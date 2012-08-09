@@ -7,11 +7,11 @@ class Asciidoc < Formula
 
   head 'https://code.google.com/p/asciidoc/', :using => :hg
 
-  depends_on :autoconf if ARGV.build_head?
+  depends_on :autoconf if build.head?
   depends_on 'docbook'
 
   def install
-    system "autoconf" if ARGV.build_head?
+    system "autoconf" if build.head?
     system "./configure", "--prefix=#{prefix}"
 
     # otherwise OS X's xmllint bails out
