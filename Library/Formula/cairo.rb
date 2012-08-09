@@ -7,7 +7,7 @@ class Cairo < Formula
 
   keg_only :provided_by_osx,
     "The Cairo provided by Leopard is too old for newer software to link against." \
-    if MacOS.x11_installed?
+    if MacOS::X11.installed?
 
   # Can't currently pass :recommended to the :x11 dep.
   depends_on :libpng # => :recommended
