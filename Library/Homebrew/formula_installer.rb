@@ -43,7 +43,8 @@ class FormulaInstaller
 
     f.recursive_deps.each do |dep|
       if dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
-        raise CannotInstallFormulaError, "You must `brew link #{dep}' before #{f} can be installed"
+        raise CannotInstallFormulaError,
+              "You must `brew link #{dep}' before #{f} can be installed"
       end
     end unless ignore_deps
 
@@ -66,13 +67,23 @@ class FormulaInstaller
       EOS
     end
 
-    f.external_deps.each do |dep|
-      unless dep.satisfied?
-        puts dep.message
-        if dep.fatal? and not ignore_deps
-          raise UnsatisfiedRequirement.new(f, dep)
+    # Build up a list of unsatisifed fatal requirements
+    first_message = true
+    unsatisfied_fatals = []
+    f.requirements.each do |req|
+      unless req.satisfied?
+        # Newline between multiple messages
+        puts unless first_message
+        puts req.message
+        first_message = false
+        if req.fatal? and not ignore_deps
+          unsatisfied_fatals << req
         end
       end
+    end
+
+    unless unsatisfied_fatals.empty?
+      raise UnsatisfiedRequirements.new(f, unsatisfied_fatals)
     end
 
     unless ignore_deps
@@ -130,8 +141,7 @@ class FormulaInstaller
   end
 
   def caveats
-    the_caveats = (f.caveats || "").strip
-    unless the_caveats.empty?
+    unless f.caveats.to_s.strip.empty?
       ohai "Caveats", f.caveats
       @show_summary_heading = true
     end
@@ -146,6 +156,22 @@ class FormulaInstaller
       check_manpages
       check_infopages
       check_m4
+    end
+
+    keg = Keg.new(f.prefix)
+
+    if keg.completion_installed? :bash
+      ohai 'Caveats', <<-EOS.undent
+        Bash completion has been installed to:
+          #{HOMEBREW_PREFIX}/etc/bash_completion.d
+        EOS
+    end
+
+    if keg.completion_installed? :zsh
+      ohai 'Caveats', <<-EOS.undent
+        zsh completion has been installed to:
+          #{HOMEBREW_PREFIX}/share/zsh/site-functions
+        EOS
     end
   end
 

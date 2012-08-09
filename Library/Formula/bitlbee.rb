@@ -5,13 +5,11 @@ class Bitlbee < Formula
   url 'http://get.bitlbee.org/src/bitlbee-3.0.5.tar.gz'
   md5 '9ff97260a2a7f3a7d102db158a8d9887'
 
+  option 'purple', "Use libpurple for all communication with instant messaging networks"
+
   depends_on 'glib'
   depends_on 'gnutls'
-  depends_on 'libpurple' if ARGV.include? '--purple'
-
-  def options
-    [['--purple', "Use libpurple for all communication with instant messaging networks"]]
-  end
+  depends_on 'libpurple' if build.include? '--purple'
 
   def install
     # By default Homebrew will set ENV['LD'] to the same as ENV['CC'] which
@@ -23,13 +21,12 @@ class Bitlbee < Formula
 
     args = ["--prefix=#{prefix}",
             "--debug=0",
-            "--strip=0", # Let Homebrew handle the stripping
             "--ssl=gnutls",
             "--pidfile=#{var}/bitlbee/run/bitlbee.pid",
             "--config=#{var}/bitlbee/lib/",
             "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"]
 
-    args << "--purple=1" if ARGV.include? "--purple"
+    args << "--purple=1" if build.include? "--purple"
 
     system "./configure", *args
 

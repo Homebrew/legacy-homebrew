@@ -68,10 +68,7 @@ module Homebrew extend self
     end
 
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
-    conflicts = []
-    f.external_deps.each do |dep|
-      conflicts << dep.formula if dep.is_a? ConflictRequirement
-    end
+    conflicts = f.conflicts.map { |c| c.formula }
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
@@ -99,8 +96,7 @@ module Homebrew extend self
       Homebrew.dump_options_for_formula f
     end
 
-    the_caveats = (f.caveats || "").strip
-    unless the_caveats.empty?
+    unless f.caveats.to_s.strip.empty?
       ohai "Caveats"
       puts f.caveats
     end

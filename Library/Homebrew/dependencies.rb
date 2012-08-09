@@ -19,11 +19,11 @@ class DependencyCollector
     :chicken, :jruby, :lua, :node, :perl, :python, :rbx, :ruby
   ].freeze
 
-  attr_reader :deps, :external_deps
+  attr_reader :deps, :requirements
 
   def initialize
     @deps = Dependencies.new
-    @external_deps = Set.new
+    @requirements = Set.new
   end
 
   def add spec
@@ -35,7 +35,7 @@ class DependencyCollector
     # dependency needed for the current platform.
     return if dep.nil?
     # Add dep to the correct bucket
-    (dep.is_a?(Requirement) ? @external_deps : @deps) << dep
+    (dep.is_a?(Requirement) ? @requirements : @deps) << dep
   end
 
 private
@@ -64,7 +64,13 @@ private
     when :autoconf, :automake, :bsdmake, :libtool
       # Xcode no longer provides autotools or some other build tools
       Dependency.new(spec.to_s) unless MacOS::Xcode.provides_autotools?
-    when :x11, :libpng
+    when :libpng, :freetype, :pixman, :fontconfig, :cairo
+      if MacOS.lion_or_newer?
+        MacOS::XQuartz.installed? ? X11Dependency.new(tag) : Dependency.new(spec.to_s)
+      else
+        X11Dependency.new(tag)
+      end
+    when :x11
       X11Dependency.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
