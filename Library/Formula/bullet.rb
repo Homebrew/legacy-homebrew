@@ -18,24 +18,24 @@ class Bullet < Formula
   def install
     args = []
 
-    if build.include? "--framework"
+    if build.include? "framework"
       args << "-DBUILD_SHARED_LIBS=ON" << "-DFRAMEWORK=ON"
       args << "-DCMAKE_INSTALL_PREFIX=#{prefix}/Frameworks"
       args << "-DCMAKE_INSTALL_NAME_DIR=#{prefix}/Frameworks"
     else
-      args << "-DBUILD_SHARED_LIBS=ON" if build.include? "--shared"
+      args << "-DBUILD_SHARED_LIBS=ON" if build.include? "shared"
       args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     end
 
     args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
-    args << "-DBUILD_DEMOS=OFF" if not build.include? "--build-demo"
-    args << "-DBUILD_EXTRAS=OFF" if not build.include? "--build-extra"
+    args << "-DBUILD_DEMOS=OFF" if not build.include? "build-demo"
+    args << "-DBUILD_EXTRAS=OFF" if not build.include? "build-extra"
 
     system "cmake", *args
     system "make"
     system "make install"
 
-    prefix.install 'Demos' if build.include? "--build-demo"
-    prefix.install 'Extras' if build.include? "--build-extra"
+    prefix.install 'Demos' if build.include? "build-demo"
+    prefix.install 'Extras' if build.include? "build-extra"
   end
 end

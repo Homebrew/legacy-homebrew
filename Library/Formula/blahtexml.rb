@@ -7,12 +7,12 @@ class Blahtexml < Formula
 
   option 'blahtex-only', "Build only blahtex, not blahtexml"
 
-  depends_on 'xerces-c' unless build.include? '--blahtex-only'
+  depends_on 'xerces-c' unless build.include? 'blahtex-only'
 
   def install
     system "make blahtex-mac"
     bin.install 'blahtex'
-    unless build.include? '--blahtex-only'
+    unless build.include? 'blahtex-only'
       system "make blahtexml-mac"
       bin.install 'blahtexml'
     end

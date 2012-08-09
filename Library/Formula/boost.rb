@@ -35,7 +35,7 @@ class Boost < Formula
   option 'with-icu', 'Build regexp engine with icu support'
 
   depends_on UniversalPython.new if needs_universal_python?
-  depends_on "icu4c" if build.include? "--with-icu"
+  depends_on "icu4c" if build.include? "with-icu"
 
   fails_with :llvm do
     build 2335
@@ -64,13 +64,13 @@ class Boost < Formula
     # Force boost to compile using the appropriate GCC version
     open("user-config.jam", "a") do |file|
       file.write "using darwin : : #{ENV.cxx} ;\n"
-      file.write "using mpi ;\n" if build.include? '--with-mpi'
+      file.write "using mpi ;\n" if build.include? 'with-mpi'
     end
 
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    if build.include? "--with-icu"
+    if build.include? "with-icu"
       icu4c_prefix = Formula.factory('icu4c').prefix
       bargs << "--with-icu=#{icu4c_prefix}"
     end
@@ -84,7 +84,7 @@ class Boost < Formula
             "install"]
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
-    args << "--without-python" if build.include? "--without-python"
+    args << "--without-python" if build.include? "without-python"
 
     system "./bootstrap.sh", *bargs
     system "./bjam", *args

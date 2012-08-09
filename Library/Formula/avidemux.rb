@@ -33,7 +33,7 @@ class Avidemux < Formula
   fails_with :clang do
     build 318
     cause "error in backend: Couldn't allocate input reg for constraint"
-  end unless build.include? '--with-debug'
+  end unless build.include? 'with-debug'
 
   def patches
     # Symbols undefined due to optimization.  Fixed in head. Remove @ 2.5.7.
@@ -77,7 +77,7 @@ class Avidemux < Formula
         -DGTK=OFF
         -DSDL=OFF
       ]
-      if build.include? '--with-debug' then
+      if build.include? 'with-debug' then
         (ENV.compiler == :clang) ? ENV.Og : ENV.O2
         ENV.deparallelize
         ENV.remove_from_cflags '-w'
@@ -125,7 +125,7 @@ class Avidemux < Formula
         -DAVIDEMUX_INSTALL_PREFIX=#{prefix}
         -DAVIDEMUX_CORECONFIG_DIR=#{buildpath}/corebuild/config
       ]
-      if build.include? '--with-debug' then
+      if build.include? 'with-debug' then
         args << '-DCMAKE_BUILD_TYPE=Debug'
         args << '-DCMAKE_VERBOSE_MAKEFILE=true'
         if ENV.compiler != :clang
