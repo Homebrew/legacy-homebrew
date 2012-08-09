@@ -7,14 +7,11 @@ class Camlp5 < Formula
 
   depends_on 'objective-caml'
 
-  def options
-    [['--strict', "Compile in strict mode"]]
-  end
+  option 'strict', 'Compile in strict mode'
 
   def install
-
     # compile for strict or transitional
-    if ARGV.include? '--strict'
+    if build.include? '--strict'
       strictness = "-strict"
     else
       strictness = "-transitional"
