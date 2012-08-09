@@ -11,7 +11,7 @@ class Wget < Formula
   option "enable-iri", "Enable iri support"
 
   depends_on "openssl" if MacOS.leopard?
-  depends_on "libidn" if build.include? "--enable-iri"
+  depends_on "libidn" if build.include? "enable-iri"
 
   if build.head?
     depends_on "autoconf" => :build
@@ -26,7 +26,7 @@ class Wget < Formula
             "--sysconfdir=#{etc}",
             "--with-ssl=openssl"]
 
-    args << "--disable-iri" unless build.include? "--enable-iri"
+    args << "--disable-iri" unless build.include? "enable-iri"
 
     system "./configure", *args
     system "make install"
