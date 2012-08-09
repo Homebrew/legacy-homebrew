@@ -9,7 +9,8 @@ class Cairo < Formula
     "The Cairo provided by Leopard is too old for newer software to link against." \
     if MacOS.x11_installed?
 
-  depends_on :libpng => :recommended
+  # Can't currently pass :recommended to the :x11 dep.
+  depends_on :libpng # => :recommended
   depends_on :pixman
   depends_on 'pkg-config' => :build
   depends_on 'xz'=> :build
