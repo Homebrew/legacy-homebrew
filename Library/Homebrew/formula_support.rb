@@ -136,19 +136,32 @@ class KegOnlyReason
   def initialize reason, explanation=nil
     @reason = reason
     @explanation = explanation
+    @valid = case @reason
+      when :when_xquartz_installed then MacOS::XQuartz.installed?
+      else true
+      end
+  end
+
+  def valid?
+    @valid
   end
 
   def to_s
-    if @reason == :provided_by_osx
-      <<-EOS.strip
-Mac OS X already provides this program and installing another version in
-parallel can cause all kinds of trouble.
+    case @reason
+    when :provided_by_osx then <<-EOS.undent
+      Mac OS X already provides this software and installing another version in
+      parallel can cause all kinds of trouble.
 
-#{@explanation}
-EOS
+      #{@explanation}
+      EOS
+    when :when_xquartz_installed then <<-EOS.undent
+      XQuartz provides this software.
+
+      #{@explanation}
+      EOS
     else
-      @reason.strip
-    end
+      @reason
+    end.strip
   end
 end
 
