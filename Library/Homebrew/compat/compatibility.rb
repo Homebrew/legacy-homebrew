@@ -34,7 +34,7 @@ def llvm_build
 end
 
 def x11_installed?
-  MacOS.x11_installed?
+  MacOS::X11.installed?
 end
 
 def macports_or_fink_installed?
@@ -188,5 +188,13 @@ module MacOS extend self
 
   def clt_version?
     CLT.version
+  end
+
+  def x11_installed?
+    X11.installed?
+  end
+
+  def x11_prefix
+    X11.prefix
   end
 end

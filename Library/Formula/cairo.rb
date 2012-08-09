@@ -5,16 +5,22 @@ class Cairo < Formula
   url 'http://cairographics.org/releases/cairo-1.12.2.tar.xz'
   sha256 'b786bc4a70542bcb09f2d9d13e5e6a0c86408cbf6d1edde5f0de807eecf93f96'
 
+  keg_only :provided_by_osx,
+    "The Cairo provided by Leopard is too old for newer software to link against." \
+    if MacOS.x11_installed?
+
+  # Can't currently pass :recommended to the :x11 dep.
+  depends_on :libpng # => :recommended
+  depends_on :pixman
   depends_on 'pkg-config' => :build
   depends_on 'xz'=> :build
-  depends_on 'pixman'
-  depends_on :x11
-
-  keg_only :provided_by_osx,
-            "The Cairo provided by Leopard is too old for newer software to link against."
+  depends_on :x11 unless ARGV.include? '--without-x'
 
   def options
-    [['--universal', 'Build a universal library']]
+    [
+      ['--universal', 'Build a universal library'],
+      ['--without-x', 'Build without X11 support'],
+    ]
   end
 
   # Fixes a build error with clang & universal, where a function was implicit.
@@ -29,9 +35,9 @@ class Cairo < Formula
 
     args = %W[
       --disable-dependency-tracking
-      --prefix=#{prefix}
-      --with-x]
+      --prefix=#{prefix}]
 
+    args << '--with-x' unless ARGV.include? '--without-x'
     args << '--enable-xcb=no' if MacOS.leopard?
 
     system "./configure", *args

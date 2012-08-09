@@ -19,11 +19,11 @@ class DependencyCollector
     :chicken, :jruby, :lua, :node, :perl, :python, :rbx, :ruby
   ].freeze
 
-  attr_reader :deps, :external_deps
+  attr_reader :deps, :requirements
 
   def initialize
     @deps = Dependencies.new
-    @external_deps = Set.new
+    @requirements = Set.new
   end
 
   def add spec
@@ -35,7 +35,7 @@ class DependencyCollector
     # dependency needed for the current platform.
     return if dep.nil?
     # Add dep to the correct bucket
-    (dep.is_a?(Requirement) ? @external_deps : @deps) << dep
+    (dep.is_a?(Requirement) ? @requirements : @deps) << dep
   end
 
 private
@@ -64,7 +64,13 @@ private
     when :autoconf, :automake, :bsdmake, :libtool
       # Xcode no longer provides autotools or some other build tools
       Dependency.new(spec.to_s) unless MacOS::Xcode.provides_autotools?
-    when :x11, :libpng
+    when :libpng, :freetype, :pixman, :fontconfig, :cairo
+      if MacOS.lion_or_newer?
+        MacOS::XQuartz.installed? ? X11Dependency.new(tag) : Dependency.new(spec.to_s)
+      else
+        X11Dependency.new(tag)
+      end
+    when :x11
       X11Dependency.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
@@ -189,7 +195,7 @@ class X11Dependency < Requirement
   def fatal?; true; end
 
   def satisfied?
-    MacOS.x11_installed? and (@min_version == nil or @min_version <= MacOS.xquartz_version)
+    MacOS::XQuartz.installed? and (@min_version.nil? or @min_version <= MacOS::XQuartz.version)
   end
 
   def message; <<-EOS.undent
@@ -203,4 +209,107 @@ class X11Dependency < Requirement
     ENV.x11
   end
 
+end
+
+
+class MPIDependency < Requirement
+
+  attr_reader :lang_list
+
+  def initialize *lang_list
+    @lang_list = lang_list
+    @non_functional = []
+    @unknown_langs = []
+  end
+
+  def fatal?; true; end
+
+  def mpi_wrapper_works? compiler
+    compiler = which compiler
+    return false if compiler.nil? or not compiler.executable?
+
+    # Some wrappers are non-functional and will return a non-zero exit code
+    # when invoked for version info.
+    #
+    # NOTE: A better test may be to do a small test compilation a la autotools.
+    quiet_system compiler, '--version'
+  end
+
+  def satisfied?
+    @lang_list.each do |lang|
+      case lang
+      when :cc, :cxx, :f90, :f77
+        compiler = 'mpi' + lang.to_s
+        @non_functional << compiler unless mpi_wrapper_works? compiler
+      else
+        @unknown_langs << lang.to_s
+      end
+    end
+
+    @unknown_langs.empty? and @non_functional.empty?
+  end
+
+  def modify_build_environment
+    # Set environment variables to help configure scripts find MPI compilers.
+    # Variable names taken from:
+    #
+    #   http://www.gnu.org/software/autoconf-archive/ax_mpi.html
+    lang_list.each do |lang|
+      compiler = 'mpi' + lang.to_s
+      mpi_path = which compiler
+
+      # Fortran 90 environment var has a different name
+      compiler = 'MPIFC' if lang == :f90
+      ENV[compiler.upcase] = mpi_path
+    end
+  end
+
+  def message
+    if not @unknown_langs.empty?
+      <<-EOS.undent
+        There is no MPI compiler wrapper for:
+
+            #{@unknown_langs.join ', '}
+
+        The following values are valid arguments to `MPIDependency.new`:
+
+            :cc, :cxx, :f90, :f77
+        EOS
+    else
+      <<-EOS.undent
+        Homebrew could not locate working copies of the following MPI compiler
+        wrappers:
+
+            #{@non_functional.join ', '}
+
+        If you have a MPI installation, please ensure the bin folder is on your
+        PATH and that all the wrappers are functional. Otherwise, a MPI
+        installation can be obtained from homebrew by *picking one* of the
+        following formulae:
+
+            open-mpi, mpich2
+        EOS
+    end
+  end
+
+end
+
+class ConflictRequirement < Requirement
+  attr_reader :formula
+
+  def initialize formula, message
+    @formula = formula
+    @message = message
+  end
+
+  def message; @message; end
+
+  def satisfied?
+    keg = Formula.factory(@formula).prefix
+    not keg.exist? && Keg.new(keg).linked?
+  end
+
+  def fatal?
+    not ARGV.force?
+  end
 end

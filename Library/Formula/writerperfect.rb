@@ -1,9 +1,9 @@
 require 'formula'
 
 class Writerperfect < Formula
-  url 'http://downloads.sourceforge.net/libwpd/writerperfect-0.8.0.tar.bz2'
-  md5 'cb55b682737ee99cff9c632f0b360372'
   homepage 'http://libwpd.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/libwpd/writerperfect-0.8.1.tar.bz2'
+  sha1 'c48b42f042973923f56d17ce4c1b5024b6e6dcb8'
 
   depends_on 'pkg-config' => :build
   depends_on "libwpg"

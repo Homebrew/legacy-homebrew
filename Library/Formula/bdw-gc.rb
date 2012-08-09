@@ -2,8 +2,13 @@ require 'formula'
 
 class BdwGc < Formula
   homepage 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/'
-  url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2.tar.gz'
-  md5 'd17aecedef3d73e75387fb63558fa4eb'
+  url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2c.tar.gz'
+  sha1 '18c5b1aa9289a12fead3ceeda8fdc81f4ed08964'
+
+  fails_with :clang do
+    build 421
+    cause 'Segfault 11 during make check'
+  end
 
   def options
     [['--universal', 'Make a 32/64-bit Intel build.']]
