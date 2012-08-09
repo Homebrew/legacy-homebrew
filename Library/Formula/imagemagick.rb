@@ -13,8 +13,8 @@ class Imagemagick < Formula
   homepage 'http://www.imagemagick.org'
 
   # upstream's stable tarballs tend to disappear, so we provide our own mirror
-  url 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.7.7-6.tar.bz2'
-  sha256 'fb32cdeef812bc2c3bb9e9f48f3cfc75c1e2640f784ef2670a0dbf948e538677'
+  url 'http://www.imagemagick.org/download/ImageMagick-6.7.8-8.tar.bz2'
+  sha256 '817b54ad9eaaa62112b901ad4359386f07fc26634bc1920869f2742f9ec6ac6e'
 
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
     :using => UnsafeSubversionDownloadStrategy
