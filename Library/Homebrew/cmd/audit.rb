@@ -155,46 +155,6 @@ INSTALL_OPTIONS = %W[
   --verbose
 ].freeze
 
-def audit_formula_options f, text
-  problems = []
-
-  # Textually find options checked for in the formula
-  options = []
-  text.scan(/ARGV\.include\?[ ]*\(?(['"])(.+?)\1/) { |m| options << m[1] }
-  options.reject! {|o| o.include? "#"}
-  options.uniq! # May be checked more than once
-
-  # Find declared options
-  begin
-    opts = f.options
-    documented_options = []
-    opts.each{ |o| documented_options << o[0] }
-    documented_options.reject! {|o| o.include? "="}
-  rescue
-    documented_options = []
-  end
-
-  if options.length > 0
-    options.each do |o|
-      next if o == '--HEAD' || o == '--devel'
-      problems << " * Option #{o} is not documented" unless documented_options.include? o
-    end
-  end
-
-  if documented_options.length > 0
-    documented_options.each do |o|
-      next if o == '--universal' and text =~ /ARGV\.build_universal\?/
-      next if o == '--32-bit' and text =~ /ARGV\.build_32_bit\?/
-      problems << " * Option #{o} is unused" unless options.include? o
-      if INSTALL_OPTIONS.include? o
-        problems << " * Option #{o} shadows an install option; should be renamed"
-      end
-    end
-  end
-
-  return problems
-end
-
 def audit_formula_patches f
   problems = []
   patches = Patches.new(f.patches)
@@ -400,7 +360,6 @@ module Homebrew extend self
       text_without_patch = (text.split("__END__")[0]).strip()
 
       problems += audit_formula_text(f.name, text_without_patch)
-      problems += audit_formula_options(f, text_without_patch)
       problems += audit_formula_specs(f)
 
       unless problems.empty?
