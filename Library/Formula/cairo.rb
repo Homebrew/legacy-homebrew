@@ -11,7 +11,7 @@ class Cairo < Formula
 
   # Can't currently pass :recommended to the :x11 dep.
   depends_on :libpng # => :recommended
-  depends_on :pixman
+  depends_on 'pixman'
   depends_on 'pkg-config' => :build
   depends_on 'xz'=> :build
   depends_on :x11 unless ARGV.include? '--without-x'
