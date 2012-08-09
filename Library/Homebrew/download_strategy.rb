@@ -274,7 +274,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
   def svn
     return ENV['HOMEBREW_SVN'] if ENV['HOMEBREW_SVN']
     return "#{HOMEBREW_PREFIX}/bin/svn" if File.exist? "#{HOMEBREW_PREFIX}/bin/svn"
-    return '/usr/bin/svn'
+    return MacOS.locate 'svn'
   end
 end
 
