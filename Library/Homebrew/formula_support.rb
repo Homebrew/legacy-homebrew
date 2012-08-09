@@ -200,10 +200,6 @@ class BuildOptions
     @args.include? '--' + name
   end
 
-  def using? name
-    @args.include? '--' + name
-  end
-
   def head?
     @args.flag? '--HEAD'
   end
