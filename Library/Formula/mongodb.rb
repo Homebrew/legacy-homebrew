@@ -6,7 +6,7 @@ class Mongodb < Formula
   if Hardware.is_64_bit? and not ARGV.build_32_bit?
     url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.7.tgz'
     md5 '81b0e8be3206cc60e8031dde302fb983'
-    version '2.0.6-x86_64'
+    version '2.0.7-x86_64'
 
     devel do
       url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0-rc0.tgz'
@@ -16,7 +16,7 @@ class Mongodb < Formula
   else
     url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.7.tgz'
     md5 '5fee3796ebc4e8721d9784ad8978b2b6'
-    version '2.0.6-i386'
+    version '2.0.7-i386'
 
     devel do
       url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0-rc0.tgz'
