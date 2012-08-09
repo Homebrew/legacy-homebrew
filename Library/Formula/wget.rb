@@ -8,27 +8,25 @@ class Wget < Formula
 
   head 'git://git.savannah.gnu.org/wget.git'
 
-  depends_on "openssl" if MacOS.leopard?
-  depends_on "libidn" if ARGV.include? "--enable-iri"
+  option "enable-iri", "Enable iri support"
 
-  if ARGV.build_head?
+  depends_on "openssl" if MacOS.leopard?
+  depends_on "libidn" if build.include? "--enable-iri"
+
+  if build.head?
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "gettext"
   end
 
-  def options
-    [["--enable-iri", "Enable iri support."]]
-  end
-
   def install
-    system "./bootstrap" if ARGV.build_head?
+    system "./bootstrap" if build.head?
     args = ["--disable-debug",
             "--prefix=#{prefix}",
             "--sysconfdir=#{etc}",
             "--with-ssl=openssl"]
 
-    args << "--disable-iri" unless ARGV.include? "--enable-iri"
+    args << "--disable-iri" unless build.include? "--enable-iri"
 
     system "./configure", *args
     system "make install"
