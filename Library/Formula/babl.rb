@@ -9,9 +9,7 @@ class Babl < Formula
 
   depends_on 'pkg-config' => :build
 
-  def options
-    [["--universal", "Builds a universal binary"]]
-  end
+  option :universal
 
   def patches
     # There are two patches.
@@ -22,7 +20,7 @@ class Babl < Formula
   end
 
   def install
-    if ARGV.build_universal?
+    if build.universal?
       ENV.universal_binary
       if ENV.compiler == :gcc
         opoo 'Compilation may fail at babl-cpuaccel.c using gcc for a universal build'
