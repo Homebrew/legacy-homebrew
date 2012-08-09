@@ -13,7 +13,7 @@ class Bullet < Formula
   option 'framework',   'Build Frameworks'
   option 'shared',      'Build shared libraries'
   option 'build-demo',  'Build demo applications'
-  opiton 'build-extra', 'Build extra library'
+  option 'build-extra', 'Build extra library'
 
   def install
     args = []
