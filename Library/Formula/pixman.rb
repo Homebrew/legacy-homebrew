@@ -7,9 +7,7 @@ class Pixman < Formula
 
   depends_on 'pkg-config' => :build
 
-  keg_only :provided_by_osx,
-    "Apple provides an outdated version of libpixman in its X11 distribution." \
-    if MacOS::X11.installed?
+  keg_only :when_xquartz_installed
 
   option :universal
 

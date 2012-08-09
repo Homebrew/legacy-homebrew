@@ -174,7 +174,12 @@ class Formula
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
   def keg_only?
-    self.class.keg_only_reason || false
+    kor = self.class.keg_only_reason
+    not kor.nil? and kor.valid?
+  end
+
+  def keg_only_reason
+    self.class.keg_only_reason
   end
 
   def fails_with? cc
