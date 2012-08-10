@@ -5,6 +5,8 @@ class GdkPixbuf < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.26/gdk-pixbuf-2.26.1.tar.xz'
   sha256 'a60af12b58d9cc15ba4c680c6730ce5d38e8d664af1d575a379385b94b4ec7ba'
 
+  option :universal
+
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'glib'
@@ -15,12 +17,8 @@ class GdkPixbuf < Formula
   # 'loaders.cache' must be writable by other packages
   skip_clean 'lib/gdk-pixbuf-2.0'
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
-
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-maintainer-mode",
                           "--enable-debug=no",
