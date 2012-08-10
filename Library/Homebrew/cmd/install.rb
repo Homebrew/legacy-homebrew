@@ -2,7 +2,7 @@ require 'formula_installer'
 require 'hardware'
 require 'blacklist'
 
-module Homebrew extend self  
+module Homebrew extend self
   def install
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
