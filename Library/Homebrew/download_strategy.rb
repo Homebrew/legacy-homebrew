@@ -315,6 +315,7 @@ end
 class GitDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
+    @@git ||= find_git
     @unique_token="#{name}--git" unless name.to_s.empty? or name == '__UNKNOWN__'
     @clone=HOMEBREW_CACHE+@unique_token
   end
@@ -339,7 +340,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     if @clone.exist?
       Dir.chdir(@clone) do
         # Check for interupted clone from a previous install
-        unless system 'git', 'status', '-s'
+        unless system @@git, 'status', '-s'
           puts "Removing invalid .git repo from cache"
           FileUtils.rm_rf @clone
         end
@@ -348,7 +349,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
     unless @clone.exist?
       # Note: first-time checkouts are always done verbosely
-      clone_args = %w[git clone]
+      clone_args = [@@git, 'clone']
       clone_args << '--depth' << '1' if support_depth?
 
       case @spec
@@ -361,15 +362,15 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
-        safe_system 'git', 'config', 'remote.origin.url', @url
+        safe_system @@git, 'config', 'remote.origin.url', @url
 
-        safe_system 'git', 'config', 'remote.origin.fetch', case @spec
+        safe_system @@git, 'config', 'remote.origin.fetch', case @spec
           when :branch then "+refs/heads/#{@ref}:refs/remotes/origin/#{@ref}"
           when :tag then "+refs/tags/#{@ref}:refs/tags/#{@ref}"
           else '+refs/heads/master:refs/remotes/origin/master'
           end
 
-        git_args = %w[git fetch origin]
+        git_args = [@@git, 'fetch', 'origin']
         quiet_safe_system(*git_args)
       end
     end
@@ -382,26 +383,33 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         ohai "Checking out #{@spec} #{@ref}"
         case @spec
         when :branch
-          nostdout { quiet_safe_system 'git', 'checkout', "origin/#{@ref}", '--' }
+          nostdout { quiet_safe_system @@git, 'checkout', "origin/#{@ref}", '--' }
         when :tag, :revision
-          nostdout { quiet_safe_system 'git', 'checkout', @ref, '--' }
+          nostdout { quiet_safe_system @@git, 'checkout', @ref, '--' }
         end
       else
         # otherwise the checkout-index won't checkout HEAD
         # https://github.com/mxcl/homebrew/issues/7124
         # must specify origin/HEAD, otherwise it resets to the current local HEAD
-        quiet_safe_system "git", "reset", "--hard", "origin/HEAD"
+        quiet_safe_system @@git, "reset", "--hard", "origin/HEAD"
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
-      safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
+      safe_system @@git, 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
       # check for submodules
       if File.exist?('.gitmodules')
-        safe_system 'git', 'submodule', 'init'
-        safe_system 'git', 'submodule', 'update'
-        sub_cmd = "git checkout-index -a -f \"--prefix=#{dst}/$path/\""
-        safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
+        safe_system @@git, 'submodule', 'init'
+        safe_system @@git, 'submodule', 'update'
+        sub_cmd = "#{@@git} checkout-index -a -f \"--prefix=#{dst}/$path/\""
+        safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
       end
     end
+  end
+
+  # Try GIT, a Homebrew-built Git, and finally the OS X system Git.
+  def find_git
+    return ENV['GIT'] if ENV['GIT']
+    return "#{HOMEBREW_PREFIX}/bin/git" if File.exist? "#{HOMEBREW_PREFIX}/bin/git"
+    return MacOS.locate 'git'
   end
 end
 
