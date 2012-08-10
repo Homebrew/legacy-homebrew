@@ -7,11 +7,16 @@ class OsspUuid < Formula
   md5 '5db0d43a9022a6ebbbc25337ae28942f'
 
   def options
-    [["--32-bit", "Build 32-bit only."]]
+    [
+      ["--32-bit", "Build 32-bit only."],
+      ["--universal", "Build with universal binaries and libraries."],
+    ]
   end
 
   def install
-    if ARGV.include? '--32-bit'
+    if ARGV.build_universal?
+      ENV.universal_binary
+    elsif ARGV.include? '--32-bit'
       ENV.append 'CFLAGS', '-arch i386'
       ENV.append 'LDFLAGS', '-arch i386'
     end
