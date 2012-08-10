@@ -1,5 +1,8 @@
 require 'formula'
 
+# NOTE: Configure will fail if using awk 20110810 from dupes.
+# Upstream issue: https://savannah.gnu.org/bugs/index.php?37063
+
 class Wget < Formula
   homepage 'http://www.gnu.org/software/wget/'
   url 'http://ftpmirror.gnu.org/wget/wget-1.14.tar.gz'
