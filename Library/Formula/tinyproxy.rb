@@ -18,10 +18,19 @@ class Tinyproxy < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-regexcheck"
+    args = [
+      "--prefix=#{prefix}",
+      "--disable-debug",
+      "--disable-dependency-tracking",
+      "--disable-regexcheck",
+    ]
+
+    # Include reverse proxy support if requested.
+    if ARGV.include? '--enable-reverse'
+      args << '--enable-reverse'
+    end
+
+    system "./configure", *args
 
     # Fix broken XML lint
     # See: http://www.freebsd.org/cgi/query-pr.cgi?pr=154624
@@ -30,5 +39,11 @@ class Tinyproxy < Formula
     end
 
     system "make install"
+  end
+
+  def options
+    [
+      ['--enable-reverse', 'Enables reverse proxy support.'],
+    ]
   end
 end
