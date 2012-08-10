@@ -29,9 +29,6 @@ class Formula
     @name = name
     validate_variable :name
 
-    # Legacy formulae can set specs via class ivars
-    ensure_specs_set if @stable.nil?
-
     # If a checksum or version was set in the DSL, but no stable URL
     # was defined, make @stable nil and save callers some trouble
     @stable = nil if @stable and @stable.url.nil?
@@ -62,30 +59,6 @@ class Formula
 
     # Combine DSL `option` and `def options`
     options.each {|o| self.class.build.add(o[0], o[1]) }
-  end
-
-  # Derive specs from class ivars
-  def ensure_specs_set
-    set_instance_variable :url
-    set_instance_variable :version
-    set_instance_variable :md5
-    set_instance_variable :sha1
-    set_instance_variable :sha256
-
-    unless @url.nil?
-      @stable = SoftwareSpec.new
-      @stable.url(@url)
-      @stable.version(@version)
-      @stable.md5(@md5)
-      @stable.sha1(@sha1)
-      @stable.sha256(@sha256)
-    end
-
-    if @head.kind_of? String
-      url = @head
-      @head = HeadSoftwareSpec.new
-      @head.url(url, self.class.instance_variable_get("@specs"))
-    end
   end
 
   def url;      @active_spec.url;     end
