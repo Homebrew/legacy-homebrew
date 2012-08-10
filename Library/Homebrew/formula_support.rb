@@ -151,3 +151,76 @@ EOS
     end
   end
 end
+
+
+# This class holds the build-time options defined for a Formula,
+# and provides named access to those options during install.
+class BuildOptions
+
+  def initialize args
+    # Take a copy of the args (any string array, actually)
+    @args = Array.new(args)
+    # Extend it into an ARGV extension
+    @args.extend(HomebrewArgvExtension)
+    @options = []
+  end
+
+  def add name, description=nil
+    if description.nil?
+      case name
+      when :universal, "universal"
+        description = "Build a universal binary."
+      when "32-bit"
+        description = "Build 32-bit only."
+      else
+        description = ""
+      end
+    end
+
+    @options << [name, description]
+  end
+
+  def has_option? name
+    @options.any? {|o| o[0] == name}
+  end
+
+  def empty?
+    @options.empty?
+  end
+
+  def collect
+    @options.collect {|o| yield o[0], o[1]}
+  end
+
+  def each
+    @options.each {|o| yield o[0], o[1]}
+  end
+
+  def include? name
+    @args.include? '--' + name
+  end
+
+  def head?
+    @args.flag? '--HEAD'
+  end
+
+  def devel?
+    @args.include? '--devel'
+  end
+
+  def stable?
+    not (head? or devel?)
+  end
+
+  # True if the user requested a universal build.
+  def universal?
+    @args.include? '--universal'
+  end
+
+  # Request a 32-bit only build.
+  # This is needed for some use-cases though we prefer to build Universal
+  # when a 32-bit version is needed.
+  def build_32_bit?
+    @args.include? '--32-bit'
+  end
+end

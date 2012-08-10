@@ -16,7 +16,7 @@ class Trafshow < Formula
   end
 
   def copy_libtool_files!
-    if MacOS.xcode_version >= "4.3"
+    if not MacOS::Xcode.provides_autotools?
       s = Formula.factory('libtool').share
       d = "#{s}/libtool/config"
       cp ["#{d}/config.guess", "#{d}/config.sub"], "."
