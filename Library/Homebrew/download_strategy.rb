@@ -210,6 +210,7 @@ end
 class SubversionDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
+    @@svn ||= find_svn
     @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
     @unique_token += "-HEAD" if ARGV.include? '--HEAD'
     @co=HOMEBREW_CACHE+@unique_token
@@ -238,7 +239,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    quiet_safe_system svn, 'export', '--force', @co, Dir.pwd
+    quiet_safe_system @@svn, 'export', '--force', @co, Dir.pwd
   end
 
   def shell_quote str
@@ -259,9 +260,9 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.exist? ? 'up' : 'checkout'
-    args = [svn, svncommand]
+    args = [@@svn, svncommand]
     # SVN shipped with XCode 3.1.4 can't force a checkout.
-    args << '--force' unless MacOS.version == :leopard and svn == '/usr/bin/svn'
+    args << '--force' unless MacOS.version == :leopard and @@svn == '/usr/bin/svn'
     args << url if !target.exist?
     args << target
     args << '-r' << revision if revision
@@ -271,7 +272,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
 
   # Try HOMEBREW_SVN, a Homebrew-built svn, and finally the OS X system svn.
   # Not all features are available in the 10.5 system-provided svn.
-  def svn
+  def find_svn
     return ENV['HOMEBREW_SVN'] if ENV['HOMEBREW_SVN']
     return "#{HOMEBREW_PREFIX}/bin/svn" if File.exist? "#{HOMEBREW_PREFIX}/bin/svn"
     return MacOS.locate 'svn'
@@ -280,7 +281,7 @@ end
 
 # Require a newer version of Subversion than 1.4.x (Leopard-provided version)
 class StrictSubversionDownloadStrategy < SubversionDownloadStrategy
-  def svn
+  def find_svn
     exe = super
     `#{exe} --version` =~ /version (\d+\.\d+(\.\d+)*)/
     svn_version = $1
@@ -303,7 +304,7 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.exist? ? 'up' : 'checkout'
-    args = [svn, svncommand, '--non-interactive', '--trust-server-cert', '--force']
+    args = [@@svn, svncommand, '--non-interactive', '--trust-server-cert', '--force']
     args << url if !target.exist?
     args << target
     args << '-r' << revision if revision
