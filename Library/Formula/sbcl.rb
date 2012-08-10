@@ -8,8 +8,8 @@ end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.55/sbcl-1.0.55-source.tar.bz2'
-  md5 '128fb15c80e8e3f8d4024bd8e04635e0'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.58/sbcl-1.0.58-source.tar.bz2'
+  md5 '341952949dc90af6f83a89f685da5dde'
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
