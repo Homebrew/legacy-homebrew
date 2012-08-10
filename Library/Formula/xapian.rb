@@ -11,44 +11,41 @@ class Xapian < Formula
   url 'http://oligarchy.co.uk/xapian/1.2.12/xapian-core-1.2.12.tar.gz'
   sha1 '2b96800280fee41eed767289620172f5226c9c4f'
 
-  def options
-    [
-      ["--ruby", "Ruby bindings"],
-      ["--python", "Python bindings"],
-      ["--php", "PHP bindings"],
-      ["--java", "Java bindings"],
-    ]
-  end
+  option "java",   "Java bindings"
+  option "php",    "PHP bindings"
+  option "python", "Python bindings"
+  option "ruby",   "Ruby bindings"
 
   def skip_clean? path
     path.extname == '.la'
   end
 
   def build_any_bindings?
-    ARGV.include? '--ruby' or ARGV.include? '--python' or ARGV.include? '--java' or ARGV.include? '--php'
-  end
-
-  def arg_for_lang lang
-    (ARGV.include? "--#{lang}") ? "--with-#{lang}" : "--without-#{lang}"
+    build.include? 'ruby' or build.include? 'python' or build.include? 'java' or build.include? 'php'
   end
 
   def install
-    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
     return unless build_any_bindings?
 
     XapianBindings.new.brew do
-      args = [
-        "XAPIAN_CONFIG=#{bin}/xapian-config",
-        "--prefix=#{prefix}",
-        "--disable-dependency-tracking",
-        "--without-csharp",
-        "--without-tcl"
+      args = %W[
+        --disable-dependency-tracking
+        --prefix=#{prefix}
+        XAPIAN_CONFIG=#{bin}/xapian-config
+        --without-csharp
+        --without-tcl
       ]
 
-      args << arg_for_lang('java')
+      if build.include? 'java'
+        args << '--with-java'
+      else
+        args << '--without-java'
+      end
 
-      if ARGV.include? '--ruby'
+      if build.include? 'ruby'
         ruby_site = lib+'ruby/site_ruby'
         ENV['RUBY_LIB'] = ENV['RUBY_LIB_ARCH'] = ruby_site
         args << '--with-ruby'
@@ -56,7 +53,7 @@ class Xapian < Formula
         args << '--without-ruby'
       end
 
-      if ARGV.include? '--python'
+      if build.include? 'python'
         python_lib = lib/which_python/'site-packages'
         python_lib.mkpath
         ENV.append 'PYTHONPATH', python_lib
@@ -67,7 +64,7 @@ class Xapian < Formula
         args << "--without-python"
       end
 
-      if ARGV.include? '--php'
+      if build.include? 'php'
         extension_dir = lib+'php/extensions'
         extension_dir.mkpath
         args << "--with-php" << "PHP_EXTENSION_DIR=#{extension_dir}"
@@ -81,14 +78,14 @@ class Xapian < Formula
 
   def caveats
     s = ''
-    if ARGV.include? '--python'
+    if build.include? 'python'
       s += <<-EOS.undent
         The Python bindings won't function until you amend your PYTHONPATH like so:
           export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
 
       EOS
     end
-    if ARGV.include? '--ruby'
+    if build.include? 'ruby'
       s += <<-EOS.undent
         You may need to add the Ruby bindings to your RUBYLIB from:
           #{HOMEBREW_PREFIX}/lib/ruby/site_ruby
