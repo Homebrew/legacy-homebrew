@@ -119,7 +119,7 @@ class FormulaInstaller
       clean
     end
 
-    raise "Nothing was installed to #{f.prefix}" unless f.installed?
+    opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
 
   def install_dependency dep
@@ -240,10 +240,23 @@ class FormulaInstaller
       data = read.read
       raise Marshal.load(data) unless data.nil? or data.empty?
       raise "Suspicious installation failure" unless $?.success?
-
-      # Write an installation receipt (a Tab) to the prefix
-      Tab.for_install(f, args).write if f.installed?
     end
+
+    # This is the installation receipt. The reason this comment is necessary
+    # is because some numpty decided to call the class Tab rather than
+    # the far more appropriate InstallationReceipt :P
+    Tab.for_install(f, args).write
+
+  rescue Exception => e
+    ignore_interrupts do
+      # any exceptions must leave us with nothing installed
+      if f.prefix.directory?
+        puts "One sec, just cleaning up..." if e.kind_of? Interrupt
+        f.prefix.rmtree
+      end
+      f.rack.rmdir_if_possible
+    end
+    raise
   end
 
   def link
