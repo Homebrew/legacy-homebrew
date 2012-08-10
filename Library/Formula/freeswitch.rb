@@ -2,8 +2,8 @@ require 'formula'
 
 class Freeswitch < Formula
   homepage 'http://freeswitch.org'
-  url 'git://git.freeswitch.org/freeswitch.git', :tag => 'v1.0.6'
-  version '1.0.6'
+  url 'git://git.freeswitch.org/freeswitch.git', :tag => 'v1.2.0'
+  version '1.2.0'
 
   head 'git://git.freeswitch.org/freeswitch.git'
 
@@ -24,6 +24,7 @@ class Freeswitch < Formula
 
     system "make"
     system "make install"
+    system "make all cd-sounds-install cd-moh-install"
 
     plist_path.write startup_plist
     plist_path.chmod 0644
