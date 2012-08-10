@@ -440,19 +440,21 @@ end
 
 class Formula
   def keg_only_text
-    # Add indent into reason so undent won't truncate the beginnings of lines
-    reason = self.keg_only_reason.to_s.gsub(/[\n]/, "\n    ")
-    return <<-EOS.undent
-    This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}.
+    s = "This formula is keg-only: so it was not symlinked into #{HOMEBREW_PREFIX}."
+    s << "\n\n#{keg_only_reason.to_s}"
+    if lib.directory? or include.directory?
+      s <<
+        <<-EOS.undent_________________________________________________________72
 
-    #{reason}
 
-    Generally there are no consequences of this for you.
-    If you build your own software and it requires this formula, you'll need
-    to add its lib & include paths to your build variables:
+        Generally there are no consequences of this for you. If you build your
+        own software and it requires this formula, you'll need to add to your
+        build variables:
 
-        LDFLAGS  -L#{lib}
-        CPPFLAGS -I#{include}
-    EOS
+        EOS
+      s << "    LDFLAGS:  -L#{HOMEBREW_PREFIX}/opt/#{name}/lib\n" if lib.directory?
+      s << "    CPPFLAGS: -I#{HOMEBREW_PREFIX}/opt/#{name}/include\n" if include.directory?
+    end
+    s << "\n"
   end
 end
