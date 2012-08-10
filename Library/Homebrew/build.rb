@@ -111,10 +111,4 @@ def install f
       end
     end
   end
-rescue Exception
-  if f.prefix.directory?
-    f.prefix.rmtree
-    f.rack.rmdir_if_possible
-  end
-  raise
 end
