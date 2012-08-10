@@ -61,14 +61,18 @@ def install f
   f.recursive_deps.uniq.each do |dep|
     dep = Formula.factory dep
     if dep.keg_only?
-      ENV.prepend 'LDFLAGS', "-L#{dep.lib}"
-      ENV.prepend 'CPPFLAGS', "-I#{dep.include}"
-      ENV.prepend 'PATH', "#{dep.bin}", ':'
+      opt = HOMEBREW_PREFIX/:opt/dep.name
 
-      pcdir = dep.lib/'pkgconfig'
+      raise "#{opt} not present\nReinstall #{dep}." unless opt.directory?
+
+      ENV.prepend 'LDFLAGS', "-L#{opt}/lib"
+      ENV.prepend 'CPPFLAGS', "-I#{opt}/include"
+      ENV.prepend 'PATH', "#{opt}/bin", ':'
+
+      pcdir = opt/'lib/pkgconfig'
       ENV.prepend 'PKG_CONFIG_PATH', pcdir, ':' if pcdir.directory?
 
-      acdir = dep.share/'aclocal'
+      acdir = opt/'share/aclocal'
       ENV.prepend 'ACLOCAL_PATH', acdir, ':' if acdir.directory?
     end
   end
