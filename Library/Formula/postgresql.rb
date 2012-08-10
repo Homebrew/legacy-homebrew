@@ -15,7 +15,8 @@ class Postgresql < Formula
       ['--without-ossp-uuid', 'Build without OSSP uuid.'],
       ['--no-python', 'Build without Python support.'],
       ['--no-perl', 'Build without Perl support.'],
-      ['--enable-dtrace', 'Build with DTrace support.']
+      ['--enable-dtrace', 'Build with DTrace support.'],
+      ['--universal', 'Build with universal binaries and libraries.']
     ]
   end
 
@@ -29,6 +30,7 @@ class Postgresql < Formula
 
   def install
     ENV.libxml2 if MacOS.snow_leopard?
+    ENV.universal_binary if ARGV.build_universal?
 
     args = ["--disable-debug",
             "--prefix=#{prefix}",
@@ -65,6 +67,10 @@ class Postgresql < Formula
     ENV.O2 if Hardware.intel_family == :core
 
     system "./configure", *args
+    if ARGV.build_universal?
+      system "curl https://trac.macports.org/export/96361/trunk/dports/databases/postgresql91/files/pg_config.h.ed | ed - ./src/include/pg_config.h"
+      system "curl https://trac.macports.org/export/96361/trunk/dports/databases/postgresql91/files/ecpg_config.h.ed | ed  - ./src/interfaces/ecpg/include/ecpg_config.h"
+    end
     system "make install-world"
 
     plist_path.write startup_plist
