@@ -10,9 +10,7 @@ class Blast < Formula
     build 421
   end
 
-  def options
-    [['--with-dll', "Create dynamic binaries instead of static"]]
-  end
+  option 'with-dll', "Create dynamic binaries instead of static"
 
   # fixes to 2.2.25 acknowledged upstream by Aaron U. per email
   # inform configure about -Os
@@ -22,7 +20,7 @@ class Blast < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--with-dll" if ARGV.include? '--with-dll'
+    args << "--with-dll" if build.include? '--with-dll'
 
     cd 'c++' do
       system "./configure", *args

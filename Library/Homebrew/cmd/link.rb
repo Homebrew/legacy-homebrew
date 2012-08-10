@@ -4,9 +4,7 @@ module Homebrew extend self
     raise KegUnspecifiedError if ARGV.named.empty?
 
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      # note we only abort if Homebrew is *not* installed as sudo and the user
-      # calls brew as root. The fix is to chown brew to root.
-      abort "Cowardly refusing to `sudo brew link'"
+      raise "Cowardly refusing to `sudo brew link'\n#{SUDO_BAD_ERRMSG}"
     end
 
     if ARGV.force? then mode = :force

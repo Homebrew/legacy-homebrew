@@ -4,14 +4,17 @@ require 'test/testball'
 
 class MockFormula < Formula
   def initialize url
-    @url=url
-    @homepage = 'http://example.com/'
+    @stable = SoftwareSpec.new(url)
     super 'test'
   end
 end
 
 class TestBadVersion < TestBall
-  @version="versions can't have spaces"
+  def initialize name=nil
+    @stable = SoftwareSpec.new
+    @stable.version "versions can't have spaces"
+    super 'testbadversion'
+  end
 end
 
 

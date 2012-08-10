@@ -15,9 +15,7 @@ module Homebrew extend self
     end unless ARGV.force?
 
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      # note we only abort if Homebrew is *not* installed as sudo and the user
-      # calls brew as root. The fix is to chown brew to root.
-      abort "Cowardly refusing to `sudo brew install'"
+      raise "Cowardly refusing to `sudo brew install'\n#{SUDO_BAD_ERRMSG}"
     end
 
     install_formulae ARGV.formulae

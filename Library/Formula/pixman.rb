@@ -9,7 +9,7 @@ class Pixman < Formula
 
   keg_only :provided_by_osx,
     "Apple provides an outdated version of libpixman in its X11 distribution." \
-    if MacOS.x11_installed?
+    if MacOS::X11.installed?
 
   fails_with :llvm do
     build 2336
