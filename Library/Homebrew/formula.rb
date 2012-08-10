@@ -304,6 +304,16 @@ class Formula
     end
   end
 
+  def self.select
+    ff = []
+    each{ |f| ff << f if yield(f) }
+    ff
+  end
+
+  def self.installed
+    HOMEBREW_CELLAR.children.map{ |rack| factory(rack.basename) rescue nil }.compact
+  end
+
   def inspect
     name
   end
