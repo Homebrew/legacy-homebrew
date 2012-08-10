@@ -172,10 +172,18 @@ class FormulaInstaller
   def finish
     ohai 'Finishing up' if ARGV.verbose?
 
-    unless f.keg_only?
+    if f.keg_only?
+      begin
+        Keg.new(f.prefix).optlink
+      rescue Exception => e
+        onoe "Failed to create: #{f.opt_prefix}"
+        puts "Things that depend on #{f} will probably not build."
+      end
+    else
       link
-      check_PATH
+      check_PATH unless f.keg_only?
     end
+
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
