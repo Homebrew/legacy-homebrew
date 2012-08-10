@@ -21,7 +21,7 @@ module Homebrew extend self
   end
 
   def github_fork
-    if which 'git'
+    if which 'git' and (HOMEBREW_REPOSITORY/".git").directory?
       if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
         $2
       end
@@ -68,10 +68,7 @@ module Homebrew extend self
     end
 
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
-    conflicts = []
-    f.external_deps.each do |dep|
-      conflicts << dep.formula if dep.is_a? ConflictRequirement
-    end
+    conflicts = f.conflicts.map { |c| c.formula }
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
@@ -93,14 +90,13 @@ module Homebrew extend self
     history = github_info(f)
     puts history if history
 
-    unless f.options.empty?
+    unless f.build.empty?
       require 'cmd/options'
       ohai "Options"
       Homebrew.dump_options_for_formula f
     end
 
-    the_caveats = (f.caveats || "").strip
-    unless the_caveats.empty?
+    unless f.caveats.to_s.strip.empty?
       ohai "Caveats"
       puts f.caveats
     end

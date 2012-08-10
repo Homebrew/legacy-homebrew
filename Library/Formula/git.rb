@@ -72,9 +72,6 @@ class Git < Formula
   end
 
   def caveats; <<-EOS.undent
-    Bash completion has been installed to:
-      #{etc}/bash_completion.d
-
     The OS X keychain credential helper has been installed to:
       #{HOMEBREW_PREFIX}/bin/git-credential-osxkeychain
 

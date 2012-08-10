@@ -3,18 +3,17 @@ require 'test/testball'
 
 class MockFormula < Formula
   def initialize url
-    @url=url
-    @homepage = 'http://example.com/'
+    @stable = SoftwareSpec.new(url)
     super 'test'
   end
 end
 
 class TestZip < Formula
   def initialize
+    @homepage = 'http://example.com/'
     zip=HOMEBREW_CACHE.parent+'test-0.1.zip'
     Kernel.system '/usr/bin/zip', '-q', '-0', zip, ABS__FILE__
-    @url="file://#{zip}"
-    @homepage = 'http://example.com/'
+    @stable = SoftwareSpec.new "file://#{zip}"
     super 'testzip'
   end
 end
@@ -49,7 +48,7 @@ class BeerTasting < Test::Unit::TestCase
       f << %{
         require 'formula'
         class #{classname} < Formula
-          @url=''
+          url ''
           def initialize(*args)
             @homepage = 'http://example.com/'
             super

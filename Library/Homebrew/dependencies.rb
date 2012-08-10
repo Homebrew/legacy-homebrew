@@ -19,11 +19,11 @@ class DependencyCollector
     :chicken, :jruby, :lua, :node, :perl, :python, :rbx, :ruby
   ].freeze
 
-  attr_reader :deps, :external_deps
+  attr_reader :deps, :requirements
 
   def initialize
     @deps = Dependencies.new
-    @external_deps = Set.new
+    @requirements = Set.new
   end
 
   def add spec
@@ -35,7 +35,7 @@ class DependencyCollector
     # dependency needed for the current platform.
     return if dep.nil?
     # Add dep to the correct bucket
-    (dep.is_a?(Requirement) ? @external_deps : @deps) << dep
+    (dep.is_a?(Requirement) ? @requirements : @deps) << dep
   end
 
 private
@@ -64,7 +64,13 @@ private
     when :autoconf, :automake, :bsdmake, :libtool
       # Xcode no longer provides autotools or some other build tools
       Dependency.new(spec.to_s) unless MacOS::Xcode.provides_autotools?
-    when :x11, :libpng
+    when :libpng, :freetype, :pixman, :fontconfig, :cairo
+      if MacOS.lion_or_newer?
+        MacOS::XQuartz.installed? ? X11Dependency.new(tag) : Dependency.new(spec.to_s)
+      else
+        X11Dependency.new(tag)
+      end
+    when :x11
       X11Dependency.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
@@ -117,9 +123,15 @@ end
 # A "fatal" requirement is one that will fail the build if it is not present.
 # By default, Requirements are non-fatal.
 class Requirement
+  # Should return true if this requirement is met.
   def satisfied?; false; end
+  # Should return true if not meeting this requirement should fail the build.
   def fatal?; false; end
+  # The message to show when the requirement is not met.
   def message; ""; end
+
+  # Requirements can modify the current build environment by overriding this.
+  # See X11Dependency
   def modify_build_environment; nil end
 
   def eql?(other)
@@ -180,6 +192,9 @@ class LanguageModuleDependency < Requirement
   end
 end
 
+
+# This requirement is used to require an X11 implementation,
+# optionally with a minimum version number.
 class X11Dependency < Requirement
 
   def initialize min_version=nil
@@ -206,6 +221,9 @@ class X11Dependency < Requirement
 end
 
 
+# There are multiple implementations of MPI-2 available.
+# http://www.mpi-forum.org/
+# This requirement is used to find an appropriate one.
 class MPIDependency < Requirement
 
   attr_reader :lang_list
@@ -246,8 +264,7 @@ class MPIDependency < Requirement
   def modify_build_environment
     # Set environment variables to help configure scripts find MPI compilers.
     # Variable names taken from:
-    #
-    #   http://www.gnu.org/software/autoconf-archive/ax_mpi.html
+    # http://www.gnu.org/software/autoconf-archive/ax_mpi.html
     lang_list.each do |lang|
       compiler = 'mpi' + lang.to_s
       mpi_path = which compiler
@@ -262,25 +279,21 @@ class MPIDependency < Requirement
     if not @unknown_langs.empty?
       <<-EOS.undent
         There is no MPI compiler wrapper for:
-
             #{@unknown_langs.join ', '}
 
         The following values are valid arguments to `MPIDependency.new`:
-
             :cc, :cxx, :f90, :f77
         EOS
     else
       <<-EOS.undent
         Homebrew could not locate working copies of the following MPI compiler
         wrappers:
-
             #{@non_functional.join ', '}
 
         If you have a MPI installation, please ensure the bin folder is on your
         PATH and that all the wrappers are functional. Otherwise, a MPI
         installation can be obtained from homebrew by *picking one* of the
         following formulae:
-
             open-mpi, mpich2
         EOS
     end
@@ -288,6 +301,7 @@ class MPIDependency < Requirement
 
 end
 
+# This requirement added by the `conflicts_with` DSL method.
 class ConflictRequirement < Requirement
   attr_reader :formula
 
@@ -303,6 +317,7 @@ class ConflictRequirement < Requirement
     not keg.exist? && Keg.new(keg).linked?
   end
 
+  # The user can chose to force installation even in the face of conflicts.
   def fatal?
     not ARGV.force?
   end

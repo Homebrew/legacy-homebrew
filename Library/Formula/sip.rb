@@ -36,6 +36,7 @@ class Sip < Formula
                               "--destdir=#{lib}/#{which_python}/site-packages",
                               "--bindir=#{bin}",
                               "--incdir=#{include}",
+                              "--sipdir=#{HOMEBREW_PREFIX}/share/sip",
                               "CFLAGS=#{ENV.cflags}",
                               "LFLAGS=#{ENV.ldflags}"
     system "make install"

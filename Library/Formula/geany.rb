@@ -5,6 +5,7 @@ class Geany < Formula
   url 'http://download.geany.org/geany-0.21.tar.gz'
   sha256 'a1aa27d2f946ccca8a4e57faf0029cf6aa544d5d52f0170e017c137c33b4b67d'
 
+  depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'intltool'
