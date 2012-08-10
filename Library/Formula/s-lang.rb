@@ -10,9 +10,12 @@ class SLang < Formula
   depends_on 'oniguruma' => :optional
 
   def install
+    pnglib = MacOS::X11.installed? ? MacOS::X11.lib : HOMEBREW_PREFIX/'lib'
+    pnginc = MacOS::X11.installed? ? MacOS::X11.include : HOMEBREW_PREFIX/'include'
+
     system "./configure", "--prefix=#{prefix}",
-                          "--with-pnglib=#{MacOS::X11.lib}",
-                          "--with-pnginc=#{MacOS::X11.include}"
+                          "--with-pnglib=#{pnglib}",
+                          "--with-pnginc=#{pnginc}"
     ENV.j1
     system "make"
     system "make install"
