@@ -409,6 +409,17 @@ Homebrew can install formulae via URL, e\.g\. \fBhttps://raw\.github\.com/mxcl/h
 .SH "ENVIRONMENT"
 .
 .TP
+GIT
+When using Git, Homebrew will use \fBGIT\fR if set, a Homebrew\-built Git if installed, or the system\-provided binary\.
+.
+.IP
+Set this to force Homebrew to use a particular git binary\.
+.
+.TP
+EDITOR
+If set, and \fBHOMEBREW_EDITOR\fR is not, use \fBEDITOR\fR as the text editor\.
+.
+.TP
 HOMEBREW_BUILD_FROM_SOURCE
 If set, instructs Homebrew to compile from source even when a formula provides a bottle\.
 .
