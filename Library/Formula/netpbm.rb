@@ -2,24 +2,26 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.82/netpbm-10.35.82.tgz'
-  md5 'fcae2fc7928ad7d31b0540ec0c3e710b'
-
+  url 'http://mirror.mcs.anl.gov/pub/gentoo/distfiles/netpbm-10.59.00.tar.xz'
+  md5 '10b74d367deff6c441a70896b93433d9'
   head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
 
+  depends_on "xz"
   depends_on "libtiff"
   depends_on "jasper"
   depends_on :libpng
 
-  def install
-    if ARGV.build_head?
-      system "cp", "config.mk.in", "config.mk"
-      config = "config.mk"
-    else
-      system "cp", "Makefile.config.in", "Makefile.config"
-      config = "Makefile.config"
-    end
+  def patches
+    {:p0 => 
+      [
+       "https://trac.macports.org/export/95870/trunk/dports/graphics/netpbm/files/patch-clang-sse-workaround.diff",
+       "https://trac.macports.org/export/95870/trunk/dports/graphics/netpbm/files/patch-converter-other-giftopnm.c-strcaseeq.diff"
+      ]}
+  end
 
+  def install
+    config = "config.mk"
+    (buildpath/"config.mk.in").cp config
     inreplace config do |s|
       s.remove_make_var! "CC"
       s.change_make_var! "CFLAGS_SHLIB", "-fno-common"
@@ -37,6 +39,7 @@ class Netpbm < Formula
     ENV.deparallelize
     system "make"
     system "make", "package", "pkgdir=#{buildpath}/stage"
+    (buildpath/"stage"/"bin"/"doc.url").unlink # non executable
     cd 'stage' do
       prefix.install %w{ bin include lib misc }
       # do man pages explicitly; otherwise a junk file is installed in man/web
