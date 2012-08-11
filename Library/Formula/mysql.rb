@@ -9,6 +9,12 @@ class Mysql < Formula
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.mountain_lion?
 
+  bottle do
+    sha1 '31e9955a3a0a6dbc2baec8f1dade79257da428a8' => :mountainlion
+    sha1 'b3cf78f7ddb812d38e376076e05020c0b412ee9c' => :lion
+    sha1 '9f36132081d2b603c8aff4a7ee561962936892ec' => :snowleopard
+  end
+
   conflicts_with 'mariadb',
     :because => "mysql and mariadb install the same binaries."
   conflicts_with 'percona-server',
