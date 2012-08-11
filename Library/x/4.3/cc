@@ -1,0 +1,139 @@
+#!/usr/bin/ruby -W0
+#TODO make it work with our GCC
+#TODO try to create /usr/local/opt before merge
+#TODO? If we find -mmacosx-version-min=10.8, change sdkroot? warn visibly if no such SDK?
+#TODO fix pkg-config files, should point to /usr/local or /usr/local/opt
+
+require "#{File.dirname __FILE__}/../libsuperenv"
+require 'set'
+
+def ccc? flags
+  flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
+end
+def macos
+  tst = Proc.new{|v| v.strip if v =~ /10\.\d/ }
+  tst.call(ENV['HOMEBREW_MACOS']) || tst.call(ENV['MACOS_DEPLOYMENT_TARGET']) || tst.call(`/usr/bin/sw_vers -productVersion`)
+end
+def nclt?
+  $sdkroot != nil
+end
+def cmake_prefixes
+  @prefixes ||= ENV['CMAKE_PREFIX_PATH'].split(':').reject do |path|
+    case path
+      when '/usr/local' then !nclt?
+      when '/usr', '/', "#$sdkroot/usr" then true
+    end
+  end
+end
+def cc
+  case cc = ENV['CC'].basename.chuzzle when /gcc/
+    cc.split(' ').first # $CC may be set with args
+  else
+    'clang'
+  end
+end
+
+class Cmd
+  def initialize path, args
+    @cmd = path.basename.freeze
+    @args = args.freeze
+  end
+  def mode
+    if @cmd == 'cpp' or @cmd == 'ld'
+      @cmd.to_sym
+    elsif @args.include? '-c'
+      :cc
+    elsif @args.include? '-E'
+      :cpp
+    else
+      :ccld
+    end
+  end
+  def tool
+    case @cmd
+      when 'clang', 'cc' then 'clang'
+      when 'clang++', 'c++' then 'clang++'
+      when /gcc/ then 'gcc'
+      when /g\+\+/ then 'g++'
+      when 'ld', 'cpp' then cc
+    else
+      abort "Unknown command: #{@cmd}"
+    end
+  end
+  def args
+    args = if ccc? 'O'
+      refurbished_args
+    else
+      @args.dup
+    end
+    args.unshift("--sysroot=#$sdkroot") if nclt?
+    case mode
+    when :cpp
+      %w{-E} + cppflags + args
+    when :ld
+      ldflags + args
+    when :cc
+      cflags + cppflags + args
+    when :ccld
+      cflags + cppflags + ldflags + args
+    end.compact
+  end
+  def refurbished_args
+    iset = Set.new(cmake_prefixes.map{|prefix| "#{prefix}/include" })
+    lset = Set.new
+    args = []
+    whittler = @args.each
+    loop do
+      case arg = whittler.next
+      when '-arch', /^-Xarch_/
+        whittler.next
+      when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
+           /^-march=.+/, /^-mtune=.+/, '-m64', '-m32',
+           /^-O[0-9zs]/, '-fast',
+           %r{^-[IL]/opt/local}, %r{^-[IL]/sw},
+           '-pedantic', '-pedantic-errors'
+      when /^-W.*/
+        args << arg if arg =~ /^-Wl,/
+      when /^-I(.+)/
+        # it is okay to add a space after the -I; so let's support it
+        path = $1.chuzzle || whittler.next
+        args << "-I#{path}" if iset.add?(path.cleanpath)
+      when /^-l(.+)/
+        lib = $1.chuzzle || whittler.next
+        args << "-l#{lib}" if lset.add?(lib)
+      else
+        args << arg
+      end
+    end
+    args
+  end
+  def cflags
+    if ccc? 'Ob'
+      %w{-mtune=generic -Oz}
+    elsif ccc? 'O'
+      u = '-arch i386 -arch x86_64' if ccc? 'u'
+      c = case tool when 'clang', 'clang++' then '-march=native' end
+      %w{-pipe -w -Os} << u << c
+    else
+      []
+    end
+  end
+  def ldflags
+    cmake_prefixes.map{|prefix| "#{prefix}/lib" }.to_flags('-L')
+  end
+  def cppflags
+    all = cmake_prefixes.map{|prefix| "#{prefix}/include" }
+    opt = all.select{|prefix| prefix =~ %r{^#$brewfix/opt} }
+    sys = all - opt + ENV['CMAKE_INCLUDE_PATH'].split(':')
+    # we want our keg-only includes to be found before system includes so that
+    # they override the system options.
+    sys.to_flags('-isystem') + opt.to_flags('-I')
+  end
+end
+
+####################################################################### sanity
+abort "The build-tool has reset ENV. --lame-env required." unless ENV['HOMEBREW_BREW_FILE']
+
+######################################################################### main
+cmd = Cmd.new($0, ARGV)
+exec "xcrun", cmd.tool, *cmd.args
