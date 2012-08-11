@@ -1,0 +1,140 @@
+#!/usr/bin/ruby -W0
+#TODO make it work with homebrew/dupes/gcc
+#TODO? If we find -mmacosx-version-min=10.8, change sdkroot? warn visibly if no such SDK?
+#TODO fix pkg-config files, should point to /usr/local or /usr/local/opt
+#TODO for easier to understand code, don't monkey-patch ENV, just set via a hash from a helper class
+#TODO create mechanism to specify build effects like %w{-O0 -O4 vanilla-arg-parsing sdk=10.6} etc.
+#TODO DSL for lame-env (and rename to typical-env or something better)
+#TODO consider always setting CC to cc and instead having HOMEBREW_CC to force cc choice in end toolchain
+#     in verbose mode print out things like "gcc called, but redirecting to clang" if that happens
+#TODO `brew sh`: https://github.com/mxcl/homebrew/issues/14381#issuecomment-8017538
+
+require "#{File.dirname __FILE__}/../libsuperenv"
+require 'set'
+
+def cccfg? flags
+  flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
+end
+def nclt?
+  $sdkroot != nil
+end
+def cmake_prefixes
+  @prefixes ||= ENV['CMAKE_PREFIX_PATH'].split(':').reject do |path|
+    case path
+      when '/usr/local' then !nclt?
+      when '/usr', '/', "#$sdkroot/usr" then true
+    end
+  end
+end
+
+class Cmd
+  def initialize path, args
+    @cmd = path.basename.freeze
+    @args = args.freeze
+  end
+  def mode
+    if @cmd == 'cpp' or @cmd == 'ld'
+      @cmd.to_sym
+    elsif @args.include? '-c'
+      :cc
+    elsif @args.include? '-E'
+      :cpp
+    else
+      :ccld
+    end
+  end
+  def tool
+    case @cmd
+      when /gcc/ then 'gcc'
+      when /g\+\+/ then 'g++'
+    when 'clang', 'clang++'
+      @cmd
+    when 'ld', 'cpp', 'cc'
+      ENV['HOMEBREW_CC'].chuzzle or 'clang'
+    when 'c++'
+      case ENV['HOMEBREW_CC']
+        when /gcc/ then 'g++'
+        else 'clang++'
+      end
+    else
+      abort "Unknown command: #{@cmd}"
+    end
+  end
+  def args
+    args = if cccfg? 'O'
+      refurbished_args
+    else
+      @args.dup
+    end
+    args.unshift("--sysroot=#$sdkroot") if nclt?
+    case mode
+    when :cpp
+      %w{-E} + cppflags + args
+    when :ld
+      ldflags + args
+    when :cc
+      cflags + cppflags + args
+    when :ccld
+      cflags + cppflags + ldflags + args
+    end.compact
+  end
+  def refurbished_args
+    iset = Set.new(cmake_prefixes.map{|prefix| "#{prefix}/include" })
+    lset = Set.new
+    args = []
+    whittler = @args.each
+    loop do
+      case arg = whittler.next
+      when '-arch', /^-Xarch_/
+        whittler.next
+      when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
+           /^-march=.+/, /^-mtune=.+/, '-m64', '-m32',
+           /^-O[0-9zs]/, '-fast',
+           %r{^-[IL]/opt/local}, %r{^-[IL]/sw},    # no macports/fink
+           %r{^-[IL]/usr/X11}, %r{^-[IL]/opt/X11}, # we add X11 ourselves
+           '-pedantic', '-pedantic-errors'
+      when /^-W.*/
+        args << arg if arg =~ /^-Wl,/
+      when /^-I(.+)/
+        # it is okay to add a space after the -I; so let's support it
+        path = $1.chuzzle || whittler.next
+        args << "-I#{path}" if iset.add?(path.cleanpath)
+      when /^-l(.+)/
+        lib = $1.chuzzle || whittler.next
+        args << "-l#{lib}" if lset.add?(lib)
+      else
+        args << arg
+      end
+    end
+    args
+  end
+  def cflags
+    if cccfg? 'Ob'
+      %w{-mtune=generic -Oz}
+    elsif cccfg? 'O'
+      u = '-arch i386 -arch x86_64' if cccfg? 'u'
+      c = case tool when 'clang', 'clang++' then '-march=native' end
+      %w{-pipe -w -Os} << u << c
+    else
+      []
+    end
+  end
+  def ldflags
+    cmake_prefixes.map{|prefix| "#{prefix}/lib" }.to_flags('-L')
+  end
+  def cppflags
+    all = cmake_prefixes.map{|prefix| "#{prefix}/include" }
+    opt = all.select{|prefix| prefix =~ %r{^#$brewfix/opt} }
+    sys = all - opt + ENV['CMAKE_INCLUDE_PATH'].split(':')
+    # we want our keg-only includes to be found before system includes so that
+    # they override the system options.
+    sys.to_flags('-isystem') + opt.to_flags('-I')
+  end
+end
+
+####################################################################### sanity
+abort "The build-tool has reset ENV. --lame-env required." unless ENV['HOMEBREW_BREW_FILE']
+
+######################################################################### main
+cmd = Cmd.new($0, ARGV)
+exec "xcrun", cmd.tool, *cmd.args
