@@ -1,9 +1,5 @@
 require 'formula'
 
-def build_clang?; ARGV.include? '--with-clang'; end
-def build_universal?; ARGV.build_universal?; end
-def build_shared?; ARGV.include? '--shared'; end
-
 class Clang < Formula
   homepage  'http://llvm.org/'
   url       'http://llvm.org/releases/3.1/clang-3.1.src.tar.gz'
@@ -34,14 +30,14 @@ class Llvm < Formula
   end
 
   def install
-    if build_shared? && build_universal?
+    if ARGV.include? '--shared' && ARGV.build_universal?
       onoe "Cannot specify both shared and universal (will not build)"
       exit 1
     end
 
-    Clang.new("clang").brew { clang_dir.install Dir['*'] } if build_clang?
+    Clang.new("clang").brew { clang_dir.install Dir['*'] } if ARGV.include? '--with-clang'
 
-    if build_universal?
+    if ARGV.build_universal?
       ENV['UNIVERSAL'] = '1'
       ENV['UNIVERSAL_ARCH'] = 'i386 x86_64'
     end
@@ -56,12 +52,12 @@ class Llvm < Formula
       "--disable-bindings",
     ]
 
-    if ARGV.include? '--all-targets'?
+    if ARGV.include? '--all-targets'
       configure_options << "--enable-targets=all"
     else
       configure_options << "--enable-targets=host"
     end
-    configure_options << "--enable-shared" if build_shared?
+    configure_options << "--enable-shared" if ARGV.include? '--shared'
 
     system "./configure", *configure_options
     system "make install"
@@ -73,7 +69,7 @@ class Llvm < Formula
     cd clang_dir do
       (share/'clang/tools').install 'tools/scan-build', 'tools/scan-view'
       (share/'clang/bindings').install 'bindings/python'
-    end if build_clang?
+    end if ARGV.include? '--with-clang'
   end
 
   def test
