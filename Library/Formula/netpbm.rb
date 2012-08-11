@@ -2,11 +2,10 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'http://mirror.mcs.anl.gov/pub/gentoo/distfiles/netpbm-10.59.00.tar.xz'
-  md5 '10b74d367deff6c441a70896b93433d9'
+  url 'svn+http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/', :revision => 1724
+  version "10.59.02"
   head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
 
-  depends_on "xz"
   depends_on "libtiff"
   depends_on "jasper"
   depends_on :libpng
