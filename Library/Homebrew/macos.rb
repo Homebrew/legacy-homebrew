@@ -1,7 +1,5 @@
 module MacOS extend self
 
-  MDITEM_BUNDLE_ID_KEY = "kMDItemCFBundleIdentifier"
-
   def version
     require 'version'
     MacOSVersion.new(MACOS_VERSION.to_s)
@@ -212,12 +210,12 @@ module MacOS extend self
   end
 
   def app_with_bundle_id id
-    mdfind(MDITEM_BUNDLE_ID_KEY, id)
+    path = mdfind(id).first
+    Pathname.new(path) unless path.nil? or path.empty?
   end
 
-  def mdfind attribute, id
-    path = `/usr/bin/mdfind "#{attribute} == '#{id}'"`.split("\n").first
-    Pathname.new(path) unless path.nil? or path.empty?
+  def mdfind id
+    `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
   end
 
   def pkgutil_info id
