@@ -5,14 +5,14 @@ class Lame < Formula
   url 'http://downloads.sourceforge.net/sourceforge/lame/lame-3.99.5.tar.gz'
   md5 '84835b313d4a8b68f5349816d33e07ce'
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
+  option :universal
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
-    system "./configure", "--disable-debug", "--prefix=#{prefix}", "--enable-nasm"
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--enable-nasm"
     system "make install"
   end
 end

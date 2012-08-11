@@ -31,6 +31,7 @@ class Sphinx < Formula
     [
       ['--mysql', 'Force compiling against MySQL.'],
       ['--pgsql', 'Force compiling against PostgreSQL.'],
+      ['--id64',  'Force compiling with 64-bit ID support'],
     ]
   end
 
@@ -46,6 +47,7 @@ class Sphinx < Formula
 
     # configure script won't auto-select PostgreSQL
     args << "--with-pgsql" if ARGV.include?('--pgsql') or which 'pg_config'
+    args << "--enable-id64" if ARGV.include?('--id64')
     args << "--without-mysql" unless ARGV.include?('--mysql') or which 'mysql_config'
 
     system "./configure", *args
