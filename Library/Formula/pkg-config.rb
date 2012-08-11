@@ -8,6 +8,12 @@ class PkgConfig < Formula
 
   depends_on 'gettext'
 
+  bottle do
+    sha1 '52e1a98740cc834f4b29ee31923812914461f815' => :mountainlion
+    sha1 'ebeb434ee288ac7c96cfa09eee98434fe810edff' => :lion
+    sha1 'b72a6f5078ee917a28c1e6c9948db23701f4dd18' => :snowleopard
+  end
+
   def install
     paths = %W[
         #{HOMEBREW_PREFIX}/lib/pkgconfig
