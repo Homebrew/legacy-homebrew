@@ -1,5 +1,3 @@
-require 'bottles'
-
 module HomebrewArgvExtension
   def named
     @named ||= reject{|arg| arg[0..0] == '-'}
@@ -115,10 +113,12 @@ module HomebrewArgvExtension
   end
 
   def build_bottle?
+    require 'bottles'
     bottles_supported? and include? '--build-bottle'
   end
 
   def build_from_source?
+    require 'bottles'
     flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
       or not bottles_supported? or not options_only.empty?
   end
