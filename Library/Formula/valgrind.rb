@@ -5,8 +5,8 @@ class Valgrind < Formula
 
   # Valgrind 3.7.0 drops support for OS X 10.5
   if MACOS_VERSION >= 10.6
-    url 'http://valgrind.org/downloads/valgrind-3.7.0.tar.bz2'
-    md5 'a855fda56edf05614f099dca316d1775'
+    url 'http://valgrind.org/downloads/valgrind-3.8.0.tar.bz2'
+    md5 'ec04dfd1256307432b2a7b520398c526'
   else
     url "http://valgrind.org/downloads/valgrind-3.6.1.tar.bz2"
     md5 "2c3aa122498baecc9d69194057ca88f5"
@@ -15,6 +15,7 @@ class Valgrind < Formula
   skip_clean 'lib'
 
   def install
+    ENV.remove_from_cflags "-mmacosx-version-min=#{MACOS_VERSION}"
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     if MacOS.prefer_64_bit?
       args << "--enable-only64bit" << "--build=amd64-darwin"
