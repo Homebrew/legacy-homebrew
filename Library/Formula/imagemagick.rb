@@ -34,6 +34,12 @@ class Imagemagick < Formula
   depends_on 'liblqr' if ARGV.include? '--use-lqr'
   depends_on 'openexr' if ARGV.include? '--use-exr'
 
+  bottle do
+    sha1 '917628f817b0b49fc60eedeb0141e4b96b5e1fd1' => :mountainlion
+    sha1 'd0086086225374c0c879c9c99dc306cf6ccd65ed' => :lion
+    sha1 'cd34ceeeab4dcf243245c953f48d4b09482c99af' => :snowleopard
+  end
+
   def skip_clean? path
     path.extname == '.la'
   end
