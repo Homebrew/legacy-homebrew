@@ -169,9 +169,9 @@ class BuildOptions
     if description.nil?
       case name
       when :universal, "universal"
-        description = "Build a universal binary."
+        description = "Build a universal binary"
       when "32-bit"
-        description = "Build 32-bit only."
+        description = "Build 32-bit only"
       else
         description = ""
       end
