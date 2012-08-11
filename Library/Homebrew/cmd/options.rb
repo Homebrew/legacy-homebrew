@@ -32,7 +32,7 @@ module Homebrew extend self
 
   def dump_options_for_formula f
     f.build.each do |k,v|
-      puts k
+      puts "--"+k
       puts "\t"+v
     end
   end
