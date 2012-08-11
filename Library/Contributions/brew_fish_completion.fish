@@ -6,7 +6,7 @@
 #   ln -s (brew --prefix)/Library/Contributions/brew_fish_completion.fish
 #     ~/.config/fish/completions/brew.fish
 
-for command in (ls (brew --repository)/Library/Homebrew/cmd | sed s/\.rb//)
+for command in (ls (brew --repository)/Library/Homebrew/cmd | sed -e "s/\.rb//g")
   set commands $command $commands
 end
 
@@ -154,9 +154,5 @@ complete -c brew -l rebase -n '__fish_complete_brew_command update' -d "Use git 
 complete -c brew -l installed -n '__fish_complete_brew_command uses' -d "Only list installed formulae"
 
 complete -c brew -l compact -n '__fish_complete_brew_command versions' -d "Show all versions on a single line"
-
-complete -c brew -l prefix  -n '__fish_complete_brew_no_command'
-complete -c brew -l version -n '__fish_complete_brew_no_command'
-complete -c brew -l cache   -n '__fish_complete_brew_no_command'
 
 complete -c brew -s v -l verbose -d "Print extra debugging information"
