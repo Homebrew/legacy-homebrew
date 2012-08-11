@@ -9,7 +9,9 @@ class Gettext < Formula
   keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
 
   bottle do
+    sha1 'd1ad5ad15bfe8fe813ee37e5d6b514fc79924b9a' => :mountainlion
     sha1 'c75fdb192f1b49c9e7e2039c66e24f60f26bc027' => :lion
+    sha1 'b8958544542fc160b4c74db5d83cb441d12741c7' => :snowleopard
   end
 
   option :universal
