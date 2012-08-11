@@ -1,9 +1,8 @@
-require 'extend/ENV'
+require 'superenv'
 require 'hardware'
 
 module Homebrew extend self
   def __env
-    ENV.extend(HomebrewEnvExtension)
     ENV.setup_build_environment
     ENV.universal_binary if ARGV.build_universal?
     if $stdout.tty?
@@ -17,10 +16,11 @@ module Homebrew extend self
 
   def build_env_keys env
     %w[ CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS SDKROOT
-      CMAKE_PREFIX_PATH CMAKE_INBLUDE_PATH CMAKE_FRAMEWORK_PATH MAKEFLAGS
+      CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH MAKEFLAGS
       MACOSX_DEPLOYMENT_TARGET PKG_CONFIG_PATH HOMEBREW_BUILD_FROM_SOURCE
       HOMEBREW_DEBUG HOMEBREW_MAKE_JOBS HOMEBREW_VERBOSE HOMEBREW_USE_CLANG
       HOMEBREW_USE_GCC HOMEBREW_USE_LLVM HOMEBREW_SVN
+      MAKE GIT CPP
       ACLOCAL_PATH OBJC PATH ].select{ |key| env[key] }
   end
 
