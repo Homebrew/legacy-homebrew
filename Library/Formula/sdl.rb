@@ -9,14 +9,12 @@ class Sdl < Formula
 
   depends_on :x11
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
 
-  def options
-    [['--universal', 'Build universal binaries.']]
-  end
+  option :universal
 
   def install
     # we have to do this because most build scripts assume that all sdl modules
@@ -24,9 +22,9 @@ class Sdl < Formula
     # keg-only but I doubt that will be needed.
     inreplace %w[sdl.pc.in sdl-config.in], '@prefix@', HOMEBREW_PREFIX
 
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
 
     args = %W[--prefix=#{prefix}]
     args << "--disable-nasm" unless MacOS.mountain_lion? # might work with earlier, might only work with new clang
