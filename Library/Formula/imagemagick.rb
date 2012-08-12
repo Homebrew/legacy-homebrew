@@ -34,6 +34,13 @@ class Imagemagick < Formula
   depends_on 'liblqr' if ARGV.include? '--use-lqr'
   depends_on 'openexr' if ARGV.include? '--use-exr'
 
+  bottle do
+    version 1
+    sha1 'fde8ed2686740ed83efd0626dd20170d9d3096b7' => :mountainlion
+    sha1 'e2c4d5b9e5f37e5f20dec36f3f3cbfc65821e164' => :lion
+    sha1 '019400feda06e4f277187702a4baeacdfdbf4851' => :snowleopard
+  end
+
   def skip_clean? path
     path.extname == '.la'
   end
@@ -107,7 +114,7 @@ class Imagemagick < Formula
   end
 
   def test
-    system "#{bin}/identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
+    system "#{bin}/identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.*"
   end
 end
 
