@@ -1,7 +1,6 @@
 require 'exceptions'
 require 'formula'
 require 'keg'
-require 'set'
 require 'tab'
 require 'bottles'
 
