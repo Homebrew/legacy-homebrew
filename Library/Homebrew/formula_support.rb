@@ -162,7 +162,7 @@ class BuildOptions
     @args = Array.new(args)
     # Extend it into an ARGV extension
     @args.extend(HomebrewArgvExtension)
-    @options = []
+    @options = Set.new
   end
 
   def add name, description=nil
