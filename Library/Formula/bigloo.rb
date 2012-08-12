@@ -1,13 +1,21 @@
 require 'formula'
 
 class Bigloo < Formula
-  url 'ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo3.4a-3.tar.gz'
-  version '3.4a-3'
+  url 'ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo3.8c.tar.gz'
+  version '3.8c'
   homepage 'http://www-sop.inria.fr/indes/fp/Bigloo/'
-  md5 '1e6589bdf1c974fe2b992457bb3ce321'
+  sha1 'e876e3f8dc5315aa61177721695e9c04b19f25d9'
 
   # libgmp seems to be required for 32-bit srfi 27 only, but include anyway
   depends_on 'gmp'
+
+  fails_with :clang do
+    build 2336
+    cause <<-EOS.undent
+      objs/obj_u/Ieee/dtoa.c:262:79504: fatal error: parser
+      recursion limit reached, program too complex
+      EOS
+  end
 
   def install
     args = [ "--disable-debug", "--disable-dependency-tracking",
