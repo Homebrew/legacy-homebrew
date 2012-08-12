@@ -9,12 +9,10 @@ class SdlImage < Formula
   depends_on 'sdl'
   depends_on :x11
 
-  def options
-    [['--universal', 'Build universal binaries.']]
-  end
+  option :universal
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     inreplace 'SDL_image.pc.in', '@prefix@', HOMEBREW_PREFIX
 
     system "./configure", "--prefix=#{prefix}",
