@@ -7,11 +7,9 @@ class Mercurial < Formula
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
-  depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
+  depends_on 'docutils' => :python if build.head? or build.include? 'doc'
 
-  def options
-    [["--doc", "build the documentation. Depends on 'docutils' module."]]
-  end
+  option 'doc', "Build the documentation. Depends on 'docutils' module"
 
   def install
     # Don't add compiler specific flags so we can build against
@@ -28,7 +26,7 @@ class Mercurial < Formula
 
     # Make Mercurial into the Cellar.
     # The documentation must be built when using HEAD
-    system "make", "doc" if ARGV.build_head? or ARGV.include? "--doc"
+    system "make", "doc" if build.head? or build.include? 'doc'
     system "make", "PREFIX=#{prefix}", "build"
     system "make", "PREFIX=#{prefix}", "install-bin"
 
