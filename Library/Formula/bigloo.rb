@@ -10,7 +10,7 @@ class Bigloo < Formula
   depends_on 'gmp'
 
   fails_with :clang do
-    build 2336
+    build 421
     cause <<-EOS.undent
       objs/obj_u/Ieee/dtoa.c:262:79504: fatal error: parser
       recursion limit reached, program too complex
