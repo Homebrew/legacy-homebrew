@@ -11,6 +11,8 @@ class Pixman < Formula
     "Apple provides an outdated version of libpixman in its X11 distribution." \
     if MacOS::X11.installed?
 
+  option :universal
+
   fails_with :llvm do
     build 2336
     cause <<-EOS.undent
@@ -20,12 +22,8 @@ class Pixman < Formula
       EOS
   end
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
-
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
     args = %W[--disable-dependency-tracking
               --disable-gtk
