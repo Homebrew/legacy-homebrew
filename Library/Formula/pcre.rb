@@ -6,17 +6,15 @@ class Pcre < Formula
   mirror 'http://downloads.sourceforge.net/project/pcre/pcre/8.31/pcre-8.31.tar.bz2'
   sha256 '5778a02535473c7ee7838ea598c19f451e63cf5eec0bf0307a688301c9078c3c'
 
+  option :universal
+
   fails_with :llvm do
     build 2326
     cause "Bus error in ld on SL 10.6.4"
   end
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
-
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.niversal?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
