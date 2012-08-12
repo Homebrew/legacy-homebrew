@@ -1,4 +1,3 @@
-require 'set'
 require 'cmd/missing'
 
 class Volumes

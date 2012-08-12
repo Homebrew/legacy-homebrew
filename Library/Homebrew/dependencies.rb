@@ -1,5 +1,3 @@
-require 'set'
-
 ## This file defines dependencies and requirements.
 ##
 ## A dependency is a formula that another formula needs to install.

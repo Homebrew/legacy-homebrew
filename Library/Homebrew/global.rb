@@ -3,6 +3,7 @@ require 'extend/ARGV'
 require 'extend/string'
 require 'utils'
 require 'exceptions'
+require 'set'
 
 ARGV.extend(HomebrewArgvExtension)
 
