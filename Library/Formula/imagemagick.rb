@@ -35,9 +35,10 @@ class Imagemagick < Formula
   depends_on 'openexr' if ARGV.include? '--use-exr'
 
   bottle do
-    sha1 '917628f817b0b49fc60eedeb0141e4b96b5e1fd1' => :mountainlion
-    sha1 'd0086086225374c0c879c9c99dc306cf6ccd65ed' => :lion
-    sha1 'cd34ceeeab4dcf243245c953f48d4b09482c99af' => :snowleopard
+    version 1
+    sha1 'fde8ed2686740ed83efd0626dd20170d9d3096b7' => :mountainlion
+    sha1 'e2c4d5b9e5f37e5f20dec36f3f3cbfc65821e164' => :lion
+    sha1 '019400feda06e4f277187702a4baeacdfdbf4851' => :snowleopard
   end
 
   def skip_clean? path
