@@ -14,6 +14,13 @@ class Io < Formula
   depends_on 'libffi'
   depends_on 'pcre'
 
+  def options
+    [
+      ['--no-addons', 'Build without addons.'],
+      ['--no-python', 'Build without python addon.']
+    ]
+  end
+
   # Fix recursive inline. See discussion in:
   # https://github.com/stevedekorte/io/issues/135
   def patches
@@ -22,6 +29,16 @@ class Io < Formula
 
   def install
     ENV.j1
+    if ARGV.include? '--no-addons'
+      inreplace  "CMakeLists.txt",
+        'add_subdirectory(addons)',
+        '#add_subdirectory(addons)'
+    end
+    if ARGV.include? '--no-python'
+      inreplace  "addons/CMakeLists.txt",
+        'add_subdirectory(Python)',
+        '#add_subdirectory(Python)'
+    end
     mkdir 'buildroot' do
       system "cmake", "..", *std_cmake_args
       system 'make'
