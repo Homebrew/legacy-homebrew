@@ -23,13 +23,13 @@ class Pixman < Formula
   def install
     ENV.universal_binary if build.universal?
 
+    # Disable gtk as it is only used to build tests
     args = %W[--disable-dependency-tracking
               --disable-gtk
               --prefix=#{prefix}]
 
     args << "--disable-mmx" if ENV.compiler == :clang
 
-    # Disable gtk as it is only used to build tests
     system "./configure", *args
     system "make install"
   end
