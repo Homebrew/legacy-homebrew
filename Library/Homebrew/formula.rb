@@ -58,7 +58,10 @@ class Formula
     @downloader = download_strategy.new(name, @active_spec)
 
     # Combine DSL `option` and `def options`
-    options.each {|o| self.class.build.add(o[0], o[1]) }
+    options.each do |opt, desc|
+      # make sure to strip "--" from the start of options
+      self.class.build.add opt[/--(.+)$/, 1], desc
+    end
   end
 
   def url;      @active_spec.url;     end
