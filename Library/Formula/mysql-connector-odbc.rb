@@ -33,13 +33,11 @@ class MysqlConnectorOdbc < Formula
   depends_on MySqlInstalled.new
   depends_on 'cmake' => :build
 
-  def options
-    [['--universal', "Make mysql-connector-odbc a universal binary"]]
-  end
+  option :universal
 
   def install
     args = ["-DCMAKE_INSTALL_PREFIX=#{prefix}"]
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
     ENV['MYSQL_DIR'] = HOMEBREW_PREFIX
     system 'cmake', ".", *args
     fix_goofy_link_file_error
