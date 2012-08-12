@@ -9,17 +9,15 @@ class Pygobject < Formula
   depends_on 'gobject-introspection'
   depends_on 'gtk+'
 
+  option :universal
+
   # https://bugzilla.gnome.org/show_bug.cgi?id=668522
   def patches
     "http://git.gnome.org/browse/pygobject/patch/gio/gio-types.defs?id=42d01f060c5d764baa881d13c103d68897163a49"
   end
 
-  def options
-    [["--universal", "Builds a universal binary"]]
-  end
-
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-introspection"
