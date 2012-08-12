@@ -156,6 +156,7 @@ end
 # This class holds the build-time options defined for a Formula,
 # and provides named access to those options during install.
 class BuildOptions
+  include Enumerable
 
   def initialize args
     # Take a copy of the args (any string array, actually)
@@ -181,19 +182,15 @@ class BuildOptions
   end
 
   def has_option? name
-    @options.any? {|o| o[0] == name}
+    @options.any? { |opt, _| opt == name }
   end
 
   def empty?
     @options.empty?
   end
 
-  def collect
-    @options.collect {|o| yield o[0], o[1]}
-  end
-
   def each
-    @options.each {|o| yield o[0], o[1]}
+    @options.each { |opt, desc| yield opt, desc }
   end
 
   def include? name

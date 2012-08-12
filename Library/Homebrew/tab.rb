@@ -13,7 +13,7 @@ class Tab < OpenStruct
     arg_options = args.options_only
     # Pick off the option flags from the formula's `options` array by
     # discarding the descriptions.
-    formula_options = f.options.map { |o, _| o }
+    formula_options = f.build.map { |opt, _| "--#{opt}" }
 
     Tab.new :used_options => formula_options & arg_options,
             :unused_options => formula_options - arg_options,
@@ -67,7 +67,7 @@ class Tab < OpenStruct
 
   def self.dummy_tab f
     Tab.new :used_options => [],
-            :unused_options => f.options.map { |o, _| o},
+            :unused_options => f.build.map { |opt, _| "--#{opt}" },
             :built_bottle => false,
             :tapped_from => ""
   end
