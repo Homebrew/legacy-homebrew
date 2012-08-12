@@ -11,8 +11,8 @@ class TigerVnc < Formula
   depends_on 'gettext'
   depends_on :x11
 
-	# Fix build of included fltk library on Mountain Lion
-	# http://www.fltk.org/str.php?L2864
+  # Fix build of included fltk library on Mountain Lion
+  # http://www.fltk.org/str.php?L2864
   def patches
     { :p0 => DATA }
   end
