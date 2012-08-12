@@ -9,11 +9,9 @@ class Curl < Formula
             "The libcurl provided by Leopard is too old for CouchDB to use."
 
   depends_on 'pkg-config' => :build
-  depends_on 'libssh2' if ARGV.include? "--with-ssh"
+  depends_on 'libssh2' if build.include? 'with-ssh'
 
-  def options
-    [["--with-ssh", "Build with scp and sftp support."]]
-  end
+  option 'with-ssh', 'Build with scp and sftp support'
 
   def install
     args = %W[
@@ -21,7 +19,7 @@ class Curl < Formula
         --disable-dependency-tracking
         --prefix=#{prefix}]
 
-    args << "--with-libssh2" if ARGV.include? "--with-ssh"
+    args << "--with-libssh2" if build.include? 'with-ssh'
 
     system "./configure", *args
     system "make install"
