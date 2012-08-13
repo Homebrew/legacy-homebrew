@@ -136,19 +136,32 @@ class KegOnlyReason
   def initialize reason, explanation=nil
     @reason = reason
     @explanation = explanation
+    @valid = case @reason
+      when :when_xquartz_installed then MacOS::XQuartz.installed?
+      else true
+      end
+  end
+
+  def valid?
+    @valid
   end
 
   def to_s
-    if @reason == :provided_by_osx
-      <<-EOS.strip
-Mac OS X already provides this program and installing another version in
-parallel can cause all kinds of trouble.
+    case @reason
+    when :provided_by_osx then <<-EOS.undent
+      Mac OS X already provides this software and installing another version in
+      parallel can cause all kinds of trouble.
 
-#{@explanation}
-EOS
+      #{@explanation}
+      EOS
+    when :when_xquartz_installed then <<-EOS.undent
+      XQuartz provides this software.
+
+      #{@explanation}
+      EOS
     else
-      @reason.strip
-    end
+      @reason
+    end.strip
   end
 end
 
@@ -156,13 +169,14 @@ end
 # This class holds the build-time options defined for a Formula,
 # and provides named access to those options during install.
 class BuildOptions
+  include Enumerable
 
   def initialize args
     # Take a copy of the args (any string array, actually)
     @args = Array.new(args)
     # Extend it into an ARGV extension
     @args.extend(HomebrewArgvExtension)
-    @options = []
+    @options = Set.new
   end
 
   def add name, description=nil
@@ -181,19 +195,15 @@ class BuildOptions
   end
 
   def has_option? name
-    @options.any? {|o| o[0] == name}
+    @options.any? { |opt, _| opt == name }
   end
 
   def empty?
     @options.empty?
   end
 
-  def collect
-    @options.collect {|o| yield o[0], o[1]}
-  end
-
   def each
-    @options.each {|o| yield o[0], o[1]}
+    @options.each { |opt, desc| yield opt, desc }
   end
 
   def include? name

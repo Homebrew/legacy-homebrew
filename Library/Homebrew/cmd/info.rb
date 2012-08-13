@@ -63,7 +63,7 @@ module Homebrew extend self
     if f.keg_only?
       puts
       puts "This formula is keg-only."
-      puts f.keg_only?
+      puts f.keg_only_reason
       puts
     end
 

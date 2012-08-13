@@ -174,7 +174,12 @@ class Formula
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
   def keg_only?
-    self.class.keg_only_reason || false
+    kor = self.class.keg_only_reason
+    not kor.nil? and kor.valid?
+  end
+
+  def keg_only_reason
+    self.class.keg_only_reason
   end
 
   def fails_with? cc
@@ -297,6 +302,16 @@ class Formula
         onoe "Formula #{n} will not import."
       end
     end
+  end
+
+  def self.select
+    ff = []
+    each{ |f| ff << f if yield(f) }
+    ff
+  end
+
+  def self.installed
+    HOMEBREW_CELLAR.children.map{ |rack| factory(rack.basename) rescue nil }.compact
   end
 
   def inspect

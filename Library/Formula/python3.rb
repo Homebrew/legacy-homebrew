@@ -42,11 +42,7 @@ class Python3 < Formula
   depends_on 'gdbm'     => :optional
   depends_on :x11 # tk.h includes X11/Xlib.h and X11/X.h
 
-  def options
-    [
-      ["--quicktest", "Run `make quicktest` after build. Takes some minutes."]
-    ]
-  end
+  option 'quicktest', 'Run `make quicktest` after the build'
 
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
@@ -94,7 +90,7 @@ class Python3 < Formula
     ENV.deparallelize # Installs must be serialized
     # Tell Python not to install into /Applications (default for framework builds)
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
-    system "make", "quicktest" if ARGV.include? "--quicktest"
+    system "make", "quicktest" if build.include? "quicktest"
 
     # Any .app get a " 3" attached, so it does not conflict with python 2.x.
     Dir.glob(prefix/"*.app").each do |app|
@@ -117,7 +113,7 @@ class Python3 < Formula
     ln_s "#{bin}/python3.2", "#{bin}/python3" unless (bin/"python3").exist?
 
     # Python 2 has a 2to3, too. (https://github.com/mxcl/homebrew/issues/12581)
-    rm bin/"2to3" if (HOMEBREW_PREFIX/bin/"2to3").exist?
+    rm bin/"2to3" if (HOMEBREW_PREFIX/"bin/2to3").exist?
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
