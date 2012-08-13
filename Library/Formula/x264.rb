@@ -10,17 +10,15 @@ class X264 < Formula
 
   depends_on 'yasm' => :build
 
-  def options
-    [["--10-bit", "Make a 10-bit x264. (default: 8-bit)"]]
-  end
+  option '10-bit', 'Build a 10-bit x264 (default: 8-bit)'
 
   def install
-    if ARGV.build_head?
+    if build.head?
       ENV['GIT_DIR'] = cached_download/'.git'
       system './version.sh'
     end
     args = ["--prefix=#{prefix}", "--enable-shared"]
-    args << "--bit-depth=10" if ARGV.include?('--10-bit')
+    args << "--bit-depth=10" if build.include? '10-bit'
 
     system "./configure", *args
 
