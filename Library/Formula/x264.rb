@@ -2,9 +2,9 @@ require 'formula'
 
 class X264 < Formula
   homepage 'http://www.videolan.org/developers/x264.html'
-  url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120609-2245-stable.tar.bz2'
-  sha1 '9abf3129cf4ebdf4409164a9334f52aad935bdd2'
-  version 'r2197' # brew install -v --HEAD x264 will display the version.
+  url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120812-2245-stable.tar.bz2'
+  sha1 '4be913fb12cd5b3628edc68dedb4b6e664eeda0a'
+  version 'r2197.4' # brew install -v --HEAD x264 will display the version.
 
   head 'http://git.videolan.org/git/x264.git', :branch => 'stable'
 
