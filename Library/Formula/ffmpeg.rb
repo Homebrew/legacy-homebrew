@@ -1,13 +1,5 @@
 require 'formula'
 
-def ffplay?
-  ARGV.include? '--with-ffplay'
-end
-
-def openjpeg?
-  ARGV.include? '--with-openjpeg'
-end
-
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
   url 'http://ffmpeg.org/releases/ffmpeg-0.11.1.tar.bz2'
@@ -30,16 +22,12 @@ class Ffmpeg < Formula
   depends_on 'libvo-aacenc' => :optional
   depends_on 'libass' => :optional
 
-  depends_on 'sdl' if ffplay?
-  depends_on 'openjpeg' if openjpeg?
+  depends_on 'sdl' if build.include? 'with-ffplay'
+  depends_on 'openjpeg' if build.include? 'with-openjpeg'
 
-  def options
-    [
-      ["--with-tools", "Install additional FFmpeg tools."],
-      ["--with-ffplay", "Build ffplay."],
-      ["--with-openjpeg", "Use openjpeg for jpeg2000 support"]
-    ]
-  end
+  option 'with-tools', 'Install additional FFmpeg tools'
+  option 'with-ffplay', 'Build ffplay'
+  option 'with-openjpeg', 'Use openjpeg for jpeg2000 support'
 
   def install
     args = ["--prefix=#{prefix}",
@@ -66,8 +54,8 @@ class Ffmpeg < Formula
     args << "--enable-libopencore-amrwb" if Formula.factory('opencore-amr').linked_keg.exist?
     args << "--enable-libass" if Formula.factory('libass').linked_keg.exist?
     args << "--enable-libvo-aacenc" if Formula.factory('libvo-aacenc').linked_keg.exist?
-    args << "--disable-ffplay" unless ffplay?
-    args << "--enable-libopenjpeg" if openjpeg?
+    args << "--disable-ffplay" unless build.include? 'with-ffplay'
+    args << "--enable-libopenjpeg" if build.include? 'with-openjpeg'
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
@@ -88,7 +76,7 @@ class Ffmpeg < Formula
 
     system "make install"
 
-    if ARGV.include? "--with-tools"
+    if build.include? 'with-tools'
       system "make alltools"
       bin.install Dir['tools/*'].select {|f| File.executable? f}
     end
