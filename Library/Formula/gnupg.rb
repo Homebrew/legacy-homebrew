@@ -10,12 +10,8 @@ class Gnupg < Formula
   url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.12.tar.bz2'
   sha1 '9b78e20328d35525af7b8a9c1cf081396910e937'
 
-  def options
-    [
-      ["--idea", "Build with the patented IDEA cipher"],
-      ["--8192", "Build with support for private keys up to 8192 bits"],
-    ]
-  end
+  option 'idea', 'Build with the patented IDEA cipher'
+  option '8192', 'Build with support for private keys of up to 8192 bits'
 
   def install
     if ENV.compiler == :clang
@@ -23,12 +19,12 @@ class Gnupg < Formula
       ENV.append 'CFLAGS', '-fheinous-gnu-extensions'
     end
 
-    if ARGV.include? '--idea'
+    if build.include? 'idea'
       GnupgIdea.new.brew { (buildpath/'cipher').install Dir['*'] }
       system 'gunzip', 'cipher/idea.c.gz'
     end
 
-    inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if ARGV.include? '--8192'
+    inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if build.include? '8192'
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -44,7 +40,7 @@ class Gnupg < Formula
   end
 
   def caveats
-    if ARGV.include? '--idea' then <<-EOS.undent
+    if build.include? 'idea' then <<-EOS.undent
       This build of GnuPG contains support for the patented IDEA cipher.
       Please read http://www.gnupg.org/faq/why-not-idea.en.html before using
       this software.
