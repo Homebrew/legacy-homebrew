@@ -21,7 +21,7 @@ module Homebrew extend self
     ff.each do |f|
       next if f.build.empty?
       if ARGV.include? '--compact'
-        puts f.build.collect {|k,v| k} * " "
+        puts f.build.collect {|k,v| "--"+k} * " "
       else
         puts f.name if ff.length > 1
         dump_options_for_formula f
