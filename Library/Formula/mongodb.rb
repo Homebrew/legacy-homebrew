@@ -3,7 +3,7 @@ require 'formula'
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
 
-  if Hardware.is_64_bit? and not ARGV.build_32_bit?
+  if Hardware.is_64_bit? and not build.build_32_bit?
     url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.7.tgz'
     md5 '81b0e8be3206cc60e8031dde302fb983'
     version '2.0.7-x86_64'
@@ -25,11 +25,9 @@ class Mongodb < Formula
     end
   end
 
-  skip_clean :all
+  option '32-bit'
 
-  def options
-    [['--32-bit', 'Build 32-bit only.']]
-  end
+  skip_clean :all
 
   def install
     # Copy the prebuilt binaries to prefix
