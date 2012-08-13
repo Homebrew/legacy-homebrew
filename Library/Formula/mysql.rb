@@ -6,9 +6,22 @@ class Mysql < Formula
   version '5.5.25a'
   sha1 '85dfea413a7d5d2733a40f9dd79cf2320302979f'
 
+  bottle do
+    sha1 '31e9955a3a0a6dbc2baec8f1dade79257da428a8' => :mountainlion
+    sha1 'b3cf78f7ddb812d38e376076e05020c0b412ee9c' => :lion
+    sha1 '9f36132081d2b603c8aff4a7ee561962936892ec' => :snowleopard
+  end
+
   depends_on 'cmake' => :build
-  depends_on 'readline'
-  depends_on 'pidof'
+  depends_on 'pidof' unless MacOS.mountain_lion?
+
+  option :universal
+  option 'with-tests', 'Build with unit tests'
+  option 'with-embedded', 'Build the embedded server'
+  option 'with-libedit', 'Compile with editline wrapper instead of readline'
+  option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
+  option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
+  option 'enable-local-infile', 'Build with local infile loading support'
 
   conflicts_with 'mariadb',
     :because => "mysql and mariadb install the same binaries."
@@ -21,18 +34,6 @@ class Mysql < Formula
   end
 
   skip_clean :all # So "INSTALL PLUGIN" can work.
-
-  def options
-    [
-      ['--with-tests', "Build with unit tests."],
-      ['--with-embedded', "Build the embedded server."],
-      ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
-      ['--with-archive-storage-engine', "Compile with the ARCHIVE storage engine enabled"],
-      ['--with-blackhole-storage-engine', "Compile with the BLACKHOLE storage engine enabled"],
-      ['--universal', "Make mysql a universal binary"],
-      ['--enable-local-infile', "Build with local infile loading support"]
-    ]
-  end
 
   # Remove optimization flags from `mysql_config --cflags`
   # This facilitates easy compilation of gems using a brewed mysql
@@ -57,29 +58,29 @@ class Mysql < Formula
             "-DSYSCONFDIR=#{etc}"]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if ARGV.include? '--with-tests'
+    if build.include? 'with-tests'
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
     end
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
 
     # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless ARGV.include? '--with-libedit'
+    args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
 
     # Compile with ARCHIVE engine enabled if chosen
-    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if ARGV.include? '--with-archive-storage-engine'
+    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.include? 'with-archive-storage-engine'
 
     # Compile with BLACKHOLE engine enabled if chosen
-    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if ARGV.include? '--with-blackhole-storage-engine'
+    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
 
     # Build with local infile loading support
-    args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
+    args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
 
     system "cmake", *args
     system "make"
@@ -97,6 +98,8 @@ class Mysql < Formula
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+      # pidof can be replaced with pgrep from proctools on Mountain Lion
+      s.gsub!(/pidof/, 'pgrep') if MacOS.mountain_lion?
     end
     ln_s "#{prefix}/support-files/mysql.server", bin
   end

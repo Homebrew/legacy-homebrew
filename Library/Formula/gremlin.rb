@@ -7,11 +7,11 @@ class Gremlin < Formula
 
   head 'https://github.com/tinkerpop/gremlin.git'
 
-  depends_on 'maven' if ARGV.build_head?
+  depends_on 'maven' if build.head?
 
   def install
     # If this is a head build, checkout the source and build it with maven
-    if ARGV.build_head?
+    if build.head?
 
       # Setup a couple of paths for the build
       pwd = Pathname.new('.')

@@ -10,12 +10,10 @@ class Neon < Formula
   keg_only :provided_by_osx,
             "Compiling newer versions of Subversion on 10.6 require this newer neon."
 
-  def options
-    [['--universal', 'Builds a universal binary.']]
-  end
+  option :universal
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",

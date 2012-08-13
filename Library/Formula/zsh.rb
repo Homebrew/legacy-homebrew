@@ -10,9 +10,7 @@ class Zsh < Formula
 
   skip_clean :all
 
-  def options
-    [['--disable-etcdir', 'Disable the reading of Zsh rc files in /etc']]
-  end
+  option 'disable-etcdir', 'Disable the reading of Zsh rc files in /etc'
 
   def install
     args = %W[
@@ -29,7 +27,7 @@ class Zsh < Formula
       --with-tcsetpgrp
     ]
 
-    args << '--disable-etcdir' if ARGV.include? '--disable-etcdir'
+    args << '--disable-etcdir' if build.include? 'disable-etcdir'
 
     system "./configure", *args
 

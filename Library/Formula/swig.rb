@@ -5,14 +5,12 @@ class Swig < Formula
   url 'http://downloads.sourceforge.net/project/swig/swig/swig-2.0.7/swig-2.0.7.tar.gz'
   sha1 '307020fb6437092e32c9c1bd9af8bccb1645b529'
 
+  option :universal
+
   depends_on 'pcre'
 
-  def options
-    [['--universal', 'Build swig as a universal binary']]
-  end
-
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

@@ -20,25 +20,20 @@ class Apollo < Formula
   version "1.3"
   md5 '13759c529b238731ebea269254a840b9'
 
-
-  def options
-    [
-      ["--no-bdb", "Install without bdb store support."],
-      ["--no-mqtt", "Install without MQTT protocol support."]
-    ]
-  end
+  option "no-bdb", "Install without bdb store support."
+  option "no-mqtt", "Install without MQTT protocol support."
 
   def install
     prefix.install %w{ LICENSE NOTICE readme.html docs examples }
     libexec.install Dir['*']
 
-    unless ARGV.include? "--no-bdb"
+    unless build.include? "no-bdb"
       BerkeleyDbJe.new.brew do
         (libexec+"lib").install Dir['*.jar']
       end
     end
 
-    unless ARGV.include? "--no-mqtt"
+    unless build.include? "no-mqtt"
       FuseMQApolloMQTT.new.brew do
         (libexec+"lib").install Dir['*.jar']
       end

@@ -5,8 +5,10 @@ class Tcpflow < Formula
   url 'https://github.com/downloads/simsong/tcpflow/tcpflow-1.2.7.tar.gz'
   sha1 'e7e71a34afb4d557ebe80e2d589f00d4afd38be4'
 
+  depends_on :libtool
+
   def copy_libtool_files!
-    if MacOS::Xcode.version >= "4.3"
+    if not MacOS::Xcode.provides_autotools?
       s = Formula.factory('libtool').share
       d = "#{s}/libtool/config"
       cp ["#{d}/config.guess", "#{d}/config.sub"], "."

@@ -63,7 +63,7 @@ module Homebrew extend self
     if f.keg_only?
       puts
       puts "This formula is keg-only."
-      puts f.keg_only?
+      puts f.keg_only_reason
       puts
     end
 
@@ -90,7 +90,7 @@ module Homebrew extend self
     history = github_info(f)
     puts history if history
 
-    unless f.options.empty?
+    unless f.build.empty?
       require 'cmd/options'
       ohai "Options"
       Homebrew.dump_options_for_formula f
