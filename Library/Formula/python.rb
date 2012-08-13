@@ -37,12 +37,8 @@ class Python < Formula
   depends_on 'gdbm'     => :optional
   depends_on :x11 # tk.h includes X11/Xlib.h and X11/X.h
 
-  def options
-    [
-      ["--universal", "Build for both 32 & 64 bit Intel."],
-      ["--quicktest", "Run `make quicktest` after build."]
-    ]
-  end
+  option :universal
+  option 'quicktest', 'Run `make quicktest` after the build'
 
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
@@ -88,7 +84,7 @@ class Python < Formula
       ENV.append_to_cflags '-Qunused-arguments'
     end
 
-    if ARGV.build_universal?
+    if build.universal?
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
     end
 
@@ -108,7 +104,7 @@ class Python < Formula
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools into HOMEBREW_PREFIX/share/python2.7
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python2.7"
-    system "make", "quicktest" if ARGV.include? '--quicktest'
+    system "make", "quicktest" if build.include? 'quicktest'
 
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
