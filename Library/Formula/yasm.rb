@@ -14,7 +14,7 @@ class Yasm < Formula
     depends_on :automake
   end
 
-  depends_on 'Cython' => :python if build.include? '--enable-python'
+  depends_on 'Cython' => :python if build.include? 'enable-python'
 
   def install
     args = %W[
@@ -22,7 +22,7 @@ class Yasm < Formula
       --prefix=#{prefix}
     ]
 
-    if build.include? '--enable-python'
+    if build.include? 'enable-python'
       args << '--enable-python'
       args << '--enable-python-bindings'
     end
@@ -36,7 +36,7 @@ class Yasm < Formula
   end
 
   def caveats
-    if build.include? '--enable-python' then <<-EOS.undent
+    if build.include? 'enable-python' then <<-EOS.undent
       Python bindings installed to:
         #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages
 
