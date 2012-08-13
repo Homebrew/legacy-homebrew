@@ -113,7 +113,7 @@ class Python3 < Formula
     ln_s "#{bin}/python3.2", "#{bin}/python3" unless (bin/"python3").exist?
 
     # Python 2 has a 2to3, too. (https://github.com/mxcl/homebrew/issues/12581)
-    rm bin/"2to3" if (HOMEBREW_PREFIX/bin/"2to3").exist?
+    rm bin/"2to3" if (HOMEBREW_PREFIX/"bin/2to3").exist?
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
