@@ -5,12 +5,10 @@ class P7zip < Formula
   homepage 'http://p7zip.sourceforge.net/'
   md5 'bd6caaea567dc0d995c990c5cc883c89'
 
-  def options
-    [["--32-bit", "Build 32-bit only."]]
-  end
+  option '32-bit'
 
   def install
-    if Hardware.is_32_bit? or ARGV.build_32_bit?
+    if Hardware.is_32_bit? or build.build_32_bit?
       mv 'makefile.macosx_32bits', 'makefile.machine'
     else
       mv 'makefile.macosx_64bits', 'makefile.machine'
