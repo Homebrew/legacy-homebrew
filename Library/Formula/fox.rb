@@ -13,10 +13,6 @@ class Fox < Formula
 
   depends_on :x11
 
-  fails_with :llvm do
-    cause "Inline asm errors during build"
-  end if ARGV.build_devel?
-
   def install
     # Yep, won't find freetype unless this is all set.
     ENV.append "CFLAGS", "-I#{MacOS::X11.include}/freetype2"
