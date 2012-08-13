@@ -20,7 +20,7 @@ class Blast < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--with-dll" if build.include? '--with-dll'
+    args << "--with-dll" if build.include? 'with-dll'
 
     cd 'c++' do
       system "./configure", *args
