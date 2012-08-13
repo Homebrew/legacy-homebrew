@@ -21,6 +21,11 @@ class Llvm < Formula
     sha1 '940aca37dafaf69a9b378ffd2a59b3c1cfe54ced' => :snowleopard
   end
 
+  def patches
+    # fix generation of ocaml bindings (essentially by switching the order of compilation between docs and bindings)
+    DATA
+  end
+
   def options
     [['--with-clang', 'Build clang C/ObjC/C++ frontend'],
      ['--shared', 'Build llvm as shared library, and link tools against it'],
@@ -49,7 +54,8 @@ class Llvm < Formula
       "--enable-optimized",
       # As of LLVM 3.1, attempting to build ocaml bindings with Homebrew's
       # OCaml 3.12.1 results in errors.
-      "--disable-bindings",
+      # *** This should be fixed now. See commented patch. ***
+      # "--disable-bindings",
     ]
 
     if ARGV.include? '--all-targets'
@@ -89,3 +95,96 @@ class Llvm < Formula
     buildpath/'tools/clang'
   end
 end
+__END__
+diff --git a/bindings/ocaml/Makefile b/bindings/ocaml/Makefile
+index a89caef..b67840a 100644
+--- a/bindings/ocaml/Makefile
++++ b/bindings/ocaml/Makefile
+@@ -11,9 +11,9 @@ LEVEL := ../..
+ DIRS = llvm bitreader bitwriter analysis target executionengine transforms
+ ExtraMakefiles = $(PROJ_OBJ_DIR)/Makefile.ocaml
+ 
+-ocamldoc:
++include $(LEVEL)/Makefile.common
++
++ocamldoc:
+ 	$(Verb) for i in $(DIRS) ; do \
+ 		$(MAKE) -C $$i ocamldoc; \
+ 	done
+-
+-include $(LEVEL)/Makefile.common
+diff --git a/bindings/ocaml/transforms/Makefile b/bindings/ocaml/transforms/Makefile
+index 05fcd90..3b6064b 100644
+--- a/bindings/ocaml/transforms/Makefile
++++ b/bindings/ocaml/transforms/Makefile
+@@ -10,9 +10,9 @@
+ LEVEL := ../../..
+ DIRS = scalar ipo
+ 
+-ocamldoc:
++include $(LEVEL)/Makefile.common
++
++ocamldoc:
+ 	$(Verb) for i in $(DIRS) ; do \
+ 		$(MAKE) -C $$i ocamldoc; \
+ 	done
+-
+-include $(LEVEL)/Makefile.common
+diff --git a/Makefile b/Makefile
+index ec24862..a10e3c0 100644
+--- a/Makefile
++++ b/Makefile
+@@ -31,8 +31,8 @@ ifeq ($(BUILD_DIRS_ONLY),1)
+   OPTIONAL_DIRS := tools/clang/utils/TableGen
+ else
+   DIRS := lib/Support lib/TableGen utils lib/VMCore lib tools/llvm-shlib \
+-          tools/llvm-config tools runtime docs unittests
+-  OPTIONAL_DIRS := projects bindings
++          tools/llvm-config tools runtime unittests
++  OPTIONAL_DIRS := projects bindings docs
+ endif
+ 
+ ifeq ($(BUILD_EXAMPLES),1)
+@@ -48,21 +48,21 @@ ifneq ($(ENABLE_SHARED),1)
+ endif
+ 
+ ifneq ($(ENABLE_DOCS),1)
+-  DIRS := $(filter-out docs, $(DIRS))
++  OPTIONAL_DIRS := $(filter-out docs, $(OPTIONAL_DIRS))
+ endif
+ 
+ ifeq ($(MAKECMDGOALS),libs-only)
+-  DIRS := $(filter-out tools runtime docs, $(DIRS))
++  DIRS := $(filter-out tools runtime, $(DIRS))
+   OPTIONAL_DIRS :=
+ endif
+ 
+ ifeq ($(MAKECMDGOALS),install-libs)
+-  DIRS := $(filter-out tools runtime docs, $(DIRS))
+-  OPTIONAL_DIRS := $(filter bindings, $(OPTIONAL_DIRS))
++  DIRS := $(filter-out tools runtime, $(DIRS))
++  OPTIONAL_DIRS := $(filter bindings docs, $(OPTIONAL_DIRS))
+ endif
+ 
+ ifeq ($(MAKECMDGOALS),tools-only)
+-  DIRS := $(filter-out runtime docs, $(DIRS))
++  DIRS := $(filter-out runtime, $(DIRS))
+   OPTIONAL_DIRS :=
+ endif
+ 
+@@ -77,13 +77,13 @@ ifeq ($(MAKECMDGOALS),install-clang)
+ endif
+ 
+ ifeq ($(MAKECMDGOALS),clang-only)
+-  DIRS := $(filter-out tools docs unittests, $(DIRS)) \
++  DIRS := $(filter-out tools unittests, $(DIRS)) \
+           tools/clang tools/lto
+   OPTIONAL_DIRS :=
+ endif
+ 
+ ifeq ($(MAKECMDGOALS),unittests)
+-  DIRS := $(filter-out tools runtime docs, $(DIRS)) utils unittests
++  DIRS := $(filter-out tools runtime, $(DIRS)) utils unittests
+   OPTIONAL_DIRS :=
+ endif
+ 
