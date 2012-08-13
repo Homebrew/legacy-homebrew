@@ -39,7 +39,7 @@ class Gdal < Formula
   # For creating up to date man pages.
   depends_on 'doxygen' => :build if ARGV.build_head?
 
-  depends_on :x11
+  depends_on :libpng
 
   depends_on 'jpeg'
   depends_on 'giflib'
