@@ -30,9 +30,7 @@ class Cmake < Formula
 
   depends_on NoExpatFramework.new
 
-  def options
-    [["--enable-ninja", "Enable Ninja build system support"]]
-  end
+  option 'enable-ninja', 'Enable Ninja build system support'
 
   def patches
     [
@@ -56,7 +54,7 @@ class Cmake < Formula
       --mandir=/share/man
     ]
 
-    if ARGV.include? "--enable-ninja"
+    if build.include? "enable-ninja"
       args << "--"
       args << "-DCMAKE_ENABLE_NINJA=1"
     end
