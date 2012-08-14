@@ -36,6 +36,7 @@ class Python3 < Formula
   url 'http://python.org/ftp/python/3.2.3/Python-3.2.3.tar.bz2'
   md5 'cea34079aeb2e21e7b60ee82a0ac286b'
 
+  depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :optional  # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
