@@ -16,7 +16,7 @@ end
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
   version '7.4.2'
-  if Hardware.is_64_bit? and not ARGV.build_32_bit?
+  if Hardware.is_64_bit? and not build.build_32_bit?
     url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
     sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
   else
@@ -25,6 +25,8 @@ class Ghc < Formula
   end
 
   depends_on NeedsSnowLeopard.new
+
+  option '32-bit'
 
   # Avoid stripping the Haskell binaries & libraries.
   # See: http://hackage.haskell.org/trac/ghc/ticket/2458
@@ -36,10 +38,6 @@ class Ghc < Formula
       Building with Clang configures GHC to use Clang as its preprocessor,
       which causes subsequent GHC-based builds to fail.
       EOS
-  end
-
-  def options
-    [['--32-bit', 'Build 32-bit only.']]
   end
 
   def install
