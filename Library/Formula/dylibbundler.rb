@@ -23,7 +23,7 @@ class Dylibbundler < Formula
     Usage example:
 
       dylibbundler -od -b -x ./HelloWorld.app/Contents/MacOS/helloworld \\
-        -d ./HelloWorld.app/Contents/libs/    
+        -d ./HelloWorld.app/Contents/libs/
     EOS
   end
 end
