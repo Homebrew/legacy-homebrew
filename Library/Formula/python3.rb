@@ -48,25 +48,22 @@ class Python3 < Formula
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
 
-  # The Cellar location of site-packages (different for Framework builds)
   def site_packages_cellar
-    # If we're installed or installing as a Framework, then use that location.
-    return prefix+"Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages"
+    prefix/"Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
   def site_packages
-    HOMEBREW_PREFIX+"lib/python3.2/site-packages"
+    HOMEBREW_PREFIX/"lib/python3.2/site-packages"
   end
 
   # Where distribute/pip will install executable scripts.
   def scripts_folder
-    HOMEBREW_PREFIX+"share/python3"
+    HOMEBREW_PREFIX/"share/python3"
   end
 
-  # lib folder,taking into account whether we are a Framework build or not
   def effective_lib
-    prefix+"Frameworks/Python.framework/Versions/3.2/lib"
+    prefix/"Frameworks/Python.framework/Versions/3.2/lib"
   end
 
   def install
@@ -106,13 +103,13 @@ class Python3 < Formula
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
-    # Create a site-packages in `brew --prefix`/lib/python3/site-packages
+    # Create a site-packages in HOMEBREW_PREFIX/lib/python3/site-packages
     site_packages.mkpath
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
     # "python3" and executable is forgotten for framework builds.
-    # Make sure homebrew symlinks it to `brew --prefix`/bin.
+    # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python3.2", "#{bin}/python3" unless (bin/"python3").exist?
 
     # Python 2 has a 2to3, too. (https://github.com/mxcl/homebrew/issues/12581)
