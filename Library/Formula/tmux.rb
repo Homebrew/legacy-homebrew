@@ -37,6 +37,12 @@ class Tmux < Formula
     prefix.install 'NOTES'
   end
 
+  def caveats; <<-EOS.undent
+    Additional information can be found in:
+      #{prefix}/NOTES
+    EOS
+  end
+
   def test
     system "#{bin}/tmux", "-V"
   end
