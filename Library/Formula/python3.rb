@@ -36,6 +36,7 @@ class Python3 < Formula
   url 'http://python.org/ftp/python/3.2.3/Python-3.2.3.tar.bz2'
   md5 'cea34079aeb2e21e7b60ee82a0ac286b'
 
+  depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :optional  # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
@@ -76,10 +77,12 @@ class Python3 < Formula
     # We need to enable warnings because the configure.in uses -Werror to detect
     # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
     ENV.enable_warnings
-    # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
-    ENV.append_to_cflags '-Wno-unused-value'
-    ENV.append_to_cflags '-Wno-empty-body'
-    ENV.append_to_cflags '-Qunused-arguments'
+    if ENV.compiler == :clang
+      # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
+      ENV.append_to_cflags '-Wno-unused-value'
+      ENV.append_to_cflags '-Wno-empty-body'
+      ENV.append_to_cflags '-Qunused-arguments'
+    end
 
     # Allow sqlite3 module to load extensions:
     # http://docs.python.org/library/sqlite3.html#f1

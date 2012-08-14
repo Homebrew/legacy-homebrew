@@ -2,8 +2,8 @@ require 'formula'
 
 class Drush < Formula
   homepage 'http://drupal.org/project/drush'
-  url 'http://ftp.drupal.org/files/projects/drush-7.x-5.5.tar.gz'
-  sha1 'fe2a35a9d91329edcfbbf69ed43ab57543c72a70'
+  url 'http://ftp.drupal.org/files/projects/drush-7.x-5.6.tar.gz'
+  sha1 '85eb48940833b3acd57927f94c6fd2b35e521c31'
 
   head 'git://git.drupal.org/project/drush.git'
 
