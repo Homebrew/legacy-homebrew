@@ -116,7 +116,7 @@ class Python < Formula
 
     # Python 3 has a 2to3, too. Additionally there still is a 2to3-2.7.
     # (https://github.com/mxcl/homebrew/issues/12581)
-    rm bin/"2to3" if (HOMEBREW_PREFIX/"bin/2to3").exist?
+    rm bin/"2to3" if (HOMEBREW_PREFIX/"bin/2to3").exist? and (bin/"2to3").exist?
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
