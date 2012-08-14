@@ -58,6 +58,8 @@ h2 {
 	font-size: 300%;
 	text-align: center;
 	color: #d7af72;
+	margin-top: 0.5em;
+	margin-bottom: 0.1em;
 }
 
 h1 a,
@@ -99,6 +101,10 @@ pre code {
   line-height: 1.6;
 }
 
+#selectable {
+  font-size: 1.9em;
+}
+
 /*}}}*/
 
 /* @section Informations {{{
@@ -132,6 +138,7 @@ pre code {
 
 .button {
   text-align: center;
+  margin: 1em 0 2em;
 }
 
 #informations .button a {
@@ -144,6 +151,7 @@ pre code {
   -moz-box-shadow: 0 0 5px rgba(0,0,0,0.4);
   -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.4);
   text-decoration: none;
+  font-size: larger;
 }
 
 #informations .button a:hover {
