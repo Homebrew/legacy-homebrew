@@ -168,7 +168,7 @@ class Python3 < Formula
       See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
     EOS
 
-    text += tk_caveats unless MacOS.lion_or_newer?
+    text += tk_caveats unless MacOS.version >= :lion
     text += general_caveats
     return text
   end
