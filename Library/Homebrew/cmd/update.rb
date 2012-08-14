@@ -76,6 +76,7 @@ class Updater
     args = ["pull"]
     args << "--rebase" if ARGV.include? "--rebase"
     args << "-q" unless ARGV.verbose?
+    args << "--no-edit" unless ARGV.verbose?
     args << "origin"
     # the refspec ensures that 'origin/master' gets updated
     args << "refs/heads/master:refs/remotes/origin/master"
