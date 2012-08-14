@@ -125,6 +125,13 @@ class Version
     m = /_([^_]+)/.match(stem)
     return m.captures.first unless m.nil?
   end
+
+  # DSL for defining comparators
+  class << self
+    def compare &blk
+      send(:define_method, '<=>', &blk)
+    end
+  end
 end
 
 class VersionSchemeDetector
