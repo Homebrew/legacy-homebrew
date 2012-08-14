@@ -14,7 +14,6 @@ class Flann < Formula
   end
 
   depends_on 'cmake' => :build
-  depends_on 'gtest' => :build
   depends_on 'hdf5'
 
   depends_on 'octave' if ARGV.include? '--enable-matlab'
