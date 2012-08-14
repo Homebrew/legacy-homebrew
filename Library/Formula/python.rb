@@ -43,25 +43,22 @@ class Python < Formula
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
 
-  # The Cellar location of site-packages (different for Framework builds)
   def site_packages_cellar
-    # We're installed or installing as a Framework, then use that location.
-    prefix+"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
+    prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
   def site_packages
-    HOMEBREW_PREFIX+"lib/python2.7/site-packages"
+    HOMEBREW_PREFIX/"lib/python2.7/site-packages"
   end
 
   # Where distribute/pip will install executable scripts.
   def scripts_folder
-    HOMEBREW_PREFIX+"share/python"
+    HOMEBREW_PREFIX/"share/python"
   end
 
-  # lib folder,taking into account whether we are a Framework build or not
   def effective_lib
-    prefix+"Frameworks/Python.framework/Versions/2.7/lib"
+    prefix/"Frameworks/Python.framework/Versions/2.7/lib"
   end
 
   def install
@@ -112,7 +109,7 @@ class Python < Formula
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
-    # Create a site-packages in `brew --prefix`/lib/python/site-packages
+    # Create a site-packages in HOMEBREW_PREFIX/lib/python/site-packages
     site_packages.mkpath
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
