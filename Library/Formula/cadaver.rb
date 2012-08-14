@@ -8,10 +8,13 @@ class Cadaver < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'readline'
+  depends_on 'neon'
 
   def install
+    neon_prefix = Formula.factory('neon').prefix
+
     system "./configure", "--prefix=#{prefix}",
-                          "--with-included-neon",
+                          "--with-neon=#{neon_prefix}",
                           "--with-ssl"
     cd 'lib/intl' do
       system "make"
