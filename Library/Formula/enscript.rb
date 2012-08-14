@@ -8,7 +8,7 @@ class Enscript < Formula
 
   head 'git://git.savannah.gnu.org/enscript.git'
 
-  keg_only 'Lion and below provide enscript' unless MacOS::mountain_lion_or_newer?
+  keg_only :provided_by_osx unless MacOS.version >= :mountain_lion
 
   depends_on 'gettext'
 
