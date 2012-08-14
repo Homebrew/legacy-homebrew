@@ -706,7 +706,7 @@ def __check_linked_brew f
   return links_found
 end
 
-def check_for_linked_kegonly_brews
+def check_for_linked_keg_only_brews
   require 'formula'
 
   warnings = Hash.new
@@ -933,7 +933,16 @@ module Homebrew extend self
   def doctor
     checks = Checks.new
 
-    checks.methods.select{ |method| method =~ /^check_/ }.sort.each do |method|
+    inject_dump_stats(checks) if ARGV.switch? 'D'
+
+    methods = if ARGV.named.empty?
+      # put slowest methods last
+      checks.methods.sort << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
+    else
+      ARGV.named
+    end.select{ |method| method =~ /^check_/ }.uniq
+
+    methods.each do |method|
       out = checks.send(method)
       unless out.nil? or out.empty?
         lines = out.to_s.split('\n')
@@ -944,5 +953,21 @@ module Homebrew extend self
     end
 
     puts "Your system is raring to brew." unless Homebrew.failed?
+  end
+
+  def inject_dump_stats checks
+    class << checks
+      alias_method :oldsend, :send
+      def send method
+        time = Time.now
+        oldsend(method)
+      ensure
+        $times[method] = Time.now - time
+      end
+    end
+    $times = {}
+    at_exit {
+      puts $times.sort_by{|k, v| v }.map{|k, v| "#{k}: #{v}"}
+    }
   end
 end
