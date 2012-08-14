@@ -764,9 +764,8 @@ end
 def check_missing_deps
   return unless HOMEBREW_CELLAR.exist?
   s = Set.new
-  missing_deps = Homebrew.find_missing_brews(Homebrew.installed_brews)
-  missing_deps.each do |m|
-    s.merge m[1]
+  Homebrew.missing_deps(Homebrew.installed_brews).each do |_, deps|
+    s.merge deps
   end
 
   if s.length > 0 then <<-EOS.undent
