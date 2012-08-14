@@ -1,9 +1,10 @@
 require 'formula'
 
 class Wdiff < Formula
-  url 'http://ftpmirror.gnu.org/wdiff/wdiff-1.0.1.tar.gz'
   homepage 'http://www.gnu.org/software/wdiff/'
-  md5 'c3b8e48a113fd064731d7372aae782f5'
+  url 'http://ftpmirror.gnu.org/wdiff/wdiff-1.1.2.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/wdiff/wdiff-1.1.2.tar.gz'
+  md5 'ac51497a2b33094c484237049803a697'
 
   depends_on 'gettext' => :optional
 

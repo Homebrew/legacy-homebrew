@@ -1,14 +1,16 @@
 require 'formula'
 
 class Lzlib < Formula
-  url 'http://download.savannah.gnu.org/releases/lzip/lzlib-1.1.tar.gz'
   homepage 'http://www.nongnu.org/lzip/lzlib.html'
-  md5 '3e57ebb510b6343e93f56724cfa16510'
-
+  url 'http://download.savannah.gnu.org/releases/lzip/lzlib-1.3.tar.gz'
+  sha1 '788de95072cd2cf89d763b441a7fc76395193265'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          "CC=#{ENV.cc}",
+                          "CFLAGS=#{ENV.cflags}"
+    system "make"
+    system "make check"
     system "make install"
   end
 end

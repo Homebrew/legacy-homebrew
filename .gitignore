@@ -8,3 +8,5 @@
 !/share/man/man1/brew.1
 .DS_Store
 /Library/LinkedKegs
+/Library/Taps
+/Library/Formula/.gitignore

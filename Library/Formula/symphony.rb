@@ -1,8 +1,8 @@
 require 'formula'
 
 class Symphony < Formula
-  url 'http://www.coin-or.org/download/source/SYMPHONY/SYMPHONY-5.3.3.tgz'
   homepage 'http://www.coin-or.org/projects/SYMPHONY.xml'
+  url 'http://www.coin-or.org/download/source/SYMPHONY/SYMPHONY-5.3.3.tgz'
   md5 '8c34f9fa49ebff325b984408ff1f92fc'
 
   def options
@@ -21,11 +21,11 @@ class Symphony < Formula
     if ARGV.include? "--with-gmpl"
       # Symphony uses a patched version of GLPK for reading MPL files.
       # Use a private version rather than require the Homebrew version of GLPK.
-      Dir.chdir 'ThirdParty/Glpk' do
+      cd 'ThirdParty/Glpk' do
         system "./get.Glpk"
       end
-      dir_glpk = Pathname.getwd + 'ThirdParty/Glpk/glpk/src'
-      ENV.append "CPPFLAGS", "-I#{dir_glpk}"
+
+      ENV.append "CPPFLAGS", "-I#{buildpath}/ThirdParty/Glpk/glpk/src"
       ENV.append "CDEFS", "-DUSE_GLPMPL"
       args << "--with-gmpl"
     end

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Stgit < Formula
-  url 'http://download.gna.org/stgit/stgit-0.15.tar.gz'
   homepage 'http://www.procode.org/stgit'
-  md5 'a4721b2a5f529cf5450109f9fcb4db19'
+  url 'http://download.gna.org/stgit/stgit-0.16.tar.gz'
+  md5 '73ca6a7469d30d9d69fa561e16abc2a8'
 
   def install
     system "make", "prefix=#{prefix}", "all"

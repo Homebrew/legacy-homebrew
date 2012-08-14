@@ -1,25 +1,32 @@
 require 'formula'
 
 class Ushare < Formula
-  url 'http://ushare.geexbox.org/releases/ushare-1.1a.tar.bz2'
   homepage 'http://ushare.geexbox.org/'
-  md5 '5bbcdbf1ff85a9710fa3d4e82ccaa251'
+  url 'http://ushare.geexbox.org/releases/ushare-1.1a.tar.bz2'
+  sha1 '1539e83cde5d80f433d262d971f5fe78486c9375'
 
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'libupnp'
   depends_on 'libdlna'
 
+  # Correct "OPTFLAGS" to "CFLAGS"
   def patches
-    { :p0 =>
-      "http://svn.macports.org/repository/macports/trunk/dports/net/ushare/files/patch-configure.diff"
-    }
+  { :p0 =>
+    "https://trac.macports.org/export/89267/trunk/dports/net/ushare/files/patch-configure.diff"
+  }
+  end
+
+  fails_with :clang do
+    cause "clang removes inline functions, causing a link error:\n" +
+          "\"_display_headers\", referenced from: _parse_command_line in cfgparser.o"
   end
 
   def install
-    # Need to explicitly add gettext here.
+    # Need to explicitly add intl and gettext here.
     gettext = Formula.factory("gettext")
-    ENV.append 'LDFLAGS', "-lintl"
     ENV.append 'CFLAGS', "-I#{gettext.include}"
+    ENV.append 'LDFLAGS', "-lintl"
 
     inreplace 'configure', /config.h/, 'src/config.h'
     system "./configure", "--disable-debug",

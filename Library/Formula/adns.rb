@@ -1,9 +1,9 @@
 require 'formula'
 
 class Adns < Formula
-  url 'http://ftpmirror.gnu.org/adns/adns-1.3.tar.gz'
   homepage 'http://www.chiark.greenend.org.uk/~ian/adns/'
-  md5 'd19cddcc11ce3183549bab7f136e0f73'
+  url 'http://www.chiark.greenend.org.uk/~ian/adns/ftp/adns-1.4.tar.gz'
+  sha1 '87283c3bcd09ceb2e605e91abedfb537a18f1884'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

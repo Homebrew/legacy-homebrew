@@ -7,21 +7,11 @@ class Rsyslog < Formula
 
   depends_on 'pkg-config' => :build
 
-  def options
-    [['--universal', 'Make a 32/64-bit Intel build.']]
-  end
+  option :universal
 
   def install
-    if ARGV.build_universal?
-      ENV['CC'] = "gcc -arch i386 -arch x86_64"
-      ENV['CXX'] = "g++ -arch i386 -arch x86_64"
-      ENV['CPP'] = "gcc -E"
-      ENV['CXXCPP'] = "g++ -E"
-      system "./configure", "--prefix=#{prefix}"
-    else
-      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    end
-
+    ENV.universal_binary if build.universal?
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end

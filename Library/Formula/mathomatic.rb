@@ -1,13 +1,17 @@
 require 'formula'
 
 class Mathomatic < Formula
-  url 'http://mathomatic.org/mathomatic-15.4.1.tar.bz2'
-  homepage 'http://www.mathomatic.org/'
-  md5 'c7bdb3c23db39f39d97d8c8eb137f8a6'
+  homepage 'http://www.mathomatic.org/math/'
+  url 'http://mathomatic.org/mathomatic-16.0.1.tar.bz2'
+  sha1 '7a3ba4a1e23f5f1898690cdad1ff2a79527e25fc'
 
   def install
     ENV['prefix'] = prefix
     system "make READLINE=1"
-    system "make install"
+    system "make m4install"
+    cd 'primes' do
+      system 'make'
+      system 'make install'
+    end
   end
 end

@@ -2,18 +2,28 @@ require 'formula'
 
 class Multimarkdown < Formula
   homepage 'http://fletcherpenney.net/multimarkdown/'
-  url 'https://github.com/fletcher/peg-multimarkdown/tarball/3.1b1'
-  md5 'fc09047d271828f068473114becd39d6'
+
+  # Use the tag instead of the tarball to get submodules
+  url 'https://github.com/fletcher/peg-multimarkdown.git', :tag => '3.6'
+  version '3.6'
+
   head 'https://github.com/fletcher/peg-multimarkdown.git', :branch => 'development'
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'glib'
-
   def install
-    system "make"
+    # Since we want to use our CFLAGS, we need to add the following:
+    ENV.append_to_cflags '-include GLibFacade.h'
+    ENV.append_to_cflags '-D MD_USE_GET_OPT=1'
+    ENV.append_to_cflags '-I..'
+    system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
     bin.install 'multimarkdown'
-    bin.install Dir['Support/bin/*']
     bin.install Dir['scripts/*']
+    # The support stuff will be put into the Cellar only
+    prefix.install Dir['Support']
+  end
+
+  def caveats; <<-EOS.undent
+    Support files have been installed to:
+      #{prefix}/Support
+    EOS
   end
 end

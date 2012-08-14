@@ -5,24 +5,28 @@ class Dcmtk < Formula
   url 'ftp://dicom.offis.de/pub/dicom/offis/software/dcmtk/dcmtk360/dcmtk-3.6.0.tar.gz'
   md5 '19409e039e29a330893caea98715390e'
 
+  depends_on :x11
   depends_on 'libtiff'
-  depends_on 'doxygen' if ARGV.include? '--install-all'
+  depends_on 'doxygen' if ARGV.include? '--with-docs'
 
   def options
-    [['--install-all', 'Install development libraries/headers and HTML docs']]
+    [['--with-docs', 'Install development libraries/headers and HTML docs']]
+  end
+
+  fails_with :clang do
+    build 421
   end
 
   def install
-    ENV.deparallelize
     ENV.m64 if MacOS.prefer_64_bit?
-    ENV.x11
-    system "./configure", "--disable-dependency-tracking", "--disable-debug",
-                          "--prefix=#{prefix}"
-    system "make all"
-    if ARGV.include? '--install-all'
-      system "make install-all"
-    else
-      system "make install"
+
+    args = std_cmake_args
+    args << '-DDCMTK_WITH_DOXYGEN=YES' if ARGV.include? '--with-docs'
+
+    mkdir 'build' do
+      system 'cmake', '..', *args
+      system 'make DOXYGEN' if ARGV.include? '--with-docs'
+      system 'make install'
     end
   end
 end

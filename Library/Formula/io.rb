@@ -1,59 +1,50 @@
 require 'formula'
 
 class Io < Formula
-  url 'https://github.com/stevedekorte/io/tarball/2010.06.06'
-  md5 '7968fbe5367aad7a630fc7094be1775b'
-  head 'https://github.com/stevedekorte/io.git'
   homepage 'http://iolanguage.com/'
+  url 'https://github.com/stevedekorte/io/tarball/2011.09.12'
+  sha1 '56720fe9b2c746ca817c15e48023b256363b3015'
 
-  depends_on 'cmake' => :build if ARGV.build_head?
-  depends_on 'libsgml'
+  head 'https://github.com/stevedekorte/io.git'
+
+  depends_on 'cmake' => :build
   depends_on 'ossp-uuid'
   depends_on 'libevent'
+  depends_on 'yajl'
+  depends_on 'libffi'
+  depends_on 'pcre'
 
-  # Either CMake doesn't detect OS X's png include path correctly,
-  # or there's an issue with io's build system; force the path in
-  # so we can build.
+  # Fix recursive inline. See discussion in:
+  # https://github.com/stevedekorte/io/issues/135
   def patches
-    DATA if ARGV.build_head?
+    DATA
   end
 
   def install
     ENV.j1
-
-    if not ARGV.build_head?
-      system "make vm"
-      system "make install"
-      system "make port"
-      system "make install"
-    else
-      opoo "IO --HEAD usually doesn't build!"
-
-      mkdir 'io-build'
-      Dir.chdir 'io-build' do
-        system "cmake .. #{std_cmake_parameters}"
-        system "make install"
+    mkdir 'buildroot' do
+      system "cmake", "..", *std_cmake_args
+      system 'make'
+      output = %x[./_build/binaries/io ../libs/iovm/tests/correctness/run.io]
+      if $?.exitstatus != 0
+        opoo "Test suite not 100% successful:\n#{output}"
+      else
+        ohai "Test suite ran successfully:\n#{output}"
       end
+      system 'make install'
     end
-
-    rm_f Dir['docs/*.pdf']
-    doc.install Dir['docs/*']
-
-    prefix.install 'license/bsd_license.txt' => 'LICENSE'
   end
 end
 
 __END__
-diff --git a/addons/Image/CMakeLists.txt b/addons/Image/CMakeLists.txt
-index a65693d..2166f1b 100644
---- a/addons/Image/CMakeLists.txt
-+++ b/addons/Image/CMakeLists.txt
-@@ -22,7 +22,7 @@ if(PNG_FOUND AND TIFF_FOUND AND JPEG_FOUND)
- 	add_definitions(-DBUILDING_IMAGE_ADDON)
+--- a/libs/basekit/source/Common_inline.h	2011-09-12 17:14:12.000000000 -0500
++++ b/libs/basekit/source/Common_inline.h	2011-12-17 00:46:02.000000000 -0600
+@@ -52,7 +52,7 @@
  
- 	# Additional include directories
--	include_directories(${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
-+	include_directories("/usr/X11/include" ${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
+ #if defined(__APPLE__) 
  
- 	# Generate the IoImageInit.c file.
- 	# Argument SHOULD ALWAYS be the exact name of the addon, case is
+-	#define NS_INLINE static __inline__ __attribute__((always_inline))
++	#define NS_INLINE static inline
+ 
+ 	#ifdef IO_IN_C_FILE
+ 		// in .c 

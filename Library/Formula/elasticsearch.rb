@@ -1,62 +1,89 @@
 require 'formula'
 
 class Elasticsearch < Formula
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.17.7.tar.gz'
   homepage 'http://www.elasticsearch.org'
-  md5 '8502edd8a9b7eb43a895eddeaa299850'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.8.tar.gz'
+  sha1 '5f2732eedc79a0d8b79d1c8a99f505b3d0465188'
+
+  def cluster_name
+    "elasticsearch_#{ENV['USER']}"
+  end
 
   def install
     # Remove Windows files
     rm_f Dir["bin/*.bat"]
+    # Move JARs from lib to libexec according to homebrew conventions
+    libexec.install Dir['lib/*.jar']
+    (libexec+'sigar').install Dir['lib/sigar/*.jar']
 
     # Install everything directly into folder
     prefix.install Dir['*']
 
-    # Make sure we have support folders in /usr/var
-    %w( run data/elasticsearch log ).each { |path| (var+path).mkpath }
-
-    # Put basic configuration into config file
+    # Set up ElasticSearch for local development:
     inreplace "#{prefix}/config/elasticsearch.yml" do |s|
-      s << <<-EOS.undent
-        cluster:
-          name: elasticsearch
 
-        path:
-          logs: #{var}/log
-          data: #{var}/data
-      EOS
+      # 1. Give the cluster a unique name
+      s.gsub! /#\s*cluster\.name\: elasticsearch/, "cluster.name: #{cluster_name}"
+
+      # 2. Configure paths
+      s.gsub! /#\s*path\.data\: [^\n]+/, "path.data: #{var}/elasticsearch/"
+      s.gsub! /#\s*path\.logs\: [^\n]+/, "path.logs: #{var}/log/elasticsearch/"
+
+      # 3. Bind to loopback IP for laptops roaming different networks
+      s.gsub! /#\s*network\.host\: [^\n]+/, "network.host: 127.0.0.1"
     end
 
-    # Write PLIST file for `launchd`
-    (prefix+'org.elasticsearch.plist').write startup_plist
-    (prefix+'org.elasticsearch.plist').chmod 0644
+    inreplace "#{bin}/elasticsearch.in.sh" do |s|
+      # Replace CLASSPATH paths to use libexec instead of lib
+      s.gsub! /ES_HOME\/lib\//, "ES_HOME/libexec/"
+    end
+
+    inreplace "#{bin}/elasticsearch" do |s|
+      # Set ES_HOME to prefix value
+      s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
+    end
+
+    inreplace "#{bin}/plugin" do |s|
+      # Set ES_HOME to prefix value
+      s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
+      # Replace CLASSPATH paths to use libexec instead of lib
+      s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
+    end
+
+    # Write .plist file for `launchd`
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats
     <<-EOS.undent
     If this is your first install, automatically load ElasticSearch on login with:
         mkdir -p ~/Library/LaunchAgents
-        ln -nfs #{prefix}/org.elasticsearch.plist ~/Library/LaunchAgents/
-        launchctl load -wF ~/Library/LaunchAgents/org.elasticsearch.plist
+        ln -nfs #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -wF ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the org.elasticsearch.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/org.elasticsearch.plist
-        ln -nfs #{prefix}/org.elasticsearch.plist ~/Library/LaunchAgents/
-        launchctl load -wF ~/Library/LaunchAgents/org.elasticsearch.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        ln -nfs #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -wF ~/Library/LaunchAgents/#{plist_path.basename}
+
+    If upgrading from 0.18 ElasticSearch requires flushing before shutting
+    down the cluster with no indexing operations happening after flush:
+        curl host:9200/_flush
 
     To stop the ElasticSearch daemon:
-        launchctl unload -wF ~/Library/LaunchAgents/org.elasticsearch.plist
+        launchctl unload -wF ~/Library/LaunchAgents/#{plist_path.basename}
 
     To start ElasticSearch manually:
         elasticsearch -f -D es.config=#{prefix}/config/elasticsearch.yml
 
-    See the #{prefix}/config/elasticsearch.yml file for configuration.
+    See the 'elasticsearch.yml' file for configuration options.
 
     You'll find the ElasticSearch log here:
-        #{var}/log/elasticsearch.log
+        open #{var}/log/elasticsearch/#{cluster_name}.log
 
-    The folder with all the data is here:
-        #{var}/data/elasticsearch
+    The folder with cluster data is here:
+        open #{var}/elasticsearch/#{cluster_name}/
 
     You should see ElasticSearch running:
         open http://localhost:9200/
@@ -73,24 +100,28 @@ class Elasticsearch < Formula
           <key>KeepAlive</key>
           <true/>
           <key>Label</key>
-          <string>org.elasticsearch</string>
+          <string>#{plist_name}</string>
           <key>ProgramArguments</key>
           <array>
-            <string>#{bin}/elasticsearch</string>
+            <string>#{HOMEBREW_PREFIX}/bin/elasticsearch</string>
             <string>-f</string>
             <string>-D es.config=#{prefix}/config/elasticsearch.yml</string>
-            <string>-p #{var}/run/elasticsearch.pid</string>
           </array>
+          <key>EnvironmentVariables</key>
+          <dict>
+            <key>ES_JAVA_OPTS</key>
+            <string>-Xss200000</string>
+          </dict>
           <key>RunAtLoad</key>
           <true/>
           <key>UserName</key>
-          <string>#{`whoami`.chomp}</string>
+          <string>#{ENV['USER']}</string>
           <key>WorkingDirectory</key>
           <string>#{var}</string>
           <key>StandardErrorPath</key>
-          <string>#{var}/log/elasticsearch.log</string>
+          <string>/dev/null</string>
           <key>StandardOutPath</key>
-          <string>#{var}/log/elasticsearch.log</string>
+          <string>/dev/null</string>
         </dict>
       </plist>
     PLIST

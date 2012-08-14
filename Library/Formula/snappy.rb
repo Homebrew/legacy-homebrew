@@ -1,13 +1,16 @@
 require 'formula'
 
 class Snappy < Formula
-  url 'http://snappy.googlecode.com/files/snappy-1.0.3.tar.gz'
   homepage 'http://snappy.googlecode.com'
-  md5 '9d328e39edbf01c0906c6293234a7637'
+  url 'http://snappy.googlecode.com/files/snappy-1.0.5.tar.gz'
+  sha1 '3a3df859cf33f78f8e945c3f67f28685f0f38bb1'
+
+  option :universal
 
   depends_on 'pkg-config' => :build
 
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

@@ -1,65 +1,45 @@
 require 'formula'
 
-def use_default_names?
-  ARGV.include? '--default-names'
-end
-
-def coreutils_aliases
-  s = "brew_prefix=`brew --prefix`\n"
-
-  %w{
-    base64 basename cat chcon chgrp chmod chown chroot cksum comm cp csplit
-    cut date dd df dir dircolors dirname du echo env expand expr factor false
-    fmt fold groups head hostid id install join kill link ln logname ls md5sum
-    mkdir mkfifo mknod mktemp mv nice nl nohup od paste pathchk pinky pr
-    printenv printf ptx pwd readlink rm rmdir runcon seq sha1sum sha225sum
-    sha256sum sha384sum sha512sum shred shuf sleep sort split stat stty sum
-    sync tac tail tee test touch tr true tsort tty uname unexpand uniq unlink
-    uptime users vdir wc who whoami yes
-    }.each do |g|
-    s += "alias #{g}=\"$brew_prefix/bin/g#{g}\"\n"
-  end
-
-  s += "alias '['=\"$brew_prefix/bin/g\\[\"\n"
-
-  return s
-end
-
 class Coreutils < Formula
   homepage 'http://www.gnu.org/software/coreutils'
-  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.12.tar.gz'
-  sha256 '9e233a62c98a3378a7b0483d2ae3d662dbaf6cd3917d3830d3514665e12a85c8'
+  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.17.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.17.tar.xz'
+  sha256 '4e075a0d238072a5bd079046e1f024dc5e0d9133d43a39c73d0b86b0d1e2c5e5'
 
-  def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
-  end
+  depends_on 'xz' => :build
 
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--program-prefix=g" unless use_default_names?
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}", "--program-prefix=g"
     system "make install"
 
-    (prefix+'aliases').write(coreutils_aliases)
+    # set installed binaries
+    commands = coreutils_bins
+
+    # create a gnubin dir that has all the commands without program-prefix
+    (libexec+'gnubin').mkpath
+    commands.each do |cmd|
+      ln_sf "../../bin/g#{cmd}", libexec+"gnubin/#{cmd}"
+    end
   end
 
-  def caveats
-    unless use_default_names?; <<-EOS
-All commands have been installed with the prefix 'g'.
+  def caveats; <<-EOS.undent
+    All commands have been installed with the prefix 'g'.
 
-A file that aliases these commands to their normal names is available
-and may be used in your bashrc like:
+    If you really need to use these commands with their normal names, you
+    can add a "gnubin" directory to your PATH from your bashrc like:
 
-    source #{prefix}/aliases
-
-But note that sourcing these aliases will cause them to be used instead
-of Bash built-in commands, which may cause problems in shell scripts.
-The Bash "printf" built-in behaves differently than gprintf, for instance,
-which is known to cause problems with "bash-completion".
-
-The man pages are still referenced with the g-prefix.
+        PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
     EOS
+  end
+
+  def coreutils_bins
+    require 'find'
+    bin_path = prefix+'bin'
+    commands = Array.new
+    Find.find(bin_path) do |path|
+      next if path == bin_path or File.basename(path) == '.DS_Store'
+      commands << File.basename(path).sub(/^g/,'')
     end
+    return commands.sort
   end
 end

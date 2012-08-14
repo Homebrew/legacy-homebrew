@@ -1,17 +1,27 @@
 require 'formula'
 
 class Streamripper < Formula
-  url 'http://downloads.sourceforge.net/sourceforge/streamripper/streamripper-1.64.6.tar.gz'
   homepage 'http://streamripper.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/sourceforge/streamripper/streamripper-1.64.6.tar.gz'
   md5 'a37a1a8b8f9228522196a122a1c2dd32'
 
   depends_on 'glib'
 
-  fails_with_llvm "strange runtime errors with llvm"
+  fails_with :llvm do
+    build 2335
+    cause "Strange runtime errors with LLVM."
+  end
 
   def install
-    File.chmod 0755, "./install-sh" # without this 'make install' doesn't seem to work (permission denied)
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    # the Makefile ignores CPPFLAGS from the environment, which
+    # breaks the build when HOMEBREW_PREFIX is not /usr/local
+    ENV.append_to_cflags ENV.cppflags
+
+    chmod 0755, "./install-sh" # or "make install" fails
+
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-debug",
+                          "--disable-dependency-tracking"
     system "make install"
   end
 end

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Newlisp < Formula
-  url 'http://www.newlisp.org/downloads/newlisp-10.3.2.tgz'
   homepage 'http://www.newlisp.org/'
-  md5 '91aede51dc31fc1997d6c52adac3568a'
+  url 'http://www.newlisp.org/downloads/newlisp-10.4.3.tgz'
+  sha1 'cf5f5514a2a18dd317aa5e6f38907f0a8879156f'
 
   depends_on 'readline'
 
@@ -15,10 +15,10 @@ class Newlisp < Formula
     system "make"
 
     # Many .lsp files assume the interpreter will be installed in /usr/bin
-    Dir.glob("**/*.lsp") do |f|
+    Dir["**/*.lsp"].each do |f|
       inreplace f do |s|
-        s.gsub! "!#/usr/bin/newlisp", "!#/usr/bin/env newlisp"
-        s.gsub! "/usr/bin/newlisp", "#{bin}/newlisp"
+        s.gsub! '#!/usr/bin/newlisp', '#!/usr/bin/env newlisp'
+        s.gsub! '/usr/bin/newlisp', "#{bin}/newlisp"
       end
     end
 
@@ -28,6 +28,6 @@ class Newlisp < Formula
 
   # Use the IDE to test a complete installation
   def test
-    system "newlisp-edit"
+    system "#{bin}/newlisp-edit"
   end
 end

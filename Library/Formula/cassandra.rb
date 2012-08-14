@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cassandra < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/0.8.6/apache-cassandra-0.8.6-bin.tar.gz'
   homepage 'http://cassandra.apache.org'
-  md5 '3d948680b87efe923f2f7aaa0b186e09'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.1.3/apache-cassandra-1.1.3-bin.tar.gz'
+  sha1 '3872d6ef4309d3fa1131bef0a08bbf132f854a60'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -28,18 +28,25 @@ class Cassandra < Formula
     rm Dir["bin/*.bat"]
 
     (etc+"cassandra").install Dir["conf/*"]
-    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,lib/licenses}"]
+    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,pylib,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
 
-    (prefix+'org.apache.cassandra.plist').write startup_plist
-    (prefix+'org.apache.cassandra.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
       mkdir -p ~/Library/LaunchAgents
-      cp #{prefix}/org.apache.cassandra.plist ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/org.apache.cassandra.plist
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+
+    If you plan to use the CQL shell (cqlsh), you will need the Python CQL library
+    installed. Since Homebrew prefers using pip for Python packages, you can
+    install that using:
+
+      pip install cql
+
     EOS
   end
 
@@ -52,11 +59,11 @@ class Cassandra < Formula
     <true/>
 
     <key>Label</key>
-    <string>org.apache.cassandra</string>
+    <string>#{plist_name}</string>
 
     <key>ProgramArguments</key>
     <array>
-        <string>#{bin}/cassandra</string>
+        <string>#{HOMEBREW_PREFIX}/bin/cassandra</string>
         <string>-f</string>
     </array>
 

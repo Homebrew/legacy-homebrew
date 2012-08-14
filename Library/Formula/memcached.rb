@@ -1,39 +1,46 @@
 require 'formula'
 
 class Memcached < Formula
-  url "http://memcached.googlecode.com/files/memcached-1.4.7.tar.gz"
   homepage 'http://memcached.org/'
-  sha1 '09e6ba550ea9f55b3116cd084b23ea2b923f9b41'
+  url "http://memcached.googlecode.com/files/memcached-1.4.14.tar.gz"
+  sha1 'b360a6acf2454452c6fd4a5bdbbc303d85c3ec27'
 
   depends_on 'libevent'
 
   def options
     [
       ["--enable-sasl", "Enable SASL support -- disables ASCII protocol!"],
+      ["--enable-sasl-pwdb", "Enable SASL with memcached's own plain text password db support -- disables ASCII protocol!"],
     ]
   end
 
   def install
     args = ["--prefix=#{prefix}"]
     args << "--enable-sasl" if ARGV.include? "--enable-sasl"
+    args << "--enable-sasl-pwdb" if ARGV.include? "--enable-sasl-pwdb"
 
     system "./configure", *args
     system "make install"
 
-    (prefix+'com.danga.memcached.plist').write startup_plist
-    (prefix+'com.danga.memcached.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
     You can enable memcached to automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-        Or start it manually:
-            #{HOMEBREW_PREFIX}/bin/memcached
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-        Add "-d" to start it as a daemon.
+    Or start it manually:
+        #{HOMEBREW_PREFIX}/bin/memcached
+
+    Add "-d" to start it as a daemon.
     EOS
   end
 
@@ -44,7 +51,7 @@ class Memcached < Formula
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.danga.memcached</string>
+  <string>#{plist_name}</string>
   <key>KeepAlive</key>
   <true/>
   <key>ProgramArguments</key>

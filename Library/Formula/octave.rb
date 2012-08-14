@@ -1,5 +1,4 @@
 require 'formula'
-require 'hardware'
 
 def no_magick?
   ARGV.include? '--without-graphicsmagick'
@@ -19,14 +18,16 @@ def snow_leopard_64?
 end
 
 class Octave < Formula
-  url 'http://ftpmirror.gnu.org/octave/octave-3.4.2.tar.bz2'
   homepage 'http://www.gnu.org/software/octave/index.html'
-  md5 '31c744ab4555a2bf04d5e644b93f9b51'
+  url 'http://ftpmirror.gnu.org/octave/octave-3.6.2.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.2.tar.bz2'
+  sha1 '145fef0122268086727a60e1c33e29d56fd546d7'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-sed' => :build
   depends_on 'texinfo' => :build     # OS X's makeinfo won't work for this
 
+  depends_on :x11
   depends_on 'fftw'
   # When building 64-bit binaries on Snow Leopard, there are naming issues with
   # the dot product functions in the BLAS library provided by Apple's
@@ -38,6 +39,7 @@ class Octave < Formula
   depends_on 'dotwrp' if snow_leopard_64?
   # octave refuses to work with BSD readline, so it's either this or --disable-readline
   depends_on 'readline'
+  depends_on 'curl' if MacOS.leopard? # Leopard's libcurl is too old
 
   # additional features
   depends_on 'suite-sparse'
@@ -68,12 +70,13 @@ class Octave < Formula
     # build time with -O3: user 58m58.054s  sys 7m52.221s
     ENV.m64 if MacOS.prefer_64_bit?
     ENV.append_to_cflags "-D_REENTRANT"
-    ENV.x11
 
     args = [
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
-      "--with-blas=#{'-ldotwrp ' if snow_leopard_64?}-framework Accelerate"
+      # Cant use `-framework Accelerate` because `mkoctfile`, the tool used to
+      # compile extension packages, can't parse `-framework` flags.
+      "--with-blas=#{'-ldotwrp ' if snow_leopard_64?}-Wl,-framework -Wl,Accelerate"
     ]
     args << "--without-framework-carbon" if MacOS.lion?
 
@@ -86,7 +89,7 @@ class Octave < Formula
 
   def caveats
     native_caveats = <<-EOS.undent
-      Octave 3.4.0 supports "native" plotting using OpenGL and FLTK. You can activate
+      Octave supports "native" plotting using OpenGL and FLTK. You can activate
       it for all future figures using the Octave command
 
           graphics_toolkit ("fltk")

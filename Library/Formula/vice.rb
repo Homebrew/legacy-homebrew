@@ -1,9 +1,12 @@
 require 'formula'
 
 class Vice < Formula
-  url "http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.2.tar.gz"
-  md5 "6737f540806205384e9129026898b0a1"
-  homepage 'http://www.viceteam.org/'
+  url "http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.3.tar.gz"
+  md5 "b48d137874daad50c087a0686cbdde34"
+  homepage 'http://vice-emu.sourceforge.net/'
+
+  depends_on 'jpeg'
+  depends_on :libpng
 
   def remove_unused_icons
     Pathname.glob libexec+'*.app' do |d|
@@ -15,17 +18,16 @@ class Vice < Formula
     end
   end
 
-  def install
-    fails_with_llvm "Cannot build with LLVM"
-    ENV.libpng
+  fails_with :llvm do
+    build 2335
+  end
 
-    # Disable the zlibtest, we know we have it.
+  def install
     # Use Cocoa instead of X
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-cocoa",
-                          "--without-x",
-                          "--disable-zlibtest"
+                          "--without-x"
     system "make"
     system "make bindist"
     prefix.install Dir['vice-macosx-*/*']

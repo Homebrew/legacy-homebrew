@@ -1,12 +1,16 @@
 require 'formula'
 
 class Cufflinks < Formula
-  url 'http://cufflinks.cbcb.umd.edu/downloads/cufflinks-1.1.0.tar.gz'
+  url 'http://cufflinks.cbcb.umd.edu/downloads/cufflinks-1.3.0.tar.gz'
   homepage 'http://cufflinks.cbcb.umd.edu/'
-  md5 '5f3a10d3a1f3b86309896fee6eaea155'
+  md5 '6914059cf8c8f22eb388e1fde44deabe'
 
   depends_on 'boost'
   depends_on 'samtools'
+
+  fails_with :clang do
+    build 421
+  end
 
   def install
     ENV.deparallelize

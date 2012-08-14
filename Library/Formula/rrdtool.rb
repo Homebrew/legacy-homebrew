@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rrdtool < Formula
-  url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.5.tar.gz'
+  url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.7.tar.gz'
   homepage 'http://oss.oetiker.ch/rrdtool/index.en.html'
-  md5 '4d116dba9a0888d8aaac179e35d3980a'
+  sha1 'faab7df7696b69f85d6f89dd9708d7cf0c9a273b'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -11,6 +11,7 @@ class Rrdtool < Formula
   depends_on 'intltool'
   depends_on 'expat'
   depends_on 'pango'
+  depends_on :x11
 
   # Can use lua if it is found, but don't force users to install
   depends_on 'lua' => :optional if ARGV.include? "--lua"
@@ -24,17 +25,17 @@ class Rrdtool < Formula
 
   def install
     ENV.libxml2
-    ENV.x11
 
-    which_perl = `/usr/bin/which perl`.chomp
-    which_ruby = `/usr/bin/which ruby`.chomp
+    which_perl = which 'perl'
+    which_ruby = which 'ruby'
+    ruby_path  = "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby"
 
-    opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby == "/usr/bin/ruby"
-    opoo "Using system Perl. RRD module will be installed to /Library/Perl/..." if which_perl == "/usr/bin/perl"
+    opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby.realpath.to_s == ruby_path
+    opoo "Using system Perl. RRD module will be installed to /Library/Perl/..." if which_perl.to_s == "/usr/bin/perl"
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--mandir=#{man}"]
-    args << "--enable-perl-site-install" if which_perl == "/usr/bin/perl"
-    args << "--enable-ruby-site-install" if which_ruby == "/usr/bin/ruby"
+    args << "--enable-perl-site-install" if which_perl.to_s == "/usr/bin/perl"
+    args << "--enable-ruby-site-install" if which_ruby.realpath.to_s == ruby_path
 
     system "./configure", *args
 
@@ -46,9 +47,10 @@ class Rrdtool < Formula
   end
 
   def test
-    system "ruby", prefix+"test.rb"
-    system "open test.png"
-    puts "You may want to `rm test.{rrd,png}`"
+    mktemp do
+      system "ruby", prefix/"test.rb"
+      system "/usr/bin/qlmanage", "-p", "test.png"
+    end
   end
 end
 

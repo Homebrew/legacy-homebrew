@@ -13,7 +13,6 @@ class Iphotoexport < Formula
     inreplace "#{unzip_dir}/tilutil/exiftool.py", "/usr/bin/exiftool", "exiftool"
 
     prefix.install Dir[unzip_dir+'/*']
-    bin.mkpath
-    ln_s prefix+'iphotoexport.py', bin+'iphotoexport'
+    bin.install_symlink prefix+'iphotoexport.py' => 'iphotoexport'
   end
 end

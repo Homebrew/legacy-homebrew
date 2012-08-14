@@ -2,11 +2,17 @@ require 'formula'
 
 class Lame < Formula
   homepage 'http://lame.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/sourceforge/lame/lame-3.98.4.tar.gz'
-  md5 '8e9866ad6b570c6c95c8cba48060473f'
+  url 'http://downloads.sourceforge.net/sourceforge/lame/lame-3.99.5.tar.gz'
+  md5 '84835b313d4a8b68f5349816d33e07ce'
+
+  option :universal
 
   def install
-    system "./configure", "--disable-debug", "--prefix=#{prefix}", "--enable-nasm"
+    ENV.universal_binary if build.universal?
+
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--enable-nasm"
     system "make install"
   end
 end

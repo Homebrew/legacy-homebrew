@@ -1,9 +1,9 @@
 require 'formula'
 
 class DfuUtil < Formula
-  url 'http://dfu-util.gnumonks.org/releases/dfu-util-0.4.tar.gz'
   homepage 'http://dfu-util.gnumonks.org/'
-  md5 '2cf466fabb881e8598fa02f286d3242c'
+  url 'http://dfu-util.gnumonks.org/releases/dfu-util-0.6.tar.gz'
+  sha1 '9cb8d27427216f80679141b142be05222407ab95'
 
   depends_on 'pkg-config' => :build
   depends_on 'libusb'

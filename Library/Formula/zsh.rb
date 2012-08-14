@@ -1,30 +1,58 @@
 require 'formula'
 
 class Zsh < Formula
-  url 'http://downloads.sourceforge.net/project/zsh/zsh-dev/4.3.12/zsh-4.3.12.tar.gz'
   homepage 'http://www.zsh.org/'
-  md5 '46ae7be975779b9b0ea24e8b30479a8b'
+  url 'http://www.zsh.org/pub/zsh-5.0.0.tar.bz2'
+  sha1 '692669243433c55384a54b397a1cc926e582e9f2'
 
-  depends_on 'gdbm' => :optional
+  depends_on 'gdbm'
+  depends_on 'pcre'
 
   skip_clean :all
 
-  def install
-    system "./configure", "--prefix=#{prefix}",
-                          # don't version stuff in Homebrew, we already do that!
-                          "--enable-fndir=#{share}/zsh/functions",
-                          "--enable-scriptdir=#{share}/zsh/scripts"
+  option 'disable-etcdir', 'Disable the reading of Zsh rc files in /etc'
 
-    # Again, don't version installation directories
+  def install
+    args = %W[
+      --prefix=#{prefix}
+      --enable-fndir=#{share}/zsh/functions
+      --enable-scriptdir=#{share}/zsh/scripts
+      --enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions
+      --enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts
+      --enable-cap
+      --enable-maildir-support
+      --enable-multibyte
+      --enable-pcre
+      --enable-zsh-secure-free
+      --with-tcsetpgrp
+    ]
+
+    args << '--disable-etcdir' if build.include? 'disable-etcdir'
+
+    system "./configure", *args
+
+    # Do not version installation directories.
     inreplace ["Makefile", "Src/Makefile"],
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
   end
 
+  def test
+    system "#{bin}/zsh", "--version"
+  end
+
   def caveats; <<-EOS.undent
-    In order to use this build of zsh as your login shell,
-    it must be added to /etc/shells.
+    To use this build of Zsh as your login shell, add it to /etc/shells.
+
+    If you have administrator privileges, you must fix an Apple miss
+    configuration in Mac OS X 10.7 Lion by renaming /etc/zshenv to
+    /etc/zprofile, or Zsh will have the wrong PATH when executed
+    non-interactively by scripts.
+
+    Alternatively, install Zsh with /etc disabled:
+
+      brew install --disable-etcdir zsh
     EOS
   end
 end

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lastfmfpclient < Formula
+  homepage 'https://github.com/lastfm/Fingerprinter'
   url 'https://github.com/lastfm/Fingerprinter/tarball/9ee83a51ac9058ff53c9'
   version '1.6'
-  homepage 'https://github.com/lastfm/Fingerprinter'
   md5 'ab909b4d6dcc6182afae616749ce0fdc'
 
   depends_on 'cmake' => :build
@@ -13,7 +13,7 @@ class Lastfmfpclient < Formula
   depends_on 'libsamplerate'
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 end

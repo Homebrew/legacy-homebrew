@@ -1,8 +1,8 @@
 require 'formula'
 
 class Calc < Formula
-  url 'http://www.isthe.com/chongo/src/calc/calc-2.12.4.0.tar.bz2'
-  md5 '2ef56695837c6e501ca80b64e0be0db6'
+  url 'http://www.isthe.com/chongo/src/calc/calc-2.12.4.4.tar.bz2'
+  sha1 'cc55ee21ab7a7a6a8b7516a7236e87ae1b09d00d'
   homepage 'http://www.isthe.com/chongo/tech/comp/calc/'
 
   depends_on 'readline'

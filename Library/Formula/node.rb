@@ -1,37 +1,42 @@
 require 'formula'
 
 class Node < Formula
-  url 'http://nodejs.org/dist/node-v0.4.12.tar.gz'
-  head 'https://github.com/joyent/node.git'
   homepage 'http://nodejs.org/'
-  md5 'a6375eaa43db5356bf443e25b828ae16'
+  url 'http://nodejs.org/dist/v0.8.6/node-v0.8.6.tar.gz'
+  sha1 '34c7ad2bb5450653748c65840155852d67742258'
+
+  head 'https://github.com/joyent/node.git'
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
 
-  fails_with_llvm :build => 2326
+  option 'enable-debug', 'Build with debugger hooks'
+
+  fails_with :llvm do
+    build 2326
+  end
 
   # Stripping breaks dynamic loading
   skip_clean :all
 
-  def options
-    [["--debug", "Build with debugger hooks."]]
-  end
-
   def install
-    inreplace 'wscript' do |s|
-      s.gsub! '/usr/local', HOMEBREW_PREFIX
-      s.gsub! '/opt/local/lib', '/usr/lib'
-    end
-
-    args = ["--prefix=#{prefix}"]
-    args << "--debug" if ARGV.include? '--debug'
+    # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
+    args = ["--prefix=#{prefix}", "--without-npm"]
+    args << "--debug" if build.include? 'enable-debug'
 
     system "./configure", *args
     system "make install"
   end
 
   def caveats
-    "Please add #{HOMEBREW_PREFIX}/lib/node_modules to your NODE_PATH environment variable to have node libraries picked up."
+    <<-EOS.undent
+      Homebrew has NOT installed npm. We recommend the following method of
+      installation:
+        curl https://npmjs.org/install.sh | sh
+
+      After installing, add the following path to your NODE_PATH environment
+      variable to have npm libraries picked up:
+        #{HOMEBREW_PREFIX}/lib/node_modules
+    EOS
   end
 end

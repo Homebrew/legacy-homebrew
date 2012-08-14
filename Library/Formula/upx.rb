@@ -1,15 +1,15 @@
 require 'formula'
 
 class Upx < Formula
-  url 'http://upx.sourceforge.net/download/upx-3.07-src.tar.bz2'
+  url 'http://upx.sourceforge.net/download/upx-3.08-src.tar.bz2'
+  head 'http://upx.hg.sourceforge.net:8000/hgroot/upx/upx', :using => :hg
   homepage 'http://upx.sourceforge.net'
-  md5 '8186ab103288242f7e8ecad1acd4af03'
+  md5 '54c76fa52cad578ff23ef98aee91e3f5'
 
   depends_on 'ucl'
 
   def install
     system "make all"
-    system "src/upx.out src/upx.out"
     bin.install "src/upx.out" => "upx"
   end
 end

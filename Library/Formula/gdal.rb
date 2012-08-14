@@ -16,27 +16,47 @@ def no_python?
   ARGV.include? "--without-python"
 end
 
+def which_python
+  "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+end
+
 def opencl?
   ARGV.include? "--enable-opencl"
 end
 
-class Gdal < Formula
-  url 'http://download.osgeo.org/gdal/gdal-1.8.1.tar.gz'
-  homepage 'http://www.gdal.org/'
-  md5 'b32269893afc9dc9eced45e74e4c6bb4'
+def armadillo?
+  ARGV.include? "--enable-armadillo"
+end
 
-  head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
+
+class Gdal < Formula
+  homepage 'http://www.gdal.org/'
+  url 'http://download.osgeo.org/gdal/gdal-1.9.1.tar.gz'
+  md5 'c5cf09b92dac1f5775db056e165b34f5'
+
+  head 'https://svn.osgeo.org/gdal/trunk/gdal'
+
+  # For creating up to date man pages.
+  depends_on 'doxygen' => :build if ARGV.build_head?
+
+  depends_on :libpng
 
   depends_on 'jpeg'
   depends_on 'giflib'
   depends_on 'proj'
   depends_on 'geos'
+  # To ensure compatibility with SpatiaLite. Might be possible to do this
+  # conditially, but the additional complexity is just not worth saving an
+  # extra few seconds of build time.
+  depends_on 'sqlite'
 
   depends_on "postgresql" if postgres?
   depends_on "mysql" if mysql?
 
   # Without Numpy, the Python bindings can't deal with raster data.
   depends_on 'numpy' => :python unless no_python?
+
+  depends_on 'armadillo' if armadillo?
 
   if complete?
     # Raster libraries
@@ -45,25 +65,17 @@ class Gdal < Formula
                         # not geo-spatially enabled.
     depends_on "cfitsio"
     depends_on "epsilon"
+    depends_on "libdap"
+    def patches; DATA; end # Fix a bug in LibDAP detection.
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
     depends_on "libspatialite"
     depends_on "xerces-c"
-    depends_on "poppler"
+    depends_on "freexl"
 
     # Other libraries
     depends_on "xz" # get liblzma compression algorithm library from XZutils
-  end
-
-  def patches
-    if complete?
-      # EPSILON v0.9.x slightly modified the naming of some struct members. A
-      # fix is in the GDAL trunk but was kept out of 1.8.1 due to concern for
-      # users of EPSILON v0.8.x. Homebrew installs 0.9.2+ so this concern is a
-      # moot point.
-      {:p1 => DATA}
-    end
   end
 
   def options
@@ -72,13 +84,16 @@ class Gdal < Formula
       ['--with-postgres', 'Specify PostgreSQL as a dependency.'],
       ['--with-mysql', 'Specify MySQL as a dependency.'],
       ['--without-python', 'Build without Python support (disables a lot of tools).'],
-      ['--enable-opencl', 'Build with support for OpenCL.']
+      ['--enable-opencl', 'Build with OpenCL acceleration.'],
+      ['--enable-armadillo', 'Build with Armadillo accelerated TPS transforms.']
     ]
   end
 
   def get_configure_args
     args = [
       # Base configuration.
+      "--prefix=#{prefix}",
+      "--mandir=#{man}",
       "--disable-debug",
       "--with-local=#{prefix}",
       "--with-threads",
@@ -95,27 +110,25 @@ class Gdal < Formula
 
       # Backends supported by OS X.
       "--with-libz=/usr",
-      "--with-png=/usr/X11",
+      "--with-png=#{MacOS::X11.prefix}",
       "--with-expat=/usr",
-      "--with-sqlite3=/usr",
 
       # Default Homebrew backends.
       "--with-jpeg=#{HOMEBREW_PREFIX}",
       "--with-jpeg12",
       "--with-gif=#{HOMEBREW_PREFIX}",
       "--with-curl=/usr/bin/curl-config",
+      "--with-sqlite3=#{HOMEBREW_PREFIX}",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
-      # Should be installed seperately after GRASS installation using the
+      # Should be installed separately after GRASS installation using the
       # official GDAL GRASS plugin.
       "--without-grass",
       "--without-libgrass",
 
-      # OPeNDAP support also explicitly disabled for now---causes the
-      # configuration of other components such as Curl and Spatialite to fail
-      # for unknown reasons.
-      "--with-dods-root=no"
-
+      # Poppler explicitly disabled. GDAL currently can't compile against
+      # Poppler 0.20.0.
+      "--without-poppler"
     ]
 
     # Optional library support for additional formats.
@@ -130,7 +143,8 @@ class Gdal < Formula
         "--with-odbc=#{HOMEBREW_PREFIX}",
         "--with-spatialite=#{HOMEBREW_PREFIX}",
         "--with-xerces=#{HOMEBREW_PREFIX}",
-        "--with-poppler=#{HOMEBREW_PREFIX}"
+        "--with-freexl=#{HOMEBREW_PREFIX}",
+        "--with-dods-root=#{HOMEBREW_PREFIX}"
       ]
     else
       args.concat [
@@ -145,7 +159,9 @@ class Gdal < Formula
         "--without-epsilon",
         "--without-spatialite",
         "--without-libkml",
-        "--without-poppler",
+        "--without-podofo",
+        "--with-freexl=no",
+        "--with-dods-root=no",
 
         # The following libraries are either proprietary or available under
         # non-free licenses.  Interested users will have to install such
@@ -168,18 +184,18 @@ class Gdal < Formula
     args << "--without-oci"    # Oracle databases
     args << "--without-idb"    # IBM Informix DataBlades
 
-    # Hombrew-provided databases.
+    # Homebrew-provided databases.
     args << "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" if postgres?
     args << "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" if mysql?
 
-    args << "--without-python" # Installed using a seperate set of
+    args << "--without-python" # Installed using a separate set of
                                          # steps so that everything winds up
                                          # in the prefix.
 
     # Scripting APIs that have not been re-worked to respect Homebrew prefixes.
     #
     # Currently disabled as they install willy-nilly into locations outside of
-    # the Hombrew prefix.  Enable if you feel like it, but uninstallation may be
+    # the Homebrew prefix.  Enable if you feel like it, but uninstallation may be
     # a manual affair.
     #
     # TODO: Fix installation of script bindings so they install into the
@@ -191,11 +207,30 @@ class Gdal < Formula
     # OpenCL support
     args << "--with-opencl" if opencl?
 
+    # Armadillo support.
+    args << (armadillo? ? '--with-armadillo=yes' : '--with-armadillo=no')
+
     return args
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", *get_configure_args
+    # Linking flags for SQLite are not added at a critical moment when the GDAL
+    # library is being assembled. This causes the build to fail due to missing
+    # symbols.
+    #
+    # Fortunately, this can be remedied using LDFLAGS.
+    ENV.append 'LDFLAGS', '-lsqlite3'
+    # Needed by libdap.
+    ENV.append 'CPPFLAGS', '-I/usr/include/libxml2' if complete?
+
+    # Reset ARCHFLAGS to match how we build.
+    if MacOS.prefer_64_bit?
+      ENV['ARCHFLAGS'] = "-arch x86_64"
+    else
+      ENV['ARCHFLAGS'] = "-arch i386"
+    end
+
+    system "./configure", *get_configure_args
     system "make"
     system "make install"
 
@@ -204,7 +239,7 @@ class Gdal < Formula
       # install to anywhere that is not on the PYTHONPATH.
       #
       # Really setuptools, we're all consenting adults here...
-      python_lib = lib + "python"
+      python_lib = lib + which_python + 'site-packages'
       ENV.append 'PYTHONPATH', python_lib
 
       # setuptools is also apparently incapable of making the directory it's
@@ -219,11 +254,16 @@ class Gdal < Formula
         ENV.append_to_cflags '-arch i386'
       end
 
-      Dir.chdir 'swig/python' do
+      cd 'swig/python' do
         system "python", "setup.py", "install_lib", "--install-dir=#{python_lib}"
         bin.install Dir['scripts/*']
       end
     end
+
+    system 'make', 'man' if ARGV.build_head?
+    system 'make', 'install-man'
+    # Clean up any stray doxygen files.
+    Dir[bin + '*.dox'].each { |p| rm p }
   end
 
   unless no_python?
@@ -231,69 +271,32 @@ class Gdal < Formula
       <<-EOS
 This version of GDAL was built with Python support.  In addition to providing
 modules that makes GDAL functions available to Python scripts, the Python
-binding provides ~18 additional command line tools.  However, both the Python
-bindings and the additional tools will be unusable unless the following
-directory is added to the PYTHONPATH:
-    #{HOMEBREW_PREFIX}/lib/python
+binding provides ~18 additional command line tools.
+
+Unless you are using Homebrew's Python, both the bindings and the
+additional tools will be unusable unless the following directory is added to
+the PYTHONPATH:
+
+    #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages
       EOS
     end
   end
 end
 
-
 __END__
+Fix test for LibDAP >= 3.10.
 
-This patch updates GDAL to be compatible with EPSILON 0.9.x. Changes sourced from the GDAL trunk:
 
-    http://trac.osgeo.org/gdal/changeset/22363
-
-Patch can be removed when GDAL hits 1.9.0.
-
-diff --git a/frmts/epsilon/epsilondataset.cpp b/frmts/epsilon/epsilondataset.cpp
-index b12928a..3f967cc 100644
---- a/frmts/epsilon/epsilondataset.cpp
-+++ b/frmts/epsilon/epsilondataset.cpp
-@@ -48,6 +48,13 @@ typedef struct
-     vsi_l_offset offset;
- } BlockDesc;
- 
-+#ifdef I_WANT_COMPATIBILITY_WITH_EPSILON_0_8_1
-+#define GET_FIELD(hdr, field) \
-+    (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.field : hdr.tc.field
-+#else
-+#define GET_FIELD(hdr, field) \
-+    (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.hdr_data.gs.field : hdr.hdr_data.tc.field
-+#endif
- 
- /************************************************************************/
- /* ==================================================================== */
-@@ -237,8 +244,8 @@ CPLErr EpsilonRasterBand::IReadBlock( int nBlockXOff,
-         return CE_Failure;
-     }
-     
--    int w = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.w : hdr.tc.w;
--    int h = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.h : hdr.tc.h;
-+    int w = GET_FIELD(hdr, w);
-+    int h = GET_FIELD(hdr, h);
-     int i;
- 
-     if (poGDS->nBands == 1)
-@@ -505,12 +512,12 @@ int EpsilonDataset::ScanBlocks(int* pnBands)
-             continue;
-         }
-         
--        int W = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.W : hdr.tc.W;
--        int H = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.H : hdr.tc.H;
--        int x = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.x : hdr.tc.x;
--        int y = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.y : hdr.tc.y;
--        int w = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.w : hdr.tc.w;
--        int h = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.h : hdr.tc.h;
-+        int W = GET_FIELD(hdr, W);
-+        int H = GET_FIELD(hdr, H);
-+        int x = GET_FIELD(hdr, x);
-+        int y = GET_FIELD(hdr, y);
-+        int w = GET_FIELD(hdr, w);
-+        int h = GET_FIELD(hdr, h);
- 
-         //CPLDebug("EPSILON", "W=%d,H=%d,x=%d,y=%d,w=%d,h=%d,offset=" CPL_FRMT_GUIB,
-         //                    W, H, x, y, w, h, nStartBlockFileOff);
+diff --git a/configure b/configure
+index 997bbbf..a1928d5 100755
+--- a/configure
++++ b/configure
+@@ -24197,7 +24197,7 @@ else
+ rm -f islibdappost310.*
+ echo '#include "Connect.h"' > islibdappost310.cpp
+ echo 'int main(int argc, char** argv) { return 0; } ' >> islibdappost310.cpp
+-if test -z "`${CXX} islibdappost310.cpp -c ${DODS_INC} 2>&1`" ; then
++if test -z "`${CXX} islibdappost310.cpp -c ${DODS_INC} ${CPPFLAGS} 2>&1`" ; then
+     DODS_INC="$DODS_INC -DLIBDAP_310 -DLIBDAP_39"
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: libdap >= 3.10" >&5
+ $as_echo "libdap >= 3.10" >&6; }

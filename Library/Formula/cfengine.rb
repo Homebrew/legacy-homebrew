@@ -1,19 +1,30 @@
 require 'formula'
 
 class Cfengine < Formula
-  url 'https://cfengine.com/source_code/download?file=cfengine-3.2.0.tar.gz'
   homepage 'http://cfengine.com/'
-  md5 '5fdd5a0bf6c5111114ee8fb2259483ae'
+  url 'https://cfengine.com/source-code/download?file=cfengine-3.3.5.tar.gz'
+  sha1 '205896ba59a472de363c06e6847cecaf4cfbc5cf'
 
   depends_on 'tokyo-cabinet'
+  depends_on 'pcre'
+
+  def patches
+    # See https://github.com/cfengine/core/commit/ce2b8abf
+    "https://github.com/cfengine/core/commit/ce2b8abf.patch" if ENV.compiler == :clang
+  end
 
   def install
-    system "./configure", "--with-tokyocabinet", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    system "/usr/bin/make install"
+    # Find our libpcre
+    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-workdir=#{var}/cfengine",
+                          "--with-tokyocabinet"
+    system "make install"
   end
 
   def test
-    system "#{sbin}/cf-agent -V"
+    system "#{bin}/cf-agent", "-V"
   end
 end

@@ -1,37 +1,33 @@
 require 'formula'
-require 'hardware'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
 
-  packages = {
-    :x86_64 => {
-      :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.0.tgz',
-      :md5 => '01776ae81c9bf12708f8a4f8a2d8c28e',
-      :version => '2.0.0-x86_64'
-    },
-    :i386 => {
-      :url => 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.0.tgz',
-      :md5 => '0a93663d1ceaed9fc99979ef17fbe32d',
-      :version => '2.0.0-i386'
-    }
-  }
+  if Hardware.is_64_bit? and not build.build_32_bit?
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.7.tgz'
+    md5 '81b0e8be3206cc60e8031dde302fb983'
+    version '2.0.7-x86_64'
 
-  package = (Hardware.is_64_bit? and not ARGV.include? '--32bit') ? packages[:x86_64] : packages[:i386]
+    devel do
+      url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0-rc0.tgz'
+      md5 '49918bd6c5c5e84c4f657df35de6512b'
+      version '2.2.0-rc0-x86_64'
+    end
+  else
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.7.tgz'
+    md5 '5fee3796ebc4e8721d9784ad8978b2b6'
+    version '2.0.7-i386'
 
-  url     package[:url]
-  md5     package[:md5]
-  version package[:version]
+    devel do
+      url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0-rc0.tgz'
+      md5 '236330754716334a6a9b88ff9bbcc3ea'
+      version '2.2.0-rc0-i386'
+    end
+  end
+
+  option '32-bit'
 
   skip_clean :all
-
-  def options
-    [
-        ['--32bit', 'Override arch detection and install the 32-bit version.'],
-        ['--nojournal', 'Disable write-ahead logging (Journaling)'],
-        ['--rest', 'Enable the REST Interface on the HTTP Status Page'],
-    ]
-  end
 
   def install
     # Copy the prebuilt binaries to prefix
@@ -43,68 +39,42 @@ class Mongodb < Formula
 
     # Write the configuration files and launchd script
     (prefix+'mongod.conf').write mongodb_conf
-    (prefix+'org.mongodb.mongod.plist').write startup_plist
-    (prefix+'org.mongodb.mongod.plist').chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
+
+    # copy the config file to etc if this is the first install.
+    etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
   end
 
-  def caveats
-    s = ""
-    s += <<-EOS.undent
+  def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the org.mongodb.mongod.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
-        cp #{prefix}/org.mongodb.mongod.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.mongodb.mongod.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or start it manually:
-        mongod run --config #{prefix}/mongod.conf
+        mongod run --config #{etc}/mongod.conf
+
+    The launchctl plist above expects the config file to be at #{etc}/mongod.conf.
     EOS
-
-    if ARGV.include? "--nojournal"
-        s += ""
-        s += <<-EOS.undent
-        Write Ahead logging (Journaling) has been disabled.
-        EOS
-    else
-        s += ""
-        s += <<-EOS.undent
-        MongoDB 1.8+ includes a feature for Write Ahead Logging (Journaling), which has been enabled by default.
-        To disable journaling, use --nojournal.
-        EOS
-    end
-
-    return s
   end
 
-  def mongodb_conf
-    conf = ""
-    conf += <<-EOS.undent
+  def mongodb_conf; <<-EOS.undent
     # Store data in #{var}/mongodb instead of the default /data/db
     dbpath = #{var}/mongodb
+
+    # Append logs to #{var}/log/mongodb/mongo.log
+    logpath = #{var}/log/mongodb/mongo.log
+    logappend = true
 
     # Only accept local connections
     bind_ip = 127.0.0.1
     EOS
-
-    if ARGV.include? '--nojournal'
-      conf += <<-EOS.undent
-      # Disable Write Ahead Logging
-      nojournal = true
-      EOS
-    end
-
-    if ARGV.include? '--rest'
-        conf += <<-EOS.undent
-        # Enable the REST interface on the HTTP Console (startup port + 1000)
-        rest = true
-        EOS
-    end
-
-    return conf
   end
 
   def startup_plist
@@ -114,13 +84,13 @@ class Mongodb < Formula
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>org.mongodb.mongod</string>
+  <string>#{plist_name}</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{bin}/mongod</string>
+    <string>#{HOMEBREW_PREFIX}/bin/mongod</string>
     <string>run</string>
     <string>--config</string>
-    <string>#{prefix}/mongod.conf</string>
+    <string>#{etc}/mongod.conf</string>
   </array>
   <key>RunAtLoad</key>
   <true/>

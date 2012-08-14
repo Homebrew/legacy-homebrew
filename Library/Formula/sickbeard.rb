@@ -1,20 +1,19 @@
 require 'formula'
 
 class Sickbeard < Formula
-  url 'https://github.com/midgetspy/Sick-Beard/tarball/build-488'
   homepage 'http://www.sickbeard.com/'
-  md5 '3bdcabe963e2622513f3cca2757fa2f0'
+  url 'https://github.com/midgetspy/Sick-Beard/tarball/build-495'
+  sha1 '401a60c016be22ea30eb3b9fbf3fdb40bc3278e5'
 
-  head 'git://github.com/midgetspy/Sick-Beard.git'
+  head 'https://github.com/midgetspy/Sick-Beard.git'
 
   depends_on 'Cheetah' => :python
 
   def install
     prefix.install Dir['*']
-    bin.mkpath
     (bin+"sickbeard").write(startup_script)
-    (prefix+"com.sickbeard.sickbeard.plist").write(startup_plist)
-    (prefix+"com.sickbeard.sickbeard.plist").chmod 0644
+    plist_path.write(startup_plist)
+    plist_path.chmod 0644
   end
 
   def startup_plist; <<-EOS.undent
@@ -23,10 +22,10 @@ class Sickbeard < Formula
     <plist version="1.0">
     <dict>
       <key>Label</key>
-      <string>com.sickbeard.sickbeard</string>
+      <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-           <string>#{bin}/sickbeard</string>
+           <string>#{HOMEBREW_PREFIX}/bin/sickbeard</string>
            <string>-q</string>
            <string>--nolaunch</string>
            <string>-p</string>
@@ -70,12 +69,12 @@ class Sickbeard < Formula
     To launch automatically on startup, copy and paste the following into a terminal:
 
         mkdir -p ~/Library/LaunchAgents
-        (launchctl unload -w ~/Library/LaunchAgents/com.sickbeard.sickbeard.plist 2>/dev/null || true)
-        ln -sf #{prefix}/com.sickbeard.sickbeard.plist ~/Library/LaunchAgents/com.sickbeard.sickbeard.plist
-        launchctl load -w ~/Library/LaunchAgents/com.sickbeard.sickbeard.plist
+        (launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename} 2>/dev/null || true)
+        ln -sf #{plist_path} ~/Library/LaunchAgents/#{plist_path.basename}
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     You may want to edit:
-      #{prefix}/com.sickbeard.sickbeard.plist
+      #{plist_path}
     to change the port (default: 8081) or user (default: #{`whoami`.chomp}).
     EOS
   end

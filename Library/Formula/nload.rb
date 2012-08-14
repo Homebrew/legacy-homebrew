@@ -1,11 +1,15 @@
 require 'formula'
 
 class Nload < Formula
-  url 'http://www.roland-riegel.de/nload/nload-0.7.3.tar.gz'
   homepage 'http://www.roland-riegel.de/nload/'
-  md5 '9b97c37fe1474f1da42f265fead24081'
+  url 'http://www.roland-riegel.de/nload/nload-0.7.4.tar.gz'
+  md5 '3c733c528f244ca5a4f76bf185729c39'
 
-  fails_with_llvm
+  fails_with :llvm do
+    build 2334
+  end
+
+  depends_on :automake
 
   # Patching configure.in file to make configure compile on Mac OS.
   # Patch taken from MacPorts.

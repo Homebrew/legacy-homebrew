@@ -1,10 +1,11 @@
 require 'formula'
 
 class Sqsh < Formula
-  url 'http://downloads.sourceforge.net/sourceforge/sqsh/sqsh-2.1.7.tar.gz'
   homepage 'http://www.sqsh.org/'
-  md5 'ce929dc8e23cedccac98288d24785e2d'
+  url 'http://downloads.sourceforge.net/sourceforge/sqsh/sqsh-2.1.8.tar.gz'
+  sha1 'c16ed1c913169e19340971e3162cca8a8f23ed05'
 
+  depends_on :x11
   depends_on 'freetds'
   depends_on 'readline'
 
@@ -23,8 +24,8 @@ class Sqsh < Formula
 
     if ARGV.include? "--with-x"
       args << "--with-x"
-      args << "--x-libraries=/usr/X11/lib"
-      args << "--x-includes=/usr/X11/includes"
+      args << "--x-libraries=#{MacOS::X11.lib}"
+      args << "--x-includes=#{MacOS::X11.include}"
     end
 
     ENV['SYBASE'] = Freetds.new("freetds").prefix

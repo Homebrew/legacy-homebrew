@@ -12,7 +12,7 @@ class Rubinius < Formula
 
   def install
     # Let Rubinius define its own flags; messing with these causes build breaks.
-    %w{CC CXX LD CFLAGS CXXFLAGS CPPFLAGS LDFLAGS}.each { |e| ENV.delete(e) }
+    ENV.remove_cc_etc
 
     # Unset RUBYLIB to configure Rubinius
     ENV.delete("RUBYLIB")
@@ -20,27 +20,22 @@ class Rubinius < Formula
     # Set to stop Rubinius messing with our prefix.
     ENV["RELEASE"] = "1"
 
-    system "/usr/bin/ruby", "./configure",
-                          "--skip-system", # download and use the prebuilt LLVM
-                          "--bindir", bin,
-                          "--prefix", prefix,
-                          "--includedir", "#{include}/rubinius",
-                          "--libdir", lib,
-                          "--mandir", man, # For completeness; no manpages exist yet.
-                          "--gemsdir", "#{lib}/rubinius/gems"
+    ruby = "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby"
+
+    system ruby, "./configure",
+                "--skip-system", # download and use the prebuilt LLVM
+                "--bindir", bin,
+                "--prefix", prefix,
+                "--includedir", "#{include}/rubinius",
+                "--libdir", lib,
+                "--mandir", man, # For completeness; no manpages exist yet.
+                "--gemsdir", "#{lib}/rubinius/gems"
 
     ohai "config.rb", File.open('config.rb').to_a if ARGV.debug? or ARGV.verbose?
 
-    system "/usr/bin/ruby", "-S", "rake", "install"
+    system ruby, "-S", "rake", "install"
 
     # Remove conflicting command aliases
     bin.children.select(&:symlink?).each(&:unlink)
-  end
-
-  def caveats; <<-EOS.undent
-    Consider using RVM or Cinderella to manage Ruby environments:
-      * RVM: http://rvm.beginrescueend.com/
-      * Cinderella: http://www.atmos.org/cinderella/
-    EOS
   end
 end

@@ -7,9 +7,8 @@ class VorbisTools < Formula
 
   depends_on 'libogg'
   depends_on 'libvorbis'
-
-  # ao and ogg123 are optional deps
-  # Not sure why we don't just require them. - Adam V.
+  depends_on 'libao'
+  depends_on 'flac'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

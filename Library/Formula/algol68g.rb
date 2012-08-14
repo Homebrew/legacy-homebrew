@@ -1,20 +1,18 @@
 require 'formula'
 
-# See: http://www.cowlark.com/2009-11-15-go/
 class Algol68g < Formula
-  url 'http://www.xs4all.nl/~jmvdveer/algol68g-1.18.0.bz2'
   homepage 'http://www.xs4all.nl/~jmvdveer/algol.html'
-  md5 '949b7eb0c49c327d36f0c7d13e7c8be4'
+  url 'http://jmvdveer.home.xs4all.nl/algol68g-2.4.tar.gz'
+  sha1 '80212604dd1ed532635177bb4d17853c8a036189'
+
+  depends_on 'gsl' => :optional
 
   def install
-    # These folders need to exist for configure to work. Lame.
-    bin.mkpath
-
-    system "./configure", "-O3", "--threads", "--bindir=#{bin}", "--cc=#{ENV.cc}"
-
-    # Don't make the docs, they appear to be missing.
-    inreplace 'makefile', '@install -m 644 doc/man1/a68g.1 $(man_dir)', ''
-    system "make"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/a68g", "--help"
   end
 end

@@ -8,7 +8,9 @@ ABS__FILE__=File.expand_path(__FILE__)
 
 $:.push(File.expand_path(__FILE__+'/../..'))
 require 'extend/pathname'
+require 'extend/string'
 require 'exceptions'
+require 'utils'
 
 # these are defined in global.rb, but we don't want to break our actual
 # homebrew tree, and we do want to test everything :)
@@ -34,4 +36,32 @@ module Homebrew extend self
   include FileUtils
 end
 
+def shutup
+  if ARGV.verbose?
+    yield
+  else
+    begin
+      tmperr = $stderr.clone
+      tmpout = $stdout.clone
+      $stderr.reopen '/dev/null', 'w'
+      $stdout.reopen '/dev/null', 'w'
+      yield
+    ensure
+      $stderr.reopen tmperr
+      $stdout.reopen tmpout
+    end
+  end
+end
+
+unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
+  $:.unshift(File.expand_path("#{ABS__FILE__}/../../compat"))
+  require 'compatibility'
+end
+
 require 'test/unit' # must be after at_exit
+
+require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
+ARGV.extend(HomebrewArgvExtension)
+
+require 'extend/ENV'
+ENV.extend(HomebrewEnvExtension)

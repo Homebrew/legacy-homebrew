@@ -1,17 +1,21 @@
 require 'formula'
 
 class Asciidoc < Formula
-  url 'http://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.6/asciidoc-8.6.6.tar.gz'
-  md5 '44b872d9c300ffa5a8fe8b3c4d10957c'
-  head 'https://code.google.com/p/asciidoc/', :using => :hg
   homepage 'http://www.methods.co.nz/asciidoc'
+  url 'http://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.7/asciidoc-8.6.7.tar.gz'
+  sha1 '5fc55496b2a23e2cc1dcc1f6b1f75dd06fcdefa1'
+
+  head 'https://code.google.com/p/asciidoc/', :using => :hg
+
+  depends_on :autoconf if build.head?
+  depends_on 'docbook'
 
   def install
-    if ARGV.build_head? and not File.exists? "./configure"
-      ohai "Creating configure file"
-      system "autoconf"
-    end
+    system "autoconf" if build.head?
     system "./configure", "--prefix=#{prefix}"
+
+    # otherwise OS X's xmllint bails out
+    inreplace 'Makefile', '-f manpage', '-f manpage -L'
     system "make install"
   end
 end

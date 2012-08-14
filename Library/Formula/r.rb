@@ -6,15 +6,22 @@ end
 
 class RBashCompletion < Formula
   # This is the same script that Debian packages use.
-  url 'http://rcompletion.googlecode.com/svn-history/r12/trunk/bash_completion/R', :using => :curl
-  version 'r12'
-  md5 '3c8f6cf1c07e052074ee843be00fa5d6'
+  url 'http://rcompletion.googlecode.com/svn-history/r28/trunk/bash_completion/R', :using => :curl
+  version 'r28'
+  md5 'd5493f7a8422147c2f5c63c6a18ebda4'
 end
 
 class R < Formula
-  url 'http://cran.r-project.org/src/base/R-2/R-2.13.1.tar.gz'
-  homepage 'http://www.r-project.org/'
-  md5 '28dd0d68ac3a0eab93fe7035565a1c30'
+  homepage 'http://www.r-project.org'
+  url 'http://cran.r-project.org/src/base/R-2/R-2.15.1.tar.gz'
+  sha1 'f0e6912be6dfc0d1fdc4be66048304d8befe8424'
+
+  head 'https://svn.r-project.org/R/trunk'
+
+  depends_on 'readline'
+  depends_on 'libtiff'
+  depends_on 'jpeg'
+  depends_on :x11
 
   depends_on 'valgrind' if valgrind?
 
@@ -25,15 +32,8 @@ class R < Formula
   end
 
   def install
-    if valgrind?
-      ENV.remove_from_cflags /-O./
-      ENV.append_to_cflags '-O0'
-    end
-
+    ENV.Og if valgrind?
     ENV.fortran
-    ENV.x11 # So PNG gets added to the x11 and cairo plotting devices
-    ENV['OBJC'] = ENV['CC']
-    ENV['OBJCFLAGS'] = ENV['CFLAGS']
 
     args = [
       "--prefix=#{prefix}",
@@ -42,6 +42,9 @@ class R < Formula
       "--with-lapack"
     ]
     args << '--with-valgrind-instrumentation=2' if valgrind?
+
+    # Pull down recommended packages if building from HEAD.
+    system './tools/rsync-recommended' if ARGV.build_head?
 
     system "./configure", *args
     system "make"
@@ -70,6 +73,9 @@ class R < Formula
     To use this Framework with IDEs such as RStudio, it must be linked
     to the standard OS X location:
       ln -s "#{prefix}/R.framework" /Library/Frameworks
+
+    To enable rJava support, run the following command:
+      R CMD javareconf JAVA_CPPFLAGS=-I/System/Library/Frameworks/JavaVM.framework/Headers
     EOS
   end
 end

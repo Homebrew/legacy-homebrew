@@ -1,8 +1,8 @@
 require 'formula'
 
 class Mkvtoolnix < Formula
-  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-5.0.0.tar.bz2'
-  sha1 '9e8d4fafa8f6916b4d92d6ff654906cf5b591c68'
+  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-5.0.1.tar.bz2'
+  sha1 '900211d47ba6cbeb4188bb45a492a2b9edf08ed2'
   head 'https://github.com/mbunkus/mkvtoolnix.git'
   homepage 'http://www.bunkus.org/videotools/mkvtoolnix/'
 
@@ -12,12 +12,16 @@ class Mkvtoolnix < Formula
   depends_on 'flac' => :optional
   depends_on 'lzo' => :optional
 
+  fails_with :clang do
+    build 318
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--with-boost-libdir=#{HOMEBREW_PREFIX}/lib", # For non-/usr/local prefix
                           "--with-boost-regex=boost_regex-mt" # via macports
-    system "./drake -j#{Hardware.processor_count}"
+    system "./drake", "-j#{ENV.make_jobs}"
     system "./drake install"
   end
 end

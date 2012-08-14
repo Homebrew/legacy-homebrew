@@ -1,56 +1,56 @@
 require 'formula'
 
 class Jenkins < Formula
-  url 'http://mirrors.jenkins-ci.org/war/1.428/jenkins.war', :using => :nounzip
-  head 'git://github.com/jenkinsci/jenkins.git'
-  version '1.428'
-  md5 '5817e09ccc3a2996addeb8f1bc1cb6c8'
   homepage 'http://jenkins-ci.org'
+  url 'http://mirrors.jenkins-ci.org/war/1.477/jenkins.war'
+  version '1.477'
+  sha1 '86ed3e5805e5bd532e8f771ba7a76cc43441057b'
+
+  head 'https://github.com/jenkinsci/jenkins.git'
 
   def install
-    system "mvn clean install -pl war -am -DskipTests && mv war/target/jenkins.war ." if ARGV.build_head?
-    lib.install "jenkins.war"
-    (prefix+'org.jenkins-ci.plist').write startup_plist
-    (prefix+'org.jenkins-ci.plist').chmod 0644
+    if ARGV.build_head?
+      system "mvn clean install -pl war -am -DskipTests"
+      mv 'war/target/jenkins.war', '.'
+    end
+
+    libexec.install "jenkins.war"
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
-  def caveats; <<-EOS
-If this is your first install, automatically load on login with:
-    mkdir -p ~/Library/LaunchAgents
-    cp #{prefix}/org.jenkins-ci.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.jenkins-ci.plist
+  def caveats; <<-EOS.undent
+    If this is your first install, automatically load on login with:
+      mkdir -p ~/Library/LaunchAgents
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-If this is an upgrade and you already have the org.jenkins-ci.plist loaded:
-    launchctl unload -w ~/Library/LaunchAgents/org.jenkins-ci.plist
-    cp #{prefix}/org.jenkins-ci.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/org.jenkins-ci.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-Or start it manually:
-    java -jar #{lib}/jenkins.war
-EOS
+    Or start it manually:
+      java -jar #{libexec}/jenkins.war
+    EOS
   end
 
-  # There is a startup plist, as well as a runner, here and here:
-  #  https://raw.github.com/jenkinsci/jenkins/master/osx/org.jenkins-ci.plist
-  #  https://raw.github.com/jenkinsci/jenkins/master/osx/Library/Application%20Support/Jenkins/jenkins-runner.sh
-  #
-  # Perhaps they could be integrated.
-  def startup_plist
-    return <<-EOS
+  def startup_plist; <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>Label</key>
-    <string>Jenkins</string>
-    <key>ProgramArguments</key>
-    <array>
-    <string>/usr/bin/java</string>
-    <string>-jar</string>
-    <string>#{lib}/jenkins.war</string>
-    </array>
-    <key>RunAtLoad</key>
-    <true/>
+  <key>Label</key>
+  <string>#{plist_name}</string>
+  <key>ProgramArguments</key>
+  <array>
+  <string>/usr/bin/java</string>
+  <string>-jar</string>
+  <string>#{libexec}/jenkins.war</string>
+  <string>--httpListenAddress=127.0.0.1</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
 </dict>
 </plist>
 EOS

@@ -1,13 +1,12 @@
 require 'formula'
 
 class Bcwipe < Formula
-  url 'http://www.jetico.com/linux/BCWipe-1.9-6.tar.gz'
-  homepage 'http://www.jetico.com/linux/bcwipe-help/wu_intro.htm'
-  md5 'abe1ddf92284d585acf43d7e2d8b1593'
+  homepage 'http://www.jetico.com/linux/bcwipe-help/'
+  url 'http://www.jetico.com/linux/BCWipe-1.9-9.tar.gz'
+  md5 '1377971bafce72238d1a062e2305c1c0'
 
   def install
-    ENV.gcc_4_0_1
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "./configure", "--prefix=#{prefix}"
+    system "make", "CFLAGS=#{ENV.cflags}", "LDFLAGS=#{ENV.ldflags}", "install"
   end
 end

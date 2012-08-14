@@ -1,10 +1,9 @@
 require 'formula'
 
 class Vorbisgain < Formula
-  url 'http://freshmeat.net/urls/e251f5bf2d45abfdc2c44540b46e37c0'
+  url 'http://sjeng.org/ftp/vorbis/vorbisgain-0.37.tar.gz'
   homepage 'http://sjeng.org/vorbisgain.html'
-  md5 '3c9df5028fa395aa98fdf0f58a5187b0'
-  version '0.36'
+  md5 '850b05a7b2b0ee67edb5a27b8c6ac3a2'
 
   depends_on 'libvorbis'
   depends_on 'libogg'

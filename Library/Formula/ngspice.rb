@@ -1,19 +1,27 @@
 require 'formula'
 
 class Ngspice < Formula
-  url 'http://downloads.sourceforge.net/project/ngspice/ng-spice-rework/22/ngspice-22.tar.gz'
   homepage 'http://ngspice.sourceforge.net/'
-  md5 'b55cdd80a56692fe6ce13f7a33c64d08'
+  url 'http://downloads.sourceforge.net/project/ngspice/ng-spice-rework/24/ngspice-24.tar.gz'
+  md5 'e9ed7092da3e3005aebd892996b2bd5f'
+
+  def options
+    [["--without-xspice", "Build without x-spice extensions"]]
+  end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-editline=yes",
-                          "--enable-x"
+    args = ["--disable-debug",
+            "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--with-editline=yes",
+            "--enable-x"]
+    args << "--enable-xspice" unless ARGV.include? "--without-xspice"
+
+    system "./configure", *args
     system "make install"
   end
 
-  def caveats
+  def caveats;
     "Note: ngspice is an X11 application."
-  end
+ end
 end

@@ -1,20 +1,29 @@
 require 'formula'
 
 class Clisp < Formula
+  homepage 'http://www.clisp.org/'
   url 'http://ftpmirror.gnu.org/clisp/release/2.49/clisp-2.49.tar.bz2'
-  homepage 'http://clisp.cons.org/'
-  md5 '1962b99d5e530390ec3829236d168649'
+  mirror 'http://ftp.gnu.org/gnu/clisp/release/2.49/clisp-2.49.tar.bz2'
+  sha1 '7e8d585ef8d0d6349ffe581d1ac08681e6e670d4'
 
-  depends_on 'libiconv'
   depends_on 'libsigsegv'
   depends_on 'readline'
 
   skip_clean :all # otherwise abort trap
 
-  fails_with_llvm "Fails during configure with LLVM GCC from XCode 4 on Snow Leopard"
+  fails_with :llvm do
+    build 2334
+    cause "Configure fails on XCode 4/Snow Leopard."
+  end
+
+  def patches
+    { :p0 => "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff",
+      :p1 => DATA }
+  end
 
   def install
     ENV.j1 # This build isn't parallel safe.
+    ENV.remove_from_cflags /-O./
 
     # Clisp requires to select word size explicitly this way,
     # set it in CFLAGS won't work.
@@ -50,6 +59,21 @@ class Clisp < Formula
   end
 
   def test
-    system "#{bin}/clisp --version"
+    system "#{bin}/clisp", "--version"
   end
 end
+
+__END__
+diff --git a/src/stream.d b/src/stream.d
+index 5345ed6..cf14e29 100644
+--- a/src/stream.d
++++ b/src/stream.d
+@@ -3994,7 +3994,7 @@ global object iconv_range (object encoding, uintL start, uintL end, uintL maxint
+ nonreturning_function(extern, error_unencodable, (object encoding, chart ch));
+ 
+ /* Avoid annoying warning caused by a wrongly standardized iconv() prototype. */
+-#ifdef GNU_LIBICONV
++#if defined(GNU_LIBICONV) && !defined(__APPLE_CC__)
+   #undef iconv
+   #define iconv(cd,inbuf,inbytesleft,outbuf,outbytesleft) \
+     libiconv(cd,(ICONV_CONST char **)(inbuf),inbytesleft,outbuf,outbytesleft)

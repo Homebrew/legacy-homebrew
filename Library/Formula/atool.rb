@@ -1,16 +1,12 @@
 require 'formula'
 
 class Atool < Formula
-  url 'http://savannah.nongnu.org/download/atool/atool-0.37.0.tar.gz'
   homepage 'http://www.nongnu.org/atool/'
-  md5 '2607e9b19518af4145be8a6bed454477'
-
-  depends_on "gnu-sed"
+  url 'http://savannah.nongnu.org/download/atool/atool-0.39.0.tar.gz'
+  md5 'e0aa006decbc6484b9dba2879f1bb9f0'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    # OS X sed doesn't work; use GNU sed
-    inreplace 'Makefile', 'sed -r', '#{HOMEBREW_PREFIX}/bin/gsed'
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 end

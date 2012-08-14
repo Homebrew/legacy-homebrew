@@ -1,15 +1,14 @@
 require 'formula'
 
 class Feh < Formula
-  url 'http://feh.finalrewind.org/feh-1.16.tar.bz2'
-  homepage 'http://freshmeat.net/projects/feh'
-  md5 'd8583e8dde2f383dc9a8dfc28bf6b348'
+  homepage 'http://feh.finalrewind.org/'
+  url 'http://feh.finalrewind.org/feh-2.5.tar.bz2'
+  sha1 'd1bf7fa8ec6b5d1ce16c291edf38d45de01f252d'
 
   depends_on 'giblib' => :build
+  depends_on :x11
 
   def install
-    ENV.x11
-
     system "make", "PREFIX=#{prefix}"
     system "make", "PREFIX=#{prefix}", "install"
   end

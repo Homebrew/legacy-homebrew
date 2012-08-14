@@ -4,19 +4,23 @@ require 'formula'
 # But we don't add either as deps because they are big.
 
 class Dvdauthor < Formula
-  url 'http://downloads.sourceforge.net/project/dvdauthor/dvdauthor/0.7.0/dvdauthor-0.7.0.tar.gz'
   homepage 'http://dvdauthor.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/dvdauthor/dvdauthor/0.7.0/dvdauthor-0.7.0.tar.gz'
   md5 '33a447fb98ab3293ac40f869eedc17ff'
 
   depends_on 'pkg-config' => :build
   depends_on 'libdvdread'
+  depends_on :x11
 
+  # Fix build with png-1.5. Patch has been applied upstream, but no tagged
+  # release has been made since 2010. See:
+  # http://bugs.gentoo.org/355039
+  # https://github.com/ldo/dvdauthor/commit/c82aaa4eb1a1c36bf7e2b7ae3c9140d0bf8000b5
   def patches
-    { :p0 => DATA }
+    DATA
   end
 
   def install
-    ENV.x11 # For libpng, etc.
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
@@ -27,11 +31,8 @@ class Dvdauthor < Formula
 end
 
 __END__
-http://bugs.gentoo.org/355039
-Fix build with png-1.5.
-
---- src/spuunmux.c.orig	2010-05-10 11:27:55.000000000 +0400
-+++ src/spuunmux.c	2011-03-17 11:20:25.000000000 +0300
+--- a/src/spuunmux.c	2010-05-10 11:27:55.000000000 +0400
++++ b/src/spuunmux.c	2011-03-17 11:20:25.000000000 +0300
 @@ -39,6 +39,7 @@
  #include <netinet/in.h>
  

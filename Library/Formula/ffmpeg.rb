@@ -1,29 +1,33 @@
 require 'formula'
 
 class Ffmpeg < Formula
-  url 'http://ffmpeg.org/releases/ffmpeg-0.8.4.tar.bz2'
   homepage 'http://ffmpeg.org/'
-  sha1 '70fc95f2711defe4953862bd42a5a228cee803b8'
+  url 'http://ffmpeg.org/releases/ffmpeg-0.11.1.tar.bz2'
+  sha1 'bf01742be60c2e6280371fc4189d5d28933f1a56'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
-  fails_with_llvm 'Dies during compilation of motionpixels_tablegen'
-
   depends_on 'yasm' => :build
+  depends_on :x11
   depends_on 'x264' => :optional
   depends_on 'faac' => :optional
   depends_on 'lame' => :optional
+  depends_on 'rtmpdump' => :optional
   depends_on 'theora' => :optional
   depends_on 'libvorbis' => :optional
   depends_on 'libogg' => :optional
   depends_on 'libvpx' => :optional
   depends_on 'xvid' => :optional
+  depends_on 'opencore-amr' => :optional
+  depends_on 'libvo-aacenc' => :optional
+  depends_on 'libass' => :optional
 
-  def options
-    [
-      ["--with-tools", "Install additional FFmpeg tools."]
-    ]
-  end
+  depends_on 'sdl' if build.include? 'with-ffplay'
+  depends_on 'openjpeg' if build.include? 'with-openjpeg'
+
+  option 'with-tools', 'Install additional FFmpeg tools'
+  option 'with-ffplay', 'Build ffplay'
+  option 'with-openjpeg', 'Use openjpeg for jpeg2000 support'
 
   def install
     args = ["--prefix=#{prefix}",
@@ -32,19 +36,30 @@ class Ffmpeg < Formula
             "--enable-version3",
             "--enable-nonfree",
             "--enable-hardcoded-tables",
-            "--cc=#{ENV.cc}"]
+            "--enable-libfreetype",
+            "--cc=#{ENV.cc}",
+            "--host-cflags=#{ENV.cflags}",
+            "--host-ldflags=#{ENV.ldflags}"
+           ]
 
-    args << "--enable-libx264" if Formula.factory('x264').installed?
-    args << "--enable-libfaac" if Formula.factory('faac').installed?
-    args << "--enable-libmp3lame" if Formula.factory('lame').installed?
-    args << "--enable-libtheora" if Formula.factory('theora').installed?
-    args << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
-    args << "--enable-libvpx" if Formula.factory('libvpx').installed?
-    args << "--enable-libxvid" if Formula.factory('xvid').installed?
+    args << "--enable-libx264" if Formula.factory('x264').linked_keg.exist?
+    args << "--enable-libfaac" if Formula.factory('faac').linked_keg.exist?
+    args << "--enable-libmp3lame" if Formula.factory('lame').linked_keg.exist?
+    args << "--enable-librtmp" if Formula.factory('rtmpdump').linked_keg.exist?
+    args << "--enable-libtheora" if Formula.factory('theora').linked_keg.exist?
+    args << "--enable-libvorbis" if Formula.factory('libvorbis').linked_keg.exist?
+    args << "--enable-libvpx" if Formula.factory('libvpx').linked_keg.exist?
+    args << "--enable-libxvid" if Formula.factory('xvid').linked_keg.exist?
+    args << "--enable-libopencore-amrnb" if Formula.factory('opencore-amr').linked_keg.exist?
+    args << "--enable-libopencore-amrwb" if Formula.factory('opencore-amr').linked_keg.exist?
+    args << "--enable-libass" if Formula.factory('libass').linked_keg.exist?
+    args << "--enable-libvo-aacenc" if Formula.factory('libvo-aacenc').linked_keg.exist?
+    args << "--disable-ffplay" unless build.include? 'with-ffplay'
+    args << "--enable-libopenjpeg" if build.include? 'with-openjpeg'
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    if MacOS.snow_leopard? and Hardware.is_32_bit?
+    if MacOS.leopard? or Hardware.is_32_bit?
       ENV.append_to_cflags "-mdynamic-no-pic"
     end
 
@@ -59,40 +74,12 @@ class Ffmpeg < Formula
       end
     end
 
-    write_version_file if ARGV.build_head?
-
     system "make install"
 
-    if ARGV.include? "--with-tools"
+    if build.include? 'with-tools'
       system "make alltools"
       bin.install Dir['tools/*'].select {|f| File.executable? f}
     end
-  end
-
-  # Makefile expects to run in git repo and generate a version number
-  # with 'git describe' command (see version.sh) but Homebrew build
-  # runs in temp copy created via git checkout-index, so 'git describe'
-  # does not work. Work around by writing VERSION file in build directory
-  # to be picked up by version.sh.  Note that VERSION file will already
-  # exist in release versions, so this only applies to git HEAD builds.
-  def write_version_file
-    return if File.exists?("VERSION")
-    git_tag = "UNKNOWN"
-    Dir.chdir(cached_download) do
-      ver = `./version.sh`.chomp
-      if not $?.success? or ver == "UNKNOWN"
-        # fall back to git
-        ver = `git describe --tags --match N --always`.chomp
-        if not $?.success?
-          opoo "Could not determine build version from git repository - set to #{git_tag}"
-        else
-          git_tag = "git-#{ver}"
-        end
-      else
-        git_tag = ver
-      end
-    end
-    File.open("VERSION","w") {|f| f.puts git_tag}
   end
 
 end

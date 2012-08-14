@@ -1,33 +1,30 @@
 require 'formula'
 
 class CouchdbLucene < Formula
-  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.6.0'
+  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.8.0'
   homepage 'https://github.com/rnewson/couchdb-lucene'
-  md5 'b55610d4c054987a5c69183585a31d8b'
+  md5 '3d4d321881188247b80847429f514639'
 
   depends_on 'couchdb'
   depends_on 'maven'
 
   def install
-    # Skipping tests because the integration test assumes that couchdb-lucene
-    # has been integrated with a local couchdb instance. Not sure if there's a
-    # way to only disable the integration test.
-    system "mvn", "-DskipTests=true"
+    system "mvn"
 
-    system "tar -xzf target/couchdb-lucene-#{version}-dist.tar.gz"
-    system "mv couchdb-lucene-#{version}/* #{prefix}"
+    system "tar", "-xzf", "target/couchdb-lucene-#{version}-dist.tar.gz"
+    prefix.install Dir["couchdb-lucene-#{version}/*"]
 
     (etc + "couchdb/local.d/couchdb-lucene.ini").write ini_file
-    (prefix+"couchdb-lucene.plist").write plist_file
-    (prefix+"couchdb-lucene.plist").chmod 0644
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
     You can enable couchdb-lucene to automatically load on login with:
 
       mkdir -p ~/Library/LaunchAgents
-      cp "#{prefix}/couchdb-lucene.plist" ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/couchdb-lucene.plist
+      cp "#{plist_path}" ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or start it manually with:
       #{bin}/run
@@ -40,14 +37,14 @@ class CouchdbLucene < Formula
 os_process_timeout=60000 ; increase the timeout from 5 seconds.
 
 [external]
-fti=#{`which python`.chomp} #{prefix}/tools/couchdb-external-hook.py
+fti=#{which 'python'} #{prefix}/tools/couchdb-external-hook.py
 
 [httpd_db_handlers]
 _fti = {couch_httpd_external, handle_external_req, <<"fti">>}
 EOS
   end
 
-  def plist_file
+  def startup_plist
     return <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
@@ -55,7 +52,7 @@ EOS
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>couchdb-lucene</string>
+    <string>#{plist_name}</string>
     <key>EnvironmentVariables</key>
     <dict>
       <key>HOME</key>
@@ -65,7 +62,7 @@ EOS
     </dict>
     <key>ProgramArguments</key>
     <array>
-      <string>#{bin}/run</string>
+      <string>#{HOMEBREW_PREFIX}/bin/run</string>
     </array>
     <key>UserName</key>
     <string>#{`whoami`.chomp}</string>

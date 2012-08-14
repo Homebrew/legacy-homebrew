@@ -1,10 +1,11 @@
-#!/usr/bin/ruby
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 # -*- coding: utf-8 -*-
 
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
 
 require 'pathname'
 HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Library/Homebrew").to_s
+$:.unshift(HOMEBREW_LIBRARY_PATH + '/vendor')
 $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
@@ -16,21 +17,18 @@ when '--version'
   puts HOMEBREW_VERSION
   exit 0
 when '-v'
-  if ARGV.length > 1
-    puts "Homebrew #{HOMEBREW_VERSION}"
-    # continue in verbose mode
-    ARGV << ARGV.shift
-  else
-    puts HOMEBREW_VERSION
-    exit 0
-  end
+  puts "Homebrew #{HOMEBREW_VERSION}"
+  # Shift the -v to the end of the parameter list
+  ARGV << ARGV.shift
+  # If no other arguments, just quit here.
+  exit 0 if ARGV.length == 1
 end
 
 case HOMEBREW_PREFIX.to_s when '/', '/usr'
   # it may work, but I only see pain this route and don't want to support it
   abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
 end
-if MACOS_VERSION < 10.5
+if MACOS and MACOS_VERSION < 10.5
   abort <<-EOABORT.undent
     Homebrew requires Leopard or higher. For Tiger support, see:
     http://github.com/sceaga/homebrew/tree/tiger
@@ -70,8 +68,8 @@ begin
   cmd = aliases[cmd] if aliases[cmd]
 
   # Add example external commands to PATH before checking.
-  ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/examples"
-  if system "/usr/bin/which -s brew-#{cmd}"
+  ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/cmds"
+  if which "brew-#{cmd}"
     %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
       ENV["HOMEBREW_#{e}"] = Object.const_get "HOMEBREW_#{e}"
     end
@@ -81,12 +79,8 @@ begin
   elsif require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/cmd
     Homebrew.send cmd.to_s.gsub('-', '_')
   else
-    # Check for git commands
-    if %w[branch checkout pull push rebase reset].include? cmd
-      onoe "Unknown command: #{cmd} (did you mean `git #{cmd}'?)"
-    else
-      onoe "Unknown command: #{cmd}"
-    end
+    onoe "Unknown command: #{cmd}"
+    exit 1
   end
 
 rescue FormulaUnspecifiedError
@@ -103,34 +97,7 @@ rescue Interrupt => e
   puts # seemingly a newline is typical
   exit 130
 rescue BuildError => e
-  require 'cmd/--config'
-  require 'cmd/--env'
-
-  e.backtrace[1] =~ %r{Library/Formula/(.+)\.rb:(\d+)}
-  formula_name = $1
-  error_line = $2
-
-  ohai "Exit Status: #{e.exit_status}"
-  puts "http://github.com/mxcl/homebrew/blob/master/Library/Formula/#{formula_name}.rb#L#{error_line}"
-  ohai "Environment"
-  puts Homebrew.config_s
-  ohai "Build Flags"
-  Homebrew.dump_build_env e.env
-  puts
-  onoe e
-  issues = GitHub.issues_for_formula formula_name
-  if issues.empty?
-    puts "If `brew doctor' does not help diagnose the issue, please report the bug:"
-    puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
-  else
-    puts "These existing issues may help you:", *issues.map{ |s| "    #{Tty.em}#{s}#{Tty.reset}" }
-    puts "Otherwise, please report the bug:"
-    puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
-  end
-  if e.was_running_configure?
-    puts "We saved the configure log, please gist it if you report the issue:"
-    puts "    ~/Library/Logs/Homebrew/config.log"
-  end
+  e.dump
   exit 1
 rescue RuntimeError, SystemCallError => e
   onoe e
@@ -142,4 +109,6 @@ rescue Exception => e
   puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
   puts e.backtrace
   exit 1
+else
+  exit 1 if Homebrew.failed?
 end

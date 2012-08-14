@@ -6,13 +6,7 @@ class Pwnat < Formula
   md5 'd1f2b556a32669484f0358d009a20feb'
 
   def install
-    inreplace "Makefile" do |s|
-      s.change_make_var! "CC", ENV.cc
-      s.change_make_var! "CFLAGS", ENV.cflags
-      s.change_make_var! "LDFLAGS", "-lz"
-    end
-
-    system "make"
+    system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}", "LDFLAGS=-lz"
     bin.install "pwnat"
   end
 end

@@ -1,28 +1,32 @@
 require 'formula'
 
 class MediaInfo < Formula
-  url 'http://downloads.sourceforge.net/sourceforge/mediainfo/MediaInfo_CLI_0.7.48_GNU_FromSource.tar.bz2'
   homepage 'http://mediainfo.sourceforge.net'
-  md5 '47017511e067ca992d7fe41f9018e579'
+  url 'http://downloads.sourceforge.net/mediainfo/MediaInfo_CLI_0.7.59_GNU_FromSource.tar.bz2'
+  sha1 'ac7fde6e4d8ae5f127675e74c005cd7b5ddc9b6a'
 
   depends_on 'pkg-config' => :build
 
   def install
-    # Build fails when parallelized
-    ENV.deparallelize
+    cd 'ZenLib/Project/GNU/Library' do
+      system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}"
+      system "make"
+    end
 
-    root_dir = Dir.pwd
+    cd "MediaInfoLib/Project/GNU/Library" do
+      args = ["--disable-debug",
+              "--disable-dependency-tracking",
+              "--with-libcurl",
+              "--prefix=#{prefix}"]
+      system "./configure", *args
+      system "make install"
+    end
 
-    Dir.chdir root_dir + '/ZenLib/Project/GNU/Library'
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make"
-
-    Dir.chdir root_dir + "/MediaInfoLib/Project/GNU/Library"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
-
-    Dir.chdir root_dir + "/MediaInfo/Project/GNU/CLI"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    cd "MediaInfo/Project/GNU/CLI" do
+      system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}"
+      system "make install"
+    end
   end
 end

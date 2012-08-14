@@ -1,11 +1,14 @@
 require 'formula'
 
 class Libexif < Formula
-  url 'http://downloads.sourceforge.net/project/libexif/libexif/0.6.19/libexif-0.6.19.tar.bz2'
   homepage 'http://libexif.sourceforge.net/'
-  md5 '56144a030a4c875c600b1ccf713f69f7'
+  url 'http://sourceforge.net/projects/libexif/files/libexif/0.6.21/libexif-0.6.21.tar.gz'
+  sha1 '4106f02eb5f075da4594769b04c87f59e9f3b931'
 
-  fails_with_llvm "segfault with llvm"
+  fails_with :llvm do
+    build 2334
+    cause "segfault with llvm"
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"

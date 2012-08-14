@@ -1,22 +1,21 @@
 require 'formula'
 
 class GnuIndent < Formula
-  url 'http://ftpmirror.gnu.org/indent/indent-2.2.10.tar.gz'
   homepage 'http://www.gnu.org/software/indent/'
-  md5 'be35ea62705733859fbf8caf816d8959'
+  url 'http://ftpmirror.gnu.org/indent/indent-2.2.10.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/indent/indent-2.2.10.tar.gz'
+  sha1 '20fa8a7a4af6670c3254c8b87020291c3db37ed1'
 
-  depends_on "gettext"
+  depends_on 'gettext'
 
-  def options
-    [['--default-names', "Do not prepend 'g' to the binary (will override system indent)"]]
-  end
+  option 'default-names', "Do not prepend 'g' to the binary"
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--mandir=#{man}"]
 
-    args << "--program-prefix=g" unless ARGV.include? '--default-names'
+    args << "--program-prefix=g" unless build.include? 'default-names'
 
     system "./configure", *args
     system "touch man/malloc.h"

@@ -2,42 +2,34 @@ require 'formula'
 
 class Gnutls < Formula
   homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
-  url 'http://ftpmirror.gnu.org/gnutls/gnutls-2.12.11.tar.bz2'
-  md5 'f08234b64a8025d6d5aa1307868b02ed'
+  url 'http://ftpmirror.gnu.org/gnutls/gnutls-2.12.20.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gnutls/gnutls-2.12.20.tar.bz2'
+  sha256 '4884eafcc8383ed23209199bbc72ad04f4eb94955a50a594125ff34c6889c564'
 
   depends_on 'pkg-config' => :build
   depends_on 'libgcrypt'
   depends_on 'libtasn1' => :optional
 
-  def patches
-    DATA
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
   end
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
-
   def install
-    ENV.universal_binary	# build fat so wine can use it
+    ENV.universal_binary # build fat so wine can use it
+    ENV.append 'LDFLAGS', '-ltasn1' # find external libtasn1
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--disable-guile",
                           "--disable-static",
                           "--prefix=#{prefix}",
                           "--with-libgcrypt",
                           "--without-p11-kit"
     system "make install"
+
+    # certtool shadows the OS X certtool utility
+    mv bin+'certtool', bin+'gnutls-certtool'
+    mv man1+'certtool.1', man1+'gnutls-certtool.1'
   end
 end
-
-__END__
-diff --git a/src/serv.c b/src/serv.c
-index 0307b05..ecd8725 100644
---- a/src/serv.c
-+++ b/src/serv.c
-@@ -440,6 +440,7 @@ static const char DEFAULT_DATA[] =
-  */
- #define tmp2 &http_buffer[strlen(http_buffer)], len-strlen(http_buffer)
- static char *
-+#undef snprintf
- peer_print_info (gnutls_session_t session, int *ret_length,
-		 const char *header)
- {

@@ -13,7 +13,9 @@ class Ufraw < Formula
   depends_on 'dcraw'
   depends_on 'exiv2' => :optional
 
-  fails_with_llvm "Compiling with LLVM gives a segfault while linking."
+  fails_with :llvm do
+    cause "Segfault while linking"
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",

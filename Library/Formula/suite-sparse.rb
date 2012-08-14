@@ -1,20 +1,20 @@
 require 'formula'
 
 class SuiteSparse < Formula
-  url 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-3.6.1.tar.gz'
-  homepage 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/'
-  md5 '88a44890e8f61cdbb844a76b7259d876'
+  homepage 'http://www.cise.ufl.edu/research/sparse/SuiteSparse'
+  url 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-3.7.0.tar.gz'
+  md5 'ecb1d1cc1101cf31f077bab46678e791'
 
   depends_on "metis"
   depends_on "tbb"
 
   def install
     # SuiteSparse doesn't like to build in parallel
-    ENV.deparallelize
+    ENV.j1
 
     # So, SuiteSparse was written by a scientific researcher.  This
     # tends to result in makefile-based build systems that are completely
-    # ignorant of the existance of things such as CPPFLAGS and LDFLAGS.
+    # ignorant of the existence of things such as CPPFLAGS and LDFLAGS.
     # SuiteSparse Does The Right Thing™ when homebrew is in /usr/local
     # but if it is not, we have to piggyback some stuff in on CFLAGS.
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
@@ -25,11 +25,6 @@ class SuiteSparse < Formula
     metis = Formula.factory("metis")
 
     inreplace 'UFconfig/UFconfig.mk' do |s|
-      # Compilers
-      s.change_make_var! "CC", ENV.cc
-      s.change_make_var! "CFLAGS", ENV.cflags
-      s.change_make_var! "CPLUSPLUS", ENV.cxx
-
       # Libraries
       s.change_make_var! "BLAS", "-Wl,-framework -Wl,Accelerate"
       s.change_make_var! "LAPACK", "$(BLAS)"
@@ -42,9 +37,6 @@ class SuiteSparse < Formula
       s.change_make_var! "INSTALL_LIB", lib
       s.change_make_var! "INSTALL_INCLUDE", include
     end
-
-    # Remove a stray Lib prefix
-    inreplace 'UFconfig/Makefile', %r|Lib/|, ''
 
     system "make library"
 

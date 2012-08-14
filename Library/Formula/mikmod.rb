@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mikmod < Formula
-  url 'http://mikmod.raphnet.net/files/mikmod-3.2.2-beta1.tar.bz2'
   homepage 'http://mikmod.raphnet.net/'
-  md5 '006378681d520fa8ee1dacca965bbd3c'
+  url 'http://mikmod.shlomifish.org/files/mikmod-3.2.2.tar.gz'
+  sha1 '37640492c0ba3aebc277a251e1d012119e2edee8'
 
   depends_on 'libmikmod'
 

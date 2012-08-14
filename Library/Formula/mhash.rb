@@ -6,7 +6,7 @@ class Mhash < Formula
   md5 'ee66b7d5947deb760aeff3f028e27d25'
 
   def install
-    system "./configure --prefix=#{prefix} --disable-debug --disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
 end

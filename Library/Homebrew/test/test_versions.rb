@@ -1,21 +1,20 @@
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'formula'
 require 'test/testball'
 
-class MockFormula <Formula
+class MockFormula < Formula
   def initialize url
-    @url=url
-    @homepage = 'http://example.com/'
+    @stable = SoftwareSpec.new(url)
     super 'test'
   end
 end
 
-class TestBadVersion <TestBall
-  @version="versions can't have spaces"
+class TestBadVersion < TestBall
+  def initialize name=nil
+    @stable = SoftwareSpec.new
+    @stable.version "versions can't have spaces"
+    super 'testbadversion'
+  end
 end
 
 
@@ -59,6 +58,10 @@ class VersionTests < Test::Unit::TestCase
   def test_p7zip_version_style
     check "http://kent.dl.sourceforge.net/sourceforge/p7zip/p7zip_9.04_src_all.tar.bz2",
       '9.04'
+  end
+
+  def test_new_github_style
+    check "https://github.com/sam-github/libnet/tarball/libnet-1.1.4", "1.1.4"
   end
 
   def test_gloox_beta_style
@@ -161,12 +164,70 @@ class VersionTests < Test::Unit::TestCase
   end
 
   def test_bottle_style
-    check 'https://downloads.sourceforge.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz',
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.0.lion.bottle.tar.gz',
+      '4.8.0'
+  end
+
+  def test_versioned_bottle_style
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.8.1.lion.bottle.1.tar.gz',
+      '4.8.1'
+  end
+
+  def test_erlang_bottle_style
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B.lion.bottle.tar.gz',
+      'R15B'
+  end
+
+  def test_old_bottle_style
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz',
       '4.7.3'
   end
 
+  def test_old_erlang_bottle_style
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B-bottle.tar.gz',
+      'R15B'
+  end
+
+  def test_imagemagick_style
+    check 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.7.5-7.tar.bz2',
+      '6.7.5-7'
+  end
+
   def test_imagemagick_bottle_style
-    check 'http://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.1-1-bottle.tar.gz',
-      '6.7.1-1'
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.5-7.lion.bottle.tar.gz',
+      '6.7.5-7'
+  end
+
+  def test_imagemagick_versioned_bottle_style
+    check 'https://downloads.sf.net/project/machomebrew/Bottles/imagemagick-6.7.5-7.lion.bottle.1.tar.gz',
+      '6.7.5-7'
+  end
+
+  def test_dash_version_dash_style
+    check 'http://www.antlr.org/download/antlr-3.4-complete.jar', '3.4'
+  end
+
+  def check_ghc_style
+    check 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2', '7.0.4'
+    check 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2', '7.0.4'
+  end
+
+  def test_more_versions
+    check 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2', '1.4.1'
+    check 'http://www.openssl.org/source/openssl-0.9.8s.tar.gz', '0.9.8s'
+    check 'ftp://ftp.visi.com/users/hawkeyd/X/Xaw3d-1.5E.tar.gz', '1.5E'
+    check 'http://downloads.sourceforge.net/project/assimp/assimp-2.0/assimp--2.0.863-sdk.zip',
+      '2.0.863'
+    check 'http://common-lisp.net/project/cmucl/downloads/release/20c/cmucl-20c-x86-darwin.tar.bz2',
+      '20c'
+    check 'http://downloads.sourceforge.net/project/fann/fann/2.1.0beta/fann-2.1.0beta.zip',
+      '2.1.0beta'
+    check 'ftp://iges.org/grads/2.0/grads-2.0.1-bin-darwin9.8-intel.tar.gz', '2.0.1'
+    check 'http://haxe.org/file/haxe-2.08-osx.tar.gz', '2.08'
+    check 'ftp://ftp.cac.washington.edu/imap/imap-2007f.tar.gz', '2007f'
+    check 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz',
+      '3.3.12ga7'
+    check 'http://www.gedanken.demon.co.uk/download-wwwoffle/wwwoffle-2.9h.tgz', '2.9h'
+    check 'http://synergy.googlecode.com/files/synergy-1.3.6p2-MacOSX-Universal.zip', '1.3.6p2'
   end
 end

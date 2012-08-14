@@ -6,6 +6,6 @@ class GitUrlSub < Formula
   md5       '5d2dad29dcd53eedc0730f42014bec51'
 
   def install
-    system "make install PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end

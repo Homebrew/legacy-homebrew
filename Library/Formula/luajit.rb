@@ -1,37 +1,46 @@
 require 'formula'
 
 class Luajit < Formula
-  url 'http://luajit.org/download/LuaJIT-2.0.0-beta8.tar.gz'
-  head 'http://luajit.org/git/luajit-2.0.git', :using => :git
   homepage 'http://luajit.org/luajit.html'
-  md5 'f0748a73ae268d49b1d01f56c4fe3e61'
+  url 'http://luajit.org/download/LuaJIT-2.0.0-beta10.tar.gz'
+  sha1 '560d06621ea616bea1d67867faa235d608040396'
+
+  head 'http://luajit.org/git/luajit-2.0.git'
 
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all
 
   def options
-    [["--debug", "Build with debugging symbols."]]
-  end
-
-  # Apply beta8 hotfix #1
-  def patches
-    if not ARGV.build_head?
-      { :p1 => "http://luajit.org/download/beta8_hotfix1.patch" }
-    end
+    [["--enable-debug", "Build with debugging symbols."]]
   end
 
   def install
-    if ARGV.include? '--debug'
-      system "make", "CCDEBUG=-g", "PREFIX=#{prefix}", "amalg"
-      system "make", "CCDEBUG=-g", "PREFIX=#{prefix}", "install"
-    else
-      system "make", "PREFIX=#{prefix}", "amalg"
-      system "make", "PREFIX=#{prefix}", "install"
+    # 1 - Remove the '-O2' so we can set Og if needed.  Leave the -fomit part.
+    # 2 - Override the hardcoded gcc.
+    # 3 - Remove the '-march=i686' so we can set the march in cflags.
+    # All three changes should persist and were discussed upstream.
+    inreplace 'src/Makefile' do |f|
+      f.change_make_var! 'CCOPT', '-fomit-frame-pointer'
+      f.change_make_var! 'CC', ENV.cc
+      f.change_make_var! 'CCOPT_X86', ''
     end
+
+    ENV.O2                          # Respect the developer's choice.
+    args = [ "PREFIX=#{prefix}" ]
+    if ARGV.include? '--enable-debug' then
+      ENV.Og if ENV.compiler == :clang
+      args << 'CCDEBUG=-g'
+    end
+
+    bldargs = args
+    bldargs << 'amalg'
+    system 'make', *bldargs
+    args << 'install'
+    system 'make', *args            # Build requires args during install
 
     # Non-versioned symlink
     if ARGV.build_head?
-      version = "2.0.0-beta8"
+      version = "2.0.0-beta10"
     else
       version = @version
     end

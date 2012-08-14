@@ -5,45 +5,51 @@ def pgm_flags
 end
 
 class Zeromq < Formula
-  url 'http://download.zeromq.org/zeromq-2.1.9.tar.gz'
-  head 'https://github.com/zeromq/libzmq.git'
   homepage 'http://www.zeromq.org/'
-  md5 '94c5e0262a79c5f82bc0b178c1f8a33d'
+  url 'http://download.zeromq.org/zeromq-2.2.0.tar.gz'
+  sha1 'e4bc024c33d3e62f658640625e061ce4e8bd1ff1'
 
-  fails_with_llvm "Compiling with LLVM gives a segfault while linking.",
-                  :build => 2326 if MacOS.snow_leopard?
+  head 'https://github.com/zeromq/libzmq.git'
 
-  def options
-    [
-      ['--with-pgm', 'Build with PGM extension'],
-      ['--universal', 'Build as a Universal Intel binary.']
-    ]
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
   end
+
+  fails_with :llvm do
+    build 2326
+    cause "Segfault while linking"
+  end
+
+  option :universal
+  option 'with-pgm', 'Build with PGM extension'
 
   def build_fat
     # make 32-bit
-    system "CFLAGS=\"$CFLAGS -arch i386\" CXXFLAGS=\"$CXXFLAGS -arch i386\" ./configure --disable-dependency-tracking --prefix=#{prefix} #{pgm_flags}"
+    system "CFLAGS=\"$CFLAGS -arch i386\" CXXFLAGS=\"$CXXFLAGS -arch i386\" ./configure --disable-dependency-tracking --prefix='#{prefix}' #{pgm_flags}"
     system "make"
     system "mv src/.libs src/libs-32"
     system "make clean"
 
     # make 64-bit
-    system "CFLAGS=\"$CFLAGS -arch x86_64\" CXXFLAGS=\"$CXXFLAGS -arch x86_64\" ./configure --disable-dependency-tracking --prefix=#{prefix} #{pgm_flags}"
+    system "CFLAGS=\"$CFLAGS -arch x86_64\" CXXFLAGS=\"$CXXFLAGS -arch x86_64\" ./configure --disable-dependency-tracking --prefix='#{prefix}' #{pgm_flags}"
     system "make"
     system "mv src/.libs/libzmq.1.dylib src/.libs/libzmq.64.dylib"
 
     # merge UB
-    system "lipo", "-create", "src/libs-32/libzmq.1.dylib", "src/.libs/libzmq.64.dylib", "-output", "src/.libs/libzmq.1.dylib"
+    system "lipo", "-create", "src/libs-32/libzmq.1.dylib",
+                              "src/.libs/libzmq.64.dylib",
+                   "-output", "src/.libs/libzmq.1.dylib"
   end
 
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
 
     if ARGV.build_universal?
       build_fat
     else
       args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-      args << "--with-pgm" if ARGV.include? '--with-pgm'
+      args << "--with-pgm" if build.include? 'with-pgm'
       system "./configure", *args
     end
 

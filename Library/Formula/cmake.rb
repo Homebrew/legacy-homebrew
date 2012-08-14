@@ -1,49 +1,70 @@
 require 'formula'
 
+class NoExpatFramework < Requirement
+  def message; <<-EOS.undent
+    Detected /Library/Frameworks/expat.framework
+
+    This will be picked up by CMake's build system and likely cause the
+    build to fail, trying to link to a 32-bit version of expat.
+
+    You may need to move this file out of the way to compile CMake.
+    EOS
+  end
+  def satisfied?
+    not File.exist? "/Library/Frameworks/expat.framework"
+  end
+end
+
+
 class Cmake < Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.5.tar.gz'
-  md5 '3c5d32cec0f4c2dc45f4c2e84f4a20c5'
   homepage 'http://www.cmake.org/'
-  bottle 'https://downloads.sf.net/project/machomebrew/Bottles/cmake-2.8.5-bottle.tar.gz'
-  bottle_sha1 'f7a4c459625eb9282fef9789cab2a702a2dff06a'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.8.tar.gz'
+  sha1 'a74dfc3e0a0d7f857ac5dda03bb99ebf07676da1'
+
+  bottle do
+    version 3
+    sha1 '64e1a488bc669f7676c99874b8496ac147d1bc70' => :mountainlion
+    sha1 'bdfb5fcd6743d65f6cfe00b314f9d3f1049e902b' => :lion
+    sha1 '3a77fc17a7b1d3cceabddcca5c126c6b911c2f90' => :snowleopard
+  end
+
+  depends_on NoExpatFramework.new
+
+  option 'enable-ninja', 'Enable Ninja build system support'
 
   def patches
-    # CMake 2.8.5 fails to find some Qt libraries that CMake 2.8.4 could find.
-    # The following patch corrects this behavior. See discussion on the CMake
-    # mailing list:
-    #
-    #   http://cmake.3232098.n2.nabble.com/FindQt4-errors-out-when-locating-QtUITools-under-CMake-2-8-5-td6619091.html
-    #
-    # Patch can be removed after next CMake release.
-    {:p1 => "http://cmake.org/gitweb?p=cmake.git;a=patch;h=702538eaa3315f3fcad9f1daea01e6a83928967b"}
+    [
+      # Correct FindPkgConfig found variable. Remove for CMake 2.8.9.
+      "https://github.com/Kitware/CMake/commit/3ea850.patch",
+      # Workaround DeployQt4 issue. Remove for CMake 2.8.9.
+      "https://github.com/Kitware/CMake/commit/374b9b.patch",
+      # Protect the default value of CMAKE_FIND_FRAMEWORK so that it can be
+      # overridden from the command line. Remove for CMake 2.8.9.
+      "https://github.com/Kitware/CMake/commit/8b2fb3.patch"
+    ]
   end
 
   def install
-    # A framework-installed expat will be detected and mess things up.
-    if File.exist? "/Library/Frameworks/expat.framework"
-      opoo "/Library/Frameworks/expat.framework detected"
-      puts <<-EOS.undent
-        This will be picked up by CMake's build system and likey cause the
-        build to fail, trying to link to a 32-bit version of expat.
-        You may need to move this file out of the way for this brew to work.
-      EOS
+    args = %W[
+      --prefix=#{prefix}
+      --system-libs
+      --no-system-libarchive
+      --datadir=/share/cmake
+      --docdir=/share/doc/cmake
+      --mandir=/share/man
+    ]
+
+    if build.include? "enable-ninja"
+      args << "--"
+      args << "-DCMAKE_ENABLE_NINJA=1"
     end
 
-    if ENV['GREP_OPTIONS'] == "--color=always"
-      opoo "GREP_OPTIONS is set to '--color=always'"
-      puts <<-EOS.undent
-        Having `GREP_OPTIONS` set this way causes CMake builds to fail.
-        You will need to `unset GREP_OPTIONS` before brewing.
-      EOS
-    end
-
-    system "./bootstrap", "--prefix=#{prefix}",
-                          "--system-libs",
-                          "--no-system-libarchive",
-                          "--datadir=/share/cmake",
-                          "--docdir=/share/doc/cmake",
-                          "--mandir=/share/man"
+    system "./bootstrap", *args
     system "make"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/cmake", "-E", "echo", "testing"
   end
 end

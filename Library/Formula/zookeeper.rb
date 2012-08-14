@@ -1,24 +1,27 @@
 require 'formula'
 
 class Zookeeper < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.3.3/zookeeper-3.3.3.tar.gz'
-  head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
   homepage 'http://zookeeper.apache.org/'
-  md5 'aa4129c6eebb50dbd6b640c9c3aa21f0'
+  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.3/zookeeper-3.4.3.tar.gz'
+  sha1 '8ac02ee34b94461fed19320d789f251e6a2a6796'
 
-  def options
-    [
-      ["--perl", "Build Perl bindings."],
-      ["--python", "Build Python bindings."],
-    ]
+  head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
+
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
+
+  option "c",      "Build C bindings."
+  option "perl",   "Build Perl bindings."
+  option "python", "Build Python bindings."
 
   def shim_script target
     <<-EOS.undent
       #!/usr/bin/env bash
       . "#{etc}/zookeeper/defaults"
-      cd #{libexec}/bin
-      ./#{target} $*
+      cd "#{libexec}/bin"
+      ./#{target} "$@"
     EOS
   end
 
@@ -31,7 +34,6 @@ class Zookeeper < Formula
   def default_log4j_properties
     <<-EOS.undent
       log4j.rootCategory=WARN, zklog
-
       log4j.appender.zklog = org.apache.log4j.FileAppender
       log4j.appender.zklog.File = #{var}/log/zookeeper/zookeeper.log
       log4j.appender.zklog.Append = true
@@ -49,7 +51,7 @@ class Zookeeper < Formula
     end
 
     # Prep work for svn compile.
-    if ARGV.build_head?
+    if build.head?
       system "ant", "compile_jute"
 
       cd "src/c" do
@@ -57,29 +59,37 @@ class Zookeeper < Formula
       end
     end
 
+    build_python = build.include? "python"
+    build_perl = build.include? "perl"
+    build_c = build_python or build_perl or build.include? "c"
+
     # Build & install C libraries.
     cd "src/c" do
-      system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--without-cppunit"
+      system "./configure", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}",
+                            "--without-cppunit"
       system "make install"
-    end
+    end if build_c
 
     # Install Python bindings
     cd "src/contrib/zkpython" do
       system "python", "src/python/setup.py", "build"
       system "python", "src/python/setup.py", "install", "--prefix=#{prefix}"
-    end if ARGV.include? "--python"
+    end if build_python
 
     # Install Perl bindings
     cd "src/contrib/zkperl" do
-      system "perl", "Makefile.PL", "PREFIX=#{prefix}", "--zookeeper-include=#{include}/c-client-src", "--zookeeper-lib=#{lib}"
+      system "perl", "Makefile.PL", "PREFIX=#{prefix}",
+                                    "--zookeeper-include=#{include}/c-client-src",
+                                    "--zookeeper-lib=#{lib}"
       system "make install"
-    end if ARGV.include? "--perl"
+    end if build_perl
 
     # Remove windows executables
     rm_f Dir["bin/*.cmd"]
 
     # Install Java stuff
-    if ARGV.build_head?
+    if build.head?
       system "ant"
       libexec.install %w(bin src/contrib src/java/lib)
       libexec.install Dir['build/*.jar']
@@ -88,7 +98,7 @@ class Zookeeper < Formula
       libexec.install Dir['*.jar']
     end
 
-    # Create neccessary directories
+    # Create necessary directories
     bin.mkpath
     (etc+'zookeeper').mkpath
     (var+'log/zookeeper').mkpath
@@ -103,15 +113,16 @@ class Zookeeper < Formula
     }
 
     # Install default config files
-    defaults = etc+'zookeeper/defaults'
+    defaults = etc/'zookeeper/defaults'
     defaults.write(default_zk_env) unless defaults.exist?
 
-    log4j_properties = etc+'zookeeper/log4j.properties'
+    log4j_properties = etc/'zookeeper/log4j.properties'
     log4j_properties.write(default_log4j_properties) unless log4j_properties.exist?
 
-    unless (etc+'zookeeper/zoo.cfg').exist?
-      inreplace 'conf/zoo_sample.cfg', /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
-      (etc+'zookeeper').install 'conf/zoo_sample.cfg'
+    unless (etc/'zookeeper/zoo.cfg').exist?
+      inreplace 'conf/zoo_sample.cfg',
+                /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
+      (etc/'zookeeper').install 'conf/zoo_sample.cfg'
     end
   end
 end

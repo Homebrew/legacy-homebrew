@@ -1,9 +1,9 @@
 require 'formula'
 
 class Xmlstarlet < Formula
-  url 'http://downloads.sourceforge.net/project/xmlstar/xmlstarlet/1.1.0/xmlstarlet-1.1.0.tar.gz'
-  md5 '1b864b16c1dc78ce87ffc8528f021ab0'
   homepage 'http://xmlstar.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/xmlstar/xmlstarlet/1.3.1/xmlstarlet-1.3.1.tar.gz'
+  md5 '5173ad3f01ec0ba0d54bd1fbfc057abf'
 
   def install
     # thanks, xmlstarlet but OS X doesn't have the static versions
@@ -13,7 +13,9 @@ class Xmlstarlet < Formula
       s.gsub! '$LIBXSLT_LIBDIR/libexslt.a', '-lexslt'
     end
 
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make"
     system "make install"
   end

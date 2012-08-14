@@ -1,24 +1,19 @@
 require 'formula'
 
 class Notmuch < Formula
-  url 'http://notmuchmail.org/releases/notmuch-0.5.tar.gz'
   homepage 'http://notmuchmail.org'
-  md5 '983cd907a7bf5ee0d12ebfb54cff784f'
+  url 'http://notmuchmail.org/releases/notmuch-0.13.2.tar.gz'
+  sha1 '368b2451a64b1e3c574e688100700fc941ff2ea1'
 
   depends_on 'xapian'
   depends_on 'talloc'
   depends_on 'gmime'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
-
-    # notmuch requires a newer emacs than macosx provides. So we either
-    # disable the emacs bindings or make notmuch depend on the homebrew
-    # emacs package.
-    # And there is a race condition in the makefile, so we have to either
-    # deparallelize the process or run make and make install separately.
-
-    system "make HAVE_EMACS=0"
-    system "make install HAVE_EMACS=0"
+    # requires a newer emacs than OS X provides, so disable the bindings
+    system "./configure", "--prefix=#{prefix}", "--without-emacs"
+    system "make install"
+    system "install_name_tool", "-change", "libnotmuch.2.dylib",
+                                "#{lib}/libnotmuch.2.dylib", "#{bin}/notmuch"
   end
 end

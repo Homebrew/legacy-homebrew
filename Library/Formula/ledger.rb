@@ -1,9 +1,10 @@
 require 'formula'
 
 class Ledger < Formula
+  homepage 'http://ledger-cli.org'
   url 'ftp://ftp.newartisans.com/pub/ledger/ledger-2.6.3.tar.gz'
   md5 '6d5d8396b1cdde5f605854c7d21d1460'
-  homepage 'http://ledger-cli.org'
+
   head 'https://github.com/jwiegley/ledger.git', :branch => 'next'
 
   depends_on 'gettext'
@@ -13,13 +14,21 @@ class Ledger < Formula
   depends_on 'pcre'
   depends_on 'expat'
 
+  def options
+    [['--no-python', 'Disable Python support']]
+  end
+
   def install
-    unless 'HEAD' == @version
+    # find Homebrew's libpcre
+    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+
+    unless ARGV.build_head?
       system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     else
       # gmp installs x86_64 only
       inreplace 'acprep', "'-arch', 'i386', ", "" if Hardware.is_64_bit?
-      system "./acprep -j#{Hardware.processor_count} opt make -- --prefix=#{prefix}"
+      no_python = ((ARGV.include? '--no-python') ? '--no-python' : '')
+      system "./acprep", no_python, "-j#{ENV.make_jobs}", "opt", "make", "--", "--prefix=#{prefix}"
     end
     system 'make'
     ENV.deparallelize

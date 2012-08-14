@@ -1,19 +1,23 @@
 require 'formula'
 
 class Synfig < Formula
-  url 'https://downloads.sourceforge.net/project/synfig/synfig/0.62.02/synfig-0.62.02.tar.gz'
   homepage 'http://synfig.org'
-  head 'git://synfig.git.sourceforge.net/gitroot/synfig/synfig', :using => :git
-  md5 'e6af1aa9426cf629127d23edbd772f6d'
+  url 'http://downloads.sourceforge.net/project/synfig/synfig/0.63.05/synfig-0.63.05.tar.gz'
+  sha1 'd532b8dd37a7eed10ea5de6f5b2b2dd419648f2c'
+
+  head 'git://synfig.git.sourceforge.net/gitroot/synfig/synfig'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'etl'
   depends_on 'libsigc++'
   depends_on 'libxml++'
+  depends_on 'imagemagick'
+  depends_on :libpng
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

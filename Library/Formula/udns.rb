@@ -1,9 +1,9 @@
 require 'formula'
 
 class Udns < Formula
-  url 'http://www.corpit.ru/mjt/udns/udns-0.1.tar.gz'
   homepage 'http://www.corpit.ru/mjt/udns.html'
-  sha1 'e3326684653701f9219cc213bdc3656dff269c80'
+  url 'http://www.corpit.ru/mjt/udns/udns-0.2.tar.gz'
+  sha1 '416da8c95283eae45f6d2e6fb055c4ef765a3f02'
 
   # Build target for dylib. See:
   # http://www.corpit.ru/pipermail/udns/2011q3/000154.html
@@ -16,11 +16,11 @@ class Udns < Formula
     system "make"
     system "make dylib"
 
-    bin.install ["dnsget", "rblcheck"]
-    doc.install ["NOTES", "TODO", "ex-rdns.c"]
+    bin.install "dnsget", "rblcheck"
+    doc.install "NOTES", "TODO", "ex-rdns.c"
     include.install "udns.h"
-    lib.install ["libudns.a", "libudns.0.dylib", "libudns.dylib"]
-    man1.install ["dnsget.1", "rblcheck.1"]
+    lib.install "libudns.a", "libudns.0.dylib", "libudns.dylib"
+    man1.install "dnsget.1", "rblcheck.1"
     man3.install "udns.3"
   end
 end

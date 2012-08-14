@@ -34,7 +34,7 @@ def llvm_build
 end
 
 def x11_installed?
-  MacOS.x11_installed?
+  MacOS::X11.installed?
 end
 
 def macports_or_fink_installed?
@@ -59,6 +59,7 @@ class Formula
   # in compatability because the naming is somewhat confusing
   def self.resolve_alias name
     opoo 'Formula.resolve_alias is deprecated and will eventually be removed'
+    opoo 'Use Formula.canonical_name instead.'
 
     # Don't resolve paths or URLs
     return name if name.include?("/")
@@ -74,9 +75,126 @@ class Formula
   # This used to be called in "def install", but should now be used
   # up in the DSL section.
   def fails_with_llvm msg=nil, data=nil
-    handle_llvm_failure FailsWithLLVM.new(msg, data)
+    FailsWithLLVM.new(msg, data).handle_failure
+  end
+
+  def fails_with_llvm?
+    fails_with? :llvm
+  end
+
+  def self.fails_with_llvm msg=nil, data=nil
+    fails_with_llvm_reason = FailsWithLLVM.new(msg, data)
+    @cc_failures ||= CompilerFailures.new
+    @cc_failures << fails_with_llvm_reason
+  end
+
+  def std_cmake_parameters
+    "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -DCMAKE_FIND_FRAMEWORK=LAST -Wno-dev"
+  end
+
+  class << self
+    def bottle_sha1 val=nil
+      val.nil? ? @bottle_sha1 : @bottle_sha1 = val
+    end
   end
 end
 
 class UnidentifiedFormula < Formula
+end
+
+module HomebrewEnvExtension extend self
+  def use_clang?
+    compiler == :clang
+  end
+
+  def use_gcc?
+    compiler == :gcc
+  end
+
+  def use_llvm?
+    compiler == :llvm
+  end
+end
+
+class FailsWithLLVM
+  attr_reader :compiler, :build, :cause
+
+  def initialize msg=nil, data=nil
+    if msg.nil? or msg.kind_of? Hash
+      @cause = "(No specific reason was given)"
+      data = msg
+    else
+      @cause = msg
+    end
+    @build = (data.delete :build rescue nil).to_i
+    @compiler = :llvm
+  end
+
+  def handle_failure
+    return unless ENV.compiler == :llvm
+
+    # version 2336 is the latest version as of Xcode 4.2, so it is the
+    # latest version we have tested against so we will switch to GCC and
+    # bump this integer when Xcode 4.3 is released. TODO do that!
+    if build.to_i >= 2336
+      if MacOS::Xcode.version < "4.2"
+        opoo "Formula will not build with LLVM, using GCC"
+        ENV.gcc
+      else
+        opoo "Formula will not build with LLVM, trying Clang"
+        ENV.clang
+      end
+      return
+    end
+    opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
+    puts
+    puts cause
+    puts
+    puts <<-EOS.undent
+      We are continuing anyway so if the build succeeds, please open a ticket with
+      the following information: #{MacOS.llvm_build_version}-#{MACOS_VERSION}. So
+      that we can update the formula accordingly. Thanks!
+      EOS
+    puts
+    if MacOS::Xcode.version < "4.2"
+      puts "If it doesn't work you can: brew install --use-gcc"
+    else
+      puts "If it doesn't work you can try: brew install --use-clang"
+    end
+    puts
+  end
+end
+
+module MacOS extend self
+  def xcode_folder
+    Xcode.folder
+  end
+
+  def xcode_prefix
+    Xcode.prefix
+  end
+
+  def xcode_installed?
+    Xcode.installed?
+  end
+
+  def xcode_version
+    Xcode.version
+  end
+
+  def clt_installed?
+    CLT.installed?
+  end
+
+  def clt_version?
+    CLT.version
+  end
+
+  def x11_installed?
+    X11.installed?
+  end
+
+  def x11_prefix
+    X11.prefix
+  end
 end

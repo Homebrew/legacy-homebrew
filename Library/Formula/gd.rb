@@ -1,23 +1,23 @@
 require 'formula'
 
 class Gd < Formula
-  # Official site has been down a lot, so use a mirror
-  # homepage "http://www.libgd.org"
-  # url "http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz"
+  homepage 'http://bitbucket.org/pierrejoye/gd-libgd'
+  url 'http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz'
+  mirror 'http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz'
+  md5 '39ac48e6d5e0012a3bd2248a0102f209'
 
-  homepage "http://bitbucket.org/pierrejoye/gd-libgd"
-  url "http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz"
-  md5 "39ac48e6d5e0012a3bd2248a0102f209"
+  head 'http://bitbucket.org/pierrejoye/gd-libgd', :using => :hg
 
-  head "http://bitbucket.org/pierrejoye/gd-libgd", :using => :hg
-
+  depends_on :x11
   depends_on 'jpeg' => :recommended
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
 
   def install
-    ENV.x11
-    system "./configure", "--prefix=#{prefix}", "--with-freetype=/usr/X11"
+    system "./configure", "--prefix=#{prefix}", "--with-freetype=#{MacOS::X11.prefix}"
     system "make install"
     (lib+'pkgconfig/gdlib.pc').write pkg_file
   end

@@ -1,16 +1,62 @@
 require 'formula'
 
 class XmlrpcC < Formula
-  url 'http://downloads.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-1.16.38.tgz'
-  md5 'fabb49e5f1efeffa1bedd15a9131699a'
   homepage 'http://xmlrpc-c.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-1.16.42.tgz'
+  sha1 '7a71fabc652c2848a7226605432a2e420a02dff0'
+
+  def patches
+    # Backport patch for deprecated curl/types.h include, which is gone on 10.8
+    # On 10.6 and 10.7 it's empty, so could probably patch unconditionally
+    # see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=636457#10
+    if MacOS.mountain_lion?
+      DATA
+    end
+  end
 
   def install
     ENV.deparallelize
-    # choosing --enable-libxml2-backend to lose some weight and not statically
-    # link in expat
-    #NOTE seemingly it isn't possible to build dylibs with this thing
-    system "./configure", "--disable-debug", "--enable-libxml2-backend", "--prefix=#{prefix}"
+    # --enable-libxml2-backend to lose some weight and not statically link in expat
+    system "./configure", "--disable-debug",
+                          "--enable-libxml2-backend",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
+
+__END__
+--- stable/lib/curl_transport/curltransaction.c 2011/03/26 19:32:28 2115
++++ stable/lib/curl_transport/curltransaction.c 2011/07/09 17:47:44 2150
+@@ -17,7 +17,9 @@
+ #include "version.h"
+ 
+ #include <curl/curl.h>
++#ifdef NEED_CURL_TYPES_H
+ #include <curl/types.h>
++#endif
+ #include <curl/easy.h>
+ 
+ #include "curlversion.h"
+--- stable/lib/curl_transport/curlmulti.c 2011/07/09 17:41:18 2149
++++ stable/lib/curl_transport/curlmulti.c 2011/07/09 17:47:44 2150
+@@ -19,7 +19,9 @@
+ #endif
+ 
+ #include <curl/curl.h>
++#ifdef NEED_CURL_TYPES_H
+ #include <curl/types.h>
++#endif
+ #include <curl/easy.h>
+ #include <curl/multi.h>
+ 
+--- stable/lib/curl_transport/xmlrpc_curl_transport.c 2011/07/09 17:41:18 2149
++++ stable/lib/curl_transport/xmlrpc_curl_transport.c 2011/07/09 17:47:44 2150
+@@ -85,7 +85,9 @@
+ #include "xmlrpc-c/time_int.h"
+ 
+ #include <curl/curl.h>
++#ifdef NEED_CURL_TYPES_H
+ #include <curl/types.h>
++#endif
+ #include <curl/easy.h>
+ #include <curl/multi.h>

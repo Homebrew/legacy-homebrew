@@ -8,10 +8,9 @@ class Vpnc < Formula
   depends_on 'libgcrypt'
   depends_on 'libgpg-error'
 
-  fails_with_llvm
-
-  skip_clean 'etc'
-  skip_clean 'var'
+  fails_with :llvm do
+    build 2334
+  end
 
   def options
     [["--hybrid", "Use vpnc hybrid authentication."]]

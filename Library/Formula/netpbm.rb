@@ -2,16 +2,16 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.80/netpbm-10.35.80.tgz'
-  md5 '2edf98b802a82e5367fc52382e9ac144'
+  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.82/netpbm-10.35.82.tgz'
+  md5 'fcae2fc7928ad7d31b0540ec0c3e710b'
+
   head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
 
   depends_on "libtiff"
   depends_on "jasper"
+  depends_on :libpng
 
   def install
-    ENV.x11 # For PNG
-
     if ARGV.build_head?
       system "cp", "config.mk.in", "config.mk"
       config = "config.mk"
@@ -36,13 +36,12 @@ class Netpbm < Formula
 
     ENV.deparallelize
     system "make"
-
-    stage_dir = Pathname(Dir.pwd) + 'stage'
-    system "make", "package", "pkgdir=#{stage_dir}"
-
-    Dir.chdir stage_dir do
+    system "make", "package", "pkgdir=#{buildpath}/stage"
+    cd 'stage' do
       prefix.install %w{ bin include lib misc }
-      share.install Dir['man']
+      # do man pages explicitly; otherwise a junk file is installed in man/web
+      man1.install Dir['man/man1/*.1']
+      man5.install Dir['man/man5/*.5']
       lib.install Dir['link/*.a']
     end
   end

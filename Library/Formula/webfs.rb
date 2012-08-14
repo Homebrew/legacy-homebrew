@@ -6,7 +6,7 @@ class Webfs < Formula
   md5 '6dc125fe160479404147e7bbfc781dbc'
 
   def patches
-    {:p0 => "http://svn.macports.org/repository/macports/trunk/dports/www/webfs/files/patch-ls.c"}
+    {:p0 => "https://trac.macports.org/export/21504/trunk/dports/www/webfs/files/patch-ls.c"}
   end
 
   def install

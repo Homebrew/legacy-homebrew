@@ -9,10 +9,9 @@ def site_package_dir
 end
 
 class Opencv < Formula
-  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.3.1/OpenCV-2.3.1a.tar.bz2'
-  md5 '82e4b6bfa349777233eea09b075e931e'
   homepage 'http://opencv.willowgarage.com/wiki/'
-
+  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.2/OpenCV-2.4.2.tar.bz2'
+  sha1 '96ff27b87e0f028d1d16201afebabec4e0c72367'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -20,6 +19,7 @@ class Opencv < Formula
   depends_on 'libtiff' => :optional
   depends_on 'jasper'  => :optional
   depends_on 'tbb'     => :optional
+  depends_on 'qt' if ARGV.include? '--with-qt'
 
   depends_on 'numpy' => :python
 
@@ -27,19 +27,19 @@ class Opencv < Formula
   # you don't need unless you're doing video analysis, and some of it isn't
   # in Homebrew anyway.
 
-  def patches
-    # Fix conflict when OpenEXR is installed. See:
-    #   http://tech.groups.yahoo.com/group/OpenCV/message/83201
-    DATA
-  end
-
   def options
-    [['--build32', 'Force a 32-bit build.']]
+    [
+      ["--32-bit", "Build 32-bit only."],
+      ["--with-qt", "Build qt backend."],
+      ["--with-tbb", "Build with TBB support."]
+    ]
   end
 
   def install
-    args = std_cmake_parameters.split
-    args << " -DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.include? '--build32'
+    args = std_cmake_args
+    args << "-DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.build_32_bit?
+    args << "-DWITH_QT=ON" if ARGV.include? "--with-qt"
+    args << "-DWITH_TBB=ON" if ARGV.include? "--with-tbb"
 
     # The CMake `FindPythonLibs` Module is dumber than a bag of hammers when
     # more than one python installation is available---for example, it clings
@@ -79,21 +79,3 @@ class Opencv < Formula
     EOS
   end
 end
-
-__END__
-
-Fix conflict when OpenEXR is installed. See:
-  http://tech.groups.yahoo.com/group/OpenCV/message/83201
-
-diff --git a/modules/highgui/src/grfmt_exr.hpp b/modules/highgui/src/grfmt_exr.hpp
-index 642000b..b1414f1 100644
---- a/modules/highgui/src/grfmt_exr.hpp
-+++ b/modules/highgui/src/grfmt_exr.hpp
-@@ -56,6 +56,7 @@ namespace cv
- 
- using namespace Imf;
- using namespace Imath;
-+using Imf::PixelType;
- 
- /* libpng version only */
- 

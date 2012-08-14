@@ -7,7 +7,7 @@ class Urlview < Formula
   md5 '4f253c82b59136181b1f0bf218ef059d'
 
   def patches
-    "http://mirrors.kernel.org/debian/pool/main/u/urlview/urlview_0.9-18.1.diff.gz"
+    "http://ftp.aarnet.edu.au/debian/pool/main/u/urlview/urlview_0.9-18.1.diff.gz"
   end
 
   def install

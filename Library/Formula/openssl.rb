@@ -1,31 +1,28 @@
 require 'formula'
 
 class Openssl < Formula
-  url 'http://www.openssl.org/source/openssl-0.9.8r.tar.gz'
-  version '0.9.8r'
-  homepage 'http://www.openssl.org'
-  md5 '0352932ea863bc02b056cda7c9ac5b79'
+  homepage 'http://openssl.org'
+  url 'http://openssl.org/source/openssl-1.0.1c.tar.gz'
+  sha256 '2a9eb3cd4e8b114eb9179c0d3884d61658e7d8e8bf4984798a5f5bd48e325ebe'
 
   keg_only :provided_by_osx,
-    "The OpenSSL provided by Leopard (0.9.7) is too old for some software."
+    "The OpenSSL provided by OS X is too old for some software."
 
   def install
-    system "./config", "--prefix=#{prefix}",
-                       "--openssldir=#{etc}",
-                       "zlib-dynamic", "shared"
+    args = %W[./Configure
+               --prefix=#{prefix}
+               --openssldir=#{etc}/openssl
+               zlib-dynamic
+               shared
+             ]
 
-    inreplace 'Makefile' do |s|
-      s.change_make_var! 'MANDIR', man
-    end
+    args << (MacOS.prefer_64_bit? ? "darwin64-x86_64-cc" : "darwin-i386-cc")
 
-    ENV.j1 # Parallel compilation fails
+    system "perl", *args
+
+    ENV.deparallelize # Parallel compilation fails
     system "make"
-    system "make test"
-    system "make install"
-  end
-
-  def caveats; <<-EOS.undent
-    Note that the libraries built tend to be 32-bit only, even on Snow Leopard.
-    EOS
+    system "make", "test"
+    system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
   end
 end

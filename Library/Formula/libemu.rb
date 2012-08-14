@@ -5,7 +5,7 @@ def use_python?
 end
 
 class Libemu < Formula
-  head 'http://git.carnivore.it/libemu.git', :using => :git
+  head 'http://git.carnivore.it/libemu.git'
   homepage 'http://libemu.carnivore.it/'
 
   depends_on 'pkg-config' => :build
@@ -13,6 +13,9 @@ class Libemu < Formula
   def options
     [["--enable-python-bindings", "Compile bindings for Python"]]
   end
+
+  depends_on :automake
+  depends_on :libtool
 
   def install
     inreplace 'Makefile.am' do |s|

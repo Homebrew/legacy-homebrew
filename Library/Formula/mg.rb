@@ -9,6 +9,7 @@ class Mg < Formula
     # -Wno-error=unused-but-set-variable requires GCC 4.6+
     inreplace 'Makefile.in', '-Wno-error=unused-but-set-variable', ''
     system "./configure"
-    system "make install prefix=#{prefix} mandir=#{man}"
+    system "make", "install", "prefix=#{prefix}", "mandir=#{man}"
+    doc.install "tutorial"
   end
 end

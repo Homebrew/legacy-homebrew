@@ -1,9 +1,9 @@
 require 'formula'
 
 class Daq < Formula
-  url 'http://www.snort.org/dl/snort-current/daq-0.5.tar.gz'
   homepage 'http://www.snort.org/'
-  md5 'ea9d8147f39c44ce00dd2d7eb19ce0ea'
+  url 'http://www.snort.org/dl/snort-current/daq-1.1.1.tar.gz'
+  md5 'bc204ea09165b4ecbb1bb49c7c1a2ad4'
 
   def install
     system "./configure", "--disable-dependency-tracking",
