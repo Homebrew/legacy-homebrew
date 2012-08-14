@@ -28,7 +28,7 @@ class Llvm < Formula
   option 'rtti', 'Build with C++ RTTI'
 
   def install
-    if build.include? 'shared' && build.universal?
+    if build.universal? and build.include? 'shared'
       onoe "Cannot specify both shared and universal (will not build)"
       exit 1
     end
