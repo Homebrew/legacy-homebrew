@@ -8,6 +8,7 @@ class Epstool < Formula
   def install
     system "make", "install",
                    "EPSTOOL_ROOT=#{prefix}",
-                   "EPSTOOL_MANDIR=#{man}"
+                   "EPSTOOL_MANDIR=#{man}",
+                   "CC=#{ENV.cc}"
   end
 end
