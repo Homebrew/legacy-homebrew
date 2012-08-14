@@ -1,19 +1,20 @@
 require 'formula'
 
 class CupsPdf < Formula
-  url 'http://www.cups-pdf.de/src/cups-pdf_2.6.1.tar.gz'
-  md5 '65f3fd525c4a9b1d736b91594b3166d5'
+  url 'http://www.cups-pdf.de/src/cups-pdf_3.0beta1.tar.gz'
+  version '3.0beta1'
+  md5 'b5079bc5d86729b0b31d93a77b4a896f'
   homepage 'http://www.cups-pdf.de/'
 
   # Patch derived from MacPorts.
-  def patches; DATA; end
+  # def patches; DATA; end
 
   def install
-    system "#{ENV.cc} #{ENV.cflags} -o cups-pdf src/cups-pdf.c"
+    system "#{ENV.cc} #{ENV.cflags} -O9 -lcups -o cups-pdf src/cups-pdf.c"
 
     (etc+'cups').install "extra/cups-pdf.conf"
     (lib+'cups/backend').install "cups-pdf"
-    (share+'cups/model').install "extra/CUPS-PDF.ppd"
+    (share+'cups/model').install "extra/CUPS-PDF_opt.ppd"
   end
 
   def caveats; <<-EOF.undent
