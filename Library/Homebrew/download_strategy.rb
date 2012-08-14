@@ -261,7 +261,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
     svncommand = target.exist? ? 'up' : 'checkout'
     args = [svn, svncommand]
     # SVN shipped with XCode 3.1.4 can't force a checkout.
-    args << '--force' unless MacOS.leopard? and svn == '/usr/bin/svn'
+    args << '--force' unless MacOS.version == :leopard and svn == '/usr/bin/svn'
     args << url if !target.exist?
     args << target
     args << '-r' << revision if revision

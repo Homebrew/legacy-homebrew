@@ -9,7 +9,7 @@ module HomebrewEnvExtension
     delete('CLICOLOR_FORCE') # autotools doesn't like this
     remove_cc_etc
 
-    if MacOS.mountain_lion?
+    if MacOS.version >= :mountain_lion
       # Fix issue with sed barfing on unicode characters on Mountain Lion.
       delete('LC_ALL')
       self['LC_CTYPE']="C"
