@@ -76,10 +76,12 @@ class Python3 < Formula
     # We need to enable warnings because the configure.in uses -Werror to detect
     # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
     ENV.enable_warnings
-    # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
-    ENV.append_to_cflags '-Wno-unused-value'
-    ENV.append_to_cflags '-Wno-empty-body'
-    ENV.append_to_cflags '-Qunused-arguments'
+    if ENV.compiler == :clang
+      # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
+      ENV.append_to_cflags '-Wno-unused-value'
+      ENV.append_to_cflags '-Wno-empty-body'
+      ENV.append_to_cflags '-Qunused-arguments'
+    end
 
     # Allow sqlite3 module to load extensions:
     # http://docs.python.org/library/sqlite3.html#f1
