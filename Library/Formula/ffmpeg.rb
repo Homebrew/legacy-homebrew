@@ -7,6 +7,8 @@ class Ffmpeg < Formula
 
   head 'git://git.videolan.org/ffmpeg.git'
 
+  # manpages won't be built without texi2html
+  depends_on 'texi2html' => :build if MacOS.mountain_lion?
   depends_on 'yasm' => :build
   depends_on :x11
   depends_on 'x264' => :optional
