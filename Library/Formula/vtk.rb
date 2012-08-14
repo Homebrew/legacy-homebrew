@@ -2,41 +2,59 @@ require 'formula'
 
 class Vtk < Formula
   homepage 'http://www.vtk.org'
-  url 'http://www.vtk.org/files/release/5.8/vtk-5.8.0.tar.gz'
-  md5 '37b7297d02d647cc6ca95b38174cb41f'
+  url 'http://www.vtk.org/files/release/5.10/vtk-5.10.0.tar.gz'
+  sha1 '0c9a17e2f446dc78b0500dc5bbd1c6a2864a0191'
 
   depends_on 'cmake' => :build
-  depends_on :x11
+  depends_on :x11 if ARGV.include? '--x11'
   depends_on 'qt' if ARGV.include? '--qt'
+  depends_on 'sip' if ARGV.include? '--pyqt' and ARGV.include? '--python'
+  depends_on 'pyqt' if ARGV.include? '--pyqt' and ARGV.include? '--python'
+
+  skip_clean :all  # Otherwise vtkpython complains can't find symbol _environ
 
   def options
   [
-    ['--python', "Enable python wrapping."],
-    ['--qt', "Enable Qt extension."],
-    ['--qt-extern', "Enable Qt extension (via external Qt)"],
-    ['--tcl', "Enable Tcl wrapping."],
-    ['--x11', "Enable X11 extension."]
+    ['--examples',  'Compile and install various examples.'],
+    ['--python',    'Enable python wrapping of VTK classes.'],
+    ['--pyqt',      'Make python wrapped classes available to SIP/PyQt.'],
+    ['--qt',        'Enable Qt4 extension via the Homebrew qt formula.'],
+    ['--qt-extern', 'Enable Qt4 extension via non-Homebrew external Qt4.'],
+    ['--tcl',       'Enable Tcl wrapping of VTK classes.'],
+    ['--x11',       'Enable X11 extension rather than OSX native Aqua.']
   ]
   end
 
   def install
-    args = std_cmake_args + [
-             "-DVTK_REQUIRED_OBJCXX_FLAGS:STRING=''",
-             "-DVTK_USE_CARBON:BOOL=OFF",
-             "-DBUILD_TESTING:BOOL=OFF",
-             "-DBUILD_EXAMPLES:BOOL=OFF",
-             "-DBUILD_SHARED_LIBS:BOOL=ON",
-             "-DCMAKE_INSTALL_RPATH:STRING='#{lib}/vtk-5.8'",
-             "-DCMAKE_INSTALL_NAME_DIR:STRING='#{lib}/vtk-5.8'"]
+    args = std_cmake_args + %W[
+      -DVTK_REQUIRED_OBJCXX_FLAGS=''
+      -DVTK_USE_CARBON=OFF
+      -DBUILD_TESTING=OFF
+      -DBUILD_SHARED_LIBS=ON
+      -DCMAKE_INSTALL_RPATH:STRING='#{lib}/vtk-5.10'
+      -DCMAKE_INSTALL_NAME_DIR:STRING='#{lib}/vtk-5.10'
+    ]
+
+    args << '-DBUILD_EXAMPLES=' + ((ARGV.include? '--examples') ? 'ON' : 'OFF')
 
     if ARGV.include? '--python'
       python_prefix = `python-config --prefix`.strip
-      # Install to global python site-packages
-      args << "-DVTK_PYTHON_SETUP_ARGS:STRING='--prefix=#{python_prefix}'"
+      # Install to lib and let installer symlink to global python site-packages.
+      # The path in lib needs to exist first and be listed in PYTHONPATH.
+      pydir = lib/which_python/'site-packages'
+      pydir.mkpath
+      ENV.prepend 'PYTHONPATH', pydir, ':'
+      args << "-DVTK_PYTHON_SETUP_ARGS='--prefix=#{prefix}'"
       # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
       if File.exist? "#{python_prefix}/Python"
         # Python was compiled with --framework:
         args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+        if !MacOS::CLT.installed? and python_prefix.start_with? '/System/Library'
+          # For Xcode-only systems, the headers of system's python are inside of Xcode
+          args << "-DPYTHON_INCLUDE_DIR='#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/Headers'"
+        else
+          args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+        end
       else
         python_version = `python-config --libs`.match('-lpython(\d+\.\d+)').captures.at(0)
         python_lib = "#{python_prefix}/lib/libpython#{python_version}"
@@ -45,52 +63,87 @@ class Vtk < Formula
         else
           args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
         end
+        args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
       end
-      args << "-DVTK_WRAP_PYTHON:BOOL=ON"
+      args << '-DVTK_WRAP_PYTHON=ON'
+      if ARGV.include? '--pyqt'
+        args << '-DVTK_WRAP_PYTHON_SIP=ON'
+        args << "-DSIP_PYQT_DIR='#{HOMEBREW_PREFIX}/share/sip'"
+      end
     end
 
     if ARGV.include? '--qt' or ARGV.include? '--qt-extern'
-      args << "-DVTK_USE_GUISUPPORT:BOOL=ON"
-      args << "-DVTK_USE_QT:BOOL=ON"
-      args << "-DVTK_USE_QVTK:BOOL=ON"
+      args << '-DVTK_USE_GUISUPPORT=ON'
+      args << '-DVTK_USE_QT=ON'
+      args << '-DVTK_USE_QVTK=ON'
     end
 
-    if ARGV.include? '--tcl'
-      args << "-DVTK_WRAP_TCL:BOOL=ON"
-    end
+    args << '-DVTK_WRAP_TCL=ON' if ARGV.include? '--tcl'
 
     # default to cocoa for everything except x11
-    args << "-DVTK_USE_COCOA:BOOL=ON" unless ARGV.include? "--x11"
-
     if ARGV.include? '--x11'
-      args << "-DOPENGL_INCLUDE_DIR:PATH='#{MacOS.x11_prefix}/include'"
-      args << "-DOPENGL_gl_LIBRARY:FILEPATH='#{MacOS.x11_prefix}/lib/libGL.dylib'"
-      args << "-DOPENGL_glu_LIBRARY:FILEPATH='#{MacOS.x11_prefix}/lib/libGLU.dylib"
-      args << "-DVTK_USE_COCOA:BOOL=OFF"
-      args << "-DVTK_USE_X:BOOL=ON"
+      args << '-DVTK_USE_COCOA=OFF'
+      args << '-DVTK_USE_X=ON'
+    else
+      args << '-DVTK_USE_COCOA=ON'
     end
 
-    # Hack suggested at http://www.vtk.org/pipermail/vtk-developers/2006-February/003983.html
-    # to get the right RPATH in the python libraries (the .so files in the vtk egg).
-    # Also readable: http://vtk.1045678.n5.nabble.com/VTK-Python-Wrappers-on-Red-Hat-td1246159.html
-    args << "-DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=ON"
-    ENV['DYLD_LIBRARY_PATH'] = buildpath/'build/bin'
+    unless MacOS::CLT.installed?
+      # We are facing an Xcode-only installation, and we have to keep
+      # vtk from using its internal Tk headers (that differ from OSX's).
+      args << "-DTK_INCLUDE_PATH:PATH=#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Headers"
+      args << "-DTK_INTERNAL_PATH:PATH=#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Headers/tk-private"
+    end
 
     args << ".."
 
     mkdir 'build' do
-      system "cmake", *args
-      # Work-a-round to avoid:
-      #   ld: file not found: /usr/local/Cellar/vtk/5.8.0/lib/vtk-5.8/libvtkDICOMParser.5.8.dylib for architecture x86_64"
-      #   collect2: ld returned 1 exit status
-      #   make[2]: *** [bin/vtkpython] Error 1
-      # We symlink such that the DCMAKE_INSTALL_NAME_DIR is available and points to the current build/bin
-      lib.mkpath # create empty directories, because we need it here
-      ln_s ENV['DYLD_LIBRARY_PATH'], lib/'vtk-5.8'
-      system "make"
-      rm lib/'vtk-5.8' # Remove our symlink, was only needed to make make succeed.
-      # end work-a-round
-      system "make install" # Finally move libs in their places.
+      system 'cmake', *args
+      system 'make'
+      system 'make install'
     end
+
+    (share+'vtk').install 'Examples' if ARGV.include? '--examples'
+
+    # Finalize a couple of Python issues due to our installing into the cellar.
+    if ARGV.include? '--python'
+      # Avoid the .egg and use the python module right away, because
+      # system python does not read .pth files from our site-packages.
+      mv pydir/'VTK-5.10.0-py2.7.egg/vtk', pydir/'vtk'
+
+      # Remove files with duplicates in /usr/local/lib/python2.7/site-packages
+      %w(site.py site.pyc easy-install.pth VTK-5.10.0-py2.7.egg).each do |f|
+        rmtree pydir/f
+      end
+    end
+  end
+
+  def caveats
+    s = ''
+    vtk = Tab.for_formula 'vtk'
+    if ARGV.include? '--python' or vtk.installed_with? '--python'
+      s += <<-EOS.undent
+        For non-homebrew Python, you need to amend your PYTHONPATH like so:
+        export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
+
+        Even without the --pyqt option, you can display native VTK render windows
+        from python. Alternatively, you can integrate the RenderWindowInteractor
+        in PyQt, PySide, Tk or Wx at runtime. Look at
+            import vtk.qt4; help(vtk.qt4) or import vtk.wx; help(vtk.wx)
+
+      EOS
+    end
+    if ARGV.include? '--examples' or vtk.installed_with? '--examples'
+      s += <<-EOS.undent
+
+        The scripting examples are stored in #{HOMEBREW_PREFIX}/share/vtk
+
+      EOS
+    end
+    return s.empty? ? nil : s
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end

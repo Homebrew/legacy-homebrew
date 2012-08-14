@@ -19,17 +19,21 @@ end
 module Homebrew extend self
   def options
     ff.each do |f|
-      next if f.options.empty?
+      next if f.build.empty?
       if ARGV.include? '--compact'
-        puts f.options.collect {|o| o[0]} * " "
+        puts f.build.collect {|k,v| "--"+k} * " "
       else
-        puts f.name
-        f.options.each do |o|
-          puts o[0]
-          puts "\t"+o[1]
-        end
+        puts f.name if ff.length > 1
+        dump_options_for_formula f
         puts
       end
+    end
+  end
+
+  def dump_options_for_formula f
+    f.build.each do |k,v|
+      puts "--"+k
+      puts "\t"+v
     end
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Vrpn < Formula
   homepage 'http://vrpn.org'
-  url 'ftp://ftp.cs.unc.edu/pub/packages/GRIP/vrpn/vrpn_07_29.zip'
-  md5 '422f13fc9cbb62d36c96f3cc3b06cec9'
+  url 'ftp://ftp.cs.unc.edu/pub/packages/GRIP/vrpn/vrpn_07_30.zip'
+  sha1 '474f45d524ba959e93630f19666fd03d8f337d90'
 
   head 'git://git.cs.unc.edu/vrpn.git'
 

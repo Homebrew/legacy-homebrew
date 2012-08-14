@@ -65,12 +65,15 @@ class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   end
 end
 
-class UnsatisfiedRequirement < Homebrew::InstallationError
-  attr :dep
+class UnsatisfiedRequirements < Homebrew::InstallationError
+  attr :reqs
 
-  def initialize formula, dep
-    @dep = dep
-    super formula, "An unsatisfied requirement failed this build."
+  def initialize formula, reqs
+    @reqs = reqs
+    message = (reqs.length == 1) \
+                ? "An unsatisfied requirement failed this build." \
+                : "Unsatisifed requirements failed this build."
+    super formula, message
   end
 end
 
@@ -122,10 +125,12 @@ class BuildError < Homebrew::InstallationError
     puts %["--use-llvm" was specified] if ARGV.include? '--use-llvm'
     puts %["--use-gcc" was specified] if ARGV.include? '--use-gcc'
     Homebrew.dump_build_env e.env
+    puts
     onoe "#{e.to_s.strip} (#{formula_name}.rb:#{error_line})"
     issues = GitHub.issues_for_formula formula_name
+    puts
     if issues.empty?
-      puts "This may help you fix or report the issue if `brew doctor` does not:"
+      puts "This link will help resolve the above errors:"
       puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
     else
       puts "These existing issues may help you:", *issues.map{ |s| "    #{Tty.em}#{s}#{Tty.reset}" }
@@ -175,4 +180,12 @@ class ChecksumMismatchError < RuntimeError
   def to_s
     super + advice.to_s
   end
+end
+
+module Homebrew extend self
+  SUDO_BAD_ERRMSG = <<-EOS.undent
+    You can use brew with sudo, but only if the brew executable is owned by root.
+    However, this is both not recommended and completely unsupported so do so at
+    your own risk.
+  EOS
 end

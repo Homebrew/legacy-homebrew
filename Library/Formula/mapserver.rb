@@ -29,7 +29,7 @@ class Mapserver < Formula
       "--with-proj",
       "--with-gdal",
       "--with-ogr",
-      "--with-png=#{MacOS.x11_prefix}"
+      "--with-png=#{MacOS::X11.prefix}"
     ]
 
     args.push "--with-geos" if ARGV.include? '--with-geos'

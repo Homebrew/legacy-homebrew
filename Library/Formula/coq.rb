@@ -19,9 +19,9 @@ end
 
 class Coq < Formula
   homepage 'http://coq.inria.fr/'
-  url 'http://coq.inria.fr/distrib/V8.3pl3/files/coq-8.3pl3.tar.gz'
-  version '8.3pl3'
-  md5 '37e9a52110a025128667c03fed75f9c2'
+  url 'http://coq.inria.fr/distrib/V8.3pl4/files/coq-8.3pl4.tar.gz'
+  version '8.3pl4'
+  md5 '88e2ce021b09eca207e3119d5202a695'
   head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
 
   skip_clean :all
