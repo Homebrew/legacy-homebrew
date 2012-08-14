@@ -57,6 +57,15 @@ def macos_version
   @macos_version ||= /(10\.\d+)(\.\d+)?/.match(`/usr/bin/sw_vers -productVersion`).captures.first.to_f
 end
 
+def git
+  @git ||= if ENV['GIT'] and File.executable? ENV['GIT']
+    ENV['GIT']
+  elsif Kernel.system '/usr/bin/which -s git'
+    'git'
+  elsif Kernel.system 'xcrun -find git 2>&1 >/dev/null'
+    %w[xcrun git]
+  end
+end
 
 # The block form of Dir.chdir fails later if Dir.CWD doesn't exist which I
 # guess is fair enough. Also sudo prints a warning message for no good reason
@@ -78,6 +87,7 @@ ohai "This script will install:"
 puts "/usr/local/bin/brew"
 puts "/usr/local/Library/Formula/..."
 puts "/usr/local/Library/Homebrew/..."
+puts "/usr/local/share/man/man1/brew.1"
 
 chmods = %w( . bin etc include lib lib/pkgconfig Library sbin share var var/log share/locale share/man
              share/man/man1 share/man/man2 share/man/man3 share/man/man4
@@ -114,13 +124,23 @@ else
   sudo "/usr/bin/chgrp admin /usr/local"
 end
 
+ohai "Downloading and Installing Homebrew..."
 Dir.chdir "/usr/local" do
-  ohai "Downloading and Installing Homebrew..."
-  # -m to stop tar erroring out if it can't modify the mtime for root owned directories
-  # pipefail to cause the exit status from curl to propogate if it fails
-  # we use -k because OS X curl has a bunch of bad SSL certificates
-  # you may want to remove the -k flag from your fork!
-  system "/bin/bash -o pipefail -c '/usr/bin/curl -skSfL https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
+  if git
+    # we do it in three steps to avoid fetching other branches
+    system git, "init", "-q"
+    system git, "remote", "add", "origin", "https://github.com/mxcl/homebrew"
+
+    args = git, "pull", "origin", "master", "--depth=1"
+    args.pop unless ARGV.include? "--fast"
+    system *args
+  else
+    # -m to stop tar erroring out if it can't modify the mtime for root owned directories
+    # pipefail to cause the exit status from curl to propogate if it fails
+    # we use -k because OS X curl has a bunch of bad SSL certificates
+    # you may want to remove the -k flag from your fork!
+    system "/bin/bash -o pipefail -c '/usr/bin/curl -skSfL https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
+  end
 end
 
 warn "/usr/local/bin is not in your PATH." unless ENV['PATH'].split(':').include? '/usr/local/bin'
