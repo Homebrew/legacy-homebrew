@@ -6,13 +6,29 @@ class Mosquitto < Formula
   sha1 '5305bcf6e760f03eb60d5542303d153795915994'
 
   # mosquitto requires OpenSSL >=1.0 for TLS support
-  depends_on 'openssl'
+  depends_on 'openssl' => :build
+  # without pkg-config there can be errors with incorrect arch libraries for OpenSSL
+  depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
+
+  def options
+    [
+      ["--with-python", "Build and install Python bindings."],
+    ]
+  end
 
   def patches
     [
       # fix TLS-PSK support in CMake build
-      'https://bitbucket.org/oojah/mosquitto/changeset/c94726931053/raw/'
+      # fix man page installation and content
+      # fix python callbacks and parameters
+      'https://bitbucket.org/oojah/mosquitto/changeset/c94726931053/raw/',
+      'https://bitbucket.org/oojah/mosquitto/changeset/794fa854bbcd/raw/',
+      'https://bitbucket.org/oojah/mosquitto/changeset/5071b1dbca1c/raw/',
+      'https://bitbucket.org/oojah/mosquitto/changeset/b46eb93f7aa2/raw/',
+      'https://bitbucket.org/oojah/mosquitto/changeset/8a87b245b076/raw/',
+      'https://bitbucket.org/oojah/mosquitto/changeset/ec720e7f2828/raw/',
+      'https://bitbucket.org/oojah/mosquitto/changeset/3d49417ee6af/raw/'
     ]
   end
 
@@ -21,11 +37,15 @@ class Mosquitto < Formula
 
     # specify brew-supplied OpenSSL libraries and includes
     inreplace "CMakeLists.txt", "set (OPENSSL_INCLUDE_DIR \"\")", "set (OPENSSL_INCLUDE_DIR \"#{openssl.include}\")\nset (OPENSSL_LIBRARIES \"#{openssl.lib}\")"
-    # this corrects the name of a man page
-    inreplace "man/CMakeLists.txt", "install(FILES mosquitto-ssl.7 DESTINATION ${MANDIR}/man7)", "install(FILES mosquitto-tls.7 DESTINATION ${MANDIR}/man7)"
 
     system "cmake", ".", *std_cmake_args
     system "make install"
+
+    # Install Python bindings
+    cd "lib/python" do
+      system "python", "setup.py", "build"
+      system "python", "setup.py", "install", "--prefix=#{prefix}"
+    end if ARGV.include? "--with-python"
 
     plist_path.write startup_plist
     plist_path.chmod 0644
