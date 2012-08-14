@@ -10,6 +10,8 @@ class Node < Formula
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
 
+  option 'enable-debug', 'Build with debugger hooks'
+
   fails_with :llvm do
     build 2326
   end
@@ -17,14 +19,10 @@ class Node < Formula
   # Stripping breaks dynamic loading
   skip_clean :all
 
-  def options
-    [["--enable-debug", "Build with debugger hooks."]]
-  end
-
   def install
     # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
     args = ["--prefix=#{prefix}", "--without-npm"]
-    args << "--debug" if ARGV.include? '--enable-debug'
+    args << "--debug" if build.include? 'enable-debug'
 
     system "./configure", *args
     system "make install"

@@ -12,18 +12,14 @@ class Nginx < Formula
 
   depends_on 'pcre'
 
+  option 'with-passenger', 'Compile with support for Phusion Passenger module'
+  option 'with-webdav', 'Compile with support for WebDAV module'
+
   skip_clean 'logs'
 
   # Changes default port to 8080
   def patches
     DATA
-  end
-
-  def options
-    [
-      ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
-    ]
   end
 
   def passenger_config_args
@@ -50,8 +46,8 @@ class Nginx < Formula
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/nginx/nginx.lock"]
 
-    args << passenger_config_args if ARGV.include? '--with-passenger'
-    args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    args << passenger_config_args if build.include? 'with-passenger'
+    args << "--with-http_dav_module" if build.include? 'with-webdav'
 
     system "./configure", *args
     system "make"

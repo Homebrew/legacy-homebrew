@@ -145,7 +145,7 @@ class Pathname
     rmdir
     true
   rescue SystemCallError => e
-    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno
+    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno or e.errno == Errno::ENOENT::Errno
     false
   end
 
