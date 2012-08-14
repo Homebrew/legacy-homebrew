@@ -40,6 +40,7 @@ end
 class Checks
   # Sorry for the lack of an indent here, the diff would have been unreadable.
 
+############# HELPERS
 def remove_trailing_slash s
   (s[s.length-1] == '/') ? s[0,s.length-1] : s
 end
@@ -54,6 +55,15 @@ def path_folders
   end.uniq.compact
 end
 
+  # Finds files in HOMEBREW_PREFIX *and* /usr/local.
+  # Specify paths relative to a prefix eg. "include/foo.h".
+  # Sets @found for your convenience.
+  def find_relative_paths *relative_paths
+    @found = %W[#{HOMEBREW_PREFIX} /usr/local].uniq.inject([]) do |found, prefix|
+      found + relative_paths.map{|f| File.join(prefix, f) }.select{|f| File.exist? f }
+    end
+  end
+############# END HELPERS
 
 # See https://github.com/mxcl/homebrew/pull/9986
 def check_path_for_trailing_slashes
@@ -514,20 +524,28 @@ def check_for_gettext
 end
 
 def check_for_iconv
-  iconv_files = %w[lib/iconv.dylib
-    include/iconv.h].select { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
-  if !iconv_files.empty?
-    <<-EOS.undent
-      The following libiconv files were detected in #{HOMEBREW_PREFIX}:
-      #{iconv_files.join "\n      "}
-      Homebrew doesn't provide a libiconv formula, and expects to link against
-      the system version in /usr/lib.
+  unless find_relative_paths("lib/iconv.dylib", "include/iconv.h").empty?
+    if (f = Formula.factory("libiconv") rescue nil) and f.linked_keg.directory?
+      if not f.keg_only? then <<-EOS.undent
+        A libiconv formula is installed and linked
+        This will break stuff. For serious. Unlink it.
+        EOS
+      else
+        # NOOP because: check_for_linked_keg_only_brews
+      end
+    else
+      s = <<-EOS.undent_________________________________________________________72
+          libiconv files detected at a system prefix other than /usr
+          Homebrew doesn't provide a libiconv formula, and expects to link against
+          the system version in /usr. libiconv in other prefixes can cause
+          compile or link failure, especially if compiled with improper
+          architectures. OS X itself never installs anything to /usr/local so
+          it was either installed by a user or some other third party software.
 
-      If you have an alternate libiconv, many formulae will fail to compile or
-      link, especially if it wasn't compiled with the proper architectures.
-    EOS
-  else
-    nil
+          tl;dr: delete these files:
+          EOS
+      @found.inject(s){|s, f| s << "    #{f}" }
+    end
   end
 end
 
@@ -787,10 +805,13 @@ end
 def check_git_status
   return unless which "git"
   HOMEBREW_REPOSITORY.cd do
-    unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty? then <<-EOS.undent
-      You have uncommitted modifications to Homebrew's core.
-      Unless you know what you are doing, you should run:
-        cd #{HOMEBREW_REPOSITORY}/Library && git reset --hard && git clean -f
+    unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
+      <<-EOS.undent_________________________________________________________72
+      You have uncommitted modifications to Homebrew
+      If this a surprise to you, then you should stash these modifications.
+      Stashing returns Homebrew to a pristine state but can be undone
+      should you later need to do so for some reason.
+          cd #{HOMEBREW_REPOSITORY} && git stash
       EOS
     end
   end
