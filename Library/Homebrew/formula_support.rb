@@ -162,6 +162,26 @@ class KegOnlyReason
 end
 
 
+# Represents a build-time option for a formula
+class Option
+  attr_reader :name, :description, :flag
+
+  def initialize name, description=nil
+    @name = name.to_s
+    @description = description.to_s
+    @flag = '--'+name.to_s
+  end
+
+  def eql?(other)
+    @name == other.name
+  end
+
+  def hash
+    @name.hash
+  end
+end
+
+
 # This class holds the build-time options defined for a Formula,
 # and provides named access to those options during install.
 class BuildOptions
@@ -187,19 +207,23 @@ class BuildOptions
       end
     end
 
-    @options << [name, description]
+    @options << Option.new(name, description)
   end
 
   def has_option? name
-    @options.any? { |opt, _| opt == name }
+    any? { |opt| opt.name == name }
   end
 
   def empty?
     @options.empty?
   end
 
-  def each
-    @options.each { |opt, desc| yield opt, desc }
+  def each(&blk)
+    @options.each(&blk)
+  end
+
+  def as_flags
+    map { |opt| opt.flag }
   end
 
   def include? name
