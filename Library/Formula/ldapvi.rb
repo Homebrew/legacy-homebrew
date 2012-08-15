@@ -18,6 +18,7 @@ class Ldapvi < Formula
   # Backporting the fix from the devel version
   # (namespace conflict with Lion's getline function)
   # http://www.lichteblau.com/git/?p=ldapvi.git;a=commit;h=256ced029c235687bfafdffd07be7d47bf7af39b
+  # Also fix compilation with clang by changing `return` to `return 0`.
   def patches
     DATA
   end
@@ -61,3 +62,14 @@ diff -rupN ldapvi-1.7-orig/misc.c ldapvi-1.7-new/misc.c
  {
  	tdialog d;
  	init_dialog(&d, DIALOG_DEFAULT, prompt, value);
+--- ldapvi-1.7/ldapvi.c 2012-08-15 10:58:23.000000000 -0400
++++ ldapvi-1.7/ldapvi.c.new     2012-08-15 10:58:12.000000000 -0400
+@@ -1465,7 +1465,7 @@
+ 	int line = 0;
+ 	int c;
+ 
+-	if (lstat(sasl, &st) == -1) return;
++	if (lstat(sasl, &st) == -1) return 0;
+ 	if ( !(in = fopen(sasl, "r"))) syserr();
+ 
+ 	if (st.st_size > 0) {
