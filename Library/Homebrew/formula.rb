@@ -440,6 +440,12 @@ class Formula
     end
   end
 
+  def recursive_requirements
+    reqs = recursive_deps.map { |dep| dep.requirements }.to_set
+    reqs << requirements
+    reqs.flatten
+  end
+
 protected
 
   # Pretty titles the command and buffers stdout/stderr
