@@ -8,7 +8,7 @@ class Geeknote < Formula
 
   def install
     prefix.install Dir['*']
-    system "echo python #{prefix}/geeknote.py > #{prefix}/geeknote"
+    system "echo python #{prefix}/geeknote.py \\\"\\$\\@\\\" > #{prefix}/geeknote"
     (prefix+"geeknote").chmod 0755
     bin.install_symlink "#{prefix}/geeknote" => 'geeknote'
   end
