@@ -7,8 +7,8 @@ class LibsvgCairo < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libsvg'
-  depends_on 'cairo' if MacOS.leopard?
-  depends_on :x11
+  depends_on :libpng
+  depends_on :cairo
 
   def install
     system "./configure", "--disable-dependency-tracking", "--disable-debug", "--prefix=#{prefix}"
