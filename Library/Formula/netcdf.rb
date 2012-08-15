@@ -33,6 +33,17 @@ class Netcdf < Formula
       ['--disable-cxx', "Don't compile C++ bindings"]
     ]
   end
+<<<<<<< HEAD
+=======
+
+  def patches
+    if ARGV.include? "--enable-largefiles"
+      #This patch edits netcdf.h to be compliant with the "LargeFile"
+      #format required by ExodusII
+      DATA
+    end
+  end
+>>>>>>> b2e5647... Added --enable-largefiles option
 
   def install
     if fortran?
@@ -74,3 +85,27 @@ class Netcdf < Formula
     end if fortran?
   end
 end
+<<<<<<< HEAD
+=======
+
+__END__
+diff --git a/include/netcdf.h b/include/netcdf.h
+index 8ccfb0f..0353b29 100644
+--- a/include/netcdf.h
++++ b/include/netcdf.h
+@@ -189,11 +189,11 @@ created with the ::NC_CLASSIC_MODEL flag.
+ As a rule, NC_MAX_VAR_DIMS <= NC_MAX_DIMS.
+ */
+ /**@{*/
+-#define NC_MAX_DIMS	1024	
++#define NC_MAX_DIMS	65536
+ #define NC_MAX_ATTRS	8192	
+-#define NC_MAX_VARS	8192	
++#define NC_MAX_VARS	524288
+ #define NC_MAX_NAME	256	
+-#define NC_MAX_VAR_DIMS	1024 /**< max per variable dimensions */
++#define NC_MAX_VAR_DIMS	8 /**< max per variable dimensions */
+ /**@}*/
+
+ /** This is the max size of an SD dataset name in HDF4 (from HDF4 documentation).*/
+>>>>>>> b2e5647... Added --enable-largefiles option
