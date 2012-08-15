@@ -66,26 +66,14 @@ class FormulaInstaller
       EOS
     end
 
-    # Build up a list of unsatisifed fatal requirements
-    first_message = true
-    unsatisfied_fatals = []
-    f.requirements.each do |req|
-      unless req.satisfied?
-        # Newline between multiple messages
-        puts unless first_message
-        puts req.message
-        first_message = false
-        if req.fatal? and not ignore_deps
-          unsatisfied_fatals << req
-        end
-      end
-    end
-
-    unless unsatisfied_fatals.empty?
-      raise UnsatisfiedRequirements.new(f, unsatisfied_fatals)
-    end
-
     unless ignore_deps
+      needed_reqs = f.recursive_requirements.reject { |r| r.satisfied? }
+      puts needed_reqs.map { |r| r.message } * "\n"
+      unsatisfied_fatals = needed_reqs.select { |r| r.fatal? }
+      unless unsatisfied_fatals.empty?
+        raise UnsatisfiedRequirements.new(f, unsatisfied_fatals)
+      end
+
       needed_deps = f.recursive_deps.reject{ |d| d.installed? }
       unless needed_deps.empty?
         needed_deps.each do |dep|
