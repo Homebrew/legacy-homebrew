@@ -409,6 +409,7 @@ Please take one of the following actions:
     [*key].each do |key|
       next if self[key].nil?
       self[key] = self[key].sub value, '' # can't use sub! on ENV
+      self[key] = self[key].gsub /\s+/, ' ' # compact whitespace
       self[key] = nil if self[key].empty? # keep things clean
     end
   end
