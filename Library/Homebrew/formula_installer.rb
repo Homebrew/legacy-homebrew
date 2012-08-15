@@ -24,7 +24,8 @@ class FormulaInstaller
 
   def check_install_sanity
     if f.installed?
-      raise CannotInstallFormulaError, "#{f}-#{f.version} already installed"
+      keg = Keg.new(f.installed_prefix)
+      raise CannotInstallFormulaError, "#{f}-#{keg.version} already installed"
     end
 
     # Building head-only without --HEAD is an error
