@@ -5,21 +5,19 @@ class Ncmpcpp < Formula
   url 'http://unkart.ovh.org/ncmpcpp/ncmpcpp-0.5.10.tar.bz2'
   sha1 '5e34733e7fbaf2862f04fdf8af8195ce860a9014'
 
+  depends_on 'pkg-config' => :build
   depends_on 'taglib'
   depends_on 'libmpdclient'
-  depends_on 'fftw' if ARGV.include? "--visualizer"
+  depends_on 'fftw' if build.include? "visualizer"
 
   fails_with :clang do
-    build 318
+    build 421
+    cause "'itsTempString' is a private member of 'NCurses::basic_buffer<char>'"
   end
 
-  def options
-    [
-      ["--outputs", "Compile with mpd outputs control"],
-      ["--visualizer", "Compile with built-in visualizer"],
-      ["--clock", "Compile with optional clock tab"]
-    ]
-  end
+  option 'outputs', 'Compile with mpd outputs control'
+  option 'visualizer', 'Compile with built-in visualizer'
+  option 'clock', 'Compile with optional clock tab'
 
   def install
     ENV.append 'LDFLAGS', '-liconv'
@@ -28,9 +26,9 @@ class Ncmpcpp < Formula
             "--with-taglib",
             "--with-curl",
             "--enable-unicode"]
-    args << '--enable-outputs'    if ARGV.include?('--outputs')
-    args << '--enable-visualizer' if ARGV.include?('--visualizer')
-    args << '--enable-clock'      if ARGV.include?('--clock')
+    args << '--enable-outputs' if build.include? 'outputs'
+    args << '--enable-visualizer' if build.include? 'visualizer'
+    args << '--enable-clock' if build.include? 'clock'
 
     system "./configure", *args
     system "make install"
