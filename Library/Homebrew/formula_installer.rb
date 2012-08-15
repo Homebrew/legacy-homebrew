@@ -68,7 +68,7 @@ class FormulaInstaller
 
     unless ignore_deps
       needed_reqs = f.recursive_requirements.reject { |r| r.satisfied? }
-      puts needed_reqs.map { |r| r.message } * "\n"
+      puts needed_reqs.map { |r| r.message } * "\n" unless needed_reqs.empty?
       unsatisfied_fatals = needed_reqs.select { |r| r.fatal? }
       unless unsatisfied_fatals.empty?
         raise UnsatisfiedRequirements.new(f, unsatisfied_fatals)
