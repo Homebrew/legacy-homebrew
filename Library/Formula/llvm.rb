@@ -21,30 +21,28 @@ class Llvm < Formula
     sha1 '940aca37dafaf69a9b378ffd2a59b3c1cfe54ced' => :snowleopard
   end
 
-  def options
-    [['--with-clang', 'Build clang C/ObjC/C++ frontend'],
-     ['--shared', 'Build llvm as shared library, and link tools against it'],
-     ['--all-targets', 'Build all target backends'],
-     ['--rtti', 'Build llvm with C++ RTTI, use if you need RTTI of llvm classes'],
-     ['--universal', 'Build both i386 and x86_64 architectures']]
-  end
+  option :universal
+  option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
+  option 'shared', 'Build LLVM as a shared library'
+  option 'all-targets', 'Build all target backends'
+  option 'rtti', 'Build with C++ RTTI'
 
   def install
-    if ARGV.include? '--shared' && ARGV.build_universal?
+    if build.universal? and build.include? 'shared'
       onoe "Cannot specify both shared and universal (will not build)"
       exit 1
     end
 
-    Clang.new("clang").brew { clang_dir.install Dir['*'] } if ARGV.include? '--with-clang'
+    Clang.new("clang").brew { clang_dir.install Dir['*'] } if build.include? 'with-clang'
 
-    if ARGV.build_universal?
+    if build.universal?
       ENV['UNIVERSAL'] = '1'
       ENV['UNIVERSAL_ARCH'] = 'i386 x86_64'
     end
 
-    ENV['REQUIRES_RTTI'] = '1' if ARGV.include? '--rtti'
+    ENV['REQUIRES_RTTI'] = '1' if build.include? 'rtti'
 
-    configure_options = [
+    args = [
       "--prefix=#{prefix}",
       "--enable-optimized",
       # As of LLVM 3.1, attempting to build ocaml bindings with Homebrew's
@@ -52,14 +50,14 @@ class Llvm < Formula
       "--disable-bindings",
     ]
 
-    if ARGV.include? '--all-targets'
-      configure_options << "--enable-targets=all"
+    if build.include? 'all-targets'
+      args << "--enable-targets=all"
     else
-      configure_options << "--enable-targets=host"
+      args << "--enable-targets=host"
     end
-    configure_options << "--enable-shared" if ARGV.include? '--shared'
+    args << "--enable-shared" if build.include? 'shared'
 
-    system "./configure", *configure_options
+    system "./configure", *args
     system "make install"
 
     # install llvm python bindings
@@ -69,7 +67,7 @@ class Llvm < Formula
     cd clang_dir do
       (share/'clang/tools').install 'tools/scan-build', 'tools/scan-view'
       (share/'clang/bindings').install 'bindings/python'
-    end if ARGV.include? '--with-clang'
+    end if build.include? 'with-clang'
   end
 
   def test

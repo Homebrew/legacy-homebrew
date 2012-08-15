@@ -37,35 +37,28 @@ class Python < Formula
   depends_on 'gdbm'     => :optional
   depends_on :x11 # tk.h includes X11/Xlib.h and X11/X.h
 
-  def options
-    [
-      ["--universal", "Build for both 32 & 64 bit Intel."],
-      ["--quicktest", "Run `make quicktest` after build."]
-    ]
-  end
+  option :universal
+  option 'quicktest', 'Run `make quicktest` after the build'
 
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
 
-  # The Cellar location of site-packages (different for Framework builds)
   def site_packages_cellar
-    # We're installed or installing as a Framework, then use that location.
-    prefix+"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
+    prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
   def site_packages
-    HOMEBREW_PREFIX+"lib/python2.7/site-packages"
+    HOMEBREW_PREFIX/"lib/python2.7/site-packages"
   end
 
   # Where distribute/pip will install executable scripts.
   def scripts_folder
-    HOMEBREW_PREFIX+"share/python"
+    HOMEBREW_PREFIX/"share/python"
   end
 
-  # lib folder,taking into account whether we are a Framework build or not
   def effective_lib
-    prefix+"Frameworks/Python.framework/Versions/2.7/lib"
+    prefix/"Frameworks/Python.framework/Versions/2.7/lib"
   end
 
   def install
@@ -88,7 +81,7 @@ class Python < Formula
       ENV.append_to_cflags '-Qunused-arguments'
     end
 
-    if ARGV.build_universal?
+    if build.universal?
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
     end
 
@@ -108,7 +101,7 @@ class Python < Formula
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools into HOMEBREW_PREFIX/share/python2.7
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python2.7"
-    system "make", "quicktest" if ARGV.include? '--quicktest'
+    system "make", "quicktest" if build.include? 'quicktest'
 
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
@@ -116,14 +109,14 @@ class Python < Formula
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
-    # Create a site-packages in `brew --prefix`/lib/python/site-packages
+    # Create a site-packages in HOMEBREW_PREFIX/lib/python/site-packages
     site_packages.mkpath
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
     # Python 3 has a 2to3, too. Additionally there still is a 2to3-2.7.
     # (https://github.com/mxcl/homebrew/issues/12581)
-    rm bin/"2to3" if (HOMEBREW_PREFIX/bin/"2to3").exist?
+    rm bin/"2to3" if (HOMEBREW_PREFIX/"bin/2to3").exist? and (bin/"2to3").exist?
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath

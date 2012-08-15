@@ -36,40 +36,34 @@ class Python3 < Formula
   url 'http://python.org/ftp/python/3.2.3/Python-3.2.3.tar.bz2'
   md5 'cea34079aeb2e21e7b60ee82a0ac286b'
 
+  depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :optional  # Prefer over OS X's libedit
   depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
   depends_on 'gdbm'     => :optional
   depends_on :x11 # tk.h includes X11/Xlib.h and X11/X.h
 
-  def options
-    [
-      ["--quicktest", "Run `make quicktest` after build. Takes some minutes."]
-    ]
-  end
+  option 'quicktest', 'Run `make quicktest` after the build'
 
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
 
-  # The Cellar location of site-packages (different for Framework builds)
   def site_packages_cellar
-    # If we're installed or installing as a Framework, then use that location.
-    return prefix+"Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages"
+    prefix/"Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
   def site_packages
-    HOMEBREW_PREFIX+"lib/python3.2/site-packages"
+    HOMEBREW_PREFIX/"lib/python3.2/site-packages"
   end
 
   # Where distribute/pip will install executable scripts.
   def scripts_folder
-    HOMEBREW_PREFIX+"share/python3"
+    HOMEBREW_PREFIX/"share/python3"
   end
 
-  # lib folder,taking into account whether we are a Framework build or not
   def effective_lib
-    prefix+"Frameworks/Python.framework/Versions/3.2/lib"
+    prefix/"Frameworks/Python.framework/Versions/3.2/lib"
   end
 
   def install
@@ -80,10 +74,12 @@ class Python3 < Formula
     # We need to enable warnings because the configure.in uses -Werror to detect
     # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
     ENV.enable_warnings
-    # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
-    ENV.append_to_cflags '-Wno-unused-value'
-    ENV.append_to_cflags '-Wno-empty-body'
-    ENV.append_to_cflags '-Qunused-arguments'
+    if ENV.compiler == :clang
+      # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
+      ENV.append_to_cflags '-Wno-unused-value'
+      ENV.append_to_cflags '-Wno-empty-body'
+      ENV.append_to_cflags '-Qunused-arguments'
+    end
 
     # Allow sqlite3 module to load extensions:
     # http://docs.python.org/library/sqlite3.html#f1
@@ -94,7 +90,7 @@ class Python3 < Formula
     ENV.deparallelize # Installs must be serialized
     # Tell Python not to install into /Applications (default for framework builds)
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
-    system "make", "quicktest" if ARGV.include? "--quicktest"
+    system "make", "quicktest" if build.include? "quicktest"
 
     # Any .app get a " 3" attached, so it does not conflict with python 2.x.
     Dir.glob(prefix/"*.app").each do |app|
@@ -107,17 +103,17 @@ class Python3 < Formula
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
-    # Create a site-packages in `brew --prefix`/lib/python3/site-packages
+    # Create a site-packages in HOMEBREW_PREFIX/lib/python3/site-packages
     site_packages.mkpath
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
     # "python3" and executable is forgotten for framework builds.
-    # Make sure homebrew symlinks it to `brew --prefix`/bin.
+    # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python3.2", "#{bin}/python3" unless (bin/"python3").exist?
 
     # Python 2 has a 2to3, too. (https://github.com/mxcl/homebrew/issues/12581)
-    rm bin/"2to3" if (HOMEBREW_PREFIX/bin/"2to3").exist?
+    rm bin/"2to3" if (HOMEBREW_PREFIX/"bin/2to3").exist? and (bin/"2to3").exist?
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
