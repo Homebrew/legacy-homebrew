@@ -137,7 +137,7 @@ class Requirement
   end
 
   def hash
-    @message.hash
+    message.hash
   end
 end
 
@@ -194,7 +194,6 @@ end
 # This requirement is used to require an X11 implementation,
 # optionally with a minimum version number.
 class X11Dependency < Requirement
-
   def initialize min_version=nil
     @min_version = min_version
   end
@@ -216,6 +215,9 @@ class X11Dependency < Requirement
     ENV.x11
   end
 
+  def hash
+    "X11".hash
+  end
 end
 
 
