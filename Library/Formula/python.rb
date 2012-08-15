@@ -71,6 +71,12 @@ class Python < Formula
              --enable-framework=#{prefix}/Frameworks
            ]
 
+    # Don't use optimizations other than "-Os" here, because Python's distutils
+    # remembers (hint: `python-config --cflags`) and reuses them for C
+    # extensions which can break software (such as scipy 0.11 fails when
+    # "-msse4" is present.)
+    ENV.minimal_optimization
+
     # We need to enable warnings because the configure.in uses -Werror to detect
     # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
     ENV.enable_warnings
@@ -78,7 +84,6 @@ class Python < Formula
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
       ENV.append_to_cflags '-Wno-unused-value'
       ENV.append_to_cflags '-Wno-empty-body'
-      ENV.append_to_cflags '-Qunused-arguments'
     end
 
     if build.universal?
@@ -99,8 +104,8 @@ class Python < Formula
     ENV.deparallelize # Installs must be serialized
     # Tell Python not to install into /Applications (default for framework builds)
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
-    # Demos and Tools into HOMEBREW_PREFIX/share/python2.7
-    system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python2.7"
+    # Demos and Tools into HOMEBREW_PREFIX/share/python
+    system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
     system "make", "quicktest" if build.include? 'quicktest'
 
     # Post-install, fix up the site-packages and install-scripts folders
@@ -113,10 +118,6 @@ class Python < Formula
     site_packages.mkpath
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
-
-    # Python 3 has a 2to3, too. Additionally there still is a 2to3-2.7.
-    # (https://github.com/mxcl/homebrew/issues/12581)
-    rm bin/"2to3" if (HOMEBREW_PREFIX/"bin/2to3").exist? and (bin/"2to3").exist?
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
@@ -136,7 +137,7 @@ class Python < Formula
         #{prefix}/Frameworks/Python.framework
 
       You can find the Python demo at
-        #{HOMEBREW_PREFIX}/share/python2.7/Extras
+        #{HOMEBREW_PREFIX}/share/python/Extras
 
       You can `brew linkapps` to symlink "Idle" and the "Python Launcher".
 
