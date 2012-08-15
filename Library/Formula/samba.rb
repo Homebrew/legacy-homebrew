@@ -17,6 +17,9 @@ class Samba < Formula
   end
 
   def install
+    # Enable deprecated CUPS structs on Mountain Lion
+    # https://github.com/mxcl/homebrew/issues/13790
+    ENV['CFLAGS'] += " -D_IPP_PRIVATE_STRUCTURES"
     cd 'source3' do
       system "./autogen.sh"
       system "./configure", "--disable-debug",
