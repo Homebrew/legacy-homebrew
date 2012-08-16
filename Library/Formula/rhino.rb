@@ -2,9 +2,9 @@ require 'formula'
 
 class Rhino < Formula
   homepage 'http://www.mozilla.org/rhino/'
-  url 'ftp://ftp.mozilla.org/pub/mozilla.org/js/rhino1_7R3.zip'
-  md5 '99d94103662a8d0b571e247a77432ac5'
-  version '1.7R3'
+  url 'https://github.com/downloads/mozilla/rhino/rhino1_7R4.zip'
+  sha1 '483e097cb575c724c745edd80c9512f073bd510a'
+  version '1.7R4'
 
   def install
     libexec.install 'js.jar'

@@ -1,4 +1,6 @@
 class Patches
+  include Enumerable
+
   # The patches defined in a formula and the DATA from that file
   def initialize patches
     @patches = []

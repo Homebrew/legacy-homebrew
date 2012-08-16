@@ -1,9 +1,9 @@
 require 'formula'
 
 class Stklos < Formula
-  url 'http://www.stklos.net/download/stklos-1.01.tar.gz'
   homepage 'http://www.stklos.net/'
-  md5 '2c370627c3abd07c30949b2ee7d3d987'
+  url 'http://www.stklos.net/download/stklos-1.10.tar.gz'
+  sha1 '113551b6bee26fbe5c835ef0db292b9276cccaa0'
 
   depends_on 'gmp'
   depends_on 'pcre'

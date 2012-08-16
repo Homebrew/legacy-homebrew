@@ -8,11 +8,12 @@ class Macvim < Formula
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
+  option "custom-icons", "Try to generate custom document icons"
+  option "override-system-vim", "Override system vim"
+
   def options
   [
-    ["--custom-icons", "Try to generate custom document icons."],
     ["--with-cscope", "Build with Cscope support."],
-    ["--override-system-vim", "Override system vim."],
     ["--with-lua", "Build with Lua scripting support."]
   ]
   end
@@ -21,12 +22,6 @@ class Macvim < Formula
   depends_on 'lua' if ARGV.include? '--with-lua'
 
   def install
-    # MacVim's Xcode project gets confused by $CC, so remove it
-    ENV['CC'] = nil
-    ENV['CFLAGS'] = nil
-    ENV['CXX'] = nil
-    ENV['CXXFLAGS'] = nil
-
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in
     # PPC support (which isn't needed in Homebrew-supported systems.)
@@ -55,7 +50,7 @@ class Macvim < Formula
     system "./configure", *args
 
     # Building custom icons fails for many users, so off by default.
-    unless ARGV.include? "--custom-icons"
+    unless build.include? "custom-icons"
       inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
       inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
     end
@@ -69,12 +64,12 @@ class Macvim < Formula
 
     prefix.install "src/MacVim/build/Release/MacVim.app"
     inreplace "src/MacVim/mvim", /^# VIM_APP_DIR=\/Applications$/,
-              "VIM_APP_DIR=#{prefix}"
+                                 "VIM_APP_DIR=#{prefix}"
     bin.install "src/MacVim/mvim"
 
     # Create MacVim vimdiff, view, ex equivalents
     executables = %w[mvimdiff mview mvimex]
-    executables += %w[vi vim vimdiff view vimex] if ARGV.include? "--override-system-vim"
+    executables += %w[vi vim vimdiff view vimex] if build.include? "override-system-vim"
     executables.each {|f| ln_s bin+'mvim', bin+f}
   end
 

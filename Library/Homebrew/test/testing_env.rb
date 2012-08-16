@@ -8,6 +8,7 @@ ABS__FILE__=File.expand_path(__FILE__)
 
 $:.push(File.expand_path(__FILE__+'/../..'))
 require 'extend/pathname'
+require 'extend/string'
 require 'exceptions'
 require 'utils'
 

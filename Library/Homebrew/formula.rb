@@ -29,9 +29,6 @@ class Formula
     @name = name
     validate_variable :name
 
-    # Legacy formulae can set specs via class ivars
-    ensure_specs_set if @stable.nil?
-
     # If a checksum or version was set in the DSL, but no stable URL
     # was defined, make @stable nil and save callers some trouble
     @stable = nil if @stable and @stable.url.nil?
@@ -59,29 +56,11 @@ class Formula
     # If we got an explicit path, use that, else determine from the name
     @path = path.nil? ? self.class.path(name) : Pathname.new(path)
     @downloader = download_strategy.new(name, @active_spec)
-  end
 
-  # Derive specs from class ivars
-  def ensure_specs_set
-    set_instance_variable :url
-    set_instance_variable :version
-    set_instance_variable :md5
-    set_instance_variable :sha1
-    set_instance_variable :sha256
-
-    unless @url.nil?
-      @stable = SoftwareSpec.new
-      @stable.url(@url)
-      @stable.version(@version)
-      @stable.md5(@md5)
-      @stable.sha1(@sha1)
-      @stable.sha256(@sha256)
-    end
-
-    if @head.kind_of? String
-      url = @head
-      @head = HeadSoftwareSpec.new
-      @head.url(url, self.class.instance_variable_get("@specs"))
+    # Combine DSL `option` and `def options`
+    options.each do |opt, desc|
+      # make sure to strip "--" from the start of options
+      self.class.build.add opt[/--(.+)$/, 1], desc
     end
   end
 
@@ -160,6 +139,10 @@ class Formula
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
 
+  def build
+    self.class.build
+  end
+
   # Use the @active_spec to detect the download strategy.
   # Can be overriden to force a custom download strategy
   def download_strategy
@@ -191,7 +174,12 @@ class Formula
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
   def keg_only?
-    self.class.keg_only_reason || false
+    kor = self.class.keg_only_reason
+    not kor.nil? and kor.valid?
+  end
+
+  def keg_only_reason
+    self.class.keg_only_reason
   end
 
   def fails_with? cc
@@ -316,6 +304,16 @@ class Formula
     end
   end
 
+  def self.select
+    ff = []
+    each{ |f| ff << f if yield(f) }
+    ff
+  end
+
+  def self.installed
+    HOMEBREW_CELLAR.children.map{ |rack| factory(rack.basename) rescue nil }.compact
+  end
+
   def inspect
     name
   end
@@ -422,8 +420,12 @@ class Formula
     HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
 
-  def deps;          self.class.dependencies.deps;          end
-  def external_deps; self.class.dependencies.external_deps; end
+  def deps;         self.class.dependencies.deps;         end
+  def requirements; self.class.dependencies.requirements; end
+
+  def conflicts
+    requirements.select { |r| r.is_a? ConflictRequirement }
+  end
 
   # deps are in an installable order
   # which means if a depends on b then b will be ordered before a in this list
@@ -436,6 +438,12 @@ class Formula
       f_dep = Formula.factory dep.to_s
       expand_deps(f_dep) << f_dep
     end
+  end
+
+  def recursive_requirements
+    reqs = recursive_deps.map { |dep| dep.requirements }.to_set
+    reqs << requirements
+    reqs.flatten
   end
 
 protected
@@ -575,6 +583,10 @@ private
       }
     end
 
+    def build
+      @build ||= BuildOptions.new(ARGV)
+    end
+
     def url val=nil, specs=nil
       if val.nil?
         return @stable.url if @stable
@@ -624,6 +636,29 @@ private
 
     def depends_on dep
       dependencies.add(dep)
+    end
+
+    def option name, description=nil
+      # Support symbols
+      name = name.to_s
+      raise "Option name is required." if name.empty?
+      raise "Options should not start with dashes." if name[0, 1] == "-"
+      build.add name, description
+    end
+
+    def conflicts_with formula, opts={}
+      message = <<-EOS.undent
+      #{formula} cannot be installed alongside #{name.downcase}.
+      EOS
+      message << "This is because #{opts[:because]}\n" if opts[:because]
+      if !ARGV.force? then message << <<-EOS.undent
+      Please `brew unlink` or `brew uninstall` #{formula} before continuing.
+      To install anyway, use:
+        brew install --force
+        EOS
+      end
+
+      dependencies.add ConflictRequirement.new(formula, message)
     end
 
     def skip_clean paths

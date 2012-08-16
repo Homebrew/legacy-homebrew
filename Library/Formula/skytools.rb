@@ -21,8 +21,8 @@ end
 
 class Skytools < Formula
   homepage 'http://pgfoundry.org/projects/skytools/'
-  url 'http://pgfoundry.org/frs/download.php/3294/skytools-3.0.3.tar.gz'
-  sha1 '8894db961216386344ac9f2c47ae4125c64afb0b'
+  url 'http://pgfoundry.org/frs/download.php/3321/skytools-3.1.tar.gz'
+  sha1 'f31fb7096f160fb959f8a217cbea529da04b277e'
 
   depends_on PostgresqlInstalled.new
 

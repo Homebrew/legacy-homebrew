@@ -2,14 +2,14 @@ require 'formula'
 
 class Guile < Formula
   homepage 'http://www.gnu.org/software/guile/'
-  url 'http://ftpmirror.gnu.org/guile/guile-1.8.7.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
-  sha1 '24cd2f06439c76d41d982a7384fe8a0fe5313b54'
+  url 'http://ftpmirror.gnu.org/guile/guile-1.8.8.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/guile/guile-1.8.8.tar.gz'
+  sha1 '548d6927aeda332b117f8fc5e4e82c39a05704f9'
 
   devel do
-    url 'http://ftpmirror.gnu.org/guile/guile-2.0.5.tar.gz'
-    mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.5.tar.gz'
-    sha1 '0cf94962ab637975bf2ad00afa15638dcc67408f'
+    url 'http://ftpmirror.gnu.org/guile/guile-2.0.6.tar.gz'
+    mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.6.tar.gz'
+    sha1 'aee330029ea48160071fdbd09271d80c92498669'
   end
 
   depends_on 'pkg-config' => :build
