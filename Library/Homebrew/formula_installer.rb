@@ -67,14 +67,20 @@ class FormulaInstaller
     end
 
     unless ignore_deps
-      needed_reqs = f.recursive_requirements.reject { |r| r.satisfied? }
-      puts needed_reqs.map { |r| r.message } * "\n" unless needed_reqs.empty?
-      unsatisfied_fatals = needed_reqs.select { |r| r.fatal? }
-      unless unsatisfied_fatals.empty?
-        raise UnsatisfiedRequirements.new(f, unsatisfied_fatals)
+      needed_deps = []
+      needed_reqs = []
+
+      ARGV.filter_for_dependencies do
+        needed_deps = f.recursive_deps.reject{ |d| d.installed? }
+        needed_reqs = f.recursive_requirements.reject { |r| r.satisfied? }
       end
 
-      needed_deps = f.recursive_deps.reject{ |d| d.installed? }
+      unless needed_reqs.empty?
+        puts needed_reqs.map { |r| r.message } * "\n"
+        fatals = needed_reqs.select { |r| r.fatal? }
+        raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
+      end
+
       unless needed_deps.empty?
         needed_deps.each do |dep|
           if dep.explicitly_requested?
