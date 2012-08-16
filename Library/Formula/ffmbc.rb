@@ -5,6 +5,8 @@ class Ffmbc < Formula
   url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc7.tar.bz2'
   md5 '547bb7b7963224dd66dffa8b25e623b3'
 
+  # manpages won't be built without texi2html
+  depends_on 'texi2html' => :build if MacOS.mountain_lion?
   depends_on 'yasm' => :build
   depends_on :x11
   depends_on 'x264' => :optional
