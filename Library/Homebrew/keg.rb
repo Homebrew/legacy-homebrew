@@ -22,13 +22,13 @@ class Keg < Pathname
   end
 
   def uninstall
-    chmod_R 0777 # ensure we have permission to delete
     rmtree
     parent.rmdir_if_possible
   end
 
   def unlink
     n=0
+
     %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
       next unless src.exist?
       src.find do |src|
@@ -56,6 +56,15 @@ class Keg < Pathname
 
   def linked?
     linked_keg_record.directory? and self == linked_keg_record.realpath
+  end
+
+  def completion_installed? shell
+    dir = case shell
+      when :bash then self/'etc/bash_completion.d'
+      when :zsh then self/'share/zsh/site-functions'
+      end
+    return if dir.nil?
+    dir.directory? and not dir.children.length.zero?
   end
 
   def link mode=nil

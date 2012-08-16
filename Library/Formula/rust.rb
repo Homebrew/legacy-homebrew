@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rust < Formula
-  url 'http://dl.rust-lang.org/dist/rust-0.2.tar.gz'
   homepage 'http://www.rust-lang.org/'
-  md5 '47be90f952ec01c3088af58be78fd618'
+  url 'http://dl.rust-lang.org/dist/rust-0.3.1.tar.gz'
+  sha256 'eb99ff2e745ecb6eaf01d4caddebce397a2b4cda6836a051cb2d493b9cedd018'
 
   fails_with :clang do
     build 318

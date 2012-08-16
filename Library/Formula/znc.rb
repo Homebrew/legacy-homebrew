@@ -19,15 +19,13 @@ class Znc < Formula
   skip_clean 'bin/znc-config'
   skip_clean 'bin/znc-buildmod'
 
-  def options
-    [['--enable-debug', "Compile ZNC with --enable-debug"]]
-  end
+  option 'enable-debug', "Compile ZNC with --enable-debug"
 
   def install
     args = ["--prefix=#{prefix}", "--enable-extra"]
-    args << "--enable-debug" if ARGV.include? '--enable-debug'
+    args << "--enable-debug" if build.include? 'enable-debug'
 
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make install"
   end

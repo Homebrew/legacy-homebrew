@@ -3,8 +3,9 @@ require 'formula'
 class EasyTag < Formula
   homepage 'http://easytag.sourceforge.net'
   url 'http://sourceforge.net/projects/easytag/files/easytag%20%28gtk%202%29/2.1/easytag-2.1.7.tar.bz2'
-  md5 '9df3e800d80e754670642f2ba5e03539'
+  sha1 '7b56ba18be2f1bec0171e5de4447ba763a264f92'
 
+  depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'gtk+'

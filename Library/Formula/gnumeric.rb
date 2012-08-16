@@ -10,6 +10,7 @@ class Gnumeric < Formula
   depends_on 'intltool'
   depends_on 'goffice'
   depends_on 'rarian'
+  depends_on :x11
 
   def install
     system "./configure", "--disable-dependency-tracking",

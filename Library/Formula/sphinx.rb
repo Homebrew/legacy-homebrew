@@ -21,21 +21,17 @@ class Sphinx < Formula
   end
 
   fails_with :clang do
-    build 318
+    build 421
     cause <<-EOS.undent
-      configure: error: Gcc version error. Minspec is 3.4
-      http://sphinxsearch.com/bugs/view.php?id=1123
-
-      sphinxexpr.cpp:1799:11: error: use of undeclared identifier 'ExprEval'
-      https://github.com/mxcl/homebrew/issues/10016
-      https://github.com/mxcl/homebrew/pull/10698
-      EOS
+      sphinxexpr.cpp:1802:11: error: use of undeclared identifier 'ExprEval'
+    EOS
   end
 
   def options
     [
       ['--mysql', 'Force compiling against MySQL.'],
       ['--pgsql', 'Force compiling against PostgreSQL.'],
+      ['--id64',  'Force compiling with 64-bit ID support'],
     ]
   end
 
@@ -51,6 +47,7 @@ class Sphinx < Formula
 
     # configure script won't auto-select PostgreSQL
     args << "--with-pgsql" if ARGV.include?('--pgsql') or which 'pg_config'
+    args << "--enable-id64" if ARGV.include?('--id64')
     args << "--without-mysql" unless ARGV.include?('--mysql') or which 'mysql_config'
 
     system "./configure", *args
@@ -77,18 +74,3 @@ class Sphinx < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index aebac75..82d6d05 100755
---- a/configure
-+++ b/configure
-@@ -4361,7 +4361,7 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
- 
- #ifdef __GNUC__
- #if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ > 3)
--void main() {}
-+int main() {}
- #else
- syntax error
- #endif

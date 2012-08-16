@@ -2,9 +2,9 @@ require 'formula'
 
 class Help2man < Formula
   homepage 'http://www.gnu.org/software/help2man/'
-  url 'http://ftpmirror.gnu.org/help2man/help2man-1.40.10.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/help2man/help2man-1.40.10.tar.gz'
-  sha256 'f7c85b9af84a87d7da912b62dadf426118841750ed1e4598787a54fddaf82b9c'
+  url 'http://ftpmirror.gnu.org/help2man/help2man-1.40.11.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/help2man/help2man-1.40.11.tar.gz'
+  sha256 '34ad76638facd75d5bbc771a6827d1cbc43c435ae64321fb5a9d7b339a861835'
 
   def install
     # install is not parallel safe

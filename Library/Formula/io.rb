@@ -3,7 +3,7 @@ require 'formula'
 class Io < Formula
   homepage 'http://iolanguage.com/'
   url 'https://github.com/stevedekorte/io/tarball/2011.09.12'
-  md5 'b5c4b4117e43b4bbe571e4e12018535b'
+  sha1 '56720fe9b2c746ca817c15e48023b256363b3015'
 
   head 'https://github.com/stevedekorte/io.git'
 
@@ -11,6 +11,14 @@ class Io < Formula
   depends_on 'ossp-uuid'
   depends_on 'libevent'
   depends_on 'yajl'
+  depends_on 'libffi'
+  depends_on 'pcre'
+
+  # Fix recursive inline. See discussion in:
+  # https://github.com/stevedekorte/io/issues/135
+  def patches
+    DATA
+  end
 
   def install
     ENV.j1
@@ -24,7 +32,19 @@ class Io < Formula
         ohai "Test suite ran successfully:\n#{output}"
       end
       system 'make install'
-      doc.install Dir['docs/*']
     end
   end
 end
+
+__END__
+--- a/libs/basekit/source/Common_inline.h	2011-09-12 17:14:12.000000000 -0500
++++ b/libs/basekit/source/Common_inline.h	2011-12-17 00:46:02.000000000 -0600
+@@ -52,7 +52,7 @@
+ 
+ #if defined(__APPLE__) 
+ 
+-	#define NS_INLINE static __inline__ __attribute__((always_inline))
++	#define NS_INLINE static inline
+ 
+ 	#ifdef IO_IN_C_FILE
+ 		// in .c 

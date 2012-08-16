@@ -1,30 +1,26 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.11.1.tar.gz'
-  sha1 'e2defbf75ff15d7684d70457e41bc45fb22f0e1f'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.11.4.tar.gz'
+  sha1 '032301a87832d738149925ad2912baa554ae2270'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.11.1.tar.gz'
-  sha1 'f7d288033a508f673824a52bc21073232e7c9736'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.11.4.tar.gz'
+  sha1 'ceb4b4699a6561719aa07e01601ed5491206c075'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.7.11.1.tar.gz'
-  sha1 'd09664978931d215e43241689eb09371b509c7ce'
+  url 'http://git-core.googlecode.com/files/git-1.7.11.4.tar.gz'
+  sha1 '36180126eb2048d49b00f6092d83568df4e61c4c'
 
   head 'https://github.com/git/git.git'
 
-  depends_on 'pcre' if ARGV.include? '--with-pcre'
+  depends_on 'pcre' if build.include? 'with-pcre'
 
-  def options
-    [
-      ['--with-blk-sha1', 'compile with the optimized SHA1 implementation'],
-      ['--with-pcre', 'compile with the PCRE library'],
-    ]
-  end
+  option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
+  option 'with-pcre', 'Compile with the PCRE library'
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -39,9 +35,9 @@ class Git < Formula
     # Clean XCode 4.x installs don't include Perl MakeMaker
     ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.lion?
 
-    ENV['BLK_SHA1'] = '1' if ARGV.include? '--with-blk-sha1'
+    ENV['BLK_SHA1'] = '1' if build.include? 'with-blk-sha1'
 
-    if ARGV.include? '--with-pcre'
+    if build.include? 'with-pcre'
       ENV['USE_LIBPCRE'] = '1'
       ENV['LIBPCREDIR'] = HOMEBREW_PREFIX
     end
@@ -72,9 +68,6 @@ class Git < Formula
   end
 
   def caveats; <<-EOS.undent
-    Bash completion has been installed to:
-      #{etc}/bash_completion.d
-
     The OS X keychain credential helper has been installed to:
       #{HOMEBREW_PREFIX}/bin/git-credential-osxkeychain
 
