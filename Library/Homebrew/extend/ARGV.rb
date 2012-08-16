@@ -101,6 +101,11 @@ module HomebrewArgvExtension
     include? '--ignore-dependencies'
   end
 
+  def json
+    json_rev = find {|o| o =~ /--json=.+/}
+    json_rev.split("=").last if json_rev
+  end
+
   def build_head?
     include? '--HEAD'
   end
