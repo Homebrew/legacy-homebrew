@@ -2,8 +2,8 @@ require 'formula'
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.8.6/node-v0.8.6.tar.gz'
-  sha1 '34c7ad2bb5450653748c65840155852d67742258'
+  url 'http://nodejs.org/dist/v0.8.7/node-v0.8.7.tar.gz'
+  sha1 '58ffb5884304e2f8415d8cee7921c42f66fc8d7b'
 
   head 'https://github.com/joyent/node.git'
 
