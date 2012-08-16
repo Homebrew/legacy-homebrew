@@ -31,7 +31,7 @@ class Avidemux < Formula
   # Check if this still exists @ XCode-4.3.4 or 4.4.0.  I think it's fixed then
   # by llvm in clang svn.  So this will have to persist for older clang.
   fails_with :clang do
-    build 318
+    build 421
     cause "error in backend: Couldn't allocate input reg for constraint"
   end unless build.include? 'with-debug'
 
