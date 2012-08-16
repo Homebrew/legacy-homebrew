@@ -53,6 +53,8 @@ class Mapserver < Formula
   def patches
     # Fix clang compilation issue, remove on future release
     # See http://trac.osgeo.org/mapserver/changeset/12809
+    # Fix msGetMarkerSize() called on unloaded pixmap symbol
+    # https://github.com/mapserver/mapserver/issues/4225
     DATA
   end
 
@@ -93,3 +95,18 @@ index 5ff3f20..7a14588 100644
 
          //---------------------------------------------------------------------
          int subpixel_width() const { return m_profile->subpixel_width(); }
+diff --git a/mapsymbol.c b/mapsymbol.c
+index 164a0ac..f9dcb20 100644
+--- a/mapsymbol.c
++++ b/mapsymbol.c
+@@ -601,6 +601,10 @@ int msGetMarkerSize(symbolSetObj *symbolset, styleObj *style, int *width, int *h
+   }
+   
+   symbol = symbolset->symbol[style->symbol];
++  if (symbol->type == MS_SYMBOL_PIXMAP && !symbol->pixmap_buffer) {
++    if (MS_SUCCESS != msPreloadImageSymbol(MS_MAP_RENDERER(symbolset->map), symbol))
++        return MS_FAILURE;
++  }
+   if(style->size == -1) {
+       size = MS_NINT( msSymbolGetDefaultSize(symbol) * scalefactor );
+   }
