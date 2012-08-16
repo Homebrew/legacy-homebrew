@@ -2,8 +2,8 @@ require 'formula'
 
 class Mosquitto < Formula
   homepage 'http://mosquitto.org/'
-  url 'http://mosquitto.org/files/source/mosquitto-1.0.tar.gz'
-  sha1 '5305bcf6e760f03eb60d5542303d153795915994'
+  url 'http://mosquitto.org/files/source/mosquitto-1.0.1.tar.gz'
+  sha1 'f676c07885d3f76745acddce9f73ae395758ffc7'
 
   # mosquitto requires OpenSSL >=1.0 for TLS support
   depends_on 'openssl' => :build
@@ -13,22 +13,7 @@ class Mosquitto < Formula
 
   def options
     [
-      ["--with-python", "Build and install Python bindings."],
-    ]
-  end
-
-  def patches
-    [
-      # fix TLS-PSK support in CMake build
-      # fix man page installation and content
-      # fix python callbacks and parameters
-      'https://bitbucket.org/oojah/mosquitto/changeset/c94726931053/raw/',
-      'https://bitbucket.org/oojah/mosquitto/changeset/794fa854bbcd/raw/',
-      'https://bitbucket.org/oojah/mosquitto/changeset/5071b1dbca1c/raw/',
-      'https://bitbucket.org/oojah/mosquitto/changeset/b46eb93f7aa2/raw/',
-      'https://bitbucket.org/oojah/mosquitto/changeset/8a87b245b076/raw/',
-      'https://bitbucket.org/oojah/mosquitto/changeset/ec720e7f2828/raw/',
-      'https://bitbucket.org/oojah/mosquitto/changeset/3d49417ee6af/raw/'
+      ["--with-python", "Build and install Python bindings (alternative to pip install mosquitt"],
     ]
   end
 
@@ -41,7 +26,7 @@ class Mosquitto < Formula
     system "cmake", ".", *std_cmake_args
     system "make install"
 
-    # Install Python bindings
+    # Install Python bindings (optional - since also available via pypi)
     cd "lib/python" do
       system "python", "setup.py", "build"
       system "python", "setup.py", "install", "--prefix=#{prefix}"
@@ -71,7 +56,13 @@ class Mosquitto < Formula
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Start the broker manually by running:
-        mosquitto
+        mosquitto -c #{etc}/mosquitto/mosquitto.conf
+
+    Python client bindings may also be installed from the Python Package Index via
+        pip install mosquitto
+
+    Javascript client is available via
+        http://mosquitto.org/js/
       EOD
   end
 
