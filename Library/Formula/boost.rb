@@ -19,14 +19,15 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.49.0/boost_1_49_0.tar.bz2'
-  sha1 '26a52840e9d12f829e3008589abf0a925ce88524'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.50.0/boost_1_50_0.tar.bz2'
+  sha1 'ee06f89ed472cf369573f8acf9819fbc7173344e'
 
   head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
-    sha1 '6b706780670a8bec5b3e0355f5dfeeaa37d9a41e' => :lion
-    sha1 '46945515d520009fbbc101e4ae19f28db1433752' => :snowleopard
+    sha1 '06c7e19ec8d684c35fb035e6326df6393e46dce2' => :mountainlion
+    sha1 '25ef1d7af5f6f9783313370fd8115902b24c5eeb' => :lion
+    sha1 '4508c9afcb14a15b6b3c7db4cdfb7bd3f8e1c9bc' => :snowleopard
   end
 
   option :universal
