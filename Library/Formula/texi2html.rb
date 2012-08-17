@@ -8,10 +8,8 @@ class Texi2html < Formula
   keg_only :provided_by_osx unless MacOS.mountain_lion?
 
   def install
-    # The install-sh, used if ginstall is not present, isn't executable!
-    chmod 0744, "install-sh"
-
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--mandir=#{man}", "--infodir=#{info}"
     system "make install"
   end
 
