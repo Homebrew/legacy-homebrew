@@ -16,6 +16,19 @@ module MacOS::Xcode extend self
     folder == "/"
   end
 
+  def latest_version
+    case MacOS.version
+      when 10.5 then "3.1.4"
+      when 10.6 then "3.2.6"
+    else
+      if MacOS.version >= 10.7
+        "4.4.1"
+      else
+        raise "Mac OS X `#{MacOS.version}' is invalid"
+      end
+    end
+  end
+
   def prefix
     @prefix ||= begin
       path = Pathname.new folder
@@ -142,6 +155,11 @@ module MacOS::CLT extend self
   # the user has installed the "Command Line Tools for Xcode" package.
   def installed?
     MacOS.dev_tools_path == Pathname.new("/usr/bin")
+  end
+
+  def latest_version?
+    `/usr/bin/clang -v` =~ %r{tags/Apple/clang-(\d+).(\d+).(\d+)}
+    $1 >= 421 and $3 >= 57
   end
 
   def version
