@@ -35,12 +35,14 @@ class Mysql < Formula
 
   skip_clean :all # So "INSTALL PLUGIN" can work.
 
-  # Remove optimization flags from `mysql_config --cflags`
-  # This facilitates easy compilation of gems using a brewed mysql
-  # Also fix compilation with Xcode and no CLT: http://bugs.mysql.com/bug.php?id=66001
+  # Fix compilation with Xcode and no CLT: http://bugs.mysql.com/bug.php?id=66001
   def patches; DATA; end
 
   def install
+    # Build without compiler or CPU specific optimization flags to facilitate
+    # compilation of gems and other software that queries `mysql-config`.
+    ENV.minimal_optimization
+
     # Make sure the var/mysql directory exists
     (var+"mysql").mkpath
 
@@ -170,23 +172,7 @@ class Mysql < Formula
   end
 end
 
-
 __END__
-diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
-index 9296075..70c18db 100644
---- a/scripts/mysql_config.sh
-+++ b/scripts/mysql_config.sh
-@@ -137,7 +137,9 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNIV_MUST_NOT_INLINE DFORCE_INIT_OF_VARS \
-               DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
-               'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
-               Xa xstrconst "xc99=none" AC99 \
--              unroll2 ip mp restrict
-+              unroll2 ip mp restrict \
-+              mmmx 'msse[0-9.]*' 'mfpmath=sse' w pipe 'fomit-frame-pointer' 'mmacosx-version-min=10.[0-9]' \
-+              aes Os
- do
-   # The first option we might strip will always have a space before it because
-   # we set -I$pkgincludedir as the first option
 diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
 index 89a9de9..677c68d 100644
 --- a/cmake/libutils.cmake
