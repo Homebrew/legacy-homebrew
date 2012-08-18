@@ -16,7 +16,7 @@ class FormulaInstaller
     @f = ff
     @tab = tab
     @show_header = true
-    @ignore_deps = ARGV.include? '--ignore-dependencies' || ARGV.interactive?
+    @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @install_bottle = install_bottle? ff
 
     check_install_sanity
