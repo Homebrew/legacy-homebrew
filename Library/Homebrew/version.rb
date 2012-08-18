@@ -1,3 +1,38 @@
+class VersionElement
+  include Comparable
+
+  attr_reader :elem
+
+  def initialize elem
+    elem = elem.to_s.downcase
+    @elem = case elem
+      when 'a', 'alpha' then 'alpha'
+      when 'b', 'beta' then 'beta'
+      when /\d+/ then elem.to_i
+      else elem
+      end
+  end
+
+  def <=>(other)
+    return unless other.is_a? VersionElement
+    return -1 if string? and other.numeric?
+    return 1 if numeric? and other.string?
+    return elem <=> other.elem
+  end
+
+  def to_s
+    @elem.to_s
+  end
+
+  def string?
+    @elem.is_a? String
+  end
+
+  def numeric?
+    @elem.is_a? Numeric
+  end
+end
+
 class Version
   include Comparable
 
@@ -11,30 +46,47 @@ class Version
     @detected_from_url
   end
 
+  def to_a
+    @array ||= @version.scan(/\d+|[a-zA-Z]+/).map { |e| VersionElement.new(e) }
+  end
+
   def head?
     @version == 'HEAD'
   end
 
-  def nums
-    @version.scan(/\d+/).map { |d| d.to_i }
+  def devel?
+    alpha? or beta? or rc?
+  end
+
+  def alpha?
+    to_a.any? { |e| e.to_s == 'alpha' }
+  end
+
+  def beta?
+    to_a.any? { |e| e.to_s == 'beta' }
+  end
+
+  def rc?
+    to_a.any? { |e| e.to_s == 'rc' }
   end
 
   def <=>(other)
-    return nil unless other.is_a? Version
-    return 0 if self.head? and other.head?
-    return 1 if self.head? and not other.head?
-    return -1 if not self.head? and other.head?
-    return 1 if other.nil?
+    # Return nil if objects aren't comparable
+    return unless other.is_a? Version
+    # Versions are equal if both are HEAD
+    return  0 if head? and other.head?
+    # HEAD is greater than any numerical version
+    return  1 if head? and not other.head?
+    return -1 if not head? and other.head?
 
-    snums = self.nums
-    onums = other.nums
+    stuple, otuple = to_a, other.to_a
 
-    count = [snums.length, onums.length].max
+    max = [stuple.length, otuple.length].max
 
-    snums.fill(0, snums.length, count - snums.length)
-    onums.fill(0, onums.length, count - onums.length)
+    stuple.fill(VersionElement.new(0), stuple.length, max - stuple.length)
+    otuple.fill(VersionElement.new(0), otuple.length, max - otuple.length)
 
-    snums <=> onums
+    stuple <=> otuple
   end
 
   def to_s
