@@ -39,6 +39,17 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert v == :snow_leopard
     assert v < :lion
   end
+
+  def test_version_interrogation
+    v = Version.new("1.1alpha1")
+    assert v.alpha?
+    v = Version.new("1.0beta2")
+    assert v.devel?
+    assert v.beta?
+    v = Version.new("1.0rc-1")
+    assert v.devel?
+    assert v.rc?
+  end
 end
 
 class VersionParsingTests < Test::Unit::TestCase
