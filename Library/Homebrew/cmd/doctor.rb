@@ -206,49 +206,27 @@ end
 
 def check_for_latest_xcode
   if not MacOS::Xcode.installed?
-    # no Xcode, now it depends on the OS X version...
-    if MacOS.version >= 10.7 then
+    if MacOS.version >= 10.7
       if not MacOS::CLT.installed?
-        return <<-EOS.undent
-          No Xcode version found!
-          No compiler found in /usr/bin!
-
-          To fix this, either:
-          - Install the "Command Line Tools for Xcode" from http://connect.apple.com/
-            Homebrew does not require all of Xcode, you only need the CLI tools package!
-            (However, you need a (free) Apple Developer ID.)
-          - Install Xcode from the Mac App Store. (Normal Apple ID is sufficient, here)
+        <<-EOS.undent
+        No developer tools installed
+        You should install the Command Line Tools: http://connect.apple.com
         EOS
-      else
-        return <<-EOS.undent
-          Experimental support for using the "Command Line Tools" without Xcode.
-          Some formulae need Xcode to be installed (for the Frameworks not in the CLT.)
+      elsif not MacOS::CLT.latest_version?
+        <<-EOS.undent
+        A newer Command Line Tools for Xcode release is avaliable
+        You should install the latest version from: http://connect.apple.com
         EOS
       end
     else
-      # older Mac systems should just install their old Xcode. We don't advertize the CLT.
-      return <<-EOS.undent
-        We couldn't detect any version of Xcode.
-        If you downloaded Xcode from the App Store, you may need to run the installer.
+      <<-EOS.undent
+      Xcode not installed
+      Most stuff needs Xcode to build: http://developer.apple.com/xcode/
       EOS
     end
-  end
-
-  latest_xcode = case MacOS.version
-    when 10.5 then "3.1.4"
-    when 10.6 then "3.2.6"
-    when 10.7 then "4.3.3"
-    when 10.8 then "4.4"
-    else nil
-  end
-  if latest_xcode.nil?
-    return <<-EOS.undent
-    Not sure what version of Xcode is the latest for OS X #{MacOS.version}.
-    EOS
-  end
-  if MacOS::Xcode.installed? and MacOS::Xcode.version < latest_xcode then <<-EOS.undent
-    You have Xcode-#{MacOS::Xcode.version}, which is outdated.
-    Please install Xcode #{latest_xcode}.
+  elsif MacOS::Xcode.version < MacOS::Xcode.latest_version then <<-EOS.undent
+    Your Xcode (#{MacOS::Xcode.version}) is outdated
+    Please install Xcode #{MacOS::Xcode.latest_version}.
     EOS
   end
 end
