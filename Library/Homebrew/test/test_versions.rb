@@ -15,20 +15,22 @@ class VersionComparisonTests < Test::Unit::TestCase
   include VersionAssertions
 
   def test_version_comparisons
-    assert_version_comparison '0.1', '==', '0.1.0'
-    assert_version_comparison '0.1', '!=', '0.2'
-    assert_version_comparison '1.2.3', '>', '1.2.2'
-    assert_version_comparison '1.2.3-p34', '>', '1.2.3-p33'
-    assert_version_comparison '1.2.4', '<', '1.2.4.1'
-    assert_version_comparison 'HEAD', '==', 'HEAD'
-    assert_version_comparison 'HEAD', '>', '1.2.3'
-    assert_version_comparison '1.2.3', '<', 'HEAD'
-    assert_version_comparison '3.2.0b4', '<', '3.2.0'
-    assert_version_comparison '1.0beta6', '<', '1.0b7'
-    assert_version_comparison '1.0b6', '<', '1.0beta7'
-    assert_version_comparison '1.1alpha4', '<', '1.1beta2'
-    assert_version_comparison '1.1beta2', '<', '1.1rc1'
-    assert_nil Version.new('1.0') <=> 'foo'
+    assert_equal 0,  version('0.1') <=> version('0.1.0')
+    assert_equal -1, version('0.1') <=> version('0.2')
+    assert_equal 1,  version('1.2.3') <=> version('1.2.2')
+    assert_equal 1,  version('1.2.3-p34') <=> version('1.2.3-p33')
+    assert_equal -1, version('1.2.4') <=> version('1.2.4.1')
+    assert_equal 0,  version('HEAD') <=> version('HEAD')
+    assert_equal 1,  version('HEAD') <=> version('1.2.3')
+    assert_equal -1, version('1.2.3') <=> version('HEAD')
+    assert_equal -1, version('3.2.0b4') <=> version('3.2.0')
+    assert_equal -1, version('1.0beta6') <=> version('1.0b7')
+    assert_equal -1, version('1.0b6') <=> version('1.0beta7')
+    assert_equal -1, version('1.1alpha4') <=> version('1.1beta2')
+    assert_equal -1, version('1.1beta2') <=> version('1.1rc1')
+    assert_equal -1, version('1.0.0beta7') <=> version('1.0.0')
+    assert_equal 1,  version('3.2.1') <=> version('3.2beta4')
+    assert_nil version('1.0') <=> 'foo'
   end
 
   def test_macos_version_comparison
@@ -45,7 +47,7 @@ class VersionParsingTests < Test::Unit::TestCase
   def test_pathname_version
     d = HOMEBREW_CELLAR/'foo-0.1.9'
     d.mkpath
-    assert_version_equal '0.1.9', d.version
+    assert_equal 0, version('0.1.9') <=> d.version
   end
 
   def test_no_version
