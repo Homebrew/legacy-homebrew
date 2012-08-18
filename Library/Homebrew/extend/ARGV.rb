@@ -89,6 +89,10 @@ module HomebrewArgvExtension
     include?('--dry-run') || switch?('n')
   end
 
+  def ignore_deps?
+    include? '--ignore-dependencies'
+  end
+
   def build_head?
     include? '--HEAD'
   end
