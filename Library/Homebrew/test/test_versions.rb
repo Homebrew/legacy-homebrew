@@ -23,6 +23,12 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert_version_comparison 'HEAD', '==', 'HEAD'
     assert_version_comparison 'HEAD', '>', '1.2.3'
     assert_version_comparison '1.2.3', '<', 'HEAD'
+    assert_version_comparison '3.2.0b4', '<', '3.2.0'
+    assert_version_comparison '1.0beta6', '<', '1.0b7'
+    assert_version_comparison '1.0b6', '<', '1.0beta7'
+    assert_version_comparison '1.1alpha4', '<', '1.1beta2'
+    assert_version_comparison '1.1beta2', '<', '1.1rc1'
+    assert_nil Version.new('1.0') <=> 'foo'
   end
 
   def test_macos_version_comparison
