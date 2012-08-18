@@ -71,8 +71,7 @@ module MacOS extend self
     else
       # Since we are pretty unrelenting in finding Xcode no matter where
       # it hides, we can now throw in the towel.
-      opoo "You really should consult the `brew doctor`!"
-      ""
+      opoo "Could not locate developer tools. Consult `brew doctor`."
     end
   end
 
