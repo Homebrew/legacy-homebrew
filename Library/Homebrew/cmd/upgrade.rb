@@ -21,7 +21,9 @@ module Homebrew extend self
       Homebrew.outdated_brews
     else
       ARGV.formulae.select do |f|
-        unless f.rack.exist? and not f.rack.children.empty?
+        if f.installed?
+          onoe "#{f}-#{f.installed_version} already installed"
+        elsif not f.rack.exist? or f.rack.children.empty?
           onoe "#{f} not installed"
         else
           true
