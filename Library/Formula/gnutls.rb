@@ -8,7 +8,8 @@ class Gnutls < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libgcrypt'
-  depends_on 'libtasn1' => :optional
+  depends_on 'libtasn1'
+  depends_on 'p11-kit'
 
   fails_with :llvm do
     build 2326
@@ -24,8 +25,7 @@ class Gnutls < Formula
                           "--disable-guile",
                           "--disable-static",
                           "--prefix=#{prefix}",
-                          "--with-libgcrypt",
-                          "--without-p11-kit"
+                          "--with-libgcrypt"
     system "make install"
 
     # certtool shadows the OS X certtool utility
