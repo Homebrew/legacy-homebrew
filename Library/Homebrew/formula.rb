@@ -105,6 +105,11 @@ class Formula
     end
   end
 
+  def installed_version
+    require 'keg'
+    Keg.new(installed_prefix).version
+  end
+
   def prefix
     validate_variable :name
     validate_variable :version
