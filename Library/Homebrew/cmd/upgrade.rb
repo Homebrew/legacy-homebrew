@@ -29,7 +29,7 @@ module Homebrew extend self
       end
     end
 
-    unless ARGV.include? '--ignore-dependencies'
+    unless ARGV.ignore_deps?
       # Expand the outdated list to include outdated dependencies then sort and
       # reduce such that dependencies are installed first and installation is not
       # attempted twice. Sorting is implicit the way `recursive_deps` returns
