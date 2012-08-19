@@ -1,8 +1,9 @@
 require 'formula'
 
 class FlexSdk < Formula
-  url 'http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4.6/flex_sdk_4.6.0.23201_mpl.zip'
   homepage 'http://opensource.adobe.com/wiki/display/flexsdk/Flex+SDK'
+  url 'http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4.6/flex_sdk_4.6.0.23201_mpl.zip'
+  version '4.6.0.23201'
   md5 'ff7b362fff908b620573405510541ce0'
 
   def install

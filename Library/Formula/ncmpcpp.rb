@@ -1,8 +1,8 @@
 require 'formula'
 
 class Ncmpcpp < Formula
-  homepage 'http://unkart.ovh.org/ncmpcpp/'
-  url 'http://unkart.ovh.org/ncmpcpp/ncmpcpp-0.5.10.tar.bz2'
+  homepage 'http://ncmpcpp.rybczak.net/'
+  url 'http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.5.10.tar.bz2'
   sha1 '5e34733e7fbaf2862f04fdf8af8195ce860a9014'
 
   depends_on 'pkg-config' => :build
