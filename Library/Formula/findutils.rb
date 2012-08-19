@@ -9,7 +9,7 @@ class Findutils < Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--program-prefix=g",
                           "--disable-dependency-tracking", "--disable-debug",
-                          "--localstatedir=#{HOMEBREW_PREFIX}/var/locate"
+                          "--localstatedir=#{var}/locate"
     system "make install"
   end
 end
