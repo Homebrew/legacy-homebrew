@@ -377,20 +377,22 @@ class Formula
     else
       name = Formula.canonical_name(name)
       # If name was a path or mapped to a cached formula
-      if name.include? "/"
-        require name
 
+      if name.include? "/"
         # require allows filenames to drop the .rb extension, but everything else
         # in our codebase will require an exact and fullpath.
         name = "#{name}.rb" unless name =~ /\.rb$/
 
         path = Pathname.new(name)
         name = path.stem
+
+        require path unless Object.const_defined? self.class_s(name)
+
         install_type = :from_path
         target_file = path.to_s
       else
         # For names, map to the path and then require
-        require Formula.path(name)
+        require Formula.path(name) unless Object.const_defined? self.class_s(name)
         install_type = :from_name
       end
     end
