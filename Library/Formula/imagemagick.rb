@@ -64,7 +64,7 @@ class Imagemagick < Formula
       ['--use-exr', 'Compile with openexr support.'],
       ['--disable-openmp', 'Disable OpenMP.'],
       ['--enable-hdri', 'Compile with HDRI support enabled'],
-      ['--with-magick-plus-plus', 'Compile with C++ interface.'],
+      ['--without-magick-plus-plus', "Don't compile C++ interface."],
       ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
       ['--with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'],
       ['--with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'],
@@ -84,7 +84,7 @@ class Imagemagick < Formula
     args << "--without-gslib" unless ARGV.include? '--with-ghostscript'
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
-    args << "--without-magick-plus-plus" unless ARGV.include? '--with-magick-plus-plus'
+    args << "--without-magick-plus-plus" if ARGV.include? '--without-magick-plus-plus'
     args << "--enable-hdri=yes" if ARGV.include? '--enable-hdri'
 
     if ARGV.include? '--with-quantum-depth-32'

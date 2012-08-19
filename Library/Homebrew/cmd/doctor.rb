@@ -764,9 +764,8 @@ end
 def check_missing_deps
   return unless HOMEBREW_CELLAR.exist?
   s = Set.new
-  missing_deps = Homebrew.find_missing_brews(Homebrew.installed_brews)
-  missing_deps.each do |m|
-    s.merge m[1]
+  Homebrew.missing_deps(Homebrew.installed_brews).each do |_, deps|
+    s.merge deps
   end
 
   if s.length > 0 then <<-EOS.undent
@@ -796,7 +795,7 @@ def check_git_status
 end
 
 def check_for_leopard_ssl
-  if MacOS.leopard? and not ENV['GIT_SSL_NO_VERIFY']
+  if MacOS.version == :leopard and not ENV['GIT_SSL_NO_VERIFY']
     <<-EOS.undent
       The version of libcurl provided with Mac OS X Leopard has outdated
       SSL certificates.

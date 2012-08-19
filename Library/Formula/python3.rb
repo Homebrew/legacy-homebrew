@@ -67,9 +67,20 @@ class Python3 < Formula
   end
 
   def install
-    args = [ "--prefix=#{prefix}",
-             "--enable-ipv6",
-             "--enable-framework=#{prefix}/Frameworks" ]
+    args = %W[--prefix=#{prefix}
+             --enable-ipv6
+             --datarootdir=#{share}
+             --datadir=#{share}
+             --enable-framework=#{prefix}/Frameworks
+           ]
+
+    args << '--without-gcc' if ENV.compiler == :clang
+
+    # Don't use optimizations other than "-Os" here, because Python's distutils
+    # remembers (hint: `python-config --cflags`) and reuses them for C
+    # extensions which can break software (such as scipy 0.11 fails when
+    # "-msse4" is present.)
+    ENV.minimal_optimization
 
     # We need to enable warnings because the configure.in uses -Werror to detect
     # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
@@ -78,7 +89,6 @@ class Python3 < Formula
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
       ENV.append_to_cflags '-Wno-unused-value'
       ENV.append_to_cflags '-Wno-empty-body'
-      ENV.append_to_cflags '-Qunused-arguments'
     end
 
     # Allow sqlite3 module to load extensions:
@@ -111,9 +121,6 @@ class Python3 < Formula
     # "python3" and executable is forgotten for framework builds.
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python3.2", "#{bin}/python3" unless (bin/"python3").exist?
-
-    # Python 2 has a 2to3, too. (https://github.com/mxcl/homebrew/issues/12581)
-    rm bin/"2to3" if (HOMEBREW_PREFIX/"bin/2to3").exist? and (bin/"2to3").exist?
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
@@ -168,7 +175,7 @@ class Python3 < Formula
       See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
     EOS
 
-    text += tk_caveats unless MacOS.lion_or_newer?
+    text += tk_caveats unless MacOS.version >= :lion
     text += general_caveats
     return text
   end

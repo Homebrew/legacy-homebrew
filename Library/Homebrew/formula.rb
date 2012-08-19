@@ -105,10 +105,15 @@ class Formula
     end
   end
 
+  def installed_version
+    require 'keg'
+    Keg.new(installed_prefix).version
+  end
+
   def prefix
     validate_variable :name
     validate_variable :version
-    HOMEBREW_CELLAR+@name+@version
+    HOMEBREW_CELLAR/@name/@version
   end
   def rack; prefix.parent end
 
@@ -372,20 +377,22 @@ class Formula
     else
       name = Formula.canonical_name(name)
       # If name was a path or mapped to a cached formula
-      if name.include? "/"
-        require name
 
+      if name.include? "/"
         # require allows filenames to drop the .rb extension, but everything else
         # in our codebase will require an exact and fullpath.
         name = "#{name}.rb" unless name =~ /\.rb$/
 
         path = Pathname.new(name)
         name = path.stem
+
+        require path unless Object.const_defined? self.class_s(name)
+
         install_type = :from_path
         target_file = path.to_s
       else
         # For names, map to the path and then require
-        require Formula.path(name)
+        require Formula.path(name) unless Object.const_defined? self.class_s(name)
         install_type = :from_name
       end
     end
@@ -543,7 +550,7 @@ private
 
   def validate_variable name
     v = instance_variable_get("@#{name}")
-    raise "Invalid @#{name}" if v.to_s.empty? or v =~ /\s/
+    raise "Invalid @#{name}" if v.to_s.empty? or v.to_s =~ /\s/
   end
 
   def set_instance_variable(type)
