@@ -1,9 +1,9 @@
 require 'formula'
 
 class Scons < Formula
-  url 'http://downloads.sourceforge.net/project/scons/scons/2.1.0/scons-2.1.0.tar.gz'
+  url 'http://prdownloads.sourceforge.net/scons/scons-2.2.0.tar.gz'
   homepage 'http://www.scons.org'
-  md5 '47daf989e303a045b76c11236df719df'
+  md5 'f737f474a02d08156c821bd2d4d4b632'
 
   def install
     man1.install gzip('scons-time.1', 'scons.1', 'sconsign.1')
