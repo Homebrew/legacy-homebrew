@@ -22,6 +22,8 @@ end
 # separate TestCase classes.
 
 class BeerTasting < Test::Unit::TestCase
+  include VersionAssertions
+
   def test_supported_compressed_types
     assert_nothing_raised do
       MockFormula.new 'test-0.1.tar.gz'
@@ -129,12 +131,6 @@ class BeerTasting < Test::Unit::TestCase
     assert_equal 10.7, f+0.1
   end
 
-  def test_pathname_version
-    d=HOMEBREW_CELLAR+'foo-0.1.9'
-    d.mkpath
-    assert_equal '0.1.9', d.version
-  end
-
   def test_pathname_plus_yeast
     nostdout do
       assert_nothing_raised do
@@ -176,12 +172,12 @@ class BeerTasting < Test::Unit::TestCase
 
     assert_equal '.tar.gz', foo1.extname
     assert_equal 'foo-0.1', foo1.stem
-    assert_equal '0.1', foo1.version
+    assert_version_equal '0.1', foo1.version
 
     foo1 = HOMEBREW_CACHE/'foo-0.1.cpio.gz'
     assert_equal '.cpio.gz', foo1.extname
     assert_equal 'foo-0.1', foo1.stem
-    assert_equal '0.1', foo1.version
+    assert_version_equal '0.1', foo1.version
   end
 
   class MockMockFormula < Struct.new(:name); end

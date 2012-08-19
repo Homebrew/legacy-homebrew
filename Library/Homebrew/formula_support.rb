@@ -1,5 +1,6 @@
 require 'download_strategy'
 require 'checksums'
+require 'version'
 
 class SoftwareSpec
   attr_reader :checksum, :mirrors, :specs
@@ -8,11 +9,6 @@ class SoftwareSpec
     @url = url
     @version = version
     @mirrors = []
-  end
-
-  # Was the version defined in the DSL, or detected from the URL?
-  def explicit_version?
-    @explicit_version || false
   end
 
   def download_strategy
@@ -49,21 +45,21 @@ class SoftwareSpec
   def url val=nil, specs=nil
     return @url if val.nil?
     @url = val
-    if specs.nil?
-      @using = nil
-    else
+    unless specs.nil?
       @using = specs.delete :using
       @specs = specs
     end
   end
 
   def version val=nil
-    unless val.nil?
-      @version = val
-      @explicit_version = true
-    end
-    @version ||= Pathname.new(@url).version
-    return @version
+    @version ||= case val
+      when nil then Version.parse(@url)
+      when Hash
+        key, value = val.shift
+        scheme = VersionSchemeDetector.new(value).detect
+        scheme.new(key)
+      else Version.new(val)
+      end
   end
 
   def mirror val
@@ -73,7 +69,7 @@ class SoftwareSpec
 end
 
 class HeadSoftwareSpec < SoftwareSpec
-  def initialize url=nil, version='HEAD'
+  def initialize url=nil, version=Version.new(:HEAD)
     super
   end
 
@@ -120,7 +116,7 @@ class Bottle < SoftwareSpec
   # as accessor for @version to preserve the interface
   def version val=nil
     if val.nil?
-      return @version ||= Pathname.new(@url).version
+      return @version ||= Version.parse(@url)
     else
       @revision = val
     end

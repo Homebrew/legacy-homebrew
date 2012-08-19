@@ -105,10 +105,15 @@ class Formula
     end
   end
 
+  def installed_version
+    require 'keg'
+    Keg.new(installed_prefix).version
+  end
+
   def prefix
     validate_variable :name
     validate_variable :version
-    HOMEBREW_CELLAR+@name+@version
+    HOMEBREW_CELLAR/@name/@version
   end
   def rack; prefix.parent end
 
@@ -543,7 +548,7 @@ private
 
   def validate_variable name
     v = instance_variable_get("@#{name}")
-    raise "Invalid @#{name}" if v.to_s.empty? or v =~ /\s/
+    raise "Invalid @#{name}" if v.to_s.empty? or v.to_s =~ /\s/
   end
 
   def set_instance_variable(type)
