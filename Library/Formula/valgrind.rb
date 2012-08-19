@@ -2,6 +2,7 @@ require 'formula'
 
 class Valgrind < Formula
   homepage 'http://www.valgrind.org/'
+  head 'svn://svn.valgrind.org/valgrind/trunk'
 
   # Valgrind 3.7.0 drops support for OS X 10.5
   if MACOS_VERSION >= 10.6
