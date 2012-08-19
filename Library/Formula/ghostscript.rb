@@ -3,13 +3,13 @@ require 'formula'
 class GhostscriptFonts < Formula
   homepage 'http://sourceforge.net/projects/gs-fonts/'
   url 'http://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
-  md5 '6865682b095f8c4500c54b285ff05ef6'
+  sha1 '2a7198e8178b2e7dba87cb5794da515200b568f5'
 end
 
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
-  url 'http://downloads.ghostscript.com/public/ghostscript-9.05.tar.gz'
-  md5 'f7c6f0431ca8d44ee132a55d583212c1'
+  url 'http://downloads.ghostscript.com/public/ghostscript-9.06.tar.gz'
+  sha1 'a3de8ccb877ee9b7437a598196eb6afa11bf31dc'
 
   head 'git://git.ghostscript.com/ghostpdl.git'
 
