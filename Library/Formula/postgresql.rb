@@ -7,7 +7,7 @@ class Postgresql < Formula
 
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
-  depends_on 'ossp-uuid'
+  depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
 
   option '32-bit'
   option 'without-ossp-uuid', 'Build without OSSP uuid'
