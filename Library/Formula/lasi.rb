@@ -13,7 +13,10 @@ class Lasi < Formula
   depends_on 'doxygen'
 
   def install
-    system "cmake", ".", *std_cmake_args
+    # None is valid, but lasi's CMakeFiles doesn't think so for some reason
+    args = std_cmake_args - %w{-DCMAKE_BUILD_TYPE=None}
+
+    system "cmake", ".", "-DCMAKE_BUILD_TYPE=Release", *args
     system "make install"
   end
 end
