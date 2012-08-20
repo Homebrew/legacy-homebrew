@@ -61,7 +61,8 @@ begin
              'abv' => :info,
              'dr' => :doctor,
              '--repo' => '--repository',
-             'environment' => '--env'  # same as gem
+             'environment' => '--env',  # same as gem
+             'find' => :search
              }
 
   cmd = ARGV.shift
