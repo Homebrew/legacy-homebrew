@@ -12,13 +12,9 @@ class Coreutils < Formula
     system "./configure", "--prefix=#{prefix}", "--program-prefix=g"
     system "make install"
 
-    # set installed binaries
-    commands = coreutils_bins
-
-    # create a gnubin dir that has all the commands without program-prefix
-    (libexec+'gnubin').mkpath
-    commands.each do |cmd|
-      ln_sf "../../bin/g#{cmd}", libexec+"gnubin/#{cmd}"
+    # Symlink all commands into libexec/gnubin without the 'g' prefix
+    coreutils_bins.each do |cmd|
+      (libexec/'gnubin').install_symlink bin/"g#{cmd}" => cmd
     end
   end
 
@@ -33,13 +29,11 @@ class Coreutils < Formula
   end
 
   def coreutils_bins
-    require 'find'
-    bin_path = prefix+'bin'
-    commands = Array.new
-    Find.find(bin_path) do |path|
-      next if path == bin_path or File.basename(path) == '.DS_Store'
-      commands << File.basename(path).sub(/^g/,'')
+    commands = []
+    bin.find do |path|
+      next if path.directory? or path.basename.to_s == '.DS_Store'
+      commands << path.basename.to_s.sub(/^g/,'')
     end
-    return commands.sort
+    commands.sort
   end
 end
