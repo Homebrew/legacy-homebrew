@@ -2,8 +2,8 @@ require 'formula'
 
 class GitCola < Formula
   homepage 'http://git-cola.github.com/'
-  url 'https://github.com/git-cola/git-cola/tarball/v1.7.7'
-  md5 'c48e597494851f8fd8b1829bd0291443'
+  url 'https://github.com/git-cola/git-cola/tarball/v1.8.0'
+  md5 'bbf727c0853ec4140684c2ddb5fd9cf2'
   head 'https://github.com/git-cola/git-cola.git'
 
   depends_on 'pyqt'
