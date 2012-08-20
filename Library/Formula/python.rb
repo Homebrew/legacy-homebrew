@@ -2,9 +2,9 @@ require 'formula'
 
 class TkCheck < Requirement
   def message; <<-EOS.undent
-    Tk.framework detected in /Library/Frameworks
-    and that can make python builds to fail.
-    https://github.com/mxcl/homebrew/issues/11602
+    Tk.framework was detected in /Library/Frameworks
+    This can cause Python builds to fail. See:
+      https://github.com/mxcl/homebrew/issues/11602
     EOS
   end
 
