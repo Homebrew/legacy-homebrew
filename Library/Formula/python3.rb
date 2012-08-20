@@ -24,9 +24,9 @@ class Python3 < Formula
 
   depends_on TkCheck.new
   depends_on 'pkg-config' => :build
-  depends_on 'readline' => :optional  # Prefer over OS X's libedit
-  depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
-  depends_on 'gdbm'     => :optional
+  depends_on 'readline' => :recommended
+  depends_on 'sqlite' => :recommended
+  depends_on 'gdbm' => :recommended
   depends_on :x11 # tk.h includes X11/Xlib.h and X11/X.h
 
   option 'quicktest', 'Run `make quicktest` after the build'
