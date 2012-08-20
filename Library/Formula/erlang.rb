@@ -60,6 +60,11 @@ class Erlang < Formula
     ]
   end
 
+  def patches
+    # fixes https://github.com/mxcl/homebrew/issues/14291
+    DATA
+  end
+
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
 
@@ -118,3 +123,18 @@ class Erlang < Formula
     end
   end
 end
+
+__END__
+diff --git a/erts/emulator/utils/make_preload b/erts/emulator/utils/make_preload
+index 13019d4..a3ea191 100755
+--- a/erts/emulator/utils/make_preload
++++ b/erts/emulator/utils/make_preload
+@@ -19,6 +19,7 @@
+ #
+ use strict;
+ use File::Basename;
++use bytes;
+ 
+ #
+ # Description:
+
