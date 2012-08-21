@@ -46,6 +46,7 @@ class Fuse4xKext < Formula
       must be installed by the root user:
 
         sudo cp -rfX #{kext_prefix}/fuse4x.kext /Library/Extensions
+        sudo chmod -R a+rX /Library/Extensions/fuse4x.kext
         sudo chmod +s /Library/Extensions/fuse4x.kext/Support/load_fuse4x
 
       If upgrading from a previous version of Fuse4x, the old kernel extension
