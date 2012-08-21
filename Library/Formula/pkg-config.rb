@@ -21,10 +21,17 @@ class PkgConfig < Formula
         /usr/local/lib/pkgconfig
         /usr/lib/pkgconfig
       ].uniq
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--with-pc-path=#{paths*':'}",
-                          "--with-internal-glib"
+
+    args = %W[
+        --disable-debug
+        --prefix=#{prefix}
+        --with-pc-path=#{paths*':'}
+        --with-internal-glib
+      ]
+    args << "CC=#{ENV.cc} #{ENV.cflags}" unless MacOS::CLT.installed?
+
+    system "./configure", *args
+
     system "make"
     system "make check"
     system "make install"

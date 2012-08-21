@@ -238,19 +238,14 @@ Please take one of the following actions:
     v = v.to_s
     remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
     self['MACOSX_DEPLOYMENT_TARGET'] = nil
-    remove 'CPPFLAGS', "-isystem #{HOMEBREW_PREFIX}/include"
+    self['CPATH'] = nil
     remove 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
     sdk = MacOS.sdk_path(v)
     unless sdk.nil? or MacOS::CLT.installed?
       self['SDKROOT'] = nil
-      remove 'CPPFLAGS', "-isysroot #{sdk}"
-      remove 'CPPFLAGS', "-isystem #{sdk}/usr/include"
-      remove 'CPPFLAGS', "-I#{sdk}/usr/include"
-      remove_from_cflags "-isystem #{sdk}/usr/include"
       remove_from_cflags "-isysroot #{sdk}"
-      remove_from_cflags "-I#{sdk}/usr/include"
-      remove 'LDFLAGS', "-L#{sdk}/usr/lib"
-      remove 'LDFLAGS', "-I#{sdk}/usr/include"
+      remove 'CPPFLAGS', "-isysroot #{sdk}"
+      remove 'LDFLAGS', "-isysroot #{sdk}"
       if HOMEBREW_PREFIX.to_s == '/usr/local'
         self['CMAKE_PREFIX_PATH'] = nil
       else
@@ -268,26 +263,19 @@ Please take one of the following actions:
     v = v.to_s
     append_to_cflags("-mmacosx-version-min=#{v}")
     self['MACOSX_DEPLOYMENT_TARGET'] = v
-    append 'CPPFLAGS', "-isystem #{HOMEBREW_PREFIX}/include"
+    self['CPATH'] = "#{HOMEBREW_PREFIX}/include"
     prepend 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
     sdk = MacOS.sdk_path(v)
     unless sdk.nil? or MacOS::CLT.installed?
       # Extra setup to support Xcode 4.3+ without CLT.
       self['SDKROOT'] = sdk
-      # Teach the preprocessor and compiler (some don't respect CPPFLAGS)
-      # where system includes are:
-      append 'CPPFLAGS', "-isysroot #{sdk}"
+      # Tell clang/gcc where system include's are:
+      append 'CPATH', "#{sdk}/usr/include", ":"
+      # The -isysroot is needed, too, because of the Frameworks
       append_to_cflags "-isysroot #{sdk}"
-      append 'CPPFLAGS', "-isystem #{sdk}/usr/include"
-      # Suggested by mxcl (https://github.com/mxcl/homebrew/pull/10510#issuecomment-4187996):
-      append_to_cflags "-isystem #{sdk}/usr/include"
-      # Some software needs this (e.g. python shows error: /usr/include/zlib.h: No such file or directory)
-      append 'CPPFLAGS', "-I#{sdk}/usr/include"
-      # And finally the "normal" things one expects for the CFLAGS and LDFLAGS:
-      append_to_cflags "-I#{sdk}/usr/include"
-      append 'LDFLAGS', "-L#{sdk}/usr/lib"
-      # Believe it or not, sometimes only the LDFLAGS are used :/
-      append 'LDFLAGS', "-I#{sdk}/usr/include"
+      append 'CPPFLAGS', "-isysroot #{sdk}"
+      # And the linker needs to find sdk/usr/lib
+      append 'LDFLAGS', "-isysroot #{sdk}"
       # Needed to build cmake itself and perhaps some cmake projects:
       append 'CMAKE_PREFIX_PATH', "#{sdk}/usr", ':'
       append 'CMAKE_FRAMEWORK_PATH', "#{sdk}/System/Library/Frameworks", ':'
