@@ -8,7 +8,7 @@ module Homebrew extend self
     problem_count = 0
 
     ff = if ARGV.named.empty?
-      Formula.all
+      Formula
     else
       ARGV.formulae
     end
