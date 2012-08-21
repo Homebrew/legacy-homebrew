@@ -1,9 +1,11 @@
 require 'formula'
 
 class Rrdtool < Formula
-  url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.7.tar.gz'
   homepage 'http://oss.oetiker.ch/rrdtool/index.en.html'
+  url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.7.tar.gz'
   sha1 'faab7df7696b69f85d6f89dd9708d7cf0c9a273b'
+
+  option 'lua', "Compile with lua support"
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -14,14 +16,10 @@ class Rrdtool < Formula
   depends_on :x11
 
   # Can use lua if it is found, but don't force users to install
-  depends_on 'lua' => :optional if ARGV.include? "--lua"
+  depends_on 'lua' => :optional if build.include? "lua"
 
   # Ha-ha, but sleeping is annoying when running configure a lot
   def patches; DATA; end
-
-  def options
-    [["--lua", "Compile with lua support."]]
-  end
 
   def install
     ENV.libxml2
@@ -33,7 +31,10 @@ class Rrdtool < Formula
     opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby.realpath.to_s == ruby_path
     opoo "Using system Perl. RRD module will be installed to /Library/Perl/..." if which_perl.to_s == "/usr/bin/perl"
 
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--mandir=#{man}"]
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
     args << "--enable-perl-site-install" if which_perl.to_s == "/usr/bin/perl"
     args << "--enable-ruby-site-install" if which_ruby.realpath.to_s == ruby_path
 
