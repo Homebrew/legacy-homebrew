@@ -7,12 +7,17 @@ class Nave < Formula
   version '0.3.0'
 
   def install
-    system "ln -sf nave.sh nave"
-    system "mkdir -p #{prefix}"
-    system "cp * #{prefix}"
+    mv 'nave.sh', 'nave'
+    bin.install 'nave'
   end
 
   def test
     system "nave"
+  end
+
+  def caveats
+    <<-EOS.undent
+      'nave.sh' was renamed to 'nave' for linking.
+    EOS
   end
 end
