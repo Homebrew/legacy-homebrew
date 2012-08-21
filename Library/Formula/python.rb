@@ -40,12 +40,21 @@ class Python < Formula
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build'
 
+  # --with-dtrace relies on CLT as the patch from
+  # http://bugs.python.org/issue13405 requires it.
+  # A note is added upstream about the CLT requirement.
+  option 'with-dtrace', 'Install with DTrace support' if MacOS::CLT.installed?
+
   # Skip binaries so modules will load; skip lib because it is mostly Python files
   skip_clean ['bin', 'lib']
 
   def site_packages_cellar
     prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
   end
+
+  def patches
+    'https://raw.github.com/gist/3415636/2365dea8dc5415daa0148e98c394345e1191e4aa/pythondtrace-patch.diff'
+  end if build.include? 'with-dtrace'
 
   # The HOMEBREW_PREFIX location of site-packages.
   def site_packages
@@ -71,6 +80,7 @@ class Python < Formula
            ]
 
     args << '--without-gcc' if ENV.compiler == :clang
+    args << '--with-dtrace' if build.include? 'with-dtrace'
 
     # Don't use optimizations other than "-Os" here, because Python's distutils
     # remembers (hint: `python-config --cflags`) and reuses them for C
