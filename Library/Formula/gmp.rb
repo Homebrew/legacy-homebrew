@@ -18,6 +18,7 @@ class Gmp < Formula
     ENV.gcc if MacOS::Xcode.provides_gcc?
 
     args = %W[--prefix=#{prefix} --enable-cxx]
+    args << "--with-sysroot=#{MacOS.sdk_path}" unless MacOS::CLT.installed?
 
     # Build 32-bit where appropriate, and help configure find 64-bit CPUs
     # see: http://gmplib.org/macos.html
@@ -28,6 +29,10 @@ class Gmp < Formula
       ENV.m32
       args << "--build=none-apple-darwin"
     end
+
+    # They forgot to use the CFLAGS for CC_FOR_BUILD. If you have a better fix
+    # than this one, please let us know:
+    ENV['CC_FOR_BUILD'] = ENV['CC'] + " #{ENV.cflags}" unless MacOS::CLT.installed?
 
     system "./configure", *args
     system "make"
