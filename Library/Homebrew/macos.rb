@@ -20,41 +20,23 @@ module MacOS extend self
     # Don't call tools (cc, make, strip, etc.) directly!
     # Give the name of the binary you look for as a string to this method
     # in order to get the full path back as a Pathname.
-    tool = tool.to_s
-
-    @locate_cache ||= {}
-    return @locate_cache[tool] if @locate_cache.has_key? tool
-
-    if File.executable? "/usr/bin/#{tool}"
-      path = Pathname.new "/usr/bin/#{tool}"
+    @locate ||= {}
+    @locate[tool.to_s] ||= if File.executable? "/usr/bin/#{tool}"
+      Pathname.new "/usr/bin/#{tool}"
     else
-      # Xcrun was provided first with Xcode 4.3 and allows us to proxy
-      # tool usage thus avoiding various bugs.
-      p = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
-      if !p.nil? and !p.empty? and File.executable? p
-        path = Pathname.new p
-      else
-        # This is for the use-case where xcode-select is not set up correctly
-        # with Xcode 4.3+. The tools in Xcode 4.3+ are split over two locations,
-        # usually xcrun would figure that out for us, but it won't work if
-        # xcode-select is not configured properly.
-        p = "#{dev_tools_path}/#{tool}"
-        if File.executable? p
-          path = Pathname.new p
-        else
-          # Otherwise lets look in the second location.
-          p = "#{xctoolchain_path}/usr/bin/#{tool}"
-          if File.executable? p
-            path = Pathname.new p
-          else
-            # We digged so deep but all is lost now.
-            path = nil
-          end
-        end
+      # If the tool isn't in /usr/bin, then we first try to use xcrun to find
+      # it. If it's not there, or xcode-select is misconfigured, we have to
+      # look in dev_tools_path, and finally in xctoolchain_path, because the
+      # tools were split over two locations beginning with Xcode 4.3+.
+      xcrun_path = unless Xcode.bad_xcode_select_path?
+        `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
       end
+
+      paths = %W[#{xcrun_path}
+                 #{dev_tools_path}/#{tool}
+                 #{xctoolchain_path}/usr/bin/#{tool}]
+      paths.map { |p| Pathname.new(p) }.find { |p| p.executable? }
     end
-    @locate_cache[tool] = path
-    return path
   end
 
   def dev_tools_path
@@ -71,8 +53,7 @@ module MacOS extend self
     else
       # Since we are pretty unrelenting in finding Xcode no matter where
       # it hides, we can now throw in the towel.
-      opoo "You really should consult the `brew doctor`!"
-      ""
+      opoo "Could not locate developer tools. Consult `brew doctor`."
     end
   end
 

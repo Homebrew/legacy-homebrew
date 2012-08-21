@@ -1,12 +1,12 @@
 require 'formula'
 
 class Pcb < Formula
-  homepage 'http://pcb.gpleda.org/'
+  homepage 'http://pcb.geda-project.org/'
   url 'http://downloads.sourceforge.net/project/pcb/pcb/pcb-20110918/pcb-20110918.tar.gz'
   version '20110908'
-  md5 '54bbc997eeb22b85cf21fed54cb8e181'
+  sha1 '53ca27797d4db65a068b56f157e3ea6c5c29051f'
 
-  head 'git://git.gpleda.org/pcb.git'
+  head 'git://git.geda-project.org/pcb.git'
 
   depends_on :automake
   depends_on 'pkg-config' => :build
@@ -26,7 +26,7 @@ class Pcb < Formula
   end
 
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
