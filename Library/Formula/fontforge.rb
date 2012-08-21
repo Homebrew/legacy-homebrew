@@ -6,12 +6,13 @@ class Fontforge < Formula
   sha1 'b520f532b48e557c177dffa29120225066cc4e84'
   version '20120731'
 
-  head 'git://fontforge.git.sourceforge.net/gitroot/fontforge/fontforge'
+  head 'https://github.com/fontforge/fontforge.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'pango'
   depends_on 'potrace'
+  depends_on 'libspiro'
   depends_on :x11
   depends_on :xcode
 
