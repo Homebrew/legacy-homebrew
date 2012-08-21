@@ -14,6 +14,7 @@ class Fontforge < Formula
   depends_on 'potrace'
   depends_on 'libspiro'
   depends_on :x11
+  depends_on :xcode
 
   def options
     [['--without-python', 'Build without Python.']]

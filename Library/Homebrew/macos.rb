@@ -3,20 +3,16 @@ module MacOS extend self
   MDITEM_BUNDLE_ID_KEY = "kMDItemCFBundleIdentifier"
 
   def version
-    MACOS_VERSION
+    require 'version'
+    MacOSVersion.new(MACOS_VERSION.to_s)
   end
 
   def cat
-    if mountain_lion?
-      :mountainlion
-    elsif lion?
-      :lion
-    elsif snow_leopard?
-      :snowleopard
-    elsif leopard?
-      :leopard
-    else
-      nil
+    if version == :mountain_lion then :mountainlion
+    elsif version == :lion then :lion
+    elsif version == :snow_leopard then :snowleopard
+    elsif version == :leopard then :leopard
+    else nil
     end
   end
 
@@ -24,41 +20,23 @@ module MacOS extend self
     # Don't call tools (cc, make, strip, etc.) directly!
     # Give the name of the binary you look for as a string to this method
     # in order to get the full path back as a Pathname.
-    tool = tool.to_s
-
-    @locate_cache ||= {}
-    return @locate_cache[tool] if @locate_cache.has_key? tool
-
-    if File.executable? "/usr/bin/#{tool}"
-      path = Pathname.new "/usr/bin/#{tool}"
+    @locate ||= {}
+    @locate[tool.to_s] ||= if File.executable? "/usr/bin/#{tool}"
+      Pathname.new "/usr/bin/#{tool}"
     else
-      # Xcrun was provided first with Xcode 4.3 and allows us to proxy
-      # tool usage thus avoiding various bugs.
-      p = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
-      if !p.nil? and !p.empty? and File.executable? p
-        path = Pathname.new p
-      else
-        # This is for the use-case where xcode-select is not set up correctly
-        # with Xcode 4.3+. The tools in Xcode 4.3+ are split over two locations,
-        # usually xcrun would figure that out for us, but it won't work if
-        # xcode-select is not configured properly.
-        p = "#{dev_tools_path}/#{tool}"
-        if File.executable? p
-          path = Pathname.new p
-        else
-          # Otherwise lets look in the second location.
-          p = "#{xctoolchain_path}/usr/bin/#{tool}"
-          if File.executable? p
-            path = Pathname.new p
-          else
-            # We digged so deep but all is lost now.
-            path = nil
-          end
-        end
+      # If the tool isn't in /usr/bin, then we first try to use xcrun to find
+      # it. If it's not there, or xcode-select is misconfigured, we have to
+      # look in dev_tools_path, and finally in xctoolchain_path, because the
+      # tools were split over two locations beginning with Xcode 4.3+.
+      xcrun_path = unless Xcode.bad_xcode_select_path?
+        `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
       end
+
+      paths = %W[#{xcrun_path}
+                 #{dev_tools_path}/#{tool}
+                 #{xctoolchain_path}/usr/bin/#{tool}]
+      paths.map { |p| Pathname.new(p) }.find { |p| p.executable? }
     end
-    @locate_cache[tool] = path
-    return path
   end
 
   def dev_tools_path
@@ -75,8 +53,7 @@ module MacOS extend self
     else
       # Since we are pretty unrelenting in finding Xcode no matter where
       # it hides, we can now throw in the towel.
-      opoo "You really should consult the `brew doctor`!"
-      ""
+      opoo "Could not locate developer tools. Consult `brew doctor`."
     end
   end
 
@@ -199,27 +176,8 @@ module MacOS extend self
     false
   end
 
-  def leopard?
-    10.5 == MACOS_VERSION
-  end
-
-  def snow_leopard?
-    10.6 <= MACOS_VERSION # Actually Snow Leopard or newer
-  end
-  alias :snow_leopard_or_newer? :snow_leopard?
-
-  def lion?
-    10.7 <= MACOS_VERSION # Actually Lion or newer
-  end
-  alias :lion_or_newer? :lion?
-
-  def mountain_lion?
-    10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
-  end
-  alias :mountain_lion_or_newer? :mountain_lion?
-
   def prefer_64_bit?
-    Hardware.is_64_bit? and not leopard?
+    Hardware.is_64_bit? and version != :leopard
   end
 
   StandardCompilers = {
@@ -233,7 +191,8 @@ module MacOS extend self
     "4.3.1" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
     "4.3.2" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
     "4.3.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.4" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421}
+    "4.4" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421},
+    "4.4.1" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421}
   }
 
   def compilers_standard?

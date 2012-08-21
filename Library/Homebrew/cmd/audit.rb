@@ -8,7 +8,7 @@ module Homebrew extend self
     problem_count = 0
 
     ff = if ARGV.named.empty?
-      Formula.all
+      Formula
     else
       ARGV.formulae
     end
@@ -217,8 +217,8 @@ class FormulaAuditor
       if s.version.to_s.empty?
         problem "Invalid or missing #{spec} version"
       else
-        version_text = s.version if s.explicit_version?
-        version_url = Pathname.new(s.url).version
+        version_text = s.version unless s.version.detected_from_url?
+        version_url = Version.parse(s.url)
         if version_url == version_text
           problem "#{spec} version #{version_text} is redundant with version scanned from URL"
         end

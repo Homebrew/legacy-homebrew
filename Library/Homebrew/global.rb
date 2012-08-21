@@ -51,6 +51,7 @@ end
 HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
 HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent # Where .git is found
 HOMEBREW_LIBRARY = HOMEBREW_REPOSITORY/"Library"
+HOMEBREW_CONTRIB = HOMEBREW_REPOSITORY/"Library/Contributions"
 
 # Where we store built products; /usr/local/Cellar if it exists,
 # otherwise a Cellar relative to the Repository.
@@ -98,5 +99,5 @@ ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(File.expand_path(p
 # Xcode-only installs place tools in non-standard locations, and we also want
 # to ensure the dev tools are in the PATH in build.rb
 unless ORIGINAL_PATHS.include? MacOS.dev_tools_path
-  ENV['PATH'] = ENV['PATH'].to_s + ':' + MacOS.dev_tools_path
+  ENV['PATH'] = ENV['PATH'].to_s + ':' + MacOS.dev_tools_path.to_s
 end

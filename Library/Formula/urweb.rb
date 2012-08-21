@@ -2,8 +2,8 @@ require 'formula'
 
 class Urweb < Formula
   homepage 'http://impredicative.com/ur/'
-  url 'http://impredicative.com/ur/urweb-20120519.tgz'
-  md5 '18ad629eb55b0c4a62ef15ef561e0f1a'
+  url 'http://impredicative.com/ur/urweb-20120807.tgz'
+  md5 'c4860d5a72f1ef7754f180a25f77b915'
   head 'http://hg.impredicative.com/urweb', :using => :hg
 
   depends_on :automake
