@@ -3,11 +3,11 @@ require 'cmd/outdated'
 
 def ff
   if ARGV.include? "--all"
-    Formula.all
+    Formula
   elsif ARGV.include? "--installed"
     # outdated brews count as installed
     outdated = Homebrew.outdated_brews.collect{ |b| b.name }
-    Formula.all.select do |f|
+    Formula.select do |f|
       f.installed? or outdated.include? f.name
     end
   else

@@ -707,7 +707,7 @@ def check_for_linked_keg_only_brews
 
   warnings = Hash.new
 
-  Formula.all.each do |f|
+  Formula.each do |f|
     next unless f.keg_only? and f.installed?
     links = __check_linked_brew f
     warnings[f.name] = links unless links.empty?
