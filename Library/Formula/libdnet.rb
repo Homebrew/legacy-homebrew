@@ -20,7 +20,7 @@ class Libdnet < Formula
       --prefix=#{prefix}
       --mandir=#{man}
     ]
-    args << "with-python" if build.include? "with-python"
+    args << "--with-python" if build.include? "with-python"
     system "./configure", *args
     system "make install"
   end
