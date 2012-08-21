@@ -1,9 +1,9 @@
 require 'formula'
 
 class Neon < Formula
+  homepage 'http://www.webdav.org/neon/'
   url 'http://www.webdav.org/neon/neon-0.29.6.tar.gz'
   md5 '591e0c82e6979e7e615211b386b8f6bc'
-  homepage 'http://www.webdav.org/neon/'
 
   depends_on 'pkg-config' => :build
 
