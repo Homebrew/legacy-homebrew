@@ -43,9 +43,11 @@ class Postgresql < Formula
     args << "--with-perl" unless build.include? 'no-perl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
 
-    ENV.append 'CFLAGS', `uuid-config --cflags`.strip
-    ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
-    ENV.append 'LIBS', `uuid-config --libs`.strip
+    unless build.include? 'without-ossp-uuid'
+      ENV.append 'CFLAGS', `uuid-config --cflags`.strip
+      ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
+      ENV.append 'LIBS', `uuid-config --libs`.strip
+    end
 
     if not build.build_32_bit? and MacOS.prefer_64_bit? and not build.include? 'no-python'
       args << "ARCHFLAGS='-arch x86_64'"
