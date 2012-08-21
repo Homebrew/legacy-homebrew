@@ -37,6 +37,11 @@ class Libxml2 < Formula
         ENV.append 'CFLAGS', arch_flags
         ENV.append 'LDFLAGS', arch_flags
 
+        unless MacOS::CLT.installed?
+          # We can hijack /opt/include to insert SDKROOT/usr/include
+          inreplace 'setup.py', '"/opt/include",', "'#{MacOS.sdk_path}/usr/include',"
+        end
+
         system "python", "setup.py",
                          "install_lib",
                          "--install-dir=#{python_lib}"
