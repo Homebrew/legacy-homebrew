@@ -74,7 +74,8 @@ class Zookeeper < Formula
     # Install Python bindings
     cd "src/contrib/zkpython" do
       system "python", "src/python/setup.py", "build"
-      system "python", "src/python/setup.py", "install", "--prefix=#{prefix}"
+      # necessary on osx lion otherwise silently ignored
+      system "sudo", "python", "src/python/setup.py", "install"
     end if build_python
 
     # Install Perl bindings
