@@ -9,6 +9,7 @@ class Node < Formula
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
+  depends_on :xcode
 
   option 'enable-debug', 'Build with debugger hooks'
 
