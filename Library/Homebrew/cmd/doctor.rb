@@ -384,7 +384,7 @@ def check_xcode_select_path
     <<-EOS.undent
       Your xcode-select path is set to /
       You must unset it or builds will hang:
-        sudo rm /usr/share/xcode-select/xcode_dir_link
+        sudo rm /usr/share/xcode-select/xcode_dir_*
     EOS
   elsif not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
     path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::Xcode::V3_BUNDLE_ID)
