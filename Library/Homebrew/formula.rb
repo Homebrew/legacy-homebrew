@@ -403,7 +403,7 @@ class Formula
 
     return klass.new(name) if install_type == :from_name
     return klass.new(name, target_file)
-  rescue LoadError
+  rescue LoadError, NameError
     raise FormulaUnavailableError.new(name)
   end
 
