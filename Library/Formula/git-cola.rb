@@ -19,7 +19,7 @@ class GitCola < Formula
   end
 
   def install
-    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'
+    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
     system "make", "prefix=#{prefix}", "install"
 
     if ARGV.include? '--build-docs'
@@ -29,5 +29,9 @@ class GitCola < Formula
              "prefix=#{prefix}",
              "install", "install-html"
     end
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end
