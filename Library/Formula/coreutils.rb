@@ -2,9 +2,9 @@ require 'formula'
 
 class Coreutils < Formula
   homepage 'http://www.gnu.org/software/coreutils'
-  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.18.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.18.tar.xz'
-  sha256 '11dc114374100ac6f56d4b66f588e51d3fe972855466a35a27de7ec67eb2143f'
+  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.19.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.19.tar.xz'
+  sha256 'ad3873183fd8cfc7672b3ba54644672e59352f9b2dc7e3ad251c1174dde8a9e7'
 
   depends_on 'xz' => :build
 
