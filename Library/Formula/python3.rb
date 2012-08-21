@@ -1,24 +1,10 @@
 require 'formula'
+require Formula.path("python") # For TkCheck requirement
 
 # Python3 is the new language standard, not just a new revision.
 # It's somewhat incompatible to Python 2.x, therefore, the executable
 # "python" will always point to the 2.x version which you can get by
 # `brew install python`.
-
-class TkCheck < Requirement
-  def message; <<-EOS.undent
-    Tk.framework detected in /Library/Frameworks
-    and that can make python builds to fail.
-    https://github.com/mxcl/homebrew/issues/11602
-    EOS
-  end
-
-  def fatal?; false; end
-
-  def satisfied?
-    not File.exist? '/Library/Frameworks/Tk.framework'
-  end
-end
 
 class Distribute < Formula
   url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
@@ -38,9 +24,9 @@ class Python3 < Formula
 
   depends_on TkCheck.new
   depends_on 'pkg-config' => :build
-  depends_on 'readline' => :optional  # Prefer over OS X's libedit
-  depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
-  depends_on 'gdbm'     => :optional
+  depends_on 'readline' => :recommended
+  depends_on 'sqlite' => :recommended
+  depends_on 'gdbm' => :recommended
   depends_on :x11 # tk.h includes X11/Xlib.h and X11/X.h
 
   option 'quicktest', 'Run `make quicktest` after the build'
