@@ -13,24 +13,23 @@ class Opencv < Formula
   url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.2/OpenCV-2.4.2.tar.bz2'
   sha1 '96ff27b87e0f028d1d16201afebabec4e0c72367'
 
+  option '32-bit'
+  option 'with-qt',  'Build the Qt4 backend to HighGUI'
+  option 'with-tbb', 'Enable parallel code in OpenCV using Intel TBB'
+
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
+  depends_on 'numpy' => :python
 
   depends_on 'eigen'   => :optional
   depends_on 'libtiff' => :optional
   depends_on 'jasper'  => :optional
   depends_on 'tbb'     => :optional
-  depends_on 'qt' if ARGV.include? '--with-qt'
-
-  depends_on 'numpy'   => :python
+  depends_on 'qt' if build.include? 'with-qt'
 
   # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
   # you don't need unless you're doing video analysis, and some of it isn't
   # in Homebrew anyway. Will depend on openexr if it's installed.
-
-  option '32-bit'
-  option 'with-qt',  'Build the Qt4 backend to HighGUI'
-  option 'with-tbb', 'Enable parallel code in OpenCV using Intel TBB'
 
   def install
     args = std_cmake_args + %w[
