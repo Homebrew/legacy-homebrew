@@ -63,6 +63,7 @@ class Imagemagick < Formula
       ['--use-lqr', 'Compile with liblqr support.'],
       ['--use-exr', 'Compile with openexr support.'],
       ['--disable-openmp', 'Disable OpenMP.'],
+      ['--disable-opencl', 'Disable OpenCL.'],
       ['--enable-hdri', 'Compile with HDRI support enabled'],
       ['--without-magick-plus-plus', "Don't compile C++ interface."],
       ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
@@ -81,6 +82,7 @@ class Imagemagick < Formula
              "--with-modules"]
 
     args << "--disable-openmp" if MacOS.leopard? or ARGV.include? '--disable-openmp'
+    args << "--disable-opencl" if ARGV.include? '--disable-opencl'
     args << "--without-gslib" unless ARGV.include? '--with-ghostscript'
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
