@@ -2,8 +2,8 @@ require 'formula'
 
 class SuiteSparse < Formula
   homepage 'http://www.cise.ufl.edu/research/sparse/SuiteSparse'
-  url 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-3.7.0.tar.gz'
-  md5 'ecb1d1cc1101cf31f077bab46678e791'
+  url 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-4.0.2.tar.gz'
+  sha1 '46b24a28eef4b040ea5a02d2c43e82e28b7d6195'
 
   depends_on "metis"
   depends_on "tbb"
@@ -24,7 +24,7 @@ class SuiteSparse < Formula
     # Some of the suite-sparse libraries use Metis
     metis = Formula.factory("metis")
 
-    inreplace 'UFconfig/UFconfig.mk' do |s|
+    inreplace 'SuiteSparse_config/SuiteSparse_config.mk' do |s|
       # Libraries
       s.change_make_var! "BLAS", "-Wl,-framework -Wl,Accelerate"
       s.change_make_var! "LAPACK", "$(BLAS)"
