@@ -289,30 +289,23 @@ class Formula
     Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
   end
 
-  # an array of all Formula, instantiated
-  def self.all
-    map{ |f| f }
-  end
-  def self.map
-    rv = []
-    each{ |f| rv << yield(f) }
-    rv
-  end
   def self.each
-    names.each do |n|
-      begin
-        yield Formula.factory(n)
-      rescue
+    names.each do |name|
+      yield begin
+        Formula.factory(name)
+      rescue => e
         # Don't let one broken formula break commands. But do complain.
-        onoe "Formula #{n} will not import."
+        onoe "Failed to import: #{name}"
+        next
       end
     end
   end
-
-  def self.select
-    ff = []
-    each{ |f| ff << f if yield(f) }
-    ff
+  class << self
+    include Enumerable
+  end
+  def self.all
+    opoo "Formula.all is deprecated, simply use Formula.map"
+    map
   end
 
   def self.installed
@@ -410,7 +403,7 @@ class Formula
 
     return klass.new(name) if install_type == :from_name
     return klass.new(name, target_file)
-  rescue LoadError
+  rescue LoadError, NameError
     raise FormulaUnavailableError.new(name)
   end
 
@@ -658,10 +651,11 @@ private
       #{formula} cannot be installed alongside #{name.downcase}.
       EOS
       message << "This is because #{opts[:because]}\n" if opts[:because]
-      if !ARGV.force? then message << <<-EOS.undent
-      Please `brew unlink` or `brew uninstall` #{formula} before continuing.
-      To install anyway, use:
-        brew install --force
+      unless ARGV.force? then message << <<-EOS.undent
+        Please `brew unlink #{formula}` before continuing. Unlinking removes
+        the formula's symlinks from #{HOMEBREW_PREFIX}. You can link the
+        formula again after the install finishes. You can --force this install
+        but the build may fail or cause obscure side-effects in the end-binary.
         EOS
       end
 

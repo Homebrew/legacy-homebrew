@@ -9,7 +9,7 @@ module Homebrew extend self
   def uses
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
-    uses = Formula.all.select do |f|
+    uses = Formula.select do |f|
       ARGV.formulae.all? do |ff|
         if ARGV.flag? '--recursive'
           f.recursive_deps.include? ff

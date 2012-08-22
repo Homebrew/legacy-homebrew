@@ -5,7 +5,10 @@ module Homebrew extend self
     else
       ohai "Interactive Homebrew Shell"
       puts "Example commands available with: brew irb --help"
-      exec "irb", "-I#{HOMEBREW_REPOSITORY}/Library/Homebrew", "-rglobal", '-rformula', '-rkeg'
+      require 'formula'
+      require 'keg'
+      require 'irb'
+      IRB.start
     end
   end
 end

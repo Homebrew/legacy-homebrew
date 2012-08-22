@@ -40,12 +40,13 @@ class FormulaInstaller
       raise CannotInstallFormulaError, "No head is defined for #{f.name}"
     end
 
-    f.recursive_deps.each do |dep|
-      if dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
-        raise CannotInstallFormulaError,
-              "You must `brew link #{dep}' before #{f} can be installed"
+    unless ignore_deps
+      unlinked_deps = f.recursive_deps.select do |dep|
+        dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
-    end unless ignore_deps
+      raise CannotInstallFormulaError,
+        "You must `brew link #{unlinked_deps*' '}' before #{f} can be installed" unless unlinked_deps.empty?
+    end
 
   rescue FormulaUnavailableError => e
     # this is sometimes wrong if the dependency chain is more than one deep
