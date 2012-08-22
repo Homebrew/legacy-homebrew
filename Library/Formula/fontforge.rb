@@ -29,6 +29,16 @@ class Fontforge < Formula
             "--enable-double",
             "--without-freetype-bytecode"]
 
+    # Using Xcode 4.4? Need to compile against the 10.7 SDK
+    if MacOS::Xcode.version >= '4.4'
+      ENV.macosxsdk 10.7
+      ENV.append "CFLAGS", "-isysroot #{MacOS.sdk_path(10.7)}"
+      # But if this is Mountain Lion, Python needs to know.
+      if MacOS.mountain_lion?
+        ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.8"
+      end
+    end
+    
     if ARGV.include? "--without-python"
       args << "--without-python"
     else
@@ -63,8 +73,14 @@ class Fontforge < Formula
     # Fix hard-coded include file paths. Reported usptream:
     # http://sourceforge.net/mailarchive/forum.php?thread_name=C1A32103-A62D-468B-AD8A-A8E0E7126AA5%40smparkes.net&forum_name=fontforge-devel
     # https://trac.macports.org/ticket/33284
+    # Using Xcode 4.4? Need to replace hard-coded paths with 10.7 SDK.
+    if MacOS::Xcode.version >= '4.4'
+      header_prefix = "#{MacOS.sdk_path(10.7)}/Developer"
+    else
+      header_prefix = MacOS::Xcode.prefix
+    end
     inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
-      s.gsub! "/Developer", MacOS::Xcode.prefix
+      s.gsub! "/Developer", header_prefix
     end
 
     system "make"
