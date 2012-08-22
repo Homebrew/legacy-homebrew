@@ -238,6 +238,7 @@ class FormulaInstaller
       Process.wait
       data = read.read
       raise Marshal.load(data) unless data.nil? or data.empty?
+      raise Interrupt if $?.exitstatus == 130
       raise "Suspicious installation failure" unless $?.success?
     end
 
@@ -266,15 +267,18 @@ class FormulaInstaller
     end
 
     keg = Keg.new(f.prefix)
-    keg.link
-  rescue Exception => e
-    onoe "The `brew link` step did not complete successfully."
-    puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}."
-    puts "You can try again using `brew link #{f.name}`."
-    keg.unlink
 
-    ohai e, e.backtrace if ARGV.debug?
-    @show_summary_heading = true
+    begin
+      keg.link
+    rescue Exception => e
+      onoe "The `brew link` step did not complete successfully"
+      puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
+      puts "You can try again using `brew link #{f.name}'"
+      ohai e, e.backtrace if ARGV.debug?
+      @show_summary_heading = true
+      ignore_interrupts{ keg.unlink }
+      raise unless e.kind_of? RuntimeError
+    end
   end
 
   def fix_install_names
