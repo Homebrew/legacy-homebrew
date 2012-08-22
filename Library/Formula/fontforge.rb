@@ -69,7 +69,7 @@ class Fontforge < Formula
       if MacOS.lion?
         s.gsub! "/Developer", "#{MacOS::sdk_path("10.7")}/Developer"
       else
-        s.gsub! "/Developer", "/Developer"
+        s.gsub! "/Developer", MacOS::Xcode.prefix
       end
     end
 
