@@ -110,7 +110,7 @@ See:
 # Create/Upgrade a Database
 
 If this is your first install, create a database with:
-  initdb #{var}/postgres
+  initdb #{var}/postgres -E utf8
 
 To migrate existing data from a previous major version (pre-9.1) of PostgreSQL, see:
   http://www.postgresql.org/docs/9.1/static/upgrading.html
