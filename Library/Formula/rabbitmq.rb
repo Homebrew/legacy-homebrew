@@ -2,8 +2,8 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.8.5/rabbitmq-server-generic-unix-2.8.5.tar.gz'
-  sha1 '40e9f4934f471088e781dc71f738708e1a213c74'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.8.6/rabbitmq-server-generic-unix-2.8.6.tar.gz'
+  sha1 '50ad453ae6a293c7b314dd2dd24a29648f1acc11'
 
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MacOS.leopard?
