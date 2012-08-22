@@ -63,7 +63,7 @@ def install f
       opt = HOMEBREW_PREFIX/:opt/dep.name
 
       #TODO try to fix, if only one key, easy, otherwise check formula.version
-      raise "#{opt} not present\nReinstall #{dep}. Sorry :(" unless opt.directory?
+      raise "#{opt} not present or broken\nReinstall #{dep}. Sorry :(" unless opt.directory?
 
       ENV.prepend_path 'PATH', "#{opt}/bin"
       ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
