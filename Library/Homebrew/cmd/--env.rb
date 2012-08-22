@@ -3,12 +3,16 @@ require 'hardware'
 
 module Homebrew extend self
   def __env
+    if superenv?
+      ENV.deps = ARGV.formulae.map(&:name) unless ARGV.named.empty?
+    end
     ENV.setup_build_environment
     ENV.universal_binary if ARGV.build_universal?
     if $stdout.tty?
       dump_build_env ENV
     else
-      build_env_keys(ENV).each do |key|
+      keys = build_env_keys(ENV) << 'HOMEBREW_BREW_FILE' << 'HOMEBREW_SDKROOT'
+      keys.each do |key|
         puts "export #{key}=\"#{ENV[key]}\""
       end
     end
