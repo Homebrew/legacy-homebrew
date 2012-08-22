@@ -5,17 +5,10 @@ class Mosquitto < Formula
   url 'http://mosquitto.org/files/source/mosquitto-1.0.2.tar.gz'
   sha1 '544112232d08abf6dc60f28c9a85f4d88206d0f2'
 
-  # mosquitto requires OpenSSL >=1.0 for TLS support
-  depends_on 'openssl' => :build
-  # without pkg-config there can be errors with incorrect arch libraries for OpenSSL
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
-
-  def options
-    [
-      ["--with-python", "Build and install Python bindings (or use pip install mosquitto"],
-    ]
-  end
+  # mosquitto requires OpenSSL >=1.0 for TLS support
+  depends_on 'openssl'
 
   def install
     openssl = Formula.factory('openssl')
@@ -29,12 +22,6 @@ class Mosquitto < Formula
     # Create the working directory under var
     (var+'mosquitto').mkpath
 
-    # Install Python bindings (optional - since also available via pypi)
-    cd "lib/python" do
-      system "python", "setup.py", "build"
-      system "python", "setup.py", "install", "--prefix=#{prefix}"
-    end if ARGV.include? "--with-python"
-
     plist_path.write startup_plist
     plist_path.chmod 0644
   end
@@ -46,7 +33,8 @@ class Mosquitto < Formula
   def caveats
     return <<-EOD.undent
     mosquitto has been installed with a default configuration file.
-        Edit #{etc}/mosquitto/mosquitto.conf to make changes to the setup.
+        You can make changes to the configuration by editing
+        #{etc}/mosquitto/mosquitto.conf
 
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
@@ -61,7 +49,7 @@ class Mosquitto < Formula
     Start the broker manually by running:
         mosquitto -c #{etc}/mosquitto/mosquitto.conf
 
-    Python client bindings may also be installed from the Python Package Index
+    Python client bindings can be installed from the Python Package Index
         pip install mosquitto
 
     Javascript client is available at
