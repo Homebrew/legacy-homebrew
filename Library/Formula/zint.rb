@@ -9,13 +9,14 @@ class Zint < Formula
 
   depends_on 'cmake' => :build
   depends_on :x11
+  # For zint-qt GUI: (lib works without qt.)
+  depends_on 'qt' => :optional if build.include? 'qt'
+
+  option 'qt', 'Build the zint-qt GUI.' 
 
   def install
     mkdir 'zint-build' do
-      system "cmake", "..",
-                      "-DCMAKE_PREFIX_PATH=#{prefix}",
-                      "-DCMAKE_C_FLAGS=-I#{MacOS::X11.include}",
-                      *std_cmake_args
+      system "cmake", "..", *std_cmake_args
       system "make install"
     end
   end
