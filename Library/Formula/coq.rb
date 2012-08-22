@@ -19,9 +19,8 @@ end
 
 class Coq < Formula
   homepage 'http://coq.inria.fr/'
-  url 'http://coq.inria.fr/distrib/V8.3pl4/files/coq-8.3pl4.tar.gz'
-  version '8.3pl4'
-  md5 '88e2ce021b09eca207e3119d5202a695'
+  url 'http://coq.inria.fr/distrib/V8.4/files/coq-8.4.tar.gz'
+  md5 'f28662cd687f66ed3c372ca3d35ea928'
   head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
 
   skip_clean :all
@@ -38,7 +37,7 @@ class Coq < Formula
                           "-camlp5dir", camlp5_lib,
                           "-emacslib", "#{lib}/emacs/site-lisp",
                           "-coqdocdir", "#{share}/coq/latex",
-                          "-coqide", "none",
+                          "-coqide", "no",
                           "-with-doc", "no",
                           "-arch", arch
     ENV.j1 # Otherwise "mkdir bin" can be attempted by more than one job
