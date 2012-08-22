@@ -72,6 +72,8 @@ private
       X11Dependency.new(tag)
     when :xcode
       XCodeDependency.new
+    when :clt
+      CLTDependency.new
     else
       raise "Unsupported special dependency #{spec}"
     end
@@ -334,6 +336,20 @@ class XCodeDependency < Requirement
 
   def message; <<-EOS.undent
     XCode is required to compile this software.
+    EOS
+  end
+end
+
+class CLTDependency < Requirement
+  def fatal?; true; end
+
+  def satisfied?
+    MacOS::CLT.installed?
+  end
+
+  def message; <<-EOS.undent
+    The "Command Line Tools for Xcode" are required to compile this software.
+    (You can install it from the Xcode preferences.)
     EOS
   end
 end
