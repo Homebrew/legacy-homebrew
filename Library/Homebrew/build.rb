@@ -1,52 +1,55 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 
 # This script is called by formula_installer as a separate instance.
 # Rationale: Formula can use __END__, Formula can change ENV
 # Thrown exceptions are propogated back to the parent process over a pipe
 
-require 'global'
+STD_TRAP = trap("INT") { exit! 130 } # no backtrace thanks
 
 at_exit do
   # the whole of everything must be run in at_exit because the formula has to
   # be the run script as __END__ must work for *that* formula.
+  main
+end
 
-  error_pipe = nil
+require 'global'
 
-  begin
-    # The main Homebrew process expects to eventually see EOF on the error
-    # pipe in FormulaInstaller#build. However, if any child process fails to
-    # terminate (i.e, fails to close the descriptor), this won't happen, and
-    # the installer will hang. Set close-on-exec to prevent this.
-    # Whether it is *wise* to launch daemons from formulae is a separate
-    # question altogether.
-    if ENV['HOMEBREW_ERROR_PIPE']
-      require 'fcntl'
-      error_pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
-      error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
-    end
+def main
+   # The main Homebrew process expects to eventually see EOF on the error
+  # pipe in FormulaInstaller#build. However, if any child process fails to
+  # terminate (i.e, fails to close the descriptor), this won't happen, and
+  # the installer will hang. Set close-on-exec to prevent this.
+  # Whether it is *wise* to launch daemons from formulae is a separate
+  # question altogether.
+  if ENV['HOMEBREW_ERROR_PIPE']
+    require 'fcntl'
+    error_pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
+    error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+  end
 
-    raise $! if $! # an exception was already thrown when parsing the formula
+  raise $! if $! # an exception was already thrown when parsing the formula
 
-    require 'hardware'
-    require 'keg'
-    require 'superenv'
+  trap("INT", STD_TRAP) # restore default CTRL-C handler
 
-    # Force any future invocations of sudo to require the user's password to be
-    # re-entered. This is in-case any build script call sudo. Certainly this is
-    # can be inconvenient for the user. But we need to be safe.
-    system "/usr/bin/sudo -k"
+  require 'hardware'
+  require 'keg'
+  require 'superenv'
 
-    install(Formula.factory($0))
-  rescue Exception => e
-    unless error_pipe.nil?
-      Marshal.dump(e, error_pipe)
-      error_pipe.close
-      exit! 1
-    else
-      onoe e
-      puts e.backtrace
-      exit! 2
-    end
+  # Force any future invocations of sudo to require the user's password to be
+  # re-entered. This is in-case any build script call sudo. Certainly this is
+  # can be inconvenient for the user. But we need to be safe.
+  system "/usr/bin/sudo -k"
+
+  install(Formula.factory($0))
+rescue Exception => e
+  unless error_pipe.nil?
+    Marshal.dump(e, error_pipe)
+    error_pipe.close
+    exit! 1
+  else
+    onoe e
+    puts e.backtrace
+    exit! 2
   end
 end
 
