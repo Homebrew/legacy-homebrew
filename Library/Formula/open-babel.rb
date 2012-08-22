@@ -5,6 +5,9 @@ class OasaPythonModule < Requirement
     The oasa Python module is required for some operations.
     It can be downloaded from:
       http://bkchem.zirael.org/oasa_en.html
+    Or with the command:
+      pip install -f http://bkchem.zirael.org/ oasa==0.13.1
+    (may first require 'brew install py2cairo')
     EOS
   end
   def satisfied?
@@ -13,82 +16,97 @@ class OasaPythonModule < Requirement
   end
 end
 
+def which_python
+  "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+end
+
+def site_package_dir
+  "#{lib}/#{which_python}/site-packages"
+end
+
 class OpenBabel < Formula
   homepage 'http://openbabel.org/'
-  url 'http://sourceforge.net/projects/openbabel/files/openbabel/2.2.3/openbabel-2.2.3.tar.gz'
-  md5 '7ea8845c54d6d3a9be378c78088af804'
-
+  url 'http://sourceforge.net/projects/openbabel/files/openbabel/2.3.1/openbabel-2.3.1.tar.gz'
+  md5 '1f029b0add12a3b55582dc2c832b04f8'
   head 'https://openbabel.svn.sourceforge.net/svnroot/openbabel/openbabel/trunk'
 
   depends_on OasaPythonModule.new
 
-  def options
-    [
-      ["--perl", "Perl bindings"],
-      ["--python", "Python bindings"],
-      ["--ruby", "Ruby bindings"]
-    ]
+  if ARGV.build_head?
+    depends_on 'eigen' # eigen3
+    depends_on 'swig' => :build
+  else
+    depends_on 'eigen2'
   end
+  depends_on 'cmake' => :build
 
+  
   def install
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}"]
-    args << '--enable-maintainer-mode' if ARGV.build_head?
+    ENV.deparallelize
+    args = std_cmake_parameters.split
+    if ARGV.build_head?
+      args << "-DEIGEN3_INCLUDE_DIR='#{HOMEBREW_PREFIX}/include/eigen3'"
+    else
+      args << "-DEIGEN2_INCLUDE_DIR='#{HOMEBREW_PREFIX}/include/eigen2'"
+    end
+    args << '-DPYTHON_BINDINGS=ON'
+    args << '-DRUN_SWIG=TRUE' if ARGV.build_head?
 
-    system "./configure", *args
+    # This block is copied from opencv.rb formula:
+    #
+    #  The CMake `FindPythonLibs` Module is dumber than a bag of hammers when
+    #  more than one python installation is available---for example, it clings
+    #  to the Header folder of the system Python Framework like a drowning
+    #  sailor.
+    #
+    #  This code was cribbed from the VTK formula and uses the output to
+    #  `python-config` to do the job FindPythonLibs should be doing in the first
+    #  place.
+    python_prefix = `python-config --prefix`.strip
+    # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
+    if File.exist? "#{python_prefix}/Python"
+      # Python was compiled with --framework:
+      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+      args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+    else
+      python_lib = "#{python_prefix}/lib/lib#{which_python}"
+      if File.exists? "#{python_lib}.a"
+        args << "-DPYTHON_LIBRARY='#{python_lib}.a'"
+      else
+        args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
+      end
+      args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
+    end
+
+    args << '.'
+
+    # The cmake script for 2.3.1 tries to guess where the compiled module ought 
+    # to live, and often gets it wrong. We know where we put it, so tell it:
+    inreplace 'scripts/CMakeLists.txt', '${PYTHON_LIB_PATH}/_openbabel.so', "#{site_package_dir}/_openbabel.so" unless ARGV.build_head?
+
+    system "cmake", *args
     system "make"
     system "make install"
 
-    ENV['OPENBABEL_INSTALL'] = prefix
-
-    # Install the python bindings
-    if ARGV.include? '--python'
-      cd 'scripts/python' do
-        system "python", "setup.py", "build"
-        system "python", "setup.py", "install", "--prefix=#{prefix}"
-      end
+    if ARGV.build_head?
+      # The simplified build system on the HEAD doesn't put the python stuff in 
+      # the right place so we have to move it into #{site_package_dir}
+      mkdir_p site_package_dir
+      mv ["#{lib}/_openbabel.so", "#{lib}/openbabel.py", "#{lib}/pybel.py"], site_package_dir
     end
+    # remove the spurious cmake folders from lib
+    rmtree "#{lib}/cmake"
 
-    # Install the perl bindings.
-    if ARGV.include? '--perl'
-      cd 'scripts/perl' do
-        # because it's not yet been linked, the perl script won't find the newly
-        # compiled library unless we pass it in as LD_LIBRARY_PATH.
-        ENV['LD_LIBRARY_PATH'] = "lib"
-        system 'perl', 'Makefile.PL'
-        # With the additional argument "PREFIX=#{prefix}" it puts things in #{prefix} (where perl can't find them).
-        # Without, it puts them in /Library/Perl/...
-        inreplace "Makefile" do |s|
-          # Fix the broken Makefile (-bundle not allowed with -dynamiclib).
-          # I think this is a SWIG error, but I'm not sure.
-          s.gsub! '-bundle ', ''
-          # Don't waste time building PPC version.
-          s.gsub! '-arch ppc ', ''
-          # Don't build i386 version when libopenbabel can't link to it.
-          s.gsub! '-arch i386 ', ''
-        end
-        system "make"
-        system "make test"
-        system "make install"
-      end
-    end
+  end
 
-    # Install the ruby bindings.
-    if ARGV.include? '--ruby'
-      cd 'scripts/ruby' do
-        system "ruby", "extconf.rb",
-               "--with-openbabel-include=#{include}",
-               "--with-openbabel-lib=#{lib}"
+  def caveats; <<-EOS.undent
+    The Python bindings were installed to #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages
+    so you may need to update your PYTHONPATH like so:
+      export PYTHONPATH="#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH"
+    To make this permanent, put it in your shell's profile (e.g. ~/.profile).
 
-        # Don't build i386 version when libopenbabel can't link to it.
-        inreplace "Makefile", '-arch i386 ', ''
-
-        # With the following line it puts things in #{prefix} (where ruby can't find them).
-        # Without, it puts them in /Library/Ruby/...
-        #ENV['DESTDIR']=prefix
-        system "make"
-        system "make install"
-      end
-    end
+    To draw images from python, you will need to get the oasa Python module:
+      pip install -f http://bkchem.zirael.org/ oasa==0.13.1
+    EOS
   end
 end
