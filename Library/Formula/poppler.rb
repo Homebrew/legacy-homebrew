@@ -14,7 +14,7 @@ class Poppler < Formula
   depends_on 'qt' if build.include? 'with-qt4'
   depends_on 'glib' if build.include? 'with-glib'
   depends_on 'cairo' if build.include? 'with-glib' # Needs a newer Cairo build than OS X 10.6.7 provides
-  depends_on :x11 # Fontconfig headers
+  depends_on :fontconfig
 
   option 'with-qt4', 'Build Qt backend'
   option 'with-glib', 'Build Glib backend'
