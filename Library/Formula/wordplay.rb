@@ -7,7 +7,7 @@ class Wordplay < Formula
 
   def patches
     # Fixes compiler warnings on Darwin
-    { :p0 => "https://raw.github.com/gist/3396973/b7d4b268e2dd047df0ec9448ecf286494e23049d/wordplay-darwin.c" }
+    { :p0 => DATA }
   end
 
   def install
@@ -20,3 +20,16 @@ class Wordplay < Formula
   end
 
 end
+
+__END__
+
+--- wordplay.c.orig	2012-08-19 11:36:39.000000000 -0700
++++ wordplay.c	2012-08-19 11:36:59.000000000 -0700
+@@ -136,6 +136,7 @@
+ */
+ 
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <string.h>
+ #include <ctype.h>
+ 
