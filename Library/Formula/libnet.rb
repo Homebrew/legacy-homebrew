@@ -6,6 +6,7 @@ class Libnet < Formula
   sha1 'dffff71c325584fdcf99b80567b60f8ad985e34c'
 
   # MacPorts does an autoreconf to get raw sockets working
+  depends_on :automake
   depends_on :autoconf
   depends_on :libtool
 

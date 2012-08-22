@@ -3,15 +3,15 @@ require 'formula'
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
 
-  if Hardware.is_64_bit? and not ARGV.build_32_bit?
+  if Hardware.is_64_bit? and not build.build_32_bit?
     url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.7.tgz'
     md5 '81b0e8be3206cc60e8031dde302fb983'
     version '2.0.7-x86_64'
 
     devel do
-      url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0-rc0.tgz'
-      md5 '49918bd6c5c5e84c4f657df35de6512b'
-      version '2.2.0-rc0-x86_64'
+      url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0-rc1.tgz'
+      md5 '7cdaafc7373c3fe8d79e963f56a0e011'
+      version '2.2.0-rc1-x86_64'
     end
   else
     url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.7.tgz'
@@ -19,17 +19,15 @@ class Mongodb < Formula
     version '2.0.7-i386'
 
     devel do
-      url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0-rc0.tgz'
-      md5 '236330754716334a6a9b88ff9bbcc3ea'
-      version '2.2.0-rc0-i386'
+      url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0-rc1.tgz'
+      md5 '4147b128e9b20597eb08c72f06a1e473'
+      version '2.2.0-rc1-i386'
     end
   end
 
-  skip_clean :all
+  option '32-bit'
 
-  def options
-    [['--32-bit', 'Build 32-bit only.']]
-  end
+  skip_clean :all
 
   def install
     # Copy the prebuilt binaries to prefix

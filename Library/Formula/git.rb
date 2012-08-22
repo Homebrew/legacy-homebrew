@@ -1,19 +1,19 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.11.4.tar.gz'
-  sha1 '032301a87832d738149925ad2912baa554ae2270'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.12.tar.gz'
+  sha1 'fb572729ca5c60161dc651564a50d4378507e20f'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.11.4.tar.gz'
-  sha1 'ceb4b4699a6561719aa07e01601ed5491206c075'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.12.tar.gz'
+  sha1 '50bbfeba77af9a411cc1a1e41220782cf3fd9b5e'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.7.11.4.tar.gz'
-  sha1 '36180126eb2048d49b00f6092d83568df4e61c4c'
+  url 'http://git-core.googlecode.com/files/git-1.7.12.tar.gz'
+  sha1 '42ec1037f1ee5bfeb405710c83b73c0515ad26e6'
 
   head 'https://github.com/git/git.git'
 
@@ -59,6 +59,7 @@ class Git < Formula
 
     # install the completion script first because it is inside 'contrib'
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
+    (prefix+'etc/bash_completion.d').install 'contrib/completion/git-prompt.sh'
     (share+'git-core').install 'contrib'
 
     # We could build the manpages ourselves, but the build process depends

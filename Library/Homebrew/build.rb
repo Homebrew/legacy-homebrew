@@ -56,7 +56,7 @@ at_exit do
 end
 
 def install f
-  f.requirements.each { |dep| dep.modify_build_environment }
+  f.recursive_requirements.each { |req| req.modify_build_environment }
 
   f.recursive_deps.uniq.each do |dep|
     dep = Formula.factory dep
@@ -111,10 +111,4 @@ def install f
       end
     end
   end
-rescue Exception
-  if f.prefix.directory?
-    f.prefix.rmtree
-    f.rack.rmdir_if_possible
-  end
-  raise
 end

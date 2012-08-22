@@ -369,6 +369,15 @@ can take several different forms:
 
 ## ENVIRONMENT
 
+  * GIT:
+    When using Git, Homebrew will use `GIT` if set,
+    a Homebrew-built Git if installed, or the system-provided binary.
+
+    Set this to force Homebrew to use a particular git binary.
+
+  * EDITOR:
+    If set, and `HOMEBREW_EDITOR` is not, use `EDITOR` as the text editor.
+
   * HOMEBREW\_BUILD\_FROM\_SOURCE:
     If set, instructs Homebrew to compile from source even when a formula
     provides a bottle.

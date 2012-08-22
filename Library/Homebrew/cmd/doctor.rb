@@ -40,6 +40,7 @@ end
 class Checks
   # Sorry for the lack of an indent here, the diff would have been unreadable.
 
+############# HELPERS
 def remove_trailing_slash s
   (s[s.length-1] == '/') ? s[0,s.length-1] : s
 end
@@ -54,6 +55,15 @@ def path_folders
   end.uniq.compact
 end
 
+  # Finds files in HOMEBREW_PREFIX *and* /usr/local.
+  # Specify paths relative to a prefix eg. "include/foo.h".
+  # Sets @found for your convenience.
+  def find_relative_paths *relative_paths
+    @found = %W[#{HOMEBREW_PREFIX} /usr/local].uniq.inject([]) do |found, prefix|
+      found + relative_paths.map{|f| File.join(prefix, f) }.select{|f| File.exist? f }
+    end
+  end
+############# END HELPERS
 
 # See https://github.com/mxcl/homebrew/pull/9986
 def check_path_for_trailing_slashes
@@ -196,49 +206,27 @@ end
 
 def check_for_latest_xcode
   if not MacOS::Xcode.installed?
-    # no Xcode, now it depends on the OS X version...
-    if MacOS.version >= 10.7 then
+    if MacOS.version >= 10.7
       if not MacOS::CLT.installed?
-        return <<-EOS.undent
-          No Xcode version found!
-          No compiler found in /usr/bin!
-
-          To fix this, either:
-          - Install the "Command Line Tools for Xcode" from http://connect.apple.com/
-            Homebrew does not require all of Xcode, you only need the CLI tools package!
-            (However, you need a (free) Apple Developer ID.)
-          - Install Xcode from the Mac App Store. (Normal Apple ID is sufficient, here)
+        <<-EOS.undent
+        No developer tools installed
+        You should install the Command Line Tools: http://connect.apple.com
         EOS
-      else
-        return <<-EOS.undent
-          Experimental support for using the "Command Line Tools" without Xcode.
-          Some formulae need Xcode to be installed (for the Frameworks not in the CLT.)
+      elsif not MacOS::CLT.latest_version?
+        <<-EOS.undent
+        A newer Command Line Tools for Xcode release is avaliable
+        You should install the latest version from: http://connect.apple.com
         EOS
       end
     else
-      # older Mac systems should just install their old Xcode. We don't advertize the CLT.
-      return <<-EOS.undent
-        We couldn't detect any version of Xcode.
-        If you downloaded Xcode from the App Store, you may need to run the installer.
+      <<-EOS.undent
+      Xcode not installed
+      Most stuff needs Xcode to build: http://developer.apple.com/xcode/
       EOS
     end
-  end
-
-  latest_xcode = case MacOS.version
-    when 10.5 then "3.1.4"
-    when 10.6 then "3.2.6"
-    when 10.7 then "4.3.3"
-    when 10.8 then "4.4"
-    else nil
-  end
-  if latest_xcode.nil?
-    return <<-EOS.undent
-    Not sure what version of Xcode is the latest for OS X #{MacOS.version}.
-    EOS
-  end
-  if MacOS::Xcode.installed? and MacOS::Xcode.version < latest_xcode then <<-EOS.undent
-    You have Xcode-#{MacOS::Xcode.version}, which is outdated.
-    Please install Xcode #{latest_xcode}.
+  elsif MacOS::Xcode.version < MacOS::Xcode.latest_version then <<-EOS.undent
+    Your Xcode (#{MacOS::Xcode.version}) is outdated
+    Please install Xcode #{MacOS::Xcode.latest_version}.
     EOS
   end
 end
@@ -396,7 +384,7 @@ def check_xcode_select_path
     <<-EOS.undent
       Your xcode-select path is set to /
       You must unset it or builds will hang:
-        sudo rm /usr/share/xcode-select/xcode_dir_link
+        sudo rm /usr/share/xcode-select/xcode_dir_*
     EOS
   elsif not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
     path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::Xcode::V3_BUNDLE_ID)
@@ -514,20 +502,28 @@ def check_for_gettext
 end
 
 def check_for_iconv
-  iconv_files = %w[lib/iconv.dylib
-    include/iconv.h].select { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
-  if !iconv_files.empty?
-    <<-EOS.undent
-      The following libiconv files were detected in #{HOMEBREW_PREFIX}:
-      #{iconv_files.join "\n      "}
-      Homebrew doesn't provide a libiconv formula, and expects to link against
-      the system version in /usr/lib.
+  unless find_relative_paths("lib/iconv.dylib", "include/iconv.h").empty?
+    if (f = Formula.factory("libiconv") rescue nil) and f.linked_keg.directory?
+      if not f.keg_only? then <<-EOS.undent
+        A libiconv formula is installed and linked
+        This will break stuff. For serious. Unlink it.
+        EOS
+      else
+        # NOOP because: check_for_linked_keg_only_brews
+      end
+    else
+      s = <<-EOS.undent_________________________________________________________72
+          libiconv files detected at a system prefix other than /usr
+          Homebrew doesn't provide a libiconv formula, and expects to link against
+          the system version in /usr. libiconv in other prefixes can cause
+          compile or link failure, especially if compiled with improper
+          architectures. OS X itself never installs anything to /usr/local so
+          it was either installed by a user or some other third party software.
 
-      If you have an alternate libiconv, many formulae will fail to compile or
-      link, especially if it wasn't compiled with the proper architectures.
-    EOS
-  else
-    nil
+          tl;dr: delete these files:
+          EOS
+      @found.inject(s){|s, f| s << "    #{f}" }
+    end
   end
 end
 
@@ -706,12 +702,12 @@ def __check_linked_brew f
   return links_found
 end
 
-def check_for_linked_kegonly_brews
+def check_for_linked_keg_only_brews
   require 'formula'
 
   warnings = Hash.new
 
-  Formula.all.each do |f|
+  Formula.each do |f|
     next unless f.keg_only? and f.installed?
     links = __check_linked_brew f
     warnings[f.name] = links unless links.empty?
@@ -768,9 +764,8 @@ end
 def check_missing_deps
   return unless HOMEBREW_CELLAR.exist?
   s = Set.new
-  missing_deps = Homebrew.find_missing_brews(Homebrew.installed_brews)
-  missing_deps.each do |m|
-    s.merge m[1]
+  Homebrew.missing_deps(Homebrew.installed_brews).each do |_, deps|
+    s.merge deps
   end
 
   if s.length > 0 then <<-EOS.undent
@@ -787,17 +782,20 @@ end
 def check_git_status
   return unless which "git"
   HOMEBREW_REPOSITORY.cd do
-    unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty? then <<-EOS.undent
-      You have uncommitted modifications to Homebrew's core.
-      Unless you know what you are doing, you should run:
-        cd #{HOMEBREW_REPOSITORY}/Library && git reset --hard && git clean -f
+    unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
+      <<-EOS.undent_________________________________________________________72
+      You have uncommitted modifications to Homebrew
+      If this a surprise to you, then you should stash these modifications.
+      Stashing returns Homebrew to a pristine state but can be undone
+      should you later need to do so for some reason.
+          cd #{HOMEBREW_REPOSITORY} && git stash
       EOS
     end
   end
 end
 
 def check_for_leopard_ssl
-  if MacOS.leopard? and not ENV['GIT_SSL_NO_VERIFY']
+  if MacOS.version == :leopard and not ENV['GIT_SSL_NO_VERIFY']
     <<-EOS.undent
       The version of libcurl provided with Mac OS X Leopard has outdated
       SSL certificates.
@@ -933,7 +931,16 @@ module Homebrew extend self
   def doctor
     checks = Checks.new
 
-    checks.methods.select{ |method| method =~ /^check_/ }.sort.each do |method|
+    inject_dump_stats(checks) if ARGV.switch? 'D'
+
+    methods = if ARGV.named.empty?
+      # put slowest methods last
+      checks.methods.sort << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
+    else
+      ARGV.named
+    end.select{ |method| method =~ /^check_/ }.uniq
+
+    methods.each do |method|
       out = checks.send(method)
       unless out.nil? or out.empty?
         lines = out.to_s.split('\n')
@@ -944,5 +951,21 @@ module Homebrew extend self
     end
 
     puts "Your system is raring to brew." unless Homebrew.failed?
+  end
+
+  def inject_dump_stats checks
+    class << checks
+      alias_method :oldsend, :send
+      def send method
+        time = Time.now
+        oldsend(method)
+      ensure
+        $times[method] = Time.now - time
+      end
+    end
+    $times = {}
+    at_exit {
+      puts $times.sort_by{|k, v| v }.map{|k, v| "#{k}: #{v}"}
+    }
   end
 end

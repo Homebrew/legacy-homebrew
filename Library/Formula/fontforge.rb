@@ -6,13 +6,15 @@ class Fontforge < Formula
   sha1 'b520f532b48e557c177dffa29120225066cc4e84'
   version '20120731'
 
-  head 'git://fontforge.git.sourceforge.net/gitroot/fontforge/fontforge'
+  head 'https://github.com/fontforge/fontforge.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'pango'
   depends_on 'potrace'
+  depends_on 'libspiro'
   depends_on :x11
+  depends_on :xcode
 
   def options
     [['--without-python', 'Build without Python.']]
@@ -37,6 +39,8 @@ class Fontforge < Formula
       args << "--with-python-lib=-lpython#{python_version}"
       args << "--enable-pyextension"
     end
+
+    ENV.macosxsdk("10.7") if MacOS.mountain_lion?
 
     # Fix linking to correct Python library
     ENV.prepend "LDFLAGS", "-L#{python_prefix}/lib" unless ARGV.include? "--without-python"
@@ -63,7 +67,11 @@ class Fontforge < Formula
     # http://sourceforge.net/mailarchive/forum.php?thread_name=C1A32103-A62D-468B-AD8A-A8E0E7126AA5%40smparkes.net&forum_name=fontforge-devel
     # https://trac.macports.org/ticket/33284
     inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
-      s.gsub! "/Developer", MacOS::Xcode.prefix
+      if MacOS.lion?
+        s.gsub! "/Developer", "#{MacOS::sdk_path("10.7")}/Developer"
+      else
+        s.gsub! "/Developer", MacOS::Xcode.prefix
+      end
     end
 
     system "make"
