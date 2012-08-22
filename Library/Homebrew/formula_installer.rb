@@ -103,17 +103,26 @@ class FormulaInstaller
 
     oh1 "Installing #{f}" if show_header
 
-    @@attempted ||= Set.new
-    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
-    @@attempted << f
-
-    if install_bottle
-      pour
-    else
-      build
-      clean
+    # Throw exceptions if lock_file already exists or cannot be locked
+    lock_file = HOMEBREW_CACHE_FORMULA+"#{f}.brewing"
+    begin
+      File.open(lock_file, File::RDWR|File::EXCL|File::CREAT) do |lf|
+        if install_bottle
+          pour
+        else
+          build
+          clean
+        end
+      end
+      File.delete(lock_file)
+    rescue Errno::EEXIST
+      raise FormulaInstallationAlreadyUnderwayError, f
+    # Catch things like CTRL-C, etc....
+    rescue Exception
+      File.delete(lock_file)
+      raise
     end
-
+    
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
 

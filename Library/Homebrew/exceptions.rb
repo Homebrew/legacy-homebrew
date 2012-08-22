@@ -59,9 +59,11 @@ end
 class CannotInstallFormulaError < RuntimeError
 end
 
-class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
-  def message
-    "Formula installation already attempted: #{formula}"
+class FormulaInstallationAlreadyUnderwayError < Homebrew::InstallationError
+  def initialize formula
+    message  = "Formula installation is already underway: #{formula}\n"
+    message += "If you believe this to be in error, delete the file "+HOMEBREW_CACHE_FORMULA+"/#{formula}.brewing and try again"
+    super formula, message
   end
 end
 
