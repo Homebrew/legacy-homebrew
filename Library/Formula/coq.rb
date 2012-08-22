@@ -20,7 +20,7 @@ end
 class Coq < Formula
   homepage 'http://coq.inria.fr/'
   url 'http://coq.inria.fr/distrib/V8.4/files/coq-8.4.tar.gz'
-  md5 'f28662cd687f66ed3c372ca3d35ea928'
+  sha1 '2987aa418dd96a0df7284afe296293cb28814ef5'
   head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
 
   skip_clean :all
