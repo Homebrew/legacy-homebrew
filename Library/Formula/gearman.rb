@@ -2,8 +2,8 @@ require 'formula'
 
 class Gearman < Formula
   homepage 'http://gearman.org/'
-  url 'https://launchpad.net/gearmand/trunk/0.34/+download/gearmand-0.34.tar.gz'
-  sha1 '198c708c46fd089dee85a53ebb2b67adbdb4a21a'
+  url 'https://launchpad.net/gearmand/0.0/0.36/+download/gearmand-0.36.tar.gz'
+  sha1 '6358497a8e01a6897f3db9788e82c29db7480caf'
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
