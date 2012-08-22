@@ -844,6 +844,53 @@ def check_for_bad_python_symlink
   end
 end
 
+def check_for_python_org
+  return unless which "python"
+  path = HOMEBREW_PREFIX/"bin/python"
+  if path.exist? and path.realpath.to_s.start_with? '/Library/Frameworks/Python.framework/'
+    <<-EOS.undent
+    Detected Python from the python.org installer in #{HOMEBREW_PREFIX}/bin.
+    #{path} => #{path.realpath}
+    Using python.org's python conflicts with Homebrew's python and you may not be
+    able to successfully `brew install python`. While you may use python.org's
+    version, we cannot provide support for it, especially for the python
+    bindings in Homebrew.
+    Unfortunately, there is no uninstaller.
+    To list all symlinkes from python.org's installer:
+       ls -l #{HOMEBREW_PREFIX}/bin | grep '../Library/Frameworks/Python.framework'
+    Delete them manually.
+    EOS
+  end
+end
+
+def check_for_python_org_in_path
+  for p in self.path_folders
+    if p == "#{HOMEBREW_PREFIX}/bin" then 
+      return
+    elsif Pathname("#{p}/python").exist?
+      return <<-EOS.undent
+        Your PATH environment variable contains a path before #{HOMEBREW_PREFIX}
+        which contains a python executable that will always take precedence
+        over Homebrew's.
+        The path is: #{p}
+        Remove that path from your PATH variable in your shell config
+        (probably .bash_profile or .bashrc).
+      EOS
+    end
+  end
+end
+
+def check_for_python_root_variable
+  if ENV['PYTHONHOME']
+    <<-EOS.undent
+      The environment variable 'PYTHONHOME' is set.
+        PYTHONHOME=#{ENV['PYTHONHOME']}
+      This may lead to failures of python bindings, installed via Homebrew.
+      Remove this variable from your shell config (.bash_profile or .bashrc).
+    EOS
+  end
+end
+
 def check_for_pydistutils_cfg_in_home
   if File.exist? ENV['HOME']+'/.pydistutils.cfg' then <<-EOS.undent
     A .pydistutils.cfg file was found in $HOME, which may cause Python
