@@ -1,7 +1,6 @@
 require 'formula'
-require 'download_strategy'
 
-class VcodexDownloadStrategy <CurlDownloadStrategy
+class VcodexDownloadStrategy < CurlDownloadStrategy
   # downloading from AT&T requires using the following credentials
   def credentials
     'I accept www.research.att.com/license/att-src:.'

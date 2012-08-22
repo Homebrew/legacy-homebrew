@@ -197,4 +197,23 @@ module MacOS extend self
   def x11_prefix
     X11.prefix
   end
+
+  def leopard?
+    10.5 == MACOS_VERSION
+  end
+
+  def snow_leopard?
+    10.6 <= MACOS_VERSION # Actually Snow Leopard or newer
+  end
+  alias_method :snow_leopard_or_newer?, :snow_leopard?
+
+  def lion?
+    10.7 <= MACOS_VERSION # Actually Lion or newer
+  end
+  alias_method :lion_or_newer?, :lion?
+
+  def mountain_lion?
+    10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
+  end
+  alias_method :mountain_lion_or_newer?, :mountain_lion?
 end

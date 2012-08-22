@@ -63,13 +63,15 @@ private
       # Xcode no longer provides autotools or some other build tools
       Dependency.new(spec.to_s) unless MacOS::Xcode.provides_autotools?
     when :libpng, :freetype, :pixman, :fontconfig, :cairo
-      if MacOS.lion_or_newer?
+      if MacOS.version >= :lion
         MacOS::XQuartz.installed? ? X11Dependency.new(tag) : Dependency.new(spec.to_s)
       else
         X11Dependency.new(tag)
       end
     when :x11
       X11Dependency.new(tag)
+    when :xcode
+      XCodeDependency.new
     else
       raise "Unsupported special dependency #{spec}"
     end
@@ -320,5 +322,18 @@ class ConflictRequirement < Requirement
   # The user can chose to force installation even in the face of conflicts.
   def fatal?
     not ARGV.force?
+  end
+end
+
+class XCodeDependency < Requirement
+  def fatal?; true; end
+
+  def satisfied?
+    MacOS::Xcode.installed?
+  end
+
+  def message; <<-EOS.undent
+    XCode is required to compile this software.
+    EOS
   end
 end

@@ -22,6 +22,10 @@ class Mariadb < Formula
   end
 
   def install
+    # Build without compiler or CPU specific optimization flags to facilitate
+    # compilation of gems and other software that queries `mysql-config`.
+    ENV.minimal_optimization
+
     ENV.append 'CXXFLAGS', '-fno-omit-frame-pointer -felide-constructors'
 
     # Make universal for bindings to universal applications
