@@ -2,10 +2,17 @@ require 'formula'
 
 class Unp < Formula
   homepage 'http://packages.debian.org/source/stable/unp'
-  url 'http://mirrors.kernel.org/debian/pool/main/u/unp/unp_2.0~pre7.tar.bz2'
-  mirror 'http://ftp.us.debian.org/debian/pool/main/u/unp/unp_2.0~pre7.tar.bz2'
-  sha1 '8e26bba069b5015425c0684575e84ff131c09756'
-  version '2.0-pre7'
+  url 'http://mirrors.kernel.org/debian/pool/main/u/unp/unp_2.0~pre4.tar.gz'
+  mirror 'http://ftp.us.debian.org/debian/pool/main/u/unp/unp_2.0~pre4.tar.gz'
+  sha1 '6c07989297a1f15bd629bd64ff02d6cd13919775'
+  version '2.0-pre4'
+
+  devel do
+    url 'http://mirrors.kernel.org/debian/pool/main/u/unp/unp_2.0~pre7+nmu1.tar.bz2'
+    mirror 'http://ftp.us.debian.org/debian/pool/main/u/unp/unp_2.0~pre7+nmu1.tar.bz2'
+    sha1 'b91f4cbc4720b3aace147652ac2043cf74668244'
+    version '2.0-pre7-nmu1'
+  end
 
   depends_on 'p7zip'
 
