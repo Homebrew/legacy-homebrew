@@ -2,8 +2,8 @@ require 'formula'
 
 class Uwsgi < Formula
   homepage 'http://projects.unbit.it/uwsgi/'
-  url 'http://projects.unbit.it/downloads/uwsgi-1.2.4.tar.gz'
-  sha1 '853ddbc1e4a0d98f2e81930dff46239d4bb12310'
+  url 'http://projects.unbit.it/downloads/uwsgi-1.2.5.tar.gz'
+  sha1 'd34ab260883416553aa186027cfbc23f38efdc6f'
 
   skip_clean :all # stripping breaks the executable
 
@@ -19,5 +19,18 @@ class Uwsgi < Formula
 
     system "python", "uwsgiconfig.py", "--build"
     bin.install "uwsgi"
+  end
+
+  def caveats; <<-EOS.undent
+    If errors occurred, you could try to reinstall 'pcre' or 'libyaml' both as
+    a universal binary:
+       # Reinstall pcre 
+       $ brew uninstall pcre
+       $ brew install pcre --universal
+
+       # Reinstall libyaml
+       $ brew uninstall libyaml
+       $ brew install libyaml --universal
+    EOS
   end
 end
