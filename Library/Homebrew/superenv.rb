@@ -26,9 +26,7 @@ class << ENV
     %w{CC CXX LD CPP OBJC MAKE
       CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
       MACOS_DEPLOYMENT_TARGET SDKROOT
-      CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH
-      HOMEBREW_CCCFG HOMEBREW_DEP_PREFIXES
-      MAKEFLAGS MAKEJOBS}.
+      CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH}.
       each{ |x| delete(x) }
     delete('CDPATH') # avoid make issues that depend on changing directories
     delete('GREP_OPTIONS') # can break CMake
@@ -48,7 +46,7 @@ class << ENV
     ENV['LD'] = 'ld'
     ENV['CPP'] = 'cpp'
     ENV['MAKE'] = 'make'
-    ENV['MAKEFLAGS'] ||= "-j#{Hardware.processor_count}"
+    ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
     ENV['HOMEBREW_CCCFG'] = 'b' if ARGV.build_bottle?
@@ -159,6 +157,14 @@ class << ENV
     paths << "#{HOMEBREW_PREFIX}/share/aclocal"
     paths << "/opt/X11/share/aclocal"
     paths.to_path_s
+  end
+
+  def determine_make_jobs
+    if (j = ENV['HOMEBREW_MAKE_JOBS'].to_i) < 1
+      Hardware.processor_count
+    else
+      j
+    end
   end
 
   public
