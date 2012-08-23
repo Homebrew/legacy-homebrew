@@ -351,11 +351,6 @@ class FormulaAuditor
       problem "xcodebuild should be passed an explicit \"SYMROOT\""
     end
 
-    # using ARGV.flag? for formula options is generally a bad thing
-    if text =~ /ARGV\.flag\?/
-      problem "Use 'ARGV.include?' instead of 'ARGV.flag?'"
-    end
-
     # Avoid hard-coding compilers
     if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]]
       problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
@@ -370,7 +365,15 @@ class FormulaAuditor
     end
 
     if text =~ /version == ['"]HEAD['"]/
-      problem "Use 'ARGV.build_head?' instead of inspecting 'version'"
+      problem "Use 'build.head?' instead of inspecting 'version'"
+    end
+
+    if text =~ /ARGV/
+      problem "Use build instead of ARGV to check options."
+    end
+
+    if text =~ /def options/
+      problem "Use new-style option definitions."
     end
   end
 
