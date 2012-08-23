@@ -223,7 +223,7 @@ class Formula
         puts if Interrupt === e # don't print next to the ^C
         unless ARGV.debug?
           %w(config.log CMakeCache.txt).select{|f| File.exist? f}.each do |f|
-            HOMEBREW_LOGS.install f
+            cp HOMEBREW_LOGS, f
             puts "#{f} was copied to #{HOMEBREW_LOGS}"
           end
           raise
