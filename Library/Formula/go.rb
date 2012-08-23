@@ -11,6 +11,9 @@ class Go < Formula
   skip_clean 'bin'
 
   def install
+    # install the completion script
+    (prefix + 'etc/bash_completion.d').install 'misc/bash/go' => 'go-completion.bash'
+
     prefix.install Dir['*']
 
     cd prefix do
