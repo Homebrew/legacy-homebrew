@@ -2,11 +2,14 @@ require 'formula'
 
 class Valgrind < Formula
   homepage 'http://www.valgrind.org/'
+  head 'svn://svn.valgrind.org/valgrind/trunk'
+
+  depends_on 'autoconf' if ARGV.build_head?
 
   # Valgrind 3.7.0 drops support for OS X 10.5
-  if MACOS_VERSION >= 10.6
-    url 'http://valgrind.org/downloads/valgrind-3.7.0.tar.bz2'
-    md5 'a855fda56edf05614f099dca316d1775'
+  if MacOS.version >= 10.6 # snow leopard
+    url 'http://valgrind.org/downloads/valgrind-3.8.0.tar.bz2'
+    sha1 '074b09e99b09634f1efa6f7f0f87c7a541fb9b0d'
   else
     url "http://valgrind.org/downloads/valgrind-3.6.1.tar.bz2"
     md5 "2c3aa122498baecc9d69194057ca88f5"
@@ -15,6 +18,11 @@ class Valgrind < Formula
   skip_clean 'lib'
 
   def install
+    # avoid __bzero when building against OS X 10.8 sdk
+    if MacOS.version >= 10.8 # mountaion lion
+      ENV.remove_from_cflags "-mmacosx-version-min=#{MacOS.version}"
+    end
+
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     if MacOS.prefer_64_bit?
       args << "--enable-only64bit" << "--build=amd64-darwin"
@@ -22,6 +30,7 @@ class Valgrind < Formula
       args << "--enable-only32bit"
     end
 
+    system "./autogen.sh" if ARGV.build_head?
     system "./configure", *args
     system "make"
     system "make install"
