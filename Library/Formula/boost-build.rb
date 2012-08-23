@@ -9,7 +9,7 @@ class BoostBuild < Formula
   head 'http://svn.boost.org/svn/boost/trunk/tools/build/v2/'
 
   def install
-    if ARGV.build_head?
+    if build.head?
       system "./bootstrap.sh"
       system "./b2", "--prefix=#{prefix}", "install"
     else
