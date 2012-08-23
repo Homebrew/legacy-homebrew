@@ -10,7 +10,7 @@ class Tmux < Formula
   depends_on 'pkg-config' => :build
   depends_on 'libevent'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -20,11 +20,11 @@ class Tmux < Formula
   # NOTE: it applies to 1.6 only, and should be removed when 1.7 is out.
   #       (because it has been merged upstream)
   def patches
-   DATA if ARGV.build_stable?
+   DATA if build.stable?
   end
 
   def install
-    system "sh", "autogen.sh" if ARGV.build_head?
+    system "sh", "autogen.sh" if build.head?
 
     ENV.append "LDFLAGS", '-lresolv'
     system "./configure", "--disable-dependency-tracking",
