@@ -2,51 +2,66 @@ require 'formula'
 require 'blacklist'
 
 module Homebrew extend self
+
+  # Create a formula from a tarball URL
   def create
+
+    # Allow searching MacPorts or Fink.
     if ARGV.include? '--macports'
       exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
       exec "open", "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
-    elsif ARGV.named.empty?
-      raise UsageError
-    else
-      HOMEBREW_CACHE.mkpath
-      paths = ARGV.named.map do |url|
-        fc = FormulaCreator.new
-        fc.url = url
-        fc.mode = if ARGV.include? '--cmake'
-          :cmake
-        elsif ARGV.include? '--autotools'
-          :autotools
-        end
-
-        if fc.name.nil? or fc.name.to_s.strip.empty?
-          path = Pathname.new url
-          print "Formula name [#{path.stem}]: "
-          fc.name = __gets || path.stem
-          fc.path = Formula.path fc.name
-        end
-
-        unless ARGV.force?
-          if msg = blacklisted?(fc.name)
-            raise "#{fc.name} is blacklisted for creation.\n#{msg}\nIf you really want to create this formula use --force."
-          end
-
-          if Formula.aliases.include? fc.name
-            realname = Formula.canonical_name fc.name
-            raise <<-EOS.undent
-              The formula #{realname} is already aliased to #{fc.name}
-              Please check that you are not creating a duplicate.
-              To force creation use --force.
-              EOS
-          end
-        end
-        fc.generate
-        fc.path
-      end
-      puts "Please `brew audit "+paths.collect{|p|p.basename(".rb")}*" "+"` before submitting, thanks."
-      exec_editor *paths
     end
+
+    raise UsageError if ARGV.named.empty?
+
+    # Ensure that the cache exists so we can fetch the tarball
+    HOMEBREW_CACHE.mkpath
+
+    url = ARGV.named.first # Pull the first (and only) url from ARGV
+
+    version = ARGV.next if ARGV.include? '--set-version'
+    name = ARGV.next if ARGV.include? '--set-name'
+
+    fc = FormulaCreator.new
+    fc.name = name
+    fc.version = version
+    fc.url = url
+
+    fc.mode = if ARGV.include? '--cmake'
+      :cmake
+    elsif ARGV.include? '--autotools'
+      :autotools
+    end
+
+    if fc.name.nil? or fc.name.to_s.strip.empty?
+      path = Pathname.new url
+      print "Formula name [#{path.stem}]: "
+      fc.name = __gets || path.stem
+      fc.path = Formula.path fc.name
+    end
+
+    # Don't allow blacklisted formula, or names that shadow aliases,
+    # unless --force is specified.
+    unless ARGV.force?
+      if msg = blacklisted?(fc.name)
+        raise "#{fc.name} is blacklisted for creation.\n#{msg}\nIf you really want to create this formula use --force."
+      end
+
+      if Formula.aliases.include? fc.name
+        realname = Formula.canonical_name fc.name
+        raise <<-EOS.undent
+          The formula #{realname} is already aliased to #{fc.name}
+          Please check that you are not creating a duplicate.
+          To force creation use --force.
+          EOS
+      end
+    end
+
+    fc.generate!
+
+    puts "Please `brew audit #{fc.name}` before submitting, thanks."
+    exec_editor fc.path
   end
 
   def __gets
@@ -59,22 +74,26 @@ class FormulaCreator
   attr :url
   attr :sha1
   attr :name, true
+  attr :version, true
   attr :path, true
   attr :mode, true
 
   def url= url
     @url = url
-    path = Pathname.new url
-    /(.*?)[-_.]?#{path.version}/.match path.basename
-    @name = $1
-    @path = Formula.path $1 unless $1.nil?
+    path = Pathname.new(url)
+    if @name.nil?
+      /(.*?)[-_.]?#{path.version}/.match path.basename
+      @name = $1
+      @path = Formula.path $1 unless $1.nil?
+    else
+      @path = Formula.path name
+    end
+    if @version.nil?
+      @version = Pathname.new(url).version
+    end
   end
 
-  def version
-    Pathname.new(url).version
-  end
-
-  def generate
+  def generate!
     raise "#{path} already exists" if path.exist?
 
     require 'digest'
@@ -83,8 +102,6 @@ class FormulaCreator
     if version.nil?
       opoo "Version cannot be determined from URL."
       puts "You'll need to add an explicit 'version' to the formula."
-    else
-      puts "Version detected as #{version}."
     end
 
     unless ARGV.include? "--no-fetch" and version
@@ -105,6 +122,9 @@ class FormulaCreator
     class #{Formula.class_s name} < Formula
       homepage ''
       url '#{url}'
+    <% unless version.nil? %>
+      version '#{version}'
+    <% end %>
       sha1 '#{sha1}'
 
     <% if mode == :cmake %>
