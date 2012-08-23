@@ -27,7 +27,6 @@ class Pango < Formula
                           "--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-man",
-                          "--with-x",
                           "--with-html-dir=#{share}/doc",
                           "--disable-introspection"
     system "make"
