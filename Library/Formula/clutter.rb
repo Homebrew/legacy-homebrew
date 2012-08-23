@@ -7,14 +7,13 @@ class Clutter < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
-  depends_on 'atk'
-  depends_on 'intltool'
-  depends_on 'json-glib'
-  depends_on 'pango'
-  depends_on 'cairo' # for cairo-gobject
-  depends_on :x11
-  depends_on 'cogl'
+  depends_on 'glib'
   depends_on 'gdk-pixbuf'
+  depends_on 'cogl'
+  depends_on 'cairo' # for cairo-gobject
+  depends_on 'atk'
+  depends_on 'pango'
+  depends_on 'json-glib'
 
   def install
     system "./configure", "--prefix=#{prefix}",
