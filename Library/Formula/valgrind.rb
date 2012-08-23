@@ -23,10 +23,8 @@ class Valgrind < Formula
   skip_clean 'lib'
 
   def install
-    # avoid __bzero when building against OS X 10.8 sdk
-    if MacOS.version >= 10.8
-      ENV.remove_from_cflags "-mmacosx-version-min=#{MacOS.version}"
-    end
+    # avoid undefined symbol __bzero
+    ENV.remove_from_cflags "-mmacosx-version-min=#{MacOS.version}"
 
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     if MacOS.prefer_64_bit?
