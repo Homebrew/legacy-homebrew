@@ -7,7 +7,10 @@ class Freetype < Formula
 
   keg_only :when_xquartz_installed
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
