@@ -7,16 +7,14 @@ class Libdvdread < Formula
 
   head 'svn://svn.mplayerhq.hu/dvdnav/trunk/libdvdread'
 
-  depends_on 'libdvdcss' => :optional
+  depends_on 'libdvdcss'
 
   depends_on :automake
   depends_on :libtool
 
   def install
-    if Formula.factory("libdvdcss").installed?
-      ENV.append "CFLAGS", "-DHAVE_DVDCSS_DVDCSS_H"
-      ENV.append "LDFLAGS", "-ldvdcss"
-    end
+    ENV.append "CFLAGS", "-DHAVE_DVDCSS_DVDCSS_H"
+    ENV.append "LDFLAGS", "-ldvdcss"
 
     system "./autogen.sh", "--disable-dependency-tracking",
                            "--prefix=#{prefix}"
