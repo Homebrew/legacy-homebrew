@@ -63,6 +63,11 @@ class << ENV
     append 'HOMEBREW_CCCFG', "u", ''
   end
 
+  def make_me_some_cflags
+    prefixes = determine_cmake_prefix_path.split(':')
+    prefixes.map{|s| "-I#{s}/include -L#{s}/lib" }.join(" ")
+  end
+
   private
 
   def determine_cc
