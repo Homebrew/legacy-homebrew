@@ -12,16 +12,14 @@ class Cfitsio < Formula
   sha1 '35360dccc69dc5f12efb6fc9096ad951b59244d5'
   version '3.310'
 
-  def options
-    [['--with-examples', "Compile and install example programs."]]
-  end
+  option 'with-examples', "Compile and install example programs"
 
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make shared"
     system "make install"
 
-    if ARGV.include? '--with-examples'
+    if build.include? 'with-examples'
       system "make fpack funpack"
       bin.install 'fpack', 'funpack'
 
