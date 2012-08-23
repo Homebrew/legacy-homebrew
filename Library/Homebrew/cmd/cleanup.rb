@@ -1,4 +1,5 @@
 require 'formula'
+require 'keg'
 require 'bottles'
 require 'cmd/prune'
 
@@ -28,19 +29,15 @@ module Homebrew extend self
   def cleanup_formula f
     f = Formula.factory f
 
-    # Don't clean up keg-only brews for now.
-    # Formulae link directly to them, so cleaning up old
-    # ones will break already compiled software.
-    if f.keg_only? and not ARGV.force?
-      opoo "Skipping keg-only #{f.name}" if f.rack.children.length > 1
-      return
-    end
-
     if f.installed? and f.rack.directory?
       f.rack.children.each do |keg|
         if f.installed_prefix != keg
-          puts "Removing #{keg}..."
-          rm_rf keg unless ARGV.dry_run?
+          if f.can_cleanup?
+            puts "Removing #{keg}..."
+            rm_rf keg unless ARGV.dry_run?
+          else
+            opoo "Skipping (old) keg-only: #{keg}"
+          end
         end
       end
     elsif f.rack.children.length > 1
@@ -70,4 +67,25 @@ module Homebrew extend self
     system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete"
   end
 
+end
+
+class Formula
+  def can_cleanup?
+    # It used to be the case that keg-only kegs could not be cleaned up, because
+    # older brews were built against the full path to the keg-only keg. Then we
+    # introduced the opt symlink, and built against that instead. So provided
+    # no brew exists that was built against an old-style keg-only keg, we can
+    # remove it.
+    if not keg_only?
+      true
+    elsif opt_prefix.directory?
+      # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks
+      !Formula.installed.
+        select{ |ff| ff.deps.map(&:to_s).include? name }.
+        map{ |ff| ff.rack.children rescue [] }.
+        flatten.
+        map{ |keg_path| Tab.for_keg(keg_path).sha }.
+        include? nil
+    end
+  end
 end

@@ -24,7 +24,9 @@ class FormulaInstaller
 
   def check_install_sanity
     if f.installed?
-      raise CannotInstallFormulaError, "#{f}-#{f.installed_version} already installed"
+      msg = "#{f}-#{f.installed_version} already installed"
+      msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
+      raise CannotInstallFormulaError, msg
     end
 
     # Building head-only without --HEAD is an error
@@ -172,10 +174,18 @@ class FormulaInstaller
   def finish
     ohai 'Finishing up' if ARGV.verbose?
 
-    unless f.keg_only?
+    if f.keg_only?
+      begin
+        Keg.new(f.prefix).optlink
+      rescue Exception => e
+        onoe "Failed to create: #{f.opt_prefix}"
+        puts "Things that depend on #{f} will probably not build."
+      end
+    else
       link
-      check_PATH
+      check_PATH unless f.keg_only?
     end
+
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
@@ -234,6 +244,7 @@ class FormulaInstaller
       Process.wait
       data = read.read
       raise Marshal.load(data) unless data.nil? or data.empty?
+      raise Interrupt if $?.exitstatus == 130
       raise "Suspicious installation failure" unless $?.success?
     end
 
@@ -262,15 +273,18 @@ class FormulaInstaller
     end
 
     keg = Keg.new(f.prefix)
-    keg.link
-  rescue Exception => e
-    onoe "The linking step did not complete successfully"
-    puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
-    puts "You can try again using `brew link #{f.name}'"
-    keg.unlink
 
-    ohai e, e.backtrace if ARGV.debug?
-    @show_summary_heading = true
+    begin
+      keg.link
+    rescue Exception => e
+      onoe "The linking step did not complete successfully"
+      puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
+      puts "You can try again using `brew link #{f.name}'"
+      ohai e, e.backtrace if ARGV.debug?
+      @show_summary_heading = true
+      ignore_interrupts{ keg.unlink }
+      raise unless e.kind_of? RuntimeError
+    end
   end
 
   def fix_install_names
@@ -432,19 +446,21 @@ end
 
 class Formula
   def keg_only_text
-    # Add indent into reason so undent won't truncate the beginnings of lines
-    reason = self.keg_only_reason.to_s.gsub(/[\n]/, "\n    ")
-    return <<-EOS.undent
-    This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}.
+    s = "This formula is keg-only: so it was not symlinked into #{HOMEBREW_PREFIX}."
+    s << "\n\n#{keg_only_reason.to_s}"
+    if lib.directory? or include.directory?
+      s <<
+        <<-EOS.undent_________________________________________________________72
 
-    #{reason}
 
-    Generally there are no consequences of this for you.
-    If you build your own software and it requires this formula, you'll need
-    to add its lib & include paths to your build variables:
+        Generally there are no consequences of this for you. If you build your
+        own software and it requires this formula, you'll need to add to your
+        build variables:
 
-        LDFLAGS  -L#{lib}
-        CPPFLAGS -I#{include}
-    EOS
+        EOS
+      s << "    LDFLAGS:  -L#{HOMEBREW_PREFIX}/opt/#{name}/lib\n" if lib.directory?
+      s << "    CPPFLAGS: -I#{HOMEBREW_PREFIX}/opt/#{name}/include\n" if include.directory?
+    end
+    s << "\n"
   end
 end

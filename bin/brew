@@ -1,6 +1,8 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 # -*- coding: utf-8 -*-
 
+std_trap = trap("INT") { exit! 130 } # no backtrace thanks
+
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
 
 require 'pathname'
@@ -49,6 +51,8 @@ rescue LoadError => e
 end
 
 begin
+  trap("INT", std_trap) # restore default CTRL-C handler
+
   aliases = {'ls' => :list,
              'homepage' => :home,
              '-S' => :search,

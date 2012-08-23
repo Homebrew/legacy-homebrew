@@ -19,13 +19,14 @@ class Tab < OpenStruct
             :unused_options => formula_options - arg_options,
             :tabfile => f.prefix + "INSTALL_RECEIPT.json",
             :built_bottle => !!args.build_bottle?,
-            :tapped_from => f.tap
+            :tapped_from => f.tap,
+            :time => Time.now.to_i, # to_s would be better but Ruby has no from_s function :P
+            :sha => `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle
   end
 
   def self.from_file path
     tab = Tab.new MultiJson.decode(open(path).read)
     tab.tabfile = path
-
     return tab
   end
 
@@ -41,7 +42,9 @@ class Tab < OpenStruct
         Tab.new :used_options => [],
                 :unused_options => [],
                 :built_bottle => false,
-                :tapped_from => ""
+                :tapped_from => "",
+                :time => nil,
+                :sha => nil
       end
     end
   end
@@ -69,7 +72,9 @@ class Tab < OpenStruct
     Tab.new :used_options => [],
             :unused_options => f.build.as_flags,
             :built_bottle => false,
-            :tapped_from => ""
+            :tapped_from => "",
+            :time => nil,
+            :sha => nil
   end
 
   def installed_with? opt
@@ -85,8 +90,9 @@ class Tab < OpenStruct
       :used_options => used_options,
       :unused_options => unused_options,
       :built_bottle => built_bottle,
-      :tapped_from => tapped_from
-    })
+      :tapped_from => tapped_from,
+      :time => time,
+      :sha => sha})
   end
 
   def write

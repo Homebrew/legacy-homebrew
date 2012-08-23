@@ -78,6 +78,10 @@ class Python < Formula
     # "-msse4" is present.)
     ENV.minimal_optimization
 
+    # superenv has no CFLAGS
+    # TODO make this part of the ENV DSL @jacknagel is doing
+    ENV['CFLAGS'] = ENV.make_me_some_cflags if superenv?
+
     # We need to enable warnings because the configure.in uses -Werror to detect
     # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
     ENV.enable_warnings
