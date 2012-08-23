@@ -7,7 +7,7 @@ class Pixman < Formula
 
   depends_on 'pkg-config' => :build
 
-  keg_only unless MacOS.version >= :mountain_lion
+  keg_only :provided_pre_mountain_lion
 
   option :universal
 
