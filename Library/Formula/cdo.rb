@@ -5,7 +5,7 @@ class Cdo < Formula
   url 'https://code.zmaw.de/attachments/download/3605/cdo-1.5.6.1.tar.gz'
   sha1 '180517a3c234a47e5e19ae15084bb2fe2bda2d06'
 
-  options 'enable-grib2', 'Compile Fortran bindings'
+  option 'enable-grib2', 'Compile Fortran bindings'
 
   depends_on 'netcdf'
   depends_on 'hdf5'
