@@ -19,7 +19,7 @@ class Sip < Formula
   end
 
   def install
-    if ARGV.build_head?
+    if build.head?
       # Set fallback version to the same value it would have without the patch
       # and link the Mercurial repository into the download directory so
       # buid.py can use it to figure out a version number.
