@@ -69,15 +69,11 @@ class SaltVEGA < Formula
 end
 
 class Salt < Formula
-  url 'http://supernovae.in2p3.fr/~guy/salt/download/snfit-2.2.2b.tar.gz'
   homepage 'http://supernovae.in2p3.fr/~guy/salt/'
+  url 'http://supernovae.in2p3.fr/~guy/salt/download/snfit-2.2.2b.tar.gz'
   md5 'bf227accaf89a751c28d0bf1ed2b0851'
 
-  def options
-    [
-     ['--with-data', 'Install model data']
-    ]
-  end
+  option 'with-data', 'Install model data'
 
   def install_subbrew(subbrew, installdir)
     s = subbrew.new
@@ -108,10 +104,10 @@ class Salt < Formula
 
     # install all the model data
     # http://supernovae.in2p3.fr/~guy/salt/download/snls3-intallation.sh
-    if ARGV.include? '--with-data'
-      data = prefix + 'data'
+    if build.include? 'with-data'
+      data = prefix/'data'
       data.mkpath
-      File.open(data+'fitmodel.card', 'w') do |fitmodel|
+      File.open(data/'fitmodel.card', 'w') do |fitmodel|
         # salt2 model + magsys
         [SaltSALT2, SaltVEGA, SaltSDSS_AB_off, SaltVEGAHST].each do |cls|
           fitmodel.write(install_subbrew(cls, data))
@@ -140,7 +136,7 @@ class Salt < Formula
   end
 
   def caveats
-    if ARGV.include? '--with-data'
+    if build.include? 'with-data'
       <<-EOS.undent
       You should add the following to your .bashrc or equivalent:
         export PATHMODEL=#{prefix}/data
