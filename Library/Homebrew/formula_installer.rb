@@ -24,7 +24,9 @@ class FormulaInstaller
 
   def check_install_sanity
     if f.installed?
-      raise CannotInstallFormulaError, "#{f}-#{f.installed_version} already installed"
+      msg = "#{f}-#{f.installed_version} already installed"
+      msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
+      raise CannotInstallFormulaError, msg
     end
 
     # Building head-only without --HEAD is an error
