@@ -12,6 +12,7 @@ class Fontforge < Formula
   depends_on 'gettext'
   depends_on 'pango'
   depends_on 'potrace'
+  depends_on 'libspiro'
   depends_on :x11
   depends_on :xcode
 
@@ -69,7 +70,7 @@ class Fontforge < Formula
       if MacOS.lion?
         s.gsub! "/Developer", "#{MacOS::sdk_path("10.7")}/Developer"
       else
-        s.gsub! "/Developer", "/Developer"
+        s.gsub! "/Developer", MacOS::Xcode.prefix
       end
     end
 

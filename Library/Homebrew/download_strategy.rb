@@ -210,6 +210,7 @@ end
 class SubversionDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
+    @@svn ||= find_svn
     @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
     @unique_token += "-HEAD" if ARGV.include? '--HEAD'
     @co=HOMEBREW_CACHE+@unique_token
@@ -238,7 +239,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    quiet_safe_system svn, 'export', '--force', @co, Dir.pwd
+    quiet_safe_system @@svn, 'export', '--force', @co, Dir.pwd
   end
 
   def shell_quote str
@@ -259,9 +260,9 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.exist? ? 'up' : 'checkout'
-    args = [svn, svncommand]
+    args = [@@svn, svncommand]
     # SVN shipped with XCode 3.1.4 can't force a checkout.
-    args << '--force' unless MacOS.version == :leopard and svn == '/usr/bin/svn'
+    args << '--force' unless MacOS.version == :leopard and @@svn == '/usr/bin/svn'
     args << url if !target.exist?
     args << target
     args << '-r' << revision if revision
@@ -271,7 +272,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
 
   # Try HOMEBREW_SVN, a Homebrew-built svn, and finally the OS X system svn.
   # Not all features are available in the 10.5 system-provided svn.
-  def svn
+  def find_svn
     return ENV['HOMEBREW_SVN'] if ENV['HOMEBREW_SVN']
     return "#{HOMEBREW_PREFIX}/bin/svn" if File.exist? "#{HOMEBREW_PREFIX}/bin/svn"
     return MacOS.locate 'svn'
@@ -280,7 +281,7 @@ end
 
 # Require a newer version of Subversion than 1.4.x (Leopard-provided version)
 class StrictSubversionDownloadStrategy < SubversionDownloadStrategy
-  def svn
+  def find_svn
     exe = super
     `#{exe} --version` =~ /version (\d+\.\d+(\.\d+)*)/
     svn_version = $1
@@ -303,7 +304,7 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.exist? ? 'up' : 'checkout'
-    args = [svn, svncommand, '--non-interactive', '--trust-server-cert', '--force']
+    args = [@@svn, svncommand, '--non-interactive', '--trust-server-cert', '--force']
     args << url if !target.exist?
     args << target
     args << '-r' << revision if revision
@@ -315,6 +316,7 @@ end
 class GitDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
+    @@git ||= find_git
     @unique_token="#{name}--git" unless name.to_s.empty? or name == '__UNKNOWN__'
     @clone=HOMEBREW_CACHE+@unique_token
   end
@@ -339,7 +341,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     if @clone.exist?
       Dir.chdir(@clone) do
         # Check for interupted clone from a previous install
-        unless system 'git', 'status', '-s'
+        unless system @@git, 'status', '-s'
           puts "Removing invalid .git repo from cache"
           FileUtils.rm_rf @clone
         end
@@ -348,7 +350,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
     unless @clone.exist?
       # Note: first-time checkouts are always done verbosely
-      clone_args = %w[git clone]
+      clone_args = [@@git, 'clone']
       clone_args << '--depth' << '1' if support_depth?
 
       case @spec
@@ -361,15 +363,15 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
-        safe_system 'git', 'config', 'remote.origin.url', @url
+        safe_system @@git, 'config', 'remote.origin.url', @url
 
-        safe_system 'git', 'config', 'remote.origin.fetch', case @spec
+        safe_system @@git, 'config', 'remote.origin.fetch', case @spec
           when :branch then "+refs/heads/#{@ref}:refs/remotes/origin/#{@ref}"
           when :tag then "+refs/tags/#{@ref}:refs/tags/#{@ref}"
           else '+refs/heads/master:refs/remotes/origin/master'
           end
 
-        git_args = %w[git fetch origin]
+        git_args = [@@git, 'fetch', 'origin']
         quiet_safe_system(*git_args)
       end
     end
@@ -382,26 +384,33 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         ohai "Checking out #{@spec} #{@ref}"
         case @spec
         when :branch
-          nostdout { quiet_safe_system 'git', 'checkout', "origin/#{@ref}", '--' }
+          nostdout { quiet_safe_system @@git, 'checkout', "origin/#{@ref}", '--' }
         when :tag, :revision
-          nostdout { quiet_safe_system 'git', 'checkout', @ref, '--' }
+          nostdout { quiet_safe_system @@git, 'checkout', @ref, '--' }
         end
       else
         # otherwise the checkout-index won't checkout HEAD
         # https://github.com/mxcl/homebrew/issues/7124
         # must specify origin/HEAD, otherwise it resets to the current local HEAD
-        quiet_safe_system "git", "reset", "--hard", "origin/HEAD"
+        quiet_safe_system @@git, "reset", "--hard", "origin/HEAD"
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
-      safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
+      safe_system @@git, 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
       # check for submodules
       if File.exist?('.gitmodules')
-        safe_system 'git', 'submodule', 'init'
-        safe_system 'git', 'submodule', 'update'
-        sub_cmd = "git checkout-index -a -f \"--prefix=#{dst}/$path/\""
-        safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
+        safe_system @@git, 'submodule', 'init'
+        safe_system @@git, 'submodule', 'update'
+        sub_cmd = "#{@@git} checkout-index -a -f \"--prefix=#{dst}/$path/\""
+        safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
       end
     end
+  end
+
+  # Try GIT, a Homebrew-built Git, and finally the OS X system Git.
+  def find_git
+    return ENV['GIT'] if ENV['GIT']
+    return "#{HOMEBREW_PREFIX}/bin/git" if File.exist? "#{HOMEBREW_PREFIX}/bin/git"
+    return MacOS.locate 'git'
   end
 end
 

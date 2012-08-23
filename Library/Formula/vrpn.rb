@@ -7,21 +7,17 @@ class Vrpn < Formula
 
   head 'git://git.cs.unc.edu/vrpn.git'
 
+  option 'clients', 'Build client apps and tests'
+  option 'docs', 'Build doxygen-based API documentation'
+
   depends_on 'libusb' # for HID support
   depends_on 'cmake' => :build
-  depends_on 'doxygen' if ARGV.include? '--docs'
-
-  def options
-    [
-      ['--clients', 'Build client apps and tests.'],
-      ['--docs', 'Build doxygen-based API documentation']
-    ]
-  end
+  depends_on 'doxygen' if build.include? 'docs'
 
   def install
     args = std_cmake_args
 
-    if ARGV.include? '--clients'
+    if build.include? 'clients'
       args << "-DVRPN_BUILD_CLIENTS:BOOL=ON"
     else
       args << "-DVRPN_BUILD_CLIENTS:BOOL=OFF"
