@@ -8,7 +8,6 @@ class Pango < Formula
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'glib'
-  depends_on :x11
 
   depends_on 'fontconfig' if MacOS.leopard?
 
