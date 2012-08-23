@@ -1,7 +1,7 @@
 require 'formula'
 
 def pgm_flags
-  return ARGV.include?('--with-pgm') ? "--with-pgm" : ""
+  return build.include? '--with-pgm' ? '--with-system-pgm' : ''
 end
 
 class Zeromq < Formula
@@ -10,6 +10,14 @@ class Zeromq < Formula
   sha1 'e4bc024c33d3e62f658640625e061ce4e8bd1ff1'
 
   head 'https://github.com/zeromq/libzmq.git'
+
+  devel do
+    url 'http://download.zeromq.org/zeromq-3.2.0-rc1.tar.gz'
+    sha1 '1a5195a61150c0a653798e5babde70f473a8a3b0'
+  end
+
+  depends_on 'pkg-config' => :build
+  depends_on 'libpgm' if build.include? 'with-pgm'
 
   if build.head?
     depends_on :automake
@@ -24,6 +32,7 @@ class Zeromq < Formula
   option :universal
   option 'with-pgm', 'Build with PGM extension'
 
+  # This can be removed at stable >= 3.2.0 because ENV.universal_binary works.
   def build_fat
     # make 32-bit
     system "CFLAGS=\"$CFLAGS -arch i386\" CXXFLAGS=\"$CXXFLAGS -arch i386\" ./configure --disable-dependency-tracking --prefix='#{prefix}' #{pgm_flags}"
@@ -42,15 +51,29 @@ class Zeromq < Formula
                    "-output", "src/.libs/libzmq.1.dylib"
   end
 
+  def do_config
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    if build.include? 'with-pgm'
+      # Use HB libpgm-5.2 because their internal 5.1 is b0rked.
+      ENV['OpenPGM_CFLAGS'] = %x[pkg-config --cflags openpgm-5.2].chomp
+      ENV['OpenPGM_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
+      args << "--with-system-pgm"
+    end
+    system "./configure", *args
+  end
+
   def install
     system "./autogen.sh" if build.head?
 
-    if ARGV.build_universal?
-      build_fat
+    if build.universal?
+      if build.devel? or build.head?
+        ENV.universal_binary
+        do_config
+      else
+        build_fat
+      end
     else
-      args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-      args << "--with-pgm" if build.include? 'with-pgm'
-      system "./configure", *args
+      do_config
     end
 
     system "make"
