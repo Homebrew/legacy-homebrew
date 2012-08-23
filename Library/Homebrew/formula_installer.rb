@@ -264,9 +264,9 @@ class FormulaInstaller
     keg = Keg.new(f.prefix)
     keg.link
   rescue Exception => e
-    onoe "The linking step did not complete successfully"
-    puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
-    puts "You can try again using `brew link #{f.name}'"
+    onoe "The `brew link` step did not complete successfully."
+    puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}."
+    puts "You can try again using `brew link #{f.name}`."
     keg.unlink
 
     ohai e, e.backtrace if ARGV.debug?
