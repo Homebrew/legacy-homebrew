@@ -9,9 +9,9 @@ class Mongodb < Formula
     version '2.0.7-x86_64'
 
     devel do
-      url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0-rc1.tgz'
-      md5 '7cdaafc7373c3fe8d79e963f56a0e011'
-      version '2.2.0-rc1-x86_64'
+      url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0-rc2.tgz'
+      md5 'a057c7987d7bc7ff6ced1b565a0856d1'
+      version '2.2.0-rc2-x86_64'
     end
   else
     url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.7.tgz'
@@ -19,9 +19,9 @@ class Mongodb < Formula
     version '2.0.7-i386'
 
     devel do
-      url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0-rc1.tgz'
-      md5 '4147b128e9b20597eb08c72f06a1e473'
-      version '2.2.0-rc1-i386'
+      url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0-rc2.tgz'
+      md5 '5426d47cd2718814c07152b34d0ea18d'
+      version '2.2.0-rc2-i386'
     end
   end
 
