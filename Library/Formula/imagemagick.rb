@@ -63,8 +63,9 @@ class Imagemagick < Formula
       ['--use-lqr', 'Compile with liblqr support.'],
       ['--use-exr', 'Compile with openexr support.'],
       ['--disable-openmp', 'Disable OpenMP.'],
+      ['--disable-opencl', 'Disable OpenCL.'],
       ['--enable-hdri', 'Compile with HDRI support enabled'],
-      ['--with-magick-plus-plus', 'Compile with C++ interface.'],
+      ['--without-magick-plus-plus', "Don't compile C++ interface."],
       ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
       ['--with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'],
       ['--with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'],
@@ -81,10 +82,11 @@ class Imagemagick < Formula
              "--with-modules"]
 
     args << "--disable-openmp" if MacOS.leopard? or ARGV.include? '--disable-openmp'
+    args << "--disable-opencl" if ARGV.include? '--disable-opencl'
     args << "--without-gslib" unless ARGV.include? '--with-ghostscript'
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
-    args << "--without-magick-plus-plus" unless ARGV.include? '--with-magick-plus-plus'
+    args << "--without-magick-plus-plus" if ARGV.include? '--without-magick-plus-plus'
     args << "--enable-hdri=yes" if ARGV.include? '--enable-hdri'
 
     if ARGV.include? '--with-quantum-depth-32'

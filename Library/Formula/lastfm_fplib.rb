@@ -11,6 +11,7 @@ class LastfmFplib < Formula
   depends_on 'fftw'
 
   def install
+    Formula.factory("lastfmfpclient").inreplace_fix
     system "cmake", ".", *std_cmake_args
     system "make install"
   end

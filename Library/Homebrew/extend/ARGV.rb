@@ -71,7 +71,7 @@ module HomebrewArgvExtension
     flag? '--force'
   end
   def verbose?
-    flag? '--verbose' or ENV['HOMEBREW_VERBOSE']
+    flag? '--verbose' or ENV['VERBOSE'] or ENV['HOMEBREW_VERBOSE']
   end
   def debug?
     flag? '--debug' or ENV['HOMEBREW_DEBUG']
@@ -87,6 +87,10 @@ module HomebrewArgvExtension
   end
   def dry_run?
     include?('--dry-run') || switch?('n')
+  end
+
+  def ignore_deps?
+    include? '--ignore-dependencies'
   end
 
   def build_head?

@@ -7,11 +7,10 @@ class Libtiff < Formula
 
   option :universal
 
-  depends_on :x11
-
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
+                          "--without-x"
                           "--prefix=#{prefix}"
     system "make install"
   end

@@ -7,7 +7,7 @@ class Znc < Formula
 
   head 'https://github.com/znc/znc.git'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
