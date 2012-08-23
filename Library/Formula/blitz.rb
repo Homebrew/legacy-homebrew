@@ -7,7 +7,7 @@ class Blitz < Formula
 
   head 'http://blitz.hg.sourceforge.net:8000/hgroot/blitz/blitz', :using => :hg
 
-  build.head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
