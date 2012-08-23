@@ -368,7 +368,7 @@ class FormulaAuditor
       problem "Use 'build.head?' instead of inspecting 'version'"
     end
 
-    if text =~ /ARGV(?!\.(debug|verbose)\?)/
+    if text =~ /ARGV\.(?!(debug|verbose)\?)/
       problem "Use build instead of ARGV to check options."
     end
 
