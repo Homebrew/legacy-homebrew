@@ -28,6 +28,7 @@ class Erlang < Formula
   md5 'ad811bb19a085b3d60d16ce576a28b68'
 
   bottle do
+    sha1 'e6f74fdab17d12026fe364d9658b906e58824076' => :mountainlion
     # Lion bottle built on OS X 10.7.2 using Xcode 4.1 using:
     #   brew install erlang --build-bottle --use-gcc
     sha1 '4dfc11ed455f8f866ab4627e8055488fa1954fa4' => :lion
