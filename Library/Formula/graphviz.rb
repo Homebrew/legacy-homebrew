@@ -8,12 +8,14 @@ class Graphviz < Formula
   option :universal
   option 'with-bindings', 'Build Perl/Python/Ruby/etc. bindings'
   option 'with-pangocairo', 'Build with Pango/Cairo for alternate PDF output'
+  option 'with-app', 'Build GraphViz.app (requires full XCode install)'
 
   depends_on :libpng
 
   depends_on 'pkg-config' => :build
   depends_on 'pango' if build.include? 'with-pangocairo'
   depends_on 'swig' if build.include? 'with-bindings'
+  depends_on :xcode if build.include? 'with-app'
 
   fails_with :clang do
     build 318
@@ -38,11 +40,14 @@ class Graphviz < Formula
     system "./configure", *args
     system "make install"
 
-    # build Graphviz.app
-    cd "macosx" do
-      system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
+    if build.include? 'with-app'
+      # build Graphviz.app
+      cd "macosx" do
+        system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
+      end
+      prefix.install "macosx/build/Release/Graphviz.app"
     end
-    prefix.install "macosx/build/Release/Graphviz.app"
+
     (bin+'gvmap.sh').unlink
   end
 
@@ -59,13 +64,16 @@ class Graphviz < Formula
     end
   end
 
-  def caveats; <<-EOS
-    Graphviz.app was installed in:
-      #{prefix}
+  def caveats
+    if build.include? 'with-app'
+      <<-EOS
+        Graphviz.app was installed in:
+          #{prefix}
 
-    To symlink into ~/Applications, you can do:
-      brew linkapps
-    EOS
+        To symlink into ~/Applications, you can do:
+          brew linkapps
+        EOS
+    end
   end
 end
 
