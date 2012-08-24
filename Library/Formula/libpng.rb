@@ -7,6 +7,8 @@ class Libpng < Formula
 
   keg_only :provided_pre_mountain_lion
 
+  option :universal
+
   bottle do
     sha1 '83c6be83e86404f41982e5e1e6877924fe737bdf' => :mountainlion
     sha1 '9a86cc5cec4cb19bd04c7c1e93595d96ebcde66f' => :lion
@@ -14,7 +16,9 @@ class Libpng < Formula
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    ENV.universal_binary if build.universal?
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
