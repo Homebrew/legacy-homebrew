@@ -6,6 +6,8 @@ class Staticrouted < Formula
   version '1.0.1'
   md5 '1f76b4f15d3bc332d40732bde154a20e'
 
+  depends_on :xcode # For working xcodebuild.
+
   def install
     system "xcodebuild SYMROOT=build -target Everything"
     sbin.install ["build/Release/staticroute", "build/Release/staticrouted"]

@@ -4,6 +4,8 @@ class Chmox < Formula
   head 'cvs://:pserver:anonymous@chmox.cvs.sourceforge.net:/cvsroot/chmox:Sources'
   homepage 'http://chmox.sourceforge.net'
 
+  depends_on :xcode # For working xcodebuild.
+
   def install
     system "xcodebuild SYMROOT=build"
     prefix.install "build/Default/Chmox.app"
