@@ -1,31 +1,22 @@
 require 'formula'
 
-def build_bindings?
-  ARGV.include? '--with-bindings' and not ARGV.include? '--without-bindings'
-end
-
 class Graphviz < Formula
   homepage 'http://graphviz.org/'
   url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.28.0.tar.gz'
   sha1 '4725d88a13e071ee22e632de551d4a55ca08ee7d'
 
   option :universal
+  option 'with-bindings', 'Build Perl/Python/Ruby/etc. bindings'
+  option 'with-pangocairo', 'Build with Pango/Cairo for alternate PDF output'
 
   depends_on :libpng
 
   depends_on 'pkg-config' => :build
-  depends_on 'pango' if ARGV.include? '--with-pangocairo'
-  depends_on 'swig' if build_bindings?
+  depends_on 'pango' if build.include? 'with-pangocairo'
+  depends_on 'swig' if build.include? 'with-bindings'
 
   fails_with :clang do
     build 318
-  end
-
-  def options
-    [
-      ["--with-pangocairo", "Build with Pango/Cairo for alternate PDF output"],
-      ["--with[out]-bindings", "Build Perl/Python/Ruby/etc. bindings (default on Lion; may not work on earlier systems)"]
-    ]
   end
 
   def patches
@@ -41,8 +32,8 @@ class Graphviz < Formula
             "--with-qt=no",
             "--without-x",
             "--with-quartz"]
-    args << "--disable-swig" unless build_bindings?
-    args << "--without-pangocairo" unless ARGV.include? '--with-pangocairo'
+    args << "--disable-swig" unless build.include? 'with-bindings'
+    args << "--without-pangocairo" unless build.include? 'with-pangocairo'
 
     system "./configure", *args
     system "make install"
