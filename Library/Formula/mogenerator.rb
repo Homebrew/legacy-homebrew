@@ -6,6 +6,8 @@ class Mogenerator < Formula
   md5 'cc761752cc581188e1065bd0919ad4c3'
   head "https://github.com/rentzsch/mogenerator.git"
 
+  depends_on :xcode # For working xcodebuild.
+
   def install
     system "xcodebuild -target mogenerator -configuration Release SYMROOT=symroot OBJROOT=objroot"
     bin.install "symroot/Release/mogenerator"
