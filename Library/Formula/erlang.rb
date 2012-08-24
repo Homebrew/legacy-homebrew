@@ -25,7 +25,7 @@ class Erlang < Formula
   # Download tarball from GitHub; it is served faster than the official tarball.
   url 'https://github.com/erlang/otp/tarball/OTP_R15B01'
   version 'R15B01'
-  md5 'ad811bb19a085b3d60d16ce576a28b68'
+  sha1 'efc06b5058605e25bfde41d614a2040f282c2601'
 
   bottle do
     sha1 'e6f74fdab17d12026fe364d9658b906e58824076' => :mountainlion
