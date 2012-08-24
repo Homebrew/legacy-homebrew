@@ -358,14 +358,15 @@ class Formula
     if name =~ %r[(https?|ftp)://]
       url = name
       name = Pathname.new(name).basename
-      target_file = HOMEBREW_CACHE_FORMULA+name
+      path = HOMEBREW_CACHE_FORMULA+name
       name = name.basename(".rb").to_s
 
-      HOMEBREW_CACHE_FORMULA.mkpath
-      FileUtils.rm target_file, :force => true
-      curl url, '-o', target_file
+      unless Object.const_defined? self.class_s(name)
+        HOMEBREW_CACHE_FORMULA.mkpath
+        FileUtils.rm path, :force => true
+        curl url, '-o', path
+      end
 
-      require target_file
       install_type = :from_url
     else
       name = Formula.canonical_name(name)
@@ -378,20 +379,21 @@ class Formula
 
         path = Pathname.new(name)
         name = path.stem
-
-        require path unless Object.const_defined? self.class_s(name)
-
         install_type = :from_path
-        target_file = path.to_s
       else
         # For names, map to the path and then require
-        require Formula.path(name) unless Object.const_defined? self.class_s(name)
+        path = Formula.path(name)
         install_type = :from_name
       end
     end
 
+    klass_name = self.class_s(name)
+    unless Object.const_defined? klass_name
+      puts "#{$0}: loading #{path}" if ARGV.debug?
+      require path
+    end
+
     begin
-      klass_name = self.class_s(name)
       klass = Object.const_get klass_name
     rescue NameError
       # TODO really this text should be encoded into the exception
@@ -402,7 +404,7 @@ class Formula
     end
 
     return klass.new(name) if install_type == :from_name
-    return klass.new(name, target_file)
+    return klass.new(name, path.to_s)
   rescue LoadError, NameError
     raise FormulaUnavailableError.new(name)
   end

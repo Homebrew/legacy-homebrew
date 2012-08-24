@@ -37,7 +37,6 @@ class Version
   include Comparable
 
   def initialize val, detected=false
-    return val if val.is_a? Version or val.nil?
     @version = val.to_s
     @detected_from_url = detected
   end
@@ -210,17 +209,12 @@ end
 # Enable things like "MacOS.version >= :lion"
 class MacOSVersion < Version
   compare do |other|
-    case other
-    when Symbol, Fixnum, Float, Version
     super Version.new case other
       when :mountain_lion then 10.8
       when :lion then 10.7
       when :snow_leopard then 10.6
       when :leopard then 10.5
-      else other
+      else other.to_s
       end
-    else
-      nil
-    end
   end
 end
