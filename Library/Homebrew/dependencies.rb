@@ -333,7 +333,8 @@ class XCodeDependency < Requirement
   end
 
   def message; <<-EOS.undent
-    XCode is required to compile this software.
+    A full installation of XCode.app is required to compile this software.
+    Installing just the Command Line Tools is not sufficent.
     EOS
   end
 end
