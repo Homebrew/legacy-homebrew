@@ -2,14 +2,14 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.25a.tar.gz/from/http://cdn.mysql.com/'
-  version '5.5.25a'
-  sha1 '85dfea413a7d5d2733a40f9dd79cf2320302979f'
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.27.tar.gz/from/http://cdn.mysql.com/'
+  version '5.5.27'
+  sha1 'd53dfbe4ac1119e4c4a33d639f2904abdd0f226d'
 
   bottle do
-    sha1 '31e9955a3a0a6dbc2baec8f1dade79257da428a8' => :mountainlion
-    sha1 'b3cf78f7ddb812d38e376076e05020c0b412ee9c' => :lion
-    sha1 '9f36132081d2b603c8aff4a7ee561962936892ec' => :snowleopard
+    sha1 '7aa66b8ea9b03baec9c5d1a678a7c547494e00fe' => :mountainlion
+    sha1 '5257fd34a20a2375e1d73c733c44e2d0fa1bcae2' => :lion
+    sha1 '8fe8c5db43b129e45823444180f4d81af0c0c880' => :snowleopard
   end
 
   depends_on 'cmake' => :build
@@ -34,9 +34,6 @@ class Mysql < Formula
   end
 
   skip_clean :all # So "INSTALL PLUGIN" can work.
-
-  # Fix compilation with Xcode and no CLT: http://bugs.mysql.com/bug.php?id=66001
-  def patches; DATA; end
 
   def install
     # Build without compiler or CPU specific optimization flags to facilitate
@@ -171,18 +168,3 @@ class Mysql < Formula
     EOPLIST
   end
 end
-
-__END__
-diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
-index 89a9de9..677c68d 100644
---- a/cmake/libutils.cmake
-+++ b/cmake/libutils.cmake
-@@ -183,7 +183,7 @@ MACRO(MERGE_STATIC_LIBS TARGET OUTPUT_NAME LIBS_TO_MERGE)
-       # binaries properly)
-       ADD_CUSTOM_COMMAND(TARGET ${TARGET} POST_BUILD
-         COMMAND rm ${TARGET_LOCATION}
--        COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION} 
-+        COMMAND libtool -static -o ${TARGET_LOCATION} 
-         ${STATIC_LIBS}
-       )  
-     ELSE()
