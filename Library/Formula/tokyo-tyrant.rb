@@ -3,18 +3,16 @@ require 'formula'
 class TokyoTyrant < Formula
   homepage 'http://fallabs.com/tokyotyrant/'
   url 'http://fallabs.com/tokyotyrant/tokyotyrant-1.1.41.tar.gz'
-  md5 'a47e58897bd1cbbac173d5a66cc32ae3'
+  sha1 '060ac946a9ac902c1d244ffafd444f0e5840c0ce'
+
+  option "no-lua", "Disable Lua support"
 
   depends_on 'tokyo-cabinet'
-  depends_on 'lua' unless ARGV.include? "--no-lua"
-
-  def options
-    [["--no-lua", "Disable Lua support."]]
-  end
+  depends_on 'lua' => :recommended unless build.include? "no-lua"
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--enable-lua" unless ARGV.include? "--no-lua"
+    args << "--enable-lua" unless build.include? "no-lua"
 
     system "./configure", *args
     system "make"

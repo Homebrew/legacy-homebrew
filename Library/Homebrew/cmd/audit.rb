@@ -368,6 +368,10 @@ class FormulaAuditor
       problem "Use 'build.head?' instead of inspecting 'version'"
     end
 
+    if text =~ /build\.include\?\s+['"]\-\-(.*)['"]/
+      problem "Reference '#{$1}' without dashes."
+    end
+
     if text =~ /ARGV\.(?!(debug|verbose)\?)/
       problem "Use build instead of ARGV to check options."
     end
