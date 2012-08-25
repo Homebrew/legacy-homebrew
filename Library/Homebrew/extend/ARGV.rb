@@ -124,16 +124,8 @@ module HomebrewArgvExtension
     include? '--32-bit'
   end
 
-  def bottles_supported?
-    # Snow Leopard was the only version of OS X that supported
-    # both 64-bit and 32-bit processors and kernels.
-    (Hardware.is_64_bit? or not MacOS.snow_leopard?) \
-      and HOMEBREW_PREFIX.to_s == '/usr/local' \
-      and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar' \
-  end
-
   def build_bottle?
-    include? '--build-bottle' and bottles_supported?
+    include? '--build-bottle' and MacOS.bottles_supported?
   end
 
   def build_from_source?
