@@ -9,14 +9,8 @@ require 'vendor/multi_json'
 # `Tab.for_install`.
 class Tab < OpenStruct
   def self.for_install f, args
-    # Retrieve option flags from command line.
-    arg_options = args.options_only
-    # Pick off the option flags from the formula's `options` array by
-    # discarding the descriptions.
-    formula_options = f.build.as_flags
-
-    Tab.new :used_options => formula_options & arg_options,
-            :unused_options => formula_options - arg_options,
+    Tab.new :used_options => args.used_options(f),
+            :unused_options => args.unused_options(f),
             :tabfile => f.prefix + "INSTALL_RECEIPT.json",
             :built_bottle => !!args.build_bottle?,
             :tapped_from => f.tap
