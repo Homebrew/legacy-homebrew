@@ -127,6 +127,10 @@ class Version
     m = %r[github.com/.+/(?:zip|tar)ball/v?((\d+\.)+\d+_(\d+))$].match(spec.to_s)
     return m.captures.first unless m.nil?
 
+    # e.g. https://github.com/erlang/otp/tarball/OTP_R15B01 (erlang style)
+    m = /[-_](R\d+[AB]\d*)/.match(spec.to_s)
+    return m.captures.first unless m.nil?
+
     # e.g. boost_1_39_0
     m = /((\d+_)+\d+)$/.match(stem)
     return m.captures.first.gsub('_', '.') unless m.nil?
@@ -164,12 +168,8 @@ class Version
     m = /_((\d+\.)+\d+[abc]?)[.]orig$/.match(stem)
     return m.captures.first unless m.nil?
 
-    # e.g. erlang-R14B03-bottle.tar.gz (old erlang bottle style)
+    # e.g. http://www.openssl.org/source/openssl-0.9.8s.tar.gz
     m = /-([^-]+)/.match(stem)
-    return m.captures.first unless m.nil?
-
-    # e.g. opt_src_R13B (erlang)
-    m = /otp_src_(.+)/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. astyle_1.23_macosx.tar.gz
