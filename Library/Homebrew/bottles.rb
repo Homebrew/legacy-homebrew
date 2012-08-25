@@ -12,7 +12,7 @@ def install_bottle? f
   return true if ARGV.include? '--install-bottle'
   not ARGV.build_from_source? \
     and ARGV.bottles_supported? \
-    and ARGV.options_only.empty? \
+    and ARGV.used_options(f).empty? \
     and bottle_current?(f)
 end
 
