@@ -6,24 +6,23 @@ class Vtk < Formula
   sha1 '0c9a17e2f446dc78b0500dc5bbd1c6a2864a0191'
 
   depends_on 'cmake' => :build
-  depends_on :x11 if ARGV.include? '--x11'
-  depends_on 'qt' if ARGV.include? '--qt'
-  depends_on 'sip' if ARGV.include? '--pyqt' and ARGV.include? '--python'
-  depends_on 'pyqt' if ARGV.include? '--pyqt' and ARGV.include? '--python'
+  depends_on :x11 if build.include? 'x11'
+  depends_on  'qt'  => :optional if build.include? 'qt'
+
+  if build.include? 'pyqt' and build.include? 'python'
+    depends_on  'sip'
+    depends_on  'pyqt'
+  end
 
   skip_clean :all  # Otherwise vtkpython complains can't find symbol _environ
 
-  def options
-  [
-    ['--examples',  'Compile and install various examples.'],
-    ['--python',    'Enable python wrapping of VTK classes.'],
-    ['--pyqt',      'Make python wrapped classes available to SIP/PyQt.'],
-    ['--qt',        'Enable Qt4 extension via the Homebrew qt formula.'],
-    ['--qt-extern', 'Enable Qt4 extension via non-Homebrew external Qt4.'],
-    ['--tcl',       'Enable Tcl wrapping of VTK classes.'],
-    ['--x11',       'Enable X11 extension rather than OSX native Aqua.']
-  ]
-  end
+  option 'examples',  'Compile and install various examples'
+  option 'python',    'Enable python wrapping of VTK classes'
+  option 'pyqt',      'Make python wrapped classes available to SIP/PyQt'
+  option 'qt',        'Enable Qt4 extension via the Homebrew qt formula'
+  option 'qt-extern', 'Enable Qt4 extension via non-Homebrew external Qt4'
+  option 'tcl',       'Enable Tcl wrapping of VTK classes'
+  option 'x11',       'Enable X11 extension rather than OSX native Aqua'
 
   def install
     args = std_cmake_args + %W[
@@ -35,9 +34,9 @@ class Vtk < Formula
       -DCMAKE_INSTALL_NAME_DIR:STRING='#{lib}/vtk-5.10'
     ]
 
-    args << '-DBUILD_EXAMPLES=' + ((ARGV.include? '--examples') ? 'ON' : 'OFF')
+    args << '-DBUILD_EXAMPLES=' + ((build.include? 'examples') ? 'ON' : 'OFF')
 
-    if ARGV.include? '--python'
+    if build.include? 'python'
       python_prefix = `python-config --prefix`.strip
       # Install to lib and let installer symlink to global python site-packages.
       # The path in lib needs to exist first and be listed in PYTHONPATH.
@@ -66,22 +65,22 @@ class Vtk < Formula
         args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
       end
       args << '-DVTK_WRAP_PYTHON=ON'
-      if ARGV.include? '--pyqt'
+      if build.include? 'pyqt'
         args << '-DVTK_WRAP_PYTHON_SIP=ON'
         args << "-DSIP_PYQT_DIR='#{HOMEBREW_PREFIX}/share/sip'"
       end
     end
 
-    if ARGV.include? '--qt' or ARGV.include? '--qt-extern'
+    if build.include? 'qt' or build.include? 'qt-extern'
       args << '-DVTK_USE_GUISUPPORT=ON'
       args << '-DVTK_USE_QT=ON'
       args << '-DVTK_USE_QVTK=ON'
     end
 
-    args << '-DVTK_WRAP_TCL=ON' if ARGV.include? '--tcl'
+    args << '-DVTK_WRAP_TCL=ON' if build.include? 'tcl'
 
     # default to cocoa for everything except x11
-    if ARGV.include? '--x11'
+    if build.include? 'x11'
       args << '-DVTK_USE_COCOA=OFF'
       args << '-DVTK_USE_X=ON'
     else
@@ -103,10 +102,10 @@ class Vtk < Formula
       system 'make install'
     end
 
-    (share+'vtk').install 'Examples' if ARGV.include? '--examples'
+    (share+'vtk').install 'Examples' if build.include? 'examples'
 
     # Finalize a couple of Python issues due to our installing into the cellar.
-    if ARGV.include? '--python'
+    if build.include? 'python'
       # Avoid the .egg and use the python module right away, because
       # system python does not read .pth files from our site-packages.
       mv pydir/'VTK-5.10.0-py2.7.egg/vtk', pydir/'vtk'
@@ -121,7 +120,7 @@ class Vtk < Formula
   def caveats
     s = ''
     vtk = Tab.for_formula 'vtk'
-    if ARGV.include? '--python' or vtk.installed_with? '--python'
+    if build.include? 'python' or vtk.installed_with? 'python'
       s += <<-EOS.undent
         For non-homebrew Python, you need to amend your PYTHONPATH like so:
         export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
@@ -133,7 +132,7 @@ class Vtk < Formula
 
       EOS
     end
-    if ARGV.include? '--examples' or vtk.installed_with? '--examples'
+    if build.include? 'examples' or vtk.installed_with? '--examples'
       s += <<-EOS.undent
 
         The scripting examples are stored in #{HOMEBREW_PREFIX}/share/vtk
