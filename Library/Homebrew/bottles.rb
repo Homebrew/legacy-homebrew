@@ -1,4 +1,5 @@
 require 'tab'
+require 'macos'
 require 'extend/ARGV'
 
 def bottle_filename f, bottle_version=nil
@@ -11,7 +12,7 @@ end
 def install_bottle? f
   return true if ARGV.include? '--install-bottle'
   not ARGV.build_from_source? \
-    and ARGV.bottles_supported? \
+    and MacOS.bottles_supported? \
     and ARGV.used_options(f).empty? \
     and bottle_current?(f)
 end
@@ -25,12 +26,15 @@ def built_as_bottle? f
 end
 
 def bottle_current? f
-  f.bottle and f.bottle.url && !f.bottle.checksum.empty? && f.bottle.version == f.stable.version
+  f.bottle and f.bottle.url \
+    and (not f.bottle.checksum.empty?) \
+    and (f.bottle.version == f.stable.version)
 end
 
 def bottle_file_outdated? f, file
   filename = file.basename.to_s
-  return nil unless (filename.match(bottle_regex) or filename.match(old_bottle_regex)) and f.bottle and f.bottle.url
+  return nil unless f.bottle and f.bottle.url \
+    and (filename.match(bottle_regex) or filename.match(old_bottle_regex))
 
   bottle_ext = filename.match(bottle_native_regex).captures.first rescue nil
   bottle_ext ||= filename.match(old_bottle_regex).captures.first rescue nil
