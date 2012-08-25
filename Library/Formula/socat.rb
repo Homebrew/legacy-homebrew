@@ -16,7 +16,7 @@ class Socat < Formula
     # Socat devs are aware; see:
     # https://trac.macports.org/ticket/32044
     p = { :p0 => "https://trac.macports.org/export/90442/trunk/dports/sysutils/socat/files/patch-xioexit.c.diff" }
-    p[:p1] = DATA if ARGV.build_devel?
+    p[:p1] = DATA if build.devel?
     p
   end
 
