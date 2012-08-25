@@ -301,9 +301,10 @@ Please take one of the following actions:
     end
   end
 
-  def x11
+  def x11 silent=false
     unless MacOS::X11.installed?
-      opoo "You do not have X11 installed, this formula may not build."
+      opoo "You do not have X11 installed, this formula may not build." unless silent
+      return
     end
 
     # There are some config scripts here that should go in the PATH
