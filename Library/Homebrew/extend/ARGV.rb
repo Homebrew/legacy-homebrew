@@ -7,6 +7,14 @@ module HomebrewArgvExtension
     select {|arg| arg[0..0] == '-'}
   end
 
+  def used_options f
+    f.build.as_flags & options_only
+  end
+
+  def unused_options f
+    f.build.as_flags - options_only
+  end
+
   def formulae
     require 'formula'
     @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
