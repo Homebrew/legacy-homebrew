@@ -66,6 +66,9 @@ class Updater
   attr_reader :initial_revision, :current_revision
 
   def pull!
+    # save previous branch name
+    branch = `git symbolic-ref --short -q HEAD`.chomp
+    
     safe_system "git checkout -q master"
 
     @initial_revision = read_current_revision
@@ -81,6 +84,11 @@ class Updater
     args << "refs/heads/master:refs/remotes/origin/master"
 
     safe_system "git", *args
+    
+    # restore previous branch
+    if !branch.empty? and branch != "master"
+      safe_system "git checkout -q #{branch}"
+    end
 
     @current_revision = read_current_revision
   end
