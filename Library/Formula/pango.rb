@@ -25,6 +25,11 @@ class Pango < Formula
   end
 
   def install
+    # Always prefer our cairo over XQuartz cairo
+    cairo = Formula.factory('cairo')
+    ENV['CAIRO_CFLAGS'] = "-I#{cairo.include}/cairo"
+    ENV['CAIRO_LIBS'] = "-L#{cairo.lib} -lcairo"
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
