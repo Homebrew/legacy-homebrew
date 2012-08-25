@@ -17,6 +17,7 @@ class Libgda < Formula
   # adamv: which options does it need?
 
   def install
+    ENV.libxml2
     system "./configure", "--enable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-binreloc",
