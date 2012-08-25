@@ -17,10 +17,12 @@ def install_bottle? f
   not ARGV.build_from_source? and bottle_current?(f)
 end
 
-def built_bottle? f
+def built_as_bottle? f
   f = Formula.factory f unless f.kind_of? Formula
   return false unless f.installed?
-  Tab.for_keg(f.installed_prefix).built_bottle
+  tab = Tab.for_keg(f.installed_prefix)
+  # Need to still use the old "built_bottle" until all bottles are updated.
+  tab.built_as_bottle or tab.built_bottle
 end
 
 def bottle_current? f
