@@ -7,6 +7,7 @@ class Libgphoto2 < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libusb-compat'
+  depends_on 'libtool'
   depends_on 'libexif' => :optional
 
   def install
