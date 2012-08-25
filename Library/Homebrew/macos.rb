@@ -215,6 +215,13 @@ module MacOS extend self
   def pkgutil_info id
     `pkgutil --pkg-info #{id} 2>/dev/null`.strip
   end
+
+  def bottles_supported?
+    # We support bottles on all versions of OS X except 32-bit Snow Leopard.
+    (Hardware.is_64_bit? or not MacOS.snow_leopard?) \
+      and HOMEBREW_PREFIX.to_s == '/usr/local' \
+      and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar' \
+  end
 end
 
 require 'macos/xcode'
