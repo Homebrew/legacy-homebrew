@@ -8,13 +8,12 @@ def bottle_filename f, bottle_version=nil
   "#{name}-#{version}#{bottle_native_suffix(bottle_version)}"
 end
 
-def bottles_supported?
-  HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar' and Hardware.is_64_bit? || !MacOS.snow_leopard?
-end
-
 def install_bottle? f
   return true if ARGV.include? '--install-bottle'
-  not ARGV.build_from_source? and bottle_current?(f)
+  not ARGV.build_from_source? \
+    and ARGV.bottles_supported? \
+    and ARGV.options_only.empty? \
+    and bottle_current?(f)
 end
 
 def built_as_bottle? f
