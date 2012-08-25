@@ -5,12 +5,8 @@ class Symphony < Formula
   url 'http://www.coin-or.org/download/source/SYMPHONY/SYMPHONY-5.3.3.tgz'
   md5 '8c34f9fa49ebff325b984408ff1f92fc'
 
-  def options
-    [
-     ["--enable-openmp", "Enable openmp support"],
-     ["--with-gmpl", "Add in GNU Modeling Lang. support via GLPK"]
-    ]
-  end
+  option "enable-openmp", "Enable openmp support"
+  option "with-gmpl", "GNU Modeling Language support via GLPK"
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",
@@ -18,7 +14,7 @@ class Symphony < Formula
             "--enable-static-executable",
             "--prefix=#{prefix}"]
 
-    if ARGV.include? "--with-gmpl"
+    if build.include? "with-gmpl"
       # Symphony uses a patched version of GLPK for reading MPL files.
       # Use a private version rather than require the Homebrew version of GLPK.
       cd 'ThirdParty/Glpk' do
@@ -30,7 +26,7 @@ class Symphony < Formula
       args << "--with-gmpl"
     end
 
-    if ARGV.include? "--enable-openmp"
+    if build.include? "enable-openmp"
       inreplace 'SYMPHONY/config', /^SYM_COMPILE_IN_LP = TRUE/, "SYM_COMPILE_IN_LP = FALSE"
       args << "--enable-openmp"
     end
