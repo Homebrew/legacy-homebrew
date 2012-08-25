@@ -33,7 +33,7 @@ end
 
 def bottle_file_outdated? f, file
   filename = file.basename.to_s
-  return nil unless f.bottle and f.bottle.url \
+  return nil unless f and f.bottle and f.bottle.url \
     and (filename.match(bottle_regex) or filename.match(old_bottle_regex))
 
   bottle_ext = filename.match(bottle_native_regex).captures.first rescue nil
