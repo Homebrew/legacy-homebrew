@@ -35,6 +35,10 @@ class Ghostscript < Formula
       mv lib, "#{lib}_local"
     end
   end
+  
+  def patches
+    DATA
+  end
 
   def install
     ENV.deparallelize
@@ -61,6 +65,7 @@ class Ghostscript < Formula
       # versioned stuff in main tree is pointless for us
       inreplace 'Makefile', '/$(GS_DOT_VERSION)', ''
       system "make install"
+      system "make install-so"
     end
 
     GhostscriptFonts.new.brew do
@@ -70,3 +75,22 @@ class Ghostscript < Formula
     (man+'de').rmtree
   end
 end
+__END__
+--- a/base/unix-dll.mak  2012-02-08 12:48:48.000000000 +0400
++++ b/base/unix-dll.mak	2012-06-05 16:25:15.000000000 +0400
+@@ -58,11 +58,11 @@
+ 
+ 
+ # MacOS X
+-#GS_SOEXT=dylib
+-#GS_SONAME=$(GS_SONAME_BASE).$(GS_SOEXT)
+-#GS_SONAME_MAJOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_SOEXT)
+-#GS_SONAME_MAJOR_MINOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_VERSION_MINOR).$(GS_SOEXT)
+-#LDFLAGS_SO=-dynamiclib -flat_namespace
++GS_SOEXT=dylib
++GS_SONAME=$(GS_SONAME_BASE).$(GS_SOEXT)
++GS_SONAME_MAJOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_SOEXT)
++GS_SONAME_MAJOR_MINOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_VERSION_MINOR).$(GS_SOEXT)
++LDFLAGS_SO=-dynamiclib -flat_namespace
+ LDFLAGS_SO_MAC=-dynamiclib -install_name $(GS_SONAME_MAJOR_MINOR)
+ #LDFLAGS_SO=-dynamiclib -install_name $(FRAMEWORK_NAME)
