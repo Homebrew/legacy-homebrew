@@ -16,14 +16,17 @@ def blacklisted? name
     However not all build scripts look for these hard enough, so you may need
     to call ENV.libxml2 in your formula's install function.
     EOS
+<<<<<<< HEAD
   when 'freetype', 'libpng' then <<-EOS.undent
     Apple distributed #{name} with OS X until 10.8. It is also distributed
     as part of XQuartz. You can find the XQuartz installer here:
       http://xquartz.macosforge.org
     EOS
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   when 'wxwidgets' then <<-EOS.undent
     An old version of wxWidgets can be found in /usr/X11/lib. However, Homebrew
-    does provide a newer version, 2.8.10:
+    does provide a newer version:
 
         brew install wxmac
     EOS
@@ -48,7 +51,7 @@ def blacklisted? name
     Homebrew does not provide npm because it is self-updating. To install it, first
     `brew install nodejs' and then:
 
-        curl http://npmjs.org/install.sh | sh
+        curl https://npmjs.org/install.sh | sh
     EOS
   when /(lib)?lzma/
     "lzma is now part of the xz formula."

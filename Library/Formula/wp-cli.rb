@@ -10,15 +10,8 @@ class WpCli < Formula
   head 'https://github.com/wp-cli/wp-cli.git'
 
   def install
-      prefix.install Dir['src/*']
-      # Install bash completion scripts for use with bash-completion
-      (prefix+'etc/bash_completion.d').install 'utils/wp-completion.bash' => 'wp'
-  end
-
-  def caveats; <<-EOS.undent
-    Bash completion script was installed to:
-      #{etc}/bash_completion.d/wp
-    EOS
+    prefix.install Dir['src/*']
+    (prefix+'etc/bash_completion.d').install 'utils/wp-completion.bash' => 'wp'
   end
 
   def test

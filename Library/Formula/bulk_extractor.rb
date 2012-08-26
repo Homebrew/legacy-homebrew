@@ -6,13 +6,19 @@ class BulkExtractor < Formula
   sha1 '2f0a2049259f826afe253cf5baeeb139b795dddb'
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   devel do
     url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.3b5.tar.gz'
     sha1 '04a3d49f35efc7381ae1d3f516bdad273a0f49ee'
   end
 
+<<<<<<< HEAD
 >>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   depends_on :autoconf
   depends_on :automake
 

@@ -1,4 +1,5 @@
 require 'tab'
+require 'macos'
 require 'extend/ARGV'
 
 def bottle_filename f, bottle_version=nil
@@ -8,28 +9,39 @@ def bottle_filename f, bottle_version=nil
   "#{name}-#{version}#{bottle_native_suffix(bottle_version)}"
 end
 
-def bottles_supported?
-  HOMEBREW_PREFIX.to_s == '/usr/local' and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar' and Hardware.is_64_bit? || !MacOS.snow_leopard?
-end
-
 def install_bottle? f
   return true if ARGV.include? '--install-bottle'
-  not ARGV.build_from_source? and bottle_current?(f)
+  not ARGV.build_from_source? \
+    and MacOS.bottles_supported? \
+    and ARGV.used_options(f).empty? \
+    and bottle_current?(f)
 end
 
+<<<<<<< HEAD
 def built_bottle? f
   f = Formula.factory f unless f.kind_of? Formula
   return false unless f.installed?
   Tab.for_keg(f.installed_prefix).built_bottle
+=======
+def built_as_bottle? f
+  f = Formula.factory f unless f.kind_of? Formula
+  return false unless f.installed?
+  tab = Tab.for_keg(f.installed_prefix)
+  # Need to still use the old "built_bottle" until all bottles are updated.
+  tab.built_as_bottle or tab.built_bottle
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 end
 
 def bottle_current? f
-  f.bottle and f.bottle.url && !f.bottle.checksum.empty? && f.bottle.version == f.stable.version
+  f.bottle and f.bottle.url \
+    and (not f.bottle.checksum.empty?) \
+    and (f.bottle.version == f.stable.version)
 end
 
 def bottle_file_outdated? f, file
   filename = file.basename.to_s
-  return nil unless (filename.match(bottle_regex) or filename.match(old_bottle_regex)) and f.bottle and f.bottle.url
+  return nil unless f and f.bottle and f.bottle.url \
+    and (filename.match(bottle_regex) or filename.match(old_bottle_regex))
 
   bottle_ext = filename.match(bottle_native_regex).captures.first rescue nil
   bottle_ext ||= filename.match(old_bottle_regex).captures.first rescue nil

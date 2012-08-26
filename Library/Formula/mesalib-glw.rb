@@ -30,7 +30,11 @@ class MesalibGlw < Formula
     inreplace 'configs/autoconf' do |s|
       s.gsub! /.so/, '.dylib'
       s.gsub! /SRC_DIRS = mesa glw/, 'SRC_DIRS = glw'
+<<<<<<< HEAD
       s.gsub! /-L\$\(TOP\)\/\$\(LIB_DIR\)/, "-L#{MacOS::XQuartz.lib}"
+=======
+      s.gsub! /-L\$\(TOP\)\/\$\(LIB_DIR\)/, "-L#{MacOS::X11.lib}"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     end
 
     inreplace 'src/glw/Makefile' do |s|

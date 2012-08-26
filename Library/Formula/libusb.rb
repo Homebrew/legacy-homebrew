@@ -7,18 +7,16 @@ class Libusb < Formula
 
   head 'git://git.libusb.org/libusb.git'
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
-
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
 
+  option :universal
+
   def install
-    ENV.universal_binary if ARGV.build_universal?
-    system "./autogen.sh" if ARGV.build_head?
+    ENV.universal_binary if build.universal?
+    system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end

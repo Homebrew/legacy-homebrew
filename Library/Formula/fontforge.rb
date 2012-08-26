@@ -2,16 +2,19 @@ require 'formula'
 
 class Fontforge < Formula
   homepage 'http://fontforge.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20110222.tar.bz2'
-  md5 '5be4dda345b5d73a27cc399df96e463a'
+  url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
+  sha1 'b520f532b48e557c177dffa29120225066cc4e84'
+  version '20120731'
 
-  head 'git://fontforge.git.sourceforge.net/gitroot/fontforge/fontforge'
+  head 'https://github.com/fontforge/fontforge.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'pango'
   depends_on 'potrace'
+  depends_on 'libspiro'
   depends_on :x11
+  depends_on :xcode # Because: #include </Developer/Headers/FlatCarbon/Files.h>
 
   def options
     [['--without-python', 'Build without Python.']]
@@ -36,6 +39,11 @@ class Fontforge < Formula
       args << "--with-python-lib=-lpython#{python_version}"
       args << "--enable-pyextension"
     end
+<<<<<<< HEAD
+=======
+
+    ENV.macosxsdk("10.7") if MacOS.mountain_lion?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
     # Fix linking to correct Python library
     ENV.prepend "LDFLAGS", "-L#{python_prefix}/lib" unless ARGV.include? "--without-python"
@@ -61,9 +69,16 @@ class Fontforge < Formula
     # Fix hard-coded include file paths. Reported usptream:
     # http://sourceforge.net/mailarchive/forum.php?thread_name=C1A32103-A62D-468B-AD8A-A8E0E7126AA5%40smparkes.net&forum_name=fontforge-devel
     # https://trac.macports.org/ticket/33284
+<<<<<<< HEAD
     header_prefix = MacOS::Xcode.prefix
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
-      s.gsub! "/Developer", header_prefix
+      if MacOS.lion?
+        s.gsub! "/Developer", "#{MacOS::sdk_path("10.7")}/Developer"
+      else
+        s.gsub! "/Developer", MacOS::Xcode.prefix
+      end
     end
 
     system "make"
@@ -73,11 +88,19 @@ class Fontforge < Formula
   def which_python
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
+<<<<<<< HEAD
 
   def caveats
     general_caveats = <<-EOS.undent
       fontforge is an X11 application.
 
+=======
+
+  def caveats
+    general_caveats = <<-EOS.undent
+      fontforge is an X11 application.
+
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
       To install the Mac OS X wrapper application run:
         brew linkapps
       or:

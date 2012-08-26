@@ -2,8 +2,8 @@ require 'formula'
 
 class Findbugs < Formula
   homepage 'http://findbugs.sourceforge.net/index.html'
-  url 'http://downloads.sourceforge.net/project/findbugs/findbugs/2.0.0/findbugs-2.0.0.tar.gz'
-  md5 '646b4b65f4d542e69102b99c649b5f81'
+  url 'http://sourceforge.net/projects/findbugs/files/findbugs/2.0.1/findbugs-2.0.1.tar.gz'
+  sha1 '8358d28d90baecbf8590ef00b69c194ff1a8475c'
 
   def startup_script name
     <<-EOS.undent

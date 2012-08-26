@@ -1,11 +1,12 @@
 require 'formula'
 
 class Libgda < Formula
-  url 'http://ftp.acc.umu.se/pub/GNOME/sources/libgda/4.2/libgda-4.2.5.tar.bz2'
   homepage 'http://www.gnome-db.org/'
-  sha256 'b98d6063469a1ba8226d94800732544be629c55132516de741c937e8bf175f13'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libgda/5.0/libgda-5.0.3.tar.xz'
+  sha256 '82d204361b794103c366bb690484d25814bfc653cb97da0dfcf7c0a13409d1cc'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'intltool'
@@ -16,6 +17,7 @@ class Libgda < Formula
   # adamv: which options does it need?
 
   def install
+    ENV.libxml2
     system "./configure", "--enable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-binreloc",

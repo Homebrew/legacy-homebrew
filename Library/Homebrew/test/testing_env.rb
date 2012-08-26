@@ -8,6 +8,7 @@ ABS__FILE__=File.expand_path(__FILE__)
 
 $:.push(File.expand_path(__FILE__+'/../..'))
 require 'extend/pathname'
+require 'extend/string'
 require 'exceptions'
 require 'utils'
 
@@ -64,3 +65,21 @@ ARGV.extend(HomebrewArgvExtension)
 
 require 'extend/ENV'
 ENV.extend(HomebrewEnvExtension)
+
+module VersionAssertions
+  def version v
+    Version.new(v)
+  end
+
+  def assert_version_equal expected, actual
+    assert_equal Version.new(expected), actual
+  end
+
+  def assert_version_detected expected, url
+    assert_equal expected, Version.parse(url).to_s
+  end
+
+  def assert_version_nil url
+    assert_nil Version.parse(url)
+  end
+end

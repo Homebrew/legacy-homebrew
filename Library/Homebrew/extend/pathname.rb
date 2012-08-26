@@ -145,7 +145,7 @@ class Pathname
     rmdir
     true
   rescue SystemCallError => e
-    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno
+    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno or e.errno == Errno::ENOENT::Errno
     false
   end
 
@@ -161,90 +161,9 @@ class Pathname
     out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
   end
 
-  # attempts to retrieve the version component of this path, so generally
-  # you'll call it on tarballs or extracted tarball directories, if you add
-  # to this please provide amend the unittest
   def version
-    if directory?
-      # directories don't have extnames
-      stem=basename.to_s
-    else
-      # sourceforge /download
-      if %r[((?:sourceforge.net|sf.net)/.*)/download$].match to_s
-        stem=Pathname.new(dirname).stem
-      else
-        stem=self.stem
-      end
-    end
-
-    # github tarballs, like v1.2.3
-    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+)$].match to_s
-    return $2 if $2
-
-    # eg. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
-    %r[github.com/.*/(zip|tar)ball/.*-((\d+\.)+\d+)$].match to_s
-    return $2 if $2
-
-    # dashed version
-    # eg. github.com/isaacs/npm/tarball/v0.2.5-1
-    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+-(\d+))$].match to_s
-    return $2 if $2
-
-    # underscore version
-    # eg. github.com/petdance/ack/tarball/1.93_02
-    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+_(\d+))$].match to_s
-    return $2 if $2
-
-    # eg. boost_1_39_0
-    /((\d+_)+\d+)$/.match stem
-    return $1.gsub('_', '.') if $1
-
-    # eg. foobar-4.5.1-1
-    # eg. ruby-1.9.1-p243
-    /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/.match stem
-    return $1 if $1
-
-    # eg. lame-398-1
-    /-((\d)+-\d)/.match stem
-    return $1 if $1
-
-    # eg. foobar-4.5.1
-    /-((\d+\.)*\d+)$/.match stem
-    return $1 if $1
-
-    # eg. foobar-4.5.1b
-    /-((\d+\.)*\d+([abc]|rc|RC)\d*)$/.match stem
-    return $1 if $1
-
-    # eg foobar-4.5.0-beta1, or foobar-4.50-beta
-    /-((\d+\.)*\d+-beta(\d+)?)$/.match stem
-    return $1 if $1
-
-    # eg. foobar4.5.1
-    unless /^erlang-/.match basename
-      /((\d+\.)*\d+)$/.match stem
-      return $1 if $1
-    end
-
-    # eg foobar-4.5.0-bin
-    /-((\d+\.)+\d+[abc]?)[-._](bin|dist|stable|src|sources?)$/.match stem
-    return $1 if $1
-
-    # Debian style eg dash_0.5.5.1.orig.tar.gz
-    /_((\d+\.)+\d+[abc]?)[.]orig$/.match stem
-    return $1 if $1
-
-    # eg. otp_src_R13B (this is erlang's style)
-    # eg. astyle_1.23_macosx.tar.gz
-    stem.scan(/_([^_]+)/) do |match|
-      return match.first if /\d/.match $1
-    end
-
-    # old erlang bottle style e.g. erlang-R14B03-bottle.tar.gz
-    /-([^-]+)/.match stem
-    return $1 if $1
-
-    nil
+    require 'version'
+    Version.parse(self)
   end
 
   def compression_type
@@ -353,7 +272,7 @@ class Pathname
             To list all files that would be deleted:
               brew link -n formula_name
             EOS
-        elsif !dirname.writable?
+        elsif !dirname.writable_real?
           raise <<-EOS.undent
             Could not symlink file: #{src.expand_path}
             #{dirname} is not writable. You should change its permissions.
@@ -375,7 +294,7 @@ class Pathname
 
   def ensure_writable
     saved_perms = nil
-    unless writable?
+    unless writable_real?
       saved_perms = stat.mode
       chmod 0644
     end

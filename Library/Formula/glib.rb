@@ -1,11 +1,15 @@
 require 'formula'
 
-def build_tests?; ARGV.include? '--test'; end
-
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
   url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.4.tar.xz'
   sha256 'a5d742a4fda22fb6975a8c0cfcd2499dd1c809b8afd4ef709bda4d11b167fae2'
+<<<<<<< HEAD
+=======
+
+  option :universal
+  option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
@@ -28,19 +32,16 @@ class Glib < Formula
       ]}
     p[:p0] = %W[
         https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/patch-configure.diff
+<<<<<<< HEAD
       ] if ARGV.build_universal?
+=======
+      ] if build.universal?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     p
   end
 
-  def options
-  [
-    ['--universal', 'Build universal binaries.'],
-    ['--test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet.']
-  ]
-  end
-
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
     # -w is said to causes gcc to emit spurious errors for this package
     ENV.enable_warnings if ENV.compiler == :gcc
@@ -56,13 +57,17 @@ class Glib < Formula
 
     system "./configure", *args
 
+<<<<<<< HEAD
     if ARGV.build_universal?
+=======
+    if build.universal?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
       system "curl 'https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/config.h.ed' | ed - config.h"
     end
 
     system "make"
     # the spawn-multithreaded tests require more open files
-    system "ulimit -n 1024; make check" if build_tests?
+    system "ulimit -n 1024; make check" if build.include? 'test'
     system "make install"
 
     # This sucks; gettext is Keg only to prevent conflicts with the wider

@@ -1,12 +1,18 @@
 require 'formula'
 
 class Mariadb < Formula
+<<<<<<< HEAD
   url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.7/kvm-tarbake-jaunty-x86/mariadb-5.3.7.tar.gz'
   homepage 'http://mariadb.org/'
+=======
+  homepage 'http://mariadb.org/'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.7/kvm-tarbake-jaunty-x86/mariadb-5.3.7.tar.gz'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   sha1 '1ee2ef4895aefabd66b4884c382ba2cd1f7bbe2d'
 
   depends_on 'readline'
 
+<<<<<<< HEAD
   conflicts_with 'mysql',
     :because => "mariadb and mysql install the same binaries."
   conflicts_with 'percona-server',
@@ -15,21 +21,31 @@ class Mariadb < Formula
   fails_with :clang do
     build 318
   end
+=======
+  option :universal
+  option 'with-tests', 'Keep test when installing'
+  option 'with-bench', 'Keep benchmark app when installing'
+  option 'client-only', 'Install only client tools'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
-  def options
-    [
-      ['--with-tests', "Keep tests when installing."],
-      ['--with-bench', "Keep benchmark app when installing."],
-      ['--client-only', "Only install client tools, not the server."],
-      ['--universal', "Make mariadb a universal binary"]
-    ]
+  conflicts_with 'mysql',
+    :because => "mariadb and mysql install the same binaries."
+  conflicts_with 'percona-server',
+    :because => "mariadb and percona-server install the same binaries."
+
+  fails_with :clang do
+    build 421
   end
 
   def install
+    # Build without compiler or CPU specific optimization flags to facilitate
+    # compilation of gems and other software that queries `mysql-config`.
+    ENV.minimal_optimization
+
     ENV.append 'CXXFLAGS', '-fno-omit-frame-pointer -felide-constructors'
 
     # Make universal for bindings to universal applications
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
     configure_args = [
       "--without-docs",
@@ -52,7 +68,7 @@ class Mariadb < Formula
       "--with-libevent",
     ]
 
-    configure_args << "--without-server" if ARGV.include? '--client-only'
+    configure_args << "--without-server" if build.include? 'client-only'
 
     system "./configure", *configure_args
     system "make install"
@@ -60,8 +76,8 @@ class Mariadb < Formula
     bin.install_symlink "#{libexec}/mysqld"
     bin.install_symlink "#{share}/mysql/mysql.server"
 
-    (prefix+'mysql-test').rmtree unless ARGV.include? '--with-tests' # save 121MB!
-    (prefix+'sql-bench').rmtree unless ARGV.include? '--with-bench'
+    (prefix+'mysql-test').rmtree unless build.include? 'with-tests' # save 121MB!
+    (prefix+'sql-bench').rmtree unless build.include? 'with-bench'
 
     plist_path.write startup_plist
     plist_path.chmod 0644

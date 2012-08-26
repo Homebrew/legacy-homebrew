@@ -2,14 +2,29 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
+<<<<<<< HEAD
   url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.25a-27.1/source/Percona-Server-5.5.25a-rel27.1.tar.gz'
   version '5.5.25-27.1'
   sha1 'f3388960311b159e46efd305ecdeb806fe2c7fdc'
+=======
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.27-28.0/source/Percona-Server-5.5.27-rel28.0.tar.gz'
+  version '5.5.27-28.0'
+  sha1 '5e6bb13ac6cec9fdf88251939e40e10c8bdef4a9'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
   depends_on 'cmake' => :build
   depends_on 'readline'
   depends_on 'pidof'
 
+<<<<<<< HEAD
+=======
+  option :universal
+  option 'with-tests', 'Build with unit tests'
+  option 'with-embedded', 'Build the embedded server'
+  option 'with-libedit', 'Compile with editline wrapper instead of readline'
+  option 'enable-local-infile', 'Build with local infile loading support'
+
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   conflicts_with 'mysql',
     :because => "percona-server and mysql install the same binaries."
   conflicts_with 'mariadb',
@@ -22,23 +37,11 @@ class PerconaServer < Formula
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
 
-  def options
-    [
-      ['--with-tests', "Build with unit tests."],
-      ['--with-embedded', "Build the embedded server."],
-      ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
-      ['--universal', "Make mysql a universal binary"],
-      ['--enable-local-infile', "Build with local infile loading support"]
-    ]
-  end
-
-  # The CMAKE patches are so that on Lion we do not detect a private
-  # pthread_init function as linkable. Patch sourced from the MySQL formula.
-  def patches
-    DATA
-  end
-
   def install
+    # Build without compiler or CPU specific optimization flags to facilitate
+    # compilation of gems and other software that queries `mysql-config`.
+    ENV.minimal_optimization
+
     # Make sure the var/msql directory exists
     (var+"percona").mkpath
 
@@ -62,23 +65,23 @@ class PerconaServer < Formula
     ]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if ARGV.include? '--with-tests'
+    if build.include? 'with-tests'
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
     end
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
 
     # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless ARGV.include? '--with-libedit'
+    args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
 
     # Build with local infile loading support
-    args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
+    args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
 
     system "cmake", *args
     system "make"
@@ -164,6 +167,7 @@ class PerconaServer < Formula
     EOPLIST
   end
 end
+<<<<<<< HEAD
 
 
 __END__
@@ -194,3 +198,5 @@ index 37e0e35..38ad6c8 100644
  then
    if test "$user" != "root" -o $SET_USER = 1
    then
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879

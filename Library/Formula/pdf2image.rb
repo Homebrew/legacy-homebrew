@@ -15,7 +15,11 @@ class Pdf2image < Formula
     inreplace "Makefile", "/man/", "/share/man/"
 
     # Add X11 libs manually; the Makefiles don't use LDFLAGS properly
+<<<<<<< HEAD
     inreplace ["src/Makefile", "xpdf/Makefile"], "LDFLAGS =", "LDFLAGS=-L#{MacOS::XQuartz.lib}"
+=======
+    inreplace ["src/Makefile", "xpdf/Makefile"], "LDFLAGS =", "LDFLAGS=-L#{MacOS::X11.lib}"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
     system "make"
     system "make install"

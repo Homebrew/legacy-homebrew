@@ -7,6 +7,7 @@ class Freerdp < Formula
 
   head 'https://github.com/FreeRDP/FreeRDP.git'
 
+  depends_on :x11
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
 

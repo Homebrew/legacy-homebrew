@@ -5,6 +5,11 @@ class Ice < Formula
   url 'http://www.zeroc.com/download/Ice/3.4/Ice-3.4.2.tar.gz'
   md5 'e97672eb4a63c6b8dd202d0773e19dc7'
   homepage 'http://www.zeroc.com'
+<<<<<<< HEAD
+=======
+  url 'http://www.zeroc.com/download/Ice/3.4/Ice-3.4.2.tar.gz'
+  sha1 '8c84d6e3b227f583d05e08251e07047e6c3a6b42'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
   depends_on 'berkeley-db'
   depends_on 'mcpp'

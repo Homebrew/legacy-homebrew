@@ -6,15 +6,13 @@ class Nauty < Formula
   version '24r2'
   md5 '53f83420491a32e3fe9b03a44c559a89'
 
-  def options
-    [['--run-tests', "Runs the included test programs"]]
-  end
+  option 'run-tests', "Runs the included test programs"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make all"
-    system "make checks" if ARGV.include? '--run-tests'
+    system "make checks" if build.include? 'run-tests'
 
     bin.install %w{ NRswitchg addedgeg amtog biplabg catg complg copyg countg
       deledgeg directg dreadnaut dretog genbg geng genrang gentourng labelg

@@ -2,16 +2,19 @@ require 'formula'
 
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
+<<<<<<< HEAD
   url 'http://mercurial.selenic.com/release/mercurial-2.2.3.tar.gz'
   sha1 'b754700c545c17f68e1ab36c942141d90c9b9b46'
+=======
+  url 'http://mercurial.selenic.com/release/mercurial-2.3.tar.gz'
+  sha1 'f5fb472500deb01677f1b2e82c7872fe06069cdb'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
-  depends_on 'docutils' => :python if ARGV.build_head? or ARGV.include? "--doc"
+  depends_on 'docutils' => :python if build.head? or build.include? 'doc'
 
-  def options
-    [["--doc", "build the documentation. Depends on 'docutils' module."]]
-  end
+  option 'doc', "Build the documentation. Depends on 'docutils' module"
 
   def install
     # Don't add compiler specific flags so we can build against
@@ -28,7 +31,7 @@ class Mercurial < Formula
 
     # Make Mercurial into the Cellar.
     # The documentation must be built when using HEAD
-    system "make", "doc" if ARGV.build_head? or ARGV.include? "--doc"
+    system "make", "doc" if build.head? or build.include? 'doc'
     system "make", "PREFIX=#{prefix}", "build"
     system "make", "PREFIX=#{prefix}", "install-bin"
 

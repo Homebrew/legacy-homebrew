@@ -3,17 +3,24 @@ require 'formula'
 class Node < Formula
   homepage 'http://nodejs.org/'
 <<<<<<< HEAD
+<<<<<<< HEAD
   url 'http://nodejs.org/dist/v0.8.2/node-v0.8.2.tar.gz'
   sha1 '0e743d21b487151e67950f09198def058db19a1e'
 =======
   url 'http://nodejs.org/dist/v0.8.5/node-v0.8.5.tar.gz'
   sha1 '835ba5ca429e56f65aeb1a5d9730fff105e86337'
 >>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
+=======
+  url 'http://nodejs.org/dist/v0.8.8/node-v0.8.8.tar.gz'
+  sha1 '5ddafc059d2f774e35e6375f5b61157879a46f0f'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
   head 'https://github.com/joyent/node.git'
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
+
+  option 'enable-debug', 'Build with debugger hooks'
 
   fails_with :llvm do
     build 2326
@@ -22,14 +29,10 @@ class Node < Formula
   # Stripping breaks dynamic loading
   skip_clean :all
 
-  def options
-    [["--enable-debug", "Build with debugger hooks."]]
-  end
-
   def install
     # Why skip npm install? Read https://github.com/mxcl/homebrew/pull/8784.
     args = ["--prefix=#{prefix}", "--without-npm"]
-    args << "--debug" if ARGV.include? '--enable-debug'
+    args << "--debug" if build.include? 'enable-debug'
 
     system "./configure", *args
     system "make install"
@@ -39,7 +42,7 @@ class Node < Formula
     <<-EOS.undent
       Homebrew has NOT installed npm. We recommend the following method of
       installation:
-        curl http://npmjs.org/install.sh | sh
+        curl https://npmjs.org/install.sh | sh
 
       After installing, add the following path to your NODE_PATH environment
       variable to have npm libraries picked up:

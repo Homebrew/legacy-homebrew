@@ -12,7 +12,11 @@ class Libwmf < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+<<<<<<< HEAD
                           "--with-freetype=#{MacOS::XQuartz.prefix}"
+=======
+                          "--with-freetype=#{MacOS::X11.prefix}"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     system "make"
     ENV.j1 # yet another rubbish Makefile
     system "make install"

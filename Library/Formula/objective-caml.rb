@@ -18,6 +18,10 @@ class ObjectiveCaml < Formula
     sha1 'f32709be6cba5639a3f7185835963d630d6f8b59' => :lion
   end
 
+  def patches
+    "http://caml.inria.fr/mantis/file_download.php?file_id=723&type=bug"
+  end
+
   # Don't strip symbols, so dynamic linking doesn't break.
   skip_clean :all
 

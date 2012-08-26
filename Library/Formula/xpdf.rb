@@ -12,7 +12,11 @@ class Xpdf < Formula
   def patches; DATA; end
 
   def install
+<<<<<<< HEAD
     ENV.append_to_cflags "-I#{MacOS::XQuartz.include} -#{MacOS::XQuartz.include}/freetype2"
+=======
+    ENV.append_to_cflags "-I#{MacOS::X11.include} -#{MacOS::X11.include}/freetype2"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"

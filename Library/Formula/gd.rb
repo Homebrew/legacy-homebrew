@@ -17,7 +17,11 @@ class Gd < Formula
   end
 
   def install
+<<<<<<< HEAD
     system "./configure", "--prefix=#{prefix}", "--with-freetype=#{MacOS::XQuartz.prefix}"
+=======
+    system "./configure", "--prefix=#{prefix}", "--with-freetype=#{MacOS::X11.prefix}"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     system "make install"
     (lib+'pkgconfig/gdlib.pc').write pkg_file
   end

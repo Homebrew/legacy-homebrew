@@ -7,12 +7,14 @@ class SdlGfx < Formula
 
   depends_on 'sdl'
 
-  def options
-    [['--universal', 'Build universal binaries.']]
-  end
+  option :universal
 
   def install
+<<<<<<< HEAD
     ENV.universal_binary if ARGV.build_universal?
+=======
+    ENV.universal_binary if build.universal?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-sdltest"

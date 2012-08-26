@@ -2,11 +2,7 @@ require 'testing_env'
 require 'cleaner'
 
 class CleanerTestBall < Formula
-  def initialize name=nil
-    @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    @homepage = 'http://example.com/'
-    super "cleanertestball"
-  end
+  url "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
 
   def install
     TEST_FOLDER.cd do

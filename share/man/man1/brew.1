@@ -1,7 +1,11 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
+<<<<<<< HEAD
 .TH "BREW" "1" "July 2012" "Homebrew" "brew"
+=======
+.TH "BREW" "1" "August 2012" "Homebrew" "brew"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -10,7 +14,11 @@
 \fBbrew\fR \-\-version
 .
 .br
+<<<<<<< HEAD
 \fBbrew\fR [\-v|\-\-verbose] command [options] [formula] \.\.\.
+=======
+\fBbrew\fR [\-\-verbose|\-v] command [options] [formula] \.\.\.
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 .
 .SH "DESCRIPTION"
 Homebrew is the easiest and most flexible way to install the UNIX tools Apple didn\'t include with OS X\.
@@ -288,6 +296,12 @@ Tap a new formula repository from GitHub, or list existing taps\.
 \fItap\fR is of the form \fIuser\fR/\fIrepo\fR, e\.g\. \fBbrew tap homebrew/dupes\fR\.
 .
 .TP
+\fBtap \-\-repair\fR:
+.
+.IP
+Ensures all tapped formula are symlinked into Library/Formula and prunes dead formula from Library/Formula\.
+.
+.TP
 \fBtest\fR \fIformula\fR
 A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
 .
@@ -401,6 +415,17 @@ An arbitrary URL
 Homebrew can install formulae via URL, e\.g\. \fBhttps://raw\.github\.com/mxcl/homebrew/master/Library/Formula/git\.rb\fR\. The formula file will be cached for later use\.
 .
 .SH "ENVIRONMENT"
+.
+.TP
+GIT
+When using Git, Homebrew will use \fBGIT\fR if set, a Homebrew\-built Git if installed, or the system\-provided binary\.
+.
+.IP
+Set this to force Homebrew to use a particular git binary\.
+.
+.TP
+EDITOR
+If set, and \fBHOMEBREW_EDITOR\fR is not, use \fBEDITOR\fR as the text editor\.
 .
 .TP
 HOMEBREW_BUILD_FROM_SOURCE

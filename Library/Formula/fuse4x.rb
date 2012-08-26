@@ -5,6 +5,7 @@ class Fuse4x < Formula
   url 'https://github.com/fuse4x/fuse/tarball/fuse4x_0_9_1'
   version '0.9.1'
   sha1 '31eff485411f106daa81ef6c7c3d31abbdcd41b4'
+<<<<<<< HEAD
 
   # Always use newer versions of these tools
   depends_on 'automake' => :build
@@ -15,6 +16,13 @@ class Fuse4x < Formula
   depends_on :libtool
 =======
 >>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
+=======
+
+  # Always use newer versions of these tools
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
+
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   depends_on 'gettext'
   depends_on 'fuse4x-kext'
 

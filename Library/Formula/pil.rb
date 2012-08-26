@@ -22,10 +22,17 @@ class Pil < Formula
     inreplace "setup.py" do |s|
       # Tell setup where Freetype2 is on 10.5/10.6
       s.gsub! 'add_directory(include_dirs, "/sw/include/freetype2")',
+<<<<<<< HEAD
               "add_directory(include_dirs, \"#{MacOS::XQuartz.include}\")"
 
       s.gsub! 'add_directory(include_dirs, "/sw/lib/freetype2/include")',
               "add_directory(library_dirs, \"#{MacOS::XQuartz.lib}\")"
+=======
+              "add_directory(include_dirs, \"#{MacOS::X11.include}\")"
+
+      s.gsub! 'add_directory(include_dirs, "/sw/lib/freetype2/include")',
+              "add_directory(library_dirs, \"#{MacOS::X11.lib}\")"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
       # Tell setup where our stuff is
       s.gsub! 'add_directory(library_dirs, "/sw/lib")',

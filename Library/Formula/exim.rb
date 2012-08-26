@@ -20,23 +20,21 @@ class Exim < Formula
   url 'http://ftp.exim.org/pub/exim/exim4/exim-4.77.tar.gz'
   sha1 '2c1ba6b8f627b71b3b58fc0cc56e394590dcd1dc'
 
+  option 'support-maildir', 'Support delivery in Maildir format'
+
   depends_on 'pcre'
   depends_on NoBdb5.new
-
-  def options
-    [['--support-maildir', 'Support delivery in Maildir format']]
-  end
 
   def install
     cp 'src/EDITME', 'Local/Makefile'
     inreplace 'Local/Makefile' do |s|
       s.remove_make_var! "EXIM_MONITOR"
       s.change_make_var! "EXIM_USER", ENV['USER']
-      s.change_make_var! "SYSTEM_ALIASES_FILE", etc+'aliases'
-      s.gsub! '/usr/exim/configure', etc+'exim.conf'
+      s.change_make_var! "SYSTEM_ALIASES_FILE", etc/'aliases'
+      s.gsub! '/usr/exim/configure', etc/'exim.conf'
       s.gsub! '/usr/exim', prefix
-      s.gsub! '/var/spool/exim', var+'spool/exim'
-      s << "SUPPORT_MAILDIR=yes\n" if ARGV.include? '--support-maildir'
+      s.gsub! '/var/spool/exim', var/'spool/exim'
+      s << "SUPPORT_MAILDIR=yes\n" if build.include? 'support-maildir'
 
       # For non-/usr/local HOMEBREW_PREFIX
       s << "LOOKUP_INCLUDE=-I#{HOMEBREW_PREFIX}/include\n"

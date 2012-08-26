@@ -1,5 +1,4 @@
 require 'formula'
-require 'find'
 
 class Scalate < Formula
   homepage 'http://scalate.fusesource.org/'
@@ -19,11 +18,7 @@ class Scalate < Formula
     # Recursively fix the permissions of extracted regular files
     # excluding the bin directory contents.
     %w{ archetypes docs lib samples license.txt readme.html }.each do |name|
-      Find.find(name) do |path|
-        if File.file?(path)
-          File.chmod(0644, path)
-        end
-      end
+      Pathname.new(name).find { |path| path.chmod(0644) if path.file? }
     end
 
     prefix.install %w{ license.txt readme.html }

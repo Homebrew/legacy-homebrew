@@ -3,33 +3,43 @@ require 'formula'
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
 
-  if Hardware.is_64_bit? and not ARGV.build_32_bit?
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.6.tgz'
-    md5 '84e592882003bed6249d258203fd0473'
-    version '2.0.6-x86_64'
+  if Hardware.is_64_bit? and not build.build_32_bit?
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.7.tgz'
+    md5 '81b0e8be3206cc60e8031dde302fb983'
+    version '2.0.7-x86_64'
 
     devel do
+<<<<<<< HEAD
       url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0-rc0.tgz'
       md5 '49918bd6c5c5e84c4f657df35de6512b'
       version '2.2.0-rc0-x86_64'
+=======
+      url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0-rc2.tgz'
+      md5 'a057c7987d7bc7ff6ced1b565a0856d1'
+      version '2.2.0-rc2-x86_64'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     end
   else
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.6.tgz'
-    md5 'a970a8e6c6de5d655816123b0c8f5718'
-    version '2.0.6-i386'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.7.tgz'
+    md5 '5fee3796ebc4e8721d9784ad8978b2b6'
+    version '2.0.7-i386'
 
     devel do
+<<<<<<< HEAD
       url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0-rc0.tgz'
       md5 '236330754716334a6a9b88ff9bbcc3ea'
       version '2.2.0-rc0-i386'
+=======
+      url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0-rc2.tgz'
+      md5 '5426d47cd2718814c07152b34d0ea18d'
+      version '2.2.0-rc2-i386'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     end
   end
 
-  skip_clean :all
+  option '32-bit'
 
-  def options
-    [['--32-bit', 'Build 32-bit only.']]
-  end
+  skip_clean :all
 
   def install
     # Copy the prebuilt binaries to prefix
@@ -69,6 +79,10 @@ class Mongodb < Formula
   def mongodb_conf; <<-EOS.undent
     # Store data in #{var}/mongodb instead of the default /data/db
     dbpath = #{var}/mongodb
+
+    # Append logs to #{var}/log/mongodb/mongo.log
+    logpath = #{var}/log/mongodb/mongo.log
+    logappend = true
 
     # Only accept local connections
     bind_ip = 127.0.0.1

@@ -14,6 +14,7 @@ end
 
 class Wxmac < Formula
   homepage 'http://www.wxwidgets.org'
+<<<<<<< HEAD
   url 'http://sourceforge.net/projects/wxpython/files/wxPython/2.9.3.1/wxPython-src-2.9.3.1.tar.bz2'
   sha1 '0202f64e1e99fb69d22d7be0d38cf7dcf3d80d79'
 
@@ -29,6 +30,14 @@ class Wxmac < Formula
       { :p0 => "http://trac.wxwidgets.org/raw-attachment/ticket/13565/ClangCompat.diff" }
     end
   end
+=======
+  url 'http://sourceforge.net/projects/wxpython/files/wxPython/2.9.4.0/wxPython-src-2.9.4.0.tar.bz2'
+  sha1 'c292cd45b51e29c558c4d9cacf93c4616ed738b9'
+
+  option 'no-python', 'Do not build Python bindings'
+
+  depends_on FrameworkPython.new unless build.include? "no-python"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
   def install_wx_python
     args = [
@@ -59,6 +68,10 @@ class Wxmac < Formula
   end
 
   def install
+<<<<<<< HEAD
+=======
+    # need to set with-macosx-version-min to avoid configure defaulting to 10.5
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     args = [
       "--disable-debug",
       "--prefix=#{prefix}",
@@ -76,13 +89,21 @@ class Wxmac < Formula
       "--enable-webkit",
       "--enable-svg",
       "--with-expat",
+<<<<<<< HEAD
       "--with-macosx-version-min=#{MacOS.version}" # need to set this, to avoid configure defaulting to 10.5
+=======
+      "--with-macosx-version-min=#{MacOS.version}"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     ]
 
     system "./configure", *args
     system "make install"
 
+<<<<<<< HEAD
     unless ARGV.include? "--no-python"
+=======
+    unless build.include? "no-python"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
       ENV['WXWIN'] = Dir.getwd
       # We have already downloaded wxPython in a bundle with wxWidgets
       install_wx_python
@@ -91,6 +112,7 @@ class Wxmac < Formula
 
   def caveats
     s = ''
+<<<<<<< HEAD
     unless ARGV.include? '--no-python'
       q = `python -c "import distutils.sysconfig as c; print(c.get_config_var('PYTHONFRAMEWORK'))"`
       if q.chomp.empty?
@@ -99,6 +121,11 @@ class Wxmac < Formula
 
         EOS
       end
+=======
+    fp = FrameworkPython.new
+    unless build.include? 'no-python' or fp.satisfied?
+      s += fp.message
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     end
 
     return s

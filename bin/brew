@@ -1,4 +1,4 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 # -*- coding: utf-8 -*-
 
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
@@ -77,7 +77,7 @@ begin
   elsif require? `/usr/bin/which brew-#{cmd}.rb`
     exit 0
   elsif require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/cmd
-    Homebrew.send cmd.to_s.gsub('-', '_')
+    Homebrew.send cmd.to_s.gsub('-', '_').downcase
   else
     onoe "Unknown command: #{cmd}"
     exit 1
