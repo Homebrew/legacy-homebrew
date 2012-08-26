@@ -7,7 +7,7 @@ class Robodoc < Formula
 
   head 'https://github.com/gumpu/ROBODoc.git'
 
-  build.head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
