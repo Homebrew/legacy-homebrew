@@ -11,7 +11,9 @@ class Rust < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--enable-clang"
+    args = ["--prefix=#{prefix}"]
+    args << "--enable-clang" if ENV.compiler == :clang
+    system "./configure", *args
     system "make"
     system "make install"
   end
