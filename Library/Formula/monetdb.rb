@@ -11,7 +11,7 @@ class Monetdb < Formula
   depends_on 'readline' # Compilation fails with libedit.
 
   def install
-    system "./bootstrap" if ARGV.build_head?
+    system "./bootstrap" if build.head?
 
     system "./configure", "--prefix=#{prefix}",
                           "--enable-debug=no",
