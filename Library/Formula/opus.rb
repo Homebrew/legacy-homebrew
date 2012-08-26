@@ -7,13 +7,13 @@ class Opus < Formula
 
   head 'https://git.xiph.org/opus.git'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
 
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking", "--disable-doc",
                           "--prefix=#{prefix}"
     system "make install"
