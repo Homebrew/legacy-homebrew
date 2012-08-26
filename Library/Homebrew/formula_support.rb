@@ -1,5 +1,6 @@
 require 'download_strategy'
 require 'checksums'
+require 'version'
 
 class SoftwareSpec
   attr_reader :checksum, :mirrors, :specs
@@ -8,11 +9,6 @@ class SoftwareSpec
     @url = url
     @version = version
     @mirrors = []
-  end
-
-  # Was the version defined in the DSL, or detected from the URL?
-  def explicit_version?
-    @explicit_version || false
   end
 
   def download_strategy
@@ -49,21 +45,21 @@ class SoftwareSpec
   def url val=nil, specs=nil
     return @url if val.nil?
     @url = val
-    if specs.nil?
-      @using = nil
-    else
+    unless specs.nil?
       @using = specs.delete :using
       @specs = specs
     end
   end
 
   def version val=nil
-    unless val.nil?
-      @version = val
-      @explicit_version = true
-    end
-    @version ||= Pathname.new(@url).version
-    return @version
+    @version ||= case val
+      when nil then Version.parse(@url)
+      when Hash
+        key, value = val.shift
+        scheme = VersionSchemeDetector.new(value).detect
+        scheme.new(key)
+      else Version.new(val)
+      end
   end
 
   def mirror val
@@ -73,7 +69,7 @@ class SoftwareSpec
 end
 
 class HeadSoftwareSpec < SoftwareSpec
-  def initialize url=nil, version='HEAD'
+  def initialize url=nil, version=Version.new(:HEAD)
     super
   end
 
@@ -120,7 +116,7 @@ class Bottle < SoftwareSpec
   # as accessor for @version to preserve the interface
   def version val=nil
     if val.nil?
-      return @version ||= Pathname.new(@url).version
+      return @version ||= Version.parse(@url)
     else
       @revision = val
     end
@@ -136,18 +132,125 @@ class KegOnlyReason
   def initialize reason, explanation=nil
     @reason = reason
     @explanation = explanation
+    @valid = case @reason
+      when :provided_pre_mountain_lion then MacOS.version < :mountain_lion
+      else true
+      end
+  end
+
+  def valid?
+    @valid
   end
 
   def to_s
-    if @reason == :provided_by_osx
-      <<-EOS.strip
-Mac OS X already provides this program and installing another version in
-parallel can cause all kinds of trouble.
+    case @reason
+    when :provided_by_osx then <<-EOS.undent
+      Mac OS X already provides this software and installing another version in
+      parallel can cause all kinds of trouble.
 
-#{@explanation}
-EOS
+      #{@explanation}
+      EOS
+    when :provided_pre_mountain_lion then <<-EOS.undent
+      Mac OS X already provides this software in versions before Mountain Lion.
+
+      #{@explanation}
+      EOS
     else
-      @reason.strip
+      @reason
+    end.strip
+  end
+end
+
+
+# Represents a build-time option for a formula
+class Option
+  attr_reader :name, :description, :flag
+
+  def initialize name, description=nil
+    @name = name.to_s
+    @description = description.to_s
+    @flag = '--'+name.to_s
+  end
+
+  def eql?(other)
+    @name == other.name
+  end
+
+  def hash
+    @name.hash
+  end
+end
+
+
+# This class holds the build-time options defined for a Formula,
+# and provides named access to those options during install.
+class BuildOptions
+  include Enumerable
+
+  def initialize args
+    # Take a copy of the args (any string array, actually)
+    @args = Array.new(args)
+    # Extend it into an ARGV extension
+    @args.extend(HomebrewArgvExtension)
+    @options = Set.new
+  end
+
+  def add name, description=nil
+    if description.nil?
+      case name
+      when :universal, "universal"
+        description = "Build a universal binary"
+      when "32-bit"
+        description = "Build 32-bit only"
+      else
+        description = ""
+      end
     end
+
+    @options << Option.new(name, description)
+  end
+
+  def has_option? name
+    any? { |opt| opt.name == name }
+  end
+
+  def empty?
+    @options.empty?
+  end
+
+  def each(&blk)
+    @options.each(&blk)
+  end
+
+  def as_flags
+    map { |opt| opt.flag }
+  end
+
+  def include? name
+    @args.include? '--' + name
+  end
+
+  def head?
+    @args.flag? '--HEAD'
+  end
+
+  def devel?
+    @args.include? '--devel'
+  end
+
+  def stable?
+    not (head? or devel?)
+  end
+
+  # True if the user requested a universal build.
+  def universal?
+    @args.include? '--universal'
+  end
+
+  # Request a 32-bit only build.
+  # This is needed for some use-cases though we prefer to build Universal
+  # when a 32-bit version is needed.
+  def build_32_bit?
+    @args.include? '--32-bit'
   end
 end

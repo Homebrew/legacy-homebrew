@@ -2,19 +2,17 @@ require 'formula'
 
 class Freeswitch < Formula
   homepage 'http://freeswitch.org'
-  url 'git://git.freeswitch.org/freeswitch.git', :tag => 'v1.0.6'
-  version '1.0.6'
+  url 'git://git.freeswitch.org/freeswitch.git', :tag => 'v1.2.0'
+  version '1.2.0'
 
   head 'git://git.freeswitch.org/freeswitch.git'
 
+  depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
+
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
-
-  if MacOS.xcode_version >= "4.3"
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   def install
     system "./bootstrap.sh -j#{ENV.make_jobs}"
@@ -26,6 +24,7 @@ class Freeswitch < Formula
 
     system "make"
     system "make install"
+    system "make all cd-sounds-install cd-moh-install"
 
     plist_path.write startup_plist
     plist_path.chmod 0644

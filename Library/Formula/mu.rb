@@ -22,40 +22,33 @@ end
 
 class Mu < Formula
   homepage 'http://www.djcbsoftware.nl/code/mu/'
-  url 'http://mu0.googlecode.com/files/mu-0.9.8.4.tar.gz'
-  sha1 'd586dddcc5b2f73e0bc1c835c199644a65c0f5b5'
+  url 'http://mu0.googlecode.com/files/mu-0.9.8.5.tar.gz'
+  sha1 'dfcf1c5ae014f464e083822e3ece420479b64b2a'
+
   head 'https://github.com/djcb/mu.git'
+
+  option 'with-emacs', 'Build with emacs support'
 
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'gmime'
   depends_on 'xapian'
-  depends_on Emacs23Installed.new if ARGV.include? '--with-emacs'
+  depends_on Emacs23Installed.new if build.include? 'with-emacs'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
-  # Fixes configure error using Xapian-1.2.10, where it thinks 1.2.10 < 1.2
-  # Patch submitted upstream: https://github.com/djcb/mu/issues/19
-  # Fixed in head.  Remove at 0.9.8.5
-  def patches
-    DATA unless ARGV.build_head?
-  end
-
-  def options
-    [['--with-emacs', 'Build with emacs support']]
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   def install
     # Explicitly tell the build not to include emacs support as the version
     # shipped by default with Mac OS X is too old.
-    ENV['EMACS'] = 'no' unless ARGV.include? '--with-emacs'
+    ENV['EMACS'] = 'no' unless build.include? 'with-emacs'
 
-    system 'autoreconf', '-ivf' if ARGV.build_head?
-    system  "./configure", "--prefix=#{prefix}",
-      "--disable-dependency-tracking", "--with-gui=none"
+    system 'autoreconf', '-ivf' if build.head?
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-gui=none"
     system "make"
     system "make install"
   end
@@ -67,16 +60,3 @@ class Mu < Formula
     EOS
   end
 end
-
-__END__
---- a/configure	2012-05-08 04:26:10.000000000 -0700
-+++ b/configure	2012-05-11 23:20:57.000000000 -0700
-@@ -17640,7 +17640,7 @@
-   xapian_version=$($XAPIAN_CONFIG --version | sed -e 's/.* //')
- fi
- case $xapian_version in #(
--  1.[2-9].[0-9]) :
-+  1.[2-9].[0-9]*) :
-      ;; #(
-   *) :
-     as_fn_error $? "*** xapian version >= 1.2 needed, but version $xapian_version found." "$LINENO" 5 ;;

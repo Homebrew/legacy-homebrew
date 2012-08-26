@@ -1,19 +1,17 @@
 require 'formula'
 
 class Jasper < Formula
-  homepage 'http://slackware.sukkology.net/packages/jasper/'
-  url 'http://slackware.sukkology.net/packages/jasper/jasper-1.900.1.zip'
-  md5 'a342b2b4495b3e1394e161eb5d85d754'
+  homepage 'http://www.ece.uvic.ca/~frodo/jasper/'
+  url 'http://www.ece.uvic.ca/~frodo/jasper/software/jasper-1.900.1.zip'
+  sha1 '9c5735f773922e580bf98c7c7dfda9bbed4c5191'
+
+  option :universal
 
   depends_on 'jpeg'
 
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
-  end
-
-  def options
-    [["--universal", "Build a universal binary."]]
   end
 
   # The following patch fixes a bug (still in upstream as of jasper 1.900.1)
@@ -23,7 +21,7 @@ class Jasper < Formula
   def patches; DATA; end
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--enable-shared",

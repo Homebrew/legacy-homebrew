@@ -9,10 +9,8 @@ class Minc < Formula
 
   depends_on 'netcdf'
 
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on :automake
+  depends_on :libtool
 
   fails_with :clang do
     # TODO This is an easy fix, someone send it upstream!

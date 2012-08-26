@@ -16,7 +16,8 @@ module Homebrew extend self
       end
       clean_cache
       # seems like a good time to do some additional cleanup
-      Homebrew.prune unless ARGV.switch? 'n'
+      Homebrew.prune unless ARGV.dry_run?
+      rm_DS_Store
     else
       ARGV.formulae.each do |f|
         cleanup_formula f
@@ -39,7 +40,7 @@ module Homebrew extend self
       f.rack.children.each do |keg|
         if f.installed_prefix != keg
           puts "Removing #{keg}..."
-          rm_rf keg unless ARGV.switch? 'n'
+          rm_rf keg unless ARGV.dry_run?
         end
       end
     elsif f.rack.children.length > 1
@@ -59,10 +60,14 @@ module Homebrew extend self
         old_bottle = bottle_file_outdated? f, pn
         if not f or (f.version != version or ARGV.switch? "s" and not f.installed?) or old_bottle
           puts "Removing #{pn}..."
-          rm pn unless ARGV.switch? 'n'
+          rm pn unless ARGV.dry_run?
         end
       end
     end
+  end
+
+  def rm_DS_Store
+    system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete"
   end
 
 end

@@ -17,15 +17,15 @@ class GnuSmalltalk < Formula
 
   head 'https://github.com/bonzini/smalltalk.git'
 
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'libffi' if ARGV.build_head?
   depends_on 'libsigsegv' if ARGV.build_head?
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   fails_with :llvm do
     build 2334

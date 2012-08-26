@@ -20,18 +20,9 @@ class GitFlow < Formula
   def install
     system "make", "prefix=#{prefix}", "install"
 
-    GitFlowCompletion.new.brew do
+    GitFlowCompletion.new('git-flow-completion').brew do
       (prefix+'etc/bash_completion.d').install "git-flow-completion.bash"
       (share+'zsh/site-functions').install "git-flow-completion.zsh"
     end
-  end
-
-  def caveats; <<-EOS.undent
-    Bash completion has been installed to:
-      #{etc}/bash_completion.d
-
-    zsh completion has been installed to:
-      #{HOMEBREW_PREFIX}/share/zsh/site-functions
-    EOS
   end
 end

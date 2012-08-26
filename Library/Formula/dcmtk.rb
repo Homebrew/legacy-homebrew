@@ -3,9 +3,9 @@ require 'formula'
 class Dcmtk < Formula
   homepage 'http://dicom.offis.de/dcmtk.php.en'
   url 'ftp://dicom.offis.de/pub/dicom/offis/software/dcmtk/dcmtk360/dcmtk-3.6.0.tar.gz'
-  md5 '19409e039e29a330893caea98715390e'
+  sha1 '469e017cffc56f36e834aa19c8612111f964f757'
 
-  depends_on :x11
+  depends_on :libpng
   depends_on 'libtiff'
   depends_on 'doxygen' if ARGV.include? '--with-docs'
 
@@ -14,7 +14,7 @@ class Dcmtk < Formula
   end
 
   fails_with :clang do
-    build 318
+    build 421
   end
 
   def install

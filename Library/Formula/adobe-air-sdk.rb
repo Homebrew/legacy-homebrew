@@ -3,7 +3,7 @@ require 'formula'
 class AdobeAirSdk < Formula
   homepage 'http://www.adobe.com/products/air/sdk/'
   url 'http://airdownload.adobe.com/air/mac/download/3.3/AdobeAIRSDK.tbz2'
-  sha1 '95fab877991fa749436d695cd612f7f4abfa7ee0'
+  sha1 '6fd563409e59e3ee66fa8ce0b60d4e9896b9a4af'
   version '3.3'
 
   def startup_script name

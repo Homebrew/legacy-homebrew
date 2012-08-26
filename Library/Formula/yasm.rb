@@ -7,21 +7,22 @@ class Yasm < Formula
 
   head 'https://github.com/yasm/yasm.git'
 
-  def options
-    [['--enable-python', 'Enable Python bindings support.']]
-  end
+  option 'enable-python', 'Enable Python bindings'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on 'gettext'
-    depends_on 'automake' => :build if MacOS.xcode_version.to_f >= 4.3
+    depends_on :automake
   end
 
-  depends_on 'Cython' => :python if ARGV.include? '--enable-python'
+  depends_on 'Cython' => :python if build.include? 'enable-python'
 
   def install
-    args = %W[--prefix=#{prefix} --disable-debug]
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+    ]
 
-    if ARGV.include? '--enable-python'
+    if build.include? 'enable-python'
       args << '--enable-python'
       args << '--enable-python-bindings'
     end
@@ -29,13 +30,13 @@ class Yasm < Formula
     # Avoid "ld: library not found for -lcrt1.10.6.o" on Xcode without CLT
     ENV['LIBS'] = ENV.ldflags
     ENV['INCLUDES'] = ENV.cppflags
-    system './autogen.sh' if ARGV.build_head?
+    system './autogen.sh' if build.head?
     system './configure', *args
     system 'make install'
   end
 
   def caveats
-    if ARGV.include? '--enable-python' then <<-EOS.undent
+    if build.include? 'enable-python' then <<-EOS.undent
       Python bindings installed to:
         #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages
 

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dvdbackup < Formula
-  url 'http://downloads.sourceforge.net/dvdbackup/dvdbackup-0.4.1.tar.bz2'
   homepage 'http://dvdbackup.sourceforge.net'
-  md5 'e4b35ba716852361f35cecafff44f37c'
+  url 'http://downloads.sourceforge.net/dvdbackup/dvdbackup-0.4.2.tar.gz'
+  sha1 '8265902972c8edcdf66d2030eddc4b752e78c1ca'
 
   depends_on 'libdvdread'
 

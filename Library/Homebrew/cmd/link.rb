@@ -4,19 +4,30 @@ module Homebrew extend self
     raise KegUnspecifiedError if ARGV.named.empty?
 
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      # note we only abort if Homebrew is *not* installed as sudo and the user
-      # calls brew as root. The fix is to chown brew to root.
-      abort "Cowardly refusing to `sudo brew link'"
+      raise "Cowardly refusing to `sudo brew link'\n#{SUDO_BAD_ERRMSG}"
+    end
+
+    if ARGV.force? then mode = :force
+    elsif ARGV.dry_run? then mode = :dryrun
+    else mode = nil
     end
 
     ARGV.kegs.each do |keg|
-      if keg.linked_keg_record.directory? and keg.linked_keg_record.realpath == keg
+      if keg.linked?
         opoo "Already linked: #{keg}"
         next
       end
 
+      if mode == :dryrun
+        print "Would remove:\n" do
+          keg.link(mode)
+        end
+
+        next
+      end
+
       print "Linking #{keg}... " do
-        puts "#{keg.link} symlinks created"
+        puts "#{keg.link(mode)} symlinks created"
       end
     end
   end

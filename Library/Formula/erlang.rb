@@ -24,10 +24,10 @@ class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
   url 'https://github.com/erlang/otp/tarball/OTP_R15B01'
-  version 'R15B01'
-  md5 'ad811bb19a085b3d60d16ce576a28b68'
+  sha1 'efc06b5058605e25bfde41d614a2040f282c2601'
 
   bottle do
+    sha1 'e6f74fdab17d12026fe364d9658b906e58824076' => :mountainlion
     # Lion bottle built on OS X 10.7.2 using Xcode 4.1 using:
     #   brew install erlang --build-bottle --use-gcc
     sha1 '4dfc11ed455f8f866ab4627e8055488fa1954fa4' => :lion
@@ -43,11 +43,9 @@ class Erlang < Formula
   # may as well skip bin too, everything is just shell scripts
   skip_clean ['lib', 'bin']
 
-  if MacOS.xcode_version >= "4.3"
-    # remove the autoreconf if possible
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  # remove the autoreconf if possible
+  depends_on :automake
+  depends_on :libtool
 
   fails_with :llvm do
     build 2334
@@ -97,6 +95,7 @@ class Erlang < Formula
 
     system "./configure", *args
     system "touch lib/wx/SKIP" if MacOS.snow_leopard?
+    ENV.j1 # Parallel builds not working again as of at least R15B01
     system "make"
     system "make install"
 

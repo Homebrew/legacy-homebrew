@@ -7,12 +7,10 @@ class Libzzip < Formula
 
   depends_on 'pkg-config' => :build
 
-  def options
-    [[ '--universal', 'Build a universal binary' ]]
-  end
+  option :universal
 
   def install
-    if ARGV.build_universal?
+    if build.universal?
       ENV.universal_binary
       # See: https://sourceforge.net/tracker/?func=detail&aid=3511669&group_id=6389&atid=356389
       ENV["ac_cv_sizeof_long"] = "(LONG_BIT/8)"

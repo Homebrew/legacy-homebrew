@@ -1,4 +1,4 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 # -*- coding: utf-8 -*-
 
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
@@ -17,14 +17,11 @@ when '--version'
   puts HOMEBREW_VERSION
   exit 0
 when '-v'
-  if ARGV.length > 1
-    puts "Homebrew #{HOMEBREW_VERSION}"
-    # continue in verbose mode
-    ARGV << ARGV.shift
-  else
-    puts HOMEBREW_VERSION
-    exit 0
-  end
+  puts "Homebrew #{HOMEBREW_VERSION}"
+  # Shift the -v to the end of the parameter list
+  ARGV << ARGV.shift
+  # If no other arguments, just quit here.
+  exit 0 if ARGV.length == 1
 end
 
 case HOMEBREW_PREFIX.to_s when '/', '/usr'
@@ -80,7 +77,7 @@ begin
   elsif require? `/usr/bin/which brew-#{cmd}.rb`
     exit 0
   elsif require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/cmd
-    Homebrew.send cmd.to_s.gsub('-', '_')
+    Homebrew.send cmd.to_s.gsub('-', '_').downcase
   else
     onoe "Unknown command: #{cmd}"
     exit 1

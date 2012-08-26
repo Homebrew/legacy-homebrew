@@ -112,7 +112,7 @@ class FormulaCreator
     <% elsif mode == nil %>
       # depends_on 'cmake' => :build
     <% end %>
-    depends_on :x11 # if your formula requires any X11/XQuartz components
+      depends_on :x11 # if your formula requires any X11/XQuartz components
 
       def install
         # ENV.j1  # if your formula's build system can't parallelize

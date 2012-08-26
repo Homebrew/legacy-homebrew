@@ -9,22 +9,20 @@ class FreeimageHttpDownloadStrategy < CurlDownloadStrategy
 end
 
 class Freeimage < Formula
+  homepage 'http://sf.net/projects/freeimage'
   url 'http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.15.1/FreeImage3151.zip',
         :using => FreeimageHttpDownloadStrategy
   version '3.15.1'
   md5 '450d2ff278690b0d1d7d7d58fad083cc'
-  homepage 'http://sf.net/projects/freeimage'
 
-  def options
-    [[ '--universal', 'Build a universal binary' ]]
-  end
+  option :universal
 
   def patches
     DATA
   end
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "make", "-f", "Makefile.gnu"
     system "make", "-f", "Makefile.gnu", "install", "PREFIX=#{prefix}"
     system "make", "-f", "Makefile.fip"

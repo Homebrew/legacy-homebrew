@@ -2,14 +2,12 @@ require 'formula'
 
 class Dnsmasq < Formula
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.61.tar.gz'
-  md5 '6ed0a5c2524dfc3a74ef494ee2469f09'
+  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.62.tar.gz'
+  sha1 'c011531a8a92b35ede387525293bfdf93b201039'
 
-  def options
-    [['--with-idn', "Compile with IDN support"]]
-  end
+  option 'with-idn', 'Compile with IDN support'
 
-  depends_on "libidn" if ARGV.include? '--with-idn'
+  depends_on "libidn" if build.include? 'with-idn'
 
   def install
     ENV.deparallelize
@@ -18,7 +16,7 @@ class Dnsmasq < Formula
     inreplace "src/config.h", "/etc/dnsmasq.conf", "#{etc}/dnsmasq.conf"
 
     # Optional IDN support
-    if ARGV.include? '--with-idn'
+    if build.include? 'with-idn'
       inreplace "src/config.h", "/* #define HAVE_IDN */", "#define HAVE_IDN"
     end
 

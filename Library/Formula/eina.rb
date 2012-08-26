@@ -2,18 +2,18 @@ require 'formula'
 
 class Eina < Formula
   homepage 'http://trac.enlightenment.org/e/wiki/Eina'
-  url 'http://download.enlightenment.org/releases/eina-1.1.0.tar.gz'
-  md5 'fedb3814427827c1bb777edea3c86298'
+  url 'http://download.enlightenment.org/releases/eina-1.2.1.tar.gz'
+  sha1 '6a96fe66cdfc26681a38d5d666898fc3e7ab7cbe'
 
   head 'http://svn.enlightenment.org/svn/e/trunk/eina/'
 
-  depends_on 'pkg-config' => :build
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if ARGV.build_head?
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
   end
+
+  depends_on 'pkg-config' => :build
 
   def install
     system "./autogen.sh" if ARGV.build_head?

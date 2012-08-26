@@ -2,15 +2,24 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.24-26.0/source/Percona-Server-5.5.24-rel26.0.tar.gz'
-  version '5.5.24-26.0'
-  sha1 '4a815b545263d008f7112b7e8b1170ae97e9cf3e'
-
-  keg_only "This brew conflicts with 'mysql'. It's safe to `brew link` if you haven't installed 'mysql'"
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.27-28.0/source/Percona-Server-5.5.27-rel28.0.tar.gz'
+  version '5.5.27-28.0'
+  sha1 '5e6bb13ac6cec9fdf88251939e40e10c8bdef4a9'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
   depends_on 'pidof'
+
+  option :universal
+  option 'with-tests', 'Build with unit tests'
+  option 'with-embedded', 'Build the embedded server'
+  option 'with-libedit', 'Compile with editline wrapper instead of readline'
+  option 'enable-local-infile', 'Build with local infile loading support'
+
+  conflicts_with 'mysql',
+    :because => "percona-server and mysql install the same binaries."
+  conflicts_with 'mariadb',
+    :because => "percona-server and mariadb install the same binaries."
 
   skip_clean :all # So "INSTALL PLUGIN" can work.
 
@@ -19,23 +28,11 @@ class PerconaServer < Formula
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
 
-  def options
-    [
-      ['--with-tests', "Build with unit tests."],
-      ['--with-embedded', "Build the embedded server."],
-      ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
-      ['--universal', "Make mysql a universal binary"],
-      ['--enable-local-infile', "Build with local infile loading support"]
-    ]
-  end
-
-  # The CMAKE patches are so that on Lion we do not detect a private
-  # pthread_init function as linkable. Patch sourced from the MySQL formula.
-  def patches
-    DATA
-  end
-
   def install
+    # Build without compiler or CPU specific optimization flags to facilitate
+    # compilation of gems and other software that queries `mysql-config`.
+    ENV.minimal_optimization
+
     # Make sure the var/msql directory exists
     (var+"percona").mkpath
 
@@ -59,23 +56,23 @@ class PerconaServer < Formula
     ]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if ARGV.include? '--with-tests'
+    if build.include? 'with-tests'
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
     end
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
 
     # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless ARGV.include? '--with-libedit'
+    args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
 
     # Build with local infile loading support
-    args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
+    args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
 
     system "cmake", *args
     system "make"
@@ -161,48 +158,3 @@ class PerconaServer < Formula
     EOPLIST
   end
 end
-
-
-__END__
-diff --git a/configure.cmake b/configure.cmake
-index c3cc787..6193481 100644
---- a/configure.cmake
-+++ b/configure.cmake
-@@ -149,7 +149,9 @@ IF(UNIX)
-   SET(CMAKE_REQUIRED_LIBRARIES 
-     ${LIBM} ${LIBNSL} ${LIBBIND} ${LIBCRYPT} ${LIBSOCKET} ${LIBDL} ${CMAKE_THREAD_LIBS_INIT} ${LIBRT})
- 
--  LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
-+  IF(CMAKE_REQUIRED_LIBRARIES)
-+    LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
-+  ENDIF()
-   LINK_LIBRARIES(${CMAKE_THREAD_LIBS_INIT})
-   
-   OPTION(WITH_LIBWRAP "Compile with tcp wrappers support" OFF)
-diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
-index 9296075..a600de2 100644
---- a/scripts/mysql_config.sh
-+++ b/scripts/mysql_config.sh
-@@ -137,7 +137,8 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNIV_MUST_NOT_INLINE DFORCE_INIT_OF_VARS \
-               DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
-               'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
-               Xa xstrconst "xc99=none" AC99 \
--              unroll2 ip mp restrict
-+              unroll2 ip mp restrict \
-+              mmmx 'msse[0-9.]*' 'mfpmath=sse' w pipe 'fomit-frame-pointer' 'mmacosx-version-min=10.[0-9]'
- do
-   # The first option we might strip will always have a space before it because
-   # we set -I$pkgincludedir as the first option
-diff --git a/scripts/mysqld_safe.sh b/scripts/mysqld_safe.sh
-index 37e0e35..38ad6c8 100644
---- a/scripts/mysqld_safe.sh
-+++ b/scripts/mysqld_safe.sh
-@@ -558,7 +558,7 @@ else
- fi
- 
- USER_OPTION=""
--if test -w / -o "$USER" = "root"
-+if test -w /sbin -o "$USER" = "root"
- then
-   if test "$user" != "root" -o $SET_USER = 1
-   then

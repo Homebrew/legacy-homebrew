@@ -1,16 +1,16 @@
 require 'formula'
 
-# Dvdauthor will optionally detect ImageMagick or GraphicsMagick, too.
-# But we don't add either as deps because they are big.
-
 class Dvdauthor < Formula
   homepage 'http://dvdauthor.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/dvdauthor/dvdauthor/0.7.0/dvdauthor-0.7.0.tar.gz'
-  md5 '33a447fb98ab3293ac40f869eedc17ff'
+  sha1 '39501f826ae9cc6b334160ebb9c01ce9c91b31d4'
+
+  # Dvdauthor will optionally detect ImageMagick or GraphicsMagick, too.
+  # But we don't add either as deps because they are big.
 
   depends_on 'pkg-config' => :build
   depends_on 'libdvdread'
-  depends_on :x11
+  depends_on :freetype
 
   # Fix build with png-1.5. Patch has been applied upstream, but no tagged
   # release has been made since 2010. See:

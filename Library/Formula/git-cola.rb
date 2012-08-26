@@ -2,8 +2,8 @@ require 'formula'
 
 class GitCola < Formula
   homepage 'http://git-cola.github.com/'
-  url 'https://github.com/git-cola/git-cola/tarball/v1.7.7'
-  md5 'c48e597494851f8fd8b1829bd0291443'
+  url 'https://github.com/git-cola/git-cola/tarball/v1.8.0'
+  md5 'bbf727c0853ec4140684c2ddb5fd9cf2'
   head 'https://github.com/git-cola/git-cola.git'
 
   depends_on 'pyqt'
@@ -19,7 +19,7 @@ class GitCola < Formula
   end
 
   def install
-    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'
+    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
     system "make", "prefix=#{prefix}", "install"
 
     if ARGV.include? '--build-docs'
@@ -29,5 +29,9 @@ class GitCola < Formula
              "prefix=#{prefix}",
              "install", "install-html"
     end
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end

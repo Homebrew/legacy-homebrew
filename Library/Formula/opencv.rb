@@ -9,44 +9,46 @@ def site_package_dir
 end
 
 class Opencv < Formula
-  homepage 'http://opencv.willowgarage.com/wiki/'
-  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.1/OpenCV-2.4.1.tar.bz2'
-  sha1 'bc6f23c62c8e3e0746f6f95067d54340d12aed56'
+  homepage 'http://opencv.org/'
+  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.2/OpenCV-2.4.2.tar.bz2'
+  sha1 '96ff27b87e0f028d1d16201afebabec4e0c72367'
+
+  option '32-bit'
+  option 'with-qt',  'Build the Qt4 backend to HighGUI'
+  option 'with-tbb', 'Enable parallel code in OpenCV using Intel TBB'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
+  depends_on 'numpy' => :python
 
+  depends_on 'eigen'   => :optional
   depends_on 'libtiff' => :optional
   depends_on 'jasper'  => :optional
   depends_on 'tbb'     => :optional
-  depends_on 'qt' if ARGV.include? '--with-qt'
-
-  depends_on 'numpy' => :python
+  depends_on 'qt' if build.include? 'with-qt'
 
   # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
   # you don't need unless you're doing video analysis, and some of it isn't
-  # in Homebrew anyway.
-
-  def options
-    [
-      ["--32-bit", "Build 32-bit only."],
-      ["--with-qt", "Build qt backend."],
-      ["--with-tbb", "Build with TBB support."]
-    ]
-  end
-
-  def patches
-    # fixes HighGUI build failure on Mac OS X – Not linking against AppKit framework
-    # patch is taken from upstream bug report
-    # upstream patch should be included in version 2.4.2
-    return DATA
-  end
+  # in Homebrew anyway. Will depend on openexr if it's installed.
 
   def install
-    args = std_cmake_args
-    args << "-DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.build_32_bit?
-    args << "-DWITH_QT=ON" if ARGV.include? "--with-qt"
-    args << "-DWITH_TBB=ON" if ARGV.include? "--with-tbb"
+    args = std_cmake_args + %w[
+      -DWITH_CUDA=OFF
+      -DBUILD_ZLIB=OFF
+      -DBUILD_TIFF=OFF
+      -DBUILD_PNG=OFF
+      -DBUILD_JPEG=OFF
+      -DBUILD_JASPER=OFF
+      -DBUILD_TESTS=OFF
+      -DBUILD_PERF_TESTS=OFF
+    ]
+    if ARGV.build_32_bit?
+      args << "-DCMAKE_OSX_ARCHITECTURES=i386"
+      args << "-DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'"
+      args << "-DOPENCV_EXTRA_CXX_FLAGS='-arch i386 -m32'"
+    end
+    args << '-DWITH_QT=ON' if build.include? 'with-qt'
+    args << '-DWITH_TBB=ON' if build.include? 'with-tbb'
 
     # The CMake `FindPythonLibs` Module is dumber than a bag of hammers when
     # more than one python installation is available---for example, it clings
@@ -61,7 +63,12 @@ class Opencv < Formula
     if File.exist? "#{python_prefix}/Python"
       # Python was compiled with --framework:
       args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
-      args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+      if !MacOS::CLT.installed? and python_prefix.start_with? '/System/Library'
+        # For Xcode-only systems, the headers of system's python are inside of Xcode
+        args << "-DPYTHON_INCLUDE_DIR='#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/Headers'"
+      else
+        args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+      end
     else
       python_lib = "#{python_prefix}/lib/lib#{which_python}"
       if File.exists? "#{python_lib}.a"
@@ -73,9 +80,12 @@ class Opencv < Formula
     end
     args << "-DPYTHON_PACKAGES_PATH='#{lib}/#{which_python}/site-packages'"
 
-    system 'cmake', '.', *args
-    system "make"
-    system "make install"
+    args << '..'
+    mkdir 'macbuild' do
+      system 'cmake', *args
+      system "make"
+      system "make install"
+    end
   end
 
   def caveats; <<-EOS.undent
@@ -86,17 +96,3 @@ class Opencv < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/modules/highgui/CMakeLists.txt b/modules/highgui/CMakeLists.txt
-index ecd0276..f045ec2 100644
---- a/modules/highgui/CMakeLists.txt
-+++ b/modules/highgui/CMakeLists.txt
-@@ -180,7 +180,7 @@ elseif(APPLE)
-     list(APPEND HIGHGUI_LIBRARIES "-framework Carbon" "-framework QuickTime" "-framework CoreFoundation" "-framework QuartzCore")
-   else()
-     list(APPEND highgui_srcs src/cap_qtkit.mm)
--    list(APPEND HIGHGUI_LIBRARIES "-framework QTKit" "-framework QuartzCore")
-+    list(APPEND HIGHGUI_LIBRARIES "-framework QTKit" "-framework QuartzCore" "-framework AppKit")
-   endif()
- endif()

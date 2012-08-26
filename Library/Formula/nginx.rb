@@ -2,28 +2,24 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.2.2.tar.gz'
-  sha1 '1893940485e21f8c9bdc8058eb9cc2826d629d04'
+  url 'http://nginx.org/download/nginx-1.2.3.tar.gz'
+  sha1 '98059ae08ebbfaaead868128f7b66ebce16be9af'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.3.2.tar.gz'
-    sha1 'a3507cb2f13332489804f79885541c717f8f4bf0'
+    url 'http://nginx.org/download/nginx-1.3.5.tar.gz'
+    sha1 'ce0245295f23a54f10d916eb6b7b34469d0618a1'
   end
 
   depends_on 'pcre'
+
+  option 'with-passenger', 'Compile with support for Phusion Passenger module'
+  option 'with-webdav', 'Compile with support for WebDAV module'
 
   skip_clean 'logs'
 
   # Changes default port to 8080
   def patches
     DATA
-  end
-
-  def options
-    [
-      ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
-    ]
   end
 
   def passenger_config_args
@@ -43,14 +39,15 @@ class Nginx < Formula
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
-            "--with-cc-opt='-I#{HOMEBREW_PREFIX}/include'",
-            "--with-ld-opt='-L#{HOMEBREW_PREFIX}/lib'",
+            "--with-ipv6",
+            "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
+            "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/nginx/nginx.lock"]
 
-    args << passenger_config_args if ARGV.include? '--with-passenger'
-    args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    args << passenger_config_args if build.include? 'with-passenger'
+    args << "--with-http_dav_module" if build.include? 'with-webdav'
 
     system "./configure", *args
     system "make"

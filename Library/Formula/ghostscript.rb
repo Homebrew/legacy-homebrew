@@ -3,15 +3,20 @@ require 'formula'
 class GhostscriptFonts < Formula
   homepage 'http://sourceforge.net/projects/gs-fonts/'
   url 'http://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
-  md5 '6865682b095f8c4500c54b285ff05ef6'
+  sha1 '2a7198e8178b2e7dba87cb5794da515200b568f5'
 end
 
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
-  url 'http://downloads.ghostscript.com/public/ghostscript-9.05.tar.gz'
-  md5 'f7c6f0431ca8d44ee132a55d583212c1'
+  url 'http://downloads.ghostscript.com/public/ghostscript-9.06.tar.gz'
+  sha1 'a3de8ccb877ee9b7437a598196eb6afa11bf31dc'
 
   head 'git://git.ghostscript.com/ghostpdl.git'
+
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
@@ -19,11 +24,6 @@ class Ghostscript < Formula
   depends_on 'jbig2dec'
   depends_on 'little-cms2'
   depends_on :libpng
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   def move_included_source_copies
     # If the install version of any of these doesn't match
@@ -39,7 +39,7 @@ class Ghostscript < Formula
   def install
     ENV.deparallelize
     # ghostscript configure ignores LDFLAGs apparently
-    ENV['LIBS'] = "-L#{MacOS.x11_prefix}/lib"
+    ENV['LIBS'] = "-L#{MacOS::X11.lib}"
 
     src_dir = ARGV.build_head? ? "gs" : "."
 

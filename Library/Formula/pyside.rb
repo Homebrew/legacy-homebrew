@@ -10,8 +10,8 @@ end
 
 class Pyside < Formula
   homepage 'http://www.pyside.org'
-  url 'http://www.pyside.org/files/pyside-qt4.7+1.1.0.tar.bz2'
-  md5 '233f0c6d2b3daf58cf88877d7f74557b'
+  url 'http://www.pyside.org/files/pyside-qt4.8+1.1.1.tar.bz2'
+  sha1 '37b4a2f666a84e39aa4b55f8909964c73ce47123'
 
   depends_on 'cmake' => :build
   depends_on 'shiboken'
@@ -24,13 +24,19 @@ class Pyside < Formula
     ENV.append_to_cflags "-F#{qt.prefix}/Frameworks"
 
     # Also need `ALTERNATIVE_QT_INCLUDE_DIR` to prevent "missing file" errors.
+    # Add out of tree build because one of its deps, shiboken, itself needs an
+    # out of tree build in shiboken.rb.
     args = std_cmake_args + %W[
       -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks
       -DSITE_PACKAGE=#{site_package_dir}
       -DBUILD_TESTS=NO
-      .]
-    system "cmake", *args
-    system 'make install'
+      ..
+    ]
+    mkdir 'macbuild' do
+      system 'cmake', *args
+      system 'make'
+      system 'make install'
+    end
   end
 
   def caveats

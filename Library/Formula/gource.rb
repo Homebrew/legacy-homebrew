@@ -4,12 +4,19 @@ class Gource < Formula
   homepage 'http://code.google.com/p/gource/'
   url 'http://gource.googlecode.com/files/gource-0.38.tar.gz'
   sha1 '78f8c2064114313851f53b657d12db28abb89fae'
+
   head 'https://github.com/acaudwell/Gource.git'
 
-  depends_on 'glm' => :build
-  depends_on 'pkg-config' => :build
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on :x11 # for Freetype
+
+  depends_on 'pkg-config' => :build
+  depends_on 'glm' => :build
+
   depends_on 'boost'
   depends_on 'glew'
   depends_on 'jpeg'
@@ -17,9 +24,10 @@ class Gource < Formula
   depends_on 'sdl'
   depends_on 'sdl_image'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  def patches
+    # Fix for API change in boost 1.50.0; can be removed in next version
+    # http://code.google.com/p/gource/issues/detail?id=162
+    "https://github.com/acaudwell/Gource/commit/408371e10f931e2330ff94bd7291b5d1c8c80e9b.patch"
   end
 
   def install

@@ -11,10 +11,8 @@ class Aplus < Formula
     DATA
   end
 
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on :automake
+  depends_on :libtool
 
   def install
     # replace placeholder w/ actual prefix

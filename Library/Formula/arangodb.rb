@@ -2,8 +2,8 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url "https://github.com/triAGENS/ArangoDB/zipball/v1.0.alpha3"
-  sha1 '1e63607f1d98edaa02e36e664ebb770ace0bbda7'
+  url 'https://github.com/triAGENS/ArangoDB/zipball/v1.0.0'
+  sha1 '2a3b58967f41116cb9422e3e159ea526081310c7'
 
   head "https://github.com/triAGENS/ArangoDB.git"
 

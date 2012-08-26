@@ -13,12 +13,20 @@ class Imapfilter < Formula
       s.change_make_var! 'CFLAGS', "#{s.get_make_var 'CFLAGS'} #{ENV.cflags}"
     end
 
-    # find Homebrew's libpcre
+    # find Homebrew's libpcre and lua
     ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
-
     ENV.append 'LDFLAGS', '-liconv'
-    system "make", "LDFLAGS=#{ENV.ldflags}"
+    system "make", "PREFIX=#{prefix}", "MANDIR=#{man}", "LDFLAGS=#{ENV.ldflags}"
     system "make", "PREFIX=#{prefix}", "MANDIR=#{man}", "install"
+
+    prefix.install 'samples'
+  end
+
+  def caveats; <<-EOS.undent
+    You will need to create a ~/.imapfilter/config.lua file.
+    Samples can be found in:
+      #{prefix}/samples
+    EOS
   end
 
   def test

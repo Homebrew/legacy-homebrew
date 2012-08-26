@@ -9,8 +9,18 @@ module HomebrewEnvExtension
     delete('CLICOLOR_FORCE') # autotools doesn't like this
     remove_cc_etc
 
+    if MacOS.version >= :mountain_lion
+      # Fix issue with sed barfing on unicode characters on Mountain Lion.
+      delete('LC_ALL')
+      self['LC_CTYPE']="C"
+
+      # Mountain Lion no longer ships a few .pcs; make sure we pick up our versions
+      prepend 'PKG_CONFIG_PATH',
+        HOMEBREW_REPOSITORY/'Library/Homebrew/pkgconfig', ':'
+    end
+
     # make any aclocal stuff installed in Homebrew available
-    self['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS.xcode_version < "4.3"
+    self['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS::Xcode.provides_autotools?
 
     self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
@@ -47,7 +57,7 @@ module HomebrewEnvExtension
     macosxsdk MacOS.version
 
     # For Xcode 4.3 (*without* the "Command Line Tools for Xcode") compiler and tools inside of Xcode:
-    if not MacOS.clt_installed? and MacOS.xcode_installed? and MacOS.xcode_version >= "4.3"
+    if not MacOS::CLT.installed? and MacOS::Xcode.installed? and MacOS::Xcode.version >= "4.3"
       # Some tools (clang, etc.) are in the xctoolchain dir of Xcode
       append 'PATH', "#{MacOS.xctoolchain_path}/usr/bin", ":" if MacOS.xctoolchain_path
       # Others are now at /Applications/Xcode.app/Contents/Developer/usr/bin
@@ -228,20 +238,14 @@ Please take one of the following actions:
     v = v.to_s
     remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
     self['MACOSX_DEPLOYMENT_TARGET'] = nil
-    remove 'CPPFLAGS', "-isystem #{HOMEBREW_PREFIX}/include"
+    self['CPATH'] = nil
     remove 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
     sdk = MacOS.sdk_path(v)
-    unless sdk.nil? or MacOS.clt_installed?
+    unless sdk.nil? or MacOS::CLT.installed?
       self['SDKROOT'] = nil
-      remove 'CPPFLAGS', "-isysroot #{sdk}"
-      remove 'CPPFLAGS', "-isystem #{sdk}/usr/include"
-      remove 'CPPFLAGS', "-I#{sdk}/usr/include"
-      remove_from_cflags "-isystem #{sdk}/usr/include"
       remove_from_cflags "-isysroot #{sdk}"
-      remove_from_cflags "-L#{sdk}/usr/lib"
-      remove_from_cflags "-I#{sdk}/usr/include"
-      remove 'LDFLAGS', "-L#{sdk}/usr/lib"
-      remove 'LDFLAGS', "-I#{sdk}/usr/include"
+      remove 'CPPFLAGS', "-isysroot #{sdk}"
+      remove 'LDFLAGS', "-isysroot #{sdk}"
       if HOMEBREW_PREFIX.to_s == '/usr/local'
         self['CMAKE_PREFIX_PATH'] = nil
       else
@@ -259,29 +263,19 @@ Please take one of the following actions:
     v = v.to_s
     append_to_cflags("-mmacosx-version-min=#{v}")
     self['MACOSX_DEPLOYMENT_TARGET'] = v
-    append 'CPPFLAGS', "-isystem #{HOMEBREW_PREFIX}/include"
+    self['CPATH'] = "#{HOMEBREW_PREFIX}/include"
     prepend 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
     sdk = MacOS.sdk_path(v)
-    unless sdk.nil? or MacOS.clt_installed?
+    unless sdk.nil? or MacOS::CLT.installed?
       # Extra setup to support Xcode 4.3+ without CLT.
       self['SDKROOT'] = sdk
-      # Teach the preprocessor and compiler (some don't respect CPPFLAGS)
-      # where system includes are:
-      append 'CPPFLAGS', "-isysroot #{sdk}"
+      # Tell clang/gcc where system include's are:
+      append 'CPATH', "#{sdk}/usr/include", ":"
+      # The -isysroot is needed, too, because of the Frameworks
       append_to_cflags "-isysroot #{sdk}"
-      append 'CPPFLAGS', "-isystem #{sdk}/usr/include"
-      # Suggested by mxcl (https://github.com/mxcl/homebrew/pull/10510#issuecomment-4187996):
-      append_to_cflags "-isystem #{sdk}/usr/include"
-      # Some software needs this (e.g. python shows error: /usr/include/zlib.h: No such file or directory)
-      append 'CPPFLAGS', "-I#{sdk}/usr/include"
-      # Needed because CC passes this to the linker and some projects
-      # forget to use the LDFLAGS explicitly:
-      append_to_cflags "-L#{sdk}/usr/lib"
-      # And finally the "normal" things one expects for the CFLAGS and LDFLAGS:
-      append_to_cflags "-I#{sdk}/usr/include"
-      prepend 'LDFLAGS', "-L#{sdk}/usr/lib"
-      # Believe it or not, sometime only the LDFLAGS are used :/
-      prepend 'LDFLAGS', "-I#{sdk}/usr/include"
+      append 'CPPFLAGS', "-isysroot #{sdk}"
+      # And the linker needs to find sdk/usr/lib
+      append 'LDFLAGS', "-isysroot #{sdk}"
       # Needed to build cmake itself and perhaps some cmake projects:
       append 'CMAKE_PREFIX_PATH', "#{sdk}/usr", ':'
       append 'CMAKE_FRAMEWORK_PATH', "#{sdk}/System/Library/Frameworks", ':'
@@ -290,16 +284,16 @@ Please take one of the following actions:
 
   def minimal_optimization
     self['CFLAGS'] = self['CXXFLAGS'] = "-Os #{SAFE_CFLAGS_FLAGS}"
-    macosxsdk unless MacOS.clt_installed?
+    macosxsdk unless MacOS::CLT.installed?
   end
   def no_optimization
     self['CFLAGS'] = self['CXXFLAGS'] = SAFE_CFLAGS_FLAGS
-    macosxsdk unless MacOS.clt_installed?
+    macosxsdk unless MacOS::CLT.installed?
   end
 
   # Some configure scripts won't find libxml2 without help
   def libxml2
-    if MacOS.clt_installed?
+    if MacOS::CLT.installed?
       append 'CPPFLAGS', '-I/usr/include/libxml2'
     else
       # Use the includes form the sdk
@@ -307,36 +301,28 @@ Please take one of the following actions:
     end
   end
 
-  def x11
-    opoo "You do not have X11 installed, this formula may not build." unless MacOS.x11_installed?
-
-    # There are some config scripts here that should go in the PATH. This
-    # path is always under MacOS.x11_prefix, even for Xcode-only systems.
-    prepend 'PATH', MacOS.x11_prefix/'bin', ':'
-
-    # Similarily, pkgconfig files are only found under MacOS.x11_prefix.
-    prepend 'PKG_CONFIG_PATH', MacOS.x11_prefix/'lib/pkgconfig', ':'
-    prepend 'PKG_CONFIG_PATH', MacOS.x11_prefix/'share/pkgconfig', ':'
-
-    append 'LDFLAGS', "-L#{MacOS.x11_prefix}/lib"
-    append 'CMAKE_PREFIX_PATH', MacOS.x11_prefix, ':'
-
-    # We prefer XQuartz if it is installed. Otherwise, we look for Apple's
-    # X11. For Xcode-only systems, the headers are found in the SDK.
-    prefix = if MacOS.x11_prefix.to_s == '/opt/X11' or MacOS.clt_installed?
-      MacOS.x11_prefix
-    else
-      MacOS.sdk_path/'usr/X11'
+  def x11 silent=false
+    unless MacOS::X11.installed?
+      opoo "You do not have X11 installed, this formula may not build." unless silent
+      return
     end
 
-    append 'CPPFLAGS', "-I#{prefix}/include"
+    # There are some config scripts here that should go in the PATH
+    prepend 'PATH', MacOS::X11.bin, ':'
 
-    append 'CMAKE_PREFIX_PATH', prefix, ':'
-    append 'CMAKE_INCLUDE_PATH', prefix/'include', ':'
+    prepend 'PKG_CONFIG_PATH', MacOS::X11.lib/'pkgconfig', ':'
+    prepend 'PKG_CONFIG_PATH', MacOS::X11.share/'pkgconfig', ':'
 
-    unless MacOS.clt_installed?
-      append 'CPPFLAGS', "-I#{prefix}/include/freetype2"
-      append 'CFLAGS', "-I#{prefix}/include"
+    append 'LDFLAGS', "-L#{MacOS::X11.lib}"
+    append 'CMAKE_PREFIX_PATH', MacOS::X11.prefix, ':'
+    append 'CMAKE_INCLUDE_PATH', MacOS::X11.include, ':'
+
+    append 'CPPFLAGS', "-I#{MacOS::X11.include}"
+
+    unless MacOS::CLT.installed?
+      append 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11', ':'
+      append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
+      append 'CFLAGS', "-I#{MacOS::X11.include}"
     end
   end
   alias_method :libpng, :x11
@@ -424,6 +410,7 @@ Please take one of the following actions:
     [*key].each do |key|
       next if self[key].nil?
       self[key] = self[key].sub value, '' # can't use sub! on ENV
+      self[key] = self[key].gsub /\s+/, ' ' # compact whitespace
       self[key] = nil if self[key].empty? # keep things clean
     end
   end

@@ -6,12 +6,10 @@ class Pixman < Formula
   sha256 'c9ab554b5160679d958bfa1753cb9e6edd1e53c4745c963a1394eea4f0b13ce2'
 
   depends_on 'pkg-config' => :build
-  depends_on :x11
 
-  keg_only :provided_by_osx, <<-EOS.undent
-    Apple provides an outdated version of libpixman in its X11 distribution.
-    A more up-to-date version is available in XQuartz.
-    EOS
+  keg_only :provided_pre_mountain_lion
+
+  option :universal
 
   fails_with :llvm do
     build 2336
@@ -22,20 +20,16 @@ class Pixman < Formula
       EOS
   end
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
-
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
+    # Disable gtk as it is only used to build tests
     args = %W[--disable-dependency-tracking
               --disable-gtk
               --prefix=#{prefix}]
 
     args << "--disable-mmx" if ENV.compiler == :clang
 
-    # Disable gtk as it is only used to build tests
     system "./configure", *args
     system "make install"
   end
