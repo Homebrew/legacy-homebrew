@@ -2,8 +2,8 @@ require 'formula'
 
 class Clay < Formula
   homepage 'http://claylabs.com/clay/'
-  url 'https://github.com/jckarter/clay/tarball/v0.1.0'
-  md5 'fa34b4ecc0ab13047f802b9aac6d850b'
+  url 'https://github.com/jckarter/clay/tarball/v0.1.2'
+  sha1 '1c7de85a36b4516c0cf5ba7f413d748d1c37c9b4'
 
   head 'https://github.com/jckarter/clay.git'
 

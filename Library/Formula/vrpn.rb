@@ -10,8 +10,8 @@ class Vrpn < Formula
   option 'clients', 'Build client apps and tests'
   option 'docs', 'Build doxygen-based API documentation'
 
-  depends_on 'libusb' # for HID support
   depends_on 'cmake' => :build
+  depends_on 'libusb' # for HID support
   depends_on 'doxygen' if build.include? 'docs'
 
   def install
@@ -26,7 +26,7 @@ class Vrpn < Formula
 
     mkdir "build" do
       system "cmake", *args
-      system "make doc" if ARGV.include? '--docs'
+      system "make doc" if build.include? 'docs'
       system "make install"
     end
   end

@@ -14,6 +14,7 @@ class Cairo < Formula
   depends_on 'pixman'
   depends_on 'pkg-config' => :build
   depends_on 'xz'=> :build
+  depends_on 'glib' unless build.include? 'without-x'
   depends_on :x11 unless build.include? 'without-x'
 
   # Fixes a build error with clang & universal, where a function was implicit.

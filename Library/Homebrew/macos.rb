@@ -197,10 +197,18 @@ module MacOS extend self
 
   def compilers_standard?
     xcode = Xcode.version
-    # Assume compilers are okay if Xcode version not in hash
-    return true unless StandardCompilers.keys.include? xcode
 
-    StandardCompilers[xcode].all? {|k,v| MacOS.send(k) == v}
+    unless StandardCompilers.keys.include? xcode
+      onoe <<-EOS.undent
+        Homebrew doesn't know what compiler versions ship with your version of
+        Xcode. Please file an issue with the output of `brew --config`:
+          https://github.com/mxcl/homebrew/issues
+
+        Thanks!
+        EOS
+    end
+
+    StandardCompilers[xcode].all? { |method, build| MacOS.send(method) == build }
   end
 
   def app_with_bundle_id id
@@ -208,12 +216,19 @@ module MacOS extend self
   end
 
   def mdfind attribute, id
-    path = `mdfind "#{attribute} == '#{id}'"`.split("\n").first
+    path = `/usr/bin/mdfind "#{attribute} == '#{id}'"`.split("\n").first
     Pathname.new(path) unless path.nil? or path.empty?
   end
 
   def pkgutil_info id
-    `pkgutil --pkg-info #{id} 2>/dev/null`.strip
+    `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
+  end
+
+  def bottles_supported?
+    # We support bottles on all versions of OS X except 32-bit Snow Leopard.
+    (Hardware.is_64_bit? or not MacOS.snow_leopard?) \
+      and HOMEBREW_PREFIX.to_s == '/usr/local' \
+      and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar' \
   end
 end
 

@@ -2,16 +2,14 @@ require 'formula'
 
 class PkgConfig < Formula
   homepage 'http://pkgconfig.freedesktop.org'
-  url 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.27.tar.gz'
-  mirror 'http://fossies.org/unix/privat/pkg-config-0.27.tar.gz'
-  sha256 '79a6b43ee6633c9e6cc03eb1706370bb7a8450659845b782411f969eaba656a4'
-
-  depends_on 'gettext'
+  url 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.27.1.tar.gz'
+  mirror 'http://fossies.org/unix/privat/pkg-config-0.27.1.tar.gz'
+  sha256 '4f63d0df3035101b12949250da5231af49e3c3afcd8fb18554fa7c3cb92d8c17'
 
   bottle do
-    sha1 '52e1a98740cc834f4b29ee31923812914461f815' => :mountainlion
-    sha1 'ebeb434ee288ac7c96cfa09eee98434fe810edff' => :lion
-    sha1 'b72a6f5078ee917a28c1e6c9948db23701f4dd18' => :snowleopard
+    sha1 '42935c12d2f0496f63bbba4b94c2c02a09035bf0' => :mountainlion
+    sha1 'dd791f33f599972d8c95fba908bf8485c46a772d' => :lion
+    sha1 '3f1f7c324e277c8774e045ffced8966086c237df' => :snowleopard
   end
 
   def install
@@ -35,11 +33,5 @@ class PkgConfig < Formula
     system "make"
     system "make check"
     system "make install"
-
-    # Fix some bullshit.
-    # pkg-config tries to install glib's m4 macros, which will conflict with
-    # an actual glib install. See:
-    # https://bugs.freedesktop.org/show_bug.cgi?id=52031
-    rm Dir["#{share}/aclocal/g*.m4"]
   end
 end

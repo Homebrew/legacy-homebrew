@@ -1,7 +1,7 @@
 require 'formula'
 
 def pgm_flags
-  return build.include? '--with-pgm' ? '--with-system-pgm' : ''
+  build.include? 'with-pgm' ? '--with-system-pgm' : ''
 end
 
 class Zeromq < Formula

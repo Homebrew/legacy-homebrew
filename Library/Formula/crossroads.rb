@@ -7,12 +7,10 @@ class Crossroads < Formula
 
   head 'https://github.com/crossroads-io/libxs.git'
 
+  option 'with-pgm', 'Build with PGM extension'
+
   depends_on :automake
   depends_on :libtool
-
-  def options
-    [['--with-pgm', 'Build with PGM extension']]
-  end
 
   fails_with :llvm do
     build 2326
@@ -20,10 +18,10 @@ class Crossroads < Formula
   end
 
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    args << "--with-pgm" if ARGV.include? '--with-pgm'
+    args << "--with-pgm" if build.include? 'with-pgm'
     system "./configure", *args
 
     system "make"
