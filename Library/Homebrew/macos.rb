@@ -216,12 +216,12 @@ module MacOS extend self
   end
 
   def mdfind attribute, id
-    path = `mdfind "#{attribute} == '#{id}'"`.split("\n").first
+    path = `/usr/bin/mdfind "#{attribute} == '#{id}'"`.split("\n").first
     Pathname.new(path) unless path.nil? or path.empty?
   end
 
   def pkgutil_info id
-    `pkgutil --pkg-info #{id} 2>/dev/null`.strip
+    `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
   end
 
   def bottles_supported?
