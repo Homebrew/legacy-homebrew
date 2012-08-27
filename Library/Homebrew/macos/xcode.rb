@@ -163,22 +163,15 @@ module MacOS::CLT extend self
   end
 
   def version
+    # The pkgutils calls are slow, don't repeat if no CLT installed.
+    @version if @version_determined
+
+    @version_determined = true
     # Version string (a pretty damn long one) of the CLT package.
     # Note, that different ways to install the CLTs lead to different
     # version numbers.
-    @version ||= begin
-      standalone = MacOS.pkgutil_info(STANDALONE_PKG_ID)
-      from_xcode = MacOS.pkgutil_info(FROM_XCODE_PKG_ID)
-
-      if not standalone.empty?
-        standalone =~ /version: (.*)$/
-        $1
-      elsif not from_xcode.empty?
-        from_xcode =~ /version: (.*)$/
-        $1
-      else
-        nil
-      end
-    end
+    @version ||= [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+      MacOS.pkgutil_info(id) =~ /version: (.+)$/
+    end && $1
   end
 end
