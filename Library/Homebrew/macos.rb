@@ -197,10 +197,18 @@ module MacOS extend self
 
   def compilers_standard?
     xcode = Xcode.version
-    # Assume compilers are okay if Xcode version not in hash
-    return true unless StandardCompilers.keys.include? xcode
 
-    StandardCompilers[xcode].all? {|k,v| MacOS.send(k) == v}
+    unless StandardCompilers.keys.include? xcode
+      onoe <<-EOS.undent
+        Homebrew doesn't know what compiler versions ship with your version of
+        Xcode. Please file an issue with the output of `brew --config`:
+          https://github.com/mxcl/homebrew/issues
+
+        Thanks!
+        EOS
+    end
+
+    StandardCompilers[xcode].all? { |method, build| MacOS.send(method) == build }
   end
 
   def app_with_bundle_id id

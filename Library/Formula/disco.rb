@@ -4,8 +4,7 @@ class Disco < Formula
   homepage 'http://discoproject.com/'
   url 'https://github.com/tuulos/disco/tarball/0.3.2'
   md5 '47a740b84ef61cea8ba3644610e25083'
-  # Periods in the install path cause disco-worker to complain so change to underscores.
-  version '0_3_2'
+
   head 'https://github.com/tuulos/disco.git'
 
   depends_on 'erlang'
