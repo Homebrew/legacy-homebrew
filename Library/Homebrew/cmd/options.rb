@@ -3,11 +3,11 @@ require 'cmd/outdated'
 
 def ff
   if ARGV.include? "--all"
-    Formula.all
+    Formula
   elsif ARGV.include? "--installed"
     # outdated brews count as installed
     outdated = Homebrew.outdated_brews.collect{ |b| b.name }
-    Formula.all.select do |f|
+    Formula.select do |f|
       f.installed? or outdated.include? f.name
     end
   else
@@ -21,7 +21,7 @@ module Homebrew extend self
     ff.each do |f|
       next if f.build.empty?
       if ARGV.include? '--compact'
-        puts f.build.collect {|k,v| "--"+k} * " "
+        puts f.build.as_flags * " "
       else
         puts f.name if ff.length > 1
         dump_options_for_formula f
@@ -31,9 +31,9 @@ module Homebrew extend self
   end
 
   def dump_options_for_formula f
-    f.build.each do |k,v|
-      puts "--"+k
-      puts "\t"+v
+    f.build.each do |opt|
+      puts opt.flag
+      puts "\t"+opt.description
     end
   end
 end

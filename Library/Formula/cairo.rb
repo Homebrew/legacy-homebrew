@@ -5,7 +5,7 @@ class Cairo < Formula
   url 'http://cairographics.org/releases/cairo-1.12.2.tar.xz'
   sha256 'b786bc4a70542bcb09f2d9d13e5e6a0c86408cbf6d1edde5f0de807eecf93f96'
 
-  keg_only :when_xquartz_installed
+  keg_only :provided_pre_mountain_lion
 
   option :universal
   option 'without-x', 'Build without X11 support'
@@ -14,6 +14,7 @@ class Cairo < Formula
   depends_on 'pixman'
   depends_on 'pkg-config' => :build
   depends_on 'xz'=> :build
+  depends_on 'glib' unless build.include? 'without-x'
   depends_on :x11 unless build.include? 'without-x'
 
   # Fixes a build error with clang & universal, where a function was implicit.

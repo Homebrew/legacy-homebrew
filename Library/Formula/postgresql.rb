@@ -7,7 +7,7 @@ class Postgresql < Formula
 
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
-  depends_on 'ossp-uuid'
+  depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
 
   option '32-bit'
   option 'without-ossp-uuid', 'Build without OSSP uuid'
@@ -43,9 +43,11 @@ class Postgresql < Formula
     args << "--with-perl" unless build.include? 'no-perl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
 
-    ENV.append 'CFLAGS', `uuid-config --cflags`.strip
-    ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
-    ENV.append 'LIBS', `uuid-config --libs`.strip
+    unless build.include? 'without-ossp-uuid'
+      ENV.append 'CFLAGS', `uuid-config --cflags`.strip
+      ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
+      ENV.append 'LIBS', `uuid-config --libs`.strip
+    end
 
     if not build.build_32_bit? and MacOS.prefer_64_bit? and not build.include? 'no-python'
       args << "ARCHFLAGS='-arch x86_64'"
@@ -108,7 +110,7 @@ See:
 # Create/Upgrade a Database
 
 If this is your first install, create a database with:
-  initdb #{var}/postgres
+  initdb #{var}/postgres -E utf8
 
 To migrate existing data from a previous major version (pre-9.1) of PostgreSQL, see:
   http://www.postgresql.org/docs/9.1/static/upgrading.html

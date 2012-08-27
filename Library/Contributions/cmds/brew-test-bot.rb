@@ -8,6 +8,7 @@
 # --comment: Comment on the pull request
 # --clean:   Clean the Homebrew directory. Very dangerous. Use with care.
 
+require 'formula'
 require 'utils'
 require 'date'
 

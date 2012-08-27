@@ -6,7 +6,7 @@ require 'formula'
 
 def get_used_by
   used_by = {}
-  Formula.all.each do |f|
+  Formula.each do |f|
     next if f.deps == nil
 
     f.deps.each do |dep|
