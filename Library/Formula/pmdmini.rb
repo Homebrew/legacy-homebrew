@@ -6,17 +6,15 @@ class Pmdmini < Formula
   version '20120115'
   md5 '7d8152d5b59bfc2b535972fe6b5096b4'
 
-  depends_on 'sdl' unless ARGV.include? "--lib-only"
+  option "lib-only", "Do not build commandline player"
 
-  def options
-    [["--lib-only", "Do not build commandline player"]]
-  end
+  depends_on 'sdl' unless build.include? "lib-only"
 
   def install
     cd "jni/pmdmini" do
       # Specify Homebrew's cc
       inreplace "mak/general.mak", "gcc", ENV.cc
-      if ARGV.include? '--lib-only'
+      if build.include? 'lib-only'
         system "make", "-f", "Makefile.lib"
       else
         system "make"
@@ -25,7 +23,7 @@ class Pmdmini < Formula
       # Makefile doesn't build a dylib
       system "#{ENV.cc} -dynamiclib -install_name #{lib}/libpmdmini.dylib -o libpmdmini.dylib -undefined dynamic_lookup obj/*.o"
 
-      bin.install "pmdplay" unless ARGV.include? '--lib-only'
+      bin.install "pmdplay" unless build.include? 'lib-only'
       lib.install "libpmdmini.a", "libpmdmini.dylib"
       (include+'libpmdmini').install Dir['src/*.h']
       (include+'libpmdmini/pmdwin').install Dir['src/pmdwin/*.h']
