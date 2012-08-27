@@ -3,7 +3,6 @@ require 'formula'
 class Icu4c < Formula
   homepage 'http://site.icu-project.org/'
   url 'http://download.icu-project.org/files/icu4c/49.1.2/icu4c-49_1_2-src.tgz'
-  version '49.1.2'
   md5 'bbc609fe5237202d7abf016141012a45'
 
   bottle do
