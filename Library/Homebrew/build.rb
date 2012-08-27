@@ -15,7 +15,7 @@ end
 require 'global'
 
 def main
-   # The main Homebrew process expects to eventually see EOF on the error
+  # The main Homebrew process expects to eventually see EOF on the error
   # pipe in FormulaInstaller#build. However, if any child process fails to
   # terminate (i.e, fails to close the descriptor), this won't happen, and
   # the installer will hang. Set close-on-exec to prevent this.

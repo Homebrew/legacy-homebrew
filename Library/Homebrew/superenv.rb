@@ -85,19 +85,20 @@ class << ENV
       opoo %{HOMEBREW_USE_GCC is deprecated, use HOMEBREW_CC="gcc" instead}
       "gcc"
     elsif ENV['HOMEBREW_CC']
-      if %w{clang gcc llvm}.include? ENV['HOMEBREW_CC']
-        ENV['HOMEBREW_CC']
+      case ENV['HOMEBREW_CC']
+        when 'clang', 'gcc' then ENV['HOMEBREW_CC']
+        when 'llvm', 'llvm-gcc' then 'llvm-gcc'
       else
         opoo "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC']}"
-        raise
+        raise # use default
       end
     else
       raise
     end
   rescue
-    # Not clang, eg. dirac detects for cl*) (windows compiler) in its
-    # configure.
-    "cc" 
+    # Don't specify 'clang', eg. dirac detects for `cl*)` (the windows
+    # compiler) in its (broken) configure.
+    "cc"
   end
 
   def determine_cxx
