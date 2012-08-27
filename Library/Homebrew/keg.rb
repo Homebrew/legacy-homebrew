@@ -137,7 +137,9 @@ class Keg < Pathname
 
   def optlink
     from = HOMEBREW_PREFIX/:opt/fname
-    if from.directory?
+    if from.symlink?
+      from.delete
+    elsif from.directory?
       from.rmdir
     elsif from.exist?
       from.delete
