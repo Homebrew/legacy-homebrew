@@ -410,6 +410,8 @@ class Formula
     # have a "no such formula" message.
     raise
   rescue LoadError, NameError
+    # Catch NameError so that things that are invalid symbols still get
+    # a useful error message.
     raise FormulaUnavailableError.new(name)
   end
 
