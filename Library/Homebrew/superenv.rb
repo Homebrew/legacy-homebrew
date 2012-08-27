@@ -31,12 +31,6 @@ class << ENV
     delete('CDPATH') # avoid make issues that depend on changing directories
     delete('GREP_OPTIONS') # can break CMake
     delete('CLICOLOR_FORCE') # autotools doesn't like this
-
-    if MacOS.mountain_lion?
-      # Fix issue with sed barfing on unicode characters on Mountain Lion
-      delete('LC_ALL')
-      ENV['LC_CTYPE'] = "C"
-    end
   end
 
   def setup_build_environment
@@ -49,7 +43,7 @@ class << ENV
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
-    ENV['HOMEBREW_CCCFG'] = 'b' if ARGV.build_bottle?
+    ENV['HOMEBREW_CCCFG'] = determine_cccfg
     ENV['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacSystem.xcode43_without_clt?
     ENV['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     ENV['CMAKE_FRAMEWORK_PATH'] = "#{MacOS.sdk_path}/System/Library/Frameworks" if MacSystem.xcode43_without_clt?
@@ -166,6 +160,14 @@ class << ENV
     else
       j
     end
+  end
+
+  def determine_cccfg
+    s = ""
+    # Fix issue with sed barfing on unicode characters on Mountain Lion
+    s << 's' if MacOS.mountain_lion?
+    s << 'b' if ARGV.build_bottle?
+    s
   end
 
   public
