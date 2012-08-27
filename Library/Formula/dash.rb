@@ -7,10 +7,10 @@ class Dash < Formula
 
   head 'https://git.kernel.org/pub/scm/utils/dash/dash.git'
 
-  depends_on :automake if ARGV.build_head?
+  depends_on :automake if build.head?
 
   def install
-    if ARGV.build_head?
+    if build.head?
       system "aclocal"
       system "autoreconf -f -i -Wall,no-obsolete"
     end
