@@ -8,14 +8,13 @@ class Cogl < Formula
   head 'git://git.gnome.org/cogl'
 
   depends_on 'pkg-config' => :build
-
   depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'pango'
   depends_on 'cairo' # needs cairo-gobject
 
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-introspection"
