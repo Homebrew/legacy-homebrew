@@ -10,8 +10,8 @@ end
 
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.0.4-release.tar.gz'
-  md5 '7da4df3df3decb24d8c6fb8f47de1d3d'
+  url 'http://sphinxsearch.com/files/sphinx-2.0.5-release.tar.gz'
+  md5 'e71fdb5b0c2911247d48fb30550b9584'
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
@@ -27,13 +27,9 @@ class Sphinx < Formula
     EOS
   end
 
-  def options
-    [
-      ['--mysql', 'Force compiling against MySQL.'],
-      ['--pgsql', 'Force compiling against PostgreSQL.'],
-      ['--id64',  'Force compiling with 64-bit ID support'],
-    ]
-  end
+  option 'mysql', 'Force compiling against MySQL'
+  option 'pgsql', 'Force compiling against PostgreSQL'
+  option 'id64',  'Force compiling with 64-bit ID support'
 
   def install
     Libstemmer.new.brew { (buildpath/'libstemmer_c').install Dir['*'] }
@@ -46,9 +42,9 @@ class Sphinx < Formula
     args << "--with-libstemmer"
 
     # configure script won't auto-select PostgreSQL
-    args << "--with-pgsql" if ARGV.include?('--pgsql') or which 'pg_config'
-    args << "--enable-id64" if ARGV.include?('--id64')
-    args << "--without-mysql" unless ARGV.include?('--mysql') or which 'mysql_config'
+    args << "--with-pgsql" if build.include?('pgsql') or which 'pg_config'
+    args << "--enable-id64" if build.include?('id64')
+    args << "--without-mysql" unless build.include?('mysql') or which 'mysql_config'
 
     system "./configure", *args
     system "make install"

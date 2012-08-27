@@ -5,6 +5,8 @@ class Imagesnap < Formula
   homepage 'http://iharder.sourceforge.net/current/macosx/imagesnap/'
   md5 '32e341f059a91703816d8aa9b87fb1e4'
 
+  depends_on :xcode # For working xcodebuild.
+
   def install
     system "xcodebuild -project ImageSnap.xcodeproj SYMROOT=build -sdk macosx#{MACOS_VERSION}"
     bin.install "build/Release/imagesnap"

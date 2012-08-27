@@ -63,8 +63,8 @@ private
       # Xcode no longer provides autotools or some other build tools
       Dependency.new(spec.to_s) unless MacOS::Xcode.provides_autotools?
     when :libpng, :freetype, :pixman, :fontconfig, :cairo
-      if MacOS.version >= :lion
-        MacOS::XQuartz.installed? ? X11Dependency.new(tag) : Dependency.new(spec.to_s)
+      if MacOS.version >= :mountain_lion
+        Dependency.new(spec.to_s)
       else
         X11Dependency.new(tag)
       end
@@ -333,7 +333,8 @@ class XCodeDependency < Requirement
   end
 
   def message; <<-EOS.undent
-    XCode is required to compile this software.
+    A full installation of XCode.app is required to compile this software.
+    Installing just the Command Line Tools is not sufficent.
     EOS
   end
 end

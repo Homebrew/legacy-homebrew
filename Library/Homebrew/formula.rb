@@ -289,30 +289,23 @@ class Formula
     Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
   end
 
-  # an array of all Formula, instantiated
-  def self.all
-    map{ |f| f }
-  end
-  def self.map
-    rv = []
-    each{ |f| rv << yield(f) }
-    rv
-  end
   def self.each
-    names.each do |n|
-      begin
-        yield Formula.factory(n)
-      rescue
+    names.each do |name|
+      yield begin
+        Formula.factory(name)
+      rescue => e
         # Don't let one broken formula break commands. But do complain.
-        onoe "Formula #{n} will not import."
+        onoe "Failed to import: #{name}"
+        next
       end
     end
   end
-
-  def self.select
-    ff = []
-    each{ |f| ff << f if yield(f) }
-    ff
+  class << self
+    include Enumerable
+  end
+  def self.all
+    opoo "Formula.all is deprecated, simply use Formula.map"
+    map
   end
 
   def self.installed
@@ -365,21 +358,21 @@ class Formula
     if name =~ %r[(https?|ftp)://]
       url = name
       name = Pathname.new(name).basename
-      target_file = HOMEBREW_CACHE_FORMULA+name
+      path = HOMEBREW_CACHE_FORMULA+name
       name = name.basename(".rb").to_s
 
-      HOMEBREW_CACHE_FORMULA.mkpath
-      FileUtils.rm target_file, :force => true
-      curl url, '-o', target_file
+      unless Object.const_defined? self.class_s(name)
+        HOMEBREW_CACHE_FORMULA.mkpath
+        FileUtils.rm path, :force => true
+        curl url, '-o', path
+      end
 
-      require target_file
       install_type = :from_url
     else
       name = Formula.canonical_name(name)
       # If name was a path or mapped to a cached formula
-      if name.include? "/"
-        require name
 
+      if name.include? "/"
         # require allows filenames to drop the .rb extension, but everything else
         # in our codebase will require an exact and fullpath.
         name = "#{name}.rb" unless name =~ /\.rb$/
@@ -387,16 +380,20 @@ class Formula
         path = Pathname.new(name)
         name = path.stem
         install_type = :from_path
-        target_file = path.to_s
       else
         # For names, map to the path and then require
-        require Formula.path(name)
+        path = Formula.path(name)
         install_type = :from_name
       end
     end
 
+    klass_name = self.class_s(name)
+    unless Object.const_defined? klass_name
+      puts "#{$0}: loading #{path}" if ARGV.debug?
+      require path
+    end
+
     begin
-      klass_name = self.class_s(name)
       klass = Object.const_get klass_name
     rescue NameError
       # TODO really this text should be encoded into the exception
@@ -407,8 +404,14 @@ class Formula
     end
 
     return klass.new(name) if install_type == :from_name
-    return klass.new(name, target_file)
-  rescue LoadError
+    return klass.new(name, path.to_s)
+  rescue NoMethodError
+    # This is a programming error in an existing formula, and should not
+    # have a "no such formula" message.
+    raise
+  rescue LoadError, NameError
+    # Catch NameError so that things that are invalid symbols still get
+    # a useful error message.
     raise FormulaUnavailableError.new(name)
   end
 
@@ -656,10 +659,11 @@ private
       #{formula} cannot be installed alongside #{name.downcase}.
       EOS
       message << "This is because #{opts[:because]}\n" if opts[:because]
-      if !ARGV.force? then message << <<-EOS.undent
-      Please `brew unlink` or `brew uninstall` #{formula} before continuing.
-      To install anyway, use:
-        brew install --force
+      unless ARGV.force? then message << <<-EOS.undent
+        Please `brew unlink #{formula}` before continuing. Unlinking removes
+        the formula's symlinks from #{HOMEBREW_PREFIX}. You can link the
+        formula again after the install finishes. You can --force this install
+        but the build may fail or cause obscure side-effects in the end-binary.
         EOS
       end
 

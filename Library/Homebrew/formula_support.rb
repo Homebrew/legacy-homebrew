@@ -133,7 +133,7 @@ class KegOnlyReason
     @reason = reason
     @explanation = explanation
     @valid = case @reason
-      when :when_xquartz_installed then MacOS::XQuartz.installed?
+      when :provided_pre_mountain_lion then MacOS.version < :mountain_lion
       else true
       end
   end
@@ -150,14 +150,34 @@ class KegOnlyReason
 
       #{@explanation}
       EOS
-    when :when_xquartz_installed then <<-EOS.undent
-      XQuartz provides this software.
+    when :provided_pre_mountain_lion then <<-EOS.undent
+      Mac OS X already provides this software in versions before Mountain Lion.
 
       #{@explanation}
       EOS
     else
       @reason
     end.strip
+  end
+end
+
+
+# Represents a build-time option for a formula
+class Option
+  attr_reader :name, :description, :flag
+
+  def initialize name, description=nil
+    @name = name.to_s
+    @description = description.to_s
+    @flag = '--'+name.to_s
+  end
+
+  def eql?(other)
+    @name == other.name
+  end
+
+  def hash
+    @name.hash
   end
 end
 
@@ -187,19 +207,23 @@ class BuildOptions
       end
     end
 
-    @options << [name, description]
+    @options << Option.new(name, description)
   end
 
   def has_option? name
-    @options.any? { |opt, _| opt == name }
+    any? { |opt| opt.name == name }
   end
 
   def empty?
     @options.empty?
   end
 
-  def each
-    @options.each { |opt, desc| yield opt, desc }
+  def each(&blk)
+    @options.each(&blk)
+  end
+
+  def as_flags
+    map { |opt| opt.flag }
   end
 
   def include? name

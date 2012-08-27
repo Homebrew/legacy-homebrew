@@ -1,5 +1,3 @@
-require 'find'
-
 class Keg
   def fix_install_names
     mach_o_files.each do |file|
