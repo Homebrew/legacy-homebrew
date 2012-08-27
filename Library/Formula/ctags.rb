@@ -15,7 +15,7 @@ class Ctags < Formula
   end
 
   def install
-    if ARGV.build_head?
+    if build.head?
       system "autoheader"
       system "autoconf"
     end
