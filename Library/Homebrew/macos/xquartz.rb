@@ -16,9 +16,9 @@ module MacOS::XQuartz extend self
   # remain public. New code should use MacOS::XQuartz.{bin,lib,include}
   # instead, as that accounts for Xcode-only systems.
   def prefix
-    @prefix ||= if Pathname.new('/opt/X11/lib/libpng.dylib').exist?
+    @prefix ||= if Dir.glob('/opt/X11/lib/libpng*dylib').any?
       Pathname.new('/opt/X11')
-    elsif Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+    elsif Dir.glob('/usr/X11/lib/libpng*dylib').any?
       Pathname.new('/usr/X11')
     end
   end
