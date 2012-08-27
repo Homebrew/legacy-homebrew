@@ -67,10 +67,7 @@ def install f
 
   keg_only_deps.each do |dep|
     opt = HOMEBREW_PREFIX/:opt/dep.name
-
-    #TODO try to fix, if only one key, easy, otherwise check formula.version
-    raise "#{opt} not present\nReinstall #{dep}. Sorry :(" unless opt.directory?
-
+    fixopt(dep) unless opt.directory?
     if not superenv?
       ENV.prepend_path 'PATH', "#{opt}/bin"
       ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
@@ -127,4 +124,19 @@ def install f
       end
     end
   end
+end
+
+def fixopt f
+  path = if f.linked_keg.directory? and f.linked_keg.symlink?
+    f.linked_keg.readlink
+  elsif f.prefix.directory?
+    f.prefix
+  elsif (kids = f.rack.children).size == 1
+    kids.first
+  else
+    raise
+  end
+  Keg.new(path).optlink
+rescue StandardError
+  "#{opt} not present or broken\nPlease reinstall #{dep}. Sorry :("
 end
