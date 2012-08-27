@@ -12,6 +12,12 @@ class Librsvg < Formula
   depends_on :x11
 
   def install
+    # Fixes gtk-2.0.pc finding cairo.pc in /opt/X11 on 10.8
+    # https://github.com/mxcl/homebrew/issues/14474
+    if MacOS.mountain_lion?
+      cairo = Formula.factory('cairo')
+      ENV.prepend 'PKG_CONFIG_PATH', "#{cairo.lib}/pkgconfig", ':'
+    end
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-Bsymbolic",
