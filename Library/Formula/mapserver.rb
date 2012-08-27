@@ -5,23 +5,19 @@ class Mapserver < Formula
   url 'http://download.osgeo.org/mapserver/mapserver-6.0.3.tar.gz'
   sha1 'd7aa1041c6d9a46da7f5e29ae1b66639d5d050ab'
 
+  option "with-fastcgi", "Build with fastcgi support"
+  option "with-geos", "Build support for GEOS spatial operations"
+  option "with-php", "Build PHP MapScript module"
+  option "with-postgresql", "Build support for PostgreSQL as a data source"
+
   depends_on :x11
   depends_on 'gd'
   depends_on 'proj'
   depends_on 'gdal'
 
-  depends_on 'geos' if ARGV.include? '--with-geos'
-  depends_on 'postgresql' if ARGV.include? '--with-postgresql' and not MacOS.lion?
-  depends_on 'fcgi' if ARGV.include? '--with-fastcgi'
-
-  def options
-    [
-      ["--with-fastcgi", "Build with fastcgi support"],
-      ["--with-geos", "Build support for GEOS spatial operations"],
-      ["--with-php", "Build PHP MapScript module"],
-      ["--with-postgresql", "Build support for PostgreSQL as a data source"]
-    ]
-  end
+  depends_on 'geos' if build.include? 'with-geos'
+  depends_on 'postgresql' if build.include? '--with-postgresql' and not MacOS.lion?
+  depends_on 'fcgi' if build.include? 'with-fastcgi'
 
   def configure_args
     args = [
@@ -32,19 +28,19 @@ class Mapserver < Formula
       "--with-png=#{MacOS::X11.prefix}"
     ]
 
-    args.push "--with-geos" if ARGV.include? '--with-geos'
-    args.push "--with-php=/usr/include/php" if ARGV.include? '--with-php'
+    args.push "--with-geos" if build.include? 'with-geos'
+    args.push "--with-php=/usr/include/php" if build.include? 'with-php'
 
-    if ARGV.include? '--with-postgresql'
+    if build.include? 'with-postgresql'
       if MacOS.lion? # Lion ships with PostgreSQL libs
-        args.push "--with-postgis"
+        args << "--with-postgis"
       else
-        args.push "--with-postgis=#{HOMEBREW_PREFIX}/bin/pg_config"
+        args << "--with-postgis=#{HOMEBREW_PREFIX}/bin/pg_config"
       end
     end
 
-    if ARGV.include? '--with-fastcgi'
-      args.push "--with-fastcgi=#{HOMEBREW_PREFIX}"
+    if build.include? 'with-fastcgi'
+      args << "--with-fastcgi=#{HOMEBREW_PREFIX}"
     end
 
     args
@@ -65,7 +61,7 @@ class Mapserver < Formula
         shptreetst scalebar sortshp mapscriptvars tile4ms
         msencrypt mapserver-config)
 
-    if ARGV.include? '--with-php'
+    if build.include? 'with-php'
       prefix.install %w(mapscript/php/php_mapscript.so)
     end
   end
