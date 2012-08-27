@@ -7,15 +7,11 @@ class Cppcheck < Formula
 
   head 'https://github.com/danmar/cppcheck.git'
 
-  depends_on 'pcre' unless ARGV.include? '--no-rules'
-  depends_on 'qt' if ARGV.include? '--with-gui'
+  option 'no-rules', "Build without rules (no pcre dependency)"
+  option 'with-gui', "Build the cppcheck gui (requires Qt)"
 
-  def options
-    [
-      ['--no-rules', "Build without rules (no pcre dependency)"],
-      ['--with-gui', "Build the cppcheck gui."]
-    ]
-  end
+  depends_on 'pcre' unless build.include? 'no-rules'
+  depends_on 'qt' if build.include? 'with-gui'
 
   # Do not strip binaries, or else it fails to run.
   skip_clean :all
@@ -24,7 +20,7 @@ class Cppcheck < Formula
     # Man pages aren't installed as they require docbook schemas.
 
     # Pass to make variables.
-    if ARGV.include? '--no-rules'
+    if build.include? 'no-rules'
       system "make", "HAVE_RULES=no"
     else
       system "make"
@@ -32,9 +28,9 @@ class Cppcheck < Formula
 
     system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "install"
 
-    if ARGV.include? '--with-gui'
+    if build.include? 'with-gui'
       cd "gui" do
-        if ARGV.include? '--no-rules'
+        if build.include? 'no-rules'
           system "qmake", "HAVE_RULES=no"
         else
           system "qmake"
