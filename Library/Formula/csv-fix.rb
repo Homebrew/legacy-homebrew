@@ -1,12 +1,14 @@
 require 'formula'
 
 class CsvFix < Formula
-  url 'http://csvfix.googlecode.com/files/csvfix_src_110a.zip'
   homepage 'http://code.google.com/p/csvfix/'
-  version '1.1a'
-  sha1 'd579c6223a9570e207b9e9b9eccb7f621916e673'
+  url 'https://bitbucket.org/neilb/csvfix/get/6c861665bf41.tar.bz2'
+  version '1.3'
+  sha1 'c69112be21f08d3f424bba0d1ee3be7376b5e7f6'
 
   def install
+    inreplace 'csvfix/Makefile', 'g++', 'c++'
+    inreplace 'alib/Makefile', 'g++', 'c++'
     system "make lin"
     bin.install 'csvfix/bin/csvfix'
   end
