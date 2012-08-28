@@ -5,18 +5,16 @@ class Fantom < Formula
   url 'http://fan.googlecode.com/files/fantom-1.0.63.zip'
   sha1 '21042981b63da9e8f170c6d53d6abcede7d2ba25'
 
-  def options
-    [['--with-src', 'Also install fantom source'],
-     ['--with-examples', 'Also install fantom examples']]
-  end
+  option 'with-src', 'Also install fantom source'
+  option 'with-examples', 'Also install fantom examples'
 
   # Select the OS X JDK path in the config file
   def patches; DATA; end
 
   def install
     rm_f Dir["bin/*.exe", "lib/dotnet/*"]
-    rm_rf "examples" unless ARGV.include? '--with-examples'
-    rm_rf "src" unless ARGV.include? '--with-src'
+    rm_rf "examples" unless build.include? 'with-examples'
+    rm_rf "src" unless build.include? 'with-src'
 
     libexec.install Dir['*']
     system "chmod 0755 #{libexec}/bin/*"
