@@ -61,7 +61,7 @@ class Node < Formula
     system "./configure", *args
     system "make install"
 
-    unless build.include? '--without-npm'
+    unless build.include? 'without-npm'
       (lib/"node_modules/npm/npmrc").write(npmrc)
     end
   end
@@ -85,7 +85,7 @@ class Node < Formula
   end
 
   def caveats
-    if ARGV.include? '--without-npm'
+    if build.include? 'without-npm'
       <<-EOS.undent
         Homebrew has NOT installed npm. We recommend the following method of
         installation:
