@@ -405,7 +405,13 @@ class Formula
 
     return klass.new(name) if install_type == :from_name
     return klass.new(name, path.to_s)
+  rescue NoMethodError
+    # This is a programming error in an existing formula, and should not
+    # have a "no such formula" message.
+    raise
   rescue LoadError, NameError
+    # Catch NameError so that things that are invalid symbols still get
+    # a useful error message.
     raise FormulaUnavailableError.new(name)
   end
 

@@ -122,7 +122,7 @@ class FormulaAuditor
 
     # Don't depend_on aliases; use full name
     aliases = Formula.aliases
-    f.deps.select {|d| aliases.include? d}.each do |d|
+    f.deps.select { |d| aliases.include? d.name }.each do |d|
       problem "Dependency #{d} is an alias; use the canonical name."
     end
 
@@ -219,7 +219,7 @@ class FormulaAuditor
       else
         version_text = s.version unless s.version.detected_from_url?
         version_url = Version.parse(s.url)
-        if version_url == version_text
+        if version_url.to_s == version_text.to_s
           problem "#{spec} version #{version_text} is redundant with version scanned from URL"
         end
       end

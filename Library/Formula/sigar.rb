@@ -5,18 +5,13 @@ class Sigar < Formula
   head 'https://github.com/hyperic/sigar.git'
   homepage 'http://sigar.hyperic.com/'
 
-  def options
-    [
-      ["--perl", "Build Perl bindings."],
-      ["--python", "Build Python bindings."],
-      ["--ruby", "Build Ruby bindings."],
-    ]
-  end
+  option "perl", "Build Perl bindings"
+  option "python", "Build Python bindings"
+  option "ruby", "Build Ruby bindings"
 
   def java_script; <<-EOS.undent
     #!/bin/sh
     # Runs SIGAR's REPL.
-
     java -jar #{prefix}/sigar.jar
     EOS
   end
@@ -33,13 +28,13 @@ class Sigar < Formula
 
       include.install Dir['sigar-bin/include/*']
 
-      (bin+'sigar').write java_script
+      (bin/'sigar').write java_script
     end
 
     # Install Python bindings
     cd "bindings/python" do
       system "python", "setup.py", "install", "--prefix=#{prefix}"
-    end if ARGV.include? "--python"
+    end if build.include? "python"
 
     # Install Perl bindings
     cd "bindings/perl" do
@@ -62,12 +57,12 @@ class Sigar < Formula
       end
 
       system "make install"
-    end if ARGV.include? "--perl"
+    end if build.include? "perl"
 
     # Install Ruby bindings
     cd "bindings/ruby" do
       system "ruby", "extconf.rb", "--prefix=#{prefix}"
       system "make install"
-    end if ARGV.include? "--ruby"
+    end if build.include? "ruby"
   end
 end

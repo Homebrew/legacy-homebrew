@@ -3,7 +3,7 @@ require 'formula'
 class Mldonkey < Formula
   homepage 'http://mldonkey.sourceforge.net/Main_Page'
   url 'http://downloads.sourceforge.net/project/mldonkey/mldonkey/3.1.3/mldonkey-3.1.3.tar.bz2'
-  sha1 ''
+  sha1 '424386f277e84df55a2cbab213fae60787e42c8b'
 
   option "with-x", "Build mldonkey with X11 support"
 

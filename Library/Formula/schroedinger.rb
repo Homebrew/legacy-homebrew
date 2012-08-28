@@ -7,7 +7,7 @@ class Schroedinger < Formula
 
   head  'git://diracvideo.org/git/schroedinger.git'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -16,7 +16,7 @@ class Schroedinger < Formula
   depends_on 'orc'
 
   def install
-    system "autoreconf -i -f" if ARGV.build_head?
+    system "autoreconf -i -f" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
 

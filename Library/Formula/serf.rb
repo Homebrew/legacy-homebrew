@@ -7,7 +7,6 @@ class Serf < Formula
 
   option :universal
 
-  depends_on :autoconf
   depends_on :libtool
 
   def install
