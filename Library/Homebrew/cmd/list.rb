@@ -1,5 +1,8 @@
 module Homebrew extend self
   def list
+    # Cellar doesn't until the first formula is installed.
+    return unless HOMEBREW_CELLAR.exist?
+
     if ARGV.flag? '--unbrewed'
       dirs = HOMEBREW_PREFIX.children.select{ |pn| pn.directory? }.map{ |pn| pn.basename.to_s }
       dirs -= %w[Library Cellar .git]
