@@ -68,7 +68,7 @@ class Ffmpeg < Formula
     args << "--enable-libvorbis" if build.include? 'with-libvorbis'
     args << "--enable-libogg" if build.include? 'with-libogg'
     args << "--enable-libvpx" if build.include? 'with-libvpx'
-    args << "--enable-rtmpdump" if build.include? 'with-rtmpdump'
+    args << "--enable-librtmp" if build.include? 'with-rtmpdump'
     args << "--enable-libopencore-amrnb" << "--enable-libopencore-amrwb" if build.include? 'with-opencore-amr'
     args << "--enable-libvo-aacenc" if build.include? 'with-libvo-aacenc'
     args << "--enable-libass" if build.include? 'with-libass'
