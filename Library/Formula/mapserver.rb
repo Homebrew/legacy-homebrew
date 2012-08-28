@@ -16,7 +16,7 @@ class Mapserver < Formula
   depends_on 'gdal'
 
   depends_on 'geos' if build.include? 'with-geos'
-  depends_on 'postgresql' if build.include? '--with-postgresql' and not MacOS.lion?
+  depends_on 'postgresql' if build.include? 'with-postgresql' and not MacOS.lion?
   depends_on 'fcgi' if build.include? 'with-fastcgi'
 
   def configure_args
