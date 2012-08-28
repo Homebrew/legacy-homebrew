@@ -5,20 +5,18 @@ class Fceux < Formula
   url 'http://downloads.sourceforge.net/fceultra/fceux-2.1.5.src.tar.bz2'
   md5 'e8b20e62bbbb061b1a59d51b47c827bd'
 
+  option 'no-gtk', "Build without Gtk+ support"
+
   depends_on 'scons' => :build
   depends_on 'sdl'
   depends_on 'libzip'
-  depends_on 'gtk+' unless ARGV.include? "--no-gtk"
-
-  def options
-    [['--no-gtk', "Build without Gtk+ support."]]
-  end
+  depends_on 'gtk+' unless build.include? "no-gtk"
 
   # fixes compilation errors on osx; upstream in 2.1.6
   def patches; DATA; end
 
   def install
-    if ARGV.include? "--no-gtk"
+    if build.include? "no-gtk"
       inreplace "SConstruct",
         "BoolVariable('GTK', 'Enable GTK2 GUI (SDL only)', 1),",
         "BoolVariable('GTK', 'Enable GTK2 GUI (SDL only)', 0),"
