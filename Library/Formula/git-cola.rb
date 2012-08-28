@@ -3,16 +3,15 @@ require 'formula'
 class GitCola < Formula
   homepage 'http://git-cola.github.com/'
   url 'https://github.com/git-cola/git-cola/tarball/v1.8.0'
-  md5 'bbf727c0853ec4140684c2ddb5fd9cf2'
+  sha1 'c36607dbff93e0a36954b500548a90f26b7a0b74'
+
   head 'https://github.com/git-cola/git-cola.git'
+
+  option 'with-docs', "Build man pages using asciidoc and xmlto"
 
   depends_on 'pyqt'
 
-  def options
-    [['--build-docs', "Build man pages using asciidoc and xmlto"]]
-  end
-
-  if ARGV.include? '--build-docs'
+  if build.include? 'with-docs'
     # these are needed to build man pages
     depends_on 'asciidoc'
     depends_on 'xmlto'
@@ -22,12 +21,11 @@ class GitCola < Formula
     ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
     system "make", "prefix=#{prefix}", "install"
 
-    if ARGV.include? '--build-docs'
-      system "make",
-             "-C", "share/doc/git-cola",
-             "-f", "Makefile.asciidoc",
-             "prefix=#{prefix}",
-             "install", "install-html"
+    if build.include? 'with-docs'
+      system "make", "-C", "share/doc/git-cola",
+                     "-f", "Makefile.asciidoc",
+                     "prefix=#{prefix}",
+                     "install", "install-html"
     end
   end
 
