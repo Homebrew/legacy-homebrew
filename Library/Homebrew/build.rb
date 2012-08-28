@@ -57,7 +57,9 @@ def install f
   # Python etc. build but then pip can't build stuff.
   # Scons resets ENV and then can't find superenv's build-tools.
   stdenvs = %w{fontforge python python3 ruby ruby-enterprise-edition jruby}
-  ARGV.unshift '--env=std' if stdenvs.include?(f.name) or f.recursive_deps.detect{|d| d.name == 'scons' }
+  ARGV.unshift '--env=std' if (stdenvs.include?(f.name) or
+    f.recursive_deps.detect{|d| d.name == 'scons' }) and
+    not ARGV.include? '--env=super'
 
   keg_only_deps = f.recursive_deps.uniq.select{|dep| dep.keg_only? }
 
@@ -82,6 +84,14 @@ def install f
   if superenv?
     ENV.deps = keg_only_deps.map(&:to_s)
     ENV.setup_build_environment
+    class << ENV
+      def []=(key, value)
+        case key when 'CFLAGS', 'CPPFLAGS', 'LDFAGS'
+          opoo "#{key} set with --env=super! Flags may not take effect!"
+        end
+        store(key, value)
+      end
+    end
   end
 
   f.recursive_requirements.each { |req| req.modify_build_environment }
