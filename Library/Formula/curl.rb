@@ -10,8 +10,10 @@ class Curl < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libssh2' if build.include? 'with-ssh'
+  depends_on 'libmetalink' if build.include? 'with-libmetalink'
 
   option 'with-ssh', 'Build with scp and sftp support'
+  option 'with-libmetalink', 'Build with Metalink support'
 
   def install
     args = %W[
@@ -20,6 +22,7 @@ class Curl < Formula
         --prefix=#{prefix}]
 
     args << "--with-libssh2" if build.include? 'with-ssh'
+    args << "--with-libmetalink" if build.include? 'with-libmetalink'
 
     system "./configure", *args
     system "make install"
