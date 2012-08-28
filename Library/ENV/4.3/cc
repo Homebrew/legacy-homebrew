@@ -135,6 +135,10 @@ end
 ####################################################################### sanity
 abort "The build-tool has reset ENV. --lame-env required." unless ENV['HOMEBREW_BREW_FILE']
 
+%w{CPPFLAGS LDFLAGS CXXFLAGS CFLAGS}.each do |flag|
+  puts "#{flag} set but superenv running! Flags may be removed!" if ENV[flag]
+end
+
 ######################################################################### main
 cmd = Cmd.new($0, ARGV)
 exec "xcrun", cmd.tool, *cmd.args
