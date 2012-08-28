@@ -6,13 +6,18 @@ class Emacs < Formula
   mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.1.tar.bz2'
   sha1 'ab22d5bf2072d04faa4aebf819fef3dfe44aacca'
 
-  if ARGV.include? "--use-git-head"
+  option "cocoa", "Build a Cocoa version of emacs"
+  option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
+  option "with-x", "Include X11 support"
+  option "use-git-head", "Use Savannah git mirror for HEAD builds"
+
+  if build.include? "use-git-head"
     head 'http://git.sv.gnu.org/r/emacs.git'
   else
     head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end
 
-  depends_on :x11 if ARGV.include? "--with-x"
+  depends_on :x11 if build.include? "with-x"
 
   # Stripping on Xcode 4 causes malformed object errors.
   # Just skip everything.
@@ -23,18 +28,9 @@ class Emacs < Formula
     cause "Duplicate symbol errors while linking."
   end
 
-  def options
-    [
-      ["--cocoa", "Build a Cocoa version of emacs"],
-      ["--srgb", "Enable sRGB colors in the Cocoa version of emacs"],
-      ["--with-x", "Include X11 support"],
-      ["--use-git-head", "Use Savannah git mirror for HEAD builds"],
-    ]
-  end
-
   def patches
-    if ARGV.include? "--cocoa"
-      # Fullscreen patch, works against 23.3 and HEAD.
+    if build.include? "cocoa"
+      # Fullscreen patch, works against 24.1 and HEAD.
       "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716"
     end
   end
@@ -42,23 +38,23 @@ class Emacs < Formula
   def install
     # HEAD builds are currently blowing up when built in parallel
     # as of April 20 2012
-    ENV.j1 if ARGV.build_head?
+    ENV.j1 if build.head?
 
     args = ["--prefix=#{prefix}",
             "--without-dbus",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
 
-    if ARGV.build_head? and File.exists? "./autogen/copy_autogen"
+    if build.head? and File.exists? "./autogen/copy_autogen"
       opoo "Using copy_autogen"
       puts "See https://github.com/mxcl/homebrew/issues/4852"
       system "autogen/copy_autogen"
     end
 
-    if ARGV.include? "--cocoa"
+    if build.include? "cocoa"
       # Patch for color issues described here:
       # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
-      if ARGV.include? "--srgb"
+      if build.include? "srgb"
         inreplace "src/nsterm.m",
           "*col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];",
           "*col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];"
@@ -70,7 +66,7 @@ class Emacs < Formula
       system "make install"
       prefix.install "nextstep/Emacs.app"
     else
-      if ARGV.include? "--with-x"
+      if build.include? "with-x"
         # These libs are not specified in xft's .pc. See:
         # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
         # https://github.com/mxcl/homebrew/issues/8156
@@ -89,7 +85,7 @@ class Emacs < Formula
 
   def caveats
     s = ""
-    if ARGV.include? "--cocoa"
+    if build.include? "cocoa"
       s += <<-EOS.undent
         Emacs.app was installed to:
           #{prefix}

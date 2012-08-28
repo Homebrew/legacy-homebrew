@@ -3,7 +3,9 @@ require 'formula'
 class AwsSnsCli < AmazonWebServicesFormula
   homepage 'http://aws.amazon.com/developertools/3688'
   url 'http://sns-public-resources.s3.amazonaws.com/SimpleNotificationServiceCli-2010-03-31.zip'
-  sha1 'e41084d375328f502546c303bc848f9ce9d1daa4'
+  # The version in the tarball is the API version; this is the tool version
+  version '2012-03-27'
+  sha1 'b2cb8645887263c5550271be3b564e102c99943d'
 
   def install
     standard_install
