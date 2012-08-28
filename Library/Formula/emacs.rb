@@ -2,9 +2,9 @@ require 'formula'
 
 class Emacs < Formula
   homepage 'http://www.gnu.org/software/emacs/'
-  url 'http://ftpmirror.gnu.org/emacs/emacs-24.1.tar.bz2'
-  mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.1.tar.bz2'
-  sha1 'ab22d5bf2072d04faa4aebf819fef3dfe44aacca'
+  url 'http://ftpmirror.gnu.org/emacs/emacs-24.2.tar.bz2'
+  mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.2.tar.bz2'
+  sha1 '38e8fbc9573b70a123358b155cf55c274b5a56cf'
 
   option "cocoa", "Build a Cocoa version of emacs"
   option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
