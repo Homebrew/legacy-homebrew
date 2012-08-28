@@ -217,3 +217,11 @@ module MacOS extend self
   end
   alias_method :mountain_lion_or_newer?, :mountain_lion?
 end
+
+
+class Version
+  def slice *args
+    opoo "Calling slice on versions is deprecated, use: to_s.slice"
+    to_s.slice *args
+  end
+end
