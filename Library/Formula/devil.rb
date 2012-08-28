@@ -21,7 +21,7 @@ class Devil < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--enable-ILU"
+                          "--prefix=#{prefix}", "--enable-ILU", "--enable-ILUT"
     system "make install"
   end
 end
