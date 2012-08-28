@@ -51,14 +51,10 @@ class Erlang < Formula
     build 2334
   end
 
-  def options
-    [
-      ['--disable-hipe', "Disable building hipe; fails on various OS X systems."],
-      ['--halfword', 'Enable halfword emulator (64-bit builds only)'],
-      ['--time', '"brew test --time" to include a time-consuming test.'],
-      ['--no-docs', 'Do not install documentation.']
-    ]
-  end
+  option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
+  option 'halfword', 'Enable halfword emulator (64-bit builds only)'
+  option 'time', '`brew test --time` to include a time-consuming test'
+  option 'no-docs', 'Do not install documentation'
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
@@ -81,7 +77,7 @@ class Erlang < Formula
             "--enable-smp-support",
             "--with-dynamic-trace=dtrace"]
 
-    unless ARGV.include? '--disable-hipe'
+    unless build.include? 'disable-hipe'
       # HIPE doesn't strike me as that reliable on OS X
       # http://syntatic.wordpress.com/2008/06/12/macports-erlang-bus-error-due-to-mac-os-x-1053-update/
       # http://www.erlang.org/pipermail/erlang-patches/2008-September/000293.html
@@ -90,7 +86,7 @@ class Erlang < Formula
 
     if MacOS.prefer_64_bit?
       args << "--enable-darwin-64bit"
-      args << "--enable-halfword-emulator" if ARGV.include? '--halfword' # Does not work with HIPE yet. Added for testing only
+      args << "--enable-halfword-emulator" if build.include? 'halfword' # Does not work with HIPE yet. Added for testing only
     end
 
     system "./configure", *args
@@ -99,11 +95,11 @@ class Erlang < Formula
     system "make"
     system "make install"
 
-    unless ARGV.include? '--no-docs'
-      manuals = ARGV.build_head? ? ErlangHeadManuals : ErlangManuals
+    unless build.include? 'no-docs'
+      manuals = build.head? ? ErlangHeadManuals : ErlangManuals
       manuals.new.brew { man.install Dir['man/*'] }
 
-      htmls = ARGV.build_head? ? ErlangHeadHtmls : ErlangHtmls
+      htmls = build.head? ? ErlangHeadHtmls : ErlangHtmls
       htmls.new.brew { doc.install Dir['*'] }
     end
   end
@@ -113,7 +109,7 @@ class Erlang < Formula
 
     # This test takes some time to run, but per bug #120 should finish in
     # "less than 20 minutes". It takes a few minutes on a Mac Pro (2009).
-    if ARGV.include? "--time"
+    if build.include? "time"
       `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.15/ebin/`
     end
   end
