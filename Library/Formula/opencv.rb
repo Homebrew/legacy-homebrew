@@ -42,7 +42,7 @@ class Opencv < Formula
       -DBUILD_TESTS=OFF
       -DBUILD_PERF_TESTS=OFF
     ]
-    if ARGV.build_32_bit?
+    if build.build_32_bit?
       args << "-DCMAKE_OSX_ARCHITECTURES=i386"
       args << "-DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'"
       args << "-DOPENCV_EXTRA_CXX_FLAGS='-arch i386 -m32'"
