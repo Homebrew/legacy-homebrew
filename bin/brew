@@ -5,6 +5,11 @@ std_trap = trap("INT") { exit! 130 } # no backtrace thanks
 
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
 
+if ARGV == %w{--prefix}
+  puts File.dirname(File.dirname(HOMEBREW_BREW_FILE))
+  exit 0
+end
+
 require 'pathname'
 HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Library/Homebrew").to_s
 $:.unshift(HOMEBREW_LIBRARY_PATH + '/vendor')
