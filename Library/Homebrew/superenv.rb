@@ -18,7 +18,7 @@ end
 def superenv?
   not MacOS::Xcode.bad_xcode_select_path? and # because xcrun won't work
   not MacOS::Xcode.folder.nil? and # because xcrun won't work
-  and superenv_bin and superenv_bin.directory? and
+  superenv_bin and superenv_bin.directory? and
   not ARGV.include? "--env=std"
 end
 
