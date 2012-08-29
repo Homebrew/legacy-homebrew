@@ -37,6 +37,7 @@ class Bitlbee < Formula
     system "make install-dev"
     # This build has an extra step.
     system "make install-etc"
+    system "make install-dev"
 
     (var+"bitlbee/run").mkpath
     (var+"bitlbee/lib").mkpath
