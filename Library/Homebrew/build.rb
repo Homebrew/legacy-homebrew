@@ -149,5 +149,5 @@ def fixopt f
   end
   Keg.new(path).optlink
 rescue StandardError
-  "#{opt} not present or broken\nPlease reinstall #{dep}. Sorry :("
+  "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
 end
