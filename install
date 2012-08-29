@@ -130,12 +130,12 @@ end
 ohai "Downloading and Installing Homebrew..."
 Dir.chdir "/usr/local" do
   if git
-    # we do it in three steps to avoid fetching other branches
+    # we do it in four steps to avoid merge errors when reinstalling
     system git, "init", "-q"
     system git, "remote", "add", "origin", "https://github.com/mxcl/homebrew"
 
-    args = git, "fetch", "origin", "--depth=1"
-    args.pop unless ARGV.include? "--fast"
+    args = git, "fetch", "origin", "master:refs/remotes/origin/master", "-n"
+    args << "--depth=1" if ARGV.include? "--fast"
     system *args
 
     system git, "reset", "--hard", "origin/master"
