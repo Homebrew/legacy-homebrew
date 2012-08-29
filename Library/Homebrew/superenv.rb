@@ -24,6 +24,8 @@ end
 
 class << ENV
   attr :deps, true
+  attr :x11, true
+  alias_method :x11?, :x11
 
   def reset
     %w{CC CXX LD CPP OBJC MAKE
@@ -100,7 +102,7 @@ class << ENV
     end
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << HOMEBREW_PREFIX/:bin
-    paths << "#{MacSystem.x11_prefix}/bin"
+    paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
     paths.to_path_s
   end
@@ -111,7 +113,7 @@ class << ENV
     paths << "#{HOMEBREW_REPOSITORY}/lib/pkgconfig"
     paths << "#{HOMEBREW_REPOSITORY}/share/pkgconfig"
     # we put our paths before X because we dupe some of the X libraries
-    paths << "#{MacSystem.x11_prefix}/lib/pkgconfig" << "#{MacSystem.x11_prefix}/share/pkgconfig"
+    paths << "#{MacSystem.x11_prefix}/lib/pkgconfig" << "#{MacSystem.x11_prefix}/share/pkgconfig" if x11?
     # Mountain Lion no longer ships some .pcs; ensure we pick up our versions
     paths << "#{HOMEBREW_REPOSITORY}/Library/Homebrew/pkgconfig" if MacOS.mountain_lion?
     paths.to_path_s
@@ -121,13 +123,14 @@ class << ENV
     paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}" }
     paths << "#{MacOS.sdk_path}/usr" if MacSystem.xcode43_without_clt?
     paths << HOMEBREW_PREFIX.to_s # again always put ourselves ahead of X11
-    paths << MacSystem.x11_prefix
+    paths << MacSystem.x11_prefix if x11?
     paths.to_path_s
   end
 
   def determine_cmake_include_path
     sdk = MacOS.sdk_path if MacSystem.xcode43_without_clt?
-    paths = %W{#{MacSystem.x11_prefix}/include/freetype2}
+    paths = []
+    paths << "#{MacSystem.x11_prefix}/include/freetype2" if x11?
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     # TODO prolly shouldn't always do this?
     paths << "#{sdk}/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7" if MacSystem.xcode43_without_clt?
@@ -137,7 +140,7 @@ class << ENV
   def determine_aclocal_path
     paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/aclocal" }
     paths << "#{HOMEBREW_PREFIX}/share/aclocal"
-    paths << "/opt/X11/share/aclocal"
+    paths << "/opt/X11/share/aclocal" if x11?
     paths.to_path_s
   end
 
