@@ -9,7 +9,7 @@ class OathToolkit < Formula
   depends_on 'pkg-config' => :build
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--without-pam"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end
