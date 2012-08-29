@@ -11,7 +11,7 @@ class Epubcheck < Formula
   end
 
   def install
-    if ARGV.build_devel?
+    if build.devel?
       libexec.install "epubcheck-3.0b5.jar", "lib"
       (bin/'epubcheck').write <<-EOS.undent
         #!/bin/sh
