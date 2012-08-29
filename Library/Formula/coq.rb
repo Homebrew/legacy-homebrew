@@ -30,7 +30,6 @@ class Coq < Formula
   depends_on 'camlp5'
 
   def install
-    arch = Hardware.is_64_bit? ? "x86_64" : "i386"
     camlp5_lib = Formula.factory('camlp5').lib+'ocaml/camlp5'
     system "./configure", "-prefix", prefix,
                           "-mandir", man,
@@ -38,8 +37,7 @@ class Coq < Formula
                           "-emacslib", "#{lib}/emacs/site-lisp",
                           "-coqdocdir", "#{share}/coq/latex",
                           "-coqide", "no",
-                          "-with-doc", "no",
-                          "-arch", arch
+                          "-with-doc", "no"
     ENV.j1 # Otherwise "mkdir bin" can be attempted by more than one job
     system "make world"
     system "make install"
