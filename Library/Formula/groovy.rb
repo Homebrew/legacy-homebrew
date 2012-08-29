@@ -12,7 +12,6 @@ class Groovy < Formula
 
     prefix.install %w(LICENSE.txt NOTICE.txt)
     libexec.install %w(bin conf lib embeddable)
-    lib.install "indy" if ARGV.build_devel?
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
