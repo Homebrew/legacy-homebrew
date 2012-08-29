@@ -10,6 +10,11 @@ class ObjectiveCaml < Formula
   # Don't strip symbols, so dynamic linking doesn't break.
   skip_clean :all
 
+  # See http://caml.inria.fr/mantis/view.php?id=5700
+  def patches
+    "http://caml.inria.fr/mantis/file_download.php?file_id=722&type=bug"
+  end
+
   def install
     system "./configure", "--prefix", HOMEBREW_PREFIX,
                           "--mandir", man,
