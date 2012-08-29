@@ -165,7 +165,8 @@ class << ENV
 ### NO LONGER NECESSARY OR NO LONGER SUPPORTED
   def noop(*args); end
   %w[m64 m32 gcc_4_0_1 fast O4 O3 O2 Os Og O1 libxml2 minimal_optimization
-    no_optimization enable_warnings fortran x11
+    no_optimization enable_warnings x11
+    set_cpu_flags
     macosxsdk remove_macosxsdk].each{|s| alias_method s, :noop }
 
 ### DEPRECATE THESE
