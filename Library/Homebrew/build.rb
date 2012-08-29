@@ -56,7 +56,7 @@ def install f
   # TODO replace with Formula DSL
   # Python etc. build but then pip can't build stuff.
   # Scons resets ENV and then can't find superenv's build-tools.
-  stdenvs = %w{fontforge python python3 ruby ruby-enterprise-edition jruby}
+  stdenvs = %w{fontforge python python3 ruby ruby-enterprise-edition jruby wine}
   ARGV.unshift '--env=std' if (stdenvs.include?(f.name) or
     f.recursive_deps.detect{|d| d.name == 'scons' }) and
     not ARGV.include? '--env=super'
