@@ -33,6 +33,8 @@ class Bitlbee < Formula
     # This build depends on make running first.
     system "make"
     system "make install"
+    # Install the dev headers too
+    system "make install-dev"
     # This build has an extra step.
     system "make install-etc"
 
