@@ -109,6 +109,7 @@ rescue BuildError => e
   e.dump
   exit 1
 rescue RuntimeError, SystemCallError => e
+  raise if e.message.empty?
   onoe e
   puts e.backtrace if ARGV.debug?
   exit 1
