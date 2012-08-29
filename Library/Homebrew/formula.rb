@@ -678,7 +678,11 @@ private
 
     def skip_clean paths
       if paths == :all
-        @skip_clean_all = true
+        opoo "skip_clean :all is deprecated"
+        puts "Skip clean was commonly used to prevent brew from stripping binaries."
+        puts "brew no longer strips binaries, if skip_clean is required to prevent"
+        puts "brew from removing empty directories, you should specify exact paths"
+        puts "in the formula."
         return
       end
       @skip_clean_paths ||= []
