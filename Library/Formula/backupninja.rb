@@ -20,6 +20,6 @@ class Backupninja < Formula
   end
 
   def test
-      system "sudo", "#{sbin}/backupninja", "-h"
+    system "#{sbin}/backupninja", "-h"
   end
 end
