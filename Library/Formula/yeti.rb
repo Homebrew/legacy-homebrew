@@ -2,8 +2,8 @@ require 'formula'
 
 class Yeti < Formula
   homepage 'http://mth.github.com/yeti/'
-  url 'https://github.com/mth/yeti/tarball/v0.9.4'
-  md5 'f84448ae15e2b0064f4fc8f24d492b64'
+  url 'https://github.com/mth/yeti/tarball/v0.9.6'
+  sha1 'f10d17d9235740cee1f7c37711d9979f84a9e078'
 
   head 'https://github.com/mth/yeti.git'
 

@@ -1,7 +1,6 @@
 require 'formula'
-require 'download_strategy'
 
-class VcodexDownloadStrategy <CurlDownloadStrategy
+class VcodexDownloadStrategy < CurlDownloadStrategy
   # downloading from AT&T requires using the following credentials
   def credentials
     'I accept www.research.att.com/license/att-src:.'
@@ -42,8 +41,10 @@ class Vcodex < Formula
     man.install 'man/man3'
   end
 
-  def caveats
-    "We agreed to the AT&T Source Code License for you.\nIf this is unacceptable you should uninstall."
+  def caveats; <<-EOS.undent
+    We agreed to the AT&T Source Code License for you.
+    If this is unacceptable you should uninstall.
+    EOS
   end
 end
 

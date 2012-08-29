@@ -13,7 +13,7 @@ class Rbenv < Formula
 
   def caveats; <<-EOS.undent
     To enable shims and autocompletion, add rbenv init to your profile:
-      eval "$(rbenv init -)"
+      if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
     EOS
   end
 end

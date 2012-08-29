@@ -8,6 +8,10 @@ class Cufflinks < Formula
   depends_on 'boost'
   depends_on 'samtools'
 
+  fails_with :clang do
+    build 421
+  end
+
   def install
     ENV.deparallelize
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

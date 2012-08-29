@@ -8,6 +8,9 @@ class Libdvdnav < Formula
 
   depends_on 'libdvdread'
 
+  depends_on :automake
+  depends_on :libtool
+
   def install
     system "./autogen.sh", "--disable-debug", "--disable-dependency-tracking",
                            "--prefix=#{prefix}"

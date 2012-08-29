@@ -1,10 +1,17 @@
 require 'formula'
 
 class PerforceProxy < Formula
-  url 'http://filehost.perforce.com/perforce/r11.1/bin.darwin90u/p4p'
   homepage 'http://www.perforce.com/'
-  md5 '2b088a486f6e431110c6926f4f63b489'
-  version '2011.1.393975'
+
+  if MacOS.prefer_64_bit?
+    url 'http://filehost.perforce.com/perforce/r12.1/bin.darwin90x86_64/p4p'
+    version '2012.1.490371-x86_64'
+    sha1 '6eae7e5f020fdc0c7aa43a176d77d72171ada2fa'
+  else
+    url 'http://filehost.perforce.com/perforce/r12.1/bin.darwin90x86/p4p'
+    version '2012.1.490371-x86'
+    sha1 '68e67031dee15ecc19622d886a4f75b086d8008c'
+  end
 
   def install
     sbin.install 'p4p'

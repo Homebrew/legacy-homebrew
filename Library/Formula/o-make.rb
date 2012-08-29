@@ -13,7 +13,7 @@ class OMake < Formula
   end
 
   def install
-    system "make install PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end
 

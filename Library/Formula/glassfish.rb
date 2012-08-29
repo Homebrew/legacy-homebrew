@@ -2,8 +2,8 @@ require 'formula'
 
 class Glassfish < Formula
   homepage 'http://glassfish.org/'
-  url 'http://download.java.net/glassfish/3.1.1/release/glassfish-3.1.1.zip'
-  md5 'bf92c2c99b3d53b83bbc8c7e2124a897'
+  url 'http://download.java.net/glassfish/3.1.2/release/glassfish-3.1.2.zip'
+  md5 'a3a566302aa7bf20dcd44b9c79492680'
 
   skip_clean :all
 

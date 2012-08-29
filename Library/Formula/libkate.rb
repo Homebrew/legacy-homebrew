@@ -5,14 +5,15 @@ class Libkate < Formula
   url 'http://libkate.googlecode.com/files/libkate-0.4.1.tar.gz'
   sha1 '87fd8baaddb7120fb4d20b0a0437e44ea8b6c9d8'
 
+  depends_on :libpng
   depends_on 'libogg' => :recommended
 
-  def install
-    ENV.libpng
-    # GCC 4.2 segfaults during compilation
-    # FIXME when we can do fails_with :gcc
-    ENV.llvm if ENV.compiler == :gcc
+  fails_with :gcc do
+    build 5666
+    cause "Segfault during compilation"
+  end
 
+  def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

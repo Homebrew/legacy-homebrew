@@ -14,6 +14,6 @@ class LinkGrammar < Formula
   end
 
   def test
-    system "link-parser", "--version"
+    system "#{bin}/link-parser", "--version"
   end
 end

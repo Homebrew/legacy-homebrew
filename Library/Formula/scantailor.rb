@@ -7,8 +7,8 @@ class Scantailor < Formula
 
   devel do
     url 'http://downloads.sourceforge.net/project/scantailor/scantailor-devel/enhanced/scantailor-enhanced-20111213.tar.gz'
-    md5 'bcba593dcba17880429884fe2bfb1d2a'
     version 'enhanced-20111213'
+    md5 'bcba593dcba17880429884fe2bfb1d2a'
   end
 
   depends_on 'cmake' => :build
@@ -16,9 +16,15 @@ class Scantailor < Formula
   depends_on 'boost'
   depends_on 'jpeg'
   depends_on 'libtiff'
+  depends_on :x11
+
+  fails_with :clang do
+    build 421
+    cause "calling a private constructor of class 'mcalc::Mat<double>'"
+  end
 
   def install
-    system "cmake . #{std_cmake_parameters} -DPNG_INCLUDE_DIR=/usr/X11/include"
+    system "cmake", ".", "-DPNG_INCLUDE_DIR=#{MacOS::X11.include}", *std_cmake_args
     system "make install"
   end
 end

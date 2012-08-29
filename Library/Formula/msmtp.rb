@@ -1,9 +1,9 @@
 require 'formula'
 
 class Msmtp < Formula
-  url 'http://downloads.sourceforge.net/project/msmtp/msmtp/1.4.26/msmtp-1.4.26.tar.bz2'
   homepage 'http://msmtp.sourceforge.net'
-  md5 '35734268c883aa06388742f902d95676'
+  url 'http://downloads.sourceforge.net/project/msmtp/msmtp/1.4.28/msmtp-1.4.28.tar.bz2'
+  md5 '14740478dc9d1f52ec97a415e3373fc7'
 
   depends_on 'pkg-config' => :build
 

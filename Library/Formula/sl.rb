@@ -6,9 +6,11 @@ class Sl < Formula
   mirror 'http://ftp.us.debian.org/debian/pool/main/s/sl/sl_3.03.orig.tar.gz'
   md5 'd0d997b964bb3478f7f4968eee13c698'
 
-  def install
-    ENV.llvm if MacOS.clang_version.to_f <= 3.1
+  fails_with :clang do
+    build 318
+  end
 
+  def install
     system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
     bin.install "sl"
     man1.install "sl.1"

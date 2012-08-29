@@ -1,5 +1,4 @@
 require 'formula'
-require 'hardware'
 
 def no_magick?
   ARGV.include? '--without-graphicsmagick'
@@ -19,15 +18,16 @@ def snow_leopard_64?
 end
 
 class Octave < Formula
-  url 'http://ftpmirror.gnu.org/octave/octave-3.4.3.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.4.3.tar.bz2'
   homepage 'http://www.gnu.org/software/octave/index.html'
-  md5 '185b08f4e4a7b646d76e4d33b77fa87e'
+  url 'http://ftpmirror.gnu.org/octave/octave-3.6.2.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.2.tar.bz2'
+  sha1 '145fef0122268086727a60e1c33e29d56fd546d7'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-sed' => :build
   depends_on 'texinfo' => :build     # OS X's makeinfo won't work for this
 
+  depends_on :x11
   depends_on 'fftw'
   # When building 64-bit binaries on Snow Leopard, there are naming issues with
   # the dot product functions in the BLAS library provided by Apple's
@@ -62,14 +62,6 @@ class Octave < Formula
     ]
   end
 
-  def patches
-    # Upstream patch that fixes a bug that causes the build to fail when BSD
-    # sed is used instead of GNU sed. See changeset 13791:4cf7356a99d0. See
-    # http://hg.savannah.gnu.org/hgweb/octave/rev/4cf7356a99d0 for more
-    # information.
-    DATA
-  end
-
   def install
     ENV.fortran
 
@@ -78,12 +70,13 @@ class Octave < Formula
     # build time with -O3: user 58m58.054s  sys 7m52.221s
     ENV.m64 if MacOS.prefer_64_bit?
     ENV.append_to_cflags "-D_REENTRANT"
-    ENV.x11
 
     args = [
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
-      "--with-blas=#{'-ldotwrp ' if snow_leopard_64?}-framework Accelerate"
+      # Cant use `-framework Accelerate` because `mkoctfile`, the tool used to
+      # compile extension packages, can't parse `-framework` flags.
+      "--with-blas=#{'-ldotwrp ' if snow_leopard_64?}-Wl,-framework -Wl,Accelerate"
     ]
     args << "--without-framework-carbon" if MacOS.lion?
 
@@ -96,7 +89,7 @@ class Octave < Formula
 
   def caveats
     native_caveats = <<-EOS.undent
-      Octave 3.4.0 supports "native" plotting using OpenGL and FLTK. You can activate
+      Octave supports "native" plotting using OpenGL and FLTK. You can activate
       it for all future figures using the Octave command
 
           graphics_toolkit ("fltk")
@@ -117,15 +110,3 @@ class Octave < Formula
     s = native_caveats + s unless no_native?
   end
 end
-
-__END__
---- a/src/find-defun-files.sh	Wed Nov 02 09:24:48 2011 -0700
-+++ b/src/find-defun-files.sh	Wed Nov 02 12:40:29 2011 -0400
-@@ -21,6 +21,6 @@
-     file="$srcdir/$arg"
-   fi
-   if [ "`$EGREP -l "$DEFUN_PATTERN" $file`" ]; then
--    echo "$file" | $SED 's,.*/,,; s/\.\(cc\|yy\|ll\)$/.df/';
-+    echo "$file" | $SED 's,.*/,,; s/\.cc$/.df/; s/\.ll$/.df/; s/\.yy$/.df/';
-   fi
- done

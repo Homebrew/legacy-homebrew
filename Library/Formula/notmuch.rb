@@ -2,8 +2,8 @@ require 'formula'
 
 class Notmuch < Formula
   homepage 'http://notmuchmail.org'
-  url 'http://notmuchmail.org/releases/notmuch-0.11.tar.gz'
-  sha1 '11eb1d967af089ed36f6816f61ebae308bc19339'
+  url 'http://notmuchmail.org/releases/notmuch-0.13.2.tar.gz'
+  sha1 '368b2451a64b1e3c574e688100700fc941ff2ea1'
 
   depends_on 'xapian'
   depends_on 'talloc'

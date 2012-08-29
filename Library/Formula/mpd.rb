@@ -1,9 +1,13 @@
 require 'formula'
 
 class Mpd < Formula
-  url 'http://sourceforge.net/projects/musicpd/files/mpd/0.16.7/mpd-0.16.7.tar.bz2'
   homepage 'http://mpd.wikia.com'
-  sha1 '878f3ce82d4f00f6cbad63a625b2c0274c4a704a'
+  url 'http://sourceforge.net/projects/musicpd/files/mpd/0.17/mpd-0.17.tar.bz2'
+  sha1 '36201f32ca5729b62b0e6cbddb19ade20ee3f7d7'
+
+  head "git://git.musicpd.org/master/mpd.git"
+
+  option "lastfm", "Compile with experimental support for Last.fm radio"
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -18,11 +22,9 @@ class Mpd < Formula
   depends_on 'libmms' => :optional
   depends_on 'libzzip' => :optional
 
-  def options
-    [["--lastfm", "Compile with experimental support for Last.fm radio"]]
-  end
-
   def install
+    system "./autogen.sh" if build.head?
+
     # make faad.h findable (when brew is used elsewhere than /usr/local/)
     ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
 
@@ -35,7 +37,7 @@ class Mpd < Formula
             "--enable-zip",
             "--enable-lame-encoder"]
     args << "--disable-curl" if MacOS.leopard?
-    args << "--enable-lastfm" if ARGV.include?("--lastfm")
+    args << "--enable-lastfm" if build.include?("lastfm")
 
     system "./configure", *args
     system "make install"

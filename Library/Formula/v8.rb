@@ -3,10 +3,10 @@ require 'formula'
 class V8 < Formula
   homepage 'http://code.google.com/p/v8/'
   # Use the official github mirror, it is easier to find tags there
-  url 'https://github.com/v8/v8/tarball/3.8.9'
-  sha1 'a99d3d1259f56baeb16b937c315e8fa158eaa7ba'
+  url 'https://github.com/v8/v8/tarball/3.9.24'
+  sha1 '111bf871bda84e72fdf93f2877d97591b918db2a'
 
-  head 'https://github.com/v8/v8.git', :using => :git
+  head 'https://github.com/v8/v8.git'
 
   depends_on 'scons' => :build
 

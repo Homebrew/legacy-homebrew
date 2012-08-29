@@ -7,6 +7,14 @@ class Justniffer < Formula
 
   depends_on "boost"
 
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+          Symbols declared inline in headers are then expected by the linker.
+          Probably declaring them static would fix it properly.
+          EOS
+  end
+
   # Patch lib/libnids-1.21_patched/configure.gnu so that CFLAGS and/or
   # CXXFLAGS with multiple words doesn't cause an error -- e.g.:
   #
@@ -28,12 +36,12 @@ class Justniffer < Formula
   end
 
   def install
-    system "./configure --prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 
   def test
-    system "justniffer --version | grep '^justniffer'"
+    system "#{bin}/justniffer --version | grep '^justniffer'"
   end
 
   def caveats; <<-EOS.undent

@@ -18,6 +18,6 @@ class Mongrel2 < Formula
     ENV['OPTLIBS'] = ENV.ldflags
 
     system "make all"
-    system "make install PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end

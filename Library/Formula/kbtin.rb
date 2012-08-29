@@ -5,7 +5,6 @@ class Kbtin < Formula
   homepage 'http://kbtin.sourceforge.net'
   md5 '5e23f48ac72e1609853895b44a0e3e90'
 
-  depends_on 'libiconv'
   depends_on 'gnutls'
 
   def install

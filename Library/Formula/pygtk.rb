@@ -5,26 +5,35 @@ class Pygtk < Formula
   homepage 'http://www.pygtk.org/'
   md5 'a1051d5794fd7696d3c1af6422d17a49'
 
+  depends_on :x11
   depends_on 'glib'
   depends_on 'gtk+'
   depends_on 'pygobject'
   depends_on 'py2cairo'
 
-  def options
-    [["--universal", "Builds a universal binary"]]
-  end
+  option :universal
 
   def install
     ENV.append 'CFLAGS', '-ObjC'
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
 
+  def caveats; <<-EOS.undent
+    For non-Homebrew Python, you need to amend your PYTHONPATH like so:
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
+    EOS
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  end
+
   def test
     mktemp do
-      (Pathname.new(Dir.pwd)+'test.py').write <<-EOS.undent
+      (Pathname.pwd+'test.py').write <<-EOS.undent
         #!/usr/bin/env python
         import pygtk
         pygtk.require('2.0')

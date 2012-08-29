@@ -5,12 +5,16 @@ class Squashfs < Formula
   url 'http://sourceforge.net/projects/squashfs/files/squashfs/squashfs4.0/squashfs4.0.tar.gz'
   md5 'a3c23391da4ebab0ac4a75021ddabf96'
 
-   def patches
-     { :p0 => DATA }
-   end
+  fails_with :clang do
+    build 318
+  end
+
+  def patches
+   { :p0 => DATA }
+  end
 
   def install
-    Dir.chdir 'squashfs-tools' do
+    cd 'squashfs-tools' do
       system "make"
       bin.install %w{mksquashfs unsquashfs}
     end

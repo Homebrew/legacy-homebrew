@@ -16,8 +16,7 @@ class Binutils < Formula
                           "--disable-werror",
                           "--enable-interwork",
                           "--enable-multilib",
-                          "--enable-targets=x86_64-elf",
-                          "--enable-targets=arm-none-eabi"
+                          "--enable-targets=x86_64-elf,arm-none-eabi,m32r"
     system "make"
     system "make install"
   end

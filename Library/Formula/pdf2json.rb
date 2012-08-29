@@ -12,7 +12,7 @@ class Pdf2json < Formula
     # Fix manpage install location. See:
     # http://code.google.com/p/pdf2json/issues/detail?id=2
     inreplace "Makefile", "/man/", "/share/man/"
-    system "make"
+    system "make", "CC=#{ENV.cc}", "CXX=#{ENV.cxx}"
     system "make install"
   end
 end

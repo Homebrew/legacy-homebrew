@@ -8,6 +8,6 @@ class Libutf < Formula
 
   def install
     inreplace 'Makefile', 'man/man7', 'share/man/man7'
-    system "make PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 end

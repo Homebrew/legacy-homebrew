@@ -1,17 +1,15 @@
 require 'formula'
 
 class Leiningen < Formula
-  url 'http://github.com/technomancy/leiningen/tarball/1.6.2'
   homepage 'http://github.com/technomancy/leiningen'
-  md5 '27b8a48619be7b1e080a1a2ad3777024'
+  url 'http://github.com/technomancy/leiningen/tarball/1.7.1'
+  md5 'd3f7deb045e0f3430f464553b77b6589'
 
-  head 'https://github.com/technomancy/leiningen.git', :using => :git
+  head 'https://github.com/technomancy/leiningen.git'
 
   def install
     bin.install "bin/lein"
-    system "#{bin}/lein self-install"
-
-    # Install the lein bash completion file
+    system "#{bin}/lein", "self-install"
     (etc+'bash_completion.d').install 'bash_completion.bash' => 'lein-completion.bash'
   end
 

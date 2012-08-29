@@ -2,9 +2,10 @@ require 'formula'
 
 class Ranger < Formula
   homepage 'http://ranger.nongnu.org/'
-  url 'http://ranger.nongnu.org/ranger-1.5.2.tar.gz'
-  md5 '75b1e15b50ecced0a337ae30741daa3b'
-  head 'git://git.savannah.nongnu.org/ranger.git', :using => :git
+  url 'http://nongnu.org/ranger/ranger-1.5.4.tar.gz'
+  sha1 '6cf42596e18e45edcfaa90e8c9601934fcaee047'
+
+  head 'git://git.savannah.nongnu.org/ranger.git'
 
   def install
     man1.install 'doc/ranger.1'

@@ -1,35 +1,23 @@
 require 'formula'
 
 class NagiosPlugins < Formula
-  url 'http://downloads.sourceforge.net/project/nagiosplug/nagiosplug/1.4.15/nagios-plugins-1.4.15.tar.gz'
   homepage 'http://nagiosplugins.org/'
-  md5 '56abd6ade8aa860b38c4ca4a6ac5ab0d'
-
-  def nagios_sbin; sbin+'nagios-plugins'; end
+  url 'http://downloads.sourceforge.net/project/nagiosplug/nagiosplug/1.4.16/nagios-plugins-1.4.16.tar.gz'
+  sha1 '52db48b15572b98c6fcd8aaec2ef4d2aad7640d3'
 
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--libexecdir=#{nagios_sbin}"
+                          "--libexecdir=#{sbin}"
     system "make install"
     system "make install-root"
   end
 
   def caveats
     <<-EOS.undent
-    All plugins are accessible under
-
-      #{nagios_sbin}
-
-    and get symlinked to
-
-      #{HOMEBREW_PREFIX}/sbin/nagios-plugins
-
-    so that they don't appear in your search path but still can be found by
-    nagios across version updates.
-
-    Please feel free to update your PATH if you want to use them standalone!
+    All plugins have been installed in:
+      #{HOMEBREW_PREFIX}/sbin
     EOS
   end
 end

@@ -3,11 +3,13 @@ require 'formula'
 class W3m < Formula
   homepage 'http://w3m.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/w3m/w3m/w3m-0.5.3/w3m-0.5.3.tar.gz'
-  md5 '1b845a983a50b8dec0169ac48479eacc'
+  sha1 '444b6c8cf7094ee95f8e9de96b37f814b9d83237'
 
   depends_on 'bdw-gc'
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+  end
 
   def patches
     # patch to build against bdw-gc 7.2 by @waltarix
@@ -17,6 +19,9 @@ class W3m < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-image"
+    # Race condition in build reported in:
+    # https://github.com/mxcl/homebrew/issues/12854
+    ENV.j1 #
     system "make install"
   end
 end

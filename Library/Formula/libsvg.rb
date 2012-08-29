@@ -5,10 +5,10 @@ class Libsvg < Formula
   homepage 'http://cairographics.org/'
   md5 'ce0715e3013f78506795fba16e8455d3'
 
+  depends_on :libpng
   depends_on 'jpeg'
 
   def install
-    ENV.x11 # for libpng
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end

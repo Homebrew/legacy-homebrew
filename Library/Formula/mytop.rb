@@ -8,7 +8,7 @@ class Mytop < Formula
   depends_on 'DBD::mysql' => :perl
 
   def install
-    system "perl Makefile.PL PREFIX=#{prefix}"
+    system "perl", "Makefile.PL", "PREFIX=#{prefix}"
     system "make test install"
   end
 end

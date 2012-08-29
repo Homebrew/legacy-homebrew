@@ -6,7 +6,8 @@ class TalkFilters < Formula
   md5 'c11c6863a1c246a8d49a80a1168b54c8'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make","MKDIR_P=mkdir -p", "install"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make", "MKDIR_P=mkdir -p", "install"
   end
 end

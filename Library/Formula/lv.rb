@@ -1,13 +1,13 @@
 require 'formula'
 
 class Lv < Formula
-  url 'http://www.ff.iij4u.or.jp/~nrt/freeware/lv451.tar.gz'
   homepage 'http://www.ff.iij4u.or.jp/~nrt/lv/'
-  md5 '85b70ae797f935741ec9a1cbe92f00e9'
+  url 'http://www.ff.iij4u.or.jp/~nrt/freeware/lv451.tar.gz'
   version '4.51'
+  md5 '85b70ae797f935741ec9a1cbe92f00e9'
 
   def install
-    Dir.chdir 'build' do
+    cd 'build' do
       system "../src/configure", "--prefix=#{prefix}"
       system "make"
       bin.install 'lv'

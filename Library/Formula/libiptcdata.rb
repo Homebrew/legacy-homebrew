@@ -6,10 +6,9 @@ class Libiptcdata < Formula
   md5 'af886556ecb129b694f2d365d03d95a8'
 
   depends_on 'gettext'
-  depends_on 'libiconv'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

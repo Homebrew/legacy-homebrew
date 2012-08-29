@@ -1,55 +1,49 @@
 require 'formula'
 
+def needs_universal_python?
+  build.universal? and not build.include? "without-python"
+end
+
+class UniversalPython < Requirement
+  def message; <<-EOS.undent
+    A universal build was requested, but Python is not a universal build
+
+    Boost compiles against the Python it finds in the path; if this Python
+    is not a universal build then linking will likely fail.
+    EOS
+  end
+  def satisfied?
+    archs_for_command("python").universal?
+  end
+end
+
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.48.0/boost_1_48_0.tar.bz2'
-  md5 'd1e9a7a7f532bb031a3c175d86688d95'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.50.0/boost_1_50_0.tar.bz2'
+  sha1 'ee06f89ed472cf369573f8acf9819fbc7173344e'
 
-  head 'http://svn.boost.org/svn/boost/trunk', :using => :svn
+  head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
-    # Bottle built on 10.7.2 using XCode 4.2
-    url 'https://downloads.sourceforge.net/project/machomebrew/Bottles/boost-1.48.0-bottle.tar.gz'
-    sha1 'c7871ddd020a24e3b0cfd3c9a352a1210b68b372'
+    sha1 '06c7e19ec8d684c35fb035e6326df6393e46dce2' => :mountainlion
+    sha1 '25ef1d7af5f6f9783313370fd8115902b24c5eeb' => :lion
+    sha1 '4508c9afcb14a15b6b3c7db4cdfb7bd3f8e1c9bc' => :snowleopard
   end
 
-  depends_on "icu4c" if ARGV.include? "--with-icu"
+  option :universal
+  option 'with-mpi', 'Enable MPI support'
+  option 'without-python', 'Build without Python'
+  option 'with-icu', 'Build regexp engine with icu support'
 
-  # Both clang and llvm-gcc provided by XCode 4.1 compile Boost 1.47.0 properly.
-  # Moreover, Apple LLVM compiler 2.1 is now among primary test compilers.
-  fails_with_llvm "Dropped arguments to functions when linking with boost", :build => 2335
+  depends_on UniversalPython.new if needs_universal_python?
+  depends_on "icu4c" if build.include? "with-icu"
 
-  def options
-    [
-      ["--with-mpi", "Enable MPI support"],
-      ["--universal", "Build universal binaries"],
-      ["--without-python", "Build without Python"],
-      ["--with-icu", "Build regexp engine with icu support"],
-    ]
-  end
-
-  def patches
-    # https://svn.boost.org/trac/boost/ticket/6131
-    #
-    # #define foreach BOOST_FOREACH causes weird compile error in certain
-    # circumstances with boost 1.48
-    #
-    # #define foreach BOOST_FOREACH causes compile error "'boost::BOOST_FOREACH'
-    # has not been declared" on its line if it appears after #include
-    # <boost/foreach.hpp> and before certain other boost headers.
-    DATA unless ARGV.build_head?
+  fails_with :llvm do
+    build 2335
+    cause "Dropped arguments to functions when linking with boost"
   end
 
   def install
-    if ARGV.build_universal? and not ARGV.include? "--without-python"
-      archs = archs_for_command("python")
-      unless archs.universal?
-        opoo "A universal build was requested, but Python is not a universal build"
-        puts "Boost compiles against the Python it finds in the path; if this Python"
-        puts "is not a universal build then linking will likely fail."
-      end
-    end
-
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a
     # non-/usr/local location.
@@ -70,14 +64,14 @@ class Boost < Formula
 
     # Force boost to compile using the appropriate GCC version
     open("user-config.jam", "a") do |file|
-      file.write "using darwin : : #{ENV['CXX']} ;\n"
-      file.write "using mpi ;\n" if ARGV.include? '--with-mpi'
+      file.write "using darwin : : #{ENV.cxx} ;\n"
+      file.write "using mpi ;\n" if build.include? 'with-mpi'
     end
 
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    if ARGV.include? "--with-icu"
+    if build.include? "with-icu"
       icu4c_prefix = Formula.factory('icu4c').prefix
       bargs << "--with-icu=#{icu4c_prefix}"
     end
@@ -90,72 +84,10 @@ class Boost < Formula
             "threading=multi",
             "install"]
 
-    args << "address-model=32_64" << "architecture=x86" << "pch=off" if ARGV.include? "--universal"
-    args << "--without-python" if ARGV.include? "--without-python"
+    args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
+    args << "--without-python" if build.include? "without-python"
 
     system "./bootstrap.sh", *bargs
     system "./bjam", *args
   end
 end
-
-__END__
-Index: /boost/foreach_fwd.hpp
-===================================================================
---- /boost/foreach_fwd.hpp  (revision 62661)
-+++ /boost/foreach_fwd.hpp  (revision 75540)
-@@ -15,4 +15,6 @@
- #define BOOST_FOREACH_FWD_HPP
-
-+#include <utility> // for std::pair
-+
- // This must be at global scope, hence the uglified name
- enum boost_foreach_argument_dependent_lookup_hack
-@@ -26,4 +28,7 @@
- namespace foreach
- {
-+    template<typename T>
-+    std::pair<T, T> in_range(T begin, T end);
-+
-     ///////////////////////////////////////////////////////////////////////////////
-     // boost::foreach::tag
-@@ -47,4 +52,22 @@
- } // namespace foreach
-
-+// Workaround for unfortunate https://svn.boost.org/trac/boost/ticket/6131
-+namespace BOOST_FOREACH
-+{
-+    using foreach::in_range;
-+    using foreach::tag;
-+
-+    template<typename T>
-+    struct is_lightweight_proxy
-+      : foreach::is_lightweight_proxy<T>
-+    {};
-+
-+    template<typename T>
-+    struct is_noncopyable
-+      : foreach::is_noncopyable<T>
-+    {};
-+
-+} // namespace BOOST_FOREACH
-+
- } // namespace boost
-
-Index: /boost/foreach.hpp
-===================================================================
---- /boost/foreach.hpp  (revision 75077)
-+++ /boost/foreach.hpp  (revision 75540)
-@@ -166,5 +166,5 @@
- //   at the global namespace for your type.
- template<typename T>
--inline boost::foreach::is_lightweight_proxy<T> *
-+inline boost::BOOST_FOREACH::is_lightweight_proxy<T> *
- boost_foreach_is_lightweight_proxy(T *&, BOOST_FOREACH_TAG_DEFAULT) { return 0; }
-
-@@ -191,5 +191,5 @@
- //   at the global namespace for your type.
- template<typename T>
--inline boost::foreach::is_noncopyable<T> *
-+inline boost::BOOST_FOREACH::is_noncopyable<T> *
- boost_foreach_is_noncopyable(T *&, BOOST_FOREACH_TAG_DEFAULT) { return 0; }
-

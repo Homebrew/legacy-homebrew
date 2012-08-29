@@ -1,9 +1,9 @@
 require 'formula'
 
 class Augeas < Formula
-  url 'http://augeas.net/download/augeas-0.8.1.tar.gz'
   homepage 'http://augeas.net'
-  md5 '62d47bdc60e175f93aed3b81cb8e2785'
+  url 'http://augeas.net/download/augeas-0.10.0.tar.gz'
+  md5 'fe1834e90a066c3208ac0214622c7352'
 
   depends_on 'readline'
 

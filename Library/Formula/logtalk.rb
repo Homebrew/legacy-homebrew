@@ -1,10 +1,10 @@
 require 'formula'
 
 class Logtalk < Formula
-  url 'http://logtalk.org/files/lgt2432.tar.bz2'
-  md5 'b5698033aca3c5173b7afe0ce4e84782'
-  version '2.43.2'
   homepage 'http://logtalk.org'
+  url 'http://logtalk.org/files/lgt2432.tar.bz2'
+  version '2.43.2'
+  md5 'b5698033aca3c5173b7afe0ce4e84782'
 
   case
   when ARGV.include?("--swi-prolog")
@@ -17,9 +17,9 @@ class Logtalk < Formula
 
   case
     when ARGV.include?("--use-git-head")
-      head 'git://github.com/pmoura/logtalk.git'
+      head 'https://github.com/pmoura/logtalk.git'
     else
-      head 'http://svn.logtalk.org/logtalk/trunk', :using =>   :svn
+      head 'http://svn.logtalk.org/logtalk/trunk'
   end
 
   def options

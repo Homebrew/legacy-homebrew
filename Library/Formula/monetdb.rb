@@ -1,25 +1,25 @@
 require 'formula'
 
 class Monetdb < Formula
-  url 'http://dev.monetdb.org/downloads/sources/Dec2011/MonetDB-11.7.5.tar.bz2'
-  sha1 '67444140c9ef015c7e18bc26faa69f33c1a1220c'
   homepage 'http://www.monetdb.org/'
+  url 'http://dev.monetdb.org/downloads/sources/Jul2012/MonetDB-11.11.5.tar.bz2'
+  sha1 'f0961abd7f6c467deb4cc540dbfe304f50944ba3'
 
   head 'http://dev.monetdb.org/hg/MonetDB', :using => :hg
 
   depends_on 'pcre'
-
-  # Compilation fails with the libedit library provided by OSX.
-  depends_on 'readline'
+  depends_on 'readline' # Compilation fails with libedit.
 
   def install
-    system "./bootstrap" if ARGV.build_head?
+    system "./bootstrap" if build.head?
 
     system "./configure", "--prefix=#{prefix}",
                           "--enable-debug=no",
                           "--enable-assert=no",
                           "--enable-optimize=yes",
-                          "--enable-testing=no"
+                          "--enable-testing=no",
+                          "--disable-jaql",
+                          "--without-rubygem"
     system "make install"
   end
 end

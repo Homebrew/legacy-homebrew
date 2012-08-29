@@ -1,8 +1,8 @@
 require 'formula'
 
 class Sleepwatcher < Formula
-  url 'http://www.bernhard-baehr.de/sleepwatcher_2.2.tgz'
   homepage 'http://www.bernhard-baehr.de/'
+  url 'http://www.bernhard-baehr.de/sleepwatcher_2.2.tgz'
   md5 '2a9235c7da4ad4ed9fb3181203849ded'
 
   def install
@@ -19,7 +19,7 @@ class Sleepwatcher < Formula
     end
 
     # Build and install binary
-    Dir.chdir "sources" do
+    cd "sources" do
       system "mv", "../sleepwatcher.8", "."
       system "make", "install", "PREFIX=#{prefix}"
     end

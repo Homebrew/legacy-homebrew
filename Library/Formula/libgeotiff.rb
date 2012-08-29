@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libgeotiff < Formula
-  url 'http://download.osgeo.org/geotiff/libgeotiff/libgeotiff-1.3.0.tar.gz'
   homepage 'http://geotiff.osgeo.org/'
-  sha1 'b8cde5014cf82fe4683fa35fc81a5ea8d64b940f'
+  url 'http://download.osgeo.org/geotiff/libgeotiff/libgeotiff-1.4.0.tar.gz'
+  sha1 '4c6f405869826bb7d9f35f1d69167e3b44a57ef0'
 
   depends_on 'libtiff'
   depends_on 'lzlib'

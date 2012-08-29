@@ -9,7 +9,7 @@ class Neko < Formula
 
   def install
     ENV.deparallelize # parallel build fails
-    system "yes s | make MACOSX=1 INSTALL_PREFIX=#{prefix}"
+    system "yes s | make MACOSX=1 INSTALL_PREFIX='#{prefix}'"
     prefix.install %w{bin libs src}
   end
 end

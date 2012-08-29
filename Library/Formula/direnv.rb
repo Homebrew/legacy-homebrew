@@ -8,7 +8,7 @@ class Direnv < Formula
   head 'https://github.com/zimbatm/direnv.git'
 
   def install
-    system "make install DESTDIR=#{prefix}"
+    system "make", "install", "DESTDIR=#{prefix}"
   end
 
   def caveats; <<-EOS.undent

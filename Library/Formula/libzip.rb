@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libzip < Formula
-  url 'http://www.nih.at/libzip/libzip-0.9.3.tar.bz2'
+  url 'http://www.nih.at/libzip/libzip-0.10.1.tar.bz2'
   homepage 'http://www.nih.at/libzip/'
-  md5 '27610091ca27bf843a6646cd05de35b9'
+  md5 'd3e933ae049204badccf605f20aaecde'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}",

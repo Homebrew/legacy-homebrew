@@ -11,6 +11,6 @@ class Iodine < Formula
         "arpa/nameser8_compat", "arpa/nameser_compat"
     end
 
-    system "make install prefix=#{prefix}"
+    system "make", "install", "prefix=#{prefix}"
   end
 end

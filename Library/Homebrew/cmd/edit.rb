@@ -2,6 +2,14 @@ require 'formula'
 
 module Homebrew extend self
   def edit
+    unless (HOMEBREW_REPOSITORY/'.git').directory?
+      raise <<-EOS.undent
+        Changes will be lost!
+        The first time you `brew update', all local changes will be lost, you should
+        thus `brew update' before you `brew edit'!
+        EOS
+    end
+
     # If no brews are listed, open the project root in an editor.
     if ARGV.named.empty?
       editor = File.basename which_editor
@@ -17,7 +25,12 @@ module Homebrew extend self
     else
       # Don't use ARGV.formulae as that will throw if the file doesn't parse
       paths = ARGV.named.map do |name|
-        HOMEBREW_REPOSITORY+"Library/Formula/#{Formula.canonical_name name}.rb"
+        name = Formula.canonical_name name
+        if name.include? '/'
+          Pathname.new(name)
+        else
+          HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
+        end
       end
       unless ARGV.force?
         paths.each do |path|

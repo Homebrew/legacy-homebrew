@@ -2,10 +2,10 @@ require 'formula'
 
 class OfflineImap < Formula
   homepage 'http://offlineimap.org/'
-  url 'https://github.com/downloads/spaetz/offlineimap/offlineimap-v6.5.2.1.tar.gz'
-  md5 'fd87752605eb8d98d7addc70a8e96576'
+  url 'https://github.com/downloads/spaetz/offlineimap/offlineimap-v6.5.4.tar.gz'
+  md5 'f696978785ecfc804271ec25100ef929'
 
-  head 'https://github.com/spaetz/offlineimap.git'
+  head 'https://github.com/OfflineIMAP/offlineimap.git'
 
   def install
     prefix.install 'offlineimap.conf', 'offlineimap.conf.minimal'

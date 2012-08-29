@@ -3,17 +3,15 @@ require 'formula'
 class Xaw3d < Formula
   homepage 'http://freshmeat.net/projects/xaw3d'
   url 'ftp://ftp.visi.com/users/hawkeyd/X/Xaw3d-1.5E.tar.gz'
-  version '1.5E'
   md5 '29ecfdcd6bcf47f62ecfd672d31269a1'
 
   depends_on 'imake' => :build
+  depends_on :x11
 
   def install
-    ENV.x11
     inreplace 'lib/Xaw3d/Imakefile', 'XCOMM EXTRA_INCLUDES', 'EXTRA_INCLUDES'
     cd 'lib/Xaw3d' do
-      mkdir 'X11'
-      cd 'X11' do
+      mkdir 'X11' do
         # TODO - surely this symlink can be made without the cd
         ln_s '..', 'Xaw3d'
       end

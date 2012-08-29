@@ -8,9 +8,10 @@ class Povray < Formula
   depends_on 'libtiff' => :optional
   depends_on 'jpeg' => :optional
 
-  if MACOS_VERSION == 10.5
-    fails_with_llvm "povray fails with 'terminate called after throwing an instance of int'"
-  end
+  # TODO give this a build number (2326?)
+  fails_with :llvm do
+    cause "povray fails with 'terminate called after throwing an instance of int'"
+  end if MacOS.leopard?
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -23,7 +24,7 @@ class Povray < Formula
   def test
     ohai "Rendering all test scenes; this may take a while"
     mktemp do
-      system "#{share}/povray-3.6/scripts/allscene.sh -o ."
+      system "#{share}/povray-3.6/scripts/allscene.sh", "-o", "."
     end
   end
 end

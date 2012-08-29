@@ -15,13 +15,7 @@ class GitNow < Formula
 
   def install
     system "make", "prefix=#{prefix}", "install"
-    (share+'zsh/functions').install 'etc/_git-now'
-  end
-
-  def caveats; <<-EOS.undent
-   Zsh completion has been installed to:
-      #{share}/zsh/functions
-    EOS
+    (share+'zsh/site-functions').install 'etc/_git-now'
   end
 end
 

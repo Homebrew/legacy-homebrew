@@ -1,24 +1,21 @@
 require 'formula'
-require 'hardware'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
 
-  if Hardware.is_64_bit? and not ARGV.build_32_bit?
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.2.tgz'
-    md5 '65d9df2b1e8d2bf2c9aef30e35d1d9f0'
-    version '2.0.2-x86_64'
+  if Hardware.is_64_bit? and not build.build_32_bit?
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0.tgz'
+    md5 '5ad0d0b046919118e73976d670dce5e5'
+    version '2.2.0-x86_64'
   else
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.2.tgz'
-    md5 '5eba72d2e348618cf4a905bba1bd9bb6'
-    version '2.0.2-i386'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0.tgz'
+    md5 '59a59df34922f3caaa6219ab8ebf05dd'
+    version '2.2.0-i386'
   end
+
+  option '32-bit'
 
   skip_clean :all
-
-  def options
-    [['--32-bit', 'Build 32-bit only.']]
-  end
 
   def install
     # Copy the prebuilt binaries to prefix
@@ -32,6 +29,9 @@ class Mongodb < Formula
     (prefix+'mongod.conf').write mongodb_conf
     plist_path.write startup_plist
     plist_path.chmod 0644
+
+    # copy the config file to etc if this is the first install.
+    etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
   end
 
   def caveats; <<-EOS.undent
@@ -46,17 +46,19 @@ class Mongodb < Formula
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or start it manually:
-        mongod run --config #{prefix}/mongod.conf
+        mongod run --config #{etc}/mongod.conf
 
     The launchctl plist above expects the config file to be at #{etc}/mongod.conf.
-    If this is a first install, you can copy one from #{prefix}/mongod.conf:
-        cp #{prefix}/mongod.conf #{etc}/mongod.conf
     EOS
   end
 
   def mongodb_conf; <<-EOS.undent
     # Store data in #{var}/mongodb instead of the default /data/db
     dbpath = #{var}/mongodb
+
+    # Append logs to #{var}/log/mongodb/mongo.log
+    logpath = #{var}/log/mongodb/mongo.log
+    logappend = true
 
     # Only accept local connections
     bind_ip = 127.0.0.1

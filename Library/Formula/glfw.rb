@@ -1,12 +1,11 @@
 require 'formula'
 
 class Glfw < Formula
-  url 'http://downloads.sourceforge.net/project/glfw/glfw/2.7.2/glfw-2.7.2.tar.bz2'
   homepage 'http://www.glfw.org/'
-  md5 'bb4f33b43e40f8cd3015a653dca02ed1'
+  url 'http://downloads.sourceforge.net/project/glfw/glfw/2.7.6/glfw-2.7.6.tar.bz2'
+  sha1 '1c278a6b9e3622eabc9b5b5e9eff3bc29437955d'
 
   def install
-    ENV.prepend 'PREFIX', "#{prefix}"
-    system "make cocoa-install"
+    system 'make', "PREFIX=#{prefix}", 'cocoa-dist-install'
   end
 end

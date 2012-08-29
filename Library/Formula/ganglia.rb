@@ -1,9 +1,12 @@
 require 'formula'
 
 class Ganglia < Formula
-  url 'http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.1.7/ganglia-3.1.7.tar.gz'
   homepage 'http://ganglia.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.1.7/ganglia-3.1.7.tar.gz'
   md5 '6aa5e2109c2cc8007a6def0799cf1b4c'
+
+  depends_on :automake
+  depends_on :libtool
 
   depends_on 'confuse'
   depends_on 'pcre'
@@ -23,30 +26,29 @@ class Ganglia < Formula
 
     # Grab the standard autogen.sh and run it twice, to update libtool
     curl "http://buildconf.git.sourceforge.net/git/gitweb.cgi?p=buildconf/buildconf;a=blob_plain;f=autogen.sh;hb=HEAD", "-o", "autogen.sh"
-    ENV['LIBTOOLIZE'] = "/usr/bin/glibtoolize"
 
+    ENV['LIBTOOLIZE'] = "/usr/bin/glibtoolize" if MacOS::Xcode.provides_autotools?
     ENV['PROJECT'] = "ganglia"
     system "/bin/sh ./autogen.sh --download"
 
-    Dir.chdir "libmetrics" do
+    cd "libmetrics" do
       ENV['PROJECT'] = "libmetrics"
       system "/bin/sh ../autogen.sh --download"
     end
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--sbindir=#{bin}",
                           "--sysconfdir=#{etc}",
                           "--with-gexec",
-                          "--with-gmetad"
-
-    # build and install
+                          "--with-gmetad",
+                          "--with-libpcre=#{HOMEBREW_PREFIX}"
     system "make install"
 
-    Dir.chdir "web" do
+    cd "web" do
       system "make", "conf.php"
       system "make", "version.php"
-
       inreplace "conf.php", "/usr/bin/rrdtool", "#{HOMEBREW_PREFIX}/bin/rrdtool"
     end
 

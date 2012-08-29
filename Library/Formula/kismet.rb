@@ -1,10 +1,10 @@
 require 'formula'
 
 class Kismet < Formula
-  url 'http://www.kismetwireless.net/code/kismet-2011-03-R1.tar.gz'
-  version '2011-03-R1'
+  url 'http://www.kismetwireless.net/code/kismet-2011-03-R2.tar.gz'
+  version '2011-03-R2'
   homepage 'http://www.kismetwireless.net'
-  sha256 '4bc1ff064dccd65dacdd2db832bc209781daa482690fba444a0b79d36744ff5b'
+  sha256 '71a099fb724951cdd55c28e492432ca21657534c91a536c206f3e0a8686d2a64'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--sysconfdir=#{etc}"

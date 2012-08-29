@@ -1,25 +1,45 @@
 require 'formula'
 
 class Snort < Formula
-  url 'http://www.snort.org/dl/snort-current/snort-2.9.0.5.tar.gz'
   homepage 'http://www.snort.org'
-  md5 'a7e6f0b013f767d09c99f8f91757e355'
+  url 'http://www.snort.org/dl/snort-current/snort-2.9.3.1.tar.gz'
+  sha1 '25dfea22a988dd1dc09a1716d8ebfcf2b7d61c19'
 
   depends_on 'daq'
   depends_on 'libdnet'
   depends_on 'pcre'
 
+  option 'enable-debug', "Compile Snort with --enable-debug and --enable-debug-msgs"
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--enable-ipv6", "--enable-zlib",
-                          "--enable-mpls", "--enable-targetbased", "--enable-ppm",
-                          "--enable-perfprofiling", "--enable-active-response",
-                          "--enable-normalizer"
+    args = %W[--prefix=#{prefix}
+              --disable-dependency-tracking
+              --enable-ipv6
+              --enable-gre
+              --enable-mpls
+              --enable-targetbased
+              --enable-decoder-preprocessor-rules
+              --enable-ppm
+              --enable-perfprofiling
+              --enable-zlib
+              --enable-active-response
+              --enable-normalizer
+              --enable-reload
+              --enable-react
+              --enable-flexresp3]
+
+    if build.include? 'enable-debug'
+      args << "--enable-debug"
+      args << "--enable-debug-msgs"
+    else
+      args << "--disable-debug"
+    end
+
+    system "./configure", *args
     system "make install"
   end
 
-  def caveats
-    <<-EOS.undent
+  def caveats; <<-EOS.undent
     For snort to be functional, you need to update the permissions for /dev/bpf*
     so that they can be read by non-root users.  This can be done manually using:
         sudo chmod 644 /dev/bpf*

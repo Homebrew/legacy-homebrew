@@ -9,6 +9,6 @@ class Ocrad < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make", "install", "CXXFLAGS=#{ENV['CXXFLAGS']}"
+    system "make", "install", "CXXFLAGS=#{ENV.cxxflags}"
   end
 end
