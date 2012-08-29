@@ -73,7 +73,6 @@ Dir.chdir "/usr"
 
 ####################################################################### script
 abort "MacOS too old, see: https://gist.github.com/1144389" if macos_version < 10.5
-abort "/usr/local/.git already exists!" unless Dir["/usr/local/.git/*"].empty?
 abort "Don't run this as root!" if Process.uid == 0
 abort <<-EOABORT unless `groups`.split.include? "admin"
 This script requires the user #{ENV['USER']} to be an Administrator. If this
@@ -82,11 +81,15 @@ you please; please refer to our homepage. If you still want to use this script
 set your user to be an Administrator in System Preferences or `su' to a
 non-root user with Administrator privileges.
 EOABORT
+abort <<-EOABORT unless Dir["/usr/local/.git/*"].empty?
+It appears Homebrew is already installed. If your intent is to reinstall you
+should do the following before running this installer again:
+    rm -rf /usr/local/Cellar /usr/local/.git && brew cleanup
+EOABORT
 
 ohai "This script will install:"
 puts "/usr/local/bin/brew"
-puts "/usr/local/Library/Formula/..."
-puts "/usr/local/Library/Homebrew/..."
+puts "/usr/local/Library/..."
 puts "/usr/local/share/man/man1/brew.1"
 
 chmods = %w( . bin etc include lib lib/pkgconfig Library sbin share var var/log share/locale share/man
