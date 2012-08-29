@@ -10,10 +10,7 @@ class Bitlbee < Formula
   depends_on 'libpurple' if ARGV.include? '--purple'
 
   def options
-    [
-      ['--purple', "Use libpurple for all communication with instant messaging networks"],
-      ['--dev', "Install development headers"]
-    ]
+    [['--purple', "Use libpurple for all communication with instant messaging networks"]]
   end
 
   def install
@@ -41,7 +38,7 @@ class Bitlbee < Formula
     system "make install"
     # This build has an extra step.
     system "make install-etc"
-    system "make install-dev" if ARGV.include? '--dev'
+    system "make install-dev"
 
     (var+"bitlbee/run").mkpath
     (var+"bitlbee/lib").mkpath
