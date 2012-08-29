@@ -1,38 +1,31 @@
 require 'formula'
 
 class Wkhtmltopdf < Formula
+  url 'http://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.9.9.tar.bz2'
   homepage 'http://code.google.com/p/wkhtmltopdf/'
-  url 'http://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.11.0_rc1.tar.bz2'
-  sha1 'db03922d281856e503b3d562614e3936285728c7'
-  version '0.11.0_rc1'
+  md5 'df2bb84b7d15140ca14732898155dd6a'
 
   depends_on 'qt'
 
   def install
-    # fix that missing TEMP= include.
-    inreplace 'common.pri' do |s|
+    # fix that missing TEMP= include
+    inreplace 'wkhtmltopdf.pro' do |s|
       s.gsub! 'TEMP = $$[QT_INSTALL_LIBS] libQtGui.prl', ''
       s.gsub! 'include($$join(TEMP, "/"))', ''
     end
 
-    # It tries to build universally, but Qt is bottled as 64bit => build error.
-    # If we are 64bit, do not compile with -arch i386.  This is a Homebrew
-    # issue with our Qt4, not upstream, because wkhtmltopdf bundles a patched
-    # Qt4 that Homebrew doesn't use.
-    if MacOS.prefer_64_bit?
-      inreplace 'src/pdf/pdf.pro', 'x86', 'x86_64'
-      inreplace 'src/image/image.pro', 'x86', 'x86_64'
-    end
+    # Always creates a useless .app doh,
+    # AFAIK this is fixed in 0.10.0beta
+    wkhtml_bin = 'wkhtmltopdf.app/Contents/MacOS/wkhtmltopdf'
+    wkhtml_man = "#{name}.1"
 
-    system 'qmake', '-spec', 'macx-g++'
-    system 'make'
-    ENV['DYLD_LIBRARY_PATH'] = './bin'
-    `bin/wkhtmltopdf --manpage > wkhtmltopdf.1`
-    `bin/wkhtmltoimage --manpage > wkhtmltoimage.1`
+    system "qmake"
+    system "make"
+    system "#{wkhtml_bin} --manpage > #{wkhtml_man}"
 
-    # install binaries, libs, and man pages
-    bin.install Dir[ "bin/wkh*" ]
-    lib.install Dir[ "bin/lib*" ]
-    man1.install Dir[ "wkht*.1" ]
+    # install binary and man file
+    bin.install wkhtml_bin
+    man1.install wkhtml_man
   end
 end
+
