@@ -1,8 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Backupninja < Formula
   homepage 'https://labs.riseup.net/code/projects/show/backupninja'
   url 'https://labs.riseup.net/code/attachments/download/275/backupninja-1.0.1.tar.gz'
