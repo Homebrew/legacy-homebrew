@@ -7,7 +7,7 @@ require 'set'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.9.2'
+HOMEBREW_VERSION = '0.9.3'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
 def cache
