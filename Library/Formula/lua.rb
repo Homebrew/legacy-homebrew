@@ -13,9 +13,7 @@ class Lua < Formula
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all
 
-  def options
-    [['--completion', 'Enables advanced readline support']]
-  end
+  option 'completion', 'Enables advanced readline support'
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/mxcl/homebrew/pull/5043
@@ -23,7 +21,7 @@ class Lua < Formula
     p = [DATA]
     # completion provided by advanced readline power patch from
     # http://lua-users.org/wiki/LuaPowerPatches
-    if ARGV.include? '--completion'
+    if build.include? 'completion'
       p << 'http://luajit.org/patches/lua-5.2.0-advanced_readline.patch'
     end
     p
