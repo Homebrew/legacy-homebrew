@@ -131,9 +131,11 @@ Dir.chdir "/usr/local" do
     system git, "init", "-q"
     system git, "remote", "add", "origin", "https://github.com/mxcl/homebrew"
 
-    args = git, "pull", "origin", "master", "--depth=1"
+    args = git, "fetch", "origin", "--depth=1"
     args.pop unless ARGV.include? "--fast"
     system *args
+
+    system git, "reset", "--hard", "origin/master"
   else
     # -m to stop tar erroring out if it can't modify the mtime for root owned directories
     # pipefail to cause the exit status from curl to propogate if it fails
