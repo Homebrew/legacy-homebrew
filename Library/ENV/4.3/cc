@@ -106,6 +106,13 @@ class Cmd
         args << arg
       end
     end
+
+    rms = @args - args
+    %w{CPPFLAGS LDFLAGS CXXFLAGS CFLAGS}.each do |flag|
+      unison = ENV[flag].split(' ') & rms
+      puts "Warning! #{unison*' '} removed from #{flag.upcase} by superenv" unless unison.empty?
+    end
+
     args
   end
   def cflags
@@ -134,10 +141,6 @@ end
 
 ####################################################################### sanity
 abort "The build-tool has reset ENV. --lame-env required." unless ENV['HOMEBREW_BREW_FILE']
-
-%w{CPPFLAGS LDFLAGS CXXFLAGS CFLAGS}.each do |flag|
-  puts "#{flag} set but superenv running! Flags may be removed!" if ENV[flag]
-end
 
 ######################################################################### main
 cmd = Cmd.new($0, ARGV)
