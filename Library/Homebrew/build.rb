@@ -85,14 +85,6 @@ def install f
     ENV.deps = keg_only_deps.map(&:to_s)
     ENV.x11 = f.requirements.detect{|rq| rq.class == X11Dependency }
     ENV.setup_build_environment
-    class << ENV
-      def []=(key, value)
-        case key when 'CFLAGS', 'CPPFLAGS', 'LDFAGS'
-          opoo "#{key} set with --env=super! Flags may not take effect!"
-        end
-        store(key, value)
-      end
-    end
   end
 
   f.recursive_requirements.each { |req| req.modify_build_environment }
