@@ -16,6 +16,10 @@ class Mkvtoolnix < Formula
     build 318
   end
 
+  def patches
+    DATA unless build.head?
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
@@ -25,3 +29,27 @@ class Mkvtoolnix < Formula
     system "./drake install"
   end
 end
+
+__END__
+Patch to build with #define foreach BOOST_FOREACH
+See: https://svn.boost.org/trac/boost/ticket/6131
+diff --git a/src/common/common.h b/src/common/common.h
+index 16f7177..8e9e053 100644
+--- a/src/common/common.h
++++ b/src/common/common.h
+@@ -17,7 +17,6 @@
+ #undef min
+ #undef max
+ 
+-#include <boost/foreach.hpp>
+ #include <boost/format.hpp>
+ #include <boost/regex.hpp>
+ #include <string>
+@@ -83,6 +82,7 @@ extern unsigned int MTX_DLL_API verbose;
+ 
+ #define foreach                  BOOST_FOREACH
+ #define reverse_foreach          BOOST_REVERSE_FOREACH
++#include <boost/foreach.hpp>
+ #define mxforeach(it, vec)       for (it = (vec).begin(); it != (vec).end(); it++)
+ #define mxfind(value, cont)      std::find(cont.begin(), cont.end(), value)
+ #define mxfind2(it, value, cont) ((it = std::find((cont).begin(), (cont).end(), value)) != (cont).end())
