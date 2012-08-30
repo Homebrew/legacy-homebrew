@@ -1,7 +1,9 @@
 require 'rake'
 require 'rake/testtask'
+require 'pathname'
 
-TEST_DIRECTORY = File.expand_path(File.dirname(__FILE__))
+TEST_DIRECTORY = Pathname.new(File.expand_path(__FILE__)).parent.realpath
+
 TEST_FILES = FileList["#{TEST_DIRECTORY}/test_*.rb"]
 
 Dir.chdir TEST_DIRECTORY
@@ -34,7 +36,7 @@ begin
                      --exclude=test_
                      --exclude=testball
                      --exclude=testing}
-    t.output_dir = TEST_DIRECTORY+'/coverage'
+    t.output_dir = TEST_DIRECTORY+'coverage'
   end
 rescue LoadError
   nil
