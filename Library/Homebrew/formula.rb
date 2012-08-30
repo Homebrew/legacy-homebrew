@@ -148,6 +148,8 @@ class Formula
     self.class.build
   end
 
+  def opt_prefix; HOMEBREW_PREFIX/:opt/name end
+
   # Use the @active_spec to detect the download strategy.
   # Can be overriden to force a custom download strategy
   def download_strategy
@@ -468,6 +470,8 @@ protected
     removed_ENV_variables = case if args.empty? then cmd.split(' ').first else cmd end
     when "xcodebuild"
       ENV.remove_cc_etc
+    when /^make\b/
+      ENV.append 'HOMEBREW_CCCFG', "O", ''
     end
 
     if ARGV.verbose?
@@ -498,6 +502,8 @@ protected
 
   rescue
     raise BuildError.new(self, cmd, args, $?)
+  ensure
+    ENV['HOMEBREW_CCCFG'] = ENV['HOMEBREW_CCCFG'].delete('O') if ENV['HOMEBREW_CCCFG']
   end
 
 public

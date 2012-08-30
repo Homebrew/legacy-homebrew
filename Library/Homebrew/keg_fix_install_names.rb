@@ -56,8 +56,13 @@ class Keg
     end
 
     # the shortpath ensures that library upgrades don’t break installed tools
-    shortpath = HOMEBREW_PREFIX + Pathname.new(file).relative_path_from(self)
-    id = if shortpath.exist? then shortpath else file end
+    relative_path = Pathname.new(file).relative_path_from(self)
+    shortpath = HOMEBREW_PREFIX.join(relative_path)
+    id = if shortpath.exist?
+      shortpath
+    else
+      "#{HOMEBREW_PREFIX}/opt/#{fname}/#{relative_path}"
+    end
 
     yield id, install_names
   end

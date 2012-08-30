@@ -7,7 +7,7 @@ require 'set'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.9.2'
+HOMEBREW_VERSION = '0.9.3'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
 def cache
@@ -95,9 +95,3 @@ unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
 end
 
 ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(File.expand_path(p)) }
-
-# Xcode-only installs place tools in non-standard locations, and we also want
-# to ensure the dev tools are in the PATH in build.rb
-unless ORIGINAL_PATHS.include? MacOS.dev_tools_path
-  ENV['PATH'] = ENV['PATH'].to_s + ':' + MacOS.dev_tools_path.to_s
-end
