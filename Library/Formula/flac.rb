@@ -1,8 +1,8 @@
 require 'formula'
 
-class Flac2Mp3 < GithubGistFormula
-  url 'https://gist.github.com/raw/124242/79857936f1d72824be0fb5d2ac845c02322abea0/flac2mp3'
-  md5 '8351009b64afedfeb7a9e162ccd8d94c'
+class Flac2Mp3 < Formula
+  url 'https://raw.github.com/rmndk/flac2mp3/master/flac2mp3'
+  md5 'bc37879da7bf543af961a9604bd4beb4'
 end
 
 class Flac < Formula
