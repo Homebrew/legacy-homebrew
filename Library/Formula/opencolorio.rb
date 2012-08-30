@@ -11,20 +11,16 @@ class Opencolorio < Formula
   depends_on 'pkg-config' => :build
   depends_on 'little-cms2'
 
-  def options
-    [
-      ['--with-tests', 'Verify the build with its unit tests (~1min)'],
-      ['--with-python', 'Build ocio with python2.7 bindings'],
-      ['--with-java', 'Build ocio with java bindings'],
-      ['--with-docs', 'Build the documentation.']
-    ]
-  end
+  option 'with-tests', 'Verify the build with its unit tests (~1min)'
+  option 'with-python', 'Build ocio with python2.7 bindings'
+  option 'with-java', 'Build ocio with java bindings'
+  option 'with-docs', 'Build the documentation'
 
   def install
     args = std_cmake_args
-    args << "-DOCIO_BUILD_JNIGLUE=ON" if ARGV.include? '--with-java'
-    args << "-DOCIO_BUILD_TESTS=ON" if ARGV.include? '--with-tests'
-    args << "-DOCIO_BUILD_DOCS=ON" if ARGV.include? '--with-docs'
+    args << "-DOCIO_BUILD_JNIGLUE=ON" if build.include? 'with-java'
+    args << "-DOCIO_BUILD_TESTS=ON" if build.include? 'with-tests'
+    args << "-DOCIO_BUILD_DOCS=ON" if build.include? 'with-docs'
     args << "-DCMAKE_VERBOSE_MAKEFILE=OFF"
 
     # CMake-2.8.7 + CLT + llvm + Lion => CMAKE_CXX_HAS_ISYSROOT "1"
@@ -48,7 +44,7 @@ class Opencolorio < Formula
     # OCIO's PyOpenColorIO.so doubles as a shared library. So it lives in lib, rather
     # than the usual HOMEBREW_PREFIX/lib/python2.7/site-packages per developer choice.
 
-    if ARGV.include? '--with-python'
+    if build.include? 'with-python'
       python_prefix = `python-config --prefix`.strip
       if File.exist? "#{python_prefix}/Python"
         # Python was compiled with --framework:
@@ -73,7 +69,7 @@ class Opencolorio < Formula
     mkdir 'macbuild' do
       system "cmake", *args
       system "make"
-      system "make test" if ARGV.include? '--with-tests'
+      system "make test" if build.include? 'with-tests'
       system "make install"
     end
   end
