@@ -8,7 +8,6 @@ class Bact < Formula
   def install
     system "make"
     system "make test"
-    system "install -d #{prefix}/bin"
-    system "install -m 755 ./bact_learn ./bact_classify ./bact_mkmodel #{bin}"
+    bin.install "./bact_learn", "./bact_classify","./bact_mkmodel"
   end
 end
