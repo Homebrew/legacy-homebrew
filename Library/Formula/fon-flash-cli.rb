@@ -2,13 +2,13 @@ require 'formula'
 
 class FonFlashCli < Formula
   homepage 'http://www.gargoyle-router.com/wiki/doku.php?id=fon_flash'
-  url 'http://www.gargoyle-router.com/downloads/fon-flash/fon-flash-src.tar.gz'
-  version '0.0.1'
-  sha1 '278a5476275ac7fc0dd343fa3baa7f6dc6ed84ff'
+  url 'http://www.gargoyle-router.com/downloads/src/gargoyle_1.5.6-src.tar.gz'
+  version '1.5.6'
+  sha1 'e6047eb8edb6c95ff174b8639d7291a10deccd97'
 
   def install
-    system "make fon-flash"
-    bin.install 'fon-flash' 
+    system "cd fon-flash; make fon-flash"
+    bin.install 'fon-flash/fon-flash' 
   end
 
   def test
