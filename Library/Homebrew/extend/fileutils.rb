@@ -15,11 +15,10 @@ module FileUtils extend self
     # prefix if they need to.
     tmp = ENV['HOMEBREW_TEMP'].chuzzle || '/tmp'
     tempd = `/usr/bin/mktemp -d #{tmp}/brew-#{name}-#{version}-XXXX`.chuzzle
+    raise "Failed to create sandbox" if tempd.nil?
     prevd = pwd
     cd tempd
     yield
-  rescue StandardError
-    raise "Failed to create sandbox"
   ensure
     cd prevd if prevd
     ignore_interrupts{ rm_r tempd } if tempd
