@@ -26,12 +26,7 @@ MACOS_VERSION=10.6
 
 (HOMEBREW_PREFIX+'Library/Formula').mkpath
 
-prevwd = Dir.pwd
-Dir.chdir HOMEBREW_PREFIX
-at_exit do
-  Dir.chdir prevwd
-  HOMEBREW_PREFIX.parent.rmtree
-end
+at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 # Test fixtures and files can be found relative to this path
 TEST_FOLDER = Pathname.new(ABS__FILE__).parent.realpath
