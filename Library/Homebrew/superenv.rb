@@ -111,8 +111,8 @@ class << ENV
   def determine_pkg_config_path
     paths  = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/lib/pkgconfig" }
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/pkgconfig" }
-    paths << "#{HOMEBREW_REPOSITORY}/lib/pkgconfig"
-    paths << "#{HOMEBREW_REPOSITORY}/share/pkgconfig"
+    paths << "#{HOMEBREW_PREFIX}/lib/pkgconfig"
+    paths << "#{HOMEBREW_PREFIX}/share/pkgconfig"
     # we put our paths before X because we dupe some of the X libraries
     paths << "#{MacSystem.x11_prefix}/lib/pkgconfig" << "#{MacSystem.x11_prefix}/share/pkgconfig" if x11?
     # Mountain Lion no longer ships some .pcs; ensure we pick up our versions
