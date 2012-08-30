@@ -28,7 +28,7 @@ class << ENV
   alias_method :x11?, :x11
 
   def reset
-    %w{CC CXX LD CPP OBJC MAKE
+    %w{CC CXX CPP OBJC MAKE
       CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
       MACOS_DEPLOYMENT_TARGET SDKROOT
       CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH}.
@@ -40,11 +40,7 @@ class << ENV
 
   def setup_build_environment
     reset
-    ENV['CC'] = 'cc'
-    ENV['CXX'] = 'c++'
-    ENV['LD'] = 'ld'
-    ENV['CPP'] = 'cpp'
-    ENV['MAKE'] = 'make'
+    ENV['LD'] = 'cc'
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
@@ -184,16 +180,13 @@ class << ENV
   end
   alias_method :j1, :deparallelize
   def gcc
-    ENV['CC'] = "gcc"
-    ENV['CXX'] = "g++"
+    ENV['HOMEBREW_CC'] = "gcc"
   end
   def llvm
-    ENV['CC'] = "llvm-gcc"
-    ENV['CXX'] = "llvm-g++"
+    ENV['HOMEBREW_CC'] = "llvm-gcc"
   end
   def clang
-    ENV['CC'] = "clang"
-    ENV['CXX'] = "clang++"
+    ENV['HOMEBREW_CC'] = "clang"
   end
   def make_jobs
     ENV['MAKEFLAGS'] =~ /-\w*j(\d)+/
