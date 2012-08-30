@@ -1,25 +1,19 @@
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'test/testball'
-require 'utils'
 
-class MockFormula <Formula
+class MockFormula < Formula
   def initialize url
-    @url=url
-    @homepage = 'http://example.com/'
+    @stable = SoftwareSpec.new(url)
     super 'test'
   end
 end
 
-class TestZip <Formula
+class TestZip < Formula
   def initialize
+    @homepage = 'http://example.com/'
     zip=HOMEBREW_CACHE.parent+'test-0.1.zip'
     Kernel.system '/usr/bin/zip', '-q', '-0', zip, ABS__FILE__
-    @url="file://#{zip}"
-    @homepage = 'http://example.com/'
+    @stable = SoftwareSpec.new "file://#{zip}"
     super 'testzip'
   end
 end
@@ -28,6 +22,8 @@ end
 # separate TestCase classes.
 
 class BeerTasting < Test::Unit::TestCase
+  include VersionAssertions
+
   def test_supported_compressed_types
     assert_nothing_raised do
       MockFormula.new 'test-0.1.tar.gz'
@@ -44,7 +40,7 @@ class BeerTasting < Test::Unit::TestCase
   def test_formula_funcs
     classname=Formula.class_s(FOOBAR)
     path=Formula.path(FOOBAR)
-    
+
     assert_equal "FooBar", classname
     assert_match Regexp.new("^#{HOMEBREW_PREFIX}/Library/Formula"), path.to_s
 
@@ -54,7 +50,7 @@ class BeerTasting < Test::Unit::TestCase
       f << %{
         require 'formula'
         class #{classname} < Formula
-          @url=''
+          url ''
           def initialize(*args)
             @homepage = 'http://example.com/'
             super
@@ -62,14 +58,14 @@ class BeerTasting < Test::Unit::TestCase
         end
       }
     end
-    
+
     assert_not_nil Formula.factory(FOOBAR)
   end
-  
+
   def test_zip
     nostdout { assert_nothing_raised { TestZip.new.brew {} } }
   end
-  
+
   # needs resurrecting
   # def test_no_ARGV_dupes
   #   ARGV.reset
@@ -78,7 +74,7 @@ class BeerTasting < Test::Unit::TestCase
   #   ARGV.named.each{|f| n+=1 if f == 'foo'}
   #   assert_equal 1, n
   # end
-  
+
   def test_brew_h
     require 'cmd/info'
     require 'cmd/prune'
@@ -135,18 +131,12 @@ class BeerTasting < Test::Unit::TestCase
     assert_equal 10.7, f+0.1
   end
 
-  def test_pathname_version
-    d=HOMEBREW_CELLAR+'foo-0.1.9'
-    d.mkpath
-    assert_equal '0.1.9', d.version
-  end
-  
   def test_pathname_plus_yeast
     nostdout do
       assert_nothing_raised do
         assert !Pathname.getwd.rmdir_if_possible
         assert !Pathname.getwd.abv.empty?
-        
+
         abcd=orig_abcd=HOMEBREW_CACHE+'abcd'
         FileUtils.cp ABS__FILE__, abcd
         installed_paths=HOMEBREW_PREFIX.install abcd
@@ -159,7 +149,7 @@ class BeerTasting < Test::Unit::TestCase
         abcd.unlink
         abcd.write 'HELLOWORLD'
         assert_equal 'HELLOWORLD', File.read(abcd)
-        
+
         assert !orig_abcd.exist?
         rv=abcd.cp orig_abcd
         assert orig_abcd.exist?
@@ -176,18 +166,18 @@ class BeerTasting < Test::Unit::TestCase
       end
     end
   end
-  
+
   def test_pathname_properties
     foo1 = HOMEBREW_CACHE/'foo-0.1.tar.gz'
-    
+
     assert_equal '.tar.gz', foo1.extname
     assert_equal 'foo-0.1', foo1.stem
-    assert_equal '0.1', foo1.version
+    assert_version_equal '0.1', foo1.version
 
     foo1 = HOMEBREW_CACHE/'foo-0.1.cpio.gz'
     assert_equal '.cpio.gz', foo1.extname
     assert_equal 'foo-0.1', foo1.stem
-    assert_equal '0.1', foo1.version
+    assert_version_equal '0.1', foo1.version
   end
 
   class MockMockFormula < Struct.new(:name); end

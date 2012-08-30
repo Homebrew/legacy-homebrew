@@ -3,31 +3,22 @@ require 'formula'
 class Aalib < Formula
   homepage 'http://aa-project.sourceforge.net/aalib/'
   url 'http://downloads.sourceforge.net/aa-project/aalib-1.4rc4.tar.gz'
-  md5 'd5aa8e9eae07b7441298b5c30490f6a6'
+  sha1 'a11c16b258bf9b64b135858afabc7f3a45222a4a'
 
   # Fix malloc/stdlib issue on OS X
   def patches
     DATA
   end
 
-  if MacOS.xcode_version >= "4.3"
-    # remove the autoreconf if possible, no comment provided about why it is there
-    # so we have no basis to make a decision at this point.
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
   def install
-    # Build fails some of the time without `ENV.x11`!
-    # See: https://github.com/mxcl/homebrew/pull/10356
-    ENV.x11
     ENV.ncurses_define
-    system 'autoreconf --force --install'
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--infodir=#{info}",
-                          "--enable-shared=yes", "--enable-static=yes"
+                          "--enable-shared=yes",
+                          "--enable-static=yes"
     system "make install"
   end
 end

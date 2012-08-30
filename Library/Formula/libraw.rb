@@ -7,19 +7,19 @@ class LibrawTestFile < Formula
 end
 
 class LibrawDemosaicGPL2 < Formula
-  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.14.6.tar.gz'
-  sha1 'cde9b65ba48b6111353964127532d2d2203edb9a'
+  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.14.7.tar.gz'
+  sha1 '9a95d5be316c6efe91228ab696eb39c565922cad'
 end
 
 class LibrawDemosaicGPL3 < Formula
-  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.14.6.tar.gz'
-  sha1 'b89bb2f44dbd42c0aa2a4fee2c6c7bb2a73d6dac'
+  url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.14.7.tar.gz'
+  sha1 '63b1e4899c7aa1a9023e6f4516b91c9c9aa3893e'
 end
 
 class Libraw < Formula
   homepage 'http://www.libraw.org/'
-  url 'http://www.libraw.org/data/LibRaw-0.14.6.tar.gz'
-  sha1 '0a55901d17165cc7e902af9c376df9bab4c40833'
+  url 'http://www.libraw.org/data/LibRaw-0.14.7.tar.gz'
+  sha1 'e924527bed3d72ee4756da0c9383dc74c584799f'
 
   depends_on 'little-cms2'
 

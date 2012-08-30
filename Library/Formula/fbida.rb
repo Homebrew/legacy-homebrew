@@ -13,6 +13,7 @@ class Fbida < Formula
   depends_on 'jpeg'
 
   def install
+    ENV.append 'LDFLAGS', '-liconv'
     system "make"
     bin.install 'exiftran'
     man1.install 'exiftran.man' => 'exiftran.1'

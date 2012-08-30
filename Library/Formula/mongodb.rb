@@ -3,21 +3,19 @@ require 'formula'
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
 
-  if Hardware.is_64_bit? and not ARGV.build_32_bit?
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.6.tgz'
-    md5 '84e592882003bed6249d258203fd0473'
-    version '2.0.6-x86_64'
+  if Hardware.is_64_bit? and not build.build_32_bit?
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0.tgz'
+    md5 '5ad0d0b046919118e73976d670dce5e5'
+    version '2.2.0-x86_64'
   else
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.6.tgz'
-    md5 'a970a8e6c6de5d655816123b0c8f5718'
-    version '2.0.6-i386'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0.tgz'
+    md5 '59a59df34922f3caaa6219ab8ebf05dd'
+    version '2.2.0-i386'
   end
+
+  option '32-bit'
 
   skip_clean :all
-
-  def options
-    [['--32-bit', 'Build 32-bit only.']]
-  end
 
   def install
     # Copy the prebuilt binaries to prefix
@@ -57,6 +55,10 @@ class Mongodb < Formula
   def mongodb_conf; <<-EOS.undent
     # Store data in #{var}/mongodb instead of the default /data/db
     dbpath = #{var}/mongodb
+
+    # Append logs to #{var}/log/mongodb/mongo.log
+    logpath = #{var}/log/mongodb/mongo.log
+    logappend = true
 
     # Only accept local connections
     bind_ip = 127.0.0.1

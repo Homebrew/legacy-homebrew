@@ -6,55 +6,33 @@ class Field3d < Formula
   sha1 '6f4de442869587f7fa5ce6f5f8bd0630b6ae7192'
 
   depends_on 'cmake' => :build
-  depends_on 'scons' => :build
-  depends_on 'doxygen' => :build
   depends_on 'boost'
   depends_on 'ilmbase'
   depends_on 'hdf5'
 
+  def patches
+    # add boost system to required boost libs
+    # already reported upstream, see https://github.com/imageworks/Field3D/pull/51
+    DATA
+  end
+
   def install
-    # When compiling with Clang, remove flags that SCons can't parse
-    if ENV.compiler == :clang then
-      ENV.remove_from_cflags '-Xclang -target-feature -Xclang -aes'
-    end
-
-    # Set the compilers for Homebrew - was fixed to gcc & g++
-    inreplace 'SConstruct', 'env = Environment()',
-                <<-EOS.undent
-                  env = Environment()\n
-                  env.Replace(CC = "#{ENV.cc}")
-                  env.Replace(CXX = "#{ENV.cxx}")
-                EOS
-
-    inreplace 'BuildSupport.py' do |s|
-      s.gsub! '/opt/local/include', "#{HOMEBREW_PREFIX}/include"
-      s.gsub! '/opt/local/lib', "#{HOMEBREW_PREFIX}/lib"
-      # Merge Homebrew's CFLAGS into the build's CCFLAGS passed to CC and CXX
-      s.gsub! 'env.Append(CCFLAGS = ["-Wall"])', "env.MergeFlags(['#{ENV.cflags}'])"
-    end
-
-    # Build the software with scons.
-    if MacOS.prefer_64_bit?
-      system "scons do64=1"
-    else
-      system "scons"
-    end
-
-    # Build the docs with cmake
-    mkdir 'macbuild' do
-      system "cmake .."
-      system "make doc"
-    end
-
-    # Install the libraries and docs.
-    b = if MacOS.prefer_64_bit?
-      'install/darwin/m64/release/'
-    else
-      'install/darwin/m32/release/'
-    end
-
-    lib.install Dir[b+'lib/*']
-    include.install Dir[b+'include/*']
-    doc.install Dir['docs/html/*']
+    system "cmake", ".", '-DINSTALL_DOCS=OFF', *std_cmake_args
+    system "make install"
   end
 end
+
+__END__
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f382937..82d2487 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -39,7 +39,7 @@ set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake )
+
+ FIND_PACKAGE (Doxygen)
+ FIND_PACKAGE (HDF5)
+-FIND_PACKAGE (Boost COMPONENTS thread program_options)
++FIND_PACKAGE (Boost COMPONENTS system thread program_options)
+ FIND_PACKAGE (ILMBase)
+
+ OPTION (INSTALL_DOCS "Automatically install documentation." ON)

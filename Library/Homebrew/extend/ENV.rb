@@ -9,8 +9,18 @@ module HomebrewEnvExtension
     delete('CLICOLOR_FORCE') # autotools doesn't like this
     remove_cc_etc
 
+    if MacOS.version >= :mountain_lion
+      # Fix issue with sed barfing on unicode characters on Mountain Lion.
+      delete('LC_ALL')
+      self['LC_CTYPE']="C"
+
+      # Mountain Lion no longer ships a few .pcs; make sure we pick up our versions
+      prepend 'PKG_CONFIG_PATH',
+        HOMEBREW_REPOSITORY/'Library/Homebrew/pkgconfig', ':'
+    end
+
     # make any aclocal stuff installed in Homebrew available
-    self['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS.xcode_version < "4.3"
+    self['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS::Xcode.provides_autotools?
 
     self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
@@ -32,8 +42,8 @@ module HomebrewEnvExtension
     unless self['CC']
       @compiler = MacOS.default_compiler
       self.send @compiler
-      self['CC']  = '/usr/bin/cc'
-      self['CXX'] = '/usr/bin/c++'
+      self['CC'] = MacOS.locate("cc")
+      self['CXX'] = MacOS.locate("c++")
       self['OBJC'] = self['CC']
     end
 
@@ -42,6 +52,17 @@ module HomebrewEnvExtension
     # build more successfully because we are changing CC and many build systems
     # don't react properly to that.
     self['LD'] = self['CC']
+
+    # Add lib and include etc. from the current macosxsdk to compiler flags:
+    macosxsdk MacOS.version
+
+    # For Xcode 4.3 (*without* the "Command Line Tools for Xcode") compiler and tools inside of Xcode:
+    if not MacOS::CLT.installed? and MacOS::Xcode.installed? and MacOS::Xcode.version >= "4.3"
+      # Some tools (clang, etc.) are in the xctoolchain dir of Xcode
+      append 'PATH', "#{MacOS.xctoolchain_path}/usr/bin", ":" if MacOS.xctoolchain_path
+      # Others are now at /Applications/Xcode.app/Contents/Developer/usr/bin
+      append 'PATH', "#{MacOS.dev_tools_path}", ":"
+    end
   end
 
   def deparallelize
@@ -86,7 +107,7 @@ module HomebrewEnvExtension
   end
 
   def gcc_4_0_1
-    # we don't use xcrun because gcc 4.0 has not been provided since Xcode 4
+    # we don't use locate because gcc 4.0 has not been provided since Xcode 4
     self['CC'] = "#{MacOS.dev_tools_path}/gcc-4.0"
     self['LD'] = self['CC']
     self['CXX'] = "#{MacOS.dev_tools_path}/g++-4.0"
@@ -96,33 +117,6 @@ module HomebrewEnvExtension
     @compiler = :gcc
   end
   alias_method :gcc_4_0, :gcc_4_0_1
-
-  def xcrun tool
-    if File.executable? "/usr/bin/#{tool}"
-      "/usr/bin/#{tool}"
-    elsif not MacOS.xctools_fucked? and system "/usr/bin/xcrun -find #{tool} 1>/dev/null 2>&1"
-      # xcrun was provided first with Xcode 4.3 and allows us to proxy
-      # tool usage thus avoiding various bugs
-      "/usr/bin/xcrun #{tool}"
-    else
-      # otherwise lets try and figure it out ourselves
-      fn = "#{MacOS.dev_tools_path}/#{tool}"
-      if File.executable? fn
-        fn
-      else
-        # This is for the use-case where xcode-select is not set up with
-        # Xcode 4.3. The tools in Xcode 4.3 are split over two locations,
-        # usually xcrun would figure that out for us, but it won't work if
-        # xcode-select is not configured properly.
-        fn = "#{MacOS.xcode_prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{tool}"
-        if File.executable? fn
-          fn
-        else
-          nil
-        end
-      end
-    end
-  end
 
   # if your formula doesn't like CC having spaces use this
   def expand_xcrun
@@ -139,9 +133,9 @@ module HomebrewEnvExtension
     # However they still provide a gcc symlink to llvm
     # But we don't want LLVM of course.
 
-    self['CC'] = xcrun "gcc-4.2"
+    self['CC'] = MacOS.locate "gcc-4.2"
     self['LD'] = self['CC']
-    self['CXX'] = xcrun "g++-4.2"
+    self['CXX'] = MacOS.locate "g++-4.2"
     self['OBJC'] = self['CC']
 
     unless self['CC']
@@ -149,7 +143,7 @@ module HomebrewEnvExtension
       self['LD'] = self['CC']
       self['CXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
       self['OBJC'] = self['CC']
-      raise "GCC could not be found" if not File.exist? self['CC']
+      raise "GCC could not be found" unless File.exist? self['CC']
     end
 
     if not self['CC'] =~ %r{^/usr/bin/xcrun }
@@ -163,18 +157,18 @@ module HomebrewEnvExtension
   alias_method :gcc_4_2, :gcc
 
   def llvm
-    self['CC'] = xcrun "llvm-gcc"
+    self['CC'] = MacOS.locate "llvm-gcc"
     self['LD'] = self['CC']
-    self['CXX'] = xcrun "llvm-g++"
+    self['CXX'] = MacOS.locate "llvm-g++"
     self['OBJC'] = self['CC']
     set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
     @compiler = :llvm
   end
 
   def clang
-    self['CC'] = xcrun "clang"
+    self['CC'] = MacOS.locate "clang"
     self['LD'] = self['CC']
-    self['CXX'] = xcrun "clang++"
+    self['CXX'] = MacOS.locate "clang++"
     self['OBJC'] = self['CC']
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
@@ -183,94 +177,98 @@ module HomebrewEnvExtension
     @compiler = :clang
   end
 
-  def fortran
-    if self['FC']
-      ohai "Building with an alternative Fortran compiler. This is unsupported."
-      self['F77'] = self['FC'] unless self['F77']
-
-      if ARGV.include? '--default-fortran-flags'
-        flags_to_set = []
-        flags_to_set << 'FCFLAGS' unless self['FCFLAGS']
-        flags_to_set << 'FFLAGS' unless self['FFLAGS']
-
-        flags_to_set.each {|key| self[key] = cflags}
-
-        # Ensure we use architecture optimizations for GCC 4.2.x
-        set_cpu_flags flags_to_set, 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
-      elsif not self['FCFLAGS'] or self['FFLAGS']
-        opoo <<-EOS.undent
-          No Fortran optimization information was provided.  You may want to consider
-          setting FCFLAGS and FFLAGS or pass the `--default-fortran-flags` option to
-          `brew install` if your compiler is compatible with GCC.
-
-          If you like the default optimization level of your compiler, ignore this
-          warning.
-        EOS
+  def remove_macosxsdk v=MacOS.version
+    # Clear all lib and include dirs from CFLAGS, CPPFLAGS, LDFLAGS that were
+    # previously added by macosxsdk
+    v = v.to_s
+    remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
+    self['MACOSX_DEPLOYMENT_TARGET'] = nil
+    self['CPATH'] = nil
+    remove 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+    sdk = MacOS.sdk_path(v)
+    unless sdk.nil? or MacOS::CLT.installed?
+      self['SDKROOT'] = nil
+      remove_from_cflags "-isysroot #{sdk}"
+      remove 'CPPFLAGS', "-isysroot #{sdk}"
+      remove 'LDFLAGS', "-isysroot #{sdk}"
+      if HOMEBREW_PREFIX.to_s == '/usr/local'
+        self['CMAKE_PREFIX_PATH'] = nil
+      else
+        # It was set in setup_build_environment, so we have to restore it here.
+        self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
       end
-
-    elsif `/usr/bin/which gfortran`.chomp.size > 0
-      ohai <<-EOS.undent
-        Using Homebrew-provided fortran compiler.
-        This may be changed by setting the FC environment variable.
-        EOS
-      self['FC'] = `/usr/bin/which gfortran`.chomp
-      self['F77'] = self['FC']
-
-      fc_flag_vars.each {|key| self[key] = cflags}
-      # Ensure we use architecture optimizations for GCC 4.2.x
-      set_cpu_flags fc_flag_vars, 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
-
-    else
-      onoe <<-EOS
-This formula requires a fortran compiler, but we could not find one by
-looking at the FC environment variable or searching your PATH for `gfortran`.
-Please take one of the following actions:
-
-  - Decide to use the build of gfortran 4.2.x provided by Homebrew using
-        `brew install gfortran`
-
-  - Choose another Fortran compiler by setting the FC environment variable:
-        export FC=/path/to/some/fortran/compiler
-    Using an alternative compiler may produce more efficient code, but we will
-    not be able to provide support for build errors.
-      EOS
-      exit 1
+      remove 'CMAKE_FRAMEWORK_PATH', "#{sdk}/System/Library/Frameworks"
     end
   end
 
-  def osx_10_4
-    self['MACOSX_DEPLOYMENT_TARGET']="10.4"
-    remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
-    append_to_cflags('-mmacosx-version-min=10.4')
-  end
-  def osx_10_5
-    self['MACOSX_DEPLOYMENT_TARGET']="10.5"
-    remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
-    append_to_cflags('-mmacosx-version-min=10.5')
+  def macosxsdk v=MacOS.version
+    # Sets all needed lib and include dirs to CFLAGS, CPPFLAGS, LDFLAGS.
+    remove_macosxsdk
+    # Allow cool style of ENV.macosxsdk 10.8 here (no "" :)
+    v = v.to_s
+    append_to_cflags("-mmacosx-version-min=#{v}")
+    self['MACOSX_DEPLOYMENT_TARGET'] = v
+    self['CPATH'] = "#{HOMEBREW_PREFIX}/include"
+    prepend 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+    sdk = MacOS.sdk_path(v)
+    unless sdk.nil? or MacOS::CLT.installed?
+      # Extra setup to support Xcode 4.3+ without CLT.
+      self['SDKROOT'] = sdk
+      # Tell clang/gcc where system include's are:
+      append 'CPATH', "#{sdk}/usr/include", ":"
+      # The -isysroot is needed, too, because of the Frameworks
+      append_to_cflags "-isysroot #{sdk}"
+      append 'CPPFLAGS', "-isysroot #{sdk}"
+      # And the linker needs to find sdk/usr/lib
+      append 'LDFLAGS', "-isysroot #{sdk}"
+      # Needed to build cmake itself and perhaps some cmake projects:
+      append 'CMAKE_PREFIX_PATH', "#{sdk}/usr", ':'
+      append 'CMAKE_FRAMEWORK_PATH', "#{sdk}/System/Library/Frameworks", ':'
+    end
   end
 
   def minimal_optimization
     self['CFLAGS'] = self['CXXFLAGS'] = "-Os #{SAFE_CFLAGS_FLAGS}"
+    macosxsdk unless MacOS::CLT.installed?
   end
   def no_optimization
     self['CFLAGS'] = self['CXXFLAGS'] = SAFE_CFLAGS_FLAGS
+    macosxsdk unless MacOS::CLT.installed?
   end
 
   # Some configure scripts won't find libxml2 without help
   def libxml2
-    append 'CPPFLAGS', '-I/usr/include/libxml2'
+    if MacOS::CLT.installed?
+      append 'CPPFLAGS', '-I/usr/include/libxml2'
+    else
+      # Use the includes form the sdk
+      append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include/libxml2"
+    end
   end
 
-  def x11
-    opoo "You do not have X11 installed, this formula may not build." if not MacOS.x11_installed?
+  def x11 silent=false
+    unless MacOS::X11.installed?
+      opoo "You do not have X11 installed, this formula may not build." unless silent
+      return
+    end
 
-    # There are some config scripts (e.g. freetype) here that should go in the path
-    prepend 'PATH', '/usr/X11/bin', ':'
-    # CPPFLAGS are the C-PreProcessor flags, *not* C++!
-    append 'CPPFLAGS', '-I/usr/X11/include'
-    append 'LDFLAGS', '-L/usr/X11/lib'
-    # CMake ignores the variables above
-    append 'CMAKE_PREFIX_PATH', '/usr/X11', ':'
+    # There are some config scripts here that should go in the PATH
+    prepend 'PATH', MacOS::X11.bin, ':'
+
+    prepend 'PKG_CONFIG_PATH', MacOS::X11.lib/'pkgconfig', ':'
+    prepend 'PKG_CONFIG_PATH', MacOS::X11.share/'pkgconfig', ':'
+
+    append 'LDFLAGS', "-L#{MacOS::X11.lib}"
+    append 'CMAKE_PREFIX_PATH', MacOS::X11.prefix, ':'
+    append 'CMAKE_INCLUDE_PATH', MacOS::X11.include, ':'
+
+    append 'CPPFLAGS', "-I#{MacOS::X11.include}"
+
+    unless MacOS::CLT.installed?
+      append 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11', ':'
+      append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
+      append 'CFLAGS', "-I#{MacOS::X11.include}"
+    end
   end
   alias_method :libpng, :x11
 
@@ -278,28 +276,6 @@ Please take one of the following actions:
   def enable_warnings
     remove_from_cflags '-w'
     remove_from_cflags '-Qunused-arguments'
-  end
-
-  # Snow Leopard defines an NCURSES value the opposite of most distros
-  # See: http://bugs.python.org/issue6848
-  def ncurses_define
-    append 'CPPFLAGS', "-DNCURSES_OPAQUE=0"
-  end
-
-  # Shortcuts for reading common flags
-  def cc;      self['CC'] or "gcc";  end
-  def cxx;     self['CXX'] or "g++"; end
-  def cflags;  self['CFLAGS'];       end
-  def cxxflags;self['CXXFLAGS'];     end
-  def cppflags;self['CPPFLAGS'];     end
-  def ldflags; self['LDFLAGS'];      end
-
-  # Shortcuts for lists of common flags
-  def cc_flag_vars
-    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
-  end
-  def fc_flag_vars
-    %w{FCFLAGS FFLAGS}
   end
 
   def m64
@@ -321,48 +297,6 @@ Please take one of the following actions:
       # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
       replace_in_cflags(/-march=\S*/, '-Xarch_i386 \0') if Hardware.is_32_bit?
     end
-  end
-
-  def prepend key, value, separator = ' '
-    # Value should be a string, but if it is a pathname then coerce it.
-    value = value.to_s
-
-    [*key].each do |key|
-      unless self[key].to_s.empty?
-        self[key] = value + separator + self[key]
-      else
-        self[key] = value
-      end
-    end
-  end
-
-  def append key, value, separator = ' '
-    # Value should be a string, but if it is a pathname then coerce it.
-    value = value.to_s
-
-    [*key].each do |key|
-      unless self[key].to_s.empty?
-        self[key] = self[key] + separator + value
-      else
-        self[key] = value
-      end
-    end
-  end
-
-  def append_to_cflags f
-    append cc_flag_vars, f
-  end
-
-  def remove key, value
-    [*key].each do |key|
-      next if self[key].nil?
-      self[key] = self[key].sub value, '' # can't use sub! on ENV
-      self[key] = nil if self[key].empty? # keep things clean
-    end
-  end
-
-  def remove_from_cflags f
-    remove cc_flag_vars, f
   end
 
   def replace_in_cflags before, after
@@ -437,13 +371,123 @@ Please take one of the following actions:
       Hardware.processor_count
     end
   end
+end
 
+class << ENV
   def remove_cc_etc
     keys = %w{CC CXX LD CPP CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS}
     removed = Hash[*keys.map{ |key| [key, self[key]] }.flatten]
     keys.each do |key|
-      self[key] = nil
+      delete(key)
     end
     removed
   end
+  def cc_flag_vars
+    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
+  end
+  def append_to_cflags newflags
+    append(cc_flag_vars, newflags)
+  end
+  def remove_from_cflags f
+    remove cc_flag_vars, f
+  end
+  def append key, value, separator = ' '
+    value = value.to_s
+    [*key].each do |key|
+      unless self[key].to_s.empty?
+        self[key] = self[key] + separator + value.to_s
+      else
+        self[key] = value.to_s
+      end
+    end
+  end
+  def prepend key, value, separator = ' '
+    [*key].each do |key|
+      unless self[key].to_s.empty?
+        self[key] = value.to_s + separator + self[key]
+      else
+        self[key] = value.to_s
+      end
+    end
+  end
+  def prepend_path key, path
+    prepend key, path, ':' if File.directory? path
+  end
+  def remove key, value
+    [*key].each do |key|
+      next unless self[key]
+      self[key] = self[key].sub(value, '')
+      delete(key) if self[key].to_s.empty?
+    end if value
+  end
+  def cc; self['CC'] or "cc"; end
+  def cxx; self['CXX'] or "c++"; end
+  def cflags; self['CFLAGS']; end
+  def cxxflags;self['CXXFLAGS']; end
+  def cppflags;self['CPPFLAGS']; end
+  def ldflags; self['LDFLAGS']; end
+
+  # Snow Leopard defines an NCURSES value the opposite of most distros
+  # See: http://bugs.python.org/issue6848
+  def ncurses_define
+    append 'CPPFLAGS', "-DNCURSES_OPAQUE=0"
+  end
+
+  def fortran
+    fc_flag_vars = %w{FCFLAGS FFLAGS}
+
+    if self['FC']
+      ohai "Building with an alternative Fortran compiler. This is unsupported."
+      self['F77'] = self['FC'] unless self['F77']
+
+      if ARGV.include? '--default-fortran-flags'
+        flags_to_set = []
+        flags_to_set << 'FCFLAGS' unless self['FCFLAGS']
+        flags_to_set << 'FFLAGS' unless self['FFLAGS']
+
+        flags_to_set.each {|key| self[key] = cflags}
+
+        # Ensure we use architecture optimizations for GCC 4.2.x
+        set_cpu_flags flags_to_set, 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
+      elsif not self['FCFLAGS'] or self['FFLAGS']
+        opoo <<-EOS.undent
+          No Fortran optimization information was provided.  You may want to consider
+          setting FCFLAGS and FFLAGS or pass the `--default-fortran-flags` option to
+          `brew install` if your compiler is compatible with GCC.
+
+          If you like the default optimization level of your compiler, ignore this
+          warning.
+        EOS
+      end
+
+    elsif `/usr/bin/which gfortran`.chomp.size > 0
+      ohai <<-EOS.undent
+        Using Homebrew-provided fortran compiler.
+        This may be changed by setting the FC environment variable.
+        EOS
+      self['FC'] = `/usr/bin/which gfortran`.chomp
+      self['F77'] = self['FC']
+
+      fc_flag_vars.each {|key| self[key] = cflags}
+      # Ensure we use architecture optimizations for GCC 4.2.x
+      set_cpu_flags fc_flag_vars, 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
+
+    else
+      onoe <<-EOS
+This formula requires a fortran compiler, but we could not find one by
+looking at the FC environment variable or searching your PATH for `gfortran`.
+Please take one of the following actions:
+
+  - Decide to use the build of gfortran 4.2.x provided by Homebrew using
+        `brew install gfortran`
+
+  - Choose another Fortran compiler by setting the FC environment variable:
+        export FC=/path/to/some/fortran/compiler
+    Using an alternative compiler may produce more efficient code, but we will
+    not be able to provide support for build errors.
+      EOS
+      exit 1
+    end
+  end
+
 end

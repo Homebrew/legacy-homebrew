@@ -2,14 +2,18 @@ require 'formula'
 
 class Jenkins < Formula
   homepage 'http://jenkins-ci.org'
-  url 'http://mirrors.jenkins-ci.org/war/1.464/jenkins.war'
-  version '1.464'
-  md5 'a859f7340fa85edd18f7837d92b987a8'
+  url 'http://mirrors.jenkins-ci.org/war/1.478/jenkins.war'
+  version '1.478'
+  sha1 'e26a450b8e1cee543a9038b37a41b8d0e9b9b043'
 
   head 'https://github.com/jenkinsci/jenkins.git'
 
   def install
-    system "mvn clean install -pl war -am -DskipTests && mv war/target/jenkins.war ." if ARGV.build_head?
+    if ARGV.build_head?
+      system "mvn clean install -pl war -am -DskipTests"
+      mv 'war/target/jenkins.war', '.'
+    end
+
     libexec.install "jenkins.war"
     plist_path.write startup_plist
     plist_path.chmod 0644

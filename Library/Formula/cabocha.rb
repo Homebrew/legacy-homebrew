@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cabocha < Formula
-  url 'http://cabocha.googlecode.com/files/cabocha-0.60.tar.gz'
   homepage 'http://code.google.com/p/cabocha/'
-  md5 '3399873faab9b252fd57e1d48fa1285d'
+  url 'http://cabocha.googlecode.com/files/cabocha-0.64.tar.gz'
+  sha1 '13f18c4aae2d75f5c7ac69c87458912fc00b4174'
 
   depends_on 'crf++'
 

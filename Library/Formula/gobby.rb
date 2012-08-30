@@ -16,9 +16,9 @@ class Gobby < Formula
   depends_on 'gettext'
   depends_on 'hicolor-icon-theme'
   depends_on 'libinfinity'
+  depends_on :x11
 
   def install
-    ENV.x11
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

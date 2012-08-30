@@ -5,18 +5,17 @@ class Pygtk < Formula
   homepage 'http://www.pygtk.org/'
   md5 'a1051d5794fd7696d3c1af6422d17a49'
 
+  depends_on :x11
   depends_on 'glib'
   depends_on 'gtk+'
   depends_on 'pygobject'
   depends_on 'py2cairo'
 
-  def options
-    [["--universal", "Builds a universal binary"]]
-  end
+  option :universal
 
   def install
     ENV.append 'CFLAGS', '-ObjC'
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

@@ -1,10 +1,10 @@
 require 'formula'
 
 class AwsIamTools < AmazonWebServicesFormula
-  homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=4143&categoryID=322'
+  homepage 'http://aws.amazon.com/developertools/4143'
   url 'http://awsiammedia.s3.amazonaws.com/public/tools/cli/latest/IAMCli.zip'
-  version "1.4.0"
-  md5 '666f31802eda23723bcc04e0440a138f'
+  md5 '7b479a42c09f0d64771dbb0415c3df9f'
+  version "1.5.0"
 
   def install
     standard_install

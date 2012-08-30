@@ -18,6 +18,7 @@ class Libxmlsec1 < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libxml=#{libxml2.prefix}",
+                          "--disable-crypto-dl",
                           "--disable-apps-crypto-dl"
     system "make install"
   end

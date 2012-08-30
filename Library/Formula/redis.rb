@@ -2,14 +2,14 @@ require 'formula'
 
 class Redis < Formula
   homepage 'http://redis.io/'
-  url 'http://redis.googlecode.com/files/redis-2.4.14.tar.gz'
-  sha1 '3f0a2ac2eef9319edb0d789d3553f77b2a3dc31d'
+  url 'http://redis.googlecode.com/files/redis-2.4.16.tar.gz'
+  sha1 '783c4444a4e2f5392458f29f4f0b7c6c4d757462'
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
   devel do
-    url  'http://redis.googlecode.com/files/redis-2.6.0-rc4.tar.gz'
-    sha1 'df702940c2249d71e6dc6b16c12e6fa12543cb8e'
+    url  'http://redis.googlecode.com/files/redis-2.6.0-rc6.tar.gz'
+    sha1 '64a3567d7a9ff1e33b121084a2c5a22c070c0a44'
   end
 
   fails_with :llvm do

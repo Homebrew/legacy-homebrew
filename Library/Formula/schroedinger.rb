@@ -7,16 +7,16 @@ class Schroedinger < Formula
 
   head  'git://diracvideo.org/git/schroedinger.git'
 
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'orc'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
   def install
-    system "autoreconf -i -f" if ARGV.build_head?
+    system "autoreconf -i -f" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
 

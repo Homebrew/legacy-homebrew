@@ -12,7 +12,8 @@ class Gmime < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-largefile",
-                          "--disable-mono"
+                          "--disable-mono",
+                          "--disable-glibtest"
     system "make install"
   end
 end

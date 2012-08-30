@@ -2,9 +2,9 @@ require 'formula'
 
 class Squirrel < Formula
   homepage 'http://www.squirrel-lang.org'
-  url 'http://squirrel.googlecode.com/files/squirrel_3_0_2_stable.tar.gz'
-  version '3.0.2'
-  md5 '1355ee4220b0448119b6887719bae37f'
+  url 'http://squirrel.googlecode.com/files/squirrel_3_0_3_stable.tar.gz'
+  version '3.0.3'
+  sha1 'ebc3122e29c221f41265978163f28c3d93872c56'
 
   def install
     system "make"

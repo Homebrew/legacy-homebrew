@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gsoap < Formula
-  url 'http://downloads.sourceforge.net/project/gsoap2/gSOAP/gsoap_2.8.6.zip'
   homepage 'http://www.cs.fsu.edu/~engelen/soap.html'
-  md5 'c0b962c6216bcf59255dc4288783252f'
+  url 'http://downloads.sourceforge.net/project/gsoap2/gSOAP/gsoap_2.8.8.zip'
+  sha1 '011b507e667d7bb76e30fc8a31055e8cf323311d'
 
   def install
     ENV.deparallelize

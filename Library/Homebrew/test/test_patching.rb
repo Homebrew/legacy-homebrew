@@ -1,32 +1,27 @@
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'test/testball'
-require 'utils'
 
 
-class DefaultPatchBall <TestBall
+class DefaultPatchBall < TestBall
   def patches
     # Default is p1
     "file:///#{TEST_FOLDER}/patches/noop-a.diff"
   end
 end
 
-class ListPatchBall <TestBall
+class ListPatchBall < TestBall
   def patches
     ["file:///#{TEST_FOLDER}/patches/noop-a.diff"]
   end
 end
 
-class P0PatchBall <TestBall
+class P0PatchBall < TestBall
   def patches
     { :p0 => ["file:///#{TEST_FOLDER}/patches/noop-b.diff"] }
   end
 end
 
-class P1PatchBall <TestBall
+class P1PatchBall < TestBall
   def patches
     { :p1 => ["file:///#{TEST_FOLDER}/patches/noop-a.diff"] }
   end
@@ -37,7 +32,7 @@ class PatchingTests < Test::Unit::TestCase
   def read_file path
     File.open(path, 'r') { |f| f.read }
   end
-  
+
   def test_single_patch
     shutup do
       DefaultPatchBall.new('test_patch').brew do

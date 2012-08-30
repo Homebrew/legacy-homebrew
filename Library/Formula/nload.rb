@@ -9,7 +9,7 @@ class Nload < Formula
     build 2334
   end
 
-  depends_on "automake" => :build if MacOS.xcode_version.to_f >= 4.3
+  depends_on :automake
 
   # Patching configure.in file to make configure compile on Mac OS.
   # Patch taken from MacPorts.

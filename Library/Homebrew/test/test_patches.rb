@@ -1,10 +1,5 @@
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'test/testball'
-require 'utils'
 require 'set'
 
 # Expose some internals
@@ -29,10 +24,10 @@ class PatchingTests < Test::Unit::TestCase
   def test_patchArray
     patches = Patches.new(["http://example.com/patch1.diff", "http://example.com/patch2.diff"])
     assert_equal 2, patches.patches.length
-    
+
     p1 = patches.patches[0]
     assert_equal :p1, p1.patch_p
-    
+
     p2 = patches.patches[0]
     assert_equal :p1, p2.patch_p
   end
@@ -42,7 +37,7 @@ class PatchingTests < Test::Unit::TestCase
       :p0 => "http://example.com/patch.diff"
     })
     assert_equal 1, patches.patches.length
-    
+
     p = patches.patches[0]
     assert_equal :p0, p.patch_p
   end
@@ -52,7 +47,7 @@ class PatchingTests < Test::Unit::TestCase
       :p1 => "http://example.com/patch.diff"
     })
     assert_equal 1, patches.patches.length
-    
+
     p = patches.patches[0]
     assert_equal :p1, p.patch_p
   end

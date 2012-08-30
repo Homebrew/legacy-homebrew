@@ -27,6 +27,7 @@ class Octave < Formula
   depends_on 'gnu-sed' => :build
   depends_on 'texinfo' => :build     # OS X's makeinfo won't work for this
 
+  depends_on :x11
   depends_on 'fftw'
   # When building 64-bit binaries on Snow Leopard, there are naming issues with
   # the dot product functions in the BLAS library provided by Apple's
@@ -69,7 +70,6 @@ class Octave < Formula
     # build time with -O3: user 58m58.054s  sys 7m52.221s
     ENV.m64 if MacOS.prefer_64_bit?
     ENV.append_to_cflags "-D_REENTRANT"
-    ENV.x11
 
     args = [
       "--disable-dependency-tracking",

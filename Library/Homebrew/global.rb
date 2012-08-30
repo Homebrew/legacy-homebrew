@@ -3,10 +3,11 @@ require 'extend/ARGV'
 require 'extend/string'
 require 'utils'
 require 'exceptions'
+require 'set'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.9'
+HOMEBREW_VERSION = '0.9.3'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
 def cache
@@ -16,7 +17,7 @@ def cache
     # we do this for historic reasons, however the cache *should* be the same
     # directory whichever user is used and whatever instance of brew is executed
     home_cache = Pathname.new("~/Library/Caches/Homebrew").expand_path
-    if home_cache.directory? and home_cache.writable?
+    if home_cache.directory? and home_cache.writable_real?
       home_cache
     else
       root_cache = Pathname.new("/Library/Caches/Homebrew")
@@ -50,6 +51,7 @@ end
 HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
 HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent # Where .git is found
 HOMEBREW_LIBRARY = HOMEBREW_REPOSITORY/"Library"
+HOMEBREW_CONTRIB = HOMEBREW_REPOSITORY/"Library/Contributions"
 
 # Where we store built products; /usr/local/Cellar if it exists,
 # otherwise a Cellar relative to the Repository.
@@ -85,9 +87,11 @@ module Homebrew extend self
 end
 
 FORMULA_META_FILES = %w[README README.md ChangeLog CHANGES COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
-ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/reporting-bugs"
+ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/bug-fixing-checklist"
 
 unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
   $:.unshift(File.expand_path("#{__FILE__}/../compat"))
   require 'compatibility'
 end
+
+ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(File.expand_path(p)) }

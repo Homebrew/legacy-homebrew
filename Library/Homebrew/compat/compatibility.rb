@@ -34,7 +34,7 @@ def llvm_build
 end
 
 def x11_installed?
-  MacOS.x11_installed?
+  MacOS::X11.installed?
 end
 
 def macports_or_fink_installed?
@@ -91,6 +91,12 @@ class Formula
   def std_cmake_parameters
     "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -DCMAKE_FIND_FRAMEWORK=LAST -Wno-dev"
   end
+
+  class << self
+    def bottle_sha1 val=nil
+      val.nil? ? @bottle_sha1 : @bottle_sha1 = val
+    end
+  end
 end
 
 class UnidentifiedFormula < Formula
@@ -131,7 +137,7 @@ class FailsWithLLVM
     # latest version we have tested against so we will switch to GCC and
     # bump this integer when Xcode 4.3 is released. TODO do that!
     if build.to_i >= 2336
-      if MacOS.xcode_version < "4.2"
+      if MacOS::Xcode.version < "4.2"
         opoo "Formula will not build with LLVM, using GCC"
         ENV.gcc
       else
@@ -150,11 +156,72 @@ class FailsWithLLVM
       that we can update the formula accordingly. Thanks!
       EOS
     puts
-    if MacOS.xcode_version < "4.2"
+    if MacOS::Xcode.version < "4.2"
       puts "If it doesn't work you can: brew install --use-gcc"
     else
       puts "If it doesn't work you can try: brew install --use-clang"
     end
     puts
+  end
+end
+
+module MacOS extend self
+  def xcode_folder
+    Xcode.folder
+  end
+
+  def xcode_prefix
+    Xcode.prefix
+  end
+
+  def xcode_installed?
+    Xcode.installed?
+  end
+
+  def xcode_version
+    Xcode.version
+  end
+
+  def clt_installed?
+    CLT.installed?
+  end
+
+  def clt_version?
+    CLT.version
+  end
+
+  def x11_installed?
+    X11.installed?
+  end
+
+  def x11_prefix
+    X11.prefix
+  end
+
+  def leopard?
+    10.5 == MACOS_VERSION
+  end
+
+  def snow_leopard?
+    10.6 <= MACOS_VERSION # Actually Snow Leopard or newer
+  end
+  alias_method :snow_leopard_or_newer?, :snow_leopard?
+
+  def lion?
+    10.7 <= MACOS_VERSION # Actually Lion or newer
+  end
+  alias_method :lion_or_newer?, :lion?
+
+  def mountain_lion?
+    10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
+  end
+  alias_method :mountain_lion_or_newer?, :mountain_lion?
+end
+
+
+class Version
+  def slice *args
+    opoo "Calling slice on versions is deprecated, use: to_s.slice"
+    to_s.slice *args
   end
 end

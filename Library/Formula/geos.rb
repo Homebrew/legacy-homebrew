@@ -1,9 +1,9 @@
 require 'formula'
 
 class Geos < Formula
-  url 'http://download.osgeo.org/geos/geos-3.3.4.tar.bz2'
-  homepage 'http://trac.osgeo.org/geos/'
-  sha1 '2ec4be729c851460daf89d0d2ab785be5ef4c5c5'
+  homepage 'http://trac.osgeo.org/geos'
+  url 'http://download.osgeo.org/geos/geos-3.3.5.tar.bz2'
+  sha1 '791e2b36a9a6114c7f213fae3fc995960c35a428'
 
   def install
     # fixes compile error: missing symbols being optimized out using llvm.

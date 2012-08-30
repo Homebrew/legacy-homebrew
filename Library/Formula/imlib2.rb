@@ -6,9 +6,9 @@ class Imlib2 < Formula
   md5 '859e5fede51ec819f4314eee11da3ea5'
 
   depends_on 'pkg-config' => :build
+  depends_on :x11 # for Freetype
 
   def install
-    ENV.x11 # For freetype
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-amd64=no"

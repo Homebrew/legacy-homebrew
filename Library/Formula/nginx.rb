@@ -2,28 +2,24 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.2.1.tar.gz'
-  sha1 '4fb69411f6c3ebb5818005955a085e891e77b2d8'
+  url 'http://nginx.org/download/nginx-1.2.3.tar.gz'
+  sha1 '98059ae08ebbfaaead868128f7b66ebce16be9af'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.3.1.tar.gz'
-    sha1 '36a4147799e303a6f19cd8ff9fb52c2fc07a840d'
+    url 'http://nginx.org/download/nginx-1.3.5.tar.gz'
+    sha1 'ce0245295f23a54f10d916eb6b7b34469d0618a1'
   end
 
   depends_on 'pcre'
+
+  option 'with-passenger', 'Compile with support for Phusion Passenger module'
+  option 'with-webdav', 'Compile with support for WebDAV module'
 
   skip_clean 'logs'
 
   # Changes default port to 8080
   def patches
     DATA
-  end
-
-  def options
-    [
-      ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
-    ]
   end
 
   def passenger_config_args
@@ -43,14 +39,15 @@ class Nginx < Formula
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
-            "--with-cc-opt='-I#{HOMEBREW_PREFIX}/include'",
-            "--with-ld-opt='-L#{HOMEBREW_PREFIX}/lib'",
+            "--with-ipv6",
+            "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
+            "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/nginx/nginx.lock"]
 
-    args << passenger_config_args if ARGV.include? '--with-passenger'
-    args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    args << passenger_config_args if build.include? 'with-passenger'
+    args << "--with-http_dav_module" if build.include? 'with-webdav'
 
     system "./configure", *args
     system "make"
@@ -90,14 +87,12 @@ class Nginx < Formula
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
-    <true/>
+    <false/>
     <key>UserName</key>
     <string>#{`whoami`.chomp}</string>
     <key>ProgramArguments</key>
     <array>
         <string>#{HOMEBREW_PREFIX}/sbin/nginx</string>
-        <string>-g</string>
-        <string>daemon off;</string>
     </array>
     <key>WorkingDirectory</key>
     <string>#{HOMEBREW_PREFIX}</string>

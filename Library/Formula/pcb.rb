@@ -1,14 +1,14 @@
 require 'formula'
 
 class Pcb < Formula
-  homepage 'http://pcb.gpleda.org/'
+  homepage 'http://pcb.geda-project.org/'
   url 'http://downloads.sourceforge.net/project/pcb/pcb/pcb-20110918/pcb-20110918.tar.gz'
   version '20110908'
-  md5 '54bbc997eeb22b85cf21fed54cb8e181'
+  sha1 '53ca27797d4db65a068b56f157e3ea6c5c29051f'
 
-  head 'git://git.gpleda.org/pcb.git'
+  head 'git://git.geda-project.org/pcb.git'
 
-  depends_on "automake" => :build if MacOS.xcode_version >= "4.3"
+  depends_on :automake
   depends_on 'pkg-config' => :build
   depends_on 'intltool'
   depends_on 'gettext'
@@ -16,6 +16,7 @@ class Pcb < Formula
   depends_on 'gd'
   depends_on 'glib'
   depends_on 'gtkglext'
+  depends_on :x11
 
   # See comments in intltool formula
   depends_on 'XML::Parser' => :perl
@@ -25,9 +26,7 @@ class Pcb < Formula
   end
 
   def install
-    ENV.x11
-
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

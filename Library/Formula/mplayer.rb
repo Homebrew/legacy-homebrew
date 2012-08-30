@@ -7,9 +7,12 @@ class Mplayer < Formula
 
   head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
 
+  option 'with-x', 'Build with X11 support'
+
   depends_on 'pkg-config' => :build
   depends_on 'yasm' => :build
   depends_on 'xz' => :build
+  depends_on :x11 if build.include? 'with-x'
 
   fails_with :clang do
     build 211
@@ -19,7 +22,7 @@ class Mplayer < Formula
   def patches
     # When building SVN, configure prompts the user to pull FFmpeg from git.
     # Don't do that.
-    DATA if ARGV.build_head?
+    DATA if build.head?
   end
 
   def install
@@ -35,10 +38,20 @@ class Mplayer < Formula
     # we disable cdparanoia because homebrew's version is hacked to work on OS X
     # and mplayer doesn't expect the hacks we apply. So it chokes.
     # Specify our compiler to stop ffmpeg from defaulting to gcc.
-    system './configure', "--prefix=#{prefix}",
-                          "--cc=#{ENV.cc}",
-                          "--host-cc=#{ENV.cc}",
-                          "--disable-cdparanoia"
+    # Disable openjpeg because it defines int main(), which hides mplayer's main().
+    # This issue was reported upstream against openjpeg 1.5.0:
+    # http://code.google.com/p/openjpeg/issues/detail?id=152
+    args = %W[
+      --prefix=#{prefix}
+      --cc=#{ENV.cc}
+      --host-cc=#{ENV.cc}
+      --disable-cdparanoia
+      --disable-libopenjpeg
+    ]
+
+    args << "--disable-x11" unless build.include? 'with-x'
+
+    system "./configure", *args
     system "make"
     system "make install"
   end

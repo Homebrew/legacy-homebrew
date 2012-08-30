@@ -6,7 +6,8 @@ class Multitail < Formula
   sha1 '66b2d603ca8f053b43419046a3cbbba8e470c24b'
 
   def install
-    system "env", "DESTDIR=#{prefix}", "make", "-f", "makefile.macosx", "multitail"
+    ENV['DESTDIR'] = prefix
+    system "make", "-f", "makefile.macosx", "multitail"
 
     bin.install "multitail"
     man1.install gzip("multitail.1")

@@ -16,14 +16,15 @@ class Scantailor < Formula
   depends_on 'boost'
   depends_on 'jpeg'
   depends_on 'libtiff'
+  depends_on :x11
 
   fails_with :clang do
-    build 318
+    build 421
     cause "calling a private constructor of class 'mcalc::Mat<double>'"
   end
 
   def install
-    system "cmake", ".", "-DPNG_INCLUDE_DIR=/usr/X11/include", *std_cmake_args
+    system "cmake", ".", "-DPNG_INCLUDE_DIR=#{MacOS::X11.include}", *std_cmake_args
     system "make install"
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Z < Formula
   homepage 'https://github.com/rupa/z'
-  url 'https://github.com/rupa/z/tarball/v1.1'
-  md5 '75125fba5be0638dafd2518489d2faf2'
+  url 'https://github.com/rupa/z/tarball/v1.3'
+  sha1 '5c7b959fa4599ddde1e18cf5ffb048e1e3284140'
 
   head 'https://github.com/rupa/z.git'
 
@@ -26,4 +26,3 @@ class Z < Formula
     EOS
   end
 end
-

@@ -1,10 +1,10 @@
 require 'formula'
 
 class Mp3gain < Formula
-  url 'http://downloads.sourceforge.net/project/mp3gain/mp3gain/1.5.1/mp3gain-1_5_1-src.zip'
-  version "1.5.1"
   homepage 'http://mp3gain.sourceforge.net'
-  md5 '71a43bd183bc2a2c37fbf4a633ffb7aa'
+  url 'https://sourceforge.net/projects/mp3gain/files/mp3gain/1.5.2/mp3gain-1_5_2_r2-src.zip'
+  version '1.5.2'
+  sha1 'cc7de597861803ac55199b8093c84f86fb5807f1'
 
   def install
     system "make"

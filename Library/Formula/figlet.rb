@@ -14,8 +14,8 @@ end
 
 class Figlet < Formula
   homepage 'http://www.figlet.org'
-  url 'ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-2.2.4.tar.gz'
-  md5 'ea048d8d0b56f9c58e55514d4eb04203'
+  url 'ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-2.2.5.tar.gz'
+  sha1 'dda696958c161bd71d6590152c94c4f705415727'
 
   def install
     share_fonts = share+"figlet/fonts"

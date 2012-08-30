@@ -2,17 +2,12 @@ require 'formula'
 
 class Xdelta < Formula
   homepage 'http://xdelta.org'
-  url 'http://xdelta.googlecode.com/files/xdelta3.0.0.tar.gz'
-  sha1 'c9e54fd8dbd9f2e77ead17be9d00e0b8af109024'
-
-  fails_with :clang do
-    build 318
-    cause "Undefined symbols for architecture x86_64: \"_xd3_source_eof\""
-  end
+  url 'http://xdelta.googlecode.com/files/xdelta3-3.0.3.tar.gz'
+  sha1 '4dfffc52a77a507edfac226d0e4716e35eaa68be'
 
   def install
-    system "make"
-    bin.install "xdelta3"
-    man1.install "xdelta3.1"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make install"
   end
 end

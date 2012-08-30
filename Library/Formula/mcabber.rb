@@ -17,9 +17,9 @@ class Mcabber < Formula
   depends_on 'aspell' if ARGV.include? '--enable-aspell'
   depends_on 'enchant' if ARGV.include? '--enable-enchant'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   def options
@@ -40,7 +40,8 @@ class Mcabber < Formula
     end
 
     args = ["--disable-debug", "--disable-dependency-tracking",
-            "--prefix=#{prefix}", "--enable-otr"]
+            "--prefix=#{prefix}",
+            "--enable-otr"]
 
     args << "--enable-aspell" if ARGV.include? "--enable-aspell"
     args << "--enable-enchant" if ARGV.include? "--enable-enchant"
@@ -51,12 +52,11 @@ class Mcabber < Formula
     (share+'mcabber').install %w[mcabberrc.example contrib]
   end
 
-  def caveats
-    <<-EOS.undent
-      A configuration file is necessary to start mcabber.  The template is here:
-          #{share}/mcabber/mcabberrc.example
-      And there is a Getting Started Guide you will need to setup Mcabber:
-          http://wiki.mcabber.com/index.php/Getting_started
+  def caveats; <<-EOS.undent
+    A configuration file is necessary to start mcabber.  The template is here:
+      #{share}/mcabber/mcabberrc.example
+    And there is a Getting Started Guide you will need to setup Mcabber:
+      http://wiki.mcabber.com/index.php/Getting_started
     EOS
   end
 end

@@ -1,9 +1,5 @@
 require 'formula'
 
-def valgrind?
-  ARGV.include? '--with-valgrind'
-end
-
 class RBashCompletion < Formula
   # This is the same script that Debian packages use.
   url 'http://rcompletion.googlecode.com/svn-history/r28/trunk/bash_completion/R', :using => :curl
@@ -13,25 +9,23 @@ end
 
 class R < Formula
   homepage 'http://www.r-project.org'
-  url 'http://cran.r-project.org/src/base/R-2/R-2.15.0.tar.gz'
-  md5 '905f638990492618559202cc1e48a867'
+  url 'http://cran.r-project.org/src/base/R-2/R-2.15.1.tar.gz'
+  sha1 'f0e6912be6dfc0d1fdc4be66048304d8befe8424'
+
+  head 'https://svn.r-project.org/R/trunk'
+
+  option 'with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger'
 
   depends_on 'readline'
   depends_on 'libtiff'
   depends_on 'jpeg'
+  depends_on :x11
 
-  depends_on 'valgrind' if valgrind?
-
-  def options
-    [
-      ['--with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger.']
-    ]
-  end
+  depends_on 'valgrind' if build.include? 'with-valgrind'
 
   def install
-    ENV.Og if valgrind?
+    ENV.Og if build.include? 'with-valgrind'
     ENV.fortran
-    ENV.x11 # So PNG gets added to the x11 and cairo plotting devices
 
     args = [
       "--prefix=#{prefix}",
@@ -39,7 +33,10 @@ class R < Formula
       "--enable-R-framework",
       "--with-lapack"
     ]
-    args << '--with-valgrind-instrumentation=2' if valgrind?
+    args << '--with-valgrind-instrumentation=2' if build.include? 'with-valgrind'
+
+    # Pull down recommended packages if building from HEAD.
+    system './tools/rsync-recommended' if build.head?
 
     system "./configure", *args
     system "make"

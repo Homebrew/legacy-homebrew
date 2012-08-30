@@ -2,13 +2,13 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/stable_updates/libvirt-0.9.11.3.tar.gz'
-  sha256 'aa73b329d2f6eb200991b9dc378d4636c15cd2f95ca224995d01b45257584fa2'
+  url 'http://libvirt.org/sources/stable_updates/libvirt-0.9.11.4.tar.gz'
+  sha256 'f3e16a62dff9720e1541da5561f448853e9821baa4622a0064dc28589eebed45'
 
   # Latest (roughly) monthly release.
   devel do
-    url 'http://libvirt.org/sources/libvirt-0.9.12.tar.gz'
-    sha256 '298ffc7f2a6d6e78aae46f11a0980f4bc17fa2928f5de6cd9e8abaf5990336e7'
+    url 'http://libvirt.org/sources/libvirt-0.10.0.tar.gz'
+    sha256 '3c06dae7bf0e3c7b29d7f4f68503a2b1222ca41fc38e29ade4113b915f77f65c'
   end
 
   depends_on "gnutls"

@@ -8,6 +8,7 @@ ABS__FILE__=File.expand_path(__FILE__)
 
 $:.push(File.expand_path(__FILE__+'/../..'))
 require 'extend/pathname'
+require 'extend/string'
 require 'exceptions'
 require 'utils'
 
@@ -24,7 +25,7 @@ HOMEBREW_CURL_ARGS = '-fsLA'
 MACOS_VERSION=10.6
 
 (HOMEBREW_PREFIX+'Library/Formula').mkpath
-Dir.chdir HOMEBREW_PREFIX
+
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 # Test fixtures and files can be found relative to this path
@@ -52,4 +53,33 @@ def shutup
   end
 end
 
+unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
+  $:.unshift(File.expand_path("#{ABS__FILE__}/../../compat"))
+  require 'compatibility'
+end
+
 require 'test/unit' # must be after at_exit
+
+require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
+ARGV.extend(HomebrewArgvExtension)
+
+require 'extend/ENV'
+ENV.extend(HomebrewEnvExtension)
+
+module VersionAssertions
+  def version v
+    Version.new(v)
+  end
+
+  def assert_version_equal expected, actual
+    assert_equal Version.new(expected), actual
+  end
+
+  def assert_version_detected expected, url
+    assert_equal expected, Version.parse(url).to_s
+  end
+
+  def assert_version_nil url
+    assert_nil Version.parse(url)
+  end
+end

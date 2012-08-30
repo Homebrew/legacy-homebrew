@@ -62,8 +62,8 @@ end
 
 class Libzdb < Formula
   homepage 'http://tildeslash.com/libzdb/'
-  url 'http://tildeslash.com/libzdb/dist/libzdb-2.10.2.tar.gz'
-  md5 '7fc43cd79131eb989e8732f1c52b1bb6'
+  url 'http://tildeslash.com/libzdb/dist/libzdb-2.10.5.tar.gz'
+  md5 'ff44923fd53925155dc630d53a6d4708'
 
   depends_on PostgresInstalled.new unless no_postgresql?
   depends_on MySqlInstalled.new    unless no_mysql?

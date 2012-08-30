@@ -21,7 +21,7 @@ module Homebrew extend self
   end
 
   def github_fork
-    if which 'git'
+    if which 'git' and (HOMEBREW_REPOSITORY/".git").directory?
       if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
         $2
       end
@@ -49,17 +49,27 @@ module Homebrew extend self
   def info_formula f
     exec 'open', github_info(f) if ARGV.flag? '--github'
 
-    puts "#{f.name} #{f.version}"
+    specs = []
+    stable = "stable #{f.stable.version}" if f.stable
+    stable += " (bottled)" if f.bottle and MacOS.bottles_supported?
+    specs << stable if stable
+    specs << "devel #{f.devel.version}" if f.devel
+    specs << "HEAD" if f.head
+
+    puts "#{f.name}: #{specs*', '}"
+
     puts f.homepage
 
     if f.keg_only?
       puts
       puts "This formula is keg-only."
-      puts f.keg_only?
+      puts f.keg_only_reason
       puts
     end
 
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
+    conflicts = f.conflicts.map { |c| c.formula }
+    puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
       kegs = f.rack.children
@@ -80,9 +90,13 @@ module Homebrew extend self
     history = github_info(f)
     puts history if history
 
-    the_caveats = (f.caveats || "").strip
-    unless the_caveats.empty?
-      puts
+    unless f.build.empty?
+      require 'cmd/options'
+      ohai "Options"
+      Homebrew.dump_options_for_formula f
+    end
+
+    unless f.caveats.to_s.strip.empty?
       ohai "Caveats"
       puts f.caveats
     end

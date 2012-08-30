@@ -9,11 +9,10 @@ class Netpbm < Formula
 
   depends_on "libtiff"
   depends_on "jasper"
+  depends_on :libpng
 
   def install
-    ENV.x11 # For PNG
-
-    if ARGV.build_head?
+    if build.head?
       system "cp", "config.mk.in", "config.mk"
       config = "config.mk"
     else

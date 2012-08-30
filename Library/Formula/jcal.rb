@@ -5,11 +5,8 @@ class Jcal < Formula
   url 'http://download.savannah.gnu.org/releases/jcal/jcal-0.4.1.tar.gz'
   md5 'd4f94ee612494cd0ab0cf1f537aaa33b'
 
-  if MacOS.xcode_version >= "4.3"
-    # when and if the tarball provides configure, remove autogen.sh and these deps
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on :automake
+  depends_on :libtool
 
   def install
     system "/bin/sh autogen.sh"

@@ -19,7 +19,8 @@ class Luciddb < Formula
     cd libexec/'install' do
       # install.sh just sets Java classpaths and writes them to bin/classpath.gen.
       # This is why we run it /after/ copying all the files to #{libexec}.
-      system "export JAVA_HOME=\"#{java_home}\" && ./install.sh"
+      ENV['JAVA_HOME'] = java_home
+      system "./install.sh"
     end
     Dir["#{libexec}/bin/*"].each do |b|
       next if b =~ /classpath.gen/ or b =~ /defineFarragoRuntime/

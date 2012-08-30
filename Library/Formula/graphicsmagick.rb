@@ -29,6 +29,7 @@ class Graphicsmagick < Formula
 
   head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
 
+  depends_on :x11
   depends_on 'jpeg'
   depends_on 'libwmf' if use_wmf?
   depends_on 'libtiff' => :optional
@@ -55,8 +56,6 @@ class Graphicsmagick < Formula
   end
 
   def install
-    ENV.x11
-
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
 

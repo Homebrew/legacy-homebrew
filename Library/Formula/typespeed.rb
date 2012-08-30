@@ -7,8 +7,8 @@ class Typespeed < Formula
 
   def install
     # Fix the hardcoded gcc.
-    inreplace 'src/Makefile.in', 'gcc', "#{ENV.cc}"
-    inreplace 'testsuite/Makefile.in', 'gcc', "#{ENV.cc}"
+    inreplace 'src/Makefile.in', 'gcc', ENV.cc
+    inreplace 'testsuite/Makefile.in', 'gcc', ENV.cc
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
