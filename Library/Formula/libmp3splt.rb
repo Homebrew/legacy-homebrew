@@ -6,10 +6,7 @@ class Libmp3splt < Formula
   md5 '848817d1d980729aec99bbc62caddd76'
 
   # Linking fails on 10.6 (and lower?) without a duplicate libtool; see #10350
-  unless MacOS.lion?
-    depends_on 'libtool' => :build
-  end
-
+  depends_on 'libtool' => :build
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'pcre'

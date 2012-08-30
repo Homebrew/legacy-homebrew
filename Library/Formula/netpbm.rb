@@ -12,7 +12,7 @@ class Netpbm < Formula
   depends_on :libpng
 
   def install
-    if ARGV.build_head?
+    if build.head?
       system "cp", "config.mk.in", "config.mk"
       config = "config.mk"
     else

@@ -177,61 +177,6 @@ module HomebrewEnvExtension
     @compiler = :clang
   end
 
-  def fortran
-    if self['FC']
-      ohai "Building with an alternative Fortran compiler. This is unsupported."
-      self['F77'] = self['FC'] unless self['F77']
-
-      if ARGV.include? '--default-fortran-flags'
-        flags_to_set = []
-        flags_to_set << 'FCFLAGS' unless self['FCFLAGS']
-        flags_to_set << 'FFLAGS' unless self['FFLAGS']
-
-        flags_to_set.each {|key| self[key] = cflags}
-
-        # Ensure we use architecture optimizations for GCC 4.2.x
-        set_cpu_flags flags_to_set, 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
-      elsif not self['FCFLAGS'] or self['FFLAGS']
-        opoo <<-EOS.undent
-          No Fortran optimization information was provided.  You may want to consider
-          setting FCFLAGS and FFLAGS or pass the `--default-fortran-flags` option to
-          `brew install` if your compiler is compatible with GCC.
-
-          If you like the default optimization level of your compiler, ignore this
-          warning.
-        EOS
-      end
-
-    elsif `/usr/bin/which gfortran`.chomp.size > 0
-      ohai <<-EOS.undent
-        Using Homebrew-provided fortran compiler.
-        This may be changed by setting the FC environment variable.
-        EOS
-      self['FC'] = `/usr/bin/which gfortran`.chomp
-      self['F77'] = self['FC']
-
-      fc_flag_vars.each {|key| self[key] = cflags}
-      # Ensure we use architecture optimizations for GCC 4.2.x
-      set_cpu_flags fc_flag_vars, 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
-
-    else
-      onoe <<-EOS
-This formula requires a fortran compiler, but we could not find one by
-looking at the FC environment variable or searching your PATH for `gfortran`.
-Please take one of the following actions:
-
-  - Decide to use the build of gfortran 4.2.x provided by Homebrew using
-        `brew install gfortran`
-
-  - Choose another Fortran compiler by setting the FC environment variable:
-        export FC=/path/to/some/fortran/compiler
-    Using an alternative compiler may produce more efficient code, but we will
-    not be able to provide support for build errors.
-      EOS
-      exit 1
-    end
-  end
-
   def remove_macosxsdk v=MacOS.version
     # Clear all lib and include dirs from CFLAGS, CPPFLAGS, LDFLAGS that were
     # previously added by macosxsdk
@@ -333,28 +278,6 @@ Please take one of the following actions:
     remove_from_cflags '-Qunused-arguments'
   end
 
-  # Snow Leopard defines an NCURSES value the opposite of most distros
-  # See: http://bugs.python.org/issue6848
-  def ncurses_define
-    append 'CPPFLAGS', "-DNCURSES_OPAQUE=0"
-  end
-
-  # Shortcuts for reading common flags
-  def cc;      self['CC'] or "gcc";  end
-  def cxx;     self['CXX'] or "g++"; end
-  def cflags;  self['CFLAGS'];       end
-  def cxxflags;self['CXXFLAGS'];     end
-  def cppflags;self['CPPFLAGS'];     end
-  def ldflags; self['LDFLAGS'];      end
-
-  # Shortcuts for lists of common flags
-  def cc_flag_vars
-    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
-  end
-  def fc_flag_vars
-    %w{FCFLAGS FFLAGS}
-  end
-
   def m64
     append_to_cflags '-m64'
     append 'LDFLAGS', '-arch x86_64'
@@ -374,49 +297,6 @@ Please take one of the following actions:
       # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
       replace_in_cflags(/-march=\S*/, '-Xarch_i386 \0') if Hardware.is_32_bit?
     end
-  end
-
-  def prepend key, value, separator = ' '
-    # Value should be a string, but if it is a pathname then coerce it.
-    value = value.to_s
-
-    [*key].each do |key|
-      unless self[key].to_s.empty?
-        self[key] = value + separator + self[key]
-      else
-        self[key] = value
-      end
-    end
-  end
-
-  def append key, value, separator = ' '
-    # Value should be a string, but if it is a pathname then coerce it.
-    value = value.to_s
-
-    [*key].each do |key|
-      unless self[key].to_s.empty?
-        self[key] = self[key] + separator + value
-      else
-        self[key] = value
-      end
-    end
-  end
-
-  def append_to_cflags f
-    append cc_flag_vars, f
-  end
-
-  def remove key, value
-    [*key].each do |key|
-      next if self[key].nil?
-      self[key] = self[key].sub value, '' # can't use sub! on ENV
-      self[key] = self[key].gsub /\s+/, ' ' # compact whitespace
-      self[key] = nil if self[key].empty? # keep things clean
-    end
-  end
-
-  def remove_from_cflags f
-    remove cc_flag_vars, f
   end
 
   def replace_in_cflags before, after
@@ -491,13 +371,123 @@ Please take one of the following actions:
       Hardware.processor_count
     end
   end
+end
 
+class << ENV
   def remove_cc_etc
     keys = %w{CC CXX LD CPP CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS}
     removed = Hash[*keys.map{ |key| [key, self[key]] }.flatten]
     keys.each do |key|
-      self[key] = nil
+      delete(key)
     end
     removed
   end
+  def cc_flag_vars
+    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
+  end
+  def append_to_cflags newflags
+    append(cc_flag_vars, newflags)
+  end
+  def remove_from_cflags f
+    remove cc_flag_vars, f
+  end
+  def append key, value, separator = ' '
+    value = value.to_s
+    [*key].each do |key|
+      unless self[key].to_s.empty?
+        self[key] = self[key] + separator + value.to_s
+      else
+        self[key] = value.to_s
+      end
+    end
+  end
+  def prepend key, value, separator = ' '
+    [*key].each do |key|
+      unless self[key].to_s.empty?
+        self[key] = value.to_s + separator + self[key]
+      else
+        self[key] = value.to_s
+      end
+    end
+  end
+  def prepend_path key, path
+    prepend key, path, ':' if File.directory? path
+  end
+  def remove key, value
+    [*key].each do |key|
+      next unless self[key]
+      self[key] = self[key].sub(value, '')
+      delete(key) if self[key].to_s.empty?
+    end if value
+  end
+  def cc; self['CC'] or "cc"; end
+  def cxx; self['CXX'] or "c++"; end
+  def cflags; self['CFLAGS']; end
+  def cxxflags;self['CXXFLAGS']; end
+  def cppflags;self['CPPFLAGS']; end
+  def ldflags; self['LDFLAGS']; end
+
+  # Snow Leopard defines an NCURSES value the opposite of most distros
+  # See: http://bugs.python.org/issue6848
+  def ncurses_define
+    append 'CPPFLAGS', "-DNCURSES_OPAQUE=0"
+  end
+
+  def fortran
+    fc_flag_vars = %w{FCFLAGS FFLAGS}
+
+    if self['FC']
+      ohai "Building with an alternative Fortran compiler. This is unsupported."
+      self['F77'] = self['FC'] unless self['F77']
+
+      if ARGV.include? '--default-fortran-flags'
+        flags_to_set = []
+        flags_to_set << 'FCFLAGS' unless self['FCFLAGS']
+        flags_to_set << 'FFLAGS' unless self['FFLAGS']
+
+        flags_to_set.each {|key| self[key] = cflags}
+
+        # Ensure we use architecture optimizations for GCC 4.2.x
+        set_cpu_flags flags_to_set, 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
+      elsif not self['FCFLAGS'] or self['FFLAGS']
+        opoo <<-EOS.undent
+          No Fortran optimization information was provided.  You may want to consider
+          setting FCFLAGS and FFLAGS or pass the `--default-fortran-flags` option to
+          `brew install` if your compiler is compatible with GCC.
+
+          If you like the default optimization level of your compiler, ignore this
+          warning.
+        EOS
+      end
+
+    elsif `/usr/bin/which gfortran`.chomp.size > 0
+      ohai <<-EOS.undent
+        Using Homebrew-provided fortran compiler.
+        This may be changed by setting the FC environment variable.
+        EOS
+      self['FC'] = `/usr/bin/which gfortran`.chomp
+      self['F77'] = self['FC']
+
+      fc_flag_vars.each {|key| self[key] = cflags}
+      # Ensure we use architecture optimizations for GCC 4.2.x
+      set_cpu_flags fc_flag_vars, 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott', :bottle => 'generic'
+
+    else
+      onoe <<-EOS
+This formula requires a fortran compiler, but we could not find one by
+looking at the FC environment variable or searching your PATH for `gfortran`.
+Please take one of the following actions:
+
+  - Decide to use the build of gfortran 4.2.x provided by Homebrew using
+        `brew install gfortran`
+
+  - Choose another Fortran compiler by setting the FC environment variable:
+        export FC=/path/to/some/fortran/compiler
+    Using an alternative compiler may produce more efficient code, but we will
+    not be able to provide support for build errors.
+      EOS
+      exit 1
+    end
+  end
+
 end

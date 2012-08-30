@@ -10,7 +10,7 @@ class Pan < Formula
   depends_on 'gmime'
   depends_on 'intltool'
   depends_on 'enchant' => :optional
-  depends_on 'dbus' => :optional
+  depends_on 'd-bus' => :optional
   depends_on 'gnutls' => :optional
 
   def install

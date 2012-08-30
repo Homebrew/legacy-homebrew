@@ -3,7 +3,7 @@ require 'formula'
 class Ctags < Formula
   homepage 'http://ctags.sourceforge.net/'
   url 'http://downloads.sourceforge.net/ctags/ctags-5.8.tar.gz'
-  md5 'c00f82ecdcc357434731913e5b48630d'
+  sha1 '482da1ecd182ab39bbdc09f2f02c9fba8cd20030'
 
   head 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
 
@@ -15,6 +15,8 @@ class Ctags < Formula
   end
 
   def install
+    # See https://trac.macports.org/changeset/93604
+    ENV.O1
     if build.head?
       system "autoheader"
       system "autoconf"

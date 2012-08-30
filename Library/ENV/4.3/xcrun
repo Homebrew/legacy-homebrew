@@ -1,0 +1,12 @@
+#!/bin/bash
+# This wrapper because 4.3 xcrun doesn't work with CLT-only configurations
+# But many build-systems expect it to work. This fixes that.
+# NOTE only works if they call xcrun without a full-path. Cross your fingers!
+
+if [ $HOMEBREW_SDKROOT ]; then
+  exec /usr/bin/xcrun "$@"
+else
+  cmd="$1"
+  shift
+  exec "/usr/bin/$cmd" "$@"
+fi

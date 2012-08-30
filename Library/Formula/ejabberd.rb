@@ -8,19 +8,15 @@ class Ejabberd < Formula
   depends_on "openssl" if MacOS.leopard?
   depends_on "erlang"
 
-  def options
-    [
-      ['--odbc', "Build with ODBC support."],
-      ['--32-bit', "Build 32-bit only."]
-    ]
-  end
+  option "32-bit"
+  option 'with-odbc', "Build with ODBC support"
 
   def install
     ENV['TARGET_DIR'] = ENV['DESTDIR'] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"
     ENV['MAN_DIR'] = man
     ENV['SBIN_DIR'] = sbin
 
-    if ARGV.build_32_bit?
+    if build.build_32_bit?
       %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
         ENV.remove compiler_flag, "-arch x86_64"
         ENV.append compiler_flag, "-arch i386"
@@ -37,7 +33,7 @@ class Ejabberd < Formula
         args << "--with-openssl=#{openssl.prefix}"
       end
 
-      args << "--enable-odbc" if ARGV.include? '--odbc'
+      args << "--enable-odbc" if build.include? 'with-odbc'
 
       system "./configure", *args
       system "make"

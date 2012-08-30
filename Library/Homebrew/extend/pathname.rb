@@ -189,8 +189,12 @@ class Pathname
     when /^\xFD7zXZ\x00/ then :xz
     when /^Rar!/         then :rar
     else
-      # Assume it is not an archive
-      nil
+      # This code so that bad-tarballs and zips produce good error messages
+      # when they don't unarchive properly.
+      case extname
+        when ".tar.gz", ".tgz", ".tar.bz2", ".tbz" then :tar
+        when ".zip" then :zip
+      end
     end
   end
 
