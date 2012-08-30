@@ -1,4 +1,4 @@
-#!/usr/bin/ruby -W0
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 #TODO make it work with homebrew/dupes/gcc
 #TODO? If we find -mmacosx-version-min=10.8, change sdkroot? warn visibly if no such SDK?
 #TODO fix pkg-config files, should point to /usr/local or /usr/local/opt
