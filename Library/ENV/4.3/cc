@@ -95,6 +95,10 @@ class Cmd
            '-pedantic', '-pedantic-errors'
       when /^-W.*/
         args << arg if arg =~ /^-Wl,/
+      when '-macosx_version_min', '-dylib_install_name'
+        args << "-Wl,#{arg},#{whittler.next}"
+      when '-dylib'
+        args << "-Wl,#{arg}"
       when /^-I(.+)/
         # it is okay to add a space after the -I; so let's support it
         path = $1.chuzzle || whittler.next
