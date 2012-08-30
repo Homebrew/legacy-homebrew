@@ -36,10 +36,7 @@ class Clisp < Formula
       # Multiple -O options will be in the generated Makefile,
       # make Homebrew's the last such option so it's effective.
       inreplace "Makefile" do |s|
-        cf = s.get_make_var("CFLAGS")
-        cf.gsub! ENV['CFLAGS'], ''
-        cf += ' '+ENV['CFLAGS']
-        s.change_make_var! 'CFLAGS', cf
+        s.change_make_var! 'CFLAGS', "#{s.get_make_var('CFLAGS')} #{ENV['CFLAGS']}"
       end
 
       # The ulimit must be set, otherwise `make` will fail and tell you to do so
