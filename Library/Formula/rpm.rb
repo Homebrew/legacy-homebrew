@@ -17,11 +17,13 @@ class RpmDownloadStrategy < CurlDownloadStrategy
 end
 
 class Rpm < Formula
-  url 'http://rpm5.org/files/rpm/rpm-5.4/rpm-5.4.9-0.20120508.src.rpm',
+  #url 'http://rpm5.org/files/rpm/rpm-5.4/rpm-5.4.9-0.20120508.src.rpm',
+  #  :using => RpmDownloadStrategy
+  url 'http://rpm5.org/files/rpm/rpm-5.4/rpm-5.4.10-0.20120706.src.rpm',
     :using => RpmDownloadStrategy
 
   homepage 'http://www.rpm5.org/'
-  md5 '60d56ace884340c1b3fcac6a1d58e768'
+  sha1 '20e5cc7e29ff45b6c5378dbe8ae4af4d1b217971'
   version '5.4.9'
 
   depends_on 'db'
@@ -51,7 +53,7 @@ class Rpm < Formula
     ]
 
     system 'glibtoolize -if' # needs updated ltmain.sh
-    system "./configure", *args
+    system "CC=gcc ./configure", *args
     system "make"
     system "make install"
 
