@@ -7,6 +7,7 @@ module MacOS::Xcode extend self
 
   # Locate the "current Xcode folder" via xcode-select. See:
   # man xcode-select
+  # NOTE!! use Xcode.prefix rather than this generally!
   def folder
     @folder ||= `xcode-select -print-path 2>/dev/null`.strip
   end
@@ -31,7 +32,7 @@ module MacOS::Xcode extend self
 
   def prefix
     @prefix ||= begin
-      path = Pathname.new folder
+      path = Pathname.new(folder)
       if path.absolute? and (path/'usr/bin/make').executable?
         path
       elsif File.executable? '/Developer/usr/bin/make'
