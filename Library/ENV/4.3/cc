@@ -15,6 +15,13 @@ require 'set'
 def cccfg? flags
   flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
 end
+def servile?
+  # we are servile when we are called from configure etc.
+  # * we give the callee the tools it asks for
+  # * we leave ARGV alone
+  # when callee is make we optimize and force HOMEBREW_CC
+  not cccfg? 'O'
+end
 def nclt?
   $sdkroot != nil
 end
@@ -29,12 +36,12 @@ end
 
 class Cmd
   def initialize path, args
-    @cmd = path.basename.freeze
+    @arg0 = path.basename.freeze
     @args = args.freeze
   end
   def mode
-    if @cmd == 'cpp' or @cmd == 'ld'
-      @cmd.to_sym
+    if @arg0 == 'cpp' or @arg0 == 'ld'
+      @arg0.to_sym
     elsif @args.include? '-c'
       :cc
     elsif @args.include? '-E'
@@ -44,25 +51,25 @@ class Cmd
     end
   end
   def tool
-    @tool ||= if @cmd.include? '++'
+    @tool ||= if servile? or @arg0 == 'ld'
+      @arg0
+    elsif @arg0.include? '++'
       if ENV['HOMEBREW_CC'].chuzzle =~ /gcc/
         'g++'
       else
         'clang++'
       end
-    elsif @cmd == 'ld'
-      'ld'
     else
       ENV['HOMEBREW_CC'].chuzzle or 'clang'
     end
   end
   def args
-    args = if cccfg? 'O' and tool != 'ld'
-      refurbished_args
-    else
+    args = if servile? or tool == 'ld'
       @args.dup
+    else
+      refurbished_args
     end
-    if @cmd != 'ld'
+    if tool != 'ld'
       args.unshift("--sysroot=#$sdkroot")
     else
       args.unshift($sdkroot).unshift("-syslibroot")
@@ -152,7 +159,7 @@ class Cmd
 end
 
 ####################################################################### sanity
-abort "The build-tool has reset ENV. --lame-env required." unless ENV['HOMEBREW_BREW_FILE']
+abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
 
 ######################################################################### main
 cmd = Cmd.new($0, ARGV)
