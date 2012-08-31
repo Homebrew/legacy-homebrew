@@ -51,6 +51,7 @@ class << ENV
     ENV['CMAKE_FRAMEWORK_PATH'] = "#{MacOS.sdk_path}/System/Library/Frameworks" if MacSystem.xcode43_without_clt?
     ENV['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
     ENV['ACLOCAL_PATH'] = determine_aclocal_path
+    ENV['VERBOSE'] = '1' if ARGV.verbose?
   end
 
   def universal_binary
