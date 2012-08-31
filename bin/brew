@@ -76,6 +76,11 @@ begin
   cmd = ARGV.shift
   cmd = aliases[cmd] if aliases[cmd]
 
+  if cmd == '-c1'
+    cmd = '--config'
+    ARGV.unshift('-1')
+  end
+
   # Add example external commands to PATH before checking.
   ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/cmds"
   if which "brew-#{cmd}"
