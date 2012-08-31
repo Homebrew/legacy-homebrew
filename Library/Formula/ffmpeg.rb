@@ -45,6 +45,7 @@ class Ffmpeg < Formula
   depends_on 'libass' if build.include? 'with-libass'
   depends_on 'openjpeg' if build.include? 'with-openjpeg'
   depends_on 'sdl' if build.include? 'with-ffplay'
+  depends_on 'speex' if build.include? 'with-speex'
 
   def install
     args = ["--prefix=#{prefix}",
@@ -74,6 +75,7 @@ class Ffmpeg < Formula
     args << "--enable-libass" if build.include? 'with-libass'
     args << "--enable-libopenjpeg" if build.include? 'with-openjpeg'
     args << "--enable-ffplay" if build.include? 'with-ffplay'
+    args << "--enable-libspeex" if build.include? 'with-speex'
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
