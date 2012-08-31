@@ -9,6 +9,7 @@ class Monetdb < Formula
 
   depends_on 'pcre'
   depends_on 'readline' # Compilation fails with libedit.
+  depends_on 'pkg-config'
 
   def install
     system "./bootstrap" if build.head?
