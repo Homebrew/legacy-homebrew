@@ -43,8 +43,6 @@ class Ghostscript < Formula
 
   def install
     ENV.deparallelize
-    # ghostscript configure ignores LDFLAGs apparently
-    ENV['LIBS'] = "-L#{MacOS::X11.lib}" if MacOS::X11.installed?
 
     src_dir = build.head? ? "gs" : "."
 
@@ -56,6 +54,7 @@ class Ghostscript < Formula
         --disable-compile-inits
         --disable-gtk
         --with-system-libtiff
+        --without-x
       ]
 
       if build.head?
