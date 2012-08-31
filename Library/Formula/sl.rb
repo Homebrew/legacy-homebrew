@@ -11,7 +11,7 @@ class Sl < Formula
   end
 
   def install
-    system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
+    system "make -e"
     bin.install "sl"
     man1.install "sl.1"
   end
