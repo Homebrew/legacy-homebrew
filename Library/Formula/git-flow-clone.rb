@@ -8,7 +8,6 @@ class GitFlowClone < Formula
   depends_on 'git-flow'
 
   def install
-    puts "prefix is #{prefix}"
     system "make", "prefix=#{prefix}", "install"
   end
 
