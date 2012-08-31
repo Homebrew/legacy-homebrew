@@ -4,7 +4,24 @@
 # NOTE only works if they call xcrun without a full-path. Cross your fingers!
 
 if [ $HOMEBREW_SDKROOT ]; then
-  exec /usr/bin/xcrun "$@"
+  arg0="$1"
+  shift
+
+  path=$(/usr/bin/xcrun -find $arg0)
+  [ -x "$path" ] && exec "$path" "$@"
+
+  # Nuts, Xcode is not setup properly or something.
+  # Try to find the tools anyway!
+  path="/Applications/Xcode.app/Contents/Developer/usr/bin/$arg0"
+  [ -x "$path" ] && exec "$path" "$@"
+  path="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/$arg0"
+  [ -x "$path" ] && exec "$path" "$@"
+
+  echo "Your Xcode setup is not ready. You need to either:"
+  echo "    sudo xcode-select -switch /path/to/Xcode.app"
+  echo "or:"
+  echo "    xcodebuild -license"
+  exit 1
 else
   cmd="$1"
   shift
