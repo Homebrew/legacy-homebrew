@@ -11,14 +11,14 @@ require 'macos'
 # 7) Simpler formula that *just work*
 # 8) Build-system agnostic configuration of the tool-chain
 
-def superenv_bin
+def superbin
   @bin ||= (HOMEBREW_REPOSITORY/"Library/ENV").children.reject{|d| d.basename.to_s > MacOS::Xcode.version }.max
 end
 
 def superenv?
   not MacOS::Xcode.bad_xcode_select_path? and # because xcrun won't work
   not MacOS::Xcode.folder.nil? and # because xcrun won't work
-  superenv_bin and superenv_bin.directory? and
+  superbin and superbin.directory? and
   not ARGV.include? "--env=std"
 end
 
@@ -97,7 +97,7 @@ class << ENV
   end
 
   def determine_path
-    paths = [superenv_bin]
+    paths = [superbin]
     if MacSystem.xcode43_without_clt?
       paths << "#{MacSystem.xcode43_developer_dir}/usr/bin"
       paths << "#{MacSystem.xcode43_developer_dir}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
@@ -156,9 +156,11 @@ class << ENV
 
   def determine_cccfg
     s = ""
+    s << 'b' if ARGV.build_bottle?
     # Fix issue with sed barfing on unicode characters on Mountain Lion
     s << 's' if MacOS.mountain_lion?
-    s << 'b' if ARGV.build_bottle?
+    # Fix issue with 10.8 apr-1-config having broken paths
+    s << 'a' if MacOS.cat == :mountainlion
     s
   end
 
