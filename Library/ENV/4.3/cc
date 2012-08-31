@@ -96,7 +96,7 @@ class Cmd
         whittler.next
       when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
            /^-march=.+/, /^-mtune=.+/, '-m64', '-m32',
-           /^-O[0-9zs]/, '-fast',
+           /^-O[0-9zs]?/, '-fast',
            %r{^-[IL]/opt/local}, %r{^-[IL]/sw},    # no macports/fink
            %r{^-[IL]/usr/X11}, %r{^-[IL]/opt/X11}, # we add X11 ourselves
            '-pedantic', '-pedantic-errors'
