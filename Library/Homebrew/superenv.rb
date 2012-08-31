@@ -28,7 +28,7 @@ class << ENV
   alias_method :x11?, :x11
 
   def reset
-    %w{CC CXX LD CPP OBJC MAKE
+    %w{CC CXX CPP OBJC MAKE
       CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
       MACOS_DEPLOYMENT_TARGET SDKROOT
       CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH}.
@@ -40,11 +40,7 @@ class << ENV
 
   def setup_build_environment
     reset
-    ENV['CC'] = 'cc'
-    ENV['CXX'] = 'c++'
-    ENV['LD'] = 'ld'
-    ENV['CPP'] = 'cpp'
-    ENV['MAKE'] = 'make'
+    ENV['LD'] = 'cc'
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
@@ -104,14 +100,15 @@ class << ENV
     paths << HOMEBREW_PREFIX/:bin
     paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
+    paths += ORIGINAL_PATHS.map{|pn| pn.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
     paths.to_path_s
   end
 
   def determine_pkg_config_path
     paths  = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/lib/pkgconfig" }
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/pkgconfig" }
-    paths << "#{HOMEBREW_REPOSITORY}/lib/pkgconfig"
-    paths << "#{HOMEBREW_REPOSITORY}/share/pkgconfig"
+    paths << "#{HOMEBREW_PREFIX}/lib/pkgconfig"
+    paths << "#{HOMEBREW_PREFIX}/share/pkgconfig"
     # we put our paths before X because we dupe some of the X libraries
     paths << "#{MacSystem.x11_prefix}/lib/pkgconfig" << "#{MacSystem.x11_prefix}/share/pkgconfig" if x11?
     # Mountain Lion no longer ships some .pcs; ensure we pick up our versions
@@ -183,16 +180,13 @@ class << ENV
   end
   alias_method :j1, :deparallelize
   def gcc
-    ENV['CC'] = "gcc"
-    ENV['CXX'] = "g++"
+    ENV['HOMEBREW_CC'] = "gcc"
   end
   def llvm
-    ENV['CC'] = "llvm-gcc"
-    ENV['CXX'] = "llvm-g++"
+    ENV['HOMEBREW_CC'] = "llvm-gcc"
   end
   def clang
-    ENV['CC'] = "clang"
-    ENV['CXX'] = "clang++"
+    ENV['HOMEBREW_CC'] = "clang"
   end
   def make_jobs
     ENV['MAKEFLAGS'] =~ /-\w*j(\d)+/
@@ -213,7 +207,7 @@ end
 
 class Array
   def to_path_s
-    map(&:to_s).select{|s| s and File.directory? s }.join(':').chuzzle
+    map(&:to_s).uniq.select{|s| File.directory? s }.join(':').chuzzle
   end
 end
 
