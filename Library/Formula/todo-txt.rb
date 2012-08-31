@@ -14,11 +14,8 @@ class TodoTxt < Formula
   end
 
   def caveats; <<-EOS.undent
-    To configure, copy the default config to your home and edit it:
+    To configure, copy the default config to your HOME and edit it:
       cp #{prefix}/todo.cfg ~/.todo.cfg
-
-    Bash completion has been installed to:
-      #{etc}/bash_completion.d
     EOS
   end
 end

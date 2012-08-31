@@ -7,6 +7,8 @@ class Mpd < Formula
 
   head "git://git.musicpd.org/master/mpd.git"
 
+  option "lastfm", "Compile with experimental support for Last.fm radio"
+
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libid3tag'
@@ -20,12 +22,8 @@ class Mpd < Formula
   depends_on 'libmms' => :optional
   depends_on 'libzzip' => :optional
 
-  def options
-    [["--lastfm", "Compile with experimental support for Last.fm radio"]]
-  end
-
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
 
     # make faad.h findable (when brew is used elsewhere than /usr/local/)
     ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
@@ -39,7 +37,7 @@ class Mpd < Formula
             "--enable-zip",
             "--enable-lame-encoder"]
     args << "--disable-curl" if MacOS.leopard?
-    args << "--enable-lastfm" if ARGV.include?("--lastfm")
+    args << "--enable-lastfm" if build.include?("lastfm")
 
     system "./configure", *args
     system "make install"

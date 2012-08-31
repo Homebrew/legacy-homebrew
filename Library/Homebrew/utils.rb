@@ -217,7 +217,7 @@ def inreplace path, before=nil, after=nil
 end
 
 def ignore_interrupts
-  std_trap = trap("INT") {}
+  std_trap = trap("INT") { puts "One sec, just cleaning up" }
   yield
 ensure
   trap("INT", std_trap)

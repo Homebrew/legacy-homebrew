@@ -7,14 +7,15 @@ module Homebrew extend self
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
     ARGV.named.each do |name|
-      msg = blacklisted? name
-      raise "No available formula for #{name}\n#{msg}" if msg
+      # if a formula has been tapped ignore the blacklisting
+      if not File.file? HOMEBREW_REPOSITORY/"Library/Formula/#{name}.rb"
+        msg = blacklisted? name
+        raise "No available formula for #{name}\n#{msg}" if msg
+      end
     end unless ARGV.force?
 
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      # note we only abort if Homebrew is *not* installed as sudo and the user
-      # calls brew as root. The fix is to chown brew to root.
-      abort "Cowardly refusing to `sudo brew install'"
+      raise "Cowardly refusing to `sudo brew install'\n#{SUDO_BAD_ERRMSG}"
     end
 
     install_formulae ARGV.formulae
@@ -30,8 +31,8 @@ module Homebrew extend self
   end
 
   def check_writable_install_location
-    raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable?
-    raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable? or HOMEBREW_PREFIX.to_s == '/usr/local'
+    raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable_real?
+    raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable_real? or HOMEBREW_PREFIX.to_s == '/usr/local'
   end
 
   def check_xcode

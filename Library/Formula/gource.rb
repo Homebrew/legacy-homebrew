@@ -24,6 +24,12 @@ class Gource < Formula
   depends_on 'sdl'
   depends_on 'sdl_image'
 
+  def patches
+    # Fix for API change in boost 1.50.0; can be removed in next version
+    # http://code.google.com/p/gource/issues/detail?id=162
+    "https://github.com/acaudwell/Gource/commit/408371e10f931e2330ff94bd7291b5d1c8c80e9b.patch"
+  end
+
   def install
     # For non-/usr/local installs
     ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"

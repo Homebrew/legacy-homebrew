@@ -7,7 +7,7 @@ class Disktype < Formula
 
   # Fixes faulty Mac OS version checking
   def patches
-    DATA if ARGV.build_head?
+    DATA
   end
 
   def install

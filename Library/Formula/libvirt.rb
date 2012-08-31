@@ -7,8 +7,8 @@ class Libvirt < Formula
 
   # Latest (roughly) monthly release.
   devel do
-    url 'http://libvirt.org/sources/libvirt-0.9.13.tar.gz'
-    sha256 'd124e9915c88c195da9c008a6d855e53e555dca5816052e163dda61388359d5b'
+    url 'http://libvirt.org/sources/libvirt-0.10.0.tar.gz'
+    sha256 '3c06dae7bf0e3c7b29d7f4f68503a2b1222ca41fc38e29ade4113b915f77f65c'
   end
 
   depends_on "gnutls"

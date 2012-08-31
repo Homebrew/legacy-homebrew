@@ -34,7 +34,7 @@ def llvm_build
 end
 
 def x11_installed?
-  MacOS::XQuartz.installed?
+  MacOS::X11.installed?
 end
 
 def macports_or_fink_installed?
@@ -191,10 +191,37 @@ module MacOS extend self
   end
 
   def x11_installed?
-    XQuartz.installed?
+    X11.installed?
   end
 
   def x11_prefix
-    XQuartz.prefix
+    X11.prefix
+  end
+
+  def leopard?
+    10.5 == MACOS_VERSION
+  end
+
+  def snow_leopard?
+    10.6 <= MACOS_VERSION # Actually Snow Leopard or newer
+  end
+  alias_method :snow_leopard_or_newer?, :snow_leopard?
+
+  def lion?
+    10.7 <= MACOS_VERSION # Actually Lion or newer
+  end
+  alias_method :lion_or_newer?, :lion?
+
+  def mountain_lion?
+    10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
+  end
+  alias_method :mountain_lion_or_newer?, :mountain_lion?
+end
+
+
+class Version
+  def slice *args
+    opoo "Calling slice on versions is deprecated, use: to_s.slice"
+    to_s.slice *args
   end
 end

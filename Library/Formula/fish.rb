@@ -8,15 +8,17 @@ class Fish < Formula
   head 'git://gitorious.org/fish-shell/fish-shell.git'
 
   # Indeed, the head build always builds documentation
-  depends_on 'doxygen' => :build if ARGV.build_head?
-  depends_on :autoconf if ARGV.build_head?
+  depends_on 'doxygen' => :build if build.head?
+  depends_on :autoconf if build.head?
   depends_on 'readline'
   skip_clean 'share/doc'
+
+  conflicts_with "fishfish"
 
   def patches
     p = []
 
-    unless ARGV.build_head?
+    unless build.head?
       # Reduces the timeout in select_try() from 5s to 10ms.
       # The old timeout would cause fish to frequently freeze for a 5
       # second period.
@@ -25,7 +27,7 @@ class Fish < Formula
   end
 
   def install
-    system "autoconf" if ARGV.build_head?
+    system "autoconf" if build.head?
     system "./configure", "--prefix=#{prefix}", "--without-xsel"
     system "make install"
   end

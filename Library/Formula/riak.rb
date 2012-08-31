@@ -3,21 +3,19 @@ require 'formula'
 class Riak < Formula
   homepage 'http://wiki.basho.com/Riak.html'
 
-  if Hardware.is_64_bit? and not ARGV.build_32_bit?
-    url 'http://downloads.basho.com/riak/riak-1.1.4/riak-1.1.4-osx-x86_64.tar.gz'
-    version '1.1.4-x86_64'
-    sha256 '7a9d402616ce2dbff2030aff96ac93756b8fe67f4e02fbbe1f1ed812b013da87'
+  if Hardware.is_64_bit? and not build.build_32_bit?
+    url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.2/1.2.0/osx/10.4/riak-1.2.0-osx-x86_64.tar.gz'
+    version '1.2.0-x86_64'
+    sha256 '5681d37377a5efe3553efc2efc1fce81e26168252dc130f7b40d2b6cfa1da9e4'
   else
-    url 'http://downloads.basho.com/riak/riak-1.1.4/riak-1.1.4-osx-i386.tar.gz'
-    version '1.1.4-i386'
-    sha256 'bde5fec665d758754f47353592875791fda054bc4b71acee44a62e4915853abc'
+    url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.2/1.2.0/osx/10.4/riak-1.2.0-osx-i386.tar.gz'
+    version '1.2.0-i386'
+    sha256 '6af3497fe0918809a8dfcb0e63d70a60b782a66645a59db7dd3e76391f63b33f'
   end
 
   skip_clean :all
 
-  def options
-    [['--32-bit', 'Build 32-bit only.']]
-  end
+  option '32-bit'
 
   def install
     libexec.install Dir['*']

@@ -136,8 +136,12 @@ class MachOPathnameTests < Test::Unit::TestCase
 end
 
 class TextExecutableTests < Test::Unit::TestCase
+  def teardown
+    (HOMEBREW_PREFIX/'foo_script').unlink
+  end
+
   def test_simple_shebang
-    pn = Pathname.new('foo')
+    pn = HOMEBREW_PREFIX/'foo_script'
     pn.write '#!/bin/sh'
     assert !pn.universal?
     assert !pn.i386?
@@ -153,7 +157,7 @@ class TextExecutableTests < Test::Unit::TestCase
   end
 
   def test_shebang_with_options
-    pn = Pathname.new('bar')
+    pn = HOMEBREW_PREFIX/'foo_script'
     pn.write '#! /usr/bin/perl -w'
     assert !pn.universal?
     assert !pn.i386?
@@ -169,7 +173,7 @@ class TextExecutableTests < Test::Unit::TestCase
   end
 
   def test_malformed_shebang
-    pn = Pathname.new('baz')
+    pn = HOMEBREW_PREFIX/'foo_script'
     pn.write ' #!'
     assert !pn.universal?
     assert !pn.i386?

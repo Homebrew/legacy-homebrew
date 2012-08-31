@@ -6,6 +6,8 @@ class Appledoc < Formula
   homepage 'http://appledoc.gentlebytes.com/'
   md5 '142cf80513ca8eda2aba631483b2e4e6'
 
+  depends_on :xcode # For working xcodebuild.
+
   def install
     system "xcodebuild", "-project", "appledoc.xcodeproj",
                          "-target", "appledoc",

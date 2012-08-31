@@ -1,9 +1,12 @@
 require 'formula'
 
 class Graylog2Server < Formula
-  url 'https://github.com/downloads/Graylog2/graylog2-server/graylog2-server-0.9.6.tar.gz'
   homepage 'http://www.graylog2.org/'
-  md5 'c04257c0617555b8fec1580fbfa9ba5a'
+  url 'https://github.com/downloads/Graylog2/graylog2-server/graylog2-server-0.9.6.tar.gz'
+  sha1 '2c4d62ccf638d3d9526551b577c035c7f87a6789'
+
+  depends_on 'elasticsearch'
+  depends_on 'mongodb'
 
   def install
     mv "graylog2.conf.example", "graylog2.conf"
@@ -34,14 +37,14 @@ class Graylog2Server < Formula
       non-root user, the default syslog_listen_port is set to 8514.
 
       If this is your first install, automatically load on login with:
-          mkdir -p ~/Library/LaunchAgents
-          cp #{plist_path} ~/Library/LaunchAgents/
-          launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+        mkdir -p ~/Library/LaunchAgents
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
       If this is an upgrade and you already have the #{plist_path.basename} loaded:
-          launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-          cp #{plist_path} ~/Library/LaunchAgents/
-          launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
       Or to manage graylog2-server without launchd:
 

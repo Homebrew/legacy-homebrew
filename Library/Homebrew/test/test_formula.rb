@@ -6,11 +6,11 @@ class AbstractDownloadStrategy
 end
 
 class MostlyAbstractFormula < Formula
-  @url=''
-  @homepage = 'http://example.com/'
+  url ''
 end
 
 class FormulaTests < Test::Unit::TestCase
+  include VersionAssertions
 
   def test_prefix
     nostdout do
@@ -66,7 +66,7 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal 'http://example.com', f.homepage
     assert_equal 'file:///foo.com/testball-0.1.tbz', f.url
     assert_equal 1, f.mirrors.length
-    assert_equal '0.1', f.version
+    assert_version_equal '0.1', f.version
     assert_equal f.stable, f.active_spec
     assert_equal CurlDownloadStrategy, f.download_strategy
     assert_instance_of CurlDownloadStrategy, f.downloader
@@ -122,50 +122,21 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal 1, f.devel.mirrors.length
     assert f.head.mirrors.empty?
 
-    assert !f.stable.explicit_version?
-    assert !f.bottle.explicit_version?
-    assert !f.devel.explicit_version?
-    assert_equal '0.1', f.stable.version
-    assert_equal '0.1', f.bottle.version
-    assert_equal '0.2', f.devel.version
-    assert_equal 'HEAD', f.head.version
+    assert f.stable.version.detected_from_url?
+    assert f.bottle.version.detected_from_url?
+    assert f.devel.version.detected_from_url?
+    assert_version_equal '0.1', f.stable.version
+    assert_version_equal '0.1', f.bottle.version
+    assert_version_equal '0.2', f.devel.version
+    assert_version_equal 'HEAD', f.head.version
     assert_equal 0, f.bottle.revision
-  end
-
-  def test_ancient_formula_specs
-    f = AncientSpecTestBall.new
-
-    assert_equal 'http://example.com', f.homepage
-    assert_equal 'file:///foo.com/testball-0.1.tbz', f.url
-    assert_equal '0.1', f.version
-    assert_equal f.stable, f.active_spec
-    assert_equal CurlDownloadStrategy, f.download_strategy
-    assert_instance_of CurlDownloadStrategy, f.downloader
-
-    assert_instance_of SoftwareSpec, f.stable
-    assert_instance_of HeadSoftwareSpec, f.head
-
-    assert_equal 'file:///foo.com/testball-0.1.tbz', f.stable.url
-    assert_equal 'https://github.com/mxcl/homebrew.git', f.head.url
-
-    assert_nil f.stable.specs
-    assert_equal({ :tag => 'foo' }, f.head.specs)
-
-    assert_instance_of Checksum, f.stable.checksum
-    assert_nil f.head.checksum
-    assert_equal :md5, f.stable.checksum.hash_type
-    assert_match /[0-9a-fA-F]{32}/, f.stable.checksum.hexdigest
-
-    assert !f.stable.explicit_version?
-    assert_equal '0.1', f.stable.version
-    assert_equal 'HEAD', f.head.version
   end
 
   def test_devel_active_spec
     ARGV.push '--devel'
     f = SpecTestBall.new
     assert_equal f.devel, f.active_spec
-    assert_equal '0.2', f.version
+    assert_version_equal '0.2', f.version
     assert_equal 'file:///foo.com/testball-0.2.tbz', f.url
     assert_equal CurlDownloadStrategy, f.download_strategy
     assert_instance_of CurlDownloadStrategy, f.downloader
@@ -176,7 +147,7 @@ class FormulaTests < Test::Unit::TestCase
     ARGV.push '--HEAD'
     f = SpecTestBall.new
     assert_equal f.head, f.active_spec
-    assert_equal 'HEAD', f.version
+    assert_version_equal 'HEAD', f.version
     assert_equal 'https://github.com/mxcl/homebrew.git', f.url
     assert_equal GitDownloadStrategy, f.download_strategy
     assert_instance_of GitDownloadStrategy, f.downloader
@@ -185,11 +156,11 @@ class FormulaTests < Test::Unit::TestCase
 
   def test_explicit_version_spec
     f = ExplicitVersionSpecTestBall.new
-    assert_equal '0.3', f.version
-    assert_equal '0.3', f.stable.version
-    assert_equal '0.4', f.devel.version
-    assert f.stable.explicit_version?
-    assert f.devel.explicit_version?
+    assert_version_equal '0.3', f.version
+    assert_version_equal '0.3', f.stable.version
+    assert_version_equal '0.4', f.devel.version
+    assert !f.stable.version.detected_from_url?
+    assert !f.devel.version.detected_from_url?
   end
 
   def test_old_bottle_specs
@@ -211,9 +182,9 @@ class FormulaTests < Test::Unit::TestCase
       assert_nil f.bottle.md5
       assert_nil f.bottle.sha256
 
-      assert !f.bottle.explicit_version?
+      assert f.bottle.version.detected_from_url?
       assert_equal 0, f.bottle.revision
-      assert_equal '0.1', f.bottle.version
+      assert_version_equal '0.1', f.bottle.version
     else
       assert_nil f.bottle
     end
@@ -233,7 +204,7 @@ class FormulaTests < Test::Unit::TestCase
     assert_nil f.devel
 
     assert_equal f.head, f.active_spec
-    assert_equal 'HEAD', f.version
+    assert_version_equal 'HEAD', f.version
     assert_nil f.head.checksum
     assert_equal 'https://github.com/mxcl/homebrew.git', f.url
     assert_equal GitDownloadStrategy, f.download_strategy
@@ -250,7 +221,7 @@ class FormulaTests < Test::Unit::TestCase
     assert_nil f.devel
 
     assert_equal f.head, f.active_spec
-    assert_equal 'HEAD', f.version
+    assert_version_equal 'HEAD', f.version
     assert_nil f.head.checksum
     assert_equal 'https://github.com/mxcl/homebrew.git', f.url
     assert_equal GitDownloadStrategy, f.download_strategy
@@ -267,7 +238,7 @@ class FormulaTests < Test::Unit::TestCase
     assert_nil f.devel
 
     assert_equal f.head, f.active_spec
-    assert_equal 'HEAD', f.version
+    assert_version_equal 'HEAD', f.version
     assert_nil f.head.checksum
     assert_equal 'https://github.com/mxcl/homebrew.git', f.url
     assert_equal GitDownloadStrategy, f.download_strategy
@@ -306,5 +277,12 @@ class FormulaTests < Test::Unit::TestCase
       when :lion then 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
       when :mountainlion then '8badf00d8badf00d8badf00d8badf00d8badf00d'
       end, f.bottle.checksum.hexdigest
+  end
+
+  def test_custom_version_scheme
+    f = CustomVersionSchemeTestBall.new
+
+    assert_version_equal '1.0', f.version
+    assert_instance_of CustomVersionScheme, f.version
   end
 end

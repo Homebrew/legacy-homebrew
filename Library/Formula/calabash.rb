@@ -2,8 +2,8 @@ require 'formula'
 
 class Calabash < Formula
   homepage 'http://xmlcalabash.com'
-  url 'http://xmlcalabash.com/download/calabash-1.0.2-94.zip'
-  md5 '76e3c709ce013ab77f5e09bb8a41bd5b'
+  url 'http://xmlcalabash.com/download/calabash-1.0.3-94.zip'
+  sha1 '4f8329f2fc9cac1b03f161219a1a1b9987ac7ecf'
   head 'https://github.com/ndw/xmlcalabash1.git'
 
   depends_on 'saxon'

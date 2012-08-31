@@ -9,13 +9,13 @@ class Trafficserver < Formula
 
   depends_on 'pcre'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
 
   def install
-    system "autoreconf -i" if ARGV.build_head?
+    system "autoreconf -i" if build.head?
 
     # Needed for correct ./configure detections.
     ENV.enable_warnings

@@ -22,7 +22,6 @@ class Keg < Pathname
   end
 
   def uninstall
-    chmod_R 0777 # ensure we have permission to delete
     rmtree
     parent.rmdir_if_possible
   end
@@ -43,7 +42,7 @@ class Keg < Pathname
         Find.prune if src.directory?
       end
     end
-    linked_keg_record.unlink if linked_keg_record.exist?
+    linked_keg_record.unlink if linked_keg_record.symlink?
     n
   end
 
@@ -57,6 +56,24 @@ class Keg < Pathname
 
   def linked?
     linked_keg_record.directory? and self == linked_keg_record.realpath
+  end
+
+  def completion_installed? shell
+    dir = case shell
+      when :bash then self/'etc/bash_completion.d'
+      when :zsh then self/'share/zsh/site-functions'
+      end
+    return if dir.nil?
+    dir.directory? and not dir.children.length.zero?
+  end
+
+  def version
+    require 'version'
+    Version.new(basename.to_s)
+  end
+
+  def basename
+    Pathname.new(self.to_s).basename
   end
 
   def link mode=nil
@@ -109,7 +126,25 @@ class Keg < Pathname
 
     linked_keg_record.make_relative_symlink(self) unless mode == :dryrun
 
+    optlink unless mode == :dryrun
+
     return $n + $d
+  rescue Exception
+    opoo "Could not link #{fname}. Unlinking..."
+    unlink
+    raise
+  end
+
+  def optlink
+    from = HOMEBREW_PREFIX/:opt/fname
+    if from.symlink?
+      from.delete
+    elsif from.directory?
+      from.rmdir
+    elsif from.exist?
+      from.delete
+    end
+    from.make_relative_symlink(self)
   end
 
 protected

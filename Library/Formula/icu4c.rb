@@ -7,20 +7,17 @@ class Icu4c < Formula
   md5 'bbc609fe5237202d7abf016141012a45'
 
   bottle do
+    sha1 '9e424ea5de5c5847b8a600078f9494f42d7f6168' => :mountainlion
     sha1 '528b8bec1b821d5503eb98b565840d8a3aeca63e' => :lion
     sha1 'c77579349187ee0cec5842f71aea2a446c770db7' => :snowleopard
   end
 
   keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
 
-  def options
-    [
-      ["--universal", "Build universal binaries."]
-    ]
-  end
+  option :universal
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
     ENV.append "LDFLAGS", "-headerpad_max_install_names"
     args = ["--prefix=#{prefix}", "--disable-samples", "--disable-tests", "--enable-static"]

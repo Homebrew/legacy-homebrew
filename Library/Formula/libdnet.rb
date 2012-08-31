@@ -8,9 +8,7 @@ class Libdnet < Formula
   depends_on :automake
   depends_on :libtool
 
-  def options
-    [['--with-python', 'Build Python module.']]
-  end
+  option 'with-python', 'Build Python module'
 
   def install
     # autoreconf to get '.dylib' extension on shared lib
@@ -22,7 +20,7 @@ class Libdnet < Formula
       --prefix=#{prefix}
       --mandir=#{man}
     ]
-    args << "--with-python" if ARGV.include? "--with-python"
+    args << "--with-python" if build.include? "with-python"
     system "./configure", *args
     system "make install"
   end

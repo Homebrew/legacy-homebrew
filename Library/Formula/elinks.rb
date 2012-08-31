@@ -13,7 +13,7 @@ class Elinks < Formula
     md5 '92790144290131ac5e63b44548b45e08'
   end
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -30,7 +30,7 @@ class Elinks < Formula
   def install
     ENV.deparallelize
     ENV.delete('LD')
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--without-spidermonkey"
     system "make install"
   end

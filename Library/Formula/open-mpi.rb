@@ -5,11 +5,12 @@ class OpenMpi < Formula
   url 'http://www.open-mpi.org/software/ompi/v1.6/downloads/openmpi-1.6.tar.bz2'
   sha1 '8b81eea712bb8f8120468003b5f29baecedf2367'
 
-  # Reported upstream at version 1.6 here:
+  # Reported upstream at version 1.6, both issues
   # http://www.open-mpi.org/community/lists/devel/2012/05/11003.php
+  # http://www.open-mpi.org/community/lists/devel/2012/08/11362.php
   fails_with :clang do
-    build 318
-    cause 'fails make check'
+    build 421
+    cause 'fails make check on Lion and does not compile on ML'
   end
 
   def options

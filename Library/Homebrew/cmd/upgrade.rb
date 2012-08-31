@@ -1,4 +1,3 @@
-require 'cmd/outdated'
 require 'cmd/install'
 
 class Fixnum
@@ -18,10 +17,13 @@ module Homebrew extend self
     Homebrew.perform_preinstall_checks
 
     outdated = if ARGV.named.empty?
+      require 'cmd/outdated'
       Homebrew.outdated_brews
     else
       ARGV.formulae.select do |f|
-        unless f.rack.exist? and not f.rack.children.empty?
+        if f.installed?
+          onoe "#{f}-#{f.installed_version} already installed"
+        elsif not f.rack.exist? or f.rack.children.empty?
           onoe "#{f} not installed"
         else
           true
@@ -29,16 +31,16 @@ module Homebrew extend self
       end
     end
 
-    unless ARGV.include? '--ignore-dependencies'
-      # Expand the outdated list to include outdated dependencies then sort and
-      # reduce such that dependencies are installed first and installation is not
-      # attempted twice. Sorting is implicit the way `recursive_deps` returns
-      # root dependencies at the head of the list and `uniq` keeps the first
-      # element it encounters and discards the rest.
-      outdated.map!{ |f| f.recursive_deps.reject{ |d| d.installed?} << f }
+    # Expand the outdated list to include outdated dependencies then sort and
+    # reduce such that dependencies are installed first and installation is not
+    # attempted twice. Sorting is implicit the way `recursive_deps` returns
+    # root dependencies at the head of the list and `uniq` keeps the first
+    # element it encounters and discards the rest.
+    ARGV.filter_for_dependencies do
+      outdated.map!{ |f| f.recursive_deps.reject{ |d| d.installed? } << f }
       outdated.flatten!
       outdated.uniq!
-    end
+    end unless ARGV.ignore_deps?
 
     if outdated.length > 1
       oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
