@@ -100,7 +100,6 @@ class << ENV
     paths << HOMEBREW_PREFIX/:bin
     paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
-    paths += ORIGINAL_PATHS.map{|pn| pn.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
     paths.to_path_s
   end
 
