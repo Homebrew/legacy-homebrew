@@ -6,6 +6,7 @@ class Groonga < Formula
   sha1 'a012a86d03e193f2ab029de2f1e09aa5f0e52bcf'
 
   depends_on 'msgpack'
+  depends_on 'pcre'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--with-zlib"
