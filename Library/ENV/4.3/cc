@@ -147,17 +147,9 @@ class Cmd
   end
   def make_fuss args
     dels = @args - args
-    if ENV['VERBOSE']
-      adds = args - @args
-      puts "brew: Superenv removed: #{dels*' '}" unless dels.empty?
-      puts "brew: Superenv added: #{adds*' '}" unless adds.empty?
-    else
-      %w{CPPFLAGS LDFLAGS CXXFLAGS CFLAGS}.each do |flag|
-        next unless ENV[flag]
-        flags = dels.select{|del| ENV[flag].include? del }.join(' ')
-        puts "brew: superenv removed `#{flags}' from #{flag}" unless flags.empty?
-      end
-    end
+    adds = args - @args
+    puts "brew: Superenv removed: #{dels*' '}" unless dels.empty?
+    puts "brew: Superenv added: #{adds*' '}" unless adds.empty?
   end
 end
 
