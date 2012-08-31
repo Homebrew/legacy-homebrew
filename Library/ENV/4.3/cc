@@ -135,7 +135,9 @@ class Cmd
     end
   end
   def ldflags
-    cmake_prefixes.map{|prefix| "#{prefix}/lib" }.to_flags('-L')
+    libs = cmake_prefixes.map{|prefix| "#{prefix}/lib" }
+    libs += ENV['CMAKE_LIBRARY_PATH'].split(':')
+    libs.to_flags('-L')
   end
   def cppflags
     all = cmake_prefixes.map{|prefix| "#{prefix}/include" }

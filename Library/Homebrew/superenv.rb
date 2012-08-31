@@ -51,6 +51,7 @@ class << ENV
     ENV['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     ENV['CMAKE_FRAMEWORK_PATH'] = "#{MacOS.sdk_path}/System/Library/Frameworks" if MacSystem.xcode43_without_clt?
     ENV['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
+    ENV['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     ENV['ACLOCAL_PATH'] = determine_aclocal_path
     ENV['VERBOSE'] = '1' if ARGV.verbose?
   end
@@ -135,8 +136,15 @@ class << ENV
     paths << "#{MacSystem.x11_prefix}/include/freetype2" if x11?
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     # TODO prolly shouldn't always do this?
-    paths << "#{sdk}/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7" if MacSystem.xcode43_without_clt?
+    paths << "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7" if MacSystem.xcode43_without_clt?
+    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/"
     paths.to_path_s
+  end
+
+  def determine_cmake_library_path
+    sdk = MacOS.sdk_path if MacSystem.xcode43_without_clt?
+    # things expect to find GL headers since X11 used to be a default, so we add them
+    %W{#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries}.to_path_s
   end
 
   def determine_aclocal_path
