@@ -208,6 +208,26 @@ class << ENV
     [$1.to_i, 1].max
   end
 
+  # Many formula assume that CFLAGS etc. will not be nil.
+  # This should be a safe hack to prevent that exception cropping up.
+  # Main consqeuence of this is that ENV['CFLAGS'] is never nil even when it
+  # is which can break if checks, but we don't do such a check in our code.
+  def [] key
+    if has_key? key
+      fetch(key)
+    elsif %w{CPPFLAGS CFLAGS LDFLAGS}.include? key
+      class << (a = "")
+        attr :key, true
+        def + value
+          ENV[key] = value
+        end
+        alias_method '<<', '+'
+      end
+      a.key = key
+      a
+    end
+  end
+
 end if superenv?
 
 
