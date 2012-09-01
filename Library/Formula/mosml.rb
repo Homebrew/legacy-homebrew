@@ -11,13 +11,12 @@ class Mosml < Formula
 
     inreplace "Makefile.inc" do |s|
       s.change_make_var! 'MOSMLHOME', prefix
-      s.gsub! '/lib/cpp', '/usr/bin/cpp'
       s.change_make_var! 'DOCDIR', doc
       s.change_make_var! 'LIBDIR', lib+'mosml'
       s.change_make_var! 'TOOLDIR', lib+'mosml'
     end
 
-    system "make"
+    system "make", "CPP=cpp"
     system "make install"
   end
 end
