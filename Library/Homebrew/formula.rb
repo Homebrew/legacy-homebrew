@@ -464,14 +464,15 @@ protected
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
-    pretty_args.delete "--disable-dependency-tracking" if cmd == "./configure" and not ARGV.verbose?
+    if cmd == "./configure" and not ARGV.verbose?
+      pretty_args.delete "--disable-dependency-tracking"
+      pretty_args.delete "--disable-debug"
+    end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
     removed_ENV_variables = case if args.empty? then cmd.split(' ').first else cmd end
     when "xcodebuild"
       ENV.remove_cc_etc
-    when /^make\b/
-      ENV.append 'HOMEBREW_CCCFG', "O", ''
     end
 
     if ARGV.verbose?
@@ -502,8 +503,6 @@ protected
 
   rescue
     raise BuildError.new(self, cmd, args, $?)
-  ensure
-    ENV['HOMEBREW_CCCFG'] = ENV['HOMEBREW_CCCFG'].delete('O') if ENV['HOMEBREW_CCCFG']
   end
 
 public

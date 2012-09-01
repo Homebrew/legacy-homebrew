@@ -52,17 +52,38 @@ rescue Exception => e
   end
 end
 
-def install f
+def pre_superenv_hacks f
   # TODO replace with Formula DSL
   # Python etc. build but then pip can't build stuff.
   # Scons resets ENV and then can't find superenv's build-tools.
-  stdenvs = %w{fontforge python python3 ruby ruby-enterprise-edition jruby wine}
+  # In some cases we should only apply in the case of an option I suggest the
+  # following:
+  #
+  # option 'with-passenger' do
+  #   env :userpaths  # for superenv
+  # end
+  # option 'without-foo' do
+  #  env :std, :x11
+  # end
+  #
+  # NOTE I think all ENV stuff should be specified with a DSL like this now.
+  case f.name
+  when 'lilypond', 'nginx'
+    paths = ORIGINAL_PATHS.map{|pn| pn.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
+    ENV['PATH'] = "#{ENV['PATH']}:#{paths.join(':')}"
+  end
+  # fontforge needs 10.7 SDK, wine 32 bit, graphviz has mysteriously missing symbols
+  # and ruby/python etc. create gem/pip that then won't work
+  stdenvs = %w{fontforge python python3 ruby ruby-enterprise-edition jruby wine graphviz}
   ARGV.unshift '--env=std' if (stdenvs.include?(f.name) or
     f.recursive_deps.detect{|d| d.name == 'scons' }) and
     not ARGV.include? '--env=super'
+end
 
+def install f
   keg_only_deps = f.recursive_deps.uniq.select{|dep| dep.keg_only? }
 
+  pre_superenv_hacks(f)
   require 'superenv'
 
   ENV.setup_build_environment unless superenv?
@@ -83,7 +104,7 @@ def install f
 
   if superenv?
     ENV.deps = keg_only_deps.map(&:to_s)
-    ENV.x11 = f.requirements.detect{|rq| rq.class == X11Dependency }
+    ENV.x11 = f.recursive_requirements.detect{|rq| rq.class == X11Dependency }
     ENV.setup_build_environment
   end
 

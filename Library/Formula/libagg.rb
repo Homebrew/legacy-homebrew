@@ -11,7 +11,7 @@ class Libagg < Formula
   depends_on 'sdl'
 
   fails_with :clang do
-    build 318
+    build 421
     cause <<-EOS.undent
       AGG tries to return a const reference as a non-const reference, which is
       rejected by clang 3.1 but accepted by gcc

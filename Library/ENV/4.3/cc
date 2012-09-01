@@ -15,6 +15,13 @@ require 'set'
 def cccfg? flags
   flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
 end
+def servile?
+  # we are servile when we are called from configure etc.
+  # * we give the callee the tools it asks for
+  # * we leave ARGV alone
+  # when callee is make we optimize and force HOMEBREW_CC
+  not cccfg? 'O'
+end
 def nclt?
   $sdkroot != nil
 end
@@ -29,12 +36,12 @@ end
 
 class Cmd
   def initialize path, args
-    @cmd = path.basename.freeze
+    @arg0 = path.basename.freeze
     @args = args.freeze
   end
   def mode
-    if @cmd == 'cpp' or @cmd == 'ld'
-      @cmd.to_sym
+    if @arg0 == 'cpp' or @arg0 == 'ld'
+      @arg0.to_sym
     elsif @args.include? '-c'
       :cc
     elsif @args.include? '-E'
@@ -44,29 +51,29 @@ class Cmd
     end
   end
   def tool
-    case @cmd
-      when /gcc/ then 'gcc'
-      when /g\+\+/ then 'g++'
-    when 'clang', 'clang++'
-      @cmd
-    when 'ld', 'cpp', 'cc'
-      ENV['HOMEBREW_CC'].chuzzle or 'clang'
-    when 'c++'
-      case ENV['HOMEBREW_CC']
-        when /gcc/ then 'g++'
-        else 'clang++'
+    @tool ||= if servile? or @arg0 == 'ld'
+      @arg0
+    elsif @arg0.include? '++'
+      if ENV['HOMEBREW_CC'].chuzzle =~ /gcc/
+        'g++'
+      else
+        'clang++'
       end
     else
-      abort "Unknown command: #{@cmd}"
+      ENV['HOMEBREW_CC'].chuzzle or 'clang'
     end
   end
   def args
-    args = if cccfg? 'O'
-      refurbished_args
-    else
+    args = if servile? or tool == 'ld'
       @args.dup
+    else
+      refurbished_args
     end
-    args.unshift("--sysroot=#$sdkroot") if nclt?
+    if tool != 'ld'
+      args.unshift("--sysroot=#$sdkroot")
+    else
+      args.unshift($sdkroot).unshift("-syslibroot")
+    end if nclt?
     case mode
     when :cpp
       %w{-E} + cppflags + args
@@ -89,10 +96,13 @@ class Cmd
         whittler.next
       when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
            /^-march=.+/, /^-mtune=.+/, '-m64', '-m32',
-           /^-O[0-9zs]/, '-fast',
+           /^-O[0-9zs]?/, '-fast',
            %r{^-[IL]/opt/local}, %r{^-[IL]/sw},    # no macports/fink
            %r{^-[IL]/usr/X11}, %r{^-[IL]/opt/X11}, # we add X11 ourselves
            '-pedantic', '-pedantic-errors'
+      when /^-fopenmp/
+        # remove this arg: it fails the build with:
+        #   ld: library not found for -lgomp
       when /^-W.*/
         args << arg if arg =~ /^-Wl,/
       when '-macosx_version_min', '-dylib_install_name'
@@ -110,13 +120,7 @@ class Cmd
         args << arg
       end
     end
-
-    rms = @args - args
-    %w{CPPFLAGS LDFLAGS CXXFLAGS CFLAGS}.each do |flag|
-      unison = ENV[flag].split(' ') & rms
-      puts "Warning! #{unison*' '} removed from #{flag.upcase} by superenv" unless unison.empty?
-    end
-
+    make_fuss(args)
     args
   end
   def cflags
@@ -131,7 +135,9 @@ class Cmd
     end
   end
   def ldflags
-    cmake_prefixes.map{|prefix| "#{prefix}/lib" }.to_flags('-L')
+    libs = cmake_prefixes.map{|prefix| "#{prefix}/lib" }
+    libs += ENV['CMAKE_LIBRARY_PATH'].split(':')
+    libs.to_flags('-L')
   end
   def cppflags
     all = cmake_prefixes.map{|prefix| "#{prefix}/include" }
@@ -141,10 +147,16 @@ class Cmd
     # they override the system options.
     sys.to_flags('-isystem') + opt.to_flags('-I')
   end
+  def make_fuss args
+    dels = @args - args
+    adds = args - @args
+    puts "brew: Superenv removed: #{dels*' '}" unless dels.empty?
+    puts "brew: Superenv added: #{adds*' '}" unless adds.empty?
+  end
 end
 
 ####################################################################### sanity
-abort "The build-tool has reset ENV. --lame-env required." unless ENV['HOMEBREW_BREW_FILE']
+abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
 
 ######################################################################### main
 cmd = Cmd.new($0, ARGV)
