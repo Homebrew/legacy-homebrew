@@ -72,7 +72,9 @@ def pre_superenv_hacks f
     paths = ORIGINAL_PATHS.map{|pn| pn.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
     ENV['PATH'] = "#{ENV['PATH']}:#{paths.join(':')}"
   end
-  stdenvs = %w{fontforge python python3 ruby ruby-enterprise-edition jruby wine}
+  # fontforge needs 10.7 SDK, wine 32 bit, graphviz has mysteriously missing symbols
+  # and ruby/python etc. create gem/pip that then won't work
+  stdenvs = %w{fontforge python python3 ruby ruby-enterprise-edition jruby wine graphviz}
   ARGV.unshift '--env=std' if (stdenvs.include?(f.name) or
     f.recursive_deps.detect{|d| d.name == 'scons' }) and
     not ARGV.include? '--env=super'
