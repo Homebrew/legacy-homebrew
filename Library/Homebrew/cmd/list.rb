@@ -8,7 +8,7 @@ module Homebrew extend self
     # Things below use the CELLAR, which doesn't until the first formula is installed.
     return unless HOMEBREW_CELLAR.exist?
 
-    if ARGV.flag? '--versions'
+    if ARGV.include? '--versions'
       list_versions
     elsif ARGV.named.empty?
       ENV['CLICOLOR'] = nil
