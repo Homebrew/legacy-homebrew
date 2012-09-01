@@ -2,8 +2,10 @@ require 'formula'
 
 class Haxe < Formula
   homepage 'http://haxe.org/'
-  url 'http://haxe.org/file/haxe-2.09-osx.tar.gz'
-  sha1 '64c538b85578ac9adf44b5727a195ca999301c93'
+  url 'http://haxe.org/file/haxe-2.10-osx.tar.gz'
+  sha1 '2e173eb206443c1af739d2b238d89af6d6c4a4ef'
+
+  depends_on 'neko'
 
   def install
     bin.install %w(haxe haxedoc haxelib)
