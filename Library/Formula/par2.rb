@@ -9,12 +9,11 @@ class Par2 < Formula
     :because => "par2 and par2tbb install the same binaries."
 
   def patches
-    "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-arch/par2cmdline/files/par2cmdline-0.4-gcc4.patch?revision=1.1"
-  end
-
-  fails_with :clang do
-    build 318
-    cause "./par2fileformat.h:87:25: error: flexible array member 'entries' of non-POD element type 'FILEVERIFICATIONENTRY []'"
+    [
+      "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-arch/par2cmdline/files/par2cmdline-0.4-gcc4.patch?revision=1.1",
+      # Clang doesn't like variable length arrays of non-POD types.
+      DATA
+    ]
   end
 
   def install
@@ -23,3 +22,18 @@ class Par2 < Formula
     system "make install"
   end
 end
+
+__END__
+diff --git a/par2fileformat.h b/par2fileformat.h
+index 9920b24..248cfaf 100644
+--- a/par2fileformat.h
++++ b/par2fileformat.h
+@@ -84,7 +84,7 @@ struct FILEVERIFICATIONPACKET
+   PACKET_HEADER         header;
+   // Body
+   MD5Hash               fileid;     // MD5hash of file_hash_16k, file_length, file_name
+-  FILEVERIFICATIONENTRY entries[];
++  FILEVERIFICATIONENTRY entries[0];
+ } PACKED;
+ 
+ // The file description packet is used to record the name of the file,
