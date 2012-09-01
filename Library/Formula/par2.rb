@@ -23,3 +23,22 @@ class Par2 < Formula
     system "make install"
   end
 end
+__END__
+
+# Fixes flexible array member 'entries' of non-POD element type
+# https://github.com/mxcl/homebrew/pull/14448
+
+diff --git a/par2fileformat.h b/par2fileformat.h
+index 9920b24..248cfaf 100644
+--- a/par2fileformat.h
++++ b/par2fileformat.h
+@@ -84,7 +84,7 @@ struct FILEVERIFICATIONPACKET
+   PACKET_HEADER         header;
+   // Body
+   MD5Hash               fileid;     // MD5hash of file_hash_16k, file_length, file_name
+-  FILEVERIFICATIONENTRY entries[];
++  FILEVERIFICATIONENTRY entries[0];
+ } PACKED;
+
+ // The file description packet is used to record the name of the file,
+
