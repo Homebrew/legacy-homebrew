@@ -1,15 +1,13 @@
 require 'formula'
 
 class Neko < Formula
-  url 'http://nekovm.org/_media/neko-1.8.1.tar.gz'
+  url 'http://nekovm.org/_media/neko-1.8.2-osx.tar.gz'
   homepage 'http://nekovm.org/'
-  md5 '0e2029465a49e1da929f0e254c017701'
-
-  depends_on 'bdw-gc'
+  sha1 '692217c08f5d039f0d729c98bf65876aae24891b'
 
   def install
-    ENV.deparallelize # parallel build fails
-    system "yes s | make MACOSX=1 INSTALL_PREFIX='#{prefix}'"
-    prefix.install %w{bin libs src}
+    bin.install Dir['*.*']
+    bin.install %w(neko nekoc nekoml nekotools)
+    (include+"neko").install Dir["include/*.h"]
   end
 end
