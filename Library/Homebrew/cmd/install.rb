@@ -37,8 +37,11 @@ module Homebrew extend self
 
   def check_xcode
     require 'cmd/doctor'
-    xcode = Checks.new.check_for_latest_xcode
-    opoo xcode unless xcode.nil?
+    checks = Checks.new
+    %w{check_for_latest_xcode check_xcode_license_approved}.each do |check|
+      out = checks.send(check)
+      opoo out unless out.nil?
+    end
   end
 
   def check_macports

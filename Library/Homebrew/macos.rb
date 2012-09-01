@@ -65,20 +65,17 @@ module MacOS extend self
     end
   end
 
-  def sdk_path v=version
+  def sdk_path(v = version)
     @sdk_path ||= {}
     @sdk_path[v.to_s] ||= begin
-      path = if not Xcode.bad_xcode_select_path? and File.executable? "#{Xcode.folder}/usr/bin/make"
-        `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.strip
-      elsif File.directory? "/Developer/SDKs/MacOS#{v}.sdk"
-        # the old default (or wild wild west style)
-        "/Developer/SDKs/MacOS#{v}.sdk"
-      elsif File.directory? "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-        # Xcode.prefix is pretty smart, so lets look inside to find the sdk
-        "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-      end
-
-      Pathname.new(path) unless path.nil? or path.empty? or not File.directory? path
+      opts = []
+      # First query Xcode itself
+      opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
+      # Xcode.prefix is pretty smart, so lets look inside to find the sdk
+      opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+      # Xcode < 4.3 style
+      opts << "/Developer/SDKs/MacOS#{v}.sdk"
+      opts.map{|a| Pathname.new(a) }.detect(&:directory?)
     end
   end
 
