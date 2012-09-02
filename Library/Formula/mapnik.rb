@@ -7,14 +7,21 @@ class Mapnik < Formula
 
   head 'https://github.com/mapnik/mapnik.git'
 
-  depends_on 'pkg-config' => :build
+  option 'with-cairo', 'Build with Cairo'
+
+  depends_on :freetype
+  depends_on :libpng
   depends_on 'libtiff'
-  depends_on 'jpeg'
   depends_on 'proj'
   depends_on 'icu4c'
+  depends_on 'jpeg'
   depends_on 'boost'
-  depends_on 'cairomm' => :optional
-  depends_on :x11
+
+  if build.include? 'with-cairo'
+    depends_on 'pkg-config' => :build
+    depends_on 'cairo' => :optional
+    depends_on 'cairomm' => :optional
+  end
 
   def install
     icu = Formula.factory("icu4c")
