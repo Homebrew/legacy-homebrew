@@ -13,4 +13,11 @@ class GnustepMake < Formula
   def test
     system "true"
   end
+
+  def caveats; <<-EOS.undent
+    To use GNUStep-make, you need to source it.
+    It is suggested you add the following line to your .profile
+      source #{prefix}/Library/GNUstep/Makefiles/GNUstep.sh
+    EOS
+  end
 end
