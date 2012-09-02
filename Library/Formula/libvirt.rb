@@ -7,9 +7,11 @@ class Libvirt < Formula
 
   # Latest (roughly) monthly release.
   devel do
-    url 'http://libvirt.org/sources/libvirt-0.9.13.tar.gz'
-    sha256 'd124e9915c88c195da9c008a6d855e53e555dca5816052e163dda61388359d5b'
+    url 'http://libvirt.org/sources/libvirt-0.10.1.tar.gz'
+    sha256 '7b179219b92bff35986e2103b2767423d1e9c284052aa81228eae765f01a074d'
   end
+
+  option 'without-libvirtd', 'Build only the virsh client and development libraries'
 
   depends_on "gnutls"
   depends_on "yajl"
@@ -23,10 +25,6 @@ class Libvirt < Formula
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
-  end
-
-  def options
-    [['--without-libvirtd', 'Build only the virsh client and development libraries.']]
   end
 
   def install
@@ -43,7 +41,7 @@ class Libvirt < Formula
             "--with-yajl",
             "--without-qemu"]
 
-    args << "--without-libvirtd" if ARGV.include? '--without-libvirtd'
+    args << "--without-libvirtd" if build.include? 'without-libvirtd'
 
     system "./configure", *args
 
@@ -58,7 +56,7 @@ class Libvirt < Formula
 
     # If the libvirt daemon is built, update its config file to reflect
     # the Homebrew prefix
-    unless ARGV.include? '--without-libvirtd'
+    unless build.include? 'without-libvirtd'
       inreplace "#{etc}/libvirt/libvirtd.conf" do |s|
         s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
         s.gsub! "/var/", "#{HOMEBREW_PREFIX}/var/"

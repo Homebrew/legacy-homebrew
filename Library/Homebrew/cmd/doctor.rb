@@ -849,7 +849,7 @@ def check_git_status
       If this a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
-          cd #{HOMEBREW_REPOSITORY} && git stash
+          cd #{HOMEBREW_REPOSITORY}/Library && git stash && git clean -f
       EOS
     end
   end
@@ -985,6 +985,16 @@ def check_os_version
     end
   end
 end
+
+  def check_xcode_license_approved
+    # If the user installs Xcode-only, they have to approve the
+    # license or no "xc*" tool will work.
+    <<-EOS.undent if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success?
+    You have not agreed to the Xcode license.
+    Builds will fail! Agree to the license by opening Xcode.app or running:
+        xcodebuild -license
+    EOS
+  end
 
 end # end class Checks
 

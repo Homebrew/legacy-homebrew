@@ -15,11 +15,15 @@ class Serf < Formula
 =======
   option :universal
 
-  depends_on :automake
   depends_on :libtool
+
+  def apr_bin
+    superbin or "/usr/bin"
+  end
 
   def install
     ENV.universal_binary if build.universal?
+<<<<<<< HEAD
     if MacOS.mountain_lion?
       # Fixes a bad path returned by `apr-1-config --cpp` on ML.
       # https://github.com/mxcl/homebrew/issues/13586
@@ -30,9 +34,12 @@ class Serf < Formula
       ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include/apr-1"
     end
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+>>>>>>> 82a1481f6fa824816bbf2bdeb53fd1933a1a15f2
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-apr=#{apr_bin}"
     system "make install"
   end
 end

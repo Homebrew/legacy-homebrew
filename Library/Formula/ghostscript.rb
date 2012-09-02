@@ -13,7 +13,7 @@ class Ghostscript < Formula
 
   head 'git://git.ghostscript.com/ghostpdl.git'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -24,6 +24,11 @@ class Ghostscript < Formula
   depends_on 'jbig2dec'
   depends_on 'little-cms2'
   depends_on :libpng
+
+  # Fix dylib names, per installation instructions
+  def patches
+    DATA
+  end
 
   def move_included_source_copies
     # If the install version of any of these doesn't match
@@ -38,14 +43,17 @@ class Ghostscript < Formula
 
   def install
     ENV.deparallelize
+<<<<<<< HEAD
     # ghostscript configure ignores LDFLAGs apparently
 <<<<<<< HEAD
     ENV['LIBS'] = "-L#{MacOS::XQuartz.lib}"
 =======
     ENV['LIBS'] = "-L#{MacOS::X11.lib}"
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+>>>>>>> 82a1481f6fa824816bbf2bdeb53fd1933a1a15f2
 
-    src_dir = ARGV.build_head? ? "gs" : "."
+    src_dir = build.head? ? "gs" : "."
 
     cd src_dir do
       move_included_source_copies
@@ -55,16 +63,21 @@ class Ghostscript < Formula
         --disable-compile-inits
         --disable-gtk
         --with-system-libtiff
+        --without-x
       ]
 
-      if ARGV.build_head?
+      if build.head?
         system './autogen.sh', *args
       else
         system './configure', *args
       end
+
       # versioned stuff in main tree is pointless for us
       inreplace 'Makefile', '/$(GS_DOT_VERSION)', ''
+
+      # Install binaries and libraries
       system "make install"
+      system "make install-so"
     end
 
     GhostscriptFonts.new.brew do
@@ -74,3 +87,25 @@ class Ghostscript < Formula
     (man+'de').rmtree
   end
 end
+
+__END__
+--- a/base/unix-dll.mak
++++ b/base/unix-dll.mak
+@@ -59,12 +59,12 @@
+ 
+ 
+ # MacOS X
+-#GS_SOEXT=dylib
+-#GS_SONAME=$(GS_SONAME_BASE).$(GS_SOEXT)
+-#GS_SONAME_MAJOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_SOEXT)
+-#GS_SONAME_MAJOR_MINOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_VERSION_MINOR).$(GS_SOEXT)
++GS_SOEXT=dylib
++GS_SONAME=$(GS_SONAME_BASE).$(GS_SOEXT)
++GS_SONAME_MAJOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_SOEXT)
++GS_SONAME_MAJOR_MINOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_VERSION_MINOR).$(GS_SOEXT)
+ #LDFLAGS_SO=-dynamiclib -flat_namespace
+-LDFLAGS_SO_MAC=-dynamiclib -install_name $(GS_SONAME_MAJOR_MINOR)
++LDFLAGS_SO_MAC=-dynamiclib -install_name __PREFIX__/lib/$(GS_SONAME_MAJOR_MINOR)
+ #LDFLAGS_SO=-dynamiclib -install_name $(FRAMEWORK_NAME)
+ 
+ GS_SO=$(BINDIR)/$(GS_SONAME)

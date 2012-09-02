@@ -1,10 +1,11 @@
 require 'formula'
 
 class Appledoc < Formula
-  url "https://github.com/tomaz/appledoc/tarball/v2.0.5"
-  head 'https://github.com/tomaz/appledoc.git', :branch => 'master'
   homepage 'http://appledoc.gentlebytes.com/'
-  md5 '142cf80513ca8eda2aba631483b2e4e6'
+  url "https://github.com/tomaz/appledoc/tarball/v2.0.5"
+  sha1 'c310584b16812826a1b054d2b96e040c82d709ff'
+
+  head 'https://github.com/tomaz/appledoc.git', :branch => 'master'
 
   depends_on :xcode # For working xcodebuild.
 
@@ -20,15 +21,14 @@ class Appledoc < Formula
     prefix.install "Templates/"
   end
 
-  def caveats; <<-EOS
-Make the documentation templates available to `appledoc':
+  def caveats; <<-EOS.undent
+    Make the documentation templates available to `appledoc':
+      ln -sf "#{prefix}/Templates" "#{ENV['HOME']}/Library/Application Support/appledoc"
 
-    ln -sf "#{prefix}/Templates" "#{ENV['HOME']}/Library/Application Support/appledoc"
+    If you have edited the templates yourself, you should check for important changes.
 
-If you have edited the templates yourself, you should check for important changes.
-
-NOTE someone should patch this tool so this caveat is unecessary.
-EOS
+    NOTE someone should patch this tool so this caveat is unecessary.
+    EOS
   end
 
   def test

@@ -10,16 +10,11 @@ class Macvim < Formula
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
+  option "with-cscope", "Build with Cscope support"
+  option "with-lua", "Build with Lua scripting support"
 
-  def options
-  [
-    ["--with-cscope", "Build with Cscope support."],
-    ["--with-lua", "Build with Lua scripting support."]
-  ]
-  end
-
-  depends_on 'cscope' if ARGV.include? '--with-cscope'
-  depends_on 'lua' if ARGV.include? '--with-lua'
+  depends_on 'cscope' if build.include? 'with-cscope'
+  depends_on 'lua' if build.include? 'with-lua'
 
   def install
     # Set ARCHFLAGS so the Python app (with C extension) that is
@@ -40,9 +35,9 @@ class Macvim < Formula
       --with-ruby-command=/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
     ]
 
-    args << "--enable-cscope" if ARGV.include? "--with-cscope"
+    args << "--enable-cscope" if build.include? "with-cscope"
 
-    if ARGV.include? "--with-lua"
+    if build.include? "with-lua"
       args << "--enable-luainterp"
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
     end

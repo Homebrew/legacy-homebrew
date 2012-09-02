@@ -148,6 +148,8 @@ class Formula
     self.class.build
   end
 
+  def opt_prefix; HOMEBREW_PREFIX/:opt/name end
+
   # Use the @active_spec to detect the download strategy.
   # Can be overriden to force a custom download strategy
   def download_strategy
@@ -405,7 +407,13 @@ class Formula
 
     return klass.new(name) if install_type == :from_name
     return klass.new(name, path.to_s)
+  rescue NoMethodError
+    # This is a programming error in an existing formula, and should not
+    # have a "no such formula" message.
+    raise
   rescue LoadError, NameError
+    # Catch NameError so that things that are invalid symbols still get
+    # a useful error message.
     raise FormulaUnavailableError.new(name)
   end
 
@@ -456,7 +464,10 @@ protected
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
-    pretty_args.delete "--disable-dependency-tracking" if cmd == "./configure" and not ARGV.verbose?
+    if cmd == "./configure" and not ARGV.verbose?
+      pretty_args.delete "--disable-dependency-tracking"
+      pretty_args.delete "--disable-debug"
+    end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
     removed_ENV_variables = case if args.empty? then cmd.split(' ').first else cmd end

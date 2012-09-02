@@ -210,7 +210,7 @@ end
 class SubversionDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
-    @@svn ||= find_svn
+    @@svn ||= 'svn'
     @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
     @unique_token += "-HEAD" if ARGV.include? '--HEAD'
     @co=HOMEBREW_CACHE+@unique_token
@@ -269,20 +269,12 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
     args << '--ignore-externals' if ignore_externals
     quiet_safe_system(*args)
   end
-
-  # Try HOMEBREW_SVN, a Homebrew-built svn, and finally the OS X system svn.
-  # Not all features are available in the 10.5 system-provided svn.
-  def find_svn
-    return ENV['HOMEBREW_SVN'] if ENV['HOMEBREW_SVN']
-    return "#{HOMEBREW_PREFIX}/bin/svn" if File.exist? "#{HOMEBREW_PREFIX}/bin/svn"
-    return MacOS.locate 'svn'
-  end
 end
 
 # Require a newer version of Subversion than 1.4.x (Leopard-provided version)
 class StrictSubversionDownloadStrategy < SubversionDownloadStrategy
   def find_svn
-    exe = super
+    exe = `svn -print-path`
     `#{exe} --version` =~ /version (\d+\.\d+(\.\d+)*)/
     svn_version = $1
     version_tuple=svn_version.split(".").collect {|v|Integer(v)}
@@ -316,7 +308,7 @@ end
 class GitDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
-    @@git ||= find_git
+    @@git ||= 'git'
     @unique_token="#{name}--git" unless name.to_s.empty? or name == '__UNKNOWN__'
     @clone=HOMEBREW_CACHE+@unique_token
   end
@@ -334,7 +326,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    raise "You must install Git: brew install git" unless which "git"
+    raise "You must: brew install git" unless which "git"
 
     ohai "Cloning #{@url}"
 
@@ -404,13 +396,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
       end
     end
-  end
-
-  # Try GIT, a Homebrew-built Git, and finally the OS X system Git.
-  def find_git
-    return ENV['GIT'] if ENV['GIT']
-    return "#{HOMEBREW_PREFIX}/bin/git" if File.exist? "#{HOMEBREW_PREFIX}/bin/git"
-    return MacOS.locate 'git'
   end
 end
 

@@ -4,6 +4,7 @@ class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
 
   if Hardware.is_64_bit? and not build.build_32_bit?
+<<<<<<< HEAD
     url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.7.tgz'
     md5 '81b0e8be3206cc60e8031dde302fb983'
     version '2.0.7-x86_64'
@@ -35,6 +36,15 @@ class Mongodb < Formula
       version '2.2.0-rc2-i386'
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     end
+=======
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0.tgz'
+    md5 '5ad0d0b046919118e73976d670dce5e5'
+    version '2.2.0-x86_64'
+  else
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0.tgz'
+    md5 '59a59df34922f3caaa6219ab8ebf05dd'
+    version '2.2.0-i386'
+>>>>>>> 82a1481f6fa824816bbf2bdeb53fd1933a1a15f2
   end
 
   option '32-bit'
