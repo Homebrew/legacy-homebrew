@@ -51,7 +51,6 @@ class Pango < Formula
                                   "--waterfall", "--rotate=10",
                                   "--annotate=1", "--header",
                                   "-q", "-o", "output.png"
-      system "/usr/bin/qlmanage", "-p", "output.png"
     end
   end
 end
