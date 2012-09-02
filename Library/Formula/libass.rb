@@ -6,8 +6,9 @@ class Libass < Formula
   sha1 '82bfda2b78f74cf75a4dd0283d090ad1a71a697f'
 
   depends_on 'pkg-config' => :build
+  depends_on :freetype
   depends_on 'fribidi'
-  depends_on :x11
+  depends_on :fontconfig
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
