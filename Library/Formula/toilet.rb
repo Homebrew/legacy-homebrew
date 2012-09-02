@@ -5,6 +5,7 @@ class Toilet < Formula
   url 'http://caca.zoy.org/raw-attachment/wiki/toilet/toilet-0.3.tar.gz'
   sha1 '73ea7aa2b0470ac0fecc103d7eeed0048684a505'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libcaca'
 
   def install
@@ -12,4 +13,8 @@ class Toilet < Formula
                           "--prefix=#{prefix}"
     system "make install"
   end
+
+  def test
+    system "#{bin}/toilet", "--version"
+   end
 end
