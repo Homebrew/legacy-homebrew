@@ -6,7 +6,7 @@ class Mathgl < Formula
   sha1 '16b9ab58e654c5b91374f8a35eafc33630d7f5c0'
 
   depends_on 'gsl'
-  depends_on :x11
+  depends_on :libpng
 
   def install
     ENV['LIBS'] = '-lz'
@@ -19,5 +19,11 @@ class Mathgl < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
+  end
+
+  def test
+    mktemp do
+      system "#{bin}/mgl_example"
+    end
   end
 end
