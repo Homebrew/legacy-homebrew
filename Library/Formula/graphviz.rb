@@ -16,6 +16,7 @@ class Graphviz < Formula
   depends_on 'pango' if build.include? 'with-pangocairo'
   depends_on 'swig' if build.include? 'with-bindings'
   depends_on :xcode if build.include? 'with-app'
+  depends_on 'gd'
 
   fails_with :clang do
     build 318
