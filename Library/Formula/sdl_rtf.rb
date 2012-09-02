@@ -8,8 +8,6 @@ class SdlRtf < Formula
   head 'http://hg.libsdl.org/SDL_rtf', :using => :hg
 
   depends_on 'sdl'
-  depends_on 'sdl_ttf'
-  depends_on :x11
 
   def install
     system "./configure", "--prefix=#{prefix}"
