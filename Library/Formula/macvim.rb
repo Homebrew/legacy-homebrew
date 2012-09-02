@@ -2,9 +2,9 @@ require 'formula'
 
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/tarball/snapshot-64'
-  version '7.3-64'
-  sha1 'c8bf2d758f52a1173112138fefbf4e5ab08015ff'
+  url 'https://github.com/b4winckler/macvim/tarball/snapshot-65'
+  version '7.3-65'
+  sha1 'fa5f6e0febe1ebcf5320a6ff8bcf4c7e39eccf8e'
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
@@ -22,6 +22,10 @@ class Macvim < Formula
     # PPC support (which isn't needed in Homebrew-supported systems.)
     arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
+
+    # If building for 10.8, make sure that CC is set to "clang".
+    # Reference: https://github.com/b4winckler/macvim/wiki/building
+    ENV['CC'] = "clang" if MacOS.mountain_lion?
 
     args = %W[
       --with-features=huge
