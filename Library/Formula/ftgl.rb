@@ -5,8 +5,7 @@ class Ftgl < Formula
   homepage 'http://sourceforge.net/projects/ftgl/'
   sha1 'b9c11d3a594896333f1bbe46e10d8617713b4fc6'
 
-  depends_on 'pkg-config' => :build
-  depends_on :x11
+  depends_on :freetype
 
   def install
     # If doxygen is installed, the docs may still fail to build.
