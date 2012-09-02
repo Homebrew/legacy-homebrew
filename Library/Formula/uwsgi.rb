@@ -2,10 +2,10 @@ require 'formula'
 
 class Uwsgi < Formula
   homepage 'http://projects.unbit.it/uwsgi/'
-  url 'http://projects.unbit.it/downloads/uwsgi-1.2.4.tar.gz'
-  sha1 '853ddbc1e4a0d98f2e81930dff46239d4bb12310'
+  url 'http://projects.unbit.it/downloads/uwsgi-1.2.5.tar.gz'
+  sha1 'd34ab260883416553aa186027cfbc23f38efdc6f'
 
-  skip_clean :all # stripping breaks the executable
+  depends_on 'pcre' # needs a universal build
 
   def install
     # Find the arch for the Python we are building against.
