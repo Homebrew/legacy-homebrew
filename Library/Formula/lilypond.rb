@@ -60,7 +60,7 @@ class Lilypond < Formula
         { c' d' e' }
       EOS
       lilykeg = Formula.factory('lilypond').linked_keg
-      system "#{lilykeg}/bin/lilypond test.ly && /usr/bin/qlmanage -p test.pdf"
+      system "#{lilykeg}/bin/lilypond test.ly"
     end
   end
 end
