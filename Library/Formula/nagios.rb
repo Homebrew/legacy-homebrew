@@ -7,7 +7,7 @@ class Nagios < Formula
 
   depends_on 'gd'
   depends_on 'nagios-plugins'
-  depends_on :x11 # Required to compile some CGI's against the build-in libpng.
+  depends_on :libpng
 
   def nagios_sbin;  prefix+'cgi-bin';       end
   def nagios_etc;   etc+'nagios';           end
@@ -39,6 +39,7 @@ class Nagios < Formula
     system "make install-config"
     system "make install-webconf"
     (share+plist_path).write startup_plist
+    mkdir HOMEBREW_PREFIX+'var/lib/nagios/rw' unless File.exists? HOMEBREW_PREFIX+'var/lib/nagios/rw'
   end
 
   def startup_plist
