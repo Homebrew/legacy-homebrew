@@ -23,7 +23,6 @@ class Zint < Formula
   def test
     mktemp do
       system "#{bin}/zint", "-o", "test-zing.png", "-d", "This Text"
-      system "/usr/bin/qlmanage", "-p", "test-zing.png"
     end
   end
 end
