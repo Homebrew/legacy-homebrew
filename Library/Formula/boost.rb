@@ -19,16 +19,10 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.50.0/boost_1_50_0.tar.bz2'
-  sha1 'ee06f89ed472cf369573f8acf9819fbc7173344e'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.51.0/boost_1_51_0.tar.bz2'
+  sha1 '52ef06895b97cc9981b8abf1997c375ca79f30c5'
 
   head 'http://svn.boost.org/svn/boost/trunk'
-
-  bottle do
-    sha1 '06c7e19ec8d684c35fb035e6326df6393e46dce2' => :mountainlion
-    sha1 '25ef1d7af5f6f9783313370fd8115902b24c5eeb' => :lion
-    sha1 '4508c9afcb14a15b6b3c7db4cdfb7bd3f8e1c9bc' => :snowleopard
-  end
 
   option :universal
   option 'with-mpi', 'Enable MPI support'
