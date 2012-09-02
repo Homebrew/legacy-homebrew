@@ -6,9 +6,14 @@ class Libcaca < Formula
   version '0.99b18'
   sha1 '0cbf8075c01d59b53c3cdfec7df9818696a41128'
 
-  depends_on 'pkg-config' => :build
-  depends_on 'imlib2'
-  depends_on :x11
+  option 'with-imlib2', 'Build with Imlib2 support'
+
+  depends_on :x11 if MacOS::X11.installed? or build.include? "with-imlib2"
+
+  if build.include? "with-imlib2"
+    depends_on 'pkg-config' => :build
+    depends_on 'imlib2' => :optional
+  end
 
   fails_with :llvm do
     cause "Unsupported inline asm: input constraint with a matching output constraint of incompatible type"
@@ -37,6 +42,10 @@ class Libcaca < Formula
     system "make"
     ENV.j1 # Or install can fail making the same folder at the same time
     system "make install"
+  end
+
+  def test
+    system "#{bin}/img2txt", "--version"
   end
 end
 
