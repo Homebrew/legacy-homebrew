@@ -7,8 +7,6 @@ class Sdl < Formula
 
   head 'http://hg.libsdl.org/SDL', :using => :hg
 
-  depends_on :x11
-
   if build.head?
     depends_on :automake
     depends_on :libtool
@@ -30,11 +28,16 @@ class Sdl < Formula
     args << "--disable-nasm" unless MacOS.mountain_lion? # might work with earlier, might only work with new clang
     # LLVM-based compilers choke on the assembly code packaged with SDL.
     args << '--disable-assembly' if ENV.compiler == :llvm or ENV.compiler == :clang and MacOS.clang_build_version < 421
+    args << '--without-x'
 
     system './configure', *args
     system "make install"
 
     # Copy source files needed for Ojective-C support.
     libexec.install Dir["src/main/macosx/*"]
+  end
+
+  def test
+    system "#{bin}/sdl-config", "--version"
   end
 end
