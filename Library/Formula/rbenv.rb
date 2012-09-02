@@ -3,7 +3,7 @@ require 'formula'
 class Rbenv < Formula
   homepage 'https://github.com/sstephenson/rbenv'
   url 'https://github.com/sstephenson/rbenv/tarball/v0.3.0'
-  md5 '26e00faff3ba04fdeeeecb0bfbf96351'
+  sha1 'b9f78b1a10d4e225d0377cac33c1a964ee6df00b'
 
   head 'https://github.com/sstephenson/rbenv.git'
 

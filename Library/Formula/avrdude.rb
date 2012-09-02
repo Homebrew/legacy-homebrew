@@ -3,7 +3,7 @@ require 'formula'
 class Avrdude < Formula
   homepage 'http://savannah.nongnu.org/projects/avrdude/'
   url 'http://download.savannah.gnu.org/releases/avrdude/avrdude-5.11.1.tar.gz'
-  md5 '3a43e288cb32916703b6945e3f260df9'
+  sha1 '330b3a38d3de6c54d4866819ffb6924ed3728173'
 
   option 'with-usb', 'Compile AVRDUDE with USB support.'
 

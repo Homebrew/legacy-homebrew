@@ -11,7 +11,7 @@ end
 class Libnids < Formula
   url 'http://downloads.sourceforge.net/project/libnids/libnids/1.24/libnids-1.24.tar.gz'
   homepage 'http://libnids.sourceforge.net/'
-  md5 '72d37c79c85615ffe158aa524d649610'
+  sha1 '9a421df05cefdc4f5f7db95efc001b3c2b5249ce'
 
   depends_on 'libnet' if use_libnet?
   depends_on 'glib' if use_glib?

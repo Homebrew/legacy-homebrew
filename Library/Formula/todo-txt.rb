@@ -3,7 +3,7 @@ require 'formula'
 class TodoTxt < Formula
   homepage 'http://todotxt.com/'
   url 'https://github.com/downloads/ginatrapani/todo.txt-cli/todo.txt_cli-2.9.tar.gz'
-  md5 'e815c63ab4e46285f0b0a30b7bac7918'
+  sha1 'b8b351f287c4f5a6510e08e14757db14d0cd1da7'
 
   head 'https://github.com/ginatrapani/todo.txt-cli.git'
 

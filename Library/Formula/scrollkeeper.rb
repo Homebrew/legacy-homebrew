@@ -3,7 +3,7 @@ require 'formula'
 class Scrollkeeper < Formula
   url 'http://downloads.sourceforge.net/project/scrollkeeper/scrollkeeper/0.3.14/scrollkeeper-0.3.14.tar.gz'
   homepage 'http://scrollkeeper.sourceforge.net/'
-  md5 '161eb3f29e30e7b24f84eb93ac696155'
+  sha1 '0462799a2d96f46dec76f2fd057e2dfe8d7cb94d'
 
   depends_on 'gettext'
   depends_on 'docbook'

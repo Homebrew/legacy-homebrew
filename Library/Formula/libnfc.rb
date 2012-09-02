@@ -3,7 +3,7 @@ require 'formula'
 class Libnfc < Formula
   url 'http://libnfc.googlecode.com/files/libnfc-1.5.1.tar.gz'
   homepage 'http://www.libnfc.org/'
-  md5 '81e3e59496060dc495c95844654a8038'
+  sha1 'aebd4a126f2268d06ade445cd6cf2b3c59256f51'
 
   depends_on 'libusb-compat'
 

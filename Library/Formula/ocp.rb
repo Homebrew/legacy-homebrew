@@ -2,7 +2,7 @@ require "formula"
 
 class Ocp < Formula
   url "http://downloads.sourceforge.net/project/opencubicplayer/ocp-0.1.21/ocp-0.1.21.tar.bz2"
-  md5 '558a6eacfadfd9c60c97a6e9c7f83f47'
+  sha1 'aaa16cf1979c572b09c73e7cc61350bfc4477380'
   homepage "http://sourceforge.net/p/opencubicplayer/home/"
 
   depends_on "libvorbis"

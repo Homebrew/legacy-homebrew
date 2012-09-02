@@ -3,7 +3,7 @@ require 'formula'
 class Docbook < Formula
   homepage 'http://docbook.sourceforge.net/'
   url 'http://www.docbook.org/xml/5.0/docbook-5.0.zip'
-  md5 '2411c19ed4fb141f3fa3d389fae40736'
+  sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
 
   def install
     packages = [Docbookxml412,
@@ -51,39 +51,39 @@ end
 
 class Docbookxml412 < Docbookxml
   url 'http://www.docbook.org/xml/4.1.2/docbkx412.zip'
-  md5 '900d7609fb7e6d78901b357e4acfbc17'
+  sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
   version '4.1.2'
 end
 
 class Docbookxml42 < Docbookxml
   url 'http://www.docbook.org/xml/4.2/docbook-xml-4.2.zip'
-  md5 '73fe50dfe74ca631c1602f558ed8961f'
+  sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
 end
 
 class Docbookxml43 < Docbookxml
   url 'http://www.docbook.org/xml/4.3/docbook-xml-4.3.zip'
-  md5 'ab200202b9e136a144db1e0864c45074'
+  sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
 end
 
 class Docbookxml44 < Docbookxml
   url 'http://www.docbook.org/xml/4.4/docbook-xml-4.4.zip'
-  md5 'cbb04e9a700955d88c50962ef22c1634'
+  sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
 end
 
 class Docbookxml45 < Docbookxml
   url 'http://www.docbook.org/xml/4.5/docbook-xml-4.5.zip'
-  md5 '03083e288e87a7e829e437358da7ef9e'
+  sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
 end
 
 class Docbookxml50 < Docbookxml
   url 'http://www.docbook.org/xml/5.0/docbook-5.0.zip'
-  md5 '2411c19ed4fb141f3fa3d389fae40736'
+  sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
 end
 
 class Docbookxsl < Formula
   homepage 'http://docbook.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl/1.76.1/docbook-xsl-1.76.1.tar.bz2'
-  md5 'b5340507cb240cc7ce00632b9c40bff5'
+  sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
 
   def install
     doc_files = %w[AUTHORS BUGS README RELEASE-NOTES.txt TODO VERSION NEWS COPYING]
@@ -100,7 +100,7 @@ end
 class Docbookxslns < Formula
   homepage 'http://docbook.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl-ns/1.77.1/docbook-xsl-ns-1.77.1.tar.bz2'
-  md5 '432e4ad25c24a6e83de844cb9c683500'
+  sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
 
   def install
     doc_files = %w[AUTHORS BUGS COPYING NEWS README RELEASE-NOTES.txt TODO VERSION VERSION.xsl]

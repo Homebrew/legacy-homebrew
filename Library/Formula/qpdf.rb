@@ -3,7 +3,7 @@ require 'formula'
 class Qpdf < Formula
   url 'http://downloads.sourceforge.net/project/qpdf/qpdf/2.3.1/qpdf-2.3.1.tar.gz'
   homepage 'http://qpdf.sourceforge.net/'
-  md5 '3d7fdbf3eccf94a3afa6454cf2732f76'
+  sha1 '043cceeb74a702d4e6a6a83b0211d99f28383655'
 
   depends_on 'pcre'
 

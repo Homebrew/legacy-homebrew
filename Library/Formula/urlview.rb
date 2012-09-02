@@ -4,7 +4,7 @@ class Urlview < Formula
   url 'http://mirrors.kernel.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz'
   mirror 'http://ftp.us.debian.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz'
   homepage 'http://packages.debian.org/unstable/misc/urlview'
-  md5 '4f253c82b59136181b1f0bf218ef059d'
+  sha1 '323af9ba30ba87ec600531629f5dd84c720984b6'
 
   def patches
     "http://ftp.aarnet.edu.au/debian/pool/main/u/urlview/urlview_0.9-18.1.diff.gz"

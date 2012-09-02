@@ -3,7 +3,7 @@ require 'formula'
 class Bsdmake < Formula
   homepage 'http://opensource.apple.com/'
   url 'http://opensource.apple.com/tarballs/bsdmake/bsdmake-24.tar.gz'
-  md5 '7856e53a7f8b29cd899e2ce98eb4a467'
+  sha1 '9ce3c3fc01e0eb47d82827b1eb227eb371fefd5c'
 
   if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/bsdmake"
     keg_only "Recent versions of OS X no longer provide this tool."

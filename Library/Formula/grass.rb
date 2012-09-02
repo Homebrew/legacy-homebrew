@@ -20,7 +20,7 @@ end
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
   url 'http://grass.osgeo.org/grass64/source/grass-6.4.2.tar.gz'
-  md5 'd3398d6b1e3a2ef19cfb6e39a5ae9919'
+  sha1 '74481611573677d90ae0cd446c04a3895e232004'
 
   head 'https://svn.osgeo.org/grass/grass/trunk'
 

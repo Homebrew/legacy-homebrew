@@ -3,7 +3,7 @@ require 'formula'
 class Dotwrp < Formula
   homepage 'https://github.com/tenomoto/dotwrp'
   url 'https://github.com/tenomoto/dotwrp/tarball/v1.0'
-  md5 '629f1f66fbb9837ee1e21a666a9688fa'
+  sha1 '98d0d2ad0c49528e0df5d004962a25c5414b17b8'
 
   head 'https://github.com/tenomoto/dotwrp.git'
 

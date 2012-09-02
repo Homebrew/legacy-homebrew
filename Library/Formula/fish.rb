@@ -3,7 +3,7 @@ require 'formula'
 class Fish < Formula
   homepage 'http://fishshell.com'
   url 'http://downloads.sourceforge.net/project/fish/fish/1.23.1/fish-1.23.1.tar.bz2'
-  md5 'ead6b7c6cdb21f35a3d4aa1d5fa596f1'
+  sha1 '3a6a5d0cfff348e5f9b1e7cd771865fd1dcd802e'
 
   head 'git://gitorious.org/fish-shell/fish-shell.git'
 

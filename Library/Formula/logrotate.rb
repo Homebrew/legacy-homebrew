@@ -3,7 +3,7 @@ require 'formula'
 class Logrotate < Formula
   homepage 'http://packages.debian.org/testing/admin/logrotate'
   url 'https://fedorahosted.org/releases/l/o/logrotate/logrotate-3.8.1.tar.gz'
-  md5 'bd2e20d8dc644291b08f9215397d28a5'
+  sha1 '1df36cee76a9c4c7438f35ca3599a7bdd68a09b5'
 
   depends_on 'popt'
 

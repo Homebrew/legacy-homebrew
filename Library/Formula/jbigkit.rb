@@ -3,7 +3,7 @@ require 'formula'
 class Jbigkit < Formula
   url 'http://www.cl.cam.ac.uk/~mgk25/download/jbigkit-2.0.tar.gz'
   homepage 'http://www.cl.cam.ac.uk/~mgk25/jbigkit/'
-  md5 '3dd87f605abb1a97a22dc79d8b3e8f6c'
+  sha1 'cfb7d3121f02a74bfb229217858a0d149b6589ef'
 
   def options
     [

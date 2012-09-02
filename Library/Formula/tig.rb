@@ -3,7 +3,7 @@ require 'formula'
 class Tig < Formula
   homepage 'http://jonas.nitro.dk/tig/'
   url 'http://jonas.nitro.dk/tig/releases/tig-1.0.tar.gz'
-  md5 'a2d414d1cebbc9cd4f3d545bc6f225c6'
+  sha1 '3fe744f79d244285b6e00b472e35967746910305'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"

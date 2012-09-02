@@ -3,7 +3,7 @@ require 'formula'
 class John < Formula
   homepage 'http://www.openwall.com/john/'
   url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
-  md5 '45f54fc59386ecd67daaef9f19781d93'
+  sha1 '8f77bdd42b7cf94ec176f55ea69c4da9b2b8fe3b'
 
   fails_with :llvm do
     build 2334

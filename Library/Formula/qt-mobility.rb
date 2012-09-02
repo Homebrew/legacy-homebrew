@@ -3,7 +3,7 @@ require 'formula'
 class QtMobility < Formula
   url 'http://get.qt.nokia.com/qt/add-ons/qt-mobility-opensource-src-1.1.1.tar.gz'
   homepage 'http://qt.nokia.com/'
-  md5 'eb1e89b47b8ff2f831ba718938f7b959'
+  sha1 '8fba3540f09e56a9efd24c799fb1d07c9d953f2a'
 
   depends_on 'qt'
 

@@ -4,7 +4,7 @@ class Neo4j < Formula
   homepage 'http://neo4j.org'
   url 'http://dist.neo4j.org/neo4j-community-1.7.2-unix.tar.gz'
   version 'community-1.7.2-unix'
-  md5 '115afbb7cc72b089577e371ce0b1116d'
+  sha1 '3836018559a550875f924ee225106ab8b15e8be0'
 
   def install
     # Remove windows files

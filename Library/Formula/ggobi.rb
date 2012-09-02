@@ -3,7 +3,7 @@ require 'formula'
 class Ggobi < Formula
   url 'http://www.ggobi.org/downloads/ggobi-2.1.9.tar.bz2'
   homepage 'http://www.ggobi.org'
-  md5 'b579861f157dfc6c5669604859352eb4'
+  sha1 '0dd0fe0cf619c1404d024e019cf9c8d87fb4fe4b'
 
   depends_on 'gtk+'
   depends_on 'glib'

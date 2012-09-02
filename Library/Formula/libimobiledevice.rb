@@ -3,7 +3,7 @@ require 'formula'
 class Libimobiledevice < Formula
   homepage 'http://www.libimobiledevice.org/'
   url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.4.tar.bz2'
-  md5 '3f28cbc6a2e30d34685049c0abde5183'
+  sha1 'd59d9751d9f792e8674cd87c91005d431bf56065'
 
   head 'http://cgit.sukimashita.com/libimobiledevice.git'
 

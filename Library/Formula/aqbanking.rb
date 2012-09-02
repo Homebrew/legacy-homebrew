@@ -3,7 +3,7 @@ require 'formula'
 class Aqbanking < Formula
   url 'http://www.aquamaniac.de/sites/download/download.php?package=03&release=94&file=01&dummy=aqbanking-5.0.24.0-git.tar.gz'
   homepage 'http://www.aqbanking.de/'
-  md5 'ae44a4d3104f5d62fa15a7084269020a'
+  sha1 '00577801882d63ba9ec7a7c900aae25af124586a'
   head 'http://devel.aqbanking.de/svn/aqbanking/trunk'
 
   depends_on 'gettext'
