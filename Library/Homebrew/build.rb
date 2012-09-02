@@ -86,7 +86,12 @@ def install f
   pre_superenv_hacks(f)
   require 'superenv'
 
-  ENV.setup_build_environment unless superenv?
+  unless superenv?
+    ENV.setup_build_environment
+    # Requirements are processed first so that adjustments made to ENV
+    # for keg-only deps take precdence.
+    f.recursive_requirements.each { |rq| rq.modify_build_environment }
+  end
 
   keg_only_deps.each do |dep|
     opt = HOMEBREW_PREFIX/:opt/dep.name
@@ -106,9 +111,8 @@ def install f
     ENV.deps = keg_only_deps.map(&:to_s)
     ENV.x11 = f.recursive_requirements.detect{|rq| rq.class == X11Dependency }
     ENV.setup_build_environment
+    f.recursive_requirements.each { |rq| rq.modify_build_environment }
   end
-
-  f.recursive_requirements.each { |req| req.modify_build_environment }
 
   if f.fails_with? ENV.compiler
     cs = CompilerSelector.new f
