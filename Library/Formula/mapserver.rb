@@ -10,7 +10,9 @@ class Mapserver < Formula
   option "with-php", "Build PHP MapScript module"
   option "with-postgresql", "Build support for PostgreSQL as a data source"
 
-  depends_on :x11
+  depends_on :freetype
+  depends_on :libpng
+  depends_on 'giflib'
   depends_on 'gd'
   depends_on 'proj'
   depends_on 'gdal'
@@ -18,33 +20,6 @@ class Mapserver < Formula
   depends_on 'geos' if build.include? 'with-geos'
   depends_on 'postgresql' if build.include? 'with-postgresql' and not MacOS.lion?
   depends_on 'fcgi' if build.include? 'with-fastcgi'
-
-  def configure_args
-    args = [
-      "--prefix=#{prefix}",
-      "--with-proj",
-      "--with-gdal",
-      "--with-ogr",
-      "--with-png=#{MacOS::X11.prefix}"
-    ]
-
-    args.push "--with-geos" if build.include? 'with-geos'
-    args.push "--with-php=/usr/include/php" if build.include? 'with-php'
-
-    if build.include? 'with-postgresql'
-      if MacOS.lion? # Lion ships with PostgreSQL libs
-        args << "--with-postgis"
-      else
-        args << "--with-postgis=#{HOMEBREW_PREFIX}/bin/pg_config"
-      end
-    end
-
-    if build.include? 'with-fastcgi'
-      args << "--with-fastcgi=#{HOMEBREW_PREFIX}"
-    end
-
-    args
-  end
 
   def patches
     # Fix clang compilation issue, remove on future release
@@ -55,10 +30,31 @@ class Mapserver < Formula
   end
 
   def install
-    system "./configure", *configure_args
+    args = [
+      "--prefix=#{prefix}",
+      "--with-proj",
+      "--with-gdal",
+      "--with-ogr",
+    ]
+
+    args << "--with-geos" if build.include? 'with-geos'
+    args << "--with-php=/usr/include/php" if build.include? 'with-php'
+
+    if build.include? 'with-postgresql'
+      if MacOS.lion? # Lion ships with PostgreSQL libs
+        args << "--with-postgis"
+      else
+        args << "--with-postgis=#{HOMEBREW_PREFIX}/bin/pg_config"
+      end
+    end
+
+    args << "--with-fastcgi=#{HOMEBREW_PREFIX}" if build.include? 'with-fastcgi'
+
+    system "./configure", *args
     system "make"
+    libexec.install "mapscriptvars"
     bin.install %w(mapserv shp2img legend shptree shptreevis
-        shptreetst scalebar sortshp mapscriptvars tile4ms
+        shptreetst scalebar sortshp tile4ms
         msencrypt mapserver-config)
 
     if build.include? 'with-php'
@@ -67,7 +63,7 @@ class Mapserver < Formula
   end
 
   def caveats; <<-EOS.undent
-    The Mapserver CGI executable is #{prefix}/mapserv
+    The Mapserver CGI executable is #{bin}/mapserv
 
     If you built the PHP option:
       * Add the following line to php.ini:
@@ -75,6 +71,10 @@ class Mapserver < Formula
       * Execute "php -m"
       * You should see MapScript in the module list
     EOS
+  end
+
+  def test
+    system "#{bin}/mapserver-config", "--version"
   end
 end
 
@@ -97,7 +97,7 @@ index 164a0ac..f9dcb20 100644
 +++ b/mapsymbol.c
 @@ -601,6 +601,10 @@ int msGetMarkerSize(symbolSetObj *symbolset, styleObj *style, int *width, int *h
    }
-   
+
    symbol = symbolset->symbol[style->symbol];
 +  if (symbol->type == MS_SYMBOL_PIXMAP && !symbol->pixmap_buffer) {
 +    if (MS_SUCCESS != msPreloadImageSymbol(MS_MAP_RENDERER(symbolset->map), symbol))
