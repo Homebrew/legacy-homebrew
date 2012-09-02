@@ -7,15 +7,11 @@ class Rrdtool < Formula
 
   option 'lua', "Compile with lua support"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
   depends_on 'glib'
-  depends_on 'intltool'
-  depends_on 'expat'
   depends_on 'pango'
-  depends_on :x11
 
   # Can use lua if it is found, but don't force users to install
+  # TODO: Do something here
   depends_on 'lua' => :optional if build.include? "lua"
 
   # Ha-ha, but sleeping is annoying when running configure a lot
@@ -49,8 +45,8 @@ class Rrdtool < Formula
 
   def test
     mktemp do
-      system "ruby", prefix/"test.rb"
-      system "/usr/bin/qlmanage", "-p", "test.png"
+      system "#{bin}/rrdtool", "create", "temperature.rrd", "--step", "300", "DS:temp:GAUGE:600:-273:5000", "RRA:AVERAGE:0.5:1:1200", "RRA:MIN:0.5:12:2400", "RRA:MAX:0.5:12:2400", "RRA:AVERAGE:0.5:12:2400"
+      system "#{bin}/rrdtool", "dump", "temperature.rrd"
     end
   end
 end
@@ -63,7 +59,7 @@ index 7487ad2..e7b85c1 100755
 @@ -31663,18 +31663,6 @@ $as_echo_n "checking in... " >&6; }
  { $as_echo "$as_me:$LINENO: result: and out again" >&5
  $as_echo "and out again" >&6; }
- 
+
 -echo $ECHO_N "ordering CD from http://tobi.oetiker.ch/wish $ECHO_C" 1>&6
 -sleep 1
 -echo $ECHO_N ".$ECHO_C" 1>&6
