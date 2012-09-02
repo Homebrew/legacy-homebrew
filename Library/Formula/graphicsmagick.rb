@@ -5,20 +5,18 @@ def ghostscript_fonts?
 end
 
 def ghostscript_srsly?
-  ARGV.include? '--with-ghostscript'
+  build.include? 'with-ghostscript'
 end
 
 def use_wmf?
-  ARGV.include? '--use-wmf'
+  build.include? 'use-wmf'
 end
 
 def quantum_depth
-  if ARGV.include? '--with-quantum-depth-32'
+  if build.include? 'with-quantum-depth-32'
     32
-  elsif ARGV.include? '--with-quantum-depth-16'
+  elsif build.include? 'with-quantum-depth-16'
     16
-  elsif ARGV.include? '--with-quantum-depth-8'
-    8
   end
 end
 
@@ -38,22 +36,19 @@ class Graphicsmagick < Formula
   depends_on 'ghostscript' => :recommended if ghostscript_srsly?
   depends_on 'xz' => :optional
 
-  fails_with :llvm
+  fails_with :llvm do
+    build 2335
+  end
 
   def skip_clean? path
     path.extname == '.la'
   end
 
-  def options
-    [
-      ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
-      ['--without-magick-plus-plus', "Don't build C++ library."],
-      ['--use-wmf', 'Compile with libwmf support.'],
-      ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
-      ['--with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'],
-      ['--with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'],
-    ]
-  end
+  option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
+  option 'without-magick-plus-plus', "Don't build C++ library."
+  option 'use-wmf', 'Compile with libwmf support.'
+  option 'with-quantum-depth-16', 'Use an 16 bit pixel quantum depth (default is 8)'
+  option 'with-quantum-depth-32', 'Use a 32 bit pixel quantum depth (default is 8)'
 
   def install
     # versioned stuff in main tree is pointless for us
@@ -62,8 +57,8 @@ class Graphicsmagick < Formula
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--enable-shared", "--disable-static"]
-    args << "--without-magick-plus-plus" if ARGV.include? '--without-magick-plus-plus'
-    args << "--disable-openmp" if MacOS.leopard? # libgomp unavailable
+    args << "--without-magick-plus-plus" if build.include? 'without-magick-plus-plus'
+    args << "--disable-openmp" if MacOS.leopard? or ENV.compiler == :clang # libgomp unavailable
     args << "--with-gslib" if ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
               unless ghostscript_fonts?
