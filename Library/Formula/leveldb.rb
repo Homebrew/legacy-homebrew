@@ -10,11 +10,9 @@ class Leveldb < Formula
   def install
     system "make"
     include.install "include/leveldb"
-
-    mv "libleveldb.dylib.1.5", "libleveldb.1.5.dylib"
-    rm "libleveldb.dylib"
-    ln_s "libleveldb.1.5.dylib", "libleveldb.dylib"
-
-    lib.install Dir["libleveldb.{a,dylib}"]
+    lib.install 'libleveldb.a'
+    lib.install 'libleveldb.dylib.1.5' => 'libleveldb.1.5.dylib'
+    lib.install_symlink lib/'libleveldb.1.5.dylib' => 'libleveldb.dylib'
+    lib.install_symlink lib/'libleveldb.1.5.dylib' => 'libleveldb.1.dylib'
   end
 end
