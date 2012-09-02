@@ -25,6 +25,14 @@ class Py2cairo < Formula
       end
     end
 
+    # Needs cairo 1.10
+    unless MacOS.lion?
+      cairo = Formula.factory('cairo')
+      ENV.prepend 'PKG_CONFIG_PATH', "#{cairo.lib}/pkgconfig", ':'
+      pixman = Formula.factory('pixman')
+      ENV.prepend 'PKG_CONFIG_PATH', "#{pixman.lib}/pkgconfig", ':'
+    end
+
     # waf miscompiles py2cairo on Lion, linking the wrong Python Library when
     # HB Python is installed.  So add a LINKFLAG that sets the path to the real
     # python Library as determined by `python-prefix`, where it gets used at
