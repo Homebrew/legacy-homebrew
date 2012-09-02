@@ -7,15 +7,19 @@ class Fontforge < Formula
 
   head 'https://github.com/fontforge/fontforge.git'
 
-  depends_on 'pkg-config' => :build
+  option 'without-python', 'Build without Python'
+  option 'with-x', 'Build with X'
+  option 'with-cairo', 'Build with Cairo'
+  option 'with-pango', 'Build with Pango'
+  option 'with-libspiro', 'Build with Spiro spline support'
+
   depends_on 'gettext'
-  depends_on 'pango'
-  depends_on 'potrace'
-  depends_on 'libspiro'
-  depends_on :x11
   depends_on :xcode # Because: #include </Developer/Headers/FlatCarbon/Files.h>
 
-  option 'without-python', 'Build without Python'
+  depends_on :x11 if build.include? "with-x"
+  depends_on 'cairo' if build.include? "with-cairo"
+  depends_on 'pango' if build.include? "with-pango"
+  depends_on 'libspiro' if build.include? "with-libspiro"
 
   fails_with :llvm do
     build 2336
@@ -54,6 +58,9 @@ class Fontforge < Formula
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
+    args << "--without-cairo" unless build.include? "with-cairo"
+    args << "--without-pango" unless build.include? "with-pango"
+
     system "./configure", *args
 
     # Fix hard-coded install locations that don't respect the target bindir
@@ -88,8 +95,12 @@ class Fontforge < Formula
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 
+  def test
+    system "#{bin}/fontforge", "-version"
+  end
+
   def caveats
-    general_caveats = <<-EOS.undent
+    x_caveats = <<-EOS.undent
       fontforge is an X11 application.
 
       To install the Mac OS X wrapper application run:
@@ -105,7 +116,8 @@ class Fontforge < Formula
         export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
     EOS
 
-    s = general_caveats
+    s = ""
+    s += x_caveats if build.include? "with-x"
     s += python_caveats unless build.include? "without-python"
     return s
   end
