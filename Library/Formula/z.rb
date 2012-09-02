@@ -2,8 +2,8 @@ require 'formula'
 
 class Z < Formula
   homepage 'https://github.com/rupa/z'
-  url 'https://github.com/rupa/z/tarball/v1.3'
-  sha1 '5c7b959fa4599ddde1e18cf5ffb048e1e3284140'
+  url 'https://github.com/rupa/z/tarball/v1.4'
+  sha1 'c5ca4988fa75b02a8f68a05a8bfb6bfd28aa7d08'
 
   head 'https://github.com/rupa/z.git'
 
@@ -18,7 +18,7 @@ class Z < Formula
      . `brew --prefix`/etc/profile.d/z.sh
 
      ZSH USERS BACKWARD COMPATIBILITY WARNING:
-     z now handles 'precmd' set up for zsh. z (<=1.2) users using zsh should
+     z now handles 'precmd' set up for zsh. z (<=1.3) users using zsh should
      remove the precmd function that was described in the installation
      instructions for previous versions.
 
