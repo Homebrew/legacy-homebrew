@@ -15,7 +15,8 @@ class Csync < Formula
   depends_on 'iniparser'
   depends_on 'argp-standalone'
   depends_on 'libssh' => :optional
-  if ARGV.build_head?
+
+  if build.head?
     # Log4c and libsmbclient are optional in HEAD. See
     # http://git.csync.org/projects/csync.git/commit/?id=13f05db93484ad6100c1987d11e7a6d33bd5d754
     # http://git.csync.org/projects/csync.git/commit/?id=f064dbcde4e25cb4661be77a76be7279946be3d6
