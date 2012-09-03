@@ -8,7 +8,7 @@ class Scantailor < Formula
   devel do
     url 'http://downloads.sourceforge.net/project/scantailor/scantailor-devel/enhanced/scantailor-enhanced-20111213.tar.gz'
     version 'enhanced-20111213'
-    md5 'bcba593dcba17880429884fe2bfb1d2a'
+    sha1 'a5fc7cd8802d6898275f07811d51952cafa8e7ea'
   end
 
   depends_on 'cmake' => :build
