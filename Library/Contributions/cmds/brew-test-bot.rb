@@ -198,7 +198,7 @@ class Test
     test "brew audit #{formula}"
     test "brew install --verbose --build-bottle #{formula}"
     return unless steps.last.status == :passed
-    test "brew test #{formula}"
+    test "brew test #{formula}" if defined? Formula.factory(formula).test
     test "brew bottle #{formula}"
     test "brew uninstall #{formula}"
   end
