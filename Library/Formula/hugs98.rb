@@ -8,6 +8,11 @@ class Hugs98 < Formula
 
   depends_on 'readline'
 
+  fails_with :clang do
+    build 421
+    cause %[runhugs: Error occurred\nERROR "libraries/bootlib/Data/Bits.hs":192 - Syntax error in declaration (unexpected `}', possibly due to bad layout)]
+  end
+
   def patches
     { :p0 => [
       "https://trac.macports.org/export/80246/trunk/dports/lang/hugs98/files/patch-packages-base-include-HsBase.h.diff",
