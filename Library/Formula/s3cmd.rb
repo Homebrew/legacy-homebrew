@@ -7,7 +7,7 @@ class S3cmd < Formula
 
   devel do
     url 'http://downloads.sourceforge.net/project/s3tools/s3cmd/1.1.0-beta3/s3cmd-1.1.0-beta3.zip'
-    md5 '04f9ed14026972f61407e98b0cbe6445'
+    sha1 '4e8e8dd0b60c0e3e146550f34ac2e8cf0a088a25'
   end
 
   def install
