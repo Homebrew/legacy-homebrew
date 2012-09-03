@@ -8,9 +8,9 @@ class Elinks < Formula
   head 'http://elinks.cz/elinks.git'
 
   devel do
-    version '0.12pre5'
     url 'http://elinks.cz/download/elinks-0.12pre5.tar.bz2'
-    md5 '92790144290131ac5e63b44548b45e08'
+    version '0.12pre5'
+    sha1 '15fb38fa938a0eec9d5f22fdd538a6785e2854af'
   end
 
   if build.head?
