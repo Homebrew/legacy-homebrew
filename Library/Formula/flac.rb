@@ -2,7 +2,7 @@ require 'formula'
 
 class Flac2Mp3 < Formula
   url 'https://raw.github.com/rmndk/flac2mp3/master/flac2mp3'
-  sha1 'bd54354900181b59db3089347cc84ad81e410b38'
+  sha1 '5d48a4eec53deaca2122a06c90f5dce2489dc673'
 end
 
 class Flac < Formula
