@@ -8,7 +8,8 @@ class Clamav < Formula
   def install
     args = %W{--disable-dependency-tracking
               --prefix=#{prefix}
-              --disable-zlib-vcheck}
+              --disable-zlib-vcheck
+              --libdir=#{lib}}
     args << "--with-zlib=#{MacOS.sdk_path}/usr" unless MacOS::CLT.installed?
 
     system "./configure", *args
