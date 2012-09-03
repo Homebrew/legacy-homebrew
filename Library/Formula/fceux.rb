@@ -11,6 +11,7 @@ class Fceux < Formula
   depends_on 'sdl'
   depends_on 'libzip'
   depends_on 'gtk+' unless build.include? "no-gtk"
+  depends_on :x11
 
   # fixes compilation errors on osx; upstream in 2.1.6
   def patches; DATA; end
