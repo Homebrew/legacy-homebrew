@@ -14,11 +14,11 @@ end
 def nclt?
   $sdkroot != nil
 end
-def cmake_prefixes
-  @prefixes ||= ENV['CMAKE_PREFIX_PATH'].split(':').reject do |path|
-    case path
-      when '/usr', '/', "#$sdkroot/usr" then true
-    end
+def syspath
+  if nclt?
+    %W{#$sdkroot/usr #$sdkroot/usr/local}
+  else
+    %W{/usr /usr/local}
   end
 end
 
@@ -75,8 +75,9 @@ class Cmd
     end.compact
   end
   def refurbished_args
-    iset = Set.new(cmake_prefixes.map{|prefix| "#{prefix}/include" })
-    lset = Set.new
+    lset = Set.new(syslibpath)
+    iset = Set.new(syscpath)
+
     args = []
     whittler = @args.each
     loop do
@@ -86,8 +87,6 @@ class Cmd
       when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
            /^-march=.+/, /^-mtune=.+/, '-m64', '-m32',
            /^-O[0-9zs]?/, '-fast',
-           %r{^-[IL]/opt/local}, %r{^-[IL]/sw},    # no macports/fink
-           %r{^-[IL]/usr/X11}, %r{^-[IL]/opt/X11}, # we add X11 ourselves
            '-pedantic', '-pedantic-errors'
       when '-fopenmp', '-lgomp'
         # clang doesn't support OpenMP
@@ -102,9 +101,14 @@ class Cmd
         # it is okay to add a space after the -I; so let's support it
         path = $1.chuzzle || whittler.next
         args << "-I#{path}" if iset.add?(path.cleanpath)
-      when /^-l(.+)/
-        lib = $1.chuzzle || whittler.next
-        args << "-l#{lib}" if lset.add?(lib)
+      when /^-L(.+)/
+        path = $1.chuzzle || whittler.next
+        case path.cleanpath
+        when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
+          # NOOP
+        else
+          args << "-L#{path}" if lset.add?(path.cleanpath)
+        end
       else
         args << arg
       end
@@ -123,20 +127,34 @@ class Cmd
       []
     end
   end
+  def syslibpath
+    # We reject brew's lib as we explicitly add this as a -L flag, thus it
+    # is given higher priority by cc, so it surpasses the system libpath.
+    # NOTE this only counts if Homebrew is installed at /usr/local
+    syspath.map{|d| "#{d}/lib" }.reject{ "#$brewfix/lib" }
+  end
+  def syscpath
+    isystem, _ = cpath
+    isystem + syspath.map{|d| "#{d}/include" }
+  end
+  def cpath
+    cpath = ENV['CMAKE_PREFIX_PATH'].split(':').map{|d| "#{d}/include" } + ENV['CMAKE_INCLUDE_PATH'].split(':')
+    opt = cpath.select{|prefix| prefix =~ %r{^#$brewfix/opt} }
+    sys = cpath - opt
+    [sys, opt]
+  end
+  def libpath
+    ENV['CMAKE_PREFIX_PATH'].split(':').map{|d| "#{d}/lib" } +
+    ENV['CMAKE_LIBRARY_PATH'].split(':') -
+    syslibpath
+  end
   def ldflags
-    libs = cmake_prefixes.map{|prefix| "#{prefix}/lib" }
-    libs += ENV['CMAKE_LIBRARY_PATH'].split(':')
-    libs.to_flags('-L')
+    libpath.to_flags('-L')
   end
   def cppflags
-    all = cmake_prefixes.map{|prefix| "#{prefix}/include" }
-    # we need to do this for cppflags and not ldflags as here we use -isystem
-    # but with ld we can only set -L.
-    all.delete('/usr/local') unless nclt?
-    opt = all.select{|prefix| prefix =~ %r{^#$brewfix/opt} }
-    sys = all - opt + ENV['CMAKE_INCLUDE_PATH'].split(':')
-    # we want our keg-only includes to be found before system includes so that
-    # they override the system options.
+    sys, opt = cpath
+    # we want our keg-only includes to be found before system includes *and*
+    # before any other includes the build-system adds
     sys.to_flags('-isystem') + opt.to_flags('-I')
   end
   def make_fuss args
