@@ -22,6 +22,7 @@ class Mysql < Formula
   option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
   option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
   option 'enable-local-infile', 'Build with local infile loading support'
+  option 'enable-debug', 'Build with debug support'
 
   conflicts_with 'mariadb',
     :because => "mysql and mariadb install the same binaries."
@@ -80,6 +81,9 @@ class Mysql < Formula
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
+
+    # Build with debug support
+    args << "-DWITH_DEBUG=1" if build.include? 'enable-debug'
 
     system "cmake", *args
     system "make"

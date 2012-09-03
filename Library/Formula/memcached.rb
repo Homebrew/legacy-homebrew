@@ -7,17 +7,13 @@ class Memcached < Formula
 
   depends_on 'libevent'
 
-  def options
-    [
-      ["--enable-sasl", "Enable SASL support -- disables ASCII protocol!"],
-      ["--enable-sasl-pwdb", "Enable SASL with memcached's own plain text password db support -- disables ASCII protocol!"],
-    ]
-  end
+  option "enable-sasl", "Enable SASL support -- disables ASCII protocol!"
+  option "enable-sasl-pwdb", "Enable SASL with memcached's own plain text password db support -- disables ASCII protocol!"
 
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--enable-sasl" if ARGV.include? "--enable-sasl"
-    args << "--enable-sasl-pwdb" if ARGV.include? "--enable-sasl-pwdb"
+    args = ["--prefix=#{prefix}", "--disable-coverage"]
+    args << "--enable-sasl" if build.include? "enable-sasl"
+    args << "--enable-sasl-pwdb" if build.include? "enable-sasl-pwdb"
 
     system "./configure", *args
     system "make install"
