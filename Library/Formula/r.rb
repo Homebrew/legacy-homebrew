@@ -4,7 +4,7 @@ class RBashCompletion < Formula
   # This is the same script that Debian packages use.
   url 'http://rcompletion.googlecode.com/svn-history/r28/trunk/bash_completion/R', :using => :curl
   version 'r28'
-  md5 'd5493f7a8422147c2f5c63c6a18ebda4'
+  sha1 'f0e6912be6dfc0d1fdc4be66048304d8befe8424'
 end
 
 class R < Formula

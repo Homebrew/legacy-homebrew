@@ -3,7 +3,7 @@ require 'formula'
 class Minisat < Formula
   homepage 'http://minisat.se'
   url 'https://github.com/niklasso/minisat/tarball/releases/2.2.0'
-  md5 '2274977506042714811968afca01b68d'
+  sha1 'dcd4bbb4620db5f49e19222d59318b2c615b4fd1'
 
   # Fixes compilation on mac; in next upstream release. See:
   # http://groups.google.com/group/minisat/browse_thread/thread/f5b6a180cadbb214

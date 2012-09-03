@@ -3,7 +3,7 @@ require 'formula'
 class Liblunar < Formula
   url 'http://liblunar.googlecode.com/files/liblunar-2.2.4.tar.gz'
   homepage 'http://code.google.com/p/liblunar/'
-  md5 '6f5a7e2f79483f572af3f896c9379b0f'
+  sha1 '34efb18ebe827ac47da6aecef70735d5c2a6b8d4'
 
   depends_on 'gettext'
   depends_on 'intltool'

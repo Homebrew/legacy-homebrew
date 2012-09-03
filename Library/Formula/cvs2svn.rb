@@ -23,7 +23,7 @@ end
 class Cvs2svn < Formula
   url 'http://trac.macports.org/export/70472/distfiles/cvs2svn/cvs2svn-2.3.0.tar.gz'
   homepage 'http://cvs2svn.tigris.org/'
-  md5 '6c412baec974f3ff64b9145944682a15'
+  sha1 '545237805ddb241054ba40b105b9c29b705539b8'
 
   depends_on PythonWithGdbm.new
 

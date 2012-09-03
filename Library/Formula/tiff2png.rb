@@ -3,7 +3,7 @@ require 'formula'
 class Tiff2png < Formula
   homepage 'http://www.libpng.org/pub/png/apps/tiff2png.html'
   url 'ftp://ftp.simplesystems.org/pub/libpng/png/applications/tiff2png/tiff2png-0.91.tar.gz'
-  md5 'b5db7add863c5cf469197aa327c0b202'
+  sha1 '3a23abaaadbed8f3d13b88241257fe2078eb61fd'
 
   depends_on :x11
   depends_on 'libtiff'

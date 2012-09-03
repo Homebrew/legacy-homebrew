@@ -3,7 +3,7 @@ require 'formula'
 class FreeradiusServer < Formula
   url 'ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.1.12.tar.gz'
   homepage 'http://freeradius.org/'
-  md5 'dcbaed16df8ccff672ba132a08bf8510'
+  sha1 '22b5d9e59369b8a3caa3c778871bf579ae7a8a9c'
 
   skip_clean :all
 

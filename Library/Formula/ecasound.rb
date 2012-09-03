@@ -4,7 +4,7 @@ require 'formula'
 class Ecasound < Formula
   homepage 'http://www.eca.cx/ecasound/'
   url 'http://ecasound.seul.org/download/ecasound-2.8.1.tar.gz'
-  md5 'd9ded0074a8eeb59dd507c248220d010'
+  sha1 '55c42a611ce59ea2b92461f49358a0cd54c40fe0'
 
   option "with-ruby", "Compile with ruby support"
 

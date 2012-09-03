@@ -3,7 +3,7 @@ require 'formula'
 class Libgtextutils < Formula
   homepage 'http://hannonlab.cshl.edu/fastx_toolkit/'
   url 'http://hannonlab.cshl.edu/fastx_toolkit/libgtextutils-0.6.tar.bz2'
-  md5 'd6969aa0d31cc934e1fedf3fe3d0dc63'
+  sha1 '0e3ad375249d7f5236d18285e8a84141e118b119'
 
   def install
     system "./configure", "--disable-debug",

@@ -3,7 +3,7 @@ require 'formula'
 class Mutt < Formula
   homepage 'http://www.mutt.org/'
   url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
-  md5 'a29db8f1d51e2f10c070bf88e8a553fd'
+  sha1 'a8475f2618ce5d5d33bff85c0affdf21ab1d76b9'
 
   depends_on 'tokyo-cabinet'
   depends_on 'slang' if ARGV.include? '--with-slang'

@@ -3,7 +3,7 @@ require 'formula'
 class Kes < Formula
   homepage 'https://github.com/epilnivek/kes'
   url 'https://github.com/epilnivek/kes/tarball/v0.9'
-  md5 '6ea08b27d49685a261e8de74c8428158'
+  sha1 '07cd04ecd000a8bcb1b091c7573e095b1af64563'
 
   head 'https://github.com/epilnivek/kes.git'
 

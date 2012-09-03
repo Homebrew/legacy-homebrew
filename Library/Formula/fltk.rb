@@ -3,7 +3,7 @@ require 'formula'
 class Fltk < Formula
   homepage 'http://www.fltk.org/'
   url 'http://ftp.easysw.com/pub/fltk/1.3.0/fltk-1.3.0-source.tar.gz'
-  md5 '44d5d7ba06afdd36ea17da6b4b703ca3'
+  sha1 '720f2804be6132ebae9909d4e74dedcc00b39d25'
 
   devel do
     url 'http://ftp.easysw.com/pub/fltk/snapshots/fltk-1.3.x-r9327.tar.bz2'

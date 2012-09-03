@@ -3,7 +3,7 @@ require 'formula'
 class CrushTools < Formula
   url 'http://crush-tools.googlecode.com/files/crush-tools-2012-02.tar.gz'
   homepage 'http://crush-tools.googlecode.com/'
-  md5 'cbf13f81c9580af3f9371a5be50ae10e'
+  sha1 'c628e3f79fa78a1437cfbe41a7ef49ecaa4d7f53'
   version '2012-02'
 
   depends_on 'pcre'

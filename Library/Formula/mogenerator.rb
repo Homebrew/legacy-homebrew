@@ -3,7 +3,7 @@ require 'formula'
 class Mogenerator < Formula
   url 'https://github.com/rentzsch/mogenerator/tarball/1.26'
   homepage 'http://rentzsch.github.com/mogenerator/'
-  md5 'cc761752cc581188e1065bd0919ad4c3'
+  sha1 '0ac8ad310760df366bdeeb32f9420548f3168ca4'
   head "https://github.com/rentzsch/mogenerator.git"
 
   depends_on :xcode # For working xcodebuild.

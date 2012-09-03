@@ -3,7 +3,7 @@ require 'formula'
 class P7zip < Formula
   url 'http://downloads.sourceforge.net/project/p7zip/p7zip/9.20.1/p7zip_9.20.1_src_all.tar.bz2'
   homepage 'http://p7zip.sourceforge.net/'
-  md5 'bd6caaea567dc0d995c990c5cc883c89'
+  sha1 '1cd567e043ee054bf08244ce15f32cb3258306b7'
 
   option '32-bit'
 

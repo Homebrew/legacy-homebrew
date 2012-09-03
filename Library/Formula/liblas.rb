@@ -3,7 +3,7 @@ require 'formula'
 class Liblas < Formula
   homepage 'http://liblas.org'
   url 'http://download.osgeo.org/liblas/libLAS-1.7.0.tar.gz'
-  md5 '03de7a61132902846c12f3b28c38eb37'
+  sha1 'f31070efdf7bb7d6675c23c6c6c84584e3a10869'
 
   depends_on 'cmake' => :build
   depends_on 'libgeotiff'

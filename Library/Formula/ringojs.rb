@@ -3,7 +3,7 @@ require 'formula'
 class Ringojs < Formula
   url 'https://github.com/downloads/ringo/ringojs/ringojs-0.8.tar.gz'
   homepage 'http://ringojs.org'
-  md5 '405455f7ab1bc7e230ff2ef50ced01c4'
+  sha1 '28fd76fce28b41e2abcbe27a8b1731744d340e94'
 
   def shim_script target
     <<-EOS.undent
