@@ -12,6 +12,7 @@ class Macvim < Formula
   option "override-system-vim", "Override system vim"
   option "with-cscope", "Build with Cscope support"
   option "with-lua", "Build with Lua scripting support"
+  option "with-xterm_clipboard", "Build with xterm_clipboard support"
 
   depends_on 'cscope' if build.include? 'with-cscope'
   depends_on 'lua' if build.include? 'with-lua'
@@ -40,6 +41,7 @@ class Macvim < Formula
     ]
 
     args << "--enable-cscope" if build.include? "with-cscope"
+    args << "--enable-xterm_clipboard=yes" if build.include? "with-xterm_clipboard"
 
     if build.include? "with-lua"
       args << "--enable-luainterp"
