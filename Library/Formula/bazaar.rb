@@ -3,7 +3,7 @@ require 'formula'
 class Bazaar < Formula
   homepage 'http://bazaar-vcs.org/'
   url 'https://launchpad.net/bzr/2.5/2.5.1/+download/bzr-2.5.1.tar.gz'
-  md5 'ac5079858364a046071000d5cdccb67b'
+  sha1 '7e2776e3aaf8fb48828026d3fc2a3047465eea5e'
 
   option "system", "Install using the OS X system Python."
 

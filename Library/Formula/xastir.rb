@@ -3,7 +3,7 @@ require 'formula'
 class Xastir < Formula
   homepage 'http://www.xastir.org/'
   url 'http://downloads.sourceforge.net/xastir/xastir-2.0.0.tar.gz'
-  md5 '3e660b8168c9037b06e20b0579af3c80'
+  sha1 '4dcb6445df134362353a49d34acf866250f205b7'
 
   depends_on 'proj'
   depends_on 'pcre'

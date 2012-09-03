@@ -3,7 +3,7 @@ require 'formula'
 class Checkstyle < Formula
   homepage 'http://checkstyle.sourceforge.net/'
   url 'http://sourceforge.net/projects/checkstyle/files/checkstyle/5.5/checkstyle-5.5-bin.tar.gz'
-  md5 '0dd29971aa26d917d88c229182272056'
+  sha1 '757f89f0bb6148718904577d230a9b4f8221b03c'
 
   def install
     # wrapper script

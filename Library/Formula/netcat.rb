@@ -2,7 +2,7 @@ require 'formula'
 
 class Netcat < Formula
   url 'http://downloads.sourceforge.net/sourceforge/netcat/netcat-0.7.1.tar.bz2'
-  md5 '0a29eff1736ddb5effd0b1ec1f6fe0ef'
+  sha1 'b761d70fe9e3e8b3fe33a329b9bc31300dc04d11'
   homepage 'http://netcat.sourceforge.net/'
 
   def install

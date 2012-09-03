@@ -22,7 +22,7 @@ end
 
 class Pip < Formula
   url 'http://pypi.python.org/packages/source/p/pip/pip-1.1.tar.gz'
-  md5 '62a9f08dd5dc69d76734568a6c040508'
+  sha1 '842c4e2aff3f016feea3c6e992c7fa96e49c9aa0'
 end
 
 class Python < Formula

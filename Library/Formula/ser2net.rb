@@ -3,7 +3,7 @@ require 'formula'
 class Ser2net < Formula
   homepage 'http://ser2net.sourceforge.net'
   url 'http://downloads.sourceforge.net/project/ser2net/ser2net/2.7/ser2net-2.7.tar.gz'
-  md5 '22977477789868923a5de09a85e847dd'
+  sha1 'ebceb41479ce5e33f400b1564d420dc12b6b44f6'
 
   def install
     ENV.deparallelize

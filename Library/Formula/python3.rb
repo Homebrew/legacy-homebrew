@@ -8,19 +8,19 @@ require Formula.path("python") # For TkCheck requirement
 
 class Distribute < Formula
   url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
-  md5 'b400b532e33f78551e6847c1f5965e56'
+  sha1 '4c2d562a0681ba27bc920500050e2f08de224311'
 end
 
 # Recommended way of installing python modules (http://pypi.python.org/pypi)
 class Pip < Formula
   url 'http://pypi.python.org/packages/source/p/pip/pip-1.1.tar.gz'
-  md5 '62a9f08dd5dc69d76734568a6c040508'
+  sha1 '4c2d562a0681ba27bc920500050e2f08de224311'
 end
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
   url 'http://python.org/ftp/python/3.2.3/Python-3.2.3.tar.bz2'
-  md5 'cea34079aeb2e21e7b60ee82a0ac286b'
+  sha1 '4c2d562a0681ba27bc920500050e2f08de224311'
 
   depends_on TkCheck.new
   depends_on 'pkg-config' => :build

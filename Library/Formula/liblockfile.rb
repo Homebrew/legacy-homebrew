@@ -4,7 +4,7 @@ class Liblockfile < Formula
   url 'http://mirrors.kernel.org/debian/pool/main/libl/liblockfile/liblockfile_1.08.orig.tar.gz'
   mirror 'http://ftp.us.debian.org/debian/pool/main/libl/liblockfile/liblockfile_1.08.orig.tar.gz'
   homepage 'http://packages.qa.debian.org/libl/liblockfile.html'
-  md5 'c24e2dfb4a2aab0263fe5ac1564d305e'
+  sha1 'c3b67ca81abb45aa02c75c2a99f0e387b897fe73'
 
   def install
     system "./configure", "--disable-dependency-tracking",

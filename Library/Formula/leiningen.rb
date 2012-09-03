@@ -3,7 +3,7 @@ require 'formula'
 class Leiningen < Formula
   homepage 'http://github.com/technomancy/leiningen'
   url 'http://github.com/technomancy/leiningen/tarball/1.7.1'
-  md5 'd3f7deb045e0f3430f464553b77b6589'
+  sha1 '80361e88cc5a88553d64e0d98ef542ab74b7148f'
 
   head 'https://github.com/technomancy/leiningen.git'
 

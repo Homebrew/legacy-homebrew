@@ -3,7 +3,7 @@ require 'formula'
 class Libmtp < Formula
   homepage 'http://libmtp.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/libmtp/libmtp/1.1.2/libmtp-1.1.2.tar.gz'
-  md5 '6dc708757e3fd3ccce7445b4f2171263'
+  sha1 '239c07afcb1ebd02b865050d0a31f5ff36b012d5'
 
   depends_on "libusb-compat"
 

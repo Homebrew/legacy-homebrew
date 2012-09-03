@@ -4,7 +4,7 @@ class Gd < Formula
   homepage 'http://bitbucket.org/pierrejoye/gd-libgd'
   url 'http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz'
   mirror 'http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz'
-  md5 '39ac48e6d5e0012a3bd2248a0102f209'
+  sha1 '21cf2ec93fd80836fc0cb4741201f7cc5440819a'
 
   head 'http://bitbucket.org/pierrejoye/gd-libgd', :using => :hg
 

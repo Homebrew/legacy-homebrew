@@ -3,7 +3,7 @@ require 'formula'
 class Ledger < Formula
   homepage 'http://ledger-cli.org'
   url 'ftp://ftp.newartisans.com/pub/ledger/ledger-2.6.3.tar.gz'
-  md5 '6d5d8396b1cdde5f605854c7d21d1460'
+  sha1 '5b8e7d8199acb116f13720a5a469fff1f14b4041'
 
   head 'https://github.com/jwiegley/ledger.git', :branch => 'next'
 

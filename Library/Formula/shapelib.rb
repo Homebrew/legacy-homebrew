@@ -3,7 +3,7 @@ require 'formula'
 class Shapelib < Formula
   homepage 'http://shapelib.maptools.org/'
   url 'http://download.osgeo.org/shapelib/shapelib-1.2.10.tar.gz'
-  md5 '4d96bd926167193d27bf14d56e2d484e'
+  sha1 '436b09b6a90f403e4568460d67560d5730725651'
 
   def install
     dylib = lib+"libshp.#{version}.dylib"

@@ -3,7 +3,7 @@ require 'formula'
 class Djmount < Formula
   url 'http://downloads.sourceforge.net/project/djmount/djmount/0.71/djmount-0.71.tar.gz'
   homepage 'http://djmount.sourceforge.net/'
-  md5 'c922753e706c194bf82a8b6ca77e6a9a'
+  sha1 '527d4603d85b7fb86dc97d326b78c97bdcc4d687'
 
   depends_on 'libupnp'
   depends_on 'fuse4x'

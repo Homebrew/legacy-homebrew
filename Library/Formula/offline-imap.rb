@@ -3,7 +3,7 @@ require 'formula'
 class OfflineImap < Formula
   homepage 'http://offlineimap.org/'
   url 'https://github.com/downloads/spaetz/offlineimap/offlineimap-v6.5.4.tar.gz'
-  md5 'f696978785ecfc804271ec25100ef929'
+  sha1 'a9ad5f32f8bc0ec042f8059ea9d34282bb8b682a'
 
   head 'https://github.com/OfflineIMAP/offlineimap.git'
 

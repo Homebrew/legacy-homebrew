@@ -4,7 +4,7 @@ class Blast < Formula
   homepage 'http://blast.ncbi.nlm.nih.gov/'
   url 'ftp://ftp.ncbi.nih.gov/blast/executables/blast+/2.2.25/ncbi-blast-2.2.25+-src.tar.gz'
   version '2.2.25'
-  md5 '01256b808e3af49a5087945b6a8c8293'
+  sha1 '95bc29cd3cdcccaac24bc4dd489d8ad6b4500d33'
 
   fails_with :clang do
     build 421

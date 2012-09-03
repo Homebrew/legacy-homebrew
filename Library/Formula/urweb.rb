@@ -3,7 +3,7 @@ require 'formula'
 class Urweb < Formula
   homepage 'http://impredicative.com/ur/'
   url 'http://impredicative.com/ur/urweb-20120807.tgz'
-  md5 'c4860d5a72f1ef7754f180a25f77b915'
+  sha1 '81c4a8095b2c6bb0f6779dd242270750f59627cf'
   head 'http://hg.impredicative.com/urweb', :using => :hg
 
   depends_on :automake

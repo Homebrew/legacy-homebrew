@@ -3,7 +3,7 @@ require 'formula'
 class Dpkg < Formula
   homepage 'http://en.wikipedia.org/wiki/Dpkg'
   url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.15.8.12.tar.bz2'
-  md5 '0cd6f20a574d0df31298e70fc3b26173'
+  sha1 'ac9e693090090aef4c3f80e62439102ddf067c34'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-tar'

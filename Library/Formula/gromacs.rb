@@ -3,7 +3,7 @@ require 'formula'
 class Gromacs < Formula
   homepage 'http://www.gromacs.org/'
   url 'ftp://ftp.gromacs.org/pub/gromacs/gromacs-4.5.5.tar.gz'
-  md5 '6a87e7cdfb25d81afa9fea073eb28468'
+  sha1 'ce4b4f9a0453dd2ffea72f28ea0bc7bb7a72f479'
 
   option 'enable-mpi', "Enables MPI support"
   option 'enable-double',"Enables double precision"

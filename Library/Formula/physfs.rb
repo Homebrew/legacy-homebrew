@@ -3,7 +3,7 @@ require 'formula'
 class Physfs < Formula
   homepage 'http://icculus.org/physfs/'
   url 'http://icculus.org/physfs/downloads/physfs-2.0.2.tar.gz'
-  md5 '4e8927c3d30279b03e2592106eb9184a'
+  sha1 '2d3d3cc819ad26542d34451f44050b85635344d0'
 
   depends_on 'cmake' => :build
 
