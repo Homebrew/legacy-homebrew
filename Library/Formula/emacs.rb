@@ -98,9 +98,9 @@ class Emacs < Formula
            brew linkapps
          or:
            ln -s #{prefix}/Emacs.app /Applications
-         
+
          A command line wrapper for the cocoa app was installed to:
-          #{prefix}/bin/emacs
+          #{bin}/emacs
       EOS
     end
 
