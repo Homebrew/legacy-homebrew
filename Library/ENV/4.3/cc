@@ -17,7 +17,6 @@ end
 def cmake_prefixes
   @prefixes ||= ENV['CMAKE_PREFIX_PATH'].split(':').reject do |path|
     case path
-      when '/usr/local' then !nclt?
       when '/usr', '/', "#$sdkroot/usr" then true
     end
   end
@@ -131,6 +130,9 @@ class Cmd
   end
   def cppflags
     all = cmake_prefixes.map{|prefix| "#{prefix}/include" }
+    # we need to do this for cppflags and not ldflags as here we use -isystem
+    # but with ld we can only set -L.
+    all.delete('/usr/local') unless nclt?
     opt = all.select{|prefix| prefix =~ %r{^#$brewfix/opt} }
     sys = all - opt + ENV['CMAKE_INCLUDE_PATH'].split(':')
     # we want our keg-only includes to be found before system includes so that
