@@ -165,7 +165,7 @@ module MacOS::CLT extend self
 
   def version
     # The pkgutils calls are slow, don't repeat if no CLT installed.
-    @version if @version_determined
+    return @version if @version_determined
 
     @version_determined = true
     # Version string (a pretty damn long one) of the CLT package.
