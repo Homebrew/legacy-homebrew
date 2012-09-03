@@ -1,26 +1,15 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
+
 #TODO make it work with homebrew/dupes/gcc
 #TODO? If we find -mmacosx-version-min=10.8, change sdkroot? warn visibly if no such SDK?
 #TODO fix pkg-config files, should point to /usr/local or /usr/local/opt
-#TODO for easier to understand code, don't monkey-patch ENV, just set via a hash from a helper class
 #TODO create mechanism to specify build effects like %w{-O0 -O4 vanilla-arg-parsing sdk=10.6} etc.
-#TODO DSL for lame-env (and rename to typical-env or something better)
-#TODO consider always setting CC to cc and instead having HOMEBREW_CC to force cc choice in end toolchain
-#     in verbose mode print out things like "gcc called, but redirecting to clang" if that happens
-#TODO `brew sh`: https://github.com/mxcl/homebrew/issues/14381#issuecomment-8017538
 
 require "#{File.dirname __FILE__}/../libsuperenv"
 require 'set'
 
 def cccfg? flags
   flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
-end
-def servile?
-  # we are servile when we are called from configure etc.
-  # * we give the callee the tools it asks for
-  # * we leave ARGV alone
-  # when callee is make we optimize and force HOMEBREW_CC
-  not cccfg? 'O'
 end
 def nclt?
   $sdkroot != nil
@@ -51,20 +40,21 @@ class Cmd
     end
   end
   def tool
-    @tool ||= if servile? or @arg0 == 'ld'
-      @arg0
-    elsif @arg0.include? '++'
-      if ENV['HOMEBREW_CC'].chuzzle =~ /gcc/
+    @tool ||= case @arg0
+    when 'ld' then 'ld'
+    when 'cc' then ENV['HOMEBREW_CC']
+    when 'c++'
+      if ENV['HOMEBREW_CC'] =~ /gcc/
         'g++'
       else
         'clang++'
       end
     else
-      ENV['HOMEBREW_CC'].chuzzle or 'clang'
+      @arg0
     end
   end
   def args
-    args = if servile? or tool == 'ld'
+    args = if not cccfg? 'O' or tool == 'ld'
       @args.dup
     else
       refurbished_args
@@ -157,6 +147,11 @@ end
 
 ####################################################################### sanity
 abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
+
+case ENV['HOMEBREW_CC'].chuzzle when 'cc', nil
+  # those values are not allowed
+  ENV['HOMEBREW_CC'] = 'clang'
+end
 
 ######################################################################### main
 cmd = Cmd.new($0, ARGV)
