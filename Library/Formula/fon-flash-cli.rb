@@ -7,11 +7,13 @@ class FonFlashCli < Formula
   sha1 'e6047eb8edb6c95ff174b8639d7291a10deccd97'
 
   def install
-    system "cd fon-flash; make fon-flash"
-    bin.install 'fon-flash/fon-flash' 
+    cd 'fon-flash' do
+      system "make fon-flash"
+      bin.install 'fon-flash'
+    end 
   end
 
   def test
-    system "fon-flash"
+    system "#{bin}/fon-flash"
   end
 end
