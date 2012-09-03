@@ -2,7 +2,7 @@ require 'formula'
 
 class ProjDatumgrid < Formula
   url 'http://download.osgeo.org/proj/proj-datumgrid-1.5.zip'
-  sha1 '5c8d6769a791c390c873fef92134bf20bb20e82a'
+  sha1 '4429ba1a8c764d5c0e6724d868f6874f452f7440'
 end
 
 class Proj < Formula
