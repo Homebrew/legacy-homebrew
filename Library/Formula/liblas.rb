@@ -10,9 +10,7 @@ class Liblas < Formula
   depends_on 'gdal'
   depends_on 'boost'
 
-  def options
-    [['--with-test', 'Verify during install with `make test`.']]
-  end
+  option 'with-test', 'Verify during install with `make test`'
 
   def install
     mkdir 'macbuild' do
@@ -23,7 +21,7 @@ class Liblas < Formula
       ENV['Boost_LIBRARY_DIRS'] = "#{HOMEBREW_PREFIX}/lib"
       system "cmake", "..", *std_cmake_args
       system "make"
-      system "make test" if ARGV.include? '--with-test'
+      system "make test" if build.include? 'with-test'
       system "make install"
     end
   end
