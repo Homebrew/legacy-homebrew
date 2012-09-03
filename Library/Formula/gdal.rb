@@ -32,7 +32,7 @@ end
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
   url 'http://download.osgeo.org/gdal/gdal-1.9.1.tar.gz'
-  md5 'c5cf09b92dac1f5775db056e165b34f5'
+  sha1 'c1eae556398ff7b9332afe9d3022dcd931130808'
 
   head 'https://svn.osgeo.org/gdal/trunk/gdal'
 

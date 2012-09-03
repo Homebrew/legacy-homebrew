@@ -4,7 +4,7 @@ class Scotch < Formula
   homepage 'https://gforge.inria.fr/projects/scotch'
   url 'https://gforge.inria.fr/frs/download.php/28933'
   version '5.1.12'
-  md5 'f873ff2bad519f9be7bc7b117bbe0bc4'
+  sha1 '1fd9becbc14809fc080f4f69ca0d9c1c8726223f'
 
   depends_on MPIDependency.new(:cc)
 

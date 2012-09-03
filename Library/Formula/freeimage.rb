@@ -13,7 +13,7 @@ class Freeimage < Formula
   url 'http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.15.1/FreeImage3151.zip',
         :using => FreeimageHttpDownloadStrategy
   version '3.15.1'
-  md5 '450d2ff278690b0d1d7d7d58fad083cc'
+  sha1 '02ae98007fc64d72a8f15ec3ff24c36ac745fbc8'
 
   option :universal
 

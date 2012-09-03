@@ -4,7 +4,7 @@ class Polipo < Formula
   url 'http://freehaven.net/~chrisd/polipo/polipo-1.0.4.1.tar.gz'
   homepage 'http://www.pps.jussieu.fr/~jch/software/polipo/'
   head 'git://git.wifi.pps.jussieu.fr/polipo'
-  md5 'bfc5c85289519658280e093a270d6703'
+  sha1 'e755b585a9bba2b599a6bcc7c6f7035d3cb27bec'
 
   def install
     cache_root = (var + "cache/polipo")

@@ -2,7 +2,7 @@ require 'formula'
 
 class Libowfat < Formula
   url 'http://dl.fefe.de/libowfat-0.28.tar.bz2'
-  md5 '6bbee9a86506419657d87123b7a6f2c1'
+  sha1 ''
   homepage 'http://www.fefe.de/libowfat/'
 end
 

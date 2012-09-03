@@ -2,68 +2,68 @@ require 'formula'
 
 class SaltSALT2 < Formula
   url 'http://supernovae.in2p3.fr/~guy/salt-dev/download/salt2_model_data-2-0.tar.gz'
-  md5 'ed8c0ab8cf75dbb98643ddc7a76ba1a9'
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
 end
 class Salt04D3gx < Formula
   url "http://supernovae.in2p3.fr/~guy/salt-dev/download/SNLS3-04D3gx.tar.gz"
-  md5 "17a03aa77636d8a5fb2eb9bc6fc48e75"
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
   version '2.2.2b'
 end
 class Salt4SHOOTER2 < Formula
   url "http://supernovae.in2p3.fr/~guy/salt-dev/download/SNLS3-4Shooter2.tar.gz"
-  md5 "478ae9ca99f220a41eb923c230037ee4"
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
   version '2.2.2b'
 end
 class SaltSWOPE < Formula
   url "http://supernovae.in2p3.fr/~guy/salt-dev/download/SNLS3-CSP-Swope.tar.gz"
-  md5 "d7e0ca6a982373dc775d19016bbdab40"
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
   version '2.2.2b'
 end
 class SaltACSWF < Formula
   url "http://supernovae.in2p3.fr/~guy/salt-dev/download/SNLS3-HST-ACSWF.tar.gz"
-  md5 "518521528b5af934b6d4281184b09ecd"
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
   version '2.2.2b'
 end
 class SaltNICMOS2 < Formula
   url "http://supernovae.in2p3.fr/~guy/salt-dev/download/SNLS3-HST-NICMOS2.tar.gz"
-  md5 "354e58e26d491ddcaec2dcf28c8b22e8"
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
   version '2.2.2b'
 end
 class SaltKEPLERCAM < Formula
   url "http://supernovae.in2p3.fr/~guy/salt-dev/download/SNLS3-Keplercam.tar.gz"
-  md5 "5c3f1c80e68a3faaa620d619c098cb49"
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
   version '2.2.2b'
 end
 class SaltSTANDARD < Formula
   url "http://supernovae.in2p3.fr/~guy/salt-dev/download/SNLS3-Landolt-model.tar.gz"
-  md5 "7d6e34688bc5cee02c89675f4213b4ca"
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
   version '2.2.2b'
 end
 class SaltMEGACAM < Formula
   url "http://supernovae.in2p3.fr/~guy/salt-dev/download/SNLS3-Megacam-model.tar.gz"
-  md5 "c2786e737f3a2d530e5ac3b941718b68"
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
   version '2.2.2b'
 end
 class SaltSDSS < Formula
   url "http://supernovae.in2p3.fr/~guy/salt-dev/download/SNLS3-SDSS-model-Doi2010.tar.gz"
-  md5 "118f6e2be45eebca0af89fe2f318548a"
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
   version '2.2.2b'
 end
 class SaltSDSS_AB_off < Formula
   url "http://supernovae.in2p3.fr/~guy/salt-dev/download/SNLS3-SDSS-magsys.tar.gz"
-  md5 "cf8c210fd19c3eef0b7f29b5d35c3270"
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
   version '2.2.2b'
   def linkto () return 'MagSys/SDSS-AB-off.dat' end
 end
 class SaltVEGAHST < Formula
   url "http://supernovae.in2p3.fr/~guy/salt-dev/download/SNLS3-Vega-magsys.tar.gz"
-  md5 "cf302ca85627ddeb2fbf590e0013dd3c"
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
   version '2.2.2b'
   def linkto () return 'MagSys/Vega0.dat' end
 end
 class SaltVEGA < Formula
   url "http://supernovae.in2p3.fr/~guy/salt-dev/download/SNLS3-magsys-1.tar.gz"
-  md5 "69c161ff17748c683df685e0a2ea2910"
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
   version '2.2.2b'
   def linkto () return 'MagSys/BD17-snls3.dat' end
 end
@@ -71,7 +71,7 @@ end
 class Salt < Formula
   homepage 'http://supernovae.in2p3.fr/~guy/salt/'
   url 'http://supernovae.in2p3.fr/~guy/salt/download/snfit-2.2.2b.tar.gz'
-  md5 'bf227accaf89a751c28d0bf1ed2b0851'
+  sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
 
   option 'with-data', 'Install model data'
 

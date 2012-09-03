@@ -3,7 +3,7 @@ require 'formula'
 class Ifstat < Formula
   homepage 'http://gael.roualland.free.fr/ifstat/'
   url 'http://gael.roualland.free.fr/ifstat/ifstat-1.1.tar.gz'
-  md5 'b655642c33a626cfe976792fbcd9b6e1'
+  sha1 '4ebf59207d24e53461f841a2480a6710d774fce2'
 
   # Fixes 32/64 bit incompatibility for snow leopard
   def patches; DATA; end

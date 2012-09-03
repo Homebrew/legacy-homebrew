@@ -3,7 +3,7 @@ require 'formula'
 class Gplcver < Formula
   homepage 'http://gplcver.sourceforge.net/'
   url 'http://sourceforge.net/projects/gplcver/files/gplcver/2.12a/gplcver-2.12a.src.tar.bz2'
-  md5 '857a15a9ebc8ef63ece01502509cbeb7'
+  sha1 '946bb35b6279646c6e10c309922ed17deb2aca8a'
 
   def install
     inreplace 'src/makefile.osx' do |s|

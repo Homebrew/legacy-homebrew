@@ -3,7 +3,7 @@ require 'formula'
 class Nrpe < Formula
   homepage 'http://www.nagios.org/'
   url 'http://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.13/nrpe-2.13.tar.gz'
-  md5 'e5176d9b258123ce9cf5872e33a77c1a'
+  sha1 '2d5ead0ff114329a0daf0778c4bb8364249aebbc'
 
   depends_on 'nagios-plugins'
 

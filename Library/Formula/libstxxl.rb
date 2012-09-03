@@ -3,7 +3,7 @@ require 'formula'
 class Libstxxl < Formula
   homepage 'http://stxxl.sourceforge.net/'
   url 'http://sourceforge.net/projects/stxxl/files/stxxl/1.3.1/stxxl-1.3.1.tar.gz'
-  md5 '8d0e8544c4c830cf9ae81c39b092438c'
+  sha1 '5fba2bb26b919a07e966b2f69ae29aa671892a7d'
 
   def install
     ENV['COMPILER'] = ENV.cxx

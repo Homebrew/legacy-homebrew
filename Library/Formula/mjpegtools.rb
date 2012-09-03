@@ -3,7 +3,7 @@ require 'formula'
 class Mjpegtools < Formula
   homepage 'http://mjpeg.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/mjpeg/mjpegtools/2.0.0/mjpegtools-2.0.0.tar.gz'
-  md5 '903e1e3b967eebcc5fe5626d7517dc46'
+  sha1 'f411e8573d446711dbe8455a6ae9257e1afe1e70'
 
   option "without-x", "Build without X support"
 

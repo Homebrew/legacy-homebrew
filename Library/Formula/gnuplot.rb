@@ -3,7 +3,7 @@ require 'formula'
 class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
   url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.0/gnuplot-4.6.0.tar.gz'
-  md5 '8e6e92b4596ea0eb75e16a57fc79efec'
+  sha1 '9a43ae13546d97d4b174533ddac31a14e0edc9b2'
 
   head 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot', :using => :cvs
 

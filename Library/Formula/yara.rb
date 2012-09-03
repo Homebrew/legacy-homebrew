@@ -3,7 +3,7 @@ require 'formula'
 class Yara < Formula
   homepage 'http://code.google.com/p/yara-project/'
   url 'http://yara-project.googlecode.com/files/yara-1.6.tar.gz'
-  md5 'c54fe284181df90e0520810797821287'
+  sha1 'd51fe954992a5de8ebab91b5f53d31a8e7e76503'
 
   depends_on 'pcre'
 

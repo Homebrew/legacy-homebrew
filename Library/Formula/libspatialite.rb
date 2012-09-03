@@ -7,7 +7,7 @@ end
 class Libspatialite < Formula
   homepage 'https://www.gaia-gis.it/fossil/libspatialite/index'
   url 'http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-3.0.1.tar.gz'
-  md5 '450d1a0d9da1bd9f770b7db3f2509f69'
+  sha1 'a88c763302aabc3b74d44a88f969c8475f0c0d10'
 
   def options
     [['--without-freexl', 'Build without support for reading Excel files']]

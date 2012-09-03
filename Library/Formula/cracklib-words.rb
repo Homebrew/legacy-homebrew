@@ -4,7 +4,7 @@ class CracklibWords < Formula
   url 'http://downloads.sourceforge.net/project/cracklib/cracklib-words/2008-05-07/cracklib-words-20080507.gz',
     :using => :nounzip
   homepage 'http://cracklib.sourceforge.net'
-  md5 '7fa6ba0cd50e7f9ccaf4707c810b14f1'
+  sha1 'e0cea03e505e709b15b8b950d56cb493166607da'
 
   depends_on 'cracklib'
 

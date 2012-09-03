@@ -3,7 +3,7 @@ require 'formula'
 class Pound < Formula
   homepage 'http://www.apsis.ch/pound'
   url 'http://www.apsis.ch/pound/Pound-2.6.tgz'
-  md5 '8c913b527332694943c4c67c8f152071'
+  sha1 '91ba84c6db579b06dc82fceb790e55e344b1dc40'
 
   depends_on 'pcre'
 

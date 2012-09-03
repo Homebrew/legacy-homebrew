@@ -3,7 +3,7 @@ require 'formula'
 class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
   url 'http://www.apache.org/dyn/closer.cgi?path=couchdb/releases/1.2.0/apache-couchdb-1.2.0.tar.gz'
-  md5 'a5cbbcaac288831b3d8a08b725657f10'
+  sha1 'da17af99cf3b1f9a89f0051b7d9de0cbd6fe81b6'
 
   head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 

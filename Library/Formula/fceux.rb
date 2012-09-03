@@ -3,7 +3,7 @@ require 'formula'
 class Fceux < Formula
   homepage 'http://fceux.com'
   url 'http://downloads.sourceforge.net/fceultra/fceux-2.1.5.src.tar.bz2'
-  md5 'e8b20e62bbbb061b1a59d51b47c827bd'
+  sha1 '599ef6a261ab1bd24e58468886d7cc303e150feb'
 
   option 'no-gtk', "Build without Gtk+ support"
 

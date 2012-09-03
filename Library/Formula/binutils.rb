@@ -4,7 +4,7 @@ class Binutils < Formula
   homepage 'http://www.gnu.org/software/binutils/binutils.html'
   url 'http://ftpmirror.gnu.org/binutils/binutils-2.22.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/binutils/binutils-2.22.tar.gz'
-  md5 '8b3ad7090e3989810943aa19103fdb83'
+  sha1 '0e16a7492c0a194962ecd33fc80fa53ccfec5149'
 
   def install
     system "./configure", "--disable-debug",
