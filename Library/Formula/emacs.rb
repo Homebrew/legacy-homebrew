@@ -10,6 +10,7 @@ class Emacs < Formula
   option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
   option "with-x", "Include X11 support"
   option "use-git-head", "Use Savannah git mirror for HEAD builds"
+  option "lion-fullscreen", "Enable Lion-style fullscreen"
 
   if build.include? "use-git-head"
     head 'http://git.sv.gnu.org/r/emacs.git'
@@ -25,7 +26,9 @@ class Emacs < Formula
   end
 
   def patches
-    if build.include? "cocoa"
+    if build.include? "lion-fullscreen"
+      "https://raw.github.com/gist/1355895/b5fe6c3bfcb88e1e80b43ecd50f635053e11d3bc"
+    elsif build.include? "cocoa"
       # Fullscreen patch, works against 24.2 and HEAD.
       "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716"
     end
@@ -98,7 +101,7 @@ class Emacs < Formula
            brew linkapps
          or:
            ln -s #{prefix}/Emacs.app /Applications
-         
+
          A command line wrapper for the cocoa app was installed to:
           #{prefix}/bin/emacs
       EOS
