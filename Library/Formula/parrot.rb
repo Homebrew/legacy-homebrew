@@ -7,7 +7,7 @@ class Parrot < Formula
 
   devel do
     url 'ftp://ftp.parrot.org/pub/parrot/releases/devel/4.7.0/parrot-4.7.0.tar.bz2'
-    sha256 '0ab6a6ce1a20191d1d143e792ff916fcd37fc024'
+    sha256 '4360ac3dffafffaa00bce561c1329df8ad134019f76930cf24e7a875a4422a90'
   end
 
   head 'https://github.com/parrot/parrot.git'
