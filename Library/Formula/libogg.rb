@@ -7,14 +7,14 @@ class Libogg < Formula
 
   head 'http://svn.xiph.org/trunk/ogg'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
