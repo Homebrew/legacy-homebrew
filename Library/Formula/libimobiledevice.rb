@@ -14,13 +14,13 @@ class Libimobiledevice < Formula
   depends_on 'usbmuxd'
   depends_on 'gnutls'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
 
   def install
-    if ARGV.build_head?
+    if build.head?
       # fix the m4 problem with the missing pkg.m4
       ENV['LIBTOOLIZE'] = "glibtoolize"
       ENV['ACLOCAL'] = "aclocal -I m4 -I #{HOMEBREW_PREFIX}/share/aclocal"
