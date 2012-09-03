@@ -1,33 +1,21 @@
 require 'formula'
 
-def use_libnet?
-  not ARGV.include? '--disable-libnet'
-end
-
-def use_glib?
-  not ARGV.include? '--disable-libglib'
-end
-
 class Libnids < Formula
-  url 'http://downloads.sourceforge.net/project/libnids/libnids/1.24/libnids-1.24.tar.gz'
   homepage 'http://libnids.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/libnids/libnids/1.24/libnids-1.24.tar.gz'
   md5 '72d37c79c85615ffe158aa524d649610'
 
-  depends_on 'libnet' if use_libnet?
-  depends_on 'glib' if use_glib?
-  depends_on 'pkg-config' => :build
+  option "disable-libnet", "Don't include code requiring libnet"
+  option "disable-libglib", "Don't use glib2 for multiprocessing support"
 
-  def options
-    [
-      ["--disable-libnet", "Don't include code requiring libnet"],
-      ["--disable-libglib", "Don't use glib2 for multiprocessing support"]
-    ]
-  end
+  depends_on 'pkg-config' => :build
+  depends_on 'libnet' => :recommended unless build.include? "disable-libnet"
+  depends_on 'glib' => :recommended unless build.include? "disable-libglib"
 
   def install
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
-    args << "--disable-libnet" unless use_libnet?
-    args << "--disable-libglib" unless use_glib?
+    args << "--disable-libnet" if build.include? "disable-libnet"
+    args << "--disable-libglib" if build.include? "disable-libglib"
 
     system "./configure", *args
     system "make install"

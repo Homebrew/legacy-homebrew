@@ -3,9 +3,16 @@
 # But many build-systems expect it to work. This fixes that.
 # NOTE only works if they call xcrun without a full-path. Cross your fingers!
 
+[ "$#" -eq 0 ] && exec /usr/bin/xcrun
+
 if [ $HOMEBREW_SDKROOT ]; then
   arg0="$1"
   shift
+
+  case $arg0 in
+  -*)
+    exec /usr/bin/xcrun "$arg0" "$@";;
+  esac
 
   path=$(/usr/bin/xcrun -find $arg0)
   [ -x "$path" ] && exec "$path" "$@"

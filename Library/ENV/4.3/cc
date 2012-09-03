@@ -100,9 +100,9 @@ class Cmd
            %r{^-[IL]/opt/local}, %r{^-[IL]/sw},    # no macports/fink
            %r{^-[IL]/usr/X11}, %r{^-[IL]/opt/X11}, # we add X11 ourselves
            '-pedantic', '-pedantic-errors'
-      when /^-fopenmp/
-        # remove this arg: it fails the build with:
-        #   ld: library not found for -lgomp
+      when '-fopenmp', '-lgomp'
+        # clang doesn't support OpenMP
+        args << arg if not tool =~ /^clang/
       when /^-W.*/
         args << arg if arg =~ /^-Wl,/
       when '-macosx_version_min', '-dylib_install_name'
