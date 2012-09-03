@@ -159,7 +159,7 @@ def fixopt f
     f.linked_keg.readlink
   elsif f.prefix.directory?
     f.prefix
-  elsif (kids = f.rack.children).size == 1
+  elsif (kids = f.rack.children).size == 1 and kids.first.directory?
     kids.first
   else
     raise
