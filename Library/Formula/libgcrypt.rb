@@ -21,7 +21,7 @@ class Libgcrypt < Formula
   end
 
   def install
-    ENV.universal_binary # build fat so wine can use it
+    ENV.universal_binary
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
