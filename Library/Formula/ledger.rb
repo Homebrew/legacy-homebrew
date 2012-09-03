@@ -7,6 +7,8 @@ class Ledger < Formula
 
   head 'https://github.com/jwiegley/ledger.git', :branch => 'next'
 
+  option 'no-python', 'Disable Python support'
+
   depends_on 'gettext'
   depends_on 'boost'
   depends_on 'mpfr'
@@ -14,21 +16,18 @@ class Ledger < Formula
   depends_on 'pcre'
   depends_on 'expat'
 
-  def options
-    [['--no-python', 'Disable Python support']]
-  end
-
   def install
     # find Homebrew's libpcre
     ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
 
-    unless ARGV.build_head?
-      system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    else
+    if build.head?
       # gmp installs x86_64 only
       inreplace 'acprep', "'-arch', 'i386', ", "" if Hardware.is_64_bit?
-      no_python = ((ARGV.include? '--no-python') ? '--no-python' : '')
+      no_python = ((build.include? 'no-python') ? '--no-python' : '')
       system "./acprep", no_python, "-j#{ENV.make_jobs}", "opt", "make", "--", "--prefix=#{prefix}"
+    else
+      system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}"
     end
     system 'make'
     ENV.deparallelize
