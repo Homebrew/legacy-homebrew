@@ -203,7 +203,7 @@ module MacOS extend self
         EOS
     end
 
-    StandardCompilers[xcode].all? { |method, build| MacOS.send(method) == build }
+    StandardCompilers[xcode].all? { |method, build| MacOS.send(method) == build } rescue false
   end
 
   def app_with_bundle_id id
