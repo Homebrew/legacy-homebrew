@@ -8,7 +8,7 @@ class Lbdb < Formula
   url 'https://github.com/tgray/lbdb/tarball/v0.38.1'
   sha1 '4678fe00c86850fd4f40891518a8d37ee3f5020b'
 
-  head 'git://github.com/tgray/lbdb.git'
+  head 'https://github.com/tgray/lbdb.git'
 
   def install
     system "./configure", "--disable-dependency-tracking",
