@@ -13,6 +13,7 @@ class Avidemux < Formula
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
   depends_on 'yasm' => :build
+  depends_on :fontconfig
   depends_on 'gettext'
   depends_on 'aften'
   depends_on 'mad'
