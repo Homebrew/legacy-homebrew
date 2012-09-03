@@ -12,13 +12,13 @@ module Homebrew extend self
     ENV['VERBOSE'] = '1'
     ENV['HOMEBREW_LOG'] = '1'
     puts <<-EOS.undent_________________________________________________________72
-           Your shell has been configured to use Homebrew's build environment:
+         Your shell has been configured to use Homebrew's build environment:
          this should help you build stuff. Notably though, the system versions of
          gem and pip will ignore our configuration and insist on using the
          environment they were built under (mostly). Sadly, scons will also
          ignore our configuration.
-           All toolchain use will be logged to: ~/Library/Homebrew/Logs/cc.log
-           When done, type `exit'.
+         All toolchain use will be logged to: ~/Library/Homebrew/Logs/cc.log
+         When done, type `exit'.
          EOS
     exec ENV['SHELL']
   end
