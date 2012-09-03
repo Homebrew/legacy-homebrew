@@ -7,8 +7,8 @@ class Fltk < Formula
 
   devel do
     url 'http://ftp.easysw.com/pub/fltk/snapshots/fltk-1.3.x-r9327.tar.bz2'
-    md5 '3205e5da58069ec7a1e487e6941cccd4'
     version '1.3.x-r9327'
+    sha1 '12425368b639cd3ae102e658cf5ba8b6d0ca2f85'
   end
 
   depends_on :libpng
