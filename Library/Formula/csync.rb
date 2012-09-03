@@ -2,8 +2,8 @@ require 'formula'
 
 class Csync < Formula
   homepage 'http://www.csync.org/'
-  url 'http://www.csync.org/files/csync-0.44.0.tar.gz'
-  sha1 '43ac96260d580726006a4cf6878c0d3c536ff8cf'
+  url 'http://www.csync.org/files/csync-0.49.9.tar.gz'
+  sha1 'fd7df6c13aa6fc6de74cb48c2ac35ad11f6d895d'
 
   # Note: HEAD requires git:// protocol, https:// does not work.
   head 'git://git.csync.org/projects/csync.git'
@@ -11,7 +11,7 @@ class Csync < Formula
   depends_on 'doxygen' => :build
   depends_on 'cmake' => :build
   depends_on 'check' => :build
-  depends_on 'sqlite3'
+  depends_on 'sqlite'
   depends_on 'iniparser'
   depends_on 'argp-standalone'
   depends_on 'libssh' => :optional
@@ -27,29 +27,11 @@ class Csync < Formula
   end
 
   def patches
-    upstream = [
-      # Upstream has seen much activity the past few months, and these
-      # patches are selected commits that make compiling on OS X work.
-      # cmake: Fix build on OSX.
-      "http://git.csync.org/projects/csync.git/patch/?id=d0888ffba8f399da79708480a62cc2f3a914eb58",
-      # time: Add csync_gettime() function.
-      "http://git.csync.org/projects/csync.git/patch/?id=1d609e5985468980ce01ad8bf29de5dab494f706",
-      # csync: Use csync_gettime().
-      "http://git.csync.org/projects/csync.git/patch/?id=19abbc04ffa894505f92ea2e3ef80fd7fb046633",
-      # time: Fix clock_gettime().
-      "http://git.csync.org/projects/csync.git/patch/?id=63565b0f264c737e6b15490041412645d17809ac"
-    ]
-    local = [
-      # This last patch is not in upstream, and removes an attempt to
-      # set the non-existing O_NOATIME flag on OS X. Once this formula
-      # also gets a HEAD build option, an issue will be opened upstream.
-      DATA
-    ]
-    return ARGV.build_head? ? local : (upstream+local)
+    DATA
   end
 
   def install
-    mkdir 'build' unless ARGV.build_head?
+    mkdir 'build' unless build.head?
     cd 'build' do
       system "cmake", "..", *std_cmake_args
       # We need to run make csync first to make the "core",
@@ -73,6 +55,7 @@ class Csync < Formula
     system "csync", "-V"
   end
 end
+
 __END__
 --- a/src/csync_propagate.c 2012-07-01 13:12:12.000000000 +0200
 +++ b/src/csync_propagate.c 2012-07-01 13:12:59.000000000 +0200
