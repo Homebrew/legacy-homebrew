@@ -41,7 +41,8 @@ class << ENV
   def setup_build_environment
     reset
     check
-    ENV['LD'] = 'cc'
+    ENV['CC'] = ENV['LD'] = 'cc'
+    ENV['CXX'] = 'c++'
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
@@ -198,13 +199,16 @@ class << ENV
   end
   alias_method :j1, :deparallelize
   def gcc
-    ENV['HOMEBREW_CC'] = "gcc"
+    ENV['CC'] = ENV['HOMEBREW_CC'] = "gcc"
+    ENV['CXX'] = "g++"
   end
   def llvm
-    ENV['HOMEBREW_CC'] = "llvm-gcc"
+    ENV['CC'] = ENV['HOMEBREW_CC'] = "llvm-gcc"
+    ENV['CXX'] = "g++"
   end
   def clang
-    ENV['HOMEBREW_CC'] = "clang"
+    ENV['CC'] = ENV['HOMEBREW_CC'] = "clang"
+    ENV['CXX'] = "clang++"
   end
   def make_jobs
     ENV['MAKEFLAGS'] =~ /-\w*j(\d)+/
