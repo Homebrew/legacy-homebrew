@@ -135,8 +135,11 @@ class << ENV
     paths = []
     paths << "#{MacSystem.x11_prefix}/include/freetype2" if x11?
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
-    # TODO prolly shouldn't always do this?
-    paths << "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7" if MacSystem.xcode43_without_clt?
+    if MacSystem.xcode43_without_clt?
+      paths << "#{sdk}/usr/include/apache2"
+      # TODO prolly shouldn't always do this?
+      paths << "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7"
+    end
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/"
     paths.to_path_s
   end
