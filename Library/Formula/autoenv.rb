@@ -3,7 +3,7 @@ require 'formula'
 class Autoenv < Formula
   homepage 'https://github.com/kennethreitz/autoenv'
   url 'https://github.com/kennethreitz/autoenv/tarball/v0.1.0'
-  md5 '5ced296136a2e97d92de247a6fbc5f77'
+  sha1 '0682a230af78e72144dd9190ba216dada851235a'
 
   head 'https://github.com/kennethreitz/autoenv.git', :branch => 'master'
 

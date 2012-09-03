@@ -3,7 +3,7 @@ require 'formula'
 class Libmpeg2 < Formula
   url 'http://libmpeg2.sourceforge.net/files/libmpeg2-0.5.1.tar.gz'
   homepage 'http://libmpeg2.sourceforge.net/'
-  md5 '0f92c7454e58379b4a5a378485bbd8ef'
+  sha1 '0f9163d8fd52db5f577ebe45636f674252641fd7'
 
   depends_on 'sdl'
 

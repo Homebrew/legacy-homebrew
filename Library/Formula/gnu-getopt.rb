@@ -2,7 +2,7 @@ require 'formula'
 
 class GnuGetopt < Formula
   url 'http://software.frodo.looijaard.name/getopt/files/getopt-1.1.4.tar.gz'
-  md5 '02188ca68da27c4175d6e9f3da732101'
+  sha1 '8b9b329b3a8f5d52c91c0381616ecbd1ba291486'
   homepage 'http://software.frodo.looijaard.name/getopt/'
 
   depends_on 'gettext'

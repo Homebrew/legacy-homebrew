@@ -3,7 +3,7 @@ require 'formula'
 class Binwalk < Formula
   homepage 'http://code.google.com/p/binwalk/'
   url 'http://binwalk.googlecode.com/files/binwalk-0.4.2.tar.gz'
-  md5 '9559d114760f6a58825004b4379fd95f'
+  sha1 '160ad2f4dd7f37628a4fade5d16c0c9996174ab2'
 
   depends_on 'libmagic'
 

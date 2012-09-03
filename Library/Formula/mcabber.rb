@@ -3,7 +3,7 @@ require 'formula'
 class Mcabber < Formula
   homepage 'http://mcabber.com/'
   url 'http://mcabber.com/files/mcabber-0.10.1.tar.bz2'
-  md5 'fe96beab30f535d5d6270fd1719659b4'
+  sha1 'cceec36352a99e4d47ad642f3d35b98293dedefa'
 
   head 'http://mcabber.com/hg/', :using => :hg
 

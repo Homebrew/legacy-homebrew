@@ -3,7 +3,7 @@ require 'formula'
 class BrewPip < Formula
   homepage 'https://github.com/josh/brew-pip'
   url 'https://github.com/josh/brew-pip/tarball/v0.1.2'
-  md5 'de88d7e2c08dc85d9f71ae5a2f3fdece'
+  sha1 '0fac3fe1b9563f6a7fb69d257b4146678fd540a4'
 
   def install
     bin.install 'bin/brew-pip'

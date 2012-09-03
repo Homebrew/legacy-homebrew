@@ -3,7 +3,7 @@ require 'formula'
 class CfitsioExamples < Formula
   url 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/cexamples/cexamples.zip'
   version '2010.08.19'
-  md5 '31a5f5622a111f25bee5a3fda2fdac28'
+  sha1 '35360dccc69dc5f12efb6fc9096ad951b59244d5'
 end
 
 class Cfitsio < Formula

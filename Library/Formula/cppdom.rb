@@ -3,7 +3,7 @@ require 'formula'
 class Cppdom < Formula
   url 'http://downloads.sourceforge.net/project/xml-cppdom/CppDOM/1.2.0/cppdom-1.2.0.tar.bz2'
   homepage 'http://sourceforge.net/projects/xml-cppdom/'
-  md5 '538a67a7ed4b2f6056bc4e356ebc6b4c'
+  sha1 'cf3a20689e82b8907825ac9d0602f469f879d934'
 
   depends_on 'scons' => :build
   depends_on 'boost'

@@ -3,7 +3,7 @@ require 'formula'
 class Ddclient < Formula
   homepage 'http://sourceforge.net/apps/trac/ddclient'
   url 'http://sourceforge.net/projects/ddclient/files/ddclient/ddclient-3.8.1/ddclient-3.8.1.tar.bz2'
-  md5 '7fa417bc65f8f0e6ce78418a4f631988'
+  sha1 '2fc0909cf25ab03019214e52d66c7fcd449f8bbe'
 
   def install
     # Adjust default paths in script

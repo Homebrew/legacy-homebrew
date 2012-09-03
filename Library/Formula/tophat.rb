@@ -3,7 +3,7 @@ require 'formula'
 class Tophat < Formula
   url 'http://tophat.cbcb.umd.edu/downloads/tophat-1.4.1.tar.gz'
   homepage 'http://tophat.cbcb.umd.edu/'
-  md5 '73f7c3b6b2f68f291757026c38eab551'
+  sha1 '0513bbcadb7194f12fbddeb3e4033e032f2fb29f'
 
   depends_on 'samtools'
 

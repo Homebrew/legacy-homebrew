@@ -2,7 +2,7 @@ require 'formula'
 
 class SqliteFunctions < Formula
   url 'http://www.sqlite.org/contrib/download/extension-functions.c?get=25', :using  => :nounzip
-  md5 '3a32bfeace0d718505af571861724a43'
+  sha1 'd3833b6ad68db8505d1044f761dd962f415cd302'
   version '2010-01-06'
 end
 

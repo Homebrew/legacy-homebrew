@@ -3,7 +3,7 @@ require 'formula'
 class Poster < Formula
   homepage 'http://schrfr.github.com/poster/'
   url 'https://github.com/schrfr/poster/tarball/1.0.0'
-  md5 'c76de471156c65b8182de0e6f5c8f1b5'
+  sha1 '30492aa7e9aa4242b4540b9b60df9538c21fcf7e'
 
   def install
     system "make"

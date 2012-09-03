@@ -3,7 +3,7 @@ require 'formula'
 class ModPython < Formula
   homepage 'http://www.modpython.org/'
   url 'http://archive.apache.org/dist/httpd/modpython/mod_python-3.3.1.tgz'
-  md5 'a3b0150176b726bd2833dac3a7837dc5'
+  sha1 'e538170fd78e09408b6d8593da980b126a0fef93'
 
   # patch-src-connobject.c.diff from MacPorts
   def patches; DATA; end

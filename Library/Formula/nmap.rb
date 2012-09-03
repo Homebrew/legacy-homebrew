@@ -3,7 +3,7 @@ require 'formula'
 class Nmap < Formula
   homepage 'http://nmap.org/6/'
   url 'http://nmap.org/dist/nmap-6.01.tar.bz2'
-  md5 'a1a71940f238abb835dbf3ee7412bcea'
+  sha1 'e397e453893930d14e9bb33a847d15b94b7ee83a'
 
   head 'https://guest:@svn.nmap.org/nmap/', :using => :svn
 

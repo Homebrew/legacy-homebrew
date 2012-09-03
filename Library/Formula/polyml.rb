@@ -3,7 +3,7 @@ require 'formula'
 class Polyml < Formula
   url 'http://downloads.sourceforge.net/project/polyml/polyml/5.3/polyml.5.3.tar.gz'
   homepage 'http://www.polyml.org'
-  md5 'c4e3a33307c4465c4f068ae4fa225ced'
+  sha1 'a037cd8cf4ce4a43b685b0e0d80f3f1e20d7c9fa'
 
   # Or dynamic linking breaks
   skip_clean :all

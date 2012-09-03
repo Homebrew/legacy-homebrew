@@ -4,14 +4,14 @@ class ScmManagerCliClient < Formula
   homepage 'http://www.scm-manager.org'
   url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.20/scm-cli-client-1.20-jar-with-dependencies.jar'
   version '1.20'
-  md5 'dd7f13e6e86b685a2d203f84d18bb1cf'
+  sha1 '3d309043cb815fe282c41894c8449943beb3e3de'
 end
 
 class ScmManager < Formula
   homepage 'http://www.scm-manager.org'
   url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.20/scm-server-1.20-app.tar.gz'
   version '1.20'
-  md5 'd250069a047533bf8deabce699836aee'
+  sha1 '3d309043cb815fe282c41894c8449943beb3e3de'
 
   skip_clean :all
 

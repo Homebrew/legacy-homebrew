@@ -4,7 +4,7 @@ class Hub < Formula
   url 'https://github.com/defunkt/hub/tarball/v1.10.2'
   homepage 'http://defunkt.io/hub/'
   head 'https://github.com/defunkt/hub.git'
-  md5 '12357b7542d1caf4ec049343e8564057'
+  sha1 '7520d264249573d7f72c443f1144b67cc645ab9b'
 
   def install
     system rake_bin, "install", "prefix=#{prefix}"

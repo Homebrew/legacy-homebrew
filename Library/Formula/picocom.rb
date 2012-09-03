@@ -3,7 +3,7 @@ require 'formula'
 class Picocom < Formula
   url 'http://picocom.googlecode.com/files/picocom-1.6.tar.gz'
   homepage 'http://code.google.com/p/picocom/'
-  md5 '426c3d30b82cbc80b0dafdccd6020c6c'
+  sha1 'f042e15fa76ab3349c74a70062aa210b527e6bdc'
 
   def patches
     # HIGH_BAUD is not defined

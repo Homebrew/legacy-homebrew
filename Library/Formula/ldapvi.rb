@@ -3,7 +3,7 @@ require 'formula'
 class Ldapvi < Formula
   url 'http://www.lichteblau.com/download/ldapvi-1.7.tar.gz'
   homepage 'http://www.lichteblau.com/ldapvi/'
-  md5 '6dc2f5441ac5f1e2b5b036e3521012cc'
+  sha1 'd1cde4cbb618180f9ae0e77c56a1520b8ad61c9a'
 
   depends_on 'gettext'
   depends_on 'glib'

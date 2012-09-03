@@ -2,7 +2,7 @@ require 'formula'
 
 class VpncScript < Formula
   url 'http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/HEAD:/vpnc-script'
-  md5 '7a51184f883bba826615e85853e6d30a'
+  sha1 'f51321920310d2e582fc246dcc77c43f9e01cc71'
 end
 
 class Openconnect < Formula

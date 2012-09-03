@@ -26,7 +26,7 @@ end
 class Mydumper < Formula
   homepage 'http://www.mydumper.org/'
   url 'http://launchpadlibrarian.net/77098505/mydumper-0.5.1.tar.gz'
-  md5 'b4df42dfe23f308ab13eb6ecb73a0d21'
+  sha1 '75635b9c25ca878bfe7907efd136aa4229161d72'
 
   depends_on MySqlInstalled.new
   depends_on 'pkg-config' => :build

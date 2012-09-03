@@ -4,7 +4,7 @@ class Owfs < Formula
   homepage 'http://owfs.org/'
   url 'http://downloads.sourceforge.net/project/owfs/owfs/2.8p13/owfs-2.8p13.tar.gz'
   version '2.8p13'
-  md5 'cc3e2542aed41c753bffca13f2a0a84e'
+  sha1 '61ea07bb82b60320889c27730abff1826cb27931'
 
   depends_on :automake
   depends_on :libtool
