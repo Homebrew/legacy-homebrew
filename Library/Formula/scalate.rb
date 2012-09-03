@@ -4,7 +4,7 @@ class Scalate < Formula
   homepage 'http://scalate.fusesource.org/'
   url 'http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.5.3/scalate-distro-1.5.3-unix-bin.tar.gz'
   version '1.5.3'
-  md5 '5114f611836957f479c1f2060b20beb3'
+  sha1 '17e3cd6252b36c9cf80566738299c7e19df957bf'
 
   # This startup script for Scalate calls the real startup script installed
   # to Homebrew's cellar. This avoids issues with local vs. absolute symlinks.

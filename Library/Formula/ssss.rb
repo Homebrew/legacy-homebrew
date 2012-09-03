@@ -3,7 +3,7 @@ require 'formula'
 class Ssss < Formula
   url 'http://point-at-infinity.org/ssss/ssss-0.5.tar.gz'
   homepage 'http://point-at-infinity.org/ssss/'
-  md5 '24227252aa195a146d09de1df10357a1'
+  sha1 '3f8f5046c2c5c3a2cf1a93f0a9446681852b190e'
 
   depends_on 'gmp'
   depends_on 'xmltoman'

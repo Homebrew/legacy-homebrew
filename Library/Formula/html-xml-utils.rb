@@ -3,7 +3,7 @@ require 'formula'
 class HtmlXmlUtils < Formula
   url 'http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-5.5.tar.gz'
   homepage 'http://www.w3.org/Tools/HTML-XML-utils/'
-  md5 '28c58add86e35a60e602a029c8e2f04b'
+  sha1 'ec1e6d52825a6aa9e9aff0a34679621de5e419ba'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"

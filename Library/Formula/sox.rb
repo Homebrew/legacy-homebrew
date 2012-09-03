@@ -3,7 +3,7 @@ require 'formula'
 class Sox < Formula
   homepage 'http://sox.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/sox/sox/14.4.0/sox-14.4.0.tar.gz'
-  md5 'b0c15cff7a4ba0ec17fdc74e6a1f9cf1'
+  sha1 'd809cab382c7a9d015491c69051a9d1c1a1a44f1'
 
   depends_on 'pkg-config' => :build
   depends_on :libpng

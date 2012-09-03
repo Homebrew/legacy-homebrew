@@ -3,7 +3,7 @@ require 'formula'
 class Rtmpdump < Formula
   homepage 'http://rtmpdump.mplayerhq.hu'
   url 'http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.3.tgz'
-  md5 'eb961f31cd55f0acf5aad1a7b900ef59'
+  sha1 'b65ce7708ae79adb51d1f43dd0b6d987076d7c42'
 
   head 'git://git.ffmpeg.org/rtmpdump'
 

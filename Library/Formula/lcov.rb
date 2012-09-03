@@ -3,7 +3,7 @@ require 'formula'
 class Lcov < Formula
   url 'http://downloads.sourceforge.net/ltp/lcov-1.9.tar.gz'
   homepage 'http://ltp.sourceforge.net/coverage/lcov.php'
-  md5 '8b88cfc0200a8c176b879ac115a31379'
+  sha1 '5aff4b998b1288896734326a0b74ab536339ec21'
 
   def install
     %w(bin/gendesc bin/genhtml bin/geninfo bin/genpng bin/lcov).each do |file|

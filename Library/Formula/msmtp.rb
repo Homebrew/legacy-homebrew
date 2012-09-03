@@ -3,7 +3,7 @@ require 'formula'
 class Msmtp < Formula
   homepage 'http://msmtp.sourceforge.net'
   url 'http://downloads.sourceforge.net/project/msmtp/msmtp/1.4.28/msmtp-1.4.28.tar.bz2'
-  md5 '14740478dc9d1f52ec97a415e3373fc7'
+  sha1 '3fd44b30e8f4ae071b2a5a205d6007f3465fa970'
 
   depends_on 'pkg-config' => :build
 

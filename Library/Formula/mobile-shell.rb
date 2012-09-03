@@ -3,7 +3,7 @@ require 'formula'
 class MobileShell < Formula
   homepage 'http://mosh.mit.edu/'
   url 'https://github.com/downloads/keithw/mosh/mosh-1.2.2.tar.gz'
-  md5 '7ed5b857307685794dcd120afe5bdf52'
+  sha1 'f0227800298d80e9f1353db3b29a807de833d7d2'
 
   head 'https://github.com/keithw/mosh.git'
 

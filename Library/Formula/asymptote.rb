@@ -18,7 +18,7 @@ end
 class Asymptote < Formula
   homepage 'http://asymptote.sourceforge.net/'
   url 'http://downloads.sourceforge.net/asymptote/asymptote-2.15.src.tgz'
-  md5 '1adb969a4d7b17a3ae98728d1956bd77'
+  sha1 'e0fb336c195fb21a39e3d0f3acd4881ce5e170a7'
 
   depends_on TexInstalled.new
 

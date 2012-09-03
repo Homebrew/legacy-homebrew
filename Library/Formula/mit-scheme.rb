@@ -4,7 +4,7 @@ class MitScheme < Formula
   homepage 'http://www.gnu.org/software/mit-scheme/'
   url 'http://ftpmirror.gnu.org/mit-scheme/stable.pkg/9.1.1/mit-scheme-c-9.1.1.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.1.1/mit-scheme-c-9.1.1.tar.gz'
-  md5 '89abdc6702388591e18bd14b93f7b548'
+  sha1 '8f175a40061bdfc0248535e198cc7f5b5a0dce32'
 
   # Do not strip the binaries, this will cause missing symbol errors on launch
   skip_clean :all

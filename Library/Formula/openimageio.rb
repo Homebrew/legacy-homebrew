@@ -2,7 +2,7 @@ require 'formula'
 
 class J2kp4files < Formula
   url 'http://pkgs.fedoraproject.org/repo/pkgs/openjpeg/j2kp4files_v1_5.zip/27780ed3254e6eb763ebd718a8ccc340/j2kp4files_v1_5.zip'
-  md5 '27780ed3254e6eb763ebd718a8ccc340'
+  sha1 '9ac265c279392117025cc18061742c3c1392d549'
 end
 
 class Tiffpic < Formula

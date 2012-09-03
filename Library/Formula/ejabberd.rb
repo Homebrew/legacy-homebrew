@@ -3,7 +3,7 @@ require 'formula'
 class Ejabberd < Formula
   homepage 'http://www.ejabberd.im'
   url "http://www.process-one.net/downloads/ejabberd/2.1.11/ejabberd-2.1.11.tgz"
-  md5 'a70b040c4e7602f47718c8afe8780d50'
+  sha1 'ae2c521d5e93fbd5bc826052c5524b5222dcfae6'
 
   depends_on "openssl" if MacOS.leopard?
   depends_on "erlang"

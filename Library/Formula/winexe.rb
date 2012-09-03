@@ -3,7 +3,7 @@ require 'formula'
 class Winexe < Formula
   homepage 'http://sourceforge.net/projects/winexe/'
   url 'http://sourceforge.net/projects/winexe/files/winexe-1.00.tar.gz'
-  md5 '48325521ddc40d14087d1480dc83d51e'
+  sha1 'bdb598745953fcad3a9b6bba8f728c2b714a7aeb'
 
   depends_on 'pkg-config' => :build
 

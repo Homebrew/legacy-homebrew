@@ -3,7 +3,7 @@ require 'formula'
 class GmapGsnap < Formula
   homepage 'http://research-pub.gene.com/gmap'
   url 'http://research-pub.gene.com/gmap/src/gmap-gsnap-2012-04-10.tar.gz'
-  md5 'acd1731524eb3517f6e82147c646d27d'
+  sha1 '0707e963c19d7dc1e96d3e04d45ae972deb7c929'
   version "2012-04-10"
 
   depends_on "samtools"

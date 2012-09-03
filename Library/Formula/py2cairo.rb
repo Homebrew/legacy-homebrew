@@ -3,7 +3,7 @@ require 'formula'
 class Py2cairo < Formula
   homepage 'http://cairographics.org/pycairo/'
   url 'http://cairographics.org/releases/py2cairo-1.10.0.tar.bz2'
-  md5 '20337132c4ab06c1146ad384d55372c5'
+  sha1 '2efa8dfafbd6b8e492adaab07231556fec52d6eb'
 
   depends_on 'cairo'
   depends_on :x11
