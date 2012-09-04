@@ -246,12 +246,7 @@ module HomebrewEnvExtension
     end
   end
 
-  def x11 silent=false
-    unless MacOS::X11.installed?
-      opoo "You do not have X11 installed, this formula may not build." unless silent
-      return
-    end
-
+  def x11
     # There are some config scripts here that should go in the PATH
     prepend 'PATH', MacOS::X11.bin, ':'
 
