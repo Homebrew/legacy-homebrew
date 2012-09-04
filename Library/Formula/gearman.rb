@@ -3,7 +3,7 @@ require 'formula'
 class Gearman < Formula
   homepage 'http://gearman.org/'
   url 'https://launchpad.net/gearmand/1.0/0.37/+download/gearmand-0.37.tar.gz'
-  md5 '685a210ba2477472eb2af4e1d94c6321'
+  sha1 'e2bdd3557cf65337ecd22b4fafff285e24c83a7d'
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
