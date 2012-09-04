@@ -352,6 +352,10 @@ class FormulaAuditor
       problem "xcodebuild should be passed an explicit \"SYMROOT\""
     end
 
+    if text =~ /ENV\.x11/
+      problem "Use \"depends_on :x11\" instead of \"ENV.x11\""
+    end
+
     # Avoid hard-coding compilers
     if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]]
       problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
