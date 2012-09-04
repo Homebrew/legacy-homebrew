@@ -36,7 +36,7 @@ class Elixir < Formula
 
     Dir['lib/*/ebin'].each do |path|
       app  = File.basename(File.dirname(path))
-      (lib/"#{app}/ebin").install path
+      (lib/"#{app}").install path
     end
   end
 
