@@ -2,8 +2,8 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.7/kvm-tarbake-jaunty-x86/mariadb-5.3.7.tar.gz'
-  sha1 '1ee2ef4895aefabd66b4884c382ba2cd1f7bbe2d'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.8/kvm-tarbake-jaunty-x86/mariadb-5.3.8.tar.gz'
+  sha1 '1a6cc5e1c0aedf6aae61cd55f8d75fce11fa3115'
 
   depends_on 'readline'
 
@@ -50,6 +50,7 @@ class Mariadb < Formula
       "--with-plugins=max-no-ndb",
       "--with-embedded-server",
       "--with-libevent",
+      "--with-readline",
     ]
 
     configure_args << "--without-server" if build.include? 'client-only'
