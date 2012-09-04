@@ -1,9 +1,9 @@
 require 'formula'
 
 class GribApi < Formula
-  url 'http://www.ecmwf.int/products/data/software/download/software_files/grib_api-1.9.16.tar.gz'
   homepage 'http://www.ecmwf.int/products/data/software/grib_api.html'
-  md5 '490cda08585e263d9f13daed4e7b688c'
+  url 'http://www.ecmwf.int/products/data/software/download/software_files/grib_api-1.9.16.tar.gz'
+  sha1 'fd85e8b939231d4d8f9dc3131fa0aab73fbbcf78'
 
   depends_on 'jasper'
 
