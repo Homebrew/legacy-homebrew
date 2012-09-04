@@ -33,7 +33,7 @@ class IscDhcp < Formula
     end
 
     # See discussion at: https://gist.github.com/1157223
-    if 10.7 <= MACOS_VERSION
+    if MacOS.version >= :lion
       ENV.append 'CFLAGS', "-D__APPLE_USE_RFC_3542"
     end
 

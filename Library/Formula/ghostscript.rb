@@ -35,7 +35,7 @@ class Ghostscript < Formula
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
     renames = %w(jpeg libpng tiff zlib lcms2 jbig2dec)
-    renames << "freetype" if 10.7 <= MACOS_VERSION
+    renames << "freetype" if MacOS.version >= :lion
     renames.each do |lib|
       mv lib, "#{lib}_local"
     end
