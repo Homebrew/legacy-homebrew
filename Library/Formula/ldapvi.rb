@@ -1,19 +1,14 @@
 require 'formula'
 
 class Ldapvi < Formula
-  url 'http://www.lichteblau.com/download/ldapvi-1.7.tar.gz'
   homepage 'http://www.lichteblau.com/ldapvi/'
+  url 'http://www.lichteblau.com/download/ldapvi-1.7.tar.gz'
   sha1 'd1cde4cbb618180f9ae0e77c56a1520b8ad61c9a'
 
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'popt'
   depends_on 'readline'
-
-  def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
-    system "make install"
-  end
 
   # Backporting the fix from the devel version
   # (namespace conflict with Lion's getline function)
@@ -23,6 +18,11 @@ class Ldapvi < Formula
     DATA
   end
 
+  def install
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make install"
+  end
 end
 
 __END__
