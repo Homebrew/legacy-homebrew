@@ -7,7 +7,7 @@ class MesalibGlw < Formula
 
   depends_on :x11
 
-  option 'enable-static', "Build static library"]
+  option 'enable-static', "Build static library"
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",
