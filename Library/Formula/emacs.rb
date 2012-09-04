@@ -27,7 +27,7 @@ class Emacs < Formula
 
   def patches
     if build.include? "lion-fullscreen"
-      "https://raw.github.com/gist/1355895/b5fe6c3bfcb88e1e80b43ecd50f635053e11d3bc"
+      "https://raw.github.com/gist/2909327/37d046bee2fdf1549890fe9aa154f9797e151036"
     elsif build.include? "cocoa"
       # Fullscreen patch, works against 24.2 and HEAD.
       "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716"
