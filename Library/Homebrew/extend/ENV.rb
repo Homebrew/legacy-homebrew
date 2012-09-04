@@ -10,7 +10,8 @@ module HomebrewEnvExtension
     remove_cc_etc
 
     if MacOS.version >= :mountain_lion
-      # Fix issue with sed barfing on unicode characters on Mountain Lion.
+      # Mountain Lion's sed is stricter, and errors out when
+      # it encounters files with mixed character sets
       delete('LC_ALL')
       self['LC_CTYPE']="C"
 
