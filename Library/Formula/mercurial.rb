@@ -50,7 +50,7 @@ class Mercurial < Formula
   end
 
   def caveats
-    if ARGV.build_head? then <<-EOS.undent
+    if build.head? then <<-EOS.undent
       Mercurial is required to fetch its own repository, so there are now two
       installations of mercurial on this machine. If the previous installation
       was done via Homebrew, the old version may need to be cleaned up and new
