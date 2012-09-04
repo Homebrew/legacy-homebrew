@@ -2,12 +2,12 @@ require 'formula'
 
 class ErlangManuals < Formula
   url 'http://erlang.org/download/otp_doc_man_R15B01.tar.gz'
-  sha1 'e6f74fdab17d12026fe364d9658b906e58824076'
+  sha1 'ec303c8e2957570b3b1ad56af8a5b29a6618d09a'
 end
 
 class ErlangHtmls < Formula
   url 'http://erlang.org/download/otp_doc_html_R15B01.tar.gz'
-  sha1 'e6f74fdab17d12026fe364d9658b906e58824076'
+  sha1 'dfbad0ffd99be2ae219615f7a354ee9d1442e1a7'
 end
 
 class ErlangHeadManuals < Formula
