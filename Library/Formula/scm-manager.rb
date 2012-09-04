@@ -4,7 +4,7 @@ class ScmManagerCliClient < Formula
   homepage 'http://www.scm-manager.org'
   url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.20/scm-cli-client-1.20-jar-with-dependencies.jar'
   version '1.20'
-  sha1 '3d309043cb815fe282c41894c8449943beb3e3de'
+  sha1 '1057c5977e90e0c036cd69c06d00a6a931c7f439'
 end
 
 class ScmManager < Formula

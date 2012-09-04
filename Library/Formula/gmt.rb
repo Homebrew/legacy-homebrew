@@ -3,7 +3,7 @@ require 'formula'
 class Gshhs < Formula
   homepage 'http://gmt.soest.hawaii.edu/'
   url 'ftp://ftp.soest.hawaii.edu/gmt/gshhs-2.2.0.tar.bz2'
-  sha1 '823783c1abc9a7e0493c35661e516d4f607fff17'
+  sha1 '786d58b9a335d3bacb37f40f21ee3bfbb424cd10'
 end
 
 class Gmt < Formula
