@@ -16,6 +16,7 @@ class Macvim < Formula
 
   depends_on 'cscope' if build.include? 'with-cscope'
   depends_on 'lua' if build.include? 'with-lua'
+  depends_on :x11 if build.include? 'with-xterm_clipboard'
 
   def install
     # Set ARCHFLAGS so the Python app (with C extension) that is
