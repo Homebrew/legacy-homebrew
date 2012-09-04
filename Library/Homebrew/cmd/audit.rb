@@ -385,6 +385,10 @@ class FormulaAuditor
     if text =~ /def options/
       problem "Use new-style option definitions."
     end
+
+    if text =~ /MACOS_VERSION/
+      problem "Use MacOS.version instead of MACOS_VERSION"
+    end
   end
 
   def audit
