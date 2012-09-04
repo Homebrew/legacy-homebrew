@@ -275,9 +275,10 @@ class FormulaAuditor
     end
 
     # build tools should be flagged properly
+    # but don't complain about automake; it needs autoconf at runtime
     if text =~ /depends_on ['"](#{BUILD_TIME_DEPS*'|'})['"]$/
       problem "#{$1} dependency should be \"depends_on '#{$1}' => :build\""
-    end
+    end unless f.name == "automake"
 
     # FileUtils is included in Formula
     if text =~ /FileUtils\.(\w+)/
