@@ -4,14 +4,14 @@ class BerkeleyDbJe < Formula
   homepage 'http://www.oracle.com/technetwork/database/berkeleydb/overview/index-093405.html'
   url "http://download.oracle.com/maven/com/sleepycat/je/5.0.34/je-5.0.34.jar"
   version '5.0.34'
-  sha1 '777b9de3209f05af30d013d52c12f68f8391ab54'
+  sha1 '66db4f43ca0f462cd6b623be9e7a87180590b487'
 end
 
 class FuseMQApolloMQTT < Formula
   homepage 'https://github.com/fusesource/fuse-extra/tree/master/fusemq-apollo/fusemq-apollo-mqtt'
   url "http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.3/fusemq-apollo-mqtt-1.3-uber.jar"
   version '1.3'
-  sha1 '777b9de3209f05af30d013d52c12f68f8391ab54'
+  sha1 'a802a5675ec0d12bf596fb2d204c581bd6ae2ae1'
 end
 
 class Apollo < Formula

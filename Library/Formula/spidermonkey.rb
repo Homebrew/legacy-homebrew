@@ -5,7 +5,7 @@ class Autoconf213 < Formula
   homepage 'http://www.gnu.org/software/autoconf/'
   url 'http://ftpmirror.gnu.org/autoconf/autoconf-2.13.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz'
-  sha1 '52a01449c48d7a117b35f213d3e4263578d846d6'
+  sha1 'e4826c8bd85325067818f19b2b2ad2b625da66fc'
 end
 
 class Spidermonkey < Formula
