@@ -3,7 +3,7 @@ require 'formula'
 class CKermit < Formula
   url 'http://www.kermitproject.org/ftp/kermit/archives/cku302.tar.gz'
   homepage 'http://www.kermitproject.org/'
-  md5 'eac4dbf18b45775e4cdee5a7c74762b0'
+  sha1 'd04c8b5600bc0bb0f163d294881f7a5a0d4395b5'
   version '9.0.302'
 
   def install

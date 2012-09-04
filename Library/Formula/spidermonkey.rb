@@ -5,14 +5,14 @@ class Autoconf213 < Formula
   homepage 'http://www.gnu.org/software/autoconf/'
   url 'http://ftpmirror.gnu.org/autoconf/autoconf-2.13.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz'
-  md5 '9de56d4a161a723228220b0f425dc711'
+  sha1 'e4826c8bd85325067818f19b2b2ad2b625da66fc'
 end
 
 class Spidermonkey < Formula
   homepage 'https://developer.mozilla.org/en/SpiderMonkey'
   url 'http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz'
   version '1.8.5'
-  md5 'a4574365938222adca0a6bd33329cb32'
+  sha1 '52a01449c48d7a117b35f213d3e4263578d846d6'
 
   # This is terribly, terribly slow the first time.
   # head 'https://hg.mozilla.org/tracemonkey', :using => :hg

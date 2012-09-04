@@ -2,7 +2,7 @@ require 'formula'
 
 class Libming < Formula
   url 'https://sourceforge.net/projects/ming/files/Releases/Ming%200.4.3/ming-0.4.3.tar.bz2'
-  md5 'db6bae65d000e2f2ac78583fd453f99a'
+  sha1 'e51a1c9de7efcd6b20f727a824cfbf323b6f5e6f'
   homepage 'http://www.libming.org'
 
   depends_on :libpng

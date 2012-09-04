@@ -3,7 +3,7 @@ require 'formula'
 class Iodine < Formula
   url 'http://code.kryo.se/iodine/iodine-0.6.0-rc1.tar.gz'
   homepage 'http://code.kryo.se/iodine/'
-  md5 'a15bb4faba020d217016fde6e231074a'
+  sha1 '4fa9a248b8a84df8a727a5d749e669e58136edca'
 
   def install
     unless MacOS.leopard?

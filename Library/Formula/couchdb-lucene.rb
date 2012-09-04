@@ -3,7 +3,7 @@ require 'formula'
 class CouchdbLucene < Formula
   url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.8.0'
   homepage 'https://github.com/rnewson/couchdb-lucene'
-  md5 '3d4d321881188247b80847429f514639'
+  sha1 '63c835499bed8fc3213ca5eaac59f362f42f21c6'
 
   depends_on 'couchdb'
   depends_on 'maven'

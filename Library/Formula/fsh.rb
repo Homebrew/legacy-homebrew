@@ -3,7 +3,7 @@ require 'formula'
 class Fsh < Formula
   homepage 'http://www.lysator.liu.se/fsh/'
   url 'http://www.lysator.liu.se/fsh/fsh-1.2.tar.gz'
-  md5 '74d7fc65044d1c9c27c6e9edbbde9c68'
+  sha1 'c2f1e923076d368fbb5504dcd1d33c74024b0d1b'
 
   def install
     # FCNTL was deprecated and needs to be changed to fcntl

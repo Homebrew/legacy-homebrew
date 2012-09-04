@@ -3,7 +3,7 @@ require 'formula'
 class Ekg2 < Formula
   homepage 'http://ekg2.org'
   url 'http://pl.ekg2.org/ekg2-0.3.1.tar.gz'
-  md5 '68fc05b432c34622df6561eaabef5a40'
+  sha1 '8b6f53086e8e1d2890fdc1ec274a7b1615da0fa1'
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'

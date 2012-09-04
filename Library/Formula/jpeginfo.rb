@@ -3,7 +3,7 @@ require 'formula'
 class Jpeginfo < Formula
   homepage 'http://www.kokkonen.net/tjko/projects.html'
   url 'http://www.kokkonen.net/tjko/src/jpeginfo-1.6.1.tar.gz'
-  md5 '344be10d6b16ec559c5d8b7e3707241f'
+  sha1 '8fd998c3090908d1b100ed38d5d7fc2600e5742b'
 
   depends_on 'jpeg'
 

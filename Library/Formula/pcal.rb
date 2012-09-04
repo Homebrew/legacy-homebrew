@@ -3,7 +3,7 @@ require 'formula'
 class Pcal < Formula
   homepage 'http://pcal.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/pcal/pcal/pcal-4.11.0/pcal-4.11.0.tgz'
-  md5 '0ed7e9bec81fe3bdd62f8af283bef704'
+  sha1 '214bcb4c4b7bc986ae495c96f2ab169233a7f973'
 
   skip_clean :all
 

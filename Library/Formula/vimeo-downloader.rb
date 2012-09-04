@@ -3,7 +3,7 @@ require 'formula'
 class VimeoDownloader < Formula
   url 'http://ossguy.com/video_hosts/vimeo_downloader.sh'
   homepage 'http://ossguy.com/?p=841'
-  md5 '8aa9a45ad7b7b8f7f8e5369a5fc3d336'
+  sha1 'd49792a22ec442fa0b3cf5f70d13793f342c6e26'
   version '0.3.1'
 
   def install

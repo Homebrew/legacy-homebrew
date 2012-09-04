@@ -1,14 +1,14 @@
 require 'formula'
 
 class Flac2Mp3 < Formula
-  url 'https://raw.github.com/rmndk/flac2mp3/master/flac2mp3'
-  md5 'bc37879da7bf543af961a9604bd4beb4'
+  url 'https://github.com/rmndk/flac2mp3/tarball/v1.0'
+  sha1 'f8f75ee34685bbf949251d36a8abffccc3e6b3aa'
 end
 
 class Flac < Formula
   homepage 'http://flac.sourceforge.net'
   url 'http://downloads.sourceforge.net/sourceforge/flac/flac-1.2.1.tar.gz'
-  md5 '153c8b15a54da428d1f0fadc756c22c7'
+  sha1 'bd54354900181b59db3089347cc84ad81e410b38'
 
   depends_on 'lame'
   depends_on 'libogg' => :optional

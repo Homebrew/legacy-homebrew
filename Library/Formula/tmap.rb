@@ -3,7 +3,7 @@ require 'formula'
 class Tmap < Formula
   homepage 'http://github.com/iontorrent/TMAP'
   url 'http://github.com/iontorrent/TMAP/tarball/tmap.0.3.7'
-  md5 '2283f15ca05c27c534cef22850711bba'
+  sha1 '8cb8c6d9ebaeb3486a74a402a07a08c778964682'
   version '0.3.7'
 
   head 'https://github.com/iontorrent/TMAP.git'

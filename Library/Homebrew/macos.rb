@@ -74,7 +74,7 @@ module MacOS extend self
       # Xcode.prefix is pretty smart, so lets look inside to find the sdk
       opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
       # Xcode < 4.3 style
-      opts << "/Developer/SDKs/MacOS#{v}.sdk"
+      opts << "/Developer/SDKs/MacOSX#{v}.sdk"
       opts.map{|a| Pathname.new(a) }.detect { |p| p.directory? }
     end
   end
@@ -203,7 +203,7 @@ module MacOS extend self
         EOS
     end
 
-    StandardCompilers[xcode].all? { |method, build| MacOS.send(method) == build }
+    StandardCompilers[xcode].all? { |method, build| MacOS.send(method) == build } rescue false
   end
 
   def app_with_bundle_id id

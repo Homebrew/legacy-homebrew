@@ -4,7 +4,7 @@ class Root < Formula
   homepage 'http://root.cern.ch'
   url 'ftp://root.cern.ch/root/root_v5.34.01.source.tar.gz'
   version '5.34.01'
-  md5 '114ea7f18b48ed0b3bb0287f5a6d593f'
+  sha1 '6e0ed779568f1f9eb0f9af79bef26207444a4173'
 
   depends_on 'fftw' => :optional
   depends_on :x11

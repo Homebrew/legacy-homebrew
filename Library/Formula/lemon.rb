@@ -3,7 +3,7 @@ require 'formula'
 class Lemon < Formula
   url 'http://tx97.net/pub/distfiles/lemon-1.69.tar.bz2'
   homepage 'http://www.hwaci.com/sw/lemon/'
-  md5 '35aebc84c4f0e186aba1303bbef11a37'
+  sha1 '3f368f5f93c37890a025c3d803b3598a939d615f'
 
   def install
     lemon_share = share+'lemon'

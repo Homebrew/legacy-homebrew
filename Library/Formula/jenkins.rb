@@ -9,7 +9,7 @@ class Jenkins < Formula
   head 'https://github.com/jenkinsci/jenkins.git'
 
   def install
-    if ARGV.build_head?
+    if build.head?
       system "mvn clean install -pl war -am -DskipTests"
       mv 'war/target/jenkins.war', '.'
     end

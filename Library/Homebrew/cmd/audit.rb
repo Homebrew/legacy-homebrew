@@ -233,6 +233,8 @@ class FormulaAuditor
         when :sha256 then 64
         end
 
+      problem "md5 is broken, deprecated: use sha1 instead" if cksum.hash_type == :md5
+
       if cksum.empty?
         problem "#{cksum.hash_type} is empty"
       else
@@ -348,6 +350,10 @@ class FormulaAuditor
     # xcodebuild should specify SYMROOT
     if text =~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
       problem "xcodebuild should be passed an explicit \"SYMROOT\""
+    end
+
+    if text =~ /ENV\.x11/
+      problem "Use \"depends_on :x11\" instead of \"ENV.x11\""
     end
 
     # Avoid hard-coding compilers

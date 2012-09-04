@@ -4,7 +4,7 @@ class Libcaca < Formula
   homepage 'http://caca.zoy.org/wiki/libcaca'
   url 'http://caca.zoy.org/files/libcaca/libcaca-0.99.beta18.tar.gz'
   version '0.99b18'
-  md5 '93d35dbdb0527d4c94df3e9a02e865cc'
+  sha1 '0cbf8075c01d59b53c3cdfec7df9818696a41128'
 
   depends_on 'pkg-config' => :build
   depends_on 'imlib2'

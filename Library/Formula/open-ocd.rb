@@ -3,7 +3,7 @@ require 'formula'
 class OpenOcd < Formula
   url 'http://download.berlios.de/openocd/openocd-0.5.0.tar.bz2'
   homepage 'http://openocd.berlios.de/web/'
-  md5 '43434c2b5353c9b853278b8bff22cb1a'
+  sha1 '807e4214b005029dccd1ed8af36f3897a5c6f49b'
 
   depends_on 'libusb-compat'
 

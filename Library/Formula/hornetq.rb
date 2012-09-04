@@ -3,7 +3,7 @@ require 'formula'
 class Hornetq < Formula
   homepage 'http://www.jboss.org/hornetq'
   url 'http://downloads.jboss.org/hornetq/hornetq-2.2.14.Final.tar.gz'
-  md5 'c204211128051b25689fbb8f844c900e'
+  sha1 'e02656a93ef9e3cb02cbb8b6e7953b591b59fa71'
 
   version '2.2.14'
 

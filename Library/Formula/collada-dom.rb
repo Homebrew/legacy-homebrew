@@ -3,7 +3,7 @@ require 'formula'
 class ColladaDom < Formula
   homepage 'http://www.collada.org/mediawiki/index.php/Portal:COLLADA_DOM'
   url 'http://downloads.sourceforge.net/project/collada-dom/Collada%20DOM/Collada%20DOM%202.3/collada_dom-2.3.1-src.tgz'
-  md5 'a74d19c1187806a713cec90c2f0f692c'
+  sha1 '055a385bf679db5d9a84f46e9ea439b75bdb8725'
 
   depends_on 'cmake' => :build
   depends_on 'pcre'

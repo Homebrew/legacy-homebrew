@@ -3,7 +3,7 @@ require 'formula'
 class Cherokee < Formula
   homepage 'http://www.cherokee-project.com/'
   url 'http://www.cherokee-project.com/download/1.2/1.2.101/cherokee-1.2.101.tar.gz'
-  md5 'ef47003355a2e368e4d9596cd070ef23'
+  sha1 'b27f149c7d7111207ac8c3cd8a4856c05490d136'
 
   depends_on 'gettext'
 
