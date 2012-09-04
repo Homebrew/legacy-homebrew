@@ -53,6 +53,11 @@ class Python3 < Formula
   end
 
   def install
+    # Unset these so that installing pip and distribute puts them where we want
+    # and not into some other Python the user has installed.
+    ENV['PYTHONPATH'] = nil
+    ENV['PYTHONHOME'] = nil
+
     args = %W[--prefix=#{prefix}
              --enable-ipv6
              --datarootdir=#{share}
@@ -61,6 +66,12 @@ class Python3 < Formula
            ]
 
     args << '--without-gcc' if ENV.compiler == :clang
+
+    # Further, Python scans all "-I" dirs but not "-isysroot", so we add
+    # the needed includes with "-I" here to avoid this err:
+    #     building dbm using ndbm
+    #     error: /usr/include/zlib.h: No such file or directory
+    ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
 
     # Don't use optimizations other than "-Os" here, because Python's distutils
     # remembers (hint: `python-config --cflags`) and reuses them for C
@@ -75,6 +86,7 @@ class Python3 < Formula
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
       ENV.append_to_cflags '-Wno-unused-value'
       ENV.append_to_cflags '-Wno-empty-body'
+      ENV.append_to_cflags '-Qunused-arguments'
     end
 
     # Allow sqlite3 module to load extensions:
@@ -117,14 +129,14 @@ class Python3 < Formula
 
     # Install distribute for python3
     Distribute.new.brew do
-      system "#{bin}/python3.2", "setup.py", "install"
+      system "#{bin}/python3.2", "setup.py", "install", "--force"
       # Symlink to easy_install3 to match python3 command.
       unless (scripts_folder/'easy_install3').exist?
         ln_s scripts_folder/"easy_install", scripts_folder/"easy_install3"
       end
     end
     # Install pip-3.2 for python3
-    Pip.new.brew { system "#{bin}/python3.2", "setup.py", "install" }
+    Pip.new.brew { system "#{bin}/python3.2", "setup.py", "install", "--force" }
   end
 
   def caveats
