@@ -1,8 +1,8 @@
 require 'formula'
 
 class Flac2Mp3 < Formula
-  url 'https://raw.github.com/rmndk/flac2mp3/master/flac2mp3'
-  sha1 '5d48a4eec53deaca2122a06c90f5dce2489dc673'
+  url 'https://github.com/rmndk/flac2mp3/tarball/v1.0'
+  sha1 'f8f75ee34685bbf949251d36a8abffccc3e6b3aa'
 end
 
 class Flac < Formula
