@@ -2,13 +2,13 @@ require 'formula'
 
 class ContribFonts < Formula
   url 'ftp://ftp.figlet.org:21//pub/figlet/fonts/contributed.tar.gz'
-  sha1 'dda696958c161bd71d6590152c94c4f705415727'
+  sha1 'a23ecfdb54301e93b6578c3c465ba84c8f861d4f'
   version '2.2.4'
 end
 
 class InternationalFonts < Formula
   url 'ftp://ftp.figlet.org:21//pub/figlet/fonts/international.tar.gz'
-  sha1 'dda696958c161bd71d6590152c94c4f705415727'
+  sha1 '4bdc505f82305debf8108b725ac418f404a8bcb0'
   version '2.2.4'
 end
 

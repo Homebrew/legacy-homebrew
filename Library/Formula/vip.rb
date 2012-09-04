@@ -2,7 +2,7 @@ require 'formula'
 
 class VipMan < Formula
   url 'http://www.cs.duke.edu/~des/scripts/vip.man'
-  sha1 '0b2794b5ac2792af5fcf1d97f9aae04798eac049'
+  sha1 'd52ce874d594ca2c82538200706bffdf1313fdc1'
   version '19970805'
 end
 

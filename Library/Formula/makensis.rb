@@ -2,7 +2,7 @@ require 'formula'
 
 class NsisSupport < Formula
   url 'http://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46.zip'
-  sha1 '2cc9bff130031a0b1d76b01ec0a9136cdf5992ce'
+  sha1 'adeff823a1f8af3c19783700a6b8d9054cf0f3c2'
 end
 
 class Makensis < Formula
