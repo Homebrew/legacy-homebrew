@@ -31,7 +31,7 @@ class Graphicsmagick < Formula
   depends_on 'jpeg'
   depends_on 'libwmf' if use_wmf?
   depends_on 'libtiff' => :optional
-  depends_on 'little-cms' => :optional
+  depends_on 'little-cms2' => :optional
   depends_on 'jasper' => :optional
   depends_on 'ghostscript' => :recommended if ghostscript_srsly?
   depends_on 'xz' => :optional
