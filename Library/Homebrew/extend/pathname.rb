@@ -215,6 +215,7 @@ class Pathname
   end
 
   def md5
+    opoo 'Formula uses insecure MD5 hash!'
     require 'digest/md5'
     incremental_hash(Digest::MD5)
   end
