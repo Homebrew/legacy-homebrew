@@ -15,8 +15,8 @@ class Libgcrypt < Formula
   end
 
   def cflags
-    cflags = "#{ENV['CFLAGS']}"
-    cflags += '-std=gnu89 -fheinous-gnu-extensions' if ENV.compiler == :clang
+    cflags = ENV.cflags.to_s
+    cflags += ' -std=gnu89 -fheinous-gnu-extensions' if ENV.compiler == :clang
     cflags
   end
 
