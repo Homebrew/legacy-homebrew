@@ -3,14 +3,14 @@ require 'formula'
 class ScalaDocs < Formula
   homepage 'http://www.scala-lang.org/'
   url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.9.2.zip'
-  sha1 '806fc1d91bda82d6a584172d7742531386ae68fb'
+  sha1 'b49ef500314d968ddbd683b64628925a747f35e5'
 end
 
 class ScalaCompletion < Formula
   homepage 'http://www.scala-lang.org/'
   url 'https://raw.github.com/scala/scala-dist/27bc0c25145a83691e3678c7dda602e765e13413/completion.d/2.9.1/scala'
   version '2.9.1'
-  sha1 '806fc1d91bda82d6a584172d7742531386ae68fb'
+  sha1 'e2fd99fe31a9fb687a2deaf049265c605692c997'
 end
 
 class Scala < Formula
