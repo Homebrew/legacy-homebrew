@@ -14,11 +14,12 @@ class Pan < Formula
   depends_on 'gnutls' => :optional
 
   def install
-    ENV.x11
     ENV.append 'LDFLAGS', ' -liconv ' # iconv detection is broken.
 
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--disable-glibtest",
+                          "--disable-gtktest"
     system "make install"
   end
 end
