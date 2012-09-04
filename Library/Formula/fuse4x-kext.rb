@@ -22,10 +22,10 @@ class Fuse4xKext < Formula
 
     args = [
       "-sdk",
-      "macosx#{MACOS_VERSION}",
+      "macosx#{MacOS.version}",
       "-configuration", "Release",
       "-alltargets",
-      "MACOSX_DEPLOYMENT_TARGET=#{MACOS_VERSION}",
+      "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
       "SYMROOT=build",
       # Build a 32-bit kernel extension on Leopard and a fat binary for Snow
       # Leopard/Lion.
