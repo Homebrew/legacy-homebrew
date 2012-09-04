@@ -21,7 +21,7 @@ class Dnsmasq < Formula
     end
 
     # Fix compilation on Lion
-    ENV.append_to_cflags "-D__APPLE_USE_RFC_3542" if 10.7 <= MACOS_VERSION
+    ENV.append_to_cflags "-D__APPLE_USE_RFC_3542" if MacOS.version >= :lion
     inreplace "Makefile" do |s|
       s.change_make_var! "CFLAGS", ENV.cflags
     end

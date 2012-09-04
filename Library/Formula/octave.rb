@@ -14,7 +14,7 @@ end
 
 def snow_leopard_64?
   # 64 bit builds on 10.6 require some special handling.
-  MACOS_VERSION == 10.6 and MacOS.prefer_64_bit?
+  MacOS.version == :snow_leopard and MacOS.prefer_64_bit?
 end
 
 class Octave < Formula

@@ -2,7 +2,7 @@ require 'formula'
 
 class NeedsSnowLeopard < Requirement
   def satisfied?
-    MACOS_VERSION >= 10.6
+    MacOS.version >= :snow_leopard
   end
 
   def fatal?
