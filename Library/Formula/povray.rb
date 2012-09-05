@@ -11,7 +11,7 @@ class Povray < Formula
   # TODO give this a build number (2326?)
   fails_with :llvm do
     cause "povray fails with 'terminate called after throwing an instance of int'"
-  end if MacOS.leopard?
+  end if MacOS.version == :leopard
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

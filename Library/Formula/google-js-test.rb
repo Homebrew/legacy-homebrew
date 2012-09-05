@@ -6,7 +6,7 @@ class NeedsSnowLeopard < Requirement
   end
 
   def satisfied?
-    MacOS.snow_leopard?
+    MacOS.version >= :snow_leopard
   end
 end
 

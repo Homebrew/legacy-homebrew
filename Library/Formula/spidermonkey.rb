@@ -24,7 +24,7 @@ class Spidermonkey < Formula
   def install
     # aparently this flag causes the build to fail for ivanvc on 10.5 with a
     # penryn (core 2 duo) CPU. So lets be cautious here and remove it.
-    ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '') if MacOS.leopard?
+    ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '') if MacOS.version == :leopard
 
     # For some reason SpiderMonkey requires Autoconf-2.13
     ac213_prefix = buildpath/'ac213'
