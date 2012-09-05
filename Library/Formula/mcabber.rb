@@ -7,6 +7,9 @@ class Mcabber < Formula
 
   head 'http://mcabber.com/hg/', :using => :hg
 
+  option 'enable-enchant', 'Enable spell checking support via enchant'
+  option 'enable-aspell', 'Enable spell checking support via aspell'
+
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'loudmouth'
@@ -14,23 +17,16 @@ class Mcabber < Formula
   depends_on 'libgcrypt'
   depends_on 'libotr'
   depends_on 'libidn'
-  depends_on 'aspell' if ARGV.include? '--enable-aspell'
-  depends_on 'enchant' if ARGV.include? '--enable-enchant'
+  depends_on 'aspell' if build.include? 'enable-aspell'
+  depends_on 'enchant' if build.include? 'enable-enchant'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
 
-  def options
-    [
-      ["--enable-enchant", "Enable spell checking support via enchant"],
-      ["--enable-aspell", "Enable spell checking support via aspell"],
-    ]
-  end
-
   def install
-    if ARGV.build_head? then
+    if build.head?
       ENV['LIBTOOLIZE'] = 'glibtoolize'
       ENV['ACLOCAL'] = "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
       cd 'mcabber' # Not using block form on purpose
@@ -43,8 +39,8 @@ class Mcabber < Formula
             "--prefix=#{prefix}",
             "--enable-otr"]
 
-    args << "--enable-aspell" if ARGV.include? "--enable-aspell"
-    args << "--enable-enchant" if ARGV.include? "--enable-enchant"
+    args << "--enable-aspell" if build.include? 'enable-aspell'
+    args << "--enable-enchant" if build.include? 'enable-enchant'
 
     system "./configure", *args
     system "make install"
