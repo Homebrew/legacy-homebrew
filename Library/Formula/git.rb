@@ -33,7 +33,7 @@ class Git < Formula
     ENV['PYTHON_PATH'] = which 'python' # python can be brewed or unbrewed
 
     # Clean XCode 4.x installs don't include Perl MakeMaker
-    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.lion?
+    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.version >= :lion
 
     ENV['BLK_SHA1'] = '1' if build.include? 'with-blk-sha1'
 

@@ -50,7 +50,7 @@ class Node < Formula
   head 'https://github.com/joyent/node.git'
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
-  depends_on 'openssl' if MacOS.leopard?
+  depends_on 'openssl' if MacOS.version == :leopard
   depends_on NpmNotInstalled.new unless build.include? 'without-npm'
   depends_on PythonVersion.new
 

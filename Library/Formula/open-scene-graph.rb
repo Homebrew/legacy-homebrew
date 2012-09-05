@@ -41,7 +41,7 @@ class OpenSceneGraph < Formula
 
     args = std_cmake_args
     args << '-DBUILD_DOCUMENTATION=' + ((build.include? 'docs') ? 'ON' : 'OFF')
-    if snow_leopard_64?
+    if MacOS.prefer_64_bit?
       args << "-DCMAKE_OSX_ARCHITECTURES=x86_64"
       args << "-DOSG_DEFAULT_IMAGE_PLUGIN_FOR_OSX=imageio"
       args << "-DOSG_WINDOWING_SYSTEM=Cocoa"

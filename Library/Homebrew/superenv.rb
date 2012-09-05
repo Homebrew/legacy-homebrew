@@ -119,7 +119,7 @@ class << ENV
     # we put our paths before X because we dupe some of the X libraries
     paths << "#{MacSystem.x11_prefix}/lib/pkgconfig" << "#{MacSystem.x11_prefix}/share/pkgconfig" if x11?
     # Mountain Lion no longer ships some .pcs; ensure we pick up our versions
-    paths << "#{HOMEBREW_REPOSITORY}/Library/Homebrew/pkgconfig" if MacOS.mountain_lion?
+    paths << "#{HOMEBREW_REPOSITORY}/Library/Homebrew/pkgconfig" if MacOS.version >= :mountain_lion
     paths.to_path_s
   end
 
@@ -173,9 +173,9 @@ class << ENV
     s = ""
     s << 'b' if ARGV.build_bottle?
     # Fix issue with sed barfing on unicode characters on Mountain Lion
-    s << 's' if MacOS.mountain_lion?
+    s << 's' if MacOS.version >= :mountain_lion
     # Fix issue with 10.8 apr-1-config having broken paths
-    s << 'a' if MacOS.cat == :mountainlion
+    s << 'a' if MacOS.version == :mountain_lion
     s
   end
 

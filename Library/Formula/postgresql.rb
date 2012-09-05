@@ -6,7 +6,7 @@ class Postgresql < Formula
   sha1 '8411f39e7cff8d691d908de7823b72426433faa2'
 
   depends_on 'readline'
-  depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
+  depends_on 'libxml2' if MacOS.version == :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
 
   option '32-bit'
@@ -24,7 +24,7 @@ class Postgresql < Formula
   end
 
   def install
-    ENV.libxml2 if MacOS.snow_leopard?
+    ENV.libxml2 if MacOS.version >= :snow_leopard
 
     args = ["--disable-debug",
             "--prefix=#{prefix}",

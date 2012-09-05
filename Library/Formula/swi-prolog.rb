@@ -21,7 +21,7 @@ class SwiProlog < Formula
   end
 
   # 10.5 versions of these are too old
-  if MacOS.leopard?
+  if MacOS.version == :leopard
     depends_on 'fontconfig'
     depends_on 'expat'
   end
