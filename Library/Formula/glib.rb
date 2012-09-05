@@ -2,7 +2,7 @@ require 'formula'
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.4.tar.xz'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.4.tar.xz'
   sha256 'a5d742a4fda22fb6975a8c0cfcd2499dd1c809b8afd4ef709bda4d11b167fae2'
 
   option :universal
