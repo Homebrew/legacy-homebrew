@@ -17,9 +17,6 @@ class Libspatialite < Formula
   depends_on 'freexl' unless build.include? 'without-freexl'
 
   def install
-    # O2 and O3 leads to corrupt/invalid rtree indexes
-    # http://groups.google.com/group/spatialite-users/browse_thread/thread/8e1cfa79f2d02a00#
-    ENV.Os
     # Ensure Homebrew's libsqlite is found before the system version.
     ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
 
