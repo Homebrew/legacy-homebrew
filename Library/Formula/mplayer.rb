@@ -9,7 +9,6 @@ class Mplayer < Formula
 
   option 'with-x', 'Build with X11 support'
 
-  depends_on 'pkg-config' => :build
   depends_on 'yasm' => :build
   depends_on 'xz' => :build
   depends_on :x11 if build.include? 'with-x'
@@ -54,6 +53,10 @@ class Mplayer < Formula
     system "./configure", *args
     system "make"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/mplayer", "-ao", "null", "/System/Library/Sounds/Glass.aiff"
   end
 end
 

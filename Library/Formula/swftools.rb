@@ -10,11 +10,17 @@ class Swftools < Formula
   url 'http://www.swftools.org/swftools-0.9.2.tar.gz'
   sha1 'd7cf8874c4187d2edd3e40d20ba325ca17b91973'
 
-  depends_on :x11
-  depends_on 'jpeg'
-  depends_on 'lame'
-  depends_on 'giflib'
-  depends_on 'fftw'
+  option 'with-xpdf', 'Build with PDF support'
+  option 'with-jpeg', 'Build with JPEG support'
+  option 'with-lame', 'Build with MP3 support'
+  option 'with-giflib', 'Build with GIF support'
+  option 'with-fftw', 'Build with FFTW support'
+
+  depends_on :x11 if build.include? "with-xpdf"
+  depends_on 'jpeg' if build.include? "with-jpeg"
+  depends_on 'lame' if build.include? "with-lame"
+  depends_on 'giflib' if build.include? "with-giflib"
+  depends_on 'fftw' if build.include? "with-fftw"
 
   def patches
     # Fixes a conftest for libfftwf.dylib that mistakenly calls fftw_malloc()
@@ -25,10 +31,17 @@ class Swftools < Formula
   end
 
   def install
-    Xpdf.new.brew { (buildpath+'lib/pdf').install Dir['*'] }
+    Xpdf.new.brew { (buildpath+'lib/pdf').install Dir['*'] } if build.include? "with-xpdf"
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
+  end
+
+  def test
+    mktemp do
+      system "#{bin}/png2swf", "swftools_test.swf", \
+        "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png"
+    end
   end
 end
 

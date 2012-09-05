@@ -1,10 +1,10 @@
 require 'formula'
 
 class Liblockfile < Formula
-  url 'http://mirrors.kernel.org/debian/pool/main/libl/liblockfile/liblockfile_1.08.orig.tar.gz'
-  mirror 'http://ftp.us.debian.org/debian/pool/main/libl/liblockfile/liblockfile_1.08.orig.tar.gz'
   homepage 'http://packages.qa.debian.org/libl/liblockfile.html'
-  sha1 'c3b67ca81abb45aa02c75c2a99f0e387b897fe73'
+  url 'http://mirrors.kernel.org/debian/pool/main/libl/liblockfile/liblockfile_1.09.orig.tar.gz'
+  mirror 'http://ftp.us.debian.org/debian/pool/main/libl/liblockfile/liblockfile_1.09.orig.tar.gz'
+  sha1 '6f3f170bc4c303435ab5b46a6aa49669e16a5a7d'
 
   def install
     system "./configure", "--disable-dependency-tracking",

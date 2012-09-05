@@ -8,8 +8,13 @@ class Gd < Formula
 
   head 'http://bitbucket.org/pierrejoye/gd-libgd', :using => :hg
 
-  depends_on :x11
-  depends_on 'jpeg' => :recommended
+  option 'without-libpng', 'Build without PNG support'
+  option 'without-jpeg', 'Build without JPEG support'
+  option 'with-freetype', 'Build with FreeType support'
+
+  depends_on :libpng unless build.include? "without-libpng"
+  depends_on 'jpeg' => :recommended unless build.include? "without-jpeg"
+  depends_on :freetype => :optional if build.include? "with-freetype"
 
   fails_with :llvm do
     build 2326
@@ -17,7 +22,9 @@ class Gd < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-freetype=#{MacOS::X11.prefix}"
+    args = ["--prefix=#{prefix}"]
+    args << "--with-freetype" if build.include? 'with-freetype'
+    system "./configure", *args
     system "make install"
     (lib+'pkgconfig/gdlib.pc').write pkg_file
   end
@@ -38,5 +45,14 @@ Libs: -L${libdir} -lgd
 Libs.private: -lXpm -lX11 -ljpeg -lfontconfig -lfreetype -lpng12 -lz -lm
 Cflags: -I${includedir}
 EOF
+  end
+
+  def test
+    mktemp do
+      system "#{bin}/pngtogd", \
+        "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png", \
+        "gd_test.gd"
+      system "#{bin}/gdtopng", "gd_test.gd", "gd_test.png"
+    end
   end
 end
