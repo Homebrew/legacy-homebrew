@@ -2,8 +2,13 @@ require 'formula'
 
 class Cpputest < Formula
   homepage 'http://www.cpputest.org/'
-  url 'http://downloads.sourceforge.net/project/cpputest/cpputest/v2.3/CppUTest-v2.3.zip'
-  sha1 '0abd7abfbafdeaffcff6083fd8c3e20408bd0d5a'
+  url 'http://sourceforge.net/projects/cpputest/files/cpputest/v3.1/CppUTest-v3.1.zip'
+  sha1 '8ff6b764a9ca6202582ae0c94545f56b921f39d5'
+
+  fails_with :clang do
+    build 421
+    cause 'Uses -lgcov which only comes with llvm or gcc'
+  end
 
   def install
     system "make"
