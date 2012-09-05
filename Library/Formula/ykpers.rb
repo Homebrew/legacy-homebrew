@@ -12,7 +12,7 @@ class Ykpers < Formula
   def patches
     {:p0 =>
     "https://trac.macports.org/export/96037/trunk/dports/security/ykpers/files/patch-pre-Lion-strnlen.diff"
-    } unless MacOS.lion?
+    } unless MacOS.version >= :lion
   end
 
   def install

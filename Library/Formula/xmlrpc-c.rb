@@ -9,9 +9,7 @@ class XmlrpcC < Formula
     # Backport patch for deprecated curl/types.h include, which is gone on 10.8
     # On 10.6 and 10.7 it's empty, so could probably patch unconditionally
     # see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=636457#10
-    if MacOS.mountain_lion?
-      DATA
-    end
+    DATA if MacOS.version >= :mountain_lion
   end
 
   def install

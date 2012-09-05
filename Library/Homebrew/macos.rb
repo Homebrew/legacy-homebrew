@@ -1,5 +1,7 @@
 module MacOS extend self
 
+  # This can be compared to numerics, strings, or symbols
+  # using the standard Ruby Comparable methods.
   def version
     require 'version'
     MacOSVersion.new(MACOS_VERSION.to_s)
@@ -221,7 +223,7 @@ module MacOS extend self
 
   def bottles_supported?
     # We support bottles on all versions of OS X except 32-bit Snow Leopard.
-    (Hardware.is_64_bit? or not MacOS.snow_leopard?) \
+    (Hardware.is_64_bit? or not MacOS.version >= :snow_leopard) \
       and HOMEBREW_PREFIX.to_s == '/usr/local' \
       and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar' \
   end

@@ -12,7 +12,7 @@ class Tcpflow < Formula
       s = Formula.factory('libtool').share
       d = "#{s}/libtool/config"
       cp ["#{d}/config.guess", "#{d}/config.sub"], "."
-    elsif MacOS.leopard?
+    elsif MacOS.version == :leopard
       cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config.*"], "."
     else
       cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config/config.*"], "."

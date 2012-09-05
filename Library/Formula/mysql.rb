@@ -13,7 +13,7 @@ class Mysql < Formula
   end
 
   depends_on 'cmake' => :build
-  depends_on 'pidof' unless MacOS.mountain_lion?
+  depends_on 'pidof' unless MacOS.version >= :mountain_lion
 
   option :universal
   option 'with-tests', 'Build with unit tests'
@@ -99,7 +99,7 @@ class Mysql < Formula
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
       # pidof can be replaced with pgrep from proctools on Mountain Lion
-      s.gsub!(/pidof/, 'pgrep') if MacOS.mountain_lion?
+      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
     ln_s "#{prefix}/support-files/mysql.server", bin
   end

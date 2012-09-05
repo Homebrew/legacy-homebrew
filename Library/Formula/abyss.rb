@@ -11,7 +11,7 @@ class Abyss < Formula
   depends_on 'google-sparsehash' => :build
 
   # Snow Leopard comes with mpi but Lion does not
-  depends_on 'open-mpi' if MacOS.lion?
+  depends_on 'open-mpi' if MacOS.version >= :lion
 
   # strip breaks the ability to read compressed files.
   skip_clean 'bin'

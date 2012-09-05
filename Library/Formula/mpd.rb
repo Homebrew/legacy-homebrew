@@ -36,7 +36,7 @@ class Mpd < Formula
             "--enable-fluidsynth",
             "--enable-zip",
             "--enable-lame-encoder"]
-    args << "--disable-curl" if MacOS.leopard?
+    args << "--disable-curl" if MacOS.version == :leopard
     args << "--enable-lastfm" if build.include?("lastfm")
 
     system "./configure", *args

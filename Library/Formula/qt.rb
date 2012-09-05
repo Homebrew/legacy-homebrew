@@ -22,7 +22,7 @@ class Qt < Formula
   option 'developer', 'Compile and link Qt with developer options'
 
   depends_on "d-bus" if build.include? 'with-qtdbus'
-  depends_on 'sqlite' if MacOS.leopard?
+  depends_on 'sqlite' if MacOS.version == :leopard
 
   fails_with :clang do
     build 421
@@ -31,11 +31,11 @@ class Qt < Formula
   def patches
     # fixes conflict on osx 10.5. See qt bug:
     # https://bugreports.qt-project.org/browse/QTBUG-23258
-    if MacOS.leopard?
+    if MacOS.version == :leopard
       "http://bugreports.qt-project.org/secure/attachment/26712/Patch-Qt-4.8-for-10.5"
     # add support for Mountain Lion
     # should be unneeded for 4.8.3
-    elsif MacOS.mountain_lion?
+    elsif MacOS.version >= :mountain_lion
       [ "https://qt.gitorious.org/qt/qt/commit/422f1b?format=patch",
         "https://qt.gitorious.org/qt/qt/commit/665355?format=patch",
         "https://raw.github.com/gist/3187034/893252db0ae3bb9bb5fa3ff7c530c7978399b101/0001-Fix-WebKit-on-OS-X-Mountain-Lion.patch" ]
@@ -46,7 +46,7 @@ class Qt < Formula
   def install
     # Apply binary git patch; normal patch ignores this.
     # TODO: Autodetect binary patches and apply them correctly.
-    system "git apply --exclude=*/QtWebKit.pro 002-homebrew.diff" if MacOS.mountain_lion?
+    system "git apply --exclude=*/QtWebKit.pro 002-homebrew.diff" if MacOS.version >= :mountain_lion
 
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
@@ -55,7 +55,7 @@ class Qt < Formula
             "-cocoa", "-fast" ]
 
     # See: https://github.com/mxcl/homebrew/issues/issue/744
-    args << "-system-sqlite" if MacOS.leopard?
+    args << "-system-sqlite" if MacOS.version == :leopard
 
     args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
 
