@@ -4,6 +4,10 @@ def needs_universal_python?
   build.universal? and not build.include? "without-python"
 end
 
+def boost_layout
+  (build.include? "use-system-layout") ? "system" : "tagged"
+end
+
 class UniversalPython < Requirement
   def message; <<-EOS.undent
     A universal build was requested, but Python is not a universal build
@@ -34,6 +38,7 @@ class Boost < Formula
   option 'with-mpi', 'Enable MPI support'
   option 'without-python', 'Build without Python'
   option 'with-icu', 'Build regexp engine with icu support'
+  option 'use-system-layout', 'Use system layout instead of tagged'
 
   depends_on UniversalPython.new if needs_universal_python?
   depends_on "icu4c" if build.include? "with-icu"
@@ -79,7 +84,7 @@ class Boost < Formula
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
             "-j#{ENV.make_jobs}",
-            "--layout=tagged",
+            "--layout=#{boost_layout}",
             "--user-config=user-config.jam",
             "threading=multi",
             "install"]
