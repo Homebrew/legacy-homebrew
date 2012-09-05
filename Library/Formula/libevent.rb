@@ -2,8 +2,8 @@ require 'formula'
 
 class Libevent < Formula
   homepage 'http://www.monkey.org/~provos/libevent/'
-  url 'https://github.com/downloads/libevent/libevent/libevent-2.0.19-stable.tar.gz'
-  sha1 '28c109190345ce5469add8cf3f45c5dd57fe2a85'
+  url 'https://github.com/downloads/libevent/libevent/libevent-2.0.20-stable.tar.gz'
+  sha1 '20bb4a1a296ac93c08dfc32ae19ab874cab67a0c'
 
   head 'git://levent.git.sourceforge.net/gitroot/levent/levent'
 
@@ -31,7 +31,9 @@ class Libevent < Formula
     ENV.universal_binary if build.universal?
     ENV.j1
     system "./autogen.sh" if build.head?
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-debug-mode",
+                          "--prefix=#{prefix}"
     system "make"
     system "make install"
 
