@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.27-28.0/source/Percona-Server-5.5.27-rel28.0.tar.gz'
-  version '5.5.27-28.0'
-  sha1 '5e6bb13ac6cec9fdf88251939e40e10c8bdef4a9'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.27-28.1/source/Percona-Server-5.5.27-rel28.1.tar.gz'
+  version '5.5.27-28.1'
+  sha1 '78bd7b408847003eb755efef646ff85ccfa071d0'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
