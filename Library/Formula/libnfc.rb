@@ -2,8 +2,8 @@ require 'formula'
 
 class Libnfc < Formula
   homepage 'http://www.libnfc.org/'
-  url 'http://libnfc.googlecode.com/files/libnfc-1.5.1.tar.gz'
-  sha1 'aebd4a126f2268d06ade445cd6cf2b3c59256f51'
+  url 'http://libnfc.googlecode.com/files/libnfc-1.6.0-rc1.tar.gz'
+  sha1 'bbff76269120c3a531eb96b7ceb96fd36c0071a1'
 
   depends_on 'libusb-compat'
 
