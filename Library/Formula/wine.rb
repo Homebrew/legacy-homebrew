@@ -72,7 +72,7 @@ class Wine < Formula
             "--with-x",
             "--with-coreaudio",
             "--with-opengl"]
-    args << "--disable-win16" if MacOS.leopard? or ENV.compiler == :clang
+    args << "--disable-win16" if MacOS.version == :leopard or ENV.compiler == :clang
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?

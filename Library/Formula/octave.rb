@@ -1,6 +1,9 @@
 require 'formula'
 
-def snow_leopard_64?
+# Leading underscore because this method is defined differently
+# in compat, and anything that loads this file would end up with
+# this definition instead!
+def _snow_leopard_64?
   # 64 bit builds on 10.6 require some special handling.
   MacOS.version == :snow_leopard and MacOS.prefer_64_bit?
 end
@@ -28,10 +31,10 @@ class Octave < Formula
   #   http://www.macresearch.org/lapackblas-fortran-106
   #
   # We can work around the issues using dotwrp.
-  depends_on 'dotwrp' if snow_leopard_64?
+  depends_on 'dotwrp' if _snow_leopard_64?
   # octave refuses to work with BSD readline, so it's either this or --disable-readline
   depends_on 'readline'
-  depends_on 'curl' if MacOS.leopard? # Leopard's libcurl is too old
+  depends_on 'curl' if MacOS.version == :leopard # Leopard's libcurl is too old
 
   # additional features
   depends_on 'suite-sparse'
@@ -63,11 +66,11 @@ class Octave < Formula
       "--prefix=#{prefix}",
       # Cant use `-framework Accelerate` because `mkoctfile`, the tool used to
       # compile extension packages, can't parse `-framework` flags.
-      "--with-blas=#{'-ldotwrp ' if snow_leopard_64?}-Wl,-framework -Wl,Accelerate",
+      "--with-blas=#{'-ldotwrp ' if _snow_leopard_64?}-Wl,-framework -Wl,Accelerate",
       # SuiteSparse-4.x.x fix, see http://savannah.gnu.org/bugs/?37031
       "--with-umfpack=-lumfpack -lsuitesparseconfig",
     ]
-    args << "--without-framework-carbon" if MacOS.lion?
+    args << "--without-framework-carbon" if MacOS.version >= :lion
     # avoid spurious 'invalid assignment to cs-list' erorrs on 32 bit installs:
     args << 'CXXFLAGS=-O0' unless MacOS.prefer_64_bit?
 

@@ -165,6 +165,7 @@ class FailsWithLLVM
   end
 end
 
+# TODO eventually some of these should print deprecation warnings
 module MacOS extend self
   def xcode_folder
     Xcode.folder

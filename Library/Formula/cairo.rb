@@ -29,7 +29,7 @@ class Cairo < Formula
     ]
 
     args << '--with-x' unless build.include? 'without-x'
-    args << '--enable-xcb=no' if MacOS.leopard?
+    args << '--enable-xcb=no' if MacOS.version == :leopard
 
     system "./configure", *args
     system "make install"

@@ -17,7 +17,7 @@ class Ffmbc < Formula
   option "with-libvpx", "Enable VP8 video format"
 
   # manpages won't be built without texi2html
-  depends_on 'texi2html' => :build if MacOS.mountain_lion?
+  depends_on 'texi2html' => :build if MacOS.version >= :mountain_lion
   depends_on 'yasm' => :build
 
   depends_on 'x264' unless build.include? 'without-x264'
