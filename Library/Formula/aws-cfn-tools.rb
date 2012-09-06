@@ -13,6 +13,14 @@ class AwsCfnTools < AmazonWebServicesFormula
   end
 
   def caveats
-    standard_instructions "AWS_CLOUDFORMATION_HOME"
+    puts standard_instructions "AWS_CLOUDFORMATION_HOME"
+    puts  <<-EOS.undent
+      export AWS_CREDENTIAL_FILE="<Path to the credentials file>"
+
+      Create the credential files with chmod 600 permissions containing two lines:
+      AWSAccessKeyId=<Your AWS Access ID>
+      AWSSecretKey=<Your AWS Secret Key>
+
+    EOS
   end
 end
