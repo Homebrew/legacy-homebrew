@@ -11,11 +11,11 @@ class Pypy < Formula
   if MacOS.prefer_64_bit?
     url 'https://bitbucket.org/pypy/pypy/downloads/pypy-1.9-osx64.tar.bz2'
     version '1.9'
-    md5 'aad9c4b7b827583e37fe8ae0f7cfe0ff'
+    sha1 '825e15724419fbdb6fe215eeea044f9181883c90'
   else
     url 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2'
     version '1.4.1'
-    md5 '8584c4e8c042f5b661fcfffa0d9b8a25'
+    sha1 '961470e7510c47b8f56e6cc6da180605ba058cb6'
   end
 
   def install
