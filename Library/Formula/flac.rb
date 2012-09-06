@@ -2,7 +2,7 @@ require 'formula'
 
 class Flac2Mp3 < Formula
   url 'https://github.com/rmndk/flac2mp3/tarball/v1.0'
-  sha1 'f8f75ee34685bbf949251d36a8abffccc3e6b3aa'
+  sha1 '07d83e9264e7159a3df50d8422fb1db07f827f55'
 end
 
 class Flac < Formula
