@@ -7,7 +7,7 @@ class GedaGaf < Formula
 
   devel do
     url 'http://geda.seul.org/devel/v1.7/1.7.2/geda-gaf-1.7.2.tar.gz'
-    md5 'ccfe334e333d6ed14ace22a43c2cdc7c'
+    sha1 '519f759211158a61689646e9963cb8c4bb5bb9a4'
   end
 
   depends_on 'pkg-config' => :build
@@ -20,7 +20,9 @@ class GedaGaf < Formula
   # MacPorts fix for glib 2.32 includes
   # Needed for 1.6.2 and 1.7.x
   def patches
-    {:p0 => ["https://trac.macports.org/export/92743/trunk/dports/science/geda-gaf/files/patch-glib-2.32.diff"]}
+    {:p0 => [
+      "https://trac.macports.org/export/92743/trunk/dports/science/geda-gaf/files/patch-glib-2.32.diff"
+    ]}
   end
 
   def install
