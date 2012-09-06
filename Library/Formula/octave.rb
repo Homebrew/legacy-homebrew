@@ -1,17 +1,5 @@
 require 'formula'
 
-def no_magick?
-  ARGV.include? '--without-graphicsmagick'
-end
-
-def no_native?
-  ARGV.include? '--without-fltk'
-end
-
-def run_tests?
-  ARGV.include? '--test'
-end
-
 def snow_leopard_64?
   # 64 bit builds on 10.6 require some special handling.
   MacOS.version == :snow_leopard and MacOS.prefer_64_bit?
@@ -22,6 +10,10 @@ class Octave < Formula
   url 'http://ftpmirror.gnu.org/octave/octave-3.6.2.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.2.tar.bz2'
   sha1 '145fef0122268086727a60e1c33e29d56fd546d7'
+
+  option 'without-graphicsmagick', 'Compile without GraphicsMagick'
+  option 'without-fltk', 'Compile without fltk (disables native graphics)'
+  option 'test', 'Run tests before installing'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-sed' => :build
@@ -44,22 +36,17 @@ class Octave < Formula
   # additional features
   depends_on 'suite-sparse'
   depends_on 'glpk'
-  depends_on 'graphicsmagick' unless no_magick?
+  depends_on 'graphicsmagick' => :recommended unless build.include? 'without-graphicsmagick'
   depends_on 'hdf5'
   depends_on 'pcre'
-  depends_on 'fltk' unless no_native?
   depends_on 'qhull'
   depends_on 'qrupdate'
 
-  # required for plotting if we don't have native graphics
-  depends_on 'gnuplot' if no_native?
-
-  def options
-    [
-      ['--without-graphicsmagick', 'Compile without GraphicsMagick'],
-      ['--without-fltk', 'Compile without fltk (disables native graphics)'],
-      ['--test', 'Run tests before installing'],
-    ]
+  if build.include? 'without-fltk'
+    # required for plotting if we don't have native graphics
+    depends_on 'gnuplot'
+  else
+    depends_on 'fltk'
   end
 
   def install
@@ -86,9 +73,10 @@ class Octave < Formula
 
     system "./configure", *args
     system "make all"
-    system "make check 2>&1 | tee make-check.log" if run_tests?
+    system "make check 2>&1 | tee make-check.log" if build.include? 'test'
     system "make install"
-    prefix.install ["test/fntests.log", "make-check.log"] if run_tests?
+
+    prefix.install ["test/fntests.log", "make-check.log"] if build.include? 'test'
   end
 
   def caveats
@@ -111,6 +99,6 @@ class Octave < Formula
     EOS
 
     s = gnuplot_caveats
-    s = native_caveats + s unless no_native?
+    s = native_caveats + s unless build.include? 'without-fltk'
   end
 end
