@@ -15,7 +15,6 @@ class Spiped < Formula
 
   def install
     system "bsdmake", "BINDIR_DEFAULT=#{bin}", "install"
-    doc.mkpath
     doc.install 'spiped/README' => 'README.spiped',
                 'spipe/README' => 'README.spipe'
   end
