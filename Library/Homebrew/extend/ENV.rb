@@ -272,6 +272,8 @@ module HomebrewEnvExtension
 
     append 'CPPFLAGS', "-I#{MacOS::X11.include}"
 
+    append 'ACLOCAL_PATH', MacOS::X11.share/'aclocal', ':'
+
     unless MacOS::CLT.installed?
       append 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11', ':'
       append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
