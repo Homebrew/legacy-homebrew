@@ -2,8 +2,8 @@ require 'formula'
 
 class Chromaprint < Formula
   homepage 'http://acoustid.org/chromaprint'
-  url 'https://github.com/downloads/lalinsky/chromaprint/chromaprint-0.6.tar.gz'
-  sha1 'e8bcc1d0d8dfec86aa648b87ba3f69b6d589eae0'
+  url 'https://github.com/downloads/lalinsky/chromaprint/chromaprint-0.7.tar.gz'
+  sha1 '6a961585e82d26d357eb792216becc0864ddcdb2'
 
   option 'without-examples', "Don't build examples (including fpcalc)"
 
