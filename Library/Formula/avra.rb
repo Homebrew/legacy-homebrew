@@ -9,7 +9,8 @@ class Avra < Formula
 
   def install
     # build fails if these don't exist
-    system "touch NEWS ChangeLog"
+    touch 'NEWS'
+    touch 'ChangeLog'
     cd "src" do
       system "./bootstrap"
       system "./configure", "--prefix=#{prefix}"
