@@ -5,42 +5,33 @@ class Pike < Formula
   url 'http://pike.ida.liu.se/pub/pike/all/7.8.700/Pike-v7.8.700.tar.gz'
   sha1 '877bd50d2bb202aa485d1f7c62398922d60696c7'
 
-  linked = 0
-
-  # really necessary
   depends_on "nettle"
   depends_on "gmp"
-
-  # one might argue that these aren't completely necessary
   depends_on :x11
-  depends_on 'libtiff'
+  depends_on 'libtiff' => :recommended
 
   # optional dependencies
-  depends_on 'gettext' if ARGV.include? '--with-gettext' or ARGV.include? '--with-all'
-  depends_on 'gdbm' if ARGV.include? '--with-gdbm' or ARGV.include? '--with-all'
-  depends_on 'gtk+' if ARGV.include? '--with-gtk2' or ARGV.include? '--with-all'
-  depends_on 'mysql' if ARGV.include? '--with-mysql' or ARGV.include? '--with-all'
-  depends_on 'pcre' if ARGV.include? '--with-pcre' or ARGV.include? '--with-all'
-  depends_on 'sdl' if ARGV.include? '--with-sdl' or ARGV.include? '--with-all'
-  depends_on 'sane-backends' if ARGV.include? '--with-sane' or ARGV.include? '--with-all'
-  depends_on 'pdflib-lite' if ARGV.include? '--with-pdf' or ARGV.include? '--with-all'
-  depends_on 'mesalib-glw' if ARGV.include? '--with-gl' or ARGV.include? '--with-all'
+  depends_on 'gettext' if build.include? 'with-gettext' or build.include? 'with-all'
+  depends_on 'gdbm' if build.include? 'with-gdbm' or build.include? 'with-all'
+  depends_on 'gtk+' if build.include? 'with-gtk2' or build.include? 'with-all'
+  depends_on 'mysql' if build.include? 'with-mysql' or build.include? 'with-all'
+  depends_on 'pcre' if build.include? 'with-pcre' or build.include? 'with-all'
+  depends_on 'sdl' if build.include? 'with-sdl' or build.include? 'with-all'
+  depends_on 'sane-backends' if build.include? 'with-sane' or build.include? 'with-all'
+  depends_on 'pdflib-lite' if build.include? 'with-pdf' or build.include? 'with-all'
+  depends_on 'mesalib-glw' if build.include? 'with-gl' or build.include? 'with-all'
 
-  def options
-   [
-     ['--with-gettext', 'Include Gettext support'],
-     ['--with-gdbm', 'Include Gdbm support'],
-     ['--with-gtk2', 'Include GTK2 support'],
-     ['--with-mysql', 'Include Mysql support'],
-     ['--with-pcre', 'Include Regexp.PCRE support'],
-     ['--with-sdl', 'Include SDL support'],
-     ['--with-sane', 'Include Sane support'],
-     ['--with-pdf', 'Include PDF support'],
-     ['--with-gl', 'Include GL support'],
-     ['--with-all', 'Include all features'],
-     ['--with-machine-code', 'Enables machine code'],
-   ]
-  end
+  option 'with-gettext', 'Include Gettext support'
+  option 'with-gdbm', 'Include Gdbm support'
+  option 'with-gtk2', 'Include GTK2 support'
+  option 'with-mysql', 'Include Mysql support'
+  option 'with-pcre', 'Include Regexp.PCRE support'
+  option 'with-sdl', 'Include SDL support'
+  option 'with-sane', 'Include Sane support'
+  option 'with-pdf', 'Include PDF support'
+  option 'with-gl', 'Include GL support'
+  option 'with-all', 'Include all features'
+  option 'with-machine-code', 'Enables machine code'
   
   fails_with :llvm do
     build 2335
@@ -51,10 +42,10 @@ class Pike < Formula
 
   def install
     cargs = [ "--prefix=#{prefix}",
-             "--without-bundles"
-           ]
+              "--without-bundles"
+            ]
 
-    if MacOS.prefer_64_bit? and not ARGV.build_32_bit?
+    if MacOS.prefer_64_bit? and not build.build_32_bit?
       ENV.append 'CFLAGS', '-m64'
       cargs << "--with-abi=64"
     else
@@ -62,8 +53,7 @@ class Pike < Formula
       cargs << "--with-abi=32"
     end
 
-    if ARGV.include? '--with-machine-code'
-    else
+    unless build.include? 'with-machine-code'
       cargs << "--without-machine-code"
     end
 
