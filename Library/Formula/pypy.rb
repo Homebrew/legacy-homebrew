@@ -2,7 +2,7 @@ require 'formula'
 
 class Distribute < Formula
   url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
-  sha1 '825e15724419fbdb6fe215eeea044f9181883c90'
+  sha1 '709bd97d46050d69865d4b588c7707768dfe6711'
 end
 
 class Pypy < Formula
