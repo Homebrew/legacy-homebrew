@@ -22,7 +22,7 @@ class Bsdmake < Formula
     # Replace @PREFIX@ inserted by MacPorts patches
     # Use 'prefix' since this is sometimes a keg-only brew
     # But first replace the X11 path if X11 is installed
-    inreplace 'mk/sys.mk', '@PREFIX@', MacOS::X11.prefix if MacOS::X11.installed?
+    inreplace 'mk/sys.mk', '@PREFIX@', MacOS::X11.prefix || prefix
     inreplace %W[mk/bsd.README
                  mk/bsd.cpu.mk
                  mk/bsd.doc.mk
@@ -30,7 +30,6 @@ class Bsdmake < Formula
                  mk/bsd.own.mk
                  mk/bsd.port.mk
                  mk/bsd.port.subdir.mk
-                 mk/sys.mk
                  pathnames.h],
                  '@PREFIX@', prefix
 
