@@ -5,7 +5,7 @@ class Tmux < Formula
   url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.6/tmux-1.6.tar.gz'
   sha1 '8756f6bcecb18102b87e5d6f5952ba2541f68ed3'
 
-  head 'https://tmux.svn.sourceforge.net/svnroot/tmux/trunk'
+  head 'git://tmux.git.sourceforge.net/gitroot/tmux/tmux'
 
   depends_on 'pkg-config' => :build
   depends_on 'libevent'
