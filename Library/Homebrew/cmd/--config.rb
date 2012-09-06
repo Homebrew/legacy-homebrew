@@ -125,7 +125,8 @@ module Homebrew extend self
     puts "GCC-4.2: build #{gcc_42}" if gcc_42
     puts "LLVM-GCC: #{llvm ? "build #{llvm}" : "N/A"}"
     puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
-    puts "MacPorts or Fink? #{macports_or_fink_installed?}"
+    ponk = macports_or_fink_installed?
+    puts "MacPorts or Fink? #{ponk}" if ponk
     puts "System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}"
     puts "Perl: #{describe_perl}"
     puts "Python: #{describe_python}"
