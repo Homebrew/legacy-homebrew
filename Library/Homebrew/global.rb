@@ -41,9 +41,6 @@ undef cache # we use a function to prevent adding home_cache to the global scope
 # Where brews installed via URL are cached
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
 
-# Where bottles are cached
-HOMEBREW_CACHE_BOTTLES = HOMEBREW_CACHE+"Bottles"
-
 if not defined? HOMEBREW_BREW_FILE
   HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] || `which brew`.chomp
 end
