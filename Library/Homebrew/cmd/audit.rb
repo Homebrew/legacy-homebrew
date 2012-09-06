@@ -88,6 +88,7 @@ class FormulaAuditor
     pkg-config
     scons
     smake
+    swig
   ]
 
   def initialize f
