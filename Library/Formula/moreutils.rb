@@ -4,7 +4,7 @@ class Moreutils < Formula
   homepage 'http://packages.debian.org/unstable/utils/moreutils'
   url 'http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.47.tar.gz'
   mirror 'http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.47.tar.gz'
-  md5 '4cd3b41a90d07166632942e173ac5ce2'
+  sha1 '0459608fdb37bc59605d7a476717693afd133e00'
 
   def install
     # Building the man pages requires DocBook, so we skip them.

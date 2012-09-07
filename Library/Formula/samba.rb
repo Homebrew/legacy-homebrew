@@ -28,7 +28,7 @@ class Samba < Formula
                             "--with-configdir=#{prefix}/etc"
       system "make install"
       (prefix/'etc').mkpath
-      system "touch", "#{prefix}/etc/smb.conf"
+      touch prefix/'etc/smb.conf'
     end
   end
 end

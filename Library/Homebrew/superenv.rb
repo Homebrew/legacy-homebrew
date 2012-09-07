@@ -41,7 +41,8 @@ class << ENV
   def setup_build_environment
     reset
     check
-    ENV['LD'] = 'cc'
+    ENV['CC'] = ENV['LD'] = 'cc'
+    ENV['CXX'] = 'c++'
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
@@ -124,9 +125,8 @@ class << ENV
 
   def determine_cmake_prefix_path
     paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}" }
+    paths << HOMEBREW_PREFIX.to_s # put ourselves ahead of everything else
     paths << "#{MacOS.sdk_path}/usr" if MacSystem.xcode43_without_clt?
-    paths << HOMEBREW_PREFIX.to_s # again always put ourselves ahead of X11
-    paths << MacSystem.x11_prefix if x11?
     paths.to_path_s
   end
 
@@ -135,16 +135,23 @@ class << ENV
     paths = []
     paths << "#{MacSystem.x11_prefix}/include/freetype2" if x11?
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
-    # TODO prolly shouldn't always do this?
-    paths << "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7" if MacSystem.xcode43_without_clt?
+    if MacSystem.xcode43_without_clt?
+      paths << "#{sdk}/usr/include/apache2"
+      # TODO prolly shouldn't always do this?
+      paths << "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7"
+    end
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/"
+    paths << "#{MacSystem.x11_prefix}/include" if x11?
     paths.to_path_s
   end
 
   def determine_cmake_library_path
     sdk = MacOS.sdk_path if MacSystem.xcode43_without_clt?
+    paths = []
     # things expect to find GL headers since X11 used to be a default, so we add them
-    %W{#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries}.to_path_s
+    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries"
+    paths << "#{MacSystem.x11_prefix}/lib" if x11?
+    paths.to_path_s
   end
 
   def determine_aclocal_path
@@ -195,13 +202,16 @@ class << ENV
   end
   alias_method :j1, :deparallelize
   def gcc
-    ENV['HOMEBREW_CC'] = "gcc"
+    ENV['CC'] = ENV['HOMEBREW_CC'] = "gcc"
+    ENV['CXX'] = "g++"
   end
   def llvm
-    ENV['HOMEBREW_CC'] = "llvm-gcc"
+    ENV['CC'] = ENV['HOMEBREW_CC'] = "llvm-gcc"
+    ENV['CXX'] = "g++"
   end
   def clang
-    ENV['HOMEBREW_CC'] = "clang"
+    ENV['CC'] = ENV['HOMEBREW_CC'] = "clang"
+    ENV['CXX'] = "clang++"
   end
   def make_jobs
     ENV['MAKEFLAGS'] =~ /-\w*j(\d)+/

@@ -21,8 +21,8 @@ class Distribute < Formula
 end
 
 class Pip < Formula
-  url 'http://pypi.python.org/packages/source/p/pip/pip-1.1.tar.gz'
-  md5 '62a9f08dd5dc69d76734568a6c040508'
+  url 'http://pypi.python.org/packages/source/p/pip/pip-1.2.tar.gz'
+  sha1 '7876f943cfbb0bbb725c2761879de2889c1fe93b'
 end
 
 class Python < Formula
@@ -62,6 +62,11 @@ class Python < Formula
   end
 
   def install
+    # Unset these so that installing pip and distribute puts them where we want
+    # and not into some other Python the user has installed.
+    ENV['PYTHONPATH'] = nil
+    ENV['PYTHONHOME'] = nil
+
     args = %W[
              --prefix=#{prefix}
              --enable-ipv6
@@ -71,6 +76,12 @@ class Python < Formula
            ]
 
     args << '--without-gcc' if ENV.compiler == :clang
+
+    # Further, Python scans all "-I" dirs but not "-isysroot", so we add
+    # the needed includes with "-I" here to avoid this err:
+    #     building dbm using ndbm
+    #     error: /usr/include/zlib.h: No such file or directory
+    ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
 
     # Don't use optimizations other than "-Os" here, because Python's distutils
     # remembers (hint: `python-config --cflags`) and reuses them for C
@@ -85,6 +96,7 @@ class Python < Formula
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
       ENV.append_to_cflags '-Wno-unused-value'
       ENV.append_to_cflags '-Wno-empty-body'
+      ENV.append_to_cflags '-Qunused-arguments'
     end
 
     if build.universal?
@@ -128,8 +140,8 @@ class Python < Formula
     EOF
 
     # Install distribute and pip
-    Distribute.new.brew { system "#{bin}/python", "setup.py", "install" }
-    Pip.new.brew { system "#{bin}/python", "setup.py", "install" }
+    Distribute.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force" }
+    Pip.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force" }
   end
 
   def caveats

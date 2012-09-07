@@ -3,7 +3,7 @@ require 'formula'
 class Nss < Formula
   url 'http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_12_10_RTM/src/nss-3.12.10.tar.gz'
   homepage 'http://www.mozilla.org/projects/security/pki/nss/'
-  md5 '027954e894f02732f4e66cd854261145'
+  sha1 '229f65c8d4e2c1b34e145253bceddada5a82a142'
 
   depends_on 'nspr'
 

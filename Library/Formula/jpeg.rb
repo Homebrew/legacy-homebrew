@@ -1,10 +1,10 @@
 require 'formula'
 
 class Jpeg < Formula
-  url 'http://www.ijg.org/files/jpegsrc.v8d.tar.gz'
-  sha1 'f080b2fffc7581f7d19b968092ba9ebc234556ff'
   homepage 'http://www.ijg.org'
+  url 'http://www.ijg.org/files/jpegsrc.v8d.tar.gz'
   version '8d'
+  sha1 'f080b2fffc7581f7d19b968092ba9ebc234556ff'
 
   bottle do
     sha1 '80b23581fb5b2b92d787969f75cedbe8054c93a4' => :mountainlion

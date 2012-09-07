@@ -1,5 +1,15 @@
 require 'formula'
 
+class PythonVersion < Requirement
+  def message; <<-EOS.undent
+    Node's build system, gyp, requires Python 2.6 or newer.
+    EOS
+  end
+  def satisfied?
+    `python -c 'import sys;print(sys.version[:3])'`.strip.to_f >= 2.6
+  end
+end
+
 class NpmNotInstalled < Requirement
   def modules_folder
     "#{HOMEBREW_PREFIX}/lib/node_modules"
@@ -42,6 +52,7 @@ class Node < Formula
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.leopard?
   depends_on NpmNotInstalled.new unless build.include? 'without-npm'
+  depends_on PythonVersion.new
 
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'

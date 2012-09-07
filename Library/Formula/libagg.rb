@@ -3,12 +3,15 @@ require 'formula'
 class Libagg < Formula
   homepage 'http://www.antigrain.com'
   url 'http://www.antigrain.com/agg-2.5.tar.gz'
-  md5 '0229a488bc47be10a2fee6cf0b2febd6'
+  sha1 '08f23da64da40b90184a0414369f450115cdb328'
+
+  option 'with-freetype', 'Build with FreeType support'
 
   depends_on :automake
-  depends_on :x11 # for Freetype
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
+  depends_on :freetype => :optional if build.include? "with-freetype"
+  depends_on :libtool unless MacOS.mountain_lion?
 
   fails_with :clang do
     build 421

@@ -3,7 +3,7 @@ require 'formula'
 class Xml2rfc < Formula
   url 'http://xml.resource.org/authoring/xml2rfc-1.36.tgz'
   homepage 'http://xml.resource.org/'
-  md5 'f96aa187e2ef86affe2843b556556b60'
+  sha1 '36d02694d1a7392c58045162cd935adab3e7a244'
 
   head 'http://svn.tools.ietf.org/svn/tools/xml2rfc/trunk',
     :using => StrictSubversionDownloadStrategy

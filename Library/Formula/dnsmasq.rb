@@ -2,8 +2,8 @@ require 'formula'
 
 class Dnsmasq < Formula
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.62.tar.gz'
-  sha1 'c011531a8a92b35ede387525293bfdf93b201039'
+  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.63.tar.gz'
+  sha256 'fd86e3bcc6a63c76e35e4a20baa790e7bbbfc7b43845cae85ca8ffd024467710'
 
   option 'with-idn', 'Compile with IDN support'
 
@@ -21,7 +21,7 @@ class Dnsmasq < Formula
     end
 
     # Fix compilation on Lion
-    ENV.append_to_cflags "-D__APPLE_USE_RFC_3542" if 10.7 <= MACOS_VERSION
+    ENV.append_to_cflags "-D__APPLE_USE_RFC_3542" if MacOS.version >= :lion
     inreplace "Makefile" do |s|
       s.change_make_var! "CFLAGS", ENV.cflags
     end

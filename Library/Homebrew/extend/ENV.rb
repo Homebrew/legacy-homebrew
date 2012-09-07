@@ -10,14 +10,15 @@ module HomebrewEnvExtension
     remove_cc_etc
 
     if MacOS.version >= :mountain_lion
-      # Fix issue with sed barfing on unicode characters on Mountain Lion.
+      # Mountain Lion's sed is stricter, and errors out when
+      # it encounters files with mixed character sets
       delete('LC_ALL')
       self['LC_CTYPE']="C"
-
-      # Mountain Lion no longer ships a few .pcs; make sure we pick up our versions
-      prepend 'PKG_CONFIG_PATH',
-        HOMEBREW_REPOSITORY/'Library/Homebrew/pkgconfig', ':'
     end
+
+    # Set the default pkg-config search path, overriding the built-in paths
+    # Anything in PKG_CONFIG_PATH is searched before paths in this variable
+    self['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
 
     # make any aclocal stuff installed in Homebrew available
     self['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS::Xcode.provides_autotools?
@@ -63,6 +64,15 @@ module HomebrewEnvExtension
       # Others are now at /Applications/Xcode.app/Contents/Developer/usr/bin
       append 'PATH', "#{MacOS.dev_tools_path}", ":"
     end
+  end
+
+  def determine_pkg_config_libdir
+    paths = []
+    paths << HOMEBREW_PREFIX/'lib/pkgconfig'
+    paths << HOMEBREW_PREFIX/'share/pkgconfig'
+    paths << HOMEBREW_REPOSITORY/'Library/Homebrew/pkgconfig' if MacOS.version >= :mountain_lion
+    paths << '/usr/lib/pkgconfig'
+    paths.select { |d| File.directory? d }.join(':')
   end
 
   def deparallelize
@@ -246,23 +256,23 @@ module HomebrewEnvExtension
     end
   end
 
-  def x11 silent=false
-    unless MacOS::X11.installed?
-      opoo "You do not have X11 installed, this formula may not build." unless silent
-      return
-    end
-
+  def x11
     # There are some config scripts here that should go in the PATH
-    prepend 'PATH', MacOS::X11.bin, ':'
+    append 'PATH', MacOS::X11.bin, ':'
 
-    prepend 'PKG_CONFIG_PATH', MacOS::X11.lib/'pkgconfig', ':'
-    prepend 'PKG_CONFIG_PATH', MacOS::X11.share/'pkgconfig', ':'
+    # Append these to PKG_CONFIG_LIBDIR so they are searched
+    # *after* our own pkgconfig directories, as we dupe some of the
+    # libs in XQuartz.
+    append 'PKG_CONFIG_LIBDIR', MacOS::X11.lib/'pkgconfig', ':'
+    append 'PKG_CONFIG_LIBDIR', MacOS::X11.share/'pkgconfig', ':'
 
     append 'LDFLAGS', "-L#{MacOS::X11.lib}"
     append 'CMAKE_PREFIX_PATH', MacOS::X11.prefix, ':'
     append 'CMAKE_INCLUDE_PATH', MacOS::X11.include, ':'
 
     append 'CPPFLAGS', "-I#{MacOS::X11.include}"
+
+    append 'ACLOCAL_PATH', MacOS::X11.share/'aclocal', ':'
 
     unless MacOS::CLT.installed?
       append 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11', ':'

@@ -7,7 +7,7 @@ end
 class Fuse4xKext < Formula
   homepage 'http://fuse4x.github.com'
   url 'https://github.com/fuse4x/kext/tarball/fuse4x_0_9_1'
-  md5 'd9139a55157427a3f9985a8e1f79e23b'
+  sha1 'a04e729df52d1caa4d1d33a58af53afc1b1b74cd'
 
   bottle do
     # Bottle provided for Lion since the Command Line Tools cannot compile
@@ -22,10 +22,10 @@ class Fuse4xKext < Formula
 
     args = [
       "-sdk",
-      "macosx#{MACOS_VERSION}",
+      "macosx#{MacOS.version}",
       "-configuration", "Release",
       "-alltargets",
-      "MACOSX_DEPLOYMENT_TARGET=#{MACOS_VERSION}",
+      "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
       "SYMROOT=build",
       # Build a 32-bit kernel extension on Leopard and a fat binary for Snow
       # Leopard/Lion.

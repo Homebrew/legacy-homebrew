@@ -3,7 +3,7 @@ require 'formula'
 class NetSnmp < Formula
   homepage 'http://www.net-snmp.org/'
   url 'http://sourceforge.net/projects/net-snmp/files/net-snmp/5.7.1/net-snmp-5.7.1.tar.gz'
-  md5 'c95d08fd5d93df0c11a2e1bdf0e01e0b'
+  sha1 'ddb82ce1112ef0642869d3c8d7c7e585f151849a'
 
   def patches
     # Fixes compile error on Lion, missing header darwin11.h

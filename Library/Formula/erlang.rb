@@ -2,22 +2,22 @@ require 'formula'
 
 class ErlangManuals < Formula
   url 'http://erlang.org/download/otp_doc_man_R15B01.tar.gz'
-  md5 'd87412c2a1e6005bbe29dfe642a9ca20'
+  sha1 'ec303c8e2957570b3b1ad56af8a5b29a6618d09a'
 end
 
 class ErlangHtmls < Formula
   url 'http://erlang.org/download/otp_doc_html_R15B01.tar.gz'
-  md5 '7569cae680eecd64e7e5d952be788ee5'
+  sha1 'dfbad0ffd99be2ae219615f7a354ee9d1442e1a7'
 end
 
 class ErlangHeadManuals < Formula
   url 'http://erlang.org/download/otp_doc_man_R15B01.tar.gz'
-  md5 'd87412c2a1e6005bbe29dfe642a9ca20'
+  sha1 'e6f74fdab17d12026fe364d9658b906e58824076'
 end
 
 class ErlangHeadHtmls < Formula
   url 'http://erlang.org/download/otp_doc_html_R15B01.tar.gz'
-  md5 '7569cae680eecd64e7e5d952be788ee5'
+  sha1 'e6f74fdab17d12026fe364d9658b906e58824076'
 end
 
 class Erlang < Formula
@@ -91,7 +91,7 @@ class Erlang < Formula
     end
 
     system "./configure", *args
-    system "touch lib/wx/SKIP" if MacOS.snow_leopard?
+    touch 'lib/wx/SKIP' if MacOS.version >= :snow_leopard
     ENV.j1 # Parallel builds not working again as of at least R15B01
     system "make"
     system "make install"

@@ -3,9 +3,9 @@ require 'formula'
 class Log4cxx < Formula
   homepage 'http://logging.apache.org/log4cxx/index.html'
   url 'http://www.apache.org/dyn/closer.cgi?path=logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz'
-  md5 'b30ffb8da3665178e68940ff7a61084c'
+  sha1 'd79c053e8ac90f66c5e873b712bb359fd42b648d'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end

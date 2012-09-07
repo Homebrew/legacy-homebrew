@@ -2,8 +2,8 @@ require 'formula'
 
 class Nuttcp < Formula
   homepage 'http://www.nuttcp.net/nuttcp'
-  url 'ftp://ftp.lcp.nrl.navy.mil/pub/nuttcp/nuttcp-6.1.2.tar.bz2'
-  md5 'a16d4d6d5def02cea980e57feaf30500'
+  url 'http://lcp.nrl.navy.mil/nuttcp/nuttcp-6.1.2.tar.bz2'
+  sha1 '329fcc3c0b75db18b7b4d73962992603f9ace9ca'
 
   def install
     system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"

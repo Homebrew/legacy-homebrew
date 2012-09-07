@@ -3,7 +3,7 @@ require 'formula'
 class Libgtop < Formula
   homepage 'http://library.gnome.org/devel/libgtop/stable/'
   url 'http://ftp.gnome.org/pub/gnome/sources/libgtop/2.28/libgtop-2.28.4.tar.xz'
-  md5 'c8aee3c9bde9033303147e993aa1b932'
+  sha1 '8c88e14ae21ac5a7071f77aad41deaccf59d88e3'
 
   depends_on 'xz' => :build
   depends_on 'pkg-config' => :build

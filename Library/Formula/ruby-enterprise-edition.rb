@@ -3,7 +3,7 @@ require 'formula'
 class RubyEnterpriseEdition < Formula
   homepage 'http://rubyenterpriseedition.com/'
   url 'http://rubyenterpriseedition.googlecode.com/files/ruby-enterprise-1.8.7-2011.03.tar.gz'
-  md5 '038604ce25349e54363c5df9cd535ec8'
+  sha1 '662f37afbe04f3a55ac3b119227a2cd4e53745bf'
 
   skip_clean 'bin/ruby'
 

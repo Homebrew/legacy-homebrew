@@ -10,7 +10,7 @@ class Zint < Formula
   option 'qt', 'Build the zint-qt GUI.'
 
   depends_on 'cmake' => :build
-  depends_on :x11
+  depends_on :libpng
   depends_on 'qt' => :optional if build.include? 'qt'
 
   def install

@@ -3,7 +3,7 @@ require 'formula'
 class Teapot < Formula
   url 'http://www.syntax-k.de/projekte/teapot/teapot-1.09.tar.gz'
   homepage 'http://www.syntax-k.de/projekte/teapot/'
-  md5 '21e1d1c1d04ba59af1fac6f49a4e2b1b'
+  sha1 '5618bcc3c2e10ed6af73a0f8ee29599c7fc5967d'
 
   def install
     system "make"

@@ -22,7 +22,7 @@ end
 class Libpqxx < Formula
   homepage 'http://pqxx.org/development/libpqxx/'
   url 'http://pqxx.org/download/software/libpqxx/libpqxx-4.0.tar.gz'
-  md5 'bd7541f858400a96cbe2a48cb342ad0e'
+  sha1 '09e6301e610e7acddbec85f4803886fd6822b2e6'
 
   depends_on 'pkg-config' => :build
   depends_on PostgresqlInstalled.new

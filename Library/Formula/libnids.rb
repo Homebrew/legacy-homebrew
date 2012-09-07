@@ -3,7 +3,7 @@ require 'formula'
 class Libnids < Formula
   homepage 'http://libnids.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/libnids/libnids/1.24/libnids-1.24.tar.gz'
-  md5 '72d37c79c85615ffe158aa524d649610'
+  sha1 '9a421df05cefdc4f5f7db95efc001b3c2b5249ce'
 
   option "disable-libnet", "Don't include code requiring libnet"
   option "disable-libglib", "Don't use glib2 for multiprocessing support"

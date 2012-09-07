@@ -88,6 +88,7 @@ class FormulaAuditor
     pkg-config
     scons
     smake
+    swig
   ]
 
   def initialize f
@@ -233,6 +234,8 @@ class FormulaAuditor
         when :sha256 then 64
         end
 
+      problem "md5 is broken, deprecated: use sha1 instead" if cksum.hash_type == :md5
+
       if cksum.empty?
         problem "#{cksum.hash_type} is empty"
       else
@@ -250,7 +253,9 @@ class FormulaAuditor
     Patches.new(f.patches).select { |p| p.external? }.each do |p|
       case p.url
       when %r[raw\.github\.com], %r[gist\.github\.com/raw]
-        problem "Using raw GitHub URLs is not recommended:\n#{p.url}"
+        unless p.url =~ /[a-fA-F0-9]{40}/
+          problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
+        end
       when %r[macports/trunk]
         problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
       end
@@ -273,9 +278,10 @@ class FormulaAuditor
     end
 
     # build tools should be flagged properly
+    # but don't complain about automake; it needs autoconf at runtime
     if text =~ /depends_on ['"](#{BUILD_TIME_DEPS*'|'})['"]$/
       problem "#{$1} dependency should be \"depends_on '#{$1}' => :build\""
-    end
+    end unless f.name == "automake"
 
     # FileUtils is included in Formula
     if text =~ /FileUtils\.(\w+)/
@@ -350,6 +356,10 @@ class FormulaAuditor
       problem "xcodebuild should be passed an explicit \"SYMROOT\""
     end
 
+    if text =~ /ENV\.x11/
+      problem "Use \"depends_on :x11\" instead of \"ENV.x11\""
+    end
+
     # Avoid hard-coding compilers
     if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]]
       problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
@@ -377,6 +387,10 @@ class FormulaAuditor
 
     if text =~ /def options/
       problem "Use new-style option definitions."
+    end
+
+    if text =~ /MACOS_VERSION/
+      problem "Use MacOS.version instead of MACOS_VERSION"
     end
   end
 

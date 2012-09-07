@@ -3,11 +3,9 @@ require 'formula'
 class Sdl < Formula
   homepage 'http://www.libsdl.org/'
   url 'http://www.libsdl.org/release/SDL-1.2.15.tar.gz'
-  md5 '9d96df8417572a2afb781a7c4c811a85'
+  sha1 '0c5f193ced810b0d7ce3ab06d808cbb5eef03a2c'
 
   head 'http://hg.libsdl.org/SDL', :using => :hg
-
-  depends_on :x11
 
   if build.head?
     depends_on :automake
@@ -30,11 +28,16 @@ class Sdl < Formula
     args << "--disable-nasm" unless MacOS.mountain_lion? # might work with earlier, might only work with new clang
     # LLVM-based compilers choke on the assembly code packaged with SDL.
     args << '--disable-assembly' if ENV.compiler == :llvm or ENV.compiler == :clang and MacOS.clang_build_version < 421
+    args << '--without-x'
 
     system './configure', *args
     system "make install"
 
     # Copy source files needed for Ojective-C support.
     libexec.install Dir["src/main/macosx/*"]
+  end
+
+  def test
+    system "#{bin}/sdl-config", "--version"
   end
 end

@@ -3,7 +3,7 @@ require 'formula'
 class Pil < Formula
   url 'http://effbot.org/downloads/Imaging-1.1.7.tar.gz'
   homepage 'http://www.pythonware.com/products/pil/'
-  md5 'fc14a54e1ce02a0225be8854bfba478e'
+  sha1 '76c37504251171fda8da8e63ecb8bc42a69a5c81'
 
   depends_on :x11
   depends_on 'jpeg' => :recommended

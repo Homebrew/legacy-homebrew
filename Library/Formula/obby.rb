@@ -3,7 +3,7 @@ require 'formula'
 class Obby < Formula
   url 'http://releases.0x539.de/obby/obby-0.4.7.tar.gz'
   homepage 'http://gobby.0x539.de'
-  md5 '33fac4228c1efc1a1635bacf6480dc31'
+  sha1 'efe4e6b406eb0628af63e88807d5d2115d88f390'
 
   depends_on 'pkg-config' => :build
   depends_on 'net6'

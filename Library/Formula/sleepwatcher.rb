@@ -3,7 +3,7 @@ require 'formula'
 class Sleepwatcher < Formula
   homepage 'http://www.bernhard-baehr.de/'
   url 'http://www.bernhard-baehr.de/sleepwatcher_2.2.tgz'
-  md5 '2a9235c7da4ad4ed9fb3181203849ded'
+  sha1 'd4e4abb0bf0e1b3db9166d1eae38b8701fc28bf8'
 
   def install
     # Adjust Makefile to build native binary only

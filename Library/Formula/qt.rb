@@ -3,7 +3,7 @@ require 'formula'
 class Qt < Formula
   homepage 'http://qt.nokia.com/'
   url 'http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.2.tar.gz'
-  md5 '3c1146ddf56247e16782f96910a8423b'
+  sha1 'e1e2edef1d63ed677d6534d32800c2e1f7ad0e73'
 
   bottle do
     version 1
