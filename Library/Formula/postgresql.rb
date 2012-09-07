@@ -9,6 +9,7 @@ class Postgresql < Formula
   depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
   depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
 
+  option :universal
   option '32-bit'
   option 'without-ossp-uuid', 'Build without OSSP uuid'
   option 'no-python', 'Build without Python support'
@@ -25,6 +26,7 @@ class Postgresql < Formula
 
   def install
     ENV.libxml2 if MacOS.snow_leopard?
+    ENV.universal_binary if ARGV.build_universal?
 
     args = ["--disable-debug",
             "--prefix=#{prefix}",
@@ -63,6 +65,11 @@ class Postgresql < Formula
     ENV.O2 if Hardware.intel_family == :core
 
     system "./configure", *args
+    if ARGV.build_universal?
+      system "curl https://trac.macports.org/export/96361/trunk/dports/databases/postgresql91/files/pg_config.h.ed | ed - ./src/include/pg_config.h"
+      system "curl https://trac.macports.org/export/96361/trunk/dports/databases/postgresql91/files/ecpg_config.h.ed | ed  - ./src/interfaces/ecpg/include/ecpg_config.h"
+    end
+
     system "make install-world"
 
     plist_path.write startup_plist
