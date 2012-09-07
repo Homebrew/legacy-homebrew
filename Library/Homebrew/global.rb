@@ -41,9 +41,6 @@ undef cache # we use a function to prevent adding home_cache to the global scope
 # Where brews installed via URL are cached
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
 
-# Where bottles are cached
-HOMEBREW_CACHE_BOTTLES = HOMEBREW_CACHE+"Bottles"
-
 if not defined? HOMEBREW_BREW_FILE
   HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] || `which brew`.chomp
 end
@@ -94,4 +91,4 @@ unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
   require 'compatibility'
 end
 
-ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(File.expand_path(p)) }
+ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(File.expand_path(p)) rescue nil }.compact.freeze
