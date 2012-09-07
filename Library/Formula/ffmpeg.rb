@@ -15,6 +15,15 @@ class Ffmpeg < Formula
 
   head 'git://git.videolan.org/ffmpeg.git'
 
+  fails_with_llvm 'Undefined symbols when linking `libavfilter`'
+
+  def options
+    [
+      ["--with-tools", "Install additional FFmpeg tools."],
+      ["--with-ffplay", "Build ffplay."]
+    ]
+  end
+
   depends_on 'yasm' => :build
   depends_on 'x264' => :optional
   depends_on 'faac' => :optional
@@ -42,6 +51,7 @@ class Ffmpeg < Formula
 
   def install
     ENV.x11
+    raise "ENV.cc == #{ENV.cc}" unless ENV.cc == 'clang'
     args = ["--prefix=#{prefix}",
             "--enable-shared",
             "--enable-gpl",
