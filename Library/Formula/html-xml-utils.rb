@@ -5,6 +5,10 @@ class HtmlXmlUtils < Formula
   homepage 'http://www.w3.org/Tools/HTML-XML-utils/'
   sha1 'ec1e6d52825a6aa9e9aff0a34679621de5e419ba'
 
+  fails_with :clang do
+    build 421
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
