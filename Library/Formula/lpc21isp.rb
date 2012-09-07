@@ -7,8 +7,8 @@ class Lpc21isp < Formula
   version '1.83'
 
   def install
-	# Can't statically link on OSX, so we'll remove that from the Makefile
-	inreplace 'Makefile', "CFLAGS	+= -Wall -static", "CFLAGS	+= -Wall"
+    # Can't statically link on OSX, so we'll remove that from the Makefile
+    inreplace 'Makefile', "CFLAGS	+= -Wall -static", "CFLAGS	+= -Wall"
     system "make"
     bin.install ["lpc21isp"]
   end
