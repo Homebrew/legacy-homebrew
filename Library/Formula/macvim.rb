@@ -67,7 +67,7 @@ class Macvim < Formula
     bin.install "src/MacVim/mvim"
 
     # Create MacVim vimdiff, view, ex equivalents
-    executables = %w[mvimdiff mview mvimex]
+    executables = %w[mvimdiff mview mvimex gvim gvimdiff gview gvimex]
     executables += %w[vi vim vimdiff view vimex] if build.include? "override-system-vim"
     executables.each {|f| ln_s bin+'mvim', bin+f}
   end
