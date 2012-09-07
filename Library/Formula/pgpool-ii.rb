@@ -21,8 +21,8 @@ end
 
 class PgpoolIi < Formula
   homepage 'http://www.pgpool.net/mediawiki/index.php/Main_Page'
-  url 'http://pgfoundry.org/frs/download.php/2841/pgpool-II-3.0.7.tar.gz'
-  sha1 '1c72a271d65bd7b44b473b5020746808a056bf3d'
+  url 'http://www.pgpool.net/mediawiki/download.php?f=pgpool-II-3.1.3.tar.gz'
+  sha1 '99e45bd218ab780e982116860fee11a605bd834f'
 
   depends_on PostgresqlInstalled.new
 

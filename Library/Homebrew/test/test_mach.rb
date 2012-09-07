@@ -1,8 +1,5 @@
 require 'testing_env'
 
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 def file pn
   `/usr/bin/file -h '#{pn}'`.chomp
 end
@@ -139,14 +136,12 @@ class MachOPathnameTests < Test::Unit::TestCase
 end
 
 class TextExecutableTests < Test::Unit::TestCase
-  TMPDIR = HOMEBREW_PREFIX/'tmp'
-
-  def setup
-    FileUtils.mkdir_p TMPDIR
+  def teardown
+    (HOMEBREW_PREFIX/'foo_script').unlink
   end
 
   def test_simple_shebang
-    pn = Pathname.new('foo')
+    pn = HOMEBREW_PREFIX/'foo_script'
     pn.write '#!/bin/sh'
     assert !pn.universal?
     assert !pn.i386?
@@ -162,7 +157,7 @@ class TextExecutableTests < Test::Unit::TestCase
   end
 
   def test_shebang_with_options
-    pn = Pathname.new('bar')
+    pn = HOMEBREW_PREFIX/'foo_script'
     pn.write '#! /usr/bin/perl -w'
     assert !pn.universal?
     assert !pn.i386?
@@ -178,7 +173,7 @@ class TextExecutableTests < Test::Unit::TestCase
   end
 
   def test_malformed_shebang
-    pn = Pathname.new('baz')
+    pn = HOMEBREW_PREFIX/'foo_script'
     pn.write ' #!'
     assert !pn.universal?
     assert !pn.i386?
@@ -191,9 +186,5 @@ class TextExecutableTests < Test::Unit::TestCase
     assert_equal [], pn.archs
     assert pn.arch == :dunno
     assert_no_match /text executable/, file(pn)
-  end
-
-  def teardown
-    TMPDIR.rmtree
   end
 end

@@ -1,15 +1,11 @@
 require 'formula'
 
 class Jbigkit < Formula
-  url 'http://www.cl.cam.ac.uk/~mgk25/download/jbigkit-2.0.tar.gz'
   homepage 'http://www.cl.cam.ac.uk/~mgk25/jbigkit/'
-  md5 '3dd87f605abb1a97a22dc79d8b3e8f6c'
+  url 'http://www.cl.cam.ac.uk/~mgk25/download/jbigkit-2.0.tar.gz'
+  sha1 'cfb7d3121f02a74bfb229217858a0d149b6589ef'
 
-  def options
-    [
-      ['--with-check', "Verify the library during install. Takes ~10s."]
-    ]
-  end
+  option 'with-check', "Verify the library during install"
 
   def install
     # Set for a universal build and patch the Makefile.
@@ -19,7 +15,7 @@ class Jbigkit < Formula
 
     # It needs j1 to make the tests happen in sequence.
     ENV.deparallelize
-    system "make test" if ARGV.include? '--with-check'
+    system "make test" if build.include? 'with-check'
 
     # Install the files using three common styles of syntax:
     prefix.install %w[contrib examples]

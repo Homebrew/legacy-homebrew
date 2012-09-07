@@ -3,7 +3,7 @@ require 'formula'
 class JsonC < Formula
   url 'http://oss.metaparadigm.com/json-c/json-c-0.9.tar.gz'
   homepage 'http://oss.metaparadigm.com/json-c/'
-  md5 '3a13d264528dcbaf3931b0cede24abae'
+  sha1 'daaf5eb960fa98e137abc5012f569b83c79be90f'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"

@@ -3,7 +3,7 @@ require 'formula'
 class Libtermkey < Formula
   homepage 'http://www.leonerd.org.uk/code/libtermkey/'
   url 'http://www.leonerd.org.uk/code/libtermkey/libtermkey-0.13.tar.gz'
-  md5 'f3bd5912c7a0d9b3eede126528c25665'
+  sha1 'f0c2ead4185095e5c87c51b1a721e211ea08bae6'
 
   def install
     system "make", "PREFIX=#{prefix}", "LIBTOOL=glibtool"

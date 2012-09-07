@@ -3,17 +3,16 @@ require 'formula'
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
   url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.82/netpbm-10.35.82.tgz'
-  md5 'fcae2fc7928ad7d31b0540ec0c3e710b'
+  sha1 '937e33e1258146510effd4ae09eca0363a21fdeb'
 
   head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
 
   depends_on "libtiff"
   depends_on "jasper"
+  depends_on :libpng
 
   def install
-    ENV.x11 # For PNG
-
-    if ARGV.build_head?
+    if build.head?
       system "cp", "config.mk.in", "config.mk"
       config = "config.mk"
     else

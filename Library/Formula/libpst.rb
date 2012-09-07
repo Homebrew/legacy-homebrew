@@ -1,16 +1,29 @@
 require 'formula'
 
 class Libpst < Formula
-  url 'http://www.five-ten-sg.com/libpst/packages/libpst-0.6.53.tar.gz'
   homepage 'http://www.five-ten-sg.com/libpst/'
-  md5 'e030d3128562ac189c2400dedec36b86'
+  url 'http://www.five-ten-sg.com/libpst/packages/libpst-0.6.55.tar.gz'
+  sha1 'c81df95509494c99222b0b603f7500dd9caceff1'
+
+  option 'pst2dii', 'Build pst2dii using gd'
+  option 'python', 'Build the libpst python interface'
 
   depends_on 'boost'
+  depends_on 'gd' if build.include? 'pst2dii'
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--with-boost-python=boost_python-mt"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+    args << '--disable-dii' unless build.include? 'pst2dii'
+    if build.include? 'python'
+      ENV['PYTHON_EXTRA_LDFLAGS'] = '-u _PyMac_Error'
+      args << '--enable-python' << '--with-boost-python=mt'
+    else
+      args << '--disable-python'
+    end
+    system "./configure", *args
     system "make install"
   end
 end

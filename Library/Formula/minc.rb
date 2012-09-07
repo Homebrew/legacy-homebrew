@@ -3,16 +3,14 @@ require 'formula'
 class Minc < Formula
   homepage 'http://en.wikibooks.org/wiki/MINC'
   url 'https://github.com/downloads/BIC-MNI/minc/minc-2.1.12.tar.gz'
-  md5 '48ccd7dbc52a9301301f5abc370c3f8c'
+  sha1 'fb44a74f16de293bec5e587584f2c43994729acc'
 
   head 'https://github.com/BIC-MNI/minc.git'
 
   depends_on 'netcdf'
 
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on :automake
+  depends_on :libtool
 
   fails_with :clang do
     # TODO This is an easy fix, someone send it upstream!

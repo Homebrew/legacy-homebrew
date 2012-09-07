@@ -4,15 +4,13 @@ class Blast < Formula
   homepage 'http://blast.ncbi.nlm.nih.gov/'
   url 'ftp://ftp.ncbi.nih.gov/blast/executables/blast+/2.2.25/ncbi-blast-2.2.25+-src.tar.gz'
   version '2.2.25'
-  md5 '01256b808e3af49a5087945b6a8c8293'
+  sha1 '95bc29cd3cdcccaac24bc4dd489d8ad6b4500d33'
 
   fails_with :clang do
-    build 318
+    build 421
   end
 
-  def options
-    [['--with-dll', "Create dynamic binaries instead of static"]]
-  end
+  option 'with-dll', "Create dynamic binaries instead of static"
 
   # fixes to 2.2.25 acknowledged upstream by Aaron U. per email
   # inform configure about -Os
@@ -22,7 +20,7 @@ class Blast < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--with-dll" if ARGV.include? '--with-dll'
+    args << "--with-dll" if build.include? 'with-dll'
 
     cd 'c++' do
       system "./configure", *args

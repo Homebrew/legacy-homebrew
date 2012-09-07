@@ -2,10 +2,13 @@ require 'formula'
 
 class BdwGc < Formula
   homepage 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/'
-  url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2.tar.gz'
-  md5 'd17aecedef3d73e75387fb63558fa4eb'
+  url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2d.tar.gz'
+  sha1 'b43573800e27361da78f05a2e98394521cfa04fc'
+
+  option :universal
 
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

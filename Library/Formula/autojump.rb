@@ -3,7 +3,7 @@ require 'formula'
 class Autojump < Formula
   homepage 'https://github.com/joelthelion/autojump/wiki'
   url 'https://github.com/downloads/joelthelion/autojump/autojump_v20.tar.gz'
-  md5 '5297817c33959cb5afc070f5d174b24f'
+  sha1 '7de157feb90dc22d5959914fa531844c68d5ba7b'
 
   head 'https://github.com/joelthelion/autojump.git'
 
@@ -23,9 +23,6 @@ class Autojump < Formula
     if [ -f `brew --prefix`/etc/autojump ]; then
       . `brew --prefix`/etc/autojump
     fi
-
-    zsh completion has been installed to:
-      #{HOMEBREW_PREFIX}/share/zsh/site-functions
     EOS
   end
 end

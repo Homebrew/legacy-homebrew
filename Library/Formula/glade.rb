@@ -11,6 +11,7 @@ class Glade < Formula
   depends_on 'intltool'
   depends_on 'libglade'
   depends_on 'hicolor-icon-theme'
+  depends_on :x11
 
   def install
     pydir = 'python' + `python -c 'import sys;print(sys.version[:3])'`.strip

@@ -1,21 +1,36 @@
 require 'formula'
 
 class Ice < Formula
-  url 'http://www.zeroc.com/download/Ice/3.4/Ice-3.4.1.tar.gz'
   homepage 'http://www.zeroc.com'
-  md5 '3aae42aa47dec74bb258c1a1b2847a1a'
+  url 'http://www.zeroc.com/download/Ice/3.4/Ice-3.4.2.tar.gz'
+  sha1 '8c84d6e3b227f583d05e08251e07047e6c3a6b42'
 
   depends_on 'berkeley-db'
   depends_on 'mcpp'
 
-  # Patch for Ice-3.4.1 to work with Berkely DB 5.X.
-  def patches; DATA; end
-
-  def options
+  # * compile against Berkely DB 5.X
+  # * use our selected compiler
+  def patches
     [
-      ['--doc', 'Install documentation'],
-      ['--demo', 'Build demos']
+      "https://trac.macports.org/export/94734/trunk/dports/devel/ice-cpp/files/patch-ice.cpp.config.Make.rules.Darwin.diff",
+      DATA
     ]
+  end
+
+  option 'doc', 'Install documentation'
+  option 'demo', 'Build demos'
+
+  # See:
+  # http://www.zeroc.com/forums/bug-reports/4965-slice2cpp-output-does-not-compile-standards-conformant-compiler.html
+  fails_with :clang do
+    build 318
+    cause <<-EOS.undent
+      In file included from BuiltinSequences.cpp:23:
+      In file included from ../../include/Ice/BuiltinSequences.h:30:
+      ../../include/Ice/Stream.h:545:19: error: invalid use of incomplete type 'Ice::MarshalException'
+                  throw MarshalException(__FILE__, __LINE__, "enumerator out of range");
+      (and many other errors)
+    EOS
   end
 
   def install
@@ -28,8 +43,8 @@ class Ice < Formula
 
     # what want we build?
     wb = 'config src include'
-    wb += ' doc' if ARGV.include? '--doc'
-    wb += ' demo' if ARGV.include? '--demo'
+    wb += ' doc' if build.include? 'doc'
+    wb += ' demo' if build.include? 'demo'
     inreplace "cpp/Makefile" do |s|
       s.change_make_var! "SUBDIRS", wb
     end

@@ -1,4 +1,12 @@
+# Cleans a newly installed keg.
+# By default:
+# * removes info files
+# * removes .la files
+# * removes empty directories
+# * sets permissions on executables
 class Cleaner
+
+  # Create a cleaner for the given formula name, and clean the keg
   def initialize f
     @f = Formula.factory f
     [f.bin, f.sbin, f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
@@ -14,9 +22,8 @@ class Cleaner
       f.info.rmtree if f.info.directory? and not f.skip_clean? f.info
     end
 
-    # Hunt for empty folders and nuke them unless they are protected by
-    # f.skip_clean? We want post-order traversal, so put the dirs in a stack
-    # and then pop them off later.
+    # Remove empty folders.
+    # We want post-order traversal, so use a stack.
     paths = []
     f.prefix.find do |path|
       paths << path if path.directory?
@@ -32,56 +39,36 @@ class Cleaner
 
   private
 
-  def strip path, args=''
-    return if @f.skip_clean? path
-    puts "strip #{path}" if ARGV.verbose?
-    path.chmod 0644 # so we can strip
-    unless path.stat.nlink > 1
-      system "#{MacOS.locate('strip')}", *(args+path)
+  # Set permissions for executables and non-executables
+  def clean_file_permissions path
+    perms = if path.mach_o_executable? || path.text_executable?
+      0555
     else
-      path = path.to_s.gsub ' ', '\\ '
-
-      # strip unlinks the file and recreates it, thus breaking hard links!
-      # is this expected behaviour? patch does it too… still, this fixes it
-      tmp = `/usr/bin/mktemp -t homebrew_strip`.chomp
-      begin
-        `#{MacOS.locate('strip')} #{args} -o #{tmp} #{path}`
-        `/bin/cat #{tmp} > #{path}`
-      ensure
-        FileUtils.rm tmp
-      end
-    end
-  end
-
-  def clean_file path
-    perms = 0444
-    if path.dylib?
-      # Stripping libraries is causing no end of trouble. Lets just give up,
-      # and try to do it manually in instances where it makes sense.
-      #strip path, '-SxX'
-    elsif path.mach_o_executable?
-      strip path
-      perms = 0555
-    elsif path.text_executable?
-      perms = 0555
+      0444
     end
     path.chmod perms
   end
 
+  # Clean a single folder (non-recursively)
   def clean_dir d
     d.find do |path|
       if path.directory?
+        # Stop cleaning this subtree if protected
         Find.prune if @f.skip_clean? path
       elsif not path.file?
+        # Sanity?
         next
       elsif path.extname == '.la'
         # *.la files are stupid
         path.unlink unless @f.skip_clean? path
       elsif path == @f.lib+'charset.alias'
+        # Many formulae symlink this file, but it is not strictly needed
         path.unlink unless @f.skip_clean? path
       elsif not path.symlink?
-        clean_file path
+        # Fix permissions
+        clean_file_permissions path
       end
     end
   end
+
 end

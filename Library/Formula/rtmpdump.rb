@@ -1,25 +1,25 @@
 require 'formula'
 
 class Rtmpdump < Formula
-  url 'http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.3.tgz'
   homepage 'http://rtmpdump.mplayerhq.hu'
-  md5 'eb961f31cd55f0acf5aad1a7b900ef59'
+  url 'http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.3.tgz'
+  sha1 'b65ce7708ae79adb51d1f43dd0b6d987076d7c42'
 
   head 'git://git.ffmpeg.org/rtmpdump'
 
   depends_on 'openssl' if MacOS.leopard?
 
   fails_with :llvm do
-    # note: as of LLVM build 2336, this still has runtime issues
+    build '2336'
     cause "Crashes at runtime"
   end
 
   # Use dylib instead of so
-  def patches; DATA; end unless ARGV.build_head?
+  def patches; DATA; end unless build.head?
 
   def install
     ENV.deparallelize
-    sys_type = ARGV.build_head? ? "darwin" : "posix"
+    sys_type = build.head? ? "darwin" : "posix"
     system "make", "CC=#{ENV.cc}",
                    "XCFLAGS=#{ENV.cflags}",
                    "XLDFLAGS=#{ENV.ldflags}",

@@ -21,7 +21,7 @@ end
 class Diffpdf < Formula
   homepage 'http://www.qtrac.eu/diffpdf.html'
   url 'http://www.qtrac.eu/diffpdf-2.0.0.tar.gz'
-  md5 '88b5346cdbfb024a9ad751c7e9a0eee4'
+  sha1 'b6a52f48927721721960aa1f581f127aa8454830'
 
   depends_on 'qt'
   depends_on 'poppler'

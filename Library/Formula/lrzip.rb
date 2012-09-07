@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lrzip < Formula
-  url 'http://ck.kolivas.org/apps/lrzip/lrzip-0.604.tar.bz2'
   homepage 'http://lrzip.kolivas.org'
-  md5 '9a405bf7fa04479abb24c4e3074ea843'
+  url 'http://ck.kolivas.org/apps/lrzip/lrzip-0.614.tar.bz2'
+  sha1 'b3c2149c9ca353f595d7f2774262244cc56a7500'
 
   depends_on 'pkg-config' => :build
   depends_on "lzo"

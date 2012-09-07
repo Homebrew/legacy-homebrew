@@ -1,0 +1,8 @@
+#!/bin/bash
+export HOMEBREW_CCCFG="O$HOMEBREW_CCCFG"
+if [ $(basename "$0") == "bsdmake" ]; then
+  pwd="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  exec "$pwd/../../../bin/bsdmake" "$@"
+else
+  exec xcrun make "$@"
+fi

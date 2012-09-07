@@ -6,9 +6,9 @@ class Qrencode < Formula
   sha1 'a5a99f47f4215ec17e74999fdb893a4e542f790c'
 
   depends_on 'pkg-config' => :build
+  depends_on :libpng
 
   def install
-    ENV.x11 # For libpng
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

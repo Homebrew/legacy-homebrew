@@ -3,19 +3,19 @@ require 'formula'
 class Elinks < Formula
   homepage 'http://elinks.or.cz/'
   url 'http://elinks.or.cz/download/elinks-0.11.7.tar.bz2'
-  md5 'fcd087a6d2415cd4c6fd1db53dceb646'
+  sha1 'd13edc1477d0ab32cafe7d3c1f3a23ae1c0a5c54'
 
   head 'http://elinks.cz/elinks.git'
 
   devel do
-    version '0.12pre5'
     url 'http://elinks.cz/download/elinks-0.12pre5.tar.bz2'
-    md5 '92790144290131ac5e63b44548b45e08'
+    version '0.12pre5'
+    sha1 '15fb38fa938a0eec9d5f22fdd538a6785e2854af'
   end
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   fails_with :llvm do
@@ -30,7 +30,7 @@ class Elinks < Formula
   def install
     ENV.deparallelize
     ENV.delete('LD')
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--without-spidermonkey"
     system "make install"
   end

@@ -3,7 +3,7 @@ require 'formula'
 class Scrotwm < Formula
   homepage 'http://opensource.conformal.com/wiki/scrotwm'
   url 'http://opensource.conformal.com/snapshots/scrotwm/scrotwm-0.9.30.tgz'
-  md5 '008d018a0ab546b4915e5aa7199f8982'
+  sha1 '844c5261170be1dfa043ad90cd7164bbaabed497'
 
   def patches
     DATA

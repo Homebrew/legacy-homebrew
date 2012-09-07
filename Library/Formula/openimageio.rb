@@ -2,7 +2,7 @@ require 'formula'
 
 class J2kp4files < Formula
   url 'http://pkgs.fedoraproject.org/repo/pkgs/openjpeg/j2kp4files_v1_5.zip/27780ed3254e6eb763ebd718a8ccc340/j2kp4files_v1_5.zip'
-  md5 '27780ed3254e6eb763ebd718a8ccc340'
+  sha1 '9ac265c279392117025cc18061742c3c1392d549'
 end
 
 class Tiffpic < Formula
@@ -36,10 +36,12 @@ end
 
 class Openimageio < Formula
   homepage 'http://openimageio.org'
-  url 'https://github.com/OpenImageIO/oiio/tarball/Release-1.0.5'
-  sha1 'd7363d2ca5300ce6f37c9ee221364d35f0edb6db'
+  url 'https://github.com/OpenImageIO/oiio/tarball/Release-1.0.8'
+  sha1 '9ac265c279392117025cc18061742c3c1392d549'
 
   head 'https://github.com/OpenImageIO/oiio.git'
+
+  option 'with-tests',  'Dowload 95MB of test images and verify Oiio (~2 min)'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -57,15 +59,11 @@ class Openimageio < Formula
   depends_on 'glew'
   depends_on 'qt'
 
-  def options
-    [['--with-tests',  'Dowload 95MB of test images and verify Oiio (~2 min).']]
-  end
-
   def install
     # Oiio is designed to have its testsuite images extracted one directory
     # above the source.  That's not a safe place for HB.  Do the opposite,
     # and move the entire source down into a subdirectory if --with-tests.
-    if ARGV.include? '--with-tests' then
+    if build.include? 'with-tests' then
       (buildpath+'localpub').install Dir['*']
       chdir 'localpub'
     end
@@ -91,11 +89,10 @@ class Openimageio < Formula
       end
     end
 
-
     # Download standardized test images if the user throws --with-tests.
     # 90% of the images are in tarballs, so they are cached normally.
     # The webp and fits images are loose.  Curl them each install.
-    if ARGV.include? '--with-tests' then
+    if build.include? 'with-tests' then
       d = buildpath
       mkdir d+'webp-images' do
         curl "http://www.gstatic.com/webp/gallery/[1-5].webp", "-O"
@@ -118,10 +115,9 @@ class Openimageio < Formula
       OiioImages.new('oiioimages').brew { (d+'oiio-images').install Dir['*'] }
     end
 
-
     # make is a shell wrapper for cmake crafted by the devs (who have Lion).
     system "make", *args
-    system "make test" if ARGV.include? '--with-tests'
+    system "make test" if build.include? 'with-tests'
     # There is no working make install in 1.0.2, devel or HEAD.
     Dir.chdir 'dist/macosx' do
       (lib + which_python ).install 'lib/python/site-packages'

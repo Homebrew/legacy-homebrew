@@ -3,7 +3,7 @@ require 'formula'
 class Gobby < Formula
   homepage 'http://gobby.0x539.de'
   url 'http://releases.0x539.de/gobby/gobby-0.4.94.tar.gz'
-  md5 '899d68ebe1af67c5a45b49328b86e23e'
+  sha1 '921979da611601ee6e220e2396bd2c86f0fb8c66'
 
   head 'git://git.0x539.de/git/gobby.git'
 
@@ -16,9 +16,9 @@ class Gobby < Formula
   depends_on 'gettext'
   depends_on 'hicolor-icon-theme'
   depends_on 'libinfinity'
+  depends_on :x11
 
   def install
-    ENV.x11
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

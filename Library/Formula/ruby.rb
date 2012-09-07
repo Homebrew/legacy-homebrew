@@ -7,11 +7,15 @@ class Ruby < Formula
 
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
-  depends_on 'autoconf' => :build if MacOS.xcode_version.to_f >= 4.3 and ARGV.build_head?
+  depends_on :autoconf if build.head?
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'gdbm'
   depends_on 'libyaml'
+
+  option :universal
+  option 'with-suffix', 'Suffix commands with "19"'
+  option 'with-doc', 'Install documentation'
 
   fails_with :llvm do
     build 2326
@@ -20,22 +24,14 @@ class Ruby < Formula
   # Stripping breaks dynamic linking
   skip_clean :all
 
-  def options
-    [
-      ["--with-suffix", "Add a 19 suffix to commands"],
-      ["--with-doc", "Install with the Ruby documentation"],
-      ["--universal", "Compile a universal binary (arch=x86_64,i386)"],
-    ]
-  end
-
   def install
-    system "autoconf" if ARGV.build_head?
+    system "autoconf" if build.head?
 
     args = ["--prefix=#{prefix}",
             "--enable-shared"]
 
-    args << "--program-suffix=19" if ARGV.include? "--with-suffix"
-    args << "--with-arch=x86_64,i386" if ARGV.build_universal?
+    args << "--program-suffix=19" if build.include? "with-suffix"
+    args << "--with-arch=x86_64,i386" if build.universal?
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
     ruby_lib = HOMEBREW_PREFIX/"lib/ruby"
@@ -50,7 +46,7 @@ class Ruby < Formula
     system "./configure", *args
     system "make"
     system "make install"
-    system "make install-doc" if ARGV.include? "--with-doc"
+    system "make install-doc" if build.include? "with-doc"
 
   end
 

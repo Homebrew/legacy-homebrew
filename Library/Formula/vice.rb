@@ -2,10 +2,11 @@ require 'formula'
 
 class Vice < Formula
   url "http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.3.tar.gz"
-  md5 "b48d137874daad50c087a0686cbdde34"
+  sha1 '5e7e1a375a4ca8c4895dc1552162955fdffce296'
   homepage 'http://vice-emu.sourceforge.net/'
 
   depends_on 'jpeg'
+  depends_on :libpng
 
   def remove_unused_icons
     Pathname.glob libexec+'*.app' do |d|
@@ -22,8 +23,6 @@ class Vice < Formula
   end
 
   def install
-    ENV.libpng
-
     # Use Cocoa instead of X
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

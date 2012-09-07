@@ -32,12 +32,14 @@ end
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
   url 'http://download.osgeo.org/gdal/gdal-1.9.1.tar.gz'
-  md5 'c5cf09b92dac1f5775db056e165b34f5'
+  sha1 'c1eae556398ff7b9332afe9d3022dcd931130808'
 
   head 'https://svn.osgeo.org/gdal/trunk/gdal'
 
   # For creating up to date man pages.
   depends_on 'doxygen' => :build if ARGV.build_head?
+
+  depends_on :libpng
 
   depends_on 'jpeg'
   depends_on 'giflib'
@@ -108,7 +110,7 @@ class Gdal < Formula
 
       # Backends supported by OS X.
       "--with-libz=/usr",
-      "--with-png=/usr/X11",
+      "--with-png=#{MacOS::X11.prefix}",
       "--with-expat=/usr",
 
       # Default Homebrew backends.

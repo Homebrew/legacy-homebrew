@@ -3,7 +3,7 @@ require 'formula'
 class Pdksh < Formula
   homepage 'http://www.cs.mun.ca/~michael/pdksh/'
   url 'http://www.cs.mun.ca/~michael/pdksh/files/pdksh-5.2.14.tar.gz'
-  md5 '871106b3bd937e1afba9f2ef7c43aef3'
+  sha1 '8b022e45de7691ef330f13b0981f0cff30b4047d'
 
   # Use a sort command that works with Leopard and up
   def patches

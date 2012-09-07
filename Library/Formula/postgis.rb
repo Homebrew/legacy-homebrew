@@ -11,6 +11,11 @@ class Postgis < Formula
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'postgresql'
   depends_on 'proj'
   depends_on 'geos'
@@ -20,11 +25,6 @@ class Postgis < Formula
   # For GeoJSON and raster handling
   depends_on 'json-c'
   depends_on 'gdal'
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
 
   def options
     [

@@ -2,53 +2,12 @@
 require 'formula'
 
 def ghostscript_srsly?
-  ARGV.include? '--with-ghostscript'
+  build.include? 'with-ghostscript'
 end
 
 def ghostscript_fonts?
   File.directory? "#{HOMEBREW_PREFIX}/share/ghostscript/fonts"
 end
-
-def use_wmf?
-  ARGV.include? '--use-wmf'
-end
-
-def use_rsvg?
-  ARGV.include? '--use-rsvg'
-end
-
-def use_lqr?
-  ARGV.include? '--use-lqr'
-end
-
-def disable_openmp?
-  ARGV.include? '--disable-openmp'
-end
-
-def enable_hdri?
-  ARGV.include? '--enable-hdri'
-end
-
-def magick_plus_plus?
-  ARGV.include? '--with-magick-plus-plus'
-end
-
-def use_exr?
-  ARGV.include? '--use-exr'
-end
-
-def quantum_depth_8?
-  ARGV.include? '--with-quantum-depth-8'
-end
-
-def quantum_depth_16?
-  ARGV.include? '--with-quantum-depth-16'
-end
-
-def quantum_depth_32?
-  ARGV.include? '--with-quantum-depth-32'
-end
-
 
 class Imagemagick < Formula
   homepage 'http://www.imagemagick.org'
@@ -60,20 +19,43 @@ class Imagemagick < Formula
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
     :using => UnsafeSubversionDownloadStrategy
 
+  option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
+  option 'use-tiff', 'Compile with libtiff support.'
+  option 'use-cms', 'Compile with little-cms support.'
+  option 'use-jpeg2000', 'Compile with jasper support.'
+  option 'use-wmf', 'Compile with libwmf support.'
+  option 'use-rsvg', 'Compile with librsvg support.'
+  option 'use-lqr', 'Compile with liblqr support.'
+  option 'use-exr', 'Compile with openexr support.'
+  option 'enable-openmp', 'Enable OpenMP (not supported on Leopard or with Clang).'
+  option 'disable-opencl', 'Disable OpenCL.'
+  option 'enable-hdri', 'Compile with HDRI support enabled'
+  option 'without-magick-plus-plus', "Don't compile C++ interface."
+  option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
+  option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
+  option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
+
   depends_on 'pkg-config' => :build
-  depends_on 'jpeg'
 
-  depends_on 'ghostscript' => :recommended if ghostscript_srsly?
+  depends_on 'jpeg' => :recommended
+  depends_on :libpng
 
-  depends_on 'libtiff' => :optional
-  depends_on 'little-cms' => :optional
-  depends_on 'jasper' => :optional
+  depends_on 'ghostscript' => :optional if ghostscript_srsly?
 
-  depends_on 'libwmf' if use_wmf?
-  depends_on 'librsvg' if use_rsvg?
-  depends_on 'liblqr' if use_lqr?
-  depends_on 'openexr' if use_exr?
+  depends_on 'libtiff' => :optional if build.include? 'use-tiff'
+  depends_on 'little-cms' => :optional if build.include? 'use-cms'
+  depends_on 'jasper' => :optional if build.include? 'use-jpeg2000'
+  depends_on 'libwmf' => :optional if build.include? 'use-wmf'
+  depends_on 'librsvg' => :optional if build.include? 'use-rsvg'
+  depends_on 'liblqr' => :optional if build.include? 'use-lqr'
+  depends_on 'openexr' => :optional if build.include? 'use-exr'
 
+  bottle do
+    version 1
+    sha1 'fde8ed2686740ed83efd0626dd20170d9d3096b7' => :mountainlion
+    sha1 'e2c4d5b9e5f37e5f20dec36f3f3cbfc65821e164' => :lion
+    sha1 '019400feda06e4f277187702a4baeacdfdbf4851' => :snowleopard
+  end
 
   def skip_clean? path
     path.extname == '.la'
@@ -86,50 +68,34 @@ class Imagemagick < Formula
     DATA
   end
 
-  def options
-    [
-      ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
-      ['--use-wmf', 'Compile with libwmf support.'],
-      ['--use-rsvg', 'Compile with librsvg support.'],
-      ['--use-lqr', 'Compile with liblqr support.'],
-      ['--use-exr', 'Compile with openexr support.'],
-      ['--disable-openmp', 'Disable OpenMP.'],
-      ['--enable-hdri', 'Compile with HDRI support enabled'],
-      ['--with-magick-plus-plus', 'Compile with C++ interface.'],
-      ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
-      ['--with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'],
-      ['--with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'],
-    ]
-  end
-
   def install
-    ENV.x11 # Add to PATH for freetype-config on Snow Leopard
-
     args = [ "--disable-osx-universal-binary",
              "--without-perl", # I couldn't make this compile
              "--prefix=#{prefix}",
              "--disable-dependency-tracking",
              "--enable-shared",
              "--disable-static",
+             "--without-pango",
              "--with-modules"]
 
-    args << "--disable-openmp" if MacOS.leopard? or disable_openmp?
-    args << "--without-gslib" unless ghostscript_srsly?
+    args << "--disable-openmp" unless build.include? 'enable-openmp'
+    args << "--disable-opencl" if build.include? 'disable-opencl'
+    args << "--without-gslib" unless build.include? 'with-ghostscript'
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
-    args << "--without-magick-plus-plus" unless magick_plus_plus?
-    args << "--enable-hdri=yes" if enable_hdri?
+    args << "--without-magick-plus-plus" if build.include? 'without-magick-plus-plus'
+    args << "--enable-hdri=yes" if build.include? 'enable-hdri'
 
-    if quantum_depth_32?
+    if build.include? 'with-quantum-depth-32'
       quantum_depth = 32
-    elsif quantum_depth_16?
+    elsif build.include? 'with-quantum-depth-16'
       quantum_depth = 16
-    elsif quantum_depth_8?
+    elsif build.include? 'with-quantum-depth-8'
       quantum_depth = 8
     end
 
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
-    args << "--with-rsvg" if use_rsvg?
+    args << "--with-rsvg" if build.include? 'use-rsvg'
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
@@ -147,7 +113,8 @@ class Imagemagick < Formula
   end
 
   def test
-    system "#{bin}/identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.gif"
+    system "#{bin}/identify", \
+      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png"
   end
 end
 

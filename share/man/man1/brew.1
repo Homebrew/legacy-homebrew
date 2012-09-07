@@ -1,16 +1,16 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "March 2012" "Homebrew" "brew"
+.TH "BREW" "1" "August 2012" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
 .
 .SH "SYNOPSIS"
-\fBbrew\fR [\-\-verbose|\-v] command [options] [formula] \.\.\.
+\fBbrew\fR \-\-version
 .
 .br
-\fBbrew\fR [\-\-version|\-v]
+\fBbrew\fR [\-\-verbose|\-v] command [options] [formula] \.\.\.
 .
 .SH "DESCRIPTION"
 Homebrew is the easiest and most flexible way to install the UNIX tools Apple didn\'t include with OS X\.
@@ -19,7 +19,7 @@ Homebrew is the easiest and most flexible way to install the UNIX tools Apple di
 .
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR command [options] [formula] \.\.\.
-Prints extra, command\-specific debugging information\. Note that \fBbrew \-v\fR by itself is the same as \fBbrew \-\-version\fR\.
+With \fB\-\-verbose\fR, many commands print extra debugging information\.
 .
 .SH "ESSENTIAL COMMANDS"
 For the full command list, see the COMMANDS section\.
@@ -208,8 +208,14 @@ Download and patch \fIformula\fR, then open a shell\. This allows the user to ru
 If \fB\-\-git\fR is passed, Homebrew will create a Git repository, useful for creating patches to the software\.
 .
 .TP
-\fBln\fR, \fBlink\fR \fIformula\fR
+\fBln\fR, \fBlink [\-\-force] [\-\-dry\-run]\fR \fIformula\fR
 Symlink all of \fIformula\fR\'s installed files into the Homebrew prefix\. This is done automatically when you install formula, but can be useful for DIY installations\.
+.
+.IP
+If \fB\-\-force\fR is passed, Homebrew will delete files which already exist in the prefix while linking\.
+.
+.IP
+If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, Homebrew will list all files which would be deleted by \fBbrew link \-\-force\fR, but will not actually link or delete any files\.
 .
 .TP
 \fBls, list [\-\-unbrewed] [\-\-versions]\fR [\fIformulae\fR]
@@ -280,6 +286,12 @@ Tap a new formula repository from GitHub, or list existing taps\.
 .
 .IP
 \fItap\fR is of the form \fIuser\fR/\fIrepo\fR, e\.g\. \fBbrew tap homebrew/dupes\fR\.
+.
+.TP
+\fBtap \-\-repair\fR:
+.
+.IP
+Ensures all tapped formula are symlinked into Library/Formula and prunes dead formula from Library/Formula\.
 .
 .TP
 \fBtest\fR \fIformula\fR
@@ -357,7 +369,7 @@ Display the location in the cellar where \fIformula\fR is or would be installed\
 Display where Homebrew\'s \fB\.git\fR directory is located\. For standard installs, the \fBprefix\fR and \fBrepository\fR are the same directory\.
 .
 .TP
-\fB\-v\fR, \fB\-\-version\fR
+\fB\-\-version\fR
 Print the version number of brew to standard error and exit\.
 .
 .SH "EXTERNAL COMMANDS"
@@ -395,6 +407,17 @@ An arbitrary URL
 Homebrew can install formulae via URL, e\.g\. \fBhttps://raw\.github\.com/mxcl/homebrew/master/Library/Formula/git\.rb\fR\. The formula file will be cached for later use\.
 .
 .SH "ENVIRONMENT"
+.
+.TP
+GIT
+When using Git, Homebrew will use \fBGIT\fR if set, a Homebrew\-built Git if installed, or the system\-provided binary\.
+.
+.IP
+Set this to force Homebrew to use a particular git binary\.
+.
+.TP
+EDITOR
+If set, and \fBHOMEBREW_EDITOR\fR is not, use \fBEDITOR\fR as the text editor\.
 .
 .TP
 HOMEBREW_BUILD_FROM_SOURCE

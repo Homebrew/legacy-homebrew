@@ -3,12 +3,12 @@ require 'formula'
 class Xaw3d < Formula
   homepage 'http://freshmeat.net/projects/xaw3d'
   url 'ftp://ftp.visi.com/users/hawkeyd/X/Xaw3d-1.5E.tar.gz'
-  md5 '29ecfdcd6bcf47f62ecfd672d31269a1'
+  sha1 'efc5b923feda52866c859c59a5b553cb675a69d1'
 
   depends_on 'imake' => :build
+  depends_on :x11
 
   def install
-    ENV.x11
     inreplace 'lib/Xaw3d/Imakefile', 'XCOMM EXTRA_INCLUDES', 'EXTRA_INCLUDES'
     cd 'lib/Xaw3d' do
       mkdir 'X11' do

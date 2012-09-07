@@ -1,0 +1,178 @@
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
+
+#TODO make it work with homebrew/dupes/gcc
+#TODO? If we find -mmacosx-version-min=10.8, change sdkroot? warn visibly if no such SDK?
+#TODO fix pkg-config files, should point to /usr/local or /usr/local/opt
+#TODO create mechanism to specify build effects like %w{-O0 -O4 vanilla-arg-parsing sdk=10.6} etc.
+
+require "#{File.dirname __FILE__}/../libsuperenv"
+require 'set'
+
+def cccfg? flags
+  flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
+end
+def nclt?
+  $sdkroot != nil
+end
+def syspath
+  if nclt?
+    %W{#$sdkroot/usr #$sdkroot/usr/local}
+  else
+    %W{/usr /usr/local}
+  end
+end
+
+class Cmd
+  def initialize path, args
+    @arg0 = path.basename.freeze
+    @args = args.freeze
+  end
+  def mode
+    if @arg0 == 'cpp' or @arg0 == 'ld'
+      @arg0.to_sym
+    elsif @args.include? '-c'
+      :cc
+    elsif @args.include? '-E'
+      :cpp
+    else
+      :ccld
+    end
+  end
+  def tool
+    @tool ||= case @arg0
+    when 'ld' then 'ld'
+    when 'cc' then ENV['HOMEBREW_CC']
+    when 'c++'
+      if ENV['HOMEBREW_CC'] =~ /gcc/
+        'g++'
+      else
+        'clang++'
+      end
+    else
+      @arg0
+    end
+  end
+  def args
+    args = if not cccfg? 'O' or tool == 'ld'
+      @args.dup
+    else
+      refurbished_args
+    end
+    if tool != 'ld'
+      args.unshift("--sysroot=#$sdkroot")
+    else
+      args.unshift($sdkroot).unshift("-syslibroot")
+    end if nclt?
+    case mode
+    when :cpp
+      %w{-E} + cppflags + args
+    when :ld
+      ldflags + args
+    when :cc
+      cflags + cppflags + args
+    when :ccld
+      cflags + cppflags + ldflags + args
+    end.compact
+  end
+  def refurbished_args
+    lset = Set.new(syslibpath)
+    iset = Set.new(syscpath)
+
+    args = []
+    whittler = @args.each
+    loop do
+      case arg = whittler.next
+      when '-arch', /^-Xarch_/
+        whittler.next
+      when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
+           /^-march=.+/, /^-mtune=.+/, '-m64', '-m32',
+           /^-O[0-9zs]?/, '-fast',
+           '-pedantic', '-pedantic-errors'
+      when '-fopenmp', '-lgomp'
+        # clang doesn't support OpenMP
+        args << arg if not tool =~ /^clang/
+      when /^-W.*/
+        args << arg if arg =~ /^-Wl,/
+      when '-macosx_version_min', '-dylib_install_name'
+        args << "-Wl,#{arg},#{whittler.next}"
+      when '-dylib'
+        args << "-Wl,#{arg}"
+      when /^-I(.+)/
+        # it is okay to add a space after the -I; so let's support it
+        path = $1.chuzzle || whittler.next
+        args << "-I#{path}" if iset.add?(path.cleanpath)
+      when /^-L(.+)/
+        path = $1.chuzzle || whittler.next
+        case path.cleanpath
+        when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
+          # NOOP
+        else
+          args << "-L#{path}" if lset.add?(path.cleanpath)
+        end
+      else
+        args << arg
+      end
+    end
+    make_fuss(args)
+    args
+  end
+  def cflags
+    if cccfg? 'Ob'
+      %w{-mtune=generic -Oz}
+    elsif cccfg? 'O'
+      u = '-arch i386 -arch x86_64' if cccfg? 'u'
+      c = case tool when 'clang', 'clang++' then '-march=native' end
+      %w{-pipe -w -Os} << u << c
+    else
+      []
+    end
+  end
+  def syslibpath
+    # We reject brew's lib as we explicitly add this as a -L flag, thus it
+    # is given higher priority by cc, so it surpasses the system libpath.
+    # NOTE this only counts if Homebrew is installed at /usr/local
+    syspath.map{|d| "#{d}/lib" }.reject{ "#$brewfix/lib" }
+  end
+  def syscpath
+    isystem, _ = cpath
+    isystem + syspath.map{|d| "#{d}/include" }
+  end
+  def cpath
+    cpath = ENV['CMAKE_PREFIX_PATH'].split(':').map{|d| "#{d}/include" } + ENV['CMAKE_INCLUDE_PATH'].split(':')
+    opt = cpath.select{|prefix| prefix =~ %r{^#$brewfix/opt} }
+    sys = cpath - opt
+    [sys, opt]
+  end
+  def libpath
+    ENV['CMAKE_PREFIX_PATH'].split(':').map{|d| "#{d}/lib" } +
+    ENV['CMAKE_LIBRARY_PATH'].split(':') -
+    syslibpath
+  end
+  def ldflags
+    libpath.to_flags('-L')
+  end
+  def cppflags
+    sys, opt = cpath
+    # we want our keg-only includes to be found before system includes *and*
+    # before any other includes the build-system adds
+    sys.to_flags('-isystem') + opt.to_flags('-I')
+  end
+  def make_fuss args
+    dels = @args - args
+    adds = args - @args
+    puts "brew: Superenv removed: #{dels*' '}" unless dels.empty?
+    puts "brew: Superenv added: #{adds*' '}" unless adds.empty?
+  end
+end
+
+####################################################################### sanity
+abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
+
+case ENV['HOMEBREW_CC'].chuzzle when 'cc', nil
+  # those values are not allowed
+  ENV['HOMEBREW_CC'] = 'clang'
+end
+
+######################################################################### main
+cmd = Cmd.new($0, ARGV)
+exec "xcrun", cmd.tool, *cmd.args

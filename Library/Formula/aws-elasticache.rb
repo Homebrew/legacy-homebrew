@@ -2,9 +2,9 @@ require 'formula'
 
 class AwsElasticache < AmazonWebServicesFormula
   homepage 'http://aws.amazon.com/developertools/2310261897259567'
-  url 'https://s3.amazonaws.com/elasticache-downloads/AmazonElastiCacheCli-2011-07-15-1.5.000.zip'
-  version '1.5.0'
-  md5 '68581c62ef0a820f12294415c60fe45f'
+  url 'https://s3.amazonaws.com/elasticache-downloads/AmazonElastiCacheCli-2012-03-09-1.6.000.zip'
+  version '1.6.0'
+  sha1 '1a45d1575d4806b432c9da38d9d4b2cadcaaac49'
 
   depends_on 'ec2-api-tools'
 

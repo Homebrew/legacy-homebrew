@@ -3,10 +3,11 @@ require 'formula'
 class Rdesktop < Formula
   url 'http://downloads.sourceforge.net/project/rdesktop/rdesktop/1.7.1/rdesktop-1.7.1.tar.gz'
   homepage 'http://www.rdesktop.org/'
-  md5 'c4b39115951c4a6d74f511c99b18fcf9'
+  sha1 'c718d0f49948a964c7ef8424b8ade73ecce3aba3'
+
+  depends_on :x11
 
   def install
-    ENV.x11
     system "./configure", "--prefix=#{prefix}", "--disable-debug"
     system "make install"
   end

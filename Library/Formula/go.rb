@@ -11,12 +11,15 @@ class Go < Formula
   skip_clean 'bin'
 
   def install
+    # install the completion script
+    (prefix/'etc/bash_completion.d').install 'misc/bash/go' => 'go-completion.bash'
+
     prefix.install Dir['*']
 
     cd prefix do
       # The version check is due to:
       # http://codereview.appspot.com/5654068
-      (prefix/'VERSION').write 'default' if ARGV.build_head?
+      (prefix/'VERSION').write 'default' if build.head?
 
       # Build only. Run `brew test go` to run distrib's tests.
       cd 'src' do

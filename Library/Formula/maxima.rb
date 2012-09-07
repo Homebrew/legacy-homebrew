@@ -1,9 +1,9 @@
 require 'formula'
 
 class Maxima < Formula
-  url 'http://sourceforge.net/projects/maxima/files/Maxima-source/5.25.1-source/maxima-5.25.1.tar.gz'
   homepage 'http://maxima.sourceforge.net/'
-  md5 'f2a7399e53eadc38e0bedb843d5d7055'
+  url 'http://sourceforge.net/projects/maxima/files/Maxima-source/5.27.0-source/maxima-5.27.0.tar.gz'
+  sha1 '8d8d0b3db27f002986cff5429dea96ada46a0576'
 
   depends_on 'gettext'
   depends_on 'sbcl'

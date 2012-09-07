@@ -1,15 +1,21 @@
 require 'formula'
 
 class Ettercap < Formula
-  url 'http://downloads.sourceforge.net/project/ettercap/ettercap/0.7.4-Lazarus/ettercap-0.7.4.1.tar.gz'
   homepage 'http://ettercap.sourceforge.net'
-  md5 '8e13ff5504b5bb4f1fc6a465d57ce7ea'
+  url 'http://downloads.sourceforge.net/project/ettercap/ettercap/0.7.4-Lazarus/ettercap-0.7.4.1.tar.gz'
+  sha1 'f4263230a6065af96b33093f39ed9a387453e3b2'
 
+  depends_on 'pkg-config' => :build
   depends_on 'pcre'
   depends_on 'libnet'
 
   # Stripping breaks plugin support
   skip_clean 'bin'
+
+  fails_with :clang do
+    build '421'
+    cause 'Multiple "converts between pointers to integer types with different sign" warnings.'
+  end
 
   # The below DATA patch fixes an issue where the linker doesn't get passed the ettercap-built
   # 'libwdg' archive which is used for the ncurses interface, thus causing a build failure.

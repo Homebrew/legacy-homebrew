@@ -3,7 +3,7 @@ require 'formula'
 class Tinysvm < Formula
   homepage 'http://chasen.org/~taku/software/TinySVM/'
   url 'http://chasen.org/~taku/software/TinySVM/src/TinySVM-0.09.tar.gz'
-  md5 '22d80bdd94c3c8373062761de0d27fde'
+  sha1 '9c3c36454c475180ef6646d059376f35549cad08'
 
   # Use correct compilation flag
   def patches

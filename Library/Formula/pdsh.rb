@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pdsh < Formula
-  url 'http://downloads.sourceforge.net/project/pdsh/pdsh/pdsh-2.18/pdsh-2.18.tar.bz2'
   homepage 'https://computing.llnl.gov/linux/pdsh.html'
-  md5 'ff5dc11f25ce9c7474e71aafb5d293e8'
+  url 'http://sourceforge.net/projects/pdsh/files/pdsh/pdsh-2.26/pdsh-2.26.tar.bz2'
+  sha1 'bdcec89760b93bd12107d8a785ca2710853cde75'
 
   depends_on 'readline'
 

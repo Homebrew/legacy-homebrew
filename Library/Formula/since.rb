@@ -3,7 +3,7 @@ require 'formula'
 class Since < Formula
   url 'http://welz.org.za/projects/since/since-1.1.tar.gz'
   homepage 'http://welz.org.za/projects/since'
-  md5 '7a6cfe573d0d2ec7b6f53fe9432a486b'
+  sha1 '67f07e8237d63f846cd8ca60b5a16fc32d4f81a5'
 
   def install
     system "make"
