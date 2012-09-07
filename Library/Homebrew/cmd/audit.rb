@@ -253,7 +253,9 @@ class FormulaAuditor
     Patches.new(f.patches).select { |p| p.external? }.each do |p|
       case p.url
       when %r[raw\.github\.com], %r[gist\.github\.com/raw]
-        problem "Using raw GitHub URLs is not recommended:\n#{p.url}"
+        unless p.url =~ /[a-fA-F0-9]{40}/
+          problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
+        end
       when %r[macports/trunk]
         problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
       end
