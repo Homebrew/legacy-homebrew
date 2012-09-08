@@ -17,9 +17,6 @@ class Memcached < Formula
 
     system "./configure", *args
     system "make install"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
