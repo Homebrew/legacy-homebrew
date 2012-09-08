@@ -7,8 +7,6 @@ class SeleniumServerStandalone < Formula
 
   def install
     prefix.install "selenium-server-standalone-#{version}.jar"
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS

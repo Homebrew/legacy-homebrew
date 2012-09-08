@@ -20,8 +20,8 @@ class Apollo < Formula
   version "1.4"
   sha1 '777b9de3209f05af30d013d52c12f68f8391ab54'
 
-  option "no-bdb", "Install without bdb store support."
-  option "no-mqtt", "Install without MQTT protocol support."
+  option "no-bdb", "Install without bdb store support"
+  option "no-mqtt", "Install without MQTT protocol support"
 
   def install
     prefix.install %w{ LICENSE NOTICE readme.html docs examples }
@@ -43,9 +43,6 @@ class Apollo < Formula
       #!/bin/bash
       exec "#{libexec}/bin/#{name}" "$@"
     EOS
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
@@ -68,29 +65,28 @@ class Apollo < Formula
     EOS
   end
 
-  def startup_plist; <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>KeepAlive</key>
-    <true/>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>ProgramArguments</key>
-    <array>
-      <string>#{var}/apollo/bin/apollo-broker</string>
-      <string>run</string>
-    </array>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-    <key>WorkingDirectory</key>
-    <string>#{var}/apollo</string>
-  </dict>
-</plist>
-EOS
+  def startup_plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>KeepAlive</key>
+        <true/>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{var}/apollo/bin/apollo-broker</string>
+          <string>run</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>UserName</key>
+        <string>#{`whoami`.chomp}</string>
+        <key>WorkingDirectory</key>
+        <string>#{var}/apollo</string>
+      </dict>
+    </plist>
+    EOS
   end
-
 end

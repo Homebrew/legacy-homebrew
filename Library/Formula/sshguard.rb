@@ -1,8 +1,8 @@
 require 'formula'
 
 class Sshguard < Formula
-  url 'http://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
   homepage 'http://www.sshguard.net/'
+  url 'http://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
   sha1 'f8f713bfb3f5c9877b34f6821426a22a7eec8df3'
 
   def patches
@@ -17,9 +17,6 @@ class Sshguard < Formula
                           "--prefix=#{prefix}",
                           "--with-firewall=ipfw"
     system "make install"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS
