@@ -9,6 +9,7 @@ class Smpeg < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
+  depends_on 'gtk'
 
   def install
     system "./autogen.sh"
