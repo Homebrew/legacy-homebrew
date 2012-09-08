@@ -1,4 +1,5 @@
 require 'formula'
+require 'set'
 
 class Simh < Formula
   homepage 'http://simh.trailing-edge.com/'
@@ -22,5 +23,13 @@ class Simh < Formula
     inreplace 'makefile', 'CFLAGS_O = -O2', "CFLAGS_O = #{ENV.cflags}"
     system "make USE_NETWORK=1 all"
     bin.install Dir['BIN/*']
+    docs = Dir['**/*.txt']
+    Set.new(docs.map {|f| File.dirname(f) }).each do |d|
+      mkpath doc+d
+    end
+    docs.each do |f|
+      cp f, doc+f
+    end
+    (share+'simh'+'vax').install Dir['VAX/*.bin', 'VAX/*.exe']
   end
 end
