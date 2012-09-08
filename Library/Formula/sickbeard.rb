@@ -12,8 +12,6 @@ class Sickbeard < Formula
   def install
     prefix.install Dir['*']
     (bin+"sickbeard").write(startup_script)
-    plist_path.write(startup_plist)
-    plist_path.chmod 0644
   end
 
   def startup_plist; <<-EOS.undent

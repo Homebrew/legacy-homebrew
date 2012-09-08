@@ -25,10 +25,8 @@ class Mongodb < Formula
     (var+'mongodb').mkpath
     (var+'log/mongodb').mkpath
 
-    # Write the configuration files and launchd script
+    # Write the configuration files
     (prefix+'mongod.conf').write mongodb_conf
-    plist_path.write startup_plist
-    plist_path.chmod 0644
 
     # copy the config file to etc if this is the first install.
     etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"

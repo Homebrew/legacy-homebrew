@@ -1,10 +1,11 @@
 require 'formula'
 
 class Polipo < Formula
-  url 'http://freehaven.net/~chrisd/polipo/polipo-1.0.4.1.tar.gz'
   homepage 'http://www.pps.jussieu.fr/~jch/software/polipo/'
-  head 'git://git.wifi.pps.jussieu.fr/polipo'
+  url 'http://freehaven.net/~chrisd/polipo/polipo-1.0.4.1.tar.gz'
   sha1 'e755b585a9bba2b599a6bcc7c6f7035d3cb27bec'
+
+  head 'git://git.wifi.pps.jussieu.fr/polipo'
 
   def install
     cache_root = (var + "cache/polipo")
@@ -18,9 +19,6 @@ class Polipo < Formula
 
     system "make", "all", *args
     system "make", "install", *args
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def startup_plist

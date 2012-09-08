@@ -34,10 +34,6 @@ class Openvpn < Formula
     # Create etc & var paths
     (etc + 'openvpn').mkpath
     (var + 'run/openvpn').mkpath
-
-    # Write the launchd script
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS
