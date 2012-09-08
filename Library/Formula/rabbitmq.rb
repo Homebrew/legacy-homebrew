@@ -29,10 +29,6 @@ class Rabbitmq < Formula
     # Enable the management web UI
     enabled_plugins_path = etc+'rabbitmq/enabled_plugins'
     enabled_plugins_path.write enabled_plugins unless enabled_plugins_path.exist?
-
-    # Create the plist file
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

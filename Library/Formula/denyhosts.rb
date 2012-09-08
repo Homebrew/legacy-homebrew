@@ -36,31 +36,27 @@ class Denyhosts < Formula
 
     sbin.install_symlink libexec+'daemon-control'
     sbin.install_symlink libexec+'denyhosts.py' => 'denyhosts'
-
-    plist_path.write cron_plist
-    plist_path.chmod 0644
   end
 
-  def cron_plist
-    <<-EOS.undent
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{HOMEBREW_PREFIX}/sbin/denyhosts</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>KeepAlive</key>
-        <false/>
-        <key>StartInterval</key>
-        <integer>600</integer>
-      </dict>
-      </plist>
+  def startup_plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{HOMEBREW_PREFIX}/sbin/denyhosts</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>KeepAlive</key>
+      <false/>
+      <key>StartInterval</key>
+      <integer>600</integer>
+    </dict>
+    </plist>
     EOS
   end
 

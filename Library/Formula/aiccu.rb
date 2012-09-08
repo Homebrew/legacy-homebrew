@@ -14,9 +14,6 @@ class Aiccu < Formula
     system "make", "install", "prefix=#{prefix}"
 
     etc.install 'doc/aiccu.conf' unless (etc/'aiccu.conf').exist?
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def startup_plist; <<-EOS.undent
@@ -72,6 +69,7 @@ class Aiccu < Formula
     EOS
   end
 end
+
 __END__
 diff --git a/Makefile b/Makefile
 index 0e96136..78609bd 100644
