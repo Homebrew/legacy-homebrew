@@ -7,9 +7,6 @@ class Beanstalk < Formula
 
   def install
     system "make", "install", "PREFIX=#{prefix}"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

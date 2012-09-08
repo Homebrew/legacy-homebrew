@@ -13,9 +13,6 @@ class Gearman < Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--without-mysql"
     system "make install"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

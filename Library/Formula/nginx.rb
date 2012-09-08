@@ -53,9 +53,6 @@ class Nginx < Formula
     system "make"
     system "make install"
     man8.install "objs/nginx.8"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

@@ -15,8 +15,6 @@ class CouchdbLucene < Formula
     prefix.install Dir["couchdb-lucene-#{version}/*"]
 
     (etc + "couchdb/local.d/couchdb-lucene.ini").write ini_file
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

@@ -78,8 +78,6 @@ class PerconaServer < Formula
     system "make"
     system "make install"
 
-    plist_path.write startup_plist
-
     # Don't create databases inside of the prefix!
     # See: https://github.com/mxcl/homebrew/issues/4975
     rm_rf prefix+'data'
