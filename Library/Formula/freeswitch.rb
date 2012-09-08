@@ -25,9 +25,6 @@ class Freeswitch < Formula
     system "make"
     system "make install"
     system "make all cd-sounds-install cd-moh-install"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def startup_plist; <<-EOS.undent

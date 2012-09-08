@@ -12,9 +12,6 @@ class OfflineImap < Formula
     libexec.install 'bin/offlineimap' => 'offlineimap.py'
     libexec.install 'offlineimap'
     bin.install_symlink libexec+'offlineimap.py' => 'offlineimap'
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
