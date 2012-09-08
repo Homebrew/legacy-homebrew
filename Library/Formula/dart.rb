@@ -4,14 +4,14 @@ class Dart < Formula
   homepage 'http://www.dartlang.org/'
 
   if MacOS.prefer_64_bit?
-    url 'https://gsdview.appspot.com/dart-editor-archive-integration/10994/dartsdk-macos-64.zip'
-    sha1 '39af10bc1d2c9d33d7b6f485ce39db75e552d789'
+    url 'https://gsdview.appspot.com/dart-editor-archive-integration/11397/dartsdk-macos-64.zip'
+    sha1 '144b487685c8b47d09c40b14689031221e2f4ee8'
   else
-    url 'https://gsdview.appspot.com/dart-editor-archive-integration/10994/dartsdk-macos-32.zip'
-    sha1 '168bfac62bfd1f717d7b51568d5a7a0f726c493b'
+    url 'https://gsdview.appspot.com/dart-editor-archive-integration/11397/dartsdk-macos-32.zip'
+    sha1 '58c7463935dd776e09458ec39ea8a579aad8978f'
   end
 
-  version '10994'
+  version '11397'
 
   def shim_script target
     <<-EOS.undent
@@ -25,7 +25,7 @@ class Dart < Formula
 
     bin.install_symlink libexec+'bin/dart'
     (bin+'dart2js').write shim_script(libexec+'lib/dart2js/lib/compiler/implementation/dart2js.dart')
-    (bin+'dartdoc').write shim_script(libexec+'lib/dartdoc/dartdoc.dart')
+    (bin+'dartdoc').write shim_script(libexec+'pkg/dartdoc/dartdoc.dart')
     (bin+'pub').write shim_script(libexec+'util/pub/pub.dart')
   end
 
