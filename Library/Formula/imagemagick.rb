@@ -59,9 +59,7 @@ class Imagemagick < Formula
     sha1 '019400feda06e4f277187702a4baeacdfdbf4851' => :snowleopard
   end
 
-  def skip_clean? path
-    path.extname == '.la'
-  end
+  skip_clean :la
 
   def patches
     # Fixes xml2-config that can be missing --prefix.  See issue #11789

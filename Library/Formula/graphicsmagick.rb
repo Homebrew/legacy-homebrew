@@ -40,9 +40,7 @@ class Graphicsmagick < Formula
     build 2335
   end
 
-  def skip_clean? path
-    path.extname == '.la'
-  end
+  skip_clean :la
 
   option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
   option 'without-magick-plus-plus', "Don't build C++ library."
