@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libshout < Formula
-  url 'http://downloads.us.xiph.org/releases/libshout/libshout-2.2.2.tar.gz'
   homepage 'http://www.icecast.org/'
-  sha1 'cabc409e63f55383f4d85fac26d3056bf0365aac'
+  url 'http://downloads.xiph.org/releases/libshout/libshout-2.3.1.tar.gz'
+  sha1 '147c5670939727420d0e2ad6a20468e2c2db1e20'
 
   depends_on 'pkg-config' => :build
   depends_on 'libogg'
@@ -13,7 +13,8 @@ class Libshout < Formula
   depends_on 'speex'  => :optional
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
