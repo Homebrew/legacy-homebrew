@@ -12,10 +12,12 @@ class Ruby < Formula
   depends_on 'readline'
   depends_on 'gdbm'
   depends_on 'libyaml'
+  depends_on :x11 if build.include? 'with-tcltk'
 
   option :universal
   option 'with-suffix', 'Suffix commands with "19"'
   option 'with-doc', 'Install documentation'
+  option 'with-tcltk' 'Install with Tcl/Tk support'
 
   fails_with :llvm do
     build 2326
@@ -32,6 +34,7 @@ class Ruby < Formula
 
     args << "--program-suffix=19" if build.include? "with-suffix"
     args << "--with-arch=x86_64,i386" if build.universal?
+    args << "--disable-tcltk-framework" <<  "--with-out-ext=tcl" <<  "--with-out-ext=tk" unless build.include? "with-tcltk"
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
     ruby_lib = HOMEBREW_PREFIX/"lib/ruby"
