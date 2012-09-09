@@ -204,6 +204,7 @@ class Formula
   # redefining skip_clean? now deprecated
   def skip_clean? path
     return true if self.class.skip_clean_all?
+    return true if path.extname == '.la' and self.class.skip_clean_paths.include? :la
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
   end
@@ -682,7 +683,8 @@ private
       end
       @skip_clean_paths ||= []
       [paths].flatten.each do |p|
-        @skip_clean_paths << p.to_s unless @skip_clean_paths.include? p.to_s
+        p = p.to_s unless p == :la
+        @skip_clean_paths << p unless @skip_clean_paths.include? p
       end
     end
 
