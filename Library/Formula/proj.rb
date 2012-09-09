@@ -6,23 +6,22 @@ class ProjDatumgrid < Formula
 end
 
 class Proj < Formula
-  url 'http://download.osgeo.org/proj/proj-4.8.0.tar.gz'
   homepage 'http://trac.osgeo.org/proj/'
+  url 'http://download.osgeo.org/proj/proj-4.8.0.tar.gz'
   sha1 '5c8d6769a791c390c873fef92134bf20bb20e82a'
+
+  skip_clean :la
 
   fails_with :llvm do
     build 2334
-  end
-
-  def skip_clean? path
-    path.extname == '.la'
   end
 
   def install
     # The datum grid files are required to support datum shifting
     ProjDatumgrid.new.brew { cp Dir["*"], buildpath/'nad' }
 
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
