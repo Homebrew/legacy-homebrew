@@ -7,7 +7,7 @@ class Pygobject < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gobject-introspection'
-  depends_on 'gtk+'
+  depends_on 'glib'
 
   option :universal
 
