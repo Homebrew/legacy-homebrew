@@ -37,9 +37,6 @@ class ScmManager < Formula
       java -jar "#{tools}/scm-cli-client-#{version}-jar-with-dependencies.jar" "$@"
     EOS
     chmod 0755, scmCliClient
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

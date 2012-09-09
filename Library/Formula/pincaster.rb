@@ -1,8 +1,8 @@
 require 'formula'
 
 class Pincaster < Formula
-  url 'http://download.pureftpd.org/pincaster/releases/pincaster-0.5.tar.gz'
   homepage 'https://github.com/jedisct1/Pincaster'
+  url 'http://download.pureftpd.org/pincaster/releases/pincaster-0.5.tar.gz'
   sha1 '1982cf2fa98368b42f4bb947db5073e4f03ff6ad'
 
   def install
@@ -16,8 +16,6 @@ class Pincaster < Formula
 
     etc.install "pincaster.conf"
     (var+"db/pincaster/").mkpath
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

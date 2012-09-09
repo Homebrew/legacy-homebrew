@@ -15,11 +15,7 @@ class PerforceProxy < Formula
 
   def install
     sbin.install 'p4p'
-
     (var+"p4p").mkpath
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

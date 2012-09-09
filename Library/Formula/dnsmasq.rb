@@ -29,8 +29,6 @@ class Dnsmasq < Formula
     system "make", "install", "PREFIX=#{prefix}"
 
     prefix.install "dnsmasq.conf.example"
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
