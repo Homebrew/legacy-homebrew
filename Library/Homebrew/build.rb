@@ -158,7 +158,7 @@ def install f
         # Some software symlinks these files (see help2man.rb)
         target_file = Pathname.new(target_file).resolved_path
         f.prefix.install target_file => filename rescue nil
-        (f.prefix+file).chmod 0644 rescue nil
+        (f.prefix/filename).chmod 0644 rescue nil
       end
     end
   end
