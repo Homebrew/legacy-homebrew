@@ -5,7 +5,7 @@ class AwsSnsCli < AmazonWebServicesFormula
   url 'http://sns-public-resources.s3.amazonaws.com/SimpleNotificationServiceCli-2010-03-31.zip'
   # The version in the tarball is the API version; this is the tool version
   version '2012-03-27'
-  sha1 'b2cb8645887263c5550271be3b564e102c99943d'
+  sha1 'fcb6f651275b88f6225ed94f51568936ccba9e6d'
 
   def install
     standard_install
