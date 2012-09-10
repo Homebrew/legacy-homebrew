@@ -25,8 +25,7 @@ class Ssreflect < Formula
     system "make", *args
     system "make", "install", *args
     bin.install 'bin/ssrcoq.byte', 'bin/ssrcoq'
-    mkdir_p "#{share}/ssreflect"
-    cp "pg-ssr.el", "#{share}/ssreflect"
+    (share/'ssreflect').install "pg-ssr.el"
   end
 
 end
