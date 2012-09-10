@@ -33,10 +33,6 @@ class Ddclient < Formula
     # Create etc & var paths
     (etc+'ddclient').mkpath
     (var+'run/ddclient').mkpath
-
-    # Write the launchd script
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS

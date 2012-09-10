@@ -26,6 +26,7 @@ class Opencv < Formula
   depends_on 'jasper'  => :optional
   depends_on 'tbb'     => :optional
   depends_on 'qt' if build.include? 'with-qt'
+  depends_on :libpng
 
   # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
   # you don't need unless you're doing video analysis, and some of it isn't

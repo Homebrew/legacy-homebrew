@@ -24,9 +24,6 @@ class Arangodb < Formula
 
     (var+'arangodb').mkpath
     (var+'log/arangodb').mkpath
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

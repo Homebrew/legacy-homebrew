@@ -19,9 +19,6 @@ class Pgbouncer < Formula
     system "make install"
     bin.install "etc/mkauth.py"
     etc.install %w(etc/pgbouncer.ini etc/userlist.txt)
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

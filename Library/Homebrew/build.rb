@@ -141,6 +141,16 @@ def install f
     else
       f.prefix.mkpath
       f.install
+
+      # Install a plist if one is defined
+      unless f.startup_plist.nil?
+        unless f.plist_path.exist?
+          f.plist_path.write f.startup_plist
+          f.plist_path.chmod 0644
+        end
+      end
+
+      # Find and link metafiles
       FORMULA_META_FILES.each do |filename|
         next if File.directory? filename
         target_file = filename
@@ -148,7 +158,7 @@ def install f
         # Some software symlinks these files (see help2man.rb)
         target_file = Pathname.new(target_file).resolved_path
         f.prefix.install target_file => filename rescue nil
-        (f.prefix+file).chmod 0644 rescue nil
+        (f.prefix/filename).chmod 0644 rescue nil
       end
     end
   end

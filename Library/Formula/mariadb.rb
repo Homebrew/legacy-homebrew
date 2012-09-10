@@ -63,9 +63,6 @@ class Mariadb < Formula
 
     (prefix+'mysql-test').rmtree unless build.include? 'with-tests' # save 121MB!
     (prefix+'sql-bench').rmtree unless build.include? 'with-bench'
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

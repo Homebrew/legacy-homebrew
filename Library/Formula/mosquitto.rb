@@ -21,9 +21,6 @@ class Mosquitto < Formula
 
     # Create the working directory under var
     (var+'mosquitto').mkpath
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def test
