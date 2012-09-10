@@ -98,8 +98,8 @@ class Pike < Formula
                     "include_path=#{libexec}/include", 
                     "INSTALLARGS=--traditional"
 
-   bin.install_symlink "#{libexec}/bin/pike" => "pike"
-   share.install_symlink "#{libexec}/share/man" => "man"
+   bin.install_symlink "#{libexec}/bin/pike"
+   share.install_symlink "#{libexec}/share/man"
 
   end
 end
