@@ -2,8 +2,8 @@ require 'formula'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp.postgresql.org/pub/source/v9.1.4/postgresql-9.1.4.tar.bz2'
-  md5 'a8035688dba988b782725ac1aec60186'
+  url 'http://ftp.postgresql.org/pub/source/v9.2.0/postgresql-9.2.0.tar.bz2'
+  md5 '8c4c32a4abe8cf61b02c8366181ede50'
 
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
@@ -14,8 +14,6 @@ class Postgresql < Formula
   option 'no-python', 'Build without Python support'
   option 'no-perl', 'Build without Perl support'
   option 'enable-dtrace', 'Build with DTrace support'
-
-  skip_clean :all
 
   # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
   # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
@@ -105,7 +103,7 @@ you may need to remove the previous version first. See:
 To build plpython against a specific Python, set PYTHON prior to brewing:
   PYTHON=/usr/local/bin/python  brew install postgresql
 See:
-  http://www.postgresql.org/docs/9.1/static/install-procedure.html
+  http://www.postgresql.org/docs/9.2/static/install-procedure.html
 
 # Create/Upgrade a Database
 
@@ -113,7 +111,7 @@ If this is your first install, create a database with:
   initdb #{var}/postgres -E utf8
 
 To migrate existing data from a previous major version (pre-9.1) of PostgreSQL, see:
-  http://www.postgresql.org/docs/9.1/static/upgrading.html
+  http://www.postgresql.org/docs/9.2/static/upgrading.html
 
 # Start/Stop PostgreSQL
 
@@ -146,9 +144,9 @@ For instance, to load the tablefunc extension in the current database, run:
   CREATE EXTENSION tablefunc;
 
 For more information on the CREATE EXTENSION command, see:
-  http://www.postgresql.org/docs/9.1/static/sql-createextension.html
+  http://www.postgresql.org/docs/9.2/static/sql-createextension.html
 For more information on extensions, see:
-  http://www.postgresql.org/docs/9.1/static/contrib.html
+  http://www.postgresql.org/docs/9.2/static/contrib.html
 
 # Other
 
