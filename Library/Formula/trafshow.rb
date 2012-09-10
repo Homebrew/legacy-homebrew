@@ -21,9 +21,9 @@ class Trafshow < Formula
       d = "#{s}/libtool/config"
       cp ["#{d}/config.guess", "#{d}/config.sub"], "."
     elsif MacOS.leopard?
-      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config.*"], "."
+      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config.*"], "."
     else
-      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config/config.*"], "."
+      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config/config.*"], "."
     end
   end
 
