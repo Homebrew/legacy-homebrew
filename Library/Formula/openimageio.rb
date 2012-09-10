@@ -2,7 +2,7 @@ require 'formula'
 
 class J2kp4files < Formula
   url 'http://pkgs.fedoraproject.org/repo/pkgs/openjpeg/j2kp4files_v1_5.zip/27780ed3254e6eb763ebd718a8ccc340/j2kp4files_v1_5.zip'
-  sha1 '9ac265c279392117025cc18061742c3c1392d549'
+  sha1 'a90cad94abbe764918175db72b49df6d2f63704b'
 end
 
 class Tiffpic < Formula
@@ -36,8 +36,8 @@ end
 
 class Openimageio < Formula
   homepage 'http://openimageio.org'
-  url 'https://github.com/OpenImageIO/oiio/tarball/Release-1.0.8'
-  sha1 '9ac265c279392117025cc18061742c3c1392d549'
+  url 'https://github.com/OpenImageIO/oiio/tarball/Release-1.0.9'
+  sha1 '3975c1eb08bf5c84ea69304f275287971e5af7ff'
 
   head 'https://github.com/OpenImageIO/oiio.git'
 
