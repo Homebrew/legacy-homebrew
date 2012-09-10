@@ -2,6 +2,8 @@ Homebrew
 ========
 Features, usage and installation instructions are [summarized on the homepage][home].
 
+This fork has for main purpose to get as many KDE applications working under OS-X.
+
 What Packages Are Available?
 ----------------------------
 1. You can [browse the Formula directory on GitHub][formula].
