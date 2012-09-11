@@ -10,6 +10,7 @@ class Ssreflect < Formula
   depends_on 'coq'
 
   option 'with-doc', 'Install HTML documents'
+  option 'with-static', 'Build with static linking'
 
   def patches
     # Fix an ill-formatted ocamldoc comment.
@@ -20,9 +21,11 @@ class Ssreflect < Formula
     ENV.j1
 
     # Enable static linking.
-    inreplace 'Make' do |s|
-      s.gsub! /#\-custom/, '-custom'
-      s.gsub! /#SSRCOQ/, 'SSRCOQ'
+    if build.include? 'with-static'
+      inreplace 'Make' do |s|
+        s.gsub! /#\-custom/, '-custom'
+        s.gsub! /#SSRCOQ/, 'SSRCOQ'
+      end
     end
 
     args = ["COQBIN=#{HOMEBREW_PREFIX}/bin/",
@@ -36,7 +39,7 @@ class Ssreflect < Formula
       system "make", "-f", "Makefile.coq", "mlihtml", *args
       system "make", "-f", "Makefile.coq", "install-doc", *args
     end
-    bin.install 'bin/ssrcoq.byte', 'bin/ssrcoq'
+    bin.install 'bin/ssrcoq.byte', 'bin/ssrcoq' if build.include? 'with-static'
     (share/'ssreflect').install "pg-ssr.el"
   end
 
