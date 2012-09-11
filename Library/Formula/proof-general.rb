@@ -42,15 +42,8 @@ class ProofGeneral < Formula
       man1.install "doc/proofgeneral.1"
       info.install "doc/ProofGeneral.info", "doc/PG-adapting.info"
 
-      if build.include? 'with-doc'
-        doc.install "doc/ProofGeneral"
-        doc.install "doc/PG-adapting"
-      end
+      doc.install "doc/ProofGeneral", "doc/PG-adapting" if build.include? 'with-doc'
     end
-
-    # Create the directories that are shared by various Emacs modes.
-    mkdir_p "#{HOMEBREW_PREFIX}/share/emacs/site-lisp/site-start.d"
-    mkdir_p "#{HOMEBREW_PREFIX}/share/mime-info"
   end
 
   def caveats
