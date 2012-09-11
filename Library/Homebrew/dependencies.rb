@@ -208,7 +208,7 @@ class X11Dependency < Requirement
 
   def message; <<-EOS.undent
     Unsatisfied dependency: XQuartz #{@min_version}
-    Please install the latest version of XQuartz:
+    Homebrew does not package XQuartz. Installers may be found at:
       https://xquartz.macosforge.org
     EOS
   end
