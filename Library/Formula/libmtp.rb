@@ -2,8 +2,8 @@ require 'formula'
 
 class Libmtp < Formula
   homepage 'http://libmtp.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/libmtp/libmtp/1.1.2/libmtp-1.1.2.tar.gz'
-  md5 '6dc708757e3fd3ccce7445b4f2171263'
+  url 'http://downloads.sourceforge.net/project/libmtp/libmtp/1.1.4/libmtp-1.1.4.tar.gz'
+  md5 '27d9bcbc925c1ef84869eb27fdda54e8'
 
   depends_on "libusb-compat"
 
