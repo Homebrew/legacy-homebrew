@@ -76,7 +76,7 @@ class Formula
     # introduced the opt symlink, and built against that instead. So provided
     # no brew exists that was built against an old-style keg-only keg, we can
     # remove it.
-    if not keg_only?
+    if not keg_only? or ARGV.force?
       true
     elsif opt_prefix.directory?
       # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks
