@@ -17,8 +17,10 @@ module Homebrew extend self
       end
       clean_cache
       # seems like a good time to do some additional cleanup
-      Homebrew.prune unless ARGV.dry_run?
-      rm_DS_Store
+      unless ARGV.dry_run?
+        Homebrew.prune
+        rm_DS_Store
+      end
     else
       ARGV.formulae.each do |f|
         cleanup_formula f
