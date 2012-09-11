@@ -10,7 +10,7 @@ class Alpine < Formula
   # http://trac.macports.org/ticket/20971
   def patches
     "https://trac.macports.org/export/89747/trunk/dports/mail/alpine/files/alpine-osx-10.6.patch"
-  end if MacOS.snow_leopard?
+  end if MacOS.version >= :snow_leopard
 
   def install
     ENV.j1

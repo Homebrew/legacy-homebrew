@@ -31,7 +31,7 @@ class Fontforge < Formula
     #         MACOSX_DEPLOYMENT_TARGET fixes ensuing Python 10.7 vs 10.8 clash.
     # Discussed: https://github.com/mxcl/homebrew/pull/14097
     # Reported:  Not yet.
-    if MacOS.mountain_lion?
+    if MacOS.version >= :mountain_lion
       ENV.macosxsdk("10.7")
       ENV.append "CFLAGS", "-isysroot #{MacOS.sdk_path(10.7)}"
       ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.8"

@@ -2,7 +2,7 @@ require 'formula'
 
 class SnowLeopardOrNewer < Requirement
   def satisfied?
-    MacOS.snow_leopard?
+    MacOS.version >= :snow_leopard
   end
 
   def message

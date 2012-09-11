@@ -36,7 +36,7 @@ class Opencolorio < Formula
     #   /usr/include
     # So we just set the sysroot to /
 
-    args << "-DCMAKE_OSX_SYSROOT=/" if ENV.compiler == :llvm and MacOS.lion?
+    args << "-DCMAKE_OSX_SYSROOT=/" if ENV.compiler == :llvm and MacOS.version >= :lion
 
 
 

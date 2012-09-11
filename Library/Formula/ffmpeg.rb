@@ -26,7 +26,7 @@ class Ffmpeg < Formula
   option 'with-tools', 'Enable additional FFmpeg tools'
 
   # manpages won't be built without texi2html
-  depends_on 'texi2html' => :build if MacOS.mountain_lion?
+  depends_on 'texi2html' => :build if MacOS.version >= :mountain_lion
   depends_on 'yasm' => :build
 
   depends_on 'x264' unless build.include? 'without-x264'
@@ -79,7 +79,7 @@ class Ffmpeg < Formula
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    ENV.append_to_cflags "-mdynamic-no-pic" if MacOS.leopard? or Hardware.is_32_bit?
+    ENV.append_to_cflags "-mdynamic-no-pic" if MacOS.version == :leopard or Hardware.is_32_bit?
 
     system "./configure", *args
 

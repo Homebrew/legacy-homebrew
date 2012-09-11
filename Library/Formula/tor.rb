@@ -10,9 +10,6 @@ class Tor < Formula
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def startup_plist

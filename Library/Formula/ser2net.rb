@@ -16,9 +16,6 @@ class Ser2net < Formula
                           "--mandir=#{man}"
     system "make install"
     etc.install 'ser2net.conf'
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

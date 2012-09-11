@@ -6,7 +6,7 @@ class Bind < Formula
   version '9.9.1-p2'
   sha1 '449b12c32682b5bef64c7b53cd0fc0c6b731c8a7'
 
-  depends_on "openssl" if MacOS.leopard?
+  depends_on "openssl" if MacOS.version == :leopard
 
   def install
     ENV.libxml2
@@ -23,7 +23,7 @@ class Bind < Formula
 
     # For Xcode-only systems we help a bit to find openssl.
     # If CLT.installed?, it evaluates to "/usr", which works.
-    args << "--with-openssl=#{MacOS.sdk_path.to_s}/usr" unless MacOS.leopard?
+    args << "--with-openssl=#{MacOS.sdk_path.to_s}/usr" unless MacOS.version == :leopard
 
     system "./configure", *args
 

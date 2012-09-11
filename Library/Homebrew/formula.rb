@@ -140,6 +140,8 @@ class Formula
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
+  # override this to provide a plist
+  def startup_plist; nil; end
   # plist name, i.e. the name of the launchd service
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
@@ -204,6 +206,7 @@ class Formula
   # redefining skip_clean? now deprecated
   def skip_clean? path
     return true if self.class.skip_clean_all?
+    return true if path.extname == '.la' and self.class.skip_clean_paths.include? :la
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
   end
@@ -682,7 +685,8 @@ private
       end
       @skip_clean_paths ||= []
       [paths].flatten.each do |p|
-        @skip_clean_paths << p.to_s unless @skip_clean_paths.include? p.to_s
+        p = p.to_s unless p == :la
+        @skip_clean_paths << p unless @skip_clean_paths.include? p
       end
     end
 

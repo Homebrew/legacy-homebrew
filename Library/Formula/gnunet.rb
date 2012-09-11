@@ -8,7 +8,7 @@ class Gnunet < Formula
 
   depends_on 'libgcrypt'
   depends_on 'libextractor'
-  depends_on 'curl' unless MacOS.lion? # needs >= v7.20.1
+  depends_on 'curl' if MacOS.version < :lion # needs >= v7.20.1
 
   def install
     system "./configure", "--disable-debug",

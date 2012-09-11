@@ -16,9 +16,7 @@ class Xapian < Formula
   option "python", "Python bindings"
   option "ruby",   "Ruby bindings"
 
-  def skip_clean? path
-    path.extname == '.la'
-  end
+  skip_clean :la
 
   def build_any_bindings?
     build.include? 'ruby' or build.include? 'python' or build.include? 'java' or build.include? 'php'

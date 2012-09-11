@@ -18,7 +18,7 @@ class Mapserver < Formula
   depends_on 'gdal'
 
   depends_on 'geos' if build.include? 'with-geos'
-  depends_on 'postgresql' if build.include? 'with-postgresql' and not MacOS.lion?
+  depends_on 'postgresql' if build.include? 'with-postgresql' and not MacOS.version >= :lion
   depends_on 'fcgi' if build.include? 'with-fastcgi'
 
   def patches
@@ -41,7 +41,7 @@ class Mapserver < Formula
     args << "--with-php=/usr/include/php" if build.include? 'with-php'
 
     if build.include? 'with-postgresql'
-      if MacOS.lion? # Lion ships with PostgreSQL libs
+      if MacOS.version >= :lion # Lion ships with PostgreSQL libs
         args << "--with-postgis"
       else
         args << "--with-postgis=#{HOMEBREW_PREFIX}/bin/pg_config"

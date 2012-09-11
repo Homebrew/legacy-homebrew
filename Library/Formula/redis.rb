@@ -36,8 +36,6 @@ class Redis < Formula
     end
 
     etc.install 'redis.conf' unless (etc/'redis.conf').exist?
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats
