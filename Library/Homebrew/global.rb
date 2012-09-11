@@ -91,4 +91,4 @@ unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
   require 'compatibility'
 end
 
-ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(File.expand_path(p)) rescue nil }.compact.freeze
+ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
