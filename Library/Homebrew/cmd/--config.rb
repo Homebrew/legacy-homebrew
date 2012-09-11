@@ -134,7 +134,6 @@ module Homebrew extend self
   end
 
   def dump_c1
-    stuff = []
     print "#{HOMEBREW_PREFIX}-#{HOMEBREW_VERSION} "
     print MACOS_FULL_VERSION
     print "-#{kernel}" if MacOS.version < :lion
