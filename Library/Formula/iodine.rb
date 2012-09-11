@@ -6,7 +6,7 @@ class Iodine < Formula
   sha1 '4fa9a248b8a84df8a727a5d749e669e58136edca'
 
   def install
-    unless MacOS.leopard?
+    unless MacOS.version == :leopard
       inreplace ["src/common.c", "src/dns.c", "src/iodine.c", "src/iodined.c"],
         "arpa/nameser8_compat", "arpa/nameser_compat"
     end

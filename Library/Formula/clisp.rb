@@ -42,7 +42,7 @@ class Clisp < Formula
       # The ulimit must be set, otherwise `make` will fail and tell you to do so
       system "ulimit -s 16384 && make"
 
-      if MacOS.lion?
+      if MacOS.version >= :lion
         opoo "`make check` fails on Lion, so we are skipping it."
         puts "But it probably means there will be other issues too."
         puts "Please take them upstream to the clisp project itself."

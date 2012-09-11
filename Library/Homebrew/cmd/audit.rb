@@ -392,6 +392,10 @@ class FormulaAuditor
     if text =~ /MACOS_VERSION/
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
+
+    if text =~ /(MacOS.((snow_)?leopard|leopard|(mountain_)?lion)\?)/
+      problem "#{$1} is deprecated, use a comparison to MacOS.version instead"
+    end
   end
 
   def audit
