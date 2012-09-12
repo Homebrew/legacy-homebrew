@@ -223,25 +223,17 @@ class Formula
         # we allow formulas to do anything they want to the Ruby process
         # so load any deps before this point! And exit asap afterwards
         yield self
-      rescue Interrupt, RuntimeError, SystemCallError => e
-        puts if Interrupt === e # don't print next to the ^C
-        unless ARGV.debug?
-          %w(config.log CMakeCache.txt).select{|f| File.exist? f}.each do |f|
-            HOMEBREW_LOGS.install f
-            puts "#{f} was copied to #{HOMEBREW_LOGS}"
+      rescue RuntimeError, SystemCallError => e
+        if not ARGV.debug?
+          %w(config.log CMakeCache.txt).each do |fn|
+            (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
           end
           raise
         end
+
         onoe e.inspect
-        puts e.backtrace
-
+        puts e.backtrace unless e.kind_of? BuildError
         ohai "Rescuing build..."
-        if (e.was_running_configure? rescue false) and File.exist? 'config.log'
-          puts "It looks like an autotools configure failed."
-          puts "Gist 'config.log' and any error output when reporting an issue."
-          puts
-        end
-
         puts "When you exit this shell Homebrew will attempt to finalise the installation."
         puts "If nothing is installed or the shell exits with a non-zero error code,"
         puts "Homebrew will abort. The installation prefix is:"
@@ -529,23 +521,30 @@ protected
     if ARGV.verbose?
       safe_system cmd, *args
     else
+      @exec_count ||= 0
+      @exec_count += 1
+      logd = HOMEBREW_LOGS/name
+      logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
+      mkdir_p(logd)
+
       rd, wr = IO.pipe
       pid = fork do
+        ENV['VERBOSE'] = '1' # helps with many tool's logging outputs
         rd.close
         $stdout.reopen wr
         $stderr.reopen wr
         args.collect!{|arg| arg.to_s}
         exec(cmd, *args) rescue nil
+        puts "Failed to execute: #{cmd}"
         exit! 1 # never gets here unless exec threw or failed
       end
       wr.close
-      out = ''
-      out << rd.read until rd.eof?
+
+      f = File.open(logfn, 'w')
+      f.write(rd.read) until rd.eof?
+
       Process.wait
-      unless $?.success?
-        puts out
-        raise
-      end
+      raise unless $?.success?
     end
 
     removed_ENV_variables.each do |key, value|
@@ -553,7 +552,21 @@ protected
     end if removed_ENV_variables
 
   rescue
+    if f
+      f.flush
+      Kernel.system "/usr/bin/tail -n 5 #{logfn}"
+      require 'cmd/--config'
+      $f = f
+      def Homebrew.puts(*foo); $f.puts *foo end
+      f.puts
+      Homebrew.dump_build_config
+      class << Homebrew; undef :puts end
+    else
+      puts "No logs recorded :(" unless ARGV.verbose?
+    end
     raise BuildError.new(self, cmd, args, $?)
+  ensure
+    f.close if f
   end
 
 public
