@@ -146,14 +146,6 @@ def install f
       f.prefix.mkpath
       f.install
 
-      # Install a plist if one is defined
-      unless f.startup_plist.nil?
-        unless f.plist_path.exist?
-          f.plist_path.write f.startup_plist
-          f.plist_path.chmod 0644
-        end
-      end
-
       # Find and link metafiles
       FORMULA_META_FILES.each do |filename|
         next if File.directory? filename
