@@ -200,6 +200,8 @@ class FormulaInstaller
   end
 
   def build
+    FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{f}/*"]
+
     @start_time = Time.now
 
     # 1. formulae can modify ENV, so we must ensure that each
@@ -236,7 +238,7 @@ class FormulaInstaller
       end
     end
 
-    ignore_interrupts do # the fork will receive the interrupt and marshall it back
+    ignore_interrupts(:quietly) do # the fork will receive the interrupt and marshall it back
       write.close
       Process.wait
       data = read.read
@@ -245,18 +247,14 @@ class FormulaInstaller
       raise "Suspicious installation failure" unless $?.success?
     end
 
-    # This is the installation receipt. The reason this comment is necessary
-    # is because some numpty decided to call the class Tab rather than
-    # the far more appropriate InstallationReceipt :P
-    Tab.for_install(f, args).write
+    raise "Empty installation" if Dir["#{f.prefix}/*"].empty?
+
+    Tab.for_install(f, args).write # INSTALL_RECEIPT.json
 
   rescue Exception => e
     ignore_interrupts do
       # any exceptions must leave us with nothing installed
-      if f.prefix.directory?
-        puts "One sec, just cleaning up..." if e.kind_of? Interrupt
-        f.prefix.rmtree
-      end
+      f.prefix.rmtree if f.prefix.directory?
       f.rack.rmdir_if_possible
     end
     raise
