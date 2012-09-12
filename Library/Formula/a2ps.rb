@@ -12,8 +12,8 @@ class A2ps < Formula
   # http://trac.macports.org/ticket/18255
   def patches
     { :p0 => [
-      "https://svn.macports.org/export/56498/trunk/dports/print/a2ps/files/patch-contrib_sample_Makefile.in",
-      "https://svn.macports.org/export/56498/trunk/dports/print/a2ps/files/patch-lib__xstrrpl.c"
+      "https://trac.macports.org/export/56498/trunk/dports/print/a2ps/files/patch-contrib_sample_Makefile.in",
+      "https://trac.macports.org/export/56498/trunk/dports/print/a2ps/files/patch-lib__xstrrpl.c"
     ]}
   end
 
