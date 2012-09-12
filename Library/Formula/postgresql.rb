@@ -59,9 +59,6 @@ class Postgresql < Formula
       ENV.append 'LDFLAGS', '-arch i386'
     end
 
-    # Fails on Core Duo with O4 and O3
-    ENV.O2 if Hardware.intel_family == :core
-
     system "./configure", *args
     system "make install-world"
   end
