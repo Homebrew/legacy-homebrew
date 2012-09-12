@@ -17,8 +17,10 @@ module Homebrew extend self
       end
       clean_cache
       # seems like a good time to do some additional cleanup
-      Homebrew.prune unless ARGV.dry_run?
-      rm_DS_Store
+      unless ARGV.dry_run?
+        Homebrew.prune
+        rm_DS_Store
+      end
     else
       ARGV.formulae.each do |f|
         cleanup_formula f
@@ -76,7 +78,7 @@ class Formula
     # introduced the opt symlink, and built against that instead. So provided
     # no brew exists that was built against an old-style keg-only keg, we can
     # remove it.
-    if not keg_only?
+    if not keg_only? or ARGV.force?
       true
     elsif opt_prefix.directory?
       # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks
