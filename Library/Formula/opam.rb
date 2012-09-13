@@ -17,4 +17,17 @@ class Opam < Formula
   def test
     system "opam --help"
   end
+
+  def caveats; <<-EOS.undent
+    opam uses ~/.opam by default to install packages, you need to init package
+    database first by running
+
+      opam init
+
+    and add the following line to ~/.profile to initialize opam environment
+
+      eval `opam config -env`
+
+    EOS
+  end
 end
