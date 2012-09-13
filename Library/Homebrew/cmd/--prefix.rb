@@ -3,7 +3,7 @@ module Homebrew extend self
     if ARGV.named.empty?
       puts HOMEBREW_PREFIX
     else
-      puts ARGV.formulae.map{ |f| f.installed_prefix }
+      puts ARGV.formulae.map{ |f| "#{HOMEBREW_PREFIX}/opt/#{f}" }
     end
   end
 end
