@@ -26,6 +26,7 @@ class Mysql < Formula
 
   conflicts_with 'mariadb',
     :because => "mysql and mariadb install the same binaries."
+
   conflicts_with 'percona-server',
     :because => "mysql and percona-server install the same binaries."
 
@@ -33,8 +34,6 @@ class Mysql < Formula
     build 2326
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
-
-  skip_clean :all # So "INSTALL PLUGIN" can work.
 
   def install
     # Build without compiler or CPU specific optimization flags to facilitate
