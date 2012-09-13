@@ -67,8 +67,8 @@ def post_superenv_hacks f
   # end
   #
   # NOTE I think all ENV stuff should be specified with a DSL like this now.
-  case f.name
-  when 'lilypond', 'nginx'
+  case f.name.to_sym
+  when :lilypond, :nginx, :auctex
     paths = ORIGINAL_PATHS.map{|pn| pn.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
     ENV['PATH'] = "#{ENV['PATH']}:#{paths.join(':')}"
   end
