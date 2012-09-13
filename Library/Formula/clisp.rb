@@ -9,8 +9,6 @@ class Clisp < Formula
   depends_on 'libsigsegv'
   depends_on 'readline'
 
-  skip_clean :all # otherwise abort trap
-
   fails_with :llvm do
     build 2334
     cause "Configure fails on XCode 4/Snow Leopard."
