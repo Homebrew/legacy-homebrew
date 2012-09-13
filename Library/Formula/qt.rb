@@ -17,7 +17,7 @@ class Qt < Formula
   option :universal
   option 'with-qtdbus', 'Enable QtDBus module'
   option 'with-qt3support', 'Enable deprecated Qt3Support module'
-  option 'with-demos-examples', 'Eanble Qt demos and examples'
+  option 'with-demos-examples', 'Enable Qt demos and examples'
   option 'with-debug-and-release', 'Compile Qt in debug and release mode'
   option 'developer', 'Compile and link Qt with developer options'
 

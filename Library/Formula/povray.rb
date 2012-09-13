@@ -13,6 +13,13 @@ class Povray < Formula
     cause "povray fails with 'terminate called after throwing an instance of int'"
   end if MacOS.version == :leopard
 
+  def patches
+    # povray has issues determining libpng version; can't get it to compile
+    # against system libpng, but it works with its internal libpng.
+    # Look at this again on the next povray version bump!
+    {:p0 => "https://trac.macports.org/export/97719/trunk/dports/graphics/povray/files/patch-configure"}
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "COMPILED_BY=homebrew",
