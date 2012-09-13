@@ -2,10 +2,11 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.8/kvm-tarbake-jaunty-x86/mariadb-5.3.8.tar.gz'
-  sha1 '1a6cc5e1c0aedf6aae61cd55f8d75fce11fa3115'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.27/kvm-tarbake-jaunty-x86/mariadb-5.5.27.tar.gz'
+  sha1 '0f10c6294f44f4a595e2f96317a2b5e04a13ba4f'
 
   depends_on 'readline'
+  depends_on 'cmake'
 
   option :universal
   option 'with-tests', 'Keep test when installing'
@@ -31,35 +32,25 @@ class Mariadb < Formula
     # Make universal for bindings to universal applications
     ENV.universal_binary if build.universal?
 
-    configure_args = [
-      "--without-docs",
-      "--without-debug",
-      "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
-      "--localstatedir=#{var}/mysql",
-      "--sysconfdir=#{etc}",
-      "--with-extra-charsets=complex",
-      "--enable-assembler",
-      "--enable-thread-safe-client",
-      "--with-big-tables",
-      "--with-plugin-aria",
-      "--with-aria-tmp-tables",
-      "--without-plugin-innodb_plugin",
-      "--with-mysqld-ldflags=-static",
-      "--with-client-ldflags=-static",
-      "--with-plugins=max-no-ndb",
-      "--with-embedded-server",
-      "--with-libevent",
-      "--with-readline",
+    cmake_args = [
+      ".",
+      "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+      "-DMYSQL_DATADIR=#{var}/mysql",
+      "-DWITH_EXTRA_CHARSETS=complex",
+      "-DWITH_PLUGIN_ARIA=1",
+      "-DWITH_MAX_NO_NDB=1",
+      "-DWITH_EMBEDDED_SERVER=1",
+      "-DWITH_READLINE=1",
+      "-DINSTALL_SYSCONFDIR=#{etc}"
     ]
 
-    configure_args << "--without-server" if build.include? 'client-only'
+    cmake_args << "-DWITHOUT_SERVER=1" if build.include? 'client-only'
 
-    system "./configure", *configure_args
+    system "cmake", *cmake_args
     system "make install"
+    system "mv #{prefix}/man #{prefix}/share/man"
 
-    bin.install_symlink "#{libexec}/mysqld"
-    bin.install_symlink "#{share}/mysql/mysql.server"
+    bin.install_symlink "#{prefix}/support-files/mysql.server"
 
     (prefix+'mysql-test').rmtree unless build.include? 'with-tests' # save 121MB!
     (prefix+'sql-bench').rmtree unless build.include? 'with-bench'
