@@ -269,12 +269,12 @@ class FormulaAuditor
 
     # Commented-out cmake support from default template
     if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
-      problem "Commented cmake support found."
+      problem "Commented cmake support found"
     end
 
     # 2 (or more in an if block) spaces before depends_on, please
     if text =~ /^\ ?depends_on/
-      problem "Check indentation of 'depends_on'."
+      problem "Check indentation of 'depends_on'"
     end
 
     # build tools should be flagged properly
@@ -331,12 +331,12 @@ class FormulaAuditor
 
     # Commented-out depends_on
     if text =~ /#\s*depends_on\s+(.+)\s*$/
-      problem "Commented-out dep #{$1}."
+      problem "Commented-out dep #{$1}"
     end
 
     # No trailing whitespace, please
     if text =~ /(\t|[ ])+$/
-      problem "Trailing whitespace was found."
+      problem "Trailing whitespace was found"
     end
 
     if text =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
@@ -344,7 +344,7 @@ class FormulaAuditor
     end
 
     if text =~ /make && make/
-      problem "Use separate make calls."
+      problem "Use separate make calls"
     end
 
     if text =~ /^[ ]*\t/
@@ -378,15 +378,15 @@ class FormulaAuditor
     end
 
     if text =~ /build\.include\?\s+['"]\-\-(.*)['"]/
-      problem "Reference '#{$1}' without dashes."
+      problem "Reference '#{$1}' without dashes"
     end
 
     if text =~ /ARGV\.(?!(debug|verbose)\?)/
-      problem "Use build instead of ARGV to check options."
+      problem "Use build instead of ARGV to check options"
     end
 
     if text =~ /def options/
-      problem "Use new-style option definitions."
+      problem "Use new-style option definitions"
     end
 
     if text =~ /MACOS_VERSION/
@@ -395,6 +395,10 @@ class FormulaAuditor
 
     if text =~ /(MacOS.((snow_)?leopard|leopard|(mountain_)?lion)\?)/
       problem "#{$1} is deprecated, use a comparison to MacOS.version instead"
+    end
+
+    if text =~ /skip_clean\s+:all/
+      problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
     end
   end
 
