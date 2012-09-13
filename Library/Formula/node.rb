@@ -54,6 +54,16 @@ class Node < Formula
   depends_on NpmNotInstalled.new unless build.include? 'without-npm'
   depends_on PythonVersion.new
 
+  # There is a bug with the GYP buildsystem that prevents Node from compiling
+  # on CLT-only systems with unset `xcode-select` paths:
+  #
+  #   http://code.google.com/p/gyp/issues/detail?id=292
+  #
+  # See the following issue for more info:
+  #
+  #   joyent/node#3681
+  depends_on :xcode
+
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'
 
