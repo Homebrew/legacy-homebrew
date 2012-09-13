@@ -8,6 +8,7 @@ class Mpd < Formula
   head "git://git.musicpd.org/master/mpd.git"
 
   option "lastfm", "Compile with experimental support for Last.fm radio"
+  option 'libwrap', 'Enable support of TCP Wrappers (buggy on 10.7)'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -38,6 +39,7 @@ class Mpd < Formula
             "--enable-lame-encoder"]
     args << "--disable-curl" if MacOS.version == :leopard
     args << "--enable-lastfm" if build.include?("lastfm")
+    args << '--disable-libwrap' unless build.include? 'libwrap'
 
     system "./configure", *args
     system "make install"

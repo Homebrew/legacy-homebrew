@@ -2,8 +2,8 @@ require 'formula'
 
 class Texi2html < Formula
   homepage 'http://www.nongnu.org/texi2html/'
-  url 'http://download.savannah.gnu.org/releases/texi2html/texi2html-1.70.tar.gz'
-  sha1 'b3472fb5ef80824177a56a1a37983c13497b23be'
+  url 'http://download.savannah.gnu.org/releases/texi2html/texi2html-1.82.tar.gz'
+  sha1 'e7bbe1197147566250abd5c456b94c8e37e0a81f'
 
   keg_only :provided_by_osx unless MacOS.version >= :mountain_lion
 

@@ -15,8 +15,6 @@ class Mongodb < Formula
 
   option '32-bit'
 
-  skip_clean :all
-
   def install
     # Copy the prebuilt binaries to prefix
     prefix.install Dir['*']
@@ -28,25 +26,34 @@ class Mongodb < Formula
     # Write the configuration files
     (prefix+'mongod.conf').write mongodb_conf
 
+    # Homebrew: it just works.
+    mv (sh = bin/'mongod'), prefix
+    sh.write <<-EOS.undent
+      #!/usr/bin/env ruby
+      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.include? '--config'
+      exec "#{prefix}/mongod", *ARGV
+    EOS
+    sh.chmod 0755
+
     # copy the config file to etc if this is the first install.
     etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
   end
 
-  def caveats; <<-EOS.undent
+  def caveats
+    bn = plist_path.basename
+    plist_path = "#{HOMEBREW_PREFIX}/opt/#{name}/*.plist"
+    <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+        ln -s #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{bn}
 
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+    If this is an upgrade and you already have the plist loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{bn}
+        launchctl load -w ~/Library/LaunchAgents/#{bn}
 
-    Or start it manually:
-        mongod run --config #{etc}/mongod.conf
-
-    The launchctl plist above expects the config file to be at #{etc}/mongod.conf.
+    Or just start it manually:
+        mongod
     EOS
   end
 
