@@ -8,6 +8,7 @@ class Pngcrush < Formula
   def install
     # Required to successfully build the bundled zlib 1.2.6
     ENV.append_to_cflags "-DZ_SOLO"
+    ENV.append_to_cflags "-DPNGCRUSH_COUNT_COLORS"
 
     system "make", "CC=#{ENV.cc}",
                    "LD=#{ENV.cc}",
