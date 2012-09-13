@@ -52,7 +52,7 @@ rescue Exception => e
   end
 end
 
-def pre_superenv_hacks f
+def post_superenv_hacks f
   # TODO replace with Formula DSL
   # Python etc. build but then pip can't build stuff.
   # Scons resets ENV and then can't find superenv's build-tools.
@@ -72,6 +72,9 @@ def pre_superenv_hacks f
     paths = ORIGINAL_PATHS.map{|pn| pn.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
     ENV['PATH'] = "#{ENV['PATH']}:#{paths.join(':')}"
   end
+end
+
+def pre_superenv_hacks f
   # fontforge needs 10.7 SDK, wine 32 bit, graphviz has mysteriously missing symbols
   # and ruby/python etc. create gem/pip that then won't work
   stdenvs = %w{fontforge python python3 ruby ruby-enterprise-edition jruby wine graphviz}
@@ -112,6 +115,7 @@ def install f
     ENV.x11 = f.recursive_requirements.detect{|rq| rq.class == X11Dependency }
     ENV.setup_build_environment
     f.recursive_requirements.each { |rq| rq.modify_build_environment }
+    post_superenv_hacks(f)
   end
 
   if f.fails_with? ENV.compiler
