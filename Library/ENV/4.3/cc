@@ -41,7 +41,12 @@ class Cmd
   def tool
     @tool ||= case @arg0
     when 'ld' then 'ld'
-    when 'cc' then ENV['HOMEBREW_CC']
+    when 'cc', 'c99', 'c89'
+      # Ideally we would run `cx9`, however these tools are POSIX compliant
+      # and don't support many flags. We need -isystem for instance, but also
+      # reliability is generally much higher if we just get clang/gcc to do
+      # the work since Makefiles are dumb and include a lot of excess flags.
+      ENV['HOMEBREW_CC']
     when 'c++'
       if ENV['HOMEBREW_CC'] =~ /gcc/
         'g++'
@@ -120,12 +125,14 @@ class Cmd
     if cccfg? 'Ob'
       %w{-mtune=generic -Oz}
     elsif cccfg? 'O'
-      u = %w{-arch i386 -arch x86_64} if cccfg? 'u'
-      c = '-march=native' if tool =~ /clang/
-      %w{-pipe -w -Os} << u << c
+      args = %w{-pipe -w -Os}
+      args << '-march=native' if tool =~ /clang/
+      args += %w{-arch i386 -arch x86_64} if cccfg? 'u'
+      args << "--std=#{@arg0}" if @arg0 =~ /c[89]9/
+      args
     else
       []
-    end.flatten
+    end
   end
   def syslibpath
     # We reject brew's lib as we explicitly add this as a -L flag, thus it
@@ -160,7 +167,9 @@ class Cmd
   def make_fuss args
     dels = @args - args
     adds = args - @args
+    dups = dels & args
     puts "brew: Superenv removed: #{dels*' '}" unless dels.empty?
+    puts "brew: Superenv deduped: #{dels}" unless dups.empty?
     puts "brew: Superenv added: #{adds*' '}" unless adds.empty?
   end
 end

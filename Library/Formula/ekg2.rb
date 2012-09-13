@@ -9,9 +9,6 @@ class Ekg2 < Formula
   depends_on 'readline'
   depends_on 'libgadu' if build.include? "with-libgadu"
 
-  # stripping breaks loading shared objects
-  skip_clean :all
-
   option "with-libgadu", "Compiles ekg2 with gadu-gadu support"
 
   def install

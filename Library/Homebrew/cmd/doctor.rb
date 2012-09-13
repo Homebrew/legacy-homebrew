@@ -231,6 +231,16 @@ def check_for_latest_xcode
   end
 end
 
+def check_for_stray_developer_directory
+  if MacOS::Xcode.version >= "4.3" and File.exist? "/Developer/Library"
+    return <<-EOS.undent
+    You have leftover files from an older version of Xcode.
+    You should delete them using:
+      /Developer/Library/uninstall-developer-folder
+    EOS
+  end
+end
+
 def check_cc
   unless MacOS::CLT.installed?
     if MacOS::Xcode.version >= "4.3"
