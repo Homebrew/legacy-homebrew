@@ -61,9 +61,6 @@ class Node < Formula
     build 2326
   end
 
-  # Stripping breaks dynamic loading
-  skip_clean :all
-
   def install
     args = %W{--prefix=#{prefix}}
     args << "--debug" if build.include? 'enable-debug'
