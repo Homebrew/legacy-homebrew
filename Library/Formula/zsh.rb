@@ -8,8 +8,6 @@ class Zsh < Formula
   depends_on 'gdbm'
   depends_on 'pcre'
 
-  skip_clean :all
-
   option 'disable-etcdir', 'Disable the reading of Zsh rc files in /etc'
 
   def install
