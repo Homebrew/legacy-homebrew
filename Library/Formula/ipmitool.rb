@@ -2,12 +2,8 @@ require 'formula'
 
 class Ipmitool < Formula
   homepage 'http://ipmitool.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/ipmitool/ipmitool/1.8.11/ipmitool-1.8.11.tar.bz2'
-  sha1 '9f6667c3d47ca56f8c0803ea7849ed375133cb72'
-
-  fails_with :clang do
-    cause 'error: non-void functions should return a value'
-  end
+  url 'http://downloads.sourceforge.net/project/ipmitool/ipmitool/1.8.12/ipmitool-1.8.12.tar.bz2'
+  sha1 'b895564db1196e891b60d2ab4f6d0bf5499c3453'
 
   def install
     system "./configure", "--disable-debug",
