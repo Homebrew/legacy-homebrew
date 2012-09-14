@@ -150,8 +150,8 @@ class Python < Formula
     EOF
 
     # Install distribute and pip
-    Distribute.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force" }
-    Pip.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force" }
+    Distribute.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force", "--verbose" }
+    Pip.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force", "--verbose" }
   end
 
   def caveats
