@@ -8,7 +8,8 @@ class Findutils < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--program-prefix=g",
-                          "--disable-dependency-tracking", "--disable-debug"
+                          "--disable-dependency-tracking", "--disable-debug",
+                          "--localstatedir=#{var}/locate"
     system "make install"
   end
 end
