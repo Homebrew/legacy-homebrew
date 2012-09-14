@@ -259,7 +259,8 @@ end
 
 def check_standard_compilers
   return if check_for_latest_xcode # only check if Xcode is up to date
-  if !MacOS.compilers_standard? then <<-EOS.undent
+  compiler_status = MacOS.compilers_standard?
+  if not compiler_status and not compiler_status.nil? then <<-EOS.undent
     Your compilers are different from the standard versions for your Xcode.
     If you have Xcode 4.3 or newer, you should install the Command Line Tools for
     Xcode from within Xcode's Download preferences.
