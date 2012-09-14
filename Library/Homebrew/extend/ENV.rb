@@ -309,6 +309,11 @@ module HomebrewEnvExtension
     end
   end
 
+  def cxx11
+    append 'CXXFLAGS', '-std=c++11 -stdlib=libc++'
+    append 'LDFLAGS', '-stdlib=libc++'
+  end
+
   def replace_in_cflags before, after
     cc_flag_vars.each do |key|
       self[key] = self[key].sub before, after if self[key]

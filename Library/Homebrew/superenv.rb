@@ -65,6 +65,11 @@ class << ENV
     append 'HOMEBREW_CCCFG', "u", ''
   end
 
+  def cxx11
+    ENV['CXXFLAGS'] = '-std=c++11 -stdlib=libc++'
+    ENV['LDFLAGS'] = '-stdlib=libc++'
+  end
+
   private
 
   def determine_cc

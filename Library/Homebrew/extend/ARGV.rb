@@ -117,6 +117,10 @@ module HomebrewArgvExtension
     include? '--universal'
   end
 
+  def build_cxx11?
+    include? '--cxx11'
+  end
+
   # Request a 32-bit only build.
   # This is needed for some use-cases though we prefer to build Universal
   # when a 32-bit version is needed.
