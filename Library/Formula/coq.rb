@@ -21,9 +21,8 @@ class Coq < Formula
   homepage 'http://coq.inria.fr/'
   url 'http://coq.inria.fr/distrib/V8.4/files/coq-8.4.tar.gz'
   sha1 '2987aa418dd96a0df7284afe296293cb28814ef5'
-  head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
 
-  skip_clean :all
+  head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
 
   depends_on TransitionalMode.new
   depends_on 'objective-caml'
