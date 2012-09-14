@@ -62,6 +62,13 @@ class Node < Formula
   end
 
   def install
+    # Lie to `xcode-select` for now to work around a GYP bug that affects
+    # CLT-only systems:
+    #
+    #   http://code.google.com/p/gyp/issues/detail?id=292
+    #   joyent/node#3681
+    ENV['DEVELOPER_DIR'] = MacOS.dev_tools_path unless MacOS::Xcode.installed?
+
     args = %W{--prefix=#{prefix}}
     args << "--debug" if build.include? 'enable-debug'
     args << "--without-npm" if build.include? 'without-npm'
