@@ -10,6 +10,8 @@ class Nginx < Formula
     sha1 '8f1f1bd9a98a2d72a5b6fce24d67e9d5f48b5224'
   end
 
+  env :userpaths
+
   depends_on 'pcre'
 
   option 'with-passenger', 'Compile with support for Phusion Passenger module'

@@ -5,6 +5,8 @@ class Jruby < Formula
   url 'http://jruby.org.s3.amazonaws.com/downloads/1.6.7.2/jruby-bin-1.6.7.2.tar.gz'
   sha1 '717db67a08bf22a838a7debcca7eed9a010ff840'
 
+  env :std
+
   def install
     # Remove Windows files
     rm Dir['bin/*.{bat,dll,exe}']

@@ -21,6 +21,8 @@ class Wine < Formula
     sha256 'ba987a0e3b1d5c0ba2d42fecdcff1c4e910d7c9949d9baca796b8b5c1318662c'
   end
 
+  env :std
+
   depends_on :x11
   depends_on 'jpeg'
   depends_on 'libicns'
