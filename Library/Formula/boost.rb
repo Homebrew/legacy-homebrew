@@ -9,7 +9,7 @@ class BoostLog < Formula
 end
 
 def needs_universal_python?
-  ARGV.build_universal? and not ARGV.include? "--without-python"
+  build.universal? and not build.include? "without-python"
 end
 
 class UniversalPython < Requirement
