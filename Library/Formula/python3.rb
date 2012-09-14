@@ -31,9 +31,6 @@ class Python3 < Formula
 
   option 'quicktest', 'Run `make quicktest` after the build'
 
-  # Skip binaries so modules will load; skip lib because it is mostly Python files
-  skip_clean ['bin', 'lib']
-
   def site_packages_cellar
     prefix/"Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages"
   end
