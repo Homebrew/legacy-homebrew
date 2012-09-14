@@ -27,6 +27,7 @@ class Mongodb < Formula
     (prefix+'mongod.conf').write mongodb_conf
 
     # Homebrew: it just works.
+    # NOTE plist updated to use prefix/mongodb!
     mv (sh = bin/'mongod'), prefix
     sh.write <<-EOS.undent
       #!/usr/bin/env ruby
@@ -41,20 +42,30 @@ class Mongodb < Formula
 
   def caveats
     bn = plist_path.basename
-    plist_path = "#{HOMEBREW_PREFIX}/opt/#{name}/*.plist"
-    <<-EOS.undent
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        ln -s #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{bn}
+    la = Pathname.new("#{ENV['HOME']}/Library/LaunchAgents")
+    prettypath = "~/Library/LaunchAgents/#{bn}"
+    domain = plist_path.basename('.plist')
+    load = "launchctl load -w #{prettypath}"
+    s = []
 
-    If this is an upgrade and you already have the plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{bn}
-        launchctl load -w ~/Library/LaunchAgents/#{bn}
-
-    Or just start it manually:
-        mongod
-    EOS
+    # we readlink because this path probably doesn't exist since caveats
+    # occurs before the link step of installation
+    if not (la/bn).file?
+      s << "To have launchd start #{name} at login:"
+      s << "    mkdir -p ~/Library/LaunchAgents" unless la.directory?
+      s << "    ln -s #{HOMEBREW_PREFIX}/opt/#{name}/*.plist ~/Library/LaunchAgents/"
+      s << "Then to load #{name} now:"
+      s << "    #{load}"
+      s << "Or, if you don't want/need launchctl, you can just run:"
+      s << "    mongod"
+    elsif Kernel.system "/bin/launchctl list #{domain} &>/dev/null"
+      s << "You should reload #{name}:"
+      s << "    launchctl unload -w #{prettypath}"
+      s << "    #{load}"
+    else
+      s << "To load #{name}:"
+      s << "    #{load}"
+    end
   end
 
   def mongodb_conf; <<-EOS.undent
@@ -80,7 +91,7 @@ class Mongodb < Formula
   <string>#{plist_name}</string>
   <key>ProgramArguments</key>
   <array>
-    <string>#{HOMEBREW_PREFIX}/bin/mongod</string>
+    <string>#{opt_prefix}/mongod</string>
     <string>run</string>
     <string>--config</string>
     <string>#{etc}/mongod.conf</string>

@@ -8,9 +8,6 @@ class Varnish < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
 
-  # If stripped, the magic string end pointer isn't found.
-  skip_clean :all
-
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

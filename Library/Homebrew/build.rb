@@ -52,7 +52,7 @@ rescue Exception => e
   end
 end
 
-def pre_superenv_hacks f
+def post_superenv_hacks f
   # TODO replace with Formula DSL
   # Python etc. build but then pip can't build stuff.
   # Scons resets ENV and then can't find superenv's build-tools.
@@ -67,14 +67,17 @@ def pre_superenv_hacks f
   # end
   #
   # NOTE I think all ENV stuff should be specified with a DSL like this now.
-  case f.name
-  when 'lilypond', 'nginx'
+  case f.name.to_sym
+  when :lilypond, :nginx, :auctex
     paths = ORIGINAL_PATHS.map{|pn| pn.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
     ENV['PATH'] = "#{ENV['PATH']}:#{paths.join(':')}"
   end
+end
+
+def pre_superenv_hacks f
   # fontforge needs 10.7 SDK, wine 32 bit, graphviz has mysteriously missing symbols
-  # and ruby/python etc. create gem/pip that then won't work
-  stdenvs = %w{fontforge python python3 ruby ruby-enterprise-edition jruby wine graphviz}
+  # and ruby/python/ghc etc. create gem/pip that then won't work
+  stdenvs = %w{fontforge python python3 ruby ruby-enterprise-edition jruby wine graphviz ghc}
   ARGV.unshift '--env=std' if (stdenvs.include?(f.name) or
     f.recursive_deps.detect{|d| d.name == 'scons' }) and
     not ARGV.include? '--env=super'
@@ -112,6 +115,7 @@ def install f
     ENV.x11 = f.recursive_requirements.detect{|rq| rq.class == X11Dependency }
     ENV.setup_build_environment
     f.recursive_requirements.each { |rq| rq.modify_build_environment }
+    post_superenv_hacks(f)
   end
 
   if f.fails_with? ENV.compiler
@@ -141,14 +145,6 @@ def install f
     else
       f.prefix.mkpath
       f.install
-
-      # Install a plist if one is defined
-      unless f.startup_plist.nil?
-        unless f.plist_path.exist?
-          f.plist_path.write f.startup_plist
-          f.plist_path.chmod 0644
-        end
-      end
 
       # Find and link metafiles
       FORMULA_META_FILES.each do |filename|
