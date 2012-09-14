@@ -13,9 +13,6 @@ class Cppcheck < Formula
   depends_on 'pcre' unless build.include? 'no-rules'
   depends_on 'qt' if build.include? 'with-gui'
 
-  # Do not strip binaries, or else it fails to run.
-  skip_clean :all
-
   def install
     # Man pages aren't installed as they require docbook schemas.
 

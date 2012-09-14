@@ -140,7 +140,7 @@ class << ENV
       # TODO prolly shouldn't always do this?
       paths << "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7"
     end
-    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/"
+    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/" unless x11?
     paths << "#{MacSystem.x11_prefix}/include" if x11?
     paths.to_path_s
   end
@@ -149,7 +149,7 @@ class << ENV
     sdk = MacOS.sdk_path if MacSystem.xcode43_without_clt?
     paths = []
     # things expect to find GL headers since X11 used to be a default, so we add them
-    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries"
+    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries" unless x11?
     paths << "#{MacSystem.x11_prefix}/lib" if x11?
     paths.to_path_s
   end

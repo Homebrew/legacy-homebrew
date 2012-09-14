@@ -186,6 +186,7 @@ class FormulaInstaller
       check_PATH unless f.keg_only?
     end
 
+    install_plist
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
@@ -280,6 +281,14 @@ class FormulaInstaller
       @show_summary_heading = true
       ignore_interrupts{ keg.unlink }
       raise unless e.kind_of? RuntimeError
+    end
+  end
+
+  def install_plist
+    # Install a plist if one is defined
+    if f.startup_plist and not f.plist_path.exist?
+      f.plist_path.write f.startup_plist
+      f.plist_path.chmod 0644
     end
   end
 

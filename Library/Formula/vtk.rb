@@ -14,8 +14,6 @@ class Vtk < Formula
     depends_on  'pyqt'
   end
 
-  skip_clean :all  # Otherwise vtkpython complains can't find symbol _environ
-
   option 'examples',  'Compile and install various examples'
   option 'python',    'Enable python wrapping of VTK classes'
   option 'pyqt',      'Make python wrapped classes available to SIP/PyQt'
