@@ -10,7 +10,7 @@ class Libagg < Formula
   depends_on :automake
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
-  depends_on :freetype => :optional if build.include? "with-freetype"
+  depends_on :freetype if build.include? "with-freetype"
   depends_on :libtool unless MacOS.version >= :mountain_lion
 
   fails_with :clang do
