@@ -3,7 +3,7 @@ require 'formula'
 class Pstree < Formula
   url 'ftp://ftp.thp.uni-duisburg.de/pub/source/pstree-2.33.tar.gz'
   homepage 'http://freshmeat.net/projects/pstree/'
-  md5 'b0a85caacd85f78bd83700afa86ec2e9'
+  sha1 '2f29ea2618cb6fd90529a543a94ed89b79db58b8'
 
   def install
     system "make pstree"

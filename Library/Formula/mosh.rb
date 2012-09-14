@@ -3,7 +3,7 @@ require 'formula'
 class Mosh < Formula
   homepage 'http://mosh.monaos.org'
   url 'http://mosh-scheme.googlecode.com/files/mosh-0.2.7.tar.gz'
-  md5 '268598897536ff352296a905879940ad'
+  sha1 '866c08ac12e14733ce27756001a27257624d01ad'
 
   depends_on 'gmp'
   depends_on 'oniguruma'

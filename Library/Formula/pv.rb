@@ -3,7 +3,7 @@ require 'formula'
 class Pv < Formula
   url 'http://www.ivarch.com/programs/sources/pv-1.2.0.tar.bz2'
   homepage 'http://www.ivarch.com/programs/pv.shtml'
-  md5 '67aedf6dbcd068d5feeaa76156153f4f'
+  sha1 'bb921bca55347a1b7c6f74ce6b70cff0325499d7'
 
   fails_with :llvm do
     build 2334

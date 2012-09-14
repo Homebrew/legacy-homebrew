@@ -2,8 +2,8 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.7/kvm-tarbake-jaunty-x86/mariadb-5.3.7.tar.gz'
-  sha1 '1ee2ef4895aefabd66b4884c382ba2cd1f7bbe2d'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.8/kvm-tarbake-jaunty-x86/mariadb-5.3.8.tar.gz'
+  sha1 '1a6cc5e1c0aedf6aae61cd55f8d75fce11fa3115'
 
   depends_on 'readline'
 
@@ -22,6 +22,10 @@ class Mariadb < Formula
   end
 
   def install
+    # Build without compiler or CPU specific optimization flags to facilitate
+    # compilation of gems and other software that queries `mysql-config`.
+    ENV.minimal_optimization
+
     ENV.append 'CXXFLAGS', '-fno-omit-frame-pointer -felide-constructors'
 
     # Make universal for bindings to universal applications
@@ -46,6 +50,7 @@ class Mariadb < Formula
       "--with-plugins=max-no-ndb",
       "--with-embedded-server",
       "--with-libevent",
+      "--with-readline",
     ]
 
     configure_args << "--without-server" if build.include? 'client-only'
@@ -58,9 +63,6 @@ class Mariadb < Formula
 
     (prefix+'mysql-test').rmtree unless build.include? 'with-tests' # save 121MB!
     (prefix+'sql-bench').rmtree unless build.include? 'with-bench'
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

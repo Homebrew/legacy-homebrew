@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sshuttle < Formula
-  url 'https://github.com/apenwarr/sshuttle/zipball/sshuttle-0.60'
   homepage 'https://github.com/apenwarr/sshuttle'
-  md5 '000af679bca06e7ee40985a014858b06'
+  url 'https://github.com/apenwarr/sshuttle/zipball/sshuttle-0.61'
+  sha1 '81ad1b98b2aed6fefdc8993a72392969a1a9be01'
 
   head 'https://github.com/apenwarr/sshuttle.git'
 

@@ -75,6 +75,8 @@ class Formula
   # This used to be called in "def install", but should now be used
   # up in the DSL section.
   def fails_with_llvm msg=nil, data=nil
+    opoo "Calling fails_with_llvm in the install method is deprecated"
+    puts "Use the fails_with DSL instead."
     FailsWithLLVM.new(msg, data).handle_failure
   end
 
@@ -165,6 +167,7 @@ class FailsWithLLVM
   end
 end
 
+# TODO eventually some of these should print deprecation warnings
 module MacOS extend self
   def xcode_folder
     Xcode.folder
@@ -196,5 +199,32 @@ module MacOS extend self
 
   def x11_prefix
     X11.prefix
+  end
+
+  def leopard?
+    10.5 == MACOS_VERSION
+  end
+
+  def snow_leopard?
+    10.6 <= MACOS_VERSION # Actually Snow Leopard or newer
+  end
+  alias_method :snow_leopard_or_newer?, :snow_leopard?
+
+  def lion?
+    10.7 <= MACOS_VERSION # Actually Lion or newer
+  end
+  alias_method :lion_or_newer?, :lion?
+
+  def mountain_lion?
+    10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
+  end
+  alias_method :mountain_lion_or_newer?, :mountain_lion?
+end
+
+
+class Version
+  def slice *args
+    opoo "Calling slice on versions is deprecated, use: to_s.slice"
+    to_s.slice *args
   end
 end

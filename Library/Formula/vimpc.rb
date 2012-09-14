@@ -2,12 +2,12 @@ require 'formula'
 
 class Vimpc < Formula
   homepage 'http://sourceforge.net/projects/vimpc/'
-  url 'http://downloads.sourceforge.net/project/vimpc/Release%200.05/vimpc-0.05.tar.gz'
-  md5 'f96cdc10827ddfbb53318e9ab4bab93b'
+  url 'http://downloads.sourceforge.net/project/vimpc/Release%200.06.1/vimpc-0.06.1.tar.gz'
+  sha1 '72c13e3a2fd10b3089fbd6d47509838fd3c3b9e4'
 
   head 'https://github.com/richo/vimpc.git'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -17,7 +17,7 @@ class Vimpc < Formula
   depends_on 'libmpdclient'
 
   def install
-    if ARGV.build_head?
+    if build.head?
       ENV['ACLOCAL_FLAGS'] = "-I #{HOMEBREW_PREFIX}/share/aclocal"
       system "./autogen.sh"
     end

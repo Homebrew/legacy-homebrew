@@ -7,7 +7,7 @@ class Pixman < Formula
 
   depends_on 'pkg-config' => :build
 
-  keg_only :when_xquartz_installed
+  keg_only :provided_pre_mountain_lion
 
   option :universal
 

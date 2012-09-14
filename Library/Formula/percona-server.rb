@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.25a-27.1/source/Percona-Server-5.5.25a-rel27.1.tar.gz'
-  version '5.5.25-27.1'
-  sha1 'f3388960311b159e46efd305ecdeb806fe2c7fdc'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.27-28.1/source/Percona-Server-5.5.27-rel28.1.tar.gz'
+  version '5.5.27-28.1'
+  sha1 '78bd7b408847003eb755efef646ff85ccfa071d0'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
@@ -21,20 +21,16 @@ class PerconaServer < Formula
   conflicts_with 'mariadb',
     :because => "percona-server and mariadb install the same binaries."
 
-  skip_clean :all # So "INSTALL PLUGIN" can work.
-
   fails_with :llvm do
     build 2334
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
 
-  # The CMAKE patches are so that on Lion we do not detect a private
-  # pthread_init function as linkable. Patch sourced from the MySQL formula.
-  def patches
-    DATA
-  end
-
   def install
+    # Build without compiler or CPU specific optimization flags to facilitate
+    # compilation of gems and other software that queries `mysql-config`.
+    ENV.minimal_optimization
+
     # Make sure the var/msql directory exists
     (var+"percona").mkpath
 
@@ -79,8 +75,6 @@ class PerconaServer < Formula
     system "cmake", *args
     system "make"
     system "make install"
-
-    plist_path.write startup_plist
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/mxcl/homebrew/issues/4975
@@ -160,33 +154,3 @@ class PerconaServer < Formula
     EOPLIST
   end
 end
-
-
-__END__
-diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
-index 9296075..a600de2 100644
---- a/scripts/mysql_config.sh
-+++ b/scripts/mysql_config.sh
-@@ -137,7 +137,8 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNIV_MUST_NOT_INLINE DFORCE_INIT_OF_VARS \
-               DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
-               'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
-               Xa xstrconst "xc99=none" AC99 \
--              unroll2 ip mp restrict
-+              unroll2 ip mp restrict \
-+              mmmx 'msse[0-9.]*' 'mfpmath=sse' w pipe 'fomit-frame-pointer' 'mmacosx-version-min=10.[0-9]'
- do
-   # The first option we might strip will always have a space before it because
-   # we set -I$pkgincludedir as the first option
-diff --git a/scripts/mysqld_safe.sh b/scripts/mysqld_safe.sh
-index 37e0e35..38ad6c8 100644
---- a/scripts/mysqld_safe.sh
-+++ b/scripts/mysqld_safe.sh
-@@ -558,7 +558,7 @@ else
- fi
- 
- USER_OPTION=""
--if test -w / -o "$USER" = "root"
-+if test -w /sbin -o "$USER" = "root"
- then
-   if test "$user" != "root" -o $SET_USER = 1
-   then

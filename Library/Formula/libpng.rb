@@ -5,7 +5,9 @@ class Libpng < Formula
   url 'http://downloads.sf.net/project/libpng/libpng15/1.5.12/libpng-1.5.12.tar.gz'
   sha1 'c329f3a9b720d7ae14e8205fa6e332236573704b'
 
-  keg_only :when_xquartz_installed
+  keg_only :provided_pre_mountain_lion
+
+  option :universal
 
   bottle do
     sha1 '83c6be83e86404f41982e5e1e6877924fe737bdf' => :mountainlion
@@ -14,7 +16,9 @@ class Libpng < Formula
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    ENV.universal_binary if build.universal?
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

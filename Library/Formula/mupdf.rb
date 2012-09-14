@@ -2,7 +2,7 @@ require 'formula'
 
 class NeedsSnowLeopard < Requirement
   def satisfied?
-    MACOS_VERSION >= 10.6
+    MacOS.version >= :snow_leopard
   end
 
   def fatal?
@@ -22,7 +22,7 @@ end
 class Mupdf < Formula
   homepage 'http://mupdf.com'
   url 'http://mupdf.googlecode.com/files/mupdf-1.0-source.tar.gz'
-  md5 'd986ab98e2b035b7abd61afc474562b3'
+  sha1 'c5c4496836cdd4bdf7b2d2344ec045c9508e49e4'
 
   depends_on NeedsSnowLeopard.new
 

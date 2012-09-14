@@ -140,7 +140,7 @@ class BuildError < Homebrew::InstallationError
     if e.was_running_configure?
       puts "We saved the configure log:"
       puts "    ~/Library/Logs/Homebrew/config.log"
-      puts "When you report the issue please paste the config.log here:"
+      puts "When you report the issue please paste the build output above and the config.log here:"
       puts "    #{Tty.em}http://gist.github.com/#{Tty.reset}"
     end
   end

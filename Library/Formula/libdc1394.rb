@@ -5,10 +5,6 @@ class Libdc1394 < Formula
   url 'http://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.0/libdc1394-2.2.0.tar.gz'
   sha1 '7e831258a65e7e111a9d52d8062aec6d28a1e4c4'
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libusb'
-  depends_on :x11
-
   def patches
     # fix issue due to bug in OSX Firewire stack
     # libdc1394 author comments here:

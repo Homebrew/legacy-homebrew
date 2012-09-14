@@ -1,13 +1,17 @@
 require 'formula'
 
-def use_luajit?; ARGV.include? '--with-luajit'; end
-
 class Luarocks < Formula
   homepage 'http://luarocks.org'
   url 'http://luarocks.org/releases/luarocks-2.0.10.tar.gz'
   sha1 '90db1c46940816ae82a8037e585769e3e8845f66'
 
-  depends_on use_luajit? ? 'luajit' : 'lua'
+  option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
+
+  if build.include? 'with-luajit'
+    depends_on 'luajit'
+  else
+    depends_on 'lua'
+  end
 
   fails_with :llvm do
     cause "Lua itself compiles with llvm, but may fail when other software tries to link."
@@ -18,17 +22,13 @@ class Luarocks < Formula
     DATA if HOMEBREW_PREFIX.to_s == '/usr/local'
   end
 
-  def options
-    [['--with-luajit', 'Use LuaJIT instead of the stock Lua.']]
-  end
-
   def install
     # Install to the Cellar, but direct modules to HOMEBREW_PREFIX
     args = ["--prefix=#{prefix}",
             "--rocks-tree=#{HOMEBREW_PREFIX}",
             "--sysconfdir=#{etc}/luarocks"]
 
-    if use_luajit?
+    if build.include? 'with-luajit'
       args << "--with-lua-include=#{HOMEBREW_PREFIX}/include/luajit-2.0"
       args << "--lua-suffix=jit"
     end

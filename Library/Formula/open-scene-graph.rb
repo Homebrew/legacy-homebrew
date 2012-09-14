@@ -2,70 +2,65 @@ require 'formula'
 
 class OpenSceneGraph < Formula
   homepage 'http://www.openscenegraph.org/projects/osg'
-  url 'http://www.openscenegraph.org/downloads/stable_releases/OpenSceneGraph-3.0.1/source/OpenSceneGraph-3.0.1.zip'
-  md5 'c43a25d023e635c3566b2083d8e6d956'
+  url 'http://www.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.1.2.zip'
+  sha1 '96b003aa7153b6c8e9ffc77fba13ef5d52db9cb0'
   head 'http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/'
+
+  option 'ffmpeg', 'Build with ffmpeg support'
+  option 'docs', 'Build the documentation with Doxygen and Graphviz'
 
   depends_on 'cmake' => :build
   depends_on 'jpeg'
   depends_on 'wget'
-  depends_on 'ffmpeg' => :optional
+  depends_on 'gtkglext'
   depends_on 'gdal' => :optional
   depends_on 'jasper' => :optional
   depends_on 'openexr' => :optional
   depends_on 'dcmtk' => :optional
   depends_on 'librsvg' => :optional
   depends_on 'collada-dom' => :optional
+  depends_on 'gnuplot' => :optional
+  depends_on 'ffmpeg' if build.include? 'ffmpeg'
+  depends_on 'doxygen' if build.include? 'docs'
+  depends_on 'graphviz' if build.include? 'docs'
 
-  devel do
-    url 'http://www.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.1.1.zip'
-    md5 '079b9c1738057227b1804c6698fc9c89'
-  end
 
-  fails_with :clang do
-    build 318
-    cause <<-EOS.undent
-      cannot initialize a parameter of type 'void *' with an lvalue of type 'const void *const'
-      http://forum.openscenegraph.org/viewtopic.php?t=10042
-      EOS
-  end
-
-  # First patch: The mini-Boost finder in FindCOLLADA doesn't find our boost, so fix it.
-  # Second patch:
-  # Lion replacement for CGDisplayBitsPerPixel();
-  # taken from: http://www.openscenegraph.org/projects/osg/changeset/12790/OpenSceneGraph/trunk/src/osgViewer/DarwinUtils.mm
-  # Issue at: https://github.com/mxcl/homebrew/issues/11391
-  # the second patch should be obsolete with some newer versions (current version is: 3.0.1, it's fixed upstream in 3.1.1)
+  # The mini-Boost finder in FindCOLLADA doesn't find our boost, so fix it.
+  # Also CMakeLists is missing an OR plus code for 10.8.
+  # Reported: http://forum.openscenegraph.org/viewtopic.php?t=10647
+  # Remove: Unknown. Neither fix is merged upstream yet.
   def patches
-    p = [DATA]
-    p << "https://raw.github.com/gist/2890654/a07dec42b8451edf9edbf6468e5ae464c73b3b95/osg.diff" if build.stable?
+    DATA
   end
 
   def install
-    args = %W{
-      ..
-      -DCMAKE_INSTALL_PREFIX='#{prefix}'
-      -DCMAKE_BUILD_TYPE=None
-      -Wno-dev
-      -DBUILD_OSG_WRAPPERS=ON
-      -DBUILD_DOCUMENTATION=ON
-    }
+    # Turning off FFMPEG takes this change or a dozen "-DFFMPEG_" variables
+    unless build.include? 'ffmpeg'
+      inreplace 'CMakeLists.txt', 'FIND_PACKAGE(FFmpeg)', '#FIND_PACKAGE(FFmpeg)'
+    end
 
-    if snow_leopard_64?
+    args = std_cmake_args
+    args << '-DBUILD_DOCUMENTATION=' + ((build.include? 'docs') ? 'ON' : 'OFF')
+    if MacOS.prefer_64_bit?
       args << "-DCMAKE_OSX_ARCHITECTURES=x86_64"
       args << "-DOSG_DEFAULT_IMAGE_PLUGIN_FOR_OSX=imageio"
       args << "-DOSG_WINDOWING_SYSTEM=Cocoa"
     else
       args << "-DCMAKE_OSX_ARCHITECTURES=i386"
     end
-
     if Formula.factory('collada-dom').installed?
       args << "-DCOLLADA_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/collada-dom"
     end
+    args << '..'
 
-    mkdir "build" do
-      system "cmake", *args
-      system "make install"
+    mkdir 'build' do
+      system 'cmake', *args
+      system 'make'
+      system 'make', 'doc_openscenegraph' if build.include? 'docs'
+      system 'make install'
+      if build.include? 'docs'
+        doc.install Dir["#{prefix}/doc/OpenSceneGraphReferenceDocs/*"]
+      end
     end
   end
 
@@ -94,3 +89,25 @@ index 428cb29..6206580 100644
          PATHS
          ${COLLADA_DOM_ROOT}/external-libs/boost/lib/${COLLADA_BUILDNAME}
          ${COLLADA_DOM_ROOT}/external-libs/boost/lib/mingw
+--- a/CMakeLists.txt    2012-03-23 03:21:51.000000000 -0700
++++ b/CMakeLists.txt    2012-08-29 11:55:21.000000000 -0700
+@@ -824,16 +824,15 @@
+         # FORCE is used because the options are not reflected in the UI otherwise.
+         # Seems like a good place to add version specific compiler flags too.
+         IF(NOT OSG_CONFIG_HAS_BEEN_RUN_BEFORE)
+-            IF(${OSG_OSX_SDK_NAME} STREQUAL "macosx10.7")
++            IF(${OSG_OSX_SDK_NAME} STREQUAL "macosx10.7" OR ${OSG_OSX_SDK_NAME} STREQUAL "macosx10.8")
+                 SET(OSG_DEFAULT_IMAGE_PLUGIN_FOR_OSX "imageio" CACHE STRING "Forced imageio default image plugin for OSX" FORCE)
+                 # 64 Bit Works, PPC is not supported any more
+                 SET(CMAKE_OSX_ARCHITECTURES "i386;x86_64" CACHE STRING "Build architectures for OSX" FORCE)
+                 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.7 -ftree-vectorize -fvisibility-inlines-hidden" CACHE STRING "Flags used by the compiler during all build types." FORCE)
+-            ELSEIF(${OSG_OSX_SDK_NAME} STREQUAL "macosx10.6" /
+-                   ${OSG_OSX_SDK_NAME} STREQUAL "macosx10.5")
++            ELSEIF(${OSG_OSX_SDK_NAME} STREQUAL "macosx10.6" OR ${OSG_OSX_SDK_NAME} STREQUAL "macosx10.5")
+                 SET(OSG_DEFAULT_IMAGE_PLUGIN_FOR_OSX "imageio" CACHE STRING "Forced imageio default image plugin for OSX" FORCE)
+                 # 64-bit compiles are not supported with Carbon. 
+-                SET(CMAKE_OSX_ARCHITECTURES "ppc;i386" CACHE STRING "Build architectures for OSX" FORCE)
++                SET(CMAKE_OSX_ARCHITECTURES "i386;x86_64" CACHE STRING "Build architectures for OSX" FORCE)
+                 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.5 -ftree-vectorize -fvisibility-inlines-hidden" CACHE STRING "Flags used by the compiler during all build types." FORCE)
+             ELSEIF(${OSG_OSX_SDK_NAME} STREQUAL "macosx10.4")
+                 SET(OSG_DEFAULT_IMAGE_PLUGIN_FOR_OSX "quicktime" CACHE STRING "Forced imageio default image plugin for OSX" FORCE)

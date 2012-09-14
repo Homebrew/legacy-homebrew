@@ -7,6 +7,7 @@ module MacOS::Xcode extend self
 
   # Locate the "current Xcode folder" via xcode-select. See:
   # man xcode-select
+  # NOTE!! use Xcode.prefix rather than this generally!
   def folder
     @folder ||= `xcode-select -print-path 2>/dev/null`.strip
   end
@@ -16,9 +17,22 @@ module MacOS::Xcode extend self
     folder == "/"
   end
 
+  def latest_version
+    case MacOS.version
+      when 10.5 then "3.1.4"
+      when 10.6 then "3.2.6"
+    else
+      if MacOS.version >= 10.7
+        "4.4.1"
+      else
+        raise "Mac OS X `#{MacOS.version}' is invalid"
+      end
+    end
+  end
+
   def prefix
     @prefix ||= begin
-      path = Pathname.new folder
+      path = Pathname.new(folder)
       if path.absolute? and (path/'usr/bin/make').executable?
         path
       elsif File.executable? '/Developer/usr/bin/make'
@@ -144,23 +158,21 @@ module MacOS::CLT extend self
     MacOS.dev_tools_path == Pathname.new("/usr/bin")
   end
 
+  def latest_version?
+    `/usr/bin/clang -v 2>&1` =~ %r{tags/Apple/clang-(\d+)\.(\d+)\.(\d+)}
+    $1.to_i >= 421 and $3.to_i >= 57
+  end
+
   def version
+    # The pkgutils calls are slow, don't repeat if no CLT installed.
+    return @version if @version_determined
+
+    @version_determined = true
     # Version string (a pretty damn long one) of the CLT package.
     # Note, that different ways to install the CLTs lead to different
     # version numbers.
-    @version ||= begin
-      standalone = MacOS.pkgutil_info(STANDALONE_PKG_ID)
-      from_xcode = MacOS.pkgutil_info(FROM_XCODE_PKG_ID)
-
-      if not standalone.empty?
-        standalone =~ /version: (.*)$/
-        $1
-      elsif not from_xcode.empty?
-        from_xcode =~ /version: (.*)$/
-        $1
-      else
-        nil
-      end
-    end
+    @version ||= [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+      MacOS.pkgutil_info(id) =~ /version: (.+)$/
+    end && $1
   end
 end

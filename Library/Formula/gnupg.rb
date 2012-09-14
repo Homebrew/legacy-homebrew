@@ -2,7 +2,7 @@ require 'formula'
 
 class GnupgIdea < Formula
   head 'http://www.gnupg.dk/contrib-dk/idea.c.gz', :using  => :nounzip
-  md5 '9dc3bc086824a8c7a331f35e09a3e57f'
+  sha1 '9b78e20328d35525af7b8a9c1cf081396910e937'
 end
 
 class Gnupg < Formula

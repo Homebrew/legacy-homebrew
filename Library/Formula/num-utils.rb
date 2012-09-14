@@ -3,7 +3,7 @@ require 'formula'
 class NumUtils < Formula
   homepage 'http://suso.suso.org/programs/num-utils/'
   url "http://suso.suso.org/programs/num-utils/downloads/num-utils-0.5.tar.gz"
-  md5 '58eed69761c2da97c3bfdfa422633427'
+  sha1 '3fc6130874129fe1e98db6db8b3dc43f0e1a89ac'
 
   def install
     %w(average bound interval normalize numgrep numprocess numsum random range round).each do |program|

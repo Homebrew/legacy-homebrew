@@ -2,8 +2,8 @@ require 'formula'
 
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-2.3.tar.gz'
-  sha1 'f5fb472500deb01677f1b2e82c7872fe06069cdb'
+  url 'http://mercurial.selenic.com/release/mercurial-2.3.1.tar.gz'
+  sha1 '59e42fd0aebabe8ec9bd59ca6a41416032f7ca48'
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
@@ -50,7 +50,7 @@ class Mercurial < Formula
   end
 
   def caveats
-    if ARGV.build_head? then <<-EOS.undent
+    if build.head? then <<-EOS.undent
       Mercurial is required to fetch its own repository, so there are now two
       installations of mercurial on this machine. If the previous installation
       was done via Homebrew, the old version may need to be cleaned up and new

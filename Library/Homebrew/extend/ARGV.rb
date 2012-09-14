@@ -7,6 +7,14 @@ module HomebrewArgvExtension
     select {|arg| arg[0..0] == '-'}
   end
 
+  def used_options f
+    f.build.as_flags & options_only
+  end
+
+  def unused_options f
+    f.build.as_flags - options_only
+  end
+
   def formulae
     require 'formula'
     @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
@@ -71,7 +79,7 @@ module HomebrewArgvExtension
     flag? '--force'
   end
   def verbose?
-    flag? '--verbose' or ENV['HOMEBREW_VERBOSE']
+    flag? '--verbose' or ENV['VERBOSE'] or ENV['HOMEBREW_VERBOSE']
   end
   def debug?
     flag? '--debug' or ENV['HOMEBREW_DEBUG']
@@ -87,6 +95,10 @@ module HomebrewArgvExtension
   end
   def dry_run?
     include?('--dry-run') || switch?('n')
+  end
+
+  def ignore_deps?
+    include? '--ignore-dependencies'
   end
 
   def build_head?
@@ -113,14 +125,11 @@ module HomebrewArgvExtension
   end
 
   def build_bottle?
-    require 'bottles'
-    bottles_supported? and include? '--build-bottle'
+    include? '--build-bottle' and MacOS.bottles_supported?
   end
 
   def build_from_source?
-    require 'bottles'
-    flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
-      or not bottles_supported? or not options_only.empty?
+    include? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE']
   end
 
   def flag? flag

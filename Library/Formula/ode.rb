@@ -9,14 +9,14 @@ class Ode < Formula
 
   depends_on 'pkg-config' => :build
 
-  if ARGV.build_head?
+  if build.head?
     # Requires newer automake and libtool
     depends_on 'automake' => :build
     depends_on 'libtool' => :build
   end
 
   def install
-    if ARGV.build_head?
+    if build.head?
       ENV['LIBTOOLIZE'] = 'glibtoolize'
       inreplace 'autogen.sh', 'libtoolize', '$LIBTOOLIZE'
       system "./autogen.sh"

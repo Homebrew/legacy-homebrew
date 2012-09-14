@@ -2,7 +2,7 @@ require 'formula'
 
 class Chicken < Formula
   url 'http://code.call-cc.org/releases/4.7.0/chicken-4.7.0.6.tar.gz'
-  md5 '31f455be39b3e12503ced8d81971e610'
+  sha1 'd7ac6f7522cf29a21ac66bf80ba3b545cebea895'
   homepage 'http://www.call-cc.org/'
   head 'git://code.call-cc.org/chicken-core'
 

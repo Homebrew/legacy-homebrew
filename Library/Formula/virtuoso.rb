@@ -3,7 +3,7 @@ require 'formula'
 class Virtuoso < Formula
   homepage 'http://virtuoso.openlinksw.com/wiki/main/'
   url 'http://downloads.sourceforge.net/project/virtuoso/virtuoso/6.1.5/virtuoso-opensource-6.1.5.tar.gz'
-  md5 '61b53395e14a11dd7e7715b50261b9eb'
+  sha1 '83e3061ebf5f554c0ff153030d21c85fe5b5abfb'
 
   # If gawk isn't found, make fails deep into the process.
   depends_on 'gawk'

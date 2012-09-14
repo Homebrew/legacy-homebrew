@@ -4,7 +4,7 @@ class GnuTime < Formula
   homepage 'http://www.gnu.org/software/time/'
   url 'http://ftpmirror.gnu.org/time/time-1.7.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/time/time-1.7.tar.gz'
-  md5 'e38d2b8b34b1ca259cf7b053caac32b3'
+  sha1 'dde0c28c7426960736933f3e763320680356cc6a'
 
   # Fixes issue with main returning void rather than int
   # http://trac.macports.org/ticket/32860

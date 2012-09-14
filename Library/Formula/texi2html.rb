@@ -2,20 +2,18 @@ require 'formula'
 
 class Texi2html < Formula
   homepage 'http://www.nongnu.org/texi2html/'
-  url 'http://download.savannah.gnu.org/releases/texi2html/texi2html-5.0.tar.bz2'
-  sha1 '20072444ce814d0e74fd7e467d1506908f8c889c'
+  url 'http://download.savannah.gnu.org/releases/texi2html/texi2html-1.82.tar.gz'
+  sha1 'e7bbe1197147566250abd5c456b94c8e37e0a81f'
 
-  keg_only :provided_by_osx unless MacOS.mountain_lion?
+  keg_only :provided_by_osx unless MacOS.version >= :mountain_lion
 
   def install
-    # The install-sh, used if ginstall is not present, isn't executable!
-    chmod 0744, "install-sh"
-
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--mandir=#{man}", "--infodir=#{info}"
     system "make install"
   end
 
   def test
-    system "texi2html", "--help"
+    system "#{bin}/texi2html", "--help"
   end
 end

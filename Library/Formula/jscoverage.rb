@@ -3,7 +3,7 @@ require 'formula'
 class Jscoverage < Formula
   url 'http://siliconforks.com/jscoverage/download/jscoverage-0.5.1.tar.bz2'
   homepage 'http://siliconforks.com/jscoverage/'
-  md5 'a70d79a6759367fbcc0bcc18d6866ff3'
+  sha1 '0d655296b593beb15c2261d97df314572ebd7319'
 
   def patches
     # Fixes compile errors with clang, int main should return a value
