@@ -45,9 +45,6 @@ class Python < Formula
   # A note is added upstream about the CLT requirement.
   option 'with-dtrace', 'Install with DTrace support' if MacOS::CLT.installed?
 
-  # Skip binaries so modules will load; skip lib because it is mostly Python files
-  skip_clean ['bin', 'lib']
-
   def site_packages_cellar
     prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
   end
