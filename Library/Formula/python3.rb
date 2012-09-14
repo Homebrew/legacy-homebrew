@@ -22,6 +22,8 @@ class Python3 < Formula
   url 'http://python.org/ftp/python/3.2.3/Python-3.2.3.tar.bz2'
   sha1 '4c2d562a0681ba27bc920500050e2f08de224311'
 
+  env :std
+
   depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended

@@ -30,6 +30,8 @@ class Python < Formula
   url 'http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2'
   sha1 '842c4e2aff3f016feea3c6e992c7fa96e49c9aa0'
 
+  env :std
+
   depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
