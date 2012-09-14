@@ -21,6 +21,8 @@ class Auctex < Formula
   mirror 'http://ftp.gnu.org/gnu/auctex/auctex-11.86.tar.gz'
   sha1 'af3dd156f8b2db7764c86d9f7de8abd5811d888a'
 
+  env :userpaths
+
   depends_on TexInstalled.new
 
   def options
