@@ -14,6 +14,8 @@ class Qt < Formula
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
+  env :std # Otherwise fails on SSE intrinsics
+
   option :universal
   option 'with-qtdbus', 'Enable QtDBus module'
   option 'with-qt3support', 'Enable deprecated Qt3Support module'
