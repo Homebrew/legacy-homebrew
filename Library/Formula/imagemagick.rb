@@ -35,12 +35,14 @@ class Imagemagick < Formula
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
   option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
   option 'without-x', 'Compile without x11'
+  option 'without-freetype', 'Compile without freetype'
 
   depends_on 'pkg-config' => :build
 
   depends_on 'jpeg' => :recommended
   depends_on :libpng
   depends_on :x11 unless build.include? 'without-x'
+  depends_on :freetype unless build.include? 'without-freetype'
 
   depends_on 'ghostscript' => :optional if ghostscript_srsly?
 
@@ -97,6 +99,7 @@ class Imagemagick < Formula
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
     args << "--with-rsvg" if build.include? 'use-rsvg'
     args << "--without-x" if build.include? 'without-x'
+    args << "--with-freetype=yes" unless build.include? 'without-freetype'
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
