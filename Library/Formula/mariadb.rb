@@ -6,7 +6,7 @@ class Mariadb < Formula
   sha1 '0f10c6294f44f4a595e2f96317a2b5e04a13ba4f'
 
   depends_on 'readline'
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   option :universal
   option 'with-tests', 'Keep test when installing'
@@ -32,16 +32,13 @@ class Mariadb < Formula
     # Make universal for bindings to universal applications
     ENV.universal_binary if build.universal?
 
-    cmake_args = [
-      ".",
-      "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-      "-DMYSQL_DATADIR=#{var}/mysql",
-      "-DWITH_EXTRA_CHARSETS=complex",
-      "-DWITH_PLUGIN_ARIA=1",
-      "-DWITH_MAX_NO_NDB=1",
-      "-DWITH_EMBEDDED_SERVER=1",
-      "-DWITH_READLINE=1",
-      "-DINSTALL_SYSCONFDIR=#{etc}"
+    cmake_args = %W[
+      -DCMAKE_INSTALL_PREFIX=#{prefix}
+      -DMYSQL_DATADIR=#{var}/mysql
+      -DWITH_EXTRA_CHARSETS=complex
+      -DWITH_EMBEDDED_SERVER=1
+      -DWITH_READLINE=1
+      -DINSTALL_SYSCONFDIR=#{etc}
     ]
 
     cmake_args << "-DWITHOUT_SERVER=1" if build.include? 'client-only'
