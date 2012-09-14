@@ -7,8 +7,6 @@ class Collectd < Formula
 
   depends_on 'pkg-config' => :build
 
-  skip_clean :all
-
   fails_with :clang do
     build 318
     cause <<-EOS.undent
