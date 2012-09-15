@@ -53,32 +53,17 @@ rescue Exception => e
 end
 
 def post_superenv_hacks f
-  # TODO replace with Formula DSL
-  # Python etc. build but then pip can't build stuff.
-  # Scons resets ENV and then can't find superenv's build-tools.
-  # In some cases we should only apply in the case of an option I suggest the
-  # following:
-  #
-  # option 'with-passenger' do
-  #   env :userpaths  # for superenv
-  # end
-  # option 'without-foo' do
-  #  env :std, :x11
-  # end
-  #
-  # NOTE I think all ENV stuff should be specified with a DSL like this now.
-  case f.name.to_sym
-  when :lilypond, :nginx, :auctex
+  # Only allow Homebrew-approved directories into the PATH, unless
+  # a formula opts-in to allowing the user's path.
+  if f.env.userpaths?
     paths = ORIGINAL_PATHS.map{|pn| pn.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
     ENV['PATH'] = "#{ENV['PATH']}:#{paths.join(':')}"
   end
 end
 
 def pre_superenv_hacks f
-  # fontforge needs 10.7 SDK, wine 32 bit, graphviz has mysteriously missing symbols
-  # and ruby/python etc. create gem/pip that then won't work
-  stdenvs = %w{fontforge python python3 ruby ruby-enterprise-edition jruby wine graphviz}
-  ARGV.unshift '--env=std' if (stdenvs.include?(f.name) or
+  # Allow a formula to opt-in to the std environment.
+  ARGV.unshift '--env=std' if (f.env.std? or
     f.recursive_deps.detect{|d| d.name == 'scons' }) and
     not ARGV.include? '--env=super'
 end
@@ -145,14 +130,6 @@ def install f
     else
       f.prefix.mkpath
       f.install
-
-      # Install a plist if one is defined
-      unless f.startup_plist.nil?
-        unless f.plist_path.exist?
-          f.plist_path.write f.startup_plist
-          f.plist_path.chmod 0644
-        end
-      end
 
       # Find and link metafiles
       FORMULA_META_FILES.each do |filename|

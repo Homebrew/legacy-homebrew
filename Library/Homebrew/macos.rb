@@ -189,7 +189,8 @@ module MacOS extend self
     "4.3.2" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
     "4.3.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
     "4.4" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421},
-    "4.4.1" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421}
+    "4.4.1" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421},
+    "4.5" => {:llvm_build_version=>2336, :clang_version=>"4.1", :clang_build_version=>421}
   }
 
   def compilers_standard?
@@ -203,9 +204,10 @@ module MacOS extend self
 
         Thanks!
         EOS
+      return
     end
 
-    StandardCompilers[xcode].all? { |method, build| MacOS.send(method) == build } rescue false
+    StandardCompilers[xcode].all? { |method, build| MacOS.send(method) == build }
   end
 
   def app_with_bundle_id id

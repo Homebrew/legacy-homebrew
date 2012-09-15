@@ -30,6 +30,8 @@ class Python < Formula
   url 'http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2'
   sha1 '842c4e2aff3f016feea3c6e992c7fa96e49c9aa0'
 
+  env :std
+
   depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
@@ -44,9 +46,6 @@ class Python < Formula
   # http://bugs.python.org/issue13405 requires it.
   # A note is added upstream about the CLT requirement.
   option 'with-dtrace', 'Install with DTrace support' if MacOS::CLT.installed?
-
-  # Skip binaries so modules will load; skip lib because it is mostly Python files
-  skip_clean ['bin', 'lib']
 
   def site_packages_cellar
     prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
@@ -150,8 +149,8 @@ class Python < Formula
     EOF
 
     # Install distribute and pip
-    Distribute.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force" }
-    Pip.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force" }
+    Distribute.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force", "--verbose" }
+    Pip.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force", "--verbose" }
   end
 
   def caveats
