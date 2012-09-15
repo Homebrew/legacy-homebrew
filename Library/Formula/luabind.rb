@@ -2,15 +2,12 @@ require 'formula'
 
 class Luabind < Formula
   homepage 'http://www.rasterbar.com/products/luabind.html'
-  
   url 'https://github.com/luabind/luabind/zipball/v0.9.1'
-  version '0.9.1'
   sha1 '37a6b8b74444545dd0c0fcdf8a6746128b40d7a1'
 
   depends_on 'lua'
   depends_on 'boost'
-
-  option 'build-with-clang', 'Build the library using the clang toolset'
+  depends_on 'boost-build' => :build
 
   def patches
   [
@@ -20,13 +17,12 @@ class Luabind < Formula
     "https://github.com/luabind/luabind/commit/3044a9053ac50977684a75c4af42b2bddb853fad.diff"
   ]
   end
-    
+
   def install
     args = [
       "release",
       "install"
     ]
-
     if ENV.compiler == :clang
       args << "--toolset=clang"
     elsif ENV.compiler == :llvm
@@ -34,7 +30,6 @@ class Luabind < Formula
     elsif ENV.compiler == :gcc
       args << "--toolset=darwin"
     end
-
     system "bjam", *args
   end
 end
