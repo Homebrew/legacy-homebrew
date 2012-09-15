@@ -3,7 +3,7 @@ require 'formula'
 class Luabind < Formula
   homepage 'http://www.rasterbar.com/products/luabind.html'
   
-  url 'https://github.com/luabind/luabind/zipball/8c66030818f0eacbb7356c16776539b55d8c5319'
+  url 'https://github.com/luabind/luabind/zipball/v0.9.1'
   version '0.9.1'
   sha1 '37a6b8b74444545dd0c0fcdf8a6746128b40d7a1'
 
@@ -13,13 +13,12 @@ class Luabind < Formula
   option 'build-with-clang', 'Build the library using the clang toolset'
 
   def patches
-    # fixes dylib lookup on OS X and compilation with clang
-    "https://raw.github.com/gist/3650292/2f998a3ae89282172b1a9cd15c1096c6fceee0b7/osx.diff"
-  end
-    
-  if build.include? 'build-with-clang' and build.include? 'build-with-gcc'
-    onoe "Cannot build using gcc and clang toolset. Specify either one"
-    exit 1
+  [
+    # patch Jamroot to perform lookup for shared objects with .dylib suffix
+    "https://raw.github.com/gist/3728987/052251fcdc23602770f6c543be9b3e12f0cac50a/Jamroot.diff",
+    # apply upstream commit to enable building with clang
+    "https://github.com/luabind/luabind/commit/3044a9053ac50977684a75c4af42b2bddb853fad.diff"
+  ]
   end
     
   def install
@@ -28,9 +27,11 @@ class Luabind < Formula
       "install"
     ]
 
-    if build.include? 'build-with-clang'
+    if ENV.compiler == :clang
       args << "--toolset=clang"
-    else
+    elsif ENV.compiler == :llvm
+      args << "--toolset=llvm"
+    elsif ENV.compiler == :gcc
       args << "--toolset=darwin"
     end
 
