@@ -6,13 +6,15 @@ end
 
 class Fuse4xKext < Formula
   homepage 'http://fuse4x.github.com'
-  url 'https://github.com/fuse4x/kext/tarball/fuse4x_0_9_1'
-  sha1 'a04e729df52d1caa4d1d33a58af53afc1b1b74cd'
+  url 'https://github.com/fuse4x/kext/tarball/fuse4x_0_9_2'
+  sha1 'ff143cd14346a6b79769b745e117949baae86705'
 
   bottle do
     # Bottle provided for Lion since the Command Line Tools cannot compile
     # things that use `xcodebuild`. Actual compilation takes ~10 seconds so
     # there is no need to bottle this for earlier systems.
+
+    # TODO release bottled version first!
     sha1 '2bc7b00c52823ea7efd8e09fb340f1701801baca' => :lion
   end
 
