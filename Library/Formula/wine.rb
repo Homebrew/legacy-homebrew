@@ -17,8 +17,8 @@ class Wine < Formula
   head 'git://source.winehq.org/git/wine.git'
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.12.tar.bz2'
-    sha256 'ba987a0e3b1d5c0ba2d42fecdcff1c4e910d7c9949d9baca796b8b5c1318662c'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.13.tar.bz2'
+    sha256 'c05dd12ecc5256219d09cc1daad6f2153368d69ef15c68400a2a404b79b079d1'
   end
 
   env :std
