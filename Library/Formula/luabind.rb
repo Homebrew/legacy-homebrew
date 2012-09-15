@@ -9,8 +9,7 @@ class Luabind < Formula
 
   depends_on 'lua'
   depends_on 'boost'
-
-  option 'build-with-clang', 'Build the library using the clang toolset'
+  depends_on 'bjam'
 
   def patches
   [
