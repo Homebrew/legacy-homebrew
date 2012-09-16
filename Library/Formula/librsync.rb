@@ -3,7 +3,7 @@ require 'formula'
 class Librsync < Formula
   url 'http://downloads.sourceforge.net/project/librsync/librsync/0.9.7/librsync-0.9.7.tar.gz'
   homepage 'http://librsync.sourceforge.net/'
-  md5 '24cdb6b78f45e0e83766903fd4f6bc84'
+  sha1 'd575eb5cae7a815798220c3afeff5649d3e8b4ab'
 
   def patches
     # fixes librsync doesn't correctly export inlined functions:

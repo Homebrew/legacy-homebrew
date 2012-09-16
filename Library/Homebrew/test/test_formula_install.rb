@@ -70,7 +70,7 @@ class InstallTests < Test::Unit::TestCase
       # Test that things make it into the Cellar
       keg=Keg.new f.prefix
       keg.link
-      assert_equal 2, HOMEBREW_PREFIX.children.length
+      assert_equal 3, HOMEBREW_PREFIX.children.length
       assert (HOMEBREW_PREFIX+'bin').directory?
       assert_equal 3, (HOMEBREW_PREFIX+'bin').children.length
     end

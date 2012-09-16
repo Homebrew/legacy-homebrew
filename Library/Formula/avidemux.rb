@@ -13,6 +13,7 @@ class Avidemux < Formula
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
   depends_on 'yasm' => :build
+  depends_on :fontconfig
   depends_on 'gettext'
   depends_on 'aften'
   depends_on 'mad'
@@ -62,7 +63,7 @@ class Avidemux < Formula
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    if MacOS.leopard? or Hardware.is_32_bit?
+    if MacOS.version == :leopard or Hardware.is_32_bit?
       inreplace 'cmake/admFFmpegBuild.cmake',
         '${CMAKE_INSTALL_PREFIX})',
         '${CMAKE_INSTALL_PREFIX} --extra-cflags=-mdynamic-no-pic)'

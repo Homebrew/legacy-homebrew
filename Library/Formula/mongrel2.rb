@@ -4,7 +4,7 @@ class Mongrel2 < Formula
   url 'http://mongrel2.org/static/downloads/mongrel2-1.7.5.tar.bz2'
   head 'https://github.com/zedshaw/mongrel2.git'
   homepage 'http://mongrel2.org/'
-  md5 'c243efc59e5972fa381bd13a7eeafdc7'
+  sha1 '456561fe04f1c0ee4a996cfc9deadab8c57ee6dc'
 
   depends_on 'zeromq'
 

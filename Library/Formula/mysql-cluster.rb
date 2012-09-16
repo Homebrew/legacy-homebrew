@@ -33,8 +33,6 @@ class MysqlCluster < Formula
     cause "http://article.gmane.org/gmane.comp.db.mysql.cluster/2085"
   end
 
-  skip_clean :all # So "INSTALL PLUGIN" can work.
-
   def options
     [
       ['--with-tests', "Build with unit tests."],

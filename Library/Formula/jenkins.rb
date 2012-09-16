@@ -9,14 +9,12 @@ class Jenkins < Formula
   head 'https://github.com/jenkinsci/jenkins.git'
 
   def install
-    if ARGV.build_head?
+    if build.head?
       system "mvn clean install -pl war -am -DskipTests"
-      mv 'war/target/jenkins.war', '.'
+      libexec.install 'war/target/jenkins.war', '.'
+    else
+      libexec.install "jenkins.war"
     end
-
-    libexec.install "jenkins.war"
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

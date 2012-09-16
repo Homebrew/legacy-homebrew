@@ -24,7 +24,9 @@ class FormulaInstaller
 
   def check_install_sanity
     if f.installed?
-      raise CannotInstallFormulaError, "#{f}-#{f.installed_version} already installed"
+      msg = "#{f}-#{f.installed_version} already installed"
+      msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
+      raise CannotInstallFormulaError, msg
     end
 
     # Building head-only without --HEAD is an error
@@ -172,10 +174,19 @@ class FormulaInstaller
   def finish
     ohai 'Finishing up' if ARGV.verbose?
 
-    unless f.keg_only?
+    if f.keg_only?
+      begin
+        Keg.new(f.prefix).optlink
+      rescue Exception => e
+        onoe "Failed to create: #{f.opt_prefix}"
+        puts "Things that depend on #{f} will probably not build."
+      end
+    else
       link
-      check_PATH
+      check_PATH unless f.keg_only?
     end
+
+    install_plist
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
@@ -201,15 +212,11 @@ class FormulaInstaller
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
     args = ARGV.clone
-    unless args.include? '--fresh'
-      unless tab.nil?
-        args.concat tab.used_options
-        # FIXME: enforce the download of the non-bottled package
-        # in the spawned Ruby process.
-        args << '--build-from-source'
-      end
-      args.uniq! # Just in case some dupes were added
-    end
+    args.concat tab.used_options unless tab.nil? or args.include? '--fresh'
+    # FIXME: enforce the download of the non-bottled package
+    # in the spawned Ruby process.
+    args << '--build-from-source'
+    args.uniq! # Just in case some dupes were added
 
     fork do
       begin
@@ -234,6 +241,7 @@ class FormulaInstaller
       Process.wait
       data = read.read
       raise Marshal.load(data) unless data.nil? or data.empty?
+      raise Interrupt if $?.exitstatus == 130
       raise "Suspicious installation failure" unless $?.success?
     end
 
@@ -262,15 +270,26 @@ class FormulaInstaller
     end
 
     keg = Keg.new(f.prefix)
-    keg.link
-  rescue Exception => e
-    onoe "The `brew link` step did not complete successfully."
-    puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}."
-    puts "You can try again using `brew link #{f.name}`."
-    keg.unlink
 
-    ohai e, e.backtrace if ARGV.debug?
-    @show_summary_heading = true
+    begin
+      keg.link
+    rescue Exception => e
+      onoe "The `brew link` step did not complete successfully"
+      puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
+      puts "You can try again using `brew link #{f.name}'"
+      ohai e, e.backtrace if ARGV.debug?
+      @show_summary_heading = true
+      ignore_interrupts{ keg.unlink }
+      raise unless e.kind_of? RuntimeError
+    end
+  end
+
+  def install_plist
+    # Install a plist if one is defined
+    if f.startup_plist and not f.plist_path.exist?
+      f.plist_path.write f.startup_plist
+      f.plist_path.chmod 0644
+    end
   end
 
   def fix_install_names
@@ -284,6 +303,14 @@ class FormulaInstaller
   end
 
   def clean
+    if f.class.skip_clean_all?
+      opoo "skip_clean :all is deprecated"
+      puts "Skip clean was commonly used to prevent brew from stripping binaries."
+      puts "brew no longer strips binaries, if skip_clean is required to prevent"
+      puts "brew from removing empty directories, you should specify exact paths"
+      puts "in the formula."
+      return
+    end
     require 'cleaner'
     Cleaner.new f
   rescue Exception => e
@@ -303,16 +330,12 @@ class FormulaInstaller
 
   ## checks
 
-  def paths
-    @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
-  end
-
   def check_PATH
     # warn the user if stuff was installed outside of their PATH
     [f.bin, f.sbin].each do |bin|
       if bin.directory? and bin.children.length > 0
-        bin = (HOMEBREW_PREFIX/bin.basename).realpath.to_s
-        unless paths.include? bin
+        bin = (HOMEBREW_PREFIX/bin.basename).realpath
+        unless ORIGINAL_PATHS.include? bin
           opoo "#{bin} is not in your PATH"
           puts "You can amend this by altering your ~/.bashrc file"
           @show_summary_heading = true
@@ -323,7 +346,7 @@ class FormulaInstaller
 
   def check_manpages
     # Check for man pages that aren't in share/man
-    if (f.prefix+'man').exist?
+    if (f.prefix+'man').directory?
       opoo 'A top-level "man" directory was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
@@ -333,7 +356,7 @@ class FormulaInstaller
 
   def check_infopages
     # Check for info pages that aren't in share/info
-    if (f.prefix+'info').exist?
+    if (f.prefix+'info').directory?
       opoo 'A top-level "info" directory was found.'
       puts "Homebrew suggests that info pages live under share."
       puts 'This can often be fixed by passing "--infodir=#{info}" to configure.'
@@ -342,7 +365,7 @@ class FormulaInstaller
   end
 
   def check_jars
-    return unless File.exist? f.lib
+    return unless f.lib.directory?
 
     jars = f.lib.children.select{|g| g.to_s =~ /\.jar$/}
     unless jars.empty?
@@ -358,7 +381,7 @@ class FormulaInstaller
   end
 
   def check_non_libraries
-    return unless File.exist? f.lib
+    return unless f.lib.directory?
 
     valid_extensions = %w(.a .dylib .framework .jnilib .la .o .so
                           .jar .prl .pm)
@@ -377,9 +400,9 @@ class FormulaInstaller
   end
 
   def audit_bin
-    return unless File.exist? f.bin
+    return unless f.bin.directory?
 
-    non_exes = f.bin.children.select {|g| File.directory? g or not File.executable? g}
+    non_exes = f.bin.children.select { |g| g.directory? or not g.executable? }
 
     unless non_exes.empty?
       opoo 'Non-executables were installed to "bin".'
@@ -391,9 +414,9 @@ class FormulaInstaller
   end
 
   def audit_sbin
-    return unless File.exist? f.sbin
+    return unless f.sbin.directory?
 
-    non_exes = f.sbin.children.select {|g| File.directory? g or not File.executable? g}
+    non_exes = f.sbin.children.select { |g| g.directory? or not g.executable? }
 
     unless non_exes.empty?
       opoo 'Non-executables were installed to "sbin".'
@@ -411,7 +434,7 @@ class FormulaInstaller
 
   def check_m4
     # Newer versions of Xcode don't come with autotools
-    return if MacOS::Xcode.version.to_f >= 4.3
+    return unless MacOS::Xcode.provides_autotools?
 
     # If the user has added our path to dirlist, don't complain
     return if File.open("/usr/share/aclocal/dirlist") do |dirlist|
@@ -432,19 +455,21 @@ end
 
 class Formula
   def keg_only_text
-    # Add indent into reason so undent won't truncate the beginnings of lines
-    reason = self.keg_only_reason.to_s.gsub(/[\n]/, "\n    ")
-    return <<-EOS.undent
-    This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}.
+    s = "This formula is keg-only: so it was not symlinked into #{HOMEBREW_PREFIX}."
+    s << "\n\n#{keg_only_reason.to_s}"
+    if lib.directory? or include.directory?
+      s <<
+        <<-EOS.undent_________________________________________________________72
 
-    #{reason}
 
-    Generally there are no consequences of this for you.
-    If you build your own software and it requires this formula, you'll need
-    to add its lib & include paths to your build variables:
+        Generally there are no consequences of this for you. If you build your
+        own software and it requires this formula, you'll need to add to your
+        build variables:
 
-        LDFLAGS  -L#{lib}
-        CPPFLAGS -I#{include}
-    EOS
+        EOS
+      s << "    LDFLAGS:  -L#{HOMEBREW_PREFIX}/opt/#{name}/lib\n" if lib.directory?
+      s << "    CPPFLAGS: -I#{HOMEBREW_PREFIX}/opt/#{name}/include\n" if include.directory?
+    end
+    s << "\n"
   end
 end

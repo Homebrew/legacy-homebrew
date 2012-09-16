@@ -7,7 +7,7 @@ require 'set'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.9.2'
+HOMEBREW_VERSION = '0.9.3'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
 def cache
@@ -40,9 +40,6 @@ undef cache # we use a function to prevent adding home_cache to the global scope
 
 # Where brews installed via URL are cached
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
-
-# Where bottles are cached
-HOMEBREW_CACHE_BOTTLES = HOMEBREW_CACHE+"Bottles"
 
 if not defined? HOMEBREW_BREW_FILE
   HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] || `which brew`.chomp
@@ -94,10 +91,4 @@ unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
   require 'compatibility'
 end
 
-ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(File.expand_path(p)) }
-
-# Xcode-only installs place tools in non-standard locations, and we also want
-# to ensure the dev tools are in the PATH in build.rb
-unless ORIGINAL_PATHS.include? MacOS.dev_tools_path
-  ENV['PATH'] = ENV['PATH'].to_s + ':' + MacOS.dev_tools_path.to_s
-end
+ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze

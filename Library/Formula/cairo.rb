@@ -23,17 +23,13 @@ class Cairo < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    pixman = Formula.factory('pixman')
-    ENV['pixman_CFLAGS'] = "-I#{pixman.include}/pixman-1"
-    ENV['pixman_LIBS'] = "-L#{pixman.lib} -lpixman-1"
-
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
 
     args << '--with-x' unless build.include? 'without-x'
-    args << '--enable-xcb=no' if MacOS.leopard?
+    args << '--enable-xcb=no' if MacOS.version == :leopard
 
     system "./configure", *args
     system "make install"

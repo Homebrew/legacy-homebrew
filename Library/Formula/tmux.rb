@@ -5,7 +5,7 @@ class Tmux < Formula
   url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.6/tmux-1.6.tar.gz'
   sha1 '8756f6bcecb18102b87e5d6f5952ba2541f68ed3'
 
-  head 'https://tmux.svn.sourceforge.net/svnroot/tmux/trunk'
+  head 'git://tmux.git.sourceforge.net/gitroot/tmux/tmux'
 
   depends_on 'pkg-config' => :build
   depends_on 'libevent'
@@ -15,12 +15,17 @@ class Tmux < Formula
     depends_on :libtool
   end
 
-  # This patch adds the implementation of osdep_get_cwd for Darwin platform,
-  # so that tmux can get current working directory correctly under Mac OS.
-  # NOTE: it applies to 1.6 only, and should be removed when 1.7 is out.
-  #       (because it has been merged upstream)
   def patches
-   DATA if build.stable?
+    # Fix for Japanese characters. See:
+    #   http://sourceforge.net/tracker/?func=detail&aid=3566884&group_id=200378&atid=973264
+    p = ['http://sourceforge.net/tracker/download.php?group_id=200378&atid=973264&file_id=453002&aid=3566884']
+    # This patch adds the implementation of osdep_get_cwd for Darwin platform,
+    # so that tmux can get current working directory correctly under Mac OS.
+    # NOTE: it applies to 1.6 only, and should be removed when 1.7 is out.
+    #       (because it has been merged upstream)
+    p << DATA if build.stable?
+
+    p
   end
 
   def install

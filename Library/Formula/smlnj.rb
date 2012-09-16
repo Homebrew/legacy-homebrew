@@ -4,7 +4,7 @@ class Smlnj < Formula
   homepage 'http://www.smlnj.org/'
   url 'http://smlnj.cs.uchicago.edu/dist/working/110.74/config.tgz'
   version '110.74'
-  md5 '9c4f80eb53240b583eb96d8f8c556cf8'
+  sha1 '8879133ba94be1b44e7b97a04c9e23070335284a'
 
   def targets
 <<-EOS

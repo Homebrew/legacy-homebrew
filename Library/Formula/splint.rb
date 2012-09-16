@@ -3,7 +3,7 @@ require 'formula'
 class Splint < Formula
   url 'http://www.splint.org/downloads/splint-3.1.2.src.tgz'
   homepage 'http://www.splint.org/'
-  md5 '25f47d70bd9c8bdddf6b03de5949c4fd'
+  sha1 '0df489cb228dcfffb149b38c57614c2c3e200501'
 
   def patches
     # fix compiling error of osd.c

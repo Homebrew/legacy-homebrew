@@ -3,7 +3,7 @@ require 'formula'
 class Aggregate < Formula
   homepage 'http://freshmeat.net/projects/aggregate/'
   url 'ftp://ftp.isc.org/isc/aggregate/aggregate-1.6.tar.gz'
-  md5 '6fcc515388bf2c5b0c8f9f733bfee7e1'
+  sha1 '13420baf4f3f93dbed3c380ab6cca175609c5d7d'
 
   def install
     bin.mkpath

@@ -11,7 +11,7 @@ end
 class PysideTools < Formula
   homepage 'http://www.pyside.org'
   url 'http://www.pyside.org/files/pyside-tools-0.2.13.tar.bz2'
-  md5 '14d3a36df06d680357d7bc1960f19a6d'
+  sha1 '4d05444300331518c3b66536aec3048454db3380'
 
   depends_on 'cmake' => :build
 

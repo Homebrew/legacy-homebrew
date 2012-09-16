@@ -21,14 +21,16 @@ class Distribute < Formula
 end
 
 class Pip < Formula
-  url 'http://pypi.python.org/packages/source/p/pip/pip-1.1.tar.gz'
-  md5 '62a9f08dd5dc69d76734568a6c040508'
+  url 'http://pypi.python.org/packages/source/p/pip/pip-1.2.tar.gz'
+  sha1 '7876f943cfbb0bbb725c2761879de2889c1fe93b'
 end
 
 class Python < Formula
   homepage 'http://www.python.org/'
   url 'http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2'
   sha1 '842c4e2aff3f016feea3c6e992c7fa96e49c9aa0'
+
+  env :std
 
   depends_on TkCheck.new
   depends_on 'pkg-config' => :build
@@ -40,12 +42,18 @@ class Python < Formula
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build'
 
-  # Skip binaries so modules will load; skip lib because it is mostly Python files
-  skip_clean ['bin', 'lib']
+  # --with-dtrace relies on CLT as the patch from
+  # http://bugs.python.org/issue13405 requires it.
+  # A note is added upstream about the CLT requirement.
+  option 'with-dtrace', 'Install with DTrace support' if MacOS::CLT.installed?
 
   def site_packages_cellar
     prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
   end
+
+  def patches
+    'https://raw.github.com/gist/3415636/2365dea8dc5415daa0148e98c394345e1191e4aa/pythondtrace-patch.diff'
+  end if build.include? 'with-dtrace'
 
   # The HOMEBREW_PREFIX location of site-packages.
   def site_packages
@@ -62,6 +70,11 @@ class Python < Formula
   end
 
   def install
+    # Unset these so that installing pip and distribute puts them where we want
+    # and not into some other Python the user has installed.
+    ENV['PYTHONPATH'] = nil
+    ENV['PYTHONHOME'] = nil
+
     args = %W[
              --prefix=#{prefix}
              --enable-ipv6
@@ -71,6 +84,13 @@ class Python < Formula
            ]
 
     args << '--without-gcc' if ENV.compiler == :clang
+    args << '--with-dtrace' if build.include? 'with-dtrace'
+
+    # Further, Python scans all "-I" dirs but not "-isysroot", so we add
+    # the needed includes with "-I" here to avoid this err:
+    #     building dbm using ndbm
+    #     error: /usr/include/zlib.h: No such file or directory
+    ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
 
     # Don't use optimizations other than "-Os" here, because Python's distutils
     # remembers (hint: `python-config --cflags`) and reuses them for C
@@ -85,6 +105,7 @@ class Python < Formula
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
       ENV.append_to_cflags '-Wno-unused-value'
       ENV.append_to_cflags '-Wno-empty-body'
+      ENV.append_to_cflags '-Qunused-arguments'
     end
 
     if build.universal?
@@ -128,8 +149,8 @@ class Python < Formula
     EOF
 
     # Install distribute and pip
-    Distribute.new.brew { system "#{bin}/python", "setup.py", "install" }
-    Pip.new.brew { system "#{bin}/python", "setup.py", "install" }
+    Distribute.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force", "--verbose" }
+    Pip.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force", "--verbose" }
   end
 
   def caveats

@@ -2,7 +2,7 @@ require 'formula'
 
 class GnomeDocUtils < Formula
   homepage 'https://live.gnome.org/GnomeDocUtils'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/gnome-doc-utils/0.20/gnome-doc-utils-0.20.10.tar.xz'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gnome-doc-utils/0.20/gnome-doc-utils-0.20.10.tar.xz'
   sha256 'cb0639ffa9550b6ddf3b62f3b1add92fb92ab4690d351f2353cffe668be8c4a6'
 
   depends_on 'pkg-config' => :build

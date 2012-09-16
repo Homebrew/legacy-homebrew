@@ -13,7 +13,7 @@ class Gtkx3 < Formula
   depends_on 'libtiff'
   depends_on 'gdk-pixbuf'
   depends_on 'pango'
-  depends_on 'cairo' # for cairo-gobject; XQuartz includes it, but it's broken as of 2.7.2
+  depends_on 'cairo'
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
 

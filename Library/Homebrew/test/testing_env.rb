@@ -25,7 +25,7 @@ HOMEBREW_CURL_ARGS = '-fsLA'
 MACOS_VERSION=10.6
 
 (HOMEBREW_PREFIX+'Library/Formula').mkpath
-Dir.chdir HOMEBREW_PREFIX
+
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 # Test fixtures and files can be found relative to this path

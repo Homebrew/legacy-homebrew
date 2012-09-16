@@ -15,7 +15,6 @@ class EnvironmentTests < Test::Unit::TestCase
     ENV.minimal_optimization
     ENV.no_optimization
     ENV.libxml2
-    ENV.x11 true
     ENV.enable_warnings
     assert !ENV.cc.empty?
     assert !ENV.cxx.empty?

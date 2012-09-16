@@ -1,13 +1,24 @@
 require 'formula'
 
 class HtmlXmlUtils < Formula
-  url 'http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-5.5.tar.gz'
   homepage 'http://www.w3.org/Tools/HTML-XML-utils/'
-  md5 '28c58add86e35a60e602a029c8e2f04b'
+  url 'http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-6.1.tar.gz'
+  sha1 '788f9eef4347e49f7e4880d99ad5d27c1e8776fd'
+
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      Undefined symbols for architecture x86_64:
+        "_min", referenced from:
+            _write_index_item in hxindex.o
+      EOS
+  end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make"
+    ENV.j1 # install is not thread-safe
     system "make install"
   end
 end

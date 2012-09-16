@@ -2,7 +2,7 @@ require 'formula'
 
 class NeedsSnowLeopard < Requirement
   def satisfied?
-    MacOS.snow_leopard?
+    MacOS.version >= :snow_leopard
   end
 
   def message; <<-EOS.undent
@@ -24,13 +24,11 @@ class Ghc < Formula
     sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
   end
 
+  env :std
+
   depends_on NeedsSnowLeopard.new
 
   option '32-bit'
-
-  # Avoid stripping the Haskell binaries & libraries.
-  # See: http://hackage.haskell.org/trac/ghc/ticket/2458
-  skip_clean ['bin', 'lib']
 
   fails_with :clang do
     build 421

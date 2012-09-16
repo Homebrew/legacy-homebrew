@@ -25,7 +25,5 @@ class V8 < Formula
     prefix.install 'include'
     lib.install 'libv8.dylib'
     bin.install 'shell' => 'v8'
-
-    system "install_name_tool", "-change", "libv8.dylib", "#{lib}/libv8.dylib", "#{bin}/v8"
   end
 end

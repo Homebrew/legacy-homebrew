@@ -6,6 +6,7 @@ require 'bottles'
 require 'extend/fileutils'
 require 'patches'
 require 'compilers'
+require 'build_environment'
 
 
 class Formula
@@ -140,6 +141,8 @@ class Formula
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
+  # override this to provide a plist
+  def startup_plist; nil; end
   # plist name, i.e. the name of the launchd service
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
@@ -147,6 +150,8 @@ class Formula
   def build
     self.class.build
   end
+
+  def opt_prefix; HOMEBREW_PREFIX/:opt/name end
 
   # Use the @active_spec to detect the download strategy.
   # Can be overriden to force a custom download strategy
@@ -202,6 +207,7 @@ class Formula
   # redefining skip_clean? now deprecated
   def skip_clean? path
     return true if self.class.skip_clean_all?
+    return true if path.extname == '.la' and self.class.skip_clean_paths.include? :la
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
   end
@@ -405,7 +411,13 @@ class Formula
 
     return klass.new(name) if install_type == :from_name
     return klass.new(name, path.to_s)
+  rescue NoMethodError
+    # This is a programming error in an existing formula, and should not
+    # have a "no such formula" message.
+    raise
   rescue LoadError, NameError
+    # Catch NameError so that things that are invalid symbols still get
+    # a useful error message.
     raise FormulaUnavailableError.new(name)
   end
 
@@ -424,6 +436,10 @@ class Formula
 
   def deps;         self.class.dependencies.deps;         end
   def requirements; self.class.dependencies.requirements; end
+
+  def env
+    @env ||= BuildEnvironment.new(self.class.environments)
+  end
 
   def conflicts
     requirements.select { |r| r.is_a? ConflictRequirement }
@@ -456,7 +472,10 @@ protected
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
-    pretty_args.delete "--disable-dependency-tracking" if cmd == "./configure" and not ARGV.verbose?
+    if cmd == "./configure" and not ARGV.verbose?
+      pretty_args.delete "--disable-dependency-tracking"
+      pretty_args.delete "--disable-debug"
+    end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
     removed_ENV_variables = case if args.empty? then cmd.split(' ').first else cmd end
@@ -632,6 +651,14 @@ private
       @stable.mirror(val)
     end
 
+    def environments
+      @environments ||= []
+    end
+
+    def env *settings
+      environments.concat [settings].flatten
+    end
+
     def dependencies
       @dependencies ||= DependencyCollector.new
     end
@@ -671,7 +698,8 @@ private
       end
       @skip_clean_paths ||= []
       [paths].flatten.each do |p|
-        @skip_clean_paths << p.to_s unless @skip_clean_paths.include? p.to_s
+        p = p.to_s unless p == :la
+        @skip_clean_paths << p unless @skip_clean_paths.include? p
       end
     end
 

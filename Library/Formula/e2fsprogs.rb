@@ -18,7 +18,7 @@ class E2fsprogs < Formula
     ]}
 
     # MacPorts patch to allow compilation on Leopard.
-    if MacOS.leopard?
+    if MacOS.version == :leopard
       p[:p0] << "https://trac.macports.org/export/92117/trunk/dports/sysutils/e2fsprogs/files/patch-lib-ext2fs-inline.c.diff"
     end
 
