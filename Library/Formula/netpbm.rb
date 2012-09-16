@@ -7,17 +7,29 @@ class Netpbm < Formula
 
   head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
 
+  devel do
+    url 'svn+http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/',
+      :revision => 1724
+    version '10.59.02'
+  end
+
   depends_on "libtiff"
   depends_on "jasper"
   depends_on :libpng
 
+  def patches; { :p0 => %W[
+    https://trac.macports.org/export/95870/trunk/dports/graphics/netpbm/files/patch-clang-sse-workaround.diff
+    https://trac.macports.org/export/95870/trunk/dports/graphics/netpbm/files/patch-converter-other-giftopnm.c-strcaseeq.diff
+    ]}
+  end unless build.stable?
+
   def install
-    if build.head?
-      system "cp", "config.mk.in", "config.mk"
-      config = "config.mk"
-    else
+    if build.stable?
       system "cp", "Makefile.config.in", "Makefile.config"
       config = "Makefile.config"
+    else
+      system "cp", "config.mk.in", "config.mk"
+      config = "config.mk"
     end
 
     inreplace config do |s|
