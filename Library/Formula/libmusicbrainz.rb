@@ -15,9 +15,4 @@ class Libmusicbrainz < Formula
     system "cmake", ".", *(std_cmake_args + neon_args)
     system "make install"
   end
-
-  def test
-    system "pkg-config", "--libs", "libmusicbrainz5"
-  end
-
 end
