@@ -1,9 +1,10 @@
 require 'formula'
 
 class Pdsh < Formula
-  url 'http://downloads.sourceforge.net/project/pdsh/pdsh/pdsh-2.18/pdsh-2.18.tar.bz2'
   homepage 'https://computing.llnl.gov/linux/pdsh.html'
-  md5 'ff5dc11f25ce9c7474e71aafb5d293e8'
+  url 'http://pdsh.googlecode.com/files/pdsh-2.28.tar.bz2'
+  version '2.28'
+  sha1 'd83612e357b00566623e668fb24e93836de89fec'
 
   depends_on 'readline'
 
@@ -12,7 +13,7 @@ class Pdsh < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--with-ssh", "--without-rsh",
-                          "--with-dshgroups", "--with-nodeupdown",
+                          "--with-dshgroups", "--with-genders", "--with-nodeupdown",
                           "--with-readline", "--without-xcpu", "--mandir=#{man}"
     system "make install"
   end
