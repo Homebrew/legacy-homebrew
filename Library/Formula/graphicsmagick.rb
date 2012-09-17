@@ -27,7 +27,7 @@ class Graphicsmagick < Formula
 
   head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
 
-  depends_on :x11
+  depends_on :x11 unless build.include? 'without-x'
   depends_on 'jpeg'
   depends_on 'libwmf' if use_wmf?
   depends_on 'libtiff' => :optional
@@ -47,6 +47,7 @@ class Graphicsmagick < Formula
   option 'use-wmf', 'Compile with libwmf support.'
   option 'with-quantum-depth-16', 'Use an 16 bit pixel quantum depth (default is 8)'
   option 'with-quantum-depth-32', 'Use a 32 bit pixel quantum depth (default is 8)'
+  option 'without-x', 'Compile without X11'
 
   def install
     # versioned stuff in main tree is pointless for us
@@ -61,6 +62,7 @@ class Graphicsmagick < Formula
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
               unless ghostscript_fonts?
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
+    args << "--without-x" if build.include? 'without-x'
 
     system "./configure", *args
     system "make install"

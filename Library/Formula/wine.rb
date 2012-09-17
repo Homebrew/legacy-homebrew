@@ -5,8 +5,8 @@ class WineGecko < Formula
   sha1 'c30aa99621e98336eb4b7e2074118b8af8ea2ad5'
 
   devel do
-    url 'http://downloads.sourceforge.net/wine/wine_gecko-1.5-x86.msi', :using => :nounzip
-    sha1 '07b2bc74d03c885bb39124a7641715314cd3ae71'
+    url 'http://downloads.sourceforge.net/wine/wine_gecko-1.7-x86.msi', :using => :nounzip
+    sha1 'efebc4ed7a86708e2dc8581033a3c5d6effe0b0b'
   end
 end
 
@@ -17,9 +17,13 @@ class Wine < Formula
   head 'git://source.winehq.org/git/wine.git'
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.12.tar.bz2'
-    sha256 'ba987a0e3b1d5c0ba2d42fecdcff1c4e910d7c9949d9baca796b8b5c1318662c'
+    # NOTE: when updating Wine, please check if Wine-Gecko needs updating too
+    # see http://wiki.winehq.org/Gecko
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.13.tar.bz2'
+    sha256 'c05dd12ecc5256219d09cc1daad6f2153368d69ef15c68400a2a404b79b079d1'
   end
+
+  env :std
 
   depends_on :x11
   depends_on 'jpeg'
@@ -103,6 +107,14 @@ class Wine < Formula
 
       Or check out:
         http://code.google.com/p/osxwinebuilder/
+    EOS
+    # see http://bugs.winehq.org/show_bug.cgi?id=31374
+    s += <<-EOS.undent if (ARGV.build_devel? or ARGV.build_head?)
+
+      The current version of Wine contains a partial implementation of dwrite.dll
+      which may cause text rendering issues in applications such as Steam.
+      We recommend that you run winecfg, add an override for dwrite in the
+      Libraries tab, and edit the override mode to "disable".
     EOS
     return s
   end

@@ -7,17 +7,19 @@ class Ruby < Formula
 
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
+  env :std
+
+  option :universal
+  option 'with-suffix', 'Suffix commands with "19"'
+  option 'with-doc', 'Install documentation'
+  option 'with-tcltk', 'Install with Tcl/Tk support'
+
   depends_on :autoconf if build.head?
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'gdbm'
   depends_on 'libyaml'
   depends_on :x11 if build.include? 'with-tcltk'
-
-  option :universal
-  option 'with-suffix', 'Suffix commands with "19"'
-  option 'with-doc', 'Install documentation'
-  option 'with-tcltk' 'Install with Tcl/Tk support'
 
   fails_with :llvm do
     build 2326
