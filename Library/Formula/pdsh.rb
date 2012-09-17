@@ -2,8 +2,8 @@ require 'formula'
 
 class Pdsh < Formula
   homepage 'https://computing.llnl.gov/linux/pdsh.html'
-  url 'http://sourceforge.net/projects/pdsh/files/pdsh/pdsh-2.26/pdsh-2.26.tar.bz2'
-  sha1 'bdcec89760b93bd12107d8a785ca2710853cde75'
+  url 'https://pdsh.googlecode.com/files/pdsh-2.28.tar.bz2'
+  sha1 'd83612e357b00566623e668fb24e93836de89fec'
 
   depends_on 'readline'
 
