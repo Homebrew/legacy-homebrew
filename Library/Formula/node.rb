@@ -69,6 +69,12 @@ class Node < Formula
     #   joyent/node#3681
     ENV['DEVELOPER_DIR'] = MacOS.dev_tools_path unless MacOS::Xcode.installed?
 
+    # Unset LD so GYP will not pick up CC for linking:
+    #
+    # See: https://github.com/mxcl/homebrew/pull/14943
+
+    ENV['LD'] = nil
+
     args = %W{--prefix=#{prefix}}
     args << "--debug" if build.include? 'enable-debug'
     args << "--without-npm" if build.include? 'without-npm'
