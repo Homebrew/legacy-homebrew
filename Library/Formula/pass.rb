@@ -25,7 +25,7 @@ class Pass < Formula
       s.gsub! "xclip -selection clipboard", "pbcopy"
       s.gsub! "qdbus", "#qdbus"
       s.gsub! "base64", "openssl base64"
-      s.gsub! "getopt", "#{HOMEBREW_PREFIX}/opt/gnu-getopt/bin/getopt"
+      s.gsub! "getopt", Formula.factory('gnu-getopt').bin/"getopt"
     end
     inreplace "man/pass.1", "xclip", "pbcopy"
 
