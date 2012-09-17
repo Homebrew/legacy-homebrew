@@ -7,14 +7,30 @@ class Pdsh < Formula
   sha1 'd83612e357b00566623e668fb24e93836de89fec'
 
   depends_on 'readline'
-
-  # don't strip binaries
-  skip_clean ['bin', 'lib']
+  depends_on 'genders' => :optional if ARGV.include? '--with-genders'
+  
+  def options
+    [
+      ["--with-genders", "Compile with genders support."],
+      ["--without-dshgroups", "Compile without dshgroups which conflicts with genders. The option should be specified to load genders module first instead of dshgroups."]
+    ]
+  end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-ssh", "--without-rsh",
-                          "--with-dshgroups", "--with-genders", "--with-nodeupdown",
-                          "--with-readline", "--without-xcpu", "--mandir=#{man}"
+    args = ["--prefix=#{prefix}",
+            "--mandir=#{man}",
+            "--with-ssh",
+            "--without-rsh",
+            "--with-nodeupdown",
+            "--with-readline",
+            "--without-xcpu"
+            ]
+
+    args << '--with-genders' if ARGV.include? '--with-genders'
+    args << ((ARGV.include? '--without-dshgroups') ? '--without-dshgroups' : '--with-dshgroups')
+
+         
+    system "./configure", *args
     system "make install"
   end
 end
