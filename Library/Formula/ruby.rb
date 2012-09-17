@@ -12,7 +12,7 @@ class Ruby < Formula
   option :universal
   option 'with-suffix', 'Suffix commands with "19"'
   option 'with-doc', 'Install documentation'
-  option 'with-tcltk' 'Install with Tcl/Tk support'
+  option 'with-tcltk', 'Install with Tcl/Tk support'
 
   depends_on :autoconf if build.head?
   depends_on 'pkg-config' => :build
