@@ -2,8 +2,8 @@ require 'formula'
 
 class Mpd < Formula
   homepage 'http://mpd.wikia.com'
-  url 'http://sourceforge.net/projects/musicpd/files/mpd/0.17/mpd-0.17.tar.bz2'
-  sha1 '36201f32ca5729b62b0e6cbddb19ade20ee3f7d7'
+  url 'http://sourceforge.net/projects/musicpd/files/mpd/0.17.1/mpd-0.17.1.tar.bz2'
+  sha1 '11da36217d57d08010f309977a4a77cce6240f77'
 
   head "git://git.musicpd.org/master/mpd.git"
 
@@ -19,7 +19,6 @@ class Mpd < Formula
   depends_on 'lame'
   depends_on 'faad2' => :optional
   depends_on 'fluid-synth'
-  depends_on 'libcue' => :optional
   depends_on 'libmms' => :optional
   depends_on 'libzzip' => :optional
 
