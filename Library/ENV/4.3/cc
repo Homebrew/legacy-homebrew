@@ -64,24 +64,24 @@ class Cmd
       refurbished_args
     end
     if tool != 'ld'
-      args.unshift("--sysroot=#$sdkroot")
+      args << "--sysroot=#$sdkroot"
     else
-      args.unshift($sdkroot).unshift("-syslibroot")
+      args << "-syslibroot" << $sdkroot
     end if nclt?
     case mode
     when :cpp
-      %w{-E} + cppflags + args
+      %w{-E} + args + cppflags
     when :ld
       ldflags + args
     when :cc
-      cflags + cppflags + args
+      cflags + args + cppflags
     when :ccld
-      cflags + cppflags + ldflags + args
+      cflags + args + cppflags + ldflags
     end.compact
   end
   def refurbished_args
-    lset = Set.new(syslibpath)
-    iset = Set.new(syscpath)
+    lset = Set.new(libpath + syslibpath)
+    iset = Set.new(cpath.flatten)
 
     args = []
     whittler = @args.each

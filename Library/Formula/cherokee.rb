@@ -5,19 +5,34 @@ class Cherokee < Formula
   url 'http://www.cherokee-project.com/download/1.2/1.2.101/cherokee-1.2.101.tar.gz'
   sha1 'b27f149c7d7111207ac8c3cd8a4856c05490d136'
 
+  head 'https://github.com/cherokee/webserver.git'
+
   depends_on 'gettext'
+  if build.head?
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}",
-                          "--localstatedir=#{var}/cherokee",
-                          "--with-wwwuser=#{ENV['USER']}",
-                          "--with-wwwgroup=www",
-                          "--enable-internal-pcre",
-                          # Don't install to /Library
-                          "--with-wwwroot=#{etc}/cherokee/htdocs",
-                          "--with-cgiroot=#{etc}/cherokee/cgi-bin"
+    if build.head?
+      ENV['LIBTOOL'] = 'glibtool'
+      ENV['LIBTOOLIZE'] = 'glibtoolize'
+      cmd = './autogen.sh'
+    else
+      cmd = './configure'
+    end
+
+    system cmd, "--disable-dependency-tracking",
+                "--prefix=#{prefix}",
+                "--sysconfdir=#{etc}",
+                "--localstatedir=#{var}/cherokee",
+                "--with-wwwuser=#{ENV['USER']}",
+                "--with-wwwgroup=www",
+                "--enable-internal-pcre",
+                # Don't install to /Library
+                "--with-wwwroot=#{etc}/cherokee/htdocs",
+                "--with-cgiroot=#{etc}/cherokee/cgi-bin"
     system "make install"
 
     prefix.install "org.cherokee.webserver.plist"

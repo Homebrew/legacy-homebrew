@@ -15,7 +15,7 @@ class TheSilverSearcher < Formula
 
   def install
     # Stable tarball does not include pre-generated configure script
-    system "aclocal -I /usr/local/share/aclocal"
+    system "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
     system "autoconf"
     system "autoheader"
     system "automake --add-missing"

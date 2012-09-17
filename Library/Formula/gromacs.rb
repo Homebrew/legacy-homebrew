@@ -7,13 +7,16 @@ class Gromacs < Formula
 
   option 'enable-mpi', "Enables MPI support"
   option 'enable-double',"Enables double precision"
+  option 'without-x', "Disable the X11 visualizer"
 
+  depends_on :x11 unless build.include? 'without-x'
   depends_on 'fftw'
 
   def install
     args = ["--prefix=#{prefix}"]
     args << "--enable-mpi" if build.include? 'enable-mpi'
     args << "--enable-double" if build.include? 'enable-double'
+    args << "--without-x" if build.include? 'without-x'
 
     system "./configure", *args
     system "make"

@@ -6,6 +6,7 @@ require 'bottles'
 require 'extend/fileutils'
 require 'patches'
 require 'compilers'
+require 'build_environment'
 
 
 class Formula
@@ -436,6 +437,10 @@ class Formula
   def deps;         self.class.dependencies.deps;         end
   def requirements; self.class.dependencies.requirements; end
 
+  def env
+    @env ||= BuildEnvironment.new(self.class.environments)
+  end
+
   def conflicts
     requirements.select { |r| r.is_a? ConflictRequirement }
   end
@@ -644,6 +649,14 @@ private
     def mirror val
       @stable ||= SoftwareSpec.new
       @stable.mirror(val)
+    end
+
+    def environments
+      @environments ||= []
+    end
+
+    def env *settings
+      environments.concat [settings].flatten
     end
 
     def dependencies
