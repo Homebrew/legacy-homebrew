@@ -34,15 +34,15 @@ class Imagemagick < Formula
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
   option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
-  option 'with-x', 'Compile with x11'
-  option 'with-freetype', 'Compile with freetype'
+  option 'with-x', 'Compile with X11 support.'
+  option 'without-freetype', 'Compile without freetype support.'
 
   depends_on 'pkg-config' => :build
 
   depends_on 'jpeg' => :recommended
   depends_on :libpng
   depends_on :x11 if build.include? 'with-x'
-  depends_on :freetype if build.include? 'with-freetype'
+  depends_on :freetype => :recommended unless build.include? 'without-freetype'
 
   depends_on 'ghostscript' => :optional if ghostscript_srsly?
 
@@ -55,10 +55,10 @@ class Imagemagick < Formula
   depends_on 'openexr' => :optional if build.include? 'use-exr'
 
   bottle do
-    version 1
-    sha1 'fde8ed2686740ed83efd0626dd20170d9d3096b7' => :mountainlion
-    sha1 'e2c4d5b9e5f37e5f20dec36f3f3cbfc65821e164' => :lion
-    sha1 '019400feda06e4f277187702a4baeacdfdbf4851' => :snowleopard
+    version 2
+    sha1 'c9bfa84492f8c4965d571797f39d60779267cb7b' => :mountainlion
+    sha1 '5aaf54c7b6974036176ec0e887265bbc597caf67' => :lion
+    sha1 '2156856d70d3cad9bf74b22d62c570c42136e63e' => :snowleopard
   end
 
   skip_clean :la
