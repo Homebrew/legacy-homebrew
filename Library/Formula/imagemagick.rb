@@ -38,7 +38,6 @@ class Imagemagick < Formula
   option 'without-freetype', 'Compile without freetype support.'
 
   depends_on 'pkg-config' => :build
-  depends_on 'libtool' if MacOS.version >= :mountain_lion
 
   depends_on 'jpeg' => :recommended
   depends_on :libpng
@@ -56,10 +55,10 @@ class Imagemagick < Formula
   depends_on 'openexr' => :optional if build.include? 'use-exr'
 
   bottle do
-    version 2
-    sha1 'c9bfa84492f8c4965d571797f39d60779267cb7b' => :mountainlion
-    sha1 '5aaf54c7b6974036176ec0e887265bbc597caf67' => :lion
-    sha1 '2156856d70d3cad9bf74b22d62c570c42136e63e' => :snowleopard
+    version 3
+    sha1 '0d7ca4e54a1d3090e8b5a85663f0efa857ea52b7' => :mountainlion
+    sha1 '64fca6d7c75407dd1942a271a4df837ab02bbeb0' => :lion
+    sha1 'b8d1a9b2de7b1961da311df77922d326c2b6723f' => :snowleopard
   end
 
   skip_clean :la
@@ -79,6 +78,7 @@ class Imagemagick < Formula
              "--enable-shared",
              "--disable-static",
              "--without-pango",
+             "--with-included-ltdl",
              "--with-modules"]
 
     args << "--disable-openmp" unless build.include? 'enable-openmp'
