@@ -3,9 +3,7 @@ require 'formula'
 class AtlassianPluginSdk < Formula
   homepage 'https://developer.atlassian.com'
 
-  # Get the latest versioned download URL from 
-  # https://marketplace.atlassian.com/plugins/atlassian-plugin-sdk-tgz
-  url 'https://marketplace.atlassian.com/download/plugins/atlassian-plugin-sdk-tgz/version/25'
+  url 'https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/amps/atlassian-plugin-sdk/4.0/atlassian-plugin-sdk-4.0.tar.gz'
   sha1 'f18ee77fbad58ceca3108ccc271cabcefa23f817'
 
   def install
