@@ -134,7 +134,8 @@ module HomebrewArgvExtension
   end
 
   def build_from_source?
-    include? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE']
+    include? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
+      or build_bottle?
   end
 
   def flag? flag
