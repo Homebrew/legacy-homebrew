@@ -6,9 +6,6 @@ class AtlassianPluginSdk < Formula
   # Get the latest versioned download URL from 
   # https://marketplace.atlassian.com/plugins/atlassian-plugin-sdk-tgz
   url 'https://marketplace.atlassian.com/download/plugins/atlassian-plugin-sdk-tgz/version/25'
-
-  # To generate a sha1 sig on a mac, run
-  #   `shasum <sdk.tgz>`
   sha1 'f18ee77fbad58ceca3108ccc271cabcefa23f817'
 
   def install
