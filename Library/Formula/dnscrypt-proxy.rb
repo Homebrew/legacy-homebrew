@@ -1,10 +1,11 @@
 require 'formula'
 
 class DnscryptProxy < Formula
-  url 'https://github.com/downloads/opendns/dnscrypt-proxy/dnscrypt-proxy-0.8.tar.gz'
-  head 'https://github.com/opendns/dnscrypt-proxy.git', :branch => 'master'
   homepage 'http://www.opendns.com/technology/dnscrypt'
-  md5 '9c573da27aa897f27a564214c92bcddb'
+  url 'https://github.com/downloads/opendns/dnscrypt-proxy/dnscrypt-proxy-1.0.1.tar.gz'
+  sha256 '9852a8dcae200c9965697b29fdaffb8ee1dc8602420afdb8763811a7996d6a7f'
+
+  head 'https://github.com/opendns/dnscrypt-proxy.git', :branch => '1.0.x'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"

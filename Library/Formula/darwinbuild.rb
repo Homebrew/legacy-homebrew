@@ -1,17 +1,19 @@
 require 'formula'
 
 class Darwinbuild < Formula
-  head 'http://svn.macosforge.org/repository/darwinbuild/trunk/', :using => :svn
   homepage 'http://darwinbuild.macosforge.org/'
+  head 'http://svn.macosforge.org/repository/darwinbuild/trunk/'
 
   def patches
     DATA
   end
 
+  depends_on :xcode # For working xcodebuild.
+
   def install
     ENV.delete('CC')
     ENV.delete('LD')
-    system "xcodebuild -configuration Release install DSTROOT=/ PREFIX=#{prefix}"
+    system "xcodebuild", "-configuration", "Release", "install", "DSTROOT=/", "PREFIX=#{prefix}", "SYMROOT=build"
   end
 end
 

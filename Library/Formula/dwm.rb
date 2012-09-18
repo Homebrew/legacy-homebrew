@@ -3,7 +3,7 @@ require 'formula'
 class Dwm < Formula
   url 'http://dl.suckless.org/dwm/dwm-6.0.tar.gz'
   homepage 'http://dwm.suckless.org/'
-  md5 '8bb00d4142259beb11e13473b81c0857'
+  sha1 '35346f873a27f219ae266594b3690407f95d06ef'
   head 'http://hg.suckless.org/dwm'
 
   def install
@@ -13,7 +13,7 @@ class Dwm < Formula
     '{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },',
     '{ MODKEY|ControlMask,           XK_q,      quit,           {0} },'
     inreplace 'dwm.1', '.B Mod1\-Shift\-q', '.B Mod1\-Control\-q'
-    system "make PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 
   def caveats

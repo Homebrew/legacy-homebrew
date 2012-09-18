@@ -1,22 +1,19 @@
 require 'formula'
 
 class Udunits < Formula
-  url 'ftp://ftp.unidata.ucar.edu/pub/udunits/udunits-2.1.21.tar.gz'
   homepage 'http://www.unidata.ucar.edu/software/udunits/'
-  md5 'daf894f3e4fbf757a459ce83b373424e'
+  url 'ftp://ftp.unidata.ucar.edu/pub/udunits/udunits-2.1.24.tar.gz'
+  sha1 '64bbb4b852146fb5d476baf4d37c9d673cfa42f9'
 
-  def options
-    [
-      ["--html-docs", "Installs html documentation"],
-      ["--pdf-docs", "Installs pdf documentation "]
-    ]
-  end
+  option "html-docs", "Installs html documentation"
+  option "pdf-docs", "Installs pdf documentation"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     targets = ["install"]
-    targets << "install-html" if ARGV.include? "--html-docs"
-    targets << "install-pdf" if ARGV.include? "--pdf-docs"
+    targets << "install-html" if build.include? "html-docs"
+    targets << "install-pdf" if build.include? "pdf-docs"
     system "make", *targets
   end
 end

@@ -2,16 +2,22 @@ require 'formula'
 
 class GitExtras < Formula
   homepage 'https://github.com/visionmedia/git-extras'
-  url 'https://github.com/visionmedia/git-extras/tarball/0.9.0'
-  sha1 'ecb0492d50f896a2121d5709cfa2e5d67273e364'
+  url 'https://github.com/visionmedia/git-extras/tarball/1.7.0'
+  sha1 '939a9a736b5ecd3dae98eb16104f4e109bdf2f70'
+
   head 'https://github.com/visionmedia/git-extras.git', :branch => 'master'
 
+  # Don't take +x off these files
+  skip_clean 'bin'
+
   def install
-    inreplace 'Makefile' do |s|
-      s.gsub! '/usr/local', prefix
-      s.gsub! '/etc/bash_completion.d', "#{prefix}/etc/bash_completion.d"
-    end
-    bin.mkpath
-    system "make", "install"
+    inreplace 'Makefile', %r|\$\(DESTDIR\)(?=/etc/bash_completion\.d)|, '$(DESTDIR)$(PREFIX)'
+    system "make", "PREFIX=#{prefix}", "install"
+  end
+
+  def caveats; <<-EOS.undent
+    Bash completion has been installed to:
+      #{etc}/bash_completion.d
+    EOS
   end
 end

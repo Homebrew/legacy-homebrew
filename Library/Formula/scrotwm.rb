@@ -1,18 +1,19 @@
 require 'formula'
 
 class Scrotwm < Formula
-  url 'http://opensource.conformal.com/snapshots/scrotwm/scrotwm-0.9.30.tgz'
   homepage 'http://opensource.conformal.com/wiki/scrotwm'
-  md5 '008d018a0ab546b4915e5aa7199f8982'
+  url 'http://opensource.conformal.com/snapshots/scrotwm/scrotwm-0.9.30.tgz'
+  sha1 '844c5261170be1dfa043ad90cd7164bbaabed497'
 
   def patches
     DATA
   end
 
   def install
-    Dir.chdir "osx"
-    system "make"
-    system "make", "install", "PREFIX=#{prefix}"
+    cd "osx" do
+      system "make"
+      system "make", "install", "PREFIX=#{prefix}"
+    end
   end
 
   def caveats; <<-EOS

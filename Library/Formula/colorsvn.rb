@@ -1,32 +1,33 @@
 require 'formula'
 
 class Colorsvn < Formula
-  url 'http://www.console-colors.de/downloads/colorsvn/colorsvn-0.3.2.tar.gz'
   homepage 'http://colorsvn.tigris.org/'
-  md5 'f6f59439f56c0ce664a0a832052cdc06'
+  url 'http://www.console-colors.de/downloads/colorsvn/colorsvn-0.3.2.tar.gz'
+  sha1 '8d9452585d474ad10e9e1fd2372f9ad41e548863'
+
+  def patches
+    DATA
+  end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--sysconfdir=#{etc}"
-    inreplace "colorsvn.1", "/etc", etc
+    system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--sysconfdir=#{etc}"
+    inreplace ["colorsvn.1", "colorsvn-original"], "/etc", etc
     system "make"
     system "make install"
   end
 
-  def caveats
-    <<-END_CAVEATS
-You probably want to set an alias to svn in your bash profile.
-So source #{etc}/profile.d/colorsvn-env.sh or add the line
+  def caveats; <<-EOS.undent
+    You probably want to set an alias to svn in your bash profile.
+    So source #{etc}/profile.d/colorsvn-env.sh or add the line
 
-    alias svn=colorsvn
+        alias svn=colorsvn
 
-to your bash profile.
+    to your bash profile.
 
-So when you type "svn" you'll run "colorsvn".
-    END_CAVEATS
-  end
-
-  def patches
-    DATA
+    So when you type "svn" you'll run "colorsvn".
+    EOS
   end
 end
 

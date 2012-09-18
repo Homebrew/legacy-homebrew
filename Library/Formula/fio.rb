@@ -1,15 +1,15 @@
 require 'formula'
 
 class Fio < Formula
-  url 'http://brick.kernel.dk/snaps/fio-1.58.tar.bz2'
-  homepage 'http://freshmeat.net/projects/fio/'
-  md5 'bc5600997788bce5647576a4976d461d'
+  homepage 'http://freecode.com/projects/fio'
+  url 'http://brick.kernel.dk/snaps/fio-2.0.7.tar.bz2'
+  sha1 '597cca3a5843daeb3584ce52d090c58ca6632ef7'
 
   def install
-    inreplace 'Makefile' do |s|
-      s.change_make_var! 'mandir', man
-    end
-    make_cmd = "make prefix=#{prefix}"
-    system "#{make_cmd} && #{make_cmd} install"
+    system "make", "prefix=#{prefix}",
+                   "mandir=#{man}",
+                   "CC=#{ENV.cc}",
+                   "CFLAGS=#{ENV.cflags}",
+                   "install"
   end
 end

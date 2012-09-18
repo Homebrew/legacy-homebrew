@@ -1,8 +1,11 @@
 require 'formula'
 
 class Plowshare < Formula
-  head 'https://code.google.com/p/plowshare/', :using => :git
   homepage 'http://code.google.com/p/plowshare/'
+  url 'http://plowshare.googlecode.com/files/plowshare-snapshot-git20120707.tar.gz'
+  sha1 'ca7b5eccf817b88584f0b4a6769ab770b2af1e1a'
+
+  head 'https://code.google.com/p/plowshare/', :using => :git
 
   depends_on 'recode'
   depends_on 'imagemagick'
@@ -24,12 +27,12 @@ class Plowshare < Formula
 end
 
 
-#This patch makes sure GNUtools are used on OSX.
-#gnu-getopt is keg-only hence the backtick expansion.
-#These aliases only exist for the duration of plowshare,
-#inside the plowshare shells. Normal operation of bash is
-#unaffected - getopt will still find the version supplied
-#by OSX in other shells, for example.
+# This patch makes sure GNUtools are used on OSX.
+# gnu-getopt is keg-only hence the backtick expansion.
+# These aliases only exist for the duration of plowshare,
+# inside the plowshare shells. Normal operation of bash is
+# unaffected - getopt will still find the version supplied
+# by OSX in other shells, for example.
 __END__
 --- a/src/core.sh
 +++ b/src/core.sh

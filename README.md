@@ -4,7 +4,7 @@ Features, usage and installation instructions are [summarized on the homepage][h
 
 What Packages Are Available?
 ----------------------------
-1. You can [browse the Formula folder on GitHub][formula].
+1. You can [browse the Formula directory on GitHub][formula].
 2. Or type `brew search` for a list.
 3. Or run `brew server` to browse packages off of a local web server.
 4. Or visit [braumeister.org][braumeister] to browse packages online.

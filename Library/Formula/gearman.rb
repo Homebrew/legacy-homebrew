@@ -1,23 +1,21 @@
 require 'formula'
 
 class Gearman < Formula
-  url 'http://launchpad.net/gearmand/trunk/0.26/+download/gearmand-0.26.tar.gz'
   homepage 'http://gearman.org/'
-  md5 '52a8cc98f649980331cc8011d47af09f'
+  url 'https://launchpad.net/gearmand/1.0/0.37/+download/gearmand-0.37.tar.gz'
+  sha1 'e2bdd3557cf65337ecd22b4fafff285e24c83a7d'
 
-  depends_on 'libevent'
+  depends_on 'pkg-config' => :build
   depends_on 'boost'
+  depends_on 'libevent'
+  depends_on 'ossp-uuid'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--without-mysql"
     system "make install"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
-  def caveats
-    <<-EOS.undent
+  def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
         cp #{plist_path} ~/Library/LaunchAgents/
@@ -33,8 +31,7 @@ class Gearman < Formula
     EOS
   end
 
-  def startup_plist
-    return <<-EOPLIST
+  def startup_plist; <<-EOPLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
 "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

@@ -4,7 +4,7 @@ class Radare2 < Formula
   url 'http://radare.org/get/radare2-0.9.tar.gz'
   head 'http://radare.org/hg/radare2', :using => :hg
   homepage 'http://radare.org'
-  md5 '751f0dc71f82b7689f10365ee3a5842f'
+  sha1 'e77c85b001d9308f38a336b26544836fbe1d14dc'
 
   depends_on 'libewf'
   depends_on 'libmagic'

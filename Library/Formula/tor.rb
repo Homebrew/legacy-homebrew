@@ -1,19 +1,15 @@
 require 'formula'
 
 class Tor < Formula
-  url 'https://www.torproject.org/dist/tor-0.2.2.35.tar.gz'
   homepage 'https://www.torproject.org/'
-  md5 'dcecf699c4b929319d5f1ce0358d4835'
+  url 'https://www.torproject.org/dist/tor-0.2.2.38.tar.gz'
+  sha1 'abac1902d301c6bd5d522e4cc81aead3299cf968'
 
   depends_on 'libevent'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def startup_plist

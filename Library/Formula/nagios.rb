@@ -1,12 +1,13 @@
 require 'formula'
 
 class Nagios < Formula
-  url 'http://downloads.sourceforge.net/project/nagios/nagios-3.x/nagios-3.2.3/nagios-3.2.3.tar.gz'
   homepage 'http://www.nagios.org/'
-  md5 'fe1be46e6976a52acdb021a782b5d04b'
+  url 'http://downloads.sourceforge.net/project/nagios/nagios-3.x/nagios-3.4.1/nagios-3.4.1.tar.gz'
+  sha1 '728d3a7f601cfbc0686afa27cb02a2cb212cc5ac'
 
   depends_on 'gd'
   depends_on 'nagios-plugins'
+  depends_on :libpng
 
   def nagios_sbin;  prefix+'cgi-bin';       end
   def nagios_etc;   etc+'nagios';           end
@@ -16,7 +17,6 @@ class Nagios < Formula
   def group;        `id -gn`.chomp;         end
 
   def install
-    ENV.x11 # Required to compile some CGI's against the build-in libpng.
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -24,6 +24,7 @@ class Nagios < Formula
                           "--sysconfdir=#{nagios_etc}",
                           "--localstatedir=#{nagios_var}",
                           "--datadir=#{htdocs}",
+                          "--libexecdir=#{HOMEBREW_PREFIX}/sbin", # Plugin dir
                           "--with-cgiurl=/nagios/cgi-bin",
                           "--with-htmurl=/nagios",
                           "--with-nagios-user=#{user}",
@@ -38,10 +39,7 @@ class Nagios < Formula
     system "make install-config"
     system "make install-webconf"
     (share+plist_path).write startup_plist
-
-    # Symlink plugins
-    libexec.rmdir
-    ln_s HOMEBREW_PREFIX+'sbin/nagios-plugins', libexec
+    mkdir HOMEBREW_PREFIX+'var/lib/nagios/rw' unless File.exists? HOMEBREW_PREFIX+'var/lib/nagios/rw'
   end
 
   def startup_plist

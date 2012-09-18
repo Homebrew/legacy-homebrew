@@ -1,13 +1,16 @@
 require 'formula'
 
 class Torsocks < Formula
-  url 'http://torsocks.googlecode.com/files/torsocks-1.1.tar.gz'
   homepage 'http://code.google.com/p/torsocks/'
-  md5 '1704fd009ed1a1c1dc9c6b72305a5449'
+  url 'http://torsocks.googlecode.com/files/torsocks-1.2.tar.gz'
+  sha1 'b8afeb217db299892a628e28f2327a1d2697f9ad'
+
+  head 'git://git.torproject.org/git/torsocks.git'
 
   depends_on 'tor'
 
   def install
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

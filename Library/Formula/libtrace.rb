@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libtrace < Formula
-  url 'http://research.wand.net.nz/software/libtrace/libtrace-3.0.12.tar.bz2'
   homepage 'http://research.wand.net.nz/software/libtrace.php'
-  md5 '12a49bb075bfca63ee49b5025b04de21'
+  url 'http://research.wand.net.nz/software/libtrace/libtrace-3.0.14.tar.bz2'
+  sha1 '9e860ebd280a9c927b254e1936b87888c844b458'
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

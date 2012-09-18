@@ -2,15 +2,19 @@ require 'formula'
 
 class Urweb < Formula
   homepage 'http://impredicative.com/ur/'
-  url 'http://impredicative.com/ur/urweb-20120110.tgz'
-  md5 'c71b1f1d16e1118fa50443b79704f9e9'
+  url 'http://impredicative.com/ur/urweb-20120807.tgz'
+  sha1 '81c4a8095b2c6bb0f6779dd242270750f59627cf'
   head 'http://hg.impredicative.com/urweb', :using => :hg
+
+  depends_on :automake
+  depends_on :libtool
 
   depends_on 'mlton'
 
   def install
-    system "aclocal && autoreconf -i --force"
-    system "./configure --prefix=#{prefix}"
+    system "aclocal"
+    system "autoreconf -i --force"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end

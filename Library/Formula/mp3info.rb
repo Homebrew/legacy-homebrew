@@ -3,7 +3,7 @@ require 'formula'
 class Mp3info < Formula
   url 'http://www.ibiblio.org/pub/linux/apps/sound/mp3-utils/mp3info/mp3info-0.8.5a.tgz'
   homepage 'http://www.ibiblio.org/mp3info/'
-  md5 'cb7b619a10a40aaac2113b87bb2b2ea2'
+  sha1 '54df29eb6c2e581899affc12be698b0a71d91ca6'
 
   def patches
     { :p0 =>

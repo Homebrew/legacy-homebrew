@@ -1,14 +1,14 @@
 require 'formula'
 
 class Hydra < Formula
-  url 'http://www.thc.org/releases/hydra-7.1-src.tar.gz'
   homepage 'http://www.thc.org/thc-hydra/'
-  md5 '0c3a6a351cb2e233cb989f0bcdd75edf'
+  url 'http://www.thc.org/releases/hydra-7.3-src.tar.gz'
+  sha1 'a998c10d82a951cdd9eeb26e011e1c6e655ac8b9'
 
   def install
     system "./configure", "--prefix=#{prefix}"
     bin.mkpath
     system "make all install"
-    share.install prefix+"man" # Put man pages in correct place
+    share.install prefix/"man" # Put man pages in correct place
   end
 end

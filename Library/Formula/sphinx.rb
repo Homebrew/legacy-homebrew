@@ -9,38 +9,48 @@ class Libstemmer < Formula
 end
 
 class Sphinx < Formula
-  url 'http://sphinxsearch.com/files/sphinx-2.0.3-release.tar.gz'
-  version '2.0.3'
   homepage 'http://www.sphinxsearch.com'
-  md5 'a1293aecd5034aa797811610beb7ba89'
+  url 'http://sphinxsearch.com/files/sphinx-2.0.5-release.tar.gz'
+  sha1 '59e38a7a81aa49a2e6825468ef1180cb6cb24bef'
+
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
-  fails_with_llvm "ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)",
-    :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)"
+  end
+
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      sphinxexpr.cpp:1802:11: error: use of undeclared identifier 'ExprEval'
+    EOS
+  end
+
+  option 'mysql', 'Force compiling against MySQL'
+  option 'pgsql', 'Force compiling against PostgreSQL'
+  option 'id64',  'Force compiling with 64-bit ID support'
 
   def install
-    lstem = Pathname.pwd+'libstemmer_c'
-    lstem.mkpath
-    Libstemmer.new.brew { mv Dir['*'], lstem }
+    Libstemmer.new.brew { (buildpath/'libstemmer_c').install Dir['*'] }
 
-    args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
-            "--localstatedir=#{var}"]
+    args = %W[--prefix=#{prefix}
+              --disable-dependency-tracking
+              --localstatedir=#{var}]
 
     # always build with libstemmer support
     args << "--with-libstemmer"
 
     # configure script won't auto-select PostgreSQL
-    args << "--with-pgsql" if `/usr/bin/which pg_config`.size > 0
-    args << "--without-mysql" unless `/usr/bin/which mysql`.size > 0
+    args << "--with-pgsql" if build.include?('pgsql') or which 'pg_config'
+    args << "--enable-id64" if build.include?('id64')
+    args << "--without-mysql" unless build.include?('mysql') or which 'mysql_config'
 
     system "./configure", *args
     system "make install"
   end
 
-  def caveats
-    <<-EOS.undent
+  def caveats; <<-EOS.undent
     Sphinx has been compiled with libstemmer support.
 
     Sphinx depends on either MySQL or PostreSQL as a datasource.

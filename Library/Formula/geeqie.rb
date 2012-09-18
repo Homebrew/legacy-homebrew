@@ -3,11 +3,12 @@ require 'formula'
 class Geeqie < Formula
   url 'http://downloads.sourceforge.net/project/geeqie/geeqie/geeqie-1.0/geeqie-1.0.tar.gz'
   homepage 'http://geeqie.sourceforge.net/'
-  md5 '1d67ef990390224c5052697d93bb49c0'
+  sha1 '8494a557d67d20e6ad720645ec789dd2b33a3266'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'intltool'
+  depends_on :x11
   depends_on 'gtk+'
   depends_on 'imagemagick' => :recommended
   depends_on 'exiv2' => :recommended

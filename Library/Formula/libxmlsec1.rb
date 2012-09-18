@@ -1,17 +1,16 @@
 require 'formula'
 
 class Libxmlsec1 < Formula
-  url 'http://www.aleksey.com/xmlsec/download/xmlsec1-1.2.18.tar.gz'
   homepage 'http://www.aleksey.com/xmlsec/'
-  md5 '8694b4609aab647186607f79e1da7f1a'
+  url 'http://www.aleksey.com/xmlsec/download/xmlsec1-1.2.18.tar.gz'
+  sha1 '740c3c791be838bf638651a3fe0e80c624c2ae0e'
 
   depends_on 'pkg-config' => :build
-  depends_on 'libxml2' #version on 10.6/10.7 is too old
+  depends_on 'libxml2' # Version on 10.6/10.7 is too old
   depends_on 'gnutls' => :optional
 
-  def patches
-    DATA
-  end
+  # Add HOMEBREW_PREFIX/lib to dl load path
+  def patches; DATA; end
 
   def install
     libxml2 = Formula.factory('libxml2')
@@ -19,6 +18,7 @@ class Libxmlsec1 < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libxml=#{libxml2.prefix}",
+                          "--disable-crypto-dl",
                           "--disable-apps-crypto-dl"
     system "make install"
   end
@@ -33,7 +33,7 @@ index 6e8a56a..0e7f06b 100644
      }
  
  #ifdef XMLSEC_DL_LIBLTDL
-+    lt_dlsearchpath("HOMEBREW_PREFIX/lib");
++    lt_dlsetsearchpath("HOMEBREW_PREFIX/lib");
      lib->handle = lt_dlopenext((char*)lib->filename);
      if(lib->handle == NULL) {
          xmlSecError(XMLSEC_ERRORS_HERE,

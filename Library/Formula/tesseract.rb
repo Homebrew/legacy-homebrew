@@ -10,18 +10,14 @@ def install_language_data
     'slk-frak' => '9420b153514fd0b3f8d77240ca1523b5c6d672d0'
   }
 
-  langs.each do |lang, sha1|
-    language_klass = <<-EOS
-    class #{lang.delete('-').capitalize} < Formula
-      url 'http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.01.#{lang}.tar.gz'
+  langs.each do |lang, sha|
+    klass = Class.new(Formula) do
+      url "http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.01.#{lang}.tar.gz"
       version '3.01'
-      sha1 '#{sha1}'
+      sha1 sha
     end
 
-    #{lang.delete('-').capitalize}.new
-    EOS
-
-    eval(language_klass).brew { mv Dir['tessdata/*'], "#{share}/tessdata/" }
+    klass.new.brew { mv Dir['tessdata/*'], "#{share}/tessdata/" }
   end
 
   # pre-3.01 language data uses a different URL format and installs differently
@@ -64,19 +60,15 @@ def install_language_data
     'cat'       => '0301a9c81c1d646bd1b135ca89476fb63bd634f8'
   }
 
-  langs_old.each do |lang, sha1|
-    language_klass = <<-EOS
-    class #{lang.delete('-').capitalize} < Formula
-      url 'http://tesseract-ocr.googlecode.com/files/#{lang}.traineddata.gz',
+  langs_old.each do |lang, sha|
+    klass = Class.new(Formula) do
+      url "http://tesseract-ocr.googlecode.com/files/#{lang}.traineddata.gz",
         :using => GzipOnlyDownloadStrategy
       version '3.00'
-      sha1 '#{sha1}'
+      sha1 sha
     end
 
-    #{lang.delete('-').capitalize}.new
-    EOS
-
-    eval(language_klass).brew { mv Dir['*'], "#{share}/tessdata/" }
+    klass.new.brew { mv Dir['*'], "#{share}/tessdata/" }
   end
 
 end
@@ -85,33 +77,39 @@ end
 class TesseractEnglishData < Formula
   url 'http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.01.eng.tar.gz'
   version '3.01'
-  md5 '89c139a73e0e7b1225809fc7b226b6c9'
+  sha1 'f2d57eea524ead247612bd027375037c21e22463'
 end
 
 class Tesseract < Formula
-  url 'http://tesseract-ocr.googlecode.com/files/tesseract-3.01.tar.gz'
   homepage 'http://code.google.com/p/tesseract-ocr/'
-  md5 '1ba496e51a42358fb9d3ffe781b2d20a'
+  url 'http://tesseract-ocr.googlecode.com/files/tesseract-3.01.tar.gz'
+  sha1 'c0b605d7192b3071842fe535c82b89c65f2d9c67'
 
+  option "all-languages", "Install recognition data for all languages"
+
+  depends_on :automake
+  depends_on :libtool
   depends_on 'libtiff'
   depends_on 'leptonica'
-
-  fails_with_llvm "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc", :build => "2206"
 
   # mftraining has a missing symbols error when cleaned
   skip_clean 'bin'
 
-  def options
-    [
-      ["--all-languages", "Install recognition data for all languages"]
-    ]
+  fails_with :llvm do
+    build 2206
+    cause "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc"
   end
 
   def install
     system "/bin/sh autogen.sh"
+
+    # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
+    # which doesn't work for non-default homebrew location
+    ENV['LIBLEPT_HEADERSDIR'] = HOMEBREW_PREFIX/"include"
+
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-    if ARGV.include? "--all-languages"
+    if build.include? "all-languages"
       install_language_data
     else
       TesseractEnglishData.new.brew { mv Dir['tessdata/*'], "#{share}/tessdata/" }

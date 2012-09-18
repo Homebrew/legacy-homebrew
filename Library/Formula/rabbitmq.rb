@@ -2,41 +2,33 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.7.1/rabbitmq-server-2.7.1.tar.gz'
-  md5 '44eb09d2dff8ce641a1fe7f255a4c546'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.8.6/rabbitmq-server-generic-unix-2.8.6.tar.gz'
+  sha1 '50ad453ae6a293c7b314dd2dd24a29648f1acc11'
 
   depends_on 'erlang'
-  depends_on 'simplejson' => :python if MacOS.leopard?
+  depends_on 'simplejson' => :python if MacOS.version == :leopard
 
   def install
-    # Building the manual requires additional software, so skip it.
-    inreplace "Makefile", "install: install_bin install_docs", "install: install_bin"
+    # Install the base files
+    prefix.install Dir['*']
 
-    target_dir = "#{lib}/rabbitmq/erlang/lib/rabbitmq-#{version}"
-    system "make"
-    ENV['TARGET_DIR'] = target_dir
-    ENV['MAN_DIR'] = man
-    ENV['SBIN_DIR'] = sbin
-    system "make install"
-
-    (etc+'rabbitmq').mkpath
+    # Setup the lib files
     (var+'lib/rabbitmq').mkpath
     (var+'log/rabbitmq').mkpath
 
-    %w{rabbitmq-server rabbitmqctl rabbitmq-env rabbitmq-plugins}.each do |script|
-      inreplace sbin+script do |s|
-        s.gsub! '/etc/rabbitmq', "#{etc}/rabbitmq"
-        s.gsub! '/var/lib/rabbitmq', "#{var}/lib/rabbitmq"
-        s.gsub! '/var/log/rabbitmq', "#{var}/log/rabbitmq"
-      end
-    end
+    # Replace the SYS_PREFIX for things like rabbitmq-plugins
+    inreplace (sbin + 'rabbitmq-defaults'), 'SYS_PREFIX=${RABBITMQ_HOME}', "SYS_PREFIX=#{HOMEBREW_PREFIX}"
 
-    # RabbitMQ Erlang binaries are installed in lib/rabbitmq/erlang/lib/rabbitmq-x.y.z/ebin
-    # therefore need to add this path for erl -pa
-    inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', target_dir
+    # Set the RABBITMQ_HOME in rabbitmq-env
+    inreplace (sbin + 'rabbitmq-env'), 'RABBITMQ_HOME="${SCRIPT_DIR}/.."', "RABBITMQ_HOME=#{prefix}"
 
-    plist_path.write startup_plist
-    plist_path.chmod 0644
+    # Create the rabbitmq-env.conf file
+    rabbitmq_env_conf = etc+'rabbitmq/rabbitmq-env.conf'
+    rabbitmq_env_conf.write rabbitmq_env unless rabbitmq_env_conf.exist?
+
+    # Enable the management web UI
+    enabled_plugins_path = etc+'rabbitmq/enabled_plugins'
+    enabled_plugins_path.write enabled_plugins unless enabled_plugins_path.exist?
   end
 
   def caveats
@@ -51,8 +43,24 @@ class Rabbitmq < Formula
         cp #{plist_path} ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-      To start rabbitmq-server manually:
+    Management Plugin enabled by default at http://localhost:55672
+
+    To start rabbitmq-server manually:
         rabbitmq-server
+    EOS
+  end
+
+  def enabled_plugins
+    return <<-EOS.undent
+      [rabbitmq_management,rabbitmq_management_visualiser].
+    EOS
+  end
+
+  def rabbitmq_env
+    return <<-EOS.undent
+    CONFIG_FILE=#{etc}/rabbitmq/rabbitmq
+    NODE_IP_ADDRESS=127.0.0.1
+    NODENAME=rabbit@localhost
     EOS
   end
 
@@ -71,11 +79,14 @@ class Rabbitmq < Formula
     <true/>
     <key>UserName</key>
     <string>#{`whoami`.chomp}</string>
-    <!-- need erl in the path -->
     <key>EnvironmentVariables</key>
     <dict>
+      <!-- need erl in the path -->
       <key>PATH</key>
       <string>/usr/local/sbin:/usr/bin:/bin:/usr/local/bin</string>
+      <!-- specify the path to the rabbitmq-env.conf file -->
+      <key>CONF_ENV_FILE</key>
+      <string>#{etc}/rabbitmq/rabbitmq-env.conf</string>
     </dict>
   </dict>
 </plist>

@@ -1,17 +1,18 @@
 require 'formula'
 
 class GitSh < Formula
-  url 'https://github.com/rtomayko/git-sh/tarball/800769328ed381638c13e6eec2c3b21a58d74867'
   homepage 'https://github.com/rtomayko/git-sh'
-  md5 'f736b2c6aea13140af4011672c7d11c3'
+  url 'https://github.com/rtomayko/git-sh/tarball/800769328ed381638c13e6eec2c3b21a58d74867'
   version '20110918'
+  sha1 'a0ce834cdae9a970b969da230c4987fa8ac6394c'
+
   head 'https://github.com/rtomayko/git-sh.git'
 
-  # Not depending on git because people might have it
-  # installed through another means
+  # Pending request for new tag:
+  # https://github.com/rtomayko/git-sh/issues/16
 
   def install
     system "make"
-    system "make install PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end

@@ -3,7 +3,7 @@ require 'formula'
 class Nacl < Formula
   url 'http://hyperelliptic.org/nacl/nacl-20110221.tar.bz2'
   homepage 'http://nacl.cace-project.eu'
-  md5 '7efb5715561c3d10dafd3fa97b4f2d20'
+  sha1 '6007a6aee249f5a534ec53fddfc364601fba9629'
 
   def install
     system "./do" # This takes a while since it builds *everything*
@@ -29,7 +29,7 @@ class Nacl < Formula
     # but plenty of the key generation routines depend on it. Users shouldn't have to
     # know this.
     nacl_libdir = "build/#{hoststr}/lib/#{archstr}"
-    system "ar -r #{nacl_libdir}/libnacl.a #{nacl_libdir}/randombytes.o"
+    system "ar", "-r", "#{nacl_libdir}/libnacl.a", "#{nacl_libdir}/randombytes.o"
     lib.install "#{nacl_libdir}/libnacl.a"
   end
 end

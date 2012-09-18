@@ -3,8 +3,9 @@ require 'formula'
 class Pil < Formula
   url 'http://effbot.org/downloads/Imaging-1.1.7.tar.gz'
   homepage 'http://www.pythonware.com/products/pil/'
-  md5 'fc14a54e1ce02a0225be8854bfba478e'
+  sha1 '76c37504251171fda8da8e63ecb8bc42a69a5c81'
 
+  depends_on :x11
   depends_on 'jpeg' => :recommended
   depends_on 'little-cms' => :optional
 
@@ -21,10 +22,10 @@ class Pil < Formula
     inreplace "setup.py" do |s|
       # Tell setup where Freetype2 is on 10.5/10.6
       s.gsub! 'add_directory(include_dirs, "/sw/include/freetype2")',
-              'add_directory(include_dirs, "/usr/X11/include")'
+              "add_directory(include_dirs, \"#{MacOS::X11.include}\")"
 
       s.gsub! 'add_directory(include_dirs, "/sw/lib/freetype2/include")',
-              'add_directory(library_dirs, "/usr/X11/lib")'
+              "add_directory(library_dirs, \"#{MacOS::X11.lib}\")"
 
       # Tell setup where our stuff is
       s.gsub! 'add_directory(library_dirs, "/sw/lib")',

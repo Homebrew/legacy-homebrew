@@ -1,41 +1,29 @@
 require 'formula'
 
 class Tcpflow < Formula
-  homepage 'http://afflib.org/software/tcpflow'
-  url 'http://afflib.org/downloads/tcpflow-1.1.0.tar.gz'
-  md5 '9b836b16575679e9d10f39ac7a98efbe'
+  homepage 'https://github.com/simsong/tcpflow'
+  url 'https://github.com/downloads/simsong/tcpflow/tcpflow-1.3.0.tar.gz'
+  sha1 'fccd0a451bf138e340fc3b55dfc07924c0a811d8'
 
-  def patches
-    # Patch from MacPorts
-    { :p0 => DATA }
+  depends_on :libtool
+
+  def copy_libtool_files!
+    if not MacOS::Xcode.provides_autotools?
+      s = Formula.factory('libtool').share
+      d = "#{s}/libtool/config"
+      cp ["#{d}/config.guess", "#{d}/config.sub"], "."
+    elsif MacOS.version == :leopard
+      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config.*"], "."
+    else
+      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config/config.*"], "."
+    end
   end
 
   def install
-    if MacOS.leopard?
-      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config.*"], "."
-    else
-      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config/config.*"], "."
-    end
-
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
+    copy_libtool_files!
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end
-
-__END__
---- src/util.cpp.orig	2012-02-07 14:42:10.000000000 +1100
-+++ src/util.cpp	2012-02-07 14:42:12.000000000 +1100
-@@ -114,6 +114,12 @@
- 	    exit(1);
- 	}
- 
-+#if defined(__APPLE__)
-+        if (limit.rlim_max > OPEN_MAX) {
-+                limit.rlim_max = OPEN_MAX;
-+        }
-+#endif
-+
- 	/* set the current to the maximum or specified value */
- 	if (max_desired_fds) limit.rlim_cur = max_desired_fds;
- 	else limit.rlim_cur = limit.rlim_max;

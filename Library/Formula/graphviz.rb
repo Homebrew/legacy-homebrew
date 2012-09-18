@@ -1,22 +1,27 @@
 require 'formula'
 
-def build_bindings?
-  ARGV.include? '--with-bindings' or (MacOS.lion? and not ARGV.include? '--without-bindings')
-end
-
 class Graphviz < Formula
-  url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.28.0.tar.gz'
-  md5 '8d26c1171f30ca3b1dc1b429f7937e58'
   homepage 'http://graphviz.org/'
+  url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.28.0.tar.gz'
+  sha1 '4725d88a13e071ee22e632de551d4a55ca08ee7d'
+
+  env :std
+
+  option :universal
+  option 'with-bindings', 'Build Perl/Python/Ruby/etc. bindings'
+  option 'with-pangocairo', 'Build with Pango/Cairo for alternate PDF output'
+  option 'with-app', 'Build GraphViz.app (requires full XCode install)'
+
+  depends_on :libpng
 
   depends_on 'pkg-config' => :build
+  depends_on 'pango' if build.include? 'with-pangocairo'
+  depends_on 'swig' if build.include? 'with-bindings'
+  depends_on :xcode if build.include? 'with-app'
+  depends_on 'gd'
 
-  depends_on 'pango' if ARGV.include? '--with-pangocairo'
-  depends_on 'swig' if build_bindings?
-
-  def options
-    [["--with-pangocairo", "Build with Pango/Cairo for alternate PDF output"],
-     ["--with[out]-bindings", "Build Perl/Python/Ruby/etc. bindings (default on Lion; may not work on earlier systems)"]]
+  fails_with :clang do
+    build 318
   end
 
   def patches
@@ -25,45 +30,52 @@ class Graphviz < Formula
   end
 
   def install
-    ENV.x11
+    ENV.universal_binary if build.universal?
     args = ["--disable-debug",
             "--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--with-qt=no",
+            "--without-x",
             "--with-quartz"]
-    args << "--disable-swig" unless build_bindings?
-    args << "--without-pangocairo" unless ARGV.include? '--with-pangocairo'
+    args << "--disable-swig" unless build.include? 'with-bindings'
+    args << "--without-pangocairo" unless build.include? 'with-pangocairo'
 
     system "./configure", *args
     system "make install"
 
-    # build Graphviz.app
-    Dir.chdir "macosx" do
-      system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
+    if build.include? 'with-app'
+      # build Graphviz.app
+      cd "macosx" do
+        system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
+      end
+      prefix.install "macosx/build/Release/Graphviz.app"
     end
-    prefix.install "macosx/build/Release/Graphviz.app"
+
+    (bin+'gvmap.sh').unlink
   end
 
   def test
     mktemp do
-      p = Pathname.new Dir.pwd
-      (p+'sample.dot').write <<-EOS.undent
+      (Pathname.pwd+'sample.dot').write <<-EOS.undent
       digraph G {
         a -> b
       }
       EOS
 
-      system "#{bin}/dot -Tpdf -o sample.pdf sample.dot && /usr/bin/open ./sample.pdf && /bin/sleep 3"
+      system "#{bin}/dot", "-Tpdf", "-o", "sample.pdf", "sample.dot"
     end
   end
 
-  def caveats; <<-EOS
-    Graphviz.app was installed in:
-      #{prefix}
+  def caveats
+    if build.include? 'with-app'
+      <<-EOS
+        Graphviz.app was installed in:
+          #{prefix}
 
-    To symlink into ~/Applications, you can do:
-      brew linkapps
-    EOS
+        To symlink into ~/Applications, you can do:
+          brew linkapps
+        EOS
+    end
   end
 end
 

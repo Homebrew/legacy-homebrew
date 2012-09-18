@@ -1,10 +1,10 @@
 require 'formula'
 
 class AutoconfArchive < Formula
-  url 'http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2011.12.21.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/autoconf-archive/autoconf-archive-2011.12.21.tar.bz2'
+  url 'http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2012.04.07.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/autoconf-archive/autoconf-archive-2012.04.07.tar.bz2'
   homepage 'http://savannah.gnu.org/projects/autoconf-archive/'
-  md5 'd209c2f6034c07835987e4741fd504c0'
+  sha1 'ca15d09f63b26b146f8be12a740a148d8deb4066'
 
   def install
     system './configure', "--prefix=#{prefix}"

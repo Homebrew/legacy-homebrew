@@ -1,19 +1,17 @@
 require 'formula'
 
 class OfflineImap < Formula
-  url "https://github.com/downloads/spaetz/offlineimap/offlineimap-v6.5.2.tar.gz"
-  md5 '0ccb6b7e4723a414ea50abb27450a56f'
-  head "https://github.com/spaetz/offlineimap.git"
-  homepage "http://offlineimap.org/"
+  homepage 'http://offlineimap.org/'
+  url 'https://github.com/downloads/spaetz/offlineimap/offlineimap-v6.5.4.tar.gz'
+  sha1 'a9ad5f32f8bc0ec042f8059ea9d34282bb8b682a'
+
+  head 'https://github.com/OfflineIMAP/offlineimap.git'
 
   def install
+    prefix.install 'offlineimap.conf', 'offlineimap.conf.minimal'
     libexec.install 'bin/offlineimap' => 'offlineimap.py'
     libexec.install 'offlineimap'
-    prefix.install [ 'offlineimap.conf', 'offlineimap.conf.minimal' ]
-    bin.mkpath
-    ln_s libexec+'offlineimap.py', bin+'offlineimap'
-    plist_path.write startup_plist
-    plist_path.chmod 0644
+    bin.install_symlink libexec+'offlineimap.py' => 'offlineimap'
   end
 
   def caveats; <<-EOS.undent

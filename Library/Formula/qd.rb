@@ -1,9 +1,9 @@
 require 'formula'
 
 class Qd < Formula
-  url 'http://crd.lbl.gov/~dhbailey/mpdist/qd-2.3.11.tar.gz'
+  url 'http://crd.lbl.gov/~dhbailey/mpdist/qd-2.3.13.tar.gz'
   homepage 'http://crd.lbl.gov/~dhbailey/mpdist/'
-  md5 '4623b3b103897d7fb12c729e8c206969'
+  sha1 'f46d63eb5e21172a6f66884b4ddbb352b327a9ca'
 
   def install
     ENV.fortran

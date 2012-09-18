@@ -1,16 +1,16 @@
 require 'formula'
 
 class Points2grid < Formula
-  url 'https://github.com/CRREL/points2grid/zipball/1.1.0'
   homepage 'https://github.com/CRREL/points2grid'
-  md5 '39a8426675d6f5cb2414683c737b13bf'
+  url 'https://github.com/CRREL/points2grid/zipball/1.1.0'
+  sha1 '31feb8890380964b875ed461b1ed6b769649ee6e'
 
   depends_on 'cmake' => :build
   depends_on 'boost'
   depends_on 'pdal'
 
   def install
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 end

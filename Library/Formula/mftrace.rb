@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mftrace < Formula
-  url 'http://lilypond.org/download/sources/mftrace/mftrace-1.2.16.tar.gz'
   homepage 'http://lilypond.org/mftrace/'
-  md5 '1c65846471db8f10902b96b7b3120da5'
+  url 'http://lilypond.org/download/sources/mftrace/mftrace-1.2.18.tar.gz'
+  sha1 '8ae5c69a49f3d34e021913b6378056a6d43c2fd2'
 
   depends_on 'potrace'
   depends_on 't1utils'

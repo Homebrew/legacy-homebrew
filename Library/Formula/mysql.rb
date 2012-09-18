@@ -2,34 +2,44 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://downloads.mysql.com/archives/mysql-5.5/mysql-5.5.19.tar.gz'
-  md5 'a78cf450974e9202bd43674860349b5a'
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.27.tar.gz/from/http://cdn.mysql.com/'
+  version '5.5.27'
+  sha1 'd53dfbe4ac1119e4c4a33d639f2904abdd0f226d'
 
-  depends_on 'cmake' => :build
-  depends_on 'readline'
-  depends_on 'pidof'
-
-  fails_with_llvm "https://github.com/mxcl/homebrew/issues/issue/144", :build => 2326
-
-  skip_clean :all # So "INSTALL PLUGIN" can work.
-
-  def options
-    [
-      ['--with-tests', "Build with unit tests."],
-      ['--with-embedded', "Build the embedded server."],
-      ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
-      ['--with-archive-storage-engine', "Compile with the ARCHIVE storage engine enabled"],
-      ['--with-blackhole-storage-engine', "Compile with the BLACKHOLE storage engine enabled"],
-      ['--universal', "Make mysql a universal binary"],
-      ['--enable-local-infile', "Build with local infile loading support"]
-    ]
+  bottle do
+    sha1 '7aa66b8ea9b03baec9c5d1a678a7c547494e00fe' => :mountainlion
+    sha1 '5257fd34a20a2375e1d73c733c44e2d0fa1bcae2' => :lion
+    sha1 '8fe8c5db43b129e45823444180f4d81af0c0c880' => :snowleopard
   end
 
-  def patches
-    DATA
+  depends_on 'cmake' => :build
+  depends_on 'pidof' unless MacOS.version >= :mountain_lion
+
+  option :universal
+  option 'with-tests', 'Build with unit tests'
+  option 'with-embedded', 'Build the embedded server'
+  option 'with-libedit', 'Compile with editline wrapper instead of readline'
+  option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
+  option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
+  option 'enable-local-infile', 'Build with local infile loading support'
+  option 'enable-debug', 'Build with debug support'
+
+  conflicts_with 'mariadb',
+    :because => "mysql and mariadb install the same binaries."
+
+  conflicts_with 'percona-server',
+    :because => "mysql and percona-server install the same binaries."
+
+  fails_with :llvm do
+    build 2326
+    cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
 
   def install
+    # Build without compiler or CPU specific optimization flags to facilitate
+    # compilation of gems and other software that queries `mysql-config`.
+    ENV.minimal_optimization
+
     # Make sure the var/mysql directory exists
     (var+"mysql").mkpath
 
@@ -47,36 +57,36 @@ class Mysql < Formula
             "-DSYSCONFDIR=#{etc}"]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if ARGV.include? '--with-tests'
+    if build.include? 'with-tests'
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
     end
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
 
     # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless ARGV.include? '--with-libedit'
+    args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
 
     # Compile with ARCHIVE engine enabled if chosen
-    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if ARGV.include? '--with-archive-storage-engine'
+    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.include? 'with-archive-storage-engine'
 
     # Compile with BLACKHOLE engine enabled if chosen
-    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if ARGV.include? '--with-blackhole-storage-engine'
+    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
 
     # Build with local infile loading support
-    args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
+    args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
+
+    # Build with debug support
+    args << "-DWITH_DEBUG=1" if build.include? 'enable-debug'
 
     system "cmake", *args
     system "make"
     system "make install"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/mxcl/homebrew/issues/4975
@@ -87,6 +97,8 @@ class Mysql < Formula
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+      # pidof can be replaced with pgrep from proctools on Mountain Lion
+      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
     ln_s "#{prefix}/support-files/mysql.server", bin
   end
@@ -156,33 +168,3 @@ class Mysql < Formula
     EOPLIST
   end
 end
-
-
-__END__
-diff --git a/scripts/mysqld_safe.sh b/scripts/mysqld_safe.sh
-index 0d2045a..2fdd5ce 100644
---- a/scripts/mysqld_safe.sh
-+++ b/scripts/mysqld_safe.sh
-@@ -558,7 +558,7 @@ else
- fi
- 
- USER_OPTION=""
--if test -w / -o "$USER" = "root"
-+if test -w /sbin -o "$USER" = "root"
- then
-   if test "$user" != "root" -o $SET_USER = 1
-   then
-diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
-index 9296075..a600de2 100644
---- a/scripts/mysql_config.sh
-+++ b/scripts/mysql_config.sh
-@@ -137,7 +137,8 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNIV_MUST_NOT_INLINE DFORCE_INIT_OF_VARS \
-               DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
-               'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
-               Xa xstrconst "xc99=none" AC99 \
--              unroll2 ip mp restrict
-+              unroll2 ip mp restrict \
-+              mmmx 'msse[0-9.]*' 'mfpmath=sse' w pipe 'fomit-frame-pointer' 'mmacosx-version-min=10.[0-9]'
- do
-   # The first option we might strip will always have a space before it because
-   # we set -I$pkgincludedir as the first option

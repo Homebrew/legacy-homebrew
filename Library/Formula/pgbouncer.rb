@@ -1,23 +1,24 @@
 require 'formula'
 
 class Pgbouncer < Formula
-  url 'http://pgfoundry.org/frs/download.php/3197/pgbouncer-1.5.tgz'
   homepage 'http://wiki.postgresql.org/wiki/PgBouncer'
-  md5 '6179fdc7f7e3c702fe834d655676de4c'
+  url 'http://pgfoundry.org/frs/download.php/3293/pgbouncer-1.5.2.tar.gz'
+  sha1 'd9e796b175e1023ef574f768a711e7dcd60b5016'
 
+  depends_on 'asciidoc' => :build
+  depends_on 'xmlto' => :build
   depends_on 'libevent'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
+
+    system "./configure", "--disable-debug",
                           "--with-libevent=#{HOMEBREW_PREFIX}",
                           "--prefix=#{prefix}"
-    system "ln -s ../install-sh doc/install-sh"
+    ln_s "../install-sh", "doc/install-sh"
     system "make install"
     bin.install "etc/mkauth.py"
     etc.install %w(etc/pgbouncer.ini etc/userlist.txt)
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

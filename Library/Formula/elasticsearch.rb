@@ -1,9 +1,9 @@
 require 'formula'
 
 class Elasticsearch < Formula
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.18.7.tar.gz'
   homepage 'http://www.elasticsearch.org'
-  md5 'c4de29abf930693b0a4290df3250e128'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.9.tar.gz'
+  sha1 '699b442ab2d9483084689dee037b5eea38a76652'
 
   def cluster_name
     "elasticsearch_#{ENV['USER']}"
@@ -28,6 +28,9 @@ class Elasticsearch < Formula
       # 2. Configure paths
       s.gsub! /#\s*path\.data\: [^\n]+/, "path.data: #{var}/elasticsearch/"
       s.gsub! /#\s*path\.logs\: [^\n]+/, "path.logs: #{var}/log/elasticsearch/"
+
+      # 3. Bind to loopback IP for laptops roaming different networks
+      s.gsub! /#\s*network\.host\: [^\n]+/, "network.host: 127.0.0.1"
     end
 
     inreplace "#{bin}/elasticsearch.in.sh" do |s|
@@ -46,10 +49,6 @@ class Elasticsearch < Formula
       # Replace CLASSPATH paths to use libexec instead of lib
       s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
     end
-
-    # Write .plist file for `launchd`
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats
@@ -63,6 +62,10 @@ class Elasticsearch < Formula
         launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
         ln -nfs #{plist_path} ~/Library/LaunchAgents/
         launchctl load -wF ~/Library/LaunchAgents/#{plist_path.basename}
+
+    If upgrading from 0.18 ElasticSearch requires flushing before shutting
+    down the cluster with no indexing operations happening after flush:
+        curl host:9200/_flush
 
     To stop the ElasticSearch daemon:
         launchctl unload -wF ~/Library/LaunchAgents/#{plist_path.basename}
@@ -100,6 +103,11 @@ class Elasticsearch < Formula
             <string>-f</string>
             <string>-D es.config=#{prefix}/config/elasticsearch.yml</string>
           </array>
+          <key>EnvironmentVariables</key>
+          <dict>
+            <key>ES_JAVA_OPTS</key>
+            <string>-Xss200000</string>
+          </dict>
           <key>RunAtLoad</key>
           <true/>
           <key>UserName</key>

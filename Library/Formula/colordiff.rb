@@ -1,31 +1,27 @@
 require 'formula'
 
 class Colordiff < Formula
-  url 'http://colordiff.sourceforge.net/colordiff-1.0.9.tar.gz'
   homepage 'http://colordiff.sourceforge.net/'
-  md5 '31864847eaa4e900f72bbb6bbc64f1ec'
+  url 'http://colordiff.sourceforge.net/colordiff-1.0.10.tar.gz'
+  sha1 'eeedbe025b9f250134d91fd68fd3940748bbe102'
 
-  def patches
-    DATA
-  end
+  def patches; DATA; end
 
   def install
-    system "make DESTDIR=#{prefix} install"
+    man1.mkpath
+    system "make", "INSTALL_DIR=#{bin}",
+                   "ETC_DIR=#{etc}",
+                   "MAN_DIR=#{man1}",
+                   "install"
   end
 end
 
 __END__
---- a/Makefile	2009-04-21 11:55:47.000000000 -0700
-+++ b/Makefile	2009-10-02 10:09:44.000000000 -0700
-@@ -1,5 +1,5 @@
--INSTALL_DIR=/usr/local/bin
--MAN_DIR=/usr/local/man/man1
-+INSTALL_DIR=/bin
-+MAN_DIR=/share/man/man1
- ETC_DIR=/etc
- VERSION=1.0.9
- DIST_FILES=COPYING INSTALL Makefile README \
-@@ -8,6 +8,7 @@
+diff --git a/Makefile b/Makefile
+index 6ccbfc7..e5d64e7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -8,6 +8,7 @@ DIST_FILES=COPYING INSTALL Makefile README \
  TMPDIR=colordiff-${VERSION}
  TARBALL=${TMPDIR}.tar.gz
  
@@ -33,16 +29,7 @@ __END__
  
  doc: colordiff.xml cdiff.xml
  	xmlto -vv man colordiff.xml
-@@ -22,14 +23,16 @@
- 
- install:
- 	install -d ${DESTDIR}${INSTALL_DIR}
-+	install -d ${DESTDIR}${MAN_DIR}
-+	install -d ${DESTDIR}${ETC_DIR}
--	sed -e "s%/etc%${ETC_DIR}%g" colordiff.pl > \
-+	sed -e "s%/etc%${DESTDIR}${ETC_DIR}%g" colordiff.pl > \
- 	  ${DESTDIR}${INSTALL_DIR}/colordiff
- 	chmod +x ${DESTDIR}${INSTALL_DIR}/colordiff
+@@ -28,8 +29,8 @@ install:
  	if [ ! -f ${DESTDIR}${INSTALL_DIR}/cdiff ] ; then \
  	  install cdiff.sh ${DESTDIR}${INSTALL_DIR}/cdiff; \
  	fi
@@ -53,3 +40,11 @@ __END__
  	if [ -f ${DESTDIR}${ETC_DIR}/colordiffrc ]; then \
  	  mv -f ${DESTDIR}${ETC_DIR}/colordiffrc \
  	    ${DESTDIR}${ETC_DIR}/colordiffrc.old; \
+@@ -37,7 +38,6 @@ install:
+ 	  install -d ${DESTDIR}${ETC_DIR}; \
+ 	fi
+ 	cp colordiffrc ${DESTDIR}${ETC_DIR}/colordiffrc
+-	-chown root.root ${DESTDIR}${ETC_DIR}/colordiffrc
+ 	chmod 644 ${DESTDIR}${ETC_DIR}/colordiffrc
+ 
+ uninstall:
