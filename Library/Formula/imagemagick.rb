@@ -38,6 +38,7 @@ class Imagemagick < Formula
   option 'without-freetype', 'Compile without freetype support.'
 
   depends_on 'pkg-config' => :build
+  depends_on 'libtool' if MacOS.version >= :mountain_lion
 
   depends_on 'jpeg' => :recommended
   depends_on :libpng
