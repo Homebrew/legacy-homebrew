@@ -2,10 +2,12 @@ require 'formula'
 
 class AtlassianPluginSdk < Formula
   homepage 'https://developer.atlassian.com'
-  url 'https://marketplace.atlassian.com/download/plugins/atlassian-plugin-sdk-tgz'
 
-  # This is the only thing that needs to be updated when a new version of the
-  # SDK is released. To generate a sha1 sig on a mac, run
+  # Get the latest versioned download URL from 
+  # https://marketplace.atlassian.com/plugins/atlassian-plugin-sdk-tgz
+  url 'https://marketplace.atlassian.com/download/plugins/atlassian-plugin-sdk-tgz/version/25'
+
+  # To generate a sha1 sig on a mac, run
   #   `shasum <sdk.tgz>`
   sha1 'f18ee77fbad58ceca3108ccc271cabcefa23f817'
 
