@@ -9,10 +9,8 @@ class Liblastfm < Formula
   depends_on 'fftw'
   depends_on 'libsamplerate'
 
-  # See issue #12886.  Reported in: https://github.com/mxcl/liblastfm/issues/14
-  fails_with :clang do
-    build 318
-    cause 'error: reference to non-static member function must be called'
+  def patches
+	  DATA
   end
 
   def install
@@ -21,3 +19,19 @@ class Liblastfm < Formula
     system "make install"
   end
 end
+
+__END__
+diff --git a/src/fingerprint/fplib/FloatingAverage.h b/src/fingerprint/fplib/FloatingAverage.h
+index 1be665b..958087e 100644
+--- a/src/fingerprint/fplib/FloatingAverage.h
++++ b/src/fingerprint/fplib/FloatingAverage.h
+@@ -76,7 +76,7 @@ public:
+    {
+       T real_sum = 0;
+       const T* pCircularBuffer = m_values.get_buffer();
+-      for ( int i = 0; i < size; ++i )
++      for ( int i = 0; i < size(); ++i )
+          real_sum += pCircularBuffer[i];
+       return abs(real_sum - m_sum) / this->size();
+    }
+
