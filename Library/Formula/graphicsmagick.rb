@@ -1,23 +1,11 @@
 require 'formula'
 
-def ghostscript_fonts?
-  File.directory? "#{HOMEBREW_PREFIX}/share/ghostscript/fonts"
-end
-
 def ghostscript_srsly?
   build.include? 'with-ghostscript'
 end
 
-def use_wmf?
-  build.include? 'use-wmf'
-end
-
-def quantum_depth
-  if build.include? 'with-quantum-depth-32'
-    32
-  elsif build.include? 'with-quantum-depth-16'
-    16
-  end
+def ghostscript_fonts?
+  File.directory? "#{HOMEBREW_PREFIX}/share/ghostscript/fonts"
 end
 
 class Graphicsmagick < Formula
@@ -27,26 +15,35 @@ class Graphicsmagick < Formula
 
   head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
 
-  depends_on :x11
-  depends_on 'jpeg'
-  depends_on 'libwmf' if use_wmf?
-  depends_on 'libtiff' => :optional
-  depends_on 'little-cms2' => :optional
-  depends_on 'jasper' => :optional
-  depends_on 'ghostscript' => :recommended if ghostscript_srsly?
-  depends_on 'xz' => :optional
+  option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
+  option 'use-tiff', 'Compile with libtiff support.'
+  option 'use-cms', 'Compile with little-cms support.'
+  option 'use-jpeg2000', 'Compile with jasper support.'
+  option 'use-wmf', 'Compile with libwmf support.'
+  option 'use-xz', 'Compile with xz support.'
+  option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
+  option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
+  option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
+  option 'with-x', 'Compile with X11 support.'
+  option 'without-magick-plus-plus', "Don't build C++ library."
+
+  depends_on 'jpeg' => :recommended
+  depends_on :libpng
+  depends_on :x11 if build.include? 'with-x'
+
+  depends_on 'ghostscript' => :optional if ghostscript_srsly?
+
+  depends_on 'libtiff' => :optional if build.include? 'use-tiff'
+  depends_on 'little-cms2' => :optional if build.include? 'use-cms'
+  depends_on 'jasper' => :optional if build.include? 'use-jpeg2000'
+  depends_on 'libwmf' => :optional if build.include? 'use-wmf'
+  depends_on 'xz' => :optional if build.include? 'use-xz'
 
   fails_with :llvm do
     build 2335
   end
 
   skip_clean :la
-
-  option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
-  option 'without-magick-plus-plus', "Don't build C++ library."
-  option 'use-wmf', 'Compile with libwmf support.'
-  option 'with-quantum-depth-16', 'Use an 16 bit pixel quantum depth (default is 8)'
-  option 'with-quantum-depth-32', 'Use a 32 bit pixel quantum depth (default is 8)'
 
   def install
     # versioned stuff in main tree is pointless for us
@@ -60,9 +57,24 @@ class Graphicsmagick < Formula
     args << "--with-gslib" if ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
               unless ghostscript_fonts?
+
+    if build.include? 'with-quantum-depth-32'
+      quantum_depth = 32
+    elsif build.include? 'with-quantum-depth-16'
+      quantum_depth = 16
+    elsif build.include? 'with-quantum-depth-8'
+      quantum_depth = 8
+    end
+
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
+    args << "--without-x" unless build.include? 'with-x'
 
     system "./configure", *args
     system "make install"
+  end
+
+  def test
+    system "#{bin}/gm", "identify", \
+      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png"
   end
 end
