@@ -132,8 +132,10 @@ module MacOS::Xcode extend self
         "4.3"
       when 40
         "4.4"
+      when 41
+        "4.5"
       else
-        "4.4"
+        "4.5"
       end
     end
   end
