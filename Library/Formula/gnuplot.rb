@@ -7,7 +7,12 @@ class Gnuplot < Formula
 
   head 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot', :using => :cvs
 
-  if ARGV.build_head?
+  option 'pdf', 'Build with pdflib-lite support.'
+  option 'wx', 'Build with wxWidgets support.'
+  option 'nolua', 'Build without lua support.'
+  option 'nogd', 'Build without gd support.'
+
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -16,19 +21,10 @@ class Gnuplot < Formula
   depends_on 'readline'
   depends_on 'pango'
   depends_on :x11
-  depends_on 'pdflib-lite' if ARGV.include? "--pdf"
-  depends_on 'lua' unless ARGV.include? '--nolua'
-  depends_on 'gd' unless ARGV.include? "--nogd"
-  depends_on 'wxmac' if ARGV.include? "--wx"
-
-  def options
-    [
-      ["--pdf", "Build with pdflib-lite support."],
-      ["--wx", "Build with wxWidgets support."],
-      ["--nolua", "Build without lua support."],
-      ["--nogd", "Build without gd support."]
-    ]
-  end
+  depends_on 'pdflib-lite' if build.include? 'pdf'
+  depends_on 'lua' unless build.include? 'nolua'
+  depends_on 'gd' unless build.include? 'nogd'
+  depends_on 'wxmac' if build.include? 'wx'
 
   def install
     # Help configure find libraries
@@ -40,17 +36,17 @@ class Gnuplot < Formula
             "--prefix=#{prefix}",
             "--with-readline=#{readline.prefix}"]
 
-    args << "--disable-wxwidgets" unless ARGV.include? "--wx"
-    args << "--with-pdf=#{pdflib.prefix}" if ARGV.include? '--pdf'
-    args << "--without-lua" if ARGV.include? "--nolua"
+    args << '--disable-wxwidgets' unless build.include? 'wx'
+    args << "--with-pdf=#{pdflib.prefix}" if build.include? 'pdf'
+    args << '--without-lua' if build.include? 'nolua'
 
-    if ARGV.include? '--nogd'
+    if build.include? 'nogd'
       args << '--without-gd'
     else
       args << "--with-gd=#{gd.prefix}"
     end
 
-    system "autoreconf" if ARGV.build_head?
+    system 'autoreconf' if build.head?
 
     system "./configure", *args
     system "make install"
