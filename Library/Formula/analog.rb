@@ -3,7 +3,6 @@ require 'formula'
 # Jason Thaxter <jason@thaxter.net>
 
 class Analog < Formula
-
   homepage 'http://analog.cx'
   url 'http://analog.cx/analog-6.0.tar.gz'
   sha1 '17ad601f84e73c940883fb9b9e805879aac37493'
