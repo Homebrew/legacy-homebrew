@@ -10,6 +10,7 @@ class Libgtop < Formula
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'intltool'
+  depends_on :x11
 
   # Patch per MacPorts:
   # https://trac.macports.org/ticket/21165
