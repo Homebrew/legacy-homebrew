@@ -14,7 +14,9 @@ class IrcdHybrid < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--localstatedir=#{var}"
+                          "--localstatedir=#{var}",
+                          # there's no config setting for this so set it to something generous
+                          "--with-nicklen=30"
     system "make install"
   end
 
