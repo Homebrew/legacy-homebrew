@@ -1,5 +1,13 @@
 require 'formula'
 
+class BoostLog < Formula
+  url 'http://sourceforge.net/projects/boost-log/files/boost-log-1.1.zip'
+  homepage 'http://http://boost-log.sourceforge.net/'
+  md5 'd42fc71d0ead0d413b997c0e678722ca'
+
+  head 'https://boost-log.svn.sourceforge.net/svnroot/boost-log', :using => :svn
+end
+
 def needs_universal_python?
   build.universal? and not build.include? "without-python"
 end
@@ -19,21 +27,17 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.50.0/boost_1_50_0.tar.bz2'
-  sha1 'ee06f89ed472cf369573f8acf9819fbc7173344e'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.51.0/boost_1_51_0.tar.bz2'
+  sha1 '52ef06895b97cc9981b8abf1997c375ca79f30c5'
 
   head 'http://svn.boost.org/svn/boost/trunk'
 
-  bottle do
-    sha1 '06c7e19ec8d684c35fb035e6326df6393e46dce2' => :mountainlion
-    sha1 '25ef1d7af5f6f9783313370fd8115902b24c5eeb' => :lion
-    sha1 '4508c9afcb14a15b6b3c7db4cdfb7bd3f8e1c9bc' => :snowleopard
-  end
-
   option :universal
+  option :cxx11
   option 'with-mpi', 'Enable MPI support'
   option 'without-python', 'Build without Python'
   option 'with-icu', 'Build regexp engine with icu support'
+  option 'with-log', 'Build with provisionally accepted logging library'
 
   depends_on UniversalPython.new if needs_universal_python?
   depends_on "icu4c" if build.include? "with-icu"
@@ -44,6 +48,16 @@ class Boost < Formula
   end
 
   def install
+
+    if build.include? "with-log"
+      d = Dir.getwd
+      BoostLog.new.brew do
+	inreplace 'libs/log/src/text_file_backend.cpp', 'get_generic_category', 'generic_category'
+        mv "boost/log", "#{d}/boost/"
+        mv "libs/log", "#{d}/libs/"
+      end
+    end
+
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a
     # non-/usr/local location.
@@ -76,14 +90,18 @@ class Boost < Formula
       bargs << "--with-icu=#{icu4c_prefix}"
     end
 
+    ENV.cxx11 if build.cxx11?
+
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
             "-j#{ENV.make_jobs}",
             "--layout=tagged",
             "--user-config=user-config.jam",
             "threading=multi",
+	    "toolset=clang",
             "install"]
 
+    args << "cxxflags=#{ENV.cxxflags}" << "linkflags=#{ENV.ldflags}" if build.cxx11?
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
     args << "--without-python" if build.include? "without-python"
 

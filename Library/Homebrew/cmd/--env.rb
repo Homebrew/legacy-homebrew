@@ -8,6 +8,8 @@ module Homebrew extend self
     end
     ENV.setup_build_environment
     ENV.universal_binary if ARGV.build_universal?
+    ENV.cxx11 if ARGV.build_cxx11?
+
     if $stdout.tty?
       dump_build_env ENV
     else
