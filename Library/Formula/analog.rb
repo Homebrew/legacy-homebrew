@@ -5,27 +5,24 @@ require 'formula'
 class Analog < Formula
   homepage 'http://analog.cx'
   url 'http://analog.cx/analog-6.0.tar.gz'
-  md5 '743d03a16eb8c8488205ae63cdb671cd'
+  sha1 '17ad601f84e73c940883fb9b9e805879aac37493'
 
   depends_on 'gd'
   depends_on 'jpeg'
   depends_on 'libpng'
 
   def install
-    system "make DEFS='-DLANGDIR=\\\"/usr/local/share/analog/lang/\\\"'"
-    system "mkdir -p /usr/local/Cellar/analog/6.0/bin"
-    system "mkdir -p /usr/local/Cellar/analog/6.0/share/analog/lang"
-    system "mkdir -p /usr/local/Cellar/analog/6.0/share/man"
-    system "mkdir -p /usr/local/Cellar/analog/6.0/share/man/man1"
-    system "mkdir -p /usr/local/Cellar/analog/6.0/etc"
-    system "mkdir -p /usr/local/Cellar/analog/6.0/share/analog"
-    system "cp analog /usr/local/Cellar/analog/6.0/bin"
-    system "cp -R examples how-to images lang /usr/local/Cellar/analog/6.0/share/analog/"
-    system "cp analog.man /usr/local/Cellar/analog/6.0/share/man/man1/analog.1"
-    system "cp analog.cfg /usr/local/Cellar/analog/6.0/etc/analog.cfg-dist"
+    system "make DEFS='-DLANGDIR=\\\"#{share}/analog/lang/\\\"'"
+    system "mkdir -p #{bin}"
+    system "cp analog #{bin}"
+    system "mkdir -p #{share}/analog"
+    system "cp -R examples how-to images lang #{share}/analog/"
+    system "cp analog.cfg #{share}/analog/analog.cfg-dist"
+    system "mkdir -p #{man1}"
+    system "cp analog.man #{man1}/analog.1"
   end
 
   def test
-    system "/usr/local/bin/analog"
+    system "#{bin}/analog > /dev/null"
   end
 end
