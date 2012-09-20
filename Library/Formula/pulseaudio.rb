@@ -7,10 +7,10 @@ class Pulseaudio < Formula
   md5 '86912af7fd4f8aa67f83182c135b2a5c'
   
   # Dependencies from http://www.freedesktop.org/wiki/Software/PulseAudio/Ports/OSX
-  depends_on 'autoconf'
-  depends_on 'automake'
-  depends_on 'intltool'
-  depends_on 'libtool'
+  depends_on 'autoconf' if ARGV.build_head?
+  depends_on 'automake' if ARGV.build_head?
+  depends_on 'intltool' 
+  depends_on 'libtool' if ARGV.build_head?
   depends_on 'libsndfile'
   depends_on 'speex'
   depends_on 'gdbm'
