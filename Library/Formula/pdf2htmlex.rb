@@ -19,6 +19,9 @@ class Pdf2htmlex < Formula
   end
 
   def test
-    system "curl http://partners.adobe.com/public/developer/en/xml/AdobeXMLFormsSamples.pdf -o /tmp/tmp.pdf && pdf2htmlEX /tmp/tmp.pdf"
+    mktemp do
+      curl "-O", "http://partners.adobe.com/public/developer/en/xml/AdobeXMLFormsSamples.pdf"
+      system "#{bin}/pdf2htmlEX", "AdobeXMLFormsSamples.pdf"
+    end
   end
 end
