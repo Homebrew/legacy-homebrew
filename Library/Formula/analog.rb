@@ -18,8 +18,7 @@ class Analog < Formula
     system "mkdir -p #{share}/analog"
     system "cp -R examples how-to images lang #{share}/analog/"
     system "cp analog.cfg #{share}/analog/analog.cfg-dist"
-    system "mkdir -p #{man1}"
-    system "cp analog.man #{man1}/analog.1"
+    man1.install "analog.man" => "analog.1"
   end
 
   def test
