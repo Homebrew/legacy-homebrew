@@ -2,11 +2,10 @@ require 'formula'
 
 class Leiningen < Formula
   homepage 'http://github.com/technomancy/leiningen'
-  head 'https://github.com/technomancy/leiningen.git'
-
   url 'http://github.com/technomancy/leiningen/tarball/1.7.1'
-  version '1.7.1'
   sha1 '80361e88cc5a88553d64e0d98ef542ab74b7148f'
+
+  head 'https://github.com/technomancy/leiningen.git'
 
   devel do
     url 'https://github.com/technomancy/leiningen/tarball/2.0.0-preview10'
