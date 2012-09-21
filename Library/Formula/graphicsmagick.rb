@@ -10,8 +10,8 @@ end
 
 class Graphicsmagick < Formula
   homepage 'http://www.graphicsmagick.org/'
-  url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.15/GraphicsMagick-1.3.15.tar.bz2'
-  sha256 'fd79168feaca5a2d230ce294541bb3655fd0fb6f21aec7c29dd7f00db14109ed'
+  url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.16/GraphicsMagick-1.3.16.tar.bz2'
+  sha256 '2845bfcd53b0ea57755f21aac80df3becfa7d37ac50c6f67387f004d67d58d83'
 
   head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
 
