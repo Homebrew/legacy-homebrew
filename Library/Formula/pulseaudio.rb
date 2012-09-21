@@ -2,9 +2,10 @@ require 'formula'
 
 class Pulseaudio < Formula
   url 'http://freedesktop.org/software/pulseaudio/releases/pulseaudio-2.1.tar.gz'
-  head 'git://anongit.freedesktop.org/pulseaudio/pulseaudio'
   homepage 'http://pulseaudio.org'
   md5 '86912af7fd4f8aa67f83182c135b2a5c'
+
+  head 'git://anongit.freedesktop.org/pulseaudio/pulseaudio'
 
   option "with-dbus", "Enable dbus"
   
