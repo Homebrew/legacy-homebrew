@@ -14,11 +14,18 @@ class Postgresql < Formula
   option 'no-python', 'Build without Python support'
   option 'no-perl', 'Build without Perl support'
   option 'enable-dtrace', 'Build with DTrace support'
+  option 'use-nonalnum-index', 'Build pg_trgm with non alphanumeric characters support'
 
   # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
   # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
+  # Disabled KEEPONLYALNUM in pg_trgm: http://archives.postgresql.org/pgsql-hackers/2012-05/msg00388.php
   def patches
-    DATA
+    puts Dir.getwd
+    p = {:p1 => DATA}
+    if build.include? 'use-nonalnum-index'
+      p[:p0] = 'https://raw.github.com/gist/3762131/452bec69a2b9cedf692d68280bf9c432e2ccae7b/pg_trgm_patch.diff'
+    end
+    p
   end
 
   def install
