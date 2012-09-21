@@ -86,7 +86,7 @@ class Formula
         select{ |ff| ff.deps.map(&:to_s).include? name }.
         map{ |ff| ff.rack.children rescue [] }.
         flatten.
-        map{ |keg_path| Tab.for_keg(keg_path).sha }.
+        map{ |keg_path| Tab.for_keg(keg_path).send("HEAD") }.
         include? nil
     end
   end
