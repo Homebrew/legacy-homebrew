@@ -26,15 +26,28 @@ class Gnuplot < Formula
   depends_on 'gd' unless build.include? 'nogd'
   depends_on 'wxmac' if build.include? 'wx'
 
+  def patches
+    # MacPorts patch --without-aquaterm as a configuration option. Submitted
+    # upstream:
+    #   http://sourceforge.net/tracker/?func=detail&aid=3476165&group_id=2055&atid=302055
+    {:p0 => 'https://trac.macports.org/export/96897/trunk/dports/math/gnuplot/files/patch-configure-aquaterm.diff'}
+  end
+
   def install
     # Help configure find libraries
     readline = Formula.factory 'readline'
     pdflib = Formula.factory 'pdflib-lite'
     gd = Formula.factory 'gd'
 
-    args = ["--disable-debug", "--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--with-readline=#{readline.prefix}"]
+    # Aquaterm disabled due to breakage. See:
+    #   https://github.com/mxcl/homebrew/issues/14647
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --with-readline=#{readline.prefix}
+      --without-aquaterm
+    ]
 
     args << '--disable-wxwidgets' unless build.include? 'wx'
     args << "--with-pdf=#{pdflib.prefix}" if build.include? 'pdf'
