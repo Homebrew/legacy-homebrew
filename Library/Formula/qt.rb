@@ -38,9 +38,11 @@ class Qt < Formula
   def install
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
-            "-system-zlib", "-no-pch",
+            "-system-zlib",
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
+
+    args << "-platform" << "unsupported/macx-clang" if ENV.compiler == :clang
 
     # See: https://github.com/mxcl/homebrew/issues/issue/744
     args << "-system-sqlite" if MacOS.version == :leopard
