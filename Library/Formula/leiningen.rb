@@ -7,6 +7,12 @@ class Leiningen < Formula
 
   head 'https://github.com/technomancy/leiningen.git'
 
+  devel do
+    url 'https://github.com/technomancy/leiningen/tarball/2.0.0-preview10'
+    version '2.0.0-preview10'
+    sha1 'e6bef03e50c2f0bfaa927c52953440c24a9ce235'
+  end
+
   def install
     bin.install "bin/lein"
     system "#{bin}/lein", "self-install"
