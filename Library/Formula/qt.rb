@@ -38,7 +38,7 @@ class Qt < Formula
   def install
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
-            "-system-zlib", "-no-pch",
+            "-system-zlib",
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
@@ -83,6 +83,10 @@ class Qt < Formula
 
     # Needed for Qt 4.8.3 due to attempting to link moc with gcc.
     ENV['LD'] = ENV.cxx
+
+    if ENV.compiler == :clang
+        args << "-platform" << "unsupported/macx-clang"
+    end
 
     system "./configure", *args
     system "make"
