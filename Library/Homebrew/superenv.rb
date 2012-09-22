@@ -125,7 +125,6 @@ class << ENV
 
   def determine_cmake_prefix_path
     paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}" }
-    paths << HOMEBREW_PREFIX.to_s # put ourselves ahead of everything else
     paths << "#{MacOS.sdk_path}/usr" if MacSystem.xcode43_without_clt?
     paths.to_path_s
   end
