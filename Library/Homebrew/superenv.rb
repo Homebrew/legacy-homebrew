@@ -41,7 +41,7 @@ class << ENV
   def setup_build_environment
     reset
     check
-    ENV['CC'] = ENV['LD'] = 'cc'
+    ENV['CC'] = 'cc'
     ENV['CXX'] = 'c++'
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
