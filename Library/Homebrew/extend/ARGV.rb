@@ -182,6 +182,11 @@ module HomebrewArgvExtension
     replace old_args
   end
 
+  def vlvl
+    n = map{|arg| arg =~ /^-([^\-]+)/ && $1 }.compact.join.count('v')
+    n if n > 0
+  end
+
   private
 
   def downcased_unique_named

@@ -38,7 +38,7 @@ module Kernel extend self
     end
     _exec *args
   end
-end if ENV['HOMEBREW_LOG']
+end if ENV['HOMEBREW_LOG'] or ENV['VERBOSE'] >= '3'
 
 $brewfix = "#{__FILE__}/../../../".cleanpath.freeze
 $sdkroot = ENV['HOMEBREW_SDKROOT'].freeze
