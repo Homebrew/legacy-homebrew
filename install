@@ -1,6 +1,8 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
 # This script installs to /usr/local only. To install elsewhere you can just
-# untar https://github.com/mxcl/homebrew/tarball/master anywhere you like.
+# untar https://github.com/mxcl/homebrew/tarball/master anywhere you like or
+# change the value of HOMEBREW_PREFIX.
+HOMEBREW_PREFIX = '/usr/local'
 
 module Tty extend self
   def blue; bold 34; end
@@ -82,22 +84,22 @@ you please; please refer to our homepage. If you still want to use this script
 set your user to be an Administrator in System Preferences or `su' to a
 non-root user with Administrator privileges.
 EOABORT
-abort <<-EOABORT unless Dir["/usr/local/.git/*"].empty?
+abort <<-EOABORT unless Dir["#{HOMEBREW_PREFIX}/.git/*"].empty?
 It appears Homebrew is already installed. If your intent is to reinstall you
 should do the following before running this installer again:
-    rm -rf /usr/local/Cellar /usr/local/.git && brew cleanup
+    rm -rf #{HOMEBREW_PREFIX}/Cellar #{HOMEBREW_PREFIX}/.git && brew cleanup
 EOABORT
 
 ohai "This script will install:"
-puts "/usr/local/bin/brew"
-puts "/usr/local/Library/..."
-puts "/usr/local/share/man/man1/brew.1"
+puts "#{HOMEBREW_PREFIX}/bin/brew"
+puts "#{HOMEBREW_PREFIX}/Library/..."
+puts "#{HOMEBREW_PREFIX}/share/man/man1/brew.1"
 
 chmods = %w( . bin etc include lib lib/pkgconfig Library sbin share var var/log share/locale share/man
              share/man/man1 share/man/man2 share/man/man3 share/man/man4
              share/man/man5 share/man/man6 share/man/man7 share/man/man8
              share/info share/doc share/aclocal ).
-            map{ |d| "/usr/local/#{d}" }.
+            map{ |d| "#{HOMEBREW_PREFIX}/#{d}" }.
             select{ |d| File.directory? d and not File.writable? d }
 chgrps = chmods.reject{ |d| File.stat(d).grpowned? }
 
@@ -118,18 +120,18 @@ if STDIN.tty?
   abort unless c == 13 or c == 10
 end
 
-if File.directory? "/usr/local"
+if File.directory? HOMEBREW_PREFIX
   sudo "/bin/chmod", "g+rwx", *chmods unless chmods.empty?
   sudo "/usr/bin/chgrp", "admin", *chgrps unless chgrps.empty?
 else
-  sudo "/bin/mkdir /usr/local"
-  sudo "/bin/chmod g+rwx /usr/local"
+  sudo "/bin/mkdir #{HOMEBREW_PREFIX}"
+  sudo "/bin/chmod g+rwx #{HOMEBREW_PREFIX}"
   # the group is set to wheel by default for some reason
-  sudo "/usr/bin/chgrp admin /usr/local"
+  sudo "/usr/bin/chgrp admin #{HOMEBREW_PREFIX}"
 end
 
 ohai "Downloading and Installing Homebrew..."
-Dir.chdir "/usr/local" do
+Dir.chdir HOMEBREW_PREFIX do
   if git
     # we do it in four steps to avoid merge errors when reinstalling
     system git, "init", "-q"
@@ -149,7 +151,7 @@ Dir.chdir "/usr/local" do
   end
 end
 
-warn "/usr/local/bin is not in your PATH." unless ENV['PATH'].split(':').include? '/usr/local/bin'
+warn "#{HOMEBREW_PREFIX}/bin is not in your PATH." unless ENV['PATH'].split(':').include? "#{HOMEBREW_PREFIX}/bin"
 
 if macos_version < 10.7
   warn "Now install Xcode: https://developer.apple.com/xcode/" unless File.exist? "/usr/bin/cc"
