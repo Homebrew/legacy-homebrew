@@ -137,8 +137,11 @@ class << ENV
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     if MacSystem.xcode43_without_clt?
       paths << "#{sdk}/usr/include/apache2"
-      # TODO prolly shouldn't always do this?
-      paths << "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7"
+      paths << if Formula.factory('python').linked_keg.directory?
+        "#{HOMEBREW_PREFIX}/opt/python/Frameworks/Python.framework/Headers"
+      else
+        "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7"
+      end
     end
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/" unless x11?
     paths << "#{MacSystem.x11_prefix}/include" if x11?
