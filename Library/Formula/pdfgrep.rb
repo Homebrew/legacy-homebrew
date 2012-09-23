@@ -1,9 +1,10 @@
 require 'formula'
 
 class Pdfgrep < Formula
-  url 'http://sourceforge.net/projects/pdfgrep/files/1.2/pdfgrep-1.2.tar.gz'
   homepage 'http://pdfgrep.sourceforge.net/'
-  md5 '80dc5159e9776c99af377550da4c907d'
+  url 'http://sourceforge.net/projects/pdfgrep/files/1.3.0/pdfgrep-1.3.0.tar.gz'
+  sha1 'cac20afdea7aee1602b2c33c3d8d36ec171c30bc'
+
   head 'https://git.gitorious.org/pdfgrep/pdfgrep.git'
 
   depends_on 'pkg-config' => :build
@@ -15,6 +16,6 @@ class Pdfgrep < Formula
   end
 
   def test
-    system "#{bin}/pdfgrep --version"
+    system "#{bin}/pdfgrep", "--version"
   end
 end

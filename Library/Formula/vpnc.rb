@@ -1,22 +1,22 @@
 require 'formula'
 
 class Vpnc < Formula
-  url 'http://www.unix-ag.uni-kl.de/~massar/vpnc/vpnc-0.5.3.tar.gz'
   homepage 'http://www.unix-ag.uni-kl.de/~massar/vpnc/'
+  url 'http://www.unix-ag.uni-kl.de/~massar/vpnc/vpnc-0.5.3.tar.gz'
   sha256 '46cea3bd02f207c62c7c6f2f22133382602baeda1dc320747809e94881414884'
 
   depends_on 'libgcrypt'
   depends_on 'libgpg-error'
 
-  fails_with_llvm :build => 2334
-
-  def options
-    [["--hybrid", "Use vpnc hybrid authentication."]]
+  fails_with :llvm do
+    build 2334
   end
+
+  option "hybrid", "Use vpnc hybrid authentication"
 
   # Patch from user @Imagesafari to enable compilation on Lion
   def patches
-    DATA if MacOS.lion?
+    DATA if MacOS.version >= :lion
   end
 
   def install
@@ -35,7 +35,7 @@ class Vpnc < Formula
       s.change_make_var! "PREFIX", prefix
       s.change_make_var! "ETCDIR", (etc + 'vpnc')
 
-      s.gsub! /^#OPENSSL/, "OPENSSL" if ARGV.include? "--hybrid"
+      s.gsub! /^#OPENSSL/, "OPENSSL" if build.include? "hybrid"
     end
 
     inreplace "config.c" do |s|

@@ -1,21 +1,17 @@
 require 'formula'
 
 class Libstxxl < Formula
-  url 'http://sourceforge.net/projects/stxxl/files/stxxl/1.3.1/stxxl-1.3.1.tar.gz'
   homepage 'http://stxxl.sourceforge.net/'
-  md5 '8d0e8544c4c830cf9ae81c39b092438c'
+  url 'http://sourceforge.net/projects/stxxl/files/stxxl/1.3.1/stxxl-1.3.1.tar.gz'
+  sha1 '5fba2bb26b919a07e966b2f69ae29aa671892a7d'
 
   def install
-    inreplace "Makefile" do |s|
-      s.change_make_var! "USE_MACOSX", "yes"
-    end
-
     ENV['COMPILER'] = ENV.cxx
 
-    system "make", "config_gnu"
-    system "make", "library_g++"
+    system "make", "config_gnu", "USE_MACOSX=yes"
+    system "make", "library_g++", "USE_MACOSX=yes"
 
     prefix.install Dir['include']
-    prefix.install Dir['lib']
+    lib.install 'lib/libstxxl.a'
   end
 end

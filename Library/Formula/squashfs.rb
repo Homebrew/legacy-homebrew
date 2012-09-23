@@ -3,14 +3,18 @@ require 'formula'
 class Squashfs < Formula
   homepage 'http://squashfs.sourceforge.net/'
   url 'http://sourceforge.net/projects/squashfs/files/squashfs/squashfs4.0/squashfs4.0.tar.gz'
-  md5 'a3c23391da4ebab0ac4a75021ddabf96'
+  sha1 '3efe764ac27c507ee4a549fc6507bc86ea0660dd'
 
-   def patches
-     { :p0 => DATA }
-   end
+  fails_with :clang do
+    build 318
+  end
+
+  def patches
+   { :p0 => DATA }
+  end
 
   def install
-    Dir.chdir 'squashfs-tools' do
+    cd 'squashfs-tools' do
       system "make"
       bin.install %w{mksquashfs unsquashfs}
     end

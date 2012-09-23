@@ -1,9 +1,9 @@
 require 'formula'
 
 class AptDater < Formula
-  url 'http://downloads.sourceforge.net/project/apt-dater/apt-dater/0.8.6/apt-dater-0.8.6.tar.gz'
   homepage 'http://www.ibh.de/apt-dater/'
-  md5 '1f1b92403b9afb74032254ed47e7bce3'
+  url 'http://downloads.sourceforge.net/project/apt-dater/apt-dater/0.8.6/apt-dater-0.8.6.tar.gz'
+  sha1 '178955f4c8999cf3cfeaf8ebbcf807f9a6beafd6'
 
   depends_on 'gettext'
   depends_on 'glib'
@@ -16,17 +16,14 @@ class AptDater < Formula
   end
 
   def install
-    inreplace 'src/Makefile.in' do |s|
-      s.remove_make_var! 'AM_LDFLAGS'
-    end
-
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "AM_LDFLAGS=", "install"
   end
 
   def test
-    system "apt-dater -v"
+    system "#{bin}/apt-dater", "-v"
   end
 end
 

@@ -1,15 +1,22 @@
 require 'formula'
 
 class ClosureCompiler < Formula
-  url 'http://closure-compiler.googlecode.com/files/compiler-20110615.tar.gz'
   homepage 'http://code.google.com/p/closure-compiler/'
-  md5 '7ba597fa67b187df23413eb0ca50f4cb'
+  # Use an SVN download to get the externals as well
+  url 'svn+http://closure-compiler.googlecode.com/svn/trunk/', :revision => '2079'
+  version '20120710'
+
+  head 'svn+http://closure-compiler.googlecode.com/svn/trunk/'
 
   def install
-    libexec.install "compiler.jar"
-    (bin+'closure').write <<-EOS.undent
+    system "ant", "clean"
+    system "ant"
+
+    libexec.install Dir['*']
+
+    (bin/'closure-compiler').write <<-EOS.undent
       #!/bin/bash
-      java -jar #{libexec}/compiler.jar $@
+      java -jar "#{libexec}/build/compiler.jar" "$@"
     EOS
   end
 end

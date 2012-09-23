@@ -1,17 +1,13 @@
 require 'formula'
 
 class Flasm < Formula
-  url 'http://www.nowrap.de/download/flasm16src.zip'
-  version '1.62'
   homepage 'http://www.nowrap.de/flasm.html'
-  md5 '28a4586409061b385d1cd27d3f120c0b'
+  url 'http://www.nowrap.de/download/flasm16src.zip'
+  sha1 '3b383fa042eae414c5e5608bfa91a42f44bd1a86'
+  version '1.62'
 
   def install
-    inreplace "Makefile" do |s|
-      s.change_make_var! 'CFLAGS', ENV.cflags
-    end
-
-    system "make"
+    system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
     bin.install "flasm"
   end
 end

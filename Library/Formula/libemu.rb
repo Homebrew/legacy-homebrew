@@ -1,28 +1,26 @@
 require 'formula'
 
-def use_python?
-  ARGV.include? '--enable-python-bindings'
-end
-
 class Libemu < Formula
-  head 'http://git.carnivore.it/libemu.git', :using => :git
+  head 'http://git.carnivore.it/libemu.git'
   homepage 'http://libemu.carnivore.it/'
 
-  depends_on 'pkg-config' => :build
+  option "enable-python-bindings", "Compile bindings for Python"
 
-  def options
-    [["--enable-python-bindings", "Compile bindings for Python"]]
-  end
+  depends_on 'pkg-config' => :build
+  depends_on :automake
+  depends_on :libtool
 
   def install
     inreplace 'Makefile.am' do |s|
       # Need to fix the static location of pkgconfigpath
       s.gsub! '/usr/lib/pkgconfig/', "#{lib}/pkgconfig/"
     end
-    args = ["--disable-debug",
-            "--disable-dependency-tracking",
-            "--prefix=#{prefix}"]
-    args << "--enable-python-bindings" if use_python?
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+    args << "--enable-python-bindings" if build.include? 'enable-python-bindings'
 
     system "autoreconf -v -i"
     system "./configure", *args

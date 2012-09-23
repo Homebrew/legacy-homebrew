@@ -2,8 +2,8 @@ require 'formula'
 
 class Libdap < Formula
   homepage 'http://www.opendap.org'
-  url 'http://www.opendap.org/pub/source/libdap-3.11.1.tar.gz'
-  md5 '985b5b4f86394eea45a467c2100e9ec5'
+  url 'http://www.opendap.org/pub/source/libdap-3.11.2.tar.gz'
+  sha1 '49393ae705e3bba66b3f7827b76645556e490240'
 
   depends_on 'pkg-config' => :build
 
@@ -16,6 +16,12 @@ class Libdap < Formula
            "--disable-debug",
            "--disable-dependency-tracking",
            "--prefix=#{prefix}",
+           # __Always pass the curl prefix!__
+           # Otherwise, configure will fall back to pkg-config and on Leopard
+           # and Snow Leopard, the libcurl.pc file that ships with the system
+           # is seriously broken---too many arch flags. This will be carried
+           # over to `dap-config` and from there the contamination will spread.
+           "--with-curl=/usr",
            "--with-included-regex"
 
     system "make install"

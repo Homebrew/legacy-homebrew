@@ -1,12 +1,13 @@
 require 'formula'
 
 class Openfst < Formula
-  url 'http://openfst.cs.nyu.edu/twiki/pub/FST/FstDownload/openfst-1.1.tar.gz'
   homepage 'http://www.openfst.org/'
-  md5 '7491c12e0878ab594cc14ae88103c486'
+  url 'http://openfst.cs.nyu.edu/twiki/pub/FST/FstDownload/openfst-1.3.2.tar.gz'
+  sha1 'b172439a9fcd5b8d4285a04d99d90e69cd7d12e9'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

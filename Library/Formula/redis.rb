@@ -1,50 +1,54 @@
 require 'formula'
 
 class Redis < Formula
-  url 'http://redis.googlecode.com/files/redis-2.4.6.tar.gz'
-  head 'https://github.com/antirez/redis.git', :branch => 'unstable'
   homepage 'http://redis.io/'
-  md5 '41d394074bcde762872ecb5506f35aee'
+  url 'http://redis.googlecode.com/files/redis-2.4.17.tar.gz'
+  sha1 '3d540531b3d7103a511d29661c2ae666dac60522'
 
-  fails_with_llvm 'Fails with "reference out of range from _linenoise"', :build => 2334
+  head 'https://github.com/antirez/redis.git', :branch => 'unstable'
+
+  devel do
+    url  'http://redis.googlecode.com/files/redis-2.6.0-rc7.tar.gz'
+    sha1 '03d849bc18a1f1849010064805e9f084857aaaab'
+  end
+
+  fails_with :llvm do
+    build 2334
+    cause 'Fails with "reference out of range from _linenoise"'
+  end
 
   def install
     # Architecture isn't detected correctly on 32bit Snow Leopard without help
     ENV["OBJARCH"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
     # Head and stable have different code layouts
-    src = File.exists?('src/Makefile') ? 'src' : '.'
-    system "make -C #{src}"
+    src = (buildpath/'src/Makefile').exist? ? buildpath/'src' : buildpath
+    system "make", "-C", src, "CC=#{ENV.cc}"
 
-    %w( redis-benchmark redis-cli redis-server redis-check-dump redis-check-aof ).each { |p|
-      bin.install "#{src}/#{p}" rescue nil
-    }
-
-    %w( run db/redis log ).each { |p| (var+p).mkpath }
+    %w[benchmark cli server check-dump check-aof].each { |p| bin.install src/"redis-#{p}" }
+    %w[run db/redis log].each { |p| (var+p).mkpath }
 
     # Fix up default conf file to match our paths
     inreplace "redis.conf" do |s|
       s.gsub! "/var/run/redis.pid", "#{var}/run/redis.pid"
       s.gsub! "dir ./", "dir #{var}/db/redis/"
+      s.gsub! "\# bind 127.0.0.1", "bind 127.0.0.1"
     end
 
-    doc.install Dir["doc/*"]
-    etc.install "redis.conf"
-    (prefix+'io.redis.redis-server.plist').write startup_plist
-    (prefix+'io.redis.redis-server.plist').chmod 0644
+    etc.install 'redis.conf' unless (etc/'redis.conf').exist?
   end
 
   def caveats
     <<-EOS.undent
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the io.redis.redis-server.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/io.redis.redis-server.plist
-        cp #{prefix}/io.redis.redis-server.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/io.redis.redis-server.plist
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+        cp #{plist_path} ~/Library/LaunchAgents/
+        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
       To start redis manually:
         redis-server #{etc}/redis.conf
@@ -63,10 +67,10 @@ class Redis < Formula
     <key>KeepAlive</key>
     <true/>
     <key>Label</key>
-    <string>io.redis.redis-server</string>
+    <string>#{plist_name}</string>
     <key>ProgramArguments</key>
     <array>
-      <string>#{bin}/redis-server</string>
+      <string>#{HOMEBREW_PREFIX}/bin/redis-server</string>
       <string>#{etc}/redis.conf</string>
     </array>
     <key>RunAtLoad</key>

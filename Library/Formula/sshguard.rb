@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sshguard < Formula
-  url 'http://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
   homepage 'http://www.sshguard.net/'
-  md5 '11b9f47f9051e25bdfe84a365c961ec1'
+  url 'http://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
+  sha1 'f8f713bfb3f5c9877b34f6821426a22a7eec8df3'
 
   def patches
     # Fix blacklist flag (-b) so that it doesn't abort on first usage.
@@ -17,20 +17,17 @@ class Sshguard < Formula
                           "--prefix=#{prefix}",
                           "--with-firewall=ipfw"
     system "make install"
-
-    (prefix+'net.sshguard.plist').write startup_plist
-    (prefix+'net.sshguard.plist').chmod 0644
   end
 
   def caveats; <<-EOS
 1) Install the launchd item in /Library/LaunchDaemons, like so:
 
-   sudo cp -vf #{prefix}/net.sshguard.plist /Library/LaunchDaemons/
-   sudo chown -v root:wheel /Library/LaunchDaemons/net.sshguard.plist
+   sudo cp -vf #{plist_path} /Library/LaunchDaemons/
+   sudo chown -v root:wheel /Library/LaunchDaemons/#{plist_path.basename}
 
 2) Start the daemon using:
 
-   sudo launchctl load /Library/LaunchDaemons/net.sshguard.plist
+   sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
 
    Next boot of system will automatically start sshguard.
 EOS
@@ -43,7 +40,7 @@ EOS
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>net.sshguard</string>
+  <string>#{plist_name}</string>
   <key>KeepAlive</key>
   <true/>
   <key>ProgramArguments</key>

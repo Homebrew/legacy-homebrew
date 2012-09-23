@@ -9,22 +9,19 @@ require 'vendor/multi_json'
 # `Tab.for_install`.
 class Tab < OpenStruct
   def self.for_install f, args
-    # Retrieve option flags from command line.
-    arg_options = args.options_only
-    # Pick off the option flags from the formula's `options` array by
-    # discarding the descriptions.
-    formula_options = f.options.map { |o, _| o }
-
-    Tab.new :used_options => formula_options & arg_options,
-            :unused_options => formula_options - arg_options,
-            :tabfile => f.prefix + 'INSTALL_RECEIPT.json',
-            :built_bottle => !!args.build_bottle?
+    sha = `cd '#{HOMEBREW_REPOSITORY}' && git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle
+    Tab.new :used_options => args.used_options(f),
+            :unused_options => args.unused_options(f),
+            :tabfile => f.prefix + "INSTALL_RECEIPT.json",
+            :built_as_bottle => !!args.build_bottle?,
+            :tapped_from => f.tap,
+            :time => Time.now.to_i, # to_s would be better but Ruby has no from_s function :P
+            :HEAD => sha
   end
 
   def self.from_file path
     tab = Tab.new MultiJson.decode(open(path).read)
     tab.tabfile = path
-
     return tab
   end
 
@@ -39,14 +36,17 @@ class Tab < OpenStruct
       rescue FormulaUnavailableError
         Tab.new :used_options => [],
                 :unused_options => [],
-                :built_bottle => false
+                :built_as_bottle => false,
+                :tapped_from => "",
+                :time => nil,
+                :HEAD => nil
       end
     end
   end
 
   def self.for_formula f
     f = Formula.factory f unless f.kind_of? Formula
-    path = HOMEBREW_REPOSITORY + 'Library' + 'LinkedKegs' + f.name + 'INSTALL_RECEIPT.json'
+    path = f.linked_keg/'INSTALL_RECEIPT.json'
 
     if path.exist?
       self.from_file path
@@ -65,8 +65,11 @@ class Tab < OpenStruct
 
   def self.dummy_tab f
     Tab.new :used_options => [],
-            :unused_options => f.options.map { |o, _| o},
-            :built_bottle => false
+            :unused_options => f.build.as_flags,
+            :built_as_bottle => false,
+            :tapped_from => "",
+            :time => nil,
+            :HEAD => nil
   end
 
   def installed_with? opt
@@ -81,8 +84,10 @@ class Tab < OpenStruct
     MultiJson.encode({
       :used_options => used_options,
       :unused_options => unused_options,
-      :built_bottle => built_bottle
-    })
+      :built_as_bottle => built_as_bottle,
+      :tapped_from => tapped_from,
+      :time => time,
+      :HEAD => send("HEAD")})
   end
 
   def write

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Wbox < Formula
-  url 'http://hping.org/wbox/wbox-5.tar.gz'
   homepage 'http://hping.org/wbox/'
-  md5 'a95ca2c69982db10704b5ed482c9c722'
+  url 'http://hping.org/wbox/wbox-5.tar.gz'
+  sha1 '5f20fca378c8abf53bb6a9069ecdebeb40a74147'
 
   def install
     system "make"
@@ -11,6 +11,6 @@ class Wbox < Formula
   end
 
   def test
-    system "wbox www.google.com 1"
+    system "#{bin}/wbox", "www.google.com", "1"
   end
 end

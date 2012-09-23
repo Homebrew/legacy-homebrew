@@ -2,22 +2,24 @@ require 'formula'
 
 class Clutter < Formula
   homepage 'http://clutter-project.org/'
-  url 'http://source.clutter-project.org/sources/clutter/1.6/clutter-1.6.14.tar.bz2'
-  sha256 '0564e57ca8eb24e76014627c0bb28a80a6c01b620ba14bc4198365562549576d'
+  url 'http://ftp.gnome.org/pub/gnome/sources/clutter/1.10/clutter-1.10.8.tar.xz'
+  sha256 '7c08c2deff62c134c1a3d18e04dcb6fbae4bbc541c800638b9fc3d71fe4a64bf'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
+  depends_on 'glib'
+  depends_on 'gdk-pixbuf'
+  depends_on 'cogl'
+  depends_on 'cairo' # for cairo-gobject
   depends_on 'atk'
-  # Cairo is keg-only and usually only used for Leopard builds.
-  # But Clutter requires a newer version of Cairo that what comes with Snow Leopard.
-  depends_on 'cairo'
-  depends_on 'intltool'
-  depends_on 'json-glib'
   depends_on 'pango'
+  depends_on 'json-glib'
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          "--with-flavour=osx",
-                          "--with-imagebackend=quartz"
+                          "--disable-introspection",
+                          "--enable-quartz-backend",
+                          "--disable-x11-backend"
     system "make install"
   end
 end

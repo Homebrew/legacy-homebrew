@@ -1,13 +1,14 @@
 require 'formula'
 
 class Jhead < Formula
-  url 'http://www.sentex.net/~mwandel/jhead/jhead-2.90.tar.gz'
   homepage 'http://www.sentex.net/~mwandel/jhead/'
-  md5 '661effa9420bb92cb99ced697c5a177f'
+  url 'http://www.sentex.net/~mwandel/jhead/jhead-2.96.tar.gz'
+  sha1 '668a515276654247e6fbe7a6193a5e1382a38116'
 
   def install
     system "make"
-    system "chmod +x jhead"
     bin.install "jhead"
+    man1.install 'jhead.1'
+    doc.install 'usage.html'
   end
 end

@@ -1,10 +1,10 @@
 require 'formula'
 
 class Tth < Formula
-  url 'http://hutchinson.belmont.ma.us/tth/tth-noncom/tth_C.tgz'
   homepage 'http://hutchinson.belmont.ma.us/tth/'
-  md5 '0c5ca8ecba950075f12c98bd9ae42087'
-  version '4.00'
+  url 'http://hutchinson.belmont.ma.us/tth/tth-noncom/tth_C.tgz'
+  sha1 '6242030c1d55499e5f505ac870a0b64b72874cd9'
+  version '4.03'
 
   def install
     system "#{ENV.cc} -o tth tth.c"

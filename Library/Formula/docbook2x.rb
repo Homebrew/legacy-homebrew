@@ -2,7 +2,7 @@ require 'formula'
 
 class Docbook2x < Formula
   url 'http://downloads.sourceforge.net/docbook2x/docbook2X-0.8.8.tar.gz'
-  md5 'b9b76a6af198c4f44574cfd17a322f01'
+  sha1 '7dc34d420f8aae2a0c0cdb39f52146ce005bf902'
   homepage 'http://docbook2x.sourceforge.net/'
 
   depends_on 'docbook'

@@ -1,16 +1,15 @@
 require 'formula'
 
 class CloudbeesSdk < Formula
-  url 'http://cloudbees-downloads.s3.amazonaws.com/sdk/cloudbees-sdk-0.7.3-dist.zip'
-  version '0.7.3'
-  homepage 'https://cloudbees.zendesk.com/entries/414109-cloudbees-sdk'
-  md5 '97354d0bec3d99aa3833b7a320d5f256'
+  homepage 'http://wiki.cloudbees.com/bin/view/RUN/BeesSDK'
+  url 'http://cloudbees-downloads.s3.amazonaws.com/sdk/cloudbees-sdk-1.2.1-bin.zip'
+  sha1 '4a32885c57c0e09ce1d5f7a7515ff012051d3b91'
 
   def shim_script target
     <<-EOS.undent
       #!/bin/bash
       export BEES_HOME=#{libexec}
-      #{libexec}/#{target} $*
+      "#{libexec}/#{target}" "$@"
     EOS
   end
 

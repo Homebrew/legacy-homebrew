@@ -1,47 +1,37 @@
 require 'formula'
 
 class Falcon < Formula
-  url 'http://falconpl.org/project_dl/_official_rel/Falcon-0.9.6.8.tgz'
   homepage 'http://www.falconpl.org/'
-  md5 '8435f6f2fe95097ac2fbe000da97c242'
+  url 'http://falconpl.org/project_dl/_official_rel/Falcon-0.9.6.8.tgz'
+  sha1 '8720096a8257e8bf370e3f0a072b5600d7575f64'
 
-  head 'http://git.falconpl.org/falcon.git', :branch => 'master', :using => :git
+  head 'http://git.falconpl.org/falcon.git'
+
+  option 'editline', "Use editline instead of readline"
+  option 'feathers', "Include feathers (extra libraries)"
 
   depends_on 'cmake' => :build
   depends_on 'pcre'
 
-  def options
-    [
-      ['--manpages', "Install manpages"],
-      ['--editline', "Use editline instead of readline"],
-      ['--feathers', "Include feathers (extra libraries)"]
-    ]
-  end
+  conflicts_with 'sdl',
+    :because => "Falcon optionally depends on SDL and then the build breaks. Fix it!"
 
   def install
-    args = ["-DCMAKE_BUILD_TYPE=Release",
-            "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-            "-DFALCON_BIN_DIR=#{bin}",
-            "-DFALCON_LIB_DIR=#{lib}",
-            "-DFALCON_MAN_DIR=#{man1}",
-            "-DFALCON_WITH_INTERNAL_PCRE=ON",
-            "-DFALCON_WITH_INTERNAL_ZLIB=ON",
-            "-DFALCON_WITH_INTERNAL=ON" ]
+    args = std_cmake_args + %W{
+      -DCMAKE_INSTALL_PREFIX=#{prefix}
+      -DFALCON_BIN_DIR=#{bin}
+      -DFALCON_LIB_DIR=#{lib}
+      -DFALCON_MAN_DIR=#{man1}
+      -DFALCON_WITH_INTERNAL_PCRE=OFF
+      -DFALCON_WITH_MANPAGES=ON}
 
-    if ARGV.include? '--manpages'
-      args << "-DFALCON_WITH_MANPAGES=ON"
-      args << "-DFALCON_MAN_DIR=#{man1}"
-    else
-      args << "-DFALCON_WITH_MANPAGES=OFF"
-    end
-
-    if ARGV.include? '--editline'
+    if build.include? 'editline'
       args << "-DFALCON_WITH_EDITLINE=ON"
     else
       args << "-DFALCON_WITH_EDITLINE=OFF"
     end
 
-    if ARGV.include? '--feathers'
+    if build.include? 'feathers'
       args << "-DFALCON_WITH_FEATHERS=feathers"
     else
       args << "-DFALCON_WITH_FEATHERS=NO"

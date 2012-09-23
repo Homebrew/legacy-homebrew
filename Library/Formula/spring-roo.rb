@@ -1,10 +1,10 @@
 require 'formula'
 
 class SpringRoo < Formula
-  url 'http://s3.amazonaws.com/dist.springframework.org/release/ROO/spring-roo-1.2.0.RELEASE.zip'
-  version '1.2.0'
   homepage 'http://www.springsource.org/spring-roo'
-  sha1 '3fa1fccd9e69d3b5c83f5bb70f1f3d852178d400'
+  url 'http://s3.amazonaws.com/dist.springframework.org/release/ROO/spring-roo-1.2.2.RELEASE.zip'
+  sha1 '1a1d27617d7029899dc96caa53b51a3b80d01d21'
+  version '1.2.2'
 
   def install
     rm Dir["bin/*.bat"]

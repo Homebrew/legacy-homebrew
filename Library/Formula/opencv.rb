@@ -9,43 +9,47 @@ def site_package_dir
 end
 
 class Opencv < Formula
-  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.3.1/OpenCV-2.3.1a.tar.bz2'
-  md5 '82e4b6bfa349777233eea09b075e931e'
-  homepage 'http://opencv.willowgarage.com/wiki/'
+  homepage 'http://opencv.org/'
+  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.2/OpenCV-2.4.2.tar.bz2'
+  sha1 '96ff27b87e0f028d1d16201afebabec4e0c72367'
 
+  option '32-bit'
+  option 'with-qt',  'Build the Qt4 backend to HighGUI'
+  option 'with-tbb', 'Enable parallel code in OpenCV using Intel TBB'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
+  depends_on 'numpy' => :python
 
+  depends_on 'eigen'   => :optional
   depends_on 'libtiff' => :optional
   depends_on 'jasper'  => :optional
   depends_on 'tbb'     => :optional
-
-  depends_on 'numpy' => :python
+  depends_on 'qt' if build.include? 'with-qt'
+  depends_on :libpng
 
   # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
   # you don't need unless you're doing video analysis, and some of it isn't
-  # in Homebrew anyway.
-
-  def patches
-    # Fix conflict when OpenEXR is installed. See:
-    #   http://tech.groups.yahoo.com/group/OpenCV/message/83201
-    DATA
-  end
-
-  depends_on 'qt' if ARGV.include? '--with-qt'
-
-  def options
-    [
-      ["--32-bit", "Build 32-bit only."],
-      ["--with-qt", "Build qt backend."]
-    ]
-  end
+  # in Homebrew anyway. Will depend on openexr if it's installed.
 
   def install
-    args = std_cmake_parameters.split
-    args << "-DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'" if ARGV.build_32_bit?
-    args << "-DWITH_QT=ON" if ARGV.include? "--with-qt"
+    args = std_cmake_args + %w[
+      -DWITH_CUDA=OFF
+      -DBUILD_ZLIB=OFF
+      -DBUILD_TIFF=OFF
+      -DBUILD_PNG=OFF
+      -DBUILD_JPEG=OFF
+      -DBUILD_JASPER=OFF
+      -DBUILD_TESTS=OFF
+      -DBUILD_PERF_TESTS=OFF
+    ]
+    if build.build_32_bit?
+      args << "-DCMAKE_OSX_ARCHITECTURES=i386"
+      args << "-DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'"
+      args << "-DOPENCV_EXTRA_CXX_FLAGS='-arch i386 -m32'"
+    end
+    args << '-DWITH_QT=ON' if build.include? 'with-qt'
+    args << '-DWITH_TBB=ON' if build.include? 'with-tbb'
 
     # The CMake `FindPythonLibs` Module is dumber than a bag of hammers when
     # more than one python installation is available---for example, it clings
@@ -60,7 +64,12 @@ class Opencv < Formula
     if File.exist? "#{python_prefix}/Python"
       # Python was compiled with --framework:
       args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
-      args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+      if !MacOS::CLT.installed? and python_prefix.start_with? '/System/Library'
+        # For Xcode-only systems, the headers of system's python are inside of Xcode
+        args << "-DPYTHON_INCLUDE_DIR='#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/Headers'"
+      else
+        args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+      end
     else
       python_lib = "#{python_prefix}/lib/lib#{which_python}"
       if File.exists? "#{python_lib}.a"
@@ -72,9 +81,12 @@ class Opencv < Formula
     end
     args << "-DPYTHON_PACKAGES_PATH='#{lib}/#{which_python}/site-packages'"
 
-    system 'cmake', '.', *args
-    system "make"
-    system "make install"
+    args << '..'
+    mkdir 'macbuild' do
+      system 'cmake', *args
+      system "make"
+      system "make install"
+    end
   end
 
   def caveats; <<-EOS.undent
@@ -85,21 +97,3 @@ class Opencv < Formula
     EOS
   end
 end
-
-__END__
-
-Fix conflict when OpenEXR is installed. See:
-  http://tech.groups.yahoo.com/group/OpenCV/message/83201
-
-diff --git a/modules/highgui/src/grfmt_exr.hpp b/modules/highgui/src/grfmt_exr.hpp
-index 642000b..b1414f1 100644
---- a/modules/highgui/src/grfmt_exr.hpp
-+++ b/modules/highgui/src/grfmt_exr.hpp
-@@ -56,6 +56,7 @@ namespace cv
- 
- using namespace Imf;
- using namespace Imath;
-+using Imf::PixelType;
- 
- /* libpng version only */
- 

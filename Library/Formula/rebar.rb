@@ -9,5 +9,6 @@ class Rebar < Formula
   def install
     system "./bootstrap"
     bin.install "rebar"
+    (prefix+'etc/bash_completion.d').install 'priv/shell-completion/bash/rebar'
   end
 end

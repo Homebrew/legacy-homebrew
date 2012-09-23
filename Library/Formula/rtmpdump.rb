@@ -1,24 +1,32 @@
 require 'formula'
 
 class Rtmpdump < Formula
-  url 'http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.3.tgz'
   homepage 'http://rtmpdump.mplayerhq.hu'
-  md5 'eb961f31cd55f0acf5aad1a7b900ef59'
+  url 'http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.3.tgz'
+  sha1 'b65ce7708ae79adb51d1f43dd0b6d987076d7c42'
 
-  depends_on 'openssl' if MacOS.leopard?
+  head 'git://git.ffmpeg.org/rtmpdump'
 
-  fails_with_llvm if MacOS.lion?
+  depends_on 'openssl' if MacOS.version == :leopard
+
+  fails_with :llvm do
+    build '2336'
+    cause "Crashes at runtime"
+  end
 
   # Use dylib instead of so
-  def patches; DATA; end
+  def patches; DATA; end unless build.head?
 
   def install
-    ENV.j1
-    inreplace ["Makefile", "librtmp/Makefile"] do |s|
-      s.change_make_var! "CC", ENV['CC']
-      s.change_make_var! "LD", ENV['LD']
-    end
-    system "make", "prefix=#{prefix}", "MANDIR=#{man}", "SYS=posix", "install"
+    ENV.deparallelize
+    sys_type = build.head? ? "darwin" : "posix"
+    system "make", "CC=#{ENV.cc}",
+                   "XCFLAGS=#{ENV.cflags}",
+                   "XLDFLAGS=#{ENV.ldflags}",
+                   "MANDIR=#{man}",
+                   "SYS=#{sys_type}",
+                   "prefix=#{prefix}",
+                   "install"
   end
 end
 

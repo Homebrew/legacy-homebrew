@@ -8,17 +8,18 @@ require 'formula'
 # which causes panic and terror to flood the Homebrew issue tracker.
 
 class Sip < Formula
-  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.13.1.tar.gz'
-  md5 '9222545ebe349f68a00d5cc9fb89b805'
-  head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
+  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.13.3.tar.gz'
+  sha1 '672f0bd9c13860979ab2a7753b2bf91475a4deeb'
+
+  head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
 
   def patches
     DATA
   end
 
   def install
-    if ARGV.build_head?
+    if build.head?
       # Set fallback version to the same value it would have without the patch
       # and link the Mercurial repository into the download directory so
       # buid.py can use it to figure out a version number.
@@ -27,20 +28,28 @@ class Sip < Formula
     else
       sip_version = version
     end
-    inreplace 'build.py', /@SIP_VERSION@/, (sip_version.gsub '.', ',')
+    inreplace 'build.py', /@SIP_VERSION@/, (sip_version.to_s.gsub '.', ',')
 
     system "python", "build.py", "prepare"
+    # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
     system "python", "configure.py",
-                              "--destdir=#{lib}/python",
+                              "--destdir=#{lib}/#{which_python}/site-packages",
                               "--bindir=#{bin}",
-                              "--incdir=#{include}"
+                              "--incdir=#{include}",
+                              "--sipdir=#{HOMEBREW_PREFIX}/share/sip",
+                              "CFLAGS=#{ENV.cflags}",
+                              "LFLAGS=#{ENV.ldflags}"
     system "make install"
   end
 
   def caveats; <<-EOS.undent
-    This formula won't function until you amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
+    For non-homebrew Python, you need to amend your PYTHONPATH like so:
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
     EOS
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end
 

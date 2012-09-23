@@ -1,19 +1,19 @@
 require 'formula'
 
 class DvdxrwTools < Formula
-  url 'http://fy.chalmers.se/~appro/linux/DVD+RW/tools/dvd+rw-tools-7.1.tar.gz'
   homepage 'http://fy.chalmers.se/~appro/linux/DVD+RW/'
-  md5 '8acb3c885c87f6838704a0025e435871'
+  url 'http://fy.chalmers.se/~appro/linux/DVD+RW/tools/dvd+rw-tools-7.1.tar.gz'
+  sha1 '6400e013934ff589b4b224eced03fd9f42ed719b'
 
+  # Respect $PREFIX
   def patches
-    # Respect $PREFIX
     DATA
   end
 
   def install
-    bin.mkdir
+    bin.mkpath
     man1.mkpath
-    system "make PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 end
 
