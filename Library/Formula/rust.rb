@@ -5,6 +5,10 @@ class Rust < Formula
   url 'http://dl.rust-lang.org/dist/rust-0.3.1.tar.gz'
   sha256 'eb99ff2e745ecb6eaf01d4caddebce397a2b4cda6836a051cb2d493b9cedd018'
 
+  head 'https://github.com/mozilla/rust.git' 
+
+  depends_on 'llvm'
+
   fails_with :clang do
     build 318
     cause "cannot initialize a parameter of type 'volatile long long *' with an rvalue of type 'int *'"
@@ -13,12 +17,13 @@ class Rust < Formula
   def patches
     # fix for Mountain Lion's clang 4.0
     # should be part of next release (commit 50f2db4)
-    DATA
+    DATA unless build.head?
   end
 
   def install
     args = ["--prefix=#{prefix}"]
     args << "--enable-clang" if ENV.compiler == :clang
+    args << "--llvm-root=#{HOMEBREW_PREFIX}"
     system "./configure", *args
     system "make"
     system "make install"
@@ -41,7 +46,7 @@ index 06bddcc..040bae9 100755
 
      case $CFG_CLANG_VERSION in
 -        (3.0svn | 3.0 | 3.1)
-+        (3.0svn | 3.0 | 3.1 | 4.0)
++        (3.0svn | 3.0 | 3.1 | 4.0 | 4.1)
          step_msg "found ok version of CLANG: $CFG_CLANG_VERSION"
          CFG_C_COMPILER="clang"
          ;;
