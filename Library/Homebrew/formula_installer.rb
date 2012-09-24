@@ -303,6 +303,7 @@ class FormulaInstaller
   end
 
   def clean
+    ohai "Cleaning" if ARGV.verbose?
     if f.class.skip_clean_all?
       opoo "skip_clean :all is deprecated"
       puts "Skip clean was commonly used to prevent brew from stripping binaries."

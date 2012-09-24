@@ -194,7 +194,7 @@ class FormulaAuditor
       end
 
       if p =~ %r[^http://prdownloads\.]
-        problem "Update this url (don't use prdownloads)."
+        problem "Update this url (don't use prdownloads). See:\nhttp://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
       end
 
       if p =~ %r[^http://\w+\.dl\.]

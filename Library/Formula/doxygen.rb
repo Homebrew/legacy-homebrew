@@ -2,8 +2,9 @@ require 'formula'
 
 class Doxygen < Formula
   homepage 'http://www.doxygen.org/'
-  url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.1.2.src.tar.gz'
-  sha1 'a11e65a597019510051290d2af0e6f379838b9c5'
+  url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.2.src.tar.gz'
+  mirror 'http://downloads.sourceforge.net/project/doxygen/rel-1.8.2/doxygen-1.8.2.src.tar.gz'
+  sha1 '7b88ade3989ce0f43f0fb2b2574436c4f1fa1c5a'
 
   head 'https://doxygen.svn.sourceforge.net/svnroot/doxygen/trunk'
 

@@ -101,6 +101,11 @@ module HomebrewArgvExtension
     include? '--ignore-dependencies'
   end
 
+  def json
+    json_rev = find {|o| o =~ /--json=.+/}
+    json_rev.split("=").last if json_rev
+  end
+
   def build_head?
     include? '--HEAD'
   end
@@ -129,7 +134,8 @@ module HomebrewArgvExtension
   end
 
   def build_from_source?
-    include? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE']
+    include? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
+      or build_bottle?
   end
 
   def flag? flag

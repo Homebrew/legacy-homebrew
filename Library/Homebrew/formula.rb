@@ -464,6 +464,49 @@ class Formula
     reqs.flatten
   end
 
+  def to_hash
+    hsh = {
+      "name" => name,
+      "homepage" => homepage,
+      "versions" => {
+        "stable" => (stable.version.to_s if stable),
+        "bottle" => bottle && MacOS.bottles_supported? || false,
+        "devel" => (devel.version.to_s if devel),
+        "head" => (head.version.to_s if head)
+      },
+      "installed" => [],
+      "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
+      "keg_only" => keg_only?,
+      "dependencies" => deps.map {|dep| dep.to_s},
+      "conflicts_with" => conflicts.map {|c| c.formula},
+      "options" => [],
+      "caveats" => caveats
+    }
+
+    build.each do |opt|
+      hsh["options"] << {
+        "option" => "--"+opt.name,
+        "description" => opt.description
+      }
+    end
+
+    if rack.directory?
+      rack.children.each do |keg|
+        next if keg.basename.to_s == '.DS_Store'
+        tab = Tab.for_keg keg
+
+        hsh["installed"] << {
+          "version" => keg.basename.to_s,
+          "used_options" => tab.used_options,
+          "built_as_bottle" => tab.built_bottle
+        }
+      end
+    end
+
+    hsh
+
+  end
+
 protected
 
   # Pretty titles the command and buffers stdout/stderr

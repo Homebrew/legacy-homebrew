@@ -232,7 +232,9 @@ def check_for_latest_xcode
 end
 
 def check_for_stray_developer_directory
-  if MacOS::Xcode.version >= "4.3" and File.exist? "/Developer/Library"
+  # if the uninstaller script isn't there, it's a good guess neither are
+  # any troublesome leftover Xcode files
+  if MacOS::Xcode.version >= "4.3" and File.exist? "/Developer/Library/uninstall-developer-folder"
     return <<-EOS.undent
     You have leftover files from an older version of Xcode.
     You should delete them using:
@@ -940,6 +942,7 @@ def check_os_version
 end
 
   def check_xcode_license_approved
+    return if MacOS::Xcode.bad_xcode_select_path?
     # If the user installs Xcode-only, they have to approve the
     # license or no "xc*" tool will work.
     <<-EOS.undent if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success?

@@ -47,7 +47,7 @@ class Keg
     id = install_names.shift if file.dylib?
 
     install_names.compact!
-    install_names.reject!{ |fn| fn =~ /^@(loader|executable)_path/ }
+    install_names.reject!{ |fn| fn =~ /^@(loader_|executable_|r)path/ }
 
     # Don't fix absolute paths unless they are rooted in the build directory
     install_names.reject! do |fn|
