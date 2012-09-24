@@ -8,6 +8,10 @@ module Homebrew extend self
       ENV.deps = Formula.installed.select{|f| f.keg_only? and f.opt_prefix.directory? }.map(&:name)
     end
     ENV.setup_build_environment
+    if superenv?
+      # superenv stopped adding brew's bin but generally user's will want it
+      ENV['PATH'] = ENV['PATH'].split(':').insert(1, "#{HOMEBREW_PREFIX}/bin").join(':')
+    end
     ENV['PS1'] = 'brew \[\033[1;32m\]\w\[\033[0m\]$ '
     ENV['VERBOSE'] = '1'
     ENV['HOMEBREW_LOG'] = '1'

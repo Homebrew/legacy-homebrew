@@ -23,6 +23,7 @@ end
 
 class << ENV
   attr :deps, true
+  attr :all_deps, true # above is just keg-only-deps
   attr :x11, true
   alias_method :x11?, :x11
 
@@ -104,8 +105,7 @@ class << ENV
       paths << "#{MacSystem.xcode43_developer_dir}/usr/bin"
       paths << "#{MacSystem.xcode43_developer_dir}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
     end
-    paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
-    paths << HOMEBREW_PREFIX/:bin
+    paths += all_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
     paths.to_path_s
@@ -256,6 +256,7 @@ if not superenv?
   ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
 else
   ENV.deps = []
+  ENV.all_deps = []
 end
 
 
