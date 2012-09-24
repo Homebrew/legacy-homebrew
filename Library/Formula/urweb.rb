@@ -8,8 +8,11 @@ class Urweb < Formula
 
   depends_on :automake
   depends_on :libtool
-
   depends_on 'mlton'
+
+  def patches
+    DATA unless build.head?
+  end
 
   def install
     system "aclocal"
@@ -27,3 +30,46 @@ class Urweb < Formula
     EOS
   end
 end
+
+# Fix compilation with Clang. This patch has been committed to Ur/Web HEAD,
+# and should be removed upon the next release.
+__END__
+Fix compilation when using Clang on OS X; it doesn't like -pthread
+
+diff -r 216e92b39fc1 -r 52c291b05738 configure.ac
+--- a/configure.ac	Wed Sep 19 18:01:22 2012 -0400
++++ b/configure.ac	Sun Sep 23 20:47:20 2012 -0500
+@@ -94,6 +94,24 @@
+    VERSION="$VERSION + `hg identify || (cat .hg_archival.txt | grep 'node\:') || echo ?`"
+ fi
+ 
++# Clang does not like being passed -pthread, since it's implicit on OS X.
++# So let's get rid of that! Here's to hoping it doesn't break Clang
++# on other platforms.
++AC_MSG_CHECKING([if compiling with clang])
++AC_COMPILE_IFELSE(
++[AC_LANG_PROGRAM([], [[
++#ifndef __clang__
++       not clang
++#endif
++]])],
++[CLANG=yes], [CLANG=no])
++AC_MSG_RESULT([$CLANG])
++
++if test [$CLANG = "yes"]; then
++   PTHREAD_CFLAGS=""
++   PTHREAD_LIBS=""
++fi
++
+ AC_SUBST(CC)
+ AC_SUBST(BIN)
+ AC_SUBST(LIB)
+@@ -130,6 +148,8 @@
+   MySQL C header:      MSHEADER       $MSHEADER
+   SQLite C header:     SQHEADER       $SQHEADER
+   OpenSSL:             OPENSSL_LIBS   $OPENSSL_LIBS
++  pthreads:            PTHREAD_CFLAGS $PTHREAD_CFLAGS
++                       PTHREAD_LIBS   $PTHREAD_LIBS
+ 
+   Version:             $VERSION
+ EOF
