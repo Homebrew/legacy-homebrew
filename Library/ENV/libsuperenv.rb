@@ -39,3 +39,4 @@ end if ENV['HOMEBREW_LOG']
 
 $brewfix = "#{__FILE__}/../../../".cleanpath.freeze
 $sdkroot = ENV['HOMEBREW_SDKROOT'].freeze
+SUPERBIN = __FILE__.dirname.cleanpath.freeze
