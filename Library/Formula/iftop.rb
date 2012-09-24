@@ -1,9 +1,10 @@
 require 'formula'
 
 class Iftop < Formula
-  url 'http://www.ex-parrot.com/~pdw/iftop/download/iftop-0.17.tar.gz'
+  url 'http://www.ex-parrot.com/pdw/iftop/download/iftop-1.0pre2.tar.gz'
   homepage 'http://www.ex-parrot.com/~pdw/iftop/'
-  sha1 '75ce6afc8c0bf851278b0a15e66f523af90cfda9'
+  version '1.0pre2'
+  sha1 'd4dc473f8263192334da6289b69e102a4ae7df9e'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
