@@ -16,7 +16,6 @@ def superbin
 end
 
 def superenv?
-  not MacOS::Xcode.bad_xcode_select_path? and # because xcrun won't work
   not MacOS::Xcode.folder.nil? and # because xcrun won't work
   superbin and superbin.directory? and
   not ARGV.include? "--env=std"
@@ -55,6 +54,7 @@ class << ENV
     ENV['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     ENV['ACLOCAL_PATH'] = determine_aclocal_path
     ENV['VERBOSE'] = '1' if ARGV.verbose?
+    ENV['DEVELOPER_DIR'] = determine_developer_dir
   end
 
   def check
@@ -177,6 +177,15 @@ class << ENV
     # Fix issue with 10.8 apr-1-config having broken paths
     s << 'a' if MacOS.version == :mountain_lion
     s
+  end
+
+  def determine_developer_dir
+    # If Xcode path is fucked then this is basically a fix. In the case where
+    # nothing is valid, it still fixes most usage to supply a valid path that
+    # is not "/".
+    if MacOS::Xcode.bad_xcode_select_path?
+      (Xcode.prefix || HOMEBREW_PREFIX).to_s
+    end
   end
 
   public
