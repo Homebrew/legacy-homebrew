@@ -24,9 +24,6 @@ class Sonar < Formula
     else
       bin.install_symlink "#{libexec}/bin/macosx-universal-32/sonar.sh" => "sonar"
     end
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS

@@ -5,7 +5,7 @@ class Librasterlite < Formula
   url 'http://www.gaia-gis.it/gaia-sins/librasterlite-sources/librasterlite-1.1c.tar.gz'
   sha1 'c54f38ef2974bc92410e2c2196088af14bd9c21a'
 
-  depends_on "pkg-config" => :build unless MacOS.mountain_lion?
+  depends_on "pkg-config" => :build unless MacOS.version >= :mountain_lion
   depends_on :libpng
   depends_on "libgeotiff"
   depends_on "libspatialite"

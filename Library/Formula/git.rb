@@ -1,19 +1,19 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.12.tar.gz'
-  sha1 'fb572729ca5c60161dc651564a50d4378507e20f'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.12.1.tar.gz'
+  sha1 '2d9c267c5370cdceb2e67f67abf5b152b0c18db9'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.12.tar.gz'
-  sha1 '50bbfeba77af9a411cc1a1e41220782cf3fd9b5e'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.12.1.tar.gz'
+  sha1 'b42d5db34612825676d0a231cf9c566f8ad45e9f'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.7.12.tar.gz'
-  sha1 '42ec1037f1ee5bfeb405710c83b73c0515ad26e6'
+  url 'http://git-core.googlecode.com/files/git-1.7.12.1.tar.gz'
+  sha1 'c5227b5202947bba3d63dca72662fad02d208800'
 
   head 'https://github.com/git/git.git'
 
@@ -33,7 +33,7 @@ class Git < Formula
     ENV['PYTHON_PATH'] = which 'python' # python can be brewed or unbrewed
 
     # Clean XCode 4.x installs don't include Perl MakeMaker
-    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.lion?
+    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.version >= :lion
 
     ENV['BLK_SHA1'] = '1' if build.include? 'with-blk-sha1'
 

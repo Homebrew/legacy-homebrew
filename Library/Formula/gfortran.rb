@@ -59,9 +59,6 @@ class Gfortran < Formula
     GfortranPkgDownloadStrategy
   end
 
-  # Shouldn't strip compiler binaries.
-  skip_clean :all
-
   def install
     if MacOS::Xcode.version >= '4.2' and MacOS.version >= :lion
       ohai "Installing gfortran 4.2.4 for XCode 4.2 (build 5666) or higher"

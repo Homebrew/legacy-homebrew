@@ -75,6 +75,8 @@ class Formula
   # This used to be called in "def install", but should now be used
   # up in the DSL section.
   def fails_with_llvm msg=nil, data=nil
+    opoo "Calling fails_with_llvm in the install method is deprecated"
+    puts "Use the fails_with DSL instead."
     FailsWithLLVM.new(msg, data).handle_failure
   end
 
@@ -165,6 +167,7 @@ class FailsWithLLVM
   end
 end
 
+# TODO eventually some of these should print deprecation warnings
 module MacOS extend self
   def xcode_folder
     Xcode.folder

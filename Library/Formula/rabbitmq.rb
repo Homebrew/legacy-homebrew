@@ -6,7 +6,7 @@ class Rabbitmq < Formula
   sha1 '50ad453ae6a293c7b314dd2dd24a29648f1acc11'
 
   depends_on 'erlang'
-  depends_on 'simplejson' => :python if MacOS.leopard?
+  depends_on 'simplejson' => :python if MacOS.version == :leopard
 
   def install
     # Install the base files
@@ -29,10 +29,6 @@ class Rabbitmq < Formula
     # Enable the management web UI
     enabled_plugins_path = etc+'rabbitmq/enabled_plugins'
     enabled_plugins_path.write enabled_plugins unless enabled_plugins_path.exist?
-
-    # Create the plist file
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

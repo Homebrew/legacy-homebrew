@@ -13,7 +13,7 @@ class Mysql < Formula
   end
 
   depends_on 'cmake' => :build
-  depends_on 'pidof' unless MacOS.mountain_lion?
+  depends_on 'pidof' unless MacOS.version >= :mountain_lion
 
   option :universal
   option 'with-tests', 'Build with unit tests'
@@ -26,6 +26,7 @@ class Mysql < Formula
 
   conflicts_with 'mariadb',
     :because => "mysql and mariadb install the same binaries."
+
   conflicts_with 'percona-server',
     :because => "mysql and percona-server install the same binaries."
 
@@ -33,8 +34,6 @@ class Mysql < Formula
     build 2326
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
-
-  skip_clean :all # So "INSTALL PLUGIN" can work.
 
   def install
     # Build without compiler or CPU specific optimization flags to facilitate
@@ -89,9 +88,6 @@ class Mysql < Formula
     system "make"
     system "make install"
 
-    plist_path.write startup_plist
-    plist_path.chmod 0644
-
     # Don't create databases inside of the prefix!
     # See: https://github.com/mxcl/homebrew/issues/4975
     rm_rf prefix+'data'
@@ -102,7 +98,7 @@ class Mysql < Formula
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
       # pidof can be replaced with pgrep from proctools on Mountain Lion
-      s.gsub!(/pidof/, 'pgrep') if MacOS.mountain_lion?
+      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
     ln_s "#{prefix}/support-files/mysql.server", bin
   end

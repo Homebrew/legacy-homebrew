@@ -26,9 +26,6 @@ class Graylog2Server < Formula
 
     etc.install "graylog2.conf"
     prefix.install Dir['*']
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

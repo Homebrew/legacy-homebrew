@@ -2,12 +2,13 @@ require 'formula'
 
 class Mpd < Formula
   homepage 'http://mpd.wikia.com'
-  url 'http://sourceforge.net/projects/musicpd/files/mpd/0.17/mpd-0.17.tar.bz2'
-  sha1 '36201f32ca5729b62b0e6cbddb19ade20ee3f7d7'
+  url 'http://sourceforge.net/projects/musicpd/files/mpd/0.17.1/mpd-0.17.1.tar.bz2'
+  sha1 '11da36217d57d08010f309977a4a77cce6240f77'
 
   head "git://git.musicpd.org/master/mpd.git"
 
   option "lastfm", "Compile with experimental support for Last.fm radio"
+  option 'libwrap', 'Enable support of TCP Wrappers (buggy on 10.7)'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -18,7 +19,6 @@ class Mpd < Formula
   depends_on 'lame'
   depends_on 'faad2' => :optional
   depends_on 'fluid-synth'
-  depends_on 'libcue' => :optional
   depends_on 'libmms' => :optional
   depends_on 'libzzip' => :optional
 
@@ -34,12 +34,15 @@ class Mpd < Formula
             "--enable-flac",
             "--enable-shout",
             "--enable-fluidsynth",
-            "--enable-zip",
+            "--enable-zzip",
             "--enable-lame-encoder"]
-    args << "--disable-curl" if MacOS.leopard?
+    args << "--disable-curl" if MacOS.version == :leopard
     args << "--enable-lastfm" if build.include?("lastfm")
+    args << '--disable-libwrap' unless build.include? 'libwrap'
 
     system "./configure", *args
+    system "make"
+    ENV.j1 # Directories are created in parallel, so let's not do that
     system "make install"
   end
 end

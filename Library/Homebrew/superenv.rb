@@ -16,7 +16,6 @@ def superbin
 end
 
 def superenv?
-  not MacOS::Xcode.bad_xcode_select_path? and # because xcrun won't work
   not MacOS::Xcode.folder.nil? and # because xcrun won't work
   superbin and superbin.directory? and
   not ARGV.include? "--env=std"
@@ -24,6 +23,7 @@ end
 
 class << ENV
   attr :deps, true
+  attr :all_deps, true # above is just keg-only-deps
   attr :x11, true
   alias_method :x11?, :x11
 
@@ -41,8 +41,9 @@ class << ENV
   def setup_build_environment
     reset
     check
-    ENV['CC'] = ENV['LD'] = 'cc'
+    ENV['CC'] = 'cc'
     ENV['CXX'] = 'c++'
+    ENV['DEVELOPER_DIR'] = determine_developer_dir # effects later settings
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
@@ -104,8 +105,7 @@ class << ENV
       paths << "#{MacSystem.xcode43_developer_dir}/usr/bin"
       paths << "#{MacSystem.xcode43_developer_dir}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
     end
-    paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
-    paths << HOMEBREW_PREFIX/:bin
+    paths += all_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
     paths.to_path_s
@@ -119,7 +119,7 @@ class << ENV
     # we put our paths before X because we dupe some of the X libraries
     paths << "#{MacSystem.x11_prefix}/lib/pkgconfig" << "#{MacSystem.x11_prefix}/share/pkgconfig" if x11?
     # Mountain Lion no longer ships some .pcs; ensure we pick up our versions
-    paths << "#{HOMEBREW_REPOSITORY}/Library/Homebrew/pkgconfig" if MacOS.mountain_lion?
+    paths << "#{HOMEBREW_REPOSITORY}/Library/Homebrew/pkgconfig" if MacOS.version >= :mountain_lion
     paths.to_path_s
   end
 
@@ -140,7 +140,7 @@ class << ENV
       # TODO prolly shouldn't always do this?
       paths << "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7"
     end
-    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/"
+    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/" unless x11?
     paths << "#{MacSystem.x11_prefix}/include" if x11?
     paths.to_path_s
   end
@@ -149,7 +149,7 @@ class << ENV
     sdk = MacOS.sdk_path if MacSystem.xcode43_without_clt?
     paths = []
     # things expect to find GL headers since X11 used to be a default, so we add them
-    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries"
+    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries" unless x11?
     paths << "#{MacSystem.x11_prefix}/lib" if x11?
     paths.to_path_s
   end
@@ -173,10 +173,19 @@ class << ENV
     s = ""
     s << 'b' if ARGV.build_bottle?
     # Fix issue with sed barfing on unicode characters on Mountain Lion
-    s << 's' if MacOS.mountain_lion?
+    s << 's' if MacOS.version >= :mountain_lion
     # Fix issue with 10.8 apr-1-config having broken paths
-    s << 'a' if MacOS.cat == :mountainlion
+    s << 'a' if MacOS.version == :mountain_lion
     s
+  end
+
+  def determine_developer_dir
+    # If Xcode path is fucked then this is basically a fix. In the case where
+    # nothing is valid, it still fixes most usage to supply a valid path that
+    # is not "/".
+    if MacOS::Xcode.bad_xcode_select_path?
+      (MacOS::Xcode.prefix || HOMEBREW_PREFIX).to_s
+    end
   end
 
   public
@@ -247,6 +256,7 @@ if not superenv?
   ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
 else
   ENV.deps = []
+  ENV.all_deps = []
 end
 
 

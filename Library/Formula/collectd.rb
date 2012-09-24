@@ -7,8 +7,6 @@ class Collectd < Formula
 
   depends_on 'pkg-config' => :build
 
-  skip_clean :all
-
   fails_with :clang do
     build 318
     cause <<-EOS.undent
@@ -27,7 +25,7 @@ class Collectd < Formula
               --localstatedir=#{var}
               --with-python=/usr/bin]
 
-    args << "--disable-embedded-perl" if MacOS.leopard?
+    args << "--disable-embedded-perl" if MacOS.version == :leopard
 
     system "./configure", *args
     system "make install"

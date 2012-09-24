@@ -30,6 +30,8 @@ class Python < Formula
   url 'http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2'
   sha1 '842c4e2aff3f016feea3c6e992c7fa96e49c9aa0'
 
+  env :std
+
   depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
@@ -40,12 +42,18 @@ class Python < Formula
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build'
 
-  # Skip binaries so modules will load; skip lib because it is mostly Python files
-  skip_clean ['bin', 'lib']
+  # --with-dtrace relies on CLT as the patch from
+  # http://bugs.python.org/issue13405 requires it.
+  # A note is added upstream about the CLT requirement.
+  option 'with-dtrace', 'Install with DTrace support' if MacOS::CLT.installed?
 
   def site_packages_cellar
     prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
   end
+
+  def patches
+    'https://raw.github.com/gist/3415636/2365dea8dc5415daa0148e98c394345e1191e4aa/pythondtrace-patch.diff'
+  end if build.include? 'with-dtrace'
 
   # The HOMEBREW_PREFIX location of site-packages.
   def site_packages
@@ -76,6 +84,7 @@ class Python < Formula
            ]
 
     args << '--without-gcc' if ENV.compiler == :clang
+    args << '--with-dtrace' if build.include? 'with-dtrace'
 
     # Further, Python scans all "-I" dirs but not "-isysroot", so we add
     # the needed includes with "-I" here to avoid this err:
@@ -140,8 +149,8 @@ class Python < Formula
     EOF
 
     # Install distribute and pip
-    Distribute.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force" }
-    Pip.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force" }
+    Distribute.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force", "--verbose" }
+    Pip.new.brew { system "#{bin}/python", "setup.py", "--no-user-cfg", "install", "--force", "--verbose" }
   end
 
   def caveats

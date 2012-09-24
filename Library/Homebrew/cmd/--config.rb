@@ -64,7 +64,7 @@ module Homebrew extend self
 
   def describe_x11
     return "N/A" unless MacOS::XQuartz.installed?
-    return "#{MacOS::XQuartz.version} in " + describe_path(MacOS::XQuartz.prefix)
+    return "#{MacOS::XQuartz.version} => " + describe_path(MacOS::XQuartz.prefix)
   end
 
   def describe_perl
@@ -127,6 +127,7 @@ module Homebrew extend self
     puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
     ponk = macports_or_fink_installed?
     puts "MacPorts or Fink? #{ponk}" if ponk
+    puts "X11: #{describe_x11}"
     puts "System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}"
     puts "Perl: #{describe_perl}"
     puts "Python: #{describe_python}"
@@ -134,7 +135,6 @@ module Homebrew extend self
   end
 
   def dump_c1
-    stuff = []
     print "#{HOMEBREW_PREFIX}-#{HOMEBREW_VERSION} "
     print MACOS_FULL_VERSION
     print "-#{kernel}" if MacOS.version < :lion

@@ -5,7 +5,7 @@ class RubyEnterpriseEdition < Formula
   url 'http://rubyenterpriseedition.googlecode.com/files/ruby-enterprise-1.8.7-2011.03.tar.gz'
   sha1 '662f37afbe04f3a55ac3b119227a2cd4e53745bf'
 
-  skip_clean 'bin/ruby'
+  env :std
 
   option 'enable-shared', "Compile shared, but see caveats"
 

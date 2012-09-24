@@ -14,7 +14,7 @@ def headless?
   #
   # This restriction can be lifted once WxMac hits a stable release that is
   # 64-bit capable.
-  ARGV.include? '--without-gui' or MacOS.lion?
+  ARGV.include? '--without-gui' or MacOS.version >= :lion
 end
 
 class Grass < Formula
@@ -31,7 +31,7 @@ class Grass < Formula
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-  depends_on "cairo" if MacOS.leopard?
+  depends_on "cairo" if MacOS.version == :leopard
   depends_on :x11
 
   # Patches ensure 32 bit system python is used for wxWidgets and that files
@@ -39,7 +39,7 @@ class Grass < Formula
   def patches; DATA; end
 
   fails_with :clang do
-    build 318
+    build 421
 
     cause <<-EOS.undent
       Multiple build failures while compiling GRASS tools.
@@ -101,7 +101,7 @@ class Grass < Formula
     end
 
     # Deal with Cairo support
-    if MacOS.leopard?
+    if MacOS.version == :leopard
       cairo = Formula.factory('cairo')
       args << "--with-cairo-includes=#{cairo.include}/cairo"
       args << "--with-cairo-libs=#{cairo.lib}"

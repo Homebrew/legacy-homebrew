@@ -7,8 +7,8 @@ class Libvirt < Formula
 
   # Latest (roughly) monthly release.
   devel do
-    url 'http://libvirt.org/sources/libvirt-0.10.1.tar.gz'
-    sha256 '7b179219b92bff35986e2103b2767423d1e9c284052aa81228eae765f01a074d'
+    url 'http://libvirt.org/sources/libvirt-0.10.2.tar.gz'
+    sha256 '1fe69ae1268a097cc0cf83563883b51780d528c6493efe3e7d94c4160cc46977'
   end
 
   option 'without-libvirtd', 'Build only the virsh client and development libraries'
@@ -16,7 +16,7 @@ class Libvirt < Formula
   depends_on "gnutls"
   depends_on "yajl"
 
-  if MacOS.leopard?
+  if MacOS.version == :leopard
     # Definitely needed on Leopard, but not on Snow Leopard.
     depends_on "readline"
     depends_on "libxml2"

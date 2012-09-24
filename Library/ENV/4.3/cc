@@ -41,7 +41,12 @@ class Cmd
   def tool
     @tool ||= case @arg0
     when 'ld' then 'ld'
-    when 'cc' then ENV['HOMEBREW_CC']
+    when 'cc', 'c99', 'c89'
+      # Ideally we would run `cx9`, however these tools are POSIX compliant
+      # and don't support many flags. We need -isystem for instance, but also
+      # reliability is generally much higher if we just get clang/gcc to do
+      # the work since Makefiles are dumb and include a lot of excess flags.
+      ENV['HOMEBREW_CC']
     when 'c++'
       if ENV['HOMEBREW_CC'] =~ /gcc/
         'g++'
@@ -59,24 +64,24 @@ class Cmd
       refurbished_args
     end
     if tool != 'ld'
-      args.unshift("--sysroot=#$sdkroot")
+      args << "--sysroot=#$sdkroot"
     else
-      args.unshift($sdkroot).unshift("-syslibroot")
+      args << "-syslibroot" << $sdkroot
     end if nclt?
     case mode
     when :cpp
-      %w{-E} + cppflags + args
+      %w{-E} + args + cppflags
     when :ld
       ldflags + args
     when :cc
-      cflags + cppflags + args
+      cflags + args + cppflags
     when :ccld
-      cflags + cppflags + ldflags + args
+      cflags + args + cppflags + ldflags
     end.compact
   end
   def refurbished_args
-    lset = Set.new(syslibpath)
-    iset = Set.new(syscpath)
+    lset = Set.new(libpath + syslibpath)
+    iset = Set.new(cpath.flatten)
 
     args = []
     whittler = @args.each
@@ -120,9 +125,11 @@ class Cmd
     if cccfg? 'Ob'
       %w{-mtune=generic -Oz}
     elsif cccfg? 'O'
-      u = '-arch i386 -arch x86_64' if cccfg? 'u'
-      c = case tool when 'clang', 'clang++' then '-march=native' end
-      %w{-pipe -w -Os} << u << c
+      args = %w{-pipe -w -Os}
+      args << '-march=native' if tool =~ /clang/
+      args += %w{-arch i386 -arch x86_64} if cccfg? 'u'
+      args << "--std=#{@arg0}" if @arg0 =~ /c[89]9/
+      args
     else
       []
     end
@@ -160,7 +167,9 @@ class Cmd
   def make_fuss args
     dels = @args - args
     adds = args - @args
+    dups = dels & args
     puts "brew: Superenv removed: #{dels*' '}" unless dels.empty?
+    puts "brew: Superenv deduped: #{dels}" unless dups.empty?
     puts "brew: Superenv added: #{adds*' '}" unless adds.empty?
   end
 end

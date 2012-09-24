@@ -8,8 +8,8 @@ class Redis < Formula
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
   devel do
-    url  'http://redis.googlecode.com/files/redis-2.6.0-rc6.tar.gz'
-    sha1 '64a3567d7a9ff1e33b121084a2c5a22c070c0a44'
+    url  'http://redis.googlecode.com/files/redis-2.6.0-rc7.tar.gz'
+    sha1 '03d849bc18a1f1849010064805e9f084857aaaab'
   end
 
   fails_with :llvm do
@@ -36,8 +36,6 @@ class Redis < Formula
     end
 
     etc.install 'redis.conf' unless (etc/'redis.conf').exist?
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

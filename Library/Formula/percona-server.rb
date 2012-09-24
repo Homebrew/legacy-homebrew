@@ -21,8 +21,6 @@ class PerconaServer < Formula
   conflicts_with 'mariadb',
     :because => "percona-server and mariadb install the same binaries."
 
-  skip_clean :all # So "INSTALL PLUGIN" can work.
-
   fails_with :llvm do
     build 2334
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
@@ -77,8 +75,6 @@ class PerconaServer < Formula
     system "cmake", *args
     system "make"
     system "make install"
-
-    plist_path.write startup_plist
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/mxcl/homebrew/issues/4975

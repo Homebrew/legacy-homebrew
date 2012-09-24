@@ -6,6 +6,7 @@ require 'bottles'
 require 'extend/fileutils'
 require 'patches'
 require 'compilers'
+require 'build_environment'
 
 
 class Formula
@@ -140,6 +141,8 @@ class Formula
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
+  # override this to provide a plist
+  def startup_plist; nil; end
   # plist name, i.e. the name of the launchd service
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
@@ -204,6 +207,7 @@ class Formula
   # redefining skip_clean? now deprecated
   def skip_clean? path
     return true if self.class.skip_clean_all?
+    return true if path.extname == '.la' and self.class.skip_clean_paths.include? :la
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
   end
@@ -433,6 +437,10 @@ class Formula
   def deps;         self.class.dependencies.deps;         end
   def requirements; self.class.dependencies.requirements; end
 
+  def env
+    @env ||= BuildEnvironment.new(self.class.environments)
+  end
+
   def conflicts
     requirements.select { |r| r.is_a? ConflictRequirement }
   end
@@ -454,6 +462,49 @@ class Formula
     reqs = recursive_deps.map { |dep| dep.requirements }.to_set
     reqs << requirements
     reqs.flatten
+  end
+
+  def to_hash
+    hsh = {
+      "name" => name,
+      "homepage" => homepage,
+      "versions" => {
+        "stable" => (stable.version.to_s if stable),
+        "bottle" => bottle && MacOS.bottles_supported? || false,
+        "devel" => (devel.version.to_s if devel),
+        "head" => (head.version.to_s if head)
+      },
+      "installed" => [],
+      "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
+      "keg_only" => keg_only?,
+      "dependencies" => deps.map {|dep| dep.to_s},
+      "conflicts_with" => conflicts.map {|c| c.formula},
+      "options" => [],
+      "caveats" => caveats
+    }
+
+    build.each do |opt|
+      hsh["options"] << {
+        "option" => "--"+opt.name,
+        "description" => opt.description
+      }
+    end
+
+    if rack.directory?
+      rack.children.each do |keg|
+        next if keg.basename.to_s == '.DS_Store'
+        tab = Tab.for_keg keg
+
+        hsh["installed"] << {
+          "version" => keg.basename.to_s,
+          "used_options" => tab.used_options,
+          "built_as_bottle" => tab.built_bottle
+        }
+      end
+    end
+
+    hsh
+
   end
 
 protected
@@ -643,6 +694,14 @@ private
       @stable.mirror(val)
     end
 
+    def environments
+      @environments ||= []
+    end
+
+    def env *settings
+      environments.concat [settings].flatten
+    end
+
     def dependencies
       @dependencies ||= DependencyCollector.new
     end
@@ -682,7 +741,8 @@ private
       end
       @skip_clean_paths ||= []
       [paths].flatten.each do |p|
-        @skip_clean_paths << p.to_s unless @skip_clean_paths.include? p.to_s
+        p = p.to_s unless p == :la
+        @skip_clean_paths << p unless @skip_clean_paths.include? p
       end
     end
 

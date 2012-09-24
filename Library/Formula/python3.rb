@@ -22,6 +22,8 @@ class Python3 < Formula
   url 'http://python.org/ftp/python/3.2.3/Python-3.2.3.tar.bz2'
   sha1 '4c2d562a0681ba27bc920500050e2f08de224311'
 
+  env :std
+
   depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
@@ -30,9 +32,6 @@ class Python3 < Formula
   depends_on :x11 # tk.h includes X11/Xlib.h and X11/X.h
 
   option 'quicktest', 'Run `make quicktest` after the build'
-
-  # Skip binaries so modules will load; skip lib because it is mostly Python files
-  skip_clean ['bin', 'lib']
 
   def site_packages_cellar
     prefix/"Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages"
@@ -129,14 +128,14 @@ class Python3 < Formula
 
     # Install distribute for python3
     Distribute.new.brew do
-      system "#{bin}/python3.2", "setup.py", "install", "--force"
+      system "#{bin}/python3.2", "setup.py", "install", "--force", "--verbose"
       # Symlink to easy_install3 to match python3 command.
       unless (scripts_folder/'easy_install3').exist?
         ln_s scripts_folder/"easy_install", scripts_folder/"easy_install3"
       end
     end
     # Install pip-3.2 for python3
-    Pip.new.brew { system "#{bin}/python3.2", "setup.py", "install", "--force" }
+    Pip.new.brew { system "#{bin}/python3.2", "setup.py", "install", "--force", "--verbose" }
   end
 
   def caveats

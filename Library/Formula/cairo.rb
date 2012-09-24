@@ -1,8 +1,12 @@
 require 'formula'
 
+# Use a mirror because of:
+# http://lists.cairographics.org/archives/cairo/2012-September/023454.html
+
 class Cairo < Formula
   homepage 'http://cairographics.org/'
   url 'http://cairographics.org/releases/cairo-1.12.2.tar.xz'
+  mirror 'http://ftp-nyc.osuosl.org/pub/gentoo/distfiles/cairo-1.12.2.tar.xz'
   sha256 'b786bc4a70542bcb09f2d9d13e5e6a0c86408cbf6d1edde5f0de807eecf93f96'
 
   keg_only :provided_pre_mountain_lion
@@ -29,7 +33,7 @@ class Cairo < Formula
     ]
 
     args << '--with-x' unless build.include? 'without-x'
-    args << '--enable-xcb=no' if MacOS.leopard?
+    args << '--enable-xcb=no' if MacOS.version == :leopard
 
     system "./configure", *args
     system "make install"

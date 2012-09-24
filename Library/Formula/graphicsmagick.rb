@@ -1,54 +1,49 @@
 require 'formula'
 
-def ghostscript_fonts?
-  File.directory? "#{HOMEBREW_PREFIX}/share/ghostscript/fonts"
-end
-
 def ghostscript_srsly?
   build.include? 'with-ghostscript'
 end
 
-def use_wmf?
-  build.include? 'use-wmf'
-end
-
-def quantum_depth
-  if build.include? 'with-quantum-depth-32'
-    32
-  elsif build.include? 'with-quantum-depth-16'
-    16
-  end
+def ghostscript_fonts?
+  File.directory? "#{HOMEBREW_PREFIX}/share/ghostscript/fonts"
 end
 
 class Graphicsmagick < Formula
   homepage 'http://www.graphicsmagick.org/'
-  url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.15/GraphicsMagick-1.3.15.tar.bz2'
-  sha256 'fd79168feaca5a2d230ce294541bb3655fd0fb6f21aec7c29dd7f00db14109ed'
+  url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.16/GraphicsMagick-1.3.16.tar.bz2'
+  sha256 '2845bfcd53b0ea57755f21aac80df3becfa7d37ac50c6f67387f004d67d58d83'
 
   head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
 
-  depends_on :x11
-  depends_on 'jpeg'
-  depends_on 'libwmf' if use_wmf?
-  depends_on 'libtiff' => :optional
-  depends_on 'little-cms2' => :optional
-  depends_on 'jasper' => :optional
-  depends_on 'ghostscript' => :recommended if ghostscript_srsly?
-  depends_on 'xz' => :optional
+  option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
+  option 'use-tiff', 'Compile with libtiff support.'
+  option 'use-cms', 'Compile with little-cms support.'
+  option 'use-jpeg2000', 'Compile with jasper support.'
+  option 'use-wmf', 'Compile with libwmf support.'
+  option 'use-xz', 'Compile with xz support.'
+  option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
+  option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
+  option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
+  option 'with-x', 'Compile with X11 support.'
+  option 'without-magick-plus-plus', "Don't build C++ library."
+
+  depends_on 'jpeg' => :recommended
+  depends_on :libpng
+  depends_on :x11 if build.include? 'with-x'
+
+  depends_on 'ghostscript' => :optional if ghostscript_srsly?
+
+  depends_on 'libtiff' => :optional if build.include? 'use-tiff'
+  depends_on 'little-cms2' => :optional if build.include? 'use-cms'
+  depends_on 'jasper' => :optional if build.include? 'use-jpeg2000'
+  depends_on 'libwmf' => :optional if build.include? 'use-wmf'
+  depends_on 'xz' => :optional if build.include? 'use-xz'
 
   fails_with :llvm do
     build 2335
   end
 
-  def skip_clean? path
-    path.extname == '.la'
-  end
-
-  option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
-  option 'without-magick-plus-plus', "Don't build C++ library."
-  option 'use-wmf', 'Compile with libwmf support.'
-  option 'with-quantum-depth-16', 'Use an 16 bit pixel quantum depth (default is 8)'
-  option 'with-quantum-depth-32', 'Use a 32 bit pixel quantum depth (default is 8)'
+  skip_clean :la
 
   def install
     # versioned stuff in main tree is pointless for us
@@ -58,13 +53,28 @@ class Graphicsmagick < Formula
             "--prefix=#{prefix}",
             "--enable-shared", "--disable-static"]
     args << "--without-magick-plus-plus" if build.include? 'without-magick-plus-plus'
-    args << "--disable-openmp" if MacOS.leopard? or ENV.compiler == :clang # libgomp unavailable
+    args << "--disable-openmp" if MacOS.version == :leopard or ENV.compiler == :clang # libgomp unavailable
     args << "--with-gslib" if ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
               unless ghostscript_fonts?
+
+    if build.include? 'with-quantum-depth-32'
+      quantum_depth = 32
+    elsif build.include? 'with-quantum-depth-16'
+      quantum_depth = 16
+    elsif build.include? 'with-quantum-depth-8'
+      quantum_depth = 8
+    end
+
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
+    args << "--without-x" unless build.include? 'with-x'
 
     system "./configure", *args
     system "make install"
+  end
+
+  def test
+    system "#{bin}/gm", "identify", \
+      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png"
   end
 end

@@ -9,8 +9,6 @@ class Clisp < Formula
   depends_on 'libsigsegv'
   depends_on 'readline'
 
-  skip_clean :all # otherwise abort trap
-
   fails_with :llvm do
     build 2334
     cause "Configure fails on XCode 4/Snow Leopard."
@@ -42,7 +40,7 @@ class Clisp < Formula
       # The ulimit must be set, otherwise `make` will fail and tell you to do so
       system "ulimit -s 16384 && make"
 
-      if MacOS.lion?
+      if MacOS.version >= :lion
         opoo "`make check` fails on Lion, so we are skipping it."
         puts "But it probably means there will be other issues too."
         puts "Please take them upstream to the clisp project itself."
