@@ -43,6 +43,7 @@ class << ENV
     check
     ENV['CC'] = 'cc'
     ENV['CXX'] = 'c++'
+    ENV['DEVELOPER_DIR'] = determine_developer_dir # effects later settings
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
@@ -55,7 +56,6 @@ class << ENV
     ENV['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     ENV['ACLOCAL_PATH'] = determine_aclocal_path
     ENV['VERBOSE'] = '1' if ARGV.verbose?
-    ENV['DEVELOPER_DIR'] = determine_developer_dir
   end
 
   def check
