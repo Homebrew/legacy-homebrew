@@ -184,7 +184,7 @@ class << ENV
     # nothing is valid, it still fixes most usage to supply a valid path that
     # is not "/".
     if MacOS::Xcode.bad_xcode_select_path?
-      (Xcode.prefix || HOMEBREW_PREFIX).to_s
+      (MacOS::Xcode.prefix || HOMEBREW_PREFIX).to_s
     end
   end
 
