@@ -149,7 +149,7 @@ end
 
 def fixopt f
   path = if f.linked_keg.directory? and f.linked_keg.symlink?
-    f.linked_keg.readlink
+    f.linked_keg.realpath
   elsif f.prefix.directory?
     f.prefix
   elsif (kids = f.rack.children).size == 1 and kids.first.directory?
@@ -159,5 +159,5 @@ def fixopt f
   end
   Keg.new(path).optlink
 rescue StandardError
-  "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
+  raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
 end
