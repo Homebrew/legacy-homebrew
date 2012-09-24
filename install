@@ -55,6 +55,14 @@ ensure
   system "/bin/stty -raw echo"
 end
 
+def wait_for_user
+  puts
+  puts "Press ENTER to continue or any other key to abort"
+  c = getc
+  # we test for \r and \n because some stuff does \r instead
+  abort unless c == 13 or c == 10
+end
+
 def macos_version
   @macos_version ||= /(10\.\d+)(\.\d+)?/.match(`/usr/bin/sw_vers -productVersion`).captures.first.to_f
 end
@@ -120,13 +128,7 @@ unless chgrps.empty?
   puts *chgrps
 end
 
-if STDIN.tty?
-  puts
-  puts "Press enter to continue"
-  c = getc
-  # we test for \r and \n because some stuff does \r instead
-  abort unless c == 13 or c == 10
-end
+wait_for_user if STDIN.tty?
 
 if File.directory? HOMEBREW_PREFIX
   sudo "/bin/chmod", "g+rwx", *chmods unless chmods.empty?
