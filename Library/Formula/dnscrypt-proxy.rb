@@ -1,14 +1,29 @@
 require 'formula'
 
 class DnscryptProxy < Formula
-  homepage 'http://www.opendns.com/technology/dnscrypt'
-  url 'https://github.com/downloads/opendns/dnscrypt-proxy/dnscrypt-proxy-1.0.1.tar.gz'
-  sha256 '9852a8dcae200c9965697b29fdaffb8ee1dc8602420afdb8763811a7996d6a7f'
+  url 'https://github.com/downloads/opendns/dnscrypt-proxy/dnscrypt-proxy-1.1.0.tar.gz'
+  head 'https://github.com/opendns/dnscrypt-proxy.git', :branch => 'master'
+  homepage 'http://dnscrypt.org'
+  sha256 '73c1042f6ba68dedd89ab518c319f5e46b3536a3c49e697ef9ba504601b26c71'
 
-  head 'https://github.com/opendns/dnscrypt-proxy.git', :branch => '1.0.x'
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
+  option "plugins", "Support plugins and install example plugins."
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    if build.head?
+      system "autoreconf", "-if"
+    end
+
+    if build.include? "plugins"
+      system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking",
+      "--enable-plugins", "--enable-relaxed-plugins-permissions", "--enable-plugins-root"
+    else
+      system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    end
     system "make install"
   end
 end
