@@ -1,8 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Partio < Formula
   homepage 'http://www.partio.us'
   url 'http://githubredir.debian.net/github/wdas/partio/v1.1.0.tar.gz'
