@@ -3,7 +3,7 @@ require 'formula'
 class Irssi < Formula
   homepage 'http://irssi.org/'
   url 'http://irssi.org/files/irssi-0.8.15.tar.bz2'
-  md5 '1dcb3f511b88df94b0c996f36668c7da'
+  sha1 'b79ce8c2c98a76b004f63706e7868cd363000d89'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

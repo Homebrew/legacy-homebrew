@@ -3,7 +3,7 @@ require 'formula'
 class Gptfdisk < Formula
   homepage 'http://www.rodsbooks.com/gdisk/'
   url 'http://sourceforge.net/projects/gptfdisk/files/gptfdisk/0.8.2/gptfdisk-0.8.2.tar.gz'
-  md5 'a6a5beb047d65c0cda4eacc6b5625a19'
+  sha1 '8ab967cd7b0925a8b8a5b24bcdc03d5de688214c'
 
   depends_on 'popt'
   depends_on 'icu4c'

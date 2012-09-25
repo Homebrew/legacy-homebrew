@@ -1,52 +1,37 @@
 require 'formula'
+require Formula.path("python") # For TkCheck requirement
 
 # Python3 is the new language standard, not just a new revision.
 # It's somewhat incompatible to Python 2.x, therefore, the executable
 # "python" will always point to the 2.x version which you can get by
 # `brew install python`.
 
-class TkCheck < Requirement
-  def message; <<-EOS.undent
-    Tk.framework detected in /Library/Frameworks
-    and that can make python builds to fail.
-    https://github.com/mxcl/homebrew/issues/11602
-    EOS
-  end
-
-  def fatal?; false; end
-
-  def satisfied?
-    not File.exist? '/Library/Frameworks/Tk.framework'
-  end
-end
-
 class Distribute < Formula
   url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
-  md5 'b400b532e33f78551e6847c1f5965e56'
+  sha1 '709bd97d46050d69865d4b588c7707768dfe6711'
 end
 
 # Recommended way of installing python modules (http://pypi.python.org/pypi)
 class Pip < Formula
   url 'http://pypi.python.org/packages/source/p/pip/pip-1.1.tar.gz'
-  md5 '62a9f08dd5dc69d76734568a6c040508'
+  sha1 '3b002db66890880ee776bbe199c3d326d8fe3d6f'
 end
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
   url 'http://python.org/ftp/python/3.2.3/Python-3.2.3.tar.bz2'
-  md5 'cea34079aeb2e21e7b60ee82a0ac286b'
+  sha1 '4c2d562a0681ba27bc920500050e2f08de224311'
+
+  env :std
 
   depends_on TkCheck.new
   depends_on 'pkg-config' => :build
-  depends_on 'readline' => :optional  # Prefer over OS X's libedit
-  depends_on 'sqlite'   => :optional  # Prefer over OS X's older version
-  depends_on 'gdbm'     => :optional
+  depends_on 'readline' => :recommended
+  depends_on 'sqlite' => :recommended
+  depends_on 'gdbm' => :recommended
   depends_on :x11 # tk.h includes X11/Xlib.h and X11/X.h
 
   option 'quicktest', 'Run `make quicktest` after the build'
-
-  # Skip binaries so modules will load; skip lib because it is mostly Python files
-  skip_clean ['bin', 'lib']
 
   def site_packages_cellar
     prefix/"Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages"
@@ -67,9 +52,31 @@ class Python3 < Formula
   end
 
   def install
-    args = [ "--prefix=#{prefix}",
-             "--enable-ipv6",
-             "--enable-framework=#{prefix}/Frameworks" ]
+    # Unset these so that installing pip and distribute puts them where we want
+    # and not into some other Python the user has installed.
+    ENV['PYTHONPATH'] = nil
+    ENV['PYTHONHOME'] = nil
+
+    args = %W[--prefix=#{prefix}
+             --enable-ipv6
+             --datarootdir=#{share}
+             --datadir=#{share}
+             --enable-framework=#{prefix}/Frameworks
+           ]
+
+    args << '--without-gcc' if ENV.compiler == :clang
+
+    # Further, Python scans all "-I" dirs but not "-isysroot", so we add
+    # the needed includes with "-I" here to avoid this err:
+    #     building dbm using ndbm
+    #     error: /usr/include/zlib.h: No such file or directory
+    ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
+
+    # Don't use optimizations other than "-Os" here, because Python's distutils
+    # remembers (hint: `python-config --cflags`) and reuses them for C
+    # extensions which can break software (such as scipy 0.11 fails when
+    # "-msse4" is present.)
+    ENV.minimal_optimization
 
     # We need to enable warnings because the configure.in uses -Werror to detect
     # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
@@ -112,9 +119,6 @@ class Python3 < Formula
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python3.2", "#{bin}/python3" unless (bin/"python3").exist?
 
-    # Python 2 has a 2to3, too. (https://github.com/mxcl/homebrew/issues/12581)
-    rm bin/"2to3" if (HOMEBREW_PREFIX/"bin/2to3").exist? and (bin/"2to3").exist?
-
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
     (effective_lib/"python3.2/distutils/distutils.cfg").write <<-EOF.undent
@@ -124,14 +128,14 @@ class Python3 < Formula
 
     # Install distribute for python3
     Distribute.new.brew do
-      system "#{bin}/python3.2", "setup.py", "install"
+      system "#{bin}/python3.2", "setup.py", "install", "--force", "--verbose"
       # Symlink to easy_install3 to match python3 command.
       unless (scripts_folder/'easy_install3').exist?
         ln_s scripts_folder/"easy_install", scripts_folder/"easy_install3"
       end
     end
     # Install pip-3.2 for python3
-    Pip.new.brew { system "#{bin}/python3.2", "setup.py", "install" }
+    Pip.new.brew { system "#{bin}/python3.2", "setup.py", "install", "--force", "--verbose" }
   end
 
   def caveats
@@ -168,7 +172,7 @@ class Python3 < Formula
       See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
     EOS
 
-    text += tk_caveats unless MacOS.lion_or_newer?
+    text += tk_caveats unless MacOS.version >= :lion
     text += general_caveats
     return text
   end

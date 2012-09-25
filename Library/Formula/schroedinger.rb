@@ -3,11 +3,11 @@ require 'formula'
 class Schroedinger < Formula
   homepage 'http://diracvideo.org/'
   url 'http://diracvideo.org/download/schroedinger/schroedinger-1.0.11.tar.gz'
-  md5 'da6af08e564ca1157348fb8d92efc891'
+  sha1 'c01ee0bed6c1bd7608763927f719f94ebc6aaa41'
 
   head  'git://diracvideo.org/git/schroedinger.git'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -16,7 +16,7 @@ class Schroedinger < Formula
   depends_on 'orc'
 
   def install
-    system "autoreconf -i -f" if ARGV.build_head?
+    system "autoreconf -i -f" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
 

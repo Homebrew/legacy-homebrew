@@ -3,7 +3,7 @@ require 'formula'
 class Ssldump < Formula
   url 'http://www.rtfm.com/ssldump/ssldump-0.9b3.tar.gz'
   homepage 'http://www.rtfm.com/ssldump/'
-  md5 'ac8c28fe87508d6bfb06344ec496b1dd'
+  sha1 'a633a9a811a138eac5ed440d583473b644135ef5'
 
   # reorder include files
   #  http://sourceforge.net/tracker/index.php?func=detail&aid=1622854&group_id=68993&atid=523055

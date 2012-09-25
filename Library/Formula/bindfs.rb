@@ -3,7 +3,7 @@ require 'formula'
 class Bindfs < Formula
   url 'http://bindfs.googlecode.com/files/bindfs-1.9.tar.gz'
   homepage 'http://code.google.com/p/bindfs/'
-  md5 '610778ad89bc5b0ff0be7b44bb2b6f0c'
+  sha1 'cf8c2acf67f0e98593ec9f88ad00e12bbbc84f2e'
 
   depends_on 'fuse4x'
 

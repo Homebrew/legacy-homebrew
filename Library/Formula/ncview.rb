@@ -3,7 +3,7 @@ require 'formula'
 class Ncview < Formula
   url 'ftp://cirrus.ucsd.edu/pub/ncview/ncview-2.1.1.tar.gz'
   homepage 'http://meteora.ucsd.edu/~pierce/ncview_home_page.html'
-  md5 '34e25f5949af342a1783542799f51bed'
+  sha1 'e5f1c475d684f7d02ca33ca5444da4b4f828005b'
 
   depends_on :x11
   depends_on "netcdf"

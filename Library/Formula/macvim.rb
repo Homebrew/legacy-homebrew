@@ -2,24 +2,21 @@ require 'formula'
 
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/tarball/snapshot-64'
-  version '7.3-64'
-  sha1 'c8bf2d758f52a1173112138fefbf4e5ab08015ff'
+  url 'https://github.com/b4winckler/macvim/tarball/snapshot-65'
+  version '7.3-65'
+  sha1 'fa5f6e0febe1ebcf5320a6ff8bcf4c7e39eccf8e'
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
+  option "with-cscope", "Build with Cscope support"
+  option "with-lua", "Build with Lua scripting support"
 
-  def options
-  [
-    ["--with-cscope", "Build with Cscope support."],
-    ["--with-lua", "Build with Lua scripting support."]
-  ]
-  end
+  depends_on 'cscope' if build.include? 'with-cscope'
+  depends_on 'lua' if build.include? 'with-lua'
 
-  depends_on 'cscope' if ARGV.include? '--with-cscope'
-  depends_on 'lua' if ARGV.include? '--with-lua'
+  depends_on :xcode # For xcodebuild.
 
   def install
     # Set ARCHFLAGS so the Python app (with C extension) that is
@@ -27,6 +24,10 @@ class Macvim < Formula
     # PPC support (which isn't needed in Homebrew-supported systems.)
     arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
+
+    # If building for 10.8, make sure that CC is set to "clang".
+    # Reference: https://github.com/b4winckler/macvim/wiki/building
+    ENV['CC'] = "clang" if MacOS.version >= :mountain_lion
 
     args = %W[
       --with-features=huge
@@ -40,9 +41,9 @@ class Macvim < Formula
       --with-ruby-command=/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
     ]
 
-    args << "--enable-cscope" if ARGV.include? "--with-cscope"
+    args << "--enable-cscope" if build.include? "with-cscope"
 
-    if ARGV.include? "--with-lua"
+    if build.include? "with-lua"
       args << "--enable-luainterp"
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
     end
@@ -68,7 +69,7 @@ class Macvim < Formula
     bin.install "src/MacVim/mvim"
 
     # Create MacVim vimdiff, view, ex equivalents
-    executables = %w[mvimdiff mview mvimex]
+    executables = %w[mvimdiff mview mvimex gvim gvimdiff gview gvimex]
     executables += %w[vi vim vimdiff view vimex] if build.include? "override-system-vim"
     executables.each {|f| ln_s bin+'mvim', bin+f}
   end

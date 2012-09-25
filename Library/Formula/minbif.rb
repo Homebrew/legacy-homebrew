@@ -1,9 +1,11 @@
 require 'formula'
 
+# Official download has untrusted SSL cert, so use Debian
+
 class Minbif < Formula
-  url 'http://minbif.im/attachments/download/50/minbif-1.0.3.tar.gz'
   homepage 'http://minbif.im/'
-  md5 'c08add6234a6dd4a45b46b590fa63268'
+  url 'http://ftp.de.debian.org/debian/pool/main/m/minbif/minbif_1.0.3.orig.tar.gz'
+  sha1 'ab4f41c6b3777235d816e619f1770d1f9857f7a8'
 
   depends_on 'cmake' => :build
   depends_on 'glib'

@@ -3,7 +3,7 @@ require 'formula'
 class Libimobiledevice < Formula
   homepage 'http://www.libimobiledevice.org/'
   url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.4.tar.bz2'
-  md5 '3f28cbc6a2e30d34685049c0abde5183'
+  sha1 'd59d9751d9f792e8674cd87c91005d431bf56065'
 
   head 'http://cgit.sukimashita.com/libimobiledevice.git'
 
@@ -14,13 +14,13 @@ class Libimobiledevice < Formula
   depends_on 'usbmuxd'
   depends_on 'gnutls'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
 
   def install
-    if ARGV.build_head?
+    if build.head?
       # fix the m4 problem with the missing pkg.m4
       ENV['LIBTOOLIZE'] = "glibtoolize"
       ENV['ACLOCAL'] = "aclocal -I m4 -I #{HOMEBREW_PREFIX}/share/aclocal"

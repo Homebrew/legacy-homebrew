@@ -3,7 +3,7 @@ require 'formula'
 class Squashfs < Formula
   homepage 'http://squashfs.sourceforge.net/'
   url 'http://sourceforge.net/projects/squashfs/files/squashfs/squashfs4.0/squashfs4.0.tar.gz'
-  md5 'a3c23391da4ebab0ac4a75021ddabf96'
+  sha1 '3efe764ac27c507ee4a549fc6507bc86ea0660dd'
 
   fails_with :clang do
     build 318

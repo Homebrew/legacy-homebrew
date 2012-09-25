@@ -206,49 +206,39 @@ end
 
 def check_for_latest_xcode
   if not MacOS::Xcode.installed?
-    # no Xcode, now it depends on the OS X version...
-    if MacOS.version >= 10.7 then
+    if MacOS.version >= 10.7
       if not MacOS::CLT.installed?
-        return <<-EOS.undent
-          No Xcode version found!
-          No compiler found in /usr/bin!
-
-          To fix this, either:
-          - Install the "Command Line Tools for Xcode" from http://connect.apple.com/
-            Homebrew does not require all of Xcode, you only need the CLI tools package!
-            (However, you need a (free) Apple Developer ID.)
-          - Install Xcode from the Mac App Store. (Normal Apple ID is sufficient, here)
+        <<-EOS.undent
+        No developer tools installed
+        You should install the Command Line Tools: http://connect.apple.com
         EOS
-      else
-        return <<-EOS.undent
-          Experimental support for using the "Command Line Tools" without Xcode.
-          Some formulae need Xcode to be installed (for the Frameworks not in the CLT.)
+      elsif not MacOS::CLT.latest_version?
+        <<-EOS.undent
+        A newer Command Line Tools for Xcode release is avaliable
+        You should install the latest version from: http://connect.apple.com
         EOS
       end
     else
-      # older Mac systems should just install their old Xcode. We don't advertize the CLT.
-      return <<-EOS.undent
-        We couldn't detect any version of Xcode.
-        If you downloaded Xcode from the App Store, you may need to run the installer.
+      <<-EOS.undent
+      Xcode not installed
+      Most stuff needs Xcode to build: http://developer.apple.com/xcode/
       EOS
     end
-  end
-
-  latest_xcode = case MacOS.version
-    when 10.5 then "3.1.4"
-    when 10.6 then "3.2.6"
-    when 10.7 then "4.3.3"
-    when 10.8 then "4.4"
-    else nil
-  end
-  if latest_xcode.nil?
-    return <<-EOS.undent
-    Not sure what version of Xcode is the latest for OS X #{MacOS.version}.
+  elsif MacOS::Xcode.version < MacOS::Xcode.latest_version then <<-EOS.undent
+    Your Xcode (#{MacOS::Xcode.version}) is outdated
+    Please install Xcode #{MacOS::Xcode.latest_version}.
     EOS
   end
-  if MacOS::Xcode.installed? and MacOS::Xcode.version < latest_xcode then <<-EOS.undent
-    You have Xcode-#{MacOS::Xcode.version}, which is outdated.
-    Please install Xcode #{latest_xcode}.
+end
+
+def check_for_stray_developer_directory
+  # if the uninstaller script isn't there, it's a good guess neither are
+  # any troublesome leftover Xcode files
+  if MacOS::Xcode.version >= "4.3" and File.exist? "/Developer/Library/uninstall-developer-folder"
+    return <<-EOS.undent
+    You have leftover files from an older version of Xcode.
+    You should delete them using:
+      /Developer/Library/uninstall-developer-folder
     EOS
   end
 end
@@ -271,7 +261,8 @@ end
 
 def check_standard_compilers
   return if check_for_latest_xcode # only check if Xcode is up to date
-  if !MacOS.compilers_standard? then <<-EOS.undent
+  compiler_status = MacOS.compilers_standard?
+  if not compiler_status and not compiler_status.nil? then <<-EOS.undent
     Your compilers are different from the standard versions for your Xcode.
     If you have Xcode 4.3 or newer, you should install the Command Line Tools for
     Xcode from within Xcode's Download preferences.
@@ -406,7 +397,7 @@ def check_xcode_select_path
     <<-EOS.undent
       Your xcode-select path is set to /
       You must unset it or builds will hang:
-        sudo rm /usr/share/xcode-select/xcode_dir_link
+        sudo rm /usr/share/xcode-select/xcode_dir_*
     EOS
   elsif not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
     path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::Xcode::V3_BUNDLE_ID)
@@ -555,8 +546,11 @@ def check_for_config_scripts
 
   config_scripts = []
 
+  whitelist = %W[/usr/bin /usr/sbin /usr/X11/bin /usr/X11R6/bin /opt/X11/bin #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin]
+  whitelist.map! { |d| d.downcase }
+
   path_folders.each do |p|
-    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', '/usr/X11R6/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin", "/opt/X11/bin"].include? p
+    next if whitelist.include? p.downcase
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
@@ -729,7 +723,7 @@ def check_for_linked_keg_only_brews
 
   warnings = Hash.new
 
-  Formula.all.each do |f|
+  Formula.each do |f|
     next unless f.keg_only? and f.installed?
     links = __check_linked_brew f
     warnings[f.name] = links unless links.empty?
@@ -786,9 +780,8 @@ end
 def check_missing_deps
   return unless HOMEBREW_CELLAR.exist?
   s = Set.new
-  missing_deps = Homebrew.find_missing_brews(Homebrew.installed_brews)
-  missing_deps.each do |m|
-    s.merge m[1]
+  Homebrew.missing_deps(Homebrew.installed_brews).each do |_, deps|
+    s.merge deps
   end
 
   if s.length > 0 then <<-EOS.undent
@@ -811,14 +804,14 @@ def check_git_status
       If this a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
-          cd #{HOMEBREW_REPOSITORY} && git stash
+          cd #{HOMEBREW_REPOSITORY}/Library && git stash && git clean -f
       EOS
     end
   end
 end
 
 def check_for_leopard_ssl
-  if MacOS.leopard? and not ENV['GIT_SSL_NO_VERIFY']
+  if MacOS.version == :leopard and not ENV['GIT_SSL_NO_VERIFY']
     <<-EOS.undent
       The version of libcurl provided with Mac OS X Leopard has outdated
       SSL certificates.
@@ -947,6 +940,17 @@ def check_os_version
     end
   end
 end
+
+  def check_xcode_license_approved
+    return if MacOS::Xcode.bad_xcode_select_path?
+    # If the user installs Xcode-only, they have to approve the
+    # license or no "xc*" tool will work.
+    <<-EOS.undent if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success?
+    You have not agreed to the Xcode license.
+    Builds will fail! Agree to the license by opening Xcode.app or running:
+        xcodebuild -license
+    EOS
+  end
 
 end # end class Checks
 

@@ -2,8 +2,8 @@ require 'formula'
 
 class Cassandra < Formula
   homepage 'http://cassandra.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.1.3/apache-cassandra-1.1.3-bin.tar.gz'
-  sha1 '3872d6ef4309d3fa1131bef0a08bbf132f854a60'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.1.5/apache-cassandra-1.1.5-bin.tar.gz'
+  sha1 '5094bd3cd537bef8a0def86098d12e238b412403'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -12,10 +12,7 @@ class Cassandra < Formula
 
     inreplace "conf/cassandra.yaml", "/var/lib/cassandra", "#{var}/lib/cassandra"
     inreplace "conf/log4j-server.properties", "/var/log/cassandra", "#{var}/log/cassandra"
-
-    inreplace "conf/cassandra-env.sh" do |s|
-      s.gsub! "/lib/", "/"
-    end
+    inreplace "conf/cassandra-env.sh", "/lib/", "/"
 
     inreplace "bin/cassandra.in.sh" do |s|
       s.gsub! "CASSANDRA_HOME=`dirname $0`/..", "CASSANDRA_HOME=#{prefix}"
@@ -30,9 +27,6 @@ class Cassandra < Formula
     (etc+"cassandra").install Dir["conf/*"]
     prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,pylib,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

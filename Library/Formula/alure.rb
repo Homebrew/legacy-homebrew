@@ -7,7 +7,7 @@ class Alure < Formula
 
   depends_on 'cmake' => :build
   depends_on 'flac'       => :optional
-  depends_on 'fluidsynth' => :optional
+  depends_on 'fluid-synth' => :optional
   depends_on 'libogg'     => :optional
   depends_on 'libsndfile' => :optional
   depends_on 'libvorbis'  => :optional

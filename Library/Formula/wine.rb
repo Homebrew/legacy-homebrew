@@ -5,21 +5,25 @@ class WineGecko < Formula
   sha1 'c30aa99621e98336eb4b7e2074118b8af8ea2ad5'
 
   devel do
-    url 'http://downloads.sourceforge.net/wine/wine_gecko-1.5-x86.msi', :using => :nounzip
-    sha1 '07b2bc74d03c885bb39124a7641715314cd3ae71'
+    url 'http://downloads.sourceforge.net/wine/wine_gecko-1.7-x86.msi', :using => :nounzip
+    sha1 'efebc4ed7a86708e2dc8581033a3c5d6effe0b0b'
   end
 end
 
 class Wine < Formula
   homepage 'http://winehq.org/'
-  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.4.tar.bz2'
-  sha256 '99a437bb8bd350bb1499d59183635e58217e73d631379c43cfd0d6020428ee65'
+  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.4.1.tar.bz2'
+  sha256 '3c233e3811e42c2f3623413783dbcd0f2288014b5645211f669ffd0ba6ae1856'
   head 'git://source.winehq.org/git/wine.git'
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.6.tar.bz2'
-    sha256 'b178bc34a69341a8f0a7ff73f7dadf2562ed2e5eb03dc0522b7c4d6002e53994'
+    # NOTE: when updating Wine, please check if Wine-Gecko needs updating too
+    # see http://wiki.winehq.org/Gecko
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.13.tar.bz2'
+    sha256 'c05dd12ecc5256219d09cc1daad6f2153368d69ef15c68400a2a404b79b079d1'
   end
+
+  env :std
 
   depends_on :x11
   depends_on 'jpeg'
@@ -72,7 +76,7 @@ class Wine < Formula
             "--with-x",
             "--with-coreaudio",
             "--with-opengl"]
-    args << "--disable-win16" if MacOS.leopard? or ENV.compiler == :clang
+    args << "--disable-win16" if MacOS.version == :leopard or ENV.compiler == :clang
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
@@ -103,6 +107,14 @@ class Wine < Formula
 
       Or check out:
         http://code.google.com/p/osxwinebuilder/
+    EOS
+    # see http://bugs.winehq.org/show_bug.cgi?id=31374
+    s += <<-EOS.undent if (ARGV.build_devel? or ARGV.build_head?)
+
+      The current version of Wine contains a partial implementation of dwrite.dll
+      which may cause text rendering issues in applications such as Steam.
+      We recommend that you run winecfg, add an override for dwrite in the
+      Libraries tab, and edit the override mode to "disable".
     EOS
     return s
   end

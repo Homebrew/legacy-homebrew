@@ -27,7 +27,7 @@ class Dbslayer < Formula
   homepage 'http://code.nytimes.com/projects/dbslayer/wiki'
   url 'http://code.nytimes.com/downloads/dbslayer-beta-12.tgz'
   version '0.12.b'
-  md5 'a529ea503c244d723166f78c75df3bb3'
+  sha1 'fbf1c5563a6ee45783e31f6b49612e64fc141186'
 
   depends_on MySqlInstalled.new
 

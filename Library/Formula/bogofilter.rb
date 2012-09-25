@@ -3,7 +3,7 @@ require 'formula'
 class Bogofilter < Formula
   url 'http://sourceforge.net/projects/bogofilter/files/bogofilter-current/bogofilter-1.2.2/bogofilter-1.2.2.tar.bz2'
   homepage 'http://bogofilter.sourceforge.net'
-  md5 '4bcabdf8c5e7efefcb508eda7e80eebc'
+  sha1 '6d2860c1d919fe47a8efcfc7fd6de9433872f21d'
 
   depends_on 'berkeley-db'
 

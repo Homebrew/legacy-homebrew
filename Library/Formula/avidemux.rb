@@ -13,6 +13,7 @@ class Avidemux < Formula
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
   depends_on 'yasm' => :build
+  depends_on :fontconfig
   depends_on 'gettext'
   depends_on 'aften'
   depends_on 'mad'
@@ -31,7 +32,7 @@ class Avidemux < Formula
   # Check if this still exists @ XCode-4.3.4 or 4.4.0.  I think it's fixed then
   # by llvm in clang svn.  So this will have to persist for older clang.
   fails_with :clang do
-    build 318
+    build 421
     cause "error in backend: Couldn't allocate input reg for constraint"
   end unless build.include? 'with-debug'
 
@@ -62,7 +63,7 @@ class Avidemux < Formula
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    if MacOS.leopard? or Hardware.is_32_bit?
+    if MacOS.version == :leopard or Hardware.is_32_bit?
       inreplace 'cmake/admFFmpegBuild.cmake',
         '${CMAKE_INSTALL_PREFIX})',
         '${CMAKE_INSTALL_PREFIX} --extra-cflags=-mdynamic-no-pic)'
