@@ -9,13 +9,14 @@ class Mpfr < Formula
   depends_on 'gmp'
 
   option '32-bit'
+  option 'skip-check', 'Do not run `make check`'
 
   def patches
     "http://www.mpfr.org/mpfr-current/allpatches"
   end
 
   def install
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
 
     # Build 32-bit where appropriate, and help configure find 64-bit CPUs
     # Note: This logic should match what the GMP formula does.
@@ -29,7 +30,8 @@ class Mpfr < Formula
 
     system "./configure", *args
     system "make"
-    system "make check"
+    # Upstream implores users to always run the test suite
+    system "make check" unless build.include? "skip-check"
     system "make install"
   end
 end
