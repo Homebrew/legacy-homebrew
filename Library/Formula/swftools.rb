@@ -1,6 +1,6 @@
 require 'formula'
 
-class Xpdf < Formula
+class XpdfTarball < Formula
   url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.03.tar.gz', :using  => :nounzip
   sha1 '499423e8a795e0efd76ca798239eb4d0d52fe248'
 end
@@ -31,7 +31,7 @@ class Swftools < Formula
   end
 
   def install
-    Xpdf.new.brew { (buildpath+'lib/pdf').install Dir['*'] } if build.include? "with-xpdf"
+    XpdfTarball.new.brew { (buildpath+'lib/pdf').install Dir['*'] } if build.include? "with-xpdf"
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
