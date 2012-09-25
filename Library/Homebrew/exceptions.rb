@@ -95,54 +95,13 @@ class BuildError < Homebrew::InstallationError
   end
 
   def dump
-    e = self
-
-    require 'cmd/--config'
-    require 'cmd/--env'
-
-    e.backtrace[1] =~ %r{Library/Formula/(.+)\.rb:(\d+)}
-    formula_name = $1
-    error_line = $2
-
-    path = HOMEBREW_REPOSITORY/"Library/Formula/#{formula_name}.rb"
-    if path.symlink? and path.realpath.to_s =~ %r{^#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)/}
-      repo = "#$1/homebrew-#$2"
-      repo_path = path.realpath.relative_path_from(HOMEBREW_REPOSITORY/"Library/Taps/#$1-#$2").parent.to_s
-      issues_url = "https://github.com/#$1/homebrew-#$2/issues/new"
-    else
-      repo = "mxcl/master"
-      repo_path = "Library/Formula"
-      issues_url = ISSUES_URL
-    end
-
-    if ARGV.verbose?
-      ohai "Exit Status: #{e.exit_status}"
-      puts "https://github.com/#{repo}/blob/master/#{repo_path}/#{formula_name}.rb#L#{error_line}"
-    end
-    ohai "Build Environment"
-    Homebrew.dump_build_config
-    puts %["--use-clang" was specified] if ARGV.include? '--use-clang'
-    puts %["--use-llvm" was specified] if ARGV.include? '--use-llvm'
-    puts %["--use-gcc" was specified] if ARGV.include? '--use-gcc'
-    Homebrew.dump_build_env e.env
+    logs = "#{ENV['HOME']}/Library/Logs/Homebrew/#{formula}/"
     puts
-    onoe "#{e.to_s.strip} (#{formula_name}.rb:#{error_line})"
-    issues = GitHub.issues_for_formula formula_name
-    puts
-    if issues.empty?
-      puts "This link will help resolve the above errors:"
-      puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
-    else
-      puts "These existing issues may help you:", *issues.map{ |s| "    #{Tty.em}#{s}#{Tty.reset}" }
-      puts "Otherwise, this may help you fix or report the issue:"
-      puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
-    end
-    if e.was_running_configure?
-      puts "We saved the configure log:"
-      puts "    ~/Library/Logs/Homebrew/config.log"
-      puts "When you report the issue please paste the build output above and the config.log here:"
-      puts "    #{Tty.em}http://gist.github.com/#{Tty.reset}"
-    end
+    onoe "#{formula.name} did not build"
+    puts "Logs: #{logs}" unless Dir["#{logs}/*"].empty?
+    puts "Help: #{Tty.em}https://github.com/mxcl/homebrew/wiki/troubleshooting#{Tty.reset}"
+    issues = GitHub.issues_for_formula(formula.name)
+    puts *issues.map{ |s| "      #{Tty.em}#{s}#{Tty.reset}" } unless issues.empty?
   end
 end
 
