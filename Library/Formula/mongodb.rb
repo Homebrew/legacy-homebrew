@@ -9,7 +9,7 @@ class Mongodb < Formula
     version '2.2.0-x86_64'
   else
     url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0.tgz'
-    md5 '59a59df34922f3caaa6219ab8ebf05dd'
+    md5 '576cc456081f8348a59448675fd1afde'
     version '2.2.0-i386'
   end
 
