@@ -1,8 +1,8 @@
 require 'formula'
 
 class Povray < Formula
-  url 'http://www.povray.org/beta/source/povray-3.7.0.RC6.tar.gz'
   homepage 'http://www.povray.org/'
+  url 'http://www.povray.org/beta/source/povray-3.7.0.RC6.tar.gz'
   sha256 '374957bdb90fb7be5f36f839b3f04ab0a4340f6e8cf369f658d6592a342803e3'
   version '3.7.0.RC6'
 
@@ -23,11 +23,11 @@ class Povray < Formula
 
   def patches
     {:p0 => [
-             "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-boost-1.50.diff",
-             "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-configure-stat.diff",
-             "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-lseek64.diff",
-             "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-vfe-uint.diff" 
-            ]}
+       "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-boost-1.50.diff",
+       "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-configure-stat.diff",
+       "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-lseek64.diff",
+       "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-vfe-uint.diff" 
+    ]}
 
   end
 
