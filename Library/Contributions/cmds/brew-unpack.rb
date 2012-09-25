@@ -23,6 +23,9 @@ module ScriptDataReader
   end
 end
 
+# otherwise we may unpack bottles
+ENV['HOMEBREW_BUILD_FROM_SOURCE'] = '1'
+
 # Need to tweak the Formula class slightly so that patching is option and `DATA`
 # patches work correctly.
 class Formula
@@ -30,7 +33,7 @@ class Formula
   # so that paching only happens if the user asks.
   alias do_patch patch
   def patch
-    if ARGV.include? '--patch'
+    if ARGV.flag? '--patch'
       # Yes Ruby, we are about to redefine a constant. Just breathe.
       orig_v = $VERBOSE; $VERBOSE = nil
       Formula.const_set 'DATA', ScriptDataReader.load(path)
@@ -48,19 +51,18 @@ end
 module Homebrew extend self
   def unpack
     unpack_usage = <<-EOS
-Usage: brew unpack [--patch] [--destdir=path/to/extract/in] <formulae ...>
+Usage: brew unpack [-pg] [--destdir=path/to/extract/in] <formulae ...>
 
 Unpack formulae source code for inspection.
 
 Formulae archives will be extracted to subfolders inside the current working
-directory or a directory specified by `--destdir`. If the `--patch` option is
-supplied, patches will also be downloaded and applied.
+directory or a directory specified by `--destdir`. If the `-p` option is
+supplied, patches will also be downloaded and applied. If the `-g` option is
+specified a git repository is created and all files added so that you can diff
+changes.
     EOS
 
-    if ARGV.empty?
-      puts unpack_usage
-      exit 0
-    end
+    abort unpack_usage if ARGV.empty?
 
     formulae = ARGV.formulae
     raise FormulaUnspecifiedError if formulae.empty?
@@ -78,11 +80,26 @@ supplied, patches will also be downloaded and applied.
     formulae.each do |f|
       # Create a nice name for the stage folder.
       stage_dir = unpack_dir + [f.name, f.version].join('-')
-      raise "Destination #{stage_dir} allready exists!" if stage_dir.exist?
 
+      if stage_dir.exist?
+        raise "Destination #{stage_dir} allready exists!" unless ARGV.force?
+        rm_rf stage_dir
+      end
+
+      oh1 "Unpacking #{f.name} to: #{stage_dir}"
+      ENV['VERBOSE'] = '1' # show messages about tar
       f.brew do
-        oh1 "Unpacking #{f.name} to: #{stage_dir}"
-        cp_r Dir.getwd, stage_dir
+        cd Dir['*'][0] if Dir['*'].one?
+        mv getwd, stage_dir
+      end
+      ENV['VERBOSE'] = nil
+
+      if ARGV.switch? 'g'
+        ohai "Setting up git repository"
+        cd stage_dir
+        system "git init -q"
+        system "git add -A"
+        system 'git commit -qm"Vanilla"'
       end
     end
   end

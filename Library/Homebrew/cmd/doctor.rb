@@ -942,6 +942,7 @@ def check_os_version
 end
 
   def check_xcode_license_approved
+    return if MacOS::Xcode.bad_xcode_select_path?
     # If the user installs Xcode-only, they have to approve the
     # license or no "xc*" tool will work.
     <<-EOS.undent if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success?
