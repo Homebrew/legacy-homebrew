@@ -36,14 +36,6 @@ def blacklisted? name
   when 'macruby' then <<-EOS.undent
     MacRuby works better when you install their package:
       http://www.macruby.org/
-
-    Although if you prefer, there is a formula in homebrew-alt.
-    EOS
-  when 'npm' then <<-EOS.undent
-    Homebrew does not provide npm because it is self-updating. To install it, first
-    `brew install nodejs' and then:
-
-        curl https://npmjs.org/install.sh | sh
     EOS
   when /(lib)?lzma/
     "lzma is now part of the xz formula."
