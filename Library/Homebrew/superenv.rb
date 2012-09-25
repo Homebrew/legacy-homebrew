@@ -185,6 +185,8 @@ class << ENV
     # is not "/".
     if MacOS::Xcode.bad_xcode_select_path?
       (MacOS::Xcode.prefix || HOMEBREW_PREFIX).to_s
+    elsif ENV['DEVELOPER_DIR']
+      ENV['DEVELOPER_DIR']
     end
   end
 
