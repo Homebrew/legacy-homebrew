@@ -13,6 +13,9 @@ class Partio < Formula
   depends_on 'doxygen' => :build
 
   def patches
+    # cmake: Allow users to specify CMAKE_INSTALL_PREFIX 
+    # cmake: Do not hard-code the path to doxygen
+    # cmake: Allow out-of-tree builds
     DATA
   end
 
