@@ -5,7 +5,9 @@ class HtopOsx < Formula
   url 'https://github.com/max-horvath/htop-osx/tarball/0.8.2.1-2012-04-18'
   sha1 '90975472c683e59a6476e215ae5cb768d86659a8'
 
+  depends_on :autoconf
   depends_on :automake
+  depends_on :libtool
 
   def install
     # Otherwise htop will segfault when resizing the terminal

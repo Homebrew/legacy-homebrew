@@ -10,7 +10,8 @@ class Ext2fuse < Formula
 
   def install
     ENV.append 'LIBS', "-lfuse4x"
-    ENV.append 'CPPFLAGS', "-DHAVE_TYPE_SSIZE_T=1"
+    ENV.append 'CFLAGS', '-D__FreeBSD__=10 -DENABLE_SWAPFS'
+    ENV.append 'CFLAGS', '--std=gnu89' if ENV.compiler == :clang
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

@@ -16,6 +16,13 @@ class Abyss < Formula
   # strip breaks the ability to read compressed files.
   skip_clean 'bin'
 
+  # Fix a compiler error on OS X 10.8 Mountain Lion.
+  # This issue is fixed upstream:
+  # https://github.com/sjackman/abyss/issues/13
+  def patches
+    DATA
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
@@ -26,3 +33,18 @@ class Abyss < Formula
     system "#{bin}/ABYSS", "--version"
   end
 end
+
+__END__
+diff --git a/Graph/ContigGraphAlgorithms.h b/Graph/ContigGraphAlgorithms.h
+index 023a898..0eac936 100644
+--- a/Graph/ContigGraphAlgorithms.h
++++ b/Graph/ContigGraphAlgorithms.h
+@@ -329,7 +329,7 @@ size_t addComplementaryEdges(ContigGraph<DG>& g)
+		if (!found) {
+			add_edge(vc, uc, g[e], static_cast<DG&>(g));
+			numAdded++;
+-		} else if (g[e] != g[f]) {
++		} else if (!(g[e] == g[f])) {
+			// The edge properties do not agree. Select the better.
+			g[e] = g[f] = BetterDistanceEst()(g[e], g[f]);
+		}

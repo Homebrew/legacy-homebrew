@@ -16,7 +16,6 @@ def superbin
 end
 
 def superenv?
-  not MacOS::Xcode.bad_xcode_select_path? and # because xcrun won't work
   not MacOS::Xcode.folder.nil? and # because xcrun won't work
   superbin and superbin.directory? and
   not ARGV.include? "--env=std"
@@ -24,6 +23,7 @@ end
 
 class << ENV
   attr :deps, true
+  attr :all_deps, true # above is just keg-only-deps
   attr :x11, true
   alias_method :x11?, :x11
 
@@ -43,6 +43,7 @@ class << ENV
     check
     ENV['CC'] = 'cc'
     ENV['CXX'] = 'c++'
+    ENV['DEVELOPER_DIR'] = determine_developer_dir # effects later settings
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
@@ -104,8 +105,7 @@ class << ENV
       paths << "#{MacSystem.xcode43_developer_dir}/usr/bin"
       paths << "#{MacSystem.xcode43_developer_dir}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
     end
-    paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
-    paths << HOMEBREW_PREFIX/:bin
+    paths += all_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
     paths.to_path_s
@@ -179,6 +179,17 @@ class << ENV
     s
   end
 
+  def determine_developer_dir
+    # If Xcode path is fucked then this is basically a fix. In the case where
+    # nothing is valid, it still fixes most usage to supply a valid path that
+    # is not "/".
+    if MacOS::Xcode.bad_xcode_select_path?
+      (MacOS::Xcode.prefix || HOMEBREW_PREFIX).to_s
+    elsif ENV['DEVELOPER_DIR']
+      ENV['DEVELOPER_DIR']
+    end
+  end
+
   public
 
 ### NO LONGER NECESSARY OR NO LONGER SUPPORTED
@@ -247,6 +258,7 @@ if not superenv?
   ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
 else
   ENV.deps = []
+  ENV.all_deps = []
 end
 
 

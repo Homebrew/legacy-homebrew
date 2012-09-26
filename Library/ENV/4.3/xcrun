@@ -1,38 +1,31 @@
-#!/bin/bash
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
+
 # This wrapper because 4.3 xcrun doesn't work with CLT-only configurations
 # But many build-systems expect it to work. This fixes that.
-# NOTE only works if they call xcrun without a full-path. Cross your fingers!
+# NOTE only works if the build-tool calls xcrun without a path prefixed!
 
-[ "$#" -eq 0 ] && exec /usr/bin/xcrun
+ENV['HOMEBREW_LOG'] = nil
 
-if [ $HOMEBREW_SDKROOT ]; then
-  arg0="$1"
-  shift
+require "#{File.dirname __FILE__}/../libsuperenv"
+SUPERBIN = __FILE__.dirname.cleanpath.freeze
 
-  case $arg0 in
-  -*)
-    exec /usr/bin/xcrun "$arg0" "$@";;
-  esac
+exec "/usr/bin/xcrun", *ARGV if ARGV.empty? or ARGV[0][0..0] == '-'
+exec "/usr/bin/#{ARGV.shift}", *ARGV unless ENV['HOMEBREW_SDKROOT'].directory?
 
-  path="$(/usr/bin/xcrun -find $arg0)"
-  [ -x "$path" ] && exec "$path" "$@"
+def try path
+  exec path, *ARGV if File.executable?(path) and path.cleanpath.dirname != SUPERBIN
+end
 
-  # Nuts, Xcode is not setup properly or something.
-  # Try to find the tools anyway!
-  path="/Applications/Xcode.app/Contents/Developer/usr/bin/$arg0"
-  [ -x "$path" ] && exec "$path" "$@"
-  path="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/$arg0"
-  [ -x "$path" ] && exec "$path" "$@"
-  path="/usr/bin/$arg0"
-  [ -x "$path" ] && exec "$path" "$@"
+arg0 = ARGV.shift
+try `/usr/bin/xcrun --find #{arg0}`
+# Nuts, Xcode is not setup properly or something. Try to find the tools anyway!
+try "/Applications/Xcode.app/Contents/Developer/usr/bin/#{arg0}"
+try "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{arg0}"
+try "/usr/bin/#{arg0}"
 
-  echo "Your Xcode setup is not ready. You need to either:"
-  echo "    sudo xcode-select -switch /path/to/Xcode.app"
-  echo "or:"
-  echo "    xcodebuild -license"
-  exit 1
-else
-  cmd="$1"
-  shift
-  exec "/usr/bin/$cmd" "$@"
-fi
+abort <<-EOS
+Your Xcode and or CLT are mis-configured. Try some or all of the following:
+    xcrun --kill-cache
+    xcodebuild -license
+    sudo xcode-select -switch /path/to/Xcode.app
+EOS

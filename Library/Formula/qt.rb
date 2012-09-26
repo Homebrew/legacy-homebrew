@@ -7,7 +7,7 @@ class Qt < Formula
 
   bottle do
     sha1 'ff488747325cd6771fbf0b79156fd3833ff3af63' => :mountainlion
-    sha1 '048517758b2beb2dddabb97f711410ccbcb29c01' => :lion
+    sha1 '5b8d6d3c47f3992465de3a750a35407eef128c94' => :lion
     sha1 'bb0b7e58d743e7b9147ae0d03cebc83134b8f68c' => :snowleopard
   end
 
