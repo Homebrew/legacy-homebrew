@@ -11,16 +11,6 @@ class Vice < Formula
   depends_on 'giflib' => :optional
   depends_on 'lame' => :optional
 
-  def remove_unused_icons
-    Pathname.glob libexec+'*.app' do |d|
-      appname = File.basename(d, '.app')
-
-      Pathname.glob d+'Contents/Resources/x*.icns' do |g|
-        File.unlink g if File.basename(g, '.icns') != appname
-      end
-    end
-  end
-
   fails_with :llvm do
     build 2335
   end
@@ -37,7 +27,6 @@ class Vice < Formula
     system "make"
     system "make bindist"
     prefix.install Dir['vice-macosx-*/*']
-    remove_unused_icons
   end
 
   def caveats
