@@ -5,6 +5,7 @@ class GsettingsDesktopSchemas < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/3.5/gsettings-desktop-schemas-3.5.4.tar.xz'
   sha256 '0f5686683841a9d5a2d4e1dc60392d69cf2b2920614a5d504bb2cac5daea1df2'
 
+  depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'gettext'
 
