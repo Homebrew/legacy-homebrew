@@ -7,7 +7,7 @@ class Clucene < Formula
 
   head 'git://clucene.git.sourceforge.net/gitroot/clucene/clucene'
 
-  depends_on 'cmake' if build.head?
+  depends_on 'cmake' => :build if build.head?
 
   def install
     if build.head?
