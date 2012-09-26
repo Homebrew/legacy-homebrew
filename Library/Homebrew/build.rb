@@ -128,7 +128,6 @@ def install f
       end
 
       interactive_shell f
-      nil
     else
       f.prefix.mkpath
       f.install

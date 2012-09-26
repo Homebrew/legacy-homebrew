@@ -168,9 +168,10 @@ class Cmd
     dels = @args - args
     adds = args - @args
     dups = dels & args
-    puts "brew: Superenv removed: #{dels*' '}" unless dels.empty?
-    puts "brew: Superenv deduped: #{dels}" unless dups.empty?
-    puts "brew: Superenv added: #{adds*' '}" unless adds.empty?
+
+    STDERR.puts "brew: superenv removed: #{dels*' '}" unless dels.empty?
+    STDERR.puts "brew: superenv deduped: #{dels}" unless dups.empty?
+    STDERR.puts "brew: superenv added: #{adds*' '}" unless adds.empty?
   end
 end
 
