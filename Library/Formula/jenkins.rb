@@ -20,12 +20,11 @@ class Jenkins < Formula
   def caveats; <<-EOS.undent
     If this is your first install, automatically load on login with:
       mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path} ~/Library/LaunchAgents/
+      ln -nfs #{plist_path} ~/Library/LaunchAgents/
       launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     If this is an upgrade and you already have the #{plist_path.basename} loaded:
       launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-      cp #{plist_path} ~/Library/LaunchAgents/
       launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
     Or start it manually:
@@ -44,7 +43,7 @@ class Jenkins < Formula
   <array>
   <string>/usr/bin/java</string>
   <string>-jar</string>
-  <string>#{libexec}/jenkins.war</string>
+  <string>#{HOMEBREW_PREFIX}/opt/jenkins/libexec/jenkins.war</string>
   <string>--httpListenAddress=127.0.0.1</string>
   </array>
   <key>RunAtLoad</key>
