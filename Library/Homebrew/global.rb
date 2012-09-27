@@ -1,3 +1,4 @@
+require 'extend/fileutils'
 require 'extend/pathname'
 require 'extend/ARGV'
 require 'extend/string'
@@ -75,7 +76,6 @@ HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY
 
 HOMEBREW_CURL_ARGS = '-qf#LA'
 
-require 'fileutils'
 module Homebrew extend self
   include FileUtils
 

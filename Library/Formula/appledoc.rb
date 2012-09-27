@@ -2,8 +2,8 @@ require 'formula'
 
 class Appledoc < Formula
   homepage 'http://appledoc.gentlebytes.com/'
-  url "https://github.com/tomaz/appledoc/tarball/v2.0.6"
-  sha1 '8e9030425aad78db16b79841568b26a6c085d255'
+  url "https://github.com/tomaz/appledoc/tarball/v2.1"
+  sha1 'd3bd05ce3f7b755cd0dfcb15316bc9f667c1ff2f'
 
   head 'https://github.com/tomaz/appledoc.git', :branch => 'master'
 

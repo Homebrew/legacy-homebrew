@@ -45,10 +45,10 @@ class Gdal < Formula
   depends_on 'giflib'
   depends_on 'proj'
   depends_on 'geos'
-  # To ensure compatibility with SpatiaLite. Might be possible to do this
-  # conditially, but the additional complexity is just not worth saving an
-  # extra few seconds of build time.
-  depends_on 'sqlite'
+
+  depends_on 'sqlite'  # To ensure compatibility with SpatiaLite.
+  depends_on 'freexl'
+  depends_on 'libspatialite'
 
   depends_on "postgresql" if postgres?
   depends_on "mysql" if mysql?
@@ -70,9 +70,7 @@ class Gdal < Formula
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
-    depends_on "libspatialite"
     depends_on "xerces-c"
-    depends_on "freexl"
 
     # Other libraries
     depends_on "xz" # get liblzma compression algorithm library from XZutils
@@ -112,13 +110,15 @@ class Gdal < Formula
       "--with-libz=/usr",
       "--with-png=#{MacOS::X11.prefix}",
       "--with-expat=/usr",
+      "--with-curl=/usr/bin/curl-config",
 
       # Default Homebrew backends.
       "--with-jpeg=#{HOMEBREW_PREFIX}",
       "--with-jpeg12",
       "--with-gif=#{HOMEBREW_PREFIX}",
-      "--with-curl=/usr/bin/curl-config",
       "--with-sqlite3=#{HOMEBREW_PREFIX}",
+      "--with-freexl=#{HOMEBREW_PREFIX}",
+      "--with-spatialite=#{HOMEBREW_PREFIX}",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
       # Should be installed separately after GRASS installation using the
@@ -141,9 +141,7 @@ class Gdal < Formula
         "--with-cfitsio=#{HOMEBREW_PREFIX}",
         "--with-epsilon=#{HOMEBREW_PREFIX}",
         "--with-odbc=#{HOMEBREW_PREFIX}",
-        "--with-spatialite=#{HOMEBREW_PREFIX}",
         "--with-xerces=#{HOMEBREW_PREFIX}",
-        "--with-freexl=#{HOMEBREW_PREFIX}",
         "--with-dods-root=#{HOMEBREW_PREFIX}"
       ]
     else
@@ -157,10 +155,8 @@ class Gdal < Formula
         "--without-jasper",
         "--without-xerces",
         "--without-epsilon",
-        "--without-spatialite",
         "--without-libkml",
         "--without-podofo",
-        "--with-freexl=no",
         "--with-dods-root=no",
 
         # The following libraries are either proprietary or available under

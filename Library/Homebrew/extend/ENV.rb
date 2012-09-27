@@ -48,12 +48,6 @@ module HomebrewEnvExtension
       self['OBJC'] = self['CC']
     end
 
-    # In rare cases this may break your builds, as the tool for some reason wants
-    # to use a specific linker. However doing this in general causes formula to
-    # build more successfully because we are changing CC and many build systems
-    # don't react properly to that.
-    self['LD'] = self['CC']
-
     # Add lib and include etc. from the current macosxsdk to compiler flags:
     macosxsdk MacOS.version
 
@@ -119,7 +113,6 @@ module HomebrewEnvExtension
   def gcc_4_0_1
     # we don't use locate because gcc 4.0 has not been provided since Xcode 4
     self['CC'] = "#{MacOS.dev_tools_path}/gcc-4.0"
-    self['LD'] = self['CC']
     self['CXX'] = "#{MacOS.dev_tools_path}/g++-4.0"
     self['OBJC'] = self['CC']
     replace_in_cflags '-O4', '-O3'
@@ -134,7 +127,6 @@ module HomebrewEnvExtension
     self['CC'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
     self['CXX'] =~ %r{/usr/bin/xcrun (.*)}
     self['CXX'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
-    self['LD'] = self['CC']
     self['OBJC'] = self['CC']
   end
 
@@ -144,13 +136,11 @@ module HomebrewEnvExtension
     # But we don't want LLVM of course.
 
     self['CC'] = MacOS.locate "gcc-4.2"
-    self['LD'] = self['CC']
     self['CXX'] = MacOS.locate "g++-4.2"
     self['OBJC'] = self['CC']
 
     unless self['CC']
       self['CC'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
-      self['LD'] = self['CC']
       self['CXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
       self['OBJC'] = self['CC']
       raise "GCC could not be found" unless File.exist? self['CC']
@@ -168,7 +158,6 @@ module HomebrewEnvExtension
 
   def llvm
     self['CC'] = MacOS.locate "llvm-gcc"
-    self['LD'] = self['CC']
     self['CXX'] = MacOS.locate "llvm-g++"
     self['OBJC'] = self['CC']
     set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
@@ -177,7 +166,6 @@ module HomebrewEnvExtension
 
   def clang
     self['CC'] = MacOS.locate "clang"
-    self['LD'] = self['CC']
     self['CXX'] = MacOS.locate "clang++"
     self['OBJC'] = self['CC']
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
@@ -446,6 +434,10 @@ class << ENV
   def fortran
     fc_flag_vars = %w{FCFLAGS FFLAGS}
 
+    # superenv removes these PATHs, but this option needs them
+    # TODO fix better, probably by making a super-fc
+    ENV['PATH'] += ":#{HOMEBREW_PREFIX}/bin:/usr/local/bin"
+
     if self['FC']
       ohai "Building with an alternative Fortran compiler. This is unsupported."
       self['F77'] = self['FC'] unless self['F77']
@@ -470,7 +462,7 @@ class << ENV
         EOS
       end
 
-    elsif `/usr/bin/which gfortran`.chomp.size > 0
+    elsif `/usr/bin/which gfortran`.chuzzle
       ohai <<-EOS.undent
         Using Homebrew-provided fortran compiler.
         This may be changed by setting the FC environment variable.

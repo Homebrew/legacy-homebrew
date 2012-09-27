@@ -7,6 +7,7 @@
 ABS__FILE__=File.expand_path(__FILE__)
 
 $:.push(File.expand_path(__FILE__+'/../..'))
+require 'extend/fileutils'
 require 'extend/pathname'
 require 'extend/string'
 require 'exceptions'
@@ -31,7 +32,6 @@ at_exit { HOMEBREW_PREFIX.parent.rmtree }
 # Test fixtures and files can be found relative to this path
 TEST_FOLDER = Pathname.new(ABS__FILE__).parent.realpath
 
-require 'fileutils'
 module Homebrew extend self
   include FileUtils
 end

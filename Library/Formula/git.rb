@@ -57,6 +57,14 @@ class Git < Formula
       system "make", "clean"
     end
 
+    # Install git-subtree
+    cd 'contrib/subtree' do
+      system "make", "CC=#{ENV.cc}",
+                     "CFLAGS=#{ENV.cflags}",
+                     "LDFLAGS=#{ENV.ldflags}"
+      bin.install 'git-subtree'
+    end
+
     # install the completion script first because it is inside 'contrib'
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-prompt.sh'

@@ -16,6 +16,8 @@ class Macvim < Formula
   depends_on 'cscope' if build.include? 'with-cscope'
   depends_on 'lua' if build.include? 'with-lua'
 
+  depends_on :xcode # For xcodebuild.
+
   def install
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in

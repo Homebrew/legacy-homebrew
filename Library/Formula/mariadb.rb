@@ -46,7 +46,7 @@ class Mariadb < Formula
       -DMYSQL_DATADIR=#{var}/mysql
       -DINSTALL_MANDIR=#{man}
       -DINSTALL_DOCDIR=#{doc}
-      -DINSTALL_MYSQLSHAREDIR=#{share.basename}/#{name}
+      -DINSTALL_MYSQLSHAREDIR=#{share.basename}/mysql
       -DWITH_SSL=yes
       -DDEFAULT_CHARSET=utf8
       -DDEFAULT_COLLATION=utf8_general_ci
@@ -94,13 +94,19 @@ class Mariadb < Formula
       # pidof can be replaced with pgrep from proctools on Mountain Lion
       s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
+
+    # Fix my.cnf to point to #{etc} instead of /etc
+    inreplace "#{etc}/my.cnf" do |s|
+      s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
+    end
+
     ln_s "#{prefix}/support-files/mysql.server", bin
   end
 
   def caveats; <<-EOS.undent
     Set up databases with:
         unset TMPDIR
-        mysql_install_db
+        mysql_install_db --user=\`whoami\` --basedir="$(brew --prefix mariadb)" --datadir=#{var}/mysql --tmpdir=/tmp
 
     If this is your first install, automatically load on login with:
         cp #{plist_path} ~/Library/LaunchAgents/

@@ -90,3 +90,13 @@ index ea5f8c3..0108774 100755
      if [ -x run.$ARCH-$OPSYS ]; then
  	mv run.$ARCH-$OPSYS "$RUNDIR"
  	if [ -f runx.$ARCH-$OPSYS ]; then
+--- a/_arch-n-opsys.orig	2012-09-27 10:30:34.000000000 +0200
++++ b/_arch-n-opsys	2012-09-27 10:30:49.000000000 +0200
+@@ -65,6 +65,7 @@
+	  9*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.5
+	  10*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.6
+	  11*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.7
++	  12*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.8
+	  *) exit 1;;
+	esac;;
+     esac
