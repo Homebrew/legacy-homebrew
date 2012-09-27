@@ -218,7 +218,7 @@ end
 
 def ignore_interrupts(opt = nil)
   std_trap = trap("INT") do
-    puts "One sec, just cleaning up" unless opt = :quietly
+    puts "One sec, just cleaning up" unless opt == :quietly
   end
   yield
 ensure
