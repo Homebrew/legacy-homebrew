@@ -58,7 +58,7 @@ class Pathname
     else
       # we mv when possible as it is faster and you should only be using
       # this function when installing from the temporary build directory
-      FileUtils.mv src, dst
+      Kernel.system 'mv', src, dst
     end
 
     return return_value
