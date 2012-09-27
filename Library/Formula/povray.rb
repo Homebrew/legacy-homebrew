@@ -14,7 +14,6 @@ class Povray < Formula
   depends_on 'libpng'
   depends_on 'libtiff'
   depends_on 'openexr' => :optional if build.include? 'use-openexr'
-  depends_on 'zlib'    => :optional if build.include? 'use-zlib'
 
   # TODO give this a build number (2326?)
   fails_with :llvm do
