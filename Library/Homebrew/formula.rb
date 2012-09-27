@@ -554,7 +554,7 @@ protected
   rescue
     if f
       f.flush
-      Kernel.system "/usr/bin/tail -n 5 #{logfn}"
+      Kernel.system "/usr/bin/tail -n 5 #{logfn}" unless ARGV.verbose?
       require 'cmd/--config'
       $f = f
       def Homebrew.puts(*foo); $f.puts *foo end
