@@ -96,6 +96,14 @@ class BuildError < Homebrew::InstallationError
 
   def dump
     logs = "#{ENV['HOME']}/Library/Logs/Homebrew/#{formula}/"
+    if ARGV.verbose?
+      require 'cmd/--config'
+      require 'cmd/--env'
+      ohai "Configuration"
+      Homebrew.dump_build_config
+      ohai "ENV"
+      Homebrew.dump_build_env(env)
+    end
     puts
     onoe "#{formula.name} did not build"
     puts "Logs: #{logs}" unless Dir["#{logs}/*"].empty?
