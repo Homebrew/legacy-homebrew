@@ -1,17 +1,19 @@
 require 'formula'
 
 class GnuProlog < Formula
-  url 'http://gprolog.univ-paris1.fr/unstable/gprolog-20110301.tgz'
   homepage 'http://www.gprolog.org/'
-  md5 '53a9bfba78f21f8f45a16f049d5df88a'
+  url 'http://www.gprolog.org/gprolog-1.4.1.tar.gz'
+  sha1 'f25e11dbef2467c8ea1bb16cfd20623fd2f4fad4'
 
-  skip_clean :all
+  fails_with :clang do
+    build 421
+    cause "Fatal Error: Segmentation Violation"
+  end
 
   def install
-    ENV.j1 # make won't run in parallel
-
-    Dir.chdir 'src' do
-      system "./configure", "--prefix=#{prefix}"
+    ENV.j1 # won't make in parallel
+    cd 'src' do
+      system "./configure", "--prefix=#{prefix}", "--with-doc-dir=#{doc}"
       system "make"
       system "make install-strip"
     end

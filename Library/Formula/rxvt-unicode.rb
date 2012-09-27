@@ -1,9 +1,14 @@
 require 'formula'
 
 class RxvtUnicode < Formula
-  url 'http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-9.11.tar.bz2'
   homepage 'http://software.schmorp.de/pkg/rxvt-unicode.html'
-  md5 '1bed5bfeed026e0bfafa0e9e4f62aa37'
+  url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.15.tar.bz2'
+  sha1 'e6fdf091860ecb458730dc68b0176f67f207a2f7'
+
+  option "disable-iso14755", "Disable ISO 14775 Shift+Ctrl hotkey"
+
+  depends_on 'pkg-config' => :build
+  depends_on :x11
 
   def patches
     # Patch hunks 1 and 2 allow perl support to compile on Intel.
@@ -12,16 +17,24 @@ class RxvtUnicode < Formula
     DATA
   end
 
-  def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--disable-afterimage",
-                          "--enable-perl",
-                          "--enable-256-color",
-                          "--with-term=rxvt-unicode-256color",
-                          "--with-terminfo=/usr/share/terminfo",
-                          "--enable-smart-resize"
+  fails_with :llvm do
+    build 2336
+    cause "memory fences not defined for your architecture"
+  end
 
+  def install
+    args = ["--prefix=#{prefix}",
+            "--mandir=#{man}",
+            "--disable-afterimage",
+            "--enable-perl",
+            "--enable-256-color",
+            "--with-term=rxvt-unicode-256color",
+            "--with-terminfo=/usr/share/terminfo",
+            "--enable-smart-resize"]
+
+    args << "--disable-iso14755" if build.include? "disable-iso14755"
+
+    system "./configure", *args
     system "make"
     # `make` won't work unless we rename this because of HFS's default case-insensitivity
     system "mv INSTALL README.install"

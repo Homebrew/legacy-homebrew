@@ -1,9 +1,9 @@
 require 'formula'
 
 class XmlSecurityC < Formula
-  url 'http://santuario.apache.org/dist/c-library/xml-security-c-1.5.1.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=%2Fsantuario%2Fc-library%2Fxml-security-c-1.6.1.tar.gz'
   homepage 'http://santuario.apache.org/'
-  md5 '2c47c4ec12e8d6abe967aa5e5e99000c'
+  sha1 '239304659752eb214f3516b6c457c99f0e6467c7'
 
   depends_on 'xerces-c'
 

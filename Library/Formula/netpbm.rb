@@ -2,18 +2,37 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.77/netpbm-10.35.77.tgz'
-  md5 '65d1b81d72341530f65d66dcd95786ad'
+  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.86/netpbm-10.35.86.tgz'
+  sha1 '45b5dacdd844dfd9f2b02a1ba0e59e6a3bddb885'
+
+  head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
+
+  devel do
+    url 'svn+http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/',
+      :revision => 1724
+    version '10.59.02'
+  end
 
   depends_on "libtiff"
   depends_on "jasper"
+  depends_on :libpng
+
+  def patches; { :p0 => %W[
+    https://trac.macports.org/export/95870/trunk/dports/graphics/netpbm/files/patch-clang-sse-workaround.diff
+    https://trac.macports.org/export/95870/trunk/dports/graphics/netpbm/files/patch-converter-other-giftopnm.c-strcaseeq.diff
+    ]}
+  end unless build.stable?
 
   def install
-    ENV.x11 # For PNG
+    if build.stable?
+      system "cp", "Makefile.config.in", "Makefile.config"
+      config = "Makefile.config"
+    else
+      system "cp", "config.mk.in", "config.mk"
+      config = "config.mk"
+    end
 
-    system "cp", "Makefile.config.in", "Makefile.config"
-
-    inreplace "Makefile.config" do |s|
+    inreplace config do |s|
       s.remove_make_var! "CC"
       s.change_make_var! "CFLAGS_SHLIB", "-fno-common"
       s.change_make_var! "NETPBMLIBTYPE", "dylib"
@@ -29,13 +48,12 @@ class Netpbm < Formula
 
     ENV.deparallelize
     system "make"
-
-    stage_dir = Pathname(Dir.pwd) + 'stage'
-    system "make", "package", "pkgdir=#{stage_dir}"
-
-    Dir.chdir stage_dir do
+    system "make", "package", "pkgdir=#{buildpath}/stage"
+    cd 'stage' do
       prefix.install %w{ bin include lib misc }
-      share.install Dir['man']
+      # do man pages explicitly; otherwise a junk file is installed in man/web
+      man1.install Dir['man/man1/*.1']
+      man5.install Dir['man/man5/*.5']
       lib.install Dir['link/*.a']
     end
   end

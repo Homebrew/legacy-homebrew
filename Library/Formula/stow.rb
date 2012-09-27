@@ -1,13 +1,13 @@
 require 'formula'
 
 class Stow < Formula
-  url 'http://ftp.gnu.org/gnu/stow/stow-1.3.3.tar.gz'
   homepage 'http://www.gnu.org/software/stow/'
-  md5 '59a078c7056dd9dd97fb707063b69d03'
+  url 'http://ftpmirror.gnu.org/stow/stow-2.2.0.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/stow/stow-2.2.0.tar.gz'
+  sha1 'b95091be6ebbbac8c5e5112d6d063299c5eefff2'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--infodir=#{info}", "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 end

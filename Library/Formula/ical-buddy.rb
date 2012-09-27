@@ -1,25 +1,14 @@
 require 'formula'
 
 class IcalBuddy < Formula
-  url "http://hasseg.org/git-public/icalBuddy.git",
-    :tag => '36058c4f05bebbc377f5dfa68b9be476f3d0a361',
-    :using => :git
   homepage 'http://hasseg.org/icalBuddy/'
-  version '1.7.18'
+  url 'http://hasseg.org/icalBuddy/1.8.4/icalBuddy-v1.8.4.zip'
+  sha1 '40e11d937869a5cd90b958271043a7efac9d21bb'
 
-  head "http://hasseg.org/git-public/icalBuddy.git", :using => :git
+  head 'http://hasseg.org/git-public/icalBuddy.git'
 
   def install
-    arch = MacOS.prefer_64_bit? ? "x86_64" : "i386"
-    sdk = MacOS.leopard? ? "10.5" : "10.6"
-
-    inreplace "Makefile" do |s|
-      s.gsub! "-arch i386 -arch ppc $(ARCH_64BIT)", "-arch #{arch}"
-      s.gsub! "-mmacosx-version-min=10.5", "-mmacosx-version-min=#{sdk}"
-    end
-
     system "make icalBuddy icalBuddy.1 icalBuddyLocalization.1 icalBuddyConfig.1"
-
     bin.install "icalBuddy"
     man1.install Dir["*.1"]
   end

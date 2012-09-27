@@ -1,18 +1,14 @@
 require 'formula'
 
 class Ocrad < Formula
-  url 'http://ftp.gnu.org/gnu/ocrad/ocrad-0.20.tar.gz'
   homepage 'http://www.gnu.org/software/ocrad/'
-  md5 '47040630580dbc75ce16f4a4fabede3f'
+  url 'http://ftpmirror.gnu.org/ocrad/ocrad-0.21.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/ocrad/ocrad-0.21.tar.gz'
+  sha1 '857a7e0b671d4216ddf2ec1ec2daf0b21d2a6a64'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-
-    inreplace "Makefile" do |s|
-      s.change_make_var! "CPPFLAGS", ENV['CPPFLAGS']
-      s.change_make_var! "CXXFLAGS", ENV['CXXFLAGS']
-    end
-
-    system "make install"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make", "install", "CXXFLAGS=#{ENV.cxxflags}"
   end
 end

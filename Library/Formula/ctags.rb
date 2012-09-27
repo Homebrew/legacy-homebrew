@@ -1,17 +1,23 @@
 require 'formula'
 
 class Ctags < Formula
-  url 'http://downloads.sourceforge.net/ctags/ctags-5.8.tar.gz'
   homepage 'http://ctags.sourceforge.net/'
-  md5 'c00f82ecdcc357434731913e5b48630d'
+  url 'http://downloads.sourceforge.net/ctags/ctags-5.8.tar.gz'
+  sha1 '482da1ecd182ab39bbdc09f2f02c9fba8cd20030'
 
   head 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
 
-  # true for both 5.8 and head
-  fails_with_llvm "Resulting executable generates erroneous tag files", :build => 2335
+  depends_on :autoconf
+
+  fails_with :llvm do
+    build 2335
+    cause "Resulting executable generates erroneous tag files"
+  end
 
   def install
-    if ARGV.build_head?
+    # See https://trac.macports.org/changeset/93604
+    ENV.O1
+    if build.head?
       system "autoheader"
       system "autoconf"
     end

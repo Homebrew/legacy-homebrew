@@ -24,10 +24,24 @@ end
 
 class FormulaUnavailableError < RuntimeError
   attr :name
+  attr :dependent, true
+
+  def dependent_s
+    "(dependency of #{dependent})" if dependent and dependent != name
+  end
+
+  def to_s
+    if name =~ %r{(\w+)/(\w+)/([^/]+)} then <<-EOS.undent
+      No available formula for #$3 #{dependent_s}
+      Please tap it and then try again: brew tap #$1/#$2
+      EOS
+    else
+      "No available formula for #{name} #{dependent_s}"
+    end
+  end
 
   def initialize name
     @name = name
-    super "No available formula for #{name}"
   end
 end
 
@@ -42,10 +56,7 @@ module Homebrew
   end
 end
 
-class FormulaAlreadyInstalledError < Homebrew::InstallationError
-  def message
-    "Formula already installed: #{formula}"
-  end
+class CannotInstallFormulaError < RuntimeError
 end
 
 class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
@@ -54,44 +65,15 @@ class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   end
 end
 
-class UnsatisfiedExternalDependencyError < Homebrew::InstallationError
-  attr :type
+class UnsatisfiedRequirements < Homebrew::InstallationError
+  attr :reqs
 
-  def initialize formula, type
-    @type = type
-    @formula = formula
-  end
-
-  def message
-    <<-EOS.undent
-      Unsatisfied dependency: #{formula}
-      Homebrew does not provide #{type.to_s.capitalize} dependencies, #{tool} does:
-
-          #{command_line} #{formula}
-      EOS
-  end
-
-  private
-
-  def tool
-    case type
-      when :python then 'easy_install'
-      when :ruby, :jruby then 'rubygems'
-      when :perl then 'cpan'
-    end
-  end
-
-  def command_line
-    case type
-      when :python
-        "easy_install install"
-      when :ruby
-        "gem install"
-      when :perl
-        "cpan -i"
-      when :jruby
-        "jruby -S gem install"
-    end
+  def initialize formula, reqs
+    @reqs = reqs
+    message = (reqs.length == 1) \
+                ? "An unsatisfied requirement failed this build." \
+                : "Unsatisifed requirements failed this build."
+    super formula, message
   end
 end
 
@@ -111,4 +93,58 @@ class BuildError < Homebrew::InstallationError
   def was_running_configure?
     @command == './configure'
   end
+
+  def dump
+    logs = "#{ENV['HOME']}/Library/Logs/Homebrew/#{formula}/"
+    puts
+    onoe "#{formula.name} did not build"
+    puts "Logs: #{logs}" unless Dir["#{logs}/*"].empty?
+    puts "Help: #{Tty.em}https://github.com/mxcl/homebrew/wiki/troubleshooting#{Tty.reset}"
+    issues = GitHub.issues_for_formula(formula.name)
+    puts *issues.map{ |s| "      #{Tty.em}#{s}#{Tty.reset}" } unless issues.empty?
+  end
+end
+
+# raised in CurlDownloadStrategy.fetch
+class CurlDownloadStrategyError < RuntimeError
+end
+
+# raised by safe_system in utils.rb
+class ErrorDuringExecution < RuntimeError
+end
+
+# raised by Pathname#verify_checksum when "expected" is nil or empty
+class ChecksumMissingError < ArgumentError
+end
+
+# raised by Pathname#verify_checksum when verification fails
+class ChecksumMismatchError < RuntimeError
+  attr :advice, true
+  attr :expected
+  attr :actual
+  attr :hash_type
+
+  def initialize expected, actual
+    @expected = expected
+    @actual = actual
+    @hash_type = expected.hash_type.to_s.upcase
+
+    super <<-EOS.undent
+      #{@hash_type} mismatch
+      Expected: #{@expected}
+      Actual: #{@actual}
+      EOS
+  end
+
+  def to_s
+    super + advice.to_s
+  end
+end
+
+module Homebrew extend self
+  SUDO_BAD_ERRMSG = <<-EOS.undent
+    You can use brew with sudo, but only if the brew executable is owned by root.
+    However, this is both not recommended and completely unsupported so do so at
+    your own risk.
+  EOS
 end

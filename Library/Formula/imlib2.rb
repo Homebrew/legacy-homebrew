@@ -1,17 +1,28 @@
 require 'formula'
 
 class Imlib2 < Formula
-  url 'http://downloads.sourceforge.net/project/enlightenment/imlib2-src/1.4.4/imlib2-1.4.4.tar.bz2'
   homepage 'http://sourceforge.net/projects/enlightenment/files/'
-  md5 'b6de51879502e857d5b1f7622267a030'
+  url 'http://downloads.sourceforge.net/project/enlightenment/imlib2-src/1.4.5/imlib2-1.4.5.tar.bz2'
+  sha1 'af86a2c38f4bc3806db57e64e74dc9814ad474a0'
 
   depends_on 'pkg-config' => :build
+  depends_on :freetype
+  depends_on :libpng => :recommended
+  depends_on 'jpeg' => :recommended
 
   def install
-    ENV.x11 # For freetype
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--enable-amd64=no"
+                          "--enable-amd64=no",
+                          "--without-x"
     system "make install"
+  end
+
+  def test
+    mktemp do
+      system "#{bin}/imlib2_conv", \
+        "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png", \
+        "imlib2_test.jpg"
+    end
   end
 end

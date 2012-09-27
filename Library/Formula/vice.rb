@@ -1,35 +1,32 @@
 require 'formula'
 
 class Vice < Formula
-  url "http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.2.tar.gz"
-  md5 "6737f540806205384e9129026898b0a1"
-  homepage 'http://www.viceteam.org/'
+  homepage 'http://vice-emu.sourceforge.net/'
+  url "http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.3.tar.gz"
+  sha1 '5e7e1a375a4ca8c4895dc1552162955fdffce296'
 
-  def remove_unused_icons
-    Pathname.glob libexec+'*.app' do |d|
-      appname = File.basename(d, '.app')
+  depends_on 'pkg-config' => :build
+  depends_on 'jpeg'
+  depends_on :libpng
+  depends_on 'giflib' => :optional
+  depends_on 'lame' => :optional
 
-      Pathname.glob d+'Contents/Resources/x*.icns' do |g|
-        File.unlink g if File.basename(g, '.icns') != appname
-      end
-    end
+  fails_with :llvm do
+    build 2335
   end
 
   def install
-    fails_with_llvm "Cannot build with LLVM"
-    ENV.libpng
-
-    # Disable the zlibtest, we know we have it.
     # Use Cocoa instead of X
+    # Use a static lame, otherwise Vice is hard-coded to look in
+    # /opt for the library.
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-cocoa",
                           "--without-x",
-                          "--disable-zlibtest"
+                          "--enable-static-lame"
     system "make"
     system "make bindist"
     prefix.install Dir['vice-macosx-*/*']
-    remove_unused_icons
   end
 
   def caveats

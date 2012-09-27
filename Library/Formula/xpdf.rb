@@ -1,25 +1,36 @@
 require 'formula'
 
 class Xpdf < Formula
-  url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.02.tar.gz'
   homepage 'http://www.foolabs.com/xpdf/'
-  md5 '599dc4cc65a07ee868cf92a667a913d2'
+  url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.03.tar.gz'
+  sha1 '499423e8a795e0efd76ca798239eb4d0d52fe248'
 
-  def patches
-    [ # security patches, applied sequentially
-      "ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.02pl1.patch",
-      "ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.02pl2.patch",
-      "ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.02pl3.patch",
-      "ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.02pl4.patch",
-      "ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.02pl5.patch"
-    ]
-  end
+  depends_on 'lesstif'
+  depends_on :x11
+
+  # see: http://gnats.netbsd.org/45562
+  def patches; DATA; end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    ENV.append_to_cflags "-I#{MacOS::X11.include} -#{MacOS::X11.include}/freetype2"
+
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
     system "make install"
   end
 end
+
+__END__
+diff --git a/xpdf/XPDFViewer.cc b/xpdf/XPDFViewer.cc
+index 2de349d..e6ef7fa 100644
+--- a/xpdf/XPDFViewer.cc
++++ b/xpdf/XPDFViewer.cc
+@@ -1803,7 +1803,7 @@ void XPDFViewer::initToolbar(Widget parent) {
+   menuPane = XmCreatePulldownMenu(toolBar, "zoomMenuPane", args, n);
+   for (i = 0; i < nZoomMenuItems; ++i) {
+     n = 0;
+-    s = XmStringCreateLocalized(zoomMenuInfo[i].label);
++    s = XmStringCreateLocalized((char *)zoomMenuInfo[i].label);
+     XtSetArg(args[n], XmNlabelString, s); ++n;
+     XtSetArg(args[n], XmNuserData, (XtPointer)i); ++n;
+     sprintf(buf, "zoom%d", i);

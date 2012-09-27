@@ -1,31 +1,35 @@
 require 'formula'
 
+# Private older version of autoconf required to compile Spidermonkey
+class Autoconf213 < Formula
+  homepage 'http://www.gnu.org/software/autoconf/'
+  url 'http://ftpmirror.gnu.org/autoconf/autoconf-2.13.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz'
+  sha1 'e4826c8bd85325067818f19b2b2ad2b625da66fc'
+end
+
 class Spidermonkey < Formula
-  # There are no proper releases of spidermonkey, so pick a version that's known
-  # to work (especially with CouchDB), revision r35345.
-  url 'http://hg.mozilla.org/tracemonkey/archive/57a6ad20eae9.tar.gz'
   homepage 'https://developer.mozilla.org/en/SpiderMonkey'
-  md5 '2d8cf22da82b30c36f47675a8486a3f3'
+  url 'http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz'
   version '1.8.5'
+  sha1 '52a01449c48d7a117b35f213d3e4263578d846d6'
+
+  # This is terribly, terribly slow the first time.
+  # head 'https://hg.mozilla.org/tracemonkey', :using => :hg
+  head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz', :using => :curl
 
   depends_on 'readline'
   depends_on 'nspr'
 
-  def patches
-    # Export date functions needed by manually-compiled MongoDB.
-    # Is it just me or is the version-to-version stable API of SpiderMonkey kind of a mess?
-    "https://gist.github.com/raw/426476/a98a15a94ca4efd3aeafb3b5cd943491b53cbf81/001-Properly-export-js_DateClass-and-js_RegExpClass.patch"
-  end
-
   def install
     # aparently this flag causes the build to fail for ivanvc on 10.5 with a
     # penryn (core 2 duo) CPU. So lets be cautious here and remove it.
-    ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '') if MacOS.leopard?
+    ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '') if MacOS.version == :leopard
 
     # For some reason SpiderMonkey requires Autoconf-2.13
-    ac213_prefix = Pathname.pwd.join('ac213')
+    ac213_prefix = buildpath/'ac213'
     Autoconf213.new.brew do |f|
-      # probably no longer required, see issue #751
+      # Force use of plain "awk"
       inreplace 'configure', 'for ac_prog in mawk gawk nawk awk', 'for ac_prog in awk'
 
       system "./configure", "--disable-debug",
@@ -34,10 +38,7 @@ class Spidermonkey < Formula
       system "make install"
     end
 
-    Dir.chdir "js/src" do
-      # Fixes a bug with linking against CoreFoundation. Tests all pass after
-      # building like this. See: http://openradar.appspot.com/7209349
-      inreplace "configure.in", "LDFLAGS=\"$LDFLAGS -framework Cocoa\"", ""
+    cd "js/src" do
       system "#{ac213_prefix}/bin/autoconf213"
 
       # Remove the broken *(for anyone but FF) install_name
@@ -46,28 +47,25 @@ class Spidermonkey < Formula
         "-install_name #{lib}/$(SHARED_LIBRARY) "
     end
 
-    mkdir "brew-build"
-
-    Dir.chdir "brew-build" do
+    mkdir "brew-build" do
       system "../js/src/configure", "--prefix=#{prefix}",
                                     "--enable-readline",
                                     "--enable-threadsafe",
                                     "--with-system-nspr"
 
       inreplace "js-config", /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
-      # Can't do `make install` right off the bat sadly
+      # These need to be in separate steps.
       system "make"
       system "make install"
 
-      # The `js` binary ins't installed. Lets do that too, eh?
+      # Also install js REPL.
       bin.install "shell/js"
     end
   end
-end
 
-
-class Autoconf213 < Formula
-  url 'http://ftp.gnu.org/pub/gnu/autoconf/autoconf-2.13.tar.gz'
-  md5 '9de56d4a161a723228220b0f425dc711'
-  homepage 'http://www.gnu.org/software/autoconf/'
+  def caveats; <<-EOS.undent
+    This formula installs Spidermonkey 1.8.5.
+    If you are trying to compile MongoDB from scratch, you will need 1.7.x instead.
+    EOS
+  end
 end

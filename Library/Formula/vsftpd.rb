@@ -1,14 +1,20 @@
 require 'formula'
 
 class Vsftpd < Formula
-  url 'ftp://vsftpd.beasts.org/users/cevans/vsftpd-2.3.2.tar.gz'
-  md5 'bad7b117d737a738738836041edc00db'
-  homepage 'http://vsftpd.beasts.org/'
+  homepage 'https://security.appspot.com/vsftpd.html'
+  url 'https://security.appspot.com/downloads/vsftpd-2.3.4.tar.gz'
+  sha1 'b774cc6b4c50e20f4fe9ca7f6aa74169ce7fe5ea'
+
+  option "openssl", "Build with OpenSSL"
 
   # Patch so vsftpd doesn't depend on UTMPX, and can't find OS X's PAM library.
   def patches; DATA; end
 
   def install
+    if build.include? "openssl"
+      inreplace "builddefs.h", "#undef VSF_BUILD_SSL", "#define VSF_BUILD_SSL"
+    end
+
     inreplace "defs.h", "/etc/vsftpd.conf", "#{etc}/vsftpd.conf"
     inreplace "tunables.c", "/etc", etc
     inreplace "tunables.c", "/var", var
@@ -18,6 +24,15 @@ class Vsftpd < Formula
     sbin.install "vsftpd"
     man5.install "vsftpd.conf.5"
     man8.install "vsftpd.8"
+  end
+
+  def caveats
+    if build.include? "openssl"
+      return <<-EOD.undent
+        vsftpd was compiled with SSL support. To use it you must generate a SSL
+        certificate and set 'enable_ssl=YES' in your config file.
+      EOD
+    end
   end
 end
 

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Resty < Formula
-  url 'https://github.com/micha/resty/tarball/1.9'
+  url 'https://github.com/micha/resty/tarball/2.2'
   homepage 'https://github.com/micha/resty'
-  md5 'a38223bb0777af3177750dd9d2f49d6d'
+  sha1 '0c5271dc66dae7466d8be91979c2c6839ab6af00'
 
   head 'https://github.com/micha/resty.git'
 

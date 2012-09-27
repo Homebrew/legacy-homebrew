@@ -1,9 +1,10 @@
 require 'formula'
 
 class SourceHighlight < Formula
-  url 'http://ftp.gnu.org/gnu/src-highlite/source-highlight-3.1.4.tar.gz'
   homepage 'http://www.gnu.org/software/src-highlite/'
-  md5 'becf8292b84ece6b532b0f0c92b530ee'
+  url 'http://ftpmirror.gnu.org/src-highlite/source-highlight-3.1.7.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/src-highlite/source-highlight-3.1.7.tar.gz'
+  sha1 '71c637548be71afc3f895b0d8ada1a72a8dab4a0'
 
   depends_on 'boost'
 
@@ -12,5 +13,7 @@ class SourceHighlight < Formula
                           "--prefix=#{prefix}",
                           "--with-boost=#{HOMEBREW_PREFIX}"
     system "make install"
+
+    (prefix+'etc/bash_completion.d').install 'completion/source-highlight'
   end
 end

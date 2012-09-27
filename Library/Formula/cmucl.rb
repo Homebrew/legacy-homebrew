@@ -1,10 +1,9 @@
 require 'formula'
 
 class Cmucl < Formula
-  url 'http://common-lisp.net/project/cmucl/downloads/release/20b/cmucl-20b-x86-darwin.tar.bz2'
-  version '20b'
   homepage 'http://www.cons.org/cmucl'
-  md5 'd1128868be1098eb48caf04de9dacca4'
+  url 'http://common-lisp.net/project/cmucl/downloads/release/20c/cmucl-20c-x86-darwin.tar.bz2'
+  sha1 '80c2a026d69ff508ead31fce716d92aa8dd5f31d'
 
   skip_clean 'bin'
 

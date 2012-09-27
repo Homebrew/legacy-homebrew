@@ -1,16 +1,17 @@
 require 'formula'
 
 class Help2man < Formula
-  url 'http://ftp.gnu.org/gnu/help2man/help2man-1.37.1.tar.gz'
   homepage 'http://www.gnu.org/software/help2man/'
-  md5 '371b5cc74fe9c2ea3ee1ca23c19b19a8'
+  url 'http://ftpmirror.gnu.org/help2man/help2man-1.40.12.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/help2man/help2man-1.40.12.tar.gz'
+  sha256 'dec8e6e3f570b745a8484d7a4229135f1cf1c5257adf1c590cd094f7d591e4e4'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    # install is not parallel safe
+    # see https://github.com/mxcl/homebrew/issues/12609
+    ENV.j1
 
-    # Skip making the "info" files.
-    system "make help2man man"
-    bin.install "help2man"
-    man1.install gzip("help2man.1")
+    system "./configure", "--prefix=#{prefix}"
+    system "make install"
   end
 end

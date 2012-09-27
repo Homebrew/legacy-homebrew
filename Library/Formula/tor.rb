@@ -1,22 +1,15 @@
 require 'formula'
 
 class Tor < Formula
-  url 'https://www.torproject.org/dist/tor-0.2.1.30.tar.gz'
   homepage 'https://www.torproject.org/'
-  md5 '6c6d61e053af5969a245d025c4cfce9d'
+  url 'https://www.torproject.org/dist/tor-0.2.2.39.tar.gz'
+  sha1 'cc5021a7656c0cd22de42da9f0ce7335026852bf'
 
   depends_on 'libevent'
 
-  def patches
-    {:p0 => 'https://gist.github.com/raw/344132/d27d1cd3042d7c58120688d79ed25a2fc959a2de/config.guess-x86_64patch.diff' }
-  end
-
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-
-    (prefix+'org.tor.plist').write startup_plist
   end
 
   def startup_plist
@@ -26,7 +19,7 @@ class Tor < Formula
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>org.tor</string>
+    <string>#{plist_name}</string>
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
@@ -35,7 +28,7 @@ class Tor < Formula
     <string>#{`whoami`.chomp}</string>
     <key>ProgramArguments</key>
     <array>
-        <string>#{bin}/tor</string>
+        <string>#{HOMEBREW_PREFIX}/bin/tor</string>
     </array>
     <key>WorkingDirectory</key>
     <string>#{HOMEBREW_PREFIX}</string>
@@ -47,8 +40,8 @@ class Tor < Formula
   def caveats; <<-EOS.undent
     You can start tor automatically on login with:
       mkdir -p ~/Library/LaunchAgents
-      cp #{prefix}/org.tor.plist ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/org.tor.plist
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
     EOS
   end
 end

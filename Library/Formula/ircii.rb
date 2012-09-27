@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ircii < Formula
-  url 'http://ftp.netbsd.org/pub/pkgsrc/distfiles/ircii-20110228.tar.bz2'
+  url 'http://ftp.netbsd.org/pub/pkgsrc/distfiles/ircii-20111115.tar.bz2'
   homepage 'http://www.eterna.com.au/ircii/'
-  md5 '062f2d2a3453a643d4679b95917dd93d'
+  sha1 '723f89ca6c0ef0085da858076865e6493fbe9788'
 
   def install
     system "./configure", "--prefix=#{prefix}",
@@ -12,6 +12,8 @@ class Ircii < Formula
                           "--disable-dependency-tracking",
                           "--with-default-server=irc.freenode.net",
                           "--enable-ipv6"
+    system "make"
+    ENV.deparallelize
     system "make install"
   end
 end

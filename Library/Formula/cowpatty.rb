@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cowpatty < Formula
-  url 'http://www.willhackforsushi.com/code/cowpatty/4.3/cowpatty-4.3.tgz'
   homepage 'http://www.willhackforsushi.com/Cowpatty.html'
-  md5 'DECCAC0763A05EF7014107D347BF9190'
+  url 'http://www.willhackforsushi.com/code/cowpatty/4.3/cowpatty-4.3.tgz'
+  sha1 '8b7cb2015d0534031827f2f06135bf5cf5929d35'
 
   def install
     inreplace "Makefile", "/usr/local/", "#{prefix}/"

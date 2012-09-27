@@ -1,16 +1,23 @@
 require 'formula'
 
-class Phantomjs < Formula
-  url "http://phantomjs.googlecode.com/files/phantomjs-1.1.0-source.zip"
-  head "https://github.com/ariya/phantomjs.git"
-  homepage 'http://www.phantomjs.org/'
-  sha1 "11b6023c9b2bd3e5f7dc7e3d4e4ce24588a3d396"
+class SnowLeopardOrNewer < Requirement
+  def satisfied?
+    MacOS.version >= :snow_leopard
+  end
 
-  depends_on 'qt'
+  def message
+    "PhantomJS requires Mac OS X 10.6 (Snow Leopard) or newer."
+  end
+end
+
+class Phantomjs < Formula
+  homepage 'http://www.phantomjs.org/'
+  url 'http://phantomjs.googlecode.com/files/phantomjs-1.7.0-macosx.zip'
+  sha1 'de9ed8092d7fd5095447ada2cf96efb6c949b359'
+
+  depends_on SnowLeopardOrNewer.new
 
   def install
-    system "qmake -spec macx-g++"
-    system "make"
-    bin.install "bin/phantomjs.app/Contents/MacOS/phantomjs"
+    bin.install 'bin/phantomjs'
   end
 end

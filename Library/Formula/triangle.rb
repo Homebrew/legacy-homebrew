@@ -3,7 +3,7 @@ require 'formula'
 class Triangle < Formula
   homepage 'http://www.cs.cmu.edu/~quake/triangle.html'
   url 'http://www.netlib.org/voronoi/triangle.zip'
-  md5 '10aff8d7950f5e0e2fb6dd2e340be2c9'
+  sha1 '63d11e0b5bf097eb946a4da4ee18ddf279e16fc4'
   version '1.6'
 
   def install

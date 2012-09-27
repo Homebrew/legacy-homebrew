@@ -1,12 +1,14 @@
 require 'formula'
 
 class CAres < Formula
-  url 'http://c-ares.haxx.se/c-ares-1.7.4.tar.gz'
   homepage 'http://c-ares.haxx.se/'
-  md5 'dd71e8f07d9f3c837e12a5416d1b7f73'
+  url 'http://c-ares.haxx.se/download/c-ares-1.9.1.tar.gz'
+  sha1 'fe41e47f300bfd587b7f552a141ad3bf85437b0f'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          '--disable-dependency-tracking',
+                          '--disable-debug'
     system "make install"
   end
 end

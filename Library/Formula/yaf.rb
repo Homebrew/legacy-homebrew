@@ -1,20 +1,17 @@
 require 'formula'
 
 class Yaf < Formula
-  url 'http://tools.netsa.cert.org/releases/yaf-1.3.1.tar.gz'
   homepage 'http://tools.netsa.cert.org/yaf/'
-  md5 'cf7602056d8eaa157f5a53f77d193761'
+  url 'http://tools.netsa.cert.org/releases/yaf-2.2.2.tar.gz'
+  sha1 '03ea518d322d3ce76f312a71e5e444eb5a6a7273'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libfixbuf'
 
-  fails_with_llvm "Undefined symbols during compile"
-
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system './configure', "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make"
     system "make install"
   end

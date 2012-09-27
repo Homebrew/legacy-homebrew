@@ -1,10 +1,13 @@
 require 'formula'
 
 class Owfs < Formula
-  url 'http://downloads.sourceforge.net/project/owfs/owfs/2.8p4/owfs-2.8p4.tar.gz'
-  version '2.8p4'
   homepage 'http://owfs.org/'
-  md5 'beccd8765184b2abea0a3f28dc466ea3'
+  url 'http://downloads.sourceforge.net/project/owfs/owfs/2.8p13/owfs-2.8p13.tar.gz'
+  version '2.8p13'
+  sha1 '61ea07bb82b60320889c27730abff1826cb27931'
+
+  depends_on :automake
+  depends_on :libtool
 
   depends_on 'libusb-compat'
 

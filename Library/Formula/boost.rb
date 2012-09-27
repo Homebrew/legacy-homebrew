@@ -1,31 +1,49 @@
 require 'formula'
 
+def needs_universal_python?
+  build.universal? and not build.include? "without-python"
+end
+
+class UniversalPython < Requirement
+  def message; <<-EOS.undent
+    A universal build was requested, but Python is not a universal build
+
+    Boost compiles against the Python it finds in the path; if this Python
+    is not a universal build then linking will likely fail.
+    EOS
+  end
+  def satisfied?
+    archs_for_command("python").universal?
+  end
+end
+
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.46.1/boost_1_46_1.tar.bz2'
-  md5 '7375679575f4c8db605d426fc721d506'
-  bottle 'https://downloads.sourceforge.net/project/machomebrew/Bottles/boost-1.46.1-bottle.tar.gz'
-  bottle_sha1 '15382f3aed119d207f0cdab7f089d284af1b3bbf'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.50.0/boost_1_50_0.tar.bz2'
+  sha1 'ee06f89ed472cf369573f8acf9819fbc7173344e'
 
-  def options
-    [
-      ['--with-mpi', "Enables MPI support"],
-      ["--universal", "Build universal binaries."]
-    ]
+  head 'http://svn.boost.org/svn/boost/trunk'
+
+  bottle do
+    sha1 '06c7e19ec8d684c35fb035e6326df6393e46dce2' => :mountainlion
+    sha1 '25ef1d7af5f6f9783313370fd8115902b24c5eeb' => :lion
+    sha1 '4508c9afcb14a15b6b3c7db4cdfb7bd3f8e1c9bc' => :snowleopard
   end
 
-  fails_with_llvm "LLVM-GCC causes errors with dropped arguments to functions when linking with boost"
+  option :universal
+  option 'with-mpi', 'Enable MPI support'
+  option 'without-python', 'Build without Python'
+  option 'with-icu', 'Build regexp engine with icu support'
+
+  depends_on UniversalPython.new if needs_universal_python?
+  depends_on "icu4c" if build.include? "with-icu"
+
+  fails_with :llvm do
+    build 2335
+    cause "Dropped arguments to functions when linking with boost"
+  end
 
   def install
-    if ARGV.build_universal?
-      archs = archs_for_command("python")
-      unless archs.universal?
-        opoo "A universal build was requested, but Python is not a universal build"
-        puts "Boost compiles against the Python it finds in the path; if this Python"
-        puts "is not a universal build then linking will likely fail."
-      end
-    end
-
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a
     # non-/usr/local location.
@@ -46,22 +64,30 @@ class Boost < Formula
 
     # Force boost to compile using the appropriate GCC version
     open("user-config.jam", "a") do |file|
-      file.write "using darwin : : #{ENV['CXX']} ;\n"
-      file.write "using mpi ;\n" if ARGV.include? '--with-mpi'
+      file.write "using darwin : : #{ENV.cxx} ;\n"
+      file.write "using mpi ;\n" if build.include? 'with-mpi'
+    end
+
+    # we specify libdir too because the script is apparently broken
+    bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
+
+    if build.include? "with-icu"
+      icu4c_prefix = Formula.factory('icu4c').prefix
+      bargs << "--with-icu=#{icu4c_prefix}"
     end
 
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
-            "-j#{Hardware.processor_count}",
+            "-j#{ENV.make_jobs}",
             "--layout=tagged",
             "--user-config=user-config.jam",
             "threading=multi",
             "install"]
 
-    args << "address-model=32_64" << "architecture=x86" << "pch=off" if ARGV.include? "--universal"
+    args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
+    args << "--without-python" if build.include? "without-python"
 
-    # we specify libdir too because the script is apparently broken
-    system "./bootstrap.sh", "--prefix=#{prefix}", "--libdir=#{lib}"
+    system "./bootstrap.sh", *bargs
     system "./bjam", *args
   end
 end

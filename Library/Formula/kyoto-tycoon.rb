@@ -1,20 +1,18 @@
 require 'formula'
 
 class KyotoTycoon < Formula
-  url 'http://fallabs.com/kyototycoon/pkg/kyototycoon-0.9.45.tar.gz'
   homepage 'http://fallabs.com/kyototycoon/'
-  sha1 '6135bae26cbbb51ed6bc3c14192c7f8f8c466219'
+  url 'http://fallabs.com/kyototycoon/pkg/kyototycoon-0.9.56.tar.gz'
+  sha1 'e5433833e681f8755ff6b9f7209029ec23914ce6'
 
-  depends_on 'lua' unless ARGV.include? "--no-lua"
+  option "no-lua", "Disable Lua support"
+
+  depends_on 'lua' unless build.include? "no-lua"
   depends_on 'kyoto-cabinet'
-
-  def options
-    [["--no-lua", "Disable Lua support (and don't force Lua install.)"]]
-  end
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--enable-lua" unless ARGV.include? "--no-lua"
+    args << "--enable-lua" unless build.include? "no-lua"
 
     system "./configure", *args
     system "make"

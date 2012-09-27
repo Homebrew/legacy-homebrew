@@ -1,12 +1,12 @@
 require 'formula'
 
 class Yamdi < Formula
-  url 'http://downloads.sourceforge.net/project/yamdi/yamdi/1.6/yamdi-1.6.tar.gz'
   homepage 'http://yamdi.sourceforge.net/'
-  md5 '3f8395373e941f235015a92d4da047c8'
+  url 'http://downloads.sourceforge.net/project/yamdi/yamdi/1.8/yamdi-1.8.tar.gz'
+  sha1 'daea2b7262ba1278a62525dafd3e8366d72fe2c3'
 
   def install
-    system "gcc yamdi.c -o yamdi -O2 -Wall"
+    system "#{ENV.cc} #{ENV.cflags} yamdi.c -o yamdi"
     bin.install "yamdi"
     man1.install "man1/yamdi.1"
   end

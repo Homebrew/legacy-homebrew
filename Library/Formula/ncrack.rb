@@ -1,10 +1,9 @@
 require 'formula'
 
 class Ncrack < Formula
-  url 'http://nmap.org/ncrack/dist/ncrack-0.2ALPHA.tar.gz'
+  url 'http://nmap.org/ncrack/dist/ncrack-0.4ALPHA.tar.gz'
   homepage 'http://nmap.org/ncrack/'
-  md5 '611d643b76008d44ca3e9eafad11393e'
-  version '0.2ALPHA'
+  sha256 'f8bd7e0ef68559490064ec0a5f139b2b9c49aeaf9f6323e080db9ff344c87603'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"

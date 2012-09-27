@@ -1,9 +1,9 @@
 require 'formula'
 
 class Bedtools < Formula
-  url 'http://bedtools.googlecode.com/files/BEDTools.v2.12.0.tar.gz'
+  url 'http://bedtools.googlecode.com/files/BEDTools.v2.16.2.tar.gz'
   homepage 'http://code.google.com/p/bedtools/'
-  md5 'cc7839a96a7537a810bb645381a2ba8a'
+  sha1 'f9580cc9394713e0575fd73492ed6bf64a2256c6'
   head 'https://github.com/arq5x/bedtools.git'
 
   def install

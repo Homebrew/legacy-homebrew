@@ -2,14 +2,14 @@ require 'formula'
 
 class Saxon < Formula
   homepage "http://saxon.sourceforge.net"
-  url "http://downloads.sourceforge.net/project/saxon/Saxon-HE/9.3/saxonhe9-3-0-5j.zip"
-  md5 "a940c252e1ae386a5f9949ace75e4ea6"
-  version "9.3.0.5"
+  url "http://downloads.sourceforge.net/project/saxon/Saxon-HE/9.4/SaxonHE9-4-0-2J.zip"
+  sha1 '7383d2504f45582f94c0d9c9ca2f4fa322fad7a1'
+  version "9.4.0.2"
 
   def shim_script target
     <<-EOS.undent
       #!/bin/bash
-      java -jar #{libexec}/saxon9he.jar "$@"
+      java -jar "#{libexec}/saxon9he.jar" "$@"
     EOS
   end
 

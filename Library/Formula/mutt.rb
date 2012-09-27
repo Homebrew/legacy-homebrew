@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mutt < Formula
-  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
   homepage 'http://www.mutt.org/'
-  md5 'a29db8f1d51e2f10c070bf88e8a553fd'
+  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
+  sha1 'a8475f2618ce5d5d33bff85c0affdf21ab1d76b9'
 
   depends_on 'tokyo-cabinet'
   depends_on 'slang' if ARGV.include? '--with-slang'
@@ -13,21 +13,25 @@ class Mutt < Formula
       ['--enable-debug', "Build with debug option enabled"],
       ['--sidebar-patch', "Apply sidebar (folder list) patch"],
       ['--trash-patch', "Apply trash folder patch"],
-      ['--with-slang', "Build against slang instead of ncurses"]
+      ['--with-slang', "Build against slang instead of ncurses"],
+      ['--ignore-thread-patch', "Apply ignore-thread patch"],
+      ['--pgp-verbose-mime-patch', "Apply PGP verbose mime patch"]
     ]
   end
 
   def patches
+    urls = [
+      ['--sidebar-patch', 'http://lunar-linux.org/~tchan/mutt/patch-1.5.21.sidebar.20120829.txt'],
+      ['--trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features/trash-folder'],
+      ['--ignore-thread-patch', 'http://ben.at.tanjero.com/patches/ignore-thread-1.5.21.patch'],
+      ['--pgp-verbose-mime-patch',
+          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+    ]
+
     p = []
-
-    if ARGV.include? '--sidebar-patch'
-      p << 'https://raw.github.com/nedos/mutt-sidebar-patch/master/mutt-sidebar.patch'
+    urls.each do |u|
+      p << u[1] if ARGV.include? u[0]
     end
-
-    if ARGV.include? '--trash-patch'
-      p << 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features/trash-folder'
-    end
-
     return p
   end
 

@@ -1,17 +1,23 @@
 require 'formula'
 
 class Fox < Formula
-  url 'http://www.fox-toolkit.org/ftp/fox-1.7.23.tar.gz'
   homepage 'http://www.fox-toolkit.org/'
-  md5 'ee8430d6480d3289d54b847f47405670'
+  url 'ftp://ftp.fox-toolkit.org/pub/fox-1.6.46.tar.gz'
+  sha1 '0d77f6b1d6cb6e57590f2825e336d963c0218061'
+
+  # Development and stable branches are incompatible
+  devel do
+    url 'ftp://ftp.fox-toolkit.org/pub/fox-1.7.35.tar.gz'
+    sha1 '9529ab0ef52ed15ad2a58d49e6bd14cd6b6b829d'
+  end
+
+  depends_on :x11
 
   def install
-    ENV.x11
-
     # Yep, won't find freetype unless this is all set.
-    ENV.append "CFLAGS", "-I/usr/X11/include/freetype2"
-    ENV.append "CPPFLAGS", "-I/usr/X11/include/freetype2"
-    ENV.append "CXXFLAGS", "-I/usr/X11/include/freetype2"
+    ENV.append "CFLAGS", "-I#{MacOS::X11.include}/freetype2"
+    ENV.append "CPPFLAGS", "-I#{MacOS::X11.include}/freetype2"
+    ENV.append "CXXFLAGS", "-I#{MacOS::X11.include}/freetype2"
 
     system "./configure", "--enable-release",
                           "--prefix=#{prefix}",

@@ -1,16 +1,16 @@
 require 'formula'
 
 class Xvid < Formula
-  url 'http://downloads.xvid.org/downloads/xvidcore-1.2.2.tar.gz'
+  url 'http://downloads.xvid.org/downloads/xvidcore-1.3.2.tar.gz'
   homepage 'http://www.xvid.org'
-  md5 '2ce9b1d280d703b5bc8e702c79e660b5'
+  sha1 '56e065d331545ade04c63c91153b9624b51d6e1b'
 
   def install
     cd 'build/generic' do
       system "./configure", "--disable-assembly", "--prefix=#{prefix}"
-      ENV.j1 # Doesn't compile on parallel build
       system "make"
-      system "make install" # Need to call these separately
+      ENV.j1 # Or install sometimes fails
+      system "make install"
     end
   end
 end

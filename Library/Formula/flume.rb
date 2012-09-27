@@ -1,16 +1,16 @@
 require 'formula'
 
 class Flume < Formula
-  url 'http://archive.cloudera.com/cdh/3/flume-0.9.3-CDH3B4.tar.gz'
+  url 'http://archive.cloudera.com/cdh/3/flume-0.9.4-cdh3u2.tar.gz'
   homepage 'https://github.com/cloudera/flume'
-  md5 '54e0df9533579ef037f2b0b994fbcadf'
-  version "0.9.3-CDH3B4"
+  sha1 '9f68c8205b61e43d35467b6d45f815f5e41239e9'
+  version "0.9.4-cdh3u2"
 
   def flume_script
       <<-EOS.undent
       #!/bin/bash
-      export FLUME_CONF_DIR=#{libexec}/conf
-      exec #{libexec}/bin/flume $@
+      export FLUME_CONF_DIR=${FLUME_CONF_DIR-#{libexec}/conf}
+      exec #{libexec}/bin/flume "$@"
       EOS
   end
 

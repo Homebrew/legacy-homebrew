@@ -3,7 +3,7 @@ require 'formula'
 class Aamath < Formula
   url 'http://fuse.superglue.se/aamath/aamath-0.3.tar.gz'
   homepage 'http://fuse.superglue.se/aamath/'
-  md5 'f0e835bd06069b1bdaddd9e9c3447c12'
+  sha1 'dc68abaf2131c73ddb1a520c95d65596e30f1b0a'
 
   def install
     ENV.j1
@@ -15,6 +15,6 @@ class Aamath < Formula
   end
 
   def test
-    system "cat #{prefix}/testcases | aamath"
+    system "cat #{prefix}/testcases | #{bin}/aamath"
   end
 end

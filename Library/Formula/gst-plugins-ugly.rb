@@ -2,8 +2,8 @@ require 'formula'
 
 class GstPluginsUgly < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-0.10.18.tar.bz2'
-  sha256 'f9c16748cd9269fae86422d8254a579fa6db073797a5a19a9dc5c72cd66c8e14'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-0.10.19.tar.bz2'
+  sha256 '1ca90059275c0f5dca71d4d1601a8f429b7852baed0723e820703b977e2c8df0'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -31,11 +31,23 @@ class GstPluginsUgly < Formula
   depends_on 'pango' => :optional
   depends_on 'theora' => :optional
   depends_on 'libmms' => :optional
+  depends_on 'x264' => :optional
+  depends_on 'opencore-amr' => :optional
+  depends_on 'libcdio' => :optional
 
   def install
     ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
-    system "./configure", "--prefix=#{prefix}", "--disable-debug",
-                          "--disable-dependency-tracking", "--mandir=#{man}"
+
+    # Fixes build error, missing includes.
+    # https://github.com/mxcl/homebrew/issues/14078
+    nbcflags = `pkg-config --cflags opencore-amrnb`.chomp
+    wbcflags = `pkg-config --cflags opencore-amrwb`.chomp
+    ENV['AMRNB_CFLAGS'] = nbcflags + "-I#{HOMEBREW_PREFIX}/include/opencore-amrnb"
+    ENV['AMRWB_CFLAGS'] = wbcflags + "-I#{HOMEBREW_PREFIX}/include/opencore-amrwb"
+
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make"
     system "make install"
   end

@@ -1,19 +1,22 @@
 require 'formula'
 
 class SdlTtf < Formula
-  url 'http://www.libsdl.org/projects/SDL_ttf/release/SDL_ttf-2.0.9.tar.gz'
   homepage 'http://www.libsdl.org/projects/SDL_ttf/'
-  md5 '6dd5a85e4924689a35a5fb1cb3336156'
+  url 'http://www.libsdl.org/projects/SDL_ttf/release/SDL_ttf-2.0.11.tar.gz'
+  sha1 '0ccf7c70e26b7801d83f4847766e09f09db15cc6'
+
+  option :universal
 
   depends_on 'sdl'
+  depends_on :freetype
 
   def install
-    ENV.x11 # For Freetype
+    ENV.universal_binary if build.universal?
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-sdltest",
-                          "--with-freetype-exec-prefix=/usr/X11"
+                          "--disable-sdltest"
     system "make install"
   end
 end

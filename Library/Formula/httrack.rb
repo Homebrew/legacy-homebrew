@@ -1,14 +1,13 @@
 require 'formula'
 
 class Httrack < Formula
-  url 'http://download.httrack.com/cserv.php3?File=httrack.tar.gz'
   homepage 'http://www.httrack.com/'
-  md5 '7aaf56913388adfdba506c346c2ca020'
-  version '3.44.1'
+  url 'http://download.httrack.com/httrack-3.46.1.tar.gz'
+  sha1 'be6328d2ff3cbabd21426b7acc54edcf1ebb76e0'
 
   def install
     ENV.deparallelize
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-shared=no"
     system "make install"

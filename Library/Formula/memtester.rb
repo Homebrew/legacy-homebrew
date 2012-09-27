@@ -1,9 +1,9 @@
 require 'formula'
 
 class Memtester < Formula
-  url 'http://pyropus.ca/software/memtester/old-versions/memtester-4.2.1.tar.gz'
   homepage 'http://pyropus.ca/software/memtester/'
-  md5 '070ced84da42060d65489e6dc1a4211a'
+  url 'http://pyropus.ca/software/memtester/old-versions/memtester-4.3.0.tar.gz'
+  sha1 'eff0e3020a7750bd5452b051526ad6439e92b9cd'
 
   def install
     inreplace "Makefile" do |s|

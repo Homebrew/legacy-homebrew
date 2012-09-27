@@ -1,110 +1,90 @@
 require 'formula'
 
-def no_magick?
-  ARGV.include? '--without-graphicsmagick'
-end
-
-def no_native?
-  ARGV.include? '--without-fltk'
-end
-
-def run_tests?
-  ARGV.include? '--test'
+# Leading underscore because this method is defined differently
+# in compat, and anything that loads this file would end up with
+# this definition instead!
+def _snow_leopard_64?
+  # 64 bit builds on 10.6 require some special handling.
+  MacOS.version == :snow_leopard and MacOS.prefer_64_bit?
 end
 
 class Octave < Formula
-  url 'ftp://ftp.gnu.org/gnu/octave/octave-3.4.0.tar.bz2'
   homepage 'http://www.gnu.org/software/octave/index.html'
-  sha1 '936a8fc962abd96e7568fb5909ec2a4d7997a1a8'
+  url 'http://ftpmirror.gnu.org/octave/octave-3.6.2.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.2.tar.bz2'
+  sha1 '145fef0122268086727a60e1c33e29d56fd546d7'
+
+  option 'without-graphicsmagick', 'Compile without GraphicsMagick'
+  option 'without-fltk', 'Compile without fltk (disables native graphics)'
+  option 'test', 'Run tests before installing'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-sed' => :build
   depends_on 'texinfo' => :build     # OS X's makeinfo won't work for this
 
+  depends_on :x11
   depends_on 'fftw'
-  # there is an incompatibility between gfortran and Apple's BLAS as of 10.6.6:
+  # When building 64-bit binaries on Snow Leopard, there are naming issues with
+  # the dot product functions in the BLAS library provided by Apple's
+  # Accelerate framework. See the following thread for the gory details:
+  #
   #   http://www.macresearch.org/lapackblas-fortran-106
-  # we can work around it using dotwrp
-  depends_on 'dotwrp'
+  #
+  # We can work around the issues using dotwrp.
+  depends_on 'dotwrp' if _snow_leopard_64?
   # octave refuses to work with BSD readline, so it's either this or --disable-readline
   depends_on 'readline'
+  depends_on 'curl' if MacOS.version == :leopard # Leopard's libcurl is too old
 
   # additional features
   depends_on 'suite-sparse'
   depends_on 'glpk'
-  # test for presence of GraphicsMagick++ relies on pkg-config
-  depends_on 'graphicsmagick' unless no_magick?
+  depends_on 'graphicsmagick' => :recommended unless build.include? 'without-graphicsmagick'
   depends_on 'hdf5'
   depends_on 'pcre'
-  depends_on 'fltk' unless no_native?
   depends_on 'qhull'
   depends_on 'qrupdate'
 
-  # required for plotting if we don't have native graphics
-  depends_on 'gnuplot' if no_native?
-
-  def options
-    [
-      ['--without-graphicsmagick', 'Compile without GraphicsMagick'],
-      ['--without-fltk', 'Compile without fltk (disables native graphics)'],
-      ['--test', 'Run tests before installing'],
-    ]
+  if build.include? 'without-fltk'
+    # required for plotting if we don't have native graphics
+    depends_on 'gnuplot'
+  else
+    depends_on 'fltk'
   end
 
   def install
     ENV.fortran
 
-    unless no_magick? or quiet_system "#{HOMEBREW_PREFIX}/bin/pkg-config", "--exists", "GraphicsMagick++"
-      onoe <<-EOS.undent
-        GraphicsMagick was installed without its C++ libraries. Please reinstall
-        GraphicsMagick with the option "--with-magick-plus-plus"; otherwise, install
-        Octave with option "--without-graphicsmagick".
-      EOS
-      exit 1
-    end
-
-    fltk = Formula.factory('fltk')
-    unless no_native? or fltk.installed_prefix.to_s !~ /1.1.10$/
-      onoe <<-EOS.undent
-        fltk 1.1.10 is too old to be used with Octave. Please reinstall ftlk with
-        the option "--HEAD"; otherwise, install Octave with option "--without-fltk".
-      EOS
-      exit 1
-    end
-
     # yes, compiling octave takes a long time, but using -O2 gives negligible savings
     # build time with -O2: user 58m5.295s   sys 7m29.064s
     # build time with -O3: user 58m58.054s  sys 7m52.221s
-    ENV.m64 if Hardware.is_64_bit?
+    ENV.m64 if MacOS.prefer_64_bit?
     ENV.append_to_cflags "-D_REENTRANT"
-    ENV.x11
 
-    # as per the caveats in the gfortran formula:
-    ENV["FC"] = ENV["F77"] = "#{HOMEBREW_PREFIX}/bin/gfortran"
-    ENV["FFLAGS"] = ENV["FCFLAGS"] = ENV["CFLAGS"]
+    args = [
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+      # Cant use `-framework Accelerate` because `mkoctfile`, the tool used to
+      # compile extension packages, can't parse `-framework` flags.
+      "--with-blas=#{'-ldotwrp ' if _snow_leopard_64?}-Wl,-framework -Wl,Accelerate",
+      # SuiteSparse-4.x.x fix, see http://savannah.gnu.org/bugs/?37031
+      "--with-umfpack=-lumfpack -lsuitesparseconfig",
+    ]
+    args << "--without-framework-carbon" if MacOS.version >= :lion
+    # avoid spurious 'invalid assignment to cs-list' erorrs on 32 bit installs:
+    args << 'CXXFLAGS=-O0' unless MacOS.prefer_64_bit?
 
-    # almost everything is autodetected, but dotwrp must be linked before Accelerate
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-blas=-ldotwrp -framework Accelerate"
+    system "./configure", *args
     system "make all"
-    system "make check" if run_tests?
+    system "make check 2>&1 | tee make-check.log" if build.include? 'test'
     system "make install"
-    prefix.install "test/fntests.log" if run_tests?
+
+    prefix.install ["test/fntests.log", "make-check.log"] if build.include? 'test'
   end
 
   def caveats
-    brew_caveats = <<-EOS.undent
-      To install, you will need custom installs of fltk and graphicsmagick:
-          brew install --HEAD fltk
-          brew install graphicsmagick --with-magick-plus-plus
-
-      To omit these features, see "brew options octave"
-
-    EOS
-
     native_caveats = <<-EOS.undent
-      Octave 3.4.0 supports "native" plotting using OpenGL and FLTK. You can activate
+      Octave supports "native" plotting using OpenGL and FLTK. You can activate
       it for all future figures using the Octave command
 
           graphics_toolkit ("fltk")
@@ -122,8 +102,6 @@ class Octave < Formula
     EOS
 
     s = gnuplot_caveats
-    s = native_caveats + s unless no_native?
-    s = brew_caveats + s
+    s = native_caveats + s unless build.include? 'without-fltk'
   end
-
 end

@@ -1,9 +1,10 @@
 require 'formula'
 
 class Aqbanking < Formula
-  url 'http://www.aquamaniac.de/sites/download/download.php?package=03&release=78&file=01&dummy=aqbanking-5.0.5.tar.gz'
+  url 'http://www2.aquamaniac.de/sites/download/download.php?package=03&release=95&file=01&dummy=aqbanking-5.0.25.tar.gz'
   homepage 'http://www.aqbanking.de/'
-  md5 'b50c28887fc9fd2fc9a4d9fc996497e6'
+  sha1 '80314a6f6114a0a3f0062161bb38effc0f1f4b62'
+  head 'http://devel.aqbanking.de/svn/aqbanking/trunk'
 
   depends_on 'gettext'
   depends_on 'gmp'

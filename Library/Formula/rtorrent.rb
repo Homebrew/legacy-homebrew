@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rtorrent < Formula
-  url 'http://libtorrent.rakshasa.no/downloads/rtorrent-0.8.6.tar.gz'
   homepage 'http://libtorrent.rakshasa.no/'
-  md5 'b804c45c01c40312926bcea6b55bb084'
+  url 'http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.2.tar.gz'
+  sha1 '2a642d722745091265037ed8929a23c237a3b99f'
 
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
@@ -13,9 +13,10 @@ class Rtorrent < Formula
   def install
     args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
     args << "--with-xmlrpc-c" if Formula.factory("xmlrpc-c").installed?
-    if MacOS.leopard?
+    if MacOS.version == :leopard
       inreplace 'configure' do |s|
-        s.gsub! '  pkg_cv_libcurl_LIBS=`$PKG_CONFIG --libs "libcurl >= 7.15.4" 2>/dev/null`', '  pkg_cv_libcurl_LIBS=`$PKG_CONFIG --libs "libcurl >= 7.15.4" | sed -e "s/-arch [^-]*/-arch $(uname -m) /" 2>/dev/null`'
+        s.gsub! '  pkg_cv_libcurl_LIBS=`$PKG_CONFIG --libs "libcurl >= 7.15.4" 2>/dev/null`',
+          '  pkg_cv_libcurl_LIBS=`$PKG_CONFIG --libs "libcurl >= 7.15.4" | sed -e "s/-arch [^-]*/-arch $(uname -m) /" 2>/dev/null`'
       end
     end
     system "./configure", *args

@@ -1,17 +1,23 @@
 require 'formula'
 
 class Libdvdread < Formula
-  homepage 'http://www.dtek.chalmers.se/groups/dvd/'
-  # Official site is down; use a mirror.
-  url 'http://www.mplayerhq.hu/MPlayer/releases/dvdnav/libdvdread-4.1.3.tar.bz2'
-  md5 '6dc068d442c85a3cdd5ad3da75f6c6e8'
+  homepage 'http://dvdnav.mplayerhq.hu/'
+  url 'http://dvdnav.mplayerhq.hu/releases/libdvdread-4.2.0.tar.bz2'
+  sha1 '431bc92195f27673bfdd2be67ce0f58338da8d3b'
 
-  depends_on 'libdvdcss' => :optional
+  head 'svn://svn.mplayerhq.hu/dvdnav/trunk/libdvdread'
+
+  depends_on 'libdvdcss'
+
+  depends_on :automake
+  depends_on :libtool
 
   def install
-    system "./autogen.sh"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    ENV.append "CFLAGS", "-DHAVE_DVDCSS_DVDCSS_H"
+    ENV.append "LDFLAGS", "-ldvdcss"
+
+    system "./autogen.sh", "--disable-dependency-tracking",
+                           "--prefix=#{prefix}"
     system "make install"
   end
 end

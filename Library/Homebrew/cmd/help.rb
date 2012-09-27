@@ -5,7 +5,7 @@ Example usage:
   brew search [foo]
   brew list [FORMULA...]
   brew update
-  brew outdated
+  brew upgrade [FORMULA...]
   brew [info | home] [FORMULA...]
 
 Troubleshooting:

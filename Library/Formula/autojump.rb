@@ -1,23 +1,25 @@
 require 'formula'
 
 class Autojump < Formula
-  url 'https://github.com/downloads/joelthelion/autojump/autojump_v15.tar.gz'
   homepage 'https://github.com/joelthelion/autojump/wiki'
-  md5 'a4a36d774ccb27cbcc9dcc6e2528632b'
+  url 'https://github.com/downloads/joelthelion/autojump/autojump_v20.tar.gz'
+  sha1 '7de157feb90dc22d5959914fa531844c68d5ba7b'
 
   head 'https://github.com/joelthelion/autojump.git'
 
   def install
-    bin.install "autojump"
-    man1.install "autojump.1"
+    inreplace 'autojump.sh', '/etc/profile.d/', "#{prefix}/etc/"
 
-    inreplace "autojump.sh", '/etc/profile.d/', (prefix+'etc/')
-    (prefix+'etc').install "autojump.sh" => "autojump"
-    (prefix+'etc').install ["autojump.bash", "autojump.zsh"]
+    bin.install 'autojump'
+    man1.install 'autojump.1'
+    (prefix+'etc').install 'autojump.sh' => 'autojump'
+    (prefix+'etc').install 'autojump.bash', 'autojump.zsh'
+    (share+'zsh/site-functions').install '_j'
   end
 
   def caveats; <<-EOS.undent
-    Add the following lines to your ~/.bash_profile file:
+    Add the following lines to your ~/.bash_profile or ~/.zshrc file (and
+    remember to source the file to update your current session):
     if [ -f `brew --prefix`/etc/autojump ]; then
       . `brew --prefix`/etc/autojump
     fi

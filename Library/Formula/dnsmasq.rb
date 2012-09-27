@@ -1,9 +1,13 @@
 require 'formula'
 
 class Dnsmasq < Formula
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.57.tar.gz'
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  md5 'd10faeb409717eae94718d7716ca63a4'
+  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.63.tar.gz'
+  sha256 'fd86e3bcc6a63c76e35e4a20baa790e7bbbfc7b43845cae85ca8ffd024467710'
+
+  option 'with-idn', 'Compile with IDN support'
+
+  depends_on "libidn" if build.include? 'with-idn'
 
   def install
     ENV.deparallelize
@@ -11,16 +15,20 @@ class Dnsmasq < Formula
     # Fix etc location
     inreplace "src/config.h", "/etc/dnsmasq.conf", "#{etc}/dnsmasq.conf"
 
+    # Optional IDN support
+    if build.include? 'with-idn'
+      inreplace "src/config.h", "/* #define HAVE_IDN */", "#define HAVE_IDN"
+    end
+
     # Fix compilation on Lion
-    ENV.append_to_cflags "-D__APPLE_USE_RFC_3542" if 10.7 <= MACOS_VERSION
+    ENV.append_to_cflags "-D__APPLE_USE_RFC_3542" if MacOS.version >= :lion
     inreplace "Makefile" do |s|
       s.change_make_var! "CFLAGS", ENV.cflags
     end
 
-    system "make install PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
 
     prefix.install "dnsmasq.conf.example"
-    (prefix + "uk.org.thekelleys.dnsmasq.plist").write startup_plist
   end
 
   def caveats; <<-EOS.undent
@@ -32,8 +40,8 @@ class Dnsmasq < Formula
     To load dnsmasq automatically on startup, install and load the provided launchd
     item as follows:
 
-      sudo cp #{prefix}/uk.org.thekelleys.dnsmasq.plist /Library/LaunchDaemons
-      sudo launchctl load -w /Library/LaunchDaemons/uk.org.thekelleys.dnsmasq.plist
+      sudo cp #{plist_path} /Library/LaunchDaemons
+      sudo launchctl load -w /Library/LaunchDaemons/#{plist_path.basename}
     EOS
   end
 
@@ -43,10 +51,10 @@ class Dnsmasq < Formula
     <plist version="1.0">
       <dict>
         <key>Label</key>
-        <string>uk.org.thekelleys.dnsmasq</string>
+        <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>/usr/local/sbin/dnsmasq</string>
+          <string>#{HOMEBREW_PREFIX}/sbin/dnsmasq</string>
           <string>--keep-in-foreground</string>
         </array>
         <key>KeepAlive</key>

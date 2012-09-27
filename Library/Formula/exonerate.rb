@@ -1,9 +1,11 @@
 require 'formula'
 
 class Exonerate < Formula
-  url 'http://www.ebi.ac.uk/~guy/exonerate/exonerate-2.2.0.tar.gz'
   homepage 'http://www.ebi.ac.uk/~guy/exonerate/'
-  md5 'ad3f7fc413376201c4631687b2e0ae89'
+  url 'http://www.ebi.ac.uk/~guy/exonerate/exonerate-2.2.0.tar.gz'
+  sha1 'ad4de207511e4d421e5cc28dda2261421c515bf0'
+
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
 
   def install

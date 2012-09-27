@@ -1,15 +1,27 @@
 require 'formula'
 
 class Libnfc < Formula
-  url 'http://libnfc.googlecode.com/files/libnfc-1.5.0.tar.gz'
   homepage 'http://www.libnfc.org/'
-  md5 '569d85c36cd68f6e6560c9d78b46788f'
+  url 'http://libnfc.googlecode.com/files/libnfc-1.6.0-rc1.tar.gz'
+  sha1 'bbff76269120c3a531eb96b7ceb96fd36c0071a1'
 
   depends_on 'libusb-compat'
 
+  option 'with-pn532_uart', 'Enable PN532 UART support'
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+
+    if build.include? 'with-pn532_uart'
+      args << "--enable-serial-autoprobe"
+      args << "--with-drivers=pn532_uart"
+    end
+
+    system "./configure", *args
     system "make install"
   end
 end
