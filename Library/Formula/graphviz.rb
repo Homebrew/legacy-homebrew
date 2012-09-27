@@ -20,6 +20,7 @@ class Graphviz < Formula
   depends_on 'swig' if build.include? 'with-bindings'
   depends_on :freetype if build.include? 'with-freetype'
   depends_on :xcode if build.include? 'with-app'
+  depends_on 'gd'
 
   fails_with :clang do
     build 318
