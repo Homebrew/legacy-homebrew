@@ -199,9 +199,7 @@ class Pathname
   end
 
   def text_executable?
-    %r[^#!\s*.+] === open('r') { |f| f.readline }
-  rescue EOFError
-    false
+    %r[^#!\s*\S+] === open('r') { |f| f.read(1024) }
   end
 
   def incremental_hash(hasher)
