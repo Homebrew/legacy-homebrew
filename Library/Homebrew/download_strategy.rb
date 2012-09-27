@@ -459,11 +459,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def hgpath
-    @path ||= if which "hg"
-      'hg'
-    else
-      "#{HOMEBREW_PREFIX}/bin/hg"
-    end
+    @path ||= (which "hg" || "#{HOMEBREW_PREFIX}/bin/hg")
   end
 
   def fetch
