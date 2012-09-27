@@ -529,7 +529,6 @@ protected
 
       rd, wr = IO.pipe
       pid = fork do
-        ENV['VERBOSE'] = '1' # helps with many tool's logging outputs
         rd.close
         $stdout.reopen wr
         $stderr.reopen wr
