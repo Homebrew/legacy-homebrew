@@ -23,7 +23,7 @@ class EnvironmentTests < Test::Unit::TestCase
   def test_switching_compilers
     ENV.llvm
     ENV.clang
-    assert_equal ENV['LD'], ENV['CC']
+    assert_nil ENV['LD']
     assert_equal ENV['OBJC'], ENV['CC']
   end
 end
