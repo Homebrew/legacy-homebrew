@@ -439,7 +439,8 @@ class << ENV
     ENV['PATH'] += ":#{HOMEBREW_PREFIX}/bin:/usr/local/bin"
 
     if self['FC']
-      ohai "Building with an alternative Fortran compiler. This is unsupported."
+      ohai "Building with an alternative Fortran compiler"
+      puts "This is unsupported."
       self['F77'] = self['FC'] unless self['F77']
 
       if ARGV.include? '--default-fortran-flags'
@@ -463,10 +464,8 @@ class << ENV
       end
 
     elsif `/usr/bin/which gfortran`.chuzzle
-      ohai <<-EOS.undent
-        Using Homebrew-provided fortran compiler.
-        This may be changed by setting the FC environment variable.
-        EOS
+      ohai "Using Homebrew-provided fortran compiler."
+      puts "This may be changed by setting the FC environment variable."
       self['FC'] = `/usr/bin/which gfortran`.chomp
       self['F77'] = self['FC']
 
