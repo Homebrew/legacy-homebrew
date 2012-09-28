@@ -113,10 +113,11 @@ module Homebrew extend self
   end
 
   def write_build_config f
-    $f = f
-    def Homebrew.puts(*foo); $f.puts(*foo); end
+    stdout = $stdout
+    $stdout = f
     Homebrew.dump_build_config
-    class << Homebrew; undef :puts; end
+  ensure
+    $stdout = stdout
   end
 
   def dump_verbose_config
