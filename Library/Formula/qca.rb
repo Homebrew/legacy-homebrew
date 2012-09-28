@@ -7,6 +7,11 @@ class Qca < Formula
 
   depends_on 'qt'
 
+  def patches
+    # Fix build with newer compilers
+    "https://raw.github.com/gist/3799512/"
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-tests"
     system "make install"
