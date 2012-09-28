@@ -84,7 +84,7 @@ module Homebrew extend self
 end
 
 FORMULA_META_FILES = %w[README README.md ChangeLog CHANGES COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
-ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/bug-fixing-checklist"
+ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/troubleshooting"
 
 unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
   $:.unshift(File.expand_path("#{__FILE__}/../compat"))
