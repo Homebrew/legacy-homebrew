@@ -8,9 +8,11 @@ class Qca < Formula
   depends_on 'qt'
 
   def patches
+    {
     # Fix for clang adhering strictly to standard, see http://clang.llvm.org/compatibility.html#dep_lookup_bases
     # See upstream report: https://bugs.kde.org/show_bug.cgi?id=307470
-    'https://gist.github.com/raw/3789382/516de8476304822634db5f305e209420eadd623d/qca-2.0.3-clang-fix'
+    :p3 => 'http://websvn.kde.org/trunk/kdesupport/qca/src/botantools/botan/botan/secmem.h?r1=1273508&r2=1273507&pathrev=1273508&view=patch' 
+    }
   end
 
   def install
