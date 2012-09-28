@@ -112,6 +112,13 @@ module Homebrew extend self
     puts "X11: #{describe_x11}"
   end
 
+  def write_build_config f
+    $f = f
+    def Homebrew.puts(*foo); $f.puts(*foo); end
+    Homebrew.dump_build_config
+    class << Homebrew; undef :puts; end
+  end
+
   def dump_verbose_config
     puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
     puts "HEAD: #{head}"
