@@ -12,10 +12,10 @@ class RegexOpt < Formula
     end
 
     system "make"
-    bin.install('regex-opt');
+    bin.install 'regex-opt'
   end
 
   def test
-    system "regex-opt"
+    system "#{bin}/regex-opt"
   end
 end
