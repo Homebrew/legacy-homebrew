@@ -6,6 +6,8 @@ class MitScheme < Formula
   mirror 'http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.1.1/mit-scheme-c-9.1.1.tar.gz'
   sha1 '8f175a40061bdfc0248535e198cc7f5b5a0dce32'
 
+  depends_on :x11 if MacOS::X11.installed?
+
   def patches
     # fix installation issue with OS X 10.7 and Xcode in /Applications
     # http://savannah.gnu.org/patch/?7775

@@ -3,7 +3,7 @@ require 'formula'
 class Botan18 < Formula
   homepage 'http://botan.randombit.net/'
   url 'http://files.randombit.net/botan/v1.8/Botan-1.8.13.tbz'
-  sha1 'aac556bb26d92910b74b65450a0be6c5045e2052'
+  sha1 '66cda9e05001e4a298cbb0095b9a3f6d11c4ef53'
 end
 
 class Monotone < Formula
