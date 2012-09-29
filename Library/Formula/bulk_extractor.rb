@@ -6,8 +6,8 @@ class BulkExtractor < Formula
   sha1 '2f0a2049259f826afe253cf5baeeb139b795dddb'
 
   devel do
-    url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.3b5.tar.gz'
-    sha1 '04a3d49f35efc7381ae1d3f516bdad273a0f49ee'
+    url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.3b14.tar.gz'
+    sha1 '0812b4ea6e0c1330cd720349ffcfe304355bf2c6'
   end
 
   depends_on :autoconf
@@ -17,10 +17,18 @@ class BulkExtractor < Formula
   depends_on 'exiv2' => :optional
   depends_on 'libewf' => :optional
 
+  def patches
+    # Error in exec install hooks; installing java GUI manually
+    if build.devel?
+      "https://gist.github.com/raw/3785687/f2bb51d0e2284d25b62271a4c068da42eedea31c/gistfile1.txt"
+    end
+  end
+
   def install
-    system "autoreconf", "-i"
+    system "bash", "./bootstrap.sh"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "make"
     system "make install"
 
     # Install documentation
@@ -28,6 +36,16 @@ class BulkExtractor < Formula
 
     # Install Python utilities
     (share/'bulk_extractor/python').install Dir['python/*.py']
+
+    # Install the GUI the Homebrew way
+    libexec.install 'java_gui/BEViewer.jar'
+    (bin+'BEViewer').write script
+  end
+
+  def script; <<-EOS.undent
+    #!/bin/sh
+    exec java -Xmx1g -jar #{libexec}/BEViewer.jar "$@"
+    EOS
   end
 
   def caveats; <<-EOS.undent
