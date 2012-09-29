@@ -2,8 +2,8 @@ require 'formula'
 
 class TheSilverSearcher < Formula
   homepage 'https://github.com/ggreer/the_silver_searcher'
-  url 'https://github.com/ggreer/the_silver_searcher/tarball/0.7.2'
-  sha1 '48c33fa25ded5c446c0fca8d32b10872aee38e70'
+  url 'https://github.com/ggreer/the_silver_searcher/tarball/0.11.1'
+  sha1 '73e46e45ad911ef697f53b51764d5306e61b0538'
 
   head 'https://github.com/ggreer/the_silver_searcher.git'
 
