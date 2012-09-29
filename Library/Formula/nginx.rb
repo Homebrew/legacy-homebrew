@@ -46,7 +46,12 @@ class Nginx < Formula
             "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
-            "--lock-path=#{var}/nginx/nginx.lock"]
+            "--lock-path=#{var}/run/nginx.lock",
+            "--http-client-body-temp-path=#{var}/run/nginx/client_body_temp",
+            "--http-proxy-temp-path=#{var}/run/nginx/proxy_temp",
+            "--http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp",
+            "--http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp",
+            "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp"]
 
     args << passenger_config_args if build.include? 'with-passenger'
     args << "--with-http_dav_module" if build.include? 'with-webdav'
@@ -55,6 +60,8 @@ class Nginx < Formula
     system "make"
     system "make install"
     man8.install "objs/nginx.8"
+
+    system "mkdir -p #{var}/run/nginx"
   end
 
   def caveats; <<-EOS.undent
