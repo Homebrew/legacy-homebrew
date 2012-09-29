@@ -458,7 +458,6 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location; @clone; end
 
-
   def hgpath
     @path ||= %W[
       #{which("hg")}
