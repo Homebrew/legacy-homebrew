@@ -46,7 +46,7 @@ class Nginx < Formula
             "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
-            "--lock-path=#{var}/nginx/nginx.lock",
+            "--lock-path=#{var}/run/nginx.lock",
             "--http-client-body-temp-path=#{var}/run/nginx/client_body_temp",
             "--http-proxy-temp-path=#{var}/run/nginx/proxy_temp",
             "--http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp",
