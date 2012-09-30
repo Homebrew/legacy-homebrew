@@ -459,15 +459,15 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def hgpath
-    @path ||= if which "hg"
-      'hg'
-    else
-      "#{HOMEBREW_PREFIX}/bin/hg"
-    end
+    @path ||= %W[
+      #{which("hg")}
+      #{HOMEBREW_PREFIX}/bin/hg
+      #{HOMEBREW_PREFIX}/share/python/hg
+      ].find { |p| File.executable? p }
   end
 
   def fetch
-    raise "You must: brew install hg" unless File.file?(hgpath)
+    raise "You must: brew install mercurial" unless hgpath
 
     ohai "Cloning #{@url}"
 
@@ -505,17 +505,24 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location; @clone; end
 
+  def bzrpath
+    @path ||= %W[
+      #{which("bzr")}
+      #{HOMEBREW_PREFIX}/bin/bzr
+      ].find { |p| File.executable? p }
+  end
+
   def fetch
-    raise "You must install bazaar first" unless which "bzr"
+    raise "You must: brew install bazaar" unless bzrpath
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
       url=@url.sub(%r[^bzr://], '')
       # 'lightweight' means history-less
-      safe_system 'bzr', 'checkout', '--lightweight', url, @clone
+      safe_system bzrpath, 'checkout', '--lightweight', url, @clone
     else
       puts "Updating #{@clone}"
-      Dir.chdir(@clone) { safe_system 'bzr', 'update' }
+      Dir.chdir(@clone) { safe_system bzrpath, 'update' }
     end
   end
 
@@ -530,10 +537,10 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
     #  if @spec and @ref
     #    ohai "Checking out #{@spec} #{@ref}"
     #    Dir.chdir @clone do
-    #      safe_system 'bzr', 'export', '-r', @ref, dst
+    #      safe_system bzrpath, 'export', '-r', @ref, dst
     #    end
     #  else
-    #    safe_system 'bzr', 'export', dst
+    #    safe_system bzrpath, 'export', dst
     #  end
     #end
   end
@@ -548,25 +555,32 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location; @clone; end
 
+  def fossilpath
+    @path ||= %W[
+      #{which("fossil")}
+      #{HOMEBREW_PREFIX}/bin/fossil
+      ].find { |p| File.executable? p }
+  end
+
   def fetch
-    raise "You must install fossil first" unless which "fossil"
+    raise "You must: brew install fossil" unless fossilpath
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
       url=@url.sub(%r[^fossil://], '')
-      safe_system 'fossil', 'clone', url, @clone
+      safe_system fossilpath, 'clone', url, @clone
     else
       puts "Updating #{@clone}"
-      safe_system 'fossil', 'pull', '-R', @clone
+      safe_system fossilpath, 'pull', '-R', @clone
     end
   end
 
   def stage
     # TODO: The 'open' and 'checkout' commands are very noisy and have no '-q' option.
-    safe_system 'fossil', 'open', @clone
+    safe_system fossilpath, 'open', @clone
     if @spec and @ref
       ohai "Checking out #{@spec} #{@ref}"
-      safe_system 'fossil', 'checkout', @ref
+      safe_system fossilpath, 'checkout', @ref
     end
   end
 end

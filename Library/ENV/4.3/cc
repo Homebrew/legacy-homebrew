@@ -21,6 +21,18 @@ def syspath
     %W{/usr /usr/local}
   end
 end
+def exec *args
+  path = File.expand_path('~/Library/Logs/Homebrew/cc.log')
+  open(path, 'a') do |f|
+    f.print '[', $0
+    f.print " -%s" % ENV['HOMEBREW_CCCFG'] if ENV['HOMEBREW_CCCFG']
+    f.print '] '
+    f.puts args.join(' ')
+    f.puts
+  end
+  Kernel.exec *args
+end if ENV['HOMEBREW_LOG']
+
 
 class Cmd
   def initialize path, args
