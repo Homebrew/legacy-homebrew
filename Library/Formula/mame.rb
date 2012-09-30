@@ -2,7 +2,6 @@ require 'formula'
 
 class Mame < Formula
   homepage 'http://mamedev.org/'
-  #url 'http://git.redump.net/mame', :revision => 15603
   url 'http://mamedev.org/downloader.php?file=releases/mame0147s.zip'
   version '0147s'
   sha1 '023a5841389ae8d41db21704cffdeedb258591e9'
