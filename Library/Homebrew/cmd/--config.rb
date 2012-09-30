@@ -112,6 +112,14 @@ module Homebrew extend self
     puts "X11: #{describe_x11}"
   end
 
+  def write_build_config f
+    stdout = $stdout
+    $stdout = f
+    Homebrew.dump_build_config
+  ensure
+    $stdout = stdout
+  end
+
   def dump_verbose_config
     puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
     puts "HEAD: #{head}"
