@@ -2,10 +2,10 @@ require 'formula'
 
 class Mame < Formula
   homepage 'http://mamedev.org/'
-  url 'svn://dspnet.fr/mame/trunk', :revision => 15603
-  version '146u3'
-
-  head 'svn://dspnet.fr/mame/trunk'
+  #url 'http://git.redump.net/mame', :revision => 15603
+  url 'http://mamedev.org/downloader.php?file=releases/mame0147s.zip'
+  version '0147s'
+  sha1 '023a5841389ae8d41db21704cffdeedb258591e9'
 
   depends_on :x11
   depends_on 'sdl'
@@ -15,6 +15,7 @@ class Mame < Formula
     ENV['INCPATH'] = "-I./src/lib/util -I#{MacOS::X11.include}"
     ENV['PTR64'] = (MacOS.prefer_64_bit? ? '1' : '0')
 
+    system 'unzip mame.zip'
     system 'make', 'TARGET=mame', 'SUBTARGET=mame'
 
     if MacOS.prefer_64_bit?
