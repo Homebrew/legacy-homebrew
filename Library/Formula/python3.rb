@@ -19,8 +19,8 @@ end
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.2.3/Python-3.2.3.tar.bz2'
-  sha1 '4c2d562a0681ba27bc920500050e2f08de224311'
+  url 'http://python.org/ftp/python/3.3.0/Python-3.3.0.tar.bz2'
+  sha1 '3e1464bc2c1dfa74287bc58da81168f50b0ae5c7'
 
   env :std
 
@@ -34,12 +34,12 @@ class Python3 < Formula
   option 'quicktest', 'Run `make quicktest` after the build'
 
   def site_packages_cellar
-    prefix/"Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages"
+    prefix/"Frameworks/Python.framework/Versions/3.3/lib/python3.3/site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
   def site_packages
-    HOMEBREW_PREFIX/"lib/python3.2/site-packages"
+    HOMEBREW_PREFIX/"lib/python3.3/site-packages"
   end
 
   # Where distribute/pip will install executable scripts.
@@ -48,7 +48,7 @@ class Python3 < Formula
   end
 
   def effective_lib
-    prefix/"Frameworks/Python.framework/Versions/3.2/lib"
+    prefix/"Frameworks/Python.framework/Versions/3.3/lib"
   end
 
   def install
@@ -106,7 +106,7 @@ class Python3 < Formula
 
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
-    # as going from 3.2.2 to 3.2.3.
+    # as going from 3.3.2 to 3.3.0.
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
@@ -117,25 +117,25 @@ class Python3 < Formula
 
     # "python3" and executable is forgotten for framework builds.
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
-    ln_s "#{bin}/python3.2", "#{bin}/python3" unless (bin/"python3").exist?
+    ln_s "#{bin}/python3.3", "#{bin}/python3" unless (bin/"python3").exist?
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
-    (effective_lib/"python3.2/distutils/distutils.cfg").write <<-EOF.undent
+    (effective_lib/"python3.3/distutils/distutils.cfg").write <<-EOF.undent
       [install]
       install-scripts=#{scripts_folder}
     EOF
 
     # Install distribute for python3
     Distribute.new.brew do
-      system "#{bin}/python3.2", "setup.py", "install", "--force", "--verbose"
+      system "#{bin}/python3.3", "setup.py", "install", "--force", "--verbose"
       # Symlink to easy_install3 to match python3 command.
       unless (scripts_folder/'easy_install3').exist?
         ln_s scripts_folder/"easy_install", scripts_folder/"easy_install3"
       end
     end
-    # Install pip-3.2 for python3
-    Pip.new.brew { system "#{bin}/python3.2", "setup.py", "install", "--force", "--verbose" }
+    # Install pip-3.3 for python3
+    Pip.new.brew { system "#{bin}/python3.3", "setup.py", "install", "--force", "--verbose" }
   end
 
   def caveats
@@ -158,7 +158,7 @@ class Python3 < Formula
       A "distutils.cfg" has been written, specifying the install-scripts directory as:
         #{scripts_folder}
 
-      If you install Python packages via "pip-3.2 install x" or "python3 setup.py install"
+      If you install Python packages via "pip-3.3 install x" or "python3 setup.py install"
       (or the outdated easy_install3), any provided scripts will go into the
       install-scripts folder above, so you may want to add it to your PATH.
 
@@ -166,8 +166,8 @@ class Python3 < Formula
         #{site_packages}
 
       Distribute and Pip have been installed. To update them:
-      #{scripts_folder}/pip-3.2 install --upgrade distribute
-      #{scripts_folder}/pip-3.2 install --upgrade pip
+      #{scripts_folder}/pip-3.3 install --upgrade distribute
+      #{scripts_folder}/pip-3.3 install --upgrade pip
 
       See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
     EOS
