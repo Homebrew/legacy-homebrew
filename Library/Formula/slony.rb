@@ -25,7 +25,7 @@ class Slony < Formula
   sha1 '47449fbc742a25eefdab088ab650973416bccb53'
 
   depends_on PostgresqlInstalled.new
-
+  
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}"
