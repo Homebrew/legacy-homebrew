@@ -8,6 +8,7 @@ class Ettercap < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
   depends_on 'libnet'
+  depends_on 'cairo'
 
   # Stripping breaks plugin support
   skip_clean 'bin'
