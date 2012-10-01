@@ -24,6 +24,8 @@ class Slony < Formula
   url 'http://slony.info/downloads/2.1/source/slony1-2.1.2.tar.bz2'
   sha1 '47449fbc742a25eefdab088ab650973416bccb53'
 
+  depends_on PostgresqlInstalled.new
+
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}"
