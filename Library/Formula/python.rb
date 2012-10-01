@@ -81,9 +81,107 @@ class Python < Formula
            ]
 
     args << '--without-gcc' if ENV.compiler == :clang
-    args << '--with-pydebug' if ENV.compiler == :clang # http://bugs.python.org/issue13370
     args << '--with-dtrace' if build.include? 'with-dtrace'
 
+    distutils_fix_superenv(args)
+    distutils_fix_stdenv
+
+    if build.universal?
+      args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
+    end
+
+    # Allow sqlite3 module to load extensions: http://docs.python.org/library/sqlite3.html#f1
+    inreplace "setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', ''
+
+    system "./configure", *args
+
+    # HAVE_POLL is "broken" on OS X
+    # See: http://trac.macports.org/ticket/18376 and http://bugs.python.org/issue5154
+    inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1' unless build.include? "with-poll"
+
+    system "make"
+
+    ENV.deparallelize # Installs must be serialized
+    # Tell Python not to install into /Applications (default for framework builds)
+    system "make", "install", "PYTHONAPPSDIR=#{prefix}"
+    # Demos and Tools
+    (HOMEBREW_PREFIX/'share/python').mkpath
+    system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
+    system "make", "quicktest" if build.include? 'quicktest'
+
+    # Post-install, fix up the site-packages and install-scripts folders
+    # so that user-installed Python software survives minor updates, such
+    # as going from 2.7.0 to 2.7.1:
+
+    # Remove the site-packages that Python created in its Cellar.
+    site_packages_cellar.rmtree
+    # Create a site-packages in HOMEBREW_PREFIX/lib/python/site-packages
+    site_packages.mkpath
+    # Symlink the prefix site-packages into the cellar.
+    ln_s site_packages, site_packages_cellar
+
+    # Teach python not to use things from /System
+    # and tell it about the correct site-package dir because we moved it
+    sitecustomize = site_packages_cellar/"sitecustomize.py"
+    rm sitecustomize if File.exist? sitecustomize
+    sitecustomize.write <<-EOF.undent
+      # This file is created by `brew install python` and is executed on each
+      # python startup. Don't print from here, or else universe will collapse.
+      import sys
+      import site
+
+      # Only do fix 1 and 2, if the currently run python is a brewed one.
+      if sys.executable.startswith('#{HOMEBREW_PREFIX}'):
+          # Fix 1)
+          #   A setuptools.pth and/or easy-install.pth sitting either in
+          #   /Library/Python/2.7/site-packages or in
+          #   ~/Library/Python/2.7/site-packages can inject the
+          #   /System's Python site-packages. People then report
+          #   "OSError: [Errno 13] Permission denied" because pip/easy_install
+          #   attempts to install into
+          #   /System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python
+          #   See: https://github.com/mxcl/homebrew/issues/14712
+          sys.path = [ p for p in sys.path if not p.startswith('/System') ]
+
+          # Fix 2)
+          #   Remove brewed Python's hard-coded site-packages
+          sys.path.remove('#{site_packages_cellar}')
+
+      # Fix 3)
+      #   For all Pythons: Tell about homebrew's site-packages location.
+      #   This is needed for for Python to parse *.pth files.
+      site.addsitedir('#{site_packages}')
+    EOF
+
+    # Install distribute and pip
+    # It's important to have these installers in our bin, because some users
+    # forget to put #{script_folder} in PATH, then easy_install'ing
+    # into /Library/Python/X.Y/site-packages with /usr/bin/easy_install.
+    mkdir_p scripts_folder unless scripts_folder.exist?
+    setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose", "--install-lib=#{site_packages_cellar}", "--install-scripts=#{bin}" ]
+    Distribute.new.brew { system "#{bin}/python", *setup_args }
+    Pip.new.brew { system "#{bin}/python", *setup_args }
+
+    # Tell distutils-based installers where to put scripts and python modules
+    (prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg").write <<-EOF.undent
+      [install]
+      install-scripts=#{scripts_folder}
+      install-lib=#{site_packages}
+    EOF
+
+    unless MacOS::CLT.installed?
+      makefile = prefix/'Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile'
+      inreplace makefile do |s|
+        s.gsub!(/^CC=.*$/, "CC=xcrun clang")
+        s.gsub!(/^CXX=.*$/, "CXX=xcrun clang++")
+        s.gsub!(/^AR=.*$/, "AR=xcrun ar")
+        s.gsub!(/^RANLIB=.*$/, "RANLIB=xcrun ranlib")
+      end
+    end
+
+  end
+
+  def distutils_fix_superenv(args)
     if superenv?
       # To allow certain Python bindings to find brewed software:
       cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include"
@@ -105,11 +203,11 @@ class Python < Formula
       inreplace "setup.py",
                 "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
                 "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
+    end
+  end
 
-    else
-      # This is obsolte with superenv (superenv defaults to -Os and does not
-      # disable warnings), but to support --env=std we leave it here:
-
+  def distutils_fix_stdenv()
+    if not superenv?
       # Python scans all "-I" dirs but not "-isysroot", so we add
       # the needed includes with "-I" here to avoid this err:
       #     building dbm using ndbm
@@ -117,7 +215,7 @@ class Python < Formula
       ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
 
       # Don't use optimizations other than "-Os" here, because Python's distutils
-      # remembers (hint: `python-config --cflags`) and reuses them for C
+      # remembers (hint: `python3-config --cflags`) and reuses them for C
       # extensions which can break software (such as scipy 0.11 fails when
       # "-msse4" is present.)
       ENV.minimal_optimization
@@ -132,97 +230,6 @@ class Python < Formula
         ENV.append_to_cflags '-Qunused-arguments'
       end
     end
-
-    if build.universal?
-      args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
-    end
-
-    # Allow sqlite3 module to load extensions:
-    # http://docs.python.org/library/sqlite3.html#f1
-    inreplace "setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', ''
-
-    system "./configure", *args
-
-    # HAVE_POLL is "broken" on OS X
-    # See: http://trac.macports.org/ticket/18376 and http://bugs.python.org/issue5154
-    inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1' unless build.include? "with-poll"
-
-    system "make"
-
-    ENV.deparallelize # Installs must be serialized
-    # Tell Python not to install into /Applications (default for framework builds)
-    system "make", "install", "PYTHONAPPSDIR=#{prefix}"
-    # Demos and Tools into HOMEBREW_PREFIX/share/python
-    system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
-    system "make", "quicktest" if build.include? 'quicktest'
-
-    # Post-install, fix up the site-packages and install-scripts folders
-    # so that user-installed Python software survives minor updates, such
-    # as going from 2.7.0 to 2.7.1:
-
-    # Remove the site-packages that Python created in its Cellar.
-    site_packages_cellar.rmtree
-    # Create a site-packages in HOMEBREW_PREFIX/lib/python/site-packages
-    site_packages.mkpath
-    # Symlink the prefix site-packages into the cellar.
-    ln_s site_packages, site_packages_cellar
-
-    # Teach python not to use things from /System
-    # and teach it about the correct site-package dir because we moved it
-    sitecustomize = site_packages/"sitecustomize.py"
-    rm sitecustomize if File.exist? sitecustomize
-    sitecustomize.write <<-EOF.undent
-      # This file is created by `brew install python` and is executed on each
-      # python startup. Don't print from here, or else universe will collapse.
-      import sys
-
-      # Only do our fixes, if the currently run python is a brewed one.
-      if sys.executable.startswith("#{HOMEBREW_PREFIX}"):
-          # Fix 1)
-          #   A setuptools.pth and/or easy-install.pth sitting either in
-          #   /Library/Python/2.7/site-packages or in
-          #   ~/Library/Python/2.7/site-packages can inject the
-          #   /System's Python site-packages. People then report
-          #   "OSError: [Errno 13] Permission denied" because pip/easy_install
-          #   attempts to install into
-          #   /System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python
-          #   See: https://github.com/mxcl/homebrew/issues/14712
-          sys.path = [ p for p in sys.path if not p.startswith('/System') ]
-
-          # Fix 2)
-          #   pip install records installed files with relative paths and
-          #   because Homebrew installs python into #{HOMEBREW_PREFIX}/Cellar,
-          #   the symlinks for the executable python scripts is not correct, so
-          #   they are not uninstalled when `pip uninstall <x>` is called.
-          #   See: https://github.com/mxcl/homebrew/issues/14688
-          sys.prefix = "#{HOMEBREW_PREFIX}"
-    EOF
-
-    # Tell distutils-based installers where to put scripts
-    (prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg").write <<-EOF.undent
-      [install]
-      install-scripts=#{scripts_folder}
-    EOF
-
-    unless MacOS::CLT.installed?
-      makefile = prefix/'Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile'
-      inreplace makefile do |s|
-        s.gsub!(/^CC=.*$/, "CC=xcrun clang")
-        s.gsub!(/^CXX=.*$/, "CXX=xcrun clang++")
-        s.gsub!(/^AR=.*$/, "AR=xcrun ar")
-        s.gsub!(/^RANLIB=.*$/, "RANLIB=xcrun ranlib")
-      end
-    end
-
-    # Install distribute and pip
-    setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose"]
-    Distribute.new.brew { system "#{bin}/python", *setup_args }
-    Pip.new.brew { system "#{bin}/python", *setup_args }
-
-    # It's important to have these installers in our bin, because some users
-    # forget to put #{script_folder} in PATH, then easy_install'ing
-    # into /Library/Python/X.Y/site-packages with /usr/bin/easy_install.
-    ['pip', 'pip-2.7', 'easy_install', 'easy_install-2.7'].each { |b| mv scripts_folder/b, bin }
   end
 
   def caveats
