@@ -12,6 +12,6 @@ class JsonC < Formula
 
     # The Makefile forgets to install this header. This is fixed upstream and
     # can be pulled on the next release.
-    include.install 'json_object_iterator.h'
+    (include/'json').install 'json_object_iterator.h'
   end
 end
