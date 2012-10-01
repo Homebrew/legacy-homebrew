@@ -383,7 +383,7 @@ class FormulaInstaller
     return unless f.lib.directory?
 
     valid_extensions = %w(.a .dylib .framework .jnilib .la .o .so
-                          .jar .prl .pm)
+                          .jar .prl .pm .sh)
     non_libraries = f.lib.children.select do |g|
       next if g.directory?
       not valid_extensions.include? g.extname
