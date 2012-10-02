@@ -1,7 +1,5 @@
 require 'formula'
 
-# added comment for sake of it
-
 class Levmar < Formula
   homepage 'http://www.ics.forth.gr/~lourakis/levmar/'
   url 'http://www.ics.forth.gr/~lourakis/levmar/levmar-2.6.tgz'
