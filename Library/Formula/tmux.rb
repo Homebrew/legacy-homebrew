@@ -16,15 +16,17 @@ class Tmux < Formula
   end
 
   def patches
-    # Fix for Japanese characters. See:
-    #   http://sourceforge.net/tracker/?func=detail&aid=3566884&group_id=200378&atid=973264
-    p = ['http://sourceforge.net/tracker/download.php?group_id=200378&atid=973264&file_id=453002&aid=3566884']
-    # This patch adds the implementation of osdep_get_cwd for Darwin platform,
-    # so that tmux can get current working directory correctly under Mac OS.
-    # NOTE: it applies to 1.6 only, and should be removed when 1.7 is out.
-    #       (because it has been merged upstream)
-    p << DATA if build.stable?
-
+    p = []
+    if build.stable?
+      # Fix for Japanese characters. (Does not apply to head.) See:
+      #   http://sourceforge.net/tracker/?func=detail&aid=3566884&group_id=200378&atid=973264
+      p << 'http://sourceforge.net/tracker/download.php?group_id=200378&atid=973264&file_id=453002&aid=3566884'
+      # This patch adds the implementation of osdep_get_cwd for Darwin platform,
+      # so that tmux can get current working directory correctly under Mac OS.
+      # NOTE: it applies to 1.6 only, and should be removed when 1.7 is out.
+      #       (because it has been merged upstream)
+      p << DATA
+    end
     p
   end
 
@@ -33,7 +35,8 @@ class Tmux < Formula
 
     ENV.append "LDFLAGS", '-lresolv'
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--sysconfdir=#{etc}"
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}"
     system "make install"
 
     (prefix+'etc/bash_completion.d').install "examples/bash_completion_tmux.sh" => 'tmux'
