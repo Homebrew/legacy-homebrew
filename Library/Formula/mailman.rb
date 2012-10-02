@@ -3,7 +3,6 @@ require 'formula'
 class Mailman < Formula
   homepage 'http://www.gnu.org/software/mailman'
   url      'http://ftpmirror.gnu.org/mailman/mailman-2.1.15.tgz'
-  # version  '2.1.15'
   sha1     '462ac96331491c76aca0128d8f9ced18c50a75d7'
 
   ##
