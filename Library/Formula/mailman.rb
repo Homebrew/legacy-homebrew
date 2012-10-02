@@ -10,7 +10,7 @@ class Mailman < Formula
   # won't be removed between uninstalls to make upgrades easier.
 
   def varprefix
-    HOMEBREW_REPOSITORY+"mailman"
+    HOMEBREW_PREFIX/'share/mailman'
   end
 
   def install
