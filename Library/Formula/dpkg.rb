@@ -9,7 +9,7 @@ class Dpkg < Formula
   depends_on 'gnu-tar'
 
   fails_with :clang do
-    build 318
+    build 421
   end
 
   # Fixes the PERL_LIBDIR.
