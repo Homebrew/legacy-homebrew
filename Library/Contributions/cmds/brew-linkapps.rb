@@ -32,7 +32,7 @@ HOMEBREW_CELLAR.subdirs.each do |keg|
       appname = File.basename(p, ".app")
       target = HOME_APPS+"/"+appname
       if File.exist? target
-        if File.symlink? target or finder_alias? target
+        if File.symlink?(target) || finder_alias?(target)
           system "rm", target
         else
           onoe "#{target} already exists, skipping."

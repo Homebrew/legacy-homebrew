@@ -17,6 +17,14 @@ class Io < Formula
   depends_on 'libffi'
   depends_on 'pcre'
 
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      make never completes. see:
+      https://github.com/stevedekorte/io/issues/223
+    EOS
+  end
+
   # Fix recursive inline. See discussion in:
   # https://github.com/stevedekorte/io/issues/135
   def patches

@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-0.11.1.tar.bz2'
-  sha1 'bf01742be60c2e6280371fc4189d5d28933f1a56'
+  url 'http://ffmpeg.org/releases/ffmpeg-1.0.tar.bz2'
+  sha1 'bf1f917c4fa26cf225616f2063e60c33cac546be'
 
   head 'git://git.videolan.org/ffmpeg.git'
 

@@ -16,7 +16,6 @@ def superbin
 end
 
 def superenv?
-  not MacOS::Xcode.bad_xcode_select_path? and # because xcrun won't work
   not MacOS::Xcode.folder.nil? and # because xcrun won't work
   superbin and superbin.directory? and
   not ARGV.include? "--env=std"
@@ -24,11 +23,12 @@ end
 
 class << ENV
   attr :deps, true
+  attr :all_deps, true # above is just keg-only-deps
   attr :x11, true
   alias_method :x11?, :x11
 
   def reset
-    %w{CC CXX CPP OBJC MAKE
+    %w{CC CXX CPP OBJC MAKE LD
       CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
       MACOS_DEPLOYMENT_TARGET SDKROOT
       CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH}.
@@ -41,8 +41,9 @@ class << ENV
   def setup_build_environment
     reset
     check
-    ENV['CC'] = ENV['LD'] = 'cc'
+    ENV['CC'] = 'cc'
     ENV['CXX'] = 'c++'
+    ENV['DEVELOPER_DIR'] = determine_developer_dir # effects later settings
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
@@ -104,8 +105,8 @@ class << ENV
       paths << "#{MacSystem.xcode43_developer_dir}/usr/bin"
       paths << "#{MacSystem.xcode43_developer_dir}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
     end
-    paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
-    paths << HOMEBREW_PREFIX/:bin
+    paths += all_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
+    paths << "#{HOMEBREW_PREFIX}/opt/python/bin" if brewed_python?
     paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
     paths.to_path_s
@@ -137,8 +138,11 @@ class << ENV
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     if MacSystem.xcode43_without_clt?
       paths << "#{sdk}/usr/include/apache2"
-      # TODO prolly shouldn't always do this?
-      paths << "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7"
+      paths << if brewed_python?
+        "#{HOMEBREW_PREFIX}/opt/python/Frameworks/Python.framework/Headers"
+      else
+        "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7"
+      end
     end
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/" unless x11?
     paths << "#{MacSystem.x11_prefix}/include" if x11?
@@ -177,6 +181,22 @@ class << ENV
     # Fix issue with 10.8 apr-1-config having broken paths
     s << 'a' if MacOS.version == :mountain_lion
     s
+  end
+
+  def determine_developer_dir
+    # If Xcode path is fucked then this is basically a fix. In the case where
+    # nothing is valid, it still fixes most usage to supply a valid path that
+    # is not "/".
+    if MacOS::Xcode.bad_xcode_select_path?
+      (MacOS::Xcode.prefix || HOMEBREW_PREFIX).to_s
+    elsif ENV['DEVELOPER_DIR']
+      ENV['DEVELOPER_DIR']
+    end
+  end
+
+  def brewed_python?
+    require 'formula'
+    Formula.factory('python').linked_keg.directory?
   end
 
   public
@@ -247,6 +267,7 @@ if not superenv?
   ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
 else
   ENV.deps = []
+  ENV.all_deps = []
 end
 
 

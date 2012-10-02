@@ -21,6 +21,18 @@ def syspath
     %W{/usr /usr/local}
   end
 end
+def exec *args
+  path = File.expand_path('~/Library/Logs/Homebrew/cc.log')
+  open(path, 'a') do |f|
+    f.print '[', $0
+    f.print " -%s" % ENV['HOMEBREW_CCCFG'] if ENV['HOMEBREW_CCCFG']
+    f.print '] '
+    f.puts args.join(' ')
+    f.puts
+  end
+  Kernel.exec *args
+end if ENV['HOMEBREW_LOG']
+
 
 class Cmd
   def initialize path, args
@@ -64,24 +76,24 @@ class Cmd
       refurbished_args
     end
     if tool != 'ld'
-      args.unshift("--sysroot=#$sdkroot")
+      args << "--sysroot=#$sdkroot"
     else
-      args.unshift($sdkroot).unshift("-syslibroot")
+      args << "-syslibroot" << $sdkroot
     end if nclt?
     case mode
     when :cpp
-      %w{-E} + cppflags + args
+      %w{-E} + args + cppflags
     when :ld
       ldflags + args
     when :cc
-      cflags + cppflags + args
+      cflags + args + cppflags
     when :ccld
-      cflags + cppflags + ldflags + args
+      cflags + args + cppflags + ldflags
     end.compact
   end
   def refurbished_args
-    lset = Set.new(syslibpath)
-    iset = Set.new(syscpath)
+    lset = Set.new(libpath + syslibpath)
+    iset = Set.new(cpath.flatten)
 
     args = []
     whittler = @args.each
@@ -168,9 +180,10 @@ class Cmd
     dels = @args - args
     adds = args - @args
     dups = dels & args
-    puts "brew: Superenv removed: #{dels*' '}" unless dels.empty?
-    puts "brew: Superenv deduped: #{dels}" unless dups.empty?
-    puts "brew: Superenv added: #{adds*' '}" unless adds.empty?
+
+    STDERR.puts "brew: superenv removed: #{dels*' '}" unless dels.empty?
+    STDERR.puts "brew: superenv deduped: #{dels}" unless dups.empty?
+    STDERR.puts "brew: superenv added: #{adds*' '}" unless adds.empty?
   end
 end
 

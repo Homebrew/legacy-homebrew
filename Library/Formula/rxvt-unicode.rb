@@ -8,6 +8,7 @@ class RxvtUnicode < Formula
   option "disable-iso14755", "Disable ISO 14775 Shift+Ctrl hotkey"
 
   depends_on 'pkg-config' => :build
+  depends_on :x11
 
   def patches
     # Patch hunks 1 and 2 allow perl support to compile on Intel.

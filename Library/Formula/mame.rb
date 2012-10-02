@@ -2,10 +2,10 @@ require 'formula'
 
 class Mame < Formula
   homepage 'http://mamedev.org/'
-  url 'svn://messdev.no-ip.org/mess', :revision => 15603
+  url 'svn://dspnet.fr/mame/trunk', :revision => 15603
   version '146u3'
 
-  head 'svn://messdev.no-ip.org/mess'
+  head 'svn://dspnet.fr/mame/trunk'
 
   depends_on :x11
   depends_on 'sdl'
