@@ -10,6 +10,7 @@ class Bitlbee < Formula
   depends_on 'glib'
   depends_on 'gnutls'
   depends_on 'libpurple' if build.include? 'purple'
+  depends_on 'libotr'
 
   def install
     # By default Homebrew will set ENV['LD'] to the same as ENV['CC'] which
@@ -24,7 +25,8 @@ class Bitlbee < Formula
             "--ssl=gnutls",
             "--pidfile=#{var}/bitlbee/run/bitlbee.pid",
             "--config=#{var}/bitlbee/lib/",
-            "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"]
+            "--ipsocket=#{var}/bitlbee/run/bitlbee.sock",
+            "--otr=1"]
 
     args << "--purple=1" if build.include? "purple"
 
