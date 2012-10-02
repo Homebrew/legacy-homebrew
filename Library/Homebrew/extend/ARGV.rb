@@ -117,6 +117,9 @@ module HomebrewArgvExtension
   def build_stable?
     not (build_head? or build_devel?)
   end
+  def universal?
+    flag? '--universal'
+  end
 
   def build_universal?
     include? '--universal'
