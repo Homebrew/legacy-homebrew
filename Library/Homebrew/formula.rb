@@ -6,6 +6,7 @@ require 'bottles'
 require 'patches'
 require 'compilers'
 require 'build_environment'
+require 'extend/set'
 
 
 class Formula
@@ -455,9 +456,9 @@ class Formula
   end
 
   def recursive_requirements
-    reqs = recursive_deps.map { |dep| dep.requirements }.to_set
-    reqs << requirements
-    reqs.flatten
+    reqs = ComparableSet.new
+    recursive_deps.each { |dep| reqs.merge dep.requirements }
+    reqs.merge requirements
   end
 
   def to_hash
