@@ -87,6 +87,7 @@ class Python < Formula
     distutils_fix_stdenv
 
     if build.universal?
+      ENV.universal_binary
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
     end
 
