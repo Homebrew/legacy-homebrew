@@ -149,7 +149,7 @@ class Python < Formula
 
       # Fix 3)
       #   For all Pythons: Tell about homebrew's site-packages location.
-      #   This is needed for for Python to parse *.pth files.
+      #   This is needed for Python to parse *.pth files.
       site.addsitedir('#{site_packages}')
     EOF
 
@@ -247,7 +247,7 @@ class Python < Formula
       To symlink "Idle" and the "Python Launcher" to ~/Applications
         `brew linkapps`
 
-      You can install Python packages with (the outdated easy_install) or
+      You can install Python packages with (the outdated easy_install or)
         `pip install <your_favorite_package>`
 
       They will install into the site-package directory
