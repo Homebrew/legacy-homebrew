@@ -29,9 +29,7 @@ def blacklisted? name
     We recommend using a MacTeX distribution: http://www.tug.org/mactex/
     EOS
   when 'pip' then <<-EOS.undent
-    Install pip with easy_install:
-
-        easy_install pip
+    pip is installed by `brew install python`
     EOS
   when 'macruby' then <<-EOS.undent
     MacRuby works better when you install their package:
