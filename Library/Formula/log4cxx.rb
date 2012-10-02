@@ -20,6 +20,7 @@ class Log4cxx < Formula
   def install
     ENV.universal_binary if build.universal?
     ENV.O2 # Using -Os causes build failures on Snow Leopard.
+    ENV.prepend_path 'PATH' , "#{HOMEBREW_PREFIX}/bin"  # Fixes path issues with autotool
 
     # Fixes build error with clang, old libtool scripts. cf. #12127
     # Reported upstream here: https://issues.apache.org/jira/browse/LOGCXX-396
