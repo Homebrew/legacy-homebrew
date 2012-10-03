@@ -6,11 +6,12 @@ class Bitlbee < Formula
   sha1 '74afdff87be49ce060771a6ae10d7643cd57b9b6'
 
   option 'purple', "Use libpurple for all communication with instant messaging networks"
+  option 'otr', "Build with otr (off the record) support"
 
   depends_on 'glib'
   depends_on 'gnutls'
   depends_on 'libpurple' if build.include? 'purple'
-  depends_on 'libotr'
+  depends_on 'libotr' if build.include? 'otr'
 
   def install
     # By default Homebrew will set ENV['LD'] to the same as ENV['CC'] which
@@ -25,10 +26,10 @@ class Bitlbee < Formula
             "--ssl=gnutls",
             "--pidfile=#{var}/bitlbee/run/bitlbee.pid",
             "--config=#{var}/bitlbee/lib/",
-            "--ipsocket=#{var}/bitlbee/run/bitlbee.sock",
-            "--otr=1"]
+            "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"]
 
     args << "--purple=1" if build.include? "purple"
+    args << "--otr=1" if build.include? "otr"
 
     system "./configure", *args
 
