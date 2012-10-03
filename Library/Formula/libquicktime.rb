@@ -19,7 +19,7 @@ class Libquicktime < Formula
                           "--prefix=#{prefix}",
                           "--enable-gpl",
                           "--without-doxygen",
-                          "--without-x"
+                          "--without-x",
                           "--without-gtk"
     system "make"
     system "make install"
