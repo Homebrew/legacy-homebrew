@@ -9,8 +9,10 @@ class Crossroads < Formula
 
   option 'with-pgm', 'Build with PGM extension'
 
+  depends_on 'pkg-config' => :build
   depends_on :automake
   depends_on :libtool
+  depends_on 'libpgm' if build.include? 'with-pgm'
 
   fails_with :llvm do
     build 2326
@@ -20,8 +22,16 @@ class Crossroads < Formula
   def install
     system "./autogen.sh" if build.head?
 
+    # Help it find openpgm-5.2 because it searches for openpgm-5.1.pc
+    # https://github.com/mxcl/homebrew/issues/15217
+    if build.include? 'with-pgm'
+      libpgm = Formula.factory('libpgm')
+      ENV['OpenPGM_CFLAGS'] = "-I#{libpgm.include}/pgm-5.2 -I#{libpgm.lib}/pgm-5.2/include"
+      ENV['OpenPGM_LIBS'] = "-L#{libpgm.lib} -lpgm"
+    end
+
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    args << "--with-pgm" if build.include? 'with-pgm'
+    args << "--with-system-pgm" if build.include? 'with-pgm'
     system "./configure", *args
 
     system "make"
