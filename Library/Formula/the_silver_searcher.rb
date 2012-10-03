@@ -13,11 +13,6 @@ class TheSilverSearcher < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
 
-  # missing stdio.h #include was fixed upstream, will be in next release
-  def patches
-    "https://github.com/ggreer/the_silver_searcher/commit/34ad7f6a728b7458f3196c1048b97b55ac07172a.patch"
-  end
-
   def install
     # Stable tarball does not include pre-generated configure script
     system "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
