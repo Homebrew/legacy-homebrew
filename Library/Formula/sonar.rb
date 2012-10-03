@@ -26,20 +26,19 @@ class Sonar < Formula
     end
   end
 
-  def caveats; <<-EOS
-If this is your first install, automatically load on login with:
-    mkdir -p ~/Library/LaunchAgents
-    cp #{plist_path} ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+  def caveats; <<-EOS.undent
+    If this is your first install, automatically load on login with:
+      mkdir -p ~/Library/LaunchAgents
+      ln -nfs #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-If this is an upgrade and you already have the #{plist_path.basename} loaded:
-    launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-    cp #{plist_path} ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-Or start it manually:
-   #{HOMEBREW_PREFIX}/bin/sonar console
-EOS
+    Or start it manually:
+      #{HOMEBREW_PREFIX}/bin/sonar console
+    EOS
   end
 
   def startup_plist
