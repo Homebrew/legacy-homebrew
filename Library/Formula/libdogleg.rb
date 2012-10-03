@@ -2,9 +2,9 @@ require 'formula'
 
 class Libdogleg < Formula
   homepage 'https://github.com/Oblong/libdogleg'
-  url 'https://github.com/laurentbartholdi/libdogleg/zipball/compile-for-mac'
+  url 'https://github.com/Oblong/libdogleg/tarball/debian/0.07'
   version '0.07'
-  sha1 '0831f70542f01f19439d6cfcab62218c8cf9cc50'
+  sha1 '80b358e087ff057f04d8c34554c8bb5a5250f331'
 
   def install
     system "make"
