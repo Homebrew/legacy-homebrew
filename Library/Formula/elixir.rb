@@ -30,6 +30,8 @@ class Elixir < Formula
 
   depends_on ErlangInstalled.new
 
+  env :userpaths
+
   def install
     system "make"
     bin.install Dir['bin/*'] - Dir['bin/*.bat']
