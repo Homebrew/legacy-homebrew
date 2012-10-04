@@ -2,7 +2,7 @@ require 'formula'
 require Formula.path("python") # For TkCheck requirement
 
 # Python3 is the new language standard, not just a new revision.
-# It's somewhat incompatible to Python 2.x, therefore, the executable
+# It's somewhat incompatible with Python 2.x, therefore, the executable
 # "python" will always point to the 2.x version which you can get by
 # `brew install python`.
 
@@ -18,9 +18,9 @@ end
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.2.3/Python-3.2.3.tar.bz2'
-  sha1 '4c2d562a0681ba27bc920500050e2f08de224311'
-  VER='3.2'  # The <major>.<minor> is used so often.
+  url 'http://python.org/ftp/python/3.3.0/Python-3.3.0.tar.bz2'
+  sha1 '3e1464bc2c1dfa74287bc58da81168f50b0ae5c7'
+  VER='3.3'  # The <major>.<minor> is used so often.
 
   depends_on TkCheck.new
   depends_on 'pkg-config' => :build
