@@ -1,7 +1,7 @@
 require 'formula'
 
 class Unac < Formula
-  homepage ''
+  homepage 'http://savannah.nongnu.org/projects/unac'
   url 'http://ftp.de.debian.org/debian/pool/main/u/unac/unac_1.8.0.orig.tar.gz'
   sha1 '3e779bb7f3b505880ac4f43b48ee2f935ef8aa36'
 
