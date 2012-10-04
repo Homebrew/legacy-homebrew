@@ -362,12 +362,6 @@ module ObserverPathnameExtension
     puts "rmdir #{to_s}" if ARGV.verbose?
     $d+=1
   end
-  def mkpath
-    return if exist?
-    super
-    puts "mkpath #{to_s}" if ARGV.verbose?
-    $d+=1
-  end
   def make_relative_symlink src
     super
     $n+=1
