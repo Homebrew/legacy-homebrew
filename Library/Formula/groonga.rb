@@ -3,7 +3,7 @@ require 'formula'
 class Groonga < Formula
   homepage 'http://groonga.org/'
   url 'http://packages.groonga.org/source/groonga/groonga-2.0.7.tar.gz'
-  sha1 '577f609c785803f90b65e2defa23247a5a256623'
+  sha1 '2bb69695d7a147cad00d1f6c7deebe81f277a99c'
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'

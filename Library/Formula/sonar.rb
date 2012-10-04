@@ -2,8 +2,8 @@ require 'formula'
 
 class Sonar < Formula
   homepage 'http://www.sonarsource.org'
-  url 'http://dist.sonar.codehaus.org/sonar-3.2.zip'
-  sha1 'a6ec8855e4b365a89c07d688a8a1af04358237bb'
+  url 'http://dist.sonar.codehaus.org/sonar-3.2.1.zip'
+  sha1 'de9300463b8d1eb728bc311f8bdbba7fe351d452'
 
   def install
     # Delete native bin directories for other systems
@@ -26,20 +26,19 @@ class Sonar < Formula
     end
   end
 
-  def caveats; <<-EOS
-If this is your first install, automatically load on login with:
-    mkdir -p ~/Library/LaunchAgents
-    cp #{plist_path} ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+  def caveats; <<-EOS.undent
+    If this is your first install, automatically load on login with:
+      mkdir -p ~/Library/LaunchAgents
+      ln -nfs #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-If this is an upgrade and you already have the #{plist_path.basename} loaded:
-    launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-    cp #{plist_path} ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-Or start it manually:
-   #{HOMEBREW_PREFIX}/bin/sonar console
-EOS
+    Or start it manually:
+      #{HOMEBREW_PREFIX}/bin/sonar console
+    EOS
   end
 
   def startup_plist

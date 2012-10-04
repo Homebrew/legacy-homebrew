@@ -515,7 +515,7 @@ def check_for_gettext
 end
 
 def check_for_iconv
-  unless find_relative_paths("lib/iconv.dylib", "include/iconv.h").empty?
+  unless find_relative_paths("lib/libiconv.dylib", "include/iconv.h").empty?
     if (f = Formula.factory("libiconv") rescue nil) and f.linked_keg.directory?
       if not f.keg_only? then <<-EOS.undent
         A libiconv formula is installed and linked

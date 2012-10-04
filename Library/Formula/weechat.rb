@@ -2,8 +2,8 @@ require 'formula'
 
 class Weechat < Formula
   homepage 'http://www.weechat.org'
-  url 'http://www.weechat.org/files/src/weechat-0.3.8.tar.bz2'
-  sha1 '50387983f3aa20946a0b3d466acafa35f86411f5'
+  url 'http://www.weechat.org/files/src/weechat-0.3.9.tar.bz2'
+  sha1 'c01025ebf2c02740c3d3842a9ea4b2cb74311161'
 
   depends_on 'cmake' => :build
   depends_on 'gettext'
@@ -24,7 +24,7 @@ class Weechat < Formula
     # This messes up because the system perl is a fat binary with 32, 64 and PPC
     # compiles, but our deps don't have that. Remove at v0.3.8, fixed in HEAD.
     archs = %W[-arch ppc -arch i386 -arch x86_64].join('|')
-    inreplace  "src/plugins/scripts/perl/CMakeLists.txt",
+    inreplace  "src/plugins/perl/CMakeLists.txt",
       'IF(PERL_FOUND)',
       'IF(PERL_FOUND)' +
       %Q{\n  STRING(REGEX REPLACE "#{archs}" "" PERL_CFLAGS "${PERL_CFLAGS}")} +
@@ -37,7 +37,7 @@ class Weechat < Formula
     # Because Macports and Apple change LINKFORSHARED but HB does not, this
     # will have to persist, and it's not reported upstream.  Fixes the error
     #   no such file or directory: 'Python.framework/Versions/2.7/Python'
-    inreplace 'src/plugins/scripts/python/CMakeLists.txt',
+    inreplace 'src/plugins/python/CMakeLists.txt',
       '${PYTHON_LFLAGS}', '-u _PyMac_Error'
 
     args = std_cmake_args + %W[
