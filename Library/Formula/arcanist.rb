@@ -2,14 +2,15 @@ require 'formula'
 
 class Arcanist < Formula
   class Libphutil < Formula
-    url 'https://github.com/facebook/libphutil/zipball/1f9e0d9b699c5cb1f6624aad7bed60309e05f1e4'
-    sha1 '74916edbb1432005334fe0fd04a2f873319fc4b6'
+    url 'https://github.com/facebook/libphutil/zipball/795212bf9d7a87397b8ada3926d11a88efdd556b'
+    sha1 'cd3eca0063e744ce6724fcc68f747090fa4f31f6'
+    version '1.0.1'
   end
 
   homepage 'http://phabricator.org'
-  url 'https://github.com/facebook/arcanist/zipball/5be656aa57166fbe4416802c9403023bfd9aeff5'
-  version '1.0.0'
-  sha1 'd6dff7de3a0ef5d00cb38b53888eb940fd3eeeee'
+  url 'https://github.com/facebook/arcanist/zipball/d0425fc238c3255f1436f311424121255adfab62'
+  version '1.0.1'
+  sha1 '8c7f8be79e2c5cefe13e17feb8cde141e01794f6'
 
   def install
     Libphutil.new.brew do
