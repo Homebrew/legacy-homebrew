@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'formula'
 
 class Unac < Formula
@@ -6,8 +7,8 @@ class Unac < Formula
   sha1 '3e779bb7f3b505880ac4f43b48ee2f935ef8aa36'
 
   depends_on 'gettext' => :build
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
+  depends_on :autoconf => :build
+  depends_on :automake => :build
   depends_on :libtool => :build
 
   def patches
@@ -25,7 +26,7 @@ class Unac < Formula
     inreplace "autogen.sh", "libtool", "glibtool"
     system "./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-    "--prefix=#{prefix}"
+      "--prefix=#{prefix}"
     system "make install"
   end
 
@@ -34,6 +35,9 @@ class Unac < Formula
   end
 end
 
+#
+# configure.ac doesn't properly detect Mac OS's iconv library. This patch fixes that.
+#
 __END__
 diff --git a/configure.ac b/configure.ac
 index 4a4eab6..9f25d50 100644
