@@ -171,14 +171,14 @@ class FormulaTests < Test::Unit::TestCase
       assert_instance_of Bottle, f.bottle
       assert_equal CurlBottleDownloadStrategy, f.bottle.download_strategy
       assert_nil f.bottle.specs
-      assert_nil f.bottle.mirrors
+      assert f.bottle.mirrors.empty?
 
       assert_equal 'file:///foo.com/testball-0.1-bottle.tar.gz', f.bottle.url
 
       assert_instance_of Checksum, f.bottle.checksum
       assert_equal :sha1, f.bottle.checksum.hash_type
       assert !f.bottle.checksum.empty?
-      assert_equal 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d', f.bottle.sha1.hexdigest
+      assert_equal 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef', f.bottle.sha1.hexdigest
       assert_nil f.bottle.md5
       assert_nil f.bottle.sha256
 

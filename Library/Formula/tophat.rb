@@ -7,6 +7,15 @@ class Tophat < Formula
 
   depends_on 'samtools'
 
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      Compiling with clang results in the error "default arguments
+      cannot be added to a function template that has already been declared".
+      Upstream source should move default parameter declaration to fix.
+    EOS
+  end
+
   def install
     # It seems this project Makefile doesn't like -j4
     # Disable until consult with upstream

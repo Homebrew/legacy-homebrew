@@ -61,7 +61,7 @@ class Zookeeper < Formula
 
     build_python = build.include? "python"
     build_perl = build.include? "perl"
-    build_c = build_python or build_perl or build.include? "c"
+    build_c = build_python || build_perl || build.include?("c")
 
     # Build & install C libraries.
     cd "src/c" do
