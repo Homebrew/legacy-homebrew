@@ -2,8 +2,8 @@ require 'formula'
 
 class Pianobar < Formula
   homepage 'https://github.com/PromyLOPh/pianobar/'
-  url 'https://github.com/PromyLOPh/pianobar/tarball/2012.06.24'
-  sha1 '510dfbbc411e516a71f56d71dfb06086faabd4dd'
+  url 'https://github.com/PromyLOPh/pianobar/tarball/2012.09.07'
+  sha1 'c4e399dafaffb3c4c4c07682f5cfac82605600da'
 
   head 'https://github.com/PromyLOPh/pianobar.git'
 
@@ -23,8 +23,6 @@ class Pianobar < Formula
   def install
     # Discard Homebrew's CFLAGS as Pianobar reportedly doesn't like them
     ENV['CFLAGS'] = "-O2 -DNDEBUG " +
-                    # fixes a segfault: https://github.com/PromyLOPh/pianobar/issues/138
-                    "-D_DARWIN_C_SOURCE " +
                     # Or it doesn't build at all
                     "-std=c99 " +
                     # build if we aren't /usr/local'

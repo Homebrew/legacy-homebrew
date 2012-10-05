@@ -39,7 +39,7 @@ class Grass < Formula
   def patches; DATA; end
 
   fails_with :clang do
-    build 318
+    build 421
 
     cause <<-EOS.undent
       Multiple build failures while compiling GRASS tools.

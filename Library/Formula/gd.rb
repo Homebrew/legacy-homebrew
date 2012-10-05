@@ -14,7 +14,7 @@ class Gd < Formula
 
   depends_on :libpng unless build.include? "without-libpng"
   depends_on 'jpeg' => :recommended unless build.include? "without-jpeg"
-  depends_on :freetype => :optional if build.include? "with-freetype"
+  depends_on :freetype if build.include? "with-freetype"
 
   fails_with :llvm do
     build 2326
@@ -23,7 +23,7 @@ class Gd < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--with-freetype" if build.include? 'with-freetype'
+    args << "--without-freetype" unless build.include? 'with-freetype'
     system "./configure", *args
     system "make install"
     (lib+'pkgconfig/gdlib.pc').write pkg_file

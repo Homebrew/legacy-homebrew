@@ -34,13 +34,15 @@ class Imagemagick < Formula
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
   option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
-  option 'without-x', 'Compile without x11'
+  option 'with-x', 'Compile with X11 support.'
+  option 'without-freetype', 'Compile without freetype support.'
 
   depends_on 'pkg-config' => :build
 
   depends_on 'jpeg' => :recommended
   depends_on :libpng
-  depends_on :x11 unless build.include? 'without-x'
+  depends_on :x11 if build.include? 'with-x'
+  depends_on :freetype => :recommended unless build.include? 'without-freetype'
 
   depends_on 'ghostscript' => :optional if ghostscript_srsly?
 
@@ -53,10 +55,10 @@ class Imagemagick < Formula
   depends_on 'openexr' => :optional if build.include? 'use-exr'
 
   bottle do
-    version 1
-    sha1 'fde8ed2686740ed83efd0626dd20170d9d3096b7' => :mountainlion
-    sha1 'e2c4d5b9e5f37e5f20dec36f3f3cbfc65821e164' => :lion
-    sha1 '019400feda06e4f277187702a4baeacdfdbf4851' => :snowleopard
+    version 3
+    sha1 '0d7ca4e54a1d3090e8b5a85663f0efa857ea52b7' => :mountainlion
+    sha1 '64fca6d7c75407dd1942a271a4df837ab02bbeb0' => :lion
+    sha1 'b8d1a9b2de7b1961da311df77922d326c2b6723f' => :snowleopard
   end
 
   skip_clean :la
@@ -76,6 +78,7 @@ class Imagemagick < Formula
              "--enable-shared",
              "--disable-static",
              "--without-pango",
+             "--with-included-ltdl",
              "--with-modules"]
 
     args << "--disable-openmp" unless build.include? 'enable-openmp'
@@ -96,7 +99,8 @@ class Imagemagick < Formula
 
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
     args << "--with-rsvg" if build.include? 'use-rsvg'
-    args << "--without-x" if build.include? 'without-x'
+    args << "--without-x" unless build.include? 'with-x'
+    args << "--with-freetype=yes" if build.include? 'with-freetype'
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'

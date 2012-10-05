@@ -7,6 +7,8 @@ class Fontforge < Formula
 
   head 'https://github.com/fontforge/fontforge.git'
 
+  env :std
+
   option 'without-python', 'Build without Python'
   option 'with-x', 'Build with X'
   option 'with-cairo', 'Build with Cairo'

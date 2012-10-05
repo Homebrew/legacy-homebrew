@@ -1,6 +1,7 @@
 /*
 !/.gitignore
 !/Library/
+!/CONTRIBUTING.md
 !/README.md
 !/bin
 /bin/*

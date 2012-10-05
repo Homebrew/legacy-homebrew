@@ -6,6 +6,8 @@ class Dmenu < Formula
   sha1 '70c1a13b950b7b0cb1bc35e30c6e861a78359953'
   head 'http://hg.suckless.org/dmenu/'
 
+  depends_on :x11
+
   def install
     system "make", "PREFIX=#{prefix}", "install"
   end

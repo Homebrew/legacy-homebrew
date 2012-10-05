@@ -24,6 +24,10 @@ class Lilypond < Formula
   url 'http://download.linuxaudio.org/lilypond/sources/v2.16/lilypond-2.16.0.tar.gz'
   sha1 'b5edfdd1332a5cee94bd31c7b1e8b08909c0a068'
 
+  env :userpaths
+
+  option 'with-doc', "Build documentation in addition to binaries (may require several hours)."
+
   depends_on TexInstalled.new
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -34,6 +38,15 @@ class Lilypond < Formula
   depends_on 'fontforge'
   depends_on 'texinfo'
   depends_on :x11
+
+  # Assert documentation dependencies if requested.
+  if build.include? 'with-doc'
+    depends_on 'netpbm'
+    depends_on 'imagemagick'
+    depends_on 'docbook'
+    depends_on 'dblatex' => :python
+    depends_on 'texi2html'
+  end
 
   skip_clean :all
 
@@ -50,6 +63,12 @@ class Lilypond < Formula
     # Separate steps to ensure that lilypond's custom fonts are created.
     system 'make all'
     system "make install"
+
+    # Build documentation if requested.
+    if build.include? 'with-doc'
+      system "make doc"
+      system "make install-doc"
+    end
   end
 
   def test

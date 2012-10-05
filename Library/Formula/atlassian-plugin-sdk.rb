@@ -2,8 +2,8 @@ require 'formula'
 
 class AtlassianPluginSdk < Formula
   homepage 'https://developer.atlassian.com/display/DOCS/Atlassian+Plugin+SDK+Documentation'
-  url 'https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/amps/atlassian-plugin-sdk/3.11/atlassian-plugin-sdk-3.11.tar.gz'
-  sha1 'c54a3498553653d2d5a29362a37fe86df2ea169a'
+  url 'https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/amps/atlassian-plugin-sdk/4.0/atlassian-plugin-sdk-4.0.tar.gz'
+  sha1 'f18ee77fbad58ceca3108ccc271cabcefa23f817'
 
   def install
     # Remove windows files
@@ -22,7 +22,7 @@ class AtlassianPluginSdk < Formula
       visit https://developer.atlassian.com.
 
       To create a plugin skeleton using atlas-create-APPLICATION-plugin, e.g.:
-        atlas-create-jira-plugin
+        atlas-create-jira-plugin or atlas-create-confluence-plugin
 
       To run your plugin's host application with the plugin skeleton installed:
         atlas-run

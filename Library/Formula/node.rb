@@ -44,8 +44,8 @@ end
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.8.8/node-v0.8.8.tar.gz'
-  sha1 '5ddafc059d2f774e35e6375f5b61157879a46f0f'
+  url 'http://nodejs.org/dist/v0.8.11/node-v0.8.11.tar.gz'
+  sha1 'e9dd36cbbe03c632ee7e9c52e06122fa022981c8'
 
   head 'https://github.com/joyent/node.git'
 
@@ -61,10 +61,14 @@ class Node < Formula
     build 2326
   end
 
-  # Stripping breaks dynamic loading
-  skip_clean :all
-
   def install
+    # Lie to `xcode-select` for now to work around a GYP bug that affects
+    # CLT-only systems:
+    #
+    #   http://code.google.com/p/gyp/issues/detail?id=292
+    #   joyent/node#3681
+    ENV['DEVELOPER_DIR'] = MacOS.dev_tools_path unless MacOS::Xcode.installed?
+
     args = %W{--prefix=#{prefix}}
     args << "--debug" if build.include? 'enable-debug'
     args << "--without-npm" if build.include? 'without-npm'

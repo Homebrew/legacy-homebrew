@@ -13,6 +13,8 @@ class Rust < Formula
   def patches
     # fix for Mountain Lion's clang 4.0
     # should be part of next release (commit 50f2db4)
+    # fix for Mountain Lion's clang 4.1
+    # should be part of next release (commit 25bc65b)
     DATA
   end
 
@@ -41,7 +43,7 @@ index 06bddcc..040bae9 100755
 
      case $CFG_CLANG_VERSION in
 -        (3.0svn | 3.0 | 3.1)
-+        (3.0svn | 3.0 | 3.1 | 4.0)
++        (3.0svn | 3.0 | 3.1 | 4.0 | 4.1)
          step_msg "found ok version of CLANG: $CFG_CLANG_VERSION"
          CFG_C_COMPILER="clang"
          ;;

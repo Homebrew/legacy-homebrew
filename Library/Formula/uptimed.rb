@@ -5,9 +5,6 @@ class Uptimed < Formula
   homepage 'http://podgorny.cz/moin/Uptimed'
   sha1 '753ab59bb99d7b88a35174ce83081ad0bb224e56'
 
-  # Stripping symbols breaks uptimed
-  skip_clean :all
-
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

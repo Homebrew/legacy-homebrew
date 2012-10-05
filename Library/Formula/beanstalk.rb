@@ -2,8 +2,8 @@ require 'formula'
 
 class Beanstalk < Formula
   homepage 'http://kr.github.com/beanstalkd/'
-  url 'https://github.com/downloads/kr/beanstalkd/beanstalkd-1.6.tar.gz'
-  sha1 '1909e7641cb75a5f9eb00df2b6a194cee9c7c1bc'
+  url 'https://github.com/downloads/kr/beanstalkd/beanstalkd-1.7.tar.gz'
+  sha1 'e14f40f2c649b0ee1d5edcbb897fc17d2ea4ed62'
 
   def install
     system "make", "install", "PREFIX=#{prefix}"

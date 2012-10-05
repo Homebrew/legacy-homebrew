@@ -5,9 +5,12 @@ class Graphviz < Formula
   url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.28.0.tar.gz'
   sha1 '4725d88a13e071ee22e632de551d4a55ca08ee7d'
 
+  env :std
+
   option :universal
   option 'with-bindings', 'Build Perl/Python/Ruby/etc. bindings'
   option 'with-pangocairo', 'Build with Pango/Cairo for alternate PDF output'
+  option 'with-freetype', 'Build with FreeType support'
   option 'with-app', 'Build GraphViz.app (requires full XCode install)'
 
   depends_on :libpng
@@ -15,8 +18,8 @@ class Graphviz < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pango' if build.include? 'with-pangocairo'
   depends_on 'swig' if build.include? 'with-bindings'
+  depends_on :freetype if build.include? 'with-freetype'
   depends_on :xcode if build.include? 'with-app'
-  depends_on 'gd'
 
   fails_with :clang do
     build 318
@@ -32,11 +35,12 @@ class Graphviz < Formula
     args = ["--disable-debug",
             "--disable-dependency-tracking",
             "--prefix=#{prefix}",
-            "--with-qt=no",
+            "--without-qt",
             "--without-x",
             "--with-quartz"]
     args << "--disable-swig" unless build.include? 'with-bindings'
     args << "--without-pangocairo" unless build.include? 'with-pangocairo'
+    args << "--without-freetype2" unless build.include? 'with-freetype'
 
     system "./configure", *args
     system "make install"
