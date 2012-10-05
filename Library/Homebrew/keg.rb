@@ -27,23 +27,30 @@ class Keg < Pathname
   end
 
   def unlink
-    n=0
+    # these are used by the ObserverPathnameExtension to count the number
+    # of files and directories linked
+    $n=$d=0
 
     %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
       next unless src.exist?
       src.find do |src|
         next if src == self
         dst=HOMEBREW_PREFIX+src.relative_path_from(self)
-        next unless dst.symlink?
+        dst.extend ObserverPathnameExtension
+
+        # check whether the file to be unlinked is from the current keg first
+        if !dst.symlink? || !dst.exist? || src != dst.resolved_path
+          next
+        end
+
         dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
         dst.unlink
         dst.parent.rmdir_if_possible
-        n+=1
         Find.prune if src.directory?
       end
     end
     linked_keg_record.unlink if linked_keg_record.symlink?
-    n
+    $n+$d
   end
 
   def fname
