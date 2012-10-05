@@ -10,6 +10,10 @@ class Mpfr < Formula
 
   option '32-bit'
 
+  # Segfaults under superenv with clang 4.1/421. See:
+  # https://github.com/mxcl/homebrew/issues/15061
+  env :std
+
   def patches
     "http://www.mpfr.org/mpfr-current/allpatches"
   end
