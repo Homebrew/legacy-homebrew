@@ -8,6 +8,7 @@ class Sox < Formula
   depends_on 'pkg-config' => :build
   depends_on :libpng
   depends_on 'mad'
+  depends_on 'opencore-amr' => :optional
   depends_on 'libvorbis' => :optional
   depends_on 'flac' => :optional
   depends_on 'libsndfile' => :optional
