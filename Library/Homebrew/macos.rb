@@ -200,7 +200,8 @@ module MacOS extend self
     unless StandardCompilers.keys.include? xcode
       onoe <<-EOS.undent
         Homebrew doesn't know what compiler versions ship with your version of
-        Xcode. Please file an issue with the output of `brew --config`:
+        Xcode. Please `brew update` and if that doesn't help, file an issue with
+        the output of `brew --config`:
           https://github.com/mxcl/homebrew/issues
 
         Thanks!
