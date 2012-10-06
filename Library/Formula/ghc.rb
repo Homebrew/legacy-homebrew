@@ -41,6 +41,12 @@ class Ghc < Formula
   option '32-bit'
   option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
 
+  bottle do
+    sha1 '72c7e8ad7d25382261ed431f953920004439ad69' => :mountainlion
+    sha1 '16c188ebe10aa06250af12268be39d56284aec91' => :lion
+    sha1 '68c1fcff903826dde6fc8e2a120ae8a69a8bafb2' => :snowleopard
+  end
+
   fails_with :clang do
     build 421
     cause <<-EOS.undent
