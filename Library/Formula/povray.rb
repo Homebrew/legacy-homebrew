@@ -1,5 +1,17 @@
 require 'formula'
 
+class NeedsLion < Requirement
+  def satisfied?
+    MacOS.version >= :lion
+  end
+  def message
+    "PovRay 3.7.0.RC6 requires Mac OS X 10.7 or newer"
+  end
+  def fatal?
+    true
+  end
+end
+
 class Povray < Formula
   homepage 'http://www.povray.org/'
   url 'http://www.povray.org/beta/source/povray-3.7.0.RC6.tar.gz'
@@ -9,16 +21,12 @@ class Povray < Formula
   option 'use-openexr', 'Compile with OpenEXR support.'
   option 'use-zlib',    'Compile with zlib support.'
 
+  depends_on NeedsLion.new
   depends_on 'boost'
   depends_on 'jpeg'
   depends_on 'libpng'
   depends_on 'libtiff'
   depends_on 'openexr' => :optional if build.include? 'use-openexr'
-
-  # TODO give this a build number (2326?)
-  fails_with :llvm do
-    cause "povray fails with 'terminate called after throwing an instance of int'"
-  end if MacOS.version == :leopard
 
   def patches
     {:p0 => [
