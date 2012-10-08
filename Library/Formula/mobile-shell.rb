@@ -10,6 +10,7 @@ class MobileShell < Formula
   # Needs new autoconf for correct AC_C_RESTRICT macro
   # See: https://github.com/keithw/mosh/issues/241
   depends_on 'autoconf' => :build if build.head?
+  depends_on 'automake' => :build if build.head?
   depends_on 'pkg-config' => :build
   depends_on 'protobuf'
 
