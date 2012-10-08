@@ -74,7 +74,7 @@ end
 
 HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; #{OS_VERSION})"
 
-HOMEBREW_CURL_ARGS = '-qf#LA'
+HOMEBREW_CURL_ARGS = '-f#LA'
 
 module Homebrew extend self
   include FileUtils
