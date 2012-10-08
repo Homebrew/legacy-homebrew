@@ -15,7 +15,6 @@ class Bibtex2html < Formula
     end
 
     system "./configure", "--prefix=#{prefix}"
-    #, "--disable-debug", "--disable-dependency-tracking"
     system "make"
     system "make install"
   end
