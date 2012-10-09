@@ -39,6 +39,7 @@ class Zabbix < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-server",
+                          "--enable-proxy",
                           "--enable-agent",
                           "--with-mysql=#{which_mysql}",
                           "--enable-ipv6",
