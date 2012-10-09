@@ -367,9 +367,14 @@ class Formula
       install_type = :from_url
     else
       name = Formula.canonical_name(name)
-      # If name was a path or mapped to a cached formula
 
-      if name.include? "/"
+      if name =~ %r{^(\w+)/(\w+)/([^/])+$}
+        # name appears to be a tapped formula, so we don't munge it
+        # in order to provide a useful error message when require fails.
+        path = Pathname.new(name)
+      elsif name.include? "/"
+        # If name was a path or mapped to a cached formula
+
         # require allows filenames to drop the .rb extension, but everything else
         # in our codebase will require an exact and fullpath.
         name = "#{name}.rb" unless name =~ /\.rb$/
