@@ -8,6 +8,7 @@ class Unac < Formula
 
   depends_on 'gettext' => :build
   depends_on :autoconf => :build
+# requires a newer automake than 1.10
   depends_on :automake => :build
   depends_on :libtool => :build
 
