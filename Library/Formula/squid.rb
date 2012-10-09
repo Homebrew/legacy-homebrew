@@ -23,8 +23,8 @@ end
 
 class Squid < Formula
   homepage 'http://www.squid-cache.org/'
-  url 'http://www.squid-cache.org/Versions/v3/3.1/squid-3.1.20.tar.bz2'
-  sha1 'caa8e65f5720dfd1bc4160946cdb86d9b23c20ab'
+  url 'http://www.squid-cache.org/Versions/v3/3.2/squid-3.2.2.tar.gz'
+  sha1 '3df827e5eb861df0b6ac7654ef738512cb3f9297'
 
   depends_on NoBdb5.new
 
