@@ -23,7 +23,7 @@ class Gd < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--with-freetype" if build.include? 'with-freetype'
+    args << "--without-freetype" unless build.include? 'with-freetype'
     system "./configure", *args
     system "make install"
     (lib+'pkgconfig/gdlib.pc').write pkg_file

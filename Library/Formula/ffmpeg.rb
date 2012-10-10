@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-0.11.2.tar.bz2'
-  sha1 '5d98729b8368df8145472ae6955ef8d6b9ed0efb'
+  url 'http://ffmpeg.org/releases/ffmpeg-1.0.tar.bz2'
+  sha1 'bf1f917c4fa26cf225616f2063e60c33cac546be'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -15,7 +15,6 @@ class Ffmpeg < Formula
   option "with-freetype", "Enable FreeType"
   option "with-theora", "Enable Theora video format"
   option "with-libvorbis", "Enable Vorbis audio format"
-  option "with-libogg", "Enable Ogg container format"
   option "with-libvpx", "Enable VP8 video format"
   option "with-rtmpdump", "Enable RTMP protocol"
   option "with-opencore-amr", "Enable AMR audio format"
@@ -37,7 +36,6 @@ class Ffmpeg < Formula
   depends_on :freetype if build.include? 'with-freetype'
   depends_on 'theora' if build.include? 'with-theora'
   depends_on 'libvorbis' if build.include? 'with-libvorbis'
-  depends_on 'libogg' if build.include? 'with-libogg'
   depends_on 'libvpx' if build.include? 'with-libvpx'
   depends_on 'rtmpdump' if build.include? 'with-rtmpdump'
   depends_on 'opencore-amr' if build.include? 'with-opencore-amr'
@@ -67,7 +65,6 @@ class Ffmpeg < Formula
     args << "--enable-libfreetype" if build.include? 'with-freetype'
     args << "--enable-libtheora" if build.include? 'with-theora'
     args << "--enable-libvorbis" if build.include? 'with-libvorbis'
-    args << "--enable-libogg" if build.include? 'with-libogg'
     args << "--enable-libvpx" if build.include? 'with-libvpx'
     args << "--enable-librtmp" if build.include? 'with-rtmpdump'
     args << "--enable-libopencore-amrnb" << "--enable-libopencore-amrwb" if build.include? 'with-opencore-amr'

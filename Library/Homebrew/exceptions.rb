@@ -96,10 +96,18 @@ class BuildError < Homebrew::InstallationError
 
   def dump
     logs = "#{ENV['HOME']}/Library/Logs/Homebrew/#{formula}/"
+    if ARGV.verbose?
+      require 'cmd/--config'
+      require 'cmd/--env'
+      ohai "Configuration"
+      Homebrew.dump_build_config
+      ohai "ENV"
+      Homebrew.dump_build_env(env)
+    end
     puts
     onoe "#{formula.name} did not build"
     puts "Logs: #{logs}" unless Dir["#{logs}/*"].empty?
-    puts "Help: #{Tty.em}https://github.com/mxcl/homebrew/wiki/troubleshooting#{Tty.reset}"
+    puts "Help: #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
     issues = GitHub.issues_for_formula(formula.name)
     puts *issues.map{ |s| "      #{Tty.em}#{s}#{Tty.reset}" } unless issues.empty?
   end

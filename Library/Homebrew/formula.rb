@@ -3,7 +3,6 @@ require 'dependencies'
 require 'formula_support'
 require 'hardware'
 require 'bottles'
-require 'extend/fileutils'
 require 'patches'
 require 'compilers'
 require 'build_environment'
@@ -368,9 +367,14 @@ class Formula
       install_type = :from_url
     else
       name = Formula.canonical_name(name)
-      # If name was a path or mapped to a cached formula
 
-      if name.include? "/"
+      if name =~ %r{^(\w+)/(\w+)/([^/])+$}
+        # name appears to be a tapped formula, so we don't munge it
+        # in order to provide a useful error message when require fails.
+        path = Pathname.new(name)
+      elsif name.include? "/"
+        # If name was a path or mapped to a cached formula
+
         # require allows filenames to drop the .rb extension, but everything else
         # in our codebase will require an exact and fullpath.
         name = "#{name}.rb" unless name =~ /\.rb$/
@@ -529,7 +533,6 @@ protected
 
       rd, wr = IO.pipe
       pid = fork do
-        ENV['VERBOSE'] = '1' # helps with many tool's logging outputs
         rd.close
         $stdout.reopen wr
         $stderr.reopen wr
@@ -544,29 +547,24 @@ protected
       f.write(rd.read) until rd.eof?
 
       Process.wait
-      raise unless $?.success?
+
+      unless $?.success?
+        unless ARGV.verbose?
+          f.flush
+          Kernel.system "/usr/bin/tail -n 5 #{logfn}"
+        end
+        f.puts
+        require 'cmd/--config'
+        Homebrew.write_build_config(f)
+        raise BuildError.new(self, cmd, args, $?)
+      end
     end
 
-    removed_ENV_variables.each do |key, value|
-      ENV[key] = value # ENV.kind_of? Hash  # => false
-    end if removed_ENV_variables
-
-  rescue
-    if f
-      f.flush
-      Kernel.system "/usr/bin/tail -n 5 #{logfn}"
-      require 'cmd/--config'
-      $f = f
-      def Homebrew.puts(*foo); $f.puts *foo end
-      f.puts
-      Homebrew.dump_build_config
-      class << Homebrew; undef :puts end
-    else
-      puts "No logs recorded :(" unless ARGV.verbose?
-    end
-    raise BuildError.new(self, cmd, args, $?)
   ensure
     f.close if f
+    removed_ENV_variables.each do |key, value|
+      ENV[key] = value
+    end if removed_ENV_variables
   end
 
 public

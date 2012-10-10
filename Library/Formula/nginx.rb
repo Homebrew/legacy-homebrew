@@ -6,8 +6,8 @@ class Nginx < Formula
   sha1 'e3de0b2b82095f26e96bdb461ba36472d3e7cdda'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.3.6.tar.gz'
-    sha1 '8f1f1bd9a98a2d72a5b6fce24d67e9d5f48b5224'
+    url 'http://nginx.org/download/nginx-1.3.7.tar.gz'
+    sha1 'd2925986fc184e0947b87e845db283967d2615cc'
   end
 
   env :userpaths
@@ -25,16 +25,16 @@ class Nginx < Formula
   end
 
   def passenger_config_args
-      passenger_root = `passenger-config --root`.chomp
+    passenger_root = `passenger-config --root`.chomp
 
-      if File.directory?(passenger_root)
-        return "--add-module=#{passenger_root}/ext/nginx"
-      end
+    if File.directory?(passenger_root)
+      return "--add-module=#{passenger_root}/ext/nginx"
+    end
 
-      puts "Unable to install nginx with passenger support. The passenger"
-      puts "gem must be installed and passenger-config must be in your path"
-      puts "in order to continue."
-      exit
+    puts "Unable to install nginx with passenger support. The passenger"
+    puts "gem must be installed and passenger-config must be in your path"
+    puts "in order to continue."
+    exit
   end
 
   def install
@@ -46,7 +46,12 @@ class Nginx < Formula
             "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
-            "--lock-path=#{var}/nginx/nginx.lock"]
+            "--lock-path=#{var}/run/nginx.lock",
+            "--http-client-body-temp-path=#{var}/run/nginx/client_body_temp",
+            "--http-proxy-temp-path=#{var}/run/nginx/proxy_temp",
+            "--http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp",
+            "--http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp",
+            "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp"]
 
     args << passenger_config_args if build.include? 'with-passenger'
     args << "--with-http_dav_module" if build.include? 'with-webdav'
@@ -55,6 +60,7 @@ class Nginx < Formula
     system "make"
     system "make install"
     man8.install "objs/nginx.8"
+    (var/'run/nginx').mkpath
   end
 
   def caveats; <<-EOS.undent

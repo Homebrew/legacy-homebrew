@@ -2,10 +2,10 @@ require 'formula'
 
 class RomTools < Formula
   homepage 'http://www.mess.org/'
-  url 'svn://messdev.no-ip.org/mess', :revision => 15603
-  version '146u3'
+  url 'svn://dspnet.fr/mame/trunk', :revision => 17961
+  version '0.147'
 
-  head 'svn://messdev.no-ip.org/mess'
+  head 'svn://dspnet.fr/mame/trunk'
 
   depends_on :x11
   depends_on 'sdl'
@@ -22,7 +22,7 @@ class RomTools < Formula
 
     bin.install %W[
       castool chdman floptool imgtool jedutil ldresample ldverify regreg
-      romcmp src2htm srcclean testkeys unidasm'
+      romcmp src2htm srcclean testkeys unidasm
     ]
     bin.install 'split' => 'rom-split'
   end

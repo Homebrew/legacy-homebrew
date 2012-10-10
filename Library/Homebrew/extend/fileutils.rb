@@ -35,4 +35,50 @@ module FileUtils extend self
     end
   end
 
+  # The #copy_metadata method in all current versions of Ruby has a
+  # bad bug which causes copying symlinks across filesystems to fail;
+  # see #14710.
+  # This was resolved in Ruby HEAD after the release of 1.9.3p194, but
+  # as of September 2012 isn't in any released version of Ruby.
+  # The monkey-patched method here is copied directly from upstream fix.
+  if RUBY_VERSION < "1.9.3" or RUBY_PATCHLEVEL < 195
+    class Entry_
+      def copy_metadata(path)
+        st = lstat()
+        if !st.symlink?
+          File.utime st.atime, st.mtime, path
+        end
+        begin
+          if st.symlink?
+            begin
+              File.lchown st.uid, st.gid, path
+            rescue NotImplementedError
+            end
+          else
+            File.chown st.uid, st.gid, path
+          end
+        rescue Errno::EPERM
+          # clear setuid/setgid
+          if st.symlink?
+            begin
+              File.lchmod st.mode & 01777, path
+            rescue NotImplementedError
+            end
+          else
+            File.chmod st.mode & 01777, path
+          end
+        else
+          if st.symlink?
+            begin
+              File.lchmod st.mode, path
+            rescue NotImplementedError
+            end
+          else
+            File.chmod st.mode, path
+          end
+        end
+      end
+    end
+  end
+
 end

@@ -4,8 +4,6 @@
 # But many build-systems expect it to work. This fixes that.
 # NOTE only works if the build-tool calls xcrun without a path prefixed!
 
-ENV['HOMEBREW_LOG'] = nil
-
 require "#{File.dirname __FILE__}/../libsuperenv"
 SUPERBIN = __FILE__.dirname.cleanpath.freeze
 

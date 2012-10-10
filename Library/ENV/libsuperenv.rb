@@ -25,20 +25,5 @@ class Array
   end
 end
 
-module Kernel extend self
-  alias :_exec :exec
-  def exec *args
-    path = File.expand_path('~/Library/Logs/Homebrew/cc.log')
-    open(path, 'a') do |f|
-      f.print '[', $0
-      f.print " -%s" % ENV['HOMEBREW_CCCFG'] if ENV['HOMEBREW_CCCFG']
-      f.print '] '
-      f.puts args.join(' ')
-      f.puts
-    end
-    _exec *args
-  end
-end if ENV['HOMEBREW_LOG']
-
 $brewfix = "#{__FILE__}/../../../".cleanpath.freeze
 $sdkroot = ENV['HOMEBREW_SDKROOT'].freeze
