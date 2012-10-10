@@ -482,7 +482,6 @@ def check_user_curlrc
     curl('-o','/dev/null','http://github.com')
     return
   rescue
-    $stdout,out = real_out,$stdout
   ensure
     $stdout,out = real_out,$stdout
   end
