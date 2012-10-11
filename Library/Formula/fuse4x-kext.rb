@@ -44,7 +44,7 @@ class Fuse4xKext < Formula
       In order for FUSE-based filesystems to work, the fuse4x kernel extension
       must be installed by the root user:
 
-        sudo cp -rfX #{kext_prefix}/fuse4x.kext /Library/Extensions
+        sudo /bin/cp -rfX #{kext_prefix}/fuse4x.kext /Library/Extensions
         sudo chmod +s /Library/Extensions/fuse4x.kext/Support/load_fuse4x
 
       If upgrading from a previous version of Fuse4x, the old kernel extension
