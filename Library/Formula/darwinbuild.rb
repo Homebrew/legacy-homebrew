@@ -8,6 +8,8 @@ class Darwinbuild < Formula
     DATA
   end
 
+  depends_on :xcode # For working xcodebuild.
+
   def install
     ENV.delete('CC')
     ENV.delete('LD')

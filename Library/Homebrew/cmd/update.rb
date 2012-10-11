@@ -20,10 +20,15 @@ module Homebrew extend self
     new_files = []
     Dir["Library/Taps/*"].each do |tapd|
       cd tapd do
-        updater = Updater.new
-        updater.pull!
-        report.merge!(updater.report) do |key, oldval, newval|
-          oldval.concat(newval)
+        begin
+          updater = Updater.new
+          updater.pull!
+          report.merge!(updater.report) do |key, oldval, newval|
+            oldval.concat(newval)
+          end
+        rescue
+          tapd =~ %r{^Library/Taps/(\w+)-(\w+)}
+          onoe "Failed to update tap: #$1/#$2"
         end
       end
     end
@@ -124,10 +129,10 @@ class Report < Hash
   def dump
     # Key Legend: Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R)
 
-    dump_formula_report :A, "New Formula"
-    dump_formula_report :M, "Updated Formula"
-    dump_formula_report :D, "Deleted Formula"
-    dump_formula_report :R, "Renamed Formula"
+    dump_formula_report :A, "New Formulae"
+    dump_formula_report :M, "Updated Formulae"
+    dump_formula_report :D, "Deleted Formulae"
+    dump_formula_report :R, "Renamed Formulae"
 #    dump_new_commands
 #    dump_deleted_commands
   end

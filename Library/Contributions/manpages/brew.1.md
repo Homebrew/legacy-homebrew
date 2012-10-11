@@ -3,8 +3,8 @@ brew(1) -- The missing package manager for OS X
 
 ## SYNOPSIS
 
-`brew` [--verbose|-v] command [options] [formula] ...  
-`brew` [--version|-v]
+`brew` --version  
+`brew` [--verbose|-v] command [options] [formula] ...
 
 ## DESCRIPTION
 
@@ -13,8 +13,7 @@ didn't include with OS X.
 
 ## OPTIONS
   * `-v`, `--verbose` command [options] [formula] ...:
-    Prints extra, command-specific debugging information.
-    Note that `brew -v` by itself is the same as `brew --version`.
+    With `--verbose`, many commands print extra debugging information.
 
 ## ESSENTIAL COMMANDS
 
@@ -259,6 +258,11 @@ For the full command list, see the COMMANDS section.
 
     <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
 
+  * `tap --repair`:
+
+    Ensures all tapped formula are symlinked into Library/Formula and prunes dead
+    formula from Library/Formula.
+
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
@@ -326,7 +330,7 @@ For the full command list, see the COMMANDS section.
     Display where Homebrew's `.git` directory is located. For standard installs,
     the `prefix` and `repository` are the same directory.
 
-  * `-v`, `--version`:
+  * `--version`:
     Print the version number of brew to standard error and exit.
 
 ## EXTERNAL COMMANDS
@@ -364,6 +368,15 @@ can take several different forms:
     The formula file will be cached for later use.
 
 ## ENVIRONMENT
+
+  * GIT:
+    When using Git, Homebrew will use `GIT` if set,
+    a Homebrew-built Git if installed, or the system-provided binary.
+
+    Set this to force Homebrew to use a particular git binary.
+
+  * EDITOR:
+    If set, and `HOMEBREW_EDITOR` is not, use `EDITOR` as the text editor.
 
   * HOMEBREW\_BUILD\_FROM\_SOURCE:
     If set, instructs Homebrew to compile from source even when a formula

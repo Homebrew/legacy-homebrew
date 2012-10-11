@@ -1,14 +1,14 @@
 require 'formula'
 
 class PureDocs < Formula
-  url 'http://pure-lang.googlecode.com/files/pure-docs-0.53.tar.gz'
-  sha1 'c0ad274d344d982e65b15b63daf3a267c50ab186'
+  url 'http://pure-lang.googlecode.com/files/pure-docs-0.55.tar.gz'
+  sha1 'f16d5b7dd6bbf5294d0e1d9258421574d33d7e09'
 end
 
 class Pure < Formula
   homepage 'http://code.google.com/p/pure-lang/'
-  url 'http://pure-lang.googlecode.com/files/pure-0.53.tar.gz'
-  sha1 '67f1394c06d885b79fc824283f0f7551a6fb2641'
+  url 'http://pure-lang.googlecode.com/files/pure-0.55.tar.gz'
+  sha1 '3786b7708956fa981605d078833d638a8e4216c3'
 
   depends_on 'llvm'
   depends_on 'gmp'

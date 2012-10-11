@@ -131,8 +131,6 @@ class CompilerSelector
       end
 
       opoo warning
-    else
-      opoo "Formula will not build with #{NAMES[@old_compiler]}, trying #{NAMES[ENV.compiler]}"
     end
   end
 end

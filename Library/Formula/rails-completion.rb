@@ -3,7 +3,7 @@ require 'formula'
 class RailsCompletion < Formula
   homepage 'https://github.com/jweslley/rails_completion'
   url 'https://github.com/jweslley/rails_completion/tarball/v0.2.0'
-  md5 '9e3fad56de597752c4a2e10006e06ce5'
+  sha1 '33c06ece02aaf3ceb55921c1b8359432cf4c61d8'
   head 'https://github.com/jweslley/rails_completion.git'
 
   def install

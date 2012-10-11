@@ -3,14 +3,12 @@ require 'formula'
 class Libdnet < Formula
   homepage 'http://code.google.com/p/libdnet/'
   url 'http://libdnet.googlecode.com/files/libdnet-1.12.tgz'
-  md5 '9253ef6de1b5e28e9c9a62b882e44cc9'
+  sha1 '71302be302e84fc19b559e811951b5d600d976f8'
 
   depends_on :automake
   depends_on :libtool
 
-  def options
-    [['--with-python', 'Build Python module.']]
-  end
+  option 'with-python', 'Build Python module'
 
   def install
     # autoreconf to get '.dylib' extension on shared lib
@@ -22,7 +20,7 @@ class Libdnet < Formula
       --prefix=#{prefix}
       --mandir=#{man}
     ]
-    args << "--with-python" if ARGV.include? "--with-python"
+    args << "--with-python" if build.include? "with-python"
     system "./configure", *args
     system "make install"
   end

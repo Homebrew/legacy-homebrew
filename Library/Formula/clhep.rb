@@ -2,8 +2,8 @@ require 'formula'
 
 class Clhep < Formula
   homepage 'http://proj-clhep.web.cern.ch/proj-clhep/'
-  url 'http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-2.1.2.2.tgz'
-  sha1 '374340e316c192c211db36c4cd3f29407cc75318'
+  url 'http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-2.1.2.4.tgz'
+  sha1 '9a1bf732bfe8e1b7d461243006e0a521f2721aa6'
 
   depends_on 'cmake' => :build
 

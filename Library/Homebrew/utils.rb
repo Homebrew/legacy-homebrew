@@ -178,7 +178,7 @@ def exec_editor *args
   # Invoke bash to evaluate env vars in $EDITOR
   # This also gets us proper argument quoting.
   # See: https://github.com/mxcl/homebrew/issues/5123
-  system "bash", "-c", which_editor + ' "$@"', "--", *args
+  system "bash", "-i", "-c", which_editor + ' "$@"', "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
@@ -216,8 +216,10 @@ def inreplace path, before=nil, after=nil
   end
 end
 
-def ignore_interrupts
-  std_trap = trap("INT") {}
+def ignore_interrupts(opt = nil)
+  std_trap = trap("INT") do
+    puts "One sec, just cleaning up" unless opt == :quietly
+  end
   yield
 ensure
   trap("INT", std_trap)

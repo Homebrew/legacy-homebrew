@@ -3,7 +3,7 @@ require 'formula'
 class Ioke < Formula
   url 'http://ioke.org/dist/ioke-P-ikj-0.4.0.tar.gz'
   homepage 'http://ioke.org/'
-  md5 '936fac215d14809ff5f4bd1fd8262ce0'
+  sha1 '1cf1512e1a845b64c8f839fed396f279afdc0ed9'
 
   def install
     # Remove windows files

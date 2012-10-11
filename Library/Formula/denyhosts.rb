@@ -3,7 +3,7 @@ require 'formula'
 class Denyhosts < Formula
   homepage 'http://denyhosts.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/denyhosts/denyhosts/2.6/DenyHosts-2.6.tar.gz'
-  md5 'fc2365305a9402886a2b0173d1beb7df'
+  sha1 '02143843cb7c37c986c222b7acc11f7b75eb7373'
 
   # Copies of daemon-control-dist & denyhosts.cfg-dist edited for OS X.
   def patches; DATA; end
@@ -36,31 +36,27 @@ class Denyhosts < Formula
 
     sbin.install_symlink libexec+'daemon-control'
     sbin.install_symlink libexec+'denyhosts.py' => 'denyhosts'
-
-    plist_path.write cron_plist
-    plist_path.chmod 0644
   end
 
-  def cron_plist
-    <<-EOS.undent
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{HOMEBREW_PREFIX}/sbin/denyhosts</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>KeepAlive</key>
-        <false/>
-        <key>StartInterval</key>
-        <integer>600</integer>
-      </dict>
-      </plist>
+  def startup_plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{HOMEBREW_PREFIX}/sbin/denyhosts</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>KeepAlive</key>
+      <false/>
+      <key>StartInterval</key>
+      <integer>600</integer>
+    </dict>
+    </plist>
     EOS
   end
 

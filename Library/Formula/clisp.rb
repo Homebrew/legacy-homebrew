@@ -9,7 +9,9 @@ class Clisp < Formula
   depends_on 'libsigsegv'
   depends_on 'readline'
 
-  skip_clean :all # otherwise abort trap
+  # -Os causes the build to fail with C_CODE_ALIGNMENT is wrong
+  # superenv doeesn't yet support changing the optimization level
+  env :std
 
   fails_with :llvm do
     build 2334
@@ -36,16 +38,13 @@ class Clisp < Formula
       # Multiple -O options will be in the generated Makefile,
       # make Homebrew's the last such option so it's effective.
       inreplace "Makefile" do |s|
-        cf = s.get_make_var("CFLAGS")
-        cf.gsub! ENV['CFLAGS'], ''
-        cf += ' '+ENV['CFLAGS']
-        s.change_make_var! 'CFLAGS', cf
+        s.change_make_var! 'CFLAGS', "#{s.get_make_var('CFLAGS')} #{ENV['CFLAGS']}"
       end
 
       # The ulimit must be set, otherwise `make` will fail and tell you to do so
       system "ulimit -s 16384 && make"
 
-      if MacOS.lion?
+      if MacOS.version >= :lion
         opoo "`make check` fails on Lion, so we are skipping it."
         puts "But it probably means there will be other issues too."
         puts "Please take them upstream to the clisp project itself."

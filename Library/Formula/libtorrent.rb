@@ -3,7 +3,7 @@ require 'formula'
 class Libtorrent < Formula
   homepage 'http://libtorrent.rakshasa.no/'
   url 'http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.2.tar.gz'
-  md5 '96c0b81501357df402ab592f59ecaeab'
+  sha1 '4f34a744fbe10c54aaf53d34681fabc1a49d7257'
 
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'

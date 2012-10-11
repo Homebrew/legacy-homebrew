@@ -3,8 +3,8 @@ require 'formula'
 class ClosureCompiler < Formula
   homepage 'http://code.google.com/p/closure-compiler/'
   # Use an SVN download to get the externals as well
-  url 'svn+http://closure-compiler.googlecode.com/svn/trunk/', :revision => '1918'
-  version '20120430'
+  url 'svn+http://closure-compiler.googlecode.com/svn/trunk/', :revision => '2079'
+  version '20120710'
 
   head 'svn+http://closure-compiler.googlecode.com/svn/trunk/'
 
