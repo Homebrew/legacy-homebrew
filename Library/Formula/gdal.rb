@@ -31,8 +31,8 @@ end
 
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
-  url 'http://download.osgeo.org/gdal/gdal-1.9.1.tar.gz'
-  sha1 'c1eae556398ff7b9332afe9d3022dcd931130808'
+  url 'http://download.osgeo.org/gdal/gdal-1.9.2.tar.gz'
+  sha1 '7eda6a4d735b8d6903740e0acdd702b43515e351'
 
   head 'https://svn.osgeo.org/gdal/trunk/gdal'
 
@@ -66,7 +66,7 @@ class Gdal < Formula
     depends_on "cfitsio"
     depends_on "epsilon"
     depends_on "libdap"
-    def patches; DATA; end # Fix a bug in LibDAP detection.
+    def patches; DATA; end # Fix a bug in LibDAP detection: http://trac.osgeo.org/gdal/ticket/4630
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
