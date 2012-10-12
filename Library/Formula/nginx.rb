@@ -16,6 +16,7 @@ class Nginx < Formula
 
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
+  option 'with-debug', 'Compile with debug support'
 
   skip_clean 'logs'
 
@@ -53,6 +54,7 @@ class Nginx < Formula
             "--http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp",
             "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp"]
 
+    args << "--with-debug" if build.include? 'with-debug'
     args << passenger_config_args if build.include? 'with-passenger'
     args << "--with-http_dav_module" if build.include? 'with-webdav'
 
@@ -92,12 +94,13 @@ class Nginx < Formula
     <key>RunAtLoad</key>
     <true/>
     <key>KeepAlive</key>
-    <false/>
+    <true/>
     <key>UserName</key>
     <string>#{`whoami`.chomp}</string>
     <key>ProgramArguments</key>
     <array>
         <string>#{HOMEBREW_PREFIX}/sbin/nginx</string>
+        <string>-g 'daemon off;'</string>
     </array>
     <key>WorkingDirectory</key>
     <string>#{HOMEBREW_PREFIX}</string>
