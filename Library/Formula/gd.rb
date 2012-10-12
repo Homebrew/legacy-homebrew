@@ -10,10 +10,12 @@ class Gd < Formula
 
   option 'without-libpng', 'Build without PNG support'
   option 'without-jpeg', 'Build without JPEG support'
+  option 'with-giflib', 'Build with GIF support'
   option 'with-freetype', 'Build with FreeType support'
 
   depends_on :libpng unless build.include? "without-libpng"
   depends_on 'jpeg' => :recommended unless build.include? "without-jpeg"
+  depends_on 'giflib' if build.include? "with-giflib"
   depends_on :freetype if build.include? "with-freetype"
 
   fails_with :llvm do
@@ -42,7 +44,7 @@ Description: A graphics library for quick creation of PNG or JPEG images
 Version: 2.0.36RC1
 Requires:
 Libs: -L${libdir} -lgd
-Libs.private: -lXpm -lX11 -ljpeg -lfontconfig -lfreetype -lpng12 -lz -lm
+Libs.private: -lXpm -lX11 -lgif -ljpeg -lfontconfig -lfreetype -lpng12 -lz -lm
 Cflags: -I${includedir}
 EOF
   end
