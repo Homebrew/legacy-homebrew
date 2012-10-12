@@ -12,7 +12,7 @@ class PostgresqlInstalled < Requirement
     EOS
   end
   def satisfied?
-    which 'pg_config'
+    which 'postgres'
   end
   def fatal?
     true

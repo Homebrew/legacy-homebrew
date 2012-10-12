@@ -6,15 +6,14 @@ class Imlib2 < Formula
   sha1 'af86a2c38f4bc3806db57e64e74dc9814ad474a0'
 
   depends_on 'pkg-config' => :build
-  depends_on :freetype
-  depends_on :libpng => :recommended
   depends_on 'jpeg' => :recommended
+  depends_on :x11
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-amd64=no",
-                          "--without-x"
+                          "--with-x"
     system "make install"
   end
 
