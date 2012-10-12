@@ -190,7 +190,8 @@ module MacOS extend self
     "4.3.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
     "4.4" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421},
     "4.4.1" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421},
-    "4.5" => {:llvm_build_version=>2336, :clang_version=>"4.1", :clang_build_version=>421}
+    "4.5" => {:llvm_build_version=>2336, :clang_version=>"4.1", :clang_build_version=>421},
+    "4.5.1" => {:llvm_build_version=>2336, :clang_version=>"4.1", :clang_build_version=>421}
   }
 
   def compilers_standard?
@@ -199,7 +200,8 @@ module MacOS extend self
     unless StandardCompilers.keys.include? xcode
       onoe <<-EOS.undent
         Homebrew doesn't know what compiler versions ship with your version of
-        Xcode. Please file an issue with the output of `brew --config`:
+        Xcode. Please `brew update` and if that doesn't help, file an issue with
+        the output of `brew --config`:
           https://github.com/mxcl/homebrew/issues
 
         Thanks!

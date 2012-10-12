@@ -6,7 +6,7 @@ class Md < Formula
   sha1 '0128de65a4da2ef9655f3b1e6a94d2f8ae292414'
 
   # OS X up to and including Lion 10.7 includes 'md'
-  keg_only :provided_by_osx unless MacOS.version >= :mountain_lion
+  keg_only :provided_pre_mountain_lion
 
   def install
     cd 'md' do

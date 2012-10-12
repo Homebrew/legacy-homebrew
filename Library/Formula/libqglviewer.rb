@@ -13,7 +13,7 @@ class Libqglviewer < Formula
 
   def install
     args = ["PREFIX=#{prefix}"]
-    args << "CONFIG += x86 x86_64" if build.unversal?
+    args << "CONFIG += x86 x86_64" if build.universal?
 
     cd 'QGLViewer' do
       system "qmake", *args

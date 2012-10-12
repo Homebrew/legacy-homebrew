@@ -515,7 +515,7 @@ def check_for_gettext
 end
 
 def check_for_iconv
-  unless find_relative_paths("lib/iconv.dylib", "include/iconv.h").empty?
+  unless find_relative_paths("lib/libiconv.dylib", "include/iconv.h").empty?
     if (f = Formula.factory("libiconv") rescue nil) and f.linked_keg.directory?
       if not f.keg_only? then <<-EOS.undent
         A libiconv formula is installed and linked
@@ -942,6 +942,7 @@ def check_os_version
 end
 
   def check_xcode_license_approved
+    return if MacOS::Xcode.bad_xcode_select_path?
     # If the user installs Xcode-only, they have to approve the
     # license or no "xc*" tool will work.
     <<-EOS.undent if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success?

@@ -185,7 +185,7 @@ class LanguageModuleDependency < Requirement
       when :lua     then "luarocks install"
       when :node    then "npm install"
       when :perl    then "cpan -i"
-      when :python  then "easy_install"
+      when :python  then "pip install"
       when :rbx     then "rbx gem install"
       when :ruby    then "gem install"
     end

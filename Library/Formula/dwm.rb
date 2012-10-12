@@ -6,6 +6,8 @@ class Dwm < Formula
   sha1 '35346f873a27f219ae266594b3690407f95d06ef'
   head 'http://hg.suckless.org/dwm'
 
+  depends_on :x11
+
   def install
     # The dwm default quit keybinding Mod1-Shift-q collides with
     # the Mac OS X Log Out shortcut in the Apple menu.
