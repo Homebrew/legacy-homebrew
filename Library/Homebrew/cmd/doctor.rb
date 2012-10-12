@@ -473,6 +473,29 @@ def check_user_path_3
   end
 end
 
+def check_user_curlrc
+  curlrc_exists = File.exists? ENV['HOME']+"/.curlrc"
+  return unless curlrc_exists
+
+  begin
+    nostdout do
+      curl('-o','/dev/null','--head','http://github.com')
+    end
+    return
+  rescue
+  end
+
+  <<-EOS.undent
+  Homebrew was unable to access 'http://github.com' using curl
+  Homebrew needs curl to download packages. If your internet connection
+  is working otherwise it is possible that your curl configuration file
+  (~/.curlrc) is at fault.
+
+  Please make sure that you can run the following command successfully:
+    curl http://github.com
+  EOS
+end
+
 def check_which_pkg_config
   binary = which 'pkg-config'
   return if binary.nil?
