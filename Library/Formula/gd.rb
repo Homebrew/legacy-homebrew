@@ -44,7 +44,7 @@ Description: A graphics library for quick creation of PNG or JPEG images
 Version: 2.0.36RC1
 Requires:
 Libs: -L${libdir} -lgd
-Libs.private: -lXpm -lX11 -lgif -ljpeg -lfontconfig -lfreetype -lpng12 -lz -lm
+Libs.private: -ljpeg -lpng12 -lz -lm
 Cflags: -I${includedir}
 EOF
   end
