@@ -6,6 +6,8 @@ class Swfmill < Formula
   sha1 'e7ac1f267e4cbb8166acf6af78ddae914feed207'
 
   depends_on 'pkg-config' => :build
+  depends_on :freetype
+  depends_on :libpng
 
   def install
     system "./configure", "--prefix=#{prefix}"

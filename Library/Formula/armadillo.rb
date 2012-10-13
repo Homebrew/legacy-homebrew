@@ -2,8 +2,8 @@ require 'formula'
 
 class Armadillo < Formula
   homepage 'http://arma.sourceforge.net/'
-  url 'http://sourceforge.net/projects/arma/files/armadillo-3.4.2.tar.gz'
-  sha1 'de3d2a6005d2433f0630f4ef0885a0a8712968dd'
+  url 'http://sourceforge.net/projects/arma/files/armadillo-3.4.3.tar.gz'
+  sha1 'a89adc51fa01640bfe463d9120cae57b2c073f8e'
 
   depends_on 'cmake' => :build
   depends_on 'boost'

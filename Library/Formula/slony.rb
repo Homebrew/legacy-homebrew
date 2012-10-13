@@ -2,7 +2,7 @@ require 'formula'
 
 class PostgresqlInstalled < Requirement
   def message; <<-EOS.undent
-    PostgresQL is required to install.
+    PostgreSQL is required to install.
 
     You can install this with:
       brew install postgresql
@@ -12,7 +12,7 @@ class PostgresqlInstalled < Requirement
     EOS
   end
   def satisfied?
-    which 'pg_config'
+    which 'postgres'
   end
   def fatal?
     true
