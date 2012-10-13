@@ -10,7 +10,9 @@ end
 
 class Pyside < Formula
   homepage 'http://www.pyside.org'
-  url 'http://www.pyside.org/files/pyside-qt4.8+1.1.1.tar.bz2'
+  # See https://github.com/mxcl/homebrew/issues/15190
+  url 'https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.1.1.tar.bz2'
+  # url 'http://www.pyside.org/files/pyside-qt4.8+1.1.1.tar.bz2'
   sha1 '37b4a2f666a84e39aa4b55f8909964c73ce47123'
 
   depends_on 'cmake' => :build
