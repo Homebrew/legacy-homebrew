@@ -5,8 +5,8 @@ class Feh < Formula
   url 'http://feh.finalrewind.org/feh-2.5.tar.bz2'
   sha1 'd1bf7fa8ec6b5d1ce16c291edf38d45de01f252d'
 
-  depends_on 'giblib' => :build
   depends_on :x11
+  depends_on 'giblib' => :build
 
   def install
     system "make", "PREFIX=#{prefix}"
