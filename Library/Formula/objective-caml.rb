@@ -9,6 +9,12 @@ class ObjectiveCaml < Formula
 
   depends_on :x11 if MacOS::X11.installed?
 
+  bottle do
+    sha1 'b5c2e3a881fa0080725d83a994d30f1ebc2bb99f' => :mountainlion
+    sha1 '0d7ca01705c22e203e9ddff748b944da6cba921b' => :lion
+    sha1 'b485f013972629a06f883e080ee1c71055579288' => :snowleopard
+  end
+
   def install
     system "./configure", "--prefix", HOMEBREW_PREFIX,
                           "--mandir", man,
