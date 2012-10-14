@@ -7,6 +7,7 @@ class Pari < Formula
 
   depends_on :x11
   depends_on 'readline'
+  depends_on :x11
 
   def install
     readline = Formula.factory 'readline'
