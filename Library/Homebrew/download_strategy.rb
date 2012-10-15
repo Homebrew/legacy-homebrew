@@ -586,23 +586,20 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
 end
 
 class DownloadStrategyDetector
-  def initialize url, strategy=nil
-    @url = url
-    @strategy = strategy
-  end
-
-  def detect
-    if @strategy.is_a? Class and @strategy.ancestors.include? AbstractDownloadStrategy
-      @strategy
-    elsif @strategy.is_a? Symbol then detect_from_symbol
-    else detect_from_url
+  def self.detect(url, strategy=nil)
+    if strategy.is_a? Class and strategy.ancestors.include? AbstractDownloadStrategy
+      strategy
+    elsif strategy.is_a? Symbol
+      detect_from_symbol(strategy)
+    else
+      detect_from_url(url)
     end
   end
 
   private
 
-  def detect_from_url
-    case @url
+  def self.detect_from_url(url)
+    case url
       # We use a special URL pattern for cvs
     when %r[^cvs://] then CVSDownloadStrategy
       # Standard URLs
@@ -628,8 +625,8 @@ class DownloadStrategyDetector
     end
   end
 
-  def detect_from_symbol
-    case @strategy
+  def self.detect_from_symbol(symbol)
+    case symbol
     when :bzr then BazaarDownloadStrategy
     when :curl then CurlDownloadStrategy
     when :cvs then CVSDownloadStrategy
@@ -639,7 +636,7 @@ class DownloadStrategyDetector
     when :post then CurlPostDownloadStrategy
     when :svn then SubversionDownloadStrategy
     else
-      raise "Unknown download strategy #{@strategy} was requested."
+      raise "Unknown download strategy #{strategy} was requested."
     end
   end
 end
