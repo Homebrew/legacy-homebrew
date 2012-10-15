@@ -376,9 +376,9 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         ohai "Checking out #{@spec} #{@ref}"
         case @spec
         when :branch
-          nostdout { quiet_safe_system @@git, 'checkout', "origin/#{@ref}", '--' }
+          nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, "origin/#{@ref}", '--' }
         when :tag, :revision
-          nostdout { quiet_safe_system @@git, 'checkout', @ref, '--' }
+          nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, @ref, '--' }
         end
       else
         # otherwise the checkout-index won't checkout HEAD
