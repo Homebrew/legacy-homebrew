@@ -333,7 +333,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     if @clone.exist?
       Dir.chdir(@clone) do
         # Check for interupted clone from a previous install
-        unless system @@git, 'status', '-s'
+        unless quiet_system @@git, 'status', '-s'
           puts "Removing invalid .git repo from cache"
           FileUtils.rm_rf @clone
         end
