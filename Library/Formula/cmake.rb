@@ -17,35 +17,29 @@ end
 
 
 class Cmake < Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.8.tar.gz'
-  md5 'ba74b22c788a0c8547976b880cd02b17'
   homepage 'http://www.cmake.org/'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.9.tar.gz'
+  sha1 'b96663c0757a5edfbddc410aabf7126a92131e2b'
 
   bottle do
-    version 2
-    sha1 '64de3916cea46cf98ff0853db401109394cfbd5d' => :lion
-    sha1 'da25300b55944c84e6a0c2e4efc57bb160a02806' => :snowleopard
+    sha1 'ae7e0cf39556ea0a32e7bb7716ac820734ca7918' => :mountainlion
+    sha1 '6631aaeeafb9209e711508ad72727fbb4b5ab295' => :lion
+    sha1 'ea52f2a18b00f3404e8bf73c12c3da1d9a39f128' => :snowleopard
   end
 
   depends_on NoExpatFramework.new
 
-  def patches
-    [
-      # Correct FindPkgConfig found variable. Remove for CMake 2.8.9.
-      "https://github.com/Kitware/CMake/commit/3ea850.patch",
-      # Protect the default value of CMAKE_FIND_FRAMEWORK so that it can be
-      # overridden from the command line. Remove for CMake 2.8.9.
-      "https://github.com/Kitware/CMake/commit/8b2fb3.patch"
-    ]
-  end
-
   def install
-    system "./bootstrap", "--prefix=#{prefix}",
-                          "--system-libs",
-                          "--no-system-libarchive",
-                          "--datadir=/share/cmake",
-                          "--docdir=/share/doc/cmake",
-                          "--mandir=/share/man"
+    args = %W[
+      --prefix=#{prefix}
+      --system-libs
+      --no-system-libarchive
+      --datadir=/share/cmake
+      --docdir=/share/doc/cmake
+      --mandir=/share/man
+    ]
+
+    system "./bootstrap", *args
     system "make"
     system "make install"
   end

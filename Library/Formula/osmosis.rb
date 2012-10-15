@@ -2,8 +2,8 @@ require 'formula'
 
 class Osmosis < Formula
   homepage 'http://wiki.openstreetmap.org/wiki/Osmosis'
-  url 'http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-0.40.1.zip'
-  md5 '2baf3eb87647a81b163fb53928253209'
+  url 'http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-0.41.zip'
+  sha1 'b4119871ed74af4c320685a45defb255acf4499f'
 
   def patches
     # need to adjust home dir for a clean install

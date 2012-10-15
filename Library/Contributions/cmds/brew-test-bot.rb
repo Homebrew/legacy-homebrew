@@ -8,6 +8,7 @@
 # --comment: Comment on the pull request
 # --clean:   Clean the Homebrew directory. Very dangerous. Use with care.
 
+require 'formula'
 require 'utils'
 require 'date'
 
@@ -108,7 +109,7 @@ class Test
 
     if ARGV.include? "--html" and not @@css
       require 'erb'
-      root = HOMEBREW_CONTRIBUTED_CMDS
+      root = HOMEBREW_CONTRIBUTED_CMDS/"brew-test-bot"
       @@css = IO.read root + "brew-test-bot.css"
       @@index_html = ERB.new IO.read root + "brew-test-bot.index.html.erb"
       @@commit_html = ERB.new IO.read root + "brew-test-bot.commit.html.erb"
@@ -197,7 +198,7 @@ class Test
     test "brew audit #{formula}"
     test "brew install --verbose --build-bottle #{formula}"
     return unless steps.last.status == :passed
-    test "brew test #{formula}"
+    test "brew test #{formula}" if defined? Formula.factory(formula).test
     test "brew bottle #{formula}"
     test "brew uninstall #{formula}"
   end

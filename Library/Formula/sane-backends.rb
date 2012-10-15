@@ -3,7 +3,7 @@ require 'formula'
 class SaneBackends < Formula
   homepage 'http://www.sane-project.org/'
   url 'ftp://ftp2.sane-project.org/pub/sane/sane-backends-1.0.22/sane-backends-1.0.22.tar.gz'
-  md5 'fadf56a60f4776bfb24491f66b617cf5'
+  sha1 'dc04d6e6fd18791d8002c3fdb23e89fef3327135'
 
   depends_on 'jpeg'
   depends_on 'libtiff'

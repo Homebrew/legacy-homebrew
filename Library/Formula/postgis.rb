@@ -11,6 +11,11 @@ class Postgis < Formula
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
+  if ARGV.build_head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'postgresql'
   depends_on 'proj'
   depends_on 'geos'
@@ -21,20 +26,11 @@ class Postgis < Formula
   depends_on 'json-c'
   depends_on 'gdal'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
   def options
     [
       ['--with-gui', 'Build shp2pgsql-gui in addition to command line tools']
     ]
   end
-
-  # PostGIS command line tools intentionally have unused symbols in
-  # them---these are callbacks for liblwgeom.
-  skip_clean :all
 
   def postgresql
     # Follow the PostgreSQL linked keg back to the active Postgres installation

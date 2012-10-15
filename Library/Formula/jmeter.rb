@@ -2,8 +2,8 @@ require 'formula'
 
 class Jmeter < Formula
   homepage 'http://jakarta.apache.org/jmeter/'
-  url 'http://apache.webxcreen.org/jmeter/binaries/apache-jmeter-2.7.tgz'
-  sha1 'cffa989e7b53dc06a9eaab3bd377b83acae4822b'
+  url 'http://apache.webxcreen.org/jmeter/binaries/apache-jmeter-2.8.tgz'
+  sha1 'e18cac4ab2b73dfcfe5d11e857905fa31c638563'
 
   def startup_script name
     <<-EOS.undent

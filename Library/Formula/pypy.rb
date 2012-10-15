@@ -1,8 +1,8 @@
 require 'formula'
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.27.tar.gz'
-  md5 'ecd75ea629fee6d59d26f88c39b2d291'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
+  sha1 '709bd97d46050d69865d4b588c7707768dfe6711'
 end
 
 class Pypy < Formula
@@ -11,11 +11,11 @@ class Pypy < Formula
   if MacOS.prefer_64_bit?
     url 'https://bitbucket.org/pypy/pypy/downloads/pypy-1.9-osx64.tar.bz2'
     version '1.9'
-    md5 'aad9c4b7b827583e37fe8ae0f7cfe0ff'
+    sha1 '825e15724419fbdb6fe215eeea044f9181883c90'
   else
     url 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2'
     version '1.4.1'
-    md5 '8584c4e8c042f5b661fcfffa0d9b8a25'
+    sha1 '961470e7510c47b8f56e6cc6da180605ba058cb6'
   end
 
   def install
@@ -35,7 +35,7 @@ class Pypy < Formula
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
-    (prefix+"lib-python/modified-2.7/distutils/distutils.cfg").write <<-EOF.undent
+    (distutils+"distutils.cfg").write <<-EOF.undent
       [install]
       install-scripts=#{scripts_folder}
     EOF
@@ -57,7 +57,7 @@ class Pypy < Formula
   def caveats
     message = <<-EOS.undent
     A "distutils.cfg" has been written to:
-      #{lib}/pypy/distutils
+      #{distutils}
     specifing the install-scripts folder as:
       #{scripts_folder}
 
@@ -91,5 +91,14 @@ class Pypy < Formula
   # Where distribute will install executable scripts
   def scripts_folder
     HOMEBREW_PREFIX+"share/pypy"
+  end
+
+  # The Cellar location of distutils
+  def distutils
+    if MacOS.prefer_64_bit?
+      prefix+"lib-python/2.7/distutils"
+    else
+      prefix+"lib-python/modified-2.5.2/distutils"
+    end
   end
 end

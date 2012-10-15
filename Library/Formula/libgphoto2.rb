@@ -6,6 +6,7 @@ class Libgphoto2 < Formula
   sha1 'c932f44d51e820245ff3394ee01a5e9df429dfef'
 
   depends_on 'pkg-config' => :build
+  depends_on :libtool # Configure script uses this
   depends_on 'libusb-compat'
   depends_on 'libexif' => :optional
 

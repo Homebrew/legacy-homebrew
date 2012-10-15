@@ -9,16 +9,14 @@ class Libtool < Formula
   mirror 'http://ftp.gnu.org/gnu/libtool/libtool-2.4.2.tar.gz'
   sha1 '22b71a8b5ce3ad86e1094e7285981cae10e6ff88'
 
-  if MacOS.xcode_version.to_f < 4.3 or File.file? "/usr/bin/glibtoolize"
+  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/glibtoolize"
     keg_only "Xcode (up to and including 4.2) provides (a rather old) Libtool."
   end
 
-  def options
-    [["--universal", "Builds a universal binary"]]
-  end
+  option :universal
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--program-prefix=g",

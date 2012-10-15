@@ -3,7 +3,7 @@ require 'formula'
 class GnuShogi < Formula
   url 'http://www.cs.caltech.edu/~mvanier/hacking/gnushogi/gnushogi-1.3.2.tar.gz'
   homepage 'http://www.cs.caltech.edu/~mvanier/hacking/gnushogi/gnushogi.html'
-  md5 'a18eae93afc89bfd368ed5f6768be791'
+  sha1 '6135ec3eb84917d0dc2cab9ac982818ed41aad87'
 
   depends_on :x11
 
@@ -23,8 +23,8 @@ class GnuShogi < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--x-include=#{MacOS.x11_prefix}/include",
-                          "--x-lib=#{MacOS.x11_prefix}/lib"
+                          "--x-include=#{MacOS::X11.include}",
+                          "--x-lib=#{MacOS::X11.lib}"
     system "make"
     system "make", "install", "MANDIR=#{man6}", "INFODIR=#{info}"
   end

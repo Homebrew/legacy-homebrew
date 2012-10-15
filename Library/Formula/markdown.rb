@@ -3,7 +3,7 @@ require 'formula'
 class Markdown < Formula
   url 'http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip'
   homepage 'http://daringfireball.net/projects/markdown/'
-  md5 'f17b3c2b2830c6fd2fe0098226e59a2f'
+  sha1 '7e6d1d9224f16fec5631bf6bc5147f1e64715a4b'
 
   def install
     bin.install 'Markdown.pl' => 'markdown'

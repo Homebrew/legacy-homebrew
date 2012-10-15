@@ -3,7 +3,7 @@ require 'formula'
 class Ripmime < Formula
   url 'http://www.pldaniels.com/ripmime/ripmime-1.4.0.9.tar.gz'
   homepage 'http://www.pldaniels.com/ripmime/'
-  md5 '25761b8a533bc935f75902724fb73244'
+  sha1 '883fbed480807c2425965f1c1a96d4c207ae8634'
 
   def install
     system "make"

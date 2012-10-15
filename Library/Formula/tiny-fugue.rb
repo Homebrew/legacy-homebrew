@@ -3,7 +3,7 @@ require 'formula'
 class TinyFugue < Formula
   url 'http://downloads.sourceforge.net/project/tinyfugue/tinyfugue/5.0%20beta%208/tf-50b8.tar.gz'
   homepage 'http://tinyfugue.sourceforge.net/'
-  md5 '3e994e791966d274f63b0e61abf2ef59'
+  sha1 '37bb70bfb7b44d36c28606c6bd45e435502fb4b4'
   version '5.0b8'
 
   depends_on 'libnet'

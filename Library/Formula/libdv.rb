@@ -3,7 +3,7 @@ require 'formula'
 class Libdv < Formula
   url 'http://downloads.sourceforge.net/libdv/libdv-1.0.0.tar.gz'
   homepage 'http://libdv.sourceforge.net'
-  md5 'f895162161cfa4bb4a94c070a7caa6c7'
+  sha1 '2e5ba0e95f665d60e72cbebcf1c4989e0d6c92c8'
 
   depends_on 'popt'
 

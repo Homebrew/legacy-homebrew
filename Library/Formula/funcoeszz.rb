@@ -3,7 +3,7 @@ require 'formula'
 class Funcoeszz < Formula
   homepage 'http://funcoeszz.googlecode.com/'
   url 'http://funcoeszz.googlecode.com/files/funcoeszz-10.12.sh'
-  md5 '93f69412f97a38ecb80493279440b5f0'
+  sha1 'd9b8f5b131b844aee9ad429943472efe477cab5a'
 
   def install
     prefix.install "funcoeszz-10.12.sh"

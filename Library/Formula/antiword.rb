@@ -3,7 +3,7 @@ require 'formula'
 class Antiword < Formula
   homepage 'http://www.winfield.demon.nl/'
   url 'http://www.winfield.demon.nl/linux/antiword-0.37.tar.gz'
-  md5 'f868e2a269edcbc06bf77e89a55898d1'
+  sha1 '4364f7f99cb2d37f7d1d5bc14a335ccc0c67292e'
 
   skip_clean 'share/antiword'
 

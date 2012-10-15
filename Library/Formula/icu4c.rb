@@ -2,28 +2,25 @@ require 'formula'
 
 class Icu4c < Formula
   homepage 'http://site.icu-project.org/'
-  url 'http://download.icu-project.org/files/icu4c/4.8.1.1/icu4c-4_8_1_1-src.tgz'
-  version '4.8.1.1'
-  md5 'ea93970a0275be6b42f56953cd332c17'
+  url 'http://download.icu-project.org/files/icu4c/49.1.2/icu4c-49_1_2-src.tgz'
+  version '49.1.2'
+  sha1 'd8cee6d2b2a91a0da7464acd97a5b7b462d93225'
 
   bottle do
-    sha1 '1cedfcb295cf637ad98d4f891d5c87b072f3a870' => :snowleopard
-    sha1 '51b6e6e735ea581a2736127414e600362846b7e1' => :lion
+    sha1 '9e424ea5de5c5847b8a600078f9494f42d7f6168' => :mountainlion
+    sha1 '528b8bec1b821d5503eb98b565840d8a3aeca63e' => :lion
+    sha1 'c77579349187ee0cec5842f71aea2a446c770db7' => :snowleopard
   end
 
   keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
 
-  def options
-    [
-      ["--universal", "Build universal binaries."]
-    ]
-  end
+  option :universal
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
     ENV.append "LDFLAGS", "-headerpad_max_install_names"
-    args = ["--prefix=#{prefix}", "--disable-samples", "--enable-static"]
+    args = ["--prefix=#{prefix}", "--disable-samples", "--disable-tests", "--enable-static"]
     args << "--with-library-bits=64" if MacOS.prefer_64_bit?
     cd "source" do
       system "./configure", *args

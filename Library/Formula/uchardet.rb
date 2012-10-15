@@ -3,7 +3,7 @@ require 'formula'
 class Uchardet < Formula
   url 'http://uchardet.googlecode.com/files/uchardet-0.0.1.tar.gz'
   homepage 'http://code.google.com/p/uchardet/'
-  md5 '9c17f0aca38c66c95d400691a9160b1b'
+  sha1 'c81264cca67f3e7c46e284288f8cab7a34b3f386'
 
   depends_on 'cmake' => :build
 

@@ -3,11 +3,11 @@ require 'formula'
 class Nagios < Formula
   homepage 'http://www.nagios.org/'
   url 'http://downloads.sourceforge.net/project/nagios/nagios-3.x/nagios-3.4.1/nagios-3.4.1.tar.gz'
-  md5 '2fa8acfb2a92b1bf8d173a855832de1f'
+  sha1 '728d3a7f601cfbc0686afa27cb02a2cb212cc5ac'
 
   depends_on 'gd'
   depends_on 'nagios-plugins'
-  depends_on :x11 # Required to compile some CGI's against the build-in libpng.
+  depends_on :libpng
 
   def nagios_sbin;  prefix+'cgi-bin';       end
   def nagios_etc;   etc+'nagios';           end
@@ -39,6 +39,7 @@ class Nagios < Formula
     system "make install-config"
     system "make install-webconf"
     (share+plist_path).write startup_plist
+    mkdir HOMEBREW_PREFIX+'var/lib/nagios/rw' unless File.exists? HOMEBREW_PREFIX+'var/lib/nagios/rw'
   end
 
   def startup_plist

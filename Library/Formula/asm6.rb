@@ -3,7 +3,7 @@ require 'formula'
 class Asm6 < Formula
   url      'http://home.comcast.net/~olimar/NES/asm6.zip'
   homepage 'http://home.comcast.net/~olimar/NES/'
-  md5      '224943d091179a700cccbda5a047b6ef'
+  sha1 '9fbc1eed740a16107730e7f996d7ddad8277eb4e'
   version  '1.6'
 
   def install

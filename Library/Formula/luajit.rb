@@ -10,9 +10,7 @@ class Luajit < Formula
   # Skip cleaning both empty folders and bin/libs so external symbols still work.
   skip_clean :all
 
-  def options
-    [["--enable-debug", "Build with debugging symbols."]]
-  end
+  option "enable-debug", "Build with debugging symbols"
 
   def install
     # 1 - Remove the '-O2' so we can set Og if needed.  Leave the -fomit part.
@@ -27,7 +25,7 @@ class Luajit < Formula
 
     ENV.O2                          # Respect the developer's choice.
     args = [ "PREFIX=#{prefix}" ]
-    if ARGV.include? '--enable-debug' then
+    if build.include? 'enable-debug' then
       ENV.Og if ENV.compiler == :clang
       args << 'CCDEBUG=-g'
     end
@@ -39,7 +37,7 @@ class Luajit < Formula
     system 'make', *args            # Build requires args during install
 
     # Non-versioned symlink
-    if ARGV.build_head?
+    if build.head?
       version = "2.0.0-beta10"
     else
       version = @version

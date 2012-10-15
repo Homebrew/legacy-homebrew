@@ -3,7 +3,7 @@ require 'formula'
 class Mysqlxx < Formula
   url 'http://tangentsoft.net/mysql++/releases/mysql++-3.1.0.tar.gz'
   homepage 'http://tangentsoft.net/mysql++/'
-  md5 'd92769cc579b87a60e58a77099cc4f0e'
+  sha1 '9bd383ad932dce8cc1948ec76eed9036419d427f'
 
   depends_on 'mysql-connector-c'
 

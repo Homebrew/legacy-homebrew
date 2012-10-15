@@ -3,15 +3,15 @@ require 'formula'
 class Gremlin < Formula
   homepage 'http://gremlin.tinkerpop.com/'
   url 'https://github.com/downloads/tinkerpop/gremlin/gremlin-1.3.zip'
-  md5 'c524ee20e119c3b6059cfd0b7873d94c'
+  sha1 'd6c3a9c754d5b3d2f629340c98a796a0f4575115'
 
   head 'https://github.com/tinkerpop/gremlin.git'
 
-  depends_on 'maven' if ARGV.build_head?
+  depends_on 'maven' if build.head?
 
   def install
     # If this is a head build, checkout the source and build it with maven
-    if ARGV.build_head?
+    if build.head?
 
       # Setup a couple of paths for the build
       pwd = Pathname.new('.')
