@@ -89,9 +89,9 @@ class Keg < Pathname
     $n=0
     $d=0
 
-    share_mkpaths=%w[aclocal doc info locale man]+(1..8).collect{|x|"man/man#{x}"}
-    # cat pages are rare, but exist so the directories should be created
-    share_mkpaths << (1..8).collect{ |x| "man/cat#{x}" }
+    share_mkpaths = %w[aclocal doc info locale man]
+    share_mkpaths.concat((1..8).map { |i| "man/man#{i}" })
+    share_mkpaths.concat((1..8).map { |i| "man/cat#{i}" })
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
