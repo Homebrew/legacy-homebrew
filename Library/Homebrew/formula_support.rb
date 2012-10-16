@@ -12,7 +12,7 @@ class SoftwareSpec
   end
 
   def download_strategy
-    @download_strategy ||= DownloadStrategyDetector.new(@url, @using).detect
+    @download_strategy ||= DownloadStrategyDetector.detect(@url, @using)
   end
 
   def verify_download_integrity fn
