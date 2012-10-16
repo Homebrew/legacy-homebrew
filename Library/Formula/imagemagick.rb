@@ -43,8 +43,9 @@ class Imagemagick < Formula
   depends_on 'jpeg' => :recommended
   depends_on :libpng
   depends_on :x11 if build.include? 'with-x'
-  depends_on :fontconfig => :optional if build.include? 'with-fontconfig' or MacOS::X11.installed?
-  depends_on :freetype => :recommended unless build.include? 'without-freetype'
+  # Can't use => with symbol deps
+  depends_on :fontconfig if build.include? 'with-fontconfig' or MacOS::X11.installed? # => :optional
+  depends_on :freetype unless build.include? 'without-freetype' # => :recommended
 
   depends_on 'ghostscript' => :optional if ghostscript_srsly?
 
