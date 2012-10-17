@@ -2,16 +2,13 @@ require 'formula'
 
 class Play < Formula
   homepage 'http://www.playframework.org/'
-  url 'http://download.playframework.org/releases/play-2.0.4.zip'
-  sha1 '98cacf40aa2099e01051a2f0b94187dd2fbb729a'
+  url 'http://download.playframework.org/releases/play-1.2.5.zip'
+  md5 '31d204bb105f67c5e418fad073e818a4'
 
   def install
-    rm Dir['*.bat'] # remove windows' bat files
+    rm_rf 'python' # we don't need the bundled Python for windows
+    rm Dir['*.bat']
     libexec.install Dir['*']
-    inreplace libexec+"play" do |s|
-      s.gsub! "$dir/", "$dir/../libexec/"
-      s.gsub! "dir=`dirname $PRG`", "dir=`dirname $0` && dir=$dir/`dirname $PRG`"
-    end
     bin.install_symlink libexec+'play'
   end
 end
