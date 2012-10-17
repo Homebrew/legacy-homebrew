@@ -71,11 +71,6 @@ class Boost < Formula
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    if build.include? "with-icu"
-      icu4c_prefix = Formula.factory('icu4c').prefix
-      bargs << "--with-icu=#{icu4c_prefix}"
-    end
-
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
             "-d2",
