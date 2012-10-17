@@ -2,8 +2,8 @@ require 'formula'
 
 class Phyml < Formula
   homepage 'http://www.atgc-montpellier.fr/phyml/'
-  url 'http://phyml.googlecode.com/files/phyml-20110919.tar.gz'
-  sha1 '6f6281af465d6daab0d7f774c1d0f62856b1af80'
+  url 'https://phyml.googlecode.com/files/phyml-20120412.tar.gz'
+  sha1 '8a4699ad2bba7e2f76c8eefa277d29290f92071c'
 
   def install
     # separate steps required
