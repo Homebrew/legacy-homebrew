@@ -177,27 +177,27 @@ module MacOS extend self
     Hardware.is_64_bit? and version != :leopard
   end
 
-  StandardCompilers = {
-    "3.1.4" => {:gcc_40_build_version=>5493, :gcc_42_build_version=>5577},
-    "3.2.6" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"1.7", :clang_build_version=>77},
-    "4.0" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
-    "4.0.1" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
-    "4.0.2" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
-    "4.2" => {:llvm_build_version=>2336, :clang_version=>"3.0", :clang_build_version=>211},
-    "4.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.3.1" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.3.2" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.3.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.4" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421},
-    "4.4.1" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421},
-    "4.5" => {:llvm_build_version=>2336, :clang_version=>"4.1", :clang_build_version=>421},
-    "4.5.1" => {:llvm_build_version=>2336, :clang_version=>"4.1", :clang_build_version=>421}
+  STANDARD_COMPILERS = {
+    "3.1.4" => { :gcc_40_build => 5493, :gcc_42_build => 5577 },
+    "3.2.6" => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "1.7", :clang_build => 77 },
+    "4.0"   => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "2.0", :clang_build => 137 },
+    "4.0.1" => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "2.0", :clang_build => 137 },
+    "4.0.2" => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "2.0", :clang_build => 137 },
+    "4.2"   => { :llvm_build => 2336, :clang => "3.0", :clang_build => 211 },
+    "4.3"   => { :llvm_build => 2336, :clang => "3.1", :clang_build => 318 },
+    "4.3.1" => { :llvm_build => 2336, :clang => "3.1", :clang_build => 318 },
+    "4.3.2" => { :llvm_build => 2336, :clang => "3.1", :clang_build => 318 },
+    "4.3.3" => { :llvm_build => 2336, :clang => "3.1", :clang_build => 318 },
+    "4.4"   => { :llvm_build => 2336, :clang => "4.0", :clang_build => 421 },
+    "4.4.1" => { :llvm_build => 2336, :clang => "4.0", :clang_build => 421 },
+    "4.5"   => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
+    "4.5.1" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 }
   }
 
   def compilers_standard?
     xcode = Xcode.version
 
-    unless StandardCompilers.keys.include? xcode
+    unless STANDARD_COMPILERS.keys.include? xcode
       onoe <<-EOS.undent
         Homebrew doesn't know what compiler versions ship with your version of
         Xcode. Please `brew update` and if that doesn't help, file an issue with
@@ -209,7 +209,9 @@ module MacOS extend self
       return
     end
 
-    StandardCompilers[xcode].all? { |method, build| MacOS.send(method) == build }
+    STANDARD_COMPILERS[xcode].all? do |method, build|
+      MacOS.send(:"#{method}_version") == build
+    end
   end
 
   def app_with_bundle_id id
