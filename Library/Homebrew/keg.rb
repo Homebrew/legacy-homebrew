@@ -27,23 +27,30 @@ class Keg < Pathname
   end
 
   def unlink
-    n=0
+    # these are used by the ObserverPathnameExtension to count the number
+    # of files and directories linked
+    $n=$d=0
 
     %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
       next unless src.exist?
       src.find do |src|
         next if src == self
         dst=HOMEBREW_PREFIX+src.relative_path_from(self)
-        next unless dst.symlink?
+        dst.extend ObserverPathnameExtension
+
+        # check whether the file to be unlinked is from the current keg first
+        if !dst.symlink? || !dst.exist? || src != dst.resolved_path
+          next
+        end
+
         dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
         dst.unlink
         dst.parent.rmdir_if_possible
-        n+=1
         Find.prune if src.directory?
       end
     end
     linked_keg_record.unlink if linked_keg_record.symlink?
-    n
+    $n+$d
   end
 
   def fname
@@ -82,9 +89,9 @@ class Keg < Pathname
     $n=0
     $d=0
 
-    share_mkpaths=%w[aclocal doc info locale man]+(1..8).collect{|x|"man/man#{x}"}
-    # cat pages are rare, but exist so the directories should be created
-    share_mkpaths << (1..8).collect{ |x| "man/cat#{x}" }
+    share_mkpaths = %w[aclocal doc info locale man]
+    share_mkpaths.concat((1..8).map { |i| "man/man#{i}" })
+    share_mkpaths.concat((1..8).map { |i| "man/cat#{i}" })
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree

@@ -6,7 +6,7 @@ class Uudeview < Formula
   sha1 '2c6ab7d355b545218bd0877d598bd5327d9fd125'
 
   fails_with :clang do
-    build 318
+    build 421
     cause "inews.c:195:4: error: non-void function 'append_signature' should return a value [-Wreturn-type]"
   end
 

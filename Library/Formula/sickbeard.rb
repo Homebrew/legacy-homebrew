@@ -2,8 +2,8 @@ require 'formula'
 
 class Sickbeard < Formula
   homepage 'http://www.sickbeard.com/'
-  url 'https://github.com/midgetspy/Sick-Beard/tarball/build-495'
-  sha1 '401a60c016be22ea30eb3b9fbf3fdb40bc3278e5'
+  url 'https://github.com/midgetspy/Sick-Beard/tarball/build-496'
+  sha1 '79b55d6075b2ddf04b8c196c091b465839396f3b'
 
   head 'https://github.com/midgetspy/Sick-Beard.git'
 

@@ -2,8 +2,8 @@ require 'formula'
 
 class GoogleSparsehash < Formula
   homepage 'http://code.google.com/p/google-sparsehash/'
-  url 'http://google-sparsehash.googlecode.com/files/sparsehash-1.12.tar.gz'
-  sha1 '6c6da5d03b6b71ba69cf056087a94b5f01048782'
+  url 'http://sparsehash.googlecode.com/files/sparsehash-2.0.2.tar.gz'
+  sha1 '12c7552400b3e20464b3362286653fc17366643e'
 
   def install
     system "./configure", "--disable-dependency-tracking",

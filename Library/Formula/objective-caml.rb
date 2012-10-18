@@ -2,16 +2,17 @@ require 'formula'
 
 class ObjectiveCaml < Formula
   homepage 'http://www.ocaml-lang.org'
-  url 'http://caml.inria.fr/pub/distrib/ocaml-4.00/ocaml-4.00.0.tar.bz2'
-  sha1 '22c0ae84c0049e75ec1577d5c1a26c293bb740b3'
+  url 'http://caml.inria.fr/pub/distrib/ocaml-4.00/ocaml-4.00.1.tar.bz2'
+  sha1 '10b8a4d0b88d20b003e3dd719f2ac9434e6a1042'
 
   head 'http://caml.inria.fr/svn/ocaml/trunk', :using => :svn
 
   depends_on :x11 if MacOS::X11.installed?
 
-  # See http://caml.inria.fr/mantis/view.php?id=5700
-  def patches
-    "http://caml.inria.fr/mantis/file_download.php?file_id=722&type=bug"
+  bottle do
+    sha1 'b5c2e3a881fa0080725d83a994d30f1ebc2bb99f' => :mountainlion
+    sha1 '0d7ca01705c22e203e9ddff748b944da6cba921b' => :lion
+    sha1 'b485f013972629a06f883e080ee1c71055579288' => :snowleopard
   end
 
   def install
@@ -24,7 +25,6 @@ class ObjectiveCaml < Formula
     system "make opt"
     system "make opt.opt"
     system "make", "PREFIX=#{prefix}", "install"
-    (lib/'ocaml/compiler-libs').install 'typing', 'parsing', 'utils'
 
     # site-lib in the Cellar will be a symlink to the HOMEBREW_PREFIX location,
     # which is mkpath'd by Keg#link when something installs into it
