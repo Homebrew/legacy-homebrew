@@ -36,7 +36,6 @@ class Graphviz < Formula
             "--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--without-qt",
-            "--without-x",
             "--with-quartz"]
     args << "--disable-swig" unless build.include? 'with-bindings'
     args << "--without-pangocairo" unless build.include? 'with-pangocairo'
