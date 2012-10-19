@@ -29,9 +29,10 @@ class Mpich2 < Formula
     end
 
     args = [
+      "--disable-dependency-tracking",
+      "--disable-silent-rules",
       "--prefix=#{prefix}",
-      "--mandir=#{man}",
-      "--enable-shared"
+      "--mandir=#{man}"
     ]
     if ARGV.include? '--disable-fortran'
       args << "--disable-f77" << "--disable-fc"
