@@ -11,6 +11,7 @@ class Mapnik < Formula
 
   depends_on :freetype
   depends_on :libpng
+  depends_on :libtool
   depends_on 'libtiff'
   depends_on 'proj'
   depends_on 'icu4c'
