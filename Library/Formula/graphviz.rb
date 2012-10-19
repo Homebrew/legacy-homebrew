@@ -42,7 +42,7 @@ class Graphviz < Formula
             "--with-quartz"]
     args << "--disable-swig" unless build.include? 'with-bindings'
     args << "--without-pangocairo" unless build.include? 'with-pangocairo'
-    args << "--without-freetype2" unless build.include? 'with-freetype'
+    args << "--without-freetype2" unless build.include? 'with-freetype' or MacOS::X11.installed?
     args << "--without-x" unless build.include? 'with-x' or MacOS::X11.installed?
 
     system "./configure", *args
