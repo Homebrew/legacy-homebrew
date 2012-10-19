@@ -5,8 +5,8 @@ class WineGecko < Formula
   sha1 'c30aa99621e98336eb4b7e2074118b8af8ea2ad5'
 
   devel do
-    url 'http://downloads.sourceforge.net/wine/wine_gecko-1.7-x86.msi', :using => :nounzip
-    sha1 'efebc4ed7a86708e2dc8581033a3c5d6effe0b0b'
+    url 'http://downloads.sourceforge.net/wine/wine_gecko-1.8-x86.msi', :using => :nounzip
+    sha1 'a8622ff749cc2a2cb311f902b7e99664ecc2f8d6'
   end
 end
 
@@ -19,8 +19,8 @@ class Wine < Formula
   devel do
     # NOTE: when updating Wine, please check if Wine-Gecko needs updating too
     # see http://wiki.winehq.org/Gecko
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.13.tar.bz2'
-    sha256 'c05dd12ecc5256219d09cc1daad6f2153368d69ef15c68400a2a404b79b079d1'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.15.tar.bz2'
+    sha256 '2642698204bbc5d9fd04c30f3507fa08a62fa3b0a21e53cdfd2c5a4530b69454'
   end
 
   env :std
