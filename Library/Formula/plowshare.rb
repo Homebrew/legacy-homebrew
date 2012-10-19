@@ -24,6 +24,18 @@ class Plowshare < Formula
     ENV["PREFIX"] = prefix
     system "bash setup.sh install"
   end
+
+  def caveats
+    s = <<-EOS.undent
+      The default installation of imagemagick does not enable
+      X11 support. plowshare uses the display command which does
+      not work if X11 support is not enabled. You can enable it
+      by typing:
+        brew remove imagemagick
+        brew install imagemagick --with-x
+    EOS
+    return s
+  end
 end
 
 
