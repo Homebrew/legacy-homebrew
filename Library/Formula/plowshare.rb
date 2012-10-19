@@ -24,6 +24,12 @@ class Plowshare < Formula
     ENV["PREFIX"] = prefix
     system "bash setup.sh install"
   end
+  
+  def caveats; <<-EOS.undent
+    plowshare depends on imagemagick.  If you require plowshare's display
+    command, please rebrew imagemagick with the --with-x option.
+    EOS
+  end
 end
 
 
