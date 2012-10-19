@@ -3,7 +3,7 @@ require 'formula'
 class Justniffer < Formula
   url 'http://downloads.sourceforge.net/project/justniffer/justniffer/justniffer%200.5.11/justniffer_0.5.11.tar.gz'
   homepage 'http://justniffer.sourceforge.net/'
-  md5 '8545b817c479444b01e74aa7b79fd2c6'
+  sha1 '3f3222361794a6f79f47567753550995c318a037'
 
   depends_on "boost"
 

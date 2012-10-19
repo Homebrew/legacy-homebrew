@@ -189,15 +189,17 @@ class Pathname
     when /^\xFD7zXZ\x00/ then :xz
     when /^Rar!/         then :rar
     else
-      # Assume it is not an archive
-      nil
+      # This code so that bad-tarballs and zips produce good error messages
+      # when they don't unarchive properly.
+      case extname
+        when ".tar.gz", ".tgz", ".tar.bz2", ".tbz" then :tar
+        when ".zip" then :zip
+      end
     end
   end
 
   def text_executable?
-    %r[^#!\s*.+] === open('r') { |f| f.readline }
-  rescue EOFError
-    false
+    %r[^#!\s*\S+] === open('r') { |f| f.read(1024) }
   end
 
   def incremental_hash(hasher)
@@ -358,12 +360,6 @@ module ObserverPathnameExtension
   def rmdir
     super
     puts "rmdir #{to_s}" if ARGV.verbose?
-    $d+=1
-  end
-  def mkpath
-    return if exist?
-    super
-    puts "mkpath #{to_s}" if ARGV.verbose?
     $d+=1
   end
   def make_relative_symlink src

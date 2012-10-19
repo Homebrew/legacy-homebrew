@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.25a-27.1/source/Percona-Server-5.5.25a-rel27.1.tar.gz'
-  version '5.5.25-27.1'
-  sha1 'f3388960311b159e46efd305ecdeb806fe2c7fdc'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.27-29.0/source/Percona-Server-5.5.27-rel29.0.tar.gz'
+  version '5.5.27-29.0'
+  sha1 'fef105a869789a7b9bf92771c07c8988c217cdf9'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
@@ -20,8 +20,6 @@ class PerconaServer < Formula
     :because => "percona-server and mysql install the same binaries."
   conflicts_with 'mariadb',
     :because => "percona-server and mariadb install the same binaries."
-
-  skip_clean :all # So "INSTALL PLUGIN" can work.
 
   fails_with :llvm do
     build 2334
@@ -77,8 +75,6 @@ class PerconaServer < Formula
     system "cmake", *args
     system "make"
     system "make install"
-
-    plist_path.write startup_plist
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/mxcl/homebrew/issues/4975

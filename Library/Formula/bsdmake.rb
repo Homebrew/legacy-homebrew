@@ -3,7 +3,7 @@ require 'formula'
 class Bsdmake < Formula
   homepage 'http://opensource.apple.com/'
   url 'http://opensource.apple.com/tarballs/bsdmake/bsdmake-24.tar.gz'
-  md5 '7856e53a7f8b29cd899e2ce98eb4a467'
+  sha1 '9ce3c3fc01e0eb47d82827b1eb227eb371fefd5c'
 
   if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/bsdmake"
     keg_only "Recent versions of OS X no longer provide this tool."
@@ -22,7 +22,7 @@ class Bsdmake < Formula
     # Replace @PREFIX@ inserted by MacPorts patches
     # Use 'prefix' since this is sometimes a keg-only brew
     # But first replace the X11 path if X11 is installed
-    inreplace 'mk/sys.mk', '@PREFIX@', MacOS::X11.prefix if MacOS::X11.installed?
+    inreplace 'mk/sys.mk', '@PREFIX@', MacOS::X11.prefix || prefix
     inreplace %W[mk/bsd.README
                  mk/bsd.cpu.mk
                  mk/bsd.doc.mk
@@ -30,7 +30,6 @@ class Bsdmake < Formula
                  mk/bsd.own.mk
                  mk/bsd.port.mk
                  mk/bsd.port.subdir.mk
-                 mk/sys.mk
                  pathnames.h],
                  '@PREFIX@', prefix
 

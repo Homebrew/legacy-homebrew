@@ -1,7 +1,7 @@
 require 'formula'
 
 def pgm_flags
-  return build.include? '--with-pgm' ? '--with-system-pgm' : ''
+  build.include? 'with-pgm' ? '--with-system-pgm' : ''
 end
 
 class Zeromq < Formula
@@ -23,6 +23,9 @@ class Zeromq < Formula
     depends_on :automake
     depends_on :libtool
   end
+
+  # Remove along with build_fat hack at 3.2.0
+  env :std if build.universal?
 
   fails_with :llvm do
     build 2326

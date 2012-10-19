@@ -11,6 +11,7 @@ class Libcroco < Formula
   depends_on 'intltool'
 
   def install
+    ENV.libxml2
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-Bsymbolic"

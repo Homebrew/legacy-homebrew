@@ -2,14 +2,14 @@ require 'formula'
 
 class SbclBootstrapBinaries < Formula
   url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.55/sbcl-1.0.55-x86-darwin-binary.tar.bz2'
-  md5 '941351112392a77dd62bdcb9fb62e4e4'
+  sha1 '8ea71938c40a6dccfe2d43a86e9b115f4428a218'
   version "1.0.55"
 end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
   url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.58/sbcl-1.0.58-source.tar.bz2'
-  md5 '341952949dc90af6f83a89f685da5dde'
+  sha1 '79c9258a15c257849790b86238999c18ec191033'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 

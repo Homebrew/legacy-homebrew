@@ -3,7 +3,7 @@ require 'formula'
 class Rsyslog < Formula
   url 'http://rsyslog.com/files/download/rsyslog/rsyslog-5.8.0.tar.gz'
   homepage 'http://www.rsyslog.com'
-  md5 '37562d0e71a24938a9ed7f242bd32d35'
+  sha1 '5a64f0ca8b6d5b32db1c20d46965803a2d8d047a'
 
   depends_on 'pkg-config' => :build
 

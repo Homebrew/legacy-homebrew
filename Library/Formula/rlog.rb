@@ -3,7 +3,7 @@ require 'formula'
 class Rlog < Formula
   homepage 'http://www.arg0.net/rlog'
   url 'http://rlog.googlecode.com/files/rlog-1.4.tar.gz'
-  md5 'c29f74e0f50d66b20312d049b683ff82'
+  sha1 '9cd86b4ceec3988f0a17730a8987110233797dcd'
 
   def patches; DATA; end
 

@@ -3,7 +3,7 @@ require 'formula'
 class Ser2net < Formula
   homepage 'http://ser2net.sourceforge.net'
   url 'http://downloads.sourceforge.net/project/ser2net/ser2net/2.7/ser2net-2.7.tar.gz'
-  md5 '22977477789868923a5de09a85e847dd'
+  sha1 'ebceb41479ce5e33f400b1564d420dc12b6b44f6'
 
   def install
     ENV.deparallelize
@@ -16,9 +16,6 @@ class Ser2net < Formula
                           "--mandir=#{man}"
     system "make install"
     etc.install 'ser2net.conf'
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

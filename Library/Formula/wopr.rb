@@ -3,7 +3,7 @@ require 'formula'
 class Wopr < Formula
   homepage 'http://ilk.uvt.nl/wopr'
   url 'http://software.ticc.uvt.nl/wopr-1.34.2.tar.gz'
-  md5 'e5db98a6b39358d05cddb88b7ae88d7a'
+  sha1 'da53c5dfbc9927a391481b9e56ffeceaf1aab0ff'
 
   depends_on 'pkg-config' => :build
   depends_on 'timbl'

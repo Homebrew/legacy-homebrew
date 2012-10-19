@@ -7,16 +7,16 @@ class Eina < Formula
 
   head 'http://svn.enlightenment.org/svn/e/trunk/eina/'
 
-  if ARGV.build_head?
+  depends_on 'pkg-config' => :build
+
+  if build.head?
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
-  depends_on 'pkg-config' => :build
-
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

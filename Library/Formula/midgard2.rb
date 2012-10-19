@@ -12,13 +12,13 @@ class Midgard2 < Formula
   depends_on 'dbus-glib'
   depends_on 'libgda'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
 
   def install
-    if ARGV.build_head?
+    if build.head?
       system "autoreconf", "-i", "--force"
       system "automake"
     end

@@ -8,12 +8,12 @@ class Elinks < Formula
   head 'http://elinks.cz/elinks.git'
 
   devel do
-    version '0.12pre5'
     url 'http://elinks.cz/download/elinks-0.12pre5.tar.bz2'
-    md5 '92790144290131ac5e63b44548b45e08'
+    version '0.12pre5'
+    sha1 '15fb38fa938a0eec9d5f22fdd538a6785e2854af'
   end
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -30,7 +30,7 @@ class Elinks < Formula
   def install
     ENV.deparallelize
     ENV.delete('LD')
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--without-spidermonkey"
     system "make install"
   end

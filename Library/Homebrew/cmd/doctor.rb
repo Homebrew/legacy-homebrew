@@ -231,6 +231,18 @@ def check_for_latest_xcode
   end
 end
 
+def check_for_stray_developer_directory
+  # if the uninstaller script isn't there, it's a good guess neither are
+  # any troublesome leftover Xcode files
+  if MacOS::Xcode.version >= "4.3" and File.exist? "/Developer/Library/uninstall-developer-folder"
+    return <<-EOS.undent
+    You have leftover files from an older version of Xcode.
+    You should delete them using:
+      /Developer/Library/uninstall-developer-folder
+    EOS
+  end
+end
+
 def check_cc
   unless MacOS::CLT.installed?
     if MacOS::Xcode.version >= "4.3"
@@ -249,7 +261,8 @@ end
 
 def check_standard_compilers
   return if check_for_latest_xcode # only check if Xcode is up to date
-  if !MacOS.compilers_standard? then <<-EOS.undent
+  compiler_status = MacOS.compilers_standard?
+  if not compiler_status and not compiler_status.nil? then <<-EOS.undent
     Your compilers are different from the standard versions for your Xcode.
     If you have Xcode 4.3 or newer, you should install the Command Line Tools for
     Xcode from within Xcode's Download preferences.
@@ -502,7 +515,7 @@ def check_for_gettext
 end
 
 def check_for_iconv
-  unless find_relative_paths("lib/iconv.dylib", "include/iconv.h").empty?
+  unless find_relative_paths("lib/libiconv.dylib", "include/iconv.h").empty?
     if (f = Formula.factory("libiconv") rescue nil) and f.linked_keg.directory?
       if not f.keg_only? then <<-EOS.undent
         A libiconv formula is installed and linked
@@ -533,8 +546,11 @@ def check_for_config_scripts
 
   config_scripts = []
 
+  whitelist = %W[/usr/bin /usr/sbin /usr/X11/bin /usr/X11R6/bin /opt/X11/bin #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin]
+  whitelist.map! { |d| d.downcase }
+
   path_folders.each do |p|
-    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', '/usr/X11R6/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin", "/opt/X11/bin"].include? p
+    next if whitelist.include? p.downcase
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
@@ -788,7 +804,7 @@ def check_git_status
       If this a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
-          cd #{HOMEBREW_REPOSITORY} && git stash
+          cd #{HOMEBREW_REPOSITORY}/Library && git stash && git clean -f
       EOS
     end
   end
@@ -924,6 +940,17 @@ def check_os_version
     end
   end
 end
+
+  def check_xcode_license_approved
+    return if MacOS::Xcode.bad_xcode_select_path?
+    # If the user installs Xcode-only, they have to approve the
+    # license or no "xc*" tool will work.
+    <<-EOS.undent if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success?
+    You have not agreed to the Xcode license.
+    Builds will fail! Agree to the license by opening Xcode.app or running:
+        xcodebuild -license
+    EOS
+  end
 
 end # end class Checks
 

@@ -4,7 +4,7 @@ class Gengetopt < Formula
   url 'http://ftpmirror.gnu.org/gengetopt/gengetopt-2.22.5.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/gengetopt/gengetopt-2.22.5.tar.gz'
   homepage 'http://www.gnu.org/software/gengetopt/'
-  md5 'a2168a480e49456451af83aa4618a529'
+  sha1 '8b1d97cbd8d013998d74830a0286435f881e3c10'
 
   def patches
     # patches to fix conflicting struct definitions

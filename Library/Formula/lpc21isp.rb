@@ -1,12 +1,14 @@
 require 'formula'
 
 class Lpc21isp < Formula
-  url 'http://sourceforge.net/projects/lpc21isp/files/lpc21isp/1.79/lpc21isp_179.zip'
-  version '1.79'
   homepage 'http://lpc21isp.sourceforge.net/'
-  md5 '67c1e2a4cebccadd6fb8ea39faf8c89e'
+  url 'http://sourceforge.net/projects/lpc21isp/files/lpc21isp/1.83/lpc21isp_183.tar.gz'
+  sha1 'b251105cec7a0a65f271c233c94e0fe3fab42082'
+  version '1.83'
 
   def install
+    # Can't statically link on OSX, so we'll remove that from the Makefile
+    inreplace 'Makefile', "CFLAGS	+= -Wall -static", "CFLAGS	+= -Wall"
     system "make"
     bin.install ["lpc21isp"]
   end

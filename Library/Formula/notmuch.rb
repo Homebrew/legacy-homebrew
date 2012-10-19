@@ -13,7 +13,5 @@ class Notmuch < Formula
     # requires a newer emacs than OS X provides, so disable the bindings
     system "./configure", "--prefix=#{prefix}", "--without-emacs"
     system "make install"
-    system "install_name_tool", "-change", "libnotmuch.2.dylib",
-                                "#{lib}/libnotmuch.2.dylib", "#{bin}/notmuch"
   end
 end

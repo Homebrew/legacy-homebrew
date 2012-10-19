@@ -1,19 +1,19 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.12.tar.gz'
-  sha1 'fb572729ca5c60161dc651564a50d4378507e20f'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.7.12.4.tar.gz'
+  sha1 '1f853aa40c4518a4fad829f255c96d6e21659e93'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.12.tar.gz'
-  sha1 '50bbfeba77af9a411cc1a1e41220782cf3fd9b5e'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.12.4.tar.gz'
+  sha1 '1d4ce5c8fabbf576d611effcce2f87089da1bb89'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.7.12.tar.gz'
-  sha1 '42ec1037f1ee5bfeb405710c83b73c0515ad26e6'
+  url 'http://git-core.googlecode.com/files/git-1.7.12.4.tar.gz'
+  sha1 'e7eb697fc12887138e44ae100165c620a1210e81'
 
   head 'https://github.com/git/git.git'
 
@@ -33,7 +33,7 @@ class Git < Formula
     ENV['PYTHON_PATH'] = which 'python' # python can be brewed or unbrewed
 
     # Clean XCode 4.x installs don't include Perl MakeMaker
-    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.lion?
+    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.version >= :lion
 
     ENV['BLK_SHA1'] = '1' if build.include? 'with-blk-sha1'
 
@@ -55,6 +55,14 @@ class Git < Formula
                      "LDFLAGS=#{ENV.ldflags}"
       bin.install 'git-credential-osxkeychain'
       system "make", "clean"
+    end
+
+    # Install git-subtree
+    cd 'contrib/subtree' do
+      system "make", "CC=#{ENV.cc}",
+                     "CFLAGS=#{ENV.cflags}",
+                     "LDFLAGS=#{ENV.ldflags}"
+      bin.install 'git-subtree'
     end
 
     # install the completion script first because it is inside 'contrib'

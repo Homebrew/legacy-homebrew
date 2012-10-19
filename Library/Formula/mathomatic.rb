@@ -2,8 +2,8 @@ require 'formula'
 
 class Mathomatic < Formula
   homepage 'http://www.mathomatic.org/math/'
-  url 'http://mathomatic.org/mathomatic-16.0.1.tar.bz2'
-  sha1 '7a3ba4a1e23f5f1898690cdad1ff2a79527e25fc'
+  url 'http://mathomatic.org/mathomatic-16.0.2.tar.bz2'
+  sha1 'd480c0a9893186151bf22cef166e20a94fcf1335'
 
   def install
     ENV['prefix'] = prefix

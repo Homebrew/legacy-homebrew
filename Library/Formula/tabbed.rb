@@ -3,7 +3,7 @@ require 'formula'
 class Tabbed < Formula
   url 'http://dl.suckless.org/tools/tabbed-0.3.tar.gz'
   homepage 'http://tools.suckless.org/tabbed'
-  md5 '4a30458f9adc38db549f735b8fb6451b'
+  sha1 '6f2e153d66be969caf5f31bc18567c75ef902269'
   head 'http://hg.suckless.org/tabbed'
 
   depends_on :x11
