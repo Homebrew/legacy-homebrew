@@ -57,12 +57,12 @@ class Python3 < Formula
     ENV['PYTHONPATH'] = nil
     ENV['PYTHONHOME'] = nil
 
-    args = %W[--prefix=#{prefix}
-             --enable-ipv6
-             --datarootdir=#{share}
-             --datadir=#{share}
-             --enable-framework=#{prefix}/Frameworks
-           ]
+    args = %W[
+      --prefix=#{prefix}
+      --enable-ipv6
+      --datarootdir=#{share}
+      --datadir=#{share}
+      --enable-framework=#{prefix}/Frameworks]
 
     args << '--without-gcc' if ENV.compiler == :clang
 
