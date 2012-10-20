@@ -5,6 +5,12 @@ class Bsdsfv < Formula
   homepage 'http://bsdsfv.sourceforge.net/'
   sha1 '5e72c5e12bce2d5f77469d8f2425064a0ea6fc1e'
 
+  # bug report:
+  # http://sourceforge.net/tracker/?func=detail&aid=2887842&group_id=7211&atid=107211
+  def patches
+    DATA
+  end
+
   def install
     bin.mkpath
 
@@ -18,3 +24,14 @@ class Bsdsfv < Formula
     system "make install"
   end
 end
+
+__END__
+--- a/bsdsfv.c	2012-09-25 07:31:03.000000000 -0500
++++ b/bsdsfv.c	2012-09-25 07:31:08.000000000 -0500
+@@ -44,5 +44,5 @@
+ typedef struct sfvtable {
+ 	char filename[FNAMELEN];
+-	int crc;
++	unsigned int crc;
+ 	int found;
+ } SFVTABLE;
