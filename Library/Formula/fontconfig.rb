@@ -7,10 +7,13 @@ class Fontconfig < Formula
 
   keg_only :provided_pre_mountain_lion
 
+  option :universal
+
   depends_on :freetype
   depends_on 'pkg-config' => :build
 
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
