@@ -29,6 +29,7 @@ class CupsPdf < Formula
       sudo ln -sf #{share}/cups/model/CUPS-PDF.ppd /usr/share/cups/model/CUPS-PDF.ppd
 
       sudo mkdir -p /var/spool/cups-pdf/${USER}
+      sudo chown ${USER}:staff /var/spool/cups-pdf/${USER}
       ln -s /var/spool/cups-pdf/${USER} ${HOME}/Documents/cups-pdf
       sudo killall -HUP cupsd
 
