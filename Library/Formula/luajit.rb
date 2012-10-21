@@ -7,8 +7,7 @@ class Luajit < Formula
 
   head 'http://luajit.org/git/luajit-2.0.git'
 
-  # Skip cleaning both empty folders and bin/libs so external symbols still work.
-  skip_clean :all
+  skip_clean 'lib/lua/5.1', 'share/lua/5.1'
 
   option "enable-debug", "Build with debugging symbols"
 
@@ -24,7 +23,7 @@ class Luajit < Formula
     end
 
     ENV.O2                          # Respect the developer's choice.
-    args = [ "PREFIX=#{prefix}" ]
+    args = ["PREFIX=#{prefix}"]
     if build.include? 'enable-debug' then
       ENV.Og if ENV.compiler == :clang
       args << 'CCDEBUG=-g'
@@ -37,11 +36,7 @@ class Luajit < Formula
     system 'make', *args            # Build requires args during install
 
     # Non-versioned symlink
-    if build.head?
-      version = "2.0.0-beta10"
-    else
-      version = @version
-    end
-    ln_s bin+"luajit-#{version}", bin+"luajit"
+    version = build.head? ? "2.0.0-beta10" : @version
+    ln_s bin/"luajit-#{version}", bin/"luajit"
   end
 end
