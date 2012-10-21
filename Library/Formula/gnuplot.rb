@@ -11,6 +11,7 @@ class Gnuplot < Formula
   option 'wx', 'Build with wxWidgets support.'
   option 'nolua', 'Build without lua support.'
   option 'nogd', 'Build without gd support.'
+  option 'with-x', 'Build with X support.'
 
   if build.head?
     depends_on :automake
@@ -19,8 +20,8 @@ class Gnuplot < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'
-  depends_on 'pango'
-  depends_on :x11
+  depends_on 'pango' unless build.include? 'with-x' or MacOS::X11.installed?
+  depends_on :x11 if build.include? 'with-x' or MacOS::X11.installed?
   depends_on 'pdflib-lite' if build.include? 'pdf'
   depends_on 'lua' unless build.include? 'nolua'
   depends_on 'gd' unless build.include? 'nogd'
