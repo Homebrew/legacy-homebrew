@@ -83,7 +83,7 @@ class Keg < Pathname
     Pathname.new(self.to_s).basename
   end
 
-  def link mode=nil
+  def link mode=OpenStruct.new
     raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
 
     $n=0
@@ -131,9 +131,9 @@ class Keg < Pathname
       end
     end
 
-    linked_keg_record.make_relative_symlink(self) unless mode == :dryrun
+    linked_keg_record.make_relative_symlink(self) unless mode.dry_run
 
-    optlink unless mode == :dryrun
+    optlink unless mode.dry_run
 
     return $n + $d
   rescue Exception
@@ -170,21 +170,25 @@ protected
     puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
   end
 
-  def make_relative_symlink dst, src, mode=nil
+  def make_relative_symlink dst, src, mode=OpenStruct.new
     if dst.exist? and dst.realpath == src.realpath
       puts "Skipping; already exists: #{dst}" if ARGV.verbose?
     # cf. git-clean -n: list files to delete, don't really link or delete
-    elsif mode == :dryrun
+    elsif mode.dry_run and mode.overwrite
       puts dst if dst.exist?
       return
+    # list all link targets
+    elsif mode.dry_run
+      puts dst
+      return
     else
-      dst.delete if mode == :force && dst.exist?
+      dst.delete if mode.overwrite && dst.exist?
       dst.make_relative_symlink src
     end
   end
 
   # symlinks the contents of self+foo recursively into /usr/local/foo
-  def link_dir foo, mode=nil
+  def link_dir foo, mode=OpenStruct.new
     root = self+foo
     return unless root.exist?
 
