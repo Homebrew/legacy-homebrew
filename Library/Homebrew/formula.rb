@@ -746,14 +746,18 @@ private
       dependencies.add ConflictRequirement.new(formula, message)
     end
 
-    def skip_clean paths
-      if paths == :all
+    def skip_clean *paths
+      paths = [paths].flatten
+
+      # :all is deprecated though
+      if paths.include? :all
         @skip_clean_all = true
         return
       end
+
       @skip_clean_paths ||= []
-      [paths].flatten.each do |p|
-        p = p.to_s unless p == :la
+      paths.each do |p|
+        p = p.to_s unless p == :la # Keep :la in paths as a symbol
         @skip_clean_paths << p unless @skip_clean_paths.include? p
       end
     end
