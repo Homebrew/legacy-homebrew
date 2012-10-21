@@ -23,9 +23,6 @@ class Sbcl < Formula
     cause "Compilation fails with LLVM."
   end
 
-  skip_clean 'bin'
-  skip_clean 'lib'
-
   option "32-bit"
   option "without-threads", "Build SBCL without support for native threads"
   option "with-ldb", "Include low-level debugger in the build"
