@@ -3,25 +3,21 @@ require 'formula'
 class Mpich2 < Formula
   homepage 'http://www.mcs.anl.gov/research/projects/mpich2/index.php'
   url 'http://www.mcs.anl.gov/research/projects/mpich2/downloads/tarballs/1.5/mpich2-1.5.tar.gz'
-  version '1.5'
   sha1 'be7448227dde5badf3d6ebc0c152b200998421e0'
+
   head 'https://svn.mcs.anl.gov/repos/mpi/mpich2/trunk'
 
   # the HEAD version requires the autotools to be installed
   # (autoconf>=2.67, automake>=1.12.3, libtool>=2.4)
-  if ARGV.build_head?
+  if build.head?
     depends_on 'automake' => :build
     depends_on 'libtool'  => :build
   end
 
-  def options
-    [
-      ['--disable-fortran', "Do not attempt to build Fortran bindings"],
-    ]
-  end
+  option 'disable-fortran', "Do not attempt to build Fortran bindings"
 
   def install
-    if ARGV.build_head?
+    if build.head?
       # ensure that the consistent set of autotools built by homebrew is used to
       # build MPICH2, otherwise very bizarre build errors can occur
       ENV['MPICH2_AUTOTOOLS_DIR'] = (HOMEBREW_PREFIX+'bin')
@@ -34,7 +30,7 @@ class Mpich2 < Formula
       "--prefix=#{prefix}",
       "--mandir=#{man}"
     ]
-    if ARGV.include? '--disable-fortran'
+    if build.include? 'disable-fortran'
       args << "--disable-f77" << "--disable-fc"
     else
       ENV.fortran
