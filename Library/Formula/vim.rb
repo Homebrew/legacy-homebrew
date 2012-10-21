@@ -9,7 +9,7 @@ class Vim < Formula
 
   head 'https://vim.googlecode.com/hg/'
 
-  env :userpaths # To find interpreters
+  env :std # To find interpreters
 
   def install
     # Why are we specifying HOMEBREW_PREFIX as the prefix?
