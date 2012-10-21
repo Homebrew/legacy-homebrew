@@ -1,11 +1,14 @@
 require 'formula'
 
 class Geos < Formula
-  url 'http://download.osgeo.org/geos/geos-3.3.2.tar.bz2'
-  homepage 'http://trac.osgeo.org/geos/'
-  sha1 '942b0bbc61a059bd5269fddd4c0b44a508670cb3'
+  homepage 'http://trac.osgeo.org/geos'
+  url 'http://download.osgeo.org/geos/geos-3.3.5.tar.bz2'
+  sha1 '791e2b36a9a6114c7f213fae3fc995960c35a428'
+
+  option :universal
 
   def install
+    ENV.universal_binary if build.universal?
     # fixes compile error: missing symbols being optimized out using llvm.
     if ENV.compiler == :llvm then
       inreplace 'src/geom/Makefile.in', 'CFLAGS = @CFLAGS@', 'CFLAGS = @CFLAGS@ -O1'

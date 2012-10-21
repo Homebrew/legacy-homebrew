@@ -3,7 +3,7 @@ require 'formula'
 class Hmmer < Formula
   homepage 'http://hmmer.janelia.org/'
   url 'http://selab.janelia.org/software/hmmer3/3.0/hmmer-3.0.tar.gz'
-  md5 '4cf685f3bc524ba5b5cdaaa070a83588'
+  sha1 '77803c0bdb3ab07b7051a4c68c0564de31940c6d'
 
   def install
     system "./configure", "--prefix=#{prefix}"

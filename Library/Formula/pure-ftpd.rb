@@ -1,9 +1,9 @@
 require 'formula'
 
 class PureFtpd < Formula
-  url 'http://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.35.tar.gz'
   homepage 'http://www.pureftpd.org/'
-  md5 'fa53507ff8e9fdca0197917ec8d106a3'
+  url 'http://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.35.tar.gz'
+  sha1 'fed26bb1f36d71819a08873d94bbda52522ff96a'
 
   def install
     args = ["--disable-dependency-tracking",
@@ -29,8 +29,6 @@ class PureFtpd < Formula
 
     system "./configure", *args
     system "make install"
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

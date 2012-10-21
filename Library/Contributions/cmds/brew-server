@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
 
 ## brew server: Run a local webserver for browsing available and installed brews.
 # Note: this external command is ruby, but set up as a shell script, so that it gets exec'd.
@@ -151,7 +151,7 @@ get '/formula/:name' do
     end
   end
 
-  used_by = Formula.all.select{|ff| ff.deps.include?(klass.name)}.map{|f| f.name}.flatten.uniq.sort
+  used_by = Formula.select{|ff| ff.deps.include?(klass.name)}.map{|f| f.name}.flatten.uniq.sort
   unless used_by.empty?
     s << <<-HTML
             <dt>Used by</td>
@@ -174,7 +174,7 @@ end
 
 
 def installed_formulas
-  Formula.all.select{|formula| formula.installed?}
+  Formula.select{|formula| formula.installed?}
 end
 
 get '/installed' do

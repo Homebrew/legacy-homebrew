@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cassandra < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.0.7/apache-cassandra-1.0.7-bin.tar.gz'
   homepage 'http://cassandra.apache.org'
-  sha1 '8ae535821b29eead5b7dc7788a0e66ecf1ac267e'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.1.6/apache-cassandra-1.1.6-bin.tar.gz'
+  sha1 'ecd25676f2cb175e715356c5e7af61014a34ba59'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -12,10 +12,7 @@ class Cassandra < Formula
 
     inreplace "conf/cassandra.yaml", "/var/lib/cassandra", "#{var}/lib/cassandra"
     inreplace "conf/log4j-server.properties", "/var/log/cassandra", "#{var}/log/cassandra"
-
-    inreplace "conf/cassandra-env.sh" do |s|
-      s.gsub! "/lib/", "/"
-    end
+    inreplace "conf/cassandra-env.sh", "/lib/", "/"
 
     inreplace "bin/cassandra.in.sh" do |s|
       s.gsub! "CASSANDRA_HOME=`dirname $0`/..", "CASSANDRA_HOME=#{prefix}"
@@ -28,11 +25,8 @@ class Cassandra < Formula
     rm Dir["bin/*.bat"]
 
     (etc+"cassandra").install Dir["conf/*"]
-    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,lib/licenses}"]
+    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,pylib,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
@@ -40,6 +34,13 @@ class Cassandra < Formula
       mkdir -p ~/Library/LaunchAgents
       cp #{plist_path} ~/Library/LaunchAgents/
       launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+
+    If you plan to use the CQL shell (cqlsh), you will need the Python CQL library
+    installed. Since Homebrew prefers using pip for Python packages, you can
+    install that using:
+
+      pip install cql
+
     EOS
   end
 

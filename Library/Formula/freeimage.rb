@@ -9,21 +9,24 @@ class FreeimageHttpDownloadStrategy < CurlDownloadStrategy
 end
 
 class Freeimage < Formula
+  homepage 'http://sf.net/projects/freeimage'
   url 'http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.15.1/FreeImage3151.zip',
         :using => FreeimageHttpDownloadStrategy
   version '3.15.1'
-  md5 '450d2ff278690b0d1d7d7d58fad083cc'
-  homepage 'http://sf.net/projects/freeimage'
+  sha1 '02ae98007fc64d72a8f15ec3ff24c36ac745fbc8'
+
+  option :universal
 
   def patches
     DATA
   end
 
   def install
-    system "gnumake -f Makefile.gnu"
-    system "gnumake -f Makefile.gnu install PREFIX=#{prefix}"
-    system "gnumake -f Makefile.fip"
-    system "gnumake -f Makefile.fip install PREFIX=#{prefix}"
+    ENV.universal_binary if build.universal?
+    system "make", "-f", "Makefile.gnu"
+    system "make", "-f", "Makefile.gnu", "install", "PREFIX=#{prefix}"
+    system "make", "-f", "Makefile.fip"
+    system "make", "-f", "Makefile.fip", "install", "PREFIX=#{prefix}"
   end
 end
 
@@ -71,7 +74,7 @@ __END__
  
  $(SHAREDLIB): $(MODULES)
 -	$(CC) -s -shared -Wl,-soname,$(VERLIBNAME) $(LDFLAGS) -o $@ $(MODULES) $(LIBRARIES)
-+	$(CXX) -dynamiclib -install_name $(LIBNAME) -current_version $(VER_MAJOR).$(VER_MINOR) -compatibility_version $(VER_MAJOR) -o $@ $(MODULES)
++	$(CXX) -dynamiclib -install_name $(LIBNAME) -current_version $(VER_MAJOR).$(VER_MINOR) -compatibility_version $(VER_MAJOR) $(LDFLAGS) -o $@ $(MODULES)
 
  install:
 	install -d $(INCDIR) $(INSTALLDIR)
@@ -125,7 +128,7 @@ __END__
  
  $(SHAREDLIB): $(MODULES)
 -	$(CC) -s -shared -Wl,-soname,$(VERLIBNAME) $(LDFLAGS) -o $@ $(MODULES) $(LIBRARIES)
-+	$(CXX) -dynamiclib -install_name $(LIBNAME) -current_version $(VER_MAJOR).$(VER_MINOR) -compatibility_version $(VER_MAJOR) -o $@ $(MODULES)
++	$(CXX) -dynamiclib -install_name $(LIBNAME) -current_version $(VER_MAJOR).$(VER_MINOR) -compatibility_version $(VER_MAJOR) $(LDFLAGS) -o $@ $(MODULES)
  
  install:
  	install -d $(INCDIR) $(INSTALLDIR)

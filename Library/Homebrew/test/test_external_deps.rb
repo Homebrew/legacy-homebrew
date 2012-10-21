@@ -1,12 +1,7 @@
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'extend/string'
 require 'test/testball'
 require 'formula_installer'
-require 'utils'
 
 
 class ExternalDepsTests < Test::Unit::TestCase
@@ -17,9 +12,9 @@ class ExternalDepsTests < Test::Unit::TestCase
     end
 
     # Should have found a dep
-    assert d.external_deps.size == 1
+    assert d.requirements.size == 1
 
-    d.external_deps do |dep|
+    d.requirements do |req|
       assert !d.satisfied?
     end
   end
@@ -31,9 +26,9 @@ class ExternalDepsTests < Test::Unit::TestCase
     end
 
     # Should have found a dep
-    assert d.external_deps.size == 1
+    assert d.requirements.size == 1
 
-    d.external_deps do |dep|
+    d.requirements do |req|
       assert d.satisfied?
     end
   end

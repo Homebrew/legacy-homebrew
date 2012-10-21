@@ -2,8 +2,8 @@ require 'formula'
 
 class Fftw < Formula
   homepage 'http://www.fftw.org'
-  url 'http://www.fftw.org/fftw-3.3.1.tar.gz'
-  md5 '76f5f3c7577613d0fbedaae77450ac91'
+  url 'http://www.fftw.org/fftw-3.3.2.tar.gz'
+  sha1 '11a8c31186ff5a7d686a79a3f21b2530888e0dc2'
 
   def install
     args = ["--enable-shared",
@@ -37,8 +37,5 @@ class Fftw < Formula
     # no SIMD optimization available
     system "./configure", "--enable-long-double", *args
     system "make install"
-
-    #wtf file?
-    (info+'dir').unlink
   end
 end

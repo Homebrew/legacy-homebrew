@@ -65,12 +65,15 @@ class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   end
 end
 
-class UnsatisfiedRequirement < Homebrew::InstallationError
-  attr :dep
+class UnsatisfiedRequirements < Homebrew::InstallationError
+  attr :reqs
 
-  def initialize formula, dep
-    @dep = dep
-    super formula, "An unsatisfied requirement failed this build."
+  def initialize formula, reqs
+    @reqs = reqs
+    message = (reqs.length == 1) \
+                ? "An unsatisfied requirement failed this build." \
+                : "Unsatisifed requirements failed this build."
+    super formula, message
   end
 end
 
@@ -92,50 +95,21 @@ class BuildError < Homebrew::InstallationError
   end
 
   def dump
-    e = self
-
-    require 'cmd/--config'
-    require 'cmd/--env'
-
-    e.backtrace[1] =~ %r{Library/Formula/(.+)\.rb:(\d+)}
-    formula_name = $1
-    error_line = $2
-
-    path = HOMEBREW_REPOSITORY/"Library/Formula/#{formula_name}.rb"
-    if path.symlink? and path.realpath.to_s =~ %r{^#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)/}
-      repo = "#$1/homebrew-#$2"
-      repo_path = path.realpath.relative_path_from(HOMEBREW_REPOSITORY/"Library/Taps/#$1-#$2").parent.to_s
-      issues_url = "https://github.com/#$1/homebrew-#$2/issues/new"
-    else
-      repo = "mxcl/master"
-      repo_path = "Library/Formula"
-      issues_url = ISSUES_URL
-    end
-
+    logs = "#{ENV['HOME']}/Library/Logs/Homebrew/#{formula}/"
     if ARGV.verbose?
-      ohai "Exit Status: #{e.exit_status}"
-      puts "https://github.com/#{repo}/blob/master/#{repo_path}/#{formula_name}.rb#L#{error_line}"
+      require 'cmd/--config'
+      require 'cmd/--env'
+      ohai "Configuration"
+      Homebrew.dump_build_config
+      ohai "ENV"
+      Homebrew.dump_build_env(env)
     end
-    ohai "Build Environment"
-    Homebrew.dump_build_config
-    puts %["--use-clang" was specified] if ARGV.include? '--use-clang'
-    puts %["--use-llvm" was specified] if ARGV.include? '--use-llvm'
-    puts %["--use-gcc" was specified] if ARGV.include? '--use-gcc'
-    Homebrew.dump_build_env e.env
-    onoe "#{e.to_s.strip} (#{formula_name}.rb:#{error_line})"
-    issues = GitHub.issues_for_formula formula_name
-    if issues.empty?
-      puts "If `brew doctor' does not help diagnose the issue, please report the bug:"
-      puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
-    else
-      puts "These existing issues may help you:", *issues.map{ |s| "    #{Tty.em}#{s}#{Tty.reset}" }
-      puts "Otherwise, please report the bug:"
-      puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
-    end
-    if e.was_running_configure?
-      puts "We saved the configure log, please gist it if you report the issue:"
-      puts "    ~/Library/Logs/Homebrew/config.log"
-    end
+    puts
+    onoe "#{formula.name} did not build"
+    puts "Logs: #{logs}" unless Dir["#{logs}/*"].empty?
+    puts "Help: #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
+    issues = GitHub.issues_for_formula(formula.name)
+    puts *issues.map{ |s| "      #{Tty.em}#{s}#{Tty.reset}" } unless issues.empty?
   end
 end
 
@@ -145,4 +119,40 @@ end
 
 # raised by safe_system in utils.rb
 class ErrorDuringExecution < RuntimeError
+end
+
+# raised by Pathname#verify_checksum when "expected" is nil or empty
+class ChecksumMissingError < ArgumentError
+end
+
+# raised by Pathname#verify_checksum when verification fails
+class ChecksumMismatchError < RuntimeError
+  attr :advice, true
+  attr :expected
+  attr :actual
+  attr :hash_type
+
+  def initialize expected, actual
+    @expected = expected
+    @actual = actual
+    @hash_type = expected.hash_type.to_s.upcase
+
+    super <<-EOS.undent
+      #{@hash_type} mismatch
+      Expected: #{@expected}
+      Actual: #{@actual}
+      EOS
+  end
+
+  def to_s
+    super + advice.to_s
+  end
+end
+
+module Homebrew extend self
+  SUDO_BAD_ERRMSG = <<-EOS.undent
+    You can use brew with sudo, but only if the brew executable is owned by root.
+    However, this is both not recommended and completely unsupported so do so at
+    your own risk.
+  EOS
 end

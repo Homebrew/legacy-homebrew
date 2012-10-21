@@ -3,7 +3,7 @@ require 'formula'
 class Boxes < Formula
   homepage 'http://boxes.thomasjensen.com/'
   url 'http://boxes.thomasjensen.com/download/boxes-1.1.src.tar.gz'
-  md5 'd2ef9fa28a87bf32b3fe0c47ab82fa97'
+  sha1 '1fd6e875e9b3c84f2a71f6df73d9eddb37d11c93'
 
   def install
     # distro uses /usr/share/boxes change to prefix

@@ -2,18 +2,22 @@ require 'formula'
 
 class Gnutls < Formula
   homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
-  url 'http://ftpmirror.gnu.org/gnutls/gnutls-2.12.18.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gnutls/gnutls-2.12.18.tar.bz2'
-  md5 'e9215d00d2930e09bc8f23f02b54f2d1'
+  url 'http://ftpmirror.gnu.org/gnutls/gnutls-2.12.20.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gnutls/gnutls-2.12.20.tar.bz2'
+  sha256 '4884eafcc8383ed23209199bbc72ad04f4eb94955a50a594125ff34c6889c564'
 
   depends_on 'pkg-config' => :build
   depends_on 'libgcrypt'
-  depends_on 'libtasn1' => :optional
+  depends_on 'libtasn1'
+  depends_on 'p11-kit'
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
 
   def install
-    ENV.universal_binary # build fat so wine can use it
+    ENV.universal_binary
     ENV.append 'LDFLAGS', '-ltasn1' # find external libtasn1
 
     system "./configure", "--disable-debug",
@@ -21,8 +25,7 @@ class Gnutls < Formula
                           "--disable-guile",
                           "--disable-static",
                           "--prefix=#{prefix}",
-                          "--with-libgcrypt",
-                          "--without-p11-kit"
+                          "--with-libgcrypt"
     system "make install"
 
     # certtool shadows the OS X certtool utility

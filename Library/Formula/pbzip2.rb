@@ -3,9 +3,11 @@ require 'formula'
 class Pbzip2 < Formula
   homepage 'http://compression.ca/pbzip2/'
   url 'http://compression.ca/pbzip2/pbzip2-1.1.6.tar.gz'
-  md5 '26cc5a0d882198f106e75101ff0544a3'
+  sha1 '3b4d0ffa3ac362c3702793cc5d9e61664d468aeb'
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+  end
 
   def install
     inreplace "Makefile", "$(PREFIX)/man", "$(PREFIX)/share/man"

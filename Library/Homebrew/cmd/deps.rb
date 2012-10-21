@@ -2,7 +2,7 @@ require 'formula'
 
 def recursive_deps_tree f, level
   f.deps.each do |dep|
-    puts "> "*level+dep
+    puts "> "*level+dep.to_s
     recursive_deps_tree(Formula.factory(dep), level+1)
   end
 end

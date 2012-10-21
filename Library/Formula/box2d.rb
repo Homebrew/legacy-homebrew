@@ -9,7 +9,11 @@ class Box2d < Formula
 
   def install
     cd 'Build' do
-      system "cmake -DBOX2D_INSTALL=ON -DBOX2D_BUILD_SHARED=ON #{std_cmake_parameters} .."
+      system "cmake", "..",
+                      "-DBOX2D_INSTALL=ON",
+                      "-DBOX2D_BUILD_SHARED=ON",
+                      "-DBOX2D_BUILD_EXAMPLES=OFF",
+                      *std_cmake_args
       system "make install"
     end
   end

@@ -3,11 +3,14 @@ require 'formula'
 class Streamripper < Formula
   homepage 'http://streamripper.sourceforge.net/'
   url 'http://downloads.sourceforge.net/sourceforge/streamripper/streamripper-1.64.6.tar.gz'
-  md5 'a37a1a8b8f9228522196a122a1c2dd32'
+  sha1 'bc8a8d3ad045e0772ca691d2063c39efcc0dca45'
 
   depends_on 'glib'
 
-  fails_with_llvm "Strange runtime errors with LLVM.", :build => 2335
+  fails_with :llvm do
+    build 2335
+    cause "Strange runtime errors with LLVM."
+  end
 
   def install
     # the Makefile ignores CPPFLAGS from the environment, which

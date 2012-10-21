@@ -2,8 +2,8 @@ require 'formula'
 
 class Hadoop < Formula
   homepage 'http://hadoop.apache.org/common/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-1.0.1/hadoop-1.0.1.tar.gz'
-  md5 'e627d9b688c4de03cba8313bd0bba148'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-1.0.4/hadoop-1.0.4.tar.gz'
+  sha1 '1ab6f3271289ff83ba7b44a090ec1a3e6b77d1dd'
 
   def shim_script target
     <<-EOS.undent

@@ -2,7 +2,7 @@ require 'formula'
 
 module Homebrew extend self
   def versions
-    raise "Please `brew install git` first" unless which_s "git"
+    raise "Please `brew install git` first" unless which "git"
     raise "Please `brew update' first" unless (HOMEBREW_REPOSITORY/".git").directory?
 
     raise FormulaUnspecifiedError if ARGV.named.empty?
@@ -13,7 +13,7 @@ module Homebrew extend self
       else
         f.versions do |version, sha|
           print Tty.white.to_s
-          print "#{version.ljust(8)} "
+          print "#{version.to_s.ljust(8)} "
           print Tty.reset.to_s
           puts "git checkout #{sha} #{f.pretty_relative_path}"
         end

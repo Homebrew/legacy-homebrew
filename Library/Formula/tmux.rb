@@ -1,34 +1,43 @@
 require 'formula'
 
 class Tmux < Formula
-  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.6/tmux-1.6.tar.gz'
-  md5 '3e37db24aa596bf108a0442a81c845b3'
   homepage 'http://tmux.sourceforge.net'
+  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.7/tmux-1.7.tar.gz'
+  sha1 'ee6942a1bc3fc650036f26921d80bc4b73d56df6'
 
-  head 'https://tmux.svn.sourceforge.net/svnroot/tmux/trunk'
+  head 'git://tmux.git.sourceforge.net/gitroot/tmux/tmux'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libevent'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   def install
-    system "sh", "autogen.sh" if ARGV.build_head?
+    system "sh", "autogen.sh" if build.head?
 
     ENV.append "LDFLAGS", '-lresolv'
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--sysconfdir=#{etc}"
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}"
     system "make install"
 
-    # Install bash completion scripts for use with bash-completion
     (prefix+'etc/bash_completion.d').install "examples/bash_completion_tmux.sh" => 'tmux'
+
+    # Install addtional meta file
+    prefix.install 'NOTES'
   end
 
   def caveats; <<-EOS.undent
-    Bash completion script was installed to:
-      #{etc}/bash_completion.d/tmux
+    Additional information can be found in:
+      #{prefix}/NOTES
     EOS
   end
+
+  def test
+    system "#{bin}/tmux", "-V"
+  end
 end
+

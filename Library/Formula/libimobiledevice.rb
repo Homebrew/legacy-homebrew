@@ -2,10 +2,10 @@ require 'formula'
 
 class Libimobiledevice < Formula
   homepage 'http://www.libimobiledevice.org/'
-  url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.1.tar.bz2'
-  md5 'cdc13037e822d9ac2e109536701d153a'
+  url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.4.tar.bz2'
+  sha1 'd59d9751d9f792e8674cd87c91005d431bf56065'
 
-  head 'http://cgit.sukimashita.com/libimobiledevice.git', :using => :git
+  head 'http://cgit.sukimashita.com/libimobiledevice.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'libtasn1'
@@ -14,13 +14,13 @@ class Libimobiledevice < Formula
   depends_on 'usbmuxd'
   depends_on 'gnutls'
 
-  if MacOS.xcode_version >= "4.3" and ARGV.build_head?
-    depends_on 'libtool' => :build
-    depends_on 'autoconf' => :build
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   def install
-    if ARGV.build_head?
+    if build.head?
       # fix the m4 problem with the missing pkg.m4
       ENV['LIBTOOLIZE'] = "glibtoolize"
       ENV['ACLOCAL'] = "aclocal -I m4 -I #{HOMEBREW_PREFIX}/share/aclocal"
@@ -33,7 +33,9 @@ class Libimobiledevice < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--without-swig"
+                          # As long as libplist builds without Cython
+                          # bindings, libimobiledevice must as well.
+                          "--without-cython"
     system "make install"
   end
 end

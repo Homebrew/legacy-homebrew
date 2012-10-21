@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ptunnel < Formula
-  url 'http://www.cs.uit.no/~daniels/PingTunnel/PingTunnel-0.71.tar.gz'
   homepage 'http://www.cs.uit.no/~daniels/PingTunnel/'
-  md5 '9b04771d4fa50abc15a6af690b81c71a'
+  url 'http://www.cs.uit.no/~daniels/PingTunnel/PingTunnel-0.72.tar.gz'
+  sha1 'd5d874ec7b4f68d2307cacc83a1c408aeb4206a5'
 
   def install
     system "make"

@@ -1,13 +1,15 @@
 require 'formula'
 
 class Ipmitool < Formula
-  url 'http://downloads.sourceforge.net/project/ipmitool/ipmitool/1.8.11/ipmitool-1.8.11.tar.bz2'
   homepage 'http://ipmitool.sourceforge.net/'
-  md5 '1d0da20add7388d64c549f95538b6858'
+  url 'http://downloads.sourceforge.net/project/ipmitool/ipmitool/1.8.12/ipmitool-1.8.12.tar.bz2'
+  sha1 'b895564db1196e891b60d2ab4f6d0bf5499c3453'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}",
-                          "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

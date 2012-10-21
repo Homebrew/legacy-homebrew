@@ -2,17 +2,18 @@ require 'formula'
 
 class Guile < Formula
   homepage 'http://www.gnu.org/software/guile/'
-  url 'http://ftpmirror.gnu.org/guile/guile-1.8.7.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/guile/guile-1.8.7.tar.gz'
-  sha1 '24cd2f06439c76d41d982a7384fe8a0fe5313b54'
+  url 'http://ftpmirror.gnu.org/guile/guile-1.8.8.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/guile/guile-1.8.8.tar.gz'
+  sha1 '548d6927aeda332b117f8fc5e4e82c39a05704f9'
 
   devel do
-    url 'http://ftpmirror.gnu.org/guile/guile-2.0.2.tar.gz'
-    mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.2.tar.gz'
-    sha1 '1943fd22417ce1e51babbdcd7681e66a794a8da3'
+    url 'http://ftpmirror.gnu.org/guile/guile-2.0.6.tar.gz'
+    mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.6.tar.gz'
+    sha1 'aee330029ea48160071fdbd09271d80c92498669'
   end
 
   depends_on 'pkg-config' => :build
+  depends_on :libtool
   depends_on 'libffi'
   depends_on 'libunistring'
   depends_on 'bdw-gc'
@@ -21,7 +22,10 @@ class Guile < Formula
   # GNU Readline is required; libedit won't work.
   depends_on 'readline'
 
-  fails_with_llvm "Segfaults during compilation.", :build => 2336
+  fails_with :llvm do
+    build 2336
+    cause "Segfaults during compilation"
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",

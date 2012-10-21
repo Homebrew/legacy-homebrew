@@ -1,9 +1,9 @@
 require 'formula'
 
 class Qpdf < Formula
-  url 'http://downloads.sourceforge.net/project/qpdf/qpdf/2.3.0/qpdf-2.3.0.tar.gz'
+  url 'http://downloads.sourceforge.net/project/qpdf/qpdf/3.0.2/qpdf-3.0.2.tar.gz'
   homepage 'http://qpdf.sourceforge.net/'
-  md5 'af6d60984055e6a2c988d53c55b1a7ca'
+  sha1 '0cab59b27c9adf4067ffc002db1d9262e219c364'
 
   depends_on 'pcre'
 

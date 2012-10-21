@@ -1,15 +1,28 @@
 require 'pathname'
-require 'bottles'
+require 'mach'
 
 # we enhance pathname to make our code more readable
 class Pathname
+  include MachO
+
+  BOTTLE_EXTNAME_RX = /(\.[a-z]+\.bottle\.(\d+\.)?tar\.gz)$/
+  OLD_BOTTLE_EXTNAME_RX = /((\.[a-z]+)?[\.-]bottle\.tar\.gz)$/
+
   def install *sources
     results = []
     sources.each do |src|
       case src
       when Array
+        if src.empty?
+          opoo "tried to install empty array to #{self}"
+          return []
+        end
         src.each {|s| results << install_p(s) }
       when Hash
+        if src.empty?
+          opoo "tried to install empty hash to #{self}"
+          return []
+        end
         src.each {|s, new_basename| results << install_p(s, new_basename) }
       else
         results << install_p(src)
@@ -109,10 +122,12 @@ class Pathname
   end
 
   # extended to support common double extensions
+  alias extname_old extname
   def extname
-    return $1 if to_s =~ bottle_regex
-    # old brew bottle style
-    return $1 if to_s =~ old_bottle_regex
+    BOTTLE_EXTNAME_RX.match to_s
+    return $1 if $1
+    OLD_BOTTLE_EXTNAME_RX.match to_s
+    return $1 if $1
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
@@ -130,7 +145,7 @@ class Pathname
     rmdir
     true
   rescue SystemCallError => e
-    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno
+    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno or e.errno == Errno::ENOENT::Errno
     false
   end
 
@@ -146,88 +161,45 @@ class Pathname
     out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
   end
 
-  # attempts to retrieve the version component of this path, so generally
-  # you'll call it on tarballs or extracted tarball directories, if you add
-  # to this please provide amend the unittest
   def version
-    if directory?
-      # directories don't have extnames
-      stem=basename.to_s
+    require 'version'
+    Version.parse(self)
+  end
+
+  def compression_type
+    # Don't treat jars or wars as compressed
+    return nil if self.extname == '.jar'
+    return nil if self.extname == '.war'
+
+    # OS X installer package
+    return :pkg if self.extname == '.pkg'
+
+    # Get enough of the file to detect common file types
+    # POSIX tar magic has a 257 byte offset
+    magic_bytes = nil
+    File.open(self) { |f| magic_bytes = f.read(262) }
+
+    # magic numbers stolen from /usr/share/file/magic/
+    case magic_bytes
+    when /^PK\003\004/   then :zip
+    when /^\037\213/     then :gzip
+    when /^BZh/          then :bzip2
+    when /^\037\235/     then :compress
+    when /^.{257}ustar/  then :tar
+    when /^\xFD7zXZ\x00/ then :xz
+    when /^Rar!/         then :rar
     else
-      # sourceforge /download
-      if %r[((?:sourceforge.net|sf.net)/.*)/download$].match to_s
-        stem=Pathname.new(dirname).stem
-      else
-        stem=self.stem
+      # This code so that bad-tarballs and zips produce good error messages
+      # when they don't unarchive properly.
+      case extname
+        when ".tar.gz", ".tgz", ".tar.bz2", ".tbz" then :tar
+        when ".zip" then :zip
       end
     end
+  end
 
-    # github tarballs, like v1.2.3
-    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+)$].match to_s
-    return $2 if $2
-
-    # eg. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
-    %r[github.com/.*/(zip|tar)ball/.*-((\d+\.)+\d+)$].match to_s
-    return $2 if $2
-
-    # dashed version
-    # eg. github.com/isaacs/npm/tarball/v0.2.5-1
-    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+-(\d+))$].match to_s
-    return $2 if $2
-
-    # underscore version
-    # eg. github.com/petdance/ack/tarball/1.93_02
-    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+_(\d+))$].match to_s
-    return $2 if $2
-
-    # eg. boost_1_39_0
-    /((\d+_)+\d+)$/.match stem
-    return $1.gsub('_', '.') if $1
-
-    # eg. foobar-4.5.1-1
-    # eg. ruby-1.9.1-p243
-    /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/.match stem
-    return $1 if $1
-
-    # eg. lame-398-1
-    /-((\d)+-\d)/.match stem
-    return $1 if $1
-
-    # eg. foobar-4.5.1
-    /-((\d+\.)*\d+)$/.match stem
-    return $1 if $1
-
-    # eg. foobar-4.5.1b
-    /-((\d+\.)*\d+([abc]|rc|RC)\d*)$/.match stem
-    return $1 if $1
-
-    # eg foobar-4.5.0-beta1, or foobar-4.50-beta
-    /-((\d+\.)*\d+-beta(\d+)?)$/.match stem
-    return $1 if $1
-
-    # eg. foobar4.5.1
-    /((\d+\.)*\d+)$/.match stem
-    return $1 if $1
-
-    # eg foobar-4.5.0-bin
-    /-((\d+\.)+\d+[abc]?)[-._](bin|dist|stable|src|sources?)$/.match stem
-    return $1 if $1
-
-    # Debian style eg dash_0.5.5.1.orig.tar.gz
-    /_((\d+\.)+\d+[abc]?)[.]orig$/.match stem
-    return $1 if $1
-
-    # eg. otp_src_R13B (this is erlang's style)
-    # eg. astyle_1.23_macosx.tar.gz
-    stem.scan(/_([^_]+)/) do |match|
-      return match.first if /\d/.match $1
-    end
-
-    # old erlang bottle style e.g. erlang-R14B03-bottle.tar.gz
-    /-([^-]+)/.match stem
-    return $1 if $1
-
-    nil
+  def text_executable?
+    %r[^#!\s*\S+] === open('r') { |f| f.read(1024) }
   end
 
   def incremental_hash(hasher)
@@ -253,6 +225,13 @@ class Pathname
   def sha2
     require 'digest/sha2'
     incremental_hash(Digest::SHA2)
+  end
+  alias_method :sha256, :sha2
+
+  def verify_checksum expected
+    raise ChecksumMissingError if expected.nil? or expected.empty?
+    actual = Checksum.new(expected.hash_type, send(expected.hash_type).downcase)
+    raise ChecksumMismatchError.new(expected, actual) unless expected == actual
   end
 
   if '1.9' <= RUBY_VERSION
@@ -285,11 +264,28 @@ class Pathname
       # NOTE only system ln -s will create RELATIVE symlinks
       quiet_system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
       if not $?.success?
-        raise <<-EOS.undent
-          Could not symlink file: #{src.expand_path}
-          Check #{self} does not already exist.
-          Check #{dirname} is writable.
-        EOS
+        if self.exist?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            Target #{self} already exists. You may need to delete it.
+            To force the link and delete this file, do:
+              brew link --overwrite formula_name
+
+            To list all files that would be deleted:
+              brew link --overwrite --dry-run formula_name
+            EOS
+        elsif !dirname.writable_real?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            #{dirname} is not writable. You should change its permissions.
+            EOS
+        else
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            #{self} may already exist.
+            #{dirname} may not be writable.
+            EOS
+        end
       end
     end
   end
@@ -300,7 +296,7 @@ class Pathname
 
   def ensure_writable
     saved_perms = nil
-    unless writable?
+    unless writable_real?
       saved_perms = stat.mode
       chmod 0644
     end
@@ -366,14 +362,8 @@ module ObserverPathnameExtension
     puts "rmdir #{to_s}" if ARGV.verbose?
     $d+=1
   end
-  def mkpath
-    super
-    puts "mkpath #{to_s}" if ARGV.verbose?
-    $d+=1
-  end
   def make_relative_symlink src
     super
-    puts "ln #{to_s}" if ARGV.verbose?
     $n+=1
   end
   def install_info

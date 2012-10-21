@@ -2,51 +2,50 @@ require 'formula'
 
 class Jenkins < Formula
   homepage 'http://jenkins-ci.org'
-  url 'http://mirrors.jenkins-ci.org/war/1.454/jenkins.war', :using => :nounzip
-  version '1.454'
-  md5 '6f8bbe0a4bddab9590f65b83cf26744a'
+  url 'http://mirrors.jenkins-ci.org/war/1.486/jenkins.war'
+  sha1 'c33ff88dfe11828623713ce47e3df0f8b441b9aa'
   head 'https://github.com/jenkinsci/jenkins.git'
 
   def install
-    system "mvn clean install -pl war -am -DskipTests && mv war/target/jenkins.war ." if ARGV.build_head?
-    lib.install "jenkins.war"
-    plist_path.write startup_plist
-    plist_path.chmod 0644
+    if build.head?
+      system "mvn clean install -pl war -am -DskipTests"
+      libexec.install 'war/target/jenkins.war', '.'
+    else
+      libexec.install "jenkins.war"
+    end
   end
 
-  def caveats; <<-EOS
-If this is your first install, automatically load on login with:
-    mkdir -p ~/Library/LaunchAgents
-    cp #{plist_path} ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+  def caveats; <<-EOS.undent
+    If this is your first install, automatically load on login with:
+      mkdir -p ~/Library/LaunchAgents
+      ln -nfs #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-If this is an upgrade and you already have the #{plist_path.basename} loaded:
-    launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-    cp #{plist_path} ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-Or start it manually:
-    java -jar #{lib}/jenkins.war
-EOS
+    Or start it manually:
+      java -jar #{libexec}/jenkins.war
+    EOS
   end
 
-  def startup_plist
-    return <<-EOS
+  def startup_plist; <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>ProgramArguments</key>
-    <array>
-    <string>/usr/bin/java</string>
-    <string>-jar</string>
-    <string>#{HOMEBREW_PREFIX}/lib/jenkins.war</string>
-    <string>--httpListenAddress=127.0.0.1</string>
-    </array>
-    <key>RunAtLoad</key>
-    <true/>
+  <key>Label</key>
+  <string>#{plist_name}</string>
+  <key>ProgramArguments</key>
+  <array>
+  <string>/usr/bin/java</string>
+  <string>-jar</string>
+  <string>#{HOMEBREW_PREFIX}/opt/jenkins/libexec/jenkins.war</string>
+  <string>--httpListenAddress=127.0.0.1</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
 </dict>
 </plist>
 EOS

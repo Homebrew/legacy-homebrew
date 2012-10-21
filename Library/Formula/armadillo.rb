@@ -2,14 +2,14 @@ require 'formula'
 
 class Armadillo < Formula
   homepage 'http://arma.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/arma/armadillo-2.4.3.tar.gz'
-  md5 'b237a869ca4535a45ac420853f779c77'
+  url 'http://sourceforge.net/projects/arma/files/armadillo-3.4.3.tar.gz'
+  sha1 'a89adc51fa01640bfe463d9120cae57b2c073f8e'
 
   depends_on 'cmake' => :build
   depends_on 'boost'
 
   def install
-    system "cmake #{std_cmake_parameters} ."
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 end

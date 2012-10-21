@@ -2,23 +2,59 @@ require 'formula'
 
 class Libevent < Formula
   homepage 'http://www.monkey.org/~provos/libevent/'
-  url 'https://github.com/downloads/libevent/libevent/libevent-2.0.17-stable.tar.gz'
-  sha1 'cea3af2d4bd688784f270ac2ecae8ea6aaaa463f'
+  url 'https://github.com/downloads/libevent/libevent/libevent-2.0.20-stable.tar.gz'
+  sha1 '20bb4a1a296ac93c08dfc32ae19ab874cab67a0c'
 
   head 'git://levent.git.sourceforge.net/gitroot/levent/levent'
 
-  fails_with_llvm "Undefined symbol '_current_base' reported during linking.", :build => 2326
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  depends_on "doxygen" => :build if build.include? 'enable-manpages'
+
+  option :universal
+  option 'enable-manpages', 'Install the libevent manpages (requires doxygen)'
+
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbol '_current_base' reported during linking."
+  end
+
+  # Enable manpage generation
+  def patches
+    DATA if build.include? 'enable-manpages'
   end
 
   def install
+    ENV.universal_binary if build.universal?
     ENV.j1
-    system "./autogen.sh" if ARGV.build_head?
-    system "./configure", "--prefix=#{prefix}"
+    system "./autogen.sh" if build.head?
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-debug-mode",
+                          "--prefix=#{prefix}"
     system "make"
     system "make install"
+
+    if build.include? 'enable-manpages'
+      system "make doxygen"
+      man3.install Dir['doxygen/man/man3/*.3']
+    end
   end
 end
+
+__END__
+diff --git a/Doxyfile b/Doxyfile
+index 5d3865e..1442c19 100644
+--- a/Doxyfile
++++ b/Doxyfile
+@@ -175,7 +175,7 @@ LATEX_HIDE_INDICES     = NO
+ # If the GENERATE_MAN tag is set to YES (the default) Doxygen will 
+ # generate man pages
+ 
+-GENERATE_MAN           = NO
++GENERATE_MAN           = YES
+ 
+ # The MAN_EXTENSION tag determines the extension that is added to 
+ # the generated man pages (default is the subroutine's section .3)

@@ -2,8 +2,8 @@ require 'formula'
 
 class Arm < Formula
   homepage 'http://www.atagar.com/arm/'
-  url 'https://archive.torproject.org/arm/arm-1.4.4.1.tar.bz2'
-  sha256 'bdf4342d61d0f8a6395a5d7ee2e1471a5db9327c59d7cdc89315116045a3abf8'
+  url 'http://www.atagar.com/arm/resources/static/arm-1.4.5.0.tar.bz2'
+  sha256 'fc0e771585dde3803873b4807578060f0556cf1cac6c38840a714ffada3b28fa'
 
   def install
     (share+"arm").install Dir["*"]

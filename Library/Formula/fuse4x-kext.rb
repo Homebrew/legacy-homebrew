@@ -5,9 +5,18 @@ def kext_prefix
 end
 
 class Fuse4xKext < Formula
-  homepage 'http://fuse4x.org/'
-  url 'https://github.com/fuse4x/kext.git', :tag => "fuse4x_0_9_0"
-  version "0.9.0"
+  homepage 'http://fuse4x.github.com'
+  url 'https://github.com/fuse4x/kext/tarball/fuse4x_0_9_2'
+  sha1 'ff143cd14346a6b79769b745e117949baae86705'
+
+  bottle do
+    # Bottle provided for Lion and newer since the Command Line Tools cannot
+    # compile things that use `xcodebuild`. Actual compilation takes ~10
+    # seconds so there is no need to bottle this for earlier systems.
+
+    sha1 '66e546c4d8b590b0c67584b73a6731757a5d87fb' => :mountainlion
+    sha1 'b2586e3f78a709a0df0385868a540fda17a7a00a' => :lion
+  end
 
   def install
     ENV.delete('CC')
@@ -15,12 +24,11 @@ class Fuse4xKext < Formula
 
     args = [
       "-sdk",
-      "macosx#{MACOS_VERSION}",
+      "macosx#{MacOS.version}",
       "-configuration", "Release",
       "-alltargets",
-      "MACOSX_DEPLOYMENT_TARGET=#{MACOS_VERSION}",
+      "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
       "SYMROOT=build",
-      "GCC_PREPROCESSOR_DEFINITIONS='FUSE4X_DISABLE_MACFUSE_MODE'",
       # Build a 32-bit kernel extension on Leopard and a fat binary for Snow
       # Leopard/Lion.
       "ARCHS=i386 #{'x86_64' if MacOS.prefer_64_bit?}", 'ONLY_ACTIVE_ARCH=NO'
@@ -38,7 +46,7 @@ class Fuse4xKext < Formula
       In order for FUSE-based filesystems to work, the fuse4x kernel extension
       must be installed by the root user:
 
-        sudo cp -rfX #{kext_prefix}/fuse4x.kext /Library/Extensions
+        sudo /bin/cp -rfX #{kext_prefix}/fuse4x.kext /Library/Extensions
         sudo chmod +s /Library/Extensions/fuse4x.kext/Support/load_fuse4x
 
       If upgrading from a previous version of Fuse4x, the old kernel extension

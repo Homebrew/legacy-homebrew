@@ -3,7 +3,7 @@ require 'formula'
 class Abcl < Formula
   homepage 'http://common-lisp.net/project/armedbear/'
   url 'http://common-lisp.net/project/armedbear/releases/1.0.1/abcl-bin-1.0.1.tar.gz'
-  md5 'bd95a55df30469b4f6d85af7c5ede297'
+  sha1 '50886fe87f31317eda5c40eba8e704742cafd18e'
 
   depends_on 'rlwrap'
 

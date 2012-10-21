@@ -1,9 +1,9 @@
 require 'formula'
 
 class Chromedriver < Formula
-  url 'http://chromium.googlecode.com/files/chromedriver_mac_18.0.995.0.zip'
-  homepage 'http://code.google.com/p/selenium/wiki/ChromeDriver'
-  sha1 '5ff64a13d56ad6b95a2c9d430f357d72064a6d7d'
+  homepage 'http://code.google.com/p/chromedriver/'
+  url 'https://chromedriver.googlecode.com/files/chromedriver_mac_23.0.1240.0.zip'
+  sha1 '20a21cca0a4f0a1e25ee88e1f0bd53acbdba4cc6'
 
   def install
     bin.install 'chromedriver'

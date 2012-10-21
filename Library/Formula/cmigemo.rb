@@ -3,7 +3,7 @@ require 'formula'
 class Cmigemo < Formula
   homepage 'http://www.kaoriya.net/software/cmigemo'
   url 'http://cmigemo.googlecode.com/files/cmigemo-default-src-20110227.zip'
-  md5 '6e9b6f6ec96d4eb8bdd18e52b91e1b85'
+  sha1 '25e279c56d3a8f1e82cbfb3526d1b38742d1d66c'
 
   depends_on 'nkf' => :build
 
@@ -13,8 +13,8 @@ class Cmigemo < Formula
   end
 
   def install
-    system "chmod 755 ./configure"
-    system "./configure"
+    system "chmod +x ./configure"
+    system "./configure", "--prefix=#{prefix}"
     system "make osx"
     system "make osx-dict"
     cd 'dict' do
@@ -40,5 +40,5 @@ __END__
  #include <string.h>
 +#include <limits.h>
  #include "wordbuf.h"
- 
+
  #define WORDLEN_DEF 64

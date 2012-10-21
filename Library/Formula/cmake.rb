@@ -1,39 +1,50 @@
 require 'formula'
 
-class Cmake < Formula
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.7.tar.gz'
-  md5 'e1b237aeaed880f65dec9c20602452f6'
-  homepage 'http://www.cmake.org/'
+class NoExpatFramework < Requirement
+  def message; <<-EOS.undent
+    Detected /Library/Frameworks/expat.framework
 
-  # Fix issues with Xcode 4.3. Remove for 2.8.8.
-  def patches
-    [ 'https://github.com/Kitware/CMake/commit/5663e.patch',
-      'https://github.com/Kitware/CMake/commit/4693c.patch' ]
+    This will be picked up by CMake's build system and likely cause the
+    build to fail, trying to link to a 32-bit version of expat.
+
+    You may need to move this file out of the way to compile CMake.
+    EOS
   end
+  def satisfied?
+    not File.exist? "/Library/Frameworks/expat.framework"
+  end
+end
+
+
+class Cmake < Formula
+  homepage 'http://www.cmake.org/'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.9.tar.gz'
+  sha1 'b96663c0757a5edfbddc410aabf7126a92131e2b'
 
   bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/cmake-2.8.7-bottle.tar.gz'
-    sha1 '3a57f6f44186e0dba34ef8b8fb4a9047e9e5d8a3'
+    sha1 'ae7e0cf39556ea0a32e7bb7716ac820734ca7918' => :mountainlion
+    sha1 '6631aaeeafb9209e711508ad72727fbb4b5ab295' => :lion
+    sha1 'ea52f2a18b00f3404e8bf73c12c3da1d9a39f128' => :snowleopard
   end
 
-  def install
-    # A framework-installed expat will be detected and mess things up.
-    if File.exist? "/Library/Frameworks/expat.framework"
-      opoo "/Library/Frameworks/expat.framework detected"
-      puts <<-EOS.undent
-        This will be picked up by CMake's build system and likey cause the
-        build to fail, trying to link to a 32-bit version of expat.
-        You may need to move this file out of the way for this brew to work.
-      EOS
-    end
+  depends_on NoExpatFramework.new
 
-    system "./bootstrap", "--prefix=#{prefix}",
-                          "--system-libs",
-                          "--no-system-libarchive",
-                          "--datadir=/share/cmake",
-                          "--docdir=/share/doc/cmake",
-                          "--mandir=/share/man"
+  def install
+    args = %W[
+      --prefix=#{prefix}
+      --system-libs
+      --no-system-libarchive
+      --datadir=/share/cmake
+      --docdir=/share/doc/cmake
+      --mandir=/share/man
+    ]
+
+    system "./bootstrap", *args
     system "make"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/cmake", "-E", "echo", "testing"
   end
 end

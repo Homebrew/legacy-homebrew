@@ -20,28 +20,43 @@ def which_python
   "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
 end
 
-
 def opencl?
   ARGV.include? "--enable-opencl"
 end
 
+def armadillo?
+  ARGV.include? "--enable-armadillo"
+end
+
+
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
-  url 'http://download.osgeo.org/gdal/gdal-1.9.0.tar.gz'
-  md5 '1853f3d8eb5232ae030abe007840cade'
+  url 'http://download.osgeo.org/gdal/gdal-1.9.2.tar.gz'
+  sha1 '7eda6a4d735b8d6903740e0acdd702b43515e351'
 
-  head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
+  head 'https://svn.osgeo.org/gdal/trunk/gdal'
+
+  # For creating up to date man pages.
+  depends_on 'doxygen' => :build if ARGV.build_head?
+
+  depends_on :libpng
 
   depends_on 'jpeg'
   depends_on 'giflib'
   depends_on 'proj'
   depends_on 'geos'
 
+  depends_on 'sqlite'  # To ensure compatibility with SpatiaLite.
+  depends_on 'freexl'
+  depends_on 'libspatialite'
+
   depends_on "postgresql" if postgres?
   depends_on "mysql" if mysql?
 
   # Without Numpy, the Python bindings can't deal with raster data.
   depends_on 'numpy' => :python unless no_python?
+
+  depends_on 'armadillo' if armadillo?
 
   if complete?
     # Raster libraries
@@ -50,12 +65,12 @@ class Gdal < Formula
                         # not geo-spatially enabled.
     depends_on "cfitsio"
     depends_on "epsilon"
+    depends_on "libdap"
+    def patches; DATA; end # Fix a bug in LibDAP detection: http://trac.osgeo.org/gdal/ticket/4630
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
-    depends_on "libspatialite"
     depends_on "xerces-c"
-    depends_on "poppler"
 
     # Other libraries
     depends_on "xz" # get liblzma compression algorithm library from XZutils
@@ -67,13 +82,16 @@ class Gdal < Formula
       ['--with-postgres', 'Specify PostgreSQL as a dependency.'],
       ['--with-mysql', 'Specify MySQL as a dependency.'],
       ['--without-python', 'Build without Python support (disables a lot of tools).'],
-      ['--enable-opencl', 'Build with support for OpenCL.']
+      ['--enable-opencl', 'Build with OpenCL acceleration.'],
+      ['--enable-armadillo', 'Build with Armadillo accelerated TPS transforms.']
     ]
   end
 
   def get_configure_args
     args = [
       # Base configuration.
+      "--prefix=#{prefix}",
+      "--mandir=#{man}",
       "--disable-debug",
       "--with-local=#{prefix}",
       "--with-threads",
@@ -90,15 +108,17 @@ class Gdal < Formula
 
       # Backends supported by OS X.
       "--with-libz=/usr",
-      "--with-png=/usr/X11",
+      "--with-png=#{MacOS::X11.prefix}",
       "--with-expat=/usr",
-      "--with-sqlite3=/usr",
+      "--with-curl=/usr/bin/curl-config",
 
       # Default Homebrew backends.
       "--with-jpeg=#{HOMEBREW_PREFIX}",
       "--with-jpeg12",
       "--with-gif=#{HOMEBREW_PREFIX}",
-      "--with-curl=/usr/bin/curl-config",
+      "--with-sqlite3=#{HOMEBREW_PREFIX}",
+      "--with-freexl=#{HOMEBREW_PREFIX}",
+      "--with-spatialite=#{HOMEBREW_PREFIX}",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
       # Should be installed separately after GRASS installation using the
@@ -106,11 +126,9 @@ class Gdal < Formula
       "--without-grass",
       "--without-libgrass",
 
-      # OPeNDAP support also explicitly disabled for now---causes the
-      # configuration of other components such as Curl and Spatialite to fail
-      # for unknown reasons.
-      "--with-dods-root=no"
-
+      # Poppler explicitly disabled. GDAL currently can't compile against
+      # Poppler 0.20.0.
+      "--without-poppler"
     ]
 
     # Optional library support for additional formats.
@@ -123,9 +141,8 @@ class Gdal < Formula
         "--with-cfitsio=#{HOMEBREW_PREFIX}",
         "--with-epsilon=#{HOMEBREW_PREFIX}",
         "--with-odbc=#{HOMEBREW_PREFIX}",
-        "--with-spatialite=#{HOMEBREW_PREFIX}",
         "--with-xerces=#{HOMEBREW_PREFIX}",
-        "--with-poppler=#{HOMEBREW_PREFIX}"
+        "--with-dods-root=#{HOMEBREW_PREFIX}"
       ]
     else
       args.concat [
@@ -138,10 +155,9 @@ class Gdal < Formula
         "--without-jasper",
         "--without-xerces",
         "--without-epsilon",
-        "--without-spatialite",
         "--without-libkml",
-        "--without-poppler",
         "--without-podofo",
+        "--with-dods-root=no",
 
         # The following libraries are either proprietary or available under
         # non-free licenses.  Interested users will have to install such
@@ -187,18 +203,30 @@ class Gdal < Formula
     # OpenCL support
     args << "--with-opencl" if opencl?
 
+    # Armadillo support.
+    args << (armadillo? ? '--with-armadillo=yes' : '--with-armadillo=no')
+
     return args
   end
 
   def install
-    # The 1.9.0 release appears to contain a regression where linking flags for
-    # Sqlite are not added at a critical moment when the GDAL library is being
-    # assembled. This causes the build to fail due to missing symbols.
+    # Linking flags for SQLite are not added at a critical moment when the GDAL
+    # library is being assembled. This causes the build to fail due to missing
+    # symbols.
     #
     # Fortunately, this can be remedied using LDFLAGS.
     ENV.append 'LDFLAGS', '-lsqlite3'
+    # Needed by libdap.
+    ENV.append 'CPPFLAGS', '-I/usr/include/libxml2' if complete?
 
-    system "./configure", "--prefix=#{prefix}", *get_configure_args
+    # Reset ARCHFLAGS to match how we build.
+    if MacOS.prefer_64_bit?
+      ENV['ARCHFLAGS'] = "-arch x86_64"
+    else
+      ENV['ARCHFLAGS'] = "-arch i386"
+    end
+
+    system "./configure", *get_configure_args
     system "make"
     system "make install"
 
@@ -227,6 +255,11 @@ class Gdal < Formula
         bin.install Dir['scripts/*']
       end
     end
+
+    system 'make', 'man' if ARGV.build_head?
+    system 'make', 'install-man'
+    # Clean up any stray doxygen files.
+    Dir[bin + '*.dox'].each { |p| rm p }
   end
 
   unless no_python?
@@ -245,3 +278,21 @@ the PYTHONPATH:
     end
   end
 end
+
+__END__
+Fix test for LibDAP >= 3.10.
+
+
+diff --git a/configure b/configure
+index 997bbbf..a1928d5 100755
+--- a/configure
++++ b/configure
+@@ -24197,7 +24197,7 @@ else
+ rm -f islibdappost310.*
+ echo '#include "Connect.h"' > islibdappost310.cpp
+ echo 'int main(int argc, char** argv) { return 0; } ' >> islibdappost310.cpp
+-if test -z "`${CXX} islibdappost310.cpp -c ${DODS_INC} 2>&1`" ; then
++if test -z "`${CXX} islibdappost310.cpp -c ${DODS_INC} ${CPPFLAGS} 2>&1`" ; then
+     DODS_INC="$DODS_INC -DLIBDAP_310 -DLIBDAP_39"
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: libdap >= 3.10" >&5
+ $as_echo "libdap >= 3.10" >&6; }

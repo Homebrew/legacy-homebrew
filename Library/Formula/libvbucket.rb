@@ -2,8 +2,8 @@ require 'formula'
 
 class Libvbucket < Formula
   homepage 'http://couchbase.com/develop/c/current'
-  url 'http://packages.couchbase.com/clients/c/libvbucket-1.8.0.3.tar.gz'
-  md5 '828050443cb47735816ff8e296e65a7f'
+  url 'http://packages.couchbase.com/clients/c/libvbucket-1.8.0.4.tar.gz'
+  sha1 '4f24a85d251c0fca69e7705681a2170dd794492a'
 
   def install
     system "./configure", "--disable-debug",

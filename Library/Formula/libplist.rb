@@ -3,7 +3,7 @@ require 'formula'
 class Libplist < Formula
   homepage 'http://cgit.sukimashita.com/libplist.git/'
   url 'http://cgit.sukimashita.com/libplist.git/snapshot/libplist-1.8.tar.bz2'
-  md5 '2a9e0258847d50f9760dc3ece25f4dc6'
+  sha1 'dea18ac31cc497dba959bdb459a2a49fb41664c3'
 
   depends_on 'cmake' => :build
   depends_on 'libxml2'
@@ -16,7 +16,7 @@ class Libplist < Formula
 
   def install
     ENV.deparallelize # make fails on an 8-core Mac Pro
-    system "cmake #{std_cmake_parameters} -DCMAKE_INSTALL_NAME_DIR=#{lib} ."
+    system "cmake", ".", "-DCMAKE_INSTALL_NAME_DIR=#{lib}", *std_cmake_args
     system "make install"
 
     # Remove 'plutil', which duplicates the system-provided one. Leave the versioned one, though.

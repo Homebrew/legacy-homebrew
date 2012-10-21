@@ -1,47 +1,125 @@
 require 'download_strategy'
+require 'checksums'
+require 'version'
 
+class SoftwareSpec
+  attr_reader :checksum, :mirrors, :specs
 
-# Defines a URL and download method for a stable or HEAD build
-class SoftwareSpecification
-  attr_reader :url, :specs, :using
-
-  VCS_SYMBOLS = {
-    :bzr     => BazaarDownloadStrategy,
-    :curl    => CurlDownloadStrategy,
-    :cvs     => CVSDownloadStrategy,
-    :git     => GitDownloadStrategy,
-    :hg      => MercurialDownloadStrategy,
-    :nounzip => NoUnzipCurlDownloadStrategy,
-    :post    => CurlPostDownloadStrategy,
-    :svn     => SubversionDownloadStrategy,
-  }
-
-  def initialize url, specs=nil
-    raise "No url provided" if url.nil?
+  def initialize url=nil, version=nil
     @url = url
+    @version = version
+    @mirrors = []
+  end
+
+  def download_strategy
+    @download_strategy ||= DownloadStrategyDetector.detect(@url, @using)
+  end
+
+  def verify_download_integrity fn
+    fn.verify_checksum @checksum
+  rescue ChecksumMissingError
+    opoo "Cannot verify package integrity"
+    puts "The formula did not provide a download checksum"
+    puts "For your reference the SHA1 is: #{fn.sha1}"
+  rescue ChecksumMismatchError => e
+    e.advice = <<-EOS.undent
+    Archive: #{fn}
+    (To retry an incomplete download, remove the file above.)
+    EOS
+    raise e
+  end
+
+  # The methods that follow are used in the block-form DSL spec methods
+  Checksum::TYPES.each do |cksum|
+    class_eval %Q{
+      def #{cksum}(val=nil)
+        if val.nil?
+          @checksum if @checksum.nil? or @checksum.hash_type == :#{cksum}
+        else
+          @checksum = Checksum.new(:#{cksum}, val)
+        end
+      end
+    }
+  end
+
+  def url val=nil, specs=nil
+    return @url if val.nil?
+    @url = val
     unless specs.nil?
-      # Get download strategy hint, if any
       @using = specs.delete :using
-      # The rest of the specs are for source control
       @specs = specs
     end
   end
 
-  # Returns a suitable DownloadStrategy class that can be
-  # used to retreive this software package.
-  def download_strategy
-    return detect_download_strategy(@url) if @using.nil?
-
-    # If a class is passed, assume it is a download strategy
-    return @using if @using.kind_of? Class
-
-    detected = VCS_SYMBOLS[@using]
-    raise "Unknown strategy #{@using} was requested." unless detected
-    return detected
+  def version val=nil
+    @version ||= case val
+      when nil then Version.parse(@url)
+      when Hash
+        key, value = val.shift
+        scheme = VersionSchemeDetector.new(value).detect
+        scheme.new(key)
+      else Version.new(val)
+      end
   end
 
-  def detect_version
-    Pathname.new(@url).version
+  def mirror val
+    @mirrors ||= []
+    @mirrors << val
+  end
+end
+
+class HeadSoftwareSpec < SoftwareSpec
+  def initialize url=nil, version=Version.new(:HEAD)
+    super
+  end
+
+  def verify_download_integrity fn
+    return
+  end
+end
+
+class Bottle < SoftwareSpec
+  attr_writer :url
+  attr_reader :revision
+
+  def initialize url=nil, version=nil
+    super
+    @revision = 0
+  end
+
+  # Checksum methods in the DSL's bottle block optionally take
+  # a Hash, which indicates the platform the checksum applies on.
+  Checksum::TYPES.each do |cksum|
+    class_eval %Q{
+      def #{cksum}(val=nil)
+        @#{cksum} ||= Hash.new
+        case val
+        when nil
+          @#{cksum}[MacOS.cat]
+        when String
+          @#{cksum}[:lion] = Checksum.new(:#{cksum}, val)
+        when Hash
+          key, value = val.shift
+          @#{cksum}[value] = Checksum.new(:#{cksum}, key)
+        end
+
+        @checksum = @#{cksum}[MacOS.cat] if @#{cksum}.has_key? MacOS.cat
+      end
+    }
+  end
+
+  def url val=nil
+    val.nil? ? @url : @url = val
+  end
+
+  # Used in the bottle DSL to set @revision, but acts as an
+  # as accessor for @version to preserve the interface
+  def version val=nil
+    if val.nil?
+      return @version ||= Version.parse(@url)
+    else
+      @revision = val
+    end
   end
 end
 
@@ -54,76 +132,125 @@ class KegOnlyReason
   def initialize reason, explanation=nil
     @reason = reason
     @explanation = explanation
+    @valid = case @reason
+      when :provided_pre_mountain_lion then MacOS.version < :mountain_lion
+      else true
+      end
+  end
+
+  def valid?
+    @valid
   end
 
   def to_s
-    if @reason == :provided_by_osx
-      <<-EOS.strip
-Mac OS X already provides this program and installing another version in
-parallel can cause all kinds of trouble.
+    case @reason
+    when :provided_by_osx then <<-EOS.undent
+      Mac OS X already provides this software and installing another version in
+      parallel can cause all kinds of trouble.
 
-#{@explanation}
-EOS
+      #{@explanation}
+      EOS
+    when :provided_pre_mountain_lion then <<-EOS.undent
+      Mac OS X already provides this software in versions before Mountain Lion.
+
+      #{@explanation}
+      EOS
     else
-      @reason.strip
-    end
+      @reason
+    end.strip
   end
 end
 
 
-# Used to annotate formulae that won't build correctly with LLVM.
-class FailsWithLLVM
-  attr_reader :msg, :data, :build
+# Represents a build-time option for a formula
+class Option
+  attr_reader :name, :description, :flag
 
-  def initialize msg=nil, data=nil
-    if msg.nil? or msg.kind_of? Hash
-      @msg = "(No specific reason was given)"
-      data = msg
-    else
-      @msg = msg
-    end
-    @data = data
-    @build = data.delete :build rescue nil
+  def initialize name, description=nil
+    @name = name.to_s
+    @description = description.to_s
+    @flag = '--'+name.to_s
   end
 
-  def reason
-    s = @msg
-    s += "Tested with LLVM build #{@build}" unless @build == nil
-    s += "\n"
-    return s
+  def eql?(other)
+    @name == other.name
   end
 
-  def handle_failure
-    return unless ENV.compiler == :llvm
+  def hash
+    @name.hash
+  end
+end
 
-    # version 2336 is the latest version as of Xcode 4.2, so it is the
-    # latest version we have tested against so we will switch to GCC and
-    # bump this integer when Xcode 4.3 is released. TODO do that!
-    if build.to_i >= 2336
-      if MacOS.xcode_version < "4.2"
-        opoo "Formula will not build with LLVM, using GCC"
-        ENV.gcc
+
+# This class holds the build-time options defined for a Formula,
+# and provides named access to those options during install.
+class BuildOptions
+  include Enumerable
+
+  def initialize args
+    # Take a copy of the args (any string array, actually)
+    @args = Array.new(args)
+    # Extend it into an ARGV extension
+    @args.extend(HomebrewArgvExtension)
+    @options = Set.new
+  end
+
+  def add name, description=nil
+    if description.nil?
+      case name
+      when :universal, "universal"
+        description = "Build a universal binary"
+      when "32-bit"
+        description = "Build 32-bit only"
       else
-        opoo "Formula will not build with LLVM, trying Clang"
-        ENV.clang
+        description = ""
       end
-      return
     end
-    opoo "Building with LLVM, but this formula is reported to not work with LLVM:"
-    puts
-    puts reason
-    puts
-    puts <<-EOS.undent
-      We are continuing anyway so if the build succeeds, please open a ticket with
-      the following information: #{MacOS.llvm_build_version}-#{MACOS_VERSION}. So
-      that we can update the formula accordingly. Thanks!
-      EOS
-    puts
-    if MacOS.xcode_version < "4.2"
-      puts "If it doesn't work you can: brew install --use-gcc"
-    else
-      puts "If it doesn't work you can try: brew install --use-clang"
-    end
-    puts
+
+    @options << Option.new(name, description)
+  end
+
+  def has_option? name
+    any? { |opt| opt.name == name }
+  end
+
+  def empty?
+    @options.empty?
+  end
+
+  def each(&blk)
+    @options.each(&blk)
+  end
+
+  def as_flags
+    map { |opt| opt.flag }
+  end
+
+  def include? name
+    @args.include? '--' + name
+  end
+
+  def head?
+    @args.flag? '--HEAD'
+  end
+
+  def devel?
+    @args.include? '--devel'
+  end
+
+  def stable?
+    not (head? or devel?)
+  end
+
+  # True if the user requested a universal build.
+  def universal?
+    @args.include? '--universal'
+  end
+
+  # Request a 32-bit only build.
+  # This is needed for some use-cases though we prefer to build Universal
+  # when a 32-bit version is needed.
+  def build_32_bit?
+    @args.include? '--32-bit'
   end
 end

@@ -3,7 +3,7 @@ require 'formula'
 class Ogmtools < Formula
   url 'http://www.bunkus.org/videotools/ogmtools/ogmtools-1.5.tar.bz2'
   homepage 'http://www.bunkus.org/videotools/ogmtools/'
-  md5 '02d356e3d21d53b1d9715bab223d8996'
+  sha1 'a23ba7e6ac490ffb60e8fb739e790b7a020a444c'
 
   depends_on 'libogg'
   depends_on 'libvorbis'

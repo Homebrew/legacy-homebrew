@@ -2,26 +2,24 @@ require 'formula'
 
 class CfitsioExamples < Formula
   url 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/cexamples/cexamples.zip'
-  version '2010.08.19'
-  md5 '31a5f5622a111f25bee5a3fda2fdac28'
+  version '2012.09.24'
+  sha1 '668ffa9a65a66c9f1d7f4241867e1e8adf653231'
 end
 
 class Cfitsio < Formula
   homepage 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html'
-  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3290.tar.gz'
-  version '3.29'
-  md5 'bba93808486cf5edac236a941283b3c3'
+  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3310.tar.gz'
+  sha1 '35360dccc69dc5f12efb6fc9096ad951b59244d5'
+  version '3.310'
 
-  def options
-    [['--with-examples', "Compile and install example programs."]]
-  end
+  option 'with-examples', "Compile and install example programs"
 
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make shared"
     system "make install"
 
-    if ARGV.include? '--with-examples'
+    if build.include? 'with-examples'
       system "make fpack funpack"
       bin.install 'fpack', 'funpack'
 
@@ -31,7 +29,7 @@ class Cfitsio < Formula
         Dir['*.c'].each do |f|
           # compressed_fits.c does not work (obsolete function call)
           next if f == 'compress_fits.c'
-          system "#{ENV.cc} #{f} -I#{include} -L#{lib} -lcfitsio -lm -o bin/#{f.sub('.c','')}"
+          system ENV.cc, f, "-I#{include}", "-L#{lib}", "-lcfitsio", "-lm", "-o", "bin/#{f.sub('.c', '')}"
         end
         bin.install Dir['bin/*']
       end

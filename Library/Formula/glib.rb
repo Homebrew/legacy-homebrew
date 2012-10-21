@@ -1,76 +1,60 @@
 require 'formula'
 
-def build_tests?; ARGV.include? '--test'; end
-
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.30/glib-2.30.3.tar.xz'
-  sha256 'e6cbb27c71c445993346e785e8609cc75cea2941e32312e544872feba572dd27'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.34/glib-2.34.1.tar.xz'
+  sha256 '6e84dc9d84b104725b34d255421ed7ac3629e49f437d37addde5ce3891c2e2f1'
 
+  option :universal
+  option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
+
+  depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'libffi'
 
-  fails_with_llvm "Undefined symbol errors while linking", :build => 2334
-
-  def patches
-    { :p0 => %W[
-      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-configure.diff
-      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-glib-2.0.pc.in.diff
-      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-glib_gunicollate.c.diff
-      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-gi18n.h.diff
-      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-gio_xdgmime_xdgmime.c.diff
-      https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/patch-gio_gdbusprivate.c.diff
-      ]}
+  fails_with :llvm do
+    build 2334
+    cause "Undefined symbol errors while linking"
   end
 
-  def options
-  [
-    ['--universal', 'Build universal binaries.'],
-    ['--test', 'Build a debug build and run tests. NOTE: Tests may hang on "unix-streams".']
-  ]
+  def patches
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673047  Still open at 2.34.1
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673135  Resolved as wontfix.
+    p = { :p1 => %W[
+      https://raw.github.com/gist/3924875/19cdaebdff7dcc94ccd9b3747d43a09318f0b846/glib-gunicollate.patch
+      https://raw.github.com/gist/3924879/f86903e0aea1458448507305d01b06a7d878c041/glib-configurable-paths.patch
+    ]}
+    p[:p0] = %W[
+        https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/patch-configure.diff
+    ] if build.universal?
+    p
   end
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
-    # indeed, amazingly, -w causes gcc to emit spurious errors for this package!
-    ENV.enable_warnings
+    # -w is said to causes gcc to emit spurious errors for this package
+    ENV.enable_warnings if ENV.compiler == :gcc
 
-    args = ["--disable-dependency-tracking", "--disable-rebuilds",
-            "--prefix=#{prefix}",
-            "--disable-dtrace"]
-
-    args << "--disable-debug" unless build_tests?
-
-    # MacPorts puts "@@PREFIX@@" in patches and does inreplace on the files,
-    # so we must follow suit if we use their patches
-    inreplace ['gio/xdgmime/xdgmime.c', 'gio/gdbusprivate.c'] do |s|
-      s.gsub! '@@PREFIX@@', HOMEBREW_PREFIX
-    end
-
-    # glib and pkg-config <= 0.26 have circular dependencies, so we should build glib without pkg-config
-    # The pkg-config dependency can be eliminated if certain env variables are set
-    # Note that this *may* need to be updated if any new dependencies are added in the future
-    # See http://permalink.gmane.org/gmane.comp.package-management.pkg-config/627
-    ENV['ZLIB_CFLAGS'] = ''
-    ENV['ZLIB_LIBS'] = '-lz'
-    # libffi include paths are dramatically ugly
-    libffi = Formula.factory('libffi')
-    ENV['LIBFFI_CFLAGS'] = "-I #{libffi.lib}/libffi-#{libffi.version}/include"
-    ENV['LIBFFI_LIBS'] = '-lffi'
+    # Disable dtrace; see https://trac.macports.org/ticket/30413
+    args = %W[
+      --disable-maintainer-mode
+      --disable-dependency-tracking
+      --disable-dtrace
+      --prefix=#{prefix}
+      --localstatedir=#{var}
+    ]
 
     system "./configure", *args
 
-    # Fix for 64-bit support, from MacPorts
-    curl "https://trac.macports.org/export/87537/trunk/dports/devel/glib2/files/config.h.ed", "-O"
-    system "ed - config.h < config.h.ed"
+    if build.universal?
+      system "curl 'https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/config.h.ed' | ed - config.h"
+    end
 
     system "make"
-    # Suppress a folder already exists warning during install
-    # Also needed for running tests
-    ENV.j1
-    system "make test" if build_tests?
+    # the spawn-multithreaded tests require more open files
+    system "ulimit -n 1024; make check" if build.include? 'test'
     system "make install"
 
     # This sucks; gettext is Keg only to prevent conflicts with the wider
@@ -90,11 +74,6 @@ class Glib < Formula
   end
 
   def test
-    unless Formula.factory("pkg-config").installed?
-      puts "pkg-config is required to run this test, but is not installed"
-      exit 1
-    end
-
     mktemp do
       (Pathname.pwd/'test.c').write <<-EOS.undent
         #include <string.h>
@@ -111,8 +90,9 @@ class Glib < Formula
             return (strcmp(str, result_2) == 0) ? 0 : 1;
         }
         EOS
-      system ENV.cc, "-o", "test", "test.c",
-        *`pkg-config --cflags --libs glib-2.0`.split
+      flags = *`pkg-config --cflags --libs glib-2.0`.split
+      flags += ENV.cflags.split
+      system ENV.cc, "-o", "test", "test.c", *flags
       system "./test"
     end
   end

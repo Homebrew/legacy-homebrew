@@ -3,7 +3,9 @@ require 'formula'
 class Libharu < Formula
   homepage 'http://www.libharu.org'
   url 'http://libharu.org/files/libharu-2.2.1.tar.bz2'
-  md5 '4febd7e677b1c5d54db59a608b84e79f'
+  sha1 'bfea7d9df3fb6a112340d0d54731f62f53b26d2f'
+
+  depends_on :libpng
 
   def patches
     # Fixes compilation against LibPNG 1.5. Can be removed on next release.
@@ -15,10 +17,11 @@ class Libharu < Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          # ENV.x11 doesn't get picked up
-                          "--with-png=/usr/X11"
+                          # libpng doesn't get picked up
+                          "--with-png=#{MacOS::X11.prefix}"
     system "make install"
   end
 end

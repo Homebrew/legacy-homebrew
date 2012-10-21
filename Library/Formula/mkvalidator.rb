@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mkvalidator < Formula
-  url 'http://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.3.7.tar.bz2'
   homepage 'http://www.matroska.org/downloads/mkvalidator.html'
-  sha1 '4dada51d23255dffb4176450b410d6326a72d845'
+  url 'http://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.4.0.tar.bz2'
+  sha1 'c1e9fc8de67694f7a3dcb9beb25488db513f8f6f'
 
   def patches
     # see https://sourceforge.net/tracker/?group_id=68739&atid=522230
@@ -20,17 +20,13 @@ class Mkvalidator < Formula
 end
 
 __END__
---- a/corec/tools/coremake/gcc_osx_x64.build	2011-09-25 08:01:47.000000000 -0700
-+++ b/corec/tools/coremake/gcc_osx_x64.build	2012-03-15 17:17:44.000000000 -0700
-@@ -4,9 +4,9 @@
+--- a/corec/tools/coremake/gcc_osx_x64.build	2012-05-13 00:39:54.000000000 -0700
++++ b/corec/tools/coremake/gcc_osx_x64.build	2012-06-14 01:43:02.000000000 -0700
+@@ -4,7 +4,6 @@
  
  PLATFORMLIB = osx_x86
  SVNDIR = osx_x86
 -SDK = /Developer/SDKs/MacOSX10.6.sdk
  
--CCFLAGS=%(CCFLAGS) -arch x86_64 -mdynamic-no-pic -mmacosx-version-min=10.6
-+
-+CCFLAGS=%(CCFLAGS) -arch x86_64 -mdynamic-no-pic
+ CCFLAGS=%(CCFLAGS) -arch x86_64 -mdynamic-no-pic -mmacosx-version-min=10.6
  ASMFLAGS = -f macho64 -D_MACHO
- 
- #include "gcc_osx.inc"

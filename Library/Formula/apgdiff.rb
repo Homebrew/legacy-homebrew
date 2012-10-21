@@ -1,15 +1,16 @@
 require 'formula'
 
 class Apgdiff < Formula
-  homepage 'http://apgdiff.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/apgdiff/apgdiff/apgdiff-1.4/apgdiff-1.4-bin.zip'
-  md5 '6ef287d02b4429d2111140f7fb2d8c29'
+  homepage 'http://apgdiff.startnet.biz/index.php'
+  url 'http://apgdiff.startnet.biz/download/apgdiff-2.4-bin.zip'
+  mirror 'http://downloads.sourceforge.net/project/apgdiff/apgdiff/apgdiff-2.4/apgdiff-2.4-bin.zip'
+  sha1 '1150d44e9da2c1417767d4106bdb297ed0adfed8'
 
   def install
-    libexec.install "apgdiff-1.4.jar"
+    libexec.install "apgdiff-#{version}.jar"
     (bin+'apgdiff').write <<-EOS.undent
       #!/bin/bash
-      java -jar "#{libexec}/apgdiff-1.4.jar" "$@"
+      java -jar "#{libexec}/apgdiff-#{version}.jar" "$@"
     EOS
   end
 end

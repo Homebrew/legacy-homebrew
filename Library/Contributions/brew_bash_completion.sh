@@ -10,30 +10,10 @@
 #    $(brew --prefix)/etc/bash_completion.d
 #    $(brew --prefix)/share/bash-completion/completions
 #
-# and bash-completion will source it automatically.
-#
-# The __brew_ps1() function can be used to annotate your PS1 with
-# Homebrew debugging information; it behaves similarly to the __git_ps1()
-# function provided by the git's bash completion script.
-#
-# For example, the prompt string
-#
-#     PS1='\u@\h \W $(__brew_ps1 "(%s)") $'
-#
-# would result in a prompt like
-#
-#    user@hostname cwd $
-#
-# but if you are currently engaged in an interactive or debug install,
-# (i.e., you invoked `brew install` with either '-i' or '-d'), then the
-# prompt would look like
-#
-#     user@hostname cwd (<formula_name>|DEBUG) $
-#
-# You can customize the output string, e.g. $(__brew_ps1 "[%s]") would
-# output "[<formula_name>|DEBUG]". The default (if you do not provide a
-# format argument) is to print "(<formula_name>|DEBUG)" prefixed with a
-# single space.
+# Installing to etc/bash_completion.d will cause bash-completion to load
+# it automatically at shell startup time. If you choose to install it to
+# share/bash-completion/completions, it will be loaded on-demand (i.e. the
+# first time you invoke the `brew` command in a shell session).
 
 __brewcomp_words_include ()
 {
@@ -107,9 +87,18 @@ __brew_complete_outdated ()
     COMPREPLY=($(compgen -W "$od" -- "$cur"))
 }
 
-__brew_complete_taps ()
+__brew_complete_tapped ()
 {
     __brewcomp "$(\ls $(brew --repository)/Library/Taps 2>/dev/null | sed 's/-/\//g')"
+}
+
+__brew_complete_taps ()
+{
+    if [[ -z "$__brew_cached_taps" ]]; then
+        __brew_cached_taps="$(brew ls-taps)"
+    fi
+
+    __brewcomp "$__brew_cached_taps"
 }
 
 _brew_cleanup ()
@@ -220,6 +209,24 @@ _brew_install ()
         ;;
     esac
     __brew_complete_formulae
+}
+
+_brew_link ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        if __brewcomp_words_include "--dry-run"; then
+            return
+        elif __brewcomp_words_include "--force"; then
+            return
+        else
+            __brewcomp "--dry-run --force"
+            return
+        fi
+        ;;
+    esac
+    __brew_complete_installed
 }
 
 _brew_list ()
@@ -345,12 +352,6 @@ _brew_versions ()
     __brew_complete_formulae
 }
 
-__brew_ps1 ()
-{
-    [[ -n $HOMEBREW_DEBUG_INSTALL ]] &&
-    printf "${1:- (%s)}" "$HOMEBREW_DEBUG_INSTALL|DEBUG"
-}
-
 _brew ()
 {
     local i=1 cmd
@@ -374,8 +375,9 @@ _brew ()
     done
 
     if [[ $i -eq $COMP_CWORD ]]; then
-        local ext=$(\ls $(brew --repository)/Library/Contributions/cmds \
-                2>/dev/null | sed -e "s/\.rb//g" -e "s/brew-//g")
+        local ext=$(\ls -p $(brew --repository)/Library/Contributions/cmds \
+                2>/dev/null | sed -e "s/\.rb//g" -e "s/brew-//g" \
+                -e "s/.*\///g")
         __brewcomp "
             --cache --cellar --config
             --env --prefix --repository
@@ -395,6 +397,7 @@ _brew ()
             link ln
             list ls
             log
+            missing
             options
             outdated
             prune
@@ -417,7 +420,7 @@ _brew ()
     case "$cmd" in
     --cache|--cellar|--prefix)  __brew_complete_formulae ;;
     audit|cat|edit|home)        __brew_complete_formulae ;;
-    link|ln|test|unlink)        __brew_complete_installed ;;
+    test|unlink)                __brew_complete_installed ;;
     upgrade)                    __brew_complete_outdated ;;
     cleanup)                    _brew_cleanup ;;
     create)                     _brew_create ;;
@@ -426,13 +429,16 @@ _brew ()
     fetch)                      _brew_fetch ;;
     info|abv)                   _brew_info ;;
     install)                    _brew_install ;;
+    link|ln)                    _brew_link ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
+    missing)                    __brew_complete_formulae ;;
     options)                    _brew_options ;;
     outdated)                   _brew_outdated ;;
     search|-S)                  _brew_search ;;
+    tap)                        __brew_complete_taps ;;
     uninstall|remove|rm)        _brew_uninstall ;;
-    untap)                      __brew_complete_taps ;;
+    untap)                      __brew_complete_tapped ;;
     update)                     _brew_update ;;
     uses)                       _brew_uses ;;
     versions)                   _brew_versions ;;

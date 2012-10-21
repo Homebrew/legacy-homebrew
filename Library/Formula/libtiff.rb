@@ -2,19 +2,16 @@ require 'formula'
 
 class Libtiff < Formula
   homepage 'http://www.remotesensing.org/libtiff/'
-  url 'http://download.osgeo.org/libtiff/tiff-3.9.5.zip'
-  sha256 '332d1a658340c41791fce62fb8fff2a5ba04c2e82b8b85e741eb0a7b30e0d127'
+  url 'http://download.osgeo.org/libtiff/tiff-4.0.2.tar.gz'
+  sha256 'aa29f1f5bfe3f443c3eb4dac472ebde15adc8ff0464b83376f35e3b2fef935da'
 
-  def options
-    [["--universal", "Builds a universal binary"]]
-  end
+  option :universal
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--with-apple-opengl-framework"
+                          "--without-x",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

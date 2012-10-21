@@ -2,16 +2,16 @@ require 'formula'
 
 class Qscintilla2 < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/qscintilla/intro'
-  url 'http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-2.6.1.tar.gz'
-  sha1 'c68dbeaafb4f5dbe0d8200ae907cced0c7762e19'
+  url 'http://www.riverbankcomputing.co.uk/static/Downloads/QScintilla2/QScintilla-gpl-2.6.2.tar.gz'
+  sha1 '6106c9e13983c086daf1fb0dba1180abed17588c'
 
   depends_on 'pyqt'
   depends_on 'sip'
 
   def install
-    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/python", ':'
+    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
 
-    cd 'Qt4' do
+    cd 'Qt4Qt5' do
       inreplace 'qscintilla.pro' do |s|
         s.gsub! '$$[QT_INSTALL_LIBS]', lib
         s.gsub! "$$[QT_INSTALL_HEADERS]", include
@@ -27,7 +27,7 @@ class Qscintilla2 < Formula
     cd 'Python' do
       system 'python', 'configure.py', "-o", lib, "-n", include,
                        "--apidir=#{prefix}/qsci",
-                       "--destdir=#{lib}/python/PyQt4",
+                       "--destdir=#{lib}/#{which_python}/site-packages/PyQt4",
                        "--sipdir=#{share}/sip"
       system 'make'
       system 'make', 'install'
@@ -35,9 +35,12 @@ class Qscintilla2 < Formula
   end
 
   def caveats; <<-EOS.undent
-    This formula includes a Python module that will not be functional until you
-    amend your PYTHONPATH:
-        export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/python:$PYTHONPATH
+    For non-Homebrew Python, you need to amend your PYTHONPATH like so:
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
     EOS
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end

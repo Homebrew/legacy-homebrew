@@ -1,9 +1,15 @@
 require 'formula'
 
 class Solr < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/3.5.0/apache-solr-3.5.0.tgz'
   homepage 'http://lucene.apache.org/solr/'
-  md5 'b7be2fc190b26377ced5ae6055ed43e2'
+  url 'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.0.0/apache-solr-4.0.0.tgz'
+  sha1 '0cb61d9572516fc627785201b79b3a85e95f877d'
+
+  devel do
+    url  'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.0.0-BETA/apache-solr-4.0.0-BETA.tgz'
+    sha1 'b41061400f3c5e0433ae8e01c4a62814be37b712'
+    version "4.0.0-BETA"
+  end
 
   def script; <<-EOS.undent
     #!/bin/sh
@@ -22,10 +28,10 @@ class Solr < Formula
 
   def caveats; <<-EOS.undent
     To start solr:
-        solr path/to/solr/config/dir
+      solr path/to/solr/config/dir
 
     See the solr homepage for more setup information:
-        brew home solr
+      brew home solr
     EOS
   end
 end

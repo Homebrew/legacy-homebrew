@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libquicktime < Formula
-  url 'http://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.3/libquicktime-1.2.3.tar.gz'
   homepage 'http://libquicktime.sourceforge.net/'
-  md5 '9a82a1546408605ea8337b3a7c78786e'
+  url 'http://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.4/libquicktime-1.2.4.tar.gz'
+  sha1 '7008b2dc27b9b40965bd2df42d39ff4cb8b6305e'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -14,10 +14,13 @@ class Libquicktime < Formula
   depends_on 'libvorbis' => :optional
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-gpl",
-                          "--without-doxygen"
+                          "--without-doxygen",
+                          "--without-x",
+                          "--without-gtk"
     system "make"
     system "make install"
   end

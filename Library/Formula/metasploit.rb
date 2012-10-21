@@ -2,8 +2,8 @@ require 'formula'
 
 class Metasploit < Formula
   homepage 'http://www.metasploit.com/framework/'
-  url "http://updates.metasploit.com/data/releases/framework-4.2.0.tar.bz2"
-  sha1 'f5ddc56a1f6dd4885edc6849428bf33179c66653'
+  url 'http://downloads.metasploit.com/data/releases/framework-4.4.0.tar.bz2'
+  sha1 '4188c1727364fff857ff1a58cb3f95a5f376cfb1'
 
   head "https://www.metasploit.com/svn/framework3/trunk/", :using => :svn
 

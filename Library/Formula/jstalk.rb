@@ -2,7 +2,7 @@ require 'formula'
 
 class NeedsSnowLeopard < Requirement
   def satisfied?
-    MacOS.snow_leopard?
+    MacOS.version >= :snow_leopard
   end
 
   def message
@@ -16,10 +16,11 @@ class Jstalk < Formula
   version '1.0.1'
 
   depends_on NeedsSnowLeopard.new
+  depends_on :xcode # For working xcodebuild.
 
   def install
     ["JSTalk Framework", "jstalk command line", "JSTalk Editor"].each do |t|
-      system "xcodebuild", "-target", t, "-configuration", "Release", "ONLY_ACTIVE_ARCH=YES"
+      system "xcodebuild", "-target", t, "-configuration", "Release", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build"
     end
 
     cd 'build/Release' do

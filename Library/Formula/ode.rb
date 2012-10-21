@@ -1,21 +1,26 @@
 require 'formula'
 
 class Ode < Formula
-  # Build from svn to get Snow Leopard fixes.
-  url 'http://opende.svn.sourceforge.net/svnroot/opende/trunk', :revision => 1760
-  version 'r1760'
   homepage 'http://www.ode.org/'
+  url 'http://sourceforge.net/projects/opende/files/ODE/0.12/ode-0.12.tar.bz2'
+  sha1 '10e7aae6cc6b1afe523ed52e76afd5e06461ea93'
+
   head 'http://opende.svn.sourceforge.net/svnroot/opende/trunk'
 
-  if MacOS.xcode_version >= "4.3"
-    # find a proper tarball with configure and remove autogen and these deps
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  depends_on 'pkg-config' => :build
+
+  if build.head?
+    # Requires newer automake and libtool
+    depends_on 'automake' => :build
+    depends_on 'libtool' => :build
   end
 
   def install
-    ENV.j1
-    system "sh autogen.sh"
+    if build.head?
+      ENV['LIBTOOLIZE'] = 'glibtoolize'
+      inreplace 'autogen.sh', 'libtoolize', '$LIBTOOLIZE'
+      system "./autogen.sh"
+    end
     system "./configure", "--prefix=#{prefix}", "--disable-demos"
     system "make"
     system "make install"

@@ -17,17 +17,20 @@ class GnuSmalltalk < Formula
 
   head 'https://github.com/bonzini/smalltalk.git'
 
-  depends_on 'pkg-config' => :build
-  depends_on 'readline'
-  depends_on 'libffi' if ARGV.build_head?
-  depends_on 'libsigsegv' if ARGV.build_head?
-
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
   end
 
-  fails_with_llvm "Codegen problems with LLVM", :build => 2334
+  depends_on 'pkg-config' => :build
+  depends_on 'readline'
+  depends_on 'libffi' if build.head?
+  depends_on 'libsigsegv' if build.head?
+
+  fails_with :llvm do
+    build 2334
+    cause "Codegen problems with LLVM"
+  end
 
   def patches
     # Builds GNU Smalltalk clean in 64-bit mode with SDL and Cairo support
@@ -36,7 +39,7 @@ class GnuSmalltalk < Formula
     # More information here:
     # http://www.eighty-twenty.org/index.cgi/tech/smalltalk/building-gnu-smalltalk-20110926.html
 
-    DATA if ARGV.build_head?
+    DATA if build.head?
   end
 
   def install
@@ -45,7 +48,7 @@ class GnuSmalltalk < Formula
     system "ln -s /usr/bin/awk #{buildpath}/gawk"
     ENV['AWK'] = "#{buildpath}/gawk"
 
-    if ARGV.build_head?
+    if build.head?
       ENV.m32 unless MacOS.prefer_64_bit?
 
       system "autoreconf -fi"
@@ -73,7 +76,7 @@ class GnuSmalltalk < Formula
             "--with-readline=#{Formula.factory("readline").lib}"]
 
     # disable generational gc to build HEAD in 32-bit
-    args << "--disable-generational-gc" if ARGV.build_head? and not MacOS.prefer_64_bit?
+    args << "--disable-generational-gc" if build.head? and not MacOS.prefer_64_bit?
 
     system "./configure", *args
     system "make"

@@ -1,21 +1,10 @@
 require 'formula'
 
-$commands = %w{
-    base64 basename cat chcon chgrp chmod chown chroot cksum comm cp csplit
-    cut date dd df dir dircolors dirname du echo env expand expr factor false
-    fmt fold groups head hostid id install join kill link ln logname ls md5sum
-    mkdir mkfifo mknod mktemp mv nice nl nohup od paste pathchk pinky pr
-    printenv printf ptx pwd readlink rm rmdir runcon seq sha1sum sha225sum
-    sha256sum sha384sum sha512sum shred shuf sleep sort split stat stty sum
-    sync tac tail tee test touch tr true tsort tty uname unexpand uniq unlink
-    uptime users vdir wc who whoami yes
-    }
-
 class Coreutils < Formula
   homepage 'http://www.gnu.org/software/coreutils'
-  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.15.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.15.tar.xz'
-  sha256 '837eb377414eae463fee17d0f77e6d76bed79b87bc97ef0c23887710107fd49c'
+  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.19.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.19.tar.xz'
+  sha256 'ad3873183fd8cfc7672b3ba54644672e59352f9b2dc7e3ad251c1174dde8a9e7'
 
   depends_on 'xz' => :build
 
@@ -23,10 +12,9 @@ class Coreutils < Formula
     system "./configure", "--prefix=#{prefix}", "--program-prefix=g"
     system "make install"
 
-    # create a gnubin dir that has all the commands without program-prefix
-    (libexec+'gnubin').mkpath
-    $commands.each do |g|
-      ln_sf "../../bin/g#{g}", libexec+"gnubin/#{g}"
+    # Symlink all commands into libexec/gnubin without the 'g' prefix
+    coreutils_bins.each do |cmd|
+      (libexec/'gnubin').install_symlink bin/"g#{cmd}" => cmd
     end
   end
 
@@ -38,5 +26,14 @@ class Coreutils < Formula
 
         PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
     EOS
+  end
+
+  def coreutils_bins
+    commands = []
+    bin.find do |path|
+      next if path.directory? or path.basename.to_s == '.DS_Store'
+      commands << path.basename.to_s.sub(/^g/,'')
+    end
+    commands.sort
   end
 end

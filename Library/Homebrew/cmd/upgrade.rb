@@ -1,4 +1,3 @@
-require 'cmd/outdated'
 require 'cmd/install'
 
 class Fixnum
@@ -18,10 +17,13 @@ module Homebrew extend self
     Homebrew.perform_preinstall_checks
 
     outdated = if ARGV.named.empty?
+      require 'cmd/outdated'
       Homebrew.outdated_brews
     else
       ARGV.formulae.select do |f|
-        unless f.rack.exist? and not f.rack.children.empty?
+        if f.installed?
+          onoe "#{f}-#{f.installed_version} already installed"
+        elsif not f.rack.exist? or f.rack.children.empty?
           onoe "#{f} not installed"
         else
           true
@@ -34,9 +36,11 @@ module Homebrew extend self
     # attempted twice. Sorting is implicit the way `recursive_deps` returns
     # root dependencies at the head of the list and `uniq` keeps the first
     # element it encounters and discards the rest.
-    outdated.map!{ |f| f.recursive_deps.reject{ |d| d.installed?} << f }
-    outdated.flatten!
-    outdated.uniq!
+    ARGV.filter_for_dependencies do
+      outdated.map!{ |f| f.recursive_deps.reject{ |d| d.installed? } << f }
+      outdated.flatten!
+      outdated.uniq!
+    end unless ARGV.ignore_deps?
 
     if outdated.length > 1
       oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
@@ -49,10 +53,12 @@ module Homebrew extend self
   end
 
   def upgrade_formula f
+    tab = Tab.for_formula(f)
     outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
 
-    installer = FormulaInstaller.new f
+    installer = FormulaInstaller.new(f, tab)
     installer.show_header = false
+    installer.install_bottle = install_bottle?(f) and tab.used_options.empty?
 
     oh1 "Upgrading #{f.name}"
 
@@ -65,10 +71,11 @@ module Homebrew extend self
     installer.caveats
     installer.finish
   rescue CannotInstallFormulaError => e
-    onoe e
+    ofail e
   rescue BuildError => e
     e.dump
     puts
+    Homebrew.failed = true
   ensure
     # restore previous installation state if build failed
     outdated_keg.link if outdated_keg and not f.installed? rescue nil

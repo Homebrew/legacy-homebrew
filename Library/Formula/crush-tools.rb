@@ -1,10 +1,10 @@
 require 'formula'
 
 class CrushTools < Formula
-  url 'http://crush-tools.googlecode.com/files/crush-tools-2010-03.tar.gz'
+  url 'http://crush-tools.googlecode.com/files/crush-tools-2012-02.tar.gz'
   homepage 'http://crush-tools.googlecode.com/'
-  md5 '3c82e046618b1d60a05a0768f99f6b0b'
-  version '2010-03'
+  sha1 'c628e3f79fa78a1437cfbe41a7ef49ecaa4d7f53'
+  version '2012-02'
 
   depends_on 'pcre'
 

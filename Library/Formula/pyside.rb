@@ -10,8 +10,10 @@ end
 
 class Pyside < Formula
   homepage 'http://www.pyside.org'
-  url 'http://www.pyside.org/files/pyside-qt4.7+1.1.0.tar.bz2'
-  md5 '233f0c6d2b3daf58cf88877d7f74557b'
+  # See https://github.com/mxcl/homebrew/issues/15190
+  url 'https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.1.2.tar.bz2'
+  # url 'http://www.pyside.org/files/pyside-qt4.8+1.1.2.tar.bz2'
+  sha1 'c0119775f2500e48efebdd50b7be7543e71b2c24'
 
   depends_on 'cmake' => :build
   depends_on 'shiboken'
@@ -24,8 +26,19 @@ class Pyside < Formula
     ENV.append_to_cflags "-F#{qt.prefix}/Frameworks"
 
     # Also need `ALTERNATIVE_QT_INCLUDE_DIR` to prevent "missing file" errors.
-    system "cmake #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks -DSITE_PACKAGE=#{site_package_dir} -DBUILD_TESTS=NO ."
-    system 'make install'
+    # Add out of tree build because one of its deps, shiboken, itself needs an
+    # out of tree build in shiboken.rb.
+    args = std_cmake_args + %W[
+      -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks
+      -DSITE_PACKAGE=#{site_package_dir}
+      -DBUILD_TESTS=NO
+      ..
+    ]
+    mkdir 'macbuild' do
+      system 'cmake', *args
+      system 'make'
+      system 'make install'
+    end
   end
 
   def caveats

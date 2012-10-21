@@ -1,16 +1,19 @@
 require 'formula'
 
 class Ddd < Formula
+  homepage 'http://www.gnu.org/s/ddd/'
   url 'http://ftpmirror.gnu.org/ddd/ddd-3.3.12.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/ddd/ddd-3.3.12.tar.gz'
-  homepage 'http://www.gnu.org/s/ddd/'
-  md5 'c50396db7bac3862a6d2555b3b22c34e'
+  sha1 'b91d2dfb1145af409138bd34517a898341724e56'
 
   depends_on 'lesstif'
+  depends_on :x11
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--enable-builtin-app-defaults", "--enable-builtin-manual",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--enable-builtin-app-defaults",
+                          "--enable-builtin-manual",
                           "--prefix=#{prefix}"
 
     # From MacPorts:
@@ -21,9 +24,6 @@ class Ddd < Formula
     ENV.deparallelize
     system "make install EXEEXT=exe"
 
-    # rename after install
-    system "mv", "#{bin}/dddexe", "#{bin}/ddd"
-    system "ln", "-sF", "#{bin}/ddd", "#{HOMEBREW_PREFIX}/bin/ddd"
-    system "rm", "-f", "#{HOMEBREW_PREFIX}/bin/dddexe"
+    mv bin/'dddexe', bin/'ddd'
   end
 end

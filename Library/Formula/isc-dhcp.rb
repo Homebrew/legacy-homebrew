@@ -1,10 +1,10 @@
 require 'formula'
 
 class IscDhcp < Formula
-  url 'ftp://ftp.isc.org/isc/dhcp/4.2.3-P1/dhcp-4.2.3-P1.tar.gz'
   homepage 'http://www.isc.org/software/dhcp'
-  version '4.2.3-P1'
-  sha256 '4860625e07c290768d513b9a2260e655ae4bad4cc5c4c8f5eaaeb4f9cbfa96af'
+  url 'http://ftp.isc.org/isc/dhcp/4.2.4-P2/dhcp-4.2.4-P2.tar.gz'
+  sha256 '0f75170e323cd9573e6e09a5d9236725f3e56e3cac5a70a01fe2a9d76b436499'
+  version '4.2.4-P2'
 
   def install
     # use one dir under var for all runtime state.
@@ -33,7 +33,7 @@ class IscDhcp < Formula
     end
 
     # See discussion at: https://gist.github.com/1157223
-    if 10.7 <= MACOS_VERSION
+    if MacOS.version >= :lion
       ENV.append 'CFLAGS', "-D__APPLE_USE_RFC_3542"
     end
 

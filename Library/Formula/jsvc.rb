@@ -2,9 +2,9 @@ require 'formula'
 
 class Jsvc < Formula
   homepage 'http://commons.apache.org/daemon/jsvc.html'
-  url 'http://apache.oss.eznetsols.org//commons/daemon/source/commons-daemon-1.0.9-native-src.tar.gz'
-  md5 '7f1296384b887ba852fddb4041bd219e'
-  version '1.0.9'
+  url 'http://archive.apache.org/dist/commons/daemon/source/commons-daemon-1.0.10-native-src.tar.gz'
+  sha1 'b76272e39fb5c4695a102227d3c52d9c717c4ede'
+  version '1.0.10'
 
   def install
     arch = Hardware.is_64_bit? ? "-arch x86_64" : "-arch i386"
