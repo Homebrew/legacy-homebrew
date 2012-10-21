@@ -3,8 +3,8 @@ require 'formula'
 class RdsCommandLineTools < AmazonWebServicesFormula
   homepage 'http://aws.amazon.com/developertools/2928'
   url 'http://s3.amazonaws.com/rds-downloads/RDSCli.zip'
-  version '1.10.002'
-  sha1 'e750a48a652c404c899919d4ff6e12bf0e4c7701'
+  version '1.10.003'
+  sha1 '668cd776e88f76084164811cb4cab3e6373009dc'
 
   def install
     standard_install
