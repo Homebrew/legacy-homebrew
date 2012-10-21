@@ -9,8 +9,6 @@ class Voms < Formula
   depends_on :automake => :build
   depends_on :libtool  => :build
 
-  # depends_on "openssl"
-
   def install
     system "sh autogen.sh"
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
