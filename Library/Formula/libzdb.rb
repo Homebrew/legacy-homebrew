@@ -48,43 +48,27 @@ class PostgresInstalled < Requirement
   end
 end
 
-def no_mysql?
-  ARGV.include? '--without-mysql'
-end
-
-def no_postgresql?
-  ARGV.include? '--without-postgresql'
-end
-
-def no_sqlite?
-  ARGV.include? '--without-sqlite'
-end
-
 class Libzdb < Formula
   homepage 'http://tildeslash.com/libzdb/'
   url 'http://tildeslash.com/libzdb/dist/libzdb-2.10.5.tar.gz'
   sha1 '30f975e73caf58f1fa02260ed7136185a3ba2d27'
 
-  depends_on PostgresInstalled.new unless no_postgresql?
-  depends_on MySqlInstalled.new    unless no_mysql?
-  depends_on 'sqlite'              unless no_sqlite?
+  option 'without-sqlite',     "Compile without SQLite support"
+  option 'without-postgresql', "Compile without PostgreSQL support"
+  option 'without-mysql',      "Compile without MySQL support"
 
-  def options
-    [
-      ['--without-sqlite',     "Compile without SQLite support."],
-      ['--without-postgresql', "Compile without PostgreSQL support."],
-      ['--without-mysql',      "Compile without MySQL support."]
-    ]
-  end
+  depends_on PostgresInstalled.new unless build.include? 'without-postgresql'
+  depends_on MySqlInstalled.new    unless build.include? 'without-mysql'
+  depends_on 'sqlite'              unless build.include? 'without-sqlite'
 
   def install
     args = ["--disable-debug",
             "--disable-dependency-tracking",
             "--prefix=#{prefix}"]
 
-    args << "--without-sqlite"     if no_sqlite?
-    args << "--without-mysql"      if no_mysql?
-    args << "--without-postgresql" if no_postgresql?
+    args << "--without-sqlite"     if build.include? 'without-sqlite'
+    args << "--without-mysql"      if build.include? 'without-mysql'
+    args << "--without-postgresql" if build.include? 'without-postgresql'
 
     system "./configure", *args
     system "make install"
