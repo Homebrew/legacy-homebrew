@@ -12,6 +12,10 @@ if ARGV.empty?
   onoe 'This command requires at least one argument containing a URL or pull request number'
 end
 
+if ARGV[0] == '--rebase'
+  onoe 'You meant `git pull --rebase`.'
+end
+
 ARGV.named.each do|arg|
   if arg.to_i > 0
     url = 'https://github.com/mxcl/homebrew/pull/' + arg

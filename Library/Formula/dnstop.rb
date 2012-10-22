@@ -2,8 +2,8 @@ require 'formula'
 
 class Dnstop < Formula
   homepage 'http://dns.measurement-factory.com/tools/dnstop/index.html'
-  url 'http://dns.measurement-factory.com/tools/dnstop/src/dnstop-20120611.tar.gz'
-  sha1 'a5fb7e9d307488f2f6aaaa0291b9c7c187f68fd9'
+  url 'http://dns.measurement-factory.com/tools/dnstop/src/dnstop-20121017.tar.gz'
+  sha1 '836d9bc118df539b80eb349ca45c946323b13366'
 
   def install
     system "./configure", "--prefix=#{prefix}"

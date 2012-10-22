@@ -7,13 +7,15 @@ class Pdsh < Formula
 
   depends_on 'readline'
 
-  # don't strip binaries
-  skip_clean ['bin', 'lib']
-
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-ssh", "--without-rsh",
-                          "--with-dshgroups", "--with-nodeupdown",
-                          "--with-readline", "--without-xcpu", "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--with-ssh",
+                          "--without-rsh",
+                          "--with-dshgroups",
+                          "--with-nodeupdown",
+                          "--with-readline",
+                          "--without-xcpu"
     system "make install"
   end
 end
