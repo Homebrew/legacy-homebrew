@@ -17,6 +17,7 @@ class Nginx < Formula
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
   option 'with-debug', 'Enable debug logging'
+  option 'with-chunkin', 'Enable http chunkin module'
 
   skip_clean 'logs'
 
@@ -74,11 +75,22 @@ class Nginx < Formula
       args << "--with-debug"
     end
 
+    if build.include? 'with-chunkin'
+      args << "--add-module=#{fetch_http_chunkin_module}"
+    end
+
     system "./configure", *args
     system "make"
     system "make install"
     man8.install "objs/nginx.8"
     (var/'run/nginx').mkpath
+  end
+
+  def fetch_http_chunkin_module
+    puts "Downloading http chunkin module ..."
+    `curl -s -L https://github.com/agentzh/chunkin-nginx-module/tarball/v0.23rc2 -o agentzh-chunkin-nginx-module-v0.23rc2.tar.gz`
+    `tar xzf agentzh-chunkin-nginx-module-v0.23rc2.tar.gz`
+    path = Dir.pwd + "/agentzh-chunkin-nginx-module-ddc0dd5"
   end
 
   def caveats; <<-EOS.undent
