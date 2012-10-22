@@ -2,9 +2,9 @@ require 'formula'
 
 class OathToolkit < Formula
   homepage 'http://www.nongnu.org/oath-toolkit/'
-  url 'http://download.savannah.gnu.org/releases/oath-toolkit/oath-toolkit-1.12.0.tar.gz'
-  mirror 'http://download-mirror.savannah.gnu.org/releases/oath-toolkit/oath-toolkit-1.12.0.tar.gz'
-  sha1 'd839ed4748220fc77cc80743816b48cef1a75f5b'
+  url 'http://download.savannah.gnu.org/releases/oath-toolkit/oath-toolkit-2.0.0.tar.gz'
+  mirror 'http://download-mirror.savannah.gnu.org/releases/oath-toolkit/oath-toolkit-2.0.0.tar.gz'
+  sha1 'cf215290d94a41d5850b2938a97d29a029477eae'
 
   depends_on 'pkg-config' => :build
 
