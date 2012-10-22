@@ -7,13 +7,13 @@ class Blitz < Formula
 
   head 'http://blitz.hg.sourceforge.net:8000/hgroot/blitz/blitz', :using => :hg
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
 
   def install
-    system "autoreconf", "-fi" if ARGV.build_head?
+    system "autoreconf", "-fi" if build.head?
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

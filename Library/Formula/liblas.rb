@@ -3,16 +3,14 @@ require 'formula'
 class Liblas < Formula
   homepage 'http://liblas.org'
   url 'http://download.osgeo.org/liblas/libLAS-1.7.0.tar.gz'
-  md5 '03de7a61132902846c12f3b28c38eb37'
+  sha1 'f31070efdf7bb7d6675c23c6c6c84584e3a10869'
 
   depends_on 'cmake' => :build
   depends_on 'libgeotiff'
   depends_on 'gdal'
   depends_on 'boost'
 
-  def options
-    [['--with-test', 'Verify during install with `make test`.']]
-  end
+  option 'with-test', 'Verify during install with `make test`'
 
   def install
     mkdir 'macbuild' do
@@ -23,7 +21,7 @@ class Liblas < Formula
       ENV['Boost_LIBRARY_DIRS'] = "#{HOMEBREW_PREFIX}/lib"
       system "cmake", "..", *std_cmake_args
       system "make"
-      system "make test" if ARGV.include? '--with-test'
+      system "make test" if build.include? 'with-test'
       system "make install"
     end
   end

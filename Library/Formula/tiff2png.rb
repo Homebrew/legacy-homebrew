@@ -3,10 +3,10 @@ require 'formula'
 class Tiff2png < Formula
   homepage 'http://www.libpng.org/pub/png/apps/tiff2png.html'
   url 'ftp://ftp.simplesystems.org/pub/libpng/png/applications/tiff2png/tiff2png-0.91.tar.gz'
-  md5 'b5db7add863c5cf469197aa327c0b202'
+  sha1 '3a23abaaadbed8f3d13b88241257fe2078eb61fd'
 
-  depends_on :x11
   depends_on 'libtiff'
+  depends_on :libpng
   depends_on 'jpeg'
 
   # libpng 1.5 no longer #includes zlib.h
@@ -18,11 +18,16 @@ class Tiff2png < Formula
                                          "LIBTIFF=#{HOMEBREW_PREFIX}/lib",
                                          "TIFFINC=#{HOMEBREW_PREFIX}/include",
                                          "LIBJPEG=#{HOMEBREW_PREFIX}/lib",
-                                         "LIBPNG=#{MacOS::X11.lib}",
-                                         "PNGINC=#{MacOS::X11.include}",
                                          "ZLIB=/usr/lib",
                                          "DEBUGFLAGS="
     bin.install 'tiff2png'
+  end
+
+  def test
+    mktemp do
+      system "#{bin}/tiff2png", \
+        "/System/Library/Frameworks/AppKit.framework/Versions/C/Resources/GrammarDot.tiff"
+    end
   end
 end
 

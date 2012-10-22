@@ -5,18 +5,11 @@ class Pathfinder < Formula
   url 'http://db.inf.uni-tuebingen.de/files/research/pathfinder/download/pathfinder-0.41.tar.gz'
   sha1 '84f5581688e4c1dff27cf8e7d4354ee594f56970'
 
-  def options
-    [
-      ['--enable-debug', 'enable full debbugging']
-    ]
-  end
+  option 'enable-debug', 'Enable debugging'
 
   def install
     args = ["--prefix=#{prefix}"]
-
-    if ARGV.include? '--enable-debug'
-      args << '--enable-debug'
-    end
+    args << '--enable-debug' if build.include? 'enable-debug'
 
     system "./configure", *args
     system "make"

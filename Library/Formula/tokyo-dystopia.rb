@@ -3,7 +3,7 @@ require 'formula'
 class TokyoDystopia < Formula
   homepage 'http://fallabs.com/tokyodystopia/'
   url 'http://fallabs.com/tokyodystopia/tokyodystopia-0.9.15.tar.gz'
-  md5 '12024f8444fea8dd1bc2cc435f104856'
+  sha1 '525a44e517ca9594d28fed111e2d103fe6fbf440'
 
   depends_on 'tokyo-cabinet'
 

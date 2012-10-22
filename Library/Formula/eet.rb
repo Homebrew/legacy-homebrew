@@ -7,7 +7,7 @@ class Eet < Formula
 
   head 'http://svn.enlightenment.org/svn/e/trunk/eet/'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -18,7 +18,7 @@ class Eet < Formula
   depends_on 'lzlib'
 
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

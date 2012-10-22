@@ -38,6 +38,13 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert v == 10.6
     assert v == :snow_leopard
     assert v < :lion
+    # Test that we can compare against different representations
+    assert v <= 10.8
+    assert v < "10.8"
+    assert v < :mountain_lion
+    assert v < 11
+    assert v < Version.new(10.8)
+    assert Version.new(10.5) < v
   end
 
   def test_version_interrogation
@@ -84,6 +91,10 @@ class VersionParsingTests < Test::Unit::TestCase
 
   def test_erlang_version_style
     assert_version_detected 'R13B', 'http://erlang.org/download/otp_src_R13B.tar.gz'
+  end
+
+  def test_another_erlang_version_style
+    assert_version_detected 'R15B01', 'https://github.com/erlang/otp/tarball/OTP_R15B01'
   end
 
   def test_p7zip_version_style
@@ -196,6 +207,10 @@ class VersionParsingTests < Test::Unit::TestCase
     assert_version_detected 'R15B', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B.lion.bottle.tar.gz'
   end
 
+  def test_another_erlang_bottle_style
+    assert_version_detected 'R15B01', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B01.mountainlion.bottle.tar.gz'
+  end
+
   def test_old_bottle_style
     assert_version_detected '4.7.3', 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz'
   end
@@ -218,6 +233,10 @@ class VersionParsingTests < Test::Unit::TestCase
 
   def test_dash_version_dash_style
     assert_version_detected '3.4', 'http://www.antlr.org/download/antlr-3.4-complete.jar'
+  end
+
+  def test_jenkins_version_style
+    assert_version_detected '1.486', 'http://mirrors.jenkins-ci.org/war/1.486/jenkins.war'
   end
 
   # def test_version_ghc_style

@@ -2,12 +2,12 @@ require 'formula'
 
 class Zookeeper < Formula
   homepage 'http://zookeeper.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.3/zookeeper-3.4.3.tar.gz'
-  sha1 '8ac02ee34b94461fed19320d789f251e6a2a6796'
+  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.4/zookeeper-3.4.4.tar.gz'
+  sha1 'c4f6dc623a265f54a93ee3b1192860324270b054'
 
   head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -61,7 +61,7 @@ class Zookeeper < Formula
 
     build_python = build.include? "python"
     build_perl = build.include? "perl"
-    build_c = build_python or build_perl or build.include? "c"
+    build_c = build_python || build_perl || build.include?("c")
 
     # Build & install C libraries.
     cd "src/c" do

@@ -6,7 +6,7 @@ class LibgpgError < Formula
   sha1 '95b324359627fbcb762487ab6091afbe59823b29'
 
   def install
-    ENV.universal_binary  # build fat so wine can use it
+    ENV.universal_binary
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

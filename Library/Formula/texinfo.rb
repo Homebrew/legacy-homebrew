@@ -4,7 +4,7 @@ class Texinfo < Formula
   url 'http://ftpmirror.gnu.org/texinfo/texinfo-4.13a.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/texinfo/texinfo-4.13a.tar.gz'
   homepage 'http://www.gnu.org/software/texinfo/'
-  md5 '71ba711519209b5fb583fed2b3d86fcb'
+  sha1 'a1533cf8e03ea4fa6c443b73f4c85e4da04dead0'
 
   keg_only :provided_by_osx, <<-EOS.undent
     Software that uses TeX, such as lilypond and octave, require a newer version

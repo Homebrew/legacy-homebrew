@@ -77,30 +77,24 @@ end
 class TesseractEnglishData < Formula
   url 'http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.01.eng.tar.gz'
   version '3.01'
-  md5 '89c139a73e0e7b1225809fc7b226b6c9'
+  sha1 'f2d57eea524ead247612bd027375037c21e22463'
 end
 
 class Tesseract < Formula
   homepage 'http://code.google.com/p/tesseract-ocr/'
   url 'http://tesseract-ocr.googlecode.com/files/tesseract-3.01.tar.gz'
-  md5 '1ba496e51a42358fb9d3ffe781b2d20a'
+  sha1 'c0b605d7192b3071842fe535c82b89c65f2d9c67'
+
+  option "all-languages", "Install recognition data for all languages"
 
   depends_on :automake
   depends_on :libtool
-
   depends_on 'libtiff'
   depends_on 'leptonica'
 
   fails_with :llvm do
     build 2206
     cause "Executable 'tesseract' segfaults on 10.6 when compiled with llvm-gcc"
-  end
-
-  # mftraining has a missing symbols error when cleaned
-  skip_clean 'bin'
-
-  def options
-    [["--all-languages", "Install recognition data for all languages"]]
   end
 
   def install
@@ -112,7 +106,7 @@ class Tesseract < Formula
 
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-    if ARGV.include? "--all-languages"
+    if build.include? "all-languages"
       install_language_data
     else
       TesseractEnglishData.new.brew { mv Dir['tessdata/*'], "#{share}/tessdata/" }

@@ -12,7 +12,7 @@ class SoftwareSpec
   end
 
   def download_strategy
-    @download_strategy ||= DownloadStrategyDetector.new(@url, @using).detect
+    @download_strategy ||= DownloadStrategyDetector.detect(@url, @using)
   end
 
   def verify_download_integrity fn
@@ -133,7 +133,7 @@ class KegOnlyReason
     @reason = reason
     @explanation = explanation
     @valid = case @reason
-      when :when_xquartz_installed then MacOS::XQuartz.installed?
+      when :provided_pre_mountain_lion then MacOS.version < :mountain_lion
       else true
       end
   end
@@ -150,8 +150,8 @@ class KegOnlyReason
 
       #{@explanation}
       EOS
-    when :when_xquartz_installed then <<-EOS.undent
-      XQuartz provides this software.
+    when :provided_pre_mountain_lion then <<-EOS.undent
+      Mac OS X already provides this software in versions before Mountain Lion.
 
       #{@explanation}
       EOS

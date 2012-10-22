@@ -3,7 +3,7 @@ require 'formula'
 class Pig < Formula
   homepage 'http://pig.apache.org/'
   url 'http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.10.0/pig-0.10.0.tar.gz'
-  md5 'b9a723f91cec9934317e50223de7e87a'
+  sha1 'afb1bc2dc7393e1fda7bb0675354899e51114292'
 
   def patches
     DATA

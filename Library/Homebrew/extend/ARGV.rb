@@ -7,6 +7,14 @@ module HomebrewArgvExtension
     select {|arg| arg[0..0] == '-'}
   end
 
+  def used_options f
+    f.build.as_flags & options_only
+  end
+
+  def unused_options f
+    f.build.as_flags - options_only
+  end
+
   def formulae
     require 'formula'
     @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
@@ -93,6 +101,11 @@ module HomebrewArgvExtension
     include? '--ignore-dependencies'
   end
 
+  def json
+    json_rev = find {|o| o =~ /--json=.+/}
+    json_rev.split("=").last if json_rev
+  end
+
   def build_head?
     include? '--HEAD'
   end
@@ -117,14 +130,12 @@ module HomebrewArgvExtension
   end
 
   def build_bottle?
-    require 'bottles'
-    bottles_supported? and include? '--build-bottle'
+    include? '--build-bottle' and MacOS.bottles_supported?
   end
 
   def build_from_source?
-    require 'bottles'
-    flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
-      or not bottles_supported? or not options_only.empty?
+    include? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
+      or build_head? or build_devel? or build_universal? or build_bottle?
   end
 
   def flag? flag

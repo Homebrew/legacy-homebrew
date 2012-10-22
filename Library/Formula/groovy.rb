@@ -2,8 +2,8 @@ require 'formula'
 
 class Groovy < Formula
   homepage 'http://groovy.codehaus.org/'
-  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-2.0.1.zip'
-  sha1 '8368651e4c96e2ab272d2a0623861c817d947316'
+  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-2.0.5.zip'
+  sha1 '856839a1cc2517e8879dfa9c9399b22098965009'
 
   def install
     # Don't need Windows files.
@@ -12,7 +12,6 @@ class Groovy < Formula
 
     prefix.install %w(LICENSE.txt NOTICE.txt)
     libexec.install %w(bin conf lib embeddable)
-    lib.install "indy" if ARGV.build_devel?
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

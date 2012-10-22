@@ -16,7 +16,7 @@ end
 class OpenBabel < Formula
   homepage 'http://openbabel.org/'
   url 'http://sourceforge.net/projects/openbabel/files/openbabel/2.2.3/openbabel-2.2.3.tar.gz'
-  md5 '7ea8845c54d6d3a9be378c78088af804'
+  sha1 'e396b27551a106e001ca6c953181657a0a53f43f'
 
   head 'https://openbabel.svn.sourceforge.net/svnroot/openbabel/openbabel/trunk'
 

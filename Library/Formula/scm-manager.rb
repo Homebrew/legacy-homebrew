@@ -2,18 +2,18 @@ require 'formula'
 
 class ScmManagerCliClient < Formula
   homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.19/scm-cli-client-1.19-jar-with-dependencies.jar'
-  version '1.19'
-  md5 '6bc17d0a816dbca8128e9f18d54ff04f'
+  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.21/scm-cli-client-1.21-jar-with-dependencies.jar'
+  version '1.21'
+  sha1 '286a53e90aa44b351d96e8682ae97ee9e6c24e7b'
 end
 
 class ScmManager < Formula
   homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.19/scm-server-1.19-app.tar.gz'
-  version '1.19'
-  md5 '33e4329adb1e63776bc838b12ad62f13'
+  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.21/scm-server-1.21-app.tar.gz'
+  version '1.21'
+  sha1 '6fe9969c1000546fee28a6f3f6c4aa631d772371'
 
-  skip_clean :all
+  skip_clean 'libexec/var/log'
 
   def install
     rm_rf Dir['bin/*.bat']
@@ -37,9 +37,6 @@ class ScmManager < Formula
       java -jar "#{tools}/scm-cli-client-#{version}-jar-with-dependencies.jar" "$@"
     EOS
     chmod 0755, scmCliClient
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

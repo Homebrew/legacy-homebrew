@@ -21,7 +21,7 @@ class DependencyCollector
 
   def initialize
     @deps = Dependencies.new
-    @requirements = Set.new
+    @requirements = ComparableSet.new
   end
 
   def add spec
@@ -63,8 +63,8 @@ private
       # Xcode no longer provides autotools or some other build tools
       Dependency.new(spec.to_s) unless MacOS::Xcode.provides_autotools?
     when :libpng, :freetype, :pixman, :fontconfig, :cairo
-      if MacOS.version >= :lion
-        MacOS::XQuartz.installed? ? X11Dependency.new(tag) : Dependency.new(spec.to_s)
+      if MacOS.version >= :mountain_lion
+        Dependency.new(spec.to_s)
       else
         X11Dependency.new(tag)
       end
@@ -185,7 +185,7 @@ class LanguageModuleDependency < Requirement
       when :lua     then "luarocks install"
       when :node    then "npm install"
       when :perl    then "cpan -i"
-      when :python  then "easy_install"
+      when :python  then "pip install"
       when :rbx     then "rbx gem install"
       when :ruby    then "gem install"
     end
@@ -196,6 +196,9 @@ end
 # This requirement is used to require an X11 implementation,
 # optionally with a minimum version number.
 class X11Dependency < Requirement
+  include Comparable
+  attr_reader :min_version
+
   def initialize min_version=nil
     @min_version = min_version
   end
@@ -208,7 +211,7 @@ class X11Dependency < Requirement
 
   def message; <<-EOS.undent
     Unsatisfied dependency: XQuartz #{@min_version}
-    Please install the latest version of XQuartz:
+    Homebrew does not package XQuartz. Installers may be found at:
       https://xquartz.macosforge.org
     EOS
   end
@@ -217,9 +220,20 @@ class X11Dependency < Requirement
     ENV.x11
   end
 
-  def hash
-    "X11".hash
+  def <=> other
+    unless other.is_a? X11Dependency
+      raise TypeError, "expected X11Dependency"
+    end
+
+    if other.min_version.nil?
+      1
+    elsif @min_version.nil?
+      -1
+    else
+      @min_version <=> other.min_version
+    end
   end
+
 end
 
 
@@ -333,7 +347,8 @@ class XCodeDependency < Requirement
   end
 
   def message; <<-EOS.undent
-    XCode is required to compile this software.
+    A full installation of XCode.app is required to compile this software.
+    Installing just the Command Line Tools is not sufficent.
     EOS
   end
 end

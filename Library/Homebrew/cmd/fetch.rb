@@ -35,6 +35,7 @@ module Homebrew extend self
       begin
         f.verify_download_integrity the_tarball
       rescue ChecksumMismatchError => e
+        Homebrew.failed = true
         opoo "Formula reports different #{e.hash_type}: #{e.expected}"
       end
     end
