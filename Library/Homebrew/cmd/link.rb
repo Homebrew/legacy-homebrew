@@ -17,6 +17,7 @@ module Homebrew extend self
     ARGV.kegs.each do |keg|
       if keg.linked?
         opoo "Already linked: #{keg}"
+        puts "To relink: brew unlink #{keg.fname} && brew link #{keg.fname}"
         next
       end
 
