@@ -16,6 +16,7 @@ class Nginx < Formula
 
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
+  option 'with-debug', 'Enable debug logging'
 
   skip_clean 'logs'
 
@@ -40,6 +41,19 @@ class Nginx < Formula
   def install
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
+            "--with-http_realip_module",
+            "--with-http_addition_module",
+            "--with-http_xslt_module",
+            "--with-http_image_filter_module",
+            "--with-http_geoip_module",
+            "--with-http_sub_module",
+            "--with-http_flv_module",
+            "--with-http_mp4_module",
+            "--with-http_gzip_static_module",
+            "--with-http_random_index_module",
+            "--with-http_secure_link_module",
+            "--with-http_degradation_module",
+            "--with-http_stub_status_module",
             "--with-pcre",
             "--with-ipv6",
             "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
@@ -55,6 +69,10 @@ class Nginx < Formula
 
     args << passenger_config_args if build.include? 'with-passenger'
     args << "--with-http_dav_module" if build.include? 'with-webdav'
+
+    if build.include? 'with-debug'
+      args << "--with-debug"
+    end
 
     system "./configure", *args
     system "make"
