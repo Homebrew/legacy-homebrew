@@ -2,13 +2,16 @@ require 'formula'
 
 class Luarocks < Formula
   homepage 'http://luarocks.org'
-  url 'http://luarocks.org/releases/luarocks-2.0.10.tar.gz'
-  sha1 '90db1c46940816ae82a8037e585769e3e8845f66'
+  url 'http://luarocks.org/releases/luarocks-2.0.12.tar.gz'
+  sha1 'bfa36d5a9931c240c0253dee09c0cfb69372d276'
 
   option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
+  option 'with-lua52', 'Use Lua 5.2 instead of the stock Lua'
 
   if build.include? 'with-luajit'
     depends_on 'luajit'
+  elsif build.include? 'with-lua52'
+    depends_on 'lua52'
   else
     depends_on 'lua'
   end
@@ -56,19 +59,24 @@ diff --git a/src/luarocks/fs/lua.lua b/src/luarocks/fs/lua.lua
 index 67c3ce0..2d149c7 100644
 --- a/src/luarocks/fs/lua.lua
 +++ b/src/luarocks/fs/lua.lua
-@@ -653,24 +653,5 @@ end
+@@ -669,29 +669,5 @@ end
  -- @return boolean or (boolean, string): true on success, false on failure,
  -- plus an error message.
  function check_command_permissions(flags)
 -   local root_dir = path.root_dir(cfg.rocks_dir)
 -   local ok = true
 -   local err = ""
--   for _, dir in ipairs { cfg.rocks_dir, root_dir, dir.dir_name(root_dir) } do
+-   for _, dir in ipairs { cfg.rocks_dir, root_dir } do
 -      if fs.exists(dir) and not fs.is_writable(dir) then
 -         ok = false
 -         err = "Your user does not have write permissions in " .. dir
 -         break
 -      end
+-   end
+-   local root_parent = dir.dir_name(root_dir)
+-   if ok and not fs.exists(root_dir) and not fs.is_writable(root_parent) then
+-      ok = false
+-      err = root_dir.." does not exist and your user does not have write permissions in " .. root_parent
 -   end
 -   if ok then
 -      return true
