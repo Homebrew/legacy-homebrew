@@ -2,15 +2,17 @@ require 'formula'
 
 class Tcpflow < Formula
   homepage 'https://github.com/simsong/tcpflow'
-  url 'https://github.com/downloads/simsong/tcpflow/tcpflow-1.2.7.tar.gz'
-  sha1 'e7e71a34afb4d557ebe80e2d589f00d4afd38be4'
+  url 'https://github.com/downloads/simsong/tcpflow/tcpflow-1.3.0.tar.gz'
+  sha1 'fccd0a451bf138e340fc3b55dfc07924c0a811d8'
+
+  depends_on :libtool
 
   def copy_libtool_files!
-    if MacOS::Xcode.version >= "4.3"
+    if not MacOS::Xcode.provides_autotools?
       s = Formula.factory('libtool').share
       d = "#{s}/libtool/config"
       cp ["#{d}/config.guess", "#{d}/config.sub"], "."
-    elsif MacOS.leopard?
+    elsif MacOS.version == :leopard
       cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config.*"], "."
     else
       cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config/config.*"], "."

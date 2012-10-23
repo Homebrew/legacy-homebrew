@@ -2,7 +2,7 @@ require 'formula'
 
 class Distribute < Formula
   url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
-  md5 'b400b532e33f78551e6847c1f5965e56'
+  sha1 '709bd97d46050d69865d4b588c7707768dfe6711'
 end
 
 class Pypy < Formula
@@ -11,11 +11,11 @@ class Pypy < Formula
   if MacOS.prefer_64_bit?
     url 'https://bitbucket.org/pypy/pypy/downloads/pypy-1.9-osx64.tar.bz2'
     version '1.9'
-    md5 'aad9c4b7b827583e37fe8ae0f7cfe0ff'
+    sha1 '825e15724419fbdb6fe215eeea044f9181883c90'
   else
     url 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2'
     version '1.4.1'
-    md5 '8584c4e8c042f5b661fcfffa0d9b8a25'
+    sha1 '961470e7510c47b8f56e6cc6da180605ba058cb6'
   end
 
   def install

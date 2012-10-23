@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mpdas < Formula
-  url 'http://www.50hz.ws/mpdas/mpdas-0.2.5.tar.bz2'
   homepage 'http://www.50hz.ws/mpdas/'
-  md5 'ea852645079be1aeedfe3e88f421917e'
+  url 'http://www.50hz.ws/mpdas/mpdas-0.3.0.tar.bz2'
+  sha1 '3e389b8bb9a37b7f9527c6c4a1aaaf4ab462bf0a'
 
   head 'https://github.com/hrkfdn/mpdas.git'
 

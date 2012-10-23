@@ -7,7 +7,7 @@ class Libxmlxx < Formula
 
   depends_on 'glibmm'
   # LibXML++ can't compile agains the version of LibXML shipped with Leopard
-  depends_on 'libxml2' if MacOS.leopard?
+  depends_on 'libxml2' if MacOS.version == :leopard
 
   def install
     system "./configure", "--disable-dependency-tracking",

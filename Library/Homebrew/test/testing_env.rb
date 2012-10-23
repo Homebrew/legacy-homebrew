@@ -7,7 +7,9 @@
 ABS__FILE__=File.expand_path(__FILE__)
 
 $:.push(File.expand_path(__FILE__+'/../..'))
+require 'extend/fileutils'
 require 'extend/pathname'
+require 'extend/string'
 require 'exceptions'
 require 'utils'
 
@@ -18,19 +20,23 @@ HOMEBREW_REPOSITORY=HOMEBREW_PREFIX
 HOMEBREW_CACHE=HOMEBREW_PREFIX.parent+"cache"
 HOMEBREW_CACHE_FORMULA=HOMEBREW_PREFIX.parent+"formula_cache"
 HOMEBREW_CELLAR=HOMEBREW_PREFIX.parent+"cellar"
+HOMEBREW_LOGS = HOMEBREW_PREFIX.parent+"logs"
 HOMEBREW_USER_AGENT="Homebrew"
 HOMEBREW_WWW='http://example.com'
 HOMEBREW_CURL_ARGS = '-fsLA'
-MACOS_VERSION=10.6
+HOMEBREW_VERSION = '0.9-test'
+
+MACOS = true
+MACOS_VERSION = 10.6
+MACOS_FULL_VERSION = '10.6.8'
 
 (HOMEBREW_PREFIX+'Library/Formula').mkpath
-Dir.chdir HOMEBREW_PREFIX
+
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 # Test fixtures and files can be found relative to this path
 TEST_FOLDER = Pathname.new(ABS__FILE__).parent.realpath
 
-require 'fileutils'
 module Homebrew extend self
   include FileUtils
 end
@@ -64,3 +70,21 @@ ARGV.extend(HomebrewArgvExtension)
 
 require 'extend/ENV'
 ENV.extend(HomebrewEnvExtension)
+
+module VersionAssertions
+  def version v
+    Version.new(v)
+  end
+
+  def assert_version_equal expected, actual
+    assert_equal Version.new(expected), actual
+  end
+
+  def assert_version_detected expected, url
+    assert_equal expected, Version.parse(url).to_s
+  end
+
+  def assert_version_nil url
+    assert_nil Version.parse(url)
+  end
+end

@@ -185,17 +185,17 @@ For the full command list, see the COMMANDS section.
     If `--git` is passed, Homebrew will create a Git repository, useful for
     creating patches to the software.
 
-  * `ln`, `link [--force] [--dry-run]` <formula>:
+  * `ln`, `link [--overwrite] [--dry-run]` <formula>:
     Symlink all of <formula>'s installed files into the Homebrew prefix. This
     is done automatically when you install formula, but can be useful for DIY
     installations.
 
-    If `--force` is passed, Homebrew will delete files which already exist in
+    If `--overwrite` is passed, Homebrew will delete files which already exist in
     the prefix while linking.
 
     If `--dry-run` or `-n` is passed, Homebrew will list all files which would
-    be deleted by `brew link --force`, but will not actually link or delete
-    any files.
+    be linked or which would be deleted by `brew link --overwrite`, but will not
+    actually link or delete any files.
 
   * `ls, list [--unbrewed] [--versions]` [<formulae>]:
     Without any arguments, list all installed formulae.
@@ -257,6 +257,11 @@ For the full command list, see the COMMANDS section.
     Tap a new formula repository from GitHub, or list existing taps.
 
     <tap> is of the form <user>/<repo>, e.g. `brew tap homebrew/dupes`.
+
+  * `tap --repair`:
+
+    Ensures all tapped formula are symlinked into Library/Formula and prunes dead
+    formula from Library/Formula.
 
   * `test` <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
@@ -363,6 +368,15 @@ can take several different forms:
     The formula file will be cached for later use.
 
 ## ENVIRONMENT
+
+  * GIT:
+    When using Git, Homebrew will use `GIT` if set,
+    a Homebrew-built Git if installed, or the system-provided binary.
+
+    Set this to force Homebrew to use a particular git binary.
+
+  * EDITOR:
+    If set, and `HOMEBREW_EDITOR` is not, use `EDITOR` as the text editor.
 
   * HOMEBREW\_BUILD\_FROM\_SOURCE:
     If set, instructs Homebrew to compile from source even when a formula

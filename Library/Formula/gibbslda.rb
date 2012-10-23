@@ -3,7 +3,7 @@ require 'formula'
 class Gibbslda < Formula
   homepage 'http://gibbslda.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/gibbslda/GibbsLDA%2B%2B/0.2/GibbsLDA%2B%2B-0.2.tar.gz'
-  md5 'd87d35be6dc8b37afc515f6237ba2ccb'
+  sha1 '3264f01ae921b6dcbbe57dd877561271df214cdd'
 
   def install
     system "make clean"

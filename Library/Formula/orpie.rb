@@ -3,7 +3,7 @@ require 'formula'
 class Orpie < Formula
   url 'http://pessimization.com/software/orpie/orpie-1.5.1.tar.gz'
   homepage 'http://pessimization.com/software/orpie/'
-  md5 '4511626ed853354af1b4b5dbbf143a1f'
+  sha1 '4e4887d8abcf015a5b423a2d1164ace95ab2d5c1'
 
   depends_on 'gsl'
   depends_on 'objective-caml'

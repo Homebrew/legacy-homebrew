@@ -9,14 +9,10 @@ class Geoip < Formula
   depends_on :automake
   depends_on :libtool
 
-  def options
-    [["--universal", "Build a universal binary."]]
-  end
+  option :universal
 
   def install
-    # Fix issue with sed barfing on unicode characters on Mountain Lion.
-    ENV.delete('LANG')
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
     # Fixes a build error on Lion when configure does a variant of autoreconf
     # that results in a botched Makefile, causing this error:
@@ -24,7 +20,8 @@ class Geoip < Formula
     # This works on Snow Leopard also when it tries but fails to run autoreconf.
     system "autoreconf", "-ivf"
 
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

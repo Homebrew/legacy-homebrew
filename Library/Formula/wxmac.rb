@@ -14,21 +14,12 @@ end
 
 class Wxmac < Formula
   homepage 'http://www.wxwidgets.org'
-  url 'http://sourceforge.net/projects/wxpython/files/wxPython/2.9.3.1/wxPython-src-2.9.3.1.tar.bz2'
-  sha1 '0202f64e1e99fb69d22d7be0d38cf7dcf3d80d79'
+  url 'http://sourceforge.net/projects/wxpython/files/wxPython/2.9.4.0/wxPython-src-2.9.4.0.tar.bz2'
+  sha1 'c292cd45b51e29c558c4d9cacf93c4616ed738b9'
 
-  def options
-    [['--no-python', 'Do not build Python bindings']]
-  end
+  option 'no-python', 'Do not build Python bindings'
 
-  depends_on FrameworkPython.new unless ARGV.include? "--no-python"
-
-  def patches
-    # webkit and clang 3.x needs fix for wx(Python) 2.9.3.1: http://trac.wxwidgets.org/ticket/13565
-    if MacOS.clang_version.to_f >= 3.0
-      { :p0 => "http://trac.wxwidgets.org/raw-attachment/ticket/13565/ClangCompat.diff" }
-    end
-  end
+  depends_on FrameworkPython.new unless build.include? "no-python"
 
   def install_wx_python
     args = [
@@ -59,6 +50,7 @@ class Wxmac < Formula
   end
 
   def install
+    # need to set with-macosx-version-min to avoid configure defaulting to 10.5
     args = [
       "--disable-debug",
       "--prefix=#{prefix}",
@@ -76,13 +68,13 @@ class Wxmac < Formula
       "--enable-webkit",
       "--enable-svg",
       "--with-expat",
-      "--with-macosx-version-min=#{MacOS.version}" # need to set this, to avoid configure defaulting to 10.5
+      "--with-macosx-version-min=#{MacOS.version}"
     ]
 
     system "./configure", *args
     system "make install"
 
-    unless ARGV.include? "--no-python"
+    unless build.include? "no-python"
       ENV['WXWIN'] = Dir.getwd
       # We have already downloaded wxPython in a bundle with wxWidgets
       install_wx_python
@@ -91,14 +83,9 @@ class Wxmac < Formula
 
   def caveats
     s = ''
-    unless ARGV.include? '--no-python'
-      q = `python -c "import distutils.sysconfig as c; print(c.get_config_var('PYTHONFRAMEWORK'))"`
-      if q.chomp.empty?
-        s += <<-EOS.undent
-          Python bindings require that Python be built as a Framework.
-
-        EOS
-      end
+    fp = FrameworkPython.new
+    unless build.include? 'no-python' or fp.satisfied?
+      s += fp.message
     end
 
     return s

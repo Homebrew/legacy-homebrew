@@ -1,21 +1,18 @@
 require 'formula'
 
 class Lua < Formula
+  # 5.2 is not fully backwards compatible, and breaks e.g. luarocks.
+  # It is available in Homebrew-versions for the time being.
   homepage 'http://www.lua.org/'
   url 'http://www.lua.org/ftp/lua-5.1.4.tar.gz'
-  md5 'd0870f2de55d59c1c8419f36e8fac150'
+  sha1 '2b11c8e60306efb7f0734b747588f57995493db7'
 
   fails_with :llvm do
     build 2326
     cause "Lua itself compiles with LLVM, but may fail when other software tries to link."
   end
 
-  # Skip cleaning both empty folders and bin/libs so external symbols still work.
-  skip_clean :all
-
-  def options
-    [['--completion', 'Enables advanced readline support']]
-  end
+  option 'completion', 'Enables advanced readline support'
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/mxcl/homebrew/pull/5043
@@ -23,7 +20,7 @@ class Lua < Formula
     p = [DATA]
     # completion provided by advanced readline power patch from
     # http://lua-users.org/wiki/LuaPowerPatches
-    if ARGV.include? '--completion'
+    if build.include? 'completion'
       p << 'http://luajit.org/patches/lua-5.1.4-advanced_readline.patch'
     end
     p
@@ -53,7 +50,7 @@ class Lua < Formula
 
     # this ensures that this symlinking for lua starts at lib/lua/5.1 and not
     # below that, thus making luarocks work
-    (HOMEBREW_PREFIX/"lib/lua"/version.split('.')[0..1].join('.')).mkpath
+    (HOMEBREW_PREFIX/"lib/lua"/version.to_s.split('.')[0..1].join('.')).mkpath
 
     system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"

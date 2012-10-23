@@ -3,7 +3,7 @@ require 'formula'
 class Hllib < Formula
   homepage 'http://nemesis.thewavelength.net/index.php?p=35'
   url 'http://nemesis.thewavelength.net/files/files/hllib242.zip'
-  md5 'd89d53ff40a58062e13d5676fb871742'
+  sha1 '96c8fae6477c8794a15f379c5874cd91800d9834'
   version '2.4.2'
 
   def install

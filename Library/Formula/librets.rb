@@ -6,7 +6,7 @@ class Librets < Formula
   sha1 '2de4d9e9cb26533eb0a9a090b3354a70ed3c41ec'
 
   depends_on 'boost'
-  depends_on 'swig' if MacOS.lion?
+  depends_on 'swig' if MacOS.version >= :lion
 
   def install
     system "./configure", "--disable-debug",

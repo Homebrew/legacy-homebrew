@@ -7,12 +7,29 @@ class Io < Formula
 
   head 'https://github.com/stevedekorte/io.git'
 
+  option 'without-addons', 'Build without addons'
+  option 'without-python', 'Build without python addon'
+
   depends_on 'cmake' => :build
-  depends_on 'ossp-uuid'
   depends_on 'libevent'
-  depends_on 'yajl'
   depends_on 'libffi'
+  depends_on 'ossp-uuid'
   depends_on 'pcre'
+  depends_on 'yajl'
+
+  # Used by Bignum add-on
+  depends_on 'gmp' unless build.include? 'without-addons'
+
+  # Used by Fonts add-on
+  depends_on :freetype unless build.include? 'without-addons'
+
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      make never completes. see:
+      https://github.com/stevedekorte/io/issues/223
+    EOS
+  end
 
   # Fix recursive inline. See discussion in:
   # https://github.com/stevedekorte/io/issues/135
@@ -22,6 +39,16 @@ class Io < Formula
 
   def install
     ENV.j1
+    if build.include? 'without-addons'
+      inreplace  "CMakeLists.txt",
+        'add_subdirectory(addons)',
+        '#add_subdirectory(addons)'
+    end
+    if build.include? 'without-python'
+      inreplace  "addons/CMakeLists.txt",
+        'add_subdirectory(Python)',
+        '#add_subdirectory(Python)'
+    end
     mkdir 'buildroot' do
       system "cmake", "..", *std_cmake_args
       system 'make'

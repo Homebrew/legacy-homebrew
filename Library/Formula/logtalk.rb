@@ -4,7 +4,7 @@ class Logtalk < Formula
   homepage 'http://logtalk.org'
   url 'http://logtalk.org/files/lgt2432.tar.bz2'
   version '2.43.2'
-  md5 'b5698033aca3c5173b7afe0ce4e84782'
+  sha1 'c5491754f4277c38ecf00d916eb0faba05d58442'
 
   case
   when ARGV.include?("--swi-prolog")

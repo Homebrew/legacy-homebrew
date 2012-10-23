@@ -8,11 +8,9 @@ class Libstfl < Formula
   def patches; DATA; end
 
   def install
-    inreplace 'Makefile',
-              'export CC = gcc -pthread',
-              "export CC = #{ENV.cc} -pthread"
-
-    system "make install"
+    system "make", "install",
+                   "CC=#{ENV.cc} -pthread",
+                   "prefix=#{prefix}"
   end
 end
 

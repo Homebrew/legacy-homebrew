@@ -3,7 +3,7 @@ require 'formula'
 class Autossh < Formula
   homepage 'http://www.harding.motd.ca/autossh/'
   url 'http://www.harding.motd.ca/autossh/autossh-1.4c.tgz'
-  md5 '26520eea934f296be0783dabe7fcfd28'
+  sha1 'd9a1d5a2987e7e5a444b00e63d6590936da1e1f2'
 
   def patches
     DATA

@@ -3,7 +3,7 @@ require 'formula'
 class Cast < Formula
   url 'http://files.cast-project.org/cast-0.2.0.tar.gz'
   homepage 'http://cast-project.org'
-  md5 'b6a4f2b1126e969ee1696f50471c7345'
+  sha1 'ab5e21c69dd0d5d1dc37b2f7d0ba7c52dddce400'
 
   depends_on 'scons' => :build
   depends_on 'runit'

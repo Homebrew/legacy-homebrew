@@ -19,7 +19,7 @@ class Sip < Formula
   end
 
   def install
-    if ARGV.build_head?
+    if build.head?
       # Set fallback version to the same value it would have without the patch
       # and link the Mercurial repository into the download directory so
       # buid.py can use it to figure out a version number.
@@ -28,7 +28,7 @@ class Sip < Formula
     else
       sip_version = version
     end
-    inreplace 'build.py', /@SIP_VERSION@/, (sip_version.gsub '.', ',')
+    inreplace 'build.py', /@SIP_VERSION@/, (sip_version.to_s.gsub '.', ',')
 
     system "python", "build.py", "prepare"
     # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
@@ -36,6 +36,7 @@ class Sip < Formula
                               "--destdir=#{lib}/#{which_python}/site-packages",
                               "--bindir=#{bin}",
                               "--incdir=#{include}",
+                              "--sipdir=#{HOMEBREW_PREFIX}/share/sip",
                               "CFLAGS=#{ENV.cflags}",
                               "LFLAGS=#{ENV.ldflags}"
     system "make install"

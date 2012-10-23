@@ -2,12 +2,12 @@ require 'formula'
 
 class Embryo < Formula
   homepage 'http://trac.enlightenment.org/e/wiki/Embryo'
-  url 'http://download.enlightenment.org/releases/embryo-1.1.0.tar.gz'
-  sha1 'f17bd3af565ada4ed5bbae1818c871b33c0897b8'
+  url 'http://download.enlightenment.org/releases/embryo-1.2.0.tar.gz'
+  sha1 '5e392a41ead0d696512b02f436eeae8747ddfbcb'
 
   head 'http://svn.enlightenment.org/svn/e/trunk/embryo/'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -16,7 +16,7 @@ class Embryo < Formula
   depends_on 'eina'
 
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

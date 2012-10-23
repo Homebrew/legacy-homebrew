@@ -22,29 +22,35 @@ class Keg < Pathname
   end
 
   def uninstall
-    chmod_R 0777 # ensure we have permission to delete
     rmtree
     parent.rmdir_if_possible
   end
 
   def unlink
-    n=0
+    # these are used by the ObserverPathnameExtension to count the number
+    # of files and directories linked
+    $n=$d=0
 
     %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
       next unless src.exist?
       src.find do |src|
         next if src == self
         dst=HOMEBREW_PREFIX+src.relative_path_from(self)
-        next unless dst.symlink?
+        dst.extend ObserverPathnameExtension
+
+        # check whether the file to be unlinked is from the current keg first
+        if !dst.symlink? || !dst.exist? || src != dst.resolved_path
+          next
+        end
+
         dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
         dst.unlink
         dst.parent.rmdir_if_possible
-        n+=1
         Find.prune if src.directory?
       end
     end
-    linked_keg_record.unlink if linked_keg_record.exist?
-    n
+    linked_keg_record.unlink if linked_keg_record.symlink?
+    $n+$d
   end
 
   def fname
@@ -59,15 +65,33 @@ class Keg < Pathname
     linked_keg_record.directory? and self == linked_keg_record.realpath
   end
 
-  def link mode=nil
+  def completion_installed? shell
+    dir = case shell
+      when :bash then self/'etc/bash_completion.d'
+      when :zsh then self/'share/zsh/site-functions'
+      end
+    return if dir.nil?
+    dir.directory? and not dir.children.length.zero?
+  end
+
+  def version
+    require 'version'
+    Version.new(basename.to_s)
+  end
+
+  def basename
+    Pathname.new(self.to_s).basename
+  end
+
+  def link mode=OpenStruct.new
     raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
 
     $n=0
     $d=0
 
-    share_mkpaths=%w[aclocal doc info locale man]+(1..8).collect{|x|"man/man#{x}"}
-    # cat pages are rare, but exist so the directories should be created
-    share_mkpaths << (1..8).collect{ |x| "man/cat#{x}" }
+    share_mkpaths = %w[aclocal doc info locale man]
+    share_mkpaths.concat((1..8).map { |i| "man/man#{i}" })
+    share_mkpaths.concat((1..8).map { |i| "man/cat#{i}" })
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
@@ -107,9 +131,27 @@ class Keg < Pathname
       end
     end
 
-    linked_keg_record.make_relative_symlink(self) unless mode == :dryrun
+    linked_keg_record.make_relative_symlink(self) unless mode.dry_run
+
+    optlink unless mode.dry_run
 
     return $n + $d
+  rescue Exception
+    opoo "Could not link #{fname}. Unlinking..."
+    unlink
+    raise
+  end
+
+  def optlink
+    from = HOMEBREW_PREFIX/:opt/fname
+    if from.symlink?
+      from.delete
+    elsif from.directory?
+      from.rmdir
+    elsif from.exist?
+      from.delete
+    end
+    from.make_relative_symlink(self)
   end
 
 protected
@@ -128,21 +170,25 @@ protected
     puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
   end
 
-  def make_relative_symlink dst, src, mode=nil
+  def make_relative_symlink dst, src, mode=OpenStruct.new
     if dst.exist? and dst.realpath == src.realpath
       puts "Skipping; already exists: #{dst}" if ARGV.verbose?
     # cf. git-clean -n: list files to delete, don't really link or delete
-    elsif mode == :dryrun
+    elsif mode.dry_run and mode.overwrite
       puts dst if dst.exist?
       return
+    # list all link targets
+    elsif mode.dry_run
+      puts dst
+      return
     else
-      dst.delete if mode == :force && dst.exist?
+      dst.delete if mode.overwrite && dst.exist?
       dst.make_relative_symlink src
     end
   end
 
   # symlinks the contents of self+foo recursively into /usr/local/foo
-  def link_dir foo, mode=nil
+  def link_dir foo, mode=OpenStruct.new
     root = self+foo
     return unless root.exist?
 

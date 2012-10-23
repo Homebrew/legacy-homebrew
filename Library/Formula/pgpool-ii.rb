@@ -2,7 +2,7 @@ require 'formula'
 
 class PostgresqlInstalled < Requirement
   def message; <<-EOS.undent
-    PostgresQL is required to install.
+    PostgreSQL is required to install.
 
     You can install this with:
       brew install postgresql
@@ -21,8 +21,8 @@ end
 
 class PgpoolIi < Formula
   homepage 'http://www.pgpool.net/mediawiki/index.php/Main_Page'
-  url 'http://pgfoundry.org/frs/download.php/2841/pgpool-II-3.0.7.tar.gz'
-  sha1 '1c72a271d65bd7b44b473b5020746808a056bf3d'
+  url 'http://www.pgpool.net/download.php?f=pgpool-II-3.1.5.tar.gz'
+  sha1 '43b84f9adbae0b4bca3284bd8ce95da441c71018'
 
   depends_on PostgresqlInstalled.new
 
