@@ -32,6 +32,6 @@ index a77a3de..1f681b1 100644
  then
      # get the full path (without any relative bits)
 -    SOAPUI_HOME=`cd $DIRNAME/..; pwd`
-+    SOAPUI_HOME=HOMEBREW_PREFIX/soapui/4.5.1/libexec
++    SOAPUI_HOME=HOMEBREW_PREFIX/Cellar/soapui/4.5.1/libexec
  fi
  export SOAPUI_HOME
