@@ -25,7 +25,7 @@ class Emacs < Formula
   end
 
   def patches
-    if build.include? "cocoa"
+    if build.include? "cocoa" and !build.head?
       # Fullscreen patch, works against 24.2 and HEAD.
       "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716"
     end
