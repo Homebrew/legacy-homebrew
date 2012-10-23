@@ -10,6 +10,7 @@ class GdkPixbuf < Formula
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'glib'
+  depends_on 'jpeg'
   depends_on 'libtiff'
   depends_on :libpng
 

@@ -7,6 +7,7 @@ class Ddd < Formula
   sha1 'b91d2dfb1145af409138bd34517a898341724e56'
 
   depends_on 'lesstif'
+  depends_on :x11
 
   def install
     system "./configure", "--disable-debug",
