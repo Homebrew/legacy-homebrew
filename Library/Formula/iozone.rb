@@ -2,8 +2,8 @@ require 'formula'
 
 class Iozone < Formula
   homepage 'http://www.iozone.org/'
-  url 'http://www.iozone.org/src/current/iozone3_408.tar'
-  sha1 '3dc56a251949151d12fc033f179cb6852abc71de'
+  url 'http://www.iozone.org/src/current/iozone3_413.tar'
+  sha1 '397c2aae67f74dc9d189912b2e72ca594b790101'
 
   # Patch by @nijotz, adds O_DIRECT support when using -I flag.
   # See: https://github.com/mxcl/homebrew/pull/10585
