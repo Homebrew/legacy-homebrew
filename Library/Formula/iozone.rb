@@ -12,7 +12,7 @@ class Iozone < Formula
   end
 
   def install
-    system "make -C src/current macosx"
+    system "make", "-C", "src/current", "macosx", "CC=#{ENV.cc}"
     bin.install 'src/current/iozone'
     man1.install 'docs/iozone.1'
   end
@@ -25,7 +25,7 @@ end
 __END__
 --- a/src/current/iozone.c      2011-12-16 09:17:05.000000000 -0800
 +++ b/src/current/iozone.c      2012-02-28 16:57:58.000000000 -0800
-@@ -1810,7 +1810,7 @@
+@@ -1820,7 +1810,7 @@
  			break;
  #endif
  #if ! defined(DONT_HAVE_O_DIRECT)
