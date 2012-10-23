@@ -84,7 +84,7 @@ def install f
 
   deps.each do |dep|
     opt = HOMEBREW_PREFIX/:opt/dep
-    fixopt(dep) unless opt.directory?
+    fixopt(dep) unless opt.directory? or ARGV.ignore_deps?
     if not superenv? and dep.keg_only?
       ENV.prepend_path 'PATH', "#{opt}/bin"
       ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
