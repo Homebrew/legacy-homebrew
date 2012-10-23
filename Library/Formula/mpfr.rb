@@ -10,6 +10,10 @@ class Mpfr < Formula
 
   option '32-bit'
 
+  # With Clang: 4.1 build 421 and superenv we had (https://github.com/mxcl/homebrew/issues/15061)
+  #"clang: error: unable to execute command: Segmentation fault: 11"
+  env :std
+
   def patches
     "http://www.mpfr.org/mpfr-current/allpatches"
   end
