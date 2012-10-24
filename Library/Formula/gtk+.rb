@@ -15,7 +15,7 @@ class Gtkx < Formula
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
   depends_on 'cairo'
-  depends_on :x11
+#  depends_on :x11
 
   fails_with :llvm do
     build 2326
@@ -28,7 +28,9 @@ class Gtkx < Formula
                           "--prefix=#{prefix}",
                           "--disable-glibtest",
                           "--disable-introspection",
-                          "--disable-visibility"
+                          "--disable-visibility",
+                          "--with-gdktarget=quartz",
+                          "--enable-quartz-relocation"
     system "make install"
   end
 

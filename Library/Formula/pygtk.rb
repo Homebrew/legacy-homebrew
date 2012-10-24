@@ -5,7 +5,7 @@ class Pygtk < Formula
   homepage 'http://www.pygtk.org/'
   sha1 '344e6a32a5e8c7e0aaeb807e0636a163095231c2'
 
-  depends_on :x11
+#  depends_on :x11
   depends_on 'glib'
   depends_on 'gtk+'
   depends_on 'pygobject'

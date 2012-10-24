@@ -10,6 +10,7 @@ class Wireshark < Formula
   depends_on 'c-ares' => :optional
   depends_on 'pcre' => :optional
   depends_on 'glib'
+  depends_on 'gtk+'
 
   if build.include? 'with-x'
     depends_on :x11
@@ -28,7 +29,7 @@ class Wireshark < Formula
     args << '--without-python' unless build.include? 'with-python'
 
     # actually just disables the GTK GUI
-    args << '--disable-wireshark' unless build.include? 'with-x'
+#    args << '--disable-wireshark' unless build.include? 'with-x'
 
     system "./configure", *args
     system "make"

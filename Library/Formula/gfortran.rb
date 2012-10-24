@@ -31,7 +31,7 @@ class Gfortran < Formula
       md5 'eb64ba9f8507da22e582814a69fbb7ca'
       version "4.2.4-5664"
     end
-  else
+  elsif MACOS_VERSION == 10.7
     # Lion
     if MacOS::Xcode.version >= '4.2'
       # This version contains an entire Apple-GCC 4.2 (i386/x86_64) build for
@@ -45,6 +45,9 @@ class Gfortran < Formula
       md5 '7eb140822c89bec17db5666859868b3b'
       version "4.2.4-5666.3"
     end
+  elsif MACOS_VERSION == 10.8
+
+  else
   end
 
   # For more information about GFortran, see:
