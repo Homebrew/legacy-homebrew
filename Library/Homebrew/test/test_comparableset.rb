@@ -1,5 +1,6 @@
 require 'testing_env'
 require 'extend/set'
+require 'dependencies'
 
 class ComparableSetTests < Test::Unit::TestCase
   def setup

@@ -61,17 +61,17 @@ private
     case spec
     when :autoconf, :automake, :bsdmake, :libtool
       # Xcode no longer provides autotools or some other build tools
-      Dependency.new(spec.to_s) unless MacOS::Xcode.provides_autotools?
+      Dependency.new(spec.to_s, tag) unless MacOS::Xcode.provides_autotools?
     when :libpng, :freetype, :pixman, :fontconfig, :cairo
       if MacOS.version >= :mountain_lion
-        Dependency.new(spec.to_s)
+        Dependency.new(spec.to_s, tag)
       else
         X11Dependency.new(tag)
       end
     when :x11
       X11Dependency.new(tag)
     when :xcode
-      XCodeDependency.new
+      XcodeDependency.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
     end
@@ -82,47 +82,76 @@ end
 
 # A list of formula dependencies.
 class Dependencies < Array
-  def include? dependency_name
-    self.any?{|d| d.name == dependency_name}
+  def <<(o)
+    super(o) unless include? o
+  end
+end
+
+module Dependable
+  RESERVED_TAGS = [:build, :optional, :recommended]
+
+  def build?
+    tags.include? :build
+  end
+
+  def optional?
+    tags.include? :optional
+  end
+
+  def recommended?
+    tags.include? :recommended
+  end
+
+  def options
+    tags.reject { |tag| RESERVED_TAGS.include? tag }.map { |tag| '--'+tag.to_s }
   end
 end
 
 
 # A dependency on another Homebrew formula.
 class Dependency
+  include Dependable
+
   attr_reader :name, :tags
 
-  def initialize name, tags=nil
+  def initialize(name, *tags)
     @name = name
-    @tags = case tags
-      when Array then tags.each {|s| s.to_s}
-      when nil then []
-      else [tags.to_s]
-    end
+    @tags = [tags].flatten.compact
+  end
+
+  def hash
+    @name.hash
   end
 
   def to_s
     @name
   end
 
-  def ==(other_dep)
-    @name == other_dep.to_s
+  def ==(other)
+    @name == other.to_s
   end
 
-  def <=>(other_dep)
-    @name <=> other_dep.to_s
+  def <=>(other)
+    @name <=> other.to_s
   end
 
-  def options
-    @tags.select{|p|p.start_with? '--'}
+  def eql?(other)
+    other.is_a? self.class and hash == other.hash
   end
 end
-
 
 # A base class for non-formula requirements needed by formulae.
 # A "fatal" requirement is one that will fail the build if it is not present.
 # By default, Requirements are non-fatal.
 class Requirement
+  include Dependable
+
+  attr_reader :tags
+
+  def initialize(*tags)
+    @tags = tags.flatten.compact
+  end
+
   # Should return true if this requirement is met.
   def satisfied?; false; end
   # Should return true if not meeting this requirement should fail the build.
