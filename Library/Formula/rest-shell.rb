@@ -6,15 +6,20 @@ class RestShell < Formula
   version '1.1.3.RELEASE'
   sha1 '0d43e99fabae72b068a09955053793ae4164c099'
 
-  def install
-    libexec.install Dir['*']
-    (bin/'rest-shell').write <<-EOS.undent
+  def startup_script name
+    <<-EOS.undent
       #!/bin/bash
-      exec "#{libexec}/bin/rest-shell" "$@"
+      exec "#{libexec}/bin/#{name}" "$@"
     EOS
   end
 
+  def install
+    libexec.install Dir['*']
+
+    (bin+'rest-shell').write startup_script('rest-shell')
+  end
+
   def test
-    system "#{bin}/rest-shell"
+    system "rest-shell"
   end
 end
