@@ -5,22 +5,22 @@ class Mongodb < Formula
 
   if Hardware.is_64_bit? and not build.build_32_bit?
     url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0.tgz'
-    md5 '5ad0d0b046919118e73976d670dce5e5'
+    sha1 '313a2f7c91354a4cfae7098e622001b4ee483f71'
     version '2.2.0-x86_64'
 
     devel do
       url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.1-rc0.tgz'
-      md5 '5c1a448faa2e568dcc10e81c177249e8'
+      sha1 'f33522f38280137d6b8d2e4b1befd9b7764c6790'
       version '2.2.1-rc0-x86_64'
     end
   else
     url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0.tgz'
-    md5 '576cc456081f8348a59448675fd1afde'
+    sha1 'd0a879d8a6fb861917c955dbfe6aebe2cbe29171'
     version '2.2.0-i386'
 
     devel do
       url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.1-rc0.tgz'
-      md5 'fab99dfe25114e616ba4ae47665fd1cc'
+      sha1 '145d659822f836afac85d635e889b2cfa403ed92'
       version '2.2.1-rc0-i386'
     end
   end
@@ -40,13 +40,12 @@ class Mongodb < Formula
 
     # Homebrew: it just works.
     # NOTE plist updated to use prefix/mongodb!
-    mv (sh = bin/'mongod'), prefix
-    sh.write <<-EOS.undent
+    mv bin/'mongod', prefix
+    (bin/'mongod').write <<-EOS.undent
       #!/usr/bin/env ruby
       ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.include? '--config'
       exec "#{prefix}/mongod", *ARGV
     EOS
-    sh.chmod 0755
 
     # copy the config file to etc if this is the first install.
     etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
