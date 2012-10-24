@@ -15,7 +15,7 @@ class Isync < Formula
 
   def install
     system "touch", "ChangeLog" if build.head?
-    system "sh", "autogen.sh" if build.head?
+    system "./autogen.sh" if build.head?
 
     system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
     system "make install"
