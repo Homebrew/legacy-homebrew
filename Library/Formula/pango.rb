@@ -5,12 +5,12 @@ class Pango < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.30/pango-1.30.1.tar.xz'
   sha256 '3a8c061e143c272ddcd5467b3567e970cfbb64d1d1600a8f8e62435556220cbe'
 
-  option 'without-x', 'Build without X11 support'
+#  option 'without-x', 'Build without X11 support'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'glib'
-  depends_on :x11 unless build.include? 'without-x'
+#  depends_on :x11 unless build.include? 'without-x'
 
   if MacOS.version == :leopard
     depends_on 'fontconfig'
@@ -36,9 +36,10 @@ class Pango < Formula
       --enable-man
       --with-html-dir=#{share}/doc
       --disable-introspection
+      --without-x
     ]
 
-    args << '--with-x' unless build.include? 'without-x'
+#    args << '--with-x' unless build.include? 'without-x'
 
     system "./configure", *args
     system "make"
