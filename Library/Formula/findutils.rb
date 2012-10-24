@@ -6,9 +6,15 @@ class Findutils < Formula
   homepage 'http://www.gnu.org/software/findutils/'
   sha1 'e8dd88fa2cc58abffd0bfc1eddab9020231bb024'
 
+  option 'default-names', "Do not prepend 'g' to the binary"
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--program-prefix=g",
-                          "--disable-dependency-tracking", "--disable-debug"
+    args = ["--prefix=#{prefix}",
+            "--disable-dependency-tracking",
+            "--disable-debug"]
+    args << "--program-prefix=g" unless build.include? 'default-names'
+
+    system "./configure", *args
     system "make install"
   end
 end
