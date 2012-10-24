@@ -53,8 +53,10 @@ class X11Dependency < Requirement
   include Comparable
   attr_reader :min_version
 
-  def initialize min_version=nil
-    @min_version = min_version
+  def initialize(*tags)
+    tags.flatten!
+    @min_version = tags.shift if /(\d\.)+\d/ === tags.first
+    super
   end
 
   def fatal?; true; end
@@ -193,7 +195,7 @@ class ConflictRequirement < Requirement
   end
 end
 
-class XCodeDependency < Requirement
+class XcodeDependency < Requirement
   def fatal?; true; end
 
   def satisfied?
@@ -201,7 +203,7 @@ class XCodeDependency < Requirement
   end
 
   def message; <<-EOS.undent
-    A full installation of XCode.app is required to compile this software.
+    A full installation of Xcode.app is required to compile this software.
     Installing just the Command Line Tools is not sufficent.
     EOS
   end
