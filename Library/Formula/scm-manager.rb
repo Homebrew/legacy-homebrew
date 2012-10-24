@@ -2,18 +2,18 @@ require 'formula'
 
 class ScmManagerCliClient < Formula
   homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.20/scm-cli-client-1.20-jar-with-dependencies.jar'
-  version '1.20'
-  sha1 '1057c5977e90e0c036cd69c06d00a6a931c7f439'
+  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.21/scm-cli-client-1.21-jar-with-dependencies.jar'
+  version '1.21'
+  sha1 '286a53e90aa44b351d96e8682ae97ee9e6c24e7b'
 end
 
 class ScmManager < Formula
   homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.20/scm-server-1.20-app.tar.gz'
-  version '1.20'
-  sha1 '3d309043cb815fe282c41894c8449943beb3e3de'
+  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.21/scm-server-1.21-app.tar.gz'
+  version '1.21'
+  sha1 '6fe9969c1000546fee28a6f3f6c4aa631d772371'
 
-  skip_clean :all
+  skip_clean 'libexec/var/log'
 
   def install
     rm_rf Dir['bin/*.bat']

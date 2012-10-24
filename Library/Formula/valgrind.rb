@@ -20,8 +20,6 @@ class Valgrind < Formula
     depends_on :libtool
   end
 
-  skip_clean 'lib'
-
   def patches
     # 1: For Xcode-only systems, we have to patch hard-coded paths, use xcrun &
     #    add missing CFLAGS. See: https://bugs.kde.org/show_bug.cgi?id=295084

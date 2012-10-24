@@ -2,8 +2,8 @@ require 'formula'
 
 class Opam < Formula
   homepage 'https://github.com/OCamlPro/opam'
-  url 'https://github.com/OCamlPro/opam/tarball/0.7.3'
-  sha1 'ef2b8e8bb36d554315b56fd866688704577db053'
+  url 'https://github.com/OCamlPro/opam/tarball/0.7.7'
+  sha1 '8db32a4b0bbfa51e28edc0a390180bcfee790e5e'
 
   depends_on "objective-caml"
 

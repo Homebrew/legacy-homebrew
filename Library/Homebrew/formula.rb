@@ -6,6 +6,7 @@ require 'bottles'
 require 'patches'
 require 'compilers'
 require 'build_environment'
+require 'extend/set'
 
 
 class Formula
@@ -367,9 +368,14 @@ class Formula
       install_type = :from_url
     else
       name = Formula.canonical_name(name)
-      # If name was a path or mapped to a cached formula
 
-      if name.include? "/"
+      if name =~ %r{^(\w+)/(\w+)/([^/])+$}
+        # name appears to be a tapped formula, so we don't munge it
+        # in order to provide a useful error message when require fails.
+        path = Pathname.new(name)
+      elsif name.include? "/"
+        # If name was a path or mapped to a cached formula
+
         # require allows filenames to drop the .rb extension, but everything else
         # in our codebase will require an exact and fullpath.
         name = "#{name}.rb" unless name =~ /\.rb$/
@@ -450,9 +456,9 @@ class Formula
   end
 
   def recursive_requirements
-    reqs = recursive_deps.map { |dep| dep.requirements }.to_set
-    reqs << requirements
-    reqs.flatten
+    reqs = ComparableSet.new
+    recursive_deps.each { |dep| reqs.merge dep.requirements }
+    reqs.merge requirements
   end
 
   def to_hash
@@ -740,14 +746,18 @@ private
       dependencies.add ConflictRequirement.new(formula, message)
     end
 
-    def skip_clean paths
-      if paths == :all
+    def skip_clean *paths
+      paths = [paths].flatten
+
+      # :all is deprecated though
+      if paths.include? :all
         @skip_clean_all = true
         return
       end
+
       @skip_clean_paths ||= []
-      [paths].flatten.each do |p|
-        p = p.to_s unless p == :la
+      paths.each do |p|
+        p = p.to_s unless p == :la # Keep :la in paths as a symbol
         @skip_clean_paths << p unless @skip_clean_paths.include? p
       end
     end

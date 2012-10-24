@@ -3,7 +3,7 @@ require 'formula'
 class BulkExtractor < Formula
   homepage 'https://github.com/simsong/bulk_extractor/wiki'
   url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.3.tar.gz'
-  sha1 '137a8a9c9d99f5f01eb09c080012b13ba48856ec'
+  sha1 '847559ef179a123b3855637396f47348d3318751'
 
   depends_on :autoconf
   depends_on :automake
