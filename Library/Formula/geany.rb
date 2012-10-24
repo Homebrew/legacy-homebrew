@@ -2,8 +2,9 @@ require 'formula'
 
 class Geany < Formula
   homepage 'http://geany.org/'
-  url 'http://download.geany.org/geany-0.21.tar.gz'
-  sha256 'a1aa27d2f946ccca8a4e57faf0029cf6aa544d5d52f0170e017c137c33b4b67d'
+  url 'https://github.com/geany/geany/tarball/1.22.0'
+  head 'git://github.com/geany/geany.git', :branch => 'master'
+  sha256 '0b08d020f9e09a8756595ca9159a43785010519bf5036c7b5acbcf2d8c7e2b9e'
 
   depends_on :x11
   depends_on 'pkg-config' => :build
@@ -16,7 +17,7 @@ class Geany < Formula
     # Check that this is still needed when updating the formula.
     ENV.append 'LDFLAGS', '-lgmodule-2.0'
 
-    system "./configure", "--disable-dependency-tracking",
+    system "./autogen.sh", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
