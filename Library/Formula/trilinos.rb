@@ -15,8 +15,6 @@ class Trilinos < Formula
 
   def install
 
-    mkdir 'trilinos-build'
-
     args = std_cmake_parameters.split
     args.concat [
       "-DCMAKE_BUILD_TYPE:STRING=RELEASE",
@@ -30,14 +28,14 @@ class Trilinos < Formula
       "-DTrilinos_ENABLE_Fortran:BOOL=OFF",
       "-DTrilinos_ENABLE_EXAMPLES:BOOL=OFF",
       "-DTrilinos_ENABLE_TESTS=OFF",
-      "-DTrilinos_ENABLE_SECONDARY_STABLE=ON",
+      "-DTrilinos_ENABLE_SECONDARY_STABLE_CODE=ON",
       "-DTrilinos_VERBOSE_CONFIGURE:BOOL=OFF"
     ]
 
     args << "-DZoltan_ENABLE_Scotch:BOOL=ON"   if build.include? 'with-scotch'
     args << "-DZoltan_ENABLE_ParMETIS:BOOL=ON" if build.include? 'with-parmetis'
 
-    Dir.chdir 'trilinos-build' do
+    mkdir 'build' do
       system "cmake", "..", *args
       system "make install"
     end
