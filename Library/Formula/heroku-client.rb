@@ -1,6 +1,6 @@
 require 'formula'
 
-class HerokuToolbelt < Formula
+class HerokuClient < Formula
   homepage 'https://toolbelt.heroku.com/other'
   url 'http://assets.heroku.com.s3.amazonaws.com/heroku-client/heroku-client-2.32.13.tgz'
   sha1 'b68bf43366e0a86a5d28fc152e79672fd0bc1d64'
