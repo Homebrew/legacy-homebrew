@@ -390,6 +390,18 @@ def check_xcode_prefix
   end
 end
 
+def check_xcode_prefix_exists
+  prefix = MacOS::Xcode.prefix
+  return if prefix.nil?
+  unless prefix.exist?
+    <<-EOS.undent
+      The folder Xcode is reportedly installed to doesn't exist:
+        #{prefix}
+      You may need to `xcode-select` the proper path if you have moved Xcode.
+    EOS
+  end
+end
+
 def check_xcode_select_path
   # with the advent of CLT-only support, we don't need xcode-select
 
