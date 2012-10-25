@@ -2,9 +2,9 @@ require 'formula'
 
 class Casperjs < Formula
   homepage 'http://www.casperjs.org/'
-  url 'https://github.com/n1k0/casperjs/zipball/1.0.0-RC2'
-  sha1 'b3c336a98a3d3b5e3640ec6c44d93bdbf0974f89'
-  version '1.0.0-RC2'
+  url 'https://github.com/n1k0/casperjs/zipball/1.0.0-RC3'
+  sha1 '617432dc3d50b0e3e544c642361f87b87dd1743b'
+  version '1.0.0-RC3'
 
   head 'https://github.com/n1k0/casperjs.git'
 
