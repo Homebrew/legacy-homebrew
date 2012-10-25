@@ -33,7 +33,7 @@ class ComparableSetTests < Test::Unit::TestCase
     @set << X11Dependency.new
     @set << Requirement.new
     reqs = Set.new [X11Dependency.new('2.6'), Requirement.new]
-    @set.merge reqs
+    assert_same @set, @set.merge(reqs)
 
     assert_equal @set.count, 2
     assert_equal @set.find {|r| r.is_a? X11Dependency}, X11Dependency.new('2.6')
