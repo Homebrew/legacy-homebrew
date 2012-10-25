@@ -8,6 +8,11 @@ class Glib < Formula
   option :universal
   option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
 
+  devel do
+    url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.33/glib-2.33.6.tar.xz'	
+    sha256 '613707eac08d96a421b6d5113f605235a35748eb582bc9c216cbb4ccfcd6f9e8'
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'gettext'

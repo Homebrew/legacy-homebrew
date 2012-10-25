@@ -5,6 +5,11 @@ class Gtkx < Formula
   url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.11.tar.xz'
   sha256 '328b4ea19a61040145e777e2ac49820968a382ac8581a380c9429897881812a9'
 
+  devel do
+    url 'ftp://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.11.tar.xz'	
+    sha256 '328b4ea19a61040145e777e2ac49820968a382ac8581a380c9429897881812a9'
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'glib'

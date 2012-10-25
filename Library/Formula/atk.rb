@@ -5,6 +5,11 @@ class Atk < Formula
   url 'http://ftp.gnome.org/pub/gnome/sources/atk/2.6/atk-2.6.0.tar.xz'
   sha256 'eff663f90847620bb68c9c2cbaaf7f45e2ff44163b9ab3f10d15be763680491f'
 
+  devel do
+    url 'http://ftp.gnome.org/pub/gnome/sources/atk/2.5/atk-2.5.4.tar.xz'	
+    sha256 'af6d6d8ec4543f338bf2476974de69891b7419913dd1cf4a94d53696bcc14aab'
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'glib'
 
