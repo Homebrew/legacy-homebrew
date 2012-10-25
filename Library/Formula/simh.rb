@@ -6,6 +6,7 @@ class Simh < Formula
   url 'http://simh.trailing-edge.com/sources/simhv39-0.zip'
   sha1 '1de3938f0dcb51d55b0e53aea8ae9769ccc57bdb'
   version '3.9-0'
+  head 'https://github.com/simh/simh.git'
 
   head 'https://github.com/simh/simh.git'
 
