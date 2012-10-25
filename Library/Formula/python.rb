@@ -87,6 +87,7 @@ class Python < Formula
     distutils_fix_stdenv
 
     if build.universal?
+      ENV.universal_binary
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
     end
 
@@ -149,7 +150,7 @@ class Python < Formula
 
       # Fix 3)
       #   For all Pythons: Tell about homebrew's site-packages location.
-      #   This is needed for for Python to parse *.pth files.
+      #   This is needed for Python to parse *.pth files.
       site.addsitedir('#{site_packages}')
     EOF
 
@@ -190,6 +191,8 @@ class Python < Formula
         # Help Python's build system (distribute/pip) to build things on Xcode-only systems
         # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
         cflags += " -isysroot #{MacOS.sdk_path}"
+        # For the Xlib.h, Python needs this header dir
+        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
         ldflags += " -isysroot #{MacOS.sdk_path}"
         # Same zlib.h-not-found-bug as in env :std (see below)
         args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
@@ -247,7 +250,7 @@ class Python < Formula
       To symlink "Idle" and the "Python Launcher" to ~/Applications
         `brew linkapps`
 
-      You can install Python packages with (the outdated easy_install) or
+      You can install Python packages with (the outdated easy_install or)
         `pip install <your_favorite_package>`
 
       They will install into the site-package directory

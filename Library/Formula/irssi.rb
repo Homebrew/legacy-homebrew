@@ -8,9 +8,6 @@ class Irssi < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
 
-  # Don't strip, to allow dynamic loading of modules
-  skip_clean 'bin'
-
   # Fix Perl build flags and paths in man page
   def patches; DATA; end
 

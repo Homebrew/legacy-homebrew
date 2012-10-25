@@ -390,6 +390,18 @@ def check_xcode_prefix
   end
 end
 
+def check_xcode_prefix_exists
+  prefix = MacOS::Xcode.prefix
+  return if prefix.nil?
+  unless prefix.exist?
+    <<-EOS.undent
+      The folder Xcode is reportedly installed to doesn't exist:
+        #{prefix}
+      You may need to `xcode-select` the proper path if you have moved Xcode.
+    EOS
+  end
+end
+
 def check_xcode_select_path
   # with the advent of CLT-only support, we don't need xcode-select
 
@@ -515,7 +527,7 @@ def check_for_gettext
 end
 
 def check_for_iconv
-  unless find_relative_paths("lib/iconv.dylib", "include/iconv.h").empty?
+  unless find_relative_paths("lib/libiconv.dylib", "include/iconv.h").empty?
     if (f = Formula.factory("libiconv") rescue nil) and f.linked_keg.directory?
       if not f.keg_only? then <<-EOS.undent
         A libiconv formula is installed and linked

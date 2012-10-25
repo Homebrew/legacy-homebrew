@@ -15,7 +15,6 @@ class Ffmpeg < Formula
   option "with-freetype", "Enable FreeType"
   option "with-theora", "Enable Theora video format"
   option "with-libvorbis", "Enable Vorbis audio format"
-  option "with-libogg", "Enable Ogg container format"
   option "with-libvpx", "Enable VP8 video format"
   option "with-rtmpdump", "Enable RTMP protocol"
   option "with-opencore-amr", "Enable AMR audio format"
@@ -24,6 +23,8 @@ class Ffmpeg < Formula
   option "with-openjpeg", 'Enable JPEG 200 image format'
   option 'with-ffplay', 'Enable FFPlay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'
+
+  depends_on 'pkg-config' => :build
 
   # manpages won't be built without texi2html
   depends_on 'texi2html' => :build if MacOS.version >= :mountain_lion
@@ -37,7 +38,6 @@ class Ffmpeg < Formula
   depends_on :freetype if build.include? 'with-freetype'
   depends_on 'theora' if build.include? 'with-theora'
   depends_on 'libvorbis' if build.include? 'with-libvorbis'
-  depends_on 'libogg' if build.include? 'with-libogg'
   depends_on 'libvpx' if build.include? 'with-libvpx'
   depends_on 'rtmpdump' if build.include? 'with-rtmpdump'
   depends_on 'opencore-amr' if build.include? 'with-opencore-amr'
@@ -67,7 +67,6 @@ class Ffmpeg < Formula
     args << "--enable-libfreetype" if build.include? 'with-freetype'
     args << "--enable-libtheora" if build.include? 'with-theora'
     args << "--enable-libvorbis" if build.include? 'with-libvorbis'
-    args << "--enable-libogg" if build.include? 'with-libogg'
     args << "--enable-libvpx" if build.include? 'with-libvpx'
     args << "--enable-librtmp" if build.include? 'with-rtmpdump'
     args << "--enable-libopencore-amrnb" << "--enable-libopencore-amrwb" if build.include? 'with-opencore-amr'

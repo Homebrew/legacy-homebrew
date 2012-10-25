@@ -15,7 +15,7 @@ class FormulaInstaller
   def initialize ff, tab=nil
     @f = ff
     @tab = tab
-    @show_header = true
+    @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @install_bottle = install_bottle? ff
 
@@ -99,7 +99,7 @@ class FormulaInstaller
           end
         end
         # now show header as all the deps stuff has clouded the original issue
-        show_header = true
+        @show_header = true
       end
     end
 

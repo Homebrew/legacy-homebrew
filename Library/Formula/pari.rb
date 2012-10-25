@@ -5,6 +5,7 @@ class Pari < Formula
   url 'http://pari.math.u-bordeaux.fr/pub/pari/unix/pari-2.5.1.tar.gz'
   sha1 'c83314bb993161a60e1e46ae7616072858414354'
 
+  depends_on :x11
   depends_on 'readline'
 
   def install

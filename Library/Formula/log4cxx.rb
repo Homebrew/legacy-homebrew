@@ -5,10 +5,8 @@ class Log4cxx < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz'
   sha1 'd79c053e8ac90f66c5e873b712bb359fd42b648d'
 
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
-  end
+  depends_on :automake
+  depends_on :libtool
 
   option :universal
 

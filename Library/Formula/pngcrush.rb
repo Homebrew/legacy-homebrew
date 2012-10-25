@@ -8,6 +8,8 @@ class Pngcrush < Formula
   def install
     # Required to successfully build the bundled zlib 1.2.6
     ENV.append_to_cflags "-DZ_SOLO"
+    # Required to enable "-cc" (color counting) option (disabled by default since 1.5.1)
+    ENV.append_to_cflags "-DPNGCRUSH_COUNT_COLORS"
 
     system "make", "CC=#{ENV.cc}",
                    "LD=#{ENV.cc}",

@@ -269,10 +269,10 @@ class Pathname
             Could not symlink file: #{src.expand_path}
             Target #{self} already exists. You may need to delete it.
             To force the link and delete this file, do:
-              brew link -f formula_name
+              brew link --overwrite formula_name
 
             To list all files that would be deleted:
-              brew link -n formula_name
+              brew link --overwrite --dry-run formula_name
             EOS
         elsif !dirname.writable_real?
           raise <<-EOS.undent
@@ -360,12 +360,6 @@ module ObserverPathnameExtension
   def rmdir
     super
     puts "rmdir #{to_s}" if ARGV.verbose?
-    $d+=1
-  end
-  def mkpath
-    return if exist?
-    super
-    puts "mkpath #{to_s}" if ARGV.verbose?
     $d+=1
   end
   def make_relative_symlink src
