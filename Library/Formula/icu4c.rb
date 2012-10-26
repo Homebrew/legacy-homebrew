@@ -6,14 +6,6 @@ class Icu4c < Formula
   version '49.1.2'
   sha1 'd8cee6d2b2a91a0da7464acd97a5b7b462d93225'
 
-  bottle do
-    sha1 '9e424ea5de5c5847b8a600078f9494f42d7f6168' => :mountainlion
-    sha1 '528b8bec1b821d5503eb98b565840d8a3aeca63e' => :lion
-    sha1 'c77579349187ee0cec5842f71aea2a446c770db7' => :snowleopard
-  end
-
-  keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
-
   option :universal
 
   def install
