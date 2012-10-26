@@ -20,6 +20,10 @@ class Valgrind < Formula
     depends_on :libtool
   end
 
+  # Valgrind needs vcpreload_core-*-darwin.so to have execute permissions.
+  # See #2150 for more information.
+  skip_clean 'lib/valgrind'
+
   def patches
     # 1: For Xcode-only systems, we have to patch hard-coded paths, use xcrun &
     #    add missing CFLAGS. See: https://bugs.kde.org/show_bug.cgi?id=295084
