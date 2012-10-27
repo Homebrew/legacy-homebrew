@@ -39,6 +39,7 @@ class Pango < Formula
     ]
 
     args << '--with-x' unless build.include? 'without-x'
+    args << '--without-x' if build.include? 'without-x'
 
     system "./configure", *args
     system "make"
