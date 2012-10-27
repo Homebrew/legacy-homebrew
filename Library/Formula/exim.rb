@@ -36,6 +36,8 @@ class Exim < Formula
       s.gsub! '/var/spool/exim', var/'spool/exim'
       s << "SUPPORT_MAILDIR=yes\n" if build.include? 'support-maildir'
       s << "AUTH_PLAINTEXT=yes\n"
+      s << "SUPPORT_TLS=yes\n"
+      s << "TLS_LIBS=-lssl -lcrypto\n"
 
       # For non-/usr/local HOMEBREW_PREFIX
       s << "LOOKUP_INCLUDE=-I#{HOMEBREW_PREFIX}/include\n"
