@@ -25,7 +25,6 @@ class Mapnik < Formula
   end
 
   def install
-    icu = Formula.factory("icu4c")
     # mapnik compiles can take ~1.5 GB per job for some .cpp files
     # so lets be cautious by limiting to CPUS/2
     jobs = ENV.make_jobs
@@ -40,8 +39,6 @@ class Mapnik < Formula
            "CXX=\"#{ENV.cxx}\"",
            "JOBS=#{jobs}",
            "PREFIX=#{prefix}",
-           "ICU_INCLUDES=#{icu.include}",
-           "ICU_LIBS=#{icu.lib}",
            "PYTHON_PREFIX=#{prefix}"  # Install to Homebrew's site-packages
     system "python",
            "scons/scons.py",
