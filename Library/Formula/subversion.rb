@@ -181,7 +181,7 @@ class Subversion < Formula
           "$(SWIG_INCLUDES) #{arches} -g -pipe -fno-common -DPERL_DARWIN -fno-strict-aliasing -I/usr/local/include -I#{perl_core}"
       end
       system "make swig-pl"
-      system "make install-swig-pl"
+      system "make", "install-swig-pl", "DESTDIR=#{prefix}"
     end
 
     if build_java?
@@ -204,6 +204,14 @@ class Subversion < Formula
       s += <<-EOS.undent
         You may need to add the Python bindings to your PYTHONPATH from:
           #{HOMEBREW_PREFIX}/lib/svn-python
+
+      EOS
+    end
+
+    if build_perl?
+      s += <<-EOS.undent
+        The perl bindings are located in various subdirectories of:
+          #{prefix}/Library/Perl
 
       EOS
     end

@@ -24,6 +24,8 @@ class Ffmpeg < Formula
   option 'with-ffplay', 'Enable FFPlay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'
 
+  depends_on 'pkg-config' => :build
+
   # manpages won't be built without texi2html
   depends_on 'texi2html' => :build if MacOS.version >= :mountain_lion
   depends_on 'yasm' => :build

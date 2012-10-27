@@ -7,9 +7,6 @@ class PltRacket < Formula
   url 'https://github.com/plt/racket/tarball/v5.2'
   sha1 'bb2c6b6504796a88dada10b510f040b5bbec7b2e'
 
-  # Don't strip symbols; need them for dynamic linking.
-  skip_clean 'bin'
-
   def install
     cd 'src' do
       args = ["--disable-debug", "--disable-dependency-tracking",

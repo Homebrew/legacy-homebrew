@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gitslave < Formula
-  url 'http://downloads.sourceforge.net/project/gitslave/gitslave-2.0.1.tar.gz'
   homepage 'http://gitslave.sourceforge.net'
-  sha1 'caf4f7525ec6c97b745b84e673b7fc3ed3672305'
+  url 'http://downloads.sourceforge.net/project/gitslave/gitslave-2.0.2.tar.gz'
+  sha1 'e27c3ed89f0dad0e7b6dffc424624c219d96296e'
 
   def install
     system "make", "install", "prefix=#{prefix}"

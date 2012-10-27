@@ -235,6 +235,10 @@ class VersionParsingTests < Test::Unit::TestCase
     assert_version_detected '3.4', 'http://www.antlr.org/download/antlr-3.4-complete.jar'
   end
 
+  def test_jenkins_version_style
+    assert_version_detected '1.486', 'http://mirrors.jenkins-ci.org/war/1.486/jenkins.war'
+  end
+
   # def test_version_ghc_style
   #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2'
   #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2'
