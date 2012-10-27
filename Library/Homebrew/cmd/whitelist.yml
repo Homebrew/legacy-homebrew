@@ -1,0 +1,30 @@
+# Files added here will be ignored by brew doctor if encountered in
+# /usr/local/lib - other unexpected and unbrewed files will still cause brew
+# doctor to complain.
+
+- libfuse.2.dylib
+- libfuse_ino64.2.dylib
+- libmacfuse_i32.2.dylib
+- libmacfuse_i64.2.dylib
+- libntfs-3g.80.dylib
+- libntfs.9.0.0.dylib
+- libosxfuse_i32.2.dylib
+- libosxfuse_i64.2.dylib
+- libublio.1.dylib
+
+- fuse.pc
+- libntfs-3g.pc
+- libublio.pc
+- osxfuse.pc
+
+- libfuse.la
+- libfuse_ino64.la
+- libntfs-3g.la
+- libntfs.la
+- libosxfuse_i32.la
+- libosxfuse_i64.la
+- libublio.la
+
+- libntfs-3g.a
+- libntfs.a
+- libublio.a

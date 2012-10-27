@@ -1,4 +1,5 @@
 require 'cmd/missing'
+require 'yaml'
 
 class Volumes
   def initialize
@@ -63,6 +64,13 @@ end
       found + relative_paths.map{|f| File.join(prefix, f) }.select{|f| File.exist? f }
     end
   end
+
+  # Provides a hash of acceptible .dynlib, .pc and .la files - these will not
+  # give the doctor grounds for complaint.
+  def white_list
+    @white_list ||= YAML.load(File.read(File.expand_path('../whitelist.yml', __FILE__)))
+  end
+
 ############# END HELPERS
 
 # See https://github.com/mxcl/homebrew/pull/9986
@@ -95,14 +103,8 @@ end
 def check_for_stray_dylibs
   unbrewed_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
 
-  # Dylibs which are generally OK should be added to this list,
-  # with a short description of the software they come with.
-  white_list = {
-    "libfuse.2.dylib" => "MacFuse",
-    "libfuse_ino64.2.dylib" => "MacFuse"
-  }
 
-  bad_dylibs = unbrewed_dylibs.reject {|d| white_list.key? File.basename(d) }
+  bad_dylibs = unbrewed_dylibs.reject { |d| white_list.include?(File.basename(d)) }
   return if bad_dylibs.empty?
 
   s = <<-EOS.undent
@@ -117,7 +119,9 @@ def check_for_stray_dylibs
 end
 
 def check_for_stray_static_libs
-  unbrewed_alibs = Dir['/usr/local/lib/*.a'].select { |f| File.file? f and not File.symlink? f }
+  unbrewed_alibs = Dir['/usr/local/lib/*.a'].select do |f|
+    File.file?(f) and not File.symlink?(f) and not white_list.include?(File.basename(f))
+  end
   return if unbrewed_alibs.empty?
 
   s = <<-EOS.undent
@@ -134,13 +138,7 @@ end
 def check_for_stray_pcs
   unbrewed_pcs = Dir['/usr/local/lib/pkgconfig/*.pc'].select { |f| File.file? f and not File.symlink? f }
 
-  # Package-config files which are generally OK should be added to this list,
-  # with a short description of the software they come with.
-  white_list = {
-    "fuse.pc" => "MacFuse",
-  }
-
-  bad_pcs = unbrewed_pcs.reject {|d| white_list.key? File.basename(d) }
+  bad_pcs = unbrewed_pcs.reject { |d| white_list.include?(File.basename(d)) }
   return if bad_pcs.empty?
 
   s = <<-EOS.undent
@@ -157,12 +155,7 @@ end
 def check_for_stray_las
   unbrewed_las = Dir['/usr/local/lib/*.la'].select { |f| File.file? f and not File.symlink? f }
 
-  white_list = {
-    "libfuse.la" => "MacFuse",
-    "libfuse_ino64.la" => "MacFuse",
-  }
-
-  bad_las = unbrewed_las.reject {|d| white_list.key? File.basename(d) }
+  bad_las = unbrewed_las.reject { |d| white_list.include?(File.basename(d)) }
   return if bad_las.empty?
 
   s = <<-EOS.undent
