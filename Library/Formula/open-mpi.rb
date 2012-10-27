@@ -13,12 +13,8 @@ class OpenMpi < Formula
     cause 'fails make check on Lion and ML'
   end
 
-  def options
-    [
-      ['--disable-fortran', 'Do not build the Fortran bindings'],
-      ['--test', 'Verify the build with make check']
-    ]
-  end
+  option 'disable-fortran', 'Do not build the Fortran bindings'
+  option 'test', 'Verify the build with make check'
 
   def install
     args = %W[
@@ -26,7 +22,7 @@ class OpenMpi < Formula
       --disable-dependency-tracking
       --enable-ipv6
     ]
-    if ARGV.include? '--disable-fortran'
+    if build.include? 'disable-fortran'
       args << '--disable-mpi-f77' << '--disable-mpi-f90'
     else
       ENV.fortran
@@ -34,7 +30,7 @@ class OpenMpi < Formula
 
     system './configure', *args
     system 'make all'
-    system 'make check' if ARGV.include? '--test'
+    system 'make check' if build.include? 'test'
     system 'make install'
 
     # If Fortran bindings were built, there will be a stray `.mod` file

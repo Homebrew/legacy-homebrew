@@ -5,9 +5,11 @@ class Pil < Formula
   homepage 'http://www.pythonware.com/products/pil/'
   sha1 '76c37504251171fda8da8e63ecb8bc42a69a5c81'
 
-  depends_on :x11
+  option 'with-little-cms', 'Compile with little-cms support.'
+
+  depends_on :freetype
   depends_on 'jpeg' => :recommended
-  depends_on 'little-cms' => :optional
+  depends_on 'little-cms' unless build.include? 'with-little-cms' # => :optional
 
   def install
     # Find the arch for the Python we are building against.
@@ -19,13 +21,16 @@ class Pil < Formula
     archs.delete :x86_64 if Hardware.is_32_bit?
     ENV['ARCHFLAGS'] = archs.as_arch_flags
 
+    freetype = Formula.factory('freetype')
+    freetype_prefix = Formula.factory('freetype').installed? ? freetype.prefix : MacOS::X11.prefix
+
     inreplace "setup.py" do |s|
       # Tell setup where Freetype2 is on 10.5/10.6
       s.gsub! 'add_directory(include_dirs, "/sw/include/freetype2")',
-              "add_directory(include_dirs, \"#{MacOS::X11.include}\")"
+              "add_directory(include_dirs, \"#{freetype_prefix}/include\")"
 
       s.gsub! 'add_directory(include_dirs, "/sw/lib/freetype2/include")',
-              "add_directory(library_dirs, \"#{MacOS::X11.lib}\")"
+              "add_directory(library_dirs, \"#{freetype_prefix}/lib\")"
 
       # Tell setup where our stuff is
       s.gsub! 'add_directory(library_dirs, "/sw/lib")',

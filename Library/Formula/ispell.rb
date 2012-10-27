@@ -5,8 +5,6 @@ class Ispell < Formula
   url 'http://www.lasr.cs.ucla.edu/geoff/tars/ispell-3.3.02.tar.gz'
   sha1 'c0d98e1af3afb8e0b642717c03439ff8881e3d60'
 
-  skip_clean :all
-
   def install
     ENV.deparallelize
     ENV.no_optimization

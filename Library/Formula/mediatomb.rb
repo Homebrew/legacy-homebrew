@@ -13,7 +13,7 @@ class Mediatomb < Formula
   end
 
   fails_with :clang do
-    build 318
+    build 421
     cause <<-EOS.undent
       In file included from ../src/content_manager.cc:45:
       In file included from ../src/content_manager.h:36:

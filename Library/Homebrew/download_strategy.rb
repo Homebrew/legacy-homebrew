@@ -333,7 +333,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     if @clone.exist?
       Dir.chdir(@clone) do
         # Check for interupted clone from a previous install
-        unless system @@git, 'status', '-s'
+        unless quiet_system @@git, 'status', '-s'
           puts "Removing invalid .git repo from cache"
           FileUtils.rm_rf @clone
         end
@@ -342,7 +342,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
     unless @clone.exist?
       # Note: first-time checkouts are always done verbosely
-      clone_args = [@@git, 'clone']
+      clone_args = [@@git, 'clone', '--no-checkout']
       clone_args << '--depth' << '1' if support_depth?
 
       case @spec
@@ -376,9 +376,9 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         ohai "Checking out #{@spec} #{@ref}"
         case @spec
         when :branch
-          nostdout { quiet_safe_system @@git, 'checkout', "origin/#{@ref}", '--' }
+          nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, "origin/#{@ref}", '--' }
         when :tag, :revision
-          nostdout { quiet_safe_system @@git, 'checkout', @ref, '--' }
+          nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, @ref, '--' }
         end
       else
         # otherwise the checkout-index won't checkout HEAD
@@ -586,23 +586,20 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
 end
 
 class DownloadStrategyDetector
-  def initialize url, strategy=nil
-    @url = url
-    @strategy = strategy
-  end
-
-  def detect
-    if @strategy.is_a? Class and @strategy.ancestors.include? AbstractDownloadStrategy
-      @strategy
-    elsif @strategy.is_a? Symbol then detect_from_symbol
-    else detect_from_url
+  def self.detect(url, strategy=nil)
+    if strategy.is_a? Class and strategy.ancestors.include? AbstractDownloadStrategy
+      strategy
+    elsif strategy.is_a? Symbol
+      detect_from_symbol(strategy)
+    else
+      detect_from_url(url)
     end
   end
 
   private
 
-  def detect_from_url
-    case @url
+  def self.detect_from_url(url)
+    case url
       # We use a special URL pattern for cvs
     when %r[^cvs://] then CVSDownloadStrategy
       # Standard URLs
@@ -628,8 +625,8 @@ class DownloadStrategyDetector
     end
   end
 
-  def detect_from_symbol
-    case @strategy
+  def self.detect_from_symbol(symbol)
+    case symbol
     when :bzr then BazaarDownloadStrategy
     when :curl then CurlDownloadStrategy
     when :cvs then CVSDownloadStrategy
@@ -639,7 +636,7 @@ class DownloadStrategyDetector
     when :post then CurlPostDownloadStrategy
     when :svn then SubversionDownloadStrategy
     else
-      raise "Unknown download strategy #{@strategy} was requested."
+      raise "Unknown download strategy #{strategy} was requested."
     end
   end
 end

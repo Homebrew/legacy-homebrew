@@ -2,8 +2,8 @@ require 'formula'
 
 class Ruby < Formula
   homepage 'http://www.ruby-lang.org/en/'
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz'
-  sha256 '46e2fa80be7efed51bd9cdc529d1fe22ebc7567ee0f91db4ab855438cf4bd8bb'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p286.tar.gz'
+  sha256 'e94367108751fd6bce79401d947baa66096c757fd3a0856350a2abd05d26d89d'
 
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
@@ -24,6 +24,9 @@ class Ruby < Formula
   fails_with :llvm do
     build 2326
   end
+
+  # https://github.com/ruby/ruby/commit/2741a598ff9e561c71eb39a57bb19c0a3205eaef
+  def patches; DATA end
 
   def install
     system "autoconf" if build.head?
@@ -60,3 +63,22 @@ class Ruby < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/missing/setproctitle.c b/missing/setproctitle.c
+index 169ba8b..4dc6d03 100644
+--- a/missing/setproctitle.c
++++ b/missing/setproctitle.c
+@@ -48,6 +48,12 @@
+ #endif
+ #include <string.h>
+ 
++#if defined(__APPLE__)
++#include <crt_externs.h>
++#undef environ
++#define environ (*_NSGetEnviron())
++#endif
++
+ #define SPT_NONE	0	/* don't use it at all */
+ #define SPT_PSTAT	1	/* use pstat(PSTAT_SETCMD, ...) */
+ #define SPT_REUSEARGV	2	/* cover argv with title information */

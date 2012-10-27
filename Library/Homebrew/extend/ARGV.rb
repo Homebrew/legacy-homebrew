@@ -177,9 +177,10 @@ module HomebrewArgvExtension
     flags_to_clear.concat %w[--verbose -v] if quieter?
     flags_to_clear.each {|flag| delete flag}
 
-    yield
+    ret = yield
 
     replace old_args
+    ret
   end
 
   private
