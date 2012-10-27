@@ -30,16 +30,11 @@ class Mercurial < Formula
     system "make", "PREFIX=#{prefix}", "build"
     system "make", "PREFIX=#{prefix}", "install-bin"
 
-    # Now we have lib/python2.x/site-packages/ with Mercurial
-    # libs in them. We want to move these out of site-packages into
-    # a self-contained folder. Let's choose libexec.
-    libexec.install Dir["#{lib}/python*/site-packages/*"]
-
     # Symlink the hg binary into bin
-    bin.install_symlink libexec+'hg'
+    bin.install_symlink libexec/'hg'
 
     # Remove the hard-coded python invocation from hg
-    inreplace bin+'hg', %r[^#!.*$], '#!/usr/bin/env python'
+    inreplace bin/'hg', %r[^#!.*$], '#!/usr/bin/env python'
 
     # Install some contribs
     bin.install 'contrib/hgk'
