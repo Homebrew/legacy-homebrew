@@ -10,9 +10,8 @@ class Dwdiff < Formula
 
   def install
     gettext = Formula.factory('gettext')
-    icu4c = Formula.factory('icu4c')
-    ENV.append "CFLAGS", "-I#{gettext.include} -I#{icu4c.include}"
-    ENV.append "LDFLAGS", "-L#{gettext.lib} -L#{icu4c.lib}"
+    ENV.append "CFLAGS", "-I#{gettext.include}"
+    ENV.append "LDFLAGS", "-L#{gettext.lib}"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
