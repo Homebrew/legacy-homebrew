@@ -17,29 +17,18 @@ class Mercurial < Formula
     ENV.minimal_optimization
 
     # install the completion script
-    (prefix + 'etc/bash_completion.d').install 'contrib/bash_completion' => 'hg-completion.bash'
+    (prefix/'etc/bash_completion.d').install 'contrib/bash_completion' => 'hg-completion.bash'
 
-    # Force the binary install path to the Cellar
-    inreplace "Makefile",
-      "setup.py $(PURE) install",
-      "setup.py $(PURE) install --install-scripts=\"#{libexec}\""
+    system "make doc" if build.head? or build.include? 'doc'
+    system "make local"
 
-    # Make Mercurial into the Cellar.
-    # The documentation must be built when using HEAD
-    system "make", "doc" if build.head? or build.include? 'doc'
-    system "make", "PREFIX=#{prefix}", "build"
-    system "make", "PREFIX=#{prefix}", "install-bin"
-
-    # Now we have lib/python2.x/site-packages/ with Mercurial
-    # libs in them. We want to move these out of site-packages into
-    # a self-contained folder. Let's choose libexec.
-    libexec.install Dir["#{lib}/python*/site-packages/*"]
+    libexec.install 'hg', 'mercurial'
 
     # Symlink the hg binary into bin
-    bin.install_symlink libexec+'hg'
+    bin.install_symlink libexec/'hg'
 
     # Remove the hard-coded python invocation from hg
-    inreplace bin+'hg', %r[^#!.*$], '#!/usr/bin/env python'
+    inreplace bin/'hg', %r[^#!.*$], '#!/usr/bin/env python'
 
     # Install some contribs
     bin.install 'contrib/hgk'

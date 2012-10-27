@@ -20,11 +20,13 @@ class Maxima < Formula
     ENV.deparallelize
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--mandir=#{man}", "--infodir=#{info}",
-                          "--enable-sbcl", "--enable-gettext"
-    system "make"
-    system "make check"
-    system "make install"
+                          "--enable-sbcl",
+                          "--enable-gettext"
+    # Per build instructions
+    ENV['LANG'] = 'C'
+    system 'make'
+    system 'make check'
+    system 'make install'
   end
 
   def test
