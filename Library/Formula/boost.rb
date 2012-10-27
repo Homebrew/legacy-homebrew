@@ -30,6 +30,8 @@ class Boost < Formula
     sha1 '474aed3845ceaf26e0eeb3175ad3e2c4f3bca942' => :snowleopard
   end
 
+  env :userpaths
+
   option :universal
   option 'with-mpi', 'Enable MPI support'
   option 'without-python', 'Build without Python'
@@ -37,6 +39,7 @@ class Boost < Formula
 
   depends_on UniversalPython.new if needs_universal_python?
   depends_on "icu4c" if build.include? "with-icu"
+  depends_on MPIDependency.new(:cc, :cxx) if build.include? "with-mpi"
 
   fails_with :llvm do
     build 2335
