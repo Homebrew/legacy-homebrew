@@ -3,7 +3,7 @@ require 'formula'
 class Transmission < Formula
   homepage 'http://www.transmissionbt.com/'
   url 'http://download.transmissionbt.com/files/transmission-2.73.tar.bz2'
-  sha1 'a23f773c52c5af68f7494da1552c681be50138d9'
+  sha1 '49f886ecb391c8901cd40f42b2f4a0df1ea4dcab'
 
   depends_on 'pkg-config' => :build # So it will find system libcurl
   depends_on 'libevent'
