@@ -6,16 +6,16 @@ class Epubcheck < Formula
   sha1 '86036eadad8408070791b3da368958239ed8a410'
 
   devel do
-    url 'http://epubcheck.googlecode.com/files/epubcheck-3.0b5.zip'
-    sha1 'd5f9d60733f587946fc853f561ca2f13e3b8f83d'
+    url 'http://epubcheck.googlecode.com/files/epubcheck-3.0-RC-1.zip'
+    sha1 '055d8aaaaee70c581aced379097bb1eb1e7a8826'
   end
 
   def install
-    if ARGV.build_devel?
-      libexec.install "epubcheck-3.0b5.jar", "lib"
+    if build.devel?
+      libexec.install "epubcheck-3.0-RC-1.jar", "lib"
       (bin/'epubcheck').write <<-EOS.undent
         #!/bin/sh
-        java -jar "#{libexec}/epubcheck-3.0b5.jar" "$@"
+        java -jar "#{libexec}/epubcheck-3.0-RC-1.jar" "$@"
       EOS
     else
       libexec.install "epubcheck-1.2.jar", "lib"
