@@ -1,9 +1,5 @@
 require 'formula'
 
-def needs_universal_python?
-  ARGV.build_universal? and not ARGV.include? "--without-python"
-end
-
 class UniversalPython < Requirement
   def message; <<-EOS.undent
     A universal build was requested, but Python is not a universal build
@@ -29,7 +25,7 @@ class Boost149 < Formula
   option 'without-python', 'Build without Python'
   option 'with-icu', 'Build regexp engine with icu support'
 
-  depends_on UniversalPython.new if needs_universal_python?
+  depends_on UniversalPython.new if build.universal? and not build.include? "without-python"
   depends_on "icu4c" if build.include? "with-icu"
 
   fails_with :llvm do
