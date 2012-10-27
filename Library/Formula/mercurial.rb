@@ -17,18 +17,12 @@ class Mercurial < Formula
     ENV.minimal_optimization
 
     # install the completion script
-    (prefix + 'etc/bash_completion.d').install 'contrib/bash_completion' => 'hg-completion.bash'
+    (prefix/'etc/bash_completion.d').install 'contrib/bash_completion' => 'hg-completion.bash'
 
-    # Force the binary install path to the Cellar
-    inreplace "Makefile",
-      "setup.py $(PURE) install",
-      "setup.py $(PURE) install --install-scripts=\"#{libexec}\""
+    system "make doc" if build.head? or build.include? 'doc'
+    system "make local"
 
-    # Make Mercurial into the Cellar.
-    # The documentation must be built when using HEAD
-    system "make", "doc" if build.head? or build.include? 'doc'
-    system "make", "PREFIX=#{prefix}", "build"
-    system "make", "PREFIX=#{prefix}", "install-bin"
+    libexec.install 'hg', 'mercurial'
 
     # Symlink the hg binary into bin
     bin.install_symlink libexec/'hg'
