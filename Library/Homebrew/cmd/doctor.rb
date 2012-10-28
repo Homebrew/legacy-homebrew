@@ -249,7 +249,7 @@ def check_cc
       return <<-EOS.undent
         Experimental support for using Xcode without the "Command Line Tools".
         You have only installed Xcode. If stuff is not building, try installing the
-        "Command Line Tools for Xcode" package.
+        "Command Line Tools for Xcode" package provided by Apple.
       EOS
     else
       return <<-EOS.undent
