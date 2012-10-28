@@ -11,6 +11,11 @@ class Pil < Formula
   depends_on 'jpeg' => :recommended
   depends_on 'little-cms' unless build.include? 'with-little-cms' # => :optional
 
+  # The patch is to fix a core dump in Bug in PIL's quantize() with 64 bit architectures.
+  def patches
+    DATA
+  end
+
   def install
     # Find the arch for the Python we are building against.
     # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
@@ -51,3 +56,16 @@ class Pil < Formula
     EOS
   end
 end
+
+__END__
+--- a/libImaging/Quant.c
++++ b/libImaging/Quant.c
+@@ -914,7 +914,7 @@
+    unsigned long bestdist,bestmatch,dist;
+    unsigned long initialdist;
+    HashTable h2;
+-   int pixelVal;
++   unsigned long pixelVal;
+
+    h2=hashtable_new(unshifted_pixel_hash,unshifted_pixel_cmp);
+    for (i=0;i<nPixels;i++) {
