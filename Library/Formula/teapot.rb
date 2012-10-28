@@ -1,12 +1,17 @@
 require 'formula'
 
 class Teapot < Formula
-  url 'http://www.syntax-k.de/projekte/teapot/teapot-1.09.tar.gz'
   homepage 'http://www.syntax-k.de/projekte/teapot/'
-  sha1 '5618bcc3c2e10ed6af73a0f8ee29599c7fc5967d'
+  url 'http://www.syntax-k.de/projekte/teapot/teapot-2.3.0.tar.gz'
+  sha1 'cac70c7967ba72166cdbd1806b674cd8299399e7'
+
+  depends_on 'cmake' => :build
 
   def install
-    system "make"
-    bin.install 'teapot'
+    args = std_cmake_args + ['-DENABLE_HELP=OFF', '..']
+    mkdir 'macbuild' do
+      system 'cmake', *args
+      system 'make install'
+    end
   end
 end
