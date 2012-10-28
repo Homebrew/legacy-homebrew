@@ -37,6 +37,8 @@ class Cairo < Formula
     ]
 
     args << '--with-x' unless build.include? 'without-x'
+    args << '--enable-xlib=no' if build.include? 'without-x'
+    args << '--enable-xlib-xrender=no' if build.include? 'without-x'
     args << '--enable-xcb=no' if MacOS.version == :leopard
 
     system "./configure", *args
