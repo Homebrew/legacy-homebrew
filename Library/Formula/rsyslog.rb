@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rsyslog < Formula
-  url 'http://rsyslog.com/files/download/rsyslog/rsyslog-5.8.0.tar.gz'
   homepage 'http://www.rsyslog.com'
-  sha1 '5a64f0ca8b6d5b32db1c20d46965803a2d8d047a'
+  url 'http://www.rsyslog.com/files/download/rsyslog/rsyslog-5.10.1.tar.gz'
+  sha256 '2f643a2c613d5b09f242affd32a90cf4fb7a9ac4557dc80f218e6f3e5affb4c8'
 
   depends_on 'pkg-config' => :build
 
