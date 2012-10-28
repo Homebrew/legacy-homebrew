@@ -14,9 +14,7 @@ class Smpeg < Formula
   def install
     system "./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-gtktest",
-                          "--disable-sdltest"
+                          "--prefix=#{prefix}"
     system "make"
     # Install script is not +x by default for some reason
     system "chmod +x ./install-sh"
