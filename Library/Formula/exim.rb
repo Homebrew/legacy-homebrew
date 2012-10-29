@@ -17,8 +17,8 @@ end
 
 class Exim < Formula
   homepage 'http://exim.org'
-  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.77.tar.gz'
-  sha1 '2c1ba6b8f627b71b3b58fc0cc56e394590dcd1dc'
+  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.80.1.tar.gz'
+  sha1 'eeb6d1e4c7c1dc0e4de55ba61316718e44d810b3'
 
   option 'support-maildir', 'Support delivery in Maildir format'
 
@@ -35,6 +35,9 @@ class Exim < Formula
       s.gsub! '/usr/exim', prefix
       s.gsub! '/var/spool/exim', var/'spool/exim'
       s << "SUPPORT_MAILDIR=yes\n" if build.include? 'support-maildir'
+      s << "AUTH_PLAINTEXT=yes\n"
+      s << "SUPPORT_TLS=yes\n"
+      s << "TLS_LIBS=-lssl -lcrypto\n"
 
       # For non-/usr/local HOMEBREW_PREFIX
       s << "LOOKUP_INCLUDE=-I#{HOMEBREW_PREFIX}/include\n"

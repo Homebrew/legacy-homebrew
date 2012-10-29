@@ -6,16 +6,13 @@ class Checkstyle < Formula
   sha1 '757f89f0bb6148718904577d230a9b4f8221b03c'
 
   def install
-    # wrapper script
-    (bin/'checkstyle').write <<-EOS.undent
-      #! /usr/bin/env bash -e
-      java -jar "#{libexec}/checkstyle-5.5-all.jar" "$@"
-    EOS
-
     libexec.install 'checkstyle-5.5-all.jar', 'sun_checks.xml'
+    bin.write_jar_script libexec/'checkstyle-5.5-all.jar', 'checkstyle'
   end
 
   def test
+    # Note this test "fails" because the audit has issues
+    # TODO - pipe through cat to ingore error code
     mktemp do
       # create test file
       (Pathname.pwd/"Test.java").write <<-EOS.undent

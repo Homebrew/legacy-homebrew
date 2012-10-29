@@ -7,9 +7,6 @@ class Antlr < Formula
 
   def install
     prefix.install "antlr-3.4-complete.jar"
-    (bin+"antlr-3.4").write <<-EOS.undent
-    #!/bin/sh
-    java -jar #{prefix}/antlr-3.4-complete.jar "$@"
-    EOS
+    bin.write_jar_script prefix/"antlr-3.4-complete.jar", "antlr-3.4"
   end
 end

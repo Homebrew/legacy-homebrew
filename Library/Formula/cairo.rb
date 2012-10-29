@@ -23,6 +23,11 @@ class Cairo < Formula
   depends_on 'glib' unless build.include? 'without-x'
   depends_on :x11 unless build.include? 'without-x'
 
+  # See: http://lists.cairographics.org/archives/cairo/2012-October/023694.html
+  def patches
+    DATA if MacOS.version <= :snow_leopard
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
@@ -31,10 +36,29 @@ class Cairo < Formula
       --prefix=#{prefix}
     ]
 
-    args << '--with-x' unless build.include? 'without-x'
+    if build.include? 'without-x'
+      args << '--enable-xlib=no' << '--enable-xlib-xrender=no'
+    else
+      args << '--with-x'
+    end
+
     args << '--enable-xcb=no' if MacOS.version == :leopard
 
     system "./configure", *args
     system "make install"
   end
 end
+
+__END__
+diff --git a/src/cairo-xlib-surface-shm.c b/src/cairo-xlib-surface-shm.c	
+index 08169f2..6a1752d 100644
+--- a/src/cairo-xlib-surface-shm.c
++++ b/src/cairo-xlib-surface-shm.c
+@@ -51,7 +51,7 @@
+ #include <X11/Xlibint.h>
+ #include <X11/Xproto.h>
+ #include <X11/extensions/XShm.h>
+-#include <X11/extensions/shmproto.h>
++#include <X11/extensions/shmstr.h>
+ #include <sys/ipc.h>
+ #include <sys/shm.h>

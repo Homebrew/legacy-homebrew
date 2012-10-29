@@ -13,10 +13,7 @@ class Savana < Formula
 
     # lib/* and logging.properties are loaded relative to bin
     libexec.install %w[bin lib logging.properties]
-    (bin+'sav').write <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/sav" "$@"
-    EOS
+    bin.write_exec_script libexec/'bin/sav'
 
     (prefix+'etc/bash_completion.d').install 'etc/bash_completion' => 'savana-completion.bash'
   end
