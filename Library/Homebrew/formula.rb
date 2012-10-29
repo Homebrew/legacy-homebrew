@@ -118,23 +118,23 @@ class Formula
   end
   def rack; prefix.parent end
 
-  def bin;     prefix+'bin'            end
-  def doc;     prefix+'share/doc'+name end
-  def include; prefix+'include'        end
-  def info;    prefix+'share/info'     end
-  def lib;     prefix+'lib'            end
-  def libexec; prefix+'libexec'        end
-  def man;     prefix+'share/man'      end
-  def man1;    man+'man1'              end
-  def man2;    man+'man2'              end
-  def man3;    man+'man3'              end
-  def man4;    man+'man4'              end
-  def man5;    man+'man5'              end
-  def man6;    man+'man6'              end
-  def man7;    man+'man7'              end
-  def man8;    man+'man8'              end
-  def sbin;    prefix+'sbin'           end
-  def share;   prefix+'share'          end
+  def bin;     prefix+'bin'     end
+  def doc;     share+'doc'+name end
+  def include; prefix+'include' end
+  def info;    share+'info'     end
+  def lib;     prefix+'lib'     end
+  def libexec; prefix+'libexec' end
+  def man;     share+'man'      end
+  def man1;    man+'man1'       end
+  def man2;    man+'man2'       end
+  def man3;    man+'man3'       end
+  def man4;    man+'man4'       end
+  def man5;    man+'man5'       end
+  def man6;    man+'man6'       end
+  def man7;    man+'man7'       end
+  def man8;    man+'man8'       end
+  def sbin;    prefix+'sbin'    end
+  def share;   prefix+'share'   end
 
   # configuration needs to be preserved past upgrades
   def etc; HOMEBREW_PREFIX+'etc' end
@@ -224,21 +224,10 @@ class Formula
         # so load any deps before this point! And exit asap afterwards
         yield self
       rescue RuntimeError, SystemCallError => e
-        if not ARGV.debug?
-          %w(config.log CMakeCache.txt).each do |fn|
-            (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
-          end
-          raise
+        %w(config.log CMakeCache.txt).each do |fn|
+          (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
         end
-
-        onoe e.inspect
-        puts e.backtrace unless e.kind_of? BuildError
-        ohai "Rescuing build..."
-        puts "When you exit this shell Homebrew will attempt to finalise the installation."
-        puts "If nothing is installed or the shell exits with a non-zero error code,"
-        puts "Homebrew will abort. The installation prefix is:"
-        puts prefix
-        interactive_shell self
+        raise
       end
     end
   end
