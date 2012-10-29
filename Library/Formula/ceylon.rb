@@ -23,7 +23,7 @@ class Ceylon < Formula
   def test
     cd "#{libexec}/samples/helloworld" do
       system "#{bin}/ceylon", "compile", "com.acme.helloworld"
-      system "#{bin}/ceylon", "doc", "-non-shared", "com.acme.helloworld"
+      system "#{bin}/ceylon", "doc", "--non-shared", "com.acme.helloworld"
       system "#{bin}/ceylon", "run", "com.acme.helloworld/1.0.0", "John"
     end
   end
