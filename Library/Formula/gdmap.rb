@@ -23,14 +23,13 @@ class Gdmap < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-        "LIBS=-lxml2 -lintl -lglib-2.0 -lgtk-x11-2.0 -lgdk-x11-2.0 -lgdk_pixbuf-2.0 -lgobject-2.0"
+                          "--prefix=#{prefix}"
 
     system "make install"
   end
 
   def test
-    system "gdmap"
+    system "#{bin}/gdmap"
   end
 end
 
