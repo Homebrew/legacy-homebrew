@@ -47,3 +47,14 @@ __END__
  #if defined(__DARWIN_BYTE_ORDER) && __DARWIN_BYTE_ORDER == __DARWIN_LITTLE_ENDIAN
  # define FC_ARCH_ENDIAN "le"
  #elif defined(__DARWIN_BYTE_ORDER) && __DARWIN_BYTE_ORDER == __DARWIN_BIG_ENDIAN
+--- a/fonts.conf.in	2012-10-29 23:15:08.000000000 +0800
++++ b/fonts.conf.in	2012-10-29 23:15:10.000000000 +0800
+@@ -23,6 +23,8 @@
+ 
+ <!-- Font directory list -->
+ 
++	<dir>/Library/Fonts</dir>
++	<dir>~/Library/Fonts</dir>
+ 	<dir>@FC_DEFAULT_FONTS@</dir>
+ 	@FC_FONTPATH@
+ 	<dir prefix="xdg">fonts</dir>
