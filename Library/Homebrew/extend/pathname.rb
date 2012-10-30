@@ -194,6 +194,7 @@ class Pathname
       case extname
         when ".tar.gz", ".tgz", ".tar.bz2", ".tbz" then :tar
         when ".zip" then :zip
+        when ".7z" then :p7zip
       end
     end
   end
