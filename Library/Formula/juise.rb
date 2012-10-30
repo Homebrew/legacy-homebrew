@@ -2,11 +2,12 @@ require 'formula'
 
 class Juise < Formula
   homepage 'http://code.google.com/p/juise/'
-  url 'http://juise.googlecode.com/files/juise-0.3.10.tar.gz'
-  sha1 '1e3c0f5e98ee3f499b5180512cc98e294c551fde'
+  url 'http://juise.googlecode.com/files/juise-0.3.15.tar.gz'
+  sha1 '9ec4ea9a078b7e5a4c72efe241b7089683fe50f1'
 
   depends_on 'libtool'  => :build
   depends_on 'libslax'
+  depends_on 'libssh2'
   depends_on 'pcre'
 
   # Need newer versions of these libraries
@@ -18,7 +19,8 @@ class Juise < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-libssh2-prefix=#{HOMEBREW_PREFIX}"
     system "make install"
   end
 end
