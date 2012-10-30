@@ -2,7 +2,7 @@ require 'formula'
 
 class Libmagic < Formula
   homepage 'http://www.darwinsys.com/file/'
-  url 'ftp://ftp.astron.com/pub/file/file-5.11.tar.gz'
+  url 'http://fossies.org/unix/misc/file-5.11.tar.gz'
   sha1 'df8ffe8759ec8cd85a98dc98e858563ea2555f64'
 
   def install
