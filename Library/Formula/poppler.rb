@@ -1,14 +1,14 @@
 require 'formula'
 
 class PopplerData < Formula
-  url 'http://poppler.freedesktop.org/poppler-data-0.4.5.tar.gz'
-  sha256 '3190bc457bafe4b158f79a08e8a3f1824031ec12acefc359e68e0f04da0f70fd'
+  url 'http://poppler.freedesktop.org/poppler-data-0.4.6.tar.gz'
+  sha1 'f030563eed9f93912b1a546e6d87936d07d7f27d'
 end
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.20.2.tar.gz'
-  sha256 '2debc5034e0e85402957d84fb2674737658a3dbe8a3c631e1792e3f8c88ce369'
+  url 'http://poppler.freedesktop.org/poppler-0.20.5.tar.gz'
+  sha1 '5eb351381e6d7994bdf7f09bb5c1075f41d79381'
 
   option 'with-qt4', 'Build Qt backend'
   option 'with-glib', 'Build Glib backend'
