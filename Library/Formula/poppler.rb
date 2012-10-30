@@ -10,14 +10,17 @@ class Poppler < Formula
   url 'http://poppler.freedesktop.org/poppler-0.20.2.tar.gz'
   sha256 '2debc5034e0e85402957d84fb2674737658a3dbe8a3c631e1792e3f8c88ce369'
 
+  option 'with-qt4', 'Build Qt backend'
+  option 'with-glib', 'Build Glib backend'
+
   depends_on 'pkg-config' => :build
+
+  depends_on :fontconfig
+  depends_on 'openjpeg'
+
   depends_on 'qt' if build.include? 'with-qt4'
   depends_on 'glib' if build.include? 'with-glib'
   depends_on 'cairo' if build.include? 'with-glib' # Needs a newer Cairo build than OS X 10.6.7 provides
-  depends_on :fontconfig
-
-  option 'with-qt4', 'Build Qt backend'
-  option 'with-glib', 'Build Glib backend'
 
   def install
     if build.include? 'with-qt4'
