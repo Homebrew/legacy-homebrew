@@ -28,8 +28,12 @@ class Poppler < Formula
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-xpdf-headers"]
     # Explicitly disable Qt if not requested because `POPPLER_QT4_CFLAGS` won't
     # be set and the build will fail.
-    args << ( build.include? 'with-qt4' ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
-    args << '--enable-poppler-glib' if build.include? 'with-glib'
+    #
+    # Also, explicitly disable Glib as Poppler will find it and set up to
+    # build, but Superenv will have stripped the Glib utilities out of the
+    # PATH.
+    args << ( build.include?('with-qt4') ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
+    args << ( build.include?('with-glib') ? '--enable-poppler-glib' : '--disable-poppler-glib' )
 
     system "./configure", *args
     system "make install"
