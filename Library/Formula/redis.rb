@@ -31,7 +31,7 @@ class Redis < Formula
     end
 
     # Fix redis upgrade from 2.4 to 2.6.
-    if File.readlines(etc/'redis.conf').grep(/^vm-enabled/)
+    if File.exists?(etc/'redis.conf') && File.readlines(etc/'redis.conf').grep(/^vm-enabled/)
       mv etc/'redis.conf', etc/'redis.conf.old'
       ohai "Your redis.conf will not work with 2.6; moved it to redis.conf.old"
     end
