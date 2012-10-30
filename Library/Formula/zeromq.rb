@@ -12,8 +12,8 @@ class Zeromq < Formula
   head 'https://github.com/zeromq/libzmq.git'
 
   devel do
-    url 'http://download.zeromq.org/zeromq-3.2.0-rc1.tar.gz'
-    sha1 '1a5195a61150c0a653798e5babde70f473a8a3b0'
+    url 'http://download.zeromq.org/zeromq-3.2.1-rc2.tar.gz'
+    sha1 '71695b3de27ebf340452b7178c3ff8941c8354b8'
   end
 
   depends_on 'pkg-config' => :build
