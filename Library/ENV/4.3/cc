@@ -103,7 +103,7 @@ class Cmd
         whittler.next
       when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
            /^-march=.+/, /^-mtune=.+/, '-m64', '-m32',
-           /^-O[0-9zs]?/, '-fast',
+           /^-O[0-9zs]?$/, '-fast',
            '-pedantic', '-pedantic-errors'
       when '-fopenmp', '-lgomp'
         # clang doesn't support OpenMP
