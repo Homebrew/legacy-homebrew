@@ -19,7 +19,7 @@ class Fontconfig < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--with-add-fonts=/Library/Fonts,~/Library/Fonts", "--prefix=#{prefix}"
     system "make install"
   end
 end

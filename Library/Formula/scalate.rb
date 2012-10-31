@@ -15,7 +15,7 @@ class Scalate < Formula
 
     prefix.install %w{ license.txt readme.html }
     libexec.install Dir['*']
-    bin.write_exec_sript libexec/'bin/scalate'
+    bin.write_exec_script libexec/'bin/scalate'
   end
 
   def caveats; <<-EOS.undent
