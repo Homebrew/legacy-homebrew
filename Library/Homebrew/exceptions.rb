@@ -94,22 +94,33 @@ class BuildError < Homebrew::InstallationError
     @command == './configure'
   end
 
+  def issues
+    @issues ||= GitHub.issues_for_formula(formula.name)
+  end
+
   def dump
-    logs = "#{ENV['HOME']}/Library/Logs/Homebrew/#{formula}/"
-    if ARGV.verbose?
+    if not ARGV.verbose?
+      puts
+      puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
+    else
       require 'cmd/--config'
       require 'cmd/--env'
       ohai "Configuration"
       Homebrew.dump_build_config
       ohai "ENV"
       Homebrew.dump_build_env(env)
+      puts
+      onoe "#{formula.name} did not build"
+      unless (logs = Dir["#{ENV['HOME']}/Library/Logs/Homebrew/#{formula}/*"]).empty?
+        print "Logs: "
+        puts *logs.map{|fn| "      #{fn}"}
+      end
     end
     puts
-    onoe "#{formula.name} did not build"
-    puts "Logs: #{logs}" unless Dir["#{logs}/*"].empty?
-    puts "Help: #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
-    issues = GitHub.issues_for_formula(formula.name)
-    puts *issues.map{ |s| "      #{Tty.em}#{s}#{Tty.reset}" } unless issues.empty?
+    unless issues.empty?
+      puts "These open issues may also help:"
+      puts *issues.map{ |s| "    #{s}" }
+    end
   end
 end
 
