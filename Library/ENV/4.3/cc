@@ -121,7 +121,7 @@ class Cmd
       when /^-L(.+)/
         path = $1.chuzzle || whittler.next
         case path.cleanpath
-        when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
+        when %r{^/opt/local}, %r{^/sw}, %r{/usr/X11}
           # NOOP
         else
           args << "-L#{path}" if lset.add?(path.cleanpath)
