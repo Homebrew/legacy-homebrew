@@ -48,7 +48,7 @@ __END__
  	$(RANLIB) $@
  $(LIBSHARED): $(OBJS_SHARED)
 -	$(CC) -shared -Wl,-soname,$(LIBSHARED) -o $(LIBSHARED) $(OBJS_SHARED) $(LIBS) $(LNETLIB) $(PCAPLIB)
-+	$(CC) -Wl,-dylib -Wl,-install_name -Wl,$(LIBSHARED) -Wl,-headerpad_max_install_names -o $(LIBSHARED) $(OBJS_SHARED) $(LIBS) $(LNETLIB) $(PCAPLIB)
++	$(CC) -dynamiclib -Wl,-dylib -Wl,-install_name,$(LIBSHARED) -Wl,-headerpad_max_install_names -o $(LIBSHARED) $(OBJS_SHARED) $(LIBS) $(LNETLIB) $(PCAPLIB)
  
  _install install: $(LIBSTATIC)
  	../mkinstalldirs $(install_prefix)$(libdir)
