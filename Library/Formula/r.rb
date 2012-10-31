@@ -9,8 +9,8 @@ end
 
 class R < Formula
   homepage 'http://www.r-project.org'
-  url 'http://cran.r-project.org/src/base/R-2/R-2.15.1.tar.gz'
-  sha1 'f0e6912be6dfc0d1fdc4be66048304d8befe8424'
+  url 'http://cran.r-project.org/src/base/R-2/R-2.15.2.tar.gz'
+  sha1 'c80da687d66ee88d1e34fc1ae5c1bd525f9513dd'
 
   head 'https://svn.r-project.org/R/trunk'
 

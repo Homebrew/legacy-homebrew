@@ -19,6 +19,8 @@ module Homebrew extend self
 
     new_files = []
     Dir["Library/Taps/*"].each do |tapd|
+      next unless File.directory?(tapd)
+
       cd tapd do
         begin
           updater = Updater.new

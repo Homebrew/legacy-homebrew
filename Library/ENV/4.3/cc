@@ -53,7 +53,7 @@ class Cmd
   def tool
     @tool ||= case @arg0
     when 'ld' then 'ld'
-    when 'cc', 'c99', 'c89'
+    when 'cc', 'c99', 'c89', 'cpp'
       # Ideally we would run `cx9`, however these tools are POSIX compliant
       # and don't support many flags. We need -isystem for instance, but also
       # reliability is generally much higher if we just get clang/gcc to do
@@ -103,7 +103,7 @@ class Cmd
         whittler.next
       when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
            /^-march=.+/, /^-mtune=.+/, '-m64', '-m32',
-           /^-O[0-9zs]?/, '-fast',
+           /^-O[0-9zs]?$/, '-fast',
            '-pedantic', '-pedantic-errors'
       when '-fopenmp', '-lgomp'
         # clang doesn't support OpenMP

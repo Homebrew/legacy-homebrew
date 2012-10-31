@@ -194,6 +194,7 @@ class Pathname
       case extname
         when ".tar.gz", ".tgz", ".tar.bz2", ".tbz" then :tar
         when ".zip" then :zip
+        when ".7z" then :p7zip
       end
     end
   end
@@ -269,10 +270,10 @@ class Pathname
             Could not symlink file: #{src.expand_path}
             Target #{self} already exists. You may need to delete it.
             To force the link and delete this file, do:
-              brew link -f formula_name
+              brew link --overwrite formula_name
 
             To list all files that would be deleted:
-              brew link -n formula_name
+              brew link --overwrite --dry-run formula_name
             EOS
         elsif !dirname.writable_real?
           raise <<-EOS.undent
@@ -348,6 +349,30 @@ class Pathname
       end
     end
   end
+
+  # Writes an exec script in this folder for each target pathname
+  def write_exec_script *targets
+    targets = [targets].flatten
+    if targets.empty?
+      opoo "tried to write exec sripts to #{self} for an empty list of targets"
+    end
+    targets.each do |target|
+      target = Pathname.new(target) # allow pathnames or strings
+      (self+target.basename()).write <<-EOS.undent
+      #!/bin/bash
+      exec "#{target}" "$@"
+      EOS
+    end
+  end
+
+  # Writes an exec script that invokes a java jar
+  def write_jar_script target_jar, script_name, java_opts=""
+    (self+script_name).write <<-EOS.undent
+    #!/bin/bash
+    exec java #{java_opts} -jar #{target_jar} "$@"
+    EOS
+  end
+
 end
 
 # sets $n and $d so you can observe creation of stuff

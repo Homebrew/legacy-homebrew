@@ -2,8 +2,8 @@ require 'formula'
 
 class Bitlbee < Formula
   homepage 'http://www.bitlbee.org/'
-  url 'http://get.bitlbee.org/src/bitlbee-3.0.5.tar.gz'
-  sha1 '74afdff87be49ce060771a6ae10d7643cd57b9b6'
+  url 'http://get.bitlbee.org/src/bitlbee-3.0.6.tar.gz'
+  sha1 '6ac7cab4dab422f9baac97818e69ee9934db345c'
 
   option 'purple', "Use libpurple for all communication with instant messaging networks"
   option 'with-otr', "Build with otr (off the record) support"
