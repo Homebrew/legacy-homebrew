@@ -120,8 +120,11 @@ class Cmd
         args << "-I#{path}" if iset.add?(path.cleanpath)
       when /^-L(.+)/
         path = $1.chuzzle || whittler.next
+        prefix = ENV['HOMEBREW_PREFIX'].chuzzle
         case path.cleanpath
-        when %r{^/opt/local}, %r{^/sw}, %r{/usr/X11}
+        when %r{^#{prefix}} then # whitelist own prefix
+          args << "-L#{path}" if lset.add?(path.cleanpath)
+        when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
           # NOOP
         else
           args << "-L#{path}" if lset.add?(path.cleanpath)
