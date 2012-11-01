@@ -81,6 +81,7 @@ class Gdal < Formula
 
     # Other libraries
     depends_on "xz" # get liblzma compression algorithm library from XZutils
+    depends_on "poppler"
   end
 
   def get_configure_args
@@ -120,11 +121,7 @@ class Gdal < Formula
       # Should be installed separately after GRASS installation using the
       # official GDAL GRASS plugin.
       "--without-grass",
-      "--without-libgrass",
-
-      # Poppler explicitly disabled. GDAL currently can't compile against
-      # Poppler 0.20.0.
-      "--without-poppler"
+      "--without-libgrass"
     ]
 
     # Optional library support for additional formats.
@@ -138,7 +135,8 @@ class Gdal < Formula
         "--with-epsilon=#{HOMEBREW_PREFIX}",
         "--with-odbc=#{HOMEBREW_PREFIX}",
         "--with-xerces=#{HOMEBREW_PREFIX}",
-        "--with-dods-root=#{HOMEBREW_PREFIX}"
+        "--with-dods-root=#{HOMEBREW_PREFIX}",
+        "--with-poppler=#{HOMEBREW_PREFIX}"
       ]
     else
       args.concat [
@@ -152,6 +150,7 @@ class Gdal < Formula
         "--without-xerces",
         "--without-epsilon",
         "--without-libkml",
+        "--without-poppler",
         "--without-podofo",
         "--with-dods-root=no",
 
