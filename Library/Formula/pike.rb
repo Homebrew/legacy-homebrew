@@ -8,7 +8,7 @@ class Pike < Formula
   depends_on "nettle"
   depends_on "gmp"
   depends_on "pcre"
-  depends_on :x11
+  depends_on :x11 => :recommended
   depends_on 'libtiff' => :recommended
 
   # optional dependencies
