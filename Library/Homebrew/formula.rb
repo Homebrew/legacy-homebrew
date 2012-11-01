@@ -15,9 +15,9 @@ class Formula
   attr_reader :name, :path, :homepage, :downloader
   attr_reader :stable, :bottle, :devel, :head, :active_spec
 
-  # The build folder, usually in /tmp.
-  # Will only be non-nil during the stage method.
-  attr_reader :buildpath
+  # The current working directory during builds and tests.
+  # Will only be non-nil inside #stage and #test.
+  attr_reader :buildpath, :testpath
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
@@ -586,6 +586,16 @@ public
     @active_spec.verify_download_integrity(fn)
   end
 
+  def test
+    ret = nil
+    mktemp do
+      @testpath = Pathname.pwd
+      ret = instance_eval(&self.class.test)
+      @testpath = nil
+    end
+    ret
+  end
+
 private
 
   def stage
@@ -776,6 +786,11 @@ private
       else
         CompilerFailure.new(compiler)
       end
+    end
+
+    def test &block
+      return @test unless block_given?
+      @test = block
     end
   end
 end
