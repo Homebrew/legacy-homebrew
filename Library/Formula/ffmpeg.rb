@@ -47,7 +47,7 @@ class Ffmpeg < Formula
   depends_on 'openjpeg' if build.include? 'with-openjpeg'
   depends_on 'sdl' if build.include? 'with-ffplay'
   depends_on 'speex' if build.include? 'with-speex'
-  depends_on 'shroedinger' if build.include? 'with-shroedinger'
+  depends_on 'schroedinger' if build.include? 'with-schroedinger'
 
   def install
     args = ["--prefix=#{prefix}",
