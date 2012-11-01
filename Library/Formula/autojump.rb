@@ -1,9 +1,9 @@
 require 'formula'
 
 class Autojump < Formula
-  homepage 'https://github.com/joelthelion/autojump/wiki'
-  url 'https://github.com/downloads/joelthelion/autojump/autojump_v20.tar.gz'
-  sha1 '7de157feb90dc22d5959914fa531844c68d5ba7b'
+  homepage 'https://github.com/joelthelion/autojump#name'
+  url 'https://github.com/downloads/joelthelion/autojump/autojump_v21.0.3.tar.gz'
+  sha1 'b81308d6ff50680cb74795195e93427557a938ad'
 
   head 'https://github.com/joelthelion/autojump.git'
 
