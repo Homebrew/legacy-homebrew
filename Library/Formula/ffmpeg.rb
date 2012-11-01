@@ -20,8 +20,8 @@ class Ffmpeg < Formula
   option "with-opencore-amr", "Enable AMR audio format"
   option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
   option "with-libass", "Enable ASS/SSA subtitle format"
-  option "with-openjpeg", 'Enable JPEG 200 image format'
-  option 'with-shroedinger', 'Enable Dirac video format'
+  option "with-openjpeg", 'Enable JPEG 2000 image format'
+  option 'with-schroedinger', 'Enable Dirac video format'
   option 'with-ffplay', 'Enable FFPlay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'
 
