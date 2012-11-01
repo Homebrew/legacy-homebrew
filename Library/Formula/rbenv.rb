@@ -7,6 +7,8 @@ class Rbenv < Formula
 
   head 'https://github.com/sstephenson/rbenv.git'
 
+  # TODO: When we bump the version here we can remove making the plugin
+  # directory in depending formulae.
   def install
     prefix.install Dir['*']
 
