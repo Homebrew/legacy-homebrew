@@ -18,4 +18,18 @@ class Wxmaxima < Formula
     prefix.install 'wxMaxima.app'
     system "make install"
   end
+
+  def caveats
+    <<-EOS.undent
+      The program you want to run is wxmaxima.app, and it gets installed into:
+        #{prefix}
+
+       To symlink it into Applications, you can type:
+         ln -s #{prefix}/wxmaxima.app /Applications
+
+       When you start wxmaxima the first time, you have to open Preferences,
+       and tell it where maxima is located.
+
+    EOS
+  end
 end
