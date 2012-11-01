@@ -8,21 +8,21 @@ class Autojump < Formula
   head 'https://github.com/joelthelion/autojump.git'
 
   def install
-    inreplace 'autojump.sh', '/etc/profile.d/', "#{prefix}/etc/"
+    inreplace 'bin/autojump.sh', ' /etc/profile.d/', " #{prefix}/etc/"
 
-    bin.install 'autojump'
-    man1.install 'autojump.1'
-    (prefix+'etc').install 'autojump.sh' => 'autojump'
-    (prefix+'etc').install 'autojump.bash', 'autojump.zsh'
-    (share+'zsh/site-functions').install '_j'
+    bin.install 'bin/autojump'
+    man1.install 'docs/autojump.1'
+    (prefix+'etc').install 'bin/autojump.sh', 'bin/autojump.bash', 'bin/autojump.zsh'
+    (share+'zsh/site-functions').install 'bin/_j'
   end
 
   def caveats; <<-EOS.undent
-    Add the following lines to your ~/.bash_profile or ~/.zshrc file (and
-    remember to source the file to update your current session):
-    if [ -f `brew --prefix`/etc/autojump ]; then
-      . `brew --prefix`/etc/autojump
-    fi
+
+    Add the following line to your ~/.bash_profile or ~/.zshrc file (and remember
+    to source the file to update your current session):
+
+    [[ -f `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+
     EOS
   end
 end
