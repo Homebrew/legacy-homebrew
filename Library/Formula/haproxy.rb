@@ -10,6 +10,11 @@ class Haproxy < Formula
     sha1 '3b0e3b9358ec59a8eea35f5e649f2f824680cf33'
   end
 
+  devel do
+    url 'http://haproxy.1wt.eu/download/1.5/src/snapshot/haproxy-ss-20120905.tar.gz'
+    sha1 '3b0e3b9358ec59a8eea35f5e649f2f824680cf33'
+  end
+
   depends_on 'pcre'
 
   def install
