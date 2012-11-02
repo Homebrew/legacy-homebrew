@@ -42,14 +42,16 @@ class Gdal < Formula
   option 'without-python', 'Build without Python support (disables a lot of tools).'
   option 'enable-opencl', 'Build with OpenCL acceleration.'
   option 'enable-armadillo', 'Build with Armadillo accelerated TPS transforms.'
+  option 'enable-unsupported', "Allow configure to drag in any library it can find. Invoke this at your own risk."
 
   # For creating up to date man pages.
   depends_on 'doxygen' => :build if build.head?
 
   depends_on :libpng
-
   depends_on 'jpeg'
   depends_on 'giflib'
+  depends_on 'libtiff'
+  depends_on 'libgeotiff'
   depends_on 'proj'
   depends_on 'geos'
 
@@ -68,8 +70,8 @@ class Gdal < Formula
   if complete?
     # Raster libraries
     depends_on "netcdf" # Also brings in HDF5
-    depends_on "jasper" # May need a keg-only GeoJasPer library as this one is
-                        # not geo-spatially enabled.
+    depends_on "jasper"
+    depends_on "webp"
     depends_on "cfitsio"
     depends_on "epsilon"
     depends_on "libdap"
@@ -95,8 +97,6 @@ class Gdal < Formula
       "--with-libtool",
 
       # GDAL native backends.
-      "--with-libtiff=internal", # For bigTIFF support
-      "--with-geotiff=internal",
       "--with-pcraster=internal",
       "--with-pcidsk=internal",
       "--with-bsb",
@@ -104,18 +104,22 @@ class Gdal < Formula
       "--with-pam",
 
       # Backends supported by OS X.
+      "--with-libiconv-prefix=/usr",
       "--with-libz=/usr",
-      "--with-png=#{MacOS::X11.prefix}",
+      "--with-png=#{(MacOS.version >= :mountain_lion) ? HOMEBREW_PREFIX : MacOS::X11.prefix}",
       "--with-expat=/usr",
       "--with-curl=/usr/bin/curl-config",
 
       # Default Homebrew backends.
       "--with-jpeg=#{HOMEBREW_PREFIX}",
-      "--with-jpeg12",
+      "--without-jpeg12", # Needs specially configured JPEG and TIFF libraries.
       "--with-gif=#{HOMEBREW_PREFIX}",
+      "--with-libtiff=#{HOMEBREW_PREFIX}",
+      "--with-geotiff=#{HOMEBREW_PREFIX}",
       "--with-sqlite3=#{HOMEBREW_PREFIX}",
       "--with-freexl=#{HOMEBREW_PREFIX}",
       "--with-spatialite=#{HOMEBREW_PREFIX}",
+      "--with-geos=#{HOMEBREW_PREFIX}/bin/geos-config",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
       # Should be installed separately after GRASS installation using the
@@ -124,64 +128,65 @@ class Gdal < Formula
       "--without-libgrass"
     ]
 
-    # Optional library support for additional formats.
+    # Optional Homebrew packages supporting additional formats.
+    supported_backends = %w[
+      liblzma
+      cfitsio
+      hdf5
+      netcdf
+      jasper
+      xerces
+      odbc
+      dods-root
+      epsilon
+      webp
+      poppler
+    ]
     if complete?
-      args.concat [
-        "--with-liblzma=yes",
-        "--with-netcdf=#{HOMEBREW_PREFIX}",
-        "--with-hdf5=#{HOMEBREW_PREFIX}",
-        "--with-jasper=#{HOMEBREW_PREFIX}",
-        "--with-cfitsio=#{HOMEBREW_PREFIX}",
-        "--with-epsilon=#{HOMEBREW_PREFIX}",
-        "--with-odbc=#{HOMEBREW_PREFIX}",
-        "--with-xerces=#{HOMEBREW_PREFIX}",
-        "--with-dods-root=#{HOMEBREW_PREFIX}",
-        "--with-poppler=#{HOMEBREW_PREFIX}"
-      ]
+      supported_backends.delete 'liblzma'
+      args << '--with-liblzma=yes'
+      args.concat supported_backends.map {|b| '--with-' + b + '=' + HOMEBREW_PREFIX}
     else
-      args.concat [
-        "--without-cfitsio",
-        "--without-netcdf",
-        "--without-ogdi",
-        "--without-hdf4",
-        "--without-hdf5",
-        "--without-openjpeg",
-        "--without-jasper",
-        "--without-xerces",
-        "--without-epsilon",
-        "--without-libkml",
-        "--without-poppler",
-        "--without-podofo",
-        "--with-dods-root=no",
-
-        # The following libraries are either proprietary or available under
-        # non-free licenses.  Interested users will have to install such
-        # software manually.
-        "--without-msg",
-        "--without-mrsid",
-        "--without-jp2mrsid",
-        "--without-kakadu",
-        "--without-fme",
-        "--without-ecw",
-        "--without-dwgdirect"
-      ]
+      args.concat supported_backends.map {|b| '--without-' + b} unless build.include? 'enable-unsupported'
     end
 
+    # The following libraries are either proprietary, not available for public
+    # download or have no stable version in the Homebrew core that is
+    # compatible with GDAL. Interested users will have to install such software
+    # manually and most likely have to tweak the install routine.
+    #
+    # Podofo is disabled because Poppler provides the same functionality and
+    # then some.
+    unsupported_backends = %w[
+      gta
+      ogdi
+      fme
+      hdf4
+      openjpeg
+      fgdb
+      ecw
+      kakadu
+      mrsid
+      jp2mrsid
+      mrsid_lidar
+      msg
+      oci
+      ingres
+      libkml
+      dwgdirect
+      idb
+      sde
+      podofo
+      rasdaman
+    ]
+    args.concat unsupported_backends.map {|b| '--without-' + b} unless build.include? 'enable-unsupported'
+
     # Database support.
-    args << "--without-pg" unless postgres?
-    args << "--without-mysql" unless mysql?
-    args << "--without-sde"    # ESRI ArcSDE databases
-    args << "--without-ingres" # Ingres databases
-    args << "--without-oci"    # Oracle databases
-    args << "--without-idb"    # IBM Informix DataBlades
+    args << (postgres? ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : '--without-pg')
+    args << (mysql? ? "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" : '--without-mysql')
 
-    # Homebrew-provided databases.
-    args << "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" if postgres?
-    args << "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" if mysql?
-
-    args << "--without-python" # Installed using a separate set of
-                                         # steps so that everything winds up
-                                         # in the prefix.
+    # Python is installed manually to ensure everything is properly sandboxed.
+    args << '--without-python'
 
     # Scripting APIs that have not been re-worked to respect Homebrew prefixes.
     #
@@ -195,10 +200,7 @@ class Gdal < Formula
     args << "--without-php"
     args << "--without-ruby"
 
-    # OpenCL support
-    args << "--with-opencl" if opencl?
-
-    # Armadillo support.
+    args << (opencl? ? '--with-opencl' : '--without-opencl')
     args << (armadillo? ? '--with-armadillo=yes' : '--with-armadillo=no')
 
     return args
