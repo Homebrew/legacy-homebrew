@@ -75,7 +75,8 @@ class Gdal < Formula
     depends_on "cfitsio"
     depends_on "epsilon"
     depends_on "libdap"
-    def patches; DATA; end # Fix a bug in LibDAP detection: http://trac.osgeo.org/gdal/ticket/4630
+    # Fix a bug in LibDAP detection: http://trac.osgeo.org/gdal/ticket/4630
+    def patches; DATA; end unless build.head?
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
