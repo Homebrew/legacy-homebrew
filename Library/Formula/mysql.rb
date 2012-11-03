@@ -132,7 +132,7 @@ class Mysql < Formula
     To connect:
         mysql -uroot
 
-    To launch on startup:
+    To launch on startup (Under your user account):
     * if this is your first install:
         mkdir -p ~/Library/LaunchAgents
         cp #{plist_path} ~/Library/LaunchAgents/
@@ -143,8 +143,19 @@ class Mysql < Formula
         cp #{plist_path} ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    You may also need to edit the plist to use the correct "UserName".
+    To launch on startup (Under a specified account):
+    * if this is your first install:
+        sudo cp #{plist_path} /Library/LaunchAgents/
+        sudo chown root:wheel /Library/LaunchAgents/#{plist_path.basename}
+        open the file in your editor and change the "UserName" key to the user you want the process to start as.
+        sudo launchctl load -w /Library/LaunchAgents/#{plist_path.basename}
 
+    * if this is an upgrade and you already have the #{plist_path.basename} loaded:
+        sudo launchctl unload -w /Library/LaunchAgents/#{plist_path.basename}
+        sudo cp #{plist_path} /Library/LaunchAgents/
+        sudo chown root:wheel /Library/LaunchAgents/#{plist_path.basename}
+        open the file in your editor and change the "UserName" key to the user you want the process to start as.
+        sudo launchctl load -w /Library/LaunchAgents/#{plist_path.basename}
     EOS
   end
 
