@@ -120,12 +120,16 @@ class Cmd
         args << "-I#{path}" if iset.add?(path.cleanpath)
       when /^-L(.+)/
         path = $1.chuzzle || whittler.next
-        case path.cleanpath
+        doit = case path.cleanpath
+        when %r{^#$brewfix}
+          # maybe homebrew is installed to /sw or /opt/brew
+          true
         when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
-          # NOOP
+          false
         else
-          args << "-L#{path}" if lset.add?(path.cleanpath)
+          true
         end
+        args << "-L#{path}" if doit and lset.add?(path.cleanpath)
       else
         args << arg
       end
