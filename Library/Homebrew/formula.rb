@@ -546,10 +546,11 @@ protected
         f.puts
         require 'cmd/--config'
         Homebrew.write_build_config(f)
-        raise BuildError.new(self, cmd, args, $?)
+        raise ErrorDuringExecution
       end
     end
-
+  rescue ErrorDuringExecution => e
+    raise BuildError.new(self, cmd, args, $?)
   ensure
     f.close if f
     removed_ENV_variables.each do |key, value|

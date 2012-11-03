@@ -13,6 +13,7 @@ class Mpd < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libid3tag'
+  depends_on 'ffmpeg'
   depends_on 'flac'
   depends_on 'libshout'
   depends_on 'mad'
@@ -31,6 +32,7 @@ class Mpd < Formula
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--enable-bzip2",
+            "--enable-ffmpeg",
             "--enable-flac",
             "--enable-shout",
             "--enable-fluidsynth",
