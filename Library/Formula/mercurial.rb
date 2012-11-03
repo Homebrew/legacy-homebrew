@@ -10,6 +10,7 @@ class Mercurial < Formula
   depends_on 'docutils' => :python if build.head? or build.include? 'doc'
 
   option 'doc', "Build the documentation. Depends on 'docutils' module"
+  option 'with-hgext', 'Install with extensions'
 
   def install
     # Don't add compiler specific flags so we can build against
@@ -22,7 +23,9 @@ class Mercurial < Formula
     system "make doc" if build.head? or build.include? 'doc'
     system "make local"
 
-    libexec.install 'hg', 'mercurial'
+    files = %w(hg mercurial)
+    files.push 'hgext' if build.include? 'with-hgext'
+    libexec.install(*files)
 
     # Symlink the hg binary into bin
     bin.install_symlink libexec/'hg'
