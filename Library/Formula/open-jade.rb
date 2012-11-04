@@ -1,5 +1,3 @@
-# Ported from openjade MacPort. Uses some patches and catalog generator
-#
 require 'formula'
 
 class OpenJade < Formula
@@ -19,14 +17,12 @@ class OpenJade < Formula
       https://trac.macports.org/export/87593/trunk/dports/textproc/openjade/files/patch-configure
       https://trac.macports.org/export/87593/trunk/dports/textproc/openjade/files/patch-GroveApp.h
       https://trac.macports.org/export/87593/trunk/dports/textproc/openjade/files/patch-GroveBuilder.cxx
-      https://trac.macports.org/export/87593/trunk/dports/textproc/openjade/files/patch-Node.h
-    ],
+      https://trac.macports.org/export/87593/trunk/dports/textproc/openjade/files/patch-Node.h ] +
     # Patch for building with clang compiler
+      %W[ https://raw.github.com/gist/3732794/7d0c7d269bbf9d93b394b52e68810615d9aa33cb/default-ctor.patch ] +
     # Patch for correct handling libtool library
-    :p1 => %W[
-      https://raw.github.com/gist/3732794/e6dfeac65c579c6f05c0ab19449ee30bacd4aee0/default-ctor.patch
-      https://raw.github.com/gist/3732807/79cd6f7eec656861f87e71c25ae3f947d36d22f4/Makefile.prog.in.patch
-    ] }
+      %W[ https://raw.github.com/gist/3732807/1400a70e6396f2c2f3d90a0ca1035e7a79ae8bd6/Makefile.prog.in.patch ]
+      }
   end
 
   def install
@@ -38,8 +34,9 @@ class OpenJade < Formula
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--datadir=#{share}/sgml/openjade",
                           "--enable-default-catalog=#{share}/sgml/catalog",
-                          "--datadir=#{share}/sgml/openjade"
+                          "--enable-default-search-path=#{share}/sgml"
 
     # Patch libtool because it doesn't know about CXX
     inreplace 'libtool' do |s|
@@ -50,45 +47,37 @@ class OpenJade < Formula
     system "make"
     system "make", "install"
 
-    puts "Install additional dsssl"
+    # Install additional dsssl
     subdir = 'sgml/openjade'
     (share+subdir).mkpath
     (share+subdir).install Dir['dsssl/*']
 
-    # Note from original macport:
-    #
-    # xmlcatmgr as installed by MacPorts defaults to using
-    # ${prefix}/etc/sgml/catalog (for XML) and ${prefix}/etc/sgml/catalog (for
-    # SGML). For historic reasons, openjade expects the catalog to be in
-    # share/sgml/catalog. To avoid breaking existing setup, we simply add
-    # a reference to the root catalog (/etc/sgml/catalog) to openjade's
-    # catalog (/share/sgml/catalog)
-    #
-    puts "Link additional catalog"
+    # Link additional catalogs to the root catalog
+
     catalog_sgml = etc + 'sgml/catalog'
     catalog_openjade = share + 'sgml/catalog'
 
     # Create the root catalog file if it doesn't exist
     (etc+'sgml').mkpath
 
-    # Create the root catalog file if it doesn't exist
     if !File.file?(catalog_sgml)
       system "xmlcatmgr -s -c #{catalog_sgml} create"
     end
 
-    # Create the openjade catalog file if it doesn't exist
+    # Create the intermediate openjade catalog file
+    # in share/sgml/catalog and reference a root catalog from it.
     if !File.file?(catalog_openjade)
       system "xmlcatmgr -s -c #{catalog_openjade} create"
     end
 
-    # Add the root catalog to openjade's catalog
+    # Add the root catalog to openjade's intermediate catalog
     begin
       safe_system "xmlcatmgr -s -c #{catalog_openjade} lookup #{catalog_sgml}"
     rescue ErrorDuringExecution
       system "xmlcatmgr -s -c #{catalog_openjade} add CATALOG #{catalog_sgml}"
     end
 
-    # And add openjade's catalog to the root catalog
+    # Add openjade's catalog to the root catalog
     begin
       safe_system "xmlcatmgr -s -c #{catalog_sgml} lookup #{share}/sgml/openjade/catalog"
     rescue ErrorDuringExecution
