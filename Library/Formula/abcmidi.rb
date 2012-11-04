@@ -2,9 +2,9 @@ require 'formula'
 
 class Abcmidi < Formula
   homepage 'http://www.ifdo.ca/~seymour/runabc/top.html'
-  url 'http://www.ifdo.ca/~seymour/runabc/abcMIDI-2012-10-03.zip'
-  version '2012-10-03'
-  sha1 'e9c44cac26b348b8302371c3148f06ff6c291424'
+  url 'http://www.ifdo.ca/~seymour/runabc/abcMIDI-2012-11-03.zip'
+  version '2012-11-03'
+  sha1 'c173a6aa4be9869d030c8900615dd45792d5cdba'
 
   def install
     # configure --prefix flag does not work properly (value is added to path twice).
