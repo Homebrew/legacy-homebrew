@@ -2,8 +2,12 @@ require 'formula'
 
 class Samba < Formula
   homepage 'http://samba.org/'
-  url 'http://samba.org/samba/ftp/stable/samba-3.6.5.tar.gz'
-  sha1 'e41611c95b2bb91c7735928742b8aff4fc0da76e'
+  url 'http://www.samba.org/samba/ftp/stable/samba-3.6.8.tar.gz'
+  sha1 'a3cd91fa8835c7c47e4cb3ab419f92b4895052b5'
+
+  # Needed for autogen.sh
+  depends_on :automake
+  depends_on :libtool
 
   # Fixes the Grouplimit of 16 users os OS X.
   # Bug has been raised upstream:
@@ -13,6 +17,9 @@ class Samba < Formula
   end
 
   def install
+    # Enable deprecated CUPS structs on Mountain Lion
+    # https://github.com/mxcl/homebrew/issues/13790
+    ENV['CFLAGS'] += " -D_IPP_PRIVATE_STRUCTURES"
     cd 'source3' do
       system "./autogen.sh"
       system "./configure", "--disable-debug",
@@ -20,8 +27,8 @@ class Samba < Formula
                             "--prefix=#{prefix}",
                             "--with-configdir=#{prefix}/etc"
       system "make install"
-      (prefix+'etc').mkpath
-      system "touch", "#{prefix}/etc/smb.conf"
+      (prefix/'etc').mkpath
+      touch prefix/'etc/smb.conf'
     end
   end
 end

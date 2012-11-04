@@ -2,22 +2,22 @@ require 'formula'
 
 class Vimpc < Formula
   homepage 'http://sourceforge.net/projects/vimpc/'
-  url 'http://downloads.sourceforge.net/project/vimpc/Release%200.05/vimpc-0.05.tar.gz'
-  md5 'f96cdc10827ddfbb53318e9ab4bab93b'
+  url 'http://downloads.sourceforge.net/project/vimpc/Release%200.07.2/vimpc-0.07.2.tar.gz'
+  sha1 '6ad68075aa540682674e870f9e5dc35a74831196'
 
   head 'https://github.com/richo/vimpc.git'
+
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre++'
   depends_on 'libmpdclient'
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
   def install
-    if ARGV.build_head?
+    if build.head?
       ENV['ACLOCAL_FLAGS'] = "-I #{HOMEBREW_PREFIX}/share/aclocal"
       system "./autogen.sh"
     end

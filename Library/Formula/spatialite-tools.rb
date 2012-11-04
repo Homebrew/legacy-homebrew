@@ -2,8 +2,13 @@ require 'formula'
 
 class SpatialiteTools < Formula
   homepage 'https://www.gaia-gis.it/fossil/spatialite-tools/index'
-  url 'http://www.gaia-gis.it/gaia-sins/spatialite-tools-sources/spatialite-tools-3.1.0a.tar.gz'
-  md5 '241f0eb00da1b19c1088d53684c24214'
+  url 'http://www.gaia-gis.it/gaia-sins/spatialite-tools-sources/spatialite-tools-3.1.0b.tar.gz'
+  sha1 '82d40a4ef92d86a310e07f0e7e43372904bdbba9'
+
+  devel do
+    url 'http://www.gaia-gis.it/gaia-sins/spatialite-tools-4.0.0-RC1.tar.gz'
+    sha1 'fa9c60b2c993ef22c5618261c13cc3cdcbad223b'
+  end
 
   depends_on 'pkg-config' => :build
 

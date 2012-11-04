@@ -3,18 +3,16 @@ require 'formula'
 class Devil < Formula
   url 'http://downloads.sourceforge.net/project/openil/DevIL/1.7.8/DevIL-1.7.8.tar.gz'
   homepage 'http://sourceforge.net/projects/openil/'
-  md5 '7918f215524589435e5ec2e8736d5e1d'
+  sha1 'bc27e3e830ba666a3af03548789700d10561fcb1'
 
+  depends_on :libpng
   depends_on 'jpeg'
-  depends_on 'libtiff'
-  depends_on 'little-cms'
-  depends_on 'jasper'
 
   # see http://sourceforge.net/tracker/?func=detail&aid=3404133&group_id=4470&atid=104470
   # also, even with -std=gnu99 removed from the configure script,
   # devil fails to build with clang++ while compiling il_exr.cpp
   fails_with :clang do
-    build 318
+    build 421
     cause "invalid -std=gnu99 flag while building C++"
   end
 
@@ -22,11 +20,11 @@ class Devil < Formula
   def patches; DATA; end
 
   def install
-    # devil won't find libpng without ENV.x11
-    ENV.x11
-
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--enable-ILU"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-ILU",
+                          "--enable-ILUT"
     system "make install"
   end
 end

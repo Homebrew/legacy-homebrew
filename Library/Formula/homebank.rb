@@ -1,14 +1,17 @@
 require 'formula'
 
 class Homebank < Formula
-  url 'http://homebank.free.fr/public/homebank-4.4.tar.gz'
   homepage 'http://homebank.free.fr'
-  md5 '840ef7f2425207d9c03e1694cf4d3a0d'
+  url 'http://homebank.free.fr/public/homebank-4.4.tar.gz'
+  sha1 '78b97c0ff118e21a1e0dd1935473601c2b7924a6'
 
+  depends_on 'pkg-config' => :build
   depends_on 'intltool'
   depends_on 'gettext'
   depends_on 'gtk+'
   depends_on 'hicolor-icon-theme'
+  depends_on :freetype
+  depends_on :fontconfig
 
   def install
     system "./configure", "--disable-dependency-tracking",

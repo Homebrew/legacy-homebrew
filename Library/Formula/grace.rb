@@ -5,6 +5,7 @@ class Grace < Formula
   url 'ftp://plasma-gate.weizmann.ac.il/pub/grace/src/grace5/grace-5.1.22.tar.gz'
   sha1 '3ce88c7c264d2de73b8935f835a1c1f8e368c78f'
 
+  depends_on :x11
   depends_on 'pdflib-lite'
   depends_on 'jpeg'
   depends_on 'fftw'
@@ -17,7 +18,6 @@ class Grace < Formula
   end
 
   def install
-    ENV.x11
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

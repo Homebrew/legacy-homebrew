@@ -3,7 +3,7 @@ require 'formula'
 class Tup < Formula
   homepage 'http://gittup.org/tup/'
   url 'https://github.com/gittup/tup/tarball/v0.6'
-  md5 '335ab8f5348955b4bfe2c8e7b22df4c7'
+  sha1 '62c83456e6d211ca4ef3026c63231d107e107dd9'
   head 'https://github.com/gittup/tup.git'
 
   depends_on 'pkg-config' => :build

@@ -1,16 +1,9 @@
 require 'testing_env'
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'cleaner'
+require 'formula'
 
 class CleanerTestBall < Formula
-  def initialize name=nil
-    @url="file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    @homepage = 'http://example.com/'
-    super "cleanertestball"
-  end
+  url "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
 
   def install
     TEST_FOLDER.cd do

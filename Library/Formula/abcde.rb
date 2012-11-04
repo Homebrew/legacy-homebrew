@@ -2,8 +2,8 @@ require 'formula'
 
 class Abcde < Formula
   homepage 'https://code.google.com/p/abcde/'
-  url 'http://abcde.googlecode.com/files/abcde-2.5.2.tar.gz'
-  sha1 '3fb0fab8f36a5a98592bc58c45f3b06f2557f6fa'
+  url 'http://abcde.googlecode.com/files/abcde-2.5.3.tar.gz'
+  sha1 '93e26fc78b742bb7e8b776a8da7b5c8558e2c77e'
 
   depends_on 'lame' => :optional
   depends_on 'vorbis-tools' => :optional

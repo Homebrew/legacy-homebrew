@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cmus < Formula
-  url 'http://downloads.sourceforge.net/cmus/cmus-v2.4.3.tar.bz2'
   homepage 'http://cmus.sourceforge.net/'
-  md5 '75452cf007637214c4ab5444e076114b'
+  url 'http://downloads.sourceforge.net/cmus/cmus-v2.4.3.tar.bz2'
+  sha1 'ba63a417b0df42fa9a4850dd8b922a95a426f7f5'
 
   head 'https://git.gitorious.org/cmus/cmus.git'
 
@@ -15,7 +15,7 @@ class Cmus < Formula
   depends_on 'faad2'
   depends_on 'flac'
   depends_on 'mp4v2'
-  depends_on 'libcue' if ARGV.build_head?
+  depends_on 'libcue' if build.head?
 
   skip_clean 'bin/cmus'
   skip_clean 'bin/cmus-remote'

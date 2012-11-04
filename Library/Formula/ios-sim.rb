@@ -2,8 +2,8 @@ require 'formula'
 
 class IosSim < Formula
   homepage 'https://github.com/phonegap/ios-sim'
-  url 'https://github.com/phonegap/ios-sim/tarball/1.4'
-  md5 'c68954b0808119a51641613a2b383c49'
+  url 'https://github.com/phonegap/ios-sim/tarball/1.5.1'
+  sha1 'ccacb1cec833a766c0960b7f400330a5d0664cbd'
 
   def install
     system "rake", "install", "prefix=#{prefix}"

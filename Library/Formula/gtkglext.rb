@@ -3,11 +3,12 @@ require 'formula'
 class Gtkglext < Formula
   url 'http://downloads.sourceforge.net/gtkglext/gtkglext-1.2.0.tar.gz'
   homepage 'http://projects.gnome.org/gtkglext/'
-  md5 '5c3240bfc1b21becd33ce35c5abe6f8d'
+  sha1 'db9ce38ee555fd14f55083ec7f4ae30e5338d5cc'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'gtk+'
+  depends_on :x11
 
   def patches
       # fixes an incompatibility with recent GTK versions
@@ -16,7 +17,6 @@ class Gtkglext < Formula
   end
 
   def install
-    ENV.x11
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

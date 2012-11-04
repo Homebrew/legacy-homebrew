@@ -2,18 +2,18 @@ require 'formula'
 
 class Blitz < Formula
   homepage 'http://oonumerics.org/blitz'
-  url 'http://downloads.sourceforge.net/project/blitz/blitz/Blitz%2B%2B%200.9/blitz-0.9.tar.gz'
-  md5 '031df2816c73e2d3bd6d667bbac19eca'
+  url 'http://sourceforge.net/projects/blitz/files/blitz/Blitz%2B%2B%200.10/blitz-0.10.tar.gz'
+  sha1 '7e157ec22ed2d261e896b7de4e8e8d3bf7d780e2'
 
   head 'http://blitz.hg.sourceforge.net:8000/hgroot/blitz/blitz', :using => :hg
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
   end
 
   def install
-    system "autoreconf", "-fi" if ARGV.build_head?
+    system "autoreconf", "-fi" if build.head?
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

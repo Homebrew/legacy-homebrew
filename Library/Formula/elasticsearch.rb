@@ -2,8 +2,8 @@ require 'formula'
 
 class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.4.tar.gz'
-  md5 '8058ae9d76bbf4ddc5b6bcbefb3706c0'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.10.tar.gz'
+  sha1 'c9aab11ad63f978052200865ed821199fa5f457e'
 
   def cluster_name
     "elasticsearch_#{ENV['USER']}"
@@ -28,6 +28,9 @@ class Elasticsearch < Formula
       # 2. Configure paths
       s.gsub! /#\s*path\.data\: [^\n]+/, "path.data: #{var}/elasticsearch/"
       s.gsub! /#\s*path\.logs\: [^\n]+/, "path.logs: #{var}/log/elasticsearch/"
+
+      # 3. Bind to loopback IP for laptops roaming different networks
+      s.gsub! /#\s*network\.host\: [^\n]+/, "network.host: 127.0.0.1"
     end
 
     inreplace "#{bin}/elasticsearch.in.sh" do |s|
@@ -46,10 +49,6 @@ class Elasticsearch < Formula
       # Replace CLASSPATH paths to use libexec instead of lib
       s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
     end
-
-    # Write .plist file for `launchd`
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

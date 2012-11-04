@@ -1,10 +1,16 @@
 require 'formula'
 
+class AdbBashCompletion < Formula
+  url 'https://raw.github.com/CyanogenMod/android_sdk/3bf0a01ef66a9b99149ba3faaf34a1362581dd01/bash_completion/adb.bash'
+  sha1 '8e7dad45b8c98c359516d4a818a9090125bc6f7a'
+  version 'cyanogenmod_jellybean'
+end
+
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r18-macosx.zip'
-  version 'r18'
-  md5 '8328e8a5531c9d6f6f1a0261cb97af36'
+  url 'http://dl.google.com/android/android-sdk_r20.0.3-macosx.zip'
+  version 'r20.0.3'
+  sha1 'c02403c2e29952e6bbd632767b5c3cd3618c3e80'
 
   # TODO docs and platform-tools
   # See the long comment below for the associated problems
@@ -19,8 +25,8 @@ class AndroidSdk < Formula
     mv 'tools', prefix
 
     %w[android apkbuilder ddms dmtracedump draw9patch etc1tool emulator
-    hierarchyviewer hprof-conv lint mksdcard monkeyrunner traceview
-    zipalign].each do |tool|
+    emulator-arm emulator-x86 hierarchyviewer hprof-conv lint mksdcard
+    monitor monkeyrunner traceview zipalign].each do |tool|
       (bin/tool).write <<-EOS.undent
         #!/bin/sh
         TOOL="#{prefix}/tools/#{tool}"
@@ -37,12 +43,18 @@ class AndroidSdk < Formula
       dst.make_relative_symlink src
     end
 
-    (bin+'adb').write <<-EOS.undent
-      #!/bin/sh
-      ADB="#{prefix}/platform-tools/adb"
-      test -f "$ADB" && exec "$ADB" "$@"
-      echo Use the \\`android\\' tool to install the \\"Android SDK Platform-tools\\".
-    EOS
+    %w[aapt adb aidl dexdump dx fastboot llvm-rs-cc].each do |platform_tool|
+      (bin/platform_tool).write <<-EOS.undent
+        #!/bin/sh
+        PLATFORM_TOOL="#{prefix}/platform-tools/#{platform_tool}"
+        test -f "$PLATFORM_TOOL" && exec "$PLATFORM_TOOL" "$@"
+        echo Use the \\`android\\' tool to install the \\"Android SDK Platform-tools\\".
+      EOS
+    end
+
+    AdbBashCompletion.new.brew do
+      (prefix+'etc/bash_completion.d').install 'adb.bash' => 'adb-completion.bash'
+    end
   end
 
   def caveats; <<-EOS.undent

@@ -7,6 +7,7 @@ class Gtkwave < Formula
 
   depends_on 'gtk+'
   depends_on 'xz'
+  depends_on :x11
 
   def install
     system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'

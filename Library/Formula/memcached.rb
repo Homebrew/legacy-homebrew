@@ -1,29 +1,22 @@
 require 'formula'
 
 class Memcached < Formula
-  url "http://memcached.googlecode.com/files/memcached-1.4.13.tar.gz"
   homepage 'http://memcached.org/'
-  sha1 'd9a48d222de53a2603fbab6156d48d0e8936ee92'
+  url "http://memcached.googlecode.com/files/memcached-1.4.15.tar.gz"
+  sha1 '12ec84011f408846250a462ab9e8e967a2e8cbbc'
 
   depends_on 'libevent'
 
-  def options
-    [
-      ["--enable-sasl", "Enable SASL support -- disables ASCII protocol!"],
-      ["--enable-sasl-pwdb", "Enable SASL with memcached's own plain text password db support -- disables ASCII protocol!"],
-    ]
-  end
+  option "enable-sasl", "Enable SASL support -- disables ASCII protocol!"
+  option "enable-sasl-pwdb", "Enable SASL with memcached's own plain text password db support -- disables ASCII protocol!"
 
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--enable-sasl" if ARGV.include? "--enable-sasl"
-    args << "--enable-sasl-pwdb" if ARGV.include? "--enable-sasl-pwdb"
+    args = ["--prefix=#{prefix}", "--disable-coverage"]
+    args << "--enable-sasl" if build.include? "enable-sasl"
+    args << "--enable-sasl-pwdb" if build.include? "enable-sasl-pwdb"
 
     system "./configure", *args
     system "make install"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent
