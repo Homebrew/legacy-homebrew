@@ -136,9 +136,7 @@ def check_for_stray_pcs
 
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = {
-    "fuse.pc" => "MacFuse",
-  }
+  white_list = { }
 
   bad_pcs = unbrewed_pcs.reject {|d| white_list.key? File.basename(d) }
   return if bad_pcs.empty?
