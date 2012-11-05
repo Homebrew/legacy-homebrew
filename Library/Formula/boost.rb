@@ -19,16 +19,12 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.51.0/boost_1_51_0.tar.bz2'
-  sha1 '52ef06895b97cc9981b8abf1997c375ca79f30c5'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.52.0/boost_1_52_0.tar.bz2'
+  sha1 'cddd6b4526a09152ddc5db856463eaa1dc29c5d9'
 
   head 'http://svn.boost.org/svn/boost/trunk'
 
-  bottle do
-    sha1 'd1f4cb36278adb7d86b221bcfc63619ec3022fdb' => :mountainlion
-    sha1 '46dd00df6343295bceae54b040cceb1d3714fe15' => :lion
-    sha1 '474aed3845ceaf26e0eeb3175ad3e2c4f3bca942' => :snowleopard
-  end
+  env :userpaths
 
   option :universal
   option 'with-mpi', 'Enable MPI support'
@@ -37,6 +33,7 @@ class Boost < Formula
 
   depends_on UniversalPython.new if needs_universal_python?
   depends_on "icu4c" if build.include? "with-icu"
+  depends_on MPIDependency.new(:cc, :cxx) if build.include? "with-mpi"
 
   fails_with :llvm do
     build 2335
