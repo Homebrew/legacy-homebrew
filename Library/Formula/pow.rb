@@ -18,6 +18,10 @@ class Pow < Formula
 
   def caveats;
     <<-EOS.undent
+      Create required directories for Pow:
+        mkdir -p ~/Library/Application\ Support/Pow/Hosts
+        ln -s ~/Library/Application\ Support/Pow/Hosts ~/.pow
+
       Sets up firewall rules to forward port 80 to Pow:
         sudo pow --install-system
 
