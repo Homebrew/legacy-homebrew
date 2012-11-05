@@ -25,23 +25,51 @@ class MySqlInstalled < Requirement
   end
 end
 
+
+class PostgresqlInstalled < Requirement
+  def message; <<-EOS.undent
+    PostgreSQL is required to install.
+
+    You can install this with:
+      brew install postgresql
+
+    Or you can use an official installer from:
+      http://www.postgresql.org/
+    EOS
+  end
+
+  def satisfied?
+    which 'pg_config'
+  end
+
+  def fatal?
+    true
+  end
+end
+
+
 class Zabbix < Formula
   homepage 'http://www.zabbix.com/'
   url 'http://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.0.3/zabbix-2.0.3.tar.gz'
   sha1 'be8902444890db9fb2c4795e62073ce7eea32d96'
 
-  depends_on MySqlInstalled.new
+  option 'with-postgresql', 'Use PostgreSQL library instead of MySQL.'
+
+  depends_on (build.include?('with-postgresql') ? PostgresqlInstalled.new : MySqlInstalled.new)
   depends_on 'fping'
   depends_on 'libssh2'
 
+  def which_or_brewed(binary)
+    which(binary) || "#{HOMEBREW_PREFIX}/bin/#{binary}"
+  end
+
   def install
-    which_mysql = which('mysql_config') || "#{HOMEBREW_PREFIX}/bin/mysql_config"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-server",
                           "--enable-proxy",
                           "--enable-agent",
-                          "--with-mysql=#{which_mysql}",
+                          (build.include?('with-postgresql') ? "--with-postgresql=#{which_or_brewed('pg_config')}" : "--with-mysql=#{which_or_brewed('mysql_config')}"),
                           "--enable-ipv6",
                           "--with-net-snmp",
                           "--with-libcurl",
