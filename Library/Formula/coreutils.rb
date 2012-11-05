@@ -13,8 +13,12 @@ class Coreutils < Formula
     system "make install"
 
     # Symlink all commands into libexec/gnubin without the 'g' prefix
-    coreutils_bins.each do |cmd|
+    coreutils_filenames(bin).each do |cmd|
       (libexec/'gnubin').install_symlink bin/"g#{cmd}" => cmd
+    end
+    # Symlink all man(1) pages into libexec/gnuman without the 'g' prefix
+    coreutils_filenames(man1).each do |cmd|
+      (libexec/'gnuman'/'man1').install_symlink man1/"g#{cmd}" => cmd
     end
   end
 
@@ -25,15 +29,21 @@ class Coreutils < Formula
     can add a "gnubin" directory to your PATH from your bashrc like:
 
         PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+
+    Additionally, you can access their man pages with normal names if you add
+    the "gnuman" directory to your MANPATH from your bashrc as well:
+
+        MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
+
     EOS
   end
 
-  def coreutils_bins
-    commands = []
-    bin.find do |path|
+  def coreutils_filenames (dir)
+    filenames = []
+    dir.find do |path|
       next if path.directory? or path.basename.to_s == '.DS_Store'
-      commands << path.basename.to_s.sub(/^g/,'')
+      filenames << path.basename.to_s.sub(/^g/,'')
     end
-    commands.sort
+    filenames.sort
   end
 end
