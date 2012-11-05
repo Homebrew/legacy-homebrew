@@ -44,7 +44,7 @@ class Lilypond < Formula
     depends_on 'netpbm'
     depends_on 'imagemagick'
     depends_on 'docbook'
-    depends_on 'dblatex' => :python
+    depends_on LanguageModuleDependency.new :python, 'dblatex', 'dbtexmf.dblatex'
     depends_on 'texi2html'
   end
 
