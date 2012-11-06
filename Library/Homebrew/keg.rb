@@ -133,9 +133,10 @@ class Keg < Pathname
       end
     end
 
-    linked_keg_record.make_relative_symlink(self) unless mode.dry_run
-
-    optlink unless mode.dry_run
+    unless mode.dry_run
+      linked_keg_record.make_relative_symlink(self)
+      optlink
+    end
 
     return $n + $d
   rescue Exception
