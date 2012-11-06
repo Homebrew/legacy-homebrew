@@ -177,12 +177,23 @@ end
 class ConflictRequirement < Requirement
   attr_reader :formula
 
-  def initialize formula, message
+  def initialize formula, name, opts={}
     @formula = formula
-    @message = message
+    @name = name
+    @opts = opts
   end
 
-  def message; @message; end
+  def message
+    message = "#{@name.downcase} cannot be installed alongside #{@formula}.\n"
+    message << "This is because #{@opts[:because]}\n" if @opts[:because]
+    message << <<-EOS.undent unless ARGV.force?
+      Please `brew unlink #{@formula}` before continuing. Unlinking removes
+      the formula's symlinks from #{HOMEBREW_PREFIX}. You can link the
+      formula again after the install finishes. You can --force this install
+      but the build may fail or cause obscure side-effects in the end-binary.
+    EOS
+    message
+  end
 
   def satisfied?
     keg = Formula.factory(@formula).prefix
