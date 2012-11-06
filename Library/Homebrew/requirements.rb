@@ -219,3 +219,46 @@ class XcodeDependency < Requirement
     EOS
   end
 end
+
+class MysqlInstalled < Requirement
+  def fatal?; true; end
+
+  def satisfied?
+    which 'mysql_config'
+  end
+
+  def message; <<-EOS.undent
+    MySQL is required to install.
+
+    You can install this with Homebrew using:
+      brew install mysql-connector-c
+        For MySQL client libraries only.
+
+      brew install mysql
+        For MySQL server.
+
+    Or you can use an official installer from:
+      http://dev.mysql.com/downloads/mysql/
+    EOS
+  end
+end
+
+class PostgresInstalled < Requirement
+  def fatal?; true; end
+
+  def satisfied?
+    which 'pg_config'
+  end
+
+  def message
+    <<-EOS.undent
+      Postgres is required to install.
+
+      You can install this with Homebrew using:
+        brew install postgres
+
+      Or you can use an official installer from:
+        http://www.postgresql.org/download/macosx/
+    EOS
+  end
+end
