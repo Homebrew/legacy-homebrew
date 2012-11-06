@@ -72,6 +72,10 @@ private
       X11Dependency.new(tag)
     when :xcode
       XcodeDependency.new(tag)
+    when :mysql
+      MysqlInstalled.new(tag)
+    when :postgresql
+      PostgresqlInstalled.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
     end
