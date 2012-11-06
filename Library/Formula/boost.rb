@@ -19,15 +19,15 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.50.0/boost_1_50_0.tar.bz2'
-  sha1 'ee06f89ed472cf369573f8acf9819fbc7173344e'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.51.0/boost_1_51_0.tar.bz2'
+  sha1 '52ef06895b97cc9981b8abf1997c375ca79f30c5'
 
   head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
-    sha1 '06c7e19ec8d684c35fb035e6326df6393e46dce2' => :mountainlion
-    sha1 '25ef1d7af5f6f9783313370fd8115902b24c5eeb' => :lion
-    sha1 '4508c9afcb14a15b6b3c7db4cdfb7bd3f8e1c9bc' => :snowleopard
+    sha1 'd1f4cb36278adb7d86b221bcfc63619ec3022fdb' => :mountainlion
+    sha1 '46dd00df6343295bceae54b040cceb1d3714fe15' => :lion
+    sha1 '474aed3845ceaf26e0eeb3175ad3e2c4f3bca942' => :snowleopard
   end
 
   option :universal
@@ -59,7 +59,7 @@ class Boost < Formula
     # /usr/local/bin/mkvmerge:
     #   /usr/local/lib/libboost_regex-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
     #   /usr/local/lib/libboost_filesystem-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    #   /usr/local/libboost_system-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
+    #   /usr/local/lib/libboost_system-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
     inreplace 'tools/build/v2/tools/darwin.jam', '-install_name "', "-install_name \"#{HOMEBREW_PREFIX}/lib/"
 
     # Force boost to compile using the appropriate GCC version
@@ -71,13 +71,16 @@ class Boost < Formula
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    if build.include? "with-icu"
-      icu4c_prefix = Formula.factory('icu4c').prefix
+    if build.include? 'with-icu'
+      icu4c_prefix = Formula.factory('icu4c').opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
+    else
+      bargs << '--without-icu'
     end
 
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
+            "-d2",
             "-j#{ENV.make_jobs}",
             "--layout=tagged",
             "--user-config=user-config.jam",

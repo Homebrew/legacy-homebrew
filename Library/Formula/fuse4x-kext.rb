@@ -6,14 +6,16 @@ end
 
 class Fuse4xKext < Formula
   homepage 'http://fuse4x.github.com'
-  url 'https://github.com/fuse4x/kext/tarball/fuse4x_0_9_1'
-  sha1 'a04e729df52d1caa4d1d33a58af53afc1b1b74cd'
+  url 'https://github.com/fuse4x/kext/tarball/fuse4x_0_9_2'
+  sha1 'ff143cd14346a6b79769b745e117949baae86705'
 
   bottle do
-    # Bottle provided for Lion since the Command Line Tools cannot compile
-    # things that use `xcodebuild`. Actual compilation takes ~10 seconds so
-    # there is no need to bottle this for earlier systems.
-    sha1 '2bc7b00c52823ea7efd8e09fb340f1701801baca' => :lion
+    # Bottle provided for Lion and newer since the Command Line Tools cannot
+    # compile things that use `xcodebuild`. Actual compilation takes ~10
+    # seconds so there is no need to bottle this for earlier systems.
+
+    sha1 '66e546c4d8b590b0c67584b73a6731757a5d87fb' => :mountainlion
+    sha1 'b2586e3f78a709a0df0385868a540fda17a7a00a' => :lion
   end
 
   def install
@@ -44,7 +46,7 @@ class Fuse4xKext < Formula
       In order for FUSE-based filesystems to work, the fuse4x kernel extension
       must be installed by the root user:
 
-        sudo cp -rfX #{kext_prefix}/fuse4x.kext /Library/Extensions
+        sudo /bin/cp -rfX #{kext_prefix}/fuse4x.kext /Library/Extensions
         sudo chmod +s /Library/Extensions/fuse4x.kext/Support/load_fuse4x
 
       If upgrading from a previous version of Fuse4x, the old kernel extension

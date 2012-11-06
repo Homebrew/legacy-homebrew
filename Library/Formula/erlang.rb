@@ -34,13 +34,6 @@ class Erlang < Formula
     sha1 '10b0aa609354c07938ac936578c9d1f12a4249ba' => :snowleopard
   end
 
-  # We can't strip the beam executables or any plugins, there isn't really
-  # anything else worth stripping and it takes a really, long time to run
-  # `file` over everything in lib because there is almost 4000 files (and
-  # really erlang guys! what's with that?! Most of them should be in share/erlang!)
-  # may as well skip bin too, everything is just shell scripts
-  skip_clean ['lib', 'bin']
-
   # remove the autoreconf if possible
   depends_on :automake
   depends_on :libtool

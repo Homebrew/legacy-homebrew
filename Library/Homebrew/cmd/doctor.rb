@@ -136,9 +136,7 @@ def check_for_stray_pcs
 
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = {
-    "fuse.pc" => "MacFuse",
-  }
+  white_list = { }
 
   bad_pcs = unbrewed_pcs.reject {|d| white_list.key? File.basename(d) }
   return if bad_pcs.empty?
@@ -249,7 +247,7 @@ def check_cc
       return <<-EOS.undent
         Experimental support for using Xcode without the "Command Line Tools".
         You have only installed Xcode. If stuff is not building, try installing the
-        "Command Line Tools for Xcode" package.
+        "Command Line Tools for Xcode" package provided by Apple.
       EOS
     else
       return <<-EOS.undent
@@ -390,6 +388,18 @@ def check_xcode_prefix
   end
 end
 
+def check_xcode_prefix_exists
+  prefix = MacOS::Xcode.prefix
+  return if prefix.nil?
+  unless prefix.exist?
+    <<-EOS.undent
+      The folder Xcode is reportedly installed to doesn't exist:
+        #{prefix}
+      You may need to `xcode-select` the proper path if you have moved Xcode.
+    EOS
+  end
+end
+
 def check_xcode_select_path
   # with the advent of CLT-only support, we don't need xcode-select
 
@@ -473,6 +483,17 @@ def check_user_path_3
   end
 end
 
+def check_user_curlrc
+  if %w[CURL_HOME HOME].one?{|key| ENV[key] and File.exists? "#{ENV[key]}/.curlrc" } then <<-EOS.undent
+    You have a curlrc file
+    If you have trouble downloading packages with Homebrew, then maybe this
+    is the problem? If the following command doesn't work, then try removing
+    your curlrc:
+      curl http://github.com
+    EOS
+  end
+end
+
 def check_which_pkg_config
   binary = which 'pkg-config'
   return if binary.nil?
@@ -515,7 +536,7 @@ def check_for_gettext
 end
 
 def check_for_iconv
-  unless find_relative_paths("lib/iconv.dylib", "include/iconv.h").empty?
+  unless find_relative_paths("lib/libiconv.dylib", "include/iconv.h").empty?
     if (f = Formula.factory("libiconv") rescue nil) and f.linked_keg.directory?
       if not f.keg_only? then <<-EOS.undent
         A libiconv formula is installed and linked

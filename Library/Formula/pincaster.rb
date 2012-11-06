@@ -2,8 +2,8 @@ require 'formula'
 
 class Pincaster < Formula
   homepage 'https://github.com/jedisct1/Pincaster'
-  url 'http://download.pureftpd.org/pincaster/releases/pincaster-0.5.tar.gz'
-  sha1 '1982cf2fa98368b42f4bb947db5073e4f03ff6ad'
+  url 'http://download.pureftpd.org/pincaster/releases/pincaster-0.6.tar.bz2'
+  sha1 'ad3799ce3207480979355f30d6f534dad6229ae2'
 
   def install
     system "./configure", "--prefix=#{prefix}"

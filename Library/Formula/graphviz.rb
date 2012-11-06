@@ -10,6 +10,8 @@ class Graphviz < Formula
   option :universal
   option 'with-bindings', 'Build Perl/Python/Ruby/etc. bindings'
   option 'with-pangocairo', 'Build with Pango/Cairo for alternate PDF output'
+  option 'with-freetype', 'Build with FreeType support'
+  option 'with-x', 'Build with X11 support'
   option 'with-app', 'Build GraphViz.app (requires full XCode install)'
 
   depends_on :libpng
@@ -17,16 +19,18 @@ class Graphviz < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pango' if build.include? 'with-pangocairo'
   depends_on 'swig' if build.include? 'with-bindings'
+  depends_on :freetype if build.include? 'with-freetype' or MacOS::X11.installed?
+  depends_on :x11 if build.include? 'with-x' or MacOS::X11.installed?
   depends_on :xcode if build.include? 'with-app'
-  depends_on 'gd'
 
   fails_with :clang do
     build 318
   end
 
   def patches
-    { :p0 => "https://trac.macports.org/export/78507/trunk/dports/graphics/graphviz-gui/files/patch-project.pbxproj.diff",
-    :p1 => DATA}
+    {:p0 =>
+      "https://trac.macports.org/export/78507/trunk/dports/graphics/graphviz-gui/files/patch-project.pbxproj.diff",
+     :p1 => DATA}
   end
 
   def install
@@ -34,11 +38,12 @@ class Graphviz < Formula
     args = ["--disable-debug",
             "--disable-dependency-tracking",
             "--prefix=#{prefix}",
-            "--with-qt=no",
-            "--without-x",
+            "--without-qt",
             "--with-quartz"]
     args << "--disable-swig" unless build.include? 'with-bindings'
     args << "--without-pangocairo" unless build.include? 'with-pangocairo'
+    args << "--without-freetype2" unless build.include? 'with-freetype' or MacOS::X11.installed?
+    args << "--without-x" unless build.include? 'with-x' or MacOS::X11.installed?
 
     system "./configure", *args
     system "make install"

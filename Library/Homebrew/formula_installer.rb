@@ -15,7 +15,7 @@ class FormulaInstaller
   def initialize ff, tab=nil
     @f = ff
     @tab = tab
-    @show_header = true
+    @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @install_bottle = install_bottle? ff
 
@@ -99,7 +99,7 @@ class FormulaInstaller
           end
         end
         # now show header as all the deps stuff has clouded the original issue
-        show_header = true
+        @show_header = true
       end
     end
 
@@ -383,7 +383,7 @@ class FormulaInstaller
     return unless f.lib.directory?
 
     valid_extensions = %w(.a .dylib .framework .jnilib .la .o .so
-                          .jar .prl .pm)
+                          .jar .prl .pm .sh)
     non_libraries = f.lib.children.select do |g|
       next if g.directory?
       not valid_extensions.include? g.extname

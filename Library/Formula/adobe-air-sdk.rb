@@ -2,20 +2,12 @@ require 'formula'
 
 class AdobeAirSdk < Formula
   homepage 'http://www.adobe.com/products/air/sdk/'
-  url 'http://airdownload.adobe.com/air/mac/download/3.3/AdobeAIRSDK.tbz2'
-  sha1 '6fd563409e59e3ee66fa8ce0b60d4e9896b9a4af'
-  version '3.3'
-
-  def startup_script name
-    (bin+name).write <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/#{name}" "$@"
-    EOS
-  end
+  url 'http://airdownload.adobe.com/air/mac/download/3.4/AdobeAIRSDK.tbz2'
+  sha1 'eddfaa8708c7f53d53f099629d6d9cb65ce45586'
 
   def install
     libexec.install Dir['*']
-    startup_script("adl")
-    startup_script("adt")
+    bin.write_exec_script libexec/'bin/adl'
+    bin.write_exec_script libexec/'bin/adt'
   end
 end

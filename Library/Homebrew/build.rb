@@ -13,6 +13,7 @@ at_exit do
 end
 
 require 'global'
+require 'debrew' if ARGV.debug?
 
 def main
   # The main Homebrew process expects to eventually see EOF on the error
@@ -42,6 +43,7 @@ def main
   install(Formula.factory($0))
 rescue Exception => e
   unless error_pipe.nil?
+    e.continuation = nil if ARGV.debug?
     Marshal.dump(e, error_pipe)
     error_pipe.close
     exit! 1
@@ -84,7 +86,7 @@ def install f
 
   deps.each do |dep|
     opt = HOMEBREW_PREFIX/:opt/dep
-    fixopt(dep) unless opt.directory?
+    fixopt(dep) unless opt.directory? or ARGV.ignore_deps?
     if not superenv? and dep.keg_only?
       ENV.prepend_path 'PATH', "#{opt}/bin"
       ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
@@ -130,7 +132,16 @@ def install f
       interactive_shell f
     else
       f.prefix.mkpath
-      f.install
+
+      begin
+        f.install
+      rescue Exception => e
+        if ARGV.debug?
+          debrew e, f
+        else
+          raise e
+        end
+      end
 
       # Find and link metafiles
       FORMULA_META_FILES.each do |filename|

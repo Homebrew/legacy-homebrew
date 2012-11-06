@@ -39,10 +39,10 @@ class Apollo < Formula
       end
     end
 
-    (bin+'apollo').write <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/#{name}" "$@"
-    EOS
+    bin.write_exec_script libexec/'bin/apollo'
+
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

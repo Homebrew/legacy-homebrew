@@ -11,6 +11,7 @@ class Tty
     def reset; escape 0; end
     def em; underline 39; end
     def green; color 92 end
+    def gray; bold 30 end
 
     def width
       `/usr/bin/tput cols`.strip.to_i
@@ -218,7 +219,7 @@ end
 
 def ignore_interrupts(opt = nil)
   std_trap = trap("INT") do
-    puts "One sec, just cleaning up" unless opt = :quietly
+    puts "One sec, just cleaning up" unless opt == :quietly
   end
   yield
 ensure

@@ -8,8 +8,8 @@ end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.58/sbcl-1.0.58-source.tar.bz2'
-  sha1 '79c9258a15c257849790b86238999c18ec191033'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.1/sbcl-1.1.1-source.tar.bz2'
+  sha1 '87e8c37a2811e10d044074ec8bfc79918c66f2d8'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
@@ -22,9 +22,6 @@ class Sbcl < Formula
     build 2334
     cause "Compilation fails with LLVM."
   end
-
-  skip_clean 'bin'
-  skip_clean 'lib'
 
   option "32-bit"
   option "without-threads", "Build SBCL without support for native threads"

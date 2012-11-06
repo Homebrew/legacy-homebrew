@@ -13,9 +13,7 @@ class NeedsSnowLeopard < Requirement
   end
 end
 
-class Ghc < Formula
-  homepage 'http://haskell.org/ghc/'
-  version '7.4.2'
+class Ghcbinary < Formula
   if Hardware.is_64_bit? and not build.build_32_bit?
     url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
     sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
@@ -23,12 +21,31 @@ class Ghc < Formula
     url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2'
     sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
   end
+  version '7.4.2'
+end
+
+class Ghctestsuite < Formula
+  url 'https://github.com/ghc/testsuite/tarball/ghc-7.4.2-release'
+  sha1 '6b1f161a78a70638aacc931abfdef7dd50c7f923'
+end
+
+class Ghc < Formula
+  homepage 'http://haskell.org/ghc/'
+  url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-src.tar.bz2'
+  sha1 '73b3b39dc164069bc80b69f7f2963ca1814ddf3d'
 
   env :std
 
   depends_on NeedsSnowLeopard.new
 
   option '32-bit'
+  option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
+
+  bottle do
+    sha1 '72c7e8ad7d25382261ed431f953920004439ad69' => :mountainlion
+    sha1 '16c188ebe10aa06250af12268be39d56284aec91' => :lion
+    sha1 '68c1fcff903826dde6fc8e2a120ae8a69a8bafb2' => :snowleopard
+  end
 
   fails_with :clang do
     build 421
@@ -38,9 +55,56 @@ class Ghc < Formula
       EOS
   end
 
+  def patches
+    # Explained: http://hackage.haskell.org/trac/ghc/ticket/7040
+    # Discussed: https://github.com/mxcl/homebrew/issues/13519
+    # Remove: version > 7.4.2
+    'http://hackage.haskell.org/trac/ghc/raw-attachment/ticket/7040/ghc7040.patch'
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    # Move the main tarball contents into a subdirectory
+    (buildpath+'Ghcsource').install Dir['*']
+
+    # Define where the subformula will temporarily install itself
+    subprefix = buildpath+'subfo'
+
+    Ghcbinary.new.brew do
+      system "./configure", "--prefix=#{subprefix}"
+      # Temporary j1 to stop an intermittent race condition
+      system 'make', '-j1', 'install'
+      ENV.prepend 'PATH', subprefix/'bin', ':'
+    end
+
+    cd 'Ghcsource' do
+      # Fix an assertion when linking ghc with llvm-gcc
+      # https://github.com/mxcl/homebrew/issues/13650
+      ENV['LD'] = 'ld'
+
+      if Hardware.is_64_bit? and not build.build_32_bit?
+        arch = 'x86_64'
+      else
+        arch = 'i386'
+      end
+
+      system "./configure", "--prefix=#{prefix}",
+                            "--build=#{arch}-apple-darwin"
+      system 'make'
+      if build.include? 'tests'
+        Ghctestsuite.new.brew do
+          (buildpath+'Ghcsource/config').install Dir['config/*']
+          (buildpath+'Ghcsource/driver').install Dir['driver/*']
+          (buildpath+'Ghcsource/mk').install Dir['mk/*']
+          (buildpath+'Ghcsource/tests').install Dir['tests/*']
+          (buildpath+'Ghcsource/timeout').install Dir['timeout/*']
+          cd (buildpath+'Ghcsource/tests') do
+            system 'make', 'CLEANUP=1', "THREADS=#{ENV.make_jobs}", 'fast'
+          end
+        end
+      end
+      ENV.j1 # Fixes an intermittent race condition
+      system 'make', 'install'
+    end
   end
 
   def caveats; <<-EOS.undent

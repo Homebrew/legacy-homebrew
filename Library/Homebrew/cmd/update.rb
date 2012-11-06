@@ -19,6 +19,8 @@ module Homebrew extend self
 
     new_files = []
     Dir["Library/Taps/*"].each do |tapd|
+      next unless File.directory?(tapd)
+
       cd tapd do
         begin
           updater = Updater.new
@@ -129,10 +131,10 @@ class Report < Hash
   def dump
     # Key Legend: Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R)
 
-    dump_formula_report :A, "New Formula"
-    dump_formula_report :M, "Updated Formula"
-    dump_formula_report :D, "Deleted Formula"
-    dump_formula_report :R, "Renamed Formula"
+    dump_formula_report :A, "New Formulae"
+    dump_formula_report :M, "Updated Formulae"
+    dump_formula_report :D, "Deleted Formulae"
+    dump_formula_report :R, "Renamed Formulae"
 #    dump_new_commands
 #    dump_deleted_commands
   end

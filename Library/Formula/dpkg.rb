@@ -2,14 +2,14 @@ require 'formula'
 
 class Dpkg < Formula
   homepage 'http://en.wikipedia.org/wiki/Dpkg'
-  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.15.8.12.tar.bz2'
-  sha1 'ac9e693090090aef4c3f80e62439102ddf067c34'
+  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.15.8.13.tar.bz2'
+  sha1 'd0b9386742f966345a23c3daa0391b37fa837a3f'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-tar'
 
   fails_with :clang do
-    build 318
+    build 421
   end
 
   # Fixes the PERL_LIBDIR.

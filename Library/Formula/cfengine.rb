@@ -2,8 +2,8 @@ require 'formula'
 
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
-  url 'https://cfengine.com/source-code/download?file=cfengine-3.3.5.tar.gz'
-  sha1 '205896ba59a472de363c06e6847cecaf4cfbc5cf'
+  url 'https://cfengine.com/source-code/download?file=cfengine-3.3.8.tar.gz'
+  sha1 'f05e84229638e67d8c749740c96044ff5374e169'
 
   depends_on 'tokyo-cabinet'
   depends_on 'pcre'
