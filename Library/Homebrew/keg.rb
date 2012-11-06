@@ -10,6 +10,8 @@ class Keg < Pathname
   # locale-specific directories have the form language[_territory][.codeset][@modifier]
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
   INFOFILE_RX = %r[info/([^.].*?\.info|dir)$]
+  TOP_LEVEL_DIRECTORIES = %w[bin etc include lib sbin share var]
+  PRUNEABLE_DIRECTORIES = %w[bin etc include lib sbin share Library/LinkedKegs]
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
@@ -31,7 +33,7 @@ class Keg < Pathname
     # of files and directories linked
     $n=$d=0
 
-    %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
+    TOP_LEVEL_DIRECTORIES.map{ |d| self/d }.each do |src|
       next unless src.exist?
       src.find do |src|
         next if src == self
