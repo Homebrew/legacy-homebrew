@@ -1,9 +1,16 @@
 require 'formula'
 
 class Elasticsearch < Formula
+
   homepage 'http://www.elasticsearch.org'
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.10.tar.gz'
-  sha1 'c9aab11ad63f978052200865ed821199fa5f457e'
+
+  url   'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.11.tar.gz'
+  sha1  '0eeaec541c8aff4d65f47eb5b19af48c725d3663'
+
+  devel do
+    url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.20.0.RC1.tar.gz'
+    sha1  'd37c8a5e440b42e61a7cd88f70b273665ca975a4'
+  end
 
   def cluster_name
     "elasticsearch_#{ENV['USER']}"
