@@ -195,7 +195,7 @@ Note that these flags should only appear after a command.
     be linked or which would be deleted by `brew link --overwrite`, but will not
     actually link or delete any files.
 
-  * `ls, list [--unbrewed] [--versions]` [<formulae>]:
+  * `ls, list [--unbrewed] [--versions] [--color]` [<formulae>]:
     Without any arguments, list all installed formulae.
 
     If <formulae> are given, list the installed files for <formulae>.
@@ -207,6 +207,9 @@ Note that these flags should only appear after a command.
 
     If `--versions` is passed, show the version number for installed formulae,
     or only the specified formulae if <formulae> are given.
+
+    If `--color` is passed, highlight, formulae that are outdated, force-
+    linked keg_only, or unlinked.
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)

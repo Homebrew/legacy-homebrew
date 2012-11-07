@@ -20,7 +20,7 @@ HOMEBREW_REPOSITORY=HOMEBREW_PREFIX
 HOMEBREW_LIBRARY=HOMEBREW_REPOSITORY+"Library"
 HOMEBREW_CACHE=HOMEBREW_PREFIX.parent+"cache"
 HOMEBREW_CACHE_FORMULA=HOMEBREW_PREFIX.parent+"formula_cache"
-HOMEBREW_CELLAR=HOMEBREW_PREFIX.parent+"cellar"
+HOMEBREW_CELLAR = HOMEBREW_PREFIX.parent+"Cellar"
 HOMEBREW_LOGS = HOMEBREW_PREFIX.parent+"logs"
 HOMEBREW_USER_AGENT="Homebrew"
 HOMEBREW_WWW='http://example.com'
@@ -60,6 +60,28 @@ def shutup
       $stderr.reopen tmperr
       $stdout.reopen tmpout
     end
+  end
+end
+
+# Use StdoutFake to test Tty output like so:
+#     stdout_fake = StdoutFake.new
+#     stdout_orig = $stdout.clone
+#     $stdout = stdout_fake
+#     stdout_fake.reopen '', 'w+'
+#     <do your tests here>
+#     $stdout = stdout_orig
+#     # Now if you want to see cool stuff, run with: `ruby test_utils.rb -- --verbose`
+#     shutup do
+#       stdout_fake.seek 0
+#       puts stdout_fake.read
+#     end
+require 'stringio'
+class StdoutFake < StringIO
+  def initialize
+    super  '', 'w+'
+  end
+  def tty?
+    true
   end
 end
 

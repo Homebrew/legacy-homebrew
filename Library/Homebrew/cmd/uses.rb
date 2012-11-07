@@ -1,4 +1,5 @@
 require 'formula'
+require 'rack'
 
 # `brew uses foo bar` now returns formula that use both foo and bar
 # Rationale: If you want the union just run the command twice and
@@ -17,12 +18,15 @@ module Homebrew extend self
           f.deps.any? { |dep| dep.name == ff.name }
         end
       end
-    end
+    end.map{ |f| f.to_s}.sort
 
     if ARGV.include? "--installed"
-      uses = uses.select { |f| Formula.installed.include? f }
+      installed = Rack.all_fnames
+      puts_columns uses.select{ |f| installed.include?(f) }
+    else
+      puts_columns uses.sort, :star=>Rack.all_fnames
+      oh1 "Legend:#{Tty.reset} * Installed. To show only those, use --installed." if $stdout.tty? and not uses.empty?
     end
 
-    puts_columns uses.map(&:to_s).sort
   end
 end
