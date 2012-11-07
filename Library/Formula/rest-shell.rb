@@ -2,9 +2,9 @@ require 'formula'
 
 class RestShell < Formula
   homepage 'https://github.com/SpringSource/rest-shell'
-  url 'https://github.com/downloads/SpringSource/rest-shell/rest-shell-1.1.4.RELEASE.tar.gz'
-  version '1.1.4.RELEASE'
-  sha1 'e34def6696c9c5834eaf5781c1eb8e6ab34ff86f'
+  url 'https://github.com/downloads/SpringSource/rest-shell/rest-shell-1.2.0.RELEASE.tar.gz'
+  version '1.2.0.RELEASE'
+  sha1 '747f43454e91a5c25d1342f499b57326b0d17d9a'
 
   def install
     libexec.install Dir['*']
