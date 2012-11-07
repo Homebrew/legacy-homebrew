@@ -484,7 +484,7 @@ def check_user_path_3
 end
 
 def check_user_curlrc
-  if %w[CURL_HOME HOME].one?{|key| ENV[key] and File.exists? "#{ENV[key]}/.curlrc" } then <<-EOS.undent
+  if %w[CURL_HOME HOME].any?{|key| ENV[key] and File.exists? "#{ENV[key]}/.curlrc" } then <<-EOS.undent
     You have a curlrc file
     If you have trouble downloading packages with Homebrew, then maybe this
     is the problem? If the following command doesn't work, then try removing
