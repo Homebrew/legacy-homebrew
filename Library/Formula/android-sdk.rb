@@ -1,5 +1,11 @@
 require 'formula'
 
+class AdbBashCompletion < Formula
+  url 'https://raw.github.com/CyanogenMod/android_sdk/3bf0a01ef66a9b99149ba3faaf34a1362581dd01/bash_completion/adb.bash'
+  sha1 '8e7dad45b8c98c359516d4a818a9090125bc6f7a'
+  version 'cyanogenmod_jellybean'
+end
+
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
   url 'http://dl.google.com/android/android-sdk_r20.0.3-macosx.zip'
@@ -44,6 +50,10 @@ class AndroidSdk < Formula
         test -f "$PLATFORM_TOOL" && exec "$PLATFORM_TOOL" "$@"
         echo Use the \\`android\\' tool to install the \\"Android SDK Platform-tools\\".
       EOS
+    end
+
+    AdbBashCompletion.new.brew do
+      (prefix+'etc/bash_completion.d').install 'adb.bash' => 'adb-completion.bash'
     end
   end
 

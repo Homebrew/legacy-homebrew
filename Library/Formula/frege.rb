@@ -8,9 +8,6 @@ class Frege < Formula
 
   def install
     libexec.install Dir['*']
-    (bin+'fregec').write <<-EOS.undent
-      #!/bin/sh
-      exec java -Xss1m -jar "#{libexec}/frege3.19.112a.jar" "$@"
-    EOS
+    bin.write_jar_script libexec/'frege3.19.112a.jar', 'fregec', '-Xss1m'
   end
 end

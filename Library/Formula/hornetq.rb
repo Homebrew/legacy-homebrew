@@ -17,7 +17,6 @@ class Hornetq < Formula
 
   def install
     libexec.install Dir['*']
-    bin.mkpath
     (bin+'hornet-start').write wrapper_script('run.sh')
     (bin+'hornet-stop').write wrapper_script('stop.sh')
   end

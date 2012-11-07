@@ -1,31 +1,35 @@
 require 'formula'
 
-class Mongodb < Formula
-  homepage 'http://www.mongodb.org/'
-
-  if Hardware.is_64_bit? and not build.build_32_bit?
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0.tgz'
-    sha1 '313a2f7c91354a4cfae7098e622001b4ee483f71'
-    version '2.2.0-x86_64'
-
-    devel do
-      url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.1-rc0.tgz'
-      sha1 'f33522f38280137d6b8d2e4b1befd9b7764c6790'
-      version '2.2.1-rc0-x86_64'
-    end
-  else
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0.tgz'
-    sha1 'd0a879d8a6fb861917c955dbfe6aebe2cbe29171'
-    version '2.2.0-i386'
-
-    devel do
-      url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.1-rc0.tgz'
-      sha1 '145d659822f836afac85d635e889b2cfa403ed92'
-      version '2.2.1-rc0-i386'
-    end
+class SixtyFourBitRequired < Requirement
+  def satisfied?
+    MacOS.prefer_64_bit?
   end
 
-  option '32-bit'
+  def fatal?; true end
+
+  def message; <<-EOS.undent
+    32-bit MongoDB binaries are no longer available.
+
+    If you need to run a 32-bit version of MongoDB, you can
+    compile the server from source:
+      http://www.mongodb.org/display/DOCS/Building+for+OS+X
+    EOS
+  end
+end
+
+class Mongodb < Formula
+  homepage 'http://www.mongodb.org/'
+  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.1.tgz'
+  sha1 '6fc3054cdc7f7e64b12742f7e8f9df256a3253d9'
+  version '2.2.1-x86_64'
+
+  devel do
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.3.0.tgz'
+    sha1 '816ca175bd31e2ec1eb8b61793b1d1e4a247a5da'
+    version '2.3.0-x86_64'
+  end
+
+  depends_on SixtyFourBitRequired.new
 
   def install
     # Copy the prebuilt binaries to prefix
@@ -43,7 +47,7 @@ class Mongodb < Formula
     mv bin/'mongod', prefix
     (bin/'mongod').write <<-EOS.undent
       #!/usr/bin/env ruby
-      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.include? '--config'
+      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.find { |arg| arg =~ /\-\-config/ }
       exec "#{prefix}/mongod", *ARGV
     EOS
 

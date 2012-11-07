@@ -1,17 +1,14 @@
 require 'formula'
 
 class RestShell < Formula
-  homepage 'https://github.com/jbrisbin/rest-shell'
-  url 'https://github.com/downloads/jbrisbin/rest-shell/rest-shell-1.1.3.RELEASE.tar.gz'
-  version '1.1.3.RELEASE'
-  sha1 '0d43e99fabae72b068a09955053793ae4164c099'
+  homepage 'https://github.com/SpringSource/rest-shell'
+  url 'https://github.com/downloads/SpringSource/rest-shell/rest-shell-1.2.0.RELEASE.tar.gz'
+  version '1.2.0.RELEASE'
+  sha1 '747f43454e91a5c25d1342f499b57326b0d17d9a'
 
   def install
     libexec.install Dir['*']
-    (bin/'rest-shell').write <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/rest-shell" "$@"
-    EOS
+    bin.write_exec_script libexec/'bin/rest-shell'
   end
 
   def test

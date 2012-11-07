@@ -98,6 +98,9 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :rar
       raise "You must install unrar: brew install unrar" unless which "unrar"
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, @tarball_path
+    when :p7zip
+      raise "You must install 7zip: brew install p7zip" unless which "7zr"
+      safe_system '7zr', 'x', @tarball_path
     else
       # we are assuming it is not an archive, use original filename
       # this behaviour is due to ScriptFileFormula expectations
