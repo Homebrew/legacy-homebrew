@@ -243,7 +243,7 @@ class MysqlInstalled < Requirement
   end
 end
 
-class PostgresInstalled < Requirement
+class PostgresqlInstalled < Requirement
   def fatal?; true; end
 
   def satisfied?
