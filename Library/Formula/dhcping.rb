@@ -1,7 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
 class Dhcping < Formula
   homepage 'http://www.mavetju.org'
@@ -13,8 +11,3 @@ class Dhcping < Formula
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end
-
-  def test
-    system "true"
-  end
-end
