@@ -9,7 +9,7 @@ module Homebrew extend self
     $d = 0
     dirs = []
 
-    %w[bin sbin etc lib include share Library/LinkedKegs].map{ |d| HOMEBREW_PREFIX+d }.each do |path|
+    Keg::PRUNEABLE_DIRECTORIES.map{ |d| HOMEBREW_PREFIX/d }.each do |path|
       next unless path.directory?
       path.find do |path|
         path.extend ObserverPathnameExtension
