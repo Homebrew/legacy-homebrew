@@ -2,8 +2,8 @@ require 'formula'
 
 class Taskopen < Formula
   homepage 'https://github.com/ValiValpas/taskopen'
-  url 'https://github.com/ValiValpas/taskopen/archive/master.tar.gz'
-  sha1 '7bb463ff41b22c38cf2ecc809cc3900501afcac7'
+  url 'https://github.com/ValiValpas/taskopen/archive/2.0.zip'
+  sha1 '50760d0ce14fa7269429d20eac2a157a8860a826'
   version '2.0'
 
   depends_on 'task'
