@@ -2,7 +2,7 @@ require 'formula'
 
 class Jmeter < Formula
   homepage 'http://jakarta.apache.org/jmeter/'
-  url 'http://apache.webxcreen.org/jmeter/binaries/apache-jmeter-2.8.tgz'
+  url 'http://mirror.symnds.com/software/Apache//jmeter/binaries/apache-jmeter-2.8.tgz'
   sha1 'e18cac4ab2b73dfcfe5d11e857905fa31c638563'
 
   def install
