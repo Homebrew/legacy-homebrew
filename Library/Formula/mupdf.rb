@@ -40,7 +40,7 @@ class Mupdf < Formula
     openjpeg = Formula.factory 'openjpeg'
     ENV.append 'CPPFLAGS', "-I#{Dir[openjpeg.include/'openjpeg-*'].first}"
     ENV.append 'CFLAGS', '-DNDEBUG'
-    ENV['SYS_FREETYPE_INC'] = MacOS.x11_prefix/'include'/'freetype2'
+    ENV['SYS_FREETYPE_INC'] = "-I#{MacOS::X11.include}/freetype2"
 
     system "make", "install", "prefix=#{prefix}"
   end

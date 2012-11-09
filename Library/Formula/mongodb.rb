@@ -47,7 +47,7 @@ class Mongodb < Formula
     mv bin/'mongod', prefix
     (bin/'mongod').write <<-EOS.undent
       #!/usr/bin/env ruby
-      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.include? '--config'
+      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.find { |arg| arg =~ /\-\-config/ }
       exec "#{prefix}/mongod", *ARGV
     EOS
 
