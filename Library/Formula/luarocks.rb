@@ -2,8 +2,8 @@ require 'formula'
 
 class Luarocks < Formula
   homepage 'http://luarocks.org'
-  url 'http://luarocks.org/releases/luarocks-2.0.10.tar.gz'
-  sha1 '90db1c46940816ae82a8037e585769e3e8845f66'
+  url 'http://luarocks.org/releases/luarocks-2.0.12.tar.gz'
+  sha1 'bfa36d5a9931c240c0253dee09c0cfb69372d276'
 
   option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
 
