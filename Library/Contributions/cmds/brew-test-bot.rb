@@ -254,14 +254,14 @@ class Test
 
   def self.run url
     test = new url
-    test.cleanup
+    test.cleanup unless ARGV.include? "--skip-cleanup"
     test.download
-    test.setup
+    test.setup unless ARGV.include? "--skip-setup"
     test.formulae.each do |f|
       test.formula f
     end
     test.homebrew if test.core_changed
-    test.cleanup
+    test.cleanup unless ARGV.include? "--skip-cleanup"
 
     test.check_results
   end
