@@ -67,12 +67,13 @@ class Step
     end
   end
 
-  def self.run test, command
+  def self.run test, command, output_on_success = false
     step = new test, command
     step.puts_command
     `#{step.command} &>#{step.log_file_path}`
     step.status = $?.success? ? :passed : :failed
     step.puts_result
+    puts IO.read(step.log_file_path) if output_on_success
     step.write_html
   end
 end
@@ -199,7 +200,7 @@ class Test
     test "brew install --verbose --build-bottle #{formula}"
     return unless steps.last.status == :passed
     test "brew test #{formula}" if defined? Formula.factory(formula).test
-    test "brew bottle #{formula}"
+    test "brew bottle #{formula}", true
     test "brew uninstall #{formula}"
   end
 
@@ -220,8 +221,8 @@ class Test
     end
   end
 
-  def test cmd
-    Step.run self, cmd
+  def test cmd, output_on_success = false
+    Step.run self, cmd, output_on_success
   end
 
   def check_results
