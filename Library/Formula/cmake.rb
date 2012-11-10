@@ -18,13 +18,13 @@ end
 
 class Cmake < Formula
   homepage 'http://www.cmake.org/'
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.10.tar.gz'
-  sha1 '6384f2295d01f04d017e2701447378598b4c7223'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.9.tar.gz'
+  sha1 'b96663c0757a5edfbddc410aabf7126a92131e2b'
 
   bottle do
-    #sha1 'ae7e0cf39556ea0a32e7bb7716ac820734ca7918' => :mountainlion
-    #sha1 '6631aaeeafb9209e711508ad72727fbb4b5ab295' => :lion
-    #sha1 'ea52f2a18b00f3404e8bf73c12c3da1d9a39f128' => :snowleopard
+    sha1 'ae7e0cf39556ea0a32e7bb7716ac820734ca7918' => :mountainlion
+    sha1 '6631aaeeafb9209e711508ad72727fbb4b5ab295' => :lion
+    sha1 'ea52f2a18b00f3404e8bf73c12c3da1d9a39f128' => :snowleopard
   end
 
   depends_on NoExpatFramework.new
