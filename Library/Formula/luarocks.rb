@@ -2,13 +2,15 @@ require 'formula'
 
 class Luarocks < Formula
   homepage 'http://luarocks.org'
-  url 'http://luarocks.org/releases/luarocks-2.0.10.tar.gz'
-  sha1 '90db1c46940816ae82a8037e585769e3e8845f66'
+  url 'http://luarocks.org/releases/luarocks-2.0.11.tar.gz'
+  sha1 '5f246b3ba33d671560ace74531f5d963f4729c4a'
 
   option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
 
   if build.include? 'with-luajit'
     depends_on 'luajit'
+  elsif build.include? 'with-lua52'
+    depends_on 'lua52'
   else
     depends_on 'lua'
   end
@@ -56,7 +58,7 @@ diff --git a/src/luarocks/fs/lua.lua b/src/luarocks/fs/lua.lua
 index 67c3ce0..2d149c7 100644
 --- a/src/luarocks/fs/lua.lua
 +++ b/src/luarocks/fs/lua.lua
-@@ -653,24 +653,5 @@ end
+@@ -666,24 +666,5 @@ end
  -- @return boolean or (boolean, string): true on success, false on failure,
  -- plus an error message.
  function check_command_permissions(flags)
@@ -82,3 +84,17 @@ index 67c3ce0..2d149c7 100644
 -   end
 +   return true
  end
+diff --git a/src/luarocks/cfg.lua b/src/luarocks/cfg.lua
+--- a/src/luarocks/cfg.lua
++++ a/src/luarocks/cfg.lua
+@@ -10,8 +10,8 @@
+ -- (~/.luarocks/config.lua on Unix or %APPDATA%/luarocks/config.lua on
+ -- Windows).
+ 
+-local rawset, next, table, pairs, require, io, os, setmetatable, pcall, ipairs, package, type, assert, _VERSION =
+-      rawset, next, table, pairs, require, io, os, setmetatable, pcall, ipairs, package, type, assert, _VERSION
++local tonumber, rawset, next, table, pairs, require, io, os, setmetatable, pcall, ipairs, package, type, assert, _VERSION =
++      tonumber, rawset, next, table, pairs, require, io, os, setmetatable, pcall, ipairs, package, type, assert, _VERSION
+ 
+ module("luarocks.cfg")
+ 
