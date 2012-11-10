@@ -5,7 +5,7 @@ class Pwsafe < Formula
   homepage 'http://nsd.dyndns.org/pwsafe/'
   sha1 '026643a391796a527a48ffccf93d542113ca79d4'
 
-  depends_on 'readline'
+  depends_on 'gnu-readline'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

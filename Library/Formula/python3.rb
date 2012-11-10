@@ -24,7 +24,7 @@ class Python3 < Formula
 
   depends_on TkCheck.new
   depends_on 'pkg-config' => :build
-  depends_on 'readline' => :recommended
+  depends_on 'gnu-readline' => :recommended
   depends_on 'sqlite' => :recommended
   depends_on 'gdbm' => :recommended
   depends_on 'openssl' if build.include? 'with-brewed-openssl'
@@ -167,7 +167,7 @@ class Python3 < Formula
       # superenv makes cc always find includes/libs!
       inreplace "setup.py",
                 "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
-                "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
+                "do_readline = '#{HOMEBREW_PREFIX}/opt/gnu-readline/lib/libhistory.dylib'"
     end
   end
 

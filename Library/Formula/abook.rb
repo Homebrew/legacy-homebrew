@@ -5,7 +5,7 @@ class Abook < Formula
   homepage 'http://abook.sourceforge.net/'
   sha1 '79f04f2264c8bd81bbc952b6560c86d69b21615d'
 
-  depends_on 'readline'
+  depends_on 'gnu-readline'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

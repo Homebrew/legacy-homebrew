@@ -15,7 +15,7 @@ class Yarp < Formula
   depends_on 'gtkmm'
   depends_on 'libglademm'
   depends_on 'sqlite'
-  depends_on 'readline'
+  depends_on 'gnu-readline'
   depends_on 'jpeg'
   depends_on :x11
 

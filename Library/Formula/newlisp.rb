@@ -5,7 +5,7 @@ class Newlisp < Formula
   url 'http://www.newlisp.org/downloads/newlisp-10.4.4.tgz'
   sha1 'eb1121aa49e5ef208855bd1ffdc3204eab974169'
 
-  depends_on 'readline'
+  depends_on 'gnu-readline'
 
   def install
     # Required to use our configuration

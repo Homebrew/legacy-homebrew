@@ -7,7 +7,7 @@ class Kes < Formula
 
   head 'https://github.com/epilnivek/kes.git'
 
-  depends_on 'readline'
+  depends_on 'gnu-readline'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--with-readline"

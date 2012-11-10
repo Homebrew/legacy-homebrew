@@ -5,7 +5,7 @@ class Postgresql < Formula
   url 'http://ftp.postgresql.org/pub/source/v9.2.1/postgresql-9.2.1.tar.bz2'
   sha1 'cea9601b3acd1484fd98441b49a15ea1c42057ec'
 
-  depends_on 'readline'
+  depends_on 'gnu-readline'
   depends_on 'libxml2' if MacOS.version == :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
 

@@ -6,7 +6,7 @@ class Ginac < Formula
   sha1 'c93913c4c543874b2ade4f0390030641be7e0c41'
 
   depends_on 'cln'
-  depends_on 'readline'
+  depends_on 'gnu-readline'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"

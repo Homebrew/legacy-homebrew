@@ -18,7 +18,7 @@ class Libvirt < Formula
 
   if MacOS.version == :leopard
     # Definitely needed on Leopard, but not on Snow Leopard.
-    depends_on "readline"
+    depends_on "gnu-readline"
     depends_on "libxml2"
   end
 
