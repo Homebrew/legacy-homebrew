@@ -29,22 +29,24 @@ class PerconaServer < Formula
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
 
+  # https://github.com/mxcl/homebrew/pull/15901
+  def destination
+    @destination ||= (File.directory? var/'percona') ? 'percona' : 'mysql'
+  end
+
   def install
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    # Make sure the var/msql directory exists
-    (var+"percona").mkpath
-
     args = std_cmake_args + [
       ".",
-      "-DMYSQL_DATADIR=#{var}/percona",
+      "-DMYSQL_DATADIR=#{var}/#{destination}",
       "-DINSTALL_MANDIR=#{man}",
       "-DINSTALL_DOCDIR=#{doc}",
       "-DINSTALL_INFODIR=#{info}",
       # CMake prepends prefix, so use share.basename
-      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}",
+      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/#{destination}",
       "-DWITH_SSL=yes",
       "-DDEFAULT_CHARSET=utf8",
       "-DDEFAULT_COLLATION=utf8_general_ci",
@@ -85,17 +87,19 @@ class PerconaServer < Formula
 
     # Link the setup script into bin
     ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
     end
+
     ln_s "#{prefix}/support-files/mysql.server", bin
   end
 
   def caveats; <<-EOS.undent
     Set up databases to run AS YOUR USER ACCOUNT with:
         unset TMPDIR
-        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix percona-server)" --datadir=#{var}/percona --tmpdir=/tmp
+        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix percona-server)" --datadir=#{var}/#{destination} --tmpdir=/tmp
 
     To set up base tables in another folder, or use a different user to run
     mysqld, view the help for mysqld_install_db:
@@ -112,9 +116,6 @@ class PerconaServer < Formula
         mysql.server start
 
         Note: if this fails, you probably forgot to run the first two steps up above
-
-    A "/etc/my.cnf" from another install may interfere with a Homebrew-built
-    server starting up correctly.
 
     To connect:
         mysql -uroot
