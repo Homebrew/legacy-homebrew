@@ -3,10 +3,12 @@
 # Usage: brew test-bot [options...] <pull-request|formula>
 #
 # Options:
-# --log:     Writes log files under ./brewbot/
-# --html:    Writes html and log files under ./brewbot/
-# --comment: Comment on the pull request
-# --clean:   Clean the Homebrew directory. Very dangerous. Use with care.
+# --log:          Writes log files under ./brewbot/
+# --html:         Writes html and log files under ./brewbot/
+# --comment:      Comment on the pull request
+# --cleanup:      Clean the Homebrew directory. Very dangerous. Use with care.
+# --skip-cleanup: Don't check for uncommitted changes.
+# --skip-setup:   Don't check the local system is setup correctly.
 
 require 'formula'
 require 'utils'
@@ -15,7 +17,7 @@ require 'date'
 HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmds/"
 
 class Step
-  attr_reader :command
+  attr_reader :command, :repository
   attr_accessor :status
 
   def initialize test, command
@@ -24,6 +26,7 @@ class Step
     @command = command
     @name = command.split[1].delete '-'
     @status = :running
+    @repository = HOMEBREW_REPOSITORY
     @test.steps << self
     write_html
   end
@@ -73,7 +76,7 @@ class Step
 
     command = "#{step.command} &>#{step.log_file_path}"
     if command.start_with? 'git '
-      Dir.chdir HOMEBREW_REPOSITORY { `#{command}` }
+      Dir.chdir step.repository { `#{command}` }
     else
       `#{command}`
     end
@@ -229,8 +232,10 @@ class Test
       test "git reset --hard origin/master"
       test "git clean --force -dx"
     else
-      git('diff --exit-code HEAD 2>/dev/null')
-      odie "Uncommitted changes, aborting." unless $?.success?
+      unless ARGV.include? "--skip-cleanup"
+        git('diff --exit-code HEAD 2>/dev/null')
+        odie "Uncommitted changes, aborting." unless $?.success?
+      end
       test "git reset --hard #{@start_sha1}" if @start_sha1
     end
   end
@@ -269,7 +274,7 @@ class Test
 
   def self.run url
     test = new url
-    test.cleanup unless ARGV.include? "--skip-cleanup"
+    test.cleanup
     test.download
     test.setup unless ARGV.include? "--skip-setup"
     test.formulae.each do |f|
