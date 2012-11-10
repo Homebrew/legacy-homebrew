@@ -70,7 +70,14 @@ class Step
   def self.run test, command, output_on_success = false
     step = new test, command
     step.puts_command
-    `#{step.command} &>#{step.log_file_path}`
+
+    command = "#{step.command} &>#{step.log_file_path}"
+    if command.start_with? 'git '
+      Dir.chdir HOMEBREW_REPOSITORY { `#{command}` }
+    else
+      `#{command}`
+    end
+
     step.status = $?.success? ? :passed : :failed
     step.puts_result
     puts IO.read(step.log_file_path) if output_on_success
@@ -142,18 +149,24 @@ class Test
     end
   end
 
+  def git arguments
+    Dir.chdir HOMEBREW_REPOSITORY do
+      `git #{arguments}`
+    end
+  end
+
   def download
     def current_sha1
-      `git rev-parse --short HEAD`.strip
+      git('rev-parse --short HEAD').strip
     end
 
     def current_branch
-      `git symbolic-ref HEAD`.slice!("refs/heads/").strip
+      git('symbolic-ref HEAD').slice!("refs/heads/").strip
     end
 
     @category = __method__
     if @url
-      `git am --abort 2>/dev/null`
+      git 'am --abort 2>/dev/null'
       test "brew update" if current_branch == "master"
       @start_sha1 = current_sha1
       test "brew pull --clean #{@url}"
@@ -171,7 +184,7 @@ class Test
 
     return unless @url and @start_sha1 != end_sha1 and steps.last.status == :passed
 
-    `git diff #{@start_sha1}..#{end_sha1} --name-status`.each_line do |line|
+    git("diff #{@start_sha1}..#{end_sha1} --name-status`.each_line") do |line|
       status, filename = line.split
       # Don't try and do anything to removed files.
       if (status == 'A' or status == 'M')
@@ -216,7 +229,7 @@ class Test
       test "git reset --hard origin/master"
       test "git clean --force -dx"
     else
-      `git diff --exit-code HEAD 2>/dev/null`
+      git('diff --exit-code HEAD 2>/dev/null')
       odie "Uncommitted changes, aborting." unless $?.success?
       test "git reset --hard #{@start_sha1}" if @start_sha1
     end
@@ -272,8 +285,6 @@ end
 if ARGV.empty?
   odie 'This command requires at least one argument containing a pull request number or formula.'
 end
-
-Dir.chdir HOMEBREW_REPOSITORY
 
 ARGV.named.each do|arg|
   Test.run arg
