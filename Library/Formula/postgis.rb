@@ -16,7 +16,7 @@ class Postgis < Formula
     depends_on :libtool
   end
 
-  depends_on 'postgresql'
+  depends_on :postgresql
   depends_on 'proj'
   depends_on 'geos'
 

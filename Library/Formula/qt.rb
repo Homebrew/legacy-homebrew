@@ -25,8 +25,8 @@ class Qt < Formula
 
   depends_on :libpng
 
-  depends_on "d-bus" if build.include? 'with-qtdbus'
-  depends_on "mysql" if build.include? 'with-mysql'
+  depends_on 'd-bus' if build.include? 'with-qtdbus'
+  depends_on :mysql if build.include? 'with-mysql'
   depends_on 'sqlite' if MacOS.version == :leopard
 
   def patches
