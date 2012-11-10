@@ -7,6 +7,15 @@ class Couchdb < Formula
 
   head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
+  devel do
+   url 'http://git-wip-us.apache.org/repos/asf/couchdb.git', :branch => '1.3.x'
+   version '1.3.x'
+  end
+  
+  depends_on 'autoconf'
+  depends_on 'autoconf-archive'
+  depends_on 'pkg-config'
+  depends_on 'automake'
   depends_on 'help2man' => :build
   depends_on 'spidermonkey'
   depends_on 'icu4c'
