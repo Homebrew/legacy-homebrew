@@ -59,8 +59,8 @@ class Gdal < Formula
   depends_on 'freexl'
   depends_on 'libspatialite'
 
-  depends_on "postgresql" if postgres?
-  depends_on "mysql" if mysql?
+  depends_on :postgresql if postgres?
+  depends_on :mysql if mysql?
 
   # Without Numpy, the Python bindings can't deal with raster data.
   depends_on 'numpy' => :python unless no_python?
