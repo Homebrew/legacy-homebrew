@@ -211,7 +211,8 @@ class Test
 
   def cleanup
     @category = __method__
-    if ARGV.include? "--clean"
+    if ARGV.include? "--cleanup"
+      test "git fetch origin"
       test "git reset --hard origin/master"
       test "git clean --force -dx"
     else
