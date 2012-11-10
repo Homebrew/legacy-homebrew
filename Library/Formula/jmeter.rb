@@ -1,8 +1,8 @@
 require 'formula'
 
 class Jmeter < Formula
-  homepage 'http://jakarta.apache.org/jmeter/'
-  url 'http://apache.webxcreen.org/jmeter/binaries/apache-jmeter-2.8.tgz'
+  homepage 'http://jmeter.apache.org/'
+  url 'http://www.apache.org/dyn/closer.cgi?path=jmeter/source/apache-jmeter-2.8_src.tgz'
   sha1 'e18cac4ab2b73dfcfe5d11e857905fa31c638563'
 
   def install
