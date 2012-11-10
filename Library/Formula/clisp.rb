@@ -7,7 +7,7 @@ class Clisp < Formula
   sha1 '7e8d585ef8d0d6349ffe581d1ac08681e6e670d4'
 
   depends_on 'libsigsegv'
-  depends_on 'readline'
+  depends_on 'gnu-readline'
 
   # -Os causes the build to fail with C_CODE_ALIGNMENT is wrong
   # superenv doeesn't yet support changing the optimization level

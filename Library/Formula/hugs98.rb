@@ -6,7 +6,7 @@ class Hugs98 < Formula
   homepage 'http://www.haskell.org/hugs/'
   sha1 '1464a80c715bc5f786ea5a4e4257b2ff0dc7e1e9'
 
-  depends_on 'readline'
+  depends_on 'gnu-readline'
 
   fails_with :clang do
     build 421

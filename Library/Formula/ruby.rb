@@ -16,7 +16,7 @@ class Ruby < Formula
 
   depends_on :autoconf if build.head?
   depends_on 'pkg-config' => :build
-  depends_on 'readline'
+  depends_on 'gnu-readline'
   depends_on 'gdbm'
   depends_on 'libyaml'
   depends_on :x11 if build.include? 'with-tcltk'

@@ -9,7 +9,7 @@ class Libqalculate < Formula
   depends_on 'glib'
   depends_on 'gnuplot'
   depends_on 'gettext'
-  depends_on 'readline'
+  depends_on 'gnu-readline'
   depends_on 'wget'
 
   # Patches against version 0.9.7, should not be needed in the future

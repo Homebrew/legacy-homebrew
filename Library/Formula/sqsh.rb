@@ -9,7 +9,7 @@ class Sqsh < Formula
 
   depends_on :x11 if build.include? "enable-x"
   depends_on 'freetds'
-  depends_on 'readline'
+  depends_on 'gnu-readline'
 
   def install
     args = %W[
@@ -18,8 +18,8 @@ class Sqsh < Formula
       --with-readline
     ]
 
-    ENV['LIBDIRS'] = Readline.new('readline').lib
-    ENV['INCDIRS'] = Readline.new('readline').include
+    ENV['LIBDIRS'] = GnuReadline.new('gnu-readline').lib
+    ENV['INCDIRS'] = GnuReadline.new('gnu-readline').include
 
     if build.include? "enable-x"
       args << "--with-x"

@@ -10,7 +10,7 @@ class Socat < Formula
     sha1 'd75c0abc816f9bb8ee1e36f6ca4fe58d7e56f2a4'
   end
 
-  depends_on 'readline'
+  depends_on 'gnu-readline'
 
   def patches
     # Socat devs are aware; see:

@@ -18,7 +18,7 @@ class Sqlite < Formula
   sha1 'c464e0e3efe98227c6546b9b1e786b51b8b642fc'
   version '3.7.14.1'
 
-  depends_on 'readline' => :recommended
+  depends_on 'gnu-readline' => :recommended
 
   option :universal
   option 'with-docs', 'Install HTML documentation'

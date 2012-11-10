@@ -16,7 +16,7 @@ class R < Formula
 
   option 'with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger'
 
-  depends_on 'readline'
+  depends_on 'gnu-readline'
   depends_on 'libtiff'
   depends_on 'jpeg'
   depends_on :x11

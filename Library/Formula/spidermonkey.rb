@@ -18,7 +18,7 @@ class Spidermonkey < Formula
   # head 'https://hg.mozilla.org/tracemonkey', :using => :hg
   head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz', :using => :curl
 
-  depends_on 'readline'
+  depends_on 'gnu-readline'
   depends_on 'nspr'
 
   def install

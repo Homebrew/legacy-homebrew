@@ -13,7 +13,7 @@ class Pce < Formula
   end
 
   depends_on 'sdl'
-  depends_on 'readline'
+  depends_on 'gnu-readline'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
