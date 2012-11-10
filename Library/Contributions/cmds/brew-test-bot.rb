@@ -70,21 +70,29 @@ class Step
     end
   end
 
-  def self.run test, command, output_on_success = false
+  def self.run test, command, puts_output = false
     step = new test, command
     step.puts_command
 
-    command = "#{step.command} &>#{step.log_file_path}"
-    if command.start_with? 'git '
-      Dir.chdir step.repository { `#{command}` }
-    else
-      `#{command}`
+    command = "#{step.command}"
+    unless puts_output and not ARGV.include? "--log"
+      command += " &>#{step.log_file_path}"
     end
+
+    output = nil
+    if command.start_with? 'git '
+      Dir.chdir step.repository do
+        output = `#{command}`
+      end
+    else
+      output = `#{command}`
+    end
+    output = IO.read(step.log_file_path) if ARGV.include? "--log"
 
     step.status = $?.success? ? :passed : :failed
     step.puts_result
-    puts IO.read(step.log_file_path) if output_on_success
     step.write_html
+    puts output if puts_output and output and not output.empty?
   end
 end
 
@@ -215,8 +223,8 @@ class Test
     test "brew audit #{formula}"
     test "brew install --verbose --build-bottle #{formula}"
     return unless steps.last.status == :passed
-    test "brew test #{formula}" if defined? Formula.factory(formula).test
     test "brew bottle #{formula}", true
+    test "brew test #{formula}" if defined? Formula.factory(formula).test
     test "brew uninstall #{formula}"
   end
 
@@ -230,7 +238,9 @@ class Test
     if ARGV.include? "--cleanup"
       test "git fetch origin"
       test "git reset --hard origin/master"
+      test "brew cleanup"
       test "git clean --force -dx"
+      test "git gc"
     else
       unless ARGV.include? "--skip-cleanup"
         git('diff --exit-code HEAD 2>/dev/null')
@@ -240,8 +250,8 @@ class Test
     end
   end
 
-  def test cmd, output_on_success = false
-    Step.run self, cmd, output_on_success
+  def test cmd, puts_output = false
+    Step.run self, cmd, puts_output
   end
 
   def check_results
