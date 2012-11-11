@@ -34,7 +34,7 @@ class PerconaServer < Formula
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    # Make sure the var/msql directory exists
+    # Make sure the var/percona directory exists
     (var+"percona").mkpath
 
     args = std_cmake_args + [
@@ -44,7 +44,7 @@ class PerconaServer < Formula
       "-DINSTALL_DOCDIR=#{doc}",
       "-DINSTALL_INFODIR=#{info}",
       # CMake prepends prefix, so use share.basename
-      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}",
+      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/percona",
       "-DWITH_SSL=yes",
       "-DDEFAULT_CHARSET=utf8",
       "-DDEFAULT_COLLATION=utf8_general_ci",
@@ -85,10 +85,12 @@ class PerconaServer < Formula
 
     # Link the setup script into bin
     ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
     end
+
     ln_s "#{prefix}/support-files/mysql.server", bin
   end
 
