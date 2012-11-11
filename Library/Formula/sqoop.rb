@@ -11,29 +11,17 @@ class Sqoop < Formula
   depends_on 'hive'
   depends_on 'zookeeper'
 
-  def shim_script target
-    <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/#{target}" "$@"
-    EOS
-  end
-
   def install
     libexec.install %w[bin conf lib]
     libexec.install Dir['*.jar']
-    bin.mkpath
-
-    Dir["#{libexec}/bin/*"].each do |b|
-      n = Pathname.new(b).basename
-      (bin+n).write shim_script(n)
-    end
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
   def caveats; <<-EOS.undent
     Hadoop, Hive, HBase and ZooKeeper must be installed for
     Sqoop to work.
     After installation, set the appropriate paths in:
-      #{libexec}/conf/sqoop-env-template.sh
+      #{libexec}/conf/sqoop-env.sh
     EOS
   end
 end
