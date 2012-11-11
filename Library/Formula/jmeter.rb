@@ -8,7 +8,7 @@ class Jmeter < Formula
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
-    prefix.install %w{ LICENSE NOTICE README }
+    prefix.install_metafiles
     libexec.install Dir['*']
     bin.write_exec_script libexec/'bin/jmeter'
   end
