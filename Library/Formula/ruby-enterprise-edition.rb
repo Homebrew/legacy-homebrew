@@ -9,12 +9,12 @@ class RubyEnterpriseEdition < Formula
 
   option 'enable-shared', "Compile shared, but see caveats"
 
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   fails_with :llvm
 
   def install
-    readline = Formula.factory('gnu-readline').prefix
+    readline = Formula.factory('readline').prefix
 
     args = ["--auto", prefix, '--no-tcmalloc']
     args << '-c' << '--enable-shared' if build.include? 'enable-shared'

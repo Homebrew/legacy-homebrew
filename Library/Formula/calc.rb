@@ -5,7 +5,7 @@ class Calc < Formula
   sha1 'cc55ee21ab7a7a6a8b7516a7236e87ae1b09d00d'
   homepage 'http://www.isthe.com/chongo/tech/comp/calc/'
 
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   def install
     ENV.deparallelize
@@ -13,7 +13,7 @@ class Calc < Formula
     ENV['EXTRA_CFLAGS'] = ENV.cflags
     ENV['EXTRA_LDFLAGS'] = ENV.ldflags
 
-    readline = Formula.factory('gnu-readline')
+    readline = Formula.factory('readline')
     inreplace "Makefile" do |s|
       s.change_make_var! "INCDIR", include
       s.change_make_var! "BINDIR", bin

@@ -7,7 +7,7 @@ class Mdbtools < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   depends_on :automake
   depends_on :libtool

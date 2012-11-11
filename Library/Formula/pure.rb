@@ -12,7 +12,7 @@ class Pure < Formula
 
   depends_on 'llvm'
   depends_on 'gmp'
-  depends_on 'gnu-readline'
+  depends_on 'readline'
   depends_on 'mpfr'
 
   def install

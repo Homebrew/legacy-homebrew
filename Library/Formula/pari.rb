@@ -6,10 +6,10 @@ class Pari < Formula
   sha1 'c83314bb993161a60e1e46ae7616072858414354'
 
   depends_on :x11
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   def install
-    readline = Formula.factory 'gnu-readline'
+    readline = Formula.factory 'readline'
     system "./Configure", "--prefix=#{prefix}",
                           "--with-readline-include=#{readline.include}",
                           "--with-readline-lib=#{readline.lib}"

@@ -23,7 +23,7 @@ class Gnuplot < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'gnu-readline'
+  depends_on 'readline'
   depends_on 'pango'       if build.include? 'cairo' or build.include? 'wx'
   depends_on :x11          if build.include? 'with-x' or MacOS::X11.installed?
   depends_on 'pdflib-lite' if build.include? 'pdf'
@@ -34,7 +34,7 @@ class Gnuplot < Formula
 
   def install
     # Help configure find libraries
-    readline = Formula.factory 'gnu-readline'
+    readline = Formula.factory 'readline'
     pdflib = Formula.factory 'pdflib-lite'
     gd = Formula.factory 'gd'
 

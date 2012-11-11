@@ -5,7 +5,7 @@ class Renameutils < Formula
   url 'http://download.savannah.gnu.org/releases/renameutils/renameutils-0.12.0.tar.gz'
   sha1 '8c6edae4ee374330a01a95257fd552b5cb7540bc'
 
-  depends_on 'gnu-readline' # Use instead of system libedit
+  depends_on 'readline' # Use instead of system libedit
   depends_on 'coreutils'
 
   # Use the GNU versions of certain system utilities. See:

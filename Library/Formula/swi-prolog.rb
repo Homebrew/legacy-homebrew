@@ -11,7 +11,7 @@ class SwiProlog < Formula
   option 'with-jpl', "Enable JPL (Java Prolog Bridge)"
   option 'with-xpce', "Enable XPCE (Prolog Native GUI Library)"
 
-  depends_on 'gnu-readline'
+  depends_on 'readline'
   depends_on 'gmp'
 
   if build.include? 'with-xpce'

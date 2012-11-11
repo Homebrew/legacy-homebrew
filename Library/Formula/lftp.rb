@@ -6,7 +6,7 @@ class Lftp < Formula
   sha1 '4eef63d05760a0e7d6d6a7318e1fcda8de8c154e'
 
   depends_on 'pkg-config' => :build
-  depends_on 'gnu-readline'
+  depends_on 'readline'
   depends_on 'gnutls'
 
   def install

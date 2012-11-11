@@ -5,7 +5,7 @@ class Hunspell < Formula
   homepage 'http://hunspell.sourceforge.net/'
   sha1 '902c76d2b55a22610e2227abc4fd26cbe606a51c'
 
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   def install
     system "./configure", "--disable-dependency-tracking",

@@ -9,7 +9,7 @@ class Gphoto2 < Formula
   depends_on 'jpeg'
   depends_on 'libgphoto2'
   depends_on 'popt'
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   def install
     system "./configure", "--disable-dependency-tracking",
