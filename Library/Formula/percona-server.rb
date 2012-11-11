@@ -39,7 +39,6 @@ class PerconaServer < Formula
 
     args = std_cmake_args + [
       ".",
-      "-DCMAKE_INSTALL_PREFIX=#{prefix}",
       "-DMYSQL_DATADIR=#{var}/percona",
       "-DINSTALL_MANDIR=#{man}",
       "-DINSTALL_DOCDIR=#{doc}",
