@@ -145,6 +145,12 @@ class Pathname
     rmdir
     true
   rescue SystemCallError => e
+    # OK, maybe there was only a single `.DS_Store` file in that folder
+    if (self/'.DS_Store').exist? && self.children.length == 1
+      (self/'.DS_Store').unlink
+      retry
+    end
+
     raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno or e.errno == Errno::ENOENT::Errno
     false
   end
