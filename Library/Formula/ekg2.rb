@@ -6,13 +6,13 @@ class Ekg2 < Formula
   sha1 '8b6f53086e8e1d2890fdc1ec274a7b1615da0fa1'
 
   depends_on 'pkg-config' => :build
-  depends_on 'gnu-readline'
+  depends_on 'readline'
   depends_on 'libgadu' if build.include? "with-libgadu"
 
   option "with-libgadu", "Compiles ekg2 with gadu-gadu support"
 
   def install
-    readline = Formula.factory 'gnu-readline'
+    readline = Formula.factory 'readline'
 
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--prefix=#{prefix}",

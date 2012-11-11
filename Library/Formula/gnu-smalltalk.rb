@@ -18,7 +18,7 @@ class GnuSmalltalk < Formula
   depends_on 'pkg-config' => :build
   depends_on 'xz'         => :build
   depends_on 'gawk'       => :build
-  depends_on 'gnu-readline'
+  depends_on 'readline'   => :build
   depends_on 'libffi'     => :recommended
   depends_on 'libsigsegv' => :recommended
   depends_on 'glew'       => :optional
@@ -45,7 +45,7 @@ class GnuSmalltalk < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --disable-gtk
-      --with-readline=#{Formula.factory('gnu-readline').lib}
+      --with-readline=#{Formula.factory('readline').lib}
     ]
     unless build.include? 'tcltk'
       args << '--without-tcl' << '--without-tk' << '--without-x'

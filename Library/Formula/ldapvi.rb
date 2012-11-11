@@ -8,7 +8,7 @@ class Ldapvi < Formula
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'popt'
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   # Backporting the fix from the devel version
   # (namespace conflict with Lion's getline function)

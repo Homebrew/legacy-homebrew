@@ -10,7 +10,7 @@ class Fish < Formula
   # Indeed, the head build always builds documentation
   depends_on 'doxygen' => :build if build.head?
   depends_on :autoconf if build.head?
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   skip_clean 'share/doc'
 

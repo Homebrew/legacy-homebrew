@@ -25,7 +25,7 @@ class MysqlCluster < Formula
 
   depends_on MysqlNotInstalled.new
   depends_on 'cmake' => :build
-  depends_on 'gnu-readline'
+  depends_on 'readline'
   depends_on 'pidof'
 
   fails_with :clang do

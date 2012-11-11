@@ -7,7 +7,7 @@ class Bash < Formula
   sha256 'a27a1179ec9c0830c65c6aa5d7dab60f7ce1a2a608618570f96bfa72e95ab3d8'
   version '4.2.39'
 
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   # Vendor the patches. The mirrors are unreliable for getting the patches,
   # and the more patches there are, the more unreliable they get. Upstream

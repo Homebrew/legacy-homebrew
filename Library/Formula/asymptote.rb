@@ -23,7 +23,7 @@ class Asymptote < Formula
   depends_on TexInstalled.new
   env :userpaths # To find TeX
 
-  depends_on 'gnu-readline'
+  depends_on 'readline'
   depends_on 'bdw-gc'
 
   def install

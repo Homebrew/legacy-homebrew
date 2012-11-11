@@ -5,7 +5,7 @@ class Pdsh < Formula
   url 'http://sourceforge.net/projects/pdsh/files/pdsh/pdsh-2.26/pdsh-2.26.tar.bz2'
   sha1 'bdcec89760b93bd12107d8a785ca2710853cde75'
 
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   def install
     system "./configure", "--prefix=#{prefix}",

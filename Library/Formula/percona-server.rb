@@ -7,7 +7,7 @@ class PerconaServer < Formula
   sha1 'c7b2803c440564beff124c9a5641daa643b9f909'
 
   depends_on 'cmake' => :build
-  depends_on 'gnu-readline'
+  depends_on 'readline'
   depends_on 'pidof'
 
   option :universal

@@ -7,7 +7,7 @@ class Dwarf < Formula
 
   head 'http://code.autistici.org/svn/dwarf/trunk'
 
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   # There's a subtle error in C99 handling of stdint.h and inttypes.h.
   # Reported upstream: http://code.autistici.org/trac/dwarf/ticket/8

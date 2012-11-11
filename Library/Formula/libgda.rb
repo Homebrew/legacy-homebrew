@@ -10,7 +10,7 @@ class Libgda < Formula
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'intltool'
-  depends_on 'gnu-readline'
+  depends_on 'readline'
   depends_on 'libgcrypt'
 
   # brew's sqlite doesn't have necessary options compiled, so skipping as a dep for now

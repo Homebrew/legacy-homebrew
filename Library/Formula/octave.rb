@@ -33,7 +33,7 @@ class Octave < Formula
   # We can work around the issues using dotwrp.
   depends_on 'dotwrp' if _snow_leopard_64?
   # octave refuses to work with BSD readline, so it's either this or --disable-readline
-  depends_on 'gnu-readline'
+  depends_on 'readline'
   depends_on 'curl' if MacOS.version == :leopard # Leopard's libcurl is too old
 
   # additional features

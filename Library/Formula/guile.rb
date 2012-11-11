@@ -20,7 +20,7 @@ class Guile < Formula
   depends_on 'gmp'
 
   # GNU Readline is required; libedit won't work.
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   fails_with :llvm do
     build 2336
@@ -30,7 +30,7 @@ class Guile < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libreadline-prefix=#{Formula.factory('gnu-readline').prefix}"
+                          "--with-libreadline-prefix=#{Formula.factory('readline').prefix}"
     system "make install"
 
     # A really messed up workaround required on OS X --mkhl

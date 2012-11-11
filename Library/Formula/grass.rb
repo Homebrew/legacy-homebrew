@@ -26,7 +26,7 @@ class Grass < Formula
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
-  depends_on "gnu-readline"
+  depends_on "readline"
   depends_on "gdal"
   depends_on "libtiff"
   depends_on "unixodbc"
@@ -55,7 +55,7 @@ class Grass < Formula
   end
 
   def install
-    readline = Formula.factory('gnu-readline')
+    readline = Formula.factory('readline')
     gettext = Formula.factory('gettext')
 
     args = [

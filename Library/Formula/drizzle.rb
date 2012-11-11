@@ -14,7 +14,7 @@ class Drizzle < Formula
   depends_on 'pcre'
   depends_on 'intltool'
   depends_on 'libgcrypt'
-  depends_on 'gnu-readline'
+  depends_on 'readline'
 
   def install
 
