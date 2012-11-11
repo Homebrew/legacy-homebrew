@@ -1,8 +1,10 @@
 class Metafiles
 
   def initialize
-    @exts = %w[.txt .md .html]
-    @metafiles = %w[readme changelog changes copying license licence copyright authors]
+    @exts = %w[.md .html .rtf .txt]
+    @metafiles = %w[
+      about authors changelog changes copying copyright history license
+      licence news notes notice readme todo]
   end
 
   def + other
