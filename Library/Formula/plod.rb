@@ -20,7 +20,7 @@ class Plod < Formula
     end
     man1.install "plod.man" => "plod.1"
     bin.install "plod"
-    prefix.install ['plod.el.v1', 'plod.el.v2']
+    prefix.install 'plod.el.v1', 'plod.el.v2'
     ohai "Creating #{prefix}/plodrc"
     (prefix + "plodrc").write plodrc
   end
