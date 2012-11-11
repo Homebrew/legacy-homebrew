@@ -8,6 +8,7 @@ class Weechat < Formula
   depends_on 'cmake' => :build
   depends_on 'gettext'
   depends_on 'gnutls'
+  depends_on 'libgcrypt'
   depends_on 'guile'  => :optional if build.include? 'guile'
   depends_on 'aspell' => :optional if build.include? 'aspell'
   depends_on 'lua'    => :optional if build.include? 'lua'
