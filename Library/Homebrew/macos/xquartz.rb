@@ -12,6 +12,10 @@ module MacOS::XQuartz extend self
     end
   end
 
+  def latest_version
+    "2.7.4"
+  end
+
   # This should really be private, but for compatibility reasons it must
   # remain public. New code should use MacOS::XQuartz.{bin,lib,include}
   # instead, as that accounts for Xcode-only systems.
