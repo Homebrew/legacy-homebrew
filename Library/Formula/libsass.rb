@@ -2,9 +2,8 @@ require 'formula'
 
 class Libsass < Formula
   homepage 'https://github.com/hcatlin/libsass'
-  url 'https://github.com/hcatlin/libsass/tarball/580c318bacbcc33f58ae4cfe8a82561ab0e04b0d'
-  sha1 'b266103d0dff22c6702587859cf1c6c640e23ed8'
-  version '580c318bacbcc33f58ae4cfe8a82561ab0e04b0d'
+  url 'https://github.com/hcatlin/libsass/archive/RELEASE-1.0.tar.gz'
+  sha1 '55a8775f2ae430f24b03964b3aa8e2a3565d613a'
 
   def install
     system "./configure", "--prefix=#{prefix}"
@@ -16,7 +15,7 @@ class Libsass < Formula
       (Pathname.pwd/"test.c").write <<-EOS.undent
         #include <sass_interface.h>
         #include <string.h>
-        
+
         int main()
         {
           struct sass_context* sass_ctx = sass_new_context();
