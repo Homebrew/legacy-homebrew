@@ -40,9 +40,13 @@ class Weechat < Formula
     #   no such file or directory: 'Python.framework/Versions/2.7/Python'
     inreplace 'src/plugins/python/CMakeLists.txt',
       '${PYTHON_LFLAGS}', '-u _PyMac_Error'
+	
+    gettext = Formula.factory('gettext')
 
     args = std_cmake_args + %W[
       -DPREFIX=#{prefix}
+      -DLIBINTL_INCLUDE=#{gettext.opt_prefix}/include
+      -DLIBINTL_LIBRARY=#{gettext.opt_prefix}/lib/libintl.dylib
       -DENABLE_GTK=OFF
     ]
     args << '-DENABLE_LUA=OFF'    unless build.include? 'lua'
