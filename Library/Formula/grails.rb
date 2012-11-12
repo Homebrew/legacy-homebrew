@@ -7,7 +7,7 @@ class Grails < Formula
 
   def install
     rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]
-    prefix.install %w[LICENSE README]
+    prefix.install_metafiles
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end

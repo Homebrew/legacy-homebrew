@@ -26,7 +26,7 @@ def choose
     menu.entries.each_with_index do |entry, i|
       puts "#{i+1}. #{entry[:name]}"
     end
-    puts menu.prompt unless menu.prompt.nil?
+    print menu.prompt unless menu.prompt.nil?
     reply = $stdin.gets.chomp
 
     i = reply.to_i
@@ -102,7 +102,7 @@ def debrew(exception, formula=nil)
   begin
     again = false
     choose do |menu|
-      menu.prompt = "Choose an action:"
+      menu.prompt = "Choose an action: "
       menu.choice(:raise) { original_raise exception }
       menu.choice(:ignore) { exception.restart }
       menu.choice(:backtrace) { puts exception.backtrace; again = true }
