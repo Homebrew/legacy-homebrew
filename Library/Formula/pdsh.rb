@@ -9,9 +9,6 @@ class Pdsh < Formula
   depends_on 'readline'
   depends_on 'genders' => :optional if ARGV.include? '--with-genders'
   
-  # don't strip binaries
-  skip_clean ['bin', 'lib']
-
   def options
     [
       ["--with-genders", "Compile with genders support."],
@@ -21,12 +18,13 @@ class Pdsh < Formula
 
   def install
     args = ["--prefix=#{prefix}",
+            "--mandir=#{man}",
             "--with-ssh",
             "--without-rsh",
             "--with-nodeupdown",
             "--with-readline",
-            "--without-xcpu", 
-            "--mandir=#{man}"]
+            "--without-xcpu"
+            ]
 
     args << '--with-genders' if ARGV.include? '--with-genders'
     args << ((ARGV.include? '--without-dshgroups') ? '--without-dshgroups' : '--with-dshgroups')
