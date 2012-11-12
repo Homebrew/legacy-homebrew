@@ -14,8 +14,9 @@ class Sbcl < Formula
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/sbcl-1.0.55-bottle.tar.gz'
-    sha1 '3c13225c8fe3eabf54e9d368e6b74318a5546430'
+    sha1 '8d568b7db2feecdb281805583f7ea3a7d104d6ac' => :mountainlion
+    sha1 'f6a50ffac61f5bb4ff398791b5a93f32f8983a25' => :lion
+    sha1 'e718dfaf3b7aa4b2be8e62d5274d59a0fedfc24b' => :snowleopard
   end
 
   fails_with :llvm do
