@@ -11,17 +11,28 @@ class Sqoop < Formula
   depends_on 'hive'
   depends_on 'zookeeper'
 
+  def spoop_envs
+    <<-EOS.undent
+      export HADOOP_HOME="#{HOMEBREW_PREFIX}"
+      export HBASE_HOME="#{HOMEBREW_PREFIX}"
+      export HIVE_HOME="#{HOMEBREW_PREFIX}"
+      export ZOOCFGDIR="#{etc}/zookeeper"
+    EOS
+  end
+
   def install
     libexec.install %w[bin conf lib]
     libexec.install Dir['*.jar']
     bin.write_exec_script Dir["#{libexec}/bin/*"]
+
+    # Install a sqoop-env.sh file
+    envs = libexec/'conf/sqoop-env.sh'
+    envs.write(spoop_envs) unless envs.exist?
   end
 
   def caveats; <<-EOS.undent
-    Hadoop, Hive, HBase and ZooKeeper must be installed for
-    Sqoop to work.
-    After installation, set the appropriate paths in:
-      #{libexec}/conf/sqoop-env.sh
+    Hadoop, Hive, HBase and ZooKeeper must be installed and configured
+    for Sqoop to work.
     EOS
   end
 end
