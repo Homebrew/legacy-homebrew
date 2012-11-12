@@ -15,16 +15,17 @@ class TexInstalled < Requirement
   end
 end
 
-class Chktex < Formula
-  homepage 'http://www.nongnu.org/chktex/'
-  url 'http://download.savannah.gnu.org/releases/chktex/chktex-1.7.1.tar.gz'
-  sha1 'ed94b96ed8ce65fb1cef1b5fc019045c5b2dd8a8'
+class LatexMk < Formula
+  homepage 'http://latex-mk.sourceforge.net/index.html'
+  url 'http://sourceforge.net/projects/latex-mk/files/latex-mk/latex-mk-2.1/latex-mk-2.1.tar.gz'
+  sha1 '8460fd1f3c716e5759828c2a5af76eeafbce8d10'
 
   depends_on TexInstalled.new
   env :userpaths # To find TeX
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

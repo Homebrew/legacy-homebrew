@@ -10,7 +10,7 @@ class Activemq < Formula
   def install
     rm_rf Dir['bin/linux-x86-*']
 
-    prefix.install %w{ LICENSE NOTICE README.txt }
+    prefix.install_metafiles
     libexec.install Dir['*']
 
     bin.write_exec_script libexec/'bin/activemq'
