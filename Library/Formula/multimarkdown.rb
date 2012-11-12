@@ -18,7 +18,7 @@ class Multimarkdown < Formula
     bin.install 'multimarkdown'
     bin.install Dir['scripts/*']
     # The support stuff will be put into the Cellar only
-    prefix.install Dir['Support']
+    prefix.install 'Support'
   end
 
   def caveats; <<-EOS.undent

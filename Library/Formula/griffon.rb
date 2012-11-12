@@ -8,7 +8,7 @@ class Griffon < Formula
   def install
     rm_f Dir["bin/*.bat"]
 
-    prefix.install %w[LICENSE README.md]
+    prefix.install_metafiles
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end

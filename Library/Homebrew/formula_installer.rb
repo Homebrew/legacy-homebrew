@@ -73,6 +73,12 @@ class FormulaInstaller
       needed_deps = []
       needed_reqs = []
 
+      # HACK: If readline is present in the dependency tree, it will clash
+      # with the stdlib's Readline module when the debugger is loaded
+      if f.recursive_deps.any? { |d| d.name == "readline" } and ARGV.debug?
+        ENV['HOMEBREW_NO_READLINE'] = '1'
+      end
+
       ARGV.filter_for_dependencies do
         needed_deps = f.recursive_deps.reject{ |d| d.installed? }
         needed_reqs = f.recursive_requirements.reject { |r| r.satisfied? }
@@ -284,7 +290,8 @@ class FormulaInstaller
 
   def install_plist
     # Install a plist if one is defined
-    if f.startup_plist and not f.plist_path.exist?
+    # Skip plist file exists check: https://github.com/mxcl/homebrew/issues/15849
+    if f.startup_plist
       f.plist_path.write f.startup_plist
       f.plist_path.chmod 0644
     end

@@ -25,7 +25,8 @@ class Libspatialite < Formula
 
   def install
     # Ensure Homebrew's libsqlite is found before the system version.
-    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+    sqlite = Formula.factory 'sqlite'
+    ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib"
 
     args = %W[
       --disable-dependency-tracking

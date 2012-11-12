@@ -373,6 +373,21 @@ class Pathname
     EOS
   end
 
+  def install_metafiles from=nil
+    # Default to current path, and make sure we have a pathname, not a string
+    from = "." if from.nil?
+    from = Pathname.new(from.to_s)
+
+    from.children.each do |p|
+      next if p.directory?
+      next unless FORMULA_META_FILES.should_copy? p
+      # Some software symlinks these files (see help2man.rb)
+      filename = p.resolved_path
+      filename.chmod 0644
+      self.install filename
+    end
+  end
+
 end
 
 # sets $n and $d so you can observe creation of stuff
