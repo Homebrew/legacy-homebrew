@@ -3,7 +3,7 @@ require 'formula'
 class Metis < Formula
   url 'http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/metis-5.0.2.tar.gz'
   homepage 'http://glaros.dtc.umn.edu/gkhome/views/metis'
-  md5 'acb521a4e8c2e6dd559a7f9abd0468c5'
+  sha1 'b5a278fa06c581e068a8296d158576a4b750f983'
 
   depends_on 'cmake' => :build
 

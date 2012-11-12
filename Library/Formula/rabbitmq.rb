@@ -2,11 +2,11 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.8.4/rabbitmq-server-generic-unix-2.8.4.tar.gz'
-  sha1 '75275083648fd9243c5bc212530355c76821c120'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.8.7/rabbitmq-server-generic-unix-2.8.7.tar.gz'
+  sha1 '16965e5c3486f6882df363064707777fc4cbbe2e'
 
   depends_on 'erlang'
-  depends_on 'simplejson' => :python if MacOS.leopard?
+  depends_on 'simplejson' => :python if MacOS.version == :leopard
 
   def install
     # Install the base files
@@ -29,10 +29,6 @@ class Rabbitmq < Formula
     # Enable the management web UI
     enabled_plugins_path = etc+'rabbitmq/enabled_plugins'
     enabled_plugins_path.write enabled_plugins unless enabled_plugins_path.exist?
-
-    # Create the plist file
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

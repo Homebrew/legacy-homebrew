@@ -1,13 +1,14 @@
 require 'formula'
 
 class Libosip < Formula
-  url 'http://ftpmirror.gnu.org/osip/libosip2-3.3.0.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/osip/libosip2-3.3.0.tar.gz'
   homepage 'http://www.gnu.org/software/osip/'
-  md5 '81493bb4d4ae6d55b71a0d4369339125'
+  url 'http://ftpmirror.gnu.org/osip/libosip2-3.6.0.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/osip/libosip2-3.6.0.tar.gz'
+  sha1 '6d81be8180a46e045fce676d55913433a5e147c8'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

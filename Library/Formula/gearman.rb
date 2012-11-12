@@ -2,8 +2,8 @@ require 'formula'
 
 class Gearman < Formula
   homepage 'http://gearman.org/'
-  url 'https://launchpad.net/gearmand/trunk/0.33/+download/gearmand-0.33.tar.gz'
-  md5 '812840b74153704b5d3e7d6e59a803b5'
+  url 'https://launchpad.net/gearmand/1.0/0.39/+download/gearmand-0.39.tar.gz'
+  sha1 'a63af4d86809f39971b21b361740d472bf993345'
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
@@ -11,11 +11,8 @@ class Gearman < Formula
   depends_on 'ossp-uuid'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--without-mysql"
     system "make install"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

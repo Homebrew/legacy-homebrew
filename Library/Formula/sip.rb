@@ -19,7 +19,7 @@ class Sip < Formula
   end
 
   def install
-    if ARGV.build_head?
+    if build.head?
       # Set fallback version to the same value it would have without the patch
       # and link the Mercurial repository into the download directory so
       # buid.py can use it to figure out a version number.
@@ -28,7 +28,7 @@ class Sip < Formula
     else
       sip_version = version
     end
-    inreplace 'build.py', /@SIP_VERSION@/, (sip_version.gsub '.', ',')
+    inreplace 'build.py', /@SIP_VERSION@/, (sip_version.to_s.gsub '.', ',')
 
     system "python", "build.py", "prepare"
     # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
@@ -36,6 +36,7 @@ class Sip < Formula
                               "--destdir=#{lib}/#{which_python}/site-packages",
                               "--bindir=#{bin}",
                               "--incdir=#{include}",
+                              "--sipdir=#{HOMEBREW_PREFIX}/share/sip",
                               "CFLAGS=#{ENV.cflags}",
                               "LFLAGS=#{ENV.ldflags}"
     system "make install"
@@ -63,7 +64,7 @@ diff --git a/build.py b/build.py
 index 927d7f1..fdf13a3 100755
 --- a/build.py
 +++ b/build.py
-@@ -179,7 +179,7 @@ def _get_release():
+@@ -185,7 +185,7 @@ def _get_release():
          changelog = None
          name = os.path.basename(_RootDir)
  
@@ -72,7 +73,7 @@ index 927d7f1..fdf13a3 100755
          version = None
  
          parts = name.split('-')
-@@ -192,7 +192,7 @@ def _get_release():
+@@ -198,7 +198,7 @@ def _get_release():
  
      # Format the results.
      if version is None:
@@ -87,7 +88,7 @@ diff --git a/siputils.py b/siputils.py
 index 57e8911..1af6152 100644
 --- a/siputils.py
 +++ b/siputils.py
-@@ -1434,8 +1434,8 @@ class ModuleMakefile(Makefile):
+@@ -1485,8 +1485,8 @@ class ModuleMakefile(Makefile):
              # 'real_prefix' exists if virtualenv is being used.
              dl = getattr(sys, 'real_prefix', sys.exec_prefix).split(os.sep)
  

@@ -5,12 +5,10 @@ class Freetds < Formula
   url 'http://mirrors.ibiblio.org/freetds/stable/freetds-0.91.tar.gz'
   sha1 '3ab06c8e208e82197dc25d09ae353d9f3be7db52'
 
-  depends_on "pkg-config" => :build
-  depends_on "unixodbc" if ARGV.include? "--with-unixodbc"
+  option 'with-unixodbc', "Compile against unixODBC"
 
-  def options
-    [['--with-unixodbc', "Compile against unixODBC."]]
-  end
+  depends_on "pkg-config" => :build
+  depends_on "unixodbc" if build.include? "with-unixodbc"
 
   def install
     args = %W[--prefix=#{prefix}
@@ -19,7 +17,7 @@ class Freetds < Formula
               --mandir=#{man}
             ]
 
-    if ARGV.include? "--with-unixodbc"
+    if build.include? "with-unixodbc"
       args << "--with-unixodbc=#{Formula.factory('unixodbc').prefix}"
     end
 

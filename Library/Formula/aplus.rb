@@ -4,17 +4,15 @@ class Aplus < Formula
   homepage 'http://www.aplusdev.org/'
   url 'http://mirrors.kernel.org/debian/pool/main/a/aplus-fsf/aplus-fsf_4.22.1.orig.tar.gz'
   mirror 'http://ftp.us.debian.org/debian/pool/main/a/aplus-fsf/aplus-fsf_4.22.1.orig.tar.gz'
-  md5 'c45df4f3e816d7fe957deed9b81f66c3'
+  sha1 'e757cc7654cf35dba15a6a5d6cac5320146558fc'
 
   # Fix the missing CoreServices include (via Fink version of aplus)
   def patches
     DATA
   end
 
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on :automake
+  depends_on :libtool
 
   def install
     # replace placeholder w/ actual prefix

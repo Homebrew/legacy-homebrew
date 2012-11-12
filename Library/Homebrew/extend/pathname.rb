@@ -145,7 +145,7 @@ class Pathname
     rmdir
     true
   rescue SystemCallError => e
-    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno
+    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno or e.errno == Errno::ENOENT::Errno
     false
   end
 
@@ -161,90 +161,9 @@ class Pathname
     out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
   end
 
-  # attempts to retrieve the version component of this path, so generally
-  # you'll call it on tarballs or extracted tarball directories, if you add
-  # to this please provide amend the unittest
   def version
-    if directory?
-      # directories don't have extnames
-      stem=basename.to_s
-    else
-      # sourceforge /download
-      if %r[((?:sourceforge.net|sf.net)/.*)/download$].match to_s
-        stem=Pathname.new(dirname).stem
-      else
-        stem=self.stem
-      end
-    end
-
-    # github tarballs, like v1.2.3
-    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+)$].match to_s
-    return $2 if $2
-
-    # eg. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
-    %r[github.com/.*/(zip|tar)ball/.*-((\d+\.)+\d+)$].match to_s
-    return $2 if $2
-
-    # dashed version
-    # eg. github.com/isaacs/npm/tarball/v0.2.5-1
-    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+-(\d+))$].match to_s
-    return $2 if $2
-
-    # underscore version
-    # eg. github.com/petdance/ack/tarball/1.93_02
-    %r[github.com/.*/(zip|tar)ball/v?((\d+\.)+\d+_(\d+))$].match to_s
-    return $2 if $2
-
-    # eg. boost_1_39_0
-    /((\d+_)+\d+)$/.match stem
-    return $1.gsub('_', '.') if $1
-
-    # eg. foobar-4.5.1-1
-    # eg. ruby-1.9.1-p243
-    /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/.match stem
-    return $1 if $1
-
-    # eg. lame-398-1
-    /-((\d)+-\d)/.match stem
-    return $1 if $1
-
-    # eg. foobar-4.5.1
-    /-((\d+\.)*\d+)$/.match stem
-    return $1 if $1
-
-    # eg. foobar-4.5.1b
-    /-((\d+\.)*\d+([abc]|rc|RC)\d*)$/.match stem
-    return $1 if $1
-
-    # eg foobar-4.5.0-beta1, or foobar-4.50-beta
-    /-((\d+\.)*\d+-beta(\d+)?)$/.match stem
-    return $1 if $1
-
-    # eg. foobar4.5.1
-    unless /^erlang-/.match basename
-      /((\d+\.)*\d+)$/.match stem
-      return $1 if $1
-    end
-
-    # eg foobar-4.5.0-bin
-    /-((\d+\.)+\d+[abc]?)[-._](bin|dist|stable|src|sources?)$/.match stem
-    return $1 if $1
-
-    # Debian style eg dash_0.5.5.1.orig.tar.gz
-    /_((\d+\.)+\d+[abc]?)[.]orig$/.match stem
-    return $1 if $1
-
-    # eg. otp_src_R13B (this is erlang's style)
-    # eg. astyle_1.23_macosx.tar.gz
-    stem.scan(/_([^_]+)/) do |match|
-      return match.first if /\d/.match $1
-    end
-
-    # old erlang bottle style e.g. erlang-R14B03-bottle.tar.gz
-    /-([^-]+)/.match stem
-    return $1 if $1
-
-    nil
+    require 'version'
+    Version.parse(self)
   end
 
   def compression_type
@@ -270,15 +189,18 @@ class Pathname
     when /^\xFD7zXZ\x00/ then :xz
     when /^Rar!/         then :rar
     else
-      # Assume it is not an archive
-      nil
+      # This code so that bad-tarballs and zips produce good error messages
+      # when they don't unarchive properly.
+      case extname
+        when ".tar.gz", ".tgz", ".tar.bz2", ".tbz" then :tar
+        when ".zip" then :zip
+        when ".7z" then :p7zip
+      end
     end
   end
 
   def text_executable?
-    %r[^#!\s*.+] === open('r') { |f| f.readline }
-  rescue EOFError
-    false
+    %r[^#!\s*\S+] === open('r') { |f| f.read(1024) }
   end
 
   def incremental_hash(hasher)
@@ -347,8 +269,13 @@ class Pathname
           raise <<-EOS.undent
             Could not symlink file: #{src.expand_path}
             Target #{self} already exists. You may need to delete it.
+            To force the link and delete this file, do:
+              brew link --overwrite formula_name
+
+            To list all files that would be deleted:
+              brew link --overwrite --dry-run formula_name
             EOS
-        elsif !dirname.writable?
+        elsif !dirname.writable_real?
           raise <<-EOS.undent
             Could not symlink file: #{src.expand_path}
             #{dirname} is not writable. You should change its permissions.
@@ -370,7 +297,7 @@ class Pathname
 
   def ensure_writable
     saved_perms = nil
-    unless writable?
+    unless writable_real?
       saved_perms = stat.mode
       chmod 0644
     end
@@ -422,6 +349,45 @@ class Pathname
       end
     end
   end
+
+  # Writes an exec script in this folder for each target pathname
+  def write_exec_script *targets
+    targets = [targets].flatten
+    if targets.empty?
+      opoo "tried to write exec sripts to #{self} for an empty list of targets"
+    end
+    targets.each do |target|
+      target = Pathname.new(target) # allow pathnames or strings
+      (self+target.basename()).write <<-EOS.undent
+      #!/bin/bash
+      exec "#{target}" "$@"
+      EOS
+    end
+  end
+
+  # Writes an exec script that invokes a java jar
+  def write_jar_script target_jar, script_name, java_opts=""
+    (self+script_name).write <<-EOS.undent
+    #!/bin/bash
+    exec java #{java_opts} -jar #{target_jar} "$@"
+    EOS
+  end
+
+  def install_metafiles from=nil
+    # Default to current path, and make sure we have a pathname, not a string
+    from = "." if from.nil?
+    from = Pathname.new(from.to_s)
+
+    from.children.each do |p|
+      next if p.directory?
+      next unless FORMULA_META_FILES.should_copy? p
+      # Some software symlinks these files (see help2man.rb)
+      filename = p.resolved_path
+      filename.chmod 0644
+      self.install filename
+    end
+  end
+
 end
 
 # sets $n and $d so you can observe creation of stuff
@@ -434,11 +400,6 @@ module ObserverPathnameExtension
   def rmdir
     super
     puts "rmdir #{to_s}" if ARGV.verbose?
-    $d+=1
-  end
-  def mkpath
-    super
-    puts "mkpath #{to_s}" if ARGV.verbose?
     $d+=1
   end
   def make_relative_symlink src

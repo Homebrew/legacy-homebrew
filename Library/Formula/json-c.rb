@@ -1,12 +1,17 @@
 require 'formula'
 
 class JsonC < Formula
-  url 'http://oss.metaparadigm.com/json-c/json-c-0.9.tar.gz'
-  homepage 'http://oss.metaparadigm.com/json-c/'
-  md5 '3a13d264528dcbaf3931b0cede24abae'
+  homepage 'https://github.com/json-c/json-c/wiki'
+  url 'https://github.com/downloads/json-c/json-c/json-c-0.10.tar.gz'
+  sha1 'f90f643c8455da21d57b3e8866868a944a93c596'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
+
+    # The Makefile forgets to install this header. This is fixed upstream and
+    # can be pulled on the next release.
+    (include/'json').install 'json_object_iterator.h'
   end
 end

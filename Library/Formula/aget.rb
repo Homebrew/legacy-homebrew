@@ -3,7 +3,7 @@ require 'formula'
 class Aget < Formula
   homepage 'http://www.enderunix.org/aget/'
   url 'http://www.enderunix.org/aget/aget-0.4.1.tar.gz'
-  md5 'ddee95ad1d394a4751ebde24fcb36fa1'
+  sha1 '6f7bc1676fd506207a1a168c587165b902d9d609'
 
   def patches
     { :p0 => "https://trac.macports.org/export/90173/trunk/dports/net/aget/files/patch-Head.c" }

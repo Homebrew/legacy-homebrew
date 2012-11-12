@@ -2,8 +2,8 @@ require 'formula'
 
 class Tarsnap < Formula
   homepage 'http://www.tarsnap.com/'
-  url 'https://www.tarsnap.com/download/tarsnap-autoconf-1.0.32.tgz'
-  sha256 '8b7c7de5277e6cac55040e0d0e0c8b0952aa77278f7e14f05f00d6aef46d265d'
+  url 'https://www.tarsnap.com/download/tarsnap-autoconf-1.0.33.tgz'
+  sha256 '0c0d825a8c9695fc8d44c5d8c3cd17299c248377c9c7b91fdb49d73e54ae0b7d'
 
   depends_on 'xz' => :optional
 

@@ -2,28 +2,15 @@ require 'formula'
 
 class Hive < Formula
   homepage 'http://hive.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hive/hive-0.8.0/hive-0.8.0-bin.tar.gz'
-  md5 '9aca92b683da8955aca3beb5a438d2f9'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hive/hive-0.9.0/hive-0.9.0-bin.tar.gz'
+  sha1 '8c8086ff9ec5de5c661d98d926bbedac62c28a61'
 
   depends_on 'hadoop'
-
-  def shim_script target
-    <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/#{target}" "$@"
-    EOS
-  end
-
   def install
     rm_f Dir["bin/*.bat"]
     libexec.install %w[bin conf examples lib ]
     libexec.install Dir['*.jar']
-    bin.mkpath
-
-    Dir["#{libexec}/bin/*"].each do |b|
-      n = Pathname.new(b).basename
-      (bin+n).write shim_script(n)
-    end
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
   def caveats; <<-EOS.undent

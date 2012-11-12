@@ -15,13 +15,12 @@ class GfortranPkgDownloadStrategy < CurlDownloadStrategy
 end
 
 class Gfortran < Formula
-  if MacOS.leopard?
+  if MacOS.version == :leopard
     url 'http://r.research.att.com/gfortran-42-5577.pkg'
     md5 '30fb495c93cf514003cdfcb7846dc701'
     version "4.2.4-5577"
-  elsif MACOS_VERSION == 10.6
-    # Snow Leopard
-    case gcc_42_build
+  elsif MacOS.version == :snow_leopard
+    case MacOS.gcc_42_build_version
     when 5659
       url 'http://r.research.att.com/gfortran-42-5659.pkg'
       md5 '71bd546baa45c9c0fb4943cdd72ee274'
@@ -34,7 +33,7 @@ class Gfortran < Formula
     end
   else
     # Lion
-    if MacOS.xcode_version >= '4.2'
+    if MacOS::Xcode.version >= '4.2'
       # This version contains an entire Apple-GCC 4.2 (i386/x86_64) build for
       # Lion. After installation, we will remove all compilers other than
       # GFortran.
@@ -60,12 +59,9 @@ class Gfortran < Formula
     GfortranPkgDownloadStrategy
   end
 
-  # Shouldn't strip compiler binaries.
-  skip_clean :all
-
   def install
-    if MacOS.xcode_version >= '4.2' and MACOS_VERSION == 10.7
-      ohai "Installing gfortran 4.2.4 for XCode 4.2 (build 5666)"
+    if MacOS::Xcode.version >= '4.2' and MacOS.version >= :lion
+      ohai "Installing gfortran 4.2.4 for XCode 4.2 (build 5666) or higher"
       safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
 
       # This package installs a whole GCC suite. Remove non-fortran

@@ -2,8 +2,8 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.82/netpbm-10.35.82.tgz'
-  md5 'fcae2fc7928ad7d31b0540ec0c3e710b'
+  url 'svn+http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/', :revision => 1755
+  version '10.60.02'
 
   head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
 
@@ -12,13 +12,8 @@ class Netpbm < Formula
   depends_on :libpng
 
   def install
-    if ARGV.build_head?
-      system "cp", "config.mk.in", "config.mk"
-      config = "config.mk"
-    else
-      system "cp", "Makefile.config.in", "Makefile.config"
-      config = "Makefile.config"
-    end
+    system "cp", "config.mk.in", "config.mk"
+    config = "config.mk"
 
     inreplace config do |s|
       s.remove_make_var! "CC"

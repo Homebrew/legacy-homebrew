@@ -2,8 +2,8 @@ require 'formula'
 
 class Libdap < Formula
   homepage 'http://www.opendap.org'
-  url 'http://www.opendap.org/pub/source/libdap-3.11.2.tar.gz'
-  md5 'ab8ab83332525e048802200ea0552619'
+  url 'http://www.opendap.org/pub/source/libdap-3.11.7.tar.gz'
+  sha1 '2a7794ab8f84671d5f516cce80f3f0cca6a02d07'
 
   depends_on 'pkg-config' => :build
 

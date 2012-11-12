@@ -2,8 +2,8 @@ require 'formula'
 
 class Libsvm < Formula
   homepage 'http://www.csie.ntu.edu.tw/~cjlin/libsvm/'
-  url 'http://www.csie.ntu.edu.tw/~cjlin/libsvm/libsvm-3.12.tar.gz'
-  md5 'a1b1083fe69a4ac695da753f4c83ed42'
+  url 'http://www.csie.ntu.edu.tw/~cjlin/libsvm/libsvm-3.13.tar.gz'
+  sha1 '7bcd2bb52d807e81556553de3490d56a960189a4'
 
   def install
     system "make", "CFLAGS=#{ENV.cflags}"

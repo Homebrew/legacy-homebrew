@@ -2,15 +2,10 @@ require 'formula'
 
 class Redis < Formula
   homepage 'http://redis.io/'
-  url 'http://redis.googlecode.com/files/redis-2.4.15.tar.gz'
-  sha1 '9e388d2c070b15136da1277f4d21f1c788694b12'
+  url 'http://redis.googlecode.com/files/redis-2.6.4.tar.gz'
+  sha1 'dbb66e0c3d2f308cd2a22bcfd9bd6c535a5e9e66'
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
-
-  devel do
-    url  'http://redis.googlecode.com/files/redis-2.6.0-rc5.tar.gz'
-    sha1 '8051ea9092f238d41966d761b6d80dffc987e37c'
-  end
 
   fails_with :llvm do
     build 2334
@@ -35,9 +30,13 @@ class Redis < Formula
       s.gsub! "\# bind 127.0.0.1", "bind 127.0.0.1"
     end
 
+    # Fix redis upgrade from 2.4 to 2.6.
+    if File.exists?(etc/'redis.conf') && File.readlines(etc/'redis.conf').grep(/^vm-enabled/)
+      mv etc/'redis.conf', etc/'redis.conf.old'
+      ohai "Your redis.conf will not work with 2.6; moved it to redis.conf.old"
+    end
+
     etc.install 'redis.conf' unless (etc/'redis.conf').exist?
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

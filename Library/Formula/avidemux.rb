@@ -8,9 +8,12 @@ class Avidemux < Formula
 
   head 'http://svn.berlios.de/svnroot/repos/avidemux/branches/avidemux_2.5_branch_gruntster'
 
+  option 'with-debug', 'Enable debug build.'
+
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
   depends_on 'yasm' => :build
+  depends_on :fontconfig
   depends_on 'gettext'
   depends_on 'aften'
   depends_on 'mad'
@@ -29,24 +32,20 @@ class Avidemux < Formula
   # Check if this still exists @ XCode-4.3.4 or 4.4.0.  I think it's fixed then
   # by llvm in clang svn.  So this will have to persist for older clang.
   fails_with :clang do
-    build 318
+    build 421
     cause "error in backend: Couldn't allocate input reg for constraint"
-  end unless ARGV.include? '--with-debug'
-
-  def options
-    [[ '--with-debug', 'Enable debug build.' ]]
-  end
+  end unless build.include? 'with-debug'
 
   def patches
     # Symbols undefined due to optimization.  Fixed in head. Remove @ 2.5.7.
-    DATA if Hardware.is_32_bit? and not ARGV.build_head?
+    DATA if Hardware.is_32_bit? and not build.head?
   end
 
   def install
     # Avidemux is coded to use the .svn or .git directory to find its revision,
     # but neither vcs copies those during clone from the cache to the stagedir.
     # Modify cmake/admMainChecks.cmake to look in the Homebrew cache.
-    if ARGV.build_head? then
+    if build.head? then
       inreplace 'CMakeLists.txt',
         'admGetRevision(${PROJECT_SOURCE_DIR} ADM_SUBVERSION)',
         "admGetRevision(\"#{cached_download}\" ADM_SUBVERSION)"
@@ -64,12 +63,11 @@ class Avidemux < Formula
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    if MacOS.leopard? or Hardware.is_32_bit?
+    if MacOS.version == :leopard or Hardware.is_32_bit?
       inreplace 'cmake/admFFmpegBuild.cmake',
         '${CMAKE_INSTALL_PREFIX})',
         '${CMAKE_INSTALL_PREFIX} --extra-cflags=-mdynamic-no-pic)'
     end
-
 
     # Build the core.
     gettext = Formula.factory('gettext')
@@ -80,7 +78,7 @@ class Avidemux < Formula
         -DGTK=OFF
         -DSDL=OFF
       ]
-      if ARGV.include? '--with-debug' then
+      if build.include? 'with-debug' then
         (ENV.compiler == :clang) ? ENV.Og : ENV.O2
         ENV.deparallelize
         ENV.remove_from_cflags '-w'
@@ -128,11 +126,13 @@ class Avidemux < Formula
         -DAVIDEMUX_INSTALL_PREFIX=#{prefix}
         -DAVIDEMUX_CORECONFIG_DIR=#{buildpath}/corebuild/config
       ]
-      if ARGV.include? '--with-debug' then
+      if build.include? 'with-debug' then
         args << '-DCMAKE_BUILD_TYPE=Debug'
         args << '-DCMAKE_VERBOSE_MAKEFILE=true'
-        args << '-DCMAKE_C_FLAGS_DEBUG=-ggdb3' if ENV.compiler != :clang
-        args << '-DCMAKE_CXX_FLAGS_DEBUG=-ggdb3' if ENV.compiler != :clang
+        if ENV.compiler != :clang
+          args << '-DCMAKE_C_FLAGS_DEBUG=-ggdb3'
+          args << '-DCMAKE_CXX_FLAGS_DEBUG=-ggdb3'
+        end
       end
       args << "#{buildpath}/plugins"
       system "cmake", *args
@@ -175,13 +175,12 @@ class Avidemux < Formula
     end # of plugbuild
   end
 
-  def caveats
-    <<-EOS.undent
-      The command line program avidemux2_cli gets installed in your PATH.
-      The Qt gui is installed if you have Qt4, and its location is
-          #{prefix}/avidemux2.app
-      You can double-click it in Finder or link it into ~/Applications with
-          brew linkapps
+  def caveats; <<-EOS.undent
+    The command line program avidemux2_cli gets installed in your PATH.
+    The Qt gui is installed if you have Qt4, and its location is
+        #{prefix}/avidemux2.app
+    You can double-click it in Finder or link it into ~/Applications with
+        brew linkapps
     EOS
   end
 end

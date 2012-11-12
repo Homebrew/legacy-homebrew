@@ -3,7 +3,7 @@ require 'formula'
 class GtkGnutella < Formula
   homepage 'http://gtk-gnutella.sourceforge.net/en/?page=news'
   url 'http://downloads.sourceforge.net/project/gtk-gnutella/gtk-gnutella/0.97.1/gtk-gnutella-0.97.1.tar.bz2'
-  md5 '7ded76ca9892b58b0e9314ee563e4bae'
+  sha1 '14a4b5fd8c35cbed443e9997e55e44aafba05906'
 
   depends_on 'gtk+'
 

@@ -1,33 +1,29 @@
 require 'formula'
 
-def glib?; ARGV.include? '--with-glib'; end
-def qt?; ARGV.include? '--with-qt4'; end
-
 class PopplerData < Formula
-  url 'http://poppler.freedesktop.org/poppler-data-0.4.5.tar.gz'
-  md5 '448dd7c5077570e340340706cef931aa'
+  url 'http://poppler.freedesktop.org/poppler-data-0.4.6.tar.gz'
+  sha1 'f030563eed9f93912b1a546e6d87936d07d7f27d'
 end
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.20.0.tar.gz'
-  md5 '5bca54b9561bf5b14d9344efce2cd4f3'
+  url 'http://poppler.freedesktop.org/poppler-0.20.5.tar.gz'
+  sha1 '5eb351381e6d7994bdf7f09bb5c1075f41d79381'
+
+  option 'with-qt4', 'Build Qt backend'
+  option 'with-glib', 'Build Glib backend'
 
   depends_on 'pkg-config' => :build
-  depends_on 'qt' if qt?
-  depends_on 'glib' if glib?
-  depends_on 'cairo' if glib? # Needs a newer Cairo build than OS X 10.6.7 provides
-  depends_on :x11 # Fontconfig headers
 
-  def options
-    [
-      ["--with-qt4", "Build Qt backend"],
-      ["--with-glib", "Build Glib backend"]
-    ]
-  end
+  depends_on :fontconfig
+  depends_on 'openjpeg'
+
+  depends_on 'qt' if build.include? 'with-qt4'
+  depends_on 'glib' if build.include? 'with-glib'
+  depends_on 'cairo' if build.include? 'with-glib' # Needs a newer Cairo build than OS X 10.6.7 provides
 
   def install
-    if qt?
+    if build.include? 'with-qt4'
       ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp
       ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
     end
@@ -35,8 +31,12 @@ class Poppler < Formula
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-xpdf-headers"]
     # Explicitly disable Qt if not requested because `POPPLER_QT4_CFLAGS` won't
     # be set and the build will fail.
-    args << ( qt? ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
-    args << '--enable-poppler-glib' if glib?
+    #
+    # Also, explicitly disable Glib as Poppler will find it and set up to
+    # build, but Superenv will have stripped the Glib utilities out of the
+    # PATH.
+    args << ( build.include?('with-qt4') ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
+    args << ( build.include?('with-glib') ? '--enable-poppler-glib' : '--disable-poppler-glib' )
 
     system "./configure", *args
     system "make install"

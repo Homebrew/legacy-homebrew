@@ -4,7 +4,7 @@ class Ocrad < Formula
   homepage 'http://www.gnu.org/software/ocrad/'
   url 'http://ftpmirror.gnu.org/ocrad/ocrad-0.21.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/ocrad/ocrad-0.21.tar.gz'
-  md5 '83f9eae9d808f9d86c181538d3f64aed'
+  sha1 '857a7e0b671d4216ddf2ec1ec2daf0b21d2a6a64'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -27,10 +27,6 @@ module Homebrew extend self
       the_tarball, _ = f.fetch
       next unless the_tarball.kind_of? Pathname
 
-      previous_md5 = f.active_spec.md5.to_s.downcase
-      previous_sha1 = f.active_spec.sha1.to_s.downcase
-      previous_sha2 = f.active_spec.sha256.to_s.downcase
-
       puts "Downloaded to: #{the_tarball}" unless already_downloaded
       puts "MD5:  #{the_tarball.md5}"
       puts "SHA1: #{the_tarball.sha1}"
@@ -39,6 +35,7 @@ module Homebrew extend self
       begin
         f.verify_download_integrity the_tarball
       rescue ChecksumMismatchError => e
+        Homebrew.failed = true
         opoo "Formula reports different #{e.hash_type}: #{e.expected}"
       end
     end

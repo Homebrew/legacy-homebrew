@@ -1,23 +1,24 @@
 require 'formula'
 
 class Smpeg < Formula
-  head 'svn://svn.icculus.org/smpeg/trunk'
   homepage 'http://icculus.org/smpeg/'
+  head 'svn://svn.icculus.org/smpeg/trunk'
+
+  depends_on :automake => :build
+  depends_on :libtool => :build
 
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
-
-  if MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
+  depends_on 'gtk+'
 
   def install
+    sdl = Formula.factory("sdl")
     system "./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-gtktest",
-                          "--disable-sdltest"
+                          "--disable-sdltest",
+                          # For non-/usr/local installs
+                          "--with-sdl-prefix=#{sdl.opt_prefix}"
     system "make"
     # Install script is not +x by default for some reason
     system "chmod +x ./install-sh"

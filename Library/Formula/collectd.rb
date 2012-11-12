@@ -3,11 +3,9 @@ require 'formula'
 class Collectd < Formula
   homepage 'http://collectd.org/'
   url 'http://collectd.org/files/collectd-5.1.0.tar.bz2'
-  md5 '141570150b4608c0c567330f6f146e0f'
+  sha1 '77545833b77a03ec02219bfb925e6a1f3463ddef'
 
   depends_on 'pkg-config' => :build
-
-  skip_clean :all
 
   fails_with :clang do
     build 318
@@ -27,7 +25,7 @@ class Collectd < Formula
               --localstatedir=#{var}
               --with-python=/usr/bin]
 
-    args << "--disable-embedded-perl" if MacOS.leopard?
+    args << "--disable-embedded-perl" if MacOS.version == :leopard
 
     system "./configure", *args
     system "make install"

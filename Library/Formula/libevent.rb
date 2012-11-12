@@ -2,42 +2,42 @@ require 'formula'
 
 class Libevent < Formula
   homepage 'http://www.monkey.org/~provos/libevent/'
-  url 'https://github.com/downloads/libevent/libevent/libevent-2.0.19-stable.tar.gz'
-  sha1 '28c109190345ce5469add8cf3f45c5dd57fe2a85'
+  url 'https://github.com/downloads/libevent/libevent/libevent-2.0.20-stable.tar.gz'
+  sha1 '20bb4a1a296ac93c08dfc32ae19ab874cab67a0c'
 
   head 'git://levent.git.sourceforge.net/gitroot/levent/levent'
+
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
+  depends_on "doxygen" => :build if build.include? 'enable-manpages'
+
+  option :universal
+  option 'enable-manpages', 'Install the libevent manpages (requires doxygen)'
 
   fails_with :llvm do
     build 2326
     cause "Undefined symbol '_current_base' reported during linking."
   end
 
-  if ARGV.build_head? and MacOS.xcode_version >= "4.3"
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
-  depends_on "doxygen" => :build if ARGV.include? '--enable-manpages'
-
   # Enable manpage generation
   def patches
-    DATA if ARGV.include? '--enable-manpages'
-  end
-
-  def options
-    [["--enable-manpages", "Install the libevent manpages"],
-     ["--universal", "Builds a universal binary"]]
+    DATA if build.include? 'enable-manpages'
   end
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     ENV.j1
-    system "./autogen.sh" if ARGV.build_head?
-    system "./configure", "--prefix=#{prefix}"
+    system "./autogen.sh" if build.head?
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-debug-mode",
+                          "--prefix=#{prefix}"
     system "make"
     system "make install"
 
-    if ARGV.include? '--enable-manpages'
+    if build.include? 'enable-manpages'
       system "make doxygen"
       man3.install Dir['doxygen/man/man3/*.3']
     end

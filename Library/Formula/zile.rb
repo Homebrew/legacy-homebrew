@@ -2,9 +2,9 @@ require 'formula'
 
 class Zile < Formula
   homepage 'http://www.gnu.org/software/zile/'
-  url 'http://ftpmirror.gnu.org/zile/zile-2.4.7.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/zile/zile-2.4.7.tar.gz'
-  sha1 '30c47a399b94b5dce68a178fe98807f86719a466'
+  url 'http://ftpmirror.gnu.org/zile/zile-2.4.9.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/zile/zile-2.4.9.tar.gz'
+  sha1 'f233487e2d0ce99d7670832d106d1a2503d4c925'
 
   depends_on 'bdw-gc'
   depends_on 'gettext'

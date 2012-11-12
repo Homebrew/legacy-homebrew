@@ -2,8 +2,8 @@ require 'formula'
 
 class Bibutils < Formula
   homepage 'http://sourceforge.net/p/bibutils/home/Bibutils/'
-  url 'http://sourceforge.net/projects/bibutils/files/bibutils_4.12_src.tgz'
-  md5 '395f46393eca8e184652c5e8e1ae83b6'
+  url 'http://sourceforge.net/projects/bibutils/files/bibutils_4.15_src.tgz'
+  sha1 '1ba285d9ac58549062ff14d48801bc6ffbc8f903'
 
   def install
     system "./configure", "--install-dir", prefix

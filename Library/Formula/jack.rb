@@ -2,7 +2,7 @@ require 'formula'
 
 class Jack < Formula
   homepage 'http://jackaudio.org'
-  url 'http://www.grame.fr/~letz/jack-1.9.7.tar.bz2'
+  url 'http://pkgs.fedoraproject.org/repo/pkgs/jack-audio-connection-kit/jack-1.9.7.tar.bz2/9759670feecbd43eeccf1c0f743ec199/jack-1.9.7.tar.bz2'
   sha1 '0a344fd962666f7c95969da0576ac0228e71b30d'
 
   depends_on 'celt'
