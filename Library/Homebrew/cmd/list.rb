@@ -30,6 +30,10 @@ private
     cache_folder = (HOMEBREW_CACHE.relative_path_from(HOMEBREW_PREFIX)).to_s
     dirs -= [cache_folder]
 
+    # Exclude the repository, if it has been located under the prefix
+    cache_folder = (HOMEBREW_REPOSITORY.relative_path_from(HOMEBREW_PREFIX)).to_s
+    dirs -= [cache_folder]
+
     cd HOMEBREW_PREFIX
     exec 'find', *dirs + %w[-type f ( ! -iname .ds_store ! -iname brew ! -iname brew-man.1 ! -iname brew.1 )]
   end
