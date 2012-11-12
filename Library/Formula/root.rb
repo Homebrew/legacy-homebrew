@@ -29,7 +29,7 @@ class Root < Formula
     system "make"
     system "make install"
 
-    prefix.install ['test'] # needed to run test suite
+    prefix.install 'test' # needed to run test suite
 
   end
 

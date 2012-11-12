@@ -24,9 +24,6 @@ class Sleepwatcher < Formula
       system "make", "install", "PREFIX=#{prefix}"
     end
 
-    # Write the usage ReadMe
-    prefix.install "ReadMe.rtf"
-
     # Write the sleep/wakeup scripts
     (prefix + 'etc/sleepwatcher').install Dir["config/rc.*"]
 

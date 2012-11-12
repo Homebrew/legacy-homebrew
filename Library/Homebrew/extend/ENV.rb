@@ -33,6 +33,10 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
+    append 'CPPFLAGS', "-F#{HOMEBREW_PREFIX}/Frameworks"
+    append 'LDFLAGS', "-F#{HOMEBREW_PREFIX}/Frameworks"
+    self['CMAKE_FRAMEWORK_PATH'] = HOMEBREW_PREFIX/"Frameworks"
+
     # Os is the default Apple uses for all its stuff so let's trust them
     set_cflags "-Os #{SAFE_CFLAGS_FLAGS}"
 
@@ -64,7 +68,7 @@ module HomebrewEnvExtension
     paths = []
     paths << HOMEBREW_PREFIX/'lib/pkgconfig'
     paths << HOMEBREW_PREFIX/'share/pkgconfig'
-    paths << HOMEBREW_REPOSITORY/'Library/Homebrew/pkgconfig' if MacOS.version >= :mountain_lion
+    paths << HOMEBREW_REPOSITORY/'Library/ENV/pkgconfig' if MacOS.version >= :mountain_lion
     paths << '/usr/lib/pkgconfig'
     paths.select { |d| File.directory? d }.join(':')
   end

@@ -10,21 +10,12 @@ class Tika < Formula
   url 'http://www.apache.org/dyn/closer.cgi/tika/tika-app-1.2.jar'
   sha1 '22c7110997d8ec114c6713cca1aadbbab6472c07'
 
-  def script; <<-EOS.undent
-    #!/bin/sh
-    java -jar #{libexec}/tika-app-1.2.jar "$@"
-    EOS
-  end
-
   def install
     libexec.install 'tika-app-1.2.jar'
-    (bin+'tika').write script
+    bin.write_jar_script libexec/'tika-app-1.2.jar', 'tika'
     TikaRestServer.new.brew {
       libexec.install 'tika-server-1.2.jar'
-      (bin+'tika-rest-server').write <<-EOS.undent
-        #!/bin/sh
-        java -jar #{libexec}/tika-server-1.2.jar "$@"
-        EOS
+      bin.write_jar_script libexec/'tika-server-1.2.jar', 'tika-rest-server'
     }
   end
 

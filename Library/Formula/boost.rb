@@ -59,7 +59,7 @@ class Boost < Formula
     # /usr/local/bin/mkvmerge:
     #   /usr/local/lib/libboost_regex-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
     #   /usr/local/lib/libboost_filesystem-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    #   /usr/local/libboost_system-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
+    #   /usr/local/lib/libboost_system-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
     inreplace 'tools/build/v2/tools/darwin.jam', '-install_name "', "-install_name \"#{HOMEBREW_PREFIX}/lib/"
 
     # Force boost to compile using the appropriate GCC version
@@ -71,13 +71,16 @@ class Boost < Formula
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    if build.include? "with-icu"
-      icu4c_prefix = Formula.factory('icu4c').prefix
+    if build.include? 'with-icu'
+      icu4c_prefix = Formula.factory('icu4c').opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
+    else
+      bargs << '--without-icu'
     end
 
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
+            "-d2",
             "-j#{ENV.make_jobs}",
             "--layout=tagged",
             "--user-config=user-config.jam",

@@ -2,8 +2,8 @@ require 'formula'
 
 class Miniupnpc < Formula
   homepage 'http://miniupnp.free.fr'
-  url 'http://miniupnp.free.fr/files/download.php?file=miniupnpc-1.7.20120714.tar.gz'
-  sha1 'b7f68de24e75c0c2538d9936e7418fc1ae4df72b'
+  url 'http://miniupnp.free.fr/files/download.php?file=miniupnpc-1.7.20120830.tar.gz'
+  sha1 '20ec14d0abb4b9c47b0a3afc37f9f6a374c0b767'
 
   def install
     # Reported upstream:

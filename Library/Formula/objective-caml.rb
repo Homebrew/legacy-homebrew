@@ -19,6 +19,7 @@ class ObjectiveCaml < Formula
     system "./configure", "--prefix", HOMEBREW_PREFIX,
                           "--mandir", man,
                           "-cc", ENV.cc,
+                          "-with-debug-runtime",
                           "-aspp", "#{ENV.cc} -c"
     ENV.deparallelize # Builds are not parallel-safe, esp. with many cores
     system "make world"

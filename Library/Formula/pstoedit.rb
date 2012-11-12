@@ -2,8 +2,8 @@ require 'formula'
 
 class Pstoedit < Formula
   homepage 'http://www.pstoedit.net'
-  url 'https://sourceforge.net/projects/pstoedit/files/pstoedit/3.60/pstoedit-3.60.tar.gz'
-  sha1 '649ade3d873429548eb6dd9f3e13cb79a8d6a1a2'
+  url 'https://sourceforge.net/projects/pstoedit/files/pstoedit/3.61/pstoedit-3.61.tar.gz'
+  sha1 '426f3746ecb441caa0db401d5880e1ac04a399d5'
 
   depends_on 'pkg-config' => :build
   depends_on 'plotutils'

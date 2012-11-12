@@ -14,7 +14,7 @@ class Bamtools < Formula
   # they're not installed by default. Sent upstream:
   # https://github.com/pezmaster31/bamtools/pull/55
   def patches
-     DATA
+    DATA
   end
 
   def install
