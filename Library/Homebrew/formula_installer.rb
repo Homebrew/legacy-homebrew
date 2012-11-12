@@ -157,7 +157,6 @@ class FormulaInstaller
       audit_lib
       check_manpages
       check_infopages
-      check_m4
     end
 
     keg = Keg.new(f.prefix)
@@ -436,25 +435,6 @@ class FormulaInstaller
   def audit_lib
     check_jars
     check_non_libraries
-  end
-
-  def check_m4
-    # Newer versions of Xcode don't come with autotools
-    return unless MacOS::Xcode.provides_autotools?
-
-    # If the user has added our path to dirlist, don't complain
-    return if File.open("/usr/share/aclocal/dirlist") do |dirlist|
-      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
-    end rescue false
-
-    # Check for installed m4 files
-    if Dir[f.share+"aclocal/*.m4"].length > 0
-      opoo 'm4 macros were installed to "share/aclocal".'
-      puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
-      puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"
-      puts "requires these m4 macros, you'll need to add this path manually."
-      @show_summary_heading = true
-    end
   end
 end
 
