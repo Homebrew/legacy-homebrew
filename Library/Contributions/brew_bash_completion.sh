@@ -136,6 +136,11 @@ _brew_deps ()
     __brew_complete_formulae
 }
 
+_brew_doctor () {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    __brewcomp "$(brew doctor --list-checks)"
+}
+
 _brew_diy ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -425,6 +430,7 @@ _brew ()
     cleanup)                    _brew_cleanup ;;
     create)                     _brew_create ;;
     deps)                       _brew_deps ;;
+    doctor|dr)                  _brew_doctor ;;
     diy|configure)              _brew_diy ;;
     fetch)                      _brew_fetch ;;
     info|abv)                   _brew_info ;;

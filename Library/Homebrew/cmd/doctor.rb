@@ -994,6 +994,11 @@ module Homebrew extend self
   def doctor
     checks = Checks.new
 
+    if ARGV.include? '--list-checks'
+      checks.methods.select { |m| m =~ /^check_/ }.sort.each { |m| puts m }
+      exit
+    end
+
     inject_dump_stats(checks) if ARGV.switch? 'D'
 
     methods = if ARGV.named.empty?
