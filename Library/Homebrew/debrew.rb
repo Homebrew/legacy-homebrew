@@ -1,8 +1,9 @@
-require 'irb'
-begin
-  require 'continuation' # needed on 1.9
-rescue LoadError
+def can_use_readline?
+  not ENV['HOMEBREW_NO_READLINE']
 end
+
+require 'irb' if can_use_readline?
+require 'continuation' if RUBY_VERSION.to_f >= 1.9
 
 class Menu
   attr_accessor :prompt
@@ -75,7 +76,7 @@ module IRB
       irb_at_exit
     end
   end
-end
+end if can_use_readline?
 
 class Exception
   attr_accessor :continuation
@@ -92,7 +93,7 @@ def has_debugger?
     true
   rescue LoadError
     false
-  end
+  end if can_use_readline?
 end
 
 def debrew(exception, formula=nil)
@@ -121,7 +122,7 @@ def debrew(exception, formula=nil)
             end
           }
         end
-      end
+      end if can_use_readline?
       menu.choice(:shell) do
         puts "When you exit this shell, you will return to the menu."
         interactive_shell formula
