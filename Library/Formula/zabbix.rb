@@ -1,28 +1,7 @@
 require 'formula'
 
-class MySqlInstalled < Requirement
-  def message; <<-EOS.undent
-    MySQL is required to install.
-
-    You can install this with Homebrew using:
-      brew install mysql-connector-c
-        For MySQL client libraries only.
-
-      brew install mysql
-        For MySQL server.
-
-    Or you can use an official installer from:
-      http://dev.mysql.com/downloads/mysql/
-    EOS
-  end
-
-  def satisfied?
-    which 'mysql_config'
-  end
-
-  def fatal?
-    true
-  end
+def mysql?
+  build.include? 'with-mysql'
 end
 
 class Zabbix < Formula
@@ -30,25 +9,38 @@ class Zabbix < Formula
   url 'http://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.0.3/zabbix-2.0.3.tar.gz'
   sha1 'be8902444890db9fb2c4795e62073ce7eea32d96'
 
-  depends_on MySqlInstalled.new
+  option 'with-mysql', 'Use MySQL library instead PostgreSQL.'
+
+  depends_on (mysql? ? :mysql : :postgresql)
   depends_on 'fping'
   depends_on 'libssh2'
 
+  def brewed_or_shipped(db_config)
+    brewed_db_config = "#{HOMEBREW_PREFIX}/bin/#{db_config}"
+    (File.exists?(brewed_db_config) && brewed_db_config) || which(db_config)
+  end
+
   def install
-    which_mysql = which('mysql_config') || "#{HOMEBREW_PREFIX}/bin/mysql_config"
+    db_adapter = if mysql?
+      "--with-mysql=#{brewed_or_shipped('mysql_config')}"
+    else
+      "--with-postgresql=#{brewed_or_shipped('pg_config')}"
+    end
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-server",
                           "--enable-proxy",
                           "--enable-agent",
-                          "--with-mysql=#{which_mysql}",
+                          "#{db_adapter}",
                           "--enable-ipv6",
                           "--with-net-snmp",
                           "--with-libcurl",
                           "--with-ssh2"
 
     system "make install"
-    (share/'zabbix').install 'frontends/php', 'database/mysql'
+    (share/'zabbix').install 'frontends/php',
+      "database/#{mysql? ? :mysql : :postgresql}"
   end
 
   def caveats; <<-EOS.undent
