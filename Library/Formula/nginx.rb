@@ -2,8 +2,8 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.2.4.tar.gz'
-  sha1 'e3de0b2b82095f26e96bdb461ba36472d3e7cdda'
+  url 'http://nginx.org/download/nginx-1.2.5.tar.gz'
+  sha1 'c36feaadbaad6938b02f4038c2d68cab10907f59'
 
   devel do
     url 'http://nginx.org/download/nginx-1.3.8.tar.gz'
