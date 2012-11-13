@@ -28,7 +28,7 @@ class << ENV
   alias_method :x11?, :x11
 
   def reset
-    %w{CC CXX CPP OBJC MAKE LD
+    %w{CC CXX OBJC OBJCXX CPP MAKE LD
       CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
       MACOS_DEPLOYMENT_TARGET SDKROOT
       CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH}.
@@ -43,6 +43,8 @@ class << ENV
     check
     ENV['CC'] = 'cc'
     ENV['CXX'] = 'c++'
+    ENV['OBJC'] = 'cc'
+    ENV['OBJCXX'] = 'c++'
     ENV['DEVELOPER_DIR'] = determine_developer_dir # effects later settings
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
@@ -221,16 +223,16 @@ class << ENV
   end
   alias_method :j1, :deparallelize
   def gcc
-    ENV['CC'] = ENV['HOMEBREW_CC'] = "gcc"
-    ENV['CXX'] = "g++"
+    ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "gcc"
+    ENV['CXX'] = ENV['OBJCXX'] = "g++"
   end
   def llvm
-    ENV['CC'] = ENV['HOMEBREW_CC'] = "llvm-gcc"
-    ENV['CXX'] = "g++"
+    ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "llvm-gcc"
+    ENV['CXX'] = ENV['OBJCXX'] = "g++"
   end
   def clang
-    ENV['CC'] = ENV['HOMEBREW_CC'] = "clang"
-    ENV['CXX'] = "clang++"
+    ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "clang"
+    ENV['CXX'] = ENV['OBJCXX'] = "clang++"
   end
   def make_jobs
     ENV['MAKEFLAGS'] =~ /-\w*j(\d)+/
