@@ -114,7 +114,7 @@ class FormulaInstaller
       end
     end
 
-    oh1 "Installing #{f}" if show_header
+    oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
     if install_bottle
       pour
@@ -133,7 +133,7 @@ class FormulaInstaller
     fi = FormulaInstaller.new(dep, dep_tab)
     fi.ignore_deps = true
     fi.show_header = false
-    oh1 "Installing #{f} dependency: #{dep}"
+    oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
     fi.caveats
@@ -173,7 +173,8 @@ class FormulaInstaller
     install_plist
     fix_install_names
 
-    ohai "Summary" if ARGV.verbose? or show_summary_heading
+    ohai "Summary - #{f.name}" if ARGV.verbose? or show_summary_heading
+    print "🍺  " if MacOS.version >= :lion
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
     puts
