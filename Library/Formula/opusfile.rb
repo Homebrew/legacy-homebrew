@@ -4,8 +4,8 @@ class Opusfile < Formula
   homepage 'http://www.opus-codec.org/'
   head 'https://git.xiph.org/opusfile.git'
 
-  url 'http://downloads.xiph.org/releases/opus/opusfile-0.1.tar.gz'
-  sha1 '5e84cd600fa9da1ec08588644436a29cf5e9de67'
+  url 'http://downloads.xiph.org/releases/opus/opusfile-0.2.tar.gz'
+  sha1 'db020e25178b501929a11b0e0f469890f4f4e6fa'
 
   depends_on 'pkg-config' => :build
   depends_on 'opus'
