@@ -383,6 +383,9 @@ class Pathname
       next unless FORMULA_META_FILES.should_copy? p
       # Some software symlinks these files (see help2man.rb)
       filename = p.resolved_path
+      # Some software links metafiles together, so by the time we iterate to one of them
+      # we may have already moved it. libxml2's COPYING and Copyright are affected by this.
+      next unless filename.exist?
       filename.chmod 0644
       self.install filename
     end
