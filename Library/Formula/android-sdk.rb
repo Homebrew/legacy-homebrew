@@ -8,9 +8,9 @@ end
 
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r20.0.3-macosx.zip'
-  version 'r20.0.3'
-  sha1 'c02403c2e29952e6bbd632767b5c3cd3618c3e80'
+  url 'http://dl.google.com/android/android-sdk_r21-macosx.zip'
+  version 'r21'
+  sha1 '0c29f5f5ab556ce4555682264d9c6414fc905c20'
 
   # TODO docs and platform-tools
   # See the long comment below for the associated problems
