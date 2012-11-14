@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mogenerator < Formula
-  url 'https://github.com/rentzsch/mogenerator/tarball/1.26'
+  url 'https://github.com/rentzsch/mogenerator/tarball/1.27'
   homepage 'http://rentzsch.github.com/mogenerator/'
-  sha1 '0ac8ad310760df366bdeeb32f9420548f3168ca4'
+  sha1 '03b04a80d3ff1190736b72bf5ff5ce44d4670914'
   head "https://github.com/rentzsch/mogenerator.git"
 
   depends_on :xcode # For working xcodebuild.
