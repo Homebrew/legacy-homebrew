@@ -16,6 +16,7 @@ class Nginx < Formula
 
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
+  option 'with-stub-status', 'Compile with support for HTTP stub status module'
 
   skip_clean 'logs'
 
@@ -55,6 +56,7 @@ class Nginx < Formula
 
     args << passenger_config_args if build.include? 'with-passenger'
     args << "--with-http_dav_module" if build.include? 'with-webdav'
+    args << "--with-http_stub_status_module" if build.include? 'with-stub-status'
 
     system "./configure", *args
     system "make"
