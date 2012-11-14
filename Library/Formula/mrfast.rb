@@ -2,8 +2,8 @@ require 'formula'
 
 class Mrfast < Formula
   homepage 'http://mrfast.sourceforge.net/'
-  url 'http://sourceforge.net/projects/mrfast/files/mrfast/mrfast-2.1.0.6.tar.gz'
-  sha1 '13e9ac030052f3930f7d2db1174070a2f2e29dbd'
+  url 'http://sourceforge.net/projects/mrfast/files/mrfast/mrfast-2.5.0.0.tar.gz'
+  sha1 'ef3445317f80dc4e2db7106d3dd3699498f7ec62'
 
   def install
     system "make", "CC=#{ENV.cc}", "CFLAGS=-c #{ENV.cflags}"

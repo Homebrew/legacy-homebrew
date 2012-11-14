@@ -52,7 +52,7 @@ class Autopsy < Formula
   def install
     (var+"lib/autopsy").mkpath
     mv 'lib', 'libexec'
-    prefix.install %w{ COPYING global.css help libexec pict }
+    prefix.install %w{ global.css help libexec pict }
     prefix.install Dir['*.txt']
     (prefix+"conf.pl").write autcfg
     inreplace 'base/autopsy.base', '/tmp/autopsy', prefix

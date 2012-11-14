@@ -16,7 +16,7 @@ class Playdar < Formula
     File.unlink 'playdar_modules/library/priv/taglib_driver/taglib_json_reader.cpp'
 
     # otherwise playdar crashes
-    prefix.install ['ebin', 'playdar_modules', 'priv', 'etc']
+    prefix.install 'ebin', 'playdar_modules', 'priv', 'etc'
 
     inreplace 'playdarctl', 'cd `dirname $0`', "cd #{prefix}"
     inreplace 'playdarctl', 'EBIN=./ebin/', "EBIN=#{prefix}/ebin"

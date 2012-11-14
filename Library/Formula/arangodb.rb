@@ -2,10 +2,15 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://github.com/triAGENS/ArangoDB/zipball/v1.0.1'
-  sha1 'f4c196ec8f160be2f830bafffcf5a6756731802f'
+  url 'https://github.com/triAGENS/ArangoDB/zipball/v1.0.4'
+  sha1 'c443cd9703055ffde0180c6a8f4dd221f6b081ac'
 
   head "https://github.com/triAGENS/ArangoDB.git"
+
+  devel do
+    url 'https://github.com/triAGENS/ArangoDB/zipball/v1.1.beta2'
+    sha1 '9cce97cd7fabf1db9612f508c782c7a9b17448a6'
+  end
 
   depends_on 'libev'
   depends_on 'v8'

@@ -6,7 +6,7 @@ class IrcdHybrid < Formula
   sha1 'a4d7e06517152ea88b064cd9756084372ed831ac'
 
   # ircd-hybrid needs the .la files
-  skip_clean 'lib'
+  skip_clean :la
 
   def install
     # See patch fix 3

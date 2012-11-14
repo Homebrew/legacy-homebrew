@@ -12,8 +12,7 @@ class Maven < Formula
     # Fix the permissions on the global settings file.
     chmod 0644, Dir["conf/settings.xml"]
 
-    prefix.install %w{ NOTICE.txt LICENSE.txt README.txt }
-    # Install jars in libexec to avoid conflicts
+    prefix.install_metafiles
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end

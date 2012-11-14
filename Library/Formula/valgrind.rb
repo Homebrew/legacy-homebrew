@@ -20,7 +20,9 @@ class Valgrind < Formula
     depends_on :libtool
   end
 
-  skip_clean 'lib'
+  # Valgrind needs vcpreload_core-*-darwin.so to have execute permissions.
+  # See #2150 for more information.
+  skip_clean 'lib/valgrind'
 
   def patches
     # 1: For Xcode-only systems, we have to patch hard-coded paths, use xcrun &

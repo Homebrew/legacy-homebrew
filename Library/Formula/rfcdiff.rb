@@ -10,6 +10,5 @@ class Rfcdiff < Formula
 
   def install
     bin.install "rfcdiff"
-    prefix.install "todo"
   end
 end

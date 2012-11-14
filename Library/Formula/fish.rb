@@ -11,6 +11,7 @@ class Fish < Formula
   depends_on 'doxygen' => :build if build.head?
   depends_on :autoconf if build.head?
   depends_on 'readline'
+
   skip_clean 'share/doc'
 
   conflicts_with "fishfish"
