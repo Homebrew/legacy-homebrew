@@ -2,8 +2,8 @@ require 'formula'
 
 class Libzdb < Formula
   homepage 'http://tildeslash.com/libzdb/'
-  url 'http://tildeslash.com/libzdb/dist/libzdb-2.10.5.tar.gz'
-  sha1 '30f975e73caf58f1fa02260ed7136185a3ba2d27'
+  url 'http://tildeslash.com/libzdb/dist/libzdb-2.10.6.tar.gz'
+  sha1 'ae649655788a8db50f2bb0c36f90afe8a7fcc40b'
 
   option 'without-sqlite',     "Compile without SQLite support"
   option 'without-postgresql', "Compile without PostgreSQL support"
