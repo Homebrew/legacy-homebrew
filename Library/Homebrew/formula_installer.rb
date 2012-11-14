@@ -23,7 +23,7 @@ class FormulaInstaller
   end
 
   def check_install_sanity
-    if f.installed?
+    if f.installed? and not ARGV.force? 
       msg = "#{f}-#{f.installed_version} already installed"
       msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
       raise CannotInstallFormulaError, msg
@@ -61,7 +61,7 @@ class FormulaInstaller
     # not in initialize so upgrade can unlink the active keg before calling this
     # function but after instantiating this class so that it can avoid having to
     # relink the active keg if possible (because it is slow).
-    if f.linked_keg.directory?
+    if f.linked_keg.directory? and not ARGV.force?
       # some other version is already installed *and* linked
       raise CannotInstallFormulaError, <<-EOS.undent
         #{f}-#{f.linked_keg.realpath.basename} already installed
