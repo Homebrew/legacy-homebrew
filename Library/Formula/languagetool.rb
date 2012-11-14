@@ -6,11 +6,7 @@ class Languagetool < Formula
   sha1 'eed879e201f13dd98d585e945b21cd7ba3eacd20'
 
   def install
-    (bin+"languagetool").write <<-EOS.undent
-      #!/bin/bash
-      java -jar "#{libexec}/LanguageTool.jar" "$@"
-    EOS
-
     libexec.install Dir["*"]
+    bin.write_jar_script libexec/'LanguageTool.jar', 'languagetool'
   end
 end

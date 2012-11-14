@@ -24,7 +24,8 @@ class Apollo < Formula
   option "no-mqtt", "Install without MQTT protocol support"
 
   def install
-    prefix.install %w{ LICENSE NOTICE readme.html docs examples }
+    prefix.install_metafiles
+    prefix.install %w{ docs examples }
     libexec.install Dir['*']
 
     unless build.include? "no-bdb"
@@ -39,10 +40,10 @@ class Apollo < Formula
       end
     end
 
-    (bin+'apollo').write <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/#{name}" "$@"
-    EOS
+    bin.write_exec_script libexec/'bin/apollo'
+
+    plist_path.write startup_plist
+    plist_path.chmod 0644
   end
 
   def caveats; <<-EOS.undent

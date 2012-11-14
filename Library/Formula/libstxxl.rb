@@ -11,7 +11,7 @@ class Libstxxl < Formula
     system "make", "config_gnu", "USE_MACOSX=yes"
     system "make", "library_g++", "USE_MACOSX=yes"
 
-    prefix.install Dir['include']
+    prefix.install 'include'
     lib.install 'lib/libstxxl.a'
   end
 end

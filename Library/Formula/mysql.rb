@@ -30,6 +30,8 @@ class Mysql < Formula
   conflicts_with 'percona-server',
     :because => "mysql and percona-server install the same binaries."
 
+  env :std if build.universal?
+
   fails_with :llvm do
     build 2326
     cause "https://github.com/mxcl/homebrew/issues/issue/144"

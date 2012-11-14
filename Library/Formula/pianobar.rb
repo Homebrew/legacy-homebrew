@@ -13,8 +13,6 @@ class Pianobar < Formula
   depends_on 'gnutls'
   depends_on 'json-c'
 
-  skip_clean 'bin'
-
   fails_with :llvm do
     build 2334
     cause "Reports of this not compiling on Xcode 4"

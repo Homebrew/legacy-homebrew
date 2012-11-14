@@ -17,7 +17,6 @@ class Ssss < Formula
 
     ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
     system "make"
-    prefix.install %w{ HISTORY LICENSE THANKS }
     man1.install %w{ ssss.1 }
     bin.install %w{ ssss-combine ssss-split }
   end

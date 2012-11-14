@@ -2,37 +2,22 @@ require 'formula'
 
 class Mpich2 < Formula
   homepage 'http://www.mcs.anl.gov/research/projects/mpich2/index.php'
-  url 'http://www.mcs.anl.gov/research/projects/mpich2/downloads/tarballs/1.4.1p1/mpich2-1.4.1p1.tar.gz'
-  version '1.4.1p1'
-  sha1 '8dcc8888fb27232eb8f76c11cc890f1c3c483804'
+  url 'http://www.mcs.anl.gov/research/projects/mpich2/downloads/tarballs/1.5/mpich2-1.5.tar.gz'
+  sha1 'be7448227dde5badf3d6ebc0c152b200998421e0'
+
   head 'https://svn.mcs.anl.gov/repos/mpi/mpich2/trunk'
 
-  devel do
-    url 'http://www.mcs.anl.gov/research/projects/mpich2/downloads/tarballs/1.5b1/mpich2-1.5b1.tar.gz'
-    version '1.5b1'
-    sha1 'd9dfc992657c3cbe5b40374fd8aaa553ebaf5402'
-  end
-
   # the HEAD version requires the autotools to be installed
-  # (autoconf>=2.67, automake>=1.11, libtool>=2.4)
-  if ARGV.build_head?
+  # (autoconf>=2.67, automake>=1.12.3, libtool>=2.4)
+  if build.head?
     depends_on 'automake' => :build
     depends_on 'libtool'  => :build
   end
 
-  def options
-    [
-      ['--disable-fortran', "Do not attempt to build Fortran bindings"],
-    ]
-  end
+  option 'disable-fortran', "Do not attempt to build Fortran bindings"
 
   def install
-    unless ARGV.build_devel? or ARGV.build_head?
-      # parallel builds are broken prior to version 1.5a1
-      ENV.deparallelize
-    end
-
-    if ARGV.build_head?
+    if build.head?
       # ensure that the consistent set of autotools built by homebrew is used to
       # build MPICH2, otherwise very bizarre build errors can occur
       ENV['MPICH2_AUTOTOOLS_DIR'] = (HOMEBREW_PREFIX+'bin')
@@ -40,11 +25,12 @@ class Mpich2 < Formula
     end
 
     args = [
+      "--disable-dependency-tracking",
+      "--disable-silent-rules",
       "--prefix=#{prefix}",
-      "--mandir=#{man}",
-      "--enable-shared"
+      "--mandir=#{man}"
     ]
-    if ARGV.include? '--disable-fortran'
+    if build.include? 'disable-fortran'
       args << "--disable-f77" << "--disable-fc"
     else
       ENV.fortran

@@ -3,7 +3,7 @@ require 'formula'
 class BulkExtractor < Formula
   homepage 'https://github.com/simsong/bulk_extractor/wiki'
   url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.3.tar.gz'
-  sha1 '137a8a9c9d99f5f01eb09c080012b13ba48856ec'
+  sha1 '847559ef179a123b3855637396f47348d3318751'
 
   depends_on :autoconf
   depends_on :automake
@@ -32,13 +32,7 @@ class BulkExtractor < Formula
 
     # Install the GUI the Homebrew way
     libexec.install 'java_gui/BEViewer.jar'
-    (bin+'BEViewer').write script
-  end
-
-  def script; <<-EOS.undent
-    #!/bin/sh
-    exec java -Xmx1g -jar #{libexec}/BEViewer.jar "$@"
-    EOS
+    bin.write_jar_script libexec/"BEViewer.jar", "BEViewer", "-Xmx1g"
   end
 
   def caveats; <<-EOS.undent

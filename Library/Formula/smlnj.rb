@@ -2,38 +2,11 @@ require 'formula'
 
 class Smlnj < Formula
   homepage 'http://www.smlnj.org/'
-  url 'http://smlnj.cs.uchicago.edu/dist/working/110.74/config.tgz'
-  version '110.74'
-  sha1 '8879133ba94be1b44e7b97a04c9e23070335284a'
+  url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/config.tgz'
+  sha1 '527cb179b48abcf1463089d168b171fd05eb814d'
+  version '110.75'
 
-  def targets
-<<-EOS
-request ml-ulex
-request ml-ulex-mllex-tool
-request ml-lex
-request ml-lex-lex-ext
-request ml-yacc
-request ml-yacc-grm-ext
-request ml-antlr
-request ml-lpt-lib
-request ml-burg
-request smlnj-lib
-request tdp-util
-request cml
-request cml-lib
-request mlrisc
-request ckit
-request heap2asm
-EOS
-  end
-
-  # fixes the install.sh script to use the correct SDK for Lion. See:
-  # https://smlnj-gforge.cs.uchicago.edu/tracker/index.php?func=detail&aid=89&group_id=33&atid=215
-  # https://github.com/mxcl/homebrew/issues/11370
-  # https://github.com/mxcl/homebrew/pull/11443
-  def patches
-    DATA
-  end
+  env :std
 
   def install
     ENV.deparallelize
@@ -62,41 +35,26 @@ EOS
     Improvements are welcome.
     EOS
   end
-end
 
-__END__
-diff --git a/install.sh b/install.sh
-index ea5f8c3..0108774 100755
---- a/install.sh
-+++ b/install.sh
-@@ -290,6 +290,11 @@ case $ARCH in
- esac
- 
- case $OPSYS in
-+    darwin)
-+    # finding the correct SDK
-+    SDKVERSION=`/usr/bin/sw_vers -productVersion | grep -o ^[0-9][0-9]\.[0-9]`
-+    EXTRA_DEFS="SDK=-isysroot /Developer/SDKs/MacOSX$SDKVERSION.sdk -mmacosx-version-min=$SDKVERSION"
-+  ;;
-     solaris)
- 	MAKE=/usr/ccs/bin/make
- 	;;
-@@ -338,7 +343,7 @@ else
-     "$CONFIGDIR"/unpack "$ROOT" runtime
-     cd "$BASEDIR"/runtime/objs
-     echo $this: Compiling the run-time system.
--    $MAKE -f mk.$ARCH-$OPSYS $EXTRA_DEFS
-+    $MAKE -f mk.$ARCH-$OPSYS "$EXTRA_DEFS"
-     if [ -x run.$ARCH-$OPSYS ]; then
- 	mv run.$ARCH-$OPSYS "$RUNDIR"
- 	if [ -f runx.$ARCH-$OPSYS ]; then
---- a/_arch-n-opsys.orig	2012-09-27 10:30:34.000000000 +0200
-+++ b/_arch-n-opsys	2012-09-27 10:30:49.000000000 +0200
-@@ -65,6 +65,7 @@
-	  9*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.5
-	  10*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.6
-	  11*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.7
-+	  12*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.8
-	  *) exit 1;;
-	esac;;
-     esac
+  def targets
+<<-EOS
+request ml-ulex
+request ml-ulex-mllex-tool
+request ml-lex
+request ml-lex-lex-ext
+request ml-yacc
+request ml-yacc-grm-ext
+request ml-antlr
+request ml-lpt-lib
+request ml-burg
+request smlnj-lib
+request tdp-util
+request cml
+request cml-lib
+request mlrisc
+request ckit
+request heap2asm
+EOS
+  end
+
+end

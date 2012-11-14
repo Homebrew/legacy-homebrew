@@ -10,12 +10,8 @@ class Htmlcompressor < Formula
   depends_on "yuicompressor" => :optional if build.include? 'yuicompressor'
 
   def install
-    libexec.install "htmlcompressor-#{version}.jar"
-
-    (bin+'htmlcompressor').write <<-EOS.undent
-      #!/bin/sh
-      java -jar "#{libexec}/htmlcompressor-#{version}.jar" "$@"
-    EOS
+    libexec.install "htmlcompressor-1.5.3.jar"
+    bin.write_jar_script libexec/"htmlcompressor-1.5.3.jar", "htmlcompressor"
 
     if build.include? 'yuicompressor'
       yui = Formula.factory('yuicompressor')

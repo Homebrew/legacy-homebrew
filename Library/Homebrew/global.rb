@@ -74,7 +74,7 @@ end
 
 HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; #{OS_VERSION})"
 
-HOMEBREW_CURL_ARGS = '-qf#LA'
+HOMEBREW_CURL_ARGS = '-f#LA'
 
 module Homebrew extend self
   include FileUtils
@@ -83,8 +83,9 @@ module Homebrew extend self
   alias_method :failed?, :failed
 end
 
-FORMULA_META_FILES = %w[README README.md ChangeLog CHANGES COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
-ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/bug-fixing-checklist"
+require 'metafiles'
+FORMULA_META_FILES = Metafiles.new
+ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/troubleshooting"
 
 unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
   $:.unshift(File.expand_path("#{__FILE__}/../compat"))
