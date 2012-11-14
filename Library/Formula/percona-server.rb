@@ -37,14 +37,15 @@ class PerconaServer < Formula
     # Make sure the var/percona directory exists
     (var+"percona").mkpath
 
-    args = std_cmake_args + [
+    args = [
       ".",
+      "-DCMAKE_INSTALL_PREFIX=#{prefix}",
       "-DMYSQL_DATADIR=#{var}/percona",
       "-DINSTALL_MANDIR=#{man}",
       "-DINSTALL_DOCDIR=#{doc}",
       "-DINSTALL_INFODIR=#{info}",
       # CMake prepends prefix, so use share.basename
-      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/percona",
+      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}",
       "-DWITH_SSL=yes",
       "-DDEFAULT_CHARSET=utf8",
       "-DDEFAULT_COLLATION=utf8_general_ci",
