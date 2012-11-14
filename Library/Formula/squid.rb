@@ -34,4 +34,48 @@ class Squid < Formula
                           "--localstatedir=#{var}"
     system "make install"
   end
+
+  def caveats; <<-EOS.undent
+
+    To launch on startup:
+
+      * if this is your first install:
+          mkdir -p ~/Library/LaunchAgents
+          cp #{plist_path} ~/Library/LaunchAgents/
+          launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+
+      * if this is an upgrade and you already have the #{plist_path.basename} loaded:
+          launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+          cp #{plist_path} ~/Library/LaunchAgents/
+          launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+
+    EOS
+  end
+
+  def startup_plist; <<-EOPLIST.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>KeepAlive</key>
+      <true/>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>/usr/local/sbin/squid</string>
+        <string>-N</string>
+        <string>-d 1</string>
+        <string>-D</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>UserName</key>
+      <string>#{`whoami`.chomp}</string>
+      <key>WorkingDirectory</key>
+      <string>#{var}</string>
+    </dict>
+    </plist>
+    EOPLIST
+  end
 end
