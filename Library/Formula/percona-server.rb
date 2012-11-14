@@ -29,22 +29,30 @@ class PerconaServer < Formula
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
 
+  # Where the database files should be located. Existing installs have them
+  # under var/percona, but going forward they will be under var/msyql to be
+  # shared with the mysql and mariadb formulae.
+  def destination
+    @destination ||= (var/'percona').directory? ? 'percona' : 'mysql'
+  end
+
   def install
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    # Make sure the var/percona directory exists
-    (var+"percona").mkpath
+    # Make sure that data directory exists
+    (var/destination).mkpath
 
-    args = std_cmake_args + [
+    args = [
       ".",
-      "-DMYSQL_DATADIR=#{var}/percona",
+      "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+      "-DMYSQL_DATADIR=#{var}/#{destination}",
       "-DINSTALL_MANDIR=#{man}",
       "-DINSTALL_DOCDIR=#{doc}",
       "-DINSTALL_INFODIR=#{info}",
       # CMake prepends prefix, so use share.basename
-      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/percona",
+      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/mysql",
       "-DWITH_SSL=yes",
       "-DDEFAULT_CHARSET=utf8",
       "-DDEFAULT_COLLATION=utf8_general_ci",
@@ -97,7 +105,7 @@ class PerconaServer < Formula
   def caveats; <<-EOS.undent
     Set up databases to run AS YOUR USER ACCOUNT with:
         unset TMPDIR
-        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix percona-server)" --datadir=#{var}/percona --tmpdir=/tmp
+        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix percona-server)" --datadir=#{var}/#{destination} --tmpdir=/tmp
 
     To set up base tables in another folder, or use a different user to run
     mysqld, view the help for mysqld_install_db:
