@@ -11,6 +11,7 @@ class Pianobar < Formula
   depends_on 'mad'
   depends_on 'faad2'
   depends_on 'gnutls'
+  depends_on 'libgcrypt'
   depends_on 'json-c'
 
   fails_with :llvm do
