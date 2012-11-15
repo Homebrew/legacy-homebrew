@@ -2,9 +2,9 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.27.tar.gz/from/http://cdn.mysql.com/'
-  version '5.5.27'
-  sha1 'd53dfbe4ac1119e4c4a33d639f2904abdd0f226d'
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.28.tar.gz/from/http://cdn.mysql.com/'
+  version '5.5.28'
+  sha1 '7b029e61db68866eeea0bec40d47fcdced30dd36'
 
   bottle do
     sha1 '7aa66b8ea9b03baec9c5d1a678a7c547494e00fe' => :mountainlion
