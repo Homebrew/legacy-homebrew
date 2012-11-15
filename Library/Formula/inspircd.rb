@@ -13,7 +13,8 @@ class Inspircd < Formula
   option 'with-tre', 'Enable the TRE module'
 
   depends_on 'pkg-config' => :build
-  depends_on 'gnutls' unless build.include? 'without-gnutls'
+  depends_on 'gnutls' => :recommended unless build.include? 'without-gnutls'
+  depends_on 'libgcrypt' unless build.include? 'without-gnutls'
   depends_on 'openssl' if build.include? 'with-openssl'
   depends_on 'pcre' if build.include? 'with-pcre'
   depends_on 'tre' if build.include? 'with-tre'
