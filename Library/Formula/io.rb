@@ -9,11 +9,12 @@ class Io < Formula
 
   option 'without-addons', 'Build without addons'
   option 'without-python', 'Build without python addon'
+  option 'without-ossp-uuid', 'Build without ossp-uuid'
 
   depends_on 'cmake' => :build
   depends_on 'libevent'
   depends_on 'libffi'
-  depends_on 'ossp-uuid'
+  depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
   depends_on 'pcre'
   depends_on 'yajl'
 
