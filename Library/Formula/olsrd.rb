@@ -15,7 +15,7 @@ class Olsrd < Formula
 
   def caveats; <<-EOS.undent
     Olsrd uses /etc/olsrd.conf as default configfile.
-    Please copy #{prefix}/etc/olsrd.conf to /etc/olsrd.conf or run olsrd -f #{prefix}/etc/olsrd.conf
+    Please use olsrd -f #{prefix}/etc/olsrd.conf to run it.
     EOS
   end
 
