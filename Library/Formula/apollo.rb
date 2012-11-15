@@ -24,7 +24,8 @@ class Apollo < Formula
   option "no-mqtt", "Install without MQTT protocol support"
 
   def install
-    prefix.install %w{ LICENSE NOTICE readme.html docs examples }
+    prefix.install_metafiles
+    prefix.install %w{ docs examples }
     libexec.install Dir['*']
 
     unless build.include? "no-bdb"

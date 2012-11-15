@@ -2,8 +2,8 @@ require 'formula'
 
 class Gptfdisk < Formula
   homepage 'http://www.rodsbooks.com/gdisk/'
-  url 'http://sourceforge.net/projects/gptfdisk/files/gptfdisk/0.8.2/gptfdisk-0.8.2.tar.gz'
-  sha1 '8ab967cd7b0925a8b8a5b24bcdc03d5de688214c'
+  url 'http://sourceforge.net/projects/gptfdisk/files/gptfdisk/0.8.5/gptfdisk-0.8.5.tar.gz'
+  sha1 'fdff85df2515d5c11d5dc6fdf726a0d65f5136d4'
 
   depends_on 'popt'
   depends_on 'icu4c'

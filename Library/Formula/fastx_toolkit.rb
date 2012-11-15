@@ -2,8 +2,8 @@ require 'formula'
 
 class FastxToolkit < Formula
   homepage 'http://hannonlab.cshl.edu/fastx_toolkit/'
-  url 'http://hannonlab.cshl.edu/fastx_toolkit/fastx_toolkit-0.0.13.tar.bz2'
-  sha1 'ae3ae793f0f3e2caa04b44133ab91ce876092fb9'
+  url 'http://hannonlab.cshl.edu/fastx_toolkit/fastx_toolkit-0.0.13.2.tar.bz2'
+  sha1 '51fd9ddc1fc1ffea29d7cabc02e46dd8a1b860ec'
 
   depends_on 'pkg-config' => :build
   depends_on 'libgtextutils'

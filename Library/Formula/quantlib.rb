@@ -2,8 +2,8 @@ require 'formula'
 
 class Quantlib < Formula
   homepage 'http://quantlib.org/'
-  url 'http://sourceforge.net/projects/quantlib/files/QuantLib/1.2/QuantLib-1.2.tar.gz'
-  sha1 'c53093adca31e598dc93385314d47f40c365e4b6'
+  url 'http://sourceforge.net/projects/quantlib/files/QuantLib/1.2.1/QuantLib-1.2.1.tar.gz'
+  sha1 '2a9faf539c7452f2f6c2b8d593677cd133659742'
 
   depends_on 'boost'
 

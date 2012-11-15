@@ -33,8 +33,8 @@ class Disco < Formula
     system "make install"
     ENV.delete('CC')
     system "make install-discodb install-discodex"
-    bin.install ['contrib/discodex/bin/discodex','contrib/discodex/bin/discodexcli.py']
-    prefix.install ['contrib', 'doc', 'examples', 'node']
+    bin.install %w[contrib/discodex/bin/discodex contrib/discodex/bin/discodexcli.py]
+    prefix.install %w[contrib doc examples node]
   end
 
   def caveats; <<-EOS.undent

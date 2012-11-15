@@ -36,8 +36,8 @@ end
 
 class Openimageio < Formula
   homepage 'http://openimageio.org'
-  url 'https://github.com/OpenImageIO/oiio/tarball/Release-1.0.9'
-  sha1 '3975c1eb08bf5c84ea69304f275287971e5af7ff'
+  url 'https://github.com/OpenImageIO/oiio/tarball/Release-1.0.10'
+  sha1 'd8e546013c56df78c6d07dd55a464a708b3a5837'
 
   head 'https://github.com/OpenImageIO/oiio.git'
 
@@ -68,7 +68,9 @@ class Openimageio < Formula
       chdir 'localpub'
     end
 
+    j2k = Formula.factory('openjpeg').linked_keg.realpath
     ENV.append 'MY_CMAKE_FLAGS', "-Wno-dev"   # stops a warning.
+    ENV.append 'MY_CMAKE_FLAGS', "-DOPENJPEG_INCLUDE_DIR=#{j2k}/include/openjpeg-1.5"
     args = ["USE_TBB=1", "EMBEDPLUGINS=1"]
 
 

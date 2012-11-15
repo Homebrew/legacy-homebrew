@@ -187,9 +187,9 @@ def check_for_other_package_managers
 end
 
 def check_for_broken_symlinks
+  require 'keg'
   broken_symlinks = []
-  %w[lib include sbin bin etc share].each do |d|
-    d = HOMEBREW_PREFIX/d
+  Keg::PRUNEABLE_DIRECTORIES.map { |d| HOMEBREW_PREFIX/d }.each do |d|
     next unless d.directory?
     d.find do |pn|
       broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/ and not pn.exist?
@@ -484,7 +484,7 @@ def check_user_path_3
 end
 
 def check_user_curlrc
-  if %w[CURL_HOME HOME].one?{|key| ENV[key] and File.exists? "#{ENV[key]}/.curlrc" } then <<-EOS.undent
+  if %w[CURL_HOME HOME].any?{|key| ENV[key] and File.exists? "#{ENV[key]}/.curlrc" } then <<-EOS.undent
     You have a curlrc file
     If you have trouble downloading packages with Homebrew, then maybe this
     is the problem? If the following command doesn't work, then try removing
@@ -973,11 +973,31 @@ end
     EOS
   end
 
+  def check_for_latest_xquartz
+    quartz = MacOS::XQuartz.version
+    return unless quartz
+    return if MacOS::XQuartz.provided_by_apple?
+
+    quartz = Version.new(quartz)
+    latest = Version.new(MacOS::XQuartz.latest_version)
+
+    return if quartz >= latest
+
+    <<-EOS.undent
+      Your XQuartz (#{quartz}) is outdated
+      Please install XQuartz #{latest}.
+    EOS
+  end
 end # end class Checks
 
 module Homebrew extend self
   def doctor
     checks = Checks.new
+
+    if ARGV.include? '--list-checks'
+      checks.methods.select { |m| m =~ /^check_/ }.sort.each { |m| puts m }
+      exit
+    end
 
     inject_dump_stats(checks) if ARGV.switch? 'D'
 
