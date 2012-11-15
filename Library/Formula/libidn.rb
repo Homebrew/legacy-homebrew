@@ -9,7 +9,6 @@ class Libidn < Formula
   depends_on 'pkg-config' => :build
 
   def install
-    ENV.universal_binary
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-csharp"
