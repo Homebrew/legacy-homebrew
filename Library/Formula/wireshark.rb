@@ -7,6 +7,7 @@ class Wireshark < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gnutls' => :optional
+  depends_on 'libgcrypt' => :optional
   depends_on 'c-ares' => :optional
   depends_on 'pcre' => :optional
   depends_on 'glib'
