@@ -9,7 +9,6 @@ class GmapGsnap < Formula
   depends_on "samtools"
 
   def install
-    ENV['CC'] = "#{ENV.cc} -O3 -m#{MacOS.prefer_64_bit? ? 64 : 32}"
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
