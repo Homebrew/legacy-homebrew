@@ -14,6 +14,6 @@ class Normalize < Formula
   end
 
   def test
-    system "normalize"
+    system "#{bin}/normalize"
   end
 end
