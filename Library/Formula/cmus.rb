@@ -2,8 +2,8 @@ require 'formula'
 
 class Cmus < Formula
   homepage 'http://cmus.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/cmus/cmus-v2.4.3.tar.bz2'
-  sha1 'ba63a417b0df42fa9a4850dd8b922a95a426f7f5'
+  url 'http://downloads.sourceforge.net/cmus/cmus-v2.5.0.tar.bz2'
+  sha1 '244975a5ff642567acb047f6bd518e4a3271c25b'
 
   head 'https://git.gitorious.org/cmus/cmus.git'
 
