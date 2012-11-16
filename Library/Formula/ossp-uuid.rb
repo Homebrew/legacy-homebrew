@@ -9,6 +9,9 @@ class OsspUuid < Formula
   option :universal
   option "32-bit"
 
+  # see https://github.com/mxcl/homebrew/issues/16077
+  keg_only "OS X provides a uuid.h which conflicts with ossp-uuid's header."
+
   def install
     if build.universal?
       ENV.universal_binary
