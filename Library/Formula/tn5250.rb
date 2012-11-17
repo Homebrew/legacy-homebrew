@@ -5,6 +5,7 @@ class Tn5250 < Formula
   url 'http://sourceforge.net/projects/tn5250/files/tn5250/0.17.4/tn5250-0.17.4.tar.gz'
   sha1 '2c84f03f798fd5095009d6798d1e6c0b29e48a75'
 
+  # Fix Segmentation fault: 11 issue on OS X
   def patches
     DATA
   end
@@ -14,7 +15,6 @@ class Tn5250 < Formula
                           "--prefix=#{prefix}"
     system "make"
     system "make install" 
-    system "make clean"
   end  
 end
 
