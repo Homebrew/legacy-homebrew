@@ -36,6 +36,7 @@ class Boost < Formula
   option 'with-mpi', 'Enable MPI support'
   option 'without-python', 'Build without Python'
   option 'with-icu', 'Build regexp engine with icu support'
+  option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
 
   depends_on UniversalPython.new if needs_universal_python?
   depends_on "icu4c" if build.include? "with-icu"
@@ -44,6 +45,14 @@ class Boost < Formula
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
+  end
+
+  # Patch boost/config/stdlib/libcpp.hpp to fix the constexpr bug reported under Boost 1.52 in Ticket
+  # 7671.  This patch can be removed when upstream release an updated version including the fix.
+  def patches
+    if MacOS.version >= :lion and build.include? 'with-c++11'
+      {:p0 => "https://svn.boost.org/trac/boost/raw-attachment/ticket/7671/libcpp_c11_numeric_limits.patch"}
+    end
   end
 
   def install
@@ -74,6 +83,8 @@ class Boost < Formula
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
+    bargs << "--with-toolset=clang" if build.include? "with-c++11"
+
     if build.include? 'with-icu'
       icu4c_prefix = Formula.factory('icu4c').opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
@@ -90,10 +101,18 @@ class Boost < Formula
             "threading=multi",
             "install"]
 
+    if MacOS.version >= :lion and build.include? 'with-c++11'
+      args << "toolset=clang" << "cxxflags=-std=c++11"
+      args << "cxxflags=-stdlib=libc++" << "cxxflags=-fPIC"
+      args << "linkflags=-stdlib=libc++"
+      args << "linkflags=-headerpad_max_install_names"
+      args << "linkflags=-arch x86_64"
+    end
+
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
     args << "--without-python" if build.include? "without-python"
 
     system "./bootstrap.sh", *bargs
-    system "./bjam", *args
+    system "./b2", *args
   end
 end
