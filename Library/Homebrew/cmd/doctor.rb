@@ -976,6 +976,7 @@ end
   def check_for_latest_xquartz
     quartz = MacOS::XQuartz.version
     return unless quartz
+    return if MacOS::XQuartz.provided_by_apple?
 
     quartz = Version.new(quartz)
     latest = Version.new(MacOS::XQuartz.latest_version)
@@ -992,6 +993,11 @@ end # end class Checks
 module Homebrew extend self
   def doctor
     checks = Checks.new
+
+    if ARGV.include? '--list-checks'
+      checks.methods.select { |m| m =~ /^check_/ }.sort.each { |m| puts m }
+      exit
+    end
 
     inject_dump_stats(checks) if ARGV.switch? 'D'
 
