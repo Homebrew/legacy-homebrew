@@ -1,8 +1,9 @@
 require 'formula'
 
 class Rpm2cpio < Formula
-  homepage 'http://www.freebsd.org/cgi/cvsweb.cgi/ports/archivers/rpm2cpio/'
-  url 'http://www.freebsd.org/cgi/cvsweb.cgi/~checkout~/ports/archivers/rpm2cpio/files/rpm2cpio?rev=1.4'
+  homepage 'http://svnweb.freebsd.org/ports/head/archivers/rpm2cpio/'
+  url 'http://svnweb.freebsd.org/ports/head/archivers/rpm2cpio/files/rpm2cpio?revision=259745'
+  # cvs2svn:cvs-rev	1.4
   version '1.4'
   sha1 '7bd6e848eed9444a4dacf9759cc195ca56ab19b2'
 
@@ -10,6 +11,6 @@ class Rpm2cpio < Formula
   depends_on 'xz'
 
   def install
-    bin.install 'rpm2cpio?rev=1.4' => 'rpm2cpio'
+    bin.install 'rpm2cpio?revision=259745' => 'rpm2cpio'
   end
 end
