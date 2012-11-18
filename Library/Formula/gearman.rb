@@ -5,10 +5,12 @@ class Gearman < Formula
   url 'https://launchpad.net/gearmand/1.0/0.39/+download/gearmand-0.39.tar.gz'
   sha1 'a63af4d86809f39971b21b361740d472bf993345'
 
+  option 'without-ossp-uuid', 'Build without ossp-uuid'
+  
   depends_on 'pkg-config' => :build
   depends_on 'boost'
   depends_on 'libevent'
-  depends_on 'ossp-uuid'
+  depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--without-mysql"
