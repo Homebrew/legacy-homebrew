@@ -15,6 +15,11 @@ class Postgresql < Formula
   option 'no-perl', 'Build without Perl support'
   option 'enable-dtrace', 'Build with DTrace support'
 
+  fails_with :clang do
+    build 211
+    cause 'Miscompilation resulting in segfault on queries'
+  end
+
   # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
   # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
   def patches
