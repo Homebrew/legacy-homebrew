@@ -1,9 +1,21 @@
 require 'formula'
 
+class LionOrNewer < Requirement
+  def satisfied?
+    MacOS.version >= :lion
+  end
+
+  def message
+    "Drizzle requires Mac OS X 10.7 (Lion) or newer."
+  end
+end
+
 class Drizzle < Formula
   homepage 'http://drizzle.org'
   url 'https://launchpad.net/drizzle/7.1/7.1.36/+download/drizzle-7.1.36-stable.tar.gz'
   sha1 '6ce317d6a6b0560e75d5bcf44af2e278443cfbfe'
+
+  depends_on LionOrNewer.new
 
   depends_on 'protobuf'
 
@@ -17,12 +29,6 @@ class Drizzle < Formula
   depends_on 'readline'
 
   def install
-
-    old_boost = Formula.factory('boost149')
-
-    ENV.append 'LDFLAGS', "-L#{old_boost.prefix}/lib"
-    ENV.append 'CPPFLAGS', "-I#{old_boost.prefix}/include"
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
