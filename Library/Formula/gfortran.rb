@@ -8,6 +8,12 @@ class Gfortran < Formula
   mirror 'http://ftp.gnu.org/gnu/gcc/gcc-4.7.2/gcc-4.7.2.tar.bz2'
   sha1 'a464ba0f26eef24c29bcd1e7489421117fb9ee35'
 
+  bottle do
+    sha1 '684879d100c02ac9ba5c23ded4860da19c02650d' => :mountainlion
+    sha1 '3d958ffe0f126d1add6e2f5236b333870b1a826b' => :lion
+    sha1 '9708ac5fa35db9789b8e050fbe410acee9ec9e45' => :snowleopard
+  end
+
   depends_on 'gmp'
   depends_on 'libmpc'
   depends_on 'mpfr'
