@@ -1,0 +1,17 @@
+require 'formula'
+
+class Argtable2 < Formula
+  homepage 'http://argtable.sourceforge.net'
+  url 'http://iweb.dl.sourceforge.net/project/argtable/argtable/argtable-2.13/argtable2-13.tar.gz'
+  version '2.13'
+  sha1 'bce828c64c35e16f4c3f8e1f355e4a2a97fe3289'
+
+  def install
+    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "make install"
+  end
+
+  def test
+    system "make check"
+  end
+end
