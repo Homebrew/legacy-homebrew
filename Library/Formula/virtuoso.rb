@@ -5,14 +5,24 @@ class Virtuoso < Formula
   url 'http://downloads.sourceforge.net/project/virtuoso/virtuoso/6.1.6/virtuoso-opensource-6.1.6.tar.gz'
   sha1 '03bc14b1627d16d76687f8b8659801966aab3fb4'
 
-  # If gawk isn't found, make fails deep into the process.
-  depends_on 'gawk'
+  head 'https://github.com/openlink/virtuoso-opensource.git', :branch => 'develop/6'
 
-  skip_clean :all
+  # If gawk isn't found, make fails deep into the process.
+  depends_on 'gawk' => :build
+
+  if build.head?
+    depends_on :autoconf => :build
+    depends_on :automake => :build
+    depends_on :libtool  => :build
+  end
+
+  skip_clean :la
 
   def install
     ENV.m64 if MacOS.prefer_64_bit?
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./autogen.sh" if build.head?
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 
