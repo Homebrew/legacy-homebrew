@@ -15,12 +15,17 @@ class Gtkx < Formula
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
   depends_on 'cairo'
-  depends_on :x11 => '2.6.3'
+
+  option 'without-x', 'Build GTK+ without X11'
 
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
   end
+
+    if build.include? 'without-x'
+      args << '--without-x' << '--with-xinput=no' << '--with-gdktarget=quartz'
+    end
 
   def install
     system "./configure", "--disable-debug",
