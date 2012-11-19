@@ -50,7 +50,7 @@ class Boost < Formula
   # Patch boost/config/stdlib/libcpp.hpp to fix the constexpr bug reported under Boost 1.52 in Ticket
   # 7671.  This patch can be removed when upstream release an updated version including the fix.
   def patches
-    if MacOS.version >= :lion and build.include? 'with-c++11'
+    if MacOS.version >= :lion and ( build.include? 'with-c++11' or build.include? 'with-icu' )
       {:p0 => "https://svn.boost.org/trac/boost/raw-attachment/ticket/7671/libcpp_c11_numeric_limits.patch"}
     end
   end
@@ -83,7 +83,8 @@ class Boost < Formula
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    bargs << "--with-toolset=clang" if build.include? "with-c++11"
+    bargs << "--with-toolset=clang" if build.include? "with-c++11" or
+                                       build.include? 'with-icu'
 
     if build.include? 'with-icu'
       icu4c_prefix = Formula.factory('icu4c').opt_prefix
@@ -101,7 +102,7 @@ class Boost < Formula
             "threading=multi",
             "install"]
 
-    if MacOS.version >= :lion and build.include? 'with-c++11'
+    if MacOS.version >= :lion and ( build.include? 'with-c++11' or build.include? 'with-icu' )
       args << "toolset=clang" << "cxxflags=-std=c++11"
       args << "cxxflags=-stdlib=libc++" << "cxxflags=-fPIC"
       args << "linkflags=-stdlib=libc++"
