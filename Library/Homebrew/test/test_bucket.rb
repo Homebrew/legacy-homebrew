@@ -84,7 +84,6 @@ class BeerTasting < Test::Unit::TestCase
       assert_nothing_raised do
         f=TestBallWithRealPath.new
         Homebrew.info_formula f
-        Cleaner.new f
         Homebrew.prune
         #TODO test diy function too
       end

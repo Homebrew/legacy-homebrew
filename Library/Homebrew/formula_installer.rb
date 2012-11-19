@@ -15,7 +15,7 @@ class FormulaInstaller
   def initialize ff, tab=nil
     @f = ff
     @tab = tab
-    @show_header = true
+    @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @install_bottle = install_bottle? ff
 
@@ -73,6 +73,12 @@ class FormulaInstaller
       needed_deps = []
       needed_reqs = []
 
+      # HACK: If readline is present in the dependency tree, it will clash
+      # with the stdlib's Readline module when the debugger is loaded
+      if f.recursive_deps.any? { |d| d.name == "readline" } and ARGV.debug?
+        ENV['HOMEBREW_NO_READLINE'] = '1'
+      end
+
       ARGV.filter_for_dependencies do
         needed_deps = f.recursive_deps.reject{ |d| d.installed? }
         needed_reqs = f.recursive_requirements.reject { |r| r.satisfied? }
@@ -99,7 +105,7 @@ class FormulaInstaller
           end
         end
         # now show header as all the deps stuff has clouded the original issue
-        show_header = true
+        @show_header = true
       end
     end
 
@@ -151,7 +157,6 @@ class FormulaInstaller
       audit_lib
       check_manpages
       check_infopages
-      check_m4
     end
 
     keg = Keg.new(f.prefix)
@@ -186,6 +191,7 @@ class FormulaInstaller
       check_PATH unless f.keg_only?
     end
 
+    install_plist
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
@@ -199,6 +205,8 @@ class FormulaInstaller
   end
 
   def build
+    FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{f}/*"]
+
     @start_time = Time.now
 
     # 1. formulae can modify ENV, so we must ensure that each
@@ -235,7 +243,7 @@ class FormulaInstaller
       end
     end
 
-    ignore_interrupts do # the fork will receive the interrupt and marshall it back
+    ignore_interrupts(:quietly) do # the fork will receive the interrupt and marshall it back
       write.close
       Process.wait
       data = read.read
@@ -244,18 +252,14 @@ class FormulaInstaller
       raise "Suspicious installation failure" unless $?.success?
     end
 
-    # This is the installation receipt. The reason this comment is necessary
-    # is because some numpty decided to call the class Tab rather than
-    # the far more appropriate InstallationReceipt :P
-    Tab.for_install(f, args).write
+    raise "Empty installation" if Dir["#{f.prefix}/*"].empty?
+
+    Tab.for_install(f, args).write # INSTALL_RECEIPT.json
 
   rescue Exception => e
     ignore_interrupts do
       # any exceptions must leave us with nothing installed
-      if f.prefix.directory?
-        puts "One sec, just cleaning up..." if e.kind_of? Interrupt
-        f.prefix.rmtree
-      end
+      f.prefix.rmtree if f.prefix.directory?
       f.rack.rmdir_if_possible
     end
     raise
@@ -283,6 +287,15 @@ class FormulaInstaller
     end
   end
 
+  def install_plist
+    # Install a plist if one is defined
+    # Skip plist file exists check: https://github.com/mxcl/homebrew/issues/15849
+    if f.startup_plist
+      f.plist_path.write f.startup_plist
+      f.plist_path.chmod 0644
+    end
+  end
+
   def fix_install_names
     Keg.new(f.prefix).fix_install_names
   rescue Exception => e
@@ -294,6 +307,7 @@ class FormulaInstaller
   end
 
   def clean
+    ohai "Cleaning" if ARGV.verbose?
     if f.class.skip_clean_all?
       opoo "skip_clean :all is deprecated"
       puts "Skip clean was commonly used to prevent brew from stripping binaries."
@@ -321,16 +335,12 @@ class FormulaInstaller
 
   ## checks
 
-  def paths
-    @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
-  end
-
   def check_PATH
     # warn the user if stuff was installed outside of their PATH
     [f.bin, f.sbin].each do |bin|
       if bin.directory? and bin.children.length > 0
-        bin = (HOMEBREW_PREFIX/bin.basename).realpath.to_s
-        unless paths.include? bin
+        bin = (HOMEBREW_PREFIX/bin.basename).realpath
+        unless ORIGINAL_PATHS.include? bin
           opoo "#{bin} is not in your PATH"
           puts "You can amend this by altering your ~/.bashrc file"
           @show_summary_heading = true
@@ -341,7 +351,7 @@ class FormulaInstaller
 
   def check_manpages
     # Check for man pages that aren't in share/man
-    if (f.prefix+'man').exist?
+    if (f.prefix+'man').directory?
       opoo 'A top-level "man" directory was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
@@ -351,7 +361,7 @@ class FormulaInstaller
 
   def check_infopages
     # Check for info pages that aren't in share/info
-    if (f.prefix+'info').exist?
+    if (f.prefix+'info').directory?
       opoo 'A top-level "info" directory was found.'
       puts "Homebrew suggests that info pages live under share."
       puts 'This can often be fixed by passing "--infodir=#{info}" to configure.'
@@ -360,7 +370,7 @@ class FormulaInstaller
   end
 
   def check_jars
-    return unless File.exist? f.lib
+    return unless f.lib.directory?
 
     jars = f.lib.children.select{|g| g.to_s =~ /\.jar$/}
     unless jars.empty?
@@ -376,10 +386,10 @@ class FormulaInstaller
   end
 
   def check_non_libraries
-    return unless File.exist? f.lib
+    return unless f.lib.directory?
 
     valid_extensions = %w(.a .dylib .framework .jnilib .la .o .so
-                          .jar .prl .pm)
+                          .jar .prl .pm .sh)
     non_libraries = f.lib.children.select do |g|
       next if g.directory?
       not valid_extensions.include? g.extname
@@ -395,9 +405,9 @@ class FormulaInstaller
   end
 
   def audit_bin
-    return unless File.exist? f.bin
+    return unless f.bin.directory?
 
-    non_exes = f.bin.children.select {|g| File.directory? g or not File.executable? g}
+    non_exes = f.bin.children.select { |g| g.directory? or not g.executable? }
 
     unless non_exes.empty?
       opoo 'Non-executables were installed to "bin".'
@@ -409,9 +419,9 @@ class FormulaInstaller
   end
 
   def audit_sbin
-    return unless File.exist? f.sbin
+    return unless f.sbin.directory?
 
-    non_exes = f.sbin.children.select {|g| File.directory? g or not File.executable? g}
+    non_exes = f.sbin.children.select { |g| g.directory? or not g.executable? }
 
     unless non_exes.empty?
       opoo 'Non-executables were installed to "sbin".'
@@ -425,25 +435,6 @@ class FormulaInstaller
   def audit_lib
     check_jars
     check_non_libraries
-  end
-
-  def check_m4
-    # Newer versions of Xcode don't come with autotools
-    return if MacOS::Xcode.version.to_f >= 4.3
-
-    # If the user has added our path to dirlist, don't complain
-    return if File.open("/usr/share/aclocal/dirlist") do |dirlist|
-      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
-    end rescue false
-
-    # Check for installed m4 files
-    if Dir[f.share+"aclocal/*.m4"].length > 0
-      opoo 'm4 macros were installed to "share/aclocal".'
-      puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
-      puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"
-      puts "requires these m4 macros, you'll need to add this path manually."
-      @show_summary_heading = true
-    end
   end
 end
 

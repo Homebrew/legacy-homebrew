@@ -2,8 +2,8 @@ require 'formula'
 
 class Nasm < Formula
   homepage 'http://www.nasm.us/'
-  url 'http://www.nasm.us/pub/nasm/releasebuilds/2.10.03/nasm-2.10.03.tar.bz2'
-  sha256 '3babec15086fed1d00495e7c412848fd135cad70faa811738cb35da46d98974c'
+  url 'http://www.nasm.us/pub/nasm/releasebuilds/2.10.05/nasm-2.10.05.tar.bz2'
+  sha256 'de5af263ce344d3a89711c61802e3ad8a4e14a61d539f521f7554cdbbe04ed0f'
 
   option :universal
 

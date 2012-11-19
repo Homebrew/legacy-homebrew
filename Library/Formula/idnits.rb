@@ -9,6 +9,6 @@ class Idnits < Formula
 
   def install
     bin.install "idnits"
-    prefix.install %w(about todo)
+    prefix.install_metafiles
   end
 end

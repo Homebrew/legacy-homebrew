@@ -1,9 +1,9 @@
 require 'formula'
 
 class Bowtie < Formula
-  url 'http://downloads.sourceforge.net/project/bowtie-bio/bowtie/0.12.7/bowtie-0.12.7-src.zip'
   homepage 'http://bowtie-bio.sourceforge.net/index.shtml'
-  md5 '2808d61eaf15c9f7138794766c99a561'
+  url 'http://downloads.sourceforge.net/project/bowtie-bio/bowtie/0.12.8/bowtie-0.12.8-src.zip'
+  sha1 '56fd4dfd1d8ef995f041d11ce6078dd1e22a655f'
 
   def install
     system "make"

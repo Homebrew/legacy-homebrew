@@ -17,8 +17,10 @@ module Homebrew extend self
       end
       clean_cache
       # seems like a good time to do some additional cleanup
-      Homebrew.prune unless ARGV.dry_run?
-      rm_DS_Store
+      unless ARGV.dry_run?
+        Homebrew.prune
+        rm_DS_Store
+      end
     else
       ARGV.formulae.each do |f|
         cleanup_formula f
@@ -33,8 +35,12 @@ module Homebrew extend self
       f.rack.children.each do |keg|
         if f.installed_prefix != keg
           if f.can_cleanup?
-            puts "Removing #{keg}..."
-            rm_rf keg unless ARGV.dry_run?
+            if ARGV.dry_run?
+              puts "Would remove: #{keg}"
+            else
+              puts "Removing: #{keg}..."
+              rm_rf keg
+            end
           else
             opoo "Skipping (old) keg-only: #{keg}"
           end
@@ -56,8 +62,12 @@ module Homebrew extend self
         f = Formula.factory(name) rescue nil
         old_bottle = bottle_file_outdated? f, pn
         if not f or (f.version != version or ARGV.switch? "s" and not f.installed?) or old_bottle
-          puts "Removing #{pn}..."
-          rm pn unless ARGV.dry_run?
+          if ARGV.dry_run?
+            puts "Would remove: #{pn}"
+          else
+            puts "Removing: #{pn}..."
+            rm pn
+          end
         end
       end
     end
@@ -76,7 +86,7 @@ class Formula
     # introduced the opt symlink, and built against that instead. So provided
     # no brew exists that was built against an old-style keg-only keg, we can
     # remove it.
-    if not keg_only?
+    if not keg_only? or ARGV.force?
       true
     elsif opt_prefix.directory?
       # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks
@@ -84,7 +94,7 @@ class Formula
         select{ |ff| ff.deps.map(&:to_s).include? name }.
         map{ |ff| ff.rack.children rescue [] }.
         flatten.
-        map{ |keg_path| Tab.for_keg(keg_path).sha }.
+        map{ |keg_path| Tab.for_keg(keg_path).send("HEAD") }.
         include? nil
     end
   end

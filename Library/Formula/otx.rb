@@ -7,9 +7,13 @@ class Otx < Formula
   depends_on :xcode # For working xcodebuild.
 
   def install
+    inreplace 'otx.xcodeproj/project.pbxproj' do |s|
+      s.gsub! "MacOSX10.6.sdk", "MacOSX#{MacOS.version}.sdk"
+    end
+
     system 'xcodebuild SYMROOT=build'
     build = buildpath/'build/Release'
-    bin.install build+"otx"
-    prefix.install build+"otx.app"
+    bin.install build/"otx"
+    prefix.install build/"otx.app"
   end
 end

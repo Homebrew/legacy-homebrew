@@ -1,9 +1,9 @@
 require 'formula'
 
 class P7zip < Formula
-  url 'http://downloads.sourceforge.net/project/p7zip/p7zip/9.20.1/p7zip_9.20.1_src_all.tar.bz2'
   homepage 'http://p7zip.sourceforge.net/'
-  md5 'bd6caaea567dc0d995c990c5cc883c89'
+  url 'http://downloads.sourceforge.net/project/p7zip/p7zip/9.20.1/p7zip_9.20.1_src_all.tar.bz2'
+  sha1 '1cd567e043ee054bf08244ce15f32cb3258306b7'
 
   option '32-bit'
 
@@ -14,7 +14,14 @@ class P7zip < Formula
       mv 'makefile.macosx_64bits', 'makefile.machine'
     end
 
-    system "make", "all3", "CC=#{ENV.cc} $(ALLFLAGS)", "CXX=#{ENV.cxx} $(ALLFLAGS)"
-    system "make", "DEST_HOME=#{prefix}", "DEST_MAN=#{man}", "install"
+    system "make", "all3",
+                   "CC=#{ENV.cc} $(ALLFLAGS)",
+                   "CXX=#{ENV.cxx} $(ALLFLAGS)"
+    system "make", "DEST_HOME=#{prefix}",
+                   "DEST_MAN=#{man}",
+                   "install"
+
+    # install.sh chmods to 444, which is bullshit and breaks uninstalling
+    system "chmod -R +w #{doc}"
   end
 end

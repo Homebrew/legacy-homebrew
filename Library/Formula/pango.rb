@@ -10,8 +10,13 @@ class Pango < Formula
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'glib'
-  depends_on :fontconfig
   depends_on :x11 unless build.include? 'without-x'
+
+  if MacOS.version == :leopard
+    depends_on 'fontconfig'
+  else
+    depends_on :fontconfig
+  end
 
   # The Cairo library shipped with Lion contains a flaw that causes Graphviz
   # to segfault. See the following ticket for information:
@@ -25,11 +30,6 @@ class Pango < Formula
   end
 
   def install
-    # Always prefer our cairo over XQuartz cairo
-    cairo = Formula.factory('cairo')
-    ENV['CAIRO_CFLAGS'] = "-I#{cairo.include}/cairo"
-    ENV['CAIRO_LIBS'] = "-L#{cairo.lib} -lcairo"
-
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
@@ -38,7 +38,11 @@ class Pango < Formula
       --disable-introspection
     ]
 
-    args << '--with-x' unless build.include? 'without-x'
+    if build.include? 'without-x'
+      args << '--without-x'
+    else
+      args << '--with-x'
+    end
 
     system "./configure", *args
     system "make"
@@ -49,9 +53,7 @@ class Pango < Formula
     mktemp do
       system "#{bin}/pango-view", "-t", "test-image",
                                   "--waterfall", "--rotate=10",
-                                  "--annotate=1", "--header",
-                                  "-q", "-o", "output.png"
-      system "/usr/bin/qlmanage", "-p", "output.png"
+                                  "--annotate=1", "--header"
     end
   end
 end

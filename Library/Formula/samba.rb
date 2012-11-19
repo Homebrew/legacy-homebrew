@@ -2,8 +2,8 @@ require 'formula'
 
 class Samba < Formula
   homepage 'http://samba.org/'
-  url 'http://samba.org/samba/ftp/stable/samba-3.6.6.tar.gz'
-  sha1 'f1516ce332fe11c68a052855edd745368ac4d8e9'
+  url 'http://www.samba.org/samba/ftp/stable/samba-3.6.8.tar.gz'
+  sha1 'a3cd91fa8835c7c47e4cb3ab419f92b4895052b5'
 
   # Needed for autogen.sh
   depends_on :automake
@@ -27,8 +27,8 @@ class Samba < Formula
                             "--prefix=#{prefix}",
                             "--with-configdir=#{prefix}/etc"
       system "make install"
-      (prefix+'etc').mkpath
-      system "touch", "#{prefix}/etc/smb.conf"
+      (prefix/'etc').mkpath
+      touch prefix/'etc/smb.conf'
     end
   end
 end

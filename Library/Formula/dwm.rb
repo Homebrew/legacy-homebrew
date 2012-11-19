@@ -3,8 +3,10 @@ require 'formula'
 class Dwm < Formula
   url 'http://dl.suckless.org/dwm/dwm-6.0.tar.gz'
   homepage 'http://dwm.suckless.org/'
-  md5 '8bb00d4142259beb11e13473b81c0857'
+  sha1 '35346f873a27f219ae266594b3690407f95d06ef'
   head 'http://hg.suckless.org/dwm'
+
+  depends_on :x11
 
   def install
     # The dwm default quit keybinding Mod1-Shift-q collides with

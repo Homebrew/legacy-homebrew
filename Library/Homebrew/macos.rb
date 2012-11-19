@@ -1,5 +1,7 @@
 module MacOS extend self
 
+  # This can be compared to numerics, strings, or symbols
+  # using the standard Ruby Comparable methods.
   def version
     require 'version'
     MacOSVersion.new(MACOS_VERSION.to_s)
@@ -65,20 +67,17 @@ module MacOS extend self
     end
   end
 
-  def sdk_path v=version
+  def sdk_path(v = version)
     @sdk_path ||= {}
     @sdk_path[v.to_s] ||= begin
-      path = if not Xcode.bad_xcode_select_path? and File.executable? "#{Xcode.folder}/usr/bin/make"
-        `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.strip
-      elsif File.directory? "/Developer/SDKs/MacOS#{v}.sdk"
-        # the old default (or wild wild west style)
-        "/Developer/SDKs/MacOS#{v}.sdk"
-      elsif File.directory? "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-        # Xcode.prefix is pretty smart, so lets look inside to find the sdk
-        "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-      end
-
-      Pathname.new(path) unless path.nil? or path.empty? or not File.directory? path
+      opts = []
+      # First query Xcode itself
+      opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
+      # Xcode.prefix is pretty smart, so lets look inside to find the sdk
+      opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+      # Xcode < 4.3 style
+      opts << "/Developer/SDKs/MacOSX#{v}.sdk"
+      opts.map{|a| Pathname.new(a) }.detect { |p| p.directory? }
     end
   end
 
@@ -178,35 +177,42 @@ module MacOS extend self
     Hardware.is_64_bit? and version != :leopard
   end
 
-  StandardCompilers = {
-    "3.1.4" => {:gcc_40_build_version=>5493, :gcc_42_build_version=>5577},
-    "3.2.6" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"1.7", :clang_build_version=>77},
-    "4.0" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
-    "4.0.1" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
-    "4.0.2" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
-    "4.2" => {:llvm_build_version=>2336, :clang_version=>"3.0", :clang_build_version=>211},
-    "4.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.3.1" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.3.2" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.3.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.4" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421},
-    "4.4.1" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421}
+  STANDARD_COMPILERS = {
+    "3.1.4" => { :gcc_40_build => 5493, :gcc_42_build => 5577 },
+    "3.2.6" => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "1.7", :clang_build => 77 },
+    "4.0"   => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "2.0", :clang_build => 137 },
+    "4.0.1" => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "2.0", :clang_build => 137 },
+    "4.0.2" => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "2.0", :clang_build => 137 },
+    "4.2"   => { :llvm_build => 2336, :clang => "3.0", :clang_build => 211 },
+    "4.3"   => { :llvm_build => 2336, :clang => "3.1", :clang_build => 318 },
+    "4.3.1" => { :llvm_build => 2336, :clang => "3.1", :clang_build => 318 },
+    "4.3.2" => { :llvm_build => 2336, :clang => "3.1", :clang_build => 318 },
+    "4.3.3" => { :llvm_build => 2336, :clang => "3.1", :clang_build => 318 },
+    "4.4"   => { :llvm_build => 2336, :clang => "4.0", :clang_build => 421 },
+    "4.4.1" => { :llvm_build => 2336, :clang => "4.0", :clang_build => 421 },
+    "4.5"   => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
+    "4.5.1" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
+    "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 }
   }
 
   def compilers_standard?
     xcode = Xcode.version
 
-    unless StandardCompilers.keys.include? xcode
+    unless STANDARD_COMPILERS.keys.include? xcode
       onoe <<-EOS.undent
         Homebrew doesn't know what compiler versions ship with your version of
-        Xcode. Please file an issue with the output of `brew --config`:
+        Xcode. Please `brew update` and if that doesn't help, file an issue with
+        the output of `brew --config`:
           https://github.com/mxcl/homebrew/issues
 
         Thanks!
         EOS
+      return
     end
 
-    StandardCompilers[xcode].all? { |method, build| MacOS.send(method) == build }
+    STANDARD_COMPILERS[xcode].all? do |method, build|
+      MacOS.send(:"#{method}_version") == build
+    end
   end
 
   def app_with_bundle_id id
@@ -224,7 +230,7 @@ module MacOS extend self
 
   def bottles_supported?
     # We support bottles on all versions of OS X except 32-bit Snow Leopard.
-    (Hardware.is_64_bit? or not MacOS.snow_leopard?) \
+    (Hardware.is_64_bit? or not MacOS.version >= :snow_leopard) \
       and HOMEBREW_PREFIX.to_s == '/usr/local' \
       and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar' \
   end

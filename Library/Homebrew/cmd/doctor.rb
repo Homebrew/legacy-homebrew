@@ -136,9 +136,7 @@ def check_for_stray_pcs
 
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = {
-    "fuse.pc" => "MacFuse",
-  }
+  white_list = { }
 
   bad_pcs = unbrewed_pcs.reject {|d| white_list.key? File.basename(d) }
   return if bad_pcs.empty?
@@ -189,9 +187,9 @@ def check_for_other_package_managers
 end
 
 def check_for_broken_symlinks
+  require 'keg'
   broken_symlinks = []
-  %w[lib include sbin bin etc share].each do |d|
-    d = HOMEBREW_PREFIX/d
+  Keg::PRUNEABLE_DIRECTORIES.map { |d| HOMEBREW_PREFIX/d }.each do |d|
     next unless d.directory?
     d.find do |pn|
       broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/ and not pn.exist?
@@ -231,13 +229,25 @@ def check_for_latest_xcode
   end
 end
 
+def check_for_stray_developer_directory
+  # if the uninstaller script isn't there, it's a good guess neither are
+  # any troublesome leftover Xcode files
+  if MacOS::Xcode.version >= "4.3" and File.exist? "/Developer/Library/uninstall-developer-folder"
+    return <<-EOS.undent
+    You have leftover files from an older version of Xcode.
+    You should delete them using:
+      /Developer/Library/uninstall-developer-folder
+    EOS
+  end
+end
+
 def check_cc
   unless MacOS::CLT.installed?
     if MacOS::Xcode.version >= "4.3"
       return <<-EOS.undent
         Experimental support for using Xcode without the "Command Line Tools".
         You have only installed Xcode. If stuff is not building, try installing the
-        "Command Line Tools for Xcode" package.
+        "Command Line Tools for Xcode" package provided by Apple.
       EOS
     else
       return <<-EOS.undent
@@ -249,7 +259,8 @@ end
 
 def check_standard_compilers
   return if check_for_latest_xcode # only check if Xcode is up to date
-  if !MacOS.compilers_standard? then <<-EOS.undent
+  compiler_status = MacOS.compilers_standard?
+  if not compiler_status and not compiler_status.nil? then <<-EOS.undent
     Your compilers are different from the standard versions for your Xcode.
     If you have Xcode 4.3 or newer, you should install the Command Line Tools for
     Xcode from within Xcode's Download preferences.
@@ -377,6 +388,18 @@ def check_xcode_prefix
   end
 end
 
+def check_xcode_prefix_exists
+  prefix = MacOS::Xcode.prefix
+  return if prefix.nil?
+  unless prefix.exist?
+    <<-EOS.undent
+      The folder Xcode is reportedly installed to doesn't exist:
+        #{prefix}
+      You may need to `xcode-select` the proper path if you have moved Xcode.
+    EOS
+  end
+end
+
 def check_xcode_select_path
   # with the advent of CLT-only support, we don't need xcode-select
 
@@ -460,6 +483,17 @@ def check_user_path_3
   end
 end
 
+def check_user_curlrc
+  if %w[CURL_HOME HOME].any?{|key| ENV[key] and File.exists? "#{ENV[key]}/.curlrc" } then <<-EOS.undent
+    You have a curlrc file
+    If you have trouble downloading packages with Homebrew, then maybe this
+    is the problem? If the following command doesn't work, then try removing
+    your curlrc:
+      curl http://github.com
+    EOS
+  end
+end
+
 def check_which_pkg_config
   binary = which 'pkg-config'
   return if binary.nil?
@@ -502,7 +536,7 @@ def check_for_gettext
 end
 
 def check_for_iconv
-  unless find_relative_paths("lib/iconv.dylib", "include/iconv.h").empty?
+  unless find_relative_paths("lib/libiconv.dylib", "include/iconv.h").empty?
     if (f = Formula.factory("libiconv") rescue nil) and f.linked_keg.directory?
       if not f.keg_only? then <<-EOS.undent
         A libiconv formula is installed and linked
@@ -533,8 +567,11 @@ def check_for_config_scripts
 
   config_scripts = []
 
+  whitelist = %W[/usr/bin /usr/sbin /usr/X11/bin /usr/X11R6/bin /opt/X11/bin #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin]
+  whitelist.map! { |d| d.downcase }
+
   path_folders.each do |p|
-    next if ['/usr/bin', '/usr/sbin', '/usr/X11/bin', '/usr/X11R6/bin', "#{HOMEBREW_PREFIX}/bin", "#{HOMEBREW_PREFIX}/sbin", "/opt/X11/bin"].include? p
+    next if whitelist.include? p.downcase
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
@@ -925,11 +962,42 @@ def check_os_version
   end
 end
 
+  def check_xcode_license_approved
+    return if MacOS::Xcode.bad_xcode_select_path?
+    # If the user installs Xcode-only, they have to approve the
+    # license or no "xc*" tool will work.
+    <<-EOS.undent if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success?
+    You have not agreed to the Xcode license.
+    Builds will fail! Agree to the license by opening Xcode.app or running:
+        xcodebuild -license
+    EOS
+  end
+
+  def check_for_latest_xquartz
+    quartz = MacOS::XQuartz.version
+    return unless quartz
+    return if MacOS::XQuartz.provided_by_apple?
+
+    quartz = Version.new(quartz)
+    latest = Version.new(MacOS::XQuartz.latest_version)
+
+    return if quartz >= latest
+
+    <<-EOS.undent
+      Your XQuartz (#{quartz}) is outdated
+      Please install XQuartz #{latest}.
+    EOS
+  end
 end # end class Checks
 
 module Homebrew extend self
   def doctor
     checks = Checks.new
+
+    if ARGV.include? '--list-checks'
+      checks.methods.select { |m| m =~ /^check_/ }.sort.each { |m| puts m }
+      exit
+    end
 
     inject_dump_stats(checks) if ARGV.switch? 'D'
 

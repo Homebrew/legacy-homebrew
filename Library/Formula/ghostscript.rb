@@ -35,7 +35,7 @@ class Ghostscript < Formula
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
     renames = %w(jpeg libpng tiff zlib lcms2 jbig2dec)
-    renames << "freetype" if 10.7 <= MACOS_VERSION
+    renames << "freetype" if MacOS.version >= :lion
     renames.each do |lib|
       mv lib, "#{lib}_local"
     end
@@ -43,8 +43,6 @@ class Ghostscript < Formula
 
   def install
     ENV.deparallelize
-    # ghostscript configure ignores LDFLAGs apparently
-    ENV['LIBS'] = "-L#{MacOS::X11.lib}" if MacOS::X11.installed?
 
     src_dir = build.head? ? "gs" : "."
 
@@ -56,6 +54,7 @@ class Ghostscript < Formula
         --disable-compile-inits
         --disable-gtk
         --with-system-libtiff
+        --without-x
       ]
 
       if build.head?

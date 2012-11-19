@@ -1,27 +1,22 @@
 require 'formula'
 
-def no_magick?
-  ARGV.include? '--without-graphicsmagick'
-end
-
-def no_native?
-  ARGV.include? '--without-fltk'
-end
-
-def run_tests?
-  ARGV.include? '--test'
-end
-
-def snow_leopard_64?
+# Leading underscore because this method is defined differently
+# in compat, and anything that loads this file would end up with
+# this definition instead!
+def _snow_leopard_64?
   # 64 bit builds on 10.6 require some special handling.
-  MACOS_VERSION == 10.6 and MacOS.prefer_64_bit?
+  MacOS.version == :snow_leopard and MacOS.prefer_64_bit?
 end
 
 class Octave < Formula
   homepage 'http://www.gnu.org/software/octave/index.html'
-  url 'http://ftpmirror.gnu.org/octave/octave-3.6.2.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.2.tar.bz2'
-  sha1 '145fef0122268086727a60e1c33e29d56fd546d7'
+  url 'http://ftpmirror.gnu.org/octave/octave-3.6.3.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.3.tar.bz2'
+  sha1 'e8bd0c0b33ab9714ddb524f2258546c3536f0628'
+
+  option 'without-graphicsmagick', 'Compile without GraphicsMagick'
+  option 'without-fltk', 'Compile without fltk (disables native graphics)'
+  option 'test', 'Run tests before installing'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-sed' => :build
@@ -36,30 +31,25 @@ class Octave < Formula
   #   http://www.macresearch.org/lapackblas-fortran-106
   #
   # We can work around the issues using dotwrp.
-  depends_on 'dotwrp' if snow_leopard_64?
+  depends_on 'dotwrp' if _snow_leopard_64?
   # octave refuses to work with BSD readline, so it's either this or --disable-readline
   depends_on 'readline'
-  depends_on 'curl' if MacOS.leopard? # Leopard's libcurl is too old
+  depends_on 'curl' if MacOS.version == :leopard # Leopard's libcurl is too old
 
   # additional features
   depends_on 'suite-sparse'
   depends_on 'glpk'
-  depends_on 'graphicsmagick' unless no_magick?
+  depends_on 'graphicsmagick' => :recommended unless build.include? 'without-graphicsmagick'
   depends_on 'hdf5'
   depends_on 'pcre'
-  depends_on 'fltk' unless no_native?
   depends_on 'qhull'
   depends_on 'qrupdate'
 
-  # required for plotting if we don't have native graphics
-  depends_on 'gnuplot' if no_native?
-
-  def options
-    [
-      ['--without-graphicsmagick', 'Compile without GraphicsMagick'],
-      ['--without-fltk', 'Compile without fltk (disables native graphics)'],
-      ['--test', 'Run tests before installing'],
-    ]
+  if build.include? 'without-fltk'
+    # required for plotting if we don't have native graphics
+    depends_on 'gnuplot'
+  else
+    depends_on 'fltk'
   end
 
   def install
@@ -76,15 +66,20 @@ class Octave < Formula
       "--prefix=#{prefix}",
       # Cant use `-framework Accelerate` because `mkoctfile`, the tool used to
       # compile extension packages, can't parse `-framework` flags.
-      "--with-blas=#{'-ldotwrp ' if snow_leopard_64?}-Wl,-framework -Wl,Accelerate"
+      "--with-blas=#{'-ldotwrp ' if _snow_leopard_64?}-Wl,-framework -Wl,Accelerate",
+      # SuiteSparse-4.x.x fix, see http://savannah.gnu.org/bugs/?37031
+      "--with-umfpack=-lumfpack -lsuitesparseconfig",
     ]
-    args << "--without-framework-carbon" if MacOS.lion?
+    args << "--without-framework-carbon" if MacOS.version >= :lion
+    # avoid spurious 'invalid assignment to cs-list' erorrs on 32 bit installs:
+    args << 'CXXFLAGS=-O0' unless MacOS.prefer_64_bit?
 
     system "./configure", *args
     system "make all"
-    system "make check 2>&1 | tee make-check.log" if run_tests?
+    system "make check 2>&1 | tee make-check.log" if build.include? 'test'
     system "make install"
-    prefix.install ["test/fntests.log", "make-check.log"] if run_tests?
+
+    prefix.install ["test/fntests.log", "make-check.log"] if build.include? 'test'
   end
 
   def caveats
@@ -107,6 +102,6 @@ class Octave < Formula
     EOS
 
     s = gnuplot_caveats
-    s = native_caveats + s unless no_native?
+    s = native_caveats + s unless build.include? 'without-fltk'
   end
 end

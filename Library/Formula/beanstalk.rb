@@ -2,14 +2,11 @@ require 'formula'
 
 class Beanstalk < Formula
   homepage 'http://kr.github.com/beanstalkd/'
-  url 'https://github.com/downloads/kr/beanstalkd/beanstalkd-1.6.tar.gz'
-  sha1 '1909e7641cb75a5f9eb00df2b6a194cee9c7c1bc'
+  url 'https://github.com/downloads/kr/beanstalkd/beanstalkd-1.8.tar.gz'
+  sha1 'b8c274d7233e02c6793d8d119608ad7c878b0954'
 
   def install
     system "make", "install", "PREFIX=#{prefix}"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

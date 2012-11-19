@@ -2,7 +2,7 @@ require 'formula'
 
 class Ack < Formula
   url "https://github.com/petdance/ack/tarball/1.96"
-  md5 '1cce67a811c52f9d51fb1195c97795f1'
+  sha1 '547058c0571095beaee9b2e6a3accad52114e759'
   homepage 'http://betterthangrep.com/'
 
   def install

@@ -2,14 +2,14 @@ require 'formula'
 
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-2.3.tar.gz'
-  sha1 'f5fb472500deb01677f1b2e82c7872fe06069cdb'
+  url 'http://mercurial.selenic.com/release/mercurial-2.4.tar.gz'
+  sha1 '80e00082c90753c1798bebf48ba963d1bbcf5f5e'
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
   depends_on 'docutils' => :python if build.head? or build.include? 'doc'
 
-  option 'doc', "Build the documentation. Depends on 'docutils' module"
+  option 'doc', "Build the documentation"
 
   def install
     # Don't add compiler specific flags so we can build against
@@ -17,29 +17,18 @@ class Mercurial < Formula
     ENV.minimal_optimization
 
     # install the completion script
-    (prefix + 'etc/bash_completion.d').install 'contrib/bash_completion' => 'hg-completion.bash'
+    (prefix/'etc/bash_completion.d').install 'contrib/bash_completion' => 'hg-completion.bash'
 
-    # Force the binary install path to the Cellar
-    inreplace "Makefile",
-      "setup.py $(PURE) install",
-      "setup.py $(PURE) install --install-scripts=\"#{libexec}\""
+    system "make doc" if build.head? or build.include? 'doc'
+    system "make local"
 
-    # Make Mercurial into the Cellar.
-    # The documentation must be built when using HEAD
-    system "make", "doc" if build.head? or build.include? 'doc'
-    system "make", "PREFIX=#{prefix}", "build"
-    system "make", "PREFIX=#{prefix}", "install-bin"
-
-    # Now we have lib/python2.x/site-packages/ with Mercurial
-    # libs in them. We want to move these out of site-packages into
-    # a self-contained folder. Let's choose libexec.
-    libexec.install Dir["#{lib}/python*/site-packages/*"]
+    libexec.install 'hg', 'mercurial', 'hgext'
 
     # Symlink the hg binary into bin
-    bin.install_symlink libexec+'hg'
+    bin.install_symlink libexec/'hg'
 
     # Remove the hard-coded python invocation from hg
-    inreplace bin+'hg', %r[#!/.*/python(/.*)?], '#!/usr/bin/env python'
+    inreplace bin/'hg', %r[^#!.*$], '#!/usr/bin/env python'
 
     # Install some contribs
     bin.install 'contrib/hgk'
@@ -50,15 +39,25 @@ class Mercurial < Formula
   end
 
   def caveats
-    if ARGV.build_head? then <<-EOS.undent
+    s = ''
+
+    s += <<-EOS.undent
+      Extensions have been installed to:
+        #{libexec}/hgext
+    EOS
+
+    if build.head? then s += <<-EOS.undent
+
       Mercurial is required to fetch its own repository, so there are now two
       installations of mercurial on this machine. If the previous installation
       was done via Homebrew, the old version may need to be cleaned up and new
       version linked:
 
-          brew cleanup mercurial && brew link mercurial
+        brew cleanup mercurial && brew link mercurial
       EOS
     end
+
+    return s
   end
 
   def test

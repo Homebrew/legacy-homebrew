@@ -2,8 +2,8 @@ require 'formula'
 
 class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.9.tar.gz'
-  sha1 '699b442ab2d9483084689dee037b5eea38a76652'
+  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.11.tar.gz'
+  sha1 '0eeaec541c8aff4d65f47eb5b19af48c725d3663'
 
   def cluster_name
     "elasticsearch_#{ENV['USER']}"
@@ -49,10 +49,6 @@ class Elasticsearch < Formula
       # Replace CLASSPATH paths to use libexec instead of lib
       s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
     end
-
-    # Write .plist file for `launchd`
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def caveats

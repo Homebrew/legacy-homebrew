@@ -10,8 +10,8 @@ end
 
 class Opencv < Formula
   homepage 'http://opencv.org/'
-  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.2/OpenCV-2.4.2.tar.bz2'
-  sha1 '96ff27b87e0f028d1d16201afebabec4e0c72367'
+  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.3/OpenCV-2.4.3.tar.bz2'
+  sha1 '982be2c3e52dfc3e9d14692c60bc856b2b766be2'
 
   option '32-bit'
   option 'with-qt',  'Build the Qt4 backend to HighGUI'
@@ -26,6 +26,7 @@ class Opencv < Formula
   depends_on 'jasper'  => :optional
   depends_on 'tbb'     => :optional
   depends_on 'qt' if build.include? 'with-qt'
+  depends_on :libpng
 
   # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
   # you don't need unless you're doing video analysis, and some of it isn't

@@ -46,12 +46,21 @@ class Cleaner
     else
       0444
     end
+    # Uncomment this block to show permission changes using brew install -v
+    # if ARGV.verbose?
+    #   old_perms = path.stat.mode
+    #   if perms != old_perms
+    #     puts "Fixing #{path} permissions from #{old_perms.to_s(8)} to #{perms.to_s(8)}"
+    #   end
+    # end
     path.chmod perms
   end
 
   # Clean a single folder (non-recursively)
   def clean_dir d
     d.find do |path|
+      path.extend(NoiseyPathname) if ARGV.verbose?
+
       if path.directory?
         # Stop cleaning this subtree if protected
         Find.prune if @f.skip_clean? path
@@ -71,4 +80,16 @@ class Cleaner
     end
   end
 
+end
+
+
+class Pathname
+  alias_method :orig_unlink, :unlink
+end
+
+module NoiseyPathname
+  def unlink
+    puts "rm: #{self}"
+    orig_unlink
+  end
 end

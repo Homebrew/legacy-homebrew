@@ -2,10 +2,8 @@ require 'formula'
 
 class Ispell < Formula
   homepage 'http://lasr.cs.ucla.edu/geoff/ispell.html'
-  url 'http://www.lasr.cs.ucla.edu/geoff/tars/ispell-3.3.02.tar.gz'
-  md5 '12087d7555fc2b746425cd167af480fe'
-
-  skip_clean :all
+  url 'http://ftp.de.debian.org/debian/pool/main/i/ispell/ispell_3.3.02.orig.tar.gz'
+  sha1 'c0d98e1af3afb8e0b642717c03439ff8881e3d60'
 
   def install
     ENV.deparallelize

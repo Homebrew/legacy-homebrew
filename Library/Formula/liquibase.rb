@@ -10,7 +10,7 @@ class Liquibase < Formula
 
     chmod 0755, Dir['liquibase']
 
-    prefix.install "LICENSE.txt"
+    prefix.install_metafiles
     libexec.install Dir['*']
     bin.install_symlink libexec+'liquibase'
   end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Vimpc < Formula
   homepage 'http://sourceforge.net/projects/vimpc/'
-  url 'http://downloads.sourceforge.net/project/vimpc/Release%200.05/vimpc-0.05.tar.gz'
-  sha1 '7853b901eb3ef3748204e52ac6de973c43fa6ea3'
+  url 'http://downloads.sourceforge.net/project/vimpc/Release%200.07.2/vimpc-0.07.2.tar.gz'
+  sha1 '6ad68075aa540682674e870f9e5dc35a74831196'
 
   head 'https://github.com/richo/vimpc.git'
 

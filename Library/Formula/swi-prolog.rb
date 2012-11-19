@@ -2,24 +2,26 @@ require 'formula'
 
 class SwiProlog < Formula
   homepage 'http://www.swi-prolog.org/'
-  url 'http://www.swi-prolog.org/download/stable/src/pl-6.0.2.tar.gz'
-  sha256 '9dbc4d3aef399204263f168583e54468078528bff75c48c7895ae3efe5499b75'
+  url 'http://www.swi-prolog.org/download/stable/src/pl-6.2.1.tar.gz'
+  sha256 'c5ceac0a23e6a2ab706a10987cb87a0cfe4e5c3d01600f6c5e178846310ea7e8'
 
   head 'git://www.swi-prolog.org/home/pl/git/pl.git'
 
-  option 'lite', "Don't install any packages"
-  option 'without-jpl', "Don't include JPL, the Java-Prolog Bridge"
+  option 'lite', "Disable all packages"
+  option 'with-jpl', "Enable JPL (Java Prolog Bridge)"
+  option 'with-xpce', "Enable XPCE (Prolog Native GUI Library)"
 
-  depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'gmp'
-  depends_on 'jpeg'
-  depends_on 'mcrypt'
-  depends_on 'gawk'
-  depends_on :x11 if MacOS::X11.installed?
+
+  if build.include? 'with-xpce'
+    depends_on 'pkg-config' => :build
+    depends_on :x11
+    depends_on 'jpeg'
+  end
 
   # 10.5 versions of these are too old
-  if MacOS.leopard?
+  if MacOS.version == :leopard
     depends_on 'fontconfig'
     depends_on 'expat'
   end
@@ -31,13 +33,8 @@ class SwiProlog < Formula
 
   def install
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
-    ENV.append 'DISABLE_PKGS', "jpl" if build.include? "without-jpl"
-
-    unless MacOS::X11.installed?
-      # SWI-Prolog requires X11 for XPCE
-      opoo "It appears that X11 is not installed. The XPCE packages will not be built."
-      ENV.append 'DISABLE_PKGS', "xpce"
-    end
+    ENV.append 'DISABLE_PKGS', "jpl" unless build.include? "with-jpl"
+    ENV.append 'DISABLE_PKGS', "xpce" unless build.include? 'with-xpce'
 
     # SWI-Prolog's Makefiles don't add CPPFLAGS to the compile command, but do
     # include CIFLAGS. Setting it here. Also, they clobber CFLAGS, so including
@@ -55,5 +52,9 @@ class SwiProlog < Formula
     system "./configure", *args
     system "make"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/swipl", "--version"
   end
 end

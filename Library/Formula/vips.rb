@@ -2,8 +2,8 @@ require 'formula'
 
 class Vips < Formula
   homepage 'http://www.vips.ecs.soton.ac.uk/'
-  url 'http://www.vips.ecs.soton.ac.uk/supported/current/vips-7.30.0.tar.gz'
-  sha1 '65802fa3103b6892317e71e23163c5095b7d4244'
+  url 'http://www.vips.ecs.soton.ac.uk/supported/current/vips-7.30.2.tar.gz'
+  sha1 '5fac9ca28660bb3457290709988911b161239f8c'
 
   depends_on 'pkg-config' => :build
   depends_on :libpng

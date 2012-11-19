@@ -3,7 +3,7 @@ require 'formula'
 class Fceux < Formula
   homepage 'http://fceux.com'
   url 'http://downloads.sourceforge.net/fceultra/fceux-2.1.5.src.tar.bz2'
-  md5 'e8b20e62bbbb061b1a59d51b47c827bd'
+  sha1 '599ef6a261ab1bd24e58468886d7cc303e150feb'
 
   option 'no-gtk', "Build without Gtk+ support"
 
@@ -11,6 +11,7 @@ class Fceux < Formula
   depends_on 'sdl'
   depends_on 'libzip'
   depends_on 'gtk+' unless build.include? "no-gtk"
+  depends_on :x11
 
   # fixes compilation errors on osx; upstream in 2.1.6
   def patches; DATA; end

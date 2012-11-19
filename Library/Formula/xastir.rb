@@ -2,8 +2,8 @@ require 'formula'
 
 class Xastir < Formula
   homepage 'http://www.xastir.org/'
-  url 'http://downloads.sourceforge.net/xastir/xastir-2.0.0.tar.gz'
-  md5 '3e660b8168c9037b06e20b0579af3c80'
+  url 'http://downloads.sourceforge.net/xastir/xastir-2.0.2.tar.gz'
+  sha1 '54a94a02349ddf8ec0e48f722cbab760a587000a'
 
   depends_on 'proj'
   depends_on 'pcre'

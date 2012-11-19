@@ -3,9 +3,10 @@ require 'dependencies'
 require 'formula_support'
 require 'hardware'
 require 'bottles'
-require 'extend/fileutils'
 require 'patches'
 require 'compilers'
+require 'build_environment'
+require 'extend/set'
 
 
 class Formula
@@ -117,29 +118,31 @@ class Formula
   end
   def rack; prefix.parent end
 
-  def bin;     prefix+'bin'            end
-  def doc;     prefix+'share/doc'+name end
-  def include; prefix+'include'        end
-  def info;    prefix+'share/info'     end
-  def lib;     prefix+'lib'            end
-  def libexec; prefix+'libexec'        end
-  def man;     prefix+'share/man'      end
-  def man1;    man+'man1'              end
-  def man2;    man+'man2'              end
-  def man3;    man+'man3'              end
-  def man4;    man+'man4'              end
-  def man5;    man+'man5'              end
-  def man6;    man+'man6'              end
-  def man7;    man+'man7'              end
-  def man8;    man+'man8'              end
-  def sbin;    prefix+'sbin'           end
-  def share;   prefix+'share'          end
+  def bin;     prefix+'bin'     end
+  def doc;     share+'doc'+name end
+  def include; prefix+'include' end
+  def info;    share+'info'     end
+  def lib;     prefix+'lib'     end
+  def libexec; prefix+'libexec' end
+  def man;     share+'man'      end
+  def man1;    man+'man1'       end
+  def man2;    man+'man2'       end
+  def man3;    man+'man3'       end
+  def man4;    man+'man4'       end
+  def man5;    man+'man5'       end
+  def man6;    man+'man6'       end
+  def man7;    man+'man7'       end
+  def man8;    man+'man8'       end
+  def sbin;    prefix+'sbin'    end
+  def share;   prefix+'share'   end
 
   # configuration needs to be preserved past upgrades
   def etc; HOMEBREW_PREFIX+'etc' end
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
+  # override this to provide a plist
+  def startup_plist; nil; end
   # plist name, i.e. the name of the launchd service
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
@@ -204,6 +207,7 @@ class Formula
   # redefining skip_clean? now deprecated
   def skip_clean? path
     return true if self.class.skip_clean_all?
+    return true if path.extname == '.la' and self.class.skip_clean_paths.include? :la
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
   end
@@ -219,30 +223,11 @@ class Formula
         # we allow formulas to do anything they want to the Ruby process
         # so load any deps before this point! And exit asap afterwards
         yield self
-      rescue Interrupt, RuntimeError, SystemCallError => e
-        puts if Interrupt === e # don't print next to the ^C
-        unless ARGV.debug?
-          %w(config.log CMakeCache.txt).select{|f| File.exist? f}.each do |f|
-            HOMEBREW_LOGS.install f
-            puts "#{f} was copied to #{HOMEBREW_LOGS}"
-          end
-          raise
+      rescue RuntimeError, SystemCallError => e
+        %w(config.log CMakeCache.txt).each do |fn|
+          (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
         end
-        onoe e.inspect
-        puts e.backtrace
-
-        ohai "Rescuing build..."
-        if (e.was_running_configure? rescue false) and File.exist? 'config.log'
-          puts "It looks like an autotools configure failed."
-          puts "Gist 'config.log' and any error output when reporting an issue."
-          puts
-        end
-
-        puts "When you exit this shell Homebrew will attempt to finalise the installation."
-        puts "If nothing is installed or the shell exits with a non-zero error code,"
-        puts "Homebrew will abort. The installation prefix is:"
-        puts prefix
-        interactive_shell self
+        raise
       end
     end
   end
@@ -372,9 +357,14 @@ class Formula
       install_type = :from_url
     else
       name = Formula.canonical_name(name)
-      # If name was a path or mapped to a cached formula
 
-      if name.include? "/"
+      if name =~ %r{^(\w+)/(\w+)/([^/])+$}
+        # name appears to be a tapped formula, so we don't munge it
+        # in order to provide a useful error message when require fails.
+        path = Pathname.new(name)
+      elsif name.include? "/"
+        # If name was a path or mapped to a cached formula
+
         # require allows filenames to drop the .rb extension, but everything else
         # in our codebase will require an exact and fullpath.
         name = "#{name}.rb" unless name =~ /\.rb$/
@@ -433,6 +423,10 @@ class Formula
   def deps;         self.class.dependencies.deps;         end
   def requirements; self.class.dependencies.requirements; end
 
+  def env
+    @env ||= BuildEnvironment.new(self.class.environments)
+  end
+
   def conflicts
     requirements.select { |r| r.is_a? ConflictRequirement }
   end
@@ -451,9 +445,52 @@ class Formula
   end
 
   def recursive_requirements
-    reqs = recursive_deps.map { |dep| dep.requirements }.to_set
-    reqs << requirements
-    reqs.flatten
+    reqs = ComparableSet.new
+    recursive_deps.each { |dep| reqs.merge dep.requirements }
+    reqs.merge requirements
+  end
+
+  def to_hash
+    hsh = {
+      "name" => name,
+      "homepage" => homepage,
+      "versions" => {
+        "stable" => (stable.version.to_s if stable),
+        "bottle" => bottle && MacOS.bottles_supported? || false,
+        "devel" => (devel.version.to_s if devel),
+        "head" => (head.version.to_s if head)
+      },
+      "installed" => [],
+      "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
+      "keg_only" => keg_only?,
+      "dependencies" => deps.map {|dep| dep.to_s},
+      "conflicts_with" => conflicts.map {|c| c.formula},
+      "options" => [],
+      "caveats" => caveats
+    }
+
+    build.each do |opt|
+      hsh["options"] << {
+        "option" => "--"+opt.name,
+        "description" => opt.description
+      }
+    end
+
+    if rack.directory?
+      rack.children.each do |keg|
+        next if keg.basename.to_s == '.DS_Store'
+        tab = Tab.for_keg keg
+
+        hsh["installed"] << {
+          "version" => keg.basename.to_s,
+          "used_options" => tab.used_options,
+          "built_as_bottle" => tab.built_bottle
+        }
+      end
+    end
+
+    hsh
+
   end
 
 protected
@@ -464,19 +501,26 @@ protected
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
-    pretty_args.delete "--disable-dependency-tracking" if cmd == "./configure" and not ARGV.verbose?
+    if cmd == "./configure" and not ARGV.verbose?
+      pretty_args.delete "--disable-dependency-tracking"
+      pretty_args.delete "--disable-debug"
+    end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
     removed_ENV_variables = case if args.empty? then cmd.split(' ').first else cmd end
     when "xcodebuild"
       ENV.remove_cc_etc
-    when /^make\b/
-      ENV.append 'HOMEBREW_CCCFG', "O", ''
     end
 
     if ARGV.verbose?
       safe_system cmd, *args
     else
+      @exec_count ||= 0
+      @exec_count += 1
+      logd = HOMEBREW_LOGS/name
+      logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
+      mkdir_p(logd)
+
       rd, wr = IO.pipe
       pid = fork do
         rd.close
@@ -484,26 +528,34 @@ protected
         $stderr.reopen wr
         args.collect!{|arg| arg.to_s}
         exec(cmd, *args) rescue nil
+        puts "Failed to execute: #{cmd}"
         exit! 1 # never gets here unless exec threw or failed
       end
       wr.close
-      out = ''
-      out << rd.read until rd.eof?
+
+      f = File.open(logfn, 'w')
+      f.write(rd.read) until rd.eof?
+
       Process.wait
+
       unless $?.success?
-        puts out
-        raise
+        unless ARGV.verbose?
+          f.flush
+          Kernel.system "/usr/bin/tail -n 5 #{logfn}"
+        end
+        f.puts
+        require 'cmd/--config'
+        Homebrew.write_build_config(f)
+        raise ErrorDuringExecution
       end
     end
-
-    removed_ENV_variables.each do |key, value|
-      ENV[key] = value # ENV.kind_of? Hash  # => false
-    end if removed_ENV_variables
-
-  rescue
+  rescue ErrorDuringExecution => e
     raise BuildError.new(self, cmd, args, $?)
   ensure
-    ENV['HOMEBREW_CCCFG'] = ENV['HOMEBREW_CCCFG'].delete('O') if ENV['HOMEBREW_CCCFG']
+    f.close if f and not f.closed?
+    removed_ENV_variables.each do |key, value|
+      ENV[key] = value
+    end if removed_ENV_variables
   end
 
 public
@@ -644,6 +696,14 @@ private
       @stable.mirror(val)
     end
 
+    def environments
+      @environments ||= []
+    end
+
+    def env *settings
+      environments.concat [settings].flatten
+    end
+
     def dependencies
       @dependencies ||= DependencyCollector.new
     end
@@ -661,29 +721,22 @@ private
     end
 
     def conflicts_with formula, opts={}
-      message = <<-EOS.undent
-      #{formula} cannot be installed alongside #{name.downcase}.
-      EOS
-      message << "This is because #{opts[:because]}\n" if opts[:because]
-      unless ARGV.force? then message << <<-EOS.undent
-        Please `brew unlink #{formula}` before continuing. Unlinking removes
-        the formula's symlinks from #{HOMEBREW_PREFIX}. You can link the
-        formula again after the install finishes. You can --force this install
-        but the build may fail or cause obscure side-effects in the end-binary.
-        EOS
-      end
-
-      dependencies.add ConflictRequirement.new(formula, message)
+      dependencies.add ConflictRequirement.new(formula, name, opts)
     end
 
-    def skip_clean paths
-      if paths == :all
+    def skip_clean *paths
+      paths = [paths].flatten
+
+      # :all is deprecated though
+      if paths.include? :all
         @skip_clean_all = true
         return
       end
+
       @skip_clean_paths ||= []
-      [paths].flatten.each do |p|
-        @skip_clean_paths << p.to_s unless @skip_clean_paths.include? p.to_s
+      paths.each do |p|
+        p = p.to_s unless p == :la # Keep :la in paths as a symbol
+        @skip_clean_paths << p unless @skip_clean_paths.include? p
       end
     end
 

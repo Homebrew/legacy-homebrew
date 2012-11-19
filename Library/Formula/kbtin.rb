@@ -3,7 +3,7 @@ require 'formula'
 class Kbtin < Formula
   url 'http://downloads.sourceforge.net/project/kbtin/kbtin/1.0.13/kbtin-1.0.13.tar.gz'
   homepage 'http://kbtin.sourceforge.net'
-  md5 '5e23f48ac72e1609853895b44a0e3e90'
+  sha1 '6e3496ab629b3a7d4ef5ea61baa7efa9b19e25af'
 
   depends_on 'gnutls'
 

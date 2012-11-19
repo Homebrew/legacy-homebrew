@@ -12,8 +12,9 @@ class Wget < Formula
   head 'git://git.savannah.gnu.org/wget.git'
 
   option "enable-iri", "Enable iri support"
+  option "enable-debug", "Build with debug support"
 
-  depends_on "openssl" if MacOS.leopard?
+  depends_on "openssl" if MacOS.version == :leopard
   depends_on "libidn" if build.include? "enable-iri"
 
   if build.head?
@@ -24,11 +25,10 @@ class Wget < Formula
 
   def install
     system "./bootstrap" if build.head?
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
+    args = ["--prefix=#{prefix}",
             "--sysconfdir=#{etc}",
             "--with-ssl=openssl"]
-
+    args << "--disable-debug" unless build.include? "enable-debug"
     args << "--disable-iri" unless build.include? "enable-iri"
 
     system "./configure", *args

@@ -2,35 +2,31 @@ require 'formula'
 
 class SqliteFunctions < Formula
   url 'http://www.sqlite.org/contrib/download/extension-functions.c?get=25', :using  => :nounzip
-  md5 '3a32bfeace0d718505af571861724a43'
+  sha1 'c68fa706d6d9ff98608044c00212473f9c14892f'
   version '2010-01-06'
 end
 
 class SqliteDocs < Formula
-  url 'http://www.sqlite.org/sqlite-doc-3071300.zip'
-  sha1 '839f471d03de777b050bf585ab6175a27d96c360'
-  version '3.7.13'
+  url 'http://www.sqlite.org/sqlite-doc-3071400.zip'
+  sha1 '38a8e9a4fa515f7aa6df7d31e58bd0ec60658031'
+  version '3.7.14.1'
 end
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://sqlite.org/sqlite-autoconf-3071300.tar.gz'
-  sha1 'd3833b6ad68db8505d1044f761dd962f415cd302'
-  version '3.7.13'
+  url 'http://sqlite.org/sqlite-autoconf-3071401.tar.gz'
+  sha1 'c464e0e3efe98227c6546b9b1e786b51b8b642fc'
+  version '3.7.14.1'
 
-  depends_on 'readline' => :optional
+  depends_on 'readline' => :recommended
 
   option :universal
   option 'with-docs', 'Install HTML documentation'
-  option 'without-rtree' 'Disable the R*Tree index module'
+  option 'without-rtree', 'Disable the R*Tree index module'
   option 'with-fts', 'Enable the FTS module'
   option 'with-functions', 'Enable more math and string functions for SQL queries'
 
   def install
-    # O2 and O3 leads to corrupt/invalid rtree indexes
-    # http://groups.google.com/group/spatialite-users/browse_thread/thread/8e1cfa79f2d02a00#
-    ENV.Os
-
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" unless build.include? "without-rtree"
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if build.include? "with-fts"
 

@@ -10,8 +10,8 @@ end
 
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.0.5-release.tar.gz'
-  md5 'e71fdb5b0c2911247d48fb30550b9584'
+  url 'http://sphinxsearch.com/files/sphinx-2.0.6-release.tar.gz'
+  sha1 'fe1b990052f961a100adba197abe806a3c1b70dc'
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 

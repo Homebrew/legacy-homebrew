@@ -1,90 +1,26 @@
 require 'formula'
 
-class MySqlInstalled < Requirement
-  def message
-    <<-EOS.undent
-      MySQL is required to install.
-
-      You can install this with Homebrew using:
-        brew install mysql-connector-c
-          For MySQL client libraries only.
-
-        brew install mysql
-          For MySQL server.
-
-      Or you can use an official installer from:
-        http://dev.mysql.com/downloads/mysql/
-    EOS
-  end
-
-  def satisfied?
-    which 'mysql_config'
-  end
-
-  def fatal?
-    true
-  end
-end
-
-class PostgresInstalled < Requirement
-  def message
-    <<-EOS.undent
-      Postgres is required to install.
-
-      You can install this with Homebrew using:
-        brew install postgres
-
-      Or you can use an official installer from:
-        http://www.postgresql.org/download/macosx/
-    EOS
-  end
-
-  def satisfied?
-    which 'pg_config'
-  end
-
-  def fatal?
-    true
-  end
-end
-
-def no_mysql?
-  ARGV.include? '--without-mysql'
-end
-
-def no_postgresql?
-  ARGV.include? '--without-postgresql'
-end
-
-def no_sqlite?
-  ARGV.include? '--without-sqlite'
-end
-
 class Libzdb < Formula
   homepage 'http://tildeslash.com/libzdb/'
-  url 'http://tildeslash.com/libzdb/dist/libzdb-2.10.5.tar.gz'
-  md5 'ff44923fd53925155dc630d53a6d4708'
+  url 'http://tildeslash.com/libzdb/dist/libzdb-2.10.6.tar.gz'
+  sha1 'ae649655788a8db50f2bb0c36f90afe8a7fcc40b'
 
-  depends_on PostgresInstalled.new unless no_postgresql?
-  depends_on MySqlInstalled.new    unless no_mysql?
-  depends_on 'sqlite'              unless no_sqlite?
+  option 'without-sqlite',     "Compile without SQLite support"
+  option 'without-postgresql', "Compile without PostgreSQL support"
+  option 'without-mysql',      "Compile without MySQL support"
 
-  def options
-    [
-      ['--without-sqlite',     "Compile without SQLite support."],
-      ['--without-postgresql', "Compile without PostgreSQL support."],
-      ['--without-mysql',      "Compile without MySQL support."]
-    ]
-  end
+  depends_on :postgresql unless build.include? 'without-postgresql'
+  depends_on :mysql unless build.include? 'without-mysql'
+  depends_on 'sqlite' unless build.include? 'without-sqlite'
 
   def install
     args = ["--disable-debug",
             "--disable-dependency-tracking",
             "--prefix=#{prefix}"]
 
-    args << "--without-sqlite"     if no_sqlite?
-    args << "--without-mysql"      if no_mysql?
-    args << "--without-postgresql" if no_postgresql?
+    args << "--without-sqlite"     if build.include? 'without-sqlite'
+    args << "--without-mysql"      if build.include? 'without-mysql'
+    args << "--without-postgresql" if build.include? 'without-postgresql'
 
     system "./configure", *args
     system "make install"

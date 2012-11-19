@@ -118,7 +118,7 @@ _brew_create ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--autotools --cmake --no-fetch"
+        __brewcomp "--autotools --cmake --no-fetch --set-name --set-version"
         return
         ;;
     esac
@@ -134,6 +134,11 @@ _brew_deps ()
         ;;
     esac
     __brew_complete_formulae
+}
+
+_brew_doctor () {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    __brewcomp "$(brew doctor --list-checks)"
 }
 
 _brew_diy ()
@@ -216,14 +221,8 @@ _brew_link ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        if __brewcomp_words_include "--dry-run"; then
-            return
-        elif __brewcomp_words_include "--force"; then
-            return
-        else
-            __brewcomp "--dry-run --force"
-            return
-        fi
+        __brewcomp "--dry-run --overwrite"
+        return
         ;;
     esac
     __brew_complete_installed
@@ -333,7 +332,7 @@ _brew_uses ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--installed"
+        __brewcomp "--installed --recursive"
         return
         ;;
     esac
@@ -425,6 +424,7 @@ _brew ()
     cleanup)                    _brew_cleanup ;;
     create)                     _brew_create ;;
     deps)                       _brew_deps ;;
+    doctor|dr)                  _brew_doctor ;;
     diy|configure)              _brew_diy ;;
     fetch)                      _brew_fetch ;;
     info|abv)                   _brew_info ;;

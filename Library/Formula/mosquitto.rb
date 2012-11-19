@@ -2,8 +2,8 @@ require 'formula'
 
 class Mosquitto < Formula
   homepage 'http://mosquitto.org/'
-  url 'http://mosquitto.org/files/source/mosquitto-1.0.2.tar.gz'
-  sha1 '544112232d08abf6dc60f28c9a85f4d88206d0f2'
+  url 'http://mosquitto.org/files/source/mosquitto-1.0.5.tar.gz'
+  sha1 'fecf0e9a55dc31e3abf4be0b7a7a79b6b8172fd6'
 
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
@@ -21,9 +21,6 @@ class Mosquitto < Formula
 
     # Create the working directory under var
     (var+'mosquitto').mkpath
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
   def test

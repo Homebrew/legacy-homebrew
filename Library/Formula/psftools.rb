@@ -8,7 +8,7 @@ end
 class Psftools < Formula
   url 'http://www.seasip.info/Unix/PSF/psftools-1.0.7.tar.gz'
   homepage 'http://www.seasip.demon.co.uk/Unix/PSF/'
-  md5 '159022aae93a797dbc2a01014acbd115'
+  sha1 '4e8b2e7686532a25c18cacaeb90a8f0ed57a30c6'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
