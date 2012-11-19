@@ -2,17 +2,15 @@ require 'formula'
 
 class Icu4c < Formula
   homepage 'http://site.icu-project.org/'
-  url 'http://download.icu-project.org/files/icu4c/49.1.2/icu4c-49_1_2-src.tgz'
-  version '49.1.2'
-  sha1 'd8cee6d2b2a91a0da7464acd97a5b7b462d93225'
+  url 'http://download.icu-project.org/files/icu4c/50.1/icu4c-50_1-src.tgz'
+  version '50.1'
+  sha1 '9a3369c00a8be8eff935d2893849ad2eb246c0ef'
 
   bottle do
-    sha1 '9e424ea5de5c5847b8a600078f9494f42d7f6168' => :mountainlion
-    sha1 '528b8bec1b821d5503eb98b565840d8a3aeca63e' => :lion
-    sha1 'c77579349187ee0cec5842f71aea2a446c770db7' => :snowleopard
+    sha1 'a71560ffd35869a1d56cd726e02b80ff5bbf2e5b' => :mountainlion
+    sha1 '0488d374c7b3cbf9c744e8b4f036e225803de20a' => :lion
+    sha1 '699a9505564a37a06c485371e1ab6fb82eedafa0' => :snowleopard
   end
-
-  keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
 
   option :universal
 

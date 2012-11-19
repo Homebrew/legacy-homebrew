@@ -10,6 +10,7 @@ class Bitlbee < Formula
 
   depends_on 'glib'
   depends_on 'gnutls'
+  depends_on 'libgcrypt'
   depends_on 'libpurple' => :optional if build.include? 'purple'
   depends_on 'libotr' => :optional if build.include? 'with-otr'
 
