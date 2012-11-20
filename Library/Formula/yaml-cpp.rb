@@ -7,7 +7,12 @@ class YamlCpp < Formula
 
   depends_on 'cmake' => :build
 
+  option 'with-c++11', "Compile with C++11"
+
   def install
+    if build.include? "with-c++11"
+      ENV['CXXFLAGS'] = " -std=c++11 -stdlib=libc++"
+    end
     system "cmake", ".", *std_cmake_args
     system "make install"
   end
