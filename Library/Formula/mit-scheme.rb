@@ -49,7 +49,7 @@ index 23187c9..4485b64 100755
      else
  	SDK=MacOSX${MACOSX}
      fi
-+	MACOSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/${SDK}.sdk
++	MACOSX_SYSROOT=$(xcode-select --print-path)/Platforms/MacOSX.platform/Developer/SDKs/${SDK}.sdk
 +	if test ! -d "${MACOSX_SYSROOT}"; then
      MACOSX_SYSROOT=/Developer/SDKs/${SDK}.sdk
 +	fi
@@ -65,7 +65,7 @@ index d4c7717..49be0a2 100755
      else
  	SDK=MacOSX${MACOSX}
      fi
-+	MACOSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/${SDK}.sdk
++	MACOSX_SYSROOT=$(xcode-select --print-path)/Platforms/MacOSX.platform/Developer/SDKs/${SDK}.sdk
 +	if test ! -d "${MACOSX_SYSROOT}"; then
      MACOSX_SYSROOT=/Developer/SDKs/${SDK}.sdk
 +	fi
