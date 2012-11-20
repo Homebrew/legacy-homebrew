@@ -2,7 +2,7 @@ require 'formula'
 
 class Trash < Formula
   homepage 'http://hasseg.org/trash/'
-  url 'http://hasseg.org/git-public/trash.git/', :using => :git, :revision => '268d6f44ee4eb11a2052d8ded9a83a887dcd4ffc'
+  url 'http://hasseg.org/git-public/trash.git/', :using => :git, :tag => 'v0.8.2'
   version '0.8.2'
 
   def install
@@ -13,6 +13,6 @@ class Trash < Formula
   end
 
   def test
-    system "trash"
+    system "#{bin}/trash"
   end
 end
