@@ -19,13 +19,13 @@ class Glib < Formula
   end
 
   def patches
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673047 Merged. Remove >= 2.34.3
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673047 Merged. Remove @ 2.34.3
     # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix.
-    # https://bugzilla.gnome.org/show_bug.cgi?id=688693 Unresolved at 2.34.2.
+    # https://bugzilla.gnome.org/show_bug.cgi?id=688693 Resolved remove @ 2.34.3
     p = { :p1 => %W[
       https://raw.github.com/gist/3924875/19cdaebdff7dcc94ccd9b3747d43a09318f0b846/glib-gunicollate.patch
       https://raw.github.com/gist/3924879/f86903e0aea1458448507305d01b06a7d878c041/glib-configurable-paths.patch
-      https://raw.github.com/gist/4115342/6f60fde65391e5c7508452ae29a7c15437168801/gsocket.c.diff
+      http://git.gnome.org/browse/glib/patch/?id=c160994
     ]}
     p[:p0] = %W[
         https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/patch-configure.diff
