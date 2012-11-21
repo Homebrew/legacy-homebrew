@@ -416,6 +416,10 @@ class Formula
     end
   end
 
+  def repository
+    path.symlink? ? path.realpath.parent : HOMEBREW_REPOSITORY
+  end
+
   def self.path name
     HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end

@@ -1,4 +1,5 @@
 require 'formula'
+require 'formula_versions'
 require 'keg'
 require 'fileutils'
 
@@ -13,33 +14,24 @@ end
 name = ARGV.shift
 version = ARGV.shift
 
-# Does this formula have any versions?
 f = Formula.factory(name.downcase)
 cellar = f.prefix.parent
 if (cellar+version).directory?
-    onoe "#{name} #{version} already in the Cellar."
-    exit 2
+  onoe "#{name} #{version} already in the Cellar."
+  exit 2
 end
 
 puts "Searching history..."
-sha_lines = `brew versions #{name}`.each_line.select{|l|l.start_with? "#{version} "}
-if sha_lines.length == 1
-    version = sha_lines[0].split[0]
-    sha = sha_lines[0].split[3]
-    ohai "Extracting formula for #{name}-#{version} (#{sha})"
+sha = f.sha_for_version version
+if sha
+  ohai "Extracting formula for #{f.name}-#{version} (#{sha[0,8]})"
 
-    def text_from_sha sha, name
-      HOMEBREW_REPOSITORY.cd do
-        `git cat-file blob #{sha}:Library/Formula/#{name}.rb`
-      end
-    end
-
-    FileUtils.mktemp do
-        path = Pathname.new(Pathname.pwd+"#{name}.rb")
-        path.write text_from_sha(sha, name)
-        system "brew install #{path}"
-    end
+  FileUtils.mktemp do
+    path = Pathname.new(Pathname.pwd+"#{name}.rb")
+    path.write f.text_from_sha(sha)
+    system "brew install #{path}"
+  end
 else
-    onoe "Couldn't find any old record of #{name}-#{version}"
-    exit 3
+  onoe "Couldn't find any old record of #{name}-#{version}"
+  exit 3
 end
