@@ -4,7 +4,6 @@ class BulkExtractor < Formula
   homepage 'https://github.com/simsong/bulk_extractor/wiki'
   url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.3.tar.gz'
   sha1 '847559ef179a123b3855637396f47348d3318751'
-  head 'https://github.com/simsong/bulk_extractor.git'
 
   depends_on :autoconf
   depends_on :automake
