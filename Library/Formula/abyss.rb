@@ -7,7 +7,7 @@ class Abyss < Formula
   head 'https://github.com/sjackman/abyss.git'
 
   # Only header files are used from these packages, so :build is appropriate
-  depends_on 'boost' => :build
+  depends_on 'boost149' => :build
   depends_on 'google-sparsehash' => :build
 
   # Snow Leopard comes with mpi but Lion does not
