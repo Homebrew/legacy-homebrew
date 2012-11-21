@@ -1,8 +1,8 @@
 require 'formula'
 
 class Mpich2 < Formula
-  homepage 'http://www.mcs.anl.gov/research/projects/mpich2/index.php'
-  url 'http://www.mcs.anl.gov/research/projects/mpich2/downloads/tarballs/1.5/mpich2-1.5.tar.gz'
+  homepage 'http://www.mpich.org/'
+  url 'http://www.mpich.org/static/tarballs/1.5/mpich2-1.5.tar.gz'
   sha1 'be7448227dde5badf3d6ebc0c152b200998421e0'
 
   head 'https://svn.mcs.anl.gov/repos/mpi/mpich2/trunk'
