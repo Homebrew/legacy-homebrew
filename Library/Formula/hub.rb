@@ -1,7 +1,7 @@
 require 'formula'
 
 class Hub < Formula
-  url 'https://github.com/defunkt/hub/tarball/v1.10.2'
+  url 'https://github.com/defunkt/hub/tarball/v1.10.3'
   homepage 'http://defunkt.io/hub/'
   head 'https://github.com/defunkt/hub.git'
   sha1 '7520d264249573d7f72c443f1144b67cc645ab9b'
