@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.27-29.0/source/Percona-Server-5.5.27-rel29.0.tar.gz'
-  version '5.5.27-29.0'
-  sha1 'fef105a869789a7b9bf92771c07c8988c217cdf9'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.28-29.1/source/Percona-Server-5.5.28-rel29.1.tar.gz'
+  version '5.5.28-29.1'
+  sha1 'c7b2803c440564beff124c9a5641daa643b9f909'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
@@ -18,12 +18,22 @@ class PerconaServer < Formula
 
   conflicts_with 'mysql',
     :because => "percona-server and mysql install the same binaries."
+
   conflicts_with 'mariadb',
     :because => "percona-server and mariadb install the same binaries."
+
+  env :std if build.universal?
 
   fails_with :llvm do
     build 2334
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
+  end
+
+  # Where the database files should be located. Existing installs have them
+  # under var/percona, but going forward they will be under var/msyql to be
+  # shared with the mysql and mariadb formulae.
+  def destination
+    @destination ||= (var/'percona').directory? ? 'percona' : 'mysql'
   end
 
   def install
@@ -31,17 +41,18 @@ class PerconaServer < Formula
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    # Make sure the var/msql directory exists
-    (var+"percona").mkpath
+    # Make sure that data directory exists
+    (var/destination).mkpath
 
-    args = std_cmake_args + [
+    args = [
       ".",
-      "-DMYSQL_DATADIR=#{var}/percona",
+      "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+      "-DMYSQL_DATADIR=#{var}/#{destination}",
       "-DINSTALL_MANDIR=#{man}",
       "-DINSTALL_DOCDIR=#{doc}",
       "-DINSTALL_INFODIR=#{info}",
       # CMake prepends prefix, so use share.basename
-      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}",
+      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/mysql",
       "-DWITH_SSL=yes",
       "-DDEFAULT_CHARSET=utf8",
       "-DDEFAULT_COLLATION=utf8_general_ci",
@@ -82,17 +93,19 @@ class PerconaServer < Formula
 
     # Link the setup script into bin
     ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
     end
+
     ln_s "#{prefix}/support-files/mysql.server", bin
   end
 
   def caveats; <<-EOS.undent
     Set up databases to run AS YOUR USER ACCOUNT with:
         unset TMPDIR
-        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix percona-server)" --datadir=#{var}/percona --tmpdir=/tmp
+        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix percona-server)" --datadir=#{var}/#{destination} --tmpdir=/tmp
 
     To set up base tables in another folder, or use a different user to run
     mysqld, view the help for mysqld_install_db:

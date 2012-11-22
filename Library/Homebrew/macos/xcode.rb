@@ -23,7 +23,7 @@ module MacOS::Xcode extend self
       when 10.6 then "3.2.6"
     else
       if MacOS.version >= 10.7
-        "4.5.1"
+        "4.5.2"
       else
         raise "Mac OS X `#{MacOS.version}' is invalid"
       end

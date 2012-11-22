@@ -118,23 +118,23 @@ class Formula
   end
   def rack; prefix.parent end
 
-  def bin;     prefix+'bin'            end
-  def doc;     prefix+'share/doc'+name end
-  def include; prefix+'include'        end
-  def info;    prefix+'share/info'     end
-  def lib;     prefix+'lib'            end
-  def libexec; prefix+'libexec'        end
-  def man;     prefix+'share/man'      end
-  def man1;    man+'man1'              end
-  def man2;    man+'man2'              end
-  def man3;    man+'man3'              end
-  def man4;    man+'man4'              end
-  def man5;    man+'man5'              end
-  def man6;    man+'man6'              end
-  def man7;    man+'man7'              end
-  def man8;    man+'man8'              end
-  def sbin;    prefix+'sbin'           end
-  def share;   prefix+'share'          end
+  def bin;     prefix+'bin'     end
+  def doc;     share+'doc'+name end
+  def include; prefix+'include' end
+  def info;    share+'info'     end
+  def lib;     prefix+'lib'     end
+  def libexec; prefix+'libexec' end
+  def man;     share+'man'      end
+  def man1;    man+'man1'       end
+  def man2;    man+'man2'       end
+  def man3;    man+'man3'       end
+  def man4;    man+'man4'       end
+  def man5;    man+'man5'       end
+  def man6;    man+'man6'       end
+  def man7;    man+'man7'       end
+  def man8;    man+'man8'       end
+  def sbin;    prefix+'sbin'    end
+  def share;   prefix+'share'   end
 
   # configuration needs to be preserved past upgrades
   def etc; HOMEBREW_PREFIX+'etc' end
@@ -224,21 +224,10 @@ class Formula
         # so load any deps before this point! And exit asap afterwards
         yield self
       rescue RuntimeError, SystemCallError => e
-        if not ARGV.debug?
-          %w(config.log CMakeCache.txt).each do |fn|
-            (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
-          end
-          raise
+        %w(config.log CMakeCache.txt).each do |fn|
+          (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
         end
-
-        onoe e.inspect
-        puts e.backtrace unless e.kind_of? BuildError
-        ohai "Rescuing build..."
-        puts "When you exit this shell Homebrew will attempt to finalise the installation."
-        puts "If nothing is installed or the shell exits with a non-zero error code,"
-        puts "Homebrew will abort. The installation prefix is:"
-        puts prefix
-        interactive_shell self
+        raise
       end
     end
   end
@@ -557,12 +546,13 @@ protected
         f.puts
         require 'cmd/--config'
         Homebrew.write_build_config(f)
-        raise BuildError.new(self, cmd, args, $?)
+        raise ErrorDuringExecution
       end
     end
-
+  rescue ErrorDuringExecution => e
+    raise BuildError.new(self, cmd, args, $?)
   ensure
-    f.close if f
+    f.close if f and not f.closed?
     removed_ENV_variables.each do |key, value|
       ENV[key] = value
     end if removed_ENV_variables
@@ -731,19 +721,7 @@ private
     end
 
     def conflicts_with formula, opts={}
-      message = <<-EOS.undent
-      #{formula} cannot be installed alongside #{name.downcase}.
-      EOS
-      message << "This is because #{opts[:because]}\n" if opts[:because]
-      unless ARGV.force? then message << <<-EOS.undent
-        Please `brew unlink #{formula}` before continuing. Unlinking removes
-        the formula's symlinks from #{HOMEBREW_PREFIX}. You can link the
-        formula again after the install finishes. You can --force this install
-        but the build may fail or cause obscure side-effects in the end-binary.
-        EOS
-      end
-
-      dependencies.add ConflictRequirement.new(formula, message)
+      dependencies.add ConflictRequirement.new(formula, name, opts)
     end
 
     def skip_clean *paths

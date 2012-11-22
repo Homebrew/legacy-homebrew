@@ -10,7 +10,7 @@ class Qemu < Formula
   depends_on 'glib'
 
   fails_with :clang do
-    build 318
+    build 421
     cause 'Compile error: global register variables are not supported'
   end
 

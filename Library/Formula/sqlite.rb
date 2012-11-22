@@ -9,20 +9,20 @@ end
 class SqliteDocs < Formula
   url 'http://www.sqlite.org/sqlite-doc-3071400.zip'
   sha1 '38a8e9a4fa515f7aa6df7d31e58bd0ec60658031'
-  version '3.7.14'
+  version '3.7.14.1'
 end
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://sqlite.org/sqlite-autoconf-3071400.tar.gz'
-  sha1 '7b429809918201555f4c0fa639183a1c663d3fe0'
-  version '3.7.14'
+  url 'http://sqlite.org/sqlite-autoconf-3071401.tar.gz'
+  sha1 'c464e0e3efe98227c6546b9b1e786b51b8b642fc'
+  version '3.7.14.1'
 
   depends_on 'readline' => :recommended
 
   option :universal
   option 'with-docs', 'Install HTML documentation'
-  option 'without-rtree' 'Disable the R*Tree index module'
+  option 'without-rtree', 'Disable the R*Tree index module'
   option 'with-fts', 'Enable the FTS module'
   option 'with-functions', 'Enable more math and string functions for SQL queries'
 

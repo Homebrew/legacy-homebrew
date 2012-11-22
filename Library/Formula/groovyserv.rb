@@ -13,8 +13,6 @@ class Groovyserv < Formula
     ENV['CC'] = ENV['CFLAGS'] = nil # to workaround
     system './gradlew clean executables'
 
-    prefix.install %w{LICENSE.txt README.txt NOTICE.txt}
-
     # Install executables in libexec to avoid conflicts
     libexec.install Dir["build/executables/{bin,lib}"]
 
