@@ -3,7 +3,7 @@ require 'formula'
 class Hub < Formula
   homepage 'http://defunkt.io/hub/'
   url 'https://github.com/defunkt/hub/tarball/v1.10.3'
-  sha1 '7520d264249573d7f72c443f1144b67cc645ab9b'
+  sha1 'ab64b4f21bcd1720b3762741e59030a2198c79f3'
 
   head 'https://github.com/defunkt/hub.git'
 
