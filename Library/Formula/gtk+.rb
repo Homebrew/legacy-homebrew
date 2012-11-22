@@ -17,6 +17,7 @@ class Gtkx < Formula
   depends_on 'cairo'
 
   option 'without-x', 'Build GTK+ without X11'
+  option 'with-quartz', 'Build GTK+ with Quartz (without-x is assumed'
 
   fails_with :llvm do
     build 2326
@@ -24,7 +25,11 @@ class Gtkx < Formula
   end
 
     if build.include? 'without-x'
-      args << '--without-x' << '--with-xinput=no' << '--with-gdktarget=quartz'
+      args << '--without-x' << '--with-xinput=no' 
+    end
+
+    if build.include? 'with-quartz'
+        args << '--with-gdktarget=quartz' << '--without-x' << '--with-xinput=no'
     end
 
   def install
