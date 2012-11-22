@@ -16,21 +16,10 @@ class Gtkx < Formula
   depends_on 'atk' => :optional
   depends_on 'cairo'
 
-  option 'without-x', 'Build GTK+ without X11'
-  option 'with-quartz', 'Build GTK+ with Quartz (without-x is assumed'
-
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
   end
-
-    if build.include? 'without-x'
-      args << '--without-x' << '--with-xinput=no' 
-    end
-
-    if build.include? 'with-quartz'
-        args << '--with-gdktarget=quartz' << '--without-x' << '--with-xinput=no'
-    end
 
   def install
     system "./configure", "--disable-debug",
@@ -38,7 +27,10 @@ class Gtkx < Formula
                           "--prefix=#{prefix}",
                           "--disable-glibtest",
                           "--disable-introspection",
-                          "--disable-visibility"
+                          "--disable-visibility",
+                          "--without-x",
+                          "--with-xinput=no",
+                          "--with-gdktarget=quartz"
     system "make install"
   end
 
