@@ -12,12 +12,11 @@ class Wireshark < Formula
   depends_on 'pcre' => :optional
   depends_on 'glib'
 
-  if build.include? 'with-x'
-    depends_on :x11
+  if build.include? 'without-x'
     depends_on 'gtk+'
   end
 
-  option 'with-x', 'Include X11 support'
+  option 'without-x', 'Exclude X11 support'
   option 'with-python', 'Enable experimental Python bindings'
 
   def install
