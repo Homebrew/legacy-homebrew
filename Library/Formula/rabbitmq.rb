@@ -2,8 +2,8 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.8.7/rabbitmq-server-generic-unix-2.8.7.tar.gz'
-  sha1 '16965e5c3486f6882df363064707777fc4cbbe2e'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.0.0/rabbitmq-server-generic-unix-3.0.0.tar.gz'
+  sha1 'a899199afe0bda17676f359789e0fea4ba8caea9'
 
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MacOS.version == :leopard
@@ -29,6 +29,11 @@ class Rabbitmq < Formula
     # Enable the management web UI
     enabled_plugins_path = etc+'rabbitmq/enabled_plugins'
     enabled_plugins_path.write enabled_plugins unless enabled_plugins_path.exist?
+
+    # Extract rabbitmqadmin to sbin
+    system "/usr/bin/unzip", "-qq", "-j", "#{prefix}/plugins/rabbitmq_management-#{version}.ez", "rabbitmq_management-#{version}/priv/www/cli/rabbitmqadmin"
+    sbin.install 'rabbitmqadmin'
+
   end
 
   def caveats
@@ -43,7 +48,7 @@ class Rabbitmq < Formula
         cp #{plist_path} ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    Management Plugin enabled by default at http://localhost:55672
+    Management Plugin enabled by default at http://localhost:15672
 
     To start rabbitmq-server manually:
         rabbitmq-server
