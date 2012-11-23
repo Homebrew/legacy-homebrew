@@ -16,8 +16,8 @@ class TkCheck < Requirement
 end
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
-  sha1 '709bd97d46050d69865d4b588c7707768dfe6711'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.30.tar.gz'
+  sha1 '40dfce237883d1c02817f726128f61614dc686ff'
 end
 
 class Pip < Formula
