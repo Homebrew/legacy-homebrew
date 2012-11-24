@@ -78,10 +78,7 @@ class Formula
   end
 
   def explicitly_requested?
-    # `ARGV.formulae` will throw an exception if it comes up with an empty list.
-    # FIXME: `ARGV.formulae` shouldn't be throwing exceptions, see issue #8823
-   return false if ARGV.named.empty?
-   ARGV.formulae.include? self
+    ARGV.formulae.include?(self) rescue false
   end
 
   def linked_keg
