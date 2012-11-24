@@ -4,6 +4,12 @@ class ScalaDocs < Formula
   homepage 'http://www.scala-lang.org/'
   url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.9.2.zip'
   sha1 'b49ef500314d968ddbd683b64628925a747f35e5'
+
+  devel do
+    url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.10.0-RC2.zip'
+    sha1 'b4ba311347fd115c75932ef51fd96801c064b387'
+  end
+
 end
 
 class ScalaCompletion < Formula
@@ -17,6 +23,12 @@ class Scala < Formula
   homepage 'http://www.scala-lang.org/'
   url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.2.tgz'
   sha1 '806fc1d91bda82d6a584172d7742531386ae68fb'
+
+  devel do
+    url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.10.0-RC2.tgz'
+    sha1 '87b2a9540470a68b518e743cbafb325c97e31a2f'
+    version '2.10.0-RC2'
+  end
 
   option 'with-docs', 'Also install library documentation'
 
