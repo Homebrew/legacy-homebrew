@@ -17,12 +17,10 @@ class Autojump < Formula
   end
 
   def caveats; <<-EOS.undent
-
     Add the following line to your ~/.bash_profile or ~/.zshrc file (and remember
     to source the file to update your current session):
 
     [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
-
     EOS
   end
 end
