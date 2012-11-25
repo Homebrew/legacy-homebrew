@@ -355,6 +355,11 @@ class Formula
       end
 
       install_type = :from_url
+    elsif name.match bottle_regex
+      bottle_filename = Pathname(name).realpath
+      name = name.split('-').first
+      path = Formula.path(name)
+      install_type = :from_local_bottle
     else
       name = Formula.canonical_name(name)
 
@@ -393,6 +398,12 @@ class Formula
       onoe "class \"#{klass_name}\" expected but not found in #{name}.rb"
       puts "Double-check the name of the class in that formula."
       raise LoadError
+    end
+
+    if install_type == :from_local_bottle
+      formula = klass.new(name)
+      formula.downloader.local_bottle_path = bottle_filename
+      return formula
     end
 
     raise NameError if !klass.ancestors.include? Formula
