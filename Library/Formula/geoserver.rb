@@ -18,7 +18,7 @@ class Geoserver < Formula
   end
 
   def caveats; <<-EOS.undent
-      To start geoserver
+      To start geoserver:
         geoserver path/to/data/dir
 
       See the Geoserver homepage for more setup information:

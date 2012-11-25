@@ -35,7 +35,7 @@ class Dnsmasq < Formula
     To configure dnsmasq, copy the example configuration to #{etc}/dnsmasq.conf
     and edit to taste.
 
-      cp #{prefix}/dnsmasq.conf.example #{etc}/dnsmasq.conf
+      cp #{opt_prefix}/dnsmasq.conf.example #{etc}/dnsmasq.conf
 
     To load dnsmasq automatically on startup, install and load the provided launchd
     item as follows:

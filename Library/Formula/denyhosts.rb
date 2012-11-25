@@ -60,20 +60,18 @@ class Denyhosts < Formula
     EOS
   end
 
-  def caveats
-    <<-EOS.undent
-      Unless it exists already, a denyhosts.cfg file has been written to:
-        #{etc}/denyhosts.cfg
+  def caveats; <<-EOS.undent
+    Unless it exists already, a denyhosts.cfg file has been written to:
+      #{etc}/denyhosts.cfg
 
-      All DenyHosts scripts will load this file by default unless told to use
-      a different one.
+    All DenyHosts scripts will load this file by default unless told to use
+    a different one.
 
-      A launchctl plist has been created that will run DenyHosts to update
-      /etc/hosts.deny every 10 minutes. It will need to be run by the user that
-      owns /etc/hosts.deny, usually root, and can be set to load at startup
-      via:
-        sudo cp #{plist_path} /Library/LaunchDaemons/
-
+    A launchctl plist has been created that will run DenyHosts to update
+    /etc/hosts.deny every 10 minutes. It will need to be run by the user that
+    owns /etc/hosts.deny, usually root, and can be set to load at startup
+    via:
+      sudo cp #{plist_path} /Library/LaunchDaemons/
     EOS
   end
 end
