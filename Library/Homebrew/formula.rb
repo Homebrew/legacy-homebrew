@@ -139,10 +139,13 @@ class Formula
   def var; HOMEBREW_PREFIX+'var' end
 
   # override this to provide a plist
-  def startup_plist; nil; end
+  def plist; nil; end
+  alias :startup_plist :plist
   # plist name, i.e. the name of the launchd service
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
+  def plist_manual; self.class.plist_manual end
+  def plist_startup; self.class.plist_startup end
 
   def build
     self.class.build
@@ -633,6 +636,7 @@ private
     end
 
     attr_rw :homepage, :keg_only_reason, :skip_clean_all, :cc_failures
+    attr_rw :plist_startup, :plist_manual
 
     Checksum::TYPES.each do |cksum|
       class_eval %Q{
@@ -715,6 +719,11 @@ private
       raise "Option name is required." if name.empty?
       raise "Options should not start with dashes." if name[0, 1] == "-"
       build.add name, description
+    end
+
+    def plist_options options
+      @plist_startup = options[:startup]
+      @plist_manual = options[:manual]
     end
 
     def conflicts_with formula, opts={}
