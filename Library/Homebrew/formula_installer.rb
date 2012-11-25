@@ -288,9 +288,9 @@ class FormulaInstaller
   end
 
   def install_plist
-    # Install a plist if one is defined
-    # Skip plist file exists check: https://github.com/mxcl/homebrew/issues/15849
     if f.startup_plist
+      # A plist may already exist if we are installing from a bottle
+      f.plist_path.unlink if f.plist_path.exist?
       f.plist_path.write f.startup_plist
       f.plist_path.chmod 0644
     end
