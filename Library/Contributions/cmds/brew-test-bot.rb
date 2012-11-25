@@ -108,18 +108,23 @@ class Test
   end
 
   def initialize arg
-    begin
-      Formula.factory arg
-    rescue FormulaUnavailableError
-      odie "#{arg} is not a pull request number or formula." unless arg.to_i > 0
-      @url = arg
-      @formulae = []
-    else
-      @url = nil
+    @start_sha1 = nil
+    @url = nil
+    @formulae = []
+
+    url_match = arg.match 'https:\/\/github.com\/\w+\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
+    formula = Formula.factory arg rescue FormulaUnavailableError
+    git("rev-parse --verify #{arg} &>/dev/null")
+    if $?.success?
+      @start_sha1 = arg
+    elsif url_match
+      @url = url_match[0]
+    elsif formula
       @formulae = [arg]
+    else
+      odie "#{arg} is not a pull request URL, commit URL or formula name."
     end
 
-    @start_sha1 = nil
     @category = __method__
     @steps = []
     @core_changed = false
@@ -176,26 +181,29 @@ class Test
     end
 
     @category = __method__
-    if @url
+    if @start_sha1
+      end_sha1 = @start_sha1
+      @start_sha1 = "#{@start_sha1}^"
+      @name = end_sha1
+    elsif @url
       git 'am --abort 2>/dev/null'
       test "brew update" if current_branch == "master"
       @start_sha1 = current_sha1
       test "brew pull --clean #{@url}"
       end_sha1 = current_sha1
+      return unless @url and @start_sha1 != end_sha1 and steps.last.status == :passed
+      @name = "#{@url}-#{end_sha1}"
     else
       @start_sha1 = end_sha1 = current_sha1
+      @name = "#{@formulae.first}-#{end_sha1}"
     end
 
-    name_prefix = @url ? @url : @formulae.first
-    @name = "#{name_prefix}-#{end_sha1}"
     @log_root = @brewbot_root + @name
     FileUtils.mkdir_p @log_root if ARGV.include? "--log" or ARGV.include? "--html"
 
     write_root_html :running
 
-    return unless @url and @start_sha1 != end_sha1 and steps.last.status == :passed
-
-    git("diff #{@start_sha1}..#{end_sha1} --name-status`.each_line") do |line|
+    git("diff #{@start_sha1}..#{end_sha1} --name-status").each_line do |line|
       status, filename = line.split
       # Don't try and do anything to removed files.
       if (status == 'A' or status == 'M')
@@ -203,8 +211,9 @@ class Test
           @formulae << File.basename(filename, '.rb')
         end
       end
-      if filename.include? '/Homebrew/' or filename.include? 'bin/brew'
-        @homebrew_changed = true
+      if filename.include? '/Homebrew/' or filename.include? '/ENV/' \
+        or filename.include? 'bin/brew'
+        @core_changed = true
       end
     end
   end
@@ -231,6 +240,7 @@ class Test
   def homebrew
     @category = __method__
     test "brew tests"
+    test "brew readall"
   end
 
   def cleanup
@@ -241,11 +251,9 @@ class Test
       test "brew cleanup"
       test "git clean --force -dx"
       test "git gc"
-    else
-      unless ARGV.include? "--skip-cleanup"
-        git('diff --exit-code HEAD 2>/dev/null')
-        odie "Uncommitted changes, aborting." unless $?.success?
-      end
+    elsif not ARGV.include? "--skip-cleanup"
+      git('diff --exit-code HEAD 2>/dev/null')
+      odie "Uncommitted changes, aborting." unless $?.success?
       test "git reset --hard #{@start_sha1}" if @start_sha1
     end
   end
@@ -282,9 +290,9 @@ class Test
     end
   end
 
-  def self.run url
-    test = new url
-    test.cleanup
+  def self.run arg
+    test = new arg
+    test.cleanup unless ARGV.include? "--skip-cleanup"
     test.download
     test.setup unless ARGV.include? "--skip-setup"
     test.formulae.each do |f|
@@ -297,10 +305,9 @@ class Test
   end
 end
 
-if ARGV.empty?
-  odie 'This command requires at least one argument containing a pull request number or formula.'
-end
-
-ARGV.named.each do|arg|
-  Test.run arg
+if ARGV.named.empty?
+  # With no arguments just build the most recent commit.
+  Test.run 'HEAD'
+else
+  ARGV.named.each { |arg| Test.run arg }
 end
