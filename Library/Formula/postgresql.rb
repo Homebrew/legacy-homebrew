@@ -9,6 +9,7 @@ class Postgresql < Formula
   depends_on 'libxml2' if MacOS.version == :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
 
+  option :universal
   option '32-bit'
   option 'without-ossp-uuid', 'Build without OSSP uuid'
   option 'no-python', 'Build without Python support'
@@ -63,6 +64,11 @@ class Postgresql < Formula
     end
 
     system "./configure", *args
+    if build.universal?
+      system "curl https://trac.macports.org/export/96361/trunk/dports/databases/postgresql91/files/pg_config.h.ed | ed - ./src/include/pg_config.h"
+      system "curl https://trac.macports.org/export/96361/trunk/dports/databases/postgresql91/files/ecpg_config.h.ed | ed  - ./src/interfaces/ecpg/include/ecpg_config.h"
+    end
+
     system "make install-world"
   end
 
