@@ -31,52 +31,40 @@ class Arangodb < Formula
     (var+'log/arangodb').mkpath
   end
 
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod"
+
   def caveats; <<-EOS.undent
     Please note that this is a very early version if ArangoDB. There will be
     bugs and the ArangoDB team would really appreciate it if you report them:
 
       https://github.com/triAGENS/ArangoDB/issues
 
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    To start the ArangoDB server manually, run:
-        /usr/local/sbin/arangod
-
     To start the ArangoDB shell, run:
         arangosh
     EOS
   end
 
-  def startup_plist
-    return <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>KeepAlive</key>
-    <true/>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>ProgramArguments</key>
-    <array>
-      <string>#{HOMEBREW_PREFIX}/sbin/arangod</string>
-      <string>-c</string>
-      <string>#{etc}/arangodb/arangod.conf</string>
-    </array>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-  </dict>
-</plist>
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>KeepAlive</key>
+        <true/>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_prefix}/sbin/arangod</string>
+          <string>-c</string>
+          <string>#{etc}/arangodb/arangod.conf</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>UserName</key>
+        <string>#{`whoami`.chomp}</string>
+      </dict>
+    </plist>
     EOS
   end
 end

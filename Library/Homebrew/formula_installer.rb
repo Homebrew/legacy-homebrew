@@ -160,7 +160,6 @@ class FormulaInstaller
     end
 
     keg = Keg.new(f.prefix)
-
     if keg.completion_installed? :bash
       ohai 'Caveats', <<-EOS.undent
         Bash completion has been installed to:
@@ -173,6 +172,45 @@ class FormulaInstaller
         zsh completion has been installed to:
           #{HOMEBREW_PREFIX}/share/zsh/site-functions
         EOS
+    end
+
+    if f.plist or keg.plist_installed?
+      if f.plist_startup and false
+        destination = '/Library/LaunchDaemons'
+      else
+        destination = '~/Library/LaunchAgents'
+      end
+
+      plist_filename = f.plist_path.basename
+      plist_link = "#{destination}/#{plist_filename}"
+      plist_domain = f.plist_path.basename('.plist')
+      launchctl_load = "launchctl load -w #{plist_link}"
+      destination_path = Pathname.new File.expand_path destination
+      plist_path = destination_path/plist_filename
+      s = []
+
+      # we readlink because this path probably doesn't exist since caveats
+      # occurs before the link step of installation
+      if not (plist_path).file? and not (plist_path).symlink?
+        s << "To have launchd start #{f.name} at login:"
+        s << "    mkdir -p #{destination}" unless destination_path.directory?
+        s << "    ln -sfv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}" #sudo
+        s << "Then to load #{f.name} now:"
+        s << "    #{launchctl_load}"
+        if f.plist_manual
+          s << "Or, if you don't want/need launchctl, you can just run:"
+          s << "    #{f.plist_manual}"
+        end
+      elsif Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
+        s << "You should reload #{f.name}:"
+        s << "    launchctl unload -w #{plist_link}"
+        s << "    #{launchctl_load}"
+      else
+        s << "To load #{f.name}:"
+        s << "    #{launchctl_load}"
+      end
+
+      ohai 'Caveats', s
     end
   end
 
@@ -288,12 +326,11 @@ class FormulaInstaller
   end
 
   def install_plist
-    if f.startup_plist
-      # A plist may already exist if we are installing from a bottle
-      f.plist_path.unlink if f.plist_path.exist?
-      f.plist_path.write f.startup_plist
-      f.plist_path.chmod 0644
-    end
+    return unless f.plist
+    # A plist may already exist if we are installing from a bottle
+    f.plist_path.unlink if f.plist_path.exist?
+    f.plist_path.write f.plist
+    f.plist_path.chmod 0644
   end
 
   def fix_install_names
