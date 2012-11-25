@@ -48,9 +48,9 @@ class Cppcheck < Formula
       #{bin}
 
     To link the application to a normal Mac OS X location:
-        brew linkapps
+      brew linkapps
     or:
-        ln -s #{bin}/cppcheck-gui.app /Applications
+      ln -s #{bin}/cppcheck-gui.app /Applications
     EOS
   end
 end
