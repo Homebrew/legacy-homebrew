@@ -5,9 +5,12 @@ class Libxmlsec1 < Formula
   url 'http://www.aleksey.com/xmlsec/download/xmlsec1-1.2.18.tar.gz'
   sha1 '740c3c791be838bf638651a3fe0e80c624c2ae0e'
 
+  option 'without-gnutls', 'Disable GnuTLS'
+
   depends_on 'pkg-config' => :build
   depends_on 'libxml2' # Version on 10.6/10.7 is too old
-  depends_on 'gnutls' => :optional
+  depends_on 'gnutls' => :recommended unless build.include? 'without-gnutls'
+  depends_on 'libgcrypt' unless build.include? 'without-gnutls'
 
   # Add HOMEBREW_PREFIX/lib to dl load path
   def patches; DATA; end

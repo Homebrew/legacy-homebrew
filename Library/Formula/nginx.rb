@@ -2,8 +2,8 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.2.4.tar.gz'
-  sha1 'e3de0b2b82095f26e96bdb461ba36472d3e7cdda'
+  url 'http://nginx.org/download/nginx-1.2.5.tar.gz'
+  sha1 'c36feaadbaad6938b02f4038c2d68cab10907f59'
 
   devel do
     url 'http://nginx.org/download/nginx-1.3.8.tar.gz'
@@ -81,29 +81,30 @@ class Nginx < Formula
     EOS
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>KeepAlive</key>
-    <false/>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-    <key>ProgramArguments</key>
-    <array>
-        <string>#{HOMEBREW_PREFIX}/sbin/nginx</string>
-    </array>
-    <key>WorkingDirectory</key>
-    <string>#{HOMEBREW_PREFIX}</string>
-  </dict>
-</plist>
-    EOPLIST
+  def startup_plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <false/>
+        <key>UserName</key>
+        <string>#{`whoami`.chomp}</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>#{opt_prefix}/sbin/nginx</string>
+            <string>-g</string>
+            <string>daemon off;</string>
+        </array>
+        <key>WorkingDirectory</key>
+        <string>#{HOMEBREW_PREFIX}</string>
+      </dict>
+    </plist>
+    EOS
   end
 end
 
