@@ -305,6 +305,10 @@ class Test
   end
 end
 
+if Pathname.pwd == HOMEBREW_PREFIX and ARGV.include? "--cleanup"
+  odie 'cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output.'
+end
+
 if ARGV.named.empty?
   # With no arguments just build the most recent commit.
   Test.run 'HEAD'
