@@ -230,6 +230,7 @@ class Test
     @category = __method__.to_s + ".#{formula}"
 
     test "brew audit #{formula}"
+    test "brew fetch --deps #{formula}"
     test "brew install --verbose --build-bottle #{formula}"
     return unless steps.last.status == :passed
     test "brew bottle #{formula}", true
