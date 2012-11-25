@@ -107,22 +107,22 @@ class Test
     return @@commit_html, @@css
   end
 
-  def initialize arg
+  def initialize argument
     @start_sha1 = nil
     @url = nil
     @formulae = []
 
-    url_match = arg.match 'https:\/\/github.com\/\w+\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
-    formula = Formula.factory arg rescue FormulaUnavailableError
-    git("rev-parse --verify #{arg} &>/dev/null")
+    url_match = argument.match HOMEBREW_PULL_URL_REGEX
+    formula = Formula.factory argument rescue FormulaUnavailableError
+    git("rev-parse --verify #{argument} &>/dev/null")
     if $?.success?
-      @start_sha1 = arg
+      @start_sha1 = argument
     elsif url_match
       @url = url_match[0]
     elsif formula
-      @formulae = [arg]
+      @formulae = [argument]
     else
-      odie "#{arg} is not a pull request URL, commit URL or formula name."
+      odie "#{argument} is not a pull request URL, commit URL or formula name."
     end
 
     @category = __method__
@@ -253,7 +253,7 @@ class Test
       test "git gc"
     elsif not ARGV.include? "--skip-cleanup"
       git('diff --exit-code HEAD 2>/dev/null')
-      odie "Uncommitted changes, aborting." unless $?.success?
+      odie "uncommitted changes, aborting." unless $?.success?
       test "git reset --hard #{@start_sha1}" if @start_sha1
     end
   end
@@ -290,13 +290,13 @@ class Test
     end
   end
 
-  def self.run arg
-    test = new arg
+  def self.run argument
+    test = new argument
     test.cleanup unless ARGV.include? "--skip-cleanup"
     test.download
     test.setup unless ARGV.include? "--skip-setup"
-    test.formulae.each do |f|
-      test.formula f
+    test.formulae.each do |formula|
+      test.formula formula
     end
     test.homebrew if test.core_changed
     test.cleanup unless ARGV.include? "--skip-cleanup"
@@ -309,5 +309,5 @@ if ARGV.named.empty?
   # With no arguments just build the most recent commit.
   Test.run 'HEAD'
 else
-  ARGV.named.each { |arg| Test.run arg }
+  ARGV.named.each { |argument| Test.run argument }
 end
