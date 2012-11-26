@@ -23,31 +23,9 @@ class Darner < Formula
     FileUtils.mkdir_p "#{var}/log/darner/"
   end
 
-  def caveats
-    <<-EOS.undent
-    If this is your first install, automatically load Darner on login with:
-        mkdir -p ~/Library/LaunchAgents
-        ln -nfs #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -wF ~/Library/LaunchAgents/#{plist_path.basename}
+  plist_options :manual => "darner"
 
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        ln -nfs #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -wF ~/Library/LaunchAgents/#{plist_path.basename}
-
-    To stop the Darner daemon:
-        launchctl unload -wF ~/Library/LaunchAgents/#{plist_path.basename}
-
-    You'll find the Darner log here:
-        open #{var}/log/darner/darner.log
-
-    To start Darner manually:
-        darner -d #{var}/darner
-
-    EOS
-  end
-
-  def startup_plist
+  def plist
     <<-PLIST.undent
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
