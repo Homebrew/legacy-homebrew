@@ -23,6 +23,16 @@ class Darner < Formula
     FileUtils.mkdir_p "#{var}/log/darner/"
   end
 
+<<<<<<< HEAD
+  def caveats
+    <<-CAVEATS.undent
+    When started via launchd you'll find the darner log here:
+        open #{var}/log/darner/darner.log
+    CAVEATS
+  end
+
+=======
+>>>>>>> bf90f07c43576bbeae495b53e1ad7a2dca96eb6d
   plist_options :manual => "darner"
 
   def plist
