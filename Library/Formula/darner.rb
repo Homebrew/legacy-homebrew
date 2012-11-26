@@ -17,10 +17,10 @@ class Darner < Formula
     system "make install"
 
     # Create the data directory.
-    FileUtils.mkdir_p "#{var}/darner/"
+    (var + 'darner').mkpath
 
     # Create the log directory.
-    FileUtils.mkdir_p "#{var}/log/darner/"
+    (var + 'log/darner').mkpath
   end
 
   def caveats
