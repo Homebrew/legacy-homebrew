@@ -109,7 +109,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       # behaviour, just open an issue at github
       # We also do this for jar files, as they are in fact zip files, but
       # we don't want to unzip them
-      FileUtils.mv @tarball_path, File.basename(@url)
+      FileUtils.cp @tarball_path, File.basename(@url)
     end
   end
 

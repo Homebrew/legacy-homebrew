@@ -36,64 +36,51 @@ class Openvpn < Formula
     (var + 'run/openvpn').mkpath
   end
 
-  def caveats; <<-EOS
-You may also wish to install tuntap:
+  def caveats; <<-EOS.undent
+    You may also wish to install tuntap:
 
-  The TunTap project provides kernel extensions for Mac OS X that allow
-  creation of virtual network interfaces.
+      The TunTap project provides kernel extensions for Mac OS X that allow
+      creation of virtual network interfaces.
 
-  http://tuntaposx.sourceforge.net/
+      http://tuntaposx.sourceforge.net/
 
-Because these are kernel extensions, there is no Homebrew formula for tuntap.
+    Because these are kernel extensions, there is no Homebrew formula for tuntap.
 
-
-For OpenVPN to work as a server, you will need to do the following:
-
-1) Create configuration file in #{etc}/openvpn, samples can be
-   found in #{share}/doc/openvpn
-
-2) Install the launchd item in /Library/LaunchDaemons, like so:
-
-   sudo cp -vf #{plist_path} /Library/LaunchDaemons/.
-   sudo chown -v root:wheel /Library/LaunchDaemons/#{plist_path.basename}
-
-3) Start the daemon using:
-
-   sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
-
-Next boot of system will automatically start OpenVPN.
-EOS
+    For OpenVPN to work as a server, you will need to create configuration file
+    in #{etc}/openvpn, samples can be found in #{share}/doc/openvpn
+    EOS
   end
 
-  def startup_plist
-    return <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd";>
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>#{plist_name}</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>#{HOMEBREW_PREFIX}/sbin/openvpn</string>
-    <string>--config</string>
-    <string>#{etc}/openvpn/openvpn.conf</string>
-  </array>
-  <key>OnDemand</key>
-  <false/>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>TimeOut</key>
-  <integer>90</integer>
-  <key>WatchPaths</key>
-  <array>
-    <string>#{etc}/openvpn</string>
-  </array>
-  <key>WorkingDirectory</key>
-  <string>#{etc}/openvpn</string>
-</dict>
-</plist>
-EOS
+  plist_options :startup => true
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd";>
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/sbin/openvpn</string>
+        <string>--config</string>
+        <string>#{etc}/openvpn/openvpn.conf</string>
+      </array>
+      <key>OnDemand</key>
+      <false/>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>TimeOut</key>
+      <integer>90</integer>
+      <key>WatchPaths</key>
+      <array>
+        <string>#{etc}/openvpn</string>
+      </array>
+      <key>WorkingDirectory</key>
+      <string>#{etc}/openvpn</string>
+    </dict>
+    </plist>
+    EOS
   end
 end
 
