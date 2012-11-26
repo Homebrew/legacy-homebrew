@@ -11,6 +11,6 @@ class Rpm2cpio < Formula
   depends_on 'xz'
 
   def install
-    bin.install 'rpm2cpio?revision=259745' => 'rpm2cpio'
+    bin.install 'rpm2cpio?revision=259745' => 'rpm2cpio.pl'
   end
 end
