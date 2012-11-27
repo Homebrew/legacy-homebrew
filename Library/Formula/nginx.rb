@@ -6,8 +6,8 @@ class Nginx < Formula
   sha1 'c36feaadbaad6938b02f4038c2d68cab10907f59'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.3.8.tar.gz'
-    sha1 '84ff39e3f76e9f496f4e05080885e04caf472bb9'
+    url 'http://nginx.org/download/nginx-1.3.9.tar.gz'
+    sha1 'dcf32eaaf7e99d169ef1d202ffe1ec38215b4d98'
   end
 
   env :userpaths
