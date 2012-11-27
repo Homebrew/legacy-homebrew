@@ -19,14 +19,14 @@ end
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.1.tgz'
-  sha1 '6fc3054cdc7f7e64b12742f7e8f9df256a3253d9'
-  version '2.2.1-x86_64'
+  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.2.tgz'
+  sha1 'b3808eeb6fe481f87db176cd3ab31119f94f7cc1'
+  version '2.2.2-x86_64'
 
   devel do
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.3.0.tgz'
-    sha1 '816ca175bd31e2ec1eb8b61793b1d1e4a247a5da'
-    version '2.3.0-x86_64'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.3.1.tgz'
+    sha1 'ebb277337e66fe88dfd0bb4208f78e9fba5ca101'
+    version '2.3.1-x86_64'
   end
 
   depends_on SixtyFourBitRequired.new
