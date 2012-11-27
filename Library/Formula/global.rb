@@ -2,9 +2,9 @@ require 'formula'
 
 class Global < Formula
   homepage 'http://www.gnu.org/software/global/'
-  url 'http://ftpmirror.gnu.org/global/global-6.2.4.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/global/global-6.2.4.tar.gz'
-  sha1 'fff915079e7099de0174c47a1a8f6a5b870517d5'
+  url 'http://ftpmirror.gnu.org/global/global-6.2.5.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/global/global-6.2.5.tar.gz'
+  sha1 'f3095e5c2427b0af1715e2696bdf32bacb50b989'
 
   option "without-rebuilding-php-parser", "Don't rebuild PHP parser; use provied parser"
 
