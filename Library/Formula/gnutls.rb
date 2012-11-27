@@ -14,14 +14,14 @@ class Gnutls < Formula
 
   fails_with :llvm do
     build 2326
-    cause "Undefined symbols when linking"
+    cause 'Undefined symbols when linking'
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-static",
+    system './configure', '--disable-dependency-tracking',
+                          '--disable-static',
                           "--prefix=#{prefix}"
-    system "make install"
+    system 'make install'
 
     # certtool shadows the OS X certtool utility
     mv bin+'certtool', bin+'gnutls-certtool'
