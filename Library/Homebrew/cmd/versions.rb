@@ -16,7 +16,7 @@ module Homebrew extend self
           print Tty.white.to_s
           print "#{version.ljust(8)} "
           print Tty.reset.to_s
-          puts "git checkout #{sha[0,8]} #{f.pretty_relative_path}"
+          puts "git checkout #{sha} #{f.pretty_relative_path}"
         end
       end
     end
