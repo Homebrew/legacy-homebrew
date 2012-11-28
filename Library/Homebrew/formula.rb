@@ -395,6 +395,8 @@ class Formula
       raise LoadError
     end
 
+    raise NameError if klass.superclass != Formula
+
     return klass.new(name) if install_type == :from_name
     return klass.new(name, path.to_s)
   rescue NoMethodError
