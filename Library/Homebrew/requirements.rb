@@ -25,6 +25,7 @@ class LanguageModuleDependency < Requirement
       when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{@import_name}'}
       when :lua then %W{/usr/bin/env luarocks show #{@import_name}}
       when :node then %W{/usr/bin/env node -e require('#{@import_name}');}
+      when :ocaml then %W{/usr/bin/env opam list #{@import_name} | grep #{@import_name}}
       when :perl then %W{/usr/bin/env perl -e use\ #{@import_name}}
       when :python then %W{/usr/bin/env python -c import\ #{@import_name}}
       when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{@import_name}'}
@@ -38,6 +39,7 @@ class LanguageModuleDependency < Requirement
       when :jruby   then "jruby -S gem install"
       when :lua     then "luarocks install"
       when :node    then "npm install"
+      when :ocaml   then "opam install"
       when :perl    then "cpan -i"
       when :python  then "pip install"
       when :rbx     then "rbx gem install"
