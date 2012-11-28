@@ -16,7 +16,7 @@ require 'build_environment'
 class DependencyCollector
   # Define the languages that we can handle as external dependencies.
   LANGUAGE_MODULES = [
-    :chicken, :jruby, :lua, :node, :perl, :python, :rbx, :ruby
+    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
   ].freeze
 
   attr_reader :deps, :requirements
