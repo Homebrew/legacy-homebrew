@@ -12,9 +12,9 @@ class Mplayer < Formula
 
   depends_on 'yasm' => :build
   depends_on 'xz' => :build
-  depends_on :x11 if build.include? 'with-x'
+  depends_on :x11 if build.head? or build.include? 'with-x'
 
-  unless build.include? 'without-osd' or build.include? 'with-x'
+  unless build.include? 'without-osd' or build.include? 'with-x' or build.head?
     # These are required for the OSD. We can get them from X11, or we can
     # build our own.
     depends_on :fontconfig
@@ -57,11 +57,18 @@ class Mplayer < Formula
     ]
 
     args << "--enable-menu" unless build.include? 'without-osd'
-    args << "--disable-x11" unless build.include? 'with-x'
+    args << "--disable-x11" unless build.head? or build.include? 'with-x'
 
     system "./configure", *args
     system "make"
     system "make install"
+  end
+
+  def caveats
+    s = ''
+    if build.head?
+      s = "HEAD formula requires X11, so the 'with-x' option has been enabled."
+    end
   end
 
   def test
