@@ -121,34 +121,17 @@ class Mysql < Formula
     To run as, for instance, user "mysql", you may need to `sudo`:
         sudo mysql_install_db ...options...
 
-    Start mysqld manually with:
-        mysql.server start
-
-        Note: if this fails, you probably forgot to run the first two steps up above
-
     A "/etc/my.cnf" from another install may interfere with a Homebrew-built
     server starting up correctly.
 
     To connect:
         mysql -uroot
-
-    To launch on startup:
-    * if this is your first install:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    * if this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    You may also need to edit the plist to use the correct "UserName".
-
     EOS
   end
 
-  def startup_plist; <<-EOPLIST.undent
+  plist_options :manual => "mysql.server start"
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -158,7 +141,7 @@ class Mysql < Formula
       <key>Label</key>
       <string>#{plist_name}</string>
       <key>Program</key>
-      <string>#{HOMEBREW_PREFIX}/bin/mysqld_safe</string>
+      <string>#{opt_prefix}/bin/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
       <key>UserName</key>
@@ -167,6 +150,6 @@ class Mysql < Formula
       <string>#{var}</string>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 end

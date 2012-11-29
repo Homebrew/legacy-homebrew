@@ -2,8 +2,8 @@ require 'formula'
 
 class BulkExtractor < Formula
   homepage 'https://github.com/simsong/bulk_extractor/wiki'
-  url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.3.tar.gz'
-  sha1 '847559ef179a123b3855637396f47348d3318751'
+  url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.3.1.tar.gz'
+  sha1 'b4d68b0d08c1630b103875ec4c6524f46ad4a8ae'
 
   depends_on :autoconf
   depends_on :automake
@@ -11,21 +11,6 @@ class BulkExtractor < Formula
   depends_on 'afflib' => :optional
   depends_on 'exiv2' => :optional
   depends_on 'libewf' => :optional
-
-  fails_with :clang do
-    build 421
-    cause <<-EOS.undent
-      bulk_extractor.cpp:719:5: error: no matching function for call to
-            'load_scanners'
-          load_scanners(scanners_builtin,histograms);
-          ^~~~~~~~~~~~~
-      ./bulk_extractor_i.h:225:6: note: candidate function not viable: no known
-            conversion from 'scanner_t *[23]' to 'const scanner_t **' (aka 'void
-            (const **)(const class scanner_params &, const class
-            recursion_control_block &)') for 1st argument;
-    EOS
-  end
-
 
   def patches
     # Error in exec install hooks; installing java GUI manually. Reported in

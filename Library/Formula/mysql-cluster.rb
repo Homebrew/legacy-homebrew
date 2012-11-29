@@ -206,7 +206,7 @@ class MysqlCluster < Formula
     (extra) ? super().dirname+(plist_name(extra)+'.plist') : super()
   end
 
-  def mysqld_startup_plist(name); <<-EOPLIST.undent
+  def mysqld_startup_plist(name); <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -228,10 +228,10 @@ class MysqlCluster < Formula
       <string>#{var}</string>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 
-  def ndb_mgmd_startup_plist(name); <<-EOPLIST.undent
+  def ndb_mgmd_startup_plist(name); <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -259,10 +259,10 @@ class MysqlCluster < Formula
       <string>#{var}/mysql-cluster/#{name}.log</string>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 
-  def ndbd_startup_plist(name); <<-EOPLIST.undent
+  def ndbd_startup_plist(name); <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -288,7 +288,7 @@ class MysqlCluster < Formula
       <string>#{var}/mysql-cluster/#{name}.log</string>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 end
 

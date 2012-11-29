@@ -10,28 +10,69 @@ class Go < Formula
 
   skip_clean 'bin'
 
+  option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
+  option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
+
   def install
     # install the completion script
     (prefix/'etc/bash_completion.d').install 'misc/bash/go' => 'go-completion.bash'
 
-    prefix.install Dir['*']
+    if build.include? 'cross-compile-all'
+      targets = [
+        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
+        ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
+        ['freebsd', ['386', 'amd64'],        { :cgo => false }],
 
-    cd prefix do
-      # The version check is due to:
-      # http://codereview.appspot.com/5654068
-      (prefix/'VERSION').write 'default' if build.head?
+        # image/jpeg fails to build
+        #['netbsd',  ['386', 'amd64'],        { :cgo => false }],
 
+        ['openbsd', ['386', 'amd64'],        { :cgo => false }],
+        ['plan9',   ['386'],                 { :cgo => false }],
+        ['windows', ['386', 'amd64'],        { :cgo => false }],
+      ]
+    elsif build.include? 'cross-compile-common'
+      targets = [
+        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
+        ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
+        ['windows', ['386', 'amd64'],        { :cgo => false }],
+      ]
+    else
+      targets = [
+        ['darwin', [''], { :cgo => true }]
+      ]
+    end
+
+    # The version check is due to:
+    # http://codereview.appspot.com/5654068
+    'VERSION'.write 'default' if build.head?
+
+    cd 'src' do
       # Build only. Run `brew test go` to run distrib's tests.
-      cd 'src' do
-        system './make.bash'
+      targets.each do |(os, archs, opts)|
+      archs.each do |arch|
+        ENV['GOROOT_FINAL'] = prefix
+        ENV['GOOS']         = os
+        ENV['GOARCH']       = arch
+        ENV['CGO_ENABLED']  = opts[:cgo] ? "1" : "0"
+        allow_fail = opts[:allow_fail] ? "|| true" : ""
+        system "./make.bash --no-clean #{allow_fail}"
+      end
       end
     end
+
+    # cleanup ENV
+    ENV.delete('GOROOT_FINAL')
+    ENV.delete('GOOS')
+    ENV.delete('GOARCH')
+    ENV.delete('CGO_ENABLED')
+
+    Pathname.new('pkg/obj').rmtree
 
     # Don't install header files; they aren't necessary and can
     # cause problems with other builds. See:
     # http://trac.macports.org/ticket/30203
     # http://code.google.com/p/go/issues/detail?id=2407
-    include.rmtree
+    prefix.install(Dir['*'] - ['include'])
   end
 
   def test
