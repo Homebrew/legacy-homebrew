@@ -6,13 +6,14 @@ class Icu4c < Formula
   version '50.1'
   sha1 '9a3369c00a8be8eff935d2893849ad2eb246c0ef'
 
-  bottle do
-    sha1 'a71560ffd35869a1d56cd726e02b80ff5bbf2e5b' => :mountainlion
-    sha1 '0488d374c7b3cbf9c744e8b4f036e225803de20a' => :lion
-    sha1 '699a9505564a37a06c485371e1ab6fb82eedafa0' => :snowleopard
-  end
+  keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
 
   option :universal
+
+  fails_with :clang do
+    build 421
+    cause "Icu will turn on C++11 mode when built with clang, which causes incompatibilities."
+  end
 
   def install
     ENV.universal_binary if build.universal?
