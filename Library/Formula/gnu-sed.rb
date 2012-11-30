@@ -9,7 +9,7 @@ class GnuSed < Formula
   option 'default-names', "Do not prepend 'g' to the binary"
 
   def install
-    args = ["--prefix=#{prefix}", "--disable-dependency-tracking"]
+    args = ["--prefix=#{prefix}", "--mandir=#{man}", "--disable-dependency-tracking"]
     args << "--program-prefix=g" unless build.include? 'default-names'
 
     system "./configure", *args
