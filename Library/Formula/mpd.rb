@@ -49,10 +49,10 @@ class Mpd < Formula
             "--enable-vorbis-encoder"]
     args << "--disable-curl" if MacOS.version == :leopard
     args << "--enable-lastfm" if build.include?("lastfm")
-    args << '--disable-libwrap' unless build.include? 'libwrap'
-    args << '--disable-shout"' unless build.include? 'libshout'
-    args << '--disable-ao"' unless build.include? 'libao'
-    args << '--disable-ffmpeg"' unless build.include? 'ffmpeg'
+    args << "--disable-libwrap" unless build.include? 'libwrap'
+    args << "--disable-shout" unless build.include? 'libshout'
+    args << "--disable-ao" unless build.include? 'libao'
+    args << "--disable-ffmpeg" unless build.include? 'ffmpeg'
 
     system "./configure", *args
     system "make"
