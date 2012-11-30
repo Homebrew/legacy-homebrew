@@ -2,7 +2,7 @@ require 'formula'
 
 class SpatialiteGui < Formula
   homepage 'https://www.gaia-gis.it/fossil/spatialite_gui/index'
-  url 'http://www.gaia-gis.it/gaia-sins/spatialite_gui-1.5.0-stable.tar.gz'
+  url 'http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.5.0-stable.tar.gz'
   sha1 'b8cfe3def8c77928f7c9fcc86bae3c99179fa486'
 
   depends_on 'libspatialite'
