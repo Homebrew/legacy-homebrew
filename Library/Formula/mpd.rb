@@ -9,19 +9,25 @@ class Mpd < Formula
 
   option "lastfm", "Compile with experimental support for Last.fm radio"
   option 'libwrap', 'Enable support of TCP Wrappers (buggy on 10.7)'
+  option 'libshout', 'Enable support Libshout for streaming default use built-in HTTP'
+  option 'libao', 'Enable support ao output'
+  option 'ffmpeg', 'Enable support ffmpeg decoder'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libid3tag'
-  depends_on 'ffmpeg'
+  depends_on 'libvorbis'
+  depends_on 'libogg'
   depends_on 'flac'
-  depends_on 'libshout'
-  depends_on 'mad'
+  depends_on 'faad2'
+  depends_on 'mpg123'
   depends_on 'lame'
-  depends_on 'faad2' => :optional
   depends_on 'fluid-synth'
   depends_on 'libmms' => :optional
   depends_on 'libzzip' => :optional
+  depends_on 'libshout' if build.include? 'libshout'
+  depends_on 'libao' if build.include? 'libao'
+  depends_on 'ffmpeg' if build.include? 'ffmpeg'
 
   def install
     system "./autogen.sh" if build.head?
@@ -30,17 +36,23 @@ class Mpd < Formula
     ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
 
     args = ["--disable-debug", "--disable-dependency-tracking",
+            "CC=gcc", "CXX=g++",
             "--prefix=#{prefix}",
             "--enable-bzip2",
-            "--enable-ffmpeg",
             "--enable-flac",
-            "--enable-shout",
+            "--enable-mpg123",
+            "--disable-vorbis",
+            "--disable-mad",
             "--enable-fluidsynth",
             "--enable-zzip",
-            "--enable-lame-encoder"]
+            "--enable-lame-encoder",
+            "--enable-vorbis-encoder"]
     args << "--disable-curl" if MacOS.version == :leopard
     args << "--enable-lastfm" if build.include?("lastfm")
     args << '--disable-libwrap' unless build.include? 'libwrap'
+    args << '--disable-shout"' unless build.include? 'libshout'
+    args << '--disable-ao"' unless build.include? 'libao'
+    args << '--disable-ffmpeg"' unless build.include? 'ffmpeg'
 
     system "./configure", *args
     system "make"
@@ -48,3 +60,4 @@ class Mpd < Formula
     system "make install"
   end
 end
+
