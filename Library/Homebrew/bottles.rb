@@ -11,7 +11,8 @@ end
 
 def install_bottle? f
   return true if ARGV.include? '--install-bottle'
-  return true if f.downloader and f.downloader.local_bottle_path
+  return true if f.downloader and defined? f.downloader.local_bottle_path \
+    and f.downloader.local_bottle_path
   not ARGV.build_from_source? \
     and MacOS.bottles_supported? \
     and ARGV.used_options(f).empty? \
