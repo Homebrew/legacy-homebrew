@@ -8,7 +8,11 @@ class AbstractDownloadStrategy
       @spec = @specs.keys.first # only use first spec
       @ref = @specs.values.first
     end
+
+    @local_bottle_path = nil
   end
+
+  attr_reader :local_bottle_path
 
   def expand_safe_system_args args
     args.each_with_index do |arg, ii|
@@ -32,7 +36,7 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  attr_reader :tarball_path, :local_bottle_path
+  attr_reader :tarball_path
   attr_writer :local_bottle_path
 
   def initialize name, package
