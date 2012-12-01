@@ -49,6 +49,8 @@ class Ruby < Formula
                                  ruby_lib/'vendor_ruby',
                                  ruby_lib/'gems'
 
+    ENV["CFLAGS"] = "-march=native -O3"
+
     system "./configure", *args
     system "make"
     system "make install"
