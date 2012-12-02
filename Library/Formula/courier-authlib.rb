@@ -16,6 +16,7 @@ class CourierAuthlib < Formula
     # ENV.j1  # if your formula's build system can't parallelize
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
+	    		  "--without-authmysql",
                           "--prefix=#{prefix}"
     # system "cmake . #{std_cmake_parameters}"
     system "make install" # if this fails, try separate make/make install steps
