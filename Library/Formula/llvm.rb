@@ -8,6 +8,14 @@ class Clang < Formula
   head      'http://llvm.org/git/clang.git'
 end
 
+class CompilerRt < Formula
+  homepage  'http://llvm.org/'
+  url       'http://llvm.org/releases/3.1/compiler-rt-3.1.src.tar.gz'
+  sha1      '62b7646eee6c81f3078ea398fee160b264b5bd84'
+
+  head      'http://llvm.org/git/compiler-rt.git'
+end
+
 class Llvm < Formula
   homepage  'http://llvm.org/'
   url       'http://llvm.org/releases/3.1/llvm-3.1.src.tar.gz'
@@ -23,6 +31,7 @@ class Llvm < Formula
 
   option :universal
   option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
+  option 'with-asan', 'Include support for -faddress-sanitizer (from compiler-rt)'
   option 'shared', 'Build LLVM as a shared library'
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
@@ -34,6 +43,8 @@ class Llvm < Formula
     end
 
     Clang.new("clang").brew { clang_dir.install Dir['*'] } if build.include? 'with-clang'
+    CompilerRt.new("compiler-rt").brew {
+      compiler_rt_dir.install Dir['*'] } if build.include? 'with-asan'
 
     if build.universal?
       ENV['UNIVERSAL'] = '1'
@@ -86,5 +97,9 @@ class Llvm < Formula
 
   def clang_dir
     buildpath/'tools/clang'
+  end
+
+  def compiler_rt_dir
+    buildpath/'projects/compiler-rt'
   end
 end
