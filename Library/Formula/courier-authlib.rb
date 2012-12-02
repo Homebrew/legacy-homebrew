@@ -12,6 +12,7 @@ class CourierAuthlib < Formula
 	    		  "--without-authmysql",
                           "--prefix=#{prefix}"
     system "make install"
+    system "make install-configure"
   end
 
 end
