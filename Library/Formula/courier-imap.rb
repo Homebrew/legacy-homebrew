@@ -5,10 +5,11 @@ require 'formula'
 
 class CourierImap < Formula
   homepage 'http://www.courier-mta.org/'
-  url 'http://downloads.sourceforge.net/project/courier/imap/4.11.0/courier-imap-4.11.0.tar.bz2?r=http%3A%2F%2Fwww.courier-mta.org%2Fdownload.php&ts=1354391676&use_mirror=garr'
+  url 'http://downloads.sourceforge.net/project/courier/imap/4.11.0/courier-imap-4.11.0.tar.bz2'
   md5 '6aa9a3487e1c255d1826833af362d1f7'
 
   # depends_on 'cmake' => :build
+  depends_on 'courier-authlib'
 
   def install
     # ENV.x11 # if your formula requires any X11 headers

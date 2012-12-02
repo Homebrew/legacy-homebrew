@@ -5,7 +5,7 @@ require 'formula'
 
 class CourierAuthlib < Formula
   homepage 'http://www.courier-mta.org/'
-  url 'http://downloads.sourceforge.net/project/courier/authlib/0.65.0/courier-authlib-0.65.0.tar.bz2?r=http%3A%2F%2Fwww.courier-mta.org%2Fdownload.php&ts=1354392149&use_mirror=netcologne'
+  url 'http://downloads.sourceforge.net/project/courier/authlib/0.65.0/courier-authlib-0.65.0.tar.bz2'
   md5 'e9287e33b0e70ea3745517b4d719948d'
 
   # depends_on 'cmake' => :build
