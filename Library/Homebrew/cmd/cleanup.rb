@@ -33,7 +33,7 @@ module Homebrew extend self
 
     if f.installed? and f.rack.directory?
       f.rack.children.each do |keg|
-        if f.installed_prefix != keg
+        if f.version > Keg.new(keg).version
           if f.can_cleanup?
             if ARGV.dry_run?
               puts "Would remove: #{keg}"
@@ -61,7 +61,7 @@ module Homebrew extend self
       if name and version
         f = Formula.factory(name) rescue nil
         old_bottle = bottle_file_outdated? f, pn
-        if not f or (f.version != version or ARGV.switch? "s" and not f.installed?) or old_bottle
+        if (f and f.version > version) or (ARGV.switch? "s" and (f and (not f.installed?))) or old_bottle
           if ARGV.dry_run?
             puts "Would remove: #{pn}"
           else
