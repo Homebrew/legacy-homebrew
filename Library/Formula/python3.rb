@@ -144,6 +144,13 @@ class Python3 < Formula
       end
     end
 
+    # A temporary fix, until a homebrew
+    # [issue on handling Frameworks](https://github.com/mxcl/homebrew/issues/15943)
+    # is resolved. `brew install python python3` failed to link because both
+    # provide `Python.Framework`. Homebrew will need to be smarter about this,
+    # since Frameworks are built to support multiple versions.
+    ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.Framework/#{f}") }
+
   end
 
   def distutils_fix_superenv(args)
