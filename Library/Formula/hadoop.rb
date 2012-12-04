@@ -2,8 +2,8 @@ require 'formula'
 
 class Hadoop < Formula
   homepage 'http://hadoop.apache.org/common/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-1.0.4/hadoop-1.0.4.tar.gz'
-  sha1 '1ab6f3271289ff83ba7b44a090ec1a3e6b77d1dd'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-1.1.1/hadoop-1.1.1.tar.gz'
+  sha1 '3b7f226e437a30bb8eee12093179c81ae94e7896'
 
   def install
     rm_f Dir["bin/*.bat"]
