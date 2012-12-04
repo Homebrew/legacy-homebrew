@@ -33,7 +33,7 @@ module Homebrew extend self
 
     if f.installed? and f.rack.directory?
       f.rack.children.each do |keg|
-        if f.version > Keg.new(keg).version
+        if File.directory? keg and f.version > Keg.new(keg).version
           if f.can_cleanup?
             if ARGV.dry_run?
               puts "Would remove: #{keg}"
