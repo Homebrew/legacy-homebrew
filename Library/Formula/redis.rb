@@ -47,7 +47,10 @@ class Redis < Formula
     <plist version="1.0">
       <dict>
         <key>KeepAlive</key>
-        <true/>
+        <dict>
+          <key>SuccessfulExit</key>
+          <false/>
+        </dict>
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
