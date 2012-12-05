@@ -11,11 +11,10 @@ class Postgis < Formula
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
-  if ARGV.build_head?
-    depends_on :automake
-    depends_on :libtool
-  end
+  depends_on :automake
+  depends_on :libtool
 
+  depends_on 'gpp' => :build
   depends_on 'postgresql'
   depends_on 'proj'
   depends_on 'geos'
@@ -37,6 +36,10 @@ class Postgis < Formula
     # as it is common for people to avoid upgrading Postgres.
     Formula.factory('postgresql').linked_keg.realpath
   end
+
+  # Force GPP to be used when pre-processing SQL files. See:
+  #   http://trac.osgeo.org/postgis/ticket/1694
+  def patches; DATA end
 
   def install
     ENV.deparallelize
@@ -61,7 +64,7 @@ class Postgis < Formula
     args << '--with-gui' if build_gui?
 
 
-    system './autogen.sh' if ARGV.build_head?
+    system './autogen.sh'
     system './configure', *args
     system 'make'
 
@@ -120,3 +123,30 @@ class Postgis < Formula
       EOS
   end
 end
+__END__
+Force usage of GPP as the SQL pre-processor as Clang chokes.
+
+diff --git a/configure.ac b/configure.ac
+index 136a1d6..c953c69 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -31,17 +31,8 @@ AC_SUBST([ANT])
+ dnl
+ dnl SQL Preprocessor
+ dnl
+-AC_PATH_PROG([CPPBIN], [cpp], [])
+-if test "x$CPPBIN" != "x"; then
+-  SQLPP="${CPPBIN} -traditional-cpp -P"
+-else
+-  AC_PATH_PROG([GPP], [gpp_], [])
+-  if test "x$GPP" != "x"; then
+-    SQLPP="${GPP} -C -s \'" dnl Use better string support
+-  else
+-    SQLPP="${CPP} -traditional-cpp"
+-  fi
+-fi
++AC_PATH_PROG([GPP], [gpp], [])
++SQLPP="${GPP} -C -s \'" dnl Use better string support
+ AC_SUBST([SQLPP])
+ 
+ dnl
