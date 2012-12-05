@@ -13,7 +13,7 @@ class Pygtk < Formula
   depends_on 'libglade' if build.include? 'glade'
 
   option :universal
-  option 'glade', 'Python bindigs for glade. (to `import gtk.glade1)'
+  option 'glade', 'Python bindigs for glade. (to `import gtk.glade`)'
 
   def install
     ENV.append 'CFLAGS', '-ObjC'
@@ -21,6 +21,11 @@ class Pygtk < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+
+    # Fixing the pkgconfig file to find codegen, because it was moved from
+    # pygtk to pygobject. But our pkgfiles point into the cellar and in the
+    # pygtk-cellar there is no pygobject.
+    inreplace lib/'pkgconfig/pygtk-2.0.pc', 'codegendir=${datadir}/pygobject/2.0/codegen', "codegendir=#{HOMEBREW_PREFIX}/share/pygobject/2.0/codegen"
   end
 
   def caveats; <<-EOS.undent
