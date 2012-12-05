@@ -2,16 +2,12 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://github.com/triAGENS/ArangoDB/zipball/v1.0.4'
-  sha1 'c443cd9703055ffde0180c6a8f4dd221f6b081ac'
+  url 'https://github.com/triAGENS/ArangoDB/zipball/v1.1.0'
+  sha1 '7ecb5a6291a31c17744656f2b26f185efa851575'
 
   head "https://github.com/triAGENS/ArangoDB.git"
 
-  devel do
-    url 'https://github.com/triAGENS/ArangoDB/zipball/v1.1.beta2'
-    sha1 '9cce97cd7fabf1db9612f508c782c7a9b17448a6'
-  end
-
+  depends_on 'icu4c'
   depends_on 'libev'
   depends_on 'v8'
 
@@ -20,7 +16,9 @@ class Arangodb < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-relative",
-                          "--disable-all-in-one",
+                          "--disable-all-in-one-icu",
+                          "--disable-all-in-one-libev",
+                          "--disable-all-in-one-v8",
                           "--enable-mruby",
                           "--datadir=#{share}",
                           "--localstatedir=#{var}"
@@ -34,13 +32,25 @@ class Arangodb < Formula
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod"
 
   def caveats; <<-EOS.undent
-    Please note that this is a very early version if ArangoDB. There will be
-    bugs and the ArangoDB team would really appreciate it if you report them:
+    ArangoDB (http://www.arangodb.org)
+      A universal open-source database with a flexible data model for documents,
+      graphs, and key-values.
 
-      https://github.com/triAGENS/ArangoDB/issues
+    First Steps with ArangoDB:
+      http:/www.arangodb.org/quickstart
 
-    To start the ArangoDB shell, run:
-        arangosh
+    Upgrading ArangoDB:
+      http://www.arangodb.org/manuals/1.1/Upgrading.html
+
+    Configuration file:
+      /usr/local/etc/arangodb/arangod.conf
+
+    Start ArangoDB server:
+      unix> /usr/local/sbin/arangod
+
+    Start ArangoDB shell client (use empty password):
+      unix> /usr/local/bin/arangosh
+
     EOS
   end
 
