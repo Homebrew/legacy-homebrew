@@ -9,7 +9,7 @@ class JiraCli < Formula
 
   def script; <<-EOS.undent
     #!/bin/bash
-    java -jar #{libexec}/jira-cli-3.1.0.jar --server ${JIRA_SERVER} --user ${JIRA_USER} --password ${JIRA_PASSWORD} "$@"
+    java -jar #{libexec}/jira-cli-3.1.0.jar "$@"
     EOS
   end
 
@@ -22,11 +22,6 @@ class JiraCli < Formula
   end
 
   def caveats; <<-EOS.undent
-    You need to set the following env variables before running:
-        JIRA_SERVER
-        JIRA_USER
-        JIRA_PASSWORD
-
     From the command prompt, run:
         jira --help
     EOS
