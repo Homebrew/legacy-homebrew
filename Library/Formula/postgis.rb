@@ -6,8 +6,8 @@ end
 
 class Postgis < Formula
   homepage 'http://postgis.refractions.net'
-  url 'http://postgis.org/download/postgis-2.0.1.tar.gz'
-  sha1 '31db797a835f14470f9e1183fe8fd2ba7b99aadf'
+  url 'http://download.osgeo.org/postgis/source/postgis-2.0.2.tar.gz'
+  sha1 'a3fe6c4ea4c50dc3f586e804c863ba5eff23bf06'
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
