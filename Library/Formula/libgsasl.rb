@@ -8,6 +8,7 @@ class Libgsasl < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
+                          "--with-gssapi-impl=mit",
                           "--prefix=#{prefix}"
     system "make install"
   end
