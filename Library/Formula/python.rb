@@ -43,8 +43,7 @@ class Python < Formula
   option 'with-poll', 'Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)'
 
   # --with-dtrace relies on CLT as dtrace hard-codes paths to /usr
-  # http://bugs.python.org/issue13405
-  option 'with-dtrace', 'Install with DTrace support' if MacOS::CLT.installed?
+  option 'with-dtrace', 'Experimental DTrace support (http://bugs.python.org/issue13405)' if MacOS::CLT.installed?
 
   def patches
     'https://raw.github.com/gist/3415636/2365dea8dc5415daa0148e98c394345e1191e4aa/pythondtrace-patch.diff'
