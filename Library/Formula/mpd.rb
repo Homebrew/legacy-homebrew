@@ -11,7 +11,8 @@ class Mpd < Formula
   option 'libwrap', 'Enable support of TCP Wrappers (buggy on 10.7)'
   option 'libshout', 'Enable support Libshout for streaming default use built-in HTTP'
   option 'libao', 'Enable support ao output'
-  option 'ffmpeg', 'Enable support ffmpeg decoder'
+  option 'faad2', 'Enable support faad2 decoder recommend build with gcc (--use-gcc)'
+  option 'without-ffmpeg', 'Disable FFmpeg decoder'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -19,15 +20,15 @@ class Mpd < Formula
   depends_on 'libvorbis'
   depends_on 'libogg'
   depends_on 'flac'
-  depends_on 'faad2'
   depends_on 'mpg123'
   depends_on 'lame'
   depends_on 'fluid-synth'
   depends_on 'libmms' => :optional
   depends_on 'libzzip' => :optional
+  depends_on 'ffmpeg' unless build.include? 'without-ffmpeg'
   depends_on 'libshout' if build.include? 'libshout'
   depends_on 'libao' if build.include? 'libao'
-  depends_on 'ffmpeg' if build.include? 'ffmpeg'
+  depends_on 'faad2' if build.include? 'faad2'
 
   def install
     system "./autogen.sh" if build.head?
@@ -36,7 +37,6 @@ class Mpd < Formula
     ENV.append 'CFLAGS', "-I#{HOMEBREW_PREFIX}/include"
 
     args = ["--disable-debug", "--disable-dependency-tracking",
-            "CC=gcc", "CXX=g++",
             "--prefix=#{prefix}",
             "--enable-bzip2",
             "--enable-flac",
@@ -49,10 +49,11 @@ class Mpd < Formula
             "--enable-vorbis-encoder"]
     args << "--disable-curl" if MacOS.version == :leopard
     args << "--enable-lastfm" if build.include?("lastfm")
-    args << "--disable-libwrap" unless build.include? 'libwrap'
-    args << "--disable-shout" unless build.include? 'libshout'
-    args << "--disable-ao" unless build.include? 'libao'
-    args << "--disable-ffmpeg" unless build.include? 'ffmpeg'
+    args << '--disable-libwrap' unless build.include? 'libwrap'
+    args << '--disable-shout' unless build.include? 'libshout'
+    args << '--disable-ao' unless build.include? 'libao'
+    args << '--disable-ffmpeg' if build.include? 'without-ffmpeg'
+    args << '--disable-aac' unless build.include? 'faad2'
 
     system "./configure", *args
     system "make"
@@ -60,4 +61,3 @@ class Mpd < Formula
     system "make install"
   end
 end
-
