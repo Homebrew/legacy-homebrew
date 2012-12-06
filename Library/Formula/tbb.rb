@@ -2,7 +2,7 @@ require 'formula'
 
 class Tbb < Formula
   homepage 'http://www.threadingbuildingblocks.org/'
-  url 'http://threadingbuildingblocks.org/uploads/77/189/4.1%20update%201/tbb41_20121003oss_src.tgz'
+  url 'http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb41_20121003oss_src.tgz'
   sha1 '072333068fa278635582846eaaa22d51c0100e09'
   version '4.1u1'
 

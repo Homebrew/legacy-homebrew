@@ -4,20 +4,18 @@ brew(1) -- The missing package manager for OS X
 ## SYNOPSIS
 
 `brew` --version  
-`brew` [--verbose|-v] command [options] [formula] ...
+`brew` command [--verbose|-v] [options] [formula] ...
 
 ## DESCRIPTION
 
 Homebrew is the easiest and most flexible way to install the UNIX tools Apple
 didn't include with OS X.
 
-## OPTIONS
-  * `-v`, `--verbose` command [options] [formula] ...:
-    With `--verbose`, many commands print extra debugging information.
-
 ## ESSENTIAL COMMANDS
 
 For the full command list, see the COMMANDS section.
+
+With `--verbose`, many commands print extra debugging information.
 
   * `install` <formula>:
     Install <formula>.

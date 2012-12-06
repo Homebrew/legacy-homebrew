@@ -22,7 +22,7 @@ class Sqlite < Formula
 
   option :universal
   option 'with-docs', 'Install HTML documentation'
-  option 'without-rtree' 'Disable the R*Tree index module'
+  option 'without-rtree', 'Disable the R*Tree index module'
   option 'with-fts', 'Enable the FTS module'
   option 'with-functions', 'Enable more math and string functions for SQL queries'
 

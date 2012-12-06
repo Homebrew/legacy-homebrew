@@ -34,12 +34,12 @@ class Coreutils < Formula
     If you really need to use these commands with their normal names, you
     can add a "gnubin" directory to your PATH from your bashrc like:
 
-        PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+        PATH="#{opt_prefix}/libexec/gnubin:$PATH"
 
     Additionally, you can access their man pages with normal names if you add
     the "gnuman" directory to your MANPATH from your bashrc as well:
 
-        MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
+        MANPATH="#{opt_prefix}/libexec/gnuman:$MANPATH"
 
     EOS
   end

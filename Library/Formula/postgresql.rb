@@ -15,6 +15,11 @@ class Postgresql < Formula
   option 'no-perl', 'Build without Perl support'
   option 'enable-dtrace', 'Build with DTrace support'
 
+  fails_with :clang do
+    build 211
+    cause 'Miscompilation resulting in segfault on queries'
+  end
+
   # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
   # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
   def patches
@@ -87,112 +92,113 @@ class Postgresql < Formula
   end
 
   def caveats
-    s = <<-EOS
-# Build Notes
+    s = <<-EOS.undent
+    # Build Notes
 
-If builds of PostgreSQL 9 are failing and you have version 8.x installed,
-you may need to remove the previous version first. See:
-  https://github.com/mxcl/homebrew/issues/issue/2510
+    If builds of PostgreSQL 9 are failing and you have version 8.x installed,
+    you may need to remove the previous version first. See:
+      https://github.com/mxcl/homebrew/issues/issue/2510
 
-To build plpython against a specific Python, set PYTHON prior to brewing:
-  PYTHON=/usr/local/bin/python  brew install postgresql
-See:
-  http://www.postgresql.org/docs/9.2/static/install-procedure.html
+    To build plpython against a specific Python, set PYTHON prior to brewing:
+      PYTHON=/usr/local/bin/python  brew install postgresql
+    See:
+      http://www.postgresql.org/docs/9.2/static/install-procedure.html
 
-# Create/Upgrade a Database
+    # Create/Upgrade a Database
 
-If this is your first install, create a database with:
-  initdb #{var}/postgres -E utf8
+    If this is your first install, create a database with:
+      initdb #{var}/postgres -E utf8
 
-To migrate existing data from a previous major version (pre-9.2) of PostgreSQL, see:
-  http://www.postgresql.org/docs/9.2/static/upgrading.html
+    To migrate existing data from a previous major version (pre-9.2) of PostgreSQL, see:
+      http://www.postgresql.org/docs/9.2/static/upgrading.html
 
-# Start/Stop PostgreSQL
+    # Start/Stop PostgreSQL
 
-If this is your first install, automatically load on login with:
-  mkdir -p ~/Library/LaunchAgents
-  cp #{plist_path} ~/Library/LaunchAgents/
-  launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+    If this is your first install, automatically load on login with:
+      mkdir -p ~/Library/LaunchAgents
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-If this is an upgrade and you already have the #{plist_path.basename} loaded:
-  launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-  cp #{plist_path} ~/Library/LaunchAgents/
-  launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+    If this is an upgrade and you already have the #{plist_path.basename} loaded:
+      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
+      cp #{plist_path} ~/Library/LaunchAgents/
+      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-Or start manually with:
-  pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
+    Or start manually with:
+      pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
 
-And stop with:
-  pg_ctl -D #{var}/postgres stop -s -m fast
+    And stop with:
+      pg_ctl -D #{var}/postgres stop -s -m fast
 
-# Loading Extensions
+    # Loading Extensions
 
-By default, Homebrew builds all available Contrib extensions.  To see a list of all
-available extensions, from the psql command line, run:
-  SELECT * FROM pg_available_extensions;
+    By default, Homebrew builds all available Contrib extensions.  To see a list of all
+    available extensions, from the psql command line, run:
+      SELECT * FROM pg_available_extensions;
 
-To load any of the extension names, navigate to the desired database and run:
-  CREATE EXTENSION [extension name];
+    To load any of the extension names, navigate to the desired database and run:
+      CREATE EXTENSION [extension name];
 
-For instance, to load the tablefunc extension in the current database, run:
-  CREATE EXTENSION tablefunc;
+    For instance, to load the tablefunc extension in the current database, run:
+      CREATE EXTENSION tablefunc;
 
-For more information on the CREATE EXTENSION command, see:
-  http://www.postgresql.org/docs/9.2/static/sql-createextension.html
-For more information on extensions, see:
-  http://www.postgresql.org/docs/9.2/static/contrib.html
+    For more information on the CREATE EXTENSION command, see:
+      http://www.postgresql.org/docs/9.2/static/sql-createextension.html
+    For more information on extensions, see:
+      http://www.postgresql.org/docs/9.2/static/contrib.html
 
-# Other
+    # Other
 
-Some machines may require provisioning of shared memory:
-  http://www.postgresql.org/docs/9.2/static/kernel-resources.html#SYSVIPC
-EOS
+    Some machines may require provisioning of shared memory:
+      http://www.postgresql.org/docs/9.2/static/kernel-resources.html#SYSVIPC
+    EOS
 
     if MacOS.prefer_64_bit? then
-      s << <<-EOS
+      s << <<-EOS.undent
 
-To install postgresql (and ossp-uuid) in 32-bit mode:
-   brew install postgresql --32-bit
+      To install postgresql (and ossp-uuid) in 32-bit mode:
+         brew install postgresql --32-bit
 
-If you want to install the postgres gem, including ARCHFLAGS is recommended:
-    env ARCHFLAGS="-arch x86_64" gem install pg
+      If you want to install the postgres gem, including ARCHFLAGS is recommended:
+          env ARCHFLAGS="-arch x86_64" gem install pg
 
-To install gems without sudo, see the Homebrew wiki.
+      To install gems without sudo, see the Homebrew wiki.
       EOS
     end
 
     return s
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>KeepAlive</key>
-  <true/>
-  <key>Label</key>
-  <string>#{plist_name}</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>#{HOMEBREW_PREFIX}/bin/postgres</string>
-    <string>-D</string>
-    <string>#{var}/postgres</string>
-    <string>-r</string>
-    <string>#{var}/postgres/server.log</string>
-  </array>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>UserName</key>
-  <string>#{`whoami`.chomp}</string>
-  <key>WorkingDirectory</key>
-  <string>#{HOMEBREW_PREFIX}</string>
-  <key>StandardErrorPath</key>
-  <string>#{var}/postgres/server.log</string>
-</dict>
-</plist>
-    EOPLIST
+  plist_options :manual => "pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres -l #{HOMEBREW_PREFIX}/var/postgres/server.log start"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>KeepAlive</key>
+      <true/>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/bin/postgres</string>
+        <string>-D</string>
+        <string>#{var}/postgres</string>
+        <string>-r</string>
+        <string>#{var}/postgres/server.log</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>UserName</key>
+      <string>#{`whoami`.chomp}</string>
+      <key>WorkingDirectory</key>
+      <string>#{HOMEBREW_PREFIX}</string>
+      <key>StandardErrorPath</key>
+      <string>#{var}/postgres/server.log</string>
+    </dict>
+    </plist>
+    EOS
   end
 end
 
