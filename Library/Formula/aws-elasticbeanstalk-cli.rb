@@ -6,25 +6,26 @@ class AwsElasticbeanstalkCli < Formula
   sha1 'c02f1962814b557b0eff15cb2f651cd9cd89c7a0'
 
   def install
-    # Remove Windows versions
+    # Remove incompatible versions
     rm_rf Dir['eb/windows']
+    rm_rf Dir['eb/linux']
     rm_rf Dir['AWSDevTools/Windows']
 
-    # Copy everything to prefix dir
-    prefix.install Dir['*']
+    #installing in a less elegant way to work around this issue https://forums.aws.amazon.com/thread.jspa?messageID=400362
+    libexec.install Dir['eb', 'AWSDevTools']
+    bin.install_symlink "#{libexec}/eb/macosx/python2.7/eb"
   end
 
   def caveats; <<-EOS.undent
-    The ElasticBeanstalk CLI app 'eb' can be run on Linux and Mac OS X.
-    You need to alias the appropriate one yourself:
+    This package contains an updated command line interface (CLI), called eb, for AWS Elastic Beanstalk.
+    AWS Elastic Beanstalk provides easy application deployment and management utilizing various Amazon
+    Web Services resources that are created on your behalf. Eb helps you create and deploy your application
+    in minutes. To ensure it works run:
 
-    For Linux, add these aliases to your shell .profile:
-      alias eb="python2.7 #{prefix}/eb/linux/python2.7/eb"
-      alias eb3="python3.0 #{prefix}/eb/linux/python3/eb"
+    eb --help
 
-    For Mac OS X, add these aliases:
-      alias eb="python2.7 #{prefix}/eb/macosx/python2.7/eb"
-      alias eb3="python3.0 #{prefix}/eb/macosx/python3/eb"
+    Further information: http://aws.amazon.com/code/6752709412171743
+
     EOS
   end
 end
