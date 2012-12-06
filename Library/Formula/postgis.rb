@@ -1,15 +1,13 @@
 require 'formula'
 
-def build_gui?
-  ARGV.include? '--with-gui'
-end
-
 class Postgis < Formula
   homepage 'http://postgis.refractions.net'
   url 'http://download.osgeo.org/postgis/source/postgis-2.0.2.tar.gz'
   sha1 'a3fe6c4ea4c50dc3f586e804c863ba5eff23bf06'
 
   head 'http://svn.osgeo.org/postgis/trunk/'
+
+  option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools'
 
   depends_on :automake
   depends_on :libtool
@@ -19,17 +17,11 @@ class Postgis < Formula
   depends_on 'proj'
   depends_on 'geos'
 
-  depends_on 'gtk+' if build_gui?
+  depends_on 'gtk+' if build.include? 'with-gui'
 
   # For GeoJSON and raster handling
   depends_on 'json-c'
   depends_on 'gdal'
-
-  def options
-    [
-      ['--with-gui', 'Build shp2pgsql-gui in addition to command line tools']
-    ]
-  end
 
   def postgresql
     # Follow the PostgreSQL linked keg back to the active Postgres installation
@@ -61,7 +53,7 @@ class Postgis < Formula
       # gettext installations are.
       "--disable-nls"
     ]
-    args << '--with-gui' if build_gui?
+    args << '--with-gui' if build.include? 'with-gui'
 
 
     system './autogen.sh'
