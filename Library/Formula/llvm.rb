@@ -26,6 +26,7 @@ class Llvm < Formula
   option 'shared', 'Build LLVM as a shared library'
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
+  option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
   def install
     if build.universal? and build.include? 'shared'
@@ -56,6 +57,8 @@ class Llvm < Formula
       args << "--enable-targets=host"
     end
     args << "--enable-shared" if build.include? 'shared'
+
+    args << "--disable-assertions" if build.include? 'disable-assertions'
 
     system "./configure", *args
     system "make install"
