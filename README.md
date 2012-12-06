@@ -15,7 +15,7 @@ More Documentation
 
 Who Are You?
 ------------
-I'm [Max Howell][mxcl] and I'm a splendid chap.
+I'm Jeff Singleton [hackdefendr], my fork is primarily for commits that replace any formula depending on X11 to the same formula that uses Quartz.
 
 
 [home]:http://mxcl.github.com/homebrew

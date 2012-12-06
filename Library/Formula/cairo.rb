@@ -14,6 +14,7 @@ class Cairo < Formula
 
   option :universal
   option 'without-x', 'Build without X11 support'
+  option 'enable-quartz', 'Build with Quartz instead of X11'
 
   env :std if build.universal?
 
@@ -36,6 +37,10 @@ class Cairo < Formula
       args << '--enable-xlib=no' << '--enable-xlib-xrender=no'
     else
       args << '--with-x'
+    end
+
+    if build.include? 'enable-quartz'
+        args << '--enable-quartz=yes' << '--without-x'
     end
 
     args << '--enable-xcb=no' if MacOS.version == :leopard
