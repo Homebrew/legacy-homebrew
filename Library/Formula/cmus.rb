@@ -15,7 +15,7 @@ class Cmus < Formula
   depends_on 'faad2'
   depends_on 'flac'
   depends_on 'mp4v2'
-  depends_on 'libcue' if build.head?
+  depends_on 'libcue'
 
   skip_clean 'bin/cmus'
   skip_clean 'bin/cmus-remote'

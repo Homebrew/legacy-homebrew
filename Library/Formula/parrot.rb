@@ -2,12 +2,12 @@ require 'formula'
 
 class Parrot < Formula
   homepage 'http://www.parrot.org/'
-  url 'ftp://ftp.parrot.org/pub/parrot/releases/supported/4.6.0/parrot-4.6.0.tar.bz2'
-  sha256 '31d48e348eab418d5d9d9f9bb24d628763ff90c608d21b1944c227b6938a69d1'
+  url 'ftp://ftp.parrot.org/pub/parrot/releases/supported/4.9.0/parrot-4.9.0.tar.bz2'
+  sha256 '638cba16b47bd5c6dfb4c9106f17961b0496d65c321279a16032ef6667d3ae4d'
 
   devel do
-    url 'ftp://ftp.parrot.org/pub/parrot/releases/devel/4.7.0/parrot-4.7.0.tar.bz2'
-    sha256 '4360ac3dffafffaa00bce561c1329df8ad134019f76930cf24e7a875a4422a90'
+    url 'ftp://ftp.parrot.org/pub/parrot/releases/devel/4.10.0/parrot-4.10.0.tar.bz2'
+    sha256 '7d6a592c386d25bcee429a269cc571ae81c5c080b15d14a884401a27fe3f5d4b'
   end
 
   head 'https://github.com/parrot/parrot.git'

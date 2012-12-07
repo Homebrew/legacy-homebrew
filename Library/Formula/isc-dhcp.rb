@@ -70,31 +70,19 @@ class IscDhcp < Formula
       File.new(file, File::CREAT|File::RDONLY).close
     end
 
-    # sample launchd plists
-    plist_path.write dhcpd_plist
-    plist_path.chmod 0644
-    (prefix+'homebrew.mxcl.dhcpd6.plist').write dhcpd6_plist
+    # dhcpv6 plists
+    (prefix+'homebrew.mxcl.dhcpd6.plist').write plist_dhcpd6
     (prefix+'homebrew.mxcl.dhcpd6.plist').chmod 0644
   end
 
-  def caveats
-    <<-EOCAVEATS.undent
+  def caveats; <<-EOS.undent
     This install of dhcpd expects config files to be in #{etc}.
     All state files (leases and pids) are stored in #{var}/dhcpd.
 
     Dhcpd needs to run as root since it listens on privileged ports.
-    Sample launchd plists to achieve this have been provided at:
-      #{plist_path}
-    and:
-      #{prefix}/homebrew.mxcl.dhcpd6.plist
 
     There are two plists because a single dhcpd process may do either
     DHCPv4 or DHCPv6 but not both. Use one or both as needed.
-
-    Copy the plists to /Library/LaunchDaemons and start the services with
-      cd /Library/LaunchDaemons
-      launchctl load -w #{plist_path.basename}
-      launchctl load -w homebrew.mxcl.dhcpd6.plist
 
     Note that you must create the appropriate config files before starting
     the services or dhcpd will refuse to run.
@@ -102,14 +90,13 @@ class IscDhcp < Formula
       DHCPv6: #{etc}/dhcpd6.conf
 
     Sample config files may be found in #{etc}.
-    If you change the config, restart dhcpd with one or both of
-      launchctl stop #{plist_name}
-      launchctl stop homebrew.mxcl.dhcpd6
-    EOCAVEATS
+    EOS
   end
 
-  def dhcpd_plist
-    <<-EOPLIST.undent
+  plist_options :startup => true
+
+  def plist
+    <<-EOS.undent
     <?xml version='1.0' encoding='UTF-8'?>
     <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
                     "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -118,7 +105,7 @@ class IscDhcp < Formula
     <key>Label</key><string>#{plist_name}</string>
     <key>ProgramArguments</key>
       <array>
-        <string>#{HOMEBREW_PREFIX}/sbin/dhcpd</string>
+        <string>#{opt_prefix}/sbin/dhcpd</string>
         <string>-f</string>
       </array>
     <key>Disabled</key><false/>
@@ -127,11 +114,11 @@ class IscDhcp < Formula
     <key>LowPriorityIO</key><true/>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 
-  def dhcpd6_plist
-    <<-EOPLIST.undent
+  def plist_dhcpd6
+    <<-EOS.undent
     <?xml version='1.0' encoding='UTF-8'?>
     <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
                     "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -140,7 +127,7 @@ class IscDhcp < Formula
     <key>Label</key><string>#{plist_name}</string>
     <key>ProgramArguments</key>
       <array>
-        <string>#{HOMEBREW_PREFIX}/sbin/dhcpd</string>
+        <string>#{opt_prefix}/sbin/dhcpd</string>
         <string>-f</string>
         <string>-6</string>
         <string>-cf</string>
@@ -152,6 +139,6 @@ class IscDhcp < Formula
     <key>LowPriorityIO</key><true/>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 end
