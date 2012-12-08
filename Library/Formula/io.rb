@@ -16,6 +16,7 @@ class Io < Formula
   depends_on 'ossp-uuid'
   depends_on 'pcre'
   depends_on 'yajl'
+  depends_on 'xz'
 
   # Used by Bignum add-on
   depends_on 'gmp' unless build.include? 'without-addons'
