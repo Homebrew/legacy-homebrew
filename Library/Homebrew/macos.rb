@@ -50,10 +50,6 @@ module MacOS extend self
     elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{Xcode.prefix}/usr/bin"
-    else
-      # Since we are pretty unrelenting in finding Xcode no matter where
-      # it hides, we can now throw in the towel.
-      opoo "Could not locate developer tools. Consult `brew doctor`."
     end
   end
 
