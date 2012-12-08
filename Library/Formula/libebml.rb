@@ -8,7 +8,7 @@ class Libebml < Formula
 
   def install
     cd 'make/linux' do
-      system "make", "install", "prefix=#{prefix}", "CXX=#{ENV.cxx}"
+      system "make", "install", "prefix=#{prefix}", "CXX=#{ENV.cxx}", "CXXFLAGS=-std=c++11 -stdlib=libc++"
     end
   end
 end
