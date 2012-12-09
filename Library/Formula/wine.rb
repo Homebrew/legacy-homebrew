@@ -11,10 +11,8 @@ class WineGecko < Formula
 end
 
 class WineMono < Formula
-  devel do
-    url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
-    sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
-  end
+  url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+  sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
 end
 
 class Wine < Formula
@@ -29,8 +27,8 @@ class Wine < Formula
     # updating too
     #  * http://wiki.winehq.org/Gecko
     #  * http://wiki.winehq.org/Mono
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.18.tar.bz2'
-    sha256 'a144900cc20e55623c8c9ab26e265eb2e76d88c9e21bd21a3bcfa030fdb3fbdf'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.19.tar.bz2'
+    sha256 '51ad795ae62d8392ac6fbc3ad595ac57d44bcc779b716573a9d73ca122961023'
   end
 
   env :std
