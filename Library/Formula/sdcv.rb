@@ -1,8 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Sdcv < Formula
   homepage 'http://sdcv.sourceforge.net/'
   url 'https://sdcv.svn.sourceforge.net/svnroot/sdcv/trunk', :revision => '38'
@@ -10,6 +7,7 @@ class Sdcv < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'automake' => :build
+  depends_on 'autoconf' => :build
   depends_on 'glib'
   depends_on 'gettext'
   depends_on 'readline'
@@ -17,7 +15,10 @@ class Sdcv < Formula
   fails_with :clang do
     build 421
     cause <<-EOS.undent
-      only llvm work, use `brew install --llvm sdcv`
+      In C++, clang supports variable length arrays in very limited 
+      circumstances, the element type of a variable length array must 
+      be a POD ("plain old data") type.
+      More detail here: http://clang.llvm.org/compatibility.html
       EOS
   end
 
@@ -26,9 +27,9 @@ class Sdcv < Formula
   end
 
   def install
-    system "autoreconf"
+    system "autoconf"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install" # if this fails, try separate make/make install steps
+    system "make install"
   end
 end
