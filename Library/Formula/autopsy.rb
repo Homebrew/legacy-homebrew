@@ -1,8 +1,8 @@
 require 'formula'
 
 class Autopsy < Formula
-  url 'http://downloads.sourceforge.net/project/autopsy/autopsy/2.24/autopsy-2.24.tar.gz'
   homepage 'http://www.sleuthkit.org/autopsy/index.php'
+  url 'http://downloads.sourceforge.net/project/autopsy/autopsy/2.24/autopsy-2.24.tar.gz'
   sha1 '084a6554a1494f5f34df4a5a3635c8d3dc3b8822'
 
   depends_on 'sleuthkit'
@@ -61,9 +61,8 @@ class Autopsy < Formula
   end
 
   def caveats; <<-EOS.undent
-    To start autopsy:
-      autopsy
-    By default, the evidence locker is in #{var}/lib/autopsy
+    By default, the evidence locker is in:
+      #{var}/lib/autopsy
     EOS
   end
 end
