@@ -27,7 +27,7 @@ class Sdcv < Formula
   end
 
   def install
-    system "autoconf"
+    system "autoreconf"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
