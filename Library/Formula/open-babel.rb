@@ -1,94 +1,39 @@
 require 'formula'
 
-class OasaPythonModule < Requirement
-  def message; <<-EOS.undent
-    The oasa Python module is required for some operations.
-    It can be downloaded from:
-      http://bkchem.zirael.org/oasa_en.html
-    EOS
-  end
-  def satisfied?
-    args = %W{/usr/bin/env python -c import\ oasa}
-    quiet_system *args
-  end
-end
+class Openbabel < Formula
+  homepage 'http://www.openbabel.org'
+  url 'http://sourceforge.net/projects/openbabel/files/openbabel/2.3.2/openbabel-2.3.2.tar.gz'
+  sha1 'b8831a308617d1c78a790479523e43524f07d50d'
 
-class OpenBabel < Formula
-  homepage 'http://openbabel.org/'
-  url 'http://sourceforge.net/projects/openbabel/files/openbabel/2.2.3/openbabel-2.2.3.tar.gz'
-  sha1 'e396b27551a106e001ca6c953181657a0a53f43f'
+  option 'build-gui',       'Build the Graphical User Interface'
+  option 'png',             'Support PNG depiction'
+  option 'python-bindings', 'Compile Python language bindings'
 
-  head 'https://openbabel.svn.sourceforge.net/svnroot/openbabel/openbabel/trunk'
-
-  depends_on OasaPythonModule.new
-
-  def options
-    [
-      ["--perl", "Perl bindings"],
-      ["--python", "Python bindings"],
-      ["--ruby", "Ruby bindings"]
-    ]
-  end
+  depends_on 'cmake' => :build
+  depends_on 'wxmac' if build.include? 'build-gui'
+  depends_on 'cairo' if build.include? 'png'
+  depends_on 'eigen' if build.include? 'python-bindings'
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}"]
-    args << '--enable-maintainer-mode' if ARGV.build_head?
+    args = %W[ -DCMAKE_INSTALL_PREFIX=#{prefix} ]
+    args << '-DPYTHON_BINDINGS=ON' if build.include? 'python-bindings'
+    args << '-DBUILD_GUI=ON' if build.include? 'build-gui'
+    args << '-DCAIRO_INCLUDE_DIRS=/usr/local/include/cairo '\
+            '-DCAIRO_LIBRARIES=/usr/local/lib/libcairo.dylib' if build.include? 'png'
 
-    system "./configure", *args
+    system "mkdir ../build"
+    system "cd ../build"
+    system "cmake", *args
     system "make"
     system "make install"
+  end
 
-    ENV['OPENBABEL_INSTALL'] = prefix
-
-    # Install the python bindings
-    if ARGV.include? '--python'
-      cd 'scripts/python' do
-        system "python", "setup.py", "build"
-        system "python", "setup.py", "install", "--prefix=#{prefix}"
-      end
-    end
-
-    # Install the perl bindings.
-    if ARGV.include? '--perl'
-      cd 'scripts/perl' do
-        # because it's not yet been linked, the perl script won't find the newly
-        # compiled library unless we pass it in as LD_LIBRARY_PATH.
-        ENV['LD_LIBRARY_PATH'] = "lib"
-        system 'perl', 'Makefile.PL'
-        # With the additional argument "PREFIX=#{prefix}" it puts things in #{prefix} (where perl can't find them).
-        # Without, it puts them in /Library/Perl/...
-        inreplace "Makefile" do |s|
-          # Fix the broken Makefile (-bundle not allowed with -dynamiclib).
-          # I think this is a SWIG error, but I'm not sure.
-          s.gsub! '-bundle ', ''
-          # Don't waste time building PPC version.
-          s.gsub! '-arch ppc ', ''
-          # Don't build i386 version when libopenbabel can't link to it.
-          s.gsub! '-arch i386 ', ''
-        end
-        system "make"
-        system "make test"
-        system "make install"
-      end
-    end
-
-    # Install the ruby bindings.
-    if ARGV.include? '--ruby'
-      cd 'scripts/ruby' do
-        system "ruby", "extconf.rb",
-               "--with-openbabel-include=#{include}",
-               "--with-openbabel-lib=#{lib}"
-
-        # Don't build i386 version when libopenbabel can't link to it.
-        inreplace "Makefile", '-arch i386 ', ''
-
-        # With the following line it puts things in #{prefix} (where ruby can't find them).
-        # Without, it puts them in /Library/Ruby/...
-        #ENV['DESTDIR']=prefix
-        system "make"
-        system "make install"
-      end
-    end
+  def caveats; <<-EOS.undent
+    Language bindings will be installed to the same location as the
+    Open Babel libraries (/usr/local/lib).
+    To prepare to use the bindings, add the install directory to the
+    front of the appropriate environment variable:
+    PYTHONPATH for Python.
+    EOS
   end
 end
