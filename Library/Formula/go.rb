@@ -45,7 +45,7 @@ class Go < Formula
 
     # The version check is due to:
     # http://codereview.appspot.com/5654068
-    'VERSION'.write 'default' if build.head?
+    Pathname.new('VERSION').write 'default' if build.head?
 
     cd 'src' do
       # Build only. Run `brew test go` to run distrib's tests.
