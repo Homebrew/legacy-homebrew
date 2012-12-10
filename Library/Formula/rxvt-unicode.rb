@@ -7,6 +7,7 @@ class RxvtUnicode < Formula
 
   option "disable-iso14755", "Disable ISO 14775 Shift+Ctrl hotkey"
 
+  depends_on :x11
   depends_on 'pkg-config' => :build
 
   def patches
