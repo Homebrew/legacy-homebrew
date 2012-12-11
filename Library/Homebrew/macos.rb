@@ -226,7 +226,7 @@ module MacOS extend self
 
   def bottles_supported? raise_if_failed=false
     # We support bottles on all versions of OS X except 32-bit Snow Leopard.
-    unless Hardware.is_64_bit? or MacOS.version >= :snow_leopard
+    if Hardware.is_32_bit? and MacOS.version = :snow_leopard
       return false unless raise_if_failed
       raise "Bottles are not supported on 32-bit Snow Leopard."
     end
