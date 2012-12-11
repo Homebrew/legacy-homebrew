@@ -554,7 +554,7 @@ protected
       unless $?.success?
         unless ARGV.verbose?
           f.flush
-          Kernel.system "/usr/bin/tail -n 5 #{logfn}"
+          Kernel.system "/usr/bin/tail", "-n", "5", logfn
         end
         f.puts
         require 'cmd/--config'
