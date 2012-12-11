@@ -5,8 +5,8 @@ require 'formula'
 
 class Ecore < Formula
   homepage 'http://docs.enlightenment.org/auto/ecore'
-  url 'http://download.enlightenment.org/releases/ecore-1.7.0.tar.bz2'
-  sha1 '352644e61fd3f71e3af199bb298ed3a30fe8ae11'
+  url 'http://download.enlightenment.org/releases/ecore-1.7.5.tar.bz2'
+  sha1 '11e001972d5f8f4fd3fe2f525b34156affb331ce'
 
   head 'http://svn.enlightenment.org/svn/e/trunk/ecore/'
 
