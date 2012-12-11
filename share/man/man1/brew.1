@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "October 2012" "Homebrew" "brew"
+.TH "BREW" "1" "November 2012" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -10,19 +10,16 @@
 \fBbrew\fR \-\-version
 .
 .br
-\fBbrew\fR [\-\-verbose|\-v] command [options] [formula] \.\.\.
+\fBbrew\fR command [\-\-verbose|\-v] [options] [formula] \.\.\.
 .
 .SH "DESCRIPTION"
 Homebrew is the easiest and most flexible way to install the UNIX tools Apple didn\'t include with OS X\.
 .
-.SH "OPTIONS"
-.
-.TP
-\fB\-v\fR, \fB\-\-verbose\fR command [options] [formula] \.\.\.
-With \fB\-\-verbose\fR, many commands print extra debugging information\.
-.
 .SH "ESSENTIAL COMMANDS"
 For the full command list, see the COMMANDS section\.
+.
+.P
+With \fB\-\-verbose\fR, many commands print extra debugging information\.
 .
 .TP
 \fBinstall\fR \fIformula\fR
@@ -74,7 +71,7 @@ If \fB\-n\fR is passed, show what would be removed, but do not actually remove a
 If \fB\-s\fR is passed, scrubs the cache, removing downloads for even the latest versions of formula\. Note downloads for any installed formula will still not be deleted\. If you want to delete those too: \fBrm \-rf $(brew \-\-cache)\fR
 .
 .TP
-\fBcreate [\-\-autotools|\-\-cmake] [\-\-no\-fetch]\fR \fIURL\fR
+\fBcreate [\-\-autotools|\-\-cmake] [\-\-no\-fetch] [\-\-set\-name <name>] [\-\-set\-version <version>]\fR \fIURL\fR
 Generate a formula for the downloadable file at \fIURL\fR and open it in \fBEDITOR\fR\. Homebrew will attempt to automatically derive the formula name and version, but if it fails, you\'ll have to make your own template\. The wget formula serves as a simple example\.
 .
 .IP
@@ -82,6 +79,9 @@ If \fB\-\-autotools\fR is passed, create a basic template for an Autotools\-styl
 .
 .IP
 If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the cache and will thus not add the MD5 to the formula for you\.
+.
+.IP
+The options \fB\-\-set\-name\fR and \fB\-\-set\-version\fR each take an argument and allow you to explicitly set the name and version of the package you are creating\.
 .
 .TP
 \fBdeps [\-\-1] [\-n] [\-\-tree] [\-\-all]\fR \fIformula\fR
@@ -100,7 +100,7 @@ If \fB\-\-tree\fR is passed, show dependencies as a tree\.
 If \fB\-\-all\fR is passed, show dependencies for all formulae\.
 .
 .TP
-\fBdiy [\-\-set\-name] [\-\-set\-version]\fR
+\fBdiy [\-\-set\-name <name>] [\-\-set\-version <version>]\fR
 Automatically determine the installation prefix for non\-Homebrew software\.
 .
 .IP
@@ -323,8 +323,11 @@ Upgrade outdated brews\.
 If \fIformulae\fR are given, upgrade only the specified brews\.
 .
 .TP
-\fBuses [\-\-installed]\fR \fIformula\fR
-Show the formulas that specify \fIformula\fR as a dependency\. The list is not recursive; only one level of dependencies is resolved\.
+\fBuses [\-\-installed] [\-\-recursive]\fR \fIformula\fR
+Show the formulas that specify \fIformula\fR as a dependency\.
+.
+.IP
+Use \fB\-\-recursive\fR to resolve more than one level of dependencies\.
 .
 .IP
 If \fB\-\-installed\fR is passed, only list installed formulae\.

@@ -2,8 +2,8 @@ require 'formula'
 
 class Cassandra < Formula
   homepage 'http://cassandra.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.1.6/apache-cassandra-1.1.6-bin.tar.gz'
-  sha1 'ecd25676f2cb175e715356c5e7af61014a34ba59'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.1.7/apache-cassandra-1.1.7-bin.tar.gz'
+  sha1 '60ee3dfc142159e689ee405259efbeb356ad543a'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -30,44 +30,38 @@ class Cassandra < Formula
   end
 
   def caveats; <<-EOS.undent
-    If this is your first install, automatically load on login with:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
     If you plan to use the CQL shell (cqlsh), you will need the Python CQL library
     installed. Since Homebrew prefers using pip for Python packages, you can
     install that using:
 
       pip install cql
-
     EOS
   end
 
-  def startup_plist; <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>KeepAlive</key>
-    <true/>
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>KeepAlive</key>
+        <true/>
 
-    <key>Label</key>
-    <string>#{plist_name}</string>
+        <key>Label</key>
+        <string>#{plist_name}</string>
 
-    <key>ProgramArguments</key>
-    <array>
-        <string>#{HOMEBREW_PREFIX}/bin/cassandra</string>
-        <string>-f</string>
-    </array>
+        <key>ProgramArguments</key>
+        <array>
+            <string>#{opt_prefix}/bin/cassandra</string>
+            <string>-f</string>
+        </array>
 
-    <key>RunAtLoad</key>
-    <true/>
+        <key>RunAtLoad</key>
+        <true/>
 
-    <key>WorkingDirectory</key>
-    <string>#{var}/lib/cassandra</string>
-  </dict>
-</plist>
-    EOPLIST
+        <key>WorkingDirectory</key>
+        <string>#{var}/lib/cassandra</string>
+      </dict>
+    </plist>
+    EOS
   end
 end

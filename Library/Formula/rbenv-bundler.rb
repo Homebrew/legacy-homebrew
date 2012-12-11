@@ -9,15 +9,9 @@ class RbenvBundler < Formula
 
   def install
     prefix.install Dir['*']
-  end
 
-  def caveats; <<-EOS.undent
-      To enable rbenv bundler create an rbenv plugins folder:
-        mkdir $HOME/.rbenv/plugins
-
-      And symlink the rbenv-bundler plugin:
-        ln -s #{prefix} $HOME/.rbenv/plugins/bundler
-
-      EOS
+    rbenv_plugins = "#{HOMEBREW_PREFIX}/var/lib/rbenv/plugins"
+    mkdir_p rbenv_plugins
+    ln_sf opt_prefix, "#{rbenv_plugins}/#{name}"
   end
 end

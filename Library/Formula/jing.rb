@@ -7,9 +7,6 @@ class Jing < Formula
 
   def install
     libexec.install Dir["*"]
-    (bin+'jing').write <<-EOS.undent
-      #!/bin/bash
-      java -jar "#{libexec}/bin/jing.jar" "$@"
-    EOS
+    bin.write_jar_script libexec/'bin/jing.jar', 'jing'
   end
 end

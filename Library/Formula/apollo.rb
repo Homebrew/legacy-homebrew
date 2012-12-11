@@ -24,7 +24,8 @@ class Apollo < Formula
   option "no-mqtt", "Install without MQTT protocol support"
 
   def install
-    prefix.install %w{ LICENSE NOTICE readme.html docs examples }
+    prefix.install_metafiles
+    prefix.install %w{ docs examples }
     libexec.install Dir['*']
 
     unless build.include? "no-bdb"
@@ -39,33 +40,18 @@ class Apollo < Formula
       end
     end
 
-    (bin+'apollo').write <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/#{name}" "$@"
-    EOS
+    bin.write_exec_script libexec/'bin/apollo'
   end
+
+  plist_options :manual => "#{HOMEBREW_PREFIX}/var/apollo/bin/apollo-broker"
 
   def caveats; <<-EOS.undent
     To create the broker:
         #{bin}/apollo create #{var}/apollo
-
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Or to start the broker in the foreground run:
-        #{var}/apollo/bin/apollo-broker run
-
     EOS
   end
 
-  def startup_plist; <<-EOS.undent
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">

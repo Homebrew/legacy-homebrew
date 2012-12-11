@@ -16,8 +16,7 @@ class FlumeNg < Formula
     EOS
   end
 
-  def caveats
-    <<-EOS.undent
+  def caveats; <<-EOS.undent
     See https://cwiki.apache.org/FLUME/getting-started.html for example configurations.
     Your flume config dir is #{libexec}/conf/
 

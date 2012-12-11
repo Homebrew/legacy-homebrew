@@ -35,17 +35,13 @@ class Dnsmasq < Formula
     To configure dnsmasq, copy the example configuration to #{etc}/dnsmasq.conf
     and edit to taste.
 
-      cp #{prefix}/dnsmasq.conf.example #{etc}/dnsmasq.conf
-
-    To load dnsmasq automatically on startup, install and load the provided launchd
-    item as follows:
-
-      sudo cp #{plist_path} /Library/LaunchDaemons
-      sudo launchctl load -w /Library/LaunchDaemons/#{plist_path.basename}
+      cp #{opt_prefix}/dnsmasq.conf.example #{etc}/dnsmasq.conf
     EOS
   end
 
-  def startup_plist; <<-EOS.undent
+  plist_options :startup => true
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -54,7 +50,7 @@ class Dnsmasq < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{HOMEBREW_PREFIX}/sbin/dnsmasq</string>
+          <string>#{opt_prefix}/sbin/dnsmasq</string>
           <string>--keep-in-foreground</string>
         </array>
         <key>KeepAlive</key>

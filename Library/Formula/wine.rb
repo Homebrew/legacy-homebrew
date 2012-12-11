@@ -20,8 +20,8 @@ class Wine < Formula
   devel do
     # NOTE: when updating Wine, please check if Wine-Gecko needs updating too
     # see http://wiki.winehq.org/Gecko
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.15.tar.bz2'
-    sha256 '2642698204bbc5d9fd04c30f3507fa08a62fa3b0a21e53cdfd2c5a4530b69454'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.16.tar.bz2'
+    sha256 '2f4df6ade18d636c892bee0feb6fd075eb3ad299e61d250ea359659d6411e723'
   end
 
   env :std

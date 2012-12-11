@@ -20,7 +20,8 @@ class Ffmpeg < Formula
   option "with-opencore-amr", "Enable AMR audio format"
   option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
   option "with-libass", "Enable ASS/SSA subtitle format"
-  option "with-openjpeg", 'Enable JPEG 200 image format'
+  option "with-openjpeg", 'Enable JPEG 2000 image format'
+  option 'with-schroedinger', 'Enable Dirac video format'
   option 'with-ffplay', 'Enable FFPlay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'
 
@@ -46,6 +47,7 @@ class Ffmpeg < Formula
   depends_on 'openjpeg' if build.include? 'with-openjpeg'
   depends_on 'sdl' if build.include? 'with-ffplay'
   depends_on 'speex' if build.include? 'with-speex'
+  depends_on 'schroedinger' if build.include? 'with-schroedinger'
 
   def install
     args = ["--prefix=#{prefix}",
@@ -72,9 +74,14 @@ class Ffmpeg < Formula
     args << "--enable-libopencore-amrnb" << "--enable-libopencore-amrwb" if build.include? 'with-opencore-amr'
     args << "--enable-libvo-aacenc" if build.include? 'with-libvo-aacenc'
     args << "--enable-libass" if build.include? 'with-libass'
-    args << "--enable-libopenjpeg" if build.include? 'with-openjpeg'
     args << "--enable-ffplay" if build.include? 'with-ffplay'
     args << "--enable-libspeex" if build.include? 'with-speex'
+    args << '--enable-libschroedinger' if build.include? 'with-schroedinger'
+
+    if build.include? 'with-openjpeg'
+      args << '--enable-libopenjpeg'
+      args << '--extra-cflags=' + %x[pkg-config --cflags libopenjpeg].chomp
+    end
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22

@@ -64,7 +64,7 @@ diff --git a/build.py b/build.py
 index 927d7f1..fdf13a3 100755
 --- a/build.py
 +++ b/build.py
-@@ -179,7 +179,7 @@ def _get_release():
+@@ -185,7 +185,7 @@ def _get_release():
          changelog = None
          name = os.path.basename(_RootDir)
  
@@ -73,7 +73,7 @@ index 927d7f1..fdf13a3 100755
          version = None
  
          parts = name.split('-')
-@@ -192,7 +192,7 @@ def _get_release():
+@@ -198,7 +198,7 @@ def _get_release():
  
      # Format the results.
      if version is None:
@@ -88,7 +88,7 @@ diff --git a/siputils.py b/siputils.py
 index 57e8911..1af6152 100644
 --- a/siputils.py
 +++ b/siputils.py
-@@ -1434,8 +1434,8 @@ class ModuleMakefile(Makefile):
+@@ -1485,8 +1485,8 @@ class ModuleMakefile(Makefile):
              # 'real_prefix' exists if virtualenv is being used.
              dl = getattr(sys, 'real_prefix', sys.exec_prefix).split(os.sep)
  

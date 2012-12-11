@@ -13,10 +13,6 @@ class ClosureCompiler < Formula
     system "ant"
 
     libexec.install Dir['*']
-
-    (bin/'closure-compiler').write <<-EOS.undent
-      #!/bin/bash
-      java -jar "#{libexec}/build/compiler.jar" "$@"
-    EOS
+    bin.write_jar_script libexec/'build/compiler.jar', 'closure-compiler'
   end
 end

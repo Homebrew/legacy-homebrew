@@ -9,7 +9,7 @@ class Libpar2 < Formula
   depends_on 'libsigc++'
 
   fails_with :clang do
-    build '318'
+    build 421
     cause <<-EOS.undent
       ./par2fileformat.h:87:25: error: flexible array member 'entries' of non-POD element type 'FILEVERIFICATIONENTRY []'
     EOS

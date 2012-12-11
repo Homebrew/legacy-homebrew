@@ -16,7 +16,7 @@ class Mallet < Formula
 
   def install
     rm Dir['bin/*.{bat,dll,exe}'] # Remove all windows files
-    prefix.install 'LICENSE'
+    prefix.install_metafiles
     libexec.install Dir['*']
     cd libexec+'bin' do
       Dir['*'].each do |file|

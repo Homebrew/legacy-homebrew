@@ -2,8 +2,8 @@ require 'formula'
 
 class Redis < Formula
   homepage 'http://redis.io/'
-  url 'http://redis.googlecode.com/files/redis-2.6.2.tar.gz'
-  sha1 '93e632ce88de07a9845aa5bcab67bdc16a7b574a'
+  url 'http://redis.googlecode.com/files/redis-2.6.7.tar.gz'
+  sha1 'fd7fcbec29956ec01710350b49653a2eda72fbd3'
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
@@ -30,56 +30,46 @@ class Redis < Formula
       s.gsub! "\# bind 127.0.0.1", "bind 127.0.0.1"
     end
 
+    # Fix redis upgrade from 2.4 to 2.6.
+    if File.exists?(etc/'redis.conf') && !File.readlines(etc/'redis.conf').grep(/^vm-enabled/).empty?
+      mv etc/'redis.conf', etc/'redis.conf.old'
+      ohai "Your redis.conf will not work with 2.6; moved it to redis.conf.old"
+    end
+
     etc.install 'redis.conf' unless (etc/'redis.conf').exist?
   end
 
-  def caveats
-    <<-EOS.undent
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+  plist_options :manual => "redis-server #{HOMEBREW_PREFIX}/etc/redis.conf"
 
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-      To start redis manually:
-        redis-server #{etc}/redis.conf
-
-      To access the server:
-        redis-cli
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>KeepAlive</key>
+        <dict>
+          <key>SuccessfulExit</key>
+          <false/>
+        </dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_prefix}/bin/redis-server</string>
+          <string>#{etc}/redis.conf</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>UserName</key>
+        <string>#{`whoami`.chomp}</string>
+        <key>WorkingDirectory</key>
+        <string>#{var}</string>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/redis.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/redis.log</string>
+      </dict>
+    </plist>
     EOS
-  end
-
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>KeepAlive</key>
-    <true/>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>ProgramArguments</key>
-    <array>
-      <string>#{HOMEBREW_PREFIX}/bin/redis-server</string>
-      <string>#{etc}/redis.conf</string>
-    </array>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-    <key>WorkingDirectory</key>
-    <string>#{var}</string>
-    <key>StandardErrorPath</key>
-    <string>#{var}/log/redis.log</string>
-    <key>StandardOutPath</key>
-    <string>#{var}/log/redis.log</string>
-  </dict>
-</plist>
-    EOPLIST
   end
 end

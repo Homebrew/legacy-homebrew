@@ -10,10 +10,11 @@ class Nzbget < Formula
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
   depends_on 'libpar2'
+  depends_on 'libgcrypt'
   depends_on 'gnutls'
 
   fails_with :clang do
-    build 318
+    build 421
     cause <<-EOS.undent
       Configure errors out when testing the libpar2 headers because
       Clang does not support flexible arrays of non-POD types.

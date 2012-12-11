@@ -177,12 +177,23 @@ end
 class ConflictRequirement < Requirement
   attr_reader :formula
 
-  def initialize formula, message
+  def initialize formula, name, opts={}
     @formula = formula
-    @message = message
+    @name = name
+    @opts = opts
   end
 
-  def message; @message; end
+  def message
+    message = "#{@name.downcase} cannot be installed alongside #{@formula}.\n"
+    message << "This is because #{@opts[:because]}\n" if @opts[:because]
+    message << <<-EOS.undent unless ARGV.force?
+      Please `brew unlink #{@formula}` before continuing. Unlinking removes
+      the formula's symlinks from #{HOMEBREW_PREFIX}. You can link the
+      formula again after the install finishes. You can --force this install
+      but the build may fail or cause obscure side-effects in the end-binary.
+    EOS
+    message
+  end
 
   def satisfied?
     keg = Formula.factory(@formula).prefix
@@ -205,6 +216,49 @@ class XcodeDependency < Requirement
   def message; <<-EOS.undent
     A full installation of Xcode.app is required to compile this software.
     Installing just the Command Line Tools is not sufficent.
+    EOS
+  end
+end
+
+class MysqlInstalled < Requirement
+  def fatal?; true; end
+
+  def satisfied?
+    which 'mysql_config'
+  end
+
+  def message; <<-EOS.undent
+    MySQL is required to install.
+
+    You can install this with Homebrew using:
+      brew install mysql-connector-c
+        For MySQL client libraries only.
+
+      brew install mysql
+        For MySQL server.
+
+    Or you can use an official installer from:
+      http://dev.mysql.com/downloads/mysql/
+    EOS
+  end
+end
+
+class PostgresqlInstalled < Requirement
+  def fatal?; true; end
+
+  def satisfied?
+    which 'pg_config'
+  end
+
+  def message
+    <<-EOS.undent
+      Postgres is required to install.
+
+      You can install this with Homebrew using:
+        brew install postgres
+
+      Or you can use an official installer from:
+        http://www.postgresql.org/download/macosx/
     EOS
   end
 end

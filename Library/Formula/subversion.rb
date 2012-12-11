@@ -71,9 +71,7 @@ class Subversion < Formula
 
   depends_on 'pkg-config' => :build
 
-  # If Subversion can use the Lion versions of these, please
-  # open an issue with a patch. Build against Homebrewed versions
-  # for consistency. - @adamv
+  # Always build against Homebrew versions instead of system versions for consistency.
   depends_on 'neon'
   depends_on 'sqlite'
   depends_on 'serf'
@@ -113,6 +111,10 @@ class Subversion < Formula
     cause "core.c:1: error: bad value (native) for -march= switch"
   end if build_perl? or build_python? or build_ruby?
 
+  def apr_bin
+    superbin or "/usr/bin"
+  end
+
   def install
     if build_java?
       unless build.universal?
@@ -133,6 +135,7 @@ class Subversion < Formula
     # Don't mess with Apache modules (since we're not sudo)
     args = ["--disable-debug",
             "--prefix=#{prefix}",
+            "--with-apr=#{apr_bin}",
             "--with-ssl",
             "--with-zlib=/usr",
             "--with-sqlite=#{HOMEBREW_PREFIX}",
