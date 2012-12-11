@@ -16,6 +16,7 @@ class Ecore < Formula
   end
 
   depends_on 'eina'
+  depends_on 'evas'
   depends_on :x11 # if your formula requires any X11/XQuartz components
   depends_on :libtool
 
@@ -27,7 +28,8 @@ class Ecore < Formula
     system "./autogen.sh" if ARGV.build_head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-    			  "--disable-ecore-imf"
+    			  "--disable-ecore-imf",
+			  "--enable-ecore-evas"
     system "make install" # if this fails, try separate make/make install steps
   end
 
