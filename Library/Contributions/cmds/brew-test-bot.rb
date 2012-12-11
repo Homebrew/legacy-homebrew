@@ -7,7 +7,6 @@
 # --html:         Writes html and log files under ./brewbot/
 # --comment:      Comment on the pull request
 # --cleanup:      Clean the Homebrew directory. Very dangerous. Use with care.
-# --skip-cleanup: Don't check for uncommitted changes.
 # --skip-setup:   Don't check the local system is setup correctly.
 
 require 'formula'
@@ -108,15 +107,15 @@ class Test
   end
 
   def initialize argument
-    @start_sha1 = nil
+    @hash = nil
     @url = nil
     @formulae = []
 
     url_match = argument.match HOMEBREW_PULL_URL_REGEX
     formula = Formula.factory argument rescue FormulaUnavailableError
-    git("rev-parse --verify #{argument} &>/dev/null")
+    git "rev-parse --verify #{argument} &>/dev/null"
     if $?.success?
-      @start_sha1 = argument
+      @hash = argument
     elsif url_match
       @url = url_match[0]
     elsif formula
@@ -129,7 +128,9 @@ class Test
     @steps = []
     @core_changed = false
     @brewbot_root = Pathname.pwd + "brewbot"
-    FileUtils.mkdir_p @brewbot_root if ARGV.include? "--log" or ARGV.include? "--html"
+    if ARGV.include? "--log" or ARGV.include? "--html"
+      FileUtils.mkdir_p @brewbot_root
+    end
 
     if ARGV.include? "--html" and not @@css
       require 'erb'
@@ -177,33 +178,47 @@ class Test
     end
 
     def current_branch
-      git('symbolic-ref HEAD').slice!("refs/heads/").strip
+      git('symbolic-ref HEAD').gsub('refs/heads/', '').strip
     end
 
     @category = __method__
-    if @start_sha1
-      end_sha1 = @start_sha1
-      @start_sha1 = "#{@start_sha1}^"
-      @name = end_sha1
-    elsif @url
-      git 'am --abort 2>/dev/null'
+    @start_branch = current_branch
+
+    if @hash or @url
+      diff_start_sha1 = current_sha1
       test "brew update" if current_branch == "master"
-      @start_sha1 = current_sha1
+      diff_end_sha1 = current_sha1
+    end
+
+    if @hash == 'HEAD'
+      @name = "#{diff_start_sha1}-#{diff_end_sha1}"
+    elsif @hash
+      test "git checkout #{@hash}"
+      diff_start_sha1 = "#{@hash}^"
+      diff_end_sha1 = @hash
+      @name = @hash
+    elsif @url
+      test "git checkout #{current_sha1}"
       test "brew pull --clean #{@url}"
-      end_sha1 = current_sha1
-      return unless @url and @start_sha1 != end_sha1 and steps.last.status == :passed
-      @name = "#{@url}-#{end_sha1}"
+      diff_end_sha1 = current_sha1
+      @name = "#{@url}-#{diff_end_sha1}"
     else
-      @start_sha1 = end_sha1 = current_sha1
-      @name = "#{@formulae.first}-#{end_sha1}"
+      diff_start_sha1 = diff_end_sha1 = current_sha1
+      @name = "#{@formulae.first}-#{diff_end_sha1}"
     end
 
     @log_root = @brewbot_root + @name
-    FileUtils.mkdir_p @log_root if ARGV.include? "--log" or ARGV.include? "--html"
+    if ARGV.include? "--log" or ARGV.include? "--html"
+      FileUtils.mkdir_p @log_root
+    end
+
+    return unless diff_start_sha1 != diff_end_sha1
+    return if @url and steps.last.status != :passed
 
     write_root_html :running
 
-    git("diff #{@start_sha1}..#{end_sha1} --name-status").each_line do |line|
+    diff_stat = git "diff #{diff_start_sha1}..#{diff_end_sha1} --name-status"
+    diff_stat.each_line do |line|
       status, filename = line.split
       # Don't try and do anything to removed files.
       if (status == 'A' or status == 'M')
@@ -244,18 +259,33 @@ class Test
     test "brew readall"
   end
 
-  def cleanup
+  def cleanup_before
     @category = __method__
-    if ARGV.include? "--cleanup"
-      test "git fetch origin"
-      test "git reset --hard origin/master"
-      test "brew cleanup"
-      test "git clean --force -dx"
-      test "git gc"
-    elsif not ARGV.include? "--skip-cleanup"
-      git('diff --exit-code HEAD 2>/dev/null')
-      odie "uncommitted changes, aborting." unless $?.success?
-      test "git reset --hard #{@start_sha1}" if @start_sha1
+    return unless ARGV.include? '--cleanup'
+    test 'git stash --include-untracked'
+    git 'am --abort 2>/dev/null'
+    git 'rebase --abort 2>/dev/null'
+    test 'git reset --hard'
+    test 'git clean --force -dx'
+  end
+
+  def cleanup_after
+    @category = __method__
+    force_flag = ''
+    if ARGV.include? '--cleanup'
+      test 'brew cleanup'
+      test 'git clean --force -dx'
+      force_flag = '-f'
+    end
+
+    if ARGV.include? '--cleanup' or @url or @hash
+      test "git checkout #{force_flag} #{@start_branch}"
+    end
+
+    if ARGV.include? '--cleanup'
+      test 'git reset --hard'
+      test 'git stash pop'
+      test 'git gc'
     end
   end
 
@@ -287,21 +317,21 @@ class Test
       url = "https://api.github.com/repos/mxcl/homebrew/issues/#{@url}/comments"
       require 'vendor/multi_json'
       json = MultiJson.encode(:body => message)
-      curl url, "-X", "POST",  "--user", "#{username}:#{password}", "--data", json, "-o", "/dev/null"
+      curl url, "-X", "POST",  "--user", "#{username}:#{password}", \
+        "--data", json, "-o", "/dev/null"
     end
   end
 
   def self.run argument
     test = new argument
-    test.cleanup unless ARGV.include? "--skip-cleanup"
+    test.cleanup_before
     test.download
     test.setup unless ARGV.include? "--skip-setup"
     test.formulae.each do |formula|
       test.formula formula
     end
     test.homebrew if test.core_changed
-    test.cleanup unless ARGV.include? "--skip-cleanup"
-
+    test.cleanup_after
     test.check_results
   end
 end

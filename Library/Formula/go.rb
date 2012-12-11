@@ -14,8 +14,9 @@ class Go < Formula
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
 
   def install
-    # install the completion script
+    # install the completion scripts
     (prefix/'etc/bash_completion.d').install 'misc/bash/go' => 'go-completion.bash'
+    (share/'zsh/site-functions').install 'misc/zsh/go' => '_go'
 
     if build.include? 'cross-compile-all'
       targets = [
@@ -44,7 +45,7 @@ class Go < Formula
 
     # The version check is due to:
     # http://codereview.appspot.com/5654068
-    'VERSION'.write 'default' if build.head?
+    Pathname.new('VERSION').write 'default' if build.head?
 
     cd 'src' do
       # Build only. Run `brew test go` to run distrib's tests.
