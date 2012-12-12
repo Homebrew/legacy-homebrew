@@ -11,10 +11,10 @@ class OpenBabel < Formula
   option 'java',   'Compile Java language bindings'
 
   depends_on 'cmake' => :build
-  depends_on 'wxmac' if build.include? 'build-gui'
+  depends_on 'wxmac' if build.include? 'gui'
   depends_on 'cairo' if build.include? 'png'
-  depends_on 'eigen' if build.include? 'python-bindings'
-  depends_on 'eigen' if build.include? 'java-bindings'
+  depends_on 'eigen' if build.include? 'python'
+  depends_on 'eigen' if build.include? 'java'
 
   def install
     args = %W[ -DCMAKE_INSTALL_PREFIX=#{prefix} ]
