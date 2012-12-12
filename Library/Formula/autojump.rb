@@ -2,8 +2,8 @@ require 'formula'
 
 class Autojump < Formula
   homepage 'https://github.com/joelthelion/autojump#name'
-  url 'https://github.com/downloads/joelthelion/autojump/autojump_v21.0.3.tar.gz'
-  sha1 'b81308d6ff50680cb74795195e93427557a938ad'
+  url 'https://github.com/downloads/joelthelion/autojump/autojump_v21.1.2.tar.gz'
+  sha1 '3137d88f52eadecebdbeff12e28586d01c7cf60b'
 
   head 'https://github.com/joelthelion/autojump.git'
 
@@ -17,12 +17,10 @@ class Autojump < Formula
   end
 
   def caveats; <<-EOS.undent
-
     Add the following line to your ~/.bash_profile or ~/.zshrc file (and remember
     to source the file to update your current session):
 
-    [[ -f `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
-
+    [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
     EOS
   end
 end

@@ -14,6 +14,7 @@ class Libvirt < Formula
   option 'without-libvirtd', 'Build only the virsh client and development libraries'
 
   depends_on "gnutls"
+  depends_on 'libgcrypt'
   depends_on "yajl"
 
   if MacOS.version == :leopard

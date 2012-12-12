@@ -78,10 +78,7 @@ class Formula
   end
 
   def explicitly_requested?
-    # `ARGV.formulae` will throw an exception if it comes up with an empty list.
-    # FIXME: `ARGV.formulae` shouldn't be throwing exceptions, see issue #8823
-   return false if ARGV.named.empty?
-   ARGV.formulae.include? self
+    ARGV.formulae.include?(self) rescue false
   end
 
   def linked_keg
@@ -142,10 +139,13 @@ class Formula
   def var; HOMEBREW_PREFIX+'var' end
 
   # override this to provide a plist
-  def startup_plist; nil; end
+  def plist; nil; end
+  alias :startup_plist :plist
   # plist name, i.e. the name of the launchd service
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
+  def plist_manual; self.class.plist_manual end
+  def plist_startup; self.class.plist_startup end
 
   def build
     self.class.build
@@ -355,6 +355,11 @@ class Formula
       end
 
       install_type = :from_url
+    elsif name.match bottle_regex
+      bottle_filename = Pathname(name).realpath
+      name = name.split('-').first
+      path = Formula.path(name)
+      install_type = :from_local_bottle
     else
       name = Formula.canonical_name(name)
 
@@ -394,6 +399,14 @@ class Formula
       puts "Double-check the name of the class in that formula."
       raise LoadError
     end
+
+    if install_type == :from_local_bottle
+      formula = klass.new(name)
+      formula.downloader.local_bottle_path = bottle_filename
+      return formula
+    end
+
+    raise NameError if !klass.ancestors.include? Formula
 
     return klass.new(name) if install_type == :from_name
     return klass.new(name, path.to_s)
@@ -541,7 +554,7 @@ protected
       unless $?.success?
         unless ARGV.verbose?
           f.flush
-          Kernel.system "/usr/bin/tail -n 5 #{logfn}"
+          Kernel.system "/usr/bin/tail", "-n", "5", logfn
         end
         f.puts
         require 'cmd/--config'
@@ -636,6 +649,7 @@ private
     end
 
     attr_rw :homepage, :keg_only_reason, :skip_clean_all, :cc_failures
+    attr_rw :plist_startup, :plist_manual
 
     Checksum::TYPES.each do |cksum|
       class_eval %Q{
@@ -718,6 +732,11 @@ private
       raise "Option name is required." if name.empty?
       raise "Options should not start with dashes." if name[0, 1] == "-"
       build.add name, description
+    end
+
+    def plist_options options
+      @plist_startup = options[:startup]
+      @plist_manual = options[:manual]
     end
 
     def conflicts_with formula, opts={}

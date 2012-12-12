@@ -145,6 +145,12 @@ class Pathname
     rmdir
     true
   rescue SystemCallError => e
+    # OK, maybe there was only a single `.DS_Store` file in that folder
+    if (self/'.DS_Store').exist? && self.children.length == 1
+      (self/'.DS_Store').unlink
+      retry
+    end
+
     raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno or e.errno == Errno::ENOENT::Errno
     false
   end
@@ -158,7 +164,7 @@ class Pathname
     out=''
     n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
     out<<"#{n} files, " if n > 1
-    out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
+    out<<`/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
   end
 
   def version
@@ -383,6 +389,9 @@ class Pathname
       next unless FORMULA_META_FILES.should_copy? p
       # Some software symlinks these files (see help2man.rb)
       filename = p.resolved_path
+      # Some software links metafiles together, so by the time we iterate to one of them
+      # we may have already moved it. libxml2's COPYING and Copyright are affected by this.
+      next unless filename.exist?
       filename.chmod 0644
       self.install filename
     end

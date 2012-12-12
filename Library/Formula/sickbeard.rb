@@ -14,7 +14,9 @@ class Sickbeard < Formula
     (bin+"sickbeard").write(startup_script)
   end
 
-  def startup_plist; <<-EOS.undent
+  plist_options :manual => 'sickbeard'
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -23,7 +25,7 @@ class Sickbeard < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-           <string>#{HOMEBREW_PREFIX}/bin/sickbeard</string>
+           <string>#{opt_prefix}/bin/sickbeard</string>
            <string>-q</string>
            <string>--nolaunch</string>
            <string>-p</string>
@@ -60,20 +62,7 @@ class Sickbeard < Formula
   end
 
   def caveats; <<-EOS.undent
-    SickBeard will start up and launch http://localhost:8081/ when you run:
-
-        sickbeard
-
-    To launch automatically on startup, copy and paste the following into a terminal:
-
-        mkdir -p ~/Library/LaunchAgents
-        (launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename} 2>/dev/null || true)
-        ln -sf #{plist_path} ~/Library/LaunchAgents/#{plist_path.basename}
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    You may want to edit:
-      #{plist_path}
-    to change the port (default: 8081) or user (default: #{`whoami`.chomp}).
+    SickBeard defaults to port 8081.
     EOS
   end
 end

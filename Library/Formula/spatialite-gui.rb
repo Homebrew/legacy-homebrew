@@ -2,8 +2,13 @@ require 'formula'
 
 class SpatialiteGui < Formula
   homepage 'https://www.gaia-gis.it/fossil/spatialite_gui/index'
-  url 'http://www.gaia-gis.it/gaia-sins/spatialite_gui-1.5.0-stable.tar.gz'
+  url 'http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.5.0-stable.tar.gz'
   sha1 'b8cfe3def8c77928f7c9fcc86bae3c99179fa486'
+
+  devel do
+    url 'http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.6.0.tar.gz'
+    sha1 'd06944273b1e19cdd5c17a463582e074f8548ccd'
+  end
 
   depends_on 'libspatialite'
   depends_on 'libgaiagraphics'
@@ -15,7 +20,7 @@ class SpatialiteGui < Formula
       :p1 => DATA
     }
     # Compatibility fix for wxWidgets 2.9.x. Remove on next release.
-    patch_set[:p0] = 'https://www.gaia-gis.it/fossil/spatialite_gui/vpatch?from=d8416d26358a24dc&to=b5b920d8d654dd0e'
+    patch_set[:p0] = 'https://www.gaia-gis.it/fossil/spatialite_gui/vpatch?from=d8416d26358a24dc&to=b5b920d8d654dd0e' unless build.devel?
 
     patch_set
   end
@@ -23,6 +28,9 @@ class SpatialiteGui < Formula
   def install
     # This lib doesn't get picked up by configure.
     ENV.append 'LDFLAGS', '-lwx_osx_cocoau_aui-2.9'
+    # 1.6.0 doesn't pick up GEOS libraries. See:
+    #   https://www.gaia-gis.it/fossil/spatialite_gui/tktview?name=d27778d7e4
+    ENV.append 'LDFLAGS', '-lgeos_c' if build.devel?
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}"
