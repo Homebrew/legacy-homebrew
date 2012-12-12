@@ -18,7 +18,7 @@ class Portaudio < Formula
     { :p0 =>
       "https://trac.macports.org/export/94150/trunk/dports/audio/portaudio/files/patch-include__pa_mac_core.h.diff"
     }
-  end if MacOS.lion?
+  end if MacOS.version >= :lion
 
   def install
     ENV.universal_binary if build.universal?

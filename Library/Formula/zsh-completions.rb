@@ -2,11 +2,13 @@ require 'formula'
 
 class ZshCompletions < Formula
   homepage 'https://github.com/zsh-users/zsh-completions'
-  url 'https://github.com/zsh-users/zsh-completions/tarball/0.5.2'
-  sha1 'aee4dde26e6b54c2c580380241c4c384b6d4962d'
+  url 'https://github.com/zsh-users/zsh-completions/tarball/0.7.0'
+  sha1 '604f4678b29ee1c1a0a0da11a20feef283b64822'
+
+  head 'https://github.com/zsh-users/zsh-completions.git'
 
   def install
-    (share/'zsh-completions').install Dir['_*']
+    (share/'zsh-completions').install Dir['src/_*']
   end
 
   def caveats

@@ -3,7 +3,7 @@ require 'formula'
 class Symphony < Formula
   homepage 'http://www.coin-or.org/projects/SYMPHONY.xml'
   url 'http://www.coin-or.org/download/source/SYMPHONY/SYMPHONY-5.3.3.tgz'
-  md5 '8c34f9fa49ebff325b984408ff1f92fc'
+  sha1 'afc38ee5655b52fc3fa0a5854b5cc5a7f31618cc'
 
   option "enable-openmp", "Enable openmp support"
   option "with-gmpl", "GNU Modeling Language support via GLPK"

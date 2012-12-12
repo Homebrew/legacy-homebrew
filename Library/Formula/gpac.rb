@@ -41,7 +41,7 @@ class Gpac < Formula
             # Force detection of X libs on 64-bit kernel
             "--extra-ldflags=-L#{MacOS::X11.lib}"]
 
-    system "chmod +x configure"
+    chmod 0700, "configure"
     system "./configure", *args
     system "make"
     system "make install"

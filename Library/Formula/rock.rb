@@ -3,7 +3,7 @@ require 'formula'
 class Rock < Formula
   homepage 'http://ooc-lang.org'
   url 'https://github.com/downloads/nddrylliog/rock/rock-0.9.3-source.tar.bz2'
-  md5 'ce877bcc72b0a78ba088a1826d8c12b3'
+  sha1 'ddc00c7298198962781fd28a2cc4c65f7fb9ccd2'
   head 'https://github.com/nddrylliog/rock.git'
 
   def install

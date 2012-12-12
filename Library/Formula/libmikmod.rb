@@ -5,8 +5,6 @@ class Libmikmod < Formula
   url 'http://mikmod.shlomifish.org/files/libmikmod-3.2.0.tar.gz'
   sha256 '734c8490bbf9b0c587920b92414dcfa3c2267838a0cdf698d5f1fb6bba8f661e'
 
-  depends_on :x11
-
   option 'with-debug', 'Enable debugging symbols'
 
   def install
@@ -26,5 +24,9 @@ class Libmikmod < Formula
       system "../configure", *args
       system "make install"
     end
+  end
+
+  def test
+    system "#{bin}/libmikmod-config", "--version"
   end
 end

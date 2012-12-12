@@ -12,7 +12,7 @@ class Mksh < Formula
   url 'https://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R40d.cpio.gz',
       :using => CpioDownloadStrategy
   version '0.40d'
-  md5 'c6428401103367730a95b99284bf47dc'
+  sha1 '74450a1107664797e5fdbdeb444f18f82f0686ac'
 
   def install
     system 'sh ./Build.sh -combine'

@@ -2,17 +2,13 @@ require 'formula'
 
 class Qemu < Formula
   homepage 'http://www.qemu.org/'
-  url 'http://wiki.qemu.org/download/qemu-1.1.0-1.tar.bz2'
-  sha256 '1e566f8cbc33e5fb7d5f364c0fd1cdde9e921e647223b5d7ae7e5f95544b258d'
+  url 'http://wiki.qemu-project.org/download/qemu-1.3.0.tar.bz2'
+  sha1 'ed56e8717308a56f51a6ed4c18a4335e5aacae83'
 
   depends_on 'jpeg'
   depends_on 'gnutls'
   depends_on 'glib'
-
-  fails_with :clang do
-    build 318
-    cause 'Compile error: global register variables are not supported'
-  end
+  depends_on 'pixman'
 
   def install
     # Disable the sdl backend. Let it use CoreAudio instead.

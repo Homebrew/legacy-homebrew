@@ -17,12 +17,8 @@ class Ice < Formula
     ]
   end
 
-  def options
-    [
-      ['--doc', 'Install documentation'],
-      ['--demo', 'Build demos']
-    ]
-  end
+  option 'doc', 'Install documentation'
+  option 'demo', 'Build demos'
 
   # See:
   # http://www.zeroc.com/forums/bug-reports/4965-slice2cpp-output-does-not-compile-standards-conformant-compiler.html
@@ -47,8 +43,8 @@ class Ice < Formula
 
     # what want we build?
     wb = 'config src include'
-    wb += ' doc' if ARGV.include? '--doc'
-    wb += ' demo' if ARGV.include? '--demo'
+    wb += ' doc' if build.include? 'doc'
+    wb += ' demo' if build.include? 'demo'
     inreplace "cpp/Makefile" do |s|
       s.change_make_var! "SUBDIRS", wb
     end

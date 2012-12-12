@@ -15,7 +15,7 @@ class Vcodex < Formula
   url 'http://www2.research.att.com/~gsf/download/tgz.att-src/vcodex.2005-05-22.tgz',
       :using => VcodexDownloadStrategy
   homepage 'http://www2.research.att.com/~gsf/download/ref/vcodex/vcodex.html'
-  md5 'a773e26272568dbd182b7664802f7d29'
+  sha1 '2a9b766b580149cc66c6d5cbc95fe2a390f45a18'
   version '2005-05-22'
 
   def patches; DATA; end

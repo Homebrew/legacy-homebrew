@@ -3,7 +3,7 @@ require 'formula'
 class Naturaldocs < Formula
   homepage 'http://www.naturaldocs.org/'
   url 'http://downloads.sourceforge.net/project/naturaldocs/Stable%20Releases/1.52/NaturalDocs-1.52.zip'
-  md5 '68e3982acae57b6befdf9e75b420fd80'
+  sha1 '0457bdd60beb2275a1fad414e6ba0a56798a7993'
 
   def install
     # Remove Windows files

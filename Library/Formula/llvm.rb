@@ -65,6 +65,7 @@ class Llvm < Formula
 
     # install clang tools and bindings
     cd clang_dir do
+      system 'make install'
       (share/'clang/tools').install 'tools/scan-build', 'tools/scan-view'
       (share/'clang/bindings').install 'bindings/python'
     end if build.include? 'with-clang'

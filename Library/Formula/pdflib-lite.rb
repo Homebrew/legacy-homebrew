@@ -26,7 +26,7 @@ class PdflibLite < Formula
   def caveats; <<-EOS.undent
     pdflib-lite is not open source software; usage restrictions apply!
     Be sure to understand and obey the license terms, which can be found at:
-    http://www.pdflib.com/products/pdflib-family/pdflib-lite/pdflib-lite-licensing/
+    http://www.pdflib.com/download/free-software/pdflib-lite-7/pdflib-lite-licensing/
     EOS
   end
 end

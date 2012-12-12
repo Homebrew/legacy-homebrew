@@ -2,7 +2,7 @@ require 'formula'
 
 class Libwpg < Formula
   url 'http://downloads.sourceforge.net/project/libwpg/libwpg/libwpg-0.2.0/libwpg-0.2.0.tar.bz2'
-  md5 '5ba6a61a2f66dfd5fee8cdd4cd262a37'
+  sha1 '34a692566bda66488f83c635774d1bd92cee0fdf'
   homepage 'http://libwpg.sourceforge.net/'
 
   depends_on 'libwpd'

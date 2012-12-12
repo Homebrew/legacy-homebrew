@@ -3,7 +3,7 @@ require 'formula'
 class MacRobber < Formula
   homepage 'http://www.sleuthkit.org/mac-robber/'
   url 'http://downloads.sourceforge.net/project/mac-robber/mac-robber/1.02/mac-robber-1.02.tar.gz'
-  md5 '6d6d99aa882a46b2bc5231d195fdb595'
+  sha1 'c50c823ac14ac8e78e79e0965134b028757e4519'
 
   def install
     system "make", "CC=#{ENV.cc}", "GCC_OPT=#{ENV.cflags}"

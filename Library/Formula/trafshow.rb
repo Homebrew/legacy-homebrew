@@ -20,10 +20,10 @@ class Trafshow < Formula
       s = Formula.factory('libtool').share
       d = "#{s}/libtool/config"
       cp ["#{d}/config.guess", "#{d}/config.sub"], "."
-    elsif MacOS.leopard?
-      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config.*"], "."
+    elsif MacOS.version == :leopard
+      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config.*"], "."
     else
-      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config/config.*"], "."
+      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config/config.*"], "."
     end
   end
 

@@ -3,7 +3,7 @@ require 'formula'
 class Amap < Formula
   homepage 'http://www.thc.org/thc-amap/'
   url 'http://www.thc.org/releases/amap-5.4.tar.gz'
-  md5 '2617c13b0738455c0e61c6e980b8decc'
+  sha1 '79056f29a3b9e0a21062116aec3e966b1a46d7d3'
 
   def install
     system "./configure", "--prefix=#{prefix}"

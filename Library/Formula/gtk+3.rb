@@ -18,11 +18,6 @@ class Gtkx3 < Formula
   depends_on 'atk' => :optional
 
   def install
-    # Always prefer our cairo over XQuartz cairo
-    cairo = Formula.factory('cairo')
-    ENV['CAIRO_BACKEND_CFLAGS'] = "-I#{cairo.include}/cairo"
-    ENV['CAIRO_BACKEND_LIBS'] = "-L#{cairo.lib} -lcairo"
-
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

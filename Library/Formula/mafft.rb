@@ -3,7 +3,7 @@ require 'formula'
 class Mafft < Formula
   homepage 'http://mafft.cbrc.jp/alignment/software/index.html'
   url 'http://align.bmr.kyushu-u.ac.jp/mafft/software/mafft-6.717-with-extensions-src.tgz'
-  md5 '2fc3acfce3a48f9804e8ca5e22bb984d'
+  sha1 '18d82340918949bbcdce659d4a09421ce06d67b1'
 
   def install
     cd 'core' do

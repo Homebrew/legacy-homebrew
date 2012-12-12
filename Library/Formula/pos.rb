@@ -2,7 +2,7 @@ require 'formula'
 
 class Pos < Formula
   url 'http://www.finkproject.org/bindist/dists/fink-0.9.0/main/source/utils/pos-1.2.tgz'
-  md5 'c667fb4ca38c96494f888ade9fb4e40a'
+  sha1 '320dc42b80508338f2f5f4e330d0c39462e3bba8'
   homepage "http://sage.ucsc.edu/~wgscott/xtal/wiki/index.php/Unix_and_OS_X:_The_Absolute_Essentials"
 
   def install

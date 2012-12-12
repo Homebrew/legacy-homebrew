@@ -1,6 +1,6 @@
 require 'formula'
 require 'utils'
-require 'extend/ENV'
+require 'superenv'
 
 module Homebrew extend self
   def audit
@@ -88,6 +88,7 @@ class FormulaAuditor
     pkg-config
     scons
     smake
+    swig
   ]
 
   def initialize f
@@ -193,7 +194,7 @@ class FormulaAuditor
       end
 
       if p =~ %r[^http://prdownloads\.]
-        problem "Update this url (don't use prdownloads)."
+        problem "Update this url (don't use prdownloads). See:\nhttp://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
       end
 
       if p =~ %r[^http://\w+\.dl\.]
@@ -233,6 +234,8 @@ class FormulaAuditor
         when :sha256 then 64
         end
 
+      problem "md5 is broken, deprecated: use sha1 instead" if cksum.hash_type == :md5
+
       if cksum.empty?
         problem "#{cksum.hash_type} is empty"
       else
@@ -245,13 +248,14 @@ class FormulaAuditor
 
   def audit_patches
     # Some formulae use ENV in patches, so set up an environment
-    ENV.extend(HomebrewEnvExtension)
     ENV.setup_build_environment
 
     Patches.new(f.patches).select { |p| p.external? }.each do |p|
       case p.url
       when %r[raw\.github\.com], %r[gist\.github\.com/raw]
-        problem "Using raw GitHub URLs is not recommended:\n#{p.url}"
+        unless p.url =~ /[a-fA-F0-9]{40}/
+          problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
+        end
       when %r[macports/trunk]
         problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
       end
@@ -265,18 +269,19 @@ class FormulaAuditor
 
     # Commented-out cmake support from default template
     if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
-      problem "Commented cmake support found."
+      problem "Commented cmake support found"
     end
 
     # 2 (or more in an if block) spaces before depends_on, please
     if text =~ /^\ ?depends_on/
-      problem "Check indentation of 'depends_on'."
+      problem "Check indentation of 'depends_on'"
     end
 
     # build tools should be flagged properly
+    # but don't complain about automake; it needs autoconf at runtime
     if text =~ /depends_on ['"](#{BUILD_TIME_DEPS*'|'})['"]$/
       problem "#{$1} dependency should be \"depends_on '#{$1}' => :build\""
-    end
+    end unless f.name == "automake"
 
     # FileUtils is included in Formula
     if text =~ /FileUtils\.(\w+)/
@@ -326,12 +331,12 @@ class FormulaAuditor
 
     # Commented-out depends_on
     if text =~ /#\s*depends_on\s+(.+)\s*$/
-      problem "Commented-out dep #{$1}."
+      problem "Commented-out dep #{$1}"
     end
 
     # No trailing whitespace, please
     if text =~ /(\t|[ ])+$/
-      problem "Trailing whitespace was found."
+      problem "Trailing whitespace was found"
     end
 
     if text =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
@@ -339,7 +344,7 @@ class FormulaAuditor
     end
 
     if text =~ /make && make/
-      problem "Use separate make calls."
+      problem "Use separate make calls"
     end
 
     if text =~ /^[ ]*\t/
@@ -349,6 +354,10 @@ class FormulaAuditor
     # xcodebuild should specify SYMROOT
     if text =~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
       problem "xcodebuild should be passed an explicit \"SYMROOT\""
+    end
+
+    if text =~ /ENV\.x11/
+      problem "Use \"depends_on :x11\" instead of \"ENV.x11\""
     end
 
     # Avoid hard-coding compilers
@@ -369,15 +378,27 @@ class FormulaAuditor
     end
 
     if text =~ /build\.include\?\s+['"]\-\-(.*)['"]/
-      problem "Reference '#{$1}' without dashes."
+      problem "Reference '#{$1}' without dashes"
     end
 
-    if text =~ /ARGV\.(?!(debug|verbose)\?)/
-      problem "Use build instead of ARGV to check options."
+    if text =~ /ARGV\.(?!(debug|verbose|find)\?)/
+      problem "Use build instead of ARGV to check options"
     end
 
     if text =~ /def options/
-      problem "Use new-style option definitions."
+      problem "Use new-style option definitions"
+    end
+
+    if text =~ /MACOS_VERSION/
+      problem "Use MacOS.version instead of MACOS_VERSION"
+    end
+
+    if text =~ /(MacOS.((snow_)?leopard|leopard|(mountain_)?lion)\?)/
+      problem "#{$1} is deprecated, use a comparison to MacOS.version instead"
+    end
+
+    if text =~ /skip_clean\s+:all/
+      problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
     end
   end
 

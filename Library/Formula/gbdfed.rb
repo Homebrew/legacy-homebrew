@@ -3,7 +3,7 @@ require 'formula'
 class Gbdfed < Formula
   homepage 'http://sofia.nmsu.edu/~mleisher/Software/gbdfed/'
   url 'http://sofia.nmsu.edu/~mleisher/Software/gbdfed/gbdfed-1.6.tar.gz'
-  md5 '5a1668adfc2afa435feda5e3737ceaee'
+  sha1 '733afccc43273d3385f8b9bc9d6334bcaa4403ae'
 
   depends_on 'pkg-config' => :build
   depends_on 'gtk+'

@@ -5,7 +5,7 @@ require 'formula'
 class Pygments < Formula
   url 'http://pypi.python.org/packages/source/P/Pygments/Pygments-1.3.1.tar.gz'
   homepage 'http://pygments.org/'
-  md5 '54be67c04834f13d7e255e1797d629a5'
+  sha1 ''
 end
 
 class Shocco < Formula

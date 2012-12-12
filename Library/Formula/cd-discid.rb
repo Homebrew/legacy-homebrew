@@ -3,7 +3,7 @@ require 'formula'
 class CdDiscid < Formula
   url 'http://linukz.org/download/cd-discid-1.1.tar.gz'
   homepage 'http://linukz.org/cd-discid.shtml'
-  md5 '04cb368e3f1ce17e656ac6691ca0b687'
+  sha1 '74cedeb2c5bf4f3248af249c0ff344ea9d713d1a'
 
   def patches
   { :p0 =>

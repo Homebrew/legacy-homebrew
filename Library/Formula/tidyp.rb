@@ -2,13 +2,13 @@ require 'formula'
 
 class TidypManual < Formula
   url "https://github.com/petdance/tidyp/raw/6a6c85bc9cb089e343337377f76127d01dd39a1c/htmldoc/tidyp1.xsl"
-  md5 "5f90f914e69bdff1663a6772c6d9ca3d"
+  sha1 'db6b733bb8e341eb806bc7487faee69eb429a68d'
 end
 
 class Tidyp < Formula
   url 'https://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz'
   homepage 'http://tidyp.com/'
-  md5 '00a6b804f6625221391d010ca37178e1'
+  sha1 '5d9050512259c3a67a2f48469555932e3a7b8bd0'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

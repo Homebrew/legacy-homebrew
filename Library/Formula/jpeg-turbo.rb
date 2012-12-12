@@ -26,7 +26,6 @@ class JpegTurbo < Formula
   def test
     mktemp do
       system "#{bin}/jpegtran -crop 500x500+200+500 -transpose -perfect -outfile test.jpg /System/Library/CoreServices/DefaultDesktop.jpg"
-      system "/usr/bin/qlmanage", "-p", "test.jpg"
     end
   end
 end

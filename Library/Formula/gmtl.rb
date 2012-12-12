@@ -3,7 +3,7 @@ require 'formula'
 class Gmtl < Formula
   homepage 'http://ggt.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/ggt/Generic%20Math%20Template%20Library/0.6.1/gmtl-0.6.1.tar.gz'
-  md5 '1391af2c5ea050dda7735855ea5bb4c1'
+  sha1 '473a454d17956d3ce3babafdb57f73c0685579fd'
 
   head 'https://ggt.svn.sourceforge.net/svnroot/ggt/trunk/'
 

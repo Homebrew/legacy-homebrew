@@ -2,25 +2,17 @@ require 'formula'
 
 class Lolcode < Formula
   homepage 'http://www.icanhaslolcode.org/'
-  url 'https://github.com/justinmeza/lci/tarball/v0.9.2'
-  md5 'bb757687aabea302351cbbce77e01c26'
+  url 'https://github.com/justinmeza/lci/tarball/v0.9.3'
+  sha1 '212c5a4f414063a1b994a9a4446dc8da69577dd4'
 
   head 'https://github.com/justinmeza/lolcode.git'
 
+  depends_on 'cmake' => :build
+
   def install
-    inreplace 'Makefile' do |s|
-      s.change_make_var! "prefix", prefix
-    end
-
+    system "cmake ."
     system "make"
-
-    # v0.9.2 should use 'make install'.
-    # Later versions can just copy the 'lolcode' bin.
-    if build.head?
-      bin.install 'lolcode'
-    else
-      bin.mkpath
-      system "make install"
-    end
+    # Don't use `make install` for this one file
+    bin.install 'lci'
   end
 end

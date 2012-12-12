@@ -3,7 +3,7 @@ require 'formula'
 class Libdca < Formula
   url 'http://download.videolan.org/pub/videolan/libdca/0.0.5/libdca-0.0.5.tar.bz2'
   homepage 'http://www.videolan.org/developers/libdca.html'
-  md5 'dab6b2795c66a82a6fcd4f8343343021'
+  sha1 '3fa5188eaaa2fc83fb9c4196f6695a23cb17f3bc'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"

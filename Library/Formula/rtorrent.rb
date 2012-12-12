@@ -13,7 +13,7 @@ class Rtorrent < Formula
   def install
     args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"]
     args << "--with-xmlrpc-c" if Formula.factory("xmlrpc-c").installed?
-    if MacOS.leopard?
+    if MacOS.version == :leopard
       inreplace 'configure' do |s|
         s.gsub! '  pkg_cv_libcurl_LIBS=`$PKG_CONFIG --libs "libcurl >= 7.15.4" 2>/dev/null`',
           '  pkg_cv_libcurl_LIBS=`$PKG_CONFIG --libs "libcurl >= 7.15.4" | sed -e "s/-arch [^-]*/-arch $(uname -m) /" 2>/dev/null`'

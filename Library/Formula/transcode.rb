@@ -3,7 +3,7 @@ require 'formula'
 class Transcode < Formula
   url 'http://download.berlios.de/tcforge/transcode-1.1.5.tar.bz2'
   homepage 'http://www.transcoding.org/'
-  md5 '41ac6b1c0fe30f3aab286e771fc31b9e'
+  sha1 '48c36e06ca0cd1cdc1a9c6a241e231f896eefd26'
 
   depends_on 'pkg-config' => :build
   depends_on 'sdl'

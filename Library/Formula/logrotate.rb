@@ -2,8 +2,8 @@ require 'formula'
 
 class Logrotate < Formula
   homepage 'http://packages.debian.org/testing/admin/logrotate'
-  url 'https://fedorahosted.org/releases/l/o/logrotate/logrotate-3.8.1.tar.gz'
-  md5 'bd2e20d8dc644291b08f9215397d28a5'
+  url 'https://fedorahosted.org/releases/l/o/logrotate/logrotate-3.8.2.tar.gz'
+  sha1 '5832a34199e75c24df6c3028494d90145f275234'
 
   depends_on 'popt'
 

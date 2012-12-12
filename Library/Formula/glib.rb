@@ -2,8 +2,8 @@ require 'formula'
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.4.tar.xz'
-  sha256 'a5d742a4fda22fb6975a8c0cfcd2499dd1c809b8afd4ef709bda4d11b167fae2'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.34/glib-2.34.3.tar.xz'
+  sha256 '855fcbf87cb93065b488358e351774d8a39177281023bae58c286f41612658a7'
 
   option :universal
   option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
@@ -19,17 +19,13 @@ class Glib < Formula
   end
 
   def patches
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673047  Still open at 2.32.3
-    # https://bugzilla.gnome.org/show_bug.cgi?id=644473  Still open at 2.32.3
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673135  Resolved as wontfix.
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix.
     p = { :p1 => %W[
-        https://raw.github.com/gist/2235195/19cdaebdff7dcc94ccd9b3747d43a09318f0b846/glib-gunicollate.diff
-        https://raw.github.com/gist/2235202/26f885e079e4d61da26d239970301b818ddbb4ab/glib-gtimezone.diff
-        https://raw.github.com/gist/2246469/591586214960f7647b1454e7d547c3935988a0a7/glib-configurable-paths.diff
-      ]}
+      https://raw.github.com/gist/3924879/f86903e0aea1458448507305d01b06a7d878c041/glib-configurable-paths.patch
+    ]}
     p[:p0] = %W[
         https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/patch-configure.diff
-      ] if build.universal?
+    ] if build.universal?
     p
   end
 
@@ -76,11 +72,6 @@ class Glib < Formula
   end
 
   def test
-    unless Formula.factory("pkg-config").installed?
-      puts "pkg-config is required to run this test, but is not installed"
-      exit 1
-    end
-
     mktemp do
       (Pathname.pwd/'test.c').write <<-EOS.undent
         #include <string.h>

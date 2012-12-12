@@ -3,7 +3,7 @@ require 'formula'
 class Schroedinger < Formula
   homepage 'http://diracvideo.org/'
   url 'http://diracvideo.org/download/schroedinger/schroedinger-1.0.11.tar.gz'
-  md5 'da6af08e564ca1157348fb8d92efc891'
+  sha1 'c01ee0bed6c1bd7608763927f719f94ebc6aaa41'
 
   head  'git://diracvideo.org/git/schroedinger.git'
 

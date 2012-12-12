@@ -1,4 +1,5 @@
 require 'formula'
+require 'keg'
 require 'bottles'
 require 'cmd/prune'
 
@@ -16,8 +17,10 @@ module Homebrew extend self
       end
       clean_cache
       # seems like a good time to do some additional cleanup
-      Homebrew.prune unless ARGV.dry_run?
-      rm_DS_Store
+      unless ARGV.dry_run?
+        Homebrew.prune
+        rm_DS_Store
+      end
     else
       ARGV.formulae.each do |f|
         cleanup_formula f
@@ -28,19 +31,19 @@ module Homebrew extend self
   def cleanup_formula f
     f = Formula.factory f
 
-    # Don't clean up keg-only brews for now.
-    # Formulae link directly to them, so cleaning up old
-    # ones will break already compiled software.
-    if f.keg_only? and not ARGV.force?
-      opoo "Skipping keg-only #{f.name}" if f.rack.children.length > 1
-      return
-    end
-
     if f.installed? and f.rack.directory?
       f.rack.children.each do |keg|
-        if f.installed_prefix != keg
-          puts "Removing #{keg}..."
-          rm_rf keg unless ARGV.dry_run?
+        if File.directory? keg and f.version > Keg.new(keg).version
+          if f.can_cleanup?
+            if ARGV.dry_run?
+              puts "Would remove: #{keg}"
+            else
+              puts "Removing: #{keg}..."
+              rm_rf keg
+            end
+          else
+            opoo "Skipping (old) keg-only: #{keg}"
+          end
         end
       end
     elsif f.rack.children.length > 1
@@ -58,9 +61,13 @@ module Homebrew extend self
       if name and version
         f = Formula.factory(name) rescue nil
         old_bottle = bottle_file_outdated? f, pn
-        if not f or (f.version != version or ARGV.switch? "s" and not f.installed?) or old_bottle
-          puts "Removing #{pn}..."
-          rm pn unless ARGV.dry_run?
+        if (f and f.version > version) or (ARGV.switch? "s" and (f and (not f.installed?))) or old_bottle
+          if ARGV.dry_run?
+            puts "Would remove: #{pn}"
+          else
+            puts "Removing: #{pn}..."
+            rm pn
+          end
         end
       end
     end
@@ -70,4 +77,25 @@ module Homebrew extend self
     system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete"
   end
 
+end
+
+class Formula
+  def can_cleanup?
+    # It used to be the case that keg-only kegs could not be cleaned up, because
+    # older brews were built against the full path to the keg-only keg. Then we
+    # introduced the opt symlink, and built against that instead. So provided
+    # no brew exists that was built against an old-style keg-only keg, we can
+    # remove it.
+    if not keg_only? or ARGV.force?
+      true
+    elsif opt_prefix.directory?
+      # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks
+      !Formula.installed.
+        select{ |ff| ff.deps.map(&:to_s).include? name }.
+        map{ |ff| ff.rack.children rescue [] }.
+        flatten.
+        map{ |keg_path| Tab.for_keg(keg_path).send("HEAD") }.
+        include? nil
+    end
+  end
 end

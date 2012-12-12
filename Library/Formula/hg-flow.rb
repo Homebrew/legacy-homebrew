@@ -3,7 +3,7 @@ require 'formula'
 class HgFlow < Formula
   homepage 'https://bitbucket.org/yinwm/hgflow/wiki/Home'
   url 'https://bitbucket.org/yinwm/hgflow/get/v0.3.tar.gz'
-  md5 '0c3305bc349be31da76ef82460019d09'
+  sha1 '56250d4ce9f2e24a71e6a3c4b1f3e1d37bb64766'
 
   head "http://bitbucket.org/yinwm/hgflow", :using => :hg
 

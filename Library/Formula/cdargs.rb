@@ -3,7 +3,7 @@ require 'formula'
 class Cdargs < Formula
   homepage 'http://www.skamphausen.de/cgi-bin/ska/CDargs'
   url 'http://www.skamphausen.de/downloads/cdargs/cdargs-1.35.tar.gz'
-  md5 '50be618d67f0b9f2439526193c69c567'
+  sha1 '20017d09d3259fcd1385754554a3e17a1c975f9b'
 
   fails_with :llvm do
     build 2334

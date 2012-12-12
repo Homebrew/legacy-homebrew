@@ -19,28 +19,24 @@ end
 
 class Coq < Formula
   homepage 'http://coq.inria.fr/'
-  url 'http://coq.inria.fr/distrib/V8.3pl4/files/coq-8.3pl4.tar.gz'
-  version '8.3pl4'
-  md5 '88e2ce021b09eca207e3119d5202a695'
-  head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
+  url 'http://coq.inria.fr/distrib/V8.4/files/coq-8.4.tar.gz'
+  sha1 '2987aa418dd96a0df7284afe296293cb28814ef5'
 
-  skip_clean :all
+  head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
 
   depends_on TransitionalMode.new
   depends_on 'objective-caml'
   depends_on 'camlp5'
 
   def install
-    arch = Hardware.is_64_bit? ? "x86_64" : "i386"
     camlp5_lib = Formula.factory('camlp5').lib+'ocaml/camlp5'
     system "./configure", "-prefix", prefix,
                           "-mandir", man,
                           "-camlp5dir", camlp5_lib,
                           "-emacslib", "#{lib}/emacs/site-lisp",
                           "-coqdocdir", "#{share}/coq/latex",
-                          "-coqide", "none",
-                          "-with-doc", "no",
-                          "-arch", arch
+                          "-coqide", "no",
+                          "-with-doc", "no"
     ENV.j1 # Otherwise "mkdir bin" can be attempted by more than one job
     system "make world"
     system "make install"

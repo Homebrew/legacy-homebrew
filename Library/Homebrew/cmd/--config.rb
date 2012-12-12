@@ -2,7 +2,11 @@ require 'hardware'
 
 module Homebrew extend self
   def __config
-    puts config_s
+    if ARGV.first == '-1'
+      dump_c1
+    else
+      dump_verbose_config
+    end
   end
 
   def llvm
@@ -60,7 +64,7 @@ module Homebrew extend self
 
   def describe_x11
     return "N/A" unless MacOS::XQuartz.installed?
-    return "#{MacOS::XQuartz.version} in " + describe_path(MacOS::XQuartz.prefix)
+    return "#{MacOS::XQuartz.version} => " + describe_path(MacOS::XQuartz.prefix)
   end
 
   def describe_perl
@@ -96,9 +100,9 @@ module Homebrew extend self
     puts "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby:\n  #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}" if RUBY_VERSION.to_f != 1.8
 
     unless MacOS.compilers_standard?
-      puts "GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"}"
-      puts "GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"}"
-      puts "LLVM: #{llvm ? "build #{llvm}" : "N/A"}"
+      puts "GCC-4.0: build #{gcc_40}" if gcc_40
+      puts "GCC-4.2: build #{gcc_42}" if gcc_42
+      puts "LLVM-GCC: #{llvm ? "build #{llvm}" : "N/A"}"
       puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
     end
 
@@ -108,30 +112,50 @@ module Homebrew extend self
     puts "X11: #{describe_x11}"
   end
 
-  def config_s
-    config_s = <<-EOS.undent
-    HOMEBREW_VERSION: #{HOMEBREW_VERSION}
-    HEAD: #{head}
-    HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}
-    HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}
-    #{hardware}
-    OS X: #{MACOS_FULL_VERSION}-#{kernel}
-    Xcode: #{describe_xcode}
-    EOS
+  def write_build_config f
+    stdout = $stdout
+    $stdout = f
+    Homebrew.dump_build_config
+  ensure
+    $stdout = stdout
+  end
 
-    config_s << "CLT: #{describe_clt}\n" if MacOS::Xcode.version.to_f >= 4.3
+  def dump_verbose_config
+    puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
+    puts "HEAD: #{head}"
+    puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}"
+    puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
+    puts hardware
+    puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
+    puts "Xcode: #{describe_xcode}"
+    puts "CLT: #{describe_clt}\n" if MacOS::Xcode.version.to_f >= 4.3
+    puts "GCC-4.0: build #{gcc_40}" if gcc_40
+    puts "GCC-4.2: build #{gcc_42}" if gcc_42
+    puts "LLVM-GCC: #{llvm ? "build #{llvm}" : "N/A"}"
+    puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
+    ponk = macports_or_fink_installed?
+    puts "MacPorts or Fink? #{ponk}" if ponk
+    puts "X11: #{describe_x11}"
+    puts "System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}"
+    puts "Perl: #{describe_perl}"
+    puts "Python: #{describe_python}"
+    puts "Ruby: #{describe_ruby}"
+  end
 
-    config_s << <<-EOS.undent
-    GCC-4.0: #{gcc_40 ? "build #{gcc_40}" : "N/A"}
-    GCC-4.2: #{gcc_42 ? "build #{gcc_42}" : "N/A"}
-    LLVM: #{llvm ? "build #{llvm}" : "N/A"}
-    Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}
-    MacPorts or Fink? #{macports_or_fink_installed?}
-    X11: #{describe_x11}
-    System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}
-    Which Perl:   #{describe_perl}
-    Which Python: #{describe_python}
-    Which Ruby:   #{describe_ruby}
-    EOS
+  def dump_c1
+    print "#{HOMEBREW_PREFIX}-#{HOMEBREW_VERSION} "
+    print MACOS_FULL_VERSION
+    print "-#{kernel}" if MacOS.version < :lion
+    print ' '
+    if MacOS::Xcode.version > "4.3"
+      print MacOS::Xcode.prefix unless MacOS::Xcode.prefix.to_s =~ %r{^/Applications/Xcode.app}
+    else
+      print MacOS::Xcode.prefix unless MacOS::Xcode.prefix.to_s =~ %r{^/Developer}
+    end
+    print "#{MacOS::Xcode.version}"
+    print "-noclt" unless MacOS::CLT.installed?
+    print " clang-#{clang_build} llvm-#{llvm} "
+    print "#{MacOS::XQuartz.prefix}-#{MacOS::XQuartz.version}" if MacOS::XQuartz.prefix
+    puts
   end
 end

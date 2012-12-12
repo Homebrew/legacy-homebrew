@@ -3,7 +3,7 @@ require 'formula'
 class Mpdscribble < Formula
   url 'http://downloads.sourceforge.net/project/musicpd/mpdscribble/0.22/mpdscribble-0.22.tar.gz'
   homepage 'http://mpd.wikia.com/wiki/Client:Mpdscribble'
-  md5 'df95ea5046511102bf1bcc35482d0365'
+  sha1 '3b4a1a71130deea1720bbfeb104fdcae298f52de'
 
   depends_on 'glib'
   depends_on 'libmpdclient'

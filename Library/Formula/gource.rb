@@ -7,12 +7,12 @@ class Gource < Formula
 
   head 'https://github.com/acaudwell/Gource.git'
 
-  if ARGV.build_head?
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
 
-  depends_on :x11 # for Freetype
+  depends_on :freetype
 
   depends_on 'pkg-config' => :build
   depends_on 'glm' => :build
@@ -34,7 +34,7 @@ class Gource < Formula
     # For non-/usr/local installs
     ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
 
-    system "autoreconf -f -i" if ARGV.build_head?
+    system "autoreconf -f -i" if build.head?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

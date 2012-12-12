@@ -21,6 +21,17 @@ class String
       self[0, prefix.length] == prefix
     end
   end
+
+  # String.chomp, but if result is empty: returns nil instead.
+  # Allows `chuzzle || foo` short-circuits.
+  def chuzzle
+    s = chomp
+    s unless s.empty?
+  end
+end
+
+class NilClass
+  def chuzzle; end
 end
 
 # used by the inreplace function (in utils.rb)

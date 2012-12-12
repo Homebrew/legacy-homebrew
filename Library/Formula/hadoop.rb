@@ -2,25 +2,14 @@ require 'formula'
 
 class Hadoop < Formula
   homepage 'http://hadoop.apache.org/common/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-1.0.3/hadoop-1.0.3.tar.gz'
-  md5 'f42d05e5c7bb43f85119546b80296435'
-
-  def shim_script target
-    <<-EOS.undent
-    #!/bin/bash
-    exec "#{libexec}/bin/#{target}" "$@"
-    EOS
-  end
+  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-1.1.1/hadoop-1.1.1.tar.gz'
+  sha1 '3b7f226e437a30bb8eee12093179c81ae94e7896'
 
   def install
     rm_f Dir["bin/*.bat"]
     libexec.install %w[bin conf lib webapps contrib]
     libexec.install Dir['*.jar']
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |b|
-      n = Pathname.new(b).basename
-      (bin+n).write shim_script(n)
-    end
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
 
     inreplace "#{libexec}/conf/hadoop-env.sh",
       "# export JAVA_HOME=/usr/lib/j2sdk1.5-sun",

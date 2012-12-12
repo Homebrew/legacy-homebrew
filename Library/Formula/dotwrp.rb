@@ -3,7 +3,7 @@ require 'formula'
 class Dotwrp < Formula
   homepage 'https://github.com/tenomoto/dotwrp'
   url 'https://github.com/tenomoto/dotwrp/tarball/v1.0'
-  md5 '629f1f66fbb9837ee1e21a666a9688fa'
+  sha1 '98d0d2ad0c49528e0df5d004962a25c5414b17b8'
 
   head 'https://github.com/tenomoto/dotwrp.git'
 
@@ -12,8 +12,8 @@ class Dotwrp < Formula
 
     # note: fno-underscoring is vital to override the symbols in Accelerate
     system "#{ENV["FC"]} #{ENV["FFLAGS"]} -fno-underscoring -c dotwrp.f90"
-    system "/usr/bin/ar -cru libdotwrp.a dotwrp.o"
-    system "/usr/bin/ranlib libdotwrp.a"
+    system "ar -cru libdotwrp.a dotwrp.o"
+    system "ranlib libdotwrp.a"
 
     lib.install 'libdotwrp.a'
   end

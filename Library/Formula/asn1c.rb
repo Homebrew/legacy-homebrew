@@ -3,7 +3,7 @@ require 'formula'
 class Asn1c < Formula
   url 'http://lionet.info/soft/asn1c-0.9.21.tar.gz'
   homepage 'http://lionet.info/asn1c/blog/'
-  md5 '0d06f96d345530e66e44e7bfee2e0aed'
+  sha1 '22b8cbc73eab870ec2cab51997b3b0d422813624'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -3,7 +3,7 @@ require 'formula'
 class Spark < Formula
   url 'https://github.com/holman/spark/zipball/v1.0.0'
   homepage 'https://github.com/holman/spark'
-  md5 'b888f1293f349bbaf1b5da0fbb73b036'
+  sha1 '63971539fda9f7f3890b52ff131633f5bdda048b'
 
   def install
     bin.install "spark"

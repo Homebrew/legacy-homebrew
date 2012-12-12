@@ -3,7 +3,7 @@ require 'formula'
 class AptDater < Formula
   homepage 'http://www.ibh.de/apt-dater/'
   url 'http://downloads.sourceforge.net/project/apt-dater/apt-dater/0.8.6/apt-dater-0.8.6.tar.gz'
-  md5 '1f1b92403b9afb74032254ed47e7bce3'
+  sha1 '178955f4c8999cf3cfeaf8ebbcf807f9a6beafd6'
 
   depends_on 'gettext'
   depends_on 'glib'

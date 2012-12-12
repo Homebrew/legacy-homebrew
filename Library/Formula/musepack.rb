@@ -4,7 +4,7 @@ class Musepack < Formula
   homepage 'http://www.musepack.net/'
   url 'http://files.musepack.net/source/musepack_src_r475.tar.gz'
   version 'r475'
-  md5 '754d67be67f713e54baf70fcfdb2817e'
+  sha1 'bdd4042773eb5c885df70d7a19914fa6e2306391'
 
   depends_on 'cmake' => :build
   depends_on 'libcuefile'

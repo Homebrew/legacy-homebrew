@@ -3,7 +3,7 @@ require 'formula'
 class Mcrypt < Formula
   url 'http://sourceforge.net/projects/mcrypt/files/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz'
   homepage 'http://mcrypt.sourceforge.net'
-  md5 '0821830d930a86a5c69110837c55b7da'
+  sha1 '9a426532e9087dd7737aabccff8b91abf9151a7a'
 
   option :universal
 

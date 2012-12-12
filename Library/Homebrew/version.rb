@@ -175,6 +175,10 @@ class Version
     # e.g. astyle_1.23_macosx.tar.gz
     m = /_([^_]+)/.match(stem)
     return m.captures.first unless m.nil?
+
+    # e.g. http://mirrors.jenkins-ci.org/war/1.486/jenkins.war
+    m = /\/(\d\.\d+)\//.match(spec.to_s)
+    return m.captures.first unless m.nil?
   end
 
   # DSL for defining comparators

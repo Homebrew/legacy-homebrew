@@ -3,7 +3,7 @@ require 'formula'
 class Gptsync < Formula
   homepage 'http://refit.sourceforge.net/'
   url 'http://downloads.sourceforge.net/refit/refit-src-0.14.tar.gz'
-  md5 '16f02fa5b5decdee17eebd5cd863b3f0'
+  sha1 'ea80a6517c1b0ce5c92c8a605a40309e2e5a9cc2'
 
   def install
     cd "gptsync" do

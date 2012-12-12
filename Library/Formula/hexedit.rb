@@ -3,7 +3,7 @@ require 'formula'
 class Hexedit < Formula
   url 'http://rigaux.org/hexedit-1.2.12.src.tgz'
   homepage 'http://rigaux.org/hexedit.html'
-  md5 '0d2f48610006278cd93359fea9a06d5c'
+  sha1 'fee89e390945045fe6b74b5f07600a8e664c8b21'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

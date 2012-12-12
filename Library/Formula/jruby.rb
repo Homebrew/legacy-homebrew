@@ -2,8 +2,10 @@ require 'formula'
 
 class Jruby < Formula
   homepage 'http://www.jruby.org'
-  url 'http://jruby.org.s3.amazonaws.com/downloads/1.6.7.2/jruby-bin-1.6.7.2.tar.gz'
-  sha1 '717db67a08bf22a838a7debcca7eed9a010ff840'
+  url 'http://jruby.org.s3.amazonaws.com/downloads/1.7.1/jruby-bin-1.7.1.tar.gz'
+  sha1 '7270fe8bdf94c365fe540b9fe7e88adf6b8ad30d'
+
+  env :std
 
   def install
     # Remove Windows files

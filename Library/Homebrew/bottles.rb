@@ -10,7 +10,9 @@ def bottle_filename f, bottle_version=nil
 end
 
 def install_bottle? f
-  return true if ARGV.include? '--install-bottle'
+  return true if ARGV.include? '--install-bottle' and MacOS.bottles_supported?(true)
+  return true if f.downloader and defined? f.downloader.local_bottle_path \
+    and f.downloader.local_bottle_path
   not ARGV.build_from_source? \
     and MacOS.bottles_supported? \
     and ARGV.used_options(f).empty? \

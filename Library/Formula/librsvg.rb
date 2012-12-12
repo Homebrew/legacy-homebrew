@@ -2,8 +2,8 @@ require 'formula'
 
 class Librsvg < Formula
   homepage 'https://live.gnome.org/LibRsvg'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.36/librsvg-2.36.1.tar.xz'
-  sha256 '786b95e1a091375c5ef2997a21c69ff24d7077afeff18197355f54d9dcbcd8c5'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.36/librsvg-2.36.3.tar.xz'
+  sha256 '3d7d583271030e21acacc60cb6b81ee305713c9da5e98429cbd609312aea3632'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build

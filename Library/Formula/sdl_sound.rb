@@ -3,7 +3,7 @@ require 'formula'
 class SdlSound < Formula
   homepage 'http://icculus.org/SDL_sound/'
   url 'http://icculus.org/SDL_sound/downloads/SDL_sound-1.0.3.tar.gz'
-  md5 'aa09cd52df85d29bee87a664424c94b5'
+  sha1 '1984bc20b2c756dc71107a5a0a8cebfe07e58cb1'
 
   head 'http://hg.icculus.org/icculus/SDL_sound', :using => :hg
 

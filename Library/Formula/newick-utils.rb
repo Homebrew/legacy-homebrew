@@ -3,7 +3,7 @@ require 'formula'
 class NewickUtils < Formula
   url 'http://cegg.unige.ch/pub/newick-utils-1.6.tar.gz'
   homepage 'http://cegg.unige.ch/newick_utils'
-  md5 'ed0bf50f03196cfef3809f5a76804624'
+  sha1 'a9779054dcbf957618458ebfed07991fabeb3e19'
 
   def patches
     # don't bother testing nw_gen, it's known to fail on MacOSX

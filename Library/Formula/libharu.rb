@@ -3,7 +3,7 @@ require 'formula'
 class Libharu < Formula
   homepage 'http://www.libharu.org'
   url 'http://libharu.org/files/libharu-2.2.1.tar.bz2'
-  md5 '4febd7e677b1c5d54db59a608b84e79f'
+  sha1 'bfea7d9df3fb6a112340d0d54731f62f53b26d2f'
 
   depends_on :libpng
 

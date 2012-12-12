@@ -3,7 +3,7 @@ require 'formula'
 class OpenCobol < Formula
   url 'http://downloads.sourceforge.net/project/open-cobol/open-cobol/1.0/open-cobol-1.0.tar.gz'
   homepage 'http://www.opencobol.org/'
-  md5 '947e0d9c4ee7fa8f077ea4bca2f894e5'
+  sha1 '4c0930a74e92014317b2f237aaedc90acc2b72df'
 
   depends_on 'gmp'
   depends_on 'berkeley-db'

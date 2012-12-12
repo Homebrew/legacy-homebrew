@@ -2,8 +2,8 @@ require 'formula'
 
 class LibtorrentRasterbar < Formula
   homepage 'http://www.rasterbar.com/products/libtorrent/'
-  url 'http://libtorrent.googlecode.com/files/libtorrent-rasterbar-0.15.9.tar.gz'
-  md5 '87eea591f6eb5da4f3af84aa6d753bc7'
+  url 'http://libtorrent.googlecode.com/files/libtorrent-rasterbar-0.16.5.tar.gz'
+  sha1 'dde29c7a51392d9098de23e2e69a993a5c380016'
 
   depends_on 'boost'
 

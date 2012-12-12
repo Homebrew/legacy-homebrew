@@ -8,9 +8,6 @@ class Fcgiwrap < Formula
   depends_on :autoconf
   depends_on 'fcgi'
 
-  # Do not strip binaries, or else it fails to run.
-  skip_clean :all
-
   def install
     system "autoreconf", "-i"
     system "./configure", "--prefix=#{prefix}"

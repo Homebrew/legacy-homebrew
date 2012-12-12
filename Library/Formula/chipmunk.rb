@@ -3,7 +3,7 @@ require 'formula'
 class Chipmunk < Formula
   homepage 'http://chipmunk-physics.net/'
   url 'https://github.com/slembcke/Chipmunk-Physics/tarball/Chipmunk-6.0.3'
-  md5 '50108c9bfa090b8a87e22043a4eb51be'
+  sha1 '28fdb3df0ca5347ad4f86321a8d8e330920c2e40'
 
   head 'https://github.com/slembcke/Chipmunk-Physics.git'
 

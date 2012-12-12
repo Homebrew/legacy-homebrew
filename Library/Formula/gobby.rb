@@ -3,7 +3,7 @@ require 'formula'
 class Gobby < Formula
   homepage 'http://gobby.0x539.de'
   url 'http://releases.0x539.de/gobby/gobby-0.4.94.tar.gz'
-  md5 '899d68ebe1af67c5a45b49328b86e23e'
+  sha1 '921979da611601ee6e220e2396bd2c86f0fb8c66'
 
   head 'git://git.0x539.de/git/gobby.git'
 

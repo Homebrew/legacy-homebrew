@@ -1,9 +1,5 @@
 require 'formula'
 
-def mecab_support?
-  ARGV.include? '--enable-mecab'
-end
-
 class EucjpMecabIpadic < Requirement
   def initialize
     @mecab_ipadic_installed = Formula.factory('mecab-ipadic').installed?
@@ -67,30 +63,24 @@ class Hyperestraier < Formula
   url 'http://fallabs.com/hyperestraier/hyperestraier-1.4.13.tar.gz'
   sha1 '1094686f457070323083ecf4f89665c564a0c5f0'
 
+  option 'enable-mecab', 'Include MeCab support'
+
   depends_on 'qdbm'
 
-  if mecab_support?
+  if build.include? 'enable-mecab'
     depends_on 'mecab'
     depends_on 'mecab-ipadic'
     depends_on EucjpMecabIpadic.new
   end
 
-  def options
-    [['--enable-mecab', 'Include MeCab support']]
-  end
-
   def install
-    args = [
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      "--prefix=#{prefix}"
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
     ]
 
-    if mecab_support?
-      args << '--enable-mecab'
-    else
-      ohai 'hyperestraier will be built without MeCab support. To build it with MeCab support, use --enable-mecab option.'
-    end
+    args << '--enable-mecab' if build.include? 'enable-mecab'
 
     system "./configure", *args
     system "make mac"

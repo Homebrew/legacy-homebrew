@@ -3,7 +3,7 @@ require 'formula'
 class Fbida < Formula
   homepage 'http://linux.bytesex.org/fbida/'
   url 'http://dl.bytesex.org/releases/fbida/fbida-2.09.tar.gz'
-  md5 '62415c7cb28d995f9d317868de0f2830'
+  sha1 '5838b2cb7188481fece6159fccb3b121acd906e7'
 
   # Fix for build failure in fbida 2.09 (and earlier)
   # Check again in fbida 2.10

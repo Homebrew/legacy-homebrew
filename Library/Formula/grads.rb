@@ -7,8 +7,8 @@ end
 
 class Grads < Formula
   homepage 'http://www.iges.org/grads/grads.html'
-  url 'ftp://iges.org/grads/2.0/grads-2.0.1-bin-darwin9.8-intel.tar.gz'
-  md5 '3c94e4e2f840a323df24df5264e159ff'
+  url 'ftp://cola.gmu.edu/grads/2.0/grads-2.0.1-bin-darwin9.8-intel.tar.gz'
+  sha1 '29191df3e25e9c7b70e730fcb7ddb65903e32a80'
 
   def install
     rm 'bin/INSTALL'

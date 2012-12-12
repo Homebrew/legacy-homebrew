@@ -2,62 +2,56 @@ require 'formula'
 
 class Qt < Formula
   homepage 'http://qt.nokia.com/'
-  url 'http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.2.tar.gz'
-  md5 '3c1146ddf56247e16782f96910a8423b'
+  url 'http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.3.tar.gz'
+  sha1 'bc352a283610e0cd2fe0dbedbc45613844090fcb'
 
   bottle do
-    version 1
-    sha1 'dfa0daa951e889a2548b1cff66759b449b5a6b98' => :mountainlion
-    sha1 '0905eb8b2c5a9bae0d1f9a8234173daba680c48c' => :lion
-    sha1 'c37ac19d54c4684d8996a0ee96cdf971bd2c1f7b' => :snowleopard
+    sha1 'ff488747325cd6771fbf0b79156fd3833ff3af63' => :mountainlion
+    sha1 '5b8d6d3c47f3992465de3a750a35407eef128c94' => :lion
+    sha1 'bb0b7e58d743e7b9147ae0d03cebc83134b8f68c' => :snowleopard
   end
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
+  env :std # Otherwise fails on SSE intrinsics
+
   option :universal
   option 'with-qtdbus', 'Enable QtDBus module'
   option 'with-qt3support', 'Enable deprecated Qt3Support module'
-  option 'with-demos-examples', 'Eanble Qt demos and examples'
+  option 'with-demos-examples', 'Enable Qt demos and examples'
   option 'with-debug-and-release', 'Compile Qt in debug and release mode'
+  option 'with-mysql', 'Enable MySQL plugin'
   option 'developer', 'Compile and link Qt with developer options'
 
-  depends_on "d-bus" if build.include? 'with-qtdbus'
-  depends_on 'sqlite' if MacOS.leopard?
+  depends_on :libpng
 
-  fails_with :clang do
-    build 421
-  end
+  depends_on "d-bus" if build.include? 'with-qtdbus'
+  depends_on "mysql" if build.include? 'with-mysql'
+  depends_on 'sqlite' if MacOS.version == :leopard
 
   def patches
-    # fixes conflict on osx 10.5. See qt bug:
+    # Fixes compilation failure on Leopard.
     # https://bugreports.qt-project.org/browse/QTBUG-23258
-    if MacOS.leopard?
+    if MacOS.version == :leopard
       "http://bugreports.qt-project.org/secure/attachment/26712/Patch-Qt-4.8-for-10.5"
-    # add support for Mountain Lion
-    # should be unneeded for 4.8.3
-    elsif MacOS.mountain_lion?
-      [ "https://qt.gitorious.org/qt/qt/commit/422f1b?format=patch",
-        "https://qt.gitorious.org/qt/qt/commit/665355?format=patch",
-        "https://raw.github.com/gist/3187034/893252db0ae3bb9bb5fa3ff7c530c7978399b101/0001-Fix-WebKit-on-OS-X-Mountain-Lion.patch" ]
     end
-
   end
 
   def install
-    # Apply binary git patch; normal patch ignores this.
-    # TODO: Autodetect binary patches and apply them correctly.
-    system "git apply --exclude=*/QtWebKit.pro 002-homebrew.diff" if MacOS.mountain_lion?
-
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
-            "-system-zlib",
+            "-system-libpng", "-system-zlib",
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
-    # See: https://github.com/mxcl/homebrew/issues/issue/744
-    args << "-system-sqlite" if MacOS.leopard?
+    args << "-L#{MacOS.x11_prefix}/lib" << "-I#{MacOS.x11_prefix}/include" if MacOS::X11.installed?
 
-    args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
+    args << "-platform" << "unsupported/macx-clang" if ENV.compiler == :clang
+
+    # See: https://github.com/mxcl/homebrew/issues/issue/744
+    args << "-system-sqlite" if MacOS.version == :leopard
+
+    args << "-plugin-sql-mysql" if build.include? 'with-mysql'
 
     if build.include? 'with-qtdbus'
       args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
@@ -93,7 +87,7 @@ class Qt < Formula
 
     args << '-developer-build' if build.include? 'developer'
 
-    # Needed for Qt 4.8.1 due to attempting to link moc with gcc.
+    # Needed for Qt 4.8.3 due to attempting to link moc with gcc.
     ENV['LD'] = ENV.cxx
 
     system "./configure", *args

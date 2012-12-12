@@ -3,7 +3,7 @@ require 'formula'
 class Mp3cat < Formula
   homepage 'http://tomclegg.net/mp3cat'
   url 'http://tomclegg.net/software/mp3cat-0.4.tar.gz'
-  md5 '0aa75af15c57b13aa7858092b79f3a61'
+  sha1 '442d2b2b546fec4535c2aa892a8fc61db21eb917'
 
   def install
     system "make"

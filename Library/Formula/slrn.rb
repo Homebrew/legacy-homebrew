@@ -3,7 +3,7 @@ require 'formula'
 class Slrn < Formula
   url 'ftp://space.mit.edu/pub/davis/slrn/slrn-0.9.9p1.tar.gz'
   homepage 'http://www.slrn.org/'
-  md5 '6cc8ac6baaff7cc2a8b78f7fbbe3187f'
+  sha1 'f14d88eda39b78bd2f098f211d4a1c363c0fe924'
   version '0.9.9p1'
 
   depends_on 's-lang'

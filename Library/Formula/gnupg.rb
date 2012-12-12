@@ -2,7 +2,7 @@ require 'formula'
 
 class GnupgIdea < Formula
   head 'http://www.gnupg.dk/contrib-dk/idea.c.gz', :using  => :nounzip
-  md5 '9dc3bc086824a8c7a331f35e09a3e57f'
+  sha1 '9b78e20328d35525af7b8a9c1cf081396910e937'
 end
 
 class Gnupg < Formula
@@ -13,12 +13,13 @@ class Gnupg < Formula
   option 'idea', 'Build with the patented IDEA cipher'
   option '8192', 'Build with support for private keys of up to 8192 bits'
 
-  def install
-    if ENV.compiler == :clang
-      ENV.append 'CFLAGS', '-std=gnu89'
-      ENV.append 'CFLAGS', '-fheinous-gnu-extensions'
-    end
+  def cflags
+    cflags = ENV.cflags.to_s
+    cflags += ' -std=gnu89 -fheinous-gnu-extensions' if ENV.compiler == :clang
+    cflags
+  end
 
+  def install
     if build.include? 'idea'
       GnupgIdea.new.brew { (buildpath/'cipher').install Dir['*'] }
       system 'gunzip', 'cipher/idea.c.gz'
@@ -29,7 +30,7 @@ class Gnupg < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-asm"
-    system "make"
+    system "make", "CFLAGS=#{cflags}"
     system "make check"
 
     # we need to create these directories because the install target has the

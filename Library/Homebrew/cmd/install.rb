@@ -6,6 +6,10 @@ module Homebrew extend self
   def install
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
+    if ARGV.include? '--head'
+      raise "Specify `--HEAD` in uppercase to build from trunk."
+    end
+
     ARGV.named.each do |name|
       # if a formula has been tapped ignore the blacklisting
       if not File.file? HOMEBREW_REPOSITORY/"Library/Formula/#{name}.rb"
@@ -37,8 +41,11 @@ module Homebrew extend self
 
   def check_xcode
     require 'cmd/doctor'
-    xcode = Checks.new.check_for_latest_xcode
-    opoo xcode unless xcode.nil?
+    checks = Checks.new
+    %w{check_for_latest_xcode check_xcode_license_approved}.each do |check|
+      out = checks.send(check)
+      opoo out unless out.nil?
+    end
   end
 
   def check_macports

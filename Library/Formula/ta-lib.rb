@@ -3,7 +3,7 @@ require 'formula'
 class TaLib < Formula
   homepage 'http://ta-lib.org/index.html'
   url 'http://sourceforge.net/projects/ta-lib/files/ta-lib/0.4.0/ta-lib-0.4.0-src.tar.gz'
-  md5 '308e53b9644213fc29262f36b9d3d9b9'
+  sha1 'b326b91e79ca1e569e95aad91e87a38640dd5f1b'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -3,7 +3,7 @@ require 'formula'
 class RdiffBackup < Formula
   homepage 'http://rdiff-backup.nongnu.org/'
   url 'http://savannah.nongnu.org/download/rdiff-backup/rdiff-backup-1.2.8.tar.gz'
-  md5 '1a94dc537fcf74d6a3a80bd27808e77b'
+  sha1 '14ffe4f5b46a8a96ded536c1d03ae5e85faae318'
 
   depends_on 'librsync'
 

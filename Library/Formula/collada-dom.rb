@@ -2,8 +2,8 @@ require 'formula'
 
 class ColladaDom < Formula
   homepage 'http://www.collada.org/mediawiki/index.php/Portal:COLLADA_DOM'
-  url 'http://downloads.sourceforge.net/project/collada-dom/Collada%20DOM/Collada%20DOM%202.3/collada_dom-2.3.1-src.tgz'
-  md5 'a74d19c1187806a713cec90c2f0f692c'
+  url 'http://sourceforge.net/projects/collada-dom/files/Collada%20DOM/Collada%20DOM%202.4/collada-dom-2.4.0.tgz'
+  sha1 '74e28d670497abc897c06a41df7d28eea2bac836'
 
   depends_on 'cmake' => :build
   depends_on 'pcre'

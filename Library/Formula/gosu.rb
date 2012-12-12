@@ -4,7 +4,7 @@ class Gosu < Formula
   url 'http://gosu-lang.org/downloads/gosu-0.8.6.1-C/gosu-0.8.6.1-C.tgz'
   version '0.8.6.1-C'
   homepage 'http://gosu-lang.org/'
-  md5 '0689133a2d0d90368ed4fe1d2f3ef0f0'
+  sha1 '6e4b4e95bc75237a1e04118aa31e9bdf331dbb0f'
 
   def install
     mv "bin/gosu.sh", "bin/gosu"

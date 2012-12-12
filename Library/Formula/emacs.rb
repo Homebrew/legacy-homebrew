@@ -2,9 +2,9 @@ require 'formula'
 
 class Emacs < Formula
   homepage 'http://www.gnu.org/software/emacs/'
-  url 'http://ftpmirror.gnu.org/emacs/emacs-24.1.tar.bz2'
-  mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.1.tar.bz2'
-  sha1 'ab22d5bf2072d04faa4aebf819fef3dfe44aacca'
+  url 'http://ftpmirror.gnu.org/emacs/emacs-24.2.tar.bz2'
+  mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.2.tar.bz2'
+  sha1 '38e8fbc9573b70a123358b155cf55c274b5a56cf'
 
   option "cocoa", "Build a Cocoa version of emacs"
   option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
@@ -19,18 +19,14 @@ class Emacs < Formula
 
   depends_on :x11 if build.include? "with-x"
 
-  # Stripping on Xcode 4 causes malformed object errors.
-  # Just skip everything.
-  skip_clean :all
-
   fails_with :llvm do
     build 2334
     cause "Duplicate symbol errors while linking."
   end
 
   def patches
-    if build.include? "cocoa"
-      # Fullscreen patch, works against 24.1 and HEAD.
+    # Fullscreen patch works against 24.2; already included in HEAD
+    if build.include? "cocoa" and not build.head?
       "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716"
     end
   end
@@ -65,6 +61,14 @@ class Emacs < Formula
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
+
+      # Replace the symlink with one that avoids starting Cocoa.
+      (bin/"emacs").unlink # Kill the existing symlink
+      (bin/"emacs").write <<-EOS.undent
+        #!/bin/bash
+        #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
+      EOS
+      (bin/"emacs").chmod 0755
     else
       if build.include? "with-x"
         # These libs are not specified in xft's .pc. See:
@@ -90,14 +94,13 @@ class Emacs < Formula
         Emacs.app was installed to:
           #{prefix}
 
-        Command-line emacs can be used by setting up an alias:
-          alias emacs="#{prefix}/Emacs.app/Contents/MacOS/Emacs -nw"
-
          To link the application to a normal Mac OS X location:
            brew linkapps
          or:
            ln -s #{prefix}/Emacs.app /Applications
 
+         A command line wrapper for the cocoa app was installed to:
+          #{bin}/emacs
       EOS
     end
 

@@ -3,7 +3,7 @@ require 'formula'
 class Giter8 < Formula
   url "http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-tools.sbt/sbt-launch/0.11.2/sbt-launch.jar"
   homepage 'http://github.com/n8han/giter8'
-  md5 '2886cc391e38fa233b3e6c0ec9adfa1e'
+  sha1 '50bd4fcf95922be5893a3973699d6b6f42946e2d'
   version '0.4.5'
 
   def exec_script

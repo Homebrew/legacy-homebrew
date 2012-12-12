@@ -20,8 +20,11 @@ class Devil < Formula
   def patches; DATA; end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--enable-ILU"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-ILU",
+                          "--enable-ILUT"
     system "make install"
   end
 end

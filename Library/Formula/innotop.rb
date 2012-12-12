@@ -1,9 +1,9 @@
 require 'formula'
 
 class Innotop < Formula
-  url 'http://innotop.googlecode.com/files/innotop-1.8.1.tar.gz'
   homepage 'http://code.google.com/p/innotop/'
-  md5 'af3e5c044912a9dfc7860d66a1a51bd4'
+  url 'http://innotop.googlecode.com/files/innotop-1.9.0.tar.gz'
+  sha1 '4f8cbf6d01a1723a5c450d66e192610c5b28c4d7'
 
   depends_on 'DBD::mysql' => :perl
 

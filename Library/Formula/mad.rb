@@ -3,7 +3,7 @@ require 'formula'
 class Mad < Formula
   homepage 'http://www.underbit.com/products/mad/'
   url 'http://downloads.sourceforge.net/project/mad/libmad/0.15.1b/libmad-0.15.1b.tar.gz'
-  md5 '1be543bc30c56fb6bea1d7bf6a64e66c'
+  sha1 'cac19cd00e1a907f3150cc040ccc077783496d76'
 
   def install
     fpm = MacOS.prefer_64_bit? ? '64bit': 'intel'

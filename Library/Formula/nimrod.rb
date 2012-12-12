@@ -3,7 +3,7 @@ require 'formula'
 class Nimrod < Formula
   homepage 'http://force7.de/nimrod/'
   url 'http://force7.de/nimrod/download/nimrod_0.8.14.zip'
-  md5 '3b89c11e4071bf492134c8f4258ebd5d'
+  sha1 'e37e48bcec96c8baf578671c3f20cc5e1e8b0267'
 
   head 'https://github.com/Araq/Nimrod.git'
 

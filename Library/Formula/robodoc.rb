@@ -3,7 +3,7 @@ require 'formula'
 class Robodoc < Formula
   homepage 'http://rfsber.home.xs4all.nl/Robo/robodoc.html'
   url 'http://rfsber.home.xs4all.nl/Robo/robodoc-4.99.41.tar.gz'
-  md5 '986ff954e0ba5a9c407384fc4b05303d'
+  sha1 'f2dfb53c667681bf0c5424be9b14f3a1e7edab9b'
 
   head 'https://github.com/gumpu/ROBODoc.git'
 

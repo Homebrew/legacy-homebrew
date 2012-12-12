@@ -2,11 +2,11 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.8.6/rabbitmq-server-generic-unix-2.8.6.tar.gz'
-  sha1 '50ad453ae6a293c7b314dd2dd24a29648f1acc11'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.0.0/rabbitmq-server-generic-unix-3.0.0.tar.gz'
+  sha1 'a899199afe0bda17676f359789e0fea4ba8caea9'
 
   depends_on 'erlang'
-  depends_on 'simplejson' => :python if MacOS.leopard?
+  depends_on 'simplejson' => :python if MacOS.version == :leopard
 
   def install
     # Install the base files
@@ -30,70 +30,56 @@ class Rabbitmq < Formula
     enabled_plugins_path = etc+'rabbitmq/enabled_plugins'
     enabled_plugins_path.write enabled_plugins unless enabled_plugins_path.exist?
 
-    # Create the plist file
-    plist_path.write startup_plist
-    plist_path.chmod 0644
+    # Extract rabbitmqadmin to sbin
+    system "/usr/bin/unzip", "-qq", "-j", "#{prefix}/plugins/rabbitmq_management-#{version}.ez", "rabbitmq_management-#{version}/priv/www/cli/rabbitmqadmin"
+    sbin.install 'rabbitmqadmin'
+
   end
 
-  def caveats
-    <<-EOS.undent
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Management Plugin enabled by default at http://localhost:55672
-
-    To start rabbitmq-server manually:
-        rabbitmq-server
+  def caveats; <<-EOS.undent
+    Management Plugin enabled by default at http://localhost:15672
     EOS
   end
 
-  def enabled_plugins
-    return <<-EOS.undent
+  def enabled_plugins; <<-EOS.undent
       [rabbitmq_management,rabbitmq_management_visualiser].
     EOS
   end
 
-  def rabbitmq_env
-    return <<-EOS.undent
+  def rabbitmq_env; <<-EOS.undent
     CONFIG_FILE=#{etc}/rabbitmq/rabbitmq
     NODE_IP_ADDRESS=127.0.0.1
     NODENAME=rabbit@localhost
     EOS
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
-"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>Program</key>
-    <string>#{HOMEBREW_PREFIX}/sbin/rabbitmq-server</string>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-    <key>EnvironmentVariables</key>
-    <dict>
-      <!-- need erl in the path -->
-      <key>PATH</key>
-      <string>/usr/local/sbin:/usr/bin:/bin:/usr/local/bin</string>
-      <!-- specify the path to the rabbitmq-env.conf file -->
-      <key>CONF_ENV_FILE</key>
-      <string>#{etc}/rabbitmq/rabbitmq-env.conf</string>
-    </dict>
-  </dict>
-</plist>
-    EOPLIST
+  plist_options :manual => 'rabbitmq-server'
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>Program</key>
+        <string>#{opt_prefix}/sbin/rabbitmq-server</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>UserName</key>
+        <string>#{`whoami`.chomp}</string>
+        <key>EnvironmentVariables</key>
+        <dict>
+          <!-- need erl in the path -->
+          <key>PATH</key>
+          <string>/usr/local/sbin:/usr/bin:/bin:/usr/local/bin</string>
+          <!-- specify the path to the rabbitmq-env.conf file -->
+          <key>CONF_ENV_FILE</key>
+          <string>#{etc}/rabbitmq/rabbitmq-env.conf</string>
+        </dict>
+      </dict>
+    </plist>
+    EOS
   end
 end

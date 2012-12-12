@@ -4,7 +4,7 @@ class DejaGnu < Formula
   url 'http://ftpmirror.gnu.org/dejagnu/dejagnu-1.5.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/dejagnu/dejagnu-1.5.tar.gz'
   homepage 'http://www.gnu.org/software/dejagnu/'
-  md5 '3df1cbca885e751e22d3ebd1ac64dc3c'
+  sha1 'bd84c71e0587af0278a9b6a404d6da1b92df66cd'
   head 'git://git.sv.gnu.org/dejagnu.git'
 
   def install

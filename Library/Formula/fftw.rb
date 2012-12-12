@@ -3,7 +3,7 @@ require 'formula'
 class Fftw < Formula
   homepage 'http://www.fftw.org'
   url 'http://www.fftw.org/fftw-3.3.2.tar.gz'
-  md5 '6977ee770ed68c85698c7168ffa6e178'
+  sha1 '11a8c31186ff5a7d686a79a3f21b2530888e0dc2'
 
   def install
     args = ["--enable-shared",

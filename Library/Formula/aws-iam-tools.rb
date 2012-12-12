@@ -3,7 +3,7 @@ require 'formula'
 class AwsIamTools < AmazonWebServicesFormula
   homepage 'http://aws.amazon.com/developertools/4143'
   url 'http://awsiammedia.s3.amazonaws.com/public/tools/cli/latest/IAMCli.zip'
-  md5 '7b479a42c09f0d64771dbb0415c3df9f'
+  sha1 'a2bd3048327d1ee34e20abbc8e2cc6c68ebdee5f'
   version "1.5.0"
 
   def install
@@ -34,7 +34,7 @@ class AwsIamTools < AmazonWebServicesFormula
       * On Zsh, add them to `~/.zprofile` instead.
 
     export JAVA_HOME="$(/usr/libexec/java_home)"
-    export AWS_IAM_HOME="#{prefix}/jars"
+    export AWS_IAM_HOME="#{opt_prefix}/jars"
     export AWS_CREDENTIAL_FILE=$HOME/.aws-credentials-master
     EOS
   end

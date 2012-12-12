@@ -1,13 +1,5 @@
 require 'formula'
 
-def threadsafe?
-  ARGV.include? '--enable-threadsafe'
-end
-
-def fortran?
-  ARGV.include? '--enable-fortran' and not threadsafe?
-end
-
 class Hdf5 < Formula
   homepage 'http://www.hdfgroup.org/HDF5'
   url 'http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.9/src/hdf5-1.8.9.tar.bz2'
@@ -15,16 +7,11 @@ class Hdf5 < Formula
 
   depends_on 'szip'
 
-  def options
-    [
-      ['--enable-fortran', 'Compile Fortran bindings.'],
-      ['--enable-threadsafe', 'Trade performance and C++ or Fortran support for thread safety']
-    ]
-  end
+  # TODO - warn that these options conflict
+  option 'enable-fortran', 'Compile Fortran bindings'
+  option 'enable-threadsafe', 'Trade performance and C++ or Fortran support for thread safety'
 
   def install
-    ENV.fortran if fortran?
-
     args = %W[
       --prefix=#{prefix}
       --enable-production
@@ -36,11 +23,15 @@ class Hdf5 < Formula
       --enable-static=yes
       --enable-shared=yes
     ]
-    if threadsafe?
+
+    if build.include? 'enable-threadsafe'
       args.concat %w[--with-pthread=/usr --enable-threadsafe]
     else
       args << '--enable-cxx'
-      args << '--enable-fortran' if fortran?
+      if build.include? 'enable-fortran'
+        args << '--enable-fortran'
+        ENV.fortran
+      end
     end
 
     system "./configure", *args

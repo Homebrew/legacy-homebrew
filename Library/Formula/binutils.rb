@@ -2,9 +2,9 @@ require 'formula'
 
 class Binutils < Formula
   homepage 'http://www.gnu.org/software/binutils/binutils.html'
-  url 'http://ftpmirror.gnu.org/binutils/binutils-2.22.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/binutils/binutils-2.22.tar.gz'
-  md5 '8b3ad7090e3989810943aa19103fdb83'
+  url 'http://ftpmirror.gnu.org/binutils/binutils-2.23.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/binutils/binutils-2.23.tar.gz'
+  sha1 '470c388c97ac8d216de33fa397d7be9f96c3fe04'
 
   def install
     system "./configure", "--disable-debug",

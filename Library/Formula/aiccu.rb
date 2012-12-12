@@ -14,12 +14,11 @@ class Aiccu < Formula
     system "make", "install", "prefix=#{prefix}"
 
     etc.install 'doc/aiccu.conf' unless (etc/'aiccu.conf').exist?
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
-  def startup_plist; <<-EOS.undent
+  plist_options :startup => true
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -28,9 +27,9 @@ class Aiccu < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{HOMEBREW_PREFIX}/sbin/aiccu</string>
+        <string>#{opt_prefix}/sbin/aiccu</string>
         <string>start</string>
-        <string>#{HOMEBREW_PREFIX}/etc/aiccu.conf</string>
+        <string>#{etc}/aiccu.conf</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
@@ -50,7 +49,6 @@ class Aiccu < Formula
 
       Because these are kernel extensions, there is no Homebrew formula for tuntap.
 
-
       Unless it exists already, a aiccu.conf file has been written to:
         #{etc}/aiccu.conf
 
@@ -58,20 +56,10 @@ class Aiccu < Formula
 
       The 'aiccu' command will load this file by default unless told to use
       a different one.
-
-
-      To launch on startup:
-      * if this is your first install:
-          sudo cp #{plist_path} /Library/LaunchDaemons/
-          sudo launchctl load -w /Library/LaunchDaemons/#{plist_path.basename}
-
-      * if this is an upgrade and you already have the #{plist_path.basename} loaded:
-          sudo launchctl unload -w /Library/LaunchDaemons/#{plist_path.basename}
-          sudo cp #{plist_path} /Library/LaunchDaemons/
-          sudo launchctl load -w /Library/LaunchDaemons/#{plist_path.basename}
     EOS
   end
 end
+
 __END__
 diff --git a/Makefile b/Makefile
 index 0e96136..78609bd 100644

@@ -2,9 +2,11 @@ require 'formula'
 
 class Groonga < Formula
   homepage 'http://groonga.org/'
-  url 'http://packages.groonga.org/source/groonga/groonga-2.0.5.tar.gz'
-  sha1 '0256c3e5e800e9763995b31e0864268e6a40678c'
+  url 'http://packages.groonga.org/source/groonga/groonga-2.0.9.tar.gz'
+  sha1 'd8b9964016beb7be3311567f8243ace7a53ea21b'
 
+  depends_on 'pkg-config' => :build
+  depends_on 'pcre'
   depends_on 'msgpack'
 
   def install

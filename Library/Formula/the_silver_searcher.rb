@@ -2,8 +2,8 @@ require 'formula'
 
 class TheSilverSearcher < Formula
   homepage 'https://github.com/ggreer/the_silver_searcher'
-  url 'https://github.com/ggreer/the_silver_searcher/tarball/0.7.2'
-  sha1 '48c33fa25ded5c446c0fca8d32b10872aee38e70'
+  url 'https://github.com/ggreer/the_silver_searcher/tarball/0.13.1'
+  sha1 'd7f2a1b421d915ecd38858f0e2b993686dce4095'
 
   head 'https://github.com/ggreer/the_silver_searcher.git'
 
@@ -15,7 +15,7 @@ class TheSilverSearcher < Formula
 
   def install
     # Stable tarball does not include pre-generated configure script
-    system "aclocal -I /usr/local/share/aclocal"
+    system "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
     system "autoconf"
     system "autoheader"
     system "automake --add-missing"

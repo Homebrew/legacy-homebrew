@@ -3,7 +3,7 @@ require 'formula'
 class Augeas < Formula
   homepage 'http://augeas.net'
   url 'http://augeas.net/download/augeas-0.10.0.tar.gz'
-  md5 'fe1834e90a066c3208ac0214622c7352'
+  sha1 '6d1d7b4572c05748d537f3ff12c5ac8ceb6b49bd'
 
   depends_on 'readline'
 

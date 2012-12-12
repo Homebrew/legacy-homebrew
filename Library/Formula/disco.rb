@@ -3,13 +3,13 @@ require 'formula'
 class Disco < Formula
   homepage 'http://discoproject.com/'
   url 'https://github.com/tuulos/disco/tarball/0.3.2'
-  md5 '47a740b84ef61cea8ba3644610e25083'
+  sha1 'f676e59b7bec0901566888533fd7eed5ff5c45d5'
   # Periods in the install path cause disco-worker to complain so change to underscores.
   version '0_3_2'
   head 'https://github.com/tuulos/disco.git'
 
   depends_on 'erlang'
-  depends_on 'simplejson' => :python if MacOS.leopard?
+  depends_on 'simplejson' => :python if MacOS.version == :leopard
   depends_on 'libcmph'
 
   def install
@@ -33,8 +33,8 @@ class Disco < Formula
     system "make install"
     ENV.delete('CC')
     system "make install-discodb install-discodex"
-    bin.install ['contrib/discodex/bin/discodex','contrib/discodex/bin/discodexcli.py']
-    prefix.install ['contrib', 'doc', 'examples', 'node']
+    bin.install %w[contrib/discodex/bin/discodex contrib/discodex/bin/discodexcli.py]
+    prefix.install %w[contrib doc examples node]
   end
 
   def caveats; <<-EOS.undent
@@ -42,7 +42,7 @@ class Disco < Formula
         ln -s #{etc}/disco/settings.py ~/.disco
 
     To run the discodex server for development:
-        cd #{prefix}/contrib/discodex/www
+        cd #{opt_prefix}/contrib/discodex/www
         ./manage.py runserver 8080
 
     The DDFS_*_REPLICA settings have been set to 1 assuming a single-machine install.

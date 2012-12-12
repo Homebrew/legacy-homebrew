@@ -3,7 +3,7 @@ require 'formula'
 class Icon < Formula
   homepage 'http://www.cs.arizona.edu/icon/'
   url 'http://www.cs.arizona.edu/icon/ftp/packages/unix/icon-v950src.tgz'
-  md5 '3f9b89bb8f2c0fb3e9c75d1b52fb5690'
+  sha1 '0e26ba1eef6db81f3b0be942daec82ea51d33718'
   version '9.5.0'
 
   def install

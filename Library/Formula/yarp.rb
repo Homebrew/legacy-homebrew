@@ -3,7 +3,7 @@ require 'formula'
 class Yarp < Formula
   homepage 'http://yarp.it'
   url 'http://downloads.sourceforge.net/yarp0/yarp-2.3.19.tar.gz'
-  md5 '7b8d10245626f8a88d8914af50e46da0'
+  sha1 'be2954a7ef7b1cb0bbb2ec1ac07371b5847a9ce6'
 
   head 'https://yarp0.svn.sourceforge.net/svnroot/yarp0/trunk/yarp2'
 

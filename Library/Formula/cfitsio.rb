@@ -2,8 +2,8 @@ require 'formula'
 
 class CfitsioExamples < Formula
   url 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/cexamples/cexamples.zip'
-  version '2010.08.19'
-  md5 '31a5f5622a111f25bee5a3fda2fdac28'
+  version '2012.09.24'
+  sha1 '668ffa9a65a66c9f1d7f4241867e1e8adf653231'
 end
 
 class Cfitsio < Formula

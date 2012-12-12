@@ -17,7 +17,7 @@ class Dc3dd < Formula
                           "--infodir=#{info}"
     system "make"
     system "make install"
-    prefix.install %w[README Options_Reference.txt Sample_Commands.txt]
+    prefix.install %w[Options_Reference.txt Sample_Commands.txt]
   end
 end
 

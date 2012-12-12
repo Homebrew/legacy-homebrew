@@ -3,7 +3,7 @@ require 'formula'
 class MtDaapd < Formula
   url 'http://downloads.sourceforge.net/project/mt-daapd/mt-daapd/0.2.4.2/mt-daapd-0.2.4.2.tar.gz'
   homepage 'http://www.fireflymediaserver.org/'
-  md5 '67bef9fb14d487693b0dfb792c3f1b05'
+  sha1 '5f1c04100b1d18a9cf6f03f879b5c3e9a7bd172f'
 
   depends_on 'gdbm'
   depends_on 'libid3tag'

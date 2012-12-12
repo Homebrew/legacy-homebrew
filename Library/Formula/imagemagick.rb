@@ -2,7 +2,7 @@
 require 'formula'
 
 def ghostscript_srsly?
-  ARGV.include? '--with-ghostscript'
+  build.include? 'with-ghostscript'
 end
 
 def ghostscript_fonts?
@@ -19,57 +19,58 @@ class Imagemagick < Formula
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
     :using => UnsafeSubversionDownloadStrategy
 
+  option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
+  option 'use-tiff', 'Compile with libtiff support.'
+  option 'use-cms', 'Compile with little-cms support.'
+  option 'use-jpeg2000', 'Compile with jasper support.'
+  option 'use-wmf', 'Compile with libwmf support.'
+  option 'use-rsvg', 'Compile with librsvg support.'
+  option 'use-lqr', 'Compile with liblqr support.'
+  option 'use-exr', 'Compile with openexr support.'
+  option 'enable-openmp', 'Enable OpenMP (not supported on Leopard or with Clang).'
+  option 'disable-opencl', 'Disable OpenCL.'
+  option 'enable-hdri', 'Compile with HDRI support enabled'
+  option 'without-magick-plus-plus', "Don't compile C++ interface."
+  option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
+  option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
+  option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
+  option 'with-x', 'Compile with X11 support.'
+  option 'with-fontconfig', 'Compile with fontconfig support.'
+  option 'without-freetype', 'Compile without freetype support.'
+
   depends_on 'pkg-config' => :build
 
-  depends_on 'jpeg'
+  depends_on 'jpeg' => :recommended
   depends_on :libpng
+  depends_on :x11 if build.include? 'with-x'
+  # Can't use => with symbol deps
+  depends_on :fontconfig if build.include? 'with-fontconfig' or MacOS::X11.installed? # => :optional
+  depends_on :freetype unless build.include? 'without-freetype' and not MacOS::X11.installed? # => :recommended
 
-  depends_on 'ghostscript' => :recommended if ghostscript_srsly?
+  depends_on 'ghostscript' => :optional if ghostscript_srsly?
 
-  depends_on 'libtiff' if ARGV.include? '--use-tiff'
-  depends_on 'little-cms' if ARGV.include? '--use-cms'
-  depends_on 'jasper' if ARGV.include? '--use-jpeg2000'
-  depends_on 'libwmf' if ARGV.include? '--use-wmf'
-  depends_on 'librsvg' if ARGV.include? '--use-rsvg'
-  depends_on 'liblqr' if ARGV.include? '--use-lqr'
-  depends_on 'openexr' if ARGV.include? '--use-exr'
+  depends_on 'libtiff' => :optional if build.include? 'use-tiff'
+  depends_on 'little-cms' => :optional if build.include? 'use-cms'
+  depends_on 'jasper' => :optional if build.include? 'use-jpeg2000'
+  depends_on 'libwmf' => :optional if build.include? 'use-wmf'
+  depends_on 'librsvg' => :optional if build.include? 'use-rsvg'
+  depends_on 'liblqr' => :optional if build.include? 'use-lqr'
+  depends_on 'openexr' => :optional if build.include? 'use-exr'
 
   bottle do
-    version 1
-    sha1 'fde8ed2686740ed83efd0626dd20170d9d3096b7' => :mountainlion
-    sha1 'e2c4d5b9e5f37e5f20dec36f3f3cbfc65821e164' => :lion
-    sha1 '019400feda06e4f277187702a4baeacdfdbf4851' => :snowleopard
+    version 3
+    sha1 '0d7ca4e54a1d3090e8b5a85663f0efa857ea52b7' => :mountainlion
+    sha1 '64fca6d7c75407dd1942a271a4df837ab02bbeb0' => :lion
+    sha1 'b8d1a9b2de7b1961da311df77922d326c2b6723f' => :snowleopard
   end
 
-  def skip_clean? path
-    path.extname == '.la'
-  end
+  skip_clean :la
 
   def patches
     # Fixes xml2-config that can be missing --prefix.  See issue #11789
     # Remove if the final Mt. Lion xml2-config supports --prefix.
     # Not reporting this upstream until the final Mt. Lion is released.
     DATA
-  end
-
-  def options
-    [
-      ['--with-ghostscript', 'Compile against ghostscript (not recommended.)'],
-      ['--use-tiff', 'Compile with libtiff support.'],
-      ['--use-cms', 'Compile with little-cms support.'],
-      ['--use-jpeg2000', 'Compile with jasper support.'],
-      ['--use-wmf', 'Compile with libwmf support.'],
-      ['--use-rsvg', 'Compile with librsvg support.'],
-      ['--use-lqr', 'Compile with liblqr support.'],
-      ['--use-exr', 'Compile with openexr support.'],
-      ['--disable-openmp', 'Disable OpenMP.'],
-      ['--disable-opencl', 'Disable OpenCL.'],
-      ['--enable-hdri', 'Compile with HDRI support enabled'],
-      ['--without-magick-plus-plus', "Don't compile C++ interface."],
-      ['--with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'],
-      ['--with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'],
-      ['--with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'],
-    ]
   end
 
   def install
@@ -79,26 +80,31 @@ class Imagemagick < Formula
              "--disable-dependency-tracking",
              "--enable-shared",
              "--disable-static",
+             "--without-pango",
+             "--with-included-ltdl",
              "--with-modules"]
 
-    args << "--disable-openmp" if MacOS.leopard? or ARGV.include? '--disable-openmp'
-    args << "--disable-opencl" if ARGV.include? '--disable-opencl'
-    args << "--without-gslib" unless ARGV.include? '--with-ghostscript'
+    args << "--disable-openmp" unless build.include? 'enable-openmp'
+    args << "--disable-opencl" if build.include? 'disable-opencl'
+    args << "--without-gslib" unless build.include? 'with-ghostscript'
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
                 unless ghostscript_srsly? or ghostscript_fonts?
-    args << "--without-magick-plus-plus" if ARGV.include? '--without-magick-plus-plus'
-    args << "--enable-hdri=yes" if ARGV.include? '--enable-hdri'
+    args << "--without-magick-plus-plus" if build.include? 'without-magick-plus-plus'
+    args << "--enable-hdri=yes" if build.include? 'enable-hdri'
 
-    if ARGV.include? '--with-quantum-depth-32'
+    if build.include? 'with-quantum-depth-32'
       quantum_depth = 32
-    elsif ARGV.include? '--with-quantum-depth-16'
+    elsif build.include? 'with-quantum-depth-16'
       quantum_depth = 16
-    elsif ARGV.include? '--with-quantum-depth-8'
+    elsif build.include? 'with-quantum-depth-8'
       quantum_depth = 8
     end
 
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
-    args << "--with-rsvg" if ARGV.include? '--use-rsvg'
+    args << "--with-rsvg" if build.include? 'use-rsvg'
+    args << "--without-x" unless build.include? 'with-x'
+    args << "--with-fontconfig=yes" if build.include? 'with-fontconfig' or MacOS::X11.installed?
+    args << "--with-freetype=yes" unless build.include? 'without-freetype' and not MacOS::X11.installed?
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
@@ -116,7 +122,8 @@ class Imagemagick < Formula
   end
 
   def test
-    system "#{bin}/identify", "/Library/Application Support/Apple/iChat Icons/Flags/Argentina.*"
+    system "#{bin}/identify", \
+      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png"
   end
 end
 

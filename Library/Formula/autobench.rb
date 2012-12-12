@@ -3,7 +3,7 @@ require 'formula'
 class Autobench < Formula
   homepage 'http://www.xenoclast.org/autobench/'
   url 'http://www.xenoclast.org/autobench/downloads/autobench-2.1.2.tar.gz'
-  md5 'dbd00818840ed8d3c3d35734f0353cff'
+  sha1 '8c342b50ce36c13d46dc995bc5f08acdead21553'
 
   depends_on 'httperf'
 

@@ -1,10 +1,9 @@
 require 'formula'
 
 class Rename < Formula
-  url 'http://plasmasturm.org/code/rename/rename', :using => :nounzip
-  version '0.1.3'
   homepage 'http://plasmasturm.org/code/rename'
-  md5 'ce931227630a44d5d4ca4234a1fb8e63'
+  url 'https://github.com/ap/rename/zipball/v1.100'
+  sha1 'fad32374f16802fa6bb94c41cdb9f50d63bfafcb'
 
   def install
     system 'pod2man', 'rename', 'rename.1'

@@ -1,13 +1,21 @@
 require 'formula'
 
 class Pil < Formula
-  url 'http://effbot.org/downloads/Imaging-1.1.7.tar.gz'
   homepage 'http://www.pythonware.com/products/pil/'
-  md5 'fc14a54e1ce02a0225be8854bfba478e'
+  url 'http://effbot.org/downloads/Imaging-1.1.7.tar.gz'
+  sha1 '76c37504251171fda8da8e63ecb8bc42a69a5c81'
 
-  depends_on :x11
+  option 'with-little-cms', 'Compile with little-cms support.'
+
+  depends_on :freetype
   depends_on 'jpeg' => :recommended
-  depends_on 'little-cms' => :optional
+  depends_on 'little-cms'=> :optional unless build.include? 'with-little-cms'
+
+  # The patch is to fix a core dump in Bug in PIL's quantize() with 64 bit architectures.
+  # http://mail.python.org/pipermail/image-sig/2012-June/007047.html
+  def patches
+    DATA
+  end
 
   def install
     # Find the arch for the Python we are building against.
@@ -19,13 +27,16 @@ class Pil < Formula
     archs.delete :x86_64 if Hardware.is_32_bit?
     ENV['ARCHFLAGS'] = archs.as_arch_flags
 
+    freetype = Formula.factory('freetype')
+    freetype_prefix = Formula.factory('freetype').installed? ? freetype.prefix : MacOS::X11.prefix
+
     inreplace "setup.py" do |s|
       # Tell setup where Freetype2 is on 10.5/10.6
       s.gsub! 'add_directory(include_dirs, "/sw/include/freetype2")',
-              "add_directory(include_dirs, \"#{MacOS::X11.include}\")"
+              "add_directory(include_dirs, \"#{freetype_prefix}/include\")"
 
       s.gsub! 'add_directory(include_dirs, "/sw/lib/freetype2/include")',
-              "add_directory(library_dirs, \"#{MacOS::X11.lib}\")"
+              "add_directory(library_dirs, \"#{freetype_prefix}/lib\")"
 
       # Tell setup where our stuff is
       s.gsub! 'add_directory(library_dirs, "/sw/lib")',
@@ -46,3 +57,16 @@ class Pil < Formula
     EOS
   end
 end
+
+__END__
+--- a/libImaging/Quant.c
++++ b/libImaging/Quant.c
+@@ -914,7 +914,7 @@
+    unsigned long bestdist,bestmatch,dist;
+    unsigned long initialdist;
+    HashTable h2;
+-   int pixelVal;
++   unsigned long pixelVal;
+
+    h2=hashtable_new(unshifted_pixel_hash,unshifted_pixel_cmp);
+    for (i=0;i<nPixels;i++) {

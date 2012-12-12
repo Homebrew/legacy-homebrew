@@ -11,6 +11,7 @@ class Tty
     def reset; escape 0; end
     def em; underline 39; end
     def green; color 92 end
+    def gray; bold 30 end
 
     def width
       `/usr/bin/tput cols`.strip.to_i
@@ -216,8 +217,10 @@ def inreplace path, before=nil, after=nil
   end
 end
 
-def ignore_interrupts
-  std_trap = trap("INT") {}
+def ignore_interrupts(opt = nil)
+  std_trap = trap("INT") do
+    puts "One sec, just cleaning up" unless opt == :quietly
+  end
   yield
 ensure
   trap("INT", std_trap)

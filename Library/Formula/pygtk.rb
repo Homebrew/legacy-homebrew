@@ -3,15 +3,17 @@ require 'formula'
 class Pygtk < Formula
   url 'http://ftp.acc.umu.se/pub/GNOME/sources/pygtk/2.24/pygtk-2.24.0.tar.bz2'
   homepage 'http://www.pygtk.org/'
-  md5 'a1051d5794fd7696d3c1af6422d17a49'
+  sha1 '344e6a32a5e8c7e0aaeb807e0636a163095231c2'
 
   depends_on :x11
   depends_on 'glib'
   depends_on 'gtk+'
   depends_on 'pygobject'
   depends_on 'py2cairo'
+  depends_on 'libglade' if build.include? 'glade'
 
   option :universal
+  option 'glade', 'Python bindigs for glade. (to `import gtk.glade1)'
 
   def install
     ENV.append 'CFLAGS', '-ObjC'

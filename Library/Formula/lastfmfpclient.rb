@@ -4,7 +4,7 @@ class Lastfmfpclient < Formula
   homepage 'https://github.com/lastfm/Fingerprinter'
   url 'https://github.com/lastfm/Fingerprinter/tarball/9ee83a51ac9058ff53c9'
   version '1.6'
-  md5 'ab909b4d6dcc6182afae616749ce0fdc'
+  sha1 'dcb10b1bad1f1af30b43f1828f83c262e6dfb6df'
 
   depends_on 'cmake' => :build
   depends_on 'taglib'
