@@ -1,5 +1,7 @@
 require 'formula'
 
+# Stripping the versions from the URLs is far more DRY and 
+# eliminates the need for a lot of copy/pasting of URLs
 def tess_version
   "3.02"
 end
@@ -126,7 +128,6 @@ class Tesseract < Formula
   end
 
   def caveats; <<-EOF.undent
-    Testing 302 changes
     Tesseract is an OCR (Optical Character Recognition) engine.
 
     The easiest way to use it is to convert the source to a Grayscale tiff:
