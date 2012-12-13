@@ -7,6 +7,5 @@ class Rfcmarkup < Formula
 
   def install
     bin.install "rfcmarkup"
-    prefix.install 'todo'
   end
 end

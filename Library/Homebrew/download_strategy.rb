@@ -32,7 +32,8 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  attr_reader :tarball_path
+  attr_reader :tarball_path, :local_bottle_path
+  attr_writer :local_bottle_path
 
   def initialize name, package
     super
@@ -55,6 +56,11 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
+    if @local_bottle_path
+      @tarball_path = @local_bottle_path
+      return @local_bottle_path
+    end
+
     ohai "Downloading #{@url}"
     unless @tarball_path.exist?
       begin
@@ -79,6 +85,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
+    ohai "Pouring #{File.basename(@tarball_path)}" if @tarball_path.to_s.match bottle_regex
+
     case @tarball_path.compression_type
     when :zip
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
@@ -109,7 +117,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       # behaviour, just open an issue at github
       # We also do this for jar files, as they are in fact zip files, but
       # we don't want to unzip them
-      FileUtils.mv @tarball_path, File.basename(@url)
+      FileUtils.cp @tarball_path, File.basename(@url)
     end
   end
 
@@ -203,10 +211,6 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
       old_bottle_path = HOMEBREW_CACHE/"#{name}-#{package.version}-7.#{MacOS.cat}.bottle.tar.gz" unless old_bottle_path.exist? or name != "imagemagick"
       FileUtils.mv old_bottle_path, @tarball_path if old_bottle_path.exist?
     end
-  end
-  def stage
-    ohai "Pouring #{File.basename(@tarball_path)}"
-    super
   end
 end
 

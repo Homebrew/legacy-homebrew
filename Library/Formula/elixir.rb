@@ -23,8 +23,8 @@ end
 
 class Elixir < Formula
   homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/tarball/v0.7.0'
-  sha1 '6a562fc4259c6ba06502274e7022e79a927fbf38'
+  url  'https://github.com/elixir-lang/elixir/tarball/v0.7.2'
+  sha1 '9f500bfe87c158f2142d226ced43105781a52a46'
 
   head 'https://github.com/elixir-lang/elixir.git', :branch => 'stable'
 

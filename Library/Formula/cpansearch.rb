@@ -16,7 +16,7 @@ class Cpansearch < Formula
 
   def caveats; <<-EOS.undent
     For usage instructions:
-        more #{prefix}/README.md
+        more #{opt_prefix}/README.md
     EOS
   end
 end

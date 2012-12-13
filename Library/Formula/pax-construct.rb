@@ -7,7 +7,7 @@ class PaxConstruct < Formula
 
   def install
     rm_rf Dir['bin/*.bat']
-    prefix.install 'bin/LICENSE', 'bin/NOTICE'
+    prefix.install_metafiles 'bin' # Don't put these in bin!
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end

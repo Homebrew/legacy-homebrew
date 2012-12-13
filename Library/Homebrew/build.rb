@@ -144,15 +144,7 @@ def install f
       end
 
       # Find and link metafiles
-      FORMULA_META_FILES.each do |filename|
-        next if File.directory? filename
-        target_file = filename
-        target_file = "#{filename}.txt" if File.exists? "#{filename}.txt"
-        # Some software symlinks these files (see help2man.rb)
-        target_file = Pathname.new(target_file).resolved_path
-        f.prefix.install target_file => filename rescue nil
-        (f.prefix/filename).chmod 0644 rescue nil
-      end
+      f.prefix.install_metafiles Pathname.pwd
     end
   end
 end

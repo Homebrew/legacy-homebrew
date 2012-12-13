@@ -33,6 +33,10 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
+    append 'CPPFLAGS', "-F#{HOMEBREW_PREFIX}/Frameworks"
+    append 'LDFLAGS', "-F#{HOMEBREW_PREFIX}/Frameworks"
+    self['CMAKE_FRAMEWORK_PATH'] = HOMEBREW_PREFIX/"Frameworks"
+
     # Os is the default Apple uses for all its stuff so let's trust them
     set_cflags "-Os #{SAFE_CFLAGS_FLAGS}"
 
@@ -43,9 +47,8 @@ module HomebrewEnvExtension
     unless self['CC']
       @compiler = MacOS.default_compiler
       self.send @compiler
-      self['CC'] = MacOS.locate("cc")
-      self['CXX'] = MacOS.locate("c++")
-      self['OBJC'] = self['CC']
+      self['CC'] = self['OBJC'] = MacOS.locate("cc")
+      self['CXX'] = self['OBJCXX'] = MacOS.locate("c++")
     end
 
     # Add lib and include etc. from the current macosxsdk to compiler flags:
@@ -64,7 +67,8 @@ module HomebrewEnvExtension
     paths = []
     paths << HOMEBREW_PREFIX/'lib/pkgconfig'
     paths << HOMEBREW_PREFIX/'share/pkgconfig'
-    paths << HOMEBREW_REPOSITORY/'Library/Homebrew/pkgconfig' if MacOS.version >= :mountain_lion
+    paths << HOMEBREW_REPOSITORY/'Library/ENV/pkgconfig/mountain_lion' if MacOS.version >= :mountain_lion
+    paths << HOMEBREW_REPOSITORY/'Library/ENV/pkgconfig/leopard' if MacOS.version <= :leopard
     paths << '/usr/lib/pkgconfig'
     paths.select { |d| File.directory? d }.join(':')
   end
@@ -112,9 +116,8 @@ module HomebrewEnvExtension
 
   def gcc_4_0_1
     # we don't use locate because gcc 4.0 has not been provided since Xcode 4
-    self['CC'] = "#{MacOS.dev_tools_path}/gcc-4.0"
-    self['CXX'] = "#{MacOS.dev_tools_path}/g++-4.0"
-    self['OBJC'] = self['CC']
+    self['CC'] = self['OBJC'] = "#{MacOS.dev_tools_path}/gcc-4.0"
+    self['CXX'] = self['OBJCXX'] = "#{MacOS.dev_tools_path}/g++-4.0"
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags 'nocona -mssse3', :core => 'prescott', :bottle => 'generic'
     @compiler = :gcc
@@ -128,6 +131,7 @@ module HomebrewEnvExtension
     self['CXX'] =~ %r{/usr/bin/xcrun (.*)}
     self['CXX'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
     self['OBJC'] = self['CC']
+    self['OBJCXX'] = self['CXX']
   end
 
   def gcc
@@ -135,14 +139,12 @@ module HomebrewEnvExtension
     # However they still provide a gcc symlink to llvm
     # But we don't want LLVM of course.
 
-    self['CC'] = MacOS.locate "gcc-4.2"
-    self['CXX'] = MacOS.locate "g++-4.2"
-    self['OBJC'] = self['CC']
+    self['CC'] = self['OBJC'] = MacOS.locate("gcc-4.2")
+    self['CXX'] = self['OBJCXX'] = MacOS.locate("g++-4.2")
 
     unless self['CC']
-      self['CC'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
-      self['CXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
-      self['OBJC'] = self['CC']
+      self['CC'] = self['OBJC'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
+      self['CXX'] = self['OBJCXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
       raise "GCC could not be found" unless File.exist? self['CC']
     end
 
@@ -157,17 +159,15 @@ module HomebrewEnvExtension
   alias_method :gcc_4_2, :gcc
 
   def llvm
-    self['CC'] = MacOS.locate "llvm-gcc"
-    self['CXX'] = MacOS.locate "llvm-g++"
-    self['OBJC'] = self['CC']
+    self['CC'] = self['OBJC'] = MacOS.locate("llvm-gcc")
+    self['CXX'] = self['OBJCXX'] = MacOS.locate("llvm-g++")
     set_cpu_cflags 'core2 -msse4', :penryn => 'core2 -msse4.1', :core2 => 'core2', :core => 'prescott'
     @compiler = :llvm
   end
 
   def clang
-    self['CC'] = MacOS.locate "clang"
-    self['CXX'] = MacOS.locate "clang++"
-    self['OBJC'] = self['CC']
+    self['CC'] = self['OBJC'] = MacOS.locate("clang")
+    self['CXX'] = self['OBJCXX'] = MacOS.locate("clang++")
     replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags 'native', :nehalem => 'native -Xclang -target-feature -Xclang -aes'
@@ -373,7 +373,7 @@ end
 
 class << ENV
   def remove_cc_etc
-    keys = %w{CC CXX LD CPP CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS}
+    keys = %w{CC CXX OBJC OBJCXX LD CPP CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS}
     removed = Hash[*keys.map{ |key| [key, self[key]] }.flatten]
     keys.each do |key|
       delete(key)

@@ -118,7 +118,16 @@ end
 
 def check_for_stray_static_libs
   unbrewed_alibs = Dir['/usr/local/lib/*.a'].select { |f| File.file? f and not File.symlink? f }
-  return if unbrewed_alibs.empty?
+
+  # Static libs which are generally OK should be added to this list,
+  # with a short description of the software they come with.
+  white_list = {
+    "libsecurity_agent_client.a" => "OS X 10.8.2 Supplemental Update",
+    "libsecurity_agent_server.a" => "OS X 10.8.2 Supplemental Update"
+  }
+
+  bad_alibs = unbrewed_alibs.reject {|d| white_list.key? File.basename(d) }
+  return if bad_alibs.empty?
 
   s = <<-EOS.undent
     Unbrewed static libraries were found in /usr/local/lib.
@@ -127,7 +136,7 @@ def check_for_stray_static_libs
 
     Unexpected static libraries:
   EOS
-  unbrewed_alibs.each{ |f| s << "    #{f}" }
+  bad_alibs.each{ |f| s << "    #{f}" }
   s
 end
 
@@ -187,9 +196,9 @@ def check_for_other_package_managers
 end
 
 def check_for_broken_symlinks
+  require 'keg'
   broken_symlinks = []
-  %w[lib include sbin bin etc share].each do |d|
-    d = HOMEBREW_PREFIX/d
+  Keg::PRUNEABLE_DIRECTORIES.map { |d| HOMEBREW_PREFIX/d }.each do |d|
     next unless d.directory?
     d.find do |pn|
       broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/ and not pn.exist?
@@ -484,7 +493,7 @@ def check_user_path_3
 end
 
 def check_user_curlrc
-  if %w[CURL_HOME HOME].one?{|key| ENV[key] and File.exists? "#{ENV[key]}/.curlrc" } then <<-EOS.undent
+  if %w[CURL_HOME HOME].any?{|key| ENV[key] and File.exists? "#{ENV[key]}/.curlrc" } then <<-EOS.undent
     You have a curlrc file
     If you have trouble downloading packages with Homebrew, then maybe this
     is the problem? If the following command doesn't work, then try removing
@@ -742,6 +751,8 @@ end
 def check_for_linked_keg_only_brews
   require 'formula'
 
+  return unless HOMEBREW_CELLAR.exist?
+
   warnings = Hash.new
 
   Formula.each do |f|
@@ -973,11 +984,31 @@ end
     EOS
   end
 
+  def check_for_latest_xquartz
+    quartz = MacOS::XQuartz.version
+    return unless quartz
+    return if MacOS::XQuartz.provided_by_apple?
+
+    quartz = Version.new(quartz)
+    latest = Version.new(MacOS::XQuartz.latest_version)
+
+    return if quartz >= latest
+
+    <<-EOS.undent
+      Your XQuartz (#{quartz}) is outdated
+      Please install XQuartz #{latest}.
+    EOS
+  end
 end # end class Checks
 
 module Homebrew extend self
   def doctor
     checks = Checks.new
+
+    if ARGV.include? '--list-checks'
+      checks.methods.select { |m| m =~ /^check_/ }.sort.each { |m| puts m }
+      exit
+    end
 
     inject_dump_stats(checks) if ARGV.switch? 'D'
 

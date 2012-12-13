@@ -13,6 +13,7 @@ class Libimobiledevice < Formula
   depends_on 'libplist'
   depends_on 'usbmuxd'
   depends_on 'gnutls'
+  depends_on 'libgcrypt'
 
   if build.head?
     depends_on :automake

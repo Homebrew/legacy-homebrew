@@ -2,8 +2,8 @@ require 'formula'
 
 class Sonar < Formula
   homepage 'http://www.sonarsource.org'
-  url 'http://dist.sonar.codehaus.org/sonar-3.3.zip'
-  sha1 '666b3f90c25e146305ce2d2afca8cba0a1ea6e18'
+  url 'http://dist.sonar.codehaus.org/sonar-3.3.2.zip'
+  md5 'a76abb38c8eb1aaf277d685d496348f4'
 
   def install
     # Delete native bin directories for other systems
@@ -26,38 +26,24 @@ class Sonar < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
-    If this is your first install, automatically load on login with:
-      mkdir -p ~/Library/LaunchAgents
-      ln -nfs #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/sonar/bin/sonar console"
 
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Or start it manually:
-      #{HOMEBREW_PREFIX}/bin/sonar console
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+        <string>#{opt_prefix}/bin/sonar</string>
+        <string>start</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+    </dict>
+    </plist>
     EOS
-  end
-
-  def startup_plist
-    return <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>ProgramArguments</key>
-    <array>
-    <string>#{HOMEBREW_PREFIX}/bin/sonar</string>
-    <string>start</string>
-    </array>
-    <key>RunAtLoad</key>
-    <true/>
-</dict>
-</plist>
-EOS
   end
 end

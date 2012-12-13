@@ -1,31 +1,12 @@
 require 'formula'
 
-class PostgresqlInstalled < Requirement
-  def message; <<-EOS.undent
-    PostgreSQL is required to install.
-
-    You can install this with:
-      brew install postgresql
-
-    Or you can use an official installer from:
-      http://www.postgresql.org/
-    EOS
-  end
-  def satisfied?
-    which 'pg_config'
-  end
-  def fatal?
-    true
-  end
-end
-
 class Libpqxx < Formula
   homepage 'http://pqxx.org/development/libpqxx/'
   url 'http://pqxx.org/download/software/libpqxx/libpqxx-4.0.tar.gz'
   sha1 '09e6301e610e7acddbec85f4803886fd6822b2e6'
 
   depends_on 'pkg-config' => :build
-  depends_on PostgresqlInstalled.new
+  depends_on :postgresql
 
   # Patches borrowed from MacPorts. See:
   # https://trac.macports.org/ticket/33671

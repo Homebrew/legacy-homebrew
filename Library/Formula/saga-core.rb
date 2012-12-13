@@ -1,24 +1,5 @@
 require 'formula'
 
-class PostgresqlInstalled < Requirement
-  def message; <<-EOS.undent
-    PostgreSQL is required to install.
-
-    You can install this with:
-      brew install postgresql
-
-    Or you can use an official installer from:
-      http://www.postgresql.org/
-    EOS
-  end
-  def satisfied?
-    which 'pg_config'
-  end
-  def fatal?
-    true
-  end
-end
-
 class SagaCore < Formula
   homepage 'http://saga-project.org'
   url 'http://download.saga.cct.lsu.edu/saga-core/saga-core-1.6.tgz'
@@ -27,7 +8,7 @@ class SagaCore < Formula
   head 'https://svn.cct.lsu.edu/repos/saga/core/trunk/'
 
   depends_on 'boost'
-  depends_on PostgresqlInstalled.new
+  depends_on :postgresql
 
   def install
     system "./configure", "--prefix=#{prefix}",
