@@ -10,6 +10,7 @@ class Nzbget < Formula
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
   depends_on 'libpar2'
+  depends_on 'libgcrypt'
   depends_on 'gnutls'
 
   fails_with :clang do

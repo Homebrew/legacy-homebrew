@@ -2,18 +2,17 @@ require 'formula'
 
 def install_language_data
   langs = {
-    'eng'     => 'f2d57eea524ead247612bd027375037c21e22463',
-    'heb'     => '648d9ea2bbf42f0410700a2afd02aaea64f89f28',
-    'hin'     => 'ad3137d84b917a4d5bd576bfd2c540d5c6645ae1',
-    'ara'     => '862b8dbfe655d31201229571b46512f18892760f',
-    'tha'     => 'fa1621c7d0dc871d140fdbd4eb326a09e37272d3',
-    'slk-frak' => '9420b153514fd0b3f8d77240ca1523b5c6d672d0'
+    'eng'     => '989ed4c3a5b246d7353893e466c353099d8b73a1',
+    'heb'     => '67e10e616caf62545eacd436e85f89436687e22b',
+    'hin'     => '4ceef97ffb8b4ab5ac79ee4bad5b5be0885f228f',
+    'ara'     => 'e15cf6b7a027454db56ecedab0038c7739ab29cc',
+    'tha'     => '04a35c04585a887662dc668e54f5368dabf31f50'
   }
 
   langs.each do |lang, sha|
     klass = Class.new(Formula) do
-      url "http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.01.#{lang}.tar.gz"
-      version '3.01'
+      url "http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.#{lang}.tar.gz"
+      version '3.02'
       sha1 sha
     end
 
@@ -75,15 +74,15 @@ end
 
 # This stays around for the English-only build option
 class TesseractEnglishData < Formula
-  url 'http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.01.eng.tar.gz'
-  version '3.01'
-  sha1 'f2d57eea524ead247612bd027375037c21e22463'
+  url 'http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz'
+  version '3.02'
+  sha1 '989ed4c3a5b246d7353893e466c353099d8b73a1'
 end
 
 class Tesseract < Formula
   homepage 'http://code.google.com/p/tesseract-ocr/'
-  url 'http://tesseract-ocr.googlecode.com/files/tesseract-3.01.tar.gz'
-  sha1 'c0b605d7192b3071842fe535c82b89c65f2d9c67'
+  url 'http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz'
+  sha1 'a950acf7b75cf851de2de787e9abb62c58ca1827'
 
   option "all-languages", "Install recognition data for all languages"
 
