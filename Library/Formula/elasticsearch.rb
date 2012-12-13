@@ -49,6 +49,11 @@ class Elasticsearch < Formula
       # Replace CLASSPATH paths to use libexec instead of lib
       s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
     end
+
+    # Persist plugins on upgrade
+    plugins = "#{HOMEBREW_PREFIX}/var/lib/elasticsearch/plugins"
+    mkdir_p plugins
+    ln_sf plugins, "#{prefix}/plugins"
   end
 
   def caveats; <<-EOS.undent
