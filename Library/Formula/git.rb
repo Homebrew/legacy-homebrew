@@ -22,10 +22,6 @@ class Git < Formula
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'with-pcre', 'Compile with the PCRE library'
 
-  def patches
-    "https://github.com/helmo/git/commit/f81d2de1384f8125d992c2ec445c0a7d39857f46.diff"
-  end
-
   def install
     # If these things are installed, tell Git build system to not use them
     ENV['NO_FINK'] = '1'
