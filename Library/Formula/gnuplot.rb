@@ -1,5 +1,20 @@
 require 'formula'
 
+class TeXDependency < Requirement
+  def fatal?; true; end
+
+  def satisfied?
+    which 'latex'
+    which 'pdflatex'
+  end
+
+  def message; <<-EOS.undent
+    You have requested to build LaTeX support, but no LaTeX installation detected.
+    You can install MacTeX distribution: http://www.tug.org/mactex/
+    EOS
+  end
+end
+
 class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
   url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.1/gnuplot-4.6.1.tar.gz'
@@ -16,6 +31,9 @@ class Gnuplot < Formula
   option 'nogd',   'Build without gd support'
   option 'tests',  'Verify the build with make check (1 min)'
   option 'without-emacs', 'Do not build Emacs lisp files'
+  option 'latex',  'Build latex support and tutorial'
+
+  env :userpaths
 
   if build.head?
     depends_on :automake
@@ -31,6 +49,7 @@ class Gnuplot < Formula
   depends_on 'gd'          unless build.include? 'nogd'
   depends_on 'wxmac'       if build.include? 'wx'
   depends_on 'qt'          if build.include? 'qt'
+  depends_on TeXDependency.new if build.include? 'latex'
 
   def install
     # Help configure find libraries
@@ -41,18 +60,22 @@ class Gnuplot < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
-      --with-readline=#{readline.prefix}
-      --without-latex
-      --without-tutorial
+      --with-readline=#{readline.opt_prefix}
     ]
 
-    args << "--with-pdf=#{pdflib.prefix}" if build.include? 'pdf'
-    args << '--with' + ((build.include? 'nogd') ? 'out-gd' : "-gd=#{gd.prefix}")
+    args << "--with-pdf=#{pdflib.opt_prefix}" if build.include? 'pdf'
+    args << '--with' + ((build.include? 'nogd') ? 'out-gd' : "-gd=#{gd.opt_prefix}")
     args << '--disable-wxwidgets' unless build.include? 'wx'
     args << '--without-cairo'     unless build.include? 'cairo'
     args << '--enable-qt'             if build.include? 'qt'
     args << '--without-lua'           if build.include? 'nolua'
     args << '--without-lisp-files'    if build.include? 'without-emacs'
+
+    if build.include? 'latex'
+      args << '--with-tutorial'
+    else
+      args << '--without-latex' << '--without-tutorial'
+    end
 
     system './prepare' if build.head?
     system "./configure", *args
