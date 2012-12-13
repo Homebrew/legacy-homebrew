@@ -22,20 +22,37 @@ class OpenBabel < Formula
     args << "-DJAVA_BINDINGS=ON" if build.include? 'java'
     args << "-DBUILD_GUI=ON" if build.include? 'gui'
     args << "-DCAIRO_INCLUDE_DIRS=#{include}/cairo "\
-            "-DCAIRO_LIBRARIES=#{lib}/libcairo.dylib" if build.include? 'png'
+    "-DCAIRO_LIBRARIES=#{lib}/libcairo.dylib" if build.include? 'png'
+    args << '..'
 
-    system "mkdir ../build"
-    system "cd ../build"
-    system "cmake", *args
-    system "make"
-    system "make install"
+    mkdir 'build' do
+      system "cmake", *args
+      system "make"
+      system "make install"
+    end
+
+    if build.include? 'python'
+      pydir = lib/which_python/'site-packages'
+      pydir.mkpath
+      mv lib/'openbabel.py', pydir
+      mv lib/'pybel.py', pydir
+      cd pydir do
+      `python -c 'import py_compile;py_compile.compile(\"openbabel.py\");py_compile.compile(\"pybel.py\")'`
+      end
+    end
   end
 
   def caveats; <<-EOS.undent
-    Language bindings will be installed to the same location as the
-    Open Babel libraries. To prepare to use the bindings, prepend the
-    install directory to the appropriate environment variable:
-    PYTHONPATH for Python, CLASSPATH for Java.
+    Python modules are installed to #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages
+    so the PYTHONPATH environment variable should include the paths
+    #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:#{HOMEBREW_PREFIX}/lib
+
+    Java libraries are installed to #{HOMEBREW_PREFIX}/lib so this path should be
+    included in the CLASSPATH environment variable.
     EOS
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end
