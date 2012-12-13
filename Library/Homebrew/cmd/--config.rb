@@ -29,24 +29,22 @@ module Homebrew extend self
     @clang_build ||= MacOS.clang_build_version
   end
 
-  def describe_xcode
-    @describe_xcode ||= begin
-      default_prefix = case MacOS.version
-        when 10.5, 10.6 then '/Developer'
-        else '/Applications/Xcode.app/Contents/Developer'
-        end
-
-      guess = '(guessed)' unless MacOS::Xcode.installed?
-      prefix = if MacOS::Xcode.installed?
-        "=> #{MacOS::Xcode.prefix}" unless MacOS::Xcode.prefix.to_s == default_prefix
-      end
-
-      [MacOS::Xcode.version, guess, prefix].compact.join(' ')
+  def xcode
+    if instance_variable_defined?(:@xcode)
+      @xcode
+    elsif MacOS::Xcode.installed?
+      @xcode = MacOS::Xcode.version
+      @xcode += " => #{MacOS::Xcode.prefix}" unless MacOS::Xcode.default_prefix?
+      @xcode
     end
   end
 
-  def describe_clt
-    @describe_clt ||= if MacOS::CLT.installed? then MacOS::CLT.version else 'N/A' end
+  def clt
+    if instance_variable_defined?(:@clt)
+      @clt
+    elsif MacOS::CLT.installed? && MacOS::Xcode.version.to_f >= 4.3
+      @clt = MacOS::CLT.version
+    end
   end
 
   def head
@@ -95,8 +93,8 @@ module Homebrew extend self
     puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.to_s != "#{HOMEBREW_PREFIX}/Cellar"
     puts hardware
     puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
-    puts "Xcode: #{describe_xcode}"
-    puts "CLT: #{describe_clt}" if MacOS::Xcode.version.to_f >= 4.3
+    puts "Xcode: #{xcode}" if xcode
+    puts "CLT: #{clt}" if clt
     puts "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby:\n  #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}" if RUBY_VERSION.to_f != 1.8
 
     unless MacOS.compilers_standard?
@@ -127,8 +125,8 @@ module Homebrew extend self
     puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
     puts hardware
     puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
-    puts "Xcode: #{describe_xcode}"
-    puts "CLT: #{describe_clt}\n" if MacOS::Xcode.version.to_f >= 4.3
+    puts "Xcode: #{xcode}" if xcode
+    puts "CLT: #{clt}" if clt
     puts "GCC-4.0: build #{gcc_40}" if gcc_40
     puts "GCC-4.2: build #{gcc_42}" if gcc_42
     puts "LLVM-GCC: #{llvm ? "build #{llvm}" : "N/A"}"
@@ -147,11 +145,7 @@ module Homebrew extend self
     print MACOS_FULL_VERSION
     print "-#{kernel}" if MacOS.version < :lion
     print ' '
-    if MacOS::Xcode.version > "4.3"
-      print MacOS::Xcode.prefix unless MacOS::Xcode.prefix.to_s =~ %r{^/Applications/Xcode.app}
-    else
-      print MacOS::Xcode.prefix unless MacOS::Xcode.prefix.to_s =~ %r{^/Developer}
-    end
+    print MacOS::Xcode.prefix unless MacOS::Xcode.default_prefix?
     print "#{MacOS::Xcode.version}"
     print "-noclt" unless MacOS::CLT.installed?
     print " clang-#{clang_build} llvm-#{llvm} "

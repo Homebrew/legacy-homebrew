@@ -8,13 +8,13 @@ class Griffon < Formula
   def install
     rm_f Dir["bin/*.bat"]
 
-    prefix.install %w[LICENSE README.md]
+    prefix.install_metafiles
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   def caveats; <<-EOS.undent
-    You should set the environment variable GRIFFON_HOME to
+    You should set the environment variable GRIFFON_HOME to:
       #{libexec}
     EOS
   end

@@ -45,7 +45,7 @@ class Imagemagick < Formula
   depends_on :x11 if build.include? 'with-x'
   # Can't use => with symbol deps
   depends_on :fontconfig if build.include? 'with-fontconfig' or MacOS::X11.installed? # => :optional
-  depends_on :freetype unless build.include? 'without-freetype' # => :recommended
+  depends_on :freetype unless build.include? 'without-freetype' and not MacOS::X11.installed? # => :recommended
 
   depends_on 'ghostscript' => :optional if ghostscript_srsly?
 
@@ -103,8 +103,8 @@ class Imagemagick < Formula
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
     args << "--with-rsvg" if build.include? 'use-rsvg'
     args << "--without-x" unless build.include? 'with-x'
-    args << "--with-fontconfig=yes" if build.include? 'with-fontconfig'
-    args << "--with-freetype=yes" if build.include? 'with-freetype'
+    args << "--with-fontconfig=yes" if build.include? 'with-fontconfig' or MacOS::X11.installed?
+    args << "--with-freetype=yes" unless build.include? 'without-freetype' and not MacOS::X11.installed?
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'

@@ -20,5 +20,6 @@ class ComparableSet < Set
   def merge enum
     enum.is_a?(Enumerable) or raise ArgumentError, "value must be enumerable"
     enum.each { |o| add(o) }
+    self
   end
 end

@@ -40,10 +40,10 @@ class GnomeDocUtils < Formula
   end
 
   def caveats; <<-EOS.undent
-  Gnome-doc-utils requires libxml2 to be compiled
-  with the python modules enabled, to do so:
-    $ brew install libxml2 --with-python
-  EOS
+    Gnome-doc-utils requires libxml2 to be compiled
+    with the python modules enabled, to do so:
+      $ brew install libxml2 --with-python
+    EOS
   end
 end
 

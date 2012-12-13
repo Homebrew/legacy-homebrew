@@ -1,9 +1,10 @@
 require 'formula'
 
 class Dwm < Formula
-  url 'http://dl.suckless.org/dwm/dwm-6.0.tar.gz'
   homepage 'http://dwm.suckless.org/'
+  url 'http://dl.suckless.org/dwm/dwm-6.0.tar.gz'
   sha1 '35346f873a27f219ae266594b3690407f95d06ef'
+
   head 'http://hg.suckless.org/dwm'
 
   depends_on :x11
@@ -18,8 +19,7 @@ class Dwm < Formula
     system "make", "PREFIX=#{prefix}", "install"
   end
 
-  def caveats
-    <<-EOS
+  def caveats; <<-EOS.undent
     In order to use the Mac OS X command key for dwm commands,
     change the X11 keyboard modifier map using xmodmap (1).
 

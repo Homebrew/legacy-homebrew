@@ -7,20 +7,13 @@ class Activemq < Formula
 
   skip_clean 'libexec/webapps/admin/WEB-INF/jsp'
 
-  def startup_script name
-    <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/#{name}" "$@"
-    EOS
-  end
-
   def install
     rm_rf Dir['bin/linux-x86-*']
 
-    prefix.install %w{ LICENSE NOTICE README.txt }
+    prefix.install_metafiles
     libexec.install Dir['*']
 
-    (bin+'activemq-admin').write startup_script('activemq-admin')
-    (bin+'activemq').write startup_script('activemq')
+    bin.write_exec_script libexec/'bin/activemq'
+    bin.write_exec_script libexec/'bin/activemq-admin'
   end
 end

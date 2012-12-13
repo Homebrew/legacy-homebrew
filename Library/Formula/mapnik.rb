@@ -9,6 +9,7 @@ class Mapnik < Formula
 
   option 'with-cairo', 'Build with Cairo'
 
+  depends_on :libtool => :build
   depends_on :freetype
   depends_on :libpng
   depends_on 'libtiff'

@@ -44,8 +44,8 @@ end
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.8.12/node-v0.8.12.tar.gz'
-  sha1 '719397c7f65365b2ec6510863ac62bd291784910'
+  url 'http://nodejs.org/dist/v0.8.15/node-v0.8.15.tar.gz'
+  sha1 'a7874cde1a87497992f1f8ea0fdaa760f617a94f'
 
   head 'https://github.com/joyent/node.git'
 

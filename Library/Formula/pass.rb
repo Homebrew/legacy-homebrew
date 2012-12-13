@@ -2,8 +2,8 @@ require 'formula'
 
 class Pass < Formula
   homepage 'http://zx2c4.com/projects/password-store'
-  url 'http://git.zx2c4.com/password-store/snapshot/password-store-1.4.tar.xz'
-  sha256 '2e94b0078abdf4673f3c22bde048776a3c12776b1bc98c22e8fb6e684b0b4a9e'
+  url 'http://git.zx2c4.com/password-store/snapshot/password-store-1.4.2.tar.xz'
+  sha256 'ac5261b176e2be60b44c5c785dc5770a3e0f459bc6dbc42136679d68d3986e04'
   head 'http://git.zx2c4.com/password-store', :using => :git
 
   depends_on 'xz' => :build
@@ -13,7 +13,6 @@ class Pass < Formula
   depends_on 'gnupg2'
 
   def install
-    inreplace "contrib/pass.bash-completion", "gpg ", "gpg2 "
     system "make DESTDIR=#{prefix} PREFIX=/ install"
   end
 

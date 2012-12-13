@@ -18,6 +18,11 @@ class Neo4j < Formula
 
     # Symlink binaries
     bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell}"]
+
+    # Adjust UDC props
+    open("#{libexec}/conf/neo4j-wrapper.conf", 'a') { |f|
+      f.puts "wrapper.java.additional.4=-Dneo4j.ext.udc.source=homebrew"
+    }
   end
 
   def caveats; <<-EOS.undent

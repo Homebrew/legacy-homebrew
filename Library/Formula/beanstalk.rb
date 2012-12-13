@@ -2,32 +2,17 @@ require 'formula'
 
 class Beanstalk < Formula
   homepage 'http://kr.github.com/beanstalkd/'
-  url 'https://github.com/downloads/kr/beanstalkd/beanstalkd-1.7.tar.gz'
-  sha1 'e14f40f2c649b0ee1d5edcbb897fc17d2ea4ed62'
+  url 'https://github.com/downloads/kr/beanstalkd/beanstalkd-1.8.tar.gz'
+  sha1 'b8c274d7233e02c6793d8d119608ad7c878b0954'
 
   def install
     system "make", "install", "PREFIX=#{prefix}"
   end
 
-  def caveats
-    <<-EOS.undent
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
 
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+  plist_options :manual => "beanstalkd"
 
-      To start beanstalk manually:
-        beanstalkd
-    EOS
-  end
-
-  def startup_plist
-    <<-EOPLIST.undent
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -38,7 +23,7 @@ class Beanstalk < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{HOMEBREW_PREFIX}/bin/beanstalkd</string>
+          <string>#{opt_prefix}/bin/beanstalkd</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
@@ -54,6 +39,6 @@ class Beanstalk < Formula
         <string>#{var}/log/beanstalkd.log</string>
       </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 end

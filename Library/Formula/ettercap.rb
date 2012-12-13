@@ -9,9 +9,6 @@ class Ettercap < Formula
   depends_on 'pcre'
   depends_on 'libnet'
 
-  # Stripping breaks plugin support
-  skip_clean 'bin'
-
   fails_with :clang do
     build '421'
     cause 'Multiple "converts between pointers to integer types with different sign" warnings.'

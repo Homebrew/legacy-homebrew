@@ -1,9 +1,5 @@
 require 'formula'
 
-# This is an extraction of the Argp header and library from Glibc. It may be
-# used as a dependency for formulae that depend on the argp functionality of
-# Glibc.
-
 class ArgpStandalone < Formula
   homepage 'http://www.lysator.liu.se/~nisse/misc/'
   url 'http://www.lysator.liu.se/~nisse/misc/argp-standalone-1.3.tar.gz'
@@ -11,7 +7,9 @@ class ArgpStandalone < Formula
 
   def patches
     # This patch fixes compilation with Clang.
-    { :p0 => "https://trac.macports.org/export/86556/trunk/dports/devel/argp-standalone/files/patch-argp-fmtstream.h" }
+    {:p0 =>
+      "https://trac.macports.org/export/86556/trunk/dports/devel/argp-standalone/files/patch-argp-fmtstream.h"
+    }
   end
 
   def install

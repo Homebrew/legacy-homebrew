@@ -1,13 +1,11 @@
 require 'formula'
 
 class Cc65 < Formula
-  url 'ftp://ftp.musoftware.de/pub/uz/cc65/cc65-sources-2.13.3.tar.bz2'
   homepage 'http://www.cc65.org/'
+  url 'ftp://ftp.musoftware.de/pub/uz/cc65/cc65-sources-2.13.3.tar.bz2'
   sha1 '925c6edfcef7057e24ecb0704fa07210faec07bc'
 
   head 'svn://svn.cc65.org/cc65/trunk'
-
-  skip_clean :all
 
   def install
     ENV.deparallelize

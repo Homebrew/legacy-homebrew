@@ -34,12 +34,13 @@ class Gettext < Formula
     ENV.libxml2
     ENV.universal_binary if build.universal?
 
-    system "./configure", "--disable-dependency-tracking", "--disable-debug",
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--without-included-gettext",
-                          "--without-included-glib",
-                          "--without-included-libcroco",
-                          "--without-included-libxml",
+                          "--with-included-gettext",
+                          "--with-included-glib",
+                          "--with-included-libcroco",
+                          "--with-included-libunistring",
                           "--without-emacs",
                           # Don't use VCS systems to create these archives
                           "--without-git",

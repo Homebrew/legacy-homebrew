@@ -12,12 +12,15 @@ if ARGV.empty?
   onoe 'This command requires at least one argument containing a URL or pull request number'
 end
 
+if ARGV[0] == '--rebase'
+  onoe 'You meant `git pull --rebase`.'
+end
+
 ARGV.named.each do|arg|
   if arg.to_i > 0
     url = 'https://github.com/mxcl/homebrew/pull/' + arg
   else
-    # This regex should work, if it's too precise, feel free to fix it.
-    url_match = arg.match 'https:\/\/github.com\/\w+\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
+    url_match = arg.match HOMEBREW_PULL_URL_REGEX
     unless url_match
       ohai 'Ignoring URL:', "Not a GitHub pull request or commit: #{arg}"
       next

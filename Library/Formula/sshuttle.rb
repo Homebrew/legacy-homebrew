@@ -9,9 +9,6 @@ class Sshuttle < Formula
 
   def install
     libexec.install Dir['*']
-    (bin+'sshuttle').write <<-EOS.undent
-      #!/bin/bash
-      exec #{libexec}/sshuttle "$@"
-    EOS
+    bin.write_exec_script libexec/'sshuttle'
   end
 end

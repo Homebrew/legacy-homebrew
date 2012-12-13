@@ -2,8 +2,10 @@ require 'formula'
 
 class Clutter < Formula
   homepage 'http://clutter-project.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/clutter/1.10/clutter-1.10.8.tar.xz'
-  sha256 '7c08c2deff62c134c1a3d18e04dcb6fbae4bbc541c800638b9fc3d71fe4a64bf'
+  url 'http://ftp.gnome.org/pub/gnome/sources/clutter/1.12/clutter-1.12.2.tar.xz'
+  sha256 '27a8c4495099ea33de39c2d9a911a2c9e00ffa4dcc8f94fafedbcc752c0ddf13'
+
+  option 'without-x', 'Build without X11 support'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
@@ -14,12 +16,23 @@ class Clutter < Formula
   depends_on 'atk'
   depends_on 'pango'
   depends_on 'json-glib'
+  depends_on :x11 unless build.include? 'without-x'
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-introspection",
-                          "--enable-quartz-backend",
-                          "--disable-x11-backend"
-    system "make install"
+    args = %W[
+      --disable-dependency-tracking
+      --disable-debug
+      --prefix=#{prefix}
+      --disable-introspection
+      --disable-silent-rules
+      --disable-Bsymbolic
+      --disable-tests
+      --disable-examples
+      --disable-gtk-doc-html
+      --enable-quartz-backend
+    ]
+    args << '--disable-x11-backend' << '--without-x' if build.include? 'without-x'
+    system './configure', *args
+    system 'make install'
   end
 end

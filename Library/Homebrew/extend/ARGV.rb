@@ -130,7 +130,7 @@ module HomebrewArgvExtension
   end
 
   def build_bottle?
-    include? '--build-bottle' and MacOS.bottles_supported?
+    include? '--build-bottle' and MacOS.bottles_supported?(true)
   end
 
   def build_from_source?
@@ -177,9 +177,10 @@ module HomebrewArgvExtension
     flags_to_clear.concat %w[--verbose -v] if quieter?
     flags_to_clear.each {|flag| delete flag}
 
-    yield
+    ret = yield
 
     replace old_args
+    ret
   end
 
   private

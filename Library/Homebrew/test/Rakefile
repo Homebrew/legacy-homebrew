@@ -3,14 +3,13 @@ require 'rake/testtask'
 require 'pathname'
 
 TEST_DIRECTORY = Pathname.new(File.expand_path(__FILE__)).parent.realpath
-
 TEST_FILES = FileList["#{TEST_DIRECTORY}/test_*.rb"]
 
-Dir.chdir TEST_DIRECTORY
+Dir.chdir(TEST_DIRECTORY)
 
 task :default => :test
 
-Rake::TestTask.new :test do |t|
+Rake::TestTask.new(:test) do |t|
   t.libs << Dir.pwd
   t.test_files = TEST_FILES
 end
@@ -39,5 +38,18 @@ begin
     t.output_dir = TEST_DIRECTORY+'coverage'
   end
 rescue LoadError
-  nil
+end
+
+begin
+  require 'rubygems'
+  require 'ruby-prof/task'
+
+  RubyProf::ProfileTask.new do |t|
+    t.libs << Dir.pwd
+    t.test_files = TEST_FILES
+    t.output_dir = TEST_DIRECTORY+'prof'
+    t.printer = :graph_html
+    t.min_percent = 2
+  end
+rescue LoadError
 end

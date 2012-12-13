@@ -1,31 +1,35 @@
 require 'formula'
 
-class Mongodb < Formula
-  homepage 'http://www.mongodb.org/'
-
-  if Hardware.is_64_bit? and not build.build_32_bit?
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0.tgz'
-    md5 '5ad0d0b046919118e73976d670dce5e5'
-    version '2.2.0-x86_64'
-
-    devel do
-      url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.1-rc0.tgz'
-      md5 '5c1a448faa2e568dcc10e81c177249e8'
-      version '2.2.1-rc0-x86_64'
-    end
-  else
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0.tgz'
-    md5 '576cc456081f8348a59448675fd1afde'
-    version '2.2.0-i386'
-
-    devel do
-      url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.1-rc0.tgz'
-      md5 'fab99dfe25114e616ba4ae47665fd1cc'
-      version '2.2.1-rc0-i386'
-    end
+class SixtyFourBitRequired < Requirement
+  def satisfied?
+    MacOS.prefer_64_bit?
   end
 
-  option '32-bit'
+  def fatal?; true end
+
+  def message; <<-EOS.undent
+    32-bit MongoDB binaries are no longer available.
+
+    If you need to run a 32-bit version of MongoDB, you can
+    compile the server from source:
+      http://www.mongodb.org/display/DOCS/Building+for+OS+X
+    EOS
+  end
+end
+
+class Mongodb < Formula
+  homepage 'http://www.mongodb.org/'
+  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.2.tgz'
+  sha1 'b3808eeb6fe481f87db176cd3ab31119f94f7cc1'
+  version '2.2.2-x86_64'
+
+  devel do
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.3.1.tgz'
+    sha1 'ebb277337e66fe88dfd0bb4208f78e9fba5ca101'
+    version '2.3.1-x86_64'
+  end
+
+  depends_on SixtyFourBitRequired.new
 
   def install
     # Copy the prebuilt binaries to prefix
@@ -40,44 +44,15 @@ class Mongodb < Formula
 
     # Homebrew: it just works.
     # NOTE plist updated to use prefix/mongodb!
-    mv (sh = bin/'mongod'), prefix
-    sh.write <<-EOS.undent
+    mv bin/'mongod', prefix
+    (bin/'mongod').write <<-EOS.undent
       #!/usr/bin/env ruby
-      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.include? '--config'
+      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.find { |arg| arg =~ /\-\-config/ }
       exec "#{prefix}/mongod", *ARGV
     EOS
-    sh.chmod 0755
 
     # copy the config file to etc if this is the first install.
     etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
-  end
-
-  def caveats
-    bn = plist_path.basename
-    la = Pathname.new("#{ENV['HOME']}/Library/LaunchAgents")
-    prettypath = "~/Library/LaunchAgents/#{bn}"
-    domain = plist_path.basename('.plist')
-    load = "launchctl load -w #{prettypath}"
-    s = []
-
-    # we readlink because this path probably doesn't exist since caveats
-    # occurs before the link step of installation
-    if not (la/bn).file?
-      s << "To have launchd start #{name} at login:"
-      s << "    mkdir -p ~/Library/LaunchAgents" unless la.directory?
-      s << "    ln -s #{HOMEBREW_PREFIX}/opt/#{name}/*.plist ~/Library/LaunchAgents/"
-      s << "Then to load #{name} now:"
-      s << "    #{load}"
-      s << "Or, if you don't want/need launchctl, you can just run:"
-      s << "    mongod"
-    elsif Kernel.system "/bin/launchctl list #{domain} &>/dev/null"
-      s << "You should reload #{name}:"
-      s << "    launchctl unload -w #{prettypath}"
-      s << "    #{load}"
-    else
-      s << "To load #{name}:"
-      s << "    #{load}"
-    end
   end
 
   def mongodb_conf; <<-EOS.undent
@@ -93,35 +68,36 @@ class Mongodb < Formula
     EOS
   end
 
-  def startup_plist
-    return <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>#{plist_name}</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>#{opt_prefix}/mongod</string>
-    <string>run</string>
-    <string>--config</string>
-    <string>#{etc}/mongod.conf</string>
-  </array>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>KeepAlive</key>
-  <false/>
-  <key>UserName</key>
-  <string>#{`whoami`.chomp}</string>
-  <key>WorkingDirectory</key>
-  <string>#{HOMEBREW_PREFIX}</string>
-  <key>StandardErrorPath</key>
-  <string>#{var}/log/mongodb/output.log</string>
-  <key>StandardOutPath</key>
-  <string>#{var}/log/mongodb/output.log</string>
-</dict>
-</plist>
-EOS
+  plist_options :manual => "mongod"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/mongod</string>
+        <string>run</string>
+        <string>--config</string>
+        <string>#{etc}/mongod.conf</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>KeepAlive</key>
+      <false/>
+      <key>UserName</key>
+      <string>#{`whoami`.chomp}</string>
+      <key>WorkingDirectory</key>
+      <string>#{HOMEBREW_PREFIX}</string>
+      <key>StandardErrorPath</key>
+      <string>#{var}/log/mongodb/output.log</string>
+      <key>StandardOutPath</key>
+      <string>#{var}/log/mongodb/output.log</string>
+    </dict>
+    </plist>
+    EOS
   end
 end
