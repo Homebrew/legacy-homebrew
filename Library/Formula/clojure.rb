@@ -8,9 +8,8 @@ class Clojure < Formula
   head 'https://github.com/clojure/clojure.git'
 
   devel do
-    url 'http://repo1.maven.org/maven2/org/clojure/clojure/1.5.0-alpha4/clojure-1.5.0-alpha4.zip'
-    sha1 '8c22c32326cc1b95a85619cf0bade8cde121b29a'
-    version "1.5.0-alpha4"
+    url 'http://central.maven.org/maven2/org/clojure/clojure/1.5.0-beta2/clojure-1.5.0-beta2.zip'
+    sha1 '54785a5de0b20e4da2d98703c3fb15b16fa3bbb1'
   end
 
   def script; <<-EOS.undent

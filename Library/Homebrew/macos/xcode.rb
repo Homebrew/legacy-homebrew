@@ -147,6 +147,14 @@ module MacOS::Xcode extend self
   def provides_gcc?
     version.to_f < 4.3
   end
+
+  def default_prefix?
+    if version.to_f < 4.3
+      %r{^/Developer} === prefix
+    else
+      %r{^/Applications/Xcode.app} === prefix
+    end
+  end
 end
 
 module MacOS::CLT extend self
