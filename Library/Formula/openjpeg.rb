@@ -7,10 +7,10 @@ class Openjpeg < Formula
 
   head 'http://openjpeg.googlecode.com/svn/trunk/'
 
+  depends_on 'cmake' => :build
   depends_on 'little-cms2'
   depends_on 'libtiff'
   depends_on :libpng
-  depends_on 'cmake'
 
   def install
     system "cmake", ".", *std_cmake_args
