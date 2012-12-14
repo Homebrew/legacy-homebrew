@@ -7,7 +7,17 @@ class Logrotate < Formula
 
   depends_on 'popt'
 
+  # Per MacPorts, let these variables be overridden by ENV vars.
+  def patches
+    DATA
+  end
+
   def install
+    # Otherwise defaults to /bin/gz
+    ENV["COMPRESS_COMMAND"] = "/usr/bin/gzip"
+    ENV["COMPRESS_EXT"] = ".gz"
+    ENV["UNCOMPRESS_COMMAND"] = "/usr/bin/gunzip"
+
     system "make"
     sbin.install 'logrotate'
     man8.install 'logrotate.8'
@@ -15,3 +25,32 @@ class Logrotate < Formula
     (prefix+'etc/logrotate/examples').install Dir['examples/*']
   end
 end
+
+__END__
+diff --git a/Makefile b/Makefile
+index d65a3f3..14d1f3f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -76,6 +76,22 @@ ifneq ($(POPT_DIR),)
+     LOADLIBES += -L$(POPT_DIR)
+ endif
+ 
++ifneq ($(COMPRESS_COMMAND),)
++    CFLAGS += -DCOMPRESS_COMMAND=\"$(COMPRESS_COMMAND)\"
++endif
++
++ifneq ($(COMPRESS_EXT),)
++    CFLAGS += -DCOMPRESS_EXT=\"$(COMPRESS_EXT)\"
++endif
++
++ifneq ($(UNCOMPRESS_COMMAND),)
++    CFLAGS += -DUNCOMPRESS_COMMAND=\"$(UNCOMPRESS_COMMAND)\"
++endif
++
++ifneq ($(DEFAULT_MAIL_COMMAND),)
++    CFLAGS += -DDEFAULT_MAIL_COMMAND=\"$(DEFAULT_MAIL_COMMAND)\"
++endif
++
+ ifneq ($(STATEFILE),)
+     CFLAGS += -DSTATEFILE=\"$(STATEFILE)\"
+ endif
