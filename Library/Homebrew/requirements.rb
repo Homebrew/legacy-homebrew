@@ -261,3 +261,20 @@ class PostgresqlInstalled < Requirement
     EOS
   end
 end
+
+class LaTeXInstalled < Requirement
+  def fatal?; true; end
+
+  def satisfied?
+    which 'latex'
+    which 'bibtex'
+  end
+
+  def message; <<-EOS.undent
+    A LaTeX distribution is required to install.
+
+    You can install MacTeX distribution from:
+      http://www.tug.org/mactex/
+    EOS
+  end
+end

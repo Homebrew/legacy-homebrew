@@ -78,6 +78,8 @@ private
       MysqlInstalled.new(tag)
     when :postgresql
       PostgresqlInstalled.new(tag)
+    when :latex
+      LaTeXInstalled.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
     end
