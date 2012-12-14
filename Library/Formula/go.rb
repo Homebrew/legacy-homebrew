@@ -24,11 +24,8 @@ class Go < Formula
         ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
         ['freebsd', ['386', 'amd64'],        { :cgo => false }],
 
-        # image/jpeg fails to build
-        #['netbsd',  ['386', 'amd64'],        { :cgo => false }],
-
         ['openbsd', ['386', 'amd64'],        { :cgo => false }],
-        ['plan9',   ['386'],                 { :cgo => false }],
+
         ['windows', ['386', 'amd64'],        { :cgo => false }],
       ]
     elsif build.include? 'cross-compile-common'
