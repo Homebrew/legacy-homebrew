@@ -10,7 +10,6 @@ class Play < Formula
   devel do
     url 'http://download.playframework.org/releases/play-2.1-RC1.zip'
     sha1 '71b03af81173f7b5e62eb620438bbb4b29e0c29f'
-    version '2.1-RC1'
   end
 
   def install
