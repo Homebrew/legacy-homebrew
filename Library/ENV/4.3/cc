@@ -112,6 +112,9 @@ class Cmd
         args << arg if arg =~ /^-Wl,/
       when '-macosx_version_min', '-dylib_install_name'
         args << "-Wl,#{arg},#{whittler.next}"
+      when /^-isysroot/
+        whittler.next
+        # We set the sysroot
       when '-dylib'
         args << "-Wl,#{arg}"
       when /^-I(.+)/
