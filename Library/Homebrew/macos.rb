@@ -50,10 +50,6 @@ module MacOS extend self
     elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{Xcode.prefix}/usr/bin"
-    else
-      # Since we are pretty unrelenting in finding Xcode no matter where
-      # it hides, we can now throw in the towel.
-      opoo "Could not locate developer tools. Consult `brew doctor`."
     end
   end
 
@@ -228,11 +224,24 @@ module MacOS extend self
     `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
   end
 
-  def bottles_supported?
+  def bottles_supported? raise_if_failed=false
     # We support bottles on all versions of OS X except 32-bit Snow Leopard.
-    (Hardware.is_64_bit? or not MacOS.version >= :snow_leopard) \
-      and HOMEBREW_PREFIX.to_s == '/usr/local' \
-      and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar' \
+    if Hardware.is_32_bit? and MacOS.version == :snow_leopard
+      return false unless raise_if_failed
+      raise "Bottles are not supported on 32-bit Snow Leopard."
+    end
+
+    unless HOMEBREW_PREFIX.to_s == '/usr/local'
+      return false unless raise_if_failed
+      raise "Bottles are only supported with a /usr/local prefix."
+    end
+
+    unless HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
+      return false unless raise_if_failed
+      raise "Bottles are only supported with a /usr/local/Cellar cellar."
+    end
+
+    true
   end
 end
 

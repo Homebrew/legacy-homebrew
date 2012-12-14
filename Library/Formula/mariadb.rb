@@ -110,27 +110,12 @@ class Mariadb < Formula
     Set up databases with:
         unset TMPDIR
         mysql_install_db --user=\`whoami\` --basedir="$(brew --prefix mariadb)" --datadir=#{var}/mysql --tmpdir=/tmp
-
-    If this is your first install, automatically load on login with:
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Note on upgrading:
-        We overwrite any existing #{plist_path.basename} in ~/Library/LaunchAgents
-        if we are upgrading because previous versions of this brew created the
-        plist with a version specific program argument.
-
-    Or start manually with:
-        mysql.server start
     EOS
   end
 
-  def startup_plist; <<-EOPLIST.undent
+  plist_options :manual => "mysql.server start"
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -149,7 +134,7 @@ class Mariadb < Formula
       <string>#{var}</string>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 end
 

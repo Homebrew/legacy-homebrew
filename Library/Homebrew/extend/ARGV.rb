@@ -130,7 +130,7 @@ module HomebrewArgvExtension
   end
 
   def build_bottle?
-    include? '--build-bottle' and MacOS.bottles_supported?
+    include? '--build-bottle' and MacOS.bottles_supported?(true)
   end
 
   def build_from_source?

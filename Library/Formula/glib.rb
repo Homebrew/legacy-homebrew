@@ -2,8 +2,8 @@ require 'formula'
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.34/glib-2.34.1.tar.xz'
-  sha256 '6e84dc9d84b104725b34d255421ed7ac3629e49f437d37addde5ce3891c2e2f1'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.34/glib-2.34.3.tar.xz'
+  sha256 '855fcbf87cb93065b488358e351774d8a39177281023bae58c286f41612658a7'
 
   option :universal
   option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
@@ -19,10 +19,8 @@ class Glib < Formula
   end
 
   def patches
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673047  Still open at 2.34.1
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673135  Resolved as wontfix.
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix.
     p = { :p1 => %W[
-      https://raw.github.com/gist/3924875/19cdaebdff7dcc94ccd9b3747d43a09318f0b846/glib-gunicollate.patch
       https://raw.github.com/gist/3924879/f86903e0aea1458448507305d01b06a7d878c041/glib-configurable-paths.patch
     ]}
     p[:p0] = %W[

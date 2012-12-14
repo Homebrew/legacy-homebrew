@@ -15,9 +15,6 @@ class Dylibbundler < Formula
   end
 
   def caveats; <<-EOS.undent
-    Documentation at:
-      #{homepage}
-
     Usage example:
       dylibbundler -od -b -x ./HelloWorld.app/Contents/MacOS/helloworld  -d ./HelloWorld.app/Contents/libs/
     EOS
