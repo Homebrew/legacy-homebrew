@@ -271,3 +271,27 @@ class PostgresqlInstalled < Requirement
     EOS
   end
 end
+
+class TeXInstalled < Requirement
+  fatal true
+  env :userpaths
+
+  def satisfied?
+    tex = which 'tex'
+    latex = which 'latex'
+    not tex.nil? and not latex.nil?
+  end
+
+  def message; <<-EOS.undent
+    A LaTeX distribution is required to install.
+
+    You can install MacTeX distribution from:
+      http://www.tug.org/mactex/
+
+    Make sure that its bin directory is in your PATH before proceed.
+
+    You may also need to restore the ownership of Homebrew install:
+      sudo chown -R $USER `brew --prefix`
+    EOS
+  end
+end
