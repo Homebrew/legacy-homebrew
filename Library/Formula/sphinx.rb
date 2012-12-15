@@ -42,9 +42,9 @@ class Sphinx < Formula
     args << "--with-libstemmer"
 
     # configure script won't auto-select PostgreSQL
-    args << "--with-pgsql" if build.include?('pgsql') or which 'pg_config'
+    args << "--with-pgsql" if build.include?('pgsql') || which('pg_config')
     args << "--enable-id64" if build.include?('id64')
-    args << "--without-mysql" unless build.include?('mysql') or which 'mysql_config'
+    args << "--without-mysql" unless build.include?('mysql') || which('mysql_config')
 
     system "./configure", *args
     system "make install"
