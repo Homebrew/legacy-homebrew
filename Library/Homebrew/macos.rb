@@ -50,10 +50,6 @@ module MacOS extend self
     elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{Xcode.prefix}/usr/bin"
-    else
-      # Since we are pretty unrelenting in finding Xcode no matter where
-      # it hides, we can now throw in the towel.
-      opoo "Could not locate developer tools. Consult `brew doctor`."
     end
   end
 
@@ -230,7 +226,7 @@ module MacOS extend self
 
   def bottles_supported? raise_if_failed=false
     # We support bottles on all versions of OS X except 32-bit Snow Leopard.
-    unless Hardware.is_64_bit? or MacOS.version >= :snow_leopard
+    if Hardware.is_32_bit? and MacOS.version == :snow_leopard
       return false unless raise_if_failed
       raise "Bottles are not supported on 32-bit Snow Leopard."
     end

@@ -751,6 +751,8 @@ end
 def check_for_linked_keg_only_brews
   require 'formula'
 
+  return unless HOMEBREW_CELLAR.exist?
+
   warnings = Hash.new
 
   Formula.each do |f|
