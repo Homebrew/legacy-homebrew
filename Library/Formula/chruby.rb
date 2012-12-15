@@ -1,57 +1,40 @@
 require 'formula'
 
 class Chruby < Formula
+
   homepage 'https://github.com/postmodern/chruby#readme'
-  url 'https://github.com/downloads/postmodern/chruby/chruby-0.2.3.tar.gz'
-  sha1 '6b8337ba2f48d3bbae680031b342680f39673af0'
+  url 'https://github.com/postmodern/chruby/archive/v0.2.4.tar.gz'
+  sha1 'c89d4a4732d63515b1948a3d0dd0e3a2d4ed1057'
   head 'https://github.com/postmodern/chruby.git'
 
   def install
     system 'make', 'install', "PREFIX=#{prefix}"
   end
 
-  def caveats
-    config_file = case File.basename(ENV['SHELL'])
-                  when 'bash' then '~/.bashrc'
-                  when 'zsh'  then '~/.zshrc'
-                  else             '~/.profile'
-                  end
+  def caveats; <<-EOS.undent
+    For a system wide install, add the following to /etc/profile.d/chruby.sh.
 
-    alternatives = {
-      'RVM'   => '~/.rvm/rubies',
-      'rbenv' => '~/.rbenv/versions',
-      'rbfu'  => '~/.rbfu/rubies'
-    }
+      #!/bin/sh
 
-    ruby_manager, rubies_dir = alternatives.find do |name,dir|
-      File.directory?(File.expand_path(dir))
-    end
+      source #{HOMEBREW_PREFIX}/opt/chruby/share/chruby/chruby.sh
 
-    message = %{
-    Add chruby to #{config_file}
+      RUBIES=(/opt/rubies/*)
 
-      . #{HOMEBREW_PREFIX}/opt/chruby/share/chruby/chruby.sh
-    }
+    For a local install, add the following to ~/.bashrc or ~/.zshrc.
 
-    if rubies_dir
-      message << %{
-      RUBIES=(#{rubies_dir}/*)
-      }
-    else
-      message << %{
-      RUBIES=(
-        /usr/local/ruby-1.9.3-p327
-        /usr/local/jruby-1.7.0
-        /usr/local/rubinius-2.0.0-rc1
-      )
-      }
-    end
+      #!/bin/sh
 
-    message << %{
-    For system-wide installation, add the above text to /etc/profile.
+      source #{HOMEBREW_PREFIX}/opt/chruby/share/chruby/chruby.sh
 
-    }
+      RUBIES=(~/.rubies/*)
 
-    return message.undent
+    To use existing Rubies installed by RVM, rbenv or rbfu, set RUBIES to
+    the following:
+
+      RVM:   RUBIES=(~/.rvm/rubies/*)
+      rbenv: RUBIES=(~/.rbenv/versions/*)
+      rbfu:  RUBIES=('~/.rbfu/rubies/*)
+
+    EOS
   end
 end
