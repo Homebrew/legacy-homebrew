@@ -1,14 +1,14 @@
 require 'formula'
 
 class RabbitmqCodegen < Formula
-  url 'http://github.com/rabbitmq/rabbitmq-codegen/tarball/rabbitmq_v2_8_2'
-  sha1 '628afefe54f6996f7c99ac8c9d5820c5ed2aeaa7'
+  url 'http://github.com/rabbitmq/rabbitmq-codegen/tarball/rabbitmq_v3_0_1'
+  sha1 '463ec8983f9078df4c7eef504a2d8daef59f3503'
 end
 
 class RabbitmqC < Formula
   homepage 'https://github.com/alanxz/rabbitmq-c'
-  url 'https://github.com/alanxz/rabbitmq-c/tarball/v0.1'
-  sha1 '57a1f3e69c36d5766df4b3a567552743b12a91d3'
+  url 'https://github.com/alanxz/rabbitmq-c/archive/0.2.zip'
+  sha1 'fe9f00b52970505223acf01008a12fa911549425'
 
   head 'https://github.com/alanxz/rabbitmq-c.git'
 
