@@ -112,24 +112,6 @@ class Postgresql < Formula
     To migrate existing data from a previous major version (pre-9.2) of PostgreSQL, see:
       http://www.postgresql.org/docs/9.2/static/upgrading.html
 
-    # Start/Stop PostgreSQL
-
-    If this is your first install, automatically load on login with:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Or start manually with:
-      pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
-
-    And stop with:
-      pg_ctl -D #{var}/postgres stop -s -m fast
-
     # Loading Extensions
 
     By default, Homebrew builds all available Contrib extensions.  To see a list of all
