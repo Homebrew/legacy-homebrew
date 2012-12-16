@@ -115,6 +115,64 @@ class Formula
   end
   def rack; prefix.parent end
 
+  def launchctl_instructions
+    if plist or Keg.new(prefix).plist_installed?
+      destination = plist_startup ? '/Library/LaunchDaemons' \
+                                    : '~/Library/LaunchAgents'
+
+      plist_filename = plist_path.basename
+      plist_link = "#{destination}/#{plist_filename}"
+      plist_domain = plist_path.basename('.plist')
+      destination_path = Pathname.new File.expand_path destination
+      plist_path = destination_path/plist_filename
+      s = []
+
+      # we readlink because this path probably doesn't exist since caveats
+      # occurs before the link step of installation
+      if not (plist_path).file? and not (plist_path).symlink?
+        if plist_startup
+          s << "To have launchd start #{name} at startup:"
+          s << "    sudo mkdir -p #{destination}" unless destination_path.directory?
+          s << "    sudo cp -fv #{HOMEBREW_PREFIX}/opt/#{name}/*.plist #{destination}"
+        else
+          s << "To have launchd start #{name} at login:"
+          s << "    mkdir -p #{destination}" unless destination_path.directory?
+          s << "    ln -sfv #{HOMEBREW_PREFIX}/opt/#{name}/*.plist #{destination}"
+        end
+        s << "Then to load #{name} now:"
+        if plist_startup
+          s << "    sudo launchctl load #{plist_link}"
+        else
+          s << "    launchctl load #{plist_link}"
+        end
+        if plist_manual
+          s << "Or, if you don't want/need launchctl, you can just run:"
+          s << "    #{plist_manual}"
+        end
+      elsif Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
+        s << "You should reload #{name}:"
+        if plist_startup
+          s << "    sudo launchctl unload #{plist_link}"
+          s << "    sudo cp -fv #{HOMEBREW_PREFIX}/opt/#{name}/*.plist #{destination}"
+          s << "    sudo launchctl load #{plist_link}"
+        else
+          s << "    launchctl unload #{plist_link}"
+          s << "    launchctl load #{plist_link}"
+        end
+      else
+        s << "To load #{name}:"
+        if plist_startup
+          s << "    sudo launchctl load #{plist_link}"
+        else
+          s << "    launchctl load #{plist_link}"
+        end
+      end
+
+      ohai 'Caveats', s
+
+    end
+  end
+
   def bin;     prefix+'bin'     end
   def doc;     share+'doc'+name end
   def include; prefix+'include' end
