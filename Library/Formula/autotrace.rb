@@ -9,6 +9,13 @@ class Autotrace < Formula
 
   depends_on 'imagemagick' unless build.include? 'without-imagemagick'
 
+  def patches
+    {
+      # Issue 16569: Use MacPorts patch to port input-png.c to libpng 1.5.
+      :p0 => 'https://trac.macports.org/export/100575/trunk/dports/graphics/autotrace/files/patch-libpng-1.5.diff'
+    }
+  end
+
   def install
     args = ["--disable-debug",
             "--disable-dependency-tracking",
