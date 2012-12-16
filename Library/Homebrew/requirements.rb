@@ -262,11 +262,13 @@ class PostgresqlInstalled < Requirement
   end
 end
 
-class LaTeXInstalled < Requirement
+class TeXInstalled < Requirement
   def fatal?; true; end
 
   def satisfied?
+    which 'tex'
     which 'latex'
+    which 'pdflatex'
     which 'bibtex'
   end
 
