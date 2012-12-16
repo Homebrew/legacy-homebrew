@@ -8,9 +8,12 @@ class Mplayer < Formula
   head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
 
   option 'with-x', 'Build with X11 support'
+  option 'with-freetype', 'Enable the subtitles support'
+  option 'with-menu', 'Enable the on screen menu'
 
   depends_on 'yasm' => :build
   depends_on 'xz' => :build
+  depends_on :freetype if build.include? 'with-freetype'
   depends_on :x11 if build.include? 'with-x'
 
   fails_with :clang do
@@ -48,6 +51,8 @@ class Mplayer < Formula
       --disable-libopenjpeg
     ]
 
+    args << "--enable-menu" if build.include? 'with-menu'
+    args << "--enable-freetype" if build.include? 'with-freetype'
     args << "--disable-x11" unless build.include? 'with-x'
 
     system "./configure", *args
@@ -62,15 +67,15 @@ end
 
 __END__
 diff --git a/configure b/configure
-index a1fba5f..5deaa80 100755
+index bbfcd51..5734024 100755
 --- a/configure
 +++ b/configure
-@@ -49,8 +49,6 @@ if test -e ffmpeg/mp_auto_pull ; then
+@@ -48,8 +48,6 @@ if test -e ffmpeg/mp_auto_pull ; then
  fi
  
  if ! test -e ffmpeg ; then
 -    echo "No FFmpeg checkout, press enter to download one with git or CTRL+C to abort"
 -    read tmp
-     if ! git clone --depth 1 git://source.ffmpeg.org/ffmpeg.git ffmpeg ; then
+     if ! git clone --depth 1 git://git.videolan.org/ffmpeg.git ffmpeg ; then
          rm -rf ffmpeg
          echo "Failed to get a FFmpeg checkout"
