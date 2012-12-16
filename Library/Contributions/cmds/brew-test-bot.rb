@@ -244,13 +244,20 @@ class Test
   def formula formula
     @category = __method__.to_s + ".#{formula}"
 
+    dependencies = `brew deps #{formula}`.split("\n")
+    dependencies -= `brew list`.split("\n")
+    dependencies = dependencies.join(' ')
+
     test "brew audit #{formula}"
-    test "brew fetch --deps #{formula}"
+    test "brew fetch #{dependencies}" unless dependencies.empty?
+    test "brew fetch --build-bottle #{formula}"
+    test "brew install --verbose #{dependencies}" unless dependencies.empty?
     test "brew install --verbose --build-bottle #{formula}"
     return unless steps.last.status == :passed
     test "brew bottle #{formula}", true
     test "brew test #{formula}" if defined? Formula.factory(formula).test
     test "brew uninstall #{formula}"
+    test "brew uninstall #{dependencies}" unless dependencies.empty?
   end
 
   def homebrew
