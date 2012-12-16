@@ -174,60 +174,7 @@ class FormulaInstaller
         EOS
     end
 
-    if f.plist or keg.plist_installed?
-      destination = f.plist_startup ? '/Library/LaunchDaemons' \
-                                    : '~/Library/LaunchAgents'
-
-      plist_filename = f.plist_path.basename
-      plist_link = "#{destination}/#{plist_filename}"
-      plist_domain = f.plist_path.basename('.plist')
-      destination_path = Pathname.new File.expand_path destination
-      plist_path = destination_path/plist_filename
-      s = []
-
-      # we readlink because this path probably doesn't exist since caveats
-      # occurs before the link step of installation
-      if not (plist_path).file? and not (plist_path).symlink?
-        if f.plist_startup
-          s << "To have launchd start #{f.name} at startup:"
-          s << "    sudo mkdir -p #{destination}" unless destination_path.directory?
-          s << "    sudo cp -fv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}"
-        else
-          s << "To have launchd start #{f.name} at login:"
-          s << "    mkdir -p #{destination}" unless destination_path.directory?
-          s << "    ln -sfv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}"
-        end
-        s << "Then to load #{f.name} now:"
-        if f.plist_startup
-          s << "    sudo launchctl load #{plist_link}"
-        else
-          s << "    launchctl load #{plist_link}"
-        end
-        if f.plist_manual
-          s << "Or, if you don't want/need launchctl, you can just run:"
-          s << "    #{f.plist_manual}"
-        end
-      elsif Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
-        s << "You should reload #{f.name}:"
-        if f.plist_startup
-          s << "    sudo launchctl unload #{plist_link}"
-          s << "    sudo cp -fv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}"
-          s << "    sudo launchctl load #{plist_link}"
-        else
-          s << "    launchctl unload #{plist_link}"
-          s << "    launchctl load #{plist_link}"
-        end
-      else
-        s << "To load #{f.name}:"
-        if f.plist_startup
-          s << "    sudo launchctl load #{plist_link}"
-        else
-          s << "    launchctl load #{plist_link}"
-        end
-      end
-
-      ohai 'Caveats', s
-    end
+    f.launchctl_instructions
   end
 
   def finish
