@@ -3,7 +3,7 @@ require 'formula'
 class Phash < Formula
   homepage 'http://www.phash.org/'
   url 'http://www.phash.org/releases/pHash-0.9.5.tar.gz'
-  sha1 '87ce165b344bb859f5fdaf7c1776b556db3d8a15/'
+  sha1 '87ce165b344bb859f5fdaf7c1776b556db3d8a15'
 
   depends_on 'cimg' unless build.include? "disable-image-hash" and build.include? "disable-video-hash"
   depends_on 'ffmpeg' unless build.include? "disable-video-hash"
