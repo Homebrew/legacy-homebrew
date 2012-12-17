@@ -2,13 +2,13 @@ require 'formula'
 
 class Qt < Formula
   homepage 'http://qt.nokia.com/'
-  url 'http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.3.tar.gz'
-  sha1 'bc352a283610e0cd2fe0dbedbc45613844090fcb'
+  url 'http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.4.tar.gz'
+  sha1 'f5880f11c139d7d8d01ecb8d874535f7d9553198'
 
   bottle do
-    sha1 'ff488747325cd6771fbf0b79156fd3833ff3af63' => :mountainlion
-    sha1 '5b8d6d3c47f3992465de3a750a35407eef128c94' => :lion
-    sha1 'bb0b7e58d743e7b9147ae0d03cebc83134b8f68c' => :snowleopard
+    sha1 'a5f5efa78a682bf59ae9458b89a17513e912d272' => :mountainlion
+    sha1 'ae790ff205b90867f11c598d6e1f1b2a141fce14' => :lion
+    sha1 '4ad517d67b35668fb0f18d10ddff323de4ba6840' => :snowleopard
   end
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
@@ -86,9 +86,6 @@ class Qt < Formula
     end
 
     args << '-developer-build' if build.include? 'developer'
-
-    # Needed for Qt 4.8.3 due to attempting to link moc with gcc.
-    ENV['LD'] = ENV.cxx
 
     system "./configure", *args
     system "make"

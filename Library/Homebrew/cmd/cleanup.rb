@@ -7,12 +7,14 @@ module Homebrew extend self
 
   def cleanup
     if ARGV.named.empty?
-      HOMEBREW_CELLAR.children.each do |rack|
-        begin
-          cleanup_formula rack.basename.to_s if rack.directory?
-        rescue FormulaUnavailableError => e
-          # Don't complain about Cellar folders that are from DIY installs
-          # instead of core formulae.
+      if HOMEBREW_CELLAR.directory?
+        HOMEBREW_CELLAR.children.each do |rack|
+          begin
+            cleanup_formula rack.basename.to_s if rack.directory?
+          rescue FormulaUnavailableError => e
+            # Don't complain about Cellar folders that are from DIY installs
+            # instead of core formulae.
+          end
         end
       end
       clean_cache
@@ -54,6 +56,7 @@ module Homebrew extend self
   end
 
   def clean_cache
+    return unless HOMEBREW_CACHE.directory?
     HOMEBREW_CACHE.children.each do |pn|
       next unless pn.file?
       version = pn.version

@@ -2,8 +2,8 @@ require 'formula'
 
 class Autojump < Formula
   homepage 'https://github.com/joelthelion/autojump#name'
-  url 'https://github.com/downloads/joelthelion/autojump/autojump_v21.1.2.tar.gz'
-  sha1 '3137d88f52eadecebdbeff12e28586d01c7cf60b'
+  url 'https://github.com/joelthelion/autojump/archive/release-v21.1.4.tar.gz'
+  sha1 '7c7035e8258cc9171a1b6a13a3ce412630070586'
 
   head 'https://github.com/joelthelion/autojump.git'
 

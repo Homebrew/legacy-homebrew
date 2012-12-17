@@ -10,7 +10,6 @@ class Clojure < Formula
   devel do
     url 'http://central.maven.org/maven2/org/clojure/clojure/1.5.0-beta2/clojure-1.5.0-beta2.zip'
     sha1 '54785a5de0b20e4da2d98703c3fb15b16fa3bbb1'
-    version "1.5.0-beta2"
   end
 
   def script; <<-EOS.undent
