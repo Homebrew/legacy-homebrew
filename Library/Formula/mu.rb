@@ -36,8 +36,8 @@ class Mu < Formula
   depends_on Emacs23Installed.new if build.include? 'with-emacs'
 
   if build.head?
-    depends_on :automake
-    depends_on :libtool
+    depends_on 'automake' => :build
+    depends_on 'libtool' => :build
   end
 
   def install
