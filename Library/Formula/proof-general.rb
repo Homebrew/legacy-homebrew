@@ -2,8 +2,8 @@ require 'formula'
 
 class ProofGeneral < Formula
   homepage 'http://proofgeneral.inf.ed.ac.uk'
-  url 'http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.1.tgz'
-  sha1 '0dd18bd0bdad8faab76f61bffc8e432c3ed7aeaf'
+  url 'http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz'
+  sha1 'c8d2e4457478b9dbf4080d3cf8255325fcffe619'
 
   option 'with-doc', 'Install documentations'
   option 'with-emacs=</path/to/emacs>', 'Re-compile the lisp files with a specified emacs'
