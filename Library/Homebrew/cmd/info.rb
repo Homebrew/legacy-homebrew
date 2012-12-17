@@ -124,8 +124,6 @@ module Homebrew extend self
       puts f.caveats
     end
 
-    f.launchctl_instructions
-
   rescue FormulaUnavailableError
     # check for DIY installation
     d = HOMEBREW_PREFIX+name
