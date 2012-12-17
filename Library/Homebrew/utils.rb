@@ -152,12 +152,8 @@ def puts_columns items, star_items=[]
 end
 
 def which cmd
-  path = `/usr/bin/which #{cmd} 2>/dev/null`.chomp
-  if path.empty?
-    nil
-  else
-    Pathname.new(path)
-  end
+  dir = ENV['PATH'].split(':').find {|p| File.executable? File.join(p, cmd)}
+  Pathname.new(File.join(dir, cmd)) unless dir.nil?
 end
 
 def which_editor
