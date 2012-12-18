@@ -184,11 +184,14 @@ def check_for_stray_las
 end
 
 def check_for_other_package_managers
-  if macports_or_fink_installed?
+  ponk = MacOS.macports_or_fink
+  unless ponk.empty?
     <<-EOS.undent
-      You have Macports or Fink installed.
-      This can cause trouble. You don't have to uninstall them, but you may like to
-      try temporarily moving them away, eg.
+      You have MacPorts or Fink installed:
+        #{ponk.join(", ")}
+
+      This can cause trouble. You don't have to uninstall them, but you may want to
+      temporarily move them out of the way, e.g.
 
         sudo mv /opt/local ~/macports
     EOS
