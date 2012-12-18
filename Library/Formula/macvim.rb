@@ -16,7 +16,6 @@ class Macvim < Formula
 
   depends_on 'cscope' if build.include? 'with-cscope'
   depends_on 'lua' if build.include? 'with-lua'
-  depends_on 'python3' if build.include? 'with-python3'
 
   depends_on :xcode # For xcodebuild.
 
