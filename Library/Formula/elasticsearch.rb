@@ -2,7 +2,7 @@ require 'formula'
 
 class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.20.1.tar.gz'
+  url 'http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.1.tar.gz'
   sha1 'd1c468a589060dd43532c1afabec9eee10095429'
 
   def cluster_name
