@@ -1,7 +1,7 @@
 require 'formula'
 
 class Dgtal < Formula
-  homepage 'http://liris.cnrs.fr/dgtal'
+  homepage 'http://libdgtal.org'
   url 'http://liris.cnrs.fr/dgtal/releases/DGtal-0.5.1-Source.tar.gz'
   sha1 'ab3e70186b3d1da1a698d3407e3603c69951e0f0'
 
