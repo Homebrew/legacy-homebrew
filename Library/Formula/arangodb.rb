@@ -2,8 +2,8 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://github.com/triAGENS/ArangoDB/zipball/v1.1.0'
-  sha1 '7ecb5a6291a31c17744656f2b26f185efa851575'
+  url 'https://github.com/triAGENS/ArangoDB/zipball/v1.1.1'
+  sha1 'c42db1ee50685376daafc18e16f87ff54dae2d98'
 
   head "https://github.com/triAGENS/ArangoDB.git"
 
@@ -12,8 +12,7 @@ class Arangodb < Formula
   depends_on 'v8'
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-relative",
                           "--disable-all-in-one-icu",
