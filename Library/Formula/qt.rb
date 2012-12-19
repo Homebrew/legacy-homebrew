@@ -29,6 +29,7 @@ class Qt < Formula
 
   depends_on :libpng
 
+  forced = true
   depends_on "d-bus" if forced or build.include? 'with-qtdbus'
   depends_on "mysql" if forced or build.include? 'with-mysql'
   depends_on 'sqlite' if forced or MacOS.version == :leopard
