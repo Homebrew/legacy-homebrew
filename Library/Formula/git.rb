@@ -1,19 +1,19 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.7.12.1.tar.gz'
-  sha1 '2d9c267c5370cdceb2e67f67abf5b152b0c18db9'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.8.0.2.tar.gz'
+  sha1 'ce0673256ce90451269a82a2464eab060adbfec6'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.7.12.1.tar.gz'
-  sha1 'b42d5db34612825676d0a231cf9c566f8ad45e9f'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.0.2.tar.gz'
+  sha1 '6b9e14c5b19b2e27605014252febd61a700012a3'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.7.12.1.tar.gz'
-  sha1 'c5227b5202947bba3d63dca72662fad02d208800'
+  url 'http://git-core.googlecode.com/files/git-1.8.0.2.tar.gz'
+  sha1 '1e1640794596da40f35194c29a8cc4e41c6b4f6d'
 
   head 'https://github.com/git/git.git'
 
@@ -55,6 +55,14 @@ class Git < Formula
                      "LDFLAGS=#{ENV.ldflags}"
       bin.install 'git-credential-osxkeychain'
       system "make", "clean"
+    end
+
+    # Install git-subtree
+    cd 'contrib/subtree' do
+      system "make", "CC=#{ENV.cc}",
+                     "CFLAGS=#{ENV.cflags}",
+                     "LDFLAGS=#{ENV.ldflags}"
+      bin.install 'git-subtree'
     end
 
     # install the completion script first because it is inside 'contrib'

@@ -16,11 +16,9 @@ def blacklisted? name
     However not all build scripts look for these hard enough, so you may need
     to call ENV.libxml2 in your formula's install function.
     EOS
-  when 'wxwidgets' then <<-EOS.undent
-    An old version of wxWidgets can be found in /usr/X11/lib. However, Homebrew
-    does provide a newer version:
-
-        brew install wxmac
+  when 'wxpython' then <<-EOS.undent
+    The Python bindings (import wx) for wxWidgets are installed by:
+        brew install wxwidgets
     EOS
   when 'tex', 'tex-live', 'texlive' then <<-EOS.undent
     Installing TeX from source is weird and gross, requires a lot of patches,
@@ -29,21 +27,11 @@ def blacklisted? name
     We recommend using a MacTeX distribution: http://www.tug.org/mactex/
     EOS
   when 'pip' then <<-EOS.undent
-    Install pip with easy_install:
-
-        easy_install pip
+    pip is installed by `brew install python`
     EOS
   when 'macruby' then <<-EOS.undent
     MacRuby works better when you install their package:
       http://www.macruby.org/
-
-    Although if you prefer, there is a formula in homebrew-alt.
-    EOS
-  when 'npm' then <<-EOS.undent
-    Homebrew does not provide npm because it is self-updating. To install it, first
-    `brew install nodejs' and then:
-
-        curl https://npmjs.org/install.sh | sh
     EOS
   when /(lib)?lzma/
     "lzma is now part of the xz formula."

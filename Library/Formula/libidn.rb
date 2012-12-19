@@ -8,8 +8,10 @@ class Libidn < Formula
 
   depends_on 'pkg-config' => :build
 
+  option :universal
+
   def install
-    ENV.universal_binary
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-csharp"

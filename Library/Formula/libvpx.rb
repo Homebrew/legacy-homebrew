@@ -7,13 +7,9 @@ class Libvpx < Formula
 
   depends_on 'yasm' => :build
 
-  def options
-    [
-      ['--gcov', 'Enable code coverage'],
-      ['--mem-tracker', 'Enable tracking memory usage'],
-      ['--visualizer', 'Enable post processing visualizer']
-    ]
-  end
+  option 'gcov', 'Enable code coverage'
+  option 'mem-tracker', 'Enable tracking memory usage'
+  option 'visualizer', 'Enable post processing visualizer'
 
   # Fixes build error on ML, discussed in:
   # https://github.com/mxcl/homebrew/issues/12567
@@ -27,9 +23,9 @@ class Libvpx < Formula
             "--enable-pic",
             "--disable-examples",
             "--disable-runtime-cpu-detect"]
-    args << "--enable-gcov" if ARGV.include? "--gcov" and not ENV.compiler == :clang
-    args << "--enable-mem-tracker" if ARGV.include? "--mem-tracker"
-    args << "--enable-postproc-visualizer" if ARGV.include? "--visualizer"
+    args << "--enable-gcov" if build.include? "gcov" and not ENV.compiler == :clang
+    args << "--enable-mem-tracker" if build.include? "mem-tracker"
+    args << "--enable-postproc-visualizer" if build.include? "visualizer"
 
     # see http://code.google.com/p/webm/issues/detail?id=401
     # Configure misdetects 32-bit 10.6.

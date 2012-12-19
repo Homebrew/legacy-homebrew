@@ -7,6 +7,6 @@ class Dasm < Formula
 
   def install
     system "make"
-    prefix.install Dir['bin']
+    prefix.install 'bin', 'doc'
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-0.11.2.tar.bz2'
-  sha1 '5d98729b8368df8145472ae6955ef8d6b9ed0efb'
+  url 'http://ffmpeg.org/releases/ffmpeg-1.0.1.tar.bz2'
+  sha1 '007465d01dcd4cae973285f89f5c6c500602a3ec'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -24,15 +24,17 @@ class Ffmpeg < Formula
   option "with-freetype", "Enable FreeType"
   option "with-theora", "Enable Theora video format"
   option "with-libvorbis", "Enable Vorbis audio format"
-  option "with-libogg", "Enable Ogg container format"
   option "with-libvpx", "Enable VP8 video format"
   option "with-rtmpdump", "Enable RTMP protocol"
   option "with-opencore-amr", "Enable AMR audio format"
   option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
   option "with-libass", "Enable ASS/SSA subtitle format"
-  option "with-openjpeg", 'Enable JPEG 200 image format'
+  option "with-openjpeg", 'Enable JPEG 2000 image format'
+  option 'with-schroedinger', 'Enable Dirac video format'
   option 'with-ffplay', 'Enable FFPlay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'
+
+  depends_on 'pkg-config' => :build
 
   # manpages won't be built without texi2html
   depends_on 'texi2html' => :build if MacOS.version >= :mountain_lion
@@ -46,7 +48,6 @@ class Ffmpeg < Formula
   depends_on :freetype if build.include? 'with-freetype'
   depends_on 'theora' if build.include? 'with-theora'
   depends_on 'libvorbis' if build.include? 'with-libvorbis'
-  depends_on 'libogg' if build.include? 'with-libogg'
   depends_on 'libvpx' if build.include? 'with-libvpx'
   depends_on 'rtmpdump' if build.include? 'with-rtmpdump'
   depends_on 'opencore-amr' if build.include? 'with-opencore-amr'
@@ -55,6 +56,7 @@ class Ffmpeg < Formula
   depends_on 'openjpeg' if build.include? 'with-openjpeg'
   depends_on 'sdl' if build.include? 'with-ffplay'
   depends_on 'speex' if build.include? 'with-speex'
+  depends_on 'schroedinger' if build.include? 'with-schroedinger'
 
   def install
     ENV.x11
@@ -78,15 +80,19 @@ class Ffmpeg < Formula
     args << "--enable-libfreetype" if build.include? 'with-freetype'
     args << "--enable-libtheora" if build.include? 'with-theora'
     args << "--enable-libvorbis" if build.include? 'with-libvorbis'
-    args << "--enable-libogg" if build.include? 'with-libogg'
     args << "--enable-libvpx" if build.include? 'with-libvpx'
     args << "--enable-librtmp" if build.include? 'with-rtmpdump'
     args << "--enable-libopencore-amrnb" << "--enable-libopencore-amrwb" if build.include? 'with-opencore-amr'
     args << "--enable-libvo-aacenc" if build.include? 'with-libvo-aacenc'
     args << "--enable-libass" if build.include? 'with-libass'
-    args << "--enable-libopenjpeg" if build.include? 'with-openjpeg'
     args << "--enable-ffplay" if build.include? 'with-ffplay'
     args << "--enable-libspeex" if build.include? 'with-speex'
+    args << '--enable-libschroedinger' if build.include? 'with-schroedinger'
+
+    if build.include? 'with-openjpeg'
+      args << '--enable-libopenjpeg'
+      args << '--extra-cflags=' + %x[pkg-config --cflags libopenjpeg].chomp
+    end
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22

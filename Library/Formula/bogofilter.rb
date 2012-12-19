@@ -1,16 +1,15 @@
 require 'formula'
 
 class Bogofilter < Formula
-  url 'http://sourceforge.net/projects/bogofilter/files/bogofilter-current/bogofilter-1.2.2/bogofilter-1.2.2.tar.bz2'
   homepage 'http://bogofilter.sourceforge.net'
-  sha1 '6d2860c1d919fe47a8efcfc7fd6de9433872f21d'
+  url 'http://sourceforge.net/projects/bogofilter/files/bogofilter-1.2.3/bogofilter-1.2.3.tar.bz2'
+  sha1 '1597e52140c9b3894d5d7ced11a67dcaf2444b58'
 
   depends_on 'berkeley-db'
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-
     system "make install"
   end
 end

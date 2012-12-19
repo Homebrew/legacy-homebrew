@@ -6,6 +6,10 @@ module Homebrew extend self
   def install
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
+    if ARGV.include? '--head'
+      raise "Specify `--HEAD` in uppercase to build from trunk."
+    end
+
     ARGV.named.each do |name|
       # if a formula has been tapped ignore the blacklisting
       if not File.file? HOMEBREW_REPOSITORY/"Library/Formula/#{name}.rb"
@@ -45,7 +49,7 @@ module Homebrew extend self
   end
 
   def check_macports
-    if MacOS.macports_or_fink_installed?
+    unless MacOS.macports_or_fink.empty?
       opoo "It appears you have MacPorts or Fink installed."
       puts "Software installed with other package managers causes known problems for"
       puts "Homebrew. If a formula fails to build, uninstall MacPorts/Fink and try again."

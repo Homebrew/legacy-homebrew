@@ -50,10 +50,6 @@ module MacOS extend self
     elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{Xcode.prefix}/usr/bin"
-    else
-      # Since we are pretty unrelenting in finding Xcode no matter where
-      # it hides, we can now throw in the towel.
-      opoo "Could not locate developer tools. Consult `brew doctor`."
     end
   end
 
@@ -141,65 +137,69 @@ module MacOS extend self
     end
   end
 
-  def macports_or_fink_installed?
-    # See these issues for some history:
-    # http://github.com/mxcl/homebrew/issues/#issue/13
-    # http://github.com/mxcl/homebrew/issues/#issue/41
-    # http://github.com/mxcl/homebrew/issues/#issue/48
-    return false unless MACOS
+  # See these issues for some history:
+  # http://github.com/mxcl/homebrew/issues/#issue/13
+  # http://github.com/mxcl/homebrew/issues/#issue/41
+  # http://github.com/mxcl/homebrew/issues/#issue/48
+  def macports_or_fink
+    paths = []
 
-    %w[port fink].each do |ponk|
+    # First look in the path because MacPorts is relocatable and Fink
+    # may become relocatable in the future.
+    %w{port fink}.each do |ponk|
       path = which(ponk)
-      return ponk unless path.nil?
+      paths << path unless path.nil?
     end
 
-    # we do the above check because macports can be relocated and fink may be
-    # able to be relocated in the future. This following check is because if
-    # fink and macports are not in the PATH but are still installed it can
-    # *still* break the build -- because some build scripts hardcode these paths:
-    %w[/sw/bin/fink /opt/local/bin/port].each do |ponk|
-      return ponk if File.exist? ponk
+    # Look in the standard locations, because even if port or fink are
+    # not in the path they can still break builds if the build scripts
+    # have these paths baked in.
+    %w{/sw/bin/fink /opt/local/bin/port}.each do |ponk|
+      path = Pathname.new(ponk)
+      paths << path if path.exist?
     end
 
-    # finally, sometimes people make their MacPorts or Fink read-only so they
-    # can quickly test Homebrew out, but still in theory obey the README's
-    # advise to rename the root directory. This doesn't work, many build scripts
-    # error out when they try to read from these now unreadable directories.
-    %w[/sw /opt/local].each do |path|
-      path = Pathname.new(path)
-      return path if path.exist? and not path.readable?
+    # Finally, some users make their MacPorts or Fink directorie
+    # read-only in order to try out Homebrew, but this doens't work as
+    # some build scripts error out when trying to read from these now
+    # unreadable paths.
+    %w{/sw /opt/local}.map { |p| Pathname.new(p) }.each do |path|
+      paths << path if path.exist? && !path.readable?
     end
 
-    false
+    paths.uniq
   end
 
   def prefer_64_bit?
     Hardware.is_64_bit? and version != :leopard
   end
 
-  StandardCompilers = {
-    "3.1.4" => {:gcc_40_build_version=>5493, :gcc_42_build_version=>5577},
-    "3.2.6" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"1.7", :clang_build_version=>77},
-    "4.0" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
-    "4.0.1" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
-    "4.0.2" => {:gcc_40_build_version=>5494, :gcc_42_build_version=>5666, :llvm_build_version=>2335, :clang_version=>"2.0", :clang_build_version=>137},
-    "4.2" => {:llvm_build_version=>2336, :clang_version=>"3.0", :clang_build_version=>211},
-    "4.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.3.1" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.3.2" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.3.3" => {:llvm_build_version=>2336, :clang_version=>"3.1", :clang_build_version=>318},
-    "4.4" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421},
-    "4.4.1" => {:llvm_build_version=>2336, :clang_version=>"4.0", :clang_build_version=>421},
-    "4.5" => {:llvm_build_version=>2336, :clang_version=>"4.1", :clang_build_version=>421}
+  STANDARD_COMPILERS = {
+    "3.1.4" => { :gcc_40_build => 5493, :gcc_42_build => 5577 },
+    "3.2.6" => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "1.7", :clang_build => 77 },
+    "4.0"   => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "2.0", :clang_build => 137 },
+    "4.0.1" => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "2.0", :clang_build => 137 },
+    "4.0.2" => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "2.0", :clang_build => 137 },
+    "4.2"   => { :llvm_build => 2336, :clang => "3.0", :clang_build => 211 },
+    "4.3"   => { :llvm_build => 2336, :clang => "3.1", :clang_build => 318 },
+    "4.3.1" => { :llvm_build => 2336, :clang => "3.1", :clang_build => 318 },
+    "4.3.2" => { :llvm_build => 2336, :clang => "3.1", :clang_build => 318 },
+    "4.3.3" => { :llvm_build => 2336, :clang => "3.1", :clang_build => 318 },
+    "4.4"   => { :llvm_build => 2336, :clang => "4.0", :clang_build => 421 },
+    "4.4.1" => { :llvm_build => 2336, :clang => "4.0", :clang_build => 421 },
+    "4.5"   => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
+    "4.5.1" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
+    "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 }
   }
 
   def compilers_standard?
     xcode = Xcode.version
 
-    unless StandardCompilers.keys.include? xcode
+    unless STANDARD_COMPILERS.keys.include? xcode
       onoe <<-EOS.undent
         Homebrew doesn't know what compiler versions ship with your version of
-        Xcode. Please file an issue with the output of `brew --config`:
+        Xcode. Please `brew update` and if that doesn't help, file an issue with
+        the output of `brew --config`:
           https://github.com/mxcl/homebrew/issues
 
         Thanks!
@@ -207,7 +207,9 @@ module MacOS extend self
       return
     end
 
-    StandardCompilers[xcode].all? { |method, build| MacOS.send(method) == build }
+    STANDARD_COMPILERS[xcode].all? do |method, build|
+      MacOS.send(:"#{method}_version") == build
+    end
   end
 
   def app_with_bundle_id id
@@ -223,11 +225,24 @@ module MacOS extend self
     `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
   end
 
-  def bottles_supported?
+  def bottles_supported? raise_if_failed=false
     # We support bottles on all versions of OS X except 32-bit Snow Leopard.
-    (Hardware.is_64_bit? or not MacOS.version >= :snow_leopard) \
-      and HOMEBREW_PREFIX.to_s == '/usr/local' \
-      and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar' \
+    if Hardware.is_32_bit? and MacOS.version == :snow_leopard
+      return false unless raise_if_failed
+      raise "Bottles are not supported on 32-bit Snow Leopard."
+    end
+
+    unless HOMEBREW_PREFIX.to_s == '/usr/local'
+      return false unless raise_if_failed
+      raise "Bottles are only supported with a /usr/local prefix."
+    end
+
+    unless HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
+      return false unless raise_if_failed
+      raise "Bottles are only supported with a /usr/local/Cellar cellar."
+    end
+
+    true
   end
 end
 

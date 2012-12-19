@@ -35,61 +35,49 @@ class Ddclient < Formula
     (var+'run/ddclient').mkpath
   end
 
-  def caveats; <<-EOS
-For ddclient to work, you will need to do the following:
+  def caveats; <<-EOS.undent
+    For ddclient to work, you will need to create a configuration file
+    in #{etc}/ddclient, a sample configuration can be found in
+    #{opt_prefix}/share/doc/ddclient.
 
-1) Create configuration file in #{etc}/ddclient, a sample
-   configuration can be found in #{HOMEBREW_PREFIX}/share/doc/ddclient.
+    Note: don't enable daemon mode in the configuration file; see
+    additional information below.
 
-   Note: don't enable daemon mode in the configuration file; see
-   additional information below.
+    The next reboot of the system will automatically start ddclient.
 
-2) Install the launchd item in /Library/LaunchDaemons, like so:
-
-   sudo cp -vf #{plist_path} /Library/LaunchDaemons/
-   sudo chown -v root:wheel /Library/LaunchDaemons/#{plist_path.basename}
-
-3) Start the daemon using:
-
-  sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
-
-The next reboot of the system will automatically start ddclient.
-
-You can adjust the execution interval by changing the value of
-StartInterval (in seconds) in /Library/LaunchDaemons/#{plist_path.basename},
-and then
-
-   sudo launchctl unload /Library/LaunchDaemons/#{plist_path.basename}
-   sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
-EOS
+    You can adjust the execution interval by changing the value of
+    StartInterval (in seconds) in /Library/LaunchDaemons/#{plist_path.basename},
+    and then
+    EOS
   end
 
-  def startup_plist
-    return <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>#{plist_name}</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>#{HOMEBREW_PREFIX}/sbin/ddclient</string>
-    <string>-file</string>
-    <string>#{etc}/ddclient/ddclient.conf</string>
-  </array>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>StartInterval</key>
-  <integer>300</integer>
-  <key>WatchPaths</key>
-  <array>
-    <string>#{etc}/ddclient</string>
-  </array>
-  <key>WorkingDirectory</key>
-  <string>#{etc}/ddclient</string>
-</dict>
-</plist>
-EOS
+  plist_options :startup => true
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/sbin/ddclient</string>
+        <string>-file</string>
+        <string>#{etc}/ddclient/ddclient.conf</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>StartInterval</key>
+      <integer>300</integer>
+      <key>WatchPaths</key>
+      <array>
+        <string>#{etc}/ddclient</string>
+      </array>
+      <key>WorkingDirectory</key>
+      <string>#{etc}/ddclient</string>
+    </dict>
+    </plist>
+    EOS
   end
 end

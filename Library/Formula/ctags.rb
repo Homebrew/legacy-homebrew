@@ -7,16 +7,14 @@ class Ctags < Formula
 
   head 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
 
-  depends_on :autoconf
+  depends_on :autoconf => :build if build.head?
 
-  fails_with :llvm do
-    build 2335
-    cause "Resulting executable generates erroneous tag files"
+  def patches
+    # fixes http://sourceforge.net/tracker/?func=detail&aid=3247256&group_id=6556&atid=106556
+    { :p2 => "https://raw.github.com/gist/4010022/8d0697dc87a40e65011e2192439609c17578c5be/ctags.patch" }
   end
 
   def install
-    # See https://trac.macports.org/changeset/93604
-    ENV.O1
     if build.head?
       system "autoheader"
       system "autoconf"

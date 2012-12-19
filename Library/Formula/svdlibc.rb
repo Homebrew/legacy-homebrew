@@ -1,10 +1,10 @@
 require 'formula'
 
 class Svdlibc < Formula
-  url 'http://tedlab.mit.edu/~dr/SVDLIBC/svdlibc.tgz'
   homepage 'http://tedlab.mit.edu/~dr/SVDLIBC/'
-  md5 '0e1b3bc149f1da476fd81c58742b5ee9'
-  version '1.34'
+  url 'http://tedlab.mit.edu/~dr/SVDLIBC/svdlibc.tgz'
+  version '1.4'
+  sha1 '9243fbc0516af42b020423442212a025b3406dac'
 
   def install
     # make only builds - no configure or install targets, have to copy files manually

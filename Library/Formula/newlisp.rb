@@ -2,8 +2,8 @@ require 'formula'
 
 class Newlisp < Formula
   homepage 'http://www.newlisp.org/'
-  url 'http://www.newlisp.org/downloads/newlisp-10.4.3.tgz'
-  sha1 'cf5f5514a2a18dd317aa5e6f38907f0a8879156f'
+  url 'http://www.newlisp.org/downloads/newlisp-10.4.5.tgz'
+  sha1 '8e81b73b8d141250ab773952259cd69b228ae824'
 
   depends_on 'readline'
 
@@ -13,17 +13,14 @@ class Newlisp < Formula
 
     system "./configure-alt", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
-
-    # Many .lsp files assume the interpreter will be installed in /usr/bin
-    Dir["**/*.lsp"].each do |f|
-      inreplace f do |s|
-        s.gsub! '#!/usr/bin/newlisp', '#!/usr/bin/env newlisp'
-        s.gsub! '/usr/bin/newlisp', "#{bin}/newlisp"
-      end
-    end
-
     system "make check"
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    If you have brew in a custom prefix, the included examples
+    will need to be be pointed to your newlisp executable.
+    EOS
   end
 
   # Use the IDE to test a complete installation

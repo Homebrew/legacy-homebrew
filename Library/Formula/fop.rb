@@ -10,16 +10,9 @@ class Fop < Formula
     DATA
   end
 
-  def shim_script target
-    <<-EOS.undent
-      #!/bin/bash
-      "#{libexec}/#{target}" "$@"
-    EOS
-  end
-
   def install
     libexec.install Dir["*"]
-    (bin+'fop').write shim_script('fop')
+    bin.write_exec_script libexec/'fop'
   end
 end
 

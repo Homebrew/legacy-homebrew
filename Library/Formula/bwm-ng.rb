@@ -6,7 +6,7 @@ class BwmNg < Formula
   sha1 '90bab1837f179fa1fe0d4b8bad04072affa39c01'
 
   fails_with :clang do
-    build 318
+    build 421
   end
 
   def install

@@ -2,10 +2,16 @@ require 'formula'
 
 class Thrift < Formula
   homepage 'http://thrift.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=thrift/0.8.0/thrift-0.8.0.tar.gz'
-  sha1 '1d652d7078d9cc70e2a45d3119b13e86ebd446da'
+  url 'http://www.apache.org/dyn/closer.cgi?path=thrift/0.9.0/thrift-0.9.0.tar.gz'
+  sha1 'fefcf4d729bf80da419407dfa028740aa95fa2e3'
 
   head 'http://svn.apache.org/repos/asf/thrift/trunk'
+
+  option "with-haskell", "Install Haskell binding"
+  option "with-erlang", "Install Erlang binding"
+  option "with-java", "Install Java binding"
+  option "with-perl", "Install Perl binding"
+  option "with-php", "Install Php binding"
 
   depends_on 'boost'
 
@@ -17,19 +23,21 @@ class Thrift < Formula
 
     system "./bootstrap.sh" if build.head?
 
+    exclusions = ["--without-python", "--without-ruby"]
+
+    exclusions << "--without-haskell" unless build.include? "with-haskell"
+    exclusions << "--without-java" unless build.include? "with-java"
+    exclusions << "--without-perl" unless build.include? "with-perl"
+    exclusions << "--without-php" unless build.include? "with-php"
+    exclusions << "--without-erlang" unless build.include? "with-erlang"
+
     # Language bindings try to install outside of Homebrew's prefix, so
     # omit them here. For ruby you can install the gem, and for Python
     # you can use pip or easy_install.
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--libdir=#{lib}",
-                          "--without-haskell",
-                          "--without-java",
-                          "--without-python",
-                          "--without-ruby",
-                          "--without-perl",
-                          "--without-php",
-                          "--without-erlang"
+                          *exclusions
     ENV.j1
     system "make"
     system "make install"

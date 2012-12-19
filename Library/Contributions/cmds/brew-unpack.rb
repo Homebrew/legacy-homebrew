@@ -90,7 +90,7 @@ changes.
       ENV['VERBOSE'] = '1' # show messages about tar
       f.brew do
         cd Dir['*'][0] if Dir['*'].one?
-        mv getwd, stage_dir
+        cp_r getwd, stage_dir
       end
       ENV['VERBOSE'] = nil
 

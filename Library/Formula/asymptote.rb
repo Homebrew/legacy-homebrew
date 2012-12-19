@@ -21,6 +21,7 @@ class Asymptote < Formula
   sha1 'e0fb336c195fb21a39e3d0f3acd4881ce5e170a7'
 
   depends_on TexInstalled.new
+  env :userpaths # To find TeX
 
   depends_on 'readline'
   depends_on 'bdw-gc'

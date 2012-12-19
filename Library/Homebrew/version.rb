@@ -128,7 +128,7 @@ class Version
     return m.captures.first unless m.nil?
 
     # e.g. https://github.com/erlang/otp/tarball/OTP_R15B01 (erlang style)
-    m = /[-_](R\d+[AB]\d*)/.match(spec.to_s)
+    m = /[-_](R\d+[AB]\d*(-\d+)?)/.match(spec.to_s)
     return m.captures.first unless m.nil?
 
     # e.g. boost_1_39_0
@@ -174,6 +174,10 @@ class Version
 
     # e.g. astyle_1.23_macosx.tar.gz
     m = /_([^_]+)/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. http://mirrors.jenkins-ci.org/war/1.486/jenkins.war
+    m = /\/(\d\.\d+)\//.match(spec.to_s)
     return m.captures.first unless m.nil?
   end
 

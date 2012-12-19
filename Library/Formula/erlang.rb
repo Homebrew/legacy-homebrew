@@ -1,45 +1,38 @@
 require 'formula'
 
 class ErlangManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R15B02.tar.gz'
-  sha1 'e50cc887b36b0b2f158a87fa5b21cb2b2c6679b0'
+  url 'http://erlang.org/download/otp_doc_man_R15B03-1.tar.gz'
+  sha1 'c8674767cd0c1f98946f6a08c7ae318c3f026988'
 end
 
 class ErlangHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R15B02.tar.gz'
-  sha1 'b2ef425fe5aa9f4fff7afaa9b8204c45357eaa89'
+  url 'http://erlang.org/download/otp_doc_html_R15B03-1.tar.gz'
+  sha1 '49d761d8554a83be00e18f681b32b94572f9c050'
 end
 
 class ErlangHeadManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R15B02.tar.gz'
-  sha1 'e50cc887b36b0b2f158a87fa5b21cb2b2c6679b0'
+  url 'http://erlang.org/download/otp_doc_man_R15B03-1.tar.gz'
+  sha1 'c8674767cd0c1f98946f6a08c7ae318c3f026988'
 end
 
 class ErlangHeadHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R15B02.tar.gz'
-  sha1 'b2ef425fe5aa9f4fff7afaa9b8204c45357eaa89'
+  url 'http://erlang.org/download/otp_doc_html_R15B03-1.tar.gz'
+  sha1 '49d761d8554a83be00e18f681b32b94572f9c050'
 end
 
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/tarball/OTP_R15B02'
-  sha1 '540d0d0a006082a8bc3e1fc239f2043fee015967'
+  url 'https://github.com/erlang/otp/tarball/OTP_R15B03-1'
+  sha1 '5ba866722de79956b06966c232490d32bb7ba0a6'
 
   head 'https://github.com/erlang/otp.git', :branch => 'dev'
 
   bottle do
-    sha1 '94cbe622b817e8a5bd7797b615aad5e47c5d8660' => :mountainlion
-    sha1 'ec5b4749668c95ad55410c0316390046ee576895' => :lion
-    sha1 '10b0aa609354c07938ac936578c9d1f12a4249ba' => :snowleopard
+    sha1 'bf26236524bc9d3a63f4504600e3f33943b149a7' => :mountainlion
+    sha1 'b4b634b8073e7bcaa424eef16bdcff771de87210' => :lion
+    sha1 '093cf021d9731ef26b763e02166a702d61c571a1' => :snowleopard
   end
-
-  # We can't strip the beam executables or any plugins, there isn't really
-  # anything else worth stripping and it takes a really, long time to run
-  # `file` over everything in lib because there is almost 4000 files (and
-  # really erlang guys! what's with that?! Most of them should be in share/erlang!)
-  # may as well skip bin too, everything is just shell scripts
-  skip_clean ['lib', 'bin']
 
   # remove the autoreconf if possible
   depends_on :automake

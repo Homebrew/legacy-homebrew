@@ -6,24 +6,11 @@ class Hive < Formula
   sha1 '8c8086ff9ec5de5c661d98d926bbedac62c28a61'
 
   depends_on 'hadoop'
-
-  def shim_script target
-    <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/#{target}" "$@"
-    EOS
-  end
-
   def install
     rm_f Dir["bin/*.bat"]
     libexec.install %w[bin conf examples lib ]
     libexec.install Dir['*.jar']
-    bin.mkpath
-
-    Dir["#{libexec}/bin/*"].each do |b|
-      n = Pathname.new(b).basename
-      (bin+n).write shim_script(n)
-    end
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
   def caveats; <<-EOS.undent

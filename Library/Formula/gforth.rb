@@ -1,8 +1,8 @@
 require 'formula'
 
 class Gforth < Formula
+  homepage 'http://bernd-paysan.de/gforth.html'
   url 'http://www.complang.tuwien.ac.at/forth/gforth/gforth-0.7.0.tar.gz'
-  homepage 'http://www.jwdt.com/~paysan/gforth.html'
   sha1 '5bb357268cba683f2a8c63d2a4bcab8f41cb0086'
 
   def install

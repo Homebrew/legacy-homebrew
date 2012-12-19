@@ -2,12 +2,10 @@ require 'formula'
 
 class Scrotwm < Formula
   homepage 'http://opensource.conformal.com/wiki/scrotwm'
-  url 'http://opensource.conformal.com/snapshots/scrotwm/scrotwm-0.9.30.tgz'
-  sha1 '844c5261170be1dfa043ad90cd7164bbaabed497'
+  url 'http://opensource.conformal.com/snapshots/scrotwm/scrotwm-0.9.34.tgz'
+  sha1 '9e943883ea55048487fe59ed09b8a84467a81593'
 
-  def patches
-    DATA
-  end
+  depends_on :x11
 
   def install
     cd "osx" do
@@ -22,16 +20,3 @@ class Scrotwm < Formula
     EOS
   end
 end
-
-__END__
-# osx.h is missing a macro for TAIL_END (which is defined for Linux)
---- a/osx/osx.h	2011-06-14 10:51:33.000000000 -0500
-+++ b/osx/osx.h	2011-08-14 14:05:58.000000000 -0500
-@@ -1,3 +1,7 @@
- /* $scrotwm: osx.h,v 1.1 2009/11/25 16:12:13 marco Exp $ */
- 
- long long strtonum(const char *, long long, long long, const char **);
-+
-+#ifndef TAILQ_END
-+#define TAILQ_END(head)		NULL
-+#endif

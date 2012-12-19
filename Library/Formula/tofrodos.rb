@@ -1,9 +1,9 @@
 require 'formula'
 
 class Tofrodos < Formula
-  homepage 'http://www.thefreecountry.com/tofrodos/index.shtml'
-  url 'http://tofrodos.sourceforge.net/download/tofrodos-1.7.9.tar.gz'
-  sha1 '3b2b0ddec1629e42bb17cf323d7518fd079191ed'
+  homepage 'http://www.thefreecountry.com/tofrodos/'
+  url 'http://tofrodos.sourceforge.net/download/tofrodos-1.7.12a.tar.gz'
+  sha1 'e4b9f3955dd30193e75a5666f7a95854c3397ce0'
 
   def install
     cd 'src' do

@@ -2,13 +2,14 @@ require 'formula'
 
 class Vimpager < Formula
   homepage 'https://github.com/rkitover/vimpager'
-  url 'https://github.com/rkitover/vimpager/tarball/1.7.1'
-  sha1 '4e44e3af13e4ca927a2d9fcda15b3ecb958dbd06'
+  url 'https://github.com/rkitover/vimpager/tarball/1.7.7'
+  sha1 '2ef558a56451afe6b347231d73a4681a7d90c113'
   head 'https://github.com/rkitover/vimpager.git'
 
   def install
     inreplace 'vimpager.1', '~/bin/', ''
 
+    bin.install 'vimcat'
     bin.install 'vimpager'
     man1.install gzip('vimpager.1')
   end

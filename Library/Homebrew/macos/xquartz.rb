@@ -12,6 +12,16 @@ module MacOS::XQuartz extend self
     end
   end
 
+  def latest_version
+    "2.7.4"
+  end
+
+  def provided_by_apple?
+    [FORGE_BUNDLE_ID, APPLE_BUNDLE_ID].find do |id|
+      MacOS.app_with_bundle_id(id)
+    end == APPLE_BUNDLE_ID
+  end
+
   # This should really be private, but for compatibility reasons it must
   # remain public. New code should use MacOS::XQuartz.{bin,lib,include}
   # instead, as that accounts for Xcode-only systems.
