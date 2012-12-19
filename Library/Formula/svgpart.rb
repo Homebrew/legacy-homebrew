@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Usvgpart < BaseKdeFormula
+class Svgpart < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/svgpart-4.8.1.tar.xz'
-  sha1 '2332156b52c9f1a33cc0f0cb9d64f01aaf38f9bc'
+  url 'http://download.kde.org/stable/4.9.4/src/svgpart-4.9.4.tar.xz'
+  sha1 'a3829bfb4d129cb56d58b72d38f9ce6a02209d93'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/svgpart-4.9.95.tar.xz'
+    sha1 '139eafff3f938b3c356cf60d1bf15d08c298e09a'
+  end
 
   depends_on 'kdelibs'
 end
-
-

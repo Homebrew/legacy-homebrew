@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Ukig < BaseKdeFormula
+class Kig < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/kig-4.8.1.tar.xz'
-  sha1 '05a5ee09be9955bb24e5fcb926eb5bb8f0b24459'
+  url 'http://download.kde.org/stable/4.9.4/src/kig-4.9.4.tar.xz'
+  sha1 'b116a1ad9877e382430511c9f28e61b42a927b82'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/kig-4.9.95.tar.xz'
+    sha1 '414b9d1dba8c25685ffcd6867bfe6a0b0c8066a4'
+  end
 
   depends_on 'kdelibs'
 end
-
-

@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Ukiten < BaseKdeFormula
+class Kiten < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/kiten-4.8.1.tar.xz'
-  sha1 'c2c165f4bc89bcbe3a6b49eb06231d4bf85132f0'
+  url 'http://download.kde.org/stable/4.9.4/src/kiten-4.9.4.tar.xz'
+  sha1 'cb82fbb6c62ebd9bb9fd7a96ca62987aa7546a72'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/kiten-4.9.95.tar.xz'
+    sha1 '93c13fe7faca9e42b78eb0d7e5efd87311e52fdf'
+  end
 
   depends_on 'kdelibs'
 end
-
-

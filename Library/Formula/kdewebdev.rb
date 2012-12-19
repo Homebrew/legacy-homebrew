@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Ukdewebdev < BaseKdeFormula
+class Kdewebdev < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/kdewebdev-4.8.1.tar.xz'
-  sha1 'c707886d79d9ba150c408326efccf24847d5dc38'
+  url 'http://download.kde.org/stable/4.9.4/src/kdewebdev-4.9.4.tar.xz'
+  sha1 'f81a44220c5622b222cb032160be06bf1d965704'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/kdewebdev-4.9.95.tar.xz'
+    sha1 '104f936fbaf9c882343db61acfcde26d762db954'
+  end
 
   depends_on 'kdelibs'
 end
-
-

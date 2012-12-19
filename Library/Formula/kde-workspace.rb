@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Ukde-workspace < BaseKdeFormula
+class Kde-workspace < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/kde-workspace-4.8.1.tar.xz'
-  sha1 '675df4befd736e770e3029af8d38800c9018e888'
+  url 'http://download.kde.org/stable/4.9.4/src/kde-workspace-4.9.4.tar.xz'
+  sha1 'c619181256f86bb1921cfbe6136ea3604d94aabe'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/kde-workspace-4.9.95.tar.xz'
+    sha1 '531a7c34da49df5d50c267fcd88cf82a216cca4b'
+  end
 
   depends_on 'kdelibs'
 end
-
-

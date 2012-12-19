@@ -1,4 +1,3 @@
-
 require 'base_kde_formula'
 
 class Ark < BaseKdeFormula
@@ -10,5 +9,6 @@ class Ark < BaseKdeFormula
     url 'http://download.kde.org/unstable/4.9.95/src/ark-4.9.95.tar.xz'
     sha1 'cf7e2248e9f5fb94701017f4fdf6c92b647cc0f3'
   end
+
   depends_on 'kdelibs'
 end

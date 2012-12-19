@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Uperlkde < BaseKdeFormula
+class Perlkde < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/perlkde-4.8.1.tar.xz'
-  sha1 '93e3b009c972a697aebf0450c4c07ff87a5c0461'
+  url 'http://download.kde.org/stable/4.9.4/src/perlkde-4.9.4.tar.xz'
+  sha1 '8b43723d404d84fa87f6899ba3d332e3c035b583'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/perlkde-4.9.95.tar.xz'
+    sha1 '302c590c9388a178fa68fe50ac1eed20913f3c1c'
+  end
 
   depends_on 'kdelibs'
 end
-
-

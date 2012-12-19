@@ -1,11 +1,9 @@
 require 'base_kde_formula'
 
-class Uprinter-applet < BaseKdeFormula
+class Printer-applet < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/printer-applet-4.8.1.tar.xz'
-  sha1 'c3002fea0382386256c3acaebd907a41db0ccc4e'
+  url 'http://download.kde.org/stable/4.9.4/src/printer-applet-4.9.4.tar.xz'
+  sha1 '3a375dd86a44ae1f720a3cc10ae91a43581a68dc'
 
   depends_on 'kdelibs'
 end
-
-

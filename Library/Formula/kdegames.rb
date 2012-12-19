@@ -1,11 +1,9 @@
 require 'base_kde_formula'
 
-class Ukdegames < BaseKdeFormula
+class Kdegames < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/kdegames-4.8.1.tar.xz'
-  sha1 'bcf764fd1f2f8083c388c17f26b83eeac568b1d5'
+  url 'http://download.kde.org/stable/4.9.4/src/kdegames-4.9.4.tar.xz'
+  sha1 '462d1e2e0a833c16d9b2ccbb79c1bf218ecb2e6f'
 
   depends_on 'kdelibs'
 end
-
-

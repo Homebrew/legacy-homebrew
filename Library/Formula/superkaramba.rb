@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Usuperkaramba < BaseKdeFormula
+class Superkaramba < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/superkaramba-4.8.1.tar.xz'
-  sha1 '934a62e3d82e92a99b9d070a2dd39634b7351cea'
+  url 'http://download.kde.org/stable/4.9.4/src/superkaramba-4.9.4.tar.xz'
+  sha1 'b42ddd333e19daf8f036b733e9dc8d4a6418bfd2'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/superkaramba-4.9.95.tar.xz'
+    sha1 '7a614af0d67628515a98de206c36003c595bc977'
+  end
 
   depends_on 'kdelibs'
 end
-
-

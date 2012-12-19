@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Ukdegraphics-thumbnailers < BaseKdeFormula
+class Kdegraphics-thumbnailers < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/kdegraphics-thumbnailers-4.8.1.tar.xz'
-  sha1 'a714f485f68202c8b6e2716cf426abd6d82c0dc7'
+  url 'http://download.kde.org/stable/4.9.4/src/kdegraphics-thumbnailers-4.9.4.tar.xz'
+  sha1 'ea6156de54839157f933588eb7db6d94a2399f3b'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/kdegraphics-thumbnailers-4.9.95.tar.xz'
+    sha1 '5d6374dcbc5991687367f678f53e289bbb434bd8'
+  end
 
   depends_on 'kdelibs'
 end
-
-

@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Ujovie < BaseKdeFormula
+class Jovie < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/jovie-4.8.1.tar.xz'
-  sha1 '4ac647ac3823b6a4f01f839f3e11bca09d6353ee'
+  url 'http://download.kde.org/stable/4.9.4/src/jovie-4.9.4.tar.xz'
+  sha1 'd490ee768aa59d263b7fd43d4b180193658aebbd'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/jovie-4.9.95.tar.xz'
+    sha1 'cb9f087f8460ab6f20fc92f3b2f5537c0aefc4fc'
+  end
 
   depends_on 'kdelibs'
 end
-
-

@@ -1,4 +1,3 @@
-
 require 'base_kde_formula'
 
 class Analitza < BaseKdeFormula
@@ -10,5 +9,6 @@ class Analitza < BaseKdeFormula
     url 'http://download.kde.org/unstable/4.9.95/src/analitza-4.9.95.tar.xz'
     sha1 '279fa3fac98bbf5fc33f59714cbd4b822d65c320'
   end
+
   depends_on 'kdelibs'
 end

@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Ukaccessible < BaseKdeFormula
+class Kaccessible < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/kaccessible-4.8.1.tar.xz'
-  sha1 'da137f22a8de55858a3ae80f4e95d89c18b50257'
+  url 'http://download.kde.org/stable/4.9.4/src/kaccessible-4.9.4.tar.xz'
+  sha1 '178b2f10621fbd50b7d4b5d50dfbae012f009551'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/kaccessible-4.9.95.tar.xz'
+    sha1 'c9fb5b6d2e6cd75f8ae54544ead0c1dc14be50ca'
+  end
 
   depends_on 'kdelibs'
 end
-
-

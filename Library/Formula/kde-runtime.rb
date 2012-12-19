@@ -2,8 +2,8 @@ require 'base_kde_formula'
 
 class KdeRuntime < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/kde-runtime-4.8.1.tar.xz'
-  sha1 '82b57dc38335716fb382a665b536a9aece4684d6'
+  url 'http://download.kde.org/stable/4.9.4/src/kde-runtime-4.9.4.tar.xz'
+  sha1 '8988c3684c05efc676d1bfe454480f60d75fac3b'
 
   depends_on 'kde-phonon'
   depends_on 'kdelibs'

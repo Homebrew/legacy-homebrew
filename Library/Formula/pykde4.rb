@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Upykde4 < BaseKdeFormula
+class Pykde4 < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/pykde4-4.8.1.tar.xz'
-  sha1 'b9ef35269d2e08578ba20d01822dbdbed72bffb8'
+  url 'http://download.kde.org/stable/4.9.4/src/pykde4-4.9.4.tar.xz'
+  sha1 'd9c5fbbc79e95fca0ab2523a8de4e2291641bea3'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/pykde4-4.9.95.tar.xz'
+    sha1 'b141ca1ba9082363bdc660ea441ec4948437218e'
+  end
 
   depends_on 'kdelibs'
 end
-
-

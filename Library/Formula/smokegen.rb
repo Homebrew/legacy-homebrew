@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Usmokegen < BaseKdeFormula
+class Smokegen < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/smokegen-4.8.1.tar.xz'
-  sha1 '6d43ed064730ff81e1844d0634c1b574bd4ffdb2'
+  url 'http://download.kde.org/stable/4.9.4/src/smokegen-4.9.4.tar.xz'
+  sha1 '15dd451d602d12e045f3618f9debded16ea45ceb'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/smokegen-4.9.95.tar.xz'
+    sha1 '7fb2756fc1536681aa0c47be8e88e85931011249'
+  end
 
   depends_on 'kdelibs'
 end
-
-

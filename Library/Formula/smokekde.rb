@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Usmokekde < BaseKdeFormula
+class Smokekde < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/smokekde-4.8.1.tar.xz'
-  sha1 '680a29725c4b04629befafcd6c74dbc8cc6238f6'
+  url 'http://download.kde.org/stable/4.9.4/src/smokekde-4.9.4.tar.xz'
+  sha1 '6634a0cc22c26c4d30a23bfc768adacdbd75eb5d'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/smokekde-4.9.95.tar.xz'
+    sha1 '0e67e797562954e2ad35e3c83782826a5fb2acf7'
+  end
 
   depends_on 'kdelibs'
 end
-
-

@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Ukdepim-runtime < BaseKdeFormula
+class Kdepim-runtime < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/kdepim-runtime-4.8.1.tar.xz'
-  sha1 '2e2e5f1dbfd1b54f0e2b71f9f23be2cfa94348f2'
+  url 'http://download.kde.org/stable/4.9.4/src/kdepim-runtime-4.9.4.tar.xz'
+  sha1 '5d6466761e890b2ee0ce66b274553c10f2827ca0'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/kdepim-runtime-4.9.95.tar.xz'
+    sha1 '8695d188f360b955fb430d4a99498e4e2e777fe9'
+  end
 
   depends_on 'kdelibs'
 end
-
-

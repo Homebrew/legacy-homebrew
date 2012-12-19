@@ -1,11 +1,14 @@
 require 'base_kde_formula'
 
-class Ukdeplasma-addons < BaseKdeFormula
+class Kdeplasma-addons < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/4.8.1/src/kdeplasma-addons-4.8.1.tar.xz'
-  sha1 'dad77ee1f6ab341a327d694f670e15f160d77d7c'
+  url 'http://download.kde.org/stable/4.9.4/src/kdeplasma-addons-4.9.4.tar.xz'
+  sha1 '112e6702e16d0e40c6422c89227a25c2c4993df3'
+
+  devel do
+    url 'http://download.kde.org/unstable/4.9.95/src/kdeplasma-addons-4.9.95.tar.xz'
+    sha1 '014576fb2ee8e8b6d57a5e38ef17405b6afdb940'
+  end
 
   depends_on 'kdelibs'
 end
-
-
