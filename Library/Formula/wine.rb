@@ -5,22 +5,30 @@ class WineGecko < Formula
   sha1 'c30aa99621e98336eb4b7e2074118b8af8ea2ad5'
 
   devel do
-    url 'http://downloads.sourceforge.net/wine/wine_gecko-1.7-x86.msi', :using => :nounzip
-    sha1 'efebc4ed7a86708e2dc8581033a3c5d6effe0b0b'
+    url 'http://downloads.sourceforge.net/wine/wine_gecko-1.8-x86.msi', :using => :nounzip
+    sha1 'a8622ff749cc2a2cb311f902b7e99664ecc2f8d6'
   end
+end
+
+class WineMono < Formula
+  url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+  sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
 end
 
 class Wine < Formula
   homepage 'http://winehq.org/'
   url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.4.1.tar.bz2'
   sha256 '3c233e3811e42c2f3623413783dbcd0f2288014b5645211f669ffd0ba6ae1856'
+
   head 'git://source.winehq.org/git/wine.git'
 
   devel do
-    # NOTE: when updating Wine, please check if Wine-Gecko needs updating too
-    # see http://wiki.winehq.org/Gecko
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.13.tar.bz2'
-    sha256 'c05dd12ecc5256219d09cc1daad6f2153368d69ef15c68400a2a404b79b079d1'
+    # NOTE: when updating Wine, please check if Wine-Gecko and Wine-Mono needs
+    # updating too
+    #  * http://wiki.winehq.org/Gecko
+    #  * http://wiki.winehq.org/Mono
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.19.tar.bz2'
+    sha256 '51ad795ae62d8392ac6fbc3ad595ac57d44bcc779b716573a9d73ca122961023'
   end
 
   env :std
@@ -87,14 +95,16 @@ class Wine < Formula
     # Don't need Gnome desktop support
     rm_rf share+'applications'
 
-    # Download Gecko once so we don't need to redownload for each prefix
+    # Download Gecko and Mono once so we don't need to redownload for each prefix
     gecko = WineGecko.new
     gecko.brew { (share+'wine/gecko').install Dir["*"] }
+    mono = WineMono.new
+    mono.brew { (share+'wine/mono').install Dir["*"] }
 
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine
-    mv (bin+'wine'), (bin+'wine.bin')
-    (bin+'wine').write(wine_wrapper)
+    mv bin/'wine', bin/'wine.bin'
+    (bin/'wine').write(wine_wrapper)
   end
 
   def caveats
@@ -109,13 +119,15 @@ class Wine < Formula
         http://code.google.com/p/osxwinebuilder/
     EOS
     # see http://bugs.winehq.org/show_bug.cgi?id=31374
-    s += <<-EOS.undent if (ARGV.build_devel? or ARGV.build_head?)
+    unless build.stable?
+      s += <<-EOS.undent
 
-      The current version of Wine contains a partial implementation of dwrite.dll
-      which may cause text rendering issues in applications such as Steam.
-      We recommend that you run winecfg, add an override for dwrite in the
-      Libraries tab, and edit the override mode to "disable".
-    EOS
+        The current version of Wine contains a partial implementation of dwrite.dll
+        which may cause text rendering issues in applications such as Steam.
+        We recommend that you run winecfg, add an override for dwrite in the
+        Libraries tab, and edit the override mode to "disable".
+      EOS
+    end
     return s
   end
 end

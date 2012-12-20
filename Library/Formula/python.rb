@@ -16,8 +16,8 @@ class TkCheck < Requirement
 end
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
-  sha1 '709bd97d46050d69865d4b588c7707768dfe6711'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.32.tar.gz'
+  sha1 '65ae88517ac47bd4e0fb449b3b9a9bf85e8366c8'
 end
 
 class Pip < Formula
@@ -43,8 +43,7 @@ class Python < Formula
   option 'with-poll', 'Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)'
 
   # --with-dtrace relies on CLT as dtrace hard-codes paths to /usr
-  # http://bugs.python.org/issue13405
-  option 'with-dtrace', 'Install with DTrace support' if MacOS::CLT.installed?
+  option 'with-dtrace', 'Experimental DTrace support (http://bugs.python.org/issue13405)' if MacOS::CLT.installed?
 
   def patches
     'https://raw.github.com/gist/3415636/2365dea8dc5415daa0148e98c394345e1191e4aa/pythondtrace-patch.diff'
@@ -81,64 +80,17 @@ class Python < Formula
            ]
 
     args << '--without-gcc' if ENV.compiler == :clang
-    args << '--with-pydebug' if ENV.compiler == :clang # http://bugs.python.org/issue13370
     args << '--with-dtrace' if build.include? 'with-dtrace'
 
-    if superenv?
-      # To allow certain Python bindings to find brewed software:
-      cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include"
-      ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib"
-      unless MacOS::CLT.installed?
-        # Help Python's build system (distribute/pip) to build things on Xcode-only systems
-        # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
-        cflags += " -isysroot #{MacOS.sdk_path}"
-        ldflags += " -isysroot #{MacOS.sdk_path}"
-        # Same zlib.h-not-found-bug as in env :std (see below)
-        args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
-      end
-      args << cflags
-      args << ldflags
-      # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
-      args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
-      # We want our readline! This is just to outsmart the detection code,
-      # superenv handles that cc finds includes/libs!
-      inreplace "setup.py",
-                "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
-                "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
-
-    else
-      # This is obsolte with superenv (superenv defaults to -Os and does not
-      # disable warnings), but to support --env=std we leave it here:
-
-      # Python scans all "-I" dirs but not "-isysroot", so we add
-      # the needed includes with "-I" here to avoid this err:
-      #     building dbm using ndbm
-      #     error: /usr/include/zlib.h: No such file or directory
-      ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
-
-      # Don't use optimizations other than "-Os" here, because Python's distutils
-      # remembers (hint: `python-config --cflags`) and reuses them for C
-      # extensions which can break software (such as scipy 0.11 fails when
-      # "-msse4" is present.)
-      ENV.minimal_optimization
-
-      # We need to enable warnings because the configure.in uses -Werror to detect
-      # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
-      ENV.enable_warnings
-      if ENV.compiler == :clang
-        # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
-        ENV.append_to_cflags '-Wno-unused-value'
-        ENV.append_to_cflags '-Wno-empty-body'
-        ENV.append_to_cflags '-Qunused-arguments'
-      end
-    end
+    distutils_fix_superenv(args)
+    distutils_fix_stdenv
 
     if build.universal?
+      ENV.universal_binary
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
     end
 
-    # Allow sqlite3 module to load extensions:
-    # http://docs.python.org/library/sqlite3.html#f1
+    # Allow sqlite3 module to load extensions: http://docs.python.org/library/sqlite3.html#f1
     inreplace "setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', ''
 
     system "./configure", *args
@@ -152,7 +104,8 @@ class Python < Formula
     ENV.deparallelize # Installs must be serialized
     # Tell Python not to install into /Applications (default for framework builds)
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
-    # Demos and Tools into HOMEBREW_PREFIX/share/python
+    # Demos and Tools
+    (HOMEBREW_PREFIX/'share/python').mkpath
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
     system "make", "quicktest" if build.include? 'quicktest'
 
@@ -168,16 +121,17 @@ class Python < Formula
     ln_s site_packages, site_packages_cellar
 
     # Teach python not to use things from /System
-    # and teach it about the correct site-package dir because we moved it
-    sitecustomize = site_packages/"sitecustomize.py"
+    # and tell it about the correct site-package dir because we moved it
+    sitecustomize = site_packages_cellar/"sitecustomize.py"
     rm sitecustomize if File.exist? sitecustomize
     sitecustomize.write <<-EOF.undent
       # This file is created by `brew install python` and is executed on each
       # python startup. Don't print from here, or else universe will collapse.
       import sys
+      import site
 
-      # Only do our fixes, if the currently run python is a brewed one.
-      if sys.executable.startswith("#{HOMEBREW_PREFIX}"):
+      # Only do fix 1 and 2, if the currently run python is a brewed one.
+      if sys.executable.startswith('#{HOMEBREW_PREFIX}'):
           # Fix 1)
           #   A setuptools.pth and/or easy-install.pth sitting either in
           #   /Library/Python/2.7/site-packages or in
@@ -190,18 +144,29 @@ class Python < Formula
           sys.path = [ p for p in sys.path if not p.startswith('/System') ]
 
           # Fix 2)
-          #   pip install records installed files with relative paths and
-          #   because Homebrew installs python into #{HOMEBREW_PREFIX}/Cellar,
-          #   the symlinks for the executable python scripts is not correct, so
-          #   they are not uninstalled when `pip uninstall <x>` is called.
-          #   See: https://github.com/mxcl/homebrew/issues/14688
-          sys.prefix = "#{HOMEBREW_PREFIX}"
+          #   Remove brewed Python's hard-coded site-packages
+          sys.path.remove('#{site_packages_cellar}')
+
+      # Fix 3)
+      #   For all Pythons: Tell about homebrew's site-packages location.
+      #   This is needed for Python to parse *.pth files.
+      site.addsitedir('#{site_packages}')
     EOF
 
-    # Tell distutils-based installers where to put scripts
+    # Install distribute and pip
+    # It's important to have these installers in our bin, because some users
+    # forget to put #{script_folder} in PATH, then easy_install'ing
+    # into /Library/Python/X.Y/site-packages with /usr/bin/easy_install.
+    mkdir_p scripts_folder unless scripts_folder.exist?
+    setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose", "--install-lib=#{site_packages_cellar}", "--install-scripts=#{bin}" ]
+    Distribute.new.brew { system "#{bin}/python", *setup_args }
+    Pip.new.brew { system "#{bin}/python", *setup_args }
+
+    # Tell distutils-based installers where to put scripts and python modules
     (prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg").write <<-EOF.undent
       [install]
       install-scripts=#{scripts_folder}
+      install-lib=#{site_packages}
     EOF
 
     unless MacOS::CLT.installed?
@@ -214,15 +179,59 @@ class Python < Formula
       end
     end
 
-    # Install distribute and pip
-    setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose"]
-    Distribute.new.brew { system "#{bin}/python", *setup_args }
-    Pip.new.brew { system "#{bin}/python", *setup_args }
+  end
 
-    # It's important to have these installers in our bin, because some users
-    # forget to put #{script_folder} in PATH, then easy_install'ing
-    # into /Library/Python/X.Y/site-packages with /usr/bin/easy_install.
-    ['pip', 'pip-2.7', 'easy_install', 'easy_install-2.7'].each { |b| mv scripts_folder/b, bin }
+  def distutils_fix_superenv(args)
+    if superenv?
+      # To allow certain Python bindings to find brewed software:
+      cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include"
+      ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib"
+      unless MacOS::CLT.installed?
+        # Help Python's build system (distribute/pip) to build things on Xcode-only systems
+        # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
+        cflags += " -isysroot #{MacOS.sdk_path}"
+        # For the Xlib.h, Python needs this header dir
+        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
+        ldflags += " -isysroot #{MacOS.sdk_path}"
+        # Same zlib.h-not-found-bug as in env :std (see below)
+        args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
+      end
+      args << cflags
+      args << ldflags
+      # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
+      args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
+      # We want our readline! This is just to outsmart the detection code,
+      # superenv handles that cc finds includes/libs!
+      inreplace "setup.py",
+                "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
+                "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
+    end
+  end
+
+  def distutils_fix_stdenv()
+    if not superenv?
+      # Python scans all "-I" dirs but not "-isysroot", so we add
+      # the needed includes with "-I" here to avoid this err:
+      #     building dbm using ndbm
+      #     error: /usr/include/zlib.h: No such file or directory
+      ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
+
+      # Don't use optimizations other than "-Os" here, because Python's distutils
+      # remembers (hint: `python3-config --cflags`) and reuses them for C
+      # extensions which can break software (such as scipy 0.11 fails when
+      # "-msse4" is present.)
+      ENV.minimal_optimization
+
+      # We need to enable warnings because the configure.in uses -Werror to detect
+      # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
+      ENV.enable_warnings
+      if ENV.compiler == :clang
+        # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
+        ENV.append_to_cflags '-Wno-unused-value'
+        ENV.append_to_cflags '-Wno-empty-body'
+        ENV.append_to_cflags '-Qunused-arguments'
+      end
+    end
   end
 
   def caveats
@@ -240,7 +249,7 @@ class Python < Formula
       To symlink "Idle" and the "Python Launcher" to ~/Applications
         `brew linkapps`
 
-      You can install Python packages with (the outdated easy_install) or
+      You can install Python packages with (the outdated easy_install or)
         `pip install <your_favorite_package>`
 
       They will install into the site-package directory

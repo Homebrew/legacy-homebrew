@@ -6,6 +6,7 @@ class Libsvg < Formula
   sha1 '2198e65833eed905d93be70f3db4f0d32a2eaf57'
 
   depends_on :libpng
+  depends_on 'pkg-config' => :build
   depends_on 'jpeg'
 
   def install

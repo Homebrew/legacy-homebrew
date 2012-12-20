@@ -2,12 +2,12 @@ require 'formula'
 
 class Grails < Formula
   homepage 'http://grails.org'
-  url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-2.1.1.zip'
-  sha1 '1beaa46a00ddd11c8c090c926e2f54af85530cc1'
+  url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-2.1.3.zip'
+  sha1 '94ac3be5b3f6a75d414a023b0666491a2d5185dc'
 
   def install
     rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]
-    prefix.install %w[LICENSE README]
+    prefix.install_metafiles
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end

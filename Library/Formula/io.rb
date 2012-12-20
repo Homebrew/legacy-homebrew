@@ -11,11 +11,17 @@ class Io < Formula
   option 'without-python', 'Build without python addon'
 
   depends_on 'cmake' => :build
-  depends_on 'ossp-uuid'
   depends_on 'libevent'
-  depends_on 'yajl'
   depends_on 'libffi'
+  depends_on 'ossp-uuid'
   depends_on 'pcre'
+  depends_on 'yajl'
+
+  # Used by Bignum add-on
+  depends_on 'gmp' unless build.include? 'without-addons'
+
+  # Used by Fonts add-on
+  depends_on :freetype unless build.include? 'without-addons'
 
   fails_with :clang do
     build 421

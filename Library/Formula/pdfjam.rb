@@ -1,3 +1,5 @@
+require 'formula'
+
 class PdfLatexRequirement < Requirement
   def message; <<-EOS.undent
     pdfjam requires pdflatex to run. You can install this using MacTex:
@@ -13,8 +15,6 @@ class PdfLatexRequirement < Requirement
     true
   end
 end
-
-require 'formula'
 
 class Pdfjam < Formula
   url 'http://www2.warwick.ac.uk/fac/sci/statistics/staff/academic-research/firth/software/pdfjam/pdfjam_208.tgz'

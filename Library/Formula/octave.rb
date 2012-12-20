@@ -10,9 +10,9 @@ end
 
 class Octave < Formula
   homepage 'http://www.gnu.org/software/octave/index.html'
-  url 'http://ftpmirror.gnu.org/octave/octave-3.6.2.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.2.tar.bz2'
-  sha1 '145fef0122268086727a60e1c33e29d56fd546d7'
+  url 'http://ftpmirror.gnu.org/octave/octave-3.6.3.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.3.tar.bz2'
+  sha1 'e8bd0c0b33ab9714ddb524f2258546c3536f0628'
 
   option 'without-graphicsmagick', 'Compile without GraphicsMagick'
   option 'without-fltk', 'Compile without fltk (disables native graphics)'

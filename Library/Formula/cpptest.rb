@@ -2,8 +2,8 @@ require 'formula'
 
 class Cpptest < Formula
   homepage 'http://cpptest.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/cpptest/cpptest/cpptest-1.1.1/cpptest-1.1.1.tar.gz'
-  sha1 '5c791746ecb0f18a5e4f15f8a57bf9e433399ebb'
+  url 'http://downloads.sourceforge.net/project/cpptest/cpptest/cpptest-1.1.2/cpptest-1.1.2.tar.gz'
+  sha1 'c8e69ca98f9b39016c94f1f78659f412ee825049'
 
   def install
     system "./configure", "--disable-dependency-tracking",

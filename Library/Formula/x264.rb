@@ -33,9 +33,8 @@ class X264 < Formula
   end
 
   def caveats; <<-EOS.undent
-    Because x264 installs its library with a version number that changes,
-    any of these that you have installed should be reinstalled each time you
-    upgrade x264.
+    Because libx264 has a rapidly-changing API, formulae that link against
+    it should be reinstalled each time you upgrade x264. Examples include:
        avidemux, ffmbc, ffmpeg, gst-plugins-ugly
     EOS
   end

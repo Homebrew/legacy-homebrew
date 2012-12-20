@@ -10,8 +10,10 @@ class Pygtk < Formula
   depends_on 'gtk+'
   depends_on 'pygobject'
   depends_on 'py2cairo'
+  depends_on 'libglade' if build.include? 'glade'
 
   option :universal
+  option 'glade', 'Python bindigs for glade. (to `import gtk.glade1)'
 
   def install
     ENV.append 'CFLAGS', '-ObjC'

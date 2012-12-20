@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.27-28.1/source/Percona-Server-5.5.27-rel28.1.tar.gz'
-  version '5.5.27-28.1'
-  sha1 '78bd7b408847003eb755efef646ff85ccfa071d0'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.28-29.2/source/Percona-Server-5.5.28-rel29.2.tar.gz'
+  version '5.5.28-29.2'
+  sha1 '5e7375f798e5eb13b39585754cfac6ff593c8939'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
@@ -18,12 +18,22 @@ class PerconaServer < Formula
 
   conflicts_with 'mysql',
     :because => "percona-server and mysql install the same binaries."
+
   conflicts_with 'mariadb',
     :because => "percona-server and mariadb install the same binaries."
+
+  env :std if build.universal?
 
   fails_with :llvm do
     build 2334
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
+  end
+
+  # Where the database files should be located. Existing installs have them
+  # under var/percona, but going forward they will be under var/msyql to be
+  # shared with the mysql and mariadb formulae.
+  def destination
+    @destination ||= (var/'percona').directory? ? 'percona' : 'mysql'
   end
 
   def install
@@ -31,17 +41,18 @@ class PerconaServer < Formula
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    # Make sure the var/msql directory exists
-    (var+"percona").mkpath
+    # Make sure that data directory exists
+    (var/destination).mkpath
 
-    args = std_cmake_args + [
+    args = [
       ".",
-      "-DMYSQL_DATADIR=#{var}/percona",
+      "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+      "-DMYSQL_DATADIR=#{var}/#{destination}",
       "-DINSTALL_MANDIR=#{man}",
       "-DINSTALL_DOCDIR=#{doc}",
       "-DINSTALL_INFODIR=#{info}",
       # CMake prepends prefix, so use share.basename
-      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}",
+      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/mysql",
       "-DWITH_SSL=yes",
       "-DDEFAULT_CHARSET=utf8",
       "-DDEFAULT_COLLATION=utf8_general_ci",
@@ -82,17 +93,19 @@ class PerconaServer < Formula
 
     # Link the setup script into bin
     ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
     end
+
     ln_s "#{prefix}/support-files/mysql.server", bin
   end
 
   def caveats; <<-EOS.undent
     Set up databases to run AS YOUR USER ACCOUNT with:
         unset TMPDIR
-        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix percona-server)" --datadir=#{var}/percona --tmpdir=/tmp
+        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix percona-server)" --datadir=#{var}/#{destination} --tmpdir=/tmp
 
     To set up base tables in another folder, or use a different user to run
     mysqld, view the help for mysqld_install_db:
@@ -105,34 +118,17 @@ class PerconaServer < Formula
     To run as, for instance, user "mysql", you may need to `sudo`:
         sudo mysql_install_db ...options...
 
-    Start mysqld manually with:
-        mysql.server start
-
-        Note: if this fails, you probably forgot to run the first two steps up above
-
     A "/etc/my.cnf" from another install may interfere with a Homebrew-built
     server starting up correctly.
 
     To connect:
         mysql -uroot
-
-    To launch on startup:
-    * if this is your first install:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    * if this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    You may also need to edit the plist to use the correct "UserName".
-
     EOS
   end
 
-  def startup_plist; <<-EOPLIST.undent
+  plist_options :manual => 'mysql.server start'
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -142,7 +138,7 @@ class PerconaServer < Formula
       <key>Label</key>
       <string>#{plist_name}</string>
       <key>Program</key>
-      <string>#{HOMEBREW_PREFIX}/bin/mysqld_safe</string>
+      <string>#{opt_prefix}/bin/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
       <key>UserName</key>
@@ -151,6 +147,6 @@ class PerconaServer < Formula
       <string>#{var}</string>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 end

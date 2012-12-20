@@ -9,6 +9,10 @@ class Clisp < Formula
   depends_on 'libsigsegv'
   depends_on 'readline'
 
+  # -Os causes the build to fail with C_CODE_ALIGNMENT is wrong
+  # superenv doeesn't yet support changing the optimization level
+  env :std
+
   fails_with :llvm do
     build 2334
     cause "Configure fails on XCode 4/Snow Leopard."

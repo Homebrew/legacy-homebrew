@@ -7,22 +7,22 @@ class SqliteFunctions < Formula
 end
 
 class SqliteDocs < Formula
-  url 'http://www.sqlite.org/sqlite-doc-3071400.zip'
-  sha1 '38a8e9a4fa515f7aa6df7d31e58bd0ec60658031'
-  version '3.7.14'
+  url 'http://www.sqlite.org/sqlite-doc-3071500.zip'
+  sha1 'e3f5ee445f13065a6c17f89a3e70331b0a6f2b34'
+  version '3.7.15'
 end
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://sqlite.org/sqlite-autoconf-3071400.tar.gz'
-  sha1 '7b429809918201555f4c0fa639183a1c663d3fe0'
-  version '3.7.14'
+  url 'http://sqlite.org/sqlite-autoconf-3071500.tar.gz'
+  version '3.7.15'
+  sha1 '7b463b76b7a0e322dcdf7bf2221f6e508511e392'
 
   depends_on 'readline' => :recommended
 
   option :universal
   option 'with-docs', 'Install HTML documentation'
-  option 'without-rtree' 'Disable the R*Tree index module'
+  option 'without-rtree', 'Disable the R*Tree index module'
   option 'with-fts', 'Enable the FTS module'
   option 'with-functions', 'Enable more math and string functions for SQL queries'
 

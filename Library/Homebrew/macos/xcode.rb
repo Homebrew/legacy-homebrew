@@ -23,7 +23,7 @@ module MacOS::Xcode extend self
       when 10.6 then "3.2.6"
     else
       if MacOS.version >= 10.7
-        "4.5"
+        "4.5.2"
       else
         raise "Mac OS X `#{MacOS.version}' is invalid"
       end
@@ -146,6 +146,14 @@ module MacOS::Xcode extend self
 
   def provides_gcc?
     version.to_f < 4.3
+  end
+
+  def default_prefix?
+    if version.to_f < 4.3
+      %r{^/Developer} === prefix
+    else
+      %r{^/Applications/Xcode.app} === prefix
+    end
   end
 end
 

@@ -75,19 +75,17 @@ class Keg
 
   def mach_o_files
     mach_o_files = []
-    if (lib = join 'lib').directory?
-      lib.find do |pn|
+    dirs = %w{bin lib Frameworks}
+    dirs.map! { |dir| join(dir) }
+    dirs.reject! { |dir| not dir.directory? }
+
+    dirs.each do |dir|
+      dir.find do |pn|
         next if pn.symlink? or pn.directory?
-        mach_o_files << pn if pn.dylib? or pn.mach_o_bundle?
+        mach_o_files << pn if pn.dylib? or pn.mach_o_bundle? or pn.mach_o_executable?
       end
     end
 
-    if (bin = join 'bin').directory?
-      bin.find do |pn|
-        next if pn.symlink? or pn.directory?
-        mach_o_files << pn if pn.mach_o_executable?
-      end
-    end
     mach_o_files
   end
 end

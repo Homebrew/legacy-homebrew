@@ -10,6 +10,8 @@ class Keg < Pathname
   # locale-specific directories have the form language[_territory][.codeset][@modifier]
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
   INFOFILE_RX = %r[info/([^.].*?\.info|dir)$]
+  TOP_LEVEL_DIRECTORIES = %w[bin etc include lib sbin share var Frameworks]
+  PRUNEABLE_DIRECTORIES = %w[bin etc include lib sbin share Frameworks Library/LinkedKegs]
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
@@ -27,23 +29,30 @@ class Keg < Pathname
   end
 
   def unlink
-    n=0
+    # these are used by the ObserverPathnameExtension to count the number
+    # of files and directories linked
+    $n=$d=0
 
-    %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
+    TOP_LEVEL_DIRECTORIES.map{ |d| self/d }.each do |src|
       next unless src.exist?
       src.find do |src|
         next if src == self
         dst=HOMEBREW_PREFIX+src.relative_path_from(self)
-        next unless dst.symlink?
+        dst.extend ObserverPathnameExtension
+
+        # check whether the file to be unlinked is from the current keg first
+        if !dst.symlink? || !dst.exist? || src != dst.resolved_path
+          next
+        end
+
         dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
         dst.unlink
         dst.parent.rmdir_if_possible
-        n+=1
         Find.prune if src.directory?
       end
     end
     linked_keg_record.unlink if linked_keg_record.symlink?
-    n
+    $n+$d
   end
 
   def fname
@@ -67,6 +76,12 @@ class Keg < Pathname
     dir.directory? and not dir.children.length.zero?
   end
 
+  def plist_installed?
+    Dir.chdir self do
+      not Dir.glob("*.plist").empty?
+    end
+  end
+
   def version
     require 'version'
     Version.new(basename.to_s)
@@ -76,15 +91,15 @@ class Keg < Pathname
     Pathname.new(self.to_s).basename
   end
 
-  def link mode=nil
+  def link mode=OpenStruct.new
     raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
 
     $n=0
     $d=0
 
-    share_mkpaths=%w[aclocal doc info locale man]+(1..8).collect{|x|"man/man#{x}"}
-    # cat pages are rare, but exist so the directories should be created
-    share_mkpaths << (1..8).collect{ |x| "man/cat#{x}" }
+    share_mkpaths = %w[aclocal doc info locale man]
+    share_mkpaths.concat((1..8).map { |i| "man/man#{i}" })
+    share_mkpaths.concat((1..8).map { |i| "man/cat#{i}" })
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
@@ -92,6 +107,7 @@ class Keg < Pathname
     link_dir('bin', mode) {:skip_dir}
     link_dir('sbin', mode) {:skip_dir}
     link_dir('include', mode) {:link}
+    link_dir('Frameworks', mode) { :link }
 
     link_dir('share', mode) do |path|
       case path.to_s
@@ -124,9 +140,10 @@ class Keg < Pathname
       end
     end
 
-    linked_keg_record.make_relative_symlink(self) unless mode == :dryrun
-
-    optlink unless mode == :dryrun
+    unless mode.dry_run
+      linked_keg_record.make_relative_symlink(self)
+      optlink
+    end
 
     return $n + $d
   rescue Exception
@@ -163,21 +180,25 @@ protected
     puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
   end
 
-  def make_relative_symlink dst, src, mode=nil
+  def make_relative_symlink dst, src, mode=OpenStruct.new
     if dst.exist? and dst.realpath == src.realpath
       puts "Skipping; already exists: #{dst}" if ARGV.verbose?
     # cf. git-clean -n: list files to delete, don't really link or delete
-    elsif mode == :dryrun
+    elsif mode.dry_run and mode.overwrite
       puts dst if dst.exist?
       return
+    # list all link targets
+    elsif mode.dry_run
+      puts dst
+      return
     else
-      dst.delete if mode == :force && dst.exist?
+      dst.delete if mode.overwrite && dst.exist?
       dst.make_relative_symlink src
     end
   end
 
   # symlinks the contents of self+foo recursively into /usr/local/foo
-  def link_dir foo, mode=nil
+  def link_dir foo, mode=OpenStruct.new
     root = self+foo
     return unless root.exist?
 

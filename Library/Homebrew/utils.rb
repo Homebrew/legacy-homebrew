@@ -11,6 +11,7 @@ class Tty
     def reset; escape 0; end
     def em; underline 39; end
     def green; color 92 end
+    def gray; bold 30 end
 
     def width
       `/usr/bin/tput cols`.strip.to_i

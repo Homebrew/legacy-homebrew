@@ -22,8 +22,8 @@ end
 
 class Mu < Formula
   homepage 'http://www.djcbsoftware.nl/code/mu/'
-  url 'http://mu0.googlecode.com/files/mu-0.9.8.5.tar.gz'
-  sha1 'dfcf1c5ae014f464e083822e3ece420479b64b2a'
+  url 'http://mu0.googlecode.com/files/mu-0.9.9.tar.gz'
+  sha1 'eafd678faf852230f55ae262ae005d006a9a839b'
 
   head 'https://github.com/djcb/mu.git'
 
@@ -36,8 +36,8 @@ class Mu < Formula
   depends_on Emacs23Installed.new if build.include? 'with-emacs'
 
   if build.head?
-    depends_on :automake
-    depends_on :libtool
+    depends_on 'automake' => :build
+    depends_on 'libtool' => :build
   end
 
   def install

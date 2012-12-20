@@ -2,9 +2,9 @@ require 'formula'
 
 class Mame < Formula
   homepage 'http://mamedev.org/'
-  url 'http://mamedev.org/downloader.php?file=releases/mame0147s.zip'
-  version '0147s'
-  sha1 '023a5841389ae8d41db21704cffdeedb258591e9'
+  url 'svn://dspnet.fr/mame/trunk', :revision => 17961
+  version '0.147'
+  head 'svn://dspnet.fr/mame/trunk'
 
   depends_on :x11
   depends_on 'sdl'

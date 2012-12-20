@@ -7,8 +7,6 @@ class Nvi < Formula
 
   depends_on 'berkeley-db'
 
-  skip_clean :all
-
   def patches
     DATA
   end

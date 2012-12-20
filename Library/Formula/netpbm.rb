@@ -2,35 +2,20 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.86/netpbm-10.35.86.tgz'
-  sha1 '45b5dacdd844dfd9f2b02a1ba0e59e6a3bddb885'
+  url 'svn+http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/', :revision => 1809
+  version '10.60.05'
+  # Maintainers: Look http://netpbm.svn.sourceforge.net/viewvc/netpbm/
+  # for versions and matching revisions
 
   head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
-
-  devel do
-    url 'svn+http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/',
-      :revision => 1724
-    version '10.59.02'
-  end
 
   depends_on "libtiff"
   depends_on "jasper"
   depends_on :libpng
 
-  def patches; { :p0 => %W[
-    https://trac.macports.org/export/95870/trunk/dports/graphics/netpbm/files/patch-clang-sse-workaround.diff
-    https://trac.macports.org/export/95870/trunk/dports/graphics/netpbm/files/patch-converter-other-giftopnm.c-strcaseeq.diff
-    ]}
-  end unless build.stable?
-
   def install
-    if build.stable?
-      system "cp", "Makefile.config.in", "Makefile.config"
-      config = "Makefile.config"
-    else
-      system "cp", "config.mk.in", "config.mk"
-      config = "config.mk"
-    end
+    system "cp", "config.mk.in", "config.mk"
+    config = "config.mk"
 
     inreplace config do |s|
       s.remove_make_var! "CC"
