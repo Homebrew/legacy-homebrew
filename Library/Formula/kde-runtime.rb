@@ -9,13 +9,13 @@ class KdeRuntime < BaseKdeFormula
     url 'http://download.kde.org/unstable/4.9.95/src/kde-runtime-4.9.95.tar.xz'
     sha1 'b5c271ddf335970d2d68395162b73f087efea4c4'
   end
+
   depends_on 'kde-phonon'
-  depends_on 'kdelibs'
   depends_on 'oxygen-icons'
-  
+  depends_on 'kdelibs'
+
   def extra_cmake_args
     phonon = Formula.factory 'kde-phonon'
     "-DPHONON_INCLUDE_DIR=#{phonon.include} -DPHONON_LIBRARY=#{phonon.lib}/libphonon.dylib"
   end
-
 end
