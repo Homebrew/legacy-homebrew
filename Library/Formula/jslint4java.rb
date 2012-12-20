@@ -7,6 +7,6 @@ class Jslint4java < Formula
 
   def install
     libexec.install Dir['*']
-    bin.write_jar_script libexec/'jslint4java-2.0.2.jar', 'jslint4java'
+    bin.write_jar_script libexec/'jslint4java-2.0.3.jar', 'jslint4java'
   end
 end
