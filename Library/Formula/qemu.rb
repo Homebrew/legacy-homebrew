@@ -4,6 +4,7 @@ class Qemu < Formula
   homepage 'http://www.qemu.org/'
   url 'http://wiki.qemu-project.org/download/qemu-1.3.0.tar.bz2'
   sha1 'ed56e8717308a56f51a6ed4c18a4335e5aacae83'
+  head 'git://git.qemu-project.org/qemu.git', :using => :git
 
   depends_on 'jpeg'
   depends_on 'gnutls'
