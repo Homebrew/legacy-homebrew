@@ -2,7 +2,7 @@ require 'formula'
 
 class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.20.1.tar.gz'
+  url 'http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.1.tar.gz'
   sha1 'd1c468a589060dd43532c1afabec9eee10095429'
 
   def cluster_name
@@ -49,6 +49,11 @@ class Elasticsearch < Formula
       # Replace CLASSPATH paths to use libexec instead of lib
       s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
     end
+
+    # Persist plugins on upgrade
+    plugins = "#{HOMEBREW_PREFIX}/var/lib/elasticsearch/plugins"
+    mkdir_p plugins
+    ln_sf plugins, "#{prefix}/plugins"
   end
 
   def caveats; <<-EOS.undent

@@ -71,7 +71,7 @@ ARGV.named.each do|arg|
   end
 
   ohai 'Patch changed:'
-  safe_system 'git', 'diff', "#{revision}..", '--stat'
+  safe_system 'git', '--no-pager', 'diff', "#{revision}..", '--stat'
 
   if ARGV.include? '--install'
     `git diff #{revision}.. --name-status`.each_line do |line|

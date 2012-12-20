@@ -41,13 +41,13 @@ class Gnuplot < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
-      --with-readline=#{readline.prefix}
+      --with-readline=#{readline.opt_prefix}
       --without-latex
       --without-tutorial
     ]
 
-    args << "--with-pdf=#{pdflib.prefix}" if build.include? 'pdf'
-    args << '--with' + ((build.include? 'nogd') ? 'out-gd' : "-gd=#{gd.prefix}")
+    args << "--with-pdf=#{pdflib.opt_prefix}" if build.include? 'pdf'
+    args << '--with' + ((build.include? 'nogd') ? 'out-gd' : "-gd=#{gd.opt_prefix}")
     args << '--disable-wxwidgets' unless build.include? 'wx'
     args << '--without-cairo'     unless build.include? 'cairo'
     args << '--enable-qt'             if build.include? 'qt'

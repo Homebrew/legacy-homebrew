@@ -7,11 +7,14 @@ class RdsCommandLineTools < AmazonWebServicesFormula
   sha1 '668cd776e88f76084164811cb4cab3e6373009dc'
 
   def install
-    standard_install
+    rm Dir['bin/*.cmd'] # Remove Windows command files
+    libexec.install "bin", "lib"
+    bin.install_symlink Dir["#{libexec}/bin/*"]
+    (bin/'service').unlink # Don't keep this symlink
   end
 
   def caveats
-    s = standard_instructions "AWS_RDS_HOME"
+    s = standard_instructions "AWS_RDS_HOME", libexec
     s += <<-EOS.undent
 
       To check that your setup works properly, run the following command:
