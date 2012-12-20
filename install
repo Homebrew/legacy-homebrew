@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
 # This script installs to /usr/local only. To install elsewhere you can just
 # untar https://github.com/mxcl/homebrew/tarball/master anywhere you like or
 # change the value of HOMEBREW_PREFIX.
@@ -83,7 +83,7 @@ end
 Dir.chdir "/usr"
 
 ####################################################################### script
-abort "MacOS too old, see: https://gist.github.com/1144389" if macos_version < 10.4
+abort "MacOS too old, see: https://gist.github.com/1144389" if macos_version < 10.5
 abort "Don't run this as root!" if Process.uid == 0
 abort <<-EOABORT unless `groups`.split.include? "admin"
 This script requires the user #{ENV['USER']} to be an Administrator. If this
@@ -145,7 +145,7 @@ Dir.chdir HOMEBREW_PREFIX do
   if git
     # we do it in four steps to avoid merge errors when reinstalling
     system git, "init", "-q"
-    system git, "remote", "add", "origin", "https://github.com/mistydemeo/tigerbrew"
+    system git, "remote", "add", "origin", "https://github.com/mxcl/homebrew"
 
     args = git, "fetch", "origin", "master:refs/remotes/origin/master", "-n"
     args << "--depth=1" if ARGV.include? "--fast"
@@ -157,14 +157,14 @@ Dir.chdir HOMEBREW_PREFIX do
     # pipefail to cause the exit status from curl to propogate if it fails
     # we use -k because OS X curl has a bunch of bad SSL certificates
     # you may want to remove the -k flag from your fork!
-    system "/bin/bash -o pipefail -c '/usr/bin/curl -skSfL https://github.com/mistydemeo/tigerbrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
+    system "/bin/bash -o pipefail -c '/usr/bin/curl -skSfL https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
   end
 end
 
 warn "#{HOMEBREW_PREFIX}/bin is not in your PATH." unless ENV['PATH'].split(':').include? "#{HOMEBREW_PREFIX}/bin"
 
 if macos_version < 10.7
-  warn "Now install Xcode: https://connect.apple.com/" unless File.exist? "/usr/bin/cc"
+  warn "Now install Xcode: https://developer.apple.com/xcode/" unless File.exist? "/usr/bin/cc"
 else
   `/usr/bin/cc --version 2> /dev/null` =~ %r{tags/Apple/clang-(\d+)}
   version = $1.to_i
