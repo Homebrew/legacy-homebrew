@@ -1,6 +1,6 @@
 require 'base_kde_formula'
 
-class Kdegraphics-thumbnailers < BaseKdeFormula
+class KdegraphicsThumbnailers < BaseKdeFormula
   homepage 'http://www.kde.org/'
   url 'http://download.kde.org/stable/4.9.4/src/kdegraphics-thumbnailers-4.9.4.tar.xz'
   sha1 'ea6156de54839157f933588eb7db6d94a2399f3b'

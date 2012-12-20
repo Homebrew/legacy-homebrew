@@ -1,6 +1,6 @@
 require 'base_kde_formula'
 
-class Kde-workspace < BaseKdeFormula
+class KdeWorkspace < BaseKdeFormula
   homepage 'http://www.kde.org/'
   url 'http://download.kde.org/stable/4.9.4/src/kde-workspace-4.9.4.tar.xz'
   sha1 'c619181256f86bb1921cfbe6136ea3604d94aabe'

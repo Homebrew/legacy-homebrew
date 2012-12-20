@@ -1,7 +1,7 @@
 require 'base_kde_formula'
 
 class OxygenIcons < BaseKdeFormula
-  homepage 'http://www.oxygen-icons.org/'
+  homepage 'http://www.oxygen-icons.org'
   url 'http://download.kde.org/stable/4.9.4/src/oxygen-icons-4.9.4.tar.xz'
   sha1 '459c0db3412e7f3aa3908467cbc6d9bc7af04c07'
 

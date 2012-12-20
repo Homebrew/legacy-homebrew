@@ -1,6 +1,6 @@
 require 'base_kde_formula'
 
-class Kde-l10n-es < BaseKdeFormula
+class KdeL10nEs < BaseKdeFormula
   homepage 'http://www.kde.org/'
   url 'http://download.kde.org/stable/4.9.4/src/kde-l10n/kde-l10n-es-4.9.4.tar.xz'
   sha1 '5df9817ab57474b40daa6f05869ab77ff0bdb36b'

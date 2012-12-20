@@ -1,6 +1,6 @@
 require 'base_kde_formula'
 
-class Kde-base-artwork < BaseKdeFormula
+class KdeBaseArtwork < BaseKdeFormula
   homepage 'http://www.kde.org/'
   url 'http://download.kde.org/stable/4.9.4/src/kde-base-artwork-4.9.4.tar.xz'
   sha1 'ab7b1746ce7fce494e5b48c8e42675ce733eb6e8'

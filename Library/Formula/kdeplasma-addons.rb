@@ -1,6 +1,6 @@
 require 'base_kde_formula'
 
-class Kdeplasma-addons < BaseKdeFormula
+class KdeplasmaAddons < BaseKdeFormula
   homepage 'http://www.kde.org/'
   url 'http://download.kde.org/stable/4.9.4/src/kdeplasma-addons-4.9.4.tar.xz'
   sha1 '112e6702e16d0e40c6422c89227a25c2c4993df3'

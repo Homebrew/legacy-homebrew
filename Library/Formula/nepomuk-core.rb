@@ -1,6 +1,6 @@
 require 'base_kde_formula'
 
-class Nepomuk-core < BaseKdeFormula
+class NepomukCore < BaseKdeFormula
   homepage 'http://www.kde.org/'
   url 'http://download.kde.org/stable/4.9.4/src/nepomuk-core-4.9.4.tar.xz'
   sha1 'f48b29dbbaec3938930176d3225fe292c26c9fce'

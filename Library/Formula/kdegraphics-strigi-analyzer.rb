@@ -1,6 +1,6 @@
 require 'base_kde_formula'
 
-class Kdegraphics-strigi-analyzer < BaseKdeFormula
+class KdegraphicsStrigiAnalyzer < BaseKdeFormula
   homepage 'http://www.kde.org/'
   url 'http://download.kde.org/stable/4.9.4/src/kdegraphics-strigi-analyzer-4.9.4.tar.xz'
   sha1 'cca29298ab63c7e775c81a2266c431507490c93a'

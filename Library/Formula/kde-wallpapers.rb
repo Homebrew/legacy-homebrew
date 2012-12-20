@@ -1,7 +1,6 @@
-
 require 'base_kde_formula'
 
-class Kde-wallpapers < BaseKdeFormula
+class KdeWallpapers < BaseKdeFormula
   homepage 'http://www.kde.org/'
   url 'http://download.kde.org/stable/4.9.4/src/kde-wallpapers-4.9.4.tar.xz'
   sha1 '02c8d13d884423a66aa04b63e7f99d274cfe683d'

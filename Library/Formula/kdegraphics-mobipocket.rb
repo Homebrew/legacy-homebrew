@@ -1,6 +1,6 @@
 require 'base_kde_formula'
 
-class Kdegraphics-mobipocket < BaseKdeFormula
+class KdegraphicsMobipocket < BaseKdeFormula
   homepage 'http://www.kde.org/'
   url 'http://download.kde.org/stable/4.9.4/src/kdegraphics-mobipocket-4.9.4.tar.xz'
   sha1 '11492b62e7691becf2fa1f1e8fb50d341abb7825'

@@ -1,6 +1,6 @@
 require 'base_kde_formula'
 
-class Kdepim-runtime < BaseKdeFormula
+class KdepimRuntime < BaseKdeFormula
   homepage 'http://www.kde.org/'
   url 'http://download.kde.org/stable/4.9.4/src/kdepim-runtime-4.9.4.tar.xz'
   sha1 '5d6466761e890b2ee0ce66b274553c10f2827ca0'

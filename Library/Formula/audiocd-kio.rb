@@ -1,6 +1,6 @@
 require 'base_kde_formula'
 
-class Audiocd-kio < BaseKdeFormula
+class AudiocdKio < BaseKdeFormula
   homepage 'http://www.kde.org/'
   url 'http://download.kde.org/stable/4.9.4/src/audiocd-kio-4.9.4.tar.xz'
   sha1 'f3ad5a8d8f4663ea0ea9d67834498350e932f57e'
