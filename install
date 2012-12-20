@@ -145,7 +145,7 @@ Dir.chdir HOMEBREW_PREFIX do
   if git
     # we do it in four steps to avoid merge errors when reinstalling
     system git, "init", "-q"
-    system git, "remote", "add", "origin", "https://github.com/mxcl/homebrew"
+    system git, "remote", "add", "origin", "https://github.com/mistydemeo/tigerbrew"
 
     args = git, "fetch", "origin", "master:refs/remotes/origin/master", "-n"
     args << "--depth=1" if ARGV.include? "--fast"
@@ -157,7 +157,7 @@ Dir.chdir HOMEBREW_PREFIX do
     # pipefail to cause the exit status from curl to propogate if it fails
     # we use -k because OS X curl has a bunch of bad SSL certificates
     # you may want to remove the -k flag from your fork!
-    system "/bin/bash -o pipefail -c '/usr/bin/curl -skSfL https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
+    system "/bin/bash -o pipefail -c '/usr/bin/curl -skSfL https://github.com/mistydemeo/tigerbrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
   end
 end
 
