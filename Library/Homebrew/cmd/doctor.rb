@@ -46,9 +46,10 @@ def remove_trailing_slash s
 end
 
 
-def path_folders
-  @path_folders ||= ENV['PATH'].split(':').collect do |p|
-    begin remove_trailing_slash(File.expand_path(p))
+def paths
+  @paths ||= ENV['PATH'].split(':').collect do |p|
+    begin
+      remove_trailing_slash(File.expand_path(p))
     rescue ArgumentError
       onoe "The following PATH component is invalid: #{p}"
     end
@@ -439,7 +440,8 @@ def check_user_path_1
 
   out = nil
 
-  path_folders.each do |p| case p
+  paths.each do |p|
+    case p
     when '/usr/bin'
       seen_usr_bin = true
       unless $seen_prefix_bin
@@ -582,7 +584,7 @@ def check_for_config_scripts
   whitelist = %W[/usr/bin /usr/sbin /usr/X11/bin /usr/X11R6/bin /opt/X11/bin #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin]
   whitelist.map! { |d| d.downcase }
 
-  path_folders.each do |p|
+  paths.each do |p|
     next if whitelist.include? p.downcase
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
