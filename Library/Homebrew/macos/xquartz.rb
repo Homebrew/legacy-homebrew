@@ -6,9 +6,11 @@ module MacOS::XQuartz extend self
   # The X11.app distributed by Apple is also XQuartz, and therefore covered
   # by this method.
   def version
-    path = MacOS.app_with_bundle_id(FORGE_BUNDLE_ID) || MacOS.app_with_bundle_id(APPLE_BUNDLE_ID)
-    version = if not path.nil? and path.exist?
-      `mdls -raw -name kMDItemVersion "#{path}" 2>/dev/null`.strip
+    @version ||= begin
+      path = MacOS.app_with_bundle_id(FORGE_BUNDLE_ID) || MacOS.app_with_bundle_id(APPLE_BUNDLE_ID)
+      if not path.nil? and path.exist?
+        `mdls -raw -name kMDItemVersion "#{path}" 2>/dev/null`.strip
+      end
     end
   end
 
@@ -34,7 +36,7 @@ module MacOS::XQuartz extend self
   end
 
   def installed?
-    not prefix.nil?
+    !version.nil? && !prefix.nil?
   end
 end
 
