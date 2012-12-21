@@ -81,9 +81,9 @@ end
 # Installing MacGPG2 interferes with Homebrew in a big way
 # http://sourceforge.net/projects/macgpg2/files/
 def check_for_macgpg2
-  if File.exist? "/Applications/start-gpg-agent.app" or
-     File.exist? "/Library/Receipts/libiconv1.pkg" or
-     File.exist? "/usr/local/MacGPG2"
+  if %w{/Applications/start-gpg-agent.app
+        /Library/Receipts/libiconv1.pkg
+        /usr/local/MacGPG2}.any? { |f| File.exist? f }
     <<-EOS.undent
       You may have installed MacGPG2 via the package installer.
       Several other checks in this script will turn up problems, such as stray
