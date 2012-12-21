@@ -2,8 +2,8 @@ require 'formula'
 
 class Qjson < Formula
   homepage 'http://qjson.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/qjson/qjson/0.7.1/qjson-0.7.1.tar.bz2'
-  sha1 '19bbef24132b238e99744bb35194c6dadece98f9'
+  url 'http://sourceforge.net/projects/qjson/files/qjson/0.8.1/qjson-0.8.1.tar.bz2'
+  sha1 '197ccfd533f17bcf40428e68a82e6622047ed4ab'
 
   depends_on 'cmake' => :build
   depends_on 'qt'
