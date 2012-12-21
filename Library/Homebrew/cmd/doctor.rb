@@ -1020,7 +1020,7 @@ module Homebrew extend self
       checks.methods.sort << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
     else
       ARGV.named
-    end.select{ |method| method =~ /^check_/ }.uniq
+    end.select{ |method| method =~ /^check_/ }.reverse.uniq.reverse
 
     methods.each do |method|
       out = checks.send(method)
