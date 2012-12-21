@@ -46,8 +46,14 @@ class Python < Formula
   option 'with-dtrace', 'Experimental DTrace support (http://bugs.python.org/issue13405)' if MacOS::CLT.installed?
 
   def patches
-    'https://raw.github.com/gist/3415636/2365dea8dc5415daa0148e98c394345e1191e4aa/pythondtrace-patch.diff'
-  end if build.include? 'with-dtrace'
+    p = []
+    # python fails to build on NFS; patch is merged upstream, will be in next release
+    # see http://bugs.python.org/issue14662
+    p << "https://gist.github.com/raw/4349132/25662c6b382315b5db67bf949773d76471bbcee7/python-nfs-shutil.diff"
+    p << 'https://raw.github.com/gist/3415636/2365dea8dc5415daa0148e98c394345e1191e4aa/pythondtrace-patch.diff' if build.include? 'with-dtrace'
+
+    p
+  end
 
   def site_packages_cellar
     prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
