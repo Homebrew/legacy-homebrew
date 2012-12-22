@@ -14,9 +14,9 @@ class Sbcl < Formula
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    # sha1 '' => :mountainlion
-    # sha1 '' => :lion
-    # sha1 '' => :snowleopard
+    sha1 '0552baca3f757837734fa0ecefbf158bc530c5a1' => :mountainlion
+    sha1 '9ff8b77853a16f30c1770790f71ec1260b4bd776' => :lion
+    sha1 '520a3526f4c3565fe2b7f99cd3e944431c8932f8' => :snowleopard
   end
 
   fails_with :llvm do
