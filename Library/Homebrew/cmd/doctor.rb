@@ -738,7 +738,7 @@ end
 def __check_linked_brew f
   links_found = []
 
-  Pathname.new(f.prefix).find do |src|
+  f.prefix.find do |src|
     dst=HOMEBREW_PREFIX+src.relative_path_from(f.prefix)
     next unless dst.symlink?
 
