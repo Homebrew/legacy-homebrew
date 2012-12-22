@@ -16,9 +16,9 @@ class Llvm < Formula
   head      'http://llvm.org/git/llvm.git'
 
   bottle do
-    # sha1 '' => :mountainlion
-    # sha1 '' => :lion
-    # sha1 '' => :snowleopard
+    sha1 '9fddf0bfed060ade86c88b64c40cc4bd5f1f0f2c' => :mountainlion
+    sha1 '8d3f3d5090d3bd2cf0c953da105efc63080e948f' => :lion
+    sha1 '3ba0beee27d60e80e9790cca9d5e21b2b8169ffe' => :snowleopard
   end
 
   option :universal
