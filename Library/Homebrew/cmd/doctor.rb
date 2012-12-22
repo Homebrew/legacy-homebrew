@@ -531,22 +531,24 @@ def check_which_pkg_config
 end
 
 def check_for_gettext
-  if %w[lib/libgettextlib.dylib
-        lib/libintl.dylib
-        include/libintl.h ].any? { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
-    <<-EOS.undent
-      gettext was detected in your PREFIX.
-      The gettext provided by Homebrew is "keg-only", meaning it does not
-      get linked into your PREFIX by default.
+  find_relative_paths("lib/libgettextlib.dylib",
+                      "lib/libintl.dylib",
+                      "include/libintl.h")
 
-      If you `brew link gettext` then a large number of brews that don't
-      otherwise have a `depends_on 'gettext'` will pick up gettext anyway
-      during the `./configure` step.
+  return if @found.empty?
 
-      If you have a non-Homebrew provided gettext, other problems will happen
-      especially if it wasn't compiled with the proper architectures.
-    EOS
+  # Our gettext formula will be caught by check_linked_keg_only_brews
+  f = Formula.factory("gettext") rescue nil
+  return if f and f.linked_keg.directory? and @found.all? do |path|
+    Pathname.new(path).realpath.to_s.start_with? "#{HOMEBREW_CELLAR}/gettext"
   end
+
+  s = <<-EOS.undent_________________________________________________________72
+      gettext files detected at a system prefix
+      These files can cause compilation and link failures, especially if they
+      are compiled with improper architectures. Consider removing these files:
+      EOS
+  @found.inject(s) { |s, f| s << "    #{f}\n" }
 end
 
 def check_for_iconv
@@ -570,7 +572,7 @@ def check_for_iconv
 
           tl;dr: delete these files:
           EOS
-      @found.inject(s){|s, f| s << "    #{f}" }
+      @found.inject(s){|s, f| s << "    #{f}\n" }
     end
   end
 end
