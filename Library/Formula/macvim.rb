@@ -12,6 +12,7 @@ class Macvim < Formula
   option "override-system-vim", "Override system vim"
   option "with-cscope", "Build with Cscope support"
   option "with-lua", "Build with Lua scripting support"
+  option "with-python3", "Build with Python 3 scripting support"
 
   depends_on 'cscope' if build.include? 'with-cscope'
   depends_on 'lua' if build.include? 'with-lua'
@@ -46,6 +47,10 @@ class Macvim < Formula
     if build.include? "with-lua"
       args << "--enable-luainterp"
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
+    end
+
+    if build.include? "with-python3"
+      args << "--enable-python3interp"
     end
 
     system "./configure", *args
