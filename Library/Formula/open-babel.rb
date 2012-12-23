@@ -23,6 +23,32 @@ class OpenBabel < Formula
     args << "-DBUILD_GUI=ON" if build.include? 'gui'
     args << "-DCAIRO_INCLUDE_DIRS=#{include}/cairo "\
     "-DCAIRO_LIBRARIES=#{lib}/libcairo.dylib" if build.include? 'png'
+
+    # Find the right pyhton installation (code from opencv.rb)
+    if build.include? 'python'
+      python_prefix = `python-config --prefix`.strip
+      # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
+      if File.exist? "#{python_prefix}/Python"
+        # Python was compiled with --framework:
+        args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+        if !MacOS::CLT.installed? and python_prefix.start_with? '/System/Library'
+          # For Xcode-only systems, the headers of system's python are inside of Xcode
+          args << "-DPYTHON_INCLUDE_DIR='#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/Headers'"
+        else
+          args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+        end
+      else
+        python_lib = "#{python_prefix}/lib/lib#{which_python}"
+        if File.exists? "#{python_lib}.a"
+          args << "-DPYTHON_LIBRARY='#{python_lib}.a'"
+        else
+          args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
+        end
+        args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
+      end
+      args << "-DPYTHON_PACKAGES_PATH='#{lib}/#{which_python}/site-packages'"
+    end
+
     args << '..'
 
     mkdir 'build' do
