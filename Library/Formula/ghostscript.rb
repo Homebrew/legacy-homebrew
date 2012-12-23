@@ -1,11 +1,5 @@
 require 'formula'
 
-class GhostscriptFonts < Formula
-  homepage 'http://sourceforge.net/projects/gs-fonts/'
-  url 'http://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
-  sha1 '2a7198e8178b2e7dba87cb5794da515200b568f5'
-end
-
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
   url 'http://downloads.ghostscript.com/public/ghostscript-9.06.tar.gz'
@@ -24,6 +18,7 @@ class Ghostscript < Formula
   depends_on 'jbig2dec'
   depends_on 'little-cms2'
   depends_on :libpng
+  depends_on 'ghostscript-fonts'
 
   # Fix dylib names, per installation instructions
   def patches
@@ -69,10 +64,6 @@ class Ghostscript < Formula
       # Install binaries and libraries
       system "make install"
       system "make install-so"
-    end
-
-    GhostscriptFonts.new.brew do
-      (share+'ghostscript').install '../fonts'
     end
 
     (man+'de').rmtree

@@ -16,6 +16,7 @@ class Graphicsmagick < Formula
   head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
 
   option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
+  option 'with-ghostscript-fonts', 'Compile against just the ghostscript fonts.'
   option 'use-tiff', 'Compile with libtiff support.'
   option 'use-cms', 'Compile with little-cms support.'
   option 'use-jpeg2000', 'Compile with jasper support.'
@@ -33,6 +34,7 @@ class Graphicsmagick < Formula
   depends_on :x11 if build.include? 'with-x'
 
   depends_on 'ghostscript' => :optional if ghostscript_srsly?
+  depends_on 'ghostscript-fonts' => :optional if build.include? 'with-ghostscript-fonts'
 
   depends_on 'libtiff' => :optional if build.include? 'use-tiff'
   depends_on 'little-cms2' => :optional if build.include? 'use-cms'

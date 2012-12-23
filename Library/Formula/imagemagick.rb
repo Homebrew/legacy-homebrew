@@ -21,6 +21,7 @@ class Imagemagick < Formula
     :using => UnsafeSubversionDownloadStrategy
 
   option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
+  option 'with-ghostscript-fonts', 'Compile against just the ghostscript fonts.'
   option 'use-tiff', 'Compile with libtiff support.'
   option 'use-cms', 'Compile with little-cms support.'
   option 'use-jpeg2000', 'Compile with jasper support.'
@@ -50,6 +51,7 @@ class Imagemagick < Formula
   depends_on :freetype unless build.include? 'without-freetype' and not MacOS::X11.installed? # => :recommended
 
   depends_on 'ghostscript' => :optional if ghostscript_srsly?
+  depends_on 'ghostscript-fonts' => :optional if build.include? 'with-ghostscript-fonts'
 
   depends_on 'libtiff' => :optional if build.include? 'use-tiff'
   depends_on 'little-cms' => :optional if build.include? 'use-cms'
@@ -111,6 +113,9 @@ class Imagemagick < Formula
       <<-EOS.undent
       Some tools will complain unless the ghostscript fonts are installed to:
         #{HOMEBREW_PREFIX}/share/ghostscript/fonts
+      You can install just the ghostscript fonts (without the rest of ghostscript
+      by installing the 'ghostscript-fonts' formula, or by using the ---with-ghostscript-fonts'
+      option with this imagemagick.
       EOS
     end
   end
