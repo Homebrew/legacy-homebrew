@@ -8,10 +8,10 @@ class Libagg < Formula
   option 'with-freetype', 'Build with FreeType support'
 
   depends_on :automake
+  depends_on :libtool
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on :freetype if build.include? "with-freetype"
-  depends_on :libtool unless MacOS.version >= :mountain_lion
 
   fails_with :clang do
     build 421

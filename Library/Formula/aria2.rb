@@ -6,6 +6,7 @@ class Aria2 < Formula
   sha1 'ef7bc1a0fc90f58cc767f240eb49d099c02b93d9'
 
   depends_on 'pkg-config' => :build
+  depends_on 'gnutls'
 
   # Leopard's libxml2 is too old.
   depends_on 'libxml2' if MacOS.version == :leopard
