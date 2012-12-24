@@ -1,12 +1,12 @@
 # A dependency on a language-specific module.
 class LanguageModuleDependency < Requirement
+  fatal true
+
   def initialize language, module_name, import_name=nil
     @language = language
     @module_name = module_name
     @import_name = import_name || module_name
   end
-
-  def fatal?; true; end
 
   def satisfied?
     quiet_system(*the_test)
@@ -53,13 +53,13 @@ class X11Dependency < Requirement
   include Comparable
   attr_reader :min_version
 
+  fatal true
+
   def initialize(*tags)
     tags.flatten!
     @min_version = tags.shift if /(\d\.)+\d/ === tags.first
     super
   end
-
-  def fatal?; true; end
 
   def satisfied?
     MacOS::XQuartz.installed? and (@min_version.nil? or @min_version <= MacOS::XQuartz.version)
@@ -100,13 +100,13 @@ class MPIDependency < Requirement
 
   attr_reader :lang_list
 
+  fatal true
+
   def initialize *lang_list
     @lang_list = lang_list
     @non_functional = []
     @unknown_langs = []
   end
-
-  def fatal?; true; end
 
   def mpi_wrapper_works? compiler
     compiler = which compiler
@@ -170,12 +170,14 @@ class MPIDependency < Requirement
         EOS
     end
   end
-
 end
 
 # This requirement added by the `conflicts_with` DSL method.
 class ConflictRequirement < Requirement
   attr_reader :formula
+
+  # The user can chose to force installation even in the face of conflicts.
+  fatal !ARGV.force?
 
   def initialize formula, name, opts={}
     @formula = formula
@@ -199,15 +201,10 @@ class ConflictRequirement < Requirement
     keg = Formula.factory(@formula).prefix
     not keg.exist? && Keg.new(keg).linked?
   end
-
-  # The user can chose to force installation even in the face of conflicts.
-  def fatal?
-    not ARGV.force?
-  end
 end
 
 class XcodeDependency < Requirement
-  def fatal?; true; end
+  fatal true
 
   def satisfied?
     MacOS::Xcode.installed?
@@ -221,7 +218,7 @@ class XcodeDependency < Requirement
 end
 
 class MysqlInstalled < Requirement
-  def fatal?; true; end
+  fatal true
 
   def satisfied?
     which 'mysql_config'
@@ -244,7 +241,7 @@ class MysqlInstalled < Requirement
 end
 
 class PostgresqlInstalled < Requirement
-  def fatal?; true; end
+  fatal true
 
   def satisfied?
     which 'pg_config'
