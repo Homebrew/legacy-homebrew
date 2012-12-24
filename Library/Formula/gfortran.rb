@@ -23,7 +23,6 @@ class Gfortran < Formula
 
   begin
     depends_on 'dejagnu'
-    depends_on 'expect'
   end if build.include? 'check'  # http://gcc.gnu.org/install/test.html
 
   fails_with :clang do
