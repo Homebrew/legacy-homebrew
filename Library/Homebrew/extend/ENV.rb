@@ -431,6 +431,11 @@ class << ENV
     append 'CPPFLAGS', "-DNCURSES_OPAQUE=0"
   end
 
+  def userpaths!
+    paths = ORIGINAL_PATHS.map { |p| p.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
+    self['PATH'] = paths.unshift(*self['PATH'].split(":")).uniq.join(":")
+  end
+
   def fortran
     fc_flag_vars = %w{FCFLAGS FFLAGS}
 
