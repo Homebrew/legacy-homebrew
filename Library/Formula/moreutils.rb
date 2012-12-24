@@ -6,6 +6,9 @@ class Moreutils < Formula
   mirror 'http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.47.tar.gz'
   sha1 '0459608fdb37bc59605d7a476717693afd133e00'
 
+  conflicts_with 'parallel',
+    :because => "both install a 'parallel' executable."
+
   def install
     # Building the man pages requires DocBook, so we skip them.
     scripts = %w[chronic combine ts vidir vipe zrun]
