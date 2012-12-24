@@ -159,7 +159,9 @@ class Requirement
   # Should return true if this requirement is met.
   def satisfied?; false; end
   # Should return true if not meeting this requirement should fail the build.
-  def fatal?; false; end
+  def fatal?
+    self.class.fatal || false
+  end
   # The message to show when the requirement is not met.
   def message; ""; end
 
@@ -173,6 +175,12 @@ class Requirement
 
   def hash
     message.hash
+  end
+
+  class << self
+    def fatal(val=nil)
+      val.nil? ? @fatal : @fatal = val
+    end
   end
 end
 
