@@ -102,6 +102,8 @@ class MPIDependency < Requirement
 
   fatal true
 
+  env :userpaths
+
   def initialize *lang_list
     @lang_list = lang_list
     @non_functional = []
