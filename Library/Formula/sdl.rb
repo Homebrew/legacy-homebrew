@@ -18,7 +18,11 @@ class Sdl < Formula
     # we have to do this because most build scripts assume that all sdl modules
     # are installed to the same prefix. Consequently SDL stuff cannot be
     # keg-only but I doubt that will be needed.
-    inreplace %w[sdl.pc.in sdl-config.in], '@prefix@', HOMEBREW_PREFIX
+    if build.stable?
+      inreplace %w[sdl.pc.in sdl-config.in], '@prefix@', HOMEBREW_PREFIX
+    else
+      inreplace %w[sdl2.pc.in sdl2-config.in], '@prefix@', HOMEBREW_PREFIX
+    end
 
     ENV.universal_binary if build.universal?
 
@@ -34,7 +38,7 @@ class Sdl < Formula
     system "make install"
 
     # Copy source files needed for Ojective-C support.
-    libexec.install Dir["src/main/macosx/*"]
+    libexec.install Dir["src/main/macosx/*"] unless build.head?
   end
 
   def test
