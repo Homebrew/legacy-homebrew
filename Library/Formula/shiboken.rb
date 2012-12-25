@@ -25,7 +25,7 @@ class Shiboken < Formula
       if File.exist? "#{python_prefix}/Python"
         # Python was compiled with --framework:
         args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
-        if !MacOS.clt_installed? and python_prefix.start_with? '/System/Library'
+        if !MacOS::CLT.installed? and python_prefix.start_with? '/System/Library'
           # For Xcode-only systems, the headers of system's python are inside of Xcode
           args << "-DPYTHON_INCLUDE_DIR='#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/Headers'"
         else
