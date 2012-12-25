@@ -115,21 +115,16 @@ class Test
   def git arguments
     Dir.chdir HOMEBREW_REPOSITORY do
       `git #{arguments}`
-      return $?.success?
     end
   end
 
   def download
     def current_sha1
-      Dir.chdir HOMEBREW_REPOSITORY do
-        `git rev-parse --short HEAD`.strip
-      end
+      git('rev-parse --short HEAD').strip
     end
 
     def current_branch
-      Dir.chdir HOMEBREW_REPOSITORY do
-        `git symbolic-ref HEAD`.gsub('refs/heads/', '').strip
-      end
+      git('symbolic-ref HEAD').gsub('refs/heads/', '').strip
     end
 
     @category = __method__
