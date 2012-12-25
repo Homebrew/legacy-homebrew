@@ -27,8 +27,8 @@ class Wine < Formula
     # updating too
     #  * http://wiki.winehq.org/Gecko
     #  * http://wiki.winehq.org/Mono
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.19.tar.bz2'
-    sha256 '51ad795ae62d8392ac6fbc3ad595ac57d44bcc779b716573a9d73ca122961023'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.20.tar.bz2'
+    sha256 '75e3073a62a933af5beaa8e8591298325edb57f255ca5b0de55a0f29a4ba2430'
   end
 
   env :std
