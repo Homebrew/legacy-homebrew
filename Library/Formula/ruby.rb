@@ -2,8 +2,8 @@ require 'formula'
 
 class Ruby < Formula
   homepage 'http://www.ruby-lang.org/en/'
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p327.tar.gz'
-  sha256 '51dd76462d3f6eb2c659a75e90f949f56da58c42bfb5766212478160b7f23d71'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p362.tar.gz'
+  sha256 'eb593607862b16a28176ae6d086dbe3bd9bd41935ec999a8cd5ef8773e8239d6'
 
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
