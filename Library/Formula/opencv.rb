@@ -30,6 +30,12 @@ class Opencv < Formula
   depends_on 'qt' if build.include? 'with-qt'
   depends_on :libpng
 
+  # Fix OpenCV - Bug # 2504: WITH_CUDA disabled with OSX in 2.4.3
+  #   http://code.opencv.org/issues/2504
+  def patches
+    DATA
+  end
+ 
   # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
   # you don't need unless you're doing video analysis, and some of it isn't
   # in Homebrew anyway. Will depend on openexr if it's installed.
@@ -105,3 +111,27 @@ class Opencv < Formula
     EOS
   end
 end
+
+__END__
+
+  # Fix OpenCV - Bug # 2504: WITH_CUDA disabled with OSX in 2.4.3
+	#   http://code.opencv.org/issues/2504
+
+
+diff --git a/cmake/OpenCVDetectCUDA.cmake b/cmake/OpenCVDetectCUDA.cmake
+--- a/cmake/OpenCVDetectCUDA.cmake
++++ b/cmake/OpenCVDetectCUDA.cmake
+@@ -3,10 +3,10 @@
+   return()
+ endif()
+ 
+-if (NOT MSVC AND NOT CMAKE_COMPILER_IS_GNUCXX OR MINGW)
+-  message(STATUS "CUDA compilation was disabled (due to unsuppoted host compiler).")
+-  return()
+-endif()
++#if (NOT MSVC AND NOT CMAKE_COMPILER_IS_GNUCXX OR MINGW)
++#  message(STATUS "CUDA compilation was disabled (due to unsuppoted host compiler).")
++#  return()
++#endif()
+ 
+
