@@ -8,6 +8,11 @@ class Libnfc < Formula
   depends_on 'libusb-compat'
 
   option 'with-pn532_uart', 'Enable PN532 UART support'
+  
+  def patches
+    #fixes the lack of MIN macro in sys/param.h on OS X which causes the formula not to compile
+    DATA
+  end
 
   def install
     args = %W[
@@ -25,3 +30,25 @@ class Libnfc < Formula
     system "make install"
   end
 end
+
+__END__
+diff --git a/libnfc/nfc-internal.h b/libnfc/nfc-internal.h
+index ec9e2fc..41797b2 100644
+--- a/libnfc/nfc-internal.h
++++ b/libnfc/nfc-internal.h
+@@ -33,6 +33,15 @@
+ 
+ #include "log.h"
+ 
++// Patch to compile on OS X
++// Tested on OS X Mountain Lion
++#ifndef MAX
++#define MAX(a,b) (((a) > (b)) ? (a) : (b))
++#endif
++#ifndef MIN
++#define MIN(a,b) (((a) < (b)) ? (a) : (b))
++#endif
++
+ /**
+  * @macro HAL
+  * @brief Execute corresponding driver function if exists.
