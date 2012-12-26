@@ -2,8 +2,8 @@ require 'formula'
 
 class Libxml2 < Formula
   homepage 'http://xmlsoft.org'
-  url 'ftp://xmlsoft.org/libxml2/libxml2-2.8.0.tar.gz'
-  sha256 'f2e2d0e322685193d1affec83b21dc05d599e17a7306d7b90de95bb5b9ac622a'
+  url 'ftp://xmlsoft.org/libxml2/libxml2-2.9.0.tar.gz'
+  sha256 'ad25d91958b7212abdc12b9611cfb4dc4e5cddb6d1e9891532f48aacee422b82'
 
   keg_only :provided_by_osx
 
