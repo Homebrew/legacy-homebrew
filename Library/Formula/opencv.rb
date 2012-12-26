@@ -17,6 +17,7 @@ class Opencv < Formula
   option 'with-qt',  'Build the Qt4 backend to HighGUI'
   option 'with-tbb', 'Enable parallel code in OpenCV using Intel TBB'
   option 'with-opencl', 'Enable gpu code in OpenCV using OpenCL'
+  option 'with-cuda', 'Enable gpu code in OpenCV using CUDA'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -29,13 +30,18 @@ class Opencv < Formula
   depends_on 'qt' if build.include? 'with-qt'
   depends_on :libpng
 
+  # Fix OpenCV - Bug # 2504: WITH_CUDA disabled with OSX in 2.4.3
+  #   http://code.opencv.org/issues/2504
+  def patches
+    DATA
+  end
+ 
   # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
   # you don't need unless you're doing video analysis, and some of it isn't
   # in Homebrew anyway. Will depend on openexr if it's installed.
 
   def install
     args = std_cmake_args + %w[
-      -DWITH_CUDA=OFF
       -DBUILD_ZLIB=OFF
       -DBUILD_TIFF=OFF
       -DBUILD_PNG=OFF
@@ -52,6 +58,12 @@ class Opencv < Formula
     args << '-DWITH_QT=ON' if build.include? 'with-qt'
     args << '-DWITH_TBB=ON' if build.include? 'with-tbb'
     args << '-DWITH_OPENCL=ON' if build.include? 'with-opencl'
+    args << '-DWITH_OPENCL=ON' if build.include? 'with-opencl'
+    if build.include? 'with-cuda'
+      args << '-DWITH_CUDA=ON' 
+    else
+      args << '-DWITH_CUDA=OFF' 
+    end
 
     # The CMake `FindPythonLibs` Module is dumber than a bag of hammers when
     # more than one python installation is available---for example, it clings
@@ -99,3 +111,27 @@ class Opencv < Formula
     EOS
   end
 end
+
+__END__
+
+  # Fix OpenCV - Bug # 2504: WITH_CUDA disabled with OSX in 2.4.3
+	#   http://code.opencv.org/issues/2504
+
+
+diff --git a/cmake/OpenCVDetectCUDA.cmake b/cmake/OpenCVDetectCUDA.cmake
+--- a/cmake/OpenCVDetectCUDA.cmake
++++ b/cmake/OpenCVDetectCUDA.cmake
+@@ -3,10 +3,10 @@
+   return()
+ endif()
+ 
+-if (NOT MSVC AND NOT CMAKE_COMPILER_IS_GNUCXX OR MINGW)
+-  message(STATUS "CUDA compilation was disabled (due to unsuppoted host compiler).")
+-  return()
+-endif()
++#if (NOT MSVC AND NOT CMAKE_COMPILER_IS_GNUCXX OR MINGW)
++#  message(STATUS "CUDA compilation was disabled (due to unsuppoted host compiler).")
++#  return()
++#endif()
+ 
+
