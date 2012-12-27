@@ -11,7 +11,7 @@ class Gnuplot < Formula
   option 'wx',     'Build the wxWidgets terminal using pango'
   option 'with-x', 'Build the X11 terminal'
   option 'qt',     'Build the Qt4 terminal'
-  option 'cairo',  'Build the Cario based terminals'
+  option 'cairo',  'Build the Cairo based terminals'
   option 'nolua',  'Build without the lua/TikZ terminal'
   option 'nogd',   'Build without gd support'
   option 'tests',  'Verify the build with make check (1 min)'
