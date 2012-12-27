@@ -18,12 +18,12 @@ class Htmlcompressor < Formula
     if build.include? 'yuicompressor'
       yui = Formula.factory('yuicompressor')
       yui_jar = "yuicompressor-#{yui.version}.jar"
-      ln_s "#{yui.libexec}/#{yui_jar}", "#{libexec}/#{yui_jar}"
+      ln_s "#{yui.opt_prefix}/libexec/#{yui_jar}", "#{libexec}/#{yui_jar}"
     end
 
     if build.include? 'closure-compiler'
       closure = Formula.factory('closure-compiler')
-      ln_s "#{closure.libexec}/build/compiler.jar", "#{libexec}/compiler.jar"
+      ln_s "#{closure.opt_prefix}/libexec/build/compiler.jar", "#{libexec}/compiler.jar"
     end
   end
 end
