@@ -6,8 +6,10 @@ class Htmlcompressor < Formula
   sha1 '57db73b92499e018b2f2978f1c7aa7b1238c7a39'
 
   option 'yuicompressor', "Use YUICompressor for JS/CSS compression"
+  option 'closure-compiler', "Use Closure Compiler for JS optimization"
 
   depends_on "yuicompressor" => :optional if build.include? 'yuicompressor'
+  depends_on "closure-compiler" => :optional if build.include? 'closure-compiler'
 
   def install
     libexec.install "htmlcompressor-1.5.3.jar"
@@ -17,6 +19,11 @@ class Htmlcompressor < Formula
       yui = Formula.factory('yuicompressor')
       yui_jar = "yuicompressor-#{yui.version}.jar"
       ln_s "#{yui.libexec}/#{yui_jar}", "#{libexec}/#{yui_jar}"
+    end
+
+    if build.include? 'closure-compiler'
+      closure = Formula.factory('closure-compiler')
+      ln_s "#{closure.libexec}/build/compiler.jar", "#{libexec}/compiler.jar"
     end
   end
 end
