@@ -2,8 +2,8 @@ require 'formula'
 
 class Vice < Formula
   homepage 'http://vice-emu.sourceforge.net/'
-  url "http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.3.tar.gz"
-  sha1 '5e7e1a375a4ca8c4895dc1552162955fdffce296'
+  url 'http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.4.tar.gz'
+  sha1 '719aa96cc72e7578983fadea1a31c21898362bc7'
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
