@@ -7,6 +7,12 @@ class Global < Formula
   sha1 '9c802a8fdc2d50e2a0780eb7033d5bad258c3f42'
 
   option "without-rebuilding-php-parser", "Don't rebuild PHP parser; use provied parser"
+  option 'with-exuberant-ctags', 'Enable Exuberant Ctags as a plug-in parser'
+
+  if build.include? 'with-exuberant-ctags'
+    depends_on 'ctags'
+    skip_clean 'lib/gtags/exuberant-ctags.la'
+  end
 
   def install
     # Rebuilding the PHP parser, see:
@@ -15,8 +21,16 @@ class Global < Formula
       system "flex -o libparser/php.c libparser/php.l"
     end
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+
+    if build.include? 'with-exuberant-ctags'
+      args << "--with-exuberant-ctags=#{HOMEBREW_PREFIX}/bin/ctags"
+    end
+
+    system "./configure", *args
     system "make install"
 
     # we copy these in already

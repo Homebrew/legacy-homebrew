@@ -46,9 +46,10 @@ def remove_trailing_slash s
 end
 
 
-def path_folders
-  @path_folders ||= ENV['PATH'].split(':').collect do |p|
-    begin remove_trailing_slash(File.expand_path(p))
+def paths
+  @paths ||= ENV['PATH'].split(':').collect do |p|
+    begin
+      remove_trailing_slash(File.expand_path(p))
     rescue ArgumentError
       onoe "The following PATH component is invalid: #{p}"
     end
@@ -62,6 +63,10 @@ end
     @found = %W[#{HOMEBREW_PREFIX} /usr/local].uniq.inject([]) do |found, prefix|
       found + relative_paths.map{|f| File.join(prefix, f) }.select{|f| File.exist? f }
     end
+  end
+
+  def inject_file_list(list, str)
+    list.inject(str) { |s, f| s << "    #{f}\n" }
   end
 ############# END HELPERS
 
@@ -81,9 +86,9 @@ end
 # Installing MacGPG2 interferes with Homebrew in a big way
 # http://sourceforge.net/projects/macgpg2/files/
 def check_for_macgpg2
-  if File.exist? "/Applications/start-gpg-agent.app" or
-     File.exist? "/Library/Receipts/libiconv1.pkg" or
-     File.exist? "/usr/local/MacGPG2"
+  if %w{/Applications/start-gpg-agent.app
+        /Library/Receipts/libiconv1.pkg
+        /usr/local/MacGPG2}.any? { |f| File.exist? f }
     <<-EOS.undent
       You may have installed MacGPG2 via the package installer.
       Several other checks in this script will turn up problems, such as stray
@@ -112,8 +117,7 @@ def check_for_stray_dylibs
 
     Unexpected dylibs:
   EOS
-  bad_dylibs.each { |f| s << "    #{f}" }
-  s
+  inject_file_list(bad_dylibs, s)
 end
 
 def check_for_stray_static_libs
@@ -136,8 +140,7 @@ def check_for_stray_static_libs
 
     Unexpected static libraries:
   EOS
-  bad_alibs.each{ |f| s << "    #{f}" }
-  s
+  inject_file_list(bad_alibs, s)
 end
 
 def check_for_stray_pcs
@@ -157,8 +160,7 @@ def check_for_stray_pcs
 
     Unexpected .pc files:
   EOS
-  bad_pcs.each{ |f| s << "    #{f}" }
-  s
+  inject_file_list(bad_pcs, s)
 end
 
 def check_for_stray_las
@@ -179,8 +181,7 @@ def check_for_stray_las
 
     Unexpected .la files:
   EOS
-  bad_las.each{ |f| s << "    #{f}" }
-  s
+  inject_file_list(bad_las, s)
 end
 
 def check_for_other_package_managers
@@ -310,7 +311,7 @@ end
 def check_access_usr_local
   return unless HOMEBREW_PREFIX.to_s == '/usr/local'
 
-  unless Pathname('/usr/local').writable_real? then <<-EOS.undent
+  unless File.writable_real?("/usr/local") then <<-EOS.undent
     The /usr/local directory is not writable.
     Even if this directory was writable when you installed Homebrew, other
     software may change permissions on this directory. Some versions of the
@@ -439,7 +440,8 @@ def check_user_path_1
 
   out = nil
 
-  path_folders.each do |p| case p
+  paths.each do |p|
+    case p
     when '/usr/bin'
       seen_usr_bin = true
       unless $seen_prefix_bin
@@ -529,22 +531,24 @@ def check_which_pkg_config
 end
 
 def check_for_gettext
-  if %w[lib/libgettextlib.dylib
-        lib/libintl.dylib
-        include/libintl.h ].any? { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
-    <<-EOS.undent
-      gettext was detected in your PREFIX.
-      The gettext provided by Homebrew is "keg-only", meaning it does not
-      get linked into your PREFIX by default.
+  find_relative_paths("lib/libgettextlib.dylib",
+                      "lib/libintl.dylib",
+                      "include/libintl.h")
 
-      If you `brew link gettext` then a large number of brews that don't
-      otherwise have a `depends_on 'gettext'` will pick up gettext anyway
-      during the `./configure` step.
+  return if @found.empty?
 
-      If you have a non-Homebrew provided gettext, other problems will happen
-      especially if it wasn't compiled with the proper architectures.
-    EOS
+  # Our gettext formula will be caught by check_linked_keg_only_brews
+  f = Formula.factory("gettext") rescue nil
+  return if f and f.linked_keg.directory? and @found.all? do |path|
+    Pathname.new(path).realpath.to_s.start_with? "#{HOMEBREW_CELLAR}/gettext"
   end
+
+  s = <<-EOS.undent_________________________________________________________72
+      gettext files detected at a system prefix
+      These files can cause compilation and link failures, especially if they
+      are compiled with improper architectures. Consider removing these files:
+      EOS
+  inject_file_list(@found, s)
 end
 
 def check_for_iconv
@@ -568,7 +572,7 @@ def check_for_iconv
 
           tl;dr: delete these files:
           EOS
-      @found.inject(s){|s, f| s << "    #{f}" }
+      inject_file_list(@found, s)
     end
   end
 end
@@ -582,7 +586,7 @@ def check_for_config_scripts
   whitelist = %W[/usr/bin /usr/sbin /usr/X11/bin /usr/X11R6/bin /opt/X11/bin #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin]
   whitelist.map! { |d| d.downcase }
 
-  path_folders.each do |p|
+  paths.each do |p|
     next if whitelist.include? p.downcase
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
@@ -734,7 +738,7 @@ end
 def __check_linked_brew f
   links_found = []
 
-  Pathname.new(f.prefix).find do |src|
+  f.prefix.find do |src|
     dst=HOMEBREW_PREFIX+src.relative_path_from(f.prefix)
     next unless dst.symlink?
 
@@ -1020,7 +1024,7 @@ module Homebrew extend self
       checks.methods.sort << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
     else
       ARGV.named
-    end.select{ |method| method =~ /^check_/ }.uniq
+    end.select{ |method| method =~ /^check_/ }.reverse.uniq.reverse
 
     methods.each do |method|
       out = checks.send(method)
