@@ -18,6 +18,7 @@ class Libvorbis < Formula
   end
 
   def install
+    ENV['CXXFLAGS'] = "-std=c++11 -stdlib=libc++"
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
