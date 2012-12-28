@@ -263,13 +263,13 @@ class PostgresqlInstalled < Requirement
 end
 
 class TeXInstalled < Requirement
-  def fatal?; true; end
+  fatal true
+  env :userpaths
 
   def satisfied?
-    which 'tex'
-    which 'latex'
-    which 'pdflatex'
-    which 'bibtex'
+    tex = which 'tex'
+    latex = which 'latex'
+    not tex.empty? and not latex.empty?
   end
 
   def message; <<-EOS.undent
@@ -277,6 +277,11 @@ class TeXInstalled < Requirement
 
     You can install MacTeX distribution from:
       http://www.tug.org/mactex/
+
+    Make sure that its bin directory is in your PATH before proceed.
+
+    You may also need to restore the ownership of Homebrew install:
+      sudo chown -R $USER `brew --prefix`
     EOS
   end
 end
