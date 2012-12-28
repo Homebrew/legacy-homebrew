@@ -8,9 +8,10 @@ class HaskellPlatform < Formula
   depends_on 'ghc'
 
   def install
-    # libdir doesn't work if passed to configure, needs to be passed to make install
+    # libdir doesn't work if passed to configure, needs to be set in the environment
     system "./configure", "--prefix=#{prefix}", "--enable-unsupported-ghc-version"
-    system %Q(EXTRA_CONFIGURE_OPTS="--libdir=#{lib}/ghc" make install)
+    ENV['EXTRA_CONFIGURE_OPTS'] = "--libdir=#{lib}/ghc"
+    system "make install"
   end
 
   def caveats; <<-EOS.undent

@@ -7,8 +7,8 @@ require Formula.path("python") # For TkCheck requirement
 # `brew install python`.
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
-  sha1 '709bd97d46050d69865d4b588c7707768dfe6711'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.32.tar.gz'
+  sha1 '65ae88517ac47bd4e0fb449b3b9a9bf85e8366c8'
 end
 
 class Pip < Formula
@@ -143,6 +143,13 @@ class Python3 < Formula
         s.gsub!(/^RANLIB=.*$/, "RANLIB=xcrun ranlib")
       end
     end
+
+    # A temporary fix, until a homebrew
+    # [issue on handling Frameworks](https://github.com/mxcl/homebrew/issues/15943)
+    # is resolved. `brew install python python3` failed to link because both
+    # provide `Python.framework`. Homebrew will need to be smarter about this,
+    # since Frameworks are built to support multiple versions.
+    ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
 
   end
 

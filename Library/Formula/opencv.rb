@@ -10,12 +10,13 @@ end
 
 class Opencv < Formula
   homepage 'http://opencv.org/'
-  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.2/OpenCV-2.4.2.tar.bz2'
-  sha1 '96ff27b87e0f028d1d16201afebabec4e0c72367'
+  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.3/OpenCV-2.4.3.tar.bz2'
+  sha1 '982be2c3e52dfc3e9d14692c60bc856b2b766be2'
 
   option '32-bit'
   option 'with-qt',  'Build the Qt4 backend to HighGUI'
   option 'with-tbb', 'Enable parallel code in OpenCV using Intel TBB'
+  option 'with-opencl', 'Enable gpu code in OpenCV using OpenCL'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -50,6 +51,7 @@ class Opencv < Formula
     end
     args << '-DWITH_QT=ON' if build.include? 'with-qt'
     args << '-DWITH_TBB=ON' if build.include? 'with-tbb'
+    args << '-DWITH_OPENCL=ON' if build.include? 'with-opencl'
 
     # The CMake `FindPythonLibs` Module is dumber than a bag of hammers when
     # more than one python installation is available---for example, it clings

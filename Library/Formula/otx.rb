@@ -13,7 +13,7 @@ class Otx < Formula
 
     system 'xcodebuild SYMROOT=build'
     build = buildpath/'build/Release'
-    bin.install build+"otx"
-    prefix.install build+"otx.app"
+    bin.install build/"otx"
+    prefix.install build/"otx.app"
   end
 end

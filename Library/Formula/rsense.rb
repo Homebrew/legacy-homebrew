@@ -6,9 +6,9 @@ class Rsense < Formula
   sha1 '497510e7048120af01bac619e50aa72ebd825c49'
 
   def install
-    prefix.install 'README.txt'
+    prefix.install_metafiles
     libexec.install Dir['*']
-    (libexec+'bin/rsense').chmod 0755
+    (libexec/'bin/rsense').chmod 0755
     bin.write_exec_script libexec/'bin/rsense'
   end
 

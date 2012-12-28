@@ -76,6 +76,12 @@ class Keg < Pathname
     dir.directory? and not dir.children.length.zero?
   end
 
+  def plist_installed?
+    Dir.chdir self do
+      not Dir.glob("*.plist").empty?
+    end
+  end
+
   def version
     require 'version'
     Version.new(basename.to_s)

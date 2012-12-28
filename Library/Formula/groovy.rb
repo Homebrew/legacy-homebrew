@@ -10,7 +10,7 @@ class Groovy < Formula
     # Why are icons in bin?
     rm_f Dir["bin/*.bat","bin/groovy.{icns,ico}"]
 
-    prefix.install %w(LICENSE.txt NOTICE.txt)
+    prefix.install_metafiles
     libexec.install %w(bin conf lib embeddable)
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end

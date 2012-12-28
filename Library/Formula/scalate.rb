@@ -13,7 +13,7 @@ class Scalate < Formula
       Pathname.new(name).find { |path| path.chmod(0644) if path.file? }
     end
 
-    prefix.install %w{ license.txt readme.html }
+    prefix.install_metafiles
     libexec.install Dir['*']
     bin.write_exec_script libexec/'bin/scalate'
   end

@@ -84,6 +84,7 @@ class Ghc < Formula
       if Hardware.is_64_bit? and not build.build_32_bit?
         arch = 'x86_64'
       else
+        ENV.m32 # Need to force this to fix build error on internal libgmp.
         arch = 'i386'
       end
 

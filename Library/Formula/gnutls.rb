@@ -2,16 +2,15 @@ require 'formula'
 
 class Gnutls < Formula
   homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
-  url 'http://ftpmirror.gnu.org/gnutls/gnutls-3.1.3.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/gnutls/gnutls-3.1.3.tar.xz'
-  sha256 'fcb236c663489d3dba5a3f41486810f3889eb4508403ebeeb58b79f0b34bce39'
+  url 'http://ftpmirror.gnu.org/gnutls/gnutls-3.1.5.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/gnutls/gnutls-3.1.5.tar.xz'
+  sha256 '2f095984dd9cbbf4dce417ecd81640fe47732322d025062b2c9a189d022de0d3'
 
   depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'libtasn1'
   depends_on 'p11-kit'
   depends_on 'nettle'
-  depends_on 'gmp'
 
   fails_with :llvm do
     build 2326
@@ -19,10 +18,7 @@ class Gnutls < Formula
   end
 
   def install
-    ENV.append 'LDFLAGS', '-ltasn1' # find external libtasn1
-
     system "./configure", "--disable-dependency-tracking",
-                          "--disable-guile",
                           "--disable-static",
                           "--prefix=#{prefix}"
     system "make install"

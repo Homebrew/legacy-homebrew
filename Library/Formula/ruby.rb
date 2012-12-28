@@ -2,8 +2,8 @@ require 'formula'
 
 class Ruby < Formula
   homepage 'http://www.ruby-lang.org/en/'
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p286.tar.gz'
-  sha256 'e94367108751fd6bce79401d947baa66096c757fd3a0856350a2abd05d26d89d'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p362.tar.gz'
+  sha256 'eb593607862b16a28176ae6d086dbe3bd9bd41935ec999a8cd5ef8773e8239d6'
 
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
@@ -37,6 +37,7 @@ class Ruby < Formula
     args << "--program-suffix=19" if build.include? "with-suffix"
     args << "--with-arch=x86_64,i386" if build.universal?
     args << "--disable-tcltk-framework" <<  "--with-out-ext=tcl" <<  "--with-out-ext=tk" unless build.include? "with-tcltk"
+    args << "--disable-install-doc" unless build.include? "with-doc"
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
     ruby_lib = HOMEBREW_PREFIX/"lib/ruby"

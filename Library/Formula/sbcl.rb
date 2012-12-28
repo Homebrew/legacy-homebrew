@@ -1,21 +1,22 @@
 require 'formula'
 
 class SbclBootstrapBinaries < Formula
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.55/sbcl-1.0.55-x86-darwin-binary.tar.bz2'
-  sha1 '8ea71938c40a6dccfe2d43a86e9b115f4428a218'
-  version "1.0.55"
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.0/sbcl-1.1.0-x86-64-darwin-binary.tar.bz2'
+  sha1 'ed2069e124027c43926728c48d604efbb4e33950'
+  version "1.1.0"
 end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.1/sbcl-1.1.1-source.tar.bz2'
-  sha1 '87e8c37a2811e10d044074ec8bfc79918c66f2d8'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.2/sbcl-1.1.2-source.tar.bz2'
+  sha1 'b562c67d689abf8e0dffcd42d11617062ab52633'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/sbcl-1.0.55-bottle.tar.gz'
-    sha1 '3c13225c8fe3eabf54e9d368e6b74318a5546430'
+    sha1 '0552baca3f757837734fa0ecefbf158bc530c5a1' => :mountainlion
+    sha1 '9ff8b77853a16f30c1770790f71ec1260b4bd776' => :lion
+    sha1 '520a3526f4c3565fe2b7f99cd3e944431c8932f8' => :snowleopard
   end
 
   fails_with :llvm do
