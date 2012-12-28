@@ -29,7 +29,7 @@ module Homebrew extend self
     case Hardware.cpu_type when :ppc, :dunno
       abort <<-EOS.undent
         Sorry, Homebrew does not support your computer's CPU architecture.
-        For PPC support, see: http://github.com/sceaga/homebrew/tree/powerpc
+        For PPC support, see: https://github.com/mistydemeo/tigerbrew
         EOS
     end
   end
