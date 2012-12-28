@@ -4,9 +4,9 @@ require "blacklist"
 module Homebrew extend self
   def search
     if ARGV.include? '--macports'
-      exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+      exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
-      exec "open", "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
+      exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     else
       query = ARGV.first
       rx = case query

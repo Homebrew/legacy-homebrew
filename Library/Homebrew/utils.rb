@@ -171,11 +171,18 @@ end
 
 def exec_editor *args
   return if args.to_s.empty?
+  safe_exec(which_editor, *args)
+end
 
-  # Invoke bash to evaluate env vars in $EDITOR
-  # This also gets us proper argument quoting.
-  # See: https://github.com/mxcl/homebrew/issues/5123
-  system "bash", "-i", "-c", which_editor + ' "$@"', "--", *args
+def exec_browser *args
+  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || "open"
+  safe_exec(browser, *args)
+end
+
+def safe_exec cmd, *args
+  # This buys us proper argument quoting and evaluation
+  # of environment variables in the cmd parameter.
+  exec "/bin/sh", "-i", "-c", cmd + ' "$@"', "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
