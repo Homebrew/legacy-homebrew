@@ -269,7 +269,7 @@ class TeXInstalled < Requirement
   def satisfied?
     tex = which 'tex'
     latex = which 'latex'
-    not tex.empty? and not latex.empty?
+    not tex.nil? and not latex.nil?
   end
 
   def message; <<-EOS.undent
