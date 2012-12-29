@@ -23,7 +23,10 @@ class Vice < Formula
                           "--prefix=#{prefix}",
                           "--with-cocoa",
                           "--without-x",
-                          "--enable-static-lame"
+                          "--enable-static-lame",
+                          # VICE can't compile against FFMPEG newer than 0.11:
+                          # http://sourceforge.net/tracker/?func=detail&aid=3585471&group_id=223021&atid=1057617
+                          "--disable-ffmpeg"
     system "make"
     system "make bindist"
     prefix.install Dir['vice-macosx-*/*']
