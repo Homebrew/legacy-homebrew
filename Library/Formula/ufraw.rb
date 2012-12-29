@@ -8,6 +8,7 @@ class Ufraw < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libtiff'
+  depends_on ':libpng'
   depends_on 'jpeg'
   depends_on 'little-cms'
   depends_on 'dcraw'
