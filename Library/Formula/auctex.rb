@@ -6,8 +6,6 @@ class Auctex < Formula
   mirror 'http://ftp.gnu.org/gnu/auctex/auctex-11.87.tar.gz'
   sha1 '0be92c7d8f89d57346fe07f05a1a045ffd11cd71'
 
-  env :userpaths
-
   depends_on :tex
 
   def options
