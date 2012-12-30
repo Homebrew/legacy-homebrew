@@ -16,6 +16,7 @@ class Gnuplot < Formula
   option 'nogd',   'Build without gd support'
   option 'tests',  'Verify the build with make check (1 min)'
   option 'without-emacs', 'Do not build Emacs lisp files'
+  option 'aquaterm', 'Build the AquaTerm terminal (needs manual AquaTerm.{app,framework} install)'
 
   if build.head?
     depends_on :automake
@@ -25,7 +26,7 @@ class Gnuplot < Formula
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'pango'       if build.include? 'cairo' or build.include? 'wx'
-  depends_on :x11          if build.include? 'with-x' or MacOS::X11.installed?
+  depends_on :x11          if build.include? 'with-x'
   depends_on 'pdflib-lite' if build.include? 'pdf'
   depends_on 'lua'         unless build.include? 'nolua'
   depends_on 'gd'          unless build.include? 'nogd'
@@ -53,6 +54,8 @@ class Gnuplot < Formula
     args << '--enable-qt'             if build.include? 'qt'
     args << '--without-lua'           if build.include? 'nolua'
     args << '--without-lisp-files'    if build.include? 'without-emacs'
+    args << '--with-aquaterm'         if build.include? 'aquaterm'
+    args << '--without-x'         unless build.include? 'with-x'
 
     system './prepare' if build.head?
     system "./configure", *args
