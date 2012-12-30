@@ -12,64 +12,47 @@ class Elasticsearch < Formula
   def install
     # Remove Windows files
     rm_f Dir["bin/*.bat"]
-    # Move JARs from lib to libexec according to homebrew conventions
-    libexec.install Dir['lib/*.jar']
-    (libexec+'sigar').install Dir['lib/sigar/*.jar']
 
-    # Install everything directly into folder
+    # Move libraries to `libexec` directory
+    libexec.install Dir['lib/*.jar']
+    (libexec/'sigar').install Dir['lib/sigar/*.{jar,dylib}']
+
+    # Install everything else into package directory
     prefix.install Dir['*']
 
     # Set up ElasticSearch for local development:
     inreplace "#{prefix}/config/elasticsearch.yml" do |s|
-
       # 1. Give the cluster a unique name
       s.gsub! /#\s*cluster\.name\: elasticsearch/, "cluster.name: #{cluster_name}"
 
       # 2. Configure paths
-      s.gsub! /#\s*path\.data\: [^\n]+/, "path.data: #{var}/elasticsearch/"
-      s.gsub! /#\s*path\.logs\: [^\n]+/, "path.logs: #{var}/log/elasticsearch/"
+      s.sub! "# path.data: /path/to/data", "path.data: #{var}/elasticsearch/"
+      s.sub! "# path.logs: /path/to/logs", "path.logs: #{var}/log/elasticsearch/"
+      s.sub! "# path.plugins: /path/to/plugins", "path.plugins: #{var}/lib/elasticsearch/plugins"
 
       # 3. Bind to loopback IP for laptops roaming different networks
       s.gsub! /#\s*network\.host\: [^\n]+/, "network.host: 127.0.0.1"
-
-      # 4. Persist plugins on upgrade
-      s.gsub! "# path.plugins: /path/to/plugins", "path.plugins: #{var}/lib/elasticsearch/plugins"
-
     end
 
     inreplace "#{bin}/elasticsearch.in.sh" do |s|
-      # Replace CLASSPATH paths to use libexec instead of lib
+      # Configure ES_HOME
+      s.sub!  /#\!\/bin\/sh\n/, "#!/bin/sh\n\nES_HOME=#{prefix}"
+      # Configure ES_CLASSPATH paths to use libexec instead of lib
       s.gsub! /ES_HOME\/lib\//, "ES_HOME/libexec/"
     end
 
-    inreplace "#{bin}/elasticsearch" do |s|
-      # Set ES_HOME to prefix value
-      s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
-    end
-
     inreplace "#{bin}/plugin" do |s|
-      # Set ES_HOME to prefix value
-      s.gsub! /^ES_HOME=.*$/, "ES_HOME=#{prefix}"
-      # Replace CLASSPATH paths to use libexec instead of lib
-      s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
+      # Add the proper ES_CLASSPATH configuration
+      s.sub!  /SCRIPT="\$0"/, %Q|SCRIPT="$0"\nES_CLASSPATH=#{prefix}/libexec|
+      # Replace paths to use libexec instead of lib
+      s.gsub! /\$ES_HOME\/lib\//, "$ES_CLASSPATH/"
     end
   end
 
   def caveats; <<-EOS.undent
-    If upgrading from 0.18 ElasticSearch requires flushing before shutting
-    down the cluster with no indexing operations happening after flush:
-        curl host:9200/_flush
-
-    See the 'elasticsearch.yml' file for configuration options.
-
-    You'll find the ElasticSearch log here:
-        open #{var}/log/elasticsearch/#{cluster_name}.log
-
-    The folder with cluster data is here:
-        open #{var}/elasticsearch/#{cluster_name}/
-
-    You should see ElasticSearch running:
-        open http://localhost:9200/
+    Data:    #{var}/elasticsearch/#{cluster_name}/
+    Logs:    #{var}/log/elasticsearch/#{cluster_name}.log
+    Plugins: #{var}/lib/elasticsearch/plugins/
     EOS
   end
 
