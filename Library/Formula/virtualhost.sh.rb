@@ -1,9 +1,10 @@
 require 'formula'
 
 class VirtualhostSh < Formula
-  url 'https://github.com/pgib/virtualhost.sh/tarball/1.23'
+  url 'https://github.com/pgib/virtualhost.sh/tarball/e21da0342260d1d7704851ea1deef2856881921b'
   homepage 'https://github.com/pgib/virtualhost.sh'
-  sha1 '837eac3163de16c83f94a1f4e5e6c8c24aa65bc8'
+  version 1.29
+  sha1 '3c86c1bf44260e91d1590b683cd64066aa384199'
 
   head 'https://github.com/pgib/virtualhost.sh.git'
 
