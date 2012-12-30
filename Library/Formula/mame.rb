@@ -2,8 +2,8 @@ require 'formula'
 
 class Mame < Formula
   homepage 'http://mamedev.org/'
-  url 'svn://dspnet.fr/mame/trunk', :revision => 17961
-  version '0.147'
+  url 'svn://dspnet.fr/mame/trunk', :revision => 19614
+  version '0.147u4'
 
   head 'svn://dspnet.fr/mame/trunk'
 
