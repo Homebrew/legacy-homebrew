@@ -17,6 +17,7 @@ class Opam < Formula
     system "#{bin}/opam --help"
   end
 
+  # Temporary patch until the next release
   def patches
     DATA
   end
