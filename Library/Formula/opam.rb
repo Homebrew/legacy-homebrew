@@ -17,6 +17,11 @@ class Opam < Formula
     system "#{bin}/opam --help"
   end
 
+  # Temporary patch until the next release
+  def patches
+    DATA
+  end
+
   def caveats; <<-EOS.undent
     OPAM uses ~/.opam by default to install packages, so you need to initialize
     the package database first by running (as a normal user):
@@ -31,3 +36,19 @@ class Opam < Formula
     EOS
   end
 end
+
+
+__END__
+diff --git a/src_ext/Makefile b/src_ext/Makefile
+index 29a9dc6..c5750b3 100644
+--- a/src_ext/Makefile
++++ b/src_ext/Makefile
+@@ -8,7 +8,7 @@ depends.ocp: depends.ocp.boot
+ clone: cudf.stamp extlib.stamp ocaml-re.stamp ocamlgraph.stamp dose.stamp cmdliner.stamp
+ 
+ cudf-0.6.3.tar.gz:
+-	$(FETCH) -k https://gforge.inria.fr/frs/download.php/31543/cudf-0.6.3.tar.gz
++	$(FETCH) -k https://gforge.inria.fr/frs/download.php/31910/cudf-0.6.3.tar.gz
+ 
+ cudf.stamp: cudf-0.6.3.tar.gz
+ 	tar xfz cudf-0.6.3.tar.gz
