@@ -2,8 +2,8 @@ require 'formula'
 
 class Osxutils < Formula
   homepage 'https://github.com/vasi/osxutils'
-  url 'git://github.com/vasi/osxutils.git', :revision => '118ab690f1cc63289f56ebcfbe6c90dff1edb7cb'
-  version '1.7-118ab690f1'
+  url 'git://github.com/vasi/osxutils.git', :tag => 'v1.8'
+  version '1.8'
   head 'git://github.com/vasi/osxutils.git'
   
   def install
