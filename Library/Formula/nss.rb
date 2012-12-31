@@ -70,7 +70,7 @@ includedir=${prefix}/include/nss
 
 Name: NSS
 Description: Mozilla Network Security Services
-Version: 3.14
+Version: 3.14.1
 Requires: nspr
 Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
 Cflags: -I${includedir}
