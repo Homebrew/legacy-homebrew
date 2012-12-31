@@ -2,8 +2,8 @@ require 'formula'
 
 class Nss < Formula
   homepage 'http://www.mozilla.org/projects/security/pki/nss/'
-  url 'http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_14_RTM/src/nss-3.14.tar.gz'
-  sha1 'ace3642fb2ca67854ea7075d053ca01a6d81e616'
+  url 'http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_14_1_RTM/src/nss-3.14.1.tar.gz'
+  sha1 '764773e869aaee314e6f3ca675e04c55075d88a8'
 
   depends_on 'nspr'
 
