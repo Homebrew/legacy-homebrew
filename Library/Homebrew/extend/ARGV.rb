@@ -97,6 +97,10 @@ module HomebrewArgvExtension
     include?('--dry-run') || switch?('n')
   end
 
+  def homebrew_developer?
+    include? '--homebrew-developer' or ENV['HOMEBREW_DEVELOPER']
+  end
+
   def ignore_deps?
     include? '--ignore-dependencies'
   end
