@@ -12,6 +12,8 @@ class SvtplayDl < Formula
   end
 
   def caveats; <<-EOS.undent
+    You need PyCrypto (https://www.dlitz.net/software/pycrypto/) to
+    download encrypted HLS streams.
     You need PyAMF (http://www.pyamf.org/) for kanal5play.se.
     EOS
   end
