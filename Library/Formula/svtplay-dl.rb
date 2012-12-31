@@ -8,8 +8,7 @@ class SvtplayDl < Formula
   depends_on 'rtmpdump'
 
   def install
-    system 'mv', 'svtplay_dl.py', 'svtplay-dl'
-    bin.install "svtplay-dl"
+    bin.install 'svtplay_dl.py' => "svtplay-dl"
   end
 
   def caveats; <<-EOS.undent
