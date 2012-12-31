@@ -8,7 +8,6 @@ class Cassandra < Formula
   devel do
     url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.2.0/apache-cassandra-1.2.0-rc2-bin.tar.gz'
     sha1 '10259ebcdd9a57202aec5e2f5f4478ade77796bf'
-    version '1.2.0-rc2'
   end
 
   def install
