@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "November 2012" "Homebrew" "brew"
+.TH "BREW" "1" "December 2012" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -448,6 +448,10 @@ When \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOM
 .TP
 HOMEBREW_DEBUG_PREFIX
 When \fBbrew install \-d\fR or \fBbrew install \-i\fR drops into a shell, \fBHOMEBREW_DEBUG_PREFIX\fR will be set to the target prefix in the Cellar of the formula being brewed\.
+.
+.TP
+HOMEBREW_DEVELOPER
+If set, Homebrew will print warnings that are only relevant to Homebrew developers (active or budding)\.
 .
 .TP
 HOMEBREW_EDITOR
