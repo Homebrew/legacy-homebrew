@@ -14,52 +14,37 @@ class X86_64_Architecture < Requirement
   end
 end
 
-class PostgresqlNotInstalled < Requirement
-  def message; <<-EOS.undent
-    You need to disable the postgresql formula with
-
-      launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
-      brew unlink postgresql
-
-    before installing Postgres-XC.
-    EOS
-  end
-  def satisfied?
-    not File.exists?("#{HOMEBREW_PREFIX}/bin/postgres")
-  end
-  def fatal?
-    true
-  end
-end
-
 class PostgresXc < Formula
   homepage 'http://postgres-xc.sourceforge.net/'
-  url 'http://sourceforge.net/projects/postgres-xc/files/Version_1.0beta2/pgxc_v1.0beta2.tar.gz'
-  version '1.0beta2'
-  md5 'f97902f3ff787085a08d6b24a1d263e2'
+  url 'http://sourceforge.net/projects/postgres-xc/files/Version_1.0/pgxc-v1.0.1.tar.gz'
+  md5 '0911f469260d5f11f28f8ee7b0db5dc6'
 
   depends_on X86_64_Architecture.new
-  depends_on PostgresqlNotInstalled.new
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.leopard? # Leopard libxml is too old
-  depends_on 'ossp-uuid'
+  depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
 
-  def options
-    [
-      ['--no-python', 'Build without Python support.'],
-      ['--no-perl', 'Build without Perl support.'],
-      ['--enable-dtrace', 'Build with DTrace support.']
-    ]
+  conflicts_with 'postgresql',
+    :because => 'postgres-xc and postgresql install the same binaries.'
+
+  option 'without-ossp-uuid', 'Build without OSSP uuid'
+  option 'no-python', 'Build without Python support'
+  option 'no-perl', 'Build without Perl support'
+  option 'enable-dtrace', 'Build with DTrace support'
+
+  fails_with :clang do
+    build 211
+    cause 'Miscompilation resulting in segfault on queries'
   end
 
-  skip_clean :all
-
-  # The patch is needed to build on OS X. See:
-  # http://sourceforge.net/mailarchive/forum.php?thread_name=CAAn2te_tCsdA%2BE0CWkhdGUQPnbsNCXec%3DMyQuZVws65sDb9e%2Bw%40mail.gmail.com&forum_name=postgres-xc-general
-  def patches; DATA; end
+  # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
+  # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
+  def patches
+    DATA
+  end
 
   def install
-    ENV.libxml2 if MacOS.snow_leopard?
+    ENV.libxml2 if MacOS.version >= :snow_leopard
 
     args = ["--disable-debug",
             "--prefix=#{prefix}",
@@ -71,25 +56,22 @@ class PostgresXc < Formula
             "--with-krb5",
             "--with-openssl",
             "--with-libxml",
-            "--with-libxslt",
-            "--with-ossp-uuid"]
+            "--with-libxslt"]
 
-    args << "--with-python" unless ARGV.include? '--no-python'
-    args << "--with-perl" unless ARGV.include? '--no-perl'
-    args << "--enable-dtrace" if ARGV.include? '--enable-dtrace'
+    args << "--with-ossp-uuid" unless build.include? 'without-ossp-uuid'
+    args << "--with-python" unless build.include? 'no-python'
+    args << "--with-perl" unless build.include? 'no-perl'
+    args << "--enable-dtrace" if build.include? 'enable-dtrace'
     args << "ARCHFLAGS='-arch x86_64'"
 
-    ENV.append 'CFLAGS', `uuid-config --cflags`.strip
-    ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
-    ENV.append 'LIBS', `uuid-config --libs`.strip
+    unless build.include? 'without-ossp-uuid'
+      ENV.append 'CFLAGS', `uuid-config --cflags`.strip
+      ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
+      ENV.append 'LIBS', `uuid-config --libs`.strip
+    end
 
-    check_python_arch unless ARGV.include? '--no-python'
+    check_python_arch unless build.include? 'no-python'
 
-    # Fails on Core Duo with O4 and O3
-    ENV.O2 if Hardware.intel_family == :core
-
-    # Remove spurious compiled library (it must be built from source)
-    rm_rf "src/gtm/path/libgtmpath.a"
     system "./configure", *args
     # We have to build contrib separately (as opposed to running "make world")
     # because "make world" depends on Jade being installed, as of v1.0.beta2.
@@ -116,8 +98,8 @@ class PostgresXc < Formula
 
   def check_python_arch
     # On 64-bit systems, we need to look for a 32-bit Framework Python.
-    # If the configure script prefers that Python version and if that version
-    # doesn't have 64-bit support then linking will fail.
+    # The configure script prefers this Python version, and if it doesn't
+    # have 64-bit support then linking will fail.
     framework_python = Pathname.new "/Library/Frameworks/Python.framework/Versions/Current/Python"
     return unless framework_python.exist?
     unless (archs_for_command framework_python).include? :x86_64
@@ -144,12 +126,6 @@ class PostgresXc < Formula
       http://sourceforge.net/projects/postgres-xc/files/Publication/
       http://postgres-xc.sourceforge.net/docs/1_0/tutorial-start.html
 
-    Launchd plist templates to automatically load the various nodes can be copied from:
-      #{plist_path('gtm')}
-      #{plist_path('gtm_proxy')}
-      #{plist_path('datanode')}
-      #{plist_path('coord')}
-
     For a first cluster, you may start with a single GTM (Global Transaction Manager),
     a pair of Data Nodes and a single Coordinator, all on the same machine:
 
@@ -158,46 +134,42 @@ class PostgresXc < Formula
       initdb -D #{var}/postgres-xc/datanode2 --nodename datanode2
       initdb -D #{var}/postgres-xc/coord --nodename coord
 
-    Edit
+    Then edit:
+
       #{var}/postgres-xc/datanode1/postgresql.conf
       #{var}/postgres-xc/datanode2/postgresql.conf
-    and change the ports to 15432 and 15433, respectively.
+
+    and change the port to 15432 and 15433, respectively.
 
     Then, launch the nodes and connect to the coordinator:
 
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path('gtm')} ~/Library/LaunchAgents/
-      cp #{plist_path('datanode')} ~/Library/LaunchAgents/#{plist_name('datanode') + '1.plist'}
-      cp #{plist_path('datanode')} ~/Library/LaunchAgents/#{plist_name('datanode') + '2.plist'}
-      cp #{plist_path('coord')} ~/Library/LaunchAgents/
-      sed -i -e 's/datanode/datanode1/g' ~/Library/LaunchAgents/#{plist_name('datanode') + '1.plist'}
-      sed -i -e 's/datanode/datanode2/g' ~/Library/LaunchAgents/#{plist_name('datanode') + '2.plist'}
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path('gtm').basename}
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path('datanode1').basename}
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path('datanode2').basename}
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path('coord').basename}
+      gtm -D #{var}/postgres-xc/gtm -l #{var}/postgres-xc/gtm/server.log &
+      postgres -i -X -D #{var}/postgres-xc/datanode1 -r #{var}/postgres-xc/datanode1/server.log &
+      postgres -i -X -D #{var}/postgres-xc/datanode2 -r #{var}/postgres-xc/datanode2/server.log &
+      postgres -i -C -D #{var}/postgres-xc/coord -r #{var}/postgres-xc/coord/server.log &
       psql postgres
         create node datanode1 with (type='datanode', port=15432);
         create node datanode2 with (type='datanode', port=15433);
         select * from pgxc_node;
         select pgxc_pool_reload();
 
+    To shutdown everything, kill the processes in reverse order:
+
+      kill -SIGTERM `head -1 #{var}/postgres-xc/coord/postmaster.pid`
+      kill -SIGTERM `head -1 #{var}/postgres-xc/datanode1/postmaster.pid`
+      kill -SIGTERM `head -1 #{var}/postgres-xc/datanode2/postmaster.pid`
+      kill -SIGTERM `head -1 #{var}/postgres-xc/gtm/gtm.pid`
+
     If you get the following error:
       FATAL:  could not create shared memory segment: Cannot allocate memory
     then you need to tweak your system's shared memory parameters:
       http://www.postgresql.org/docs/current/static/kernel-resources.html#SYSVIPC
-
-    To shutdown everything, unload the plists in reverse order:
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path('coord').basename}
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path('datanode2').basename}
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path('datanode1').basename}
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path('gtm').basename}
     EOS
   end
 
   # Override Formula#plist_name
   def plist_name(extra = nil)
-    (extra) ? super()+'-'+extra : super()
+    (extra) ? super()+'-'+extra : super()+'-gtm'
   end
 
   # Override Formula#plist_path
@@ -216,7 +188,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{HOMEBREW_PREFIX}/bin/gtm</string>
+        <string>#{opt_prefix}/bin/gtm</string>
         <string>-D</string>
         <string>#{var}/postgres-xc/#{name}</string>
         <string>-l</string>
@@ -246,7 +218,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{HOMEBREW_PREFIX}/bin/gtm_proxy</string>
+        <string>#{opt_prefix}/bin/gtm_proxy</string>
         <string>-D</string>
         <string>#{var}/postgres-xc/#{name}</string>
         <string>-n</string>
@@ -282,7 +254,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{HOMEBREW_PREFIX}/bin/postgres</string>
+        <string>#{opt_prefix}/bin/postgres</string>
         <string>-i</string>
         <string>-C</string>
         <string>-D</string>
@@ -314,7 +286,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{HOMEBREW_PREFIX}/bin/postgres</string>
+        <string>#{opt_prefix}/bin/postgres</string>
         <string>-i</string>
         <string>-X</string>
         <string>-D</string>
@@ -339,16 +311,25 @@ end
 
 
 __END__
-diff --git a/src/Makefile.shlib b/src/Makefile.shlib
-index 983abc3..e393fc6 100644
---- a/src/Makefile.shlib
-+++ b/src/Makefile.shlib
-@@ -130,7 +130,7 @@ ifeq ($(PORTNAME), darwin)
-     ifneq ($(SO_MAJOR_VERSION), 0)
-       version_link	= -compatibility_version $(SO_MAJOR_VERSION) -current_version $(SO_MAJOR_VERSION).$(SO_MINOR_VERSION)
-     endif
--    LINK.shared		= $(COMPILER) -dynamiclib -install_name '$(libdir)/lib$(NAME).$(SO_MAJOR_VERSION)$(DLSUFFIX)' $(version_link) $(exported_symbols_list) -multiply_defined suppress
-+    LINK.shared		= $(COMPILER) -dynamiclib -install_name '$(libdir)/lib$(NAME).$(SO_MAJOR_VERSION)$(DLSUFFIX)' $(version_link) $(exported_symbols_list) -multiply_defined suppress -undefined suppress -flat_namespace
-     shlib		= lib$(NAME).$(SO_MAJOR_VERSION).$(SO_MINOR_VERSION)$(DLSUFFIX)
-     shlib_major		= lib$(NAME).$(SO_MAJOR_VERSION)$(DLSUFFIX)
-   else
+--- a/src/pl/plpython/Makefile	2011-09-23 08:03:52.000000000 +1000
++++ b/src/pl/plpython/Makefile	2011-10-26 21:43:40.000000000 +1100
+@@ -24,8 +24,6 @@
+ # Darwin (OS X) has its own ideas about how to do this.
+ ifeq ($(PORTNAME), darwin)
+ shared_libpython = yes
+-override python_libspec = -framework Python
+-override python_additional_libs =
+ endif
+ 
+ # If we don't have a shared library and the platform doesn't allow it
+--- a/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:34:53.000000000 -0700
++++ b/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:35:03.000000000 -0700
+@@ -9,6 +9,8 @@
+  *-------------------------------------------------------------------------
+  */
+
++#define _XOPEN_SOURCE
++
+ #include "postgres.h"
+ #include "fmgr.h"
+ #include "utils/builtins.h"
