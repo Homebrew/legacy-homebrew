@@ -143,13 +143,16 @@ class FormulaInstaller
   end
 
   def caveats
+    s = []
+
     unless f.caveats.to_s.strip.empty?
-      ohai "Caveats", f.caveats
+      s << f.caveats
       @show_summary_heading = true
     end
 
     if f.keg_only?
-      ohai 'Caveats', f.keg_only_text
+      s << "\n" unless s.empty?
+      s << f.keg_only_text
       @show_summary_heading = true
     elsif ARGV.homebrew_developer?
       audit_bin
@@ -159,22 +162,29 @@ class FormulaInstaller
       check_infopages
     end
 
-    keg = Keg.new(f.prefix)
-    if keg.completion_installed? :bash
-      ohai 'Caveats', <<-EOS.undent
+    keg = Keg.new(f.prefix) rescue nil
+    keg ||= Keg.new(f.opt_prefix.realpath) rescue nil
+    keg ||= Keg.new(f.linked_keg.realpath) rescue nil
+
+    if keg and keg.completion_installed? :bash
+      s << "\n" unless s.empty?
+      s << <<-EOS.undent
         Bash completion has been installed to:
           #{HOMEBREW_PREFIX}/etc/bash_completion.d
         EOS
     end
 
-    if keg.completion_installed? :zsh
-      ohai 'Caveats', <<-EOS.undent
+    if keg and keg.completion_installed? :zsh
+      s << "\n" unless s.empty?
+      s <<  <<-EOS.undent
         zsh completion has been installed to:
           #{HOMEBREW_PREFIX}/share/zsh/site-functions
         EOS
     end
 
-    if f.plist or keg.plist_installed?
+    if f.plist or (keg and keg.plist_installed?)
+      s << "\n" unless s.empty?
+
       destination = f.plist_startup ? '/Library/LaunchDaemons' \
                                     : '~/Library/LaunchAgents'
 
@@ -183,11 +193,10 @@ class FormulaInstaller
       plist_domain = f.plist_path.basename('.plist')
       destination_path = Pathname.new File.expand_path destination
       plist_path = destination_path/plist_filename
-      s = []
 
       # we readlink because this path probably doesn't exist since caveats
       # occurs before the link step of installation
-      if not (plist_path).file? and not (plist_path).symlink?
+      if (not plist_path.file?) and (not plist_path.symlink?)
         if f.plist_startup
           s << "To have launchd start #{f.name} at startup:"
           s << "    sudo mkdir -p #{destination}" unless destination_path.directory?
@@ -225,9 +234,9 @@ class FormulaInstaller
           s << "    launchctl load #{plist_link}"
         end
       end
-
-      ohai 'Caveats', s
     end
+
+    ohai 'Caveats', s unless s.empty?
   end
 
   def finish
