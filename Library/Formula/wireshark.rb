@@ -4,6 +4,7 @@ class Wireshark < Formula
   homepage 'http://www.wireshark.org'
   url 'http://www.wireshark.org/download/src/wireshark-1.8.4.tar.bz2'
   sha1 '00265d9196f030848c78025f30556cd014be843d'
+  head 'http://anonsvn.wireshark.org/wireshark/trunk', :using => :svn
 
   depends_on 'pkg-config' => :build
   depends_on 'gnutls' => :optional
@@ -15,6 +16,12 @@ class Wireshark < Formula
   if build.include? 'with-x'
     depends_on :x11
     depends_on 'gtk+'
+  end
+
+  if build.include? 'HEAD'
+    depends_on :automake
+    depends_on :autoconf
+    depends_on :libtool
   end
 
   option 'with-x', 'Include X11 support'
@@ -31,6 +38,10 @@ class Wireshark < Formula
     # actually just disables the GTK GUI
     args << '--disable-wireshark' unless build.include? 'with-x'
 
+    if build.include? 'HEAD'
+      #	system "./autogen.sh"
+      system "autoreconf --force --install"
+    end
     system "./configure", *args
     system "make"
     ENV.deparallelize # parallel install fails
