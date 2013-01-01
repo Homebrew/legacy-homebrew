@@ -2,9 +2,9 @@ require 'formula'
 
 class GlobusToolkit < Formula
   homepage 'http://www.globus.org/toolkit/'
-  url 'http://www.globus.org/ftppub/gt5/5.2/5.2.2/installers/src/gt5.2.2-all-source-installer.tar.gz'
-  version '5.2.2'
-  sha1 '0e59f1dbd2c9f13cca42bef442922d3e5702cfd8'
+  url 'http://www.globus.org/ftppub/gt5/5.2/5.2.3/installers/src/gt5.2.3-all-source-installer.tar.gz'
+  version '5.2.3'
+  sha1 '47b1d6579adbd5b62accffbb69bd8d9deeb75236'
 
   depends_on :libtool
 
