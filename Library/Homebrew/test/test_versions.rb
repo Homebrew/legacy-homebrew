@@ -247,6 +247,10 @@ class VersionParsingTests < Test::Unit::TestCase
     assert_version_detected '1.486', 'http://mirrors.jenkins-ci.org/war/1.486/jenkins.war'
   end
 
+  def test_apache_version_style
+    assert_version_detected '1.2.0-rc2', 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.2.0/apache-cassandra-1.2.0-rc2-bin.tar.gz'
+  end
+
   # def test_version_ghc_style
   #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2'
   #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2'
