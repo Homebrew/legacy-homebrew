@@ -64,6 +64,10 @@ end
       found + relative_paths.map{|f| File.join(prefix, f) }.select{|f| File.exist? f }
     end
   end
+
+  def inject_file_list(list, str)
+    list.inject(str) { |s, f| s << "    #{f}\n" }
+  end
 ############# END HELPERS
 
 # See https://github.com/mxcl/homebrew/pull/9986
@@ -113,8 +117,7 @@ def check_for_stray_dylibs
 
     Unexpected dylibs:
   EOS
-  bad_dylibs.each { |f| s << "    #{f}" }
-  s
+  inject_file_list(bad_dylibs, s)
 end
 
 def check_for_stray_static_libs
@@ -137,8 +140,7 @@ def check_for_stray_static_libs
 
     Unexpected static libraries:
   EOS
-  bad_alibs.each{ |f| s << "    #{f}" }
-  s
+  inject_file_list(bad_alibs, s)
 end
 
 def check_for_stray_pcs
@@ -158,8 +160,7 @@ def check_for_stray_pcs
 
     Unexpected .pc files:
   EOS
-  bad_pcs.each{ |f| s << "    #{f}" }
-  s
+  inject_file_list(bad_pcs, s)
 end
 
 def check_for_stray_las
@@ -180,8 +181,7 @@ def check_for_stray_las
 
     Unexpected .la files:
   EOS
-  bad_las.each{ |f| s << "    #{f}" }
-  s
+  inject_file_list(bad_las, s)
 end
 
 def check_for_other_package_managers
@@ -548,7 +548,7 @@ def check_for_gettext
       These files can cause compilation and link failures, especially if they
       are compiled with improper architectures. Consider removing these files:
       EOS
-  @found.inject(s) { |s, f| s << "    #{f}\n" }
+  inject_file_list(@found, s)
 end
 
 def check_for_iconv
@@ -572,7 +572,7 @@ def check_for_iconv
 
           tl;dr: delete these files:
           EOS
-      @found.inject(s){|s, f| s << "    #{f}\n" }
+      inject_file_list(@found, s)
     end
   end
 end

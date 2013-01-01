@@ -2,8 +2,8 @@ require 'formula'
 
 class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
-  url 'http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.1.tar.gz'
-  sha1 'd1c468a589060dd43532c1afabec9eee10095429'
+  url 'http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.2.tar.gz'
+  sha1 '9bedb3638e4fc5a53e264aab3c5ff1a345f22bab'
 
   def cluster_name
     "elasticsearch_#{ENV['USER']}"
@@ -31,6 +31,10 @@ class Elasticsearch < Formula
 
       # 3. Bind to loopback IP for laptops roaming different networks
       s.gsub! /#\s*network\.host\: [^\n]+/, "network.host: 127.0.0.1"
+
+      # 4. Persist plugins on upgrade
+      s.gsub! "# path.plugins: /path/to/plugins", "path.plugins: #{var}/lib/elasticsearch/plugins"
+
     end
 
     inreplace "#{bin}/elasticsearch.in.sh" do |s|
@@ -49,11 +53,6 @@ class Elasticsearch < Formula
       # Replace CLASSPATH paths to use libexec instead of lib
       s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
     end
-
-    # Persist plugins on upgrade
-    plugins = "#{HOMEBREW_PREFIX}/var/lib/elasticsearch/plugins"
-    mkdir_p plugins
-    ln_sf plugins, "#{prefix}/plugins"
   end
 
   def caveats; <<-EOS.undent

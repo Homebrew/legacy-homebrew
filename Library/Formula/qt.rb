@@ -44,7 +44,7 @@ class Qt < Formula
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
-    args << "-L#{MacOS.x11_prefix}/lib" << "-I#{MacOS.x11_prefix}/include" if MacOS::X11.installed?
+    args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
     args << "-platform" << "unsupported/macx-clang" if ENV.compiler == :clang
 

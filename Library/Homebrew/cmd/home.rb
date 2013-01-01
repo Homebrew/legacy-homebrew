@@ -1,9 +1,9 @@
 module Homebrew extend self
   def home
     if ARGV.named.empty?
-      exec "open", HOMEBREW_WWW
+      exec_browser HOMEBREW_WWW
     else
-      exec "open", *ARGV.formulae.map{ |f| f.homepage }
+      exec_browser *ARGV.formulae.map{ |f| f.homepage }
     end
   end
 end

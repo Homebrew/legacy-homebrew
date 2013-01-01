@@ -408,6 +408,10 @@ can take several different forms:
     `HOMEBREW_DEBUG_PREFIX` will be set to the target prefix in the Cellar
     of the formula being brewed.
 
+  * HOMEBREW\_DEVELOPER:
+    If set, Homebrew will print warnings that are only relevant to Homebrew
+    developers (active or budding).
+
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or
     several formulae in the same directory.
