@@ -1,6 +1,7 @@
 require 'formula'
 require 'tab'
 require 'keg'
+require 'caveats'
 
 module Homebrew extend self
   def info
@@ -119,10 +120,7 @@ module Homebrew extend self
       Homebrew.dump_options_for_formula f
     end
 
-    unless f.caveats.to_s.strip.empty?
-      ohai "Caveats"
-      puts f.caveats
-    end
+    Caveats.print f
 
   rescue FormulaUnavailableError
     # check for DIY installation
