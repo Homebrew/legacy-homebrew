@@ -14,6 +14,7 @@ class PerconaServer < Formula
   option 'with-tests', 'Build with unit tests'
   option 'with-embedded', 'Build the embedded server'
   option 'with-libedit', 'Compile with editline wrapper instead of readline'
+  option 'with-handlersocket', 'Build with handlersocket support'
   option 'enable-local-infile', 'Build with local infile loading support'
 
   conflicts_with 'mysql',
@@ -86,6 +87,19 @@ class PerconaServer < Formula
     system "cmake", *args
     system "make"
     system "make install"
+
+    if build.include? 'with-handlersocket'
+      system "git clone https://github.com/DeNADev/HandlerSocket-Plugin-for-MySQL.git handlersocket-plugin"
+      Dir.chdir("handlersocket-plugin") do
+        # Add path with libtools
+        ENV['PATH'] += ':/usr/local/bin'
+        # Compile
+        system "./autogen.sh"
+        system "./configure --with-mysql-source=../ --with-mysql-bindir=#{prefix}/bin"
+        system 'make'
+        system 'make install'
+      end
+    end
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/mxcl/homebrew/issues/4975
