@@ -2,9 +2,11 @@ require 'formula'
 
 class Augeas < Formula
   homepage 'http://augeas.net'
-  url 'http://augeas.net/download/augeas-0.10.0.tar.gz'
-  sha1 '6d1d7b4572c05748d537f3ff12c5ac8ceb6b49bd'
+  url 'http://augeas.net/download/augeas-1.0.0.tar.gz'
+  sha1 '5d0bc5738cc77ad4731f9406fb8dceb08826bba9'
 
+  depends_on 'pkg-config' => :build
+  depends_on 'libxml2'
   depends_on 'readline'
 
   def install
