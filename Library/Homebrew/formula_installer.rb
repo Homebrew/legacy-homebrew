@@ -151,12 +151,12 @@ class FormulaInstaller
     if f.keg_only?
       ohai 'Caveats', f.keg_only_text
       @show_summary_heading = true
-    else
-      #audit_bin
-      #audit_sbin
-      #audit_lib
-      #check_manpages
-      #check_infopages
+    elsif ARGV.homebrew_developer?
+      audit_bin
+      audit_sbin
+      audit_lib
+      check_manpages
+      check_infopages
     end
 
     keg = Keg.new(f.prefix)
