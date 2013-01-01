@@ -36,8 +36,9 @@ class Erlang < Formula
 
   # remove the autoreconf if possible
   depends_on :automake
+  depends_on :autoconf #Joan
   depends_on :libtool
-
+  depends_on 'wxgtk' if build.include? 'with-wxgtk'
   fails_with :llvm do
     build 2334
   end
@@ -46,6 +47,12 @@ class Erlang < Formula
   option 'halfword', 'Enable halfword emulator (64-bit builds only)'
   option 'time', '`brew test --time` to include a time-consuming test'
   option 'no-docs', 'Do not install documentation'
+  option 'with-wxgtk','Enable wx GTK, useful on mountain lion where wxwidgets 2.8 does not compile'
+
+    def patches
+      # Fix build for 64 bits machines
+      "https://gist.github.com/raw/4370480/181f8056668ad9c5989b9cc7c0d59ad97586c458/enable_wx_on_64bits.diff" if build.include? 'with-wxgtk'
+    end
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
@@ -55,6 +62,8 @@ class Erlang < Formula
       ENV.remove_from_cflags /-O./
       ENV.append_to_cflags '-O0'
     end
+
+    ENV.append 'LDFLAGS', '-framework AppKit' if build.include? 'with-wxgtk'
 
     # Do this if building from a checkout to generate configure
     system "./otp_build autoconf" if File.exist? "otp_build"
@@ -66,7 +75,6 @@ class Erlang < Formula
             "--enable-dynamic-ssl-lib",
             "--enable-shared-zlib",
             "--enable-smp-support"]
-
     args << "--with-dynamic-trace=dtrace" unless MacOS.version == :leopard
 
     unless build.include? 'disable-hipe'
@@ -82,7 +90,9 @@ class Erlang < Formula
     end
 
     system "./configure", *args
-    touch 'lib/wx/SKIP' if MacOS.version >= :snow_leopard
+    if (MacOS.version >= :snow_leopard && !build.include?('with-wxgtk'))
+      touch 'lib/wx/SKIP'
+    end
     system "make"
     system "make install"
 
