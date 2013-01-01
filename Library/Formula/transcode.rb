@@ -16,11 +16,15 @@ class Transcode < Formula
   depends_on 'imagemagick'
   depends_on 'libdvdread'
   depends_on 'libquicktime'
+  depends_on 'fontconfig'
+  depends_on 'freetype'
+  depends_on 'theora'
 
   def install
     args = ["--disable-debug",
             "--disable-dependency-tracking",
             "--prefix=#{prefix}",
+            "--with-freetype2-prefix=/usr/local/opt/fontconfig",
             "--enable-a52",
             "--enable-faac",
             "--enable-imagemagick",
