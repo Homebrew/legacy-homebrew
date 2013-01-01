@@ -7,6 +7,9 @@ class Cdrtools < Formula
 
   depends_on 'smake' => :build
 
+  conflicts_with 'dvdrtools',
+    :because => 'both dvdrtools and cdrtools install binaries by the same name'
+
   def install
     system "smake", "INS_BASE=#{prefix}", "INS_RBASE=#{prefix}", "install"
     # cdrtools tries to install some generic smake headers, libraries and
