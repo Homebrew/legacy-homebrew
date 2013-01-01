@@ -7,6 +7,9 @@ class Ctags < Formula
 
   head 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
 
+  conflicts_with 'emacs',
+    :because => 'Both ctags and emacs install a `ctags` executable.'
+
   depends_on :autoconf => :build if build.head?
 
   def patches
