@@ -6,6 +6,18 @@ class GhostscriptFonts < Formula
   sha1 '2a7198e8178b2e7dba87cb5794da515200b568f5'
 end
 
+class GsDjVU < Formula
+  homepage 'http://djvu.sourceforge.net/gsdjvu.html'
+  url 'http://sourceforge.net/projects/djvu/files/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
+  version '1.5'
+  sha1 'c7d0677dae5fe644cf3d714c04b3c2c343906342'
+  head 'git://git.code.sf.net/p/djvu/gsdjvu-git'
+
+  depends_on 'djvulibre'
+  depends_on 'jpeg'
+  depends_on :libpng
+end
+
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
   url 'http://downloads.ghostscript.com/public/ghostscript-9.07.tar.gz'
@@ -14,6 +26,8 @@ class Ghostscript < Formula
   head 'git://git.ghostscript.com/ghostpdl.git'
 
   option 'with-x11', 'Install with X11 support'
+  option 'with-djvu', "Build drivers for DjVU file format"
+  #binaries made with this option are not redistributable due to incompatible licensing of gsdjvu & ghostscript, do not bottle
 
   if build.head?
     depends_on :automake
@@ -48,6 +62,16 @@ class Ghostscript < Formula
 
     src_dir = build.head? ? "gs" : "."
 
+    if build.include? 'with-djvu'
+      GsDjVU.new.brew do
+        inreplace 'gdevdjvu.c', /#include "gserror.h"/, ''
+        (buildpath+'base').install 'gdevdjvu.c'
+        (buildpath+'lib').install 'ps2utf8.ps'
+        ENV['EXTRA_INIT_FILES'] = 'ps2utf8.ps'
+        File.open((buildpath+'base/contrib.mak'),'a'){|f|f.write(IO.read('gsdjvu.mak'))} #cat
+      end
+    end
+
     cd src_dir do
       move_included_source_copies
       args = %W[
@@ -67,6 +91,8 @@ class Ghostscript < Formula
 
       # versioned stuff in main tree is pointless for us
       inreplace 'Makefile', '/$(GS_DOT_VERSION)', ''
+
+      inreplace('Makefile'){|s|s.change_make_var!('DEVICE_DEVS17','$(DD)djvumask.dev $(DD)djvusep.dev')} if build.include? 'with-djvu'
 
       # Install binaries and libraries
       system "make install"
