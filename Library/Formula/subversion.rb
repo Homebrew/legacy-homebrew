@@ -147,7 +147,7 @@ class Subversion < Formula
             "--without-berkeley-db"]
 
     args << "--enable-javahl" << "--without-jikes" if build_java?
-    args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
+    args << "--with-ruby-sitedir=#{lib}/ruby" << "RUBY=/usr/bin/ruby" if build_ruby?
 
     # The system Python is built with llvm-gcc, so we override this
     # variable to prevent failures due to incompatible CFLAGS
@@ -194,8 +194,14 @@ class Subversion < Formula
     end
 
     if build_ruby?
+      inreplace "Makefile" do |s|
+        ruby_libs = s.get_make_var "SWIG_RB_LIBS"
+        ruby_libs.gsub! /-lruby /, "-lruby.1 "
+        s.change_make_var! "SWIG_RB_LIBS", ruby_libs
+      end
+
       ENV.j1 # This build isn't parallel safe
-      system "make swig-rb"
+      system "make swig-rb EXTRA_SWIG_LDFLAGS=-L/usr/lib"
       system "make install-swig-rb"
     end
   end
