@@ -2,6 +2,7 @@
 # Optionally, installs it too.
 
 require 'utils'
+require 'formula'
 
 def tap arg
   match = arg.match(%r[homebrew-(\w+)/])
