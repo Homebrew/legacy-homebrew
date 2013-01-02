@@ -16,18 +16,11 @@ class GitTf < Formula
     url 'https://git01.codeplex.com/gittf', :using => :git
   end
   
-  def startup_script name
-  <<-EOS.undent
-    #!/bin/sh
-    exec "#{libexec}/#{name}" "$@"
-  EOS
-  end
-  
   def install
     if build.devel? || build.head?
-      system "mvn", "assembly:assembly"
+      system 'mvn', 'assembly:assembly'
       
-      system "unzip", Dir['target/git-tf-*.zip'], "-dtarget"
+      system 'unzip', Dir['target/git-tf-*.zip'], "-dtarget"
       install_prefix = Dir['target/git-tf-*/'].to_s
     else
       install_prefix = ''
@@ -37,8 +30,8 @@ class GitTf < Formula
     libexec.install install_prefix + 'lib'
     libexec.install install_prefix + 'native/macosx'
     
-    (bin+"git-tf").write startup_script('git-tf')
-    (share/"doc/git-tf").install Dir['Git-TF_*'] + Dir['ThirdPartyNotices*']
+    bin.write_exec_script 'git-tf'
+    (share/'doc/git-tf').install Dir['Git-TF_*'] + Dir['ThirdPartyNotices*']
   end
   
   def test
