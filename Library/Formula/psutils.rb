@@ -8,14 +8,20 @@ class Psutils < Formula
   def install
     ENV.j1
     man1.mkpath # This is required, because the makefile expects that its man folder exists
-    system "make -f Makefile.unix PERL=/usr/bin/perl BINDIR=#{bin} INCLUDEDIR=#{share}/psutils MANDIR=#{man1} install" # if this fails, try separate make/make install steps
+    system "make", "-f", "Makefile.unix", 
+                      "PERL=/usr/bin/perl",
+                      "BINDIR=#{bin}", 
+                      "INCLUDEDIR=#{share}/psutils",
+                      "MANDIR=#{man1}",
+                      "install"
   end
 
   def test
-    # Unfortunately, there aren't any tests bundled with psutils,
-    #  we just run a few of the core binaries and check the return code
-    system "sh -c '#{bin}/psnup -h    || [[ $? -eq 1 ]] && exit 0'"
-    system "sh -c '#{bin}/psselect -h || [[ $? -eq 1 ]] && exit 0'"
-    system "sh -c '#{bin}/pstops -h   || [[ $? -eq 1 ]] && exit 0'"
+    mktemp do
+      system "sh -c '#{bin}/showchar Palatino B > test.ps'" 
+      system "#{bin}/psmerge", "-omulti.ps", "test.ps", "test.ps", "test.ps", "test.ps"
+      system "#{bin}/psnup", "-n", "2", "multi.ps", "nup.ps"
+      system "#{bin}/psselect", "-p1", "multi.ps", "test2.ps"
+    end
   end
 end
