@@ -1,9 +1,9 @@
 require 'formula'
 
 class Nss < Formula
-  url 'http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_12_10_RTM/src/nss-3.12.10.tar.gz'
   homepage 'http://www.mozilla.org/projects/security/pki/nss/'
-  md5 '027954e894f02732f4e66cd854261145'
+  url 'http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_14_1_RTM/src/nss-3.14.1.tar.gz'
+  sha1 '764773e869aaee314e6f3ca675e04c55075d88a8'
 
   depends_on 'nspr'
 
@@ -70,7 +70,7 @@ includedir=${prefix}/include/nss
 
 Name: NSS
 Description: Mozilla Network Security Services
-Version: 3.12.10
+Version: 3.14.1
 Requires: nspr
 Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
 Cflags: -I${includedir}

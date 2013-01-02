@@ -17,12 +17,6 @@ class GitNow < Formula
     system "make", "prefix=#{prefix}", "install"
     (share+'zsh/site-functions').install 'etc/_git-now'
   end
-
-  def caveats; <<-EOS.undent
-   Zsh completion has been installed to:
-      #{HOMEBREW_PREFIX}/share/zsh/site-functions
-    EOS
-  end
 end
 
 # This patch makes sure GNUtools are used on OSX.

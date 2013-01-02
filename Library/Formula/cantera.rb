@@ -3,7 +3,7 @@ require 'formula'
 class Cantera < Formula
   homepage 'http://code.google.com/p/cantera/'
   url 'http://cantera.googlecode.com/files/cantera-1.8.0-beta.tar.gz'
-  md5 '53d923922535c64b7e6b9f07bbfcf866'
+  sha1 'c62666590c65c9a5a17c0867f0f6b6789984131f'
   head 'http://cantera.googlecode.com/svn/cantera18/trunk/'
 
   depends_on 'numpy' => :python
@@ -57,7 +57,7 @@ class Cantera < Formula
 
   def caveats; <<-EOS.undent
     The license, demos, tutorials, data, etc. can be found in:
-      #{prefix}
+      #{opt_prefix}
 
     Try the following in python to find the equilibrium composition of a
     stoichiometric methane/air mixture at 1000 K and 1 atm:

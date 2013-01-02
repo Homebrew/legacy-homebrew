@@ -2,9 +2,9 @@ require 'formula'
 
 class Autogen < Formula
   homepage 'http://autogen.sourceforge.net'
-  url 'http://ftpmirror.gnu.org/autogen/rel5.16.1/autogen-5.16.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/autogen/rel5.16.1/autogen-5.16.1.tar.gz'
-  sha1 'a3a1aac9df966aabad39c68c01668bb2ba6be566'
+  url 'http://ftpmirror.gnu.org/autogen/rel5.16.2/autogen-5.16.2.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/autogen/rel5.16.2/autogen-5.16.2.tar.gz'
+  sha1 '55c5e3c18c77a9de14cce8044f5848a614f4ed66'
 
   depends_on 'guile'
 

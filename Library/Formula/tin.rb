@@ -3,7 +3,7 @@ require 'formula'
 class Tin < Formula
   homepage 'http://www.tin.org'
   url 'ftp://ftp.tin.org/pub/news/clients/tin/stable/tin-2.0.1.tar.gz'
-  md5 'd05622db1712a78a2b92aa27904befc2'
+  sha1 '27d3003d90b8ee4be3a25377986f0f53955a6b5b'
 
   def install
     ENV.enable_warnings

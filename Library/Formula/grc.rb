@@ -3,7 +3,7 @@ require 'formula'
 class Grc < Formula
   homepage 'http://korpus.juls.savba.sk/~garabik/software/grc.html'
   url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.4.tar.gz'
-  md5 'a59267f88b6d2b7e6a4779bc904c3f75'
+  sha1 '79fd504d8291f13486d361611415ae60fa56712a'
 
   def install
     #TODO we should deprefixify since it's python and thus possible

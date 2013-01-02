@@ -3,8 +3,7 @@ require 'formula'
 class Ezlupdate < Formula
   homepage 'http://ezpedia.org/ez/ezlupdate'
   url 'https://github.com/downloads/ezsystems/ezpublish/ezpublish_community_project-2011.10-with_ezc.tar.bz2'
-  version '2011.10'
-  md5 'd40cbcf714c1071ffb6ee2c1e4975282'
+  sha1 'd20912fda2438143d3981ca8e07bb52329e2cf25'
 
   depends_on 'qt'
 

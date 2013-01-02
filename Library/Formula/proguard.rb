@@ -7,9 +7,6 @@ class Proguard < Formula
 
   def install
     libexec.install 'lib/proguard.jar'
-    (bin+"proguard").write <<-EOS.undent
-      #!/bin/sh
-      java -jar "#{libexec}/proguard.jar" "$@"
-    EOS
+    bin.write_jar_script libexec/'proguard.jar', 'proguard'
   end
 end

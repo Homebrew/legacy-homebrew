@@ -3,7 +3,7 @@ require 'formula'
 class Mediatomb < Formula
   homepage 'http://mediatomb.cc'
   url 'http://downloads.sourceforge.net/mediatomb/mediatomb-0.12.1.tar.gz'
-  md5 'e927dd5dc52d3cfcebd8ca1af6f0d3c2'
+  sha1 '86e880584cc9c8aaf3926d56048510d1d06e76b4'
 
   # This is for libav 0.7 support. See:
   # https://bugs.launchpad.net/ubuntu/+source/mediatomb/+bug/784431
@@ -13,7 +13,7 @@ class Mediatomb < Formula
   end
 
   fails_with :clang do
-    build 318
+    build 421
     cause <<-EOS.undent
       In file included from ../src/content_manager.cc:45:
       In file included from ../src/content_manager.h:36:

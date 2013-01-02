@@ -2,8 +2,8 @@ require 'formula'
 
 class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
-  url 'https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.7.tar.gz'
-  md5 '2d4f6d608862c47963483a1d7fa6e8c6'
+  url 'http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.2.tar.gz'
+  sha1 '9bedb3638e4fc5a53e264aab3c5ff1a345f22bab'
 
   def cluster_name
     "elasticsearch_#{ENV['USER']}"
@@ -31,6 +31,10 @@ class Elasticsearch < Formula
 
       # 3. Bind to loopback IP for laptops roaming different networks
       s.gsub! /#\s*network\.host\: [^\n]+/, "network.host: 127.0.0.1"
+
+      # 4. Persist plugins on upgrade
+      s.gsub! "# path.plugins: /path/to/plugins", "path.plugins: #{var}/lib/elasticsearch/plugins"
+
     end
 
     inreplace "#{bin}/elasticsearch.in.sh" do |s|
@@ -49,33 +53,12 @@ class Elasticsearch < Formula
       # Replace CLASSPATH paths to use libexec instead of lib
       s.gsub! /-cp \".*\"/, '-cp "$ES_HOME/libexec/*"'
     end
-
-    # Write .plist file for `launchd`
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
-  def caveats
-    <<-EOS.undent
-    If this is your first install, automatically load ElasticSearch on login with:
-        mkdir -p ~/Library/LaunchAgents
-        ln -nfs #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -wF ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        ln -nfs #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -wF ~/Library/LaunchAgents/#{plist_path.basename}
-
+  def caveats; <<-EOS.undent
     If upgrading from 0.18 ElasticSearch requires flushing before shutting
     down the cluster with no indexing operations happening after flush:
         curl host:9200/_flush
-
-    To stop the ElasticSearch daemon:
-        launchctl unload -wF ~/Library/LaunchAgents/#{plist_path.basename}
-
-    To start ElasticSearch manually:
-        elasticsearch -f -D es.config=#{prefix}/config/elasticsearch.yml
 
     See the 'elasticsearch.yml' file for configuration options.
 
@@ -87,12 +70,12 @@ class Elasticsearch < Formula
 
     You should see ElasticSearch running:
         open http://localhost:9200/
-
     EOS
   end
 
-  def startup_plist
-    <<-PLIST.undent
+  plist_options :manual => "elasticsearch -f -D es.config=#{HOMEBREW_PREFIX}/opt/elasticsearch/config/elasticsearch.yml"
+
+  def plist; <<-EOS.undent
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
@@ -124,6 +107,6 @@ class Elasticsearch < Formula
           <string>/dev/null</string>
         </dict>
       </plist>
-    PLIST
+    EOS
   end
 end

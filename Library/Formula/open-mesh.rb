@@ -2,8 +2,8 @@ require 'formula'
 
 class OpenMesh < Formula
   homepage 'http://openmesh.org'
-  url 'http://openmesh.org/fileadmin/openmesh-files/2.1/OpenMesh-2.1.tar.bz2'
-  md5 'e28ede60a261b92b7da517be71387b39'
+  url 'http://www.openmesh.org/fileadmin/openmesh-files/2.3/OpenMesh-2.3.tar.gz'
+  sha1 '3cccb46afd6f8b0c60dfbdcd883806f77efd14c3'
 
   head 'http://openmesh.org/svnrepo/OpenMesh/trunk/', :using => :svn
 

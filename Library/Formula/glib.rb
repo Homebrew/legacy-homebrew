@@ -1,12 +1,14 @@
 require 'formula'
 
-def build_tests?; ARGV.include? '--test'; end
-
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.3.tar.xz'
-  sha256 'b65ceb462807e4a2f91c95e4293ce6bbefca308cb44a1407bcfdd9e40363ff4d'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.34/glib-2.34.3.tar.xz'
+  sha256 '855fcbf87cb93065b488358e351774d8a39177281023bae58c286f41612658a7'
 
+  option :universal
+  option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
+
+  depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'libffi'
@@ -17,29 +19,18 @@ class Glib < Formula
   end
 
   def patches
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673047  Still open at 2.32.3
-    # https://bugzilla.gnome.org/show_bug.cgi?id=644473  Still open at 2.32.3
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673135  Resolved as wontfix.
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix.
     p = { :p1 => %W[
-        https://raw.github.com/gist/2235195/19cdaebdff7dcc94ccd9b3747d43a09318f0b846/glib-gunicollate.diff
-        https://raw.github.com/gist/2235202/26f885e079e4d61da26d239970301b818ddbb4ab/glib-gtimezone.diff
-        https://raw.github.com/gist/2246469/591586214960f7647b1454e7d547c3935988a0a7/glib-configurable-paths.diff
-      ]}
+      https://raw.github.com/gist/3924879/f86903e0aea1458448507305d01b06a7d878c041/glib-configurable-paths.patch
+    ]}
     p[:p0] = %W[
-        https://trac.macports.org/export/92183/trunk/dports/devel/glib2/files/patch-configure.diff
-      ] if ARGV.build_universal?
+        https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/patch-configure.diff
+    ] if build.universal?
     p
   end
 
-  def options
-  [
-    ['--universal', 'Build universal binaries.'],
-    ['--test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet.']
-  ]
-  end
-
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
 
     # -w is said to causes gcc to emit spurious errors for this package
     ENV.enable_warnings if ENV.compiler == :gcc
@@ -53,26 +44,15 @@ class Glib < Formula
       --localstatedir=#{var}
     ]
 
-    # glib and pkg-config 0.26 have circular dependencies, so we should build glib without pkg-config
-    # The pkg-config dependency can be eliminated if certain env variables are set
-    # Note that this *may* need to be updated if any new dependencies are added in the future
-    # See http://permalink.gmane.org/gmane.comp.package-management.pkg-config/627
-    ENV['ZLIB_CFLAGS'] = ''
-    ENV['ZLIB_LIBS'] = '-lz'
-    # libffi include paths are dramatically ugly
-    libffi = Formula.factory('libffi')
-    ENV['LIBFFI_CFLAGS'] = "-I #{libffi.lib}/libffi-#{libffi.version}/include"
-    ENV['LIBFFI_LIBS'] = '-lffi'
-
     system "./configure", *args
 
-    if ARGV.build_universal?
-      system "curl 'https://trac.macports.org/export/92179/trunk/dports/devel/glib2/files/config.h.ed' | ed - config.h"
+    if build.universal?
+      system "curl 'https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/config.h.ed' | ed - config.h"
     end
 
     system "make"
     # the spawn-multithreaded tests require more open files
-    system "ulimit -n 1024; make check" if build_tests?
+    system "ulimit -n 1024; make check" if build.include? 'test'
     system "make install"
 
     # This sucks; gettext is Keg only to prevent conflicts with the wider
@@ -92,11 +72,6 @@ class Glib < Formula
   end
 
   def test
-    unless Formula.factory("pkg-config").installed?
-      puts "pkg-config is required to run this test, but is not installed"
-      exit 1
-    end
-
     mktemp do
       (Pathname.pwd/'test.c').write <<-EOS.undent
         #include <string.h>
@@ -113,8 +88,9 @@ class Glib < Formula
             return (strcmp(str, result_2) == 0) ? 0 : 1;
         }
         EOS
-      system ENV.cc, "-o", "test", "test.c",
-        *`pkg-config --cflags --libs glib-2.0`.split
+      flags = *`pkg-config --cflags --libs glib-2.0`.split
+      flags += ENV.cflags.split
+      system ENV.cc, "-o", "test", "test.c", *flags
       system "./test"
     end
   end

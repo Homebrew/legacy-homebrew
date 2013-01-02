@@ -2,8 +2,8 @@ require 'formula'
 
 class Freeswitch < Formula
   homepage 'http://freeswitch.org'
-  url 'git://git.freeswitch.org/freeswitch.git', :tag => 'v1.0.6'
-  version '1.0.6'
+  url 'git://git.freeswitch.org/freeswitch.git', :tag => 'v1.2.0'
+  version '1.2.0'
 
   head 'git://git.freeswitch.org/freeswitch.git'
 
@@ -24,12 +24,12 @@ class Freeswitch < Formula
 
     system "make"
     system "make install"
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
+    system "make all cd-sounds-install cd-moh-install"
   end
 
-  def startup_plist; <<-EOS.undent
+  plist_options :manual => "freeswitch -nc --nonat"
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -50,22 +50,6 @@ class Freeswitch < Formula
         <true/>
     </dict>
     </plist>
-    EOS
-  end
-
-  def caveats; <<-EOS.undent
-    If this is your first install, automatically load on login with:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Or start it manually:
-      freeswitch -nc --nonat
     EOS
   end
 

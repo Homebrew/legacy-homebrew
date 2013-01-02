@@ -3,34 +3,29 @@ require 'formula'
 class Teem < Formula
   homepage 'http://teem.sourceforge.net/'
   url 'https://sourceforge.net/projects/teem/files/teem/1.10.0/teem-1.10.0-src.tar.gz'
-  md5 'efe219575adc89f6470994154d86c05b'
+  sha1 'f63ff41111ca5aa6ff6fc7653ec0e089da61bac6'
+
   head 'https://teem.svn.sourceforge.net/svnroot/teem/teem/trunk'
 
   depends_on 'cmake' => :build
 
-  def options
-    [
-      ['--experimental-apps', "Build experimental apps"],
-      ['--experimental-libs', "Build experimental libs"],
-    ]
-  end
+  option 'experimental-apps', "Build experimental apps"
+  option 'experimental-libs', "Build experimental libs"
 
   # fixes issues with linking to more recent libpng bundled with OS X
   # (fixed in head)
   def patches
-    unless ARGV.build_head?
-      DATA
-    end
-  end
+    DATA
+  end unless build.head?
 
   def install
     cmake_args = std_cmake_args
     cmake_args << "-DBUILD_SHARED_LIBS:BOOL=ON"
 
-    if ARGV.include? '--experimental-apps'
+    if build.include? 'experimental-apps'
       cmake_args << "-DBUILD_EXPERIMENTAL_APPS:BOOL=ON"
     end
-    if ARGV.include? '--experimental-libs'
+    if build.include? 'experimental-libs'
       cmake_args << "-DBUILD_EXPERIMENTAL_LIBS:BOOL=ON"
     end
 

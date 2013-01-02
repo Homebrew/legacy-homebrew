@@ -3,7 +3,7 @@ require 'formula'
 class Resty < Formula
   url 'https://github.com/micha/resty/tarball/2.2'
   homepage 'https://github.com/micha/resty'
-  md5 '4f75aee6b65c55eb1e5367fa791430ba'
+  sha1 '0c5271dc66dae7466d8be91979c2c6839ab6af00'
 
   head 'https://github.com/micha/resty.git'
 

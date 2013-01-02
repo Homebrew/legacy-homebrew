@@ -3,8 +3,9 @@ require 'formula'
 class Authexec < Formula
   homepage 'https://github.com/tcurdt/authexec'
   url 'https://github.com/tcurdt/authexec/tarball/1.0'
+  sha1 'cae4cbd4c2d3ded8e13b4257d951efd1755ed411'
+
   head 'https://github.com/tcurdt/authexec.git'
-  md5 '3ee6c6939be0372b3c1fdaa73d762387'
 
   def install
     system 'make all'

@@ -9,7 +9,7 @@ module Homebrew extend self
       return
     end
 
-    unless built_bottle? f
+    unless built_as_bottle? f
       return ofail "Formula not installed with '--build-bottle': #{f.name}"
     end
 

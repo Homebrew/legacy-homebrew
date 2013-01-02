@@ -1,16 +1,16 @@
 require 'formula'
 
-def pgm_flags
-  return ARGV.include?('--with-pgm') ? "--with-pgm" : ""
-end
-
 class Zeromq < Formula
   homepage 'http://www.zeromq.org/'
-  url 'http://download.zeromq.org/zeromq-2.2.0.tar.gz'
-  md5 '1b11aae09b19d18276d0717b2ea288f6'
+  url 'http://download.zeromq.org/zeromq-3.2.2.tar.gz'
+  sha1 '0e8734c773b6a757b474c16fc3c517993ba47283'
+
   head 'https://github.com/zeromq/libzmq.git'
 
-  if ARGV.build_head?
+  depends_on 'pkg-config' => :build
+  depends_on 'libpgm' if build.include? 'with-pgm'
+
+  if build.head?
     depends_on :automake
     depends_on :libtool
   end
@@ -20,40 +20,22 @@ class Zeromq < Formula
     cause "Segfault while linking"
   end
 
-  def options
-    [
-      ['--with-pgm', 'Build with PGM extension'],
-      ['--universal', 'Build as a Universal Intel binary.']
-    ]
-  end
-
-  def build_fat
-    # make 32-bit
-    system "CFLAGS=\"$CFLAGS -arch i386\" CXXFLAGS=\"$CXXFLAGS -arch i386\" ./configure --disable-dependency-tracking --prefix='#{prefix}' #{pgm_flags}"
-    system "make"
-    system "mv src/.libs src/libs-32"
-    system "make clean"
-
-    # make 64-bit
-    system "CFLAGS=\"$CFLAGS -arch x86_64\" CXXFLAGS=\"$CXXFLAGS -arch x86_64\" ./configure --disable-dependency-tracking --prefix='#{prefix}' #{pgm_flags}"
-    system "make"
-    system "mv src/.libs/libzmq.1.dylib src/.libs/libzmq.64.dylib"
-
-    # merge UB
-    system "lipo", "-create", "src/libs-32/libzmq.1.dylib", "src/.libs/libzmq.64.dylib", "-output", "src/.libs/libzmq.1.dylib"
-  end
+  option :universal
+  option 'with-pgm', 'Build with PGM extension'
 
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    ENV.universal_binary if build.universal?
 
-    if ARGV.build_universal?
-      build_fat
-    else
-      args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-      args << "--with-pgm" if ARGV.include? '--with-pgm'
-      system "./configure", *args
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    if build.include? 'with-pgm'
+      # Use HB libpgm-5.2 because their internal 5.1 is b0rked.
+      ENV['OpenPGM_CFLAGS'] = %x[pkg-config --cflags openpgm-5.2].chomp
+      ENV['OpenPGM_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
+      args << "--with-system-pgm"
     end
 
+    system "./autogen.sh" if build.head?
+    system "./configure", *args
     system "make"
     system "make install"
   end

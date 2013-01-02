@@ -3,7 +3,7 @@ require 'formula'
 class Csshx < Formula
   url 'http://csshx.googlecode.com/files/csshX-0.74.tgz'
   homepage 'http://code.google.com/p/csshx/'
-  md5 '5e25d4812d98c3a6b2436aaf4e23c02c'
+  sha1 'aa686b71161d6144d539d077b960da10d7b96993'
 
   head 'https://code.google.com/p/csshx/', :using => :git
 

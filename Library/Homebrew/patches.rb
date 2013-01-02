@@ -1,4 +1,8 @@
+require 'stringio'
+
 class Patches
+  include Enumerable
+
   # The patches defined in a formula and the DATA from that file
   def initialize patches
     @patches = []
@@ -70,7 +74,8 @@ class Patch
     @compression = nil
     @url = nil
 
-    if url.kind_of? File # true when DATA is passed
+    if url.kind_of? IO or url.kind_of? StringIO
+      # File-like objects. Most common when DATA is passed.
       write_data url
     elsif looks_like_url(url)
       @url = url # Save URL to mark this as an external patch

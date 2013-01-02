@@ -3,7 +3,7 @@ require 'formula'
 class WlaDx < Formula
   homepage 'http://www.villehelin.com/wla.html'
   url 'http://www.villehelin.com/wla_dx_9.5a.tar.gz'
-  md5 '5930d9142c7b99026e021234be527a9c'
+  sha1 '2d14c33b985a594686ca8343488de7c41d690b9d'
 
   head 'https://wladx.svn.sourceforge.net/svnroot/wladx'
 

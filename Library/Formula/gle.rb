@@ -4,7 +4,7 @@ class Gle < Formula
   homepage 'http://glx.sourceforge.net/'
   url 'http://downloads.sourceforge.net/glx/gle-graphics-4.2.4cf-src.tar.gz'
   version '4.2.4c'
-  md5 '5eef0a63ee0077237b8a36fe1a24407f'
+  sha1 '5528528dfe54c74f69bfad174105d55a3dd90e49'
 
   depends_on 'pkg-config' => :build
   depends_on :x11

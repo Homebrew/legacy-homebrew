@@ -3,7 +3,7 @@ require 'formula'
 class Montage < Formula
   url 'http://montage.ipac.caltech.edu/download/Montage_v3.3.tar.gz'
   homepage 'http://montage.ipac.caltech.edu'
-  md5 '875a88b4a2396a0eb5d0006a656e9c4a'
+  sha1 'c8db5b9018c96e19b584d45758819e892b453d6d'
 
   def install
     system "make"

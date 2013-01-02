@@ -2,14 +2,14 @@ require 'formula'
 
 class Automake < Formula
   homepage 'http://www.gnu.org/software/automake/'
-  url 'http://ftpmirror.gnu.org/automake/automake-1.12.2.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/automake/automake-1.12.2.tar.gz'
-  sha1 '3a31471923be1cff1d2fe68166ae209ab455aa0f'
+  url 'http://ftpmirror.gnu.org/automake/automake-1.12.6.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/automake/automake-1.12.6.tar.gz'
+  sha1 '34bfda1c720e1170358562b1667e533a203878d6'
 
   # Always needs a newer autoconf, even on Snow Leopard.
   depends_on 'autoconf'
 
-  if MacOS.xcode_version.to_f < 4.3 or File.file? "/usr/bin/automake"
+  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/automake"
     keg_only "Xcode (up to and including 4.2) provides (a rather old) Automake."
   end
 

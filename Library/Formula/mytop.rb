@@ -3,7 +3,7 @@ require 'formula'
 class Mytop < Formula
   homepage 'http://jeremy.zawodny.com/mysql/mytop/'
   url 'http://jeremy.zawodny.com/mysql/mytop/mytop-1.6.tar.gz'
-  md5 '4127c3e486eb664fed60f40849372a9f'
+  sha1 'e1485115ca3a15e79f7811bdc1cfe692aa95833f'
 
   depends_on 'DBD::mysql' => :perl
 

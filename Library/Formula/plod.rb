@@ -3,7 +3,7 @@ require 'formula'
 class Plod < Formula
   url 'http://www.deer-run.com/~hal/plod/plod.shar'
   homepage 'http://www.deer-run.com/~hal/'
-  md5 '2f1b52298eed7b660eb4a73c3a2cba83'
+  sha1 '5cceafeafeb5487926e93e2f5e9ecfce64f6cdd3'
   version '1.9'
 
   def install
@@ -20,7 +20,7 @@ class Plod < Formula
     end
     man1.install "plod.man" => "plod.1"
     bin.install "plod"
-    prefix.install ['plod.el.v1', 'plod.el.v2']
+    prefix.install 'plod.el.v1', 'plod.el.v2'
     ohai "Creating #{prefix}/plodrc"
     (prefix + "plodrc").write plodrc
   end

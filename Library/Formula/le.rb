@@ -1,13 +1,15 @@
 require 'formula'
 
 class Le < Formula
-  url 'http://ftp.yar.ru/pub/source/le/le-1.14.5.tar.bz2'
-  homepage 'http://directory.fsf.org/project/le-editor/'
-  md5 '92d9ff5e0e91eba6b93d49d50070143c'
+  homepage 'http://freecode.com/projects/leeditor'
+  url 'http://ftp.yar.ru/pub/source/le/le-1.14.6.tar.xz'
+  sha1 '8f2088c95d2707c464edc122543414af287e0fdb'
+
+  depends_on 'xz' => :build
 
   def install
     ENV.j1
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

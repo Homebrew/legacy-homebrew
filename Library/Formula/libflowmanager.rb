@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libflowmanager < Formula
-  url 'http://research.wand.net.nz/software/libflowmanager/libflowmanager-2.0.0.tar.gz'
   homepage 'http://research.wand.net.nz/software/libflowmanager.php'
-  md5 'da8d21616c28bcba817405d85773b9c6'
+  url 'http://research.wand.net.nz/software/libflowmanager/libflowmanager-2.0.2.tar.gz'
+  sha1 '77efc29fc9442bd330c00615f1f2657b30456d4f'
 
   depends_on 'libtrace'
 

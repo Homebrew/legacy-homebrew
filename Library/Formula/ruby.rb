@@ -2,40 +2,42 @@ require 'formula'
 
 class Ruby < Formula
   homepage 'http://www.ruby-lang.org/en/'
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p194.tar.gz'
-  sha256 '46e2fa80be7efed51bd9cdc529d1fe22ebc7567ee0f91db4ab855438cf4bd8bb'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p362.tar.gz'
+  sha256 'eb593607862b16a28176ae6d086dbe3bd9bd41935ec999a8cd5ef8773e8239d6'
 
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
-  depends_on :autoconf if ARGV.build_head?
+  env :std
+
+  option :universal
+  option 'with-suffix', 'Suffix commands with "19"'
+  option 'with-doc', 'Install documentation'
+  option 'with-tcltk', 'Install with Tcl/Tk support'
+
+  depends_on :autoconf if build.head?
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'gdbm'
   depends_on 'libyaml'
+  depends_on :x11 if build.include? 'with-tcltk'
 
   fails_with :llvm do
     build 2326
   end
 
-  # Stripping breaks dynamic linking
-  skip_clean :all
-
-  def options
-    [
-      ["--with-suffix", "Add a 19 suffix to commands"],
-      ["--with-doc", "Install with the Ruby documentation"],
-      ["--universal", "Compile a universal binary (arch=x86_64,i386)"],
-    ]
-  end
+  # https://github.com/ruby/ruby/commit/2741a598ff9e561c71eb39a57bb19c0a3205eaef
+  def patches; DATA end
 
   def install
-    system "autoconf" if ARGV.build_head?
+    system "autoconf" if build.head?
 
     args = ["--prefix=#{prefix}",
             "--enable-shared"]
 
-    args << "--program-suffix=19" if ARGV.include? "--with-suffix"
-    args << "--with-arch=x86_64,i386" if ARGV.build_universal?
+    args << "--program-suffix=19" if build.include? "with-suffix"
+    args << "--with-arch=x86_64,i386" if build.universal?
+    args << "--disable-tcltk-framework" <<  "--with-out-ext=tcl" <<  "--with-out-ext=tk" unless build.include? "with-tcltk"
+    args << "--disable-install-doc" unless build.include? "with-doc"
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
     ruby_lib = HOMEBREW_PREFIX/"lib/ruby"
@@ -50,7 +52,7 @@ class Ruby < Formula
     system "./configure", *args
     system "make"
     system "make install"
-    system "make install-doc" if ARGV.include? "--with-doc"
+    system "make install-doc" if build.include? "with-doc"
 
   end
 
@@ -62,3 +64,22 @@ class Ruby < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/missing/setproctitle.c b/missing/setproctitle.c
+index 169ba8b..4dc6d03 100644
+--- a/missing/setproctitle.c
++++ b/missing/setproctitle.c
+@@ -48,6 +48,12 @@
+ #endif
+ #include <string.h>
+ 
++#if defined(__APPLE__)
++#include <crt_externs.h>
++#undef environ
++#define environ (*_NSGetEnviron())
++#endif
++
+ #define SPT_NONE	0	/* don't use it at all */
+ #define SPT_PSTAT	1	/* use pstat(PSTAT_SETCMD, ...) */
+ #define SPT_REUSEARGV	2	/* cover argv with title information */

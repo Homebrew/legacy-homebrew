@@ -2,14 +2,14 @@ require 'formula'
 
 class Cimg < Formula
   homepage 'http://cimg.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/cimg/CImg-1.4.9.zip'
-  md5 'a07cba03f6d66a9970e0b3fcc230bddc'
+  url 'http://downloads.sourceforge.net/cimg/CImg-1.5.2.zip'
+  sha1 'd1323ce2e758f96c505dd68e5f58a9f6bd51a93c'
 
   def install
     include.install 'CImg.h'
 
     doc.install %w(
-      README.txt CHANGES.txt
+      README.txt
       Licence_CeCILL-C_V1-en.txt Licence_CeCILL_V2-en.txt
       html examples)
   end

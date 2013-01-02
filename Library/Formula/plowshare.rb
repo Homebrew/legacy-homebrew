@@ -2,8 +2,8 @@ require 'formula'
 
 class Plowshare < Formula
   homepage 'http://code.google.com/p/plowshare/'
-  url 'http://plowshare.googlecode.com/files/plowshare-snapshot-git20120225.tar.gz'
-  sha1 'f47806261e620a9c1c6e5c9323f3471aabbe058b'
+  url 'http://plowshare.googlecode.com/files/plowshare-snapshot-git20120930.tar.gz'
+  sha1 'd8272d2a325764f855d77158e0ed35e70d9d1968'
 
   head 'https://code.google.com/p/plowshare/', :using => :git
 
@@ -23,6 +23,15 @@ class Plowshare < Formula
   def install
     ENV["PREFIX"] = prefix
     system "bash setup.sh install"
+  end
+
+  def caveats; <<-EOS.undent
+    The default installation of imagemagick does not enable
+    X11 support. plowshare uses the display command which does
+    not work if X11 support is not enabled. To enable:
+      brew remove imagemagick
+      brew install imagemagick --with-x
+    EOS
   end
 end
 

@@ -10,6 +10,7 @@ module Homebrew extend self
         puts "Uninstalling #{keg}..."
         keg.unlink
         keg.uninstall
+        rm_opt_link keg.fname
       end
     else
       ARGV.named.each do |name|
@@ -30,10 +31,18 @@ module Homebrew extend self
           end
           rack.rmtree
         end
+
+        rm_opt_link name
       end
     end
   rescue MultipleVersionsInstalledError => e
     ofail e
     puts "Use `brew remove --force #{e.name}` to remove all versions."
   end
+
+  def rm_opt_link name
+    optlink = HOMEBREW_PREFIX/:opt/name
+    optlink.unlink if optlink.symlink?
+  end
+
 end

@@ -13,7 +13,7 @@ class Vmalloc < Formula
   url 'http://www2.research.att.com/~gsf/download/tgz/vmalloc.2005-02-01.tgz',
       :using => VmallocDownloadStrategy
   homepage 'http://www2.research.att.com/sw/download/'
-  md5 '564db0825820ecd18308de2933075980'
+  sha1 '13e45960831226b2b2ac93cdbe23d1d4c6e7eb38'
   version '2005-02-01'
 
   def install

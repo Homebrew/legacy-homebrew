@@ -2,8 +2,8 @@ require 'formula'
 
 class Httpry < Formula
   homepage 'http://dumpsterventures.com/jason/httpry/'
-  url 'http://dumpsterventures.com/jason/httpry/httpry-0.1.5.tar.gz'
-  sha1 'b9c5b117502c8e52fa19812f5e26cc0d82afde3d'
+  url 'http://dumpsterventures.com/jason/httpry/httpry-0.1.7.tar.gz'
+  sha1 '22cc6aa8079abf671b9e7f4f93b615d0b7d389d3'
 
   depends_on :bsdmake
 

@@ -6,7 +6,7 @@ class Autoconf < Formula
   mirror 'http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz'
   sha1 '562471cbcb0dd0fa42a76665acf0dbb68479b78a'
 
-  if MacOS.xcode_version.to_f < 4.3 or File.file? "/usr/bin/autoconf"
+  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/autoconf"
     keg_only "Xcode (up to and including 4.2) provides (a rather old) Autoconf."
   end
 

@@ -2,12 +2,12 @@ require 'extend/ENV'
 require 'hardware'
 require 'keg'
 
-ENV.extend(HomebrewEnvExtension)
-ENV.setup_build_environment
-
 module Homebrew extend self
   def test
     raise FormulaUnspecifiedError if ARGV.named.empty?
+
+    ENV.extend(HomebrewEnvExtension)
+    ENV.setup_build_environment
 
     ARGV.formulae.each do |f|
       # Cannot test uninstalled formulae

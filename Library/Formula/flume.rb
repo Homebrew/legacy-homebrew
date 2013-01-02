@@ -3,7 +3,7 @@ require 'formula'
 class Flume < Formula
   url 'http://archive.cloudera.com/cdh/3/flume-0.9.4-cdh3u2.tar.gz'
   homepage 'https://github.com/cloudera/flume'
-  md5 '6db17876879f419f769ec7bef4a1fad7'
+  sha1 '9f68c8205b61e43d35467b6d45f815f5e41239e9'
   version "0.9.4-cdh3u2"
 
   def flume_script

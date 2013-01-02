@@ -2,8 +2,8 @@ require 'formula'
 
 class Sonar < Formula
   homepage 'http://www.sonarsource.org'
-  url 'http://dist.sonar.codehaus.org/sonar-3.1.1.zip'
-  md5 '9606c6f6c79c6b944d9d4a7c5eb6531b'
+  url 'http://dist.sonar.codehaus.org/sonar-3.4.zip'
+  sha1 'dbe402d892b7c77626b35aa4efd1e4d7262563e2'
 
   def install
     # Delete native bin directories for other systems
@@ -24,44 +24,26 @@ class Sonar < Formula
     else
       bin.install_symlink "#{libexec}/bin/macosx-universal-32/sonar.sh" => "sonar"
     end
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
 
-  def caveats; <<-EOS
-If this is your first install, automatically load on login with:
-    mkdir -p ~/Library/LaunchAgents
-    cp #{plist_path} ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/sonar/bin/sonar console"
 
-If this is an upgrade and you already have the #{plist_path.basename} loaded:
-    launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-    cp #{plist_path} ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-Or start it manually:
-   #{HOMEBREW_PREFIX}/bin/sonar console
-EOS
-  end
-
-  def startup_plist
-    return <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>ProgramArguments</key>
-    <array>
-    <string>#{HOMEBREW_PREFIX}/bin/sonar</string>
-    <string>start</string>
-    </array>
-    <key>RunAtLoad</key>
-    <true/>
-</dict>
-</plist>
-EOS
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+        <string>#{opt_prefix}/bin/sonar</string>
+        <string>start</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+    </dict>
+    </plist>
+    EOS
   end
 end

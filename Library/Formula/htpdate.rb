@@ -3,7 +3,7 @@ require 'formula'
 class Htpdate < Formula
   homepage 'http://www.clevervest.com/htp'
   url 'http://www.clevervest.com/htp/archive/c/htpdate-0.9.1.tar.gz'
-  md5 '26f9792ded592e2dd79a6c26d436a4ed'
+  sha1 '0c8ca300491d12d0bbb3950c8b6c41ba5225c3fa'
 
   def install
     system "make", "prefix=#{prefix}",

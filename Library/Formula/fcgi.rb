@@ -1,15 +1,15 @@
 require 'formula'
 
 class Fcgi < Formula
-  url 'http://www.fastcgi.com/dist/fcgi-2.4.0.tar.gz'
   homepage 'http://www.fastcgi.com/'
-  md5 'd15060a813b91383a9f3c66faf84867e'
+  url 'http://www.fastcgi.com/dist/fcgi-2.4.0.tar.gz'
+  sha1 '2329404159e8b8315e524b9eaf1de763202c6e6a'
 
+  # Fixes "dyld: Symbol not found: _environ"
+  # Affects programs linking this library. Reported at
+  # http://mailman.fastcgi.com/pipermail/fastcgi-developers/2009-January/000152.html
+  # https://trac.macports.org/browser/trunk/dports/www/fcgi/files/patch-libfcgi-fcgi_stdio.c.diff
   def patches
-    # https://trac.macports.org/browser/trunk/dports/www/fcgi/files/patch-libfcgi-fcgi_stdio.c.diff
-    # Fixes "dyld: Symbol not found: _environ"
-    # Affects programs linking this library. Reported at
-    # http://mailman.fastcgi.com/pipermail/fastcgi-developers/2009-January/000152.html
     DATA
   end
 

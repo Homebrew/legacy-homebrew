@@ -3,7 +3,7 @@ require 'formula'
 class RtAudio < Formula
   homepage 'http://www.music.mcgill.ca/~gary/rtaudio/'
   url 'http://www.music.mcgill.ca/~gary/rtaudio/release/rtaudio-4.0.7.tar.gz'
-  md5 '5d1292abccffa37505d9c4cc177b1e4f'
+  sha1 '56c647cc664dd021df1a6fa30fe96c04100c2b75'
 
   def install
     system "./configure"

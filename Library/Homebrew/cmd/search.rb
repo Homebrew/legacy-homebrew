@@ -4,9 +4,9 @@ require "blacklist"
 module Homebrew extend self
   def search
     if ARGV.include? '--macports'
-      exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+      exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
-      exec "open", "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
+      exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     else
       query = ARGV.first
       rx = case query
@@ -31,12 +31,20 @@ module Homebrew extend self
       if query
         $found = search_results.length
 
-        # TODO parallelize!
-        puts_columns search_tap "adamv", "alt", rx
-        puts_columns search_tap "josegonzalez", "php", rx
-        puts_columns search_tap "Homebrew", "versions", rx
-        puts_columns search_tap "Homebrew", "dupes", rx
-        puts_columns search_tap "Homebrew", "games", rx
+        threads = []
+        results = []
+        threads << Thread.new { search_tap "josegonzalez", "php", rx }
+        threads << Thread.new { search_tap "alanthing", "apachemod", rx }
+        threads << Thread.new { search_tap "Homebrew", "versions", rx }
+        threads << Thread.new { search_tap "Homebrew", "dupes", rx }
+        threads << Thread.new { search_tap "Homebrew", "games", rx }
+        threads << Thread.new { search_tap "Homebrew", "science", rx }
+
+        threads.each do |t|
+          results << t.value
+        end
+
+        results.each { |r| puts_columns r }
 
         if $found == 0 and not blacklisted? query
           puts "No formula found for \"#{query}\". Searching open pull requests..."

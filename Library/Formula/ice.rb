@@ -2,8 +2,8 @@ require 'formula'
 
 class Ice < Formula
   homepage 'http://www.zeroc.com'
-  url 'http://www.zeroc.com/download/Ice/3.4/Ice-3.4.1.tar.gz'
-  md5 '3aae42aa47dec74bb258c1a1b2847a1a'
+  url 'http://www.zeroc.com/download/Ice/3.4/Ice-3.4.2.tar.gz'
+  sha1 '8c84d6e3b227f583d05e08251e07047e6c3a6b42'
 
   depends_on 'berkeley-db'
   depends_on 'mcpp'
@@ -17,12 +17,8 @@ class Ice < Formula
     ]
   end
 
-  def options
-    [
-      ['--doc', 'Install documentation'],
-      ['--demo', 'Build demos']
-    ]
-  end
+  option 'doc', 'Install documentation'
+  option 'demo', 'Build demos'
 
   # See:
   # http://www.zeroc.com/forums/bug-reports/4965-slice2cpp-output-does-not-compile-standards-conformant-compiler.html
@@ -47,8 +43,8 @@ class Ice < Formula
 
     # what want we build?
     wb = 'config src include'
-    wb += ' doc' if ARGV.include? '--doc'
-    wb += ' demo' if ARGV.include? '--demo'
+    wb += ' doc' if build.include? 'doc'
+    wb += ' demo' if build.include? 'demo'
     inreplace "cpp/Makefile" do |s|
       s.change_make_var! "SUBDIRS", wb
     end

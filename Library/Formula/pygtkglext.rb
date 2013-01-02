@@ -3,7 +3,7 @@ require 'formula'
 class Pygtkglext < Formula
   homepage 'http://projects.gnome.org/gtkglext/download.html#pygtkglext'
   url 'http://downloads.sourceforge.net/gtkglext/pygtkglext-1.1.0.tar.gz'
-  md5 'dfbe2ceb05db9265a7d94b209fa8ad97'
+  sha1 '2ae3e87e8cdfc3318d8ff0e33b344377cb3df7cb'
 
   depends_on 'pkg-config' => :build
   depends_on 'pygtk'

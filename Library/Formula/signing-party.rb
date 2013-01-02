@@ -25,7 +25,7 @@ end
 class SigningParty < Formula
   homepage 'http://pgp-tools.alioth.debian.org/'
   url 'http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.4.orig.tar.gz'
-  md5 '675f8f1edd01baa8b58a743927d13750'
+  sha1 '092b7d644b7a8a8d2e82fd6ddb453ca58020ed31'
 
   depends_on GnupgInstalled.new
   depends_on 'dialog'
@@ -47,6 +47,8 @@ class SigningParty < Formula
       system "make"
       man1.install Dir['*.1']
       bin.install 'caff'
+      bin.install 'pgp-clean'
+      bin.install 'pgp-fixkey'
       (doc+'caff').install Dir['README*', 'caffrc.sample']
     end
 

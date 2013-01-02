@@ -1,11 +1,12 @@
 require 'formula'
 
 class Cabocha < Formula
-  url 'http://cabocha.googlecode.com/files/cabocha-0.60.tar.gz'
   homepage 'http://code.google.com/p/cabocha/'
-  md5 '3399873faab9b252fd57e1d48fa1285d'
+  url 'http://cabocha.googlecode.com/files/cabocha-0.66.tar.bz2'
+  sha1 '33172b7973239a53d98eabbd309f70d88e36c94c'
 
   depends_on 'crf++'
+  depends_on 'mecab'
 
   def install
     ENV["LIBS"] = '-liconv'

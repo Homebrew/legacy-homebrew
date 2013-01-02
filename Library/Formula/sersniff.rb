@@ -3,7 +3,7 @@ require 'formula'
 class Sersniff < Formula
   url 'http://www.earth.li/projectpurple/files/sersniff-0.0.5.tar.gz'
   homepage 'http://www.earth.li/projectpurple/progs/sersniff.html'
-  md5 '5caf3262442b5e82c3de820ce3f76fa2'
+  sha1 'f320171e38ce8877646be65664328071254ed3ce'
   head 'git://the.earth.li/sersniff'
 
   def install

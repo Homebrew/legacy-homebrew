@@ -2,12 +2,12 @@ require 'formula'
 
 class Nagios < Formula
   homepage 'http://www.nagios.org/'
-  url 'http://downloads.sourceforge.net/project/nagios/nagios-3.x/nagios-3.4.1/nagios-3.4.1.tar.gz'
-  md5 '2fa8acfb2a92b1bf8d173a855832de1f'
+  url 'http://downloads.sourceforge.net/project/nagios/nagios-3.x/nagios-3.4.3/nagios-3.4.3.tar.gz'
+  sha1 '3e9b73b9e219829ec4dca6ffe44106401d430ad3'
 
   depends_on 'gd'
   depends_on 'nagios-plugins'
-  depends_on :x11 # Required to compile some CGI's against the build-in libpng.
+  depends_on :libpng
 
   def nagios_sbin;  prefix+'cgi-bin';       end
   def nagios_etc;   etc+'nagios';           end
@@ -38,11 +38,12 @@ class Nagios < Formula
     # Install config
     system "make install-config"
     system "make install-webconf"
-    (share+plist_path).write startup_plist
+    mkdir HOMEBREW_PREFIX+'var/lib/nagios/rw' unless File.exists? HOMEBREW_PREFIX+'var/lib/nagios/rw'
   end
 
-  def startup_plist
-    <<-EOS.undent
+  plist_options :startup => true, :manual => "nagios #{HOMEBREW_PREFIX}/etc/nagios.cfg"
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -53,7 +54,7 @@ class Nagios < Formula
             <string>#{plist_name}</string>
             <key>ProgramArguments</key>
             <array>
-                    <string>#{HOMEBREW_PREFIX}/bin/nagios</string>
+                    <string>#{opt_prefix}/bin/nagios</string>
                     <string>#{nagios_etc}/nagios.cfg</string>
             </array>
             <key>RunAtLoad</key>
@@ -69,8 +70,7 @@ class Nagios < Formula
     EOS
   end
 
-  def caveats
-    <<-EOS.undent
+  def caveats; <<-EOS.undent
     First we need to create a command dir using superhuman powers:
 
       mkdir -p #{nagios_var}/rw
@@ -92,16 +92,7 @@ class Nagios < Formula
         htpasswd -cs #{nagios_etc}/htpasswd.users nagiosadmin
         sudo apachectl restart
 
-    If you want to run nagios automatically at startup:
-
-      sudo cp #{share}/#{plist_path.basename} /Library/LaunchDaemons/
-      sudo launchctl load -w /Library/LaunchDaemons/#{plist_path.basename}
-
-    ...or simply run it on demand:
-
-      nagios #{nagios_etc}/nagios.cfg
-
-    Now log in with your web account (and don't forget to RTFM :-)
+    Log in with your web account (and don't forget to RTFM :-)
 
       open http://localhost/nagios
 

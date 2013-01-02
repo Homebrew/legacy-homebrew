@@ -21,7 +21,7 @@ class Abiword < Formula
   depends_on 'imagemagick'
 
   def patches
-    if ARGV.build_devel?
+    if build.devel?
       {:p0 => "http://bugzilla.abisource.com/attachment.cgi?id=5477"}
     else
       DATA

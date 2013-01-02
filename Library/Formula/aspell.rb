@@ -13,7 +13,7 @@ class Aspell < Formula
   homepage 'http://aspell.net/'
   url 'http://ftpmirror.gnu.org/aspell/aspell-0.60.6.1.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz'
-  md5 'e66a9c9af6a60dc46134fdacf6ce97d7'
+  sha1 'ff1190db8de279f950c242c6f4c5d5cdc2cbdc49'
 
   fails_with :llvm do
     build 2334
@@ -66,455 +66,459 @@ end
 class Aspell_af < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/af/aspell-af-0.50-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/af/aspell-af-0.50-0.tar.bz2'
-  md5 'bde617a195e70364f96eea71cf71a333'
+  sha1 '9957b57df8da90f0498c558481b0e6b1ce70af66'
 end
 class Aspell_am < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/am/aspell6-am-0.03-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/am/aspell6-am-0.03-1.tar.bz2'
-  md5 '7e28708b53bd4bc3008dfb04237413ac'
+  sha1 '837579f3bb085b6c491fd913cb35a3076659d2ee'
 end
 class Aspell_ar < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ar/aspell6-ar-1.2-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ar/aspell6-ar-1.2-0.tar.bz2'
-  md5 '154cf762bafdd02db419b62191138738'
+  sha1 '35038cca52a8acbd042e98b1b158e5d612a11a48'
 end
 class Aspell_ast < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ast/aspell6-ast-0.01.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ast/aspell6-ast-0.01.tar.bz2'
-  md5 '28955414fef2bc3e5395d45e051bdcd9'
+  sha1 '4ee3b1a73c31d24db46a6b30f60a659d5e12aa40'
 end
 class Aspell_az < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/az/aspell6-az-0.02-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/az/aspell6-az-0.02-0.tar.bz2'
-  md5 '24d9d46c8fc23197666a43a7962a7b0d'
+  sha1 '1ffe8b9674706f46b9daab564760c86a7b6ac63f'
 end
 class Aspell_be < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/be/aspell5-be-0.01.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/be/aspell5-be-0.01.tar.bz2'
-  md5 '61314a1672f98571b32d23486bbd43be'
+  sha1 'd4a00c3b4ce6e3629c87217e1e0c8a34b905a2b0'
 end
 class Aspell_bg < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/bg/aspell6-bg-4.1-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/bg/aspell6-bg-4.1-0.tar.bz2'
-  md5 'e22f0634c48eae9c9fbdf9d569b8235c'
+  sha1 '0388f430a14f974fab67eaa92ebba3068eec7248'
 end
 class Aspell_bn < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/bn/aspell6-bn-0.01.1-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/bn/aspell6-bn-0.01.1-1.tar.bz2'
-  md5 '5ea70ec74e67f49b2844d306ddf38388'
+  sha1 'c3adbfb8b6df04ba5cee2b25671f6119f86d67e5'
 end
 class Aspell_br < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/br/aspell-br-0.50-2.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/br/aspell-br-0.50-2.tar.bz2'
-  md5 '800c7a28e09bd7734d1501cb7a91ad8f'
+  sha1 'e6cbb638d7704e88c6d59b794829267b41a7e536'
 end
 class Aspell_ca < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ca/aspell6-ca-2.1.5-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ca/aspell6-ca-2.1.5-1.tar.bz2'
-  md5 '153d26f724866909c6faf49eecefe8b3'
+  sha1 'abce32e6dffa420b7ae90ac277038591e7c32a90'
 end
 class Aspell_cs < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/cs/aspell6-cs-20040614-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/cs/aspell6-cs-20040614-1.tar.bz2'
-  md5 '50f0c2b7b6fcfe47bb647ad8993d2fe8'
+  sha1 '83756c070c1444f06c779a350d0bdad1d31e2b98'
 end
 class Aspell_csb < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/csb/aspell6-csb-0.02-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/csb/aspell6-csb-0.02-0.tar.bz2'
-  md5 '0d4b408076115b7516c68887a563be68'
+  sha1 '19640604cfe0035e14170d66653274779768bc3b'
 end
 class Aspell_cy < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/cy/aspell-cy-0.50-3.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/cy/aspell-cy-0.50-3.tar.bz2'
-  md5 'd59fee193dba87973b38ac2862a090bb'
+  sha1 '8a62c649cf99cd239449961a0d5f8942b1c02116'
 end
 class Aspell_da < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/da/aspell5-da-1.4.42-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/da/aspell5-da-1.4.42-1.tar.bz2'
-  md5 'd14c03dca23b572606279d7317b022d0'
+  sha1 '8cc990c195707e2b4db4ed0969aa10117a3b6bb2'
 end
 class Aspell_de < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/de/aspell6-de-20030222-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/de/aspell6-de-20030222-1.tar.bz2'
-  md5 '5950c5c8a36fc93d4d7616591bace6a6'
+  sha1 'a06b1153404f6d1f9bd8aa03d596c14093e561c7'
 end
 class Aspell_de_alt < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/de-alt/aspell6-de-alt-2.1-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/de-alt/aspell6-de-alt-2.1-1.tar.bz2'
-  md5 '13245374b03088608d729fd15c58cd7a'
+  sha1 '114092feb634b309e78e25d7c81fa0521916833b'
 end
 class Aspell_el < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/el/aspell-el-0.50-3.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/el/aspell-el-0.50-3.tar.bz2'
-  md5 '0ea2c42ceb9b91f7f5de2c017234ad37'
+  sha1 'f0242d02e45956f8fe5d8321d737ee4dc5d18931'
 end
 class Aspell_en < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/en/aspell6-en-7.1-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/en/aspell6-en-7.1-0.tar.bz2'
-  md5 'beba5e8f3afd3ed1644653bb685b2dfb'
+  sha1 'd45ccda0c03e2a679c2936487ec851a1896b8150'
 end
 class Aspell_eo < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/eo/aspell6-eo-2.1.20000225a-2.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/eo/aspell6-eo-2.1.20000225a-2.tar.bz2'
-  md5 '455719c49ffeb51b204767de6e1d9ef6'
+  sha1 '0996e0b553bcb5706b598a0256c49102eb489c34'
 end
 class Aspell_es < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/es/aspell6-es-1.11-2.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/es/aspell6-es-1.11-2.tar.bz2'
-  md5 '8406336a89c64e47e96f4153d0af70c4'
+  sha1 '18acfa4bc08433e920bb015b158e43643e5125cf'
 end
 class Aspell_et < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/et/aspell6-et-0.1.21-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/et/aspell6-et-0.1.21-1.tar.bz2'
-  md5 '82929f49ddc1149b6ef2bde4c3c12bcd'
+  sha1 '7376022dfea538be579d327db3a57696cce35e39'
 end
 class Aspell_fa < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/fa/aspell6-fa-0.11-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/fa/aspell6-fa-0.11-0.tar.bz2'
-  md5 '47c8599e529fc291a096c12f0b8372ca'
+  sha1 '2d3427b9d274c0dbbcbbf78752afc19b1e31a41a'
 end
 class Aspell_fi < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/fi/aspell6-fi-0.7-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/fi/aspell6-fi-0.7-0.tar.bz2'
-  md5 '6d1032116982c0efab1af8fce83259c0'
+  sha1 '10235c88220f7b914a1d8af7b4d4e8e26b5d7c76'
 end
 class Aspell_fo < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/fo/aspell5-fo-0.2.16-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/fo/aspell5-fo-0.2.16-1.tar.bz2'
-  md5 'a57e8870c272931da41cd1fc5a291f3d'
+  sha1 'da3dab3261df65df6765ad7fb7a9078f1a33d0ee'
 end
 class Aspell_fr < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/fr/aspell-fr-0.50-3.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/fr/aspell-fr-0.50-3.tar.bz2'
-  md5 '53a2d05c4e8f7fabd3cefe24db977be7'
+  sha1 '4712f81069eb20763aaf855f73b2819f4805f132'
 end
 class Aspell_fy < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/fy/aspell6-fy-0.12-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/fy/aspell6-fy-0.12-0.tar.bz2'
-  md5 '7c356ab9a52e546bdf75af8774b6d9bf'
+  sha1 '8cfb4b506576b2a0d905d3abfa21bcd9bb2c2d67'
 end
 class Aspell_ga < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ga/aspell5-ga-4.5-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ga/aspell5-ga-4.5-0.tar.bz2'
-  md5 '174385bbc0b67ae75a5581c8617827b6'
+  sha1 '0c4de4c1b55a73647ec5d20c2966bce8ebdb5a80'
 end
 class Aspell_gd < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/gd/aspell5-gd-0.1.1-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/gd/aspell5-gd-0.1.1-1.tar.bz2'
-  md5 '171673ec92270f58f945c4317286220b'
+  sha1 '9b8593d4be9dd11c945a8f4e390bbf731897be76'
 end
 class Aspell_gl < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/gl/aspell6-gl-0.5a-2.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/gl/aspell6-gl-0.5a-2.tar.bz2'
-  md5 '7502e37bf2a1c4a0a05f9a6e755e7c21'
+  sha1 '5f4f6d9ec134f54527380027e29f9f726040cb38'
 end
 class Aspell_grc < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/grc/aspell6-grc-0.02-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/grc/aspell6-grc-0.02-0.tar.bz2'
-  md5 '9a4ecc08569e4de53d35f16d1da02099'
+  sha1 'e9139a1961e8d3de1b3a4d6be823d920c6477dd7'
 end
 class Aspell_gu < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/gu/aspell6-gu-0.03-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/gu/aspell6-gu-0.03-0.tar.bz2'
-  md5 'dd9e466b23ced916d6bb89decc919976'
+  sha1 'daf8bb6bcb84ad3d3fe5e03fffee572c41e17bb4'
 end
 class Aspell_gv < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/gv/aspell-gv-0.50-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/gv/aspell-gv-0.50-0.tar.bz2'
-  md5 '139b5aa1f5ea85fb7a4be0338039e959'
+  sha1 '48bd30e8ce0cf229f7f369b20a304cf39a8cfc24'
 end
 class Aspell_he < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/he/aspell6-he-1.0-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/he/aspell6-he-1.0-0.tar.bz2'
-  md5 '71791e0299787391d2ace1c850b5b434'
+  sha1 'cd6755053937b9c32995d7fa085cd269489f5484'
 end
 class Aspell_hi < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/hi/aspell6-hi-0.02-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/hi/aspell6-hi-0.02-0.tar.bz2'
-  md5 '4fd4aedbda587bbc4eecb9d3ea57591d'
+  sha1 'af9ce9a4a97f2489a23d382bd72943b30bc3f6a4'
 end
 class Aspell_hil < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/hil/aspell5-hil-0.11-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/hil/aspell5-hil-0.11-0.tar.bz2'
-  md5 '6ce553007a773a1c2ffd68b660ddb60b'
+  sha1 '2f25bd4d260420e8d94e50160eada2db175ae145'
 end
 class Aspell_hr < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/hr/aspell-hr-0.51-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/hr/aspell-hr-0.51-0.tar.bz2'
-  md5 '7d2fb9af47266884c731691123a95a8d'
+  sha1 '6788b9001287f9debd59803f5f9c5005b701f8f7'
 end
 class Aspell_hsb < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/hsb/aspell6-hsb-0.02-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/hsb/aspell6-hsb-0.02-0.tar.bz2'
-  md5 'f018c68a688600aeb9cb53747021703a'
+  sha1 '3bac178029f97a73f37b7196b974815af559d7dc'
 end
 class Aspell_hu < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/hu/aspell6-hu-0.99.4.2-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/hu/aspell6-hu-0.99.4.2-0.tar.bz2'
-  md5 '4f4e1e98019a89d0ebf43ec59ae68254'
+  sha1 '0e020ed79ecfd5a88ec758482e31b757f54f60bf'
+end
+class Aspell_hus < AspellLang
+  url 'http://ftpmirror.gnu.org/aspell/dict/hus/aspell6-hus-0.03-1.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/aspell/dict/hus/aspell6-hus-0.03-1.tar.bz2'
+  sha1 '5f54c8190375a12f50ab0df87997fa245ee7fa86'
 end
 class Aspell_hy < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/hy/aspell6-hy-0.10.0-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/hy/aspell6-hy-0.10.0-0.tar.bz2'
-  md5 '41af00aed5078bb4755728c7dec834a2'
+  sha1 'c24b59816222f5adff0c0f76316348524d93925b'
 end
 class Aspell_ia < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ia/aspell-ia-0.50-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ia/aspell-ia-0.50-1.tar.bz2'
-  md5 '36846c747a4cb7874b00f37752e83f25'
+  sha1 'aafc9e979c9b906b1b28b5001130a2b721835487'
 end
 class Aspell_id < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/id/aspell5-id-1.2-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/id/aspell5-id-1.2-0.tar.bz2'
-  md5 '9136385a6ce0ff0d113427ab3c974254'
+  sha1 '7c4ce9252d74927a8b22a7af5260b3b22cc11a3c'
 end
 class Aspell_is < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/is/aspell-is-0.51.1-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/is/aspell-is-0.51.1-0.tar.bz2'
-  md5 '1e0b6125d91d7edad710482ddcce2d23'
+  sha1 '26c3a3bf047534cab163411735e8ff880b789ebe'
 end
 class Aspell_it < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/it/aspell6-it-2.2_20050523-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/it/aspell6-it-2.2_20050523-0.tar.bz2'
-  md5 'b1217299a0b67d1e121494d7ec18a88d'
+  sha1 '756e9c89f36eb0fdca951c818c2d3f2c52b9398d'
 end
 class Aspell_kn < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/kn/aspell6-kn-0.01-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/kn/aspell6-kn-0.01-1.tar.bz2'
-  md5 '0359676017bf18a761b02346d3cc3253'
+  sha1 '89d078ba50fddca9d7b0e9fd88ec3ba42a2137cc'
 end
 class Aspell_ku < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ku/aspell5-ku-0.20-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ku/aspell5-ku-0.20-1.tar.bz2'
-  md5 '8d714169b131fc6ca8a783c6acc471ae'
+  sha1 'ca8e15136f52345a506ea70fe922c45806fe171f'
 end
 class Aspell_ky < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ky/aspell6-ky-0.01-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ky/aspell6-ky-0.01-0.tar.bz2'
-  md5 '83ed490464521361867546f9ad4cbaf2'
+  sha1 '310367cbba994992bd801f13827ecd45f9bd2227'
 end
 class Aspell_la < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/la/aspell6-la-20020503-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/la/aspell6-la-20020503-0.tar.bz2'
-  md5 'd42c679b95ba9b094aaa65f118834bf6'
+  sha1 '8f0ef073428955ffebff6dc31aaa84f13783b346'
 end
 class Aspell_lt < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/lt/aspell6-lt-1.2.1-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/lt/aspell6-lt-1.2.1-0.tar.bz2'
-  md5 'bfde48c27cac3ae8ce3a1818ba68a2d8'
+  sha1 '114c33dd042712dcef546b73dfbf889c1f7d7479'
 end
 class Aspell_lv < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/lv/aspell6-lv-0.5.5-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/lv/aspell6-lv-0.5.5-1.tar.bz2'
-  md5 'cd120047c0b160a40361cbf03913e91f'
+  sha1 'bbdebf5c7e959115dcbd1856327da11a84687d75'
 end
 class Aspell_mg < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/mg/aspell5-mg-0.03-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/mg/aspell5-mg-0.03-0.tar.bz2'
-  md5 'f75e3b51a6935cd4be19c1ea452217a1'
+  sha1 '5a09a0a57c202433eac5cddf7a65c9095d8e748e'
 end
 class Aspell_mi < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/mi/aspell-mi-0.50-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/mi/aspell-mi-0.50-0.tar.bz2'
-  md5 '8b1a07032ee086662bfe44a2e0459db4'
+  sha1 '837551b776a1e52987c6963e2c6382be9c8faa00'
 end
 class Aspell_mk < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/mk/aspell-mk-0.50-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/mk/aspell-mk-0.50-0.tar.bz2'
-  md5 '50e15df6b68e78d1baa789f517b2401b'
+  sha1 '08117e9d14543ca6d3626681d4b0eab51d53e727'
 end
 class Aspell_ml < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ml/aspell6-ml-0.03-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ml/aspell6-ml-0.03-1.tar.bz2'
-  md5 '5ac03b3b0d0618b0aa470c9f5ac46866'
+  sha1 '5525ab8c2b956d62ffe9ad8651cab20841480e7e'
 end
 class Aspell_mn < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/mn/aspell6-mn-0.06-2.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/mn/aspell6-mn-0.06-2.tar.bz2'
-  md5 'fd1ed8b4e57c858c62c4f74a687bba90'
+  sha1 '39d7e9adcefaa0e1d9dac41ad4f86b66dc9257c7'
 end
 class Aspell_mr < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/mr/aspell6-mr-0.10-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/mr/aspell6-mr-0.10-0.tar.bz2'
-  md5 '489ac0c368d3012525134758f8572cac'
+  sha1 'bbcd0f26c93d37687284791eb7684a5277d6ff49'
 end
 class Aspell_ms < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ms/aspell-ms-0.50-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ms/aspell-ms-0.50-0.tar.bz2'
-  md5 'cfdd94bba4781766c5d870202abd60e0'
+  sha1 '2f6bbe94bb717ee0009408f96800536891317d83'
 end
 class Aspell_mt < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/mt/aspell-mt-0.50-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/mt/aspell-mt-0.50-0.tar.bz2'
-  md5 '6df98356e411891c956c249731b708fa'
+  sha1 '456b2fd40dd1d508947ed6ece14b00a61dd13138'
 end
 class Aspell_nb < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/nb/aspell-nb-0.50.1-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/nb/aspell-nb-0.50.1-0.tar.bz2'
-  md5 'd1173a5ce04f39e9c93183da691e7ce8'
+  sha1 '40e2549973c192b82f782b9e0b1159e6b51464b3'
 end
 class Aspell_nds < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/nds/aspell6-nds-0.01-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/nds/aspell6-nds-0.01-0.tar.bz2'
-  md5 '76b2b3f2bdeefdfc6ce75ae11c9ae149'
+  sha1 'b5cc46fac7a5436f9f52395c975ec66935b3ed54'
 end
 class Aspell_nl < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/nl/aspell-nl-0.50-2.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/nl/aspell-nl-0.50-2.tar.bz2'
-  md5 'c3ef9fd7dc4c47d816eee9ef5149c76a'
+  sha1 '651ac98c63ce342b19dd9c1a74a961500234bc0a'
 end
 class Aspell_nn < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/nn/aspell-nn-0.50.1-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/nn/aspell-nn-0.50.1-1.tar.bz2'
-  md5 '3711eb9df68f25262af10119579239bc'
+  sha1 '09c6cb3360ddbc231984e77608e911ee65a29b26'
 end
 class Aspell_ny < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ny/aspell5-ny-0.01-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ny/aspell5-ny-0.01-0.tar.bz2'
-  md5 '856906a424fcbc50cc925d692d294215'
+  sha1 'e2a654d042d028a7a7634ee3cbcd22c4e318b63f'
 end
 class Aspell_or < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/or/aspell6-or-0.03-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/or/aspell6-or-0.03-1.tar.bz2'
-  md5 '6c9d702607eaa43ef665007c4b857ba4'
+  sha1 'c1c8c48567dd5d28e48c00097b18859bd5a62d7d'
 end
 class Aspell_pa < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/pa/aspell6-pa-0.01-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/pa/aspell6-pa-0.01-1.tar.bz2'
-  md5 'de336d6ef55ad6fa81f8903765c6c95d'
+  sha1 'b90300b077dbef4c1a25047ca9d84e8bc26681e3'
 end
 class Aspell_pl < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/pl/aspell6-pl-6.0_20061121-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/pl/aspell6-pl-6.0_20061121-0.tar.bz2'
-  md5 '3139a69a1bd9ccb1d853d30aa024fc2b'
+  sha1 '907852b5fbcdc643a84389cdf412aaf2bebff0ce'
 end
 class Aspell_pt_BR < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/pt_BR/aspell6-pt_BR-20090702-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/pt_BR/aspell6-pt_BR-20090702-0.tar.bz2'
-  md5 'e082a8956882eb94a67c12e1b8c4a324'
+  sha1 'add1db9a6a908dccaad13a7fd85c3b202299ff26'
 end
 class Aspell_pt_PT < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/pt_PT/aspell6-pt_PT-20070510-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/pt_PT/aspell6-pt_PT-20070510-0.tar.bz2'
-  md5 'a54267ce8f91de6e6a1baf1e8048cba0'
+  sha1 'e136c2f411b582897437b06b9068c98ee333be41'
 end
 class Aspell_qu < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/qu/aspell6-qu-0.02-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/qu/aspell6-qu-0.02-0.tar.bz2'
-  md5 'b1c4a68fd5f46cadb600d925b0764fa5'
+  sha1 '4c530c06d0ae5cdcc857e02b7bf155dd0ccd80e9'
 end
 class Aspell_ro < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ro/aspell5-ro-3.3-2.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ro/aspell5-ro-3.3-2.tar.bz2'
-  md5 '2d708c95fd7711efc61673c77f5f9d9e'
+  sha1 '98a64f2dade68bcff050b06567d09d40e727a2a2'
 end
 class Aspell_ru < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ru/aspell6-ru-0.99f7-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ru/aspell6-ru-0.99f7-1.tar.bz2'
-  md5 'c4c98eaa5e77ad3adccbc5c96cb57cb3'
+  sha1 'e012fa03645f4ff1f5ba9df6b215ea4ffc6fd9cf'
 end
 class Aspell_rw < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/rw/aspell-rw-0.50-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/rw/aspell-rw-0.50-0.tar.bz2'
-  md5 'd369916c4f4159b04e43daf31dde60c9'
+  sha1 '48248fa20e14b9369051360a37efdbadaf57d972'
 end
 class Aspell_sc < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/sc/aspell5-sc-1.0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/sc/aspell5-sc-1.0.tar.bz2'
-  md5 '05284890c3445c5850a3c1410790a057'
+  sha1 '4d94c9a3c5cc0c7f9af4e94074616073efa2374a'
 end
 class Aspell_sk < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/sk/aspell6-sk-2.01-2.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/sk/aspell6-sk-2.01-2.tar.bz2'
-  md5 'b31bdc33a681902e5bc493a0692022a9'
+  sha1 '8eb0bd453a1db4ad12863b833a2a3512ef43d30b'
 end
 class Aspell_sl < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/sl/aspell-sl-0.50-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/sl/aspell-sl-0.50-0.tar.bz2'
-  md5 'c4c11402bc834d796d1b56e711470480'
+  sha1 '028e41e39495ea32bc2318b9f91a9027e905479a'
 end
 class Aspell_sr < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/sr/aspell6-sr-0.02.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/sr/aspell6-sr-0.02.tar.bz2'
-  md5 'a068ba095e7246fd3bbc92e7d0287998'
+  sha1 '4827f2b386861730f1fdc2e70cad48c0715a94e2'
 end
 class Aspell_sv < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/sv/aspell-sv-0.51-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/sv/aspell-sv-0.51-0.tar.bz2'
-  md5 'd180c781f8986ea0f65b6b18f02a494e'
+  sha1 'bcae409db1b26387e7a1b552fb135b07c5c85f73'
 end
 class Aspell_sw < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/sw/aspell-sw-0.50-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/sw/aspell-sw-0.50-0.tar.bz2'
-  md5 '26ccc3500d7f7c288b74bba1c1fab38f'
+  sha1 '3f525cdd25bb74577dcd1db9393d8348cf4dd656'
 end
 class Aspell_ta < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/ta/aspell6-ta-20040424-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/ta/aspell6-ta-20040424-1.tar.bz2'
-  md5 'fc98b0b8d79291448d3a4f48ebbf2bd0'
+  sha1 '7d9a96985af7bde014462c8973e3f2a75ad6ed27'
 end
 class Aspell_te < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/te/aspell6-te-0.01-2.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/te/aspell6-te-0.01-2.tar.bz2'
-  md5 '645f7f7204520552cddbe1c9ae64df2a'
+  sha1 'b3a1df4c3e35fbdf0a2cd0db07c9b63372c9c94a'
 end
 class Aspell_tet < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/tet/aspell5-tet-0.1.1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/tet/aspell5-tet-0.1.1.tar.bz2'
-  md5 '6a18e0253d7d6baa49daca513b0d782b'
+  sha1 '2b170ce5b4b866e61fd63a405ba7139b523a4e18'
 end
 class Aspell_tk < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/tk/aspell5-tk-0.01-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/tk/aspell5-tk-0.01-0.tar.bz2'
-  md5 'acf208c098538eeacef444baf123ea3c'
+  sha1 '40f10a6f5f252b9fac8fb49fc7bd89cc6b2c3046'
 end
 class Aspell_tl < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/tl/aspell5-tl-0.02-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/tl/aspell5-tl-0.02-1.tar.bz2'
-  md5 '126437909424021a553055b1b96fdf73'
+  sha1 'ae9d5fad56ba162db0a33a9ece0e348298f2e3c6'
 end
 class Aspell_tn < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/tn/aspell5-tn-1.0.1-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/tn/aspell5-tn-1.0.1-0.tar.bz2'
-  md5 '6e5ef98452b36a211a4fc1fdbadda322'
+  sha1 '595c6c10f823cf713e80505ccd15577ee7a77a65'
 end
 class Aspell_tr < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/tr/aspell-tr-0.50-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/tr/aspell-tr-0.50-0.tar.bz2'
-  md5 '432ecdc4e5233da0a4c1a52ed9103fa2'
+  sha1 '3913b0227a8f2ad28760b965106980b4a60520e9'
 end
 class Aspell_uk < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/uk/aspell6-uk-1.4.0-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/uk/aspell6-uk-1.4.0-0.tar.bz2'
-  md5 '662f15381d11581758866fd7af43b4d7'
+  sha1 'b4697fa6c8879aa54364839b0dceae5d9dc46b89'
 end
 class Aspell_uz < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/uz/aspell6-uz-0.6-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/uz/aspell6-uz-0.6-0.tar.bz2'
-  md5 'e0d72a8250bba1a1f40dfb2a163eed65'
+  sha1 '4662f5ec36afec8efdc2a5b29f2d1328cc14b829'
 end
 class Aspell_vi < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/vi/aspell6-vi-0.01.1-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/vi/aspell6-vi-0.01.1-1.tar.bz2'
-  md5 '314185e521900df0fab8375fa609bba2'
+  sha1 'a497488786d796c677efd1bbf9df4c2eb511e728'
 end
 class Aspell_wa < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/wa/aspell-wa-0.50-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/wa/aspell-wa-0.50-0.tar.bz2'
-  md5 'e3817402d7be19d4b0d0342d3a5970ea'
+  sha1 '06b5c0d0915b7e10db73c6aa548475ac1fcb3fcf'
 end
 class Aspell_yi < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/yi/aspell6-yi-0.01.1-1.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/yi/aspell6-yi-0.01.1-1.tar.bz2'
-  md5 '9d514384bf00cfb9ceb0d5f78f998d93'
+  sha1 'da49f8445ce89f656d9d75d5ee1a730126077896'
 end
 class Aspell_zu < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/zu/aspell-zu-0.50-0.tar.bz2'
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/zu/aspell-zu-0.50-0.tar.bz2'
-  md5 '2478cbbb6abaf5ed74bc2da7e7152116'
+  sha1 '0cba6163d1a1b9f63b1f5eaaeba466cdaf5f0742'
 end
-
 def available_languages
-  %w( af am ar ast az be bg bn br ca cs csb cy da de de_alt el en eo es et fa fi fo fr fy ga gd gl grc gu gv he hi hil hr hsb hu hy ia id is it kn ku ky la lt lv mg mi mk ml mn mr ms mt nb nds nl nn ny or pa pl pt_BR pt_PT qu ro ru rw sc sk sl sr sv sw ta te tet tk tl tn tr uk uz vi wa yi zu)
+  %w( af am ar ast az be bg bn br ca cs csb cy da de de_alt el en eo es et fa fi fo fr fy ga gd gl grc gu gv he hi hil hr hsb hu hus hy ia id is it kn ku ky la lt lv mg mi mk ml mn mr ms mt nb nds nl nn ny or pa pl pt_BR pt_PT qu ro ru rw sc sk sl sr sv sw ta te tet tk tl tn tr uk uz vi wa yi zu)
 end
 # END generated with brew-aspell-dictionaries

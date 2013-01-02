@@ -1,9 +1,10 @@
 require 'formula'
 
 class GooglePerftools < Formula
-  url 'http://google-perftools.googlecode.com/files/google-perftools-1.8.tar.gz'
-  homepage 'http://code.google.com/p/google-perftools/'
-  sha1 '9490214967913bd579201a60a25320e316d731a5'
+  # TODO rename to gperftools when renames are supported
+  homepage 'http://code.google.com/p/gperftools/'
+  url 'http://gperftools.googlecode.com/files/gperftools-2.0.tar.gz'
+  sha1 'da7181a7ba9b5ee7302daf6c16e886c179fe8d1b'
 
   fails_with :llvm do
     build 2326

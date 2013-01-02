@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pdf2json < Formula
-  url 'http://pdf2json.googlecode.com/files/pdf2json-0.52-source.tar.gz'
   homepage 'http://code.google.com/p/pdf2json/'
-  md5 '6f2c611bd30218391b0ff35d5a7df049'
+  url 'http://pdf2json.googlecode.com/files/pdf2json-0.61.tar.gz'
+  sha1 'd7bfcf89ab82741ed014d3499fe7505d7168686d'
 
   depends_on 'xpdf'
 

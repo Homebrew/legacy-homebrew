@@ -21,7 +21,7 @@ end
 class Pdf2svg < Formula
   url 'http://www.cityinthesky.co.uk/_media/opensource/pdf2svg-0.2.1.tar.gz'
   homepage 'http://www.cityinthesky.co.uk/opensource/pdf2svg'
-  md5 '59b3b9768166f73b77215e95d91f0a9d'
+  sha1 '12f9d1bde6aa2e396eb7f196b6d8e29ade3cafe6'
 
   depends_on "pkg-config" => :build
 

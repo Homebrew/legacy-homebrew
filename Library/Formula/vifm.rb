@@ -2,8 +2,8 @@ require 'formula'
 
 class Vifm < Formula
   homepage 'http://vifm.sourceforge.net/index.html'
-  url 'http://sourceforge.net/projects/vifm/files/vifm-0.7.3.tar.bz2'
-  sha1 '2198f387d607da074fd3653b3662587a5a706785'
+  url 'http://sourceforge.net/projects/vifm/files/vifm-0.7.3a.tar.bz2'
+  sha1 '4056b5bdc496f81225ddc7ee796380beb72a43da'
 
   # OS X provides "ncurses" not "ncursesw"
   def patches

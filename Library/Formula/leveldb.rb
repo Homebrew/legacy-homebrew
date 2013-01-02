@@ -2,19 +2,17 @@ require 'formula'
 
 class Leveldb < Formula
   homepage 'https://code.google.com/p/leveldb/'
-  url 'https://leveldb.googlecode.com/files/leveldb-1.5.0.tar.gz'
-  sha1 'b5b45ff74065f242c37f465b13dafb925972ca43'
+  url 'https://leveldb.googlecode.com/files/leveldb-1.8.0.tar.gz'
+  sha1 'af79e0105099dd7d1223f45eb685475223043e21'
 
   depends_on 'snappy' => :build
 
   def install
     system "make"
     include.install "include/leveldb"
-
-    mv "libleveldb.dylib.1.5", "libleveldb.1.5.dylib"
-    rm "libleveldb.dylib"
-    ln_s "libleveldb.1.5.dylib", "libleveldb.dylib"
-
-    lib.install Dir["libleveldb.{a,dylib}"]
+    lib.install 'libleveldb.a'
+    lib.install 'libleveldb.dylib.1.8' => 'libleveldb.1.8.dylib'
+    lib.install_symlink lib/'libleveldb.1.8.dylib' => 'libleveldb.dylib'
+    lib.install_symlink lib/'libleveldb.1.8.dylib' => 'libleveldb.1.dylib'
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Xrootd < Formula
   homepage 'http://xrootd.slac.stanford.edu/index.html'
-  url 'http://xrootd.slac.stanford.edu/download/v3.1.1/xrootd-3.1.1.tar.gz'
-  md5 '6466b12a99aed3f8ea0b56b5b3ace093'
+  url 'http://xrootd.slac.stanford.edu/download/v3.2.6/xrootd-3.2.6.tar.gz'
+  sha1 '2eb2fc1d5b19d8080edb716bfa37469e54e5cde4'
 
   depends_on 'cmake' => :build
 

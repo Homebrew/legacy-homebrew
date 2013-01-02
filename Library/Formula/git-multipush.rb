@@ -7,10 +7,10 @@ class GitMultipush < Formula
 
   head 'https://github.com/gavinbeatty/git-multipush.git', :revision => 'HEAD'
 
-  depends_on 'asciidoc' => :build if ARGV.build_head?
+  depends_on 'asciidoc' => :build if build.head?
 
   def install
-    if ARGV.build_head?
+    if build.head?
       ENV['GIT_DIR'] = cached_download/'.git'
       inreplace 'make/gen-version.mk', '.git', '$(GIT_DIR)'
       system "make"

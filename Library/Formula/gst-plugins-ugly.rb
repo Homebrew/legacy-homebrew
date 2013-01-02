@@ -32,9 +32,19 @@ class GstPluginsUgly < Formula
   depends_on 'theora' => :optional
   depends_on 'libmms' => :optional
   depends_on 'x264' => :optional
+  depends_on 'opencore-amr' => :optional
+  depends_on 'libcdio' => :optional
 
   def install
     ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
+
+    # Fixes build error, missing includes.
+    # https://github.com/mxcl/homebrew/issues/14078
+    nbcflags = `pkg-config --cflags opencore-amrnb`.chomp
+    wbcflags = `pkg-config --cflags opencore-amrwb`.chomp
+    ENV['AMRNB_CFLAGS'] = nbcflags + "-I#{HOMEBREW_PREFIX}/include/opencore-amrnb"
+    ENV['AMRWB_CFLAGS'] = wbcflags + "-I#{HOMEBREW_PREFIX}/include/opencore-amrwb"
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"

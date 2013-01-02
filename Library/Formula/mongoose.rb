@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mongoose < Formula
-  homepage 'http://code.google.com/p/mongoose/'
-  url 'http://mongoose.googlecode.com/files/mongoose-3.1.tgz'
-  md5 'e718fc287b4eb1bd523be3fa00942bb0'
+  homepage 'https://github.com/valenok/mongoose'
+  url 'https://github.com/valenok/mongoose/tarball/3.4'
+  sha1 '3b917304d5ffbb516167ef29561a9f82881bc033'
 
   def install
     system "make", "mac", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"

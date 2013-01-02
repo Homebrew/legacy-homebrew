@@ -1,11 +1,12 @@
 require 'formula'
 
 class Bibtex2html < Formula
-  url 'http://www.lri.fr/~filliatr/ftp/bibtex2html/bibtex2html-1.94.tar.gz'
   homepage 'http://www.lri.fr/~filliatr/bibtex2html/'
-  md5 '16e6656156e10c07747163a0914058b8'
+  url 'http://www.lri.fr/~filliatr/ftp/bibtex2html/bibtex2html-1.97.tar.gz'
+  sha1 '970cb972eb88ff4cd01f247c0d8a6b821473f243'
 
   depends_on 'objective-caml'
+  depends_on 'hevea'
 
   def install
     # See: https://trac.macports.org/ticket/26724
@@ -13,7 +14,7 @@ class Bibtex2html < Formula
       s.remove_make_var! 'STRLIB'
     end
 
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end

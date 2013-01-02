@@ -1,7 +1,14 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 # -*- coding: utf-8 -*-
 
+std_trap = trap("INT") { exit! 130 } # no backtrace thanks
+
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] = File.expand_path(__FILE__)
+
+if ARGV == %w{--prefix}
+  puts File.dirname(File.dirname(HOMEBREW_BREW_FILE))
+  exit 0
+end
 
 require 'pathname'
 HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Library/Homebrew").to_s
@@ -17,14 +24,11 @@ when '--version'
   puts HOMEBREW_VERSION
   exit 0
 when '-v'
-  if ARGV.length > 1
-    puts "Homebrew #{HOMEBREW_VERSION}"
-    # continue in verbose mode
-    ARGV << ARGV.shift
-  else
-    puts HOMEBREW_VERSION
-    exit 0
-  end
+  puts "Homebrew #{HOMEBREW_VERSION}"
+  # Shift the -v to the end of the parameter list
+  ARGV << ARGV.shift
+  # If no other arguments, just quit here.
+  exit 0 if ARGV.length == 1
 end
 
 case HOMEBREW_PREFIX.to_s when '/', '/usr'
@@ -34,7 +38,7 @@ end
 if MACOS and MACOS_VERSION < 10.5
   abort <<-EOABORT.undent
     Homebrew requires Leopard or higher. For Tiger support, see:
-    http://github.com/sceaga/homebrew/tree/tiger
+    https://github.com/mistydemeo/tigerbrew
   EOABORT
 end
 
@@ -52,6 +56,8 @@ rescue LoadError => e
 end
 
 begin
+  trap("INT", std_trap) # restore default CTRL-C handler
+
   aliases = {'ls' => :list,
              'homepage' => :home,
              '-S' => :search,
@@ -70,6 +76,11 @@ begin
   cmd = ARGV.shift
   cmd = aliases[cmd] if aliases[cmd]
 
+  if cmd == '-c1'
+    cmd = '--config'
+    ARGV.unshift('-1')
+  end
+
   # Add example external commands to PATH before checking.
   ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/cmds"
   if which "brew-#{cmd}"
@@ -80,7 +91,7 @@ begin
   elsif require? `/usr/bin/which brew-#{cmd}.rb`
     exit 0
   elsif require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/cmd
-    Homebrew.send cmd.to_s.gsub('-', '_')
+    Homebrew.send cmd.to_s.gsub('-', '_').downcase
   else
     onoe "Unknown command: #{cmd}"
     exit 1
@@ -103,6 +114,7 @@ rescue BuildError => e
   e.dump
   exit 1
 rescue RuntimeError, SystemCallError => e
+  raise if e.message.empty?
   onoe e
   puts e.backtrace if ARGV.debug?
   exit 1

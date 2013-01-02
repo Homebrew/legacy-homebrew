@@ -4,7 +4,7 @@ class Wdiff < Formula
   homepage 'http://www.gnu.org/software/wdiff/'
   url 'http://ftpmirror.gnu.org/wdiff/wdiff-1.1.2.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/wdiff/wdiff-1.1.2.tar.gz'
-  md5 'ac51497a2b33094c484237049803a697'
+  sha1 '5b3ab95bd6a77fce8f194069ac0ac823593258fc'
 
   depends_on 'gettext' => :optional
 

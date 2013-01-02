@@ -100,14 +100,14 @@ module MachO
   end
 
   def dylib?
-    mach_data.map{ |m| m.fetch :type }.include? :dylib
+    mach_data.any? { |m| m.fetch(:type) == :dylib }
   end
 
   def mach_o_executable?
-    mach_data.map{ |m| m.fetch :type }.include? :executable
+    mach_data.any? { |m| m.fetch(:type) == :executable }
   end
 
   def mach_o_bundle?
-    mach_data.map{ |m| m.fetch :type }.include? :bundle
+    mach_data.any? { |m| m.fetch(:type) == :bundle }
   end
 end

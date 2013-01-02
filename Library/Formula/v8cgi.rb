@@ -2,25 +2,21 @@ require 'formula'
 
 class V8cgi < Formula
   homepage 'http://code.google.com/p/v8cgi/'
-  url 'http://v8cgi.googlecode.com/files/v8cgi-0.9.2-src.tar.gz'
-  sha1 '790aa7d177cccc94e2cb3ba4ca06213765094f01'
+  url 'http://v8cgi.googlecode.com/files/v8cgi-0.9.3-src.tar.gz'
+  sha1 'a3dd4a648bce71aa3cb37ba2c1921f0605ff50f0'
 
   head 'http://v8cgi.googlecode.com/svn/trunk/'
+
+  option "with-dom", "Enable DOM"
+  option "with-gd", "Enable GD"
+  option "with-sqlite", "Enable SQLite"
 
   depends_on 'scons' => :build
   depends_on 'v8'
   depends_on 'libmemcached'
-  depends_on 'xerces-c' if ARGV.include? '--with-dom'
-  depends_on 'gd' if ARGV.include? '--with-gd'
-  depends_on 'sqlite' if ARGV.include? '--with-sqlite'
-
-  def options
-    [
-      ["--with-dom", "Enable DOM."],
-      ["--with-gd", "Enable GD."],
-      ["--with-sqlite", "Enable SQLite."]
-    ]
-  end
+  depends_on 'xerces-c' => :optional if build.include? 'with-dom'
+  depends_on 'gd'       => :optional if build.include? 'with-gd'
+  depends_on 'sqlite'   => :optional if build.include? 'with-sqlite'
 
   def install
     arch = Hardware.is_64_bit? ? 'x64' : 'ia32'
@@ -28,9 +24,9 @@ class V8cgi < Formula
     v8_prefix = Formula.factory('v8').prefix
 
     args = ["config_file=#{etc}/v8cgi.conf", "v8_path=#{v8_prefix}"]
-    args << ((ARGV.include? '--with-dom') ? 'dom=1' : 'dom=0')
-    args << ((ARGV.include? '--with-gd') ? 'gd=1' : 'gd=0')
-    args << ((ARGV.include? '--with-sqlite') ? 'sqlite=1' : 'sqlite=0')
+    args << ((build.include? 'with-dom') ? 'dom=1' : 'dom=0')
+    args << ((build.include? 'with-gd') ? 'gd=1' : 'gd=0')
+    args << ((build.include? 'with-sqlite') ? 'sqlite=1' : 'sqlite=0')
 
     cd 'v8cgi' do
       inreplace 'SConstruct', '../v8', v8_prefix

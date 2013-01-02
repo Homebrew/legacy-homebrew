@@ -1,10 +1,10 @@
 require 'formula'
 
 class ShaperProbe < Formula
-  url 'http://www.cc.gatech.edu/~partha/diffprobe/shaperprobe.tgz'
   homepage 'http://www.cc.gatech.edu/~partha/diffprobe/shaperprobe.html'
-  md5 'a15b31cce3ffe087c5242d1fc9006c13'
-  version '2009.10'
+  url 'http://www.cc.gatech.edu/~partha/diffprobe/shaperprobe.tgz'
+  sha1 '91e06ad4e1e966f15b887243c276cb12107baf0f'
+  version '2012.01'
 
   def install
     system "make -f Makefile.osx"

@@ -1,17 +1,16 @@
 require 'formula'
-require 'find'
 
 class ClozureCl < Formula
   url 'ftp://ftp.clozure.com/pub/release/1.8/ccl-1.8-darwinx86.tar.gz'
   version '1.8'
   homepage 'http://ccl.clozure.com/'
-  md5 'ff235d9cec6f45502e993096c80570b9'
+  sha1 'a155fc0d74a463bd6281ed66e7703b84c03afd33'
 
   def install
     # Get rid of all the .svn dirs, that for some reason are
     # included in the tarball
-    Find.find(buildpath) do |path|
-      if File.directory?(path) && File.basename(path) == '.svn'
+    buildpath.find do |path|
+      if path.directory? and path.basename.to_s == '.svn'
         rm_rf path
         Find.prune
       end

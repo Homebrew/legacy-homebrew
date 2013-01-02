@@ -3,7 +3,7 @@ require 'formula'
 class Wakeonlan < Formula
   url 'http://gsd.di.uminho.pt/jpo/software/wakeonlan/downloads/wakeonlan-0.41.tar.gz'
   homepage 'http://gsd.di.uminho.pt/jpo/software/wakeonlan/'
-  md5 'd3143c5fe92d16196ac853b55dd421b5'
+  sha1 '95ed4be631e291fc07a72d5625a1ee915b35f85f'
 
   def install
     system "perl", "Makefile.PL"

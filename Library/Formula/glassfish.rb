@@ -3,7 +3,7 @@ require 'formula'
 class Glassfish < Formula
   homepage 'http://glassfish.org/'
   url 'http://download.java.net/glassfish/3.1.2/release/glassfish-3.1.2.zip'
-  md5 'a3a566302aa7bf20dcd44b9c79492680'
+  sha1 '9e111bbd7791b63ae37220641867b47851a636d5'
 
   skip_clean :all
 

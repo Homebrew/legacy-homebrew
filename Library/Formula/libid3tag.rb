@@ -2,7 +2,7 @@ require 'formula'
 
 class Libid3tag < Formula
   url 'http://downloads.sourceforge.net/project/mad/libid3tag/0.15.1b/libid3tag-0.15.1b.tar.gz'
-  md5 'e5808ad997ba32c498803822078748c3'
+  sha1 '4d867e8a8436e73cd7762fe0e85958e35f1e4306'
 
   def id3tag_pc
     return <<-EOS

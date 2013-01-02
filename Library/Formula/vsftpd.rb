@@ -1,21 +1,17 @@
 require 'formula'
 
 class Vsftpd < Formula
-  url 'https://security.appspot.com/downloads/vsftpd-2.3.4.tar.gz'
-  md5 '2ea5d19978710527bb7444d93b67767a'
   homepage 'https://security.appspot.com/vsftpd.html'
+  url 'https://security.appspot.com/downloads/vsftpd-2.3.4.tar.gz'
+  sha1 'b774cc6b4c50e20f4fe9ca7f6aa74169ce7fe5ea'
 
-  def options
-    [
-      ["--openssl", "build with OpenSSL"],
-    ]
-  end
+  option "openssl", "Build with OpenSSL"
 
   # Patch so vsftpd doesn't depend on UTMPX, and can't find OS X's PAM library.
   def patches; DATA; end
 
   def install
-    if ARGV.include? "--openssl"
+    if build.include? "openssl"
       inreplace "builddefs.h", "#undef VSF_BUILD_SSL", "#define VSF_BUILD_SSL"
     end
 
@@ -31,7 +27,7 @@ class Vsftpd < Formula
   end
 
   def caveats
-    if ARGV.include? "--openssl"
+    if build.include? "openssl"
       return <<-EOD.undent
         vsftpd was compiled with SSL support. To use it you must generate a SSL
         certificate and set 'enable_ssl=YES' in your config file.

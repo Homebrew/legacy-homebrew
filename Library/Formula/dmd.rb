@@ -2,8 +2,8 @@ require 'formula'
 
 class Dmd < Formula
   homepage 'http://www.digitalmars.com/d/'
-  url 'http://cloud.github.com/downloads/D-Programming-Language/dmd/dmd.2.059.zip'
-  md5 '803b182e71c4b021dfd1811066201140'
+  url 'http://downloads.dlang.org.s3-website-us-east-1.amazonaws.com/releases/2013/dmd.2.061.zip'
+  sha1 'c50fca6f5abe292d38fcbb87fc19c0324d6a605b'
 
   def doc
     #use d and not dmd, rationale: meh
@@ -15,7 +15,6 @@ class Dmd < Formula
     rm Dir['src/*.mak']
     mv 'license.txt', 'COPYING'
     mv 'README.TXT', 'README'
-    mv 'src/phobos/phoboslicense.txt', 'src/phobos/COPYING.phobos'
 
     prefix.install 'osx/bin', 'osx/lib', 'src'
     man.install 'man/man1'

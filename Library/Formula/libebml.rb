@@ -4,7 +4,7 @@ class Libebml < Formula
   homepage 'http://www.matroska.org/'
   url 'http://dl.matroska.org/downloads/libebml/libebml-1.2.2.tar.bz2'
   mirror 'http://www.bunkus.org/videotools/mkvtoolnix/sources/libebml-1.2.2.tar.bz2'
-  md5 '726cc2bd1a525929ff35ff9854c0ebab'
+  sha1 'f8ef2e044b79b6e4f777b20c0e0e2382c16fbafc'
 
   def install
     cd 'make/linux' do

@@ -1,10 +1,9 @@
 require 'formula'
 
 class Slrn < Formula
-  url 'ftp://space.mit.edu/pub/davis/slrn/slrn-0.9.9p1.tar.gz'
-  homepage 'http://www.slrn.org/'
-  md5 '6cc8ac6baaff7cc2a8b78f7fbbe3187f'
-  version '0.9.9p1'
+  url 'http://sourceforge.net/projects/slrn/files/slrn/slrn-1.0.1.tar.gz'
+  homepage 'http://slrn.sourceforge.net/'
+  sha1 '9ad41ec3894d2b6b1ae8f158e994a8f138540baa'
 
   depends_on 's-lang'
 

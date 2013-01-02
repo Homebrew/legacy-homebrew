@@ -2,8 +2,8 @@ require 'formula'
 
 class Optipng < Formula
   homepage 'http://optipng.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/optipng/OptiPNG/optipng-0.7.1/optipng-0.7.1.tar.gz'
-  md5 'b6181d566998ad489397b985ebfc4a03'
+  url 'http://downloads.sourceforge.net/project/optipng/OptiPNG/optipng-0.7.4/optipng-0.7.4.tar.gz'
+  sha1 'dcde17501cfb7a425b6cc23cfed482bbfd4867bb'
 
   def install
     system "./configure", "--with-system-zlib",

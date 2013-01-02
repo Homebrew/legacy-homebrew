@@ -3,7 +3,7 @@ require 'formula'
 class Qfits < Formula
   url 'ftp://ftp.eso.org/pub/qfits/qfits-6.2.0.tar.gz'
   homepage 'http://www.eso.org/sci/software/eclipse/qfits/index.html'
-  md5 'f3920831eee308af04d75089291ce144'
+  sha1 '9e05023316ebc307b8191068dc07d6fd449ac14d'
 
   def install
     # qfits does not support 64bit build

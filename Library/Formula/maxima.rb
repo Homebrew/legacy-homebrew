@@ -1,14 +1,17 @@
 require 'formula'
 
 class Maxima < Formula
-  url 'http://sourceforge.net/projects/maxima/files/Maxima-source/5.25.1-source/maxima-5.25.1.tar.gz'
   homepage 'http://maxima.sourceforge.net/'
-  md5 'f2a7399e53eadc38e0bedb843d5d7055'
+  url 'http://sourceforge.net/projects/maxima/files/Maxima-source/5.28.0-source/maxima-5.28.0.tar.gz'
+  sha1 '52d7dad4681711a6ead73b72835b177107363b9c'
 
   depends_on 'gettext'
   depends_on 'sbcl'
   depends_on 'gnuplot'
   depends_on 'rlwrap'
+
+  # required for maxima help(), describe(), "?" and "??" lisp functionality
+  skip_clean 'share/info'
 
   def patches
     # fixes 3468021: imaxima.el uses incorrect tmp directory on OS X:
@@ -20,11 +23,13 @@ class Maxima < Formula
     ENV.deparallelize
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--mandir=#{man}", "--infodir=#{info}",
-                          "--enable-sbcl", "--enable-gettext"
-    system "make"
-    system "make check"
-    system "make install"
+                          "--enable-sbcl",
+                          "--enable-gettext"
+    # Per build instructions
+    ENV['LANG'] = 'C'
+    system 'make'
+    system 'make check'
+    system 'make install'
   end
 
   def test

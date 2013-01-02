@@ -2,20 +2,17 @@ require 'formula'
 
 class Checkstyle < Formula
   homepage 'http://checkstyle.sourceforge.net/'
-  url 'http://sourceforge.net/projects/checkstyle/files/checkstyle/5.5/checkstyle-5.5-bin.tar.gz'
-  md5 '0dd29971aa26d917d88c229182272056'
+  url 'http://sourceforge.net/projects/checkstyle/files/checkstyle/5.6/checkstyle-5.6-bin.tar.gz'
+  sha1 'cf08ac75aedddcd3a8d1f27fcbbb6095b0d1d5e3'
 
   def install
-    # wrapper script
-    (bin/'checkstyle').write <<-EOS.undent
-      #! /usr/bin/env bash -e
-      java -jar "#{libexec}/checkstyle-5.5-all.jar" "$@"
-    EOS
-
-    libexec.install 'checkstyle-5.5-all.jar', 'sun_checks.xml'
+    libexec.install 'checkstyle-5.6-all.jar', 'sun_checks.xml'
+    bin.write_jar_script libexec/'checkstyle-5.6-all.jar', 'checkstyle'
   end
 
   def test
+    # Note this test "fails" because the audit has issues
+    # TODO - pipe through cat to ingore error code
     mktemp do
       # create test file
       (Pathname.pwd/"Test.java").write <<-EOS.undent

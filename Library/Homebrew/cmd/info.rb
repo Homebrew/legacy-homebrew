@@ -1,9 +1,20 @@
 require 'formula'
 require 'tab'
 require 'keg'
+require 'caveats'
 
 module Homebrew extend self
   def info
+    # eventually we'll solidify an API, but we'll keep old versions
+    # awhile around for compatibility
+    if ARGV.json == "v1"
+      print_json
+    else
+      print_info
+    end
+  end
+
+  def print_info
     if ARGV.named.empty?
       if ARGV.include? "--all"
         Formula.each do |f|
@@ -20,8 +31,20 @@ module Homebrew extend self
     end
   end
 
+  def print_json
+    require 'vendor/multi_json'
+
+    formulae = ARGV.include?("--all") ? Formula : ARGV.formulae
+    json = formulae.map {|f| f.to_hash}
+    if json.size == 1
+      puts MultiJson.encode json.pop
+    else
+      puts MultiJson.encode json
+    end
+  end
+
   def github_fork
-    if which 'git'
+    if which 'git' and (HOMEBREW_REPOSITORY/".git").directory?
       if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
         $2
       end
@@ -51,7 +74,7 @@ module Homebrew extend self
 
     specs = []
     stable = "stable #{f.stable.version}" if f.stable
-    stable += " (bottled)" if f.bottle and bottles_supported?
+    stable += " (bottled)" if f.bottle and MacOS.bottles_supported?
     specs << stable if stable
     specs << "devel #{f.devel.version}" if f.devel
     specs << "HEAD" if f.head
@@ -63,18 +86,21 @@ module Homebrew extend self
     if f.keg_only?
       puts
       puts "This formula is keg-only."
-      puts f.keg_only?
+      puts f.keg_only_reason
       puts
     end
 
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
+    conflicts = f.conflicts.map { |c| c.formula }
+    puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
       kegs = f.rack.children
+      kegs.reject! {|keg| keg.basename.to_s == '.DS_Store' }
+      kegs = kegs.map {|keg| Keg.new(keg) }.sort_by {|keg| keg.version }
       kegs.each do |keg|
-        next if keg.basename.to_s == '.DS_Store'
         print "#{keg} (#{keg.abv})"
-        print " *" if Keg.new(keg).linked?
+        print " *" if keg.linked?
         puts
         tab = Tab.for_keg keg
         unless tab.used_options.empty?
@@ -88,12 +114,13 @@ module Homebrew extend self
     history = github_info(f)
     puts history if history
 
-    the_caveats = (f.caveats || "").strip
-    unless the_caveats.empty?
-      puts
-      ohai "Caveats"
-      puts f.caveats
+    unless f.build.empty?
+      require 'cmd/options'
+      ohai "Options"
+      Homebrew.dump_options_for_formula f
     end
+
+    Caveats.print f
 
   rescue FormulaUnavailableError
     # check for DIY installation

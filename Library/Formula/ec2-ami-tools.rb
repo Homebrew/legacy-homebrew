@@ -3,7 +3,7 @@ require 'formula'
 class Ec2AmiTools < AmazonWebServicesFormula
   homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?externalID=368'
   url 'http://s3.amazonaws.com/ec2-downloads/ec2-ami-tools-1.4.0.7.zip'
-  md5 '9d315e7d7d8f5713b2349d3de2aec42b'
+  sha1 '9af4e621860486d491c184014c1d955a82d834b9'
 
   def install
     standard_install

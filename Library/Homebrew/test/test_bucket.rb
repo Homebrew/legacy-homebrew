@@ -3,18 +3,17 @@ require 'test/testball'
 
 class MockFormula < Formula
   def initialize url
-    @url=url
-    @homepage = 'http://example.com/'
+    @stable = SoftwareSpec.new(url)
     super 'test'
   end
 end
 
 class TestZip < Formula
   def initialize
+    @homepage = 'http://example.com/'
     zip=HOMEBREW_CACHE.parent+'test-0.1.zip'
     Kernel.system '/usr/bin/zip', '-q', '-0', zip, ABS__FILE__
-    @url="file://#{zip}"
-    @homepage = 'http://example.com/'
+    @stable = SoftwareSpec.new "file://#{zip}"
     super 'testzip'
   end
 end
@@ -23,6 +22,8 @@ end
 # separate TestCase classes.
 
 class BeerTasting < Test::Unit::TestCase
+  include VersionAssertions
+
   def test_supported_compressed_types
     assert_nothing_raised do
       MockFormula.new 'test-0.1.tar.gz'
@@ -49,7 +50,7 @@ class BeerTasting < Test::Unit::TestCase
       f << %{
         require 'formula'
         class #{classname} < Formula
-          @url=''
+          url ''
           def initialize(*args)
             @homepage = 'http://example.com/'
             super
@@ -83,7 +84,6 @@ class BeerTasting < Test::Unit::TestCase
       assert_nothing_raised do
         f=TestBallWithRealPath.new
         Homebrew.info_formula f
-        Cleaner.new f
         Homebrew.prune
         #TODO test diy function too
       end
@@ -93,12 +93,15 @@ class BeerTasting < Test::Unit::TestCase
   def test_brew_cleanup
     require 'cmd/cleanup'
 
-    f1=TestBall.new
-    f1.instance_eval { @version = "0.1" }
-    f2=TestBall.new
-    f2.instance_eval { @version = "0.2" }
-    f3=TestBall.new
-    f3.instance_eval { @version = "0.3" }
+    f1 = TestBall.new
+    f1.instance_eval { @version = Version.new("0.1") }
+    f1.active_spec.instance_eval { @version = Version.new("0.1") }
+    f2 = TestBall.new
+    f2.instance_eval { @version = Version.new("0.2") }
+    f2.active_spec.instance_eval { @version = Version.new("0.2") }
+    f3 = TestBall.new
+    f3.instance_eval { @version = Version.new("0.3") }
+    f3.active_spec.instance_eval { @version = Version.new("0.3") }
 
     nostdout do
       f1.brew { f1.install }
@@ -128,12 +131,6 @@ class BeerTasting < Test::Unit::TestCase
     assert f <= 10.6
     assert_equal 10.5, f-0.1
     assert_equal 10.7, f+0.1
-  end
-
-  def test_pathname_version
-    d=HOMEBREW_CELLAR+'foo-0.1.9'
-    d.mkpath
-    assert_equal '0.1.9', d.version
   end
 
   def test_pathname_plus_yeast
@@ -177,12 +174,12 @@ class BeerTasting < Test::Unit::TestCase
 
     assert_equal '.tar.gz', foo1.extname
     assert_equal 'foo-0.1', foo1.stem
-    assert_equal '0.1', foo1.version
+    assert_version_equal '0.1', foo1.version
 
     foo1 = HOMEBREW_CACHE/'foo-0.1.cpio.gz'
     assert_equal '.cpio.gz', foo1.extname
     assert_equal 'foo-0.1', foo1.stem
-    assert_equal '0.1', foo1.version
+    assert_version_equal '0.1', foo1.version
   end
 
   class MockMockFormula < Struct.new(:name); end

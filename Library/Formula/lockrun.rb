@@ -3,7 +3,7 @@ require 'formula'
 class Lockrun < Formula
   url 'http://unixwiz.net/tools/lockrun.c'
   homepage 'http://unixwiz.net/tools/lockrun.html'
-  md5 '40f1a02df4dd67c5e2d973b669acb45d'
+  sha1 '04c6df93c3ac5b2cdedfb25615f39c9ed50c0663'
   version '20090625'
 
   def install

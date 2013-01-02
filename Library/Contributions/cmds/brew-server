@@ -151,7 +151,7 @@ get '/formula/:name' do
     end
   end
 
-  used_by = Formula.all.select{|ff| ff.deps.include?(klass.name)}.map{|f| f.name}.flatten.uniq.sort
+  used_by = Formula.select{|ff| ff.deps.include?(klass.name)}.map{|f| f.name}.flatten.uniq.sort
   unless used_by.empty?
     s << <<-HTML
             <dt>Used by</td>
@@ -174,7 +174,7 @@ end
 
 
 def installed_formulas
-  Formula.all.select{|formula| formula.installed?}
+  Formula.select{|formula| formula.installed?}
 end
 
 get '/installed' do

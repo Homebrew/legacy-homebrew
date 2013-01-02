@@ -3,10 +3,10 @@ require 'formula'
 class Mathgl < Formula
   homepage 'http://mathgl.sourceforge.net/'
   url 'http://downloads.sourceforge.net/mathgl/mathgl-1.11.2.tar.gz'
-  md5 'acd33e68911d9506f60d769dce23f95e'
+  sha1 '16b9ab58e654c5b91374f8a35eafc33630d7f5c0'
 
   depends_on 'gsl'
-  depends_on :x11
+  depends_on :libpng
 
   def install
     ENV['LIBS'] = '-lz'
@@ -19,5 +19,11 @@ class Mathgl < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
+  end
+
+  def test
+    mktemp do
+      system "#{bin}/mgl_example"
+    end
   end
 end

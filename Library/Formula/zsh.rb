@@ -2,17 +2,14 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'http://sourceforge.net/projects/zsh/files/zsh-dev/4.3.17/zsh-4.3.17.tar.gz'
-  md5 '9074077945550d6684ebe18b3b167d52'
+  url 'http://www.zsh.org/pub/zsh-5.0.2.tar.bz2'
+  mirror 'http://sourceforge.net/projects/zsh/files/zsh/5.0.2/zsh-5.0.2.tar.bz2'
+  sha1 '9f55ecaaae7cdc1495f91237ba2ec087777a4ad9'
 
   depends_on 'gdbm'
   depends_on 'pcre'
 
-  skip_clean :all
-
-  def options
-    [['--disable-etcdir', 'Disable the reading of Zsh rc files in /etc']]
-  end
+  option 'disable-etcdir', 'Disable the reading of Zsh rc files in /etc'
 
   def install
     args = %W[
@@ -29,7 +26,7 @@ class Zsh < Formula
       --with-tcsetpgrp
     ]
 
-    args << '--disable-etcdir' if ARGV.include? '--disable-etcdir'
+    args << '--disable-etcdir' if build.include? 'disable-etcdir'
 
     system "./configure", *args
 

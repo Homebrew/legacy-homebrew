@@ -3,7 +3,7 @@ require 'formula'
 class Automoc4 < Formula
   homepage 'http://techbase.kde.org/Development/Tools/Automoc4'
   url 'ftp://ftp.kde.org/pub/kde/stable/automoc4/0.9.88/automoc4-0.9.88.tar.bz2'
-  md5 '91bf517cb940109180ecd07bc90c69ec'
+  sha1 'd864c3dda99d8b5f625b9267acfa1d88ff617e3a'
 
   depends_on 'cmake' => :build
   depends_on 'qt'

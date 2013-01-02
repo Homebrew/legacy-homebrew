@@ -3,7 +3,7 @@ require 'formula'
 class ShellFm < Formula
   url 'https://github.com/jkramer/shell-fm/tarball/v0.8'
   homepage 'http://nex.scrapping.cc/shell-fm/'
-  md5 'ce5c45ead71a299edbff280d4007ad99'
+  sha1 'ad35391489a4c5b216740a543f6cb46285f556c7'
   head 'https://github.com/jkramer/shell-fm.git'
 
   # homepage says that libao is optional, but it doesn't seem

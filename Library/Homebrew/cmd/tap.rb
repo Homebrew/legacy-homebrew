@@ -4,8 +4,11 @@ module Homebrew extend self
     if ARGV.empty?
       tapd = HOMEBREW_LIBRARY/"Taps"
       tapd.children.each do |tap|
-        puts tap.basename.sub('-', '/') if (tap/'.git').directory?
+        # only replace the *last* dash: yes, tap filenames suck
+        puts tap.basename.to_s.reverse.sub('-', '/').reverse if (tap/'.git').directory?
       end if tapd.directory?
+    elsif ARGV.first == "--repair"
+      repair_taps
     else
       install_tap(*tap_args)
     end
@@ -27,6 +30,22 @@ module Homebrew extend self
     tapd.find_formula{ |file| files << tapd.basename.join(file) }
     tapped = link_tap_formula(files)
     puts "Tapped #{tapped} formula"
+
+    # Figure out if this repo is private
+    # curl will throw an exception if the repo is private (Github returns a 404)
+    begin
+      curl('-Ifso', '/dev/null', "https://api.github.com/repos/#{repouser}/homebrew-#{repo}")
+    rescue
+      puts
+      puts "It looks like you tapped a private repository"
+      puts "In order to not input your credentials every time"
+      puts "you can use git HTTP credential caching or issue the"
+      puts "following command:"
+      puts
+      puts "   cd #{tapd}"
+      puts "   git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git"
+      puts
+    end
   end
 
   def link_tap_formula formulae
@@ -58,6 +77,28 @@ module Homebrew extend self
     tapped
   end
 
+  def repair_taps
+    count = 0
+    # prune dead symlinks in Formula
+    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].each do |fn|
+      if not File.exist? fn
+        File.delete fn
+        count += 1
+      end
+    end
+    puts "Pruned #{count} dead formula"
+
+    count = 0
+    # check symlinks are all set in each tap
+    HOMEBREW_REPOSITORY.join("Library/Taps").children.each do |tap|
+      files = []
+      tap.find_formula{ |file| files << tap.basename.join(file) }
+      count += link_tap_formula(files)
+    end
+
+    puts "Tapped #{count} formula"
+  end
+
   private
 
   def tap_args
@@ -72,7 +113,7 @@ end
 class Pathname
   def tap_ref
     case self.to_s
-    when %r{^#{HOMEBREW_LIBRARY}/Taps/(\w+)-(\w+)/(.+)}
+    when %r{^#{HOMEBREW_LIBRARY}/Taps/([a-z\-_]+)-(\w+)/(.+)}
       "#$1/#$2/#{File.basename($3, '.rb')}"
     when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
       "mxcl/master/#{File.basename($1, '.rb')}"

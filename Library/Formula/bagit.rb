@@ -3,7 +3,7 @@ require 'formula'
 class Bagit < Formula
   homepage 'http://sourceforge.net/projects/loc-xferutils/files/loc-bil-java-library/4.1/'
   url 'http://downloads.sourceforge.net/project/loc-xferutils/loc-bil-java-library/4.1/bagit-4.1-bin.zip'
-  md5 '9c104028d608edb41a9b78eeb0662411'
+  sha1 'a8ae349e3901a7eb38ff580dd10dd915440c27cc'
 
   skip_clean 'logs'
 

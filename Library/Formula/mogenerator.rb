@@ -1,10 +1,12 @@
 require 'formula'
 
 class Mogenerator < Formula
-  url 'https://github.com/rentzsch/mogenerator/tarball/1.26'
   homepage 'http://rentzsch.github.com/mogenerator/'
-  md5 'cc761752cc581188e1065bd0919ad4c3'
-  head "https://github.com/rentzsch/mogenerator.git"
+  url 'https://github.com/rentzsch/mogenerator/tarball/1.27'
+  sha1 '03b04a80d3ff1190736b72bf5ff5ce44d4670914'
+  head 'https://github.com/rentzsch/mogenerator.git'
+
+  depends_on :xcode # For working xcodebuild.
 
   def install
     system "xcodebuild -target mogenerator -configuration Release SYMROOT=symroot OBJROOT=objroot"

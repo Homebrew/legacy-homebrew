@@ -2,8 +2,8 @@ require 'formula'
 
 class GitFlowCompletion < Formula
   homepage 'https://github.com/bobthecow/git-flow-completion'
-  url 'https://github.com/bobthecow/git-flow-completion/tarball/0.4.1.0'
-  md5 '95c05d1a278c1c41067bd7cc6c281ecd'
+  url 'https://github.com/bobthecow/git-flow-completion/tarball/0.4.2'
+  sha1 '49316a92b667bc28fb9449824a4384a511861924'
 
   head 'https://github.com/bobthecow/git-flow-completion.git', :branch => 'develop'
 end
@@ -24,14 +24,5 @@ class GitFlow < Formula
       (prefix+'etc/bash_completion.d').install "git-flow-completion.bash"
       (share+'zsh/site-functions').install "git-flow-completion.zsh"
     end
-  end
-
-  def caveats; <<-EOS.undent
-    Bash completion has been installed to:
-      #{etc}/bash_completion.d
-
-    zsh completion has been installed to:
-      #{HOMEBREW_PREFIX}/share/zsh/site-functions
-    EOS
   end
 end

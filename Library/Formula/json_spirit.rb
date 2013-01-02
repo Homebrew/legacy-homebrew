@@ -3,7 +3,7 @@ require 'formula'
 class JsonSpirit < Formula
   homepage 'http://www.codeproject.com/KB/recipes/JSON_Spirit.aspx'
   url 'https://uwe-arzt.de/files/json_spirit_v4.04.zip'
-  md5 '0729870198528a28c21c5ee588d032a4'
+  sha1 '5e92f0b337c43104faaf23f082d4c6763986bdd1'
 
   depends_on 'boost'
   depends_on 'cmake' => :build

@@ -15,7 +15,6 @@ class EnvironmentTests < Test::Unit::TestCase
     ENV.minimal_optimization
     ENV.no_optimization
     ENV.libxml2
-    ENV.x11
     ENV.enable_warnings
     assert !ENV.cc.empty?
     assert !ENV.cxx.empty?
@@ -24,7 +23,7 @@ class EnvironmentTests < Test::Unit::TestCase
   def test_switching_compilers
     ENV.llvm
     ENV.clang
-    assert_equal ENV['LD'], ENV['CC']
+    assert_nil ENV['LD']
     assert_equal ENV['OBJC'], ENV['CC']
   end
 end

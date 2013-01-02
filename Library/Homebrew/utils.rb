@@ -11,6 +11,7 @@ class Tty
     def reset; escape 0; end
     def em; underline 39; end
     def green; color 92 end
+    def gray; bold 30 end
 
     def width
       `/usr/bin/tput cols`.strip.to_i
@@ -151,12 +152,8 @@ def puts_columns items, star_items=[]
 end
 
 def which cmd
-  path = `/usr/bin/which #{cmd} 2>/dev/null`.chomp
-  if path.empty?
-    nil
-  else
-    Pathname.new(path)
-  end
+  dir = ENV['PATH'].split(':').find {|p| File.executable? File.join(p, cmd)}
+  Pathname.new(File.join(dir, cmd)) unless dir.nil?
 end
 
 def which_editor
@@ -174,11 +171,18 @@ end
 
 def exec_editor *args
   return if args.to_s.empty?
+  safe_exec(which_editor, *args)
+end
 
-  # Invoke bash to evaluate env vars in $EDITOR
-  # This also gets us proper argument quoting.
-  # See: https://github.com/mxcl/homebrew/issues/5123
-  system "bash", "-c", which_editor + ' "$@"', "--", *args
+def exec_browser *args
+  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || "open"
+  safe_exec(browser, *args)
+end
+
+def safe_exec cmd, *args
+  # This buys us proper argument quoting and evaluation
+  # of environment variables in the cmd parameter.
+  exec "/bin/sh", "-i", "-c", cmd + ' "$@"', "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
@@ -216,8 +220,10 @@ def inreplace path, before=nil, after=nil
   end
 end
 
-def ignore_interrupts
-  std_trap = trap("INT") {}
+def ignore_interrupts(opt = nil)
+  std_trap = trap("INT") do
+    puts "One sec, just cleaning up" unless opt == :quietly
+  end
   yield
 ensure
   trap("INT", std_trap)

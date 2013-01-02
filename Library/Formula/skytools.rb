@@ -1,30 +1,12 @@
 require 'formula'
 
-class PostgresqlInstalled < Requirement
-  def message; <<-EOS.undent
-    PostgresQL is required to install.
-
-    You can install this with:
-      brew install postgresql
-
-    Or you can use an official installer from:
-      http://www.postgresql.org/
-    EOS
-  end
-  def satisfied?
-    which 'postgres'
-  end
-  def fatal?
-    true
-  end
-end
-
 class Skytools < Formula
   homepage 'http://pgfoundry.org/projects/skytools/'
-  url 'http://pgfoundry.org/frs/download.php/3294/skytools-3.0.3.tar.gz'
-  sha1 '8894db961216386344ac9f2c47ae4125c64afb0b'
+  url 'http://pgfoundry.org/frs/download.php/3390/skytools-3.1.2.tar.gz'
+  sha1 '47fef7abb4fab55b8987bff839a88afc4f4c717e'
 
-  depends_on PostgresqlInstalled.new
+  # Works only with homebrew postgres: https://github.com/mxcl/homebrew/issues/16024
+  depends_on 'postgresql'
 
   def install
     system "./configure", "--prefix=#{prefix}"
