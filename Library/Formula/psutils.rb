@@ -6,7 +6,6 @@ class Psutils < Formula
   sha1 '6f1ecb5846cffb644826a02bd9153fe5d6387a9b'
 
   def install
-    ENV.j1
     man1.mkpath # This is required, because the makefile expects that its man folder exists
     system "make", "-f", "Makefile.unix", 
                       "PERL=/usr/bin/perl",
