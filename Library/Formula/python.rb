@@ -150,8 +150,12 @@ class Python < Formula
           sys.path = [ p for p in sys.path if not p.startswith('/System') ]
 
           # Fix 2)
-          #   Remove brewed Python's hard-coded site-packages
-          sys.path.remove('#{site_packages_cellar}')
+          #   Remove brewed Python's hard-coded site-packages,
+          #   if it's there
+          try:
+              sys.path.remove('#{site_packages_cellar}')
+          except ValueError:
+              pass
 
       # Fix 3)
       #   For all Pythons: Tell about homebrew's site-packages location.
