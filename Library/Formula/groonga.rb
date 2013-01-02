@@ -10,7 +10,8 @@ class Groonga < Formula
   depends_on 'msgpack'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-zlib"
+    # ZeroMQ is an optional dependency that will be auto-detected unless we disbale it
+    system "./configure", "--prefix=#{prefix}", "--with-zlib", "--disable-zeromq"
     system "make install"
   end
 end
