@@ -36,9 +36,9 @@ class Erlang < Formula
 
   # remove the autoreconf if possible
   depends_on :automake
-  depends_on :autoconf #Joan
   depends_on :libtool
   depends_on 'wxgtk' if build.include? 'with-wxgtk'
+  
   fails_with :llvm do
     build 2334
   end
