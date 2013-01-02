@@ -80,8 +80,8 @@ ARGV.named.each do|arg|
       if (status == 'A' or status == 'M') and filename.include? '/Formula/' or tap url
         formula = File.basename(filename, '.rb')
         ohai "Installing #{formula}"
-        # Not sure if this is the best way to install?
-        safe_system 'brew', 'install', '--force', '--build-bottle', formula
+        install = Formula.factory(formula).installed? ? 'upgrade' : 'install'
+        safe_system 'brew', install, '--debug', '--fresh', formula
       end
     end
   end
