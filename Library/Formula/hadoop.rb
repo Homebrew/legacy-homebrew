@@ -5,6 +5,11 @@ class Hadoop < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-1.1.1/hadoop-1.1.1.tar.gz'
   sha1 '3b7f226e437a30bb8eee12093179c81ae94e7896'
 
+  devel do
+    url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-2.0.2-alpha/hadoop-2.0.2-alpha.tar.gz'
+    sha1 '44206b2d4b657a8efa47dbe78725c58233e17a9d'
+  end
+
   def install
     rm_f Dir["bin/*.bat"]
     libexec.install %w[bin conf lib webapps contrib]
