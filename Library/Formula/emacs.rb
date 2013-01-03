@@ -6,6 +6,9 @@ class Emacs < Formula
   mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.2.tar.bz2'
   sha1 '38e8fbc9573b70a123358b155cf55c274b5a56cf'
 
+  conflicts_with 'ctags',
+    :because => 'Both emacs and ctags install a `ctags` executable.'
+
   option "cocoa", "Build a Cocoa version of emacs"
   option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
   option "with-x", "Include X11 support"
