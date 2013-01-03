@@ -6,8 +6,6 @@ class Hadoop < Formula
   sha1 '44206b2d4b657a8efa47dbe78725c58233e17a9d'
   version '2.0.2'
 
-  depends_on 'protobuf'
-
   def install
     libexec.install %w[bin lib libexec share]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
