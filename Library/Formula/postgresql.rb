@@ -9,8 +9,8 @@ class Postgresql < Formula
   depends_on 'libxml2' if MacOS.version == :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
 
-  conflicts_with 'postgresql-xc',
-    :because => 'postgresql and postgresql-xc install the same binaries.'
+  conflicts_with 'postgres-xc',
+    :because => 'postgresql and postgres-xc install the same binaries.'
 
   option '32-bit'
   option 'without-ossp-uuid', 'Build without OSSP uuid'
