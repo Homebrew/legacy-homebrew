@@ -2,15 +2,10 @@ require 'formula'
 
 class Opam < Formula
   homepage 'https://github.com/OCamlPro/opam'
-  url 'https://github.com/OCamlPro/opam/tarball/0.8.2'
-  sha1 'a1a16cda2c58064d2f7e644da5fb045783d7b23d'
+  url 'https://github.com/OCamlPro/opam/tarball/0.8.3'
+  sha1 '92339757360abce0a18aab313c1b8e656b83d61f'
 
   depends_on "objective-caml"
-
-  # Temporary patch until the next release
-  def patches
-    DATA
-  end
 
   def install
     system "./configure", "--prefix=#{prefix}"
@@ -36,19 +31,3 @@ class Opam < Formula
     EOS
   end
 end
-
-
-__END__
-diff --git a/src_ext/Makefile b/src_ext/Makefile
-index 29a9dc6..c5750b3 100644
---- a/src_ext/Makefile
-+++ b/src_ext/Makefile
-@@ -8,7 +8,7 @@ depends.ocp: depends.ocp.boot
- clone: cudf.stamp extlib.stamp ocaml-re.stamp ocamlgraph.stamp dose.stamp cmdliner.stamp
-
- cudf-0.6.3.tar.gz:
--	$(FETCH) -k https://gforge.inria.fr/frs/download.php/31543/cudf-0.6.3.tar.gz
-+	$(FETCH) -k https://gforge.inria.fr/frs/download.php/31910/cudf-0.6.3.tar.gz
-
- cudf.stamp: cudf-0.6.3.tar.gz
-	tar xfz cudf-0.6.3.tar.gz
