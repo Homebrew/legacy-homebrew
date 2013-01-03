@@ -67,6 +67,8 @@ class Git < Formula
 
     # install the completion script first because it is inside 'contrib'
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
+    (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.tcsh'
+    (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.zsh'
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-prompt.sh'
     (share+'git-core').install 'contrib'
 
@@ -82,6 +84,12 @@ class Git < Formula
 
     The 'contrib' directory has been installed to:
       #{HOMEBREW_PREFIX}/share/git-core/contrib
+
+    zsh completion has been installed to:
+      #{etc}/git-completion.zsh
+
+    tcsh completion has been installed to:
+      #{etc}/git-completion.tcsh
     EOS
   end
 
