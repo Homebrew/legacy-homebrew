@@ -8,12 +8,15 @@ class Doxygen < Formula
 
   head 'https://doxygen.svn.sourceforge.net/svnroot/doxygen/trunk'
 
+  option 'with-dot', 'Build with dot command support from Graphviz.'
+  option 'with-doxywizard', 'Build GUI frontend with qt support.'
+
+  depends_on 'graphviz' if build.include? 'with-dot'
+  depends_on 'qt' if build.include? 'with-doxywizard'
+
   def install
     system "./configure", "--prefix", prefix
-    system "make", "CC=#{ENV.cc}",
-                   "CXX=#{ENV.cxx}",
-                   "CFLAGS=#{ENV.cflags}",
-                   "CXXFLAGS=#{ENV.cflags}"
+    system "make"
     # MAN1DIR, relative to the given prefix
     system "make", "MAN1DIR=share/man/man1", "install"
   end
