@@ -14,10 +14,4 @@ class GitExtras < Formula
     inreplace 'Makefile', %r|\$\(DESTDIR\)(?=/etc/bash_completion\.d)|, '$(DESTDIR)$(PREFIX)'
     system "make", "PREFIX=#{prefix}", "install"
   end
-
-  def caveats; <<-EOS.undent
-    Bash completion has been installed to:
-      #{etc}/bash_completion.d
-    EOS
-  end
 end
