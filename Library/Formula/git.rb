@@ -84,6 +84,12 @@ class Git < Formula
 
     The 'contrib' directory has been installed to:
       #{HOMEBREW_PREFIX}/share/git-core/contrib
+
+    zsh completion has been installed to:
+      #{etc}/git-completion.zsh
+
+    tcsh completion has been installed to:
+      #{etc}/git-completion.tcsh
     EOS
   end
 
