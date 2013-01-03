@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-1.0.tar.bz2'
-  sha1 'bf1f917c4fa26cf225616f2063e60c33cac546be'
+  url 'http://ffmpeg.org/releases/ffmpeg-1.0.1.tar.bz2'
+  sha1 '007465d01dcd4cae973285f89f5c6c500602a3ec'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -24,6 +24,9 @@ class Ffmpeg < Formula
   option 'with-schroedinger', 'Enable Dirac video format'
   option 'with-ffplay', 'Enable FFPlay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'
+  option 'with-fdk-aac', 'Enable the Fraunhofer FDK AAC library'
+  option 'with-openssl', 'Enable OpenSSL encryption library'
+  option 'with-opus', 'Enable the Opus Codec library'
 
   depends_on 'pkg-config' => :build
 
@@ -48,6 +51,8 @@ class Ffmpeg < Formula
   depends_on 'sdl' if build.include? 'with-ffplay'
   depends_on 'speex' if build.include? 'with-speex'
   depends_on 'schroedinger' if build.include? 'with-schroedinger'
+  depends_on 'fdk-aac' if build.include? 'with-fdk-aac'
+  depends_on 'opus' if build.include? 'with-opus'
 
   def install
     args = ["--prefix=#{prefix}",
@@ -77,6 +82,9 @@ class Ffmpeg < Formula
     args << "--enable-ffplay" if build.include? 'with-ffplay'
     args << "--enable-libspeex" if build.include? 'with-speex'
     args << '--enable-libschroedinger' if build.include? 'with-schroedinger'
+    args << "--enable-libfdk-aac" if build.include? 'with-fdk-aac'
+    args << "--enable-openssl" if build.include? 'with-openssl'
+    args << "--enable-libopus" if build.include? 'with-opus'
 
     if build.include? 'with-openjpeg'
       args << '--enable-libopenjpeg'

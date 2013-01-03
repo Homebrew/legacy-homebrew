@@ -53,12 +53,15 @@ module Homebrew extend self
   end
 
   def upgrade_formula f
-    tab = Tab.for_formula(f)
+    # Generate using `for_keg` since the formula object points to a newer version
+    # that doesn't exist yet. Use `opt_prefix` to guard against keg-only installs.
+    # Also, guard against old installs that may not have an `opt_prefix` symlink.
+    tab = (f.opt_prefix.exist? ? Tab.for_keg(f.opt_prefix) : Tab.dummy_tab(f))
     outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
 
     installer = FormulaInstaller.new(f, tab)
     installer.show_header = false
-    installer.install_bottle = install_bottle?(f) and tab.used_options.empty?
+    installer.install_bottle = (install_bottle?(f) and tab.used_options.empty?)
 
     oh1 "Upgrading #{f.name}"
 

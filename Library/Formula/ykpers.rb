@@ -2,8 +2,8 @@ require 'formula'
 
 class Ykpers < Formula
   homepage 'http://code.google.com/p/yubikey-personalization/'
-  url 'http://yubikey-personalization.googlecode.com/files/ykpers-1.8.2.tar.gz'
-  sha1 '916fea7b0490d1c7c083a371e0bd9adc4d3224d5'
+  url 'http://yubikey-personalization.googlecode.com/files/ykpers-1.11.1.tar.gz'
+  sha1 '454f82e3ec0bbc7224fac542cf761db71c584621'
 
   depends_on 'libyubikey'
 

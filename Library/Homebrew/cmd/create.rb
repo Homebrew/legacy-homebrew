@@ -8,9 +8,9 @@ module Homebrew extend self
 
     # Allow searching MacPorts or Fink.
     if ARGV.include? '--macports'
-      exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+      exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
-      exec "open", "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
+      exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     end
 
     raise UsageError if ARGV.named.empty?
