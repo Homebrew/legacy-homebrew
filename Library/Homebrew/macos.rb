@@ -50,10 +50,6 @@ module MacOS extend self
     elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{Xcode.prefix}/usr/bin"
-    else
-      # Since we are pretty unrelenting in finding Xcode no matter where
-      # it hides, we can now throw in the towel.
-      opoo "Could not locate developer tools. Consult `brew doctor`."
     end
   end
 
@@ -141,36 +137,37 @@ module MacOS extend self
     end
   end
 
-  def macports_or_fink_installed?
-    # See these issues for some history:
-    # http://github.com/mxcl/homebrew/issues/#issue/13
-    # http://github.com/mxcl/homebrew/issues/#issue/41
-    # http://github.com/mxcl/homebrew/issues/#issue/48
-    return false unless MACOS
+  # See these issues for some history:
+  # http://github.com/mxcl/homebrew/issues/#issue/13
+  # http://github.com/mxcl/homebrew/issues/#issue/41
+  # http://github.com/mxcl/homebrew/issues/#issue/48
+  def macports_or_fink
+    paths = []
 
-    %w[port fink].each do |ponk|
+    # First look in the path because MacPorts is relocatable and Fink
+    # may become relocatable in the future.
+    %w{port fink}.each do |ponk|
       path = which(ponk)
-      return ponk unless path.nil?
+      paths << path unless path.nil?
     end
 
-    # we do the above check because macports can be relocated and fink may be
-    # able to be relocated in the future. This following check is because if
-    # fink and macports are not in the PATH but are still installed it can
-    # *still* break the build -- because some build scripts hardcode these paths:
-    %w[/sw/bin/fink /opt/local/bin/port].each do |ponk|
-      return ponk if File.exist? ponk
+    # Look in the standard locations, because even if port or fink are
+    # not in the path they can still break builds if the build scripts
+    # have these paths baked in.
+    %w{/sw/bin/fink /opt/local/bin/port}.each do |ponk|
+      path = Pathname.new(ponk)
+      paths << path if path.exist?
     end
 
-    # finally, sometimes people make their MacPorts or Fink read-only so they
-    # can quickly test Homebrew out, but still in theory obey the README's
-    # advise to rename the root directory. This doesn't work, many build scripts
-    # error out when they try to read from these now unreadable directories.
-    %w[/sw /opt/local].each do |path|
-      path = Pathname.new(path)
-      return path if path.exist? and not path.readable?
+    # Finally, some users make their MacPorts or Fink directorie
+    # read-only in order to try out Homebrew, but this doens't work as
+    # some build scripts error out when trying to read from these now
+    # unreadable paths.
+    %w{/sw /opt/local}.map { |p| Pathname.new(p) }.each do |path|
+      paths << path if path.exist? && !path.readable?
     end
 
-    false
+    paths.uniq
   end
 
   def prefer_64_bit?
@@ -228,11 +225,24 @@ module MacOS extend self
     `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
   end
 
-  def bottles_supported?
+  def bottles_supported? raise_if_failed=false
     # We support bottles on all versions of OS X except 32-bit Snow Leopard.
-    (Hardware.is_64_bit? or not MacOS.version >= :snow_leopard) \
-      and HOMEBREW_PREFIX.to_s == '/usr/local' \
-      and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar' \
+    if Hardware.is_32_bit? and MacOS.version == :snow_leopard
+      return false unless raise_if_failed
+      raise "Bottles are not supported on 32-bit Snow Leopard."
+    end
+
+    unless HOMEBREW_PREFIX.to_s == '/usr/local'
+      return false unless raise_if_failed
+      raise "Bottles are only supported with a /usr/local prefix."
+    end
+
+    unless HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
+      return false unless raise_if_failed
+      raise "Bottles are only supported with a /usr/local/Cellar cellar."
+    end
+
+    true
   end
 end
 

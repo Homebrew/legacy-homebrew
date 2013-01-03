@@ -97,6 +97,10 @@ module HomebrewArgvExtension
     include?('--dry-run') || switch?('n')
   end
 
+  def homebrew_developer?
+    include? '--homebrew-developer' or ENV['HOMEBREW_DEVELOPER']
+  end
+
   def ignore_deps?
     include? '--ignore-dependencies'
   end
@@ -130,7 +134,7 @@ module HomebrewArgvExtension
   end
 
   def build_bottle?
-    include? '--build-bottle' and MacOS.bottles_supported?
+    include? '--build-bottle' and MacOS.bottles_supported?(true)
   end
 
   def build_from_source?

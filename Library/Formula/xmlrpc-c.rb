@@ -2,8 +2,8 @@ require 'formula'
 
 class XmlrpcC < Formula
   homepage 'http://xmlrpc-c.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-1.16.43.tgz'
-  sha1 'e7d6834c337fb8cd665fb7f9b7ba5743d309485e'
+  url 'http://downloads.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-1.16.44.tgz'
+  sha1 '181c54ac860698ed7cf4e3814c6f3c6dd46b2ce1'
 
   def patches
     # Backport patch for deprecated curl/types.h include, which is gone on 10.8

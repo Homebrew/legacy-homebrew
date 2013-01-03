@@ -25,7 +25,10 @@ class Openvpn < Formula
 
   def install
     # Build and install binary
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--enable-password-save"
     system "make install"
 
     # Adjust sample file paths

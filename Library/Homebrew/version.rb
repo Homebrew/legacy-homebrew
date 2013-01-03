@@ -128,7 +128,7 @@ class Version
     return m.captures.first unless m.nil?
 
     # e.g. https://github.com/erlang/otp/tarball/OTP_R15B01 (erlang style)
-    m = /[-_](R\d+[AB]\d*)/.match(spec.to_s)
+    m = /[-_](R\d+[AB]\d*(-\d+)?)/.match(spec.to_s)
     return m.captures.first unless m.nil?
 
     # e.g. boost_1_39_0
@@ -137,7 +137,7 @@ class Version
 
     # e.g. foobar-4.5.1-1
     # e.g. ruby-1.9.1-p243
-    m = /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/.match(stem)
+    m = /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)(?:[-._](?:bin|dist|stable|src|sources))?$/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. lame-398-1

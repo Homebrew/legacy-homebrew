@@ -2,8 +2,8 @@ require 'formula'
 
 class Ninja < Formula
   homepage 'https://github.com/martine/ninja'
-  url 'https://github.com/martine/ninja/tarball/v1.0.0'
-  sha1 '10995610f7235dcaadc55c9ecf3fee31a5a6e856'
+  url 'https://github.com/martine/ninja/tarball/v1.1.0'
+  sha1 '491b087d124c832f83a427d424b5e48f0f3803c3'
 
   def install
     system "./bootstrap.py"
