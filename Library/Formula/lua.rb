@@ -12,6 +12,7 @@ class Lua < Formula
     cause "Lua itself compiles with LLVM, but may fail when other software tries to link."
   end
 
+  option :universal
   option 'completion', 'Enables advanced readline support'
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
@@ -27,6 +28,8 @@ class Lua < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     # Apply patch-level 2
     curl "https://trac.macports.org/export/90538/trunk/dports/lang/lua/files/patch-lua-5.1.4-3", "-O"
     safe_system '/usr/bin/patch', '-d', 'src', '-i', '../patch-lua-5.1.4-3'
