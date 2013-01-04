@@ -8,5 +8,6 @@ class YoutubeDl < Formula
   def install
     system "make", "youtube-dl", "PREFIX=#{prefix}"
     bin.install 'youtube-dl'
+    man1.install 'youtube-dl.1'
   end
 end
