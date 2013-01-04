@@ -3,7 +3,7 @@ require 'formula'
 class ScalaDocs < Formula
   homepage 'http://www.scala-lang.org/'
   url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.10.0.zip'
-  md5 '699d61aff25f16a5560372e610da91ab'
+  sha1 '5bf44bd04b2b37976bde5d4a4c9bb6bcdeb10eb2'
 
   devel do
     url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.10.0-RC5.zip'
@@ -22,7 +22,7 @@ end
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
   url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.10.0.tgz'
-  md5 '7692fc5b9b5e0038842e1e256ae8f120'
+  sha1 '87f605a186aa0e4435b302fb9af575513d29249a'
 
   devel do
     url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.10.0-RC5.tgz'
