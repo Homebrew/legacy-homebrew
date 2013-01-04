@@ -5,7 +5,7 @@ class VowpalWabbit < Formula
   url 'https://github.com/JohnLangford/vowpal_wabbit/tarball/v7.1'
   sha1 'a2a8241654d79fd2c0b14a3907d98f7e87705ba8'
 
-  head 'git://github.com/JohnLangford/vowpal_wabbit.git'
+  head 'https://github.com/JohnLangford/vowpal_wabbit.git'
 
   if build.head?
     depends_on :libtool
