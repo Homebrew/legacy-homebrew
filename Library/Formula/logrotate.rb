@@ -18,6 +18,7 @@ class Logrotate < Formula
     ENV["COMPRESS_COMMAND"] = "/usr/bin/gzip"
     ENV["COMPRESS_EXT"] = ".gz"
     ENV["UNCOMPRESS_COMMAND"] = "/usr/bin/gunzip"
+    ENV["STATEFILE"] = "#{var}/lib/logrotate.status"
 
     system "make"
     sbin.install 'logrotate'
