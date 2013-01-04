@@ -8,6 +8,7 @@ class Logrotate < Formula
   depends_on 'popt'
 
   # Per MacPorts, let these variables be overridden by ENV vars.
+  # Also, use HOMEBREW suggested locations for run and log files.
   def patches
     DATA
   end
@@ -22,7 +23,42 @@ class Logrotate < Formula
     sbin.install 'logrotate'
     man8.install 'logrotate.8'
     man5.install 'logrotate.conf.5'
-    (prefix+'etc/logrotate/examples').install Dir['examples/*']
+
+    mv "examples/logrotate-default", "logrotate.conf"
+    inreplace "logrotate.conf" do |s|
+      s.gsub! "/etc/logrotate.d", "#{etc}/logrotate.d"
+    end
+
+    etc.install 'logrotate.conf' unless (etc/'logrotate.conf').exist?
+    (etc/'logrotate.d').mkpath
+  end
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{sbin}/logrotate</string>
+          <string>#{etc}/logrotate.conf</string>
+        </array>
+        <key>RunAtLoad</key>
+        <false/>
+        <key>UserName</key>
+        <string>#{`whoami`.chomp}</string>
+        <key>StartCalendarInterval</key>
+        <dict>
+          <key>Hour</key>
+          <integer>6</integer>
+          <key>Minute</key>
+          <integer>25</integer>
+        </dict>
+      </dict>
+    </plist>
+    EOS
   end
 end
 
@@ -54,3 +90,32 @@ index d65a3f3..14d1f3f 100644
  ifneq ($(STATEFILE),)
      CFLAGS += -DSTATEFILE=\"$(STATEFILE)\"
  endif
+
+diff --git a/examples/logrotate-default b/examples/logrotate-default
+index 7da6bb7..0b27baf 100644
+--- a/examples/logrotate-default
++++ b/examples/logrotate-default
+@@ -14,22 +14,5 @@ dateext
+ # uncomment this if you want your log files compressed
+ #compress
+
+-# RPM packages drop log rotation information into this directory
++# homebrew packages drop log rotation information into this directory
+ include /etc/logrotate.d
+-
+-# no packages own wtmp and btmp -- we'll rotate them here
+-/var/log/wtmp {
+-    monthly
+-    create 0664 root utmp
+-	minsize 1M
+-    rotate 1
+-}
+-
+-/var/log/btmp {
+-    missingok
+-    monthly
+-    create 0600 root utmp
+-    rotate 1
+-}
+-
+-# system-specific logs may be also be configured here.
