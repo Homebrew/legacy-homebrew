@@ -2,8 +2,8 @@ require 'formula'
 
 class ScalaDocs < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.9.2.zip'
-  sha1 'b49ef500314d968ddbd683b64628925a747f35e5'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.10.0.zip'
+  md5 '699d61aff25f16a5560372e610da91ab'
 
   devel do
     url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.10.0-RC5.zip'
@@ -21,8 +21,8 @@ end
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.2.tgz'
-  sha1 '806fc1d91bda82d6a584172d7742531386ae68fb'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.10.0.tgz'
+  md5 '7692fc5b9b5e0038842e1e256ae8f120'
 
   devel do
     url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.10.0-RC5.tgz'
