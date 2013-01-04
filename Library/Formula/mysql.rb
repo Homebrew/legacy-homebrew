@@ -30,6 +30,9 @@ class Mysql < Formula
   conflicts_with 'percona-server',
     :because => "mysql and percona-server install the same binaries."
 
+  conflicts_with 'mysql-cluster',
+    :because => "mysql and mysql-cluster install the same binaries."
+
   env :std if build.universal?
 
   fails_with :llvm do
