@@ -15,7 +15,7 @@ class Mksh < Formula
   sha1 '74450a1107664797e5fdbdeb444f18f82f0686ac'
 
   def install
-    system 'sh ./Build.sh -combine'
+    system "sh", "./Build.sh", "-c", (ENV.compiler == :clang ? "lto" : "combine")
     bin.install 'mksh'
     man1.install 'mksh.1'
   end

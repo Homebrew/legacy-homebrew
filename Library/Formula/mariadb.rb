@@ -24,6 +24,9 @@ class Mariadb < Formula
   conflicts_with 'percona-server',
     :because => "mariadb and percona-server install the same binaries."
 
+  conflicts_with 'mysql-cluster',
+    :because => "mariadb and mysql-cluster install the same binaries."
+
   env :std if build.universal?
 
   fails_with :clang do

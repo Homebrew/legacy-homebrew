@@ -437,7 +437,7 @@ class Formula
   def requirements; self.class.dependencies.requirements; end
 
   def env
-    @env ||= BuildEnvironment.new(self.class.environments)
+    @env ||= self.class.env
   end
 
   def conflicts
@@ -710,12 +710,10 @@ private
       @stable.mirror(val)
     end
 
-    def environments
-      @environments ||= []
-    end
-
     def env *settings
-      environments.concat [settings].flatten
+      @env ||= BuildEnvironment.new
+      settings.each { |s| @env << s }
+      @env
     end
 
     def dependencies

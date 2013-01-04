@@ -11,7 +11,7 @@ class Gnuplot < Formula
   option 'wx',     'Build the wxWidgets terminal using pango'
   option 'with-x', 'Build the X11 terminal'
   option 'qt',     'Build the Qt4 terminal'
-  option 'cairo',  'Build the Cario based terminals'
+  option 'cairo',  'Build the Cairo based terminals'
   option 'nolua',  'Build without the lua/TikZ terminal'
   option 'nogd',   'Build without gd support'
   option 'tests',  'Verify the build with make check (1 min)'
@@ -41,13 +41,13 @@ class Gnuplot < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
-      --with-readline=#{readline.prefix}
+      --with-readline=#{readline.opt_prefix}
       --without-latex
       --without-tutorial
     ]
 
-    args << "--with-pdf=#{pdflib.prefix}" if build.include? 'pdf'
-    args << '--with' + ((build.include? 'nogd') ? 'out-gd' : "-gd=#{gd.prefix}")
+    args << "--with-pdf=#{pdflib.opt_prefix}" if build.include? 'pdf'
+    args << '--with' + ((build.include? 'nogd') ? 'out-gd' : "-gd=#{gd.opt_prefix}")
     args << '--disable-wxwidgets' unless build.include? 'wx'
     args << '--without-cairo'     unless build.include? 'cairo'
     args << '--enable-qt'             if build.include? 'qt'
