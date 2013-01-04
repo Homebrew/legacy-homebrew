@@ -31,7 +31,7 @@ class Elasticsearch < Formula
     prefix.install Dir['*']
 
     # Remove unnecessary files
-    rm_f Dir["#{prefix}/lib/sigar/*"]
+    rm_f Dir["#{lib}/sigar/*"]
     if build.head?
       rm_rf "#{prefix}/pom.xml"
       rm_rf "#{prefix}/src/"
@@ -61,7 +61,7 @@ class Elasticsearch < Formula
 
     inreplace "#{bin}/plugin" do |s|
       # Add the proper ES_CLASSPATH configuration
-      s.sub!  /SCRIPT="\$0"/, %Q|SCRIPT="$0"\nES_CLASSPATH=#{prefix}/libexec|
+      s.sub!  /SCRIPT="\$0"/, %Q|SCRIPT="$0"\nES_CLASSPATH=#{libexec}|
       # Replace paths to use libexec instead of lib
       s.gsub! /\$ES_HOME\/lib\//, "$ES_CLASSPATH/"
     end
