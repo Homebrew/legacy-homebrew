@@ -14,8 +14,10 @@ class Cdrtools < Formula
     system "smake", "INS_BASE=#{prefix}", "INS_RBASE=#{prefix}", "install"
     # cdrtools tries to install some generic smake headers, libraries and
     # manpages, which conflict with the copies installed by smake itself
-    (include/"schily/i386-darwin-cc").rmtree
-    (lib/"libschily.a").unlink
+    (include/"schily").rmtree
+    %w[libschily.a libdeflt.a libfind.a].each do |file|
+      (lib/file).unlink
+    end
     (lib/"profiled").rmtree
     man5.rmtree
   end
