@@ -13,7 +13,6 @@ class Ngircd < Formula
                           "--prefix=#{prefix}",
                           "--with-ident",
                           "--with-openssl",
-                          "--with-tcp-wrappers",
                           "--enable-ipv6"
     system "make install"
   end
