@@ -9,6 +9,9 @@ class Moreutils < Formula
   conflicts_with 'parallel',
     :because => "both install a 'parallel' executable."
 
+  conflicts_with 'task-spooler',
+    :because => "both install a 'ts' executable."
+
   def install
     # Building the man pages requires DocBook, so we skip them.
     scripts = %w[chronic combine ts vidir vipe zrun]

@@ -19,8 +19,9 @@ end
 
 class Coq < Formula
   homepage 'http://coq.inria.fr/'
-  url 'http://coq.inria.fr/distrib/V8.4/files/coq-8.4.tar.gz'
-  sha1 '2987aa418dd96a0df7284afe296293cb28814ef5'
+  url 'http://coq.inria.fr/distrib/V8.4pl1/files/coq-8.4pl1.tar.gz'
+  version '8.4pl1'
+  sha1 '23d403dbe9e410a99c584d0210dc527950051679'
 
   head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
 
