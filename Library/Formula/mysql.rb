@@ -2,14 +2,14 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.28.tar.gz/from/http://cdn.mysql.com/'
-  version '5.5.28'
-  sha1 '7b029e61db68866eeea0bec40d47fcdced30dd36'
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.29.tar.gz/from/http://cdn.mysql.com/'
+  version '5.5.29'
+  sha1 '40e26b193b6ece86ce97896c0c9c524d479e37be'
 
   bottle do
-    sha1 'a4389fb4c6e77d43b166e29ce1ebf9d9e193bb11' => :mountainlion
-    sha1 '9f0da89543cd96d6352ac6ede0cb2dfd156ea7c1' => :lion
-    sha1 '440103cef7733865f8ceed83a86242648b357ec2' => :snowleopard
+    sha1 '3c5b57df466eb538db58654c5f046ddf7bc675e9' => :mountainlion
+    sha1 '6595eb3f79224193a17159934220bed94fbc2df4' => :lion
+    sha1 '57992bbcc2820ffe41ae9317da81aba7480b0268' => :snowleopard
   end
 
   depends_on 'cmake' => :build
@@ -29,6 +29,9 @@ class Mysql < Formula
 
   conflicts_with 'percona-server',
     :because => "mysql and percona-server install the same binaries."
+
+  conflicts_with 'mysql-cluster',
+    :because => "mysql and mysql-cluster install the same binaries."
 
   env :std if build.universal?
 

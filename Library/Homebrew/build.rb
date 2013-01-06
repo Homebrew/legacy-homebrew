@@ -57,9 +57,8 @@ end
 def post_superenv_hacks f
   # Only allow Homebrew-approved directories into the PATH, unless
   # a formula opts-in to allowing the user's path.
-  if f.env.userpaths?
-    paths = ORIGINAL_PATHS.map{|pn| pn.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
-    ENV['PATH'] = "#{ENV['PATH']}:#{paths.join(':')}"
+  if f.env.userpaths? or f.recursive_requirements.any? { |rq| rq.env.userpaths? }
+    ENV.userpaths!
   end
 end
 

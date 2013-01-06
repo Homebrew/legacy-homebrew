@@ -2,12 +2,15 @@ require 'formula'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp.postgresql.org/pub/source/v9.2.1/postgresql-9.2.1.tar.bz2'
-  sha1 'cea9601b3acd1484fd98441b49a15ea1c42057ec'
+  url 'http://ftp.postgresql.org/pub/source/v9.2.2/postgresql-9.2.2.tar.bz2'
+  sha1 'edadf238bcf51bd6e92dfe2f8afb3665510297a6'
 
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version == :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
+
+  conflicts_with 'postgres-xc',
+    :because => 'postgresql and postgres-xc install the same binaries.'
 
   option '32-bit'
   option 'without-ossp-uuid', 'Build without OSSP uuid'
@@ -111,24 +114,6 @@ class Postgresql < Formula
 
     To migrate existing data from a previous major version (pre-9.2) of PostgreSQL, see:
       http://www.postgresql.org/docs/9.2/static/upgrading.html
-
-    # Start/Stop PostgreSQL
-
-    If this is your first install, automatically load on login with:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Or start manually with:
-      pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
-
-    And stop with:
-      pg_ctl -D #{var}/postgres stop -s -m fast
 
     # Loading Extensions
 

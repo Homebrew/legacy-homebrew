@@ -1,19 +1,19 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.8.0.1.tar.gz'
-  sha1 'cb26eea4ebe53b41cbc5c5f430499f7d76605414'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.8.1.tar.gz'
+  sha1 'a9ab9de3fa1781bb5009f5a215374dfc694feb30'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.0.1.tar.gz'
-  sha1 '6c0e64d53a8543447f595e3bac4966ba9257e783'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.1.tar.gz'
+  sha1 'a256fc56c89dc3c8d58b81a2c02dc89299f1f29b'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.0.1.tar.gz'
-  sha1 '4e7492f7558f3ba2a450c43efa7de3b0b1adc6c1'
+  url 'http://git-core.googlecode.com/files/git-1.8.1.tar.gz'
+  sha1 'ac8dced9c3232c0ec6a88d04600a4d0eaf2ba4e3'
 
   head 'https://github.com/git/git.git'
 

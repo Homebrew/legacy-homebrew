@@ -1,6 +1,7 @@
 require 'formula'
 require 'tab'
 require 'keg'
+require 'caveats'
 
 module Homebrew extend self
   def info
@@ -95,10 +96,11 @@ module Homebrew extend self
 
     if f.rack.directory?
       kegs = f.rack.children
+      kegs.reject! {|keg| keg.basename.to_s == '.DS_Store' }
+      kegs = kegs.map {|keg| Keg.new(keg) }.sort_by {|keg| keg.version }
       kegs.each do |keg|
-        next if keg.basename.to_s == '.DS_Store'
         print "#{keg} (#{keg.abv})"
-        print " *" if Keg.new(keg).linked?
+        print " *" if keg.linked?
         puts
         tab = Tab.for_keg keg
         unless tab.used_options.empty?
@@ -118,10 +120,7 @@ module Homebrew extend self
       Homebrew.dump_options_for_formula f
     end
 
-    unless f.caveats.to_s.strip.empty?
-      ohai "Caveats"
-      puts f.caveats
-    end
+    Caveats.print f
 
   rescue FormulaUnavailableError
     # check for DIY installation

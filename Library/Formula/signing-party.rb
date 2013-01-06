@@ -47,6 +47,8 @@ class SigningParty < Formula
       system "make"
       man1.install Dir['*.1']
       bin.install 'caff'
+      bin.install 'pgp-clean'
+      bin.install 'pgp-fixkey'
       (doc+'caff').install Dir['README*', 'caffrc.sample']
     end
 
