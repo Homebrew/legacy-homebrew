@@ -86,8 +86,6 @@ class Tesseract < Formula
 
   option "all-languages", "Install recognition data for all languages"
 
-  depends_on :automake
-  depends_on :libtool
   depends_on 'libtiff'
   depends_on 'leptonica'
 
@@ -97,8 +95,6 @@ class Tesseract < Formula
   end
 
   def install
-    system "/bin/sh autogen.sh"
-
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
     # which doesn't work for non-default homebrew location
     ENV['LIBLEPT_HEADERSDIR'] = HOMEBREW_PREFIX/"include"
