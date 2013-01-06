@@ -97,6 +97,9 @@ class Tesseract < Formula
   end
 
   def install
+    inreplace "configure.ac", "AM_CONFIG_HEADER", "AC_CONFIG_HEADERS"
+    inreplace "autogen.sh", "libtoolize", "glibtoolize"
+
     system "/bin/sh autogen.sh"
 
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
