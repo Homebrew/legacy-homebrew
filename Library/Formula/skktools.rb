@@ -8,12 +8,17 @@ class Skktools < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
 
+  def patches
+    # fixing compile errors with clang
+    "https://gist.github.com/raw/4473844/skkdic-expr.c.patch"
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}", "--with-skkdic-expr2"
 
     # replace Makefile Target
     inreplace 'Makefile' do |s|
-      s.gsub! 'TARGETS = skkdic-expr$(EXEEXT)', 'TARGETS = skkdic-expr$(EXEEXT) skkdic-expr2$(EXEEXT)'
+      s.change_make_var! "CC", ENV.cc
     end
 
     system "make"
