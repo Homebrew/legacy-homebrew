@@ -23,12 +23,9 @@ class Vim < Formula
     ENV['LUA_PREFIX'] = HOMEBREW_PREFIX
 
     language_opts = LANGUAGES.map do |language|
-      with_option    = "with-#{language}"
-      without_option = "without-#{language}"
-
-      if DEFAULT_LANGUAGES.include? language and !build.include? without_option
+      if DEFAULT_LANGUAGES.include? language and !build.include? "without-#{language}"
         "--enable-#{language}interp"
-      elsif build.include? with_option
+      elsif build.include? "with-#{language}"
         "--enable-#{language}interp"
       end
     end.compact

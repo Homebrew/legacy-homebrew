@@ -6,13 +6,11 @@ class Emacs < Formula
   mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.2.tar.bz2'
   sha1 '38e8fbc9573b70a123358b155cf55c274b5a56cf'
 
-  conflicts_with 'ctags',
-    :because => 'Both emacs and ctags install a `ctags` executable.'
-
   option "cocoa", "Build a Cocoa version of emacs"
   option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
   option "with-x", "Include X11 support"
   option "use-git-head", "Use Savannah git mirror for HEAD builds"
+  option "keep-ctags", "Don't remove the ctags executable that emacs provides"
 
   if build.include? "use-git-head"
     head 'http://git.sv.gnu.org/r/emacs.git'
@@ -65,6 +63,13 @@ class Emacs < Formula
       system "make install"
       prefix.install "nextstep/Emacs.app"
 
+      # Follow MacPorts and don't install ctags from emacs. This allows vim
+      # and emacs and ctags to play together without violence.
+      unless build.include? "keep-ctags"
+        (bin/"ctags").unlink
+        (share/man/man1/"ctags.1.gz").unlink
+      end
+
       # Replace the symlink with one that avoids starting Cocoa.
       (bin/"emacs").unlink # Kill the existing symlink
       (bin/"emacs").write <<-EOS.undent
@@ -87,6 +92,13 @@ class Emacs < Formula
       system "./configure", *args
       system "make"
       system "make install"
+
+      # Follow MacPorts and don't install ctags from emacs. This allows vim
+      # and emacs and ctags to play together without violence.
+      unless build.include? "keep-ctags"
+        (bin/"ctags").unlink
+        (share/man/man1/"ctags.1.gz").unlink
+      end
     end
   end
 
@@ -118,6 +130,12 @@ class Emacs < Formula
       http://git.savannah.gnu.org/cgit/emacs.git for the mirror's status. The Emacs
       devs do not provide support for the git mirror, and they might reject bug
       reports filed with git version information. Use it at your own risk.
+
+      Emacs creates an executable `ctags` that stomps on exuberant-ctags. In
+      order to prevent that, we remove `ctags` and its manpage from the emacs
+      build before linking. (Add the flag "--keep-ctags" to keep it.) You can
+      install exuberant-ctags via brew with `brew install ctags`.
+      (exuberant-ctags can provide both vim-style and emacs-style tags.)
     EOS
 
     return s
