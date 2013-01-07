@@ -14,6 +14,6 @@ class GpawSetups < Formula
   end
 
   def test
-    system "true"
+    system "ls #{share}/gpaw-setups"
   end
 end
