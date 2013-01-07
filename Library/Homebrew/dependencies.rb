@@ -85,11 +85,28 @@ private
 
 end
 
+class Dependencies
+  include Enumerable
 
-# A list of formula dependencies.
-class Dependencies < Array
+  def initialize(*args)
+    @deps = Array.new(*args)
+  end
+
+  def each(*args, &block)
+    @deps.each(*args, &block)
+  end
+
   def <<(o)
-    super(o) unless include? o
+    @deps << o unless @deps.include? o
+    self
+  end
+
+  def empty?
+    @deps.empty?
+  end
+
+  def *(arg)
+    @deps * arg
   end
 end
 
