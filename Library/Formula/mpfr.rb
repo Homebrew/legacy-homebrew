@@ -2,9 +2,10 @@ require 'formula'
 
 class Mpfr < Formula
   homepage 'http://www.mpfr.org/'
-  url 'http://www.mpfr.org/mpfr-3.1.1/mpfr-3.1.1.tar.bz2'
+  # Upstream is down a lot, so use the GNU mirror + Gist for patches
+  url 'http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.1.tar.bz2'
   version '3.1.1-p2'
-  sha256 '7b66c3f13dc8385f08264c805853f3e1a8eedab8071d582f3e661971c9acd5fd'
+  sha1 'f632d43943ff9f13c184fa13b9a6e8c7f420f4dd'
 
   depends_on 'gmp'
 
@@ -15,7 +16,7 @@ class Mpfr < Formula
   env :std
 
   def patches
-    "http://www.mpfr.org/mpfr-current/allpatches"
+    "https://gist.github.com/raw/4472199/42c0b207037a133527083d12adc9028b4da429ee/gistfile1.txt"
   end
 
   def install
