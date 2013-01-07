@@ -85,7 +85,7 @@ class Git < Formula
     EOS
   end
 
-  def test
+  test do
     HOMEBREW_REPOSITORY.cd do
       `#{bin}/git ls-files -- bin`.chomp == 'bin/brew'
     end
