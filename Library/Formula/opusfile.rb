@@ -11,10 +11,6 @@ class Opusfile < Formula
   depends_on 'opus'
   depends_on 'libogg'
 
-  # A naive build works against Apple openssl, but brew gets
-  # unresolved symbol warnings. I couldn't figure out why.
-  # depends_on 'openssl'
-
   def install
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
