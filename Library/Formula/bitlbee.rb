@@ -9,6 +9,7 @@ class Bitlbee < Formula
   option 'with-otr', "Build with otr (off the record) support"
 
   depends_on 'glib'
+  depends_on 'pkg-config' => :build
   depends_on 'gnutls'
   depends_on 'libgcrypt'
   depends_on 'libpurple' => :optional if build.include? 'purple'
