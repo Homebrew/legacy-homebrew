@@ -202,7 +202,7 @@ class Test
     bottle_filename = bottle_filename(formula_object, bottle_version)
     test "brew uninstall #{formula}"
     test "brew install #{bottle_filename}"
-    test "brew test #{formula}" if defined? formula_object.test
+    test "brew test #{formula}" if formula_object.test_defined?
     test "brew uninstall #{formula}"
     test "brew uninstall #{dependencies}" unless dependencies.empty?
   end
