@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "December 2012" "Homebrew" "brew"
+.TH "BREW" "1" "January 2013" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -412,6 +412,14 @@ Homebrew can install formulae via URL, e\.g\. \fBhttps://raw\.github\.com/mxcl/h
 .SH "ENVIRONMENT"
 .
 .TP
+BROWSER
+If set, and \fBHOMEBREW_BROWSER\fR is not, use \fBBROWSER\fR as the web browser when opening project homepages\.
+.
+.TP
+EDITOR
+If set, and \fBHOMEBREW_EDITOR\fR is not, use \fBEDITOR\fR as the text editor\.
+.
+.TP
 GIT
 When using Git, Homebrew will use \fBGIT\fR if set, a Homebrew\-built Git if installed, or the system\-provided binary\.
 .
@@ -419,8 +427,8 @@ When using Git, Homebrew will use \fBGIT\fR if set, a Homebrew\-built Git if ins
 Set this to force Homebrew to use a particular git binary\.
 .
 .TP
-EDITOR
-If set, and \fBHOMEBREW_EDITOR\fR is not, use \fBEDITOR\fR as the text editor\.
+HOMEBREW_BROWSER
+If set, uses this setting as the browser when opening project homepages, instead of the OS default browser\.
 .
 .TP
 HOMEBREW_BUILD_FROM_SOURCE
@@ -428,7 +436,7 @@ If set, instructs Homebrew to compile from source even when a formula provides a
 .
 .TP
 HOMEBREW_CACHE
-If set, instructs Homebrew to use the give directory as the download cache\. Otherwise, \fB~/Library/Caches/Homebrew\fR is used\.
+If set, instructs Homebrew to use the given directory as the download cache\. Otherwise, \fB~/Library/Caches/Homebrew\fR is used\.
 .
 .IP
 This can be used to keep downloads out of your home directory, if you have it mounted on an SSD or are using FileVault for instance\.
@@ -439,7 +447,7 @@ If set, Homebrew will pass \fB\-\-verbose\fR when invoking \fBcurl\fR(1)\.
 .
 .TP
 HOMEBREW_DEBUG
-If set, instructs Homebrew to always assume \fB\-\-debug\fR when running commands\.
+If set, Homebrew always assumes \fB\-\-debug\fR when running commands\.
 .
 .TP
 HOMEBREW_DEBUG_INSTALL
@@ -490,22 +498,19 @@ This issue typically occurs when using FileVault or custom SSD configurations\.
 .
 .TP
 HOMEBREW_USE_CLANG
-If set, instructs Homebrew to compile using clang\.
+If set, forces Homebrew to compile using clang\.
 .
 .TP
 HOMEBREW_USE_GCC
-If set, instructs Homebrew to compile using gcc\.
+If set, forces Homebrew to compile using gcc\.
 .
 .TP
 HOMEBREW_USE_LLVM
-If set, instructs Homebrew to compile using LLVM\.
-.
-.IP
-\fINOTE\fR: Not all formulae build correctly with LLVM\.
+If set, forces Homebrew to compile using LLVM\.
 .
 .TP
 HOMEBREW_VERBOSE
-If set, instructs Homebrew to always assume \fB\-\-verbose\fR when running commands\.
+If set, Homebrew always assumes \fB\-\-verbose\fR when running commands\.
 .
 .SH "USING HOMEBREW BEHIND A PROXY"
 Homebrew uses several commands for downloading files (e\.g\. curl, git, svn)\. Many of these tools can download via a proxy\. It\'s common for these tools to read proxy parameters from environment variables\.
