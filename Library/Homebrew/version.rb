@@ -1,8 +1,6 @@
 class VersionElement
   include Comparable
 
-  attr_reader :elem
-
   def initialize elem
     elem = elem.to_s.downcase
     @elem = case elem
@@ -31,6 +29,10 @@ class VersionElement
   def numeric?
     @elem.is_a? Numeric
   end
+
+  protected
+
+  attr_reader :elem
 end
 
 class Version
@@ -43,10 +45,6 @@ class Version
 
   def detected_from_url?
     @detected_from_url
-  end
-
-  def to_a
-    @array ||= @version.scan(/\d+|[a-zA-Z]+/).map { |e| VersionElement.new(e) }
   end
 
   def head?
@@ -96,6 +94,12 @@ class Version
   def self.parse spec
     version = _parse(spec)
     Version.new(version, true) unless version.nil?
+  end
+
+  protected
+
+  def to_a
+    @array ||= @version.scan(/\d+|[a-zA-Z]+/).map { |e| VersionElement.new(e) }
   end
 
   private
