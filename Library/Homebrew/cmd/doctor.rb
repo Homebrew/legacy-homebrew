@@ -202,7 +202,7 @@ end
 def check_for_broken_symlinks
   require 'keg'
   broken_symlinks = []
-  Keg::PRUNEABLE_DIRECTORIES.map { |d| HOMEBREW_PREFIX/d }.each do |d|
+  Keg::PRUNEABLE_DIRECTORIES.each do |d|
     next unless d.directory?
     d.find do |pn|
       broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/ and not pn.exist?
