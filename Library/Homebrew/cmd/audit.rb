@@ -404,6 +404,10 @@ class FormulaAuditor
     if text =~ /skip_clean\s+:all/
       problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
     end
+
+    if text =~ /[^,]\n^(  ){0,} [^ ]/
+      problem "Indents should be 2 spaces"
+    end
   end
 
   def audit
