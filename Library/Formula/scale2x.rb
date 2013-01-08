@@ -1,7 +1,7 @@
 require 'formula'
 
 class Scale2x < Formula
-  homepage '//http://scale2x.sourceforge.net'
+  homepage 'http://scale2x.sourceforge.net'
   url 'http://sourceforge.net/projects/scale2x/files/scale2x/2.4/scale2x-2.4.tar.gz'
   sha1 '30bbd674dcdf134a58b34e75f87ed05bd716d484'
 
