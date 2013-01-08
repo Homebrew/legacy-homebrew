@@ -2,8 +2,8 @@ require 'formula'
 
 class Klavaro < Formula
   homepage 'http://klavaro.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/klavaro/klavaro-1.9.5.tar.bz2'
-  sha1 'd9d0bf226ee6f622f674fcc8a526528a31385bf6'
+  url 'http://downloads.sourceforge.net/project/klavaro/klavaro-1.9.6.tar.bz2'
+  sha1 '781e0d79b4e805d648085ada46b82dae89093eaf'
 
   depends_on 'pkg-config' => :build
   depends_on 'gtk+'
