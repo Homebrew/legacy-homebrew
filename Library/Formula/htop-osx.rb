@@ -13,6 +13,7 @@ class HtopOsx < Formula
     # Otherwise htop will segfault when resizing the terminal
     ENV.no_optimization if ENV.compiler == :clang
 
+    (buildpath/'m4').mkpath # or autogen fails
     system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install", "DEFAULT_INCLUDES='-iquote .'"
