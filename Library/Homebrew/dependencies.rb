@@ -108,6 +108,10 @@ class Dependencies
   def *(arg)
     @deps * arg
   end
+
+  def to_ary
+    @deps
+  end
 end
 
 module Dependable
