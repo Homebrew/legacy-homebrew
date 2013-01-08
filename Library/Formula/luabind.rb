@@ -3,7 +3,7 @@ require 'formula'
 class Luabind < Formula
   homepage 'http://www.rasterbar.com/products/luabind.html'
   url 'https://github.com/luabind/luabind/zipball/v0.9.1'
-  sha1 '37a6b8b74444545dd0c0fcdf8a6746128b40d7a1'
+  sha1 '8b073335a8e6e19acc2bdb7d5b22dc9cc36a3090'
 
   depends_on 'lua'
   depends_on 'boost'
@@ -30,6 +30,7 @@ class Luabind < Formula
     elsif ENV.compiler == :gcc
       args << "--toolset=darwin"
     end
+    args << "--prefix=#{prefix}" 
     system "bjam", *args
   end
 end
