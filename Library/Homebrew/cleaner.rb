@@ -26,7 +26,13 @@ class Cleaner
     # We want post-order traversal, so use a stack.
     paths = []
     f.prefix.find do |path|
-      paths << path if path.directory?
+      if path.directory?
+        if f.skip_clean? path
+          Find.prune
+        else
+          paths << path
+        end
+      end
     end
 
     paths.each do |d|
