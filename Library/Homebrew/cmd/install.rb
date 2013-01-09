@@ -78,16 +78,20 @@ module Homebrew extend self
     unless formulae.empty?
       perform_preinstall_checks
       formulae.each do |f|
-        begin
-          fi = FormulaInstaller.new(f)
-          fi.install
-          fi.caveats
-          fi.finish
-        rescue CannotInstallFormulaError => e
-          ofail e.message
-        end
+        install_formula(f)
       end
     end
   end
 
+  def install_formula f
+    fi = FormulaInstaller.new(f)
+    fi.install
+    fi.caveats
+    fi.finish
+  rescue FormulaInstallationAlreadyAttemptedError
+    # We already attempted to install f as part of the dependency tree of
+    # another formula. In that case, don't generate an error, just move on.
+  rescue CannotInstallFormulaError => e
+    ofail e.message
+  end
 end
