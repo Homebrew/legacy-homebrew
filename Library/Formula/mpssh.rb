@@ -2,8 +2,8 @@ require 'formula'
 
 class Mpssh < Formula
   homepage 'https://github.com/ndenev/mpssh'
-  url 'http://mpssh.totalterror.net/mpssh-1.3.1.tar.gz'
-  sha1 '4d80a07c6057372a98095f6c788efcfe9c3b030b'
+  url 'https://github.com/ndenev/mpssh/archive/1.3.1.tar.gz'
+  sha1 'c9ae08c1449962a0585e9cbf5e6174581912a053'
 
   def install
     system "make", "CC=#{ENV.cc}"
