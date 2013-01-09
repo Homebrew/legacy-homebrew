@@ -6,7 +6,7 @@ class Lcov < Formula
   sha1 '70fb361bcfd7dd81ea30731d6fe532ddea56f283'
 
   def install
-    %w(bin/gendesc bin/genhtml bin/geninfo bin/genpng bin/lcov).each do |file|
+    %w(bin/genhtml bin/geninfo bin/lcov).each do |file|
       inreplace file, '/etc/lcovrc', "#{prefix}/etc/lcovrc"
     end
     system "make", "PREFIX=#{prefix}", "install"
