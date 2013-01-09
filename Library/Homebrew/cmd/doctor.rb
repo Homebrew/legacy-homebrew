@@ -890,8 +890,10 @@ end
 
 def check_for_bad_python_symlink
   return unless which "python"
-  # Indeed Python --version outputs to stderr (WTF?)
-  `python --version 2>&1` =~ /Python (\d+)\./
+  # Indeed Python -V outputs to stderr (WTF?)
+  `python -V 2>&1` =~ /Python (\d+)\./
+  # This won't be the right warning if we matched nothing at all
+  return if $1.nil?
   unless $1 == "2" then <<-EOS.undent
     python is symlinked to python#$1
     This will confuse build scripts and in general lead to subtle breakage.
