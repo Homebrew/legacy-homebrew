@@ -15,9 +15,9 @@ class Formula
   attr_reader :name, :path, :homepage, :downloader
   attr_reader :stable, :bottle, :devel, :head, :active_spec
 
-  # The build folder, usually in /tmp.
-  # Will only be non-nil during the stage method.
-  attr_reader :buildpath
+  # The current working directory during builds and tests.
+  # Will only be non-nil inside #stage and #test.
+  attr_reader :buildpath, :testpath
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
@@ -26,6 +26,7 @@ class Formula
     set_instance_variable :bottle
     set_instance_variable :devel
     set_instance_variable :head
+    set_instance_variable :test
 
     @name = name
     validate_variable :name
@@ -357,7 +358,7 @@ class Formula
       install_type = :from_url
     elsif name.match bottle_regex
       bottle_filename = Pathname(name).realpath
-      name = name.split('-').first
+      name = bottle_filename.basename.to_s.rpartition('-').first
       path = Formula.path(name)
       install_type = :from_local_bottle
     else
@@ -437,7 +438,7 @@ class Formula
   def requirements; self.class.dependencies.requirements; end
 
   def env
-    @env ||= BuildEnvironment.new(self.class.environments)
+    @env ||= self.class.env
   end
 
   def conflicts
@@ -586,6 +587,20 @@ public
     @active_spec.verify_download_integrity(fn)
   end
 
+  def test
+    ret = nil
+    mktemp do
+      @testpath = Pathname.pwd
+      ret = instance_eval(&@test)
+      @testpath = nil
+    end
+    ret
+  end
+
+  def test_defined?
+    not @test.nil?
+  end
+
 private
 
   def stage
@@ -632,7 +647,12 @@ private
   end
 
   def self.method_added method
-    raise 'You cannot override Formula.brew' if method == :brew
+    case method
+    when :brew
+      raise "You cannot override Formula#brew"
+    when :test
+      @test = method
+    end
   end
 
   class << self
@@ -710,12 +730,10 @@ private
       @stable.mirror(val)
     end
 
-    def environments
-      @environments ||= []
-    end
-
     def env *settings
-      environments.concat [settings].flatten
+      @env ||= BuildEnvironment.new
+      settings.each { |s| @env << s }
+      @env
     end
 
     def dependencies
@@ -778,6 +796,11 @@ private
       else
         CompilerFailure.new(compiler)
       end
+    end
+
+    def test &block
+      return @test unless block_given?
+      @test = block
     end
   end
 end

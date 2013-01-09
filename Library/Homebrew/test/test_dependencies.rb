@@ -30,7 +30,7 @@ class DependencyTests < Test::Unit::TestCase
   def test_no_duplicate_dependencies
     @d.add 'foo'
     @d.add 'foo' => :build
-    assert_equal 1, @d.deps.length
+    assert_equal 1, @d.deps.count
     assert_empty @d.find_dependency('foo').tags
   end
 end
