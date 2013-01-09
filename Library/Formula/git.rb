@@ -67,6 +67,7 @@ class Git < Formula
 
     # install the completion scripts from 'contrib' first
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
+    (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.zsh'
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-prompt.sh'
 
     (share+'zsh/site-functions').install 'contrib/completion/git-completion.zsh' => '_git'
