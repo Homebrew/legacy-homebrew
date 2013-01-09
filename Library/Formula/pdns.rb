@@ -1,17 +1,17 @@
 require 'formula'
 
-class Powerdnsauth< Formula
-  homepage "http://wiki.powerdns.com"
-  url "http://downloads.powerdns.com/releases/pdns-3.1.tar.gz"
-  sha256 "1400f7bd659207c0b1f4b8296092e559a7b7bf6a2434951970217d9af06922a1"
+class Pdns < Formula
+  homepage 'http://wiki.powerdns.com'
+  url 'http://downloads.powerdns.com/releases/pdns-3.1.tar.gz'
+  sha256 '1400f7bd659207c0b1f4b8296092e559a7b7bf6a2434951970217d9af06922a1'
 
-  depends_on "pkg-config" => :build
-  depends_on "boost"
-  depends_on "lua"
-  depends_on "sqlite"
-  depends_on :postgresql if build.include? "pgsql"
+  option 'pgsql', 'Enable the PostgreSQL backend'
 
-  option "pgsql", "Enable the PostgreSQL backend"
+  depends_on 'pkg-config' => :build
+  depends_on 'boost'
+  depends_on 'lua'
+  depends_on 'sqlite'
+  depends_on :postgresql if build.include? 'pgsql'
 
   def patches
     # Patches from @justinclift:
