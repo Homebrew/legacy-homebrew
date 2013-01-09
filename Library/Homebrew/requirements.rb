@@ -124,6 +124,11 @@ class MPIDependency < Requirement
   end
 
   def satisfied?
+    # we have to assure the ENV is (almost) as during the build
+    orig_PATH = ENV['PATH']
+    require 'superenv'
+    ENV.setup_build_environment
+    ENV.userpaths!
     @lang_list.each do |lang|
       case lang
       when :cc, :cxx, :f90, :f77
@@ -133,6 +138,9 @@ class MPIDependency < Requirement
         @unknown_langs << lang.to_s
       end
     end
+
+    # Restore the original paths
+    ENV['PATH'] = orig_PATH
 
     @unknown_langs.empty? and @non_functional.empty?
   end
