@@ -24,6 +24,10 @@ class FormulaInstaller
   end
 
   def check_install_sanity
+    @@attempted ||= Set.new
+    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
+    @@attempted << f
+
     if f.installed?
       msg = "#{f}-#{f.installed_version} already installed"
       msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
@@ -111,10 +115,6 @@ class FormulaInstaller
     end
 
     oh1 "Installing #{f}" if show_header
-
-    @@attempted ||= Set.new
-    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
-    @@attempted << f
 
     if install_bottle
       pour
