@@ -15,7 +15,7 @@ class Z < Formula
   def caveats; <<-EOS.undent
     For Bash or Zsh, put something like this in your $HOME/.bashrc or $HOME/.zshrc:
 
-     . `brew --prefix`/etc/profile.d/z.sh
+     . `brew --prefix z`/etc/profile.d/z.sh
 
      ZSH USERS BACKWARD COMPATIBILITY WARNING:
      z now handles 'precmd' set up for zsh. z (<=1.3) users using zsh should
@@ -28,7 +28,7 @@ class Z < Formula
          _z --add "$(pwd -P)"
         }
      should now just be:
-        . `brew --prefix`/etc/profile.d/z.sh
+        . `brew --prefix z`/etc/profile.d/z.sh
     EOS
   end
 end
