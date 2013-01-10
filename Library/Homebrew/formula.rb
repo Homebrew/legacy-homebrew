@@ -800,7 +800,11 @@ private
 
     def test &block
       return @test unless block_given?
-      @test = block
+      # If this formula is the executing script, we are performing an
+      # install. Since it may be marshalled back to the main process as
+      # part of an exception, don't store this Proc because Procs can't
+      # be marshalled.
+      @test = block unless $0 != HOMEBREW_BREW_FILE.to_s
     end
   end
 end
