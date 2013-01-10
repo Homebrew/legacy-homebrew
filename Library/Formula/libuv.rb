@@ -7,7 +7,11 @@ class Libuv < Formula
 
   head 'https://github.com/joyent/libuv.git', :branch => 'master'
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
+
     system 'make', 'libuv.dylib'
 
     include.install Dir['include/*']
