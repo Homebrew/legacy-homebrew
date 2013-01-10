@@ -26,7 +26,6 @@ class Formula
     set_instance_variable :bottle
     set_instance_variable :devel
     set_instance_variable :head
-    set_instance_variable :test
 
     @name = name
     validate_variable :name
@@ -591,14 +590,14 @@ public
     ret = nil
     mktemp do
       @testpath = Pathname.pwd
-      ret = instance_eval(&@test)
+      ret = instance_eval(&self.class.test)
       @testpath = nil
     end
     ret
   end
 
   def test_defined?
-    not @test.nil?
+    not self.class.instance_variable_get(:@test_defined).nil?
   end
 
 private
@@ -651,7 +650,7 @@ private
     when :brew
       raise "You cannot override Formula#brew"
     when :test
-      @test = method
+      @test_defined = true
     end
   end
 
@@ -800,6 +799,7 @@ private
 
     def test &block
       return @test unless block_given?
+      @test_defined = true
       @test = block
     end
   end
