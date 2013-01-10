@@ -2,8 +2,8 @@ require 'formula'
 
 class Jenkins < Formula
   homepage 'http://jenkins-ci.org'
-  url 'http://mirrors.jenkins-ci.org/war/1.496/jenkins.war'
-  sha1 '733b69a899150da7fd39c4135dfd700e2b9bc545'
+  url 'http://mirrors.jenkins-ci.org/war/1.498/jenkins.war'
+  sha1 '04e5e28d86154aec56a248bef5f57414b53875fd'
   head 'https://github.com/jenkinsci/jenkins.git'
 
   def install
