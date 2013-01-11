@@ -1,5 +1,20 @@
 require 'formula'
 
+class TkCheck < Requirement
+  def message; <<-EOS.undent
+    Tk.framework was detected in /Library/Frameworks
+    This can cause Python builds to fail. See:
+      https://github.com/mxcl/homebrew/issues/11602
+    EOS
+  end
+
+  def fatal?; false; end
+
+  def satisfied?
+    not File.exist? '/Library/Frameworks/Tk.framework'
+  end
+end
+
 class Distribute < Formula
   url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.34.tar.gz'
   sha1 'b6f9cfbaf3e63833b71009812a613be13e68f5de'
@@ -15,20 +30,20 @@ class Python < Formula
   url 'http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2'
   sha1 '842c4e2aff3f016feea3c6e992c7fa96e49c9aa0'
 
-  option :universal
-  option 'quicktest', 'Run `make quicktest` after the build'
-  option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
-  option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
-  option 'with-poll', 'Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)'
-  # --with-dtrace relies on CLT as dtrace hard-codes paths to /usr
-  option 'with-dtrace', 'Experimental DTrace support (http://bugs.python.org/issue13405)' if MacOS::CLT.installed?
-
+  depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
   depends_on 'sqlite' => :recommended
   depends_on 'gdbm' => :recommended
   depends_on 'openssl' if build.include? 'with-brewed-openssl'
-  depends_on 'homebrew/dupes/tk' if build.include? 'with-brewed-tk'
+
+  option :universal
+  option 'quicktest', 'Run `make quicktest` after the build'
+  option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
+  option 'with-poll', 'Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)'
+
+  # --with-dtrace relies on CLT as dtrace hard-codes paths to /usr
+  option 'with-dtrace', 'Experimental DTrace support (http://bugs.python.org/issue13405)' if MacOS::CLT.installed?
 
   def patches
     p = []
@@ -36,8 +51,7 @@ class Python < Formula
     # see http://bugs.python.org/issue14662
     p << "https://gist.github.com/raw/4349132/25662c6b382315b5db67bf949773d76471bbcee7/python-nfs-shutil.diff"
     p << 'https://raw.github.com/gist/3415636/2365dea8dc5415daa0148e98c394345e1191e4aa/pythondtrace-patch.diff' if build.include? 'with-dtrace'
-    # Patch to disable the search for Tk.frameworked, since homebrew's Tk is a plain unix build
-    p << DATA if build.include? 'with-brewed-tk'
+
     p
   end
 
@@ -168,7 +182,6 @@ class Python < Formula
         s.gsub!(/^CXX=.*$/, "CXX=xcrun clang++")
         s.gsub!(/^AR=.*$/, "AR=xcrun ar")
         s.gsub!(/^RANLIB=.*$/, "RANLIB=xcrun ranlib")
-        s.gsub!(/^PYTHONFRAMEWORKDIR=\tPython\.framework/, "PYTHONFRAMEWORKDIR= #{opt_prefix}/Frameworks/Python.framework")
       end
     end
 
@@ -183,13 +196,11 @@ class Python < Formula
         # Help Python's build system (distribute/pip) to build things on Xcode-only systems
         # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
         cflags += " -isysroot #{MacOS.sdk_path}"
+        # For the Xlib.h, Python needs this header dir
+        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
         ldflags += " -isysroot #{MacOS.sdk_path}"
         # Same zlib.h-not-found-bug as in env :std (see below)
         args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
-        # For the Xlib.h, Python needs this header dir with the system Tk
-        unless build.include? 'with-brewed-tk'
-          cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
-        end
       end
       args << cflags
       args << ldflags
@@ -234,7 +245,7 @@ class Python < Formula
       Homebrew's Python framework
         #{prefix}/Frameworks/Python.framework
 
-      Python demo #{'🐍' if MacOS.version >= :lion}
+      Python demo
         #{HOMEBREW_PREFIX}/share/python/Extras
 
       Distribute and Pip have been installed. To update them
@@ -249,7 +260,6 @@ class Python < Formula
 
       They will install into the site-package directory
         #{site_packages}
-
       Executable python scripts will be put in:
         #{scripts_folder}
       so you may want to put "#{scripts_folder}" in your PATH, too.
@@ -263,25 +273,6 @@ class Python < Formula
     # and it can occur that building sqlite silently fails if OSX's sqlite is used.
     system "#{bin}/python", "-c", "import sqlite3"
     # Check if some other modules import. Then the linked libs are working.
-    system "#{bin}/python", "-c", "import Tkinter; root = Tkinter.Tk()"
+    system "#{bin}/python", "-c", "import Tkinter"
   end
 end
-
-__END__
-diff --git a/setup.py b/setup.py
-index 6b47451..b0400f8 100644
---- a/setup.py
-+++ b/setup.py
-@@ -1702,9 +1702,9 @@ class PyBuildExt(build_ext):
-         # AquaTk is a separate method. Only one Tkinter will be built on
-         # Darwin - either AquaTk, if it is found, or X11 based Tk.
-         platform = self.get_platform()
--        if (platform == 'darwin' and
--            self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
--            return
-+        # if (platform == 'darwin' and
-+        #     self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
-+        #     return
-
-         # Assume we haven't found any of the libraries or include files
-         # The versions with dots are used on Unix, and the versions without
