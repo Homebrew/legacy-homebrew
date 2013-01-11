@@ -42,7 +42,7 @@ end
 
 def oh1 title
   title = title.to_s[0, Tty.width - 4] if $stdout.tty? unless ARGV.verbose?
-  puts "#{Tty.green}==> #{Tty.reset}#{title}"
+  puts "#{Tty.green}==>#{Tty.white} #{title}#{Tty.reset}"
 end
 
 def opoo warning
