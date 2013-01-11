@@ -71,6 +71,9 @@ class Elasticsearch < Formula
     Data:    #{var}/elasticsearch/#{cluster_name}/
     Logs:    #{var}/log/elasticsearch/#{cluster_name}.log
     Plugins: #{var}/lib/elasticsearch/plugins/
+    
+    Clustered mode: In case you want elasticsearch run clustered on the same machine comment out the "network.host" directive in elasticsearch.yml.
+                    Be aware that this can create some issue with switched networks. More info at http://sartak.org/2012/06/roaming-elasticsearch.html
     EOS
   end
 
