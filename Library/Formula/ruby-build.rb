@@ -15,8 +15,8 @@ class RubyBuild < Formula
     ENV['PREFIX'] = prefix
     system "./install.sh"
 
-    rbenv_plugins = "#{HOMEBREW_PREFIX}/var/lib/rbenv/plugins"
-    mkdir_p rbenv_plugins
-    ln_sf opt_prefix, "#{rbenv_plugins}/#{name}" unless build.include? 'without-rbenv'
+    unless build.include? 'without-rbenv'
+      ln_sf opt_prefix, "#{HOMEBREW_PREFIX}/var/lib/rbenv/plugins/#{name}"
+    end
   end
 end
