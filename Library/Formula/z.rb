@@ -8,27 +8,27 @@ class Z < Formula
   head 'https://github.com/rupa/z.git'
 
   def install
-    (prefix+'etc/profile.d').install 'z.sh'
+    (prefix/'etc/profile.d').install 'z.sh'
     man1.install 'z.1'
   end
 
   def caveats; <<-EOS.undent
     For Bash or Zsh, put something like this in your $HOME/.bashrc or $HOME/.zshrc:
+      . `brew --prefix`/etc/profile.d/z.s
 
-     . `brew --prefix`/etc/profile.d/z.sh
-
-     ZSH USERS BACKWARD COMPATIBILITY WARNING:
+    ZSH USERS BACKWARD COMPATIBILITY WARNING:
      z now handles 'precmd' set up for zsh. z (<=1.3) users using zsh should
      remove the precmd function that was described in the installation
      instructions for previous versions.
 
-     In short, this:
-        . /path/to/z.sh
-        function precmd () {
-         _z --add "$(pwd -P)"
-        }
-     should now just be:
-        . `brew --prefix`/etc/profile.d/z.sh
+   In short, this:
+      . /path/to/z.sh
+      function precmd () {
+       _z --add "$(pwd -P)"
+      }
+
+   should now be:
+      . `brew --prefix`/etc/profile.d/z.sh
     EOS
   end
 end
