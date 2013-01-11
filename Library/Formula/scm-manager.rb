@@ -2,16 +2,16 @@ require 'formula'
 
 class ScmManagerCliClient < Formula
   homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.24/scm-cli-client-1.24-jar-with-dependencies.jar'
-  version '1.24'
-  sha1 '2ff5cdcc5804b6917b1da36dd11f369b032408b0'
+  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.25/scm-cli-client-1.25-jar-with-dependencies.jar'
+  version '1.25'
+  sha1 '37e1d257c4ce1f688be7bc5b193a992888e0aa0e'
 end
 
 class ScmManager < Formula
   homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.24/scm-server-1.24-app.tar.gz'
-  version '1.24'
-  sha1 'ee6aa84978aa6ff2b8a8ba6fe444f223193be35f'
+  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.25/scm-server-1.25-app.tar.gz'
+  version '1.25'
+  sha1 '38a2871de8b38d29129e04993a74d2f3006614c2'
 
   skip_clean 'libexec/var/log'
 
