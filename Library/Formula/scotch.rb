@@ -13,11 +13,14 @@ class Scotch < Formula
 
       # Scotch uses more recent POSIX standards than OSX supports
       inreplace 'Makefile.inc' do |s|
+        s.change_make_var! 'CCS', ENV['CC']
+        s.change_make_var! 'CCP', ENV['MPICC']
+        s.change_make_var! 'CCD', ENV['MPICC']
         s.slice! "-DCOMMON_PTHREAD"
         s.slice! "-DSCOTCH_PTHREAD"
       end
-      system 'make', 'scotch'
-      system 'make', 'ptscotch'
+      system 'make', 'scotch','VERBOSE=ON'
+      system 'make', 'ptscotch','VERBOSE=ON'
       system 'make', 'install', "prefix=#{prefix}"
     end
   end
