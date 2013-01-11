@@ -1,5 +1,4 @@
 require 'formula'
-require Formula.path("python") # For TkCheck requirement
 
 # Python3 is the new language standard, not just a new revision.
 # It's somewhat incompatible with Python 2.x, therefore, the executable
@@ -22,7 +21,6 @@ class Python3 < Formula
   sha1 '3e1464bc2c1dfa74287bc58da81168f50b0ae5c7'
   VER='3.3'  # The <major>.<minor> is used so often.
 
-  depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
   depends_on 'sqlite' => :recommended
