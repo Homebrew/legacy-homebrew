@@ -120,7 +120,8 @@ module Homebrew extend self
       Homebrew.dump_options_for_formula f
     end
 
-    Caveats.print f
+    c = Caveats.new(f)
+    ohai 'Caveats', c.caveats unless c.empty?
 
   rescue FormulaUnavailableError
     # check for DIY installation

@@ -154,7 +154,12 @@ class FormulaInstaller
       check_infopages
     end
 
-    Caveats.print f
+    c = Caveats.new(f)
+
+    unless c.empty?
+      @show_summary_heading = true
+      ohai 'Caveats', c.caveats
+    end
   end
 
   def finish
@@ -175,7 +180,7 @@ class FormulaInstaller
     install_plist
     fix_install_names
 
-    ohai "Summary - #{f.name}" if ARGV.verbose? or show_summary_heading
+    ohai "Summary" if ARGV.verbose? or show_summary_heading
     print "🍺  " if MacOS.version >= :lion
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
