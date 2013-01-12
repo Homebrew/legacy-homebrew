@@ -9,9 +9,8 @@ class Abcmidi < Formula
   def install
     # configure --prefix flag does not work properly (value is added to path twice).
     # abcmidi author is notified. 2012-06-20
-    system "./configure", "--disable-debug",
-                          "--prefix="
-    system "make install DESTDIR=#{prefix}"
+    system "./configure", "--disable-debug", "--prefix="
+    system "make", "install", "DESTDIR=#{prefix}"
     man.install prefix/'man/man1'
   end
 
