@@ -20,13 +20,13 @@ class FormulaInstaller
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @install_bottle = install_bottle? ff
 
+    @@attempted ||= Set.new
+
     check_install_sanity
   end
 
   def check_install_sanity
-    @@attempted ||= Set.new
     raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
-    @@attempted << f
 
     if f.installed?
       msg = "#{f}-#{f.installed_version} already installed"
@@ -115,6 +115,8 @@ class FormulaInstaller
     end
 
     oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
+
+    @@attempted << f
 
     if install_bottle
       pour
