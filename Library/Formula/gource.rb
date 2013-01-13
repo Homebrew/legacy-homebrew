@@ -2,8 +2,8 @@ require 'formula'
 
 class Gource < Formula
   homepage 'http://code.google.com/p/gource/'
-  url 'http://gource.googlecode.com/files/gource-0.38.tar.gz'
-  sha1 '78f8c2064114313851f53b657d12db28abb89fae'
+  url 'http://gource.googlecode.com/files/gource-0.39.tar.gz'
+  sha1 '1dd6476e56a197354ce93612c7be9aff8c1f8cd2'
 
   head 'https://github.com/acaudwell/Gource.git'
 
@@ -23,12 +23,6 @@ class Gource < Formula
   depends_on 'pcre'
   depends_on 'sdl'
   depends_on 'sdl_image'
-
-  def patches
-    # Fix for API change in boost 1.50.0; can be removed in next version
-    # http://code.google.com/p/gource/issues/detail?id=162
-    "https://github.com/acaudwell/Gource/commit/408371e10f931e2330ff94bd7291b5d1c8c80e9b.patch"
-  end
 
   def install
     # For non-/usr/local installs
