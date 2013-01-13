@@ -24,7 +24,8 @@ class Gource < Formula
   depends_on 'sdl'
   depends_on 'sdl_image'
 
-  # configure fails to find boost libs on OS X; submitted upstream
+  # configure fails to find boost libs on OS X;
+  # merged upstream, should be in the next release
   # https://github.com/acaudwell/Gource/pull/17
   def patches; DATA; end unless build.head?
 
