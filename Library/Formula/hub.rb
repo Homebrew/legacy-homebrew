@@ -1,10 +1,11 @@
 require 'formula'
 
 class Hub < Formula
-  url 'https://github.com/defunkt/hub/tarball/v1.10.2'
   homepage 'http://defunkt.io/hub/'
+  url 'https://github.com/defunkt/hub/tarball/v1.10.4'
+  sha1 'b43f69f20563cb779d77a6beaf773bad8c49ad4c'
+
   head 'https://github.com/defunkt/hub.git'
-  sha1 '7520d264249573d7f72c443f1144b67cc645ab9b'
 
   def install
     system rake_bin, "install", "prefix=#{prefix}"

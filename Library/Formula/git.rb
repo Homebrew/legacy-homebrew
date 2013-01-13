@@ -1,19 +1,19 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.8.0.tar.gz'
-  sha1 'a6fa49be36f265e85b7252d36364d4c7f38530ea'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.8.1.tar.gz'
+  sha1 'a9ab9de3fa1781bb5009f5a215374dfc694feb30'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.0.tar.gz'
-  sha1 '93c860cf4cd26d4b3e269b0903b833db1c1f0f8e'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.1.tar.gz'
+  sha1 'a256fc56c89dc3c8d58b81a2c02dc89299f1f29b'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.0.tar.gz'
-  sha1 'a03afc33f8f0723ad12649d79f1e8968526b4bf7'
+  url 'http://git-core.googlecode.com/files/git-1.8.1.tar.gz'
+  sha1 'ac8dced9c3232c0ec6a88d04600a4d0eaf2ba4e3'
 
   head 'https://github.com/git/git.git'
 
@@ -65,9 +65,12 @@ class Git < Formula
       bin.install 'git-subtree'
     end
 
-    # install the completion script first because it is inside 'contrib'
+    # install the completion scripts from 'contrib' first
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-prompt.sh'
+
+    (share+'zsh/site-functions').install 'contrib/completion/git-completion.zsh' => '_git'
+
     (share+'git-core').install 'contrib'
 
     # We could build the manpages ourselves, but the build process depends
@@ -85,7 +88,7 @@ class Git < Formula
     EOS
   end
 
-  def test
+  test do
     HOMEBREW_REPOSITORY.cd do
       `#{bin}/git ls-files -- bin`.chomp == 'bin/brew'
     end

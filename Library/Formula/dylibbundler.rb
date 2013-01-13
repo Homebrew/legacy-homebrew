@@ -2,8 +2,8 @@ require 'formula'
 
 class Dylibbundler < Formula
   homepage 'http://macdylibbundler.sourceforge.net'
-  url 'http://sourceforge.net/projects/macdylibbundler/files/macdylibbundler/0.4.1/dylibbundler0.4.1.zip'
-  sha1 'ea80b57a487da3df3e3cc508573bf18268100464'
+  url 'http://sourceforge.net/projects/macdylibbundler/files/macdylibbundler/0.4.2/dylibbundler-0.4.2.zip'
+  sha1 '7cd65413ed250a42a3428e34d624e3141c173ab4'
 
   def install
     system "make"
@@ -15,9 +15,6 @@ class Dylibbundler < Formula
   end
 
   def caveats; <<-EOS.undent
-    Documentation at:
-      #{homepage}
-
     Usage example:
       dylibbundler -od -b -x ./HelloWorld.app/Contents/MacOS/helloworld  -d ./HelloWorld.app/Contents/libs/
     EOS

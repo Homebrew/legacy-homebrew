@@ -1,3 +1,5 @@
+require 'build_environment'
+
 ## This file defines dependencies and requirements.
 ##
 ## A dependency is a formula that another formula needs to install.
@@ -14,7 +16,7 @@
 class DependencyCollector
   # Define the languages that we can handle as external dependencies.
   LANGUAGE_MODULES = [
-    :chicken, :jruby, :lua, :node, :perl, :python, :rbx, :ruby
+    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
   ].freeze
 
   attr_reader :deps, :requirements
@@ -83,11 +85,32 @@ private
 
 end
 
+class Dependencies
+  include Enumerable
 
-# A list of formula dependencies.
-class Dependencies < Array
+  def initialize(*args)
+    @deps = Array.new(*args)
+  end
+
+  def each(*args, &block)
+    @deps.each(*args, &block)
+  end
+
   def <<(o)
-    super(o) unless include? o
+    @deps << o unless @deps.include? o
+    self
+  end
+
+  def empty?
+    @deps.empty?
+  end
+
+  def *(arg)
+    @deps * arg
+  end
+
+  def to_ary
+    @deps
   end
 end
 
@@ -159,7 +182,9 @@ class Requirement
   # Should return true if this requirement is met.
   def satisfied?; false; end
   # Should return true if not meeting this requirement should fail the build.
-  def fatal?; false; end
+  def fatal?
+    self.class.fatal || false
+  end
   # The message to show when the requirement is not met.
   def message; ""; end
 
@@ -167,12 +192,28 @@ class Requirement
   # See X11Dependency
   def modify_build_environment; nil end
 
+  def env
+    @env ||= self.class.env
+  end
+
   def eql?(other)
     other.is_a? self.class and hash == other.hash
   end
 
   def hash
     message.hash
+  end
+
+  class << self
+    def fatal(val=nil)
+      val.nil? ? @fatal : @fatal = val
+    end
+
+    def env(*settings)
+      @env ||= BuildEnvironment.new
+      settings.each { |s| @env << s }
+      @env
+    end
   end
 end
 

@@ -311,8 +311,8 @@ class Service
   # Delegate access to `formula.name`.
   def name; @name ||= formula.name end
 
-  # Label, static, always looks like `com.github.homebrew.<formula>`.
-  def label; @label ||= "com.github.homebrew.#{name}" end
+  # Label delegates to formula.plist_name, e.g `homebrew.mxcl.<formula>`.
+  def label; @label ||= formula.plist_name end
 
   # Path to a static plist file, this is always `com.github.homebrew.<formula>.plist`.
   def plist; @plist ||= formula.prefix + "#{label}.plist" end

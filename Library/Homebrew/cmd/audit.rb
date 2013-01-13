@@ -155,6 +155,15 @@ class FormulaAuditor
     end
   end
 
+  def audit_conflicts
+    f.conflicts.each do |req|
+      begin
+        conflict_f = Formula.factory req.formula
+      rescue
+        problem "Can't find conflicting formula \"#{req.formula}\"."
+      end
+    end
+  end
 
   def audit_urls
     unless f.homepage =~ %r[^https?://]
@@ -268,13 +277,8 @@ class FormulaAuditor
     end
 
     # Commented-out cmake support from default template
-    if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
-      problem "Commented cmake support found"
-    end
-
-    # 2 (or more in an if block) spaces before depends_on, please
-    if text =~ /^\ ?depends_on/
-      problem "Check indentation of 'depends_on'"
+    if (text =~ /# system "cmake/)
+      problem "Commented cmake call found"
     end
 
     # build tools should be flagged properly
@@ -407,6 +411,7 @@ class FormulaAuditor
     audit_specs
     audit_urls
     audit_deps
+    audit_conflicts
     audit_patches
     audit_text
   end

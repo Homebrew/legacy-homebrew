@@ -3,6 +3,7 @@ require 'formula'
 require 'keg'
 require 'tab'
 require 'bottles'
+require 'caveats'
 
 class FormulaInstaller
   attr :f
@@ -23,6 +24,10 @@ class FormulaInstaller
   end
 
   def check_install_sanity
+    @@attempted ||= Set.new
+    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
+    @@attempted << f
+
     if f.installed?
       msg = "#{f}-#{f.installed_version} already installed"
       msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
@@ -109,11 +114,7 @@ class FormulaInstaller
       end
     end
 
-    oh1 "Installing #{f}" if show_header
-
-    @@attempted ||= Set.new
-    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
-    @@attempted << f
+    oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
     if install_bottle
       pour
@@ -132,7 +133,7 @@ class FormulaInstaller
     fi = FormulaInstaller.new(dep, dep_tab)
     fi.ignore_deps = true
     fi.show_header = false
-    oh1 "Installing #{f} dependency: #{dep}"
+    oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
     fi.caveats
@@ -143,15 +144,7 @@ class FormulaInstaller
   end
 
   def caveats
-    unless f.caveats.to_s.strip.empty?
-      ohai "Caveats", f.caveats
-      @show_summary_heading = true
-    end
-
-    if f.keg_only?
-      ohai 'Caveats', f.keg_only_text
-      @show_summary_heading = true
-    else
+    if (not f.keg_only?) and ARGV.homebrew_developer?
       audit_bin
       audit_sbin
       audit_lib
@@ -159,21 +152,7 @@ class FormulaInstaller
       check_infopages
     end
 
-    keg = Keg.new(f.prefix)
-
-    if keg.completion_installed? :bash
-      ohai 'Caveats', <<-EOS.undent
-        Bash completion has been installed to:
-          #{HOMEBREW_PREFIX}/etc/bash_completion.d
-        EOS
-    end
-
-    if keg.completion_installed? :zsh
-      ohai 'Caveats', <<-EOS.undent
-        zsh completion has been installed to:
-          #{HOMEBREW_PREFIX}/share/zsh/site-functions
-        EOS
-    end
+    Caveats.print f
   end
 
   def finish
@@ -194,7 +173,8 @@ class FormulaInstaller
     install_plist
     fix_install_names
 
-    ohai "Summary" if ARGV.verbose? or show_summary_heading
+    ohai "Summary - #{f.name}" if ARGV.verbose? or show_summary_heading
+    print "🍺  " if MacOS.version >= :lion
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
     puts
@@ -288,12 +268,11 @@ class FormulaInstaller
   end
 
   def install_plist
-    # Install a plist if one is defined
-    # Skip plist file exists check: https://github.com/mxcl/homebrew/issues/15849
-    if f.startup_plist
-      f.plist_path.write f.startup_plist
-      f.plist_path.chmod 0644
-    end
+    return unless f.plist
+    # A plist may already exist if we are installing from a bottle
+    f.plist_path.unlink if f.plist_path.exist?
+    f.plist_path.write f.plist
+    f.plist_path.chmod 0644
   end
 
   def fix_install_names
@@ -327,7 +306,7 @@ class FormulaInstaller
 
   def pour
     fetched, downloader = f.fetch
-    f.verify_download_integrity fetched
+    f.verify_download_integrity fetched unless downloader.local_bottle_path
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end
