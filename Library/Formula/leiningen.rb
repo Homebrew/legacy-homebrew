@@ -8,9 +8,9 @@ class Leiningen < Formula
   head 'https://github.com/technomancy/leiningen.git'
 
   devel do
-    url 'https://github.com/technomancy/leiningen/tarball/2.0.0-RC1'
-    version '2.0.0-RC1'
-    sha1 'a7ac8e76f68ec0c2b76daada46a9682312b21dff'
+    url 'https://github.com/technomancy/leiningen/tarball/2.0.0-RC2'
+    version '2.0.0-RC2'
+    sha1 '71e47c8686c0148532738a7ee56df83757382607'
   end
 
   def install
