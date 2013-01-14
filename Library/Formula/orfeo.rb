@@ -14,6 +14,7 @@ class Orfeo < Formula
   option 'examples',  'Compile and install various examples'
   option 'python', 'Enable Python support'
   option 'java', 'Enable Java support'
+  option 'patented', "Enable patented algorithms"
 
   def install
     args = std_cmake_args + %W[
@@ -27,6 +28,7 @@ class Orfeo < Formula
     args << '-DBUILD_EXAMPLES=' + ((build.include? 'examples') ? 'ON' : 'OFF')
     args << '-DOTB_WRAP_PYTHON=' + ((build.include? 'python') ? 'ON' : 'OFF')
     args << '-DOTB_WRAP_JAVA=' + ((build.include? 'java') ? 'ON' : 'OFF')
+    args << '-DOTB_USE_PATENTED=' + ((build.include? 'patented') ? 'ON' : 'OFF')
 
     args << ".."
 
