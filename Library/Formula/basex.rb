@@ -5,6 +5,7 @@ class Basex < Formula
   url 'http://files.basex.org/releases/7.5/BaseX75.zip'
   version '7.5'
   sha1 'da4ee9be44f34c9aa770e72a263d1a0ccf390f11'
+  head 'http://files.basex.org/releases/BaseX-latest.zip'
 
   def install
     rm Dir['bin/*.bat']
