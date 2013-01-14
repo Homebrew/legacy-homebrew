@@ -41,6 +41,8 @@ class Python < Formula
   option 'quicktest', 'Run `make quicktest` after the build'
   option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
   option 'with-poll', 'Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)'
+  option 'with-ucs2', 'Enable unicode ucs2 support for python. (http://docs.python.org/2/c-api/unicode.html)'
+  option 'with-ucs4', 'Enable unicode ucs4 support for python. (http://docs.python.org/2/c-api/unicode.html)'
 
   # --with-dtrace relies on CLT as dtrace hard-codes paths to /usr
   option 'with-dtrace', 'Experimental DTrace support (http://bugs.python.org/issue13405)' if MacOS::CLT.installed?
@@ -87,6 +89,8 @@ class Python < Formula
 
     args << '--without-gcc' if ENV.compiler == :clang
     args << '--with-dtrace' if build.include? 'with-dtrace'
+    args << '--enable-unicode=ucs2' if build.include? 'with-ucs2'
+    args << '--enable-unicode=ucs4' if build.include? 'with-ucs4'
 
     distutils_fix_superenv(args)
     distutils_fix_stdenv
