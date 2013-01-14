@@ -14,7 +14,7 @@ class Neon < Formula
 
   def install
     ENV.universal_binary if build.universal?
-
+    ENV.enable_warnings
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--enable-shared",
