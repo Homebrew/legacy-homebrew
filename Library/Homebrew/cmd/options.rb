@@ -21,7 +21,7 @@ module Homebrew extend self
     ff.each do |f|
       next if f.build.empty?
       if ARGV.include? '--compact'
-        puts f.build.as_flags * " "
+        puts f.build.as_flags.sort * " "
       else
         puts f.name if ff.length > 1
         dump_options_for_formula f
@@ -31,7 +31,7 @@ module Homebrew extend self
   end
 
   def dump_options_for_formula f
-    f.build.each do |opt|
+    f.build.sort_by(&:flag).each do |opt|
       puts opt.flag
       puts "\t"+opt.description
     end
