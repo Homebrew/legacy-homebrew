@@ -1,18 +1,41 @@
 require 'testing_env'
-require 'test/testball'
 require 'dependencies'
+require 'extend/set'
 
-class DependencyCollector
+module DependencyCollectorTestExtension
+  def find_dependency(name)
+    deps.find { |dep| dep.name == name }
+  end
+
   def find_requirement(klass)
-    requirements.find do |req|
-      klass === req
-    end
+    requirements.find { |req| klass === req }
   end
 end
 
-class RequirementTests < Test::Unit::TestCase
+class DependencyCollectorTests < Test::Unit::TestCase
   def setup
-    @d = DependencyCollector.new
+    @d = DependencyCollector.new.extend(DependencyCollectorTestExtension)
+  end
+
+  def test_dependency_creation
+    @d.add 'foo' => :build
+    @d.add 'bar' => ['--universal', :optional]
+    assert_not_nil @d.find_dependency('foo')
+    assert_equal 2, @d.find_dependency('bar').tags.length
+  end
+
+  def test_dependency_tags
+    assert Dependency.new('foo', :build).build?
+    assert Dependency.new('foo', [:build, :optional]).optional?
+    assert Dependency.new('foo', [:universal]).options.include? '--universal'
+    assert_empty Dependency.new('foo').tags
+  end
+
+  def test_no_duplicate_dependencies
+    @d.add 'foo'
+    @d.add 'foo' => :build
+    assert_equal 1, @d.deps.count
+    assert_empty @d.find_dependency('foo').tags
   end
 
   def test_requirement_creation
@@ -20,16 +43,9 @@ class RequirementTests < Test::Unit::TestCase
     assert_not_nil @d.find_requirement(X11Dependency)
   end
 
-
   def test_no_duplicate_requirements
     2.times { @d.add :x11 }
     assert_equal 1, @d.requirements.length
-  end
-end
-
-class RequirementTagTests < Test::Unit::TestCase
-  def setup
-    @d = DependencyCollector.new
   end
 
   def test_requirement_tags
