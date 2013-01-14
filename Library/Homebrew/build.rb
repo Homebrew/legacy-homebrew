@@ -102,8 +102,8 @@ def install f
     ENV.all_deps = f.recursive_deps.map(&:to_s)
     ENV.x11 = f.recursive_requirements.detect{|rq| rq.class == X11Dependency }
     ENV.setup_build_environment
-    f.recursive_requirements.each { |rq| rq.modify_build_environment }
     post_superenv_hacks(f)
+    f.recursive_requirements.each { |rq| rq.modify_build_environment }
   end
 
   if f.fails_with? ENV.compiler

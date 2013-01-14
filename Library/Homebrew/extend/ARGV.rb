@@ -97,6 +97,10 @@ module HomebrewArgvExtension
     include?('--dry-run') || switch?('n')
   end
 
+  def homebrew_developer?
+    include? '--homebrew-developer' or ENV['HOMEBREW_DEVELOPER']
+  end
+
   def ignore_deps?
     include? '--ignore-dependencies'
   end
@@ -177,10 +181,9 @@ module HomebrewArgvExtension
     flags_to_clear.concat %w[--verbose -v] if quieter?
     flags_to_clear.each {|flag| delete flag}
 
-    ret = yield
-
-    replace old_args
-    ret
+    yield
+  ensure
+    replace(old_args)
   end
 
   private

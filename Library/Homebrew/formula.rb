@@ -15,9 +15,9 @@ class Formula
   attr_reader :name, :path, :homepage, :downloader
   attr_reader :stable, :bottle, :devel, :head, :active_spec
 
-  # The build folder, usually in /tmp.
-  # Will only be non-nil during the stage method.
-  attr_reader :buildpath
+  # The current working directory during builds and tests.
+  # Will only be non-nil inside #stage and #test.
+  attr_reader :buildpath, :testpath
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
@@ -357,7 +357,7 @@ class Formula
       install_type = :from_url
     elsif name.match bottle_regex
       bottle_filename = Pathname(name).realpath
-      name = name.split('-').first
+      name = bottle_filename.basename.to_s.rpartition('-').first
       path = Formula.path(name)
       install_type = :from_local_bottle
     else
@@ -586,6 +586,20 @@ public
     @active_spec.verify_download_integrity(fn)
   end
 
+  def test
+    ret = nil
+    mktemp do
+      @testpath = Pathname.pwd
+      ret = instance_eval(&self.class.test)
+      @testpath = nil
+    end
+    ret
+  end
+
+  def test_defined?
+    not self.class.instance_variable_get(:@test_defined).nil?
+  end
+
 private
 
   def stage
@@ -632,7 +646,12 @@ private
   end
 
   def self.method_added method
-    raise 'You cannot override Formula.brew' if method == :brew
+    case method
+    when :brew
+      raise "You cannot override Formula#brew"
+    when :test
+      @test_defined = true
+    end
   end
 
   class << self
@@ -776,6 +795,12 @@ private
       else
         CompilerFailure.new(compiler)
       end
+    end
+
+    def test &block
+      return @test unless block_given?
+      @test_defined = true
+      @test = block
     end
   end
 end
