@@ -91,7 +91,7 @@ module Homebrew extend self
     end
 
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
-    conflicts = f.conflicts.map { |c| c.formula }
+    conflicts = f.conflicts.map { |c| c.formula }.sort
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
