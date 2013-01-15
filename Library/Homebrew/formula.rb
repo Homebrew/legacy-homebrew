@@ -357,7 +357,7 @@ class Formula
       install_type = :from_url
     elsif name.match bottle_regex
       bottle_filename = Pathname(name).realpath
-      name = name.split('-').first
+      name = bottle_filename.basename.to_s.rpartition('-').first
       path = Formula.path(name)
       install_type = :from_local_bottle
     else
@@ -596,6 +596,10 @@ public
     ret
   end
 
+  def test_defined?
+    not self.class.instance_variable_get(:@test_defined).nil?
+  end
+
 private
 
   def stage
@@ -642,7 +646,12 @@ private
   end
 
   def self.method_added method
-    raise 'You cannot override Formula.brew' if method == :brew
+    case method
+    when :brew
+      raise "You cannot override Formula#brew"
+    when :test
+      @test_defined = true
+    end
   end
 
   class << self
@@ -790,6 +799,7 @@ private
 
     def test &block
       return @test unless block_given?
+      @test_defined = true
       @test = block
     end
   end

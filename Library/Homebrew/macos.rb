@@ -20,22 +20,23 @@ module MacOS extend self
     # Don't call tools (cc, make, strip, etc.) directly!
     # Give the name of the binary you look for as a string to this method
     # in order to get the full path back as a Pathname.
-    @locate ||= {}
-    @locate[tool.to_s] ||= if File.executable? "/usr/bin/#{tool}"
-      Pathname.new "/usr/bin/#{tool}"
-    else
-      # If the tool isn't in /usr/bin, then we first try to use xcrun to find
-      # it. If it's not there, or xcode-select is misconfigured, we have to
-      # look in dev_tools_path, and finally in xctoolchain_path, because the
-      # tools were split over two locations beginning with Xcode 4.3+.
-      xcrun_path = unless Xcode.bad_xcode_select_path?
-        `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
-      end
+    (@locate ||= {}).fetch(tool.to_s) do
+      @locate[tool.to_s] = if File.executable? "/usr/bin/#{tool}"
+        Pathname.new "/usr/bin/#{tool}"
+      else
+        # If the tool isn't in /usr/bin, then we first try to use xcrun to find
+        # it. If it's not there, or xcode-select is misconfigured, we have to
+        # look in dev_tools_path, and finally in xctoolchain_path, because the
+        # tools were split over two locations beginning with Xcode 4.3+.
+        xcrun_path = unless Xcode.bad_xcode_select_path?
+          `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+        end
 
-      paths = %W[#{xcrun_path}
-                 #{dev_tools_path}/#{tool}
-                 #{xctoolchain_path}/usr/bin/#{tool}]
-      paths.map { |p| Pathname.new(p) }.find { |p| p.executable? }
+        paths = %W[#{xcrun_path}
+                   #{dev_tools_path}/#{tool}
+                   #{xctoolchain_path}/usr/bin/#{tool}]
+        paths.map { |p| Pathname.new(p) }.find { |p| p.executable? }
+      end
     end
   end
 
@@ -64,16 +65,17 @@ module MacOS extend self
   end
 
   def sdk_path(v = version)
-    @sdk_path ||= {}
-    @sdk_path[v.to_s] ||= begin
-      opts = []
-      # First query Xcode itself
-      opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
-      # Xcode.prefix is pretty smart, so lets look inside to find the sdk
-      opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-      # Xcode < 4.3 style
-      opts << "/Developer/SDKs/MacOSX#{v}.sdk"
-      opts.map{|a| Pathname.new(a) }.detect { |p| p.directory? }
+    (@sdk_path ||= {}).fetch(v.to_s) do
+      @sdk_path[v.to_s] = begin
+        opts = []
+        # First query Xcode itself
+        opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
+        # Xcode.prefix is pretty smart, so lets look inside to find the sdk
+        opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+        # Xcode < 4.3 style
+        opts << "/Developer/SDKs/MacOSX#{v}.sdk"
+        opts.map{|a| Pathname.new(a) }.detect { |p| p.directory? }
+      end
     end
   end
 

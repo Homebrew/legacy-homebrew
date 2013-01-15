@@ -7,6 +7,8 @@ class Nss < Formula
 
   depends_on 'nspr'
 
+  keg_only 'NSS installs a libssl which conflicts with OpenSSL.'
+
   def install
     ENV.deparallelize
 

@@ -116,6 +116,9 @@ class Subversion < Formula
   end
 
   def install
+    # We had weird issues with "make" apparently hanging on first run: https://github.com/mxcl/homebrew/issues/13226
+    ENV.deparallelize
+
     if build_java?
       unless build.universal?
         opoo "A non-Universal Java build was requested."
@@ -138,7 +141,7 @@ class Subversion < Formula
             "--with-apr=#{apr_bin}",
             "--with-ssl",
             "--with-zlib=/usr",
-            "--with-sqlite=#{HOMEBREW_PREFIX}",
+            "--with-sqlite=#{Formula.factory('sqlite').opt_prefix}",
             "--with-serf=#{HOMEBREW_PREFIX}",
             # use our neon, not OS X's
             "--disable-neon-version-check",
@@ -164,7 +167,6 @@ class Subversion < Formula
     end
 
     if build_perl?
-      ENV.j1 # This build isn't parallel safe
       # Remove hard-coded ppc target, add appropriate ones
       if build.universal?
         arches = "-arch x86_64 -arch i386"
@@ -188,13 +190,11 @@ class Subversion < Formula
     end
 
     if build_java?
-      ENV.j1 # This build isn't parallel safe
       system "make javahl"
       system "make install-javahl"
     end
 
     if build_ruby?
-      ENV.j1 # This build isn't parallel safe
       system "make swig-rb"
       system "make install-swig-rb"
     end
@@ -251,6 +251,7 @@ class Subversion < Formula
     return s.empty? ? nil : s
   end
 end
+
 __END__
 --- subversion/bindings/swig/perl/native/Makefile.PL.in~	2011-07-16 04:47:59.000000000 -0700
 +++ subversion/bindings/swig/perl/native/Makefile.PL.in	2012-06-27 17:45:57.000000000 -0700

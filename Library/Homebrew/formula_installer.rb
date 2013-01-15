@@ -20,10 +20,14 @@ class FormulaInstaller
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @install_bottle = install_bottle? ff
 
+    @@attempted ||= Set.new
+
     check_install_sanity
   end
 
   def check_install_sanity
+    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
+
     if f.installed?
       msg = "#{f}-#{f.installed_version} already installed"
       msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
@@ -110,10 +114,8 @@ class FormulaInstaller
       end
     end
 
-    oh1 "Installing #{f}" if show_header
+    oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
-    @@attempted ||= Set.new
-    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
     @@attempted << f
 
     if install_bottle
@@ -133,7 +135,7 @@ class FormulaInstaller
     fi = FormulaInstaller.new(dep, dep_tab)
     fi.ignore_deps = true
     fi.show_header = false
-    oh1 "Installing #{f} dependency: #{dep}"
+    oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
     fi.caveats
@@ -152,7 +154,12 @@ class FormulaInstaller
       check_infopages
     end
 
-    Caveats.print f
+    c = Caveats.new(f)
+
+    unless c.empty?
+      @show_summary_heading = true
+      ohai 'Caveats', c.caveats
+    end
   end
 
   def finish
@@ -174,6 +181,7 @@ class FormulaInstaller
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
+    print "🍺  " if MacOS.version >= :lion
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
     puts

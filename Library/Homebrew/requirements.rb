@@ -124,6 +124,11 @@ class MPIDependency < Requirement
   end
 
   def satisfied?
+    # we have to assure the ENV is (almost) as during the build
+    orig_PATH = ENV['PATH']
+    require 'superenv'
+    ENV.setup_build_environment
+    ENV.userpaths!
     @lang_list.each do |lang|
       case lang
       when :cc, :cxx, :f90, :f77
@@ -133,6 +138,9 @@ class MPIDependency < Requirement
         @unknown_langs << lang.to_s
       end
     end
+
+    # Restore the original paths
+    ENV['PATH'] = orig_PATH
 
     @unknown_langs.empty? and @non_functional.empty?
   end
@@ -260,6 +268,30 @@ class PostgresqlInstalled < Requirement
 
       Or you can use an official installer from:
         http://www.postgresql.org/download/macosx/
+    EOS
+  end
+end
+
+class TeXInstalled < Requirement
+  fatal true
+  env :userpaths
+
+  def satisfied?
+    tex = which 'tex'
+    latex = which 'latex'
+    not tex.nil? and not latex.nil?
+  end
+
+  def message; <<-EOS.undent
+    A LaTeX distribution is required to install.
+
+    You can install MacTeX distribution from:
+      http://www.tug.org/mactex/
+
+    Make sure that its bin directory is in your PATH before proceeding.
+
+    You may also need to restore the ownership of Homebrew install:
+      sudo chown -R $USER `brew --prefix`
     EOS
   end
 end
