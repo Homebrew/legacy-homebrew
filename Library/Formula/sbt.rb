@@ -8,6 +8,7 @@ class Sbt < Formula
 
   devel do
     url 'http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.12.2-RC2/sbt-launch.jar'
+    version '0.12.2-RC2'
     sha1 '5e33a7cfd88ca0a05fac538649e1c2ed444458cd'
   end
 
