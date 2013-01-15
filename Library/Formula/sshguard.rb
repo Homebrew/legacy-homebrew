@@ -13,15 +13,49 @@ class Sshguard < Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-firewall=ipfw"
+    args = %W[--prefix=#{prefix} --disable-debug --disable-dependency-tracking]
+    if MacOS.version < :lion
+      args << "--with-firewall=ipfw"
+    else
+      args << "--with-firewall=pf"
+    end
+
+    system './configure', *args
     system "make install"
+
+    ssh_log = '/var/log/system.log'
+    if MacOS.version < :lion
+      ssh_log = '/var/log/secure.log'
+    end
+    plist_path().write sshguard_plist(ssh_log)
+    plist_path().chmod 0644
+  end
+
+  def caveats
+    s = []
+
+    if MacOS.version >= :lion
+      s << <<-EOS.undent
+        To launch sshguard on bootup:
+          cp #{plist_path().to_s} /Library/LaunchDaemons/
+          sudo launchctl load -w /Library/LaunchDaemons/#{plist_name()}
+
+        Add the following lines to /etc/pf.conf to block entries in the sshguard
+        table (replace $ext_if with your WAN interface):
+
+          table <sshguard> persist
+          block in quick on $ext_if proto tcp from any to any port 22 label "ssh bruteforce"
+
+        Then run sudo pfctl -f /etc/pf.conf to reload the rules.
+      EOS
+    end
+
+    s.join "\n"
   end
 
   plist_options :startup => true
 
-  def plist; <<-EOS
+  def sshguard_plist(log_path); <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -34,7 +68,7 @@ class Sshguard < Formula
       <array>
         <string>#{opt_prefix}/sbin/sshguard</string>
         <string>-l</string>
-        <string>/var/log/secure.log</string>
+        <string>#{log_path}</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
