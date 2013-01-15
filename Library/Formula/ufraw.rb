@@ -6,9 +6,9 @@ class Ufraw < Formula
   sha1 '41c9ad7aa7f1cbb63a6b0b330b3599b18a7e8cd2'
 
   depends_on 'pkg-config' => :build
+  depends_on :libpng
   depends_on 'glib'
   depends_on 'libtiff'
-  depends_on ':libpng'
   depends_on 'jpeg'
   depends_on 'little-cms'
   depends_on 'dcraw'
