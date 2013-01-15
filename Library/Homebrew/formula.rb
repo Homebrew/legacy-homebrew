@@ -72,9 +72,7 @@ class Formula
 
   # if the dir is there, but it's empty we consider it not installed
   def installed?
-    return installed_prefix.children.length > 0
-  rescue
-    return false
+    installed_prefix.children.length > 0 rescue false
   end
 
   def explicitly_requested?
