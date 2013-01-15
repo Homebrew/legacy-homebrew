@@ -3,6 +3,7 @@ require 'formula'
 require 'keg'
 require 'tab'
 require 'bottles'
+require 'caveats'
 
 class FormulaInstaller
   attr :f
@@ -19,10 +20,14 @@ class FormulaInstaller
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @install_bottle = install_bottle? ff
 
+    @@attempted ||= Set.new
+
     check_install_sanity
   end
 
   def check_install_sanity
+    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
+
     if f.installed?
       msg = "#{f}-#{f.installed_version} already installed"
       msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
@@ -109,10 +114,8 @@ class FormulaInstaller
       end
     end
 
-    oh1 "Installing #{f}" if show_header
+    oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
-    @@attempted ||= Set.new
-    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
     @@attempted << f
 
     if install_bottle
@@ -132,7 +135,7 @@ class FormulaInstaller
     fi = FormulaInstaller.new(dep, dep_tab)
     fi.ignore_deps = true
     fi.show_header = false
-    oh1 "Installing #{f} dependency: #{dep}"
+    oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
     fi.caveats
@@ -143,74 +146,19 @@ class FormulaInstaller
   end
 
   def caveats
-    unless f.caveats.to_s.strip.empty?
-      ohai "Caveats", f.caveats
+    if (not f.keg_only?) and ARGV.homebrew_developer?
+      audit_bin
+      audit_sbin
+      audit_lib
+      check_manpages
+      check_infopages
+    end
+
+    c = Caveats.new(f)
+
+    unless c.empty?
       @show_summary_heading = true
-    end
-
-    if f.keg_only?
-      ohai 'Caveats', f.keg_only_text
-      @show_summary_heading = true
-    else
-      #audit_bin
-      #audit_sbin
-      #audit_lib
-      #check_manpages
-      #check_infopages
-    end
-
-    keg = Keg.new(f.prefix)
-    if keg.completion_installed? :bash
-      ohai 'Caveats', <<-EOS.undent
-        Bash completion has been installed to:
-          #{HOMEBREW_PREFIX}/etc/bash_completion.d
-        EOS
-    end
-
-    if keg.completion_installed? :zsh
-      ohai 'Caveats', <<-EOS.undent
-        zsh completion has been installed to:
-          #{HOMEBREW_PREFIX}/share/zsh/site-functions
-        EOS
-    end
-
-    if f.plist or keg.plist_installed?
-      if f.plist_startup and false
-        destination = '/Library/LaunchDaemons'
-      else
-        destination = '~/Library/LaunchAgents'
-      end
-
-      plist_filename = f.plist_path.basename
-      plist_link = "#{destination}/#{plist_filename}"
-      plist_domain = f.plist_path.basename('.plist')
-      launchctl_load = "launchctl load -w #{plist_link}"
-      destination_path = Pathname.new File.expand_path destination
-      plist_path = destination_path/plist_filename
-      s = []
-
-      # we readlink because this path probably doesn't exist since caveats
-      # occurs before the link step of installation
-      if not (plist_path).file? and not (plist_path).symlink?
-        s << "To have launchd start #{f.name} at login:"
-        s << "    mkdir -p #{destination}" unless destination_path.directory?
-        s << "    ln -sfv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}" #sudo
-        s << "Then to load #{f.name} now:"
-        s << "    #{launchctl_load}"
-        if f.plist_manual
-          s << "Or, if you don't want/need launchctl, you can just run:"
-          s << "    #{f.plist_manual}"
-        end
-      elsif Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
-        s << "You should reload #{f.name}:"
-        s << "    launchctl unload -w #{plist_link}"
-        s << "    #{launchctl_load}"
-      else
-        s << "To load #{f.name}:"
-        s << "    #{launchctl_load}"
-      end
-
-      ohai 'Caveats', s
+      ohai 'Caveats', c.caveats
     end
   end
 
@@ -233,6 +181,7 @@ class FormulaInstaller
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
+    print "🍺  " if MacOS.version >= :lion
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
     puts
@@ -364,7 +313,7 @@ class FormulaInstaller
 
   def pour
     fetched, downloader = f.fetch
-    f.verify_download_integrity fetched
+    f.verify_download_integrity fetched unless downloader.local_bottle_path
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end

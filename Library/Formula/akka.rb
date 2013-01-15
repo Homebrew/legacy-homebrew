@@ -2,8 +2,8 @@ require 'formula'
 
 class Akka < Formula
   homepage 'http://akka.io/'
-  url 'http://download.akka.io/downloads/akka-2.0.4.tgz'
-  sha1 'd29e223745cf7d4f73ebc03a0d51296118553e6d'
+  url 'http://download.akka.io/downloads/akka-2.1.0.tgz'
+  sha1 'fd93792e94a2d2c981d62a70f45f6d6da0f74d47'
 
   def install
     # Remove Windows files

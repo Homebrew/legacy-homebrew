@@ -2,8 +2,8 @@ require 'formula'
 
 class Pgbouncer < Formula
   homepage 'http://wiki.postgresql.org/wiki/PgBouncer'
-  url 'http://pgfoundry.org/frs/download.php/3369/pgbouncer-1.5.3.tar.gz'
-  sha1 '2811d32d39cb87a64e278d985178258072c5c8ef'
+  url 'http://pgfoundry.org/frs/download.php/3393/pgbouncer-1.5.4.tar.gz'
+  sha1 '87c3dd7fc70cbbae93ce8865953891f0aabffd2d'
 
   depends_on 'asciidoc' => :build
   depends_on 'xmlto' => :build

@@ -2,8 +2,8 @@ require 'formula'
 
 class Redis < Formula
   homepage 'http://redis.io/'
-  url 'http://redis.googlecode.com/files/redis-2.6.6.tar.gz'
-  sha1 'cef5e9e5c9e91b789b06bcb2d9132f76dd581933'
+  url 'http://redis.googlecode.com/files/redis-2.6.8.tar.gz'
+  sha1 'ea39bf292afe24efcbeaa02db71152b09d4a5d9f'
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
@@ -31,7 +31,7 @@ class Redis < Formula
     end
 
     # Fix redis upgrade from 2.4 to 2.6.
-    if File.exists?(etc/'redis.conf') && File.readlines(etc/'redis.conf').grep(/^vm-enabled/)
+    if File.exists?(etc/'redis.conf') && !File.readlines(etc/'redis.conf').grep(/^vm-enabled/).empty?
       mv etc/'redis.conf', etc/'redis.conf.old'
       ohai "Your redis.conf will not work with 2.6; moved it to redis.conf.old"
     end
@@ -47,7 +47,10 @@ class Redis < Formula
     <plist version="1.0">
       <dict>
         <key>KeepAlive</key>
-        <true/>
+        <dict>
+          <key>SuccessfulExit</key>
+          <false/>
+        </dict>
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>

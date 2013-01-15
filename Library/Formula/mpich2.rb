@@ -15,6 +15,18 @@ class Mpich2 < Formula
   end
 
   option 'disable-fortran', "Do not attempt to build Fortran bindings"
+  option 'enable-shared', "Build shared libraries"
+
+  # fails with clang from Xcode 4.5.1 on 10.7 and 10.8 (see #15533)
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      Clang generates code that causes the linker to segfault when building
+      MPICH2 with shared libraries.  Specific message:
+
+          collect2: ld terminated with signal 11 [Segmentation fault: 11]
+      EOS
+  end if build.include? 'enable-shared'
 
   def install
     if build.head?
@@ -34,6 +46,11 @@ class Mpich2 < Formula
       args << "--disable-f77" << "--disable-fc"
     else
       ENV.fortran
+    end
+
+    # MPICH2 configure defaults to "--disable-shared"
+    if build.include? 'enable-shared'
+      args << "--enable-shared"
     end
 
     system "./configure", *args
