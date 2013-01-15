@@ -22,18 +22,14 @@ class OpenBabel < Formula
 
   depends_on OasaPythonModule.new
 
-  def options
-    [
-      ["--perl", "Perl bindings"],
-      ["--python", "Python bindings"],
-      ["--ruby", "Ruby bindings"]
-    ]
-  end
+  option "with-perl", "Build Perl bindings"
+  option "with-python", "Build Python bindings"
+  option "with-ruby", "Build Ruby bindings"
 
   def install
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}"]
-    args << '--enable-maintainer-mode' if ARGV.build_head?
+    args << '--enable-maintainer-mode' if build.head?
 
     system "./configure", *args
     system "make"
@@ -42,7 +38,7 @@ class OpenBabel < Formula
     ENV['OPENBABEL_INSTALL'] = prefix
 
     # Install the python bindings
-    if ARGV.include? '--python'
+    if build.include? 'with-python'
       cd 'scripts/python' do
         system "python", "setup.py", "build"
         system "python", "setup.py", "install", "--prefix=#{prefix}"
@@ -50,7 +46,7 @@ class OpenBabel < Formula
     end
 
     # Install the perl bindings.
-    if ARGV.include? '--perl'
+    if build.include? 'with-perl'
       cd 'scripts/perl' do
         # because it's not yet been linked, the perl script won't find the newly
         # compiled library unless we pass it in as LD_LIBRARY_PATH.
@@ -74,7 +70,7 @@ class OpenBabel < Formula
     end
 
     # Install the ruby bindings.
-    if ARGV.include? '--ruby'
+    if build.include? 'with-ruby'
       cd 'scripts/ruby' do
         system "ruby", "extconf.rb",
                "--with-openbabel-include=#{include}",
