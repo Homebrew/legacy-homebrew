@@ -1,18 +1,18 @@
-require "vendor/multi_json/vendor/ok_json" unless defined?(::OkJson)
+require 'multi_json/vendor/okjson'
 
 module MultiJson
-  module Engines
+  module Adapters
     class OkJson
-      ParseError = ::OkJson::Error
+      ParseError = ::MultiJson::OkJson::Error
 
-      def self.decode(string, options = {}) #:nodoc:
+      def self.load(string, options={}) #:nodoc:
         string = string.read if string.respond_to?(:read)
-        result = ::OkJson.decode(string)
+        result = ::MultiJson::OkJson.decode("[#{string}]").first
         options[:symbolize_keys] ? symbolize_keys(result) : result
       end
 
-      def self.encode(object) #:nodoc:
-        ::OkJson.valenc(stringify_keys(object))
+      def self.dump(object, options={}) #:nodoc:
+        ::MultiJson::OkJson.valenc(stringify_keys(object))
       end
 
       def self.symbolize_keys(object) #:nodoc:
@@ -23,7 +23,7 @@ module MultiJson
 
       def self.stringify_keys(object) #:nodoc:
         modify_keys(object) do |key|
-          key.is_a?(Symbol) ? key.to_s : key
+          key.respond_to?(:to_s) ? key.to_s : key
         end
       end
 
