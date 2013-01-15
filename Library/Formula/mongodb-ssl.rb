@@ -1,0 +1,83 @@
+require 'formula'
+
+# copy of mongodb formula
+# I just replaced the nstall with a source build with ssl enabled
+
+class MongodbSsl < Formula
+  homepage 'http://www.mongodb.org/'
+  url 'http://downloads.mongodb.org/src/mongodb-src-r2.2.2.tar.gz'
+#  version '2.2.2'
+  sha1 '64f96c4149cb79fbbad62c9b374f659cb46575b2'
+
+  depends_on 'scons' => :build
+
+  def install
+    # ENV.j1  # if your formula's build system can't parallelize
+    system "scons","--64","--ssl","--prefix=#{prefix}","install"
+
+    (var+'mongodb').mkpath
+    (var+'log/mongodb').mkpath
+
+   # Write the configuration files
+    (prefix+'mongod.conf').write mongodb_conf
+
+    # Homebrew: it just works.
+    # NOTE plist updated to use prefix/mongodb!
+    mv bin/'mongod', prefix
+    (bin/'mongod').write <<-EOS.undent
+      #!/usr/bin/env ruby
+      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.find { |arg| arg =~ /\-\-config/ }
+      exec "#{prefix}/mongod", *ARGV
+    EOS
+
+    # copy the config file to etc if this is the first install.
+    etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
+  end
+
+  def mongodb_conf; <<-EOS.undent
+    # Store data in #{var}/mongodb instead of the default /data/db
+    dbpath = #{var}/mongodb
+
+    # Append logs to #{var}/log/mongodb/mongo.log
+    logpath = #{var}/log/mongodb/mongo.log
+    logappend = true
+
+    # Only accept local connections
+    bind_ip = 127.0.0.1
+    EOS
+  end
+
+  plist_options :manual => "mongod"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/mongod</string>
+        <string>run</string>
+        <string>--config</string>
+        <string>#{etc}/mongod.conf</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>KeepAlive</key>
+      <false/>
+      <key>UserName</key>
+      <string>#{`whoami`.chomp}</string>
+      <key>WorkingDirectory</key>
+      <string>#{HOMEBREW_PREFIX}</string>
+      <key>StandardErrorPath</key>
+      <string>#{var}/log/mongodb/output.log</string>
+      <key>StandardOutPath</key>
+      <string>#{var}/log/mongodb/output.log</string>
+    </dict>
+    </plist>
+    EOS
+  end
+
+end
