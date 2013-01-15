@@ -46,6 +46,11 @@ class GnuSmalltalk < Formula
     # disable generational gc in 32-bit
     args << "--disable-generational-gc" unless MacOS.prefer_64_bit?
 
+    # Compatibility with Automake 1.13+, fixed upstream
+    inreplace %w{configure.ac sigsegv/configure.ac},
+      'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
+    inreplace 'snprintfv/configure.ac', 'AM_PROG_CC_STD', ''
+
     system 'autoreconf', '-ivf'
     system "./configure", *args
     system "make"
