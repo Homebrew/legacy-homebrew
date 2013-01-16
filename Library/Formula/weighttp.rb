@@ -2,6 +2,7 @@ require 'formula'
 
 class Weighttp < Formula
   homepage 'http://redmine.lighttpd.net/projects/weighttp/wiki'
+  version '0.3'
   url 'https://nodeload.github.com/lighttpd/weighttp/tar.gz/weighttp-0.3'
   sha1 '170b359abd989fe1db26c71e89dc07c3a7caaf05'
   head 'git://git.lighttpd.net/weighttp'
@@ -11,7 +12,7 @@ class Weighttp < Formula
   def install
     system "./waf", "configure"
     system "./waf", "build"
-    system "./waf", "install"
+    bin.install "build/default/weighttp"
   end
 
   def test
