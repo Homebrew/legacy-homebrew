@@ -78,6 +78,8 @@ private
       MysqlInstalled.new(tag)
     when :postgresql
       PostgresqlInstalled.new(tag)
+    when :tex
+      TeXInstalled.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
     end
@@ -143,27 +145,23 @@ class Dependency
 
   def initialize(name, *tags)
     @name = name
-    @tags = [tags].flatten.compact
-  end
-
-  def hash
-    @name.hash
+    @tags = tags.flatten.compact
   end
 
   def to_s
-    @name
+    name
   end
 
   def ==(other)
-    @name == other.to_s
-  end
-
-  def <=>(other)
-    @name <=> other.to_s
+    name == other.name
   end
 
   def eql?(other)
-    other.is_a? self.class and hash == other.hash
+    other.is_a?(self.class) && hash == other.hash
+  end
+
+  def hash
+    name.hash
   end
 end
 
@@ -197,7 +195,7 @@ class Requirement
   end
 
   def eql?(other)
-    other.is_a? self.class and hash == other.hash
+    other.is_a?(self.class) && hash == other.hash
   end
 
   def hash

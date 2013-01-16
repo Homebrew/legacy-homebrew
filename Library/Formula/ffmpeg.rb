@@ -57,10 +57,12 @@ class Ffmpeg < Formula
   def install
     args = ["--prefix=#{prefix}",
             "--enable-shared",
+            "--enable-pthreads",
             "--enable-gpl",
             "--enable-version3",
             "--enable-nonfree",
             "--enable-hardcoded-tables",
+            "--enable-avresample",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
             "--host-ldflags=#{ENV.ldflags}"

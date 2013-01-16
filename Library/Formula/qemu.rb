@@ -11,6 +11,18 @@ class Qemu < Formula
   depends_on 'glib'
   depends_on 'pixman'
 
+  def patches
+    # This patch fixes the semaphore fallback code for block devices,
+    # as OS X does not implement sem_timedwait() & Co.
+    #
+    # It has not been merged to the 1.3.x stable branch yet.
+    #
+    # See https://bugs.launchpad.net/qemu/+bug/1087114
+    if not build.head? then
+      { :p1 => "https://github.com/qemu/qemu/commit/a795ef8dcb8cbadffc996c41ff38927a97645234.diff"}
+    end
+  end
+
   def install
     # Disable the sdl backend. Let it use CoreAudio instead.
     args = %W[

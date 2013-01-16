@@ -24,9 +24,9 @@ class Mongodb < Formula
   version '2.2.2-x86_64'
 
   devel do
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.3.1.tgz'
-    sha1 'ebb277337e66fe88dfd0bb4208f78e9fba5ca101'
-    version '2.3.1-x86_64'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.3.2.tgz'
+    sha1 'b4c31e4bf1ea2613c8fe47cb781de23ff81bafca'
+    version '2.3.2-x86_64'
   end
 
   depends_on SixtyFourBitRequired.new
