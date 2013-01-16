@@ -22,17 +22,17 @@ class VersionElement
     @elem.to_s
   end
 
-  def string?
-    @elem.is_a? String
-  end
-
-  def numeric?
-    @elem.is_a? Numeric
-  end
-
   protected
 
   attr_reader :elem
+
+  def string?
+    elem.is_a? String
+  end
+
+  def numeric?
+    elem.is_a? Numeric
+  end
 end
 
 class Version

@@ -65,12 +65,9 @@ class Git < Formula
       bin.install 'git-subtree'
     end
 
-    # install the completion scripts from 'contrib' first
+    # install the completion script first because it is inside 'contrib'
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
     (prefix+'etc/bash_completion.d').install 'contrib/completion/git-prompt.sh'
-
-    (share+'zsh/site-functions').install 'contrib/completion/git-completion.zsh' => '_git'
-
     (share+'git-core').install 'contrib'
 
     # We could build the manpages ourselves, but the build process depends
