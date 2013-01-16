@@ -8,6 +8,12 @@ class GambitScheme < Formula
   option 'with-check', 'Execute "make check" before installing'
   option 'enable-shared', 'Build Gambit Scheme runtime as shared library'
 
+  # Gambit Scheme needs to know the real compilers used during compilation, as
+  # it writes these into its "gambit-cc" script. The superenv wrappers won't
+  # work for this.
+  # See: https://github.com/mxcl/homebrew/issues/17099
+  env :std
+
   fails_with :llvm do
     build 2335
     cause "ld crashes during the build process or segfault at runtime"
