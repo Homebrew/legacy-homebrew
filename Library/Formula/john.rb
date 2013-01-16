@@ -5,10 +5,6 @@ class John < Formula
   url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
   sha1 '8f77bdd42b7cf94ec176f55ea69c4da9b2b8fe3b'
 
-  fails_with :llvm do
-    build 2334
-  end
-
   option 'jumbo', 'Build with jumbo-7 features'
 
   def patches
@@ -16,6 +12,15 @@ class John < Formula
     p << "http://www.openwall.com/john/g/john-1.7.9-jumbo-7.diff.gz" if build.include? 'jumbo'
     return p
   end
+
+  fails_with :llvm do
+    build 2334
+  end
+
+  fails_with :clang do
+    build 421
+    cause "rawSHA1_ng_fmt.c:535:19: error: redefinition of '_mm_testz_si128'"
+  end if build.include? 'jumbo'
 
   def install
     ENV.deparallelize

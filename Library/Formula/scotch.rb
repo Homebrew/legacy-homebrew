@@ -2,9 +2,8 @@ require 'formula'
 
 class Scotch < Formula
   homepage 'https://gforge.inria.fr/projects/scotch'
-  url 'https://gforge.inria.fr/frs/download.php/28933'
-  version '5.1.12'
-  sha1 '1fd9becbc14809fc080f4f69ca0d9c1c8726223f'
+  url 'https://gforge.inria.fr/frs/download.php/31831/scotch_6.0.0.tar.gz'
+  sha1 'eb32d846bb14449245b08c81e740231f7883fea6'
 
   depends_on MPIDependency.new(:cc)
 
@@ -12,15 +11,16 @@ class Scotch < Formula
     cd 'src' do
       ln_s 'Make.inc/Makefile.inc.i686_mac_darwin8', 'Makefile.inc'
 
-      # Use mpicc to compile everything
       inreplace 'Makefile.inc' do |s|
-        s.change_make_var! 'CCS', ENV['MPICC']
+        s.change_make_var! 'CCS', ENV['CC']
         s.change_make_var! 'CCP', ENV['MPICC']
         s.change_make_var! 'CCD', ENV['MPICC']
+        # OS X doesn't implement pthread_barriers required by Scotch
+        s.slice! '-DCOMMON_PTHREAD'
+        s.slice! '-DSCOTCH_PTHREAD'
       end
-
-      system 'make', 'scotch'
-      system 'make', 'ptscotch'
+      system 'make', 'scotch','VERBOSE=ON'
+      system 'make', 'ptscotch','VERBOSE=ON'
       system 'make', 'install', "prefix=#{prefix}"
     end
   end

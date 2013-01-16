@@ -7,12 +7,14 @@ module Homebrew extend self
 
   def cleanup
     if ARGV.named.empty?
-      HOMEBREW_CELLAR.children.each do |rack|
-        begin
-          cleanup_formula rack.basename.to_s if rack.directory?
-        rescue FormulaUnavailableError => e
-          # Don't complain about Cellar folders that are from DIY installs
-          # instead of core formulae.
+      if HOMEBREW_CELLAR.directory?
+        HOMEBREW_CELLAR.children.each do |rack|
+          begin
+            cleanup_formula rack.basename.to_s if rack.directory?
+          rescue FormulaUnavailableError => e
+            # Don't complain about Cellar folders that are from DIY installs
+            # instead of core formulae.
+          end
         end
       end
       clean_cache
@@ -35,11 +37,15 @@ module Homebrew extend self
       f.rack.children.each do |keg|
         if File.directory? keg and f.version > Keg.new(keg).version
           if f.can_cleanup?
-            if ARGV.dry_run?
-              puts "Would remove: #{keg}"
+            if !Keg.new(keg).linked?
+              if ARGV.dry_run?
+                puts "Would remove: #{keg}"
+              else
+                puts "Removing: #{keg}..."
+                rm_rf keg
+              end
             else
-              puts "Removing: #{keg}..."
-              rm_rf keg
+              opoo "Skipping (old) #{keg} due to it being linked"
             end
           else
             opoo "Skipping (old) keg-only: #{keg}"
@@ -54,6 +60,7 @@ module Homebrew extend self
   end
 
   def clean_cache
+    return unless HOMEBREW_CACHE.directory?
     HOMEBREW_CACHE.children.each do |pn|
       next unless pn.file?
       version = pn.version
@@ -91,7 +98,7 @@ class Formula
     elsif opt_prefix.directory?
       # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks
       !Formula.installed.
-        select{ |ff| ff.deps.map(&:to_s).include? name }.
+        select{ |ff| ff.deps.map{ |d| d.to_s }.include? name }.
         map{ |ff| ff.rack.children rescue [] }.
         flatten.
         map{ |keg_path| Tab.for_keg(keg_path).send("HEAD") }.

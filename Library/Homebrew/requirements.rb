@@ -1,12 +1,12 @@
 # A dependency on a language-specific module.
 class LanguageModuleDependency < Requirement
+  fatal true
+
   def initialize language, module_name, import_name=nil
     @language = language
     @module_name = module_name
     @import_name = import_name || module_name
   end
-
-  def fatal?; true; end
 
   def satisfied?
     quiet_system(*the_test)
@@ -25,6 +25,7 @@ class LanguageModuleDependency < Requirement
       when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{@import_name}'}
       when :lua then %W{/usr/bin/env luarocks show #{@import_name}}
       when :node then %W{/usr/bin/env node -e require('#{@import_name}');}
+      when :ocaml then %W{/usr/bin/env opam list #{@import_name} | grep #{@import_name}}
       when :perl then %W{/usr/bin/env perl -e use\ #{@import_name}}
       when :python then %W{/usr/bin/env python -c import\ #{@import_name}}
       when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{@import_name}'}
@@ -38,6 +39,7 @@ class LanguageModuleDependency < Requirement
       when :jruby   then "jruby -S gem install"
       when :lua     then "luarocks install"
       when :node    then "npm install"
+      when :ocaml   then "opam install"
       when :perl    then "cpan -i"
       when :python  then "pip install"
       when :rbx     then "rbx gem install"
@@ -53,13 +55,13 @@ class X11Dependency < Requirement
   include Comparable
   attr_reader :min_version
 
+  fatal true
+
   def initialize(*tags)
     tags.flatten!
     @min_version = tags.shift if /(\d\.)+\d/ === tags.first
     super
   end
-
-  def fatal?; true; end
 
   def satisfied?
     MacOS::XQuartz.installed? and (@min_version.nil? or @min_version <= MacOS::XQuartz.version)
@@ -100,13 +102,15 @@ class MPIDependency < Requirement
 
   attr_reader :lang_list
 
+  fatal true
+
+  env :userpaths
+
   def initialize *lang_list
     @lang_list = lang_list
     @non_functional = []
     @unknown_langs = []
   end
-
-  def fatal?; true; end
 
   def mpi_wrapper_works? compiler
     compiler = which compiler
@@ -120,6 +124,11 @@ class MPIDependency < Requirement
   end
 
   def satisfied?
+    # we have to assure the ENV is (almost) as during the build
+    orig_PATH = ENV['PATH']
+    require 'superenv'
+    ENV.setup_build_environment
+    ENV.userpaths!
     @lang_list.each do |lang|
       case lang
       when :cc, :cxx, :f90, :f77
@@ -129,6 +138,9 @@ class MPIDependency < Requirement
         @unknown_langs << lang.to_s
       end
     end
+
+    # Restore the original paths
+    ENV['PATH'] = orig_PATH
 
     @unknown_langs.empty? and @non_functional.empty?
   end
@@ -170,12 +182,14 @@ class MPIDependency < Requirement
         EOS
     end
   end
-
 end
 
 # This requirement added by the `conflicts_with` DSL method.
 class ConflictRequirement < Requirement
   attr_reader :formula
+
+  # The user can chose to force installation even in the face of conflicts.
+  fatal !ARGV.force?
 
   def initialize formula, name, opts={}
     @formula = formula
@@ -199,15 +213,10 @@ class ConflictRequirement < Requirement
     keg = Formula.factory(@formula).prefix
     not keg.exist? && Keg.new(keg).linked?
   end
-
-  # The user can chose to force installation even in the face of conflicts.
-  def fatal?
-    not ARGV.force?
-  end
 end
 
 class XcodeDependency < Requirement
-  def fatal?; true; end
+  fatal true
 
   def satisfied?
     MacOS::Xcode.installed?
@@ -221,7 +230,7 @@ class XcodeDependency < Requirement
 end
 
 class MysqlInstalled < Requirement
-  def fatal?; true; end
+  fatal true
 
   def satisfied?
     which 'mysql_config'
@@ -244,7 +253,7 @@ class MysqlInstalled < Requirement
 end
 
 class PostgresqlInstalled < Requirement
-  def fatal?; true; end
+  fatal true
 
   def satisfied?
     which 'pg_config'
@@ -259,6 +268,30 @@ class PostgresqlInstalled < Requirement
 
       Or you can use an official installer from:
         http://www.postgresql.org/download/macosx/
+    EOS
+  end
+end
+
+class TeXInstalled < Requirement
+  fatal true
+  env :userpaths
+
+  def satisfied?
+    tex = which 'tex'
+    latex = which 'latex'
+    not tex.nil? and not latex.nil?
+  end
+
+  def message; <<-EOS.undent
+    A LaTeX distribution is required to install.
+
+    You can install MacTeX distribution from:
+      http://www.tug.org/mactex/
+
+    Make sure that its bin directory is in your PATH before proceeding.
+
+    You may also need to restore the ownership of Homebrew install:
+      sudo chown -R $USER `brew --prefix`
     EOS
   end
 end

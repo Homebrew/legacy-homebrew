@@ -11,11 +11,12 @@ class Gnuplot < Formula
   option 'wx',     'Build the wxWidgets terminal using pango'
   option 'with-x', 'Build the X11 terminal'
   option 'qt',     'Build the Qt4 terminal'
-  option 'cairo',  'Build the Cario based terminals'
+  option 'cairo',  'Build the Cairo based terminals'
   option 'nolua',  'Build without the lua/TikZ terminal'
   option 'nogd',   'Build without gd support'
   option 'tests',  'Verify the build with make check (1 min)'
   option 'without-emacs', 'Do not build Emacs lisp files'
+  option 'latex',  'Build with LaTeX support'
 
   if build.head?
     depends_on :automake
@@ -31,6 +32,7 @@ class Gnuplot < Formula
   depends_on 'gd'          unless build.include? 'nogd'
   depends_on 'wxmac'       if build.include? 'wx'
   depends_on 'qt'          if build.include? 'qt'
+  depends_on :tex          if build.include? 'latex'
 
   def install
     # Help configure find libraries
@@ -42,8 +44,6 @@ class Gnuplot < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --with-readline=#{readline.opt_prefix}
-      --without-latex
-      --without-tutorial
     ]
 
     args << "--with-pdf=#{pdflib.opt_prefix}" if build.include? 'pdf'
@@ -53,6 +53,14 @@ class Gnuplot < Formula
     args << '--enable-qt'             if build.include? 'qt'
     args << '--without-lua'           if build.include? 'nolua'
     args << '--without-lisp-files'    if build.include? 'without-emacs'
+
+    if build.include? 'latex'
+      args << '--with-latex'
+      args << '--with-tutorial'
+    else
+      args << '--without-latex'
+      args << '--without-tutorial'
+    end
 
     system './prepare' if build.head?
     system "./configure", *args

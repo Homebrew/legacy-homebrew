@@ -5,6 +5,9 @@ class Discount < Formula
   url 'https://github.com/Orc/discount/tarball/v2.1.5a'
   sha1 '73dcf117fa6ca15332c67f246544cd224bfc1774'
 
+  conflicts_with 'markdown',
+    :because => 'both discount and markdown ship a `markdown` executable.'
+
   def install
     system "./configure.sh", "--prefix=#{prefix}",
                              "--mandir=#{man}",

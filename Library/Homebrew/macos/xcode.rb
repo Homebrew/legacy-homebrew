@@ -58,12 +58,7 @@ module MacOS::Xcode extend self
   end
 
   def installed?
-    # Telling us whether the Xcode.app is installed or not.
-    @installed ||= V4_BUNDLE_PATH.exist? ||
-      V3_BUNDLE_PATH.exist? ||
-      MacOS.app_with_bundle_id(V4_BUNDLE_ID) ||
-      MacOS.app_with_bundle_id(V3_BUNDLE_ID) ||
-      false
+    not prefix.nil?
   end
 
   def version
