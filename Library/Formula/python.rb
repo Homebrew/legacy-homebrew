@@ -74,8 +74,11 @@ class Python < Formula
     args << '--without-gcc' if ENV.compiler == :clang
     args << '--with-dtrace' if build.include? 'with-dtrace'
 
-    distutils_fix_superenv(args)
-    distutils_fix_stdenv
+    if superenv?
+      distutils_fix_superenv(args)
+    else
+      distutils_fix_stdenv
+    end
 
     if build.universal?
       ENV.universal_binary
@@ -175,57 +178,53 @@ class Python < Formula
   end
 
   def distutils_fix_superenv(args)
-    if superenv?
-      # To allow certain Python bindings to find brewed software:
-      cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include"
-      ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib"
-      unless MacOS::CLT.installed?
-        # Help Python's build system (distribute/pip) to build things on Xcode-only systems
-        # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
-        cflags += " -isysroot #{MacOS.sdk_path}"
-        ldflags += " -isysroot #{MacOS.sdk_path}"
-        # Same zlib.h-not-found-bug as in env :std (see below)
-        args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
-        # For the Xlib.h, Python needs this header dir with the system Tk
-        unless build.include? 'with-brewed-tk'
-          cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
-        end
+    # To allow certain Python bindings to find brewed software:
+    cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
+    ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
+    unless MacOS::CLT.installed?
+      # Help Python's build system (distribute/pip) to build things on Xcode-only systems
+      # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
+      cflags += " -isysroot #{MacOS.sdk_path}"
+      ldflags += " -isysroot #{MacOS.sdk_path}"
+      # Same zlib.h-not-found-bug as in env :std (see below)
+      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
+      # For the Xlib.h, Python needs this header dir with the system Tk
+      unless build.include? 'with-brewed-tk'
+        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
       end
-      args << cflags
-      args << ldflags
-      # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
-      args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
-      # We want our readline! This is just to outsmart the detection code,
-      # superenv handles that cc finds includes/libs!
-      inreplace "setup.py",
-                "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
-                "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
     end
+    args << cflags
+    args << ldflags
+    # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
+    args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
+    # We want our readline! This is just to outsmart the detection code,
+    # superenv handles that cc finds includes/libs!
+    inreplace "setup.py",
+              "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
+              "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
   end
 
   def distutils_fix_stdenv()
-    if not superenv?
-      # Python scans all "-I" dirs but not "-isysroot", so we add
-      # the needed includes with "-I" here to avoid this err:
-      #     building dbm using ndbm
-      #     error: /usr/include/zlib.h: No such file or directory
-      ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
+    # Python scans all "-I" dirs but not "-isysroot", so we add
+    # the needed includes with "-I" here to avoid this err:
+    #     building dbm using ndbm
+    #     error: /usr/include/zlib.h: No such file or directory
+    ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
 
-      # Don't use optimizations other than "-Os" here, because Python's distutils
-      # remembers (hint: `python3-config --cflags`) and reuses them for C
-      # extensions which can break software (such as scipy 0.11 fails when
-      # "-msse4" is present.)
-      ENV.minimal_optimization
+    # Don't use optimizations other than "-Os" here, because Python's distutils
+    # remembers (hint: `python3-config --cflags`) and reuses them for C
+    # extensions which can break software (such as scipy 0.11 fails when
+    # "-msse4" is present.)
+    ENV.minimal_optimization
 
-      # We need to enable warnings because the configure.in uses -Werror to detect
-      # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
-      ENV.enable_warnings
-      if ENV.compiler == :clang
-        # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
-        ENV.append_to_cflags '-Wno-unused-value'
-        ENV.append_to_cflags '-Wno-empty-body'
-        ENV.append_to_cflags '-Qunused-arguments'
-      end
+    # We need to enable warnings because the configure.in uses -Werror to detect
+    # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
+    ENV.enable_warnings
+    if ENV.compiler == :clang
+      # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
+      ENV.append_to_cflags '-Wno-unused-value'
+      ENV.append_to_cflags '-Wno-empty-body'
+      ENV.append_to_cflags '-Qunused-arguments'
     end
   end
 
