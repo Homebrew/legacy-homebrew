@@ -80,7 +80,7 @@ class Pydoop < Formula
 
   def caveats; <<-EOS.undent
     This formula installs Pydoop for whatever Python is found first in
-    your path.  Either setuptools or distribute must be installed.
+    your path.
     EOS
   end
 
