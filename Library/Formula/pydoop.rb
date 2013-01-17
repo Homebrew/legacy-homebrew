@@ -2,8 +2,7 @@ require 'formula'
 
 class JdkInstalled < Requirement
   def message; <<-EOS.undent
-    A JDK is required.
-    You can get the official Oracle installers from:
+    A JDK is required.  You can get the official Oracle installers from:
     http://www.oracle.com/technetwork/java/javase/downloads/index.html
     EOS
   end
@@ -19,9 +18,9 @@ end
 
 class JavaHome < Requirement
   def message; <<-EOS.undent
-    JAVA_HOME is unset. JAVA_HOME is required to build pydoop.
-    A JDK is required. If you don't have java installed you can get the official Oracle installers from:
-    http://www.oracle.com/technetwork/java/javase/downloads/index.html
+    JAVA_HOME is not set:  please set it to the correct value for your Java
+    installation.  For instance:
+    /Library/Java/JavaVirtualMachines/jdk1.7.0_11.jdk/Contents/Home
     EOS
   end
 
@@ -48,7 +47,7 @@ class Pydoop < Formula
 
   def install
     unless(ENV["HADOOP_HOME"])
-      ohai "HADOOP_HOME is unset. Using brew version"
+      ohai "HADOOP_HOME is not set.  Using brew version"
       ENV.append 'HADOOP_HOME', Formula.factory('hadoop').libexec
     end
     ENV.append 'BOOST_PYTHON', 'boost_python-mt'
@@ -80,9 +79,8 @@ class Pydoop < Formula
   end
 
   def caveats; <<-EOS.undent
-    This formula installs pydoop against whatever Python is first in your path.
-    This Python needs to have either setuptools or distribute installed or
-    the build will fail.
+    This formula installs Pydoop for whatever Python is found first in
+    your path.  Either setuptools or distribute must be installed.
     EOS
   end
 
