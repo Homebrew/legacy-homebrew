@@ -2,8 +2,8 @@ require 'formula'
 
 class AvroCpp < Formula
   homepage 'http://avro.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=avro/avro-1.7.2/cpp/avro-cpp-1.7.2.tar.gz'
-  sha1 'f9116583e4f230288317410404b066664722f9e4'
+  url 'http://www.apache.org/dyn/closer.cgi?path=avro/avro-1.7.3/cpp/avro-cpp-1.7.3.tar.gz'
+  sha1 'b8596a1d717f59d9d0e7d0130b36fa8b79a5be9f'
 
   depends_on 'cmake' => :build
   depends_on 'boost'
