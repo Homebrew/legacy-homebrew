@@ -15,8 +15,9 @@ class Socat < Formula
   def patches
     # Socat devs are aware; see:
     # https://trac.macports.org/ticket/32044
-    p = { :p0 => "https://trac.macports.org/export/90442/trunk/dports/sysutils/socat/files/patch-xioexit.c.diff" }
-    p[:p1] = DATA if build.devel?
+    p = { :p0 => "https://trac.macports.org/export/90442/trunk/dports/sysutils/socat/files/patch-xioexit.c.diff",
+          :p1 => [ "https://gist.github.com/raw/4554315/c77d8e1f5acb1d1938400c622468d5a9bb0ab9e1/gistfile1.txt" ] }
+    p[:p1].push(DATA) if build.devel?
     p
   end
 
