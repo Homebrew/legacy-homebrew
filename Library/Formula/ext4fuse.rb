@@ -2,8 +2,8 @@ require 'formula'
 
 class Ext4fuse < Formula
   homepage 'https://github.com/gerard/ext4fuse'
-  url 'https://github.com/gerard/ext4fuse/archive/v0.1.1.tar.gz'
-  sha1 '1dbf4dc4859f8d118e80046cef0af2bcee471ea5'
+  url 'https://github.com/gerard/ext4fuse/archive/v0.1.2.tar.gz'
+  sha1 'ba46e5964910d7ae42447836db1c5f1cd0e7de78'
 
   head 'https://github.com/gerard/ext4fuse.git'
 
