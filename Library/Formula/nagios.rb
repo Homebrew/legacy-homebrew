@@ -41,7 +41,7 @@ class Nagios < Formula
     mkdir HOMEBREW_PREFIX+'var/lib/nagios/rw' unless File.exists? HOMEBREW_PREFIX+'var/lib/nagios/rw'
   end
 
-  plist_options :startup => true, :manual => "nagios #{HOMEBREW_PREFIX}/etc/nagios.cfg"
+  plist_options :startup => true, :manual => "nagios #{HOMEBREW_PREFIX}/etc/nagios/nagios.cfg"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
