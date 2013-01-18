@@ -178,7 +178,11 @@ class Formula
   # The final option is to return DATA, then put a diff after __END__. You
   # can still return a Hash with DATA as the value for a patch level key.
   def patches; end
-
+  
+  # on_uninstall are automatically applied before unlink and uninstall on 
+  # uninstall formula command
+  def on_uninstall; end
+  
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
   def keg_only?

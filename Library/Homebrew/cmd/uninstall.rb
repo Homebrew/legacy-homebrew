@@ -2,12 +2,20 @@ require 'keg'
 require 'formula'
 
 module Homebrew extend self
+  def formula_for(name)
+    Formula.factory(name)
+  end
+  
   def uninstall
     raise KegUnspecifiedError if ARGV.named.empty?
 
     if not ARGV.force?
       ARGV.kegs.each do |keg|
         puts "Uninstalling #{keg}..."
+        
+        name = Formula.canonical_name(keg.fname)
+        formula_for(name).on_uninstall
+        
         keg.unlink
         keg.uninstall
         rm_opt_link keg.fname
@@ -25,6 +33,9 @@ module Homebrew extend self
           rack.children.each do |keg|
             if keg.directory?
               keg = Keg.new(keg)
+              
+              formula_for(name).on_uninstall
+              
               keg.unlink
               keg.rmtree
             end
