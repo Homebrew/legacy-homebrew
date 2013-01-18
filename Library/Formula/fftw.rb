@@ -13,7 +13,11 @@ class Fftw < Formula
             "--disable-dependency-tracking"]
 
     # check for gfortran
-    args << "--disable-fortran" unless which 'gfortran'
+    if build.include? 'disable-fortran'
+      args << "--disable-fortran" 
+    else
+      ENV.fortran
+    end
 
     # single precision
     # enable-sse only works with single
