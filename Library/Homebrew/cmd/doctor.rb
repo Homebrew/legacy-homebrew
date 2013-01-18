@@ -744,7 +744,7 @@ def check_the_git_origin
   HOMEBREW_REPOSITORY.cd do
     origin = `git config --get remote.origin.url`.chomp
 
-    unless origin =~ /mxcl\/homebrew\.git$/ then <<-EOS.undent
+    unless origin =~ /mxcl\/homebrew(\.git)?$/ then <<-EOS.undent
       Suspicious git origin remote found.
 
       With a non-standard origin, Homebrew won't pull updates from
