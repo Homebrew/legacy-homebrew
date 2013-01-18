@@ -7,9 +7,13 @@ class Libodbcxx < Formula
   sha1 'e59842266b981caab24a6fae1f7d48b6799420f8'
   
   def patches
-    # Fixes a compilation error on 64bit machines.
-    # Submitted a patch to the upstream project:
-    #   http://sourceforge.net/tracker/?func=detail&aid=3590196&group_id=19075&atid=319075
+    # Two patches are included:
+    # The first: Fixes a compilation error on 64bit machines.
+    #   Here is the URL to the submitted patch to the upstream project:
+    # http://sourceforge.net/tracker/?func=detail&aid=3590196&group_id=19075&atid=319075
+    # The second: Fixes a memory corruption error on 64bit systems
+    #   Here is the URL to the submitted patch to the upstream project:
+    # https://sourceforge.net/tracker/?func=detail&aid=3601361&group_id=19075&atid=319075
     DATA
   end
 
@@ -34,3 +38,16 @@ index b281ec5..18a04da 100644
  # elif ODBCXX_SIZEOF_LONG==8
               ODBCXX_STRING_CONST("%ld")
  # else
+diff --git a/src/statement.cpp b/src/statement.cpp
+index 809278b..e5f0e5d 100644
+--- a/src/statement.cpp
++++ b/src/statement.cpp
+@@ -90,7 +90,7 @@ void Statement::_unregisterResultSet(ResultSet* rs)
+ //protected
+ SQLUINTEGER Statement::_getUIntegerOption(SQLINTEGER optnum)
+ {
+-  SQLUINTEGER res;
++  SQLULEN res;
+   SQLRETURN r;
+ 
+ #if ODBCVER < 0x0300
