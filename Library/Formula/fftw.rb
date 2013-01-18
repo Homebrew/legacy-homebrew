@@ -5,6 +5,8 @@ class Fftw < Formula
   url 'http://www.fftw.org/fftw-3.3.3.tar.gz'
   sha1 '11487180928d05746d431ebe7a176b52fe205cf9'
 
+  option "with-fortran", "Enable Fortran bindings"
+
   def install
     args = ["--enable-shared",
             "--disable-debug",
@@ -12,8 +14,11 @@ class Fftw < Formula
             "--enable-threads",
             "--disable-dependency-tracking"]
 
-    # check for gfortran
-    args << "--disable-fortran" unless which 'gfortran'
+    if build.include? "with-fortran"
+      ENV.fortran
+    else
+      args << "--disable-fortran" unless which 'gfortran'
+    end
 
     # single precision
     # enable-sse only works with single
