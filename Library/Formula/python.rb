@@ -32,6 +32,8 @@ class Python < Formula
 
   def patches
     p = []
+    # change the default install location for scripts
+    p << "https://gist.github.com/raw/4565288/feaf0caf4cc412562aa67f4b8bf9373608a33bc5/brew_python_install_scripts.diff"
     # python fails to build on NFS; patch is merged upstream, will be in next release
     # see http://bugs.python.org/issue14662
     p << "https://gist.github.com/raw/4349132/25662c6b382315b5db67bf949773d76471bbcee7/python-nfs-shutil.diff"
@@ -157,15 +159,10 @@ class Python < Formula
     Distribute.new.brew { system "#{bin}/python", *setup_args }
     Pip.new.brew { system "#{bin}/python", *setup_args }
 
-    # Tell distutils-based installers where to put scripts and python modules
-    (prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg").write <<-EOF.undent
-      [install]
-      install-scripts=#{scripts_folder}
-      install-lib=#{site_packages}
-    EOF
-
     makefile = prefix/'Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile'
     inreplace makefile do |s|
+      # Tell distutils-based installers where to put scripts
+      s.gsub!(/^BINDIR=.*$/, "BINDIR=#{scripts_folder}")
       unless MacOS::CLT.installed?
         s.gsub!(/^CC=.*$/, "CC=xcrun clang")
         s.gsub!(/^CXX=.*$/, "CXX=xcrun clang++")
