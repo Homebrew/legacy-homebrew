@@ -11,7 +11,7 @@ class Skktools < Formula
   # fixing compile errors with clang
   # Reported upstream, check if still needed in next version.
   def patches
-    "https://gist.github.com/raw/4473844/skkdic-expr.c.patch"
+    "https://gist.github.com/raw/4473844/807a208e642953bf95d1a1f3adda4863d189984d/skkdic-expr.c.patch"
   end
 
   def install
