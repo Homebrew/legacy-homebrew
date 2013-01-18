@@ -1,4 +1,4 @@
-require 'multi_json/vendor/okjson'
+require 'vendor/multi_json/vendor/okjson'
 
 module MultiJson
   module Adapters
