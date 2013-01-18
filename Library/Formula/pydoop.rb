@@ -63,7 +63,7 @@ class Pydoop < Formula
       "--verbose",
       "install",
       "--force",
-      "--install-scripts=#{share}/python",
+      "--install-scripts=#{bin}",
       "--install-lib=#{temp_site_packages}",
       "--install-data=#{share}",
       "--install-headers=#{include}",
