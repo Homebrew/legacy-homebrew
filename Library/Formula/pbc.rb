@@ -7,6 +7,11 @@ class Pbc < Formula
 
   depends_on 'gmp'
 
+  fails_with :clang do
+    build 421
+    cause "Clang does not support nested functions"
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
