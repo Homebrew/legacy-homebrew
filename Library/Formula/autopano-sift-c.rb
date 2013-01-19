@@ -6,7 +6,7 @@ class AutopanoSiftC < Formula
   sha1 'f8c5f4004ae51cb58acc5cedb065ae0ef3e19a8c'
 
   depends_on 'libpano'
-  depends_on 'cmake' => :install
+  depends_on 'cmake' => :build
 
   def install
     system "cmake", ".", *std_cmake_args
