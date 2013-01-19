@@ -7,6 +7,9 @@ class Libusb < Formula
 
   head 'git://git.libusb.org/libusb.git'
 
+  conflicts_with 'libusbx',
+    :because => 'libusbx and libusb install the same binaries.'
+
   if build.head?
     depends_on :automake
     depends_on :libtool
