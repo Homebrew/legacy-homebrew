@@ -1,6 +1,8 @@
 require 'formula'
 
 class HomebrewedPython < Requirement
+  fatal true
+
   def message; <<-EOS.undent
     Compiling against the system-provided Python will likely fail.
     The system-provided Python includes PPC support, which will cause a compiler
@@ -11,9 +13,6 @@ class HomebrewedPython < Requirement
   end
   def satisfied?
     Formula.factory('python').installed?
-  end
-  def fatal?
-    false
   end
 end
 
