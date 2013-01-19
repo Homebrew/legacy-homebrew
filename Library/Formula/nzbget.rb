@@ -23,7 +23,7 @@ class Nzbget < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--disable-libpar2-bugfixes-check", "--prefix=#{prefix}"
     system "make install"
     system "make install-conf"
   end
