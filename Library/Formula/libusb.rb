@@ -23,4 +23,23 @@ class Libusb < Formula
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
+
+  # The 'system "./autogen.sh" step fails. Tickets #159 and #161 address this.
+  # "Automake-1.13 removed long obsolete AM_CONFIG_HEADER completely ..."
+  def patches; build.head? ? DATA : []; end
 end
+
+__END__
+diff --git a/configure.ac b/configure.ac
+index 260d2f7..d127601 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -31,7 +31,7 @@ AM_MAINTAINER_MODE
+ 
+ AC_CONFIG_SRCDIR([libusb/core.c])
+ AC_CONFIG_MACRO_DIR([m4])
+-AM_CONFIG_HEADER([config.h])
++AC_CONFIG_HEADERS([config.h])
+ m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
+ 
+ AC_PREREQ([2.50])
