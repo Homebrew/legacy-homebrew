@@ -57,6 +57,8 @@ class X11Dependency < Requirement
 
   fatal true
 
+  env { x11 }
+
   def initialize(*tags)
     tags.flatten!
     @min_version = tags.shift if /(\d\.)+\d/ === tags.first
@@ -72,10 +74,6 @@ class X11Dependency < Requirement
     Homebrew does not package XQuartz. Installers may be found at:
       https://xquartz.macosforge.org
     EOS
-  end
-
-  def modify_build_environment
-    ENV.x11
   end
 
   def <=> other
@@ -142,11 +140,11 @@ class MPIDependency < Requirement
     @unknown_langs.empty? and @non_functional.empty?
   end
 
-  def modify_build_environment
+  env do |req|
     # Set environment variables to help configure scripts find MPI compilers.
     # Variable names taken from:
     # http://www.gnu.org/software/autoconf-archive/ax_mpi.html
-    lang_list.each do |lang|
+    req.lang_list.each do |lang|
       compiler = 'mpi' + lang.to_s
       mpi_path = which compiler
 
