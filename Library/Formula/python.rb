@@ -32,8 +32,8 @@ class Python < Formula
 
   def patches
     p = []
-    # change the default install location for scripts
-    p << "https://gist.github.com/raw/4565288/feaf0caf4cc412562aa67f4b8bf9373608a33bc5/brew_python_install_scripts.diff"
+    # change the default install location for scripts and packages
+    p << "https://gist.github.com/raw/4565288/dfe62bbf2acccd83f7ad6263af038dced58739cf/brew_python_install_scripts.diff"
     # python fails to build on NFS; patch is merged upstream, will be in next release
     # see http://bugs.python.org/issue14662
     p << "https://gist.github.com/raw/4349132/25662c6b382315b5db67bf949773d76471bbcee7/python-nfs-shutil.diff"
@@ -111,11 +111,11 @@ class Python < Formula
     # as going from 2.7.0 to 2.7.1:
 
     # Remove the site-packages that Python created in its Cellar.
-    site_packages_cellar.rmtree
+#    site_packages_cellar.rmtree
     # Create a site-packages in HOMEBREW_PREFIX/lib/python/site-packages
-    site_packages.mkpath
+#    site_packages.mkpath
     # Symlink the prefix site-packages into the cellar.
-    ln_s site_packages, site_packages_cellar
+#    ln_s site_packages, site_packages_cellar
 
     # Teach python not to use things from /System
     # and tell it about the correct site-package dir because we moved it
@@ -161,8 +161,8 @@ class Python < Formula
 
     makefile = prefix/'Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile'
     inreplace makefile do |s|
-      # Tell distutils-based installers where to put scripts
-      s.gsub!(/^BINDIR=.*$/, "BINDIR=#{scripts_folder}")
+      # Tell distutils-based installers where to put scripts and packages
+      s.gsub!(/^BINDIR=.*$/, "BINDIR=#{scripts_folder}\nBREWSITEDIR=#{site_packages}")
       unless MacOS::CLT.installed?
         s.gsub!(/^CC=.*$/, "CC=xcrun clang")
         s.gsub!(/^CXX=.*$/, "CXX=xcrun clang++")
