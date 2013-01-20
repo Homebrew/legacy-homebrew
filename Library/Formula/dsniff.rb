@@ -1,6 +1,8 @@
 require 'formula'
 
 class NoBdb5 < Requirement
+  satisfy(:build_env => false) { !Formula.factory("berkeley-db").installed? }
+
   def message; <<-EOS.undent
     This software can fail to compile when Berkeley-DB 5.x is installed.
     You may need to try:
@@ -8,10 +10,6 @@ class NoBdb5 < Requirement
       brew install dsniff
       brew link berkeley-db
     EOS
-  end
-  def satisfied?
-    f = Formula.factory("berkeley-db")
-    not f.installed?
   end
 end
 
