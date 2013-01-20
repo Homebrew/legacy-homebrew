@@ -31,6 +31,20 @@ class BuildEnvironmentTests < Test::Unit::TestCase
     dump = Marshal.dump(@env)
     assert Marshal.load(dump).userpaths?
   end
+
+  def test_env_block
+    foo = mock("foo")
+    @env << Proc.new { foo.some_message }
+    foo.expects(:some_message)
+    @env.modify_build_environment
+  end
+
+  def test_env_block_with_argument
+    foo = mock("foo")
+    @env << Proc.new { |x| x.some_message }
+    foo.expects(:some_message)
+    @env.modify_build_environment(foo)
+  end
 end
 
 class BuildEnvironmentDSLTests < Test::Unit::TestCase
