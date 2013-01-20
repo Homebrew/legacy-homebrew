@@ -440,6 +440,11 @@ can take several different forms:
 
     *Default:* the number of available CPU cores.
 
+  * HOMEBREW\_NO\_EMOJI:
+    If set, Homebrew will not print the beer emoji on a successful build.
+
+    *Note:* Homebrew will only try to print emoji on Lion or newer.
+
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
     a Homebrew-built Subversion if installed, or the system-provided binary.

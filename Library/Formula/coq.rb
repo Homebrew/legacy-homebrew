@@ -1,6 +1,8 @@
 require 'formula'
 
 class TransitionalMode < Requirement
+  fatal true
+
   def message; <<-EOS.undent
     camlp5 must be compiled in transitional mode (instead of --strict mode):
       brew install camlp5
@@ -11,9 +13,6 @@ class TransitionalMode < Requirement
     return true if not which('camlp5')
     # If installed, make sure it is transitional instead of strict.
     `camlp5 -pmode 2>&1`.chomp == 'transitional'
-  end
-  def fatal?
-    true
   end
 end
 

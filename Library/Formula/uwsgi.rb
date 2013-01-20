@@ -1,16 +1,14 @@
 require 'formula'
 
 class UniversalPcre < Requirement
+  fatal true
+
   def message; <<-EOS.undent
     pcre must be build universal for uwsgi to work.
     You will need to:
       brew rm pcre
       brew install --universal pcre
     EOS
-  end
-
-  def fatal?
-    true
   end
 
   def satisfied?
