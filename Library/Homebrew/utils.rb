@@ -130,6 +130,24 @@ def curl *args
   safe_system curl, *args
 end
 
+def axel *args
+  axel = Pathname.new '/usr/local/bin/axel'
+  raise "#{axel} is not executable" unless axel.exist? and axel.executable?
+
+  #args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
+  # See https://github.com/mxcl/homebrew/issues/6103
+  #args << "--insecure" if MacOS.version < 10.6
+  args << "-a"
+  args << "-U"
+  args << HOMEBREW_USER_AGENT
+  args << "--quiet" unless $stdout.tty?
+
+  #puts args
+  
+  safe_system axel, *args
+end
+
+
 def puts_columns items, star_items=[]
   return if items.empty?
 

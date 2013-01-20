@@ -145,6 +145,28 @@ private
   end
 end
 
+# Alternative download with axel
+class AxelDownloadStrategy < CurlDownloadStrategy
+  def _fetch
+    axel = false
+    axel_speed = 0
+    ARGV.each do|a|
+      s = a.split("=")
+      if s[0] == "--axel"
+        axel = true
+        axel_speed = s[1]
+      end
+    end
+    if axel == true
+      axel_speed = 5 if axel_speed == nil
+      axel '-o', @tarball_path, '-n', axel_speed, @url
+    else  
+      super._fetch
+    end
+  end
+end
+
+
 # Detect and download from Apache Mirror
 class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   def _fetch
@@ -628,14 +650,14 @@ class DownloadStrategyDetector
     when bottle_native_regex, bottle_regex, old_bottle_regex
       CurlBottleDownloadStrategy
       # Otherwise just try to download
-    else CurlDownloadStrategy
+    else AxelDownloadStrategy
     end
   end
 
   def self.detect_from_symbol(symbol)
     case symbol
     when :bzr then BazaarDownloadStrategy
-    when :curl then CurlDownloadStrategy
+    when :curl then AxelDownloadStrategy
     when :cvs then CVSDownloadStrategy
     when :git then GitDownloadStrategy
     when :hg then MercurialDownloadStrategy
