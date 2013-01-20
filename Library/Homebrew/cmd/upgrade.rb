@@ -16,11 +16,11 @@ module Homebrew extend self
 
     Homebrew.perform_preinstall_checks
 
-    outdated = if ARGV.named.empty?
+    if ARGV.named.empty?
       require 'cmd/outdated'
-      Homebrew.outdated_brews
+      outdated = Homebrew.outdated_brews
     else
-      ARGV.formulae.select do |f|
+      outdated = ARGV.formulae.select do |f|
         if f.installed?
           onoe "#{f}-#{f.installed_version} already installed"
         elsif not f.rack.exist? or f.rack.children.empty?
@@ -29,6 +29,7 @@ module Homebrew extend self
           true
         end
       end
+      exit 1 if outdated.empty?
     end
 
     # Expand the outdated list to include outdated dependencies then sort and
