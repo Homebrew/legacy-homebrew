@@ -438,6 +438,14 @@ class << ENV
     self['PATH'] = paths.unshift(*self['PATH'].split(":")).uniq.join(":")
   end
 
+  def with_build_environment
+    old_env = to_hash
+    setup_build_environment
+    yield
+  ensure
+    replace(old_env)
+  end
+
   def fortran
     fc_flag_vars = %w{FCFLAGS FFLAGS}
 

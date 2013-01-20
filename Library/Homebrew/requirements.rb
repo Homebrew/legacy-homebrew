@@ -125,23 +125,20 @@ class MPIDependency < Requirement
 
   def satisfied?
     # we have to assure the ENV is (almost) as during the build
-    orig_PATH = ENV['PATH']
     require 'superenv'
-    ENV.setup_build_environment
-    ENV.userpaths!
-    @lang_list.each do |lang|
-      case lang
-      when :cc, :cxx, :f90, :f77
-        compiler = 'mpi' + lang.to_s
-        @non_functional << compiler unless mpi_wrapper_works? compiler
-      else
-        @unknown_langs << lang.to_s
+    ENV.with_build_environment do
+      ENV.userpaths!
+
+      @lang_list.each do |lang|
+        case lang
+        when :cc, :cxx, :f90, :f77
+          compiler = 'mpi' + lang.to_s
+          @non_functional << compiler unless mpi_wrapper_works? compiler
+        else
+          @unknown_langs << lang.to_s
+        end
       end
     end
-
-    # Restore the original paths
-    ENV['PATH'] = orig_PATH
-
     @unknown_langs.empty? and @non_functional.empty?
   end
 
