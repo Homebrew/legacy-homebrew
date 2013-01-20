@@ -190,7 +190,7 @@ class Requirement
   # Overriding modify_build_environment is deprecated, pass a block to
   # the env DSL method instead.
   def modify_build_environment
-    env.modify_build_environment
+    env.modify_build_environment(self)
   end
 
   def env
