@@ -18,9 +18,9 @@ class BuildEnvironment
     @settings.include? :userpaths
   end
 
-  def modify_build_environment
+  def modify_build_environment(context=nil)
     p = @settings.find { |s| Proc === s }
-    ENV.instance_eval(&p) unless p.nil?
+    ENV.instance_exec(context, &p) unless p.nil?
   end
 
   def _dump(*)
