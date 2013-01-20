@@ -2,6 +2,9 @@ require 'formula'
 
 class GnupgInstalled < Requirement
   fatal true
+  env :userpaths
+
+  satisfy { which('gpg') || which('gpg2') }
 
   def message; <<-EOS.undent
     Gnupg is required to use these tools.
@@ -13,10 +16,6 @@ class GnupgInstalled < Requirement
     Or you can use one of several different
     prepackaged installers that are available.
     EOS
-  end
-
-  def satisfied?
-    which 'gpg' or which 'gpg2'
   end
 end
 

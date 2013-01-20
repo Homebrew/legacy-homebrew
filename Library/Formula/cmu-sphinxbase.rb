@@ -3,6 +3,8 @@ require 'formula'
 class HomebrewedPython < Requirement
   fatal true
 
+  satisfy(:build_env => false) { Formula.factory('python').installed? }
+
   def message; <<-EOS.undent
     Compiling against the system-provided Python will likely fail.
     The system-provided Python includes PPC support, which will cause a compiler
@@ -10,9 +12,6 @@ class HomebrewedPython < Requirement
 
     Patches to correct this issue are welcome.
     EOS
-  end
-  def satisfied?
-    Formula.factory('python').installed?
   end
 end
 

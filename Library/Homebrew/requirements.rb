@@ -8,9 +8,7 @@ class LanguageModuleDependency < Requirement
     @import_name = import_name || module_name
   end
 
-  def satisfied?
-    quiet_system(*the_test)
-  end
+  satisfy { quiet_system(*the_test) }
 
   def message; <<-EOS.undent
     Unsatisfied dependency: #{@module_name}
@@ -65,8 +63,8 @@ class X11Dependency < Requirement
     super
   end
 
-  def satisfied?
-    MacOS::XQuartz.installed? and (@min_version.nil? or @min_version <= MacOS::XQuartz.version)
+  satisfy :build_env => false do
+    MacOS::XQuartz.installed? && (@min_version.nil? || @min_version <= MacOS::XQuartz.version)
   end
 
   def message; <<-EOS.undent
@@ -121,20 +119,14 @@ class MPIDependency < Requirement
     quiet_system compiler, '--version'
   end
 
-  def satisfied?
-    # we have to assure the ENV is (almost) as during the build
-    require 'superenv'
-    ENV.with_build_environment do
-      ENV.userpaths!
-
-      @lang_list.each do |lang|
-        case lang
-        when :cc, :cxx, :f90, :f77
-          compiler = 'mpi' + lang.to_s
-          @non_functional << compiler unless mpi_wrapper_works? compiler
-        else
-          @unknown_langs << lang.to_s
-        end
+  satisfy do
+    @lang_list.each do |lang|
+      case lang
+      when :cc, :cxx, :f90, :f77
+        compiler = 'mpi' + lang.to_s
+        @non_functional << compiler unless mpi_wrapper_works? compiler
+      else
+        @unknown_langs << lang.to_s
       end
     end
     @unknown_langs.empty? and @non_functional.empty?
@@ -204,7 +196,7 @@ class ConflictRequirement < Requirement
     message
   end
 
-  def satisfied?
+  satisfy :build_env => false do
     keg = Formula.factory(@formula).prefix
     not keg.exist? && Keg.new(keg).linked?
   end
@@ -213,9 +205,7 @@ end
 class XcodeDependency < Requirement
   fatal true
 
-  def satisfied?
-    MacOS::Xcode.installed?
-  end
+  satisfy(:build_env => false) { MacOS::Xcode.installed? }
 
   def message; <<-EOS.undent
     A full installation of Xcode.app is required to compile this software.
@@ -226,10 +216,9 @@ end
 
 class MysqlInstalled < Requirement
   fatal true
+  env :userpaths
 
-  def satisfied?
-    which 'mysql_config'
-  end
+  satisfy { which 'mysql_config' }
 
   def message; <<-EOS.undent
     MySQL is required to install.
@@ -249,10 +238,9 @@ end
 
 class PostgresqlInstalled < Requirement
   fatal true
+  env :userpaths
 
-  def satisfied?
-    which 'pg_config'
-  end
+  satisfy { which 'pg_config' }
 
   def message
     <<-EOS.undent
@@ -271,11 +259,7 @@ class TeXInstalled < Requirement
   fatal true
   env :userpaths
 
-  def satisfied?
-    tex = which 'tex'
-    latex = which 'latex'
-    not tex.nil? and not latex.nil?
-  end
+  satisfy { which('tex') || which('latex') }
 
   def message; <<-EOS.undent
     A LaTeX distribution is required to install.

@@ -1,9 +1,7 @@
 require 'formula'
 
 class LionOrNewer < Requirement
-  def satisfied?
-    MacOS.version >= :lion
-  end
+  satisfy MacOS.version >= :lion
 
   def message
     "Drizzle requires Mac OS X 10.7 (Lion) or newer."

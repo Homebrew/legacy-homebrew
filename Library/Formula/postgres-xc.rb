@@ -3,13 +3,12 @@ require 'formula'
 class X86_64_Architecture < Requirement
   fatal true
 
+  satisfy MacOS.prefer_64_bit?
+
   def message; <<-EOS.undent
     Your system appears to run on a 32-bit architecture.
     Postgres-XC only supports 64-bit architectures, sorry.
     EOS
-  end
-  def satisfied?
-    MacOS.prefer_64_bit?
   end
 end
 

@@ -3,16 +3,16 @@ require 'formula'
 class TransitionalMode < Requirement
   fatal true
 
+  satisfy do
+    # If not installed, it will install in the correct mode.
+    # If installed, make sure it is transitional instead of strict.
+    !which('camlp5') || `camlp5 -pmode 2>&1`.chomp == 'transitional'
+  end
+
   def message; <<-EOS.undent
     camlp5 must be compiled in transitional mode (instead of --strict mode):
       brew install camlp5
     EOS
-  end
-  def satisfied?
-    # If not installed, it will install in the correct mode.
-    return true if not which('camlp5')
-    # If installed, make sure it is transitional instead of strict.
-    `camlp5 -pmode 2>&1`.chomp == 'transitional'
   end
 end
 

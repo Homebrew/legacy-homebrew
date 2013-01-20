@@ -4,7 +4,7 @@ class Emacs23Installed < Requirement
   fatal true
   env :userpaths
 
-  def satisfied?
+  satisfy do
     `emacs --version 2>/dev/null` =~ /^GNU Emacs (\d{2})/
     $1.to_i >= 23
   end

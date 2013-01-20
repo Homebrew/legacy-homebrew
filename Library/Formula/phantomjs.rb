@@ -1,9 +1,7 @@
 require 'formula'
 
 class SnowLeopardOrNewer < Requirement
-  def satisfied?
-    MacOS.version >= :snow_leopard
-  end
+  satisfy MacOS.version >= :snow_leopard
 
   def message
     "PhantomJS requires Mac OS X 10.6 (Snow Leopard) or newer."
