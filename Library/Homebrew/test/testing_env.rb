@@ -31,7 +31,11 @@ MACOS = true
 MACOS_VERSION = 10.6
 MACOS_FULL_VERSION = '10.6.8'
 
-(HOMEBREW_PREFIX+'Library/Formula').mkpath
+%w{Library/Formula Library/ENV}.each do |d|
+  HOMEBREW_REPOSITORY.join(d).mkpath
+end
+
+ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
