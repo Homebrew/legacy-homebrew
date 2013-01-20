@@ -8,16 +8,10 @@ end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.2/sbcl-1.1.2-source.tar.bz2'
-  sha1 'b562c67d689abf8e0dffcd42d11617062ab52633'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.3/sbcl-1.1.3-source.tar.bz2'
+  sha1 '9c3027899a4d40f95549768f51f2aa010e84c009'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
-
-  bottle do
-    sha1 '0552baca3f757837734fa0ecefbf158bc530c5a1' => :mountainlion
-    sha1 '9ff8b77853a16f30c1770790f71ec1260b4bd776' => :lion
-    sha1 '520a3526f4c3565fe2b7f99cd3e944431c8932f8' => :snowleopard
-  end
 
   fails_with :llvm do
     build 2334
