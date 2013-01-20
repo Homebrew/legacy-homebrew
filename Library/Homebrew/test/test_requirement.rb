@@ -26,17 +26,6 @@ class RequirementTests < Test::Unit::TestCase
     assert_equal [:build, "bar"], dep.tags
   end
 
-  def test_dsl_env_single_argument
-    req = Class.new(Requirement) { env :userpaths }.new
-    assert req.env.userpaths?
-  end
-
-  def test_dsl_env_multiple_arguments
-    req = Class.new(Requirement) { env :userpaths, :std }.new
-    assert req.env.userpaths?
-    assert req.env.std?
-  end
-
   def test_dsl_fatal
     req = Class.new(Requirement) { fatal true }.new
     assert req.fatal?

@@ -11,6 +11,7 @@ require 'extend/set'
 
 class Formula
   include FileUtils
+  extend BuildEnvironmentDSL
 
   attr_reader :name, :path, :homepage, :downloader
   attr_reader :stable, :bottle, :devel, :head, :active_spec
@@ -725,12 +726,6 @@ private
     def mirror val
       @stable ||= SoftwareSpec.new
       @stable.mirror(val)
-    end
-
-    def env *settings
-      @env ||= BuildEnvironment.new
-      settings.each { |s| @env << s }
-      @env
     end
 
     def dependencies
