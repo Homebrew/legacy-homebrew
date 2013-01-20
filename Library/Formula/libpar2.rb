@@ -15,6 +15,11 @@ class Libpar2 < Formula
     EOS
   end
 
+  def patches
+    # patch from NZBGet 9.1, bugfix and adds ability to cancel par check
+    "https://gist.github.com/raw/4576230/e722f2113195ee9b8ee67c1c424aa3f2085b1066/libpar2-0.2-nzbget.patch"
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
