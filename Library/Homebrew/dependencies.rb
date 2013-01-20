@@ -170,6 +170,7 @@ end
 # By default, Requirements are non-fatal.
 class Requirement
   include Dependable
+  extend BuildEnvironmentDSL
 
   attr_reader :tags
 
@@ -186,9 +187,11 @@ class Requirement
   # The message to show when the requirement is not met.
   def message; ""; end
 
-  # Requirements can modify the current build environment by overriding this.
-  # See X11Dependency
-  def modify_build_environment; nil end
+  # Overriding modify_build_environment is deprecated, pass a block to
+  # the env DSL method instead.
+  def modify_build_environment
+    env.modify_build_environment
+  end
 
   def env
     @env ||= self.class.env
@@ -205,12 +208,6 @@ class Requirement
   class << self
     def fatal(val=nil)
       val.nil? ? @fatal : @fatal = val
-    end
-
-    def env(*settings)
-      @env ||= BuildEnvironment.new
-      settings.each { |s| @env << s }
-      @env
     end
   end
 end
