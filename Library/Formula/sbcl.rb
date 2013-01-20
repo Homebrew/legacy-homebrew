@@ -13,6 +13,12 @@ class Sbcl < Formula
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
+  bottle do
+    sha1 '1387c2961aba507cf285c74276fa5aa38fd6476f' => :mountainlion
+    sha1 'b5f26fbd0e88997429fbe1cad42143bcb19f0d4b' => :lion
+    sha1 'd5a1b5303a386871512ff4acdcf3447d460ddd8f' => :snowleopard
+  end
+
   fails_with :llvm do
     build 2334
     cause "Compilation fails with LLVM."
