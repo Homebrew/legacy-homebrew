@@ -2,8 +2,8 @@ require 'formula'
 
 class Flann < Formula
   homepage 'http://www.cs.ubc.ca/~mariusm/index.php/FLANN/FLANN'
-  url 'http://people.cs.ubc.ca/~mariusm/uploads/FLANN/flann-1.7.1-src.zip'
-  sha1 '61b9858620528919ea60a2a4b085ccc2b3c2d138'
+  url 'http://people.cs.ubc.ca/~mariusm/uploads/FLANN/flann-1.8.2-src.zip'
+  sha1 '62ace1c41365dfc8ceabde1381febc5c8b71ad98'
 
   option 'enable-python', 'Enable python bindings'
   option 'enable-matlab', 'Enable matlab/octave bindings'
@@ -31,8 +31,7 @@ class Flann < Formula
 
     inreplace 'CMakeLists.txt', 'add_subdirectory( examples )', '' unless build.include? 'with-examples'
 
-    mkdir 'build'
-    cd 'build' do
+    mkdir 'build' do
       system 'cmake', '..', *args
       system 'make install'
     end
