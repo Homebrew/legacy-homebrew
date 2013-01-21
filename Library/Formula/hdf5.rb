@@ -8,10 +8,12 @@ class Hdf5 < Formula
   depends_on 'szip'
 
   # TODO - warn that these options conflict
+  option :universal
   option 'enable-fortran', 'Compile Fortran bindings'
   option 'enable-threadsafe', 'Trade performance and C++ or Fortran support for thread safety'
 
   def install
+    ENV.universal_binary if build.universal?
     args = %W[
       --prefix=#{prefix}
       --enable-production
