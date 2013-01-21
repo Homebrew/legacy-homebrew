@@ -5,6 +5,8 @@ class Mjpegtools < Formula
   url 'http://downloads.sourceforge.net/project/mjpeg/mjpegtools/2.0.0/mjpegtools-2.0.0.tar.gz'
   sha1 'f411e8573d446711dbe8455a6ae9257e1afe1e70'
 
+  depends_on :x11 if MacOS::X11.installed?
+
   option "with-libquicktime", "Build with Quicktime support"
   option "with-libdv", "Build with DV support"
   option "with-gtk+", "Build with GTK+ support"
