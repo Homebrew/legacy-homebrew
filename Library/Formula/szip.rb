@@ -6,6 +6,7 @@ class Szip < Formula
   sha1 'd241c9acc26426a831765d660b683b853b83c131'
 
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end
