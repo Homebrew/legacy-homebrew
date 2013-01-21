@@ -3,16 +3,14 @@ require 'formula'
 class JdkInstalled < Requirement
   fatal true
 
+  satisfy { which 'javac' }
+
   def message; <<-EOS.undent
     A JDK is required.
 
     You can get the official Oracle installers from:
     http://www.oracle.com/technetwork/java/javase/downloads/index.html
     EOS
-  end
-
-  def satisfied?
-    which 'javac'
   end
 end
 

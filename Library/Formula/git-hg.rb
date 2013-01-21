@@ -1,6 +1,8 @@
 require 'formula'
 
 class HgInstalled < Requirement
+  satisfy { which 'hg' }
+
   def message; <<-EOS.undent
     Mercurial is required to use this software.
 
@@ -10,9 +12,6 @@ class HgInstalled < Requirement
     Or you can use an official installer from:
       http://mercurial.selenic.com/
     EOS
-  end
-  def satisfied?
-    which 'hg'
   end
 end
 
