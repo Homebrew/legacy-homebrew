@@ -82,6 +82,7 @@ class Sbcl < Formula
     s = ""
 
     s += <<-EOS.undent
+
       If you are upgrading sbcl and you have installed maxima,
       you have to reinstall maxima.
         brew rm maxima && brew install maxima
