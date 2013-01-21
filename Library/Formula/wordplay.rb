@@ -16,7 +16,7 @@ class Wordplay < Formula
 
   def install
     inreplace "wordplay.c", "@PREFIX@", prefix
-    system "make"
+    system "make", "CC=#{ENV.cc}"
     bin.install 'wordplay'
     (share/'wordplay').install 'words721.txt'
   end
