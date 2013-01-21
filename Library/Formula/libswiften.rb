@@ -7,6 +7,7 @@ class Libswiften < Formula
 
   head "git://swift.im/swift"
 
+  depends_on :python => :build
   depends_on 'scons' => :build
   depends_on 'libidn'
   depends_on 'boost'

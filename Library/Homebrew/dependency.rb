@@ -47,7 +47,7 @@ class Dependency
   end
 
   def missing_options
-    options - Tab.for_formula(to_formula).used_options
+    options - Tab.for_formula(to_formula).used_options - to_formula.build.implicit_options
   end
 
   def universal!

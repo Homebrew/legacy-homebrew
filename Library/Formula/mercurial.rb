@@ -7,6 +7,7 @@ class Mercurial < Formula
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
+  depends_on :python # its written in Python, so this is a hard dep
   depends_on 'docutils' => :python if build.head? or build.include? 'doc'
 
   option 'doc', "Build the documentation"
@@ -16,25 +17,29 @@ class Mercurial < Formula
     # System-provided Python.
     ENV.minimal_optimization
 
+    # install the completion script
     bash_completion.install 'contrib/bash_completion' => 'hg-completion.bash'
 
-    system "make doc" if build.head? or build.include? 'doc'
-    system "make local"
+    python do
+      system "make doc" if build.head? or build.include? 'doc'
+      system "make local"
 
-    libexec.install 'hg', 'mercurial', 'hgext'
+      libexec.install 'hg', 'mercurial', 'hgext'
+      # If we get it working with python3, we would need the next line instead:
+      #['hg', 'mercurial', 'hgext'].each{ |f| libexec.install "#{f}#{python.if3then3}" }
 
-    # Symlink the hg binary into bin
-    bin.install_symlink libexec/'hg'
+      # Symlink the hg binary into bin
+      bin.install_symlink libexec/"hg#{python.if3then3}"
 
-    # Remove the hard-coded python invocation from hg
-    inreplace bin/'hg', %r[^#!.*$], '#!/usr/bin/env python'
+      # Install some contribs
+      bin.install "contrib/hgk#{python.if3then3}"
+      # Install man pages
+      man1.install 'doc/hg.1'
+      man5.install 'doc/hgignore.5', 'doc/hgrc.5'
 
-    # Install some contribs
-    bin.install 'contrib/hgk'
+      system 'make clean'
+    end
 
-    # Install man pages
-    man1.install 'doc/hg.1'
-    man5.install 'doc/hgignore.5', 'doc/hgrc.5'
   end
 
   def caveats

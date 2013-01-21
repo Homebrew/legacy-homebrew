@@ -30,7 +30,7 @@ class << ENV
   alias_method :x11?, :x11
 
   def reset
-    %w{CC CXX OBJC OBJCXX CPP MAKE LD
+    %w{CC CXX OBJC OBJCXX CPP MAKE LD LDSHARED
       CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
       MACOS_DEPLOYMENT_TARGET SDKROOT
       CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH
@@ -57,7 +57,7 @@ class << ENV
     ENV['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
     ENV['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacSystem.xcode43_without_clt?
     ENV['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
-    ENV['CMAKE_FRAMEWORK_PATH'] = "#{MacOS.sdk_path}/System/Library/Frameworks" if MacSystem.xcode43_without_clt?
+    ENV['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
     ENV['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
     ENV['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     ENV['ACLOCAL_PATH'] = determine_aclocal_path
@@ -133,7 +133,6 @@ class << ENV
       paths << "#{MacOS::Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
     end
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
-    paths << "#{HOMEBREW_PREFIX}/opt/python/bin" if brewed_python?
     paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
     paths.to_path_s
@@ -158,6 +157,14 @@ class << ENV
     paths.to_path_s
   end
 
+  def determine_cmake_frameworks_path
+    # XXX: keg_only_deps perhaps? but Qt does not link its Frameworks because of Ruby's Find.find ignoring symlinks!!
+    paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/Frameworks" }
+    paths << "#{HOMEBREW_PREFIX}/Frameworks"
+    paths << "#{MacOS.sdk_path}/System/Library/Frameworks" if MacSystem.xcode43_without_clt?
+    paths.to_path_s
+  end
+
   def determine_cmake_include_path
     sdk = MacOS.sdk_path if MacSystem.xcode43_without_clt?
     paths = []
@@ -165,11 +172,6 @@ class << ENV
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     if MacSystem.xcode43_without_clt?
       paths << "#{sdk}/usr/include/apache2"
-      paths << if brewed_python?
-        "#{HOMEBREW_PREFIX}/opt/python/Frameworks/Python.framework/Headers"
-      else
-        "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7"
-      end
     end
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/" unless x11?
     paths << "#{MacSystem.x11_prefix}/include" if x11?
@@ -225,11 +227,6 @@ class << ENV
     # nothing is valid, it still fixes most usage to supply a valid path that
     # is not "/".
     MacOS::Xcode.prefix || ENV['DEVELOPER_DIR']
-  end
-
-  def brewed_python?
-    require 'formula'
-    Formula.factory('python').linked_keg.directory?
   end
 
   public
