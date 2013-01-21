@@ -12,6 +12,7 @@ class Hdf5 < Formula
   option 'enable-threadsafe', 'Trade performance and C++ or Fortran support for thread safety'
 
   def install
+    ENV.universal_binary if build.universal?
     args = %W[
       --prefix=#{prefix}
       --enable-production
