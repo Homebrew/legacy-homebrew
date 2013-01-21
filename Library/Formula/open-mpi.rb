@@ -8,16 +8,15 @@ class OpenMpi < Formula
   # Reported upstream at version 1.6, both issues
   # http://www.open-mpi.org/community/lists/devel/2012/05/11003.php
   # http://www.open-mpi.org/community/lists/devel/2012/08/11362.php
-  fails_with :clang do
-    build 421
-    cause 'fails make check on Lion and ML'
-  end
-
   option 'disable-fortran', 'Do not build the Fortran bindings'
   option 'test', 'Verify the build with make check'
 
   def install
     args = %W[
+      CC=gcc
+      CXX=g++
+      FC=gfortran
+      F77=gfortran
       --prefix=#{prefix}
       --disable-dependency-tracking
       --enable-ipv6
@@ -27,10 +26,8 @@ class OpenMpi < Formula
     else
       ENV.fortran
     end
-
-    system './configure', *args
-    system 'make V=1 all'
-    system 'make V=1 check' if build.include? 'test'
+    system './configure CC=gcc CXX=g++ FC=gfortran F77=gfortran --prefix=/usr/local/Cellar/open-mpi/1.6.3'
+    system 'make -j8'
     system 'make install'
 
     # If Fortran bindings were built, there will be a stray `.mod` file
