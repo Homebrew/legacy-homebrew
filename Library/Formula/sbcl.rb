@@ -77,4 +77,16 @@ class Sbcl < Formula
     ENV['INSTALL_ROOT'] = prefix
     system "sh install.sh"
   end
+
+  def caveats
+    s = ""
+
+    s += <<-EOS.undent
+
+      If you are upgrading sbcl and you have installed maxima,
+      you have to reinstall maxima.
+        brew rm maxima && brew install maxima
+      
+    EOS
+  end
 end
