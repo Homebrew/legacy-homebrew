@@ -2,13 +2,14 @@ require 'formula'
 
 class Bitlbee < Formula
   homepage 'http://www.bitlbee.org/'
-  url 'http://get.bitlbee.org/src/bitlbee-3.0.6.tar.gz'
-  sha1 '6ac7cab4dab422f9baac97818e69ee9934db345c'
+  url 'http://get.bitlbee.org/src/bitlbee-3.2.tar.gz'
+  sha1 '21e17f082c776566429603b1e8c966983a75ac9e'
 
   option 'purple', "Use libpurple for all communication with instant messaging networks"
   option 'with-otr', "Build with otr (off the record) support"
 
   depends_on 'glib'
+  depends_on 'pkg-config' => :build
   depends_on 'gnutls'
   depends_on 'libgcrypt'
   depends_on 'libpurple' => :optional if build.include? 'purple'
