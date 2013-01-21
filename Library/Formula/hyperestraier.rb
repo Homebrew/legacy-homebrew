@@ -1,16 +1,14 @@
 require 'formula'
 
 class EucjpMecabIpadic < Requirement
+  fatal true
+
   def initialize
     @mecab_ipadic_installed = Formula.factory('mecab-ipadic').installed?
   end
 
   def satisfied?
     @mecab_ipadic_installed && mecab_dic_charset == 'euc'
-  end
-
-  def fatal?
-    true
   end
 
   def message

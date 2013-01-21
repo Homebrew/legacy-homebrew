@@ -14,9 +14,15 @@ class Apktool < Formula
     libexec.install 'apktool.jar'
 
     ApktoolExecutables.new.brew do |f|
-      # Make apktool look for jar in libexec
-      inreplace 'apktool', /^libdir=.*$/, "libdir=\"#{libexec}\""
-      bin.install 'aapt', 'apktool'
+      libexec.install 'aapt', 'apktool'
     end
+
+    # Make apktool look for jar and aapkt in libexec
+    inreplace "#{libexec}/apktool" do |s|
+      s.gsub! /^libdir=.*$/, "libdir=\"#{libexec}\""
+      s.gsub! "PATH=$PATH:`pwd`;", "PATH=$PATH:#{libexec};"
+    end
+
+    bin.install_symlink libexec/'apktool'
   end
 end

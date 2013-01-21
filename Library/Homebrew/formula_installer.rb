@@ -181,7 +181,9 @@ class FormulaInstaller
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
-    print "🍺  " if MacOS.version >= :lion
+    unless ENV['HOMEBREW_NO_EMOJI']
+      print "🍺  " if MacOS.version >= :lion
+    end
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
     puts

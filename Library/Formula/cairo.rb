@@ -5,10 +5,10 @@ require 'formula'
 
 class Cairo < Formula
   homepage 'http://cairographics.org/'
-  url 'http://cairographics.org/releases/cairo-1.12.8.tar.xz'
-  mirror 'http://ftp-nyc.osuosl.org/pub/gentoo/distfiles/cairo-1.12.8.tar.xz'
-  mirror 'ftp://anduin.linuxfromscratch.org/BLFS/conglomeration/cairo/cairo-1.12.8.tar.xz'
-  sha256 '8fbb6fc66117ab4100bad830cb4479497e53c6f3facb98bf05c8d298554ebdd9'
+  url 'http://cairographics.org/releases/cairo-1.12.10.tar.xz'
+  mirror 'http://ftp-nyc.osuosl.org/pub/gentoo/distfiles/cairo-1.12.10.tar.xz'
+  mirror 'ftp://anduin.linuxfromscratch.org/BLFS/conglomeration/cairo/cairo-1.12.10.tar.xz'
+  sha256 'f1581aef210f6caa9cf42875fb66ab3b47a32db9436bdfa9913b9bbd5034b03b'
 
   keg_only :provided_pre_mountain_lion
 
