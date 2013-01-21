@@ -4,8 +4,8 @@ class WpCli < Formula
   homepage 'https://github.com/wp-cli/wp-cli/'
 
   # Use the tag instead of the tarball to get submodules
-  url 'https://github.com/wp-cli/wp-cli.git', :tag => 'v0.6.0'
-  version '0.6.0'
+  url 'https://github.com/wp-cli/wp-cli.git', :tag => 'v0.7.0'
+  version '0.7.0'
 
   head 'https://github.com/wp-cli/wp-cli.git'
 

@@ -6,7 +6,7 @@ class Wireshark < Formula
   sha1 '00265d9196f030848c78025f30556cd014be843d'
 
   depends_on 'pkg-config' => :build
-  depends_on 'gnutls' => :optional
+  depends_on 'gnutls2' => :optional
   depends_on 'libgcrypt' => :optional
   depends_on 'c-ares' => :optional
   depends_on 'pcre' => :optional

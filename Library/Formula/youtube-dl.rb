@@ -9,5 +9,6 @@ class YoutubeDl < Formula
     system "make", "youtube-dl", "PREFIX=#{prefix}"
     bin.install 'youtube-dl'
     man1.install 'youtube-dl.1'
+    (prefix+'etc/bash_completion.d').install 'youtube-dl.bash-completion'
   end
 end

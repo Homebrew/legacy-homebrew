@@ -2,8 +2,13 @@ require 'formula'
 
 class Storm < Formula
   homepage 'https://github.com/nathanmarz/storm/wiki'
-  url 'https://github.com/downloads/nathanmarz/storm/storm-0.8.1.zip'
-  sha1 'ce5f5dad82f33b7189ce975e0741d1c57007ed0e'
+  url 'https://dl.dropbox.com/u/133901206/storm-0.8.2.zip'
+  sha1 'abb533c90f5b9eeaafb9136670091fc894fce169'
+
+  devel do
+    url 'https://dl.dropbox.com/u/133901206/storm-0.9.0-wip13.zip'
+    sha1 '1de407b2eef494db3efc7f0d9b3f6e6fe2e28fc2'
+  end
 
   def install
     libexec.install Dir['*']

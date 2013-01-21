@@ -1,11 +1,10 @@
 require 'formula'
 
 class LionOrNewer < Requirement
+  fatal true
+
   def satisfied?
     MacOS.version >= :lion
-  end
-  def fatal?
-    true
   end
   def message
     "Appledoc requires Mac OS X 10.7 (Lion) or newer."

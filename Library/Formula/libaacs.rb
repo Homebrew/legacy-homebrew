@@ -11,6 +11,7 @@ class Libaacs < Formula
   depends_on 'libgcrypt'
 
   def install
+    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
     system './bootstrap'
     system "./configure", "--disable-dependency-tracking",
                           "--disable-debug",

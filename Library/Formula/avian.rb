@@ -1,6 +1,8 @@
 require 'formula'
 
 class JdkInstalled < Requirement
+  fatal true
+
   def message; <<-EOS.undent
     A JDK is required.
 
@@ -11,10 +13,6 @@ class JdkInstalled < Requirement
 
   def satisfied?
     which 'javac'
-  end
-
-  def fatal?
-    true
   end
 end
 
