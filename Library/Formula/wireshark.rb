@@ -4,6 +4,7 @@ class Wireshark < Formula
   homepage 'http://www.wireshark.org'
   url 'http://www.wireshark.org/download/src/wireshark-1.8.4.tar.bz2'
   sha1 '00265d9196f030848c78025f30556cd014be843d'
+  head 'http://anonsvn.wireshark.org/wireshark/trunk', :using => :svn
 
   depends_on 'pkg-config' => :build
   depends_on 'gnutls2' => :optional
@@ -17,8 +18,16 @@ class Wireshark < Formula
     depends_on 'gtk+'
   end
 
+  if build.include? 'with-qt'
+    depends_on 'qt'
+    if not build.head?
+      opoo 'with-qt requires --HEAD.'
+    end
+  end
+
   option 'with-x', 'Include X11 support'
   option 'with-python', 'Enable experimental Python bindings'
+  option 'with-qt', 'Use experimental, incomplete Qt interface, requires --HEAD'
 
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
@@ -29,8 +38,11 @@ class Wireshark < Formula
     args << '--without-python' unless build.include? 'with-python'
 
     # actually just disables the GTK GUI
-    args << '--disable-wireshark' unless build.include? 'with-x'
+    args << '--disable-wireshark' unless build.include? 'with-x' or build.include? 'with-qt'
 
+    args << '--with-qt' if build.include? 'with-qt'
+
+    system './autogen.sh' if build.head?
     system "./configure", *args
     system "make"
     ENV.deparallelize # parallel install fails
