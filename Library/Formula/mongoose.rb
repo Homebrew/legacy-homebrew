@@ -2,8 +2,8 @@ require 'formula'
 
 class Mongoose < Formula
   homepage 'https://github.com/valenok/mongoose'
-  url 'https://github.com/valenok/mongoose/tarball/3.2'
-  sha1 'c825fad84061e497d1d2fb711b94c6fdf5c1398c'
+  url 'https://github.com/valenok/mongoose/tarball/3.4'
+  sha1 '3b917304d5ffbb516167ef29561a9f82881bc033'
 
   def install
     system "make", "mac", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"

@@ -10,6 +10,11 @@ class WineGecko < Formula
   end
 end
 
+class WineMono < Formula
+  url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+  sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
+end
+
 class Wine < Formula
   homepage 'http://winehq.org/'
   url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.4.1.tar.bz2'
@@ -18,10 +23,12 @@ class Wine < Formula
   head 'git://source.winehq.org/git/wine.git'
 
   devel do
-    # NOTE: when updating Wine, please check if Wine-Gecko needs updating too
-    # see http://wiki.winehq.org/Gecko
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.16.tar.bz2'
-    sha256 '2f4df6ade18d636c892bee0feb6fd075eb3ad299e61d250ea359659d6411e723'
+    # NOTE: when updating Wine, please check if Wine-Gecko and Wine-Mono needs
+    # updating too
+    #  * http://wiki.winehq.org/Gecko
+    #  * http://wiki.winehq.org/Mono
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.21.tar.bz2'
+    sha256 'ac77c1dd1a31ccc67f0391b4965959096aeb98745f52c4d91b7bd280e3c8b350'
   end
 
   env :std
@@ -88,9 +95,11 @@ class Wine < Formula
     # Don't need Gnome desktop support
     rm_rf share+'applications'
 
-    # Download Gecko once so we don't need to redownload for each prefix
+    # Download Gecko and Mono once so we don't need to redownload for each prefix
     gecko = WineGecko.new
     gecko.brew { (share+'wine/gecko').install Dir["*"] }
+    mono = WineMono.new
+    mono.brew { (share+'wine/mono').install Dir["*"] }
 
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine

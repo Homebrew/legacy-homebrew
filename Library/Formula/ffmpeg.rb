@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-1.0.tar.bz2'
-  sha1 'bf1f917c4fa26cf225616f2063e60c33cac546be'
+  url 'http://ffmpeg.org/releases/ffmpeg-1.1.tar.bz2'
+  sha1 'a006d8833dd7a03dd5b7823671995640322177fe'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -24,6 +24,9 @@ class Ffmpeg < Formula
   option 'with-schroedinger', 'Enable Dirac video format'
   option 'with-ffplay', 'Enable FFPlay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'
+  option 'with-fdk-aac', 'Enable the Fraunhofer FDK AAC library'
+  option 'with-openssl', 'Enable OpenSSL encryption library'
+  option 'with-opus', 'Enable the Opus Codec library'
 
   depends_on 'pkg-config' => :build
 
@@ -48,14 +51,18 @@ class Ffmpeg < Formula
   depends_on 'sdl' if build.include? 'with-ffplay'
   depends_on 'speex' if build.include? 'with-speex'
   depends_on 'schroedinger' if build.include? 'with-schroedinger'
+  depends_on 'fdk-aac' if build.include? 'with-fdk-aac'
+  depends_on 'opus' if build.include? 'with-opus'
 
   def install
     args = ["--prefix=#{prefix}",
             "--enable-shared",
+            "--enable-pthreads",
             "--enable-gpl",
             "--enable-version3",
             "--enable-nonfree",
             "--enable-hardcoded-tables",
+            "--enable-avresample",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
             "--host-ldflags=#{ENV.ldflags}"
@@ -77,6 +84,9 @@ class Ffmpeg < Formula
     args << "--enable-ffplay" if build.include? 'with-ffplay'
     args << "--enable-libspeex" if build.include? 'with-speex'
     args << '--enable-libschroedinger' if build.include? 'with-schroedinger'
+    args << "--enable-libfdk-aac" if build.include? 'with-fdk-aac'
+    args << "--enable-openssl" if build.include? 'with-openssl'
+    args << "--enable-libopus" if build.include? 'with-opus'
 
     if build.include? 'with-openjpeg'
       args << '--enable-libopenjpeg'

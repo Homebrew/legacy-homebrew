@@ -1,6 +1,8 @@
 require 'formula'
 
 class GnupgInstalled < Requirement
+  fatal true
+
   def message; <<-EOS.undent
     Gnupg is required to use these tools.
 
@@ -15,10 +17,6 @@ class GnupgInstalled < Requirement
 
   def satisfied?
     which 'gpg' or which 'gpg2'
-  end
-
-  def fatal?
-    false
   end
 end
 
@@ -47,6 +45,8 @@ class SigningParty < Formula
       system "make"
       man1.install Dir['*.1']
       bin.install 'caff'
+      bin.install 'pgp-clean'
+      bin.install 'pgp-fixkey'
       (doc+'caff').install Dir['README*', 'caffrc.sample']
     end
 

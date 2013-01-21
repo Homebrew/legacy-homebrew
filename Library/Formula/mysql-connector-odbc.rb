@@ -1,6 +1,8 @@
 require 'formula'
 
 class MySqlInstalled < Requirement
+  fatal true
+
   def message; <<-EOS.undent
     MySQL is required to install.
 
@@ -17,9 +19,6 @@ class MySqlInstalled < Requirement
   end
   def satisfied?
     which 'mysql_config'
-  end
-  def fatal?
-    true
   end
 end
 

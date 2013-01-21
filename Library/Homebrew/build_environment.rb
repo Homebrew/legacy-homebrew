@@ -1,8 +1,13 @@
 require 'set'
 
 class BuildEnvironment
-  def initialize settings
+  def initialize(*settings)
     @settings = Set.new(settings)
+  end
+
+  def <<(o)
+    @settings << o
+    self
   end
 
   def std?

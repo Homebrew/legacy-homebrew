@@ -54,6 +54,13 @@ module Homebrew extend self
     if head.empty? then "(none)" else head end
   end
 
+  def origin
+    origin = HOMEBREW_REPOSITORY.cd do
+      `git config --get remote.origin.url`.chomp
+    end
+    if origin.empty? then "(none)" else origin end
+  end
+
   def describe_path path
     return "N/A" if path.nil?
     realpath = path.realpath
@@ -85,6 +92,11 @@ module Homebrew extend self
     `uname -m`.chomp
   end
 
+  def macports_or_fink
+    @ponk ||= MacOS.macports_or_fink
+    @ponk.join(", ") unless @ponk.empty?
+  end
+
   # we try to keep output minimal
   def dump_build_config
     puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
@@ -104,8 +116,7 @@ module Homebrew extend self
       puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
     end
 
-    ponk = macports_or_fink_installed?
-    puts "MacPorts/Fink: #{ponk}" if ponk
+    puts "MacPorts/Fink: #{macports_or_fink}" if macports_or_fink
 
     puts "X11: #{describe_x11}"
   end
@@ -120,6 +131,7 @@ module Homebrew extend self
 
   def dump_verbose_config
     puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
+    puts "ORIGIN: #{origin}"
     puts "HEAD: #{head}"
     puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}"
     puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
@@ -131,8 +143,7 @@ module Homebrew extend self
     puts "GCC-4.2: build #{gcc_42}" if gcc_42
     puts "LLVM-GCC: #{llvm ? "build #{llvm}" : "N/A"}"
     puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
-    ponk = macports_or_fink_installed?
-    puts "MacPorts or Fink? #{ponk}" if ponk
+    puts "MacPorts/Fink: #{macports_or_fink}" if macports_or_fink
     puts "X11: #{describe_x11}"
     puts "System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}"
     puts "Perl: #{describe_perl}"

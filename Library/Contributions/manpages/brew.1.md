@@ -371,21 +371,29 @@ can take several different forms:
 
 ## ENVIRONMENT
 
+  * BROWSER:
+    If set, and `HOMEBREW_BROWSER` is not, use `BROWSER` as the web browser
+    when opening project homepages.
+
+  * EDITOR:
+    If set, and `HOMEBREW_EDITOR` is not, use `EDITOR` as the text editor.
+
   * GIT:
     When using Git, Homebrew will use `GIT` if set,
     a Homebrew-built Git if installed, or the system-provided binary.
 
     Set this to force Homebrew to use a particular git binary.
 
-  * EDITOR:
-    If set, and `HOMEBREW_EDITOR` is not, use `EDITOR` as the text editor.
+  * HOMEBREW_BROWSER:
+    If set, uses this setting as the browser when opening project homepages,
+    instead of the OS default browser.
 
   * HOMEBREW\_BUILD\_FROM\_SOURCE:
     If set, instructs Homebrew to compile from source even when a formula
     provides a bottle.
 
   * HOMEBREW\_CACHE:
-    If set, instructs Homebrew to use the give directory as the download cache.
+    If set, instructs Homebrew to use the given directory as the download cache.
     Otherwise, `~/Library/Caches/Homebrew` is used.
 
     This can be used to keep downloads out of your home directory, if you have
@@ -395,8 +403,7 @@ can take several different forms:
     If set, Homebrew will pass `--verbose` when invoking `curl`(1).
 
   * HOMEBREW\_DEBUG:
-    If set, instructs Homebrew to always assume `--debug` when running
-    commands.
+    If set, Homebrew always assumes `--debug` when running commands.
 
   * HOMEBREW\_DEBUG\_INSTALL:
     When `brew install -d` or `brew install -i` drops into a shell,
@@ -407,6 +414,10 @@ can take several different forms:
     When `brew install -d` or `brew install -i` drops into a shell,
     `HOMEBREW_DEBUG_PREFIX` will be set to the target prefix in the Cellar
     of the formula being brewed.
+
+  * HOMEBREW\_DEVELOPER:
+    If set, Homebrew will print warnings that are only relevant to Homebrew
+    developers (active or budding).
 
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or
@@ -429,6 +440,11 @@ can take several different forms:
 
     *Default:* the number of available CPU cores.
 
+  * HOMEBREW\_NO\_EMOJI:
+    If set, Homebrew will not print the beer emoji on a successful build.
+
+    *Note:* Homebrew will only try to print emoji on Lion or newer.
+
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
     a Homebrew-built Subversion if installed, or the system-provided binary.
@@ -445,19 +461,16 @@ can take several different forms:
     configurations.
 
   * HOMEBREW\_USE\_CLANG:
-    If set, instructs Homebrew to compile using clang.
+    If set, forces Homebrew to compile using clang.
 
   * HOMEBREW\_USE\_GCC:
-    If set, instructs Homebrew to compile using gcc.
+    If set, forces Homebrew to compile using gcc.
 
   * HOMEBREW\_USE\_LLVM:
-    If set, instructs Homebrew to compile using LLVM.
-
-    *NOTE*: Not all formulae build correctly with LLVM.
+    If set, forces Homebrew to compile using LLVM.
 
   * HOMEBREW\_VERBOSE:
-    If set, instructs Homebrew to always assume `--verbose` when running
-    commands.
+    If set, Homebrew always assumes `--verbose` when running commands.
 
 ## USING HOMEBREW BEHIND A PROXY
 

@@ -14,7 +14,7 @@ module Homebrew extend self
         if ARGV.flag? '--recursive'
           f.recursive_deps.include? ff
         else
-          f.deps.include? ff.name
+          f.deps.include? ff
         end
       end
     end
