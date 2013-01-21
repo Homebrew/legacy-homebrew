@@ -10,10 +10,11 @@ class Macvim < Formula
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
-  option "with-python3", "Build with Python 3 scripting support"
 
   depends_on 'cscope' => :recommended
   depends_on 'lua' => :optional
+  depends_on :python => :recommended
+  depends_on :python3 => :optional # Help us! :python3 is MacVim makes the window disappear!
 
   depends_on :xcode # For xcodebuild.
 
@@ -30,14 +31,16 @@ class Macvim < Formula
 
     args = %W[
       --with-features=huge
-      --with-tlib=ncurses
       --enable-multibyte
       --with-macarchs=#{arch}
+      --with-macsdk=10.8
       --enable-perlinterp
-      --enable-pythoninterp
       --enable-rubyinterp
       --enable-tclinterp
       --with-ruby-command=#{RUBY_PATH}
+      --with-tlib=ncurses
+      --with-compiledby=Homebrew
+      --with-local-dir=#{HOMEBREW_PREFIX}
     ]
 
     args << "--enable-cscope" if build.with? "cscope"
@@ -47,7 +50,17 @@ class Macvim < Formula
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
     end
 
-    args << "--enable-python3interp" if build.include? "with-python3"
+    args << "--enable-pythoninterp=dynamic" if build.with? 'python'
+    args << "--enable-python3interp=dynamic" if build.with? "python3"
+
+    unless MacOS::CLT.installed?
+      # On Xcode-only systems:
+      # Macvim cannot deal with "/Applications/Xcode.app/Contents/Developer" as
+      # it is returned by `xcode-select -print-path` and already set by
+      # Homebrew (in superenv). Instead Macvim needs the deeper dir to directly
+      # append "SDKs/...".
+      args << "--with-developer-dir=#{MacOS::Xcode.prefix}/Platforms/MacOSX.platform/Developer/"
+    end
 
     system "./configure", *args
 

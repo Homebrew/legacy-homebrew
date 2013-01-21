@@ -7,6 +7,7 @@ class Disco < Formula
   # Periods in the install path cause disco-worker to complain so change to underscores.
   version '0_4_5'
 
+  depends_on :python
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MacOS.version == :leopard
   depends_on 'libcmph'
@@ -23,44 +24,31 @@ class Disco < Formula
       s.change_make_var! "localstatedir", var
     end
 
-    # Support for setup.py, which is called from within the Makefile
-    temp_site_packages = lib/which_python/'site-packages'
-    mkdir_p temp_site_packages
-    ENV['PYTHONPATH'] = temp_site_packages
-    py_install_opts = "--verbose --force --install-scripts=#{bin} " +
-      "--install-lib=#{temp_site_packages} --install-data=#{share} --install-headers=#{include}"
+    python do
+      # Disco's "rebar" build tool refuses to build unless it's in a git repo, so
+      # make a dummy one
+      system "git init && git add master/rebar && git commit -a -m 'dummy commit'"
 
-    # Disco's "rebar" build tool refuses to build unless it's in a git repo, so
-    # make a dummy one
-    system "git init && git add master/rebar && git commit -a -m 'dummy commit'"
+      system "make"
+      system "make install"
+      prefix.install %w[contrib doc examples]
 
-    system "make"
-    system "make install PY_INSTALL_OPTS='#{py_install_opts}'"
-    prefix.install %w[contrib doc examples]
-
-    # Fix the config file to point at the linked files, not in to cellar
-    # This isn't ideal - if there's a settings.py file left over from a previous disco
-    # installation, it'll issue a Warning
-    inreplace "#{etc}/disco/settings.py" do |s|
-      s.gsub!("Cellar/disco/"+version+"/", "")
+      # Fix the config file to point at the linked files, not in to cellar
+      # This isn't ideal - if there's a settings.py file left over from a previous disco
+      # installation, it'll issue a Warning
+      inreplace "#{etc}/disco/settings.py" do |s|
+        s.gsub!("Cellar/disco/"+version+"/", "")
+      end
     end
-
   end
 
-
-  def which_python
-    # Update this once we have something like [this](https://github.com/mxcl/homebrew/issues/11204)
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
-
-  def caveats; <<-EOS.undent
-    Disco is a Python script. You must install homebrew's python or add the path
-      #{HOMEBREW_PREFIX}/lib/python2.7/site-packages
-    to your PYTHONPATH before running disco or ddfs.
-
-    Please copy #{etc}/disco/settings.py to ~/.disco and edit it if necessary.
-    The DDFS_*_REPLICA settings have been set to 1 assuming a single-machine install.
-    Please see http://discoproject.org/doc/disco/start/install.html for further instructions.
+  def caveats
+    s = ''
+    s += python.standard_caveats if python
+    s += <<-EOS.undent
+      Please copy #{etc}/disco/settings.py to ~/.disco and edit it if necessary.
+      The DDFS_*_REPLICA settings have been set to 1 assuming a single-machine install.
+      Please see http://discoproject.org/doc/disco/start/install.html for further instructions.
     EOS
   end
 end

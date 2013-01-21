@@ -5,6 +5,8 @@ class Denyhosts < Formula
   url 'http://downloads.sourceforge.net/project/denyhosts/denyhosts/2.6/DenyHosts-2.6.tar.gz'
   sha1 '02143843cb7c37c986c222b7acc11f7b75eb7373'
 
+  depends_on :python
+
   # Copies of daemon-control-dist & denyhosts.cfg-dist edited for OS X.
   def patches; DATA; end
 
@@ -30,11 +32,12 @@ class Denyhosts < Formula
     end
 
     # Install mostly into libexec (a la Duplicity)
-    system "python", "setup.py", "install",
-                     "--prefix=#{prefix}",
-                     "--install-lib=#{libexec}",
-                     "--install-scripts=#{libexec}",
-                     "--install-data=#{libexec}"
+    python do
+      system python, "setup.py", "install",
+                                 "--prefix=#{prefix}",
+                                 "--install-scripts=#{bin}",
+                                 "--install-data=#{libexec}"
+    end
     libexec.install 'daemon-control'
     (libexec+'daemon-control').chmod 0755
 

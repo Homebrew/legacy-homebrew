@@ -33,14 +33,20 @@ class Llvm < Formula
   option :universal
   option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
   option 'with-asan', 'Include support for -faddress-sanitizer (from compiler-rt)'
-  option 'shared', 'Build LLVM as a shared library'
+  option 'disable-shared', "Don't build LLVM as a shared library"
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
   option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
+  depends_on :python => :recommended
+
   env :std if build.universal?
 
   def install
+    if build.with? 'python' and build.include? 'disable-shared'
+      raise 'The Python bindings need the shared library.'
+    end
+
     Clang.new("clang").brew do
       clang_dir.install Dir['*']
     end if build.include? 'with-clang'
@@ -69,7 +75,7 @@ class Llvm < Formula
     else
       args << "--enable-targets=host"
     end
-    args << "--enable-shared" if build.include? 'shared'
+    args << "--enable-shared" unless build.include? 'disable-shared'
 
     args << "--disable-assertions" if build.include? 'disable-assertions'
 
@@ -77,13 +83,18 @@ class Llvm < Formula
     system "make install"
 
     # install llvm python bindings
-    (share/'llvm/bindings').install buildpath/'bindings/python'
+    if python
+      unless build.head?
+        inreplace buildpath/'bindings/python/llvm/common.py', 'LLVM-3.1svn', "libLLVM-#{version}svn"
+      end
+      python.site_packages.install buildpath/'bindings/python/llvm'
+    end
 
     # install clang tools and bindings
     cd clang_dir do
       system 'make install'
       (share/'clang/tools').install 'tools/scan-build', 'tools/scan-view'
-      (share/'clang/bindings').install 'bindings/python'
+      python.site_packages.install 'bindings/python/clang' if python
     end if build.include? 'with-clang'
   end
 
@@ -91,12 +102,15 @@ class Llvm < Formula
     system "#{bin}/llvm-config", "--version"
   end
 
-  def caveats; <<-EOS.undent
-    Extra tools and bindings are installed in #{share}/llvm and #{share}/clang.
+  def caveats
+    s = ''
+    s += python.standard_caveats if python
+    s += <<-EOS.undent
+      Extra tools are installed in #{share}/llvm and #{share}/clang.
 
-    If you already have LLVM installed, then "brew upgrade llvm" might not work.
-    Instead, try:
-        brew rm llvm && brew install llvm
+      If you already have LLVM installed, then "brew upgrade llvm" might not work.
+      Instead, try:
+          brew rm llvm && brew install llvm
     EOS
   end
 
