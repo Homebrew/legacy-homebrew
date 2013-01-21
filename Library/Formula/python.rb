@@ -111,11 +111,11 @@ class Python < Formula
     # as going from 2.7.0 to 2.7.1:
 
     # Remove the site-packages that Python created in its Cellar.
-#    site_packages_cellar.rmtree
+    site_packages_cellar.rmtree
     # Create a site-packages in HOMEBREW_PREFIX/lib/python/site-packages
-#    site_packages.mkpath
+    site_packages.mkpath
     # Symlink the prefix site-packages into the cellar.
-#    ln_s site_packages, site_packages_cellar
+    ln_s site_packages, site_packages_cellar
 
     # Teach python not to use things from /System
     # and tell it about the correct site-package dir because we moved it
