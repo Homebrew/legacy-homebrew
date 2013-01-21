@@ -1,6 +1,8 @@
 require 'formula'
 
 class ErlangInstalled < Requirement
+  fatal true
+
   def message; <<-EOS.undent
     Erlang is required to install.
 
@@ -14,10 +16,6 @@ class ErlangInstalled < Requirement
 
   def satisfied?
     which 'erl'
-  end
-
-  def fatal?
-    true
   end
 end
 

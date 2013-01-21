@@ -9,6 +9,8 @@ class Pygments < Formula
 end
 
 class MarkdownProvider < Requirement
+  fatal true
+
   def message; <<-EOS.undent
     shocco requires a `markdown` command.
 
@@ -22,10 +24,6 @@ class MarkdownProvider < Requirement
 
   def satisfied?
     which 'markdown'
-  end
-
-  def fatal?
-    true
   end
 end
 

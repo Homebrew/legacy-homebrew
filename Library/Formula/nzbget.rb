@@ -2,8 +2,8 @@ require 'formula'
 
 class Nzbget < Formula
   homepage 'http://sourceforge.net/projects/nzbget/'
-  url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/9.0/nzbget-9.0.tar.gz'
-  sha1 '7288e3250aea862a3f89b49b924436836b36ac95'
+  url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/9.1/nzbget-9.1.tar.gz'
+  sha1 '779258e9349ebc1ea78ae1d7ba5d379af35d4040'
   head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk', :using => :svn
 
   # Also depends on libxml2 but the one in OS X is fine

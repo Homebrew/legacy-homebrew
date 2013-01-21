@@ -1,11 +1,11 @@
 require 'formula'
 
 class SixtyFourBitRequired < Requirement
+  fatal true
+
   def satisfied?
     MacOS.prefer_64_bit?
   end
-
-  def fatal?; true end
 
   def message; <<-EOS.undent
     32-bit MongoDB binaries are no longer available.

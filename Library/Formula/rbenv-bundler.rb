@@ -3,7 +3,7 @@ require 'formula'
 class RbenvBundler < Formula
   homepage 'https://github.com/carsomyr/rbenv-bundler'
   url 'https://github.com/carsomyr/rbenv-bundler/tarball/0.95'
-  sha1 '373b93874b889ae11c2e26460e73ef1a99e8b9f6'
+  sha1 '68f34b7d9e123d93f51fe5fcca585fdaf3cd31e7'
 
   depends_on 'rbenv'
 

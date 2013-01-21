@@ -290,7 +290,7 @@ module MacSystem extend self
   end
 
   def x11_prefix
-    @x11_prefix ||= %W[/usr/X11 /opt/X11
+    @x11_prefix ||= %W[/opt/X11 /usr/X11
       #{MacOS.sdk_path}/usr/X11].find{|path| File.directory? "#{path}/include" }
   end
 

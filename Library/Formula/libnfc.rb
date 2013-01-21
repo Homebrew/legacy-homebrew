@@ -2,8 +2,8 @@ require 'formula'
 
 class Libnfc < Formula
   homepage 'http://www.libnfc.org/'
-  url 'http://libnfc.googlecode.com/files/libnfc-1.6.0-rc1.tar.gz'
-  sha1 'bbff76269120c3a531eb96b7ceb96fd36c0071a1'
+  url 'http://libnfc.googlecode.com/files/libnfc-1.7.0-rc1.tar.gz'
+  sha1 'b8660604c950c50c12d68025672bf553e50f111d'
 
   option 'with-pn532_uart', 'Enable PN532 UART support'
 

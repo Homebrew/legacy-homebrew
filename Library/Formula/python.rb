@@ -164,15 +164,16 @@ class Python < Formula
       install-lib=#{site_packages}
     EOF
 
-    unless MacOS::CLT.installed?
-      makefile = prefix/'Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile'
-      inreplace makefile do |s|
+    makefile = prefix/'Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile'
+    inreplace makefile do |s|
+      unless MacOS::CLT.installed?
         s.gsub!(/^CC=.*$/, "CC=xcrun clang")
         s.gsub!(/^CXX=.*$/, "CXX=xcrun clang++")
         s.gsub!(/^AR=.*$/, "AR=xcrun ar")
         s.gsub!(/^RANLIB=.*$/, "RANLIB=xcrun ranlib")
-        s.gsub!(/^PYTHONFRAMEWORKDIR=\tPython\.framework/, "PYTHONFRAMEWORKDIR= #{opt_prefix}/Frameworks/Python.framework")
       end
+      # Should be fixed regardless of CLT (for `python-config --ldflags`)
+      s.gsub!(/^PYTHONFRAMEWORKDIR=\tPython\.framework/, "PYTHONFRAMEWORKDIR= #{opt_prefix}/Frameworks/Python.framework")
     end
 
   end
