@@ -8,6 +8,7 @@ class Fann < Formula
   depends_on 'cmake' => :build
 
   def install
+    ENV.universal_binary if build.universal?
     system "cmake", ".", *std_cmake_args
     system "make install"
   end
