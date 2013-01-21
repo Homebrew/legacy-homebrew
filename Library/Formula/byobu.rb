@@ -7,6 +7,7 @@ class Byobu < Formula
 
   depends_on 'coreutils'
   depends_on 'gnu-sed' # fails with BSD sed
+  depends_on 'tmux'
 
   def install
     system "./configure", "--prefix=#{prefix}"
