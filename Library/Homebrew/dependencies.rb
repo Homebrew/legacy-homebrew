@@ -184,13 +184,12 @@ class Requirement
   # Overriding #satisfied? is deprepcated.
   # Pass a block or boolean to the satisfied DSL method instead.
   def satisfied?
-    self.class.satisfy.yielder do |proc|
+    result = self.class.satisfy.yielder do |proc|
       instance_eval(&proc)
     end
-  rescue NoMethodError
-    self.class.satisfy || false
-  rescue ArgumentError
-    false
+
+    infer_env_modification(result)
+    !!result
   end
 
   # Overriding #fatal? is deprecated.
@@ -217,29 +216,45 @@ class Requirement
     message.hash
   end
 
+  private
+
+  def infer_env_modification(o)
+    case o
+    when Pathname
+      self.class.env do
+        unless ENV["PATH"].split(":").include?(o.parent.to_s)
+          append("PATH", o.parent, ":")
+        end
+      end
+    end
+  end
+
   class << self
     def fatal(val=nil)
       val.nil? ? @fatal : @fatal = val
     end
 
     def satisfy(options={}, &block)
-      if block_given?
-        @satisfied ||= Requirement::Satisfier.new(options, &block)
-      else
-        @satisfied ||= options
-      end
+      @satisfied ||= Requirement::Satisfier.new(options, &block)
     end
   end
 
   class Satisfier
     def initialize(options={}, &block)
-      @options = { :build_env => true }
-      @options.merge!(options)
+      case options
+      when Hash
+        @options = { :build_env => true }
+        @options.merge!(options)
+      else
+        @satisfied = options
+      end
       @proc = block
     end
 
     def yielder
-      if @options[:build_env]
+      if instance_variable_defined?(:@satisfied)
+        @satisfied
+      elsif @options[:build_env]
         require 'superenv'
         ENV.with_build_environment do
           ENV.userpaths!
