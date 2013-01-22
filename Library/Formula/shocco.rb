@@ -10,6 +10,7 @@ end
 
 class MarkdownProvider < Requirement
   fatal true
+  env :userpaths
 
   satisfy { which 'markdown' }
 
