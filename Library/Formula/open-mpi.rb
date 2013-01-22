@@ -16,13 +16,25 @@ class OpenMpi < Formula
   option 'disable-fortran', 'Do not build the Fortran bindings'
   option 'test', 'Verify the build with make check'
   option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
-
+  option 'force-gcc', 'force the use of gcc'
   def install
-    args = %W[
-      --prefix=#{prefix}
-      --disable-dependency-tracking
-      --enable-ipv6
-    ]
+    if build.include? 'force-gcc'
+        args = %W[
+          CC=gcc
+          CXX=g++
+          FC=gfortran
+          --prefix=#{prefix}
+          --disable-dependency-tracking
+          --enable-ipv6
+        ]
+    elsif
+        args = %W[
+          --prefix=#{prefix}
+          --disable-dependency-tracking
+          --enable-ipv6
+        ]
+    end
+
     if build.include? 'disable-fortran'
       args << '--disable-mpi-f77' << '--disable-mpi-f90'
     else
@@ -33,9 +45,11 @@ class OpenMpi < Formula
       args << '--enable-mpi-thread-multiple'
     end
 
-    system './configure', *args
-    system 'make V=1 all'
-    system 'make V=1 check' if build.include? 'test'
+#    if build.include? 'force gcc'
+#      system 'CC=mpicc CXX=mpic++ FC=mpif90 ./configure', *args
+#    else
+      system './configure', *args
+#    end
     system 'make install'
 
     # If Fortran bindings were built, there will be a stray `.mod` file

@@ -7,6 +7,6 @@ class Szip < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
+    system "make -j8 install"
   end
 end
