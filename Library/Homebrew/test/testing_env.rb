@@ -31,7 +31,11 @@ MACOS = true
 MACOS_VERSION = 10.6
 MACOS_FULL_VERSION = '10.6.8'
 
-(HOMEBREW_PREFIX+'Library/Formula').mkpath
+%w{Library/Formula Library/ENV}.each do |d|
+  HOMEBREW_REPOSITORY.join(d).mkpath
+end
+
+ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
@@ -65,12 +69,17 @@ unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
 end
 
 require 'test/unit' # must be after at_exit
-
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'extend/ENV'
+ARGV.extend(HomebrewArgvExtension)
 ENV.extend(HomebrewEnvExtension)
+
+begin
+  require 'rubygems'
+  require 'mocha/setup'
+rescue LoadError
+  warn 'The mocha gem is required to run some tests, expect failures'
+end
 
 module VersionAssertions
   def version v
