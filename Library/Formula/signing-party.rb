@@ -2,7 +2,6 @@ require 'formula'
 
 class GnupgInstalled < Requirement
   fatal true
-  env :userpaths
 
   satisfy { which('gpg') || which('gpg2') }
 

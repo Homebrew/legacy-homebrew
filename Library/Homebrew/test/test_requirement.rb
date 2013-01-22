@@ -74,4 +74,17 @@ class RequirementTests < Test::Unit::TestCase
 
     assert req.satisfied?
   end
+
+  def test_infers_path_from_satisfy_result
+    which_path = Pathname.new("/foo/bar/baz")
+    req = Class.new(Requirement) do
+      satisfy { which_path }
+    end.new
+
+    ENV.expects(:with_build_environment).yields.returns(which_path)
+    ENV.expects(:userpaths!)
+    ENV.expects(:append).with("PATH", which_path.parent, ":")
+
+    req.modify_build_environment
+  end
 end
