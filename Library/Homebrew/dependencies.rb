@@ -224,7 +224,6 @@ class Requirement
 
     def satisfy(options={}, &block)
       if block_given?
-        options[:userpaths] = true if env.userpaths?
         @satisfied ||= Requirement::Satisfier.new(options, &block)
       else
         @satisfied ||= options
@@ -243,7 +242,7 @@ class Requirement
       if @options[:build_env]
         require 'superenv'
         ENV.with_build_environment do
-          ENV.userpaths! if @options[:userpaths]
+          ENV.userpaths!
           yield @proc
         end
       else
