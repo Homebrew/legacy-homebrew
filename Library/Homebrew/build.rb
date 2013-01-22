@@ -71,30 +71,14 @@ end
 
 def install f
   deps = f.recursive_deps
-  keg_only_deps = deps.select{|dep| dep.keg_only? }
+  keg_only_deps = deps.select(&:keg_only?)
 
   pre_superenv_hacks(f)
   require 'superenv'
 
-  unless superenv?
-    ENV.setup_build_environment
-    # Requirements are processed first so that adjustments made to ENV
-    # for keg-only deps take precdence.
-    f.recursive_requirements.each { |rq| rq.modify_build_environment }
-  end
-
   deps.each do |dep|
     opt = HOMEBREW_PREFIX/:opt/dep
     fixopt(dep) unless opt.directory? or ARGV.ignore_deps?
-    if not superenv? and dep.keg_only?
-      ENV.prepend_path 'PATH', "#{opt}/bin"
-      ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
-      ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
-      ENV.prepend_path 'ACLOCAL_PATH', "#{opt}/share/aclocal"
-      ENV.prepend_path 'CMAKE_PREFIX_PATH', opt
-      ENV.prepend 'LDFLAGS', "-L#{opt}/lib" if (opt/:lib).directory?
-      ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
-    end
   end
 
   if superenv?
@@ -103,7 +87,21 @@ def install f
     ENV.x11 = f.recursive_requirements.detect{|rq| rq.class == X11Dependency }
     ENV.setup_build_environment
     post_superenv_hacks(f)
-    f.recursive_requirements.each { |rq| rq.modify_build_environment }
+    f.recursive_requirements.each(&:modify_build_environment)
+  else
+    ENV.setup_build_environment
+    f.recursive_requirements.each(&:modify_build_environment)
+
+    keg_only_deps.each do |dep|
+      opt = dep.opt_prefix
+      ENV.prepend_path 'PATH', "#{opt}/bin"
+      ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
+      ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
+      ENV.prepend_path 'ACLOCAL_PATH', "#{opt}/share/aclocal"
+      ENV.prepend_path 'CMAKE_PREFIX_PATH', opt
+      ENV.prepend 'LDFLAGS', "-L#{opt}/lib" if (opt/:lib).directory?
+      ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
+    end
   end
 
   if f.fails_with? ENV.compiler
