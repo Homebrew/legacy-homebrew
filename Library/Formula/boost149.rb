@@ -1,15 +1,14 @@
 require 'formula'
 
 class UniversalPython < Requirement
+  satisfy { archs_for_command("python").universal? }
+
   def message; <<-EOS.undent
     A universal build was requested, but Python is not a universal build
 
     Boost compiles against the Python it finds in the path; if this Python
     is not a universal build then linking will likely fail.
     EOS
-  end
-  def satisfied?
-    archs_for_command("python").universal?
   end
 end
 

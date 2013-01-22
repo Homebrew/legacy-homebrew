@@ -170,6 +170,7 @@ end
 # By default, Requirements are non-fatal.
 class Requirement
   include Dependable
+  extend BuildEnvironmentDSL
 
   attr_reader :tags
 
@@ -177,18 +178,32 @@ class Requirement
     @tags = tags.flatten.compact
   end
 
-  # Should return true if this requirement is met.
-  def satisfied?; false; end
-  # Should return true if not meeting this requirement should fail the build.
+  # The message to show when the requirement is not met.
+  def message; "" end
+
+  # Overriding #satisfied? is deprepcated.
+  # Pass a block or boolean to the satisfied DSL method instead.
+  def satisfied?
+    self.class.satisfy.yielder do |proc|
+      instance_eval(&proc)
+    end
+  rescue NoMethodError
+    self.class.satisfy || false
+  rescue ArgumentError
+    false
+  end
+
+  # Overriding #fatal? is deprecated.
+  # Pass a boolean to the fatal DSL method instead.
   def fatal?
     self.class.fatal || false
   end
-  # The message to show when the requirement is not met.
-  def message; ""; end
 
-  # Requirements can modify the current build environment by overriding this.
-  # See X11Dependency
-  def modify_build_environment; nil end
+  # Overriding #modify_build_environment is deprecated.
+  # Pass a block to the the env DSL method instead.
+  def modify_build_environment
+    satisfied? and env.modify_build_environment(self)
+  end
 
   def env
     @env ||= self.class.env
@@ -207,10 +222,33 @@ class Requirement
       val.nil? ? @fatal : @fatal = val
     end
 
-    def env(*settings)
-      @env ||= BuildEnvironment.new
-      settings.each { |s| @env << s }
-      @env
+    def satisfy(options={}, &block)
+      if block_given?
+        options[:userpaths] = true if env.userpaths?
+        @satisfied ||= Requirement::Satisfier.new(options, &block)
+      else
+        @satisfied ||= options
+      end
+    end
+  end
+
+  class Satisfier
+    def initialize(options={}, &block)
+      @options = { :build_env => true }
+      @options.merge!(options)
+      @proc = block
+    end
+
+    def yielder
+      if @options[:build_env]
+        require 'superenv'
+        ENV.with_build_environment do
+          ENV.userpaths! if @options[:userpaths]
+          yield @proc
+        end
+      else
+        yield @proc
+      end
     end
   end
 end

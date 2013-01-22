@@ -5,6 +5,8 @@ require 'formula'
 # would require an existing ML compiler/interpreter for bootstrapping.
 
 class StandardHomebrewLocation < Requirement
+  satisfy HOMEBREW_PREFIX.to_s == "/usr/local"
+
   def message; <<-EOS.undent
     mlton won't work outside of /usr/local
 
@@ -12,9 +14,6 @@ class StandardHomebrewLocation < Requirement
     Homebrew is installed somewhere other than /usr/local; mlton
     will be unable to find GMP.
     EOS
-  end
-  def satisfied?
-    HOMEBREW_PREFIX.to_s == "/usr/local"
   end
 end
 
