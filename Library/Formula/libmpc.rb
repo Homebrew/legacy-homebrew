@@ -9,7 +9,7 @@ class Libmpc < Formula
   depends_on 'mpfr'
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--with-gmp=#{HOMEBREW_PREFIX}", "--with-mpfr=#{HOMEBREW_PREFIX}", "--prefix=#{prefix}"
     system "make"
     system "make check"
     system "make install"
