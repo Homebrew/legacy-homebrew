@@ -12,6 +12,7 @@ class Gource < Formula
     depends_on :libtool
   end
 
+  depends_on :x11 if MacOS::X11.installed?
   depends_on :freetype
 
   depends_on 'pkg-config' => :build
