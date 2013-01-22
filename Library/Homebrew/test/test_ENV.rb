@@ -26,4 +26,13 @@ class EnvironmentTests < Test::Unit::TestCase
     assert_nil ENV['LD']
     assert_equal ENV['OBJC'], ENV['CC']
   end
+
+  def test_with_build_environment
+    before = ENV.to_hash
+    ENV.with_build_environment do
+      ENV['foo'] = 'bar'
+    end
+    assert_nil ENV['foo']
+    assert_equal before, ENV.to_hash
+  end
 end

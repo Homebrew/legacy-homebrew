@@ -3,6 +3,8 @@ require 'formula'
 class ErlangInstalled < Requirement
   fatal true
 
+  satisfy { which 'erl' }
+
   def message; <<-EOS.undent
     Erlang is required to install.
 
@@ -12,10 +14,6 @@ class ErlangInstalled < Requirement
     Or you can use an official installer from:
       http://www.erlang.org/
     EOS
-  end
-
-  def satisfied?
-    which 'erl'
   end
 end
 

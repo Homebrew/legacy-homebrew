@@ -3,17 +3,17 @@ require 'formula'
 class UniversalPcre < Requirement
   fatal true
 
+  satisfy :build_env => false do
+    f = Formula.factory('pcre')
+    f.installed? && archs_for_command(f.lib/'libpcre.dylib').universal?
+  end
+
   def message; <<-EOS.undent
     pcre must be build universal for uwsgi to work.
     You will need to:
       brew rm pcre
       brew install --universal pcre
     EOS
-  end
-
-  def satisfied?
-    f = Formula.factory('pcre')
-    f.installed? && archs_for_command(f.lib/'libpcre.dylib').universal?
   end
 end
 
