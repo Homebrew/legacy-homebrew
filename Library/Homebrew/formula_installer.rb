@@ -75,8 +75,11 @@ class FormulaInstaller
     end
 
     unless ignore_deps
+      check_requirements
+    end
+
+    unless ignore_deps
       needed_deps = []
-      needed_reqs = []
 
       # HACK: If readline is present in the dependency tree, it will clash
       # with the stdlib's Readline module when the debugger is loaded
@@ -86,13 +89,6 @@ class FormulaInstaller
 
       ARGV.filter_for_dependencies do
         needed_deps = f.recursive_deps.reject{ |d| d.installed? }
-        needed_reqs = f.recursive_requirements.reject { |r| r.satisfied? }
-      end
-
-      unless needed_reqs.empty?
-        puts needed_reqs.map { |r| r.message } * "\n"
-        fatals = needed_reqs.select { |r| r.fatal? }
-        raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
       end
 
       unless needed_deps.empty?
@@ -126,6 +122,18 @@ class FormulaInstaller
     end
 
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
+  end
+
+  def check_requirements
+    needed_reqs = ARGV.filter_for_dependencies do
+      f.recursive_requirements.reject(&:satisfied?)
+    end
+
+    unless needed_reqs.empty?
+      puts needed_reqs.map(&:message) * "\n"
+      fatals = needed_reqs.select(&:fatal?)
+      raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
+    end
   end
 
   def install_dependency dep
