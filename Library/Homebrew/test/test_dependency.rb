@@ -1,5 +1,6 @@
 require 'testing_env'
 require 'dependencies'
+require 'options'
 
 class DependableTests < Test::Unit::TestCase
   def setup
@@ -8,7 +9,7 @@ class DependableTests < Test::Unit::TestCase
   end
 
   def test_options
-    assert_equal %w{--foo --bar}.sort, @dep.options.sort
+    assert_equal %w{--foo --bar}.sort, @dep.options.as_flags.sort
   end
 
   def test_interrogation

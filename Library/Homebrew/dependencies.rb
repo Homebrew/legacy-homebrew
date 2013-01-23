@@ -138,7 +138,7 @@ module Dependable
   end
 
   def options
-    tags.reject { |tag| RESERVED_TAGS.include? tag }.map { |tag| '--'+tag.to_s }
+    Options.new((tags - RESERVED_TAGS).map { |o| Option.new(o) })
   end
 end
 
@@ -171,11 +171,22 @@ class Dependency
   end
 
   def to_formula
-    Formula.factory(name)
+    f = Formula.factory(name)
+    # Add this dependency's options to the formula's build args
+    f.build.args = f.build.args.concat(options)
+    f
+  end
+
+  def installed?
+    to_formula.installed?
   end
 
   def requested?
     ARGV.formulae.include?(to_formula) rescue false
+  end
+
+  def universal!
+    tags << 'universal' if to_formula.build.has_option? 'universal'
   end
 
   # Expand the dependencies of f recursively, optionally yielding
