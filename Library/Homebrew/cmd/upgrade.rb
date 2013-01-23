@@ -60,7 +60,8 @@ module Homebrew extend self
     tab = (f.opt_prefix.exist? ? Tab.for_keg(f.opt_prefix) : Tab.dummy_tab(f))
     outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
 
-    installer = FormulaInstaller.new(f, tab)
+    installer = FormulaInstaller.new(f)
+    installer.tab = tab
     installer.show_header = false
     installer.install_bottle = (install_bottle?(f) and tab.used_options.empty?)
 

@@ -7,15 +7,14 @@ require 'caveats'
 
 class FormulaInstaller
   attr :f
-  attr :tab
+  attr :tab, true
   attr :show_summary_heading, true
   attr :ignore_deps, true
   attr :install_bottle, true
   attr :show_header, true
 
-  def initialize ff, tab=nil
+  def initialize ff
     @f = ff
-    @tab = tab
     @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @install_bottle = install_bottle? ff
@@ -170,9 +169,11 @@ class FormulaInstaller
   def install_dependency dep
     dep_tab = Tab.for_formula(dep)
     dep = dep.to_formula
+
     outdated_keg = Keg.new(dep.linked_keg.realpath) rescue nil
 
-    fi = FormulaInstaller.new(dep, dep_tab)
+    fi = FormulaInstaller.new(dep)
+    fi.tab = dep_tab
     fi.ignore_deps = true
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
