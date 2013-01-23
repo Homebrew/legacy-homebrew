@@ -169,6 +169,14 @@ class Dependency
   def hash
     name.hash
   end
+
+  def to_formula
+    Formula.factory(name)
+  end
+
+  def requested?
+    ARGV.formulae.include?(to_formula) rescue false
+  end
 end
 
 # A base class for non-formula requirements needed by formulae.

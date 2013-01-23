@@ -77,10 +77,6 @@ class Formula
     installed_prefix.children.length > 0 rescue false
   end
 
-  def explicitly_requested?
-    ARGV.formulae.include?(self) rescue false
-  end
-
   def linked_keg
     HOMEBREW_REPOSITORY/'Library/LinkedKegs'/@name
   end
