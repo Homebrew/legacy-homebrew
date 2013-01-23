@@ -32,17 +32,6 @@ module Homebrew extend self
       exit 1 if outdated.empty?
     end
 
-    # Expand the outdated list to include outdated dependencies then sort and
-    # reduce such that dependencies are installed first and installation is not
-    # attempted twice. Sorting is implicit the way `recursive_deps` returns
-    # root dependencies at the head of the list and `uniq` keeps the first
-    # element it encounters and discards the rest.
-    ARGV.filter_for_dependencies do
-      outdated.map!{ |f| f.recursive_deps.reject{ |d| d.installed? } << f }
-      outdated.flatten!
-      outdated.uniq!
-    end unless ARGV.ignore_deps?
-
     if outdated.length > 1
       oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
       puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
