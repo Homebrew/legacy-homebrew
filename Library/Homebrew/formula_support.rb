@@ -172,6 +172,11 @@ class Option
     @flag = '--'+name.to_s
   end
 
+  def to_s
+    flag
+  end
+  alias_method :to_str, :to_s
+
   def eql?(other)
     @name == other.name
   end
