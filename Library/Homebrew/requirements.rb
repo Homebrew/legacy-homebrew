@@ -204,6 +204,7 @@ end
 
 class XcodeDependency < Requirement
   fatal true
+  build true
 
   satisfy(:build_env => false) { MacOS::Xcode.installed? }
 
@@ -274,6 +275,7 @@ end
 
 class CLTDependency < Requirement
   fatal true
+  build true
 
   def satisfied?
     MacOS::CLT.installed?

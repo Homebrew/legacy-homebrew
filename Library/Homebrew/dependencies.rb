@@ -229,6 +229,7 @@ class Requirement
 
   def initialize(*tags)
     @tags = tags.flatten.compact
+    @tags << :build if self.class.build
   end
 
   # The message to show when the requirement is not met.
@@ -285,6 +286,10 @@ class Requirement
   class << self
     def fatal(val=nil)
       val.nil? ? @fatal : @fatal = val
+    end
+
+    def build(val=nil)
+      val.nil? ? @build : @build = val
     end
 
     def satisfy(options={}, &block)
