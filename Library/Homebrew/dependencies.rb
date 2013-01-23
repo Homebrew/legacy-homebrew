@@ -86,6 +86,8 @@ private
       PostgresqlInstalled.new(tag)
     when :tex
       TeXInstalled.new(tag)
+    when :clt
+      CLTDependency.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
     end
