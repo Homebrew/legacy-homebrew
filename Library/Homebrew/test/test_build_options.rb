@@ -27,6 +27,13 @@ class BuildOptionsTests < Test::Unit::TestCase
     assert !@build.include?("--with-foo")
   end
 
+  def test_with_without
+    assert @build.with?("foo")
+    assert @build.with?("bar")
+    assert @build.with?("baz")
+    assert @build.without?("qux")
+  end
+
   def test_used_options
     assert @build.used_options.include?("--with-foo")
     assert @build.used_options.include?("--with-bar")
