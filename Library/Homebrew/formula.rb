@@ -831,12 +831,16 @@ private
     def finalize_dsl
       # Synthesize options for optional dependencies
       dependencies.deps.select(&:optional?).each do |dep|
-        option "with-#{dep.name}", "Build with #{dep.name} support"
+        unless build.has_option? "with-#{dep.name}"
+          option "with-#{dep.name}", "Build with #{dep.name} support"
+        end
       end
 
       # Synthesize options for recommended dependencies
       dependencies.deps.select(&:recommended?).each do |dep|
-        option "without-#{dep.name}", "Build without #{dep.name} support"
+        unless build.has_option? "without-#{dep.name}"
+          option "without-#{dep.name}", "Build without #{dep.name} support"
+        end
       end
     end
   end
