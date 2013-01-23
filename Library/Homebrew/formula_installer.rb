@@ -10,19 +10,22 @@ class FormulaInstaller
   attr :tab, true
   attr :show_summary_heading, true
   attr :ignore_deps, true
-  attr :install_bottle, true
   attr :show_header, true
 
   def initialize ff
     @f = ff
     @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
-    @install_bottle = install_bottle? ff
+    @options = []
 
     @@attempted ||= Set.new
 
     lock
     check_install_sanity
+  end
+
+  def pour_bottle?
+    install_bottle?(f) && (tab.used_options.empty? rescue true) && options.empty?
   end
 
   def check_install_sanity
@@ -89,7 +92,7 @@ class FormulaInstaller
 
     @@attempted << f
 
-    if install_bottle
+    if pour_bottle?
       pour
     else
       build
@@ -104,7 +107,7 @@ class FormulaInstaller
       f.recursive_requirements.reject(&:satisfied?)
     end
 
-    needed_reqs.reject!(&:build?) if install_bottle
+    needed_reqs.reject!(&:build?) if pour_bottle?
 
     unless needed_reqs.empty?
       puts needed_reqs.map(&:message) * "\n"
@@ -233,7 +236,7 @@ class FormulaInstaller
   end
 
   def build_time
-    @build_time ||= Time.now - @start_time unless install_bottle or ARGV.interactive? or @start_time.nil?
+    @build_time ||= Time.now - @start_time unless pour_bottle? or ARGV.interactive? or @start_time.nil?
   end
 
   def build
