@@ -3,7 +3,7 @@ require 'build_options'
 
 class BuildOptionsTests < Test::Unit::TestCase
   def setup
-    args = %w{--with-foo --with-bar --without-qux}.extend(HomebrewArgvExtension)
+    args = %w{--with-foo --with-bar --without-qux}
     @build = BuildOptions.new(args)
     @build.add("with-foo")
     @build.add("with-bar")

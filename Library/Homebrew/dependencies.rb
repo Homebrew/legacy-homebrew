@@ -138,7 +138,7 @@ module Dependable
   end
 
   def options
-    Options.new((tags - RESERVED_TAGS).map { |o| Option.new(o) })
+    Options.coerce(tags - RESERVED_TAGS)
   end
 end
 
