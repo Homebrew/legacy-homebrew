@@ -104,6 +104,8 @@ class FormulaInstaller
       f.recursive_requirements.reject(&:satisfied?)
     end
 
+    needed_reqs.reject!(&:build?) if install_bottle
+
     unless needed_reqs.empty?
       puts needed_reqs.map(&:message) * "\n"
       fatals = needed_reqs.select(&:fatal?)
@@ -115,6 +117,9 @@ class FormulaInstaller
     dep_f = dep.to_formula
     if dep_f.installed?
       # If the dep is already installed, skip it.
+      false
+    elsif install_bottle and dep.build?
+      # We skip build-time deps when installing bottles.
       false
     else
       # Otherwise, we need to install it.
