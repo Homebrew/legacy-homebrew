@@ -4,9 +4,8 @@ class Option
   attr_reader :name, :description, :flag
 
   def initialize(name, description=nil)
-    @name = name.to_s[/^(?:--)?(.+)$/, 1]
+    @name, @flag = split_name(name)
     @description = description.to_s
-    @flag = "--#{@name}"
   end
 
   def to_s
@@ -28,6 +27,19 @@ class Option
 
   def hash
     name.hash
+  end
+
+  private
+
+  def split_name(name)
+    case name
+    when /^-[a-zA-Z]$/
+      [name[1..1], name]
+    when /^--(.+)$/
+      [$1, name]
+    else
+      [name, "--#{name}"]
+    end
   end
 end
 
@@ -55,6 +67,10 @@ class Options
     Options.new(@options - o)
   end
 
+  def &(o)
+    Options.new(@options & o)
+  end
+
   def *(arg)
     @options.to_a * arg
   end
@@ -71,8 +87,22 @@ class Options
     any? { |opt| opt == o || opt.name == o || opt.flag == o }
   end
 
+  def concat(o)
+    o.each { |opt| @options << opt }
+    self
+  end
+
   def to_a
     @options.to_a
   end
   alias_method :to_ary, :to_a
+
+  def self.coerce(arg)
+    case arg
+    when self then arg
+    when Option then new << arg
+    when Array then new(arg.map { |a| Option.new(a.to_s) })
+    else raise TypeError, "Cannot convert #{arg.inspect} to Options"
+    end
+  end
 end

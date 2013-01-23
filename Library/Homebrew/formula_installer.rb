@@ -17,7 +17,7 @@ class FormulaInstaller
     @f = ff
     @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
-    @options = []
+    @options = Options.new
 
     @@attempted ||= Set.new
 
@@ -247,6 +247,17 @@ class FormulaInstaller
     @build_time ||= Time.now - @start_time unless pour_bottle? or ARGV.interactive? or @start_time.nil?
   end
 
+  def build_argv
+    @build_argv ||= begin
+      opts = Options.coerce(ARGV.options_only)
+      unless opts.include? '--fresh'
+        opts.concat(options) # from a dependent formula
+        opts.concat((tab.used_options rescue [])) # from a previous install
+      end
+      opts << '--build-from-source' # don't download bottle
+    end
+  end
+
   def build
     FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{f}/*"]
 
@@ -261,16 +272,6 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
-    args = ARGV.clone
-    args.concat(tab.used_options.as_flags) unless tab.nil? or args.include? '--fresh'
-    # FIXME: enforce the download of the non-bottled package
-    # in the spawned Ruby process.
-    args << '--build-from-source'
-    # Add any options that were passed into this FormulaInstaller instance.
-    # Usually this represents options being passed by a dependent formula.
-    args.concat options
-    args.uniq!
-
     fork do
       begin
         read.close
@@ -281,7 +282,7 @@ class FormulaInstaller
              '-rbuild',
              '--',
              f.path,
-             *args.options_only
+             *build_argv
       rescue Exception => e
         Marshal.dump(e, write)
         write.close
@@ -300,7 +301,7 @@ class FormulaInstaller
 
     raise "Empty installation" if Dir["#{f.prefix}/*"].empty?
 
-    Tab.create(f, args).write # INSTALL_RECEIPT.json
+    Tab.create(f, build_argv).write # INSTALL_RECEIPT.json
 
   rescue Exception => e
     ignore_interrupts do
