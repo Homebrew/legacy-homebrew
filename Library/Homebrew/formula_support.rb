@@ -248,14 +248,14 @@ class BuildOptions
 
   # True if the user requested a universal build.
   def universal?
-    @args.include? '--universal'
+    @args.include?('--universal') && has_option?('universal')
   end
 
   # Request a 32-bit only build.
   # This is needed for some use-cases though we prefer to build Universal
   # when a 32-bit version is needed.
   def build_32_bit?
-    @args.include? '--32-bit'
+    @args.include?('--32-bit') && has_option?('32-bit')
   end
 
   def used_options
