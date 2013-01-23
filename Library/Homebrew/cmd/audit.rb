@@ -129,18 +129,24 @@ class FormulaAuditor
 
     # Check for things we don't like to depend on.
     # We allow non-Homebrew installs whenever possible.
-    f.deps.each do |d|
+    f.deps.each do |dep|
       begin
-        dep_f = Formula.factory d
+        dep_f = dep.to_formula
       rescue
-        problem "Can't find dependency \"#{d}\"."
+        problem "Can't find dependency #{dep.inspect}."
       end
 
-      case d.name
+      dep.options.reject do |opt|
+        dep_f.build.has_option?(opt.name)
+      end.each do |opt|
+        problem "Dependency #{dep} does not define option #{opt.name.inspect}"
+      end
+
+      case dep.name
       when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
         problem <<-EOS.undent
-          Don't use #{d} as a dependency. We allow non-Homebrew
-          #{d} installations.
+          Don't use #{dep} as a dependency. We allow non-Homebrew
+          #{dep} installations.
           EOS
       when 'gfortran'
         problem "Use ENV.fortran during install instead of depends_on 'gfortran'"
