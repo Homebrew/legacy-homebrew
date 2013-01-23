@@ -829,6 +829,15 @@ private
     # This method is called once by `factory` before creating any instances.
     # It allows the DSL to finalize itself, reducing complexity in the constructor.
     def finalize_dsl
+      # Synthesize options for optional dependencies
+      dependencies.deps.select(&:optional?).each do |dep|
+        option "with-#{dep.name}", "Build with #{dep.name} support"
+      end
+
+      # Synthesize options for recommended dependencies
+      dependencies.deps.select(&:recommended?).each do |dep|
+        option "without-#{dep.name}", "Build without #{dep.name} support"
+      end
     end
   end
 end
