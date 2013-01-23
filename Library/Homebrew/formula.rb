@@ -466,7 +466,7 @@ class Formula
   # The full set of Requirements for this formula's dependency tree.
   def recursive_requirements
     reqs = ComparableSet.new
-    recursive_deps.each { |dep| reqs.merge dep.requirements }
+    recursive_dependencies.each { |d| reqs.merge d.to_formula.requirements }
     reqs.merge requirements
   end
 

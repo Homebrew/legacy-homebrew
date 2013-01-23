@@ -52,7 +52,7 @@ class FormulaInstaller
     end
 
     unless ignore_deps
-      unlinked_deps = f.recursive_deps.select do |dep|
+      unlinked_deps = f.recursive_dependencies.map(&:to_formula).select do |dep|
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
       raise CannotInstallFormulaError,
@@ -491,7 +491,9 @@ class FormulaInstaller
 
   def lock
     if (@@locked ||= []).empty?
-      f.recursive_deps.each { |d| @@locked << d } unless ignore_deps
+      f.recursive_dependencies.each do |dep|
+        @@locked << dep.to_formula
+      end unless ignore_deps
       @@locked.unshift(f)
       @@locked.each(&:lock)
       @hold_locks = true
