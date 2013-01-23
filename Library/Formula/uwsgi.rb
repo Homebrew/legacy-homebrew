@@ -19,8 +19,8 @@ end
 
 class Uwsgi < Formula
   homepage 'http://projects.unbit.it/uwsgi/'
-  url 'http://projects.unbit.it/downloads/uwsgi-1.2.6.tar.gz'
-  sha1 '61996a4bc7d745dc3ed849c78310c4e1c5c70ee1'
+  url 'http://projects.unbit.it/downloads/uwsgi-1.4.4.tar.gz'
+  sha1 'efaff6ebaa39bc015771bdecbf73373e1d1eceed'
 
   depends_on UniversalPcre.new
   depends_on 'pcre'
