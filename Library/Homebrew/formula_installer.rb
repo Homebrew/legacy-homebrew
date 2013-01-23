@@ -208,7 +208,7 @@ class FormulaInstaller
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
     args = ARGV.clone
-    args.concat tab.used_options unless tab.nil? or args.include? '--fresh'
+    args.concat(tab.used_options.as_flags) unless tab.nil? or args.include? '--fresh'
     # FIXME: enforce the download of the non-bottled package
     # in the spawned Ruby process.
     args << '--build-from-source'
