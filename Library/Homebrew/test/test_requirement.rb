@@ -87,4 +87,9 @@ class RequirementTests < Test::Unit::TestCase
 
     req.modify_build_environment
   end
+
+  def test_dsl_build
+    req = Class.new(Requirement) { build true }.new
+    assert req.build?
+  end
 end
