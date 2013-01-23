@@ -8,6 +8,7 @@ require 'caveats'
 class FormulaInstaller
   attr :f
   attr :tab, true
+  attr :options, true
   attr :show_summary_heading, true
   attr :ignore_deps, true
   attr :show_header, true
@@ -116,20 +117,6 @@ class FormulaInstaller
     end
   end
 
-  def dep_needed? dep
-    dep_f = dep.to_formula
-    if dep_f.installed?
-      # If the dep is already installed, skip it.
-      false
-    elsif install_bottle and dep.build?
-      # We skip build-time deps when installing bottles.
-      false
-    else
-      # Otherwise, we need to install it.
-      true
-    end
-  end
-
   def effective_deps
     @deps ||= begin
       deps = Set.new
@@ -138,15 +125,34 @@ class FormulaInstaller
       # any influential flags (--HEAD, --devel, etc.) the user has passed
       # when we check the installed status.
       requested_deps = f.recursive_dependencies.select do |dep|
-        dep_f = dep.to_formula
-        dep_f.requested? and not dep_f.installed?
+        dep.requested? && !dep.installed?
       end
 
       # Otherwise, we filter these influential flags so that they do not
       # affect installation prefixes and other properties when we decide
       # whether or not the dep is needed.
       necessary_deps = ARGV.filter_for_dependencies do
-        f.recursive_dependencies.select { |d| dep_needed? d }
+        f.recursive_dependencies do |dependent, dep|
+          if dep.optional? || dep.recommended?
+            Dependency.prune unless dependent.build.with?(dep.name)
+          elsif dep.build?
+            Dependency.prune if pour_bottle?
+          end
+
+          dep.universal! if f.build.universal?
+
+          dep_f = dep.to_formula
+          dep_tab = Tab.for_formula(dep)
+          missing = dep.options - dep_tab.used_options
+
+          if dep.installed?
+            if missing.empty?
+              Dependency.prune
+            else
+              raise "#{f} dependency #{dep} not installed with:\n  #{missing*', '}"
+            end
+          end
+        end
       end
 
       deps.merge(requested_deps)
@@ -171,12 +177,14 @@ class FormulaInstaller
 
   def install_dependency dep
     dep_tab = Tab.for_formula(dep)
+    dep_options = dep.options
     dep = dep.to_formula
 
     outdated_keg = Keg.new(dep.linked_keg.realpath) rescue nil
 
     fi = FormulaInstaller.new(dep)
     fi.tab = dep_tab
+    fi.options = dep_options
     fi.ignore_deps = true
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
@@ -258,7 +266,10 @@ class FormulaInstaller
     # FIXME: enforce the download of the non-bottled package
     # in the spawned Ruby process.
     args << '--build-from-source'
-    args.uniq! # Just in case some dupes were added
+    # Add any options that were passed into this FormulaInstaller instance.
+    # Usually this represents options being passed by a dependent formula.
+    args.concat options
+    args.uniq!
 
     fork do
       begin

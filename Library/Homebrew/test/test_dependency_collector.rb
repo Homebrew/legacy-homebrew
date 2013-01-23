@@ -1,5 +1,6 @@
 require 'testing_env'
 require 'dependencies'
+require 'options'
 require 'extend/set'
 
 module DependencyCollectorTestExtension
