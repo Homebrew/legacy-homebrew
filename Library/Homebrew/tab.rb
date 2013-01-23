@@ -58,8 +58,22 @@ class Tab < OpenStruct
             :HEAD => nil
   end
 
-  def installed_with? opt
+  def with? name
+    if options.include? "with-#{name}"
+      used_options.include? "with-#{name}"
+    elsif options.include? "without-#{name}"
+      not used_options.include? "without-#{name}"
+    else
+      false
+    end
+  end
+
+  def include? opt
     used_options.include? opt
+  end
+
+  def universal?
+    used_options.include? "universal"
   end
 
   def used_options
