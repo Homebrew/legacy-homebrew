@@ -1,5 +1,6 @@
 require 'ostruct'
 require 'formula'
+require 'options'
 require 'vendor/multi_json'
 
 # Inherit from OpenStruct to gain a generic initialization method that takes a
@@ -61,14 +62,22 @@ class Tab < OpenStruct
     used_options.include? opt
   end
 
+  def used_options
+    Options.new(super.map { |o| Option.new(o) })
+  end
+
+  def unused_options
+    Options.new(super.map { |o| Option.new(o) })
+  end
+
   def options
     used_options + unused_options
   end
 
   def to_json
     MultiJson.encode({
-      :used_options => used_options,
-      :unused_options => unused_options,
+      :used_options => used_options.to_a,
+      :unused_options => unused_options.to_a,
       :built_as_bottle => built_as_bottle,
       :tapped_from => tapped_from,
       :time => time,
