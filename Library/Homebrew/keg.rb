@@ -61,6 +61,18 @@ class Keg < Pathname
     parent.basename.to_s
   end
 
+  def lock
+    path = HOMEBREW_CACHE_FORMULA/"#{fname}.brewing"
+    file = path.open(File::RDWR | File::CREAT)
+    unless file.flock(File::LOCK_EX | File::LOCK_NB)
+      raise OperationInProgressError, fname
+    end
+    yield
+  ensure
+    file.flock(File::LOCK_UN)
+    file.close
+  end
+
   def linked_keg_record
     @linked_keg_record ||= HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname
   end
