@@ -206,16 +206,10 @@ class BuildOptions
   end
 
   def add name, description=nil
-    if description.nil?
-      case name
-      when :universal, "universal"
-        description = "Build a universal binary"
-      when "32-bit"
-        description = "Build 32-bit only"
-      else
-        description = ""
-      end
-    end
+    description ||= case name.to_s
+      when "universal" then "Build a universal binary"
+      when "32-bit" then "Build 32-bit only"
+      end.to_s
 
     @options << Option.new(name, description)
   end
