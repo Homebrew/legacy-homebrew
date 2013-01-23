@@ -6,6 +6,7 @@ require 'bottles'
 require 'patches'
 require 'compilers'
 require 'build_environment'
+require 'build_options'
 require 'extend/set'
 
 
