@@ -10,14 +10,16 @@ class Tab < OpenStruct
   FILENAME = 'INSTALL_RECEIPT.json'
 
   def self.create f, args
+    f.build.args = args
+
     sha = HOMEBREW_REPOSITORY.cd do
       `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle
     end
 
-    Tab.new :used_options => args.used_options(f),
-            :unused_options => args.unused_options(f),
+    Tab.new :used_options => f.build.used_options,
+            :unused_options => f.build.unused_options,
             :tabfile => f.prefix.join(FILENAME),
-            :built_as_bottle => !!args.build_bottle?,
+            :built_as_bottle => !!ARGV.build_bottle?,
             :tapped_from => f.tap,
             :time => Time.now.to_i, # to_s would be better but Ruby has no from_s function :P
             :HEAD => sha
