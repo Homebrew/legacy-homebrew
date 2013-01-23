@@ -419,6 +419,8 @@ class Formula
 
     raise NameError if !klass.ancestors.include? Formula
 
+    klass.finalize_dsl
+
     return klass.new(name) if install_type == :from_name
     return klass.new(name, path.to_s)
   rescue NoMethodError
@@ -822,6 +824,11 @@ private
       return @test unless block_given?
       @test_defined = true
       @test = block
+    end
+
+    # This method is called once by `factory` before creating any instances.
+    # It allows the DSL to finalize itself, reducing complexity in the constructor.
+    def finalize_dsl
     end
   end
 end
