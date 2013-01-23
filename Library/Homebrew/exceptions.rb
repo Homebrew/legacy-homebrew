@@ -45,6 +45,18 @@ class FormulaUnavailableError < RuntimeError
   end
 end
 
+class OperationInProgressError < RuntimeError
+  def initialize name
+    message = <<-EOS.undent
+      Operation already in progress for #{name}
+      Another active Homebrew process is already using #{name}.
+      Please wait for it to finish or terminate it to continue.
+      EOS
+
+    super message
+  end
+end
+
 module Homebrew
   class InstallationError < RuntimeError
     attr :formula

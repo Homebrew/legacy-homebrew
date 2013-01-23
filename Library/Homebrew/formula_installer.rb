@@ -22,6 +22,7 @@ class FormulaInstaller
 
     @@attempted ||= Set.new
 
+    lock
     check_install_sanity
   end
 
@@ -226,6 +227,8 @@ class FormulaInstaller
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
     puts
+
+    unlock if hold_locks?
   end
 
   def build_time
@@ -462,6 +465,29 @@ class FormulaInstaller
   def audit_lib
     check_jars
     check_non_libraries
+  end
+
+  private
+
+  def hold_locks?
+    @hold_locks || false
+  end
+
+  def lock
+    if (@@locked ||= []).empty?
+      f.recursive_deps.each { |d| @@locked << d } unless ignore_deps
+      @@locked.unshift(f)
+      @@locked.each(&:lock)
+      @hold_locks = true
+    end
+  end
+
+  def unlock
+    if hold_locks?
+      @@locked.each(&:unlock)
+      @@locked.clear
+      @hold_locks = false
+    end
   end
 end
 
