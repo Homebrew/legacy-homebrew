@@ -12,4 +12,13 @@ class RbenvBundler < Formula
 
     ln_sf opt_prefix, "#{HOMEBREW_PREFIX}/var/lib/rbenv/plugins/#{name}"
   end
+
+  def caveats; <<-EOS.undent
+    rbenv-bundler may cause problems with rbenv including significant slowdown
+    of shell initialisation and rehashing.
+
+    Please report any issues with rbenv after installing this plugin here:
+    https://github.com/carsomyr/rbenv-bundler/issues/new
+    EOS
+  end
 end
