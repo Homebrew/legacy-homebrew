@@ -3,7 +3,7 @@ require 'formula'
 class LionOrNewer < Requirement
   fatal true
 
-  satisfy(:build_env => false) { MacOS.version >= :lion }
+  satisfy MacOS.version >= :lion
 
   def message
     "rhash requires `wcsdup` which isn't in the SDK before Lion."

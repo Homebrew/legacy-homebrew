@@ -109,7 +109,7 @@ class Cmd
         # clang doesn't support OpenMP
         args << arg if not tool =~ /^clang/
       when /^-W.*/
-        args << arg if arg =~ /^-Wl,/
+        args << arg if arg =~ /^-W[alp],/
       when '-macosx_version_min', '-dylib_install_name'
         args << "-Wl,#{arg},#{whittler.next}"
       when '-dylib'
