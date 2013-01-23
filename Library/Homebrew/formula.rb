@@ -444,12 +444,7 @@ class Formula
     requirements.select { |r| r.is_a? ConflictRequirement }
   end
 
-  # deps are in an installable order
-  # which means if a depends on b then b will be ordered before a in this list
-  def recursive_deps
-    Formula.expand_deps(self).flatten.uniq
-  end
-
+  # for Formula objects
   def self.expand_deps f
     f.deps.map do |dep|
       f_dep = Formula.factory dep.to_s
@@ -457,6 +452,27 @@ class Formula
     end
   end
 
+  # for Dependency objects
+  def self.expand_dependencies f
+    f.deps.map do |dep|
+      f_dep = Formula.factory dep.to_s
+      expand_dependencies(f_dep) << dep
+    end
+  end
+
+  # deps are in an installable order
+  # which means if a depends on b then b will be ordered before a in this list
+  def recursive_deps
+    Formula.expand_deps(self).flatten.uniq
+  end
+
+  # Like recursive_deps, but returns a list of Dependency objects instead
+  # of Formula objects.
+  def recursive_dependencies
+    Formula.expand_dependencies(self).flatten.uniq
+  end
+
+  # The full set of Requirements for this formula's dependency tree.
   def recursive_requirements
     reqs = ComparableSet.new
     recursive_deps.each { |dep| reqs.merge dep.requirements }
