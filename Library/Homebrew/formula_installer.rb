@@ -75,39 +75,14 @@ class FormulaInstaller
     end
 
     unless ignore_deps
-      check_requirements
-    end
-
-    unless ignore_deps
-      needed_deps = []
-
       # HACK: If readline is present in the dependency tree, it will clash
       # with the stdlib's Readline module when the debugger is loaded
       if f.recursive_deps.any? { |d| d.name == "readline" } and ARGV.debug?
         ENV['HOMEBREW_NO_READLINE'] = '1'
       end
 
-      ARGV.filter_for_dependencies do
-        needed_deps = f.recursive_deps.reject{ |d| d.installed? }
-      end
-
-      unless needed_deps.empty?
-        needed_deps.each do |dep|
-          if dep.explicitly_requested?
-            install_dependency dep
-          else
-            ARGV.filter_for_dependencies do
-              # Re-create the formula object so that args like `--HEAD` won't
-              # affect properties like the installation prefix. Also need to
-              # re-check installed status as the Formula may have changed.
-              dep = Formula.factory dep.path
-              install_dependency dep unless dep.installed?
-            end
-          end
-        end
-        # now show header as all the deps stuff has clouded the original issue
-        @show_header = true
-      end
+      check_requirements
+      install_dependencies
     end
 
     oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
@@ -136,8 +111,59 @@ class FormulaInstaller
     end
   end
 
+  def dep_needed? dep
+    dep_f = dep.to_formula
+    if dep_f.installed?
+      # If the dep is already installed, skip it.
+      false
+    else
+      # Otherwise, we need to install it.
+      true
+    end
+  end
+
+  def effective_deps
+    @deps ||= begin
+      deps = Set.new
+
+      # If a dep was also requested on the command line, we let it honor
+      # any influential flags (--HEAD, --devel, etc.) the user has passed
+      # when we check the installed status.
+      requested_deps = f.recursive_dependencies.select do |dep|
+        dep_f = dep.to_formula
+        dep_f.requested? and not dep_f.installed?
+      end
+
+      # Otherwise, we filter these influential flags so that they do not
+      # affect installation prefixes and other properties when we decide
+      # whether or not the dep is needed.
+      necessary_deps = ARGV.filter_for_dependencies do
+        f.recursive_dependencies.select { |d| dep_needed? d }
+      end
+
+      deps.merge(requested_deps)
+      deps.merge(necessary_deps)
+
+      # Now that we've determined which deps we need, map them back
+      # onto recursive_dependencies to preserve installation order
+      f.recursive_dependencies.select { |d| deps.include? d }
+    end
+  end
+
+  def install_dependencies
+    effective_deps.each do |dep|
+      if dep.requested?
+       install_dependency(dep)
+      else
+        ARGV.filter_for_dependencies { install_dependency(dep) }
+      end
+    end
+    @show_header = true unless effective_deps.empty?
+  end
+
   def install_dependency dep
     dep_tab = Tab.for_formula(dep)
+    dep = dep.to_formula
     outdated_keg = Keg.new(dep.linked_keg.realpath) rescue nil
 
     fi = FormulaInstaller.new(dep, dep_tab)
