@@ -1,6 +1,7 @@
 require 'download_strategy'
 require 'checksums'
 require 'version'
+require 'options'
 
 class SoftwareSpec
   attr_reader :checksum, :mirrors, :specs
@@ -161,36 +162,6 @@ class KegOnlyReason
   end
 end
 
-
-# Represents a build-time option for a formula
-class Option
-  attr_reader :name, :description, :flag
-
-  def initialize name, description=nil
-    @name = name.to_s
-    @description = description.to_s
-    @flag = '--'+name.to_s
-  end
-
-  def to_s
-    flag
-  end
-  alias_method :to_str, :to_s
-
-  def to_json
-    flag.inspect
-  end
-
-  def eql?(other)
-    @name == other.name
-  end
-
-  def hash
-    @name.hash
-  end
-end
-
-
 # This class holds the build-time options defined for a Formula,
 # and provides named access to those options during install.
 class BuildOptions
@@ -198,11 +169,8 @@ class BuildOptions
   include Enumerable
 
   def initialize args
-    # Take a copy of the args (any string array, actually)
-    @args = Array.new(args)
-    # Extend it into an ARGV extension
-    @args.extend(HomebrewArgvExtension)
-    @options = Set.new
+    @args = Array.new(args).extend(HomebrewArgvExtension)
+    @options = Options.new
   end
 
   def add name, description=nil
@@ -222,12 +190,12 @@ class BuildOptions
     @options.empty?
   end
 
-  def each(&blk)
-    @options.each(&blk)
+  def each(*args, &block)
+    @options.each(*args, &block)
   end
 
   def as_flags
-    map { |opt| opt.flag }
+    @options.as_flags
   end
 
   def include? name
@@ -259,10 +227,10 @@ class BuildOptions
   end
 
   def used_options
-    as_flags & @args.options_only
+    Options.new((as_flags & @args.options_only).map { |o| Option.new(o) })
   end
 
   def unused_options
-    as_flags - @args.options_only
+    Options.new((as_flags - @args.options_only).map { |o| Option.new(o) })
   end
 end
