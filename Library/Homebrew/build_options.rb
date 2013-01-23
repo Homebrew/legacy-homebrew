@@ -7,7 +7,7 @@ class BuildOptions
   include Enumerable
 
   def initialize args
-    @args = Array.new(args).extend(HomebrewArgvExtension)
+    @args = Options.coerce(args)
     @options = Options.new
   end
 
@@ -37,7 +37,7 @@ class BuildOptions
   end
 
   def include? name
-    @args.include? '--' + name
+    args.include? '--' + name
   end
 
   def with? name
@@ -55,11 +55,11 @@ class BuildOptions
   end
 
   def head?
-    @args.flag? '--HEAD'
+    args.include? '--HEAD'
   end
 
   def devel?
-    @args.include? '--devel'
+    args.include? '--devel'
   end
 
   def stable?
@@ -68,21 +68,21 @@ class BuildOptions
 
   # True if the user requested a universal build.
   def universal?
-    @args.include?('--universal') && has_option?('universal')
+    args.include?('--universal') && has_option?('universal')
   end
 
   # Request a 32-bit only build.
   # This is needed for some use-cases though we prefer to build Universal
   # when a 32-bit version is needed.
   def build_32_bit?
-    @args.include?('--32-bit') && has_option?('32-bit')
+    args.include?('--32-bit') && has_option?('32-bit')
   end
 
   def used_options
-    Options.new((as_flags & @args.options_only).map { |o| Option.new(o) })
+    Options.new(@options & @args)
   end
 
   def unused_options
-    Options.new((as_flags - @args.options_only).map { |o| Option.new(o) })
+    Options.new(@options - @args)
   end
 end

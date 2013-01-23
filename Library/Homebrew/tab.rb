@@ -77,11 +77,11 @@ class Tab < OpenStruct
   end
 
   def used_options
-    Options.new(super.map { |o| Option.new(o) })
+    Options.coerce(super)
   end
 
   def unused_options
-    Options.new(super.map { |o| Option.new(o) })
+    Options.coerce(super)
   end
 
   def options

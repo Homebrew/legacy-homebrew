@@ -38,6 +38,12 @@ class OptionTests < Test::Unit::TestCase
     assert_empty @option.description
     assert_equal "foo", Option.new("foo", "foo").description
   end
+
+  def test_preserves_short_options
+    option = Option.new("-d")
+    assert_equal "-d", option.flag
+    assert_equal "d", option.name
+  end
 end
 
 class OptionsTests < Test::Unit::TestCase
@@ -86,5 +92,52 @@ class OptionsTests < Test::Unit::TestCase
     option = Option.new("foo")
     @options << option
     assert_equal [option], @options.to_ary
+  end
+
+  def test_concat_array
+    option = Option.new("foo")
+    @options.concat([option])
+    assert @options.include?(option)
+    assert_equal [option], @options.to_a
+  end
+
+  def test_concat_options
+    option = Option.new("foo")
+    opts = Options.new
+    opts << option
+    @options.concat(opts)
+    assert @options.include?(option)
+    assert_equal [option], @options.to_a
+  end
+
+  def test_concat_returns_self
+    assert_same @options, (@options.concat([]))
+  end
+
+  def test_intersection
+    foo, bar, baz = %w{foo bar baz}.map { |o| Option.new(o) }
+    options = Options.new << foo << bar
+    @options << foo << baz
+    assert_equal [foo], (@options & options).to_a
+  end
+
+  def test_coerce_with_options
+    assert_same @options, Options.coerce(@options)
+  end
+
+  def test_coerce_with_option
+    option = Option.new("foo")
+    assert_equal option, Options.coerce(option).to_a.first
+  end
+
+  def test_coerce_with_array
+    array = %w{--foo --bar}
+    option1 = Option.new("foo")
+    option2 = Option.new("bar")
+    assert_equal [option1, option2].sort, Options.coerce(array).to_a.sort
+  end
+
+  def test_coerce_raises_for_inappropriate_types
+    assert_raises(TypeError) { Options.coerce(1) }
   end
 end

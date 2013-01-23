@@ -690,7 +690,7 @@ private
     end
 
     def build
-      @build ||= BuildOptions.new(ARGV)
+      @build ||= BuildOptions.new(ARGV.options_only)
     end
 
     def url val=nil, specs=nil
