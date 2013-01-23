@@ -185,6 +185,7 @@ end
 # This class holds the build-time options defined for a Formula,
 # and provides named access to those options during install.
 class BuildOptions
+  attr_writer :args
   include Enumerable
 
   def initialize args
@@ -252,5 +253,13 @@ class BuildOptions
   # when a 32-bit version is needed.
   def build_32_bit?
     @args.include? '--32-bit'
+  end
+
+  def used_options
+    as_flags & @args.options_only
+  end
+
+  def unused_options
+    as_flags - @args.options_only
   end
 end
