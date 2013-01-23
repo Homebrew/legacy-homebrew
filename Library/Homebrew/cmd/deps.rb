@@ -23,7 +23,7 @@ module Homebrew extend self
     else
       raise FormulaUnspecifiedError if ARGV.named.empty?
       all_deps = ARGV.formulae.map do |f|
-        ARGV.one? ? f.deps : f.recursive_deps
+        ARGV.one? ? f.deps : f.recursive_dependencies
       end.intersection.map(&:name)
       all_deps.sort! unless ARGV.include? "-n"
       puts all_deps
