@@ -243,7 +243,7 @@ class FormulaInstaller
 
     raise "Empty installation" if Dir["#{f.prefix}/*"].empty?
 
-    Tab.for_install(f, args).write # INSTALL_RECEIPT.json
+    Tab.create(f, args).write # INSTALL_RECEIPT.json
 
   rescue Exception => e
     ignore_interrupts do
