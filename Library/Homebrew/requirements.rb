@@ -216,7 +216,6 @@ end
 
 class MysqlInstalled < Requirement
   fatal true
-  env :userpaths
 
   satisfy { which 'mysql_config' }
 
@@ -238,7 +237,6 @@ end
 
 class PostgresqlInstalled < Requirement
   fatal true
-  env :userpaths
 
   satisfy { which 'pg_config' }
 
@@ -257,7 +255,6 @@ end
 
 class TeXInstalled < Requirement
   fatal true
-  env :userpaths
 
   satisfy { which('tex') || which('latex') }
 

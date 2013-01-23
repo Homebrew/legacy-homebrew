@@ -45,29 +45,46 @@ class RequirementTests < Test::Unit::TestCase
     assert !req.satisfied?
   end
 
-  def test_satisfy_with_userpaths_from_env
-    ENV.expects(:with_build_environment).yields.returns(true)
-    ENV.expects(:userpaths!)
-    req = Class.new(Requirement) do
-      env :userpaths
-      satisfy(:build_env => true) { true }
-    end.new
-    assert req.satisfied?
-  end
-
-  def test_satisfy_with_userpaths_from_options
-    ENV.expects(:with_build_environment).yields.returns(true)
-    ENV.expects(:userpaths!)
-    req = Class.new(Requirement) do
-      satisfy(:build_env => true, :userpaths => true) { true }
-    end.new
-    assert req.satisfied?
-  end
-
   def test_satisfy_with_boolean
     req = Class.new(Requirement) do
       satisfy true
     end.new
     assert req.satisfied?
+  end
+
+  def test_satisfy_sets_up_build_env_by_default
+    req = Class.new(Requirement) do
+      env :userpaths
+      satisfy { true }
+    end.new
+
+    ENV.expects(:with_build_environment).yields.returns(true)
+    ENV.expects(:userpaths!)
+
+    assert req.satisfied?
+  end
+
+  def test_satisfy_build_env_can_be_disabled
+    req = Class.new(Requirement) do
+      satisfy(:build_env => false) { true }
+    end.new
+
+    ENV.expects(:with_build_environment).never
+    ENV.expects(:userpaths!).never
+
+    assert req.satisfied?
+  end
+
+  def test_infers_path_from_satisfy_result
+    which_path = Pathname.new("/foo/bar/baz")
+    req = Class.new(Requirement) do
+      satisfy { which_path }
+    end.new
+
+    ENV.expects(:with_build_environment).yields.returns(which_path)
+    ENV.expects(:userpaths!)
+    ENV.expects(:append).with("PATH", which_path.parent, ":")
+
+    req.modify_build_environment
   end
 end
