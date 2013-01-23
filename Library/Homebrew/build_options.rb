@@ -3,7 +3,7 @@ require 'options'
 # This class holds the build-time options defined for a Formula,
 # and provides named access to those options during install.
 class BuildOptions
-  attr_writer :args
+  attr_accessor :args
   include Enumerable
 
   def initialize args
