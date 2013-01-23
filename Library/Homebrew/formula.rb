@@ -228,6 +228,21 @@ class Formula
     end
   end
 
+  def lock
+    lockpath = HOMEBREW_CACHE_FORMULA/"#{@name}.brewing"
+    @lockfile = lockpath.open(File::RDWR | File::CREAT)
+    unless @lockfile.flock(File::LOCK_EX | File::LOCK_NB)
+      raise OperationInProgressError, @name
+    end
+  end
+
+  def unlock
+    unless @lockfile.nil?
+      @lockfile.flock(File::LOCK_UN)
+      @lockfile.close
+    end
+  end
+
   def == b
     name == b.name
   end
