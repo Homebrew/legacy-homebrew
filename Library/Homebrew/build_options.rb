@@ -40,6 +40,20 @@ class BuildOptions
     @args.include? '--' + name
   end
 
+  def with? name
+    if has_option? "with-#{name}"
+      include? "with-#{name}"
+    elsif has_option? "without-#{name}"
+      not include? "without-#{name}"
+    else
+      false
+    end
+  end
+
+  def without? name
+    not with? name
+  end
+
   def head?
     @args.flag? '--HEAD'
   end
