@@ -177,6 +177,32 @@ class Dependency
   def requested?
     ARGV.formulae.include?(to_formula) rescue false
   end
+
+  # Expand the dependencies of f recursively, optionally yielding
+  # [f, dep] to allow callers to apply arbitrary filters to the list.
+  # The default filter, which is used when a block is not supplied,
+  # omits optionals and recommendeds based on what the dependent has
+  # asked for.
+  def self.expand(dependent, &block)
+    dependent.deps.map do |dep|
+      prune = catch(:prune) do
+        if block_given?
+          yield dependent, dep
+        elsif dep.optional? || dep.recommended?
+          Dependency.prune unless dependent.build.with?(dep.name)
+        end
+      end
+
+      next if prune
+
+      expand(dep.to_formula, &block) << dep
+    end.flatten.compact.uniq
+  end
+
+  # Used to prune dependencies when calling expand_dependencies with a block.
+  def self.prune
+    throw(:prune, true)
+  end
 end
 
 # A base class for non-formula requirements needed by formulae.
