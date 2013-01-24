@@ -26,11 +26,12 @@ class Couchdb < Formula
     system "make"
 
     # patch icu library paths for keg-only installation
-    icu_driver = "src/couchdb/priv/.libs/couch_icu_driver.so"
-    icu_libs = ["libicui18n.50.1.dylib", "libicuuc.50.1.dylib", "libicudata.50.1.dylib"]
     icu_keg_prefix = Formula.factory("icu4c").lib
-    icu_changes = icu_libs.map { |l| "-change /usr/local/lib/#{l} #{icu_keg_prefix}/#{l} " } 
-    system "install_name_tool #{icu_changes} #{icu_driver}"
+    icu_libraries.each do |l|
+      system MacOS.locate("install_name_tool"),
+             "-change", "/usr/local/lib/#{l}", "#{icu_keg_prefix}/#{l}",
+             "src/couchdb/priv/.libs/couch_icu_driver.so"
+    end
 
     system "make install"
 
@@ -70,5 +71,11 @@ class Couchdb < Formula
     Or start manually as the current user with:
         couchdb
     EOS
+  end
+
+  private
+
+  def icu_libraries
+    Dir.glob("#{Formula.factory("icu4c").lib}/libicu*.dylib").map { |f| File.basename(f) }
   end
 end
