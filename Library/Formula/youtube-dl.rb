@@ -11,4 +11,8 @@ class YoutubeDl < Formula
     man1.install 'youtube-dl.1'
     (prefix+'etc/bash_completion.d').install 'youtube-dl.bash-completion'
   end
+
+  def caveats
+    'Install ffmpeg for using the post-processing options.'
+  end
 end
