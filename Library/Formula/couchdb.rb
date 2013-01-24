@@ -14,6 +14,8 @@ class Couchdb < Formula
   depends_on 'curl' if MacOS.version == :leopard
 
   def install
+    ENV.prepend "LDFLAGS", "-headerpad_max_install_names"
+
     system "./bootstrap" if File.exists? "bootstrap"
     system "./configure", "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
@@ -22,6 +24,15 @@ class Couchdb < Formula
                           "--with-js-include=#{HOMEBREW_PREFIX}/include/js",
                           "--with-js-lib=#{HOMEBREW_PREFIX}/lib"
     system "make"
+
+    # patch icu library paths for keg-only installation
+    icu_keg_prefix = Formula.factory("icu4c").lib
+    icu_libraries.each do |l|
+      system MacOS.locate("install_name_tool"),
+             "-change", "/usr/local/lib/#{l}", "#{icu_keg_prefix}/#{l}",
+             "src/couchdb/priv/.libs/couch_icu_driver.so"
+    end
+
     system "make install"
 
     (prefix+"Library/LaunchDaemons/org.apache.couchdb.plist").chmod 0644
@@ -60,5 +71,11 @@ class Couchdb < Formula
     Or start manually as the current user with:
         couchdb
     EOS
+  end
+
+  private
+
+  def icu_libraries
+    Dir.glob("#{Formula.factory("icu4c").lib}/libicu*.dylib").map { |f| File.basename(f) }
   end
 end
