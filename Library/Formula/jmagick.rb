@@ -7,7 +7,7 @@ class Jmagick < Formula
 
   head 'https://jmagick.svn.sourceforge.net/svnroot/jmagick', :using => :svn
 
-  depends_on "imagemagick" => :build
+  depends_on "imagemagick"
 
   fails_with :clang do
     build 421
@@ -15,16 +15,16 @@ class Jmagick < Formula
   end
 
   def install
-    java_home = `/usr/libexec/java_home`.chomp!
+    java_home = `/usr/libexec/java_home`
     ENV['JAVA_HOME'] = java_home
-    ENV.append_to_cflags '-I' + java_home + '/include/darwin'
+    ENV.append_to_cflags '-I#{java_home}/include/darwin'
     cd('trunk') do
       system "./configure", "--prefix=#{prefix}"
       system "make"
       system "make install"
     end
 
-    FileUtils.ln(lib + 'libJMagick-6.6.9.so', lib + 'libJMagick.dylib')
+    ln lib/'libJMagick-6.6.9.so', lib/'libJMagick.dylib'
   end
 
   def caveats; <<-EOS.undent
