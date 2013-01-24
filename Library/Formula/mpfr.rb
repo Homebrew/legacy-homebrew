@@ -3,7 +3,8 @@ require 'formula'
 class Mpfr < Formula
   homepage 'http://www.mpfr.org/'
   # Upstream is down a lot, so use the GNU mirror + Gist for patches
-  url 'http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.1.tar.bz2'
+  url 'http://ftpmirror.gnu.org/mpfr/mpfr-3.1.1.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.1.tar.bz2'
   version '3.1.1-p2'
   sha1 'f632d43943ff9f13c184fa13b9a6e8c7f420f4dd'
 
