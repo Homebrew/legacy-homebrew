@@ -10,7 +10,7 @@ class Elinks < Formula
   devel do
     url 'http://elinks.cz/download/elinks-0.12pre6.tar.bz2'
     version '0.12pre6'
-    sha1 '15fb38fa938a0eec9d5f22fdd538a6785e2854af'
+    sha1 '3517795e8a390cb36ca249a5be6514b9784520a5'
   end
 
   if build.head?

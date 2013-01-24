@@ -1,13 +1,10 @@
 require 'formula'
 
 class PopplerQt4 < Requirement
-  def satisfied?
-    poppler = Tab.for_formula 'poppler'
-    poppler.installed_with? '--with-qt4'
-  end
+  fatal true
 
-  def fatal?
-    true
+  satisfy :build_env => false do
+    Tab.for_formula("poppler").installed_with? "--with-qt4"
   end
 
   def message; <<-EOS.undent

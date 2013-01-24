@@ -24,11 +24,8 @@ class Go < Formula
         ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
         ['freebsd', ['386', 'amd64'],        { :cgo => false }],
 
-        # image/jpeg fails to build
-        #['netbsd',  ['386', 'amd64'],        { :cgo => false }],
-
         ['openbsd', ['386', 'amd64'],        { :cgo => false }],
-        ['plan9',   ['386'],                 { :cgo => false }],
+
         ['windows', ['386', 'amd64'],        { :cgo => false }],
       ]
     elsif build.include? 'cross-compile-common'
@@ -45,7 +42,7 @@ class Go < Formula
 
     # The version check is due to:
     # http://codereview.appspot.com/5654068
-    'VERSION'.write 'default' if build.head?
+    Pathname.new('VERSION').write 'default' if build.head?
 
     cd 'src' do
       # Build only. Run `brew test go` to run distrib's tests.

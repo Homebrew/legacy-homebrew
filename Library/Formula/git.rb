@@ -1,19 +1,19 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.8.0.1.tar.gz'
-  sha1 'cb26eea4ebe53b41cbc5c5f430499f7d76605414'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.8.1.1.tar.gz'
+  sha1 '5089613a434ba09c94f6694d546c246838377760'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.0.1.tar.gz'
-  sha1 '6c0e64d53a8543447f595e3bac4966ba9257e783'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.1.1.tar.gz'
+  sha1 '952e0950d40bb141357be88a63f4cbb58258a4f5'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.0.1.tar.gz'
-  sha1 '4e7492f7558f3ba2a450c43efa7de3b0b1adc6c1'
+  url 'http://git-core.googlecode.com/files/git-1.8.1.1.tar.gz'
+  sha1 '44b90aab937b0e0dbb0661eb5ec4ca6182e60854'
 
   head 'https://github.com/git/git.git'
 
@@ -85,7 +85,7 @@ class Git < Formula
     EOS
   end
 
-  def test
+  test do
     HOMEBREW_REPOSITORY.cd do
       `#{bin}/git ls-files -- bin`.chomp == 'bin/brew'
     end

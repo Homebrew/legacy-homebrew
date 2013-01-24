@@ -1,6 +1,10 @@
 require 'formula'
 
 class GnupgInstalled < Requirement
+  fatal true
+
+  satisfy { which('gpg') || which('gpg2') }
+
   def message; <<-EOS.undent
     Gnupg is required to use these tools.
 
@@ -11,14 +15,6 @@ class GnupgInstalled < Requirement
     Or you can use one of several different
     prepackaged installers that are available.
     EOS
-  end
-
-  def satisfied?
-    which 'gpg' or which 'gpg2'
-  end
-
-  def fatal?
-    false
   end
 end
 
@@ -47,6 +43,8 @@ class SigningParty < Formula
       system "make"
       man1.install Dir['*.1']
       bin.install 'caff'
+      bin.install 'pgp-clean'
+      bin.install 'pgp-fixkey'
       (doc+'caff').install Dir['README*', 'caffrc.sample']
     end
 

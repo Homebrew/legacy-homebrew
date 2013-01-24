@@ -13,8 +13,7 @@ class Duplicity < Formula
     # Install mostly into libexec
     system "python", "setup.py", "install",
                      "--prefix=#{prefix}",
-                     "--install-purelib=#{libexec}",
-                     "--install-platlib=#{libexec}",
+                     "--install-lib=#{libexec}",
                      "--install-scripts=#{bin}"
 
     # Shift files around to avoid needing a PYTHONPATH

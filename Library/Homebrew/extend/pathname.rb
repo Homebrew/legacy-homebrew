@@ -164,7 +164,7 @@ class Pathname
     out=''
     n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
     out<<"#{n} files, " if n > 1
-    out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
+    out<<`/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
   end
 
   def version

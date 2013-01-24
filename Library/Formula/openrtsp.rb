@@ -17,7 +17,7 @@ class Openrtsp < Formula
     system "make"
 
     cd 'testProgs' do
-      bin.install 'openRTSP' ,'vobStreamer', 'playSIP'
+      bin.install 'openRTSP', 'vobStreamer', 'playSIP'
     end
   end
 end

@@ -51,6 +51,7 @@ class << ENV
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
     ENV['HOMEBREW_CC'] = determine_cc
     ENV['HOMEBREW_CCCFG'] = determine_cccfg
+    ENV['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
     ENV['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacSystem.xcode43_without_clt?
     ENV['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     ENV['CMAKE_FRAMEWORK_PATH'] = "#{MacOS.sdk_path}/System/Library/Frameworks" if MacSystem.xcode43_without_clt?
@@ -289,7 +290,7 @@ module MacSystem extend self
   end
 
   def x11_prefix
-    @x11_prefix ||= %W[/usr/X11 /opt/X11
+    @x11_prefix ||= %W[/opt/X11 /usr/X11
       #{MacOS.sdk_path}/usr/X11].find{|path| File.directory? "#{path}/include" }
   end
 

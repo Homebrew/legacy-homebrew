@@ -1,3 +1,5 @@
+require 'build_environment'
+
 ## This file defines dependencies and requirements.
 ##
 ## A dependency is a formula that another formula needs to install.
@@ -14,7 +16,7 @@
 class DependencyCollector
   # Define the languages that we can handle as external dependencies.
   LANGUAGE_MODULES = [
-    :chicken, :jruby, :lua, :node, :perl, :python, :rbx, :ruby
+    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
   ].freeze
 
   attr_reader :deps, :requirements
@@ -76,6 +78,8 @@ private
       MysqlInstalled.new(tag)
     when :postgresql
       PostgresqlInstalled.new(tag)
+    when :tex
+      TeXInstalled.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
     end
@@ -83,11 +87,32 @@ private
 
 end
 
+class Dependencies
+  include Enumerable
 
-# A list of formula dependencies.
-class Dependencies < Array
+  def initialize(*args)
+    @deps = Array.new(*args)
+  end
+
+  def each(*args, &block)
+    @deps.each(*args, &block)
+  end
+
   def <<(o)
-    super(o) unless include? o
+    @deps << o unless @deps.include? o
+    self
+  end
+
+  def empty?
+    @deps.empty?
+  end
+
+  def *(arg)
+    @deps * arg
+  end
+
+  def to_ary
+    @deps
   end
 end
 
@@ -120,27 +145,23 @@ class Dependency
 
   def initialize(name, *tags)
     @name = name
-    @tags = [tags].flatten.compact
-  end
-
-  def hash
-    @name.hash
+    @tags = tags.flatten.compact
   end
 
   def to_s
-    @name
+    name
   end
 
   def ==(other)
-    @name == other.to_s
-  end
-
-  def <=>(other)
-    @name <=> other.to_s
+    name == other.name
   end
 
   def eql?(other)
-    other.is_a? self.class and hash == other.hash
+    other.is_a?(self.class) && hash == other.hash
+  end
+
+  def hash
+    name.hash
   end
 end
 
@@ -149,6 +170,7 @@ end
 # By default, Requirements are non-fatal.
 class Requirement
   include Dependable
+  extend BuildEnvironmentDSL
 
   attr_reader :tags
 
@@ -156,23 +178,92 @@ class Requirement
     @tags = tags.flatten.compact
   end
 
-  # Should return true if this requirement is met.
-  def satisfied?; false; end
-  # Should return true if not meeting this requirement should fail the build.
-  def fatal?; false; end
   # The message to show when the requirement is not met.
-  def message; ""; end
+  def message; "" end
 
-  # Requirements can modify the current build environment by overriding this.
-  # See X11Dependency
-  def modify_build_environment; nil end
+  # Overriding #satisfied? is deprepcated.
+  # Pass a block or boolean to the satisfied DSL method instead.
+  def satisfied?
+    result = self.class.satisfy.yielder do |proc|
+      instance_eval(&proc)
+    end
+
+    infer_env_modification(result)
+    !!result
+  end
+
+  # Overriding #fatal? is deprecated.
+  # Pass a boolean to the fatal DSL method instead.
+  def fatal?
+    self.class.fatal || false
+  end
+
+  # Overriding #modify_build_environment is deprecated.
+  # Pass a block to the the env DSL method instead.
+  def modify_build_environment
+    satisfied? and env.modify_build_environment(self)
+  end
+
+  def env
+    @env ||= self.class.env
+  end
 
   def eql?(other)
-    other.is_a? self.class and hash == other.hash
+    other.is_a?(self.class) && hash == other.hash
   end
 
   def hash
     message.hash
+  end
+
+  private
+
+  def infer_env_modification(o)
+    case o
+    when Pathname
+      self.class.env do
+        unless ENV["PATH"].split(":").include?(o.parent.to_s)
+          append("PATH", o.parent, ":")
+        end
+      end
+    end
+  end
+
+  class << self
+    def fatal(val=nil)
+      val.nil? ? @fatal : @fatal = val
+    end
+
+    def satisfy(options={}, &block)
+      @satisfied ||= Requirement::Satisfier.new(options, &block)
+    end
+  end
+
+  class Satisfier
+    def initialize(options={}, &block)
+      case options
+      when Hash
+        @options = { :build_env => true }
+        @options.merge!(options)
+      else
+        @satisfied = options
+      end
+      @proc = block
+    end
+
+    def yielder
+      if instance_variable_defined?(:@satisfied)
+        @satisfied
+      elsif @options[:build_env]
+        require 'superenv'
+        ENV.with_build_environment do
+          ENV.userpaths!
+          yield @proc
+        end
+      else
+        yield @proc
+      end
+    end
   end
 end
 

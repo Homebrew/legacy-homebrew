@@ -11,7 +11,9 @@ class Keg < Pathname
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
   INFOFILE_RX = %r[info/([^.].*?\.info|dir)$]
   TOP_LEVEL_DIRECTORIES = %w[bin etc include lib sbin share var Frameworks]
-  PRUNEABLE_DIRECTORIES = %w[bin etc include lib sbin share Frameworks Library/LinkedKegs]
+  PRUNEABLE_DIRECTORIES = %w[bin etc include lib sbin share Frameworks LinkedKegs].map do |d|
+    case d when 'LinkedKegs' then HOMEBREW_LIBRARY/d else HOMEBREW_PREFIX/d end
+  end
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path

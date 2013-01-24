@@ -16,6 +16,9 @@ class Sleuthkit < Formula
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional
 
+  conflicts_with 'ffind',
+    :because => "both install a 'ffind' executable."
+
   def install
     system "./bootstrap" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

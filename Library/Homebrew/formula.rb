@@ -11,13 +11,14 @@ require 'extend/set'
 
 class Formula
   include FileUtils
+  extend BuildEnvironmentDSL
 
   attr_reader :name, :path, :homepage, :downloader
   attr_reader :stable, :bottle, :devel, :head, :active_spec
 
-  # The build folder, usually in /tmp.
-  # Will only be non-nil during the stage method.
-  attr_reader :buildpath
+  # The current working directory during builds and tests.
+  # Will only be non-nil inside #stage and #test.
+  attr_reader :buildpath, :testpath
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
@@ -72,9 +73,7 @@ class Formula
 
   # if the dir is there, but it's empty we consider it not installed
   def installed?
-    return installed_prefix.children.length > 0
-  rescue
-    return false
+    installed_prefix.children.length > 0 rescue false
   end
 
   def explicitly_requested?
@@ -357,7 +356,7 @@ class Formula
       install_type = :from_url
     elsif name.match bottle_regex
       bottle_filename = Pathname(name).realpath
-      name = name.split('-').first
+      name = bottle_filename.basename.to_s.rpartition('-').first
       path = Formula.path(name)
       install_type = :from_local_bottle
     else
@@ -437,7 +436,7 @@ class Formula
   def requirements; self.class.dependencies.requirements; end
 
   def env
-    @env ||= BuildEnvironment.new(self.class.environments)
+    @env ||= self.class.env
   end
 
   def conflicts
@@ -554,7 +553,7 @@ protected
       unless $?.success?
         unless ARGV.verbose?
           f.flush
-          Kernel.system "/usr/bin/tail -n 5 #{logfn}"
+          Kernel.system "/usr/bin/tail", "-n", "5", logfn
         end
         f.puts
         require 'cmd/--config'
@@ -584,6 +583,20 @@ public
   # For FormulaInstaller.
   def verify_download_integrity fn
     @active_spec.verify_download_integrity(fn)
+  end
+
+  def test
+    ret = nil
+    mktemp do
+      @testpath = Pathname.pwd
+      ret = instance_eval(&self.class.test)
+      @testpath = nil
+    end
+    ret
+  end
+
+  def test_defined?
+    not self.class.instance_variable_get(:@test_defined).nil?
   end
 
 private
@@ -632,7 +645,12 @@ private
   end
 
   def self.method_added method
-    raise 'You cannot override Formula.brew' if method == :brew
+    case method
+    when :brew
+      raise "You cannot override Formula#brew"
+    when :test
+      @test_defined = true
+    end
   end
 
   class << self
@@ -710,14 +728,6 @@ private
       @stable.mirror(val)
     end
 
-    def environments
-      @environments ||= []
-    end
-
-    def env *settings
-      environments.concat [settings].flatten
-    end
-
     def dependencies
       @dependencies ||= DependencyCollector.new
     end
@@ -778,6 +788,12 @@ private
       else
         CompilerFailure.new(compiler)
       end
+    end
+
+    def test &block
+      return @test unless block_given?
+      @test_defined = true
+      @test = block
     end
   end
 end

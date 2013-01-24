@@ -219,6 +219,10 @@ module MacOS extend self
     10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
   end
   alias_method :mountain_lion_or_newer?, :mountain_lion?
+
+  def macports_or_fink_installed?
+    not MacOS.macports_or_fink.empty?
+  end
 end
 
 

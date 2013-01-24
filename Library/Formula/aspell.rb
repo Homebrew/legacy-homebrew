@@ -20,24 +20,23 @@ class Aspell < Formula
     cause "Segmentation fault during linking."
   end
 
-  def options
-    [
-      ['--lang=XX,...', "Install dictionary for language XX where XX is the country code, e.g.: --lang=en,es\n\tAvailable country codes: #{available_languages.join(', ')}"],
-      ['--all', "Install all available dictionaries"]
-    ]
-  end
+  option "with-lang", "Install dictionary for language XX where XX is the country code, e.g.: --with-lang=en,es\n"
+  option "all", "Install all available dictionaries"
 
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
     languages = []
-    if ARGV.include?('--all')
+
+    ARGV.select { |v| v =~ /with-lang/ }.uniq.each do |opt|
+      languages << opt.split('=')[1].split(',')
+    end
+
+    if build.include? 'all'
       languages << available_languages.to_a
     else
-      ARGV.options_only.select { |v| v =~ /--lang=/ }.uniq.each do |opt|
-        languages << opt.split('=')[1].split(',')
-      end
+      languages << "en" if languages.empty?
     end
     languages.flatten.each do |lang|
       begin

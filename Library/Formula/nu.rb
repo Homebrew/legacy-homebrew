@@ -1,14 +1,12 @@
 require 'formula'
 
 class NeedsLion < Requirement
-  def satisfied?
-    MacOS.version >= :lion
-  end
+  fatal true
+
+  satisfy MacOS.version >= :lion
+
   def message
     "Nu requires Mac OS X 10.7 or newer"
-  end
-  def fatal?
-    true
   end
 end
 

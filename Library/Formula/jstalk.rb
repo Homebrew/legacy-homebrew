@@ -1,9 +1,7 @@
 require 'formula'
 
 class NeedsSnowLeopard < Requirement
-  def satisfied?
-    MacOS.version >= :snow_leopard
-  end
+  satisfy MacOS.version >= :snow_leopard
 
   def message
     "jstalk requires Mac OS X 10.6 or newer"

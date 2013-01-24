@@ -7,6 +7,11 @@ class Calcurse < Formula
 
   depends_on 'gettext'
 
+  fails_with :clang do
+    build 421
+    cause "Issue with macro expansion in htable.h"
+  end
+
   def install
     # need this flag otherwise there is a build error.
     ENV.append 'CFLAGS', "-fnested-functions"

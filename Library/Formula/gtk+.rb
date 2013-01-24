@@ -15,7 +15,7 @@ class Gtkx < Formula
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
   depends_on 'cairo'
-  depends_on :x11 => '2.6.3'
+  depends_on :x11 => '2.3.6'
 
   fails_with :llvm do
     build 2326

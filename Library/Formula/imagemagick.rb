@@ -1,4 +1,3 @@
-# some credit to https://github.com/maddox/magick-installer
 require 'formula'
 
 def ghostscript_srsly?
@@ -13,8 +12,10 @@ class Imagemagick < Formula
   homepage 'http://www.imagemagick.org'
 
   # upstream's stable tarballs tend to disappear, so we provide our own mirror
-  url 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.7.7-6.tar.bz2'
-  sha256 'fb32cdeef812bc2c3bb9e9f48f3cfc75c1e2640f784ef2670a0dbf948e538677'
+  # Tarball from: http://www.imagemagick.org/download/ImageMagick.tar.gz
+  # SHA-256 from: http://www.imagemagick.org/download/digest.rdf
+  url 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.0-10.tar.gz'
+  sha256 'b3dfcb44300f73e73ffa8deef8bba4cf43f03d7150bf1fd0febedceac1a45c7e'
 
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
     :using => UnsafeSubversionDownloadStrategy
@@ -42,6 +43,7 @@ class Imagemagick < Formula
 
   depends_on 'jpeg' => :recommended
   depends_on :libpng
+  depends_on :libtool
   depends_on :x11 if build.include? 'with-x'
   # Can't use => with symbol deps
   depends_on :fontconfig if build.include? 'with-fontconfig' or MacOS::X11.installed? # => :optional
@@ -58,20 +60,12 @@ class Imagemagick < Formula
   depends_on 'openexr' => :optional if build.include? 'use-exr'
 
   bottle do
-    version 3
-    sha1 '0d7ca4e54a1d3090e8b5a85663f0efa857ea52b7' => :mountainlion
-    sha1 '64fca6d7c75407dd1942a271a4df837ab02bbeb0' => :lion
-    sha1 'b8d1a9b2de7b1961da311df77922d326c2b6723f' => :snowleopard
+    sha1 '543ce5bf72c3897f25b54523a5c3de355a84ff44' => :mountainlion
+    sha1 '1966734b73b2cf77f47e639fe7ae48603dec15bd' => :lion
+    sha1 '1068830a71fb1f990d8fcb06495693eaeb4edafc' => :snowleopard
   end
 
   skip_clean :la
-
-  def patches
-    # Fixes xml2-config that can be missing --prefix.  See issue #11789
-    # Remove if the final Mt. Lion xml2-config supports --prefix.
-    # Not reporting this upstream until the final Mt. Lion is released.
-    DATA
-  end
 
   def install
     args = [ "--disable-osx-universal-binary",
@@ -126,16 +120,3 @@ class Imagemagick < Formula
       "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png"
   end
 end
-
-__END__
---- a/configure	2012-02-25 09:03:23.000000000 -0800
-+++ b/configure	2012-04-26 03:32:15.000000000 -0700
-@@ -31924,7 +31924,7 @@
-         # Debian installs libxml headers under /usr/include/libxml2/libxml with
-         # the shared library installed under /usr/lib, whereas the package
-         # installs itself under $prefix/libxml and $prefix/lib.
--        xml2_prefix=`xml2-config --prefix`
-+        xml2_prefix=/usr
-         if test -d "${xml2_prefix}/include/libxml2"; then
-             CPPFLAGS="$CPPFLAGS -I${xml2_prefix}/include/libxml2"
-         fi

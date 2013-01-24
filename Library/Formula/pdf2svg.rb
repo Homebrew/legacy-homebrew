@@ -1,13 +1,10 @@
 require 'formula'
 
 class PopplerGlib < Requirement
-  def satisfied?
-    poppler = Tab.for_formula 'poppler'
-    poppler.installed_with? '--with-glib'
-  end
+  fatal true
 
-  def fatal?
-    true
+  satisfy :build_env => false do
+    Tab.for_formula("poppler").installed_with? "--with-glib"
   end
 
   def message; <<-EOS.undent

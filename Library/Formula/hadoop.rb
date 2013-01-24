@@ -10,6 +10,8 @@ class Hadoop < Formula
     libexec.install %w[bin conf lib webapps contrib]
     libexec.install Dir['*.jar']
     bin.write_exec_script Dir["#{libexec}/bin/*"]
+    # But don't make rcc visible, it conflicts with Qt
+    (bin/'rcc').unlink
 
     inreplace "#{libexec}/conf/hadoop-env.sh",
       "# export JAVA_HOME=/usr/lib/j2sdk1.5-sun",

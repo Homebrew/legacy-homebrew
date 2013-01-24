@@ -1,16 +1,14 @@
 # A dependency on a language-specific module.
 class LanguageModuleDependency < Requirement
+  fatal true
+
   def initialize language, module_name, import_name=nil
     @language = language
     @module_name = module_name
     @import_name = import_name || module_name
   end
 
-  def fatal?; true; end
-
-  def satisfied?
-    quiet_system(*the_test)
-  end
+  satisfy { quiet_system(*the_test) }
 
   def message; <<-EOS.undent
     Unsatisfied dependency: #{@module_name}
@@ -25,6 +23,7 @@ class LanguageModuleDependency < Requirement
       when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{@import_name}'}
       when :lua then %W{/usr/bin/env luarocks show #{@import_name}}
       when :node then %W{/usr/bin/env node -e require('#{@import_name}');}
+      when :ocaml then %W{/usr/bin/env opam list #{@import_name} | grep #{@import_name}}
       when :perl then %W{/usr/bin/env perl -e use\ #{@import_name}}
       when :python then %W{/usr/bin/env python -c import\ #{@import_name}}
       when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{@import_name}'}
@@ -38,6 +37,7 @@ class LanguageModuleDependency < Requirement
       when :jruby   then "jruby -S gem install"
       when :lua     then "luarocks install"
       when :node    then "npm install"
+      when :ocaml   then "opam install"
       when :perl    then "cpan -i"
       when :python  then "pip install"
       when :rbx     then "rbx gem install"
@@ -53,16 +53,18 @@ class X11Dependency < Requirement
   include Comparable
   attr_reader :min_version
 
+  fatal true
+
+  env { x11 }
+
   def initialize(*tags)
     tags.flatten!
     @min_version = tags.shift if /(\d\.)+\d/ === tags.first
     super
   end
 
-  def fatal?; true; end
-
-  def satisfied?
-    MacOS::XQuartz.installed? and (@min_version.nil? or @min_version <= MacOS::XQuartz.version)
+  satisfy :build_env => false do
+    MacOS::XQuartz.installed? && (@min_version.nil? || @min_version <= MacOS::XQuartz.version)
   end
 
   def message; <<-EOS.undent
@@ -70,10 +72,6 @@ class X11Dependency < Requirement
     Homebrew does not package XQuartz. Installers may be found at:
       https://xquartz.macosforge.org
     EOS
-  end
-
-  def modify_build_environment
-    ENV.x11
   end
 
   def <=> other
@@ -100,13 +98,15 @@ class MPIDependency < Requirement
 
   attr_reader :lang_list
 
+  fatal true
+
+  env :userpaths
+
   def initialize *lang_list
     @lang_list = lang_list
     @non_functional = []
     @unknown_langs = []
   end
-
-  def fatal?; true; end
 
   def mpi_wrapper_works? compiler
     compiler = which compiler
@@ -119,7 +119,7 @@ class MPIDependency < Requirement
     quiet_system compiler, '--version'
   end
 
-  def satisfied?
+  satisfy do
     @lang_list.each do |lang|
       case lang
       when :cc, :cxx, :f90, :f77
@@ -129,15 +129,14 @@ class MPIDependency < Requirement
         @unknown_langs << lang.to_s
       end
     end
-
     @unknown_langs.empty? and @non_functional.empty?
   end
 
-  def modify_build_environment
+  env do |req|
     # Set environment variables to help configure scripts find MPI compilers.
     # Variable names taken from:
     # http://www.gnu.org/software/autoconf-archive/ax_mpi.html
-    lang_list.each do |lang|
+    req.lang_list.each do |lang|
       compiler = 'mpi' + lang.to_s
       mpi_path = which compiler
 
@@ -170,12 +169,14 @@ class MPIDependency < Requirement
         EOS
     end
   end
-
 end
 
 # This requirement added by the `conflicts_with` DSL method.
 class ConflictRequirement < Requirement
   attr_reader :formula
+
+  # The user can chose to force installation even in the face of conflicts.
+  fatal !ARGV.force?
 
   def initialize formula, name, opts={}
     @formula = formula
@@ -195,23 +196,16 @@ class ConflictRequirement < Requirement
     message
   end
 
-  def satisfied?
+  satisfy :build_env => false do
     keg = Formula.factory(@formula).prefix
     not keg.exist? && Keg.new(keg).linked?
-  end
-
-  # The user can chose to force installation even in the face of conflicts.
-  def fatal?
-    not ARGV.force?
   end
 end
 
 class XcodeDependency < Requirement
-  def fatal?; true; end
+  fatal true
 
-  def satisfied?
-    MacOS::Xcode.installed?
-  end
+  satisfy(:build_env => false) { MacOS::Xcode.installed? }
 
   def message; <<-EOS.undent
     A full installation of Xcode.app is required to compile this software.
@@ -221,11 +215,9 @@ class XcodeDependency < Requirement
 end
 
 class MysqlInstalled < Requirement
-  def fatal?; true; end
+  fatal true
 
-  def satisfied?
-    which 'mysql_config'
-  end
+  satisfy { which 'mysql_config' }
 
   def message; <<-EOS.undent
     MySQL is required to install.
@@ -244,11 +236,9 @@ class MysqlInstalled < Requirement
 end
 
 class PostgresqlInstalled < Requirement
-  def fatal?; true; end
+  fatal true
 
-  def satisfied?
-    which 'pg_config'
-  end
+  satisfy { which 'pg_config' }
 
   def message
     <<-EOS.undent
@@ -259,6 +249,25 @@ class PostgresqlInstalled < Requirement
 
       Or you can use an official installer from:
         http://www.postgresql.org/download/macosx/
+    EOS
+  end
+end
+
+class TeXInstalled < Requirement
+  fatal true
+
+  satisfy { which('tex') || which('latex') }
+
+  def message; <<-EOS.undent
+    A LaTeX distribution is required to install.
+
+    You can install MacTeX distribution from:
+      http://www.tug.org/mactex/
+
+    Make sure that its bin directory is in your PATH before proceeding.
+
+    You may also need to restore the ownership of Homebrew install:
+      sudo chown -R $USER `brew --prefix`
     EOS
   end
 end

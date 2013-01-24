@@ -24,6 +24,8 @@ class Gtkx3 < Formula
                           "--disable-glibtest",
                           "--disable-introspection"
     system "make install"
+    # Prevent a conflict between this and Gtk+2
+    mv bin/'gtk-update-icon-cache', bin/'gtk3-update-icon-cache'
   end
 
   def test

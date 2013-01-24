@@ -57,9 +57,8 @@ end
 def post_superenv_hacks f
   # Only allow Homebrew-approved directories into the PATH, unless
   # a formula opts-in to allowing the user's path.
-  if f.env.userpaths?
-    paths = ORIGINAL_PATHS.map{|pn| pn.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
-    ENV['PATH'] = "#{ENV['PATH']}:#{paths.join(':')}"
+  if f.env.userpaths? or f.recursive_requirements.any? { |rq| rq.env.userpaths? }
+    ENV.userpaths!
   end
 end
 
@@ -72,22 +71,29 @@ end
 
 def install f
   deps = f.recursive_deps
-  keg_only_deps = deps.select{|dep| dep.keg_only? }
+  keg_only_deps = deps.select(&:keg_only?)
 
   pre_superenv_hacks(f)
   require 'superenv'
 
-  unless superenv?
-    ENV.setup_build_environment
-    # Requirements are processed first so that adjustments made to ENV
-    # for keg-only deps take precdence.
-    f.recursive_requirements.each { |rq| rq.modify_build_environment }
-  end
-
   deps.each do |dep|
     opt = HOMEBREW_PREFIX/:opt/dep
     fixopt(dep) unless opt.directory? or ARGV.ignore_deps?
-    if not superenv? and dep.keg_only?
+  end
+
+  if superenv?
+    ENV.deps = keg_only_deps.map(&:to_s)
+    ENV.all_deps = f.recursive_deps.map(&:to_s)
+    ENV.x11 = f.recursive_requirements.detect{|rq| rq.class == X11Dependency }
+    ENV.setup_build_environment
+    post_superenv_hacks(f)
+    f.recursive_requirements.each(&:modify_build_environment)
+  else
+    ENV.setup_build_environment
+    f.recursive_requirements.each(&:modify_build_environment)
+
+    keg_only_deps.each do |dep|
+      opt = dep.opt_prefix
       ENV.prepend_path 'PATH', "#{opt}/bin"
       ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
       ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
@@ -96,15 +102,6 @@ def install f
       ENV.prepend 'LDFLAGS', "-L#{opt}/lib" if (opt/:lib).directory?
       ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
     end
-  end
-
-  if superenv?
-    ENV.deps = keg_only_deps.map(&:to_s)
-    ENV.all_deps = f.recursive_deps.map(&:to_s)
-    ENV.x11 = f.recursive_requirements.detect{|rq| rq.class == X11Dependency }
-    ENV.setup_build_environment
-    f.recursive_requirements.each { |rq| rq.modify_build_environment }
-    post_superenv_hacks(f)
   end
 
   if f.fails_with? ENV.compiler

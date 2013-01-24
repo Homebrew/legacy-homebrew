@@ -2,8 +2,8 @@ require 'formula'
 
 class Libinfinity < Formula
   homepage 'http://gobby.0x539.de/trac/wiki/Infinote/Libinfinity'
-  url 'http://releases.0x539.de/libinfinity/libinfinity-0.5.2.tar.gz'
-  sha1 '0864b7f00c44b7bed9f6b69e0e322e0359883358'
+  url 'http://releases.0x539.de/libinfinity/libinfinity-0.5.3.tar.gz'
+  sha1 '33fcdad764331e33ff1036d24c65d6296387e839'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -13,9 +13,10 @@ class Libinfinity < Formula
   depends_on :x11
 
   # Reported upstream here: http://gobby.0x539.de/trac/ticket/595
-  # Supposedly fixed in HEAD.  Test and remove at libinfinity-0.5.3.
+  # Supposedly fixed in HEAD, but still happens in 0.5.3, possibly
+  # in a different place.
   fails_with :clang do
-    build 318
+    build 421
     cause 'Non-void function should return a value'
   end
 
@@ -30,5 +31,7 @@ class Libinfinity < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+    # Don't link this into share!
+    (share/"icons/hicolor/icon-theme.cache").unlink
   end
 end

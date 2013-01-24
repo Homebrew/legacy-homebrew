@@ -1,9 +1,9 @@
 require 'formula'
 
 class CouchdbLucene < Formula
-  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.8.0'
+  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.9.0'
   homepage 'https://github.com/rnewson/couchdb-lucene'
-  sha1 '63c835499bed8fc3213ca5eaac59f362f42f21c6'
+  sha1 'f5c29f5d76c70ef25ed240b0a04658ec6120a0fd'
 
   depends_on 'couchdb'
   depends_on 'maven'

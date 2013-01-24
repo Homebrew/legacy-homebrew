@@ -49,11 +49,9 @@ class Pango < Formula
     system "make install"
   end
 
-  def test
-    mktemp do
-      system "#{bin}/pango-view", "-t", "test-image",
-                                  "--waterfall", "--rotate=10",
-                                  "--annotate=1", "--header"
-    end
+  test do
+    system "#{bin}/pango-view", "-t", "test-image",
+                                "--waterfall", "--rotate=10",
+                                "--annotate=1", "--header"
   end
 end
