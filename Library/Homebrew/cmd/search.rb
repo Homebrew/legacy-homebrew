@@ -39,6 +39,7 @@ module Homebrew extend self
         threads << Thread.new { search_tap "Homebrew", "dupes", rx }
         threads << Thread.new { search_tap "Homebrew", "games", rx }
         threads << Thread.new { search_tap "Homebrew", "science", rx }
+        threads << Thread.new { search_tap "Homebrew", "completions", rx }
 
         threads.each do |t|
           results << t.value
