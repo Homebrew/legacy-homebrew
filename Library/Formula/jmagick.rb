@@ -16,12 +16,18 @@ class Jmagick < Formula
 
   def install
     java_home = `/usr/libexec/java_home`
-    ENV['JAVA_HOME'] = java_home
-    ENV.append_to_cflags '-I#{java_home}/include/darwin'
-    cd('trunk') do
-      system "./configure", "--prefix=#{prefix}"
-      system "make"
-      system "make install"
+    ENV['JAVA_HOME'] = java_home.chomp!
+    ENV.append_to_cflags "-I#{java_home}/include/darwin"
+    if build.head?
+      cd('trunk') do
+        system "./configure", "--prefix=#{prefix}"
+        system "make"
+        system "make install"
+      end
+    else
+        system "./configure", "--prefix=#{prefix}"
+        system "make"
+        system "make install"
     end
 
     ln lib/'libJMagick-6.6.9.so', lib/'libJMagick.dylib'
