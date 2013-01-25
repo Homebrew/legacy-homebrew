@@ -2,8 +2,8 @@ require 'formula'
 
 class Opam < Formula
   homepage 'https://github.com/OCamlPro/opam'
-  url 'https://github.com/OCamlPro/opam/tarball/0.8.3'
-  sha1 '92339757360abce0a18aab313c1b8e656b83d61f'
+  url 'https://github.com/OCamlPro/opam/archive/0.9.1.tar.gz'
+  sha1 '49622e3677ed4514b1c4a4eb59beccc2f0c4960c'
 
   depends_on "objective-caml"
 
@@ -27,7 +27,8 @@ class Opam < Formula
 
     $  eval `opam config -env`
 
-    Documentation and tutorials are available at http://opam.ocamlpro.com
+    Documentation and tutorials are available at http://opam.ocamlpro.com, or
+    via 'man opam' and 'opam --help'.
     EOS
   end
 end

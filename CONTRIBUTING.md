@@ -15,6 +15,6 @@ Contributing
 Please read:
 
 * [Formula Cookbook](https://github.com/mxcl/homebrew/wiki/Formula-Cookbook)
-* [Acceptable Formula](https://github.com/mxcl/homebrew/wiki/Acceptable-Formula)
+* [Acceptable Formulae](https://github.com/mxcl/homebrew/wiki/Acceptable-Formulae)
 
 Thanks!

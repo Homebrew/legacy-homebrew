@@ -1,34 +1,51 @@
 class Caveats
-  def self.print f
+  attr_reader :f
+
+  def initialize(f)
+    @f = f
+  end
+
+  def caveats
+    caveats = []
+    caveats << f.caveats
+    caveats << f.keg_only_text rescue nil if f.keg_only?
+    caveats << bash_completion_caveats
+    caveats << zsh_completion_caveats
+    caveats << plist_caveats
+    caveats.compact.join("\n")
+  end
+
+  def empty?
+    caveats.empty?
+  end
+
+  private
+
+  def keg
+    @keg ||= [f.prefix, f.opt_prefix, f.linked_keg].map do |d|
+      Keg.new(d.realpath) rescue nil
+    end.compact.first
+  end
+
+  def bash_completion_caveats
+    if keg and keg.completion_installed? :bash then <<-EOS.undent
+      Bash completion has been installed to:
+        #{HOMEBREW_PREFIX}/etc/bash_completion.d
+      EOS
+    end
+  end
+
+  def zsh_completion_caveats
+    if keg and keg.completion_installed? :zsh then <<-EOS.undent
+      zsh completion has been installed to:
+        #{HOMEBREW_PREFIX}/share/zsh/site-functions
+      EOS
+    end
+  end
+
+  def plist_caveats
     s = []
-
-    unless f.caveats.to_s.strip.empty?
-      s << f.caveats
-    end
-
-    keg = Keg.new(f.prefix) rescue nil
-    keg ||= Keg.new(f.opt_prefix.realpath) rescue nil
-    keg ||= Keg.new(f.linked_keg.realpath) rescue nil
-
-    if keg and keg.completion_installed? :bash
-      s << "\n" unless s.empty?
-      s << <<-EOS.undent
-        Bash completion has been installed to:
-          #{HOMEBREW_PREFIX}/etc/bash_completion.d
-        EOS
-    end
-
-    if keg and keg.completion_installed? :zsh
-      s << "\n" unless s.empty?
-      s <<  <<-EOS.undent
-        zsh completion has been installed to:
-          #{HOMEBREW_PREFIX}/share/zsh/site-functions
-        EOS
-    end
-
     if f.plist or (keg and keg.plist_installed?)
-      s << "\n" unless s.empty?
-
       destination = f.plist_startup ? '/Library/LaunchDaemons' \
                                     : '~/Library/LaunchAgents'
 
@@ -79,7 +96,6 @@ class Caveats
         end
       end
     end
-
-    ohai 'Caveats', s unless s.empty?
+    s.join("\n") unless s.empty?
   end
 end

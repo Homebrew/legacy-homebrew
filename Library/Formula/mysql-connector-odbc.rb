@@ -1,6 +1,10 @@
 require 'formula'
 
 class MySqlInstalled < Requirement
+  fatal true
+
+  satisfy { which 'mysql_config' }
+
   def message; <<-EOS.undent
     MySQL is required to install.
 
@@ -14,12 +18,6 @@ class MySqlInstalled < Requirement
     Or, you can use an official installer from:
       http://dev.mysql.com/downloads/mysql/
     EOS
-  end
-  def satisfied?
-    which 'mysql_config'
-  end
-  def fatal?
-    true
   end
 end
 

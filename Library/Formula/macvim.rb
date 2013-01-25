@@ -28,7 +28,7 @@ class Macvim < Formula
 
     # If building for 10.8, make sure that CC is set to "clang".
     # Reference: https://github.com/b4winckler/macvim/wiki/building
-    ENV['CC'] = "clang" if MacOS.version >= :mountain_lion
+    ENV.clang if MacOS.version >= :mountain_lion
 
     args = %W[
       --with-features=huge

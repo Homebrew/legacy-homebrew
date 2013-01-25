@@ -1,6 +1,10 @@
 require 'formula'
 
 class PythonWithGdbm < Requirement
+  fatal true
+
+  satisfy { quiet_system "python", "-c", "import gdbm" }
+
   def message; <<-EOS.undent
     The Python being used does not include gdbm support,
     but it is required to build this formula:
@@ -9,14 +13,6 @@ class PythonWithGdbm < Requirement
 
     Homebrew's Python includes gdbm support.
     EOS
-  end
-
-  def satisfied?
-    quiet_system "python", "-c", "import gdbm"
-  end
-
-  def fatal?
-    true
   end
 end
 

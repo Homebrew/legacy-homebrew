@@ -1,16 +1,19 @@
 require 'formula'
 
 class PythonVersion < Requirement
+  env :userpaths
+
+  satisfy { `python -c 'import sys;print(sys.version[:3])'`.strip.to_f >= 2.6 }
+
   def message; <<-EOS.undent
     Node's build system, gyp, requires Python 2.6 or newer.
     EOS
   end
-  def satisfied?
-    `python -c 'import sys;print(sys.version[:3])'`.strip.to_f >= 2.6
-  end
 end
 
 class NpmNotInstalled < Requirement
+  fatal true
+
   def modules_folder
     "#{HOMEBREW_PREFIX}/lib/node_modules"
   end
@@ -28,7 +31,7 @@ class NpmNotInstalled < Requirement
     EOS
   end
 
-  def satisfied?
+  satisfy :build_env => false do
     begin
       path = Pathname.new("#{modules_folder}/npm")
       not path.realpath.to_s.include?(HOMEBREW_CELLAR)
@@ -36,16 +39,12 @@ class NpmNotInstalled < Requirement
       true
     end
   end
-
-  def fatal?
-    true
-  end
 end
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.8.17/node-v0.8.17.tar.gz'
-  sha1 '65d22e4e183cee8888c797300d8fdbb5c530c740'
+  url 'http://nodejs.org/dist/v0.8.18/node-v0.8.18.tar.gz'
+  sha1 'e3bc9b64f60f76a32b7d9b35bf86b5d1b8166717'
 
   devel do
     url 'http://nodejs.org/dist/v0.9.6/node-v0.9.6.tar.gz'

@@ -1,15 +1,17 @@
 require 'formula'
 
 class FrameworkPython < Requirement
-  def message; <<-EOS.undent
-    Python needs to be built as a framework.
-    EOS
-  end
-  def satisfied?
+  fatal true
+  env :userpaths
+
+  satisfy do
     q = `python -c "import distutils.sysconfig as c; print(c.get_config_var('PYTHONFRAMEWORK'))"`
     not q.chomp.empty?
   end
-  def fatal?; true; end
+
+  def message
+    "Python needs to be built as a framework."
+  end
 end
 
 class Wxmac < Formula

@@ -3,8 +3,8 @@ require 'formula'
 class Vgmstream < Formula
   homepage 'http://hcs64.com/vgmstream.html'
   url 'https://vgmstream.svn.sourceforge.net/svnroot/vgmstream',
-    :using => UnsafeSubversionDownloadStrategy, :revision => 982
-  version 'r982'
+    :using => UnsafeSubversionDownloadStrategy, :revision => 1007
+  version 'r1007'
 
   depends_on 'mpg123'
   depends_on 'libvorbis'

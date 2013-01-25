@@ -1,12 +1,10 @@
 require 'formula'
 
 class NeedsSnowLeopard < Requirement
+  satisfy MacOS.version >= :snow_leopard
+
   def message
     "Google JS Test requires Mac OS X 10.6 (Snow Leopard) or newer."
-  end
-
-  def satisfied?
-    MacOS.version >= :snow_leopard
   end
 end
 

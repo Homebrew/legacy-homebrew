@@ -148,19 +148,16 @@ end
 # Detect and download from Apache Mirror
 class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   def _fetch
-    # Fetch mirror list site
     require 'open-uri'
-    mirror_list = open(@url).read()
+    require 'vendor/multi_json'
 
-    # Parse out suggested mirror
-    #   Yep, this is ghetto, grep the first <strong></strong> element content
-    mirror_url = mirror_list[/<strong>([^<]+)/, 1]
+    mirrors = MultiJson.decode(open("#{@url}&asjson=1").read)
+    url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
 
-    raise "Couldn't determine mirror. Try again later." if mirror_url.nil?
-
-    ohai "Best Mirror #{mirror_url}"
-    # Start download from that mirror
-    curl mirror_url, '-o', @tarball_path
+    ohai "Best Mirror #{url}"
+    curl url, '-o', @tarball_path
+  rescue IndexError
+    raise "Couldn't determine mirror. Try again later."
   end
 end
 
