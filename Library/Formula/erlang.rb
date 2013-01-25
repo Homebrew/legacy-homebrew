@@ -86,6 +86,10 @@ class Erlang < Formula
     system "make"
     system "make install"
 
+    # fixup pathes in erlang wrappers
+    inreplace ["#{lib}/erlang/bin/erl", "#{lib}/erlang/bin/start"],
+      "#{prefix}", HOMEBREW_PREFIX
+
     unless build.include? 'no-docs'
       manuals = build.head? ? ErlangHeadManuals : ErlangManuals
       manuals.new.brew { man.install Dir['man/*'] }
