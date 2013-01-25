@@ -68,6 +68,11 @@ class << ENV
     append 'HOMEBREW_CCCFG', "u", ''
   end
 
+  # m32 on superenv does not add any flags. It prevents "-m32" from being erased.
+  def m32
+    append 'HOMEBREW_CCCFG', "3", ''
+  end
+
   private
 
   def determine_cc
@@ -205,7 +210,7 @@ class << ENV
 
 ### NO LONGER NECESSARY OR NO LONGER SUPPORTED
   def noop(*args); end
-  %w[m64 m32 gcc_4_0_1 fast O4 O3 O2 Os Og O1 libxml2 minimal_optimization
+  %w[m64 gcc_4_0_1 fast O4 O3 O2 Os Og O1 libxml2 minimal_optimization
     no_optimization enable_warnings x11
     set_cpu_flags
     macosxsdk remove_macosxsdk].each{|s| alias_method s, :noop }
