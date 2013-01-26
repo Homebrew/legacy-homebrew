@@ -216,11 +216,6 @@ class Pathname
     incr_hash.hexdigest
   end
 
-  def md5
-    require 'digest/md5'
-    incremental_hash(Digest::MD5)
-  end
-
   def sha1
     require 'digest/sha1'
     incremental_hash(Digest::SHA1)
