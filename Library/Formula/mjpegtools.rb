@@ -7,16 +7,11 @@ class Mjpegtools < Formula
 
   depends_on :x11 if MacOS::X11.installed?
 
-  option "with-libquicktime", "Build with Quicktime support"
-  option "with-libdv", "Build with DV support"
-  option "with-gtk+", "Build with GTK+ support"
-  option "with-sdl_gfx", "Build with SDL support"
-
   depends_on 'jpeg'
-  depends_on 'libquicktime' => :optional if build.include? "with-libquicktime"
-  depends_on 'libdv' => :optional if build.include? "with-libdv"
-  depends_on 'gtk+' => :optional if build.include? "with-gtk+"
-  depends_on 'sdl_gfx' => :optional if build.include? "with-sdl_gfx"
+  depends_on 'libquicktime' => :optional
+  depends_on 'libdv' => :optional
+  depends_on 'gtk+' => :optional
+  depends_on 'sdl_gfx' => :optional
 
   fails_with :clang do
     build 421
@@ -27,11 +22,9 @@ class Mjpegtools < Formula
   end
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--enable-simd-accel",
-            "--prefix=#{prefix}"]
-
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking",
+                          "--enable-simd-accel",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
