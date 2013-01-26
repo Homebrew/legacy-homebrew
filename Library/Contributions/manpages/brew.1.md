@@ -72,7 +72,7 @@ With `--verbose`, many commands print extra debugging information.
     If `--cmake` is passed, create a basic template for a CMake-style build.
 
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
-    will thus not add the MD5 to the formula for you.
+    will thus not add the SHA-1 to the formula for you.
 
     The options `--set-name` and `--set-version` each take an argument and allow
     you to explicitly set the name and version of the package you are creating.
@@ -110,7 +110,7 @@ With `--verbose`, many commands print extra debugging information.
 
   * `fetch [--force] [-v] [--HEAD] [--deps]` <formulae>:
     Download the source packages for the given <formulae>.
-    For tarballs, also print MD5 and SHA1 checksums.
+    For tarballs, also print SHA1 and SHA-256 checksums.
 
     If `--HEAD` is passed, download the HEAD versions of <formulae> instead. `-v`
     may also be passed to make the VCS checkout verbose, useful for seeing if
