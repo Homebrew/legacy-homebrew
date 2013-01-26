@@ -1,4 +1,4 @@
-# Outputs formulas that are installed but are not a dependency for
+# Outputs formulae that are installed but are not a dependency for
 # any other installed formula.
 # See: http://github.com/mxcl/homebrew/issues/issue/1438
 
