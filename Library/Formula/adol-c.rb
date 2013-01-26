@@ -7,14 +7,20 @@ class AdolC < Formula
 
   head 'https://projects.coin-or.org/svn/ADOL-C/trunk/', :using => :svn
 
-  # realpath is used in configure to find colpack
-  depends_on 'aardvark_shell_utils' => :build
   depends_on 'colpack'
 
   def install
+    # Make our own realpath script
+    (buildpath/'realpath').write <<-EOS.undent
+      #!/usr/bin/python
+      import os,sys
+      print os.path.realpath(sys.argv[1])
+    EOS
+    system "chmod +x ./realpath"
+
     # Configure may get automatically regenerated.  So patch configure.ac also.
     inreplace %w(configure configure.ac) do |s|
-      s.gsub! "readlink -f", "realpath"
+      s.gsub! "readlink -f", "/#{buildpath}/realpath"
       s.gsub! "lib64", "lib"
     end
 
