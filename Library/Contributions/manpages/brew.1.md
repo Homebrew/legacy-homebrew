@@ -291,7 +291,7 @@ With `--verbose`, many commands print extra debugging information.
     If <formulae> are given, upgrade only the specified brews.
 
   * `uses [--installed] [--recursive]` <formula>:
-    Show the formulas that specify <formula> as a dependency.
+    Show the formulae that specify <formula> as a dependency.
 
     Use `--recursive` to resolve more than one level of dependencies.
 
