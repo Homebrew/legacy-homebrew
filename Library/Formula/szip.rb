@@ -5,6 +5,8 @@ class Szip < Formula
   homepage 'http://www.hdfgroup.org/HDF5/release/obtain5.html#extlibs'
   sha1 'd241c9acc26426a831765d660b683b853b83c131'
 
+  option :universal
+
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
