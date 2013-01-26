@@ -229,6 +229,7 @@ class Formula
   end
 
   def lock
+    HOMEBREW_CACHE_FORMULA.mkpath
     lockpath = HOMEBREW_CACHE_FORMULA/"#{@name}.brewing"
     @lockfile = lockpath.open(File::RDWR | File::CREAT)
     unless @lockfile.flock(File::LOCK_EX | File::LOCK_NB)
