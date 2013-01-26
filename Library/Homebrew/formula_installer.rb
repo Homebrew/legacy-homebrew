@@ -254,7 +254,7 @@ class FormulaInstaller
         opts.concat(options) # from a dependent formula
         opts.concat((tab.used_options rescue [])) # from a previous install
       end
-      opts << '--build-from-source' # don't download bottle
+      opts << Option.new("--build-from-source") # don't download bottle
     end
   end
 
