@@ -139,7 +139,9 @@ class FormulaInstaller
             Dependency.prune if pour_bottle?
           end
 
-          dep.universal! if f.build.universal?
+          if f.build.universal?
+            dep.universal! unless dep.build?
+          end
 
           dep_f = dep.to_formula
           dep_tab = Tab.for_formula(dep)
