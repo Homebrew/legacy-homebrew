@@ -54,6 +54,12 @@ private
       Dependency.new(spec.name, tag)
     when Dependency, Requirement
       spec
+    when Class
+      if spec < Requirement
+        spec.new
+      else
+        raise "#{spec} is not a Requirement subclass"
+      end
     else
       raise "Unsupported type #{spec.class} for #{spec}"
     end
