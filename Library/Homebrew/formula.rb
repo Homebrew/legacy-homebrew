@@ -219,7 +219,7 @@ class Formula
     stage do
       begin
         patch
-        # we allow formulas to do anything they want to the Ruby process
+        # we allow formulae to do anything they want to the Ruby process
         # so load any deps before this point! And exit asap afterwards
         yield self
       rescue RuntimeError, SystemCallError => e
