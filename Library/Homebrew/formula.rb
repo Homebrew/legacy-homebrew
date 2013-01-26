@@ -6,6 +6,7 @@ require 'bottles'
 require 'patches'
 require 'compilers'
 require 'build_environment'
+require 'build_options'
 require 'extend/set'
 
 
@@ -74,10 +75,6 @@ class Formula
   # if the dir is there, but it's empty we consider it not installed
   def installed?
     installed_prefix.children.length > 0 rescue false
-  end
-
-  def explicitly_requested?
-    ARGV.formulae.include?(self) rescue false
   end
 
   def linked_keg
@@ -228,6 +225,21 @@ class Formula
         end
         raise
       end
+    end
+  end
+
+  def lock
+    lockpath = HOMEBREW_CACHE_FORMULA/"#{@name}.brewing"
+    @lockfile = lockpath.open(File::RDWR | File::CREAT)
+    unless @lockfile.flock(File::LOCK_EX | File::LOCK_NB)
+      raise OperationInProgressError, @name
+    end
+  end
+
+  def unlock
+    unless @lockfile.nil?
+      @lockfile.flock(File::LOCK_UN)
+      @lockfile.close
     end
   end
 
@@ -407,6 +419,8 @@ class Formula
 
     raise NameError if !klass.ancestors.include? Formula
 
+    klass.finalize_dsl
+
     return klass.new(name) if install_type == :from_name
     return klass.new(name, path.to_s)
   rescue NoMethodError
@@ -443,22 +457,16 @@ class Formula
     requirements.select { |r| r.is_a? ConflictRequirement }
   end
 
-  # deps are in an installable order
-  # which means if a depends on b then b will be ordered before a in this list
-  def recursive_deps
-    Formula.expand_deps(self).flatten.uniq
+  # Returns a list of Dependency objects in an installable order, which
+  # means if a depends on b then b will be ordered before a in this list
+  def recursive_dependencies(&block)
+    Dependency.expand(self, &block)
   end
 
-  def self.expand_deps f
-    f.deps.map do |dep|
-      f_dep = Formula.factory dep.to_s
-      expand_deps(f_dep) << f_dep
-    end
-  end
-
+  # The full set of Requirements for this formula's dependency tree.
   def recursive_requirements
     reqs = ComparableSet.new
-    recursive_deps.each { |dep| reqs.merge dep.requirements }
+    recursive_dependencies.each { |d| reqs.merge d.to_formula.requirements }
     reqs.merge requirements
   end
 
@@ -682,7 +690,7 @@ private
     end
 
     def build
-      @build ||= BuildOptions.new(ARGV)
+      @build ||= BuildOptions.new(ARGV.options_only)
     end
 
     def url val=nil, specs=nil
@@ -794,6 +802,24 @@ private
       return @test unless block_given?
       @test_defined = true
       @test = block
+    end
+
+    # This method is called once by `factory` before creating any instances.
+    # It allows the DSL to finalize itself, reducing complexity in the constructor.
+    def finalize_dsl
+      # Synthesize options for optional dependencies
+      dependencies.deps.select(&:optional?).each do |dep|
+        unless build.has_option? "with-#{dep.name}"
+          option "with-#{dep.name}", "Build with #{dep.name} support"
+        end
+      end
+
+      # Synthesize options for recommended dependencies
+      dependencies.deps.select(&:recommended?).each do |dep|
+        unless build.has_option? "without-#{dep.name}"
+          option "without-#{dep.name}", "Build without #{dep.name} support"
+        end
+      end
     end
   end
 end

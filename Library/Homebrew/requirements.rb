@@ -204,6 +204,7 @@ end
 
 class XcodeDependency < Requirement
   fatal true
+  build true
 
   satisfy(:build_env => false) { MacOS::Xcode.installed? }
 
@@ -268,6 +269,22 @@ class TeXInstalled < Requirement
 
     You may also need to restore the ownership of Homebrew install:
       sudo chown -R $USER `brew --prefix`
+    EOS
+  end
+end
+
+class CLTDependency < Requirement
+  fatal true
+  build true
+
+  def satisfied?
+    MacOS::CLT.installed?
+  end
+
+  def message; <<-EOS.undent
+    The Command Line Tools for Xcode are required to compile this software.
+    The standalone package can be obtained from http://connect.apple.com,
+    or it can be installed via Xcode's preferences.
     EOS
   end
 end

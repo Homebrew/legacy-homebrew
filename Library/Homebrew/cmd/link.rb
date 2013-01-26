@@ -35,8 +35,10 @@ module Homebrew extend self
         next
       end
 
-      print "Linking #{keg}... " do
-        puts "#{keg.link(mode)} symlinks created"
+      keg.lock do
+        print "Linking #{keg}... " do
+          puts "#{keg.link(mode)} symlinks created"
+        end
       end
     end
   end
