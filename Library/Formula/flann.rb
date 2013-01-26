@@ -5,7 +5,6 @@ class Flann < Formula
   url 'http://people.cs.ubc.ca/~mariusm/uploads/FLANN/flann-1.8.2-src.zip'
   sha1 '62ace1c41365dfc8ceabde1381febc5c8b71ad98'
 
-  option :universal
   option 'enable-python', 'Enable python bindings'
   option 'enable-matlab', 'Enable matlab/octave bindings'
   option 'with-examples', 'Build and install example binaries'
