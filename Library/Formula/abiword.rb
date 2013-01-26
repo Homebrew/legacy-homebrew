@@ -6,8 +6,8 @@ class Abiword < Formula
   sha1 '998f69d038000b3fc027d4259548f02d67c8d0df'
 
   devel do
-    url 'http://www.abisource.com/downloads/abiword/2.9.2/source/abiword-2.9.2.tar.gz'
-    sha1 '34a6e4e9c5619e8f2d619ac844519fc9378405b3'
+    url 'http://www.abisource.com/downloads/abiword/2.9.4/source/abiword-2.9.4.tar.gz'
+    sha1 '67cfbc633129128a1aa48ffba8959229cef2ebdd'
   end
 
   depends_on :libpng
