@@ -6,6 +6,7 @@ class Fann < Formula
   sha1 'ff8341e4104bdbc0f3ab7ad39aef33285f8512d4'
 
   depends_on 'cmake' => :build
+  option :universal
 
   def install
     ENV.universal_binary if build.universal?
