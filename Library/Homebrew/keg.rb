@@ -62,6 +62,7 @@ class Keg < Pathname
   end
 
   def lock
+    HOMEBREW_CACHE_FORMULA.mkpath
     path = HOMEBREW_CACHE_FORMULA/"#{fname}.brewing"
     file = path.open(File::RDWR | File::CREAT)
     unless file.flock(File::LOCK_EX | File::LOCK_NB)
