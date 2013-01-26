@@ -34,7 +34,7 @@ class ConfigureFails < Formula
   # name parameter required for some Formula::factory
   url "file:///#{TEST_FOLDER}/tarballs/configure_fails.tar.gz"
   version '1.0.0'
-  md5 '9385e1b68ab8af68ac2c35423443159b'
+  sha1 'b36c65e5de86efef1b3a7e9cf78a98c186b400b3'
 
   def initialize name=nil
     super "configurefails"
