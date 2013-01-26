@@ -2,8 +2,8 @@ require 'formula'
 
 class Vtk < Formula
   homepage 'http://www.vtk.org'
-  url 'http://www.vtk.org/files/release/5.10/vtk-5.10.0.tar.gz'
-  sha1 '0c9a17e2f446dc78b0500dc5bbd1c6a2864a0191'
+  url 'http://www.vtk.org/files/release/5.10/vtk-5.10.1.tar.gz'
+  sha1 'deb834f46b3f7fc3e122ddff45e2354d69d2adc3'
 
   depends_on 'cmake' => :build
   depends_on :x11 if build.include? 'x11'
