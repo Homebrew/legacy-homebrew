@@ -101,7 +101,7 @@ class Vtk < Formula
   def caveats
     s = ''
     vtk = Tab.for_formula 'vtk'
-    if build.include? 'python' or vtk.installed_with? 'python'
+    if build.include? 'python' or vtk.include? 'python'
       s += <<-EOS.undent
         For non-homebrew Python, you need to amend your PYTHONPATH like so:
         export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
@@ -113,7 +113,7 @@ class Vtk < Formula
 
       EOS
     end
-    if build.include? 'examples' or vtk.installed_with? '--examples'
+    if build.include? 'examples' or vtk.include? 'examples'
       s += <<-EOS.undent
 
         The scripting examples are stored in #{HOMEBREW_PREFIX}/share/vtk
