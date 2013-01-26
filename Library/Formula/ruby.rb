@@ -58,7 +58,7 @@ class Ruby < Formula
 
   def caveats; <<-EOS.undent
     NOTE: By default, gem installed binaries will be placed into:
-      #{bin}
+      #{opt_prefix}/bin
 
     You may want to add this to your PATH.
     EOS
