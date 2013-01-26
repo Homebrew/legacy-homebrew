@@ -4,12 +4,12 @@ class Valgrind < Formula
   homepage 'http://www.valgrind.org/'
 
   # Valgrind 3.7.0 drops support for OS X 10.5
-  if MacOS.version >= 10.6
+  if MacOS.version >= 10.6 and false
     url 'http://valgrind.org/downloads/valgrind-3.8.1.tar.bz2'
     sha1 'aa7a3b0b9903f59a11ae518874852e8ccb12751c'
   else
     url "http://valgrind.org/downloads/valgrind-3.6.1.tar.bz2"
-    md5 "2c3aa122498baecc9d69194057ca88f5"
+    sha1 "6116ddca2708f56e0a2851bdfbe88e01906fa300"
   end
 
   head 'svn://svn.valgrind.org/valgrind/trunk'
