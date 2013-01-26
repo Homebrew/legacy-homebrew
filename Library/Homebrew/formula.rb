@@ -420,8 +420,6 @@ class Formula
 
     raise NameError if !klass.ancestors.include? Formula
 
-    klass.finalize_dsl
-
     return klass.new(name) if install_type == :from_name
     return klass.new(name, path.to_s)
   rescue NoMethodError
@@ -743,6 +741,7 @@ private
 
     def depends_on dep
       dependencies.add(dep)
+      post_depends_on
     end
 
     def option name, description=nil
@@ -805,20 +804,15 @@ private
       @test = block
     end
 
-    # This method is called once by `factory` before creating any instances.
-    # It allows the DSL to finalize itself, reducing complexity in the constructor.
-    def finalize_dsl
-      # Synthesize options for optional dependencies
-      dependencies.deps.select(&:optional?).each do |dep|
-        unless build.has_option? "with-#{dep.name}"
-          option "with-#{dep.name}", "Build with #{dep.name} support"
-        end
-      end
+    private
 
-      # Synthesize options for recommended dependencies
-      dependencies.deps.select(&:recommended?).each do |dep|
-        unless build.has_option? "without-#{dep.name}"
-          option "without-#{dep.name}", "Build without #{dep.name} support"
+    def post_depends_on
+      # Generate with- and without- options for optional and recommended deps
+      dependencies.deps.each do |dep|
+        if dep.optional? && !build.has_option?("with-#{dep.name}")
+          build.add("with-#{dep.name}", "Build with #{dep.name} support")
+        elsif dep.recommended? && !build.has_option?("without-#{dep.name}")
+          build.add("without-#{dep.name}", "Build without #{dep.name} support")
         end
       end
     end
