@@ -6,8 +6,6 @@ class AdolC < Formula
   sha1 'd9124ce0b199cb8b841a9a9ec10d1fb31ed11b49'
 
   head 'https://projects.coin-or.org/svn/ADOL-C/trunk/', :using => :svn
-  # HEAD contains bugfix for NaNs appearing in 2.2.1
-  # http://answerpot.com/showthread.php?2997935-sparse_jac+return+unreasonable+NaN's
 
   # realpath is used in configure to find colpack
   depends_on 'aardvark_shell_utils' => :build
