@@ -1,9 +1,9 @@
 require 'formula'
 
 class ClozureCl < Formula
+  homepage 'http://ccl.clozure.com/'
   url 'ftp://ftp.clozure.com/pub/release/1.8/ccl-1.8-darwinx86.tar.gz'
   version '1.8'
-  homepage 'http://ccl.clozure.com/'
   sha1 'a155fc0d74a463bd6281ed66e7703b84c03afd33'
 
   def install
