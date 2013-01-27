@@ -723,15 +723,17 @@ def check_git_newline_settings
   autocrlf = `git config --get core.autocrlf`.chomp
   safecrlf = `git config --get core.safecrlf`.chomp
 
-  if autocrlf == 'input' and safecrlf == 'true' then <<-EOS.undent
+  unless autocrlf == 'false' then <<-EOS.undent
     Suspicious Git newline settings found.
 
-    The detected Git newline settings can cause checkout problems:
+    The detected Git newline settings will cause checkout problems:
       core.autocrlf = #{autocrlf}
-      core.safecrlf = #{safecrlf}
 
     If you are not routinely dealing with Windows-based projects,
     consider removing these settings.
+
+    Alternatively run:
+    `git config -f #{HOMEBREW_REPOSITORY}/.git/config --add core.autocrlf false`
     EOS
   end
 end
