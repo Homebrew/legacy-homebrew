@@ -1,6 +1,5 @@
 require 'testing_env'
-require 'dependencies'
-require 'options'
+require 'dependency'
 
 class DependableTests < Test::Unit::TestCase
   def setup

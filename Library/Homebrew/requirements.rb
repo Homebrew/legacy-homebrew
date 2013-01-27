@@ -1,3 +1,5 @@
+require 'requirement'
+
 # A dependency on a language-specific module.
 class LanguageModuleDependency < Requirement
   fatal true
