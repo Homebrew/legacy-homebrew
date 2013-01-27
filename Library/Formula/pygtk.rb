@@ -8,6 +8,7 @@ class Pygtk < Formula
   depends_on :x11
   depends_on 'glib'
   depends_on 'gtk+'
+  depends_on 'atk'
   depends_on 'pygobject'
   depends_on 'py2cairo'
   depends_on 'libglade' if build.include? 'glade'
