@@ -74,10 +74,10 @@ private
       if MacOS.version >= :mountain_lion
         Dependency.new(spec.to_s, tag)
       else
-        X11Dependency.new(tag)
+        X11Dependency.new(spec.to_s, tag)
       end
     when :x11
-      X11Dependency.new(tag)
+      X11Dependency.new(spec.to_s, tag)
     when :xcode
       XcodeDependency.new(tag)
     when :mysql
