@@ -13,7 +13,7 @@ class GoogleJsTest < Formula
   url 'http://google-js-test.googlecode.com/files/gjstest-1.0.8.tar.bz2'
   sha1 '2209dd0c700f9420e29a844920f8614e3d97156d'
 
-  depends_on NeedsSnowLeopard.new
+  depends_on NeedsSnowLeopard
   depends_on 'gflags'
   depends_on 'glog'
   depends_on 'protobuf'
