@@ -26,7 +26,7 @@ class Boost149 < Formula
   option 'without-python', 'Build without Python'
   option 'with-icu', 'Build regexp engine with icu support'
 
-  depends_on UniversalPython.new if build.universal? and not build.include? "without-python"
+  depends_on UniversalPython if build.universal? and not build.include? "without-python"
   depends_on "icu4c" if build.include? "with-icu"
   depends_on MPIDependency.new(:cc, :cxx) if build.include? "with-mpi"
 
