@@ -410,6 +410,10 @@ class FormulaAuditor
     if text =~ /skip_clean\s+:all/
       problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
     end
+
+    if text =~ /depends_on (.*)\.new\s*[^(]/
+      problem "`depends_on` can take requirement classes directly"
+    end
   end
 
   def audit
