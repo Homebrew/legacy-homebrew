@@ -22,7 +22,7 @@ class Uwsgi < Formula
   url 'http://projects.unbit.it/downloads/uwsgi-1.4.4.tar.gz'
   sha1 'efaff6ebaa39bc015771bdecbf73373e1d1eceed'
 
-  depends_on UniversalPcre.new
+  depends_on UniversalPcre
   depends_on 'pcre'
 
   def install
