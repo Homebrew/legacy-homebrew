@@ -28,7 +28,7 @@ class MysqlConnectorOdbc < Formula
 
   # Won't compile against mysql-connector-c, as the C connector exports an API version
   # that causes issues with how "my_free" is declared
-  depends_on MySqlInstalled.new
+  depends_on MySqlInstalled
   depends_on 'cmake' => :build
 
   option :universal
