@@ -30,7 +30,7 @@ class Shocco < Formula
   url 'https://github.com/rtomayko/shocco/tarball/a1ee000613946335f54a8f236ee9fe6f7f22bcb8'
   sha1 '8feb66dad3c957fabdfa368e710dfb2a078a732f'
 
-  depends_on MarkdownProvider.new
+  depends_on MarkdownProvider
 
   def install
     Pygments.new.brew { libexec.install 'pygmentize','pygments' }
