@@ -51,6 +51,10 @@ class Boost < Formula
     cause "Dropped arguments to functions when linking with boost"
   end
 
+  def pour_bottle?
+    false
+  end
+
   # Patch boost/config/stdlib/libcpp.hpp to fix the constexpr bug reported under Boost 1.52 in Ticket
   # 7671.  This patch can be removed when upstream release an updated version including the fix.
   def patches
