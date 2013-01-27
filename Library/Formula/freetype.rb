@@ -21,6 +21,7 @@ class Freetype < Formula
   end
 
   def test
-    system "#{bin}/freetype-config --ftversion"
+    system "#{bin}/freetype-config", '--cflags', '--libs', '--ftversion',
+      '--exec-prefix', '--prefix'
   end
 end
