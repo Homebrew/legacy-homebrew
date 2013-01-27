@@ -137,6 +137,9 @@ class Formula
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
+  def bash_completion; prefix+'etc/bash_completion.d' end
+  def zsh_completion;  share+'zsh/site-functions'     end
+
   # override this to provide a plist
   def plist; nil; end
   alias :startup_plist :plist
