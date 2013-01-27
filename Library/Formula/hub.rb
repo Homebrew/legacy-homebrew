@@ -8,9 +8,9 @@ class Hub < Formula
   head 'https://github.com/defunkt/hub.git'
 
   def install
-    system rake_bin, "install", "prefix=#{prefix}"
-    (prefix+'etc/bash_completion.d').install 'etc/hub.bash_completion.sh'
-    (share+'zsh/site-functions').install 'etc/hub.zsh_completion' => '_hub'
+    system "rake", "install", "prefix=#{prefix}"
+    bash_completion.install 'etc/hub.bash_completion.sh'
+    zsh_completion.install 'etc/hub.zsh_completion' => '_hub'
   end
 
   def rake_bin
