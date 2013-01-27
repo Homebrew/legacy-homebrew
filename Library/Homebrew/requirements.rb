@@ -59,10 +59,11 @@ class X11Dependency < Requirement
 
   env { x11 }
 
-  def initialize(*tags)
+  def initialize(name="x11", *tags)
     tags.flatten!
+    @name = name
     @min_version = tags.shift if /(\d\.)+\d/ === tags.first
-    super
+    super(tags)
   end
 
   satisfy :build_env => false do
