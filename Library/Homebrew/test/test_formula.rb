@@ -103,9 +103,9 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal :sha1, f.bottle.checksum.hash_type
     assert_equal :sha256, f.devel.checksum.hash_type
     assert_equal case MacOS.cat
-      when :snowleopard then 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
+      when :snow_leopard then 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
       when :lion then 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
-      when :mountainlion then '8badf00d8badf00d8badf00d8badf00d8badf00d'
+      when :mountain_lion then '8badf00d8badf00d8badf00d8badf00d8badf00d'
       end, f.bottle.checksum.hexdigest
     assert_match /[0-9a-fA-F]{40}/, f.stable.checksum.hexdigest
     assert_match /[0-9a-fA-F]{64}/, f.devel.checksum.hexdigest
@@ -241,9 +241,9 @@ class FormulaTests < Test::Unit::TestCase
 
     assert_equal 1, f.bottle.revision
     assert_equal case MacOS.cat
-      when :snowleopard then 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
+      when :snow_leopard then 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
       when :lion then 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
-      when :mountainlion then '8badf00d8badf00d8badf00d8badf00d8badf00d'
+      when :mountain_lion then '8badf00d8badf00d8badf00d8badf00d8badf00d'
       end, f.bottle.checksum.hexdigest
   end
 

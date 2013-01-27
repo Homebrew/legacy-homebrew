@@ -8,12 +8,19 @@ module MacOS extend self
   end
 
   def cat
-    if version == :mountain_lion then :mountainlion
+    if version == :mountain_lion then :mountain_lion
     elsif version == :lion then :lion
-    elsif version == :snow_leopard then :snowleopard
+    elsif version == :snow_leopard then :snow_leopard
     elsif version == :leopard then :leopard
     else nil
     end
+  end
+
+  # TODO: Can be removed when all bottles migrated to underscored cat symbols.
+  def cat_without_underscores
+    possibly_underscored_cat = cat
+    return nil unless possibly_underscored_cat
+    cat.to_s.gsub('_', '').to_sym
   end
 
   def locate tool
