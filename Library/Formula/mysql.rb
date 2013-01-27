@@ -114,7 +114,7 @@ class Mysql < Formula
         mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=#{var}/mysql --tmpdir=/tmp
 
     To set up base tables in another folder, or use a different user to run
-    mysqld, view the help for mysqld_install_db:
+    mysqld, view the help for mysql_install_db:
         mysql_install_db --help
 
     and view the MySQL documentation:
