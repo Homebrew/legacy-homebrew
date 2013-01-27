@@ -183,6 +183,10 @@ class Version
     # e.g. http://mirrors.jenkins-ci.org/war/1.486/jenkins.war
     m = /\/(\d\.\d+)\//.match(spec.to_s)
     return m.captures.first unless m.nil?
+
+    # e.g. http://www.ijg.org/files/jpegsrc.v8d.tar.gz
+    m = /\.v(\d+[a-z]?)/.match(stem)
+    return m.captures.first unless m.nil?
   end
 
   # DSL for defining comparators
