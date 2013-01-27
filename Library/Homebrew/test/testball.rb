@@ -140,34 +140,6 @@ class ExplicitVersionSpecTestBall < Formula
   end
 end
 
-class OldBottleSpecTestBall < Formula
-  homepage 'http://example.com'
-  url 'file:///foo.com/testball-0.1.tbz'
-  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
-
-  bottle do
-    url 'file:///foo.com/testball-0.1-bottle.tar.gz'
-    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
-  end
-
-  def initialize name=nil
-    super "oldbottlespectestball"
-  end
-end
-
-class AncientBottleSpecTestBall < Formula
-  homepage 'http://example.com'
-  url 'file:///foo.com/testball-0.1.tbz'
-  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
-
-  bottle 'file:///foo.com/testball-0.1-bottle.tar.gz'
-  bottle_sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
-
-  def initialize name=nil
-    super "ancientbottlespectestball"
-  end
-end
-
 class HeadOnlySpecTestBall < Formula
   homepage 'http://example.com'
   head 'https://github.com/mxcl/homebrew.git'

@@ -6,7 +6,6 @@ class Pathname
   include MachO
 
   BOTTLE_EXTNAME_RX = /(\.[a-z]+\.bottle\.(\d+\.)?tar\.gz)$/
-  OLD_BOTTLE_EXTNAME_RX = /((\.[a-z]+)?[\.-]bottle\.tar\.gz)$/
 
   def install *sources
     results = []
@@ -125,8 +124,6 @@ class Pathname
   alias extname_old extname
   def extname
     BOTTLE_EXTNAME_RX.match to_s
-    return $1 if $1
-    OLD_BOTTLE_EXTNAME_RX.match to_s
     return $1 if $1
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1

@@ -219,14 +219,6 @@ class VersionParsingTests < Test::Unit::TestCase
     assert_version_detected 'R15B03-1', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B03-1.mountainlion.bottle.tar.gz'
   end
 
-  def test_old_bottle_style
-    assert_version_detected '4.7.3', 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz'
-  end
-
-  def test_old_erlang_bottle_style
-    assert_version_detected 'R15B', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B-bottle.tar.gz'
-  end
-
   def test_imagemagick_style
     assert_version_detected '6.7.5-7', 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.7.5-7.tar.bz2'
   end

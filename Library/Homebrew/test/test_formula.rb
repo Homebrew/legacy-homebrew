@@ -163,38 +163,6 @@ class FormulaTests < Test::Unit::TestCase
     assert !f.devel.version.detected_from_url?
   end
 
-  def test_old_bottle_specs
-    f = OldBottleSpecTestBall.new
-
-    case MacOS.cat
-    when :lion
-      assert_instance_of Bottle, f.bottle
-      assert_equal CurlBottleDownloadStrategy, f.bottle.download_strategy
-      assert_nil f.bottle.specs
-      assert f.bottle.mirrors.empty?
-
-      assert_equal 'file:///foo.com/testball-0.1-bottle.tar.gz', f.bottle.url
-
-      assert_instance_of Checksum, f.bottle.checksum
-      assert_equal :sha1, f.bottle.checksum.hash_type
-      assert !f.bottle.checksum.empty?
-      assert_equal 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef', f.bottle.sha1.hexdigest
-      assert_nil f.bottle.md5
-      assert_nil f.bottle.sha256
-
-      assert f.bottle.version.detected_from_url?
-      assert_equal 0, f.bottle.revision
-      assert_version_equal '0.1', f.bottle.version
-    else
-      assert_nil f.bottle
-    end
-  end
-
-  def test_ancient_bottle_specs
-    f = AncientBottleSpecTestBall.new
-    assert_nil f.bottle
-  end
-
   def test_head_only_specs
     f = HeadOnlySpecTestBall.new
 
