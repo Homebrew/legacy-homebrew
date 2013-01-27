@@ -1,5 +1,5 @@
 require 'testing_env'
-require 'dependencies'
+require 'requirement'
 
 class RequirementTests < Test::Unit::TestCase
   def test_accepts_single_tag

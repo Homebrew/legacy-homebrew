@@ -1,5 +1,5 @@
 require 'download_strategy'
-require 'dependencies'
+require 'dependency_collector'
 require 'formula_support'
 require 'hardware'
 require 'bottles'
