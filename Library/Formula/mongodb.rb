@@ -27,7 +27,7 @@ class Mongodb < Formula
     version '2.3.2-x86_64'
   end
 
-  depends_on SixtyFourBitRequired.new
+  depends_on SixtyFourBitRequired
 
   def install
     # Copy the prebuilt binaries to prefix
