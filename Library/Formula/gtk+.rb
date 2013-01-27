@@ -13,7 +13,7 @@ class Gtkx < Formula
   depends_on 'gdk-pixbuf'
   depends_on 'pango'
   depends_on 'jasper' => :optional
-  depends_on 'atk' => :optional
+  depends_on 'atk'
   depends_on 'cairo'
   depends_on :x11 => '2.3.6'
 
