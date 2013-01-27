@@ -18,7 +18,7 @@ class Appledoc < Formula
   head 'https://github.com/tomaz/appledoc.git', :branch => 'master'
 
   depends_on :xcode # For working xcodebuild.
-  depends_on LionOrNewer.new
+  depends_on LionOrNewer
 
   def install
     system "xcodebuild", "-project", "appledoc.xcodeproj",
