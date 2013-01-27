@@ -24,6 +24,11 @@ class DependencyCollectorTests < Test::Unit::TestCase
     assert_equal 2, @d.find_dependency('bar').tags.length
   end
 
+  def test_add_returns_created_dep
+    ret = @d.add 'foo'
+    assert_equal Dependency.new('foo'), ret
+  end
+
   def test_dependency_tags
     assert Dependency.new('foo', :build).build?
     assert Dependency.new('foo', [:build, :optional]).optional?

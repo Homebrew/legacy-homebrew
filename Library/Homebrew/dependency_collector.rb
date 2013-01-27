@@ -26,16 +26,23 @@ class DependencyCollector
     @requirements = ComparableSet.new
   end
 
-  def add spec
-    tag = nil
-    spec, tag = spec.shift if spec.is_a? Hash
+  def add(spec)
+    case dep = build(spec)
+    when Dependency
+      @deps << dep
+    when Requirement
+      @requirements << dep
+    end
+    dep
+  end
 
-    dep = parse_spec(spec, tag)
-    # Some symbol specs are conditional, and resolve to nil if there is no
-    # dependency needed for the current platform.
-    return if dep.nil?
-    # Add dep to the correct bucket
-    (dep.is_a?(Requirement) ? @requirements : @deps) << dep
+  def build(spec)
+    spec, tag = case spec
+                when Hash then spec.shift
+                else spec
+                end
+
+    parse_spec(spec, tag)
   end
 
 private
