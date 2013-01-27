@@ -21,7 +21,7 @@ class Wxmac < Formula
 
   option 'no-python', 'Do not build Python bindings'
 
-  depends_on FrameworkPython.new unless build.include? "no-python"
+  depends_on FrameworkPython unless build.include? "no-python"
 
   def install_wx_python
     args = [
