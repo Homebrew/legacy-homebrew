@@ -108,6 +108,7 @@ class FormulaInstaller
       f.recursive_requirements.reject(&:satisfied?)
     end
 
+    needed_reqs.reject! {|r| f.build.without?(r.name) }
     needed_reqs.reject!(&:build?) if pour_bottle?
 
     unless needed_reqs.empty?

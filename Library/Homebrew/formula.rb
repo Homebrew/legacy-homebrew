@@ -808,7 +808,9 @@ private
 
     def post_depends_on
       # Generate with- and without- options for optional and recommended deps
-      dependencies.deps.each do |dep|
+      deps_and_reqs = dependencies.deps.to_a + dependencies.requirements.to_a
+      deps_and_reqs.each do |dep|
+        next unless dep.tags
         if dep.optional? && !build.has_option?("with-#{dep.name}")
           build.add("with-#{dep.name}", "Build with #{dep.name} support")
         elsif dep.recommended? && !build.has_option?("without-#{dep.name}")
