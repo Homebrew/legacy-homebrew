@@ -54,5 +54,6 @@ class Vim < Formula
     # Even though we specified HOMEBREW_PREFIX for configure,
     # we still want to install it in the Cellar location.
     system "make", "install", "prefix=#{prefix}"
+    system "cp src/vim #{prefix}/bin"
   end
 end
