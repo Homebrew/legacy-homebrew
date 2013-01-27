@@ -1,8 +1,8 @@
 require 'formula'
 
 class Clam < Formula
-  url 'http://clam-project.org/download/src/CLAM-1.4.0.tar.gz'
   homepage 'http://clam-project.org'
+  url 'http://clam-project.org/download/src/CLAM-1.4.0.tar.gz'
   sha1 '32acbdc64e641b4a666e8e58e008430a6a906cd0'
 
   depends_on 'scons' => :build
