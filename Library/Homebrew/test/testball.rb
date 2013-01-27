@@ -107,9 +107,9 @@ class SpecTestBall < Formula
   end
 
   bottle do
-    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
     sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
-    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountainlion
+    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
   def initialize name=nil
@@ -217,7 +217,7 @@ class SnowLeopardBottleSpecTestBall < Formula
   sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
 
   bottle do
-    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
   end
 
   def initialize name=nil
@@ -245,9 +245,9 @@ class AllCatsBottleSpecTestBall < Formula
   sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
 
   bottle do
-    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
     sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
-    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountainlion
+    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
   def initialize name=nil
@@ -262,9 +262,9 @@ class RevisedBottleSpecTestBall < Formula
 
   bottle do
     version 1
-    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
     sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
-    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountainlion
+    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
   def initialize name=nil
