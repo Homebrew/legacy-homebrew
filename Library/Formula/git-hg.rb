@@ -19,7 +19,7 @@ class GitHg < Formula
   head 'https://github.com/offbytwo/git-hg.git'
   homepage 'http://offbytwo.com/git-hg/'
 
-  depends_on HgInstalled.new
+  depends_on HgInstalled
 
   def install
     prefix.install Dir['*']
