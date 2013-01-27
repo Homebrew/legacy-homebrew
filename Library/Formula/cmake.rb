@@ -1,12 +1,16 @@
 require 'formula'
 
 class NoExpatFramework < Requirement
+  def expat_framework
+    '/Library/Frameworks/expat.framework'
+  end
+
   satisfy :build_env => false do
-    not File.exist? "/Library/Frameworks/expat.framework"
+    not File.exist? expat_framework
   end
 
   def message; <<-EOS.undent
-    Detected /Library/Frameworks/expat.framework
+    Detected #{expat_framework}
 
     This will be picked up by CMake's build system and likely cause the
     build to fail, trying to link to a 32-bit version of expat.
@@ -15,7 +19,6 @@ class NoExpatFramework < Requirement
     EOS
   end
 end
-
 
 class Cmake < Formula
   homepage 'http://www.cmake.org/'
@@ -45,7 +48,8 @@ class Cmake < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/cmake", "-E", "echo", "testing"
+  test do
+    File.open('CMakeLists.txt', 'w') {|f| f.write('find_package(Ruby)') }
+    system "#{bin}/cmake", '.'
   end
 end
