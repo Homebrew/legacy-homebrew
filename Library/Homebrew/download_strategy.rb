@@ -200,14 +200,6 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
   def initialize name, package
     super
     @tarball_path = HOMEBREW_CACHE/"#{name}-#{package.version}#{ext}"
-
-    unless @tarball_path.exist?
-      # Stop people redownloading bottles just because I (Mike) was stupid.
-      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{package.version}-bottle.tar.gz"
-      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{package.version}.#{MacOS.cat}.bottle-bottle.tar.gz" unless old_bottle_path.exist?
-      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{package.version}-7.#{MacOS.cat}.bottle.tar.gz" unless old_bottle_path.exist? or name != "imagemagick"
-      FileUtils.mv old_bottle_path, @tarball_path if old_bottle_path.exist?
-    end
   end
 end
 
@@ -622,7 +614,7 @@ class DownloadStrategyDetector
     when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
       # Common URL patterns
     when %r[^https?://svn\.] then SubversionDownloadStrategy
-    when bottle_native_regex, bottle_regex, old_bottle_regex
+    when bottle_native_regex, bottle_regex
       CurlBottleDownloadStrategy
       # Otherwise just try to download
     else CurlDownloadStrategy
