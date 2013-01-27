@@ -746,7 +746,7 @@ def check_for_git_origin
       Without a correctly configured origin, Homebrew won't update
       properly. You can solve this by adding the Homebrew remote:
         cd #{HOMEBREW_REPOSITORY}
-        git add remote origin https://github.com/mxcl/homebrew.git
+        git remote add origin https://github.com/mxcl/homebrew.git
       EOS
     end
   end
