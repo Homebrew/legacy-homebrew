@@ -1,8 +1,8 @@
 require 'formula'
 
 class Unittest < Formula
-  url 'http://unittest.red-bean.com/tar/unittest-0.50-62.tar.gz'
   homepage 'http://unittest.red-bean.com/'
+  url 'http://unittest.red-bean.com/tar/unittest-0.50-62.tar.gz'
   sha1 '95d15db78e60d0f96b321177c2f3f52c619634b3'
 
   fails_with :llvm do
@@ -10,7 +10,8 @@ class Unittest < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
