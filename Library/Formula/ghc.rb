@@ -34,7 +34,7 @@ class Ghc < Formula
 
   env :std
 
-  depends_on NeedsSnowLeopard.new
+  depends_on NeedsSnowLeopard
 
   option '32-bit'
   option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
