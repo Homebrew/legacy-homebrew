@@ -1,8 +1,8 @@
 require 'formula'
 
 class Xmp < Formula
-  url 'http://downloads.sourceforge.net/project/xmp/xmp/3.5.0/xmp-3.5.0.tar.gz'
   homepage 'http://xmp.sourceforge.net'
+  url 'http://downloads.sourceforge.net/project/xmp/xmp/3.5.0/xmp-3.5.0.tar.gz'
   sha1 '0707b586a445b4c3aab50eb1a6b9feb431a20983'
 
   def install
