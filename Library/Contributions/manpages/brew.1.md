@@ -15,7 +15,8 @@ didn't include with OS X.
 
 For the full command list, see the COMMANDS section.
 
-With `--verbose`, many commands print extra debugging information.
+With `--verbose` or `-v`, many commands print extra debugging information.
+Note that these flags should only appear after a command.
 
   * `install` <formula>:
     Install <formula>.
