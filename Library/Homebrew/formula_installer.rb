@@ -136,7 +136,7 @@ class FormulaInstaller
           if dep.optional? || dep.recommended?
             Dependency.prune unless dependent.build.with?(dep.name)
           elsif dep.build?
-            Dependency.prune if pour_bottle?
+            Dependency.prune if install_bottle?(dependent)
           end
 
           if f.build.universal?
