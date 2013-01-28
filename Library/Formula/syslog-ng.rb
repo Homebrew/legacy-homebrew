@@ -1,8 +1,8 @@
 require 'formula'
 
 class SyslogNg < Formula
-  url 'http://www.balabit.com/downloads/files/syslog-ng/sources/3.2.5/source/syslog-ng_3.2.5.tar.gz'
   homepage 'http://www.balabit.com/network-security/syslog-ng/'
+  url 'http://www.balabit.com/downloads/files/syslog-ng/sources/3.2.5/source/syslog-ng_3.2.5.tar.gz'
   sha1 '5541cd6711b7a9d983601d8047b9a27d98ecbe9b'
 
   depends_on 'pkg-config' => :build
