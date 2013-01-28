@@ -77,6 +77,15 @@ class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   end
 end
 
+class UnsatisfiedDependencyError < Homebrew::InstallationError
+  def initialize(f, dep)
+    super f, <<-EOS.undent
+    #{f} dependency #{dep} not installed with:
+      #{dep.missing_options * ', '}
+    EOS
+  end
+end
+
 class UnsatisfiedRequirements < Homebrew::InstallationError
   attr :reqs
 

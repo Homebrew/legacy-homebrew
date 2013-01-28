@@ -143,16 +143,10 @@ class FormulaInstaller
             dep.universal! unless dep.build?
           end
 
-          dep_f = dep.to_formula
-          dep_tab = Tab.for_formula(dep)
-          missing = dep.options - dep_tab.used_options
-
-          if dep.installed?
-            if missing.empty?
-              Dependency.prune
-            else
-              raise "#{f} dependency #{dep} not installed with:\n  #{missing*', '}"
-            end
+          if dep.satisfied?
+            Dependency.prune
+          elsif dep.installed?
+            raise UnsatisfiedDependencyError.new(f, dep)
           end
         end
       end
