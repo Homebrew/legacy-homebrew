@@ -1,8 +1,8 @@
 require 'formula'
 
 class Iodine < Formula
-  url 'http://code.kryo.se/iodine/iodine-0.6.0-rc1.tar.gz'
   homepage 'http://code.kryo.se/iodine/'
+  url 'http://code.kryo.se/iodine/iodine-0.6.0-rc1.tar.gz'
   sha1 '4fa9a248b8a84df8a727a5d749e669e58136edca'
 
   def patches
