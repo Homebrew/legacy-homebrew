@@ -34,8 +34,12 @@ class DependencyCollector
     # Some symbol specs are conditional, and resolve to nil if there is no
     # dependency needed for the current platform.
     return if dep.nil?
-    # Add dep to the correct bucket
-    (dep.is_a?(Requirement) ? @requirements : @deps) << dep
+    if dep.is_a? Requirement
+      dep.name = spec
+      @requirements << dep
+    else
+      @deps << dep
+    end
   end
 
 private
@@ -74,7 +78,9 @@ private
       if MacOS.version >= :mountain_lion
         Dependency.new(spec.to_s, tag)
       else
-        X11Dependency.new(tag)
+        # No tag intentionally as it's using something already on the machine
+        # rather than a dependency that can be optionally installed.
+        X11Dependency.new
       end
     when :x11
       X11Dependency.new(tag)

@@ -183,13 +183,13 @@ class ConflictRequirement < Requirement
 
   def initialize formula, name, opts={}
     @formula = formula
-    @name = name
+    @fname = name
     @opts = opts
     super()
   end
 
   def message
-    message = "#{@name.downcase} cannot be installed alongside #{@formula}.\n"
+    message = "#{@fname.downcase} cannot be installed alongside #{@formula}.\n"
     message << "This is because #{@opts[:because]}\n" if @opts[:because]
     message << <<-EOS.undent unless ARGV.force?
       Please `brew unlink #{@formula}` before continuing. Unlinking removes
