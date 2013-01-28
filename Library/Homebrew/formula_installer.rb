@@ -104,15 +104,23 @@ class FormulaInstaller
   end
 
   def check_requirements
-    needed_reqs = ARGV.filter_for_dependencies do
-      f.recursive_requirements.reject(&:satisfied?)
+    unsatisfied = ARGV.filter_for_dependencies do
+      f.recursive_requirements.select do |req|
+        if req.satisfied?
+          false
+        elsif req.build?
+          not pour_bottle?
+        elsif req.optional? || req.recommended?
+          f.recursive_dependencies.map(&:to_formula).any? do |dep|
+            dep.build.with?(req.name)
+          end || f.build.with?(req.name)
+        end
+      end
     end
 
-    needed_reqs.reject!(&:build?) if pour_bottle?
-
-    unless needed_reqs.empty?
-      puts needed_reqs.map(&:message) * "\n"
-      fatals = needed_reqs.select(&:fatal?)
+    unless unsatisfied.empty?
+      puts unsatisfied.map(&:message) * "\n"
+      fatals = unsatisfied.select(&:fatal?)
       raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
     end
   end
