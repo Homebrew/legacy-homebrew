@@ -20,10 +20,19 @@ class GameMusicEmu < Formula
     system "make install" # if this fails, try separate make/make install steps
   end
 
-  def test
-    # This test will fail and we won't accept that! It's enough to just replace
-    # "false" with the main program this formula installs, but it'd be nice if you
-    # were more thorough. Run the test with `brew test game-music-emu`.
-    system "false"
+  def caveats
+      <<-EOS.undent
+      Game_Music_Emu is a collection of video game music file emulators that 
+      support the following formats and systems: 
+        AY        ZX Spectrum/Amstrad CPC
+        GBS       Nintendo Game Boy
+        GYM       Sega Genesis/Mega Drive
+        HES       NEC TurboGrafx-16/PC Engine
+        KSS       MSX Home Computer/other Z80 systems (doesn't support FM sound)
+        NSF/NSFE  Nintendo NES/Famicom (with VRC 6, Namco 106, and FME-7 sound)
+        SAP       Atari systems using POKEY sound chip
+        SPC       Super Nintendo/Super Famicom
+        VGM/VGZ   Sega Master System/Mark III, Sega Genesis/Mega Drive,BBC Micro
+    EOS
   end
 end
