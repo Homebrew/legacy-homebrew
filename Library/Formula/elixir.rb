@@ -19,10 +19,10 @@ end
 
 class Elixir < Formula
   homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/tarball/v0.7.2'
-  sha1 '9f500bfe87c158f2142d226ced43105781a52a46'
+  url  'https://github.com/elixir-lang/elixir/tarball/v0.8.0'
+  sha1 'c548335f5d072ae4da52520d95b5be22941de330'
 
-  head 'https://github.com/elixir-lang/elixir.git', :branch => 'stable'
+  head 'https://github.com/elixir-lang/elixir.git'
 
   depends_on ErlangInstalled
 
