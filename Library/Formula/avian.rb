@@ -21,7 +21,7 @@ class Avian < Formula
 
   head 'https://github.com/ReadyTalk/avian.git'
 
-  depends_on JdkInstalled.new
+  depends_on JdkInstalled
 
   def install
     system 'make', 'JAVA_HOME=/Library/Java/Home'

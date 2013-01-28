@@ -5,6 +5,8 @@ class Librsync < Formula
   homepage 'http://librsync.sourceforge.net/'
   sha1 'd575eb5cae7a815798220c3afeff5649d3e8b4ab'
 
+  option :universal
+
   def patches
     # fixes librsync doesn't correctly export inlined functions:
     # http://trac.macports.org/ticket/31742
@@ -14,7 +16,7 @@ class Librsync < Formula
   end
 
   def install
-    ENV.universal_binary
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",

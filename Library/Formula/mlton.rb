@@ -24,7 +24,7 @@ class Mlton < Formula
 
   # We download and install the version of MLton which is statically linked to libgmp, but all
   # generated executables will require gmp anyway, hence the dependency
-  depends_on StandardHomebrewLocation.new
+  depends_on StandardHomebrewLocation
   depends_on 'gmp'
 
   skip_clean :all

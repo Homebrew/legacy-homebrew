@@ -66,7 +66,7 @@ class Hyperestraier < Formula
   if build.include? 'enable-mecab'
     depends_on 'mecab'
     depends_on 'mecab-ipadic'
-    depends_on EucjpMecabIpadic.new
+    depends_on EucjpMecabIpadic
   end
 
   def install
