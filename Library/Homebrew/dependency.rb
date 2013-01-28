@@ -42,6 +42,14 @@ class Dependency
     ARGV.formulae.include?(to_formula) rescue false
   end
 
+  def satisfied?
+    installed? && missing_options.empty?
+  end
+
+  def missing_options
+    options - Tab.for_formula(to_formula).used_options
+  end
+
   def universal!
     tags << 'universal' if to_formula.build.has_option? 'universal'
   end
