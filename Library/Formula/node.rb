@@ -55,8 +55,8 @@ class Node < Formula
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.version == :leopard
-  depends_on NpmNotInstalled.new unless build.include? 'without-npm'
-  depends_on PythonVersion.new
+  depends_on NpmNotInstalled unless build.include? 'without-npm'
+  depends_on PythonVersion
 
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'

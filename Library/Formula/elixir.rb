@@ -24,7 +24,7 @@ class Elixir < Formula
 
   head 'https://github.com/elixir-lang/elixir.git', :branch => 'stable'
 
-  depends_on ErlangInstalled.new
+  depends_on ErlangInstalled
 
   env :userpaths
 

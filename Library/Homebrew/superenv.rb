@@ -77,7 +77,8 @@ class << ENV
 
   def determine_cc
     if ARGV.include? '--use-gcc'
-      "gcc"
+      # fall back to something else on systems without Apple gcc
+      MacOS.locate('gcc-4.2') ? "gcc-4.2" : raise("gcc-4.2 not found!")
     elsif ARGV.include? '--use-llvm'
       "llvm-gcc"
     elsif ARGV.include? '--use-clang'
@@ -219,6 +220,7 @@ class << ENV
   def compiler
     case ENV['HOMEBREW_CC']
       when "llvm-gcc" then :llvm
+      when "gcc-4.2" then :gcc
       when "gcc", "clang" then ENV['HOMEBREW_CC'].to_sym
     else
       raise

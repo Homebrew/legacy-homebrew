@@ -28,7 +28,7 @@ class Cmake < Formula
     sha1 'ff80d9bb064fcec2e268896ede95532f99c6cfb6' => :snowleopard
   end
 
-  depends_on NoExpatFramework.new
+  depends_on NoExpatFramework
 
   def install
     args = %W[

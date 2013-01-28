@@ -746,7 +746,7 @@ def check_for_git_origin
       Without a correctly configured origin, Homebrew won't update
       properly. You can solve this by adding the Homebrew remote:
         cd #{HOMEBREW_REPOSITORY}
-        git add remote origin https://github.com/mxcl/homebrew.git
+        git remote add origin https://github.com/mxcl/homebrew.git
       EOS
     end
   end
@@ -872,7 +872,7 @@ end
 def check_missing_deps
   return unless HOMEBREW_CELLAR.exist?
   s = Set.new
-  Homebrew.missing_deps(Homebrew.installed_brews).each do |_, deps|
+  Homebrew.missing_deps(Formula.installed).each do |_, deps|
     s.merge deps
   end
 

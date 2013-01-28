@@ -7,6 +7,8 @@ class Qt5 < Formula
 
   head 'git://gitorious.org/qt/qt5.git', :branch => 'master'
 
+  keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
+
   option :universal
   option 'with-qtdbus', 'Enable QtDBus module'
   option 'with-demos-examples', 'Enable Qt demos and examples'

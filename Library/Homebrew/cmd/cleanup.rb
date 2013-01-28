@@ -81,7 +81,7 @@ module Homebrew extend self
   end
 
   def rm_DS_Store
-    system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete"
+    system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete 2>/dev/null"
   end
 
 end

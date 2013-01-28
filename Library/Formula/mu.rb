@@ -34,7 +34,7 @@ class Mu < Formula
   depends_on 'glib'
   depends_on 'gmime'
   depends_on 'xapian'
-  depends_on Emacs23Installed.new if build.include? 'with-emacs'
+  depends_on Emacs23Installed if build.include? 'with-emacs'
 
   if build.head?
     depends_on 'automake' => :build
