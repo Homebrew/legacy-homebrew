@@ -127,14 +127,14 @@ module MacOS extend self
 
   def clang_version
     @clang_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ /clang version (\d\.\d)/
+      `#{locate("clang")} --version` =~ /(?:clang|LLVM) version (\d\.\d)/
       $1
     end
   end
 
   def clang_build_version
     @clang_build_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ %r[tags/Apple/clang-(\d{2,})]
+      `#{locate("clang")} --version` =~ %r[clang-(\d{2,})]
       $1.to_i
     end
   end
@@ -192,7 +192,7 @@ module MacOS extend self
     "4.5"   => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
     "4.5.1" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
     "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
-    "4.6"   => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
+    "4.6"   => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
   }
 
   def compilers_standard?
