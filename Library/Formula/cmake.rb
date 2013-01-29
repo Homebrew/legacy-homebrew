@@ -1,6 +1,10 @@
 require 'formula'
 
 class NoExpatFramework < Requirement
+  satisfy :build_env => false do
+    not File.exist? "/Library/Frameworks/expat.framework"
+  end
+
   def message; <<-EOS.undent
     Detected /Library/Frameworks/expat.framework
 
@@ -9,9 +13,6 @@ class NoExpatFramework < Requirement
 
     You may need to move this file out of the way to compile CMake.
     EOS
-  end
-  def satisfied?
-    not File.exist? "/Library/Frameworks/expat.framework"
   end
 end
 
@@ -27,7 +28,7 @@ class Cmake < Formula
     sha1 'ff80d9bb064fcec2e268896ede95532f99c6cfb6' => :snowleopard
   end
 
-  depends_on NoExpatFramework.new
+  depends_on NoExpatFramework
 
   def install
     args = %W[

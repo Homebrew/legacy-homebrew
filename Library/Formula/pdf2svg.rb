@@ -1,23 +1,5 @@
 require 'formula'
 
-class PopplerGlib < Requirement
-  def satisfied?
-    poppler = Tab.for_formula 'poppler'
-    poppler.installed_with? '--with-glib'
-  end
-
-  def fatal?
-    true
-  end
-
-  def message; <<-EOS.undent
-    pdf2svg requires the Poppler-Glib bindings but Poppler was not installed
-    with support for glib. Please reinstall Poppler using the `--with-glib`
-    option.
-    EOS
-  end
-end
-
 class Pdf2svg < Formula
   url 'http://www.cityinthesky.co.uk/_media/opensource/pdf2svg-0.2.1.tar.gz'
   homepage 'http://www.cityinthesky.co.uk/opensource/pdf2svg'
@@ -26,8 +8,7 @@ class Pdf2svg < Formula
   depends_on "pkg-config" => :build
 
   depends_on :x11
-  depends_on "poppler"
-  depends_on PopplerGlib.new
+  depends_on "poppler" => "with-glib"
   depends_on "gtk+"
   depends_on "cairo" # Poppler-glib needs a newer cairo than provided by OS X 10.6.x
                      # and pdf2svg needs it to be on PKG_CONFIG_PATH during the build

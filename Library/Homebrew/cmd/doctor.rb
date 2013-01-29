@@ -370,6 +370,21 @@ def check_access_share
   'fail during the link step.'
 end
 
+def check_access_logs
+  folder = Pathname.new('~/Library/Logs/Homebrew')
+  if folder.exist? and not folder.writable_real?
+    <<-EOS.undent
+      #{folder} isn't writable.
+      This can happen if you "sudo make install" software that isn't managed
+      by Homebrew.
+
+      Homebrew writes debugging logs to this location.
+
+      You should probably `chown` #{folder}
+    EOS
+  end
+end
+
 def check_usr_bin_ruby
   if /^1\.9/.match RUBY_VERSION
     <<-EOS.undent
@@ -721,6 +736,44 @@ def check_git_newline_settings
   end
 end
 
+def check_for_git_origin
+  return unless which "git"
+
+  HOMEBREW_REPOSITORY.cd do
+    if `git config --get remote.origin.url`.chomp.empty? then <<-EOS.undent
+      Missing git origin remote.
+
+      Without a correctly configured origin, Homebrew won't update
+      properly. You can solve this by adding the Homebrew remote:
+        cd #{HOMEBREW_REPOSITORY}
+        git remote add origin https://github.com/mxcl/homebrew.git
+      EOS
+    end
+  end
+end
+
+def check_the_git_origin
+  return unless which "git"
+  return if check_for_git_origin
+
+  HOMEBREW_REPOSITORY.cd do
+    origin = `git config --get remote.origin.url`.chomp
+
+    unless origin =~ /mxcl\/homebrew(\.git)?$/ then <<-EOS.undent
+      Suspicious git origin remote found.
+
+      With a non-standard origin, Homebrew won't pull updates from
+      the main repository. The current git origin is:
+        #{origin}
+
+      Unless you have compelling reasons, consider setting the
+      origin remote to point at the main repository, located at:
+        https://github.com/mxcl/homebrew.git
+      EOS
+    end
+  end
+end
+
 def check_for_autoconf
   return unless MacOS::Xcode.provides_autotools?
 
@@ -819,7 +872,7 @@ end
 def check_missing_deps
   return unless HOMEBREW_CELLAR.exist?
   s = Set.new
-  Homebrew.missing_deps(Homebrew.installed_brews).each do |_, deps|
+  Homebrew.missing_deps(Formula.installed).each do |_, deps|
     s.merge deps
   end
 

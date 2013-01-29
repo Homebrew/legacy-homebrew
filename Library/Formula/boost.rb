@@ -4,16 +4,19 @@ def needs_universal_python?
   build.universal? and not build.include? "without-python"
 end
 
+def boost_layout
+  (build.include? "use-system-layout") ? "system" : "tagged"
+end
+
 class UniversalPython < Requirement
+  satisfy { archs_for_command("python").universal? }
+
   def message; <<-EOS.undent
     A universal build was requested, but Python is not a universal build
 
     Boost compiles against the Python it finds in the path; if this Python
     is not a universal build then linking will likely fail.
     EOS
-  end
-  def satisfied?
-    archs_for_command("python").universal?
   end
 end
 
@@ -37,8 +40,9 @@ class Boost < Formula
   option 'without-python', 'Build without Python'
   option 'with-icu', 'Build regexp engine with icu support'
   option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
+  option 'use-system-layout', 'Use system layout instead of tagged'
 
-  depends_on UniversalPython.new if needs_universal_python?
+  depends_on UniversalPython if needs_universal_python?
   depends_on "icu4c" if build.include? "with-icu"
   depends_on MPIDependency.new(:cc, :cxx) if build.include? "with-mpi"
 
@@ -96,7 +100,7 @@ class Boost < Formula
             "--libdir=#{lib}",
             "-d2",
             "-j#{ENV.make_jobs}",
-            "--layout=tagged",
+            "--layout=#{boost_layout}",
             "--user-config=user-config.jam",
             "threading=multi",
             "install"]
@@ -104,9 +108,12 @@ class Boost < Formula
     if MacOS.version >= :lion and build.include? 'with-c++11'
       args << "toolset=clang" << "cxxflags=-std=c++11"
       args << "cxxflags=-stdlib=libc++" << "cxxflags=-fPIC"
+      args << "cxxflags=-arch x86_64" if MacOS.prefer_64_bit? or build.universal?
+      args << "cxxflags=-arch i386" if !MacOS.prefer_64_bit? or build.universal?
       args << "linkflags=-stdlib=libc++"
       args << "linkflags=-headerpad_max_install_names"
-      args << "linkflags=-arch x86_64"
+      args << "linkflags=-arch x86_64" if MacOS.prefer_64_bit? or build.universal?
+      args << "linkflags=-arch i386" if !MacOS.prefer_64_bit? or build.universal?
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?

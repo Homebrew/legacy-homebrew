@@ -1,9 +1,7 @@
 require 'formula'
 
 class NeedsSnowLeopard < Requirement
-  def satisfied?
-    MacOS.version >= :snow_leopard
-  end
+  satisfy MacOS.version >= :snow_leopard
 
   def message; <<-EOS.undent
     GHC requires OS X 10.6 or newer. The binary releases no longer work on
@@ -36,7 +34,7 @@ class Ghc < Formula
 
   env :std
 
-  depends_on NeedsSnowLeopard.new
+  depends_on NeedsSnowLeopard
 
   option '32-bit'
   option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'

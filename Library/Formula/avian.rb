@@ -1,20 +1,16 @@
 require 'formula'
 
 class JdkInstalled < Requirement
+  fatal true
+
+  satisfy { which 'javac' }
+
   def message; <<-EOS.undent
     A JDK is required.
 
     You can get the official Oracle installers from:
     http://www.oracle.com/technetwork/java/javase/downloads/index.html
     EOS
-  end
-
-  def satisfied?
-    which 'javac'
-  end
-
-  def fatal?
-    true
   end
 end
 
@@ -25,7 +21,7 @@ class Avian < Formula
 
   head 'https://github.com/ReadyTalk/avian.git'
 
-  depends_on JdkInstalled.new
+  depends_on JdkInstalled
 
   def install
     system 'make', 'JAVA_HOME=/Library/Java/Home'
