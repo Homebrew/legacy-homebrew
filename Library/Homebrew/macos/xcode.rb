@@ -164,7 +164,7 @@ module MacOS::CLT extend self
   end
 
   def latest_version?
-    `/usr/bin/clang -v 2>&1` =~ %r{tags/Apple/clang-(\d+)\.(\d+)\.(\d+)}
+    `/usr/bin/clang --version` =~ %r{clang-(\d+)\.(\d+)\.(\d+)}
     $1.to_i >= 425 and $3.to_i >= 24
   end
 
