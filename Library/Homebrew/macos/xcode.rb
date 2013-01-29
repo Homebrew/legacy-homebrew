@@ -109,28 +109,18 @@ module MacOS::Xcode extend self
       "4.0"
     else
       case (MacOS.clang_version.to_f * 10).to_i
-      when 0
-        "dunno"
-      when 1..14
-        "3.2.2"
-      when 15
-        "3.2.4"
-      when 16
-        "3.2.5"
-      when 17..20
-        "4.0"
-      when 21
-        "4.1"
-      when 22..30
-        "4.2"
-      when 31
-        "4.3"
-      when 40
-        "4.4"
-      when 41
-        "4.5"
-      else
-        "4.5"
+      when 0       then :dunno
+      when 1..14   then "3.2.2"
+      when 15      then "3.2.4"
+      when 16      then "3.2.5"
+      when 17..20  then "4.0"
+      when 21      then "4.1"
+      when 22..30  then "4.2"
+      when 31      then "4.3"
+      when 40      then "4.4"
+      when 41      then "4.5"
+      when 42      then "4.6"
+      else "4.6"
       end
     end
   end
