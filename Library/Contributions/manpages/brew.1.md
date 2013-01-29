@@ -27,7 +27,7 @@ With `--verbose`, many commands print extra debugging information.
     Fetch the newest version of Homebrew from GitHub using `git`(1).
 
   * `list`:
-    List all installed formulae.
+    List all installed formulas.
 
   * `search`, `-S` <text>|/<text>/:
     Perform a substring search of formula names for <text>. If <text> is
@@ -36,11 +36,11 @@ With `--verbose`, many commands print extra debugging information.
 
 ## COMMANDS
 
-  * `audit` [<formulae>]:
-    Check <formulae> for Homebrew coding style violations. This should be
+  * `audit` [<formulas>]:
+    Check <formulas> for Homebrew coding style violations. This should be
     run before submitting a new formula.
 
-    If no <formulae> are provided, all of them are checked.
+    If no <formulas> are provided, all of them are checked.
 
     `audit` exits with a non-zero status if any errors are found. This is useful,
     for instance, for implementing pre-commit hooks.
@@ -48,8 +48,8 @@ With `--verbose`, many commands print extra debugging information.
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup [--force] [-ns]` [<formulae>]:
-    For all installed or specific formulae, remove any older versions from the
+  * `cleanup [--force] [-ns]` [<formulas>]:
+    For all installed or specific formulas, remove any older versions from the
     cellar. By default, does not remove out-of-date keg-only brews, as other
     software may link directly to specific versions. In addition old downloads from
     the Homebrew download-cache are deleted.
@@ -87,7 +87,7 @@ With `--verbose`, many commands print extra debugging information.
 
     If `--tree` is passed, show dependencies as a tree.
 
-    If `--all` is passed, show dependencies for all formulae.
+    If `--all` is passed, show dependencies for all formulas.
 
   * `diy [--set-name <name>] [--set-version <version>]`:
     Automatically determine the installation prefix for non-Homebrew software.
@@ -108,17 +108,17 @@ With `--verbose`, many commands print extra debugging information.
   * `edit` <formula>:
     Open <formula> in `EDITOR`.
 
-  * `fetch [--force] [-v] [--HEAD] [--deps]` <formulae>:
-    Download the source packages for the given <formulae>.
+  * `fetch [--force] [-v] [--HEAD] [--deps]` <formulas>:
+    Download the source packages for the given <formulas>.
     For tarballs, also print SHA1 and SHA-256 checksums.
 
-    If `--HEAD` is passed, download the HEAD versions of <formulae> instead. `-v`
+    If `--HEAD` is passed, download the HEAD versions of <formulas> instead. `-v`
     may also be passed to make the VCS checkout verbose, useful for seeing if
     an existing HEAD cache has been updated.
 
     If `--force` is passed, remove a previously cached version and re-fetch.
 
-    If `--deps` is passed, also download dependencies for any listed <formulae>.
+    If `--deps` is passed, also download dependencies for any listed <formulas>.
 
   * `home`:
     Open Homebrew's own homepage in a browser.
@@ -129,7 +129,7 @@ With `--verbose`, many commands print extra debugging information.
   * `info [--all]` <formula>:
     Display information about <formula>.
 
-    If `--all` is passed, show info for all formulae.
+    If `--all` is passed, show info for all formulas.
 
   * `info --github` <formula>:
     Open a browser to the GitHub History page for formula <formula>.
@@ -143,7 +143,7 @@ With `--verbose`, many commands print extra debugging information.
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
-    several different ways. See [SPECIFYING FORMULAE][].
+    several different ways. See [SPECIFYING FORMULAS][].
 
     If `--force` is passed, will install <formula> if it exists, even if it
     is blacklisted.
@@ -164,7 +164,7 @@ With `--verbose`, many commands print extra debugging information.
     systems whose default compiler is LLVM-GCC.
 
     If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
-    *NOTE*: Not all formulae will build with LLVM.
+    *NOTE*: Not all formulas will build with LLVM.
 
     If `--build-from-source` is passed, compile from source even if a bottle
     is provided for <formula>.
@@ -198,27 +198,27 @@ With `--verbose`, many commands print extra debugging information.
     be linked or which would be deleted by `brew link --overwrite`, but will not
     actually link or delete any files.
 
-  * `ls, list [--unbrewed] [--versions]` [<formulae>]:
-    Without any arguments, list all installed formulae.
+  * `ls, list [--unbrewed] [--versions]` [<formulas>]:
+    Without any arguments, list all installed formulas.
 
-    If <formulae> are given, list the installed files for <formulae>.
+    If <formulas> are given, list the installed files for <formulas>.
     Combined with `--verbose`, recursively list the contents of all subdirectories
     in each <formula>'s keg.
 
     If `--unbrewed` is passed, list all files in the Homebrew prefix not installed
     by Homebrew.
 
-    If `--versions` is passed, show the version number for installed formulae,
-    or only the specified formulae if <formulae> are given.
+    If `--versions` is passed, show the version number for installed formulas,
+    or only the specified formulas if <formulas> are given.
 
   * `log [git-log-options]` <formula> ...:
-    Show the git log for the given formulae. Options that `git-log`(1)
+    Show the git log for the given formulas. Options that `git-log`(1)
     recognizes can be passed before the formula list.
 
-  * `missing` [<formulae>]:
-    Check the given <formulae> for missing dependencies.
+  * `missing` [<formulas>]:
+    Check the given <formulas> for missing dependencies.
 
-    If no <formulae> are given, check all installed brews.
+    If no <formulas> are given, check all installed brews.
 
   * `options [--compact] [--all] [--installed]` <formula>:
     Display install options specific to <formula>.
@@ -226,12 +226,12 @@ With `--verbose`, many commands print extra debugging information.
     If `--compact` is passed, show all options on a single line separated by
     spaces.
 
-    If `--all` is passed, show options for all formulae.
+    If `--all` is passed, show options for all formulas.
 
-    If `--installed` is passed, show options for all installed formulae.
+    If `--installed` is passed, show options for all installed formulas.
 
   * `outdated [--quiet]`:
-    Show formulae that have an updated version available.
+    Show formulas that have an updated version available.
 
     If `--quiet` is passed, list only the names of outdated brews. Otherwise,
     the versions are printed as well.
@@ -265,7 +265,7 @@ With `--verbose`, many commands print extra debugging information.
     formula from Library/Formula.
 
   * `test` <formula>:
-    A few formulae provide a test method. `brew test <formula>` runs this
+    A few formulas provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
     generally indicate to the user if something is wrong with the installed
     formula.
@@ -280,25 +280,25 @@ With `--verbose`, many commands print extra debugging information.
     Remove a tapped repository.
 
   * `update [--rebase]`:
-    Fetch the newest version of Homebrew and all formulae from GitHub using
+    Fetch the newest version of Homebrew and all formulas from GitHub using
      `git`(1).
 
     If `--rebase` is specified then `git pull --rebase` is used.
 
-  * `upgrade` [<formulae>]:
+  * `upgrade` [<formulas>]:
     Upgrade outdated brews.
 
-    If <formulae> are given, upgrade only the specified brews.
+    If <formulas> are given, upgrade only the specified brews.
 
   * `uses [--installed] [--recursive]` <formula>:
-    Show the formulae that specify <formula> as a dependency.
+    Show the formulas that specify <formula> as a dependency.
 
     Use `--recursive` to resolve more than one level of dependencies.
 
-    If `--installed` is passed, only list installed formulae.
+    If `--installed` is passed, only list installed formulas.
 
-  * `versions [--compact]` <formulae>:
-    List previous versions of <formulae>, along with a command to checkout
+  * `versions [--compact]` <formulas>:
+    List previous versions of <formulas>, along with a command to checkout
     each version.
 
     If `--compact` is passed, show all options on a single line separated by
@@ -351,7 +351,7 @@ Documentation for the included external commands as well as instructions for
 creating your own can be found on the wiki:
 <http://wiki.github.com/mxcl/homebrew/External-Commands>
 
-## SPECIFYING FORMULAE
+## SPECIFYING FORMULAS
 
 Many Homebrew commands accept one or more <formula> arguments. These arguments
 can take several different forms:
@@ -361,11 +361,11 @@ can take several different forms:
 
   * The fully-qualified name of a tapped formula:
     Sometimes a formula from a tapped repository may conflict with one in mxcl/master.
-    You can still access these formulae by using a special syntax, e.g.
+    You can still access these formulas by using a special syntax, e.g.
     `homebrew/dupes/vim` or `homebrew/versions/node4`.
 
   * An arbitrary URL:
-    Homebrew can install formulae via URL, e.g.
+    Homebrew can install formulas via URL, e.g.
     `https://raw.github.com/mxcl/homebrew/master/Library/Formula/git.rb`.
     The formula file will be cached for later use.
 
@@ -421,7 +421,7 @@ can take several different forms:
 
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or
-    several formulae in the same directory.
+    several formulas in the same directory.
 
     *NOTE*: `brew edit` will open all of Homebrew as discontinuous files and
     directories. TextMate can handle this correctly in project mode, but many

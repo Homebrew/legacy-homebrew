@@ -1,6 +1,6 @@
 require 'formula'
 
-# This formula is intended to be used by gcc formulae with java support.
+# This formula is intended to be used by gcc formulas with java support.
 
 class Ecj < Formula
   homepage 'http://gcc.gnu.org'

@@ -113,7 +113,7 @@ def check_for_stray_dylibs
   s = <<-EOS.undent
     Unbrewed dylibs were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
-    building Homebrew formulae, and may need to be deleted.
+    building Homebrew formulas, and may need to be deleted.
 
     Unexpected dylibs:
   EOS
@@ -136,7 +136,7 @@ def check_for_stray_static_libs
   s = <<-EOS.undent
     Unbrewed static libraries were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
-    building Homebrew formulae, and may need to be deleted.
+    building Homebrew formulas, and may need to be deleted.
 
     Unexpected static libraries:
   EOS
@@ -156,7 +156,7 @@ def check_for_stray_pcs
   s = <<-EOS.undent
     Unbrewed .pc files were found in /usr/local/lib/pkgconfig.
     If you didn't put them there on purpose they could cause problems when
-    building Homebrew formulae, and may need to be deleted.
+    building Homebrew formulas, and may need to be deleted.
 
     Unexpected .pc files:
   EOS
@@ -177,7 +177,7 @@ def check_for_stray_las
   s = <<-EOS.undent
     Unbrewed .la files were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
-    building Homebrew formulae, and may need to be deleted.
+    building Homebrew formulas, and may need to be deleted.
 
     Unexpected .la files:
   EOS
@@ -411,7 +411,7 @@ def check_xcode_prefix
   if prefix.to_s.match(' ')
     <<-EOS.undent
       Xcode is installed to a directory with a space in the name.
-      This will cause some formulae to fail to build.
+      This will cause some formulas to fail to build.
     EOS
   end
 end
@@ -710,7 +710,7 @@ end
 def check_for_git
   unless which "git" then <<-EOS.undent
     Git could not be found in your PATH.
-    Homebrew uses Git for several internal functions, and some formulae use Git
+    Homebrew uses Git for several internal functions, and some formulas use Git
     checkouts instead of stable tarballs. You may want to install Git:
       brew install git
     EOS
@@ -785,7 +785,7 @@ def check_for_autoconf
     An "autoconf" in your path blocks the Xcode-provided version at:
       #{autoconf}
 
-    This custom autoconf may cause some Homebrew formulae to fail to compile.
+    This custom autoconf may cause some Homebrew formulas to fail to compile.
     EOS
   end
 end
@@ -827,11 +827,11 @@ def check_for_linked_keg_only_brews
     s = <<-EOS.undent
     Some keg-only formula are linked into the Cellar.
     Linking a keg-only formula, such as gettext, into the cellar with
-    `brew link f` will cause other formulae to detect them during the
+    `brew link f` will cause other formulas to detect them during the
     `./configure` step. This may cause problems when compiling those
-    other formulae.
+    other formulas.
 
-    Binaries provided by keg-only formulae may override system binaries
+    Binaries provided by keg-only formulas may override system binaries
     with other strange results.
 
     You may wish to `brew unlink` these brews:
@@ -911,7 +911,7 @@ def check_for_leopard_ssl
       SSL certificates.
 
       This can cause problems when running Homebrew commands that use Git to
-      fetch over HTTPS, e.g. `brew update` or installing formulae that perform
+      fetch over HTTPS, e.g. `brew update` or installing formulas that perform
       Git checkouts.
 
       You can force Git to ignore these errors by setting GIT_SSL_NO_VERIFY.

@@ -7,10 +7,10 @@ module HomebrewArgvExtension
     select {|arg| arg[0..0] == '-'}
   end
 
-  def formulae
+  def formulas
     require 'formula'
-    @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
-    return @formulae
+    @formulas ||= downcased_unique_named.map{ |name| Formula.factory name }
+    return @formulas
   end
 
   def kegs

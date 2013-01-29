@@ -61,8 +61,8 @@ class UpdaterTests < Test::Unit::TestCase
     end
   end
 
-  def test_update_homebrew_without_formulae_changes
-    diff_output = fixture('update_git_diff_output_without_formulae_changes')
+  def test_update_homebrew_without_formula_changes
+    diff_output = fixture('update_git_diff_output_without_formula_changes')
 
     HOMEBREW_REPOSITORY.cd do
       updater = UpdaterMock.new
@@ -83,8 +83,8 @@ class UpdaterTests < Test::Unit::TestCase
     end
   end
 
-  def test_update_homebrew_with_formulae_changes
-    diff_output = fixture('update_git_diff_output_with_formulae_changes')
+  def test_update_homebrew_with_formula_changes
+    diff_output = fixture('update_git_diff_output_with_formulas_changes')
 
     HOMEBREW_REPOSITORY.cd do
       updater = UpdaterMock.new

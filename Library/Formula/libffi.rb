@@ -6,7 +6,7 @@ class Libffi < Formula
   mirror 'ftp://sourceware.org/pub/libffi/libffi-3.0.11.tar.gz'
   sha1 'bff6a6c886f90ad5e30dee0b46676e8e0297d81d'
 
-  keg_only :provided_by_osx, "Some formulae require a newer version of libffi."
+  keg_only :provided_by_osx, "Some formulas require a newer version of libffi."
 
   def install
     ENV.universal_binary

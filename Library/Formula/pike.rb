@@ -63,7 +63,7 @@ class Pike < Formula
 
     # installation is complicated by some of brew's standard patterns.
     # hopefully these notes explain the reasons for diverging from
-    # the path that most other formulae use.
+    # the path that most other formulas use.
     #
     # item 1
     #

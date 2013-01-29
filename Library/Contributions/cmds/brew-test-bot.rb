@@ -84,13 +84,13 @@ end
 
 class Test
   attr_reader :log_root, :category, :name
-  attr_reader :core_changed, :formulae
+  attr_reader :core_changed, :formulas
   attr_accessor :steps
 
   def initialize argument
     @hash = nil
     @url = nil
-    @formulae = []
+    @formulas = []
 
     url_match = argument.match HOMEBREW_PULL_URL_REGEX
     formula = Formula.factory argument rescue FormulaUnavailableError
@@ -100,7 +100,7 @@ class Test
     elsif url_match
       @url = url_match[0]
     elsif formula
-      @formulae = [argument]
+      @formulas = [argument]
     else
       odie "#{argument} is not a pull request URL, commit URL or formula name."
     end
@@ -150,7 +150,7 @@ class Test
       @name = "#{@url}-#{diff_end_sha1}"
     else
       diff_start_sha1 = diff_end_sha1 = current_sha1
-      @name = "#{@formulae.first}-#{diff_end_sha1}"
+      @name = "#{@formulas.first}-#{diff_end_sha1}"
     end
 
     @log_root = @brewbot_root + @name
@@ -165,7 +165,7 @@ class Test
       # Don't try and do anything to removed files.
       if (status == 'A' or status == 'M')
         if filename.include? '/Formula/'
-          @formulae << File.basename(filename, '.rb')
+          @formulas << File.basename(filename, '.rb')
         end
       end
       if filename.include? '/Homebrew/' or filename.include? '/ENV/' \
@@ -273,7 +273,7 @@ class Test
     test.cleanup_before
     test.download
     test.setup unless ARGV.include? "--skip-setup"
-    test.formulae.each do |formula|
+    test.formulas.each do |formula|
       test.formula formula
     end
     test.homebrew if test.core_changed

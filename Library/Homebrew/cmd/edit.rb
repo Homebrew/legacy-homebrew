@@ -24,7 +24,7 @@ module Homebrew extend self
         exec_editor HOMEBREW_REPOSITORY
       end
     else
-      # Don't use ARGV.formulae as that will throw if the file doesn't parse
+      # Don't use ARGV.formulas as that will throw if the file doesn't parse
       paths = ARGV.named.map do |name|
         name = Formula.canonical_name name
         if name.include? '/'

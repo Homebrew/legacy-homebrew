@@ -4,7 +4,7 @@ module Homebrew extend self
       cd HOMEBREW_REPOSITORY
       exec "git", "log", *ARGV.options_only
     else
-      path = ARGV.formulae.first.path.realpath
+      path = ARGV.formulas.first.path.realpath
       cd path.dirname # supports taps
       exec "git", "log", *ARGV.options_only + [path]
     end

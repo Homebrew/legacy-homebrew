@@ -10,7 +10,7 @@ class GstPluginsBad < Formula
   depends_on 'gst-plugins-base'
 
   # These optional dependencies are based on the intersection of
-  # gst-plugins-bad-0.10.21/REQUIREMENTS and Homebrew formulae
+  # gst-plugins-bad-0.10.21/REQUIREMENTS and Homebrew formulas
   depends_on 'dirac' => :optional
   depends_on 'libdvdread' => :optional
   depends_on 'libmms' => :optional

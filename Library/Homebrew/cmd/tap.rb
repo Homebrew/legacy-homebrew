@@ -48,12 +48,12 @@ module Homebrew extend self
     end
   end
 
-  def link_tap_formula formulae
+  def link_tap_formula formulas
     ignores = (HOMEBREW_LIBRARY/"Formula/.gitignore").read.split rescue []
     tapped = 0
 
     cd HOMEBREW_LIBRARY/"Formula" do
-      formulae.each do |formula|
+      formulas.each do |formula|
         from = HOMEBREW_LIBRARY.join("Taps/#{formula}")
         to = HOMEBREW_LIBRARY.join("Formula/#{formula.basename}")
 

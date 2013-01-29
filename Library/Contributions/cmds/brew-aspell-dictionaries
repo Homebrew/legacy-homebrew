@@ -7,12 +7,12 @@
 # The script then calculates the sha1 for each dictionary archive and
 # generates a brew formula for each language.
 # The result can then to be merged into the aspell formula, to update
-# the available dictionary formulae.
+# the available dictionary formulas.
 
 dictionaries_url=http://ftpmirror.gnu.org/aspell/dict
 dictionaries_mirror=http://ftp.gnu.org/gnu/aspell/dict
 tmp_file=`mktemp -t brew_aspell_dictionaries`
-brew_formulae_tmp_file=`mktemp -t brew_aspell_dictionaries_formulae`
+brew_formulas_tmp_file=`mktemp -t brew_aspell_dictionaries_formulas`
 
 echo "Downloading aspell dictionaries Index"
 curl -sL ${dictionaries_url}/0index.html \
@@ -20,7 +20,7 @@ curl -sL ${dictionaries_url}/0index.html \
        | cut -d\" -f2,4 \
        > $tmp_file
 
-echo "# BEGIN generated with `basename $0`" > $brew_formulae_tmp_file
+echo "# BEGIN generated with `basename $0`" > $brew_formulas_tmp_file
 langs=""
 for dict in `cat $tmp_file`; do
   [ "${dict}" = "</table>" ] && break # only read the entries in the first table, which lists the dictionaries for aspell 0.60
@@ -30,7 +30,7 @@ for dict in `cat $tmp_file`; do
   langs="${langs} ${lang}"
   echo "Calculating sha1 for formula: ${lang}"
   sha1=`curl -sL "${url}" | shasum | awk '{print $1}'`
-  cat <<EOF >> $brew_formulae_tmp_file
+  cat <<EOF >> $brew_formulas_tmp_file
 class Aspell_${lang} < AspellLang
   url '${url}'
   mirror '${mirror}'
@@ -39,7 +39,7 @@ end
 EOF
 done
 
-cat <<EOF >> $brew_formulae_tmp_file
+cat <<EOF >> $brew_formulas_tmp_file
 def available_languages
   %w(${langs})
 end
@@ -48,5 +48,5 @@ EOF
 
 rm $tmp_file
 
-echo "The formulae for the aspell dictionaries have been written to\n$brew_formulae_tmp_file"
+echo "The formulas for the aspell dictionaries have been written to\n$brew_formulas_tmp_file"
 

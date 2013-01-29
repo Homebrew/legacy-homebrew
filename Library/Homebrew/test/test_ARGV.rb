@@ -4,7 +4,7 @@ module ExtendArgvPlusYeast
   def reset
     @named = nil
     @downcased_unique_named = nil
-    @formulae = nil
+    @formulas = nil
     @kegs = nil
     ARGV.shift while ARGV.length > 0
   end
@@ -27,7 +27,7 @@ class ARGVTests < Test::Unit::TestCase
     ARGV.unshift 'mxcl'
     assert_equal 1, ARGV.named.length
     assert_equal 1, ARGV.kegs.length
-    assert_raises(FormulaUnavailableError) { ARGV.formulae }
+    assert_raises(FormulaUnavailableError) { ARGV.formulas }
   end
 
   def test_switch?

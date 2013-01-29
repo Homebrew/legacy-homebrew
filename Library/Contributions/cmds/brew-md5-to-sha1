@@ -3,9 +3,9 @@
 
 HOMEBREW_PREFIX=$(brew --config | grep HOMEBREW_PREFIX | sed -e 's/HOMEBREW_PREFIX: //')
 cd $HOMEBREW_PREFIX/Library/Formula
-FORMULAE=$(grep "^  md5 " -rl . | sed -e 's/\.\///' -e 's/\.rb$//')
+FORMULAS=$(grep "^  md5 " -rl . | sed -e 's/\.\///' -e 's/\.rb$//')
 
-for FORMULA in $FORMULAE
+for FORMULA in $FORMULAS
 do
 	echo "Fetching and SHA1ing $FORMULA"
 	if brew fetch $FORMULA &>/dev/null

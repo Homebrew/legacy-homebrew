@@ -31,7 +31,7 @@ module Homebrew extend self
   end
 
   def bottle
-    ARGV.formulae.each do|f|
+    ARGV.formulas.each do|f|
       bottle_formula Formula.factory f
     end
   end
