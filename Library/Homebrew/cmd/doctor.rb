@@ -225,7 +225,7 @@ def check_for_latest_xcode
         EOS
       elsif not MacOS::CLT.latest_version?
         <<-EOS.undent
-        A newer Command Line Tools for Xcode release is avaliable
+        A newer Command Line Tools for Xcode release is available
         You should install the latest version from: http://connect.apple.com
         EOS
       end
