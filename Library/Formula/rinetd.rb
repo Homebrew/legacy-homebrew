@@ -1,10 +1,10 @@
 require 'formula'
 
 class Rinetd < Formula
-  url 'http://www.boutell.com/rinetd/http/rinetd.tar.gz'
   homepage 'http://www.boutell.com/rinetd/'
-  sha1 '2498fa03c2ef50bf924ffd0a034d5de5e3258f21'
+  url 'http://www.boutell.com/rinetd/http/rinetd.tar.gz'
   version '0.62'
+  sha1 '2498fa03c2ef50bf924ffd0a034d5de5e3258f21'
 
   def install
     inreplace 'rinetd.c' do |s|
