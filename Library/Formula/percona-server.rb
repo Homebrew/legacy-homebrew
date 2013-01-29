@@ -34,7 +34,7 @@ class PerconaServer < Formula
 
   # Where the database files should be located. Existing installs have them
   # under var/percona, but going forward they will be under var/msyql to be
-  # shared with the mysql and mariadb formulae.
+  # shared with the mysql and mariadb formulas.
   def destination
     @destination ||= (var/'percona').directory? ? 'percona' : 'mysql'
   end

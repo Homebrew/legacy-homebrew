@@ -10,7 +10,7 @@ class GstPluginsUgly < Formula
   depends_on 'gst-plugins-base'
 
   # The set of optional dependencies is based on the intersection of
-  # gst-plugins-ugly-0.10.17/REQUIREMENTS and Homebrew formulae
+  # gst-plugins-ugly-0.10.17/REQUIREMENTS and Homebrew formulas
   depends_on 'dirac' => :optional
   depends_on 'mad' => :optional
   depends_on 'jpeg' => :optional

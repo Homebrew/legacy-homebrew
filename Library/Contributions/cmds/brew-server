@@ -173,7 +173,7 @@ get '/formula/:name' do
 end
 
 
-def installed_formulae
+def installed_formulas
   Formula.select{|formula| formula.installed?}
 end
 
@@ -182,7 +182,7 @@ get '/installed' do
   s = <<-HTML
     <html>
     <head>
-      <title>Installed formulae</title>
+      <title>Installed formulas</title>
       #{css_style}
     </head>
     <body>
@@ -190,7 +190,7 @@ get '/installed' do
     <ul>
   HTML
 
-  installed_formulae.each do |formula|
+  installed_formulas.each do |formula|
     s << "<li>#{link_to_formula(formula.name)}</li>"
   end
 

@@ -1,6 +1,6 @@
 require 'formula'
 
-# Downloads the tarballs for the given formulae to the Cache
+# Downloads the tarballs for the given formulas to the Cache
 
 module Homebrew extend self
   def fetch
@@ -8,14 +8,14 @@ module Homebrew extend self
 
     if ARGV.include? '--deps'
       bucket = []
-      ARGV.formulae.each do |f|
+      ARGV.formulas.each do |f|
         bucket << f
         bucket << f.recursive_dependencies.map(&:to_formula)
       end
 
       bucket = bucket.flatten.uniq
     else
-      bucket = ARGV.formulae
+      bucket = ARGV.formulas
     end
 
     puts "Fetching: #{bucket * ', '}" if bucket.size > 1

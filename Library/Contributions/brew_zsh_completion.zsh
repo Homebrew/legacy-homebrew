@@ -6,16 +6,16 @@
 #
 # altered from _fink
 
-_brew_all_formulae() {
-  formulae=(`brew search`)
+_brew_all_formulas() {
+  formulas=(`brew search`)
 }
 
-_brew_installed_formulae() {
-  installed_formulae=(`brew list`)
+_brew_installed_formulas() {
+  installed_formulas=(`brew list`)
 }
 
-_brew_outdated_formulae() {
-  outdated_formulae=(`brew outdated`)
+_brew_outdated_formulas() {
+  outdated_formulas=(`brew outdated`)
 }
 
 local -a _1st_arguments
@@ -30,22 +30,22 @@ _1st_arguments=(
   'info:information about a formula'
   'install:install a formula'
   'link:link a formula'
-  'list:list files in a formula or not-installed formulae'
+  'list:list files in a formula or not-installed formulas'
   'log:git commit log for a formula'
   'missing:check all installed formuale for missing dependencies.'
-  'outdated:list formulae for which a newer version is available'
+  'outdated:list formulas for which a newer version is available'
   'prune:remove dead links'
   'remove:remove a formula'
   'search:search for a formula (/regex/ or string)'
-  'server:start a local web app that lets you browse formulae (requires Sinatra)'
+  'server:start a local web app that lets you browse formulas (requires Sinatra)'
   'unlink:unlink a formula'
   'update:freshen up links'
-  'upgrade:upgrade outdated formulae'
-  'uses:show formulae which depend on a formula'
+  'upgrade:upgrade outdated formulas'
+  'uses:show formulas which depend on a formula'
 )
 
 local expl
-local -a formulae installed_formulae outdated_formulae
+local -a formulas installed_formulas outdated_formulas
 
 _arguments \
   '(-v)-v[verbose]' \
@@ -75,16 +75,16 @@ case "$words[1]" in
       '1: :->forms' &&  return 0
 
       if [[ "$state" == forms ]]; then
-        _brew_installed_formulae
-        _wanted installed_formulae expl 'installed formulae' compadd -a installed_formulae
+        _brew_installed_formulas
+        _wanted installed_formulas expl 'installed formulas' compadd -a installed_formulas
       fi ;;
   install|home|homepage|log|info|abv|uses|cat|deps|edit|options)
-    _brew_all_formulae
-    _wanted formulae expl 'all formulae' compadd -a formulae ;;
+    _brew_all_formulas
+    _wanted formulas expl 'all formulas' compadd -a formulas ;;
   remove|rm|uninstall|unlink|cleanup|link|ln)
-    _brew_installed_formulae
-    _wanted installed_formulae expl 'installed formulae' compadd -a installed_formulae ;;
+    _brew_installed_formulas
+    _wanted installed_formulas expl 'installed formulas' compadd -a installed_formulas ;;
   upgrade)
-    _brew_outdated_formulae
-    _wanted outdated_formulae expl 'outdated formulae' compadd -a outdated_formulae ;;
+    _brew_outdated_formulas
+    _wanted outdated_formulas expl 'outdated formulas' compadd -a outdated_formulas ;;
 esac

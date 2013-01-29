@@ -51,11 +51,11 @@ end
 module Homebrew extend self
   def unpack
     unpack_usage = <<-EOS
-Usage: brew unpack [-pg] [--destdir=path/to/extract/in] <formulae ...>
+Usage: brew unpack [-pg] [--destdir=path/to/extract/in] <formulas ...>
 
-Unpack formulae source code for inspection.
+Unpack formula source code for inspection.
 
-Formulae archives will be extracted to subfolders inside the current working
+Formula archives will be extracted to subfolders inside the current working
 directory or a directory specified by `--destdir`. If the `-p` option is
 supplied, patches will also be downloaded and applied. If the `-g` option is
 specified a git repository is created and all files added so that you can diff
@@ -64,8 +64,8 @@ changes.
 
     abort unpack_usage if ARGV.empty?
 
-    formulae = ARGV.formulae
-    raise FormulaUnspecifiedError if formulae.empty?
+    formulas = ARGV.formulas
+    raise FormulaUnspecifiedError if formulas.empty?
 
     unpack_dir = ARGV.options_only.select {|o| o.start_with? "--destdir="}
     if unpack_dir.empty?
@@ -77,7 +77,7 @@ changes.
 
     raise "Cannot write to #{unpack_dir}" unless unpack_dir.writable_real?
 
-    formulae.each do |f|
+    formulas.each do |f|
       # Create a nice name for the stage folder.
       stage_dir = unpack_dir + [f.name, f.version].join('-')
 

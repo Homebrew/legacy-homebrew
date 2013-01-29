@@ -20,7 +20,7 @@ module Homebrew extend self
       require 'cmd/outdated'
       outdated = Homebrew.outdated_brews
     else
-      outdated = ARGV.formulae.select do |f|
+      outdated = ARGV.formulas.select do |f|
         if f.installed?
           onoe "#{f}-#{f.installed_version} already installed"
         elsif not f.rack.exist? or f.rack.children.empty?

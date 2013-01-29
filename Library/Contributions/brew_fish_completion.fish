@@ -87,13 +87,13 @@ function __fish_complete_brew_no_command
 end
 
 function __fish_brew_formula_arguments
-  set formulae (ls (brew --repository)/Library/Formula 2>/dev/null | sed 's/\.rb//g')
+  set formulas (ls (brew --repository)/Library/Formula 2>/dev/null | sed 's/\.rb//g')
   for formula in (ls (brew --repository)/Library/Aliases 2>/dev/null | sed 's/\.rb//g')
-    set formulae $formula $formulae
+    set formulas $formula $formulas
   end
 
   for cmd in (commandline -opc)
-    if contains -- $cmd $formulae
+    if contains -- $cmd $formulas
       brew options $cmd --compact | tr ' ' '\n'
     end
   end
@@ -114,7 +114,7 @@ complete -c brew -l no-fetch -n '__fish_complete_brew_command create' -d "Do not
 complete -c brew -l 1 -n '__fish_complete_brew_command deps' -d "Only show dependencies one level down"
 complete -c brew -s n -n '__fish_complete_brew_command deps' -d "Show dependencies in topological order"
 complete -c brew -l tree -n '__fish_complete_brew_command deps' -d "Show dependencies as a tree"
-complete -c brew -l all -n '__fish_complete_brew_command deps' -d "Show dependencies for all formulae"
+complete -c brew -l all -n '__fish_complete_brew_command deps' -d "Show dependencies for all formulas"
 
 complete -c brew -l set-name -n '__fish_complete_brew_command diy' -d "Set package name" -f
 complete -c brew -l set-version -n '__fish_complete_brew_command diy' -d "Set package version" -f
@@ -129,7 +129,7 @@ complete -c brew -l deps -n '__fish_complete_brew_command fetch' -d "Download de
 
 complete -c brew -n '__fish_complete_brew_command home' -x
 
-complete -c brew -l all -n '__fish_complete_brew_command info abv' -d "Show info for all formulae"
+complete -c brew -l all -n '__fish_complete_brew_command info abv' -d "Show info for all formulas"
 complete -c brew -l github -n '__fish_complete_brew_command info abv' -d "Open GitHub History page in browser" -x
 
 complete -c brew -s d -l debug -n '__fish_complete_brew_command install' -d "Open a shell if install fails"
@@ -148,13 +148,13 @@ complete -c brew -s f -l force -n '__fish_complete_brew_command link ln' -d "Ove
 complete -c brew -s n -l dry-run -n '__fish_complete_brew_command link ln' -d "Show which files would be deleted"
 
 complete -c brew -l unbrewed -n '__fish_complete_brew_command list ls' -d "List files in Homebrew prefix not installed by Homebrew"
-complete -c brew -l versions -n '__fish_complete_brew_command list ls' -d "Show the version number for specified formulae"
+complete -c brew -l versions -n '__fish_complete_brew_command list ls' -d "Show the version number for specified formulas"
 
 complete -c brew -n '__fish_complete_brew_command log' -u
 
 complete -c brew -l compact -n '__fish_complete_brew_command options' -d "Show options on a single line"
-complete -c brew -l all -n '__fish_complete_brew_command options' -f -d "Show options for all formulae"
-complete -c brew -l installed -n '__fish_complete_brew_command options' -f -d "Show options for all installed formulae"
+complete -c brew -l all -n '__fish_complete_brew_command options' -f -d "Show options for all formulas"
+complete -c brew -l installed -n '__fish_complete_brew_command options' -f -d "Show options for all installed formulas"
 
 complete -c brew -l quiet -n '__fish_complete_brew_command outdated' -d "Do not print names of outdated brews"
 
@@ -165,7 +165,7 @@ complete -c brew -l fink -n '__fish_complete_brew_command search' -d "Search Fin
 
 complete -c brew -l rebase -n '__fish_complete_brew_command update' -d "Use git pull --rebase"
 
-complete -c brew -l installed -n '__fish_complete_brew_command uses' -d "Only list installed formulae"
+complete -c brew -l installed -n '__fish_complete_brew_command uses' -d "Only list installed formulas"
 
 complete -c brew -l compact -n '__fish_complete_brew_command versions' -d "Show all versions on a single line"
 

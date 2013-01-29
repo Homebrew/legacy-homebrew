@@ -9,7 +9,7 @@ def blacklisted? name
   when 'libiconv' then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/lib.
     Some build scripts fail to detect it correctly, please check existing
-    formulae for solutions.
+    formulas for solutions.
     EOS
   when 'libxml', 'libxlst' then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/lib.

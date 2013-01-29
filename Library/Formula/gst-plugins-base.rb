@@ -10,7 +10,7 @@ class GstPluginsBase < Formula
   depends_on 'gstreamer'
 
   # The set of optional dependencies is based on the intersection of
-  # gst-plugins-base-0.10.35/REQUIREMENTS and Homebrew formulae
+  # gst-plugins-base-0.10.35/REQUIREMENTS and Homebrew formulas
   depends_on 'orc' => :optional
   depends_on 'gtk+' => :optional
   depends_on 'libogg' => :optional

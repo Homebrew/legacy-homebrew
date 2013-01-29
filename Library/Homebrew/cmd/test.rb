@@ -9,14 +9,14 @@ module Homebrew extend self
     ENV.extend(HomebrewEnvExtension)
     ENV.setup_build_environment
 
-    ARGV.formulae.each do |f|
-      # Cannot test uninstalled formulae
+    ARGV.formulas.each do |f|
+      # Cannot test uninstalled formulas
       unless f.installed?
         ofail "Testing requires the latest version of #{f.name}"
         next
       end
 
-      # Cannot test formulae without a test method
+      # Cannot test formulas without a test method
       unless f.test_defined?
         ofail "#{f.name} defines no test"
         next

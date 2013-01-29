@@ -169,7 +169,7 @@ class MPIDependency < Requirement
         If you have a MPI installation, please ensure the bin folder is on your
         PATH and that all the wrappers are functional. Otherwise, a MPI
         installation can be obtained from homebrew by *picking one* of the
-        following formulae:
+        following formulas:
             open-mpi, mpich2
         EOS
     end

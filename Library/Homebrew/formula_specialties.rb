@@ -1,4 +1,4 @@
-# Base classes for specialized types of formulae.
+# Base classes for specialized types of formulas.
 
 # See youtube-dl.rb for an example
 class ScriptFileFormula < Formula
@@ -18,7 +18,7 @@ class GithubGistFormula < ScriptFileFormula
 end
 
 # This formula serves as the base class for several very similar
-# formulae for Amazon Web Services related tools.
+# formulas for Amazon Web Services related tools.
 class AmazonWebServicesFormula < Formula
   # Use this method to peform a standard install for Java-based tools,
   # keeping the .jars out of HOMEBREW_PREFIX/lib

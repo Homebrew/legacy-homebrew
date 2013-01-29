@@ -57,7 +57,7 @@ __brewcomp ()
 
 # Don't use __brewcomp() in any of the __brew_complete_foo functions, as
 # it is too slow and is not worth it just for duplicate elimination.
-__brew_complete_formulae ()
+__brew_complete_formulas ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
     local ff=$(\ls $(brew --repository)/Library/Formula 2>/dev/null | sed 's/\.rb//g')
@@ -133,7 +133,7 @@ _brew_deps ()
         return
         ;;
     esac
-    __brew_complete_formulae
+    __brew_complete_formulas
 }
 
 _brew_doctor () {
@@ -161,7 +161,7 @@ _brew_fetch ()
         return
         ;;
     esac
-    __brew_complete_formulae
+    __brew_complete_formulas
 }
 
 _brew_info ()
@@ -173,7 +173,7 @@ _brew_info ()
         return
         ;;
     esac
-    __brew_complete_formulae
+    __brew_complete_formulas
 }
 
 _brew_install ()
@@ -213,7 +213,7 @@ _brew_install ()
         return
         ;;
     esac
-    __brew_complete_formulae
+    __brew_complete_formulas
 }
 
 _brew_link ()
@@ -267,7 +267,7 @@ _brew_log ()
         return
         ;;
     esac
-    __brew_complete_formulae
+    __brew_complete_formulas
 }
 
 _brew_options ()
@@ -279,7 +279,7 @@ _brew_options ()
         return
         ;;
     esac
-    __brew_complete_formulae
+    __brew_complete_formulas
 }
 
 _brew_outdated ()
@@ -336,7 +336,7 @@ _brew_uses ()
         return
         ;;
     esac
-    __brew_complete_formulae
+    __brew_complete_formulas
 }
 
 _brew_versions ()
@@ -348,7 +348,7 @@ _brew_versions ()
         return
         ;;
     esac
-    __brew_complete_formulae
+    __brew_complete_formulas
 }
 
 _brew ()
@@ -417,8 +417,8 @@ _brew ()
 
     # subcommands have their own completion functions
     case "$cmd" in
-    --cache|--cellar|--prefix)  __brew_complete_formulae ;;
-    audit|cat|edit|home)        __brew_complete_formulae ;;
+    --cache|--cellar|--prefix)  __brew_complete_formulas ;;
+    audit|cat|edit|home)        __brew_complete_formulas ;;
     test|unlink)                __brew_complete_installed ;;
     upgrade)                    __brew_complete_outdated ;;
     cleanup)                    _brew_cleanup ;;
@@ -432,7 +432,7 @@ _brew ()
     link|ln)                    _brew_link ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
-    missing)                    __brew_complete_formulae ;;
+    missing)                    __brew_complete_formulas ;;
     options)                    _brew_options ;;
     outdated)                   _brew_outdated ;;
     search|-S)                  _brew_search ;;

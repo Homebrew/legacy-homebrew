@@ -27,15 +27,15 @@ module Homebrew extend self
     elsif valid_url ARGV[0]
       info_formula Formula.factory(ARGV.shift)
     else
-      ARGV.formulae.each{ |f| info_formula f }
+      ARGV.formulas.each{ |f| info_formula f }
     end
   end
 
   def print_json
     require 'vendor/multi_json'
 
-    formulae = ARGV.include?("--all") ? Formula : ARGV.formulae
-    json = formulae.map {|f| f.to_hash}
+    formulas = ARGV.include?("--all") ? Formula : ARGV.formulas
+    json = formulas.map {|f| f.to_hash}
     if json.size == 1
       puts MultiJson.encode json.pop
     else

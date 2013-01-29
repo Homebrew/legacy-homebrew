@@ -15,14 +15,14 @@ module Homebrew extend self
       end
     elsif ARGV.include? '--tree'
       raise FormulaUnspecifiedError if ARGV.named.empty?
-      ARGV.formulae.each do |f|
+      ARGV.formulas.each do |f|
         puts f
         recursive_deps_tree(f, 1)
         puts
       end
     else
       raise FormulaUnspecifiedError if ARGV.named.empty?
-      all_deps = ARGV.formulae.map do |f|
+      all_deps = ARGV.formulas.map do |f|
         ARGV.one? ? f.deps : f.recursive_dependencies
       end.intersection.map(&:name)
       all_deps.sort! unless ARGV.include? "-n"

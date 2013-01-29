@@ -39,7 +39,7 @@ class Dependency
   end
 
   def requested?
-    ARGV.formulae.include?(to_formula) rescue false
+    ARGV.formulas.include?(to_formula) rescue false
   end
 
   def satisfied?

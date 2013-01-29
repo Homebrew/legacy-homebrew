@@ -16,7 +16,7 @@ class MarkdownProvider < Requirement
   def message; <<-EOS.undent
     shocco requires a `markdown` command.
 
-    You can satisfy this requirement with either of two formulae:
+    You can satisfy this requirement with either of two formulas:
       brew install markdown
       brew install discount
 

@@ -12,7 +12,7 @@ def ff
     end
   else
     raise FormulaUnspecifiedError if ARGV.named.empty?
-    ARGV.formulae
+    ARGV.formulas
   end
 end
 

@@ -22,11 +22,11 @@ module Homebrew extend self
     puts "Untapped #{untapped} formula"
   end
 
-  def unlink_tap_formula formulae
+  def unlink_tap_formula formulas
     untapped = 0
     gitignores = (HOMEBREW_LIBRARY/"Formula/.gitignore").read.split rescue []
 
-    formulae.each do |formula|
+    formulas.each do |formula|
       tapd = (HOMEBREW_LIBRARY/"Taps/#{formula}").dirname
       bn = formula.basename.to_s
       pn = HOMEBREW_LIBRARY/"Formula/#{bn}"

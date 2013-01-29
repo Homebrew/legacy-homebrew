@@ -124,7 +124,7 @@ class Bottle < SoftwareSpec
 end
 
 
-# Used to annotate formulae that duplicate OS X provided software
+# Used to annotate formulas that duplicate OS X provided software
 # or cause conflicts when linked in.
 class KegOnlyReason
   attr_reader :reason, :explanation

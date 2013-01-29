@@ -77,7 +77,7 @@ class Cleaner
         # *.la files are stupid
         path.unlink unless @f.skip_clean? path
       elsif path == @f.lib+'charset.alias'
-        # Many formulae symlink this file, but it is not strictly needed
+        # Many formulas symlink this file, but it is not strictly needed
         path.unlink unless @f.skip_clean? path
       elsif not path.symlink?
         # Fix permissions

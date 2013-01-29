@@ -22,7 +22,7 @@ module Homebrew extend self
       raise "Cowardly refusing to `sudo brew install'\n#{SUDO_BAD_ERRMSG}"
     end
 
-    install_formulae ARGV.formulae
+    install_formulas ARGV.formulas
   end
 
   def check_ppc
@@ -73,11 +73,11 @@ module Homebrew extend self
     check_cellar
   end
 
-  def install_formulae formulae
-    formulae = [formulae].flatten.compact
-    unless formulae.empty?
+  def install_formulas formulas
+    formulas = [formulas].flatten.compact
+    unless formulas.empty?
       perform_preinstall_checks
-      formulae.each do |f|
+      formulas.each do |f|
         install_formula(f)
       end
     end

@@ -26,7 +26,7 @@ end
 module Homebrew extend self
   def check_mirrors
     mirror_check_usage = <<-EOS
-Usage: brew mirror-check <formulae ...>
+Usage: brew mirror-check <formulas ...>
 
 Cycle through mirror lists for each formula, attempt a download and validate file hashes.
     EOS
@@ -36,10 +36,10 @@ Cycle through mirror lists for each formula, attempt a download and validate fil
       exit 0
     end
 
-    formulae = ARGV.formulae
-    raise FormulaUnspecifiedError if formulae.empty?
+    formulas = ARGV.formulas
+    raise FormulaUnspecifiedError if formulas.empty?
 
-    formulae.each do |f|
+    formulas.each do |f|
       if f.mirrors.empty?
         opoo "#{f.name} has no mirrors"
         next

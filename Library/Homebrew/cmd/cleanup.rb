@@ -13,7 +13,7 @@ module Homebrew extend self
             cleanup_formula rack.basename.to_s if rack.directory?
           rescue FormulaUnavailableError => e
             # Don't complain about Cellar folders that are from DIY installs
-            # instead of core formulae.
+            # instead of core formulas.
           end
         end
       end
@@ -24,7 +24,7 @@ module Homebrew extend self
         rm_DS_Store
       end
     else
-      ARGV.formulae.each do |f|
+      ARGV.formulas.each do |f|
         cleanup_formula f
       end
     end

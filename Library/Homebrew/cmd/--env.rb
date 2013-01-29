@@ -4,7 +4,7 @@ require 'hardware'
 module Homebrew extend self
   def __env
     if superenv?
-      ENV.deps = ARGV.formulae.map(&:name) unless ARGV.named.empty?
+      ENV.deps = ARGV.formulas.map(&:name) unless ARGV.named.empty?
     end
     ENV.setup_build_environment
     ENV.universal_binary if ARGV.build_universal?

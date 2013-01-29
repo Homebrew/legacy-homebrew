@@ -20,7 +20,7 @@ def main
   # pipe in FormulaInstaller#build. However, if any child process fails to
   # terminate (i.e, fails to close the descriptor), this won't happen, and
   # the installer will hang. Set close-on-exec to prevent this.
-  # Whether it is *wise* to launch daemons from formulae is a separate
+  # Whether it is *wise* to launch daemons from formulas is a separate
   # question altogether.
   if ENV['HOMEBREW_ERROR_PIPE']
     require 'fcntl'

@@ -10,7 +10,7 @@ module Homebrew extend self
     ff = if ARGV.named.empty?
       Formula
     else
-      ARGV.formulae
+      ARGV.formulas
     end
 
     ff.each do |f|
@@ -27,7 +27,7 @@ module Homebrew extend self
     end
 
     unless problem_count.zero?
-      ofail "#{problem_count} problems in #{formula_count} formulae"
+      ofail "#{problem_count} problems in #{formula_count} formulas"
     end
   end
 end
@@ -262,7 +262,7 @@ class FormulaAuditor
   end
 
   def audit_patches
-    # Some formulae use ENV in patches, so set up an environment
+    # Some formulas use ENV in patches, so set up an environment
     ENV.setup_build_environment
 
     Patches.new(f.patches).select { |p| p.external? }.each do |p|
