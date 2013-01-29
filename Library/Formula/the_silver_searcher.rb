@@ -20,8 +20,7 @@ class TheSilverSearcher < Formula
     system "autoheader"
     system "automake --add-missing"
 
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
     system "make install"
