@@ -8,7 +8,7 @@ class Cgminer < Formula
   depends_on 'automake' => :build
   depends_on 'curl' => :build
   depends_on 'c-ares' => :build
-  depends_on 'libusb' => :build
+  depends_on 'libusb'
   depends_on 'pkg-config' => :build
 
   def install
