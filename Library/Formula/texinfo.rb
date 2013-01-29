@@ -1,9 +1,9 @@
 require 'formula'
 
 class Texinfo < Formula
+  homepage 'http://www.gnu.org/software/texinfo/'
   url 'http://ftpmirror.gnu.org/texinfo/texinfo-4.13a.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/texinfo/texinfo-4.13a.tar.gz'
-  homepage 'http://www.gnu.org/software/texinfo/'
   sha1 'a1533cf8e03ea4fa6c443b73f4c85e4da04dead0'
 
   keg_only :provided_by_osx, <<-EOS.undent

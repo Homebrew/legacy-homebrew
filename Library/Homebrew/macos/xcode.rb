@@ -23,7 +23,7 @@ module MacOS::Xcode extend self
       when 10.6 then "3.2.6"
     else
       if MacOS.version >= 10.7
-        "4.5.2"
+        "4.6"
       else
         raise "Mac OS X `#{MacOS.version}' is invalid"
       end
@@ -165,7 +165,7 @@ module MacOS::CLT extend self
 
   def latest_version?
     `/usr/bin/clang -v 2>&1` =~ %r{tags/Apple/clang-(\d+)\.(\d+)\.(\d+)}
-    $1.to_i >= 421 and $3.to_i >= 57
+    $1.to_i >= 425 and $3.to_i >= 24
   end
 
   def version

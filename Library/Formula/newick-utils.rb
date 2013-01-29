@@ -1,8 +1,8 @@
 require 'formula'
 
 class NewickUtils < Formula
-  url 'http://cegg.unige.ch/pub/newick-utils-1.6.tar.gz'
   homepage 'http://cegg.unige.ch/newick_utils'
+  url 'http://cegg.unige.ch/pub/newick-utils-1.6.tar.gz'
   sha1 'a9779054dcbf957618458ebfed07991fabeb3e19'
 
   def patches

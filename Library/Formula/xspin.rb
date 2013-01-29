@@ -1,10 +1,10 @@
 require 'formula'
 
 class Xspin < Formula
-  url 'http://spinroot.com/spin/Src/xspin525.tcl'
   homepage 'http://spinroot.com/spin/Src/index.html'
-  sha1 '8166ccc6830f052e31162bec618c17452a988b5d'
+  url 'http://spinroot.com/spin/Src/xspin525.tcl'
   version '5.2.5'
+  sha1 '8166ccc6830f052e31162bec618c17452a988b5d'
 
   depends_on 'spin'
 

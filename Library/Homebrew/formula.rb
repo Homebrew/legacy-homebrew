@@ -740,8 +740,8 @@ private
     end
 
     def depends_on dep
-      dependencies.add(dep)
-      post_depends_on
+      d = dependencies.add(dep)
+      post_depends_on(d) unless d.nil?
     end
 
     def option name, description=nil
@@ -806,14 +806,13 @@ private
 
     private
 
-    def post_depends_on
-      # Generate with- and without- options for optional and recommended deps
-      dependencies.deps.each do |dep|
-        if dep.optional? && !build.has_option?("with-#{dep.name}")
-          build.add("with-#{dep.name}", "Build with #{dep.name} support")
-        elsif dep.recommended? && !build.has_option?("without-#{dep.name}")
-          build.add("without-#{dep.name}", "Build without #{dep.name} support")
-        end
+    def post_depends_on(dep)
+      # Generate with- or without- options for optional and recommended
+      # dependencies and requirements
+      if dep.optional? && !build.has_option?("with-#{dep.name}")
+        build.add("with-#{dep.name}", "Build with #{dep.name} support")
+      elsif dep.recommended? && !build.has_option?("without-#{dep.name}")
+        build.add("without-#{dep.name}", "Build without #{dep.name} support")
       end
     end
   end
