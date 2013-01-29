@@ -1,9 +1,6 @@
 require 'formula'
 
 class NoBdb5 < Requirement
-  # Not fatal in case Squid starts working with a newer version of BDB.
-  fatal false
-
   satisfy(:build_env => false) { !Formula.factory("berkeley-db").installed? }
 
   def message; <<-EOS.undent

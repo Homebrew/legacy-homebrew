@@ -8,7 +8,7 @@ class Requirement
   include Dependable
   extend BuildEnvironmentDSL
 
-  attr_reader :tags
+  attr_reader :tags, :name
 
   def initialize(*tags)
     @tags = tags.flatten.compact

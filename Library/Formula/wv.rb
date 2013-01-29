@@ -1,8 +1,8 @@
 require 'formula'
 
 class Wv < Formula
-  url 'http://abisource.com/downloads/wv/1.2.5/wv-1.2.5.tar.gz'
   homepage 'http://wvware.sourceforge.net/'
+  url 'http://abisource.com/downloads/wv/1.2.5/wv-1.2.5.tar.gz'
   sha1 'a196a31ca1c4083436d9414b9bf4809c0fd7c33c'
 
   depends_on 'glib'

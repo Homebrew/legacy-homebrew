@@ -225,7 +225,7 @@ def check_for_latest_xcode
         EOS
       elsif not MacOS::CLT.latest_version?
         <<-EOS.undent
-        A newer Command Line Tools for Xcode release is avaliable
+        A newer Command Line Tools for Xcode release is available
         You should install the latest version from: http://connect.apple.com
         EOS
       end
@@ -738,6 +738,8 @@ end
 
 def check_for_git_origin
   return unless which "git"
+  # otherwise this will nag users with no repo about their remote
+  return unless (HOMEBREW_REPOSITORY/'.git').exist?
 
   HOMEBREW_REPOSITORY.cd do
     if `git config --get remote.origin.url`.chomp.empty? then <<-EOS.undent

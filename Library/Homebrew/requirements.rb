@@ -8,6 +8,7 @@ class LanguageModuleDependency < Requirement
     @language = language
     @module_name = module_name
     @import_name = import_name || module_name
+    super()
   end
 
   satisfy { quiet_system(*the_test) }
@@ -59,10 +60,11 @@ class X11Dependency < Requirement
 
   env { x11 }
 
-  def initialize(*tags)
+  def initialize(name="x11", *tags)
     tags.flatten!
+    @name = name
     @min_version = tags.shift if /(\d\.)+\d/ === tags.first
-    super
+    super(tags)
   end
 
   satisfy :build_env => false do

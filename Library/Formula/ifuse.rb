@@ -1,8 +1,8 @@
 require 'formula'
 
 class Ifuse < Formula
-  url 'http://www.libimobiledevice.org/downloads/ifuse-1.1.2.tar.bz2'
   homepage 'http://www.libimobiledevice.org/'
+  url 'http://www.libimobiledevice.org/downloads/ifuse-1.1.2.tar.bz2'
   sha1 '885d88b45edb85c38b0ce9863f0d45fd378b5614'
 
   depends_on 'pkg-config' => :build
@@ -11,7 +11,8 @@ class Ifuse < Formula
   depends_on 'fuse4x'
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 

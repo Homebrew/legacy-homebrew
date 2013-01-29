@@ -1,5 +1,15 @@
 require 'formula'
 
+class LionOrNewer < Requirement
+  fatal true
+
+  satisfy MacOS.version >= :lion
+
+  def message
+    "Avian requires Mac OS X 10.7 (Lion) or newer."
+  end
+end
+
 class JdkInstalled < Requirement
   fatal true
 
@@ -22,25 +32,23 @@ class Avian < Formula
   head 'https://github.com/ReadyTalk/avian.git'
 
   depends_on JdkInstalled
+  depends_on LionOrNewer
 
   def install
     system 'make', 'JAVA_HOME=/Library/Java/Home'
-
     bin.install Dir['build/darwin-*/avian*']
     lib.install Dir['build/darwin-*/*.dylib'] + Dir['build/darwin-*/*.a']
   end
 
-  def test
-    mktemp do
-      (Pathname.pwd/'Test.java').write <<-EOS.undent
-        public class Test {
-          public static void main(String arg[]) {
-            System.out.print("OK");
-          }
+  test do
+    (testpath/'Test.java').write <<-EOS.undent
+      public class Test {
+        public static void main(String arg[]) {
+          System.out.print("OK");
         }
-      EOS
-      system 'javac', 'Test.java'
-      %x[avian Test] == 'OK'
-    end
+      }
+    EOS
+    system 'javac', 'Test.java'
+    %x[avian Test] == 'OK'
   end
 end
