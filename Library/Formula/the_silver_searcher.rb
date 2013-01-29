@@ -12,6 +12,8 @@ class TheSilverSearcher < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
+  depends_on 'nspr'
+  depends_on 'libtool'
 
   def install
     # Stable tarball does not include pre-generated configure script
