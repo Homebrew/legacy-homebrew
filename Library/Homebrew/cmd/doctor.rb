@@ -738,6 +738,8 @@ end
 
 def check_for_git_origin
   return unless which "git"
+  # otherwise this will nag users with no repo about their remote
+  return unless (HOMEBREW_REPOSITORY/'.git').exist?
 
   HOMEBREW_REPOSITORY.cd do
     if `git config --get remote.origin.url`.chomp.empty? then <<-EOS.undent
