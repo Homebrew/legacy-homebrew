@@ -271,14 +271,16 @@ def check_cc
 end
 
 def check_standard_compilers
-  return if check_for_latest_xcode # only check if Xcode is up to date
-  compiler_status = MacOS.compilers_standard?
-  if not compiler_status and not compiler_status.nil? then <<-EOS.undent
-    Your compilers are different from the standard versions for your Xcode.
-    If you have Xcode 4.3 or newer, you should install the Command Line Tools for
-    Xcode from within Xcode's Download preferences.
-    Otherwise, you should reinstall Xcode.
-    EOS
+  if MacOS::Xcode.installed?
+    return if check_for_latest_xcode # only check if Xcode is up to date
+    compiler_status = MacOS.compilers_standard?
+    if not compiler_status and not compiler_status.nil? then <<-EOS.undent
+      Your compilers are different from the standard versions for your Xcode.
+      If you have Xcode 4.3 or newer, you should install the Command Line Tools for
+      Xcode from within Xcode's Download preferences.
+      Otherwise, you should reinstall Xcode.
+      EOS
+    end
   end
 end
 
