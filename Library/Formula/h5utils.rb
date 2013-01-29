@@ -8,7 +8,7 @@ class H5utils < Formula
   depends_on 'hdf5'
   depends_on :x11
 
-  # A patch is required in order to build h5utils with libpng 11.5
+  # A patch is required in order to build h5utils with libpng 1.5
   # as described by https://github.com/mxcl/homebrew/pull/6944
   def patches; DATA; end
 
