@@ -1,4 +1,5 @@
 require 'requirement'
+require 'extend/set'
 
 # A dependency on a language-specific module.
 class LanguageModuleDependency < Requirement
