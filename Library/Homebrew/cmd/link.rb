@@ -35,6 +35,13 @@ module Homebrew extend self
         next
       end
 
+      f = Formula.factory(keg.fname)
+      if f.keg_only? and not ARGV.force?
+        opoo "#{keg.fname} is keg-only and must be linked with --force"
+        puts "Note that doing so can interfere with building software."
+        next
+      end
+
       keg.lock do
         print "Linking #{keg}... " do
           puts "#{keg.link(mode)} symlinks created"
