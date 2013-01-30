@@ -48,6 +48,8 @@ module MacOS::XQuartz extend self
     elsif Pathname.new('/usr/X11/lib/libpng.dylib').exist?
       Pathname.new('/usr/X11')
     end
+    raise "Could not find X11 libraries" unless @prefix
+    return @prefix
   end
 
   def installed?
