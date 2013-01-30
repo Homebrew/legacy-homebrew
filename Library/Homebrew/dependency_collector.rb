@@ -77,24 +77,18 @@ private
     when :autoconf, :automake, :bsdmake, :libtool
       # Xcode no longer provides autotools or some other build tools
       Dependency.new(spec.to_s, tag) unless MacOS::Xcode.provides_autotools?
-    when :libpng, :freetype, :pixman, :fontconfig, :cairo
+    when *X11Dependency::Proxy::PACKAGES
       if MacOS.version >= :mountain_lion
         Dependency.new(spec.to_s, tag)
       else
-        X11Dependency.new(spec.to_s, tag)
+        X11Dependency::Proxy.for(spec.to_s, tag)
       end
-    when :x11
-      X11Dependency.new(spec.to_s, tag)
-    when :xcode
-      XcodeDependency.new(tag)
-    when :mysql
-      MysqlInstalled.new(tag)
-    when :postgresql
-      PostgresqlInstalled.new(tag)
-    when :tex
-      TeXInstalled.new(tag)
-    when :clt
-      CLTDependency.new(tag)
+    when :x11        then X11Dependency.new(spec.to_s, tag)
+    when :xcode      then XcodeDependency.new(tag)
+    when :mysql      then MysqlInstalled.new(tag)
+    when :postgresql then PostgresqlInstalled.new(tag)
+    when :tex        then TeXInstalled.new(tag)
+    when :clt        then CLTDependency.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
     end
