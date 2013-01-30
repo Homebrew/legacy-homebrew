@@ -10,6 +10,7 @@ class Vips < Formula
   depends_on :fontconfig
   depends_on 'gettext'
   depends_on 'glib'
+  depends_on 'openslide' => :optional
   depends_on 'jpeg' => :optional
   depends_on 'libtiff' => :optional
   depends_on 'imagemagick' => :optional
