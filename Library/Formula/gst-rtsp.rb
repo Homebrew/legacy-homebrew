@@ -13,6 +13,8 @@ class GstRtsp < Formula
   depends_on 'gst-plugins-base'
 
   def install
+    # Compatibility with Automake 1.13 and newer.
+    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
     system "./autogen.sh", "--disable-debug", "--disable-dependency-tracking",
                            "--prefix=#{prefix}",
                            "--disable-schemas-install",

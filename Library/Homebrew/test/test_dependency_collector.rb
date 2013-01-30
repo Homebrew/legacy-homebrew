@@ -1,5 +1,5 @@
 require 'testing_env'
-require 'dependencies'
+require 'dependency_collector'
 require 'extend/set'
 
 module DependencyCollectorTestExtension
@@ -22,6 +22,11 @@ class DependencyCollectorTests < Test::Unit::TestCase
     @d.add 'bar' => ['--universal', :optional]
     assert_not_nil @d.find_dependency('foo')
     assert_equal 2, @d.find_dependency('bar').tags.length
+  end
+
+  def test_add_returns_created_dep
+    ret = @d.add 'foo'
+    assert_equal Dependency.new('foo'), ret
   end
 
   def test_dependency_tags

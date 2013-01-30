@@ -1,8 +1,8 @@
 require 'formula'
 
 class Justniffer < Formula
-  url 'http://downloads.sourceforge.net/project/justniffer/justniffer/justniffer%200.5.11/justniffer_0.5.11.tar.gz'
   homepage 'http://justniffer.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/justniffer/justniffer/justniffer%200.5.11/justniffer_0.5.11.tar.gz'
   sha1 '3f3222361794a6f79f47567753550995c318a037'
 
   depends_on "boost"

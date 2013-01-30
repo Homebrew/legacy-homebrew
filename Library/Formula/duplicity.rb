@@ -8,8 +8,10 @@ class Duplicity < Formula
   depends_on 'librsync'
   depends_on 'gnupg'
 
+  option :universal
+
   def install
-    ENV.universal_binary
+    ENV.universal_binary if build.universal?
     # Install mostly into libexec
     system "python", "setup.py", "install",
                      "--prefix=#{prefix}",

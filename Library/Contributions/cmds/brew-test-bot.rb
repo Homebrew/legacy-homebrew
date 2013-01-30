@@ -216,7 +216,7 @@ class Test
   def cleanup_before
     @category = __method__
     return unless ARGV.include? '--cleanup'
-    git 'stash --all'
+    git 'stash'
     git 'am --abort 2>/dev/null'
     git 'rebase --abort 2>/dev/null'
     git 'reset --hard'

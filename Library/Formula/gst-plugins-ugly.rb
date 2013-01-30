@@ -10,7 +10,7 @@ class GstPluginsUgly < Formula
   depends_on 'gst-plugins-base'
 
   # The set of optional dependencies is based on the intersection of
-  # gst-plugins-ugly-0.10.17/REQUIREMENTS and Homebrew formulas
+  # gst-plugins-ugly-0.10.17/REQUIREMENTS and Homebrew formulae
   depends_on 'dirac' => :optional
   depends_on 'mad' => :optional
   depends_on 'jpeg' => :optional
@@ -33,7 +33,8 @@ class GstPluginsUgly < Formula
   depends_on 'libmms' => :optional
   depends_on 'x264' => :optional
   depends_on 'opencore-amr' => :optional
-  depends_on 'libcdio' => :optional
+  # Does not work with libcdio 0.9
+  # depends_on 'libcdio' => :optional
 
   def install
     ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"

@@ -1,6 +1,10 @@
 require 'formula'
 
 class MySqlInstalled < Requirement
+  fatal true
+
+  satisfy { which 'mysql_config' }
+
   def message; <<-EOS.undent
     MySQL is required to install.
 
@@ -15,12 +19,6 @@ class MySqlInstalled < Requirement
       http://dev.mysql.com/downloads/mysql/
     EOS
   end
-  def satisfied?
-    which 'mysql_config'
-  end
-  def fatal?
-    true
-  end
 end
 
 class MysqlConnectorOdbc < Formula
@@ -30,7 +28,7 @@ class MysqlConnectorOdbc < Formula
 
   # Won't compile against mysql-connector-c, as the C connector exports an API version
   # that causes issues with how "my_free" is declared
-  depends_on MySqlInstalled.new
+  depends_on MySqlInstalled
   depends_on 'cmake' => :build
 
   option :universal

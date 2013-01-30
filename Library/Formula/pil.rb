@@ -5,11 +5,9 @@ class Pil < Formula
   url 'http://effbot.org/downloads/Imaging-1.1.7.tar.gz'
   sha1 '76c37504251171fda8da8e63ecb8bc42a69a5c81'
 
-  option 'with-little-cms', 'Compile with little-cms support.'
-
   depends_on :freetype
   depends_on 'jpeg' => :recommended
-  depends_on 'little-cms' => :optional unless build.include? 'with-little-cms'
+  depends_on 'little-cms' => :optional
 
   # The patch is to fix a core dump in Bug in PIL's quantize() with 64 bit architectures.
   # http://mail.python.org/pipermail/image-sig/2012-June/007047.html

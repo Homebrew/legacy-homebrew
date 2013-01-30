@@ -2,8 +2,8 @@ require 'formula'
 
 class Ruby < Formula
   homepage 'http://www.ruby-lang.org/en/'
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p362.tar.gz'
-  sha256 'eb593607862b16a28176ae6d086dbe3bd9bd41935ec999a8cd5ef8773e8239d6'
+  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p374.tar.gz'
+  sha256 '0d0e32a3554867e3eddbb23fbf30a72c4748622e010c23e31302d899fc005574'
 
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
@@ -58,7 +58,7 @@ class Ruby < Formula
 
   def caveats; <<-EOS.undent
     NOTE: By default, gem installed binaries will be placed into:
-      #{bin}
+      #{opt_prefix}/bin
 
     You may want to add this to your PATH.
     EOS

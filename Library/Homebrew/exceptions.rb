@@ -45,6 +45,18 @@ class FormulaUnavailableError < RuntimeError
   end
 end
 
+class OperationInProgressError < RuntimeError
+  def initialize name
+    message = <<-EOS.undent
+      Operation already in progress for #{name}
+      Another active Homebrew process is already using #{name}.
+      Please wait for it to finish or terminate it to continue.
+      EOS
+
+    super message
+  end
+end
+
 module Homebrew
   class InstallationError < RuntimeError
     attr :formula
@@ -62,6 +74,15 @@ end
 class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   def message
     "Formula installation already attempted: #{formula}"
+  end
+end
+
+class UnsatisfiedDependencyError < Homebrew::InstallationError
+  def initialize(f, dep)
+    super f, <<-EOS.undent
+    #{f} dependency #{dep} not installed with:
+      #{dep.missing_options * ', '}
+    EOS
   end
 end
 

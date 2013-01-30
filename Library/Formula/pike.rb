@@ -5,8 +5,8 @@ def option? opt
 end
 
 class Pike < Formula
-  homepage 'http://pike.ida.liu.se'
-  url 'http://pike.ida.liu.se/pub/pike/all/7.8.700/Pike-v7.8.700.tar.gz'
+  homepage 'http://pike.lysator.liu.se'
+  url 'http://pike.lysator.liu.se/pub/pike/latest-stable/Pike-v7.8.700.tar.gz'
   sha1 '877bd50d2bb202aa485d1f7c62398922d60696c7'
 
   depends_on "nettle"

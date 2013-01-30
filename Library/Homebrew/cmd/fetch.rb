@@ -10,7 +10,7 @@ module Homebrew extend self
       bucket = []
       ARGV.formulae.each do |f|
         bucket << f
-        bucket << f.recursive_deps
+        bucket << f.recursive_dependencies.map(&:to_formula)
       end
 
       bucket = bucket.flatten.uniq
@@ -28,7 +28,6 @@ module Homebrew extend self
       next unless the_tarball.kind_of? Pathname
 
       puts "Downloaded to: #{the_tarball}" unless already_downloaded
-      puts "MD5:  #{the_tarball.md5}"
       puts "SHA1: #{the_tarball.sha1}"
       puts "SHA256: #{the_tarball.sha2}"
 

@@ -15,6 +15,7 @@ class OpenMpi < Formula
 
   option 'disable-fortran', 'Do not build the Fortran bindings'
   option 'test', 'Verify the build with make check'
+  option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
 
   def install
     args = %W[
@@ -26,6 +27,10 @@ class OpenMpi < Formula
       args << '--disable-mpi-f77' << '--disable-mpi-f90'
     else
       ENV.fortran
+    end
+
+    if build.include? 'enable-mpi-thread-multiple'
+      args << '--enable-mpi-thread-multiple'
     end
 
     system './configure', *args
