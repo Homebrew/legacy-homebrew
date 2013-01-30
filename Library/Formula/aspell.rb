@@ -52,8 +52,8 @@ class Aspell < Formula
   # TODO remove when options works properly
   def caveats; <<-EOS.undent
     Dictionaries are not automatically installed, please specify the languages
-    for which you want dictionaries to be installed with the --lang option, e.g:
-    % brew install aspell --lang=en,es
+    for which you want dictionaries to be installed with the --with-lang option, e.g:
+    % brew install aspell --with-lang=en,es
 
     For the following languages aspell dictionaries are available:
     #{available_languages.join(', ')}
