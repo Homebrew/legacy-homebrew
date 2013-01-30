@@ -7,7 +7,6 @@ require 'patches'
 require 'compilers'
 require 'build_environment'
 require 'build_options'
-require 'extend/set'
 
 
 class Formula
@@ -489,10 +488,8 @@ class Formula
   end
 
   # The full set of Requirements for this formula's dependency tree.
-  def recursive_requirements
-    reqs = ComparableSet.new
-    recursive_dependencies.each { |d| reqs.merge d.to_formula.requirements }
-    reqs.merge requirements
+  def recursive_requirements(&block)
+    Requirement.expand(self, &block)
   end
 
   def to_hash
