@@ -40,6 +40,9 @@ class Formula
     # then a bottle is not available for the current platform.
     if @bottle and not (@bottle.checksum.nil? or @bottle.checksum.empty?)
       @bottle.url ||= bottle_base_url + bottle_filename(self)
+      if @bottle.cat_without_underscores
+        @bottle.url.gsub!(MacOS.cat.to_s, MacOS.cat_without_underscores.to_s)
+      end
     else
       @bottle = nil
     end
@@ -157,6 +160,13 @@ class Formula
 
   def cached_download
     @downloader.cached_location
+  end
+
+  # Can be overridden to selectively disable bottles from formulae.
+  # Defaults to true so overridden version does not have to check if bottles
+  # are supported.
+  def pour_bottle?
+    true
   end
 
   # tell the user about any caveats regarding this package, return a string

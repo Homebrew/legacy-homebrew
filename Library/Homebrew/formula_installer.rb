@@ -114,6 +114,8 @@ class FormulaInstaller
           f.recursive_dependencies.map(&:to_formula).any? do |dep|
             dep.build.with?(req.name)
           end || f.build.with?(req.name)
+        else
+          true
         end
       end
     end

@@ -70,8 +70,10 @@ class Keg < Pathname
     end
     yield
   ensure
-    file.flock(File::LOCK_UN)
-    file.close
+    unless file.nil?
+      file.flock(File::LOCK_UN)
+      file.close
+    end
   end
 
   def linked_keg_record
