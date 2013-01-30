@@ -15,6 +15,7 @@ def install_bottle? f
     and f.downloader.local_bottle_path
   not ARGV.build_from_source? \
     and MacOS.bottles_supported? \
+    and f.pour_bottle? \
     and f.build.used_options.empty? \
     and bottle_current?(f)
 end
