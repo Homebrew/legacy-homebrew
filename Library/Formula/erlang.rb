@@ -82,7 +82,6 @@ class Erlang < Formula
     end
 
     system "./configure", *args
-    touch 'lib/wx/SKIP' if MacOS.version >= :snow_leopard
     system "make"
     system "make install"
 
