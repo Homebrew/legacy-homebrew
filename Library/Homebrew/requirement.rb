@@ -46,11 +46,11 @@ class Requirement
   end
 
   def eql?(other)
-    other.is_a?(self.class) && hash == other.hash
+    instance_of?(other.class) && hash == other.hash
   end
 
   def hash
-    message.hash
+    [name, *tags].hash
   end
 
   private
