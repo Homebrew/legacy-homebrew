@@ -212,7 +212,7 @@ class VersionParsingTests < Test::Unit::TestCase
   end
 
   def test_another_erlang_bottle_style
-    assert_version_detected 'R15B01', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B01.mountainlion.bottle.tar.gz'
+    assert_version_detected 'R15B01', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B01.mountain_lion.bottle.tar.gz'
   end
 
   def test_yet_another_erlang_bottle_style
