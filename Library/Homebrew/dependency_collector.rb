@@ -63,7 +63,7 @@ private
       spec
     when Class
       if spec < Requirement
-        spec.new
+        spec.new(tag)
       else
         raise "#{spec} is not a Requirement subclass"
       end
