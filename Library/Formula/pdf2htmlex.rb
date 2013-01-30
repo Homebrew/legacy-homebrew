@@ -2,14 +2,15 @@ require 'formula'
 
 class Pdf2htmlex < Formula
   homepage 'http://coolwanglu.github.com/pdf2htmlEX/'
-  url 'https://github.com/coolwanglu/pdf2htmlEX/tarball/v0.3.1'
-  sha1 '1ad2d9d1db10ce10721ffb38cbc692da32662bfe'
+  url 'https://github.com/coolwanglu/pdf2htmlEX/archive/v0.6.tar.gz'
+  sha1 '3b824e007e48130ccacb7372fb98658990e402fd'
 
   head 'https://github.com/coolwanglu/pdf2htmlEX.git'
 
   depends_on 'cmake' => :build
   depends_on 'fontforge'
   depends_on 'libpng'
+  depends_on 'ttfautohint'
   depends_on 'poppler'
 
   def install
