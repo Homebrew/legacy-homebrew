@@ -16,7 +16,7 @@ class Skipfish < Formula
       "#define ASSETS_DIR              \"assets\"",
       "#define ASSETS_DIR	       \"#{libexec}/assets\""
 
-system 'make'
+    system 'make'
     bin.install 'skipfish'
     libexec.install %w(assets dictionaries config signatures)
   end
