@@ -8,7 +8,7 @@ class MecabIpadic < Formula
   depends_on "mecab"
 
   def install
-    args = %w[
+    args = %W[
       --disable-debug
       --disable-dependency-tracking
       --prefix=#{prefix}
