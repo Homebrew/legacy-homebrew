@@ -446,6 +446,12 @@ can take several different forms:
 
     *Note:* Homebrew will only try to print emoji on Lion or newer.
 
+  * HOMEBREW\_SOURCEFORGE\_MIRROR:
+    If set, Homebrew will use the value of `HOMEBREW_SOURCEFORGE_MIRROR` to
+    select a SourceForge mirror for downloading bottles.
+
+    *Example:* `export HOMEBREW_SOURCEFORGE_MIRROR='heanet'`
+
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
     a Homebrew-built Subversion if installed, or the system-provided binary.

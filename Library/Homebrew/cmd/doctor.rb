@@ -730,10 +730,8 @@ def check_git_newline_settings
       core.autocrlf = #{autocrlf}
 
     If you are not routinely dealing with Windows-based projects,
-    consider removing these settings.
-
-    Alternatively run:
-    `git config -f #{HOMEBREW_REPOSITORY}/.git/config --add core.autocrlf false`
+    consider removing these by running:
+    `git config --global --set core.autocrlf false`
     EOS
   end
 end
