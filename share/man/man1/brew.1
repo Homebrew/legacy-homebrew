@@ -19,10 +19,7 @@ Homebrew is the easiest and most flexible way to install the UNIX tools Apple di
 For the full command list, see the COMMANDS section\.
 .
 .P
-With \fB\-\-verbose\fR or \fB\-v\fR, many commands print extra debugging information\.
-.
-.br
-Note that these flags should only appear after a command\.
+With \fB\-\-verbose\fR or \fB\-v\fR, many commands print extra debugging information\. Note that these flags should only appear after a command\.
 .
 .TP
 \fBinstall\fR \fIformula\fR
@@ -491,6 +488,13 @@ If set, Homebrew will not print the beer emoji on a successful build\.
 .
 .IP
 \fINote:\fR Homebrew will only try to print emoji on Lion or newer\.
+.
+.TP
+HOMEBREW_SOURCEFORGE_MIRROR
+If set, Homebrew will use the value of \fBHOMEBREW_SOURCEFORGE_MIRROR\fR to select a SourceForge mirror for downloading bottles\.
+.
+.IP
+\fIExample:\fR \fBexport HOMEBREW_SOURCEFORGE_MIRROR=\'heanet\'\fR
 .
 .TP
 HOMEBREW_SVN
