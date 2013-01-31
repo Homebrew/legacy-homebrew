@@ -95,7 +95,7 @@ class Caveats
           s << "    launchctl load #{plist_link}"
         end
       end
-      s << '' << "WARNING: launchctl will fail when run under tmux."
+      s << '' << "WARNING: launchctl will fail when run under tmux." if ENV['TMUX']
     end
     s.join("\n") unless s.empty?
   end

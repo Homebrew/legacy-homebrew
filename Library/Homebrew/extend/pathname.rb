@@ -5,8 +5,7 @@ require 'mach'
 class Pathname
   include MachO
 
-  BOTTLE_EXTNAME_RX = /(\.[a-z]+\.bottle\.(\d+\.)?tar\.gz)$/
-  OLD_BOTTLE_EXTNAME_RX = /((\.[a-z]+)?[\.-]bottle\.tar\.gz)$/
+  BOTTLE_EXTNAME_RX = /(\.[a-z_]+\.bottle\.(\d+\.)?tar\.gz)$/
 
   def install *sources
     results = []
@@ -126,8 +125,6 @@ class Pathname
   def extname
     BOTTLE_EXTNAME_RX.match to_s
     return $1 if $1
-    OLD_BOTTLE_EXTNAME_RX.match to_s
-    return $1 if $1
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
@@ -217,11 +214,6 @@ class Pathname
       end
     end
     incr_hash.hexdigest
-  end
-
-  def md5
-    require 'digest/md5'
-    incremental_hash(Digest::MD5)
   end
 
   def sha1

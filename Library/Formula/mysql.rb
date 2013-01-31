@@ -106,6 +106,10 @@ class Mysql < Formula
       s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
     ln_s "#{prefix}/support-files/mysql.server", bin
+
+    # Move mysqlaccess to libexec
+    mv "#{bin}/mysqlaccess", libexec
+    mv "#{bin}/mysqlaccess.conf", libexec
   end
 
   def caveats; <<-EOS.undent
@@ -114,7 +118,7 @@ class Mysql < Formula
         mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=#{var}/mysql --tmpdir=/tmp
 
     To set up base tables in another folder, or use a different user to run
-    mysqld, view the help for mysqld_install_db:
+    mysqld, view the help for mysql_install_db:
         mysql_install_db --help
 
     and view the MySQL documentation:
@@ -154,5 +158,11 @@ class Mysql < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    (opt_prefix+'mysql-test').cd do
+      system './mysql-test-run.pl', 'status'
+    end
   end
 end

@@ -244,12 +244,9 @@ class FormulaAuditor
       next if cksum.nil?
 
       len = case cksum.hash_type
-        when :md5 then 32
         when :sha1 then 40
         when :sha256 then 64
         end
-
-      problem "md5 is broken, deprecated: use sha1 instead" if cksum.hash_type == :md5
 
       if cksum.empty?
         problem "#{cksum.hash_type} is empty"

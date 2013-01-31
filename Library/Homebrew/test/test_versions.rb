@@ -212,19 +212,11 @@ class VersionParsingTests < Test::Unit::TestCase
   end
 
   def test_another_erlang_bottle_style
-    assert_version_detected 'R15B01', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B01.mountainlion.bottle.tar.gz'
+    assert_version_detected 'R15B01', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B01.mountain_lion.bottle.tar.gz'
   end
 
   def test_yet_another_erlang_bottle_style
     assert_version_detected 'R15B03-1', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B03-1.mountainlion.bottle.tar.gz'
-  end
-
-  def test_old_bottle_style
-    assert_version_detected '4.7.3', 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz'
-  end
-
-  def test_old_erlang_bottle_style
-    assert_version_detected 'R15B', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B-bottle.tar.gz'
   end
 
   def test_imagemagick_style
@@ -249,6 +241,10 @@ class VersionParsingTests < Test::Unit::TestCase
 
   def test_apache_version_style
     assert_version_detected '1.2.0-rc2', 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.2.0/apache-cassandra-1.2.0-rc2-bin.tar.gz'
+  end
+
+  def test_jpeg_style
+    assert_version_detected '8d', 'http://www.ijg.org/files/jpegsrc.v8d.tar.gz'
   end
 
   # def test_version_ghc_style

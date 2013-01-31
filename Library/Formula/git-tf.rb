@@ -24,7 +24,7 @@ class GitTf < Formula
     libexec.install install_prefix + 'lib'
     libexec.install install_prefix + 'native/macosx'
 
-    bin.write_exec_script 'git-tf'
+    bin.write_exec_script libexec/'git-tf'
     (share/'doc/git-tf').install Dir['Git-TF_*'] + Dir['ThirdPartyNotices*']
   end
 

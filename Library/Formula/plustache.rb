@@ -8,6 +8,6 @@ class Plustache < Formula
   depends_on 'boost'
 
   def install
-    system "rake", "install", "prefix=#{prefix}"
+    rake "install", "prefix=#{prefix}"
   end
 end
