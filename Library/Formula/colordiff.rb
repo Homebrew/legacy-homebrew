@@ -14,6 +14,14 @@ class Colordiff < Formula
                    "MAN_DIR=#{man1}",
                    "install"
   end
+
+  def test
+    mktemp do
+      cp HOMEBREW_PREFIX+'bin/brew', 'brew1'
+      cp HOMEBREW_PREFIX+'bin/brew', 'brew2'
+      system "#{bin}/colordiff", 'brew1', 'brew2'
+    end
+  end
 end
 
 __END__

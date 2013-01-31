@@ -9,4 +9,8 @@ class Gist < Formula
   def install
     system "rake", "install", "prefix=#{prefix}"
   end
+
+  def test
+    system "#{bin}/gist", '--version'
+  end
 end
