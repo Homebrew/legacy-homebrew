@@ -134,6 +134,10 @@ module HomebrewArgvExtension
       or build_head? or build_devel? or build_universal? or build_bottle?
   end
 
+  def force_install_bottle?
+    include? 'force-install-bottle' or ENV['HOMEBREW_FORCE_BOTTLES']
+  end
+
   def flag? flag
     options_only.each do |arg|
       return true if arg == flag
