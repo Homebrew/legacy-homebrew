@@ -33,7 +33,7 @@ class GstPluginsUgly < Formula
   depends_on 'libmms' => :optional
   depends_on 'x264' => :optional
   depends_on 'opencore-amr' => :optional
-  depends_on 'libcdio' => :optional
+  # Does not work with libcdio 0.9
 
   def install
     ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"

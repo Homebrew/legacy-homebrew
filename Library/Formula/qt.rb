@@ -15,6 +15,10 @@ class Qt < Formula
 
   env :std # Otherwise fails on SSE intrinsics
 
+  fails_with :clang do
+    build 425
+  end
+
   option :universal
   option 'with-qtdbus', 'Enable QtDBus module'
   option 'with-qt3support', 'Enable deprecated Qt3Support module'

@@ -200,6 +200,8 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
   def initialize name, package
     super
     @tarball_path = HOMEBREW_CACHE/"#{name}-#{package.version}#{ext}"
+    mirror = ENV['HOMEBREW_SOURCEFORGE_MIRROR']
+    @url = "#{@url}?use_mirror=#{mirror}" if mirror
   end
 end
 
