@@ -1,3 +1,5 @@
+require 'set'
+
 class Option
   include Comparable
 
@@ -33,6 +35,8 @@ class Option
 
   def split_name(name)
     case name
+    when /^[a-zA-Z]$/
+      [name, "-#{name}"]
     when /^-[a-zA-Z]$/
       [name[1..1], name]
     when /^--(.+)$/
@@ -101,8 +105,16 @@ class Options
     case arg
     when self then arg
     when Option then new << arg
-    when Array then new(arg.map { |a| Option.new(a.to_s) })
-    else raise TypeError, "Cannot convert #{arg.inspect} to Options"
+    when Array
+      opts = arg.map do |arg|
+        case arg
+        when /^-[^-]+$/ then arg[1..-1].split(//)
+        else arg
+        end
+      end.flatten
+      new(opts.map { |o| Option.new(o) })
+    else
+      raise TypeError, "Cannot convert #{arg.inspect} to Options"
     end
   end
 end

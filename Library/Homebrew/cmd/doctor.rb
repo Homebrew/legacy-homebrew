@@ -723,7 +723,7 @@ def check_git_newline_settings
   autocrlf = `git config --get core.autocrlf`.chomp
   safecrlf = `git config --get core.safecrlf`.chomp
 
-  unless autocrlf == 'false' then <<-EOS.undent
+  if !autocrlf.empty? && autocrlf != 'false' then <<-EOS.undent
     Suspicious Git newline settings found.
 
     The detected Git newline settings will cause checkout problems:
