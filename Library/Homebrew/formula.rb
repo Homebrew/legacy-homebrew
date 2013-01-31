@@ -394,7 +394,8 @@ class Formula
       install_type = :from_url
     elsif name.match bottle_regex
       bottle_filename = Pathname(name).realpath
-      name = bottle_filename.basename.to_s.rpartition('-').first
+      version = Version.parse(bottle_filename).to_s
+      name = bottle_filename.basename.to_s.rpartition("-#{version}").first
       path = Formula.path(name)
       install_type = :from_local_bottle
     else
