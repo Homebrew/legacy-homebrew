@@ -11,10 +11,13 @@ class Jpeg < Formula
     sha1 'edff61d516f97d76341a14211d0206bda18d0cf7' => :snowleopard
   end
 
+  option :universal
+
   def install
-    ENV.universal_binary
+    ENV.universal_binary if build.universal?
     # Builds static and shared libraries.
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
