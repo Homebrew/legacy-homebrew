@@ -17,7 +17,7 @@ class GitFlowAvh < Formula
 
   def caveats; <<-EOS.undent
     Create a ~/.gitflow_export file with the content
-      alias getopt="$(brew --prefix gnu-getopt)/bin/getopt"
+      export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
      EOS
   end
 
