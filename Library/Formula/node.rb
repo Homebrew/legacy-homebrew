@@ -34,7 +34,7 @@ class NpmNotInstalled < Requirement
   satisfy :build_env => false do
     begin
       path = Pathname.new("#{modules_folder}/npm")
-      not path.realpath.to_s.include?(HOMEBREW_CELLAR)
+      path.realpath.to_s.include?(HOMEBREW_CELLAR)
     rescue Exception => e
       true
     end
