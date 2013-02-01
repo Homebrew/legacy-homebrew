@@ -10,7 +10,13 @@ class GtkMacIntegration < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gtk+'
 
-  fails_with :clang
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      cocoa_menu_item.c:527 fails to compile because 'const gchar *' (aka 'const char *')
+      is not implicitly converted to 'NSString *'
+      EOS
+  end
 
   def install
 
