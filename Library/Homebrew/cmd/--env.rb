@@ -8,6 +8,21 @@ module Homebrew extend self
     end
     ENV.setup_build_environment
     ENV.universal_binary if ARGV.build_universal?
+    ARGV.formulae.each do |f|
+      # NOTE: Copied from build.rb def install (line ~63)
+      # TODO: Refactor to have a single instance of this code.
+      if dep.keg_only?
+        ENV.prepend 'LDFLAGS', "-L#{dep.lib}"
+        ENV.prepend 'CPPFLAGS', "-I#{dep.include}"
+        ENV.prepend 'PATH', "#{dep.bin}", ':'
+
+        pcdir = dep.lib/'pkgconfig'
+        ENV.prepend 'PKG_CONFIG_PATH', pcdir, ':' if pcdir.directory?
+
+        acdir = dep.share/'aclocal'
+        ENV.prepend 'ACLOCAL_PATH', acdir, ':' if acdir.directory?
+      end
+    end
     if $stdout.tty?
       dump_build_env ENV
     else
