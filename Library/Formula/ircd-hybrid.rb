@@ -8,7 +8,12 @@ class IrcdHybrid < Formula
   # ircd-hybrid needs the .la files
   skip_clean :la
 
+  # system openssl fails with undefined symbols: "_SSL_CTX_clear_options"
+  depends_on 'openssl' if MacOS.version < :lion
+
   def install
+    ENV.j1 # build system trips over itself
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
@@ -18,7 +23,7 @@ class IrcdHybrid < Formula
   end
 
   def test
-    system "ircd -version"
+    system "#{sbin}/ircd", "-version"
   end
 
   def caveats; <<-EOS.undent
