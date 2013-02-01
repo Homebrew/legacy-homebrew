@@ -8,8 +8,8 @@ class Play < Formula
   head 'https://github.com/playframework/Play20.git'
 
   devel do
-    url 'http://download.playframework.org/releases/play-2.1-RC3.zip'
-    sha1 '7dd97e75a41541ace9638ad49c611d6a0b57e098'
+    url 'http://download.playframework.org/releases/play-2.1-RC4.zip'
+    sha1 '2fbf24bd14e4b74de7353e08fbed496baf394b04'
   end
 
   def install
