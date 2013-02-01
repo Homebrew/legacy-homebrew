@@ -39,6 +39,9 @@ module MacOS extend self
           `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
         end
 
+        # If xcrun finds a superenv tool then discard the result.
+        xcrun_path = nil if xcrun_path.include? HOMEBREW_PREFIX+"Library/ENV"
+
         paths = %W[#{xcrun_path}
                    #{dev_tools_path}/#{tool}
                    #{xctoolchain_path}/usr/bin/#{tool}]
