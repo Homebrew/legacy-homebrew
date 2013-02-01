@@ -7,8 +7,8 @@ class Tenyr < Formula
 
   head 'https://github.com/kulp/tenyr.git'
 
-  depends_on 'flex'
-  depends_on 'bison'
+  #depends_on 'flex'
+  depends_on 'bison' # tenyr requires bison >= 2.5
 
   def install
     system "make"
