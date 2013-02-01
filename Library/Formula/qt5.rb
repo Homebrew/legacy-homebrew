@@ -2,12 +2,16 @@ require 'formula'
 
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
-  url 'http://releases.qt-project.org/qt5/5.0.0/single/qt-everywhere-opensource-src-5.0.0.tar.gz'
-  sha1 '42f4b11389fe1361352cdd04f258f0d6f175ebfd'
+  url 'http://releases.qt-project.org/qt5/5.0.1/single/qt-everywhere-opensource-src-5.0.1.tar.gz'
+  sha1 'fda04435b1d4069dc189ab4d22ed7a36fe6fa3e9'
 
   head 'git://gitorious.org/qt/qt5.git', :branch => 'master'
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
+
+  fails_with :clang do
+    build 425
+  end
 
   option :universal
   option 'with-qtdbus', 'Enable QtDBus module'
@@ -24,8 +28,7 @@ class Qt5 < Formula
   def install
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
-            "-confirm-license", "-opensource",
-            "-fast" ]
+            "-confirm-license", "-opensource" ]
 
     args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
