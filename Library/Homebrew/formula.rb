@@ -444,6 +444,7 @@ class Formula
     end
 
     raise NameError if !klass.ancestors.include? Formula
+    raise NameError if klass == Formula
 
     return klass.new(name) if install_type == :from_name
     return klass.new(name, path.to_s)
