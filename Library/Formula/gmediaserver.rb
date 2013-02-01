@@ -1,8 +1,8 @@
 require 'formula'
 
 class Gmediaserver < Formula
-  url 'http://download.savannah.gnu.org/releases/gmediaserver/gmediaserver-0.13.0.tar.gz'
   homepage 'http://www.gnu.org/software/gmediaserver/'
+  url 'http://download.savannah.gnu.org/releases/gmediaserver/gmediaserver-0.13.0.tar.gz'
   sha1 '5b868bc3c3d3bf0c2c550a4fc618c586a2640799'
 
   depends_on 'pkg-config' => :build

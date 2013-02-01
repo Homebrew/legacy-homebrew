@@ -42,7 +42,7 @@ class Disco < Formula
         ln -s #{etc}/disco/settings.py ~/.disco
 
     To run the discodex server for development:
-        cd #{prefix}/contrib/discodex/www
+        cd #{opt_prefix}/contrib/discodex/www
         ./manage.py runserver 8080
 
     The DDFS_*_REPLICA settings have been set to 1 assuming a single-machine install.

@@ -2,8 +2,8 @@ require 'formula'
 
 class Ec2ApiTools < AmazonWebServicesFormula
   homepage 'http://aws.amazon.com/developertools/351'
-  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.6.1.2.zip'
-  sha1 '7bd0f294d9661db403d2615407a253b6ee0aab3e'
+  url 'http://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.6.6.0.zip'
+  sha1 'e2461caf2b95e97e991f3d22b63516ed46a270f0'
 
   def install
     standard_install

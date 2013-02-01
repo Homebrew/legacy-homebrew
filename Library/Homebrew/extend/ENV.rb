@@ -33,9 +33,11 @@ module HomebrewEnvExtension
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    append 'CPPFLAGS', "-F#{HOMEBREW_PREFIX}/Frameworks"
-    append 'LDFLAGS', "-F#{HOMEBREW_PREFIX}/Frameworks"
-    self['CMAKE_FRAMEWORK_PATH'] = HOMEBREW_PREFIX/"Frameworks"
+    if (HOMEBREW_PREFIX/'Frameworks').exist?
+      append 'CPPFLAGS', "-F#{HOMEBREW_PREFIX}/Frameworks"
+      append 'LDFLAGS', "-F#{HOMEBREW_PREFIX}/Frameworks"
+      self['CMAKE_FRAMEWORK_PATH'] = HOMEBREW_PREFIX/"Frameworks"
+    end
 
     # Os is the default Apple uses for all its stuff so let's trust them
     set_cflags "-Os #{SAFE_CFLAGS_FLAGS}"
@@ -67,7 +69,8 @@ module HomebrewEnvExtension
     paths = []
     paths << HOMEBREW_PREFIX/'lib/pkgconfig'
     paths << HOMEBREW_PREFIX/'share/pkgconfig'
-    paths << HOMEBREW_REPOSITORY/'Library/ENV/pkgconfig' if MacOS.version >= :mountain_lion
+    paths << HOMEBREW_REPOSITORY/'Library/ENV/pkgconfig/mountain_lion' if MacOS.version >= :mountain_lion
+    paths << HOMEBREW_REPOSITORY/'Library/ENV/pkgconfig/leopard' if MacOS.version <= :leopard
     paths << '/usr/lib/pkgconfig'
     paths.select { |d| File.directory? d }.join(':')
   end
@@ -428,6 +431,19 @@ class << ENV
   # See: http://bugs.python.org/issue6848
   def ncurses_define
     append 'CPPFLAGS', "-DNCURSES_OPAQUE=0"
+  end
+
+  def userpaths!
+    paths = ORIGINAL_PATHS.map { |p| p.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
+    self['PATH'] = paths.unshift(*self['PATH'].split(":")).uniq.join(":")
+  end
+
+  def with_build_environment
+    old_env = to_hash
+    setup_build_environment
+    yield
+  ensure
+    replace(old_env)
   end
 
   def fortran

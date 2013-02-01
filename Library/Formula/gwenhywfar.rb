@@ -10,6 +10,7 @@ class Gwenhywfar < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gnutls'
+  depends_on 'libgcrypt'
 
   def options
     [[

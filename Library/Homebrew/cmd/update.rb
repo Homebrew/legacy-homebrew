@@ -3,6 +3,8 @@ require 'cmd/untap'
 
 module Homebrew extend self
 
+  DEPRECATED_TAPS = ['adamv-alt']
+
   def update
     abort "Please `brew install git' first." unless which "git"
 
@@ -20,6 +22,12 @@ module Homebrew extend self
     new_files = []
     Dir["Library/Taps/*"].each do |tapd|
       next unless File.directory?(tapd)
+
+      basename = Pathname.new(tapd).basename.to_s
+      if DEPRECATED_TAPS.include?(basename)
+        opoo "#{basename} is deprecated; please untap it"
+        next
+      end
 
       cd tapd do
         begin

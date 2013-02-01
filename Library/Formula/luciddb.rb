@@ -27,11 +27,11 @@ class Luciddb < Formula
       n = Pathname.new(b).basename
       (bin+n).write shim_script(n)
     end
-    plist_path.write luciddb_startup_plist(java_home)
-    plist_path.chmod 0644
   end
 
-  def luciddb_startup_plist(java_home); <<-EOPLIST.undent
+  plist_options :manual => "lucidDbServer"
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -45,7 +45,7 @@ class Luciddb < Formula
       <key>EnvironmentVariables</key>
       <dict>
         <key>JAVA_HOME</key>
-        <string>#{java_home}</string>
+        <string>#{`/usr/libexec/java_home`.chomp!}</string>
       </dict>
       <key>ProgramArguments</key>
       <array>
@@ -59,22 +59,6 @@ class Luciddb < Formula
       <string>/dev/null</string>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
-
-  def caveats; <<-EOS.undent
-    If this is your first install:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Or start the server manually by typing:
-      lucidDbServer
-   EOS
- end
 end

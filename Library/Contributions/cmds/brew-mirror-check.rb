@@ -28,8 +28,7 @@ module Homebrew extend self
     mirror_check_usage = <<-EOS
 Usage: brew mirror-check <formulae ...>
 
-Cycle through mirror lists for each formula, attempt a download and validate
-MD5 sums.
+Cycle through mirror lists for each formula, attempt a download and validate file hashes.
     EOS
 
     if ARGV.empty?

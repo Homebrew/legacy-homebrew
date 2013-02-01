@@ -5,9 +5,14 @@ class WineGecko < Formula
   sha1 'c30aa99621e98336eb4b7e2074118b8af8ea2ad5'
 
   devel do
-    url 'http://downloads.sourceforge.net/wine/wine_gecko-1.8-x86.msi', :using => :nounzip
-    sha1 'a8622ff749cc2a2cb311f902b7e99664ecc2f8d6'
+    url 'http://downloads.sourceforge.net/wine/wine_gecko-1.9-x86.msi', :using => :nounzip
+    sha1 'd2553224848a926eacfa8685662ff1d7e8be2428'
   end
+end
+
+class WineMono < Formula
+  url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+  sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
 end
 
 class Wine < Formula
@@ -18,17 +23,23 @@ class Wine < Formula
   head 'git://source.winehq.org/git/wine.git'
 
   devel do
-    # NOTE: when updating Wine, please check if Wine-Gecko needs updating too
-    # see http://wiki.winehq.org/Gecko
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.16.tar.bz2'
-    sha256 '2f4df6ade18d636c892bee0feb6fd075eb3ad299e61d250ea359659d6411e723'
+    # NOTE: when updating Wine, please check if Wine-Gecko and Wine-Mono needs
+    # updating too
+    #  * http://wiki.winehq.org/Gecko
+    #  * http://wiki.winehq.org/Mono
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.22.tar.bz2'
+    sha256 'db08a40a5e6fce050b5cca7782d396ed3a9b1dfb23b9915dad93efb886fc6739'
   end
 
   env :std
 
+  option :universal
+
   depends_on :x11
   depends_on 'jpeg'
   depends_on 'libicns'
+  depends_on 'libtiff'
+  depends_on 'little-cms'
 
   fails_with :llvm do
     build 2336
@@ -55,6 +66,14 @@ class Wine < Formula
     EOS
   end
 
+  def winemac_key; <<-EOS.undent
+    REGEDIT4
+    [HKEY_CURRENT_USER\\Software\\Wine\\Drivers]
+    "Graphics"="mac,x11"
+    "Ime"="osxime,mac,x11"
+    EOS
+  end
+
   def install
     # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
     build32 = "-arch i386 -m32"
@@ -71,14 +90,27 @@ class Wine < Formula
     ENV.append "CXXFLAGS", "-D_DARWIN_NO_64_BIT_INODE"
     ENV.append "LDFLAGS", "#{build32} -framework CoreServices -lz -lGL -lGLU"
 
-    args = ["--prefix=#{prefix}",
-            "--x-include=#{MacOS::X11.include}",
-            "--x-lib=#{MacOS::X11.lib}",
-            "--with-x",
-            "--with-coreaudio",
-            "--with-opengl"]
+    # Workarounds for XCode not including pkg-config files
+    ENV.libxml2
+    ENV.append "LDFLAGS", "-lxslt"
+
+    args = %W[--prefix=#{prefix}
+              --with-coreaudio
+              --with-opengl
+              --with-x
+              --x-include=#{MacOS::X11.include}
+              --x-lib=#{MacOS::X11.lib}]
     args << "--disable-win16" if MacOS.version == :leopard or ENV.compiler == :clang
 
+    if not build.universal?
+      opoo <<-EOS.undent
+        Not building a universal wine, you will only be able to run
+        applications built for win64! To get support for win32 build with:
+          brew install wine --universal
+
+      EOS
+      args << "--enable-win64"
+    end
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
 
@@ -88,14 +120,18 @@ class Wine < Formula
     # Don't need Gnome desktop support
     rm_rf share+'applications'
 
-    # Download Gecko once so we don't need to redownload for each prefix
+    # Download Gecko and Mono once so we don't need to redownload for each prefix
     gecko = WineGecko.new
     gecko.brew { (share+'wine/gecko').install Dir["*"] }
+    mono = WineMono.new
+    mono.brew { (share+'wine/mono').install Dir["*"] }
 
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine
     mv bin/'wine', bin/'wine.bin'
     (bin/'wine').write(wine_wrapper)
+
+    (prefix/'winemac.key').write(winemac_key) unless build.stable?
   end
 
   def caveats
@@ -109,14 +145,26 @@ class Wine < Formula
       Or check out:
         http://code.google.com/p/osxwinebuilder/
     EOS
-    # see http://bugs.winehq.org/show_bug.cgi?id=31374
     unless build.stable?
+      # see http://bugs.winehq.org/show_bug.cgi?id=31374
       s += <<-EOS.undent
 
         The current version of Wine contains a partial implementation of dwrite.dll
         which may cause text rendering issues in applications such as Steam.
         We recommend that you run winecfg, add an override for dwrite in the
         Libraries tab, and edit the override mode to "disable".
+      EOS
+      s += <<-EOS.undent
+
+        Starting with wine 1.5.22 the new experimental Mac driver by CodeWeavers has
+        been included in the main distribution. This allows wine to run without X11
+        on MacOS X. To enable it execute the following command in your wine prefix:
+
+          wine regedit #{prefix/'winemac.key'}
+
+        To disable it execute:
+
+          wine regedit /D 'HKEY_CURRENT_USER\\Software\\Wine\\Drivers'
       EOS
     end
     return s

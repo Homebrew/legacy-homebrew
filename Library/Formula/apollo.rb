@@ -16,9 +16,9 @@ end
 
 class Apollo < Formula
   homepage 'http://activemq.apache.org/apollo'
-  url "http://archive.apache.org/dist/activemq/activemq-apollo/1.4/apache-apollo-1.4-unix-distro.tar.gz"
-  version "1.4"
-  sha1 '777b9de3209f05af30d013d52c12f68f8391ab54'
+  url "http://archive.apache.org/dist/activemq/activemq-apollo/1.5/apache-apollo-1.5-unix-distro.tar.gz"
+  version "1.5"
+  sha1 '7944c4f40f2b98c79cd697a06238d056f7b4b394'
 
   option "no-bdb", "Install without bdb store support"
   option "no-mqtt", "Install without MQTT protocol support"
@@ -41,32 +41,17 @@ class Apollo < Formula
     end
 
     bin.write_exec_script libexec/'bin/apollo'
-
-    plist_path.write startup_plist
-    plist_path.chmod 0644
   end
+
+  plist_options :manual => "#{HOMEBREW_PREFIX}/var/apollo/bin/apollo-broker"
 
   def caveats; <<-EOS.undent
     To create the broker:
         #{bin}/apollo create #{var}/apollo
-
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Or to start the broker in the foreground run:
-        #{var}/apollo/bin/apollo-broker run
-
     EOS
   end
 
-  def startup_plist; <<-EOS.undent
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">

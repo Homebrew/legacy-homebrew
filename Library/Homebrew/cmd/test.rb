@@ -17,7 +17,7 @@ module Homebrew extend self
       end
 
       # Cannot test formulae without a test method
-      unless f.respond_to? :test
+      unless f.test_defined?
         ofail "#{f.name} defines no test"
         next
       end

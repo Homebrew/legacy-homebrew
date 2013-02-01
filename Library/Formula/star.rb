@@ -15,6 +15,12 @@ class Star < Formula
     (bin+'gnutar').unlink
     (bin+'tar').unlink
     (man1+'gnutar.1').unlink
-    (man1+'tar.1').unlink
+
+    # Remove generic smake files that clash with smake's versions
+    (include/'schily').rmtree
+    %w[libschily.a libdeflt.a libfind.a].each do |file|
+      (lib/file).unlink
+    end
+    (lib/'profiled').rmtree
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Xmlstarlet < Formula
   homepage 'http://xmlstar.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/xmlstar/xmlstarlet/1.4.0/xmlstarlet-1.4.0.tar.gz'
-  sha1 '8c0542c4978e43fb876f6671a786510aa5f544cf'
+  url 'http://sourceforge.net/projects/xmlstar/files/xmlstarlet/1.4.2/xmlstarlet-1.4.2.tar.gz'
+  sha1 '432bd1bd2511369b7823e5731397744435a68f04'
 
   def install
     # thanks, xmlstarlet but OS X doesn't have the static versions

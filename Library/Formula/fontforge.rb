@@ -10,17 +10,22 @@ class Fontforge < Formula
   env :std
 
   option 'without-python', 'Build without Python'
-  option 'with-x', 'Build with X'
-  option 'with-cairo', 'Build with Cairo'
-  option 'with-pango', 'Build with Pango'
-  option 'with-libspiro', 'Build with Spiro spline support'
+  option 'with-gif',       'Build with GIF support'
+  option 'with-x',         'Build with X'
+  option 'with-cairo',     'Build with Cairo'
+  option 'with-pango',     'Build with Pango'
+  option 'with-libspiro',  'Build with Spiro spline support'
 
   depends_on 'gettext'
   depends_on :xcode # Because: #include </Developer/Headers/FlatCarbon/Files.h>
 
-  depends_on :x11 if build.include? "with-x"
-  depends_on 'cairo' if build.include? "with-cairo"
-  depends_on 'pango' if build.include? "with-pango"
+  depends_on :libpng    => :recommended
+  depends_on 'jpeg'     => :recommended
+  depends_on 'libtiff'  => :recommended
+  depends_on :x11       if build.include? "with-x"
+  depends_on 'giflib'   if build.include? 'with-gif'
+  depends_on 'cairo'    if build.include? "with-cairo"
+  depends_on 'pango'    if build.include? "with-pango"
   depends_on 'libspiro' if build.include? "with-libspiro"
 
   fails_with :llvm do
@@ -108,7 +113,7 @@ class Fontforge < Formula
       To install the Mac OS X wrapper application run:
         brew linkapps
       or:
-        ln -s #{prefix}/FontForge.app /Applications
+        ln -s #{opt_prefix}/FontForge.app /Applications
     EOS
 
     python_caveats = <<-EOS.undent

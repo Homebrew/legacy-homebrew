@@ -31,13 +31,10 @@ class Aplus < Formula
     system "make", "install"
   end
 
-  def caveats
-    return <<-EOS.undent
+  def caveats; <<-EOS.undent
     This package contains a custom APL font; it doesn't display APL characters
     using the usual Unicode codepoints.  Install it by running
-
-    open #{prefix}/fonts/TrueType/KAPL.TTF
-
+      open #{opt_prefix}/fonts/TrueType/KAPL.TTF
     and clicking on the "Install Font" button.
     EOS
   end

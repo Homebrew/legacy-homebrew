@@ -8,34 +8,45 @@ module MacOS extend self
   end
 
   def cat
-    if version == :mountain_lion then :mountainlion
+    if version == :mountain_lion then :mountain_lion
     elsif version == :lion then :lion
-    elsif version == :snow_leopard then :snowleopard
+    elsif version == :snow_leopard then :snow_leopard
     elsif version == :leopard then :leopard
     else nil
     end
+  end
+
+  # TODO: Can be removed when all bottles migrated to underscored cat symbols.
+  def cat_without_underscores
+    possibly_underscored_cat = cat
+    return nil unless possibly_underscored_cat
+    cat.to_s.gsub('_', '').to_sym
   end
 
   def locate tool
     # Don't call tools (cc, make, strip, etc.) directly!
     # Give the name of the binary you look for as a string to this method
     # in order to get the full path back as a Pathname.
-    @locate ||= {}
-    @locate[tool.to_s] ||= if File.executable? "/usr/bin/#{tool}"
-      Pathname.new "/usr/bin/#{tool}"
-    else
-      # If the tool isn't in /usr/bin, then we first try to use xcrun to find
-      # it. If it's not there, or xcode-select is misconfigured, we have to
-      # look in dev_tools_path, and finally in xctoolchain_path, because the
-      # tools were split over two locations beginning with Xcode 4.3+.
-      xcrun_path = unless Xcode.bad_xcode_select_path?
-        `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
-      end
+    (@locate ||= {}).fetch(tool.to_s) do
+      @locate[tool.to_s] = if File.executable? "/usr/bin/#{tool}"
+        Pathname.new "/usr/bin/#{tool}"
+      else
+        # If the tool isn't in /usr/bin, then we first try to use xcrun to find
+        # it. If it's not there, or xcode-select is misconfigured, we have to
+        # look in dev_tools_path, and finally in xctoolchain_path, because the
+        # tools were split over two locations beginning with Xcode 4.3+.
+        xcrun_path = unless Xcode.bad_xcode_select_path?
+          `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+        end
 
-      paths = %W[#{xcrun_path}
-                 #{dev_tools_path}/#{tool}
-                 #{xctoolchain_path}/usr/bin/#{tool}]
-      paths.map { |p| Pathname.new(p) }.find { |p| p.executable? }
+        # If xcrun finds a superenv tool then discard the result.
+        xcrun_path = nil if xcrun_path.include? HOMEBREW_PREFIX+"Library/ENV"
+
+        paths = %W[#{xcrun_path}
+                   #{dev_tools_path}/#{tool}
+                   #{xctoolchain_path}/usr/bin/#{tool}]
+        paths.map { |p| Pathname.new(p) }.find { |p| p.executable? }
+      end
     end
   end
 
@@ -50,10 +61,6 @@ module MacOS extend self
     elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{Xcode.prefix}/usr/bin"
-    else
-      # Since we are pretty unrelenting in finding Xcode no matter where
-      # it hides, we can now throw in the towel.
-      opoo "Could not locate developer tools. Consult `brew doctor`."
     end
   end
 
@@ -68,16 +75,17 @@ module MacOS extend self
   end
 
   def sdk_path(v = version)
-    @sdk_path ||= {}
-    @sdk_path[v.to_s] ||= begin
-      opts = []
-      # First query Xcode itself
-      opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
-      # Xcode.prefix is pretty smart, so lets look inside to find the sdk
-      opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-      # Xcode < 4.3 style
-      opts << "/Developer/SDKs/MacOSX#{v}.sdk"
-      opts.map{|a| Pathname.new(a) }.detect { |p| p.directory? }
+    (@sdk_path ||= {}).fetch(v.to_s) do
+      @sdk_path[v.to_s] = begin
+        opts = []
+        # First query Xcode itself
+        opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
+        # Xcode.prefix is pretty smart, so lets look inside to find the sdk
+        opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+        # Xcode < 4.3 style
+        opts << "/Developer/SDKs/MacOSX#{v}.sdk"
+        opts.map{|a| Pathname.new(a) }.detect { |p| p.directory? }
+      end
     end
   end
 
@@ -129,48 +137,49 @@ module MacOS extend self
 
   def clang_version
     @clang_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ /clang version (\d\.\d)/
+      `#{locate("clang")} --version` =~ /(?:clang|LLVM) version (\d\.\d)/
       $1
     end
   end
 
   def clang_build_version
     @clang_build_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ %r[tags/Apple/clang-(\d{2,})]
+      `#{locate("clang")} --version` =~ %r[clang-(\d{2,})]
       $1.to_i
     end
   end
 
-  def macports_or_fink_installed?
-    # See these issues for some history:
-    # http://github.com/mxcl/homebrew/issues/#issue/13
-    # http://github.com/mxcl/homebrew/issues/#issue/41
-    # http://github.com/mxcl/homebrew/issues/#issue/48
-    return false unless MACOS
+  # See these issues for some history:
+  # http://github.com/mxcl/homebrew/issues/#issue/13
+  # http://github.com/mxcl/homebrew/issues/#issue/41
+  # http://github.com/mxcl/homebrew/issues/#issue/48
+  def macports_or_fink
+    paths = []
 
-    %w[port fink].each do |ponk|
+    # First look in the path because MacPorts is relocatable and Fink
+    # may become relocatable in the future.
+    %w{port fink}.each do |ponk|
       path = which(ponk)
-      return ponk unless path.nil?
+      paths << path unless path.nil?
     end
 
-    # we do the above check because macports can be relocated and fink may be
-    # able to be relocated in the future. This following check is because if
-    # fink and macports are not in the PATH but are still installed it can
-    # *still* break the build -- because some build scripts hardcode these paths:
-    %w[/sw/bin/fink /opt/local/bin/port].each do |ponk|
-      return ponk if File.exist? ponk
+    # Look in the standard locations, because even if port or fink are
+    # not in the path they can still break builds if the build scripts
+    # have these paths baked in.
+    %w{/sw/bin/fink /opt/local/bin/port}.each do |ponk|
+      path = Pathname.new(ponk)
+      paths << path if path.exist?
     end
 
-    # finally, sometimes people make their MacPorts or Fink read-only so they
-    # can quickly test Homebrew out, but still in theory obey the README's
-    # advise to rename the root directory. This doesn't work, many build scripts
-    # error out when they try to read from these now unreadable directories.
-    %w[/sw /opt/local].each do |path|
-      path = Pathname.new(path)
-      return path if path.exist? and not path.readable?
+    # Finally, some users make their MacPorts or Fink directorie
+    # read-only in order to try out Homebrew, but this doens't work as
+    # some build scripts error out when trying to read from these now
+    # unreadable paths.
+    %w{/sw /opt/local}.map { |p| Pathname.new(p) }.each do |path|
+      paths << path if path.exist? && !path.readable?
     end
 
-    false
+    paths.uniq
   end
 
   def prefer_64_bit?
@@ -192,7 +201,8 @@ module MacOS extend self
     "4.4.1" => { :llvm_build => 2336, :clang => "4.0", :clang_build => 421 },
     "4.5"   => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
     "4.5.1" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
-    "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 }
+    "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
+    "4.6"   => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
   }
 
   def compilers_standard?
@@ -228,11 +238,24 @@ module MacOS extend self
     `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
   end
 
-  def bottles_supported?
+  def bottles_supported? raise_if_failed=false
     # We support bottles on all versions of OS X except 32-bit Snow Leopard.
-    (Hardware.is_64_bit? or not MacOS.version >= :snow_leopard) \
-      and HOMEBREW_PREFIX.to_s == '/usr/local' \
-      and HOMEBREW_CELLAR.to_s == '/usr/local/Cellar' \
+    if Hardware.is_32_bit? and MacOS.version == :snow_leopard
+      return false unless raise_if_failed
+      raise "Bottles are not supported on 32-bit Snow Leopard."
+    end
+
+    unless HOMEBREW_PREFIX.to_s == '/usr/local'
+      return false unless raise_if_failed
+      raise "Bottles are only supported with a /usr/local prefix."
+    end
+
+    unless HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
+      return false unless raise_if_failed
+      raise "Bottles are only supported with a /usr/local/Cellar cellar."
+    end
+
+    true
   end
 end
 

@@ -2,8 +2,8 @@ require 'formula'
 
 class Openrtsp < Formula
   homepage 'http://www.live555.com/openRTSP'
-  url 'http://www.live555.com/liveMedia/public/live.2012.10.12.tar.gz'
-  sha1 '429dca050b7ee631cc7ddced81207bbaba65a7cc'
+  url 'http://www.live555.com/liveMedia/public/live.2013.01.25.tar.gz'
+  sha1 '5ea2868e090eb40e31a500f90f094e04c2f39e03'
 
   option "32-bit"
 
@@ -17,7 +17,7 @@ class Openrtsp < Formula
     system "make"
 
     cd 'testProgs' do
-      bin.install 'openRTSP' ,'vobStreamer', 'playSIP'
+      bin.install 'openRTSP', 'vobStreamer', 'playSIP'
     end
   end
 end

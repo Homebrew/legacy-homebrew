@@ -1,14 +1,12 @@
 require 'formula'
 
 class NeedsLion < Requirement
-  def satisfied?
-    MacOS.version >= :lion
-  end
+  fatal true
+
+  satisfy MacOS.version >= :lion
+
   def message
     "Nu requires Mac OS X 10.7 or newer"
-  end
-  def fatal?
-    true
   end
 end
 
@@ -17,7 +15,7 @@ class Nu < Formula
   url 'http://programming.nu/releases/Nu-2.0.1.tgz'
   sha1 'c0735f8f3daec9471b849f8e96827b5eef0ec44e'
 
-  depends_on NeedsLion.new
+  depends_on NeedsLion
   depends_on 'pcre'
 
   def install

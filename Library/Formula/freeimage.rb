@@ -10,10 +10,10 @@ end
 
 class Freeimage < Formula
   homepage 'http://sf.net/projects/freeimage'
-  url 'http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.15.3/FreeImage3153.zip',
+  url 'http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.15.4/FreeImage3154.zip',
         :using => FreeimageHttpDownloadStrategy
-  version '3.15.3'
-  sha1 '083ef40a1734e33cc34c55ba87019bf5cce9ca4a'
+  version '3.15.4'
+  sha1 '1d30057a127b2016cf9b4f0f8f2ba92547670f96'
 
   option :universal
 
@@ -142,3 +142,15 @@ index 0c967b8..e50ed7f 100644
 	ln -sf $(SHAREDLIB) $(INSTALLDIR)/$(VERLIBNAME)
 	ln -sf $(VERLIBNAME) $(INSTALLDIR)/$(LIBNAME)
  #	ldconfig
+diff --git a/Source/OpenEXR/IlmImf/ImfAutoArray.h b/Source/OpenEXR/IlmImf/ImfAutoArray.h
+index edb8b10..3ecf3e0 100755
+--- a/Source/OpenEXR/IlmImf/ImfAutoArray.h
++++ b/Source/OpenEXR/IlmImf/ImfAutoArray.h
+@@ -44,6 +44,7 @@
+ //
+ //-----------------------------------------------------------------------------
+
++#include <cstring>
+ #include "OpenEXRConfig.h"
+
+ namespace Imf {

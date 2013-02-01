@@ -129,18 +129,24 @@ class FormulaAuditor
 
     # Check for things we don't like to depend on.
     # We allow non-Homebrew installs whenever possible.
-    f.deps.each do |d|
+    f.deps.each do |dep|
       begin
-        dep_f = Formula.factory d
+        dep_f = dep.to_formula
       rescue
-        problem "Can't find dependency \"#{d}\"."
+        problem "Can't find dependency #{dep.inspect}."
       end
 
-      case d.name
+      dep.options.reject do |opt|
+        dep_f.build.has_option?(opt.name)
+      end.each do |opt|
+        problem "Dependency #{dep} does not define option #{opt.name.inspect}"
+      end
+
+      case dep.name
       when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
         problem <<-EOS.undent
-          Don't use #{d} as a dependency. We allow non-Homebrew
-          #{d} installations.
+          Don't use #{dep} as a dependency. We allow non-Homebrew
+          #{dep} installations.
           EOS
       when 'gfortran'
         problem "Use ENV.fortran during install instead of depends_on 'gfortran'"
@@ -155,6 +161,15 @@ class FormulaAuditor
     end
   end
 
+  def audit_conflicts
+    f.conflicts.each do |req|
+      begin
+        conflict_f = Formula.factory req.formula
+      rescue
+        problem "Can't find conflicting formula \"#{req.formula}\"."
+      end
+    end
+  end
 
   def audit_urls
     unless f.homepage =~ %r[^https?://]
@@ -229,12 +244,9 @@ class FormulaAuditor
       next if cksum.nil?
 
       len = case cksum.hash_type
-        when :md5 then 32
         when :sha1 then 40
         when :sha256 then 64
         end
-
-      problem "md5 is broken, deprecated: use sha1 instead" if cksum.hash_type == :md5
 
       if cksum.empty?
         problem "#{cksum.hash_type} is empty"
@@ -268,13 +280,8 @@ class FormulaAuditor
     end
 
     # Commented-out cmake support from default template
-    if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
-      problem "Commented cmake support found"
-    end
-
-    # 2 (or more in an if block) spaces before depends_on, please
-    if text =~ /^\ ?depends_on/
-      problem "Check indentation of 'depends_on'"
+    if (text =~ /# system "cmake/)
+      problem "Commented cmake call found"
     end
 
     # build tools should be flagged properly
@@ -400,6 +407,10 @@ class FormulaAuditor
     if text =~ /skip_clean\s+:all/
       problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
     end
+
+    if text =~ /depends_on (.*)\.new\s*[^(]/
+      problem "`depends_on` can take requirement classes directly"
+    end
   end
 
   def audit
@@ -407,6 +418,7 @@ class FormulaAuditor
     audit_specs
     audit_urls
     audit_deps
+    audit_conflicts
     audit_patches
     audit_text
   end

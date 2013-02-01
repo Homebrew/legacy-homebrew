@@ -2,8 +2,10 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'svn+http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/', :revision => 1755
-  version '10.60.02'
+  url 'svn+http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/', :revision => 1809
+  version '10.60.05'
+  # Maintainers: Look http://netpbm.svn.sourceforge.net/viewvc/netpbm/
+  # for versions and matching revisions
 
   head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
 

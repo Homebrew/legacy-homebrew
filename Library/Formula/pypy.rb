@@ -1,8 +1,8 @@
 require 'formula'
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
-  sha1 '709bd97d46050d69865d4b588c7707768dfe6711'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.30.tar.gz'
+  sha1 '40dfce237883d1c02817f726128f61614dc686ff'
 end
 
 class Pypy < Formula
@@ -16,6 +16,12 @@ class Pypy < Formula
     url 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2'
     version '1.4.1'
     sha1 '961470e7510c47b8f56e6cc6da180605ba058cb6'
+  end
+
+  devel do
+    url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.0-beta1-osx64.tar.bz2'
+    version '2.0-beta1'
+    sha1 'e4938fdf33072e457fee6cb22798ec08b5a01978'
   end
 
   def install

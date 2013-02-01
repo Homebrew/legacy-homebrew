@@ -1,9 +1,9 @@
 require 'formula'
 
 class Httptunnel < Formula
-  url 'http://www.nocrew.org/software/httptunnel/httptunnel-3.0.5.tar.gz'
   homepage 'http://www.nocrew.org/software/httptunnel.html'
-  sha1 'd48a18bb7ea7eac16837b0a1f9e99aa0b8c44475'
+  url 'http://www.nocrew.org/software/httptunnel/httptunnel-3.3.tar.gz'
+  sha1 'e3fa5c6499cbad9202bb7a3ba8a5b6478a60a3f3'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Remind < Formula
-  url 'http://www.roaringpenguin.com/files/download/remind-03.01.12.tar.gz'
   homepage 'http://www.roaringpenguin.com/products/remind'
+  url 'http://www.roaringpenguin.com/files/download/remind-03.01.12.tar.gz'
   sha1 '0978357014916e0c5259e18b845d291eeb367b6c'
 
   def install

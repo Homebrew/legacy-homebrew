@@ -1,27 +1,11 @@
 require 'formula'
 
-class TexInstalled < Requirement
-  def message; <<-EOS.undent
-    A TeX/LaTeX installation is required to install.
-    You can obtain the TeX distribution for Mac OS X from:
-        http://www.tug.org/mactex/
-    EOS
-  end
-  def satisfied?
-    which 'latex'
-  end
-  def fatal?
-    true
-  end
-end
-
 class Asymptote < Formula
   homepage 'http://asymptote.sourceforge.net/'
   url 'http://downloads.sourceforge.net/asymptote/asymptote-2.15.src.tgz'
   sha1 'e0fb336c195fb21a39e3d0f3acd4881ce5e170a7'
 
-  depends_on TexInstalled.new
-  env :userpaths # To find TeX
+  depends_on :tex
 
   depends_on 'readline'
   depends_on 'bdw-gc'

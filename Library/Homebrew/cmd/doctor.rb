@@ -46,9 +46,10 @@ def remove_trailing_slash s
 end
 
 
-def path_folders
-  @path_folders ||= ENV['PATH'].split(':').collect do |p|
-    begin remove_trailing_slash(File.expand_path(p))
+def paths
+  @paths ||= ENV['PATH'].split(':').collect do |p|
+    begin
+      remove_trailing_slash(File.expand_path(p))
     rescue ArgumentError
       onoe "The following PATH component is invalid: #{p}"
     end
@@ -62,6 +63,10 @@ end
     @found = %W[#{HOMEBREW_PREFIX} /usr/local].uniq.inject([]) do |found, prefix|
       found + relative_paths.map{|f| File.join(prefix, f) }.select{|f| File.exist? f }
     end
+  end
+
+  def inject_file_list(list, str)
+    list.inject(str) { |s, f| s << "    #{f}\n" }
   end
 ############# END HELPERS
 
@@ -81,9 +86,9 @@ end
 # Installing MacGPG2 interferes with Homebrew in a big way
 # http://sourceforge.net/projects/macgpg2/files/
 def check_for_macgpg2
-  if File.exist? "/Applications/start-gpg-agent.app" or
-     File.exist? "/Library/Receipts/libiconv1.pkg" or
-     File.exist? "/usr/local/MacGPG2"
+  if %w{/Applications/start-gpg-agent.app
+        /Library/Receipts/libiconv1.pkg
+        /usr/local/MacGPG2}.any? { |f| File.exist? f }
     <<-EOS.undent
       You may have installed MacGPG2 via the package installer.
       Several other checks in this script will turn up problems, such as stray
@@ -112,13 +117,21 @@ def check_for_stray_dylibs
 
     Unexpected dylibs:
   EOS
-  bad_dylibs.each { |f| s << "    #{f}" }
-  s
+  inject_file_list(bad_dylibs, s)
 end
 
 def check_for_stray_static_libs
   unbrewed_alibs = Dir['/usr/local/lib/*.a'].select { |f| File.file? f and not File.symlink? f }
-  return if unbrewed_alibs.empty?
+
+  # Static libs which are generally OK should be added to this list,
+  # with a short description of the software they come with.
+  white_list = {
+    "libsecurity_agent_client.a" => "OS X 10.8.2 Supplemental Update",
+    "libsecurity_agent_server.a" => "OS X 10.8.2 Supplemental Update"
+  }
+
+  bad_alibs = unbrewed_alibs.reject {|d| white_list.key? File.basename(d) }
+  return if bad_alibs.empty?
 
   s = <<-EOS.undent
     Unbrewed static libraries were found in /usr/local/lib.
@@ -127,8 +140,7 @@ def check_for_stray_static_libs
 
     Unexpected static libraries:
   EOS
-  unbrewed_alibs.each{ |f| s << "    #{f}" }
-  s
+  inject_file_list(bad_alibs, s)
 end
 
 def check_for_stray_pcs
@@ -148,8 +160,7 @@ def check_for_stray_pcs
 
     Unexpected .pc files:
   EOS
-  bad_pcs.each{ |f| s << "    #{f}" }
-  s
+  inject_file_list(bad_pcs, s)
 end
 
 def check_for_stray_las
@@ -170,16 +181,18 @@ def check_for_stray_las
 
     Unexpected .la files:
   EOS
-  bad_las.each{ |f| s << "    #{f}" }
-  s
+  inject_file_list(bad_las, s)
 end
 
 def check_for_other_package_managers
-  if macports_or_fink_installed?
+  ponk = MacOS.macports_or_fink
+  unless ponk.empty?
     <<-EOS.undent
-      You have Macports or Fink installed.
-      This can cause trouble. You don't have to uninstall them, but you may like to
-      try temporarily moving them away, eg.
+      You have MacPorts or Fink installed:
+        #{ponk.join(", ")}
+
+      This can cause trouble. You don't have to uninstall them, but you may want to
+      temporarily move them out of the way, e.g.
 
         sudo mv /opt/local ~/macports
     EOS
@@ -189,7 +202,7 @@ end
 def check_for_broken_symlinks
   require 'keg'
   broken_symlinks = []
-  Keg::PRUNEABLE_DIRECTORIES.map { |d| HOMEBREW_PREFIX/d }.each do |d|
+  Keg::PRUNEABLE_DIRECTORIES.each do |d|
     next unless d.directory?
     d.find do |pn|
       broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/ and not pn.exist?
@@ -212,7 +225,7 @@ def check_for_latest_xcode
         EOS
       elsif not MacOS::CLT.latest_version?
         <<-EOS.undent
-        A newer Command Line Tools for Xcode release is avaliable
+        A newer Command Line Tools for Xcode release is available
         You should install the latest version from: http://connect.apple.com
         EOS
       end
@@ -298,7 +311,7 @@ end
 def check_access_usr_local
   return unless HOMEBREW_PREFIX.to_s == '/usr/local'
 
-  unless Pathname('/usr/local').writable_real? then <<-EOS.undent
+  unless File.writable_real?("/usr/local") then <<-EOS.undent
     The /usr/local directory is not writable.
     Even if this directory was writable when you installed Homebrew, other
     software may change permissions on this directory. Some versions of the
@@ -355,6 +368,21 @@ def check_access_share
   __check_folder_access 'share',
   'If a brew tries to write a file to this directory, the install will\n'+
   'fail during the link step.'
+end
+
+def check_access_logs
+  folder = Pathname.new('~/Library/Logs/Homebrew')
+  if folder.exist? and not folder.writable_real?
+    <<-EOS.undent
+      #{folder} isn't writable.
+      This can happen if you "sudo make install" software that isn't managed
+      by Homebrew.
+
+      Homebrew writes debugging logs to this location.
+
+      You should probably `chown` #{folder}
+    EOS
+  end
 end
 
 def check_usr_bin_ruby
@@ -427,7 +455,8 @@ def check_user_path_1
 
   out = nil
 
-  path_folders.each do |p| case p
+  paths.each do |p|
+    case p
     when '/usr/bin'
       seen_usr_bin = true
       unless $seen_prefix_bin
@@ -517,22 +546,24 @@ def check_which_pkg_config
 end
 
 def check_for_gettext
-  if %w[lib/libgettextlib.dylib
-        lib/libintl.dylib
-        include/libintl.h ].any? { |f| File.exist? "#{HOMEBREW_PREFIX}/#{f}" }
-    <<-EOS.undent
-      gettext was detected in your PREFIX.
-      The gettext provided by Homebrew is "keg-only", meaning it does not
-      get linked into your PREFIX by default.
+  find_relative_paths("lib/libgettextlib.dylib",
+                      "lib/libintl.dylib",
+                      "include/libintl.h")
 
-      If you `brew link gettext` then a large number of brews that don't
-      otherwise have a `depends_on 'gettext'` will pick up gettext anyway
-      during the `./configure` step.
+  return if @found.empty?
 
-      If you have a non-Homebrew provided gettext, other problems will happen
-      especially if it wasn't compiled with the proper architectures.
-    EOS
+  # Our gettext formula will be caught by check_linked_keg_only_brews
+  f = Formula.factory("gettext") rescue nil
+  return if f and f.linked_keg.directory? and @found.all? do |path|
+    Pathname.new(path).realpath.to_s.start_with? "#{HOMEBREW_CELLAR}/gettext"
   end
+
+  s = <<-EOS.undent_________________________________________________________72
+      gettext files detected at a system prefix
+      These files can cause compilation and link failures, especially if they
+      are compiled with improper architectures. Consider removing these files:
+      EOS
+  inject_file_list(@found, s)
 end
 
 def check_for_iconv
@@ -556,7 +587,7 @@ def check_for_iconv
 
           tl;dr: delete these files:
           EOS
-      @found.inject(s){|s, f| s << "    #{f}" }
+      inject_file_list(@found, s)
     end
   end
 end
@@ -570,7 +601,7 @@ def check_for_config_scripts
   whitelist = %W[/usr/bin /usr/sbin /usr/X11/bin /usr/X11R6/bin /opt/X11/bin #{HOMEBREW_PREFIX}/bin #{HOMEBREW_PREFIX}/sbin]
   whitelist.map! { |d| d.downcase }
 
-  path_folders.each do |p|
+  paths.each do |p|
     next if whitelist.include? p.downcase
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
@@ -676,6 +707,28 @@ def check_for_multiple_volumes
   end
 end
 
+def check_filesystem_case_sensitive
+  volumes = Volumes.new
+  tmp_prefix = Pathname.new(ENV['HOMEBREW_TEMP'] || '/tmp')
+  case_sensitive_vols = [HOMEBREW_PREFIX, HOMEBREW_REPOSITORY, HOMEBREW_CELLAR, tmp_prefix].select do |dir|
+    # We select the dir as being case-sensitive if either the UPCASED or the
+    # downcased variant is missing.
+    # Of course, on a case-insensitive fs, both exist because the os reports so.
+    # In the rare situation when the user has indeed a downcased and an upcased
+    # dir (e.g. /TMP and /tmp) this check falsely thinks it is case-insensitive
+    # but we don't care beacuse: 1. there is more than one dir checked, 2. the
+    # check is not vital and 3. we would have to touch files otherwise.
+    upcased = Pathname.new(dir.to_s.upcase)
+    downcased = Pathname.new(dir.to_s.downcase)
+    dir.exist? && !(upcased.exist? && downcased.exist?)
+  end.map { |case_sensitive_dir| volumes.get_mounts(case_sensitive_dir) }.uniq
+  return if case_sensitive_vols.empty?
+  <<-EOS.undent
+    Your file-system on #{case_sensitive_vols} appears to be CaSe SeNsItIvE.
+    Homebrew is less tested with that - don't worry but please report issues.
+  EOS
+end
+
 def check_for_git
   unless which "git" then <<-EOS.undent
     Git could not be found in your PATH.
@@ -692,16 +745,56 @@ def check_git_newline_settings
   autocrlf = `git config --get core.autocrlf`.chomp
   safecrlf = `git config --get core.safecrlf`.chomp
 
-  if autocrlf == 'input' and safecrlf == 'true' then <<-EOS.undent
+  if !autocrlf.empty? && autocrlf != 'false' then <<-EOS.undent
     Suspicious Git newline settings found.
 
-    The detected Git newline settings can cause checkout problems:
+    The detected Git newline settings will cause checkout problems:
       core.autocrlf = #{autocrlf}
-      core.safecrlf = #{safecrlf}
 
     If you are not routinely dealing with Windows-based projects,
-    consider removing these settings.
+    consider removing these by running:
+    `git config --global --set core.autocrlf false`
     EOS
+  end
+end
+
+def check_for_git_origin
+  return unless which "git"
+  # otherwise this will nag users with no repo about their remote
+  return unless (HOMEBREW_REPOSITORY/'.git').exist?
+
+  HOMEBREW_REPOSITORY.cd do
+    if `git config --get remote.origin.url`.chomp.empty? then <<-EOS.undent
+      Missing git origin remote.
+
+      Without a correctly configured origin, Homebrew won't update
+      properly. You can solve this by adding the Homebrew remote:
+        cd #{HOMEBREW_REPOSITORY}
+        git remote add origin https://github.com/mxcl/homebrew.git
+      EOS
+    end
+  end
+end
+
+def check_the_git_origin
+  return unless which "git"
+  return if check_for_git_origin
+
+  HOMEBREW_REPOSITORY.cd do
+    origin = `git config --get remote.origin.url`.chomp
+
+    unless origin =~ /mxcl\/homebrew(\.git)?$/ then <<-EOS.undent
+      Suspicious git origin remote found.
+
+      With a non-standard origin, Homebrew won't pull updates from
+      the main repository. The current git origin is:
+        #{origin}
+
+      Unless you have compelling reasons, consider setting the
+      origin remote to point at the main repository, located at:
+        https://github.com/mxcl/homebrew.git
+      EOS
+    end
   end
 end
 
@@ -722,7 +815,7 @@ end
 def __check_linked_brew f
   links_found = []
 
-  Pathname.new(f.prefix).find do |src|
+  f.prefix.find do |src|
     dst=HOMEBREW_PREFIX+src.relative_path_from(f.prefix)
     next unless dst.symlink?
 
@@ -741,6 +834,8 @@ end
 
 def check_for_linked_keg_only_brews
   require 'formula'
+
+  return unless HOMEBREW_CELLAR.exist?
 
   warnings = Hash.new
 
@@ -801,7 +896,7 @@ end
 def check_missing_deps
   return unless HOMEBREW_CELLAR.exist?
   s = Set.new
-  Homebrew.missing_deps(Homebrew.installed_brews).each do |_, deps|
+  Homebrew.missing_deps(Formula.installed).each do |_, deps|
     s.merge deps
   end
 
@@ -872,8 +967,10 @@ end
 
 def check_for_bad_python_symlink
   return unless which "python"
-  # Indeed Python --version outputs to stderr (WTF?)
-  `python --version 2>&1` =~ /Python (\d+)\./
+  # Indeed Python -V outputs to stderr (WTF?)
+  `python -V 2>&1` =~ /Python (\d+)\./
+  # This won't be the right warning if we matched nothing at all
+  return if $1.nil?
   unless $1 == "2" then <<-EOS.undent
     python is symlinked to python#$1
     This will confuse build scripts and in general lead to subtle breakage.
@@ -1006,7 +1103,7 @@ module Homebrew extend self
       checks.methods.sort << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
     else
       ARGV.named
-    end.select{ |method| method =~ /^check_/ }.uniq
+    end.select{ |method| method =~ /^check_/ }.reverse.uniq.reverse
 
     methods.each do |method|
       out = checks.send(method)

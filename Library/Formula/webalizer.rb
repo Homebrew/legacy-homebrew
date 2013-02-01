@@ -3,7 +3,6 @@ require 'formula'
 class Webalizer < Formula
   homepage 'http://www.mrunix.net/webalizer/'
   url 'ftp://ftp.mrunix.net/pub/webalizer/webalizer-2.23-05-src.tgz'
-  version '2.23-05'
   sha1 'bc28ff28d9484c8e9793ec081c7cbfcb1f577351'
 
   depends_on 'gd'

@@ -5,11 +5,9 @@ class Pil < Formula
   url 'http://effbot.org/downloads/Imaging-1.1.7.tar.gz'
   sha1 '76c37504251171fda8da8e63ecb8bc42a69a5c81'
 
-  option 'with-little-cms', 'Compile with little-cms support.'
-
   depends_on :freetype
   depends_on 'jpeg' => :recommended
-  depends_on 'little-cms'=> :optional unless build.include? 'with-little-cms'
+  depends_on 'little-cms' => :optional
 
   # The patch is to fix a core dump in Bug in PIL's quantize() with 64 bit architectures.
   # http://mail.python.org/pipermail/image-sig/2012-June/007047.html
@@ -46,8 +44,24 @@ class Pil < Formula
               "add_directory(include_dirs, \"#{HOMEBREW_PREFIX}/include\")"
     end
 
-    system "python", "setup.py", "build_ext"
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    # In order to install into the Cellar, the dir must exist and be in the
+    # PYTHONPATH.
+    temp_site_packages = lib/which_python/'site-packages'
+    mkdir_p temp_site_packages
+    ENV['PYTHONPATH'] = temp_site_packages
+    args = [
+      "--no-user-cfg",
+      "--verbose",
+      "install",
+      "--force",
+      "--install-scripts=#{share}/python",
+      "--install-lib=#{temp_site_packages}",
+      "--install-data=#{share}",
+      "--install-headers=#{include}",
+      "--record=installed-files.txt"
+    ]
+    system "python", "-s", "setup.py", *args
+
   end
 
   def caveats; <<-EOS.undent
@@ -55,6 +69,10 @@ class Pil < Formula
     This Python needs to have either setuptools or distribute installed or
     the build will fail.
     EOS
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end
 

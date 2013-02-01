@@ -2,7 +2,7 @@ require 'formula'
 
 class Fop < Formula
   homepage "http://xmlgraphics.apache.org/fop/index.html"
-  url "http://www.apache.org/dyn/closer.cgi?path=/xmlgraphics-org/fop/binaries/fop-1.0-bin.tar.gz"
+  url "http://www.apache.org/dyn/closer.cgi?path=/xmlgraphics/fop/binaries/fop-1.0-bin.tar.gz"
   sha1 '2e81bc0b6d26cba8af7d008cffe6a46955a82a4f'
 
   # Run in headless mode to avoid having it appear on the Dock and stealing UI focus.

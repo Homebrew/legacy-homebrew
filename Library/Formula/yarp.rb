@@ -2,8 +2,8 @@ require 'formula'
 
 class Yarp < Formula
   homepage 'http://yarp.it'
-  url 'http://downloads.sourceforge.net/yarp0/yarp-2.3.19.tar.gz'
-  sha1 'be2954a7ef7b1cb0bbb2ec1ac07371b5847a9ce6'
+  url 'http://downloads.sourceforge.net/yarp0/yarp-2.3.20.tar.gz'
+  sha1 '7c9283bfe07b4da2f7c92ec584497d66248adb42'
 
   head 'https://yarp0.svn.sourceforge.net/svnroot/yarp0/trunk/yarp2'
 
@@ -35,6 +35,9 @@ class Yarp < Formula
       -DENABLE_yarpcar_priority_carrier=TRUE
       -DCREATE_IDLS=TRUE
       -DENABLE_yarpidl_thrift=TRUE
+      -DCREATE_YARPVIEW=TRUE
+      -DCREATE_YARPSCOPE=TRUE
+      -DCREATE_GYARPMANAGER=TRUE
       .]
 
     system "cmake", *args

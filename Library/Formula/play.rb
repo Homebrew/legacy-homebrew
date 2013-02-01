@@ -5,6 +5,13 @@ class Play < Formula
   url 'http://download.playframework.org/releases/play-2.0.4.zip'
   sha1 '98cacf40aa2099e01051a2f0b94187dd2fbb729a'
 
+  head 'https://github.com/playframework/Play20.git'
+
+  devel do
+    url 'http://download.playframework.org/releases/play-2.1-RC3.zip'
+    sha1 '7dd97e75a41541ace9638ad49c611d6a0b57e098'
+  end
+
   def install
     rm Dir['*.bat'] # remove windows' bat files
     libexec.install Dir['*']

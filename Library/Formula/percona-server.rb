@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.28-29.1/source/Percona-Server-5.5.28-rel29.1.tar.gz'
-  version '5.5.28-29.1'
-  sha1 'c7b2803c440564beff124c9a5641daa643b9f909'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.29-29.4/source/Percona-Server-5.5.29-rel29.4.tar.gz'
+  version '5.5.29-29.4'
+  sha1 '0c02296414739a29e8a3c81ff7fab68a45d5b8a2'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
@@ -22,6 +22,9 @@ class PerconaServer < Formula
   conflicts_with 'mariadb',
     :because => "percona-server and mariadb install the same binaries."
 
+  conflicts_with 'mysql-cluster',
+    :because => "percona-server and mysql-cluster install the same binaries."
+
   env :std if build.universal?
 
   fails_with :llvm do
@@ -29,22 +32,30 @@ class PerconaServer < Formula
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
 
+  # Where the database files should be located. Existing installs have them
+  # under var/percona, but going forward they will be under var/msyql to be
+  # shared with the mysql and mariadb formulae.
+  def destination
+    @destination ||= (var/'percona').directory? ? 'percona' : 'mysql'
+  end
+
   def install
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    # Make sure the var/percona directory exists
-    (var+"percona").mkpath
+    # Make sure that data directory exists
+    (var/destination).mkpath
 
-    args = std_cmake_args + [
+    args = [
       ".",
-      "-DMYSQL_DATADIR=#{var}/percona",
+      "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+      "-DMYSQL_DATADIR=#{var}/#{destination}",
       "-DINSTALL_MANDIR=#{man}",
       "-DINSTALL_DOCDIR=#{doc}",
       "-DINSTALL_INFODIR=#{info}",
       # CMake prepends prefix, so use share.basename
-      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/percona",
+      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/mysql",
       "-DWITH_SSL=yes",
       "-DDEFAULT_CHARSET=utf8",
       "-DDEFAULT_COLLATION=utf8_general_ci",
@@ -97,7 +108,7 @@ class PerconaServer < Formula
   def caveats; <<-EOS.undent
     Set up databases to run AS YOUR USER ACCOUNT with:
         unset TMPDIR
-        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix percona-server)" --datadir=#{var}/percona --tmpdir=/tmp
+        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix percona-server)" --datadir=#{var}/#{destination} --tmpdir=/tmp
 
     To set up base tables in another folder, or use a different user to run
     mysqld, view the help for mysqld_install_db:
@@ -110,34 +121,17 @@ class PerconaServer < Formula
     To run as, for instance, user "mysql", you may need to `sudo`:
         sudo mysql_install_db ...options...
 
-    Start mysqld manually with:
-        mysql.server start
-
-        Note: if this fails, you probably forgot to run the first two steps up above
-
     A "/etc/my.cnf" from another install may interfere with a Homebrew-built
     server starting up correctly.
 
     To connect:
         mysql -uroot
-
-    To launch on startup:
-    * if this is your first install:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    * if this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    You may also need to edit the plist to use the correct "UserName".
-
     EOS
   end
 
-  def startup_plist; <<-EOPLIST.undent
+  plist_options :manual => 'mysql.server start'
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -147,7 +141,7 @@ class PerconaServer < Formula
       <key>Label</key>
       <string>#{plist_name}</string>
       <key>Program</key>
-      <string>#{HOMEBREW_PREFIX}/bin/mysqld_safe</string>
+      <string>#{opt_prefix}/bin/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
       <key>UserName</key>
@@ -156,6 +150,6 @@ class PerconaServer < Formula
       <string>#{var}</string>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 end

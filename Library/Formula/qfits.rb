@@ -1,8 +1,8 @@
 require 'formula'
 
 class Qfits < Formula
-  url 'ftp://ftp.eso.org/pub/qfits/qfits-6.2.0.tar.gz'
   homepage 'http://www.eso.org/sci/software/eclipse/qfits/index.html'
+  url 'ftp://ftp.eso.org/pub/qfits/qfits-6.2.0.tar.gz'
   sha1 '9e05023316ebc307b8191068dc07d6fd449ac14d'
 
   def install

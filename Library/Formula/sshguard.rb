@@ -19,40 +19,27 @@ class Sshguard < Formula
     system "make install"
   end
 
-  def caveats; <<-EOS
-1) Install the launchd item in /Library/LaunchDaemons, like so:
+  plist_options :startup => true
 
-   sudo cp -vf #{plist_path} /Library/LaunchDaemons/
-   sudo chown -v root:wheel /Library/LaunchDaemons/#{plist_path.basename}
-
-2) Start the daemon using:
-
-   sudo launchctl load /Library/LaunchDaemons/#{plist_path.basename}
-
-   Next boot of system will automatically start sshguard.
-EOS
-  end
-
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>#{plist_name}</string>
-  <key>KeepAlive</key>
-  <true/>
-  <key>ProgramArguments</key>
-  <array>
-    <string>#{HOMEBREW_PREFIX}/sbin/sshguard</string>
-    <string>-l</string>
-    <string>/var/log/secure.log</string>
-  </array>
-  <key>RunAtLoad</key>
-  <true/>
-</dict>
-</plist>
-EOPLIST
+  def plist; <<-EOS
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>KeepAlive</key>
+      <true/>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/sbin/sshguard</string>
+        <string>-l</string>
+        <string>/var/log/secure.log</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+    </dict>
+    </plist>
+    EOS
   end
 end

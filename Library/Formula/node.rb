@@ -1,16 +1,19 @@
 require 'formula'
 
 class PythonVersion < Requirement
+  env :userpaths
+
+  satisfy { `python -c 'import sys;print(sys.version[:3])'`.strip.to_f >= 2.6 }
+
   def message; <<-EOS.undent
     Node's build system, gyp, requires Python 2.6 or newer.
     EOS
   end
-  def satisfied?
-    `python -c 'import sys;print(sys.version[:3])'`.strip.to_f >= 2.6
-  end
 end
 
 class NpmNotInstalled < Requirement
+  fatal true
+
   def modules_folder
     "#{HOMEBREW_PREFIX}/lib/node_modules"
   end
@@ -28,31 +31,32 @@ class NpmNotInstalled < Requirement
     EOS
   end
 
-  def satisfied?
+  satisfy :build_env => false do
     begin
       path = Pathname.new("#{modules_folder}/npm")
-      not path.realpath.to_s.include?(HOMEBREW_CELLAR)
+      path.realpath.to_s.include?(HOMEBREW_CELLAR)
     rescue Exception => e
       true
     end
-  end
-
-  def fatal?
-    true
   end
 end
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.8.14/node-v0.8.14.tar.gz'
-  sha1 '47a1186004f6ce5e25a8555429d72b15519bc7f1'
+  url 'http://nodejs.org/dist/v0.8.18/node-v0.8.18.tar.gz'
+  sha1 'e3bc9b64f60f76a32b7d9b35bf86b5d1b8166717'
+
+  devel do
+    url 'http://nodejs.org/dist/v0.9.6/node-v0.9.6.tar.gz'
+    sha1 '650d7c50e29ce7ab428de0617ad315063a53ea1a'
+  end
 
   head 'https://github.com/joyent/node.git'
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.version == :leopard
-  depends_on NpmNotInstalled.new unless build.include? 'without-npm'
-  depends_on PythonVersion.new
+  depends_on NpmNotInstalled unless build.include? 'without-npm'
+  depends_on PythonVersion
 
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'

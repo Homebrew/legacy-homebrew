@@ -2,12 +2,13 @@ require 'formula'
 
 class Serf < Formula
   homepage 'http://code.google.com/p/serf/'
-  url 'http://serf.googlecode.com/files/serf-1.1.0.tar.bz2'
-  sha1 '231af70b7567a753b49df4216743010c193884b7'
+  url 'http://serf.googlecode.com/files/serf-1.1.1.tar.bz2'
+  sha1 '1ec4689ef57e7c28e7371df00d0ccc3e32ef6457'
 
   option :universal
 
   depends_on :libtool
+  depends_on 'sqlite'
 
   def apr_bin
     superbin or "/usr/bin"

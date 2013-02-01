@@ -2,8 +2,8 @@ require 'formula'
 
 class Mspdebug < Formula
   homepage 'http://mspdebug.sourceforge.net/'
-  url 'http://sourceforge.net/projects/mspdebug/files/mspdebug-0.20.tar.gz'
-  sha1 'ddf589e6e15c2577fc132001f757113309e134e9'
+  url 'http://sourceforge.net/projects/mspdebug/files/mspdebug-0.21.tar.gz'
+  sha1 'a439acd166e90bfd19ddf2c3459eee9643e55368'
 
   depends_on 'libusb-compat'
 

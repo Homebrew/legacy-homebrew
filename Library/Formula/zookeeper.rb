@@ -2,8 +2,8 @@ require 'formula'
 
 class Zookeeper < Formula
   homepage 'http://zookeeper.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.4/zookeeper-3.4.4.tar.gz'
-  sha1 'c4f6dc623a265f54a93ee3b1192860324270b054'
+  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz'
+  sha1 'fd921575e02478909557034ea922de871926efc7'
 
   head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 

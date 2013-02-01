@@ -60,8 +60,10 @@ class Cmd
       # the work since Makefiles are dumb and include a lot of excess flags.
       ENV['HOMEBREW_CC']
     when 'c++'
-      if ENV['HOMEBREW_CC'] =~ /gcc/
+      if ENV['HOMEBREW_CC'] =~ /llvm-gcc/
         'g++'
+      elsif ENV['HOMEBREW_CC'] =~ /gcc-4.2/
+        'g++-4.2'
       else
         'clang++'
       end
@@ -101,15 +103,18 @@ class Cmd
       case arg = whittler.next
       when '-arch', /^-Xarch_/
         whittler.next
+      when '-m32'
+        # If ENV.m32 was set, we allow the "-m32" flag, but we don't add anything
+        args << '-m32' if cccfg? '3'
       when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
-           /^-march=.+/, /^-mtune=.+/, '-m64', '-m32',
+           /^-march=.+/, /^-mtune=.+/, '-m64',
            /^-O[0-9zs]?$/, '-fast',
            '-pedantic', '-pedantic-errors'
       when '-fopenmp', '-lgomp'
         # clang doesn't support OpenMP
         args << arg if not tool =~ /^clang/
       when /^-W.*/
-        args << arg if arg =~ /^-Wl,/
+        args << arg if arg =~ /^-W[alp],/
       when '-macosx_version_min', '-dylib_install_name'
         args << "-Wl,#{arg},#{whittler.next}"
       when '-dylib'

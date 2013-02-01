@@ -2,14 +2,16 @@ require 'formula'
 
 class Libidn < Formula
   homepage 'http://www.gnu.org/software/libidn/'
-  url 'http://ftpmirror.gnu.org/libidn/libidn-1.25.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libidn/libidn-1.25.tar.gz'
-  sha256 '7fe625328a6a5d837d723c462c1788affb84d9c9fc0ae5cd0ce9ac7724c34716'
+  url 'http://ftpmirror.gnu.org/libidn/libidn-1.26.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/libidn/libidn-1.26.tar.gz'
+  sha256 '0a2f4c71c80f8f389a99d5a26539a9be4a4ac42cd7f375aa41046660f63cc53c'
 
   depends_on 'pkg-config' => :build
 
+  option :universal
+
   def install
-    ENV.universal_binary
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-csharp"

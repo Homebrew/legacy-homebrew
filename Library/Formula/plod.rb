@@ -1,10 +1,10 @@
 require 'formula'
 
 class Plod < Formula
-  url 'http://www.deer-run.com/~hal/plod/plod.shar'
   homepage 'http://www.deer-run.com/~hal/'
-  sha1 '5cceafeafeb5487926e93e2f5e9ecfce64f6cdd3'
+  url 'http://www.deer-run.com/~hal/plod/plod.shar'
   version '1.9'
+  sha1 '5cceafeafeb5487926e93e2f5e9ecfce64f6cdd3'
 
   def install
     system "sh plod.shar"

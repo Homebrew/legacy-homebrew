@@ -2,8 +2,8 @@ require 'formula'
 
 class Gauche < Formula
   homepage 'http://practical-scheme.net/gauche/'
-  url 'http://downloads.sourceforge.net/gauche/Gauche/Gauche-0.9.3.2.tgz'
-  sha1 'e2e3f4553674d02a0800c981325de3fef858d9f6'
+  url 'http://downloads.sourceforge.net/gauche/Gauche/Gauche-0.9.3.3.tgz'
+  sha1 '71d7ca3eceb9adc1de33455c1616cbed89d226f7'
 
   def install
     system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking',

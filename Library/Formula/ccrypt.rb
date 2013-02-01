@@ -1,8 +1,8 @@
 require 'formula'
 
 class Ccrypt < Formula
-  url 'http://ccrypt.sourceforge.net/download/ccrypt-1.9.tar.gz'
   homepage 'http://ccrypt.sourceforge.net/'
+  url 'http://ccrypt.sourceforge.net/download/ccrypt-1.9.tar.gz'
   sha1 '5ad1889c71be905c3004c80dc011948c9c35c814'
 
   def install

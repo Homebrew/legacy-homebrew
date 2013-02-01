@@ -10,10 +10,13 @@ def bottle_filename f, bottle_version=nil
 end
 
 def install_bottle? f
-  return true if ARGV.include? '--install-bottle'
+  return true if ARGV.include? '--install-bottle' and MacOS.bottles_supported?(true)
+  return true if f.downloader and defined? f.downloader.local_bottle_path \
+    and f.downloader.local_bottle_path
   not ARGV.build_from_source? \
     and MacOS.bottles_supported? \
-    and ARGV.used_options(f).empty? \
+    and f.pour_bottle? \
+    and f.build.used_options.empty? \
     and bottle_current?(f)
 end
 
@@ -34,12 +37,10 @@ end
 def bottle_file_outdated? f, file
   filename = file.basename.to_s
   return nil unless f and f.bottle and f.bottle.url \
-    and (filename.match(bottle_regex) or filename.match(old_bottle_regex))
+    and filename.match(bottle_regex)
 
   bottle_ext = filename.match(bottle_native_regex).captures.first rescue nil
-  bottle_ext ||= filename.match(old_bottle_regex).captures.first rescue nil
   bottle_url_ext = f.bottle.url.match(bottle_native_regex).captures.first rescue nil
-  bottle_url_ext ||= f.bottle.url.match(old_bottle_regex).captures.first rescue nil
 
   bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
 end
@@ -64,10 +65,6 @@ end
 
 def bottle_regex
   Pathname::BOTTLE_EXTNAME_RX
-end
-
-def old_bottle_regex
-  Pathname::OLD_BOTTLE_EXTNAME_RX
 end
 
 def bottle_base_url

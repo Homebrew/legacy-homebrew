@@ -2,8 +2,8 @@ require 'formula'
 
 class Atf < Formula
   homepage 'http://code.google.com/p/kyua/wiki/ATF'
-  url 'http://kyua.googlecode.com/files/atf-0.15.tar.gz'
-  sha256 '0c7242a107c7e308feed8fac45a194a6f6c8d90283add576cfc3dab0fcd61b2b'
+  url 'http://kyua.googlecode.com/files/atf-0.16.tar.gz'
+  sha256 'f33a85f4a0677f40be406baaf6a5a749ca02870af9707f7606a0f3fa613c8339'
 
   def install
     system "./configure", "--disable-dependency-tracking",

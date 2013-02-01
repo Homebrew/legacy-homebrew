@@ -6,8 +6,8 @@ class SpatialiteTools < Formula
   sha1 '82d40a4ef92d86a310e07f0e7e43372904bdbba9'
 
   devel do
-    url 'http://www.gaia-gis.it/gaia-sins/spatialite-tools-4.0.0-RC1.tar.gz'
-    sha1 'fa9c60b2c993ef22c5618261c13cc3cdcbad223b'
+    url 'http://www.gaia-gis.it/gaia-sins/spatialite-tools-sources/spatialite-tools-4.0.0.tar.gz'
+    sha1 'ab70abdc487a869252b0042f51813c6ff6ffdadb'
   end
 
   depends_on 'pkg-config' => :build

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby -w
 
-# brew-services(1) - Easily start and stop formulas via launchctl
+# brew-services(1) - Easily start and stop formulae via launchctl
 # ===============================================================
 #
 # ## SYNOPSIS
@@ -13,7 +13,7 @@
 #
 # ## DESCRIPTION
 #
-# Integrates homebrew formulas with MacOS X' `launchctl` manager. Services
+# Integrates homebrew formulae with MacOS X' `launchctl` manager. Services
 # can either be added to `/Library/LaunchDaemons` or `~/Library/LaunchAgents`.
 # Basically items added to `/Library/LaunchDaemons` are started at boot,
 # those in `~/Library/LaunchAgents` at login.
@@ -45,12 +45,12 @@
 #
 # ## SYNTAX
 #
-# Several existing formulas (like mysql, nginx) already write custom plist
-# files to the formulas prefix. Most of these implement `#startup_plist`
+# Several existing formulae (like mysql, nginx) already write custom plist
+# files to the formulae prefix. Most of these implement `#startup_plist`
 # which then in turn returns a neat-o plist file as string.
 #
 # `brew services` operates on `#startup_plist` as well and requires
-# supporting formulas to implement it. This method should either string
+# supporting formulae to implement it. This method should either string
 # containing the generated XML file, or return a `Pathname` instance which
 # points to a plist template, or a hash like:
 #
@@ -130,7 +130,7 @@ module ServicesCli
     def usage(code = 0)
       puts "usage: [sudo] #{bin} [--help] <command> [<formula>]"
       puts
-      puts "Small wrapper around `launchctl` for supported formulas, commands available:"
+      puts "Small wrapper around `launchctl` for supported formulae, commands available:"
       puts "   cleanup Get rid of stale services and unused plists"
       puts "   list    List all services managed by `#{bin}`"
       puts "   restart Gracefully restart selected service"
@@ -311,8 +311,8 @@ class Service
   # Delegate access to `formula.name`.
   def name; @name ||= formula.name end
 
-  # Label, static, always looks like `com.github.homebrew.<formula>`.
-  def label; @label ||= "com.github.homebrew.#{name}" end
+  # Label delegates to formula.plist_name, e.g `homebrew.mxcl.<formula>`.
+  def label; @label ||= formula.plist_name end
 
   # Path to a static plist file, this is always `com.github.homebrew.<formula>.plist`.
   def plist; @plist ||= formula.prefix + "#{label}.plist" end

@@ -18,43 +18,34 @@ class Pincaster < Formula
     (var+"db/pincaster/").mkpath
   end
 
-  def caveats
-    <<-EOS.undent
-      Automatically load on login with:
-        launchctl load -w #{plist_path}
+  plist_options :manual => "pincaster #{HOMEBREW_PREFIX}/etc/pincaster.conf"
 
-      To start pincaster manually:
-        pincaster #{etc}/pincaster.conf
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>KeepAlive</key>
+        <true/>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_prefix}/bin/pincaster</string>
+          <string>#{etc}/pincaster.conf</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>UserName</key>
+        <string>#{`whoami`.chomp}</string>
+        <key>WorkingDirectory</key>
+        <string>#{var}</string>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/pincaster.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/pincaster.log</string>
+      </dict>
+    </plist>
     EOS
-  end
-
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>KeepAlive</key>
-    <true/>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>ProgramArguments</key>
-    <array>
-      <string>#{HOMEBREW_PREFIX}/bin/pincaster</string>
-      <string>#{etc}/pincaster.conf</string>
-    </array>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-    <key>WorkingDirectory</key>
-    <string>#{var}</string>
-    <key>StandardErrorPath</key>
-    <string>#{var}/log/pincaster.log</string>
-    <key>StandardOutPath</key>
-    <string>#{var}/log/pincaster.log</string>
-  </dict>
-</plist>
-    EOPLIST
   end
 end

@@ -7,8 +7,8 @@ require 'formula'
 
 class Gsutil < Formula
   homepage 'http://code.google.com/p/gsutil/'
-  url 'http://commondatastorage.googleapis.com/pub/gsutil_3.9.tar.gz'
-  sha1 '33e728bc5d6d26c81737446843ffa0f9a5dbc8b5'
+  url 'http://commondatastorage.googleapis.com/pub/gsutil_3.21.tar.gz'
+  sha1 '286b9c777c714eec48ae595060d3fba40d78e87f'
 
   def install
     libexec.install Dir["*"]

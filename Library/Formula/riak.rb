@@ -13,7 +13,7 @@ class Riak < Formula
     sha256 'a5acbdd1f0a7095557681713158bbc898e7c6f47128bd200bca3840c68aa640a'
   end
 
-  skip_clean :all
+  skip_clean 'libexec'
 
   option '32-bit'
 

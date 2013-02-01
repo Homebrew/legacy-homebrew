@@ -1,31 +1,12 @@
 require 'formula'
 
-class PopplerQt4 < Requirement
-  def satisfied?
-    poppler = Tab.for_formula 'poppler'
-    poppler.installed_with? '--with-qt4'
-  end
-
-  def fatal?
-    true
-  end
-
-  def message; <<-EOS.undent
-    DiffPDF requires the Poppler-Qt4 bindings but Poppler was not installed
-    with support for Qt. Please reinstall Poppler using the `--with-qt4`
-    option.
-    EOS
-  end
-end
-
 class Diffpdf < Formula
   homepage 'http://www.qtrac.eu/diffpdf.html'
   url 'http://www.qtrac.eu/diffpdf-2.0.0.tar.gz'
   sha1 'b6a52f48927721721960aa1f581f127aa8454830'
 
   depends_on 'qt'
-  depends_on 'poppler'
-  depends_on PopplerQt4.new
+  depends_on 'poppler' => 'with-qt4'
 
   # The location of Poppler library/include paths is hardcoded in the project file
   # which causes builds to fail if Homebrew is not installed to /usr/local.

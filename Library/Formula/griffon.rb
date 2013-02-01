@@ -14,7 +14,7 @@ class Griffon < Formula
   end
 
   def caveats; <<-EOS.undent
-    You should set the environment variable GRIFFON_HOME to
+    You should set the environment variable GRIFFON_HOME to:
       #{libexec}
     EOS
   end
