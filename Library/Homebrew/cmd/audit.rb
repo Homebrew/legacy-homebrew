@@ -260,16 +260,16 @@ class FormulaAuditor
 
   def audit_patches
     # Some formulae use ENV in patches, so set up an environment
-    ENV.setup_build_environment
-
-    Patches.new(f.patches).select { |p| p.external? }.each do |p|
-      case p.url
-      when %r[raw\.github\.com], %r[gist\.github\.com/raw]
-        unless p.url =~ /[a-fA-F0-9]{40}/
-          problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
+    ENV.with_build_environment do
+      Patches.new(f.patches).select { |p| p.external? }.each do |p|
+        case p.url
+        when %r[raw\.github\.com], %r[gist\.github\.com/raw]
+          unless p.url =~ /[a-fA-F0-9]{40}/
+            problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
+          end
+        when %r[macports/trunk]
+          problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
         end
-      when %r[macports/trunk]
-        problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
       end
     end
   end
