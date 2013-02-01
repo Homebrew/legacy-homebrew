@@ -12,6 +12,7 @@ class Postgresql < Formula
   conflicts_with 'postgres-xc',
     :because => 'postgresql and postgres-xc install the same binaries.'
 
+  option :universal
   option '32-bit'
   option 'no-python', 'Build without Python support'
   option 'no-perl', 'Build without Perl support'
@@ -65,6 +66,11 @@ class Postgresql < Formula
     end
 
     system "./configure", *args
+    if build.universal?
+      system "curl https://trac.macports.org/export/96361/trunk/dports/databases/postgresql91/files/pg_config.h.ed | ed - ./src/include/pg_config.h"
+      system "curl https://trac.macports.org/export/96361/trunk/dports/databases/postgresql91/files/ecpg_config.h.ed | ed  - ./src/interfaces/ecpg/include/ecpg_config.h"
+    end
+
     system "make install-world"
   end
 
