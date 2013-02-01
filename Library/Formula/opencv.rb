@@ -26,7 +26,7 @@ class Opencv < Formula
   depends_on 'libtiff' => :optional
   depends_on 'jasper'  => :optional
   depends_on 'tbb'     => :optional
-  depends_on 'qt' if build.include? 'with-qt'
+  depends_on 'qt'      => :optional
   depends_on :libpng
 
   # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
@@ -49,9 +49,9 @@ class Opencv < Formula
       args << "-DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'"
       args << "-DOPENCV_EXTRA_CXX_FLAGS='-arch i386 -m32'"
     end
-    args << '-DWITH_QT=ON' if build.include? 'with-qt'
-    args << '-DWITH_TBB=ON' if build.include? 'with-tbb'
-    args << '-DWITH_OPENCL=ON' if build.include? 'with-opencl'
+    args << '-DWITH_QT=ON' if build.with? 'qt'
+    args << '-DWITH_TBB=ON' if build.with? 'tbb'
+    args << '-DWITH_OPENCL=ON' if build.with? 'opencl'
 
     # The CMake `FindPythonLibs` Module is dumber than a bag of hammers when
     # more than one python installation is available---for example, it clings
