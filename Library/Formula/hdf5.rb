@@ -10,7 +10,9 @@ class Hdf5 < Formula
   # TODO - warn that these options conflict
   option :universal
   option 'enable-fortran', 'Compile Fortran bindings'
+  option 'enable-cxx', 'Compile C++ bindings'
   option 'enable-threadsafe', 'Trade performance and C++ or Fortran support for thread safety'
+  option 'enable-parallel', 'Compile parallel bindings'
 
   def install
     ENV.universal_binary if build.universal?
@@ -26,17 +28,28 @@ class Hdf5 < Formula
       --enable-shared=yes
     ]
 
+    if build.include? 'enable-parallel'
+      args << '--enable-parallel'
+    end
     if build.include? 'enable-threadsafe'
       args.concat %w[--with-pthread=/usr --enable-threadsafe]
     else
-      args << '--enable-cxx'
+      if build.include? 'enable-cxx'
+        args << '--enable-cxx'
+      end
       if build.include? 'enable-fortran'
         args << '--enable-fortran'
         ENV.fortran
       end
     end
 
-    system "./configure", *args
+    if build.include? 'enable-parallel'
+      ENV['CC'] = 'mpicc'
+      ENV['FC'] = 'mpif90'
+      system './configure', *args
+    else
+      system "./configure", *args
+    end
     system "make install"
   end
 end
