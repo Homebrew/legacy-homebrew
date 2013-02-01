@@ -30,6 +30,8 @@ class GtkMacIntegration < Formula
   end
 
   def test
-    system "cd #{prefix} && ./test-integration"
+    cd prefix do
+      system "./test-integration"
+    end
   end
 end
