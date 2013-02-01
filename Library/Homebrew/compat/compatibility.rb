@@ -247,3 +247,36 @@ class Version
     to_s.slice *args
   end
 end
+
+
+# MD5 support
+class Formula
+  def self.md5(val=nil)
+    unless val.nil?
+      @stable ||= SoftwareSpec.new
+      @stable.md5(val)
+    end
+    return @stable ? @stable.md5 : @md5
+  end
+end
+
+class SoftwareSpec
+  def md5(val=nil)
+    if val.nil?
+      @checksum if checksum.nil? or @checksum.hash_type == :md5
+    else
+      opoo <<-EOS.undent
+      MD5 support is deprecated and will be removed in a future version.
+      Please switch this formula to #{Checksum::TYPES.map { |t| t.to_s.upcase } * ' or '}.
+      EOS
+      @checksum = Checksum.new(:md5, val)
+    end
+  end
+end
+
+class Pathname
+  def md5
+    require 'digest/md5'
+    incremental_hash(Digest::MD5)
+  end
+end
