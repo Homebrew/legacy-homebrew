@@ -707,6 +707,28 @@ def check_for_multiple_volumes
   end
 end
 
+def check_filesystem_case_sensitive
+  volumes = Volumes.new
+  tmp_prefix = Pathname.new(ENV['HOMEBREW_TEMP'] || '/tmp')
+  case_sensitive_vols = [HOMEBREW_PREFIX, HOMEBREW_REPOSITORY, HOMEBREW_CELLAR, tmp_prefix].select do |dir|
+    # We select the dir as being case-sensitive if either the UPCASED or the
+    # downcased variant is missing.
+    # Of course, on a case-insensitive fs, both exist because the os reports so.
+    # In the rare situation when the user has indeed a downcased and an upcased
+    # dir (e.g. /TMP and /tmp) this check falsely thinks it is case-insensitive
+    # but we don't care beacuse: 1. there is more than one dir checked, 2. the
+    # check is not vital and 3. we would have to touch files otherwise.
+    upcased = Pathname.new(dir.to_s.upcase)
+    downcased = Pathname.new(dir.to_s.downcase)
+    dir.exist? && !(upcased.exist? && downcased.exist?)
+  end.map { |case_sensitive_dir| volumes.get_mounts(case_sensitive_dir) }.uniq
+  return if case_sensitive_vols.empty?
+  <<-EOS.undent
+    Your file-system on #{case_sensitive_vols} appears to be CaSe SeNsItIvE.
+    Homebrew is less tested with that - don't worry but please report issues.
+  EOS
+end
+
 def check_for_git
   unless which "git" then <<-EOS.undent
     Git could not be found in your PATH.
