@@ -12,7 +12,7 @@ class Rrdtool < Formula
 
   # Can use lua if it is found, but don't force users to install
   # TODO: Do something here
-  depends_on 'lua' => :optional if build.include? "lua"
+  depends_on 'lua' if build.include? "lua"
 
   # Ha-ha, but sleeping is annoying when running configure a lot
   def patches; DATA; end
