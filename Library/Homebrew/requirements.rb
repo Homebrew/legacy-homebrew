@@ -107,7 +107,7 @@ class X11Dependency < Requirement
   # Rather than instantiate it directly, a separate class is built
   # for each of the packages that we proxy to X11Dependency.
   class Proxy < self
-    PACKAGES = [:libpng, :freetype, :pixman, :fontconfig]
+    PACKAGES = [:libpng, :freetype, :fontconfig]
 
     def self.for(name, *tags)
       constant = name.capitalize
