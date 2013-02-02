@@ -62,16 +62,14 @@ class Graphviz < Formula
     (bin+'gvmap.sh').unlink
   end
 
-  def test
-    mktemp do
-      (Pathname.pwd+'sample.dot').write <<-EOS.undent
-      digraph G {
-        a -> b
-      }
-      EOS
+  test do
+    (testpath/'sample.dot').write <<-EOS.undent
+    digraph G {
+      a -> b
+    }
+    EOS
 
-      system "#{bin}/dot", "-Tpdf", "-o", "sample.pdf", "sample.dot"
-    end
+    system "#{bin}/dot", "-Tpdf", "-o", "sample.pdf", "sample.dot"
   end
 
   def caveats
