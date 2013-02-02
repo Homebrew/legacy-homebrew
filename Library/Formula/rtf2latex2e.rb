@@ -16,15 +16,13 @@ class Rtf2latex2e < Formula
     EOS
   end
 
-  def test
-    mktemp do
-      Pathname.new('test.rtf').write <<-'EOF'.undent
-      {\rtf1\ansi
-      {\b hello} world
-      }
-      EOF
-      system "#{bin}/rtf2latex2e", "-n", "test.rtf"
-      system %q[cat test.tex | grep '\textbf{hello} world']
-    end
+  test do
+    (testpath/'test.rtf').write <<-'EOF'.undent
+    {\rtf1\ansi
+    {\b hello} world
+    }
+    EOF
+    system "#{bin}/rtf2latex2e", "-n", "test.rtf"
+    system %q[cat test.tex | grep '\textbf{hello} world']
   end
 end
