@@ -55,13 +55,22 @@ class Boost < Formula
     false
   end
 
-  # Patch boost/config/stdlib/libcpp.hpp to fix the constexpr bug reported under Boost 1.52 in Ticket
-  # 7671.  This patch can be removed when upstream release an updated version including the fix.
   def patches
-    if MacOS.version >= :lion and build.include? 'with-c++11'
-      {:p0 => "https://svn.boost.org/trac/boost/raw-attachment/ticket/7671/libcpp_c11_numeric_limits.patch"}
-    end
-  end
+    {
+      :p2 => [
+        # Patch boost/config/stdlib/libcpp.hpp to fix the constexpr
+        # bug reported under Boost 1.52 in Ticket 7671.  This patch
+        # can be removed when upstream release an updated version
+        # including the fix.
+        "https://svn.boost.org/trac/boost/changeset/82391?format=diff&new=82391",
+
+        # Security fix for Boost.Locale. For details:
+        # http://www.boost.org/users/news/boost_locale_security_notice.html
+        # Drop when 1.53.0+ releases.
+        "https://svn.boost.org/trac/boost/changeset/81590?format=diff&new=81590"
+      ]
+    }
+  end unless build.head?
 
   def install
     # Adjust the name the libs are installed under to include the path to the
