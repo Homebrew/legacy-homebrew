@@ -44,14 +44,16 @@ class Thrift < Formula
   end
 
   def caveats; <<-EOS.undent
-    Most language bindings were not installed. You may like to do the
-    following:
+    To install Python bindings:
+      pip install thrift
 
+    To install Ruby bindings:
       gem install thrift
-      easy_install thrift
 
-    If anyone figures out the steps to reliably build a set of bindings, please
-    open a pull request.
+    To install PHP bindings:
+      export PHP_PREFIX=/path/to/homebrew/thrift/0.9.0/php
+      export PHP_CONFIG_PREFIX=/path/to/homebrew/thrift/0.9.0/php_extensions
+      brew install thrift --with-php
     EOS
   end
 end
