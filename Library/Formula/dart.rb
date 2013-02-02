@@ -19,18 +19,16 @@ class Dart < Formula
     bin.write_exec_script Dir["#{libexec}/bin/{pub,dart?*}"]
   end
 
-  def test
-    mktemp do
-      (Pathname.pwd+'sample.dart').write <<-EOS.undent
+  test do
+    (testpath/'sample.dart').write <<-EOS.undent
       void main() {
         Options opts = new Options();
         for (String arg in opts.arguments) {
           print(arg);
         }
       }
-      EOS
+    EOS
 
-      `#{bin}/dart sample.dart test message` == "test\nmessage\n"
-    end
+    `#{bin}/dart sample.dart test message` == "test\nmessage\n"
   end
 end
