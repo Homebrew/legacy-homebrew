@@ -17,6 +17,8 @@ class Nginx < Formula
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
   option 'with-debug', 'Compile with support for debug log'
+  option 'with-mp4', 'Compile with support for mp4 module'
+  option 'with-securelink', 'Compile with support for secure link module'
 
   skip_clean 'logs'
 
@@ -57,6 +59,8 @@ class Nginx < Formula
     args << passenger_config_args if build.include? 'with-passenger'
     args << "--with-http_dav_module" if build.include? 'with-webdav'
     args << "--with-debug" if build.include? 'with-debug'
+    args << "--with-http_mp4_module" if build.include? 'with-mp4'
+    args << "--with-http_secure_link_module" if build.include? 'with-securelink'
 
     system "./configure", *args
     system "make"
