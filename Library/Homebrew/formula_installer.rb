@@ -109,7 +109,7 @@ class FormulaInstaller
         if req.optional? || req.recommended?
           Requirement.prune unless dependent.build.with?(req.name)
         elsif req.build?
-          Requirement.prune unless install_bottle?(dependent)
+          Requirement.prune if install_bottle?(dependent)
         end
 
         Requirement.prune if req.satisfied?
