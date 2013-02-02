@@ -83,6 +83,10 @@ private
       else
         X11Dependency::Proxy.for(spec.to_s, tag)
       end
+    when :cairo, :pixman
+      # We no longer use X11 psuedo-deps for cairo or pixman,
+      # so just return a standard formula dependency.
+      Dependency.new(spec.to_s, tag)
     when :x11        then X11Dependency.new(spec.to_s, tag)
     when :xcode      then XcodeDependency.new(tag)
     when :mysql      then MysqlInstalled.new(tag)
