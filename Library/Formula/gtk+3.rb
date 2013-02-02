@@ -2,8 +2,8 @@ require 'formula'
 
 class Gtkx3 < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.4/gtk+-3.4.4.tar.xz'
-  sha256 'f154e460075034da4c0ce89c320025dcd459da2a1fdf32d92a09522eaca242c7'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.6/gtk+-3.6.4.tar.xz'
+  sha256 'dbda37986f934f986c0bb20f2b0c59f2717a2e5c098370ad69677ff89295f1a1'
 
   depends_on :x11 => '2.5' # needs XInput2, introduced in libXi 1.3
   depends_on 'pkg-config' => :build
@@ -16,6 +16,7 @@ class Gtkx3 < Formula
   depends_on 'cairo'
   depends_on 'jasper' => :optional
   depends_on 'atk'
+  depends_on 'at-spi2-atk'
 
   def install
     system "./configure", "--disable-debug",
