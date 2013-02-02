@@ -9,7 +9,7 @@ class Cdo < Formula
 
   depends_on 'netcdf'
   depends_on 'hdf5'
-  depends_on 'grib-api' => :optional if build.include? 'enable-grib2'
+  depends_on 'grib-api' if build.include? 'enable-grib2'
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",
