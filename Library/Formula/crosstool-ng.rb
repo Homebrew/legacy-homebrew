@@ -5,7 +5,7 @@ class CrosstoolNg < Formula
   url 'http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.18.0.tar.bz2'
   sha1 'ea9aa0521683486efb02596d9dfe00f66e18fdc3'
 
-  depends_on :automake => :build
+  depends_on :automake
   depends_on 'coreutils' => :build
   depends_on 'wget'
   depends_on 'gnu-sed'
