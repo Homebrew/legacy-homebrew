@@ -32,13 +32,13 @@ class Graphicsmagick < Formula
   depends_on :libpng
   depends_on :x11 if build.include? 'with-x'
 
-  depends_on 'ghostscript' => :optional if ghostscript_srsly?
+  depends_on 'ghostscript' if ghostscript_srsly?
 
-  depends_on 'libtiff' => :optional if build.include? 'use-tiff'
-  depends_on 'little-cms2' => :optional if build.include? 'use-cms'
-  depends_on 'jasper' => :optional if build.include? 'use-jpeg2000'
-  depends_on 'libwmf' => :optional if build.include? 'use-wmf'
-  depends_on 'xz' => :optional if build.include? 'use-xz'
+  depends_on 'libtiff' if build.include? 'use-tiff'
+  depends_on 'little-cms2' if build.include? 'use-cms'
+  depends_on 'jasper' if build.include? 'use-jpeg2000'
+  depends_on 'libwmf' if build.include? 'use-wmf'
+  depends_on 'xz' if build.include? 'use-xz'
 
   fails_with :llvm do
     build 2335
