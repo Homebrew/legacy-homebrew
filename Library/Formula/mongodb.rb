@@ -94,6 +94,16 @@ class Mongodb < Formula
       <string>#{var}/log/mongodb/output.log</string>
       <key>StandardOutPath</key>
       <string>#{var}/log/mongodb/output.log</string>
+      <key>HardResourceLimits</key>
+      <dict>
+        <key>NumberOfFiles</key>
+        <integer>1024</integer>
+      </dict>
+      <key>SoftResourceLimits</key>
+      <dict>
+        <key>NumberOfFiles</key>
+        <integer>1024</integer>
+      </dict>
     </dict>
     </plist>
     EOS
