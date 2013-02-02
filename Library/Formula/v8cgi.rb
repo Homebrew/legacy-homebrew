@@ -8,15 +8,13 @@ class V8cgi < Formula
   head 'http://v8cgi.googlecode.com/svn/trunk/'
 
   option "with-dom", "Enable DOM"
-  option "with-gd", "Enable GD"
-  option "with-sqlite", "Enable SQLite"
 
   depends_on 'scons' => :build
   depends_on 'v8'
   depends_on 'libmemcached'
-  depends_on 'xerces-c' => :optional if build.include? 'with-dom'
-  depends_on 'gd'       => :optional if build.include? 'with-gd'
-  depends_on 'sqlite'   => :optional if build.include? 'with-sqlite'
+  depends_on 'xerces-c' if build.with? 'dom'
+  depends_on 'gd' => :optional
+  depends_on 'sqlite' => :optional
 
   def install
     arch = Hardware.is_64_bit? ? 'x64' : 'ia32'
@@ -24,9 +22,9 @@ class V8cgi < Formula
     v8_prefix = Formula.factory('v8').prefix
 
     args = ["config_file=#{etc}/v8cgi.conf", "v8_path=#{v8_prefix}"]
-    args << ((build.include? 'with-dom') ? 'dom=1' : 'dom=0')
-    args << ((build.include? 'with-gd') ? 'gd=1' : 'gd=0')
-    args << ((build.include? 'with-sqlite') ? 'sqlite=1' : 'sqlite=0')
+    args << ((build.with? 'dom') ? 'dom=1' : 'dom=0')
+    args << ((build.with? 'gd') ? 'gd=1' : 'gd=0')
+    args << ((build.with? 'sqlite') ? 'sqlite=1' : 'sqlite=0')
 
     cd 'v8cgi' do
       inreplace 'SConstruct', '../v8', v8_prefix
