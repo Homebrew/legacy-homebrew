@@ -15,7 +15,7 @@ class Gtkx3 < Formula
   depends_on 'pango'
   depends_on 'cairo'
   depends_on 'jasper' => :optional
-  depends_on 'atk' => :optional
+  depends_on 'atk'
 
   def install
     system "./configure", "--disable-debug",
