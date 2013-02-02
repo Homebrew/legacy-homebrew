@@ -133,7 +133,7 @@ class FormulaAuditor
       begin
         dep_f = dep.to_formula
       rescue
-        problem "Can't find dependency #{dep.inspect}."
+        problem "Can't find dependency #{dep.name.inspect}."
       end
 
       dep.options.reject do |opt|
