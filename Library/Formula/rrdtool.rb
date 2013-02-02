@@ -43,11 +43,11 @@ class Rrdtool < Formula
     prefix.install "bindings/ruby/test.rb"
   end
 
-  def test
-    mktemp do
-      system "#{bin}/rrdtool", "create", "temperature.rrd", "--step", "300", "DS:temp:GAUGE:600:-273:5000", "RRA:AVERAGE:0.5:1:1200", "RRA:MIN:0.5:12:2400", "RRA:MAX:0.5:12:2400", "RRA:AVERAGE:0.5:12:2400"
-      system "#{bin}/rrdtool", "dump", "temperature.rrd"
-    end
+  test do
+    system "#{bin}/rrdtool", "create", "temperature.rrd", "--step", "300",
+      "DS:temp:GAUGE:600:-273:5000", "RRA:AVERAGE:0.5:1:1200",
+      "RRA:MIN:0.5:12:2400", "RRA:MAX:0.5:12:2400", "RRA:AVERAGE:0.5:12:2400"
+    system "#{bin}/rrdtool", "dump", "temperature.rrd"
   end
 end
 
