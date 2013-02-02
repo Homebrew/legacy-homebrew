@@ -265,10 +265,6 @@ class SoftwareSpec
     if val.nil?
       @checksum if checksum.nil? or @checksum.hash_type == :md5
     else
-      opoo <<-EOS.undent
-      MD5 support is deprecated and will be removed in a future version.
-      Please switch this formula to #{Checksum::TYPES.map { |t| t.to_s.upcase } * ' or '}.
-      EOS
       @checksum = Checksum.new(:md5, val)
     end
   end
@@ -277,6 +273,10 @@ end
 class Pathname
   def md5
     require 'digest/md5'
+    opoo <<-EOS.undent
+    MD5 support is deprecated and will be removed in a future version.
+    Please switch this formula to #{Checksum::TYPES.map { |t| t.to_s.upcase } * ' or '}.
+    EOS
     incremental_hash(Digest::MD5)
   end
 end
