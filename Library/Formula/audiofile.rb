@@ -19,7 +19,7 @@ class Audiofile < Formula
     system "make install"
   end
 
-  def test
+  test do
     inn  = '/System/Library/Sounds/Glass.aiff'
     out  = 'Glass.wav'
     conv_bin = "#{bin}/sfconvert"
@@ -39,9 +39,7 @@ class Audiofile < Formula
       return
     end
 
-    mktemp do
-      system conv_bin, inn, out, 'format', 'wave'
-      system info_bin, '--short', '--reporterror', out
-    end
+    system conv_bin, inn, out, 'format', 'wave'
+    system info_bin, '--short', '--reporterror', out
   end
 end
