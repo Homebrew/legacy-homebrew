@@ -55,13 +55,11 @@ class Nss < Formula
     (lib+'pkgconfig/nss.pc').write pkg_file
   end
 
-  def test
+  test do
     # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
-    mktemp do
-      File.open('passwd', 'w') {|f| f.write("It's a secret to everyone.") }
-      system "#{bin}/certutil", "-N", "-d", pwd, "-f", "passwd"
-      system "#{bin}/certutil", "-L", "-d", pwd
-    end
+    File.open('passwd', 'w') {|f| f.write("It's a secret to everyone.") }
+    system "#{bin}/certutil", "-N", "-d", pwd, "-f", "passwd"
+    system "#{bin}/certutil", "-L", "-d", pwd
   end
 
   def pkg_file; <<-EOF
