@@ -289,18 +289,6 @@ class Formula
     ]
   end
 
-  def ruby_bin
-    '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin'
-  end
-
-  def rake *args
-    system "#{ruby_bin}/rake", *args
-  end
-
-  def ruby *args
-    system "#{ruby_bin}/ruby", *args
-  end
-
   def self.class_s name
     #remove invalid characters and then camelcase it
     name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
