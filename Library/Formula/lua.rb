@@ -14,8 +14,6 @@ class Lua < Formula
 
   option :universal
   option 'completion', 'Enables advanced readline support'
-  option 'lanes',      'Configure Lua to be compatible with Lua Lanes'
-  # See: https://github.com/LuaLanes/lanes
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/mxcl/homebrew/pull/5043
@@ -37,10 +35,7 @@ class Lua < Formula
       s.remove_make_var! 'CC'
       s.change_make_var! 'CFLAGS', "#{ENV.cflags} $(MYCFLAGS)"
       s.change_make_var! 'MYLDFLAGS', ENV.ldflags
-      s.sub! 'MYCFLAGS_VAL',
-        (build.include? 'lanes') ?
-          "-fno-common -DLUA_USE_POSIX -DLUA_USE_DLOPEN -DLUA_USE_READLINE" :
-          "-fno-common -DLUA_USE_LINUX"
+      s.sub! 'MYCFLAGS_VAL', "-fno-common -DLUA_USE_LINUX"
     end
 
     # Fix path in the config header
