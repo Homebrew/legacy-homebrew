@@ -2,14 +2,15 @@ require 'formula'
 
 class Pango < Formula
   homepage 'http://www.pango.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.30/pango-1.30.1.tar.xz'
-  sha256 '3a8c061e143c272ddcd5467b3567e970cfbb64d1d1600a8f8e62435556220cbe'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.32/pango-1.32.6.tar.xz'
+  sha256 '8e9a3eadebf30a31640f2b3ae0fb455cf92d10d1cad246d0ffe72ec595905174'
 
   option 'without-x', 'Build without X11 support'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'glib'
+  depends_on 'harfbuzz'
   depends_on :x11 unless build.include? 'without-x'
 
   if MacOS.version == :leopard
@@ -49,9 +50,7 @@ class Pango < Formula
     system "make install"
   end
 
-  test do
-    system "#{bin}/pango-view", "-t", "test-image",
-                                "--waterfall", "--rotate=10",
-                                "--annotate=1", "--header"
+  def test
+    system "#{bin}/pango-querymodules", "--version"
   end
 end
