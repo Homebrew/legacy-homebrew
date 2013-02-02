@@ -9,6 +9,12 @@ class V8 < Formula
   head 'https://github.com/v8/v8.git'
 
   def install
+    # Lie to `xcode-select` for now to work around a GYP bug that affects
+    # CLT-only systems:
+    #
+    #   http://code.google.com/p/gyp/issues/detail?id=292
+    ENV['DEVELOPER_DIR'] = MacOS.dev_tools_path unless MacOS::Xcode.installed?
+
     system 'make dependencies'
     system 'make', 'native',
                    "-j#{ENV.make_jobs}",
