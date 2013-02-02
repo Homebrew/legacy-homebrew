@@ -297,7 +297,7 @@ class Formula
     system "#{ruby_bin}/rake", *args
   end
 
-  def ruby
+  def ruby *args
     system "#{ruby_bin}/ruby", *args
   end
 
