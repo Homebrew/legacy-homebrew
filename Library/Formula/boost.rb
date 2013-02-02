@@ -28,9 +28,10 @@ class Boost < Formula
   head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
-    sha1 'a4e733fe67c15b7bfe500b0855d84616152f7042' => :mountainlion
-    sha1 'dd94aac5f03fb553c1c0e393fbd346748b0bc524' => :lion
-    sha1 '5fae01afa7e5c6e2d29ec32a24324fdaa14cf594' => :snowleopard
+    version 1
+    sha1 'b39540ad7b7ab4ae48ac1265260adb28dde2b9c6' => :mountain_lion
+    sha1 '7444827406c29b69b5cb1a2479a9d2f0add1a755' => :lion
+    sha1 '880dbd7127340bda5ee724f81f78709334704fa4' => :snowleopard
   end
 
   env :userpaths
