@@ -20,9 +20,7 @@ class Zint < Formula
     end
   end
 
-  def test
-    mktemp do
-      system "#{bin}/zint", "-o", "test-zing.png", "-d", "This Text"
-    end
+  test do
+    system "#{bin}/zint", "-o", "test-zing.png", "-d", "This Text"
   end
 end
