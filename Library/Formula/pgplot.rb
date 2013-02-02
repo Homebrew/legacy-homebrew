@@ -102,19 +102,17 @@ EOS
     end
   end
 
-  def test
-    mktemp do
-      File.open('test_pgplot', 'w') do |t|
-        t.write(<<-EOS
+  test do
+    File.open('test_pgplot', 'w') do |t|
+      t.write(<<-EOS
 spawn #{prefix}/examples/pgdemo1
 expect {
-   NULL     {send "/XWINDOW\n"; exp_continue}
-   RETURN   {send "\n"; exp_continue}
+  NULL     {send "/XWINDOW\n"; exp_continue}
+  RETURN   {send "\n"; exp_continue}
 }
 EOS
-                )
-      end
-      system "expect test_pgplot; killall pgxwin_server"
+              )
     end
+    system "expect test_pgplot; killall pgxwin_server"
   end
 end
