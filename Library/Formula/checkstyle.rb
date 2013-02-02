@@ -10,15 +10,12 @@ class Checkstyle < Formula
     bin.write_jar_script libexec/'checkstyle-5.6-all.jar', 'checkstyle'
   end
 
-  def test
+  test do
     # Note this test "fails" because the audit has issues
     # TODO - pipe through cat to ingore error code
-    mktemp do
-      # create test file
-      (Pathname.pwd/"Test.java").write <<-EOS.undent
+    (testpath/"Test.java").write <<-EOS.undent
         public class Test{ }
-      EOS
-      system "#{bin}/checkstyle", "-c", "#{libexec}/sun_checks.xml", "-r", "Test.java"
-    end
+    EOS
+    system "#{bin}/checkstyle", "-c", "#{libexec}/sun_checks.xml", "-r", "Test.java"
   end
 end
