@@ -2,8 +2,8 @@ require 'formula'
 
 class Mathgl < Formula
   homepage 'http://mathgl.sourceforge.net/'
-  url 'http://sourceforge.net/projects/mathgl/files/mathgl/mathgl%202.0.3/mathgl-2.0.3.tar.gz'
-  sha1 'c032cf53de3f6d3d5e45f6ff9e26889617770f02'
+  url 'http://downloads.sourceforge.net/mathgl/mathgl-2.1.2.tar.gz'
+  sha1 'bd3e797f8616c1f8afd0955fc9b87a2605cbf5ff'
 
   option 'fltk',   'Build the fltk widget and mglview using X11'
   option 'qt4',    'Build the Qt widget, the udav gui, and mglview using Qt4'
