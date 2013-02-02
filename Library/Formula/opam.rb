@@ -11,6 +11,9 @@ class Opam < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
+
+    bash_completion.install "shell/opam_completion.sh"
+    zsh_completion.install "shell/opam_completion_zsh.sh"
   end
 
   def test
