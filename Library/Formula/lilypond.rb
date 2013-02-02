@@ -50,15 +50,13 @@ class Lilypond < Formula
     end
   end
 
-  def test
-    mktemp do
-      (Pathname.pwd+'test.ly').write <<-EOS.undent
-        \\version "2.16.0"
-        \\header { title = "Do-Re-Mi" }
-        { c' d' e' }
-      EOS
-      lilykeg = Formula.factory('lilypond').linked_keg
-      system "#{lilykeg}/bin/lilypond test.ly"
-    end
+  test do
+    (testpath/'test.ly').write <<-EOS.undent
+      \\version "2.16.0"
+      \\header { title = "Do-Re-Mi" }
+      { c' d' e' }
+    EOS
+    lilykeg = Formula.factory('lilypond').linked_keg
+    system "#{lilykeg}/bin/lilypond test.ly"
   end
 end
