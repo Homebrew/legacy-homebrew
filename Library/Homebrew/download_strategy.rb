@@ -159,7 +159,7 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
     mirrors = MultiJson.decode(open("#{@url}&asjson=1").read)
     url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
 
-    ohai "Best Mirror #{mirror_url}"
+    ohai "Best Mirror #{url}"
     curl url, '-C', downloaded_size, '-o', @temporary_path
   rescue IndexError
     raise "Couldn't determine mirror. Try again later."
