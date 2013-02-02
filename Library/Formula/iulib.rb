@@ -9,7 +9,7 @@ class Iulib < Formula
   depends_on :automake
   depends_on :libtool
   depends_on :libpng
-  depends_on "libjpeg"
+  depends_on "jpeg"
   depends_on "libtiff"
 
   def patches
