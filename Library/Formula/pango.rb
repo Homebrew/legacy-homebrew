@@ -11,12 +11,11 @@ class Pango < Formula
   depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'harfbuzz'
-  depends_on :x11 unless build.include? 'without-x'
 
-  if MacOS.version == :leopard
+  unless build.include? 'without-x'
+    depends_on :x11
+    # Needs fontconfig 2.10.91, which is newer than what XQuartz provides
     depends_on 'fontconfig'
-  else
-    depends_on :fontconfig
   end
 
   # The Cairo library shipped with Lion contains a flaw that causes Graphviz
@@ -40,9 +39,9 @@ class Pango < Formula
     ]
 
     if build.include? 'without-x'
-      args << '--without-x'
+      args << '--without-xft'
     else
-      args << '--with-x'
+      args << '--with-xft'
     end
 
     system "./configure", *args
