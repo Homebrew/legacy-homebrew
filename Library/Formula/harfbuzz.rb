@@ -14,6 +14,9 @@ class Harfbuzz < Formula
   depends_on 'glib'
   depends_on 'icu4c' => :recommended
 
+  # Needs newer fontconfig than XQuartz provides for pango
+  depends_on 'fontconfig'
+
   def install
     system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
