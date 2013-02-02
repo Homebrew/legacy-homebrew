@@ -76,7 +76,7 @@ class Pygtk < Formula
           hello = HelloWorld()
           hello.main()
     EOS
-    chmod '+x', 'test.py'
+    chmod 0755, 'test.py'
     system "./test.py"
   end
 end
