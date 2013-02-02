@@ -50,9 +50,7 @@ class Mathgl < Formula
     end
   end
 
-  def test
-    mktemp do
-      system "#{bin}/mgl_example"
-    end
+  test do
+    system "#{bin}/mgl_example"
   end
 end
