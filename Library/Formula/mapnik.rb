@@ -11,7 +11,7 @@ class Mapnik < Formula
   option 'with-gdal', 'Build with optional "Geospatial Data Abstraction Library"'
   option 'with-geos', 'Build with the GEOS (Geometry Engine)'
 
-  depends_on :libtool => :build
+  depends_on :libtool
   depends_on :freetype
   depends_on :libpng
   depends_on 'libtiff'
