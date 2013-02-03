@@ -10,4 +10,11 @@ class Unshield < Formula
                           "--prefix=#{prefix}"
     system "make install"
   end
+  
+  def patches
+    # add support for new Installshield versions
+    # see http://sourceforge.net/tracker/?func=detail&aid=3163039&group_id=30550&atid=399603
+    "http://patch-tracker.debian.org/patch/series/dl/unshield/0.6-3/new_installshield_format.patch" 
+  end
+  
 end
