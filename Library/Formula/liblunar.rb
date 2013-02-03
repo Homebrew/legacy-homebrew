@@ -8,9 +8,9 @@ class Liblunar < Formula
   option 'python', 'Build python bindings using pygobject'
 
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'glib'
   depends_on 'gettext'
-  depends_on 'intltool'
   depends_on 'vala' => :optional
   depends_on 'pygobject' if build.include? 'python'
 
