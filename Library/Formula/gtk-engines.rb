@@ -6,8 +6,8 @@ class GtkEngines < Formula
   sha1 '574c7577d70eaacecd2ffa14e288ef88fdcb6c2a'
 
   depends_on 'pkg-config' => :build
-  depends_on 'gettext' => :build
   depends_on 'intltool' => :build
+  depends_on 'gettext'
   depends_on 'cairo'
   depends_on 'gtk+'
 
