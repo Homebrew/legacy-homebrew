@@ -9,6 +9,10 @@ class Qt5 < Formula
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
+  fails_with :clang do
+    build 425
+  end
+
   option :universal
   option 'with-qtdbus', 'Enable QtDBus module'
   option 'with-demos-examples', 'Enable Qt demos and examples'
