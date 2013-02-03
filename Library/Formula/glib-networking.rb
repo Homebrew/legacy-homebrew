@@ -6,7 +6,7 @@ class GlibNetworking < Formula
   sha256 '39fe23e86a57bb7a8a67c65668394ad0fbe2d43960c1f9d68311d5d13ef1e5cf'
 
   depends_on 'xz' => :build
-  depends_on 'intltool'
+  depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'gnutls'
