@@ -26,7 +26,7 @@ class Unac < Formula
     # Compatibility with Automake 1.13 and newer.
     inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
 
-    system "chmod", "+x", "./configure"
+    chmod 0755, "configure"
     touch "config.rpath"
     inreplace "autogen.sh", "libtool", "glibtool"
     system "./autogen.sh"
@@ -44,9 +44,7 @@ class Unac < Formula
   end
 end
 
-#
 # configure.ac doesn't properly detect Mac OS's iconv library. This patch fixes that.
-#
 __END__
 diff --git a/configure.ac b/configure.ac
 index 4a4eab6..9f25d50 100644
@@ -56,7 +54,8 @@ index 4a4eab6..9f25d50 100644
 
  AM_ICONV
 
+-AC_CHECK_FUNCS(iconv_open,,AC_MSG_ERROR([
 +LIBS="$LIBS -liconv"
- AC_CHECK_FUNCS(iconv_open,,AC_MSG_ERROR([
++AC_CHECK_FUNCS(libiconv_open,,AC_MSG_ERROR([
  iconv_open not found try to install replacement from
  http://www.gnu.org/software/libiconv/
