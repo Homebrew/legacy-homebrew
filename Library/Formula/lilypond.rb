@@ -27,8 +27,6 @@ class Lilypond < Formula
     depends_on 'texi2html'
   end
 
-  skip_clean :all
-
   fails_with :clang do
     build 421
     cause 'Strict C99 compliance error in a pointer conversion.'
