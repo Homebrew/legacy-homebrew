@@ -28,10 +28,10 @@ class Povray < Formula
 
   def patches
     {:p0 => [
-      "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-boost-1.50.diff",
-      "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-configure-stat.diff",
-      "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-lseek64.diff",
-      "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-vfe-uint.diff"
+      "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-boost-1.50.diff",
+      "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-configure-stat.diff",
+      "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-lseek64.diff",
+      "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-vfe-uint.diff"
     ]}
   end
 
