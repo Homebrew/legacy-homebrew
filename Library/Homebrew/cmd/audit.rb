@@ -84,6 +84,7 @@ class FormulaAuditor
     bsdmake
     cmake
     imake
+    intltool
     libtool
     pkg-config
     scons
