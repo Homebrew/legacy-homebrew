@@ -49,9 +49,10 @@ class Macvim < Formula
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
     end
 
-   if build.include? "with-python3"
+    if build.include? "with-python3"
       args << "--enable-python3interp=dynamic"
       args << "vi_cv_path_python3=/usr/local/bin/python3"
+    end
 
     system "./configure", *args
 
