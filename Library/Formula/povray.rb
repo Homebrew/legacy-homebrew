@@ -19,7 +19,7 @@ class Povray < Formula
   version '3.7.0.RC6'
   sha256 '374957bdb90fb7be5f36f839b3f04ab0a4340f6e8cf369f658d6592a342803e3'
 
-  depends_on NeedsLion.new
+  depends_on NeedsLion
   depends_on :libpng
   depends_on 'boost'
   depends_on 'jpeg'
