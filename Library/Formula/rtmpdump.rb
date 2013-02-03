@@ -2,8 +2,8 @@ require 'formula'
 
 class Rtmpdump < Formula
   homepage 'http://rtmpdump.mplayerhq.hu'
-  url 'http://ftp.de.debian.org/debian/pool/main/r/rtmpdump/rtmpdump_2.4+20111222.git4e06e21.orig.tar.gz'
-  sha1 '16f7e7470939ce8801e7d499345fa7d8f195c636'
+  url 'http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.4.tar.gz'
+  sha1 '975f8c79788d1f9fcc66f572509f0203982b17ac'
   version '2.4'
 
   head 'git://git.ffmpeg.org/rtmpdump'
