@@ -222,6 +222,10 @@ class FormulaAuditor
     if urls.any? { |p| p =~ %r[^git://github\.com/] }
       problem "Use https:// URLs for accessing GitHub repositories."
     end
+
+    if urls.any? { |u| u =~ /\.xz/ } && !f.deps.any? { |d| d.name == "xz" }
+      problem "Missing a build-time dependency on 'xz'"
+    end
   end
 
   def audit_specs
