@@ -6,7 +6,7 @@ class Homebank < Formula
   sha1 'cb2b1435f46965eab44171bc6411fee1da754380'
 
   depends_on 'pkg-config' => :build
-  depends_on 'intltool'
+  depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'gtk+'
   depends_on 'hicolor-icon-theme'
