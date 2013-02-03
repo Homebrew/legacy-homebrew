@@ -6,8 +6,8 @@ class Klavaro < Formula
   sha1 '781e0d79b4e805d648085ada46b82dae89093eaf'
 
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'gtk+'
-  depends_on 'intltool'
   depends_on 'gtkdatabox'
   depends_on :x11
 
