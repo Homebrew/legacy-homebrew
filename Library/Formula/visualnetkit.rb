@@ -7,8 +7,6 @@ class Visualnetkit < Formula
 
   depends_on 'qt'
 
-  skip_clean :all
-
   # We're maintaining a patch to allow this software to compile against newer
   # versions of Qt. Since the upstream project hasn't had activity in a while,
   # if a newer version of Qt breaks this formula we will consider moving it to

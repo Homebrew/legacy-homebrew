@@ -25,31 +25,29 @@ class GstPython < Formula
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 
-  def test
-    mktemp do
-      (Pathname.pwd+'test.py').write <<-EOS.undent
-        #!/usr/bin/env python
+  test do
+    (testpath/'test.py').write <<-EOS.undent
+      #!/usr/bin/env python
 
-        import time
+      import time
 
-        import pygst
-        pygst.require('0.10')
-        import gst
+      import pygst
+      pygst.require('0.10')
+      import gst
 
-        import gobject
-        gobject.threads_init()
+      import gobject
+      gobject.threads_init()
 
-        def main():
-            pipeline = gst.parse_launch(
-                'audiotestsrc ! audioresample ! fakesink')
-            pipeline.set_state(gst.STATE_PLAYING)
-            time.sleep(3)
+      def main():
+          pipeline = gst.parse_launch(
+              'audiotestsrc ! audioresample ! fakesink')
+          pipeline.set_state(gst.STATE_PLAYING)
+          time.sleep(3)
 
-        if __name__ == "__main__":
-            main()
-      EOS
-      system "chmod +x test.py"
-      system "./test.py"
-    end
+      if __name__ == "__main__":
+          main()
+    EOS
+    system "chmod +x test.py"
+    system "./test.py"
   end
 end

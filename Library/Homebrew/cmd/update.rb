@@ -6,6 +6,7 @@ module Homebrew extend self
   DEPRECATED_TAPS = ['adamv-alt']
 
   def update
+    abort "This command updates brew itself, and does not take formula names." unless ARGV.named.empty?
     abort "Please `brew install git' first." unless which "git"
 
     # ensure GIT_CONFIG is unset as we need to operate on .git/config

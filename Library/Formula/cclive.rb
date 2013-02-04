@@ -6,6 +6,7 @@ class Cclive < Formula
   sha1 'ca89731073eeda0eb9ccdf3e6cbaca13029f55cb'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'quvi'
   depends_on 'boost'
 

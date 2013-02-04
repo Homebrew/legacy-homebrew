@@ -7,7 +7,7 @@ class Vtk < Formula
 
   depends_on 'cmake' => :build
   depends_on :x11 if build.include? 'x11'
-  depends_on  'qt'  => :optional if build.include? 'qt'
+  depends_on 'qt' if build.include? 'qt'
 
   if build.include? 'pyqt' and build.include? 'python'
     depends_on  'sip'

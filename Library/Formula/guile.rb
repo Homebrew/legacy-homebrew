@@ -27,6 +27,11 @@ class Guile < Formula
     cause "Segfaults during compilation"
   end
 
+  fails_with :clang do
+    build 211
+    cause "Segfaults during compilation"
+  end if build.devel?
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

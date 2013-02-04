@@ -16,6 +16,15 @@ class Doxygen < Formula
 
   def install
     system "./configure", "--prefix", prefix
+    # Per Macports:
+    # https://trac.macports.org/browser/trunk/dports/textproc/doxygen/Portfile#L92
+    inreplace %w[ libmd5/Makefile.libmd5
+                  src/Makefile.libdoxycfg
+                  tmake/lib/macosx-c++/tmake.conf
+                  tmake/lib/macosx-intel-c++/tmake.conf
+                  tmake/lib/macosx-uni-c++/tmake.conf ],
+      '-Wno-invalid-source-encoding', ''
+
     system "make"
     # MAN1DIR, relative to the given prefix
     system "make", "MAN1DIR=share/man/man1", "install"

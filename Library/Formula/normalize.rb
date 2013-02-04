@@ -7,7 +7,7 @@ class Normalize < Formula
 
   option 'without-mad', 'Compile without MP3 support'
 
-  depends_on 'mad' unless build.include? 'without-mad'
+  depends_on 'mad' => :recommended
 
   def install
     args = %W[
@@ -16,7 +16,7 @@ class Normalize < Formula
       --prefix=#{prefix}
       --mandir=#{man}
     ]
-    args << "--without-mad" if build.include? "without-mad"
+    args << "--without-mad" if build.without? "mad"
 
     system "./configure", *args
     system "make install"

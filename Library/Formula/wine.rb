@@ -27,8 +27,8 @@ class Wine < Formula
     # updating too
     #  * http://wiki.winehq.org/Gecko
     #  * http://wiki.winehq.org/Mono
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.22.tar.bz2'
-    sha256 'db08a40a5e6fce050b5cca7782d396ed3a9b1dfb23b9915dad93efb886fc6739'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.23.tar.bz2'
+    sha1 '8c99ea994fc76bdcce95ea377a6f68e6f1c0cdf9'
   end
 
   env :std
@@ -49,7 +49,7 @@ class Wine < Formula
   # Wine tests CFI support by calling clang, but then attempts to use as, which
   # does not work. Use clang for assembling too.
   def patches
-    DATA if ENV.compiler == :clang
+    DATA if ENV.compiler == :clang and !build.devel?
   end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:

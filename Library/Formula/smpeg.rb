@@ -4,9 +4,8 @@ class Smpeg < Formula
   homepage 'http://icculus.org/smpeg/'
   head 'svn://svn.icculus.org/smpeg/trunk'
 
-  depends_on :automake => :build
-  depends_on :libtool => :build
-
+  depends_on :automake
+  depends_on :libtool
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on 'gtk+'
