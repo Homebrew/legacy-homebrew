@@ -230,7 +230,9 @@ module MacOS extend self
   end
 
   def mdfind id
-    `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
+    (@mdfind ||= {}).fetch(id.to_s) do
+      @mdfind[id.to_s] = `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
+    end
   end
 
   def pkgutil_info id
