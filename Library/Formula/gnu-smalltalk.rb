@@ -43,8 +43,8 @@ class GnuSmalltalk < Formula
       args << '--without-tcl' << '--without-tk' << '--without-x'
     end
 
-    # disable generational gc in 32-bit
-    args << "--disable-generational-gc" unless MacOS.prefer_64_bit?
+    # disable generational gc in 32-bit and if libsigsegv is absent
+    args << "--disable-generational-gc" unless MacOS.prefer_64_bit? && build.include?('libsigsegv')
 
     # Compatibility with Automake 1.13+, fixed upstream
     inreplace %w{configure.ac sigsegv/configure.ac},
