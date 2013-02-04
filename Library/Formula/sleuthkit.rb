@@ -2,8 +2,8 @@ require 'formula'
 
 class Sleuthkit < Formula
   homepage 'http://www.sleuthkit.org/'
-  url 'http://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.0.1/sleuthkit-4.0.1.tar.gz'
-  sha1 '5364ffe9c6354e9f9461972ebd906fff8175db3a'
+  url 'http://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.0.2/sleuthkit-4.0.2.tar.gz'
+  sha1 'e5394d53eb07615e6e78ff7fa73340cc6f6e98d4'
 
   head 'https://github.com/sleuthkit/sleuthkit.git'
 

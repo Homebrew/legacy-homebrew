@@ -17,10 +17,9 @@ class Git < Formula
 
   head 'https://github.com/git/git.git'
 
-  depends_on 'pcre' if build.include? 'with-pcre'
-
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
-  option 'with-pcre', 'Compile with the PCRE library'
+
+  depends_on 'pcre' => :optional
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -37,7 +36,7 @@ class Git < Formula
 
     ENV['BLK_SHA1'] = '1' if build.include? 'with-blk-sha1'
 
-    if build.include? 'with-pcre'
+    if build.with? 'pcre'
       ENV['USE_LIBPCRE'] = '1'
       ENV['LIBPCREDIR'] = HOMEBREW_PREFIX
     end

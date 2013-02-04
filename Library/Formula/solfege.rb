@@ -6,7 +6,8 @@ class Solfege < Formula
   mirror 'http://ftp.gnu.org/gnu/solfege/solfege-3.20.6.tar.xz'
   sha1 '0b83f351e90aeb9267f76d8dda0638dc50682226'
 
-  depends_on 'gettext'      => :build
+  depends_on 'xz' => :build
+  depends_on 'gettext'
   depends_on 'pygtk'        => :recommended
   depends_on 'qtplay'       => :recommended
   depends_on 'librsvg'      => :recommended

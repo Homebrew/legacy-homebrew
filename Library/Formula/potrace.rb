@@ -8,7 +8,8 @@ class Potrace < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+                          "--mandir=#{man}",
+                          "--with-libpotrace"
     system "make install"
   end
 end

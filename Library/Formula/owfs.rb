@@ -2,9 +2,9 @@ require 'formula'
 
 class Owfs < Formula
   homepage 'http://owfs.org/'
-  url 'http://downloads.sourceforge.net/project/owfs/owfs/2.8p20/owfs-2.8p20.tar.gz'
-  version '2.8p20'
-  sha1 'ccfe8b794fd224221538d2f85c6d9774254c58f5'
+  url 'http://sourceforge.net/projects/owfs/files/owfs/2.8p21/owfs-2.8p21.tar.gz'
+  version '2.8p21'
+  sha1 '253b70aef2637dc60beeb0187254b69abe158e43'
 
   depends_on 'libusb-compat'
 

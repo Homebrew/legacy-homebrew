@@ -8,6 +8,14 @@ class Clang < Formula
   head      'http://llvm.org/git/clang.git'
 end
 
+class CompilerRt < Formula
+  homepage  'http://llvm.org/'
+  url       'http://llvm.org/releases/3.2/compiler-rt-3.2.src.tar.gz'
+  sha1      '718c0249a00e928f8bba32c84771da998ea4d42f'
+
+  head      'http://llvm.org/git/compiler-rt.git'
+end
+
 class Llvm < Formula
   homepage  'http://llvm.org/'
   url       'http://llvm.org/releases/3.2/llvm-3.2.src.tar.gz'
@@ -23,9 +31,11 @@ class Llvm < Formula
 
   option :universal
   option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
+  option 'with-asan', 'Include support for -faddress-sanitizer (from compiler-rt)'
   option 'shared', 'Build LLVM as a shared library'
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
+  option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
   def install
     if build.universal? and build.include? 'shared'
@@ -33,7 +43,13 @@ class Llvm < Formula
       exit 1
     end
 
-    Clang.new("clang").brew { clang_dir.install Dir['*'] } if build.include? 'with-clang'
+    Clang.new("clang").brew do
+      clang_dir.install Dir['*']
+    end if build.include? 'with-clang'
+
+    CompilerRt.new("compiler-rt").brew do
+      (buildpath/'projects/compiler-rt').install Dir['*']
+    end if build.include? 'with-asan'
 
     if build.universal?
       ENV['UNIVERSAL'] = '1'
@@ -56,6 +72,8 @@ class Llvm < Formula
       args << "--enable-targets=host"
     end
     args << "--enable-shared" if build.include? 'shared'
+
+    args << "--disable-assertions" if build.include? 'disable-assertions'
 
     system "./configure", *args
     system "make install"
