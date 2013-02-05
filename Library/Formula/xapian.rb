@@ -2,14 +2,14 @@ require 'formula'
 
 class XapianBindings < Formula
   homepage 'http://xapian.org'
-  url 'http://oligarchy.co.uk/xapian/1.2.12/xapian-bindings-1.2.12.tar.gz'
-  sha1 'f75921b43041e6e672821c51fe29dbbaee491791'
+  url 'http://oligarchy.co.uk/xapian/1.2.13/xapian-bindings-1.2.13.tar.gz'
+  sha1 '0cffc6ae2df295d2f8bc052831ed225e60236e92'
 end
 
 class Xapian < Formula
   homepage 'http://xapian.org'
-  url 'http://oligarchy.co.uk/xapian/1.2.12/xapian-core-1.2.12.tar.gz'
-  sha1 '2b96800280fee41eed767289620172f5226c9c4f'
+  url 'http://oligarchy.co.uk/xapian/1.2.13/xapian-core-1.2.13.tar.gz'
+  sha1 'ae5edc64671c5f32a3a24abf8cc3028cb56f6c6b'
 
   option "java",   "Java bindings"
   option "php",    "PHP bindings"
