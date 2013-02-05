@@ -6,7 +6,7 @@ require 'formula'
 
 def tap arg
   match = arg.match(%r[homebrew-(\w+)/])
-  match[1] if match
+  match[1].downcase if match
 end
 
 if ARGV.empty?
@@ -31,7 +31,7 @@ ARGV.named.each do|arg|
   end
 
   if tap url
-    Dir.chdir HOMEBREW_REPOSITORY/"Library/Taps/homebrew-#{tap url}"
+    Dir.chdir HOMEBREW_REPOSITORY/"Library/Taps/#{url_match[1].downcase}-#{tap url}"
   else
     Dir.chdir HOMEBREW_REPOSITORY
   end
@@ -57,7 +57,7 @@ ARGV.named.each do|arg|
 
   safe_system 'git', *patch_args
 
-  issue = arg.to_i > 0 ? arg.to_i : url_match[3]
+  issue = arg.to_i > 0 ? arg.to_i : url_match[4]
   if issue and not ARGV.include? '--clean'
     ohai "Patch closes issue ##{issue}"
     message = `git log HEAD^.. --format=%B`
