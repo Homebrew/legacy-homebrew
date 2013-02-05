@@ -77,11 +77,15 @@ module Homebrew extend self
           end
         end
       end
+      if pn.basename.to_s.split('.').last == 'incomplete'
+        puts "Removing #{pn}..."
+        rm pn unless ARGV.dry_run?
+      end
     end
   end
 
   def rm_DS_Store
-    system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete"
+    system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete 2>/dev/null"
   end
 
 end

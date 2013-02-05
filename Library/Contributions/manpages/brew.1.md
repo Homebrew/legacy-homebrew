@@ -15,7 +15,8 @@ didn't include with OS X.
 
 For the full command list, see the COMMANDS section.
 
-With `--verbose`, many commands print extra debugging information.
+With `--verbose` or `-v`, many commands print extra debugging information.
+Note that these flags should only appear after a command.
 
   * `install` <formula>:
     Install <formula>.
@@ -72,7 +73,7 @@ With `--verbose`, many commands print extra debugging information.
     If `--cmake` is passed, create a basic template for a CMake-style build.
 
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
-    will thus not add the MD5 to the formula for you.
+    will thus not add the SHA-1 to the formula for you.
 
     The options `--set-name` and `--set-version` each take an argument and allow
     you to explicitly set the name and version of the package you are creating.
@@ -110,7 +111,7 @@ With `--verbose`, many commands print extra debugging information.
 
   * `fetch [--force] [-v] [--HEAD] [--deps]` <formulae>:
     Download the source packages for the given <formulae>.
-    For tarballs, also print MD5 and SHA1 checksums.
+    For tarballs, also print SHA1 and SHA-256 checksums.
 
     If `--HEAD` is passed, download the HEAD versions of <formulae> instead. `-v`
     may also be passed to make the VCS checkout verbose, useful for seeing if
@@ -291,7 +292,7 @@ With `--verbose`, many commands print extra debugging information.
     If <formulae> are given, upgrade only the specified brews.
 
   * `uses [--installed] [--recursive]` <formula>:
-    Show the formulas that specify <formula> as a dependency.
+    Show the formulae that specify <formula> as a dependency.
 
     Use `--recursive` to resolve more than one level of dependencies.
 
@@ -444,6 +445,12 @@ can take several different forms:
     If set, Homebrew will not print the beer emoji on a successful build.
 
     *Note:* Homebrew will only try to print emoji on Lion or newer.
+
+  * HOMEBREW\_SOURCEFORGE\_MIRROR:
+    If set, Homebrew will use the value of `HOMEBREW_SOURCEFORGE_MIRROR` to
+    select a SourceForge mirror for downloading bottles.
+
+    *Example:* `export HOMEBREW_SOURCEFORGE_MIRROR='heanet'`
 
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,

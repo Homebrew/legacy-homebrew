@@ -1,8 +1,8 @@
 require 'formula'
 
 class Openexr < Formula
-  url 'http://download.savannah.gnu.org/releases/openexr/openexr-1.7.0.tar.gz'
   homepage 'http://www.openexr.com/'
+  url 'http://download.savannah.gnu.org/releases/openexr/openexr-1.7.0.tar.gz'
   sha1 '91d0d4e69f06de956ec7e0710fc58ec0d4c4dc2b'
 
   # included for reference only - repository doesn't have 'configure' script

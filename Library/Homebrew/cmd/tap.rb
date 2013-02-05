@@ -92,7 +92,7 @@ module Homebrew extend self
     # check symlinks are all set in each tap
     HOMEBREW_REPOSITORY.join("Library/Taps").children.each do |tap|
       files = []
-      tap.find_formula{ |file| files << tap.basename.join(file) }
+      tap.find_formula{ |file| files << tap.basename.join(file) } if tap.directory?
       count += link_tap_formula(files)
     end
 

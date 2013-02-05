@@ -81,10 +81,13 @@ end
 class Bottle < SoftwareSpec
   attr_writer :url
   attr_reader :revision
+  # TODO: Can be removed when all bottles migrated to underscored cat symbols.
+  attr_reader :cat_without_underscores
 
   def initialize url=nil, version=nil
     super
     @revision = 0
+    @cat_without_underscores = false
   end
 
   # Checksum methods in the DSL's bottle block optionally take
@@ -103,7 +106,12 @@ class Bottle < SoftwareSpec
           @#{cksum}[value] = Checksum.new(:#{cksum}, key)
         end
 
-        @checksum = @#{cksum}[MacOS.cat] if @#{cksum}.has_key? MacOS.cat
+        if @#{cksum}.has_key? MacOS.cat
+          @checksum = @#{cksum}[MacOS.cat]
+        elsif @#{cksum}.has_key? MacOS.cat_without_underscores
+          @checksum = @#{cksum}[MacOS.cat_without_underscores]
+          @cat_without_underscores = true
+        end
       end
     }
   end
@@ -158,99 +166,5 @@ class KegOnlyReason
     else
       @reason
     end.strip
-  end
-end
-
-
-# Represents a build-time option for a formula
-class Option
-  attr_reader :name, :description, :flag
-
-  def initialize name, description=nil
-    @name = name.to_s
-    @description = description.to_s
-    @flag = '--'+name.to_s
-  end
-
-  def eql?(other)
-    @name == other.name
-  end
-
-  def hash
-    @name.hash
-  end
-end
-
-
-# This class holds the build-time options defined for a Formula,
-# and provides named access to those options during install.
-class BuildOptions
-  include Enumerable
-
-  def initialize args
-    # Take a copy of the args (any string array, actually)
-    @args = Array.new(args)
-    # Extend it into an ARGV extension
-    @args.extend(HomebrewArgvExtension)
-    @options = Set.new
-  end
-
-  def add name, description=nil
-    if description.nil?
-      case name
-      when :universal, "universal"
-        description = "Build a universal binary"
-      when "32-bit"
-        description = "Build 32-bit only"
-      else
-        description = ""
-      end
-    end
-
-    @options << Option.new(name, description)
-  end
-
-  def has_option? name
-    any? { |opt| opt.name == name }
-  end
-
-  def empty?
-    @options.empty?
-  end
-
-  def each(&blk)
-    @options.each(&blk)
-  end
-
-  def as_flags
-    map { |opt| opt.flag }
-  end
-
-  def include? name
-    @args.include? '--' + name
-  end
-
-  def head?
-    @args.flag? '--HEAD'
-  end
-
-  def devel?
-    @args.include? '--devel'
-  end
-
-  def stable?
-    not (head? or devel?)
-  end
-
-  # True if the user requested a universal build.
-  def universal?
-    @args.include? '--universal'
-  end
-
-  # Request a 32-bit only build.
-  # This is needed for some use-cases though we prefer to build Universal
-  # when a 32-bit version is needed.
-  def build_32_bit?
-    @args.include? '--32-bit'
   end
 end

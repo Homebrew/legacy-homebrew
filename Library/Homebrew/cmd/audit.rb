@@ -84,6 +84,7 @@ class FormulaAuditor
     bsdmake
     cmake
     imake
+    intltool
     libtool
     pkg-config
     scons
@@ -129,18 +130,24 @@ class FormulaAuditor
 
     # Check for things we don't like to depend on.
     # We allow non-Homebrew installs whenever possible.
-    f.deps.each do |d|
+    f.deps.each do |dep|
       begin
-        dep_f = Formula.factory d
+        dep_f = dep.to_formula
       rescue
-        problem "Can't find dependency \"#{d}\"."
+        problem "Can't find dependency #{dep.name.inspect}."
       end
 
-      case d.name
+      dep.options.reject do |opt|
+        dep_f.build.has_option?(opt.name)
+      end.each do |opt|
+        problem "Dependency #{dep} does not define option #{opt.name.inspect}"
+      end
+
+      case dep.name
       when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
         problem <<-EOS.undent
-          Don't use #{d} as a dependency. We allow non-Homebrew
-          #{d} installations.
+          Don't use #{dep} as a dependency. We allow non-Homebrew
+          #{dep} installations.
           EOS
       when 'gfortran'
         problem "Use ENV.fortran during install instead of depends_on 'gfortran'"
@@ -215,6 +222,10 @@ class FormulaAuditor
     if urls.any? { |p| p =~ %r[^git://github\.com/] }
       problem "Use https:// URLs for accessing GitHub repositories."
     end
+
+    if urls.any? { |u| u =~ /\.xz/ } && !f.deps.any? { |d| d.name == "xz" }
+      problem "Missing a build-time dependency on 'xz'"
+    end
   end
 
   def audit_specs
@@ -238,12 +249,9 @@ class FormulaAuditor
       next if cksum.nil?
 
       len = case cksum.hash_type
-        when :md5 then 32
         when :sha1 then 40
         when :sha256 then 64
         end
-
-      problem "md5 is broken, deprecated: use sha1 instead" if cksum.hash_type == :md5
 
       if cksum.empty?
         problem "#{cksum.hash_type} is empty"
@@ -257,16 +265,16 @@ class FormulaAuditor
 
   def audit_patches
     # Some formulae use ENV in patches, so set up an environment
-    ENV.setup_build_environment
-
-    Patches.new(f.patches).select { |p| p.external? }.each do |p|
-      case p.url
-      when %r[raw\.github\.com], %r[gist\.github\.com/raw]
-        unless p.url =~ /[a-fA-F0-9]{40}/
-          problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
+    ENV.with_build_environment do
+      Patches.new(f.patches).select { |p| p.external? }.each do |p|
+        case p.url
+        when %r[raw\.github\.com], %r[gist\.github\.com/raw]
+          unless p.url =~ /[a-fA-F0-9]{40}/
+            problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
+          end
+        when %r[macports/trunk]
+          problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
         end
-      when %r[macports/trunk]
-        problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
       end
     end
   end
@@ -403,6 +411,10 @@ class FormulaAuditor
 
     if text =~ /skip_clean\s+:all/
       problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
+    end
+
+    if text =~ /depends_on (.*)\.new\s*[^(]/
+      problem "`depends_on` can take requirement classes directly"
     end
   end
 

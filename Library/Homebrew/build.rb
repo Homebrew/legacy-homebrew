@@ -65,28 +65,35 @@ end
 def pre_superenv_hacks f
   # Allow a formula to opt-in to the std environment.
   ARGV.unshift '--env=std' if (f.env.std? or
-    f.recursive_deps.detect{|d| d.name == 'scons' }) and
+    f.recursive_dependencies.detect{|d| d.name == 'scons' }) and
     not ARGV.include? '--env=super'
 end
 
 def install f
-  deps = f.recursive_deps
-  keg_only_deps = deps.select{|dep| dep.keg_only? }
+  deps = f.recursive_dependencies.map(&:to_formula)
+  keg_only_deps = deps.select(&:keg_only?)
 
   pre_superenv_hacks(f)
   require 'superenv'
 
-  unless superenv?
-    ENV.setup_build_environment
-    # Requirements are processed first so that adjustments made to ENV
-    # for keg-only deps take precdence.
-    f.recursive_requirements.each { |rq| rq.modify_build_environment }
-  end
-
   deps.each do |dep|
     opt = HOMEBREW_PREFIX/:opt/dep
     fixopt(dep) unless opt.directory? or ARGV.ignore_deps?
-    if not superenv? and dep.keg_only?
+  end
+
+  if superenv?
+    ENV.deps = keg_only_deps.map(&:to_s)
+    ENV.all_deps = f.recursive_dependencies.map(&:to_s)
+    ENV.x11 = f.recursive_requirements.detect { |rq| rq.kind_of?(X11Dependency) }
+    ENV.setup_build_environment
+    post_superenv_hacks(f)
+    f.recursive_requirements.each(&:modify_build_environment)
+  else
+    ENV.setup_build_environment
+    f.recursive_requirements.each(&:modify_build_environment)
+
+    keg_only_deps.each do |dep|
+      opt = dep.opt_prefix
       ENV.prepend_path 'PATH', "#{opt}/bin"
       ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
       ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
@@ -95,15 +102,6 @@ def install f
       ENV.prepend 'LDFLAGS', "-L#{opt}/lib" if (opt/:lib).directory?
       ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
     end
-  end
-
-  if superenv?
-    ENV.deps = keg_only_deps.map(&:to_s)
-    ENV.all_deps = f.recursive_deps.map(&:to_s)
-    ENV.x11 = f.recursive_requirements.detect{|rq| rq.class == X11Dependency }
-    ENV.setup_build_environment
-    post_superenv_hacks(f)
-    f.recursive_requirements.each { |rq| rq.modify_build_environment }
   end
 
   if f.fails_with? ENV.compiler

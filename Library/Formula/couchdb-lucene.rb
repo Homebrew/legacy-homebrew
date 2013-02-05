@@ -1,8 +1,8 @@
 require 'formula'
 
 class CouchdbLucene < Formula
-  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.9.0'
   homepage 'https://github.com/rnewson/couchdb-lucene'
+  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.9.0'
   sha1 'f5c29f5d76c70ef25ed240b0a04658ec6120a0fd'
 
   depends_on 'couchdb'
@@ -18,14 +18,8 @@ class CouchdbLucene < Formula
   end
 
   def ini_file; <<-EOS.undent
-    [couchdb]
-    os_process_timeout=60000 ; increase the timeout from 5 seconds.
-
-    [external]
-    fti=#{which 'python'} #{prefix}/tools/couchdb-external-hook.py
-
-    [httpd_db_handlers]
-    _fti = {couch_httpd_external, handle_external_req, <<"fti">>}
+    [httpd_global_handlers]
+    _fti = {couch_httpd_proxy, handle_proxy_req, <<"http://127.0.0.1:5985">>}
     EOS
   end
 

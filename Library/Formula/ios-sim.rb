@@ -6,6 +6,6 @@ class IosSim < Formula
   sha1 '60f9e007384ccc0a8c36ad4bd02e22f0c48104b1'
 
   def install
-    system "rake", "install", "prefix=#{prefix}"
+    rake "install", "prefix=#{prefix}"
   end
 end

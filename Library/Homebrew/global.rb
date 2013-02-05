@@ -3,13 +3,14 @@ require 'extend/pathname'
 require 'extend/ARGV'
 require 'extend/string'
 require 'extend/symbol'
+require 'extend/object'
 require 'utils'
 require 'exceptions'
 require 'set'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.9.3'
+HOMEBREW_VERSION = '0.9.4'
 HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
 
 def cache

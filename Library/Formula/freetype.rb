@@ -20,7 +20,8 @@ class Freetype < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/freetype-config --ftversion"
+  test do
+    system "#{bin}/freetype-config", '--cflags', '--libs', '--ftversion',
+      '--exec-prefix', '--prefix'
   end
 end

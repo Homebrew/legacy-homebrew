@@ -8,12 +8,19 @@ module MacOS extend self
   end
 
   def cat
-    if version == :mountain_lion then :mountainlion
+    if version == :mountain_lion then :mountain_lion
     elsif version == :lion then :lion
-    elsif version == :snow_leopard then :snowleopard
+    elsif version == :snow_leopard then :snow_leopard
     elsif version == :leopard then :leopard
     else nil
     end
+  end
+
+  # TODO: Can be removed when all bottles migrated to underscored cat symbols.
+  def cat_without_underscores
+    possibly_underscored_cat = cat
+    return nil unless possibly_underscored_cat
+    cat.to_s.gsub('_', '').to_sym
   end
 
   def locate tool
@@ -29,7 +36,9 @@ module MacOS extend self
         # look in dev_tools_path, and finally in xctoolchain_path, because the
         # tools were split over two locations beginning with Xcode 4.3+.
         xcrun_path = unless Xcode.bad_xcode_select_path?
-          `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+          path = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+          # If xcrun finds a superenv tool then discard the result.
+          path unless path.include?(HOMEBREW_PREFIX/"Library/ENV")
         end
 
         paths = %W[#{xcrun_path}
@@ -127,14 +136,14 @@ module MacOS extend self
 
   def clang_version
     @clang_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ /clang version (\d\.\d)/
+      `#{locate("clang")} --version` =~ /(?:clang|LLVM) version (\d\.\d)/
       $1
     end
   end
 
   def clang_build_version
     @clang_build_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ %r[tags/Apple/clang-(\d{2,})]
+      `#{locate("clang")} --version` =~ %r[clang-(\d{2,})]
       $1.to_i
     end
   end
@@ -191,7 +200,8 @@ module MacOS extend self
     "4.4.1" => { :llvm_build => 2336, :clang => "4.0", :clang_build => 421 },
     "4.5"   => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
     "4.5.1" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
-    "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 }
+    "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
+    "4.6"   => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
   }
 
   def compilers_standard?

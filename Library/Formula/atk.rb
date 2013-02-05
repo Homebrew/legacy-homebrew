@@ -6,6 +6,7 @@ class Atk < Formula
   sha256 'eff663f90847620bb68c9c2cbaaf7f45e2ff44163b9ab3f10d15be763680491f'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'glib'
 
   option :universal

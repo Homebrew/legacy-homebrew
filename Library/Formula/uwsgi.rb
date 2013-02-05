@@ -3,6 +3,11 @@ require 'formula'
 class UniversalPcre < Requirement
   fatal true
 
+  satisfy :build_env => false do
+    f = Formula.factory('pcre')
+    f.installed? && archs_for_command(f.lib/'libpcre.dylib').universal?
+  end
+
   def message; <<-EOS.undent
     pcre must be build universal for uwsgi to work.
     You will need to:
@@ -10,19 +15,14 @@ class UniversalPcre < Requirement
       brew install --universal pcre
     EOS
   end
-
-  def satisfied?
-    f = Formula.factory('pcre')
-    f.installed? && archs_for_command(f.lib/'libpcre.dylib').universal?
-  end
 end
 
 class Uwsgi < Formula
   homepage 'http://projects.unbit.it/uwsgi/'
-  url 'http://projects.unbit.it/downloads/uwsgi-1.2.6.tar.gz'
-  sha1 '61996a4bc7d745dc3ed849c78310c4e1c5c70ee1'
+  url 'http://projects.unbit.it/downloads/uwsgi-1.4.4.tar.gz'
+  sha1 'efaff6ebaa39bc015771bdecbf73373e1d1eceed'
 
-  depends_on UniversalPcre.new
+  depends_on UniversalPcre
   depends_on 'pcre'
 
   def install

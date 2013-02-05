@@ -27,10 +27,9 @@ class Asymptote < Formula
     system "make install"
   end
 
-  def test
+  test do
     ENV['TEXMFHOME'] = "#{HOMEBREW_PREFIX}/share/texmf"
-    mktemp do
-      (Pathname.pwd+'asy_test.tex').write <<-EOS.undent
+    (testpath/'asy_test.tex').write <<-EOS.undent
         \\nonstopmode
 
         \\documentclass{minimal}
@@ -45,12 +44,11 @@ class Asymptote < Formula
         \\end{asy}
 
         \\end{document}
-      EOS
+    EOS
 
-      system "pdflatex asy_test"
-      system "asy asy_test-1.asy"
-      system "pdflatex asy_test"
-    end
+    system "pdflatex asy_test"
+    system "asy asy_test-1.asy"
+    system "pdflatex asy_test"
 
     return (not $? == 0)
   end

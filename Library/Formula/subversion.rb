@@ -6,51 +6,6 @@ def build_python?; build.include? "python"; end
 def build_ruby?;   build.include? "ruby";   end
 def with_unicode_path?; build.include? "unicode-path"; end
 
-class UniversalNeon < Requirement
-  fatal true
-
-  def message; <<-EOS.undent
-      A universal build was requested, but neon was already built for a single arch.
-      You will need to `brew rm neon` first.
-    EOS
-  end
-
-  def satisfied?
-    f = Formula.factory('neon')
-    !f.installed? || archs_for_command(f.lib+'libneon.dylib').universal?
-  end
-end
-
-class UniversalSqlite < Requirement
-  fatal true
-
-  def message; <<-EOS.undent
-      A universal build was requested, but sqlite was already built for a single arch.
-      You will need to `brew rm sqlite` first.
-    EOS
-  end
-
-  def satisfied?
-    f = Formula.factory('sqlite')
-    !f.installed? || archs_for_command(f.lib+'libsqlite3.dylib').universal?
-  end
-end
-
-class UniversalSerf < Requirement
-  fatal true
-
-  def message; <<-EOS.undent
-      A universal build was requested, but serf was already built for a single arch.
-      You will need to `brew rm serf` first.
-    EOS
-  end
-
-  def satisfied?
-    f = Formula.factory('serf')
-    !f.installed? || archs_for_command(f.lib+'libserf-1.0.0.0.dylib').universal?
-  end
-end
-
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
   url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.8.tar.bz2'
@@ -69,12 +24,6 @@ class Subversion < Formula
   depends_on 'neon'
   depends_on 'sqlite'
   depends_on 'serf'
-
-  if build.universal?
-    depends_on UniversalNeon.new
-    depends_on UniversalSqlite.new
-    depends_on UniversalSerf.new
-  end
 
   # Building Ruby bindings requires libtool
   depends_on :libtool if build_ruby?
@@ -110,7 +59,8 @@ class Subversion < Formula
   end
 
   def install
-    # We had weird issues with "make" apparently hanging on first run: https://github.com/mxcl/homebrew/issues/13226
+    # We had weird issues with "make" apparently hanging on first run:
+    # https://github.com/mxcl/homebrew/issues/13226
     ENV.deparallelize
 
     if build_java?
@@ -136,7 +86,7 @@ class Subversion < Formula
             "--with-ssl",
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula.factory('sqlite').opt_prefix}",
-            "--with-serf=#{HOMEBREW_PREFIX}",
+            "--with-serf=#{Formula.factory('serf').opt_prefix}",
             # use our neon, not OS X's
             "--disable-neon-version-check",
             "--disable-mod-activation",
@@ -144,7 +94,12 @@ class Subversion < Formula
             "--without-berkeley-db"]
 
     args << "--enable-javahl" << "--without-jikes" if build_java?
-    args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
+
+    if build_ruby?
+      args << "--with-ruby-sitedir=#{lib}/ruby"
+      # Peg to system Ruby
+      args << "RUBY=/usr/bin/ruby"
+    end
 
     # The system Python is built with llvm-gcc, so we override this
     # variable to prevent failures due to incompatible CFLAGS
@@ -189,7 +144,8 @@ class Subversion < Formula
     end
 
     if build_ruby?
-      system "make swig-rb"
+      # Peg to system Ruby
+      system "make swig-rb EXTRA_SWIG_LDFLAGS=-L/usr/lib"
       system "make install-swig-rb"
     end
   end

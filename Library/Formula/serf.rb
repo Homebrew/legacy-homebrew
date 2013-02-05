@@ -8,6 +8,7 @@ class Serf < Formula
   option :universal
 
   depends_on :libtool
+  depends_on 'sqlite'
 
   def apr_bin
     superbin or "/usr/bin"

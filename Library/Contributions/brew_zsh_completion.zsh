@@ -33,7 +33,7 @@ _1st_arguments=(
   'list:list files in a formula or not-installed formulae'
   'log:git commit log for a formula'
   'missing:check all installed formuale for missing dependencies.'
-  'outdated:list formulas for which a newer version is available'
+  'outdated:list formulae for which a newer version is available'
   'prune:remove dead links'
   'remove:remove a formula'
   'search:search for a formula (/regex/ or string)'
@@ -41,7 +41,7 @@ _1st_arguments=(
   'unlink:unlink a formula'
   'update:freshen up links'
   'upgrade:upgrade outdated formulae'
-  'uses:show formulas which depend on a formula'
+  'uses:show formulae which depend on a formula'
 )
 
 local expl

@@ -3,9 +3,7 @@ require 'formula'
 class NeedsSnowLeopard < Requirement
   fatal true
 
-  def satisfied?
-    MacOS.version >= :snow_leopard
-  end
+  satisfy MacOS.version >= :snow_leopard
 
   def message; <<-EOS.undent
     The version of Freetype that comes with Leopard is too old to build MuPDF
@@ -22,7 +20,7 @@ class Mupdf < Formula
   url 'http://mupdf.googlecode.com/files/mupdf-1.1-source.tar.gz'
   sha1 'e2c2cd555d790ed97bd6507accf29817945dfe81'
 
-  depends_on NeedsSnowLeopard.new
+  depends_on NeedsSnowLeopard
 
   depends_on 'jpeg'
   depends_on 'openjpeg'

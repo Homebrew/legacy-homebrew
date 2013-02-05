@@ -3,6 +3,8 @@ require 'formula'
 class PythonWithGdbm < Requirement
   fatal true
 
+  satisfy { quiet_system "python", "-c", "import gdbm" }
+
   def message; <<-EOS.undent
     The Python being used does not include gdbm support,
     but it is required to build this formula:
@@ -12,10 +14,6 @@ class PythonWithGdbm < Requirement
     Homebrew's Python includes gdbm support.
     EOS
   end
-
-  def satisfied?
-    quiet_system "python", "-c", "import gdbm"
-  end
 end
 
 class Cvs2svn < Formula
@@ -23,7 +21,7 @@ class Cvs2svn < Formula
   url 'http://trac.macports.org/export/70472/distfiles/cvs2svn/cvs2svn-2.3.0.tar.gz'
   sha1 '545237805ddb241054ba40b105b9c29b705539b8'
 
-  depends_on PythonWithGdbm.new
+  depends_on PythonWithGdbm
 
   def install
     system "python", "setup.py", "install", "--prefix=#{prefix}"

@@ -225,7 +225,7 @@ def check_for_latest_xcode
         EOS
       elsif not MacOS::CLT.latest_version?
         <<-EOS.undent
-        A newer Command Line Tools for Xcode release is avaliable
+        A newer Command Line Tools for Xcode release is available
         You should install the latest version from: http://connect.apple.com
         EOS
       end
@@ -368,6 +368,21 @@ def check_access_share
   __check_folder_access 'share',
   'If a brew tries to write a file to this directory, the install will\n'+
   'fail during the link step.'
+end
+
+def check_access_logs
+  folder = Pathname.new('~/Library/Logs/Homebrew')
+  if folder.exist? and not folder.writable_real?
+    <<-EOS.undent
+      #{folder} isn't writable.
+      This can happen if you "sudo make install" software that isn't managed
+      by Homebrew.
+
+      Homebrew writes debugging logs to this location.
+
+      You should probably `chown` #{folder}
+    EOS
+  end
 end
 
 def check_usr_bin_ruby
@@ -692,6 +707,28 @@ def check_for_multiple_volumes
   end
 end
 
+def check_filesystem_case_sensitive
+  volumes = Volumes.new
+  tmp_prefix = Pathname.new(ENV['HOMEBREW_TEMP'] || '/tmp')
+  case_sensitive_vols = [HOMEBREW_PREFIX, HOMEBREW_REPOSITORY, HOMEBREW_CELLAR, tmp_prefix].select do |dir|
+    # We select the dir as being case-sensitive if either the UPCASED or the
+    # downcased variant is missing.
+    # Of course, on a case-insensitive fs, both exist because the os reports so.
+    # In the rare situation when the user has indeed a downcased and an upcased
+    # dir (e.g. /TMP and /tmp) this check falsely thinks it is case-insensitive
+    # but we don't care beacuse: 1. there is more than one dir checked, 2. the
+    # check is not vital and 3. we would have to touch files otherwise.
+    upcased = Pathname.new(dir.to_s.upcase)
+    downcased = Pathname.new(dir.to_s.downcase)
+    dir.exist? && !(upcased.exist? && downcased.exist?)
+  end.map { |case_sensitive_dir| volumes.get_mounts(case_sensitive_dir) }.uniq
+  return if case_sensitive_vols.empty?
+  <<-EOS.undent
+    Your file-system on #{case_sensitive_vols} appears to be CaSe SeNsItIvE.
+    Homebrew is less tested with that - don't worry but please report issues.
+  EOS
+end
+
 def check_for_git
   unless which "git" then <<-EOS.undent
     Git could not be found in your PATH.
@@ -708,21 +745,23 @@ def check_git_newline_settings
   autocrlf = `git config --get core.autocrlf`.chomp
   safecrlf = `git config --get core.safecrlf`.chomp
 
-  if autocrlf == 'input' and safecrlf == 'true' then <<-EOS.undent
+  if !autocrlf.empty? && autocrlf != 'false' then <<-EOS.undent
     Suspicious Git newline settings found.
 
-    The detected Git newline settings can cause checkout problems:
+    The detected Git newline settings will cause checkout problems:
       core.autocrlf = #{autocrlf}
-      core.safecrlf = #{safecrlf}
 
     If you are not routinely dealing with Windows-based projects,
-    consider removing these settings.
+    consider removing these by running:
+    `git config --global --set core.autocrlf false`
     EOS
   end
 end
 
 def check_for_git_origin
   return unless which "git"
+  # otherwise this will nag users with no repo about their remote
+  return unless (HOMEBREW_REPOSITORY/'.git').exist?
 
   HOMEBREW_REPOSITORY.cd do
     if `git config --get remote.origin.url`.chomp.empty? then <<-EOS.undent
@@ -731,7 +770,7 @@ def check_for_git_origin
       Without a correctly configured origin, Homebrew won't update
       properly. You can solve this by adding the Homebrew remote:
         cd #{HOMEBREW_REPOSITORY}
-        git add remote origin https://github.com/mxcl/homebrew.git
+        git remote add origin https://github.com/mxcl/homebrew.git
       EOS
     end
   end
@@ -857,7 +896,7 @@ end
 def check_missing_deps
   return unless HOMEBREW_CELLAR.exist?
   s = Set.new
-  Homebrew.missing_deps(Homebrew.installed_brews).each do |_, deps|
+  Homebrew.missing_deps(Formula.installed).each do |_, deps|
     s.merge deps
   end
 

@@ -7,22 +7,26 @@ require 'caveats'
 
 class FormulaInstaller
   attr :f
-  attr :tab
+  attr :tab, true
+  attr :options, true
   attr :show_summary_heading, true
   attr :ignore_deps, true
-  attr :install_bottle, true
   attr :show_header, true
 
-  def initialize ff, tab=nil
+  def initialize ff
     @f = ff
-    @tab = tab
     @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
-    @install_bottle = install_bottle? ff
+    @options = Options.new
 
     @@attempted ||= Set.new
 
+    lock
     check_install_sanity
+  end
+
+  def pour_bottle?
+    install_bottle?(f) && (tab.used_options.empty? rescue true) && options.empty?
   end
 
   def check_install_sanity
@@ -48,7 +52,7 @@ class FormulaInstaller
     end
 
     unless ignore_deps
-      unlinked_deps = f.recursive_deps.select do |dep|
+      unlinked_deps = f.recursive_dependencies.map(&:to_formula).select do |dep|
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
       raise CannotInstallFormulaError,
@@ -75,50 +79,21 @@ class FormulaInstaller
     end
 
     unless ignore_deps
-      needed_deps = []
-      needed_reqs = []
-
       # HACK: If readline is present in the dependency tree, it will clash
       # with the stdlib's Readline module when the debugger is loaded
       if f.recursive_deps.any? { |d| d.name == "readline" } and ARGV.debug?
         ENV['HOMEBREW_NO_READLINE'] = '1'
       end
 
-      ARGV.filter_for_dependencies do
-        needed_deps = f.recursive_deps.reject{ |d| d.installed? }
-        needed_reqs = f.recursive_requirements.reject { |r| r.satisfied? }
-      end
-
-      unless needed_reqs.empty?
-        puts needed_reqs.map { |r| r.message } * "\n"
-        fatals = needed_reqs.select { |r| r.fatal? }
-        raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
-      end
-
-      unless needed_deps.empty?
-        needed_deps.each do |dep|
-          if dep.explicitly_requested?
-            install_dependency dep
-          else
-            ARGV.filter_for_dependencies do
-              # Re-create the formula object so that args like `--HEAD` won't
-              # affect properties like the installation prefix. Also need to
-              # re-check installed status as the Formula may have changed.
-              dep = Formula.factory dep.path
-              install_dependency dep unless dep.installed?
-            end
-          end
-        end
-        # now show header as all the deps stuff has clouded the original issue
-        @show_header = true
-      end
+      check_requirements
+      install_dependencies
     end
 
     oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
     @@attempted << f
 
-    if install_bottle
+    if pour_bottle?
       pour
     else
       build
@@ -128,11 +103,90 @@ class FormulaInstaller
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
 
+  def check_requirements
+    unsatisfied = ARGV.filter_for_dependencies do
+      f.recursive_requirements do |dependent, req|
+        if req.optional? || req.recommended?
+          Requirement.prune unless dependent.build.with?(req.name)
+        elsif req.build?
+          Requirement.prune if install_bottle?(dependent)
+        end
+
+        Requirement.prune if req.satisfied?
+      end
+    end
+
+    unless unsatisfied.empty?
+      puts unsatisfied.map(&:message) * "\n"
+      fatals = unsatisfied.select(&:fatal?)
+      raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
+    end
+  end
+
+  def effective_deps
+    @deps ||= begin
+      deps = Set.new
+
+      # If a dep was also requested on the command line, we let it honor
+      # any influential flags (--HEAD, --devel, etc.) the user has passed
+      # when we check the installed status.
+      requested_deps = f.recursive_dependencies.select do |dep|
+        dep.requested? && !dep.installed?
+      end
+
+      # Otherwise, we filter these influential flags so that they do not
+      # affect installation prefixes and other properties when we decide
+      # whether or not the dep is needed.
+      necessary_deps = ARGV.filter_for_dependencies do
+        f.recursive_dependencies do |dependent, dep|
+          if dep.optional? || dep.recommended?
+            Dependency.prune unless dependent.build.with?(dep.name)
+          elsif dep.build?
+            Dependency.prune if install_bottle?(dependent)
+          end
+
+          if f.build.universal?
+            dep.universal! unless dep.build?
+          end
+
+          if dep.satisfied?
+            Dependency.prune
+          elsif dep.installed?
+            raise UnsatisfiedDependencyError.new(f, dep)
+          end
+        end
+      end
+
+      deps.merge(requested_deps)
+      deps.merge(necessary_deps)
+
+      # Now that we've determined which deps we need, map them back
+      # onto recursive_dependencies to preserve installation order
+      f.recursive_dependencies.select { |d| deps.include? d }
+    end
+  end
+
+  def install_dependencies
+    effective_deps.each do |dep|
+      if dep.requested?
+       install_dependency(dep)
+      else
+        ARGV.filter_for_dependencies { install_dependency(dep) }
+      end
+    end
+    @show_header = true unless effective_deps.empty?
+  end
+
   def install_dependency dep
     dep_tab = Tab.for_formula(dep)
+    dep_options = dep.options
+    dep = dep.to_formula
+
     outdated_keg = Keg.new(dep.linked_keg.realpath) rescue nil
 
-    fi = FormulaInstaller.new(dep, dep_tab)
+    fi = FormulaInstaller.new(dep)
+    fi.tab = dep_tab
+    fi.options = dep_options
     fi.ignore_deps = true
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
@@ -187,10 +241,23 @@ class FormulaInstaller
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
     puts
+
+    unlock if hold_locks?
   end
 
   def build_time
-    @build_time ||= Time.now - @start_time unless install_bottle or ARGV.interactive? or @start_time.nil?
+    @build_time ||= Time.now - @start_time unless pour_bottle? or ARGV.interactive? or @start_time.nil?
+  end
+
+  def build_argv
+    @build_argv ||= begin
+      opts = Options.coerce(ARGV.options_only)
+      unless opts.include? '--fresh'
+        opts.concat(options) # from a dependent formula
+        opts.concat((tab.used_options rescue [])) # from a previous install
+      end
+      opts << Option.new("--build-from-source") # don't download bottle
+    end
   end
 
   def build
@@ -207,13 +274,6 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
-    args = ARGV.clone
-    args.concat tab.used_options unless tab.nil? or args.include? '--fresh'
-    # FIXME: enforce the download of the non-bottled package
-    # in the spawned Ruby process.
-    args << '--build-from-source'
-    args.uniq! # Just in case some dupes were added
-
     fork do
       begin
         read.close
@@ -224,7 +284,7 @@ class FormulaInstaller
              '-rbuild',
              '--',
              f.path,
-             *args.options_only
+             *build_argv
       rescue Exception => e
         Marshal.dump(e, write)
         write.close
@@ -243,7 +303,7 @@ class FormulaInstaller
 
     raise "Empty installation" if Dir["#{f.prefix}/*"].empty?
 
-    Tab.for_install(f, args).write # INSTALL_RECEIPT.json
+    Tab.create(f, build_argv).write # INSTALL_RECEIPT.json
 
   rescue Exception => e
     ignore_interrupts do
@@ -423,6 +483,31 @@ class FormulaInstaller
   def audit_lib
     check_jars
     check_non_libraries
+  end
+
+  private
+
+  def hold_locks?
+    @hold_locks || false
+  end
+
+  def lock
+    if (@@locked ||= []).empty?
+      f.recursive_dependencies.each do |dep|
+        @@locked << dep.to_formula
+      end unless ignore_deps
+      @@locked.unshift(f)
+      @@locked.each(&:lock)
+      @hold_locks = true
+    end
+  end
+
+  def unlock
+    if hold_locks?
+      @@locked.each(&:unlock)
+      @@locked.clear
+      @hold_locks = false
+    end
   end
 end
 

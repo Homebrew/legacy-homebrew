@@ -7,9 +7,7 @@ class EucjpMecabIpadic < Requirement
     @mecab_ipadic_installed = Formula.factory('mecab-ipadic').installed?
   end
 
-  def satisfied?
-    @mecab_ipadic_installed && mecab_dic_charset == 'euc'
-  end
+  satisfy { @mecab_ipadic_installed && mecab_dic_charset == 'euc' }
 
   def message
     if @mecab_ipadic_installed
@@ -68,7 +66,7 @@ class Hyperestraier < Formula
   if build.include? 'enable-mecab'
     depends_on 'mecab'
     depends_on 'mecab-ipadic'
-    depends_on EucjpMecabIpadic.new
+    depends_on EucjpMecabIpadic
   end
 
   def install
