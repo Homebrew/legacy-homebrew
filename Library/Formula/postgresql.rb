@@ -12,6 +12,7 @@ class Postgresql < Formula
   conflicts_with 'postgres-xc',
     :because => 'postgresql and postgres-xc install the same binaries.'
 
+  option :universal
   option '32-bit'
   option 'no-python', 'Build without Python support'
   option 'no-perl', 'Build without Perl support'
@@ -29,6 +30,7 @@ class Postgresql < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
     ENV.libxml2 if MacOS.version >= :snow_leopard
 
     args = ["--disable-debug",
@@ -65,6 +67,28 @@ class Postgresql < Formula
     end
 
     system "./configure", *args
+    if build.universal?
+      inreplace "./src/include/pg_config.h" do |s|
+        s.gsub!(/^.* ALIGNOF_DOUBLE .*$/, "#ifdef __LP64__\n#define ALIGNOF_DOUBLE 8\n#else\n#define ALIGNOF_DOUBLE 4\n#endif")
+        s.gsub!(/^.* ALIGNOF_LONG .*$/, "#ifdef __LP64__\n#define ALIGNOF_LONG 8\n#else\n#define ALIGNOF_LONG 4\n#endif")
+        s.gsub!(/^.* ALIGNOF_LONG_LONG_INT .*$/, "#ifdef __LP64__\n/* #undef ALIGNOF_LONG_LONG_INT */\n#else\n#define ALIGNOF_LONG_LONG_INT 4\n#endif")
+        s.gsub!(/^.* FLOAT8PASSBYVAL .*$/, "#ifdef __LP64__\n#define FLOAT8PASSBYVAL true\n#else\n#define FLOAT8PASSBYVAL false\n#endif")
+        s.gsub!(/^.* HAVE_LL_CONSTANTS .*$/, "#ifdef __LP64__\n/* #undef HAVE_LL_CONSTANTS */\n#else\n#define HAVE_LL_CONSTANTS 1\n#endif")
+        s.gsub!(/^.* HAVE_LONG_INT_64 .*$/, "#ifdef __LP64__\n#define HAVE_LONG_INT_64 1\n#else\n/* #undef HAVE_LONG_INT_64 */\n#endif")
+        s.gsub!(/^.* HAVE_LONG_LONG_INT_64 .*$/, "#ifdef __LP64__\n/* #undef HAVE_LONG_LONG_INT_64 */\n#else\n#define HAVE_LONG_LONG_INT_64 1\n#endif")
+        s.gsub!(/^.* INT64_FORMAT .*$/, "#ifdef __LP64__\n#define INT64_FORMAT \"%ld\"\n#else\n#define INT64_FORMAT \"%lld\"\n#endif")
+        s.gsub!(/^.* MAXIMUM_ALIGNOF .*$/, "#ifdef __LP64__\n#define MAXIMUM_ALIGNOF 8\n#else\n#define MAXIMUM_ALIGNOF 4\n#endif")
+        s.gsub!(/^.* SIZEOF_LONG .*$/, "#ifdef __LP64__\n#define SIZEOF_LONG 8\n#else\n#define SIZEOF_LONG 4\n#endif")
+        s.gsub!(/^.* SIZEOF_SIZE_T .*$/, "#ifdef __LP64__\n#define SIZEOF_SIZE_T 8\n#else\n#define SIZEOF_SIZE_T 4\n#endif")
+        s.gsub!(/^.* SIZEOF_VOID_P .*$/, "#ifdef __LP64__\n#define SIZEOF_VOID_P 8\n#else\n#define SIZEOF_VOID_P 4\n#endif")
+        s.gsub!(/^.* UINT64_FORMAT .*$/, "#ifdef __LP64__\n#define UINT64_FORMAT \"%lu\"\n#else\n#define UINT64_FORMAT \"%llu\"\n#endif")
+        s.gsub!(/^.* USE_FLOAT8_BYVAL .*/, "#ifdef __LP64__\n#define USE_FLOAT8_BYVAL 1\n#else\n/* #undef USE_FLOAT8_BYVAL */\n#endif")
+      end
+      inreplace "./src/interfaces/ecpg/include/ecpg_config.h" do |s|
+        s.gsub!(/^.* HAVE_LONG_INT_64 .*$/, "#ifdef __LP64__\n#define HAVE_LONG_INT_64 1\n#else\n/* #undef HAVE_LONG_INT_64 */\n#endif")
+        s.gsub!(/^.* HAVE_LONG_LONG_INT_64 .*$/, "#ifdef __LP64__\n/* #undef HAVE_LONG_LONG_INT_64 */\n#else\n#define HAVE_LONG_LONG_INT_64 1\n#endif")
+      end
+    end
     system "make install-world"
   end
 
