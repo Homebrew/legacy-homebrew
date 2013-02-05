@@ -36,7 +36,9 @@ module MacOS extend self
         # look in dev_tools_path, and finally in xctoolchain_path, because the
         # tools were split over two locations beginning with Xcode 4.3+.
         xcrun_path = unless Xcode.bad_xcode_select_path?
-          `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+          path = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+          # If xcrun finds a superenv tool then discard the result.
+          path unless path.include?(HOMEBREW_PREFIX/"Library/ENV")
         end
 
         paths = %W[#{xcrun_path}

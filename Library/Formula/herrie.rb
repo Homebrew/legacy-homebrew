@@ -6,7 +6,7 @@ class Herrie < Formula
   sha1 'ae5c39be11aeb19898cd3f968580eafc623830b7'
 
   depends_on 'pkg-config' => :build
-  depends_on 'gettext' => :build
+  depends_on 'gettext'
   depends_on 'glib'
   depends_on 'libvorbis'
   depends_on 'libid3tag'

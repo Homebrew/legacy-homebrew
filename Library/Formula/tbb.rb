@@ -6,6 +6,11 @@ class Tbb < Formula
   sha1 '072333068fa278635582846eaaa22d51c0100e09'
   version '4.1u1'
 
+  fails_with :clang do
+    build 425
+    cause "Undefined symbols for architecture x86_64: vtable for tbb::tbb_exception"
+  end
+
   def install
     # Intel sets varying O levels on each compile command.
     ENV.no_optimization

@@ -7,8 +7,8 @@ class FdkAac < Formula
 
   head 'git://opencore-amr.git.sourceforge.net/gitroot/opencore-amr/fdk-aac'
 
-  depends_on :automake => :build
-  depends_on :libtool => :build
+  depends_on :automake
+  depends_on :libtool
 
   def install
     system "autoreconf -fvi"

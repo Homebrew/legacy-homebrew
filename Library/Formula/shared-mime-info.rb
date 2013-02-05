@@ -6,8 +6,9 @@ class SharedMimeInfo < Formula
   sha1 '146dbad62f5450116b0353f88bb8e700f0034013'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
+  depends_on 'intltool' => :build
   depends_on 'gettext'
-  depends_on 'intltool'
   depends_on 'glib'
 
   def install

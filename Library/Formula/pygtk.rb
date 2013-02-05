@@ -8,6 +8,7 @@ class Pygtk < Formula
   depends_on :x11
   depends_on 'glib'
   depends_on 'gtk+'
+  depends_on 'atk'
   depends_on 'pygobject'
   depends_on 'py2cairo'
   depends_on 'libglade' if build.include? 'glade'
@@ -76,7 +77,7 @@ class Pygtk < Formula
           hello = HelloWorld()
           hello.main()
     EOS
-    chmod '+x', 'test.py'
+    chmod 0755, 'test.py'
     system "./test.py"
   end
 end

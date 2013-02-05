@@ -2,10 +2,10 @@ require 'formula'
 
 class CrosstoolNg < Formula
   homepage 'http://crosstool-ng.org'
-  url 'http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.17.0.tar.bz2'
-  sha1 '39a8d075bb8106fbc25e537a147228253dbf8cb7'
+  url 'http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.18.0.tar.bz2'
+  sha1 'ea9aa0521683486efb02596d9dfe00f66e18fdc3'
 
-  depends_on :automake => :build
+  depends_on :automake
   depends_on 'coreutils' => :build
   depends_on 'wget'
   depends_on 'gnu-sed'
@@ -16,13 +16,7 @@ class CrosstoolNg < Formula
 
   def patches
     # Fixes clang offsetof compatability. Took better patch from #14547
-    p = [DATA]
-    # The following patches are already upstream.
-    # They can be removed at the next release.
-    p << 'http://crosstool-ng.org/download/crosstool-ng/01-fixes/1.17.0/000-scripts_unquoted_variable_reference_in_glibc_eglibc_sh_common.patch'
-    p << 'http://crosstool-ng.org/download/crosstool-ng/01-fixes/1.17.0/001-scripts_fail_on_in_paths.patch'
-    # The 'case ;;&' construct is a bash4ism. Get rid of it.
-    p << 'http://crosstool-ng.org/download/crosstool-ng/01-fixes/1.17.0/002-scripts_functions_fix_debug_shell.patch'
+    DATA
   end
 
   def install

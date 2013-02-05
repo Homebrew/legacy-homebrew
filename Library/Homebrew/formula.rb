@@ -7,7 +7,6 @@ require 'patches'
 require 'compilers'
 require 'build_environment'
 require 'build_options'
-require 'extend/set'
 
 
 class Formula
@@ -290,18 +289,6 @@ class Formula
     ]
   end
 
-  def ruby_bin
-    '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin'
-  end
-
-  def rake *args
-    system "#{ruby_bin}/rake", *args
-  end
-
-  def ruby
-    system "#{ruby_bin}/ruby", *args
-  end
-
   def self.class_s name
     #remove invalid characters and then camelcase it
     name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
@@ -445,6 +432,7 @@ class Formula
     end
 
     raise NameError if !klass.ancestors.include? Formula
+    raise NameError if klass == Formula
 
     return klass.new(name) if install_type == :from_name
     return klass.new(name, path.to_s)
@@ -489,10 +477,8 @@ class Formula
   end
 
   # The full set of Requirements for this formula's dependency tree.
-  def recursive_requirements
-    reqs = ComparableSet.new
-    recursive_dependencies.each { |d| reqs.merge d.to_formula.requirements }
-    reqs.merge requirements
+  def recursive_requirements(&block)
+    Requirement.expand(self, &block)
   end
 
   def to_hash

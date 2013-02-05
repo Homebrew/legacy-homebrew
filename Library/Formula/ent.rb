@@ -14,21 +14,19 @@ class Ent < Formula
     prefix.install "entest.mas", "entitle.gif"
   end
 
-  def test
+  test do
     # Adapted from the test in the Makefile and entest.bat
-    mktemp do
-      system "#{bin}/ent #{prefix}/entitle.gif > entest.bak"
-      # The single > here was also in entest.bat
-      system "#{bin}/ent -c #{prefix}/entitle.gif > entest.bak"
-      system "#{bin}/ent -fc #{prefix}/entitle.gif >> entest.bak"
-      system "#{bin}/ent -b #{prefix}/entitle.gif >> entest.bak"
-      system "#{bin}/ent -bc #{prefix}/entitle.gif >> entest.bak"
-      system "#{bin}/ent -t #{prefix}/entitle.gif >> entest.bak"
-      system "#{bin}/ent -ct #{prefix}/entitle.gif >> entest.bak"
-      system "#{bin}/ent -ft #{prefix}/entitle.gif >> entest.bak"
-      system "#{bin}/ent -bt #{prefix}/entitle.gif >> entest.bak"
-      system "#{bin}/ent -bct #{prefix}/entitle.gif >> entest.bak"
-      system "diff entest.bak #{prefix}/entest.mas"
-    end
+    system "#{bin}/ent #{prefix}/entitle.gif > entest.bak"
+    # The single > here was also in entest.bat
+    system "#{bin}/ent -c #{prefix}/entitle.gif > entest.bak"
+    system "#{bin}/ent -fc #{prefix}/entitle.gif >> entest.bak"
+    system "#{bin}/ent -b #{prefix}/entitle.gif >> entest.bak"
+    system "#{bin}/ent -bc #{prefix}/entitle.gif >> entest.bak"
+    system "#{bin}/ent -t #{prefix}/entitle.gif >> entest.bak"
+    system "#{bin}/ent -ct #{prefix}/entitle.gif >> entest.bak"
+    system "#{bin}/ent -ft #{prefix}/entitle.gif >> entest.bak"
+    system "#{bin}/ent -bt #{prefix}/entitle.gif >> entest.bak"
+    system "#{bin}/ent -bct #{prefix}/entitle.gif >> entest.bak"
+    system "diff entest.bak #{prefix}/entest.mas"
   end
 end

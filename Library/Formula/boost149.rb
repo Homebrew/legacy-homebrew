@@ -35,6 +35,11 @@ class Boost149 < Formula
     cause "Dropped arguments to functions when linking with boost"
   end
 
+  def patches
+    # Security fix for Boost.Locale. For details: http://www.boost.org/users/news/boost_locale_security_notice.html
+    {:p0 => "http://cppcms.com/files/locale/boost_locale_utf.patch"}
+  end
+
   def install
     # Adjust the name the libs are installed under to include the path to the
     # full keg library location.
