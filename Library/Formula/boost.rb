@@ -22,17 +22,10 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.52.0/boost_1_52_0.tar.bz2'
-  sha1 'cddd6b4526a09152ddc5db856463eaa1dc29c5d9'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.bz2'
+  sha1 'e6dd1b62ceed0a51add3dda6f3fc3ce0f636a7f3'
 
   head 'http://svn.boost.org/svn/boost/trunk'
-
-  bottle do
-    version 1
-    sha1 'b39540ad7b7ab4ae48ac1265260adb28dde2b9c6' => :mountain_lion
-    sha1 '7444827406c29b69b5cb1a2479a9d2f0add1a755' => :lion
-    sha1 '880dbd7127340bda5ee724f81f78709334704fa4' => :snowleopard
-  end
 
   env :userpaths
 
@@ -55,23 +48,6 @@ class Boost < Formula
   def pour_bottle?
     false
   end
-
-  def patches
-    {
-      :p2 => [
-        # Patch boost/config/stdlib/libcpp.hpp to fix the constexpr
-        # bug reported under Boost 1.52 in Ticket 7671.  This patch
-        # can be removed when upstream release an updated version
-        # including the fix.
-        "https://svn.boost.org/trac/boost/changeset/82391?format=diff&new=82391",
-
-        # Security fix for Boost.Locale. For details:
-        # http://www.boost.org/users/news/boost_locale_security_notice.html
-        # Drop when 1.53.0+ releases.
-        "https://svn.boost.org/trac/boost/changeset/81590?format=diff&new=81590"
-      ]
-    }
-  end unless build.head?
 
   def install
     # Adjust the name the libs are installed under to include the path to the
