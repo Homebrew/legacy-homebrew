@@ -12,39 +12,30 @@ class Mercurial < Formula
   option 'doc', "Build the documentation"
 
   def install
-    # Don't add compiler specific flags so we can build against
-    # System-provided Python.
-    ENV.minimal_optimization
+    # "Don't add compiler specific flags so we can build against System-provided
+    # Python." - this is actually not needed on ML, not sure about earlier versions.
+    ENV.minimal_optimization unless MacOS.version >= :mountain_lion
+    ENV.j1
 
-    # install the completion script
-    (prefix/'etc/bash_completion.d').install 'contrib/bash_completion' => 'hg-completion.bash'
+    system "make", "PREFIX=#{prefix}", "install-bin"
 
+    # Man pages come pre-built in source releases
     system "make doc" if build.head? or build.include? 'doc'
-    system "make local"
-
-    libexec.install 'hg', 'mercurial', 'hgext'
-
-    # Symlink the hg binary into bin
-    bin.install_symlink libexec/'hg'
+	
+    # Install man pages
+    man1.install 'doc/hg.1'
+    man5.install 'doc/hgignore.5', 'doc/hgrc.5'
 
     # Remove the hard-coded python invocation from hg
     inreplace bin/'hg', %r[^#!.*$], '#!/usr/bin/env python'
 
     # Install some contribs
     bin.install 'contrib/hgk'
-
-    # Install man pages
-    man1.install 'doc/hg.1'
-    man5.install 'doc/hgignore.5', 'doc/hgrc.5'
+    (prefix/'etc/bash_completion.d').install 'contrib/bash_completion' => 'hg-completion.bash'
   end
 
   def caveats
     s = ''
-
-    s += <<-EOS.undent
-      Extensions have been installed to:
-        #{libexec}/hgext
-    EOS
 
     if build.head? then s += <<-EOS.undent
 
