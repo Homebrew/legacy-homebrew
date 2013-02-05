@@ -11,7 +11,7 @@ class Diffpdf < Formula
   # The location of Poppler library/include paths is hardcoded in the project file
   # which causes builds to fail if Homebrew is not installed to /usr/local.
   def patches
-    # DATA
+    DATA
   end
 
   def install
@@ -29,10 +29,10 @@ end
 
 __END__
 diff --git a/diffpdf.pro b/diffpdf.pro
-index 8130da1..b13bcd2 100644
+index 8130da1..e2dfcfd 100644
 --- a/diffpdf.pro
 +++ b/diffpdf.pro
-@@ -34,36 +34,3 @@ LIBS      += -lpoppler-qt4
+@@ -34,36 +34,6 @@ LIBS	     += -lpoppler-qt4
  win32 {
      CONFIG += release
  }
@@ -43,18 +43,18 @@ index 8130da1..b13bcd2 100644
 -    LIBS += -Wl,-rpath -Wl,$(HOME)/opt/poppler020/lib -L$(HOME)/opt/poppler020/lib
 -} else {
 -    exists(/poppler_lib) {
--       message(Using locally built Poppler library on Windows)
--       INCLUDEPATH += /c/poppler_lib/include/poppler/cpp
--       INCLUDEPATH += /c/poppler_lib/include/poppler/qt4
--       LIBS += -Wl,-rpath -Wl,/c/poppler_lib/bin -Wl,-L/c/poppler_lib/bin
+-	message(Using locally built Poppler library on Windows)
+-	INCLUDEPATH += /c/poppler_lib/include/poppler/cpp
+-	INCLUDEPATH += /c/poppler_lib/include/poppler/qt4
+-	LIBS += -Wl,-rpath -Wl,/c/poppler_lib/bin -Wl,-L/c/poppler_lib/bin
 -    } else {
--       exists(/usr/include/poppler/qt4) {
--           INCLUDEPATH += /usr/include/poppler/cpp
--           INCLUDEPATH += /usr/include/poppler/qt4
--       } else {
--           INCLUDEPATH += /usr/local/include/poppler/cpp
--           INCLUDEPATH += /usr/local/include/poppler/qt4
--       }
+-	exists(/usr/include/poppler/qt4) {
+-	    INCLUDEPATH += /usr/include/poppler/cpp
+-	    INCLUDEPATH += /usr/include/poppler/qt4
+-	} else {
+-	    INCLUDEPATH += /usr/local/include/poppler/cpp
+-	    INCLUDEPATH += /usr/local/include/poppler/qt4
+-	}
 -    }
 -}
 -#exists($(HOME)/opt/podofo09/) {
@@ -64,8 +64,12 @@ index 8130da1..b13bcd2 100644
 -#    LIBS += -Wl,-rpath -Wl,$(HOME)/opt/podofo09/lib64 -Wl,-L$(HOME)/opt/podofo09/lib64
 -#} else {
 -#    exists(/usr/include/podofo) {
--#      INCLUDEPATH += /usr/include/podofo
+-#	INCLUDEPATH += /usr/include/podofo
 -#    } else {
--#      INCLUDEPATH += /usr/local/include/podofo
+-#	INCLUDEPATH += /usr/local/include/podofo
 -#    }
 -#}
++LIBS       += -L$$quote(HOMEBREW_PREFIX/lib) -lpoppler-qt4
++INCLUDEPATH += $$quote(HOMEBREW_PREFIX/include/poppler/cpp)
++INCLUDEPATH += $$quote(HOMEBREW_PREFIX/include/poppler/qt4)
+
