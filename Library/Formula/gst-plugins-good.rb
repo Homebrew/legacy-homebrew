@@ -5,6 +5,7 @@ class GstPluginsGood < Formula
   url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-0.10.31.tar.bz2'
   sha256 '7e27840e40a7932ef2dc032d7201f9f41afcaf0b437daf5d1d44dc96d9e35ac6'
 
+  depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
