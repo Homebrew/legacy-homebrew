@@ -2,8 +2,8 @@ require 'formula'
 
 class Tbb < Formula
   homepage 'http://www.threadingbuildingblocks.org/'
-  url 'http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb41_20121003oss_src.tgz'
-  sha1 '072333068fa278635582846eaaa22d51c0100e09'
+  url 'http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb41_20121003oss_src_1.tgz'
+  sha1 '9ecf581dbf98f7828d83b4f1b47f6f1140fbb759'
   version '4.1u1'
 
   fails_with :clang do
