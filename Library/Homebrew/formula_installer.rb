@@ -260,6 +260,12 @@ class FormulaInstaller
     end
   end
 
+  def ruby_interpreter_path
+    require 'rbconfig'
+    @@ruby_interpreter_path ||= File.join(Config::CONFIG['bindir'],
+      Config::CONFIG['RUBY_INSTALL_NAME'] + Config::CONFIG['EXEEXT'])
+  end
+
   def build
     FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{f}/*"]
 
@@ -277,8 +283,8 @@ class FormulaInstaller
     fork do
       begin
         read.close
-        exec '/usr/bin/nice',
-             '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby',
+        exec 'nice',
+             ruby_interpreter_path,
              '-W0',
              '-I', Pathname.new(__FILE__).dirname,
              '-rbuild',
