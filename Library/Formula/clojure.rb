@@ -7,6 +7,10 @@ class Clojure < Formula
 
   head 'https://github.com/clojure/clojure.git'
 
+  option 'with-drip',    'Specify drip instead of java in the clj script'
+
+  depends_on 'drip' => :optional
+
   devel do
     url 'http://repo1.maven.org/maven2/org/clojure/clojure/1.5.0-RC1/clojure-1.5.0-RC1.zip'
     sha1 '1820d7da736079c767bb3c02308d7e2c401a4410'
@@ -21,15 +25,19 @@ class Clojure < Formula
     CLOJURE=$CLASSPATH:#{prefix}/#{jar}:${PWD}
 
     if [ "$#" -eq 0 ]; then
-        java -cp "$CLOJURE" clojure.main --repl
+        #{java_cmd} -cp "$CLOJURE" clojure.main --repl
     else
-        java -cp "$CLOJURE" clojure.main "$@"
+        #{java_cmd} -cp "$CLOJURE" clojure.main "$@"
     fi
     EOS
   end
 
   def jar
     "clojure-#{version}.jar"
+  end
+
+  def java_cmd
+    (build.include? 'drip') ? 'drip' : 'java'
   end
 
   def install
