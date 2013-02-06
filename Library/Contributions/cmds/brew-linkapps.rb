@@ -1,11 +1,11 @@
-# Links any Applications (.app) found in installed prefixes to ~/Applications
+# Links any Applications (.app) found in installed prefixes to /Applications
 require "formula"
 
-HOME_APPS = File.expand_path("~/Applications")
+HOME_APPS = File.expand_path("/Applications")
 
 unless File.exist? HOME_APPS
   opoo "#{HOME_APPS} does not exist, stopping."
-  puts "Run `mkdir ~/Applications` first."
+  puts "Run `mkdir #{HOME_APPS}` first."
   exit 1
 end
 
@@ -30,4 +30,4 @@ HOMEBREW_CELLAR.subdirs.each do |keg|
   end
 end
 
-puts "Finished linking. Find the links under ~/Applications."
+puts "Finished linking. Find the links under #{HOME_APPS}."
