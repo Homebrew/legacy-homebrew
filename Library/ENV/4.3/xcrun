@@ -25,7 +25,6 @@ try "/usr/bin/#{arg0}"
 
 abort <<-EOS
 Your Xcode and or CLT are mis-configured. Try some or all of the following:
-    xcrun --kill-cache
     xcodebuild -license
     sudo xcode-select -switch /path/to/Xcode.app
 EOS

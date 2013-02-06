@@ -19,7 +19,7 @@ module MacOS::XQuartz extend self
         when 10.5 then "2.1.6"
         when 10.6 then "2.3.6"
         when 10.7 then "2.6.3"
-        else :dunno
+        else "dunno"
         end
       else
         # Finally, try to find it via pkgutil. This is slow, and only works
