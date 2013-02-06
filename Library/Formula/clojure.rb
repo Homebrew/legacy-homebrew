@@ -9,7 +9,7 @@ class Clojure < Formula
 
   option 'with-drip',    'Specify drip instead of java in the clj script'
 
-  depends_on 'drip'       if build.include? 'with-drip'
+  depends_on 'drip' => :optional
 
   devel do
     url 'http://repo1.maven.org/maven2/org/clojure/clojure/1.5.0-RC1/clojure-1.5.0-RC1.zip'
@@ -37,7 +37,7 @@ class Clojure < Formula
   end
 
   def java_cmd
-    (build.include? 'with-drip') ? 'drip' : 'java'
+    (build.include? 'drip') ? 'drip' : 'java'
   end
 
   def install
