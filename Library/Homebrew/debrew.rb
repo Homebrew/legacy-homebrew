@@ -137,10 +137,18 @@ module RaisePlus
 
   def raise(*args)
     exception = case
-      when args.size == 0 then ($!.nil? ? RuntimeError.exception : $!)
-      when (args.size == 1 and args[0].is_a?(String)) then RuntimeError.exception(args[0])
-      else args[0].exception(args[1]) # this does the right thing if args[1] is missing
-    end
+                when args.size == 0
+                  $!.nil? ? RuntimeError.exception : $!
+                when args.size == 1 && args[0].is_a?(String)
+                  RuntimeError.exception(args[0])
+                when args.size == 2 && args[0].is_a?(Exception)
+                  args[0].exception(args[1])
+                when args[0].is_a?(Class) && args[0].ancestors.include?(Exception)
+                  args[0].exception(args[1])
+                else
+                  args[0]
+                end
+
     # passing something other than a String or Exception is illegal, but if someone does it anyway,
     # that object won't have backtrace or continuation methods. in that case, let's pass it on to
     # the original raise, which will reject it
