@@ -51,10 +51,6 @@ class Boost < Formula
     cause "Dropped arguments to functions when linking with boost"
   end
 
-  def pour_bottle?
-    false
-  end
-
   def install
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a
