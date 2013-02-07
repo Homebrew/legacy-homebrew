@@ -13,6 +13,7 @@ class Ruby < Formula
   option 'with-suffix', 'Suffix commands with "19"'
   option 'with-doc', 'Install documentation'
   option 'with-tcltk', 'Install with Tcl/Tk support'
+  option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
 
   if build.universal?
     depends_on 'autoconf' => :build
@@ -25,6 +26,7 @@ class Ruby < Formula
   depends_on 'gdbm'
   depends_on 'libyaml'
   depends_on :x11 if build.include? 'with-tcltk'
+  depends_on 'openssl' if build.include? 'with-brewed-openssl'
 
   fails_with :llvm do
     build 2326
