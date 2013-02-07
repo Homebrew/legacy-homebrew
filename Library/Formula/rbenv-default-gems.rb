@@ -16,7 +16,7 @@ class RbenvDefaultGems < Formula
   end
 
   def caveats; <<-EOS.undent
-    If you are using Homebrew's directories for `rbenv` rather than ~/.rbenv
+    As you are using Homebrew's directories for `rbenv` rather than ~/.rbenv
     place the `default-gems` file in #{HOMEBREW_PREFIX+'opt/rbenv'}/.
     EOS
   end
