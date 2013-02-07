@@ -25,9 +25,6 @@ class Ruby < Formula
     build 2326
   end
 
-  # https://github.com/ruby/ruby/commit/2741a598ff9e561c71eb39a57bb19c0a3205eaef
-  def patches; DATA end
-
   def install
     system "autoconf" if build.head?
 
@@ -64,22 +61,3 @@ class Ruby < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/missing/setproctitle.c b/missing/setproctitle.c
-index 169ba8b..4dc6d03 100644
---- a/missing/setproctitle.c
-+++ b/missing/setproctitle.c
-@@ -48,6 +48,12 @@
- #endif
- #include <string.h>
- 
-+#if defined(__APPLE__)
-+#include <crt_externs.h>
-+#undef environ
-+#define environ (*_NSGetEnviron())
-+#endif
-+
- #define SPT_NONE	0	/* don't use it at all */
- #define SPT_PSTAT	1	/* use pstat(PSTAT_SETCMD, ...) */
- #define SPT_REUSEARGV	2	/* cover argv with title information */
