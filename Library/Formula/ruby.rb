@@ -14,7 +14,12 @@ class Ruby < Formula
   option 'with-doc', 'Install documentation'
   option 'with-tcltk', 'Install with Tcl/Tk support'
 
-  depends_on :autoconf if build.head?
+  if build.universal?
+    depends_on 'autoconf' => :build
+  elsif build.head?
+    depends_on :autoconf
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'gdbm'
