@@ -91,18 +91,16 @@ class Version
   end
   alias_method :to_str, :to_s
 
-  def self.parse spec
-    version = _parse(spec)
-    Version.new(version, true) unless version.nil?
-  end
-
   protected
 
   def to_a
     @array ||= @version.scan(/\d+|[a-zA-Z]+/).map { |e| VersionElement.new(e) }
   end
 
-  private
+  def self.parse spec
+    version = _parse(spec)
+    Version.new(version, true) unless version.nil?
+  end
 
   def self._parse spec
     spec = Pathname.new(spec) unless spec.is_a? Pathname
