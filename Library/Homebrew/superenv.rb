@@ -187,7 +187,7 @@ class << ENV
     # Fix issue with sed barfing on unicode characters on Mountain Lion
     s << 's' if MacOS.version >= :mountain_lion
     # Fix issue with 10.8 apr-1-config having broken paths
-    s << 'a' if MacOS.version == :mountain_lion
+    s << 'a' if MacOS.version == :mountain_lion or MacSystem.xcode43_without_clt?
     s
   end
 
