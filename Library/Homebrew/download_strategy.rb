@@ -1,3 +1,6 @@
+require 'open-uri'
+require 'vendor/multi_json'
+
 class AbstractDownloadStrategy
   def initialize name, package
     @url = package.url
@@ -153,9 +156,6 @@ end
 # Detect and download from Apache Mirror
 class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   def _fetch
-    require 'open-uri'
-    require 'vendor/multi_json'
-
     mirrors = MultiJson.decode(open("#{@url}&asjson=1").read)
     url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
 
