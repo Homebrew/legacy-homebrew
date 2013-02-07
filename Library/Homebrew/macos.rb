@@ -1,10 +1,11 @@
+require 'macos/version'
+
 module MacOS extend self
 
   # This can be compared to numerics, strings, or symbols
   # using the standard Ruby Comparable methods.
   def version
-    require 'version'
-    MacOSVersion.new(MACOS_VERSION.to_s)
+    Version.new(MACOS_VERSION)
   end
 
   def cat
