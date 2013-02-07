@@ -11,6 +11,8 @@ end
 module RaisePlus
   alias :original_raise :raise
 
+  private
+
   def raise(*args)
     exception = case
                 when args.size == 0
