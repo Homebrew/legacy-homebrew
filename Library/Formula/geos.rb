@@ -2,8 +2,8 @@ require 'formula'
 
 class Geos < Formula
   homepage 'http://trac.osgeo.org/geos'
-  url 'http://download.osgeo.org/geos/geos-3.3.6.tar.bz2'
-  sha1 '454c9b61f158de509db60a69512414a0a1b0743b'
+  url 'http://download.osgeo.org/geos/geos-3.3.7.tar.bz2'
+  sha1 'd62c6f86ba854f319feaa5d957bebb8b6bed10a3'
 
   option :universal
 
