@@ -24,7 +24,7 @@ class RakudoStar < Formula
   end
 
   def caveats; <<-EOS
-    Raukdo Star comes with its own specific version of Parrot. Installing the
+    Rakudo Star comes with its own specific version of Parrot. Installing the
     Parrot formula along side the Rakudo Star formula will override a number
     of the binaries (eg. parrot, nqp, winxed, etc.).
     EOS
