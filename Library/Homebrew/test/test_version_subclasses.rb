@@ -1,9 +1,10 @@
 require 'testing_env'
 require 'version'
+require 'macos/version'
 
 class MacOSVersionTests < Test::Unit::TestCase
   def setup
-    @v = MacOSVersion.new(10.7)
+    @v = MacOS::Version.new(10.7)
   end
 
   def test_compare_with_symbol
