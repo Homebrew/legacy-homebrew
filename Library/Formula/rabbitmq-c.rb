@@ -7,8 +7,8 @@ end
 
 class RabbitmqC < Formula
   homepage 'https://github.com/alanxz/rabbitmq-c'
-  url 'https://github.com/alanxz/rabbitmq-c/archive/0.2.zip'
-  sha1 'fe9f00b52970505223acf01008a12fa911549425'
+  url 'https://github.com/alanxz/rabbitmq-c/archive/rabbitmq-c-v0.3.0.zip'
+  sha1 '91f5d1af85b118c63354744d9b0adb9eaab1d9e0'
 
   head 'https://github.com/alanxz/rabbitmq-c.git'
 
