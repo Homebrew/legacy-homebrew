@@ -1,23 +1,18 @@
-def can_use_readline?
-  not ENV['HOMEBREW_NO_READLINE']
-end
-
 require 'debrew/menu'
 require 'debrew/raise_plus'
-require 'debrew/irb' if can_use_readline?
 
-class Object
-  include RaisePlus
-end
-
-def has_debugger?
+unless ENV['HOMEBREW_NO_READLINE']
   begin
     require 'rubygems'
     require 'ruby-debug'
-    true
   rescue LoadError
-    false
-  end if can_use_readline?
+  end
+
+  require 'debrew/irb'
+end
+
+class Object
+  include RaisePlus
 end
 
 def debrew(exception, formula=nil)
@@ -34,7 +29,7 @@ def debrew(exception, formula=nil)
       menu.choice(:debug) do
         puts "When you exit the debugger, execution will continue."
         exception.restart { debugger }
-      end if has_debugger?
+      end if Object.const_defined?(:Debugger)
       menu.choice(:irb) do
         puts "When you exit this IRB session, execution will continue."
         exception.restart do
@@ -46,7 +41,7 @@ def debrew(exception, formula=nil)
             end
           }
         end
-      end if can_use_readline?
+      end if Object.const_defined?(:IRB)
       menu.choice(:shell) do
         puts "When you exit this shell, you will return to the menu."
         interactive_shell formula
