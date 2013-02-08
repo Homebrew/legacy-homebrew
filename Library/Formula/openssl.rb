@@ -5,6 +5,11 @@ class Openssl < Formula
   url 'http://openssl.org/source/openssl-1.0.1d.tar.gz'
   sha256 '88a423f9b08a994054583691b968815875580e12df754e881d7cfe9f1bd1f49d'
 
+  def patches
+    # Fixes a zlib bug
+    "http://git.openssl.org/gitweb/?p=openssl.git;a=patch;h=32cc247"
+  end
+
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
 
