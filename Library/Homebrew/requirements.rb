@@ -9,7 +9,7 @@ class LanguageModuleDependency < Requirement
     @language = language
     @module_name = module_name
     @import_name = import_name || module_name
-    super()
+    super
   end
 
   satisfy { quiet_system(*the_test) }
