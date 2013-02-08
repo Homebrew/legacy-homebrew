@@ -2,6 +2,7 @@
 
 THIS_FILE="$0"
 [ -n "$(readlink $THIS_FILE)" ] && THIS_FILE=$(readlink $THIS_FILE)
+(echo $THIS_FILE | grep ^/) || THIS_FILE="$(dirname $0)/$THIS_FILE)"
 
 BREW_DIRECTORY=$(dirname "$THIS_FILE")/../Library
 BREW_SYSTEM=$(uname -s | tr "[:upper:]" "[:lower:]")
