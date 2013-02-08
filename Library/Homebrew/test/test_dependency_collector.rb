@@ -83,6 +83,16 @@ class DependencyCollectorTests < Test::Unit::TestCase
   end
 end
 
+class LanguageModuleDependencyTests < Test::Unit::TestCase
+  def test_unique_deps_are_not_eql
+    x = LanguageModuleDependency.new(:node, "less")
+    y = LanguageModuleDependency.new(:node, "coffee-script")
+    assert x.hash != y.hash
+    assert !x.eql?(y)
+    assert !y.eql?(x)
+  end
+end
+
 class ExternalDepsTests < Test::Unit::TestCase
   def check_deps_fail specs
     d = DependencyCollector.new
