@@ -51,10 +51,62 @@ index 2641786..7fa00f8 100755
  </dict>
  </plist>
  EOF
+diff --git a/active-response/firewalls/pf.sh b/active-response/firewalls/pf.sh
+index 1958f3e..0c35cc5 100755
+--- a/active-response/firewalls/pf.sh
++++ b/active-response/firewalls/pf.sh
+@@ -1,6 +1,6 @@
+ #!/bin/sh
+ # Author: Rafael M. Capovilla
+-# Last modified: Daniel B. Cid
++# Last modified: Ole Kristensen
+ 
+ UNAME=`uname`
+ GREP=`which grep`
+@@ -35,7 +35,6 @@ if [ "x${IP}" = "x" ]; then
+ fi
+ 
+ 
+-
+ # Blocking IP
+ if [ "x${ACTION}" != "xadd" -a "x${ACTION}" != "xdelete" ]; then
+    echo "$0: invalid action: ${ACTION}"
+@@ -44,10 +43,22 @@ if [ "x${ACTION}" != "xadd" -a "x${ACTION}" != "xdelete" ]; then
+ fi
+ 
+ 
+-
+-# OpenBSD and FreeBSD pf
+-if [ "X${UNAME}" = "XOpenBSD" -o "X${UNAME}" = "XFreeBSD" ]; then
++# OpenBSD, Darwin and FreeBSD pf
++if [ "X${UNAME}" = "XOpenBSD" -o "X${UNAME}" = "XFreeBSD" -o "X${UNAME}" = "XDarwin" ]; then
+   
++  if [ "$X{UNAME}" = "XDarwin" ]; then
++    id -u ${USER} > /dev/null 2>&1
++    if [ ! $? = 0 ]; then
++        # Only create on Mac OS X Mountain Lion 
++        /usr/bin/sw_vers 2>/dev/null| grep "ProductVersion" | grep -E "10.8" > /dev/null 2>&1
++        if [ $? != 0 ]; then
++            echo "PF config only made for Mountain Lion"
++            exit 0;
++        fi
++     fi
++  fi
++
++
+   # Checking if pfctl is present
+   ls ${PFCTL} > /dev/null 2>&1
+   if [ ! $? = 0 ]; then
 diff --git a/install.sh b/install.sh
 index 781a762..143f187 100755
 --- a/install.sh
 +++ b/install.sh
+@@ -12,3 +12,4 @@
+ # Changelog 29 March 2012 - Adding hybrid mode (standalone + agent)
+-
++# Changelog 08 Feb 2013 - Ole Kristensen
++# Patching for Homebrew recipe on Mountain Lion with pf support
+
 @@ -69,5 +69,5 @@ 
         echo "DIR=\"${INSTALLDIR}\"" > ${LOCATION}
 -    echo "CC=${CC}" >> ${LOCATION}
@@ -64,86 +116,83 @@ index 781a762..143f187 100755
 +    echo "GCC=/usr/local/bin/gcc-4*" >> ${LOCATION}
 +    echo "CLANG=clang" >> ${LOCATION}
  
-diff --git a/etc/preloaded-vars.conf b/etc/preloaded-vars.conf
-index 45a2f7e..cf5c345 100755
---- a/etc/preloaded-vars.conf
-+++ b/etc/preloaded-vars.conf
-@@ -16,7 +16,7 @@
- # It can be "en", "br", "tr", "it", "de" or "pl".
- # In case of an invalid language, it will default
- # to English "en" 
--#USER_LANGUAGE="en"     # For english
-+USER_LANGUAGE="en"     # For english
- #USER_LANGUAGE="br"     # For portuguese
+@@ -626,25 +627,25 @@ ConfigureServer()
+             # automatically setting it up.
+             # Commenting it out in case I change my mind about it
+             # later.
+-            #if [ "X`sh ./src/init/fw-check.sh`" = "XPF" ]; then
+-            #    echo ""
+-            #    $ECHO "   - ${pfenable} ($yes/$no) [$yes]: "
+-            #    if [ "X${USER_ENABLE_PF}" = "X" ]; then
+-            #        read PFENABLE
+-            #    else
+-            #        PFENABLE=${USER_ENABLE_PF}
+-            #    fi
+-            #
+-            #    echo ""
+-            #    case $PFENABLE in
+-            #        $nomatch)
+-            #            echo "     - ${nopf}"
+-            #            ;;
+-            #        *)
+-            #            AddPFTable
+-            #            ;;
+-            #    esac
+-            #fi
++            if [ "X`sh ./src/init/fw-check.sh`" = "XPF" ]; then
++                echo ""
++                $ECHO "   - ${pfenable} ($yes/$no) [$yes]: "
++                if [ "X${USER_ENABLE_PF}" = "X" ]; then
++                    read PFENABLE
++                else
++                    PFENABLE=${USER_ENABLE_PF}
++                fi
++            
++                echo ""
++                case $PFENABLE in
++                    $nomatch)
++                        echo "     - ${nopf}"
++                        ;;
++                    *)
++                        AddPFTable
++                        ;;
++                esac
++            fi
  
+             echo "  </global>" >> $NEWCONFIG
+             ;;
+diff --git a/src/init/fw-check.sh b/src/init/fw-check.sh
+index c8fde4c..7ba3ede 100755
+--- a/src/init/fw-check.sh
++++ b/src/init/fw-check.sh
+@@ -1,6 +1,5 @@
+ #!/bin/sh
  
-@@ -28,13 +28,13 @@
- # USER_INSTALL_TYPE defines the installation type to
- # be used during install. It can only be "local",
- # "agent" or "server".
--#USER_INSTALL_TYPE="local"
-+USER_INSTALL_TYPE="local"
- #USER_INSTALL_TYPE="agent"
- #USER_INSTALL_TYPE="server"
+-
+ # Checking which firewall to use.
+ UNAME=`uname`
+ FILE="";
+@@ -24,9 +23,17 @@ if [ "X${UNAME}" = "XFreeBSD" ]; then
+     fi    
  
- 
- # USER_DIR defines the location to install ossec
--#USER_DIR="/var/ossec"
-+USER_DIR="/var/ossec"
- 
- 
- # If USER_DELETE_DIR is set to "y", the directory
-@@ -44,19 +44,19 @@
- 
- # If USER_ENABLE_ACTIVE_RESPONSE is set to "n",
- # active response will be disabled.
--#USER_ENABLE_ACTIVE_RESPONSE="y"
-+USER_ENABLE_ACTIVE_RESPONSE="y"
- 
- 
- # If USER_ENABLE_SYSCHECK is set to "y", 
- # syscheck will be enabled. Set to "n" to
- # disable it.
--#USER_ENABLE_SYSCHECK="y"
-+USER_ENABLE_SYSCHECK="y"
- 
- 
- # If USER_ENABLE_ROOTCHECK is set to "y",
- # rootcheck will be enabled. Set to "n" to
- # disable it.
--#USER_ENABLE_ROOTCHECK="y"
-+USER_ENABLE_ROOTCHECK="y"
- 
- 
- # If USER_UPDATE is set to anything, the update
-@@ -93,7 +93,7 @@
- ### Server/Local Installation variables. ###
- 
- # USER_ENABLE_EMAIL enables or disables email alerting.
--#USER_ENABLE_EMAIL="y"
-+USER_ENABLE_EMAIL="y"
- 
- # USER_EMAIL_ADDRESS defines the destination e-mail of the alerts.
- #USER_EMAIL_ADDRESS="dcid@test.ossec.net"
-@@ -108,15 +108,15 @@
- 
- # USER_ENABLE_FIREWALL_RESPONSE enables or disables
- # the firewall response.
--#USER_ENABLE_FIREWALL_RESPONSE="y"
-+USER_ENABLE_FIREWALL_RESPONSE="y"
- 
- 
- # Enable PF firewall (OpenBSD and FreeBSD only)
--#USER_ENABLE_PF="y"
-+USER_ENABLE_PF="y"
- 
- 
- # PF table to use (OpenBSD and FreeBSD only).
--#USER_PF_TABLE="ossec_fwtable"
-+USER_PF_TABLE="ossec_fwtable"
- 
- 
- # USER_WHITE_LIST is a list of IPs or networks
+ # Darwin
+-elif [ "X${UNAME}" = "Darwin" ]; then
+-    echo "IPFW";
+-    FILE="ipfw_mac.sh";
++elif [ "X${UNAME}" = "XDarwin" ]; then
++    # Mountain Lion uses pf
++    /usr/bin/sw_vers 2>/dev/null| grep "ProductVersion" | grep -E "10.8" > /dev/null 2>&1
++    if [ $? = 0 ]; then
++        # Firewall is PF
++        FILE="pf.sh";
++        echo "PF";
++    else
++        echo "IPFW";
++        FILE="ipfw_mac.sh";
++    fi
+         
+ elif [ "X${UNAME}" = "XOpenBSD" ]; then
+     if [ $? = 0 ]; then
 diff --git a/src/InstallAgent.sh b/src/InstallAgent.sh
 index 4dcd94c..b8fa594 100755
 --- a/src/InstallAgent.sh
