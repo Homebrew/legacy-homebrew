@@ -6,9 +6,12 @@ module IRB
   def IRB.start_within(binding)
     unless @setup_done
       # make IRB ignore our command line arguments
-      saved_args = ARGV.shift(ARGV.size)
-      IRB.setup(nil)
-      ARGV.concat(saved_args)
+      begin
+        saved_args = ARGV.shift(ARGV.size)
+        IRB.setup(nil)
+      ensure
+        ARGV.replace(saved_args)
+      end
       @setup_done = true
     end
 
