@@ -66,6 +66,80 @@ class FormulaInstaller
     raise
   end
 
+  #/usr/local/Cellar/foo/1/etc/foorc, empty /usr/local/etc
+  # brew does: cp /usr/local/Cellar/foo/1/etc/foorc /usr/local/etc
+  # brew does: cd /usr/local/etc && git init
+  # brew does: cd /usr/local/etc && git commit foorc -m'foo-1: foorc'
+  # User edits /usr/local/etc/foorc.
+
+  # brew upgrade foo # upgrades to foo2
+  # /usr/local/Cellar/foo/1/etc/foorc is same as the committed version of foorc in /usr/local/etc.
+  # Nothing changes
+  # Months later:
+
+  # brew upgrade foo #upgrades to foo3
+  # /usr/local/Cellar/foo/1/etc/foorc is not the same as the committed version of foorc in /usr/local/etc.
+  # brew does: git checkout -b pre-foo3 && git commit foorc -mblah
+  # brew does: git checkout master && git checkout master foorc
+  # brew does: cp /usr/local/Cellar/foo/3/etc/foorc /usr/local/etc/foorc
+  # brew does: git commit foorc -m'foo-3: foorc
+  # brew does: git merge pre-foo3
+  # And there we have it. The merge either succeeds or requires the user to do some git. We can have a brew etc helper for people who don't know git. But let's do that later.
+
+  def git_etc_preinstall
+    return unless quiet_system 'git', '--version'
+
+    etc = HOMEBREW_PREFIX+'etc'
+    etc.cd do
+      quiet_system 'git', 'init' unless (etc+'.git').directory?
+      quiet_system 'git', 'checkout', '-B', "#{f.name}-last"
+      system 'git', 'add', '.'
+      system 'git', 'commit', '-m', "#{f.name}-#{f.version}: preinstall"
+    end
+  end
+
+  def git_etc_postinstall
+    return unless quiet_system 'git', '--version'
+
+    etc = HOMEBREW_PREFIX+'etc'
+    keg_etc_files = Dir[f.etc+'*']
+    last_branch = "#{f.name}-last"
+    default_branch = "#{f.name}-default"
+    merged = false
+    etc.cd do
+      FileUtils.cp_r keg_etc_files, etc
+
+      system 'git', 'add', '.'
+      if quiet_system 'git', 'diff', '--exit-code', default_branch
+        quiet_system 'git', 'reset', '--hard'
+      else
+        if quiet_system 'git', 'rev-parse', 'master'
+          quiet_system 'git', 'checkout', '-f', 'master'
+          FileUtils.cp_r keg_etc_files, etc
+          quiet_system 'git', 'add', '.'
+        else
+          quiet_system 'git', 'checkout', '-b' 'master'
+        end
+        system 'git', 'commit', '-m', "#{f.name}-#{f.version}: default"
+        quiet_system 'git', 'branch', '-f', default_branch
+
+        merged = true unless quiet_system 'git' 'merge-base', '--is-ancestor',
+                                          last_branch, 'master'
+        system 'git', 'merge', '--no-ff', '--no-edit',
+               '-X', 'theirs', last_branch
+      end
+
+      if merged
+        ohai "Configuration Files"
+        puts "Your configuration files for #{f.name} in etc were merged:"
+        puts "To reverse this merge: git reset --hard #{last_branch}"
+        puts "To restore defaults:   git reset --hard #{default_branch}"
+      end
+    end
+
+    opoo "Nothing was installed to #{f.prefix}" unless f.installed?
+  end
+
   def install
     # not in initialize so upgrade can unlink the active keg before calling this
     # function but after instantiating this class so that it can avoid having to
@@ -93,6 +167,8 @@ class FormulaInstaller
 
     @@attempted << f
 
+    git_etc_preinstall
+
     if pour_bottle?
       pour
     else
@@ -100,7 +176,7 @@ class FormulaInstaller
       clean
     end
 
-    opoo "Nothing was installed to #{f.prefix}" unless f.installed?
+    git_etc_postinstall
   end
 
   def check_requirements
