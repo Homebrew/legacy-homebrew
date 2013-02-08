@@ -1,19 +1,21 @@
 require 'formula'
 
-class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.8.1.2.tar.gz'
-  sha1 '142222a27dfec52256831f2d0e2ee655f75c1077'
-end
-
-class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.1.2.tar.gz'
-  sha1 '3df491003d026b8f4b2de378e57b930a98f0a595'
-end
-
 class Git < Formula
+  VERSION = '1.8.1.3'
+
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.1.2.tar.gz'
-  sha1 '29a2dee568b1f86e9d3d8f9dcc376f24439b6a0c'
+  url "http://git-core.googlecode.com/files/git-#{VERSION}.tar.gz"
+  sha1 '29ed9047263f9835726200226451339276641779'
+
+  class ManPages < Formula
+    url "http://git-core.googlecode.com/files/git-manpages-#{VERSION}.tar.gz"
+    sha1 '12aaa8a0428e64d194665379ab0335d786728930'
+  end
+
+  class HtmlDocs < Formula
+    url "http://git-core.googlecode.com/files/git-htmldocs-#{VERSION}.tar.gz"
+    sha1 '6b1e57bde2f2b0a86532390c15bfa7b181c50db2'
+  end
 
   head 'https://github.com/git/git.git'
 
@@ -75,8 +77,8 @@ class Git < Formula
 
     # We could build the manpages ourselves, but the build process depends
     # on many other packages, and is somewhat crazy, this way is easier.
-    GitManuals.new.brew { man.install Dir['*'] }
-    GitHtmldocs.new.brew { (share+'doc/git-doc').install Dir['*'] }
+    ManPages.new.brew { man.install Dir['*'] }
+    HtmlDocs.new.brew { (share+'doc/git-doc').install Dir['*'] }
   end
 
   def caveats; <<-EOS.undent
