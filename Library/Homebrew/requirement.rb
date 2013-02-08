@@ -18,7 +18,7 @@ class Requirement
   # The message to show when the requirement is not met.
   def message; "" end
 
-  # Overriding #satisfied? is deprepcated.
+  # Overriding #satisfied? is deprecated.
   # Pass a block or boolean to the satisfied DSL method instead.
   def satisfied?
     result = self.class.satisfy.yielder do |proc|

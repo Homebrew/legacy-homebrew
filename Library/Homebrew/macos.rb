@@ -1,10 +1,11 @@
+require 'macos/version'
+
 module MacOS extend self
 
   # This can be compared to numerics, strings, or symbols
   # using the standard Ruby Comparable methods.
   def version
-    require 'version'
-    MacOSVersion.new(MACOS_VERSION.to_s)
+    Version.new(MACOS_VERSION)
   end
 
   def cat
@@ -38,7 +39,7 @@ module MacOS extend self
         xcrun_path = unless Xcode.bad_xcode_select_path?
           path = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
           # If xcrun finds a superenv tool then discard the result.
-          path unless path.include?(HOMEBREW_PREFIX/"Library/ENV")
+          path unless path.include?(HOMEBREW_REPOSITORY/"Library/ENV")
         end
 
         paths = %W[#{xcrun_path}
