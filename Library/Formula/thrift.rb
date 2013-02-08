@@ -15,6 +15,7 @@ class Thrift < Formula
 
   depends_on 'boost'
 
+  # Includes are fixed in the upstream. Please remove this patch in the next version > 0.9.0
   def patches
     DATA
   end
