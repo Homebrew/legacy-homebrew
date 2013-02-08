@@ -2,8 +2,8 @@ require 'formula'
 
 class Openssl < Formula
   homepage 'http://openssl.org'
-  url 'http://openssl.org/source/openssl-1.0.1c.tar.gz'
-  sha256 '2a9eb3cd4e8b114eb9179c0d3884d61658e7d8e8bf4984798a5f5bd48e325ebe'
+  url 'http://openssl.org/source/openssl-1.0.1d.tar.gz'
+  sha256 '88a423f9b08a994054583691b968815875580e12df754e881d7cfe9f1bd1f49d'
 
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
