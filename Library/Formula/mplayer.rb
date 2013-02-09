@@ -9,10 +9,13 @@ class Mplayer < Formula
 
   option 'with-x', 'Build with X11 support'
   option 'without-osd', 'Build without OSD'
+  option 'with-opus', 'Build with Opus support (currently requires --HEAD)'
 
   depends_on 'yasm' => :build
   depends_on 'xz' => :build
+  depends_on 'pkg-config' => :build if build.include? 'with-opus'
   depends_on :x11 if build.include? 'with-x'
+  depends_on 'opus' if build.include? 'with-opus' and build.head?
 
   unless build.include? 'without-osd' or build.include? 'with-x'
     # These are required for the OSD. We can get them from X11, or we can
@@ -29,7 +32,12 @@ class Mplayer < Formula
   def patches
     # When building SVN, configure prompts the user to pull FFmpeg from git.
     # Don't do that.
-    DATA if build.head?
+    # In HEAD they have moved the source so the patch has changed.
+    if build.head?
+      "https://raw.github.com/gist/3801133/3bd547e198127e3ce2a83c1b481a8d6c6101013b/gistfile1.txt"
+    else
+      "https://raw.github.com/gist/3801137/87a7eb6e78827fb4ab549bd7b536e840a8992019/gistfile1.txt"
+    end
   end
 
   def install
@@ -59,6 +67,9 @@ class Mplayer < Formula
     args << "--enable-menu" unless build.include? 'without-osd'
     args << "--disable-x11" unless build.include? 'with-x'
 
+    # GL headers are not correctly referenced since r35183 (when using HEAD)
+    args << "--disable-gl" if build.head?
+
     system "./configure", *args
     system "make"
     system "make install"
@@ -68,18 +79,3 @@ class Mplayer < Formula
     system "#{bin}/mplayer", "-ao", "null", "/System/Library/Sounds/Glass.aiff"
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index a1fba5f..5deaa80 100755
---- a/configure
-+++ b/configure
-@@ -49,8 +49,6 @@ if test -e ffmpeg/mp_auto_pull ; then
- fi
- 
- if ! test -e ffmpeg ; then
--    echo "No FFmpeg checkout, press enter to download one with git or CTRL+C to abort"
--    read tmp
-     if ! git clone --depth 1 git://source.ffmpeg.org/ffmpeg.git ffmpeg ; then
-         rm -rf ffmpeg
-         echo "Failed to get a FFmpeg checkout"
