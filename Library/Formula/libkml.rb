@@ -20,6 +20,11 @@ class Libkml < Formula
       # If the patch is applied, this find and replace will be unnecessary, but also
       # harmless
       inreplace 'configure.ac', '-Werror', ''
+
+      # the new version of automake (1.13.1) is causing errors because libkml
+      # is using an old directive (AM_CONFIG_HEADER).
+      inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADER'
+ 
       system "./autogen.sh"
     end
 
