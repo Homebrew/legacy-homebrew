@@ -9,6 +9,7 @@ class Cclive < Formula
   depends_on 'xz' => :build
   depends_on 'quvi'
   depends_on 'boost'
+  depends_on 'pcre'
 
   # Fix linking against Boost during configure. See:
   # https://trac.macports.org/ticket/29982
