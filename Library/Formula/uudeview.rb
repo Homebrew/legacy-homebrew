@@ -7,7 +7,7 @@ class Uudeview < Formula
 
   # Fix function signatures (for clang)
   def patches
-    {:p0 => "https://trac.macports.org/export/102865/trunk/dports/mail/uudeview/files/inews.c.patch" }
+    {:p0 => "https://trac.macports.org/export/102865/trunk/dports/mail/uudeview/files/inews.c.patch"}
   end
 
   def install
