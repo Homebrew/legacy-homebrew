@@ -52,6 +52,7 @@ class Node < Formula
 
   head 'https://github.com/joyent/node.git'
 
+  depends_on 'v8'
   # Leopard OpenSSL is not new enough, so use our keg-only one
   depends_on 'openssl' if MacOS.version == :leopard
   depends_on NpmNotInstalled unless build.include? 'without-npm'
@@ -72,7 +73,13 @@ class Node < Formula
     #   joyent/node#3681
     ENV['DEVELOPER_DIR'] = MacOS.dev_tools_path unless MacOS::Xcode.installed?
 
-    args = %W{--prefix=#{prefix}}
+    args = [
+      "--prefix=#{prefix}",
+      '--shared-v8',
+      '--shared-openssl',
+      '--shared-zlib'
+    ]
+
     args << "--debug" if build.include? 'enable-debug'
     args << "--without-npm" if build.include? 'without-npm'
 
