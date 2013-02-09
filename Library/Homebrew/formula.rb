@@ -114,6 +114,7 @@ class Formula
   def rack; prefix.parent end
 
   def bin;     prefix+'bin'     end
+  def etc;     prefix+'etc'     end
   def doc;     share+'doc'+name end
   def include; prefix+'include' end
   def info;    share+'info'     end
@@ -131,13 +132,11 @@ class Formula
   def sbin;    prefix+'sbin'    end
   def share;   prefix+'share'   end
 
-  # configuration needs to be preserved past upgrades
-  def etc; HOMEBREW_PREFIX+'etc' end
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
-  def bash_completion; prefix+'etc/bash_completion.d' end
-  def zsh_completion;  share+'zsh/site-functions'     end
+  def bash_completion; etc+'bash_completion.d'    end
+  def zsh_completion;  share+'zsh/site-functions' end
 
   # override this to provide a plist
   def plist; nil; end
