@@ -10,7 +10,7 @@ class Rbenv < Formula
   def install
     prefix.install Dir['*']
 
-    var_lib = "#{HOMEBREW_PREFIX}/var/lib/rbenv/"
+    var_lib = "#{HOMEBREW_PREFIX}/var/lib/rbenv"
     ['plugins', 'versions'].each do |dir|
       var_dir = "#{var_lib}/#{dir}"
       mkdir_p var_dir
