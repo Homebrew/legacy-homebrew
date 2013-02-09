@@ -11,7 +11,7 @@ class Irssi < Formula
   depends_on 'glib'
 
   # Fix Perl build flags and paths in man page
-  def patches; DATA; end unless build.
+  def patches; DATA; end
 
   def install
     args =%W[
