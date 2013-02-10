@@ -131,8 +131,9 @@ class ExplicitVersionSpecTestBall < Formula
 
   bottle do
     version '1'
-    url 'file:///foo.com/test-0.3.lion.bottle.tar.gz'
-    sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
+    sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
+    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
   def initialize name=nil
