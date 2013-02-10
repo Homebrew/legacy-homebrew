@@ -70,6 +70,11 @@ def bottle_regex
   Pathname::BOTTLE_EXTNAME_RX
 end
 
-def bottle_base_url
-  "https://downloads.sf.net/project/machomebrew/Bottles/"
+def bottle_root_url f
+  root_url = f.bottle.root_url
+  root_url ||= 'https://downloads.sf.net/project/machomebrew/Bottles'
+end
+
+def bottle_url f
+  "#{bottle_root_url(f)}/#{bottle_filename(f)}"
 end
