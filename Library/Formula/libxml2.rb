@@ -18,7 +18,9 @@ class Libxml2 < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    system "./configure", "--prefix=#{prefix}", "--without-python"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--without-python"
     system "make"
     ENV.deparallelize
     system "make install"
