@@ -32,12 +32,13 @@ class Rabbitmq < Formula
 
     # Extract rabbitmqadmin and install to sbin
     # use it to generate, then install the bash completion file
-    system ("/usr/bin/unzip", "-qq", "-j", "#{prefix}/plugins/rabbitmq_management-#{version}.ez", "rabbitmq_management-#{version}/priv/www/cli/rabbitmqadmin")
+    system "/usr/bin/unzip", "-qq", "-j",
+           "#{prefix}/plugins/rabbitmq_management-#{version}.ez",
+           "rabbitmq_management-#{version}/priv/www/cli/rabbitmqadmin"
+
     sbin.install 'rabbitmqadmin'
 
-    system ("#{sbin}/rabbitmqadmin --bash-completion > rabbitmqadmin.bash")
-    (prefix+'etc/bash_completion.d').install 'rabbitmqadmin.bash'
-
+    (prefix+'etc/bash_completion.d/rabbitmqadmin.bash').write `#{sbin}/rabbitmqadmin --bash-completion`
   end
 
   def caveats; <<-EOS.undent
