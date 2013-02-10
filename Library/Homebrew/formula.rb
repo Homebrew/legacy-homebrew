@@ -39,7 +39,7 @@ class Formula
     # Ensure the bottle URL is set. If it does not have a checksum,
     # then a bottle is not available for the current platform.
     if @bottle and not (@bottle.checksum.nil? or @bottle.checksum.empty?)
-      @bottle.url ||= bottle_base_url + bottle_filename(self)
+      @bottle.url ||= bottle_url(self)
       if @bottle.cat_without_underscores
         @bottle.url.gsub!(MacOS.cat.to_s, MacOS.cat_without_underscores.to_s)
       end
