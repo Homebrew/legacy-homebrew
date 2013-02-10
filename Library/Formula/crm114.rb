@@ -8,8 +8,10 @@ class Crm114 < Formula
   depends_on 'tre'
 
   def install
-    system %q!sed -i.bak 's/^\(LDFLAGS += -static\)/#\1/' Makefile!
-    (prefix + 'bin').mkdir
+    # link dynamically
+    inreplace 'Makefile', 'LDFLAGS += -static -static-libgcc', ''
+
+    bin.mkdir
     system "make", "prefix=#{prefix}", "install"
   end
 end
