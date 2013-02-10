@@ -5,6 +5,7 @@ class GlibNetworking < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.32/glib-networking-2.32.3.tar.xz'
   sha256 '39fe23e86a57bb7a8a67c65668394ad0fbe2d43960c1f9d68311d5d13ef1e5cf'
 
+  depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'intltool' => :build
   depends_on 'gettext'
