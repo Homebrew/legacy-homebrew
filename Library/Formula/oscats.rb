@@ -7,6 +7,7 @@ class Oscats < Formula
 
   option 'python', 'Build Python bindings'
 
+  depends_on 'pkg-config' => :build
   depends_on 'gsl'
   depends_on 'glib'
   depends_on 'pygobject' if build.include? 'python'
