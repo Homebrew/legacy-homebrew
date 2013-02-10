@@ -5,6 +5,7 @@ class Putty < Formula
   url 'http://the.earth.li/~sgtatham/putty/0.62/putty-0.62.tar.gz'
   sha1 '5898438614117ee7e3704fc3f30a3c4bf2041380'
 
+  depends_on 'pkg-config' => :build
   depends_on 'gtk+' => :optional
 
   def install
