@@ -1,4 +1,5 @@
 require 'extend/pathname'
+require 'formula_lock'
 
 class Keg < Pathname
   def initialize path
@@ -62,18 +63,7 @@ class Keg < Pathname
   end
 
   def lock
-    HOMEBREW_CACHE_FORMULA.mkpath
-    path = HOMEBREW_CACHE_FORMULA/"#{fname}.brewing"
-    file = path.open(File::RDWR | File::CREAT)
-    unless file.flock(File::LOCK_EX | File::LOCK_NB)
-      raise OperationInProgressError, fname
-    end
-    yield
-  ensure
-    unless file.nil?
-      file.flock(File::LOCK_UN)
-      file.close
-    end
+    FormulaLock.new(fname).with_lock { yield }
   end
 
   def linked_keg_record
