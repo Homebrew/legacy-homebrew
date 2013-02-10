@@ -2,8 +2,8 @@ require 'formula'
 
 class ZshCompletions < Formula
   homepage 'https://github.com/zsh-users/zsh-completions'
-  url 'https://github.com/zsh-users/zsh-completions/tarball/0.7.0'
-  sha1 '604f4678b29ee1c1a0a0da11a20feef283b64822'
+  url 'https://github.com/zsh-users/zsh-completions/tarball/0.8.0'
+  sha1 '9dd4923aab739077640a340ba9f9f2afd7f0a206'
 
   head 'https://github.com/zsh-users/zsh-completions.git'
 

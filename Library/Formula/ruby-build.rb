@@ -2,8 +2,8 @@ require 'formula'
 
 class RubyBuild < Formula
   homepage 'https://github.com/sstephenson/ruby-build'
-  url 'https://github.com/sstephenson/ruby-build/tarball/v20130206'
-  sha1 '2a19a3420f831ba896aac161c8bb18c65ef272ab'
+  url 'https://github.com/sstephenson/ruby-build/tarball/v20130208'
+  sha1 '66138408b7684c2119df7df4d6ced79ee6820018'
 
   head 'https://github.com/sstephenson/ruby-build.git'
 

@@ -1,6 +1,7 @@
 require 'download_strategy'
 require 'dependency_collector'
 require 'formula_support'
+require 'formula_lock'
 require 'hardware'
 require 'bottles'
 require 'patches'
@@ -241,19 +242,12 @@ class Formula
   end
 
   def lock
-    HOMEBREW_CACHE_FORMULA.mkpath
-    lockpath = HOMEBREW_CACHE_FORMULA/"#{@name}.brewing"
-    @lockfile = lockpath.open(File::RDWR | File::CREAT)
-    unless @lockfile.flock(File::LOCK_EX | File::LOCK_NB)
-      raise OperationInProgressError, @name
-    end
+    @lock = FormulaLock.new(name)
+    @lock.lock
   end
 
   def unlock
-    unless @lockfile.nil?
-      @lockfile.flock(File::LOCK_UN)
-      @lockfile.close
-    end
+    @lock.unlock unless @lock.nil?
   end
 
   def == b

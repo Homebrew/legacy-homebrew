@@ -2,8 +2,8 @@ require 'formula'
 
 class Libuv < Formula
   homepage 'https://github.com/joyent/libuv'
-  url 'https://github.com/joyent/libuv/archive/node-v0.9.7.zip'
-  sha1 'aa3f1f06f648d0bb6893107ade6a79294a244b39'
+  url 'https://github.com/joyent/libuv/archive/node-v0.9.8.zip'
+  sha1 'd3ace85028bf371d2301be9fe2c4a5c91bcaa6b2'
 
   head 'https://github.com/joyent/libuv.git', :branch => 'master'
 
