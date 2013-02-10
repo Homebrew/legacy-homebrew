@@ -5,6 +5,8 @@ class Ack < Formula
   url "https://github.com/petdance/ack/tarball/1.96"
   sha1 '547058c0571095beaee9b2e6a3accad52114e759'
 
+  bottle_unnecessary true
+
   def install
     system 'pod2man', 'ack', 'ack.1'
     man1.install 'ack.1'

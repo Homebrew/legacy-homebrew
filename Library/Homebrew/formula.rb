@@ -172,6 +172,8 @@ class Formula
     true
   end
 
+  def bottle_unnecessary; self.class.bottle_unnecessary; end
+
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
@@ -716,6 +718,12 @@ private
       return @bottle unless block_given?
       @bottle ||= Bottle.new
       @bottle.instance_eval(&block)
+    end
+
+    def bottle_unnecessary val=nil
+      return !!@bottle_unnecessary if val.nil?
+      raise "bottle_unnecessary must be a boolean." unless val == !!val
+      @bottle_unnecessary = val
     end
 
     def devel &block
