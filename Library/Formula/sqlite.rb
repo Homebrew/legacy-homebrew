@@ -7,16 +7,16 @@ class SqliteFunctions < Formula
 end
 
 class SqliteDocs < Formula
-  url 'http://www.sqlite.org/sqlite-doc-3071501.zip'
-  sha1 '3b33264eeb5594e0a1db5aee44ec48a1d1c28e5f'
-  version '3.7.15.1'
+  url 'http://www.sqlite.org/sqlite-doc-3071502.zip'
+  version '3.7.15.2'
+  sha1 '06076f7a5b3f5b4dad3803f96375bf3755cd0913'
 end
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://sqlite.org/sqlite-autoconf-3071501.tar.gz'
-  version '3.7.15.1'
-  sha1 '0247b4ff581e7bacaad97663116a029ad1976f1c'
+  url 'http://sqlite.org/sqlite-autoconf-3071502.tar.gz'
+  version '3.7.15.2'
+  sha1 '075732562183d560cd46a0d8d08b50bc44e34eac'
 
   depends_on 'readline' => :recommended
 

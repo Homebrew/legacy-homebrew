@@ -74,15 +74,11 @@ private
 
   def parse_symbol_spec spec, tag
     case spec
-    when :autoconf, :automake, :bsdmake, :libtool
+    when :autoconf, :automake, :bsdmake, :libtool, :libltdl
       # Xcode no longer provides autotools or some other build tools
-      Dependency.new(spec.to_s, [:build, *tag]) unless MacOS::Xcode.provides_autotools?
+      autotools_dep(spec, tag)
     when *X11Dependency::Proxy::PACKAGES
-      if MacOS.version >= :mountain_lion
-        Dependency.new(spec.to_s, tag)
-      else
-        X11Dependency::Proxy.for(spec.to_s, tag)
-      end
+      x11_dep(spec, tag)
     when :cairo, :pixman
       # We no longer use X11 psuedo-deps for cairo or pixman,
       # so just return a standard formula dependency.
@@ -95,6 +91,25 @@ private
     when :clt        then CLTDependency.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
+    end
+  end
+
+  def x11_dep(spec, tag)
+    if MacOS.version >= :mountain_lion
+      Dependency.new(spec.to_s, tag)
+    else
+      X11Dependency::Proxy.for(spec.to_s, tag)
+    end
+  end
+
+  def autotools_dep(spec, tag)
+    case spec
+    when :libltdl then spec, tag = :libtool, Array(tag)
+    else tag = Array(tag) << :build
+    end
+
+    unless MacOS::Xcode.provides_autotools?
+      Dependency.new(spec.to_s, tag)
     end
   end
 end

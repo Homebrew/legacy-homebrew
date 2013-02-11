@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-1.1.tar.bz2'
-  sha1 'a006d8833dd7a03dd5b7823671995640322177fe'
+  url 'http://ffmpeg.org/releases/ffmpeg-1.1.2.tar.bz2'
+  sha1 '1fb1c2019ff13440b3670dc83846c654b245c4c9'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -45,6 +45,7 @@ class Ffmpeg < Formula
   depends_on 'schroedinger' => :optional
   depends_on 'fdk-aac' => :optional
   depends_on 'opus' => :optional
+  depends_on 'frei0r' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -79,6 +80,7 @@ class Ffmpeg < Formula
     args << "--enable-libfdk-aac" if build.with? 'fdk-aac'
     args << "--enable-openssl" if build.with? 'openssl'
     args << "--enable-libopus" if build.with? 'opus'
+    args << "--enable-frei0r" if build.with? 'frei0r'
 
     if build.with? 'openjpeg'
       args << '--enable-libopenjpeg'
