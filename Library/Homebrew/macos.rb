@@ -206,23 +206,18 @@ module MacOS extend self
   }
 
   def compilers_standard?
-    xcode = Xcode.version
-
-    unless STANDARD_COMPILERS.keys.include? xcode
-      onoe <<-EOS.undent
-        Homebrew doesn't know what compiler versions ship with your version of
-        Xcode. Please `brew update` and if that doesn't help, file an issue with
-        the output of `brew --config`:
-          https://github.com/mxcl/homebrew/issues
-
-        Thanks!
-        EOS
-      return
-    end
-
-    STANDARD_COMPILERS[xcode].all? do |method, build|
+    STANDARD_COMPILERS.fetch(Xcode.version.to_s).all? do |method, build|
       MacOS.send(:"#{method}_version") == build
     end
+  rescue IndexError
+    onoe <<-EOS.undent
+      Homebrew doesn't know what compiler versions ship with your version
+      of Xcode (#{Xcode.version}). Please `brew update` and if that doesn't help, file
+      an issue with the output of `brew --config`:
+        https://github.com/mxcl/homebrew/issues
+
+      Thanks!
+    EOS
   end
 
   def app_with_bundle_id id
