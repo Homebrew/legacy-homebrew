@@ -33,9 +33,12 @@ class Wine < Formula
 
   env :std
 
-  option :universal
+  # this tells Homebrew that dependencies must be built universal
+  def build.universal? ; true; end
 
   depends_on :x11
+  # note: we get freetype from :x11, but if the freetype formula has been installed
+  # separately and not built universal, it's going to get picked up and break the build
   depends_on 'jpeg'
   depends_on 'libicns'
   depends_on 'libtiff'
@@ -53,7 +56,7 @@ class Wine < Formula
   end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
-  # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
+  # configure: libsane, libv4l, libgphoto2, gstreamer-0.10, libcapi20, libgsm
 
   # Wine loads many libraries lazily using dlopen calls, so it needs these paths
   # to be searched by dyld.
@@ -102,15 +105,6 @@ class Wine < Formula
               --x-lib=#{MacOS::X11.lib}]
     args << "--disable-win16" if MacOS.version == :leopard or ENV.compiler == :clang
 
-    if not build.universal?
-      opoo <<-EOS.undent
-        Not building a universal wine, you will only be able to run
-        applications built for win64! To get support for win32 build with:
-          brew install wine --universal
-
-      EOS
-      args << "--enable-win64"
-    end
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
 

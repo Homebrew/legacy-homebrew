@@ -1,3 +1,6 @@
+require 'open-uri'
+require 'vendor/multi_json'
+
 class AbstractDownloadStrategy
   def initialize name, package
     @url = package.url
@@ -70,23 +73,20 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     unless @tarball_path.exist?
       begin
         _fetch
-      rescue Exception => e
-        if e.kind_of? ErrorDuringExecution
-          raise CurlDownloadStrategyError, "Download failed: #{@url}"
-        else
-          raise
-        end
+      rescue ErrorDuringExecution
+        raise CurlDownloadStrategyError, "Download failed: #{@url}"
       end
       ignore_interrupts { @temporary_path.rename(@tarball_path) }
     else
       puts "Already downloaded: #{@tarball_path}"
     end
-    return @tarball_path # thus performs checksum verification
   rescue CurlDownloadStrategyError
     raise if @mirrors.empty?
     puts "Trying a mirror..."
     @url = @mirrors.shift
     retry
+  else
+    @tarball_path
   end
 
   def stage
@@ -153,9 +153,6 @@ end
 # Detect and download from Apache Mirror
 class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   def _fetch
-    require 'open-uri'
-    require 'vendor/multi_json'
-
     mirrors = MultiJson.decode(open("#{@url}&asjson=1").read)
     url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
 
@@ -598,8 +595,6 @@ class DownloadStrategyDetector
       detect_from_url(url)
     end
   end
-
-  private
 
   def self.detect_from_url(url)
     case url

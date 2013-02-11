@@ -7,6 +7,7 @@ class Pianobar < Formula
 
   head 'https://github.com/PromyLOPh/pianobar.git'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libao'
   depends_on 'mad'
   depends_on 'faad2'

@@ -185,7 +185,7 @@ class FormulaAuditor
     urls = [(f.stable.url rescue nil), (f.devel.url rescue nil), (f.head.url rescue nil)].compact
 
     # Check GNU urls; doesn't apply to mirrors
-    if urls.any? { |p| p =~ %r[^(https?|ftp)://(.+)/gnu/] }
+    if urls.any? { |p| p =~ %r[^(https?|ftp)://(?!alpha).+/gnu/] }
       problem "\"ftpmirror.gnu.org\" is preferred for GNU software."
     end
 

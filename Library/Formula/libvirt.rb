@@ -7,9 +7,10 @@ class Libvirt < Formula
 
   option 'without-libvirtd', 'Build only the virsh client and development libraries'
 
-  depends_on "gnutls"
+  depends_on 'pkg-config' => :build
+  depends_on 'gnutls'
   depends_on 'libgcrypt'
-  depends_on "yajl"
+  depends_on 'yajl'
 
   if MacOS.version == :leopard
     # Definitely needed on Leopard, but not on Snow Leopard.

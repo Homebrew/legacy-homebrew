@@ -94,6 +94,10 @@ class Caveats
         else
           s << "    launchctl load #{plist_link}"
         end
+        if f.plist_manual
+          s << "Or, if you don't want/need launchctl, you can just run:"
+          s << "    #{f.plist_manual}"
+        end
       end
       s << '' << "WARNING: launchctl will fail when run under tmux." if ENV['TMUX']
     end
