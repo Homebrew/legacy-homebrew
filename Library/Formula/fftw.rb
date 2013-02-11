@@ -6,6 +6,9 @@ class Fftw < Formula
   sha1 '11487180928d05746d431ebe7a176b52fe205cf9'
 
   option "with-fortran", "Enable Fortran bindings"
+  option "with-openmpi", "Enable OpenMPI support"
+
+  depends_on "openmpi" if build.include? "with-openmpi"
 
   def install
     args = ["--enable-shared",
@@ -18,6 +21,10 @@ class Fftw < Formula
       ENV.fortran
     else
       args << "--disable-fortran" unless which 'gfortran'
+    end
+
+    if build.include? "with-openmpi"
+      args << "--enable-mpi"
     end
 
     # single precision
