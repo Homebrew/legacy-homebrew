@@ -158,7 +158,7 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
 
     ohai "Best Mirror #{url}"
     curl url, '-C', downloaded_size, '-o', @temporary_path
-  rescue IndexError
+  rescue IndexError, MultiJson::DecodeError
     raise "Couldn't determine mirror. Try again later."
   end
 end
