@@ -7,9 +7,11 @@ class Atarixx < Formula
 
   depends_on :x11 => :recommended
   depends_on 'sdl' => :optional
+  option 'with-curses'
   
   def install
-    options = ["--disable-CURSES"]
+    options = []
+    options << "--disable-CURSES" unless build.include? 'with-curses'
     options << "--disable-SDL" unless build.include? 'with-sdl'
     options << "--disable-X11" if build.include? 'without-x11'
 
