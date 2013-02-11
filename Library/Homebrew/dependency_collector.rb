@@ -74,7 +74,7 @@ private
 
   def parse_symbol_spec spec, tag
     case spec
-    when :autoconf, :automake, :bsdmake, :libtool
+    when :autoconf, :automake, :bsdmake, :libtool, :libltdl
       # Xcode no longer provides autotools or some other build tools
       autotools_dep(spec, tag)
     when *X11Dependency::Proxy::PACKAGES
@@ -103,8 +103,13 @@ private
   end
 
   def autotools_dep(spec, tag)
+    case spec
+    when :libltdl then spec, tag = :libtool, Array(tag)
+    else tag = Array(tag) << :build
+    end
+
     unless MacOS::Xcode.provides_autotools?
-      Dependency.new(spec.to_s, [:build, *tag])
+      Dependency.new(spec.to_s, tag)
     end
   end
 end
