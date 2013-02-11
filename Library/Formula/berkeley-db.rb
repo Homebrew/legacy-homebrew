@@ -17,6 +17,7 @@ class BerkeleyDb < Formula
     args = ["--disable-debug",
             "--prefix=#{prefix}",
             "--mandir=#{man}",
+            "--enable-sql",
             "--enable-cxx"]
     args << "--enable-java" if build.include? "with-java"
 
