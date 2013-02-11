@@ -596,8 +596,6 @@ class DownloadStrategyDetector
     end
   end
 
-  private
-
   def self.detect_from_url(url)
     case url
       # We use a special URL pattern for cvs
