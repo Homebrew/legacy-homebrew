@@ -11,8 +11,4 @@ class Lbzip2 < Formula
 
     system "make install"
   end
-
-  def test
-    system "false"
-  end
 end
