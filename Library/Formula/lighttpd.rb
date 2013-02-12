@@ -18,7 +18,11 @@ class Lighttpd < Formula
       --prefix=#{prefix}
       --with-openssl
       --with-ldap
+      --with-zlib
+      --with-bzip2
+      --with-attr
     ]
+
     args << "--with-lua" if build.with? 'lua'
     args << "--with-libev" if build.with? 'libev'
 
