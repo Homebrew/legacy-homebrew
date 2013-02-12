@@ -149,9 +149,8 @@ class Formula
   def plist_manual; self.class.plist_manual end
   def plist_startup; self.class.plist_startup end
 
-  def build
-    self.class.build
-  end
+  # Defined and active build-time options.
+  def build; self.class.build; end
 
   def opt_prefix; HOMEBREW_PREFIX/:opt/name end
 
@@ -168,9 +167,7 @@ class Formula
   # Can be overridden to selectively disable bottles from formulae.
   # Defaults to true so overridden version does not have to check if bottles
   # are supported.
-  def pour_bottle?
-    true
-  end
+  def pour_bottle?; true end
 
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
@@ -183,8 +180,7 @@ class Formula
   # return a Hash eg.
   #   {
   #     :p0 => ['http://foo.com/patch1', 'http://foo.com/patch2'],
-  #     :p1 =>  'http://bar.com/patch2',
-  #     :p2 => ['http://moo.com/patch5', 'http://moo.com/patch6']
+  #     :p1 =>  'http://bar.com/patch2'
   #   }
   # The final option is to return DATA, then put a diff after __END__. You
   # can still return a Hash with DATA as the value for a patch level key.
@@ -284,7 +280,7 @@ class Formula
   end
 
   def self.class_s name
-    #remove invalid characters and then camelcase it
+    # remove invalid characters and then camelcase it
     name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
                    .gsub('+', 'x')
   end
@@ -589,7 +585,6 @@ public
   def fetch
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
-
     return @downloader.fetch, @downloader
   end
 
@@ -806,7 +801,7 @@ private
       @test = block
     end
 
-    private
+  private
 
     def post_depends_on(dep)
       # Generate with- or without- options for optional and recommended
