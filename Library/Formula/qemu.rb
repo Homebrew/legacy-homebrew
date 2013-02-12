@@ -24,7 +24,7 @@ class Qemu < Formula
       --disable-bsd-user
       --disable-guest-agent
     ]
-    args << build.with?('sdl') ? '--enable-sdl' : '--disable-sdl'
+    args << (build.with?('sdl') ? '--enable-sdl' : '--disable-sdl')
     system "./configure", *args
     system "make install"
   end
