@@ -11,4 +11,10 @@ class Lbzip2 < Formula
 
     system "make install"
   end
+
+  test do
+    system 'touch', 'fish'
+    system 'lbzip2', 'fish'
+    system 'lbunzip2', 'fish.bz2'
+  end
 end
