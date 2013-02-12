@@ -12,6 +12,7 @@ class Qemu < Formula
   depends_on 'gnutls'
   depends_on 'glib'
   depends_on 'pixman'
+  depends_on 'sdl' => :optional
 
   def install
     # Disable the sdl backend; use CoreAudio instead.
@@ -22,8 +23,8 @@ class Qemu < Formula
       --enable-cocoa
       --disable-bsd-user
       --disable-guest-agent
-      --disable-sdl
     ]
+    args << build.with?('sdl') ? '--enable-sdl' : '--disable-sdl'
     system "./configure", *args
     system "make install"
   end
