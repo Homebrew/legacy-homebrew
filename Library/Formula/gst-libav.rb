@@ -10,8 +10,7 @@ class GstLibav < Formula
   depends_on "gst-plugins-base"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
