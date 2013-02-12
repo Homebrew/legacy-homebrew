@@ -4,13 +4,7 @@ require 'vendor/multi_json'
 class AbstractDownloadStrategy
   def initialize name, package
     @url = package.url
-    @specs = package.specs
-
-    case @specs
-    when Hash
-      @spec = @specs.keys.first # only use first spec
-      @ref = @specs.values.first
-    end
+    @spec, @ref = package.specs.dup.shift
   end
 
   def expand_safe_system_args args

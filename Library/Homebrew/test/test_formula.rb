@@ -82,9 +82,9 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal 'file:///foo.com/testball-0.2.tbz', f.devel.url
     assert_equal 'https://github.com/mxcl/homebrew.git', f.head.url
 
-    assert_nil f.stable.specs
-    assert_nil f.bottle.specs
-    assert_nil f.devel.specs
+    assert_empty f.stable.specs
+    assert_empty f.bottle.specs
+    assert_empty f.devel.specs
     assert_equal({ :tag => 'foo' }, f.head.specs)
 
     assert_equal CurlDownloadStrategy, f.stable.download_strategy
