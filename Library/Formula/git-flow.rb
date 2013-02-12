@@ -17,6 +17,8 @@ class GitFlow < Formula
 
   head 'https://github.com/nvie/gitflow.git', :branch => 'develop'
 
+  conflicts_with 'git-flow-avh'
+
   def install
     system "make", "prefix=#{prefix}", "install"
 

@@ -4,8 +4,8 @@ class Vim < Formula
   homepage 'http://www.vim.org/'
   # Get stable versions from hg repo instead of downloading an increasing
   # number of separate patches.
-  url 'https://vim.googlecode.com/hg/', :tag => 'v7-3-762'
-  version '7.3.762'
+  url 'https://vim.googlecode.com/hg/', :tag => 'v7-3-806'
+  version '7.3.806'
 
   head 'https://vim.googlecode.com/hg/'
 
@@ -23,12 +23,9 @@ class Vim < Formula
     ENV['LUA_PREFIX'] = HOMEBREW_PREFIX
 
     language_opts = LANGUAGES.map do |language|
-      with_option    = "with-#{language}"
-      without_option = "without-#{language}"
-
-      if DEFAULT_LANGUAGES.include? language and !build.include? without_option
+      if DEFAULT_LANGUAGES.include? language and !build.include? "without-#{language}"
         "--enable-#{language}interp"
-      elsif build.include? with_option
+      elsif build.include? "with-#{language}"
         "--enable-#{language}interp"
       end
     end.compact

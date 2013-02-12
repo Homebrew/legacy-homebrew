@@ -5,25 +5,51 @@ class Zabbix < Formula
   url 'http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/2.0.4/zabbix-2.0.4.tar.gz'
   sha1 '26ffd4616a96434b3c357146780f66058f6fbd80'
 
-  depends_on :mysql
-  depends_on 'fping'
-  depends_on 'libssh2'
+  option 'with-mysql', 'Use Zabbix Server with MySQL library instead PostgreSQL.'
+  option 'agent-only', 'Install only the Zabbix Agent without Server and Proxy.'
+
+  unless build.include?('agent-only')
+    depends_on (build.include?('with-mysql') ? :mysql : :postgresql)
+    depends_on 'fping'
+    depends_on 'libssh2'
+  end
+
+  def brewed_or_shipped(db_config)
+    brewed_db_config = "#{HOMEBREW_PREFIX}/bin/#{db_config}"
+    (File.exists?(brewed_db_config) && brewed_db_config) || which(db_config)
+  end
 
   def install
-    which_mysql = which('mysql_config') || "#{HOMEBREW_PREFIX}/bin/mysql_config"
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-server",
-                          "--enable-proxy",
-                          "--enable-agent",
-                          "--with-mysql=#{which_mysql}",
-                          "--enable-ipv6",
-                          "--with-net-snmp",
-                          "--with-libcurl",
-                          "--with-ssh2"
+    args = %W{
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-agent
+    }
 
+    unless build.include?('agent-only')
+      db_adapter = if build.include?('with-mysql')
+        "--with-mysql=#{brewed_or_shipped('mysql_config')}"
+      else
+        "--with-postgresql=#{brewed_or_shipped('pg_config')}"
+      end
+      args += %W{
+        --enable-server
+        --enable-proxy
+        #{db_adapter}
+        --enable-ipv6
+        --with-net-snmp
+        --with-libcurl
+        --with-ssh2
+      }
+    end
+
+    system "./configure", *args
     system "make install"
-    (share/'zabbix').install 'frontends/php', 'database/mysql'
+
+    unless build.include?('agent-only')
+      (share/'zabbix').install 'frontends/php',
+        "database/#{build.include?('with-mysql') ? :mysql : :postgresql}"
+    end
   end
 
   def caveats; <<-EOS.undent
@@ -36,6 +62,6 @@ class Zabbix < Formula
   end
 
   def test
-    system "#{sbin}/zabbix_agent", "--print"
+    system "#{sbin}/zabbix_agentd", "--print"
   end
 end

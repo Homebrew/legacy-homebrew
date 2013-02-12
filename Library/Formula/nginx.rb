@@ -6,8 +6,8 @@ class Nginx < Formula
   sha1 '432059b668e3f018eab61f99c7cc727db88464e8'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.3.9.tar.gz'
-    sha1 'dcf32eaaf7e99d169ef1d202ffe1ec38215b4d98'
+    url 'http://nginx.org/download/nginx-1.3.10.tar.gz'
+    sha1 '11cd44bc0479594fd2e5f7a65bf8f2c36ad5ec1e'
   end
 
   env :userpaths
@@ -16,6 +16,7 @@ class Nginx < Formula
 
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
+  option 'with-debug', 'Compile with support for debug log'
 
   skip_clean 'logs'
 
@@ -55,6 +56,7 @@ class Nginx < Formula
 
     args << passenger_config_args if build.include? 'with-passenger'
     args << "--with-http_dav_module" if build.include? 'with-webdav'
+    args << "--with-debug" if build.include? 'with-debug'
 
     system "./configure", *args
     system "make"

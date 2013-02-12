@@ -2,8 +2,8 @@ require 'formula'
 
 class Poco < Formula
   homepage 'http://pocoproject.org/'
-  url 'http://downloads.sourceforge.net/project/poco/sources/poco-1.4.3/poco-1.4.3p1-all.tar.gz'
-  sha1 '893b26bdd2adee36d489ce1412bf67d5035f5b47'
+  url 'http://pocoproject.org/releases/poco-1.4.6/poco-1.4.6.tar.gz'
+  sha1 'e96260f5a5309e129bdea4251c8e26e14bd0c9bc'
 
   def install
     arch = Hardware.is_64_bit? ? 'Darwin64': 'Darwin32'

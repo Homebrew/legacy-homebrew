@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libewf < Formula
-  homepage 'http://sourceforge.net/projects/libewf/'
-  url 'http://downloads.sourceforge.net/project/libewf/libewf2/libewf-20120813/libewf-20120813.tar.gz'
-  sha1 'a8226c42dd55022569b8234fba997f8bd40b9303'
+  homepage 'http://code.google.com/p/libewf/'
+  url 'http://libewf.googlecode.com/files/libewf-20130128.tar.gz'
+  sha1 '90fdd6878b8b3a001d486ca5608bc029ca21556d'
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

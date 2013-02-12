@@ -12,9 +12,6 @@ class Fontforge < Formula
   option 'without-python', 'Build without Python'
   option 'with-gif',       'Build with GIF support'
   option 'with-x',         'Build with X'
-  option 'with-cairo',     'Build with Cairo'
-  option 'with-pango',     'Build with Pango'
-  option 'with-libspiro',  'Build with Spiro spline support'
 
   depends_on 'gettext'
   depends_on :xcode # Because: #include </Developer/Headers/FlatCarbon/Files.h>
@@ -22,11 +19,11 @@ class Fontforge < Formula
   depends_on :libpng    => :recommended
   depends_on 'jpeg'     => :recommended
   depends_on 'libtiff'  => :recommended
-  depends_on :x11       if build.include? "with-x"
-  depends_on 'giflib'   if build.include? 'with-gif'
-  depends_on 'cairo'    if build.include? "with-cairo"
-  depends_on 'pango'    if build.include? "with-pango"
-  depends_on 'libspiro' if build.include? "with-libspiro"
+  depends_on :x11 if build.with? 'x'
+  depends_on 'giflib' if build.with? 'gif'
+  depends_on 'cairo' => :optional
+  depends_on 'pango' => :optional
+  depends_on 'libspiro' => :optional
 
   fails_with :llvm do
     build 2336
@@ -48,7 +45,7 @@ class Fontforge < Formula
             "--enable-double",
             "--without-freetype-bytecode"]
 
-    if build.include? "without-python"
+    if build.without? "python"
       args << "--without-python"
     else
       python_prefix = `python-config --prefix`.strip
@@ -59,14 +56,14 @@ class Fontforge < Formula
     end
 
     # Fix linking to correct Python library
-    ENV.prepend "LDFLAGS", "-L#{python_prefix}/lib" unless build.include? "without-python"
+    ENV.prepend "LDFLAGS", "-L#{python_prefix}/lib" unless build.without? "python"
     # Fix linker error; see: http://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
-    args << "--without-cairo" unless build.include? "with-cairo"
-    args << "--without-pango" unless build.include? "with-pango"
+    args << "--without-cairo" unless build.with? "cairo"
+    args << "--without-pango" unless build.with? "pango"
 
     system "./configure", *args
 
@@ -124,8 +121,8 @@ class Fontforge < Formula
     EOS
 
     s = ""
-    s += x_caveats if build.include? "with-x"
-    s += python_caveats unless build.include? "without-python"
+    s += x_caveats if build.with? "x"
+    s += python_caveats unless build.without? "python"
     return s
   end
 end

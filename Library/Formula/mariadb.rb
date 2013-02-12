@@ -2,8 +2,8 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.28/kvm-tarbake-jaunty-x86/mariadb-5.5.28.tar.gz'
-  sha1 '29ec3c64365e73dfda5f9d38c76de681b62a4987'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.29/kvm-tarbake-jaunty-x86/mariadb-5.5.29.tar.gz'
+  sha1 '4548876e9c6a17a8d11e4e585d9d05b6fbcf4654'
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -23,6 +23,9 @@ class Mariadb < Formula
 
   conflicts_with 'percona-server',
     :because => "mariadb and percona-server install the same binaries."
+
+  conflicts_with 'mysql-cluster',
+    :because => "mariadb and mysql-cluster install the same binaries."
 
   env :std if build.universal?
 

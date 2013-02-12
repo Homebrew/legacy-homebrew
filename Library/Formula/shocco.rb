@@ -8,12 +8,29 @@ class Pygments < Formula
   sha1 '4fbd937fd5cebc79fa4b26d4cce0868c4eec5ec5'
 end
 
+class MarkdownProvider < Requirement
+  fatal true
+
+  satisfy { which 'markdown' }
+
+  def message; <<-EOS.undent
+    shocco requires a `markdown` command.
+
+    You can satisfy this requirement with either of two formulae:
+      brew install markdown
+      brew install discount
+
+    Please install one and try again.
+    EOS
+  end
+end
+
 class Shocco < Formula
   homepage 'http://rtomayko.github.com/shocco/'
   url 'https://github.com/rtomayko/shocco/tarball/a1ee000613946335f54a8f236ee9fe6f7f22bcb8'
   sha1 '8feb66dad3c957fabdfa368e710dfb2a078a732f'
 
-  depends_on 'markdown'
+  depends_on MarkdownProvider
 
   def install
     Pygments.new.brew { libexec.install 'pygmentize','pygments' }

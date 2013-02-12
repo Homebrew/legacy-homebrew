@@ -38,7 +38,7 @@ end
 if MACOS and MACOS_VERSION < 10.5
   abort <<-EOABORT.undent
     Homebrew requires Leopard or higher. For Tiger support, see:
-    http://github.com/sceaga/homebrew/tree/tiger
+    https://github.com/mistydemeo/tigerbrew
   EOABORT
 end
 

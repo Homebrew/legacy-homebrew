@@ -7,14 +7,6 @@ module HomebrewArgvExtension
     select {|arg| arg[0..0] == '-'}
   end
 
-  def used_options f
-    f.build.as_flags & options_only
-  end
-
-  def unused_options f
-    f.build.as_flags - options_only
-  end
-
   def formulae
     require 'formula'
     @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
@@ -97,6 +89,10 @@ module HomebrewArgvExtension
     include?('--dry-run') || switch?('n')
   end
 
+  def homebrew_developer?
+    include? '--homebrew-developer' or ENV['HOMEBREW_DEVELOPER']
+  end
+
   def ignore_deps?
     include? '--ignore-dependencies'
   end
@@ -177,10 +173,9 @@ module HomebrewArgvExtension
     flags_to_clear.concat %w[--verbose -v] if quieter?
     flags_to_clear.each {|flag| delete flag}
 
-    ret = yield
-
-    replace old_args
-    ret
+    yield
+  ensure
+    replace(old_args)
   end
 
   private

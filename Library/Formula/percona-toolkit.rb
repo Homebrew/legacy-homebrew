@@ -2,8 +2,8 @@ require 'formula'
 
 class PerconaToolkit < Formula
   homepage 'http://www.percona.com/software/percona-toolkit/'
-  url 'http://www.percona.com/redir/downloads/percona-toolkit/2.1.6/percona-toolkit-2.1.6.tar.gz'
-  sha1 '75fed9c2bc9d658a99869a1c8f81c8a1e8999e58'
+  url 'http://www.percona.com/redir/downloads/percona-toolkit/2.1.8/percona-toolkit-2.1.8.tar.gz'
+  sha1 '96377fd17324608d3031ebe52c14c595b3da7984'
 
   depends_on 'Time::HiRes' => :perl
   depends_on 'DBD::mysql' => :perl

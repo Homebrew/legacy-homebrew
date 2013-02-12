@@ -15,6 +15,10 @@ class Qt < Formula
 
   env :std # Otherwise fails on SSE intrinsics
 
+  fails_with :clang do
+    build 425
+  end
+
   option :universal
   option 'with-qtdbus', 'Enable QtDBus module'
   option 'with-qt3support', 'Enable deprecated Qt3Support module'
@@ -44,7 +48,7 @@ class Qt < Formula
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
-    args << "-L#{MacOS.x11_prefix}/lib" << "-I#{MacOS.x11_prefix}/include" if MacOS::X11.installed?
+    args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
     args << "-platform" << "unsupported/macx-clang" if ENV.compiler == :clang
 

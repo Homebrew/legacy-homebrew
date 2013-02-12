@@ -1,8 +1,8 @@
 require 'formula'
 
 class Jscoverage < Formula
-  url 'http://siliconforks.com/jscoverage/download/jscoverage-0.5.1.tar.bz2'
   homepage 'http://siliconforks.com/jscoverage/'
+  url 'http://siliconforks.com/jscoverage/download/jscoverage-0.5.1.tar.bz2'
   sha1 '0d655296b593beb15c2261d97df314572ebd7319'
 
   def patches

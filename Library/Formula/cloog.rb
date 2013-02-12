@@ -2,8 +2,8 @@ require 'formula'
 
 class Cloog < Formula
   homepage 'http://www.cloog.org/'
-  url 'http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.17.0.tar.gz'
-  sha1 'decc2221b1f1bd9238288d043835cb018af15d5a'
+  url 'http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.0.tar.gz'
+  sha1 '85f620a26aabf6a934c44ca40a9799af0952f863'
 
   depends_on 'pkg-config' => :build
   depends_on 'gmp'

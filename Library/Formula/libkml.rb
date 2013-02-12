@@ -1,8 +1,8 @@
 require 'formula'
 
 class Libkml < Formula
-  url 'http://libkml.googlecode.com/files/libkml-1.2.0.tar.gz'
   homepage 'http://code.google.com/p/libkml/'
+  url 'http://libkml.googlecode.com/files/libkml-1.2.0.tar.gz'
   sha1 '3fa5acdc2b2185d7f0316d205002b7162f079894'
 
   head 'http://libkml.googlecode.com/svn/trunk/', :using => :svn
@@ -20,6 +20,10 @@ class Libkml < Formula
       # If the patch is applied, this find and replace will be unnecessary, but also
       # harmless
       inreplace 'configure.ac', '-Werror', ''
+
+      # Compatibility with Automake 1.13 and newer.
+      inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADER'
+
       system "./autogen.sh"
     end
 

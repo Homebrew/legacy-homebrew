@@ -6,8 +6,8 @@ class Gnumeric < Formula
   sha256 'bb2a13424811d132fe1be7a6e82d61157a18c630fc91b7409503dbd7ef600ea5'
 
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'gettext'
-  depends_on 'intltool'
   depends_on 'goffice'
   depends_on 'rarian'
   depends_on :x11

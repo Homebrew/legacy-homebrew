@@ -2,8 +2,8 @@ require 'formula'
 
 class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
-  url 'http://www.apache.org/dyn/closer.cgi?path=couchdb/releases/1.2.0/apache-couchdb-1.2.0.tar.gz'
-  sha1 'da17af99cf3b1f9a89f0051b7d9de0cbd6fe81b6'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/1.2.1/apache-couchdb-1.2.1.tar.gz'
+  sha1 '70dac0304cdc9f4313f524db583170a2c59e265c'
 
   head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
@@ -36,7 +36,7 @@ class Couchdb < Formula
         curl http://127.0.0.1:5984/
 
       The reply should look like:
-        {"couchdb":"Welcome","version":"1.2.0"}
+        {"couchdb":"Welcome","version":"1.2.1"}
     EOS
   end
 

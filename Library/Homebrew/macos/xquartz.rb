@@ -11,8 +11,19 @@ module MacOS::XQuartz extend self
       path = MacOS.app_with_bundle_id(FORGE_BUNDLE_ID) || MacOS.app_with_bundle_id(APPLE_BUNDLE_ID)
       if not path.nil? and path.exist?
         `mdls -raw -name kMDItemVersion "#{path}" 2>/dev/null`.strip
+      elsif prefix.to_s == "/usr/X11"
+        # Some users disable Spotlight indexing. If we're working with the
+        # system X11 distribution, we can't get the version from pkgutil, so
+        # just use the expected version.
+        case MacOS.version
+        when 10.5 then "2.1.6"
+        when 10.6 then "2.3.6"
+        when 10.7 then "2.6.3"
+        else "dunno"
+        end
       else
-        # Some users disable Spotlight indexing. Try to find it via pkgutil
+        # Finally, try to find it via pkgutil. This is slow, and only works
+        # for the upstream XQuartz package, so use it as a last resort.
         MacOS.pkgutil_info(FORGE_PKG_ID) =~ /version: (\d\.\d\.\d).+$/ and $1
       end
     end
@@ -29,7 +40,7 @@ module MacOS::XQuartz extend self
   end
 
   # This should really be private, but for compatibility reasons it must
-  # remain public. New code should use MacOS::XQuartz.{bin,lib,include}
+  # remain public. New code should use MacOS::X11.{bin,lib,include}
   # instead, as that accounts for Xcode-only systems.
   def prefix
     @prefix ||= if Pathname.new('/opt/X11/lib/libpng.dylib').exist?

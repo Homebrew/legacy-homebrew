@@ -7,7 +7,7 @@ class Libmatio < Formula
 
   option 'with-hdf5', 'Enable support for newer MAT files that use the HDF5-format'
 
-  depends_on 'hdf5' if build.include? 'with-hdf5'
+  depends_on 'hdf5' => :optional
 
   def install
     args = %W[
@@ -15,7 +15,7 @@ class Libmatio < Formula
       --with-zlib=/usr
       --enable-extended-sparse=yes
     ]
-    args << "--with-hdf5=#{HOMEBREW_PREFIX}" if build.include? 'with-hdf5'
+    args << "--with-hdf5=#{HOMEBREW_PREFIX}" if build.with? 'hdf5'
 
     system "./configure", *args
     system "make"

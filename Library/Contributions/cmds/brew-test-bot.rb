@@ -202,7 +202,7 @@ class Test
     bottle_filename = bottle_filename(formula_object, bottle_version)
     test "brew uninstall #{formula}"
     test "brew install #{bottle_filename}"
-    test "brew test #{formula}" if defined? formula_object.test
+    test "brew test #{formula}" if formula_object.test_defined?
     test "brew uninstall #{formula}"
     test "brew uninstall #{dependencies}" unless dependencies.empty?
   end
@@ -216,7 +216,7 @@ class Test
   def cleanup_before
     @category = __method__
     return unless ARGV.include? '--cleanup'
-    git 'stash --all'
+    git 'stash'
     git 'am --abort 2>/dev/null'
     git 'rebase --abort 2>/dev/null'
     git 'reset --hard'

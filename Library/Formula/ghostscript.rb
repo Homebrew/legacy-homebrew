@@ -13,6 +13,8 @@ class Ghostscript < Formula
 
   head 'git://git.ghostscript.com/ghostpdl.git'
 
+  option 'with-x11', 'Install with X11 support'
+
   if build.head?
     depends_on :automake
     depends_on :libtool
@@ -24,6 +26,7 @@ class Ghostscript < Formula
   depends_on 'jbig2dec'
   depends_on 'little-cms2'
   depends_on :libpng
+  depends_on :x11 => '2.7.2' if build.include? 'with-x11'
 
   # Fix dylib names, per installation instructions
   def patches
@@ -54,8 +57,8 @@ class Ghostscript < Formula
         --disable-compile-inits
         --disable-gtk
         --with-system-libtiff
-        --without-x
       ]
+      args << '--without-x' unless build.include? 'with-x11'
 
       if build.head?
         system './autogen.sh', *args

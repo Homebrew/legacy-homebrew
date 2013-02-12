@@ -8,15 +8,10 @@ class Gd < Formula
 
   head 'http://bitbucket.org/pierrejoye/gd-libgd', :using => :hg
 
-  option 'without-libpng', 'Build without PNG support'
-  option 'without-jpeg', 'Build without JPEG support'
-  option 'with-giflib', 'Build with GIF support'
-  option 'with-freetype', 'Build with FreeType support'
-
-  depends_on :libpng unless build.include? "without-libpng"
-  depends_on 'jpeg' => :recommended unless build.include? "without-jpeg"
-  depends_on 'giflib' if build.include? "with-giflib"
-  depends_on :freetype if build.include? "with-freetype" or MacOS::X11.installed?
+  depends_on :libpng => :recommended
+  depends_on 'jpeg' => :recommended
+  depends_on 'giflib' => :optional
+  depends_on :freetype => :optional
 
   fails_with :llvm do
     build 2326
@@ -25,7 +20,7 @@ class Gd < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--without-freetype" unless build.include? 'with-freetype'
+    args << "--without-freetype" unless build.with? 'freetype'
     system "./configure", *args
     system "make install"
     (lib+'pkgconfig/gdlib.pc').write pkg_file
@@ -49,12 +44,10 @@ Cflags: -I${includedir}
 EOF
   end
 
-  def test
-    mktemp do
-      system "#{bin}/pngtogd", \
-        "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png", \
-        "gd_test.gd"
-      system "#{bin}/gdtopng", "gd_test.gd", "gd_test.png"
-    end
+  test do
+    system "#{bin}/pngtogd", \
+      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png", \
+      "gd_test.gd"
+    system "#{bin}/gdtopng", "gd_test.gd", "gd_test.png"
   end
 end

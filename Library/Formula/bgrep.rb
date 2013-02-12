@@ -1,9 +1,9 @@
 require 'formula'
 
 class Bgrep < Formula
-  url 'https://github.com/tmbinc/bgrep/tarball/bgrep-0.2'
   homepage 'https://github.com/tmbinc/bgrep'
-  sha1 'a43be236e437779a941ebfbeca8a3abf7075182d'
+  url 'https://github.com/tmbinc/bgrep/archive/bgrep-0.2.tar.gz'
+  sha1 '37f29f95397730dcd8760a0bac33ba167ac7d998'
 
   def install
     system "#{ENV.cc} #{ENV.cflags} -o bgrep bgrep.c"

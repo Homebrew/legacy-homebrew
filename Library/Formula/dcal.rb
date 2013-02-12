@@ -1,10 +1,10 @@
 require 'formula'
 
 class Dcal < Formula
-  url 'http://alexeyt.freeshell.org/code/dcal.c'
   homepage 'http://alexeyt.freeshell.org/'
-  sha1 '3b1d4ed45ed0192df4841ed9e371c89fe87bdeac'
+  url 'http://alexeyt.freeshell.org/code/dcal.c'
   version '0.1.0'
+  sha1 '3b1d4ed45ed0192df4841ed9e371c89fe87bdeac'
 
   def install
     system ENV.cxx, "dcal.c", "-o", "dcal"

@@ -2,8 +2,8 @@ require 'formula'
 
 class Mp3splt < Formula
   homepage 'http://mp3splt.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/mp3splt/mp3splt/2.4.3/mp3splt-2.4.3.tar.gz'
-  sha1 'b3acab4206d348fa8477f751e46840e41cb56046'
+  url 'http://sourceforge.net/projects/mp3splt/files/mp3splt/2.5.1/mp3splt-2.5.1.tar.gz'
+  sha1 '75551f12f349312d2e8fcc58bbadab134e9e3a99'
 
   depends_on 'libmp3splt'
 

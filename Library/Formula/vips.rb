@@ -2,14 +2,15 @@ require 'formula'
 
 class Vips < Formula
   homepage 'http://www.vips.ecs.soton.ac.uk/'
-  url 'http://www.vips.ecs.soton.ac.uk/supported/7.30/vips-7.30.6.tar.gz'
-  sha1 'f13aa134e39e2f6c126e393ff3ee841632defcb4'
+  url 'http://www.vips.ecs.soton.ac.uk/supported/7.30/vips-7.30.7.tar.gz'
+  sha1 '49713df2eaf774d51fc9cf734b2bb19859f9047d'
 
   depends_on 'pkg-config' => :build
   depends_on :libpng
   depends_on :fontconfig
   depends_on 'gettext'
   depends_on 'glib'
+  depends_on 'openslide' => :optional
   depends_on 'jpeg' => :optional
   depends_on 'libtiff' => :optional
   depends_on 'imagemagick' => :optional

@@ -37,11 +37,15 @@ module Homebrew extend self
       f.rack.children.each do |keg|
         if File.directory? keg and f.version > Keg.new(keg).version
           if f.can_cleanup?
-            if ARGV.dry_run?
-              puts "Would remove: #{keg}"
+            if !Keg.new(keg).linked?
+              if ARGV.dry_run?
+                puts "Would remove: #{keg}"
+              else
+                puts "Removing: #{keg}..."
+                rm_rf keg
+              end
             else
-              puts "Removing: #{keg}..."
-              rm_rf keg
+              opoo "Skipping (old) #{keg} due to it being linked"
             end
           else
             opoo "Skipping (old) keg-only: #{keg}"
@@ -73,11 +77,15 @@ module Homebrew extend self
           end
         end
       end
+      if pn.basename.to_s.split('.').last == 'incomplete'
+        puts "Removing #{pn}..."
+        rm pn unless ARGV.dry_run?
+      end
     end
   end
 
   def rm_DS_Store
-    system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete"
+    system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete 2>/dev/null"
   end
 
 end

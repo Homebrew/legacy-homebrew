@@ -15,7 +15,8 @@ didn't include with OS X.
 
 For the full command list, see the COMMANDS section.
 
-With `--verbose`, many commands print extra debugging information.
+With `--verbose` or `-v`, many commands print extra debugging information.
+Note that these flags should only appear after a command.
 
   * `install` <formula>:
     Install <formula>.
@@ -72,7 +73,7 @@ With `--verbose`, many commands print extra debugging information.
     If `--cmake` is passed, create a basic template for a CMake-style build.
 
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
-    will thus not add the MD5 to the formula for you.
+    will thus not add the SHA-1 to the formula for you.
 
     The options `--set-name` and `--set-version` each take an argument and allow
     you to explicitly set the name and version of the package you are creating.
@@ -110,7 +111,7 @@ With `--verbose`, many commands print extra debugging information.
 
   * `fetch [--force] [-v] [--HEAD] [--deps]` <formulae>:
     Download the source packages for the given <formulae>.
-    For tarballs, also print MD5 and SHA1 checksums.
+    For tarballs, also print SHA1 and SHA-256 checksums.
 
     If `--HEAD` is passed, download the HEAD versions of <formulae> instead. `-v`
     may also be passed to make the VCS checkout verbose, useful for seeing if
@@ -139,14 +140,11 @@ With `--verbose`, many commands print extra debugging information.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--devel] [--HEAD]` <formula>:
+  * `install [--debug] [--ignore-dependencies] [--fresh] [--use-clang|--use-gcc|--use-llvm] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
     several different ways. See [SPECIFYING FORMULAE][].
-
-    If `--force` is passed, will install <formula> if it exists, even if it
-    is blacklisted.
 
     If `--debug` is passed and brewing fails, open a shell inside the
     temporary directory used for compiling.
@@ -175,8 +173,7 @@ With `--verbose`, many commands print extra debugging information.
     aka master, trunk, unstable.
 
     To install a newer version of HEAD use
-    `brew rm <foo> && brew install --HEAD <foo>`
-    or `brew install --force --HEAD <foo>`.
+    `brew rm <foo> && brew install --HEAD <foo>`.
 
   * `install --interactive [--git]` <formula>:
     Download and patch <formula>, then open a shell. This allows the user to
@@ -291,7 +288,7 @@ With `--verbose`, many commands print extra debugging information.
     If <formulae> are given, upgrade only the specified brews.
 
   * `uses [--installed] [--recursive]` <formula>:
-    Show the formulas that specify <formula> as a dependency.
+    Show the formulae that specify <formula> as a dependency.
 
     Use `--recursive` to resolve more than one level of dependencies.
 
@@ -371,21 +368,29 @@ can take several different forms:
 
 ## ENVIRONMENT
 
+  * BROWSER:
+    If set, and `HOMEBREW_BROWSER` is not, use `BROWSER` as the web browser
+    when opening project homepages.
+
+  * EDITOR:
+    If set, and `HOMEBREW_EDITOR` is not, use `EDITOR` as the text editor.
+
   * GIT:
     When using Git, Homebrew will use `GIT` if set,
     a Homebrew-built Git if installed, or the system-provided binary.
 
     Set this to force Homebrew to use a particular git binary.
 
-  * EDITOR:
-    If set, and `HOMEBREW_EDITOR` is not, use `EDITOR` as the text editor.
+  * HOMEBREW_BROWSER:
+    If set, uses this setting as the browser when opening project homepages,
+    instead of the OS default browser.
 
   * HOMEBREW\_BUILD\_FROM\_SOURCE:
     If set, instructs Homebrew to compile from source even when a formula
     provides a bottle.
 
   * HOMEBREW\_CACHE:
-    If set, instructs Homebrew to use the give directory as the download cache.
+    If set, instructs Homebrew to use the given directory as the download cache.
     Otherwise, `~/Library/Caches/Homebrew` is used.
 
     This can be used to keep downloads out of your home directory, if you have
@@ -395,8 +400,7 @@ can take several different forms:
     If set, Homebrew will pass `--verbose` when invoking `curl`(1).
 
   * HOMEBREW\_DEBUG:
-    If set, instructs Homebrew to always assume `--debug` when running
-    commands.
+    If set, Homebrew always assumes `--debug` when running commands.
 
   * HOMEBREW\_DEBUG\_INSTALL:
     When `brew install -d` or `brew install -i` drops into a shell,
@@ -407,6 +411,10 @@ can take several different forms:
     When `brew install -d` or `brew install -i` drops into a shell,
     `HOMEBREW_DEBUG_PREFIX` will be set to the target prefix in the Cellar
     of the formula being brewed.
+
+  * HOMEBREW\_DEVELOPER:
+    If set, Homebrew will print warnings that are only relevant to Homebrew
+    developers (active or budding).
 
   * HOMEBREW\_EDITOR:
     If set, Homebrew will use this editor when editing a single formula, or
@@ -429,6 +437,17 @@ can take several different forms:
 
     *Default:* the number of available CPU cores.
 
+  * HOMEBREW\_NO\_EMOJI:
+    If set, Homebrew will not print the beer emoji on a successful build.
+
+    *Note:* Homebrew will only try to print emoji on Lion or newer.
+
+  * HOMEBREW\_SOURCEFORGE\_MIRROR:
+    If set, Homebrew will use the value of `HOMEBREW_SOURCEFORGE_MIRROR` to
+    select a SourceForge mirror for downloading bottles.
+
+    *Example:* `export HOMEBREW_SOURCEFORGE_MIRROR='heanet'`
+
   * HOMEBREW\_SVN:
     When exporting from Subversion, Homebrew will use `HOMEBREW_SVN` if set,
     a Homebrew-built Subversion if installed, or the system-provided binary.
@@ -445,19 +464,16 @@ can take several different forms:
     configurations.
 
   * HOMEBREW\_USE\_CLANG:
-    If set, instructs Homebrew to compile using clang.
+    If set, forces Homebrew to compile using clang.
 
   * HOMEBREW\_USE\_GCC:
-    If set, instructs Homebrew to compile using gcc.
+    If set, forces Homebrew to compile using gcc.
 
   * HOMEBREW\_USE\_LLVM:
-    If set, instructs Homebrew to compile using LLVM.
-
-    *NOTE*: Not all formulae build correctly with LLVM.
+    If set, forces Homebrew to compile using LLVM.
 
   * HOMEBREW\_VERBOSE:
-    If set, instructs Homebrew to always assume `--verbose` when running
-    commands.
+    If set, Homebrew always assumes `--verbose` when running commands.
 
 ## USING HOMEBREW BEHIND A PROXY
 

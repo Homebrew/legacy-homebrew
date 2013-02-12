@@ -13,6 +13,9 @@ class Sshfs < Formula
   depends_on 'glib'
 
   def install
+    # Compatibility with Automake 1.13 and newer.
+    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
+
     system "autoreconf", "--force", "--install"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

@@ -1,19 +1,45 @@
-class Compilers < Array
-  def include? cc
+class Compilers
+  include Enumerable
+
+  def initialize(*args)
+    @compilers = Array.new(*args)
+  end
+
+  def each(*args, &block)
+    @compilers.each(*args, &block)
+  end
+
+  def include?(cc)
     cc = cc.name if cc.is_a? Compiler
-    self.any? { |c| c.name == cc }
+    @compilers.any? { |c| c.name == cc }
+  end
+
+  def <<(o)
+    @compilers << o
+    self
   end
 end
 
 
-class CompilerFailures < Array
-  def include? cc
-    cc = Compiler.new(cc) unless cc.is_a? Compiler
-    self.any? { |failure| failure.compiler == cc.name }
+class CompilerFailures
+  include Enumerable
+
+  def initialize(*args)
+    @failures = Array.new(*args)
   end
 
-  def <<(failure)
-    super(failure) unless self.include? failure.compiler
+  def each(*args, &block)
+    @failures.each(*args, &block)
+  end
+
+  def include?(cc)
+    cc = Compiler.new(cc) unless cc.is_a? Compiler
+    @failures.any? { |failure| failure.compiler == cc.name }
+  end
+
+  def <<(o)
+    @failures << o unless include? o.compiler
+    self
   end
 end
 
@@ -72,7 +98,7 @@ class CompilerSelector
     # @compilers is our list of available compilers. If @f declares a
     # failure with compiler foo, then we remove foo from the list if
     # the failing build is >= the currently installed version of foo.
-    @compilers.reject! do |cc|
+    @compilers = @compilers.reject do |cc|
       failure = @f.fails_with? cc
       next unless failure
       failure.build >= cc.build

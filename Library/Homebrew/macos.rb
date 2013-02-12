@@ -1,41 +1,52 @@
+require 'macos/version'
+
 module MacOS extend self
 
   # This can be compared to numerics, strings, or symbols
   # using the standard Ruby Comparable methods.
   def version
-    require 'version'
-    MacOSVersion.new(MACOS_VERSION.to_s)
+    Version.new(MACOS_VERSION)
   end
 
   def cat
-    if version == :mountain_lion then :mountainlion
+    if version == :mountain_lion then :mountain_lion
     elsif version == :lion then :lion
-    elsif version == :snow_leopard then :snowleopard
+    elsif version == :snow_leopard then :snow_leopard
     elsif version == :leopard then :leopard
     else nil
     end
+  end
+
+  # TODO: Can be removed when all bottles migrated to underscored cat symbols.
+  def cat_without_underscores
+    possibly_underscored_cat = cat
+    return nil unless possibly_underscored_cat
+    cat.to_s.gsub('_', '').to_sym
   end
 
   def locate tool
     # Don't call tools (cc, make, strip, etc.) directly!
     # Give the name of the binary you look for as a string to this method
     # in order to get the full path back as a Pathname.
-    @locate ||= {}
-    @locate[tool.to_s] ||= if File.executable? "/usr/bin/#{tool}"
-      Pathname.new "/usr/bin/#{tool}"
-    else
-      # If the tool isn't in /usr/bin, then we first try to use xcrun to find
-      # it. If it's not there, or xcode-select is misconfigured, we have to
-      # look in dev_tools_path, and finally in xctoolchain_path, because the
-      # tools were split over two locations beginning with Xcode 4.3+.
-      xcrun_path = unless Xcode.bad_xcode_select_path?
-        `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
-      end
+    (@locate ||= {}).fetch(tool.to_s) do
+      @locate[tool.to_s] = if File.executable? "/usr/bin/#{tool}"
+        Pathname.new "/usr/bin/#{tool}"
+      else
+        # If the tool isn't in /usr/bin, then we first try to use xcrun to find
+        # it. If it's not there, or xcode-select is misconfigured, we have to
+        # look in dev_tools_path, and finally in xctoolchain_path, because the
+        # tools were split over two locations beginning with Xcode 4.3+.
+        xcrun_path = unless Xcode.bad_xcode_select_path?
+          path = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+          # If xcrun finds a superenv tool then discard the result.
+          path unless path.include?(HOMEBREW_REPOSITORY/"Library/ENV")
+        end
 
-      paths = %W[#{xcrun_path}
-                 #{dev_tools_path}/#{tool}
-                 #{xctoolchain_path}/usr/bin/#{tool}]
-      paths.map { |p| Pathname.new(p) }.find { |p| p.executable? }
+        paths = %W[#{xcrun_path}
+                   #{dev_tools_path}/#{tool}
+                   #{xctoolchain_path}/usr/bin/#{tool}]
+        paths.map { |p| Pathname.new(p) }.find { |p| p.executable? }
+      end
     end
   end
 
@@ -64,16 +75,17 @@ module MacOS extend self
   end
 
   def sdk_path(v = version)
-    @sdk_path ||= {}
-    @sdk_path[v.to_s] ||= begin
-      opts = []
-      # First query Xcode itself
-      opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
-      # Xcode.prefix is pretty smart, so lets look inside to find the sdk
-      opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-      # Xcode < 4.3 style
-      opts << "/Developer/SDKs/MacOSX#{v}.sdk"
-      opts.map{|a| Pathname.new(a) }.detect { |p| p.directory? }
+    (@sdk_path ||= {}).fetch(v.to_s) do
+      @sdk_path[v.to_s] = begin
+        opts = []
+        # First query Xcode itself
+        opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
+        # Xcode.prefix is pretty smart, so lets look inside to find the sdk
+        opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+        # Xcode < 4.3 style
+        opts << "/Developer/SDKs/MacOSX#{v}.sdk"
+        opts.map{|a| Pathname.new(a) }.detect { |p| p.directory? }
+      end
     end
   end
 
@@ -125,14 +137,14 @@ module MacOS extend self
 
   def clang_version
     @clang_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ /clang version (\d\.\d)/
+      `#{locate("clang")} --version` =~ /(?:clang|LLVM) version (\d\.\d)/
       $1
     end
   end
 
   def clang_build_version
     @clang_build_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ %r[tags/Apple/clang-(\d{2,})]
+      `#{locate("clang")} --version` =~ %r[clang-(\d{2,})]
       $1.to_i
     end
   end
@@ -189,27 +201,23 @@ module MacOS extend self
     "4.4.1" => { :llvm_build => 2336, :clang => "4.0", :clang_build => 421 },
     "4.5"   => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
     "4.5.1" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
-    "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 }
+    "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
+    "4.6"   => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
   }
 
   def compilers_standard?
-    xcode = Xcode.version
-
-    unless STANDARD_COMPILERS.keys.include? xcode
-      onoe <<-EOS.undent
-        Homebrew doesn't know what compiler versions ship with your version of
-        Xcode. Please `brew update` and if that doesn't help, file an issue with
-        the output of `brew --config`:
-          https://github.com/mxcl/homebrew/issues
-
-        Thanks!
-        EOS
-      return
-    end
-
-    STANDARD_COMPILERS[xcode].all? do |method, build|
+    STANDARD_COMPILERS.fetch(Xcode.version.to_s).all? do |method, build|
       MacOS.send(:"#{method}_version") == build
     end
+  rescue IndexError
+    onoe <<-EOS.undent
+      Homebrew doesn't know what compiler versions ship with your version
+      of Xcode (#{Xcode.version}). Please `brew update` and if that doesn't help, file
+      an issue with the output of `brew --config`:
+        https://github.com/mxcl/homebrew/issues
+
+      Thanks!
+    EOS
   end
 
   def app_with_bundle_id id
@@ -218,7 +226,9 @@ module MacOS extend self
   end
 
   def mdfind id
-    `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
+    (@mdfind ||= {}).fetch(id.to_s) do
+      @mdfind[id.to_s] = `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
+    end
   end
 
   def pkgutil_info id

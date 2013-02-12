@@ -2,21 +2,20 @@ require 'formula'
 
 class Rbenv < Formula
   homepage 'https://github.com/sstephenson/rbenv'
-  url 'https://github.com/sstephenson/rbenv/tarball/v0.3.0'
-  sha1 'b9f78b1a10d4e225d0377cac33c1a964ee6df00b'
+  url 'https://github.com/sstephenson/rbenv/tarball/v0.4.0'
+  sha1 'a5e80249f985294c1c9f0914f7cbdc85d4cadd74'
 
   head 'https://github.com/sstephenson/rbenv.git'
 
-  # TODO: When we bump the version here we can remove making the plugin
-  # directory in depending formulae.
   def install
+    inreplace 'libexec/rbenv', '/usr/local', HOMEBREW_PREFIX
     prefix.install Dir['*']
 
-    var_lib = "#{HOMEBREW_PREFIX}/var/lib/rbenv/"
+    var_lib = var/'lib/rbenv'
     ['plugins', 'versions'].each do |dir|
-      var_dir = "#{var_lib}/#{dir}"
-      mkdir_p var_dir
-      ln_sf var_dir, "#{prefix}/#{dir}"
+      var_dir = var_lib/dir
+      var_dir.mkpath
+      ln_sf var_dir, (prefix/dir)
     end
   end
 

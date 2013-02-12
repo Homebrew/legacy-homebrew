@@ -1,22 +1,28 @@
 require 'formula'
 
 class ApktoolExecutables < Formula
-  url 'http://android-apktool.googlecode.com/files/apktool-install-macosx-r04-brut1.tar.bz2'
-  sha1 'f3e7376225916d3fb73df618ec4e5f5c00474e0c'
+  url 'https://android-apktool.googlecode.com/files/apktool-install-macosx-r05-ibot.tar.bz2'
+  sha1 'c2fb262760ccd27530e58ccc4bbef4d4a7b0ab39'
 end
 
 class Apktool < Formula
   homepage 'http://android-apktool.googlecode.com/'
-  url 'http://android-apktool.googlecode.com/files/apktool1.4.3.tar.bz2'
-  sha1 '7c0b85882c1fab7660258ab344e3a43b17e10741'
+  url 'https://android-apktool.googlecode.com/files/apktool1.5.2.tar.bz2'
+  sha1 '2dd828cf79467730c7406aa918f1da1bd21aaec8'
 
   def install
     libexec.install 'apktool.jar'
 
     ApktoolExecutables.new.brew do |f|
-      # Make apktool look for jar in libexec
-      inreplace 'apktool', /^libdir=.*$/, "libdir=\"#{libexec}\""
-      bin.install 'aapt', 'apktool'
+      libexec.install 'aapt', 'apktool'
     end
+
+    # Make apktool look for jar and aapkt in libexec
+    inreplace "#{libexec}/apktool" do |s|
+      s.gsub! /^libdir=.*$/, "libdir=\"#{libexec}\""
+      s.gsub! "PATH=$PATH:`pwd`;", "PATH=$PATH:#{libexec};"
+    end
+
+    bin.install_symlink libexec/'apktool'
   end
 end

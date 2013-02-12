@@ -1,10 +1,11 @@
 require 'formula'
 
 class Ggobi < Formula
-  url 'http://www.ggobi.org/downloads/ggobi-2.1.9.tar.bz2'
   homepage 'http://www.ggobi.org'
+  url 'http://www.ggobi.org/downloads/ggobi-2.1.9.tar.bz2'
   sha1 '0dd0fe0cf619c1404d024e019cf9c8d87fb4fe4b'
 
+  depends_on 'pkg-config' => :build
   depends_on 'gtk+'
   depends_on 'glib'
   depends_on 'atk'
@@ -24,7 +25,8 @@ class Ggobi < Formula
     # Reported at https://groups.google.com/d/msg/ggobi/0yiepEUgjiM/nXTVoMaAzj8J
     inreplace 'src/texture.c', 'psort', 'p_sort'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--with-all-plugins", "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-all-plugins"
     system "make install"
   end
 end

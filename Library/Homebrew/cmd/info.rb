@@ -1,6 +1,7 @@
 require 'formula'
 require 'tab'
 require 'keg'
+require 'caveats'
 
 module Homebrew extend self
   def info
@@ -90,7 +91,7 @@ module Homebrew extend self
     end
 
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
-    conflicts = f.conflicts.map { |c| c.formula }
+    conflicts = f.conflicts.map { |c| c.formula }.sort
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
@@ -119,10 +120,8 @@ module Homebrew extend self
       Homebrew.dump_options_for_formula f
     end
 
-    unless f.caveats.to_s.strip.empty?
-      ohai "Caveats"
-      puts f.caveats
-    end
+    c = Caveats.new(f)
+    ohai 'Caveats', c.caveats unless c.empty?
 
   rescue FormulaUnavailableError
     # check for DIY installation

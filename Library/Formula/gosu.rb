@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gosu < Formula
+  homepage 'http://gosu-lang.org/'
   url 'http://gosu-lang.org/downloads/gosu-0.8.6.1-C/gosu-0.8.6.1-C.tgz'
   version '0.8.6.1-C'
-  homepage 'http://gosu-lang.org/'
   sha1 '6e4b4e95bc75237a1e04118aa31e9bdf331dbb0f'
 
   def install

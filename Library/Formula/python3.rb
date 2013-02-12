@@ -1,5 +1,4 @@
 require 'formula'
-require Formula.path("python") # For TkCheck requirement
 
 # Python3 is the new language standard, not just a new revision.
 # It's somewhat incompatible with Python 2.x, therefore, the executable
@@ -7,8 +6,8 @@ require Formula.path("python") # For TkCheck requirement
 # `brew install python`.
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.32.tar.gz'
-  sha1 '65ae88517ac47bd4e0fb449b3b9a9bf85e8366c8'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.34.tar.gz'
+  sha1 'b6f9cfbaf3e63833b71009812a613be13e68f5de'
 end
 
 class Pip < Formula
@@ -22,7 +21,6 @@ class Python3 < Formula
   sha1 '3e1464bc2c1dfa74287bc58da81168f50b0ae5c7'
   VER='3.3'  # The <major>.<minor> is used so often.
 
-  depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
   depends_on 'sqlite' => :recommended
