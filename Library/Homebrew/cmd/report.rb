@@ -7,6 +7,8 @@ module Homebrew extend self
     f_pn = (f = ARGV.formulae[0]).path
     Dir.chdir((f_pn.symlink? ? f_pn.realpath.dirname : HOMEBREW_REPOSITORY).to_s) do
       if `git config --get remote.origin.url` =~ %r{https://github.com/(\w+)/([\-\w]+)}
+        $gh_user = $1
+        $gh_repo = $2
         ohai 'Running brew doctor'
         doctor = `brew doctor`
         ohai 'Running brew --config'
@@ -14,8 +16,9 @@ module Homebrew extend self
         response = upload_logs f
         body = ''
         response['files'].sort.each { |f_n, x| body << "* [#{f_n}](#{x['raw_url']})\n" }
-        body << "\n```\n$ brew doctor\n#{doctor}\n```\n```\n$ brew --config\n#{config}\n```"
-        open_issue f, $1, $2, body
+        body << "\n```\n$ brew doctor\n#{doctor}```"
+        body << "\n```\n$ brew --config\n#{config}```"
+        open_issue f, $gh_user, $gh_repo, body
       end
     end
   end
@@ -26,12 +29,14 @@ module Homebrew extend self
     files = {}
     if l_pn.directory?
       l_pn.children.each do |l_f|
-        print l_f if l_f.basename.to_s =~ %r{0[\d].[\w]+|config.log}
-        if l_f.size < 3 * 1024 * 1024
-          files[l_f.basename.to_s] = {'content' => l_f.read}
-          puts
-        else
-          puts ' - too big, skipping...'
+        if l_f.basename.to_s =~ %r{0[\d].[\w]+|config.log}
+          print l_f
+          if l_f.size < 3 * 1024 * 1024
+            files[l_f.basename.to_s] = {'content' => l_f.read}
+            puts
+          else
+            puts ' - too big, skipping...'
+          end
         end
       end
     end
@@ -39,10 +44,10 @@ module Homebrew extend self
     return post 'https://api.github.com/gists', {'description' => "#{f.name} #{f.version}", 'public' => true, 'files' => files}
   end
 
-  def open_issue f, gh_user, gh_repository, body
+  def open_issue f, gh_user, gh_repo, body
     ohai 'Opening issue'
     title = "#{f.name} #{f.version} failed to build on #{MACOS_FULL_VERSION}"
-    response = post "https://api.github.com/repos/#{gh_user}/#{gh_repository}/issues", {'title' => title, 'body' => body}
+    response = post "https://api.github.com/repos/#{gh_user}/#{gh_repo}/issues", {'title' => title, 'body' => body}
     puts "Issue: ##{response['number']}"
     puts response['http_url']
   end
@@ -68,6 +73,6 @@ module Homebrew extend self
   end
 
   def gh_token
-    gh_token ||= (pn = Pathname.new('~/.brew').expand_path).file? ? MultiJson.decode(File.open(pn.to_s, 'r').read)['token'] : ''
+    gh_token ||= (pn = Pathname.new('~/.brew').expand_path).file? ? MultiJson.decode(pn.read)['token'] : ''
   end
 end
