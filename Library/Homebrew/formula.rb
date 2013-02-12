@@ -698,11 +698,7 @@ private
       @build ||= BuildOptions.new(ARGV.options_only)
     end
 
-    def url val=nil, specs={}
-      if val.nil?
-        return @stable.url if @stable
-        return @url if @url
-      end
+    def url val, specs={}
       @stable ||= SoftwareSpec.new
       @stable.url(val, specs)
     end
