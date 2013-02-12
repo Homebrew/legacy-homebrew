@@ -85,9 +85,9 @@ private
       Dependency.new(spec.to_s, tag)
     when :x11        then X11Dependency.new(spec.to_s, tag)
     when :xcode      then XcodeDependency.new(tag)
-    when :mysql      then MysqlInstalled.new(tag)
-    when :postgresql then PostgresqlInstalled.new(tag)
-    when :tex        then TeXInstalled.new(tag)
+    when :mysql      then MysqlDependency.new(tag)
+    when :postgresql then PostgresqlDependency.new(tag)
+    when :tex        then TeXDependency.new(tag)
     when :clt        then CLTDependency.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
