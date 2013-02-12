@@ -698,7 +698,7 @@ private
       @build ||= BuildOptions.new(ARGV.options_only)
     end
 
-    def url val=nil, specs=nil
+    def url val=nil, specs={}
       if val.nil?
         return @stable.url if @stable
         return @url if @url
@@ -724,7 +724,7 @@ private
       @devel.instance_eval(&block)
     end
 
-    def head val=nil, specs=nil
+    def head val=nil, specs={}
       return @head if val.nil?
       @head ||= HeadSoftwareSpec.new
       @head.url(val, specs)
