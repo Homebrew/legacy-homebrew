@@ -13,6 +13,7 @@ class Requirement
   def initialize(*tags)
     @tags = tags.flatten.compact
     @tags << :build if self.class.build
+    @name ||= infer_name
   end
 
   # The message to show when the requirement is not met.
@@ -54,6 +55,13 @@ class Requirement
   end
 
   private
+
+  def infer_name
+    klass = self.class.to_s
+    klass.sub!(/(Dependency|Requirement)$/, '')
+    klass.sub!(/^(\w+::){0,}/, '')
+    klass.downcase
+  end
 
   def infer_env_modification(o)
     case o
