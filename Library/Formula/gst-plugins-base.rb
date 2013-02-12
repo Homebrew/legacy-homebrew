@@ -34,7 +34,6 @@ class GstPluginsBase < Formula
       --disable-x
       --disable-xvideo
       --disable-xshm
-      --disable-gnome_vfs
     ]
     system "./configure", *args
     system "make"
