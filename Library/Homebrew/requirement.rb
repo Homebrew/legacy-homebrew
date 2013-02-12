@@ -59,7 +59,7 @@ class Requirement
   def infer_name
     klass = self.class.to_s
     klass.sub!(/(Dependency|Requirement)$/, '')
-    klass.sub!(/^(\w+::){0,}/, '')
+    klass.sub!(/^(\w+::)*/, '')
     klass.downcase
   end
 
