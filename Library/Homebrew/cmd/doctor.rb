@@ -849,8 +849,8 @@ def check_for_linked_keg_only_brews
     s = <<-EOS.undent
     Some keg-only formula are linked into the Cellar.
     Linking a keg-only formula, such as gettext, into the cellar with
-    `brew link f` will cause other formulae to detect them during the
-    `./configure` step. This may cause problems when compiling those
+    `brew link <formula>` will cause other formulae to detect them during
+    the `./configure` step. This may cause problems when compiling those
     other formulae.
 
     Binaries provided by keg-only formulae may override system binaries
