@@ -101,6 +101,7 @@ class CompilerSelector
     @compilers = @compilers.reject do |cc|
       failure = @f.fails_with? cc
       next unless failure
+      next unless ARGV.homebrew_developer?
       failure.build >= cc.build
     end
 
