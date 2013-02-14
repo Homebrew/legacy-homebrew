@@ -311,55 +311,23 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     @clone
   end
 
-  def support_depth?
-    @spec != :revision and host_supports_depth?
-  end
-
-  def host_supports_depth?
-    @url =~ %r(git://) or @url =~ %r(https://github.com/)
-  end
-
   def fetch
     raise "You must: brew install git" unless which "git"
 
-    ohai "Cloning #{@url}"
+    ohai "Cloning #@url"
 
-    if @clone.exist?
+    if @clone.exist? && repo_valid?
+      puts "Updating #@clone"
       Dir.chdir(@clone) do
-        # Check for interupted clone from a previous install
-        unless quiet_system @@git, 'status', '-s'
-          puts "Removing invalid .git repo from cache"
-          FileUtils.rm_rf @clone
-        end
+        config_repo
+        fetch_repo
       end
-    end
-
-    unless @clone.exist?
-      # Note: first-time checkouts are always done verbosely
-      clone_args = [@@git, 'clone', '--no-checkout']
-      clone_args << '--depth' << '1' if support_depth?
-
-      case @spec
-      when :branch, :tag
-        clone_args << '--branch' << @ref
-      end
-
-      clone_args << @url << @clone
-      safe_system(*clone_args)
+    elsif @clone.exist?
+      puts "Removing invalid .git repo from cache"
+      FileUtils.rm_rf @clone
+      clone_repo
     else
-      puts "Updating #{@clone}"
-      Dir.chdir(@clone) do
-        safe_system @@git, 'config', 'remote.origin.url', @url
-
-        safe_system @@git, 'config', 'remote.origin.fetch', case @spec
-          when :branch then "+refs/heads/#{@ref}:refs/remotes/origin/#{@ref}"
-          when :tag then "+refs/tags/#{@ref}:refs/tags/#{@ref}"
-          else '+refs/heads/master:refs/remotes/origin/master'
-          end
-
-        git_args = [@@git, 'fetch', 'origin']
-        quiet_safe_system(*git_args)
-      end
+      clone_repo
     end
   end
 
@@ -367,7 +335,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     dst = Dir.getwd
     Dir.chdir @clone do
       if @spec and @ref
-        ohai "Checking out #{@spec} #{@ref}"
+        ohai "Checking out #@spec #@ref"
         case @spec
         when :branch
           nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, "origin/#{@ref}", '--' }
@@ -390,6 +358,52 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
       end
     end
+  end
+
+  private
+
+  def support_depth?
+    @spec != :revision and host_supports_depth?
+  end
+
+  def host_supports_depth?
+    @url =~ %r{git://} or @url =~ %r{https://github.com/}
+  end
+
+  def repo_valid?
+    quiet_system @@git, "--git-dir", "#@clone/.git", "status", "-s"
+  end
+
+  def clone_args
+    args = %w{clone --no-checkout}
+    args << '--depth' << '1' if support_depth?
+
+    case @spec
+    when :branch, :tag then args << '--branch' << @ref
+    end
+
+    args << @url << @clone
+  end
+
+  def refspec
+    case @spec
+    when :branch then "+refs/heads/#@ref:refs/remotes/origin/#@ref"
+    when :tag    then "+refs/tags/#@ref:refs/tags/#@ref"
+    else              "+refs/heads/master:refs/remotes/origin/master"
+    end
+  end
+
+  def config_repo
+    safe_system @@git, 'config', 'remote.origin.url', @url
+    safe_system @@git, 'config', 'remote.origin.fetch', refspec
+  end
+
+  def fetch_repo
+    quiet_safe_system @@git, 'fetch', 'origin'
+  end
+
+  def clone_repo
+    safe_system @@git, *clone_args
   end
 end
 
