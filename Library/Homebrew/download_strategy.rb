@@ -350,13 +350,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system @@git, 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
-      # check for submodules
-      if File.exist?('.gitmodules')
-        safe_system @@git, 'submodule', 'init'
-        safe_system @@git, 'submodule', 'update'
-        sub_cmd = "#{@@git} checkout-index -a -f \"--prefix=#{dst}/$path/\""
-        safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
-      end
+      checkout_submodules(dst) if submodules?
     end
   end
 
@@ -372,6 +366,10 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
   def repo_valid?
     quiet_system @@git, "--git-dir", "#@clone/.git", "status", "-s"
+  end
+
+  def submodules?
+    @clone.join(".gitmodules").exist?
   end
 
   def clone_args
@@ -404,6 +402,15 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
   def clone_repo
     safe_system @@git, *clone_args
+  end
+
+  def update_submodules
+    safe_system @@git, 'submodule', 'update', '--init'
+  end
+
+  def checkout_submodules(dst)
+    sub_cmd = %W{#@@git checkout-index -a -f --prefix=#{dst}/$path/}
+    safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', *sub_cmd
   end
 end
 
