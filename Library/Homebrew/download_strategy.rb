@@ -321,6 +321,8 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       Dir.chdir(@clone) do
         config_repo
         fetch_repo
+        checkout
+        update_submodules if submodules?
       end
     elsif @clone.exist?
       puts "Removing invalid .git repo from cache"
@@ -336,12 +338,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     Dir.chdir @clone do
       if @spec and @ref
         ohai "Checking out #@spec #@ref"
-        case @spec
-        when :branch
-          nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, "origin/#{@ref}", '--' }
-        when :tag, :revision
-          nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, @ref, '--' }
-        end
       else
         # otherwise the checkout-index won't checkout HEAD
         # https://github.com/mxcl/homebrew/issues/7124
@@ -402,6 +398,21 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
   def clone_repo
     safe_system @@git, *clone_args
+    @clone.cd do
+      checkout
+      update_submodules if submodules?
+    end
+  end
+
+  def checkout
+    ref = case @spec
+          when :branch         then "origin/#@ref"
+          when :tag, :revision then @ref
+          end
+
+    nostdout do
+      quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, ref, '--'
+    end
   end
 
   def update_submodules
