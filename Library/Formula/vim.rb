@@ -48,6 +48,7 @@ class Vim < Formula
                           "--with-tlib=ncurses",
                           "--enable-cscope",
                           "--with-features=huge",
+                          "--with-ruby-command=/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby",
                           *language_opts
     system "make"
 
