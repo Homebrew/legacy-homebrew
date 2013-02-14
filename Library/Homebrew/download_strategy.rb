@@ -320,7 +320,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       puts "Updating #@clone"
       Dir.chdir(@clone) do
         config_repo
-        fetch_repo
+        update_repo
         checkout
         update_submodules if submodules?
       end
@@ -352,6 +352,14 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
   private
 
+  def git_dir
+    @clone.join(".git")
+  end
+
+  def has_tag?(tag)
+    quiet_system @@git, '--git-dir', git_dir, 'rev-parse', '-q', '--verify', tag
+  end
+
   def support_depth?
     @spec != :revision and host_supports_depth?
   end
@@ -361,7 +369,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def repo_valid?
-    quiet_system @@git, "--git-dir", "#@clone/.git", "status", "-s"
+    quiet_system @@git, "--git-dir", git_dir, "status", "-s"
   end
 
   def submodules?
@@ -392,8 +400,10 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     safe_system @@git, 'config', 'remote.origin.fetch', refspec
   end
 
-  def fetch_repo
-    quiet_safe_system @@git, 'fetch', 'origin'
+  def update_repo
+    unless @spec == :tag && has_tag?(@ref)
+      quiet_safe_system @@git, 'fetch', 'origin'
+    end
   end
 
   def clone_repo
