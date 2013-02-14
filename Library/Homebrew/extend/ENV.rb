@@ -129,9 +129,9 @@ module HomebrewEnvExtension
   # if your formula doesn't like CC having spaces use this
   def expand_xcrun
     self['CC'] =~ %r{/usr/bin/xcrun (.*)}
-    self['CC'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
+    self['CC'] = `/usr/bin/xcrun -n -find #{$1}`.chomp if $1
     self['CXX'] =~ %r{/usr/bin/xcrun (.*)}
-    self['CXX'] = `/usr/bin/xcrun -find #{$1}`.chomp if $1
+    self['CXX'] = `/usr/bin/xcrun -n -find #{$1}`.chomp if $1
     self['OBJC'] = self['CC']
     self['OBJCXX'] = self['CXX']
   end

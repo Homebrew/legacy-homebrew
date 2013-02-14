@@ -1063,7 +1063,7 @@ end
     return if MacOS::Xcode.bad_xcode_select_path?
     # If the user installs Xcode-only, they have to approve the
     # license or no "xc*" tool will work.
-    <<-EOS.undent if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success?
+    <<-EOS.undent if `/usr/bin/xcrun -n clang 2>&1` =~ /license/ and not $?.success?
     You have not agreed to the Xcode license.
     Builds will fail! Agree to the license by opening Xcode.app or running:
         xcodebuild -license

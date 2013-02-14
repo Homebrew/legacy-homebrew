@@ -35,7 +35,7 @@ module Homebrew extend self
       print "#{key}: #{value}"
       case key when 'CC', 'CXX', 'LD'
         if value =~ %r{/usr/bin/xcrun (.*)}
-          path = `/usr/bin/xcrun -find #{$1}`
+          path = `/usr/bin/xcrun -n -find #{$1}`
           print " => #{path}"
         elsif File.symlink? value
           print " => #{Pathname.new(value).realpath}"

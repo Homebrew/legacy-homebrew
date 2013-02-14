@@ -37,7 +37,7 @@ module MacOS extend self
         # look in dev_tools_path, and finally in xctoolchain_path, because the
         # tools were split over two locations beginning with Xcode 4.3+.
         xcrun_path = unless Xcode.bad_xcode_select_path?
-          path = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+          path = `/usr/bin/xcrun -n -find #{tool} 2>/dev/null`.chomp
           # If xcrun finds a superenv tool then discard the result.
           path unless path.include?(HOMEBREW_REPOSITORY/"Library/ENV")
         end
@@ -55,9 +55,9 @@ module MacOS extend self
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
     # Note that the exit status of system "xcrun foo" isn't always accurate
-    elsif not Xcode.bad_xcode_select_path? and not `/usr/bin/xcrun -find make 2>/dev/null`.empty?
+    elsif not Xcode.bad_xcode_select_path? and not `/usr/bin/xcrun -n -find make 2>/dev/null`.empty?
       # Wherever "make" is there are the dev tools.
-      Pathname.new(`/usr/bin/xcrun -find make`.chomp).dirname
+      Pathname.new(`/usr/bin/xcrun -n -find make`.chomp).dirname
     elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{Xcode.prefix}/usr/bin"
