@@ -377,7 +377,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def clone_args
-    args = %w{clone --no-checkout}
+    args = %w{clone}
     args << '--depth' << '1' if support_depth?
 
     case @spec
@@ -408,16 +408,13 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
   def clone_repo
     safe_system @@git, *clone_args
-    @clone.cd do
-      checkout
-      update_submodules if submodules?
-    end
+    @clone.cd { update_submodules } if submodules?
   end
 
   def checkout
     ref = case @spec
-          when :branch         then "origin/#@ref"
-          when :tag, :revision then @ref
+          when :branch, :tag, :revision then @ref
+          else `git symbolic-ref refs/remotes/origin/HEAD`.strip.split("/").last
           end
 
     nostdout do
