@@ -311,55 +311,25 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     @clone
   end
 
-  def support_depth?
-    @spec != :revision and host_supports_depth?
-  end
-
-  def host_supports_depth?
-    @url =~ %r(git://) or @url =~ %r(https://github.com/)
-  end
-
   def fetch
     raise "You must: brew install git" unless which "git"
 
-    ohai "Cloning #{@url}"
+    ohai "Cloning #@url"
 
-    if @clone.exist?
+    if @clone.exist? && repo_valid?
+      puts "Updating #@clone"
       Dir.chdir(@clone) do
-        # Check for interupted clone from a previous install
-        unless quiet_system @@git, 'status', '-s'
-          puts "Removing invalid .git repo from cache"
-          FileUtils.rm_rf @clone
-        end
+        config_repo
+        update_repo
+        checkout
+        update_submodules if submodules?
       end
-    end
-
-    unless @clone.exist?
-      # Note: first-time checkouts are always done verbosely
-      clone_args = [@@git, 'clone', '--no-checkout']
-      clone_args << '--depth' << '1' if support_depth?
-
-      case @spec
-      when :branch, :tag
-        clone_args << '--branch' << @ref
-      end
-
-      clone_args << @url << @clone
-      safe_system(*clone_args)
+    elsif @clone.exist?
+      puts "Removing invalid .git repo from cache"
+      FileUtils.rm_rf @clone
+      clone_repo
     else
-      puts "Updating #{@clone}"
-      Dir.chdir(@clone) do
-        safe_system @@git, 'config', 'remote.origin.url', @url
-
-        safe_system @@git, 'config', 'remote.origin.fetch', case @spec
-          when :branch then "+refs/heads/#{@ref}:refs/remotes/origin/#{@ref}"
-          when :tag then "+refs/tags/#{@ref}:refs/tags/#{@ref}"
-          else '+refs/heads/master:refs/remotes/origin/master'
-          end
-
-        git_args = [@@git, 'fetch', 'origin']
-        quiet_safe_system(*git_args)
-      end
+      clone_repo
     end
   end
 
@@ -367,29 +337,98 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     dst = Dir.getwd
     Dir.chdir @clone do
       if @spec and @ref
-        ohai "Checking out #{@spec} #{@ref}"
-        case @spec
-        when :branch
-          nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, "origin/#{@ref}", '--' }
-        when :tag, :revision
-          nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, @ref, '--' }
-        end
+        ohai "Checking out #@spec #@ref"
       else
         # otherwise the checkout-index won't checkout HEAD
         # https://github.com/mxcl/homebrew/issues/7124
         # must specify origin/HEAD, otherwise it resets to the current local HEAD
-        quiet_safe_system @@git, "reset", "--hard", "origin/HEAD"
+        quiet_safe_system @@git, "reset", { :quiet_flag => "-q" }, "--hard", "origin/HEAD"
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system @@git, 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
-      # check for submodules
-      if File.exist?('.gitmodules')
-        safe_system @@git, 'submodule', 'init'
-        safe_system @@git, 'submodule', 'update'
-        sub_cmd = "#{@@git} checkout-index -a -f \"--prefix=#{dst}/$path/\""
-        safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
-      end
+      checkout_submodules(dst) if submodules?
     end
+  end
+
+  private
+
+  def git_dir
+    @clone.join(".git")
+  end
+
+  def has_tag?(tag)
+    quiet_system @@git, '--git-dir', git_dir, 'rev-parse', '-q', '--verify', tag
+  end
+
+  def support_depth?
+    @spec != :revision and host_supports_depth?
+  end
+
+  def host_supports_depth?
+    @url =~ %r{git://} or @url =~ %r{https://github.com/}
+  end
+
+  def repo_valid?
+    quiet_system @@git, "--git-dir", git_dir, "status", "-s"
+  end
+
+  def submodules?
+    @clone.join(".gitmodules").exist?
+  end
+
+  def clone_args
+    args = %w{clone}
+    args << '--depth' << '1' if support_depth?
+
+    case @spec
+    when :branch, :tag then args << '--branch' << @ref
+    end
+
+    args << @url << @clone
+  end
+
+  def refspec
+    case @spec
+    when :branch then "+refs/heads/#@ref:refs/remotes/origin/#@ref"
+    when :tag    then "+refs/tags/#@ref:refs/tags/#@ref"
+    else              "+refs/heads/master:refs/remotes/origin/master"
+    end
+  end
+
+  def config_repo
+    safe_system @@git, 'config', 'remote.origin.url', @url
+    safe_system @@git, 'config', 'remote.origin.fetch', refspec
+  end
+
+  def update_repo
+    unless @spec == :tag && has_tag?(@ref)
+      quiet_safe_system @@git, 'fetch', 'origin'
+    end
+  end
+
+  def clone_repo
+    safe_system @@git, *clone_args
+    @clone.cd { update_submodules } if submodules?
+  end
+
+  def checkout
+    ref = case @spec
+          when :branch, :tag, :revision then @ref
+          else `git symbolic-ref refs/remotes/origin/HEAD`.strip.split("/").last
+          end
+
+    nostdout do
+      quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, ref, '--'
+    end
+  end
+
+  def update_submodules
+    safe_system @@git, 'submodule', 'update', '--init'
+  end
+
+  def checkout_submodules(dst)
+    sub_cmd = %W{#@@git checkout-index -a -f --prefix=#{dst}/$path/}
+    safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', *sub_cmd
   end
 end
 

@@ -22,6 +22,7 @@ class Notmuch < Formula
   option "emacs", "Install emacs support."
 
   depends_on NewEnoughEmacs if build.include? "emacs"
+  depends_on 'pkg-config' => :build
   depends_on 'xapian'
   depends_on 'talloc'
   depends_on 'gmime'
