@@ -59,6 +59,7 @@ class Node < Formula
 
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'
+  option 'use-system-openssl', 'Build against system openssl'
 
   fails_with :llvm do
     build 2326
@@ -75,6 +76,7 @@ class Node < Formula
     args = %W{--prefix=#{prefix}}
     args << "--debug" if build.include? 'enable-debug'
     args << "--without-npm" if build.include? 'without-npm'
+    args << "--shared-openssl" if build.include? 'use-system-openssl'
 
     system "./configure", *args
     system "make install"
