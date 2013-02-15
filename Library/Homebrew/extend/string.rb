@@ -66,6 +66,5 @@ module StringInreplaceExtension
   def get_make_var flag
     m = match Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$")
     return m[1] if m
-    return nil
   end
 end
