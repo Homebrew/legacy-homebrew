@@ -114,6 +114,7 @@ class << ENV
       paths << "#{MacSystem.xcode43_developer_dir}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
     end
     paths += all_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
+    paths << determine_perl_path if customized_perl?
     paths << "#{HOMEBREW_PREFIX}/opt/python/bin" if brewed_python?
     paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
@@ -205,6 +206,14 @@ class << ENV
   def brewed_python?
     require 'formula'
     Formula.factory('python').linked_keg.directory?
+  end
+
+  def determine_perl_path
+    ENV['PATH'].split(':').find {|p| File.executable? File.join(p, 'perl')}
+  end
+
+  def customized_perl?
+    determine_perl_path !~ /^\/usr\/bin/
   end
 
   public
