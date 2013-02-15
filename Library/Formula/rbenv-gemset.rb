@@ -11,7 +11,5 @@ class RbenvGemset < Formula
 
   def install
     prefix.install Dir['*']
-
-    ln_sf opt_prefix, "#{HOMEBREW_PREFIX}/var/lib/rbenv/plugins/#{name}"
   end
 end

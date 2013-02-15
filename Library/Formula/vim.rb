@@ -4,8 +4,8 @@ class Vim < Formula
   homepage 'http://www.vim.org/'
   # Get stable versions from hg repo instead of downloading an increasing
   # number of separate patches.
-  url 'https://vim.googlecode.com/hg/', :tag => 'v7-3-806'
-  version '7.3.806'
+  url 'https://vim.googlecode.com/hg/', :tag => 'v7-3-820'
+  version '7.3.820'
 
   head 'https://vim.googlecode.com/hg/'
 
@@ -30,15 +30,15 @@ class Vim < Formula
       end
     end.compact
 
-    # Why are we specifying HOMEBREW_PREFIX as the prefix?
-    #
-    # To make vim look for the system vimscript files in the
-    # right place, we need to tell it about HOMEBREW_PREFIX.
-    # The actual install location will still be in the Cellar.
-    #
-    # This way, user can create /usr/local/share/vim/vimrc
-    # or /usr/local/share/vim/vimfiles and they won't end up
-    # in the Cellar, and be removed when vim is upgraded.
+    # XXX: Please do not submit a pull request that hardcodes the path
+    # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.
+    # If you have problems with vim because of ruby, ensure a compatible
+    # version is first in your PATH when building vim.
+
+    # We specify HOMEBREW_PREFIX as the prefix to make vim look in the
+    # the right place (HOMEBREW_PREFIX/share/vim/{vimrc,vimfiles}) for
+    # system vimscript files. We specify the normal installation prefix
+    # when calling "make install".
     system "./configure", "--prefix=#{HOMEBREW_PREFIX}",
                           "--mandir=#{man}",
                           "--enable-gui=no",
@@ -50,9 +50,6 @@ class Vim < Formula
                           "--with-features=huge",
                           *language_opts
     system "make"
-
-    # Even though we specified HOMEBREW_PREFIX for configure,
-    # we still want to install it in the Cellar location.
     system "make", "install", "prefix=#{prefix}"
   end
 end

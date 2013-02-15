@@ -253,7 +253,7 @@ class XcodeDependency < Requirement
   end
 end
 
-class MysqlInstalled < Requirement
+class MysqlDependency < Requirement
   fatal true
 
   satisfy { which 'mysql_config' }
@@ -274,7 +274,7 @@ class MysqlInstalled < Requirement
   end
 end
 
-class PostgresqlInstalled < Requirement
+class PostgresqlDependency < Requirement
   fatal true
 
   satisfy { which 'pg_config' }
@@ -292,7 +292,7 @@ class PostgresqlInstalled < Requirement
   end
 end
 
-class TeXInstalled < Requirement
+class TeXDependency < Requirement
   fatal true
 
   satisfy { which('tex') || which('latex') }
