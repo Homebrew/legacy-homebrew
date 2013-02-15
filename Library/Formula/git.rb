@@ -17,6 +17,8 @@ class Git < Formula
 
   head 'https://github.com/git/git.git'
 
+  env :userpaths
+
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
 
   depends_on 'pcre' => :optional
