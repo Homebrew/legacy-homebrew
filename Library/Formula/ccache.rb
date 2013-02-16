@@ -5,7 +5,16 @@ class Ccache < Formula
   url 'http://samba.org/ftp/ccache/ccache-3.1.9.tar.bz2'
   sha1 'e80a5cb7301e72f675097246d722505ae56e3cd3'
 
+  head 'https://github.com/jrosdahl/ccache.git'
+
+  if build.head?
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
+
   def install
+    system './autogen.sh' if build.head?
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
     system "make install"
