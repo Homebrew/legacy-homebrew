@@ -806,10 +806,11 @@ private
     def post_depends_on(dep)
       # Generate with- or without- options for optional and recommended
       # dependencies and requirements
-      if dep.optional? && !build.has_option?("with-#{dep.name}")
-        build.add("with-#{dep.name}", "Build with #{dep.name} support")
-      elsif dep.recommended? && !build.has_option?("without-#{dep.name}")
-        build.add("without-#{dep.name}", "Build without #{dep.name} support")
+      name = dep.name.split("/").last # strip any tap prefix
+      if dep.optional? && !build.has_option?("with-#{name}")
+        build.add("with-#{name}", "Build with #{name} support")
+      elsif dep.recommended? && !build.has_option?("without-#{name}")
+        build.add("without-#{name}", "Build without #{name} support")
       end
     end
   end
