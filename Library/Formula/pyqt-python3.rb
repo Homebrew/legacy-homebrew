@@ -37,7 +37,6 @@ class PyqtPython3 < Formula
 
   def test
     test_program = <<-EOS
-#!/usr/bin/env python3
 # Taken from: http://zetcode.com/tutorials/pyqt4/firstprograms/
 
 import sys
@@ -69,9 +68,8 @@ sys.exit(0)
     open("test_pyqt.py", "w+") do |file|
       file.write test_program
     end
-
-    ENV['PYTHONPATH'] = "#{HOMEBREW_PREFIX}/lib/python"
-    system "python test_pyqt.py"
+    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'    
+    system which_python,  "test_pyqt.py"
 
     ohai "Removing test script 'test_pyqt.py'."
     rm "test_pyqt.py"
