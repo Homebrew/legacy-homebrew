@@ -83,15 +83,15 @@ begin
 
   # Add example external commands to PATH before checking.
   ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/cmds"
-  if which "brew-#{cmd}"
+  if require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/cmd
+    Homebrew.send cmd.to_s.gsub('-', '_').downcase
+  elsif which "brew-#{cmd}"
     %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
       ENV["HOMEBREW_#{e}"] = Object.const_get "HOMEBREW_#{e}"
     end
     exec "brew-#{cmd}", *ARGV
   elsif require? `/usr/bin/which brew-#{cmd}.rb`
     exit 0
-  elsif require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/cmd
-    Homebrew.send cmd.to_s.gsub('-', '_').downcase
   else
     onoe "Unknown command: #{cmd}"
     exit 1
