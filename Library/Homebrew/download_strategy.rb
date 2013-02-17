@@ -356,8 +356,8 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     @clone.join(".git")
   end
 
-  def has_tag?(tag)
-    quiet_system @@git, '--git-dir', git_dir, 'rev-parse', '-q', '--verify', tag
+  def has_ref?
+    quiet_system @@git, '--git-dir', git_dir, 'rev-parse', '-q', '--verify', @ref
   end
 
   def support_depth?
@@ -401,7 +401,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def update_repo
-    unless @spec == :tag && has_tag?(@ref)
+    unless @spec == :tag && has_ref?
       quiet_safe_system @@git, 'fetch', 'origin'
     end
   end
