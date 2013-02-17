@@ -322,6 +322,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
         config_repo
         update_repo
         checkout
+        reset
         update_submodules if submodules?
       end
     elsif @clone.exist?
@@ -339,10 +340,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
       if @spec and @ref
         ohai "Checking out #@spec #@ref"
       else
-        # otherwise the checkout-index won't checkout HEAD
-        # https://github.com/mxcl/homebrew/issues/7124
-        # must specify origin/HEAD, otherwise it resets to the current local HEAD
-        quiet_safe_system @@git, "reset", { :quiet_flag => "-q" }, "--hard", "origin/HEAD"
+        reset
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system @@git, 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
@@ -424,6 +422,22 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
   def checkout
     nostdout { quiet_safe_system @@git, *checkout_args }
+  end
+
+  def reset_args
+    ref = case @spec
+          when :branch then "origin/#@ref"
+          when :revision, :tag then @ref
+          else "origin/HEAD"
+          end
+
+    args = %w{reset}
+    args << { :quiet_flag => "-q" }
+    args << "--hard" << ref
+  end
+
+  def reset
+    quiet_safe_system @@git, *reset_args
   end
 
   def update_submodules
