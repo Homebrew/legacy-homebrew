@@ -415,7 +415,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
           else `git symbolic-ref refs/remotes/origin/HEAD`.strip.split("/").last
           end
 
-    args = %w{checkout}
+    args = %w{checkout -f}
     args << { :quiet_flag => '-q' }
     args << ref
   end
