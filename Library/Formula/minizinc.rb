@@ -15,6 +15,7 @@ class Minizinc < Formula
     system "sh SETUP " + prefix
     bin.install Dir['bin/*']
     man.install Dir['doc/man/*']
+    lib.install Dir['lib/*']
   end
 
   def test
