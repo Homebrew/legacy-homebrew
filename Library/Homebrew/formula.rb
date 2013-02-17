@@ -504,7 +504,7 @@ class Formula
 
         hsh["installed"] << {
           "version" => keg.basename.to_s,
-          "used_options" => tab.used_options,
+          "used_options" => tab.used_options.map(&:flag),
           "built_as_bottle" => tab.built_bottle
         }
       end
