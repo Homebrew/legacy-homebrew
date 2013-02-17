@@ -47,5 +47,13 @@ def blacklisted? name
     Installing gmock system-wide is not recommended; it should be vendored
     in your projects that use it.
     EOS
+  when 'gcc' then <<-EOS.undent
+    GCC is now maintained in homebrew-versions, with major version
+    number in formula name as suffix. Please tap using:
+
+        brew tap homebrew-versions
+
+    and then install GCC based on its version, e.g., 'brew install gcc47'.
+    EOS
   end
 end
