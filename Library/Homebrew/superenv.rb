@@ -115,6 +115,7 @@ class << ENV
     end
     paths += all_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << "#{HOMEBREW_PREFIX}/opt/python/bin" if brewed_python?
+    paths << "#{HOMEBREW_PREFIX}/opt/python3/bin" if brewed_python3?
     paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
     paths.to_path_s
@@ -205,6 +206,11 @@ class << ENV
   def brewed_python?
     require 'formula'
     Formula.factory('python').linked_keg.directory?
+  end
+
+  def brewed_python3?
+    require 'formula'
+    Formula.factory('python3').linked_keg.directory?
   end
 
   public
