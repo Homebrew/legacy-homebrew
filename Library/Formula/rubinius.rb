@@ -7,6 +7,8 @@ class Rubinius < Formula
   sha1 'c39c4fb1e62e0fb418453811636177e6ccf6a936'
   head 'https://github.com/rubinius/rubinius.git'
 
+  env :std
+
   def install
     # Let Rubinius define its own flags; messing with these causes build breaks.
     ENV.remove_cc_etc
