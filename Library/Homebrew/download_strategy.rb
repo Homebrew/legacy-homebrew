@@ -411,15 +411,19 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     @clone.cd { update_submodules } if submodules?
   end
 
-  def checkout
+  def checkout_args
     ref = case @spec
           when :branch, :tag, :revision then @ref
           else `git symbolic-ref refs/remotes/origin/HEAD`.strip.split("/").last
           end
 
-    nostdout do
-      quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, ref, '--'
-    end
+    args = %w{checkout}
+    args << { :quiet_flag => '-q' }
+    args << ref
+  end
+
+  def checkout
+    nostdout { quiet_safe_system @@git, *checkout_args }
   end
 
   def update_submodules
