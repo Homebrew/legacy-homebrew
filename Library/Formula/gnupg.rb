@@ -7,8 +7,8 @@ end
 
 class Gnupg < Formula
   homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.12.tar.bz2'
-  sha1 '9b78e20328d35525af7b8a9c1cf081396910e937'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.13.tar.bz2'
+  sha1 '17a75c54d292bd0923f0a1817a1b02ded37d1de1'
 
   option 'idea', 'Build with the patented IDEA cipher'
   option '8192', 'Build with support for private keys of up to 8192 bits'
@@ -35,8 +35,7 @@ class Gnupg < Formula
 
     # we need to create these directories because the install target has the
     # dependency order wrong
-    bin.mkpath
-    (libexec+'gnupg').mkpath
+    [bin, libexec/'gnupg'].each(&:mkpath)
     system "make install"
   end
 
