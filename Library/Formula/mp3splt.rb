@@ -8,6 +8,11 @@ class Mp3splt < Formula
   depends_on 'libmp3splt'
 
   def install
+    # Use of getline(); see https://sourceforge.net/p/mp3splt/bugs/149/
+    if MacOS.version <= :snow_leopard
+      inreplace 'src/freedb.c', /getline\(&(.+, )&(.+, .+\) == )-1/, 'fgets(\1\2NULL'
+    end
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
