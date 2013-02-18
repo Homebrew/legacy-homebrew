@@ -6,12 +6,9 @@ require 'bottles'
 require 'caveats'
 
 class FormulaInstaller
-  attr :f
-  attr :tab, true
-  attr :options, true
-  attr :show_summary_heading, true
-  attr :ignore_deps, true
-  attr :show_header, true
+  attr_reader :f
+  attr_accessor :tab, :options, :ignore_deps
+  attr_accessor :show_summary_heading, :show_header
 
   def initialize ff
     @f = ff
