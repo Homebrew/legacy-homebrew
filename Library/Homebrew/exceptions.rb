@@ -3,7 +3,7 @@ class FormulaUnspecifiedError < UsageError; end
 class KegUnspecifiedError < UsageError; end
 
 class MultipleVersionsInstalledError < RuntimeError
-  attr :name
+  attr_reader :name
 
   def initialize name
     @name = name
@@ -14,7 +14,7 @@ end
 class NotAKegError < RuntimeError; end
 
 class NoSuchKegError < RuntimeError
-  attr :name
+  attr_reader :name
 
   def initialize name
     @name = name
@@ -23,8 +23,8 @@ class NoSuchKegError < RuntimeError
 end
 
 class FormulaUnavailableError < RuntimeError
-  attr :name
-  attr :dependent, true
+  attr_reader :name
+  attr_accessor :dependent
 
   def dependent_s
     "(dependency of #{dependent})" if dependent and dependent != name
@@ -59,7 +59,7 @@ end
 
 module Homebrew
   class InstallationError < RuntimeError
-    attr :formula
+    attr_reader :formula
 
     def initialize formula, message=""
       super message
@@ -87,7 +87,7 @@ class UnsatisfiedDependencyError < Homebrew::InstallationError
 end
 
 class UnsatisfiedRequirements < Homebrew::InstallationError
-  attr :reqs
+  attr_reader :reqs
 
   def initialize formula, reqs
     @reqs = reqs
@@ -99,9 +99,7 @@ class UnsatisfiedRequirements < Homebrew::InstallationError
 end
 
 class BuildError < Homebrew::InstallationError
-  attr :exit_status
-  attr :command
-  attr :env
+  attr_reader :exit_status, :command, :env
 
   def initialize formula, cmd, args, es
     @command = cmd
@@ -159,10 +157,8 @@ end
 
 # raised by Pathname#verify_checksum when verification fails
 class ChecksumMismatchError < RuntimeError
-  attr :advice, true
-  attr :expected
-  attr :actual
-  attr :hash_type
+  attr_accessor :advice
+  attr_reader :expected, :actual, :hash_type
 
   def initialize expected, actual
     @expected = expected
