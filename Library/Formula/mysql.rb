@@ -2,15 +2,9 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.29.tar.gz/from/http://cdn.mysql.com/'
-  version '5.5.29'
-  sha1 '40e26b193b6ece86ce97896c0c9c524d479e37be'
-
-  bottle do
-    sha1 '3c5b57df466eb538db58654c5f046ddf7bc675e9' => :mountainlion
-    sha1 '6595eb3f79224193a17159934220bed94fbc2df4' => :lion
-    sha1 '57992bbcc2820ffe41ae9317da81aba7480b0268' => :snowleopard
-  end
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.10.tar.gz/from/http://cdn.mysql.com/'
+  version '5.6.10'
+  sha1 'f37979eafc241a0ebeac9548cb3f4113074271b7'
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -22,6 +16,7 @@ class Mysql < Formula
   option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
   option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
   option 'enable-local-infile', 'Build with local infile loading support'
+  option 'enable-memcached', 'Enable innodb-memcached support'
   option 'enable-debug', 'Build with debug support'
 
   conflicts_with 'mariadb',
@@ -85,6 +80,9 @@ class Mysql < Formula
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
+
+    # Build with memcached support
+    args << "-DWITH_INNODB_MEMCACHED=1" if build.include? 'enable-memcached'
 
     # Build with debug support
     args << "-DWITH_DEBUG=1" if build.include? 'enable-debug'
