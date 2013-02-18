@@ -134,13 +134,13 @@ class BuildError < Homebrew::InstallationError
       onoe "#{formula.name} did not build"
       unless (logs = Dir["#{ENV['HOME']}/Library/Logs/Homebrew/#{formula}/*"]).empty?
         print "Logs: "
-        puts *logs.map{|fn| "      #{fn}"}
+        puts logs.map{|fn| "      #{fn}"}.join("\n")
       end
     end
     puts
     unless issues.empty?
       puts "These open issues may also help:"
-      puts *issues.map{ |s| "    #{s}" }
+      puts issues.map{ |s| "    #{s}" }.join("\n")
     end
   end
 end
