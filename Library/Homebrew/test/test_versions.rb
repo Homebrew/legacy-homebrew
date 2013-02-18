@@ -60,7 +60,7 @@ class VersionParsingTests < Test::Unit::TestCase
   end
 
   def test_bad_version
-    assert_raises(RuntimeError) { f = TestBadVersion.new }
+    assert_raises(RuntimeError) { TestBadVersion.new }
   end
 
   def test_version_all_dots

@@ -118,8 +118,6 @@ class FormulaAuditor
   end
 
   def audit_deps
-    problems = []
-
     # Don't depend_on aliases; use full name
     aliases = Formula.aliases
     f.deps.select { |d| aliases.include? d.name }.each do |d|
@@ -163,8 +161,8 @@ class FormulaAuditor
   def audit_conflicts
     f.conflicts.each do |req|
       begin
-        conflict_f = Formula.factory req.formula
-      rescue
+        Formula.factory req.formula
+      rescue FormulaUnavailableError
         problem "Can't find conflicting formula \"#{req.formula}\"."
       end
     end
