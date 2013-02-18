@@ -92,9 +92,17 @@ class FormulaInstaller
 
     @@attempted << f
 
-    if pour_bottle?
-      pour
-    else
+    poured_bottle = false
+    begin
+      if pour_bottle?
+        pour
+        poured_bottle = true
+      end
+    rescue
+      opoo "Bottle installation failed: building from source."
+    end
+
+    unless poured_bottle
       build
       clean
     end
