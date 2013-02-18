@@ -73,9 +73,7 @@ class FormulaText
 end
 
 class FormulaAuditor
-  attr :f
-  attr :text
-  attr :problems, true
+  attr_reader :f, :text, :problems
 
   BUILD_TIME_DEPS = %W[
     autoconf

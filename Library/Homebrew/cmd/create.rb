@@ -71,12 +71,8 @@ module Homebrew extend self
 end
 
 class FormulaCreator
-  attr :url
-  attr :sha1
-  attr :name, true
-  attr :version, true
-  attr :path, true
-  attr :mode, true
+  attr_reader :url, :sha1
+  attr_accessor :name, :version, :path, :mode
 
   def url= url
     @url = url
