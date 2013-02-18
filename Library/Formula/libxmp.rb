@@ -8,6 +8,12 @@ class Libxmp < Formula
 
   depends_on :autoconf if build.head?
 
+  # Fixes channel volume setting
+  # Merged upstream, will be in 4.0.2
+  def patches
+    "http://sourceforge.net/mailarchive/attachment.php?list_name=xmp-devel&message_id=CAGfWt5eaw-5ofKGpM6SO%3D%2BwB0cyVZNi4Y1NFBRnOAXyFqu56yg%40mail.gmail.com&counter=1"
+  end unless build.head?
+
   def install
     system "autoconf" if build.head?
     system "./configure", "--prefix=#{prefix}"
