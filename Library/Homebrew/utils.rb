@@ -199,8 +199,8 @@ def archs_for_command cmd
   Pathname.new(cmd).archs
 end
 
-def inreplace path, before=nil, after=nil
-  [*path].each do |path|
+def inreplace paths, before=nil, after=nil
+  Array(paths).each do |path|
     f = File.open(path, 'r')
     s = f.read
 
