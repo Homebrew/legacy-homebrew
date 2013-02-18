@@ -34,7 +34,7 @@ class NpmNotInstalled < Requirement
     begin
       path = Pathname.new("#{modules_folder}/npm")
       path.realpath.to_s.include?(HOMEBREW_CELLAR)
-    rescue Exception => e
+    rescue Errno::ENOENT
       true
     end
   end
