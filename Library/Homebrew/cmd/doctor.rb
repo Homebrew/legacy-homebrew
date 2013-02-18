@@ -607,7 +607,7 @@ def check_for_config_scripts
 
     configs = Dir["#{p}/*-config"]
     # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
-    config_scripts << [p, configs.collect {|p| File.basename(p)}] unless configs.empty?
+    config_scripts << [p, configs.map { |c| File.basename(c) }] unless configs.empty?
   end
 
   unless config_scripts.empty?
