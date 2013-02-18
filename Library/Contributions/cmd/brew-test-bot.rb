@@ -11,7 +11,7 @@ require 'formula'
 require 'utils'
 require 'date'
 
-HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmds/"
+HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 
 class Step
   attr_reader :command, :repository
