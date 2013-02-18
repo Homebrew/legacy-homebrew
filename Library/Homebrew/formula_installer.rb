@@ -219,7 +219,7 @@ class FormulaInstaller
     if f.keg_only?
       begin
         Keg.new(f.prefix).optlink
-      rescue Exception => e
+      rescue Exception
         onoe "Failed to create: #{f.opt_prefix}"
         puts "Things that depend on #{f} will probably not build."
       end
@@ -302,7 +302,7 @@ class FormulaInstaller
 
     Tab.create(f, build_argv).write # INSTALL_RECEIPT.json
 
-  rescue Exception => e
+  rescue Exception
     ignore_interrupts do
       # any exceptions must leave us with nothing installed
       f.prefix.rmtree if f.prefix.directory?

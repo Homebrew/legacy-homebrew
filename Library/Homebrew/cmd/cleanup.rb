@@ -11,7 +11,7 @@ module Homebrew extend self
         HOMEBREW_CELLAR.children.each do |rack|
           begin
             cleanup_formula rack.basename.to_s if rack.directory?
-          rescue FormulaUnavailableError => e
+          rescue FormulaUnavailableError
             # Don't complain about Cellar folders that are from DIY installs
             # instead of core formulae.
           end

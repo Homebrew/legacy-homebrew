@@ -228,7 +228,7 @@ class Formula
         # we allow formulae to do anything they want to the Ruby process
         # so load any deps before this point! And exit asap afterwards
         yield self
-      rescue RuntimeError, SystemCallError => e
+      rescue RuntimeError, SystemCallError
         %w(config.log CMakeCache.txt).each do |fn|
           (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
         end
@@ -294,7 +294,7 @@ class Formula
     names.each do |name|
       yield begin
         Formula.factory(name)
-      rescue => e
+      rescue
         # Don't let one broken formula break commands. But do complain.
         onoe "Failed to import: #{name}"
         next
@@ -543,7 +543,7 @@ protected
       mkdir_p(logd)
 
       rd, wr = IO.pipe
-      pid = fork do
+      fork do
         rd.close
         $stdout.reopen wr
         $stderr.reopen wr
@@ -570,7 +570,7 @@ protected
         raise ErrorDuringExecution
       end
     end
-  rescue ErrorDuringExecution => e
+  rescue ErrorDuringExecution
     raise BuildError.new(self, cmd, args, $?)
   ensure
     f.close if f and not f.closed?

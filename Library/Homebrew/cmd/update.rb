@@ -25,7 +25,6 @@ module Homebrew extend self
     master_updater.pull!
     report.merge!(master_updater.report)
 
-    new_files = []
     Dir["Library/Taps/*"].each do |tapd|
       next unless File.directory?(tapd)
 
