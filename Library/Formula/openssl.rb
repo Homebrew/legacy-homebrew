@@ -25,4 +25,11 @@ class Openssl < Formula
     system "make", "test"
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
   end
+
+  def caveats; <<-EOS.undent
+    To install updated CA certs from Mozilla.org:
+
+        brew install curl-ca-bundle
+    EOS
+  end
 end
