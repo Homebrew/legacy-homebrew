@@ -369,11 +369,11 @@ class FormulaAuditor
     end
 
     # Avoid hard-coding compilers
-    if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]]
+    if text =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
       problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
     end
 
-    if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]]
+    if text =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}
       problem "Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
     end
 
