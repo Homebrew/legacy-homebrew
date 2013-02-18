@@ -8,6 +8,10 @@ class Fossil < Formula
 
   head 'fossil://http://www.fossil-scm.org/'
 
+  def patches
+    { :p0 => "https://trac.macports.org/export/103209/trunk/dports/devel/fossil/files/patch-autosetup-cc.tcl_gstab_option_is_gcc_only.diff" }
+  end
+
   def install
     system "./configure"
     system "make"
