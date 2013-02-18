@@ -743,7 +743,6 @@ def check_git_newline_settings
   return unless which "git"
 
   autocrlf = `git config --get core.autocrlf`.chomp
-  safecrlf = `git config --get core.safecrlf`.chomp
 
   if !autocrlf.empty? && autocrlf != 'false' then <<-EOS.undent
     Suspicious Git newline settings found.
