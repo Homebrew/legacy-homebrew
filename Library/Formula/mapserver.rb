@@ -13,7 +13,7 @@ class Mapserver < Formula
   depends_on :freetype
   depends_on :libpng
   depends_on 'giflib'
-  depends_on 'gd'
+  depends_on 'gd' => %w{with-freetype}
   depends_on 'proj'
   depends_on 'gdal'
 
