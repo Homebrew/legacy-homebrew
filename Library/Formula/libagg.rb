@@ -12,7 +12,7 @@ class Libagg < Formula
   depends_on :freetype => :optional
 
   fails_with :clang do
-    build 421
+    build 425
     cause <<-EOS.undent
       AGG tries to return a const reference as a non-const reference, which is
       rejected by clang 3.1 but accepted by gcc

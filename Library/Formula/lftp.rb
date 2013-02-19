@@ -2,8 +2,8 @@ require 'formula'
 
 class Lftp < Formula
   homepage 'http://lftp.yar.ru/'
-  url 'http://ftp.yar.ru/pub/source/lftp/lftp-4.4.2.tar.bz2'
-  sha1 '7c45c1d102f376f4d88786d4e625fb0d4eedd764'
+  url 'http://ftp.yar.ru/pub/source/lftp/lftp-4.4.3.tar.bz2'
+  sha1 'f027fc0ee1069c8fa0ae665eeea742c16d58a5d8'
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'

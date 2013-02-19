@@ -7,6 +7,7 @@ class Solfege < Formula
   sha1 '0b83f351e90aeb9267f76d8dda0638dc50682226'
 
   depends_on 'xz' => :build
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'      => :build
   depends_on 'pygtk'        => :recommended
   depends_on 'qtplay'       => :recommended

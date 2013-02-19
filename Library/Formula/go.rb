@@ -20,19 +20,23 @@ class Go < Formula
 
     if build.include? 'cross-compile-all'
       targets = [
-        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
         ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
         ['freebsd', ['386', 'amd64'],        { :cgo => false }],
 
         ['openbsd', ['386', 'amd64'],        { :cgo => false }],
 
         ['windows', ['386', 'amd64'],        { :cgo => false }],
+
+        # Host platform (darwin/amd64) must always come last
+        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
       ]
     elsif build.include? 'cross-compile-common'
       targets = [
-        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
         ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
         ['windows', ['386', 'amd64'],        { :cgo => false }],
+
+        # Host platform (darwin/amd64) must always come last
+        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
       ]
     else
       targets = [

@@ -2,8 +2,15 @@ require 'formula'
 
 class Lilypond < Formula
   homepage 'http://lilypond.org/'
-  url 'http://download.linuxaudio.org/lilypond/sources/v2.16/lilypond-2.16.1.tar.gz'
-  sha1 'ce923f27091ec5501df7bcd0596f1ffd7ab9b8b9'
+  url 'http://download.linuxaudio.org/lilypond/sources/v2.16/lilypond-2.16.2.tar.gz'
+  sha1 '1eb3b0e5c117a8669dba19ab28f933351e51e39a'
+
+  devel do
+    url  'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.12.tar.gz'
+    sha1 'e7a2cbcae2e92955104c8f69835f8364ac0aecd9'
+  end
+
+  env :std
 
   option 'with-doc', "Build documentation in addition to binaries (may require several hours)."
 
@@ -17,6 +24,11 @@ class Lilypond < Formula
   depends_on 'mftrace'
   depends_on 'fontforge' => ["with-x", "with-cairo"]
   depends_on 'texinfo'
+  depends_on 'fondu'
+  # Add dependency on keg-only Homebrew 'flex' because Apple bundles an older and incompatible
+  # version of the library with 10.7 at least, seems slow keeping up with updates,
+  # and the extra brew is tiny anyway.
+  depends_on 'flex' => :build
 
   # Assert documentation dependencies if requested.
   if build.include? 'with-doc'
@@ -34,9 +46,13 @@ class Lilypond < Formula
 
   def install
     gs = Formula.factory('ghostscript')
-    system "./configure", "--prefix=#{prefix}",
-                          "--enable-rpath",
-                          "--with-ncsb-dir=#{gs.share}/ghostscript/fonts/"
+
+    args = ["--prefix=#{prefix}",
+            "--enable-rpath",
+            "--with-ncsb-dir=#{gs.share}/ghostscript/fonts/"]
+
+    args << "--disable-documentation" unless build.include? 'with-doc'
+    system "./configure", *args
 
     # Separate steps to ensure that lilypond's custom fonts are created.
     system 'make all'
@@ -51,7 +67,6 @@ class Lilypond < Formula
 
   test do
     (testpath/'test.ly').write <<-EOS.undent
-      \\version "2.16.0"
       \\header { title = "Do-Re-Mi" }
       { c' d' e' }
     EOS

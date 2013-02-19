@@ -73,9 +73,7 @@ class FormulaText
 end
 
 class FormulaAuditor
-  attr :f
-  attr :text
-  attr :problems, true
+  attr_reader :f, :text, :problems
 
   BUILD_TIME_DEPS = %W[
     autoconf
@@ -120,8 +118,6 @@ class FormulaAuditor
   end
 
   def audit_deps
-    problems = []
-
     # Don't depend_on aliases; use full name
     aliases = Formula.aliases
     f.deps.select { |d| aliases.include? d.name }.each do |d|
@@ -165,8 +161,8 @@ class FormulaAuditor
   def audit_conflicts
     f.conflicts.each do |req|
       begin
-        conflict_f = Formula.factory req.formula
-      rescue
+        Formula.factory req.formula
+      rescue FormulaUnavailableError
         problem "Can't find conflicting formula \"#{req.formula}\"."
       end
     end
@@ -373,11 +369,11 @@ class FormulaAuditor
     end
 
     # Avoid hard-coding compilers
-    if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]]
+    if text =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
       problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
     end
 
-    if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]]
+    if text =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}
       problem "Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
     end
 

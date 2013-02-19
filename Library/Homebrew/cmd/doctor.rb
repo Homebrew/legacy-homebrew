@@ -607,7 +607,7 @@ def check_for_config_scripts
 
     configs = Dir["#{p}/*-config"]
     # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
-    config_scripts << [p, configs.collect {|p| File.basename(p)}] unless configs.empty?
+    config_scripts << [p, configs.map { |c| File.basename(c) }] unless configs.empty?
   end
 
   unless config_scripts.empty?
@@ -743,9 +743,8 @@ def check_git_newline_settings
   return unless which "git"
 
   autocrlf = `git config --get core.autocrlf`.chomp
-  safecrlf = `git config --get core.safecrlf`.chomp
 
-  if !autocrlf.empty? && autocrlf != 'false' then <<-EOS.undent
+  if autocrlf == 'true' then <<-EOS.undent
     Suspicious Git newline settings found.
 
     The detected Git newline settings will cause checkout problems:
@@ -753,7 +752,7 @@ def check_git_newline_settings
 
     If you are not routinely dealing with Windows-based projects,
     consider removing these by running:
-    `git config --global --set core.autocrlf false`
+    `git config --global --set core.autocrlf input`
     EOS
   end
 end
@@ -849,8 +848,8 @@ def check_for_linked_keg_only_brews
     s = <<-EOS.undent
     Some keg-only formula are linked into the Cellar.
     Linking a keg-only formula, such as gettext, into the cellar with
-    `brew link f` will cause other formulae to detect them during the
-    `./configure` step. This may cause problems when compiling those
+    `brew link <formula>` will cause other formulae to detect them during
+    the `./configure` step. This may cause problems when compiling those
     other formulae.
 
     Binaries provided by keg-only formulae may override system binaries

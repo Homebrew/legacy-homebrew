@@ -2,17 +2,11 @@ require 'formula'
 
 class Coreutils < Formula
   homepage 'http://www.gnu.org/software/coreutils'
-  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.20.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.20.tar.xz'
-  sha256 'dbcb798764827a0f74be738662ecb516705cf520330cd3d7b2640fdffa499eb2'
+  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.21.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.21.tar.xz'
+  sha256 'adaa44bdab3fa5eb352e80d8a31fdbf957b78653d0c2cd30d63e161444288e18'
 
   depends_on 'xz' => :build
-
-  def patches
-    # Build issue with LIBICONV. Can be removed for next release.
-    # http://git.savannah.gnu.org/cgit/coreutils.git/commit/?id=88a6201917cad43fd4efea0f1c34c891b70a7414
-    DATA
-  end
 
   def install
     system "./configure", "--prefix=#{prefix}", "--program-prefix=g"
@@ -53,18 +47,3 @@ class Coreutils < Formula
     filenames.sort
   end
 end
-
-__END__
-diff --git a/Makefile.in b/Makefile.in
-index 9768860..c8f92c2 100644
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -3114,7 +3114,7 @@ src_expand_LDADD = $(LDADD)
-
- # for various GMP functions
- src_expr_LDADD = $(LDADD) $(LIB_GMP)
--src_factor_LDADD = $(LDADD) $(LIB_GMP)
-+src_factor_LDADD = $(LDADD) $(LIB_GMP) $(LIBICONV)
- src_false_LDADD = $(LDADD)
- src_fmt_LDADD = $(LDADD)
- src_fold_LDADD = $(LDADD)

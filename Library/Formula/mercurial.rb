@@ -43,7 +43,7 @@ class Mercurial < Formula
 
     s += <<-EOS.undent
       Extensions have been installed to:
-        #{libexec}/hgext
+        #{opt_prefix}/libexec/hgext
     EOS
 
     if build.head? then s += <<-EOS.undent

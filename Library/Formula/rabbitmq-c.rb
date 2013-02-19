@@ -13,6 +13,8 @@ class RabbitmqC < Formula
   head 'https://github.com/alanxz/rabbitmq-c.git'
 
   depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
   depends_on 'rabbitmq'
   depends_on 'simplejson' => :python if MacOS.version == :leopard
 
