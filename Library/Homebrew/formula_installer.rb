@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 require 'exceptions'
 require 'formula'
 require 'keg'
