@@ -12,13 +12,10 @@ class Formula
     tarball_path = downloader.tarball_path
     tarball_path.unlink if tarball_path.exist?
 
-    begin
-      fetched = downloader.fetch
-    rescue DownloadError => e
-      opoo "Failed to fetch from URL: #{url}"
-      return
-    end
-
+    fetched = downloader.fetch
+  rescue StandardError
+    opoo "Failed to fetch from URL: #{url}"
+  else
     verify_download_integrity fetched if fetched.kind_of? Pathname
   end
 end
