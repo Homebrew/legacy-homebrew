@@ -18,8 +18,7 @@ class Tuntap < Formula
     end
   end
 
-  def caveats
-    message = <<-EOS.undent
+  def caveats; <<-EOS.undent
       In order for TUN/TAP network devices to work, the tun/tap kernel extensions
       must be installed by the root user:
 

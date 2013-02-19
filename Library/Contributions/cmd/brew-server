@@ -47,13 +47,13 @@ def html_page
     </head>
     <body>
       <div id="wrap">
-  			<div id="header">
-  				<h1><a href="./">Homebrew</a></h1>
-  				<p id="subtitle"><strong>The missing package manager for OS X</strong></p>
+			<div id="header">
+				<h1><a href="./">Homebrew</a></h1>
+				<p id="subtitle"><strong>The missing package manager for OS X</strong></p>
                                 <p id="installed"><a href="/installed">Show installed packages</a></p>
-  			</div>
+			</div>
 
-  			<div id="informations">
+			<div id="informations">
   HTML
   yield body
   body += <<-HTML

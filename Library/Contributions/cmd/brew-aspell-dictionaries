@@ -49,4 +49,3 @@ EOF
 rm $tmp_file
 
 echo "The formulae for the aspell dictionaries have been written to\n$brew_formulae_tmp_file"
-
