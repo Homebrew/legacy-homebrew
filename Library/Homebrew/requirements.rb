@@ -109,19 +109,29 @@ class X11Dependency < Requirement
   class Proxy < self
     PACKAGES = [:libpng, :freetype, :fontconfig]
 
-    def self.for(name, *tags)
-      constant = name.capitalize
-
-      if const_defined?(constant)
-        klass = const_get(constant)
-      else
-        klass = Class.new(self) do
-          def initialize(name, *tags) super end
+    class << self
+      def defines_const?(const)
+        if ::RUBY_VERSION >= "1.9"
+          const_defined?(const, false)
+        else
+          const_defined?(const)
         end
-
-        const_set(constant, klass)
       end
-      klass.new(name, *tags)
+
+      def for(name, *tags)
+        constant = name.capitalize
+
+        if defines_const?(constant)
+          klass = const_get(constant)
+        else
+          klass = Class.new(self) do
+            def initialize(name, *tags) super end
+          end
+
+          const_set(constant, klass)
+        end
+        klass.new(name, *tags)
+      end
     end
   end
 end
