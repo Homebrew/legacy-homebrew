@@ -54,7 +54,7 @@ class FormulaTests < Test::Unit::TestCase
     HOMEBREW_CACHE.mkpath unless HOMEBREW_CACHE.exist?
     nostdout do
       f = TestBallWithMirror.new
-      tarball, downloader = f.fetch
+      _, downloader = f.fetch
       assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
       assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
     end

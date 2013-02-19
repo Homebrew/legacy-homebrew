@@ -36,7 +36,7 @@ class Bochs < Formula
             "--enable-cpu-level=6",
             "--enable-sb16",
             "--enable-clgd54xx",
-            "--with-term"
+            "--with-term",
             "--enable-ne2000"
 
     system "make"
