@@ -32,7 +32,7 @@ class NpmNotInstalled < Requirement
 
   satisfy :build_env => false do
     begin
-      path = Pathname.new("#{modules_folder}/npm")
+      path = Pathname.new("#{modules_folder}/npm/bin/npm")
       path.realpath.to_s.include?(HOMEBREW_CELLAR)
     rescue Errno::ENOENT
       true
