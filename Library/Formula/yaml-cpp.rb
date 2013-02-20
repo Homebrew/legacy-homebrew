@@ -6,6 +6,7 @@ class YamlCpp < Formula
   sha1 '575ece77122bffc392e6e9bc7389a1efcdb6bc97'
 
   depends_on 'cmake' => :build
+  depends_on 'boost'
 
   def install
     system "cmake", ".", *std_cmake_args
