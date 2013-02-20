@@ -2,8 +2,14 @@ require 'formula'
 
 class Zeromq < Formula
   homepage 'http://www.zeromq.org/'
-  url 'http://download.zeromq.org/zeromq-3.2.2.tar.gz'
-  sha1 '0e8734c773b6a757b474c16fc3c517993ba47283'
+
+  if build.include? 'zeromq-2'
+    url 'http://download.zeromq.org/zeromq-2.2.0.tar.gz'
+    sha1 'e4bc024c33d3e62f658640625e061ce4e8bd1ff1'
+  else
+    url 'http://download.zeromq.org/zeromq-3.2.2.tar.gz'
+    sha1 '0e8734c773b6a757b474c16fc3c517993ba47283'
+  end
 
   head 'https://github.com/zeromq/libzmq.git'
 
@@ -20,6 +26,7 @@ class Zeromq < Formula
     cause "Segfault while linking"
   end
 
+  option 'zeromq-2', 'Build with ZeroMQ 2.2.x instead of 3.2.x'
   option :universal
   option 'with-pgm', 'Build with PGM extension'
 
