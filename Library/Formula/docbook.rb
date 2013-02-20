@@ -97,14 +97,15 @@ end
 
 class Docbookxsl < Formula
   homepage 'http://docbook.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl/1.76.1/docbook-xsl-1.76.1.tar.bz2'
-  sha1 'dc9fa422c53e0a4f0e32b5c8ec896b39080bc14d'
+  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl/1.78.0/docbook-xsl-1.78.0.tar.bz2'
+  sha1 '39a62791e7c1479e22d13d12a9ecbb2273d66229'
 
   def install
-    doc_files = %w[AUTHORS BUGS README RELEASE-NOTES.txt TODO VERSION NEWS COPYING]
-    xsl_files = %w[catalog.xml common eclipse epub extensions fo highlighting html
-                   htmlhelp images javahelp lib manpages params profiling roundtrip
-                   slides template tools website xhtml xhtml-1_1]
+    doc_files = %w[AUTHORS BUGS COPYING NEWS README RELEASE-NOTES.txt TODO VERSION VERSION.xsl]
+    xsl_files = %w[assembly catalog.xml common docsrc eclipse epub epub3 extensions
+                   fo highlighting html htmlhelp images javahelp lib log manpages
+                   params profiling roundtrip slides template tests tools webhelp
+                   website xhtml xhtml-1_1 xhtml5]
     docbook = Formula.factory 'docbook'
     (docbook.prefix/'docbook/xsl'/version).install xsl_files + doc_files
   end
@@ -116,11 +117,11 @@ end
 
 class Docbookxslns < Formula
   homepage 'http://docbook.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl-ns/1.77.1/docbook-xsl-ns-1.77.1.tar.bz2'
-  sha1 '01fe5f2d41af272fd97d24ffbfa4b97a5d78f125'
+  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl-ns/1.78.0/docbook-xsl-ns-1.78.0.tar.bz2'
+  sha1 '377c7bc16af6779c827ac9e818b0f665c7a038f2'
 
   def install
-    doc_files = %w[AUTHORS BUGS COPYING NEWS README RELEASE-NOTES.txt TODO VERSION VERSION.xsl]
+    doc_files = %w[AUTHORS BUGS COPYING NEWS README README.ns RELEASE-NOTES.txt TODO VERSION VERSION.xsl]
     xsl_files = %w[assembly catalog.xml common docsrc eclipse epub epub3 extensions
                    fo highlighting html htmlhelp images javahelp lib log manpages
                    params profiling roundtrip slides template tests tools webhelp
