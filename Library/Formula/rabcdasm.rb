@@ -13,7 +13,8 @@ class Rabcdasm < Formula
   def install
     system "dmd -run build_rabcdasm.d"
 
-    bin.install 'abcexport', 'abcreplace', 'swfbinexport', 'swfbinreplace', 'swfdecompress', 'swf7zcompress', 'swflzmacompress'
+    bin.install 'rabcdasm', 'rabcasm', 'abcexport', 'abcreplace', 'swfdecompress', 'swf7zcompress', 'swflzmacompress', 'swfbinexport', 'swfbinreplace'
+
   end
 
 end
