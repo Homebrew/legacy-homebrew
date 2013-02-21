@@ -73,9 +73,7 @@ class FormulaText
 end
 
 class FormulaAuditor
-  attr :f
-  attr :text
-  attr :problems, true
+  attr_reader :f, :text, :problems
 
   BUILD_TIME_DEPS = %W[
     autoconf
@@ -84,6 +82,7 @@ class FormulaAuditor
     bsdmake
     cmake
     imake
+    intltool
     libtool
     pkg-config
     scons
@@ -119,8 +118,6 @@ class FormulaAuditor
   end
 
   def audit_deps
-    problems = []
-
     # Don't depend_on aliases; use full name
     aliases = Formula.aliases
     f.deps.select { |d| aliases.include? d.name }.each do |d|
@@ -133,7 +130,7 @@ class FormulaAuditor
       begin
         dep_f = dep.to_formula
       rescue
-        problem "Can't find dependency #{dep.inspect}."
+        problem "Can't find dependency #{dep.name.inspect}."
       end
 
       dep.options.reject do |opt|
@@ -164,8 +161,8 @@ class FormulaAuditor
   def audit_conflicts
     f.conflicts.each do |req|
       begin
-        conflict_f = Formula.factory req.formula
-      rescue
+        Formula.factory req.formula
+      rescue FormulaUnavailableError
         problem "Can't find conflicting formula \"#{req.formula}\"."
       end
     end
@@ -184,7 +181,7 @@ class FormulaAuditor
     urls = [(f.stable.url rescue nil), (f.devel.url rescue nil), (f.head.url rescue nil)].compact
 
     # Check GNU urls; doesn't apply to mirrors
-    if urls.any? { |p| p =~ %r[^(https?|ftp)://(.+)/gnu/] }
+    if urls.any? { |p| p =~ %r[^(https?|ftp)://(?!alpha).+/gnu/] }
       problem "\"ftpmirror.gnu.org\" is preferred for GNU software."
     end
 
@@ -220,6 +217,10 @@ class FormulaAuditor
     # Check for git:// urls; https:// is preferred.
     if urls.any? { |p| p =~ %r[^git://github\.com/] }
       problem "Use https:// URLs for accessing GitHub repositories."
+    end
+
+    if urls.any? { |u| u =~ /\.xz/ } && !f.deps.any? { |d| d.name == "xz" }
+      problem "Missing a build-time dependency on 'xz'"
     end
   end
 
@@ -260,16 +261,16 @@ class FormulaAuditor
 
   def audit_patches
     # Some formulae use ENV in patches, so set up an environment
-    ENV.setup_build_environment
-
-    Patches.new(f.patches).select { |p| p.external? }.each do |p|
-      case p.url
-      when %r[raw\.github\.com], %r[gist\.github\.com/raw]
-        unless p.url =~ /[a-fA-F0-9]{40}/
-          problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
+    ENV.with_build_environment do
+      Patches.new(f.patches).select { |p| p.external? }.each do |p|
+        case p.url
+        when %r[raw\.github\.com], %r[gist\.github\.com/raw]
+          unless p.url =~ /[a-fA-F0-9]{40}/
+            problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
+          end
+        when %r[macports/trunk]
+          problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
         end
-      when %r[macports/trunk]
-        problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
       end
     end
   end
@@ -368,11 +369,11 @@ class FormulaAuditor
     end
 
     # Avoid hard-coding compilers
-    if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]]
+    if text =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
       problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
     end
 
-    if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]]
+    if text =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}
       problem "Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
     end
 

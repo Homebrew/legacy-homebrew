@@ -31,11 +31,8 @@ class Grass < Formula
   def patches; DATA; end
 
   fails_with :clang do
-    build 421
-
-    cause <<-EOS.undent
-      Multiple build failures while compiling GRASS tools.
-      EOS
+    build 425
+    cause "Multiple build failures while compiling GRASS tools."
   end
 
   option "with-postgres", "specify PostgreSQL as a dependency."

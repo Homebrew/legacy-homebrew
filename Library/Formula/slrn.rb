@@ -5,6 +5,8 @@ class Slrn < Formula
   url 'http://sourceforge.net/projects/slrn/files/slrn/slrn-1.0.1.tar.gz'
   sha1 '9ad41ec3894d2b6b1ae8f158e994a8f138540baa'
 
+  head 'git://git.jedsoft.org/git/slrn.git'
+
   depends_on 's-lang'
 
   def install

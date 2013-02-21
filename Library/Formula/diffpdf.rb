@@ -2,8 +2,8 @@ require 'formula'
 
 class Diffpdf < Formula
   homepage 'http://www.qtrac.eu/diffpdf.html'
-  url 'http://www.qtrac.eu/diffpdf-2.0.0.tar.gz'
-  sha1 'b6a52f48927721721960aa1f581f127aa8454830'
+  url 'http://www.qtrac.eu/diffpdf-2.1.2.tar.gz'
+  sha1 'b01a2bfecf8dd2f04d0a799483e9b6e99adba317'
 
   depends_on 'qt'
   depends_on 'poppler' => 'with-qt4'
@@ -28,20 +28,19 @@ class Diffpdf < Formula
 end
 
 __END__
-
 diff --git a/diffpdf.pro b/diffpdf.pro
-index 8b511b6..2079247 100644
+index 8130da1..e2dfcfd 100644
 --- a/diffpdf.pro
 +++ b/diffpdf.pro
-@@ -31,36 +31,7 @@ LIBS	     += -lpoppler-qt4
+@@ -34,36 +34,6 @@ LIBS	     += -lpoppler-qt4
  win32 {
      CONFIG += release
  }
--exists($(HOME)/opt/poppler018/) {
+-exists($(HOME)/opt/poppler020/) {
 -    message(Using locally built Poppler library)
--    INCLUDEPATH += $(HOME)/opt/poppler018/include/poppler/cpp
--    INCLUDEPATH += $(HOME)/opt/poppler018/include/poppler/qt4
--    LIBS += -Wl,-rpath -Wl,$(HOME)/opt/poppler018/lib -Wl,-L$(HOME)/opt/poppler018/lib
+-    INCLUDEPATH += $(HOME)/opt/poppler020/include/poppler/cpp
+-    INCLUDEPATH += $(HOME)/opt/poppler020/include/poppler/qt4
+-    LIBS += -Wl,-rpath -Wl,$(HOME)/opt/poppler020/lib -L$(HOME)/opt/poppler020/lib
 -} else {
 -    exists(/poppler_lib) {
 -	message(Using locally built Poppler library on Windows)
@@ -70,7 +69,7 @@ index 8b511b6..2079247 100644
 -#	INCLUDEPATH += /usr/local/include/podofo
 -#    }
 -#}
-+
 +LIBS       += -L$$quote(HOMEBREW_PREFIX/lib) -lpoppler-qt4
 +INCLUDEPATH += $$quote(HOMEBREW_PREFIX/include/poppler/cpp)
 +INCLUDEPATH += $$quote(HOMEBREW_PREFIX/include/poppler/qt4)
+

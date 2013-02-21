@@ -1,13 +1,10 @@
+require 'open-uri'
+require 'vendor/multi_json'
+
 class AbstractDownloadStrategy
   def initialize name, package
     @url = package.url
-    @specs = package.specs
-
-    case @specs
-    when Hash
-      @spec = @specs.keys.first # only use first spec
-      @ref = @specs.values.first
-    end
+    @spec, @ref = package.specs.dup.shift
   end
 
   def expand_safe_system_args args
@@ -44,15 +41,20 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     else
       @tarball_path=HOMEBREW_CACHE+File.basename(@url)
     end
+    @temporary_path=Pathname.new(@tarball_path.to_s + ".incomplete")
   end
 
   def cached_location
     @tarball_path
   end
 
+  def downloaded_size
+    @temporary_path.size? or 0
+  end
+
   # Private method, can be overridden if needed.
   def _fetch
-    curl @url, '-o', @tarball_path
+    curl @url, '-C', downloaded_size, '-o', @temporary_path
   end
 
   def fetch
@@ -65,23 +67,20 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     unless @tarball_path.exist?
       begin
         _fetch
-      rescue Exception => e
-        ignore_interrupts { @tarball_path.unlink if @tarball_path.exist? }
-        if e.kind_of? ErrorDuringExecution
-          raise CurlDownloadStrategyError, "Download failed: #{@url}"
-        else
-          raise
-        end
+      rescue ErrorDuringExecution
+        raise CurlDownloadStrategyError, "Download failed: #{@url}"
       end
+      ignore_interrupts { @temporary_path.rename(@tarball_path) }
     else
       puts "Already downloaded: #{@tarball_path}"
     end
-    return @tarball_path # thus performs checksum verification
   rescue CurlDownloadStrategyError
     raise if @mirrors.empty?
     puts "Trying a mirror..."
     @url = @mirrors.shift
     retry
+  else
+    @tarball_path
   end
 
   def stage
@@ -148,15 +147,12 @@ end
 # Detect and download from Apache Mirror
 class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   def _fetch
-    require 'open-uri'
-    require 'vendor/multi_json'
-
     mirrors = MultiJson.decode(open("#{@url}&asjson=1").read)
     url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
 
     ohai "Best Mirror #{url}"
-    curl url, '-o', @tarball_path
-  rescue IndexError
+    curl url, '-C', downloaded_size, '-o', @temporary_path
+  rescue IndexError, MultiJson::DecodeError
     raise "Couldn't determine mirror. Try again later."
   end
 end
@@ -166,7 +162,7 @@ end
 class CurlPostDownloadStrategy < CurlDownloadStrategy
   def _fetch
     base_url,data = @url.split('?')
-    curl base_url, '-d', data, '-o', @tarball_path
+    curl base_url, '-d', data, '-C', downloaded_size, '-o', @temporary_path
   end
 end
 
@@ -191,7 +187,7 @@ end
 # Try not to need this, as we probably won't accept the formula.
 class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
-    curl @url, '--insecure', '-o', @tarball_path
+    curl @url, '--insecure', '-C', downloaded_size, '-o', @temporary_path
   end
 end
 
@@ -315,55 +311,26 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     @clone
   end
 
-  def support_depth?
-    @spec != :revision and host_supports_depth?
-  end
-
-  def host_supports_depth?
-    @url =~ %r(git://) or @url =~ %r(https://github.com/)
-  end
-
   def fetch
     raise "You must: brew install git" unless which "git"
 
-    ohai "Cloning #{@url}"
+    ohai "Cloning #@url"
 
-    if @clone.exist?
+    if @clone.exist? && repo_valid?
+      puts "Updating #@clone"
       Dir.chdir(@clone) do
-        # Check for interupted clone from a previous install
-        unless quiet_system @@git, 'status', '-s'
-          puts "Removing invalid .git repo from cache"
-          FileUtils.rm_rf @clone
-        end
+        config_repo
+        update_repo
+        checkout
+        reset
+        update_submodules if submodules?
       end
-    end
-
-    unless @clone.exist?
-      # Note: first-time checkouts are always done verbosely
-      clone_args = [@@git, 'clone', '--no-checkout']
-      clone_args << '--depth' << '1' if support_depth?
-
-      case @spec
-      when :branch, :tag
-        clone_args << '--branch' << @ref
-      end
-
-      clone_args << @url << @clone
-      safe_system(*clone_args)
+    elsif @clone.exist?
+      puts "Removing invalid .git repo from cache"
+      FileUtils.rm_rf @clone
+      clone_repo
     else
-      puts "Updating #{@clone}"
-      Dir.chdir(@clone) do
-        safe_system @@git, 'config', 'remote.origin.url', @url
-
-        safe_system @@git, 'config', 'remote.origin.fetch', case @spec
-          when :branch then "+refs/heads/#{@ref}:refs/remotes/origin/#{@ref}"
-          when :tag then "+refs/tags/#{@ref}:refs/tags/#{@ref}"
-          else '+refs/heads/master:refs/remotes/origin/master'
-          end
-
-        git_args = [@@git, 'fetch', 'origin']
-        quiet_safe_system(*git_args)
-      end
+      clone_repo
     end
   end
 
@@ -371,29 +338,115 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     dst = Dir.getwd
     Dir.chdir @clone do
       if @spec and @ref
-        ohai "Checking out #{@spec} #{@ref}"
-        case @spec
-        when :branch
-          nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, "origin/#{@ref}", '--' }
-        when :tag, :revision
-          nostdout { quiet_safe_system @@git, 'checkout', { :quiet_flag => '-q' }, @ref, '--' }
-        end
+        ohai "Checking out #@spec #@ref"
       else
-        # otherwise the checkout-index won't checkout HEAD
-        # https://github.com/mxcl/homebrew/issues/7124
-        # must specify origin/HEAD, otherwise it resets to the current local HEAD
-        quiet_safe_system @@git, "reset", "--hard", "origin/HEAD"
+        reset
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system @@git, 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
-      # check for submodules
-      if File.exist?('.gitmodules')
-        safe_system @@git, 'submodule', 'init'
-        safe_system @@git, 'submodule', 'update'
-        sub_cmd = "#{@@git} checkout-index -a -f \"--prefix=#{dst}/$path/\""
-        safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
-      end
+      checkout_submodules(dst) if submodules?
     end
+  end
+
+  private
+
+  def git_dir
+    @clone.join(".git")
+  end
+
+  def has_ref?
+    quiet_system @@git, '--git-dir', git_dir, 'rev-parse', '-q', '--verify', @ref
+  end
+
+  def support_depth?
+    @spec != :revision and host_supports_depth?
+  end
+
+  def host_supports_depth?
+    @url =~ %r{git://} or @url =~ %r{https://github.com/}
+  end
+
+  def repo_valid?
+    quiet_system @@git, "--git-dir", git_dir, "status", "-s"
+  end
+
+  def submodules?
+    @clone.join(".gitmodules").exist?
+  end
+
+  def clone_args
+    args = %w{clone}
+    args << '--depth' << '1' if support_depth?
+
+    case @spec
+    when :branch, :tag then args << '--branch' << @ref
+    end
+
+    args << @url << @clone
+  end
+
+  def refspec
+    case @spec
+    when :branch then "+refs/heads/#@ref:refs/remotes/origin/#@ref"
+    when :tag    then "+refs/tags/#@ref:refs/tags/#@ref"
+    else              "+refs/heads/master:refs/remotes/origin/master"
+    end
+  end
+
+  def config_repo
+    safe_system @@git, 'config', 'remote.origin.url', @url
+    safe_system @@git, 'config', 'remote.origin.fetch', refspec
+  end
+
+  def update_repo
+    unless @spec == :tag && has_ref?
+      quiet_safe_system @@git, 'fetch', 'origin'
+    end
+  end
+
+  def clone_repo
+    safe_system @@git, *clone_args
+    @clone.cd { update_submodules } if submodules?
+  end
+
+  def checkout_args
+    ref = case @spec
+          when :branch, :tag, :revision then @ref
+          else `git symbolic-ref refs/remotes/origin/HEAD`.strip.split("/").last
+          end
+
+    args = %w{checkout -f}
+    args << { :quiet_flag => '-q' }
+    args << ref
+  end
+
+  def checkout
+    nostdout { quiet_safe_system @@git, *checkout_args }
+  end
+
+  def reset_args
+    ref = case @spec
+          when :branch then "origin/#@ref"
+          when :revision, :tag then @ref
+          else "origin/HEAD"
+          end
+
+    args = %w{reset}
+    args << { :quiet_flag => "-q" }
+    args << "--hard" << ref
+  end
+
+  def reset
+    quiet_safe_system @@git, *reset_args
+  end
+
+  def update_submodules
+    safe_system @@git, 'submodule', 'update', '--init'
+  end
+
+  def checkout_submodules(dst)
+    sub_cmd = %W{#@@git checkout-index -a -f --prefix=#{dst}/$path/}
+    safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', *sub_cmd
   end
 end
 
@@ -593,8 +646,6 @@ class DownloadStrategyDetector
       detect_from_url(url)
     end
   end
-
-  private
 
   def self.detect_from_url(url)
     case url

@@ -7,9 +7,9 @@ class Libgsf < Formula
 
   depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'glib'
-  depends_on 'intltool'
 
   def install
     system "./configure", "--disable-dependency-tracking",

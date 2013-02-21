@@ -8,6 +8,10 @@ class V8 < Formula
 
   head 'https://github.com/v8/v8.git'
 
+  # gyp currently depends on a full xcode install
+  # https://code.google.com/p/gyp/issues/detail?id=292
+  depends_on :xcode
+
   def install
     system 'make dependencies'
     system 'make', 'native',

@@ -9,6 +9,7 @@ class SoftwareSpec
     @url = url
     @version = version
     @mirrors = []
+    @specs = {}
   end
 
   def download_strategy
@@ -42,13 +43,11 @@ class SoftwareSpec
     }
   end
 
-  def url val=nil, specs=nil
+  def url val=nil, specs={}
     return @url if val.nil?
     @url = val
-    unless specs.nil?
-      @using = specs.delete :using
-      @specs = specs
-    end
+    @using = specs.delete(:using)
+    @specs.merge!(specs)
   end
 
   def version val=nil

@@ -2,10 +2,11 @@ require 'formula'
 
 class GstPluginsUgly < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-0.10.19.tar.bz2'
-  sha256 '1ca90059275c0f5dca71d4d1601a8f429b7852baed0723e820703b977e2c8df0'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.0.5.tar.xz'
+  sha256 'a62a182ea96d9b2783b493b46d531914db9d2ebb9e537e9c84668fe752791331'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
 
@@ -22,7 +23,6 @@ class GstPluginsUgly < Formula
   depends_on 'aalib' => :optional
   depends_on 'libcaca' => :optional
   depends_on 'libdvdread' => :optional
-  depends_on 'sdl' => :optional
   depends_on 'libmpeg2' => :optional
   depends_on 'a52dec' => :optional
   depends_on 'liboil' => :optional

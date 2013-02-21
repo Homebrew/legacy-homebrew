@@ -125,14 +125,12 @@ class Salt < Formula
     end
   end
 
-  def test
-    mktemp do
-      ENV['PATHMODEL'] = "#{prefix}/data"
-      cp_r Dir[prefix + '04D3gx' + '*'], '.'
-      # I don't know why I need to redo the cd on the shell, but it doesn't work otherwise
-      system "cd #{Dir.pwd}; #{bin}/snfit lc2fit_g.dat lc2fit_r.dat lc2fit_i.dat lc2fit_z.dat"
-      system "cat result_salt2.dat result_salt2_SNLS3.dat"
-    end
+  test do
+    ENV['PATHMODEL'] = "#{prefix}/data"
+    cp_r Dir[prefix + '04D3gx' + '*'], '.'
+    # I don't know why I need to redo the cd on the shell, but it doesn't work otherwise
+    system "cd #{Dir.pwd}; #{bin}/snfit lc2fit_g.dat lc2fit_r.dat lc2fit_i.dat lc2fit_z.dat"
+    system "cat result_salt2.dat result_salt2_SNLS3.dat"
   end
 
   def caveats

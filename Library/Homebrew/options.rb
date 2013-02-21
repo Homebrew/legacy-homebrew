@@ -106,10 +106,10 @@ class Options
     when self then arg
     when Option then new << arg
     when Array
-      opts = arg.map do |arg|
-        case arg
-        when /^-[^-]+$/ then arg[1..-1].split(//)
-        else arg
+      opts = arg.map do |_arg|
+        case _arg
+        when /^-[^-]+$/ then _arg[1..-1].split(//)
+        else _arg
         end
       end.flatten
       new(opts.map { |o| Option.new(o) })

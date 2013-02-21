@@ -140,14 +140,11 @@ Note that these flags should only appear after a command.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--devel] [--HEAD]` <formula>:
+  * `install [--debug] [--ignore-dependencies] [--fresh] [--use-clang|--use-gcc|--use-llvm] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
     several different ways. See [SPECIFYING FORMULAE][].
-
-    If `--force` is passed, will install <formula> if it exists, even if it
-    is blacklisted.
 
     If `--debug` is passed and brewing fails, open a shell inside the
     temporary directory used for compiling.
@@ -176,8 +173,7 @@ Note that these flags should only appear after a command.
     aka master, trunk, unstable.
 
     To install a newer version of HEAD use
-    `brew rm <foo> && brew install --HEAD <foo>`
-    or `brew install --force --HEAD <foo>`.
+    `brew rm <foo> && brew install --HEAD <foo>`.
 
   * `install --interactive [--git]` <formula>:
     Download and patch <formula>, then open a shell. This allows the user to
@@ -346,7 +342,7 @@ to create your own commands without modifying Homebrew's internals.
 A number of (useful, but unsupported) external commands are included and enabled
 by default:
 
-    $ ls `brew --repository`/Library/Contributions/cmds
+    $ ls `brew --repository`/Library/Contributions/cmd
 
 Documentation for the included external commands as well as instructions for
 creating your own can be found on the wiki:

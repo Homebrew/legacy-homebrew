@@ -6,7 +6,7 @@ class Gdmap < Formula
   sha1 'd97cc7c107dbaf9f3f3ed22ee6cef6172c115295'
 
   depends_on 'pkg-config' => :build
-  depends_on 'intltool'
+  depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'gtk+'

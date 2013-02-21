@@ -179,18 +179,15 @@ class Pathname
 
     # Get enough of the file to detect common file types
     # POSIX tar magic has a 257 byte offset
-    magic_bytes = nil
-    File.open(self) { |f| magic_bytes = f.read(262) }
-
     # magic numbers stolen from /usr/share/file/magic/
-    case magic_bytes
-    when /^PK\003\004/   then :zip
-    when /^\037\213/     then :gzip
-    when /^BZh/          then :bzip2
-    when /^\037\235/     then :compress
-    when /^.{257}ustar/  then :tar
-    when /^\xFD7zXZ\x00/ then :xz
-    when /^Rar!/         then :rar
+    case open { |f| f.read(262) }
+    when /^PK\003\004/n   then :zip
+    when /^\037\213/n     then :gzip
+    when /^BZh/n          then :bzip2
+    when /^\037\235/n     then :compress
+    when /^.{257}ustar/n  then :tar
+    when /^\xFD7zXZ\x00/n then :xz
+    when /^Rar!/n         then :rar
     else
       # This code so that bad-tarballs and zips produce good error messages
       # when they don't unarchive properly.

@@ -9,7 +9,8 @@ class Dpkg < Formula
   depends_on 'gnu-tar'
 
   fails_with :clang do
-    build 421
+    build 425
+    cause 'cstdlib:142:3: error: declaration conflicts with target of using declaration already in scope'
   end
 
   # Fixes the PERL_LIBDIR.

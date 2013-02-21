@@ -9,58 +9,6 @@ class AspellLang < Formula
   end
 end
 
-class Aspell < Formula
-  homepage 'http://aspell.net/'
-  url 'http://ftpmirror.gnu.org/aspell/aspell-0.60.6.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz'
-  sha1 'ff1190db8de279f950c242c6f4c5d5cdc2cbdc49'
-
-  fails_with :llvm do
-    build 2334
-    cause "Segmentation fault during linking."
-  end
-
-  option "with-lang", "Install dictionary for language XX where XX is the country code, e.g.: --with-lang=en,es\n"
-  option "all", "Install all available dictionaries"
-
-  def install
-    system "./configure", "--prefix=#{prefix}"
-    system "make install"
-
-    languages = []
-
-    ARGV.select { |v| v =~ /with-lang/ }.uniq.each do |opt|
-      languages << opt.split('=')[1].split(',')
-    end
-
-    if build.include? 'all'
-      languages << available_languages.to_a
-    else
-      languages << "en" if languages.empty?
-    end
-    languages.flatten.each do |lang|
-      begin
-        formula = Object.const_get("Aspell_" + lang).new
-      rescue
-        opoo "Unknown language: #{lang}"
-        next
-      end
-      formula.brew { formula.install }
-    end
-  end
-
-  # TODO remove when options works properly
-  def caveats; <<-EOS.undent
-    Dictionaries are not automatically installed, please specify the languages
-    for which you want dictionaries to be installed with the --with-lang option, e.g:
-    % brew install aspell --with-lang=en,es
-
-    For the following languages aspell dictionaries are available:
-    #{available_languages.join(', ')}
-    EOS
-  end
-end
-
 # BEGIN generated with brew-aspell-dictionaries
 class Aspell_af < AspellLang
   url 'http://ftpmirror.gnu.org/aspell/dict/af/aspell-af-0.50-0.tar.bz2'
@@ -521,3 +469,45 @@ def available_languages
   %w( af am ar ast az be bg bn br ca cs csb cy da de de_alt el en eo es et fa fi fo fr fy ga gd gl grc gu gv he hi hil hr hsb hu hus hy ia id is it kn ku ky la lt lv mg mi mk ml mn mr ms mt nb nds nl nn ny or pa pl pt_BR pt_PT qu ro ru rw sc sk sl sr sv sw ta te tet tk tl tn tr uk uz vi wa yi zu)
 end
 # END generated with brew-aspell-dictionaries
+
+class Aspell < Formula
+  homepage 'http://aspell.net/'
+  url 'http://ftpmirror.gnu.org/aspell/aspell-0.60.6.1.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz'
+  sha1 'ff1190db8de279f950c242c6f4c5d5cdc2cbdc49'
+
+  fails_with :llvm do
+    build 2334
+    cause "Segmentation fault during linking."
+  end
+
+  option "all", "Install all available dictionaries"
+  available_languages.each { |lang| option "with-lang-#{lang}", "Install #{lang} dictionary" }
+
+  def install
+    system "./configure", "--prefix=#{prefix}"
+    system "make install"
+
+    languages = []
+
+    available_languages.each do |lang|
+      languages << lang if build.with? "lang-#{lang}"
+    end
+
+    if build.include? 'all'
+      languages << available_languages.to_a
+    elsif languages.empty?
+      languages << "en"
+    end
+
+    languages.flatten.each do |lang|
+      begin
+        formula = Object.const_get("Aspell_" + lang).new
+      rescue
+        opoo "Unknown language: #{lang}"
+        next
+      end
+      formula.brew { formula.install }
+    end
+  end
+end

@@ -5,31 +5,24 @@ class Ffmbc < Formula
   url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc7.tar.bz2'
   sha1 '79d125cd5d420e61120e2a66b018b0be096ad088'
 
-  option "without-x264", "Disable H264 encoder"
-  option "without-faac", "Disable AAC encoder"
+  option "without-x264", "Disable H.264 encoder"
   option "without-lame", "Disable MP3 encoder"
-  option "without-xvid", "Disable Xvid MPEG-4 video format"
-
-  option "with-freetype", "Enable FreeType"
-  option "with-theora", "Enable Theora video format"
-  option "with-libvorbis", "Enable Vorbis audio format"
-  option "with-libogg", "Enable Ogg container format"
-  option "with-libvpx", "Enable VP8 video format"
+  option "without-xvid", "Disable Xvid MPEG-4 video encoder"
 
   # manpages won't be built without texi2html
   depends_on 'texi2html' => :build if MacOS.version >= :mountain_lion
   depends_on 'yasm' => :build
 
-  depends_on 'x264' unless build.include? 'without-x264'
-  depends_on 'faac' unless build.include? 'without-faac'
-  depends_on 'lame' unless build.include? 'without-lame'
-  depends_on 'xvid' unless build.include? 'without-xvid'
+  depends_on 'x264' => :recommended
+  depends_on 'faac' => :recommended
+  depends_on 'lame' => :recommended
+  depends_on 'xvid' => :recommended
 
-  depends_on :freetype if build.include? 'with-freetype'
-  depends_on 'theora' if build.include? 'with-theora'
-  depends_on 'libvorbis' if build.include? 'with-libvorbis'
-  depends_on 'libogg' if build.include? 'with-libogg'
-  depends_on 'libvpx' if build.include? 'with-libvpx'
+  depends_on :freetype => :optional
+  depends_on 'theora'  => :optional
+  depends_on 'libvorbis' => :optional
+  depends_on 'libogg' => :optional
+  depends_on 'libvpx' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -39,16 +32,16 @@ class Ffmbc < Formula
             "--enable-nonfree",
             "--cc=#{ENV.cc}"]
 
-    args << "--enable-libx264" unless build.include? 'without-x264'
-    args << "--enable-libfaac" unless build.include? 'without-faac'
-    args << "--enable-libmp3lame" unless build.include? 'without-lame'
-    args << "--enable-libxvid" unless build.include? 'without-xvid'
+    args << "--enable-libx264" unless build.without? 'x264'
+    args << "--enable-libfaac" unless build.without? 'faac'
+    args << "--enable-libmp3lame" unless build.without? 'lame'
+    args << "--enable-libxvid" unless build.without? 'xvid'
 
-    args << "--enable-libfreetype" if build.include? 'with-freetype'
-    args << "--enable-libtheora" if build.include? 'with-theora'
-    args << "--enable-libvorbis" if build.include? 'with-libvorbis'
-    args << "--enable-libogg" if build.include? 'with-libogg'
-    args << "--enable-libvpx" if build.include? 'with-libvpx'
+    args << "--enable-libfreetype" if build.with? 'freetype'
+    args << "--enable-libtheora" if build.with? 'theora'
+    args << "--enable-libvorbis" if build.with? 'libvorbis'
+    args << "--enable-libogg" if build.with? 'libogg'
+    args << "--enable-libvpx" if build.with? 'libvpx'
 
     system "./configure", *args
     system "make"

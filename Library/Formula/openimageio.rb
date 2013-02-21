@@ -36,8 +36,8 @@ end
 
 class Openimageio < Formula
   homepage 'http://openimageio.org'
-  url 'https://github.com/OpenImageIO/oiio/tarball/Release-1.0.10'
-  sha1 'd8e546013c56df78c6d07dd55a464a708b3a5837'
+  url 'https://github.com/OpenImageIO/oiio/tarball/Release-1.1.6'
+  sha1 '75be042f3f50ff1c558c04e1a8a256c4fdc250ad'
 
   head 'https://github.com/OpenImageIO/oiio.git'
 
@@ -120,7 +120,7 @@ class Openimageio < Formula
     # make is a shell wrapper for cmake crafted by the devs (who have Lion).
     system "make", *args
     system "make test" if build.include? 'with-tests'
-    # There is no working make install in 1.0.2, devel or HEAD.
+    # There is no working make install in 1.1.6, devel or HEAD.
     Dir.chdir 'dist/macosx' do
       (lib + which_python ).install 'lib/python/site-packages'
       prefix.install %w[ bin include ]

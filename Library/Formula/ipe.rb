@@ -2,8 +2,8 @@ require 'formula'
 
 class Ipe < Formula
   homepage 'http://ipe7.sourceforge.net'
-  url 'http://sourceforge.net/projects/ipe7/files/ipe/7.1.0/ipe-7.1.2-src.tar.gz'
-  sha1 '7c55d2b72bb256dc99b18145644ae27edc9a056c'
+  url 'http://sourceforge.net/projects/ipe7/files/ipe/7.1.0/ipe-7.1.3-src.tar.gz'
+  sha1 '7999a85d902fbe3952664dea86c2c0a1aaed40d6'
 
   depends_on 'pkg-config' => :build
   depends_on 'makeicns' => :build

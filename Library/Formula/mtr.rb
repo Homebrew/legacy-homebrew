@@ -5,6 +5,7 @@ class Mtr < Formula
   url 'ftp://ftp.bitwizard.nl/mtr/mtr-0.82.tar.gz'
   sha1 'f1319de27324d85898a9df0a293a438bbaaa12b5'
 
+  depends_on 'pkg-config' => :build
   depends_on 'gtk+' => :optional
 
   def install

@@ -13,6 +13,7 @@ class MecabIpadic < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
+    # Via ./configure --help, valid choices are utf8 (default), euc-jp, sjis
     args << ARGV.find(Proc.new {"--with-charset=utf8"}) { |arg| /^--with-charset/.match(arg) }
 
     system "./configure", *args

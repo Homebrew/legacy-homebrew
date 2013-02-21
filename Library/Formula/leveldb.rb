@@ -9,7 +9,9 @@ class Leveldb < Formula
 
   def install
     system "make"
+    system "make leveldbutil"
     include.install "include/leveldb"
+    bin.install 'leveldbutil'
     lib.install 'libleveldb.a'
     lib.install 'libleveldb.dylib.1.9' => 'libleveldb.1.9.dylib'
     lib.install_symlink lib/'libleveldb.1.9.dylib' => 'libleveldb.dylib'

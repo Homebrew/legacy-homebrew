@@ -7,6 +7,7 @@ class Mjpegtools < Formula
 
   depends_on :x11 if MacOS::X11.installed?
 
+  depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libquicktime' => :optional
   depends_on 'libdv' => :optional

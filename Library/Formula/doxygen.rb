@@ -2,9 +2,9 @@ require 'formula'
 
 class Doxygen < Formula
   homepage 'http://www.doxygen.org/'
-  url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.3.src.tar.gz'
-  mirror 'http://downloads.sourceforge.net/project/doxygen/rel-1.8.3/doxygen-1.8.3.src.tar.gz'
-  sha1 'e74240f445e08b782fa7a3de5f0b333901307587'
+  url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.3.1.src.tar.gz'
+  mirror 'http://downloads.sourceforge.net/project/doxygen/rel-1.8.3.1/doxygen-1.8.3.1.src.tar.gz'
+  sha1 '289fc809f44b8025d45279deefbaee7680efd88f'
 
   head 'https://doxygen.svn.sourceforge.net/svnroot/doxygen/trunk'
 
@@ -16,6 +16,15 @@ class Doxygen < Formula
 
   def install
     system "./configure", "--prefix", prefix
+    # Per Macports:
+    # https://trac.macports.org/browser/trunk/dports/textproc/doxygen/Portfile#L92
+    inreplace %w[ libmd5/Makefile.libmd5
+                  src/Makefile.libdoxycfg
+                  tmake/lib/macosx-c++/tmake.conf
+                  tmake/lib/macosx-intel-c++/tmake.conf
+                  tmake/lib/macosx-uni-c++/tmake.conf ],
+      '-Wno-invalid-source-encoding', ''
+
     system "make"
     # MAN1DIR, relative to the given prefix
     system "make", "MAN1DIR=share/man/man1", "install"

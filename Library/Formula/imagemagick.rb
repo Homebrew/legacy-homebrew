@@ -16,7 +16,7 @@ class Imagemagick < Formula
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
   option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
 
-  depends_on :libtool
+  depends_on :libltdl
 
   depends_on 'pkg-config' => :build
 

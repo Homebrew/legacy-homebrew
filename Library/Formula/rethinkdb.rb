@@ -20,6 +20,6 @@ class Rethinkdb < Formula
       system "make DEBUG=0 WEBRESDIR=#{share}/rethinkdb/web"
     end
     bin.install 'build/release/rethinkdb'
-    share.install 'build/release/web' => 'rethinkdb'
+    (share/'rethinkdb').install 'build/release/web'
   end
 end

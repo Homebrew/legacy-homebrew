@@ -2,8 +2,8 @@ require 'formula'
 
 class Libcouchbase < Formula
   homepage 'http://couchbase.com/develop/c/current'
-  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.0.2.tar.gz'
-  sha1 'e1f6149d2fc05e3e8be568469baed5c7234c48f3'
+  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.0.3.tar.gz'
+  sha1 '41edb41fd490a0a41c78773ee02877e773b3e1c0'
 
   option 'with-libev-plugin', 'Build libev IO plugin (will pull libev dependency)'
   option 'without-libevent-plugin', 'Do not build libevent plugin (will remove libevent dependency)'
@@ -16,6 +16,7 @@ class Libcouchbase < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-examples",
+                          "--disable-tests", # don't download google-test framework
                           "--disable-couchbasemock"
     system "make install"
   end

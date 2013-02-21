@@ -2,8 +2,8 @@ require 'formula'
 
 class Gnutls < Formula
   homepage 'http://gnutls.org'
-  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1/gnutls-3.1.6.tar.xz'
-  sha256 '83039b8c243ebaa4c31c96c823c88c8c1576de4a7d0d04e10d93527a535e5e7f'
+  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1/gnutls-3.1.8.tar.xz'
+  sha1 'ad9c281fc6d5d8d5af9a2d8225baf9ec556e2723'
 
   depends_on 'xz' => :build
   depends_on 'pkg-config' => :build

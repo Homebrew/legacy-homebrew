@@ -7,17 +7,15 @@ class Dgtal < Formula
 
   head 'https://github.com/DGtal-team/DGtal.git'
 
-  option 'with-cairo', "Enable cairographics in DGtal"
-  option 'with-gmp', "Enable GNU Multiple Precision Arithmetic Library in DGtal"
   option 'with-qglview', "Enable QGLViewer vizualisation"
   option 'with-magick', "Enable GraphicsMagick for 2d image readers"
 
   depends_on 'cmake' => :build
   depends_on 'boost'
-  depends_on 'gmp' if build.include? 'with-gmp'
-  depends_on 'cairo' if build.include? 'with-cairo'
-  depends_on 'libqglviewer' if build.include? 'with-qglviewer'
-  depends_on 'graphicsmagick' if build.include? 'with-magick'
+  depends_on 'gmp' => :optional
+  depends_on 'cairo' => :optional
+  depends_on 'libqglviewer' if build.with? 'qglviewer'
+  depends_on 'graphicsmagick' if build.with? 'magick'
 
   def install
     args = std_cmake_args
@@ -25,9 +23,9 @@ class Dgtal < Formula
     args << "-DBUILD_EXAMPLES=OFF"
     args << "-DWITH_C11:bool=false"
 
-    args << "-DWITH_GMP=ON" if build.include? 'with-gmp'
-    args << "-DWITH_CAIRO=ON" if build.include? 'with-cairo'
-    args << "-DWITH_QGLVIEWER=ON" if build.include? 'with-qglviewer'
+    args << "-DWITH_GMP=ON" if build.with? 'gmp'
+    args << "-DWITH_CAIRO=ON" if build.with? 'cairo'
+    args << "-DWITH_QGLVIEWER=ON" if build.with? 'qglviewer'
 
     mkdir 'build' do
       system "cmake", "..", *args

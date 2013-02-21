@@ -1,10 +1,11 @@
+require 'macos/version'
+
 module MacOS extend self
 
   # This can be compared to numerics, strings, or symbols
   # using the standard Ruby Comparable methods.
   def version
-    require 'version'
-    MacOSVersion.new(MACOS_VERSION.to_s)
+    Version.new(MACOS_VERSION)
   end
 
   def cat
@@ -36,11 +37,10 @@ module MacOS extend self
         # look in dev_tools_path, and finally in xctoolchain_path, because the
         # tools were split over two locations beginning with Xcode 4.3+.
         xcrun_path = unless Xcode.bad_xcode_select_path?
-          `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+          path = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+          # If xcrun finds a superenv tool then discard the result.
+          path unless path.include?(HOMEBREW_REPOSITORY/"Library/ENV")
         end
-
-        # If xcrun finds a superenv tool then discard the result.
-        xcrun_path = nil if xcrun_path.include? HOMEBREW_PREFIX+"Library/ENV"
 
         paths = %W[#{xcrun_path}
                    #{dev_tools_path}/#{tool}
@@ -206,23 +206,18 @@ module MacOS extend self
   }
 
   def compilers_standard?
-    xcode = Xcode.version
-
-    unless STANDARD_COMPILERS.keys.include? xcode
-      onoe <<-EOS.undent
-        Homebrew doesn't know what compiler versions ship with your version of
-        Xcode. Please `brew update` and if that doesn't help, file an issue with
-        the output of `brew --config`:
-          https://github.com/mxcl/homebrew/issues
-
-        Thanks!
-        EOS
-      return
-    end
-
-    STANDARD_COMPILERS[xcode].all? do |method, build|
+    STANDARD_COMPILERS.fetch(Xcode.version.to_s).all? do |method, build|
       MacOS.send(:"#{method}_version") == build
     end
+  rescue IndexError
+    onoe <<-EOS.undent
+      Homebrew doesn't know what compiler versions ship with your version
+      of Xcode (#{Xcode.version}). Please `brew update` and if that doesn't help, file
+      an issue with the output of `brew --config`:
+        https://github.com/mxcl/homebrew/issues
+
+      Thanks!
+    EOS
   end
 
   def app_with_bundle_id id
@@ -231,7 +226,9 @@ module MacOS extend self
   end
 
   def mdfind id
-    `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
+    (@mdfind ||= {}).fetch(id.to_s) do
+      @mdfind[id.to_s] = `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
+    end
   end
 
   def pkgutil_info id
