@@ -30,6 +30,9 @@ class Emacs < Formula
     if build.include? "cocoa" and not build.head?
       "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716"
     end
+    if build.include? "cocoa" and build.head?
+      "https://gist.github.com/whiteley/5001524/raw/19661a79f52e680001a19ed1e7b0d8bd58c28089/emacs-head-cocoa-headerpad.diff"
+    end
   end
 
   def install
