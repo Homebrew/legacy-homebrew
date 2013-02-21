@@ -9,13 +9,19 @@ class Libmagic < Formula
   # Fixed upstream, should be in next release
   # See http://bugs.gw.com/view.php?id=230
   def patches; DATA; end if MacOS.version < :lion
-
+  
+  option "python", "Build Python bindings."
+  
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-fsect-man5"
     system "make install"
 
+    cd "python" do
+      system "python setup.py build"
+      system "python setup.py install --prefix={prefix}"
+    end if build.include? "python"
     # Don't dupe this system utility
     rm bin/"file"
     rm man1/"file.1"
