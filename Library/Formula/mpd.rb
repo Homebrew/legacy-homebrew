@@ -23,6 +23,14 @@ class Mpd < Formula
   depends_on 'libmms' => :optional
   depends_on 'libzzip' => :optional
 
+  def patches
+    # Support float planar audio, so m4a files from iTunes can be played using ffmpeg.
+    # This patch has already been applied upstream, so remove this in the next release.
+    #
+    # https://github.com/bjaglin/mpd/commit/a84774fd46e4f3b6147bfd3d19ff4841bde8c98d
+    { :p1 => 'https://github.com/bjaglin/mpd/commit/a84774fd46e4f3b6147bfd3d19ff4841bde8c98d.patch' }
+  end
+
   def install
     system "./autogen.sh" if build.head?
 
