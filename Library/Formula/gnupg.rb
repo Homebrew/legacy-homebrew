@@ -1,10 +1,5 @@
 require 'formula'
 
-class GnupgIdea < Formula
-  head 'http://www.gnupg.dk/contrib-dk/idea.c.gz', :using  => :nounzip
-  sha1 '9b78e20328d35525af7b8a9c1cf081396910e937'
-end
-
 class Gnupg < Formula
   homepage 'http://www.gnupg.org/'
   url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.13.tar.bz2'
@@ -20,11 +15,6 @@ class Gnupg < Formula
   end
 
   def install
-    if build.include? 'idea'
-      GnupgIdea.new.brew { (buildpath/'cipher').install Dir['*'] }
-      system 'gunzip', 'cipher/idea.c.gz'
-    end
-
     inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if build.include? '8192'
 
     system "./configure", "--disable-dependency-tracking",
