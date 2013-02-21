@@ -9,8 +9,13 @@ class Sbt < Formula
   def install
     (bin+'sbt').write <<-EOS.undent
       #!/bin/sh
-      test -f ~/.sbtconfig && . ~/.sbtconfig
-      exec java -Xmx512M ${SBT_OPTS} -jar #{libexec}/sbt-launch.jar "$@"
+      test -f ~/.sbt/config && . ~/.sbt/config
+      if test "$1" = "debug"; then
+        DEBUG_PARAM="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9999"
+        exec java -Xmx512M ${DEBUG_PARAM} ${SBT_OPTS} -jar #{libexec}/sbt-launch.jar
+      else
+        exec java -Xmx512M ${SBT_OPTS} -jar #{libexec}/sbt-launch.jar "$@"
+      fi
     EOS
 
     libexec.install Dir['*']
@@ -18,7 +23,7 @@ class Sbt < Formula
 
   def caveats;  <<-EOS.undent
     You can use $SBT_OPTS to pass additional JVM options to SBT.
-    For convenience, this can specified in `~/.sbtconfig`.
+    For convenience, this can specified in `~/.sbt/config`.
 
     For example:
         SBT_OPTS="-XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M"
