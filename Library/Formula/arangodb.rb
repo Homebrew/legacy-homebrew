@@ -12,16 +12,20 @@ class Arangodb < Formula
     sha1 '4fe3f0e7344b77f72a31ce4e3b1c4e54bab848fd'
   end
 
+  option 'without-homebrew-libev', 'do not use homebrew libev in order to avoid conflicts with libevent'
+
   depends_on 'icu4c'
-  depends_on 'libev'
+  depends_on 'libev' unless build.include?('without-homebrew-libev')
   depends_on 'v8'
 
   def install
+    libev = if build.include?('without-homebrew-libev') then "--enable-all-in-one-libev" else "--disable-all-in-one-libev" end
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-relative",
                           "--disable-all-in-one-icu",
-                          "--disable-all-in-one-libev",
+                          libev,
                           "--disable-all-in-one-v8",
                           "--enable-mruby",
                           "--datadir=#{share}",
