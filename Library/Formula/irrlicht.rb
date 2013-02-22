@@ -13,7 +13,7 @@ class Irrlicht < Formula
     build 425
     cause <<-EOS.undent
       COpenGLExtensionHandler.h:2390:31: error: expected ')'
-              glProgramParameteriEXT((long GLuint)program, pname, value);                                      
+              glProgramParameteriEXT((long GLuint)program, pname, value);
     EOS
   end
 
