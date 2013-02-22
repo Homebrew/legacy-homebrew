@@ -8,8 +8,8 @@ class Arangodb < Formula
   head "https://github.com/triAGENS/ArangoDB.git"
 
   devel do
-    url 'https://github.com/triAGENS/ArangoDB/zipball/v1.2.beta2'
-    sha1 '4fe3f0e7344b77f72a31ce4e3b1c4e54bab848fd'
+    url 'https://github.com/triAGENS/ArangoDB/zipball/v1.2.beta3'
+    sha1 '5eb9c5753579a04893f0afa3f5e6e90ddd709ebc'
   end
 
   depends_on 'icu4c'
