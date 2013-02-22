@@ -7,6 +7,8 @@ class Clojure < Formula
 
   head 'https://github.com/clojure/clojure.git'
 
+  depends_on 'rlwrap'
+
   devel do
     url 'http://repo1.maven.org/maven2/org/clojure/clojure/1.5.0-RC1/clojure-1.5.0-RC1.zip'
     sha1 '1820d7da736079c767bb3c02308d7e2c401a4410'
@@ -21,7 +23,7 @@ class Clojure < Formula
     CLOJURE=$CLASSPATH:#{prefix}/#{jar}:${PWD}
 
     if [ "$#" -eq 0 ]; then
-        java -cp "$CLOJURE" clojure.main --repl
+        rlwrap java -cp "$CLOJURE" clojure.main --repl
     else
         java -cp "$CLOJURE" clojure.main "$@"
     fi
