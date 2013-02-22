@@ -17,5 +17,6 @@ class Phantomjs < Formula
 
   def install
     bin.install 'bin/phantomjs'
+    (share+'phantomjs').install 'examples'
   end
 end
