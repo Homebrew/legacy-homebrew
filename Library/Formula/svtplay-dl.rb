@@ -2,8 +2,8 @@ require 'formula'
 
 class SvtplayDl < Formula
   homepage 'https://github.com/spaam/svtplay-dl'
-  url 'https://github.com/spaam/svtplay-dl/archive/0.8.2013.01.18.tar.gz'
-  sha1 '8d2aee7517f462cdef4255021fae3a52a019bd86'
+  url 'https://github.com/spaam/svtplay-dl/archive/0.9.2013.02.22.tar.gz'
+  sha1 'aa19ba16dc110cabd7e61753ad20c2a8f751e740'
 
   depends_on 'rtmpdump'
 
