@@ -47,5 +47,13 @@ def blacklisted? name
     Installing gmock system-wide is not recommended; it should be vendored
     in your projects that use it.
     EOS
+  when 'foo' then <<-EOS.undent
+    There is no software named 'foo'. When the wiki suggests copying output
+    from "brew install foo", you should use the name of the actual package
+    that you're having trouble with instead of 'foo'.
+
+    Please shake off any embarrassment and try this again. Do *not* submit
+    the output of "brew install foo" as part of a bug report.
+    EOS
   end
 end
