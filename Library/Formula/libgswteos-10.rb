@@ -6,12 +6,12 @@ require 'formula'
 # TEOS-10 V3.0 GSW Oceanographic Toolbox in C
 # 
 
-class Libteos10 < Formula
+class Libgswteos10 < Formula
   homepage ''
   url 'https://github.com/lukecampbell/gsw-teos/tarball/v3.0r3'
   homepage 'http://www.teos-10.org/'
   version '3.0'
-  sha1 'de7922fba167fff6cdcb5ba27ade5024424ab641'
+  sha1 'aa58bdfbe92d40504713cd9b8ed39f59c8d04627'
 
   depends_on 'autoconf'
   depends_on 'automake'
