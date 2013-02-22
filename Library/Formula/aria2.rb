@@ -15,7 +15,7 @@ class Aria2 < Formula
   def install
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}"]
-    args << "--with-ca-bundle=#{HOMEBREW_PREFIX}/share/ca-bundle.crt" if not build.include? 'without-curl-ca-bundle'
+    args << "--with-ca-bundle=#{HOMEBREW_PREFIX}/share/ca-bundle.crt" if build.with? 'curl-ca-bundle'
 
     system "./configure", *args
     system "make install"
