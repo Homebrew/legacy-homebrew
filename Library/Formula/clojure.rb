@@ -7,6 +7,8 @@ class Clojure < Formula
 
   head 'https://github.com/clojure/clojure.git'
 
+  depends_on 'rlwrap'
+
   def script; <<-EOS.undent
     #!/bin/sh
     # Clojure wrapper script.
@@ -16,7 +18,7 @@ class Clojure < Formula
     CLOJURE=$CLASSPATH:#{prefix}/clojure-1.4.0.jar:${PWD}
 
     if [ "$#" -eq 0 ]; then
-        java -cp "$CLOJURE" clojure.main --repl
+        rlwrap java -cp "$CLOJURE" clojure.main --repl
     else
         java -cp "$CLOJURE" clojure.main "$@"
     fi
