@@ -6,12 +6,19 @@ class Go < Formula
   version '1.0.3'
   sha1 '1a67293c10d6c06c633c078a7ca67e98c8b58471'
 
-  head 'http://go.googlecode.com/hg/'
+  head 'https://go.googlecode.com/hg/'
 
   skip_clean 'bin'
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
+
+  if build.head
+    fails_with :clang do
+      build 425
+      cause "clang: error: no such file or directory: 'libgcc.a'"
+    end
+  end
 
   def install
     # install the completion scripts
@@ -82,4 +89,5 @@ class Go < Formula
       system './run.bash --no-rebuild'
     end
   end
+
 end
