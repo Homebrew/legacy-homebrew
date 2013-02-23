@@ -9,6 +9,11 @@ class Freetype < Formula
 
   option :universal
 
+  bottle do
+    # Included with X11 so no bottle needed before Mountain Lion.
+    sha1 '7dc4747810e51beb99fd36c8f5baade6e65d19b7' => :mountain_lion
+  end
+
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}"
