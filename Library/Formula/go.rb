@@ -6,7 +6,7 @@ class Go < Formula
   version '1.0.3'
   sha1 '1a67293c10d6c06c633c078a7ca67e98c8b58471'
 
-  head 'http://go.googlecode.com/hg/'
+  head 'https://go.googlecode.com/hg/'
 
   skip_clean 'bin'
 
