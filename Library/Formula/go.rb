@@ -13,9 +13,11 @@ class Go < Formula
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
 
-  fails_with :clang do
-    build 425
-    cause "clang: error: no such file or directory: 'libgcc.a'"
+  if build.head
+    fails_with :clang do
+      build 425
+      cause "clang: error: no such file or directory: 'libgcc.a'"
+    end
   end
 
   def install
@@ -87,4 +89,5 @@ class Go < Formula
       system './run.bash --no-rebuild'
     end
   end
+
 end
