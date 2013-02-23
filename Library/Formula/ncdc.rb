@@ -6,15 +6,12 @@ class Ncdc < Formula
   sha1 'ff2ae3107097ce4cd03862841421f157198217ea'
 
   depends_on 'glib'
-  depends_on 'zlib'
   depends_on 'sqlite'
-  depends_on 'ncurses'
   depends_on 'gnutls'
   depends_on 'pkg-config' => :build
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 
