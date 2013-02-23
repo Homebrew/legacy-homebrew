@@ -3,7 +3,7 @@ require 'formula'
 class Colorsvn < Formula
   homepage 'http://colorsvn.tigris.org/'
   url 'http://www.console-colors.de/downloads/colorsvn/colorsvn-0.3.2.tar.gz'
-  md5 'f6f59439f56c0ce664a0a832052cdc06'
+  sha1 '8d9452585d474ad10e9e1fd2372f9ad41e548863'
 
   def patches
     DATA

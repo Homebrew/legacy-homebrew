@@ -3,7 +3,7 @@ require 'formula'
 class Ganglia < Formula
   homepage 'http://ganglia.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.1.7/ganglia-3.1.7.tar.gz'
-  md5 '6aa5e2109c2cc8007a6def0799cf1b4c'
+  sha1 'e234d64814af1c9f55f1cd039a5840039d175f85'
 
   depends_on :automake
   depends_on :libtool

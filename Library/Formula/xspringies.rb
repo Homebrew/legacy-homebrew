@@ -3,7 +3,7 @@ require 'formula'
 class Xspringies < Formula
   homepage 'http://www.cs.rutgers.edu/~decarlo/software.html'
   url 'http://www.cs.rutgers.edu/~decarlo/software/xspringies-1.12.tar.Z'
-  md5 '14b14916471874e9d0569ab5f4e8d492'
+  sha1 '7898352b444f7eca8ad90a609330935b7eafa1c2'
 
   depends_on :x11
 

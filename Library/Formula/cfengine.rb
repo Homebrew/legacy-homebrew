@@ -2,16 +2,11 @@ require 'formula'
 
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
-  url 'https://cfengine.com/source-code/download?file=cfengine-3.3.5.tar.gz'
-  sha1 '205896ba59a472de363c06e6847cecaf4cfbc5cf'
+  url 'https://cfengine.com/source-code/download?file=cfengine-3.4.3.tar.gz'
+  sha1 '71240fc35ab0a14783544af819cbf50543341b66'
 
   depends_on 'tokyo-cabinet'
   depends_on 'pcre'
-
-  def patches
-    # See https://github.com/cfengine/core/commit/ce2b8abf
-    "https://github.com/cfengine/core/commit/ce2b8abf.patch" if ENV.compiler == :clang
-  end
 
   def install
     # Find our libpcre

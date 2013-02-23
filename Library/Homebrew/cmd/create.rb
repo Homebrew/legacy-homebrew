@@ -8,9 +8,9 @@ module Homebrew extend self
 
     # Allow searching MacPorts or Fink.
     if ARGV.include? '--macports'
-      exec "open", "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+      exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
-      exec "open", "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
+      exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     end
 
     raise UsageError if ARGV.named.empty?
@@ -71,12 +71,8 @@ module Homebrew extend self
 end
 
 class FormulaCreator
-  attr :url
-  attr :sha1
-  attr :name, true
-  attr :version, true
-  attr :path, true
-  attr :mode, true
+  attr_reader :url, :sha1
+  attr_accessor :name, :version, :path, :mode
 
   def url= url
     @url = url
@@ -122,7 +118,7 @@ class FormulaCreator
     class #{Formula.class_s name} < Formula
       homepage ''
       url '#{url}'
-    <% unless version.nil? %>
+    <% if not version.nil? and not version.detected_from_url? %>
       version '#{version}'
     <% end %>
       sha1 '#{sha1}'

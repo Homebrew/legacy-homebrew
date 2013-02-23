@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dict < Formula
-  url 'http://en.sourceforge.jp/frs/g_redir.php?m=jaist&f=%2Fdict%2Fdictd%2Fdictd-1.9.15%2Fdictd-1.9.15.tar.gz'
   homepage 'http://www.dict.org/'
-  md5 '68c1cffa952012ba85a7271311de55e9'
+  url 'http://en.sourceforge.jp/frs/g_redir.php?m=jaist&f=%2Fdict%2Fdictd%2Fdictd-1.9.15%2Fdictd-1.9.15.tar.gz'
+  sha1 '081ea97a4a6a936855af30d9c2a31f5733985822'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

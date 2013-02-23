@@ -13,6 +13,7 @@ at_exit do
 end
 
 require 'global'
+require 'debrew' if ARGV.debug?
 
 def main
   # The main Homebrew process expects to eventually see EOF on the error
@@ -51,6 +52,7 @@ def install f
   install(Formula.factory($0))
 rescue Exception => e
   unless error_pipe.nil?
+    e.continuation = nil if ARGV.debug?
     Marshal.dump(e, error_pipe)
     error_pipe.close
     exit! 1
@@ -61,46 +63,56 @@ rescue Exception => e
   end
 end
 
-def pre_superenv_hacks f
-  # TODO replace with Formula DSL
-  # Python etc. build but then pip can't build stuff.
-  # Scons resets ENV and then can't find superenv's build-tools.
-  # In some cases we should only apply in the case of an option I suggest the
-  # following:
-  #
-  # option 'with-passenger' do
-  #   env :userpaths  # for superenv
-  # end
-  # option 'without-foo' do
-  #  env :std, :x11
-  # end
-  #
-  # NOTE I think all ENV stuff should be specified with a DSL like this now.
-  case f.name
-  when 'lilypond', 'nginx'
-    paths = ORIGINAL_PATHS.map{|pn| pn.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
-    ENV['PATH'] = "#{ENV['PATH']}:#{paths.join(':')}"
+def post_superenv_hacks f
+  # Only allow Homebrew-approved directories into the PATH, unless
+  # a formula opts-in to allowing the user's path.
+  if f.env.userpaths? or f.recursive_requirements.any? { |rq| rq.env.userpaths? }
+    ENV.userpaths!
   end
-  # fontforge needs 10.7 SDK, wine 32 bit, graphviz has mysteriously missing symbols
-  # and ruby/python etc. create gem/pip that then won't work
-  stdenvs = %w{fontforge python python3 ruby ruby-enterprise-edition jruby wine graphviz}
-  ARGV.unshift '--env=std' if (stdenvs.include?(f.name) or
-    f.recursive_deps.detect{|d| d.name == 'scons' }) and
+end
+
+def pre_superenv_hacks f
+  # Allow a formula to opt-in to the std environment.
+  ARGV.unshift '--env=std' if (f.env.std? or
+    f.recursive_dependencies.detect{|d| d.name == 'scons' }) and
     not ARGV.include? '--env=super'
 end
 
+def expand_deps f
+  f.recursive_dependencies do |dependent, dep|
+    if dep.optional? || dep.recommended?
+      Dependency.prune unless dependent.build.with?(dep.name)
+    elsif dep.build?
+      Dependency.prune unless dependent == f
+    end
+  end.map(&:to_formula)
+end
+
 def install f
-  keg_only_deps = f.recursive_deps.uniq.select{|dep| dep.keg_only? }
+  deps = expand_deps(f)
+  keg_only_deps = deps.select(&:keg_only?)
 
   pre_superenv_hacks(f)
   require 'superenv'
 
-  ENV.setup_build_environment unless superenv?
+  deps.each do |dep|
+    opt = HOMEBREW_PREFIX/:opt/dep
+    fixopt(dep) unless opt.directory? or ARGV.ignore_deps?
+  end
 
-  keg_only_deps.each do |dep|
-    opt = HOMEBREW_PREFIX/:opt/dep.name
-    fixopt(dep) unless opt.directory?
-    if not superenv?
+  if superenv?
+    ENV.deps = keg_only_deps.map(&:to_s)
+    ENV.all_deps = deps.map(&:to_s)
+    ENV.x11 = f.recursive_requirements.detect { |rq| rq.kind_of?(X11Dependency) }
+    ENV.setup_build_environment
+    post_superenv_hacks(f)
+    f.recursive_requirements.each(&:modify_build_environment)
+  else
+    ENV.setup_build_environment
+    f.recursive_requirements.each(&:modify_build_environment)
+
+    keg_only_deps.each do |dep|
+      opt = dep.opt_prefix
       ENV.prepend_path 'PATH', "#{opt}/bin"
       ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
       ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
@@ -110,14 +122,6 @@ def install f
       ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
     end
   end
-
-  if superenv?
-    ENV.deps = keg_only_deps.map(&:to_s)
-    ENV.x11 = f.recursive_requirements.detect{|rq| rq.class == X11Dependency }
-    ENV.setup_build_environment
-  end
-
-  f.recursive_requirements.each { |req| req.modify_build_environment }
 
   if f.fails_with? ENV.compiler
     cs = CompilerSelector.new f
@@ -142,34 +146,36 @@ def install f
       end
 
       interactive_shell f
-      nil
     else
       f.prefix.mkpath
-      f.install
-      FORMULA_META_FILES.each do |filename|
-        next if File.directory? filename
-        target_file = filename
-        target_file = "#{filename}.txt" if File.exists? "#{filename}.txt"
-        # Some software symlinks these files (see help2man.rb)
-        target_file = Pathname.new(target_file).resolved_path
-        f.prefix.install target_file => filename rescue nil
-        (f.prefix+file).chmod 0644 rescue nil
+
+      begin
+        f.install
+      rescue Exception => e
+        if ARGV.debug?
+          debrew e, f
+        else
+          raise e
+        end
       end
+
+      # Find and link metafiles
+      f.prefix.install_metafiles Pathname.pwd
     end
   end
 end
 
 def fixopt f
   path = if f.linked_keg.directory? and f.linked_keg.symlink?
-    f.linked_keg.readlink
+    f.linked_keg.realpath
   elsif f.prefix.directory?
     f.prefix
-  elsif (kids = f.rack.children).size == 1
+  elsif (kids = f.rack.children).size == 1 and kids.first.directory?
     kids.first
   else
     raise
   end
   Keg.new(path).optlink
 rescue StandardError
-  "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
+  raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
 end

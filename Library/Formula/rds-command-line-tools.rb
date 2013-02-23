@@ -2,15 +2,18 @@ require 'formula'
 
 class RdsCommandLineTools < AmazonWebServicesFormula
   homepage 'http://aws.amazon.com/developertools/2928'
-  url      'http://s3.amazonaws.com/rds-downloads/RDSCli-1.8.002.zip'
-  md5      'e695e43a1bd3b124f729ffd98959ecf9'
+  url 'https://s3.amazonaws.com/rds-downloads/RDSCli-1.10.003.zip'
+  sha1 '668cd776e88f76084164811cb4cab3e6373009dc'
 
   def install
-    standard_install
+    rm Dir['bin/*.cmd'] # Remove Windows command files
+    libexec.install "bin", "lib"
+    bin.install_symlink Dir["#{libexec}/bin/*"]
+    (bin/'service').unlink # Don't keep this symlink
   end
 
   def caveats
-    s = standard_instructions "AWS_RDS_HOME"
+    s = standard_instructions "AWS_RDS_HOME", libexec
     s += <<-EOS.undent
 
       To check that your setup works properly, run the following command:

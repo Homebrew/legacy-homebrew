@@ -2,8 +2,8 @@ require 'formula'
 
 class Tcpflow < Formula
   homepage 'https://github.com/simsong/tcpflow'
-  url 'https://github.com/downloads/simsong/tcpflow/tcpflow-1.2.7.tar.gz'
-  sha1 'e7e71a34afb4d557ebe80e2d589f00d4afd38be4'
+  url 'https://github.com/downloads/simsong/tcpflow/tcpflow-1.3.0.tar.gz'
+  sha1 'fccd0a451bf138e340fc3b55dfc07924c0a811d8'
 
   depends_on :libtool
 
@@ -20,11 +20,15 @@ class Tcpflow < Formula
       s = Formula.factory('libtool').share
       d = "#{s}/libtool/config"
       cp ["#{d}/config.guess", "#{d}/config.sub"], "."
+<<<<<<< HEAD
     elsif MacOS.leopard?
 <<<<<<< HEAD
 <<<<<<< HEAD
       cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config.*"], "."
 =======
+=======
+    elsif MacOS.version == :leopard
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
       cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config.*"], "."
 >>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
 =======

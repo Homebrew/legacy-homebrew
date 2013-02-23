@@ -7,15 +7,23 @@ class Fontforge < Formula
 
   head 'https://github.com/fontforge/fontforge.git'
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'pango'
-  depends_on 'potrace'
-  depends_on 'libspiro'
-  depends_on :x11
-  depends_on :xcode # Because: #include </Developer/Headers/FlatCarbon/Files.h>
+  env :std
 
   option 'without-python', 'Build without Python'
+  option 'with-gif',       'Build with GIF support'
+  option 'with-x',         'Build with X'
+
+  depends_on 'gettext'
+  depends_on :xcode # Because: #include </Developer/Headers/FlatCarbon/Files.h>
+
+  depends_on :libpng    => :recommended
+  depends_on 'jpeg'     => :recommended
+  depends_on 'libtiff'  => :recommended
+  depends_on :x11 if build.with? 'x'
+  depends_on 'giflib' if build.with? 'gif'
+  depends_on 'cairo' => :optional
+  depends_on 'pango' => :optional
+  depends_on 'libspiro' => :optional
 
   fails_with :llvm do
     build 2336
@@ -27,7 +35,7 @@ class Fontforge < Formula
     #         MACOSX_DEPLOYMENT_TARGET fixes ensuing Python 10.7 vs 10.8 clash.
     # Discussed: https://github.com/mxcl/homebrew/pull/14097
     # Reported:  Not yet.
-    if MacOS.mountain_lion?
+    if MacOS.version >= :mountain_lion
       ENV.macosxsdk("10.7")
       ENV.append "CFLAGS", "-isysroot #{MacOS.sdk_path(10.7)}"
       ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.8"
@@ -37,7 +45,7 @@ class Fontforge < Formula
             "--enable-double",
             "--without-freetype-bytecode"]
 
-    if build.include? "without-python"
+    if build.without? "python"
       args << "--without-python"
     else
       python_prefix = `python-config --prefix`.strip
@@ -56,11 +64,14 @@ class Fontforge < Formula
 =======
 >>>>>>> 82a1481f6fa824816bbf2bdeb53fd1933a1a15f2
     # Fix linking to correct Python library
-    ENV.prepend "LDFLAGS", "-L#{python_prefix}/lib" unless build.include? "without-python"
+    ENV.prepend "LDFLAGS", "-L#{python_prefix}/lib" unless build.without? "python"
     # Fix linker error; see: http://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
+
+    args << "--without-cairo" unless build.with? "cairo"
+    args << "--without-pango" unless build.with? "pango"
 
     system "./configure", *args
 
@@ -110,15 +121,19 @@ class Fontforge < Formula
 
 =======
 
+  def test
+    system "#{bin}/fontforge", "-version"
+  end
+
   def caveats
-    general_caveats = <<-EOS.undent
+    x_caveats = <<-EOS.undent
       fontforge is an X11 application.
 
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
       To install the Mac OS X wrapper application run:
         brew linkapps
       or:
-        ln -s #{prefix}/FontForge.app /Applications
+        ln -s #{opt_prefix}/FontForge.app /Applications
     EOS
 
     python_caveats = <<-EOS.undent
@@ -128,8 +143,9 @@ class Fontforge < Formula
         export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
     EOS
 
-    s = general_caveats
-    s += python_caveats unless build.include? "without-python"
+    s = ""
+    s += x_caveats if build.with? "x"
+    s += python_caveats unless build.without? "python"
     return s
   end
 end

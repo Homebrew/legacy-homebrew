@@ -1,10 +1,12 @@
 require 'formula'
+require 'set'
 
 class Simh < Formula
   homepage 'http://simh.trailing-edge.com/'
   url 'http://simh.trailing-edge.com/sources/simhv39-0.zip'
   sha1 '1de3938f0dcb51d55b0e53aea8ae9769ccc57bdb'
   version '3.9-0'
+
   head 'https://github.com/simh/simh.git'
 
   # After 3.9-0 the project moves to https://github.com/simh/simh
@@ -22,5 +24,13 @@ class Simh < Formula
     inreplace 'makefile', 'CFLAGS_O = -O2', "CFLAGS_O = #{ENV.cflags}"
     system "make USE_NETWORK=1 all"
     bin.install Dir['BIN/*']
+    docs = Dir['**/*.txt']
+    Set.new(docs.map {|f| File.dirname(f) }).each do |d|
+      mkpath doc+d
+    end
+    docs.each do |f|
+      cp f, doc+f
+    end
+    (share+'simh/vax').install Dir['VAX/*.{bin,exe}']
   end
 end

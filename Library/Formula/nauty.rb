@@ -4,7 +4,7 @@ class Nauty < Formula
   homepage 'http://cs.anu.edu.au/~bdm/nauty/'
   url 'http://cs.anu.edu.au/~bdm/nauty/nauty24r2.tar.gz'
   version '24r2'
-  md5 '53f83420491a32e3fe9b03a44c559a89'
+  sha1 '3f012beb399a9340f77d0104bf1c9bf1100e8286'
 
   option 'run-tests', "Runs the included test programs"
 

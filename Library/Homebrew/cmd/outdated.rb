@@ -5,7 +5,7 @@ module Homebrew extend self
   def outdated
     outdated_brews do |f|
       if $stdout.tty? and not ARGV.flag? '--quiet'
-        versions = f.rack.subdirs.map { |d| Keg.new(d).version }
+        versions = f.rack.subdirs.map { |d| Keg.new(d).version }.sort
         puts "#{f.name} (#{versions*', '} < #{f.version})"
       else
         puts f.name

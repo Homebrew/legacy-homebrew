@@ -2,8 +2,8 @@ require 'formula'
 
 class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
-  url 'http://www.apache.org/dyn/closer.cgi?path=couchdb/releases/1.2.0/apache-couchdb-1.2.0.tar.gz'
-  md5 'a5cbbcaac288831b3d8a08b725657f10'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/1.2.1/apache-couchdb-1.2.1.tar.gz'
+  sha1 '70dac0304cdc9f4313f524db583170a2c59e265c'
 
   head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
@@ -11,7 +11,7 @@ class Couchdb < Formula
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
-  depends_on 'curl' if MacOS.leopard?
+  depends_on 'curl' if MacOS.version == :leopard
 
   def install
     system "./bootstrap" if File.exists? "bootstrap"
@@ -36,7 +36,7 @@ class Couchdb < Formula
         curl http://127.0.0.1:5984/
 
       The reply should look like:
-        {"couchdb":"Welcome","version":"1.2.0"}
+        {"couchdb":"Welcome","version":"1.2.1"}
     EOS
   end
 

@@ -2,14 +2,11 @@ require 'formula'
 
 class Antlr < Formula
   homepage 'http://www.antlr.org/'
-  url "http://www.antlr.org/download/antlr-3.4-complete.jar"
-  md5 '1b91dea1c7d480b3223f7c8a9aa0e172'
+  url 'http://www.antlr.org/download/antlr-4.0-complete.jar'
+  sha1 '6186fb2d530fa822251224250cbf55a238f248ac'
 
   def install
-    prefix.install "antlr-3.4-complete.jar"
-    (bin+"antlr-3.4").write <<-EOS.undent
-    #!/bin/sh
-    java -jar #{prefix}/antlr-3.4-complete.jar "$@"
-    EOS
+    prefix.install "antlr-4.0-complete.jar"
+    bin.write_jar_script prefix/"antlr-4.0-complete.jar", "antlr4"
   end
 end

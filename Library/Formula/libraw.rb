@@ -44,7 +44,6 @@ class Libraw < Formula
       filename = 'RAW_NIKON_D1.NEF'
       system "#{bin}/raw-identify", "-u", filename
       system "#{bin}/simple_dcraw", "-v", "-T", filename
-      system "/usr/bin/qlmanage", "-p", "#{filename}.tiff"
     end
   end
 end

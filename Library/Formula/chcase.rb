@@ -3,7 +3,7 @@ require 'formula'
 class Chcase < ScriptFileFormula
   url 'http://www.primaledge.ca/chcase'
   version '2.0'
-  md5 '6d7e35fd597c60ba5ebbdd8d5e57eee7'
+  sha1 'ec81ad76d85cf9162d422e801092ddc5e0841e39'
   homepage 'http://www.primaledge.ca/chcase.html'
 
   def patches

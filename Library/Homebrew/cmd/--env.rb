@@ -26,7 +26,7 @@ module Homebrew extend self
       HOMEBREW_USE_GCC HOMEBREW_USE_LLVM HOMEBREW_SVN HOMEBREW_GIT
       HOMEBREW_SDKROOT
       MAKE GIT CPP
-      ACLOCAL_PATH OBJC PATH ].select{ |key| env[key] }
+      ACLOCAL_PATH OBJC PATH ].select{ |key| env.fetch(key) if env.key? key }
   end
 
   def dump_build_env env

@@ -7,6 +7,7 @@ class Cpansearch < Formula
 
   head 'https://github.com/c9s/cpansearch.git'
 
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
 
   def install
@@ -16,7 +17,7 @@ class Cpansearch < Formula
 
   def caveats; <<-EOS.undent
     For usage instructions:
-        more #{prefix}/README.md
+        more #{opt_prefix}/README.md
     EOS
   end
 end

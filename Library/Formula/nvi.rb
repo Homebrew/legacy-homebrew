@@ -3,11 +3,9 @@ require 'formula'
 class Nvi < Formula
   homepage 'https://sites.google.com/a/bostic.com/keithbostic/nvi'
   url 'http://www.kotnet.org/~skimo/nvi/devel/nvi-1.81.6.tar.bz2'
-  md5 '88d1e23115ee9f2961186b62e55f5704'
+  sha1 'd3445ed69166102735335a2ff60d092d9a9143c6'
 
   depends_on 'berkeley-db'
-
-  skip_clean :all
 
   def patches
     DATA

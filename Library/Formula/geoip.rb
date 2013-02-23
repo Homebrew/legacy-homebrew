@@ -24,4 +24,8 @@ class Geoip < Formula
                           "--prefix=#{prefix}"
     system "make install"
   end
+
+  test do
+    system "#{bin}/geoiplookup", '8.8.8.8'
+  end
 end

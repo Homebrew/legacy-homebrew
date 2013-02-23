@@ -4,7 +4,7 @@ class Libreplaygain < Formula
   homepage 'http://www.musepack.net/'
   url 'http://files.musepack.net/source/libreplaygain_r475.tar.gz'
   version 'r475'
-  md5 'e27b3b1249b7fbae92d656d9e3d26633'
+  sha1 '7739b4b9cf46e0846663f707a9498a4db0345eaf'
 
   depends_on 'cmake' => :build
 

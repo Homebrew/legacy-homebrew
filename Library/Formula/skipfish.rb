@@ -2,8 +2,8 @@ require 'formula'
 
 class Skipfish < Formula
   homepage 'http://code.google.com/p/skipfish/'
-  url 'http://skipfish.googlecode.com/files/skipfish-2.07b.tgz'
-  sha1 'eb8811137dd474adc02a657d371c4427b28f8d97'
+  url 'http://skipfish.googlecode.com/files/skipfish-2.10b.tgz'
+  sha1 '2564162a13d02f8310eef5edcbaf74ed6043be99'
 
   depends_on 'libidn'
 
@@ -11,14 +11,14 @@ class Skipfish < Formula
     ENV.append "CFLAGS", "-I#{HOMEBREW_PREFIX}/include"
     ENV.append "LDFLAGS", "-L#{HOMEBREW_PREFIX}/lib"
 
-    chmod 0755, "config.h" # Not writeable in the tgz. Lame.
-    inreplace "config.h",
+    chmod 0755, "src/config.h" # Not writeable in the tgz. Lame.
+    inreplace "src/config.h",
       "#define ASSETS_DIR              \"assets\"",
       "#define ASSETS_DIR	       \"#{libexec}/assets\""
 
     system 'make'
     bin.install 'skipfish'
-    libexec.install %w(assets dictionaries)
+    libexec.install %w(assets dictionaries config signatures)
   end
 
   def caveats; <<-EOS.undent

@@ -4,7 +4,7 @@ class Metalua < Formula
   homepage 'http://metalua.luaforge.net/'
   url 'https://github.com/fab13n/metalua/tarball/0.5-rc2'
   version '0.5-rc2'
-  md5 'c841976b3a2fe9b7322aaca16927c9e2'
+  sha1 'f6e9596930efed78a5b54b6a2fc338a77c3b0799'
 
   head 'https://github.com/fab13n/metalua.git'
 

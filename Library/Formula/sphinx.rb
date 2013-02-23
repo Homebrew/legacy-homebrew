@@ -10,8 +10,8 @@ end
 
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.0.5-release.tar.gz'
-  md5 'e71fdb5b0c2911247d48fb30550b9584'
+  url 'http://sphinxsearch.com/files/sphinx-2.0.6-release.tar.gz'
+  sha1 'fe1b990052f961a100adba197abe806a3c1b70dc'
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
@@ -42,9 +42,14 @@ class Sphinx < Formula
     args << "--with-libstemmer"
 
     # configure script won't auto-select PostgreSQL
-    args << "--with-pgsql" if build.include?('pgsql') or which 'pg_config'
+    if build.include?('mysql') || which('mysql_config')
+      args << "--with-mysql"
+    else
+      args << "--without-mysql"
+    end
+
+    args << "--with-pgsql" if build.include?('pgsql') || which('pg_config')
     args << "--enable-id64" if build.include?('id64')
-    args << "--without-mysql" unless build.include?('mysql') or which 'mysql_config'
 
     system "./configure", *args
     system "make install"

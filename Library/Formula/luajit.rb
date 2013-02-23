@@ -2,13 +2,11 @@ require 'formula'
 
 class Luajit < Formula
   homepage 'http://luajit.org/luajit.html'
-  url 'http://luajit.org/download/LuaJIT-2.0.0-beta10.tar.gz'
-  sha1 '560d06621ea616bea1d67867faa235d608040396'
-
+  url 'http://luajit.org/download/LuaJIT-2.0.1.tar.gz'
+  sha1 '330492aa5366e4e60afeec72f15e44df8a794db5'
   head 'http://luajit.org/git/luajit-2.0.git'
 
-  # Skip cleaning both empty folders and bin/libs so external symbols still work.
-  skip_clean :all
+  skip_clean 'lib/lua/5.1', 'share/lua/5.1'
 
   option "enable-debug", "Build with debugging symbols"
 
@@ -20,11 +18,11 @@ class Luajit < Formula
     inreplace 'src/Makefile' do |f|
       f.change_make_var! 'CCOPT', '-fomit-frame-pointer'
       f.change_make_var! 'CC', ENV.cc
-      f.change_make_var! 'CCOPT_X86', ''
+      f.change_make_var! 'CCOPT_x86', ''
     end
 
     ENV.O2                          # Respect the developer's choice.
-    args = [ "PREFIX=#{prefix}" ]
+    args = ["PREFIX=#{prefix}"]
     if build.include? 'enable-debug' then
       ENV.Og if ENV.compiler == :clang
       args << 'CCDEBUG=-g'
@@ -35,13 +33,5 @@ class Luajit < Formula
     system 'make', *bldargs
     args << 'install'
     system 'make', *args            # Build requires args during install
-
-    # Non-versioned symlink
-    if build.head?
-      version = "2.0.0-beta10"
-    else
-      version = @version
-    end
-    ln_s bin+"luajit-#{version}", bin+"luajit"
   end
 end

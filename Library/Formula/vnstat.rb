@@ -3,7 +3,7 @@ require 'formula'
 class Vnstat < Formula
   homepage 'http://humdi.net/vnstat/'
   url 'http://humdi.net/vnstat/vnstat-1.11.tar.gz'
-  md5 'a5a113f9176cd61fb954f2ba297f5fdb'
+  sha1 '92494f38a752dcf60053af2a6d8977737da7e616'
 
   def install
     inreplace "src/cfg.c", '/etc/vnstat.conf', "#{etc}/vnstat.conf"

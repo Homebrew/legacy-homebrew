@@ -1,12 +1,13 @@
 require 'formula'
 
 class Paperkey < Formula
-  url 'http://www.jabberwocky.com/software/paperkey/paperkey-1.2.tar.gz'
   homepage 'http://www.jabberwocky.com/software/paperkey/'
-  md5 '84af99e3f283337722336571c630da93'
+  url 'http://www.jabberwocky.com/software/paperkey/paperkey-1.2.tar.gz'
+  sha1 '069bb0bdba28682f9fedcd446ae5d1b7633b9788'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make"
     system "make check"
     system "make install"

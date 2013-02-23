@@ -3,8 +3,8 @@ require 'formula'
 class When < Formula
   homepage 'http://www.lightandmatter.com/when/when.html'
   url 'http://www.lightandmatter.com/when/when.tar.gz'
-  md5 'e094bcff1e5a267094f14a50b673aab4'
-  version '1.1.29'
+  sha1 '5f48fa1bc8cd700cf7d9d59f701db8b466b3e457'
+  version '1.1.30'
 
   def install
     bin.install 'when'

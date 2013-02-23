@@ -1,6 +1,8 @@
 require 'formula'
 
 class NoBdb5 < Requirement
+  satisfy(:build_env => false) { !Formula.factory("berkeley-db").installed? }
+
   def message; <<-EOS.undent
     This software can fail to compile when Berkeley-DB 5.x is installed.
     You may need to try:
@@ -9,18 +11,14 @@ class NoBdb5 < Requirement
       brew link berkeley-db
     EOS
   end
-  def satisfied?
-    f = Formula.factory("berkeley-db")
-    not f.installed?
-  end
 end
 
 class Dsniff < Formula
-  url 'http://monkey.org/~dugsong/dsniff/beta/dsniff-2.4b1.tar.gz'
   homepage 'http://monkey.org/~dugsong/dsniff/'
-  md5 '2f761fa3475682a7512b0b43568ee7d6'
+  url 'http://monkey.org/~dugsong/dsniff/beta/dsniff-2.4b1.tar.gz'
+  sha1 '25cfea26e9bbe016451180758a49d4d5bc9317d3'
 
-  depends_on NoBdb5.new
+  depends_on NoBdb5
   depends_on 'libnet'
   depends_on 'libnids'
 

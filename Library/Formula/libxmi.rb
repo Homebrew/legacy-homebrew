@@ -4,7 +4,7 @@ class Libxmi < Formula
   homepage 'http://www.gnu.org/software/libxmi/'
   url 'http://ftpmirror.gnu.org/libxmi/libxmi-1.2.tar.gz'
   mirror 'http://ftp.gnu.org/libxmi/libxmi-1.2.tar.gz'
-  md5 '4e6935484f0ad71b531920bf4c546b47'
+  sha1 '62fa13ec4c8b706729c2553122e44f81715f3c0b'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

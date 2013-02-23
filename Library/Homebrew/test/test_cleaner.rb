@@ -1,5 +1,6 @@
 require 'testing_env'
 require 'cleaner'
+require 'formula'
 
 class CleanerTestBall < Formula
   url "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"

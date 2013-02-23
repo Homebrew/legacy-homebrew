@@ -2,9 +2,9 @@ require 'formula'
 
 class Libpgm < Formula
   homepage 'http://code.google.com/p/openpgm/'
-  url 'http://openpgm.googlecode.com/files/libpgm-5.2.119%7Edfsg.tar.gz'
-  sha1 '8ac7e61716a7911ec8c1608cea8cf59d841b2d9d'
-  version '5.2.119'
+  url 'http://openpgm.googlecode.com/files/libpgm-5.2.122%7Edfsg.tar.gz'
+  sha1 '788efcb223a05bb68b304bcdd3c37bb54fe4de28'
+  version '5.2.122'
 
   option :universal
 

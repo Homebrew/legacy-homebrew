@@ -19,7 +19,7 @@ class BottleTests < Test::Unit::TestCase
       f = SnowLeopardBottleSpecTestBall.new
 
       assert_equal case MacOS.cat
-        when :snowleopard then f.bottle
+        when :snow_leopard then f.bottle
         else f.stable
         end, f.active_spec
 

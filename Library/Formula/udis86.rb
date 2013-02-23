@@ -3,7 +3,7 @@ require 'formula'
 class Udis86 < Formula
   homepage 'http://udis86.sourceforge.net'
   url 'http://downloads.sourceforge.net/udis86/udis86-1.7.tar.gz'
-  md5 'e279108e10f774e6c3af83caa18f5dc3'
+  sha1 '1a9949e33024542a24a948af5d9cbee34ff64695'
 
   option :universal
 

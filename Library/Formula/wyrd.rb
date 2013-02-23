@@ -1,9 +1,9 @@
 require 'formula'
 
 class Wyrd < Formula
-  url 'http://pessimization.com/software/wyrd/wyrd-1.4.5.tar.gz'
   homepage 'http://pessimization.com/software/wyrd/'
-  md5 '3f39fa83a54d2d890823094aba9ca3cc'
+  url 'http://pessimization.com/software/wyrd/wyrd-1.4.5.tar.gz'
+  sha1 '97b6c03ca532e5c209c112f5fb050cafbcecce6d'
 
   depends_on 'remind'
   depends_on 'objective-caml'

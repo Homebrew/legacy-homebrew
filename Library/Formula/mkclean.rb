@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mkclean < Formula
-  url 'http://downloads.sourceforge.net/project/matroska/mkclean/mkclean-0.8.6.tar.bz2'
   homepage 'http://www.matroska.org/downloads/mkclean.html'
-  sha1 'dd59c50178c5d1b11190e466c0562ac3cd64cd71'
+  url 'http://downloads.sourceforge.net/project/matroska/mkclean/mkclean-0.8.7.tar.bz2'
+  sha1 '21d9dd829086fe13771815481b6c7beeb83aca88'
 
   def patches
     # Fixes compile error with with XCode-4.3+, a hardcoded /Developer.  Reported as:

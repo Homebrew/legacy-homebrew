@@ -2,8 +2,8 @@ require 'formula'
 
 class Logcheck < Formula
   homepage 'http://logcheck.org/'
-  url 'http://ftp.de.debian.org/debian/pool/main/l/logcheck/logcheck_1.3.14.tar.gz'
-  md5 'cbd32dbdcb877f267636205f33ede790'
+  url 'http://ftp.de.debian.org/debian/pool/main/l/logcheck/logcheck_1.3.15.tar.gz'
+  sha1 'c1fef9d602f208e5cae64d39900834c216568fb0'
 
   def install
     system "make", "install",

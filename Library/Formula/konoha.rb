@@ -2,8 +2,10 @@ require 'formula'
 
 class Konoha < Formula
   homepage 'http://www.konohascript.org/'
-  url 'http://konoha.googlecode.com/files/konoha-1.0.0-952.tar.gz'
-  sha1 'c4cfdc956bd583f8c3e8e696eeb0316ca78b1389'
+  url 'https://github.com/downloads/konoha-project/minikonoha/minikonoha-0.1.0.tar.gz'
+  sha1 '621aa1244c344a9e7be96fb6e6d067bae7f43d64'
+
+  option 'tests', 'Verify the build with make test (1 min)'
 
   depends_on 'cmake' => :build
   depends_on MPIDependency.new(:cc, :cxx)
@@ -13,9 +15,10 @@ class Konoha < Formula
 
   def install
     args = std_cmake_args + ['..']
-    cd 'build' do
+    mkdir 'build' do
       system 'cmake', *args
       system 'make'
+      system 'make test' if build.include? 'tests'
       system 'make install'
     end
   end

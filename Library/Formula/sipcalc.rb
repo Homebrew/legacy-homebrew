@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sipcalc < Formula
-  url 'http://www.routemeister.net/projects/sipcalc/files/sipcalc-1.1.5.tar.gz'
   homepage 'http://www.routemeister.net/projects/sipcalc/'
-  md5 '8d59e70d21d8f0568e310d342e3e2306'
+  url 'http://www.routemeister.net/projects/sipcalc/files/sipcalc-1.1.6.tar.gz'
+  sha1 'edc4177bf0ef7e61363ef85bbe80255448418460'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

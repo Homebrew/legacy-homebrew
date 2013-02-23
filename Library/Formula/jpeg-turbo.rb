@@ -23,10 +23,10 @@ class JpegTurbo < Formula
     system "make install"
   end
 
-  def test
-    mktemp do
-      system "#{bin}/jpegtran -crop 500x500+200+500 -transpose -perfect -outfile test.jpg /System/Library/CoreServices/DefaultDesktop.jpg"
-      system "/usr/bin/qlmanage", "-p", "test.jpg"
-    end
+  test do
+    system "#{bin}/jpegtran", "-crop", "500x500+200+500",
+                              "-transpose", "-perfect",
+                              "-outfile", "test.jpg",
+                              "/System/Library/CoreServices/DefaultDesktop.jpg"
   end
 end

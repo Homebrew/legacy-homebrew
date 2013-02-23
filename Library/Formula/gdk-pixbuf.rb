@@ -2,14 +2,15 @@ require 'formula'
 
 class GdkPixbuf < Formula
   homepage 'http://gtk.org'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.26/gdk-pixbuf-2.26.2.tar.xz'
-  sha256 '3555521050e30e2fa090bfe650910c14649b6ab0acb35a5a7eaf90fe694f1403'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.26/gdk-pixbuf-2.26.5.tar.xz'
+  sha256 '77696fd163bca95a130a1883dbd78d0ae4d782de2fc85a9a38556d13681f5c84'
 
   option :universal
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'glib'
+  depends_on 'jpeg'
   depends_on 'libtiff'
   depends_on :libpng
 

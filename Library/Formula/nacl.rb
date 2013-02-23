@@ -1,9 +1,9 @@
 require 'formula'
 
 class Nacl < Formula
-  url 'http://hyperelliptic.org/nacl/nacl-20110221.tar.bz2'
   homepage 'http://nacl.cace-project.eu'
-  md5 '7efb5715561c3d10dafd3fa97b4f2d20'
+  url 'http://hyperelliptic.org/nacl/nacl-20110221.tar.bz2'
+  sha1 '6007a6aee249f5a534ec53fddfc364601fba9629'
 
   def install
     system "./do" # This takes a while since it builds *everything*

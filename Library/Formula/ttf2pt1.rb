@@ -3,7 +3,7 @@ require 'formula'
 class Ttf2pt1 < Formula
   homepage 'http://ttf2pt1.sourceforge.net/'
   url 'http://downloads.sourceforge.net/ttf2pt1/ttf2pt1-3.4.4.tgz'
-  md5 'cb143c07cc83167875ca09ea720d4932'
+  sha1 '936771b11a740c16a8e0adb737b54b22cca18cb2'
 
   def patches
     # From MacPorts, needed to find free-type on OS X.

@@ -13,4 +13,8 @@ class Mikmod < Formula
                           "--mandir=#{man}"
     system "make install"
   end
+
+  def test
+    system "#{bin}/mikmod", "-V"
+  end
 end

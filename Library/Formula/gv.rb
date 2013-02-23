@@ -8,7 +8,7 @@ class Gv < Formula
   # Note: Switch back to ftp://ftp.gnu.org/gnu/gv/ @ gv-3.7.4.
   # This gv version from alpha was released to support libxaw3d >= 1.6.1
 
-  depends_on 'ghostscript'
+  depends_on 'ghostscript' => 'with-x11'
   depends_on :x11 => '2.7.2'
 
   skip_clean 'share/gv/safe-gs-workdir'

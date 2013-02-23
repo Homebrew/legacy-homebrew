@@ -2,8 +2,8 @@ require 'formula'
 
 class Swig < Formula
   homepage 'http://www.swig.org/'
-  url 'http://downloads.sourceforge.net/project/swig/swig/swig-2.0.7/swig-2.0.7.tar.gz'
-  sha1 '307020fb6437092e32c9c1bd9af8bccb1645b529'
+  url 'http://sourceforge.net/projects/swig/files/swig/swig-2.0.9/swig-2.0.9.tar.gz'
+  sha1 '7984bf1043f522e88ea51d4bd21c97d3c68342be'
 
   option :universal
 

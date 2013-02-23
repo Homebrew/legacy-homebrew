@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pgdbf < Formula
-  homepage 'http://pgdbf.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/pgdbf/pgdbf/0.6.1/pgdbf-0.6.1.tar.xz'
-  md5 'fc4de726f44ce403c49ef184beaffe02'
+  homepage 'https://github.com/kstrauser/pgdbf'
+  url 'http://downloads.sourceforge.net/project/pgdbf/pgdbf/0.6.2/pgdbf-0.6.2.tar.xz'
+  sha1 '36ddf162b594ac328456a21d057b787c93ec1abb'
 
   depends_on 'xz' => :build
 

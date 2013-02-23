@@ -2,8 +2,8 @@ require 'formula'
 
 class GnuProlog < Formula
   homepage 'http://www.gprolog.org/'
-  url 'http://www.gprolog.org/gprolog-1.4.1.tar.gz'
-  sha1 'f25e11dbef2467c8ea1bb16cfd20623fd2f4fad4'
+  url 'http://www.gprolog.org/gprolog-1.4.2.tar.gz'
+  sha1 '76d366910e50e56aa06c98a0a8903f98ec7f1c21'
 
   fails_with :clang do
     build 421

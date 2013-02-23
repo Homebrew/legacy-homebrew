@@ -5,6 +5,8 @@ class Libmxml < Formula
   url 'http://ftp.easysw.com/pub/mxml/2.7/mxml-2.7.tar.gz'
   sha1 'a3bdcab48307794c297e790435bcce7becb9edae'
 
+  depends_on :xcode # for docsetutil
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

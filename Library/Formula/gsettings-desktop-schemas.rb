@@ -2,10 +2,13 @@ require 'formula'
 
 class GsettingsDesktopSchemas < Formula
   homepage 'http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/3.5/gsettings-desktop-schemas-3.5.4.tar.xz'
-  sha256 '0f5686683841a9d5a2d4e1dc60392d69cf2b2920614a5d504bb2cac5daea1df2'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/3.5/gsettings-desktop-schemas-3.5.92.tar.xz'
+  sha256 '65f6e866019d41599563774bbb4b08125760d4f93abcdf7704a8ee2fa9421b2e'
 
   depends_on 'xz' => :build
+  depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
+  depends_on 'glib' => :build # Yep, for glib-mkenums
   depends_on 'gettext'
 
   def install

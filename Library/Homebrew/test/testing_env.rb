@@ -7,6 +7,7 @@
 ABS__FILE__=File.expand_path(__FILE__)
 
 $:.push(File.expand_path(__FILE__+'/../..'))
+require 'extend/fileutils'
 require 'extend/pathname'
 require 'extend/string'
 require 'exceptions'
@@ -16,22 +17,31 @@ require 'utils'
 # homebrew tree, and we do want to test everything :)
 HOMEBREW_PREFIX=Pathname.new '/private/tmp/testbrew/prefix'
 HOMEBREW_REPOSITORY=HOMEBREW_PREFIX
+HOMEBREW_LIBRARY=HOMEBREW_REPOSITORY+"Library"
 HOMEBREW_CACHE=HOMEBREW_PREFIX.parent+"cache"
 HOMEBREW_CACHE_FORMULA=HOMEBREW_PREFIX.parent+"formula_cache"
 HOMEBREW_CELLAR=HOMEBREW_PREFIX.parent+"cellar"
+HOMEBREW_LOGS = HOMEBREW_PREFIX.parent+"logs"
 HOMEBREW_USER_AGENT="Homebrew"
 HOMEBREW_WWW='http://example.com'
 HOMEBREW_CURL_ARGS = '-fsLA'
-MACOS_VERSION=10.6
+HOMEBREW_VERSION = '0.9-test'
 
-(HOMEBREW_PREFIX+'Library/Formula').mkpath
+MACOS = true
+MACOS_VERSION = 10.6
+MACOS_FULL_VERSION = '10.6.8'
+
+%w{Library/Formula Library/ENV}.each do |d|
+  HOMEBREW_REPOSITORY.join(d).mkpath
+end
+
+ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 # Test fixtures and files can be found relative to this path
 TEST_FOLDER = Pathname.new(ABS__FILE__).parent.realpath
 
-require 'fileutils'
 module Homebrew extend self
   include FileUtils
 end
@@ -59,12 +69,17 @@ unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
 end
 
 require 'test/unit' # must be after at_exit
-
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
 require 'extend/ENV'
+ARGV.extend(HomebrewArgvExtension)
 ENV.extend(HomebrewEnvExtension)
+
+begin
+  require 'rubygems'
+  require 'mocha/setup'
+rescue LoadError
+  warn 'The mocha gem is required to run some tests, expect failures'
+end
 
 module VersionAssertions
   def version v
@@ -82,4 +97,11 @@ module VersionAssertions
   def assert_version_nil url
     assert_nil Version.parse(url)
   end
+end
+
+module Test::Unit::Assertions
+  def assert_empty(obj, msg=nil)
+    assert_respond_to(obj, :empty?, msg)
+    assert(obj.empty?, msg)
+  end if RUBY_VERSION.to_f <= 1.8
 end

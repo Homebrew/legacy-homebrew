@@ -2,8 +2,8 @@ require 'formula'
 
 class Vtk < Formula
   homepage 'http://www.vtk.org'
-  url 'http://www.vtk.org/files/release/5.10/vtk-5.10.0.tar.gz'
-  sha1 '0c9a17e2f446dc78b0500dc5bbd1c6a2864a0191'
+  url 'http://www.vtk.org/files/release/5.10/vtk-5.10.1.tar.gz'
+  sha1 'deb834f46b3f7fc3e122ddff45e2354d69d2adc3'
 
   depends_on 'cmake' => :build
 <<<<<<< HEAD
@@ -26,15 +26,13 @@ class Vtk < Formula
   ]
 =======
   depends_on :x11 if build.include? 'x11'
-  depends_on  'qt'  => :optional if build.include? 'qt'
+  depends_on 'qt' if build.include? 'qt'
 
   if build.include? 'pyqt' and build.include? 'python'
     depends_on  'sip'
     depends_on  'pyqt'
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   end
-
-  skip_clean :all  # Otherwise vtkpython complains can't find symbol _environ
 
   option 'examples',  'Compile and install various examples'
   option 'python',    'Enable python wrapping of VTK classes'
@@ -43,6 +41,11 @@ class Vtk < Formula
   option 'qt-extern', 'Enable Qt4 extension via non-Homebrew external Qt4'
   option 'tcl',       'Enable Tcl wrapping of VTK classes'
   option 'x11',       'Enable X11 extension rather than OSX native Aqua'
+
+  def patches
+    # Fix bug in Wrapping/Python/setup_install_paths.py: http://vtk.org/Bug/view.php?id=13699
+    DATA
+  end
 
   def install
     args = std_cmake_args + %W[
@@ -62,38 +65,35 @@ class Vtk < Formula
     args << '-DBUILD_EXAMPLES=' + ((build.include? 'examples') ? 'ON' : 'OFF')
 
     if build.include? 'python'
+<<<<<<< HEAD
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+      args << '-DVTK_WRAP_PYTHON=ON'
+
+      # Cmake picks up the system's python dylib, even if we have a brewed one.
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
       python_prefix = `python-config --prefix`.strip
+      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+
       # Install to lib and let installer symlink to global python site-packages.
       # The path in lib needs to exist first and be listed in PYTHONPATH.
       pydir = lib/which_python/'site-packages'
       pydir.mkpath
-      ENV.prepend 'PYTHONPATH', pydir, ':'
-      args << "-DVTK_PYTHON_SETUP_ARGS='--prefix=#{prefix}'"
-      # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
-      if File.exist? "#{python_prefix}/Python"
-        # Python was compiled with --framework:
-        args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
-        if !MacOS::CLT.installed? and python_prefix.start_with? '/System/Library'
-          # For Xcode-only systems, the headers of system's python are inside of Xcode
-          args << "-DPYTHON_INCLUDE_DIR='#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/Headers'"
-        else
-          args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
-        end
-      else
-        python_version = `python-config --libs`.match('-lpython(\d+\.\d+)').captures.at(0)
-        python_lib = "#{python_prefix}/lib/libpython#{python_version}"
-        if File.exists? "#{python_lib}.a"
-          args << "-DPYTHON_LIBRARY='#{python_lib}.a'"
-        else
-          args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
-        end
-        args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
+      ENV['PYTHONPATH'] = pydir
+      args << "-DVTK_PYTHON_SETUP_ARGS:STRING='--prefix=#{prefix} --install-lib=#{pydir} --single-version-externally-managed --record=installed-files.txt'"
+
+      # For Xcode-only systems, the headers of system's python are inside of Xcode
+      if !MacOS::CLT.installed? and python_prefix.start_with? '/System/Library'
+        args << "-DPYTHON_INCLUDE_DIR='#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/Headers'"
       end
+<<<<<<< HEAD
       args << '-DVTK_WRAP_PYTHON=ON'
 <<<<<<< HEAD
       if ARGV.include? '--pyqt'
 =======
+=======
+
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
       if build.include? 'pyqt'
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
         args << '-DVTK_WRAP_PYTHON_SIP=ON'
@@ -119,7 +119,7 @@ class Vtk < Formula
 =======
     args << '-DVTK_WRAP_TCL=ON' if build.include? 'tcl'
 
-    # default to cocoa for everything except x11
+    # Cocoa for everything except x11
     if build.include? 'x11'
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
       args << '-DVTK_USE_COCOA=OFF'
@@ -185,24 +185,12 @@ class Vtk < Formula
     end
 
     (share+'vtk').install 'Examples' if build.include? 'examples'
-
-    # Finalize a couple of Python issues due to our installing into the cellar.
-    if build.include? 'python'
-      # Avoid the .egg and use the python module right away, because
-      # system python does not read .pth files from our site-packages.
-      mv pydir/'VTK-5.10.0-py2.7.egg/vtk', pydir/'vtk'
-
-      # Remove files with duplicates in /usr/local/lib/python2.7/site-packages
-      %w(site.py site.pyc easy-install.pth VTK-5.10.0-py2.7.egg).each do |f|
-        rmtree pydir/f
-      end
-    end
   end
 
   def caveats
     s = ''
     vtk = Tab.for_formula 'vtk'
-    if build.include? 'python' or vtk.installed_with? 'python'
+    if build.include? 'python' or vtk.include? 'python'
       s += <<-EOS.undent
         For non-homebrew Python, you need to amend your PYTHONPATH like so:
         export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
@@ -214,7 +202,7 @@ class Vtk < Formula
 
       EOS
     end
-    if build.include? 'examples' or vtk.installed_with? '--examples'
+    if build.include? 'examples' or vtk.include? 'examples'
       s += <<-EOS.undent
 
         The scripting examples are stored in #{HOMEBREW_PREFIX}/share/vtk
@@ -229,3 +217,18 @@ class Vtk < Formula
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end
+
+__END__
+diff --git a/Wrapping/Python/setup_install_paths.py b/Wrapping/Python/setup_install_paths.py
+index 00f48c8..014b906 100755
+--- a/Wrapping/Python/setup_install_paths.py
++++ b/Wrapping/Python/setup_install_paths.py
+@@ -35,7 +35,7 @@ def get_install_path(command, *args):
+                 option, value = string.split(arg,"=")
+                 options[option] = value
+             except ValueError:
+-                options[option] = 1
++                options[arg] = 1
+
+     # check for the prefix and exec_prefix
+     try:

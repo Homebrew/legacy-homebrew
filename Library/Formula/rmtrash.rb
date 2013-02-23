@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rmtrash < Formula
-  url 'http://www.nightproductions.net/downloads/rmtrash_source.tar.gz'
   homepage 'http://www.nightproductions.net/cli.htm'
-  md5 'fecbb879766e23ec4c918b0e13bc7e43'
+  url 'http://www.nightproductions.net/downloads/rmtrash_source.tar.gz'
+  sha1 '3e24ca03c2aadcb804681b4790177569ac83a8c6'
   version '0.3.3'
 
   def install

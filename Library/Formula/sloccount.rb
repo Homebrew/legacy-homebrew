@@ -3,7 +3,7 @@ require 'formula'
 class Sloccount < Formula
   homepage 'http://www.dwheeler.com/sloccount/'
   url 'http://www.dwheeler.com/sloccount/sloccount-2.26.tar.gz'
-  md5 '09abd6e2a016ebaf7552068a1dba1249'
+  sha1 '505031c6adfb93e454aaf8b0ee7de04122079d13'
 
   depends_on 'md5sha1sum'
 

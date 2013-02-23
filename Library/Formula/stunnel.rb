@@ -3,7 +3,7 @@ require 'formula'
 class Stunnel < Formula
   homepage 'http://www.stunnel.org/'
   url 'ftp://ftp.stunnel.org/stunnel/archive/4.x/stunnel-4.53.tar.gz'
-  md5 'ab3bfc915357d67da18c73f73610d593'
+  sha1 'c167833c23fde388db697bd3edb4444aff0e449e'
 
   # This patch installs a bogus .pem in lieu of interactive cert generation.
   # - additionally stripping carriage-returns
@@ -15,7 +15,7 @@ class Stunnel < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--disable-libwrap",
                           "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}"
+                          "--sysconfdir=#{etc}",
                           "--mandir=#{man}"
     system "make install"
   end

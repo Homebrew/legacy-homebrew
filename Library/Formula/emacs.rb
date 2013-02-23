@@ -10,6 +10,7 @@ class Emacs < Formula
   option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
   option "with-x", "Include X11 support"
   option "use-git-head", "Use Savannah git mirror for HEAD builds"
+  option "keep-ctags", "Don't remove the ctags executable that emacs provides"
 
   if build.include? "use-git-head"
     head 'http://git.sv.gnu.org/r/emacs.git'
@@ -19,18 +20,14 @@ class Emacs < Formula
 
   depends_on :x11 if build.include? "with-x"
 
-  # Stripping on Xcode 4 causes malformed object errors.
-  # Just skip everything.
-  skip_clean :all
-
   fails_with :llvm do
     build 2334
     cause "Duplicate symbol errors while linking."
   end
 
   def patches
-    if build.include? "cocoa"
-      # Fullscreen patch, works against 24.1 and HEAD.
+    # Fullscreen patch works against 24.2; already included in HEAD
+    if build.include? "cocoa" and not build.head?
       "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716"
     end
   end
@@ -65,6 +62,21 @@ class Emacs < Formula
       system "make bootstrap"
       system "make install"
       prefix.install "nextstep/Emacs.app"
+
+      # Follow MacPorts and don't install ctags from emacs. This allows vim
+      # and emacs and ctags to play together without violence.
+      unless build.include? "keep-ctags"
+        (bin/"ctags").unlink
+        (share/man/man1/"ctags.1.gz").unlink
+      end
+
+      # Replace the symlink with one that avoids starting Cocoa.
+      (bin/"emacs").unlink # Kill the existing symlink
+      (bin/"emacs").write <<-EOS.undent
+        #!/bin/bash
+        #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
+      EOS
+      (bin/"emacs").chmod 0755
     else
       if build.include? "with-x"
         # These libs are not specified in xft's .pc. See:
@@ -80,6 +92,13 @@ class Emacs < Formula
       system "./configure", *args
       system "make"
       system "make install"
+
+      # Follow MacPorts and don't install ctags from emacs. This allows vim
+      # and emacs and ctags to play together without violence.
+      unless build.include? "keep-ctags"
+        (bin/"ctags").unlink
+        (share/man/man1/"ctags.1.gz").unlink
+      end
     end
   end
 
@@ -90,14 +109,13 @@ class Emacs < Formula
         Emacs.app was installed to:
           #{prefix}
 
-        Command-line emacs can be used by setting up an alias:
-          alias emacs="#{prefix}/Emacs.app/Contents/MacOS/Emacs -nw"
-
          To link the application to a normal Mac OS X location:
            brew linkapps
          or:
            ln -s #{prefix}/Emacs.app /Applications
 
+         A command line wrapper for the cocoa app was installed to:
+          #{bin}/emacs
       EOS
     end
 
@@ -112,6 +130,12 @@ class Emacs < Formula
       http://git.savannah.gnu.org/cgit/emacs.git for the mirror's status. The Emacs
       devs do not provide support for the git mirror, and they might reject bug
       reports filed with git version information. Use it at your own risk.
+
+      Emacs creates an executable `ctags` that stomps on exuberant-ctags. In
+      order to prevent that, we remove `ctags` and its manpage from the emacs
+      build before linking. (Add the flag "--keep-ctags" to keep it.) You can
+      install exuberant-ctags via brew with `brew install ctags`.
+      (exuberant-ctags can provide both vim-style and emacs-style tags.)
     EOS
 
     return s

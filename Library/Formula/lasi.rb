@@ -3,7 +3,7 @@ require 'formula'
 class Lasi < Formula
   homepage 'http://www.unifont.org/lasi/'
   url 'http://sourceforge.net/projects/lasi/files/lasi/1.1.1%20Source/libLASi-1.1.1.tar.gz'
-  md5 'bc5161b1d820db3dbcea24ce1c2ed5ec'
+  sha1 'd17fdebf4bb4a29512e321c7af157a694dc855a0'
 
   head 'https://lasi.svn.sourceforge.net/svnroot/lasi/trunk'
 

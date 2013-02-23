@@ -3,7 +3,7 @@ require 'formula'
 class Xchat < Formula
   homepage 'http://xchat.org'
   url 'http://xchat.org/files/source/2.8/xchat-2.8.8.tar.bz2'
-  md5 '6775c44f38e84d06c06c336b32c4a452'
+  sha1 'a4ac161e4e40f4bbabc492675a1ff4380dba8d68'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'

@@ -13,9 +13,8 @@ class SdlTtf < Formula
   option :universal
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
-  depends_on 'pkg-config' => :build
   depends_on 'sdl'
-  depends_on :x11
+  depends_on :freetype
 
   def install
     ENV.universal_binary if build.universal?

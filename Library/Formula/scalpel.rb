@@ -1,11 +1,11 @@
 require 'formula'
 
 class Scalpel < Formula
-  url 'http://www.digitalforensicssolutions.com/Scalpel/scalpel-2.0.tar.gz'
   homepage 'http://www.digitalforensicssolutions.com/Scalpel/'
-  md5 'b0da813bf34941e79209d7fafe86a6e6'
-  depends_on 'tre'
+  url 'http://www.digitalforensicssolutions.com/Scalpel/scalpel-2.0.tar.gz'
+  sha1 '4cc1164c75471c75f7dfa91c81ccef7eb15142f1'
 
+  depends_on 'tre'
 
   def install
     system "./configure", "--disable-dependency-tracking",

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 require 'set'
 
 ## This file defines dependencies and requirements.
@@ -118,19 +119,28 @@ class Dependency
 
   def to_s
     @name
+=======
+class Dependencies
+  include Enumerable
+
+  def initialize(*args)
+    @deps = Array.new(*args)
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
   end
 
-  def ==(other_dep)
-    @name == other_dep.to_s
+  def each(*args, &block)
+    @deps.each(*args, &block)
   end
 
-  def <=>(other_dep)
-    @name <=> other_dep.to_s
+  def <<(o)
+    @deps << o unless @deps.include? o
+    self
   end
 
-  def options
-    @tags.select{|p|p.start_with? '--'}
+  def empty?
+    @deps.empty?
   end
+<<<<<<< HEAD
 end
 
 
@@ -384,15 +394,19 @@ end
 
 class XCodeDependency < Requirement
   def fatal?; true; end
+=======
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
-  def satisfied?
-    MacOS::Xcode.installed?
+  def *(arg)
+    @deps * arg
   end
 
-  def message; <<-EOS.undent
-    A full installation of XCode.app is required to compile this software.
-    Installing just the Command Line Tools is not sufficent.
-    EOS
+  def to_a
+    @deps
   end
+<<<<<<< HEAD
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+  alias_method :to_ary, :to_a
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 end

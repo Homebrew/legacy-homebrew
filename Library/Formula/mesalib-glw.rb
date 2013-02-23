@@ -1,17 +1,13 @@
 require 'formula'
 
 class MesalibGlw < Formula
-  url 'http://downloads.sourceforge.net/project/mesa3d/MesaLib/7.2/MesaLib-7.2.tar.gz'
   homepage 'http://www.mesa3d.org'
-  md5 '81a2a4b7cbfce7553f7ad8d924edbe2f'
+  url 'http://downloads.sourceforge.net/project/mesa3d/MesaLib/7.2/MesaLib-7.2.tar.gz'
+  sha1 '6390ece818ec6fecacaafe3618ae844cf5f92b92'
 
   depends_on :x11
 
-  def options
-    [
-      ['--enable-static', "build static library"]
-    ]
-  end
+  option 'enable-static', "Build static library"
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",
@@ -21,7 +17,7 @@ class MesalibGlw < Formula
     args << "--disable-glu"
     args << "--disable-glut"
 
-    if ARGV.include? '--enable-static'
+    if build.include? 'enable-static'
       args << "--enable-static"
     end
 

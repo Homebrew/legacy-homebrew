@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rubber < Formula
-  url 'http://launchpad.net/rubber/trunk/1.1/+download/rubber-20100306.tar.gz'
   homepage 'https://launchpad.net/rubber/'
-  md5 'f3e41773853db232630d4a71636b2ba4'
+  url 'http://launchpad.net/rubber/trunk/1.1/+download/rubber-20100306.tar.gz'
+  sha1 'cd382a19cc9fc65d114456ec9d6b042dc0e65b53'
 
   def patches
     # Creates missing .in files and adds them to the configure phase

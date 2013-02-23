@@ -1,13 +1,10 @@
+require 'open-uri'
+require 'vendor/multi_json'
+
 class AbstractDownloadStrategy
   def initialize name, package
     @url = package.url
-    @specs = package.specs
-
-    case @specs
-    when Hash
-      @spec = @specs.keys.first # only use first spec
-      @ref = @specs.values.first
-    end
+    @spec, @ref = package.specs.dup.shift
   end
 
   def expand_safe_system_args args
@@ -32,7 +29,8 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  attr_reader :tarball_path
+  attr_reader :tarball_path, :local_bottle_path
+  attr_writer :local_bottle_path
 
   def initialize name, package
     super
@@ -43,42 +41,51 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     else
       @tarball_path=HOMEBREW_CACHE+File.basename(@url)
     end
+    @temporary_path=Pathname.new(@tarball_path.to_s + ".incomplete")
   end
 
   def cached_location
     @tarball_path
   end
 
+  def downloaded_size
+    @temporary_path.size? or 0
+  end
+
   # Private method, can be overridden if needed.
   def _fetch
-    curl @url, '-o', @tarball_path
+    curl @url, '-C', downloaded_size, '-o', @temporary_path
   end
 
   def fetch
+    if @local_bottle_path
+      @tarball_path = @local_bottle_path
+      return @local_bottle_path
+    end
+
     ohai "Downloading #{@url}"
     unless @tarball_path.exist?
       begin
         _fetch
-      rescue Exception => e
-        ignore_interrupts { @tarball_path.unlink if @tarball_path.exist? }
-        if e.kind_of? ErrorDuringExecution
-          raise CurlDownloadStrategyError, "Download failed: #{@url}"
-        else
-          raise
-        end
+      rescue ErrorDuringExecution
+        raise CurlDownloadStrategyError, "Download failed: #{@url}"
       end
+      ignore_interrupts { @temporary_path.rename(@tarball_path) }
     else
       puts "Already downloaded: #{@tarball_path}"
     end
-    return @tarball_path # thus performs checksum verification
   rescue CurlDownloadStrategyError
     raise if @mirrors.empty?
     puts "Trying a mirror..."
     @url = @mirrors.shift
     retry
+  else
+    @tarball_path
   end
 
   def stage
+    ohai "Pouring #{File.basename(@tarball_path)}" if @tarball_path.to_s.match bottle_regex
+
     case @tarball_path.compression_type
     when :zip
       quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
@@ -98,6 +105,9 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :rar
       raise "You must install unrar: brew install unrar" unless which "unrar"
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, @tarball_path
+    when :p7zip
+      raise "You must install 7zip: brew install p7zip" unless which "7zr"
+      safe_system '7zr', 'x', @tarball_path
     else
       # we are assuming it is not an archive, use original filename
       # this behaviour is due to ScriptFileFormula expectations
@@ -106,7 +116,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       # behaviour, just open an issue at github
       # We also do this for jar files, as they are in fact zip files, but
       # we don't want to unzip them
-      FileUtils.mv @tarball_path, File.basename(@url)
+      FileUtils.cp @tarball_path, File.basename(@url)
     end
   end
 
@@ -137,19 +147,13 @@ end
 # Detect and download from Apache Mirror
 class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   def _fetch
-    # Fetch mirror list site
-    require 'open-uri'
-    mirror_list = open(@url).read()
+    mirrors = MultiJson.decode(open("#{@url}&asjson=1").read)
+    url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
 
-    # Parse out suggested mirror
-    #   Yep, this is ghetto, grep the first <strong></strong> element content
-    mirror_url = mirror_list[/<strong>([^<]+)/, 1]
-
-    raise "Couldn't determine mirror. Try again later." if mirror_url.nil?
-
-    ohai "Best Mirror #{mirror_url}"
-    # Start download from that mirror
-    curl mirror_url, '-o', @tarball_path
+    ohai "Best Mirror #{url}"
+    curl url, '-C', downloaded_size, '-o', @temporary_path
+  rescue IndexError, MultiJson::DecodeError
+    raise "Couldn't determine mirror. Try again later."
   end
 end
 
@@ -158,7 +162,7 @@ end
 class CurlPostDownloadStrategy < CurlDownloadStrategy
   def _fetch
     base_url,data = @url.split('?')
-    curl base_url, '-d', data, '-o', @tarball_path
+    curl base_url, '-d', data, '-C', downloaded_size, '-o', @temporary_path
   end
 end
 
@@ -183,7 +187,7 @@ end
 # Try not to need this, as we probably won't accept the formula.
 class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
-    curl @url, '--insecure', '-o', @tarball_path
+    curl @url, '--insecure', '-C', downloaded_size, '-o', @temporary_path
   end
 end
 
@@ -192,18 +196,8 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
   def initialize name, package
     super
     @tarball_path = HOMEBREW_CACHE/"#{name}-#{package.version}#{ext}"
-
-    unless @tarball_path.exist?
-      # Stop people redownloading bottles just because I (Mike) was stupid.
-      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{package.version}-bottle.tar.gz"
-      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{package.version}.#{MacOS.cat}.bottle-bottle.tar.gz" unless old_bottle_path.exist?
-      old_bottle_path = HOMEBREW_CACHE/"#{name}-#{package.version}-7.#{MacOS.cat}.bottle.tar.gz" unless old_bottle_path.exist? or name != "imagemagick"
-      FileUtils.mv old_bottle_path, @tarball_path if old_bottle_path.exist?
-    end
-  end
-  def stage
-    ohai "Pouring #{File.basename(@tarball_path)}"
-    super
+    mirror = ENV['HOMEBREW_SOURCEFORGE_MIRROR']
+    @url = "#{@url}?use_mirror=#{mirror}" if mirror
   end
 end
 
@@ -317,55 +311,26 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     @clone
   end
 
-  def support_depth?
-    @spec != :revision and host_supports_depth?
-  end
-
-  def host_supports_depth?
-    @url =~ %r(git://) or @url =~ %r(https://github.com/)
-  end
-
   def fetch
     raise "You must: brew install git" unless which "git"
 
-    ohai "Cloning #{@url}"
+    ohai "Cloning #@url"
 
-    if @clone.exist?
+    if @clone.exist? && repo_valid?
+      puts "Updating #@clone"
       Dir.chdir(@clone) do
-        # Check for interupted clone from a previous install
-        unless system @@git, 'status', '-s'
-          puts "Removing invalid .git repo from cache"
-          FileUtils.rm_rf @clone
-        end
+        config_repo
+        update_repo
+        checkout
+        reset
+        update_submodules if submodules?
       end
-    end
-
-    unless @clone.exist?
-      # Note: first-time checkouts are always done verbosely
-      clone_args = [@@git, 'clone']
-      clone_args << '--depth' << '1' if support_depth?
-
-      case @spec
-      when :branch, :tag
-        clone_args << '--branch' << @ref
-      end
-
-      clone_args << @url << @clone
-      safe_system(*clone_args)
+    elsif @clone.exist?
+      puts "Removing invalid .git repo from cache"
+      FileUtils.rm_rf @clone
+      clone_repo
     else
-      puts "Updating #{@clone}"
-      Dir.chdir(@clone) do
-        safe_system @@git, 'config', 'remote.origin.url', @url
-
-        safe_system @@git, 'config', 'remote.origin.fetch', case @spec
-          when :branch then "+refs/heads/#{@ref}:refs/remotes/origin/#{@ref}"
-          when :tag then "+refs/tags/#{@ref}:refs/tags/#{@ref}"
-          else '+refs/heads/master:refs/remotes/origin/master'
-          end
-
-        git_args = [@@git, 'fetch', 'origin']
-        quiet_safe_system(*git_args)
-      end
+      clone_repo
     end
   end
 
@@ -373,29 +338,115 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     dst = Dir.getwd
     Dir.chdir @clone do
       if @spec and @ref
-        ohai "Checking out #{@spec} #{@ref}"
-        case @spec
-        when :branch
-          nostdout { quiet_safe_system @@git, 'checkout', "origin/#{@ref}", '--' }
-        when :tag, :revision
-          nostdout { quiet_safe_system @@git, 'checkout', @ref, '--' }
-        end
+        ohai "Checking out #@spec #@ref"
       else
-        # otherwise the checkout-index won't checkout HEAD
-        # https://github.com/mxcl/homebrew/issues/7124
-        # must specify origin/HEAD, otherwise it resets to the current local HEAD
-        quiet_safe_system @@git, "reset", "--hard", "origin/HEAD"
+        reset
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
       safe_system @@git, 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
-      # check for submodules
-      if File.exist?('.gitmodules')
-        safe_system @@git, 'submodule', 'init'
-        safe_system @@git, 'submodule', 'update'
-        sub_cmd = "#{@@git} checkout-index -a -f \"--prefix=#{dst}/$path/\""
-        safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
-      end
+      checkout_submodules(dst) if submodules?
     end
+  end
+
+  private
+
+  def git_dir
+    @clone.join(".git")
+  end
+
+  def has_ref?
+    quiet_system @@git, '--git-dir', git_dir, 'rev-parse', '-q', '--verify', @ref
+  end
+
+  def support_depth?
+    @spec != :revision and host_supports_depth?
+  end
+
+  def host_supports_depth?
+    @url =~ %r{git://} or @url =~ %r{https://github.com/}
+  end
+
+  def repo_valid?
+    quiet_system @@git, "--git-dir", git_dir, "status", "-s"
+  end
+
+  def submodules?
+    @clone.join(".gitmodules").exist?
+  end
+
+  def clone_args
+    args = %w{clone}
+    args << '--depth' << '1' if support_depth?
+
+    case @spec
+    when :branch, :tag then args << '--branch' << @ref
+    end
+
+    args << @url << @clone
+  end
+
+  def refspec
+    case @spec
+    when :branch then "+refs/heads/#@ref:refs/remotes/origin/#@ref"
+    when :tag    then "+refs/tags/#@ref:refs/tags/#@ref"
+    else              "+refs/heads/master:refs/remotes/origin/master"
+    end
+  end
+
+  def config_repo
+    safe_system @@git, 'config', 'remote.origin.url', @url
+    safe_system @@git, 'config', 'remote.origin.fetch', refspec
+  end
+
+  def update_repo
+    unless @spec == :tag && has_ref?
+      quiet_safe_system @@git, 'fetch', 'origin'
+    end
+  end
+
+  def clone_repo
+    safe_system @@git, *clone_args
+    @clone.cd { update_submodules } if submodules?
+  end
+
+  def checkout_args
+    ref = case @spec
+          when :branch, :tag, :revision then @ref
+          else `git symbolic-ref refs/remotes/origin/HEAD`.strip.split("/").last
+          end
+
+    args = %w{checkout -f}
+    args << { :quiet_flag => '-q' }
+    args << ref
+  end
+
+  def checkout
+    nostdout { quiet_safe_system @@git, *checkout_args }
+  end
+
+  def reset_args
+    ref = case @spec
+          when :branch then "origin/#@ref"
+          when :revision, :tag then @ref
+          else "origin/HEAD"
+          end
+
+    args = %w{reset}
+    args << { :quiet_flag => "-q" }
+    args << "--hard" << ref
+  end
+
+  def reset
+    quiet_safe_system @@git, *reset_args
+  end
+
+  def update_submodules
+    safe_system @@git, 'submodule', 'update', '--init'
+  end
+
+  def checkout_submodules(dst)
+    sub_cmd = %W{#@@git checkout-index -a -f --prefix=#{dst}/$path/}
+    safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', *sub_cmd
   end
 end
 
@@ -458,19 +509,27 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location; @clone; end
 
+  def hgpath
+    @path ||= %W[
+      #{which("hg")}
+      #{HOMEBREW_PREFIX}/bin/hg
+      #{HOMEBREW_PREFIX}/share/python/hg
+      ].find { |p| File.executable? p }
+  end
+
   def fetch
-    raise "You must install Mercurial: brew install mercurial" unless which "hg"
+    raise "You must: brew install mercurial" unless hgpath
 
     ohai "Cloning #{@url}"
 
     unless @clone.exist?
       url=@url.sub(%r[^hg://], '')
-      safe_system 'hg', 'clone', url, @clone
+      safe_system hgpath, 'clone', url, @clone
     else
       puts "Updating #{@clone}"
       Dir.chdir(@clone) do
-        safe_system 'hg', 'pull'
-        safe_system 'hg', 'update'
+        safe_system hgpath, 'pull'
+        safe_system hgpath, 'update'
       end
     end
   end
@@ -480,9 +539,9 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
     Dir.chdir @clone do
       if @spec and @ref
         ohai "Checking out #{@spec} #{@ref}"
-        safe_system 'hg', 'archive', '--subrepos', '-y', '-r', @ref, '-t', 'files', dst
+        safe_system hgpath, 'archive', '--subrepos', '-y', '-r', @ref, '-t', 'files', dst
       else
-        safe_system 'hg', 'archive', '--subrepos', '-y', '-t', 'files', dst
+        safe_system hgpath, 'archive', '--subrepos', '-y', '-t', 'files', dst
       end
     end
   end
@@ -497,17 +556,24 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location; @clone; end
 
+  def bzrpath
+    @path ||= %W[
+      #{which("bzr")}
+      #{HOMEBREW_PREFIX}/bin/bzr
+      ].find { |p| File.executable? p }
+  end
+
   def fetch
-    raise "You must install bazaar first" unless which "bzr"
+    raise "You must: brew install bazaar" unless bzrpath
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
       url=@url.sub(%r[^bzr://], '')
       # 'lightweight' means history-less
-      safe_system 'bzr', 'checkout', '--lightweight', url, @clone
+      safe_system bzrpath, 'checkout', '--lightweight', url, @clone
     else
       puts "Updating #{@clone}"
-      Dir.chdir(@clone) { safe_system 'bzr', 'update' }
+      Dir.chdir(@clone) { safe_system bzrpath, 'update' }
     end
   end
 
@@ -522,10 +588,10 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
     #  if @spec and @ref
     #    ohai "Checking out #{@spec} #{@ref}"
     #    Dir.chdir @clone do
-    #      safe_system 'bzr', 'export', '-r', @ref, dst
+    #      safe_system bzrpath, 'export', '-r', @ref, dst
     #    end
     #  else
-    #    safe_system 'bzr', 'export', dst
+    #    safe_system bzrpath, 'export', dst
     #  end
     #end
   end
@@ -540,47 +606,49 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location; @clone; end
 
+  def fossilpath
+    @path ||= %W[
+      #{which("fossil")}
+      #{HOMEBREW_PREFIX}/bin/fossil
+      ].find { |p| File.executable? p }
+  end
+
   def fetch
-    raise "You must install fossil first" unless which "fossil"
+    raise "You must: brew install fossil" unless fossilpath
 
     ohai "Cloning #{@url}"
     unless @clone.exist?
       url=@url.sub(%r[^fossil://], '')
-      safe_system 'fossil', 'clone', url, @clone
+      safe_system fossilpath, 'clone', url, @clone
     else
       puts "Updating #{@clone}"
-      safe_system 'fossil', 'pull', '-R', @clone
+      safe_system fossilpath, 'pull', '-R', @clone
     end
   end
 
   def stage
     # TODO: The 'open' and 'checkout' commands are very noisy and have no '-q' option.
-    safe_system 'fossil', 'open', @clone
+    safe_system fossilpath, 'open', @clone
     if @spec and @ref
       ohai "Checking out #{@spec} #{@ref}"
-      safe_system 'fossil', 'checkout', @ref
+      safe_system fossilpath, 'checkout', @ref
     end
   end
 end
 
 class DownloadStrategyDetector
-  def initialize url, strategy=nil
-    @url = url
-    @strategy = strategy
-  end
-
-  def detect
-    if @strategy.is_a? Class and @strategy.ancestors.include? AbstractDownloadStrategy
-      @strategy
-    elsif @strategy.is_a? Symbol then detect_from_symbol
-    else detect_from_url
+  def self.detect(url, strategy=nil)
+    if strategy.is_a? Class and strategy.ancestors.include? AbstractDownloadStrategy
+      strategy
+    elsif strategy.is_a? Symbol
+      detect_from_symbol(strategy)
+    else
+      detect_from_url(url)
     end
   end
 
-  private
-
-  def detect_from_url
-    case @url
+  def self.detect_from_url(url)
+    case url
       # We use a special URL pattern for cvs
     when %r[^cvs://] then CVSDownloadStrategy
       # Standard URLs
@@ -599,15 +667,15 @@ class DownloadStrategyDetector
     when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
       # Common URL patterns
     when %r[^https?://svn\.] then SubversionDownloadStrategy
-    when bottle_native_regex, bottle_regex, old_bottle_regex
+    when bottle_native_regex, bottle_regex
       CurlBottleDownloadStrategy
       # Otherwise just try to download
     else CurlDownloadStrategy
     end
   end
 
-  def detect_from_symbol
-    case @strategy
+  def self.detect_from_symbol(symbol)
+    case symbol
     when :bzr then BazaarDownloadStrategy
     when :curl then CurlDownloadStrategy
     when :cvs then CVSDownloadStrategy
@@ -617,7 +685,7 @@ class DownloadStrategyDetector
     when :post then CurlPostDownloadStrategy
     when :svn then SubversionDownloadStrategy
     else
-      raise "Unknown download strategy #{@strategy} was requested."
+      raise "Unknown download strategy #{strategy} was requested."
     end
   end
 end

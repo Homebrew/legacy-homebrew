@@ -3,7 +3,7 @@ require 'formula'
 class Fondu < Formula
   homepage 'http://fondu.sourceforge.net/'
   url 'http://fondu.sourceforge.net/fondu_src-060102.tgz'
-  md5 'e20861beacddc1ab392bef7813641bf8'
+  sha1 '4fa5438df935f15f0370802f94a04e8d1263061b'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

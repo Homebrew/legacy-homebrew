@@ -3,7 +3,7 @@ require 'formula'
 class Tinyproxy < Formula
   homepage 'https://www.banu.com/tinyproxy/'
   url 'https://www.banu.com/pub/tinyproxy/1.8/tinyproxy-1.8.3.tar.bz2'
-  md5 '292ac51da8ad6ae883d4ebf56908400d'
+  sha1 '2538fbd190d3dc357a2e7c2a07ea0fbefb768a13'
 
   skip_clean 'var/run'
 

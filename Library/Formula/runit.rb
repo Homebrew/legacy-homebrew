@@ -3,7 +3,7 @@ require 'formula'
 class Runit < Formula
   homepage 'http://smarden.org/runit'
   url 'http://smarden.org/runit/runit-2.1.1.tar.gz'
-  md5 '8fa53ea8f71d88da9503f62793336bc3'
+  sha1 '8eee39639dcb79ba251ca4ab2c7cde38059f09c2'
 
   def install
     # Runit untars to 'admin/runit-VERSION'

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Strategoxt < Formula
-  url 'ftp://ftp.stratego-language.org/pub/stratego/StrategoXT/strategoxt-0.17/strategoxt-0.17.tar.gz'
   homepage 'http://strategoxt.org/Stratego/WebHome'
-  md5 '6a1523ec105c5091a8174b276aceea1b'
+  url 'ftp://ftp.stratego-language.org/pub/stratego/StrategoXT/strategoxt-0.17/strategoxt-0.17.tar.gz'
+  sha1 '65fbd0a394917747366ce5c7c83ba6e3883cbb5c'
 
   depends_on 'aterm'
   depends_on 'sdf'

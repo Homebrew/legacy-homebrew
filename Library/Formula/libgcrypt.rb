@@ -7,6 +7,8 @@ class Libgcrypt < Formula
 
   depends_on 'libgpg-error'
 
+  option :universal
+
   def patches
     if ENV.compiler == :clang
       {:p0 =>
@@ -15,13 +17,13 @@ class Libgcrypt < Formula
   end
 
   def cflags
-    cflags = "#{ENV['CFLAGS']}"
-    cflags += '-std=gnu89 -fheinous-gnu-extensions' if ENV.compiler == :clang
-    cflags  
+    cflags = ENV.cflags.to_s
+    cflags += ' -std=gnu89 -fheinous-gnu-extensions' if ENV.compiler == :clang
+    cflags
   end
 
   def install
-    ENV.universal_binary # build fat so wine can use it
+    ENV.universal_binary if build.universal?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

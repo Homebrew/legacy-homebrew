@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module Homebrew extend self
 
   def link
@@ -7,27 +9,47 @@ module Homebrew extend self
       raise "Cowardly refusing to `sudo brew link'\n#{SUDO_BAD_ERRMSG}"
     end
 
-    if ARGV.force? then mode = :force
-    elsif ARGV.dry_run? then mode = :dryrun
-    else mode = nil
-    end
+    mode = OpenStruct.new
+
+    mode.overwrite = true if ARGV.include? '--overwrite'
+    mode.dry_run = true if ARGV.dry_run?
 
     ARGV.kegs.each do |keg|
       if keg.linked?
         opoo "Already linked: #{keg}"
+        puts "To relink: brew unlink #{keg.fname} && brew link #{keg.fname}"
         next
       end
 
-      if mode == :dryrun
+      if mode.dry_run and mode.overwrite
         print "Would remove:\n" do
+          keg.link(mode)
+        end
+
+        next
+      elsif mode.dry_run
+        print "Would link:\n" do
           keg.link(mode)
         end
 
         next
       end
 
-      print "Linking #{keg}... " do
-        puts "#{keg.link(mode)} symlinks created"
+      begin
+        f = Formula.factory(keg.fname)
+        if f.keg_only? and not ARGV.force?
+          opoo "#{keg.fname} is keg-only and must be linked with --force"
+          puts "Note that doing so can interfere with building software."
+          next
+        end
+      rescue
+        # Nothing to see here
+      end
+
+      keg.lock do
+        print "Linking #{keg}... " do
+          puts "#{keg.link(mode)} symlinks created"
+        end
       end
     end
   end

@@ -2,16 +2,14 @@ require 'formula'
 
 class XmlrpcC < Formula
   homepage 'http://xmlrpc-c.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-1.16.42.tgz'
-  sha1 '7a71fabc652c2848a7226605432a2e420a02dff0'
+  url 'http://downloads.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-1.16.44.tgz'
+  sha1 '181c54ac860698ed7cf4e3814c6f3c6dd46b2ce1'
 
   def patches
     # Backport patch for deprecated curl/types.h include, which is gone on 10.8
     # On 10.6 and 10.7 it's empty, so could probably patch unconditionally
     # see http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=636457#10
-    if MacOS.mountain_lion?
-      DATA
-    end
+    DATA if MacOS.version >= :mountain_lion
   end
 
   def install

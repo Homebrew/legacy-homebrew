@@ -3,7 +3,7 @@ require 'formula'
 class Pcrexx < Formula
   homepage 'http://www.daemon.de/PCRE'
   url 'http://www.daemon.de/idisk/Apps/pcre++/pcre++-0.9.5.tar.gz'
-  md5 '1fe6ea8e23ece01fde2ce5fb4746acc2'
+  sha1 '7cb640555c6adf34bf366139b22f6d1a66bd1fb0'
 
   depends_on 'pcre'
 

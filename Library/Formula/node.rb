@@ -1,39 +1,48 @@
 require 'formula'
 
+class PythonVersion < Requirement
+  env :userpaths
+
+  satisfy { `python -c 'import sys;print(sys.version[:3])'`.strip.to_f >= 2.6 }
+
+  def message;
+    "Node's build system, gyp, requires Python 2.6 or newer."
+  end
+end
+
 class NpmNotInstalled < Requirement
+  fatal true
+
   def modules_folder
     "#{HOMEBREW_PREFIX}/lib/node_modules"
   end
 
   def message; <<-EOS.undent
-      The homebrew node recipe now (beginning with 0.8.0) comes with npm.
-      It appears you already have npm installed at #{modules_folder}/npm.
-      To use the npm that comes with this recipe,
-        first uninstall npm with `npm uninstall npm -g`.
-        Then run this command again.
+    The homebrew node recipe now (beginning with 0.8.0) comes with npm.
+    It appears you already have npm installed at #{modules_folder}/npm.
+    To use the npm that comes with this recipe,
+      first uninstall npm with `npm uninstall npm -g`.
+      Then run this command again.
 
-      If you would like to keep your installation of npm instead of
-        using the one provided with homebrew,
-        install the formula with the --without-npm option added.
+    If you would like to keep your installation of npm instead of
+      using the one provided with homebrew,
+      install the formula with the --without-npm option added.
     EOS
   end
 
-  def satisfied?
+  satisfy :build_env => false do
     begin
-      path = Pathname.new("#{modules_folder}/npm")
-      not path.realpath.to_s.include?(HOMEBREW_CELLAR)
-    rescue Exception => e
+      path = Pathname.new("#{modules_folder}/npm/bin/npm")
+      path.realpath.to_s.include?(HOMEBREW_CELLAR)
+    rescue Errno::ENOENT
       true
     end
-  end
-
-  def fatal?
-    true
   end
 end
 
 class Node < Formula
   homepage 'http://nodejs.org/'
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   url 'http://nodejs.org/dist/v0.8.2/node-v0.8.2.tar.gz'
@@ -46,12 +55,22 @@ class Node < Formula
   url 'http://nodejs.org/dist/v0.8.8/node-v0.8.8.tar.gz'
   sha1 '5ddafc059d2f774e35e6375f5b61157879a46f0f'
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+  url 'http://nodejs.org/dist/v0.8.20/node-v0.8.20.tar.gz'
+  sha1 'b780f58f0e3bc43d2380d4a935f2b45350783b37'
+
+  devel do
+    url 'http://nodejs.org/dist/v0.9.10/node-v0.9.10.tar.gz'
+    sha1 '265542c15cf939b7c71a545758d835ed44d791d3'
+  end
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   head 'https://github.com/joyent/node.git'
 
   # Leopard OpenSSL is not new enough, so use our keg-only one
-  depends_on 'openssl' if MacOS.leopard?
-  depends_on NpmNotInstalled.new unless build.include? 'without-npm'
+  depends_on 'openssl' if MacOS.version == :leopard
+  depends_on NpmNotInstalled unless build.include? 'without-npm'
+  depends_on PythonVersion
 
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'
@@ -60,10 +79,14 @@ class Node < Formula
     build 2326
   end
 
-  # Stripping breaks dynamic loading
-  skip_clean :all
-
   def install
+    # Lie to `xcode-select` for now to work around a GYP bug that affects
+    # CLT-only systems:
+    #
+    #   http://code.google.com/p/gyp/issues/detail?id=292
+    #   joyent/node#3681
+    ENV['DEVELOPER_DIR'] = MacOS.dev_tools_path unless MacOS::Xcode.installed?
+
     args = %W{--prefix=#{prefix}}
     args << "--debug" if build.include? 'enable-debug'
     args << "--without-npm" if build.include? 'without-npm'

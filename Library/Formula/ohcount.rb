@@ -3,7 +3,7 @@ require 'formula'
 class Ohcount < Formula
   homepage 'http://sourceforge.net/apps/trac/ohcount/'
   url 'http://downloads.sourceforge.net/project/ohcount/ohcount-3.0.0.tar.gz'
-  md5 '08f97d01adde8b45635abfe93f8a717a'
+  sha1 '5c1357b3094881ff9804fbf3002c9aaa16494cce'
 
   depends_on 'ragel'
   depends_on 'pcre'

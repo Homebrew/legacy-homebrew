@@ -3,7 +3,7 @@ require 'formula'
 class Par2tbb < Formula
   homepage 'http://chuchusoft.com/par2_tbb/'
   url 'http://chuchusoft.com/par2_tbb/par2cmdline-0.4-tbb-20100203.tar.gz'
-  sha1 '2fcdc932b5d7b4b1c68c4a4ca855ca913d464d2f'
+  sha1 '6453ab5f0ee76800fdfdb5d10fe607250c9ea330'
 
   depends_on 'tbb'
 

@@ -8,11 +8,18 @@ class Mplayer < Formula
   head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
 
   option 'with-x', 'Build with X11 support'
+  option 'without-osd', 'Build without OSD'
 
-  depends_on 'pkg-config' => :build
   depends_on 'yasm' => :build
   depends_on 'xz' => :build
   depends_on :x11 if build.include? 'with-x'
+
+  unless build.include? 'without-osd' or build.include? 'with-x'
+    # These are required for the OSD. We can get them from X11, or we can
+    # build our own.
+    depends_on :fontconfig
+    depends_on :freetype
+  end
 
   fails_with :clang do
     build 211
@@ -49,25 +56,30 @@ class Mplayer < Formula
       --disable-libopenjpeg
     ]
 
+    args << "--enable-menu" unless build.include? 'without-osd'
     args << "--disable-x11" unless build.include? 'with-x'
 
     system "./configure", *args
     system "make"
     system "make install"
   end
+
+  def test
+    system "#{bin}/mplayer", "-ao", "null", "/System/Library/Sounds/Glass.aiff"
+  end
 end
 
 __END__
 diff --git a/configure b/configure
-index bbfcd51..5734024 100755
+index a1fba5f..5deaa80 100755
 --- a/configure
 +++ b/configure
-@@ -48,8 +48,6 @@ if test -e ffmpeg/mp_auto_pull ; then
+@@ -49,8 +49,6 @@ if test -e ffmpeg/mp_auto_pull ; then
  fi
  
  if ! test -e ffmpeg ; then
 -    echo "No FFmpeg checkout, press enter to download one with git or CTRL+C to abort"
 -    read tmp
-     if ! git clone --depth 1 git://git.videolan.org/ffmpeg.git ffmpeg ; then
+     if ! git clone --depth 1 git://source.ffmpeg.org/ffmpeg.git ffmpeg ; then
          rm -rf ffmpeg
          echo "Failed to get a FFmpeg checkout"

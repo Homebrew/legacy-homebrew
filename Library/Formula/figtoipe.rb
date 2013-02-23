@@ -1,9 +1,9 @@
 require 'formula'
 
 class Figtoipe < Formula
-  url 'http://downloads.sourceforge.net/project/ipe7/tools/figtoipe-20091205.tar.gz'
   homepage 'http://ipe7.sourceforge.net/'
-  md5 'a19e0712df137939c37c194b551da6b8'
+  url 'http://downloads.sourceforge.net/project/ipe7/tools/figtoipe-20091205.tar.gz'
+  sha1 'b81f2f0cc568e165bdedb618ced9384ebfcb19a3'
 
   def install
     system "make"

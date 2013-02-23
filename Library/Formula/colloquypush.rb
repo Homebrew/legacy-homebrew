@@ -3,7 +3,7 @@ require 'formula'
 class Colloquypush < Formula
   homepage 'https://github.com/wired/colloquypush'
   url 'https://github.com/wired/colloquypush/tarball/colloquy-znc-1.1'
-  md5 '6f696b3c36bcbc05975181e129ea8599'
+  sha1 '6e17212680332e9a1975a68a118d0fd4e8883fc2'
 
   head 'https://github.com/wired/colloquypush.git'
 

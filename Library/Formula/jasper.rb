@@ -2,10 +2,16 @@ require 'formula'
 
 class Jasper < Formula
   homepage 'http://www.ece.uvic.ca/~frodo/jasper/'
+<<<<<<< HEAD
   url 'http://www.ece.uvic.ca/~frodo/jasper/software/jasper-1.900.1.zip'
   sha1 '9c5735f773922e580bf98c7c7dfda9bbed4c5191'
 <<<<<<< HEAD
 =======
+=======
+  url 'http://download.osgeo.org/gdal/jasper-1.900.1.uuid.tar.gz'
+  sha1 'bbf30168ceae74d78e28039972657a90799e68d3'
+  version '1.900.1'
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   option :universal
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879

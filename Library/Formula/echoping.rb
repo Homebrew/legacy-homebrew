@@ -3,7 +3,7 @@ require 'formula'
 class Echoping < Formula
   homepage 'http://echoping.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/echoping/echoping/6.0.2/echoping-6.0.2.tar.gz'
-  md5 '991478532b56ab3b6f46ea9fa332626f'
+  sha1 '8b414d1dbc5a0f21a7f2cccb0138aec13117a1a4'
 
   depends_on 'popt'
   depends_on 'libidn'

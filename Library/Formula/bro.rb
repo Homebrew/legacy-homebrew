@@ -1,9 +1,9 @@
 require 'formula'
 
 class Bro < Formula
-  url 'http://www.bro-ids.org/downloads/release/bro-2.0.tar.gz'
   homepage 'http://www.bro-ids.org/'
-  md5 '2ea82a7b4cabf3ff70e26085494e527f'
+  url 'http://www.bro-ids.org/downloads/release/bro-2.1.tar.gz'
+  sha1 'c000a19831d46ecd448e1ec40ed84abfcf496b6f'
 
   depends_on 'cmake' => :build
   depends_on 'swig' => :build

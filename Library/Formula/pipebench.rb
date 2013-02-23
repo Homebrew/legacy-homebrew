@@ -3,7 +3,7 @@ require 'formula'
 class Pipebench < Formula
   homepage 'http://www.habets.pp.se/synscan/programs.php?prog=pipebench'
   url 'http://www.habets.pp.se/synscan/files/pipebench-0.40.tar.gz'
-  md5 'eb1b888ec6c413c2cb096ac052174a78'
+  sha1 '5ac405b9f1f25b39b3760fd9684533ccb778b26c'
 
   def install
     system "make"

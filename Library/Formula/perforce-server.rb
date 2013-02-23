@@ -4,13 +4,13 @@ class PerforceServer < Formula
   homepage 'http://www.perforce.com/'
 
   if MacOS.prefer_64_bit?
-    url 'http://filehost.perforce.com/perforce/r12.1/bin.darwin90x86_64/p4d'
-    version '2012.1.490371-x86_64'
-    sha1 'ac74dcfc2cd42e07f111d28b9b79f5bc4ae41e08'
+    url 'http://filehost.perforce.com/perforce/r12.2/bin.darwin90x86_64/p4d'
+    version '2012.2.551823-x86_64'
+    sha1 'df326fc5d88bdd9ab4a6fe77a86f7100b0935958'
   else
-    url 'http://filehost.perforce.com/perforce/r12.1/bin.darwin90x86/p4d'
-    version '2012.1.490371-x86'
-    sha1 '89380e86bede6cc84e29a9d8283931eb7e5fa2e6'
+    url 'http://filehost.perforce.com/perforce/r12.2/bin.darwin90x86/p4d'
+    version '2012.2.551823-x86'
+    sha1 'd70a8d19c86b75286ed5bba54241992931196f0e'
   end
 
   def install

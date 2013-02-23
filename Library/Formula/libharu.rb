@@ -3,7 +3,7 @@ require 'formula'
 class Libharu < Formula
   homepage 'http://www.libharu.org'
   url 'http://libharu.org/files/libharu-2.2.1.tar.bz2'
-  md5 '4febd7e677b1c5d54db59a608b84e79f'
+  sha1 'bfea7d9df3fb6a112340d0d54731f62f53b26d2f'
 
   depends_on :libpng
 
@@ -16,16 +16,24 @@ class Libharu < Formula
     "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/media-libs/libharu/files/libharu-2.2.1-libpng-1.5.patch?revision=1.1"
   end
 
+  def png_prefix
+    MacOS::X11.installed? ? MacOS::X11.prefix : HOMEBREW_PREFIX/:opt/:libpng
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           # libpng doesn't get picked up
 <<<<<<< HEAD
+<<<<<<< HEAD
                           "--with-png=#{MacOS::XQuartz.prefix}"
 =======
                           "--with-png=#{MacOS::X11.prefix}"
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+                          "--with-png=#{png_prefix}"
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
     system "make install"
   end
 end

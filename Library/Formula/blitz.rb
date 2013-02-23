@@ -2,8 +2,8 @@ require 'formula'
 
 class Blitz < Formula
   homepage 'http://oonumerics.org/blitz'
-  url 'http://downloads.sourceforge.net/project/blitz/blitz/Blitz%2B%2B%200.9/blitz-0.9.tar.gz'
-  sha1 '055a4bcb47903e5c2446884d2df1494ac3e24034'
+  url 'http://sourceforge.net/projects/blitz/files/blitz/Blitz%2B%2B%200.10/blitz-0.10.tar.gz'
+  sha1 '7e157ec22ed2d261e896b7de4e8e8d3bf7d780e2'
 
   head 'http://blitz.hg.sourceforge.net:8000/hgroot/blitz/blitz', :using => :hg
 

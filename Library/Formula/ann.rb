@@ -3,7 +3,7 @@ require 'formula'
 class Ann < Formula
   homepage 'http://www.cs.umd.edu/~mount/ANN/'
   url 'http://www.cs.umd.edu/~mount/ANN/Files/1.1.2/ann_1.1.2.zip'
-  md5 '31267ffbe4e6d04768b3ec21763e9343'
+  sha1 '622be90314a603ef9b2abadcf62379f73f28f46c'
 
   def install
     system "make", "macosx-g++"

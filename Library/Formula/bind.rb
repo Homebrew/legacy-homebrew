@@ -2,11 +2,11 @@ require 'formula'
 
 class Bind < Formula
   homepage 'http://www.isc.org/software/bind/'
-  url 'ftp://ftp.isc.org/isc/bind9/9.9.1-P2/bind-9.9.1-P2.tar.gz'
-  version '9.9.1-p2'
-  sha1 '449b12c32682b5bef64c7b53cd0fc0c6b731c8a7'
+  url 'ftp://ftp.isc.org/isc/bind9/9.9.2-P1/bind-9.9.2-P1.tar.gz'
+  version '9.9.2-P1'
+  sha1 '9d56db2a86dde8167f7adfb200beee0f51d771a5'
 
-  depends_on "openssl" if MacOS.leopard?
+  depends_on "openssl" if MacOS.version == :leopard
 
   def install
     ENV.libxml2
@@ -23,7 +23,7 @@ class Bind < Formula
 
     # For Xcode-only systems we help a bit to find openssl.
     # If CLT.installed?, it evaluates to "/usr", which works.
-    args << "--with-openssl=#{MacOS.sdk_path.to_s}/usr" unless MacOS.leopard?
+    args << "--with-openssl=#{MacOS.sdk_path.to_s}/usr" unless MacOS.version == :leopard
 
     system "./configure", *args
 

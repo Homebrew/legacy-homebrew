@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lsdvd < Formula
-  url 'http://downloads.sourceforge.net/project/lsdvd/lsdvd/0.16%20-%20I%20hate%20James%20Blunt/lsdvd-0.16.tar.gz'
   homepage 'http://sourceforge.net/projects/lsdvd'
-  md5 '340e1abe5c5e5abf7ff8031e78f49ee7'
+  url 'http://downloads.sourceforge.net/project/lsdvd/lsdvd/0.16%20-%20I%20hate%20James%20Blunt/lsdvd-0.16.tar.gz'
+  sha1 'd5c0d32bfb220807ebdc0bfbb17679e7294791f4'
 
   depends_on 'libdvdread'
   depends_on 'libdvdcss' => :optional
@@ -17,7 +17,8 @@ class Lsdvd < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

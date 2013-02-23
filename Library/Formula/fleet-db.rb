@@ -1,9 +1,9 @@
 require 'formula'
 
 class FleetDb < Formula
-  url 'http://fleetdb.s3.amazonaws.com/fleetdb-standalone-0.2.0.jar'
   homepage 'http://fleetdb.org'
-  md5 'e7c0b9dd61650300e82da46bab6ee560'
+  url 'http://fleetdb.s3.amazonaws.com/fleetdb-standalone-0.2.0.jar'
+  sha1 'dcc8f10ba697e7603c4c6ae9ba93913f83de87dd'
 
   def install
     libexec.install "fleetdb-standalone-0.2.0.jar"

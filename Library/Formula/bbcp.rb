@@ -3,8 +3,8 @@ require 'formula'
 class Bbcp < Formula
   homepage 'http://www.slac.stanford.edu/%7Eabh/bbcp'
   url 'http://www.slac.stanford.edu/~abh/bbcp/bbcp.tgz'
-  version "10.08.29.00.0"
-  md5 '1ed7e42aa6b9233bcc1ef8567c4bc7f9'
+  version "12.08.17.00.0"
+  sha1 '63ada9888f77a07729bfc64bdda124ac44025b51'
 
   def install
     mkdir "bin"

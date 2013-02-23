@@ -2,9 +2,9 @@ require 'formula'
 
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/tarball/snapshot-64'
-  version '7.3-64'
-  sha1 'c8bf2d758f52a1173112138fefbf4e5ab08015ff'
+  url 'https://github.com/b4winckler/macvim/tarball/snapshot-66'
+  version '7.3-66'
+  sha1 'd11696f7089688fa96a45fc57410c60f6ca5a394'
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
@@ -12,9 +12,12 @@ class Macvim < Formula
   option "override-system-vim", "Override system vim"
   option "with-cscope", "Build with Cscope support"
   option "with-lua", "Build with Lua scripting support"
+  option "with-python3", "Build with Python 3 scripting support"
 
   depends_on 'cscope' if build.include? 'with-cscope'
   depends_on 'lua' if build.include? 'with-lua'
+
+  depends_on :xcode # For xcodebuild.
 
   def install
     # Set ARCHFLAGS so the Python app (with C extension) that is
@@ -22,6 +25,10 @@ class Macvim < Formula
     # PPC support (which isn't needed in Homebrew-supported systems.)
     arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
+
+    # If building for 10.8, make sure that CC is set to "clang".
+    # Reference: https://github.com/b4winckler/macvim/wiki/building
+    ENV.clang if MacOS.version >= :mountain_lion
 
     args = %W[
       --with-features=huge
@@ -41,6 +48,8 @@ class Macvim < Formula
       args << "--enable-luainterp"
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
     end
+
+   args << "--enable-python3interp" if build.include? "with-python3"
 
     system "./configure", *args
 
@@ -63,7 +72,7 @@ class Macvim < Formula
     bin.install "src/MacVim/mvim"
 
     # Create MacVim vimdiff, view, ex equivalents
-    executables = %w[mvimdiff mview mvimex]
+    executables = %w[mvimdiff mview mvimex gvim gvimdiff gview gvimex]
     executables += %w[vi vim vimdiff view vimex] if build.include? "override-system-vim"
     executables.each {|f| ln_s bin+'mvim', bin+f}
   end

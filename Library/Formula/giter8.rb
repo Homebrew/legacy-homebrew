@@ -1,10 +1,10 @@
 require 'formula'
 
 class Giter8 < Formula
-  url "http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-tools.sbt/sbt-launch/0.11.2/sbt-launch.jar"
   homepage 'http://github.com/n8han/giter8'
-  md5 '2886cc391e38fa233b3e6c0ec9adfa1e'
-  version '0.4.5'
+  url "https://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.12.1/sbt-launch.jar"
+  sha1 '45c28c7c6328d6ecf8e9dc51003a0f1af71516ad'
+  version '0.5.3'
 
   def exec_script
      <<-EOS
@@ -16,7 +16,7 @@ exec java -Xmx512M -jar #{prefix}/sbt-launch.jar @giter8.launchconfig "$@"
   def config_script
     <<-EOS
 [app]
-  version: 0.4.5
+  version: 0.5.3
   org: net.databinder.giter8
   name: giter8
   class: giter8.Giter8

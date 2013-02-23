@@ -3,7 +3,7 @@ require 'formula'
 class Star < Formula
   homepage 'http://cdrecord.berlios.de/old/private/star.html'
   url 'ftp://ftp.berlios.de/pub/star/star-1.5.1.tar.bz2'
-  md5 'f9a28f83702624c4c08ef1a343014c7a'
+  sha1 '62ba0e0a995fc5deb492b025ecffe58735574b8a'
 
   depends_on "smake" => :build
 
@@ -15,6 +15,12 @@ class Star < Formula
     (bin+'gnutar').unlink
     (bin+'tar').unlink
     (man1+'gnutar.1').unlink
-    (man1+'tar.1').unlink
+
+    # Remove generic smake files that clash with smake's versions
+    (include/'schily').rmtree
+    %w[libschily.a libdeflt.a libfind.a].each do |file|
+      (lib/file).unlink
+    end
+    (lib/'profiled').rmtree
   end
 end

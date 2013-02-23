@@ -2,8 +2,8 @@ require 'formula'
 
 class Io < Formula
   homepage 'http://iolanguage.com/'
-  url 'https://github.com/stevedekorte/io/tarball/2011.09.12'
-  sha1 '56720fe9b2c746ca817c15e48023b256363b3015'
+  url 'https://github.com/stevedekorte/io/archive/2011.09.12.tar.gz'
+  sha1 'edb63aa4ee87052f1512f0770e0c9a9b1ba91082'
 
   head 'https://github.com/stevedekorte/io.git'
 
@@ -11,11 +11,26 @@ class Io < Formula
   option 'without-python', 'Build without python addon'
 
   depends_on 'cmake' => :build
-  depends_on 'ossp-uuid'
   depends_on 'libevent'
-  depends_on 'yajl'
   depends_on 'libffi'
+  depends_on 'ossp-uuid'
   depends_on 'pcre'
+  depends_on 'yajl'
+  depends_on 'xz'
+
+  # Used by Bignum add-on
+  depends_on 'gmp' unless build.include? 'without-addons'
+
+  # Used by Fonts add-on
+  depends_on :freetype unless build.include? 'without-addons'
+
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      make never completes. see:
+      https://github.com/stevedekorte/io/issues/223
+    EOS
+  end
 
   # Fix recursive inline. See discussion in:
   # https://github.com/stevedekorte/io/issues/135

@@ -3,7 +3,7 @@ require 'formula'
 class Flasm < Formula
   homepage 'http://www.nowrap.de/flasm.html'
   url 'http://www.nowrap.de/download/flasm16src.zip'
-  md5 '28a4586409061b385d1cd27d3f120c0b'
+  sha1 '3b383fa042eae414c5e5608bfa91a42f44bd1a86'
   version '1.62'
 
   def install

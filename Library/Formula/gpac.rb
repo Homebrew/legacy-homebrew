@@ -47,7 +47,7 @@ class Gpac < Formula
             "--extra-ldflags=-L#{MacOS::X11.lib}"]
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
-    system "chmod +x configure"
+    chmod 0700, "configure"
     system "./configure", *args
     system "make"
     system "make install"

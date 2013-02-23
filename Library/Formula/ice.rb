@@ -29,6 +29,7 @@ class Ice < Formula
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 
+<<<<<<< HEAD
   def options
     [
       ['--doc', 'Install documentation'],
@@ -37,6 +38,10 @@ class Ice < Formula
       ['--python', 'Build python library']
     ]
   end
+=======
+  option 'doc', 'Install documentation'
+  option 'demo', 'Build demos'
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   def install
     ENV.O2
@@ -48,9 +53,14 @@ class Ice < Formula
 
     # what want we build?
     wb = 'config src include'
+<<<<<<< HEAD
     wb += ' doc' if ARGV.include? '--doc'
     wb += ' demo' if ARGV.include? '--demo'
 
+=======
+    wb += ' doc' if build.include? 'doc'
+    wb += ' demo' if build.include? 'demo'
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
     inreplace "cpp/Makefile" do |s|
       s.change_make_var! "SUBDIRS", wb
     end

@@ -16,7 +16,7 @@ class Vpnc < Formula
 
   # Patch from user @Imagesafari to enable compilation on Lion
   def patches
-    DATA if MacOS.lion?
+    DATA if MacOS.version >= :lion
   end
 
   def install

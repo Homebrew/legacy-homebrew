@@ -1,9 +1,9 @@
 require 'formula'
 
 class Hiredis < Formula
-  homepage 'https://github.com/antirez/hiredis'
-  url 'https://github.com/antirez/hiredis/tarball/v0.11.0'
-  sha1 '70ad9dd6d946563925ea8aecd64882a0f046ab05'
+  homepage 'https://github.com/redis/hiredis'
+  url 'https://github.com/redis/hiredis/tarball/v0.11.0'
+  sha1 '26eb4459943530b4be66fd253c5c8f4dd86c2fa3'
 
   def install
     # Architecture isn't detected correctly on 32bit Snow Leopard without help

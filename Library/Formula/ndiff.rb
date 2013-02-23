@@ -3,7 +3,7 @@ require 'formula'
 class Ndiff < Formula
   homepage 'http://www.math.utah.edu/~beebe/software/ndiff/'
   url 'ftp://ftp.math.utah.edu/pub/misc/ndiff-2.00.tar.gz'
-  md5 '885548b4dc26e72c5455bebb5ba6c16d'
+  sha1 'b9ef2eb0de0cd26c3c92e0b3342d0ea4c37e8975'
 
   def install
     ENV.j1

@@ -2,8 +2,8 @@ require 'formula'
 
 class Chkrootkit < Formula
   homepage 'http://www.chkrootkit.org/'
-  url 'ftp://ftp.pangeia.com.br/pub/seg/pac/chkrootkit-0.49.tar.gz'
-  md5 '304d840d52840689e0ab0af56d6d3a18'
+  url 'http://ftp.de.debian.org/debian/pool/main/c/chkrootkit/chkrootkit_0.49.orig.tar.gz'
+  sha1 'cec1a3c482b95b20d3a946b07fffb23290abc4a6'
 
   def install
     chmod 0644, 'Makefile' # Makefile is read-only

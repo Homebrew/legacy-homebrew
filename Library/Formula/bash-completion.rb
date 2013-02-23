@@ -20,7 +20,6 @@ class BashCompletion < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
-
     unless (compdir/'brew_bash_completion.sh').exist?
       compdir.install_symlink HOMEBREW_CONTRIB/'brew_bash_completion.sh'
     end

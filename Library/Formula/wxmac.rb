@@ -1,15 +1,17 @@
 require 'formula'
 
 class FrameworkPython < Requirement
-  def message; <<-EOS.undent
-    Python needs to be built as a framework.
-    EOS
-  end
-  def satisfied?
+  fatal true
+  env :userpaths
+
+  satisfy do
     q = `python -c "import distutils.sysconfig as c; print(c.get_config_var('PYTHONFRAMEWORK'))"`
     not q.chomp.empty?
   end
-  def fatal?; true; end
+
+  def message
+    "Python needs to be built as a framework."
+  end
 end
 
 class Wxmac < Formula
@@ -36,8 +38,12 @@ class Wxmac < Formula
 
   option 'no-python', 'Do not build Python bindings'
 
+<<<<<<< HEAD
   depends_on FrameworkPython.new unless build.include? "no-python"
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+  depends_on FrameworkPython unless build.include? "no-python"
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   def install_wx_python
     args = [
@@ -45,8 +51,9 @@ class Wxmac < Formula
       "WX_CONFIG=#{bin}/wx-config",
       # At this time Wxmac is installed Unicode only
       "UNICODE=1",
-      # And thus we have no need for multiversion support
-      "INSTALL_MULTIVERSION=0",
+      # Some scripts (e.g. matplotlib) expect to `import wxversion`, which is
+      # only available on a multiversion build. Besides that `import wx` still works.
+      "INSTALL_MULTIVERSION=1",
       # OpenGL and stuff
       "BUILD_GLCANVAS=1",
       "BUILD_GIZMOS=1",

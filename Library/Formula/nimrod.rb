@@ -1,9 +1,9 @@
 require 'formula'
 
 class Nimrod < Formula
-  homepage 'http://force7.de/nimrod/'
-  url 'http://force7.de/nimrod/download/nimrod_0.8.14.zip'
-  md5 '3b89c11e4071bf492134c8f4258ebd5d'
+  homepage 'http://nimrod-code.org/'
+  url 'http://nimrod-code.org/download/nimrod_0.9.0.zip'
+  sha1 '5fdfcfa8ccab19093ec0d01fc0d956e6a273f13f'
 
   head 'https://github.com/Araq/Nimrod.git'
 

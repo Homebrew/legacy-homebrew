@@ -2,16 +2,17 @@ require 'formula'
 
 class Libtiff < Formula
   homepage 'http://www.remotesensing.org/libtiff/'
-  url 'http://download.osgeo.org/libtiff/tiff-4.0.2.tar.gz'
-  sha256 'aa29f1f5bfe3f443c3eb4dac472ebde15adc8ff0464b83376f35e3b2fef935da'
+  url 'http://download.osgeo.org/libtiff/tiff-4.0.3.tar.gz'
+  sha256 'ea1aebe282319537fb2d4d7805f478dd4e0e05c33d0928baba76a7c963684872'
 
   option :universal
 
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--without-x",
-                          "--prefix=#{prefix}"
+                          "--disable-lzma"
     system "make install"
   end
 end

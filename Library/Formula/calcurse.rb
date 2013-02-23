@@ -1,11 +1,16 @@
 require 'formula'
 
 class Calcurse < Formula
-  url 'http://calcurse.org/files/calcurse-2.9.2.tar.gz'
   homepage 'http://calcurse.org/'
-  md5 '5cb7d9c9edddc551fc62c9c5733591c5'
+  url 'http://calcurse.org/files/calcurse-2.9.2.tar.gz'
+  sha1 'ab59b3275a9b7eb9184797f9e998e64783b03ceb'
 
   depends_on 'gettext'
+
+  fails_with :clang do
+    build 421
+    cause "Issue with macro expansion in htable.h"
+  end
 
   def install
     # need this flag otherwise there is a build error.

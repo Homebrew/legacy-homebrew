@@ -3,7 +3,7 @@ require 'formula'
 class Nload < Formula
   homepage 'http://www.roland-riegel.de/nload/'
   url 'http://www.roland-riegel.de/nload/nload-0.7.4.tar.gz'
-  md5 '3c733c528f244ca5a4f76bf185729c39'
+  sha1 'bb0a168c93c588ad4fd5e3a653b3620b79ada1e8'
 
   fails_with :llvm do
     build 2334

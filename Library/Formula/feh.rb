@@ -2,11 +2,11 @@ require 'formula'
 
 class Feh < Formula
   homepage 'http://feh.finalrewind.org/'
-  url 'http://feh.finalrewind.org/feh-2.5.tar.bz2'
-  sha1 'd1bf7fa8ec6b5d1ce16c291edf38d45de01f252d'
+  url 'http://feh.finalrewind.org/feh-2.9.1.tar.bz2'
+  sha1 'd6effb0bb3074315114b2590722fae9712a531ad'
 
-  depends_on 'giblib' => :build
   depends_on :x11
+  depends_on 'giblib' => :build
 
   def install
     system "make", "PREFIX=#{prefix}"

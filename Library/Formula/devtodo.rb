@@ -3,7 +3,7 @@ require 'formula'
 class Devtodo < Formula
   homepage 'http://swapoff.org/DevTodo'
   url 'http://swapoff.org/files/devtodo/devtodo-0.1.20.tar.gz'
-  md5 '4a6241437cb56f237f850bcd2233c3c4'
+  sha1 '003067a12139d712dbb3706069e0950a93ecaaf4'
 
   depends_on "readline"
 

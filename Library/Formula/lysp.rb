@@ -3,7 +3,7 @@ require 'formula'
 class Lysp < Formula
   homepage 'http://www.piumarta.com/software/lysp/'
   url 'http://www.piumarta.com/software/lysp/lysp-1.0.tar.gz'
-  md5 '1cd5df2f83956c5ce58a7394b9d8b92e'
+  sha1 '11fa500d2769c0701de5c5501c73f36331bcee02'
 
   depends_on 'bdw-gc'
 

@@ -3,7 +3,7 @@ require 'formula'
 class Mysqlreport < Formula
   homepage 'http://hackmysql.com/mysqlreport'
   url 'http://hackmysql.com/scripts/mysqlreport-3.5.tgz'
-  md5 '33a345f5e2c89b083a9ff0423f7fd7b4'
+  sha1 '00d2790a9b76422a936f96a622567aa03437b9a3'
 
   def install
     bin.install "mysqlreport"

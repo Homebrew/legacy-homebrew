@@ -2,9 +2,9 @@ require 'formula'
 
 class Gawk < Formula
   homepage 'http://www.gnu.org/software/gawk/'
-  url 'http://ftpmirror.gnu.org/gawk/gawk-4.0.1.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/gawk/gawk-4.0.1.tar.xz'
-  md5 'a601b032c39cd982f34272664f8afa49'
+  url 'http://ftpmirror.gnu.org/gawk/gawk-4.0.2.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/gawk/gawk-4.0.2.tar.xz'
+  sha1 '816277597445c4b52ab2c2084ec940e13422fb3c'
 
   depends_on 'xz' => :build
 

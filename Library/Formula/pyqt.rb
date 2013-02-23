@@ -5,7 +5,7 @@ require 'formula'
 
 class Pyqt < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  url 'http://www.riverbankcomputing.co.uk/static/Downloads/PyQt4/PyQt-mac-gpl-4.9.4.tar.gz'
+  url 'http://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.9.4/PyQt-mac-gpl-4.9.4.tar.gz'
   sha1 '3fe827fed91ec710746fa980f433313dfec2d5fd'
 
   depends_on 'sip'
@@ -32,38 +32,36 @@ class Pyqt < Formula
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 
-  def test
+  test do
+    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
+
     # Reference: http://zetcode.com/tutorials/pyqt4/firstprograms/
-    mktemp do
-      ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
+    (testpath/'test.py').write <<-EOS.undent
+      #!/usr/bin/env python
 
-      (Pathname.pwd/'test.py').write <<-EOS.undent
-        #!/usr/bin/env python
+      import sys
+      from PyQt4 import QtGui, QtCore
 
-        import sys
-        from PyQt4 import QtGui, QtCore
+      class QuitButton(QtGui.QWidget):
+          def __init__(self, parent=None):
+              QtGui.QWidget.__init__(self, parent)
 
-        class QuitButton(QtGui.QWidget):
-            def __init__(self, parent=None):
-                QtGui.QWidget.__init__(self, parent)
+              self.setGeometry(300, 300, 250, 150)
+              self.setWindowTitle('Quit button')
 
-                self.setGeometry(300, 300, 250, 150)
-                self.setWindowTitle('Quit button')
+              quit = QtGui.QPushButton('Close', self)
+              quit.setGeometry(10, 10, 60, 35)
 
-                quit = QtGui.QPushButton('Close', self)
-                quit.setGeometry(10, 10, 60, 35)
+              self.connect(quit, QtCore.SIGNAL('clicked()'),
+                  QtGui.qApp, QtCore.SLOT('quit()'))
 
-                self.connect(quit, QtCore.SIGNAL('clicked()'),
-                    QtGui.qApp, QtCore.SLOT('quit()'))
+      app = QtGui.QApplication(sys.argv)
+      qb = QuitButton()
+      qb.show()
+      app.exec_()
+      sys.exit(0)
+      EOS
 
-        app = QtGui.QApplication(sys.argv)
-        qb = QuitButton()
-        qb.show()
-        app.exec_()
-        sys.exit(0)
-        EOS
-
-      system "python", "test.py"
-    end
+    system "python", "test.py"
   end
 end

@@ -8,9 +8,6 @@ class Rhino < Formula
 
   def install
     libexec.install 'js.jar'
-    (bin+'rhino').write <<-EOS.undent
-      #!/bin/bash
-      java -jar "#{libexec}/js.jar" "$@"
-    EOS
+    bin.write_jar_script libexec/'js.jar', 'rhino'
   end
 end

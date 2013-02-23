@@ -25,7 +25,7 @@ module MacOS::Xcode extend self
       when 10.6 then "3.2.6"
     else
       if MacOS.version >= 10.7
-        "4.4.1"
+        "4.6"
       else
         raise "Mac OS X `#{MacOS.version}' is invalid"
       end
@@ -61,12 +61,7 @@ module MacOS::Xcode extend self
   end
 
   def installed?
-    # Telling us whether the Xcode.app is installed or not.
-    @installed ||= V4_BUNDLE_PATH.exist? ||
-      V3_BUNDLE_PATH.exist? ||
-      MacOS.app_with_bundle_id(V4_BUNDLE_ID) ||
-      MacOS.app_with_bundle_id(V3_BUNDLE_ID) ||
-      false
+    not prefix.nil?
   end
 
   def version
@@ -178,6 +173,7 @@ module MacOS::Xcode extend self
       "4.0"
     else
       case (MacOS.clang_version.to_f * 10).to_i
+<<<<<<< HEAD
       when 0
         "dunno"
       when 1..14
@@ -199,6 +195,20 @@ module MacOS::Xcode extend self
       else
         "4.4"
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+      when 0       then "dunno"
+      when 1..14   then "3.2.2"
+      when 15      then "3.2.4"
+      when 16      then "3.2.5"
+      when 17..20  then "4.0"
+      when 21      then "4.1"
+      when 22..30  then "4.2"
+      when 31      then "4.3"
+      when 40      then "4.4"
+      when 41      then "4.5"
+      when 42      then "4.6"
+      else "4.6"
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
       end
     end
   end
@@ -209,6 +219,14 @@ module MacOS::Xcode extend self
 
   def provides_gcc?
     version.to_f < 4.3
+  end
+
+  def default_prefix?
+    if version.to_f < 4.3
+      %r{^/Developer} === prefix
+    else
+      %r{^/Applications/Xcode.app} === prefix
+    end
   end
 end
 
@@ -226,14 +244,14 @@ module MacOS::CLT extend self
 <<<<<<< HEAD
 =======
   def latest_version?
-    `/usr/bin/clang -v 2>&1` =~ %r{tags/Apple/clang-(\d+)\.(\d+)\.(\d+)}
-    $1.to_i >= 421 and $3.to_i >= 57
+    `/usr/bin/clang --version` =~ %r{clang-(\d+)\.(\d+)\.(\d+)}
+    $1.to_i >= 425 and $3.to_i >= 24
   end
 
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   def version
     # The pkgutils calls are slow, don't repeat if no CLT installed.
-    @version if @version_determined
+    return @version if @version_determined
 
     @version_determined = true
     # Version string (a pretty damn long one) of the CLT package.

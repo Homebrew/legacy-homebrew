@@ -3,7 +3,7 @@ require 'formula'
 class Libidl < Formula
   homepage 'http://ftp.acc.umu.se/pub/gnome/sources/libIDL/0.8/'
   url 'http://ftp.acc.umu.se/pub/gnome/sources/libIDL/0.8/libIDL-0.8.14.tar.bz2'
-  md5 'bb8e10a218fac793a52d404d14adedcb'
+  sha1 'abedf091bef0c7e65162111baf068dcb739ffcd3'
 
   option :universal
 

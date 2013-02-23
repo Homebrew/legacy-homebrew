@@ -2,8 +2,8 @@ require 'formula'
 
 class Yamdi < Formula
   homepage 'http://yamdi.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/yamdi/yamdi/1.8/yamdi-1.8.tar.gz'
-  md5 '7562f6e28247013cd09e62c4c91272d5'
+  url 'http://sourceforge.net/projects/yamdi/files/yamdi/1.9/yamdi-1.9.tar.gz'
+  sha1 '921d23f3059fa21319b74de945bb7cf565e2d67e'
 
   def install
     system "#{ENV.cc} #{ENV.cflags} yamdi.c -o yamdi"

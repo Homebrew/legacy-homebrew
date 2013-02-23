@@ -1,9 +1,9 @@
 require 'formula'
 
 class Latex2rtf < Formula
-  url 'http://downloads.sourceforge.net/project/latex2rtf/latex2rtf-unix/2.1.0/latex2rtf-2.1.0.tar.gz'
   homepage 'http://latex2rtf.sourceforge.net/'
-  md5 'e89b78f9cfe6d83c79e657a9390e8bc9'
+  url 'http://downloads.sourceforge.net/project/latex2rtf/latex2rtf-unix/2.1.0/latex2rtf-2.1.0.tar.gz'
+  sha1 '31e6280312b56c2c38cf6a3fddff21a9910c7d6f'
 
   def install
     inreplace "Makefile" do |s|

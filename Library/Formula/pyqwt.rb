@@ -3,7 +3,7 @@ require 'formula'
 class Pyqwt < Formula
   homepage 'http://pyqwt.sourceforge.net'
   url 'http://sourceforge.net/projects/pyqwt/files/pyqwt5/PyQwt-5.2.0/PyQwt-5.2.0.tar.gz'
-  md5 'fcd6c6029090d473dcc9df497516eae7'
+  sha1 '797f37c63dec660272f6a8ccfd16a017df0ad640'
 
   depends_on 'qt'
   depends_on 'qwt'

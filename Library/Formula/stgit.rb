@@ -3,7 +3,7 @@ require 'formula'
 class Stgit < Formula
   homepage 'http://www.procode.org/stgit'
   url 'http://download.gna.org/stgit/stgit-0.16.tar.gz'
-  md5 '73ca6a7469d30d9d69fa561e16abc2a8'
+  sha1 '10b62d080a4c34c2dd11de4d1c800f62b9e5018c'
 
   def install
     system "make", "prefix=#{prefix}", "all"

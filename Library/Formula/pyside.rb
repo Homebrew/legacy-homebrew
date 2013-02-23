@@ -10,8 +10,9 @@ end
 
 class Pyside < Formula
   homepage 'http://www.pyside.org'
-  url 'http://www.pyside.org/files/pyside-qt4.8+1.1.1.tar.bz2'
-  sha1 '37b4a2f666a84e39aa4b55f8909964c73ce47123'
+  url 'http://qt-project.org/uploads/pyside/pyside-qt4.8+1.1.2.tar.bz2'
+  mirror 'https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.1.2.tar.bz2'
+  sha1 'c0119775f2500e48efebdd50b7be7543e71b2c24'
 
   depends_on 'cmake' => :build
   depends_on 'shiboken'

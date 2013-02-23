@@ -3,7 +3,7 @@ require 'formula'
 class Savana < Formula
   homepage 'http://savana.codehaus.org'
   url 'http://repository.codehaus.org/org/codehaus/savana/1.2/savana-1.2-install.tar.gz'
-  md5 'cb0d5907540799d7d48fc23ca80f6b0f'
+  sha1 '436523a5fab41f3096748de047ed4ea6d3efa3ef'
 
   def install
     # Remove Windows files
@@ -13,10 +13,7 @@ class Savana < Formula
 
     # lib/* and logging.properties are loaded relative to bin
     libexec.install %w[bin lib logging.properties]
-    (bin+'sav').write <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/sav" "$@"
-    EOS
+    bin.write_exec_script libexec/'bin/sav'
 
     (prefix+'etc/bash_completion.d').install 'etc/bash_completion' => 'savana-completion.bash'
   end

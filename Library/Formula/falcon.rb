@@ -3,7 +3,7 @@ require 'formula'
 class Falcon < Formula
   homepage 'http://www.falconpl.org/'
   url 'http://falconpl.org/project_dl/_official_rel/Falcon-0.9.6.8.tgz'
-  md5 '8435f6f2fe95097ac2fbe000da97c242'
+  sha1 '8720096a8257e8bf370e3f0a072b5600d7575f64'
 
   head 'http://git.falconpl.org/falcon.git'
 

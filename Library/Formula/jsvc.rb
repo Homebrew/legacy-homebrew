@@ -3,7 +3,7 @@ require 'formula'
 class Jsvc < Formula
   homepage 'http://commons.apache.org/daemon/jsvc.html'
   url 'http://archive.apache.org/dist/commons/daemon/source/commons-daemon-1.0.10-native-src.tar.gz'
-  md5 '36d5a1daa9d477d00cd3ad80226325c5'
+  sha1 'b76272e39fb5c4695a102227d3c52d9c717c4ede'
   version '1.0.10'
 
   def install

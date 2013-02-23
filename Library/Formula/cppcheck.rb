@@ -2,8 +2,8 @@ require 'formula'
 
 class Cppcheck < Formula
   homepage 'http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page'
-  url 'https://github.com/danmar/cppcheck/tarball/1.55'
-  sha1 '5a888427b9303420a1a583a2cb3919fb5ba3c5ce'
+  url 'https://github.com/danmar/cppcheck/tarball/1.58'
+  sha1 '628fa455c0c22daba5d9ffe2e37ecf02f46529f2'
 
   head 'https://github.com/danmar/cppcheck.git'
 
@@ -12,9 +12,6 @@ class Cppcheck < Formula
 
   depends_on 'pcre' unless build.include? 'no-rules'
   depends_on 'qt' if build.include? 'with-gui'
-
-  # Do not strip binaries, or else it fails to run.
-  skip_clean :all
 
   def install
     # Man pages aren't installed as they require docbook schemas.
@@ -42,14 +39,18 @@ class Cppcheck < Formula
     end
   end
 
+  def test
+    system "#{bin}/cppcheck", "--version"
+  end
+
   def caveats; <<-EOS.undent
     --with-gui installs cppcheck-gui.app in:
       #{bin}
 
     To link the application to a normal Mac OS X location:
-        brew linkapps
+      brew linkapps
     or:
-        ln -s #{bin}/cppcheck-gui.app /Applications
+      ln -s #{bin}/cppcheck-gui.app /Applications
     EOS
   end
 end

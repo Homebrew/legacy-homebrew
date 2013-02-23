@@ -3,7 +3,7 @@ require 'formula'
 class Flvstreamer < Formula
   homepage 'http://www.nongnu.org/flvstreamer/'
   url 'http://download.savannah.gnu.org/releases-noredirect/flvstreamer/source/flvstreamer-2.1c1.tar.gz'
-  md5 '4866387328ad89c957af90a2478e5556'
+  sha1 '07fac3dea65d8de8afbcc3c892d7830a90b66f10'
 
   def install
     system "make posix"

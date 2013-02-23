@@ -1,9 +1,22 @@
 require 'formula'
 require 'tab'
 require 'keg'
+require 'caveats'
 
 module Homebrew extend self
   def info
+    # eventually we'll solidify an API, but we'll keep old versions
+    # awhile around for compatibility
+    if ARGV.json == "v1"
+      print_json
+    elsif ARGV.flag? '--github'
+      exec_browser *ARGV.formulae.map { |f| github_info(f) }
+    else
+      print_info
+    end
+  end
+
+  def print_info
     if ARGV.named.empty?
       if ARGV.include? "--all"
         Formula.each do |f|
@@ -17,6 +30,18 @@ module Homebrew extend self
       info_formula Formula.factory(ARGV.shift)
     else
       ARGV.formulae.each{ |f| info_formula f }
+    end
+  end
+
+  def print_json
+    require 'vendor/multi_json'
+
+    formulae = ARGV.include?("--all") ? Formula : ARGV.formulae
+    json = formulae.map {|f| f.to_hash}
+    if json.size == 1
+      puts MultiJson.encode json.pop
+    else
+      puts MultiJson.encode json
     end
   end
 
@@ -47,8 +72,6 @@ module Homebrew extend self
   end
 
   def info_formula f
-    exec 'open', github_info(f) if ARGV.flag? '--github'
-
     specs = []
     stable = "stable #{f.stable.version}" if f.stable
     stable += " (bottled)" if f.bottle and MacOS.bottles_supported?
@@ -69,6 +92,7 @@ module Homebrew extend self
 
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
 <<<<<<< HEAD
+<<<<<<< HEAD
     conflicts = []
     f.external_deps.each do |dep|
       conflicts << dep.formula if dep.is_a? ConflictRequirement
@@ -76,14 +100,18 @@ module Homebrew extend self
 =======
     conflicts = f.conflicts.map { |c| c.formula }
 >>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+    conflicts = f.conflicts.map { |c| c.formula }.sort
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
       kegs = f.rack.children
+      kegs.reject! {|keg| keg.basename.to_s == '.DS_Store' }
+      kegs = kegs.map {|keg| Keg.new(keg) }.sort_by {|keg| keg.version }
       kegs.each do |keg|
-        next if keg.basename.to_s == '.DS_Store'
         print "#{keg} (#{keg.abv})"
-        print " *" if Keg.new(keg).linked?
+        print " *" if keg.linked?
         puts
         tab = Tab.for_keg keg
         unless tab.used_options.empty?
@@ -103,10 +131,8 @@ module Homebrew extend self
       Homebrew.dump_options_for_formula f
     end
 
-    unless f.caveats.to_s.strip.empty?
-      ohai "Caveats"
-      puts f.caveats
-    end
+    c = Caveats.new(f)
+    ohai 'Caveats', c.caveats unless c.empty?
 
   rescue FormulaUnavailableError
     # check for DIY installation

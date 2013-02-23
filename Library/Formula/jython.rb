@@ -2,8 +2,8 @@ require 'formula'
 
 class Jython < Formula
   homepage 'http://www.jython.org'
-  url "http://downloads.sourceforge.net/project/jython/jython/2.5.2/jython_installer-2.5.2.jar"
-  sha1 'd4534a691edf40aa1d51723dfe3e22db1e39b432'
+  url "http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.5.3/jython-installer-2.5.3.jar"
+  sha1 '6b6ac4354733b6d68d51acf2f3d5c823a10a4ce4'
 
   devel do
     url "http://downloads.sourceforge.net/project/jython/jython-dev/2.7.0a2/jython_installer-2.7a2.jar"
@@ -11,7 +11,7 @@ class Jython < Formula
   end
 
   def install
-    system "java", "-jar", "jython_installer-#{version}.jar", "-s", "-d", libexec
+    system "java", "-jar", cached_download, "-s", "-d", libexec
     bin.install_symlink libexec/'bin/jython'
   end
 end

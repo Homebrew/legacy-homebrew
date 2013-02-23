@@ -1,30 +1,28 @@
 require 'formula'
 
 class SbclBootstrapBinaries < Formula
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.55/sbcl-1.0.55-x86-darwin-binary.tar.bz2'
-  md5 '941351112392a77dd62bdcb9fb62e4e4'
-  version "1.0.55"
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.0/sbcl-1.1.0-x86-64-darwin-binary.tar.bz2'
+  sha1 'ed2069e124027c43926728c48d604efbb4e33950'
+  version "1.1.0"
 end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.58/sbcl-1.0.58-source.tar.bz2'
-  md5 '341952949dc90af6f83a89f685da5dde'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.3/sbcl-1.1.3-source.tar.bz2'
+  sha1 '9c3027899a4d40f95549768f51f2aa010e84c009'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/sbcl-1.0.55-bottle.tar.gz'
-    sha1 '3c13225c8fe3eabf54e9d368e6b74318a5546430'
+    sha1 '1387c2961aba507cf285c74276fa5aa38fd6476f' => :mountainlion
+    sha1 'b5f26fbd0e88997429fbe1cad42143bcb19f0d4b' => :lion
+    sha1 'd5a1b5303a386871512ff4acdcf3447d460ddd8f' => :snowleopard
   end
 
   fails_with :llvm do
     build 2334
     cause "Compilation fails with LLVM."
   end
-
-  skip_clean 'bin'
-  skip_clean 'lib'
 
   option "32-bit"
   option "without-threads", "Build SBCL without support for native threads"
@@ -61,7 +59,7 @@ class Sbcl < Formula
     # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
     ENV.delete_if do |key, value|
-      value =~ /[\x80-\xff]/
+      value =~ /[\x80-\xff]/n
     end
 
     SbclBootstrapBinaries.new.brew do
@@ -78,5 +76,13 @@ class Sbcl < Formula
 
     ENV['INSTALL_ROOT'] = prefix
     system "sh install.sh"
+  end
+
+  def caveats; <<-EOS.undent
+    If you are upgrading sbcl and you have installed maxima,
+    you have to reinstall maxima:
+
+      brew rm maxima && brew install maxima
+    EOS
   end
 end

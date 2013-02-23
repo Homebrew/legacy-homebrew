@@ -3,7 +3,7 @@ require 'formula'
 class Kite < Formula
   homepage 'http://www.kite-language.org/'
   url 'http://www.kite-language.org/files/kite-1.0.4.tar.gz'
-  md5 '46b4a99d72984e8e9d330517faddd9d5'
+  sha1 '9db2adbcc3acac5f06d495002a344e613c81c3f2'
 
   depends_on 'bdw-gc'
 

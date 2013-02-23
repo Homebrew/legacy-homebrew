@@ -3,7 +3,7 @@ require 'formula'
 class Wmctrl < Formula
   homepage 'http://sweb.cz/tripie/utils/wmctrl/'
   url 'http://tomas.styblo.name/wmctrl/dist/wmctrl-1.07.tar.gz'
-  md5 '1fe3c7a2caa6071e071ba34f587e1555'
+  sha1 'a123019a7fd5adc3e393fc1108cb706268a34e4d'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

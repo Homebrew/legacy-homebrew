@@ -2,8 +2,8 @@ require 'formula'
 
 class Ldns < Formula
   homepage 'http://nlnetlabs.nl/projects/ldns/'
-  url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.13.tar.gz'
-  sha1 '859f633d10b763f06b602e2113828cbbd964c7eb'
+  url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.16.tar.gz'
+  sha1 '5b4fc6c5c3078cd061905c47178478cb1015c62a'
 
   option "python", "Build Python pydns bindings"
 

@@ -1,28 +1,36 @@
+# -*- coding: utf-8 -*-
+
 require 'exceptions'
 require 'formula'
 require 'keg'
 require 'tab'
 require 'bottles'
+require 'caveats'
 
 class FormulaInstaller
-  attr :f
-  attr :tab
-  attr :show_summary_heading, true
-  attr :ignore_deps, true
-  attr :install_bottle, true
-  attr :show_header, true
+  attr_reader :f
+  attr_accessor :tab, :options, :ignore_deps
+  attr_accessor :show_summary_heading, :show_header
 
-  def initialize ff, tab=nil
+  def initialize ff
     @f = ff
-    @tab = tab
-    @show_header = true
+    @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
-    @install_bottle = install_bottle? ff
+    @options = Options.new
 
+    @@attempted ||= Set.new
+
+    lock
     check_install_sanity
   end
 
+  def pour_bottle?
+    install_bottle?(f) && (tab.used_options.empty? rescue true) && options.empty?
+  end
+
   def check_install_sanity
+    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
+
     if f.installed?
       msg = "#{f}-#{f.installed_version} already installed"
       msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
@@ -43,7 +51,7 @@ class FormulaInstaller
     end
 
     unless ignore_deps
-      unlinked_deps = f.recursive_deps.select do |dep|
+      unlinked_deps = f.recursive_dependencies.map(&:to_formula).select do |dep|
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
       raise CannotInstallFormulaError,
@@ -70,46 +78,21 @@ class FormulaInstaller
     end
 
     unless ignore_deps
-      needed_deps = []
-      needed_reqs = []
-
-      ARGV.filter_for_dependencies do
-        needed_deps = f.recursive_deps.reject{ |d| d.installed? }
-        needed_reqs = f.recursive_requirements.reject { |r| r.satisfied? }
+      # HACK: If readline is present in the dependency tree, it will clash
+      # with the stdlib's Readline module when the debugger is loaded
+      if f.recursive_deps.any? { |d| d.name == "readline" } and ARGV.debug?
+        ENV['HOMEBREW_NO_READLINE'] = '1'
       end
 
-      unless needed_reqs.empty?
-        puts needed_reqs.map { |r| r.message } * "\n"
-        fatals = needed_reqs.select { |r| r.fatal? }
-        raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
-      end
-
-      unless needed_deps.empty?
-        needed_deps.each do |dep|
-          if dep.explicitly_requested?
-            install_dependency dep
-          else
-            ARGV.filter_for_dependencies do
-              # Re-create the formula object so that args like `--HEAD` won't
-              # affect properties like the installation prefix. Also need to
-              # re-check installed status as the Formula may have changed.
-              dep = Formula.factory dep.path
-              install_dependency dep unless dep.installed?
-            end
-          end
-        end
-        # now show header as all the deps stuff has clouded the original issue
-        show_header = true
-      end
+      check_requirements
+      install_dependencies
     end
 
-    oh1 "Installing #{f}" if show_header
+    oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
-    @@attempted ||= Set.new
-    raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
     @@attempted << f
 
-    if install_bottle
+    if pour_bottle?
       pour
     else
       build
@@ -119,14 +102,93 @@ class FormulaInstaller
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
 
+  def check_requirements
+    unsatisfied = ARGV.filter_for_dependencies do
+      f.recursive_requirements do |dependent, req|
+        if req.optional? || req.recommended?
+          Requirement.prune unless dependent.build.with?(req.name)
+        elsif req.build?
+          Requirement.prune if install_bottle?(dependent)
+        end
+
+        Requirement.prune if req.satisfied?
+      end
+    end
+
+    unless unsatisfied.empty?
+      puts unsatisfied.map(&:message) * "\n"
+      fatals = unsatisfied.select(&:fatal?)
+      raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
+    end
+  end
+
+  def effective_deps
+    @deps ||= begin
+      deps = Set.new
+
+      # If a dep was also requested on the command line, we let it honor
+      # any influential flags (--HEAD, --devel, etc.) the user has passed
+      # when we check the installed status.
+      requested_deps = f.recursive_dependencies.select do |dep|
+        dep.requested? && !dep.installed?
+      end
+
+      # Otherwise, we filter these influential flags so that they do not
+      # affect installation prefixes and other properties when we decide
+      # whether or not the dep is needed.
+      necessary_deps = ARGV.filter_for_dependencies do
+        f.recursive_dependencies do |dependent, dep|
+          if dep.optional? || dep.recommended?
+            Dependency.prune unless dependent.build.with?(dep.name)
+          elsif dep.build?
+            Dependency.prune if install_bottle?(dependent)
+          end
+
+          if f.build.universal?
+            dep.universal! unless dep.build?
+          end
+
+          if dep.satisfied?
+            Dependency.prune
+          elsif dep.installed?
+            raise UnsatisfiedDependencyError.new(f, dep)
+          end
+        end
+      end
+
+      deps.merge(requested_deps)
+      deps.merge(necessary_deps)
+
+      # Now that we've determined which deps we need, map them back
+      # onto recursive_dependencies to preserve installation order
+      f.recursive_dependencies.select { |d| deps.include? d }
+    end
+  end
+
+  def install_dependencies
+    effective_deps.each do |dep|
+      if dep.requested?
+       install_dependency(dep)
+      else
+        ARGV.filter_for_dependencies { install_dependency(dep) }
+      end
+    end
+    @show_header = true unless effective_deps.empty?
+  end
+
   def install_dependency dep
     dep_tab = Tab.for_formula(dep)
+    dep_options = dep.options
+    dep = dep.to_formula
+
     outdated_keg = Keg.new(dep.linked_keg.realpath) rescue nil
 
-    fi = FormulaInstaller.new(dep, dep_tab)
+    fi = FormulaInstaller.new(dep)
+    fi.tab = dep_tab
+    fi.options = dep_options
     fi.ignore_deps = true
     fi.show_header = false
-    oh1 "Installing #{f} dependency: #{dep}"
+    oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
     fi.caveats
@@ -137,37 +199,19 @@ class FormulaInstaller
   end
 
   def caveats
-    unless f.caveats.to_s.strip.empty?
-      ohai "Caveats", f.caveats
-      @show_summary_heading = true
-    end
-
-    if f.keg_only?
-      ohai 'Caveats', f.keg_only_text
-      @show_summary_heading = true
-    else
+    if (not f.keg_only?) and ARGV.homebrew_developer?
       audit_bin
       audit_sbin
       audit_lib
       check_manpages
       check_infopages
-      check_m4
     end
 
-    keg = Keg.new(f.prefix)
+    c = Caveats.new(f)
 
-    if keg.completion_installed? :bash
-      ohai 'Caveats', <<-EOS.undent
-        Bash completion has been installed to:
-          #{HOMEBREW_PREFIX}/etc/bash_completion.d
-        EOS
-    end
-
-    if keg.completion_installed? :zsh
-      ohai 'Caveats', <<-EOS.undent
-        zsh completion has been installed to:
-          #{HOMEBREW_PREFIX}/share/zsh/site-functions
-        EOS
+    unless c.empty?
+      @show_summary_heading = true
+      ohai 'Caveats', c.caveats
     end
   end
 
@@ -177,7 +221,7 @@ class FormulaInstaller
     if f.keg_only?
       begin
         Keg.new(f.prefix).optlink
-      rescue Exception => e
+      rescue Exception
         onoe "Failed to create: #{f.opt_prefix}"
         puts "Things that depend on #{f} will probably not build."
       end
@@ -186,19 +230,38 @@ class FormulaInstaller
       check_PATH unless f.keg_only?
     end
 
+    install_plist
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
+    unless ENV['HOMEBREW_NO_EMOJI']
+      print "🍺  " if MacOS.version >= :lion
+    end
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
     puts
+
+    unlock if hold_locks?
   end
 
   def build_time
-    @build_time ||= Time.now - @start_time unless install_bottle or ARGV.interactive? or @start_time.nil?
+    @build_time ||= Time.now - @start_time unless pour_bottle? or ARGV.interactive? or @start_time.nil?
+  end
+
+  def build_argv
+    @build_argv ||= begin
+      opts = Options.coerce(ARGV.options_only)
+      unless opts.include? '--fresh'
+        opts.concat(options) # from a dependent formula
+        opts.concat((tab.used_options rescue [])) # from a previous install
+      end
+      opts << Option.new("--build-from-source") # don't download bottle
+    end
   end
 
   def build
+    FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{f}/*"]
+
     @start_time = Time.now
 
     # 1. formulae can modify ENV, so we must ensure that each
@@ -210,13 +273,6 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
-    args = ARGV.clone
-    args.concat tab.used_options unless tab.nil? or args.include? '--fresh'
-    # FIXME: enforce the download of the non-bottled package
-    # in the spawned Ruby process.
-    args << '--build-from-source'
-    args.uniq! # Just in case some dupes were added
-
     fork do
       begin
         read.close
@@ -227,7 +283,7 @@ class FormulaInstaller
              '-rbuild',
              '--',
              f.path,
-             *args.options_only
+             *build_argv
       rescue Exception => e
         Marshal.dump(e, write)
         write.close
@@ -235,7 +291,7 @@ class FormulaInstaller
       end
     end
 
-    ignore_interrupts do # the fork will receive the interrupt and marshall it back
+    ignore_interrupts(:quietly) do # the fork will receive the interrupt and marshall it back
       write.close
       Process.wait
       data = read.read
@@ -244,18 +300,14 @@ class FormulaInstaller
       raise "Suspicious installation failure" unless $?.success?
     end
 
-    # This is the installation receipt. The reason this comment is necessary
-    # is because some numpty decided to call the class Tab rather than
-    # the far more appropriate InstallationReceipt :P
-    Tab.for_install(f, args).write
+    raise "Empty installation" if Dir["#{f.prefix}/*"].empty?
 
-  rescue Exception => e
+    Tab.create(f, build_argv).write # INSTALL_RECEIPT.json
+
+  rescue Exception
     ignore_interrupts do
       # any exceptions must leave us with nothing installed
-      if f.prefix.directory?
-        puts "One sec, just cleaning up..." if e.kind_of? Interrupt
-        f.prefix.rmtree
-      end
+      f.prefix.rmtree if f.prefix.directory?
       f.rack.rmdir_if_possible
     end
     raise
@@ -283,6 +335,14 @@ class FormulaInstaller
     end
   end
 
+  def install_plist
+    return unless f.plist
+    # A plist may already exist if we are installing from a bottle
+    f.plist_path.unlink if f.plist_path.exist?
+    f.plist_path.write f.plist
+    f.plist_path.chmod 0644
+  end
+
   def fix_install_names
     Keg.new(f.prefix).fix_install_names
   rescue Exception => e
@@ -294,6 +354,7 @@ class FormulaInstaller
   end
 
   def clean
+    ohai "Cleaning" if ARGV.verbose?
     if f.class.skip_clean_all?
       opoo "skip_clean :all is deprecated"
       puts "Skip clean was commonly used to prevent brew from stripping binaries."
@@ -313,7 +374,7 @@ class FormulaInstaller
 
   def pour
     fetched, downloader = f.fetch
-    f.verify_download_integrity fetched
+    f.verify_download_integrity fetched unless downloader.local_bottle_path
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end
@@ -321,16 +382,12 @@ class FormulaInstaller
 
   ## checks
 
-  def paths
-    @paths ||= ENV['PATH'].split(':').map{ |p| File.expand_path p }
-  end
-
   def check_PATH
     # warn the user if stuff was installed outside of their PATH
     [f.bin, f.sbin].each do |bin|
       if bin.directory? and bin.children.length > 0
-        bin = (HOMEBREW_PREFIX/bin.basename).realpath.to_s
-        unless paths.include? bin
+        bin = (HOMEBREW_PREFIX/bin.basename).realpath
+        unless ORIGINAL_PATHS.include? bin
           opoo "#{bin} is not in your PATH"
           puts "You can amend this by altering your ~/.bashrc file"
           @show_summary_heading = true
@@ -341,7 +398,7 @@ class FormulaInstaller
 
   def check_manpages
     # Check for man pages that aren't in share/man
-    if (f.prefix+'man').exist?
+    if (f.prefix+'man').directory?
       opoo 'A top-level "man" directory was found.'
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
@@ -351,7 +408,7 @@ class FormulaInstaller
 
   def check_infopages
     # Check for info pages that aren't in share/info
-    if (f.prefix+'info').exist?
+    if (f.prefix+'info').directory?
       opoo 'A top-level "info" directory was found.'
       puts "Homebrew suggests that info pages live under share."
       puts 'This can often be fixed by passing "--infodir=#{info}" to configure.'
@@ -360,7 +417,7 @@ class FormulaInstaller
   end
 
   def check_jars
-    return unless File.exist? f.lib
+    return unless f.lib.directory?
 
     jars = f.lib.children.select{|g| g.to_s =~ /\.jar$/}
     unless jars.empty?
@@ -376,10 +433,10 @@ class FormulaInstaller
   end
 
   def check_non_libraries
-    return unless File.exist? f.lib
+    return unless f.lib.directory?
 
     valid_extensions = %w(.a .dylib .framework .jnilib .la .o .so
-                          .jar .prl .pm)
+                          .jar .prl .pm .sh)
     non_libraries = f.lib.children.select do |g|
       next if g.directory?
       not valid_extensions.include? g.extname
@@ -395,9 +452,9 @@ class FormulaInstaller
   end
 
   def audit_bin
-    return unless File.exist? f.bin
+    return unless f.bin.directory?
 
-    non_exes = f.bin.children.select {|g| File.directory? g or not File.executable? g}
+    non_exes = f.bin.children.select { |g| g.directory? or not g.executable? }
 
     unless non_exes.empty?
       opoo 'Non-executables were installed to "bin".'
@@ -409,9 +466,9 @@ class FormulaInstaller
   end
 
   def audit_sbin
-    return unless File.exist? f.sbin
+    return unless f.sbin.directory?
 
-    non_exes = f.sbin.children.select {|g| File.directory? g or not File.executable? g}
+    non_exes = f.sbin.children.select { |g| g.directory? or not g.executable? }
 
     unless non_exes.empty?
       opoo 'Non-executables were installed to "sbin".'
@@ -427,22 +484,28 @@ class FormulaInstaller
     check_non_libraries
   end
 
-  def check_m4
-    # Newer versions of Xcode don't come with autotools
-    return if MacOS::Xcode.version.to_f >= 4.3
+  private
 
-    # If the user has added our path to dirlist, don't complain
-    return if File.open("/usr/share/aclocal/dirlist") do |dirlist|
-      dirlist.grep(%r{^#{HOMEBREW_PREFIX}/share/aclocal$}).length > 0
-    end rescue false
+  def hold_locks?
+    @hold_locks || false
+  end
 
-    # Check for installed m4 files
-    if Dir[f.share+"aclocal/*.m4"].length > 0
-      opoo 'm4 macros were installed to "share/aclocal".'
-      puts "Homebrew does not append \"#{HOMEBREW_PREFIX}/share/aclocal\""
-      puts "to \"/usr/share/aclocal/dirlist\". If an autoconf script you use"
-      puts "requires these m4 macros, you'll need to add this path manually."
-      @show_summary_heading = true
+  def lock
+    if (@@locked ||= []).empty?
+      f.recursive_dependencies.each do |dep|
+        @@locked << dep.to_formula
+      end unless ignore_deps
+      @@locked.unshift(f)
+      @@locked.each(&:lock)
+      @hold_locks = true
+    end
+  end
+
+  def unlock
+    if hold_locks?
+      @@locked.each(&:unlock)
+      @@locked.clear
+      @hold_locks = false
     end
   end
 end

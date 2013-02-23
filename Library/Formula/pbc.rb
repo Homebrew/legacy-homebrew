@@ -1,14 +1,20 @@
 require 'formula'
 
 class Pbc < Formula
-  url 'http://crypto.stanford.edu/pbc/files/pbc-0.5.12.tar.gz'
   homepage 'http://crypto.stanford.edu/pbc/'
-  md5 '4f3f017b5709fcc46b58d1ebc6b30e3f'
+  url 'http://crypto.stanford.edu/pbc/files/pbc-0.5.12.tar.gz'
+  sha1 '6fc0815a3e7766958365df4495247049d1bf968c'
 
   depends_on 'gmp'
 
+  fails_with :clang do
+    build 421
+    cause "Clang does not support nested functions"
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Abcl < Formula
   homepage 'http://common-lisp.net/project/armedbear/'
-  url 'http://common-lisp.net/project/armedbear/releases/1.0.1/abcl-bin-1.0.1.tar.gz'
-  md5 'bd95a55df30469b4f6d85af7c5ede297'
+  url 'http://common-lisp.net/project/armedbear/releases/1.1.1/abcl-bin-1.1.1.tar.gz'
+  sha1 '44cf1446ec51b24947b71aa5551bdb560a675d42'
 
   depends_on 'rlwrap'
 

@@ -13,12 +13,18 @@ class Field3d < Formula
   def patches
     # add boost system to required boost libs
     # already reported upstream, see https://github.com/imageworks/Field3D/pull/51
+    # Remove at > 1.3.2
     DATA
   end
 
   def install
-    system "cmake", ".", '-DINSTALL_DOCS=OFF', *std_cmake_args
-    system "make install"
+    mkdir 'brewbuild' do
+      args = std_cmake_args + %w[
+        -DDOXYGEN_EXECUTABLE=NOTFOUND
+        ..]
+      system "cmake",  *args
+      system "make install"
+    end
   end
 end
 

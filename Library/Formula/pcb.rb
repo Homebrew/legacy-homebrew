@@ -10,9 +10,10 @@ class Pcb < Formula
 
   depends_on :automake
   depends_on 'pkg-config' => :build
-  depends_on 'intltool'
+  depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'd-bus'
+  depends_on 'gtk+'
   depends_on 'gd'
   depends_on 'glib'
   depends_on 'gtkglext'

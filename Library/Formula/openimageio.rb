@@ -2,7 +2,7 @@ require 'formula'
 
 class J2kp4files < Formula
   url 'http://pkgs.fedoraproject.org/repo/pkgs/openjpeg/j2kp4files_v1_5.zip/27780ed3254e6eb763ebd718a8ccc340/j2kp4files_v1_5.zip'
-  md5 '27780ed3254e6eb763ebd718a8ccc340'
+  sha1 'a90cad94abbe764918175db72b49df6d2f63704b'
 end
 
 class Tiffpic < Formula
@@ -36,8 +36,8 @@ end
 
 class Openimageio < Formula
   homepage 'http://openimageio.org'
-  url 'https://github.com/OpenImageIO/oiio/tarball/Release-1.0.8'
-  sha1 '9ac265c279392117025cc18061742c3c1392d549'
+  url 'https://github.com/OpenImageIO/oiio/tarball/Release-1.1.6'
+  sha1 '75be042f3f50ff1c558c04e1a8a256c4fdc250ad'
 
   head 'https://github.com/OpenImageIO/oiio.git'
 
@@ -68,7 +68,9 @@ class Openimageio < Formula
       chdir 'localpub'
     end
 
+    j2k = Formula.factory('openjpeg').linked_keg.realpath
     ENV.append 'MY_CMAKE_FLAGS', "-Wno-dev"   # stops a warning.
+    ENV.append 'MY_CMAKE_FLAGS', "-DOPENJPEG_INCLUDE_DIR=#{j2k}/include/openjpeg-1.5"
     args = ["USE_TBB=1", "EMBEDPLUGINS=1"]
 
 
@@ -118,7 +120,7 @@ class Openimageio < Formula
     # make is a shell wrapper for cmake crafted by the devs (who have Lion).
     system "make", *args
     system "make test" if build.include? 'with-tests'
-    # There is no working make install in 1.0.2, devel or HEAD.
+    # There is no working make install in 1.1.6, devel or HEAD.
     Dir.chdir 'dist/macosx' do
       (lib + which_python ).install 'lib/python/site-packages'
       prefix.install %w[ bin include ]

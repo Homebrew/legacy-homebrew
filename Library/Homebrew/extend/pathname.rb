@@ -5,8 +5,7 @@ require 'mach'
 class Pathname
   include MachO
 
-  BOTTLE_EXTNAME_RX = /(\.[a-z]+\.bottle\.(\d+\.)?tar\.gz)$/
-  OLD_BOTTLE_EXTNAME_RX = /((\.[a-z]+)?[\.-]bottle\.tar\.gz)$/
+  BOTTLE_EXTNAME_RX = /(\.[a-z_]+\.bottle\.(\d+\.)?tar\.gz)$/
 
   def install *sources
     results = []
@@ -126,8 +125,6 @@ class Pathname
   def extname
     BOTTLE_EXTNAME_RX.match to_s
     return $1 if $1
-    OLD_BOTTLE_EXTNAME_RX.match to_s
-    return $1 if $1
     /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
     return $1 if $1
     return File.extname(to_s)
@@ -145,6 +142,12 @@ class Pathname
     rmdir
     true
   rescue SystemCallError => e
+    # OK, maybe there was only a single `.DS_Store` file in that folder
+    if (self/'.DS_Store').exist? && self.children.length == 1
+      (self/'.DS_Store').unlink
+      retry
+    end
+
     raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno or e.errno == Errno::ENOENT::Errno
     false
   end
@@ -158,7 +161,7 @@ class Pathname
     out=''
     n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
     out<<"#{n} files, " if n > 1
-    out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
+    out<<`/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
   end
 
   def version
@@ -176,32 +179,28 @@ class Pathname
 
     # Get enough of the file to detect common file types
     # POSIX tar magic has a 257 byte offset
-    magic_bytes = nil
-    File.open(self) { |f| magic_bytes = f.read(262) }
-
     # magic numbers stolen from /usr/share/file/magic/
-    case magic_bytes
-    when /^PK\003\004/   then :zip
-    when /^\037\213/     then :gzip
-    when /^BZh/          then :bzip2
-    when /^\037\235/     then :compress
-    when /^.{257}ustar/  then :tar
-    when /^\xFD7zXZ\x00/ then :xz
-    when /^Rar!/         then :rar
+    case open { |f| f.read(262) }
+    when /^PK\003\004/n   then :zip
+    when /^\037\213/n     then :gzip
+    when /^BZh/n          then :bzip2
+    when /^\037\235/n     then :compress
+    when /^.{257}ustar/n  then :tar
+    when /^\xFD7zXZ\x00/n then :xz
+    when /^Rar!/n         then :rar
     else
       # This code so that bad-tarballs and zips produce good error messages
       # when they don't unarchive properly.
       case extname
         when ".tar.gz", ".tgz", ".tar.bz2", ".tbz" then :tar
         when ".zip" then :zip
+        when ".7z" then :p7zip
       end
     end
   end
 
   def text_executable?
-    %r[^#!\s*.+] === open('r') { |f| f.readline }
-  rescue EOFError
-    false
+    %r[^#!\s*\S+] === open('r') { |f| f.read(1024) }
   end
 
   def incremental_hash(hasher)
@@ -212,11 +211,6 @@ class Pathname
       end
     end
     incr_hash.hexdigest
-  end
-
-  def md5
-    require 'digest/md5'
-    incremental_hash(Digest::MD5)
   end
 
   def sha1
@@ -271,10 +265,10 @@ class Pathname
             Could not symlink file: #{src.expand_path}
             Target #{self} already exists. You may need to delete it.
             To force the link and delete this file, do:
-              brew link -f formula_name
+              brew link --overwrite formula_name
 
             To list all files that would be deleted:
-              brew link -n formula_name
+              brew link --overwrite --dry-run formula_name
             EOS
         elsif !dirname.writable_real?
           raise <<-EOS.undent
@@ -350,6 +344,48 @@ class Pathname
       end
     end
   end
+
+  # Writes an exec script in this folder for each target pathname
+  def write_exec_script *targets
+    targets = [targets].flatten
+    if targets.empty?
+      opoo "tried to write exec sripts to #{self} for an empty list of targets"
+    end
+    targets.each do |target|
+      target = Pathname.new(target) # allow pathnames or strings
+      (self+target.basename()).write <<-EOS.undent
+      #!/bin/bash
+      exec "#{target}" "$@"
+      EOS
+    end
+  end
+
+  # Writes an exec script that invokes a java jar
+  def write_jar_script target_jar, script_name, java_opts=""
+    (self+script_name).write <<-EOS.undent
+    #!/bin/bash
+    exec java #{java_opts} -jar #{target_jar} "$@"
+    EOS
+  end
+
+  def install_metafiles from=nil
+    # Default to current path, and make sure we have a pathname, not a string
+    from = "." if from.nil?
+    from = Pathname.new(from.to_s)
+
+    from.children.each do |p|
+      next if p.directory?
+      next unless FORMULA_META_FILES.should_copy? p
+      # Some software symlinks these files (see help2man.rb)
+      filename = p.resolved_path
+      # Some software links metafiles together, so by the time we iterate to one of them
+      # we may have already moved it. libxml2's COPYING and Copyright are affected by this.
+      next unless filename.exist?
+      filename.chmod 0644
+      self.install filename
+    end
+  end
+
 end
 
 # sets $n and $d so you can observe creation of stuff
@@ -362,12 +398,6 @@ module ObserverPathnameExtension
   def rmdir
     super
     puts "rmdir #{to_s}" if ARGV.verbose?
-    $d+=1
-  end
-  def mkpath
-    return if exist?
-    super
-    puts "mkpath #{to_s}" if ARGV.verbose?
     $d+=1
   end
   def make_relative_symlink src

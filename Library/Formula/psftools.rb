@@ -6,23 +6,22 @@ class Pc8x8Font < Formula
 end
 
 class Psftools < Formula
-  url 'http://www.seasip.info/Unix/PSF/psftools-1.0.7.tar.gz'
   homepage 'http://www.seasip.demon.co.uk/Unix/PSF/'
-  md5 '159022aae93a797dbc2a01014acbd115'
+  url 'http://www.seasip.info/Unix/PSF/psftools-1.0.7.tar.gz'
+  sha1 '4e8b2e7686532a25c18cacaeb90a8f0ed57a30c6'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 
-  def test
+  test do
     # The zip file has a fon in it, use fon2fnts to extrat to fnt
-    mktemp do
-      Pc8x8Font.new.brew do
-        system "#{bin}/fon2fnts", "pc8x8.fon"
-        raise unless File.exist? "PC8X8_9.fnt"
-      end
+    Pc8x8Font.new.brew do
+      system "#{bin}/fon2fnts", "pc8x8.fon"
+      raise unless File.exist? "PC8X8_9.fnt"
     end
   end
 end
