@@ -52,13 +52,13 @@ class Node < Formula
 
   head 'https://github.com/joyent/node.git'
 
-  # Leopard OpenSSL is not new enough, so use our keg-only one
-  depends_on 'openssl' if MacOS.version == :leopard
-  depends_on NpmNotInstalled unless build.include? 'without-npm'
-  depends_on PythonVersion
-
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'
+  option 'with-shared-libs', 'Use Homebrew V8 and system OpenSSL, zlib'
+
+  depends_on NpmNotInstalled unless build.without? 'npm'
+  depends_on PythonVersion
+  depends_on 'v8' if build.with? 'shared-libs'
 
   fails_with :llvm do
     build 2326
@@ -73,6 +73,13 @@ class Node < Formula
     ENV['DEVELOPER_DIR'] = MacOS.dev_tools_path unless MacOS::Xcode.installed?
 
     args = %W{--prefix=#{prefix}}
+
+    if build.with? 'shared-libs'
+      args << '--shared-openssl' unless MacOS.version == :leopard
+      args << '--shared-v8'
+      args << '--shared-zlib'
+    end
+
     args << "--debug" if build.include? 'enable-debug'
     args << "--without-npm" if build.include? 'without-npm'
 
