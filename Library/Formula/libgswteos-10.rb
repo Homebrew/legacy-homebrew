@@ -1,9 +1,8 @@
 require 'formula'
 #
 # TEOS-10 V3.0 GSW Oceanographic Toolbox in C
-# 
+#
 class Libgswteos10 < Formula
-  homepage ''
   url 'https://github.com/lukecampbell/gsw-teos/tarball/v3.0r3'
   homepage 'http://www.teos-10.org/'
   version '3.0'
