@@ -1,7 +1,7 @@
 require 'formula'
 
 class Hadoop < Formula
-  homepage 'http://hadoop.apache.org/common/'
+  homepage 'http://hadoop.apache.org/'
   url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-1.1.1/hadoop-1.1.1.tar.gz'
   sha1 '3b7f226e437a30bb8eee12093179c81ae94e7896'
 
