@@ -2,15 +2,15 @@ require 'formula'
 
 class Ruby < Formula
   homepage 'http://www.ruby-lang.org/en/'
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p392.tar.bz2'
-  sha256 '5a7334dfdf62966879bf539b8a9f0b889df6f3b3824fb52a9303c3c3d3a58391'
+  url 'http://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p0.tar.bz2'
+  sha256 'c680d392ccc4901c32067576f5b474ee186def2fcd3fcbfa485739168093295f'
 
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
   env :std
 
   option :universal
-  option 'with-suffix', 'Suffix commands with "19"'
+  option 'with-suffix', 'Suffix commands with "20"'
   option 'with-doc', 'Install documentation'
   option 'with-tcltk', 'Install with Tcl/Tk support'
 
@@ -36,7 +36,7 @@ class Ruby < Formula
     args = ["--prefix=#{prefix}",
             "--enable-shared"]
 
-    args << "--program-suffix=19" if build.include? "with-suffix"
+    args << "--program-suffix=20" if build.include? "with-suffix"
     args << "--with-arch=x86_64,i386" if build.universal?
     args << "--disable-tcltk-framework" <<  "--with-out-ext=tcl" <<  "--with-out-ext=tk" unless build.include? "with-tcltk"
     args << "--disable-install-doc" unless build.include? "with-doc"
