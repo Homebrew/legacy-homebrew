@@ -3,7 +3,7 @@ require 'formula'
 class Maven < Formula
   homepage 'http://maven.apache.org/'
   url 'http://mirror.quintex.com/apache/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.tar.gz'
-  md5 '94c51f0dd139b4b8549204d0605a5859'
+  sha1 'aecc0d3d67732939c0056d4a0d8510483ee1167e'
 
   def install
     # Remove windows files
