@@ -741,6 +741,8 @@ private
       post_depends_on(d) unless d.nil?
     end
 
+<<<<<<< HEAD
+=======
     def option name, description=nil
       # Support symbols
       name = name.to_s
@@ -749,10 +751,34 @@ private
       build.add name, description
     end
 
+<<<<<<< HEAD
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+    def conflicts_with formula, opts={}
+      message = <<-EOS.undent
+      #{formula} cannot be installed alongside #{name.downcase}.
+      EOS
+<<<<<<< HEAD
+      message << "This is because #{opts[:reason]}\n" if opts[:reason]
+      if !ARGV.force? then message << <<-EOS.undent
+      Please `brew unlink` or `brew uninstall` #{formula} before continuing.
+      To install anyway, use:
+        brew install --force
+=======
+      message << "This is because #{opts[:because]}\n" if opts[:because]
+      unless ARGV.force? then message << <<-EOS.undent
+        Please `brew unlink #{formula}` before continuing. Unlinking removes
+        the formula's symlinks from #{HOMEBREW_PREFIX}. You can link the
+        formula again after the install finishes. You can --force this install
+        but the build may fail or cause obscure side-effects in the end-binary.
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+        EOS
+      end
+=======
     def plist_options options
       @plist_startup = options[:startup]
       @plist_manual = options[:manual]
     end
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
     def conflicts_with formula, opts={}
       dependencies.add ConflictRequirement.new(formula, name, opts)

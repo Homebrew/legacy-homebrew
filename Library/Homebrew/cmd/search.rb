@@ -31,6 +31,14 @@ module Homebrew extend self
       if query
         $found = search_results.length
 
+<<<<<<< HEAD
+        # TODO parallelize!
+        puts_columns search_tap "josegonzalez", "php", rx
+        puts_columns search_tap "Homebrew", "versions", rx
+        puts_columns search_tap "Homebrew", "dupes", rx
+        puts_columns search_tap "Homebrew", "games", rx
+        puts_columns search_tap "Homebrew", "science", rx
+=======
         threads = []
         results = []
         threads << Thread.new { search_tap "josegonzalez", "php", rx }
@@ -48,6 +56,7 @@ module Homebrew extend self
         end
 
         results.each { |r| puts_columns r }
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
         if $found == 0 and not blacklisted? query
           puts "No formula found for \"#{query}\". Searching open pull requests..."

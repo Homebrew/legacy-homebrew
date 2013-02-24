@@ -4,8 +4,11 @@ class Xplanet < Formula
   homepage 'http://xplanet.sourceforge.net/'
   url 'http://sourceforge.net/projects/xplanet/files/xplanet/1.3.0/xplanet-1.3.0.tar.gz'
   sha1 '7c5208b501b441a0184cbb334a5658d0309d7dac'
+<<<<<<< HEAD
+=======
 
   option "with-x", "Build for X11 instead of Aqua"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'

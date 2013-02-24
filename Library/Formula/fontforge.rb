@@ -44,7 +44,15 @@ class Fontforge < Formula
       args << "--with-python-lib=-lpython#{python_version}"
       args << "--enable-pyextension"
     end
+<<<<<<< HEAD
+=======
 
+<<<<<<< HEAD
+    ENV.macosxsdk("10.7") if MacOS.mountain_lion?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+
+=======
+>>>>>>> 82a1481f6fa824816bbf2bdeb53fd1933a1a15f2
     # Fix linking to correct Python library
     ENV.prepend "LDFLAGS", "-L#{python_prefix}/lib" unless build.without? "python"
     # Fix linker error; see: http://trac.macports.org/ticket/25012
@@ -73,8 +81,26 @@ class Fontforge < Formula
       s.gsub! "python setup.py install --prefix=$(prefix) --root=$(DESTDIR)", "python setup.py install --prefix=$(prefix)"
     end
 
+<<<<<<< HEAD
+    # Fix hard-coded include file paths. Reported usptream:
+    # http://sourceforge.net/mailarchive/forum.php?thread_name=C1A32103-A62D-468B-AD8A-A8E0E7126AA5%40smparkes.net&forum_name=fontforge-devel
+    # https://trac.macports.org/ticket/33284
+<<<<<<< HEAD
+<<<<<<< HEAD
+    header_prefix = MacOS::Xcode.prefix
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+    if MacOS::Xcode.version >= '4.4'
+      header_prefix = "#{MacOS.sdk_path(10.7)}/Developer"
+    else
+      header_prefix = MacOS::Xcode.prefix
+    end
+>>>>>>> 82a1481f6fa824816bbf2bdeb53fd1933a1a15f2
+=======
     # Replace FlatCarbon headers with the real paths
     # Fixes building on 10.8
+>>>>>>> 3d092aef58bc2ed02b1e6d68d15923b73b3e80cb
     inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
       s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
     end
@@ -89,6 +115,13 @@ class Fontforge < Formula
   def which_python
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
+<<<<<<< HEAD
+
+  def caveats
+    general_caveats = <<-EOS.undent
+      fontforge is an X11 application.
+
+=======
 
   def test
     system "#{bin}/fontforge", "-version"
@@ -98,6 +131,7 @@ class Fontforge < Formula
     x_caveats = <<-EOS.undent
       fontforge is an X11 application.
 
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
       To install the Mac OS X wrapper application run:
         brew linkapps
       or:

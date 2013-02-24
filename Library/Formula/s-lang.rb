@@ -15,8 +15,13 @@ class SLang < Formula
     pnginc = MacOS::X11.installed? ? MacOS::X11.include : HOMEBREW_PREFIX/'include'
 
     system "./configure", "--prefix=#{prefix}",
+<<<<<<< HEAD
+                          "--with-pnglib=#{MacOS::XQuartz.lib}",
+                          "--with-pnginc=#{MacOS::XQuartz.include}"
+=======
                           "--with-pnglib=#{pnglib}",
                           "--with-pnginc=#{pnginc}"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     ENV.j1
     system "make"
     system "make install"

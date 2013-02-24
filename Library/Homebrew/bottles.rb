@@ -20,12 +20,19 @@ def install_bottle? f
     and bottle_current?(f)
 end
 
+<<<<<<< HEAD
+def built_bottle? f
+  f = Formula.factory f unless f.kind_of? Formula
+  return false unless f.installed?
+  Tab.for_keg(f.installed_prefix).built_bottle
+=======
 def built_as_bottle? f
   f = Formula.factory f unless f.kind_of? Formula
   return false unless f.installed?
   tab = Tab.for_keg(f.installed_prefix)
   # Need to still use the old "built_bottle" until all bottles are updated.
   tab.built_as_bottle or tab.built_bottle
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 end
 
 def bottle_current? f

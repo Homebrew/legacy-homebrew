@@ -24,7 +24,15 @@ class Thrift < Formula
     # No reason for this step is known. On Lion at least the pkg.m4 doesn't
     # even exist. Turns out that it isn't needed on Lion either. Possibly it
     # isn't needed anymore at all but I can't test that.
+<<<<<<< HEAD
+<<<<<<< HEAD
+    cp "#{MacOS::XQuartz.share}/aclocal/pkg.m4", "aclocal" if MACOS_VERSION < 10.7
+=======
+    cp "#{MacOS::X11.share}/aclocal/pkg.m4", "aclocal" if MACOS_VERSION < 10.7
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
     cp "#{MacOS::X11.share}/aclocal/pkg.m4", "aclocal" if MacOS.version < :lion
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
     system "./bootstrap.sh" if build.head?
 

@@ -23,8 +23,13 @@ class Sqsh < Formula
 
     if build.include? "enable-x"
       args << "--with-x"
+<<<<<<< HEAD
+      args << "--x-libraries=#{MacOS::XQuartz.lib}"
+      args << "--x-includes=#{MacOS::XQuartz.include}"
+=======
       args << "--x-libraries=#{MacOS::X11.lib}"
       args << "--x-includes=#{MacOS::X11.include}"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     end
 
     ENV['SYBASE'] = Freetds.new("freetds").prefix

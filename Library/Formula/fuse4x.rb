@@ -2,13 +2,31 @@ require 'formula'
 
 class Fuse4x < Formula
   homepage 'http://fuse4x.github.com'
+<<<<<<< HEAD
+  url 'https://github.com/fuse4x/fuse/tarball/fuse4x_0_9_1'
+  sha1 '31eff485411f106daa81ef6c7c3d31abbdcd41b4'
+<<<<<<< HEAD
+=======
   url 'https://github.com/fuse4x/fuse/tarball/fuse4x_0_9_2'
   sha1 '316df7c0bb2caa6d32300b31fdeba3267ee6f41f'
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   # Always use newer versions of these tools
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
 
+<<<<<<< HEAD
+  depends_on :automake
+  depends_on :libtool
+=======
+>>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
+=======
+
+  # Always use newer versions of these tools
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
+
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   depends_on 'gettext'
   depends_on 'fuse4x-kext'
 

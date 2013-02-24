@@ -8,12 +8,32 @@ class Tcpflow < Formula
   depends_on :libtool
 
   def copy_libtool_files!
+<<<<<<< HEAD
+<<<<<<< HEAD
+    if MacOS.xcode_version >= "4.3"
+=======
+    if MacOS::Xcode.version >= "4.3"
+>>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
+=======
     if not MacOS::Xcode.provides_autotools?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
       s = Formula.factory('libtool').share
       d = "#{s}/libtool/config"
       cp ["#{d}/config.guess", "#{d}/config.sub"], "."
+<<<<<<< HEAD
+    elsif MacOS.leopard?
+<<<<<<< HEAD
+<<<<<<< HEAD
+      cp Dir["#{MacOS.xcode_prefix}/usr/share/libtool/config.*"], "."
+=======
+=======
     elsif MacOS.version == :leopard
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
       cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config.*"], "."
+>>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
+=======
+      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config.*"], "."
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     else
       cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config/config.*"], "."
     end

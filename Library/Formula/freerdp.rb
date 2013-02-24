@@ -20,6 +20,9 @@ class Freerdp < Formula
   end unless build.head?
 
   def install
+<<<<<<< HEAD
+    system "cmake", ".", "-DWITH_X11=OFF", *std_cmake_args
+=======
     if build.head? then
       # workaround for out-of-git clone tree build
       inreplace 'cmake/GetGitRevisionDescription.cmake',
@@ -32,6 +35,7 @@ class Freerdp < Formula
     end
 
     system "cmake", ".", *std_cmake_args
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
     system "make install"
   end
 end

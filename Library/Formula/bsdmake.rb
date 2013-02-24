@@ -33,6 +33,12 @@ class Bsdmake < Formula
                  pathnames.h],
                  '@PREFIX@', prefix
 
+<<<<<<< HEAD
+    # X11 path shouldn't be munged
+    inreplace 'mk/sys.mk', '@PREFIX@', MacOS::XQuartz.prefix
+
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     inreplace 'mk/bsd.own.mk' do |s|
       s.gsub! '@INSTALL_USER@', `id -un`.chomp
       s.gsub! '@INSTALL_GROUP@', `id -gn`.chomp

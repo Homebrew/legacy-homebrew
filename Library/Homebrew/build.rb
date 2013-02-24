@@ -35,10 +35,19 @@ def main
   require 'hardware'
   require 'keg'
 
+<<<<<<< HEAD
+def install f
+<<<<<<< HEAD
+  f.external_deps.each { |dep| dep.modify_build_environment }
+=======
+  f.recursive_requirements.each { |req| req.modify_build_environment }
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
   # Force any future invocations of sudo to require the user's password to be
   # re-entered. This is in-case any build script call sudo. Certainly this is
   # can be inconvenient for the user. But we need to be safe.
   system "/usr/bin/sudo -k"
+>>>>>>> 82a1481f6fa824816bbf2bdeb53fd1933a1a15f2
 
   install(Formula.factory($0))
 rescue Exception => e

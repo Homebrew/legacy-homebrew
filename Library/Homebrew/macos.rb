@@ -9,11 +9,28 @@ module MacOS extend self
   end
 
   def cat
+<<<<<<< HEAD
+<<<<<<< HEAD
+    if mountain_lion?
+      :mountainlion
+    elsif lion?
+      :lion
+    elsif snow_leopard?
+      :snowleopard
+    elsif leopard?
+      :leopard
+    else
+      nil
+=======
+    if version == :mountain_lion then :mountainlion
+=======
     if version == :mountain_lion then :mountain_lion
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
     elsif version == :lion then :lion
     elsif version == :snow_leopard then :snow_leopard
     elsif version == :leopard then :leopard
     else nil
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     end
   end
 
@@ -28,6 +45,45 @@ module MacOS extend self
     # Don't call tools (cc, make, strip, etc.) directly!
     # Give the name of the binary you look for as a string to this method
     # in order to get the full path back as a Pathname.
+<<<<<<< HEAD
+    @locate ||= {}
+    @locate[tool.to_s] ||= if File.executable? "/usr/bin/#{tool}"
+      Pathname.new "/usr/bin/#{tool}"
+    else
+<<<<<<< HEAD
+      # Xcrun was provided first with Xcode 4.3 and allows us to proxy
+      # tool usage thus avoiding various bugs.
+      p = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
+      if !p.nil? and !p.empty? and File.executable? p
+        path = Pathname.new p
+      else
+        # This is for the use-case where xcode-select is not set up correctly
+        # with Xcode 4.3+. The tools in Xcode 4.3+ are split over two locations,
+        # usually xcrun would figure that out for us, but it won't work if
+        # xcode-select is not configured properly.
+        p = "#{dev_tools_path}/#{tool}"
+        if File.executable? p
+          path = Pathname.new p
+        else
+          # Otherwise lets look in the second location.
+          p = "#{xctoolchain_path}/usr/bin/#{tool}"
+          if File.executable? p
+            path = Pathname.new p
+          else
+            # We digged so deep but all is lost now.
+            path = nil
+          end
+        end
+=======
+      # If the tool isn't in /usr/bin, then we first try to use xcrun to find
+      # it. If it's not there, or xcode-select is misconfigured, we have to
+      # look in dev_tools_path, and finally in xctoolchain_path, because the
+      # tools were split over two locations beginning with Xcode 4.3+.
+      xcrun_path = unless Xcode.bad_xcode_select_path?
+        `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+      end
+=======
     (@locate ||= {}).fetch(tool.to_s) do
       @locate[tool.to_s] = if File.executable? "/usr/bin/#{tool}"
         Pathname.new "/usr/bin/#{tool}"
@@ -41,6 +97,7 @@ module MacOS extend self
           # If xcrun finds a superenv tool then discard the result.
           path unless path.include?(HOMEBREW_REPOSITORY/"Library/ENV")
         end
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
         paths = %W[#{xcrun_path}
                    #{dev_tools_path}/#{tool}
@@ -54,8 +111,12 @@ module MacOS extend self
     @dev_tools_path ||= if File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
+<<<<<<< HEAD
+    elsif not Xcode.bad_xcode_select_path? and system "/usr/bin/xcrun -find make 1>/dev/null 2>&1"
+=======
     # Note that the exit status of system "xcrun foo" isn't always accurate
     elsif not Xcode.bad_xcode_select_path? and not `/usr/bin/xcrun -find make 2>/dev/null`.empty?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
       # Wherever "make" is there are the dev tools.
       Pathname.new(`/usr/bin/xcrun -find make`.chomp).dirname
     elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
@@ -111,6 +172,114 @@ module MacOS extend self
     end
   end
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+  def xcode_prefix
+    @xcode_prefix ||= begin
+      path = Pathname.new xcode_folder
+      if $?.success? and path.absolute? and File.executable? "#{path}/usr/bin/make"
+        path
+      elsif File.executable? '/Developer/usr/bin/make'
+        # we do this to support cowboys who insist on installing
+        # only a subset of Xcode
+        Pathname.new '/Developer'
+      elsif File.executable? '/Applications/Xcode.app/Contents/Developer/usr/bin/make'
+        # fallback for broken Xcode 4.3 installs
+        Pathname.new '/Applications/Xcode.app/Contents/Developer'
+      else
+        # Ask Spotlight where Xcode is. If the user didn't install the
+        # helper tools and installed Xcode in a non-conventional place, this
+        # is our only option. See: http://superuser.com/questions/390757
+        path = app_with_bundle_id(XCODE_4_BUNDLE_ID) || app_with_bundle_id(XCODE_3_BUNDLE_ID)
+
+        unless path.nil?
+          path += "Contents/Developer"
+          path if File.executable? "#{path}/usr/bin/make"
+        end
+      end
+    end
+  end
+
+  def xcode_installed?
+    # Telling us whether the Xcode.app is installed or not.
+    @xcode_installed ||= File.directory?('/Applications/Xcode.app') ||
+      File.directory?('/Developer/Applications/Xcode.app') ||
+      app_with_bundle_id(XCODE_4_BUNDLE_ID) ||
+      app_with_bundle_id(XCODE_3_BUNDLE_ID) ||
+      false
+  end
+
+  def xcode_version
+    # may return a version string
+    # that is guessed based on the compiler, so do not
+    # use it in order to check if Xcode is installed.
+    @xcode_version ||= begin
+      return "0" unless MACOS
+
+      # this shortcut makes xcode_version work for people who don't realise you
+      # need to install the CLI tools
+      xcode43build = "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild"
+      if File.file? xcode43build
+        `#{xcode43build} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+        return $1 if $1
+      end
+
+      # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
+      raise if xctools_fucked?
+
+      raise unless which "xcodebuild"
+      `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+      raise if $1.nil? or not $?.success?
+      $1
+    rescue
+      # For people who's xcode-select is unset, or who have installed
+      # xcode-gcc-installer or whatever other combinations we can try and
+      # supprt. See https://github.com/mxcl/homebrew/wiki/Xcode
+      case llvm_build_version.to_i
+      when 1..2063 then "3.1.0"
+      when 2064..2065 then "3.1.4"
+      when 2366..2325
+        # we have no data for this range so we are guessing
+        "3.2.0"
+      when 2326
+        # also applies to "3.2.3"
+        "3.2.4"
+      when 2327..2333 then "3.2.5"
+      when 2335
+        # this build number applies to 3.2.6, 4.0 and 4.1
+        # https://github.com/mxcl/homebrew/wiki/Xcode
+        "4.0"
+      else
+        case (clang_version.to_f * 10).to_i
+        when 0
+          "dunno"
+        when 1..14
+          "3.2.2"
+        when 15
+          "3.2.4"
+        when 16
+          "3.2.5"
+        when 17..20
+          "4.0"
+        when 21
+          "4.1"
+        when 22..30
+          "4.2"
+        when 31
+          "4.3"
+        when 40
+          "4.4"
+        else
+          "4.4"
+        end
+      end
+    end
+  end
+
+=======
+>>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   def gcc_40_build_version
     @gcc_40_build_version ||= if locate("gcc-4.0")
       `#{locate("gcc-4.0")} --version` =~ /build (\d{4,})/
@@ -206,8 +375,26 @@ module MacOS extend self
   }
 
   def compilers_standard?
+<<<<<<< HEAD
+    xcode = Xcode.version
+<<<<<<< HEAD
+    # Assume compilers are okay if Xcode version not in hash
+    return true unless StandardCompilers.keys.include? xcode
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+
+    unless StandardCompilers.keys.include? xcode
+      onoe <<-EOS.undent
+        Homebrew doesn't know what compiler versions ship with your version of
+        Xcode. Please file an issue with the output of `brew --config`:
+          https://github.com/mxcl/homebrew/issues
+
+        Thanks!
+        EOS
+=======
     STANDARD_COMPILERS.fetch(Xcode.version.to_s).all? do |method, build|
       MacOS.send(:"#{method}_version") == build
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
     end
   rescue IndexError
     onoe <<-EOS.undent

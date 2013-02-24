@@ -31,16 +31,48 @@ class Mysql < Formula
   conflicts_with 'percona-server',
     :because => "mysql and percona-server install the same binaries."
 
+<<<<<<< HEAD
+  conflicts_with 'mariadb',
+    :because => "mysql and mariadb install the same binaries."
+  conflicts_with 'percona-server',
+    :because => "mysql and percona-server install the same binaries."
+=======
   conflicts_with 'mysql-cluster',
     :because => "mysql and mysql-cluster install the same binaries."
 
   env :std if build.universal?
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   fails_with :llvm do
     build 2326
     cause "https://github.com/mxcl/homebrew/issues/issue/144"
   end
 
+<<<<<<< HEAD
+  skip_clean :all # So "INSTALL PLUGIN" can work.
+
+<<<<<<< HEAD
+  def options
+    [
+      ['--with-tests', "Build with unit tests."],
+      ['--with-embedded', "Build the embedded server."],
+      ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
+      ['--with-archive-storage-engine', "Compile with the ARCHIVE storage engine enabled"],
+      ['--with-blackhole-storage-engine', "Compile with the BLACKHOLE storage engine enabled"],
+      ['--universal', "Make mysql a universal binary"],
+      ['--enable-local-infile', "Build with local infile loading support"]
+    ]
+  end
+
+  # Remove optimization flags from `mysql_config --cflags`
+  # This facilitates easy compilation of gems using a brewed mysql
+  # Also fix compilation with Xcode and no CLT: http://bugs.mysql.com/bug.php?id=66001
+  def patches; DATA; end
+
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
   def install
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
@@ -170,3 +202,37 @@ class Mysql < Formula
     end
   end
 end
+<<<<<<< HEAD
+
+
+__END__
+diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
+index 9296075..70c18db 100644
+--- a/scripts/mysql_config.sh
++++ b/scripts/mysql_config.sh
+@@ -137,7 +137,9 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNIV_MUST_NOT_INLINE DFORCE_INIT_OF_VARS \
+               DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
+               'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
+               Xa xstrconst "xc99=none" AC99 \
+-              unroll2 ip mp restrict
++              unroll2 ip mp restrict \
++              mmmx 'msse[0-9.]*' 'mfpmath=sse' w pipe 'fomit-frame-pointer' 'mmacosx-version-min=10.[0-9]' \
++              aes Os
+ do
+   # The first option we might strip will always have a space before it because
+   # we set -I$pkgincludedir as the first option
+diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
+index 89a9de9..677c68d 100644
+--- a/cmake/libutils.cmake
++++ b/cmake/libutils.cmake
+@@ -183,7 +183,7 @@ MACRO(MERGE_STATIC_LIBS TARGET OUTPUT_NAME LIBS_TO_MERGE)
+       # binaries properly)
+       ADD_CUSTOM_COMMAND(TARGET ${TARGET} POST_BUILD
+         COMMAND rm ${TARGET_LOCATION}
+-        COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION} 
++        COMMAND libtool -static -o ${TARGET_LOCATION} 
+         ${STATIC_LIBS}
+       )  
+     ELSE()
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879

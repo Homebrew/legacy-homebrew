@@ -2,11 +2,26 @@ require 'formula'
 
 class Luarocks < Formula
   homepage 'http://luarocks.org'
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+  url 'http://luarocks.org/releases/luarocks-2.0.9.tar.gz'
+  sha1 '84656ef2c1261a21a7e8aaf347743f8e542d2f49'
+=======
+  url 'http://luarocks.org/releases/luarocks-2.0.10.tar.gz'
+  sha1 '90db1c46940816ae82a8037e585769e3e8845f66'
+>>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
+=======
+  url 'http://luarocks.org/releases/luarocks-2.0.10.tar.gz'
+  sha1 '90db1c46940816ae82a8037e585769e3e8845f66'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
   url 'http://luarocks.org/releases/luarocks-2.0.12.tar.gz'
   sha1 'bfa36d5a9931c240c0253dee09c0cfb69372d276'
 
   option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
   option 'with-lua52', 'Use Lua 5.2 instead of the stock Lua'
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   if build.include? 'with-luajit'
     depends_on 'luajit'

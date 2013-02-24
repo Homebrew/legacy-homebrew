@@ -69,7 +69,15 @@ module Homebrew extend self
 
   def describe_x11
     return "N/A" unless MacOS::XQuartz.installed?
+<<<<<<< HEAD
+<<<<<<< HEAD
+    return "#{MacOS::XQuartz.version} @ " + describe_path(MacOS::XQuartz.prefix)
+=======
+    return "#{MacOS::XQuartz.version} in " + describe_path(MacOS::XQuartz.prefix)
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
     return "#{MacOS::XQuartz.version} => " + describe_path(MacOS::XQuartz.prefix)
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
   end
 
   def describe_perl

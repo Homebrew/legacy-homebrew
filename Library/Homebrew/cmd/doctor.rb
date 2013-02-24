@@ -184,6 +184,20 @@ def check_for_stray_las
   inject_file_list(bad_las, s)
 end
 
+<<<<<<< HEAD
+def check_for_x11
+  unless MacOS::XQuartz.installed? then <<-EOS.undent
+    X11 is not installed.
+    You don't have X11 installed as part of your OS X installation.
+    This is not required for all formulae, but is expected by some.
+    You can download the latest version of XQuartz from:
+      https://xquartz.macosforge.org
+    EOS
+  end
+end
+
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 def check_for_other_package_managers
   ponk = MacOS.macports_or_fink
   unless ponk.empty?
@@ -217,11 +231,26 @@ end
 
 def check_for_latest_xcode
   if not MacOS::Xcode.installed?
+<<<<<<< HEAD
+    # no Xcode, now it depends on the OS X version...
+    if MacOS.version >= 10.7 then
+      if not MacOS::CLT.installed?
+        return <<-EOS.undent
+          No Xcode version found!
+          No compiler found in /usr/bin!
+
+          To fix this, either:
+          - Install the "Command Line Tools for Xcode" from http://connect.apple.com/
+            Homebrew does not require all of Xcode, you only need the CLI tools package!
+            (However, you need a (free) Apple Developer ID.)
+          - Install Xcode from the Mac App Store. (Normal Apple ID is sufficient, here)
+=======
     if MacOS.version >= 10.7
       if not MacOS::CLT.installed?
         <<-EOS.undent
         No developer tools installed
         You should install the Command Line Tools: http://connect.apple.com
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
         EOS
       elsif not MacOS::CLT.latest_version?
         <<-EOS.undent
@@ -235,9 +264,29 @@ def check_for_latest_xcode
       Most stuff needs Xcode to build: http://developer.apple.com/xcode/
       EOS
     end
+<<<<<<< HEAD
+  end
+
+  latest_xcode = case MacOS.version
+    when 10.5 then "3.1.4"
+    when 10.6 then "3.2.6"
+    when 10.7 then "4.3.3"
+    when 10.8 then "4.4"
+    else nil
+  end
+  if latest_xcode.nil?
+    return <<-EOS.undent
+    Not sure what version of Xcode is the latest for OS X #{MacOS.version}.
+    EOS
+  end
+  if MacOS::Xcode.installed? and MacOS::Xcode.version < latest_xcode then <<-EOS.undent
+    You have Xcode-#{MacOS::Xcode.version}, which is outdated.
+    Please install Xcode #{latest_xcode}.
+=======
   elsif MacOS::Xcode.version < MacOS::Xcode.latest_version then <<-EOS.undent
     Your Xcode (#{MacOS::Xcode.version}) is outdated
     Please install Xcode #{MacOS::Xcode.latest_version}.
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     EOS
   end
 end
@@ -430,6 +479,17 @@ end
 
 def check_xcode_select_path
   # with the advent of CLT-only support, we don't need xcode-select
+<<<<<<< HEAD
+<<<<<<< HEAD
+  return if MacOS.clt_installed?
+  unless File.file? "#{MacOS.xcode_folder}/usr/bin/xcodebuild" and not MacOS.xctools_fucked?
+    path = MacOS.app_with_bundle_id(MacOS::XCODE_4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::XCODE_3_BUNDLE_ID)
+=======
+  return if MacOS::CLT.installed?
+  unless File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild" and not MacOS::Xcode.bad_xcode_select_path?
+    path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::Xcode::V3_BUNDLE_ID)
+>>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
+=======
 
   if MacOS::Xcode.bad_xcode_select_path?
     <<-EOS.undent
@@ -439,6 +499,7 @@ def check_xcode_select_path
     EOS
   elsif not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
     path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::Xcode::V3_BUNDLE_ID)
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent
       Your Xcode is configured with an invalid path.

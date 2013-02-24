@@ -31,6 +31,14 @@ class Mapserver < Formula
       "--with-proj",
       "--with-gdal",
       "--with-ogr",
+<<<<<<< HEAD
+<<<<<<< HEAD
+      "--with-png=#{MacOS::XQuartz.prefix}"
+=======
+      "--with-png=#{MacOS::X11.prefix}"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
     ]
 
     args << "--with-geos" if build.with? 'geos'

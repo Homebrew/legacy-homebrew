@@ -10,9 +10,22 @@ class Distribute < Formula
   sha1 'b6f9cfbaf3e63833b71009812a613be13e68f5de'
 end
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+class Distribute < Formula
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
+  md5 'b400b532e33f78551e6847c1f5965e56'
+=======
+# Recommended way of installing python modules (http://pypi.python.org/pypi)
+class Pip < Formula
+  url 'http://pypi.python.org/packages/source/p/pip/pip-1.1.tar.gz'
+  md5 '62a9f08dd5dc69d76734568a6c040508'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
 class Pip < Formula
   url 'http://pypi.python.org/packages/source/p/pip/pip-1.2.1.tar.gz'
   sha1 '35db84983ef3f66a8a161d320e61d192afc233d9'
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 end
 
 class Python3 < Formula
