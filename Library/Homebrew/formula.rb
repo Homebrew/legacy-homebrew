@@ -657,8 +657,6 @@ private
     case method
     when :brew
       raise "You cannot override Formula#brew"
-    when :patch
-      raise "You probably meant `def patches`."
     when :test
       @test_defined = true
     end
