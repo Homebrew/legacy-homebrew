@@ -13,6 +13,19 @@ In order to prevent conflicts when programs look for libreadline we are
 defaulting this GNU Readline installation to keg-only.
 EOS
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+  def patches
+    {:p0 => [
+        "http://ftpmirror.gnu.org/readline/readline-6.2-patches/readline62-001",
+        "http://ftpmirror.gnu.org/readline/readline-6.2-patches/readline62-002",
+        "http://ftpmirror.gnu.org/readline/readline-6.2-patches/readline62-003",
+        "http://ftpmirror.gnu.org/readline/readline-6.2-patches/readline62-004"
+      ]}
+  end
+=======
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   # Vendor the patches.
   # The mirrors are unreliable for getting the patches, and the more patches
   # there are, the more unreliable they get. Pulling this patch inline to
@@ -20,6 +33,10 @@ EOS
   # Upstream patches can be found in:
   # http://ftpmirror.gnu.org/readline/readline-6.2-patches
   def patches; DATA; end
+<<<<<<< HEAD
+>>>>>>> 1cd31e942565affb535d538f85d0c2f7bc613b5a
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
   def install
     # Always build universal, per https://github.com/mxcl/homebrew/issues/issue/899

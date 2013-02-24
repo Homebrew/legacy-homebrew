@@ -13,12 +13,20 @@ class Qt < Formula
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+  fails_with :clang do
+    build 421
+  end
+=======
+=======
   env :std # Otherwise fails on SSE intrinsics
 
   fails_with :clang do
     build 425
   end
 
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
   option :universal
   option 'with-qtdbus', 'Enable QtDBus module'
   option 'with-qt3support', 'Enable deprecated Qt3Support module'
@@ -27,7 +35,13 @@ class Qt < Formula
   option 'with-mysql', 'Enable MySQL plugin'
   option 'developer', 'Compile and link Qt with developer options'
 
+<<<<<<< HEAD
+  depends_on "d-bus" if build.include? 'with-qtdbus'
+  depends_on 'sqlite' if MacOS.leopard?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
   depends_on :libpng
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   depends_on "d-bus" if build.include? 'with-qtdbus'
   depends_on "mysql" if build.include? 'with-mysql'

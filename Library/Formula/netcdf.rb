@@ -20,8 +20,13 @@ end
 
 class Netcdf < Formula
   homepage 'http://www.unidata.ucar.edu/software/netcdf'
+<<<<<<< HEAD
+  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.2.1.tar.gz'
+  sha1 'dfb6b10ef8dd20e785efa5e29b448383090f144d'
+=======
   url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.2.1.1.tar.gz'
   sha1 '76631cb4e6b767c224338415cf6e5f5ff9bd1238'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
   depends_on 'hdf5'
 

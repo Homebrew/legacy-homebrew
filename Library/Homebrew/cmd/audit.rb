@@ -381,8 +381,27 @@ class FormulaAuditor
       problem "Use ENV instead of invoking '#{$1}' to modify the environment"
     end
 
+<<<<<<< HEAD
+    case d.name
+    when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
+      problems << <<-EOS
+ * Don't use #{d} as a dependency. We allow non-Homebrew
+   #{d} installations.
+EOS
+    when 'gfortran'
+      problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
+
+    when 'open-mpi', 'mpich2'
+      problems << <<-EOS.undent
+          * There are multiple conflicting ways to install MPI. Use a MPIDependency:
+              depends_on MPIDependency.new(<lang list>)
+            Where <lang list> is a comma delimited list that can include:
+              :cc, :cxx, :f90, :f77
+        EOS
+=======
     if text =~ /version == ['"]HEAD['"]/
       problem "Use 'build.head?' instead of inspecting 'version'"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     end
 
     if text =~ /build\.include\?\s+['"]\-\-(.*)['"]/

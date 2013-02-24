@@ -1,22 +1,46 @@
 require 'formula'
 
 class Mariadb < Formula
+<<<<<<< HEAD
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.7/kvm-tarbake-jaunty-x86/mariadb-5.3.7.tar.gz'
   homepage 'http://mariadb.org/'
+=======
+  homepage 'http://mariadb.org/'
+<<<<<<< HEAD
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.3.7/kvm-tarbake-jaunty-x86/mariadb-5.3.7.tar.gz'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+  sha1 '1ee2ef4895aefabd66b4884c382ba2cd1f7bbe2d'
+=======
   url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.29/kvm-tarbake-jaunty-x86/mariadb-5.5.29.tar.gz'
   sha1 '4548876e9c6a17a8d11e4e585d9d05b6fbcf4654'
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
 
+<<<<<<< HEAD
+  conflicts_with 'mysql',
+    :because => "mariadb and mysql install the same binaries."
+  conflicts_with 'percona-server',
+    :because => "mariadb and percona-server install the same binaries."
+
+  fails_with :clang do
+    build 318
+  end
+=======
   option :universal
   option 'with-tests', 'Keep test when installing'
   option 'with-bench', 'Keep benchmark app when installing'
   option 'client-only', 'Install only client tools'
+<<<<<<< HEAD
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
   option 'with-embedded', 'Build the embedded server'
   option 'with-libedit', 'Compile with editline wrapper instead of readline'
   option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
   option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
   option 'enable-local-infile', 'Build with local infile loading support'
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   conflicts_with 'mysql',
     :because => "mariadb and mysql install the same binaries."

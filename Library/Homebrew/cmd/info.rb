@@ -91,7 +91,18 @@ module Homebrew extend self
     end
 
     puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
+<<<<<<< HEAD
+<<<<<<< HEAD
+    conflicts = []
+    f.external_deps.each do |dep|
+      conflicts << dep.formula if dep.is_a? ConflictRequirement
+    end
+=======
+    conflicts = f.conflicts.map { |c| c.formula }
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
     conflicts = f.conflicts.map { |c| c.formula }.sort
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?

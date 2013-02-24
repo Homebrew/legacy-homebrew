@@ -9,11 +9,25 @@ module HomebrewEnvExtension
     delete('CLICOLOR_FORCE') # autotools doesn't like this
     remove_cc_etc
 
+<<<<<<< HEAD
+    if MacOS.mountain_lion?
+      # Fix issue with sed barfing on unicode characters on Mountain Lion.
+      delete('LC_ALL')
+      self['LANG']="C"
+=======
     if MacOS.version >= :mountain_lion
       # Mountain Lion's sed is stricter, and errors out when
       # it encounters files with mixed character sets
       delete('LC_ALL')
       self['LC_CTYPE']="C"
+<<<<<<< HEAD
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+
+      # Mountain Lion no longer ships a few .pcs; make sure we pick up our versions
+      prepend 'PKG_CONFIG_PATH',
+        HOMEBREW_REPOSITORY/'Library/Homebrew/pkgconfig', ':'
+=======
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
     end
 
     # Set the default pkg-config search path, overriding the built-in paths
@@ -246,7 +260,39 @@ module HomebrewEnvExtension
     end
   end
 
+<<<<<<< HEAD
+<<<<<<< HEAD
   def x11
+    unless MacOS::XQuartz.installed?
+      opoo "You do not have X11 installed, this formula may not build."
+    end
+
+    # There are some config scripts here that should go in the PATH
+    prepend 'PATH', MacOS::XQuartz.bin, ':'
+
+    prepend 'PKG_CONFIG_PATH', MacOS::XQuartz.lib/'pkgconfig', ':'
+    prepend 'PKG_CONFIG_PATH', MacOS::XQuartz.share/'pkgconfig', ':'
+
+    append 'LDFLAGS', "-L#{MacOS::XQuartz.lib}"
+    append 'CMAKE_PREFIX_PATH', MacOS::XQuartz.prefix, ':'
+    append 'CMAKE_INCLUDE_PATH', MacOS::XQuartz.include, ':'
+
+    append 'CPPFLAGS', "-I#{MacOS::XQuartz.include}"
+
+    unless MacOS::CLT.installed?
+      append 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11', ':'
+      append 'CPPFLAGS', "-I#{MacOS::XQuartz.include}/freetype2"
+      append 'CFLAGS', "-I#{MacOS::XQuartz.include}"
+=======
+  def x11 silent=false
+    unless MacOS::X11.installed?
+      opoo "You do not have X11 installed, this formula may not build." unless silent
+      return
+    end
+
+=======
+  def x11
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
     # There are some config scripts here that should go in the PATH
     append 'PATH', MacOS::X11.bin, ':'
 
@@ -268,6 +314,7 @@ module HomebrewEnvExtension
       append 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11', ':'
       append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
       append 'CFLAGS', "-I#{MacOS::X11.include}"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     end
   end
   alias_method :libpng, :x11

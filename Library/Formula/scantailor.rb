@@ -24,7 +24,11 @@ class Scantailor < Formula
   end
 
   def install
+<<<<<<< HEAD
+    system "cmake", ".", "-DPNG_INCLUDE_DIR=#{MacOS::XQuartz.include}", *std_cmake_args
+=======
     system "cmake", ".", "-DPNG_INCLUDE_DIR=#{MacOS::X11.include}", *std_cmake_args
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
     system "make install"
   end
 end

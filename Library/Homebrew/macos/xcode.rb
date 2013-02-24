@@ -17,6 +17,8 @@ module MacOS::Xcode extend self
     folder == "/"
   end
 
+<<<<<<< HEAD
+=======
   def latest_version
     case MacOS.version
       when 10.5 then "3.1.4"
@@ -30,6 +32,7 @@ module MacOS::Xcode extend self
     end
   end
 
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   def prefix
     @prefix ||= begin
       path = Pathname.new(folder)
@@ -65,6 +68,67 @@ module MacOS::Xcode extend self
     # may return a version string
     # that is guessed based on the compiler, so do not
     # use it in order to check if Xcode is installed.
+<<<<<<< HEAD
+    @version ||= begin
+      return "0" unless MACOS
+
+      # this shortcut makes version work for people who don't realise you
+      # need to install the CLI tools
+      xcode43build = V4_BUNDLE_PATH/'Contents/Developer/usr/bin/xcodebuild'
+      if xcode43build.file?
+        `#{xcode43build} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+        return $1 if $1
+      end
+
+      # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
+      raise if bad_xcode_select_path?
+
+      raise unless which "xcodebuild"
+      `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+      raise if $1.nil? or not $?.success?
+      $1
+    rescue
+      # For people who's xcode-select is unset, or who have installed
+      # xcode-gcc-installer or whatever other combinations we can try and
+      # supprt. See https://github.com/mxcl/homebrew/wiki/Xcode
+      case MacOS.llvm_build_version.to_i
+      when 1..2063 then "3.1.0"
+      when 2064..2065 then "3.1.4"
+      when 2366..2325
+        # we have no data for this range so we are guessing
+        "3.2.0"
+      when 2326
+        # also applies to "3.2.3"
+        "3.2.4"
+      when 2327..2333 then "3.2.5"
+      when 2335
+        # this build number applies to 3.2.6, 4.0 and 4.1
+        # https://github.com/mxcl/homebrew/wiki/Xcode
+        "4.0"
+      else
+        case (MacOS.clang_version.to_f * 10).to_i
+        when 0
+          "dunno"
+        when 1..14
+          "3.2.2"
+        when 15
+          "3.2.4"
+        when 16
+          "3.2.5"
+        when 17..20
+          "4.0"
+        when 21
+          "4.1"
+        when 22..30
+          "4.2"
+        when 31
+          "4.3"
+        when 40
+          "4.4"
+        else
+          "4.4"
+        end
+=======
     @version ||= uncached_version
   end
 
@@ -109,6 +173,29 @@ module MacOS::Xcode extend self
       "4.0"
     else
       case (MacOS.clang_version.to_f * 10).to_i
+<<<<<<< HEAD
+      when 0
+        "dunno"
+      when 1..14
+        "3.2.2"
+      when 15
+        "3.2.4"
+      when 16
+        "3.2.5"
+      when 17..20
+        "4.0"
+      when 21
+        "4.1"
+      when 22..30
+        "4.2"
+      when 31
+        "4.3"
+      when 40
+        "4.4"
+      else
+        "4.4"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
       when 0       then "dunno"
       when 1..14   then "3.2.2"
       when 15      then "3.2.4"
@@ -121,6 +208,7 @@ module MacOS::Xcode extend self
       when 41      then "4.5"
       when 42      then "4.6"
       else "4.6"
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
       end
     end
   end
@@ -153,11 +241,14 @@ module MacOS::CLT extend self
     MacOS.dev_tools_path == Pathname.new("/usr/bin")
   end
 
+<<<<<<< HEAD
+=======
   def latest_version?
     `/usr/bin/clang --version` =~ %r{clang-(\d+)\.(\d+)\.(\d+)}
     $1.to_i >= 425 and $3.to_i >= 24
   end
 
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   def version
     # The pkgutils calls are slow, don't repeat if no CLT installed.
     return @version if @version_determined

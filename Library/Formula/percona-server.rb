@@ -2,20 +2,35 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
+<<<<<<< HEAD
+<<<<<<< HEAD
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.25a-27.1/source/Percona-Server-5.5.25a-rel27.1.tar.gz'
+  version '5.5.25-27.1'
+  sha1 'f3388960311b159e46efd305ecdeb806fe2c7fdc'
+=======
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.27-28.0/source/Percona-Server-5.5.27-rel28.0.tar.gz'
+  version '5.5.27-28.0'
+  sha1 '5e6bb13ac6cec9fdf88251939e40e10c8bdef4a9'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
   url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.29-29.4/source/Percona-Server-5.5.29-rel29.4.tar.gz'
   version '5.5.29-29.4'
   sha1 '0c02296414739a29e8a3c81ff7fab68a45d5b8a2'
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   depends_on 'cmake' => :build
   depends_on 'readline'
   depends_on 'pidof'
 
+<<<<<<< HEAD
+=======
   option :universal
   option 'with-tests', 'Build with unit tests'
   option 'with-embedded', 'Build the embedded server'
   option 'with-libedit', 'Compile with editline wrapper instead of readline'
   option 'enable-local-infile', 'Build with local infile loading support'
 
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
   conflicts_with 'mysql',
     :because => "percona-server and mysql install the same binaries."
 
@@ -153,3 +168,36 @@ class PerconaServer < Formula
     EOS
   end
 end
+<<<<<<< HEAD
+
+
+__END__
+diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
+index 9296075..a600de2 100644
+--- a/scripts/mysql_config.sh
++++ b/scripts/mysql_config.sh
+@@ -137,7 +137,8 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNIV_MUST_NOT_INLINE DFORCE_INIT_OF_VARS \
+               DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
+               'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
+               Xa xstrconst "xc99=none" AC99 \
+-              unroll2 ip mp restrict
++              unroll2 ip mp restrict \
++              mmmx 'msse[0-9.]*' 'mfpmath=sse' w pipe 'fomit-frame-pointer' 'mmacosx-version-min=10.[0-9]'
+ do
+   # The first option we might strip will always have a space before it because
+   # we set -I$pkgincludedir as the first option
+diff --git a/scripts/mysqld_safe.sh b/scripts/mysqld_safe.sh
+index 37e0e35..38ad6c8 100644
+--- a/scripts/mysqld_safe.sh
++++ b/scripts/mysqld_safe.sh
+@@ -558,7 +558,7 @@ else
+ fi
+ 
+ USER_OPTION=""
+-if test -w / -o "$USER" = "root"
++if test -w /sbin -o "$USER" = "root"
+ then
+   if test "$user" != "root" -o $SET_USER = 1
+   then
+=======
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879

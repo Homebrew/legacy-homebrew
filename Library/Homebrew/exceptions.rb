@@ -136,9 +136,29 @@ class BuildError < Homebrew::InstallationError
       end
     end
     puts
+<<<<<<< HEAD
+    if issues.empty?
+<<<<<<< HEAD
+      puts "This may help you fix or report the issue if `brew doctor` does not:"
+=======
+      puts "This link will help resolve the above errors:"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+      puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
+    else
+      puts "These existing issues may help you:", *issues.map{ |s| "    #{Tty.em}#{s}#{Tty.reset}" }
+      puts "Otherwise, this may help you fix or report the issue:"
+      puts "    #{Tty.em}#{issues_url}#{Tty.reset}"
+    end
+    if e.was_running_configure?
+      puts "We saved the configure log:"
+      puts "    ~/Library/Logs/Homebrew/config.log"
+      puts "When you report the issue please paste the build output above and the config.log here:"
+      puts "    #{Tty.em}http://gist.github.com/#{Tty.reset}"
+=======
     unless issues.empty?
       puts "These open issues may also help:"
       puts issues.map{ |s| "    #{s}" }.join("\n")
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
     end
   end
 end

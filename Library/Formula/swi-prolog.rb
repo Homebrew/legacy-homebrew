@@ -13,12 +13,23 @@ class SwiProlog < Formula
 
   depends_on 'readline'
   depends_on 'gmp'
+<<<<<<< HEAD
+  depends_on 'jpeg'
+  depends_on 'mcrypt'
+  depends_on 'gawk'
+<<<<<<< HEAD
+  depends_on :x11 if MacOS::XQuartz.installed?
+=======
+  depends_on :x11 if MacOS::X11.installed?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
 
   if build.include? 'with-xpce'
     depends_on 'pkg-config' => :build
     depends_on :x11
     depends_on 'jpeg'
   end
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   # 10.5 versions of these are too old
   if MacOS.version == :leopard
@@ -33,8 +44,22 @@ class SwiProlog < Formula
 
   def install
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
+<<<<<<< HEAD
+    ENV.append 'DISABLE_PKGS', "jpl" if build.include? "without-jpl"
+
+<<<<<<< HEAD
+    unless MacOS::XQuartz.installed?
+=======
+    unless MacOS::X11.installed?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+      # SWI-Prolog requires X11 for XPCE
+      opoo "It appears that X11 is not installed. The XPCE packages will not be built."
+      ENV.append 'DISABLE_PKGS', "xpce"
+    end
+=======
     ENV.append 'DISABLE_PKGS', "jpl" unless build.include? "with-jpl"
     ENV.append 'DISABLE_PKGS', "xpce" unless build.include? 'with-xpce'
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
     # SWI-Prolog's Makefiles don't add CPPFLAGS to the compile command, but do
     # include CIFLAGS. Setting it here. Also, they clobber CFLAGS, so including

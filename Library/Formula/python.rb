@@ -1,8 +1,49 @@
 require 'formula'
 
+<<<<<<< HEAD
+class TkCheck < Requirement
+  def message; <<-EOS.undent
+    Tk.framework was detected in /Library/Frameworks
+    This can cause Python builds to fail. See:
+      https://github.com/mxcl/homebrew/issues/11602
+    EOS
+  end
+
+  def fatal?; false; end
+
+  def satisfied?
+    not File.exist? '/Library/Frameworks/Tk.framework'
+  end
+end
+
+class TkCheck < Requirement
+  def message; <<-EOS.undent
+    Tk.framework detected in /Library/Frameworks
+    and that can make python builds to fail.
+    https://github.com/mxcl/homebrew/issues/11602
+    EOS
+  end
+
+  def fatal?; false; end
+
+  def satisfied?
+    not File.exist? '/Library/Frameworks/Tk.framework'
+  end
+end
+
+
+class Distribute < Formula
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
+<<<<<<< HEAD
+  md5 'b400b532e33f78551e6847c1f5965e56'
+=======
+  sha1 '709bd97d46050d69865d4b588c7707768dfe6711'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
 class Distribute < Formula
   url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.34.tar.gz'
   sha1 'b6f9cfbaf3e63833b71009812a613be13e68f5de'
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 end
 
 class Pip < Formula

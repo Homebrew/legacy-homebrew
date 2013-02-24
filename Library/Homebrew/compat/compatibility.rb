@@ -34,7 +34,11 @@ def llvm_build
 end
 
 def x11_installed?
+<<<<<<< HEAD
+  MacOS::XQuartz.installed?
+=======
   MacOS::X11.installed?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 end
 
 def macports_or_fink_installed?
@@ -209,6 +213,14 @@ module MacOS extend self
   end
 
   def x11_installed?
+<<<<<<< HEAD
+    XQuartz.installed?
+  end
+
+  def x11_prefix
+    XQuartz.prefix
+  end
+=======
     X11.installed?
   end
 
@@ -234,10 +246,14 @@ module MacOS extend self
     10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
   end
   alias_method :mountain_lion_or_newer?, :mountain_lion?
+<<<<<<< HEAD
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
 
   def macports_or_fink_installed?
     not MacOS.macports_or_fink.empty?
   end
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 end
 
 

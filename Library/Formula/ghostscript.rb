@@ -46,6 +46,15 @@ class Ghostscript < Formula
 
   def install
     ENV.deparallelize
+<<<<<<< HEAD
+    # ghostscript configure ignores LDFLAGs apparently
+<<<<<<< HEAD
+    ENV['LIBS'] = "-L#{MacOS::XQuartz.lib}"
+=======
+    ENV['LIBS'] = "-L#{MacOS::X11.lib}"
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
+>>>>>>> 82a1481f6fa824816bbf2bdeb53fd1933a1a15f2
 
     src_dir = build.head? ? "gs" : "."
 

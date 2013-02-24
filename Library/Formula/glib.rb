@@ -2,11 +2,19 @@ require 'formula'
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
+<<<<<<< HEAD
+  url 'ftp://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.4.tar.xz'
+  sha256 'a5d742a4fda22fb6975a8c0cfcd2499dd1c809b8afd4ef709bda4d11b167fae2'
+<<<<<<< HEAD
+=======
+=======
   url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.34/glib-2.34.3.tar.xz'
   sha256 '855fcbf87cb93065b488358e351774d8a39177281023bae58c286f41612658a7'
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
 
   option :universal
   option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
@@ -25,7 +33,15 @@ class Glib < Formula
     ]}
     p[:p0] = %W[
         https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/patch-configure.diff
+<<<<<<< HEAD
+<<<<<<< HEAD
+      ] if ARGV.build_universal?
+=======
+      ] if build.universal?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
+=======
     ] if build.universal?
+>>>>>>> 35b0414670cc73c4050f911c89fc1602fa6a1d40
     p
   end
 
@@ -47,7 +63,11 @@ class Glib < Formula
 
     system "./configure", *args
 
+<<<<<<< HEAD
+    if ARGV.build_universal?
+=======
     if build.universal?
+>>>>>>> 0dba76a6beda38e9e5357faaf3339408dcea0879
       system "curl 'https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/config.h.ed' | ed - config.h"
     end
 
