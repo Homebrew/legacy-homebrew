@@ -1,13 +1,12 @@
 require 'formula'
 
 class Sipp < Formula
-  url 'http://downloads.sourceforge.net/project/sipp/sipp/3.2/sipp.svn.tar.gz'
   homepage 'http://sipp.sourceforge.net/'
-  md5 '2a3a60cb4317dcf8eb5482f6a955e4d0'
-  version '3.2'
+  url 'http://downloads.sourceforge.net/project/sipp/sipp/3.2/sipp.svn.tar.gz'
+  sha1 'cef9e061b3223b228ae403f897edc192b3ce2ce7'
 
   def install
-    system "make DESTDIR=#{prefix}"
+    system "make", "DESTDIR=#{prefix}"
     bin.install "sipp"
   end
 end

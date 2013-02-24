@@ -1,9 +1,9 @@
 require 'formula'
 
 class Rpl < Formula
-  url 'ftp://ftp2.laffeycomputer.com/pub/current_builds/rpl-1.4.1.tar.gz'
   homepage 'http://www.laffeycomputer.com/rpl.html'
-  md5 '2eb9c18d97040dc301bfaa8aa70e21a4'
+  url 'ftp://ftp2.laffeycomputer.com/pub/current_builds/rpl-1.4.1.tar.gz'
+  sha1 '6c67ecd2307f378b44b697411b0ab65bc5d2cdaa'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

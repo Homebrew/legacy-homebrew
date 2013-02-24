@@ -1,8 +1,11 @@
 require 'formula'
 
 class Plowshare < Formula
-  head 'https://code.google.com/p/plowshare/', :using => :git
   homepage 'http://code.google.com/p/plowshare/'
+  url 'http://plowshare.googlecode.com/files/plowshare-snapshot-git20120930.tar.gz'
+  sha1 'd8272d2a325764f855d77158e0ed35e70d9d1968'
+
+  head 'https://code.google.com/p/plowshare/', :using => :git
 
   depends_on 'recode'
   depends_on 'imagemagick'
@@ -21,15 +24,24 @@ class Plowshare < Formula
     ENV["PREFIX"] = prefix
     system "bash setup.sh install"
   end
+
+  def caveats; <<-EOS.undent
+    The default installation of imagemagick does not enable
+    X11 support. plowshare uses the display command which does
+    not work if X11 support is not enabled. To enable:
+      brew remove imagemagick
+      brew install imagemagick --with-x
+    EOS
+  end
 end
 
 
-#This patch makes sure GNUtools are used on OSX.
-#gnu-getopt is keg-only hence the backtick expansion.
-#These aliases only exist for the duration of plowshare,
-#inside the plowshare shells. Normal operation of bash is
-#unaffected - getopt will still find the version supplied
-#by OSX in other shells, for example.
+# This patch makes sure GNUtools are used on OSX.
+# gnu-getopt is keg-only hence the backtick expansion.
+# These aliases only exist for the duration of plowshare,
+# inside the plowshare shells. Normal operation of bash is
+# unaffected - getopt will still find the version supplied
+# by OSX in other shells, for example.
 __END__
 --- a/src/core.sh
 +++ b/src/core.sh

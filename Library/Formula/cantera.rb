@@ -1,21 +1,20 @@
 require 'formula'
 
 class Cantera < Formula
-  url 'http://cantera.googlecode.com/files/cantera-1.8.0-beta.tar.gz'
   homepage 'http://code.google.com/p/cantera/'
-  md5 '53d923922535c64b7e6b9f07bbfcf866'
+  url 'http://cantera.googlecode.com/files/cantera-1.8.0-beta.tar.gz'
+  sha1 'c62666590c65c9a5a17c0867f0f6b6789984131f'
   head 'http://cantera.googlecode.com/svn/cantera18/trunk/'
 
   depends_on 'numpy' => :python
-  depends_on 'graphviz' # for the reaction flux diagrams
+  depends_on 'graphviz'
 
+  # fixes the Makefiles in Cantera/cxx/demos/ that have broken install commands
   def patches
-    # fixes the Makefiles in Cantera/cxx/demos/ that have broken install commands
     DATA
   end
 
   def install
-
     if MacOS.prefer_64_bit?
       # There is probably a better way to do this, but this seems to work for my purposes:
       ENV['CFLAGS'] += " -arch x86_64"
@@ -56,18 +55,18 @@ class Cantera < Formula
     system "make install"
   end
 
-  def caveats; <<-EOS
-The license, demos, tutorials, data, etc. can be found in:
- #{prefix}
+  def caveats; <<-EOS.undent
+    The license, demos, tutorials, data, etc. can be found in:
+      #{opt_prefix}
 
-Try the following in python to find the equilibrium composition of a
-stoichiometric methane/air mixture at 1000 K and 1 atm:
->>> import Cantera
->>> g=Cantera.GRI30()
->>> g.set(X='CH4:1, O2:2, N2:8', T=1000, P=Cantera.OneAtm)
->>> g.equilibrate('TP')
->>> g
-EOS
+    Try the following in python to find the equilibrium composition of a
+    stoichiometric methane/air mixture at 1000 K and 1 atm:
+    >>> import Cantera
+    >>> g=Cantera.GRI30()
+    >>> g.set(X='CH4:1, O2:2, N2:8', T=1000, P=Cantera.OneAtm)
+    >>> g.equilibrate('TP')
+    >>> g
+    EOS
   end
 end
 

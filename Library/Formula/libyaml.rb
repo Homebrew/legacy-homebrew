@@ -1,22 +1,17 @@
 require 'formula'
 
 class Libyaml < Formula
-  url 'http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz'
   homepage 'http://pyyaml.org/wiki/LibYAML'
-  md5 '36c852831d02cf90508c29852361d01b'
+  url 'http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz'
+  sha1 'e0e5e09192ab10a607e3da2970db492118f560f2'
 
-  def options
-    [
-      ["--universal", "Build for both 32 & 64 bit Intel."],
-    ]
-  end
+  option :universal
 
   def install
     args = ["--prefix=#{prefix}"]
 
-    if ARGV.build_universal?
-      ENV['CFLAGS'] = "-arch i386 -arch x86_64"
-      ENV['LDFLAGS'] = "-arch i386 -arch x86_64"
+    if build.universal?
+      ENV.universal_binary
       args << "--disable-dependency-tracking"
     end
 

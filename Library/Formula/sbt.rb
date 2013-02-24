@@ -1,10 +1,10 @@
 require 'formula'
 
 class Sbt < Formula
-  url "http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-tools.sbt/sbt-launch/0.10.1/sbt-launch.jar"
-  homepage 'http://github.com/harrah/xsbt/'
-  version '0.10.1'
-  md5 '9408d6092d6e12139d111f39e2e7b61e'
+  homepage 'http://www.scala-sbt.org'
+  url 'http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.12.2/sbt-launch.jar'
+  version '0.12.2'
+  sha1 'ef6213597489edd8d1955086924f488949dd4975'
 
   def install
     (bin+'sbt').write <<-EOS.undent

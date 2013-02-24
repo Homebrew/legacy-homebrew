@@ -1,10 +1,16 @@
 require 'formula'
 
 class Clojure < Formula
-  url 'https://github.com/downloads/clojure/clojure/clojure-1.2.1.zip'
-  md5 'c5724c624fd6ce6a1d00252c27d53ebe'
-  head 'https://github.com/clojure/clojure.git'
   homepage 'http://clojure.org/'
+  url 'http://repo1.maven.org/maven2/org/clojure/clojure/1.4.0/clojure-1.4.0.zip'
+  sha1 '34daf1bb035aba4c0e5ff3b4afef837d21700e72'
+
+  head 'https://github.com/clojure/clojure.git'
+
+  devel do
+    url 'http://repo1.maven.org/maven2/org/clojure/clojure/1.5.0-RC1/clojure-1.5.0-RC1.zip'
+    sha1 '1820d7da736079c767bb3c02308d7e2c401a4410'
+  end
 
   def script; <<-EOS.undent
     #!/bin/sh
@@ -12,19 +18,24 @@ class Clojure < Formula
     # With no arguments runs Clojure's REPL.
 
     # Put the Clojure jar from the cellar and the current folder in the classpath.
-    CLOJURE=$CLASSPATH:#{prefix}/clojure.jar:${PWD}
+    CLOJURE=$CLASSPATH:#{prefix}/#{jar}:${PWD}
 
     if [ "$#" -eq 0 ]; then
-        java -cp $CLOJURE clojure.main --repl
+        java -cp "$CLOJURE" clojure.main --repl
     else
-        java -cp $CLOJURE clojure.main "$@"
+        java -cp "$CLOJURE" clojure.main "$@"
     fi
     EOS
   end
 
+  def jar
+    "clojure-#{version}.jar"
+  end
+
   def install
-    system "ant" if ARGV.build_head?
-    prefix.install 'clojure.jar'
+    system "ant" if build.head?
+    prefix.install jar
+    (prefix+jar).chmod(0644) # otherwise it's 0600
     (prefix+'classes').mkpath
     (bin+'clj').write script
   end
@@ -37,6 +48,6 @@ class Clojure < Formula
   end
 
   def test
-    system "#{bin}/clj -e \"(println \\\"Hello World\\\")\""
+    system "#{bin}/clj", "-e", '(println "Hello World")'
   end
 end

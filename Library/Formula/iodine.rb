@@ -1,16 +1,16 @@
 require 'formula'
 
 class Iodine < Formula
-  url 'http://code.kryo.se/iodine/iodine-0.6.0-rc1.tar.gz'
   homepage 'http://code.kryo.se/iodine/'
-  md5 'a15bb4faba020d217016fde6e231074a'
+  url 'http://code.kryo.se/iodine/iodine-0.6.0-rc1.tar.gz'
+  sha1 '4fa9a248b8a84df8a727a5d749e669e58136edca'
+
+  def patches
+    # 10.8 compatibility; see https://github.com/yarrick/iodine/pull/1
+    "https://github.com/zschoche/iodine/commit/e1e438497a83dbe6800212a0e5cb632907d1b3d9.patch"
+  end
 
   def install
-    unless MacOS.leopard?
-      inreplace ["src/common.c", "src/dns.c", "src/iodine.c", "src/iodined.c"],
-        "arpa/nameser8_compat", "arpa/nameser_compat"
-    end
-
-    system "make install prefix=#{prefix}"
+    system "make", "install", "prefix=#{prefix}"
   end
 end

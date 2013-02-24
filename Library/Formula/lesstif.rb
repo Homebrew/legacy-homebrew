@@ -1,13 +1,13 @@
 require 'formula'
 
 class Lesstif < Formula
-  url 'http://sourceforge.net/projects/lesstif/files/lesstif/0.95.2/lesstif-0.95.2.tar.bz2'
-  md5 '754187dbac09fcf5d18296437e72a32f'
   homepage 'http://lesstif.sourceforge.net'
+  url 'http://sourceforge.net/projects/lesstif/files/lesstif/0.95.2/lesstif-0.95.2.tar.bz2'
+  sha1 'b894e544d529a235a6a665d48ca94a465f44a4e5'
+
+  depends_on :x11
 
   def install
-    ENV.x11
-
     # LessTif does naughty, naughty, things by assuming we want autoconf macros
     # to live in wherever `aclocal --print-ac-dir` says they should.
 

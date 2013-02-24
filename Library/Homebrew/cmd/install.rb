@@ -4,21 +4,22 @@ require 'blacklist'
 
 module Homebrew extend self
   def install
-    ARGV.named.each do |name|
-      msg = blacklisted? name
-      raise "No available formula for #{name}\n#{msg}" if msg
-    end unless ARGV.force?
+    raise FormulaUnspecifiedError if ARGV.named.empty?
 
-    ARGV.formulae.each do |f|
-      if File.directory? HOMEBREW_REPOSITORY/"Library/LinkedKegs/#{f.name}"
-        raise "#{f} already installed\nTry: brew upgrade #{f}"
+    if ARGV.include? '--head'
+      raise "Specify `--HEAD` in uppercase to build from trunk."
+    end
+
+    ARGV.named.each do |name|
+      # if a formula has been tapped ignore the blacklisting
+      if not File.file? HOMEBREW_REPOSITORY/"Library/Formula/#{name}.rb"
+        msg = blacklisted? name
+        raise "No available formula for #{name}\n#{msg}" if msg
       end
     end unless ARGV.force?
 
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      # note we only abort if Homebrew is *not* installed as sudo and the user
-      # calls brew as root. The fix is to chown brew to root.
-      abort "Cowardly refusing to `sudo brew install'"
+      raise "Cowardly refusing to `sudo brew install'\n#{SUDO_BAD_ERRMSG}"
     end
 
     install_formulae ARGV.formulae
@@ -28,34 +29,27 @@ module Homebrew extend self
     case Hardware.cpu_type when :ppc, :dunno
       abort <<-EOS.undent
         Sorry, Homebrew does not support your computer's CPU architecture.
-        For PPC support, see: http://github.com/sceaga/homebrew/tree/powerpc
+        For PPC support, see: https://github.com/mistydemeo/tigerbrew
         EOS
     end
   end
 
   def check_writable_install_location
-    raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable?
-    raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable? or HOMEBREW_PREFIX.to_s == '/usr/local'
+    raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable_real?
+    raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable_real? or HOMEBREW_PREFIX.to_s == '/usr/local'
   end
 
-  def check_cc
-    if MacOS.snow_leopard?
-      if MacOS.llvm_build_version < RECOMMENDED_LLVM
-        opoo "You should upgrade to Xcode 3.2.6"
-      end
-    else
-      if (MacOS.gcc_40_build_version < RECOMMENDED_GCC_40) or (MacOS.gcc_42_build_version < RECOMMENDED_GCC_42)
-        opoo "You should upgrade to Xcode 3.1.4"
-      end
+  def check_xcode
+    require 'cmd/doctor'
+    checks = Checks.new
+    %w{check_for_latest_xcode check_xcode_license_approved}.each do |check|
+      out = checks.send(check)
+      opoo out unless out.nil?
     end
-  rescue
-    # the reason we don't abort is some formula don't require Xcode
-    # TODO allow formula to declare themselves as "not needing Xcode"
-    opoo "Xcode is not installed! Builds may fail!"
   end
 
   def check_macports
-    if MacOS.macports_or_fink_installed?
+    unless MacOS.macports_or_fink.empty?
       opoo "It appears you have MacPorts or Fink installed."
       puts "Software installed with other package managers causes known problems for"
       puts "Homebrew. If a formula fails to build, uninstall MacPorts/Fink and try again."
@@ -74,7 +68,7 @@ module Homebrew extend self
   def perform_preinstall_checks
     check_ppc
     check_writable_install_location
-    check_cc
+    check_xcode
     check_macports
     check_cellar
   end
@@ -84,15 +78,20 @@ module Homebrew extend self
     unless formulae.empty?
       perform_preinstall_checks
       formulae.each do |f|
-        begin
-          fi = FormulaInstaller.new(f)
-          fi.install
-          fi.caveats
-          fi.finish
-        rescue FormulaAlreadyInstalledError => e
-          opoo e.message
-        end
+        install_formula(f)
       end
     end
+  end
+
+  def install_formula f
+    fi = FormulaInstaller.new(f)
+    fi.install
+    fi.caveats
+    fi.finish
+  rescue FormulaInstallationAlreadyAttemptedError
+    # We already attempted to install f as part of the dependency tree of
+    # another formula. In that case, don't generate an error, just move on.
+  rescue CannotInstallFormulaError => e
+    ofail e.message
   end
 end

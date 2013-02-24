@@ -1,36 +1,39 @@
 require 'formula'
 
 class Phash < Formula
-  url 'http://www.phash.org/releases/pHash-0.9.4.tar.gz'
   homepage 'http://www.phash.org/'
-  sha1 '9710b8a1d4d24e7fc3ac43c33eac8e89d9e727d7'
+  url 'http://www.phash.org/releases/pHash-0.9.5.tar.gz'
+  sha1 '87ce165b344bb859f5fdaf7c1776b556db3d8a15'
 
-  depends_on 'cimg' unless  ARGV.include? "--disable-image-hash" and ARGV.include? "--disable-video-hash"
-  depends_on 'ffmpeg' unless ARGV.include? "--disable-video-hash"
+  depends_on 'cimg' unless build.include? "disable-image-hash" and build.include? "disable-video-hash"
+  depends_on 'ffmpeg' unless build.include? "disable-video-hash"
 
-  unless ARGV.include? "--disable-audio-hash"
+  unless build.include? "disable-audio-hash"
     depends_on 'libsndfile'
     depends_on 'libsamplerate'
     depends_on 'mpg123'
   end
 
-  def options
-    [
-     ["--disable-image-hash", "Disable image hash"],
-     ["--disable-video-hash", "Disable video hash"],
-     ["--disable-audio-hash", "Disable audio hash"]
-    ]
+  option "disable-image-hash", "Disable image hash"
+  option "disable-video-hash", "Disable video hash"
+  option "disable-audio-hash", "Disable audio hash"
+
+  fails_with :clang do
+    build 318
+    cause "configure: WARNING: CImg.h: present but cannot be compiled"
   end
 
   def install
-    args = ["--disable-debug", "--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--enable-shared"]
+    args = %W[--disable-debug
+              --disable-dependency-tracking
+              --prefix=#{prefix}
+              --enable-shared
+            ]
 
     # disable specific hashes if specified as an option
-    args << "--disable-image-hash" if ARGV.include? "--disable-image-hash"
-    args << "--disable-video-hash" if ARGV.include? "--disable-video-hash"
-    args << "--disable-audio-hash" if ARGV.include? "--disable-audio-hash"
+    args << "--disable-image-hash" if build.include? "disable-image-hash"
+    args << "--disable-video-hash" if build.include? "disable-video-hash"
+    args << "--disable-audio-hash" if build.include? "disable-audio-hash"
 
     system "./configure", *args
     system "make install"

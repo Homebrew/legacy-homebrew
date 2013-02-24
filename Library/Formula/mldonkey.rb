@@ -1,26 +1,26 @@
 require 'formula'
 
 class Mldonkey < Formula
-  url 'http://downloads.sourceforge.net/project/mldonkey/mldonkey/3.0.7/mldonkey-3.0.7.tar.bz2'
   homepage 'http://mldonkey.sourceforge.net/Main_Page'
-  md5 '162b78fc4e20335a8fe31d91e1656db2'
+  url 'http://downloads.sourceforge.net/project/mldonkey/mldonkey/3.1.3/mldonkey-3.1.3.tar.bz2'
+  sha1 '424386f277e84df55a2cbab213fae60787e42c8b'
+
+  option "with-x", "Build mldonkey with X11 support"
 
   depends_on 'objective-caml'
-  if ARGV.include? "--with-x"
+  depends_on :libpng
+
+  if build.include? "with-x"
     depends_on 'librsvg'
     depends_on 'lablgtk'
   end
 
-  def options
-    [["--with-x", "Build mldonkey with X11 support"]]
-  end
-
   def install
-    args = ["--prefix=#{prefix}"]
+    # Fix compiler selection
+    ENV['OCAMLC'] = "#{HOMEBREW_PREFIX}/bin/ocamlc.opt -cc #{ENV.cc}"
 
-    if ARGV.include? "--with-x"
-      args << "--enable-gui=newgui2"
-    end
+    args = ["--prefix=#{prefix}"]
+    args << "--enable-gui=newgui2" if build.include? "with-x"
 
     system "./configure", *args
     system "make install"

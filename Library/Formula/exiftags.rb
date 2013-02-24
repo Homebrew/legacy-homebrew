@@ -1,9 +1,9 @@
 require 'formula'
 
 class Exiftags < Formula
-  url 'http://johnst.org/sw/exiftags/exiftags-1.01.tar.gz'
   homepage 'http://johnst.org/sw/exiftags'
-  md5 '9d5bce968fdde2dc24ba49c0024dc0cc'
+  url 'http://johnst.org/sw/exiftags/exiftags-1.01.tar.gz'
+  sha1 '06636feb7d5c5835da01d5da8cd0f4a291d23fd8'
 
   def install
     system 'make'

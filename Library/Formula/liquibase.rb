@@ -1,20 +1,18 @@
 require 'formula'
 
 class Liquibase < Formula
-  url 'http://liquibase.org/liquibase-2.0.1-bin.tar.gz'
   homepage 'http://liquibase.org'
-  md5 '5dcceb7b3b5d39c4c39479fce6da2270'
+  url 'https://github.com/downloads/liquibase/liquibase/liquibase-2.0.5-bin.tar.gz'
+  sha1 'eb237c4b9b8c85aff5ddac6272f6291ae593c7a4'
 
   def install
     rm_f Dir['*.bat']
 
     chmod 0755, Dir['liquibase']
 
-    prefix.install "LICENSE.txt"
+    prefix.install_metafiles
     libexec.install Dir['*']
-
-    bin.mkpath
-    ln_s libexec+('liquibase'), bin
+    bin.install_symlink libexec+'liquibase'
   end
 
   def caveats

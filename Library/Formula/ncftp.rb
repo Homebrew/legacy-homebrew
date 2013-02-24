@@ -3,7 +3,7 @@ require 'formula'
 class Ncftp < Formula
   homepage 'http://www.ncftp.com'
   url 'ftp://ftp.ncftp.com/ncftp/ncftp-3.2.5-src.tar.gz'
-  md5 '685e45f60ac11c89442c572c28af4228'
+  sha1 'b1aafd9291e29c336fcad07ae212fe1b5b2a1c58'
 
   def install
     # "disable universal" doesn't seem to work.

@@ -1,30 +1,64 @@
 require 'formula'
 
 class Libxml2 < Formula
-  url 'ftp://xmlsoft.org/libxml2/libxml2-2.7.8.tar.gz'
   homepage 'http://xmlsoft.org'
-  md5 '8127a65e8c3b08856093099b52599c86'
+  url 'ftp://xmlsoft.org/libxml2/libxml2-2.9.0.tar.gz'
+  sha256 'ad25d91958b7212abdc12b9611cfb4dc4e5cddb6d1e9891532f48aacee422b82'
 
   keg_only :provided_by_osx
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+  option :universal
+  option 'with-python', 'Compile the libxml2 Python 2.x modules'
 
-  def options
-    [['--with-python', 'Compile the libxml2 Python 2.x modules']]
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
+
+  def patches
+    %w{
+    http://git.gnome.org/browse/libxml2/patch/?id=3f6cfbd1d38d0634a2ddcb9a0a13e1b5a2195a5e
+    http://git.gnome.org/browse/libxml2/patch/?id=713434d2309da469d64b35e163ea6556dadccada
+    }
   end
 
   def install
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    ENV.universal_binary if build.universal?
 
-    if ARGV.include? '--with-python'
-      python_prefix=`python-config --prefix`
-      ohai "Installing Python module to #{python_prefix}"
-      args << "--with-python=#{python_prefix}"
-    end
-
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--without-python"
     system "make"
-    ENV.j1
+    ENV.deparallelize
     system "make install"
+
+    if build.include? 'with-python'
+      # Build Python bindings manually
+      cd 'python' do
+        python_lib = lib/which_python/'site-packages'
+        ENV.append 'PYTHONPATH', python_lib
+        python_lib.mkpath
+
+        archs = archs_for_command("python")
+        archs.remove_ppc!
+        arch_flags = archs.as_arch_flags
+
+        ENV.append 'CFLAGS', arch_flags
+        ENV.append 'LDFLAGS', arch_flags
+
+        unless MacOS::CLT.installed?
+          # We can hijack /opt/include to insert SDKROOT/usr/include
+          inreplace 'setup.py', '"/opt/include",', "'#{MacOS.sdk_path}/usr/include',"
+        end
+
+        system "python", "setup.py",
+                         "install_lib",
+                         "--install-dir=#{python_lib}"
+      end
+    end
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end

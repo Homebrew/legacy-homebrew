@@ -1,28 +1,30 @@
 require 'formula'
 
 class Camlp5 < Formula
-  url 'http://pauillac.inria.fr/~ddr/camlp5/distrib/src/camlp5-5.15.tgz'
   homepage 'http://pauillac.inria.fr/~ddr/camlp5/'
-  md5 '67ccbf37ffe33dec137ee71ca6189ea2'
+  url 'http://pauillac.inria.fr/~ddr/camlp5/distrib/src/camlp5-6.07.tgz'
+  sha1 'a6b52e533e7062845a0a45dda097cb2eff52b928'
+  version '6.07-1'
 
   depends_on 'objective-caml'
 
-  def options
-    [['--strict', "Compile in strict mode"]]
+  option 'strict', 'Compile in strict mode'
+
+  def patches
+    { :p0 => "http://pauillac.inria.fr/~ddr/camlp5/distrib/src/patch-6.07-1" }
   end
 
   def install
-
-    # compile for strict or transitional
-    if ARGV.include? '--strict'
+    if build.include? 'strict'
       strictness = "-strict"
     else
       strictness = "-transitional"
     end
 
-    system "./configure -prefix #{prefix} -mandir #{man} #{strictness}"
+    system "./configure", "-prefix", prefix, "-mandir", man, strictness
     # this build fails if jobs are parallelized
-    system "make -j 1 world.opt"
+    ENV.deparallelize
+    system "make world.opt"
     system "make install"
   end
 end

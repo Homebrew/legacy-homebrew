@@ -10,15 +10,12 @@ end
 
 class Pyside < Formula
   homepage 'http://www.pyside.org'
-  url 'http://www.pyside.org/files/pyside-qt4.7+1.0.6.tar.bz2'
-  md5 '6773cdd7c594f5bc314541d8cfb70256'
+  url 'http://qt-project.org/uploads/pyside/pyside-qt4.8+1.1.2.tar.bz2'
+  mirror 'https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.1.2.tar.bz2'
+  sha1 'c0119775f2500e48efebdd50b7be7543e71b2c24'
 
   depends_on 'cmake' => :build
-
   depends_on 'shiboken'
-  depends_on 'generatorrunner'
-  depends_on 'apiextractor'
-  depends_on 'qt'
 
   def install
     # The build will be unable to find Qt headers buried inside frameworks
@@ -28,8 +25,19 @@ class Pyside < Formula
     ENV.append_to_cflags "-F#{qt.prefix}/Frameworks"
 
     # Also need `ALTERNATIVE_QT_INCLUDE_DIR` to prevent "missing file" errors.
-    system "cmake . #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks -DSITE_PACKAGE=#{site_package_dir} -DBUILD_TESTS=NO"
-    system 'make install'
+    # Add out of tree build because one of its deps, shiboken, itself needs an
+    # out of tree build in shiboken.rb.
+    args = std_cmake_args + %W[
+      -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks
+      -DSITE_PACKAGE=#{site_package_dir}
+      -DBUILD_TESTS=NO
+      ..
+    ]
+    mkdir 'macbuild' do
+      system 'cmake', *args
+      system 'make'
+      system 'make install'
+    end
   end
 
   def caveats

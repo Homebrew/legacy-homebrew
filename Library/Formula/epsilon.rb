@@ -3,7 +3,7 @@ require 'formula'
 class Epsilon < Formula
   homepage 'http://epsilon-project.sourceforge.net'
   url 'http://sourceforge.net/projects/epsilon-project/files/epsilon/0.9.2/epsilon-0.9.2.tar.gz'
-  md5 '56d7f1a41e05be20441728d9e20d22ef'
+  sha1 '050b0d2e35057c1a82f8927aceebe61a045c388e'
 
   depends_on 'popt'
 

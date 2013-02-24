@@ -1,14 +1,18 @@
 require 'formula'
 
 class Aplus < Formula
-  url 'http://mirrors.kernel.org/debian/pool/main/a/aplus-fsf/aplus-fsf_4.22.1.orig.tar.gz'
   homepage 'http://www.aplusdev.org/'
-  md5 'c45df4f3e816d7fe957deed9b81f66c3'
+  url 'http://mirrors.kernel.org/debian/pool/main/a/aplus-fsf/aplus-fsf_4.22.1.orig.tar.gz'
+  mirror 'http://ftp.us.debian.org/debian/pool/main/a/aplus-fsf/aplus-fsf_4.22.1.orig.tar.gz'
+  sha1 'e757cc7654cf35dba15a6a5d6cac5320146558fc'
 
   # Fix the missing CoreServices include (via Fink version of aplus)
   def patches
     DATA
   end
+
+  depends_on :automake
+  depends_on :libtool
 
   def install
     # replace placeholder w/ actual prefix
@@ -16,25 +20,21 @@ class Aplus < Formula
       chmod 0644, path
       inreplace path, "/usr/local/aplus-fsf-4.20", prefix
     end
-    system "/usr/bin/aclocal -I config"
-    system "/usr/bin/glibtoolize --force --copy"
-    system "/usr/bin/automake --foreign --add-missing --copy"
-    system "/usr/bin/autoconf"
+    system "aclocal -I config"
+    system "glibtoolize --force --copy"
+    system "automake --foreign --add-missing --copy"
+    system "autoconf"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "/usr/bin/make"
-    # make install breaks with -j option
-    ENV.j1
-    system "/usr/bin/make", "install"
+    system "make"
+    ENV.j1 # make install breaks with -j option
+    system "make", "install"
   end
 
-  def caveats
-    return <<-EOS.undent
+  def caveats; <<-EOS.undent
     This package contains a custom APL font; it doesn't display APL characters
     using the usual Unicode codepoints.  Install it by running
-
-    open #{prefix}/fonts/TrueType/KAPL.TTF
-
+      open #{opt_prefix}/fonts/TrueType/KAPL.TTF
     and clicking on the "Install Font" button.
     EOS
   end

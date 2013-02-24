@@ -1,9 +1,9 @@
 require 'formula'
 
 class XmlCoreutils < Formula
-  url 'http://www.lbreyer.com/gpl/xml-coreutils-0.8a.tar.gz'
   homepage 'http://www.lbreyer.com/xml-coreutils.html'
-  md5 '2a5fa1f1feffad6be2f8af7661408268'
+  url 'http://www.lbreyer.com/gpl/xml-coreutils-0.8.1.tar.gz'
+  sha1 'fd73b2a087ea1c630571070b1ab4ea3b40138a46'
 
   depends_on 's-lang'
 

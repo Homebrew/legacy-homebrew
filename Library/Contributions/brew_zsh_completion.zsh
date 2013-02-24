@@ -14,6 +14,10 @@ _brew_installed_formulae() {
   installed_formulae=(`brew list`)
 }
 
+_brew_outdated_formulae() {
+  outdated_formulae=(`brew outdated`)
+}
+
 local -a _1st_arguments
 _1st_arguments=(
   'cat:display formula file for a formula'
@@ -29,18 +33,19 @@ _1st_arguments=(
   'list:list files in a formula or not-installed formulae'
   'log:git commit log for a formula'
   'missing:check all installed formuale for missing dependencies.'
-  'outdated:list formulas for which a newer version is available'
+  'outdated:list formulae for which a newer version is available'
   'prune:remove dead links'
   'remove:remove a formula'
   'search:search for a formula (/regex/ or string)'
   'server:start a local web app that lets you browse formulae (requires Sinatra)'
   'unlink:unlink a formula'
   'update:freshen up links'
-  'uses:show formulas which depend on a formula'
+  'upgrade:upgrade outdated formulae'
+  'uses:show formulae which depend on a formula'
 )
 
 local expl
-local -a formulae installed_formulae
+local -a formulae installed_formulae outdated_formulae
 
 _arguments \
   '(-v)-v[verbose]' \
@@ -79,4 +84,7 @@ case "$words[1]" in
   remove|rm|uninstall|unlink|cleanup|link|ln)
     _brew_installed_formulae
     _wanted installed_formulae expl 'installed formulae' compadd -a installed_formulae ;;
+  upgrade)
+    _brew_outdated_formulae
+    _wanted outdated_formulae expl 'outdated formulae' compadd -a outdated_formulae ;;
 esac

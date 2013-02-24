@@ -1,16 +1,20 @@
 require 'formula'
 
 class Xar < Formula
-  url 'http://xar.googlecode.com/files/xar-1.5.2.tar.gz'
   homepage 'http://code.google.com/p/xar/'
-  md5 '8eabb055d3387b8edc30ecfb08d2e80d'
+  url 'http://xar.googlecode.com/files/xar-1.5.2.tar.gz'
+  sha1 'eb411a92167387aa5d06a81970f7e929ec3087c9'
 
+  # Known issue upstream:
+  # http://code.google.com/p/xar/issues/detail?id=51
   def patches
     DATA
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make"
     system "make install"
   end

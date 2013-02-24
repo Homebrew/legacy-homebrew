@@ -2,18 +2,29 @@ require 'formula'
 
 class Geany < Formula
   homepage 'http://geany.org/'
-  url 'http://download.geany.org/geany-0.20.tar.gz'
-  sha256 '8d8ec9411c58c706befcca00435f4ec7af2f60a057e9fac232246f4893bf4050'
+  url 'http://download.geany.org/geany-1.22.tar.gz'
+  sha1 '5c3fe16806debef457f78678cfe0a6528043a6ee'
 
+  depends_on :x11
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'gettext'
-  depends_on 'intltool'
   depends_on 'gtk+'
 
+  # Remove --export-dynamic per MacPorts
+  def patches
+    {:p0 =>
+      "https://trac.macports.org/export/103350/trunk/dports/devel/geany/files/patch-no-export-dynamic.diff"
+    }
+  end
+
   def install
-    intltool = Formula.factory('intltool')
-    ENV.append "PATH", intltool.bin, ":"
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    # Needed to compile against current version of glib.
+    # Check that this is still needed when updating the formula.
+    ENV.append 'LDFLAGS', '-lgmodule-2.0'
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

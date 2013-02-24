@@ -1,12 +1,14 @@
 require 'formula'
 
 class Esniper < Formula
-  url 'http://downloads.sourceforge.net/project/esniper/esniper/2.23.0/esniper-2-23-0.tgz'
   homepage 'http://sourceforge.net/projects/esniper/'
-  md5 'fa1990f82213193cb05efd3040848fcb'
+  url 'http://downloads.sourceforge.net/project/esniper/esniper/2.28.0/esniper-2-28-0.tgz'
+  version '2.28'
+  sha1 'f5c367ab08565597f1808f9141706dcb3abfcffc'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

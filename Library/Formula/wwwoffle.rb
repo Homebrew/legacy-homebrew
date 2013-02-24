@@ -1,10 +1,9 @@
 require 'formula'
 
 class Wwwoffle < Formula
-  url 'http://www.gedanken.demon.co.uk/download-wwwoffle/wwwoffle-2.9f.tgz'
   homepage 'http://www.gedanken.demon.co.uk/wwwoffle/'
-  md5 'a5f04c190a2f27f28cfc744c478e6aaa'
-  version '2.9f'
+  url 'http://www.gedanken.demon.co.uk/download-wwwoffle/wwwoffle-2.9h.tgz'
+  sha1 '14b30fd66ca8a95e90489323fb6ade3ffd60ad49'
 
   def install
     system "./configure", "--prefix=#{prefix}"

@@ -1,33 +1,34 @@
 require 'formula'
 
 class Djmount < Formula
-  url 'http://downloads.sourceforge.net/project/djmount/djmount/0.71/djmount-0.71.tar.gz'
   homepage 'http://djmount.sourceforge.net/'
-  md5 'c922753e706c194bf82a8b6ca77e6a9a'
+  url 'http://downloads.sourceforge.net/project/djmount/djmount/0.71/djmount-0.71.tar.gz'
+  sha1 '527d4603d85b7fb86dc97d326b78c97bdcc4d687'
 
   depends_on 'libupnp'
+  depends_on 'fuse4x'
 
   def patches
     { :p0 => DATA }
   end
 
-  def caveats
-    <<-EOS.undent
-      This depends on the MacFUSE installation from http://code.google.com/p/macfuse/
-      MacFUSE must be installed prior to installing this formula.
-    EOS
-  end
-
   def install
-    ENV.append "CFLAGS", "-D__FreeBSD__=10"
+    ENV['FUSE_CFLAGS'] = `pkg-config fuse --cflags`.chomp
+    ENV['FUSE_LIBS'] = `pkg-config fuse --libs`.chomp
+
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-fuse-prefix=/usr/local",
                           "--with-external-libupnp",
                           "--with-libupnp-prefix=#{HOMEBREW_PREFIX}"
     system "make"
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    Make sure to follow the directions given by `brew info fuse4x-kext`
+    before trying to use a FUSE-based filesystem.
+    EOS
   end
 end
 

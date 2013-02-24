@@ -1,9 +1,9 @@
 require 'formula'
 
 class Bchunk < Formula
-  url 'http://he.fi/bchunk/bchunk-1.2.0.tar.gz'
   homepage 'http://he.fi/bchunk/'
-  md5 '6a613da3f34f9a303f202d2e9731d231'
+  url 'http://he.fi/bchunk/bchunk-1.2.0.tar.gz'
+  sha1 'a328e4665eb5e51df63d8d27d1d75ecc74bdef9e'
 
   def install
     system "make"

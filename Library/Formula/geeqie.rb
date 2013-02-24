@@ -1,14 +1,16 @@
 require 'formula'
 
 class Geeqie < Formula
-  url 'http://downloads.sourceforge.net/project/geeqie/geeqie/geeqie-1.0/geeqie-1.0.tar.gz'
   homepage 'http://geeqie.sourceforge.net/'
-  md5 '1d67ef990390224c5052697d93bb49c0'
+  url 'http://downloads.sourceforge.net/project/geeqie/geeqie/geeqie-1.1/geeqie-1.1.tar.gz'
+  sha1 '77167479e91e03d9512535a146c5d2d77941257f'
 
+  depends_on :x11
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'gettext'
-  depends_on 'intltool'
   depends_on 'gtk+'
+  depends_on 'gnu-getopt'
   depends_on 'imagemagick' => :recommended
   depends_on 'exiv2' => :recommended
   depends_on 'little-cms' => :recommended

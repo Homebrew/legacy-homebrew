@@ -1,9 +1,11 @@
 require 'formula'
 
 class Gifsicle < Formula
-  url 'http://www.lcdf.org/gifsicle/gifsicle-1.61.tar.gz'
   homepage 'http://www.lcdf.org/gifsicle/'
-  md5 '3d9e45873daaf960a35d1b89505f1101'
+  url 'http://www.lcdf.org/gifsicle/gifsicle-1.67.tar.gz'
+  sha1 '9b239cfce086d416017b237743d68d19a3a095f6'
+
+  depends_on :x11
 
   def install
     system "./configure", "--disable-dependency-tracking",

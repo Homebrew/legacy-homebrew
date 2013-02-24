@@ -1,17 +1,13 @@
 require 'formula'
 
 class Jslint4java < Formula
-  url "http://jslint4java.googlecode.com/files/jslint4java-1.4.7-dist.zip"
   homepage 'http://code.google.com/p/jslint4java/'
-  md5 '6dc5cf125641f84a05f3b89da6a650a3'
-  version '1.4.7'
+  url 'http://jslint4java.googlecode.com/files/jslint4java-2.0.3-dist.zip'
+  sha1 'd92f29e4f2055c4f945b398a602349afa14c26ca'
 
   def install
-    prefix.install Dir['*']
-    bin.mkpath
-    (bin + 'jslint4java').write <<-EOF.undent
-      #!/bin/bash
-      java -jar #{prefix}/jslint4java-1.4.7.jar "$@"
-    EOF
+    doc.install Dir['docs/*']
+    libexec.install Dir['*.jar']
+    bin.write_jar_script Dir[libexec/'jslint4java*.jar'].first, 'jslint4java'
   end
 end

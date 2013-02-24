@@ -1,16 +1,14 @@
 require 'formula'
 
 class PltRacket < Formula
-  # Use GitHub; tarball doesn't have everything needed for building on OS X
-  url 'https://github.com/plt/racket.git', :tag => 'v5.1.3'
   homepage 'http://racket-lang.org/'
-  version '5.1.3'
-
-  # Don't strip symbols; need them for dynamic linking.
-  skip_clean 'bin'
+  # Use GitHub tarball as the release tarball doesn't have
+  # everything needed for building on OS X
+  url 'https://github.com/plt/racket/tarball/v5.2'
+  sha1 'bb2c6b6504796a88dada10b510f040b5bbec7b2e'
 
   def install
-    Dir.chdir 'src' do
+    cd 'src' do
       args = ["--disable-debug", "--disable-dependency-tracking",
               "--enable-xonx",
               "--enable-shared",
@@ -22,7 +20,7 @@ class PltRacket < Formula
 
       system "./configure", *args
       system "make"
-      ohai   "Installing might take a long time (~40 minutes)"
+      ohai "Installing may take a long time (~40 minutes)" unless ARGV.verbose?
       system "make install"
     end
   end

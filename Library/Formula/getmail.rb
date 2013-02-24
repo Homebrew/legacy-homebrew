@@ -1,17 +1,15 @@
 require 'formula'
 
 class Getmail < Formula
-  url 'http://pyropus.ca/software/getmail/old-versions/getmail-4.20.3.tar.gz'
   homepage 'http://pyropus.ca/software/getmail/'
-  md5 'afb772745e91c9a7baa7d9337bc34df2'
+  url 'http://pyropus.ca/software/getmail/old-versions/getmail-4.38.0.tar.gz'
+  sha1 '428494eae427343adf9962be934b6dad6e87164b'
 
   def install
+    scripts = %w[ getmail getmail_fetch getmail_maildir getmail_mbox ]
     libexec.install 'getmailcore'
-    bin.mkpath
-    %w[ getmail getmail_fetch getmail_maildir getmail_mbox ].each do |f|
-      libexec.install f
-      ln_s libexec+f, bin
-    end
+    libexec_scripts = libexec.install scripts
+    bin.install_symlink libexec_scripts
     man1.install Dir['docs/*.1']
   end
 end

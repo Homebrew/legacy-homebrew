@@ -1,12 +1,19 @@
 require 'formula'
 
 class Ack < Formula
-  url "https://github.com/petdance/ack/tarball/1.94"
-  md5 '6c75e25bb29e24f89f77f2ee6deb29e8'
   homepage 'http://betterthangrep.com/'
+  url "https://github.com/petdance/ack/tarball/1.96"
+  sha1 '547058c0571095beaee9b2e6a3accad52114e759'
 
   def install
+    system 'pod2man', 'ack', 'ack.1'
+    man1.install 'ack.1'
     bin.install 'ack'
-    (prefix+'etc/bash_completion.d').install 'etc/ack.bash_completion.sh'
+    bash_completion.install 'etc/ack.bash_completion.sh'
+    zsh_completion.install 'etc/ack.zsh_completion' => '_ack'
+  end
+
+  test do
+    system "#{bin}/ack", 'brew', '/usr/share/dict/words'
   end
 end

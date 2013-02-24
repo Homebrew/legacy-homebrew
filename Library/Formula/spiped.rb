@@ -1,16 +1,15 @@
 require 'formula'
 
 class Spiped < Formula
-  url 'http://www.tarsnap.com/spiped/spiped-1.1.0.tgz'
   homepage 'http://www.tarsnap.com/spiped.html'
-  sha256 'b727b902310d217d56c07d503c4175c65387ff07c9cd50a24584903faf9f3dc3'
+  url 'https://www.tarsnap.com/spiped/spiped-1.2.2.tgz'
+  sha256 'a9eb4681e4ccd5d86b8a2d4e16785db8ba10d8a9f7f732485511fd4b92dff1ec'
+
+  depends_on :bsdmake
 
   def install
-    inreplace 'Makefile' do |s|
-      s.change_make_var! "LDADD", "-lcrypto"
-      s.change_make_var! "BINDIR_DEFAULT", bin
-    end
-
-    system "bsdmake install"
+    system "bsdmake", "BINDIR_DEFAULT=#{bin}", "install"
+    doc.install 'spiped/README' => 'README.spiped',
+                'spipe/README' => 'README.spipe'
   end
 end

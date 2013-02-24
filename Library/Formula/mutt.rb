@@ -1,37 +1,40 @@
 require 'formula'
 
 class Mutt < Formula
-  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
   homepage 'http://www.mutt.org/'
-  md5 'a29db8f1d51e2f10c070bf88e8a553fd'
+  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
+  sha1 'a8475f2618ce5d5d33bff85c0affdf21ab1d76b9'
+
+  option "with-debug", "Build with debug option enabled"
+  option "with-sidebar-patch", "Apply sidebar (folder list) patch"
+  option "with-trash-patch", "Apply trash folder patch"
+  option "with-slang", "Build against slang instead of ncurses"
+  option "with-ignore-thread-patch", "Apply ignore-thread patch"
+  option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
 
   depends_on 'tokyo-cabinet'
-  depends_on 'slang' if ARGV.include? '--with-slang'
-
-  def options
-    [
-      ['--enable-debug', "Build with debug option enabled"],
-      ['--sidebar-patch', "Apply sidebar (folder list) patch"],
-      ['--trash-patch', "Apply trash folder patch"],
-      ['--with-slang', "Build against slang instead of ncurses"],
-      ['--ignore-thread-patch', "Apply ignore-thread patch"],
-      ['--pgp-verbose-mime-patch', "Apply PGP verbose mime patch"]
-    ]
-  end
+  depends_on 'slang' if build.include? 'with-slang'
 
   def patches
     urls = [
-      ['--sidebar-patch', 'https://raw.github.com/nedos/mutt-sidebar-patch/master/mutt-sidebar.patch'],
-      ['--trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features/trash-folder'],
-      ['--ignore-thread-patch', 'http://ben.at.tanjero.com/patches/ignore-thread-1.5.21.patch'],
-      ['--pgp-verbose-mime-patch',
-          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-5/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+      ['with-sidebar-patch', 'http://lunar-linux.org/~tchan/mutt/patch-1.5.21.sidebar.20120829.txt'],
+      ['with-trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features/trash-folder'],
+      ['with-ignore-thread-patch', 'http://ben.at.tanjero.com/patches/ignore-thread-1.5.21.patch'],
+      ['with-pgp-verbose-mime-patch',
+          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
     ]
+
+    if build.include? "with-ignore-thread-patch" and build.include? "with-sidebar-patch"
+      puts "\n"
+      onoe "The ignore-thread-patch and sidebar-patch options are mutually exlusive. Please pick one"
+      exit 1
+    end
 
     p = []
     urls.each do |u|
-      p << u[1] if ARGV.include? u[0]
+      p << u[1] if build.include? u[0]
     end
+
     return p
   end
 
@@ -41,7 +44,6 @@ class Mutt < Formula
             "--prefix=#{prefix}",
             "--with-ssl",
             "--with-sasl",
-            "--with-gnutls",
             "--with-gss",
             "--enable-imap",
             "--enable-smtp",
@@ -52,9 +54,9 @@ class Mutt < Formula
             # the mutt_dotlock file (which we can't do if we're running as an
             # unpriviledged user)
             "--with-homespool=.mbox"]
-    args << "--with-slang" if ARGV.include? '--with-slang'
+    args << "--with-slang" if build.include? 'with-slang'
 
-    if ARGV.include? '--enable-debug'
+    if build.include? 'with-debug'
       args << "--enable-debug"
     else
       args << "--disable-debug"

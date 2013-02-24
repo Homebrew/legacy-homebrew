@@ -1,17 +1,17 @@
 require 'formula'
 
 class Libpano < Formula
-  url 'http://downloads.sourceforge.net/project/panotools/libpano13/libpano13-2.9.17/libpano13-2.9.17.tar.gz'
-  version '13-2.9.17'
   homepage 'http://panotools.sourceforge.net/'
-  md5 '54ec7c505cf38521f2fbb6e2acd2c433'
+  url 'http://downloads.sourceforge.net/project/panotools/libpano13/libpano13-2.9.18/libpano13-2.9.18.tar.gz'
+  version '13-2.9.18'
+  sha1 '23849bdbdfc9176a2b53d157e58bd24aa0e7276e'
 
+  depends_on :libpng
   depends_on 'jpeg'
   depends_on 'libtiff'
 
   def install
-    ENV.x11 # for libpng
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make install"

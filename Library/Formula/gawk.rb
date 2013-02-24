@@ -1,11 +1,17 @@
 require 'formula'
 
 class Gawk < Formula
-  url 'http://ftpmirror.gnu.org/gawk/gawk-4.0.0.tar.bz2'
   homepage 'http://www.gnu.org/software/gawk/'
-  md5 '7cdc48e99b885a4bbe0e98dcf1706b22'
+  url 'http://ftpmirror.gnu.org/gawk/gawk-4.0.2.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/gawk/gawk-4.0.2.tar.xz'
+  sha1 '816277597445c4b52ab2c2084ec940e13422fb3c'
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+  depends_on 'xz' => :build
+
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}"

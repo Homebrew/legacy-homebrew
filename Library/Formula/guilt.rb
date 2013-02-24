@@ -1,9 +1,9 @@
 require 'formula'
 
 class Guilt < Formula
-  homepage 'http://www.kernel.org/pub/linux/kernel/people/jsipek/guilt/man/'
-  url 'http://www.kernel.org/pub/linux/kernel/people/jsipek/guilt/guilt-0.33.tar.bz2'
-  md5 'de2d3b82d3e08c8c6a940bd31f47d758'
+  homepage 'http://packages.debian.org/wheezy/guilt'
+  url 'http://ftp.de.debian.org/debian/pool/main/g/guilt/guilt_0.35.orig.tar.gz'
+  sha1 'e722180bc100afc096a1bd5c8338f797268c9947'
 
   def install
     # Skip the documentation, it depends on xmlto.
