@@ -36,11 +36,12 @@ class Mpd < Formula
             "--enable-flac",
             "--enable-shout",
             "--enable-fluidsynth",
-            "--enable-zzip",
             "--enable-lame-encoder"]
+
+    args << "--enable-zzip" if build.with? "libzzip"
     args << "--disable-curl" if MacOS.version == :leopard
     args << "--enable-lastfm" if build.include?("lastfm")
-    args << '--disable-libwrap' unless build.include? 'libwrap'
+    args << "--disable-libwrap" unless build.include? 'libwrap'
 
     system "./configure", *args
     system "make"
