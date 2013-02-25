@@ -50,6 +50,9 @@ class Vim < Formula
                           "--with-features=huge",
                           *language_opts
     system "make"
-    system "make", "install", "prefix=#{prefix}"
+    # If stripping the binaries is not enabled, vim will segfault with
+    # statically-linked interpreters like ruby
+    # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
+    system "make", "install", "prefix=#{prefix}", "STRIP=/usr/bin/true"
   end
 end

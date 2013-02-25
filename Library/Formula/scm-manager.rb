@@ -24,6 +24,7 @@ class ScmManager < Formula
       #!/bin/bash
       BASEDIR="#{libexec}"
       REPO="#{libexec}/lib"
+      export JAVA_HOME=$(/usr/libexec/java_home -v 1.6)
       "#{libexec}/bin/scm-server" "$@"
     EOS
     chmod 0755, bin/'scm-server'
