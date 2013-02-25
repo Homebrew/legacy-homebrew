@@ -7,7 +7,7 @@ class Clojure < Formula
 
   head 'https://github.com/clojure/clojure.git'
 
-  depends_on 'rlwrap'
+  depends_on 'rlwrap' => :optional
 
   devel do
     url 'http://repo1.maven.org/maven2/org/clojure/clojure/1.5.0-RC1/clojure-1.5.0-RC1.zip'
