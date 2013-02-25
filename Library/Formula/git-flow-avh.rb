@@ -2,8 +2,8 @@ require 'formula'
 
 class GitFlowAvh < Formula
   homepage 'https://github.com/petervanderdoes/gitflow'
-  url 'https://github.com/petervanderdoes/gitflow/archive/1.4.2.tar.gz'
-  sha1 '8ea7ac31e062ff01de6203d30de9fc049891589e'
+  url 'https://github.com/petervanderdoes/gitflow/archive/1.5.0.tar.gz'
+  sha1 '3a9ac53606ab3306da53cba2abe9779b778dd8e0'
 
   head 'https://github.com/petervanderdoes/gitflow.git', :branch => 'develop'
 
