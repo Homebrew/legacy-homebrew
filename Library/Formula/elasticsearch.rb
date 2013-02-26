@@ -2,8 +2,8 @@ require 'formula'
 
 class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
-  url 'http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.4.tar.gz'
-  sha1 '1d5e58649ec84fba9ed41ed75b38b6758ad411e9'
+  url 'http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.5.tar.gz'
+  sha1 'e52cd5e7cae2be85d7df65315ec7b91e2e84f83e'
   head 'https://github.com/elasticsearch/elasticsearch.git'
 
   depends_on 'maven' if build.head?
