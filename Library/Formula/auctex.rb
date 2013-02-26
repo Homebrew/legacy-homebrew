@@ -8,9 +8,7 @@ class Auctex < Formula
 
   depends_on :tex
 
-  def options
-    [['--with-emacs=</full/path/to/emacs>', "Force a different emacs"]]
-  end
+  option 'with-emacs=</full/path/to/emacs>', 'Force a different emacs'
 
   def which_emacs
     # check arguments for a different emacs
