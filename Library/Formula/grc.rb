@@ -20,7 +20,7 @@ class Grc < Formula
 
   def rc_script; <<-EOS.undent
     GRC=`which grc`
-    if [ "$TERM" != dumb ] && [ -n GRC ]
+    if [ "$TERM" != dumb ] && [ -n "$GRC" ]
     then
         alias colourify="$GRC -es --colour=auto"
         alias configure='colourify ./configure'

@@ -534,6 +534,9 @@ def check_which_pkg_config
 
     This was most likely created by the Mono installer. `./configure` may
     have problems finding brew-installed packages using this other pkg-config.
+
+    Mono no longer installs this file as of 3.0.4. You should
+    `sudo rm /usr/bin/pkg-config` and upgrade to the latest version of Mono.
     EOS
   elsif binary.to_s != "#{HOMEBREW_PREFIX}/bin/pkg-config" then <<-EOS.undent
     You have a non-Homebrew 'pkg-config' in your PATH:
