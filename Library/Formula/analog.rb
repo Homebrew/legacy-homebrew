@@ -10,12 +10,10 @@ class Analog < Formula
   depends_on 'libpng'
 
   def install
-    system "make DEFS='-DLANGDIR=\\\"#{share}/analog/lang/\\\"'"
-    system "mkdir -p #{bin}"
-    system "cp analog #{bin}"
-    system "mkdir -p #{share}/analog"
-    system "cp -R examples how-to images lang #{share}/analog/"
-    system "cp analog.cfg #{share}/analog/analog.cfg-dist"
+    system "make DEFS='-DLANGDIR=\\\"#{share}/lang/\\\"'"
+
+    bin.install "analog", "analog.cfg"
+    share.install "examples", "how-to", "images", "lang"
     man1.install "analog.man" => "analog.1"
   end
 
