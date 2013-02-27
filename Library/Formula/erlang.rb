@@ -1,37 +1,34 @@
 require 'formula'
 
 class ErlangManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R15B03-1.tar.gz'
-  sha1 'c8674767cd0c1f98946f6a08c7ae318c3f026988'
+  url 'http://erlang.org/download/otp_doc_man_R16B.tar.gz'
+  sha1 '48eaf215e5dcae8b4f02cc39ed557ec6f9dd026a'
 end
 
 class ErlangHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R15B03-1.tar.gz'
-  sha1 '49d761d8554a83be00e18f681b32b94572f9c050'
+  url 'http://erlang.org/download/otp_doc_html_R16B.tar.gz'
+  sha1 '14729a486f331678d2c7ae1ca1608b7e9f3fd8f2'
 end
 
 class ErlangHeadManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R15B03-1.tar.gz'
-  sha1 'c8674767cd0c1f98946f6a08c7ae318c3f026988'
+  url 'http://erlang.org/download/otp_doc_man_R16B.tar.gz'
+  sha1 '48eaf215e5dcae8b4f02cc39ed557ec6f9dd026a'
 end
 
 class ErlangHeadHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R15B03-1.tar.gz'
-  sha1 '49d761d8554a83be00e18f681b32b94572f9c050'
+  url 'http://erlang.org/download/otp_doc_html_R16B.tar.gz'
+  sha1 '14729a486f331678d2c7ae1ca1608b7e9f3fd8f2'
 end
 
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/tarball/OTP_R15B03-1'
-  sha1 '5ba866722de79956b06966c232490d32bb7ba0a6'
+  url 'https://github.com/erlang/otp/archive/OTP_R16B.tar.gz'
+  sha1 '546e8538aa17b8b9212c6cd2ba6781c553c623a5'
 
   head 'https://github.com/erlang/otp.git', :branch => 'dev'
 
   bottle do
-    sha1 'bf26236524bc9d3a63f4504600e3f33943b149a7' => :mountainlion
-    sha1 'b4b634b8073e7bcaa424eef16bdcff771de87210' => :lion
-    sha1 '093cf021d9731ef26b763e02166a702d61c571a1' => :snowleopard
   end
 
   # remove the autoreconf if possible
@@ -82,8 +79,8 @@ class Erlang < Formula
     end
 
     system "./configure", *args
-    touch 'lib/wx/SKIP' if MacOS.version >= :snow_leopard
     system "make"
+    ENV.j1
     system "make install"
 
     unless build.include? 'no-docs'
