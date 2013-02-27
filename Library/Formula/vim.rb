@@ -4,8 +4,8 @@ class Vim < Formula
   homepage 'http://www.vim.org/'
   # Get stable versions from hg repo instead of downloading an increasing
   # number of separate patches.
-  url 'https://vim.googlecode.com/hg/', :tag => 'v7-3-837'
-  version '7.3.837'
+  url 'https://vim.googlecode.com/hg/', :tag => 'v7-3-843'
+  version '7.3.843'
 
   head 'https://vim.googlecode.com/hg/'
 
