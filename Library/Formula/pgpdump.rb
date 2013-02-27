@@ -8,7 +8,7 @@ class Pgpdump < Formula
   def install
     system "./configure", "--prefix=#{prefix}"
     # bin and man1 are not created by the Makefile but it wants to put data there.
-	bin.mkpath
+    bin.mkpath
     man1.mkpath
     system "make install"
   end
