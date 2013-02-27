@@ -2,8 +2,13 @@ require 'formula'
 
 class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.6/downloads/openmpi-1.6.3.tar.bz2'
-  sha1 'a61aa2dee4c47d93d88e49ebed36de25df4f6492'
+  url 'http://www.open-mpi.org/software/ompi/v1.6/downloads/openmpi-1.6.4.tar.bz2'
+  sha1 '38095d3453519177272f488d5058a98f7ebdbf10'
+
+  devel do
+    url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7rc7.tar.bz2'
+    sha1 'c1fe29f686b92763c2e703ee04b8830d09ced39c'
+  end
 
   # Reported upstream at version 1.6, both issues
   # http://www.open-mpi.org/community/lists/devel/2012/05/11003.php
@@ -11,7 +16,7 @@ class OpenMpi < Formula
   fails_with :clang do
     build 421
     cause 'fails make check on Lion and ML'
-  end
+  end if not build.devel?
 
   option 'disable-fortran', 'Do not build the Fortran bindings'
   option 'test', 'Verify the build with make check'
