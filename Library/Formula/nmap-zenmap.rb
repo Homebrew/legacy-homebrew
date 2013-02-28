@@ -16,7 +16,6 @@ class NmapZenmap < Formula
   # required for zenmap gui:
   depends_on :x11
   depends_on "pygtk"
-  # echo export PYTHONPATH=\"$(brew --prefix)/lib/python2.7/site-packages:\$PYTHONPATH\" >> ~/.bash_profile
 
   fails_with :llvm do
     build 2334
@@ -43,6 +42,18 @@ class NmapZenmap < Formula
   def patches
     # Fixes Zenmap use of pygtk to work with non-brew python installation
     DATA
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  end
+
+  def caveats
+    <<-EOS.undent
+    To use the Python extension with non-homebrew Python, you need to amend your
+    PYTHONPATH like so:
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
+    EOS
   end
 end
 
