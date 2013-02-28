@@ -13,6 +13,8 @@ class Opencv < Formula
   url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.4/OpenCV-2.4.4.tar.bz2'
   sha1 '23c62f7e3de540524f61974c640a23df426ebed5'
 
+  env :std # to find python
+
   option '32-bit'
   option 'with-qt',  'Build the Qt4 backend to HighGUI'
   option 'with-tbb', 'Enable parallel code in OpenCV using Intel TBB'
