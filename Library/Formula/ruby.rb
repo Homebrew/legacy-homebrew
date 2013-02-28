@@ -7,8 +7,6 @@ class Ruby < Formula
 
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
-  env :std
-
   option :universal
   option 'with-suffix', 'Suffix commands with "20"'
   option 'with-doc', 'Install documentation'
