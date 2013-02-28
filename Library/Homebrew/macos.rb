@@ -242,16 +242,6 @@ module MacOS extend self
       raise "Bottles are not supported on 32-bit Snow Leopard."
     end
 
-    unless HOMEBREW_PREFIX.to_s == '/usr/local'
-      return false unless raise_if_failed
-      raise "Bottles are only supported with a /usr/local prefix."
-    end
-
-    unless HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
-      return false unless raise_if_failed
-      raise "Bottles are only supported with a /usr/local/Cellar cellar."
-    end
-
     true
   end
 end

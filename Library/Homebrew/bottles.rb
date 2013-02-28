@@ -10,7 +10,6 @@ def bottle_filename f, bottle_revision=nil
 end
 
 def install_bottle? f
-  return true if ARGV.include? '--install-bottle' and MacOS.bottles_supported?(true)
   return true if f.downloader and defined? f.downloader.local_bottle_path \
     and f.downloader.local_bottle_path
 
@@ -19,6 +18,7 @@ def install_bottle? f
   return false unless f.pour_bottle?
   return false unless f.build.used_options.empty?
   return false unless bottle_current?(f)
+  return false if f.bottle.cellar != :any && f.bottle.cellar != HOMEBREW_CELLAR.to_s
 
   true
 end
