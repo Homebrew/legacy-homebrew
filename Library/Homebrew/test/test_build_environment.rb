@@ -21,8 +21,10 @@ class BuildEnvironmentTests < Test::Unit::TestCase
   end
 
   def test_modify_build_environment
-    @env << Proc.new { 1 }
-    assert_equal 1, @env.modify_build_environment
+    @env << Proc.new { raise StandardError }
+    assert_raises(StandardError) do
+      @env.modify_build_environment
+    end
   end
 
   def test_marshal

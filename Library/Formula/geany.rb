@@ -2,14 +2,21 @@ require 'formula'
 
 class Geany < Formula
   homepage 'http://geany.org/'
-  url 'http://download.geany.org/geany-0.21.tar.gz'
-  sha256 'a1aa27d2f946ccca8a4e57faf0029cf6aa544d5d52f0170e017c137c33b4b67d'
+  url 'http://download.geany.org/geany-1.22.tar.gz'
+  sha1 '5c3fe16806debef457f78678cfe0a6528043a6ee'
 
   depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'gtk+'
+
+  # Remove --export-dynamic per MacPorts
+  def patches
+    {:p0 =>
+      "https://trac.macports.org/export/103350/trunk/dports/devel/geany/files/patch-no-export-dynamic.diff"
+    }
+  end
 
   def install
     # Needed to compile against current version of glib.

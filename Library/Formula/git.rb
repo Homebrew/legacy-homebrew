@@ -69,7 +69,7 @@ class Git < Formula
     bash_completion.install 'contrib/completion/git-prompt.sh'
 
     zsh_completion.install 'contrib/completion/git-completion.zsh' => '_git'
-    ln_sf "#{etc}/bash_completion.d/git-completion.bash", zsh_completion
+    cp "#{bash_completion}/git-completion.bash", zsh_completion
 
     (share+'git-core').install 'contrib'
 

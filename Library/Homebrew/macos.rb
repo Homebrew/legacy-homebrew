@@ -39,7 +39,7 @@ module MacOS extend self
         xcrun_path = unless Xcode.bad_xcode_select_path?
           path = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
           # If xcrun finds a superenv tool then discard the result.
-          path unless path.include?(HOMEBREW_REPOSITORY/"Library/ENV")
+          path unless path.include?("Library/ENV")
         end
 
         paths = %W[#{xcrun_path}
