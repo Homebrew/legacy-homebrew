@@ -79,13 +79,14 @@ end
 
 class Bottle < SoftwareSpec
   attr_writer :url
-  attr_reader :revision, :root_url
+  attr_reader :revision, :root_url, :cellar
   # TODO: Can be removed when all bottles migrated to underscored cat symbols.
   attr_reader :cat_without_underscores
 
   def initialize
     super
     @revision = 0
+    @cellar = '/usr/local/Cellar'
     @cat_without_underscores = false
   end
 
@@ -115,6 +116,10 @@ class Bottle < SoftwareSpec
 
   def root_url val=nil
     val.nil? ? @root_url : @root_url = val
+  end
+
+  def cellar val=nil
+    val.nil? ? @cellar : @cellar = val
   end
 
   def revision val=nil
