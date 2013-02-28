@@ -27,4 +27,12 @@ class Pidgin < Formula
                           "--prefix=#{prefix}"
     system "make install"
   end
+  def caveats
+    <<-EOS.undent
+      Pidgin will look in for plugins in:
+      #{lib}/pidgin
+      Be certain if you install any new plugins to link or copy to
+      this directory.
+    EOS
+  end
 end
