@@ -1,12 +1,16 @@
 require 'formula'
 
 class Udis86 < Formula
-  url 'http://downloads.sourceforge.net/udis86/udis86-1.7.tar.gz'
-  md5 'e279108e10f774e6c3af83caa18f5dc3'
   homepage 'http://udis86.sourceforge.net'
+  url 'http://downloads.sourceforge.net/udis86/udis86-1.7.tar.gz'
+  sha1 '1a9949e33024542a24a948af5d9cbee34ff64695'
+
+  option :universal
 
   def install
-    system "./configure", "--enable-shared", "--prefix=#{prefix}"
+    ENV.universal_binary if build.universal?
+    system "./configure", "--prefix=#{prefix}",
+                          "--enable-shared"
     system "make"
     system "make install"
   end

@@ -4,11 +4,13 @@ require 'formula'
 
 module Homebrew extend self
   def fetch
+    raise FormulaUnspecifiedError if ARGV.named.empty?
+
     if ARGV.include? '--deps'
       bucket = []
       ARGV.formulae.each do |f|
         bucket << f
-        bucket << f.recursive_deps
+        bucket << f.recursive_dependencies.map(&:to_formula)
       end
 
       bucket = bucket.flatten.uniq
@@ -17,33 +19,26 @@ module Homebrew extend self
     end
 
     puts "Fetching: #{bucket * ', '}" if bucket.size > 1
+    bucket.each { |f| fetch_formula(f) }
+  end
 
-    bucket.each do |f|
-      if ARGV.include? "--force" or ARGV.include? "-f"
-        where_to = f.cached_download
-        FileUtils.rm_rf where_to if File.exist? where_to
-      end
+  def already_fetched? f
+    f.cached_download.exist?
+  end
 
-      the_tarball, _ = f.fetch
-      next unless the_tarball.kind_of? Pathname
+  def fetch_formula f
+    f.cached_download.rmtree if already_fetched?(f) && ARGV.force?
+    tarball, _ = f.fetch
 
-      previous_md5 = f.instance_variable_get(:@md5)
-      previous_sha1 = f.instance_variable_get(:@sha1)
-      previous_sha2 = f.instance_variable_get(:@sha2)
+    # FIXME why are strategies returning different types?
+    return unless tarball.is_a? Pathname
 
-      puts "MD5:  #{the_tarball.md5}"
-      puts "SHA1: #{the_tarball.sha1}"
-      puts "SHA256: #{the_tarball.sha2}"
+    puts "Downloaded to: #{tarball}" unless already_fetched?(f)
+    puts Checksum::TYPES.map { |t| "#{t.to_s.upcase}: #{tarball.send(t)}" }
 
-      unless previous_md5.nil? or previous_md5.empty? or  the_tarball.md5 == previous_md5
-        opoo "Formula reports different MD5: #{previous_md5}"
-      end
-      unless previous_sha1.nil? or previous_sha1.empty? or the_tarball.sha1 == previous_sha1
-        opoo "Formula reports different SHA1: #{previous_sha1}"
-      end
-      unless previous_sha2.nil? or previous_sha2.empty? or  the_tarball.sha2 == previous_sha2
-        opoo "Formula reports different SHA256: #{previous_sha2}"
-      end
-    end
+    f.verify_download_integrity(tarball)
+  rescue ChecksumMismatchError => e
+    Homebrew.failed = true
+    opoo "Formula reports different #{e.hash_type}: #{e.expected}"
   end
 end

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Arpoison < Formula
-  url 'http://www.arpoison.net/arpoison-0.6.tar.gz'
   homepage 'http://www.arpoison.net/'
-  md5 '5274ae9c7c879b97b425a4b2da59aa65'
+  url 'http://www.arpoison.net/arpoison-0.6.tar.gz'
+  sha1 'a4adc83fd0a29776f8135f304e5b090b5bf31b56'
 
   depends_on 'libnet'
 

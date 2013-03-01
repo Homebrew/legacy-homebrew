@@ -1,15 +1,21 @@
 require 'formula'
 
 class ArgpStandalone < Formula
-  url 'http://www.lysator.liu.se/~nisse/misc/argp-standalone-1.3.tar.gz'
   homepage 'http://www.lysator.liu.se/~nisse/misc/'
-  md5 '720704bac078d067111b32444e24ba69'
+  url 'http://www.lysator.liu.se/~nisse/misc/argp-standalone-1.3.tar.gz'
+  sha1 '815c560680ebdc11694b88de2f8ec15133e0bfa0'
+
+  def patches
+    # This patch fixes compilation with Clang.
+    {:p0 =>
+      "https://trac.macports.org/export/86556/trunk/dports/devel/argp-standalone/files/patch-argp-fmtstream.h"
+    }
+  end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make"
-
-    include.install ['argp.h', 'argp-fmtstream.h', 'argp-namefrob.h']
+    system "./configure", "--prefix=#{prefix}"
+    system "make install"
     lib.install 'libargp.a'
+    include.install 'argp.h'
   end
 end

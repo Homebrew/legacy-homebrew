@@ -1,17 +1,12 @@
 require 'formula'
 
 class Minised < Formula
-  url 'http://dl.exactcode.de/oss/minised/minised-1.13.tar.gz'
   homepage 'http://www.exactcode.de/site/open_source/minised/'
-  md5 '2a43b1bbf1654ef7fab9d8c4f6c979a1'
+  url 'http://dl.exactcode.de/oss/minised/minised-1.13.tar.gz'
+  sha1 '3b718ce86c48047d1f5e8efcee8dd69a7a9dbac5'
 
   def install
-    inreplace "Makefile" do |s|
-      s.change_make_var! "DESTDIR", prefix
-      s.change_make_var! "PREFIX", ""
-    end
-
-    system "make"
-    system "make install"
+    system "make" # separate steps or it won't build the binary
+    system "make", "DESTDIR=#{prefix}", "PREFIX=", "install"
   end
 end

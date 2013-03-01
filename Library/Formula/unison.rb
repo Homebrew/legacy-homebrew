@@ -1,9 +1,9 @@
 require 'formula'
 
 class Unison < Formula
-  url 'http://www.seas.upenn.edu/~bcpierce/unison//download/releases/unison-2.40.61/unison-2.40.61.tar.gz'
   homepage 'http://www.cis.upenn.edu/~bcpierce/unison/'
-  md5 '9d48796b115704321c6a4a50dd0928ee'
+  url 'http://www.seas.upenn.edu/~bcpierce/unison//download/releases/unison-2.40.102/unison-2.40.102.tar.gz'
+  sha1 'bf18f64fa30bd04234e864d42190294e0d9a2910'
 
   depends_on 'objective-caml'
 

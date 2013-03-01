@@ -1,20 +1,56 @@
 require 'formula'
 
 class Cppcheck < Formula
-  url 'http://downloads.sourceforge.net/project/cppcheck/cppcheck/1.50/cppcheck-1.50.tar.bz2'
   homepage 'http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page'
-  md5 '79ef3898b246ba9c143155d5ad23dbd1'
+  url 'https://github.com/danmar/cppcheck/tarball/1.58'
+  sha1 '628fa455c0c22daba5d9ffe2e37ecf02f46529f2'
+
   head 'https://github.com/danmar/cppcheck.git'
 
-  depends_on 'pcre'
+  option 'no-rules', "Build without rules (no pcre dependency)"
+  option 'with-gui', "Build the cppcheck gui (requires Qt)"
 
-  # Do not strip binaries, or else it fails to run.
-  skip_clean :all
+  depends_on 'pcre' unless build.include? 'no-rules'
+  depends_on 'qt' if build.include? 'with-gui'
 
   def install
+    # Man pages aren't installed as they require docbook schemas.
+
     # Pass to make variables.
-    system "make"
+    if build.include? 'no-rules'
+      system "make", "HAVE_RULES=no"
+    else
+      system "make"
+    end
+
     system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "install"
-    # Man pages aren't installed, they require docbook schemas which I don't know how to install.
+
+    if build.include? 'with-gui'
+      cd "gui" do
+        if build.include? 'no-rules'
+          system "qmake", "HAVE_RULES=no"
+        else
+          system "qmake"
+        end
+
+        system "make"
+        bin.install "cppcheck-gui.app"
+      end
+    end
+  end
+
+  def test
+    system "#{bin}/cppcheck", "--version"
+  end
+
+  def caveats; <<-EOS.undent
+    --with-gui installs cppcheck-gui.app in:
+      #{bin}
+
+    To link the application to a normal Mac OS X location:
+      brew linkapps
+    or:
+      ln -s #{bin}/cppcheck-gui.app /Applications
+    EOS
   end
 end

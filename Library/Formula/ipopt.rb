@@ -1,9 +1,11 @@
 require 'formula'
 
 class Ipopt < Formula
-  url 'http://www.coin-or.org/download/source/Ipopt/Ipopt-3.10.0.tgz'
   homepage 'https://projects.coin-or.org/Ipopt'
-  md5 '10d934a58b54dcc58c6ebee34ca437bb'
+  url 'http://www.coin-or.org/download/source/Ipopt/Ipopt-3.10.0.tgz'
+  sha1 '3dec7e71f93756865cc83275f7ddb22e1dc5edcc'
+
+  depends_on 'pkg-config' => :build
 
   def install
     ENV.fortran

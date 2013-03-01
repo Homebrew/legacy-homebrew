@@ -1,53 +1,43 @@
 require 'formula'
 
 class Grails < Formula
-  url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-1.3.7.zip'
   homepage 'http://grails.org'
-  md5 'ea7cbfecdcf30c861f8faa8552ce3b46'
+  url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-2.2.1.zip'
+  sha1 '34d5c7d13dc92ef35f726e949d03164f69e23962'
 
   def install
     rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]
-    prefix.install %w[LICENSE README]
+    prefix.install_metafiles
     libexec.install Dir['*']
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |f|
-      next unless File.extname(f).empty?
-      ln_s f, bin+File.basename(f)
-    end
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
-  def caveats
-    <<-EOS.undent
-    IMPORTANT!
-
-    Notes On Upgrading #{name.capitalize} From Versions < 1.3.7
+  def caveats; <<-EOS.undent
+    Notes On Upgrading Grails From Versions < 1.3.7
 
     The directory layout has been changed slightly for versions >= 1.3.7
     in order to conform with Homebrew conventions for installation of Java
     jar files.  Please note the following:
 
-    Before upgrading -
+    Before upgrading:
+      run 'brew unlink grails' (keeps old version in cellar)
+    or
+      run 'brew rm grails' (deletes old version from cellar)
 
-      run 'brew unlink #{name}' (keeps old version in cellar)
-      OR
-      run 'brew rm #{name}' (deletes old version from cellar)
-      THEN
+    and then:
       run 'brew prune'
 
-    This is to ensure that #{HOMEBREW_PREFIX} is cleaned of references to the
+    This is to ensure that HOMEBREW_PREFIX is cleaned of references to the
     old version.
 
-    The #{name.capitalize} home directory for versions < 1.3.7 was in the form:
+    The Grails home directory for versions < 1.3.7 was in the form:
+      #{HOMEBREW_CELLAR}/grails/1.3.6
 
-      #{HOMEBREW_CELLAR}/#{name}/1.3.6
-
-    For versions >= 1.3.7, the #{name.capitalize} home directory is in the form:
-
+    For versions >= 1.3.7, the Grails home directory is in the form:
       #{libexec}
 
     If you set the GRAILS_HOME variable explicitly in your shell environment,
     change its value accordingly.
     EOS
   end
-
 end

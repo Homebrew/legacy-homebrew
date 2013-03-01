@@ -1,0 +1,30 @@
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
+
+# This wrapper because 4.3 xcrun doesn't work with CLT-only configurations
+# But many build-systems expect it to work. This fixes that.
+# NOTE only works if the build-tool calls xcrun without a path prefixed!
+
+require "#{File.dirname __FILE__}/../libsuperenv"
+SUPERBIN = __FILE__.dirname.cleanpath.freeze
+
+exec "/usr/bin/xcrun", *ARGV if ARGV.empty? or ARGV[0][0..0] == '-'
+if File.exist?("/usr/bin/#{ARGV.first}")
+  exec "/usr/bin/#{ARGV.shift}", *ARGV unless ENV['HOMEBREW_SDKROOT'].directory?
+end
+
+def try path
+  exec path, *ARGV if File.executable?(path) and path.cleanpath.dirname != SUPERBIN
+end
+
+arg0 = ARGV.shift
+try `/usr/bin/xcrun --find #{arg0}`.chomp
+# Nuts, Xcode is not setup properly or something. Try to find the tools anyway!
+try "/Applications/Xcode.app/Contents/Developer/usr/bin/#{arg0}"
+try "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{arg0}"
+try "/usr/bin/#{arg0}"
+
+abort <<-EOS
+Your Xcode and or CLT are mis-configured. Try some or all of the following:
+    xcodebuild -license
+    sudo xcode-select -switch /path/to/Xcode.app
+EOS

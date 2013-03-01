@@ -1,32 +1,31 @@
 require 'formula'
 
 class Sickbeard < Formula
-  url 'https://github.com/midgetspy/Sick-Beard/tarball/build-488'
   homepage 'http://www.sickbeard.com/'
-  md5 '3bdcabe963e2622513f3cca2757fa2f0'
+  url 'https://github.com/midgetspy/Sick-Beard/tarball/build-498'
+  sha1 '39b57fadf7c5562e889f9203c0dac5212eab9b79'
 
-  head 'git://github.com/midgetspy/Sick-Beard.git'
+  head 'https://github.com/midgetspy/Sick-Beard.git'
 
   depends_on 'Cheetah' => :python
 
   def install
     prefix.install Dir['*']
-    bin.mkpath
     (bin+"sickbeard").write(startup_script)
-    (prefix+"com.sickbeard.sickbeard.plist").write(startup_plist)
-    (prefix+"com.sickbeard.sickbeard.plist").chmod 0644
   end
 
-  def startup_plist; <<-EOS.undent
+  plist_options :manual => 'sickbeard'
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
     <dict>
       <key>Label</key>
-      <string>com.sickbeard.sickbeard</string>
+      <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-           <string>#{bin}/sickbeard</string>
+           <string>#{opt_prefix}/bin/sickbeard</string>
            <string>-q</string>
            <string>--nolaunch</string>
            <string>-p</string>
@@ -63,20 +62,7 @@ class Sickbeard < Formula
   end
 
   def caveats; <<-EOS.undent
-    SickBeard will start up and launch http://localhost:8081/ when you run:
-
-        sickbeard
-
-    To launch automatically on startup, copy and paste the following into a terminal:
-
-        mkdir -p ~/Library/LaunchAgents
-        (launchctl unload -w ~/Library/LaunchAgents/com.sickbeard.sickbeard.plist 2>/dev/null || true)
-        ln -sf #{prefix}/com.sickbeard.sickbeard.plist ~/Library/LaunchAgents/com.sickbeard.sickbeard.plist
-        launchctl load -w ~/Library/LaunchAgents/com.sickbeard.sickbeard.plist
-
-    You may want to edit:
-      #{prefix}/com.sickbeard.sickbeard.plist
-    to change the port (default: 8081) or user (default: #{`whoami`.chomp}).
+    SickBeard defaults to port 8081.
     EOS
   end
 end

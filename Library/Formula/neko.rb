@@ -1,14 +1,15 @@
 require 'formula'
 
 class Neko < Formula
-  url 'http://nekovm.org/_media/neko-1.8.1.tar.gz'
   homepage 'http://nekovm.org/'
-  md5 '0e2029465a49e1da929f0e254c017701'
+  url 'http://nekovm.org/_media/neko-1.8.2.tar.gz'
+  sha1 '59f0fa72485b4c39561efbb64fc8c7293d372b0b'
 
   depends_on 'bdw-gc'
 
   def install
-    system "yes s | /usr/bin/gnumake -j1 MACOSX=1 INSTALL_PREFIX=#{prefix}"
+    ENV.deparallelize # parallel build fails
+    system "yes s | make MACOSX=1 INSTALL_PREFIX='#{prefix}'"
     prefix.install %w{bin libs src}
   end
 end

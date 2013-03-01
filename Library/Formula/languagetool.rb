@@ -1,19 +1,12 @@
 require 'formula'
 
 class Languagetool < Formula
-  url 'http://www.languagetool.org/download/LanguageTool-1.3.1.oxt'
   homepage 'http://www.languagetool.org/'
-  md5 '9bf13c617eba946fd6b44562cbc90d42'
-
-  def startup_script
-    <<-EOS
-#!/bin/bash
-java -jar #{libexec}/LanguageTool.jar $*
-EOS
-  end
+  url 'http://www.languagetool.org/download/LanguageTool-2.0.oxt'
+  sha1 'f21589f77511656bb7ca5e83b4c22f1660eb96d8'
 
   def install
-    (bin+"languagetool").write startup_script
     libexec.install Dir["*"]
+    bin.write_jar_script libexec/'LanguageTool.jar', 'languagetool'
   end
 end

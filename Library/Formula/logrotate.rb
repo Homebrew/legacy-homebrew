@@ -1,146 +1,122 @@
 require 'formula'
 
 class Logrotate < Formula
-  url 'https://fedorahosted.org/releases/l/o/logrotate/logrotate-3.7.8.tar.gz'
   homepage 'http://packages.debian.org/testing/admin/logrotate'
-  md5 'b3589bea6d8d5afc8a84134fddaae973'
+  url 'https://fedorahosted.org/releases/l/o/logrotate/logrotate-3.8.3.tar.gz'
+  sha1 '19d70e2cfb97c1cee32e0d709da990856311022a'
 
   depends_on 'popt'
 
+  # Per MacPorts, let these variables be overridden by ENV vars.
+  # Also, use HOMEBREW suggested locations for run and log files.
   def patches
-    # these patches emerge from the logrotate patch. Recursively nice!
-    debian_patches=['configparse.patch',
-                    'datehack.patch',
-                    'compressutime.patch',
-                    'man-startcount.patch',
-                    'dst.patch',
-                    'dateext-504079.patch',
-                    'rh-toolarge.patch',
-                    'rh-curdir2.patch',
-                    'copyloginfo-512152.patch',
-                    'sharedscripts-519432.patch',
-                    'chown-484762.patch',
-                    'create-388608.patch',
-                    'nofollow.patch',
-                    'security-388608.patch'].collect {|p| "debian/patches/#{p}"}
-
-    [
-      DATA,
-      "https://launchpad.net/debian/sid/+source/logrotate/3.7.8-4/+files/logrotate_3.7.8-4.diff.gz",
-      *debian_patches
-    ]
+    DATA
   end
 
   def install
+    # Otherwise defaults to /bin/gz
+    ENV["COMPRESS_COMMAND"] = "/usr/bin/gzip"
+    ENV["COMPRESS_EXT"] = ".gz"
+    ENV["UNCOMPRESS_COMMAND"] = "/usr/bin/gunzip"
+    ENV["STATEFILE"] = "#{var}/lib/logrotate.status"
+
     system "make"
-    system "make", "install", "BASEDIR=#{prefix}"
+    sbin.install 'logrotate'
+    man8.install 'logrotate.8'
+    man5.install 'logrotate.conf.5'
+
+    mv "examples/logrotate-default", "logrotate.conf"
+    inreplace "logrotate.conf" do |s|
+      s.gsub! "/etc/logrotate.d", "#{etc}/logrotate.d"
+    end
+
+    etc.install 'logrotate.conf' unless (etc/'logrotate.conf').exist?
+    (etc/'logrotate.d').mkpath
+  end
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{sbin}/logrotate</string>
+          <string>#{etc}/logrotate.conf</string>
+        </array>
+        <key>RunAtLoad</key>
+        <false/>
+        <key>UserName</key>
+        <string>#{`whoami`.chomp}</string>
+        <key>StartCalendarInterval</key>
+        <dict>
+          <key>Hour</key>
+          <integer>6</integer>
+          <key>Minute</key>
+          <integer>25</integer>
+        </dict>
+      </dict>
+    </plist>
+    EOS
   end
 end
 
-
 __END__
-diff --git a/config.c b/config.c
-index 4e650f1..be7905a 100644
---- a/config.c
-+++ b/config.c
-@@ -12,6 +12,7 @@
- #include <stdlib.h>
- #include <string.h>
- #include <sys/stat.h>
-+#include <sys/syslimits.h>
- #include <time.h>
- #include <unistd.h>
- #include <assert.h>
-diff --git a/logrotate.c b/logrotate.c
-index 6427465..f0614a8 100644
---- a/logrotate.c
-+++ b/logrotate.c
-@@ -10,6 +10,7 @@
- #include <string.h>
- #include <sys/stat.h>
- #include <sys/wait.h>
-+#include <sys/syslimits.h>
- #include <time.h>
- #include <unistd.h>
- #include <glob.h>
 diff --git a/Makefile b/Makefile
-index f110ab5..49e55f4 100644
+index d65a3f3..14d1f3f 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -1,7 +1,7 @@
- VERSION = $(shell awk '/Version:/ { print $$2 }' logrotate.spec)
- OS_NAME = $(shell uname -s)
- LFS = $(shell echo `getconf LFS_CFLAGS 2>/dev/null`)
--CFLAGS = -Wall -D_GNU_SOURCE -D$(OS_NAME) -DVERSION=\"$(VERSION)\" $(RPM_OPT_FLAGS) $(LFS)
-+CFLAGS += -D_GNU_SOURCE -D$(OS_NAME) -DVERSION=\"$(VERSION)\" $(RPM_OPT_FLAGS) $(LFS)
- PROG = logrotate
- MAN = logrotate.8
- LOADLIBES = -lpopt
-@@ -45,6 +45,15 @@ ifeq ($(OS_NAME),SunOS)
-     endif
+@@ -76,6 +76,22 @@ ifneq ($(POPT_DIR),)
+     LOADLIBES += -L$(POPT_DIR)
  endif
  
-+# Darwin
-+ifeq ($(OS_NAME),Darwin)
-+    INSTALL = install
-+    CC = gcc
-+    ifeq ($(BASEDIR),)
-+        BASEDIR = /usr/local
-+    endif
++ifneq ($(COMPRESS_COMMAND),)
++    CFLAGS += -DCOMPRESS_COMMAND=\"$(COMPRESS_COMMAND)\"
 +endif
 +
- # Red Hat Linux
- ifeq ($(OS_NAME),Linux)
-     INSTALL = install
-@@ -52,8 +61,8 @@ ifeq ($(OS_NAME),Linux)
- endif
- 
- ifneq ($(POPT_DIR),)
--    CFLAGS += -I$(POPT_DIR)
--    LOADLIBES += -L$(POPT_DIR)
-+    CFLAGS += -I$(POPT_DIR)/include
-+    LOADLIBES += -L$(POPT_DIR)/lib
- endif
- 
++ifneq ($(COMPRESS_EXT),)
++    CFLAGS += -DCOMPRESS_EXT=\"$(COMPRESS_EXT)\"
++endif
++
++ifneq ($(UNCOMPRESS_COMMAND),)
++    CFLAGS += -DUNCOMPRESS_COMMAND=\"$(UNCOMPRESS_COMMAND)\"
++endif
++
++ifneq ($(DEFAULT_MAIL_COMMAND),)
++    CFLAGS += -DDEFAULT_MAIL_COMMAND=\"$(DEFAULT_MAIL_COMMAND)\"
++endif
++
  ifneq ($(STATEFILE),)
-@@ -61,7 +70,7 @@ ifneq ($(STATEFILE),)
+     CFLAGS += -DSTATEFILE=\"$(STATEFILE)\"
  endif
- 
- BINDIR = $(BASEDIR)/sbin
--MANDIR = $(BASEDIR)/man
-+MANDIR = $(BASEDIR)/share/man
- 
- #--------------------------------------------------------------------------
- 
-@@ -70,7 +79,7 @@ SOURCES = $(subst .o,.c,$(OBJS) $(LIBOBJS))
- 
- ifeq ($(RPM_OPT_FLAGS),)
- CFLAGS += -g
--LDFLAGS = -g
-+LDFLAGS += -g
- endif
- 
- ifeq (.depend,$(wildcard .depend))
-@@ -89,7 +98,7 @@ clean:
- 	rm -f $(OBJS) $(PROG) core* .depend
- 
- depend:
--	$(CPP) $(CFLAGS) -M $(SOURCES) > .depend
-+	$(CPP) $(CPPFLAGS) $(CFLAGS) -M $(SOURCES) > .depend
- 
- .PHONY : test
- test: $(TARGET)
-diff --git a/config.c b/config.c
-index 4e650f1..9e9dc1c 100644
---- a/config.c
-+++ b/config.c
-@@ -93,7 +93,7 @@ static char *readPath(const char *configFile, int lineNum, char *key,
 
-	chptr = start;
+diff --git a/examples/logrotate-default b/examples/logrotate-default
+index 7da6bb7..0b27baf 100644
+--- a/examples/logrotate-default
++++ b/examples/logrotate-default
+@@ -14,22 +14,5 @@ dateext
+ # uncomment this if you want your log files compressed
+ #compress
 
--	while( (len = mbrtowc(&pwc, chptr, strlen(chptr), NULL)) != 0 ) {
-+	while( (len = strlen(chptr)) != 0 && (len = mbrtowc(&pwc, chptr, len, NULL)) != 0 ) {
-		if( len == (size_t)(-1) || len == (size_t)(-2) || !iswprint(pwc) || iswblank(pwc) ) {
-		    message(MESS_ERROR, "%s:%d bad %s path %s\n",
-			    configFile, lineNum, key, start);
-/usr/local/src/logrotate-3.7.8
+-# RPM packages drop log rotation information into this directory
++# homebrew packages drop log rotation information into this directory
+ include /etc/logrotate.d
+-
+-# no packages own wtmp and btmp -- we'll rotate them here
+-/var/log/wtmp {
+-    monthly
+-    create 0664 root utmp
+-	minsize 1M
+-    rotate 1
+-}
+-
+-/var/log/btmp {
+-    missingok
+-    monthly
+-    create 0600 root utmp
+-    rotate 1
+-}
+-
+-# system-specific logs may be also be configured here.

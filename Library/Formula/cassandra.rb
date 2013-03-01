@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cassandra < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/0.8.6/apache-cassandra-0.8.6-bin.tar.gz'
   homepage 'http://cassandra.apache.org'
-  md5 '3d948680b87efe923f2f7aaa0b186e09'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.2.1/apache-cassandra-1.2.1-bin.tar.gz'
+  sha1 '62b947c2c88d7c28afd044b09be9084e5c3d4949'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -12,10 +12,7 @@ class Cassandra < Formula
 
     inreplace "conf/cassandra.yaml", "/var/lib/cassandra", "#{var}/lib/cassandra"
     inreplace "conf/log4j-server.properties", "/var/log/cassandra", "#{var}/log/cassandra"
-
-    inreplace "conf/cassandra-env.sh" do |s|
-      s.gsub! "/lib/", "/"
-    end
+    inreplace "conf/cassandra-env.sh", "/lib/", "/"
 
     inreplace "bin/cassandra.in.sh" do |s|
       s.gsub! "CASSANDRA_HOME=`dirname $0`/..", "CASSANDRA_HOME=#{prefix}"
@@ -28,45 +25,43 @@ class Cassandra < Formula
     rm Dir["bin/*.bat"]
 
     (etc+"cassandra").install Dir["conf/*"]
-    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,lib/licenses}"]
+    prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,pylib,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
-
-    (prefix+'org.apache.cassandra.plist').write startup_plist
-    (prefix+'org.apache.cassandra.plist').chmod 0644
   end
 
   def caveats; <<-EOS.undent
-    If this is your first install, automatically load on login with:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{prefix}/org.apache.cassandra.plist ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/org.apache.cassandra.plist
+    If you plan to use the CQL shell (cqlsh), you will need the Python CQL library
+    installed. Since Homebrew prefers using pip for Python packages, you can
+    install that using:
+
+      pip install cql
     EOS
   end
 
-  def startup_plist; <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>KeepAlive</key>
-    <true/>
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>KeepAlive</key>
+        <true/>
 
-    <key>Label</key>
-    <string>org.apache.cassandra</string>
+        <key>Label</key>
+        <string>#{plist_name}</string>
 
-    <key>ProgramArguments</key>
-    <array>
-        <string>#{bin}/cassandra</string>
-        <string>-f</string>
-    </array>
+        <key>ProgramArguments</key>
+        <array>
+            <string>#{opt_prefix}/bin/cassandra</string>
+            <string>-f</string>
+        </array>
 
-    <key>RunAtLoad</key>
-    <true/>
+        <key>RunAtLoad</key>
+        <true/>
 
-    <key>WorkingDirectory</key>
-    <string>#{var}/lib/cassandra</string>
-  </dict>
-</plist>
-    EOPLIST
+        <key>WorkingDirectory</key>
+        <string>#{var}/lib/cassandra</string>
+      </dict>
+    </plist>
+    EOS
   end
 end

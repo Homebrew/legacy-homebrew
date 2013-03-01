@@ -1,11 +1,11 @@
 require 'formula'
 
 class IosSim < Formula
-  url "https://github.com/Fingertips/ios-sim/tarball/1.1"
-  homepage "https://github.com/Fingertips/ios-sim"
-  md5 "ea70e2889390844ce2a72f1345df0e69"
+  homepage 'https://github.com/phonegap/ios-sim'
+  url 'https://github.com/phonegap/ios-sim/tarball/1.6'
+  sha1 '60f9e007384ccc0a8c36ad4bd02e22f0c48104b1'
 
   def install
-    system "rake install prefix='#{prefix}'"
+    rake "install", "prefix=#{prefix}"
   end
 end

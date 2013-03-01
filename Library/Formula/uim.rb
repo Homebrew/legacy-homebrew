@@ -1,11 +1,11 @@
 require 'formula'
 
 class Uim < Formula
-  url 'http://uim.googlecode.com/files/uim-1.6.0.tar.bz2'
   homepage 'http://code.google.com/p/uim/'
-  md5 'cb3b9b2adaff3db9dec43658f30e9f89'
+  url 'http://uim.googlecode.com/files/uim-1.6.0.tar.bz2'
+  sha1 'd27f2ca8136da0702c82f0522911d06b2b8f8ea7'
 
-  depends_on 'pkg-config'
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
   def install

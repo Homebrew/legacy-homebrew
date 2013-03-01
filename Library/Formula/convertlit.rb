@@ -1,9 +1,9 @@
 require 'formula'
 
 class Convertlit < Formula
-  url 'http://www.convertlit.com/clit18src.zip'
   homepage 'http://www.convertlit.com/'
-  md5 'd691d4729485fe5d73e3f0937d8fb42e'
+  url 'http://www.convertlit.com/clit18src.zip'
+  sha1 '0fa9aead468bd8640c49374d46d78d2a3e79489f'
   version '1.8'
 
   depends_on 'libtommath'
@@ -14,11 +14,13 @@ class Convertlit < Formula
       s.gsub! "../libtommath-0.30/libtommath.a", "#{HOMEBREW_PREFIX}/lib/libtommath.a"
     end
 
-    Dir.chdir "lib"
-    system "make"
-    Dir.chdir "../clit18"
-    system "make"
+    cd "lib" do
+      system "make"
+    end
 
-    bin.install 'clit'
+    cd "clit18" do
+      system "make"
+      bin.install 'clit'
+    end
   end
 end

@@ -1,14 +1,16 @@
 require 'formula'
 
 class Vips < Formula
-  url 'http://www.vips.ecs.soton.ac.uk/supported/current/vips-7.26.3.tar.gz'
   homepage 'http://www.vips.ecs.soton.ac.uk/'
-
-  md5 '1fbf164ef0da8e835a036c56ff659e8e'
+  url 'http://www.vips.ecs.soton.ac.uk/supported/7.30/vips-7.30.7.tar.gz'
+  sha1 '49713df2eaf774d51fc9cf734b2bb19859f9047d'
 
   depends_on 'pkg-config' => :build
+  depends_on :libpng
+  depends_on :fontconfig
   depends_on 'gettext'
   depends_on 'glib'
+  depends_on 'openslide' => :optional
   depends_on 'jpeg' => :optional
   depends_on 'libtiff' => :optional
   depends_on 'imagemagick' => :optional
@@ -18,10 +20,10 @@ class Vips < Formula
   depends_on 'libexif' => :optional
   depends_on 'liboil' => :optional
   depends_on 'openexr' => :optional
+  depends_on 'cfitsio' => :optional
 
   def install
-    ENV.x11 # for libpng
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

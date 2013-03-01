@@ -29,8 +29,10 @@ class Hardware
       :nehalem
     when 0x573B5EEC # Arrandale
       :arrandale
-    when 0x5490B78C
-      :sandybridge # Sandy bridge
+    when 0x5490B78C # Sandy Bridge
+      :sandybridge
+    when 0x1F65E835 # Ivy Bridge
+      :ivybridge
     else
       :dunno
     end
@@ -55,7 +57,8 @@ class Hardware
   end
 
   def self.is_64_bit?
-    self.sysctl_bool("hw.cpu64bit_capable")
+    return @@is_64_bit if defined? @@is_64_bit
+    @@is_64_bit = self.sysctl_bool("hw.cpu64bit_capable")
   end
   
   def self.bits

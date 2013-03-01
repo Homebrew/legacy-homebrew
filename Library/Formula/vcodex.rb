@@ -1,7 +1,6 @@
 require 'formula'
-require 'download_strategy'
 
-class VcodexDownloadStrategy <CurlDownloadStrategy
+class VcodexDownloadStrategy < CurlDownloadStrategy
   # downloading from AT&T requires using the following credentials
   def credentials
     'I accept www.research.att.com/license/att-src:.'
@@ -13,10 +12,10 @@ class VcodexDownloadStrategy <CurlDownloadStrategy
 end
 
 class Vcodex < Formula
+  homepage 'http://www2.research.att.com/~gsf/download/ref/vcodex/vcodex.html'
   url 'http://www2.research.att.com/~gsf/download/tgz.att-src/vcodex.2005-05-22.tgz',
       :using => VcodexDownloadStrategy
-  homepage 'http://www2.research.att.com/~gsf/download/ref/vcodex/vcodex.html'
-  md5 'a773e26272568dbd182b7664802f7d29'
+  sha1 '2a9b766b580149cc66c6d5cbc95fe2a390f45a18'
   version '2005-05-22'
 
   def patches; DATA; end
@@ -42,8 +41,10 @@ class Vcodex < Formula
     man.install 'man/man3'
   end
 
-  def caveats
-    "We agreed to the AT&T Source Code License for you.\nIf this is unacceptable you should uninstall."
+  def caveats; <<-EOS.undent
+    We agreed to the AT&T Source Code License for you.
+    If this is unacceptable you should uninstall.
+    EOS
   end
 end
 

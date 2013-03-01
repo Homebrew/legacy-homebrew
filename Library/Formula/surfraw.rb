@@ -1,13 +1,14 @@
 require 'formula'
 
 class Surfraw < Formula
-  url 'http://surfraw.alioth.debian.org/dist/surfraw-2.2.8.tar.gz'
-  head 'git://git.debian.org/surfraw/surfraw.git'
   homepage 'http://surfraw.alioth.debian.org/'
-  md5 'e0f571f7a2d109555c26bdb40781a3f2'
+  url 'http://surfraw.alioth.debian.org/dist/surfraw-2.2.8.tar.gz'
+  sha1 '3114cd6e8d64f87b84ed0eff4369bfb0b10f2eb6'
+
+  head 'git://git.debian.org/surfraw/surfraw.git'
 
   def install
-    system "./prebuild" if ARGV.build_head?
+    system "./prebuild" if build.head?
     system "./configure", "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
                           "--with-graphical-browser=open"

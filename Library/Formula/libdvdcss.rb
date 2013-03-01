@@ -1,11 +1,14 @@
 require 'formula'
 
 class Libdvdcss < Formula
-  url 'http://download.videolan.org/pub/libdvdcss/1.2.9/libdvdcss-1.2.9.tar.bz2'
-  md5 '553383d898826c285afb2ee453b07868'
   homepage 'http://www.videolan.org/developers/libdvdcss.html'
+  url 'http://download.videolan.org/pub/libdvdcss/1.2.12/libdvdcss-1.2.12.tar.bz2'
+  sha1 'f0977374f12fadbbeb45e1ff493adc259247bb09'
+
+  head 'svn://svn.videolan.org/libdvdcss/trunk'
 
   def install
+    system "./bootstrap" if build.head?
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
   end

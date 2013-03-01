@@ -1,16 +1,17 @@
 require 'formula'
 
 class Swfmill < Formula
-  # Staying on 3.0 until this 3.1 issue is fixed:
-  # https://bugs.launchpad.net/swfmill/+bug/611403
-  url 'http://swfmill.org/releases/swfmill-0.3.0.tar.gz'
   homepage 'http://swfmill.org'
-  md5 'b7850211cf683aa7a1c62324b56e3216'
+  url 'http://swfmill.org/releases/swfmill-0.3.2.tar.gz'
+  sha1 'e7ac1f267e4cbb8166acf6af78ddae914feed207'
 
   depends_on 'pkg-config' => :build
+  depends_on :freetype
+  depends_on :libpng
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    # Has trouble linking against zlib unless we add it here - @adamv
+    system "make", "LIBS=-lz", "install"
   end
 end

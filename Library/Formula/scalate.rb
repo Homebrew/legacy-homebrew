@@ -1,42 +1,25 @@
 require 'formula'
-require 'find'
 
 class Scalate < Formula
-  url 'http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.5.0/scalate-distro-1.5.0-unix-bin.tar.gz'
-  version '1.5.0'
   homepage 'http://scalate.fusesource.org/'
-  md5 '7574d29b29c05c086f1fa977f23ed4a5'
-
-  def startup_script
-    <<-EOS.undent
-    #!/bin/bash
-    # This startup script for Scalate calls the real startup script installed
-    # to Homebrew's cellar. This avoids issues with local vs. absolute symlinks.
-
-    #{libexec}/bin/scalate $*
-    EOS
-  end
+  url 'http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/scalate/scalate-distro/1.5.3/scalate-distro-1.5.3-unix-bin.tar.gz'
+  version '1.5.3'
+  sha1 '17e3cd6252b36c9cf80566738299c7e19df957bf'
 
   def install
-
-    # Recursively fix the permissions of extracted regular files excluding the bin directory contents.
+    # Recursively fix the permissions of extracted regular files
+    # excluding the bin directory contents.
     %w{ archetypes docs lib samples license.txt readme.html }.each do |name|
-      Find.find(name) do |path|
-        if File.file?(path)
-          File.chmod(0644, path)
-        end
-      end
+      Pathname.new(name).find { |path| path.chmod(0644) if path.file? }
     end
 
-    prefix.install %w{ license.txt readme.html }
+    prefix.install_metafiles
     libexec.install Dir['*']
-
-    (bin+'scalate').write startup_script
+    bin.write_exec_script libexec/'bin/scalate'
   end
 
-  def caveats
-    <<-EOS.undent
-    Software was installed to:
+  def caveats; <<-EOS.undent
+    Scalate was installed to:
       #{libexec}
     EOS
   end

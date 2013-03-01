@@ -1,15 +1,16 @@
 require 'formula'
 
 class DfuProgrammer < Formula
-  url 'http://sourceforge.net/projects/dfu-programmer/files/dfu-programmer/0.5.4/dfu-programmer-0.5.4.tar.gz'
   homepage 'http://dfu-programmer.sourceforge.net/'
-  md5 '707dcd0f957a74e92456ea6919faa772'
+  url 'http://sourceforge.net/projects/dfu-programmer/files/dfu-programmer/0.6.0/dfu-programmer-0.6.0.tar.gz'
+  sha1 'db6366f7a00c6d4555f9144e0efc83a799c1e4cc'
 
   depends_on 'libusb-compat'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                           "--disable-libusb_1_0"
     system "make install"
   end
 end

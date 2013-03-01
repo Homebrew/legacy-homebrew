@@ -1,12 +1,20 @@
 require 'formula'
 
 class Hub < Formula
-  url 'https://github.com/defunkt/hub/tarball/v1.6.1'
-  homepage 'https://github.com/defunkt/hub'
+  homepage 'http://defunkt.io/hub/'
+  url 'https://github.com/defunkt/hub/tarball/v1.10.4'
+  sha1 'b43f69f20563cb779d77a6beaf773bad8c49ad4c'
   head 'https://github.com/defunkt/hub.git'
-  md5 'a1e87ad54076f075f5d337ff8e0cc144'
 
   def install
-    system "rake", "install", "prefix=#{prefix}"
+    rake "install", "prefix=#{prefix}"
+    bash_completion.install 'etc/hub.bash_completion.sh'
+    zsh_completion.install 'etc/hub.zsh_completion' => '_hub'
+  end
+
+  test do
+    HOMEBREW_REPOSITORY.cd do
+      `#{bin}/hub ls-files -- bin`.chomp == 'bin/brew'
+    end
   end
 end

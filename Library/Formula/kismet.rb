@@ -1,10 +1,17 @@
 require 'formula'
 
 class Kismet < Formula
-  url 'http://www.kismetwireless.net/code/kismet-2011-03-R1.tar.gz'
-  version '2011-03-R1'
   homepage 'http://www.kismetwireless.net'
-  sha256 '4bc1ff064dccd65dacdd2db832bc209781daa482690fba444a0b79d36744ff5b'
+  url 'http://www.kismetwireless.net/code/kismet-2011-03-R2.tar.gz'
+  version '2011-03-R2'
+  sha256 '71a099fb724951cdd55c28e492432ca21657534c91a536c206f3e0a8686d2a64'
+
+  # Strip -rdynamic, per MacPorts
+  def patches
+    { :p0 => [
+      "https://trac.macports.org/export/100624/trunk/dports/net/kismet/files/patch-configure.diff"
+    ]}
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--sysconfdir=#{etc}"

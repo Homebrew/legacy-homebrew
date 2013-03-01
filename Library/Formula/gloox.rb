@@ -1,17 +1,16 @@
 require 'formula'
 
 class Gloox < Formula
-  url 'http://camaya.net/download/gloox-1.0.tar.bz2'
   homepage 'http://camaya.net/gloox/'
-  md5 'f8eacf1c6476e0a309b453fd04f90e31'
+  url 'http://camaya.net/download/gloox-1.0.tar.bz2'
+  sha1 '8c788738f72b05fae7c05c744a67859419ffa09c'
 
   depends_on 'pkg-config' => :build
 
-  def patches
-    # Fix memory leak
-    # http://bugs.camaya.net/horde/whups/ticket/?id=181
-    DATA
-  end
+  # Fix memory leak
+  # http://bugs.camaya.net/horde/whups/ticket/?id=181
+  # Issue tracker is 404 on 3/17/2012 - @adamv
+  def patches; DATA; end
 
   def install
     system "./configure", "--disable-debug",

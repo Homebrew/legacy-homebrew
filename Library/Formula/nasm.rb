@@ -1,18 +1,15 @@
 require 'formula'
 
 class Nasm < Formula
-  url 'http://www.nasm.us/pub/nasm/releasebuilds/2.09.10/nasm-2.09.10.tar.bz2'
   homepage 'http://www.nasm.us/'
-  sha1 'ca57a7454b29e18c64018e49cdf5c832937497ab'
+  url 'http://www.nasm.us/pub/nasm/releasebuilds/2.10.07/nasm-2.10.07.tar.bz2'
+  sha256 'c056e2abc83816892e448f9e9e95a3d21e9e096f44341b9d4853f62a443bba82'
 
-  def options
-    [[ '--universal', 'Build a universal binary' ]]
-  end
+  option :universal
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}"
-    system "make everything"
-    system "make install_everything"
+    system "make install install_rdf"
   end
 end

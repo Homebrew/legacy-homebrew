@@ -1,23 +1,27 @@
 require 'formula'
 
 class Gd < Formula
-  # Official site has been down a lot, so use a mirror
-  # homepage "http://www.libgd.org"
-  # url "http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz"
+  homepage 'http://bitbucket.org/pierrejoye/gd-libgd'
+  url 'http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz'
+  mirror 'http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz'
+  sha1 '21cf2ec93fd80836fc0cb4741201f7cc5440819a'
 
-  homepage "http://bitbucket.org/pierrejoye/gd-libgd"
-  url "http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz"
-  md5 "39ac48e6d5e0012a3bd2248a0102f209"
+  head 'http://bitbucket.org/pierrejoye/gd-libgd', :using => :hg
 
-  head "http://bitbucket.org/pierrejoye/gd-libgd", :using => :hg
-
+  depends_on :libpng => :recommended
   depends_on 'jpeg' => :recommended
+  depends_on 'giflib' => :optional
+  depends_on :freetype => :optional
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
 
   def install
-    ENV.x11
-    system "./configure", "--prefix=#{prefix}", "--with-freetype=/usr/X11"
+    args = ["--prefix=#{prefix}"]
+    args << "--without-freetype" unless build.with? 'freetype'
+    system "./configure", *args
     system "make install"
     (lib+'pkgconfig/gdlib.pc').write pkg_file
   end
@@ -35,8 +39,15 @@ Description: A graphics library for quick creation of PNG or JPEG images
 Version: 2.0.36RC1
 Requires:
 Libs: -L${libdir} -lgd
-Libs.private: -lXpm -lX11 -ljpeg -lfontconfig -lfreetype -lpng12 -lz -lm
+Libs.private: -ljpeg -lpng12 -lz -lm
 Cflags: -I${includedir}
 EOF
+  end
+
+  test do
+    system "#{bin}/pngtogd", \
+      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png", \
+      "gd_test.gd"
+    system "#{bin}/gdtopng", "gd_test.gd", "gd_test.png"
   end
 end

@@ -1,9 +1,9 @@
 require 'formula'
 
 class LcdfTypetools < Formula
-  url 'http://www.lcdf.org/type/lcdf-typetools-2.92.tar.gz'
   homepage 'http://www.lcdf.org/type/'
-  sha256 'a7a9eeab572f4f392870f6e70e291235af18633b30ac179342efb5e99b426860'
+  url 'http://www.lcdf.org/type/lcdf-typetools-2.97.tar.gz'
+  sha256 '761746041c669fa3673a3e90ec7a247abd0e2782bdddf0fc5d7ab70b33b6f975'
 
   def install
     system "./configure", "--disable-dependency-tracking",

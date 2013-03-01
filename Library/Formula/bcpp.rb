@@ -1,9 +1,9 @@
 require 'formula'
 
 class Bcpp < Formula
-  url 'ftp://invisible-island.net/bcpp/bcpp-20090630.tgz'
   homepage 'http://invisible-island.net/bcpp/'
-  md5 '3428176dafcf4af1d2741804bca05189'
+  url 'ftp://invisible-island.net/bcpp/bcpp-20090630.tgz'
+  sha1 'f8ce9736fa2775e8c15b7fcbfee156103d90ece8'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"

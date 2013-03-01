@@ -1,12 +1,15 @@
 require 'formula'
 
 class Anttweakbar < Formula
-  url 'http://www.antisphere.com/Tools/AntTweakBar/AntTweakBar_114.zip'
   homepage 'http://www.antisphere.com/Wiki/tools:anttweakbar'
-  md5 '2cb5f2fb7b3089f91521f4c14b726f8f'
+  url 'http://www.antisphere.com/Tools/AntTweakBar/AntTweakBar_115.zip'
+  version '1.15'
+  sha1 'fcc5069c00001e4954e2c465042f591df167c40b'
 
   def install
-    system 'cd src; make -f Makefile.osx'
+    cd 'src' do
+      system 'make -f Makefile.osx'
+    end
     lib.install 'lib/libAntTweakBar.dylib'
     include.install 'include/AntTweakBar.h'
   end

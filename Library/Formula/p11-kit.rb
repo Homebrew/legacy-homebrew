@@ -1,42 +1,23 @@
 require 'formula'
 
 class P11Kit < Formula
-  url 'http://p11-glue.freedesktop.org/releases/p11-kit-0.6.tar.gz'
   homepage 'http://p11-glue.freedesktop.org'
-  md5 'c1ff3e52f172fda8bf3b426f7fb63c92'
+  url 'http://p11-glue.freedesktop.org/releases/p11-kit-0.14.tar.gz'
+  sha256 '7a5e561b8b4c6e25ed7a89ef36c8127437c8f18bd86fe4cd41d899c5c7def6d3'
 
-  def patches
-    # Patch to get PATH_MAX; fixed upstream:
-    # http://cgit.freedesktop.org/p11-glue/p11-kit/commit/?id=8054865
-    DATA
-  end
+  option :universal
 
   def install
-    ENV.universal_binary
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
+
+    # Bug workaround: https://bugs.freedesktop.org/show_bug.cgi?id=57714
+    mv 'tests/.libs/mock-one.so', 'tests/.libs/mock-one.dylib'
+
     system "make check"
     system "make install"
   end
 end
-
-__END__
-diff --git a/p11-kit/modules.c b/p11-kit/modules.c
-index 3f1eae1..4c87cee 100644
---- a/p11-kit/modules.c
-+++ b/p11-kit/modules.c
-@@ -50,11 +50,12 @@
- #include <dirent.h>
- #include <dlfcn.h>
- #include <errno.h>
-+#include <limits.h>
- #include <pthread.h>
- #include <stdarg.h>
- #include <stddef.h>
--#include <stdlib.h>
- #include <stdio.h>
-+#include <stdlib.h>
- #include <string.h>
- #include <unistd.h>

@@ -1,15 +1,17 @@
 require 'formula'
 
 class WpCli < Formula
-  url 'https://github.com/downloads/andreascreten/wp-cli/wp-cli-0.1.zip'
-  homepage 'https://github.com/andreascreten/wp-cli/'
-  head 'https://github.com/andreascreten/wp-cli.git'
-  md5 'afeb5d8f33b35980a71b37d4718ccd7e'
+  homepage 'https://github.com/wp-cli/wp-cli/'
+
+  # Use the tag instead of the tarball to get submodules
+  url 'https://github.com/wp-cli/wp-cli.git', :tag => 'v0.7.0'
+  version '0.7.0'
+
+  head 'https://github.com/wp-cli/wp-cli.git'
 
   def install
-      prefix.install Dir['*']
-      bin.mkpath
-      ln_s prefix+'wp-cli/wp', bin
+    prefix.install Dir['src/*']
+    (prefix+'etc/bash_completion.d').install 'utils/wp-completion.bash' => 'wp'
   end
 
   def test

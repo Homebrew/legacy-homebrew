@@ -1,18 +1,17 @@
 require 'formula'
 
 class Ifstat < Formula
-  url 'http://gael.roualland.free.fr/ifstat/ifstat-1.1.tar.gz'
   homepage 'http://gael.roualland.free.fr/ifstat/'
-  md5 'b655642c33a626cfe976792fbcd9b6e1'
+  url 'http://gael.roualland.free.fr/ifstat/ifstat-1.1.tar.gz'
+  sha1 '4ebf59207d24e53461f841a2480a6710d774fce2'
 
-  def patches
-    #Fixes 32/64 bit incompatibility for snow leopard
-    DATA
-  end
+  # Fixes 32/64 bit incompatibility for snow leopard
+  def patches; DATA; end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

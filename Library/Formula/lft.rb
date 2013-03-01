@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lft < Formula
-  url 'http://pwhois.org/dl/index.who?file=lft-3.1.tar.gz'
   homepage 'http://pwhois.org/lft/'
-  md5 '70e69706e7600f34c0dfb54e2ee5eb01'
+  url 'http://pwhois.org/dl/index.who?file=lft-3.35.tar.gz'
+  sha1 'b6c6fb51f423c5398ca649b2e8cbcbe597afff23'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"

@@ -1,24 +1,20 @@
 require 'formula'
 
 class Voldemort < Formula
-  url 'https://github.com/downloads/voldemort/voldemort/voldemort-0.81.tar.gz'
   homepage 'http://project-voldemort.com/'
-  md5 '38da11626c6704f2bda17d6461cd2928'
+  url 'https://github.com/downloads/voldemort/voldemort/voldemort-0.90.1.tar.gz'
+  sha1 '8a8d33e3a5904f3aeea66bc0503fb12e449e0969'
+
+  skip_clean 'libexec/config'
 
   def install
     system "ant"
     libexec.install %w(bin lib dist contrib)
     libexec.install "config" => "config-examples"
-    (libexec+"config").mkpath
+    (libexec/"config").mkpath
 
     # Write shim scripts for all utilities
-    Dir["#{libexec}/bin/*.sh"].each do |p|
-      script = File.basename(p)
-      (bin+script).write <<-EOS
-#!/bin/bash
-#{p} $@
-EOS
-    end
+    bin.write_exec_script Dir["#{libexec}/bin/*.sh"]
   end
 
   def caveats; <<-EOS.undent

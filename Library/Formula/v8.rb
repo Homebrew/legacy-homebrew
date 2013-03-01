@@ -1,27 +1,29 @@
 require 'formula'
 
 class V8 < Formula
-  head 'http://v8.googlecode.com/svn/trunk/'
   homepage 'http://code.google.com/p/v8/'
+  # Use the official github mirror, it is easier to find tags there
+  url 'https://github.com/v8/v8/archive/3.15.11.tar.gz'
+  sha1 '0c47b3a5409d71d4fd6581520c8972f7451a87e4'
 
-  depends_on 'scons' => :build
+  head 'https://github.com/v8/v8.git'
+
+  # gyp currently depends on a full xcode install
+  # https://code.google.com/p/gyp/issues/detail?id=292
+  depends_on :xcode
 
   def install
-    arch = Hardware.is_64_bit? ? 'x64' : 'ia32'
+    system 'make dependencies'
+    system 'make', 'native',
+                   "-j#{ENV.make_jobs}",
+                   "library=shared",
+                   "snapshot=on",
+                   "console=readline"
 
-    system "scons", "-j #{Hardware.processor_count}",
-                    "arch=#{arch}",
-                    "mode=release",
-                    "snapshot=on",
-                    "library=shared",
-                    "visibility=default",
-                    "console=readline",
-                    "sample=shell"
-
-    include.install Dir['include/*']
-    lib.install Dir['libv8.*']
-    bin.install 'shell' => 'v8'
-
-    system "install_name_tool -change libv8.dylib #{lib}/libv8.dylib #{bin}/v8"
+    prefix.install 'include'
+    cd 'out/native' do
+      lib.install Dir['lib*']
+      bin.install 'd8', 'lineprocessor', 'mksnapshot', 'preparser', 'process', 'shell' => 'v8'
+    end
   end
 end

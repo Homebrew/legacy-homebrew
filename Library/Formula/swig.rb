@@ -1,14 +1,17 @@
 require 'formula'
 
 class Swig < Formula
-  url 'http://downloads.sourceforge.net/project/swig/swig/swig-2.0.4/swig-2.0.4.tar.gz'
   homepage 'http://www.swig.org/'
-  md5 '4319c503ee3a13d2a53be9d828c3adc0'
+  url 'http://sourceforge.net/projects/swig/files/swig/swig-2.0.9/swig-2.0.9.tar.gz'
+  sha1 '7984bf1043f522e88ea51d4bd21c97d3c68342be'
+
+  option :universal
 
   depends_on 'pcre'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    ENV.universal_binary if build.universal?
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
     system "make install"

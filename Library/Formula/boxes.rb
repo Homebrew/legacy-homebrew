@@ -1,17 +1,13 @@
 require 'formula'
 
 class Boxes < Formula
-  url 'http://boxes.thomasjensen.com/download/boxes-1.1.src.tar.gz'
   homepage 'http://boxes.thomasjensen.com/'
-  md5 'd2ef9fa28a87bf32b3fe0c47ab82fa97'
+  url 'http://boxes.thomasjensen.com/download/boxes-1.1.src.tar.gz'
+  sha1 '1fd6e875e9b3c84f2a71f6df73d9eddb37d11c93'
 
   def install
     # distro uses /usr/share/boxes change to prefix
-    inreplace 'Makefile' do |s|
-      s.change_make_var! "GLOBALCONF", "#{share}/boxes-config"
-    end
-
-    system "make"
+    system "make", "GLOBALCONF=#{share}/boxes-config", "CC=#{ENV.cc}"
 
     # No make install have to manually copy files
     bin.install 'src/boxes'

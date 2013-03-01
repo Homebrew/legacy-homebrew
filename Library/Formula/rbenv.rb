@@ -1,13 +1,23 @@
 require 'formula'
 
 class Rbenv < Formula
-  url 'https://github.com/sstephenson/rbenv/tarball/v0.2.1'
   homepage 'https://github.com/sstephenson/rbenv'
-  md5 '4b2ca757c7dcc6384a49d8947b97c4ed'
+  url 'https://github.com/sstephenson/rbenv/tarball/v0.4.0'
+  sha1 'a5e80249f985294c1c9f0914f7cbdc85d4cadd74'
 
   head 'https://github.com/sstephenson/rbenv.git'
 
   def install
+    inreplace 'libexec/rbenv', '/usr/local', HOMEBREW_PREFIX
     prefix.install Dir['*']
+  end
+
+  def caveats; <<-EOS.undent
+    To enable shims and autocompletion add to your profile:
+      if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+    To use Homebrew's directories rather than ~/.rbenv add to your profile:
+      export RBENV_ROOT=#{var}/rbenv
+    EOS
   end
 end

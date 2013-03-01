@@ -1,13 +1,13 @@
 require 'formula'
 
 class Dcal < Formula
-  url 'http://alexeyt.freeshell.org/code/dcal.c'
   homepage 'http://alexeyt.freeshell.org/'
-  md5 '66e6abfccf934cf1e7fb8e467cc8f005'
+  url 'http://alexeyt.freeshell.org/code/dcal.c'
   version '0.1.0'
+  sha1 '3b1d4ed45ed0192df4841ed9e371c89fe87bdeac'
 
   def install
-    system "#{ENV['CXX']}", "dcal.c", "-o", "dcal"
+    system ENV.cxx, "dcal.c", "-o", "dcal"
     bin.install 'dcal'
   end
 end

@@ -1,24 +1,45 @@
 require 'formula'
 
-class Notmuch < Formula
-  url 'http://notmuchmail.org/releases/notmuch-0.5.tar.gz'
-  homepage 'http://notmuchmail.org'
-  md5 '983cd907a7bf5ee0d12ebfb54cff784f'
+class NewEnoughEmacs < Requirement
+  fatal true
 
+  def satisfied?
+    `emacs --version`.split("\n")[0] =~ /GNU Emacs (\d+)\./
+    major_version = ($1 || 0).to_i
+    major_version >= 23
+  end
+
+  def message
+    "Emacs support requires at least Emacs 23."
+  end
+end
+
+class Notmuch < Formula
+  homepage 'http://notmuchmail.org'
+  url 'http://notmuchmail.org/releases/notmuch-0.14.tar.gz'
+  sha1 'ad1ef9c2d29cfb0faab7837968d11325dee404bd'
+
+  option "emacs", "Install emacs support."
+
+  depends_on NewEnoughEmacs if build.include? "emacs"
+  depends_on 'pkg-config' => :build
   depends_on 'xapian'
   depends_on 'talloc'
   depends_on 'gmime'
 
+  fails_with :clang do
+    build 425
+    cause "./lib/notmuch-private.h:478:8: error: visibility does not match previous declaration"
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}"
-
-    # notmuch requires a newer emacs than macosx provides. So we either
-    # disable the emacs bindings or make notmuch depend on the homebrew
-    # emacs package.
-    # And there is a race condition in the makefile, so we have to either
-    # deparallelize the process or run make and make install separately.
-
-    system "make HAVE_EMACS=0"
-    system "make install HAVE_EMACS=0"
+    args = ["--prefix=#{prefix}"]
+    if build.include? "emacs"
+      args << "--with-emacs"
+    else
+      args << "--without-emacs"
+    end
+    system "./configure", *args
+    system "make install"
   end
 end

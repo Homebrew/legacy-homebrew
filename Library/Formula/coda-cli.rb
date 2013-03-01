@@ -1,9 +1,9 @@
 require 'formula'
 
 class CodaCli < Formula
-  url 'https://github.com/bobthecow/coda-cli/zipball/v1.0.0'
   homepage 'http://justinhileman.info/coda-cli/'
-  md5 'ae7e53dffcd2a7a01e653429ce4bd5a6'
+  url 'https://github.com/bobthecow/coda-cli/zipball/v1.0.5'
+  sha1 '6ac508f6f75d8e4bb2a984d5d7d1ecb65052317b'
 
   def install
     bin.install 'coda'

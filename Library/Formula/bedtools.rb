@@ -1,13 +1,14 @@
 require 'formula'
 
 class Bedtools < Formula
-  url 'http://bedtools.googlecode.com/files/BEDTools.v2.13.3.tar.gz'
   homepage 'http://code.google.com/p/bedtools/'
-  md5 '4119b0e84d49b0a7425070c82b4d1920'
+  url 'http://bedtools.googlecode.com/files/BEDTools.v2.17.0.tar.gz'
+  sha1 '1b1de3c35394a423f9ad98a9957a8853b426a578'
+
   head 'https://github.com/arq5x/bedtools.git'
 
   def install
     system "make all"
-    bin.install Dir['bin/*']
+    prefix.install 'bin'
   end
 end
