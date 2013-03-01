@@ -7,7 +7,7 @@ class Icu4c < Formula
   sha1 '9a3369c00a8be8eff935d2893849ad2eb246c0ef'
 
   bottle do
-    version 1
+    revision 1
     sha1 '0ec81beb069eeea0e3c2fb5a1193607084de2a7f' => :mountainlion
     sha1 '280d2010c9f467a849366b0b20e5368297333afd' => :lion
     sha1 '3789775bb60069eb62abc972d63c7f3baffe2883' => :snowleopard
