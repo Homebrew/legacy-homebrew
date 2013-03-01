@@ -108,6 +108,11 @@ class Docbookxsl < Formula
                    website xhtml xhtml-1_1 xhtml5]
     docbook = Formula.factory 'docbook'
     (docbook.prefix/'docbook/xsl'/version).install xsl_files + doc_files
+
+    (docbook.bin/'dbtoepub').write <<-EOS.undent
+      #!/bin/sh
+      exec "#{docbook.prefix}/docbook/xsl/#{version}/epub/bin/dbtoepub" "$@"
+    EOS
   end
 
   def catalog
