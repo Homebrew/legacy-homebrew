@@ -5,6 +5,9 @@ class Dvdrtools < Formula
   url 'http://savannah.nongnu.org/download/dvdrtools/dvdrtools-0.2.1.tar.gz'
   sha1 'b8b889f73953c121acd85ce1b4ba988ef7ef6bfc'
 
+  conflicts_with 'cdrtools',
+    :because => 'both cdrtools and dvdrtools install binaries by the same name'
+
   def patches
   { :p0 => [
       "https://trac.macports.org/export/89262/trunk/dports/sysutils/dvdrtools/files/patch-cdda2wav-cdda2wav.c",

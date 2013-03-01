@@ -10,7 +10,7 @@ class FonFlashCli < Formula
     cd 'fon-flash' do
       system "make fon-flash"
       bin.install 'fon-flash'
-      prefix.install 'README.txt'
+      prefix.install_metafiles
     end
   end
 

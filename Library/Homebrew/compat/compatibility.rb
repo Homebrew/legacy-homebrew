@@ -99,6 +99,21 @@ class Formula
       val.nil? ? @bottle_sha1 : @bottle_sha1 = val
     end
   end
+
+  # These methods return lists of Formula objects.
+  # They are eprecated in favor of Dependency::expand_dependencies
+  # and Formula#recursive_dependencies, which return lists of
+  # Dependency objects instead.
+  def self.expand_deps f
+    f.deps.map do |dep|
+      f_dep = Formula.factory dep.to_s
+      expand_deps(f_dep) << f_dep
+    end
+  end
+
+  def recursive_deps
+    Formula.expand_deps(self).flatten.uniq
+  end
 end
 
 class UnidentifiedFormula < Formula
@@ -219,12 +234,49 @@ module MacOS extend self
     10.8 <= MACOS_VERSION # Actually Mountain Lion or newer
   end
   alias_method :mountain_lion_or_newer?, :mountain_lion?
+
+  def macports_or_fink_installed?
+    not MacOS.macports_or_fink.empty?
+  end
 end
 
 
 class Version
   def slice *args
     opoo "Calling slice on versions is deprecated, use: to_s.slice"
-    to_s.slice *args
+    to_s.slice(*args)
+  end
+end
+
+
+# MD5 support
+class Formula
+  def self.md5(val=nil)
+    unless val.nil?
+      @stable ||= SoftwareSpec.new
+      @stable.md5(val)
+    end
+    return @stable ? @stable.md5 : @md5
+  end
+end
+
+class SoftwareSpec
+  def md5(val=nil)
+    if val.nil?
+      @checksum if checksum.nil? or @checksum.hash_type == :md5
+    else
+      @checksum = Checksum.new(:md5, val)
+    end
+  end
+end
+
+class Pathname
+  def md5
+    require 'digest/md5'
+    opoo <<-EOS.undent
+    MD5 support is deprecated and will be removed in a future version.
+    Please switch this formula to #{Checksum::TYPES.map { |t| t.to_s.upcase } * ' or '}.
+    EOS
+    incremental_hash(Digest::MD5)
   end
 end

@@ -1,9 +1,7 @@
 require 'formula'
 
 class NeedsSnowLeopard < Requirement
-  def satisfied?
-    MacOS.version >= :snow_leopard
-  end
+  satisfy MacOS.version >= :snow_leopard
 
   def message; <<-EOS.undent
     GHC requires OS X 10.6 or newer. The binary releases no longer work on
@@ -36,7 +34,7 @@ class Ghc < Formula
 
   env :std
 
-  depends_on NeedsSnowLeopard.new
+  depends_on NeedsSnowLeopard
 
   option '32-bit'
   option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
@@ -48,7 +46,7 @@ class Ghc < Formula
   end
 
   fails_with :clang do
-    build 421
+    build 425
     cause <<-EOS.undent
       Building with Clang configures GHC to use Clang as its preprocessor,
       which causes subsequent GHC-based builds to fail.
@@ -84,6 +82,7 @@ class Ghc < Formula
       if Hardware.is_64_bit? and not build.build_32_bit?
         arch = 'x86_64'
       else
+        ENV.m32 # Need to force this to fix build error on internal libgmp.
         arch = 'i386'
       end
 

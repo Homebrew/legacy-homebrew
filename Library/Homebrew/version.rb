@@ -1,8 +1,6 @@
 class VersionElement
   include Comparable
 
-  attr_reader :elem
-
   def initialize elem
     elem = elem.to_s.downcase
     @elem = case elem
@@ -24,12 +22,16 @@ class VersionElement
     @elem.to_s
   end
 
+  protected
+
+  attr_reader :elem
+
   def string?
-    @elem.is_a? String
+    elem.is_a? String
   end
 
   def numeric?
-    @elem.is_a? Numeric
+    elem.is_a? Numeric
   end
 end
 
@@ -43,10 +45,6 @@ class Version
 
   def detected_from_url?
     @detected_from_url
-  end
-
-  def to_a
-    @array ||= @version.scan(/\d+|[a-zA-Z]+/).map { |e| VersionElement.new(e) }
   end
 
   def head?
@@ -93,12 +91,16 @@ class Version
   end
   alias_method :to_str, :to_s
 
+  protected
+
+  def to_a
+    @array ||= @version.scan(/\d+|[a-zA-Z]+/).map { |e| VersionElement.new(e) }
+  end
+
   def self.parse spec
     version = _parse(spec)
     Version.new(version, true) unless version.nil?
   end
-
-  private
 
   def self._parse spec
     spec = Pathname.new(spec) unless spec.is_a? Pathname
@@ -128,7 +130,7 @@ class Version
     return m.captures.first unless m.nil?
 
     # e.g. https://github.com/erlang/otp/tarball/OTP_R15B01 (erlang style)
-    m = /[-_](R\d+[AB]\d*)/.match(spec.to_s)
+    m = /[-_](R\d+[AB]\d*(-\d+)?)/.match(spec.to_s)
     return m.captures.first unless m.nil?
 
     # e.g. boost_1_39_0
@@ -137,7 +139,7 @@ class Version
 
     # e.g. foobar-4.5.1-1
     # e.g. ruby-1.9.1-p243
-    m = /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)$/.match(stem)
+    m = /-((\d+\.)*\d\.\d+-(p|rc|RC)?\d+)(?:[-._](?:bin|dist|stable|src|sources))?$/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. lame-398-1
@@ -179,13 +181,10 @@ class Version
     # e.g. http://mirrors.jenkins-ci.org/war/1.486/jenkins.war
     m = /\/(\d\.\d+)\//.match(spec.to_s)
     return m.captures.first unless m.nil?
-  end
 
-  # DSL for defining comparators
-  class << self
-    def compare &blk
-      send(:define_method, '<=>', &blk)
-    end
+    # e.g. http://www.ijg.org/files/jpegsrc.v8d.tar.gz
+    m = /\.v(\d+[a-z]?)/.match(stem)
+    return m.captures.first unless m.nil?
   end
 end
 
@@ -207,18 +206,5 @@ class VersionSchemeDetector
 
   def detect_from_symbol
     raise "Unknown version scheme #{@scheme} was requested."
-  end
-end
-
-# Enable things like "MacOS.version >= :lion"
-class MacOSVersion < Version
-  compare do |other|
-    super Version.new case other
-      when :mountain_lion then 10.8
-      when :lion then 10.7
-      when :snow_leopard then 10.6
-      when :leopard then 10.5
-      else other.to_s
-      end
   end
 end

@@ -2,10 +2,10 @@ require 'formula'
 
 class Vimpc < Formula
   homepage 'http://sourceforge.net/projects/vimpc/'
-  url 'http://downloads.sourceforge.net/project/vimpc/Release%200.06.1/vimpc-0.06.1.tar.gz'
-  sha1 '72c13e3a2fd10b3089fbd6d47509838fd3c3b9e4'
+  url 'http://downloads.sourceforge.net/project/vimpc/Release%200.07.2/vimpc-0.07.2.tar.gz'
+  sha1 '6ad68075aa540682674e870f9e5dc35a74831196'
 
-  head 'https://github.com/richo/vimpc.git'
+  head 'https://github.com/boysetsfrog/vimpc.git'
 
   if build.head?
     depends_on :automake

@@ -1,10 +1,16 @@
 require 'formula'
 
+class AdbBashCompletion < Formula
+  url 'https://raw.github.com/CyanogenMod/android_sdk/3bf0a01ef66a9b99149ba3faaf34a1362581dd01/bash_completion/adb.bash'
+  sha1 '8e7dad45b8c98c359516d4a818a9090125bc6f7a'
+  version 'cyanogenmod_jellybean'
+end
+
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r20.0.3-macosx.zip'
-  version 'r20.0.3'
-  sha1 'c02403c2e29952e6bbd632767b5c3cd3618c3e80'
+  url 'http://dl.google.com/android/android-sdk_r21.1-macosx.zip'
+  version 'r21.1'
+  sha1 '3f8148ce1c0e8a6e8f48334f5e34dd7c198f2a4e'
 
   # TODO docs and platform-tools
   # See the long comment below for the associated problems
@@ -45,6 +51,10 @@ class AndroidSdk < Formula
         echo Use the \\`android\\' tool to install the \\"Android SDK Platform-tools\\".
       EOS
     end
+
+    AdbBashCompletion.new.brew do
+      (prefix+'etc/bash_completion.d').install 'adb.bash' => 'adb-completion.bash'
+    end
   end
 
   def caveats; <<-EOS.undent
@@ -57,7 +67,7 @@ class AndroidSdk < Formula
     updates. If you want to try and fix this then see the comment in this formula.
 
     You may need to add the following to your .bashrc:
-      export ANDROID_SDK_ROOT=#{prefix}
+      export ANDROID_SDK_ROOT=#{opt_prefix}
     EOS
   end
 

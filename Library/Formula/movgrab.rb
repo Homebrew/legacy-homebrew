@@ -2,8 +2,8 @@ require 'formula'
 
 class Movgrab < Formula
   homepage 'http://sites.google.com/site/columscode'
-  url 'http://sites.google.com/site/columscode/files/movgrab-1.1.12.tar.gz'
-  sha1 'de5e48e0cde9c038562798a6a9fdcc56746c31bc'
+  url 'http://sites.google.com/site/columscode/files/movgrab-1.1.13.tar.gz'
+  sha1 '532e5e529dd4263b54f56965fafab04686f9f873'
 
   def install
     # When configure recurses into libUseful-2.0, it puts CC and CFLAGS into

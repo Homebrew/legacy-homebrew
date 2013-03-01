@@ -93,12 +93,15 @@ class BeerTasting < Test::Unit::TestCase
   def test_brew_cleanup
     require 'cmd/cleanup'
 
-    f1=TestBall.new
-    f1.instance_eval { @version = "0.1" }
-    f2=TestBall.new
-    f2.instance_eval { @version = "0.2" }
-    f3=TestBall.new
-    f3.instance_eval { @version = "0.3" }
+    f1 = TestBall.new
+    f1.instance_eval { @version = Version.new("0.1") }
+    f1.active_spec.instance_eval { @version = Version.new("0.1") }
+    f2 = TestBall.new
+    f2.instance_eval { @version = Version.new("0.2") }
+    f2.active_spec.instance_eval { @version = Version.new("0.2") }
+    f3 = TestBall.new
+    f3.instance_eval { @version = Version.new("0.3") }
+    f3.active_spec.instance_eval { @version = Version.new("0.3") }
 
     nostdout do
       f1.brew { f1.install }

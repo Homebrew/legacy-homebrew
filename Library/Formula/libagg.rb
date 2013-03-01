@@ -5,16 +5,14 @@ class Libagg < Formula
   url 'http://www.antigrain.com/agg-2.5.tar.gz'
   sha1 '08f23da64da40b90184a0414369f450115cdb328'
 
-  option 'with-freetype', 'Build with FreeType support'
-
   depends_on :automake
+  depends_on :libtool
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
-  depends_on :freetype if build.include? "with-freetype"
-  depends_on :libtool unless MacOS.version >= :mountain_lion
+  depends_on :freetype => :optional
 
   fails_with :clang do
-    build 421
+    build 425
     cause <<-EOS.undent
       AGG tries to return a const reference as a non-const reference, which is
       rejected by clang 3.1 but accepted by gcc

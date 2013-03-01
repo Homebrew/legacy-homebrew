@@ -10,6 +10,7 @@ class Findutils < Formula
 
   def install
     args = ["--prefix=#{prefix}",
+            "--localstatedir=#{var}/locate",
             "--disable-dependency-tracking",
             "--disable-debug"]
     args << "--program-prefix=g" unless build.include? 'default-names'

@@ -2,8 +2,8 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.8.7/rabbitmq-server-generic-unix-2.8.7.tar.gz'
-  sha1 '16965e5c3486f6882df363064707777fc4cbbe2e'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.0.2/rabbitmq-server-generic-unix-3.0.2.tar.gz'
+  sha1 '83e3d01cf1d901b72b2110751405c53c4f50eb16'
 
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MacOS.version == :leopard
@@ -26,70 +26,65 @@ class Rabbitmq < Formula
     rabbitmq_env_conf = etc+'rabbitmq/rabbitmq-env.conf'
     rabbitmq_env_conf.write rabbitmq_env unless rabbitmq_env_conf.exist?
 
-    # Enable the management web UI
+    # Enable the management web UI and visualiser
     enabled_plugins_path = etc+'rabbitmq/enabled_plugins'
     enabled_plugins_path.write enabled_plugins unless enabled_plugins_path.exist?
+
+    # Extract rabbitmqadmin and install to sbin
+    # use it to generate, then install the bash completion file
+    system "/usr/bin/unzip", "-qq", "-j",
+           "#{prefix}/plugins/rabbitmq_management-#{version}.ez",
+           "rabbitmq_management-#{version}/priv/www/cli/rabbitmqadmin"
+
+    sbin.install 'rabbitmqadmin'
+
+    (prefix+'etc/bash_completion.d/rabbitmqadmin.bash').write `#{sbin}/rabbitmqadmin --bash-completion`
   end
 
-  def caveats
-    <<-EOS.undent
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Management Plugin enabled by default at http://localhost:55672
-
-    To start rabbitmq-server manually:
-        rabbitmq-server
+  def caveats; <<-EOS.undent
+    Management Plugin enabled by default at http://localhost:15672
     EOS
   end
 
-  def enabled_plugins
-    return <<-EOS.undent
+  def enabled_plugins; <<-EOS.undent
       [rabbitmq_management,rabbitmq_management_visualiser].
     EOS
   end
 
-  def rabbitmq_env
-    return <<-EOS.undent
+  def rabbitmq_env; <<-EOS.undent
     CONFIG_FILE=#{etc}/rabbitmq/rabbitmq
     NODE_IP_ADDRESS=127.0.0.1
     NODENAME=rabbit@localhost
     EOS
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
-"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>Program</key>
-    <string>#{HOMEBREW_PREFIX}/sbin/rabbitmq-server</string>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-    <key>EnvironmentVariables</key>
-    <dict>
-      <!-- need erl in the path -->
-      <key>PATH</key>
-      <string>/usr/local/sbin:/usr/bin:/bin:/usr/local/bin</string>
-      <!-- specify the path to the rabbitmq-env.conf file -->
-      <key>CONF_ENV_FILE</key>
-      <string>#{etc}/rabbitmq/rabbitmq-env.conf</string>
-    </dict>
-  </dict>
-</plist>
-    EOPLIST
+  plist_options :manual => 'rabbitmq-server'
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>Program</key>
+        <string>#{opt_prefix}/sbin/rabbitmq-server</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>UserName</key>
+        <string>#{`whoami`.chomp}</string>
+        <key>EnvironmentVariables</key>
+        <dict>
+          <!-- need erl in the path -->
+          <key>PATH</key>
+          <string>/usr/local/sbin:/usr/bin:/bin:/usr/local/bin</string>
+          <!-- specify the path to the rabbitmq-env.conf file -->
+          <key>CONF_ENV_FILE</key>
+          <string>#{etc}/rabbitmq/rabbitmq-env.conf</string>
+        </dict>
+      </dict>
+    </plist>
+    EOS
   end
 end

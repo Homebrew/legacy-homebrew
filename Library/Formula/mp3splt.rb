@@ -2,12 +2,17 @@ require 'formula'
 
 class Mp3splt < Formula
   homepage 'http://mp3splt.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/mp3splt/mp3splt/2.4.2/mp3splt-2.4.2.tar.gz'
-  sha1 '0a66b2e2cfc6091cfd0dc9fc303a0650de3bc738'
+  url 'http://sourceforge.net/projects/mp3splt/files/mp3splt/2.5.1/mp3splt-2.5.1.tar.gz'
+  sha1 '75551f12f349312d2e8fcc58bbadab134e9e3a99'
 
   depends_on 'libmp3splt'
 
   def install
+    # Use of getline(); see https://sourceforge.net/p/mp3splt/bugs/149/
+    if MacOS.version <= :snow_leopard
+      inreplace 'src/freedb.c', /getline\(&(.+, )&(.+, .+\) == )-1/, 'fgets(\1\2NULL'
+    end
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

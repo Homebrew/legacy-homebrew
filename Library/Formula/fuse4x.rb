@@ -16,7 +16,9 @@ class Fuse4x < Formula
     # Build universal if the hardware can handle it---otherwise 32 bit only
     MacOS.prefer_64_bit? ? ENV.universal_binary : ENV.m32
 
-    system "autoreconf", "--force", "--install"
+    inreplace 'configure.in', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
+    inreplace 'makeconf.sh', 'libtoolize', 'glibtoolize'
+    system './makeconf.sh'
 
     # force 64bit inodes on 10.5. On 10.6+ this is no-op.
     ENV.append_to_cflags "-D_DARWIN_USE_64_BIT_INODE"

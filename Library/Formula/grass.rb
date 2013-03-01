@@ -1,20 +1,12 @@
 require 'formula'
 
-def postgres?
-    ARGV.include? "--with-postgres"
-end
-
-def mysql?
-    ARGV.include? "--with-mysql"
-end
-
 def headless?
   # The GRASS GUI is based on WxPython. Unfortunately, Lion does not include
   # this module so we have to drop it.
   #
   # This restriction can be lifted once WxMac hits a stable release that is
   # 64-bit capable.
-  ARGV.include? '--without-gui' or MacOS.version >= :lion
+  build.include? 'without-gui' or MacOS.version >= :lion
 end
 
 class Grass < Formula
@@ -39,20 +31,13 @@ class Grass < Formula
   def patches; DATA; end
 
   fails_with :clang do
-    build 421
-
-    cause <<-EOS.undent
-      Multiple build failures while compiling GRASS tools.
-      EOS
+    build 425
+    cause "Multiple build failures while compiling GRASS tools."
   end
 
-  def options
-    [
-      ['--with-postgres', 'Specify PostgreSQL as a dependency'],
-      ['--with-mysql', 'Specify MySQL as a dependency'],
-      ['--without-gui', 'Build without WxPython interface. Command line tools still available.']
-    ]
-  end
+  option "with-postgres", "specify PostgreSQL as a dependency."
+  option "with-mysql", "Specify MySQL as a dependency."
+  option "without-gui", "Build without WxPython interface. Command line tools still available."
 
   def install
     readline = Formula.factory('readline')
@@ -112,8 +97,11 @@ class Grass < Formula
     args << "--with-cairo"
 
     # Database support
-    args << "--with-postgres" if postgres?
-    if mysql?
+    if build.include? "with-postgres"
+      args << "--with-postgres"
+    end
+
+    if build.include? "with-mysql"
       mysql = Formula.factory('mysql')
       args << "--with-mysql-includes=#{mysql.include + 'mysql'}"
       args << "--with-mysql-libs=#{mysql.lib + 'mysql'}"

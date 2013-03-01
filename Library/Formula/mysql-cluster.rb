@@ -1,58 +1,43 @@
 require 'formula'
 
-class MysqlNotInstalled < Requirement
-  def message; <<-EOS.undent
-    You need to disable the mysql formula with
-
-      launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
-      brew unlink mysql
-
-    before installing MySQL Cluster.
-    EOS
-  end
-  def satisfied?
-    not File.exists?(HOMEBREW_PREFIX+'bin/mysqld')
-  end
-  def fatal?
-    true
-  end
-end
-
 class MysqlCluster < Formula
   homepage 'http://www.mysql.com/cluster/'
-  url 'http://mysql.llarian.net/Downloads/MySQL-Cluster-7.2/mysql-cluster-gpl-7.2.6.tar.gz'
-  sha1 'f5523f877391b95a2428f37047028df6361251f0'
+  url 'http://mysql.llarian.net/Downloads/MySQL-Cluster-7.2/mysql-cluster-gpl-7.2.8.tar.gz'
+  sha1 '5bcb69d35eea9b4a45dd6025f2af13d6b1fc4d19'
 
-  depends_on MysqlNotInstalled.new
   depends_on 'cmake' => :build
-  depends_on 'readline'
-  depends_on 'pidof'
+  depends_on 'pidof' unless MacOS.version >= :mountain_lion
+
+  option :universal
+  option 'with-tests', 'Build with unit tests'
+  option 'with-embedded', 'Build the embedded server'
+  option 'with-libedit', 'Compile with editline wrapper instead of readline'
+  option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
+  option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
+  option 'enable-local-infile', 'Build with local infile loading support'
+  option 'enable-debug', 'Build with debug support'
+
+  conflicts_with 'mysql',
+    :because => "mysql-cluster and mysql install the same binaries."
+
+  conflicts_with 'mariadb',
+    :because => "mysql-cluster and mariadb install the same binaries."
+
+  conflicts_with 'percona-server',
+    :because => "mysql-cluster and percona-server install the same binaries."
+
+  env :std if build.universal?
 
   fails_with :clang do
-    build 318
+    build 421
     cause "http://article.gmane.org/gmane.comp.db.mysql.cluster/2085"
   end
 
-  def options
-    [
-      ['--with-tests', "Build with unit tests."],
-      ['--with-embedded', "Build the embedded server."],
-      ['--with-libedit', "Compile with EditLine wrapper instead of readline"],
-      ['--with-archive-storage-engine', "Compile with the ARCHIVE storage engine enabled"],
-      ['--with-blackhole-storage-engine', "Compile with the BLACKHOLE storage engine enabled"],
-      ['--universal', "Make mysql a universal binary"],
-      ['--enable-local-infile', "Build with local infile loading support"]
-    ]
-  end
-
-  # Remove optimization flags from `mysql_config --cflags`
-  # This facilitates easy compilation of gems using a brewed mysql
-  # CMake patch needed for CMake 2.8.8.
-  # Reported here: http://bugs.mysql.com/bug.php?id=65050
-  # See also the mysql formula.
-  def patches; DATA; end
-
   def install
+    # Build without compiler or CPU specific optimization flags to facilitate
+    # compilation of gems and other software that queries `mysql-config`.
+    ENV.minimal_optimization
+
     # Make sure the var/mysql-cluster directory exists
     (var+"mysql-cluster").mkpath
 
@@ -70,29 +55,32 @@ class MysqlCluster < Formula
             "-DSYSCONFDIR=#{etc}"]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if ARGV.include? '--with-tests'
+    if build.include? 'with-tests'
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
     end
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if ARGV.include? '--with-embedded'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
 
     # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless ARGV.include? '--with-libedit'
+    args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
 
     # Compile with ARCHIVE engine enabled if chosen
-    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if ARGV.include? '--with-archive-storage-engine'
+    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.include? 'with-archive-storage-engine'
 
     # Compile with BLACKHOLE engine enabled if chosen
-    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if ARGV.include? '--with-blackhole-storage-engine'
+    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if ARGV.build_universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
 
     # Build with local infile loading support
-    args << "-DENABLED_LOCAL_INFILE=1" if ARGV.include? '--enable-local-infile'
+    args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
+
+    # Build with debug support
+    args << "-DWITH_DEBUG=1" if build.include? 'enable-debug'
 
     system "cmake", *args
     system "make"
@@ -121,6 +109,8 @@ class MysqlCluster < Formula
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+      # pidof can be replaced with pgrep from proctools on Mountain Lion
+      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
     ln_s "#{prefix}/support-files/mysql.server", bin
   end
@@ -134,21 +124,17 @@ class MysqlCluster < Formula
     Note that in a production system there are other parameters
     that you would set to tune the configuration.
 
-    Launchd plists templates to automatically load the various nodes can be copied from:
-      #{plist_path('ndb_mgmd')}
-      #{plist_path('ndbd')}
-      #{plist_path('mysqld')}
+    Set up databases to run AS YOUR USER ACCOUNT with:
+      unset TMPDIR
+      mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql-cluster)" --datadir=#{var}/mysql-cluster/mysqld_data --tmpdir=/tmp
 
     For a first cluster, you may start with a single MySQL Server (mysqld),
     a pair of Data Nodes (ndbd) and a single management node (ndb_mgmd):
 
-      mysql_install_db --no-defaults --basedir=#{prefix} --datadir=#{var}/mysql-cluster/mysqld_data
       ndb_mgmd -f #{var}/mysql-cluster/conf/config.ini --initial --configdir=#{var}/mysql-cluster/conf/
       ndbd -c localhost:1186
       ndbd -c localhost:1186
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path('mysqld')} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path('mysqld').basename}
+      mysqld --defaults-file=/usr/local/var/mysql-cluster/conf/my.cnf &
       mysql -h 127.0.0.1 -P 5000 -u root -p
       (Leave the password empty and press Enter)
         create database clusterdb;
@@ -159,7 +145,7 @@ class MysqlCluster < Formula
 
     To shutdown everything:
 
-      launchctl unload -w ~/Library/LaunchAgents/#{plist_path('mysqld').basename}
+      mysqladmin -u root -p shutdown
       ndb_mgm -e shutdown
     EOS
   end
@@ -198,7 +184,7 @@ class MysqlCluster < Formula
 
   # Override Formula#plist_name
   def plist_name(extra = nil)
-    (extra) ? super()+'-'+extra : super()
+    (extra) ? super()+'-'+extra : super()+'-ndb_mgmd'
   end
 
   # Override Formula#plist_path
@@ -206,7 +192,7 @@ class MysqlCluster < Formula
     (extra) ? super().dirname+(plist_name(extra)+'.plist') : super()
   end
 
-  def mysqld_startup_plist(name); <<-EOPLIST.undent
+  def mysqld_startup_plist(name); <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -228,10 +214,10 @@ class MysqlCluster < Formula
       <string>#{var}</string>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 
-  def ndb_mgmd_startup_plist(name); <<-EOPLIST.undent
+  def ndb_mgmd_startup_plist(name); <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -259,10 +245,10 @@ class MysqlCluster < Formula
       <string>#{var}/mysql-cluster/#{name}.log</string>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 
-  def ndbd_startup_plist(name); <<-EOPLIST.undent
+  def ndbd_startup_plist(name); <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -288,39 +274,6 @@ class MysqlCluster < Formula
       <string>#{var}/mysql-cluster/#{name}.log</string>
     </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 end
-
-
-__END__
-diff --git a/configure.cmake b/configure.cmake
-index 6d90b78..3d6118c 100644
---- a/configure.cmake
-+++ b/configure.cmake
-@@ -151,7 +151,9 @@ IF(UNIX)
-   SET(CMAKE_REQUIRED_LIBRARIES 
-     ${LIBM} ${LIBNSL} ${LIBBIND} ${LIBCRYPT} ${LIBSOCKET} ${LIBDL} ${CMAKE_THREAD_LIBS_INIT} ${LIBRT})
- 
--  LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
-+  IF(CMAKE_REQUIRED_LIBRARIES)
-+    LIST(REMOVE_DUPLICATES CMAKE_REQUIRED_LIBRARIES)
-+  ENDIF()
-   LINK_LIBRARIES(${CMAKE_THREAD_LIBS_INIT})
-   
-   OPTION(WITH_LIBWRAP "Compile with tcp wrappers support" OFF)
-diff --git a/scripts/mysql_config.sh b/scripts/mysql_config.sh
-index b62386a..2e8bf44 100644
---- a/scripts/mysql_config.sh
-+++ b/scripts/mysql_config.sh
-@@ -137,7 +137,9 @@ for remove in DDBUG_OFF DSAFE_MUTEX DUNIV_MUST_NOT_INLINE DFORCE_INIT_OF_VARS \
-               DEXTRA_DEBUG DHAVE_purify O 'O[0-9]' 'xO[0-9]' 'W[-A-Za-z]*' \
-               'mtune=[-A-Za-z0-9]*' 'mcpu=[-A-Za-z0-9]*' 'march=[-A-Za-z0-9]*' \
-               Xa xstrconst "xc99=none" AC99 \
--              unroll2 ip mp restrict
-+              unroll2 ip mp restrict \
-+              mmmx 'msse[0-9.]*' 'mfpmath=sse' w pipe 'fomit-frame-pointer' 'mmacosx-version-min=10.[0-9]' \
-+              aes Os
- do
-   # The first option we might strip will always have a space before it because
-   # we set -I$pkgincludedir as the first option

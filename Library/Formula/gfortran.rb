@@ -1,117 +1,115 @@
 require 'formula'
 
-class GfortranPkgDownloadStrategy < CurlDownloadStrategy
-  def stage
-    # The 4.2.4 compiler is distributed as a OS X 10.5
-    # package- a single flat xar archive instead of a
-    # bundle.
-    safe_system '/usr/bin/xar', '-xf', @tarball_path
-    chdir
-
-    # Clean up.
-    safe_system "mv *.pkg/Payload Payload.gz"
-    safe_system "ls | grep -v Payload | xargs rm -r"
-  end
-end
+# todo: Use graphite loop optimizations? (would depends_on 'cloog')
 
 class Gfortran < Formula
-  if MacOS.version == :leopard
-    url 'http://r.research.att.com/gfortran-42-5577.pkg'
-    md5 '30fb495c93cf514003cdfcb7846dc701'
-    version "4.2.4-5577"
-  elsif MacOS.version == :snow_leopard
-    case MacOS.gcc_42_build_version
-    when 5659
-      url 'http://r.research.att.com/gfortran-42-5659.pkg'
-      md5 '71bd546baa45c9c0fb4943cdd72ee274'
-      version "4.2.4-5659"
-    else
-      # This version works for XCode 3.2.3-4.0 on Snow Leopard.
-      url 'http://r.research.att.com/gfortran-42-5664.pkg'
-      md5 'eb64ba9f8507da22e582814a69fbb7ca'
-      version "4.2.4-5664"
-    end
-  else
-    # Lion
-    if MacOS::Xcode.version >= '4.2'
-      # This version contains an entire Apple-GCC 4.2 (i386/x86_64) build for
-      # Lion. After installation, we will remove all compilers other than
-      # GFortran.
-      url 'http://r.research.att.com/tools/gcc-42-5666.3-darwin11.pkg'
-      md5 '3ccf46da27aaba17706b420711fb997e'
-      version '4.2.4-5666.3'
-    else
-      url 'http://r.research.att.com/gfortran-lion-5666-3.pkg'
-      md5 '7eb140822c89bec17db5666859868b3b'
-      version "4.2.4-5666.3"
-    end
+  homepage 'http://gcc.gnu.org/wiki/GFortran'
+  url 'http://ftpmirror.gnu.org/gcc/gcc-4.7.2/gcc-4.7.2.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gcc/gcc-4.7.2/gcc-4.7.2.tar.bz2'
+  sha1 'a464ba0f26eef24c29bcd1e7489421117fb9ee35'
+
+  bottle do
+    sha1 '684879d100c02ac9ba5c23ded4860da19c02650d' => :mountainlion
+    sha1 '3d958ffe0f126d1add6e2f5236b333870b1a826b' => :lion
+    sha1 '9708ac5fa35db9789b8e050fbe410acee9ec9e45' => :snowleopard
   end
 
-  # For more information about GFortran, see:
-  #
-  #     http://gcc.gnu.org/wiki/GFortran
-  #
-  # The homepage points to r.research.att.com because this site contains
-  # specific information about the binary distribution that we use.
-  homepage 'http://r.research.att.com/tools/'
+  option 'enable-profiled-build', 'Make use of profile guided optimization when bootstrapping GCC'
+  option 'check', 'Run the make check fortran. This is for maintainers.'
 
-  def download_strategy
-    GfortranPkgDownloadStrategy
+  depends_on 'gmp'
+  depends_on 'libmpc'
+  depends_on 'mpfr'
+
+  # http://gcc.gnu.org/install/test.html
+  depends_on 'dejagnu' if build.include? 'check'
+
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      "fatal error: error in backend: ran out of registers during register allocation"
+
+      If you have any knowledge to share or can provide a fix, please open an issue.
+      Thanks!
+      EOS
   end
 
   def install
-    if MacOS::Xcode.version >= '4.2' and MacOS.version >= :lion
-      ohai "Installing gfortran 4.2.4 for XCode 4.2 (build 5666) or higher"
-      safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
+    # Sandbox the GCC lib, libexec and include directories so they don't wander
+    # around telling small children there is no Santa Claus. This results in a
+    # partially keg-only brew following suggestions outlined in the "How to
+    # install multiple versions of GCC" section of the GCC FAQ:
+    #     http://gcc.gnu.org/faq.html#multiple
+    gfortran_prefix = prefix/'gfortran'
 
-      # This package installs a whole GCC suite. Remove non-fortran
-      # components.
-      bin.children.reject{|p| p.basename.to_s.match /gfortran/}.each{|p| rm p}
-      man1.children.reject{|p| p.basename.to_s.match /gfortran/}.each{|p| rm p}
-      (include + 'gcc').rmtree
+    args = [
+      # Sandbox everything...
+      "--prefix=#{gfortran_prefix}",
+      # ...except the stuff in share...
+      "--datarootdir=#{share}",
+      # ...and the binaries...
+      "--bindir=#{bin}",
+      "--with-system-zlib",
+      # ...opt_prefix survives upgrades and works even if `brew unlink gmp`
+      "--with-gmp=#{Formula.factory('gmp').opt_prefix}",
+      "--with-mpfr=#{Formula.factory('mpfr').opt_prefix}",
+      "--with-mpc=#{Formula.factory('libmpc').opt_prefix}",
+      # ...we build the stage 1 gcc with clang (which is know to fail checks)
+      "--enable-checking=release",
+      "--disable-stage1-checking",
+      # ...speed up build by ignoring cxx
+      "--disable-build-poststage1-with-cxx",
+      "--disable-libstdcxx-pc",
+      # ...disable translations avoid conflict with brew install gcc --enable-nls
+      '--disable-nls'
+    ]
 
-      # This package does not contain the gfortran->gfortran-4.2 symlink
-      safe_system "ln -sf #{bin}/gfortran-4.2 #{bin}/gfortran"
-    else
-      # Break installation down by GCC build as there are some slight
-      # variations in packaging.
-      case gcc_42_build
-      when 5577
-        ohai "Installing gfortran 4.2.4 for XCode 3.1.4 (build 5577)"
-        safe_system "pax -rz -f Payload.gz -s ',./usr,#{prefix},'"
-        # The 5577 package does not contain the gfortran->gfortran-4.2 symlink
-        safe_system "ln -sf #{bin}/gfortran-4.2 #{bin}/gfortran"
-      when 5659
-        ohai "Installing gfortran 4.2.4 for XCode 3.2.2 (build 5659)"
-        # The version of pax jumped 16 years in development between OS X 10.5
-        # and OS X 10.6. In that time it became security conscious.
-        safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
-      when 5664
-        ohai "Installing gfortran 4.2.4 for XCode 3.2.3 (build 5664)"
-        safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
-      when 5666
-        ohai "Installing gfortran 4.2.4 for XCode 3.2.6--4.1 (build 5666)"
-        safe_system "pax --insecure -rz -f Payload.gz -s ',./usr,#{prefix},'"
-      else
-        onoe <<-EOS.undent
-          Currently the gfortran compiler provided by this brew is only supports
-          the following versions of XCode:
-
-            - XCode 3.1.4 on OS X 10.5.x
-            - XCode 3.2.2/3.2.3 -- 4.0 on OS X 10.6.x
-            - XCode 4.1 or newer on OS X 10.7.x
-
-          The AppStore and Software Update can help upgrade your copy of XCode.
-          The latest version of XCode is also available from:
-
-              http://developer.apple.com/technologies/xcode.html
-        EOS
-        exit
+    mkdir 'build' do
+      unless MacOS::CLT.installed?
+        # For Xcode-only systems, we need to tell the sysroot path.
+        # 'native-system-header's will be appended
+        args << "--with-native-system-header-dir=/usr/include"
+        args << "--with-sysroot=#{MacOS.sdk_path}"
       end
+
+      system '../configure', "--enable-languages=fortran", *args
+
+      if build.include? 'enable-profiled-build'
+        # Takes longer to build, may bug out. Provided for those who want to
+        # optimise all the way to 11.
+        system 'make profiledbootstrap'
+      else
+        system 'make bootstrap'
+      end
+
+      system "make"
+      system "make check-fortran" if build.include? 'check'
+      system 'make install'
     end
 
-    # Alias the manpage so it will be available via `man gfortran`
-    safe_system "ln -sf #{man1}/gfortran-4.2.1 #{man1}/gfortran.1"
+    # This package installs a whole GCC suite. Removing non-fortran components:
+    bin.children.reject{ |p| p.basename.to_s.match(/gfortran/) }.each{ |p| rm p }
+    man1.children.reject{ |p| p.basename.to_s.match(/gfortran/) }.each{ |p| rm p }
+    man7.rmtree  # dupes: fsf fundraising and gpl will be added by gcc formula
+    # (share/'locale').rmtree
+  end
+
+  test do
+    fixture = <<-EOS.undent
+      integer,parameter::m=10000
+      real::a(m), b(m)
+      real::fact=0.5
+
+      do concurrent (i=1:m)
+        a(i) = a(i) + fact*b(i)
+      end do
+      print *, "done"
+      end
+    EOS
+    Pathname('in.f90').write(fixture)
+    system "#{bin}/gfortran -c in.f90"
+    system "#{bin}/gfortran -o test in.o"
+    `./test`.strip =='done'
   end
 
   def caveats; <<-EOS.undent

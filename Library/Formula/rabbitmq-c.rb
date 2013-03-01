@@ -1,18 +1,20 @@
 require 'formula'
 
 class RabbitmqCodegen < Formula
-  url 'http://github.com/rabbitmq/rabbitmq-codegen/tarball/rabbitmq_v2_8_2'
-  sha1 '628afefe54f6996f7c99ac8c9d5820c5ed2aeaa7'
+  url 'http://github.com/rabbitmq/rabbitmq-codegen/tarball/rabbitmq_v3_0_1'
+  sha1 '463ec8983f9078df4c7eef504a2d8daef59f3503'
 end
 
 class RabbitmqC < Formula
   homepage 'https://github.com/alanxz/rabbitmq-c'
-  url 'https://github.com/alanxz/rabbitmq-c/tarball/v0.1'
-  sha1 '57a1f3e69c36d5766df4b3a567552743b12a91d3'
+  url 'https://github.com/alanxz/rabbitmq-c/archive/rabbitmq-c-v0.3.0.zip'
+  sha1 '91f5d1af85b118c63354744d9b0adb9eaab1d9e0'
 
   head 'https://github.com/alanxz/rabbitmq-c.git'
 
   depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
   depends_on 'rabbitmq'
   depends_on 'simplejson' => :python if MacOS.version == :leopard
 

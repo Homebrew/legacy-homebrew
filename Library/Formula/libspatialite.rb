@@ -6,8 +6,8 @@ class Libspatialite < Formula
   sha1 'a88c763302aabc3b74d44a88f969c8475f0c0d10'
 
   devel do
-    url 'http://www.gaia-gis.it/gaia-sins/libspatialite-4.0.0-RC1.tar.gz'
-    sha1 'a8fdbf76a4dc8a3388b49156dad99a3a788dc9b9'
+    url 'http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-4.0.0.tar.gz'
+    sha1 '3d20fcabcc5a951e7863d33b6b6ef3f78dbf006d'
   end
 
   option 'without-freexl', 'Build without support for reading Excel files'
@@ -25,7 +25,8 @@ class Libspatialite < Formula
 
   def install
     # Ensure Homebrew's libsqlite is found before the system version.
-    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+    sqlite = Formula.factory 'sqlite'
+    ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib"
 
     args = %W[
       --disable-dependency-tracking
@@ -38,4 +39,11 @@ class Libspatialite < Formula
     system './configure', *args
     system "make install"
   end
+
+  def caveats; <<-EOS.undent
+    Note that the SpatiaLite 4.x series is not compatible with QGIS 1.8.0 or
+    GDAL 1.9.2. Hopefully this situation will improve in future releases.
+    EOS
+  end if build.devel?
+
 end

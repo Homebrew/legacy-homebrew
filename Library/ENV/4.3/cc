@@ -60,8 +60,10 @@ class Cmd
       # the work since Makefiles are dumb and include a lot of excess flags.
       ENV['HOMEBREW_CC']
     when 'c++'
-      if ENV['HOMEBREW_CC'] =~ /gcc/
+      if ENV['HOMEBREW_CC'] =~ /llvm-gcc/
         'g++'
+      elsif ENV['HOMEBREW_CC'] =~ /gcc-4.2/
+        'g++-4.2'
       else
         'clang++'
       end
@@ -101,15 +103,18 @@ class Cmd
       case arg = whittler.next
       when '-arch', /^-Xarch_/
         whittler.next
+      when '-m32'
+        # If ENV.m32 was set, we allow the "-m32" flag, but we don't add anything
+        args << '-m32' if cccfg? '3'
       when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
-           /^-march=.+/, /^-mtune=.+/, '-m64', '-m32',
-           /^-O[0-9zs]?/, '-fast',
+           /^-march=.+/, /^-mtune=.+/, '-m64',
+           /^-O[0-9zs]?$/, '-fast',
            '-pedantic', '-pedantic-errors'
       when '-fopenmp', '-lgomp'
         # clang doesn't support OpenMP
         args << arg if not tool =~ /^clang/
       when /^-W.*/
-        args << arg if arg =~ /^-Wl,/
+        args << arg if arg =~ /^-W[alp],/
       when '-macosx_version_min', '-dylib_install_name'
         args << "-Wl,#{arg},#{whittler.next}"
       when '-dylib'
@@ -120,12 +125,16 @@ class Cmd
         args << "-I#{path}" if iset.add?(path.cleanpath)
       when /^-L(.+)/
         path = $1.chuzzle || whittler.next
-        case path.cleanpath
+        doit = case path.cleanpath
+        when %r{^#$brewfix}
+          # maybe homebrew is installed to /sw or /opt/brew
+          true
         when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
-          # NOOP
+          false
         else
-          args << "-L#{path}" if lset.add?(path.cleanpath)
+          true
         end
+        args << "-L#{path}" if doit and lset.add?(path.cleanpath)
       else
         args << arg
       end
@@ -182,7 +191,7 @@ class Cmd
     dups = dels & args
 
     STDERR.puts "brew: superenv removed: #{dels*' '}" unless dels.empty?
-    STDERR.puts "brew: superenv deduped: #{dels}" unless dups.empty?
+    STDERR.puts "brew: superenv deduped: #{dups}" unless dups.empty?
     STDERR.puts "brew: superenv added: #{adds*' '}" unless adds.empty?
   end
 end

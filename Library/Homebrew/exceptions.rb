@@ -3,7 +3,7 @@ class FormulaUnspecifiedError < UsageError; end
 class KegUnspecifiedError < UsageError; end
 
 class MultipleVersionsInstalledError < RuntimeError
-  attr :name
+  attr_reader :name
 
   def initialize name
     @name = name
@@ -14,7 +14,7 @@ end
 class NotAKegError < RuntimeError; end
 
 class NoSuchKegError < RuntimeError
-  attr :name
+  attr_reader :name
 
   def initialize name
     @name = name
@@ -23,8 +23,8 @@ class NoSuchKegError < RuntimeError
 end
 
 class FormulaUnavailableError < RuntimeError
-  attr :name
-  attr :dependent, true
+  attr_reader :name
+  attr_accessor :dependent
 
   def dependent_s
     "(dependency of #{dependent})" if dependent and dependent != name
@@ -45,9 +45,21 @@ class FormulaUnavailableError < RuntimeError
   end
 end
 
+class OperationInProgressError < RuntimeError
+  def initialize name
+    message = <<-EOS.undent
+      Operation already in progress for #{name}
+      Another active Homebrew process is already using #{name}.
+      Please wait for it to finish or terminate it to continue.
+      EOS
+
+    super message
+  end
+end
+
 module Homebrew
   class InstallationError < RuntimeError
-    attr :formula
+    attr_reader :formula
 
     def initialize formula, message=""
       super message
@@ -65,8 +77,17 @@ class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   end
 end
 
+class UnsatisfiedDependencyError < Homebrew::InstallationError
+  def initialize(f, dep)
+    super f, <<-EOS.undent
+    #{f} dependency #{dep} not installed with:
+      #{dep.missing_options * ', '}
+    EOS
+  end
+end
+
 class UnsatisfiedRequirements < Homebrew::InstallationError
-  attr :reqs
+  attr_reader :reqs
 
   def initialize formula, reqs
     @reqs = reqs
@@ -78,9 +99,7 @@ class UnsatisfiedRequirements < Homebrew::InstallationError
 end
 
 class BuildError < Homebrew::InstallationError
-  attr :exit_status
-  attr :command
-  attr :env
+  attr_reader :exit_status, :command, :env
 
   def initialize formula, cmd, args, es
     @command = cmd
@@ -94,22 +113,33 @@ class BuildError < Homebrew::InstallationError
     @command == './configure'
   end
 
+  def issues
+    @issues ||= GitHub.issues_for_formula(formula.name)
+  end
+
   def dump
-    logs = "#{ENV['HOME']}/Library/Logs/Homebrew/#{formula}/"
-    if ARGV.verbose?
+    if not ARGV.verbose?
+      puts
+      puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
+    else
       require 'cmd/--config'
       require 'cmd/--env'
       ohai "Configuration"
       Homebrew.dump_build_config
       ohai "ENV"
       Homebrew.dump_build_env(env)
+      puts
+      onoe "#{formula.name} did not build"
+      unless (logs = Dir["#{ENV['HOME']}/Library/Logs/Homebrew/#{formula}/*"]).empty?
+        print "Logs: "
+        puts logs.map{|fn| "      #{fn}"}.join("\n")
+      end
     end
     puts
-    onoe "#{formula.name} did not build"
-    puts "Logs: #{logs}" unless Dir["#{logs}/*"].empty?
-    puts "Help: #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
-    issues = GitHub.issues_for_formula(formula.name)
-    puts *issues.map{ |s| "      #{Tty.em}#{s}#{Tty.reset}" } unless issues.empty?
+    unless issues.empty?
+      puts "These open issues may also help:"
+      puts issues.map{ |s| "    #{s}" }.join("\n")
+    end
   end
 end
 
@@ -127,10 +157,8 @@ end
 
 # raised by Pathname#verify_checksum when verification fails
 class ChecksumMismatchError < RuntimeError
-  attr :advice, true
-  attr :expected
-  attr :actual
-  attr :hash_type
+  attr_accessor :advice
+  attr_reader :expected, :actual, :hash_type
 
   def initialize expected, actual
     @expected = expected

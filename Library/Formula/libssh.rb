@@ -2,8 +2,8 @@ require 'formula'
 
 class Libssh < Formula
   homepage 'http://www.libssh.org/'
-  url 'http://www.libssh.org/files/0.5/libssh-0.5.2.tar.gz'
-  sha1 '4bf36d4052bd0c948e05bbf3b0cd0da8684ac00e'
+  url 'https://red.libssh.org/attachments/download/41/libssh-0.5.4.tar.gz'
+  sha1 '4a372378db8fffaf28d5c79d80b2235843aa587c'
 
   depends_on 'cmake' => :build
 

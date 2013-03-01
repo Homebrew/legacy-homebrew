@@ -1,12 +1,17 @@
 require 'formula'
 
 class BibTool < Formula
-  url 'http://sarovar.org/frs/download.php/1298/BibTool-2.51.tar.gz'
   homepage 'http://www.gerd-neugebauer.de/software/TeX/BibTool/index.en.html'
-  sha1 '8cb4f562f4d3d380a809eb1bdbbc9d47d498957e'
+  url 'http://www.gerd-neugebauer.de/software/TeX/BibTool/BibTool-2.55.tar.gz'
+  sha1 'b36eee9929419a4d0a6d407adc60dbe0ffa9fce9'
+
+  depends_on :automake
+  depends_on :libtool
 
   def install
-    system "./configure", "--prefix", prefix
+    # Needd to pick up the --without-kpathsea argument
+    system "autoreconf", "-fi"
+    system "./configure", "--prefix=#{prefix}", "--without-kpathsea"
     system "make"
     system "make install"
   end

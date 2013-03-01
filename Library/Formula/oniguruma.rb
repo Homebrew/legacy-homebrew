@@ -1,12 +1,13 @@
 require 'formula'
 
 class Oniguruma < Formula
-  url 'http://www.geocities.jp/kosako3/oniguruma/archive/onig-5.9.2.tar.gz'
   homepage 'http://www.geocities.jp/kosako3/oniguruma/'
-  sha1 '63d0a412b9e8578724c37ef8936704c8b985f6cb'
+  url 'http://www.geocities.jp/kosako3/oniguruma/archive/onig-5.9.3.tar.gz'
+  sha1 '235e0ec46582e4dbd12c44aeba97d1219aed6702'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

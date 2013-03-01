@@ -7,16 +7,14 @@ class Ctags < Formula
 
   head 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
 
-  depends_on :autoconf
+  depends_on :autoconf if build.head?
 
-  fails_with :llvm do
-    build 2335
-    cause "Resulting executable generates erroneous tag files"
+  def patches
+    # fixes http://sourceforge.net/tracker/?func=detail&aid=3247256&group_id=6556&atid=106556
+    { :p2 => "https://raw.github.com/gist/4010022/8d0697dc87a40e65011e2192439609c17578c5be/ctags.patch" }
   end
 
   def install
-    # See https://trac.macports.org/changeset/93604
-    ENV.O1
     if build.head?
       system "autoheader"
       system "autoconf"
@@ -26,5 +24,19 @@ class Ctags < Formula
                           "--mandir=#{man}",
                           "--with-readlib"
     system "make install"
+  end
+
+  def caveats
+    <<-EOS.undent
+      Under some circumstances, emacs and ctags can conflict. By default,
+      emacs provides an executable `ctags` that would conflict with the
+      executable of the same name that ctags provides. To prevent this,
+      Homebrew removes the emacs `ctags` and its manpage before linking.
+
+      However, if you install emacs with the `--keep-ctags` option, then
+      the `ctags` emacs provides will not be removed. In that case, you
+      won't be able to install ctags successfully. It will build but not
+      link.
+    EOS
   end
 end

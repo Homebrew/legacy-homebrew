@@ -2,9 +2,9 @@ require 'formula'
 
 class GnuUnits < Formula
   homepage 'http://www.gnu.org/software/units/'
-  url 'http://ftpmirror.gnu.org/units/units-2.00.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/units/units-2.00.tar.gz'
-  sha1 '6da9ea78ff0dc21bc43cf1809c530e61d9394ce0'
+  url 'http://ftpmirror.gnu.org/units/units-2.01.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/units/units-2.01.tar.gz'
+  sha1 '80e7f1a2e70769bfac93702924871843b85f12d4'
 
   option 'default-names', "Do not prepend 'g' to the binary"
 

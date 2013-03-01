@@ -28,7 +28,7 @@ class << ENV
   alias_method :x11?, :x11
 
   def reset
-    %w{CC CXX CPP OBJC MAKE LD
+    %w{CC CXX OBJC OBJCXX CPP MAKE LD
       CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
       MACOS_DEPLOYMENT_TARGET SDKROOT
       CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH}.
@@ -43,19 +43,21 @@ class << ENV
     check
     ENV['CC'] = 'cc'
     ENV['CXX'] = 'c++'
+    ENV['OBJC'] = 'cc'
+    ENV['OBJCXX'] = 'c++'
     ENV['DEVELOPER_DIR'] = determine_developer_dir # effects later settings
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
     ENV['HOMEBREW_CC'] = determine_cc
     ENV['HOMEBREW_CCCFG'] = determine_cccfg
+    ENV['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
     ENV['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacSystem.xcode43_without_clt?
     ENV['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     ENV['CMAKE_FRAMEWORK_PATH'] = "#{MacOS.sdk_path}/System/Library/Frameworks" if MacSystem.xcode43_without_clt?
     ENV['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
     ENV['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     ENV['ACLOCAL_PATH'] = determine_aclocal_path
-    ENV['VERBOSE'] = '1' if ARGV.verbose?
   end
 
   def check
@@ -66,11 +68,17 @@ class << ENV
     append 'HOMEBREW_CCCFG', "u", ''
   end
 
+  # m32 on superenv does not add any flags. It prevents "-m32" from being erased.
+  def m32
+    append 'HOMEBREW_CCCFG', "3", ''
+  end
+
   private
 
   def determine_cc
     if ARGV.include? '--use-gcc'
-      "gcc"
+      # fall back to something else on systems without Apple gcc
+      MacOS.locate('gcc-4.2') ? "gcc-4.2" : raise("gcc-4.2 not found!")
     elsif ARGV.include? '--use-llvm'
       "llvm-gcc"
     elsif ARGV.include? '--use-clang'
@@ -120,7 +128,7 @@ class << ENV
     # we put our paths before X because we dupe some of the X libraries
     paths << "#{MacSystem.x11_prefix}/lib/pkgconfig" << "#{MacSystem.x11_prefix}/share/pkgconfig" if x11?
     # Mountain Lion no longer ships some .pcs; ensure we pick up our versions
-    paths << "#{HOMEBREW_REPOSITORY}/Library/Homebrew/pkgconfig" if MacOS.version >= :mountain_lion
+    paths << "#{HOMEBREW_REPOSITORY}/Library/ENV/pkgconfig/mountain_lion" if MacOS.version >= :mountain_lion
     paths.to_path_s
   end
 
@@ -203,7 +211,7 @@ class << ENV
 
 ### NO LONGER NECESSARY OR NO LONGER SUPPORTED
   def noop(*args); end
-  %w[m64 m32 gcc_4_0_1 fast O4 O3 O2 Os Og O1 libxml2 minimal_optimization
+  %w[m64 gcc_4_0_1 fast O4 O3 O2 Os Og O1 libxml2 minimal_optimization
     no_optimization enable_warnings x11
     set_cpu_flags
     macosxsdk remove_macosxsdk].each{|s| alias_method s, :noop }
@@ -212,6 +220,7 @@ class << ENV
   def compiler
     case ENV['HOMEBREW_CC']
       when "llvm-gcc" then :llvm
+      when "gcc-4.2" then :gcc
       when "gcc", "clang" then ENV['HOMEBREW_CC'].to_sym
     else
       raise
@@ -222,16 +231,16 @@ class << ENV
   end
   alias_method :j1, :deparallelize
   def gcc
-    ENV['CC'] = ENV['HOMEBREW_CC'] = "gcc"
-    ENV['CXX'] = "g++"
+    ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "gcc"
+    ENV['CXX'] = ENV['OBJCXX'] = "g++"
   end
   def llvm
-    ENV['CC'] = ENV['HOMEBREW_CC'] = "llvm-gcc"
-    ENV['CXX'] = "g++"
+    ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "llvm-gcc"
+    ENV['CXX'] = ENV['OBJCXX'] = "g++"
   end
   def clang
-    ENV['CC'] = ENV['HOMEBREW_CC'] = "clang"
-    ENV['CXX'] = "clang++"
+    ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "clang"
+    ENV['CXX'] = ENV['OBJCXX'] = "clang++"
   end
   def make_jobs
     ENV['MAKEFLAGS'] =~ /-\w*j(\d)+/
@@ -288,7 +297,7 @@ module MacSystem extend self
   end
 
   def x11_prefix
-    @x11_prefix ||= %W[/usr/X11 /opt/X11
+    @x11_prefix ||= %W[/opt/X11 /usr/X11
       #{MacOS.sdk_path}/usr/X11].find{|path| File.directory? "#{path}/include" }
   end
 

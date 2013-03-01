@@ -38,7 +38,9 @@ class Denyhosts < Formula
     sbin.install_symlink libexec+'denyhosts.py' => 'denyhosts'
   end
 
-  def startup_plist; <<-EOS.undent
+  plist_options :startup => true
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -47,7 +49,7 @@ class Denyhosts < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{HOMEBREW_PREFIX}/sbin/denyhosts</string>
+        <string>#{opt_prefix}/sbin/denyhosts</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
@@ -60,20 +62,12 @@ class Denyhosts < Formula
     EOS
   end
 
-  def caveats
-    <<-EOS.undent
-      Unless it exists already, a denyhosts.cfg file has been written to:
-        #{etc}/denyhosts.cfg
+  def caveats; <<-EOS.undent
+    Unless it exists already, a denyhosts.cfg file has been written to:
+      #{etc}/denyhosts.cfg
 
-      All DenyHosts scripts will load this file by default unless told to use
-      a different one.
-
-      A launchctl plist has been created that will run DenyHosts to update
-      /etc/hosts.deny every 10 minutes. It will need to be run by the user that
-      owns /etc/hosts.deny, usually root, and can be set to load at startup
-      via:
-        sudo cp #{plist_path} /Library/LaunchDaemons/
-
+    All DenyHosts scripts will load this file by default unless told to use
+    a different one.
     EOS
   end
 end

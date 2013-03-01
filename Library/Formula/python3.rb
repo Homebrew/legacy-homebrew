@@ -1,5 +1,4 @@
 require 'formula'
-require Formula.path("python") # For TkCheck requirement
 
 # Python3 is the new language standard, not just a new revision.
 # It's somewhat incompatible with Python 2.x, therefore, the executable
@@ -7,8 +6,8 @@ require Formula.path("python") # For TkCheck requirement
 # `brew install python`.
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.28.tar.gz'
-  sha1 '709bd97d46050d69865d4b588c7707768dfe6711'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.34.tar.gz'
+  sha1 'b6f9cfbaf3e63833b71009812a613be13e68f5de'
 end
 
 class Pip < Formula
@@ -22,7 +21,6 @@ class Python3 < Formula
   sha1 '3e1464bc2c1dfa74287bc58da81168f50b0ae5c7'
   VER='3.3'  # The <major>.<minor> is used so often.
 
-  depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
   depends_on 'sqlite' => :recommended
@@ -144,13 +142,20 @@ class Python3 < Formula
       end
     end
 
+    # A temporary fix, until a homebrew
+    # [issue on handling Frameworks](https://github.com/mxcl/homebrew/issues/15943)
+    # is resolved. `brew install python python3` failed to link because both
+    # provide `Python.framework`. Homebrew will need to be smarter about this,
+    # since Frameworks are built to support multiple versions.
+    ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
+
   end
 
   def distutils_fix_superenv(args)
     if superenv?
       # To allow certain Python bindings to find brewed software:
-      cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include"
-      ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib"
+      cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
+      ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
       unless MacOS::CLT.installed?
         # Help Python's build system (distribute/pip) to build things on Xcode-only systems
         # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)

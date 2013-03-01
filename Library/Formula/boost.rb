@@ -4,7 +4,13 @@ def needs_universal_python?
   build.universal? and not build.include? "without-python"
 end
 
+def boost_layout
+  (build.include? "use-system-layout") ? "system" : "tagged"
+end
+
 class UniversalPython < Requirement
+  satisfy { archs_for_command("python").universal? }
+
   def message; <<-EOS.undent
     A universal build was requested, but Python is not a universal build
 
@@ -12,31 +18,33 @@ class UniversalPython < Requirement
     is not a universal build then linking will likely fail.
     EOS
   end
-  def satisfied?
-    archs_for_command("python").universal?
-  end
 end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.51.0/boost_1_51_0.tar.bz2'
-  sha1 '52ef06895b97cc9981b8abf1997c375ca79f30c5'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.bz2'
+  sha1 'e6dd1b62ceed0a51add3dda6f3fc3ce0f636a7f3'
 
   head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
-    sha1 'd1f4cb36278adb7d86b221bcfc63619ec3022fdb' => :mountainlion
-    sha1 '46dd00df6343295bceae54b040cceb1d3714fe15' => :lion
-    sha1 '474aed3845ceaf26e0eeb3175ad3e2c4f3bca942' => :snowleopard
+    sha1 'fda423e53ed998d54c33cc91582c0d5e3e4ff91e' => :mountain_lion
+    sha1 '99fec23d1b79a510d8cd1f1f0cbd77cc73b4f4b5' => :lion
+    sha1 '15f74640979b95bd327be3b6ca2a5d18878a29ad' => :snow_leopard
   end
+
+  env :userpaths
 
   option :universal
   option 'with-mpi', 'Enable MPI support'
   option 'without-python', 'Build without Python'
   option 'with-icu', 'Build regexp engine with icu support'
+  option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
+  option 'use-system-layout', 'Use system layout instead of tagged'
 
-  depends_on UniversalPython.new if needs_universal_python?
+  depends_on UniversalPython if needs_universal_python?
   depends_on "icu4c" if build.include? "with-icu"
+  depends_on MPIDependency.new(:cc, :cxx) if build.include? "with-mpi"
 
   fails_with :llvm do
     build 2335
@@ -71,6 +79,8 @@ class Boost < Formula
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
+    bargs << "--with-toolset=clang" if build.include? "with-c++11"
+
     if build.include? 'with-icu'
       icu4c_prefix = Formula.factory('icu4c').opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
@@ -82,15 +92,26 @@ class Boost < Formula
             "--libdir=#{lib}",
             "-d2",
             "-j#{ENV.make_jobs}",
-            "--layout=tagged",
+            "--layout=#{boost_layout}",
             "--user-config=user-config.jam",
             "threading=multi",
             "install"]
+
+    if MacOS.version >= :lion and build.include? 'with-c++11'
+      args << "toolset=clang" << "cxxflags=-std=c++11"
+      args << "cxxflags=-stdlib=libc++" << "cxxflags=-fPIC"
+      args << "cxxflags=-arch x86_64" if MacOS.prefer_64_bit? or build.universal?
+      args << "cxxflags=-arch i386" if !MacOS.prefer_64_bit? or build.universal?
+      args << "linkflags=-stdlib=libc++"
+      args << "linkflags=-headerpad_max_install_names"
+      args << "linkflags=-arch x86_64" if MacOS.prefer_64_bit? or build.universal?
+      args << "linkflags=-arch i386" if !MacOS.prefer_64_bit? or build.universal?
+    end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
     args << "--without-python" if build.include? "without-python"
 
     system "./bootstrap.sh", *bargs
-    system "./bjam", *args
+    system "./b2", *args
   end
 end

@@ -9,7 +9,14 @@ class Libmpc < Formula
   depends_on 'mpfr'
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    args = [
+      "--prefix=#{prefix}",
+      "--disable-dependency-tracking",
+      "--with-gmp=#{Formula.factory('gmp').opt_prefix}",
+      "--with-mpfr=#{Formula.factory('mpfr').opt_prefix}"
+    ]
+
+    system "./configure", *args
     system "make"
     system "make check"
     system "make install"

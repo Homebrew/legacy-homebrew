@@ -1,13 +1,9 @@
 require 'formula'
 
 class NeedsSnowLeopard < Requirement
-  def satisfied?
-    MacOS.version >= :snow_leopard
-  end
+  fatal true
 
-  def fatal?
-    true
-  end
+  satisfy MacOS.version >= :snow_leopard
 
   def message; <<-EOS.undent
     The version of Freetype that comes with Leopard is too old to build MuPDF
@@ -21,15 +17,15 @@ end
 
 class Mupdf < Formula
   homepage 'http://mupdf.com'
-  url 'http://mupdf.googlecode.com/files/mupdf-1.0-source.tar.gz'
-  sha1 'c5c4496836cdd4bdf7b2d2344ec045c9508e49e4'
+  url 'http://mupdf.googlecode.com/files/mupdf-1.1-source.tar.gz'
+  sha1 'e2c2cd555d790ed97bd6507accf29817945dfe81'
 
-  depends_on NeedsSnowLeopard.new
+  depends_on NeedsSnowLeopard
 
   depends_on 'jpeg'
   depends_on 'openjpeg'
   depends_on 'jbig2dec'
-  depends_on :x11 # libpng, freetype
+  depends_on :x11 # libpng, freetype and the X11 libs
 
   def patches
     # Fix up the Makefile so it doesn't mess with our CFLAGS.
@@ -37,6 +33,11 @@ class Mupdf < Formula
   end
 
   def install
+    openjpeg = Formula.factory 'openjpeg'
+    ENV.append 'CPPFLAGS', "-I#{Dir[openjpeg.include/'openjpeg-*'].first}"
+    ENV.append 'CFLAGS', '-DNDEBUG'
+    ENV['SYS_FREETYPE_INC'] = "-I#{MacOS::X11.include}/freetype2"
+
     system "make", "install", "prefix=#{prefix}"
   end
 end
@@ -47,10 +48,10 @@ Remove some Makefile rules that Homebrew takes care of through CFLAGS and
 LDFLAGS. MuPDF doesn't look at CPPFLAGS, so we piggyback it onto CFLAGS.
 
 diff --git a/Makerules b/Makerules
-index 26eab3c..46e8dc9 100644
+index 3e036f6..c9ddc69 100644
 --- a/Makerules
 +++ b/Makerules
-@@ -5,21 +5,6 @@ OS := $(OS:MINGW%=MINGW)
+@@ -5,24 +5,6 @@ OS := $(OS:MINGW%=MINGW)
  
  CFLAGS += -Wall
  
@@ -61,6 +62,9 @@ index 26eab3c..46e8dc9 100644
 -LDFLAGS += -pg
 -else ifeq "$(build)" "release"
 -CFLAGS += -pipe -O2 -DNDEBUG -fomit-frame-pointer
+-else ifeq "$(build)" "coverage"
+-CFLAGS += -pipe -g -DDEBUG -pg -fprofile-arcs -ftest-coverage
+-LIBS += -lgcov
 -else ifeq "$(build)" "native"
 -CFLAGS += -pipe -O2 -DNDEBUG -fomit-frame-pointer -march=native -mfpmath=sse
 -else ifeq "$(build)" "memento"
@@ -72,10 +76,11 @@ index 26eab3c..46e8dc9 100644
  ifeq "$(OS)" "Linux"
  SYS_FREETYPE_INC := `pkg-config --cflags freetype2`
  X11_LIBS := -lX11 -lXext
-@@ -34,17 +19,9 @@ endif
+@@ -36,18 +18,9 @@ endif
+ 
  # Mac OS X build depends on some thirdparty libs
  ifeq "$(OS)" "Darwin"
- SYS_FREETYPE_INC := -I/usr/X11R6/include/freetype2
+-SYS_FREETYPE_INC := -I/usr/X11R6/include/freetype2
 -CFLAGS += -I/usr/X11R6/include
 -LDFLAGS += -L/usr/X11R6/lib
 +CFLAGS += $(CPPFLAGS)

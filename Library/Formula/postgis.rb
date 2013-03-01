@@ -1,42 +1,37 @@
 require 'formula'
 
-def build_gui?
-  ARGV.include? '--with-gui'
-end
-
 class Postgis < Formula
   homepage 'http://postgis.refractions.net'
-  url 'http://postgis.org/download/postgis-2.0.1.tar.gz'
-  sha1 '31db797a835f14470f9e1183fe8fd2ba7b99aadf'
+  url 'http://download.osgeo.org/postgis/source/postgis-2.0.2.tar.gz'
+  sha1 'a3fe6c4ea4c50dc3f586e804c863ba5eff23bf06'
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
-  if ARGV.build_head?
-    depends_on :automake
-    depends_on :libtool
-  end
+  option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools'
 
+  depends_on :automake
+  depends_on :libtool
+
+  depends_on 'gpp' => :build
   depends_on 'postgresql'
   depends_on 'proj'
   depends_on 'geos'
 
-  depends_on 'gtk+' if build_gui?
+  depends_on 'gtk+' if build.include? 'with-gui'
 
   # For GeoJSON and raster handling
   depends_on 'json-c'
   depends_on 'gdal'
-
-  def options
-    [
-      ['--with-gui', 'Build shp2pgsql-gui in addition to command line tools']
-    ]
-  end
 
   def postgresql
     # Follow the PostgreSQL linked keg back to the active Postgres installation
     # as it is common for people to avoid upgrading Postgres.
     Formula.factory('postgresql').linked_keg.realpath
   end
+
+  # Force GPP to be used when pre-processing SQL files. See:
+  #   http://trac.osgeo.org/postgis/ticket/1694
+  def patches; DATA end
 
   def install
     ENV.deparallelize
@@ -58,10 +53,10 @@ class Postgis < Formula
       # gettext installations are.
       "--disable-nls"
     ]
-    args << '--with-gui' if build_gui?
+    args << '--with-gui' if build.include? 'with-gui'
 
 
-    system './autogen.sh' if ARGV.build_head?
+    system './autogen.sh'
     system './configure', *args
     system 'make'
 
@@ -120,3 +115,30 @@ class Postgis < Formula
       EOS
   end
 end
+__END__
+Force usage of GPP as the SQL pre-processor as Clang chokes.
+
+diff --git a/configure.ac b/configure.ac
+index 136a1d6..c953c69 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -31,17 +31,8 @@ AC_SUBST([ANT])
+ dnl
+ dnl SQL Preprocessor
+ dnl
+-AC_PATH_PROG([CPPBIN], [cpp], [])
+-if test "x$CPPBIN" != "x"; then
+-  SQLPP="${CPPBIN} -traditional-cpp -P"
+-else
+-  AC_PATH_PROG([GPP], [gpp_], [])
+-  if test "x$GPP" != "x"; then
+-    SQLPP="${GPP} -C -s \'" dnl Use better string support
+-  else
+-    SQLPP="${CPP} -traditional-cpp"
+-  fi
+-fi
++AC_PATH_PROG([GPP], [gpp], [])
++SQLPP="${GPP} -C -s \'" dnl Use better string support
+ AC_SUBST([SQLPP])
+ 
+ dnl

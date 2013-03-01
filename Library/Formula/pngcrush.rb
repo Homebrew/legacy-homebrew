@@ -2,8 +2,8 @@ require 'formula'
 
 class Pngcrush < Formula
   homepage 'http://pmt.sourceforge.net/pngcrush/'
-  url 'http://downloads.sourceforge.net/project/pmt/pngcrush/1.7.38/pngcrush-1.7.38.tar.gz'
-  sha1 'ed156aaa53b1b48fa0d3e32466d0d5512b25a67a'
+  url 'http://sourceforge.net/projects/pmt/files/pngcrush/1.7.51/pngcrush-1.7.51.tar.gz'
+  sha1 'e9bcf17fe601b4a6260a58106400594da95efd11'
 
   def install
     # Required to successfully build the bundled zlib 1.2.6

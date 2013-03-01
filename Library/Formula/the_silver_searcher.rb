@@ -2,8 +2,8 @@ require 'formula'
 
 class TheSilverSearcher < Formula
   homepage 'https://github.com/ggreer/the_silver_searcher'
-  url 'https://github.com/ggreer/the_silver_searcher/tarball/0.12'
-  sha1 '8b19f76fd81d7c2db22567127cf2cf8d6302d43a'
+  url 'https://github.com/ggreer/the_silver_searcher/tarball/0.13.1'
+  sha1 'd7f2a1b421d915ecd38858f0e2b993686dce4095'
 
   head 'https://github.com/ggreer/the_silver_searcher.git'
 
@@ -20,8 +20,7 @@ class TheSilverSearcher < Formula
     system "autoheader"
     system "automake --add-missing"
 
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
     system "make install"

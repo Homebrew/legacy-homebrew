@@ -1,8 +1,8 @@
 require 'formula'
 
 class Geomview < Formula
-  url 'http://sourceforge.net/projects/geomview/files/geomview/1.9.4/geomview-1.9.4.tar.gz'
   homepage 'http://www.geomview.org'
+  url 'http://sourceforge.net/projects/geomview/files/geomview/1.9.4/geomview-1.9.4.tar.gz'
   sha1 'b5e04dfee5cef46655766c2456199905832cd45c'
 
   depends_on :x11

@@ -7,9 +7,9 @@ class VipMan < Formula
 end
 
 class Vip < Formula
+  homepage 'http://www.cs.duke.edu/~des/vip.html'
   url 'http://www.cs.duke.edu/~des/scripts/vip'
   version '19971113'
-  homepage 'http://www.cs.duke.edu/~des/vip.html'
   sha1 '0b2794b5ac2792af5fcf1d97f9aae04798eac049'
 
   # use awk and /var/tmp as temporary directory

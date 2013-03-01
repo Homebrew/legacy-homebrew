@@ -7,10 +7,12 @@ module Homebrew extend self
 
     if not ARGV.force?
       ARGV.kegs.each do |keg|
-        puts "Uninstalling #{keg}..."
-        keg.unlink
-        keg.uninstall
-        rm_opt_link keg.fname
+        keg.lock do
+          puts "Uninstalling #{keg}..."
+          keg.unlink
+          keg.uninstall
+          rm_opt_link keg.fname
+        end
       end
     else
       ARGV.named.each do |name|

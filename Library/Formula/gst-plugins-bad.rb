@@ -2,15 +2,16 @@ require 'formula'
 
 class GstPluginsBad < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-0.10.23.tar.bz2'
-  sha256 '0eae7d1a1357ae8377fded6a1b42e663887beabe0e6cc336e2ef9ada42e11491'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.0.5.tar.xz'
+  sha256 '2e8f5b9a2fd274142d0a916b6425b9466028978b85858dc835dc80de744b276a'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
 
   # These optional dependencies are based on the intersection of
-  # gst-plugins-bad-0.10.21/REQUIREMENTS and Homebrew formulas
+  # gst-plugins-bad-0.10.21/REQUIREMENTS and Homebrew formulae
   depends_on 'dirac' => :optional
   depends_on 'libdvdread' => :optional
   depends_on 'libmms' => :optional

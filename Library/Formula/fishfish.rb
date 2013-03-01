@@ -10,7 +10,7 @@ class Fishfish < Formula
   head 'https://github.com/fish-shell/fish-shell.git',
        :branch => 'master'
 
-  depends_on :autoconf => :build
+  depends_on :autoconf
   depends_on 'doxygen' => :build
 
   conflicts_with "fish"

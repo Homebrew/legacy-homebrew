@@ -2,8 +2,8 @@ require 'formula'
 
 class Log4c < Formula
   homepage 'http://log4c.sourceforge.net/'
-  url 'http://sourceforge.net/projects/log4c/files/log4c/1.2.1/log4c-1.2.1.tar.gz'
-  sha1 'b380947047cd6f71bdec1afe57d7b285fb2a3f38'
+  url 'http://sourceforge.net/projects/log4c/files/log4c/1.2.2/log4c-1.2.2.tar.gz'
+  sha1 '39fb1d4ffb4c3b33235e5d6ecc9fddd217d51137'
 
   head 'cvs://:pserver:anonymous@log4c.cvs.sourceforge.net:/cvsroot/log4c:log4c'
 

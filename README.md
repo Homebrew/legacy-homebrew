@@ -2,6 +2,12 @@ Homebrew
 ========
 Features, usage and installation instructions are [summarized on the homepage][home].
 
+Kickstarter
+-----------
+
+Please [back our Kickstarter](http://www.kickstarter.com/projects/homebrew/brew-test-bot) before March 6th:  
+[![Homebrew brew-test-bot Kickstarter](http://f.cl.ly/items/2c0D160A1B2z2S280H33/kickstarter.png)](http://www.kickstarter.com/projects/homebrew/brew-test-bot)
+
 What Packages Are Available?
 ----------------------------
 1. You can [browse the Formula directory on GitHub][formula].

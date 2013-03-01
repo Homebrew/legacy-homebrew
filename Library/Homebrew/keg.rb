@@ -1,4 +1,5 @@
 require 'extend/pathname'
+require 'formula_lock'
 
 class Keg < Pathname
   def initialize path
@@ -10,6 +11,10 @@ class Keg < Pathname
   # locale-specific directories have the form language[_territory][.codeset][@modifier]
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
   INFOFILE_RX = %r[info/([^.].*?\.info|dir)$]
+  TOP_LEVEL_DIRECTORIES = %w[bin etc include lib sbin share var Frameworks]
+  PRUNEABLE_DIRECTORIES = %w[bin etc include lib sbin share Frameworks LinkedKegs].map do |d|
+    case d when 'LinkedKegs' then HOMEBREW_LIBRARY/d else HOMEBREW_PREFIX/d end
+  end
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
@@ -31,9 +36,9 @@ class Keg < Pathname
     # of files and directories linked
     $n=$d=0
 
-    %w[bin etc lib include sbin share var].map{ |d| self/d }.each do |src|
-      next unless src.exist?
-      src.find do |src|
+    TOP_LEVEL_DIRECTORIES.map{ |d| self/d }.each do |dir|
+      next unless dir.exist?
+      dir.find do |src|
         next if src == self
         dst=HOMEBREW_PREFIX+src.relative_path_from(self)
         dst.extend ObserverPathnameExtension
@@ -57,6 +62,10 @@ class Keg < Pathname
     parent.basename.to_s
   end
 
+  def lock
+    FormulaLock.new(fname).with_lock { yield }
+  end
+
   def linked_keg_record
     @linked_keg_record ||= HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname
   end
@@ -72,6 +81,12 @@ class Keg < Pathname
       end
     return if dir.nil?
     dir.directory? and not dir.children.length.zero?
+  end
+
+  def plist_installed?
+    Dir.chdir self do
+      not Dir.glob("*.plist").empty?
+    end
   end
 
   def version
@@ -99,6 +114,7 @@ class Keg < Pathname
     link_dir('bin', mode) {:skip_dir}
     link_dir('sbin', mode) {:skip_dir}
     link_dir('include', mode) {:link}
+    link_dir('Frameworks', mode) { :link }
 
     link_dir('share', mode) do |path|
       case path.to_s
@@ -131,9 +147,10 @@ class Keg < Pathname
       end
     end
 
-    linked_keg_record.make_relative_symlink(self) unless mode.dry_run
-
-    optlink unless mode.dry_run
+    unless mode.dry_run
+      linked_keg_record.make_relative_symlink(self)
+      optlink
+    end
 
     return $n + $d
   rescue Exception

@@ -34,7 +34,7 @@ class AwsIamTools < AmazonWebServicesFormula
       * On Zsh, add them to `~/.zprofile` instead.
 
     export JAVA_HOME="$(/usr/libexec/java_home)"
-    export AWS_IAM_HOME="#{prefix}/jars"
+    export AWS_IAM_HOME="#{opt_prefix}/jars"
     export AWS_CREDENTIAL_FILE=$HOME/.aws-credentials-master
     EOS
   end

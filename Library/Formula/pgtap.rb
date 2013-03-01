@@ -1,30 +1,11 @@
 require 'formula'
 
-class PostgresqlInstalled < Requirement
-  def message; <<-EOS.undent
-    PostgreSQL is required to install.
-
-    You can install this with:
-      brew install postgresql
-
-    Or you can use an official installer from:
-      http://www.postgresql.org/
-    EOS
-  end
-  def satisfied?
-    Formula.factory('postgresql').installed?
-  end
-  def fatal?
-    true
-  end
-end
-
 class Pgtap < Formula
   homepage 'http://pgtap.org'
   url 'http://api.pgxn.org/dist/pgtap/0.91.0/pgtap-0.91.0.zip'
   sha1 '1f10b78eb42361659603228c754a55755fcff4fa'
 
-  depends_on PostgresqlInstalled.new
+  depends_on :postgresql
 
   skip_clean 'share'
 

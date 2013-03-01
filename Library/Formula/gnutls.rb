@@ -1,15 +1,15 @@
 require 'formula'
 
 class Gnutls < Formula
-  homepage 'http://www.gnu.org/software/gnutls/gnutls.html'
-  url 'http://ftpmirror.gnu.org/gnutls/gnutls-2.12.20.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gnutls/gnutls-2.12.20.tar.bz2'
-  sha256 '4884eafcc8383ed23209199bbc72ad04f4eb94955a50a594125ff34c6889c564'
+  homepage 'http://gnutls.org'
+  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1/gnutls-3.1.9.tar.xz'
+  sha1 'f51085d8a15bc2ebe8d449fc2c9b526d1957d149'
 
+  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
-  depends_on 'libgcrypt'
   depends_on 'libtasn1'
   depends_on 'p11-kit'
+  depends_on 'nettle'
 
   fails_with :llvm do
     build 2326
@@ -17,15 +17,9 @@ class Gnutls < Formula
   end
 
   def install
-    ENV.universal_binary
-    ENV.append 'LDFLAGS', '-ltasn1' # find external libtasn1
-
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-guile",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-static",
-                          "--prefix=#{prefix}",
-                          "--with-libgcrypt"
+                          "--prefix=#{prefix}"
     system "make install"
 
     # certtool shadows the OS X certtool utility

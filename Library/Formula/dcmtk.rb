@@ -7,6 +7,7 @@ class Dcmtk < Formula
 
   option 'with-docs', 'Install development libraries/headers and HTML docs'
 
+  depends_on 'cmake' => :build
   depends_on :libpng
   depends_on 'libtiff'
   depends_on 'doxygen' if build.include? 'with-docs'
@@ -20,9 +21,10 @@ class Dcmtk < Formula
 
     args = std_cmake_args
     args << '-DDCMTK_WITH_DOXYGEN=YES' if build.include? 'with-docs'
+    args << '..'
 
     mkdir 'build' do
-      system 'cmake', '..', *args
+      system 'cmake', *args
       system 'make DOXYGEN' if build.include? 'with-docs'
       system 'make install'
     end

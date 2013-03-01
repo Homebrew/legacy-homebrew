@@ -21,23 +21,10 @@ class OfflineImap < Formula
 
     * advanced configuration:
         cp -n #{prefix}/offlineimap.conf ~/.offlineimaprc
-
-
-    To launch on startup and run every 5 minutes:
-    * if this is your first install:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    * if this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
     EOS
   end
 
-  def startup_plist; <<-EOPLIST.undent
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -48,7 +35,7 @@ class OfflineImap < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{HOMEBREW_PREFIX}/bin/offlineimap</string>
+          <string>#{opt_prefix}/bin/offlineimap</string>
         </array>
         <key>StartInterval</key>
         <integer>300</integer>
@@ -60,6 +47,6 @@ class OfflineImap < Formula
         <string>/dev/null</string>
       </dict>
     </plist>
-    EOPLIST
+    EOS
   end
 end

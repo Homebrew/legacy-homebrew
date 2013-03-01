@@ -34,7 +34,7 @@ class ConfigureFails < Formula
   # name parameter required for some Formula::factory
   url "file:///#{TEST_FOLDER}/tarballs/configure_fails.tar.gz"
   version '1.0.0'
-  md5 '9385e1b68ab8af68ac2c35423443159b'
+  sha1 'b36c65e5de86efef1b3a7e9cf78a98c186b400b3'
 
   def initialize name=nil
     super "configurefails"
@@ -107,9 +107,9 @@ class SpecTestBall < Formula
   end
 
   bottle do
-    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
     sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
-    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountainlion
+    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
   def initialize name=nil
@@ -137,34 +137,6 @@ class ExplicitVersionSpecTestBall < Formula
 
   def initialize name=nil
     super "explicitversionspectestball"
-  end
-end
-
-class OldBottleSpecTestBall < Formula
-  homepage 'http://example.com'
-  url 'file:///foo.com/testball-0.1.tbz'
-  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
-
-  bottle do
-    url 'file:///foo.com/testball-0.1-bottle.tar.gz'
-    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
-  end
-
-  def initialize name=nil
-    super "oldbottlespectestball"
-  end
-end
-
-class AncientBottleSpecTestBall < Formula
-  homepage 'http://example.com'
-  url 'file:///foo.com/testball-0.1.tbz'
-  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
-
-  bottle 'file:///foo.com/testball-0.1-bottle.tar.gz'
-  bottle_sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
-
-  def initialize name=nil
-    super "ancientbottlespectestball"
   end
 end
 
@@ -217,7 +189,7 @@ class SnowLeopardBottleSpecTestBall < Formula
   sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
 
   bottle do
-    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
   end
 
   def initialize name=nil
@@ -245,9 +217,9 @@ class AllCatsBottleSpecTestBall < Formula
   sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
 
   bottle do
-    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
     sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
-    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountainlion
+    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
   def initialize name=nil
@@ -262,9 +234,9 @@ class RevisedBottleSpecTestBall < Formula
 
   bottle do
     version 1
-    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snowleopard
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
     sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
-    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountainlion
+    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
   def initialize name=nil

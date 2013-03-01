@@ -8,15 +8,14 @@ class Fping < Formula
   head 'https://github.com/schweikert/fping.git'
 
   def install
-    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 
   def caveats; <<-EOS.undent
     fping can only be run by root by default so either use sudo to run fping or
         setuid root #{sbin}/fping
-
     EOS
   end
-
 end

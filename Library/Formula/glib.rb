@@ -2,8 +2,8 @@ require 'formula'
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.34/glib-2.34.1.tar.xz'
-  sha256 '6e84dc9d84b104725b34d255421ed7ac3629e49f437d37addde5ce3891c2e2f1'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.34/glib-2.34.3.tar.xz'
+  sha256 '855fcbf87cb93065b488358e351774d8a39177281023bae58c286f41612658a7'
 
   option :universal
   option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
@@ -19,10 +19,8 @@ class Glib < Formula
   end
 
   def patches
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673047  Still open at 2.34.1
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673135  Resolved as wontfix.
+    # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix.
     p = { :p1 => %W[
-      https://raw.github.com/gist/3924875/19cdaebdff7dcc94ccd9b3747d43a09318f0b846/glib-gunicollate.patch
       https://raw.github.com/gist/3924879/f86903e0aea1458448507305d01b06a7d878c041/glib-configurable-paths.patch
     ]}
     p[:p0] = %W[
@@ -42,6 +40,7 @@ class Glib < Formula
       --disable-maintainer-mode
       --disable-dependency-tracking
       --disable-dtrace
+      --disable-modular-tests
       --prefix=#{prefix}
       --localstatedir=#{var}
     ]
@@ -73,27 +72,25 @@ class Glib < Formula
     (share+'gtk-doc').rmtree
   end
 
-  def test
-    mktemp do
-      (Pathname.pwd/'test.c').write <<-EOS.undent
-        #include <string.h>
-        #include <glib.h>
+  test do
+    (testpath/'test.c').write <<-EOS.undent
+      #include <string.h>
+      #include <glib.h>
 
-        int main(void)
-        {
-            gchar *result_1, *result_2;
-            char *str = "string";
+      int main(void)
+      {
+          gchar *result_1, *result_2;
+          char *str = "string";
 
-            result_1 = g_convert(str, strlen(str), "ASCII", "UTF-8", NULL, NULL, NULL);
-            result_2 = g_convert(result_1, strlen(result_1), "UTF-8", "ASCII", NULL, NULL, NULL);
+          result_1 = g_convert(str, strlen(str), "ASCII", "UTF-8", NULL, NULL, NULL);
+          result_2 = g_convert(result_1, strlen(result_1), "UTF-8", "ASCII", NULL, NULL, NULL);
 
-            return (strcmp(str, result_2) == 0) ? 0 : 1;
-        }
-        EOS
-      flags = *`pkg-config --cflags --libs glib-2.0`.split
-      flags += ENV.cflags.split
-      system ENV.cc, "-o", "test", "test.c", *flags
-      system "./test"
-    end
+          return (strcmp(str, result_2) == 0) ? 0 : 1;
+      }
+      EOS
+    flags = *`pkg-config --cflags --libs glib-2.0`.split
+    flags += ENV.cflags.split
+    system ENV.cc, "-o", "test", "test.c", *flags
+    system "./test"
   end
 end

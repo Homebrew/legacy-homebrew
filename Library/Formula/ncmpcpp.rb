@@ -11,7 +11,7 @@ class Ncmpcpp < Formula
   depends_on 'fftw' if build.include? "visualizer"
 
   fails_with :clang do
-    build 421
+    build 425
     cause "'itsTempString' is a private member of 'NCurses::basic_buffer<char>'"
   end
 

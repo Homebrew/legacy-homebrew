@@ -2,8 +2,11 @@ require 'formula'
 
 class Physfs < Formula
   homepage 'http://icculus.org/physfs/'
-  url 'http://icculus.org/physfs/downloads/physfs-2.0.2.tar.gz'
-  sha1 '2d3d3cc819ad26542d34451f44050b85635344d0'
+  url 'http://icculus.org/physfs/downloads/physfs-2.0.3.tar.bz2'
+  # Upstream not responding:
+  # https://github.com/mxcl/homebrew/issues/17203
+  mirror 'https://dl.dropbox.com/u/3252883/Games/physfs-2.0.3.tar.bz2'
+  sha1 '327308c777009a41bbabb9159b18c4c0ac069537'
 
   depends_on 'cmake' => :build
 

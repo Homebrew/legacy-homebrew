@@ -2,8 +2,8 @@ require 'formula'
 
 class RakudoStar < Formula
   homepage 'http://rakudo.org/'
-  url 'https://github.com/downloads/rakudo/star/rakudo-star-2012.09.tar.gz'
-  sha256 '26246946f5e90982a9c024d0d17ac75a9e073af332b01441e46a46745f9dbb84'
+  url 'http://rakudo.org/downloads/star/rakudo-star-2013.02.tar.gz'
+  sha256 '99c9b033065c2f8e4e847182677b71cbc1f7ba5f509069d3c4c5edf606e9d92a'
 
   depends_on 'gmp' => :optional
   depends_on 'icu4c' => :optional
@@ -24,7 +24,7 @@ class RakudoStar < Formula
   end
 
   def caveats; <<-EOS
-    Raukdo Star comes with its own specific version of Parrot. Installing the
+    Rakudo Star comes with its own specific version of Parrot. Installing the
     Parrot formula along side the Rakudo Star formula will override a number
     of the binaries (eg. parrot, nqp, winxed, etc.).
     EOS

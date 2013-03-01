@@ -6,6 +6,10 @@ module Homebrew extend self
   def install
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
+    if ARGV.include? '--head'
+      raise "Specify `--HEAD` in uppercase to build from trunk."
+    end
+
     ARGV.named.each do |name|
       # if a formula has been tapped ignore the blacklisting
       if not File.file? HOMEBREW_REPOSITORY/"Library/Formula/#{name}.rb"
@@ -25,7 +29,7 @@ module Homebrew extend self
     case Hardware.cpu_type when :ppc, :dunno
       abort <<-EOS.undent
         Sorry, Homebrew does not support your computer's CPU architecture.
-        For PPC support, see: http://github.com/sceaga/homebrew/tree/powerpc
+        For PPC support, see: https://github.com/mistydemeo/tigerbrew
         EOS
     end
   end
@@ -45,7 +49,7 @@ module Homebrew extend self
   end
 
   def check_macports
-    if MacOS.macports_or_fink_installed?
+    unless MacOS.macports_or_fink.empty?
       opoo "It appears you have MacPorts or Fink installed."
       puts "Software installed with other package managers causes known problems for"
       puts "Homebrew. If a formula fails to build, uninstall MacPorts/Fink and try again."
@@ -74,16 +78,20 @@ module Homebrew extend self
     unless formulae.empty?
       perform_preinstall_checks
       formulae.each do |f|
-        begin
-          fi = FormulaInstaller.new(f)
-          fi.install
-          fi.caveats
-          fi.finish
-        rescue CannotInstallFormulaError => e
-          ofail e.message
-        end
+        install_formula(f)
       end
     end
   end
 
+  def install_formula f
+    fi = FormulaInstaller.new(f)
+    fi.install
+    fi.caveats
+    fi.finish
+  rescue FormulaInstallationAlreadyAttemptedError
+    # We already attempted to install f as part of the dependency tree of
+    # another formula. In that case, don't generate an error, just move on.
+  rescue CannotInstallFormulaError => e
+    ofail e.message
+  end
 end

@@ -2,15 +2,16 @@ require 'formula'
 
 class Weechat < Formula
   homepage 'http://www.weechat.org'
-  url 'http://www.weechat.org/files/src/weechat-0.3.9.tar.bz2'
-  sha1 'c01025ebf2c02740c3d3842a9ea4b2cb74311161'
+  url 'http://www.weechat.org/files/src/weechat-0.3.9.2.tar.bz2'
+  sha1 '64147c88426c240d5d33c65755c729ed2c435aeb'
 
   depends_on 'cmake' => :build
   depends_on 'gettext'
   depends_on 'gnutls'
-  depends_on 'guile'  => :optional if build.include? 'guile'
-  depends_on 'aspell' => :optional if build.include? 'aspell'
-  depends_on 'lua'    => :optional if build.include? 'lua'
+  depends_on 'libgcrypt'
+  depends_on 'guile' if build.include? 'guile'
+  depends_on 'aspell' if build.include? 'aspell'
+  depends_on 'lua' if build.include? 'lua'
 
   option 'lua', 'Build the lua module'
   option 'perl', 'Build the perl module'
@@ -18,6 +19,13 @@ class Weechat < Formula
   option 'guile', 'Build the guile module'
   option 'python', 'Build the python module (requires framework Python)'
   option 'aspell', 'Build the aspell module that checks your spelling'
+
+  def patches
+    # Fixes bug #38321: The charset plugin doesn't build on OS X
+    # https://savannah.nongnu.org/bugs/index.php?38321
+    # Patch incorporated upstream; should be included in the next release
+    DATA
+  end
 
   def install
     # Remove all arch flags from the PERL_*FLAGS as we specify them ourselves.
@@ -51,10 +59,12 @@ class Weechat < Formula
     args << '-DENABLE_ASPELL=OFF' unless build.include? 'aspell'
     args << '-DENABLE_GUILE=OFF'  unless build.include? 'guile' and \
                                          Formula.factory('guile').linked_keg.exist?
-    args << '.'
+    args << '..'
 
-    system 'cmake', *args
-    system 'make install'
+    mkdir 'build' do
+      system 'cmake', *args
+      system 'make install'
+    end
   end
 
   def caveats; <<-EOS.undent
@@ -65,3 +75,25 @@ class Weechat < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/cmake/FindIconv.cmake b/cmake/FindIconv.cmake
+index c077ba0..6622ea3 100644
+--- a/cmake/FindIconv.cmake
++++ b/cmake/FindIconv.cmake
+@@ -49,10 +49,11 @@ FIND_LIBRARY(ICONV_LIBRARY
+ IF(ICONV_INCLUDE_PATH)
+   IF(ICONV_LIBRARY)
+     STRING(REGEX REPLACE "/[^/]*$" "" ICONV_LIB_PATH "${ICONV_LIBRARY}")
+-    CHECK_LIBRARY_EXISTS(iconv libiconv_open ${ICONV_LIB_PATH} ICONV_FOUND)
+-    IF(NOT ICONV_FOUND)
+-      CHECK_LIBRARY_EXISTS(iconv iconv_open ${ICONV_LIB_PATH} ICONV_FOUND)
+-    ENDIF(NOT ICONV_FOUND)
++    CHECK_LIBRARY_EXISTS(iconv libiconv_open ${ICONV_LIB_PATH} LIBICONV_OPEN_FOUND)
++    CHECK_LIBRARY_EXISTS(iconv iconv_open ${ICONV_LIB_PATH} ICONV_OPEN_FOUND)
++    IF (LIBICONV_OPEN_FOUND OR ICONV_OPEN_FOUND)
++       SET(ICONV_FOUND TRUE)
++    ENDIF (LIBICONV_OPEN_FOUND OR ICONV_OPEN_FOUND)
+   ELSE(ICONV_LIBRARY)
+     CHECK_FUNCTION_EXISTS(iconv_open ICONV_FOUND)
+   ENDIF(ICONV_LIBRARY)

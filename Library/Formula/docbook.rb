@@ -6,8 +6,10 @@ class Docbook < Formula
   sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
 
   def install
-    packages = [Docbookxml412,
-                Docbookxml42,
+    # Install 4.1.2 *after* 4.2, because we need to borrow the catalog.xml
+    # file from the 4.2 package.
+    packages = [Docbookxml42,
+                Docbookxml412,
                 Docbookxml43,
                 Docbookxml44,
                 Docbookxml45,
@@ -15,13 +17,13 @@ class Docbook < Formula
                 Docbookxsl,
                 Docbookxslns]
 
-    (etc+'xml').mkpath
+    (etc/'xml').mkpath
     system "xmlcatalog", "--noout", "--create", "#{etc}/xml/catalog"
 
     packages.each do |pkg|
       pkg.new.brew do |f|
         f.install
-        catalog = prefix+f.catalog+'catalog.xml'
+        catalog = prefix/f.catalog/'catalog.xml'
         system "xmlcatalog", "--noout", "--del",
                              "file://#{catalog}", "#{etc}/xml/catalog"
         system "xmlcatalog", "--noout", "--add", "nextCatalog",
@@ -43,16 +45,29 @@ class Docbookxml < Formula
   def install
     rm_rf 'docs'
     docbook = Formula.factory 'docbook'
-    (docbook.prefix+'docbook/xml'+version).install Dir['*']
+    (docbook.prefix/'docbook/xml'/version).install Dir['*']
   end
 
-  def catalog; 'docbook/xml/'+version; end
+  def catalog
+    "docbook/xml/#{version}"
+  end
 end
 
 class Docbookxml412 < Docbookxml
   url 'http://www.docbook.org/xml/4.1.2/docbkx412.zip'
   sha1 'b9ae7a41056bfaf885581812d60651b7b5531519'
   version '4.1.2'
+
+  def install
+    cp Formula.factory('docbook').prefix/'docbook/xml/4.2/catalog.xml', 'catalog.xml'
+
+    inreplace 'catalog.xml' do |s|
+      s.gsub! 'V4.2 ..', 'V4.1.2 '
+      s.gsub! '4.2', '4.1.2'
+    end
+
+    super
+  end
 end
 
 class Docbookxml42 < Docbookxml
@@ -82,25 +97,8 @@ end
 
 class Docbookxsl < Formula
   homepage 'http://docbook.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl/1.76.1/docbook-xsl-1.76.1.tar.bz2'
-  sha1 'dc9fa422c53e0a4f0e32b5c8ec896b39080bc14d'
-
-  def install
-    doc_files = %w[AUTHORS BUGS README RELEASE-NOTES.txt TODO VERSION NEWS COPYING]
-    xsl_files = %w[catalog.xml common eclipse epub extensions fo highlighting html
-                   htmlhelp images javahelp lib manpages params profiling roundtrip
-                   slides template tools website xhtml xhtml-1_1]
-    docbook = Formula.factory 'docbook'
-    (docbook.prefix+'docbook/xsl'+version).install xsl_files + doc_files
-  end
-
-  def catalog; 'docbook/xsl/'+version; end
-end
-
-class Docbookxslns < Formula
-  homepage 'http://docbook.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl-ns/1.77.1/docbook-xsl-ns-1.77.1.tar.bz2'
-  sha1 '01fe5f2d41af272fd97d24ffbfa4b97a5d78f125'
+  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl/1.78.0/docbook-xsl-1.78.0.tar.bz2'
+  sha1 '39a62791e7c1479e22d13d12a9ecbb2273d66229'
 
   def install
     doc_files = %w[AUTHORS BUGS COPYING NEWS README RELEASE-NOTES.txt TODO VERSION VERSION.xsl]
@@ -109,8 +107,30 @@ class Docbookxslns < Formula
                    params profiling roundtrip slides template tests tools webhelp
                    website xhtml xhtml-1_1 xhtml5]
     docbook = Formula.factory 'docbook'
-    (docbook.prefix+'docbook/xsl-ns'+version).install xsl_files + doc_files
+    (docbook.prefix/'docbook/xsl'/version).install xsl_files + doc_files
   end
 
-  def catalog; 'docbook/xsl-ns/'+version; end
+  def catalog
+    "docbook/xsl/#{version}"
+  end
+end
+
+class Docbookxslns < Formula
+  homepage 'http://docbook.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl-ns/1.78.0/docbook-xsl-ns-1.78.0.tar.bz2'
+  sha1 '377c7bc16af6779c827ac9e818b0f665c7a038f2'
+
+  def install
+    doc_files = %w[AUTHORS BUGS COPYING NEWS README README.ns RELEASE-NOTES.txt TODO VERSION VERSION.xsl]
+    xsl_files = %w[assembly catalog.xml common docsrc eclipse epub epub3 extensions
+                   fo highlighting html htmlhelp images javahelp lib log manpages
+                   params profiling roundtrip slides template tests tools webhelp
+                   website xhtml xhtml-1_1 xhtml5]
+    docbook = Formula.factory 'docbook'
+    (docbook.prefix/'docbook/xsl-ns'/version).install xsl_files + doc_files
+  end
+
+  def catalog
+    "docbook/xsl-ns/#{version}"
+  end
 end

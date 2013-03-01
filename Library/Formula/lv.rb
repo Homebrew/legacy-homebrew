@@ -11,6 +11,7 @@ class Lv < Formula
       system "../src/configure", "--prefix=#{prefix}"
       system "make"
       bin.install 'lv'
+      bin.install_symlink 'lv' => 'lgrep'
     end
 
     man1.install 'lv.1'

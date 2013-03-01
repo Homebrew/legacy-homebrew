@@ -1,6 +1,6 @@
 def blacklisted? name
   case name.downcase
-  when /^vim?$/, 'screen', /^rubygems?$/ then <<-EOS.undent
+  when 'screen', /^rubygems?$/ then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/bin.
     EOS
   when 'libarchive', 'libpcap' then <<-EOS.undent
@@ -38,6 +38,14 @@ def blacklisted? name
   when 'xcode' then <<-EOS.undent
     Xcode can be installed via the App Store (on Lion or newer), or from:
       http://connect.apple.com/
+    EOS
+  when 'gtest', 'googletest', 'google-test' then <<-EOS.undent
+    Installing gtest system-wide is not recommended; it should be vendored
+    in your projects that use it.
+    EOS
+  when 'gmock', 'googlemock', 'google-mock' then <<-EOS.undent
+    Installing gmock system-wide is not recommended; it should be vendored
+    in your projects that use it.
     EOS
   end
 end

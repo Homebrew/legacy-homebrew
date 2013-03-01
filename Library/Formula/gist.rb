@@ -7,6 +7,10 @@ class Gist < Formula
   head 'https://github.com/defunkt/gist.git'
 
   def install
-    system "rake", "install", "prefix=#{prefix}"
+    rake "install", "prefix=#{prefix}"
+  end
+
+  test do
+    system "#{bin}/gist", '--version'
   end
 end

@@ -10,32 +10,19 @@ class Gwenhywfar < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gnutls'
-
-  def options
-    [[
-      "--with-gui=XX,...", <<-EOS.undent
-        Install gui support XX where XX is the name of the gui toolkit
-        \te.g.: --with-gui=gtk
-        \tAvailable gui toolkits are: qt, gtk"
-        EOS
-    ]]
-  end
-
+  depends_on 'libgcrypt'
+  depends_on 'gtk+' => :optional
+  depends_on 'qt' => :optional
 
   def install
     guis = []
-    ARGV.options_only.select { |v| v =~ /--with-gui=/ }.uniq.each do |opt|
-      guis << opt.split('=')[1].split(',')
-    end
+    guis << "gtk2" if build.with? "gtk+"
+    guis << "qt4" if build.with? "qt"
 
-    configure_args = [
-      "--prefix=#{prefix}",
-      "--disable-debug",
-      "--disable-dependency-tracking",
-      "--with-guis='#{guis.flatten.join(' ')}'"
-    ]
-
-    system "./configure", *configure_args
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-guis=#{guis.join(' ')}"
     system "make install"
   end
 end

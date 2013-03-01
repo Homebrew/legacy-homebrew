@@ -2,8 +2,13 @@ require 'formula'
 
 class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.6/downloads/openmpi-1.6.2.tar.bz2'
-  sha1 '694fd3bac911cdb22f77175884d819b6fea871df'
+  url 'http://www.open-mpi.org/software/ompi/v1.6/downloads/openmpi-1.6.4.tar.bz2'
+  sha1 '38095d3453519177272f488d5058a98f7ebdbf10'
+
+  devel do
+    url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7rc7.tar.bz2'
+    sha1 'c1fe29f686b92763c2e703ee04b8830d09ced39c'
+  end
 
   # Reported upstream at version 1.6, both issues
   # http://www.open-mpi.org/community/lists/devel/2012/05/11003.php
@@ -11,10 +16,11 @@ class OpenMpi < Formula
   fails_with :clang do
     build 421
     cause 'fails make check on Lion and ML'
-  end
+  end if not build.devel?
 
   option 'disable-fortran', 'Do not build the Fortran bindings'
   option 'test', 'Verify the build with make check'
+  option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
 
   def install
     args = %W[
@@ -28,9 +34,13 @@ class OpenMpi < Formula
       ENV.fortran
     end
 
+    if build.include? 'enable-mpi-thread-multiple'
+      args << '--enable-mpi-thread-multiple'
+    end
+
     system './configure', *args
-    system 'make all'
-    system 'make check' if build.include? 'test'
+    system 'make V=1 all'
+    system 'make V=1 check' if build.include? 'test'
     system 'make install'
 
     # If Fortran bindings were built, there will be a stray `.mod` file

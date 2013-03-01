@@ -1,7 +1,7 @@
 require 'formula'
 
 class Fontforge < Formula
-  homepage 'http://fontforge.sourceforge.net'
+  homepage 'http://fontforge.org/'
   url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
   sha1 'b520f532b48e557c177dffa29120225066cc4e84'
 
@@ -10,18 +10,20 @@ class Fontforge < Formula
   env :std
 
   option 'without-python', 'Build without Python'
-  option 'with-x', 'Build with X'
-  option 'with-cairo', 'Build with Cairo'
-  option 'with-pango', 'Build with Pango'
-  option 'with-libspiro', 'Build with Spiro spline support'
+  option 'with-gif',       'Build with GIF support'
+  option 'with-x',         'Build with X'
 
   depends_on 'gettext'
   depends_on :xcode # Because: #include </Developer/Headers/FlatCarbon/Files.h>
 
-  depends_on :x11 if build.include? "with-x"
-  depends_on 'cairo' if build.include? "with-cairo"
-  depends_on 'pango' if build.include? "with-pango"
-  depends_on 'libspiro' if build.include? "with-libspiro"
+  depends_on :libpng    => :recommended
+  depends_on 'jpeg'     => :recommended
+  depends_on 'libtiff'  => :recommended
+  depends_on :x11 if build.with? 'x'
+  depends_on 'giflib' if build.with? 'gif'
+  depends_on 'cairo' => :optional
+  depends_on 'pango' => :optional
+  depends_on 'libspiro' => :optional
 
   fails_with :llvm do
     build 2336
@@ -29,21 +31,11 @@ class Fontforge < Formula
   end
 
   def install
-    # Reason: Designed for the 10.7 SDK because it uses FlatCarbon.
-    #         MACOSX_DEPLOYMENT_TARGET fixes ensuing Python 10.7 vs 10.8 clash.
-    # Discussed: https://github.com/mxcl/homebrew/pull/14097
-    # Reported:  Not yet.
-    if MacOS.version >= :mountain_lion
-      ENV.macosxsdk("10.7")
-      ENV.append "CFLAGS", "-isysroot #{MacOS.sdk_path(10.7)}"
-      ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.8"
-    end
-
     args = ["--prefix=#{prefix}",
             "--enable-double",
             "--without-freetype-bytecode"]
 
-    if build.include? "without-python"
+    if build.without? "python"
       args << "--without-python"
     else
       python_prefix = `python-config --prefix`.strip
@@ -54,14 +46,18 @@ class Fontforge < Formula
     end
 
     # Fix linking to correct Python library
-    ENV.prepend "LDFLAGS", "-L#{python_prefix}/lib" unless build.include? "without-python"
+    ENV.prepend "LDFLAGS", "-L#{python_prefix}/lib" unless build.without? "python"
     # Fix linker error; see: http://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
-    args << "--without-cairo" unless build.include? "with-cairo"
-    args << "--without-pango" unless build.include? "with-pango"
+    # Set up framework paths so FlatCarbon replacement paths work (see below)
+    ENV.append "CFLAGS", "-F/System/Library/Frameworks/CoreServices.framework/Frameworks"
+    ENV.append "CFLAGS", "-F/System/Library/Frameworks/Carbon.framework/Frameworks"
+
+    args << "--without-cairo" unless build.with? "cairo"
+    args << "--without-pango" unless build.with? "pango"
 
     system "./configure", *args
 
@@ -77,16 +73,13 @@ class Fontforge < Formula
       s.gsub! "python setup.py install --prefix=$(prefix) --root=$(DESTDIR)", "python setup.py install --prefix=$(prefix)"
     end
 
-    # Fix hard-coded include file paths. Reported usptream:
-    # http://sourceforge.net/mailarchive/forum.php?thread_name=C1A32103-A62D-468B-AD8A-A8E0E7126AA5%40smparkes.net&forum_name=fontforge-devel
-    # https://trac.macports.org/ticket/33284
-    if MacOS::Xcode.version >= '4.4'
-      header_prefix = "#{MacOS.sdk_path(10.7)}/Developer"
-    else
-      header_prefix = MacOS::Xcode.prefix
-    end
+    # Replace FlatCarbon headers with the real paths
+    # Fixes building on 10.8
     inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
-      s.gsub! "/Developer", header_prefix
+      s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
+    end
+    inreplace %w(fontforge/startui.c) do |s|
+      s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", "HIToolbox/CarbonEvents.h"
     end
 
     system "make"
@@ -108,7 +101,7 @@ class Fontforge < Formula
       To install the Mac OS X wrapper application run:
         brew linkapps
       or:
-        ln -s #{prefix}/FontForge.app /Applications
+        ln -s #{opt_prefix}/FontForge.app /Applications
     EOS
 
     python_caveats = <<-EOS.undent
@@ -119,8 +112,8 @@ class Fontforge < Formula
     EOS
 
     s = ""
-    s += x_caveats if build.include? "with-x"
-    s += python_caveats unless build.include? "without-python"
+    s += x_caveats if build.with? "x"
+    s += python_caveats unless build.without? "python"
     return s
   end
 end

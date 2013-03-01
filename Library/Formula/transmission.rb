@@ -2,22 +2,26 @@ require 'formula'
 
 class Transmission < Formula
   homepage 'http://www.transmissionbt.com/'
-  url 'http://download.transmissionbt.com/files/transmission-2.73.tar.bz2'
-  sha1 '49f886ecb391c8901cd40f42b2f4a0df1ea4dcab'
+  url 'http://download.transmissionbt.com/files/transmission-2.77.tar.bz2'
+  sha1 'a26298dc814b3995a7e4a7f6566fc16b1463bbbb'
+
+  option 'with-nls', 'Build with native language support'
 
   depends_on 'pkg-config' => :build # So it will find system libcurl
   depends_on 'libevent'
-  depends_on 'intltool' => :optional
-  depends_on 'gettext' => :optional # need gettext if intltool is used
+
+  if build.with? 'nls'
+    depends_on 'intltool' => :build
+    depends_on 'gettext'
+  end
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--disable-mac",
-            "--without-gtk"]
+    args = %W[--disable-dependency-tracking
+              --prefix=#{prefix}
+              --disable-mac
+              --without-gtk]
 
-    args << "--disable-nls" unless Formula.factory("intltool").installed? and
-                                   Formula.factory("gettext").installed?
+    args << "--disable-nls" unless build.with? 'nls'
 
     system "./configure", *args
     system "make" # Make and install in one step fails

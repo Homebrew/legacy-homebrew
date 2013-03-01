@@ -1,26 +1,25 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.8.0.tar.gz'
-  sha1 'a6fa49be36f265e85b7252d36364d4c7f38530ea'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.8.1.4.tar.gz'
+  sha1 '98c41b38d02f09e1fcde335834694616d0a615f7'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.0.tar.gz'
-  sha1 '93c860cf4cd26d4b3e269b0903b833db1c1f0f8e'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.1.4.tar.gz'
+  sha1 'bb71df6bc1fdb55b45c59af83102e901d484ef53'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.0.tar.gz'
-  sha1 'a03afc33f8f0723ad12649d79f1e8968526b4bf7'
+  url 'http://git-core.googlecode.com/files/git-1.8.1.4.tar.gz'
+  sha1 '553191fe02cfac77386d5bb01df0a79eb7f163c8'
 
   head 'https://github.com/git/git.git'
 
-  depends_on 'pcre' if build.include? 'with-pcre'
-
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
-  option 'with-pcre', 'Compile with the PCRE library'
+
+  depends_on 'pcre' => :optional
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -37,7 +36,7 @@ class Git < Formula
 
     ENV['BLK_SHA1'] = '1' if build.include? 'with-blk-sha1'
 
-    if build.include? 'with-pcre'
+    if build.with? 'pcre'
       ENV['USE_LIBPCRE'] = '1'
       ENV['LIBPCREDIR'] = HOMEBREW_PREFIX
     end
@@ -66,8 +65,12 @@ class Git < Formula
     end
 
     # install the completion script first because it is inside 'contrib'
-    (prefix+'etc/bash_completion.d').install 'contrib/completion/git-completion.bash'
-    (prefix+'etc/bash_completion.d').install 'contrib/completion/git-prompt.sh'
+    bash_completion.install 'contrib/completion/git-completion.bash'
+    bash_completion.install 'contrib/completion/git-prompt.sh'
+
+    zsh_completion.install 'contrib/completion/git-completion.zsh' => '_git'
+    cp "#{bash_completion}/git-completion.bash", zsh_completion
+
     (share+'git-core').install 'contrib'
 
     # We could build the manpages ourselves, but the build process depends
@@ -85,7 +88,7 @@ class Git < Formula
     EOS
   end
 
-  def test
+  test do
     HOMEBREW_REPOSITORY.cd do
       `#{bin}/git ls-files -- bin`.chomp == 'bin/brew'
     end

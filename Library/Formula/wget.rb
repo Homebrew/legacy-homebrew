@@ -20,6 +20,7 @@ class Wget < Formula
   if build.head?
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "xz" => :build
     depends_on "gettext"
   end
 

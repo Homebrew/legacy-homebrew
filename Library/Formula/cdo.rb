@@ -2,14 +2,14 @@ require 'formula'
 
 class Cdo < Formula
   homepage 'https://code.zmaw.de/projects/cdo'
-  url 'https://code.zmaw.de/attachments/download/3605/cdo-1.5.6.1.tar.gz'
-  sha1 '180517a3c234a47e5e19ae15084bb2fe2bda2d06'
+  url 'https://code.zmaw.de/attachments/download/4824/cdo-1.5.9.tar.gz'
+  sha1 '94add81a8f6e8e964ed0b12ed23014ad54764735'
 
   option 'enable-grib2', 'Compile Fortran bindings'
 
   depends_on 'netcdf'
   depends_on 'hdf5'
-  depends_on 'grib-api' => :optional if build.include? 'enable-grib2'
+  depends_on 'grib-api' if build.include? 'enable-grib2'
 
   def install
     args = ["--disable-debug", "--disable-dependency-tracking",

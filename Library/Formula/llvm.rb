@@ -2,30 +2,40 @@ require 'formula'
 
 class Clang < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.1/clang-3.1.src.tar.gz'
-  sha1      '19f33b187a50d22fda2a6f9ed989699a9a9efd62'
+  url       'http://llvm.org/releases/3.2/clang-3.2.src.tar.gz'
+  sha1      'b0515298c4088aa294edc08806bd671f8819f870'
 
   head      'http://llvm.org/git/clang.git'
 end
 
+class CompilerRt < Formula
+  homepage  'http://llvm.org/'
+  url       'http://llvm.org/releases/3.2/compiler-rt-3.2.src.tar.gz'
+  sha1      '718c0249a00e928f8bba32c84771da998ea4d42f'
+
+  head      'http://llvm.org/git/compiler-rt.git'
+end
+
 class Llvm < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.1/llvm-3.1.src.tar.gz'
-  sha1      '234c96e73ef81aec9a54da92fc2a9024d653b059'
+  url       'http://llvm.org/releases/3.2/llvm-3.2.src.tar.gz'
+  sha1      '42d139ab4c9f0c539c60f5ac07486e9d30fc1280'
 
   head      'http://llvm.org/git/llvm.git'
 
   bottle do
-    sha1 'fcf6c3eb5b074afa820f905f32182e074a29ffb5' => :mountainlion
-    sha1 '4ee3e9242cff9a03af4e1f20017fe547dcd07a4a' => :lion
-    sha1 '940aca37dafaf69a9b378ffd2a59b3c1cfe54ced' => :snowleopard
+    sha1 '9fddf0bfed060ade86c88b64c40cc4bd5f1f0f2c' => :mountainlion
+    sha1 '8d3f3d5090d3bd2cf0c953da105efc63080e948f' => :lion
+    sha1 '3ba0beee27d60e80e9790cca9d5e21b2b8169ffe' => :snowleopard
   end
 
   option :universal
   option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
+  option 'with-asan', 'Include support for -faddress-sanitizer (from compiler-rt)'
   option 'shared', 'Build LLVM as a shared library'
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
+  option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
   def install
     if build.universal? and build.include? 'shared'
@@ -33,7 +43,13 @@ class Llvm < Formula
       exit 1
     end
 
-    Clang.new("clang").brew { clang_dir.install Dir['*'] } if build.include? 'with-clang'
+    Clang.new("clang").brew do
+      clang_dir.install Dir['*']
+    end if build.include? 'with-clang'
+
+    CompilerRt.new("compiler-rt").brew do
+      (buildpath/'projects/compiler-rt').install Dir['*']
+    end if build.include? 'with-asan'
 
     if build.universal?
       ENV['UNIVERSAL'] = '1'
@@ -56,6 +72,8 @@ class Llvm < Formula
       args << "--enable-targets=host"
     end
     args << "--enable-shared" if build.include? 'shared'
+
+    args << "--disable-assertions" if build.include? 'disable-assertions'
 
     system "./configure", *args
     system "make install"

@@ -1,21 +1,22 @@
 require 'formula'
 
 class SbclBootstrapBinaries < Formula
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.55/sbcl-1.0.55-x86-darwin-binary.tar.bz2'
-  sha1 '8ea71938c40a6dccfe2d43a86e9b115f4428a218'
-  version "1.0.55"
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.0/sbcl-1.1.0-x86-64-darwin-binary.tar.bz2'
+  sha1 'ed2069e124027c43926728c48d604efbb4e33950'
+  version "1.1.0"
 end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.58/sbcl-1.0.58-source.tar.bz2'
-  sha1 '79c9258a15c257849790b86238999c18ec191033'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.4/sbcl-1.1.4-source.tar.bz2'
+  sha1 '57c1055821e4ad1c9c1b2b75fa972c5ae7ca86d0'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    url 'https://downloads.sf.net/project/machomebrew/Bottles/sbcl-1.0.55-bottle.tar.gz'
-    sha1 '3c13225c8fe3eabf54e9d368e6b74318a5546430'
+    sha1 'f3a56af6651fad229616ce0ad182fa4829b1c0f2' => :mountain_lion
+    sha1 'cec671e27e8a23ff8b9c6f8d15549a7cfc688bcb' => :lion
+    sha1 'f148420a1d44f0a8e5fe56ac57639fe6421a22c3' => :snow_leopard
   end
 
   fails_with :llvm do
@@ -58,7 +59,7 @@ class Sbcl < Formula
     # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
     ENV.delete_if do |key, value|
-      value =~ /[\x80-\xff]/
+      value =~ /[\x80-\xff]/n
     end
 
     SbclBootstrapBinaries.new.brew do
@@ -75,5 +76,13 @@ class Sbcl < Formula
 
     ENV['INSTALL_ROOT'] = prefix
     system "sh install.sh"
+  end
+
+  def caveats; <<-EOS.undent
+    If you are upgrading sbcl and you have installed maxima,
+    you have to reinstall maxima:
+
+      brew rm maxima && brew install maxima
+    EOS
   end
 end

@@ -6,8 +6,8 @@ class Ldid < Formula
   sha1 '0254b29f913f7fd10ec9a6d8891d36805980f649'
 
   fails_with :clang do
-    build 318
-    cause "Undefined symbols when linking"
+    build 421
+    cause "util/ldid.cpp:574:36: warning: format specifies type 'unsigned int' but the argument has type 'unsigned long' [-Wformat]"
   end
 
   # Adds support for armv7 binaries

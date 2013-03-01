@@ -2,9 +2,9 @@ require 'formula'
 
 class Sbt < Formula
   homepage 'http://www.scala-sbt.org'
-  url 'http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.12.1/sbt-launch.jar'
-  version '0.12.1'
-  sha1 '45c28c7c6328d6ecf8e9dc51003a0f1af71516ad'
+  url 'http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.12.2/sbt-launch.jar'
+  version '0.12.2'
+  sha1 'ef6213597489edd8d1955086924f488949dd4975'
 
   def install
     (bin+'sbt').write <<-EOS.undent

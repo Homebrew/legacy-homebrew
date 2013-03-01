@@ -2,8 +2,8 @@ require 'formula'
 
 class GitFlowCompletion < Formula
   homepage 'https://github.com/bobthecow/git-flow-completion'
-  url 'https://github.com/bobthecow/git-flow-completion/tarball/0.4.1.0'
-  sha1 'c3d09e9d9e6a268d0587e31d30d6a20ca8c36800'
+  url 'https://github.com/bobthecow/git-flow-completion/tarball/0.4.2'
+  sha1 '49316a92b667bc28fb9449824a4384a511861924'
 
   head 'https://github.com/bobthecow/git-flow-completion.git', :branch => 'develop'
 end
@@ -16,6 +16,8 @@ class GitFlow < Formula
   version '0.4.1'
 
   head 'https://github.com/nvie/gitflow.git', :branch => 'develop'
+
+  conflicts_with 'git-flow-avh'
 
   def install
     system "make", "prefix=#{prefix}", "install"

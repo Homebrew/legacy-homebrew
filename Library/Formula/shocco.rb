@@ -3,28 +3,44 @@ require 'formula'
 # Include a private copy of this Python app
 # so we don't have to worry about clashing dependencies.
 class Pygments < Formula
-  url 'http://pypi.python.org/packages/source/P/Pygments/Pygments-1.3.1.tar.gz'
   homepage 'http://pygments.org/'
-  sha1 ''
+  url 'http://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz'
+  sha1 '4fbd937fd5cebc79fa4b26d4cce0868c4eec5ec5'
+end
+
+class MarkdownProvider < Requirement
+  fatal true
+
+  satisfy { which 'markdown' }
+
+  def message; <<-EOS.undent
+    shocco requires a `markdown` command.
+
+    You can satisfy this requirement with either of two formulae:
+      brew install markdown
+      brew install discount
+
+    Please install one and try again.
+    EOS
+  end
 end
 
 class Shocco < Formula
   homepage 'http://rtomayko.github.com/shocco/'
-  head 'https://github.com/rtomayko/shocco.git',
-          :commit => '06ab9ecebd713a1a6ae695b190a775ca6dfeb7b2'
+  url 'https://github.com/rtomayko/shocco/tarball/a1ee000613946335f54a8f236ee9fe6f7f22bcb8'
+  sha1 '8feb66dad3c957fabdfa368e710dfb2a078a732f'
 
-  depends_on 'markdown'
+  depends_on MarkdownProvider
 
   def install
     Pygments.new.brew { libexec.install 'pygmentize','pygments' }
 
-    # Brew into libexec, along with Pygments
-    system "./configure", "PYGMENTIZE=#{libexec}/pygmentize", "--prefix=#{libexec}"
-    system "make"
-    libexec.install "shocco"
+    # Brew along with Pygments
+    system "./configure", "PYGMENTIZE=#{libexec}/pygmentize", "--prefix=#{prefix}"
 
-    # Link the script into bin
-    bin.install_symlink libexec+"shocco"
+    # Shocco's Makefile does not combine the make and make install steps.
+    system "make"
+    system "make install"
   end
 
   def caveats

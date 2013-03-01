@@ -4,8 +4,8 @@ class Multimarkdown < Formula
   homepage 'http://fletcherpenney.net/multimarkdown/'
 
   # Use the tag instead of the tarball to get submodules
-  url 'https://github.com/fletcher/peg-multimarkdown.git', :tag => '3.6'
-  version '3.6'
+  url 'https://github.com/fletcher/peg-multimarkdown.git', :tag => '3.7'
+  version '3.7'
 
   head 'https://github.com/fletcher/peg-multimarkdown.git', :branch => 'development'
 
@@ -18,7 +18,7 @@ class Multimarkdown < Formula
     bin.install 'multimarkdown'
     bin.install Dir['scripts/*']
     # The support stuff will be put into the Cellar only
-    prefix.install Dir['Support']
+    prefix.install 'Support'
   end
 
   def caveats; <<-EOS.undent

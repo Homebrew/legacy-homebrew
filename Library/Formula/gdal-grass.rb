@@ -23,13 +23,12 @@ class GdalGrass < Formula
     system "make install"
   end
 
-  def caveats
-    caveats = <<-EOS
-This formula provides a plugin that allows GDAL and OGR to access geospatial
-data stored using the GRASS vector and raster formats. In order to use the
-plugin, you will need to add the following path to the GDAL_DRIVER_PATH
-enviroment variable:
-    #{HOMEBREW_PREFIX}/lib/gdalplugins
+  def caveats; <<-EOS.undent
+    This formula provides a plugin that allows GDAL and OGR to access geospatial
+    data stored using the GRASS vector and raster formats. In order to use the
+    plugin, you will need to add the following path to the GDAL_DRIVER_PATH
+    enviroment variable:
+      #{HOMEBREW_PREFIX}/lib/gdalplugins
     EOS
   end
 end

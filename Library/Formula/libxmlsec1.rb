@@ -7,17 +7,16 @@ class Libxmlsec1 < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libxml2' # Version on 10.6/10.7 is too old
-  depends_on 'gnutls' => :optional
+  depends_on 'gnutls' => :recommended
+  depends_on 'libgcrypt' unless build.without? 'gnutls'
 
   # Add HOMEBREW_PREFIX/lib to dl load path
   def patches; DATA; end
 
   def install
-    libxml2 = Formula.factory('libxml2')
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libxml=#{libxml2.prefix}",
+                          "--with-libxml=#{Formula.factory("libxml2").opt_prefix}",
                           "--disable-crypto-dl",
                           "--disable-apps-crypto-dl"
     system "make install"

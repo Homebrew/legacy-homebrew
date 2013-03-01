@@ -1,10 +1,11 @@
 require 'formula'
 
 class Kbtin < Formula
-  url 'http://downloads.sourceforge.net/project/kbtin/kbtin/1.0.13/kbtin-1.0.13.tar.gz'
   homepage 'http://kbtin.sourceforge.net'
-  sha1 '6e3496ab629b3a7d4ef5ea61baa7efa9b19e25af'
+  url 'http://sourceforge.net/projects/kbtin/files/kbtin/1.0.14/kbtin-1.0.14.tar.xz'
+  sha1 'b6e09ee7702fe52d48db53098c79fe243505cc0f'
 
+  depends_on 'xz' => :build
   depends_on 'gnutls'
 
   def install

@@ -8,6 +8,11 @@ class Pxz < Formula
 
   depends_on 'xz'
 
+  fails_with :clang do
+    build 421
+    cause "pxz requires OpenMP support"
+  end
+
   def patches
     DATA # Fixes usage of MAP_POPULATE for mmap (linux only)
   end

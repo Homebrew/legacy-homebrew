@@ -2,8 +2,11 @@ require 'formula'
 
 class Ffind < Formula
   homepage 'https://github.com/sjl/friendly-find'
-  url 'https://github.com/sjl/friendly-find/tarball/v0.2.0'
-  sha1 'b902ebb9966c1394628e52d0dea3b1ba7c421720'
+  url 'https://github.com/sjl/friendly-find/tarball/v0.3.1'
+  sha1 '891207067c0d8715b48e91a52ff815aa73d7e139'
+
+  conflicts_with 'sleuthkit',
+    :because => "both install a 'ffind' executable."
 
   def install
     bin.install "ffind"

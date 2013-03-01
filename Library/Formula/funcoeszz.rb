@@ -11,7 +11,7 @@ class Funcoeszz < Formula
 
   def caveats; <<-EOS.undent
     To use this software add to your profile:
-      source #{prefix}/funcoeszz-10.12.sh
+      source #{opt_prefix}/funcoeszz-10.12.sh
     EOS
   end
 end

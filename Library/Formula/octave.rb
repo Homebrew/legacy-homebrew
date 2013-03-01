@@ -10,11 +10,10 @@ end
 
 class Octave < Formula
   homepage 'http://www.gnu.org/software/octave/index.html'
-  url 'http://ftpmirror.gnu.org/octave/octave-3.6.2.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.2.tar.bz2'
-  sha1 '145fef0122268086727a60e1c33e29d56fd546d7'
+  url 'http://ftpmirror.gnu.org/octave/octave-3.6.4.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/octave/octave-3.6.4.tar.bz2'
+  sha1 '3cc9366b6dbbd336eaf90fe70ad16e63705d82c4'
 
-  option 'without-graphicsmagick', 'Compile without GraphicsMagick'
   option 'without-fltk', 'Compile without fltk (disables native graphics)'
   option 'test', 'Run tests before installing'
 
@@ -39,7 +38,7 @@ class Octave < Formula
   # additional features
   depends_on 'suite-sparse'
   depends_on 'glpk'
-  depends_on 'graphicsmagick' => :recommended unless build.include? 'without-graphicsmagick'
+  depends_on 'graphicsmagick' => :recommended
   depends_on 'hdf5'
   depends_on 'pcre'
   depends_on 'qhull'
