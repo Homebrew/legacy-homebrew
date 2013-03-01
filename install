@@ -155,9 +155,10 @@ Dir.chdir HOMEBREW_PREFIX do
   else
     # -m to stop tar erroring out if it can't modify the mtime for root owned directories
     # pipefail to cause the exit status from curl to propogate if it fails
-    # we use -k because OS X curl has a bunch of bad SSL certificates
-    # you may want to remove the -k flag from your fork!
-    system "/bin/bash -o pipefail -c '/usr/bin/curl -skSfL https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
+    # we use -k for curl because Leopard has a bunch of bad SSL certificates
+    curl_flags = "fsSL"
+    curl_flags << "k" if macos_version == 10.5
+    system "/bin/bash -o pipefail -c '/usr/bin/curl -#{curl_flags} https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
   end
 end
 
