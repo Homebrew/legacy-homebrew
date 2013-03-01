@@ -2,8 +2,8 @@ require 'formula'
 
 class Opam < Formula
   homepage 'https://github.com/OCamlPro/opam'
-  url 'https://github.com/OCamlPro/opam/archive/0.9.3.tar.gz'
-  sha1 '5be3d072ab461c5ef744a8b718e970afd1c684f6'
+  url 'https://github.com/OCamlPro/opam/archive/0.9.4.tar.gz'
+  sha1 '731446f5fc3bf0980578f82fe827d23d97e8b762'
 
   head 'https://github.com/OCamlPro/opam.git'
 
