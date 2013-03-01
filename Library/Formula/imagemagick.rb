@@ -77,8 +77,8 @@ class Imagemagick < Formula
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
     args << "--with-rsvg" if build.with? 'rsvg'
     args << "--without-x" unless build.with? 'x11'
-    args << "--with-fontconfig=yes" if build.with? 'fontconfig' or MacOS::X11.installed?
-    args << "--with-freetype=yes" if build.with? 'freetype' or MacOS::X11.installed?
+    args << "--with-fontconfig=yes" if build.with? 'fontconfig'
+    args << "--with-freetype=yes" if build.with? 'freetype'
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
