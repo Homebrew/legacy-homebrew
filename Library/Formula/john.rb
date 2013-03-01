@@ -15,6 +15,7 @@ class John < Formula
 
   fails_with :llvm do
     build 2334
+    cause "Don't remember, but adding this to whitelist 2336."
   end
 
   fails_with :clang do
