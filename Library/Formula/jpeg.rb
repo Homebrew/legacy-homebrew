@@ -2,16 +2,15 @@ require 'formula'
 
 class Jpeg < Formula
   homepage 'http://www.ijg.org'
-  url 'http://www.ijg.org/files/jpegsrc.v8d.tar.gz'
-  sha1 'f080b2fffc7581f7d19b968092ba9ebc234556ff'
-
-  bottle do
-    sha1 '80b23581fb5b2b92d787969f75cedbe8054c93a4' => :mountainlion
-    sha1 'a16984c6522807644ea960cb724f91aeca2d3dd0' => :lion
-    sha1 'edff61d516f97d76341a14211d0206bda18d0cf7' => :snowleopard
-  end
+  url 'http://www.ijg.org/files/jpegsrc.v9.tar.gz'
+  sha1 '724987e7690ca3d74d6ab7c1f1b6854e88ca204b'
 
   option :universal
+
+  #http://trac.macports.org/ticket/37984
+  def patches
+    DATA
+  end
 
   def install
     ENV.universal_binary if build.universal?
@@ -21,3 +20,30 @@ class Jpeg < Formula
     system "make install"
   end
 end
+
+__END__
+--- a/jmorecfg.h
++++ b/jmorecfg.h
+@@ -252,17 +252,16 @@ typedef void noreturn_t;
+  * Defining HAVE_BOOLEAN before including jpeglib.h should make it work.
+  */
+ 
+-#ifdef HAVE_BOOLEAN
++#ifndef HAVE_BOOLEAN
++typedef int boolean;
++#endif
++
+ #ifndef FALSE			/* in case these macros already exist */
+ #define FALSE	0		/* values of boolean */
+ #endif
+ #ifndef TRUE
+ #define TRUE	1
+ #endif
+-#else
+-typedef enum { FALSE = 0, TRUE = 1 } boolean;
+-#endif
+-
+ 
+ /*
+  * The remaining options affect code selection within the JPEG library,
+
