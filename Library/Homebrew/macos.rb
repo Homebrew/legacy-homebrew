@@ -11,7 +11,8 @@ module MacOS extend self
   def cat
     if version == :mountain_lion then :mountain_lion
     elsif version == :lion then :lion
-    elsif version == :snow_leopard then :snow_leopard
+    elsif version == :snow_leopard
+      Hardware.is_64_bit? ? :snow_leopard : :snow_leopard_32
     elsif version == :leopard then :leopard
     else nil
     end
@@ -233,16 +234,6 @@ module MacOS extend self
 
   def pkgutil_info id
     `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
-  end
-
-  def bottles_supported? raise_if_failed=false
-    # We support bottles on all versions of OS X except 32-bit Snow Leopard.
-    if Hardware.is_32_bit? and MacOS.version == :snow_leopard
-      return false unless raise_if_failed
-      raise "Bottles are not supported on 32-bit Snow Leopard."
-    end
-
-    true
   end
 end
 
