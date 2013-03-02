@@ -1,11 +1,8 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class SimpleTiles < Formula
   homepage 'http://propublica.github.com/simple-tiles/'
-#  url 'https://github.com/propublica/simple-tiles/tarball/0.2.0'
+  url 'https://github.com/propublica/simple-tiles/tarball/0.3.0'
   head 'https://github.com/propublica/simple-tiles.git'
   version 'tiles'
   sha1 ''
