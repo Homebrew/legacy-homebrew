@@ -3,7 +3,7 @@ require 'formula'
 class Ent < Formula
   homepage 'http://www.fourmilab.ch/random/'
   # This tarball is versioned and smaller, though non-official
-  url 'http://github.com/psm14/ent/tarball/1.0'
+  url 'https://github.com/psm14/ent/tarball/1.0'
   sha1 'ab45969decd8e79031e9cd1a74dbec3edb802e98'
 
   def install
