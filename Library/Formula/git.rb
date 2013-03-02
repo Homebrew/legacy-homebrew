@@ -35,7 +35,7 @@ class Git < Formula
     # Clean XCode 4.x installs don't include Perl MakeMaker
     ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.version >= :lion
 
-    ENV['BLK_SHA1'] = '1' if build.include? 'with-blk-sha1'
+    ENV['BLK_SHA1'] = '1' if build.with? 'blk-sha1'
 
     if build.with? 'pcre'
       ENV['USE_LIBPCRE'] = '1'
@@ -65,7 +65,7 @@ class Git < Formula
       bin.install 'git-subtree'
     end
 
-    unless build.include? 'without-completions'
+    unless build.without? 'completions'
       # install the completion script first because it is inside 'contrib'
       bash_completion.install 'contrib/completion/git-completion.bash'
       bash_completion.install 'contrib/completion/git-prompt.sh'
