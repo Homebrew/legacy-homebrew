@@ -15,6 +15,7 @@ class R < Formula
   head 'https://svn.r-project.org/R/trunk'
 
   option 'with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger'
+  option 'test', 'Run tests before installing'
 
   depends_on 'readline'
   depends_on 'libtiff'
@@ -41,7 +42,7 @@ class R < Formula
     system "./configure", *args
     system "make"
     ENV.j1 # Serialized installs, please
-    system "make check"
+    system "make check 2>&1 | tee make-check.log" if build.include? 'test'
     system "make install"
 
     # Link binaries and manpages from the Framework
@@ -57,6 +58,8 @@ class R < Formula
     bash_dir = prefix + 'etc/bash_completion.d'
     bash_dir.mkpath
     RBashCompletion.new.brew { bash_dir.install 'R' }
+
+    prefix.install 'make-check.log' if build.include? 'test'
   end
 
   def caveats; <<-EOS.undent
