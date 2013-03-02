@@ -2,11 +2,7 @@ module Homebrew extend self
 
   def tap
     if ARGV.empty?
-      tapd = HOMEBREW_LIBRARY/"Taps"
-      tapd.children.each do |tap|
-        # only replace the *last* dash: yes, tap filenames suck
-        puts tap.basename.to_s.reverse.sub('-', '/').reverse if (tap/'.git').directory?
-      end if tapd.directory?
+      show_taps
     elsif ARGV.first == "--repair"
       repair_taps
     else
@@ -105,6 +101,14 @@ module Homebrew extend self
     ARGV.first =~ %r{^(\S+)/(homebrew-)?(\w+)$}
     raise "Invalid usage" unless $1 and $3
     [$1, $3]
+  end
+
+  def show_taps
+      tapd = HOMEBREW_LIBRARY/"Taps"
+      tapd.children.each do |tap|
+        # only replace the *last* dash: yes, tap filenames suck
+        puts tap.basename.to_s.reverse.sub('-', '/').reverse if (tap/'.git').directory?
+      end if tapd.directory?
   end
 
 end

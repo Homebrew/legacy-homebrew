@@ -1,7 +1,12 @@
-require 'cmd/tap' # for tap_args
+require 'cmd/tap' # for tap_args and show_taps
 
 module Homebrew extend self
   def untap
+    if ARGV.empty?
+      show_taps
+      exit
+    end
+
     user, repo = tap_args
 
     # we consistently downcase in tap to ensure we are not bitten by case-insensive
