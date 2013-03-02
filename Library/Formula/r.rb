@@ -10,7 +10,7 @@ end
 class R < Formula
   homepage 'http://www.r-project.org'
   url 'http://cran.r-project.org/src/base/R-2/R-2.15.3.tar.gz'
-  sha1 ''
+  sha1 'a05b68f31b00d8038d9f0a8562cfc0c8e32d9621'
 
   head 'https://svn.r-project.org/R/trunk'
 
