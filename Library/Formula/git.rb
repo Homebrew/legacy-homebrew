@@ -18,6 +18,7 @@ class Git < Formula
   head 'https://github.com/git/git.git'
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
+  option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
 
   depends_on 'pcre' => :optional
 
@@ -64,12 +65,14 @@ class Git < Formula
       bin.install 'git-subtree'
     end
 
-    # install the completion script first because it is inside 'contrib'
-    bash_completion.install 'contrib/completion/git-completion.bash'
-    bash_completion.install 'contrib/completion/git-prompt.sh'
+    unless build.include? 'without-completions'
+      # install the completion script first because it is inside 'contrib'
+      bash_completion.install 'contrib/completion/git-completion.bash'
+      bash_completion.install 'contrib/completion/git-prompt.sh'
 
-    zsh_completion.install 'contrib/completion/git-completion.zsh' => '_git'
-    cp "#{bash_completion}/git-completion.bash", zsh_completion
+      zsh_completion.install 'contrib/completion/git-completion.zsh' => '_git'
+      cp "#{bash_completion}/git-completion.bash", zsh_completion
+    end
 
     (share+'git-core').install 'contrib'
 
