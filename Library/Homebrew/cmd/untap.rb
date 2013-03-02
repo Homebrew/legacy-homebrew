@@ -2,6 +2,8 @@ require 'cmd/tap' # for tap_args
 
 module Homebrew extend self
   def untap
+    raise "Usage is `brew untap <tap-name>`" if ARGV.empty?
+
     user, repo = tap_args
 
     # we consistently downcase in tap to ensure we are not bitten by case-insensive
