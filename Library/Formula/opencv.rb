@@ -17,6 +17,7 @@ class Opencv < Formula
   option 'with-qt',  'Build the Qt4 backend to HighGUI'
   option 'with-tbb', 'Enable parallel code in OpenCV using Intel TBB'
   option 'with-opencl', 'Enable gpu code in OpenCV using OpenCL'
+  option 'with-openni', 'Enable support for OpenNI. brew tap totakke/openni'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -27,6 +28,7 @@ class Opencv < Formula
   depends_on 'jasper'  => :optional
   depends_on 'tbb'     => :optional
   depends_on 'qt'      => :optional
+  depends_on 'openni'  => :optional
   depends_on :libpng
 
   # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
@@ -52,6 +54,7 @@ class Opencv < Formula
     args << '-DWITH_QT=ON' if build.with? 'qt'
     args << '-DWITH_TBB=ON' if build.with? 'tbb'
     args << '-DWITH_OPENCL=ON' if build.with? 'opencl'
+    args << '-DWITH_OPENNI=ON' if build.with? 'openni'
 
     # The CMake `FindPythonLibs` Module is dumber than a bag of hammers when
     # more than one python installation is available---for example, it clings
@@ -99,3 +102,21 @@ class Opencv < Formula
     EOS
   end
 end
+
+# If openni was installed using homebrew, look for it on the proper path
+__END__
+diff --git a/cmake/OpenCVFindOpenNI.cmake b/cmake/OpenCVFindOpenNI.cmake
+index 7541868..f1455e8 100644
+--- a/cmake/OpenCVFindOpenNI.cmake
++++ b/cmake/OpenCVFindOpenNI.cmake
+@@ -26,8 +26,8 @@ if(WIN32)
+         find_library(OPENNI_LIBRARY "OpenNI64" PATHS $ENV{OPEN_NI_LIB64} DOC "OpenNI library")
+     endif()
+ elseif(UNIX OR APPLE)
+-    find_file(OPENNI_INCLUDES "XnCppWrapper.h" PATHS "/usr/include/ni" "/usr/include/openni" DOC "OpenNI c++ interface header")
+-    find_library(OPENNI_LIBRARY "OpenNI" PATHS "/usr/lib" DOC "OpenNI library")
++    find_file(OPENNI_INCLUDES "XnCppWrapper.h" PATHS "#{HOMEBREW_PREFIX}/include/ni" "/usr/include/ni" "/usr/include/openni" DOC "OpenNI c++ interface header")
++    find_library(OPENNI_LIBRARY "OpenNI" PATHS "#{HOMEBREW_PREFIX}/lib" "/usr/lib" DOC "OpenNI library")
+ endif()
+
+ if(OPENNI_LIBRARY AND OPENNI_INCLUDES)
