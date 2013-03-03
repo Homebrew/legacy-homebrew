@@ -6,9 +6,10 @@ class Qt < Formula
   sha1 'f5880f11c139d7d8d01ecb8d874535f7d9553198'
 
   bottle do
-    sha1 'a5f5efa78a682bf59ae9458b89a17513e912d272' => :mountainlion
-    sha1 'ae790ff205b90867f11c598d6e1f1b2a141fce14' => :lion
-    sha1 '4ad517d67b35668fb0f18d10ddff323de4ba6840' => :snowleopard
+    revision 1
+    sha1 '7fb679119b8b463055849dea791cc7fca62c62d1' => :mountain_lion
+    sha1 'b456ff5f8d18fc53b4546119d00d8ff0dda92f90' => :lion
+    sha1 '920992e5059a5c816b4eb245597fc028ff6b09ae' => :snow_leopard
   end
 
   head 'git://gitorious.org/qt/qt.git', :branch => 'master'
