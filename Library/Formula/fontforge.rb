@@ -116,4 +116,9 @@ class Fontforge < Formula
     s += python_caveats unless build.without? "python"
     return s
   end
+
+  def patches
+    # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
+    "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
+  end
 end
