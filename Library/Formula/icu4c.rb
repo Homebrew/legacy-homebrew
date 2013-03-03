@@ -7,10 +7,10 @@ class Icu4c < Formula
   sha1 '9a3369c00a8be8eff935d2893849ad2eb246c0ef'
 
   bottle do
-    revision 1
-    sha1 '0ec81beb069eeea0e3c2fb5a1193607084de2a7f' => :mountainlion
-    sha1 '280d2010c9f467a849366b0b20e5368297333afd' => :lion
-    sha1 '3789775bb60069eb62abc972d63c7f3baffe2883' => :snowleopard
+    revision 2
+    sha1 '34c2ab788c5ca698c1902d3d6c38db0461f8b100' => :mountain_lion
+    sha1 '899afa2267843f7204583884885f2c05f8189ddc' => :lion
+    sha1 'a54cbdd33dbdcb0fd8ed2441580e91e8ff114640' => :snow_leopard
   end
 
   keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
