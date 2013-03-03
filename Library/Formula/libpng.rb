@@ -10,9 +10,10 @@ class Libpng < Formula
   option :universal
 
   bottle do
-    sha1 '382eb757c38a4c326410a42deab8b4a8c22a6c13' => :mountainlion
-    sha1 'deb8a3143e61d0d1123781974d23a89e10ede779' => :lion
-    sha1 '4a72aa9046feecec944de5063834f2613289db5c' => :snowleopard
+    revision 1
+    sha1 '7aea90896440277ef84dfaf35cc9f08cfa024331' => :mountain_lion
+    sha1 '8cb9f898522ea356a8dbd8dca13a8ede31f9140c' => :lion
+    sha1 'fc51e3ebca7b1b3d57c54957e10c22e2900585f3' => :snow_leopard
   end
 
   def install
