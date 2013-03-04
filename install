@@ -164,7 +164,7 @@ Dir.chdir HOMEBREW_PREFIX do
     # pipefail to cause the exit status from curl to propogate if it fails
     # we use -k for curl because Leopard has a bunch of bad SSL certificates
     curl_flags = "fsSL"
-    curl_flags << "k" if macos_version == 10.5
+    curl_flags << "k" if macos_version <= 10.5
     system "/bin/bash -o pipefail -c '/usr/bin/curl -#{curl_flags} https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
   end
 end
