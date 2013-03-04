@@ -1,5 +1,7 @@
 require 'cmd/tap'
 require 'cmd/untap'
+require 'formula'
+require 'rack'
 
 module Homebrew extend self
 
@@ -142,12 +144,15 @@ end
 class Report < Hash
 
   def dump
+    @hint_log = nil
+    @hint_update = nil
     # Key Legend: Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R)
-
     dump_formula_report :A, "New Formulae"
-    dump_formula_report :M, "Updated Formulae"
+    dump_formula_report :M, "Modified Formulae"
     dump_formula_report :D, "Deleted Formulae"
     dump_formula_report :R, "Renamed Formulae"
+    oh1 "Legend:"
+    puts "#{@hint_log}#{@hint_update}"
 #    dump_new_commands
 #    dump_deleted_commands
   end
@@ -179,10 +184,42 @@ class Report < Hash
   end
 
   def dump_formula_report key, title
-    formula = select_formula(key)
-    unless formula.empty?
+    formulae = select_formula(key)
+    # Because formulae can be something like "homebrew/dupes/gcc" or "wget",
+    # we have to match the same for the Formula.installed:
+    installed = Formula.installed.map{ |f| f.tap == 'mxcl/master' ? f.name : "#{f.tap}/#{f.name}" }
+    # DIY installs and older (remove formulae) are not listed by
+    # Formula.installed, but we want them here, too:
+    racknames_without_formula = Rack.all.reject do |r|
+      begin
+        r.formula
+      rescue FormulaUnavailableError
+        false
+      end
+    end.map{ |r| r.fname }
+    installed += racknames_without_formula
+
+    # Outdated only makes sense for modified (git flag "M") formulae.
+    outdated = if key == :M then
+      # Do the name mapping for taps and check which formulae are in the outdated_brews
+      # (see outdated.rb for `outdated_brews`)
+      old = outdated_brews.map{ |f| f.tap == 'mxcl/master' ? f.name : "#{f.tap}/#{f.name}" }
+      formulae.select { |f| old.include?(f) || racknames_without_formula.include?(f) }
+    else
+      []
+    end
+
+    unless formulae.empty?
       ohai title
-      puts_columns formula
+      # Formulae, which are in installed get a *
+      # Version bumps are green and modified ones blue.
+      puts_columns formulae, :star=>installed, :green=>outdated, :blue=>installed.reject{ |f| outdated.include?(f) }
+      if @hint_log.nil? && formulae.any? { |f| installed.include?(f) }
+        @hint_log = "*) Installed. See the #{Tty.blue_color}change-log#{Tty.reset}: brew log <formula>"
+      end
+      unless @hint_update.nil? && outdated.empty?
+        @hint_update = "\nor install the #{Tty.green}newer version available#{Tty.reset}: brew upgrade <formula>"
+      end
     end
   end
 

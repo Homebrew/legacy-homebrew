@@ -1,3 +1,7 @@
+require 'formula'
+require 'rack'
+require 'keg'
+
 module Homebrew extend self
   def list
 
@@ -8,12 +12,39 @@ module Homebrew extend self
     # Things below use the CELLAR, which doesn't until the first formula is installed.
     return unless HOMEBREW_CELLAR.exist?
 
-    if ARGV.include? '--versions'
-      list_versions
-    elsif ARGV.named.empty?
-      ENV['CLICOLOR'] = nil
-      exec 'ls', *ARGV.options_only << HOMEBREW_CELLAR
-    elsif ARGV.verbose? or not $stdout.tty?
+    if ARGV.include?('--versions') || ARGV.named.empty?
+      legend = []
+
+      if ARGV.include? '--color'
+        outdated = outdated_brews.map{ |b| b.name }
+        linked   = Rack.linked_but_keg_only.map{ |r| r.fname }
+        unlinked = Rack.unlinked_but_not_keg_only.map{ |r| r.fname }
+        legend << "#{Tty.green}outdated#{Tty.reset}" unless outdated.empty?
+        legend << "#{Tty.yellow_color}linked with --force#{Tty.reset}" unless linked.empty?
+        legend << "#{Tty.red_color}unlinked#{Tty.reset}" unless unlinked.empty?
+      else
+        outdated = []
+        linked = []
+        unlinked = []
+      end
+
+      if ARGV.include? '--versions'
+        name_and_versions = list_versions
+        outdated = name_and_versions.select{ |f| outdated.include?(f[:name]) }
+        linked   = name_and_versions.select{ |f| linked.include?(f[:name]) }
+        unlinked = name_and_versions.select{ |f| unlinked.include?(f[:name]) }
+        puts_columns( name_and_versions.map{ |f| "#{f[:name]} #{f[:versions]*' '}" },
+                      :green=>outdated.map{ |f| "#{f[:name]} #{f[:versions]*' '}" },
+                      :yellow=>linked.map{ |f| "#{f[:name]} #{f[:versions]*' '}" },
+                      :red=>unlinked.map{ |f| "#{f[:name]} #{f[:versions]*' '}" } )
+      elsif ARGV.named.empty?
+        puts_columns( Rack.all_fnames,
+                      :green=>outdated,
+                      :yellow=>linked,
+                      :red=>unlinked )
+      end
+      oh1 "Legend: " + legend.join(" - ") if !legend.empty? && $stdout.tty?
+    elsif ARGV.verbose? || !$stdout.tty?
       exec "find", *ARGV.kegs + %w[-not -type d -print]
     else
       ARGV.kegs.each{ |keg| PrettyListing.new keg }
@@ -43,9 +74,9 @@ private
       HOMEBREW_CELLAR.children.select{ |pn| pn.directory? }
     else
       ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
-    end.each do |d|
+    end.map do |d|
       versions = d.children.select{ |pn| pn.directory? }.map{ |pn| pn.basename.to_s }
-      puts "#{d.basename} #{versions*' '}"
+      {:name=>d.basename.to_s, :versions=>versions}
     end
   end
 end

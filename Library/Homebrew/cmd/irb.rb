@@ -1,5 +1,6 @@
 require 'formula'
 require 'keg'
+require 'rack'
 require 'irb'
 
 class Symbol

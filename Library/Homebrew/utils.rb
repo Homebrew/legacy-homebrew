@@ -5,9 +5,13 @@ require 'macos'
 class Tty
   class <<self
     def blue; bold 34; end
+    def blue_color; color 34; end  # without bold. We can't break API, so we append _color
     def white; bold 39; end
+    def white_color; color 39; end
     def red; underline 31; end
+    def red_color; color 31; end
     def yellow; underline 33 ; end
+    def yellow_color; color 33; end
     def reset; escape 0; end
     def em; underline 39; end
     def green; color 92 end
@@ -130,23 +134,81 @@ def curl *args
   safe_system curl, *args
 end
 
-def puts_columns items, star_items=[]
+# Print items in columns on Tty or else output just a list.
+# For items _also_ in the star list, a "*" is appended to each.
+# If an item is in any of the other lists, special Tty control chars will
+# sourround that item. (bold is not supported. Let's reserve bold for
+# captions)
+def puts_columns items, opts={ :star=>[], :green=>[], :red=>[], :blue=>[], :white=>[], :yellow=>[], :em=>[] }
   return if items.empty?
-
-  if star_items && star_items.any?
-    items = items.map{|item| star_items.include?(item) ? "#{item}*" : item}
-  end
+  opts.each{ |k,v| raise "Invalid color #{k} for puts_columns:" unless [:star, :green, :red, :blue, :white, :yellow, :em].include? k }
+  # Ensure default options and that the things in there are strings.
+  star_items = opts[:star] || []
+  # Map :red to :red_color etc., because Tty uses :red to show an underline, too.
+  color_items = { :green=>opts[:green] || [],
+                  :red_color=>opts[:red] || [],
+                  :blue_color=>opts[:blue] || [],
+                  :white_color=>opts[:white] || [],
+                  :yellow_color=>opts[:yellow] || [],
+                  :em=>opts[:em] || [] }
+  star_items.map!{ |item| item.to_s }
+  color_items.each{ |k,v| v.map!{|i| i.to_s} }
 
   if $stdout.tty?
+    # Because we add things like padding, color and stars, we use
+    # pairs of [original, modified] for each item.
+    pairs = items.map do |item|
+      star_items.include?(item.to_s) ? [item.to_s, "#{item}*"] : [item.to_s, item.to_s]
+    end
     # determine the best width to display for different console sizes
     console_width = `/bin/stty size`.chomp.split(" ").last.to_i
     console_width = 80 if console_width <= 0
-    longest = items.sort_by { |item| item.length }.last
-    optimal_col_width = (console_width.to_f / (longest.length + 2).to_f).floor
+    longest_len = pairs.sort_by { |pair| pair[1].length }.last[1].length
+    optimal_col_width = (console_width.to_f / (longest_len + 1).to_f).floor
     cols = optimal_col_width > 1 ? optimal_col_width : 1
+    rows = (pairs.length / cols.to_f).ceil
 
-    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w"){|io| io.puts(items) }
+    # Add some color if the pair[0] is also in one of the lists of color_items,
+    pairs.map do |pair|
+      color_items.each do |color, items_to_color|
+        begin
+          pair[1] = Tty.send(color)+pair[1]+Tty.reset if items_to_color.include?(pair[0])
+        rescue NoMethodError; end
+          pair
+      end
+    end unless color_items.empty?
+
+    # Sort column-wise
+    transposed_pairs = []
+    rows.times do |r|
+      cols.times do |c|
+        idx = r+(c*rows)
+        if idx >= pairs.length
+          transposed_pairs << nil
+        else
+          transposed_pairs << pairs[idx]
+        end
+      end
+    end
+
+    # Pad to the right side of pair[1] (but not on the last pair in each row)
+    transposed_pairs.each_slice(cols) do |row|
+      row[0..-2].each do |pair|
+        next if pair.nil?
+        # Add padding and compensate for the length of the invisble chars
+        # which may be in pair[1] but not in pair[0]
+        compensate = pair[1].length - pair[0].length
+        compensate -= 1 if star_items.include?(pair[0])
+        pair[1] = pair[1].ljust(longest_len+compensate+1)
+      end
+    end
+
+    transposed_pairs.each_slice(cols) do |row|
+      row.each { |pair| print pair[1] unless pair.nil? }
+      print "\n"
+    end
   else
+    # Don't fuck up scripts and shell piping:
     puts items
   end
 end

@@ -239,7 +239,16 @@ class Pathname
   end
 
   def subdirs
-    children.select{ |child| child.directory? }
+    if directory?
+      # This "p" is a work-a-round because right now our Keg
+      # class inherits directly from Pathname, and Ruby's Pathname#children
+      # internally uses self.class.new, which makes the children of Keg a
+      # keg too. But then the Keg#initilize raises an exception.
+      p = Pathname.new(self.to_s)
+      p.children.select{ |child| child.directory? }
+    else
+      []
+    end
   end
 
   def resolved_path
