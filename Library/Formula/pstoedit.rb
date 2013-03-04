@@ -6,6 +6,7 @@ class Pstoedit < Formula
   sha1 '426f3746ecb441caa0db401d5880e1ac04a399d5'
 
   depends_on 'pkg-config' => :build
+  depends_on 'libtool' => :build
   depends_on 'plotutils'
   depends_on 'ghostscript'
   depends_on 'imagemagick'
