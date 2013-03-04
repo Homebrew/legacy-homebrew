@@ -2,9 +2,9 @@ require 'formula'
 
 class Libffi < Formula
   homepage 'http://sourceware.org/libffi/'
-  url 'http://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.11.tar.gz'
-  mirror 'ftp://sourceware.org/pub/libffi/libffi-3.0.11.tar.gz'
-  sha1 'bff6a6c886f90ad5e30dee0b46676e8e0297d81d'
+  url 'http://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.12.tar.gz'
+  mirror 'ftp://sourceware.org/pub/libffi/libffi-3.0.12.tar.gz'
+  sha1 '463dcb4ae9aea4c52bba12b67fbe4d91ed1e21fd'
 
   keg_only :provided_by_osx, "Some formulae require a newer version of libffi."
 
