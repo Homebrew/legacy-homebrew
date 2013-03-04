@@ -196,14 +196,16 @@ class Cmd
   end
 end
 
-####################################################################### sanity
-abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
+if __FILE__ == $PROGRAM_NAME
+  ##################################################################### sanity
+  abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
 
-case ENV['HOMEBREW_CC'].chuzzle when 'cc', nil
-  # those values are not allowed
-  ENV['HOMEBREW_CC'] = 'clang'
+  case ENV['HOMEBREW_CC'].chuzzle when 'cc', nil
+    # those values are not allowed
+    ENV['HOMEBREW_CC'] = 'clang'
+  end
+
+  ####################################################################### main
+  cmd = Cmd.new($0, ARGV)
+  exec "xcrun", cmd.tool, *cmd.args
 end
-
-######################################################################### main
-cmd = Cmd.new($0, ARGV)
-exec "xcrun", cmd.tool, *cmd.args
