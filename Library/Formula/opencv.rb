@@ -17,7 +17,7 @@ class Opencv < Formula
   option 'with-qt',  'Build the Qt4 backend to HighGUI'
   option 'with-tbb', 'Enable parallel code in OpenCV using Intel TBB'
   option 'with-opencl', 'Enable gpu code in OpenCV using OpenCL'
-  option 'with-openni', 'Enable support for OpenNI. brew tap totakke/openni'
+  option 'with-openni', 'Enable support for OpenNI.'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -28,7 +28,7 @@ class Opencv < Formula
   depends_on 'jasper'  => :optional
   depends_on 'tbb'     => :optional
   depends_on 'qt'      => :optional
-  depends_on 'openni'  => :optional
+  depends_on 'totakke/openni/openni' if build.with? 'openni'
   depends_on :libpng
 
   # Can also depend on ffmpeg, but this pulls in a lot of extra stuff that
