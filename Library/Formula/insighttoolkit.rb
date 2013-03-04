@@ -8,6 +8,7 @@ class Insighttoolkit < Formula
   head 'git://itk.org/ITK.git'
 
   option 'examples', 'Compile and install various examples'
+  option 'with-opencv-bridge', 'Include OpenCV bridge'
 
   depends_on 'cmake' => :build
 
@@ -18,6 +19,7 @@ class Insighttoolkit < Formula
     ]
     args << ".."
     args << '-DBUILD_EXAMPLES=' + ((build.include? 'examples') ? 'ON' : 'OFF')
+    args << '-DModule_ITKVideoBridgeOpenCV=' + ((build.include? 'with-opencv-bridge') ? 'ON' : 'OFF')
 
     mkdir 'itk-build' do
       system "cmake", *args
