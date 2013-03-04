@@ -11,6 +11,7 @@ class Ruby < Formula
   option 'with-suffix', 'Suffix commands with "20"'
   option 'with-doc', 'Install documentation'
   option 'with-tcltk', 'Install with Tcl/Tk support'
+  option 'with-dtrace', 'Enable DTrace support'
 
   if build.universal?
     depends_on 'autoconf' => :build
@@ -39,6 +40,7 @@ class Ruby < Formula
     args << "--with-arch=x86_64,i386" if build.universal?
     args << "--disable-tcltk-framework" <<  "--with-out-ext=tcl" <<  "--with-out-ext=tk" unless build.include? "with-tcltk"
     args << "--disable-install-doc" unless build.include? "with-doc"
+    args << "--enable-dtrace" if build.include? "with-dtrace"
 
     # OpenSSL is deprecated on OS X 10.8 and Ruby can't find the outdated
     # version (0.9.8r 8 Feb 2011) that ships with the system.
