@@ -83,6 +83,8 @@ class Wine < Formula
 
     ENV["LIBS"] = "-lGL -lGLU"
     ENV.append "CFLAGS", build32
+
+    # Still miscompiles at v1.5.25
     if ENV.compiler == :clang
       opoo <<-EOS.undent
         Clang currently miscompiles some parts of Wine. If you have gcc, you
@@ -90,6 +92,7 @@ class Wine < Formula
           brew install wine --use-gcc
       EOS
     end
+
     ENV.append "CXXFLAGS", "-D_DARWIN_NO_64_BIT_INODE"
     ENV.append "LDFLAGS", "#{build32} -framework CoreServices -lz -lGL -lGLU"
 
