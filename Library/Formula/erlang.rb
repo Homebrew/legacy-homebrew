@@ -29,6 +29,9 @@ class Erlang < Formula
   head 'https://github.com/erlang/otp.git', :branch => 'dev'
 
   bottle do
+    sha1 '69f32b53b5b0d1abab749e1316e35cc65e99edaf' => :mountain_lion
+    sha1 'e36c1ac452ff9b2e476bb620296db9182f814efa' => :lion
+    sha1 '37db8ac8b1bedcb820a24773fb31de6e1c967874' => :snow_leopard
   end
 
   # remove the autoreconf if possible
