@@ -74,7 +74,7 @@ module Homebrew extend self
   def info_formula f
     specs = []
     stable = "stable #{f.stable.version}" if f.stable
-    stable += " (bottled)" if f.bottle and MacOS.bottles_supported?
+    stable += " (bottled)" if f.bottle
     specs << stable if stable
     specs << "devel #{f.devel.version}" if f.devel
     specs << "HEAD" if f.head
