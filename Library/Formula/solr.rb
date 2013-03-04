@@ -16,7 +16,7 @@ class Solr < Formula
     if [ -z "$1" ]; then
       echo "Usage: $ solr path/to/config/dir"
     else
-      cd #{libexec}/example && java -Dsolr.solr.home=$1 -jar start.jar
+      cd #{libexec}/example && java -server $JAVA_OPTS -Dsolr.solr.home=$1 -jar start.jar
     fi
     EOS
   end
