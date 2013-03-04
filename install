@@ -76,6 +76,13 @@ def git
     s = `xcrun -find git 2>/dev/null`.chomp
     s if $? and not s.empty?
   end
+
+  # Github only supports HTTPS fetches on 1.7.10 or later:
+  # https://help.github.com/articles/https-cloning-errors
+  `#{@git} --version` =~ /git version (\d\.\d+\.\d+)/
+  return if $1 < "1.7.10"
+
+  @git
 end
 
 # The block form of Dir.chdir fails later if Dir.CWD doesn't exist which I
