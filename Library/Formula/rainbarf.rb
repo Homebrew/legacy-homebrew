@@ -2,8 +2,8 @@ require 'formula'
 
 class Rainbarf < Formula
   homepage 'https://github.com/creaktive/rainbarf'
-  url 'https://github.com/creaktive/rainbarf/archive/v0.6.tar.gz'
-  sha1 '46102cc165c3bd27bc7f798d2644b3c7e5be7f81'
+  url 'https://github.com/creaktive/rainbarf/archive/v0.7.tar.gz'
+  sha1 'a32ec6bf19432b99a2d2860401da68939f539b2e'
 
   def install
     system 'pod2man', 'rainbarf', 'rainbarf.1'
