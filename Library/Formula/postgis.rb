@@ -1,9 +1,9 @@
 require 'formula'
 
 class Postgis < Formula
-  homepage 'http://postgis.refractions.net'
-  url 'http://download.osgeo.org/postgis/source/postgis-2.0.2.tar.gz'
-  sha1 'a3fe6c4ea4c50dc3f586e804c863ba5eff23bf06'
+  homepage 'http://postgis.net'
+  url 'http://download.osgeo.org/postgis/source/postgis-2.0.3.tar.gz'
+  sha1 '825c1718cf2603fa0f1c2de802989dff7239f9bc'
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
