@@ -2,9 +2,9 @@ require 'formula'
 
 class GitSh < Formula
   homepage 'https://github.com/rtomayko/git-sh'
-  url 'https://github.com/rtomayko/git-sh/tarball/800769328ed381638c13e6eec2c3b21a58d74867'
-  version '20110918'
-  sha1 'a0ce834cdae9a970b969da230c4987fa8ac6394c'
+  url 'https://github.com/rtomayko/git-sh/tarball/bd044dfd33513665a75aa89467e1a6e9e04cb3d6'
+  version '201301241'
+  sha1 'a2b071417167a18d751c66236986086c7a21d43d'
 
   head 'https://github.com/rtomayko/git-sh.git'
 
