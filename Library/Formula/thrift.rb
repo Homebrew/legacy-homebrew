@@ -15,6 +15,11 @@ class Thrift < Formula
 
   depends_on 'boost'
 
+  # Includes are fixed in the upstream. Please remove this patch in the next version > 0.9.0
+  def patches
+    DATA
+  end
+
   def install
     # No reason for this step is known. On Lion at least the pkg.m4 doesn't
     # even exist. Turns out that it isn't needed on Lion either. Possibly it
@@ -57,3 +62,17 @@ class Thrift < Formula
     EOS
   end
 end
+__END__
+diff --git a/lib/cpp/src/thrift/transport/TSocket.h b/lib/cpp/src/thrift/transport/TSocket.h
+index ff5e541..65e6aea 100644
+--- a/lib/cpp/src/thrift/transport/TSocket.h
++++ b/lib/cpp/src/thrift/transport/TSocket.h
+@@ -21,6 +21,8 @@
+ #define _THRIFT_TRANSPORT_TSOCKET_H_ 1
+
+ #include <string>
++#include <sys/socket.h>
++#include <arpa/inet.h>
+
+ #include "TTransport.h"
+ #include "TVirtualTransport.h"

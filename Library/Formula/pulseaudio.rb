@@ -17,8 +17,7 @@ class Pulseaudio < Formula
   end
 
   depends_on 'pkg-config' => :build
-
-  depends_on 'intltool'
+  depends_on 'intltool' => :build
   depends_on 'libsndfile'
   depends_on 'speex'
   depends_on 'gdbm'

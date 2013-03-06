@@ -10,5 +10,8 @@ class Libev < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make install"
+
+    # Remove compatibility header to prevent conflict with libevent
+    (include/"event.h").unlink
   end
 end

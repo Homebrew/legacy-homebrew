@@ -101,7 +101,7 @@ class CompilerSelector
     @compilers = @compilers.reject do |cc|
       failure = @f.fails_with? cc
       next unless failure
-      failure.build >= cc.build
+      failure.build >= cc.build or not ARGV.homebrew_developer?
     end
 
     return if @compilers.empty? or @compilers.include? ENV.compiler
@@ -149,10 +149,10 @@ class CompilerSelector
         so that we can update the formula accordingly. Thanks!
         EOS
 
-      viable = @compilers.reject { |cc| @f.fails_with? cc }
+      viable = @compilers.reject { |c| @f.fails_with? c }
       unless viable.empty?
         warning += "\nIf it fails you can use "
-        options = viable.map { |cc| "--use-#{cc.name}" }
+        options = viable.map { |c| "--use-#{c.name}" }
         warning += "#{options*' or '} to try a different compiler."
       end
 

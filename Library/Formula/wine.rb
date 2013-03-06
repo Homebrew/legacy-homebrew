@@ -27,15 +27,18 @@ class Wine < Formula
     # updating too
     #  * http://wiki.winehq.org/Gecko
     #  * http://wiki.winehq.org/Mono
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.23.tar.bz2'
-    sha1 '8c99ea994fc76bdcce95ea377a6f68e6f1c0cdf9'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.25.tar.bz2'
+    sha1 'fdc0067cce2176577a61b693fcbbf98ec1d50f2a'
   end
 
   env :std
 
-  option :universal
+  # this tells Homebrew that dependencies must be built universal
+  def build.universal? ; true; end
 
   depends_on :x11
+  # note: we get freetype from :x11, but if the freetype formula has been installed
+  # separately and not built universal, it's going to get picked up and break the build
   depends_on 'jpeg'
   depends_on 'libicns'
   depends_on 'libtiff'
@@ -53,7 +56,7 @@ class Wine < Formula
   end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
-  # configure: libsane, libv4l, libgphoto2, liblcms, gstreamer-0.10, libcapi20, libgsm, libtiff
+  # configure: libsane, libv4l, libgphoto2, gstreamer-0.10, libcapi20, libgsm
 
   # Wine loads many libraries lazily using dlopen calls, so it needs these paths
   # to be searched by dyld.
@@ -80,6 +83,8 @@ class Wine < Formula
 
     ENV["LIBS"] = "-lGL -lGLU"
     ENV.append "CFLAGS", build32
+
+    # Still miscompiles at v1.5.25
     if ENV.compiler == :clang
       opoo <<-EOS.undent
         Clang currently miscompiles some parts of Wine. If you have gcc, you
@@ -87,6 +92,7 @@ class Wine < Formula
           brew install wine --use-gcc
       EOS
     end
+
     ENV.append "CXXFLAGS", "-D_DARWIN_NO_64_BIT_INODE"
     ENV.append "LDFLAGS", "#{build32} -framework CoreServices -lz -lGL -lGLU"
 
@@ -102,15 +108,6 @@ class Wine < Formula
               --x-lib=#{MacOS::X11.lib}]
     args << "--disable-win16" if MacOS.version == :leopard or ENV.compiler == :clang
 
-    if not build.universal?
-      opoo <<-EOS.undent
-        Not building a universal wine, you will only be able to run
-        applications built for win64! To get support for win32 build with:
-          brew install wine --universal
-
-      EOS
-      args << "--enable-win64"
-    end
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
 

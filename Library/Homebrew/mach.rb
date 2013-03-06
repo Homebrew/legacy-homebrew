@@ -3,6 +3,10 @@ module ArchitectureListExtension
     self.include? :i386 and self.include? :x86_64
   end
 
+  def ppc?
+    self.include? :ppc7400 or self.include? :ppc64
+  end
+
   def remove_ppc!
     self.delete :ppc7400
     self.delete :ppc64

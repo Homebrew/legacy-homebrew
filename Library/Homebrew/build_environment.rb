@@ -3,10 +3,14 @@ require 'set'
 class BuildEnvironment
   def initialize(*settings)
     @settings = Set.new(settings)
+    @procs = Set.new
   end
 
   def <<(o)
-    @settings << o
+    case o
+    when Proc then @procs << o
+    else @settings << o
+    end
     self
   end
 
@@ -19,12 +23,11 @@ class BuildEnvironment
   end
 
   def modify_build_environment(context=nil)
-    p = @settings.find { |s| Proc === s }
-    ENV.instance_exec(context, &p) unless p.nil?
+    @procs.each { |p| ENV.instance_exec(context, &p) }
   end
 
   def _dump(*)
-    @settings.dup.reject { |s| Proc === s }.join(":")
+    @settings.to_a.join(":")
   end
 
   def self._load(s)

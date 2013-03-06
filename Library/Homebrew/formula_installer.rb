@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'exceptions'
 require 'formula'
 require 'keg'
@@ -6,12 +8,9 @@ require 'bottles'
 require 'caveats'
 
 class FormulaInstaller
-  attr :f
-  attr :tab, true
-  attr :options, true
-  attr :show_summary_heading, true
-  attr :ignore_deps, true
-  attr :show_header, true
+  attr_reader :f
+  attr_accessor :tab, :options, :ignore_deps
+  attr_accessor :show_summary_heading, :show_header
 
   def initialize ff
     @f = ff
@@ -93,9 +92,17 @@ class FormulaInstaller
 
     @@attempted << f
 
-    if pour_bottle?
-      pour
-    else
+    poured_bottle = false
+    begin
+      if pour_bottle?
+        pour
+        poured_bottle = true
+      end
+    rescue
+      opoo "Bottle installation failed: building from source."
+    end
+
+    unless poured_bottle
       build
       clean
     end
@@ -222,7 +229,7 @@ class FormulaInstaller
     if f.keg_only?
       begin
         Keg.new(f.prefix).optlink
-      rescue Exception => e
+      rescue Exception
         onoe "Failed to create: #{f.opt_prefix}"
         puts "Things that depend on #{f} will probably not build."
       end
@@ -305,7 +312,7 @@ class FormulaInstaller
 
     Tab.create(f, build_argv).write # INSTALL_RECEIPT.json
 
-  rescue Exception => e
+  rescue Exception
     ignore_interrupts do
       # any exceptions must leave us with nothing installed
       f.prefix.rmtree if f.prefix.directory?

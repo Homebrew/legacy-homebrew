@@ -7,8 +7,8 @@ class Libcroco < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
+  depends_on 'intltool' => :build
   depends_on 'glib'
-  depends_on 'intltool'
 
   def install
     ENV.libxml2

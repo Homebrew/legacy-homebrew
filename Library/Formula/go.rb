@@ -5,13 +5,19 @@ class Go < Formula
   url 'http://go.googlecode.com/files/go1.0.3.src.tar.gz'
   version '1.0.3'
   sha1 '1a67293c10d6c06c633c078a7ca67e98c8b58471'
-
-  head 'http://go.googlecode.com/hg/'
+  head 'https://go.googlecode.com/hg/'
 
   skip_clean 'bin'
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
+
+  if build.head?
+    fails_with :clang do
+      build 425
+      cause "clang: error: no such file or directory: 'libgcc.a'"
+    end
+  end
 
   def install
     # install the completion scripts
@@ -20,19 +26,23 @@ class Go < Formula
 
     if build.include? 'cross-compile-all'
       targets = [
-        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
         ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
         ['freebsd', ['386', 'amd64'],        { :cgo => false }],
 
         ['openbsd', ['386', 'amd64'],        { :cgo => false }],
 
         ['windows', ['386', 'amd64'],        { :cgo => false }],
+
+        # Host platform (darwin/amd64) must always come last
+        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
       ]
     elsif build.include? 'cross-compile-common'
       targets = [
-        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
         ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
         ['windows', ['386', 'amd64'],        { :cgo => false }],
+
+        # Host platform (darwin/amd64) must always come last
+        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
       ]
     else
       targets = [

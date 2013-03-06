@@ -109,7 +109,7 @@ module MacOS::Xcode extend self
       "4.0"
     else
       case (MacOS.clang_version.to_f * 10).to_i
-      when 0       then :dunno
+      when 0       then "dunno"
       when 1..14   then "3.2.2"
       when 15      then "3.2.4"
       when 16      then "3.2.5"

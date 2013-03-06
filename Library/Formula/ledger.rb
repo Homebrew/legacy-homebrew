@@ -9,7 +9,6 @@ class Ledger < Formula
 
   option 'debug', 'Build with debugging symbols enabled'
   option 'python', 'Enable Python support'
-  option 'time-colon', 'Apply time-colon patch'
 
   depends_on 'gettext'
   depends_on 'boost'
@@ -19,12 +18,6 @@ class Ledger < Formula
   depends_on 'expat'
   depends_on 'cmake' if build.head?
   depends_on 'libofx' => :optional unless build.head?
-
-  def patches
-    p = {:p1 => []}
-    p[:p1] << 'https://raw.github.com/gist/856799/66158f9f3b732d658f5d0784407ec63a0be33746/ledger_time_colon.patch' if build.include? 'time-colon'
-    p
-  end
 
   def install
     # find Homebrew's libpcre

@@ -19,7 +19,7 @@ class Povray < Formula
   version '3.7.0.RC6'
   sha256 '374957bdb90fb7be5f36f839b3f04ab0a4340f6e8cf369f658d6592a342803e3'
 
-  depends_on NeedsLion.new
+  depends_on NeedsLion
   depends_on :libpng
   depends_on 'boost'
   depends_on 'jpeg'
@@ -28,10 +28,10 @@ class Povray < Formula
 
   def patches
     {:p0 => [
-      "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-boost-1.50.diff",
-      "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-configure-stat.diff",
-      "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-lseek64.diff",
-      "http://svn.macports.org/repository/macports/trunk/dports/graphics/povray/files/patch-vfe-uint.diff"
+      "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-boost-1.50.diff",
+      "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-configure-stat.diff",
+      "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-lseek64.diff",
+      "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-vfe-uint.diff"
     ]}
   end
 
@@ -41,7 +41,7 @@ class Povray < Formula
     inreplace [ 'VERSION', 'configure' ], '3.7.0.RC5', '3.7.0.RC6'
 
     # include the boost system library to resolve compilation conflicts
-    ENV["LIBS"] = "-lboost_system-mt"
+    ENV["LIBS"] = "-lboost_system-mt -lboost_thread-mt"
 
     args = [
       "COMPILED_BY=homebrew",

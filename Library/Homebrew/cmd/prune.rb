@@ -9,9 +9,9 @@ module Homebrew extend self
     $d = 0
     dirs = []
 
-    Keg::PRUNEABLE_DIRECTORIES.each do |path|
-      next unless path.directory?
-      path.find do |path|
+    Keg::PRUNEABLE_DIRECTORIES.each do |dir|
+      next unless dir.directory?
+      dir.find do |path|
         path.extend ObserverPathnameExtension
         if path.symlink?
           unless path.resolved_path_exists?

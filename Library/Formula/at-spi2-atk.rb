@@ -10,7 +10,7 @@ class AtSpi2Atk < Formula
   depends_on 'at-spi2-core'
   depends_on 'atk'
 
-  # https://bugs.freedesktop.org/show_bug.cgi?id=60209
+  # Suppress a "non-void function should return a value" error, fixed upstream
   def patches; DATA end
 
   def install
@@ -30,7 +30,7 @@ index be247e4..62566b8 100644
              {
                g_static_rec_mutex_unlock (&cache_mutex);
 -              return;
-+              return FALSE;
++              return TRUE;
              }
  
            g_object_ref (child);

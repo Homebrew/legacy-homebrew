@@ -5,6 +5,7 @@ class Streamripper < Formula
   url 'http://downloads.sourceforge.net/sourceforge/streamripper/streamripper-1.64.6.tar.gz'
   sha1 'bc8a8d3ad045e0772ca691d2063c39efcc0dca45'
 
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
 
   fails_with :llvm do

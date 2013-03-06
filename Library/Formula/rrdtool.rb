@@ -7,6 +7,7 @@ class Rrdtool < Formula
 
   option 'lua', "Compile with lua support"
 
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'pango'
 

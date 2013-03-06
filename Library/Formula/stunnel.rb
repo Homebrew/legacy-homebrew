@@ -15,7 +15,7 @@ class Stunnel < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--disable-libwrap",
                           "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}"
+                          "--sysconfdir=#{etc}",
                           "--mandir=#{man}"
     system "make install"
   end

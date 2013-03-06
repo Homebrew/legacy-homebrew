@@ -8,14 +8,8 @@ class Rbenv < Formula
   head 'https://github.com/sstephenson/rbenv.git'
 
   def install
+    inreplace 'libexec/rbenv', '/usr/local', HOMEBREW_PREFIX
     prefix.install Dir['*']
-
-    var_lib = "#{HOMEBREW_PREFIX}/var/lib/rbenv/"
-    ['plugins', 'versions'].each do |dir|
-      var_dir = "#{var_lib}/#{dir}"
-      mkdir_p var_dir
-      ln_sf var_dir, "#{prefix}/#{dir}"
-    end
   end
 
   def caveats; <<-EOS.undent
@@ -23,7 +17,7 @@ class Rbenv < Formula
       if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
     To use Homebrew's directories rather than ~/.rbenv add to your profile:
-      export RBENV_ROOT=#{opt_prefix}
+      export RBENV_ROOT=#{var}/rbenv
     EOS
   end
 end
