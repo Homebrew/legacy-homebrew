@@ -78,7 +78,7 @@ Note that these flags should only appear after a command.
     The options `--set-name` and `--set-version` each take an argument and allow
     you to explicitly set the name and version of the package you are creating.
 
-  * `deps [--1] [-n] [--tree] [--all]` <formula>:
+  * `deps [--1] [-n] [--tree] [--all] [--installed]` <formula>:
     Show <formula>'s dependencies.
 
     If `--1` is passed, only show dependencies one level down, instead of
