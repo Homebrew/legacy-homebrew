@@ -4,6 +4,7 @@ class Hdf5 < Formula
   homepage 'http://www.hdfgroup.org/HDF5'
   url 'http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.10/src/hdf5-1.8.10-patch1.tar.bz2'
   sha1 '458cb91496e313debd55d52a7f89459a5469cceb'
+  version '1.8.10-patch1'
 
   # TODO - warn that these options conflict
   option :universal
