@@ -1,7 +1,7 @@
 require 'formula'
 
 class Gpgme < Formula
-  homepage 'http://www.gnupg.org/gpgme.html'
+  homepage 'http://www.gnupg.org/related_software/gpgme/'
   url 'ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.4.0.tar.bz2'
   sha1 '897e36c1d3f6595d69fb37c820aaa162daa0e369'
 
