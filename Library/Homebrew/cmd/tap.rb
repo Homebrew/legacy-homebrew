@@ -24,27 +24,43 @@ module Homebrew extend self
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
     raise "Already tapped!" if tapd.directory?
-    abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
+
+    # Work out whether we want to look at 'repo' or 'homebrew-repo' first.
+    `curl -Ifso /dev/null https://github.com/#{repouser}/homebrew-#{repo}`
+    if $?.success?
+      repo = 'homebrew-' + repo
+    else
+      `curl -Ifso /dev/null https://github.com/#{repouser}/#{repo}`
+      unless $?.success?
+        abort <<-EOS.undent
+           Neither #{repouser}/#{repo} nor #{repouser}/homebrew-#{repo} seems to be a valid repo.
+           Please check the tap name and try again.
+        EOS
+      end
+    end
+
+    abort unless system "git clone https://github.com/#{repouser}/#{repo} #{tapd}"
 
     files = []
     tapd.find_formula{ |file| files << tapd.basename.join(file) }
     link_tap_formula(files)
     puts "Tapped #{files.count} formula"
 
-    # Figure out if this repo is private
-    # curl will throw an exception if the repo is private (Github returns a 404)
-    begin
-      curl('-Ifso', '/dev/null', "https://api.github.com/repos/#{repouser}/homebrew-#{repo}")
-    rescue
-      puts
-      puts "It looks like you tapped a private repository"
-      puts "In order to not input your credentials every time"
-      puts "you can use git HTTP credential caching or issue the"
-      puts "following command:"
-      puts
-      puts "   cd #{tapd}"
-      puts "   git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git"
-      puts
+    # Figure out if this repo is private.
+    # Github returns a 404, so curl's return status will be failure.
+    `curl -Ifso /dev/null https://api.github.com/repos/#{repouser}/#{repo}`
+    unless $?.success?
+      abort <<-EOS.undent
+
+        It looks like you tapped a private repository.
+        In order to not input your credentials every time
+        you can use git HTTP credential cachine or issue the
+        following command:
+
+            cd #{tapd}
+            git remote set-url origin git://github.com/#{repouser}/#{repo}.git
+
+      EOS
     end
   end
 
@@ -102,7 +118,7 @@ module Homebrew extend self
   private
 
   def tap_args
-    ARGV.first =~ %r{^(\S+)/(homebrew-)?(\w+)$}
+    ARGV.first =~ %r{^(\S+)/(homebrew-)?([-\w]+)$}
     raise "Invalid usage" unless $1 and $3
     [$1, $3]
   end
