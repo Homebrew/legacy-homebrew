@@ -14,7 +14,7 @@ class Gmp < Formula
       ENV.append 'ABI', '32'
     end
 
-    system "./configure --prefix=#{prefix} --enable-cxx"
+    system "./configure", "--prefix=#{prefix}", "--enable-cxx"
     system "make"
     system "make check"
     ENV.deparallelize
