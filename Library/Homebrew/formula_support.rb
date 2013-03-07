@@ -79,13 +79,14 @@ end
 
 class Bottle < SoftwareSpec
   attr_writer :url
-  attr_reader :revision
+  attr_reader :revision, :root_url, :cellar
   # TODO: Can be removed when all bottles migrated to underscored cat symbols.
   attr_reader :cat_without_underscores
 
-  def initialize url=nil, version=nil
+  def initialize
     super
     @revision = 0
+    @cellar = '/usr/local/Cellar'
     @cat_without_underscores = false
   end
 
@@ -98,8 +99,6 @@ class Bottle < SoftwareSpec
         case val
         when nil
           @#{cksum}[MacOS.cat]
-        when String
-          @#{cksum}[:lion] = Checksum.new(:#{cksum}, val)
         when Hash
           key, value = val.shift
           @#{cksum}[value] = Checksum.new(:#{cksum}, key)
@@ -115,12 +114,21 @@ class Bottle < SoftwareSpec
     }
   end
 
-  def url val=nil
-    val.nil? ? @url : @url = val
+  def root_url val=nil
+    val.nil? ? @root_url : @root_url = val
   end
 
-  # Used in the bottle DSL to set @revision, but acts as an
+  def cellar val=nil
+    val.nil? ? @cellar : @cellar = val
+  end
+
+  def revision val=nil
+    val.nil? ? @revision : @revision = val
+  end
+
+  # Used in the old bottle DSL to set @revision, but acts as an
   # as accessor for @version to preserve the interface
+  # TODO: Can be removed when no bottles are using `version` any more.
   def version val=nil
     if val.nil?
       return @version ||= Version.parse(@url)

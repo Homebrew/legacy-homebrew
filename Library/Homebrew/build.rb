@@ -38,7 +38,7 @@ def main
   # Force any future invocations of sudo to require the user's password to be
   # re-entered. This is in-case any build script call sudo. Certainly this is
   # can be inconvenient for the user. But we need to be safe.
-  system "/usr/bin/sudo -k"
+  system "/usr/bin/sudo", "-k"
 
   install(Formula.factory($0))
 rescue Exception => e

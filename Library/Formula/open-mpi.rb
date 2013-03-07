@@ -6,8 +6,8 @@ class OpenMpi < Formula
   sha1 '38095d3453519177272f488d5058a98f7ebdbf10'
 
   devel do
-    url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7rc7.tar.bz2'
-    sha1 'c1fe29f686b92763c2e703ee04b8830d09ced39c'
+    url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7rc8.tar.bz2'
+    sha1 '38b6f2598a071311ae6f5ccaf13dffd6154ccfff'
   end
 
   # Reported upstream at version 1.6, both issues

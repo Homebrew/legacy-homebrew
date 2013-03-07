@@ -9,7 +9,11 @@ end
 
 module Homebrew extend self
   def deps
-    if ARGV.include? '--all'
+    if ARGV.include? '--installed'
+        Formula.installed.each do |f|
+          puts "#{f.name}: #{f.deps*' '}"
+        end
+    elsif ARGV.include? '--all'
       Formula.each do |f|
         puts "#{f.name}: #{f.deps*' '}"
       end

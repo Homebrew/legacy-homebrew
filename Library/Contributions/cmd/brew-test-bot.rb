@@ -198,8 +198,8 @@ class Test
     test "brew install --verbose --build-bottle #{formula}"
     return unless steps.last.status == :passed
     test "brew bottle #{formula}", true
-    bottle_version = bottle_new_version(formula_object)
-    bottle_filename = bottle_filename(formula_object, bottle_version)
+    bottle_revision = bottle_new_revision(formula_object)
+    bottle_filename = bottle_filename(formula_object, bottle_revision)
     test "brew uninstall #{formula}"
     test "brew install #{bottle_filename}"
     test "brew test #{formula}" if formula_object.test_defined?
