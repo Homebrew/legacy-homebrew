@@ -11,6 +11,7 @@ class Hdf5 < Formula
   option 'enable-cxx', 'Compile C++ bindings'
   option 'enable-threadsafe', 'Trade performance and C++ or Fortran support for thread safety'
   option 'enable-parallel', 'Compile parallel bindings'
+  option 'enable-fortran2003', 'Compile Fortran 2003 bindings. Requires enable-fortran.'
 
   depends_on 'szip'
   depends_on MPIDependency.new(:cc, :cxx, :f90) if build.include? "enable-parallel"
@@ -36,9 +37,10 @@ class Hdf5 < Formula
       if build.include? 'enable-cxx'
         args << '--enable-cxx'
       end
-      if build.include? 'enable-fortran'
+      if build.include? 'enable-fortran' or build.include? 'enable-fortran2003'
         args << '--enable-fortran'
         ENV.fortran
+        args << '--enable-fortran2003' if build.include? 'enable-fortran2003'
       end
     end
 
@@ -46,6 +48,7 @@ class Hdf5 < Formula
       ENV['CC'] = 'mpicc'
       ENV['FC'] = 'mpif90'
     end
+
     system "./configure", *args
     system "make install"
   end
