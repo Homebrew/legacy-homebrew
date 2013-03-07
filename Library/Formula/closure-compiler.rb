@@ -2,7 +2,6 @@ require 'formula'
 
 class ClosureCompiler < Formula
   homepage 'http://code.google.com/p/closure-compiler/'
-  # switched to archive over tags from git
   url 'https://code.google.com/p/closure-compiler/', :using => :git, :tag => 'v20130227'
   sha1 '0becbcb3b4f23162f4df50d2996e1a0765f75b75'
   version '20130227'
