@@ -39,6 +39,7 @@ class Gdal < Formula
   option 'complete', 'Use additional Homebrew libraries to provide more drivers.'
   option 'with-postgres', 'Specify PostgreSQL as a dependency.'
   option 'with-mysql', 'Specify MySQL as a dependency.'
+  option 'with-static-proj4', 'Link proj4 statically (for when libproj.dylib is not in a standard path).'
   option 'without-python', 'Build without Python support (disables a lot of tools).'
   option 'enable-opencl', 'Build with OpenCL acceleration.'
   option 'enable-armadillo', 'Build with Armadillo accelerated TPS transforms.'
@@ -181,6 +182,9 @@ class Gdal < Formula
       rasdaman
     ]
     args.concat unsupported_backends.map {|b| '--without-' + b} unless build.include? 'enable-unsupported'
+
+    # Static proj4 linking
+    args << "--with-static-proj4=#{HOMEBREW_PREFIX}" if build.include? 'with-static-proj4'
 
     # Database support.
     args << (postgres? ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : '--without-pg')
