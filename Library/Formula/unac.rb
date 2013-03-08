@@ -55,8 +55,7 @@ index 4a4eab6..9f25d50 100644
 
  AM_ICONV
 
--AC_CHECK_FUNCS(iconv_open,,AC_MSG_ERROR([
 +LIBS="$LIBS -liconv"
-+AC_CHECK_FUNCS(libiconv_open,,AC_MSG_ERROR([
+ AC_CHECK_FUNCS(iconv_open,,AC_MSG_ERROR([
  iconv_open not found try to install replacement from
  http://www.gnu.org/software/libiconv/
