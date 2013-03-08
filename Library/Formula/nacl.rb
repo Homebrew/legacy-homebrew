@@ -5,7 +5,10 @@ class Nacl < Formula
   url 'http://hyperelliptic.org/nacl/nacl-20110221.tar.bz2'
   sha1 '6007a6aee249f5a534ec53fddfc364601fba9629'
 
+  conflicts_with 'cnacl'
+
   def install
+    ohai "Compilation takes a long time; use `brew install cnacl` for faster builds" unless ARGV.verbose?
     system "./do" # This takes a while since it builds *everything*
 
     # NaCL has an odd compilation model (software by djb, who'da thunk it?)
