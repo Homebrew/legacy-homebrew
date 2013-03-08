@@ -2,8 +2,8 @@ require 'formula'
 
 class Igraph < Formula
   homepage 'http://igraph.sourceforge.net'
-  url 'http://downloads.sourceforge.net/sourceforge/igraph/igraph-0.6.tar.gz'
-  sha1 'd9a6e7c0462b5948ebfbf9f1d2685141f5867fe3'
+  url 'http://downloads.sourceforge.net/sourceforge/igraph/igraph-0.6.5.tar.gz'
+  sha1 'f1605c5592e8bf3c97473f7781e77b6608448f78'
 
   option :universal
 
