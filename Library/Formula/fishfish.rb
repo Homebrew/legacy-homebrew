@@ -21,6 +21,13 @@ class Fishfish < Formula
     system "make install"
   end
 
+  def patches
+    [
+      # Fix jobs command output without new line
+      "https://github.com/txgruppi/fish-shell/commit/97e071b3172513eff4aabe1a5bea43d6dea5b3ed?format=patch"
+    ]
+  end
+
   def test
     system "fish -c 'echo'"
   end
