@@ -1,5 +1,7 @@
 require 'formula'
 
+# 3.0.12 has a packaging error which causes GTK+, and possibly other
+# software, to fail to build; see https://github.com/mxcl/homebrew/issues/18329
 class Libffi < Formula
   homepage 'http://sourceware.org/libffi/'
   url 'http://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.11.tar.gz'
