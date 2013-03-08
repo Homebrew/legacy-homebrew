@@ -125,17 +125,6 @@ class Bottle < SoftwareSpec
   def revision val=nil
     val.nil? ? @revision : @revision = val
   end
-
-  # Used in the old bottle DSL to set @revision, but acts as an
-  # as accessor for @version to preserve the interface
-  # TODO: Can be removed when no bottles are using `version` any more.
-  def version val=nil
-    if val.nil?
-      return @version ||= Version.parse(@url)
-    else
-      @revision = val
-    end
-  end
 end
 
 
