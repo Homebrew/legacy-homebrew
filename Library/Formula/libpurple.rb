@@ -17,20 +17,31 @@ class Libpurple < Formula
   # https://github.com/mxcl/homebrew/issues/17129
   depends_on 'libgcrypt' => :build
 
+  option 'without-perl', 'Build libpurple without perl support'
+  option 'with-perl', 'Build libpurple with perl support (default unless OSX 10.6 or below)'
+
   def install
     # Just build the library, so disable all this UI stuff
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-gtkui",
-                          "--disable-consoleui",
-                          "--disable-dbus",
-                          "--without-x",
-                          "--disable-gstreamer",
-                          "--disable-vv",
-                          "--disable-meanwhile",
-                          "--disable-avahi",
-                          "--disable-perl",
-                          "--disable-doxygen"
+    options = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-gtkui
+      --disable-consoleui
+      --disable-dbus
+      --without-x
+      --disable-gstreamer
+      --disable-vv
+      --disable-meanwhile
+      --disable-avahi
+      --disable-doxygen
+    ]
+
+    if build.include? 'without-perl' or (!build.include?('with-perl') and MacOS.version <= :snow_leopard)
+      options << '--disable-perl'
+    end
+
+    system "./configure", *options
     system "make install"
   end
 end
