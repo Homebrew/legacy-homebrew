@@ -31,9 +31,7 @@ def built_as_bottle? f
 end
 
 def bottle_current? f
-  f.bottle and f.bottle.url \
-    and (not f.bottle.checksum.empty?) \
-    and (f.bottle.version == f.stable.version)
+  f.bottle and f.bottle.url and not f.bottle.checksum.empty?
 end
 
 def bottle_file_outdated? f, file

@@ -237,7 +237,7 @@ class RevisedBottleSpecTestBall < Formula
   sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
 
   bottle do
-    version 1
+    revision 1
     sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
     sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
