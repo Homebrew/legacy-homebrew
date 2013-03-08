@@ -15,6 +15,8 @@ class Parrot < Formula
   depends_on 'gmp' => :optional
   depends_on 'icu4c' => :optional
   depends_on 'pcre' => :optional
+  depends_on 'readline' => :optional
+  depends_on 'libffi' => :optional
 
   def install
     system "perl", "Configure.pl", "--prefix=#{prefix}",
