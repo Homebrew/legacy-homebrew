@@ -12,20 +12,28 @@ class Libpurple < Formula
   depends_on 'gnutls'
   depends_on 'libidn'
 
+  option 'perl', 'Build libpurple with perl support'
+
   def install
     # Just build the library, so disable all this UI stuff
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-avahi",
-                          "--disable-consoleui",
-                          "--disable-dbus",
-                          "--disable-doxygen",
-                          "--disable-gstreamer",
-                          "--disable-gtkui",
-                          "--disable-meanwhile",
-                          "--disable-vv",
-                          "--without-x",
-                          "--disable-perl"
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-avahi
+      --disable-consoleui
+      --disable-dbus
+      --disable-doxygen
+      --disable-gstreamer
+      --disable-gtkui
+      --disable-meanwhile
+      --disable-vv
+      --without-x
+    ]
+
+    args << '--disable-perl' unless build.include? 'perl'
+
+    system "./configure", *args
     system "make install"
   end
 end
