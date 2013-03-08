@@ -29,6 +29,11 @@ class Libgcrypt < Formula
                           "--prefix=#{prefix}",
                           "--disable-asm",
                           "--with-gpg-error-prefix=#{HOMEBREW_PREFIX}"
+
+    if build.universal?
+      system "curl 'https://trac.macports.org/export/56608/trunk/dports/devel/libgcrypt/files/config.h.ed' | ed - config.h"
+    end
+
     # Parallel builds work, but only when run as separate steps
     system "make", "CFLAGS=#{cflags}"
     system "make check"
