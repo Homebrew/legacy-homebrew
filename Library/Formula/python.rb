@@ -138,7 +138,8 @@ class Python < Formula
 
           # Fix 2)
           #   Remove brewed Python's hard-coded site-packages
-          sys.path.remove('#{site_packages_cellar}')
+          if '#{site_packages_cellar}' in sys.path:
+              sys.path.remove('#{site_packages_cellar}')
 
       # Fix 3)
       #   For all Pythons: Tell about homebrew's site-packages location.
