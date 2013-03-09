@@ -68,7 +68,7 @@ class FormulaText
   end
 
   def has_trailing_newline?
-    /.+\z/ =~ @text
+    /\Z\n/ =~ @text
   end
 end
 
@@ -112,7 +112,7 @@ class FormulaAuditor
       problem "'__END__' was found, but 'DATA' is not used"
     end
 
-    if f.text.has_trailing_newline?
+    unless f.text.has_trailing_newline?
       problem "File should end with a newline"
     end
   end
