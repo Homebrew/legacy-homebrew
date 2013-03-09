@@ -127,8 +127,7 @@ class << ENV
     paths << "#{HOMEBREW_PREFIX}/share/pkgconfig"
     # we put our paths before X because we dupe some of the X libraries
     paths << "#{MacSystem.x11_prefix}/lib/pkgconfig" << "#{MacSystem.x11_prefix}/share/pkgconfig" if x11?
-    # Mountain Lion no longer ships some .pcs; ensure we pick up our versions
-    paths << "#{HOMEBREW_REPOSITORY}/Library/ENV/pkgconfig/mountain_lion" if MacOS.version >= :mountain_lion
+    paths << "#{HOMEBREW_REPOSITORY}/Library/ENV/pkgconfig/#{MacOS.version}"
     paths.to_path_s
   end
 
