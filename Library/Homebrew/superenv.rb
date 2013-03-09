@@ -255,7 +255,7 @@ class << ENV
       fetch(key)
     elsif %w{CPPFLAGS CFLAGS LDFLAGS}.include? key
       class << (a = "")
-        attr :key, true
+        attr_accessor :key
         def + value
           ENV[key] = value
         end
