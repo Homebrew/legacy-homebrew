@@ -20,6 +20,7 @@ class R < Formula
   depends_on 'readline'
   depends_on 'libtiff'
   depends_on 'jpeg'
+  depends_on 'cairo'
   depends_on :x11
 
   depends_on 'valgrind' if build.include? 'with-valgrind'
