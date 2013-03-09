@@ -49,6 +49,7 @@ class << ENV
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
+    ENV['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
     ENV['HOMEBREW_CC'] = determine_cc
     ENV['HOMEBREW_CCCFG'] = determine_cccfg
     ENV['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
@@ -123,11 +124,12 @@ class << ENV
   def determine_pkg_config_path
     paths  = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/lib/pkgconfig" }
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/pkgconfig" }
-    paths << "#{HOMEBREW_PREFIX}/lib/pkgconfig"
-    paths << "#{HOMEBREW_PREFIX}/share/pkgconfig"
-    # we put our paths before X because we dupe some of the X libraries
+    paths.to_path_s
+  end
+
+  def determine_pkg_config_libdir
+    paths = %W{/usr/lib/pkgconfig #{HOMEBREW_REPOSITORY}/Library/ENV/pkgconfig/#{MacOS.version}}
     paths << "#{MacSystem.x11_prefix}/lib/pkgconfig" << "#{MacSystem.x11_prefix}/share/pkgconfig" if x11?
-    paths << "#{HOMEBREW_REPOSITORY}/Library/ENV/pkgconfig/#{MacOS.version}"
     paths.to_path_s
   end
 
