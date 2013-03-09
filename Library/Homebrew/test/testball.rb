@@ -107,6 +107,7 @@ class SpecTestBall < Formula
   end
 
   bottle do
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard_32
     sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
     sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
@@ -221,7 +222,8 @@ class AllCatsBottleSpecTestBall < Formula
 
   bottle do
     cellar '/private/tmp/testbrew/cellar'
-    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard_32
+    sha1 'faceb00cfaceb00cfaceb00cfaceb00cfaceb00c' => :snow_leopard
     sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
@@ -238,7 +240,8 @@ class RevisedBottleSpecTestBall < Formula
 
   bottle do
     revision 1
-    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard_32
+    sha1 'faceb00cfaceb00cfaceb00cfaceb00cfaceb00c' => :snow_leopard
     sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
