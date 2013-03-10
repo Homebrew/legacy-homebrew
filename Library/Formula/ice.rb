@@ -17,8 +17,19 @@ class Ice < Formula
     ]
   end
 
+  def site_package_dir
+    "#{which_python}/site-packages"
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  end
+
   option 'doc', 'Install documentation'
   option 'demo', 'Build demos'
+  option 'java', 'Build java library'
+  option 'python', 'Build python library'
+
 
   # See:
   # http://www.zeroc.com/forums/bug-reports/4965-slice2cpp-output-does-not-compile-standards-conformant-compiler.html
@@ -57,6 +68,35 @@ class Ice < Formula
       system "make"
       system "make install"
     end
+
+    if build.include? 'java'
+      Dir.chdir "java" do
+        system "ant ice-jar"       
+        Dir.chdir "lib" do
+          # prefix seems to be the preferred place to put jars now, libexec also an option
+          prefix.install ['Ice.jar', 'ant-ice.jar']
+        end
+      end
+    end
+
+    if build.include? 'python'
+
+      inreplace "py/config/Make.rules" do |s|
+        s.gsub! "/opt/Ice-$(VERSION)", prefix
+        s.gsub! "/opt/Ice-$(VERSION_MAJOR).$(VERSION_MINOR)", prefix
+      end
+
+      Dir.chdir "py" do
+        system "make"
+        system "make install"
+      end
+
+      # install python bits
+      Dir.chdir "#{prefix}/python" do
+        (lib + site_package_dir).install Dir['*']
+      end
+    end
+
   end
 end
 
