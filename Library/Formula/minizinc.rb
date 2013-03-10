@@ -1,5 +1,18 @@
 require 'formula'
 
+class X86_64_Architecture < Requirement
+  fatal true
+
+  satisfy MacOS.prefer_64_bit?
+
+  def message; <<-EOS.undent
+    Your system appears to run on a 32-bit architecture.
+    Minizinc only supports 64-bit architectures, sorry.
+    EOS
+  end
+end
+
+
 class Minizinc < Formula
   homepage 'http://www.g12.csse.unimelb.edu.au/minizinc/'
   url 'http://www.g12.csse.unimelb.edu.au/minizinc/downloads/release-1.6/minizinc-1.6-x86_64-apple-darwin.tar.gz'
@@ -12,15 +25,10 @@ class Minizinc < Formula
   end
 
   def install
-    if Hardware.is_64_bit?
-        system "sh SETUP " + prefix
-        bin.install Dir['bin/*']
-        man.install Dir['doc/man/*']
-        lib.install Dir['lib/*']
-    else
-        onoe 'Minizinc requires a 64-bit architecture.'
-        exit 1
-    end
+    system "sh SETUP " + prefix
+    bin.install Dir['bin/*']
+    man.install Dir['doc/man/*']
+    lib.install Dir['lib/*']
   end
 
   def test
