@@ -81,13 +81,11 @@ module FileUtils extend self
     end
   end
 
-  RUBY_BIN = '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin'
-
   def rake *args
-    system "#{RUBY_BIN}/rake", *args
+    system RUBY_BIN/'rake', *args
   end
 
   def ruby *args
-    system "#{RUBY_BIN}/ruby", *args
+    system RUBY_PATH, *args
   end
 end
