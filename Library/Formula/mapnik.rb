@@ -5,6 +5,13 @@ class Mapnik < Formula
   url 'https://github.com/downloads/mapnik/mapnik/mapnik-v2.1.0.tar.bz2'
   sha1 'b1c6a138e65a5e20f0f312a559e2ae7185adf5b6'
 
+  # batch for building against boost >1.52
+  # can be removed at Mapnik >= 2.1.1
+  # https://github.com/mapnik/mapnik/issues/1716
+  def patches
+    DATA
+  end
+
   head 'https://github.com/mapnik/mapnik.git'
 
   depends_on 'pkg-config' => :build
@@ -80,3 +87,27 @@ class Mapnik < Formula
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end
+
+__END__
+diff --git a/src/json/feature_collection_parser.cpp b/src/json/feature_collection_parser.cpp
+index 3faeda7..51ad824 100644
+--- a/src/json/feature_collection_parser.cpp
++++ b/src/json/feature_collection_parser.cpp
+@@ -20,12 +20,17 @@
+  *
+  *****************************************************************************/
+
++// TODO https://github.com/mapnik/mapnik/issues/1658
++#include <boost/version.hpp>
++#if BOOST_VERSION >= 105200
++#define BOOST_SPIRIT_USE_PHOENIX_V3
++#endif
++
+ // mapnik
+ #include <mapnik/json/feature_collection_parser.hpp>
+ #include <mapnik/json/feature_collection_grammar.hpp>
+
+ // boost
+-#include <boost/version.hpp>
+ #include <boost/spirit/include/qi.hpp>
+ #include <boost/spirit/include/support_multi_pass.hpp>
