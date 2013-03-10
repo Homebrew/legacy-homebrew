@@ -88,12 +88,12 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
     case @tarball_path.compression_type
     when :zip
-      quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
+      with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, @tarball_path }
       chdir
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
-      safe_system '/usr/bin/tar', 'xf', @tarball_path
+      with_system_path { safe_system 'tar', 'xf', @tarball_path }
       chdir
     when :xz
       raise "You must install XZutils: brew install xz" unless which "xz"
@@ -178,7 +178,7 @@ end
 class GzipOnlyDownloadStrategy < CurlDownloadStrategy
   def stage
     FileUtils.mv @tarball_path, File.basename(@url)
-    safe_system '/usr/bin/gunzip', '-f', File.basename(@url)
+    with_system_path { safe_system 'gunzip', '-f', File.basename(@url) }
   end
 end
 
