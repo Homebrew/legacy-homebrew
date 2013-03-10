@@ -227,6 +227,7 @@ module MacOS extend self
   end
 
   def mdfind id
+    return [] unless MACOS
     (@mdfind ||= {}).fetch(id.to_s) do
       @mdfind[id.to_s] = `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
     end
