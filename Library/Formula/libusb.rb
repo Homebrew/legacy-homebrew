@@ -16,7 +16,12 @@ class Libusb < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "./autogen.sh" if build.head?
+
+    if build.head?
+      inreplace "configure.ac", "AM_CONFIG_HEADER", "AC_CONFIG_HEADERS"
+      system "./autogen.sh"
+    end
+
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
