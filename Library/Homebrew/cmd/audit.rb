@@ -170,19 +170,25 @@ class FormulaAuditor
 
   def audit_urls
     unless f.homepage =~ %r[^https?://]
-      problem "The homepage should start with http or https."
+      problem "The homepage should start with http or https (url is #{f.homepage})."
+    end
+
+    # Check for http:// GitHub homepage urls, https:// is preferred.
+    # Note: only check homepages that are repo pages, not *.github.com hosts
+    if f.homepage =~ %r[^http://github\.com/]
+      problem "Use https:// URLs for homepages on GitHub (url is #{f.homepage})."
     end
 
     # Google Code homepages should end in a slash
     if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
-      problem "Google Code homepage should end with a slash."
+      problem "Google Code homepage should end with a slash (url is #{f.homepage})."
     end
 
     urls = [(f.stable.url rescue nil), (f.devel.url rescue nil), (f.head.url rescue nil)].compact
 
     # Check GNU urls; doesn't apply to mirrors
-    if urls.any? { |p| p =~ %r[^(https?|ftp)://(?!alpha).+/gnu/] }
-      problem "\"ftpmirror.gnu.org\" is preferred for GNU software."
+    urls.select { |u| u =~ %r[^(https?|ftp)://(?!alpha).+/gnu/] }.each do |u|
+      problem "\"ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
     end
 
     # the rest of the checks apply to mirrors as well
@@ -198,26 +204,32 @@ class FormulaAuditor
       next unless p =~ %r[^https?://.*\bsourceforge\.]
 
       if p =~ /(\?|&)use_mirror=/
-        problem "Update this url (don't use #{$1}use_mirror)."
+        problem "Don't use #{$1}use_mirror in SourceForge urls (url is #{p})."
       end
 
       if p =~ /\/download$/
-        problem "Update this url (don't use /download)."
+        problem "Don't use /download in SourceForge urls (url is #{p})."
       end
 
       if p =~ %r[^http://prdownloads\.]
-        problem "Update this url (don't use prdownloads). See:\nhttp://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
+        problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" + 
+                "\tSee: http://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
       end
 
       if p =~ %r[^http://\w+\.dl\.]
-        problem "Update this url (don't use specific dl mirrors)."
+        problem "Don't use specific dl mirrors in SourceForge urls (url is #{p})."
       end
     end
 
-    # Check for git:// urls; https:// is preferred.
-    if urls.any? { |p| p =~ %r[^git://github\.com/] }
-      problem "Use https:// URLs for accessing GitHub repositories."
+    # Check for git:// GitHub repo urls, https:// is preferred.
+    urls.select { |u| u =~ %r[^git://([^/])*github\.com/] }.each do |u|
+      problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
     end
+
+    # Check for http:// GitHub repo urls, https:// is preferred.
+    urls.select { |u| u =~ %r[^http://github\.com/.*\.git$] }.each do |u|
+      problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
+    end 
 
     if urls.any? { |u| u =~ /\.xz/ } && !f.deps.any? { |d| d.name == "xz" }
       problem "Missing a build-time dependency on 'xz'"
