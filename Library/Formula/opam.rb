@@ -9,6 +9,13 @@ class Opam < Formula
 
   depends_on "objective-caml"
 
+  def patches
+  [
+    # patch to fix symlink issue in #520
+    "https://github.com/OCamlPro/opam/commit/db5129d42fd70cb80ee33040d42f0103d9cc51ea.diff"
+  ]
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make"
