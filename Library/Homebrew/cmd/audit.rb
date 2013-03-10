@@ -186,9 +186,9 @@ class FormulaAuditor
     urls = [(f.stable.url rescue nil), (f.devel.url rescue nil), (f.head.url rescue nil)].compact
 
     # Check GNU urls; doesn't apply to mirrors
-    urls.select { |u| u =~ %r[^(https?|ftp)://(?!alpha).+/gnu/] }.each { |u|
+    urls.select { |u| u =~ %r[^(https?|ftp)://(?!alpha).+/gnu/] }.each do |u|
       problem "\"ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
-    }
+    end
 
     # the rest of the checks apply to mirrors as well
     urls.concat([(f.stable.mirrors rescue nil), (f.devel.mirrors rescue nil)].flatten.compact)
@@ -221,14 +221,14 @@ class FormulaAuditor
     end
 
     # Check for git:// GitHub repo urls, https:// is preferred.
-    urls.select { |u| u =~ %r[^git://([^/])*github\.com/] }.each { |u|
+    urls.select { |u| u =~ %r[^git://([^/])*github\.com/] }.each do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
-    } 
+    end
 
     # Check for http:// GitHub repo urls, https:// is preferred.
-    urls.select { |u| u =~ %r[^http://github\.com/.*\.git$] }.each { |u|
+    urls.select { |u| u =~ %r[^http://github\.com/.*\.git$] }.each do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
-    } 
+    end 
 
     if urls.any? { |u| u =~ /\.xz/ } && !f.deps.any? { |d| d.name == "xz" }
       problem "Missing a build-time dependency on 'xz'"
