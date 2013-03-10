@@ -15,6 +15,17 @@ class Qwt < Formula
 
     system "qmake -spec macx-g++ -config release"
     system "make"
+    ENV.j1
     system "make install"
+
+    # The pkg-config files installed suggest that headers can be found in the
+    # `include` directory. Make this so by creating symlinks from `include` to
+    # the Frameworks' Headers folders.
+    include.mkdir
+    Pathname.glob(lib + '*.framework/Headers').each do |path|
+      framework_name = File.basename(File.dirname(path), '.framework')
+      ln_s path.realpath, include+framework_name
+    end
+
   end
 end
