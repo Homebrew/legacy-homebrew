@@ -12,10 +12,15 @@ class Minizinc < Formula
   end
 
   def install
-    system "sh SETUP " + prefix
-    bin.install Dir['bin/*']
-    man.install Dir['doc/man/*']
-    lib.install Dir['lib/*']
+    if Hardware.is_64_bit?
+        system "sh SETUP " + prefix
+        bin.install Dir['bin/*']
+        man.install Dir['doc/man/*']
+        lib.install Dir['lib/*']
+    else
+        onoe 'Minizinc requires a 64-bit architecture.'
+        exit 1
+    end
   end
 
   def test
