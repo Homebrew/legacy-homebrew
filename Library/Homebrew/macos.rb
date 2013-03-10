@@ -1,4 +1,4 @@
-require 'macos/version'
+require 'os/mac/version'
 
 module MacOS extend self
 
@@ -238,5 +238,5 @@ module MacOS extend self
   end
 end
 
-require 'macos/xcode'
-require 'macos/xquartz'
+require 'os/mac/xcode'
+require 'os/mac/xquartz'
