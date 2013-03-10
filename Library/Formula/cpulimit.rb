@@ -13,6 +13,6 @@ class Cpulimit < Formula
   end
 
   test do
-    system 'cpulimit', '-l', '10', 'ls'
+    system *%W{#{bin}/cpulimit -l 10 ls}
   end
 end
