@@ -284,7 +284,7 @@ class FormulaInstaller
     fork do
       begin
         read.close
-        exec '/usr/bin/nice',
+        exec 'nice',
              RUBY_PATH,
              '-W0',
              '-I', Pathname.new(__FILE__).dirname,
