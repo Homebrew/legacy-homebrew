@@ -79,7 +79,6 @@ end
 
 class Bottle < SoftwareSpec
   attr_writer :url
-  attr_reader :revision, :root_url, :cellar
   # TODO: Can be removed when all bottles migrated to underscored cat symbols.
   attr_reader :cat_without_underscores
 
