@@ -20,6 +20,12 @@ class Opencv < Formula
   option 'with-tbb', 'Enable parallel code in OpenCV using Intel TBB'
   option 'with-opencl', 'Enable gpu code in OpenCV using OpenCL'
 
+  # CLT-only couldn't install this out-of-the-box.
+  # From the build error:
+  # set CMAKE_OSX_SYSROOT to a valid SDK or
+  # set CMAKE_OSX_DEPLOYMENT_TARGET to empty
+  depends_on :xcode
+
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
   depends_on 'numpy' => :python

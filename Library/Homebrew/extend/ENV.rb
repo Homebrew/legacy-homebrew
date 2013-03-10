@@ -69,8 +69,7 @@ module HomebrewEnvExtension
     paths = []
     paths << HOMEBREW_PREFIX/'lib/pkgconfig'
     paths << HOMEBREW_PREFIX/'share/pkgconfig'
-    paths << HOMEBREW_REPOSITORY/'Library/ENV/pkgconfig/mountain_lion' if MacOS.version >= :mountain_lion
-    paths << HOMEBREW_REPOSITORY/'Library/ENV/pkgconfig/leopard' if MacOS.version <= :leopard
+    paths << HOMEBREW_REPOSITORY/"Library/ENV/pkgconfig/#{MacOS.version}"
     paths << '/usr/lib/pkgconfig'
     paths.select { |d| File.directory? d }.join(':')
   end
