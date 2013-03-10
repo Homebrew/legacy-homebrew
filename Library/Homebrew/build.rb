@@ -92,8 +92,8 @@ def install f
   end
 
   if superenv?
-    ENV.deps = keg_only_deps.map(&:to_s)
-    ENV.all_deps = deps.map(&:to_s)
+    ENV.keg_only_deps = keg_only_deps.map(&:to_s)
+    ENV.deps = deps.map(&:to_s)
     ENV.x11 = f.recursive_requirements.detect { |rq| rq.kind_of?(X11Dependency) }
     ENV.setup_build_environment
     post_superenv_hacks(f)

@@ -121,6 +121,7 @@ class Gdal < Formula
       "--with-freexl=#{HOMEBREW_PREFIX}",
       "--with-spatialite=#{HOMEBREW_PREFIX}",
       "--with-geos=#{HOMEBREW_PREFIX}/bin/geos-config",
+      "--with-static-proj4=#{HOMEBREW_PREFIX}",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
       # Should be installed separately after GRASS installation using the

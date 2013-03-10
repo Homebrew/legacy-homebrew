@@ -22,9 +22,7 @@ def superenv?
 end
 
 class << ENV
-  attr :deps, true
-  attr :all_deps, true # above is just keg-only-deps
-  attr :x11, true
+  attr_accessor :keg_only_deps, :deps, :x11
   alias_method :x11?, :x11
 
   def reset
@@ -49,6 +47,7 @@ class << ENV
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
+    ENV['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
     ENV['HOMEBREW_CC'] = determine_cc
     ENV['HOMEBREW_CCCFG'] = determine_cccfg
     ENV['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
@@ -113,7 +112,7 @@ class << ENV
       paths << "#{MacSystem.xcode43_developer_dir}/usr/bin"
       paths << "#{MacSystem.xcode43_developer_dir}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
     end
-    paths += all_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
+    paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << "#{HOMEBREW_PREFIX}/opt/python/bin" if brewed_python?
     paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
@@ -123,17 +122,17 @@ class << ENV
   def determine_pkg_config_path
     paths  = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/lib/pkgconfig" }
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/pkgconfig" }
-    paths << "#{HOMEBREW_PREFIX}/lib/pkgconfig"
-    paths << "#{HOMEBREW_PREFIX}/share/pkgconfig"
-    # we put our paths before X because we dupe some of the X libraries
+    paths.to_path_s
+  end
+
+  def determine_pkg_config_libdir
+    paths = %W{/usr/lib/pkgconfig #{HOMEBREW_REPOSITORY}/Library/ENV/pkgconfig/#{MacOS.version}}
     paths << "#{MacSystem.x11_prefix}/lib/pkgconfig" << "#{MacSystem.x11_prefix}/share/pkgconfig" if x11?
-    # Mountain Lion no longer ships some .pcs; ensure we pick up our versions
-    paths << "#{HOMEBREW_REPOSITORY}/Library/ENV/pkgconfig/mountain_lion" if MacOS.version >= :mountain_lion
     paths.to_path_s
   end
 
   def determine_cmake_prefix_path
-    paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}" }
+    paths = keg_only_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}" }
     paths << HOMEBREW_PREFIX.to_s # put ourselves ahead of everything else
     paths << "#{MacOS.sdk_path}/usr" if MacSystem.xcode43_without_clt?
     paths.to_path_s
@@ -167,7 +166,7 @@ class << ENV
   end
 
   def determine_aclocal_path
-    paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/aclocal" }
+    paths = keg_only_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/aclocal" }
     paths << "#{HOMEBREW_PREFIX}/share/aclocal"
     paths << "/opt/X11/share/aclocal" if x11?
     paths.to_path_s
@@ -256,7 +255,7 @@ class << ENV
       fetch(key)
     elsif %w{CPPFLAGS CFLAGS LDFLAGS}.include? key
       class << (a = "")
-        attr :key, true
+        attr_accessor :key
         def + value
           ENV[key] = value
         end
@@ -275,8 +274,8 @@ if not superenv?
   # we must do this or tools like pkg-config won't get found by configure scripts etc.
   ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
 else
+  ENV.keg_only_deps = []
   ENV.deps = []
-  ENV.all_deps = []
 end
 
 
