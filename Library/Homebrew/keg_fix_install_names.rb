@@ -38,7 +38,9 @@ class Keg
 
   def bad_install_names_for file
     ENV['HOMEBREW_MACH_O_FILE'] = file.to_s # solves all shell escaping problems
-    install_names = `#{MacOS.locate("otool")} -L "$HOMEBREW_MACH_O_FILE"`.split "\n"
+    otool = MacOS.locate("otool")
+    return unless otool
+    install_names = `#{otool} -L "$HOMEBREW_MACH_O_FILE"`.split "\n"
 
     install_names.shift # first line is fluff
     install_names.map!{ |s| OTOOL_RX =~ s && $1 }
