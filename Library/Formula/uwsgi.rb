@@ -4,15 +4,18 @@ class UniversalPcre < Requirement
   fatal true
 
   satisfy :build_env => false do
-    f = Formula.factory('pcre')
-    f.installed? && archs_for_command(f.lib/'libpcre.dylib').universal?
+    pcre = Formula.factory('pcre')
+    pcre.installed? && archs_for_command(pcre.lib/'libpcre.dylib').universal?
+
+    libyaml = Formula.factory('libyaml')
+    libyaml.installed? && archs_for_command(libyaml.lib/'libyaml.dylib').universal?
   end
 
   def message; <<-EOS.undent
-    pcre must be build universal for uwsgi to work.
+    pcre and libyaml must be build universal for uwsgi to work.
     You will need to:
-      brew rm pcre
-      brew install --universal pcre
+      brew rm pcre && brew install --universal pcre
+      brew rm libyaml && brew install --universal libyaml
     EOS
   end
 end
@@ -24,6 +27,7 @@ class Uwsgi < Formula
 
   depends_on UniversalPcre
   depends_on 'pcre'
+  depends_on 'libyaml'
 
   def install
     # Find the arch for the Python we are building against.
