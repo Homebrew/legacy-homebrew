@@ -79,7 +79,6 @@ end
 
 class Bottle < SoftwareSpec
   attr_writer :url
-  attr_reader :revision, :root_url, :cellar
   # TODO: Can be removed when all bottles migrated to underscored cat symbols.
   attr_reader :cat_without_underscores
 
@@ -124,17 +123,6 @@ class Bottle < SoftwareSpec
 
   def revision val=nil
     val.nil? ? @revision : @revision = val
-  end
-
-  # Used in the old bottle DSL to set @revision, but acts as an
-  # as accessor for @version to preserve the interface
-  # TODO: Can be removed when no bottles are using `version` any more.
-  def version val=nil
-    if val.nil?
-      return @version ||= Version.parse(@url)
-    else
-      @revision = val
-    end
   end
 end
 

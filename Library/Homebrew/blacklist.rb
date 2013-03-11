@@ -47,5 +47,9 @@ def blacklisted? name
     Installing gmock system-wide is not recommended; it should be vendored
     in your projects that use it.
     EOS
+  when 'sshpass' then <<-EOS.undent
+    We won't add sshpass because it makes it too easy for novice SSH users to
+    ruin SSH's security.
+    EOS
   end
 end
