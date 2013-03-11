@@ -45,11 +45,6 @@ class Node < Formula
   url 'http://nodejs.org/dist/v0.10.0/node-v0.10.0.tar.gz'
   sha1 '7321266347dc1c47ed2186e7d61752795ce8a0ef'
 
-  devel do
-    url 'http://nodejs.org/dist/v0.9.12/node-v0.9.12.tar.gz'
-    sha1 '2353d3e5c6518f75202b74236fa9d8eeecd26ca3'
-  end
-
   head 'https://github.com/joyent/node.git'
 
   option 'enable-debug', 'Build with debugger hooks'
