@@ -27,6 +27,12 @@ class Dpkg < Formula
     system "make"
     system "make install"
   end
+
+  def caveats; <<-EOS.undent
+    This installation of dpkg is not configured to install software, so
+    commands such as `dpkg -i`, `dpkg --configure` will fail.
+    EOS
+  end
 end
 
 __END__
