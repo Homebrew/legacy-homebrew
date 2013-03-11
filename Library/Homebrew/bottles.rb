@@ -9,7 +9,7 @@ def bottle_filename f, bottle_revision=nil
   "#{name}-#{version}#{bottle_native_suffix(bottle_revision)}"
 end
 
-def install_bottle? f
+def install_bottle? f, warn=false
   return true if f.downloader and defined? f.downloader.local_bottle_path \
     and f.downloader.local_bottle_path
 
@@ -17,7 +17,10 @@ def install_bottle? f
   return false unless f.pour_bottle?
   return false unless f.build.used_options.empty?
   return false unless bottle_current?(f)
-  return false if f.bottle.cellar != :any && f.bottle.cellar != HOMEBREW_CELLAR.to_s
+  if f.bottle.cellar != :any && f.bottle.cellar != HOMEBREW_CELLAR.to_s
+    opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}" if warn
+    return false
+  end
 
   true
 end
@@ -31,9 +34,7 @@ def built_as_bottle? f
 end
 
 def bottle_current? f
-  f.bottle and f.bottle.url \
-    and (not f.bottle.checksum.empty?) \
-    and (f.bottle.version == f.stable.version)
+  f.bottle and f.bottle.url and not f.bottle.checksum.empty?
 end
 
 def bottle_file_outdated? f, file

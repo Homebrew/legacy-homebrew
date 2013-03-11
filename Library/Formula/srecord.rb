@@ -2,8 +2,8 @@ require 'formula'
 
 class Srecord < Formula
   homepage 'http://srecord.sourceforge.net/'
-  url 'http://srecord.sourceforge.net/srecord-1.60.tar.gz'
-  sha1 '0e0e94e735578346138c916117a8d6c8324e9fec'
+  url 'http://srecord.sourceforge.net/srecord-1.61.tar.gz'
+  sha1 '7d705a1ff389bbfd1279b4f49c80909678cc7847'
 
   depends_on :libtool
   depends_on 'boost'

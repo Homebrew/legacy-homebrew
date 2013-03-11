@@ -25,7 +25,7 @@ class FormulaInstaller
   end
 
   def pour_bottle?
-    install_bottle?(f) && (tab.used_options.empty? rescue true) && options.empty?
+    (tab.used_options.empty? rescue true) && options.empty? && install_bottle?(f, true)
   end
 
   def check_install_sanity

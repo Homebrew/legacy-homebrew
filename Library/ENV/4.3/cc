@@ -151,7 +151,7 @@ class Cmd
       args = %w{-pipe -w -Os}
       args << '-march=native' if tool =~ /clang/
       args += %w{-arch i386 -arch x86_64} if cccfg? 'u'
-      args << "--std=#{@arg0}" if @arg0 =~ /c[89]9/
+      args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
       args
     else
       []
