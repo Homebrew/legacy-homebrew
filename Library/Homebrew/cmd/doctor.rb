@@ -782,6 +782,9 @@ def check_the_git_origin
   return unless which "git"
   return if check_for_git_origin
 
+  # otherwise this will nag users with no repo about their remote
+  return unless (HOMEBREW_REPOSITORY/'.git').exist?
+
   HOMEBREW_REPOSITORY.cd do
     origin = `git config --get remote.origin.url`.chomp
 
