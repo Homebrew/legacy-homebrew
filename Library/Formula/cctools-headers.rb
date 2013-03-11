@@ -6,7 +6,7 @@ class XnuHeaders < Formula
   sha1 '3a2a0b3629cb215b17aca3bb365b8b10b8b408fe'
 end
 
-# These headers are newer than the version of cctools we provide
+# The system versions are too old to build ld64
 class CctoolsHeaders < Formula
   homepage 'http://opensource.apple.com/'
   url 'http://www.opensource.apple.com/tarballs/cctools/cctools-836.tar.gz'
