@@ -66,9 +66,6 @@ module MachO
       end
       mach_data
     rescue
-      # read() will raise if it sees EOF, which should only happen if the
-      # file is < 8 bytes. Otherwise, we raise if the file is not a Mach-O 
-      # binary. In both cases, we want to return an empty array.
       []
     end
   end
