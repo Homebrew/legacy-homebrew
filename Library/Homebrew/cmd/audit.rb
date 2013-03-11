@@ -389,7 +389,7 @@ class FormulaAuditor
       problem "Reference '#{$1}' without dashes"
     end
 
-    if text =~ /ARGV\.(?!(debug|verbose|find)\?)/
+    if text =~ /ARGV\.(?!(debug\?|verbose\?|find[\(\s]))/
       problem "Use build instead of ARGV to check options"
     end
 
