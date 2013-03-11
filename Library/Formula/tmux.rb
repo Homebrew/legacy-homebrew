@@ -15,6 +15,16 @@ class Tmux < Formula
     depends_on :libtool
   end
 
+  def patches
+  	# https://gist.github.com/1399751
+    # https://sourceforge.net/tracker/?func=detail&aid=3588949&group_id=200378&atid=973264
+  	[
+  		"https://raw.github.com/gist/1399751/8c5f0018c901f151d39680ef85de6d22649b687a/tmux-ambiguous-width-cjk.patch",
+  	 	"https://raw.github.com/gist/1399751/752a6f29f43eb9230a61a2d34d6b36aba2327c42/tmux-do-not-combine-utf8.patch",
+  	 	"https://raw.github.com/gist/1399751/6a6cf47aea405c53edc87adab0bf40531aac741d/tmux-pane-border-ascii.patch"
+  	]
+  end
+
   def install
     system "sh", "autogen.sh" if build.head?
 
