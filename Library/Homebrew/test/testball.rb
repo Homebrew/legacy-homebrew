@@ -221,6 +221,7 @@ class AllCatsBottleSpecTestBall < Formula
   sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
 
   bottle do
+    prefix '/private/tmp/testbrew/prefix'
     cellar '/private/tmp/testbrew/cellar'
     sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard_32
     sha1 'faceb00cfaceb00cfaceb00cfaceb00cfaceb00c' => :snow_leopard

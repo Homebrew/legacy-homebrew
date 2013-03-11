@@ -85,6 +85,7 @@ class Bottle < SoftwareSpec
   def initialize
     super
     @revision = 0
+    @prefix = '/usr/local'
     @cellar = '/usr/local/Cellar'
     @cat_without_underscores = false
   end
@@ -115,6 +116,10 @@ class Bottle < SoftwareSpec
 
   def root_url val=nil
     val.nil? ? @root_url : @root_url = val
+  end
+
+  def prefix val=nil
+    val.nil? ? @prefix : @prefix = val
   end
 
   def cellar val=nil
