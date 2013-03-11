@@ -18,6 +18,8 @@ class Minizinc < Formula
   url 'http://www.g12.csse.unimelb.edu.au/minizinc/downloads/release-1.6/minizinc-1.6-x86_64-apple-darwin.tar.gz'
   sha1 '71f0e08962eb8bb44c463851f0144c8b006fdb80'
 
+  depends_on X86_64_Architecture
+
   def patches
       # remove echoed recommendations about linking directories
       # add installation location as parameter of SETUP script
