@@ -20,7 +20,7 @@ def blacklisted? name
     The Python bindings (import wx) for wxWidgets are installed by:
         brew install wxwidgets
     EOS
-  when 'tex', 'tex-live', 'texlive' then <<-EOS.undent
+  when 'tex', 'tex-live', 'texlive', 'latex' then <<-EOS.undent
     Installing TeX from source is weird and gross, requires a lot of patches,
     and only builds 32-bit (and thus can't use Homebrew deps on Snow Leopard.)
 
