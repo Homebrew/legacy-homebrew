@@ -2,6 +2,7 @@ require 'download_strategy'
 require 'dependency_collector'
 require 'formula_support'
 require 'formula_lock'
+require 'formula_pin'
 require 'hardware'
 require 'bottles'
 require 'patches'
@@ -68,6 +69,8 @@ class Formula
       # make sure to strip "--" from the start of options
       self.class.build.add opt[/--(.+)$/, 1], desc
     end
+
+    @pin = FormulaPin.new(self)
   end
 
   def url;      @active_spec.url;     end
@@ -78,6 +81,22 @@ class Formula
   # if the dir is there, but it's empty we consider it not installed
   def installed?
     installed_prefix.children.length > 0 rescue false
+  end
+
+  def pinable?
+    @pin.pinable?
+  end
+
+  def pinned?
+    @pin.pinned?
+  end
+
+  def pin
+    @pin.pin
+  end
+
+  def unpin
+    @pin.unpin
   end
 
   def linked_keg

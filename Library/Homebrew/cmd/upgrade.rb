@@ -18,8 +18,10 @@ module Homebrew extend self
 
     if ARGV.named.empty?
       require 'cmd/outdated'
+      upgrade_pinned = false
       outdated = Homebrew.outdated_brews
     else
+      upgrade_pinned = true
       outdated = ARGV.formulae.select do |f|
         if f.installed?
           onoe "#{f}-#{f.installed_version} already installed"
@@ -32,9 +34,18 @@ module Homebrew extend self
       exit 1 if outdated.empty?
     end
 
-    if outdated.length > 1
+    unless upgrade_pinned
+      pinned = outdated.select { |f| f.pinned? }
+      outdated -= pinned
+    end
+
+    if outdated.length > 0
       oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
       puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
+    end
+    if not upgrade_pinned and pinned.length > 0
+      oh1 "Not upgrading #{pinned.length} pinned package#{outdated.length.plural_s}:"
+      puts pinned.map{ |f| "#{f.name} #{f.version}" } * ", "
     end
 
     outdated.each do |f|
@@ -60,6 +71,13 @@ module Homebrew extend self
     installer.install
     installer.caveats
     installer.finish
+
+    # If the formula was pinned, and we were force-upgrading it, unpin and
+    # pin it again to get a symlink pointing to the correct keg.
+    if f.pinned?
+      f.unpin
+      f.pin
+    end
   rescue FormulaInstallationAlreadyAttemptedError
     # We already attempted to upgrade f as part of the dependency tree of
     # another formula. In that case, don't generate an error, just move on.
