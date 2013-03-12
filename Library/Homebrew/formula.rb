@@ -667,11 +667,11 @@ private
 
     def self.attr_rw(*attrs)
       attrs.each do |attr|
-        class_eval %Q{
+        class_eval <<-EOS, __FILE__, __LINE__ + 1
           def #{attr}(val=nil)
             val.nil? ? @#{attr} : @#{attr} = val
           end
-        }
+        EOS
       end
     end
 
@@ -679,7 +679,7 @@ private
     attr_rw :plist_startup, :plist_manual
 
     Checksum::TYPES.each do |cksum|
-      class_eval %Q{
+      class_eval <<-EOS, __FILE__, __LINE__ + 1
         def #{cksum}(val=nil)
           unless val.nil?
             @stable ||= SoftwareSpec.new
@@ -687,7 +687,7 @@ private
           end
           return @stable ? @stable.#{cksum} : @#{cksum}
         end
-      }
+      EOS
     end
 
     def build
