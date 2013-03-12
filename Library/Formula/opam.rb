@@ -2,19 +2,12 @@ require 'formula'
 
 class Opam < Formula
   homepage 'https://github.com/OCamlPro/opam'
-  url 'https://github.com/OCamlPro/opam/archive/0.9.5.tar.gz'
-  sha1 '73afb82f16052badd5c7eea0d24a01029ab21c67'
+  url 'https://github.com/OCamlPro/opam/archive/0.9.6.tar.gz'
+  sha1 '6361468864c4ea649152594d9471dc5a83de955c'
 
   head 'https://github.com/OCamlPro/opam.git'
 
   depends_on "objective-caml"
-
-  def patches
-  [
-    # patch to fix symlink issue in #520
-    "https://github.com/OCamlPro/opam/commit/db5129d42fd70cb80ee33040d42f0103d9cc51ea.diff"
-  ]
-  end
 
   def install
     system "./configure", "--prefix=#{prefix}"
@@ -35,7 +28,7 @@ class Opam < Formula
 
     $  opam init
 
-    Run the following to initialize your environmnent variables:
+    Run the following to initialize your environment variables:
 
     $  eval `opam config env`
 
