@@ -10,7 +10,7 @@ class Highlight < Formula
   depends_on 'lua'
 
   def install
-    inreplace "src/Makefile" do |s|
+    inreplace "src/makefile" do |s|
       s.change_make_var! "CXX", ENV.cxx
       s.gsub! /^(CFLAGS):=.*$/, "\\1 = #{ENV.cppflags}"
       s.gsub! /^(LUA_LIBS)=(.*)$/, "\\1 = #{ENV.ldflags} \\2"
