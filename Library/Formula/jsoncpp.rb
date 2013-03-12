@@ -8,20 +8,19 @@ class Jsoncpp < Formula
   depends_on 'scons' => :build
 
   def install
+    # this is how the SConstruct build system creates file paths
     gccversion = `g++ -dumpversion`
     gccversion = gccversion.delete("\n");
+    # run the build
     system "scons platform=linux-gcc"
-    # make some directories need for install
-    system "mkdir -p lib include/include"
-    # copy the libraries to the right directory with easier file names
-    system "cp -f libs/linux-gcc-#{gccversion}/libjson_linux-gcc-#{gccversion}_libmt.a lib/libjsoncpp.a"
-    system "cp -f libs/linux-gcc-#{gccversion}/libjson_linux-gcc-#{gccversion}_libmt.dylib lib/libjsoncpp.dylib"
-    # copy the header files to a more unique folder name
-    system "cp -r include/json include/include/jsoncpp"
-    prefix.install Dir["lib"], Dir["include/include"]
+    #install the libs
+    lib.install "libs/linux-gcc-#{gccversion}/libjson_linux-gcc-#{gccversion}_libmt.a" => "libjsoncpp.a", 
+    "libs/linux-gcc-#{gccversion}/libjson_linux-gcc-#{gccversion}_libmt.dylib" => "libjsoncpp.dylib"
+    # install the headers
+    include.install "include/json" => "jsoncpp"
   end
 
   test do
-    system "scons platform=linux-gcc check"
+    system "false"
   end
 end
