@@ -200,10 +200,8 @@ class Formula
   def fails_with? cc
     return false if self.class.cc_failures.nil?
     cc = Compiler.new(cc) unless cc.is_a? Compiler
-    return self.class.cc_failures.find do |failure|
-      next unless failure.compiler == cc.name
-      failure.build.zero? or \
-        (failure.build >= cc.build or not ARGV.homebrew_developer?)
+    self.class.cc_failures.find do |failure|
+      failure.compiler == cc.name && failure.build >= cc.build
     end
   end
 

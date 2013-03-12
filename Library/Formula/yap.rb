@@ -14,7 +14,6 @@ class Yap < Formula
   depends_on 'readline'
 
   fails_with :clang do
-    build 425
     cause "Undefined symbols linking for architecture x86_64"
   end
 

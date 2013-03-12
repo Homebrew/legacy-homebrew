@@ -68,6 +68,7 @@ class CompilerFailure
   def initialize compiler, &block
     @compiler = compiler
     instance_eval(&block) if block_given?
+    @build ||= 9999
   end
 
   def build val=nil
@@ -100,8 +101,7 @@ class CompilerSelector
     # the failing build is >= the currently installed version of foo.
     @compilers = @compilers.reject do |cc|
       failure = @f.fails_with? cc
-      next unless failure
-      failure.build >= cc.build or not ARGV.homebrew_developer?
+      failure && failure.build >= cc.build
     end
 
     return if @compilers.empty? or @compilers.include? ENV.compiler
@@ -124,39 +124,6 @@ class CompilerSelector
       elsif @compilers.include? :clang then :clang
       else ENV.compiler
       end
-    end
-  end
-
-  def advise
-    failure = @f.fails_with? @old_compiler
-    return unless failure
-
-    # If we're still using the original ENV.compiler, then the formula did not
-    # declare a specific failing build, so we continue and print some advice.
-    # Otherwise, tell the user that we're switching compilers.
-    if @old_compiler == ENV.compiler
-      cc = Compiler.new(ENV.compiler)
-      subject = "#{@f.name}-#{@f.version}: builds with #{NAMES[cc.name]}-#{cc.build}-#{MACOS_VERSION}"
-      warning = "Using #{NAMES[cc.name]}, but this formula is reported to fail with #{NAMES[cc.name]}."
-      warning += "\n\n#{failure.cause.strip}\n" unless failure.cause.nil?
-      warning += <<-EOS.undent
-
-        We are continuing anyway so if the build succeeds, please open a ticket with
-        the subject
-
-          #{subject}
-
-        so that we can update the formula accordingly. Thanks!
-        EOS
-
-      viable = @compilers.reject { |c| @f.fails_with? c }
-      unless viable.empty?
-        warning += "\nIf it fails you can use "
-        options = viable.map { |c| "--use-#{c.name}" }
-        warning += "#{options*' or '} to try a different compiler."
-      end
-
-      opoo warning
     end
   end
 end

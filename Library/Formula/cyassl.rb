@@ -16,9 +16,7 @@ class Cyassl < Formula
     "https://github.com/cyassl/cyassl/commit/543d81ba97430844c04c82ea274a99122c9cd1b9.patch"
   end
 
-  fails_with :clang do
-    build 425
-  end
+  fails_with :clang
 
   def install
     args = %W[--infodir=#{info}
