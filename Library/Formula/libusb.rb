@@ -7,6 +7,9 @@ class Libusb < Formula
 
   head 'git://git.libusb.org/libusb.git'
 
+  conflicts_with 'libusb',
+    :because => 'both provide libusb compatible libraries'
+
   if build.head?
     depends_on :automake
     depends_on :libtool
