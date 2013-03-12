@@ -18,7 +18,6 @@ class Icu4c < Formula
   option :universal
 
   fails_with :clang do
-    build 425
     cause "Icu will turn on C++11 mode when built with clang, which causes incompatibilities."
   end
 
