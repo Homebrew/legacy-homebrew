@@ -1,8 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Denominator < Formula
   homepage 'https://github.com/Netflix/denominator'
   url 'http://dl.bintray.com/content/netflixoss/denominator/denominator?direct', :using  => :nounzip
@@ -11,8 +8,7 @@ class Denominator < Formula
 
   def install
     mv "denominator?direct", "denominator"
-    bin.install Dir['*']
-    system "chmod 755 #{prefix}/bin/denominator"
+    bin.install "denominator"
   end
 
 end
