@@ -27,7 +27,6 @@ class Libusbx < Formula
             "--prefix=#{prefix}"]
     args << "--disable-log" if build.include?('no-runtime-logging')
     args << "--enable-debug-log" if build.include?('with-default-log-level-debug')
-    args << "--enable-examples-build" if build.include?('with-examples')
     system "./configure", *args
     system "make install"
   end
