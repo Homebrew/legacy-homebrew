@@ -24,21 +24,7 @@ module Homebrew extend self
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
     raise "Already tapped!" if tapd.directory?
-    # First try tapping the repo name as is. If that fails, fall back to
-    # 'homebrew-repo'.
-    stdout = `git clone https://github.com/#{repouser}/#{repo} #{tapd} 2>/dev/null`
-    unless $?.success?
-      stdout = `git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd} 2>&1`
-      if $?.success?
-        repo = "homebrew-" + repo
-      else
-        abort <<-EOS.undent
-          Neither #{repouser}/#{repo} nor #{repouser}/homebrew-#{repo} tapped.
-          Please check the tap name and try again.
-        EOS
-      end
-    end
-    puts stdout
+    abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
 
     files = []
     tapd.find_formula{ |file| files << tapd.basename.join(file) }
@@ -48,7 +34,7 @@ module Homebrew extend self
     # Figure out if this repo is private
     # curl will throw an exception if the repo is private (Github returns a 404)
     begin
-      curl('-Ifso', '/dev/null', "https://api.github.com/repos/#{repouser}/#{repo}")
+      curl('-Ifso', '/dev/null', "https://api.github.com/repos/#{repouser}/homebrew-#{repo}")
     rescue
       puts
       puts "It looks like you tapped a private repository"
@@ -57,7 +43,7 @@ module Homebrew extend self
       puts "following command:"
       puts
       puts "   cd #{tapd}"
-      puts "   git remote set-url origin git@github.com:#{repouser}/#{repo}.git"
+      puts "   git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git"
       puts
     end
   end
@@ -116,7 +102,7 @@ module Homebrew extend self
   private
 
   def tap_args
-    ARGV.first =~ %r{^(\S+)/(homebrew-)?([-\w]+)$}
+    ARGV.first =~ %r{^(\S+)/(homebrew-)?(\w+)$}
     raise "Invalid usage" unless $1 and $3
     [$1, $3]
   end
