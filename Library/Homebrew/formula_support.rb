@@ -32,7 +32,7 @@ class SoftwareSpec
 
   # The methods that follow are used in the block-form DSL spec methods
   Checksum::TYPES.each do |cksum|
-    class_eval %Q{
+    class_eval <<-EOS, __FILE__, __LINE__ + 1
       def #{cksum}(val=nil)
         if val.nil?
           @checksum if @checksum.nil? or @checksum.hash_type == :#{cksum}
@@ -40,7 +40,7 @@ class SoftwareSpec
           @checksum = Checksum.new(:#{cksum}, val)
         end
       end
-    }
+    EOS
   end
 
   def url val=nil, specs={}
@@ -93,7 +93,7 @@ class Bottle < SoftwareSpec
   # Checksum methods in the DSL's bottle block optionally take
   # a Hash, which indicates the platform the checksum applies on.
   Checksum::TYPES.each do |cksum|
-    class_eval %Q{
+    class_eval <<-EOS, __FILE__, __LINE__ + 1
       def #{cksum}(val=nil)
         @#{cksum} ||= Hash.new
         case val
@@ -111,7 +111,7 @@ class Bottle < SoftwareSpec
           @cat_without_underscores = true
         end
       end
-    }
+    EOS
   end
 
   def root_url val=nil
