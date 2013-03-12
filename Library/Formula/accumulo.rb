@@ -21,11 +21,11 @@ class Accumulo < Formula
 
     inreplace "#{libexec}/conf/accumulo-env.sh",
       "/path/to/hadoop",
-      "/usr/local/opt/hadoop/libexec"
+      "#{HOMEBREW_PREFIX}/opt/hadoop/libexec"
 
     inreplace "#{libexec}/conf/accumulo-env.sh",
       "/path/to/zookeeper",
-      "/usr/local/opt/zookeeper/libexec"
+      "#{HOMEBREW_PREFIX}/opt/zookeeper/libexec"
   end
 
   def caveats; <<-EOS.undent
@@ -33,13 +33,13 @@ class Accumulo < Formula
       #{libexec}/conf/accumulo-env.sh
     JAVA_HOME has been set to be the output of:
       /usr/libexec/java_home
-    HADOOP_HOME has been set to /usr/local/opt/hadoop/libexec
-    ZOOKEEPER_HOME has been set to /usr/local/opt/zookeeper/libexec
+    HADOOP_HOME has been set to #{HOMEBREW_PREFIX}/opt/hadoop/libexec
+    ZOOKEEPER_HOME has been set to #{HOMEBREW_PREFIX}/opt/zookeeper/libexec
 
-    You must have Hadoop and Zookeeper configured and running prior to starting Accumulo.
-    Per standard installation procedures you must also run bin/accumulo init to initialize
-    Accumulo prior to starting it. accumulo-start-all.sh should have been installed in your
-    PATH for convenience.
+    You must have Hadoop and Zookeeper configured and running prior to starting
+    Accumulo. Per standard installation procedures you must also run bin/accumulo
+    init to initialize Accumulo prior to starting it. accumulo-start-all.sh should
+    have been installed in your PATH for convenience.
     EOS
   end
 
