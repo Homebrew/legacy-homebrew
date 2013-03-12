@@ -12,10 +12,6 @@ class GsDjVU < Formula
   version '1.5'
   sha1 'c7d0677dae5fe644cf3d714c04b3c2c343906342'
   head 'git://git.code.sf.net/p/djvu/gsdjvu-git'
-
-  depends_on 'djvulibre'
-  depends_on 'jpeg'
-  depends_on :libpng
 end
 
 class Ghostscript < Formula
@@ -26,8 +22,7 @@ class Ghostscript < Formula
   head 'git://git.ghostscript.com/ghostpdl.git'
 
   option 'with-x11', 'Install with X11 support'
-  option 'with-djvu', "Build drivers for DjVU file format"
-  #binaries made with this option are not redistributable due to incompatible licensing of gsdjvu & ghostscript, do not bottle
+  option 'with-djvu', 'Build drivers for DjVU file format'
 
   if build.head?
     depends_on :automake
@@ -40,6 +35,12 @@ class Ghostscript < Formula
   depends_on 'jbig2dec'
   depends_on :libpng
   depends_on :x11 => '2.7.2' if build.include? 'with-x11'
+      
+  if build.include? 'with-djvu'
+    depends_on 'djvulibre'
+    depends_on 'jpeg'
+    depends_on 'libpng'
+  end
 
   # Fix dylib names, per installation instructions
   def patches
@@ -92,11 +93,13 @@ class Ghostscript < Formula
       # versioned stuff in main tree is pointless for us
       inreplace 'Makefile', '/$(GS_DOT_VERSION)', ''
 
-      inreplace('Makefile'){|s|s.change_make_var!('DEVICE_DEVS17','$(DD)djvumask.dev $(DD)djvusep.dev')} if build.include? 'with-djvu'
+      inreplace 'Makefile' do |s|
+        s.change_make_var!('DEVICE_DEVS17','$(DD)djvumask.dev $(DD)djvusep.dev')
+      end if build.include? 'with-djvu'
 
       # Install binaries and libraries
-      system "make install"
-      system "make install-so"
+      system 'make install'
+      system 'make install-so'
     end
 
     GhostscriptFonts.new.brew do
