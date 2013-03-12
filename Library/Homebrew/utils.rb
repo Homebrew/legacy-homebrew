@@ -99,6 +99,14 @@ module Homebrew
   end
 end
 
+def with_system_path
+  old_path = ENV['PATH']
+  ENV['PATH'] = '/usr/bin:/bin'
+  yield
+ensure
+  ENV['PATH'] = old_path
+end
+
 # Kernel.system but with exceptions
 def safe_system cmd, *args
   unless Homebrew.system cmd, *args
