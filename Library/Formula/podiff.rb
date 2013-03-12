@@ -14,7 +14,7 @@ class Podiff < Formula
 
   def caveats
     <<-EOS.undent
-      Add this to your .git/config or global git config file:
+      To use with git, add this to your .git/config or global git config file:
 
       [diff "podiff"]
       command = #{HOMEBREW_PREFIX}/bin/podiff -D-u
