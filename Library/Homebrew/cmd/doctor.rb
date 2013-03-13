@@ -38,23 +38,21 @@ end
 
 
 class Checks
-  # Sorry for the lack of an indent here, the diff would have been unreadable.
 
 ############# HELPERS
-def remove_trailing_slash s
-  (s[s.length-1] == '/') ? s[0,s.length-1] : s
-end
+  def remove_trailing_slash s
+    (s[s.length-1] == '/') ? s[0,s.length-1] : s
+  end
 
-
-def paths
-  @paths ||= ENV['PATH'].split(':').collect do |p|
-    begin
-      remove_trailing_slash(File.expand_path(p))
-    rescue ArgumentError
-      onoe "The following PATH component is invalid: #{p}"
-    end
-  end.uniq.compact
-end
+  def paths
+    @paths ||= ENV['PATH'].split(':').collect do |p|
+      begin
+        remove_trailing_slash(File.expand_path(p))
+      rescue ArgumentError
+        onoe "The following PATH component is invalid: #{p}"
+      end
+    end.uniq.compact
+  end
 
   # Finds files in HOMEBREW_PREFIX *and* /usr/local.
   # Specify paths relative to a prefix eg. "include/foo.h".
@@ -70,6 +68,7 @@ end
   end
 ############# END HELPERS
 
+# Sorry for the lack of an indent here, the diff would have been unreadable.
 # See https://github.com/mxcl/homebrew/pull/9986
 def check_path_for_trailing_slashes
   bad_paths = ENV['PATH'].split(':').select{|p| p[p.length-1, p.length] == '/'}
