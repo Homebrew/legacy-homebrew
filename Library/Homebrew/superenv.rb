@@ -17,6 +17,8 @@ def superbin
 end
 
 def superenv?
+  not (MacSystem.xcode43_without_clt? and
+  MacOS.sdk_path.nil?) and # because superenv will fail to find stuff
   not MacOS::Xcode.folder.nil? and # because xcrun won't work
   superbin and superbin.directory? and
   not ARGV.include? "--env=std"
@@ -40,7 +42,6 @@ class << ENV
 
   def setup_build_environment
     reset
-    check
     ENV['CC'] = 'cc'
     ENV['CXX'] = 'c++'
     ENV['OBJC'] = 'cc'
@@ -59,10 +60,6 @@ class << ENV
     ENV['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
     ENV['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     ENV['ACLOCAL_PATH'] = determine_aclocal_path
-  end
-
-  def check
-    raise if MacSystem.xcode43_without_clt? and MacOS.sdk_path.nil?
   end
 
   def universal_binary
