@@ -1,43 +1,13 @@
-class Compilers
-  include Enumerable
-
-  def initialize(*args)
-    @compilers = Array.new(*args)
-  end
-
-  def each(*args, &block)
-    @compilers.each(*args, &block)
-  end
-
-  def include?(cc)
-    cc = cc.name if cc.is_a? Compiler
-    @compilers.any? { |c| c.name == cc }
-  end
-
-  def <<(o)
-    @compilers << o
-    self
-  end
-end
-
-
-class Compiler
-  attr_reader :name, :build
-
-  def initialize name
-    @name = name
-    @build = case name
-    when :clang then MacOS.clang_build_version.to_i
-    when :llvm then MacOS.llvm_build_version.to_i
-    when :gcc then MacOS.gcc_42_build_version.to_i
+class Compiler < Struct.new(:name, :priority)
+  def build
+    case name
+    when :clang, :llvm
+      MacOS.send("#{name}_build_version")
+    when :gcc
+      MacOS.gcc_42_build_version
     end
   end
-
-  def ==(other)
-    @name.to_sym == other.to_sym
-  end
 end
-
 
 class CompilerFailure
   attr_reader :compiler
@@ -57,50 +27,49 @@ class CompilerFailure
   end
 end
 
+class CompilerQueue
+  def initialize
+    @array = []
+  end
 
-# CompilerSelector is used to process a formula's CompilerFailures.
-# If no viable compilers are available, ENV.compiler is left as-is.
+  def <<(o)
+    @array << o
+    self
+  end
+
+  def pop
+    @array.delete(@array.max { |a, b| a.priority <=> b.priority })
+  end
+
+  def empty?
+    @array.empty?
+  end
+end
+
 class CompilerSelector
-  NAMES = { :clang => "Clang", :gcc => "GCC", :llvm => "LLVM" }
-
-  def initialize f
+  def initialize(f, old_compiler=ENV.compiler)
     @f = f
-    @old_compiler = ENV.compiler
-    @compilers = Compilers.new
-    @compilers << Compiler.new(:clang) if MacOS.clang_build_version
-    @compilers << Compiler.new(:llvm) if MacOS.llvm_build_version
-    @compilers << Compiler.new(:gcc) if MacOS.gcc_42_build_version
+    @old_compiler = old_compiler
+    @compilers = CompilerQueue.new
+    %w{clang llvm gcc}.map(&:to_sym).each do |cc|
+      @compilers << Compiler.new(cc, priority_for(cc))
+    end
   end
 
   def select_compiler
-    # @compilers is our list of available compilers. If @f declares a
-    # failure with compiler foo, then we remove foo from the list if
-    # the failing build is >= the currently installed version of foo.
-    @compilers = @compilers.reject do |cc|
-      failure = @f.fails_with? cc
-      failure && failure.build >= cc.build
-    end
+    begin
+      cc = @compilers.pop
+    end while @f.fails_with?(cc)
+    ENV.send(cc.name) unless cc.nil?
+  end
 
-    return if @compilers.empty? or @compilers.include? ENV.compiler
+  private
 
-    ENV.send case ENV.compiler
-    when :clang
-      if @compilers.include? :llvm then :llvm
-      elsif @compilers.include? :gcc then :gcc
-      else ENV.compiler
-      end
-    when :llvm
-      if @compilers.include? :clang and MacOS.clang_build_version >= 211 then :clang
-      elsif @compilers.include? :gcc then :gcc
-      elsif @compilers.include? :clang then :clang
-      else ENV.compiler
-      end
-    when :gcc
-      if @compilers.include? :clang and MacOS.clang_build_version >= 211 then :clang
-      elsif @compilers.include? :llvm then :llvm
-      elsif @compilers.include? :clang then :clang
-      else ENV.compiler
-      end
+  def priority_for(cc)
+    case cc
+    when :clang then MacOS.clang_build_version >= 211 ? 3 : 0.5
+    when :llvm  then 2
+    when :gcc   then 1
     end
   end
 end
