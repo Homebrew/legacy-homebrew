@@ -21,29 +21,6 @@ class Compilers
 end
 
 
-class CompilerFailures
-  include Enumerable
-
-  def initialize(*args)
-    @failures = Array.new(*args)
-  end
-
-  def each(*args, &block)
-    @failures.each(*args, &block)
-  end
-
-  def include?(cc)
-    cc = Compiler.new(cc) unless cc.is_a? Compiler
-    @failures.any? { |failure| failure.compiler == cc.name }
-  end
-
-  def <<(o)
-    @failures << o unless include? o.compiler
-    self
-  end
-end
-
-
 class Compiler
   attr_reader :name, :build
 
