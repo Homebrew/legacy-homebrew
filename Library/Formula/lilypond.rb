@@ -40,7 +40,6 @@ class Lilypond < Formula
   end
 
   fails_with :clang do
-    build 425
     cause 'Strict C99 compliance error in a pointer conversion.'
   end
 

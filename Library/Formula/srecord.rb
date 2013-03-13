@@ -8,6 +8,7 @@ class Srecord < Formula
   depends_on :libtool
   depends_on 'boost'
   depends_on 'libgcrypt'
+  depends_on 'ghostscript'
 
   def install
     system "./configure", "--prefix=#{prefix}", "LIBTOOL=glibtool"

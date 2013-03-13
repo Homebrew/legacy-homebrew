@@ -1,4 +1,4 @@
-require 'macos/version'
+require 'os/mac/version'
 
 module MacOS extend self
 
@@ -227,6 +227,7 @@ module MacOS extend self
   end
 
   def mdfind id
+    return [] unless MACOS
     (@mdfind ||= {}).fetch(id.to_s) do
       @mdfind[id.to_s] = `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
     end
@@ -237,5 +238,5 @@ module MacOS extend self
   end
 end
 
-require 'macos/xcode'
-require 'macos/xquartz'
+require 'os/mac/xcode'
+require 'os/mac/xquartz'

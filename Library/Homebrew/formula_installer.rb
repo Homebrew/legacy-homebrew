@@ -96,13 +96,13 @@ class FormulaInstaller
     begin
       if pour_bottle?
         pour
-        poured_bottle = true
+        @poured_bottle = true
       end
     rescue
       opoo "Bottle installation failed: building from source."
     end
 
-    unless poured_bottle
+    unless @poured_bottle
       build
       clean
     end
@@ -284,8 +284,8 @@ class FormulaInstaller
     fork do
       begin
         read.close
-        exec '/usr/bin/nice',
-             '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby',
+        exec 'nice',
+             RUBY_PATH,
              '-W0',
              '-I', Pathname.new(__FILE__).dirname,
              '-rbuild',
@@ -353,6 +353,17 @@ class FormulaInstaller
 
   def fix_install_names
     Keg.new(f.prefix).fix_install_names
+    if @poured_bottle
+      old_prefix = f.bottle.prefix
+      new_prefix = HOMEBREW_PREFIX.to_s
+      old_cellar = f.bottle.cellar
+      new_cellar = HOMEBREW_CELLAR.to_s
+
+      if old_prefix != new_prefix or old_cellar != new_cellar
+        Keg.new(f.prefix).relocate_install_names \
+          old_prefix, new_prefix, old_cellar, new_cellar
+      end
+    end
   rescue Exception => e
     onoe "Failed to fix install names"
     puts "The formula built, but you may encounter issues using it or linking other"

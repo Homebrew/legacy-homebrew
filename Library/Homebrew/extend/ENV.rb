@@ -201,6 +201,7 @@ module HomebrewEnvExtension
   end
 
   def macosxsdk v=MacOS.version
+    return unless MACOS
     # Sets all needed lib and include dirs to CFLAGS, CPPFLAGS, LDFLAGS.
     remove_macosxsdk
     # Allow cool style of ENV.macosxsdk 10.8 here (no "" :)
