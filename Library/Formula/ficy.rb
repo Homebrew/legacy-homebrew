@@ -9,7 +9,7 @@ class Ficy < Formula
 
   def install
     system "make"
-    prefix.install 'fIcy', 'fPls', 'fResync'
+    bin.install 'fIcy', 'fPls', 'fResync'
   end
 
   def test
