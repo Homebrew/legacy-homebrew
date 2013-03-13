@@ -225,7 +225,7 @@ def check_for_latest_xcode
         EOS
       elsif not MacOS::CLT.latest_version?
         <<-EOS.undent
-        A newer Command Line Tools for Xcode release is avaliable
+        A newer Command Line Tools for Xcode release is available
         You should install the latest version from: http://connect.apple.com
         EOS
       end
@@ -534,6 +534,9 @@ def check_which_pkg_config
 
     This was most likely created by the Mono installer. `./configure` may
     have problems finding brew-installed packages using this other pkg-config.
+
+    Mono no longer installs this file as of 3.0.4. You should
+    `sudo rm /usr/bin/pkg-config` and upgrade to the latest version of Mono.
     EOS
   elsif binary.to_s != "#{HOMEBREW_PREFIX}/bin/pkg-config" then <<-EOS.undent
     You have a non-Homebrew 'pkg-config' in your PATH:
@@ -607,7 +610,7 @@ def check_for_config_scripts
 
     configs = Dir["#{p}/*-config"]
     # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
-    config_scripts << [p, configs.collect {|p| File.basename(p)}] unless configs.empty?
+    config_scripts << [p, configs.map { |c| File.basename(c) }] unless configs.empty?
   end
 
   unless config_scripts.empty?
@@ -707,6 +710,28 @@ def check_for_multiple_volumes
   end
 end
 
+def check_filesystem_case_sensitive
+  volumes = Volumes.new
+  tmp_prefix = Pathname.new(ENV['HOMEBREW_TEMP'] || '/tmp')
+  case_sensitive_vols = [HOMEBREW_PREFIX, HOMEBREW_REPOSITORY, HOMEBREW_CELLAR, tmp_prefix].select do |dir|
+    # We select the dir as being case-sensitive if either the UPCASED or the
+    # downcased variant is missing.
+    # Of course, on a case-insensitive fs, both exist because the os reports so.
+    # In the rare situation when the user has indeed a downcased and an upcased
+    # dir (e.g. /TMP and /tmp) this check falsely thinks it is case-insensitive
+    # but we don't care beacuse: 1. there is more than one dir checked, 2. the
+    # check is not vital and 3. we would have to touch files otherwise.
+    upcased = Pathname.new(dir.to_s.upcase)
+    downcased = Pathname.new(dir.to_s.downcase)
+    dir.exist? && !(upcased.exist? && downcased.exist?)
+  end.map { |case_sensitive_dir| volumes.get_mounts(case_sensitive_dir) }.uniq
+  return if case_sensitive_vols.empty?
+  <<-EOS.undent
+    Your file-system on #{case_sensitive_vols} appears to be CaSe SeNsItIvE.
+    Homebrew is less tested with that - don't worry but please report issues.
+  EOS
+end
+
 def check_for_git
   unless which "git" then <<-EOS.undent
     Git could not be found in your PATH.
@@ -721,23 +746,24 @@ def check_git_newline_settings
   return unless which "git"
 
   autocrlf = `git config --get core.autocrlf`.chomp
-  safecrlf = `git config --get core.safecrlf`.chomp
 
-  if autocrlf == 'input' and safecrlf == 'true' then <<-EOS.undent
+  if autocrlf == 'true' then <<-EOS.undent
     Suspicious Git newline settings found.
 
-    The detected Git newline settings can cause checkout problems:
+    The detected Git newline settings will cause checkout problems:
       core.autocrlf = #{autocrlf}
-      core.safecrlf = #{safecrlf}
 
     If you are not routinely dealing with Windows-based projects,
-    consider removing these settings.
+    consider removing these by running:
+    `git config --global --set core.autocrlf input`
     EOS
   end
 end
 
 def check_for_git_origin
   return unless which "git"
+  # otherwise this will nag users with no repo about their remote
+  return unless (HOMEBREW_REPOSITORY/'.git').exist?
 
   HOMEBREW_REPOSITORY.cd do
     if `git config --get remote.origin.url`.chomp.empty? then <<-EOS.undent
@@ -755,6 +781,9 @@ end
 def check_the_git_origin
   return unless which "git"
   return if check_for_git_origin
+
+  # otherwise this will nag users with no repo about their remote
+  return unless (HOMEBREW_REPOSITORY/'.git').exist?
 
   HOMEBREW_REPOSITORY.cd do
     origin = `git config --get remote.origin.url`.chomp
@@ -825,8 +854,8 @@ def check_for_linked_keg_only_brews
     s = <<-EOS.undent
     Some keg-only formula are linked into the Cellar.
     Linking a keg-only formula, such as gettext, into the cellar with
-    `brew link f` will cause other formulae to detect them during the
-    `./configure` step. This may cause problems when compiling those
+    `brew link <formula>` will cause other formulae to detect them during
+    the `./configure` step. This may cause problems when compiling those
     other formulae.
 
     Binaries provided by keg-only formulae may override system binaries

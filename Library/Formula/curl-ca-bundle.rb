@@ -2,15 +2,10 @@ require 'formula'
 
 class CurlCaBundle < Formula
   homepage 'http://curl.haxx.se/docs/caextract.html'
-  url 'http://curl.haxx.se/download/curl-7.28.1.tar.gz'
-  sha256 '78dce7cfff51ec5725442b92c00550b4e0ca2f45ad242223850a312cd9160509'
-  version '1.87'
+  url 'https://downloads.sourceforge.net/project/machomebrew/mirror/curl-ca-bundle-1.87.tar.bz2'
+  sha256 '41742f0c6aa689543ad037d1f7615b8620dae399d3cf2061a8d86d84a1b41f7f'
 
   def install
-    cd 'lib' do
-      inreplace 'mk-ca-bundle.pl', /(http):/, '\1s:'
-      system 'perl', 'mk-ca-bundle.pl'
-      share.install 'ca-bundle.crt'
-    end
+    share.install 'ca-bundle.crt'
   end
 end

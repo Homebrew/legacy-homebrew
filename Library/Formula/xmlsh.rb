@@ -2,8 +2,8 @@ require 'formula'
 
 class Xmlsh < Formula
   homepage 'http://www.xmlsh.org'
-  url 'http://downloads.sourceforge.net/project/xmlsh/xmlsh/1.2.1/xmlsh_1_2_1.zip'
-  sha1 'be9d04b5cf3c770f350e530bfafb96bb4f21c73d'
+  url 'http://sourceforge.net/projects/xmlsh/files/xmlsh/1.2.2/xmlsh_1_2_2.zip'
+  sha1 '4965af46566e205355536f2ec0b03da1c03a9363'
 
   def shim_script target
     <<-EOS.undent

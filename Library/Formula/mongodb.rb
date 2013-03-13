@@ -17,14 +17,14 @@ end
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.2.tgz'
-  sha1 'b3808eeb6fe481f87db176cd3ab31119f94f7cc1'
-  version '2.2.2-x86_64'
+  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.3.tgz'
+  sha1 '6b81469374eb8d1b209fcdd8111d4e654573d095'
+  version '2.2.3-x86_64'
 
   devel do
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.3.2.tgz'
-    sha1 'b4c31e4bf1ea2613c8fe47cb781de23ff81bafca'
-    version '2.3.2-x86_64'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.0-rc2.tgz'
+    sha1 '651e8b59c38367e4038449104c6e884f8216ac2c'
+    version '2.4.0-rc2-x86_64'
   end
 
   depends_on SixtyFourBitRequired
@@ -94,6 +94,16 @@ class Mongodb < Formula
       <string>#{var}/log/mongodb/output.log</string>
       <key>StandardOutPath</key>
       <string>#{var}/log/mongodb/output.log</string>
+      <key>HardResourceLimits</key>
+      <dict>
+        <key>NumberOfFiles</key>
+        <integer>1024</integer>
+      </dict>
+      <key>SoftResourceLimits</key>
+      <dict>
+        <key>NumberOfFiles</key>
+        <integer>1024</integer>
+      </dict>
     </dict>
     </plist>
     EOS

@@ -27,8 +27,6 @@ class Mlton < Formula
   depends_on StandardHomebrewLocation
   depends_on 'gmp'
 
-  skip_clean :all
-
   def install
     cd "local" do
       # Remove OS X droppings

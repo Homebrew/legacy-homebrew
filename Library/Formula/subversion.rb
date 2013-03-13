@@ -59,7 +59,8 @@ class Subversion < Formula
   end
 
   def install
-    # We had weird issues with "make" apparently hanging on first run: https://github.com/mxcl/homebrew/issues/13226
+    # We had weird issues with "make" apparently hanging on first run:
+    # https://github.com/mxcl/homebrew/issues/13226
     ENV.deparallelize
 
     if build_java?
@@ -85,7 +86,7 @@ class Subversion < Formula
             "--with-ssl",
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula.factory('sqlite').opt_prefix}",
-            "--with-serf=#{HOMEBREW_PREFIX}",
+            "--with-serf=#{Formula.factory('serf').opt_prefix}",
             # use our neon, not OS X's
             "--disable-neon-version-check",
             "--disable-mod-activation",
@@ -93,7 +94,12 @@ class Subversion < Formula
             "--without-berkeley-db"]
 
     args << "--enable-javahl" << "--without-jikes" if build_java?
-    args << "--with-ruby-sitedir=#{lib}/ruby" if build_ruby?
+
+    if build_ruby?
+      args << "--with-ruby-sitedir=#{lib}/ruby"
+      # Peg to system Ruby
+      args << "RUBY=/usr/bin/ruby"
+    end
 
     # The system Python is built with llvm-gcc, so we override this
     # variable to prevent failures due to incompatible CFLAGS
@@ -138,7 +144,8 @@ class Subversion < Formula
     end
 
     if build_ruby?
-      system "make swig-rb"
+      # Peg to system Ruby
+      system "make swig-rb EXTRA_SWIG_LDFLAGS=-L/usr/lib"
       system "make install-swig-rb"
     end
   end

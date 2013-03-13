@@ -12,24 +12,6 @@ class ChecksumTests < Test::Unit::TestCase
     end
   end
 
-  def test_md5
-    valid_md5 = TestBall.new
-    valid_md5.stable.instance_eval do
-      md5 '060844753f2a3b36ecfc3192d307dab2'
-    end
-
-    good_checksum valid_md5
-  end
-
-  def test_badmd5
-    invalid_md5 = TestBall.new
-    invalid_md5.stable.instance_eval do
-      md5 '61aa838a9e4050d1876a295a9e62cbe6'
-    end
-
-    bad_checksum invalid_md5
-  end
-
   def test_sha1
     valid_sha1 = TestBall.new
     valid_sha1.stable.instance_eval do

@@ -2,8 +2,8 @@ require 'formula'
 
 class Olsrd < Formula
   homepage 'http://www.olsr.org'
-  url 'http://www.olsr.org/releases/0.6/olsrd-0.6.4.tar.bz2'
-  sha1 '60a701c04bba01e06d44e144b6d5fa57d478de84'
+  url 'http://www.olsr.org/releases/0.6/olsrd-0.6.5.2.tar.bz2'
+  sha1 '0a365dd5c70e44cd6a1da01ca6843b5e83c0bc58'
 
   def install
     lib.mkpath

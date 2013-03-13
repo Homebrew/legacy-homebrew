@@ -1,8 +1,8 @@
 require 'formula'
 
 class Fdupes < Formula
-  url 'http://fdupes.googlecode.com/files/fdupes-1.40.tar.gz'
   homepage 'http://code.google.com/p/fdupes/'
+  url 'http://fdupes.googlecode.com/files/fdupes-1.40.tar.gz'
   sha1 'e1bce9bdf50d7bf700dda3eb8a3d218b181b3931'
 
   def install

@@ -8,8 +8,8 @@ class Htmlcompressor < Formula
   option 'yuicompressor', "Use YUICompressor for JS/CSS compression"
   option 'closure-compiler', "Use Closure Compiler for JS optimization"
 
-  depends_on "yuicompressor" => :optional if build.include? 'yuicompressor'
-  depends_on "closure-compiler" => :optional if build.include? 'closure-compiler'
+  depends_on "yuicompressor" if build.include? 'yuicompressor'
+  depends_on "closure-compiler" if build.include? 'closure-compiler'
 
   def install
     libexec.install "htmlcompressor-1.5.3.jar"

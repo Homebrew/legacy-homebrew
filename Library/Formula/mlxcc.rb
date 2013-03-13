@@ -12,11 +12,8 @@ class Mlxcc < Formula
     system "make install"
   end
 
-  def test
-    mktemp do
-      (Pathname.pwd / "test.c").write("int main(void) { return 0; }")
-
-      system ENV.cc, "-lmlxcc", "test.c"
-    end
+  test do
+    (testpath/"test.c").write("int main(void) { return 0; }")
+    system ENV.cc, "-lmlxcc", "test.c"
   end
 end

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Lout < Formula
-  url 'ftp://ftp.cs.usyd.edu.au/jeff/lout/lout-3.38.tar.gz'
   homepage 'http://sourceforge.net/apps/mediawiki/lout/index.php'
+  url 'ftp://ftp.cs.usyd.edu.au/jeff/lout/lout-3.38.tar.gz'
   sha1 '2c4aec500dc27a00298f8265b9249d74d97e5466'
 
   def install
@@ -14,7 +14,7 @@ class Lout < Formula
     end
     bin.mkpath
     man1.mkpath
-    (doc + 'lout').mkpath
+    (doc/'lout').mkpath
     system "make allinstall"
   end
 end

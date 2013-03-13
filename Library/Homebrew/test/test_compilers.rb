@@ -94,9 +94,9 @@ class CompilerTests < Test::Unit::TestCase
 
     cs.select_compiler
 
-    assert_equal case MacOS.clang_build_version
-      when 0..210 then :gcc
-      else :clang
+    assert_equal case MacOS.gcc_42_build_version
+      when nil then :llvm
+      else :gcc
       end, ENV.compiler
   end
 
@@ -110,6 +110,6 @@ class CompilerTests < Test::Unit::TestCase
 
     cs.select_compiler
 
-    assert_equal MacOS.default_compiler, ENV.compiler
+    assert_not_equal :clang, ENV.compiler
   end
 end

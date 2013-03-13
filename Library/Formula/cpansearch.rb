@@ -7,6 +7,7 @@ class Cpansearch < Formula
 
   head 'https://github.com/c9s/cpansearch.git'
 
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
 
   def install

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Polyml < Formula
-  url 'http://downloads.sourceforge.net/project/polyml/polyml/5.3/polyml.5.3.tar.gz'
   homepage 'http://www.polyml.org'
-  sha1 'a037cd8cf4ce4a43b685b0e0d80f3f1e20d7c9fa'
+  url 'http://downloads.sourceforge.net/project/polyml/polyml/5.5/polyml.5.5.tar.gz'
+  sha1 '9b308d3ac69316d1fcb0f6ac5f9b9e2d2390d511'
 
   def install
     # for whatever reason, the configure script fails to find c++ if CXX is defined.
@@ -11,6 +11,7 @@ class Polyml < Formula
     ENV["check_cpp"] = "yes"
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
                           "--prefix=#{prefix}"
+    system "make"
     system "make install"
   end
 end

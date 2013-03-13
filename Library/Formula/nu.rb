@@ -18,6 +18,16 @@ class Nu < Formula
   depends_on NeedsLion
   depends_on 'pcre'
 
+  fails_with :llvm do
+    build 2336
+    cause 'nu only builds with clang'
+  end
+
+  fails_with :gcc do
+    build 5666
+    cause 'nu only builds with clang'
+  end
+
   def install
 
     ENV['PREFIX'] = prefix
@@ -25,9 +35,13 @@ class Nu < Formula
     inreplace "Makefile" do |s|
       cflags = s.get_make_var "CFLAGS"
       s.change_make_var! "CFLAGS", "#{cflags} #{ENV["CPPFLAGS"]}"
+      # nu hardcodes its compiler paths to a location which no longer works
+      # This should work for both Xcode-only and CLT-only systems
+      s.gsub! "$(DEVROOT)/usr/bin/clang", ENV.cc
     end
 
     inreplace "Nukefile" do |s|
+      s.gsub!'"#{DEVROOT}/usr/bin/clang"', "\"#{ENV.cc}\""
       case Hardware.cpu_type
       when :intel
         arch = :i386

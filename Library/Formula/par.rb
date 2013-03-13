@@ -1,8 +1,8 @@
 require 'formula'
 
 class Par < Formula
-  url 'http://www.nicemice.net/par/Par152.tar.gz'
   homepage 'http://www.nicemice.net/par/'
+  url 'http://www.nicemice.net/par/Par152.tar.gz'
   sha1 '4b83d2ec593bb45ee46d4b7c2bfc590e1f4a41a8'
 
   def patches

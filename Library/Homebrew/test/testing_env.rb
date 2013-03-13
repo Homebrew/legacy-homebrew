@@ -28,7 +28,7 @@ HOMEBREW_CURL_ARGS = '-fsLA'
 HOMEBREW_VERSION = '0.9-test'
 
 MACOS = true
-MACOS_VERSION = 10.6
+MACOS_VERSION = ENV.fetch('MACOS_VERSION', 10.6)
 MACOS_FULL_VERSION = '10.6.8'
 
 %w{Library/Formula Library/ENV}.each do |d|

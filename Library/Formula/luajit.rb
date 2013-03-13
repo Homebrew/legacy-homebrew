@@ -2,8 +2,8 @@ require 'formula'
 
 class Luajit < Formula
   homepage 'http://luajit.org/luajit.html'
-  url 'http://luajit.org/download/LuaJIT-2.0.0.tar.gz'
-  sha1 'b942f05d41ee193becad285618e7874d113cb976'
+  url 'http://luajit.org/download/LuaJIT-2.0.1.tar.gz'
+  sha1 '330492aa5366e4e60afeec72f15e44df8a794db5'
   head 'http://luajit.org/git/luajit-2.0.git'
 
   skip_clean 'lib/lua/5.1', 'share/lua/5.1'

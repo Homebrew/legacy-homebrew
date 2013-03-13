@@ -91,18 +91,16 @@ class Version
   end
   alias_method :to_str, :to_s
 
-  def self.parse spec
-    version = _parse(spec)
-    Version.new(version, true) unless version.nil?
-  end
-
   protected
 
   def to_a
     @array ||= @version.scan(/\d+|[a-zA-Z]+/).map { |e| VersionElement.new(e) }
   end
 
-  private
+  def self.parse spec
+    version = _parse(spec)
+    Version.new(version, true) unless version.nil?
+  end
 
   def self._parse spec
     spec = Pathname.new(spec) unless spec.is_a? Pathname
@@ -183,13 +181,10 @@ class Version
     # e.g. http://mirrors.jenkins-ci.org/war/1.486/jenkins.war
     m = /\/(\d\.\d+)\//.match(spec.to_s)
     return m.captures.first unless m.nil?
-  end
 
-  # DSL for defining comparators
-  class << self
-    def compare &blk
-      send(:define_method, '<=>', &blk)
-    end
+    # e.g. http://www.ijg.org/files/jpegsrc.v8d.tar.gz
+    m = /\.v(\d+[a-z]?)/.match(stem)
+    return m.captures.first unless m.nil?
   end
 end
 
@@ -211,18 +206,5 @@ class VersionSchemeDetector
 
   def detect_from_symbol
     raise "Unknown version scheme #{@scheme} was requested."
-  end
-end
-
-# Enable things like "MacOS.version >= :lion"
-class MacOSVersion < Version
-  compare do |other|
-    super Version.new case other
-      when :mountain_lion then 10.8
-      when :lion then 10.7
-      when :snow_leopard then 10.6
-      when :leopard then 10.5
-      else other.to_s
-      end
   end
 end

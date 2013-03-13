@@ -2,8 +2,8 @@ require 'formula'
 
 class VowpalWabbit < Formula
   homepage 'https://github.com/JohnLangford/vowpal_wabbit'
-  url 'https://github.com/JohnLangford/vowpal_wabbit/tarball/v7.1'
-  sha1 'a2a8241654d79fd2c0b14a3907d98f7e87705ba8'
+  url 'https://github.com/JohnLangford/vowpal_wabbit/tarball/v7.2'
+  sha1 '974dc03941fabc304ddfcf3ceb3d763c702c6b6b'
 
   head 'https://github.com/JohnLangford/vowpal_wabbit.git'
 

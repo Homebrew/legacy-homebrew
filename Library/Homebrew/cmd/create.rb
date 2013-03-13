@@ -71,12 +71,8 @@ module Homebrew extend self
 end
 
 class FormulaCreator
-  attr :url
-  attr :sha1
-  attr :name, true
-  attr :version, true
-  attr :path, true
-  attr :mode, true
+  attr_reader :url, :sha1
+  attr_accessor :name, :version, :path, :mode
 
   def url= url
     @url = url
@@ -122,7 +118,7 @@ class FormulaCreator
     class #{Formula.class_s name} < Formula
       homepage ''
       url '#{url}'
-    <% unless version.nil? %>
+    <% if not version.nil? and not version.detected_from_url? %>
       version '#{version}'
     <% end %>
       sha1 '#{sha1}'
@@ -150,7 +146,9 @@ class FormulaCreator
         system "make install" # if this fails, try separate make/make install steps
       end
 
-      def test
+      test do
+        # `test do` will create, run in and delete a temporary directory.
+        #
         # This test will fail and we won't accept that! It's enough to just replace
         # "false" with the main program this formula installs, but it'd be nice if you
         # were more thorough. Run the test with `brew test #{name}`.

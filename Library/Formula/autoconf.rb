@@ -10,31 +10,15 @@ class Autoconf < Formula
     keg_only "Xcode (up to and including 4.2) provides (a rather old) Autoconf."
   end
 
-  def patches
-    # force autoreconf to look for and use our glibtoolize
-    DATA
-  end
-
   def install
+    # force autoreconf to look for and use our glibtoolize
+    inreplace 'bin/autoreconf.in', 'libtoolize', 'glibtoolize'
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 
-  def test
-    system "#{bin}/autoconf", "--version"
+  test do
+    cp "#{share}/autoconf/autotest/autotest.m4", 'autotest.m4'
+    system "#{bin}/autoconf", 'autotest.m4'
   end
 end
-
-
-__END__
---- a/bin/autoreconf.in	2012-04-24 15:00:28.000000000 -0700
-+++ b/bin/autoreconf.in	2012-04-24 21:51:41.000000000 -0700
-@@ -111,7 +111,7 @@
- my $autom4te   = $ENV{'AUTOM4TE'}   || '@bindir@/@autom4te-name@';
- my $automake   = $ENV{'AUTOMAKE'}   || 'automake';
- my $aclocal    = $ENV{'ACLOCAL'}    || 'aclocal';
--my $libtoolize = $ENV{'LIBTOOLIZE'} || 'libtoolize';
-+my $libtoolize = $ENV{'LIBTOOLIZE'} || 'glibtoolize';
- my $autopoint  = $ENV{'AUTOPOINT'}  || 'autopoint';
- my $make       = $ENV{'MAKE'}       || 'make';
- 

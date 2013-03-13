@@ -2,8 +2,8 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://www.wireshark.org/download/src/wireshark-1.8.4.tar.bz2'
-  sha1 '00265d9196f030848c78025f30556cd014be843d'
+  url 'http://www.wireshark.org/download/src/wireshark-1.8.6.tar.bz2'
+  sha1 '0f51ed901b5e07cceb1373f3368f739be8f1e827'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnutls2' => :optional

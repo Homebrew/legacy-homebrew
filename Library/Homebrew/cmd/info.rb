@@ -9,6 +9,8 @@ module Homebrew extend self
     # awhile around for compatibility
     if ARGV.json == "v1"
       print_json
+    elsif ARGV.flag? '--github'
+      exec_browser *ARGV.formulae.map { |f| github_info(f) }
     else
       print_info
     end
@@ -70,11 +72,9 @@ module Homebrew extend self
   end
 
   def info_formula f
-    exec 'open', github_info(f) if ARGV.flag? '--github'
-
     specs = []
     stable = "stable #{f.stable.version}" if f.stable
-    stable += " (bottled)" if f.bottle and MacOS.bottles_supported?
+    stable += " (bottled)" if f.bottle
     specs << stable if stable
     specs << "devel #{f.devel.version}" if f.devel
     specs << "HEAD" if f.head

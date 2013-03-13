@@ -1,9 +1,6 @@
 require 'formula'
 
 class NoBdb5 < Requirement
-  # Not fatal in case Squid starts working with a newer version of BDB.
-  fatal false
-
   satisfy(:build_env => false) { !Formula.factory("berkeley-db").installed? }
 
   def message; <<-EOS.undent
@@ -18,8 +15,8 @@ end
 
 class Squid < Formula
   homepage 'http://www.squid-cache.org/'
-  url 'http://www.squid-cache.org/Versions/v3/3.2/squid-3.2.5.tar.gz'
-  sha1 '17c6f03ca90b0918b847e9e34669ba827da7edba'
+  url 'http://www.squid-cache.org/Versions/v3/3.2/squid-3.2.7.tar.gz'
+  sha1 '15df9b09c3eb2c964441e637a4d4cf0af11bcfd5'
 
   depends_on NoBdb5
 

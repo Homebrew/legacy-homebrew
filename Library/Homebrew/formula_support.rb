@@ -9,6 +9,7 @@ class SoftwareSpec
     @url = url
     @version = version
     @mirrors = []
+    @specs = {}
   end
 
   def download_strategy
@@ -31,7 +32,7 @@ class SoftwareSpec
 
   # The methods that follow are used in the block-form DSL spec methods
   Checksum::TYPES.each do |cksum|
-    class_eval %Q{
+    class_eval <<-EOS, __FILE__, __LINE__ + 1
       def #{cksum}(val=nil)
         if val.nil?
           @checksum if @checksum.nil? or @checksum.hash_type == :#{cksum}
@@ -39,16 +40,14 @@ class SoftwareSpec
           @checksum = Checksum.new(:#{cksum}, val)
         end
       end
-    }
+    EOS
   end
 
-  def url val=nil, specs=nil
+  def url val=nil, specs={}
     return @url if val.nil?
     @url = val
-    unless specs.nil?
-      @using = specs.delete :using
-      @specs = specs
-    end
+    @using = specs.delete(:using)
+    @specs.merge!(specs)
   end
 
   def version val=nil
@@ -80,46 +79,55 @@ end
 
 class Bottle < SoftwareSpec
   attr_writer :url
-  attr_reader :revision
+  # TODO: Can be removed when all bottles migrated to underscored cat symbols.
+  attr_reader :cat_without_underscores
 
-  def initialize url=nil, version=nil
+  def initialize
     super
     @revision = 0
+    @prefix = '/usr/local'
+    @cellar = '/usr/local/Cellar'
+    @cat_without_underscores = false
   end
 
   # Checksum methods in the DSL's bottle block optionally take
   # a Hash, which indicates the platform the checksum applies on.
   Checksum::TYPES.each do |cksum|
-    class_eval %Q{
+    class_eval <<-EOS, __FILE__, __LINE__ + 1
       def #{cksum}(val=nil)
         @#{cksum} ||= Hash.new
         case val
         when nil
           @#{cksum}[MacOS.cat]
-        when String
-          @#{cksum}[:lion] = Checksum.new(:#{cksum}, val)
         when Hash
           key, value = val.shift
           @#{cksum}[value] = Checksum.new(:#{cksum}, key)
         end
 
-        @checksum = @#{cksum}[MacOS.cat] if @#{cksum}.has_key? MacOS.cat
+        if @#{cksum}.has_key? MacOS.cat
+          @checksum = @#{cksum}[MacOS.cat]
+        elsif @#{cksum}.has_key? MacOS.cat_without_underscores
+          @checksum = @#{cksum}[MacOS.cat_without_underscores]
+          @cat_without_underscores = true
+        end
       end
-    }
+    EOS
   end
 
-  def url val=nil
-    val.nil? ? @url : @url = val
+  def root_url val=nil
+    val.nil? ? @root_url : @root_url = val
   end
 
-  # Used in the bottle DSL to set @revision, but acts as an
-  # as accessor for @version to preserve the interface
-  def version val=nil
-    if val.nil?
-      return @version ||= Version.parse(@url)
-    else
-      @revision = val
-    end
+  def prefix val=nil
+    val.nil? ? @prefix : @prefix = val
+  end
+
+  def cellar val=nil
+    val.nil? ? @cellar : @cellar = val
+  end
+
+  def revision val=nil
+    val.nil? ? @revision : @revision = val
   end
 end
 

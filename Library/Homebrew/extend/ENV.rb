@@ -69,8 +69,7 @@ module HomebrewEnvExtension
     paths = []
     paths << HOMEBREW_PREFIX/'lib/pkgconfig'
     paths << HOMEBREW_PREFIX/'share/pkgconfig'
-    paths << HOMEBREW_REPOSITORY/'Library/ENV/pkgconfig/mountain_lion' if MacOS.version >= :mountain_lion
-    paths << HOMEBREW_REPOSITORY/'Library/ENV/pkgconfig/leopard' if MacOS.version <= :leopard
+    paths << HOMEBREW_REPOSITORY/"Library/ENV/pkgconfig/#{MacOS.version}"
     paths << '/usr/lib/pkgconfig'
     paths.select { |d| File.directory? d }.join(':')
   end
@@ -202,6 +201,7 @@ module HomebrewEnvExtension
   end
 
   def macosxsdk v=MacOS.version
+    return unless MACOS
     # Sets all needed lib and include dirs to CFLAGS, CPPFLAGS, LDFLAGS.
     remove_macosxsdk
     # Allow cool style of ENV.macosxsdk 10.8 here (no "" :)
@@ -391,9 +391,9 @@ class << ENV
   def remove_from_cflags f
     remove cc_flag_vars, f
   end
-  def append key, value, separator = ' '
+  def append keys, value, separator = ' '
     value = value.to_s
-    [*key].each do |key|
+    Array(keys).each do |key|
       unless self[key].to_s.empty?
         self[key] = self[key] + separator + value.to_s
       else
@@ -401,8 +401,8 @@ class << ENV
       end
     end
   end
-  def prepend key, value, separator = ' '
-    [*key].each do |key|
+  def prepend keys, value, separator = ' '
+    Array(keys).each do |key|
       unless self[key].to_s.empty?
         self[key] = value.to_s + separator + self[key]
       else
@@ -413,8 +413,8 @@ class << ENV
   def prepend_path key, path
     prepend key, path, ':' if File.directory? path
   end
-  def remove key, value
-    [*key].each do |key|
+  def remove keys, value
+    Array(keys).each do |key|
       next unless self[key]
       self[key] = self[key].sub(value, '')
       delete(key) if self[key].to_s.empty?

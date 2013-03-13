@@ -140,4 +140,11 @@ class OptionsTests < Test::Unit::TestCase
   def test_coerce_raises_for_inappropriate_types
     assert_raises(TypeError) { Options.coerce(1) }
   end
+
+  def test_coerce_splits_multiple_switches_with_single_dash
+    array = %w{-vd}
+    verbose = Option.new("-v")
+    debug = Option.new("-d")
+    assert_equal [verbose, debug].sort, Options.coerce(array).to_a.sort
+  end
 end

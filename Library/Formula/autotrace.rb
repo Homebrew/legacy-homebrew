@@ -5,9 +5,7 @@ class Autotrace < Formula
   url 'http://downloads.sourceforge.net/project/autotrace/AutoTrace/0.31.1/autotrace-0.31.1.tar.gz'
   sha1 '679e4912528030b86f23db5b99e60f8e7df883fd'
 
-  option 'without-imagemagick', 'Compile without ImageMagick'
-
-  depends_on 'imagemagick' unless build.include? 'without-imagemagick'
+  depends_on 'imagemagick' => :recommended
 
   # Issue 16569: Use MacPorts patch to port input-png.c to libpng 1.5.
   # Fix underquoted m4
@@ -24,7 +22,7 @@ class Autotrace < Formula
             "--prefix=#{prefix}",
             "--mandir=#{man}"]
 
-    args << "--without-magick" if build.include? 'without-imagemagick'
+    args << "--without-magick" if build.without? 'imagemagick'
 
     system "./configure", *args
     system "make install"

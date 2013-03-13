@@ -3,10 +3,14 @@ require 'formula'
 class V8 < Formula
   homepage 'http://code.google.com/p/v8/'
   # Use the official github mirror, it is easier to find tags there
-  url 'https://github.com/v8/v8/archive/3.15.11.tar.gz'
-  sha1 '0c47b3a5409d71d4fd6581520c8972f7451a87e4'
+  url 'https://github.com/v8/v8/archive/3.16.14.tar.gz'
+  sha1 '2940c0ec6b31459d0ba724dba9e586f0de23e2c4'
 
   head 'https://github.com/v8/v8.git'
+
+  # gyp currently depends on a full xcode install
+  # https://code.google.com/p/gyp/issues/detail?id=292
+  depends_on :xcode
 
   def install
     system 'make dependencies'
