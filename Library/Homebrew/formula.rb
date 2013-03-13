@@ -198,9 +198,8 @@ class Formula
   end
 
   def fails_with? cc
-    return false if self.class.cc_failures.nil?
     cc = Compiler.new(cc) unless cc.is_a? Compiler
-    self.class.cc_failures.find do |failure|
+    (self.class.cc_failures || []).any? do |failure|
       failure.compiler == cc.name && failure.build >= cc.build
     end
   end
