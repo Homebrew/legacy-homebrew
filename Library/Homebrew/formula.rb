@@ -785,12 +785,8 @@ private
     end
 
     def fails_with compiler, &block
-      @cc_failures ||= CompilerFailures.new
-      @cc_failures << if block_given?
-        CompilerFailure.new(compiler, &block)
-      else
-        CompilerFailure.new(compiler)
-      end
+      @cc_failures ||= Set.new
+      @cc_failures << CompilerFailure.new(compiler, &block)
     end
 
     def test &block
