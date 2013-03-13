@@ -7,6 +7,9 @@ class RubyBuild < Formula
 
   head 'https://github.com/sstephenson/ruby-build.git'
 
+  depends_on 'autoconf' => :recommended
+  depends_on 'pkg-config' => :recommended
+
   def install
     ENV['PREFIX'] = prefix
     system "./install.sh"

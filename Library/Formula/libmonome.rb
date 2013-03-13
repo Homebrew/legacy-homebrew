@@ -10,7 +10,6 @@ class Libmonome < Formula
   depends_on 'liblo'
 
   fails_with :clang do
-    build 425
     cause 'waf fails to find g++ when compiling with clang'
   end
 

@@ -14,7 +14,6 @@ class Go < Formula
 
   if build.head?
     fails_with :clang do
-      build 425
       cause "clang: error: no such file or directory: 'libgcc.a'"
     end
   end
