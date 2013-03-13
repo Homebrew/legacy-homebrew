@@ -5,7 +5,7 @@ class PythonVersion < Requirement
 
   satisfy { `python -c 'import sys;print(sys.version[:3])'`.strip.to_f >= 2.6 }
 
-  def message;
+  def message
     "Node's build system, gyp, requires Python 2.6 or newer."
   end
 end
@@ -18,15 +18,14 @@ class NpmNotInstalled < Requirement
   end
 
   def message; <<-EOS.undent
-    The homebrew node recipe now (beginning with 0.8.0) comes with npm.
+    Beginning with 0.8.0, this recipe now comes with npm.
     It appears you already have npm installed at #{modules_folder}/npm.
-    To use the npm that comes with this recipe,
-      first uninstall npm with `npm uninstall npm -g`.
-      Then run this command again.
+    To use the npm that comes with this recipe, first uninstall npm with
+    `npm uninstall npm -g`, then run this command again.
 
     If you would like to keep your installation of npm instead of
-      using the one provided with homebrew,
-      install the formula with the --without-npm option added.
+    using the one provided with homebrew, install the formula with
+    the `--without-npm` option.
     EOS
   end
 
