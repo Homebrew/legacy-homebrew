@@ -56,11 +56,11 @@ class CompilerSelector
     end
   end
 
-  def select_compiler
+  def compiler
     begin
       cc = @compilers.pop
     end while @f.fails_with?(cc)
-    ENV.send(cc.name) unless cc.nil?
+    cc.nil? ? @old_compiler : cc.name
   end
 
   private
