@@ -10,6 +10,7 @@ class Pyqt < Formula
 
   depends_on 'sip'
   depends_on 'qt'
+  conflicts_with 'pyqt-py3'
 
   def install
     ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
