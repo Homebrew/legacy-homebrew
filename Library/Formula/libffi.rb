@@ -67,11 +67,8 @@ class Libffi < Formula
      }
     TEST_SCRIPT
 
-    cellar = `brew --prefix libffi`.chomp
-    ENV['PKG_CONFIG_PATH'] = "#{cellar}/lib/pkgconfig/"
-    flags = *`pkg-config --cflags --libs libffi`.split
-    flags += ENV.cflags.split
-    ohai flags
+    ENV['PKG_CONFIG_PATH'] = "#{opt_prefix}/lib/pkgconfig"
+    flags = `pkg-config --cflags --libs libffi`.split + ENV.cflags.split
     system ENV.cc, "-o", "closure", "closure.c", *flags
     system "./closure"
   end
