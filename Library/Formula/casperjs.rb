@@ -3,7 +3,7 @@ require 'formula'
 class Casperjs < Formula
   homepage 'http://www.casperjs.org/'
   url 'https://github.com/n1k0/casperjs/zipball/1.0.2'
-  sha1 'b335a6d2f496161cb480d6efb498fb9d59756225'
+  sha1 '9bfc1f0b0842ebbb1cd28d29897caf3f605e563a'
 
   head 'https://github.com/n1k0/casperjs.git'
 
