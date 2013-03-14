@@ -2,12 +2,12 @@ require 'formula'
 
 class Vtk < Formula
   homepage 'http://www.vtk.org'
-  url 'http://www.vtk.org/files/release/5.10/vtk-5.10.0.tar.gz'
-  sha1 '0c9a17e2f446dc78b0500dc5bbd1c6a2864a0191'
+  url 'http://www.vtk.org/files/release/5.10/vtk-5.10.1.tar.gz'
+  sha1 'deb834f46b3f7fc3e122ddff45e2354d69d2adc3'
 
   depends_on 'cmake' => :build
   depends_on :x11 if build.include? 'x11'
-  depends_on  'qt'  => :optional if build.include? 'qt'
+  depends_on 'qt' if build.include? 'qt'
 
   if build.include? 'pyqt' and build.include? 'python'
     depends_on  'sip'
@@ -101,7 +101,7 @@ class Vtk < Formula
   def caveats
     s = ''
     vtk = Tab.for_formula 'vtk'
-    if build.include? 'python' or vtk.installed_with? 'python'
+    if build.include? 'python' or vtk.include? 'python'
       s += <<-EOS.undent
         For non-homebrew Python, you need to amend your PYTHONPATH like so:
         export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
@@ -113,7 +113,7 @@ class Vtk < Formula
 
       EOS
     end
-    if build.include? 'examples' or vtk.installed_with? '--examples'
+    if build.include? 'examples' or vtk.include? 'examples'
       s += <<-EOS.undent
 
         The scripting examples are stored in #{HOMEBREW_PREFIX}/share/vtk

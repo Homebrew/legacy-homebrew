@@ -1,5 +1,4 @@
 require 'formula'
-require Formula.path("python") # For TkCheck requirement
 
 # Python3 is the new language standard, not just a new revision.
 # It's somewhat incompatible with Python 2.x, therefore, the executable
@@ -7,14 +6,15 @@ require Formula.path("python") # For TkCheck requirement
 # `brew install python`.
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.32.tar.gz'
-  sha1 '65ae88517ac47bd4e0fb449b3b9a9bf85e8366c8'
+  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.35.tar.gz'
+  sha1 'a928104ea1bd1f85c35de6d0d5f1628d2602ac66'
 end
 
 class Pip < Formula
-  url 'http://pypi.python.org/packages/source/p/pip/pip-1.2.1.tar.gz'
-  sha1 '35db84983ef3f66a8a161d320e61d192afc233d9'
+  url 'https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz'
+  sha1 '9c70d314e5dea6f41415af814056b0f63c3ffd14'
 end
+
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
@@ -22,7 +22,6 @@ class Python3 < Formula
   sha1 '3e1464bc2c1dfa74287bc58da81168f50b0ae5c7'
   VER='3.3'  # The <major>.<minor> is used so often.
 
-  depends_on TkCheck.new
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
   depends_on 'sqlite' => :recommended
@@ -121,7 +120,7 @@ class Python3 < Formula
     # Install distribute for python3 and assure there's no name clash
     # with what the python (2.x) formula installs.
     scripts_folder.mkpath
-    setup_args = ["-s", "setup.py", "install", "--force", "--verbose", "--install-lib=#{site_packages_cellar}", "--install-scripts=#{bin}" ]
+    setup_args = ["-s", "setup.py", "install", "--force", "--verbose", "--install-lib=#{site_packages_cellar}", "--install-scripts=#{bin}"]
     Distribute.new.brew { system "#{bin}/python#{VER}", *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
     Pip.new.brew { system "#{bin}/python#{VER}", *setup_args }
@@ -156,8 +155,8 @@ class Python3 < Formula
   def distutils_fix_superenv(args)
     if superenv?
       # To allow certain Python bindings to find brewed software:
-      cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include"
-      ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib"
+      cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
+      ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
       unless MacOS::CLT.installed?
         # Help Python's build system (distribute/pip) to build things on Xcode-only systems
         # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)

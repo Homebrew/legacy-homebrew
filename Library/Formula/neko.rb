@@ -1,9 +1,9 @@
 require 'formula'
 
 class Neko < Formula
-  url 'http://nekovm.org/_media/neko-1.8.1.tar.gz'
   homepage 'http://nekovm.org/'
-  sha1 'a551ac615a98f8b75c67502cc977d64034e11f20'
+  url 'http://nekovm.org/_media/neko-1.8.2.tar.gz'
+  sha1 '59f0fa72485b4c39561efbb64fc8c7293d372b0b'
 
   depends_on 'bdw-gc'
 

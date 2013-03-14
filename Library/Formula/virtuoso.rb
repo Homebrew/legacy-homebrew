@@ -11,9 +11,9 @@ class Virtuoso < Formula
   depends_on 'gawk' => :build
 
   if build.head?
-    depends_on :autoconf => :build
-    depends_on :automake => :build
-    depends_on :libtool  => :build
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
   end
 
   skip_clean :la

@@ -1,6 +1,10 @@
 require 'formula'
 
 class ErlangInstalled < Requirement
+  fatal true
+
+  satisfy { which 'erl' }
+
   def message; <<-EOS.undent
     Erlang is required to install.
 
@@ -11,24 +15,16 @@ class ErlangInstalled < Requirement
       http://www.erlang.org/
     EOS
   end
-
-  def satisfied?
-    which 'erl'
-  end
-
-  def fatal?
-    true
-  end
 end
 
 class Elixir < Formula
   homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/tarball/v0.7.2'
-  sha1 '9f500bfe87c158f2142d226ced43105781a52a46'
+  url  'https://github.com/elixir-lang/elixir/tarball/v0.8.1'
+  sha1 '6805ffbfc75652b23952512fc86188db91c7d9c6'
 
-  head 'https://github.com/elixir-lang/elixir.git', :branch => 'stable'
+  head 'https://github.com/elixir-lang/elixir.git'
 
-  depends_on ErlangInstalled.new
+  depends_on ErlangInstalled
 
   env :userpaths
 

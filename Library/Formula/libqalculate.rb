@@ -5,6 +5,7 @@ class Libqalculate < Formula
   url 'http://sourceforge.net/projects/qalculate/files/libqalculate/libqalculate-0.9.7/libqalculate-0.9.7.tar.gz'
   sha1 'c15f7f3a97995decf62cc964956fc1e374ecd78c'
 
+  depends_on 'pkg-config' => :build
   depends_on 'cln'
   depends_on 'glib'
   depends_on 'gnuplot'

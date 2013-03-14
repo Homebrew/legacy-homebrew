@@ -10,8 +10,9 @@ class Libtiff < Formula
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--without-x",
-                          "--prefix=#{prefix}"
+                          "--disable-lzma"
     system "make install"
   end
 end

@@ -2,15 +2,17 @@ require 'formula'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp.postgresql.org/pub/source/v9.2.2/postgresql-9.2.2.tar.bz2'
-  sha1 'edadf238bcf51bd6e92dfe2f8afb3665510297a6'
+  url 'http://ftp.postgresql.org/pub/source/v9.2.3/postgresql-9.2.3.tar.bz2'
+  sha1 'fe46685c36f6a7a04edd67be5695b4f5acebedff'
 
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version == :leopard # Leopard libxml is too old
-  depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
+  depends_on 'ossp-uuid' => :recommended
+
+  conflicts_with 'postgres-xc',
+    :because => 'postgresql and postgres-xc install the same binaries.'
 
   option '32-bit'
-  option 'without-ossp-uuid', 'Build without OSSP uuid'
   option 'no-python', 'Build without Python support'
   option 'no-perl', 'Build without Perl support'
   option 'enable-dtrace', 'Build with DTrace support'
@@ -41,12 +43,12 @@ class Postgresql < Formula
             "--with-libxml",
             "--with-libxslt"]
 
-    args << "--with-ossp-uuid" unless build.include? 'without-ossp-uuid'
+    args << "--with-ossp-uuid" if build.with? 'ossp-uuid'
     args << "--with-python" unless build.include? 'no-python'
     args << "--with-perl" unless build.include? 'no-perl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
 
-    unless build.include? 'without-ossp-uuid'
+    if build.with? 'ossp-uuid'
       ENV.append 'CFLAGS', `uuid-config --cflags`.strip
       ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
       ENV.append 'LIBS', `uuid-config --libs`.strip

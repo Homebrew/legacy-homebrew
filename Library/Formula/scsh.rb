@@ -1,8 +1,8 @@
 require 'formula'
 
 class Scsh < Formula
-  url 'http://ftp.scsh.net/pub/scsh/0.6/scsh-0.6.7.tar.gz'
   homepage 'http://www.scsh.net/'
+  url 'http://ftp.scsh.net/pub/scsh/0.6/scsh-0.6.7.tar.gz'
   sha1 'a1eaf0d0593e14914824898a0c3ec166429affd7'
 
   def install

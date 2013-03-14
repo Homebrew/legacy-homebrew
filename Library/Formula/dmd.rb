@@ -2,13 +2,8 @@ require 'formula'
 
 class Dmd < Formula
   homepage 'http://www.digitalmars.com/d/'
-  url 'http://cloud.github.com/downloads/D-Programming-Language/dmd/dmd.2.060.zip'
-  sha1 'e39687e90a52b979d1cea64faf745b7825f01f94'
-
-  def doc
-    #use d and not dmd, rationale: meh
-    prefix+'share/doc/d'
-  end
+  url 'http://downloads.dlang.org.s3-website-us-east-1.amazonaws.com/releases/2013/dmd.2.062.zip'
+  sha1 '02caec18aeb55ff2d2251925e867340f58617c80'
 
   def install
     # clean it up a little first
@@ -16,20 +11,17 @@ class Dmd < Formula
     mv 'license.txt', 'COPYING'
     mv 'README.TXT', 'README'
 
+    cd 'osx/bin' do
+      mv 'dmdx.conf', 'dmd.conf'
+      inreplace 'dmd.conf', '~/dmd2', prefix
+    end
+
+    rmtree 'src/dmd'
     prefix.install 'osx/bin', 'osx/lib', 'src'
+
     man.install 'man/man1'
+    man5.install man1/'dmd.conf.5'
 
-    (prefix+'src/dmd').rmtree # we don't need the dmd sources thanks
-    man5.install man1+'dmd.conf.5' # oops
     (share+'d/examples').install Dir['samples/d/*.d']
-
-    # Rewrite the DFLAGS to point to the prefix.
-    # @adamv: this should not go into bin!
-    # But I'm too lazy to figure out how to fix right now.
-    rm bin+'dmd.conf'
-    (bin+'dmd.conf').write <<-EOS.undent
-      [Environment]
-      DFLAGS=-I#{prefix}/src/phobos -I#{prefix}/src/druntime/import
-    EOS
   end
 end

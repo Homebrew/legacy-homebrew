@@ -1,8 +1,8 @@
 require 'formula'
 
 class Bcrypt < Formula
-  url 'http://bcrypt.sourceforge.net/bcrypt-1.1.tar.gz'
   homepage 'http://bcrypt.sourceforge.net'
+  url 'http://bcrypt.sourceforge.net/bcrypt-1.1.tar.gz'
   sha1 'fd4c7c83fdc560f143bb0e0a8c9fb7aa57e69698'
 
   def install

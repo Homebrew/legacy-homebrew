@@ -1,19 +1,45 @@
-class Compilers < Array
-  def include? cc
+class Compilers
+  include Enumerable
+
+  def initialize(*args)
+    @compilers = Array.new(*args)
+  end
+
+  def each(*args, &block)
+    @compilers.each(*args, &block)
+  end
+
+  def include?(cc)
     cc = cc.name if cc.is_a? Compiler
-    self.any? { |c| c.name == cc }
+    @compilers.any? { |c| c.name == cc }
+  end
+
+  def <<(o)
+    @compilers << o
+    self
   end
 end
 
 
-class CompilerFailures < Array
-  def include? cc
-    cc = Compiler.new(cc) unless cc.is_a? Compiler
-    self.any? { |failure| failure.compiler == cc.name }
+class CompilerFailures
+  include Enumerable
+
+  def initialize(*args)
+    @failures = Array.new(*args)
   end
 
-  def <<(failure)
-    super(failure) unless self.include? failure.compiler
+  def each(*args, &block)
+    @failures.each(*args, &block)
+  end
+
+  def include?(cc)
+    cc = Compiler.new(cc) unless cc.is_a? Compiler
+    @failures.any? { |failure| failure.compiler == cc.name }
+  end
+
+  def <<(o)
+    @failures << o unless include? o.compiler
+    self
   end
 end
 
@@ -42,6 +68,7 @@ class CompilerFailure
   def initialize compiler, &block
     @compiler = compiler
     instance_eval(&block) if block_given?
+    @build ||= 9999
   end
 
   def build val=nil
@@ -72,10 +99,9 @@ class CompilerSelector
     # @compilers is our list of available compilers. If @f declares a
     # failure with compiler foo, then we remove foo from the list if
     # the failing build is >= the currently installed version of foo.
-    @compilers.reject! do |cc|
+    @compilers = @compilers.reject do |cc|
       failure = @f.fails_with? cc
-      next unless failure
-      failure.build >= cc.build
+      failure && failure.build >= cc.build
     end
 
     return if @compilers.empty? or @compilers.include? ENV.compiler
@@ -98,39 +124,6 @@ class CompilerSelector
       elsif @compilers.include? :clang then :clang
       else ENV.compiler
       end
-    end
-  end
-
-  def advise
-    failure = @f.fails_with? @old_compiler
-    return unless failure
-
-    # If we're still using the original ENV.compiler, then the formula did not
-    # declare a specific failing build, so we continue and print some advice.
-    # Otherwise, tell the user that we're switching compilers.
-    if @old_compiler == ENV.compiler
-      cc = Compiler.new(ENV.compiler)
-      subject = "#{@f.name}-#{@f.version}: builds with #{NAMES[cc.name]}-#{cc.build}-#{MACOS_VERSION}"
-      warning = "Using #{NAMES[cc.name]}, but this formula is reported to fail with #{NAMES[cc.name]}."
-      warning += "\n\n#{failure.cause.strip}\n" unless failure.cause.nil?
-      warning += <<-EOS.undent
-
-        We are continuing anyway so if the build succeeds, please open a ticket with
-        the subject
-
-          #{subject}
-
-        so that we can update the formula accordingly. Thanks!
-        EOS
-
-      viable = @compilers.reject { |cc| @f.fails_with? cc }
-      unless viable.empty?
-        warning += "\nIf it fails you can use "
-        options = viable.map { |cc| "--use-#{cc.name}" }
-        warning += "#{options*' or '} to try a different compiler."
-      end
-
-      opoo warning
     end
   end
 end

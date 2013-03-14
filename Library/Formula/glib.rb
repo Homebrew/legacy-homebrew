@@ -40,6 +40,7 @@ class Glib < Formula
       --disable-maintainer-mode
       --disable-dependency-tracking
       --disable-dtrace
+      --disable-modular-tests
       --prefix=#{prefix}
       --localstatedir=#{var}
     ]
@@ -71,27 +72,25 @@ class Glib < Formula
     (share+'gtk-doc').rmtree
   end
 
-  def test
-    mktemp do
-      (Pathname.pwd/'test.c').write <<-EOS.undent
-        #include <string.h>
-        #include <glib.h>
+  test do
+    (testpath/'test.c').write <<-EOS.undent
+      #include <string.h>
+      #include <glib.h>
 
-        int main(void)
-        {
-            gchar *result_1, *result_2;
-            char *str = "string";
+      int main(void)
+      {
+          gchar *result_1, *result_2;
+          char *str = "string";
 
-            result_1 = g_convert(str, strlen(str), "ASCII", "UTF-8", NULL, NULL, NULL);
-            result_2 = g_convert(result_1, strlen(result_1), "UTF-8", "ASCII", NULL, NULL, NULL);
+          result_1 = g_convert(str, strlen(str), "ASCII", "UTF-8", NULL, NULL, NULL);
+          result_2 = g_convert(result_1, strlen(result_1), "UTF-8", "ASCII", NULL, NULL, NULL);
 
-            return (strcmp(str, result_2) == 0) ? 0 : 1;
-        }
-        EOS
-      flags = *`pkg-config --cflags --libs glib-2.0`.split
-      flags += ENV.cflags.split
-      system ENV.cc, "-o", "test", "test.c", *flags
-      system "./test"
-    end
+          return (strcmp(str, result_2) == 0) ? 0 : 1;
+      }
+      EOS
+    flags = *`pkg-config --cflags --libs glib-2.0`.split
+    flags += ENV.cflags.split
+    system ENV.cc, "-o", "test", "test.c", *flags
+    system "./test"
   end
 end

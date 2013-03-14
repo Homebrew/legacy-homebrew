@@ -6,7 +6,8 @@ class Jslint4java < Formula
   sha1 'd92f29e4f2055c4f945b398a602349afa14c26ca'
 
   def install
-    libexec.install Dir['*']
-    bin.write_jar_script libexec/'jslint4java-2.0.2.jar', 'jslint4java'
+    doc.install Dir['docs/*']
+    libexec.install Dir['*.jar']
+    bin.write_jar_script Dir[libexec/'jslint4java*.jar'].first, 'jslint4java'
   end
 end

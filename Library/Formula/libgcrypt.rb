@@ -7,6 +7,8 @@ class Libgcrypt < Formula
 
   depends_on 'libgpg-error'
 
+  option :universal
+
   def patches
     if ENV.compiler == :clang
       {:p0 =>
@@ -21,7 +23,7 @@ class Libgcrypt < Formula
   end
 
   def install
-    ENV.universal_binary
+    ENV.universal_binary if build.universal?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

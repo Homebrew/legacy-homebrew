@@ -1,8 +1,8 @@
 require 'formula'
 
 class Lynx < Formula
-  url 'http://lynx.isc.org/release/lynx2.8.7.tar.bz2'
   homepage 'http://lynx.isc.org/release/'
+  url 'http://lynx.isc.org/release/lynx2.8.7.tar.bz2'
   sha1 'a34978f7f83cd46bd857cb957faa5a9120458afa'
 
   def install

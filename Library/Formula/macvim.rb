@@ -12,6 +12,7 @@ class Macvim < Formula
   option "override-system-vim", "Override system vim"
   option "with-cscope", "Build with Cscope support"
   option "with-lua", "Build with Lua scripting support"
+  option "with-python3", "Build with Python 3 scripting support"
 
   depends_on 'cscope' if build.include? 'with-cscope'
   depends_on 'lua' if build.include? 'with-lua'
@@ -27,7 +28,7 @@ class Macvim < Formula
 
     # If building for 10.8, make sure that CC is set to "clang".
     # Reference: https://github.com/b4winckler/macvim/wiki/building
-    ENV['CC'] = "clang" if MacOS.version >= :mountain_lion
+    ENV.clang if MacOS.version >= :mountain_lion
 
     args = %W[
       --with-features=huge
@@ -47,6 +48,8 @@ class Macvim < Formula
       args << "--enable-luainterp"
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
     end
+
+   args << "--enable-python3interp" if build.include? "with-python3"
 
     system "./configure", *args
 

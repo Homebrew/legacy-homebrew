@@ -6,7 +6,6 @@ class Pygobject < Formula
   sha1 '4eda7d2b97f495a2ad7d4cdc234d08ca5408d9d5'
 
   depends_on 'pkg-config' => :build
-  depends_on 'gobject-introspection'
   depends_on 'glib'
 
   option :universal

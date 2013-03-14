@@ -5,12 +5,13 @@ class Jbigkit < Formula
   url 'http://www.cl.cam.ac.uk/~mgk25/download/jbigkit-2.0.tar.gz'
   sha1 'cfb7d3121f02a74bfb229217858a0d149b6589ef'
 
+  option :universal
   option 'with-check', "Verify the library during install"
 
   def install
     # Set for a universal build and patch the Makefile.
     # There's no configure. It creates a static lib.
-    ENV.universal_binary
+    ENV.universal_binary if build.universal?
     system "make", "CC=#{ENV.cc}", "CCFLAGS=#{ENV.cflags}"
 
     # It needs j1 to make the tests happen in sequence.
@@ -31,10 +32,8 @@ class Jbigkit < Formula
     end
   end
 
-  def test
-    mktemp do
-      system "#{bin}/jbgtopbm #{prefix}/examples/ccitt7.jbg | #{bin}/pbmtojbg - testoutput.jbg"
-      system "/usr/bin/cmp", "#{prefix}/examples/ccitt7.jbg", "testoutput.jbg"
-    end
+  test do
+    system "#{bin}/jbgtopbm #{prefix}/examples/ccitt7.jbg | #{bin}/pbmtojbg - testoutput.jbg"
+    system "/usr/bin/cmp", "#{prefix}/examples/ccitt7.jbg", "testoutput.jbg"
   end
 end

@@ -1,7 +1,7 @@
 require 'formula'
 
 class Blitz < Formula
-  homepage 'http://oonumerics.org/blitz'
+  homepage 'http://blitz.sourceforge.net'
   url 'http://sourceforge.net/projects/blitz/files/blitz/Blitz%2B%2B%200.10/blitz-0.10.tar.gz'
   sha1 '7e157ec22ed2d261e896b7de4e8e8d3bf7d780e2'
 

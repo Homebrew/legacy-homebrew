@@ -5,6 +5,7 @@ class Enchant < Formula
   url 'http://www.abisource.com/downloads/enchant/1.6.0/enchant-1.6.0.tar.gz'
   sha1 '321f9cf0abfa1937401676ce60976d8779c39536'
 
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'aspell'
 

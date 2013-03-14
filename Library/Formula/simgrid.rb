@@ -10,7 +10,7 @@ class Simgrid < Formula
   depends_on 'graphviz'
 
   fails_with :clang do
-    build 318
+    cause "Undefined symbols for architecture x86_64"
   end
 
   def install

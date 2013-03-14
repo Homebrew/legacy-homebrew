@@ -12,8 +12,8 @@ class Gnupg2 < Formula
   depends_on 'pinentry'
   depends_on 'pth'
   depends_on 'gpg-agent'
-  depends_on 'dirmngr' => :optional
-  depends_on 'libusb-compat' => :optional
+  depends_on 'dirmngr' => :recommended
+  depends_on 'libusb-compat' => :recommended
 
   # Fix hardcoded runtime data location
   # upstream: http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;h=c3f08dc

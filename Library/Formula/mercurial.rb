@@ -2,8 +2,8 @@ require 'formula'
 
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-2.4.1.tar.gz'
-  sha1 '28c6a09200bb2e9918bf965ae5507bc4ba84bc1f'
+  url 'http://mercurial.selenic.com/release/mercurial-2.5.2.tar.gz'
+  sha1 'aa1503c353370bafc90d79b9c682aae9c1001c3c'
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
@@ -43,7 +43,7 @@ class Mercurial < Formula
 
     s += <<-EOS.undent
       Extensions have been installed to:
-        #{libexec}/hgext
+        #{opt_prefix}/libexec/hgext
     EOS
 
     if build.head? then s += <<-EOS.undent

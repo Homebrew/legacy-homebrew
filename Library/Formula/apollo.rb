@@ -16,9 +16,9 @@ end
 
 class Apollo < Formula
   homepage 'http://activemq.apache.org/apollo'
-  url "http://archive.apache.org/dist/activemq/activemq-apollo/1.4/apache-apollo-1.4-unix-distro.tar.gz"
-  version "1.4"
-  sha1 '777b9de3209f05af30d013d52c12f68f8391ab54'
+  url "http://archive.apache.org/dist/activemq/activemq-apollo/1.5/apache-apollo-1.5-unix-distro.tar.gz"
+  version "1.5"
+  sha1 '7944c4f40f2b98c79cd697a06238d056f7b4b394'
 
   option "no-bdb", "Install without bdb store support"
   option "no-mqtt", "Install without MQTT protocol support"

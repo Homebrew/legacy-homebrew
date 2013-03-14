@@ -14,12 +14,10 @@ class Webp < Formula
     system "make install"
   end
 
-  def test
-    mktemp do
-      system "#{bin}/cwebp", \
-        "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png", \
-        "-o", "webp_test.png"
-      system "#{bin}/dwebp", "webp_test.png", "-o", "webp_test.webp"
-    end
+  test do
+    system "#{bin}/cwebp", \
+      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png", \
+      "-o", "webp_test.png"
+    system "#{bin}/dwebp", "webp_test.png", "-o", "webp_test.webp"
   end
 end

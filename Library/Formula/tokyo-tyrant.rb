@@ -8,7 +8,7 @@ class TokyoTyrant < Formula
   option "no-lua", "Disable Lua support"
 
   depends_on 'tokyo-cabinet'
-  depends_on 'lua' => :recommended unless build.include? "no-lua"
+  depends_on 'lua' unless build.include? "no-lua"
 
   def install
     args = ["--prefix=#{prefix}"]

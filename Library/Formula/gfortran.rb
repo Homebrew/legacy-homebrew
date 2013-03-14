@@ -9,22 +9,21 @@ class Gfortran < Formula
   sha1 'a464ba0f26eef24c29bcd1e7489421117fb9ee35'
 
   bottle do
-    sha1 '684879d100c02ac9ba5c23ded4860da19c02650d' => :mountainlion
-    sha1 '3d958ffe0f126d1add6e2f5236b333870b1a826b' => :lion
-    sha1 '9708ac5fa35db9789b8e050fbe410acee9ec9e45' => :snowleopard
+    revision 1
+    sha1 '52c6563098b7a761ab0a5182d242af42e26b0c3a' => :mountain_lion
+    sha1 '93fc137cb0f8c41b6af88cd7a1c791dc395e7ae1' => :lion
+    sha1 '7d284bd3f3263be11229ac45f340fbf742ebbea6' => :snow_leopard
   end
+
+  option 'enable-profiled-build', 'Make use of profile guided optimization when bootstrapping GCC'
+  option 'check', 'Run the make check fortran. This is for maintainers.'
 
   depends_on 'gmp'
   depends_on 'libmpc'
   depends_on 'mpfr'
 
-  option 'enable-profiled-build', 'Make use of profile guided optimization when bootstrapping GCC'
-  option 'check', 'Run the make check fortran. This is for maintainers.'
-
-  begin
-    depends_on 'dejagnu'
-    depends_on 'expect'
-  end if build.include? 'check'  # http://gcc.gnu.org/install/test.html
+  # http://gcc.gnu.org/install/test.html
+  depends_on 'dejagnu' if build.include? 'check'
 
   fails_with :clang do
     build 421
@@ -96,24 +95,22 @@ class Gfortran < Formula
     # (share/'locale').rmtree
   end
 
-  def test
-    mktemp do
-      fixture = <<-EOS.undent
-        integer,parameter::m=10000
-        real::a(m), b(m)
-        real::fact=0.5
+  test do
+    fixture = <<-EOS.undent
+      integer,parameter::m=10000
+      real::a(m), b(m)
+      real::fact=0.5
 
-        do concurrent (i=1:m)
-          a(i) = a(i) + fact*b(i)
-        end do
-        print *, "done"
-        end
-      EOS
-      Pathname('in.f90').write(fixture)
-      system "#{bin}/gfortran -c in.f90"
-      system "#{bin}/gfortran -o test in.o"
-      `./test`.strip =='done'
-    end
+      do concurrent (i=1:m)
+        a(i) = a(i) + fact*b(i)
+      end do
+      print *, "done"
+      end
+    EOS
+    Pathname('in.f90').write(fixture)
+    system "#{bin}/gfortran -c in.f90"
+    system "#{bin}/gfortran -o test in.o"
+    `./test`.strip =='done'
   end
 
   def caveats; <<-EOS.undent

@@ -1,7 +1,7 @@
 class Checksum
   attr_reader :hash_type, :hexdigest
 
-  TYPES = [:md5, :sha1, :sha256]
+  TYPES = [:sha1, :sha256]
 
   def initialize type=:sha1, val=nil
     @hash_type = type

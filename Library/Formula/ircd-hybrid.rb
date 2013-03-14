@@ -2,15 +2,17 @@ require 'formula'
 
 class IrcdHybrid < Formula
   homepage 'http://www.ircd-hybrid.org/'
-  url 'http://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-7.3.1/ircd-hybrid-7.3.1.tgz'
-  sha1 'a4d7e06517152ea88b064cd9756084372ed831ac'
+  url 'http://sourceforge.net/projects/ircd-hybrid/files/ircd-hybrid/ircd-hybrid-8.0.6/ircd-hybrid-8.0.6.tgz'
+  sha1 'd43cf4464c69f57f1d8273f70cf885c220385a4b'
 
   # ircd-hybrid needs the .la files
   skip_clean :la
 
+  # system openssl fails with undefined symbols: "_SSL_CTX_clear_options"
+  depends_on 'openssl' if MacOS.version < :lion
+
   def install
-    # See patch fix 3
-    mv 'etc/example.conf', 'etc/ircd.conf'
+    ENV.j1 # build system trips over itself
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -21,14 +23,7 @@ class IrcdHybrid < Formula
   end
 
   def test
-    system "ircd -version"
-  end
-
-  # Fix 1: Set an sid so it runs
-  # Fix 2: Remove the trap line so it runs
-  # Fix 3: Rename config path in Makefile to match where we moved it
-  def patches
-    DATA
+    system "#{sbin}/ircd", "-version"
   end
 
   def caveats; <<-EOS.undent
@@ -65,60 +60,3 @@ class IrcdHybrid < Formula
     EOS
   end
 end
-
-
-__END__
-diff --git a/etc/example.conf b/etc/example.conf
-index d74ef84..94d2218 100644
---- a/etc/example.conf
-+++ b/etc/example.conf
-@@ -53,7 +53,7 @@ serverinfo {
-	 * a digit, followed by 2 alpha-numerical letters.
-	 * NOTE: The letters must be capitalized.  This cannot be changed at runtime.
-	 */
--	sid = "_CHANGE_ME_";
-+	sid = "1AA";
-
-	/*
-	 * description: the description of the server.  '[' and ']' may not
-@@ -1144,7 +1144,7 @@ general {
-	idletime = 0;
-
-	/* REMOVE ME.  The following line checks you've been reading. */
--	havent_read_conf = 1;
-+	/* havent_read_conf = 1; */
-
-	/*
-	 * max_targets: the maximum amount of targets in a single
-diff --git a/etc/Makefile.am b/etc/Makefile.am
-index ac0ac33..9a93ee2 100644
---- a/etc/Makefile.am
-+++ b/etc/Makefile.am
-@@ -2,5 +2,5 @@ AUTOMAKE_OPTIONS = foreign
- if EFNET
- dist_sysconf_DATA = example.efnet.conf
- else
--dist_sysconf_DATA = example.conf
-+dist_sysconf_DATA = ircd.conf
- endif
-diff --git a/etc/Makefile.in b/etc/Makefile.in
-index dd88824..60d9b19 100644
---- a/etc/Makefile.in
-+++ b/etc/Makefile.in
-@@ -48,7 +48,7 @@ CONFIG_CLEAN_FILES =
- CONFIG_CLEAN_VPATH_FILES =
- SOURCES =
- DIST_SOURCES =
--am__dist_sysconf_DATA_DIST = example.conf example.efnet.conf
-+am__dist_sysconf_DATA_DIST = ircd.conf example.efnet.conf
- am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
- am__vpath_adj = case $$p in \
-     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-@@ -214,7 +214,7 @@ top_build_prefix = @top_build_prefix@
- top_builddir = @top_builddir@
- top_srcdir = @top_srcdir@
- AUTOMAKE_OPTIONS = foreign
--@EFNET_FALSE@dist_sysconf_DATA = example.conf
-+@EFNET_FALSE@dist_sysconf_DATA = ircd.conf
- @EFNET_TRUE@dist_sysconf_DATA = example.efnet.conf
- all: all-am
