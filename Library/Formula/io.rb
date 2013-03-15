@@ -3,7 +3,7 @@ require 'formula'
 class Io < Formula
   homepage 'http://iolanguage.com/'
   url 'https://github.com/stevedekorte/io/archive/2011.09.12.tar.gz'
-  sha1 'edb63aa4ee87052f1512f0770e0c9a9b1ba91082'
+  sha1 '9c3110c229e2c4bd9713052675b68fc5082d94cf'
 
   head 'https://github.com/stevedekorte/io.git'
 
