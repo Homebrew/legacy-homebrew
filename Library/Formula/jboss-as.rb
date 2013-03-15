@@ -10,4 +10,19 @@ class JbossAs < Formula
     rm_f Dir["bin/*.bat"]
     libexec.install Dir['*']
   end
+
+  def caveats; <<-EOS.undent
+  		The home of JBoss Application Server 7 is:
+  		#{prefix}/libexec
+
+  		You may want to add the following to your .bash_profile:
+  			export JBOSS_HOME=#{prefix}/libexec
+  			export PATH=${PATH}:${JBOSS_HOME}/bin
+
+  		Note: The support scripts used by JBoss Application Server 7 have
+  		very generic names. These are likely to conflict with support scripts 
+  		used by other Java-based server software. Hence they are *NOT* linked
+  		to bin.
+  	EOS
+  end
 end
