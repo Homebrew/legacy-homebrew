@@ -103,6 +103,13 @@ module Homebrew extend self
         print " *" if keg.linked?
         puts
         tab = Tab.for_keg keg
+
+        # Intentionally print no message if this is nil because it's unknown.
+        case tab.poured_from_bottle
+        when true then puts "Poured from bottle"
+        when false then puts "Built from source"
+        end
+
         unless tab.used_options.empty?
           puts "  Installed with: #{tab.used_options*', '}"
         end
