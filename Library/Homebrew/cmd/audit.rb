@@ -231,6 +231,11 @@ class FormulaAuditor
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
     end 
 
+    # Use new-style archive downloads
+    urls.select { |u|  u =~ %r[https://.*/(tar|zip)ball/] and not u =~ %r[\.git$] }.each do |u|
+      problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
+    end
+
     if urls.any? { |u| u =~ /\.xz/ } && !f.deps.any? { |d| d.name == "xz" }
       problem "Missing a build-time dependency on 'xz'"
     end
