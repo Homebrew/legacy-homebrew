@@ -2,8 +2,8 @@ require 'formula'
 
 class GitFlowAvhCompletion < Formula
   homepage 'https://github.com/petervanderdoes/git-flow-completion'
-  url 'https://github.com/petervanderdoes/git-flow-completion/tarball/0.4.2'
-  sha1 '0a36ae6fda83b6ba0251f4eea3a957f94f5467b7'
+  url 'https://github.com/petervanderdoes/gitflow/archive/1.5.1.tar.gz'
+  sha1 'bb984d36ce1c89fc07877d9a3ebd3540633efd9a'
 
   head 'https://github.com/petervanderdoes/git-flow-completion.git', :branch => 'develop'
 end
