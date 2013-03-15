@@ -97,6 +97,10 @@ class FormulaInstaller
       if pour_bottle?
         pour
         @poured_bottle = true
+        tab = Tab.for_keg f.prefix
+        tab.poured_from_bottle = true
+        tab.tabfile.delete rescue nil
+        tab.write
       end
     rescue
       opoo "Bottle installation failed: building from source."
