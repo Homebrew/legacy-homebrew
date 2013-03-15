@@ -1,11 +1,11 @@
 # Links any Applications (.app) found in installed prefixes to ~/Applications
 require "formula"
 
-HOME_APPS = File.expand_path("~/Applications")
+TARGET_DIR = ARGV.include?("--system") ? "/Applications" : File.expand_path("~/Applications")
 
-unless File.exist? HOME_APPS
-  opoo "#{HOME_APPS} does not exist, stopping."
-  puts "Run `mkdir ~/Applications` first."
+unless File.exist? TARGET_DIR
+  opoo "#{TARGET_DIR} does not exist, stopping."
+  puts "Run `mkdir #{TARGET_DIR}` first."
   exit 1
 end
 
@@ -17,7 +17,7 @@ HOMEBREW_CELLAR.subdirs.each do |keg|
     Dir["#{f.installed_prefix}/*.app", "#{f.installed_prefix}/bin/*.app", "#{f.installed_prefix}/libexec/*.app"].each do |p|
       puts "Linking #{p}"
       appname = File.basename(p)
-      target = HOME_APPS+"/"+appname
+      target = TARGET_DIR+"/"+appname
       if File.exist? target
         if File.symlink? target
           system "rm", target
@@ -25,9 +25,9 @@ HOMEBREW_CELLAR.subdirs.each do |keg|
           onoe "#{target} already exists, skipping."
         end
       end
-      system "ln", "-s", p, HOME_APPS
+      system "ln", "-s", p, TARGET_DIR
     end
   end
 end
 
-puts "Finished linking. Find the links under ~/Applications."
+puts "Finished linking. Find the links under #{TARGET_DIR}."

@@ -2,8 +2,8 @@ require 'formula'
 
 class ScalaDocs < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.10.0.zip'
-  sha1 '5bf44bd04b2b37976bde5d4a4c9bb6bcdeb10eb2'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.10.1.zip'
+  sha1 '7ff73776f7af9d6b2d5081a3a6ffa2a442640a59'
 end
 
 class ScalaCompletion < Formula
@@ -15,8 +15,8 @@ end
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.10.0.tgz'
-  sha1 '87f605a186aa0e4435b302fb9af575513d29249a'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.10.1.tgz'
+  sha1 '589cc2ba688510f2ec169837b44be5db9fd538b6'
 
   option 'with-docs', 'Also install library documentation'
 
