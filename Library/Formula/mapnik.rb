@@ -64,8 +64,9 @@ class Mapnik < Formula
              "PROJ_LIBS=#{proj}/lib" ]
 
     if build.with? 'cairo'
-      args << "CAIRO_INCLUDES=#{cairo}/include"
-      args << "CAIRO_LIBS=#{cairo}/lib"
+      args << "CAIRO=True" # cairo paths will come from pkg-config
+    else
+      args << "CAIRO=False"
     end
     args << "GEOS_CONFIG=#{Formula.factory('geos').opt_prefix}/bin/geos-config" if build.with? 'geos'
     args << "GDAL_CONFIG=#{Formula.factory('gdal').opt_prefix}/bin/gdal-config" if build.with? 'gdal'
