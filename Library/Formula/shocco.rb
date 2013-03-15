@@ -27,8 +27,8 @@ end
 
 class Shocco < Formula
   homepage 'http://rtomayko.github.com/shocco/'
-  url 'https://github.com/rtomayko/shocco/tarball/a1ee000613946335f54a8f236ee9fe6f7f22bcb8'
-  sha1 '8feb66dad3c957fabdfa368e710dfb2a078a732f'
+  url 'https://github.com/rtomayko/shocco/archive/1.0.tar.gz'
+  sha1 'e29d58fb8109040b4fb4a816f330bb1c67064f6d'
 
   depends_on MarkdownProvider
 
