@@ -444,6 +444,14 @@ class Formula
     end
   end
 
+  # find the repository for the formula by resolving any symlink, cd to the parent
+  # and ask git where the repository top level is
+  def repository
+    path.realpath.dirname.cd do
+      Pathname.new(`git rev-parse --show-toplevel`.strip)
+    end
+  end
+
   def self.path name
     HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
   end
