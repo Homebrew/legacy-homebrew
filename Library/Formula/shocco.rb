@@ -32,11 +32,18 @@ class Shocco < Formula
 
   depends_on MarkdownProvider
 
+  def patches
+    DATA
+  end
+
   def install
     Pygments.new.brew { libexec.install 'pygmentize','pygments' }
 
     # Brew along with Pygments
-    system "./configure", "PYGMENTIZE=#{libexec}/pygmentize", "--prefix=#{prefix}"
+    system "./configure",
+      "PYGMENTIZE=#{libexec}/pygmentize",
+      "MARKDOWN=#{HOMEBREW_PREFIX}/bin/markdown",
+      "--prefix=#{prefix}"
 
     # Shocco's Makefile does not combine the make and make install steps.
     system "make"
@@ -51,3 +58,17 @@ class Shocco < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/configure b/configure
+index 2262477..bf0af62 100755
+--- a/configure
++++ b/configure
+@@ -193,7 +193,7 @@ else stdutil xdg-open   XDG_OPEN   xdg-open
+ fi
+
+ stdutil ronn       RONN       ronn
+-stdutil markdown   MARKDOWN   markdown Markdown.pl
++stdutil markdown   MARKDOWN   markdown Markdown.pl $MARKDOWN
+ stdutil perl       PERL       perl
+ stdutil pygmentize PYGMENTIZE pygmentize $PYGMENTIZE
