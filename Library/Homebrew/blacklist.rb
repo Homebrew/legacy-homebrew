@@ -51,7 +51,7 @@ def blacklisted? name
     GCC is now maintained in homebrew-versions, with major version
     number in formula name as suffix. Please tap using:
 
-        brew tap homebrew-versions
+        brew tap homebrew/versions
 
     and then install GCC based on its version, e.g., 'brew install gcc47'.
     EOS
