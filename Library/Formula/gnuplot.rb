@@ -34,6 +34,10 @@ class Gnuplot < Formula
   depends_on 'qt'          if build.include? 'qt'
   depends_on :tex          if build.include? 'latex'
 
+  def patches
+    DATA
+  end
+
   def install
     # Help configure find libraries
     readline = Formula.factory 'readline'
@@ -74,3 +78,18 @@ class Gnuplot < Formula
     system "#{bin}/gnuplot", "--version"
   end
 end
+
+__END__
+diff --git a/term/cairo.trm b/term/cairo.trm
+index 48fac72..c5d110f 100644
+--- a/term/cairo.trm
++++ b/term/cairo.trm
+@@ -615,6 +615,7 @@ TERM_PUBLIC void cairotrm_options()
+  * Is the 'main' function of the terminal. */
+ void cairotrm_init()
+ {
++	g_type_init();
+ 	cairo_surface_t *surface = NULL;
+ 
+ 	FPRINTF((stderr,"Init\n"));
+
