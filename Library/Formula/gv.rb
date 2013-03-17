@@ -2,11 +2,9 @@ require 'formula'
 
 class Gv < Formula
   homepage 'http://www.gnu.org/s/gv/'
-  url 'ftp://alpha.gnu.org/gnu/gv/gv-3.7.3.90.tar.gz'
-  sha1 'd7820c770e595c93b5fe1ea50776ae11d0decfac'
-
-  # Note: Switch back to ftp://ftp.gnu.org/gnu/gv/ @ gv-3.7.4.
-  # This gv version from alpha was released to support libxaw3d >= 1.6.1
+  url 'http://ftpmirror.gnu.org/gv/gv-3.7.4.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/gv/gv-3.7.4.tar.gz'
+  sha1 'd5bc11a37136dff69248f943a632544a4036b63f'
 
   depends_on 'ghostscript' => 'with-x11'
   depends_on :x11 => '2.7.2'
@@ -15,7 +13,8 @@ class Gv < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--enable-SIGCHLD-fallback"
+                          "--prefix=#{prefix}",
+                          "--enable-SIGCHLD-fallback"
     system "make install"
   end
 end
