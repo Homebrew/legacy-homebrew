@@ -2,8 +2,8 @@ require 'formula'
 
 class Yajl < Formula
   homepage 'http://lloyd.github.com/yajl/'
-  url 'https://github.com/lloyd/yajl/tarball/2.0.4'
-  sha256 'c19b9691cf15f22e74d903cd06ac9ba5e1e216e6a1b82bfe787c3b48a25bc118'
+  url 'https://github.com/lloyd/yajl/archive/2.0.4.tar.gz'
+  sha256 '0e78f516dc53ecce7dc073f9a9bb0343186b58ef29dcd1dad74e5e853b216dd5'
 
   # Configure uses cmake internally
   depends_on 'cmake' => :build
@@ -13,6 +13,6 @@ class Yajl < Formula
 
     system "./configure", "--prefix=#{prefix}"
     system "make install"
-    (include + 'yajl').install Dir['src/api/*.h']
+    (include/'yajl').install Dir['src/api/*.h']
   end
 end
