@@ -12,17 +12,17 @@ class JbossAs < Formula
   end
 
   def caveats; <<-EOS.undent
-		The home of JBoss Application Server 7 is:
-		#{prefix}/libexec
+    The home of JBoss Application Server 7 is:
+      #{opt_prefix}/libexec
 
-		You may want to add the following to your .bash_profile:
-			export JBOSS_HOME=#{prefix}/libexec
-			export PATH=${PATH}:${JBOSS_HOME}/bin
+    You may want to add the following to your .bash_profile:
+      export JBOSS_HOME=#{opt_prefix}/libexec
+      export PATH=${PATH}:${JBOSS_HOME}/bin
 
-		Note: The support scripts used by JBoss Application Server 7 have
-		very generic names. These are likely to conflict with support scripts
-		used by other Java-based server software. Hence they are *NOT* linked
-		to bin.
-	EOS
+    Note: The support scripts used by JBoss Application Server 7 have
+    very generic names. These are likely to conflict with support scripts
+    used by other Java-based server software. Hence they are *NOT* linked
+    to bin.
+  EOS
   end
 end
