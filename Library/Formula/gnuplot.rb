@@ -35,6 +35,8 @@ class Gnuplot < Formula
   depends_on :tex          if build.include? 'latex'
 
   def patches
+    # see discussion on this cairo issue: https://github.com/fontforge/fontforge/issues/222
+    # and the gnuplot bug report: https://sourceforge.net/p/gnuplot/bugs/1223/
     DATA
   end
 
