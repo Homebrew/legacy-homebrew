@@ -1,5 +1,35 @@
 require 'formula'
 
+class Erlang16Incompat < Requirement
+  fatal true
+
+  def version
+    Formula.factory('erlang').version
+  end
+
+  satisfy do
+    version =~ /R(\d{2})B/
+    $1.to_i > 15
+  end
+
+  def message; <<-EOS.undent
+    Erlang <= R15B03-1 is required to install.
+
+    You have a erlang version #{version}
+
+    The work-around is:
+
+        brew unlink erlang
+        cd #{HOMEBREW_REPOSITORY}
+        git checkout 168742f Library/Formula/erlang.rb
+        brew install erlang
+        brew install couchdb
+
+    EOS
+  end
+end
+
+
 class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
   url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/1.2.1/apache-couchdb-1.2.1.tar.gz'
@@ -7,6 +37,7 @@ class Couchdb < Formula
 
   head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
+  depends_on Erlang16Incompat
   depends_on 'help2man' => :build
   depends_on 'spidermonkey'
   depends_on 'icu4c'
