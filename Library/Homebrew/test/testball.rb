@@ -131,8 +131,9 @@ class ExplicitVersionSpecTestBall < Formula
 
   bottle do
     version '1'
-    url 'file:///foo.com/test-0.3.lion.bottle.tar.gz'
-    sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
+    sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
+    sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
+    sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
   def initialize name=nil
@@ -189,6 +190,7 @@ class SnowLeopardBottleSpecTestBall < Formula
   sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
 
   bottle do
+    cellar :any
     sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
   end
 
@@ -203,6 +205,7 @@ class LionBottleSpecTestBall < Formula
   sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
 
   bottle do
+    cellar :any
     sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :lion
   end
 
@@ -217,6 +220,7 @@ class AllCatsBottleSpecTestBall < Formula
   sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
 
   bottle do
+    cellar '/private/tmp/testbrew/cellar'
     sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
     sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion

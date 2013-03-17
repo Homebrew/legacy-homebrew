@@ -1,5 +1,5 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
-# -*- coding: utf-8 -*-
+# encoding: UTF-8
 
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
 

@@ -7,13 +7,16 @@ class Aria2 < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gnutls'
+  depends_on 'curl-ca-bundle' => :recommended
 
   # Leopard's libxml2 is too old.
   depends_on 'libxml2' if MacOS.version == :leopard
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args << "--with-ca-bundle=#{HOMEBREW_PREFIX}/share/ca-bundle.crt" if build.with? 'curl-ca-bundle'
+
+    system "./configure", *args
     system "make install"
   end
 end

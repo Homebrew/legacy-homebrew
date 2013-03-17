@@ -40,9 +40,10 @@ class Ghc < Formula
   option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
 
   bottle do
-    sha1 '72c7e8ad7d25382261ed431f953920004439ad69' => :mountainlion
-    sha1 '16c188ebe10aa06250af12268be39d56284aec91' => :lion
-    sha1 '68c1fcff903826dde6fc8e2a120ae8a69a8bafb2' => :snowleopard
+    revision 1
+    sha1 '45b4f126123e71613564084851a8470fa4b06e6b' => :mountain_lion
+    sha1 'a93d9aab9e3abfe586f9091f14057c6d90f6fdc0' => :lion
+    sha1 '7d284bd3f3263be11229ac45f340fbf742ebbea6' => :snow_leopard
   end
 
   fails_with :clang do

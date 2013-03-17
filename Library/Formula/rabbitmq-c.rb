@@ -1,7 +1,7 @@
 require 'formula'
 
 class RabbitmqCodegen < Formula
-  url 'http://github.com/rabbitmq/rabbitmq-codegen/tarball/rabbitmq_v3_0_1'
+  url 'https://github.com/rabbitmq/rabbitmq-codegen/tarball/rabbitmq_v3_0_1'
   sha1 '463ec8983f9078df4c7eef504a2d8daef59f3503'
 end
 

@@ -8,11 +8,10 @@ class CpioDownloadStrategy < CurlDownloadStrategy
 end
 
 class Mksh < Formula
-  homepage 'https://www.mirbsd.org/mksh.htm'
-  url 'https://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R40d.cpio.gz',
-      :using => CpioDownloadStrategy
-  version '0.40d'
-  sha1 '74450a1107664797e5fdbdeb444f18f82f0686ac'
+  homepage 'https://mirbsd.org/mksh.htm'
+  url 'https://mirbsd.org/MirOS/dist/mir/mksh/mksh-R43.tgz'
+  version '0.43'
+  sha256 '65e54a0cd4189b80cf24fdf1b1b959a707522451025cc22f7d3ba451566ffc81'
 
   def install
     system "sh", "./Build.sh", "-c", (ENV.compiler == :clang ? "lto" : "combine")

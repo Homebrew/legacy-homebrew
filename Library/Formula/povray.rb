@@ -41,7 +41,7 @@ class Povray < Formula
     inreplace [ 'VERSION', 'configure' ], '3.7.0.RC5', '3.7.0.RC6'
 
     # include the boost system library to resolve compilation conflicts
-    ENV["LIBS"] = "-lboost_system-mt"
+    ENV["LIBS"] = "-lboost_system-mt -lboost_thread-mt"
 
     args = [
       "COMPILED_BY=homebrew",

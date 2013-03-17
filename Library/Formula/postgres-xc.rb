@@ -14,8 +14,8 @@ end
 
 class PostgresXc < Formula
   homepage 'http://postgres-xc.sourceforge.net/'
-  url 'http://sourceforge.net/projects/postgres-xc/files/Version_1.0/pgxc-v1.0.1.tar.gz'
-  sha1 '350277d7b32e54baffdd52fa98bac6b14f088c6d'
+  url 'http://sourceforge.net/projects/postgres-xc/files/Version_1.0/pgxc-v1.0.2.tar.gz'
+  sha1 'f427f37eb141ad9d00374fc1100a55dd09718fed'
 
   depends_on X86_64_Architecture
   depends_on 'readline'

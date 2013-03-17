@@ -42,23 +42,23 @@ end
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.8.20/node-v0.8.20.tar.gz'
-  sha1 'b780f58f0e3bc43d2380d4a935f2b45350783b37'
+  url 'http://nodejs.org/dist/v0.8.22/node-v0.8.22.tar.gz'
+  sha1 '1b7e65da70e2b3c2feacb1b13f673dfe43beb381'
 
   devel do
-    url 'http://nodejs.org/dist/v0.9.10/node-v0.9.10.tar.gz'
-    sha1 '265542c15cf939b7c71a545758d835ed44d791d3'
+    url 'http://nodejs.org/dist/v0.9.12/node-v0.9.12.tar.gz'
+    sha1 '2353d3e5c6518f75202b74236fa9d8eeecd26ca3'
   end
 
   head 'https://github.com/joyent/node.git'
 
-  # Leopard OpenSSL is not new enough, so use our keg-only one
-  depends_on 'openssl' if MacOS.version == :leopard
-  depends_on NpmNotInstalled unless build.include? 'without-npm'
-  depends_on PythonVersion
-
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'
+  option 'with-shared-libs', 'Use Homebrew V8 and system OpenSSL, zlib'
+
+  depends_on NpmNotInstalled unless build.without? 'npm'
+  depends_on PythonVersion
+  depends_on 'v8' if build.with? 'shared-libs'
 
   fails_with :llvm do
     build 2326
@@ -73,6 +73,13 @@ class Node < Formula
     ENV['DEVELOPER_DIR'] = MacOS.dev_tools_path unless MacOS::Xcode.installed?
 
     args = %W{--prefix=#{prefix}}
+
+    if build.with? 'shared-libs'
+      args << '--shared-openssl' unless MacOS.version == :leopard
+      args << '--shared-v8'
+      args << '--shared-zlib'
+    end
+
     args << "--debug" if build.include? 'enable-debug'
     args << "--without-npm" if build.include? 'without-npm'
 

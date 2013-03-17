@@ -11,7 +11,8 @@ module MacOS extend self
   def cat
     if version == :mountain_lion then :mountain_lion
     elsif version == :lion then :lion
-    elsif version == :snow_leopard then :snow_leopard
+    elsif version == :snow_leopard
+      Hardware.is_64_bit? ? :snow_leopard : :snow_leopard_32
     elsif version == :leopard then :leopard
     else nil
     end
@@ -39,7 +40,7 @@ module MacOS extend self
         xcrun_path = unless Xcode.bad_xcode_select_path?
           path = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
           # If xcrun finds a superenv tool then discard the result.
-          path unless path.include?(HOMEBREW_REPOSITORY/"Library/ENV")
+          path unless path.include?("Library/ENV")
         end
 
         paths = %W[#{xcrun_path}
@@ -233,26 +234,6 @@ module MacOS extend self
 
   def pkgutil_info id
     `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
-  end
-
-  def bottles_supported? raise_if_failed=false
-    # We support bottles on all versions of OS X except 32-bit Snow Leopard.
-    if Hardware.is_32_bit? and MacOS.version == :snow_leopard
-      return false unless raise_if_failed
-      raise "Bottles are not supported on 32-bit Snow Leopard."
-    end
-
-    unless HOMEBREW_PREFIX.to_s == '/usr/local'
-      return false unless raise_if_failed
-      raise "Bottles are only supported with a /usr/local prefix."
-    end
-
-    unless HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
-      return false unless raise_if_failed
-      raise "Bottles are only supported with a /usr/local/Cellar cellar."
-    end
-
-    true
   end
 end
 

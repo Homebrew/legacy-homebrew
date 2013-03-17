@@ -10,13 +10,21 @@ end
 
 class Opencv < Formula
   homepage 'http://opencv.org/'
-  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.3/OpenCV-2.4.3.tar.bz2'
-  sha1 '982be2c3e52dfc3e9d14692c60bc856b2b766be2'
+  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.4/OpenCV-2.4.4.tar.bz2'
+  sha1 '23c62f7e3de540524f61974c640a23df426ebed5'
+
+  env :std # to find python
 
   option '32-bit'
   option 'with-qt',  'Build the Qt4 backend to HighGUI'
   option 'with-tbb', 'Enable parallel code in OpenCV using Intel TBB'
   option 'with-opencl', 'Enable gpu code in OpenCV using OpenCL'
+
+  # CLT-only couldn't install this out-of-the-box.
+  # From the build error:
+  # set CMAKE_OSX_SYSROOT to a valid SDK or
+  # set CMAKE_OSX_DEPLOYMENT_TARGET to empty
+  depends_on :xcode
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
