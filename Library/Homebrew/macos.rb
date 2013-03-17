@@ -9,6 +9,9 @@ module MacOS extend self
   end
 
   def cat
+    # PowerPC builds per processor, not per OS
+    return Hardware::CPU.family if Hardware::CPU.type == :ppc
+
     if version == :mountain_lion then :mountain_lion
     elsif version == :lion then :lion
     elsif version == :snow_leopard
