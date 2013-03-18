@@ -20,10 +20,7 @@ class Inkscape < Formula
   depends_on 'pango'
   depends_on :x11
 
-  fails_with :clang do
-    build 425
-    cause "Requires gcc"
-  end
+  fails_with :clang
 
   def install
     system "./configure", "--disable-dependency-tracking",

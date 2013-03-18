@@ -5,7 +5,7 @@ class PythonVersion < Requirement
 
   satisfy { `python -c 'import sys;print(sys.version[:3])'`.strip.to_f >= 2.6 }
 
-  def message;
+  def message
     "Node's build system, gyp, requires Python 2.6 or newer."
   end
 end
@@ -18,15 +18,14 @@ class NpmNotInstalled < Requirement
   end
 
   def message; <<-EOS.undent
-    The homebrew node recipe now (beginning with 0.8.0) comes with npm.
+    Beginning with 0.8.0, this recipe now comes with npm.
     It appears you already have npm installed at #{modules_folder}/npm.
-    To use the npm that comes with this recipe,
-      first uninstall npm with `npm uninstall npm -g`.
-      Then run this command again.
+    To use the npm that comes with this recipe, first uninstall npm with
+    `npm uninstall npm -g`, then run this command again.
 
     If you would like to keep your installation of npm instead of
-      using the one provided with homebrew,
-      install the formula with the --without-npm option added.
+    using the one provided with homebrew, install the formula with
+    the `--without-npm` option.
     EOS
   end
 
@@ -42,13 +41,8 @@ end
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.8.21/node-v0.8.21.tar.gz'
-  sha1 '65ab7307f1aee12be4c88e396e2510967a52b1c6'
-
-  devel do
-    url 'http://nodejs.org/dist/v0.9.10/node-v0.9.10.tar.gz'
-    sha1 '265542c15cf939b7c71a545758d835ed44d791d3'
-  end
+  url 'http://nodejs.org/dist/v0.10.0/node-v0.10.0.tar.gz'
+  sha1 '7321266347dc1c47ed2186e7d61752795ce8a0ef'
 
   head 'https://github.com/joyent/node.git'
 

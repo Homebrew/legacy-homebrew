@@ -2,9 +2,9 @@ require 'formula'
 
 class Emacs < Formula
   homepage 'http://www.gnu.org/software/emacs/'
-  url 'http://ftpmirror.gnu.org/emacs/emacs-24.2.tar.bz2'
-  mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.2.tar.bz2'
-  sha1 '38e8fbc9573b70a123358b155cf55c274b5a56cf'
+  url 'http://ftpmirror.gnu.org/emacs/emacs-24.3.tar.gz'
+  mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.3.tar.gz'
+  sha256 '0098ca3204813d69cd8412045ba33e8701fa2062f4bff56bedafc064979eef41'
 
   option "cocoa", "Build a Cocoa version of emacs"
   option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
@@ -18,6 +18,10 @@ class Emacs < Formula
     head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end
 
+  if build.head? or build.include? "cocoa"
+    depends_on :autoconf
+    depends_on :automake
+  end
   depends_on :x11 if build.include? "with-x"
 
   fails_with :llvm do
@@ -25,10 +29,12 @@ class Emacs < Formula
     cause "Duplicate symbol errors while linking."
   end
 
-  def patches
-    # Fullscreen patch works against 24.2; already included in HEAD
-    if build.include? "cocoa" and not build.head?
-      "https://raw.github.com/gist/1746342/702dfe9e2dd79fddd536aa90d561efdeec2ba716"
+  # Follow MacPorts and don't install ctags from Emacs. This allows Vim
+  # and Emacs and ctags to play together without violence.
+  def do_not_install_ctags
+    unless build.include? "keep-ctags"
+      (bin/"ctags").unlink
+      (share/man/man1/"ctags.1.gz").unlink
     end
   end
 
@@ -42,9 +48,8 @@ class Emacs < Formula
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
 
+    # See: https://github.com/mxcl/homebrew/issues/4852
     if build.head? and File.exists? "./autogen/copy_autogen"
-      opoo "Using copy_autogen"
-      puts "See https://github.com/mxcl/homebrew/issues/4852"
       system "autogen/copy_autogen"
     end
 
@@ -63,12 +68,8 @@ class Emacs < Formula
       system "make install"
       prefix.install "nextstep/Emacs.app"
 
-      # Follow MacPorts and don't install ctags from emacs. This allows vim
-      # and emacs and ctags to play together without violence.
-      unless build.include? "keep-ctags"
-        (bin/"ctags").unlink
-        (share/man/man1/"ctags.1.gz").unlink
-      end
+      # Don't cause ctags clash.
+      do_not_install_ctags
 
       # Replace the symlink with one that avoids starting Cocoa.
       (bin/"emacs").unlink # Kill the existing symlink
@@ -93,12 +94,8 @@ class Emacs < Formula
       system "make"
       system "make install"
 
-      # Follow MacPorts and don't install ctags from emacs. This allows vim
-      # and emacs and ctags to play together without violence.
-      unless build.include? "keep-ctags"
-        (bin/"ctags").unlink
-        (share/man/man1/"ctags.1.gz").unlink
-      end
+      # Don't cause ctags clash.
+      do_not_install_ctags
     end
   end
 

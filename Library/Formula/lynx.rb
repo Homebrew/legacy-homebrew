@@ -12,7 +12,7 @@ class Lynx < Formula
                           "--disable-echo",
                           "--with-zlib",
                           "--with-bzlib",
-                          "--with-ssl",
+                          "--with-ssl=/usr",
                           "--enable-ipv6"
     system "make install"
   end

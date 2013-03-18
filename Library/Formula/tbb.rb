@@ -7,7 +7,6 @@ class Tbb < Formula
   version '4.1u2'
 
   fails_with :clang do
-    build 425
     cause "Undefined symbols for architecture x86_64: vtable for tbb::tbb_exception"
   end
 

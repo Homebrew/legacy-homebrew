@@ -5,11 +5,12 @@ class Highlight < Formula
   url 'http://www.andre-simon.de/zip/highlight-3.12.tar.bz2'
   sha1 '4d96b4d91ff08268a338847b9ea408d741b91573'
 
+  depends_on 'pkg-config' => :build
   depends_on 'boost'
   depends_on 'lua'
 
   def install
-    inreplace "src/Makefile" do |s|
+    inreplace "src/makefile" do |s|
       s.change_make_var! "CXX", ENV.cxx
       s.gsub! /^(CFLAGS):=.*$/, "\\1 = #{ENV.cppflags}"
       s.gsub! /^(LUA_LIBS)=(.*)$/, "\\1 = #{ENV.ldflags} \\2"

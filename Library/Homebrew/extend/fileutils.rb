@@ -14,7 +14,7 @@ module FileUtils extend self
     # /tmp volume to the other volume. So we let the user override the tmp
     # prefix if they need to.
     tmp = ENV['HOMEBREW_TEMP'].chuzzle || '/tmp'
-    tempd = `/usr/bin/mktemp -d #{tmp}/#{name}-XXXX`.chuzzle
+    tempd = with_system_path { `mktemp -d #{tmp}/#{name}-XXXX` }.chuzzle
     raise "Failed to create sandbox" if tempd.nil?
     prevd = pwd
     cd tempd
@@ -81,13 +81,11 @@ module FileUtils extend self
     end
   end
 
-  RUBY_BIN = '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin'
-
   def rake *args
-    system "#{RUBY_BIN}/rake", *args
+    system RUBY_BIN/'rake', *args
   end
 
   def ruby *args
-    system "#{RUBY_BIN}/ruby", *args
+    system RUBY_PATH, *args
   end
 end

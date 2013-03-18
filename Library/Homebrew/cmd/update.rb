@@ -182,7 +182,7 @@ class Report < Hash
     formula = select_formula(key)
     unless formula.empty?
       ohai title
-      puts_columns formula
+      puts_columns formula.uniq
     end
   end
 

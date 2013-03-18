@@ -38,7 +38,7 @@ def main
   # Force any future invocations of sudo to require the user's password to be
   # re-entered. This is in-case any build script call sudo. Certainly this is
   # can be inconvenient for the user. But we need to be safe.
-  system "/usr/bin/sudo -k"
+  system "/usr/bin/sudo", "-k"
 
   install(Formula.factory($0))
 rescue Exception => e
@@ -92,8 +92,8 @@ def install f
   end
 
   if superenv?
-    ENV.deps = keg_only_deps.map(&:to_s)
-    ENV.all_deps = deps.map(&:to_s)
+    ENV.keg_only_deps = keg_only_deps.map(&:to_s)
+    ENV.deps = deps.map(&:to_s)
     ENV.x11 = f.recursive_requirements.detect { |rq| rq.kind_of?(X11Dependency) }
     ENV.setup_build_environment
     post_superenv_hacks(f)
@@ -114,11 +114,7 @@ def install f
     end
   end
 
-  if f.fails_with? ENV.compiler
-    cs = CompilerSelector.new f
-    cs.select_compiler
-    cs.advise
-  end
+  ENV.send(CompilerSelector.new(f).compiler) if f.fails_with? ENV.compiler
 
   f.brew do
     if ARGV.flag? '--git'
