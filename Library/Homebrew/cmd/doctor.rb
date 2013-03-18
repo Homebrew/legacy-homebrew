@@ -308,17 +308,27 @@ def __check_subdir_access base
 end
 
 def check_access_usr_local
-  return unless HOMEBREW_PREFIX.to_s == '/usr/local'
+  [HOMEBREW_PREFIX, "#{HOMEBREW_PREFIX}/include",
+    "#{HOMEBREW_PREFIX}/lib"].each do |dir|
+    unless File.writable_real?(dir)
+      msg = <<-EOS.undent
+        The #{dir} directory is not writable.
+        Even if this directory was writable when you installed Homebrew, other
+        software may have changed permissions on this directory.
+      EOS
 
-  unless File.writable_real?("/usr/local") then <<-EOS.undent
-    The /usr/local directory is not writable.
-    Even if this directory was writable when you installed Homebrew, other
-    software may change permissions on this directory. Some versions of the
-    "InstantOn" component of Airfoil are known to do this.
+      if dir.to_s == '/usr/local'
+        msg += <<-EOS.undent
+          Some versions of the "InstantOn" component of Airfoil are known to do
+          this.
+        EOS
+      end
 
-    You should probably change the ownership and permissions of /usr/local
-    back to your user account.
-    EOS
+      return msg + <<-EOS.undent
+        You should probably change the ownership and permissions of #{dir} back
+        to your user account.
+      EOS
+    end
   end
 end
 
