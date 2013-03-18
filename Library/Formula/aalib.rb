@@ -6,9 +6,8 @@ class Aalib < Formula
   sha1 'a11c16b258bf9b64b135858afabc7f3a45222a4a'
 
   # Fix malloc/stdlib issue on OS X
-  def patches
-    DATA
-  end
+  # Fix underquoted definition of AM_PATH_AALIB in aalib.m4
+  def patches; DATA end
 
   def install
     ENV.ncurses_define
@@ -127,4 +126,16 @@ index 9935b03..7e725ad 100644
  #include <stdlib.h>
  #include <string.h>
  #include <stdio.h>
-
+diff --git a/aalib.m4 b/aalib.m4
+index c40b8db..991fbda 100644
+--- a/aalib.m4
++++ b/aalib.m4
+@@ -9,7 +9,7 @@
+ dnl AM_PATH_AALIB([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
+ dnl Test for AALIB, and define AALIB_CFLAGS and AALIB_LIBS
+ dnl
+-AC_DEFUN(AM_PATH_AALIB,
++AC_DEFUN([AM_PATH_AALIB],
+ [dnl 
+ dnl Get the cflags and libraries from the aalib-config script
+ dnl

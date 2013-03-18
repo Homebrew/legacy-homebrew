@@ -32,15 +32,11 @@ class SoftwareSpec
 
   # The methods that follow are used in the block-form DSL spec methods
   Checksum::TYPES.each do |cksum|
-    class_eval %Q{
-      def #{cksum}(val=nil)
-        if val.nil?
-          @checksum if @checksum.nil? or @checksum.hash_type == :#{cksum}
-        else
-          @checksum = Checksum.new(:#{cksum}, val)
-        end
+    class_eval <<-EOS, __FILE__, __LINE__ + 1
+      def #{cksum}(val)
+        @checksum = Checksum.new(:#{cksum}, val)
       end
-    }
+    EOS
   end
 
   def url val=nil, specs={}
@@ -79,13 +75,13 @@ end
 
 class Bottle < SoftwareSpec
   attr_writer :url
-  attr_reader :revision, :root_url, :cellar
   # TODO: Can be removed when all bottles migrated to underscored cat symbols.
   attr_reader :cat_without_underscores
 
   def initialize
     super
     @revision = 0
+    @prefix = '/usr/local'
     @cellar = '/usr/local/Cellar'
     @cat_without_underscores = false
   end
@@ -93,12 +89,10 @@ class Bottle < SoftwareSpec
   # Checksum methods in the DSL's bottle block optionally take
   # a Hash, which indicates the platform the checksum applies on.
   Checksum::TYPES.each do |cksum|
-    class_eval %Q{
-      def #{cksum}(val=nil)
+    class_eval <<-EOS, __FILE__, __LINE__ + 1
+      def #{cksum}(val)
         @#{cksum} ||= Hash.new
         case val
-        when nil
-          @#{cksum}[MacOS.cat]
         when Hash
           key, value = val.shift
           @#{cksum}[value] = Checksum.new(:#{cksum}, key)
@@ -111,11 +105,15 @@ class Bottle < SoftwareSpec
           @cat_without_underscores = true
         end
       end
-    }
+    EOS
   end
 
   def root_url val=nil
     val.nil? ? @root_url : @root_url = val
+  end
+
+  def prefix val=nil
+    val.nil? ? @prefix : @prefix = val
   end
 
   def cellar val=nil
@@ -124,17 +122,6 @@ class Bottle < SoftwareSpec
 
   def revision val=nil
     val.nil? ? @revision : @revision = val
-  end
-
-  # Used in the old bottle DSL to set @revision, but acts as an
-  # as accessor for @version to preserve the interface
-  # TODO: Can be removed when no bottles are using `version` any more.
-  def version val=nil
-    if val.nil?
-      return @version ||= Version.parse(@url)
-    else
-      @revision = val
-    end
   end
 end
 

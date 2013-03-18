@@ -31,7 +31,6 @@ class Grass < Formula
   def patches; DATA; end
 
   fails_with :clang do
-    build 425
     cause "Multiple build failures while compiling GRASS tools."
   end
 

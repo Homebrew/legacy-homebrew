@@ -10,8 +10,8 @@ end
 
 class Opencv < Formula
   homepage 'http://opencv.org/'
-  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.4/OpenCV-2.4.4.tar.bz2'
-  sha1 '23c62f7e3de540524f61974c640a23df426ebed5'
+  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.4/OpenCV-2.4.4a.tar.bz2'
+  sha1 '6e518c0274a8392c0c98d18ef0ef754b9c596aca'
 
   env :std # to find python
 

@@ -2,8 +2,8 @@ require 'formula'
 
 class Opam < Formula
   homepage 'https://github.com/OCamlPro/opam'
-  url 'https://github.com/OCamlPro/opam/archive/0.9.5.tar.gz'
-  sha1 '73afb82f16052badd5c7eea0d24a01029ab21c67'
+  url 'https://github.com/OCamlPro/opam/archive/1.0.0.tar.gz'
+  sha1 '5e126f71c7e0caff3b61a751ef09dd66892720ae'
 
   head 'https://github.com/OCamlPro/opam.git'
 
@@ -28,7 +28,7 @@ class Opam < Formula
 
     $  opam init
 
-    Run the following to initialize your environmnent variables:
+    Run the following to initialize your environment variables:
 
     $  eval `opam config env`
 

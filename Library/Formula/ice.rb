@@ -5,6 +5,9 @@ class Ice < Formula
   url 'http://www.zeroc.com/download/Ice/3.4/Ice-3.4.2.tar.gz'
   sha1 '8c84d6e3b227f583d05e08251e07047e6c3a6b42'
 
+  option 'doc', 'Install documentation'
+  option 'demo', 'Build demos'
+
   depends_on 'berkeley-db'
   depends_on 'mcpp'
 
@@ -17,19 +20,13 @@ class Ice < Formula
     ]
   end
 
-  option 'doc', 'Install documentation'
-  option 'demo', 'Build demos'
-
-  # See:
   # http://www.zeroc.com/forums/bug-reports/4965-slice2cpp-output-does-not-compile-standards-conformant-compiler.html
   fails_with :clang do
-    build 318
+    build 425
     cause <<-EOS.undent
-      In file included from BuiltinSequences.cpp:23:
-      In file included from ../../include/Ice/BuiltinSequences.h:30:
-      ../../include/Ice/Stream.h:545:19: error: invalid use of incomplete type 'Ice::MarshalException'
-                  throw MarshalException(__FILE__, __LINE__, "enumerator out of range");
-      (and many other errors)
+      error: call to function 'upCast' that is
+        neither visible in the template definition nor found by argument-dependent
+        lookup
     EOS
   end
 
@@ -61,8 +58,8 @@ class Ice < Formula
 end
 
 __END__
---- ./cpp/src/Freeze/MapI.cpp   
-+++ ./cpp/src/Freeze/MapI.cpp                                      
+--- ./cpp/src/Freeze/MapI.cpp
++++ ./cpp/src/Freeze/MapI.cpp
 @@ -1487,10 +1487,10 @@ Freeze::MapHelperI::size() const
 
      try

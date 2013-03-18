@@ -2,9 +2,9 @@ require 'formula'
 
 class Libmagic < Formula
   homepage 'http://www.darwinsys.com/file/'
-  url 'ftp://ftp.astron.com/pub/file/file-5.12.tar.gz'
-  mirror 'http://fossies.org/unix/misc/file-5.12.tar.gz'
-  sha1 '782db8a2b37ff8ceada9d19c416eaf6c5b8297d4'
+  url 'ftp://ftp.astron.com/pub/file/file-5.13.tar.gz'
+  mirror 'http://fossies.org/unix/misc/file-5.13.tar.gz'
+  sha1 '927651df90ead6b3e036e243109137c7d42c4fb6'
 
   # Fixed upstream, should be in next release
   # See http://bugs.gw.com/view.php?id=230

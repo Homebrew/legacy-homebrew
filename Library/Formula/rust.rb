@@ -15,7 +15,8 @@ class Rust < Formula
   def patches
     [ "https://github.com/mozilla/rust/commit/9bf87bbf66227c132283ae59720f919601de9a56.patch",
     "https://github.com/mozilla/rust/commit/37f97ff5041839aa42892115de954489f9eab5bc.patch",
-    "https://github.com/labria/rust/commit/b4133cc1236197d0a3ce6f8664827f89277315fe.patch",
+    "https://github.com/mozilla/rust/commit/bb51a8442fb16d71faccac1abfa953d8b1e37cb7.patch",
+    "https://github.com/mozilla/rust/commit/2c46bf7e318f585947c2146ce42c249fba3bc326.patch",
     "https://github.com/mozilla/rust/commit/3ee1d3ebb81de199fc630a86933ac18c0a869482.patch" ]
   end
 

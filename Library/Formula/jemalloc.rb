@@ -2,8 +2,8 @@ require 'formula'
 
 class Jemalloc < Formula
   homepage 'http://www.canonware.com/jemalloc/download.html'
-  url 'http://www.canonware.com/download/jemalloc/jemalloc-3.3.0.tar.bz2'
-  sha1 'e426b0b8e4f8ef073b90358cb7603e7cbccde895'
+  url 'http://www.canonware.com/download/jemalloc/jemalloc-3.3.1.tar.bz2'
+  sha1 '75266cf0356bad309503d16080fecd61c67c66c0'
 
   def install
     system './configure', '--disable-debug', "--prefix=#{prefix}"
