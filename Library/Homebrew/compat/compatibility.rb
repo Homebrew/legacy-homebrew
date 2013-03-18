@@ -202,22 +202,15 @@ end
 
 # MD5 support
 class Formula
-  def self.md5(val=nil)
-    unless val.nil?
-      @stable ||= SoftwareSpec.new
-      @stable.md5(val)
-    end
-    return @stable ? @stable.md5 : @md5
+  def self.md5(val)
+    @stable ||= SoftwareSpec.new
+    @stable.md5(val)
   end
 end
 
 class SoftwareSpec
-  def md5(val=nil)
-    if val.nil?
-      @checksum if checksum.nil? or @checksum.hash_type == :md5
-    else
-      @checksum = Checksum.new(:md5, val)
-    end
+  def md5(val)
+    @checksum = Checksum.new(:md5, val)
   end
 end
 
