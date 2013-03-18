@@ -20,6 +20,7 @@ class Qt5 < Formula
 
   depends_on "d-bus" if build.include? 'with-qtdbus'
   depends_on "mysql" if build.include? 'with-mysql'
+  depends_on "jpeg"
 
   def patches
     # http://qt.gitorious.org/qt/qtbase/commit/655ba5?format=patch
@@ -31,6 +32,13 @@ class Qt5 < Formula
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
             "-confirm-license", "-opensource"]
+
+    unless MacOS::CLT.installed?
+      # Qt hard-codes paths (and uses -I flags) and linking fails on Xcode-only
+      args += ["-sdk", MacOS.sdk_path]
+      # Even with sdk given, Qt5 is too stupid to find CFNumber.h, so we give a hint:
+      ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
+    end
 
     args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
