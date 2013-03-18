@@ -8,6 +8,9 @@ class Gist < Formula
 
   def install
     rake "install", "prefix=#{prefix}"
+    if File.exists?("/tmp/gist_cacert.pem") then
+	    system "/bin/rm", "/tmp/gist_cacert.pem"
+    end
   end
 
   test do
