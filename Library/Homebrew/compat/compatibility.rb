@@ -86,7 +86,7 @@ class Formula
 
   def self.fails_with_llvm msg=nil, data=nil
     fails_with_llvm_reason = FailsWithLLVM.new(msg, data)
-    @cc_failures ||= CompilerFailures.new
+    @cc_failures ||= Set.new
     @cc_failures << fails_with_llvm_reason
   end
 
