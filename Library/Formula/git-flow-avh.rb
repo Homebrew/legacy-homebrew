@@ -2,16 +2,16 @@ require 'formula'
 
 class GitFlowAvhCompletion < Formula
   homepage 'https://github.com/petervanderdoes/git-flow-completion'
-  url 'https://github.com/petervanderdoes/gitflow/archive/1.5.1.tar.gz'
-  sha1 'bb984d36ce1c89fc07877d9a3ebd3540633efd9a'
+  url 'https://github.com/petervanderdoes/git-flow-completion/tarball/0.4.2'
+  sha1 '0a36ae6fda83b6ba0251f4eea3a957f94f5467b7'
 
   head 'https://github.com/petervanderdoes/git-flow-completion.git', :branch => 'develop'
 end
 
 class GitFlowAvh < Formula
   homepage 'https://github.com/petervanderdoes/gitflow'
-  url 'https://github.com/petervanderdoes/gitflow/archive/1.5.0.tar.gz'
-  sha1 '3a9ac53606ab3306da53cba2abe9779b778dd8e0'
+  url 'https://github.com/petervanderdoes/gitflow/archive/1.5.1.tar.gz'
+  sha1 'bb984d36ce1c89fc07877d9a3ebd3540633efd9a'
 
   head 'https://github.com/petervanderdoes/gitflow.git', :branch => 'develop'
 
