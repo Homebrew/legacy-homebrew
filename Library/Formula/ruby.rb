@@ -39,6 +39,7 @@ class Ruby < Formula
     args << "--with-arch=x86_64,i386" if build.universal?
     args << "--disable-tcltk-framework" <<  "--with-out-ext=tcl" <<  "--with-out-ext=tk" unless build.include? "with-tcltk"
     args << "--disable-install-doc" unless build.include? "with-doc"
+    args << "--disable-dtrace" unless MacOS::CLT.installed?
 
     # OpenSSL is deprecated on OS X 10.8 and Ruby can't find the outdated
     # version (0.9.8r 8 Feb 2011) that ships with the system.
