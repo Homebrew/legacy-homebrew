@@ -2,8 +2,8 @@ require 'formula'
 
 class Trafficserver < Formula
   homepage 'http://trafficserver.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-3.2.0.tar.bz2'
-  sha1 '0d7461f0711387b1049e50522e61281be6f5cf38'
+  url 'http://www.eu.apache.org/dist/trafficserver/trafficserver-3.2.4.tar.bz2'
+  sha1 '05b9ee455f6cdb83486132183e04443efa057c00'
 
   head 'http://svn.apache.org/repos/asf/trafficserver/traffic/trunk/'
 
@@ -24,7 +24,9 @@ class Trafficserver < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--with-user=#{ENV['USER']}",
-                          "--with-group=admin"
+                          "--with-group=admin",
+                          "CC=clang",
+                          "CXX=clang++"
     system "make install"
   end
 
