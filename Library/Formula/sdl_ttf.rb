@@ -17,24 +17,13 @@ class SdlTtf < Formula
 
   option :universal
 
-  def install
-    # we have to do this because most build scripts assume that all sdl modules
-    # are installed to the same prefix. Consequently SDL stuff cannot be
-    # keg-only but I doubt that will be needed.
-    if build.stable?
-      inreplace %w[sdl.pc.in sdl-config.in], '@prefix@', HOMEBREW_PREFIX
-    else
-      inreplace %w[sdl2.pc.in sdl2-config.in], '@prefix@', HOMEBREW_PREFIX
-    end
-    
+  def install    
     ENV.universal_binary if build.universal?
       
     system "./autogen.sh" if build.head?
-
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-sdltest"
+    
+    system "./configure"
+    
     system "make install"
   end
 end
