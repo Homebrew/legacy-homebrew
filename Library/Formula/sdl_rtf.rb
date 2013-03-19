@@ -7,10 +7,22 @@ class SdlRtf < Formula
 
   head 'http://hg.libsdl.org/SDL_rtf', :using => :hg
 
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
+  
   depends_on 'sdl'
 
+  option :universal
+
   def install
-    system "./configure", "--prefix=#{prefix}"
+    ENV.universal_binary if build.universal?
+      
+    system "./autogen.sh" if build.head?
+    
+    system "./configure"
+    
     system "make install"
   end
 end
