@@ -7,20 +7,22 @@ require 'formula'
 # website. This URL will break as soon as a new version of SIP is released
 # which causes panic and terror to flood the Homebrew issue tracker.
 
-class Sip < Formula
+class SipPy3 < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
   url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.13.3.tar.gz'
   sha1 '672f0bd9c13860979ab2a7753b2bf91475a4deeb'
 
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
 
-  conflicts_with 'sip-py3'
+  conflicts_with 'sip'
 
   def patches
     DATA
   end
 
   def install
+    ENV.prepend 'PATH', "/usr/local/bin", ':'
+
     if build.head?
       # Set fallback version to the same value it would have without the patch
       # and link the Mercurial repository into the download directory so
@@ -31,14 +33,15 @@ class Sip < Formula
       sip_version = version
     end
     inreplace 'build.py', /@SIP_VERSION@/, (sip_version.to_s.gsub '.', ',')
+    inreplace 'build.py', /func_name/, '__name__'
 
-    system "python", "build.py", "prepare"
+    system "python3", "build.py", "prepare"
     # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
-    system "python", "configure.py",
-                              "--destdir=#{lib}/#{which_python}/site-packages",
+    system "python3", "configure.py",
+                              "--destdir=#{lib}/#{which_python3}/site-packages",
                               "--bindir=#{bin}",
                               "--incdir=#{include}",
-                              "--sipdir=#{HOMEBREW_PREFIX}/share/sip",
+                              "--sipdir=#{HOMEBREW_PREFIX}/share/sip-py3",
                               "CFLAGS=#{ENV.cflags}",
                               "LFLAGS=#{ENV.ldflags}"
     system "make install"
@@ -46,12 +49,12 @@ class Sip < Formula
 
   def caveats; <<-EOS.undent
     For non-homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python3}/site-packages:$PYTHONPATH
     EOS
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  def which_python3
+    "python" + `python3 -c 'import sys;print(sys.version[:3])'`.strip
   end
 end
 
