@@ -23,7 +23,7 @@ class SdlMixer < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    inreplace 'SDL_mixer.pc.in', '@prefix@', HOMEBREW_PREFIX
+    inreplace 'SDL_mixer.pc.in', '@prefix@', HOMEBREW_PREFIX if build.stable?
 
     system "./autogen.sh" if build.head?
 
