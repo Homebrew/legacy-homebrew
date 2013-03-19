@@ -10,7 +10,7 @@ class Couchdb < Formula
   depends_on 'help2man' => :build
   depends_on 'spidermonkey'
   depends_on 'icu4c'
-  depends_on 'homebrew/versions/erlang-r15'
+  depends_on 'erlang'
   depends_on 'curl' if MacOS.version == :leopard
 
   def install
