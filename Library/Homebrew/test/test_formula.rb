@@ -111,10 +111,6 @@ class FormulaTests < Test::Unit::TestCase
     assert_match /[0-9a-fA-F]{40}/, f.stable.checksum.hexdigest
     assert_match /[0-9a-fA-F]{64}/, f.devel.checksum.hexdigest
 
-    assert_nil f.stable.sha256
-    assert_nil f.bottle.sha256
-    assert_nil f.devel.sha1
-
     assert_equal 1, f.stable.mirrors.length
     assert f.bottle.mirrors.empty?
     assert_equal 1, f.devel.mirrors.length

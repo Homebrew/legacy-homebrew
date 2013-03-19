@@ -198,9 +198,8 @@ class Formula
   end
 
   def fails_with? cc
-    return false if self.class.cc_failures.nil?
     cc = Compiler.new(cc) unless cc.is_a? Compiler
-    self.class.cc_failures.find do |failure|
+    (self.class.cc_failures || []).any? do |failure|
       failure.compiler == cc.name && failure.build >= cc.build
     end
   end
@@ -678,12 +677,9 @@ private
 
     Checksum::TYPES.each do |cksum|
       class_eval <<-EOS, __FILE__, __LINE__ + 1
-        def #{cksum}(val=nil)
-          unless val.nil?
-            @stable ||= SoftwareSpec.new
-            @stable.#{cksum}(val)
-          end
-          return @stable ? @stable.#{cksum} : @#{cksum}
+        def #{cksum}(val)
+          @stable ||= SoftwareSpec.new
+          @stable.#{cksum}(val)
         end
       EOS
     end
@@ -785,12 +781,8 @@ private
     end
 
     def fails_with compiler, &block
-      @cc_failures ||= CompilerFailures.new
-      @cc_failures << if block_given?
-        CompilerFailure.new(compiler, &block)
-      else
-        CompilerFailure.new(compiler)
-      end
+      @cc_failures ||= Set.new
+      @cc_failures << CompilerFailure.new(compiler, &block)
     end
 
     def test &block
