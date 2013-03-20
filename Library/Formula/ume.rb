@@ -2,8 +2,8 @@ require 'formula'
 
 class Ume < Formula
   homepage 'http://mamedev.org/'
-  url 'svn://dspnet.fr/mame/trunk', :revision => '20928'
-  version '0.148u1'
+  url 'svn://dspnet.fr/mame/trunk', :revision => '21963'
+  version '0.148u2'
 
   head 'svn://dspnet.fr/mame/trunk'
 
@@ -12,10 +12,10 @@ class Ume < Formula
 
   def install
     ENV['MACOSX_USE_LIBSDL'] = '1'
-    ENV['INCPATH'] = "-I./src/lib/util -I#{MacOS::X11.include}"
+    ENV['INCPATH'] = "-I#{MacOS::X11.include}"
     ENV['PTR64'] = (MacOS.prefer_64_bit? ? '1' : '0')
 
-    system 'make', 'TARGET=ume'
+    system "make", "CC=#{ENV.cc}", "LD=#{ENV.cxx}", "TARGET=ume"
 
     if MacOS.prefer_64_bit?
       bin.install 'ume64' => 'ume'
