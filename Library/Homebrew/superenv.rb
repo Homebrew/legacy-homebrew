@@ -19,9 +19,12 @@ end
 def superenv?
   not (MacSystem.xcode43_without_clt? and
   MacOS.sdk_path.nil?) and # because superenv will fail to find stuff
+  MacSystem.xcode43_developer_dir and # because superenv's logic might not find it
   not MacOS::Xcode.folder.nil? and # because xcrun won't work
   superbin and superbin.directory? and
   not ARGV.include? "--env=std"
+rescue # blanket rescue because there are naked raises
+  false
 end
 
 class << ENV
