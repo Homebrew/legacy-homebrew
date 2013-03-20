@@ -7,7 +7,10 @@ class SpringRoo < Formula
   version '1.2.3'
 
   def install
+    # Remove Windows scripts
     rm Dir["bin/*.bat"]
+    
+    # Install files
     File.rename "bin/roo.sh", "bin/roo"
     prefix.install %w[annotations bin bundle conf docs legal samples]
   end
