@@ -2,8 +2,8 @@ require 'formula'
 
 class Leiningen < Formula
   homepage 'https://github.com/technomancy/leiningen'
-  url 'https://github.com/technomancy/leiningen/tarball/2.0.0'
-  sha1 '133e1d0667734b25a10aa6547967710f296e8ea1'
+  url 'https://github.com/technomancy/leiningen/archive/2.1.0.tar.gz'
+  sha1 '1056867aaa5c15a2050df1a6faf45864a24ce991'
 
   head 'https://github.com/technomancy/leiningen.git'
 
