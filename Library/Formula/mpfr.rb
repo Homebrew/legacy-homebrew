@@ -14,7 +14,7 @@ class Mpfr < Formula
 
   # Segfaults under superenv with clang 4.1/421. See:
   # https://github.com/mxcl/homebrew/issues/15061
-  env :std
+  env :std if MacOS.clang_build_version < 425
 
   def patches
     "https://gist.github.com/raw/4472199/42c0b207037a133527083d12adc9028b4da429ee/gistfile1.txt"

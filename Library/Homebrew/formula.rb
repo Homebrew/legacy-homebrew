@@ -677,12 +677,9 @@ private
 
     Checksum::TYPES.each do |cksum|
       class_eval <<-EOS, __FILE__, __LINE__ + 1
-        def #{cksum}(val=nil)
-          unless val.nil?
-            @stable ||= SoftwareSpec.new
-            @stable.#{cksum}(val)
-          end
-          return @stable ? @stable.#{cksum} : @#{cksum}
+        def #{cksum}(val)
+          @stable ||= SoftwareSpec.new
+          @stable.#{cksum}(val)
         end
       EOS
     end
