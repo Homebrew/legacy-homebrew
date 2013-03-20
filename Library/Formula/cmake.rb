@@ -23,8 +23,9 @@ end
 class Cmake < Formula
   homepage 'http://www.cmake.org/'
   url 'http://www.cmake.org/files/v2.8/cmake-2.8.10.2.tar.gz'
+  head 'git://cmake.org/cmake.git'
   sha1 '2d868ccc3f9f2aa7c2844bd0a4609d5313edaaec'
-
+  
   bottle do
     sha1 '0bdd4bfd4a094d3fbacbe33d0968161a0f24d665' => :mountain_lion
     sha1 '340f321eed8fd6b423980ecf9bed90646fc9331c' => :lion
