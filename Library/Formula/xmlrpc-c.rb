@@ -17,6 +17,3 @@ class XmlrpcC < Formula
     system "make install"
   end
 end
-
-__END__
-
