@@ -1,7 +1,8 @@
 class Keg
   def fix_install_names
+    return unless MACOS
     mach_o_files.each do |file|
-      bad_install_names_for file do |id, bad_names|
+      install_names_for file do |id, bad_names|
         file.ensure_writable do
           system MacOS.locate("install_name_tool"), "-id", id, file if file.dylib?
 
@@ -30,13 +31,50 @@ class Keg
     end
   end
 
+  def relocate_install_names old_prefix, new_prefix, old_cellar, new_cellar
+    mach_o_files.each do |file|
+      install_names_for(file, relocate_reject_proc(old_prefix)) do |id, old_prefix_names|
+        file.ensure_writable do
+          new_prefix_id = id.to_s.gsub old_prefix, new_prefix
+          system MacOS.locate("install_name_tool"), "-id", new_prefix_id, file if file.dylib?
+
+          old_prefix_names.each do |old_prefix_name|
+            new_prefix_name = old_prefix_name.to_s.gsub old_prefix, new_prefix
+            system MacOS.locate("install_name_tool"), "-change", old_prefix_name, new_prefix_name, file
+          end
+        end
+      end
+
+      install_names_for(file, relocate_reject_proc(old_cellar)) do |id, old_cellar_names|
+        file.ensure_writable do
+          old_cellar_names.each do |old_cellar_name|
+            new_cellar_name = old_cellar_name.to_s.gsub old_cellar, new_cellar
+            system MacOS.locate("install_name_tool"), "-change", old_cellar_name, new_cellar_name, file
+          end
+        end
+      end
+    end
+  end
+
   private
 
   OTOOL_RX = /\t(.*) \(compatibility version (\d+\.)*\d+, current version (\d+\.)*\d+\)/
 
   def lib; join 'lib' end
 
-  def bad_install_names_for file
+  def default_reject_proc
+    Proc.new do |fn|
+      # Don't fix absolute paths unless they are rooted in the build directory
+      tmp = ENV['HOMEBREW_TEMP'] ? Regexp.escape(ENV['HOMEBREW_TEMP']) : '/tmp'
+      fn[0,1] == '/' and not %r[^#{tmp}] === fn
+    end
+  end
+
+  def relocate_reject_proc(path)
+    Proc.new { |fn| not fn.start_with?(path) }
+  end
+
+  def install_names_for file, reject_proc=default_reject_proc
     ENV['HOMEBREW_MACH_O_FILE'] = file.to_s # solves all shell escaping problems
     install_names = `#{MacOS.locate("otool")} -L "$HOMEBREW_MACH_O_FILE"`.split "\n"
 
@@ -48,12 +86,7 @@ class Keg
 
     install_names.compact!
     install_names.reject!{ |fn| fn =~ /^@(loader_|executable_|r)path/ }
-
-    # Don't fix absolute paths unless they are rooted in the build directory
-    install_names.reject! do |fn|
-      tmp = ENV['HOMEBREW_TEMP'] ? Regexp.escape(ENV['HOMEBREW_TEMP']) : '/tmp'
-      fn[0,1] == '/' and not %r[^#{tmp}] === fn
-    end
+    install_names.reject!{ |fn| reject_proc.call(fn) }
 
     # the shortpath ensures that library upgrades don’t break installed tools
     relative_path = Pathname.new(file).relative_path_from(self)

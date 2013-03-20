@@ -35,7 +35,11 @@ cellar.children.select { |pn| pn.directory? }.each do |v|
 end
 
 # Link new version, if not keg-only
-unless f.keg_only?
+if f.keg_only?
+  keg = Keg.new(cellar+version)
+  keg.optlink
+  puts "Opt link created for #{keg}"
+else
   keg = Keg.new(cellar+version)
   puts "#{keg.link} links created for #{keg}"
 end

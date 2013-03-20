@@ -1,4 +1,4 @@
-require 'macos/version'
+require 'os/mac/version'
 
 module MacOS extend self
 
@@ -204,6 +204,7 @@ module MacOS extend self
     "4.5.1" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
     "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
     "4.6"   => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "4.6.1" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
   }
 
   def compilers_standard?
@@ -227,6 +228,7 @@ module MacOS extend self
   end
 
   def mdfind id
+    return [] unless MACOS
     (@mdfind ||= {}).fetch(id.to_s) do
       @mdfind[id.to_s] = `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
     end
@@ -237,5 +239,5 @@ module MacOS extend self
   end
 end
 
-require 'macos/xcode'
-require 'macos/xquartz'
+require 'os/mac/xcode'
+require 'os/mac/xquartz'

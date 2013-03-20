@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-1.1.3.tar.bz2'
-  sha1 'd82d6f53c5130ee21dcb87f76bdbdf768d3f0db9'
+  url 'http://ffmpeg.org/releases/ffmpeg-1.2.tar.bz2'
+  sha1 'e1df2389560da95e1a76f9375f054e630c7e2602'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -56,6 +56,7 @@ class Ffmpeg < Formula
             "--enable-nonfree",
             "--enable-hardcoded-tables",
             "--enable-avresample",
+            "--enable-vda",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
             "--host-ldflags=#{ENV.ldflags}"
@@ -89,7 +90,7 @@ class Ffmpeg < Formula
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    ENV.append_to_cflags "-mdynamic-no-pic" if MacOS.version == :leopard or Hardware.is_32_bit?
+    ENV.append_to_cflags "-mdynamic-no-pic" if Hardware.is_32_bit? && Hardware.cpu_type == :intel && ENV.compiler == :clang
 
     system "./configure", *args
 

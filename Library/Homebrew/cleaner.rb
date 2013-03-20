@@ -64,7 +64,7 @@ class Cleaner
   # Clean a single folder (non-recursively)
   def clean_dir d
     d.find do |path|
-      path.extend(NoiseyPathname) if ARGV.verbose?
+      path.extend(NoisyPathname) if ARGV.verbose?
 
       if path.directory?
         # Stop cleaning this subtree if protected
@@ -87,14 +87,9 @@ class Cleaner
 
 end
 
-
-class Pathname
-  alias_method :orig_unlink, :unlink
-end
-
-module NoiseyPathname
+module NoisyPathname
   def unlink
     puts "rm: #{self}"
-    orig_unlink
+    super
   end
 end

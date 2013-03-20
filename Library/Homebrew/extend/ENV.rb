@@ -7,6 +7,7 @@ module HomebrewEnvExtension
     delete('CDPATH')
     delete('GREP_OPTIONS') # can break CMake (lol)
     delete('CLICOLOR_FORCE') # autotools doesn't like this
+    %w{CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH}.each { |k| delete(k) }
     remove_cc_etc
 
     if MacOS.version >= :mountain_lion
@@ -201,6 +202,7 @@ module HomebrewEnvExtension
   end
 
   def macosxsdk v=MacOS.version
+    return unless MACOS
     # Sets all needed lib and include dirs to CFLAGS, CPPFLAGS, LDFLAGS.
     remove_macosxsdk
     # Allow cool style of ENV.macosxsdk 10.8 here (no "" :)

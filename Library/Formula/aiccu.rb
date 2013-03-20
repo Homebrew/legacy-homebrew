@@ -47,7 +47,7 @@ class Aiccu < Formula
 
         http://tuntaposx.sourceforge.net/
 
-      Because these are kernel extensions, there is no Homebrew formula for tuntap.
+      You can install tuntap with homebrew using brew install tuntap
 
       Unless it exists already, a aiccu.conf file has been written to:
         #{etc}/aiccu.conf
