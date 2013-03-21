@@ -76,7 +76,7 @@ module MacOS::Xcode extend self
 
     # this shortcut makes version work for people who don't realise you
     # need to install the CLI tools
-    xcode43build = V4_BUNDLE_PATH/'Contents/Developer/usr/bin/xcodebuild'
+    xcode43build = prefix/'usr/bin/xcodebuild'
     if xcode43build.file?
       `#{xcode43build} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
       return $1 if $1
