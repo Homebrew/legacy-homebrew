@@ -18,7 +18,7 @@ class SdlImage < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    inreplace 'SDL_image.pc.in', '@prefix@', HOMEBREW_PREFIX
+    inreplace 'SDL_image.pc.in', '@prefix@', HOMEBREW_PREFIX if build.stable?
     
     system "./autogen.sh" if build.head?
 
