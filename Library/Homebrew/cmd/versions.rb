@@ -68,8 +68,8 @@ class Formula
 
         # Unload the class so Formula#version returns the correct value
         begin
-          version = nostdout { Formula.factory(path).version }
           Object.send(:remove_const, Formula.class_s(name))
+          version = nostdout { Formula.factory(path).version }
           version
         rescue SyntaxError, TypeError, NameError, ArgumentError
           # We rescue these so that we can skip bad versions and
