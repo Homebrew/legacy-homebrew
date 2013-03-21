@@ -370,7 +370,7 @@ def check_access_share
 end
 
 def check_access_logs
-  folder = Pathname.new('~/Library/Logs/Homebrew')
+  folder = Pathname.new("#{ENV['HOME']}/Library/Logs/Homebrew")
   if folder.exist? and not folder.writable_real?
     <<-EOS.undent
       #{folder} isn't writable.

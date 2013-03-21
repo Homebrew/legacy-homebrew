@@ -20,7 +20,7 @@ def cache
   else
     # we do this for historic reasons, however the cache *should* be the same
     # directory whichever user is used and whatever instance of brew is executed
-    home_cache = Pathname.new("~/Library/Caches/Homebrew").expand_path
+    home_cache = Pathname.new("#{ENV['HOME']}/Library/Caches/Homebrew")
     if home_cache.directory? and home_cache.writable_real?
       home_cache
     else
@@ -62,7 +62,7 @@ else
   HOMEBREW_REPOSITORY+"Cellar"
 end
 
-HOMEBREW_LOGS = Pathname.new('~/Library/Logs/Homebrew/').expand_path
+HOMEBREW_LOGS = Pathname.new("#{ENV['HOME']}/Library/Logs/Homebrew/")
 
 RUBY_CONFIG = RbConfig::CONFIG
 RUBY_BIN = Pathname.new("#{RUBY_CONFIG['bindir']}")
