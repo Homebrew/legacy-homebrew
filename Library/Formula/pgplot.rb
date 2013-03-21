@@ -34,7 +34,7 @@ class Pgplot < Formula
     # re-hardcode the share dir
     inreplace 'src/grgfil.f', '/usr/local/pgplot', share
     # perl may not be in /usr/local
-    inreplace 'makehtml', '/usr/local/bin/perl', `which perl`.chomp
+    inreplace 'makehtml', '/usr/local/bin/perl', which('perl')
     # prevent a "dereferencing pointer to incomplete type" in libpng
     inreplace 'drivers/pndriv.c', 'setjmp(png_ptr->jmpbuf)', 'setjmp(png_jmpbuf(png_ptr))'
 
@@ -58,7 +58,7 @@ LIBS="#{ENV.ldflags} -lX11"
 MOTIF_LIBS=""
 ATHENA_LIBS=""
 TK_LIBS=""
-RANLIB="#{`which ranlib`.chomp}"
+RANLIB="#{which 'ranlib'}"
 SHARED_LIB="libpgplot.dylib"
 SHARED_LD="#{ENV['FC']} -dynamiclib -single_module $LDFLAGS -lX11 -install_name libpgplot.dylib"
 SHARED_LIB_LIBS="#{ENV.ldflags} -lpng -lX11"
