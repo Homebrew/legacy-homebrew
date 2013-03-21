@@ -259,6 +259,9 @@ class Formula
   def to_s
     name
   end
+  def inspect
+    name
+  end
 
   # Standard parameters for CMake builds.
   # Using Build Type "None" tells cmake to use our CFLAGS,etc. settings.
@@ -305,10 +308,6 @@ class Formula
 
   def self.installed
     HOMEBREW_CELLAR.children.map{ |rack| factory(rack.basename) rescue nil }.compact
-  end
-
-  def inspect
-    name
   end
 
   def self.aliases
