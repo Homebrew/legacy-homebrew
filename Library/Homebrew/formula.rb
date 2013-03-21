@@ -302,10 +302,6 @@ class Formula
   class << self
     include Enumerable
   end
-  def self.all
-    opoo "Formula.all is deprecated, simply use Formula.map"
-    map
-  end
 
   def self.installed
     HOMEBREW_CELLAR.children.map{ |rack| factory(rack.basename) rescue nil }.compact
