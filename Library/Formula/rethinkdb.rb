@@ -10,7 +10,7 @@ class Rethinkdb < Formula
   depends_on 'protobuf' => :build
 
   def install
-    system "./configure --prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install-osx"
   end
 end
