@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <title>Homebrew — MacPorts driving you to drink? Try Homebrew!</title>
+    <title>Homebrew - MacPorts 讓你抓狂嗎？試試 Homebrew 吧！</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="dc.creator" content="Rémi Prévost - http://exomel.com" />
     <link rel="stylesheet" href="./css/screen.css" type="text/css" media="screen" />
@@ -24,8 +24,8 @@
     <div id="wrap">
       <div id="header">
         <h1><a href="./">Homebrew</a></h1>
-        <p id="subtitle"><strong>The missing package manager for OS X</strong></p>
-        <p>English Version | <a href="index_zh-cn.html">简体中文版</a> | <a href="index_zh-tw.html">繁體中文版</a></p>
+        <p id="subtitle"><strong>OS X 缺少的套件管理工具</strong></p>
+        <p><a href="index.html">English Version</a> | <a href="index_zh-cn.html">简体中文版</a> | 繁體中文版</p>
       </div>
 
       <div id="informations">
@@ -33,7 +33,7 @@
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew installs <a href="https://github.com/mxcl/homebrew/tree/master/Library/Formula" title="List of Homebrew packages">the stuff you need</a> that Apple didn’t.</p>
+                <p>使用 Homebrew 安裝 Apple 沒有預裝但是<a href="https://github.com/mxcl/homebrew/tree/master/Library/Formula" title="List of Homebrew packages">你需要的東西</a>。</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> brew install wget</code></pre>
@@ -43,7 +43,7 @@
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew installs packages to their own directory and then symlinks their files into <code>/usr/local</code>.</p>
+                <p>Homebrew 會將 packages 安裝在他們自己的目錄，然後把檔案 symlink 到 <code>/usr/local</code> 下。</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> cd /usr/local
@@ -61,14 +61,14 @@ bin/wget -&gt; ../Cellar/wget/1.12/bin/wget</code></pre>
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew won’t install files outside its prefix, and you can place a Homebrew installation wherever you like.</p>
+                <p>Homebrew 不會把檔案放在預設路徑之外的地方，因此可以在任何位置使用 Homebrew 安裝程式。</p>
               </div>
             </div>
           </li>
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Trivially create your own Homebrew packages.</p>
+                <p>輕鬆建立你自己的 Homebrew packages。</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> brew create http://foo.com/bar-1.0.tgz
@@ -80,7 +80,7 @@ Created /usr/local/Library/Formula/bar.rb
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>It's all git and ruby underneath, so hack away with the knowledge that you can easily revert your modifications and merge upstream updates.</p>
+                <p>完全以 Git 和 Ruby 為基底，所以你可以盡情地運用這些知識，輕鬆地復原你的修改以及合併上游的更新。</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> brew edit wget <span style="color: #666;"># opens in $EDITOR!</span></code></pre>
@@ -90,7 +90,7 @@ Created /usr/local/Library/Formula/bar.rb
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew formula are simple Ruby scripts:</p>
+                <p>Homebrew 的 formula 都是簡單的 Ruby 腳本：</p>
               </div>
               <div class="col-2">
                 <pre class="overflow"><code><span style="color: #8a9597;">require</span> <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">formula</span><span style="color: #c2c98f;">'</span>
@@ -111,27 +111,27 @@ Created /usr/local/Library/Formula/bar.rb
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew complements OS X. Install your gems with <code>gem</code>, and their dependencies with <code>brew</code>.</p>
+                <p>Homebrew 互補了 OS X，你可以使用 <code>gem</code> 來安裝 Ruby 套件， 而它的依存軟體可以用 <code>brew</code> 安裝。</p>
               </div>
             </div>
           </li>
 
           <li>
             <div class="group row">
-              <h2>Install Homebrew</h2>
+              <h2>安裝 Homebrew</h2>
               <pre style='clear:both;text-align:center;margin:0 -3em;margin-bottom:0.9em'><code id='selectable' onclick="selectText()">ruby -e &quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)&quot;</code></pre>
               <div class="col-1">
-                <p>Paste that at a Terminal prompt.</p>
+                <p>在終端機命令列提示貼上這個。</p>
               </div>
               <div class="col-2">
-                <p>The script explains what it will do and then pauses before it does it. There are more installation options <a href='https://github.com/mxcl/homebrew/wiki/Installation'>here</a> (needed on 10.5).
+                <p>腳本執行時會解釋它正在做什麼，並在你確認之前暫停下來。你可以在<a href='https://github.com/mxcl/homebrew/wiki/Installation'>這裡</a>找到更多安裝選擇（需要 10.5 以上版本）。
               </div>
             </div>
           </li>
 
           <li>
             <div class="group row">
-              <h2>Further Documentation</h2>
+              <h2>更多說明文件</h2>
               <div class="button">
                 <p><a href="https://github.com/mxcl/homebrew/wiki">Homebrew Wiki</a></p>
               </div>
