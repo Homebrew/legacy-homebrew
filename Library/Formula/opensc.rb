@@ -9,6 +9,7 @@ class Opensc < Formula
   if build.head?
     depends_on :automake
     depends_on :libtool
+    depends_on :openssl
   end
 
   option 'with-man-pages', 'Build manual pages'
@@ -40,6 +41,9 @@ class Opensc < Formula
     system "./bootstrap" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--enable-sm",
+                          "--enable-openssl",
+                          "--enable-pcsc",
                           *extra_args
 
     system "make install"
