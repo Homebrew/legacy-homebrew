@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <title>Homebrew — MacPorts让您崩溃不?试试Homebrew吧!</title>
+    <title>Homebrew — ¿MacPorts te hace tomar? !Prueba Homebrew!</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="dc.creator" content="Rémi Prévost - http://exomel.com" />
     <link rel="stylesheet" href="./css/screen.css" type="text/css" media="screen" />
@@ -24,8 +24,8 @@
     <div id="wrap">
       <div id="header">
         <h1><a href="./">Homebrew</a></h1>
-        <p id="subtitle"><strong>OS X系统缺失的组件管理工具</strong></p>
-        <p><a href="index.html">English Version</a> | 中文版 | <a href="index-es.html">Versión en Español</a></p>
+        <p id="subtitle"><strong>El gestor de paquetes ausente para OS X</strong></p>
+        <p><a href="index.html">English Version</a> | <a href="index_zh-cn.html">中文版</a> | Versión en Español</p>
       </div>
 
       <div id="informations">
@@ -33,7 +33,7 @@
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>使用Homebrew安装苹果系统没有但是<a href="https://github.com/mxcl/homebrew/tree/master/Library/Formula" title="List of Homebrew packages">您需要的东西</a></p>
+                <p>Homebrew instala <a href="https://github.com/mxcl/homebrew/tree/master/Library/Formula" title="List of Homebrew packages">lo que necesitas</a> y Apple no hizo.</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> brew install wget</code></pre>
@@ -43,7 +43,7 @@
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew将packages安装在它们自己的目录里, 然后symlink到<code>/usr/local</code>下.</p>
+                <p>Homebrew instala paquetes en su propio directorio y crea symlinks de los archivos en <code>/usr/local</code>.</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> cd /usr/local
@@ -61,14 +61,14 @@ bin/wget -&gt; ../Cellar/wget/1.12/bin/wget</code></pre>
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew不会在它prefix定义的目录之外存放任何文件, 所以, 您可以将Homebrew安装在任何想要安装到地方.</p>
+                <p>Homebrew no instalará archivos fuera de su prefijo, y se puede instalar Homebrew donde prefieras.</p>
               </div>
             </div>
           </li>
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>创建您自己的Homebrew packages是非常容易的一件事.</p>
+                <p>Crea tus propios paquetes para Homebrew fácilmente.</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> brew create http://foo.com/bar-1.0.tgz
@@ -80,7 +80,7 @@ Created /usr/local/Library/Formula/bar.rb
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>完全基于git和ruby实现, 您可以很方便的撤销更改或合并来自upstream的更新.</p>
+                <p>Todo es git y ruby por debajo, puedes empezar a hackear inmediatamente con la confianza de que puedes revertir tus modificaciones y agregar actualizaciones.</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> brew edit wget <span style="color: #666;"># opens in $EDITOR!</span></code></pre>
@@ -90,20 +90,20 @@ Created /usr/local/Library/Formula/bar.rb
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew的formula都是简单的ruby脚本:</p>
+                <p>Las formulas de Homebrew son simples scripts de Ruby:</p>
               </div>
               <div class="col-2">
-                <pre class="overflow"><code><span style="color: #8a9597;">require</span> <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">formula</span><span style="color: #c2c98f;">'</span>
+                <pre class="overflow"><code><span style="color: #8a9597;">require</span> <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">formula</span><span style="color: #c2c98f;">'</span>
 
-<span style="color: #8a9597;">class</span> <span style="color: #e3d796;"><em>Wget</em></span> &lt; Formula
-  homepage <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">http://www.gnu.org/wget/</span><span style="color: #c2c98f;">'</span>
-  url <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">http://ftp.gnu.org/wget-1.12.tar.gz</span><span style="color: #c2c98f;">'</span>
-  md5 <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">308a5476fc096a8a525d07279a6f6aa3</span><span style="color: #c2c98f;">'</span>
+<span style="color: #8a9597;">class</span> <span style="color: #e3d796;"><em>Wget</em></span> &lt; Formula
+  homepage <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">http://www.gnu.org/wget/</span><span style="color: #c2c98f;">'</span>
+  url <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">http://ftp.gnu.org/wget-1.12.tar.gz</span><span style="color: #c2c98f;">'</span>
+  md5 <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">308a5476fc096a8a525d07279a6f6aa3</span><span style="color: #c2c98f;">'</span>
 
-  <span style="color: #8a9597;">def</span> <span style="color: #a999ac;">install</span>
-    system <span style="color: #c2c98f;">"</span><span style="color: #a2a96f;">./configure</span><span style="color: #c2c98f;"> </span><span style="color: #a2a96f;">--prefix=</span><span style="color: #c2c98f;">#{</span>prefix<span style="color: #c2c98f;">}</span><span style="color: #c2c98f;">"</span>
-    system <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">make install</span><span style="color: #c2c98f;">'</span>
-  <span style="color: #8a9597;">end</span>
+  <span style="color: #8a9597;">def</span> <span style="color: #a999ac;">install</span>
+    system <span style="color: #c2c98f;">"</span><span style="color: #a2a96f;">./configure</span><span style="color: #c2c98f;"> </span><span style="color: #a2a96f;">--prefix=</span><span style="color: #c2c98f;">#{</span>prefix<span style="color: #c2c98f;">}</span><span style="color: #c2c98f;">"</span>
+    system <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">make install</span><span style="color: #c2c98f;">'</span>
+  <span style="color: #8a9597;">end</span>
 <span style="color: #8a9597;">end</span></code></pre>
               </div>
             </div>
@@ -111,29 +111,29 @@ Created /usr/local/Library/Formula/bar.rb
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew是对OS X的补充. 使用<code>gem</code>来安装您的gems, 而它的依赖可以使用<code>brew</code>来安装.</p>
+                <p>Homebrew complementa OS X. Instala tus gemas con <code>gem</code>, y las dependencias con <code>brew</code>.</p>
               </div>
             </div>
           </li>
 
           <li>
             <div class="group row">
-              <h2>安装Homebrew</h2>
+              <h2>Instalar Homebrew</h2>
               <pre style='clear:both;text-align:center;margin:0 -3em;margin-bottom:0.9em'><code id='selectable' onclick="selectText()">ruby -e &quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)&quot;</code></pre>
               <div class="col-1">
-                <p>打开Terminal, 粘贴上面的语句.</p>
+                <p>Pega esto en el prompt de la Terminal.</p>
               </div>
               <div class="col-2">
-                <p>该脚本首先将会解释它要做什么, 然后暂停下来, 直到您确认继续. 更多的安装选项在<a href='https://github.com/mxcl/homebrew/wiki/Installation'>这里</a>可以看到 (需要10.5).
+                <p>El script explica que va a hacer y luego se detiene antes de hacerlo. Hay más opciones para instalar <a href='https://github.com/mxcl/homebrew/wiki/Installation'>aquí</a> (necesario en 10.5).
               </div>
             </div>
           </li>
 
           <li>
             <div class="group row">
-              <h2>更进一步的文档</h2>
+              <h2>Documentación Adicional</h2>
               <div class="button">
-                <p><a href="https://github.com/mxcl/homebrew/wiki">Homebrew Wiki</a> (翻译中)</p>
+                <p><a href="https://github.com/mxcl/homebrew/wiki">Homebrew Wiki</a></p>
               </div>
             </div>
           </li>
