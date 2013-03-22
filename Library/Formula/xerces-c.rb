@@ -9,5 +9,8 @@ class XercesC < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+    # Remove a sample program that conflicts with libmemcached
+    # on case-insensitive file systems
+    (bin/"MemParse").unlink
   end
 end

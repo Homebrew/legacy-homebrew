@@ -10,8 +10,10 @@ class Vips < Formula
   depends_on :fontconfig
   depends_on 'gettext'
   depends_on 'glib'
+  # Removed the optional flag to jpeg library as a temporary workaround since it fails to build
+  # Already reported on project here https://github.com/jcupitt/libvips/issues/57
+  depends_on 'jpeg'
   depends_on 'openslide' => :optional
-  depends_on 'jpeg' => :optional
   depends_on 'libtiff' => :optional
   depends_on 'imagemagick' => :optional
   depends_on 'fftw' => :optional

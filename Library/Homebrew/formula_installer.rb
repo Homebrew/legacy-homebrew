@@ -97,6 +97,10 @@ class FormulaInstaller
       if pour_bottle?
         pour
         @poured_bottle = true
+        tab = Tab.for_keg f.prefix
+        tab.poured_from_bottle = true
+        tab.tabfile.delete rescue nil
+        tab.write
       end
     rescue
       opoo "Bottle installation failed: building from source."
@@ -353,7 +357,7 @@ class FormulaInstaller
 
   def fix_install_names
     Keg.new(f.prefix).fix_install_names
-    if @poured_bottle
+    if @poured_bottle and f.bottle
       old_prefix = f.bottle.prefix
       new_prefix = HOMEBREW_PREFIX.to_s
       old_cellar = f.bottle.cellar

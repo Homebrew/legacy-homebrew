@@ -114,6 +114,11 @@ class Formula
   def recursive_deps
     Formula.expand_deps(self).flatten.uniq
   end
+
+  def self.all
+    opoo "Formula.all is deprecated, use Formula.map instead"
+    map
+  end
 end
 
 class UnidentifiedFormula < Formula
