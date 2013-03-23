@@ -30,7 +30,9 @@ class GstPluginsBad < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--disable-sdl"
+                          "--disable-sdl",
+                          # gst/interfaces/propertyprobe.h is missing from gst-plugins-base 1.0.x
+                          "--disable-osx_video"
     system "make"
     system "make install"
   end
