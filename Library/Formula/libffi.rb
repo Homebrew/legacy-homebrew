@@ -1,12 +1,10 @@
 require 'formula'
 
-# 3.0.12 has a packaging error which causes GTK+, and possibly other
-# software, to fail to build; see https://github.com/mxcl/homebrew/issues/18329
 class Libffi < Formula
   homepage 'http://sourceware.org/libffi/'
-  url 'http://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.11.tar.gz'
-  mirror 'ftp://sourceware.org/pub/libffi/libffi-3.0.11.tar.gz'
-  sha1 'bff6a6c886f90ad5e30dee0b46676e8e0297d81d'
+  url 'http://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.13.tar.gz'
+  mirror 'ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz'
+  sha1 'f5230890dc0be42fb5c58fbf793da253155de106'
 
   keg_only :provided_by_osx, "Some formulae require a newer version of libffi."
 
