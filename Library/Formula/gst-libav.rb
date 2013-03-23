@@ -2,8 +2,8 @@ require 'formula'
 
 class GstLibav < Formula
   homepage 'http://gstreamer.freedesktop.org'
-  url 'http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.0.5.tar.xz'
-  sha1 '7c186f82743cca7fb8fc78848d4e79c1d3bcd5e4'
+  url 'http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.0.6.tar.xz'
+  sha256 '8ab222a52bf7482e913f2c9a4f490cda8f8ed1acfbc429f27451b0558b08044d'
 
   depends_on "pkg-config" => :build
   depends_on "xz" => :build
