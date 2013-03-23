@@ -8,13 +8,6 @@ class Gfortran < Formula
   mirror 'http://ftp.gnu.org/gnu/gcc/gcc-4.8.0/gcc-4.8.0.tar.bz2'
   sha1 'b4ee6e9bdebc65223f95067d0cc1a634b59dad72'
 
-  bottle do
-    revision 1
-    sha1 '52c6563098b7a761ab0a5182d242af42e26b0c3a' => :mountain_lion
-    sha1 '93fc137cb0f8c41b6af88cd7a1c791dc395e7ae1' => :lion
-    sha1 '7d284bd3f3263be11229ac45f340fbf742ebbea6' => :snow_leopard
-  end
-
   option 'enable-profiled-build', 'Make use of profile guided optimization when bootstrapping GCC'
   option 'check', 'Run the make check fortran. This is for maintainers.'
 
