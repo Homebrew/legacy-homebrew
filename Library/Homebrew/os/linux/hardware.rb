@@ -16,7 +16,7 @@ module LinuxCPUs
   def family
     :dunno
   end
-  alias_method :intel_family, :cpu_family
+  alias_method :intel_family, :family
 
   def cores
     `grep -c ^processor /proc/cpuinfo`.to_i
