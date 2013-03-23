@@ -4,16 +4,9 @@ require 'formula'
 
 class Gfortran < Formula
   homepage 'http://gcc.gnu.org/wiki/GFortran'
-  url 'http://ftpmirror.gnu.org/gcc/gcc-4.7.2/gcc-4.7.2.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gcc/gcc-4.7.2/gcc-4.7.2.tar.bz2'
-  sha1 'a464ba0f26eef24c29bcd1e7489421117fb9ee35'
-
-  bottle do
-    revision 1
-    sha1 '52c6563098b7a761ab0a5182d242af42e26b0c3a' => :mountain_lion
-    sha1 '93fc137cb0f8c41b6af88cd7a1c791dc395e7ae1' => :lion
-    sha1 '7d284bd3f3263be11229ac45f340fbf742ebbea6' => :snow_leopard
-  end
+  url 'http://ftpmirror.gnu.org/gcc/gcc-4.8.0/gcc-4.8.0.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gcc/gcc-4.8.0/gcc-4.8.0.tar.bz2'
+  sha1 'b4ee6e9bdebc65223f95067d0cc1a634b59dad72'
 
   option 'enable-profiled-build', 'Make use of profile guided optimization when bootstrapping GCC'
   option 'check', 'Run the make check fortran. This is for maintainers.'
