@@ -2,9 +2,9 @@ require 'formula'
 
 class Spin < Formula
   homepage 'http://spinroot.com/spin/whatispin.html'
-  url 'http://spinroot.com/spin/Src/spin623.tar.gz'
-  version '6.2.3'
-  sha1 'af4e809627ac3d33d2125569d63fde5515659ef4'
+  url 'http://spinroot.com/spin/Src/spin624.tar.gz'
+  version '6.2.4'
+  sha1 '980d47f26f8a0f5e191fc47c2240dc96f3dceab9'
 
   fails_with :llvm do
     build 2334
@@ -29,10 +29,10 @@ end
 
 # manual patching is required by the spin install process
 __END__
-diff --git a/Src6.2.3/makefile b/Src6.2.3/makefile
+diff --git a/Src6.2.4/makefile b/Src6.2.4/makefile
 index 02d2a02..7687e0a 100644
---- a/Src6.2.3/makefile
-+++ b/Src6.2.3/makefile
+--- a/Src6.2.4/makefile
++++ b/Src6.2.4/makefile
 @@ -13,12 +13,12 @@
  
  # see also ./make_pc for a simpler script, not requiring make
