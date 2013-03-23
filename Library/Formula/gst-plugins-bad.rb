@@ -25,7 +25,8 @@ class GstPluginsBad < Formula
   depends_on 'rtmpdump' => :optional
 
   def install
-    ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
+    ENV.append "CFLAGS", "-no-cpp-precomp" unless ENV.compiler == :clang
+    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing"
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
