@@ -15,7 +15,7 @@ class GstLibav < Formula
     system "make install"
   end
 
-  def test
-    system "gst-inspect-1.0 libav"
+  test do
+    system "#{bin}/gst-inspect-1.0", "libav"
   end
 end
