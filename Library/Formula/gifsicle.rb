@@ -2,8 +2,8 @@ require 'formula'
 
 class Gifsicle < Formula
   homepage 'http://www.lcdf.org/gifsicle/'
-  url 'http://www.lcdf.org/gifsicle/gifsicle-1.67.tar.gz'
-  sha1 '9b239cfce086d416017b237743d68d19a3a095f6'
+  url 'http://www.lcdf.org/gifsicle/gifsicle-1.70.tar.gz'
+  sha1 'f5017c7e3298108f2063a926f83392c66f0652ae'
 
   depends_on :x11
 
