@@ -9,7 +9,7 @@ class Sendemail < Formula
     bin.install 'sendEmail'
   end
 
-  def test
-    system "#{bin}/sendEmail | cat"
+  test do
+    `#{bin}/sendemail`.strip =~ /sendemail-#{Regexp.escape(version)}/
   end
 end

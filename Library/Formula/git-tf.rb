@@ -7,9 +7,7 @@ class GitTf < Formula
 
   depends_on 'maven' unless build.stable?
 
-  head do
-    url 'https://git01.codeplex.com/gittf', :using => :git
-  end
+  head 'https://git01.codeplex.com/gittf', :using => :git
 
   def install
     if build.stable?
@@ -28,9 +26,7 @@ class GitTf < Formula
     (share/'doc/git-tf').install Dir['Git-TF_*'] + Dir['ThirdPartyNotices*']
   end
 
-  def test
-    system "mvn", "test" unless build.stable?
+  test do
     system "#{bin}/git-tf"
-    system "git", "tf"
   end
 end

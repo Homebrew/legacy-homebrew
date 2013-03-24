@@ -19,7 +19,7 @@ class Auctex < Formula
         return a.sub('--with-emacs=', '')
       end
     end
-    return which 'emacs'
+    which('emacs').to_s
   end
 
   def install
