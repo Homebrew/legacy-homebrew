@@ -21,7 +21,7 @@ class Libspotify < Formula
   end
 
   def pc_content; <<-EOS.undent
-    prefix=#{HOMEBREW_PREFIX}
+    prefix=#{prefix}
     exec_prefix=${prefix}
     libdir=${exec_prefix}/lib
     includedir=${prefix}/include
