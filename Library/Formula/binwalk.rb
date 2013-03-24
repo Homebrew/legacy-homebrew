@@ -2,8 +2,8 @@ require 'formula'
 
 class Binwalk < Formula
   homepage 'http://code.google.com/p/binwalk/'
-  url 'http://binwalk.googlecode.com/files/binwalk-0.5.0.tar.gz'
-  sha1 'e7ffb447f932fb33b5c7c9b4ca8f8ddbead7f6db'
+  url 'http://binwalk.googlecode.com/files/binwalk-1.1.tar.gz'
+  sha1 'd2a6b076bc748ef1dc97304233bc36dfbbe59098'
 
   depends_on 'libmagic'
 
