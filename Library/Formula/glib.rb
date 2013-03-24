@@ -43,6 +43,7 @@ class Glib < Formula
       --disable-modular-tests
       --prefix=#{prefix}
       --localstatedir=#{var}
+      --with-gio-module-dir=#{HOMEBREW_PREFIX}/lib/gio/modules
     ]
 
     system "./configure", *args
