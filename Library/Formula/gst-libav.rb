@@ -16,6 +16,6 @@ class GstLibav < Formula
   end
 
   test do
-    system "#{bin}/gst-inspect-1.0", "libav"
+    system "#{Formula.factory("gstreamer").opt_prefix}/bin/gst-inspect-1.0", "libav"
   end
 end
