@@ -34,7 +34,7 @@ class GitFlowAvh < Formula
      EOS
   end
 
-  def test
-    system "#{bin}/git-flow version"
+  test do
+    system "#{bin}/git-flow", "version"
   end
 end
