@@ -10,7 +10,7 @@ class Jbig2dec < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/jbig2dec", '--version'
+  test do
+    system "#{bin}/jbig2dec", "--version"
   end
 end
