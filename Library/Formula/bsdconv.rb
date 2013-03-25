@@ -14,8 +14,12 @@ class Bsdconv < Formula
     system "make", "PREFIX=#{prefix}", "install"
   end
 
-  def test
-    printf = 'printf "\263\134\245\134\273\134"'
-    system "test `#{printf} | #{bin}/bsdconv big5:utf-8` = '許功蓋'"
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/bsdconv", "big5:utf-8") do |stdin, stdout, _|
+      stdin.write("\263\134\245\134\273\134")
+      stdin.close
+      stdout.read == "許功蓋"
+    end
   end
 end
