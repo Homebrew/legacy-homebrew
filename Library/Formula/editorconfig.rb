@@ -12,7 +12,7 @@ class Editorconfig < Formula
     system "make install"
   end
 
-  def test
-    system "editorconfig"
+  test do
+    system "#{bin}/editorconfig"
   end
 end
