@@ -63,7 +63,7 @@ class Nss < Formula
   end
 
   def pkg_file; <<-EOF
-prefix=#{HOMEBREW_PREFIX}
+prefix=#{prefix}
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include/nss

@@ -6,7 +6,7 @@ class Libid3tag < Formula
 
   def id3tag_pc
     return <<-EOS
-prefix=#{HOMEBREW_PREFIX}
+prefix=#{prefix}
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
