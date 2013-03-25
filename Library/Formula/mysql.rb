@@ -165,7 +165,7 @@ class Mysql < Formula
   end
 
   test do
-    (opt_prefix+'mysql-test').cd do
+    (prefix+'mysql-test').cd do
       system './mysql-test-run.pl', 'status'
     end
   end
