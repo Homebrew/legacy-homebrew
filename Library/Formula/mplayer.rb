@@ -100,22 +100,14 @@ index a1fba5f..5deaa80 100755
    _timer=timer-darwin.c
  fi
  
-@@ -2771,8 +2770,8 @@
+@@ -2771,6 +2770,10 @@
      extra_ldflags="$extra_ldflags -pie"
      relocatable=yes
      res_comment="non-PIC"
--  elif x86_64 && cflag_check -fpie -pie ; then
--    extra_ldflags="$extra_ldflags -fpie -pie"
-+  elif x86_64 && cflag_check -fpie -Wl,-pie; then
-+    extra_ldflags="$extra_ldflags -fpie -Wl,-pie"
++  elif x86_64 && test "$cc_vendor" = "clang" && darwin; then
++    extra_ldflags="$extra_ldflags -Wl,-pie"
++    relocatable=yes
++    res_comment="fast PIC"
+   elif x86_64 && cflag_check -fpie -pie ; then
+     extra_ldflags="$extra_ldflags -fpie -pie"
      extra_cflags="$extra_cflags -fpie"
-     relocatable=yes
-     res_comment="fast PIC"
-@@ -2847,8 +2846,7 @@
- echocheck "PIC"
- def_pic='#define CONFIG_PIC 0'
- pic=no
--cpp_condition_check '' 'defined(__PIC__) || defined(__pic__) || defined(PIC)' &&
--  pic=yes && extra_cflags="$extra_cflags -DPIC" && def_pic='#define CONFIG_PIC 1'
-+pic=yes && extra_cflags="$extra_cflags -DPIC" && def_pic='#define CONFIG_PIC 1'
- echores $pic
