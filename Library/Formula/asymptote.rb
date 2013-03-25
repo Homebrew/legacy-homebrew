@@ -48,8 +48,6 @@ class Asymptote < Formula
     system "pdflatex asy_test"
     system "asy asy_test-1.asy"
     system "pdflatex asy_test"
-
-    return (not $? == 0)
   end
 
   def caveats; <<-EOS.undent
