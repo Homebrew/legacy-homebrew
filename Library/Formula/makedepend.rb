@@ -12,7 +12,7 @@ class Makedepend < Formula
     system 'make', 'install'
   end
 
-  def test
-    system 'makedepend', '--version'
+  test do
+    system "#{bin}/makedepend", "--version"
   end
 end
