@@ -10,13 +10,9 @@ class Cloog < Formula
   depends_on 'isl'
 
   def install
-    args = [
-      "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
-      "--with-isl-prefix=#{Formula.factory('isl').opt_prefix}"
-    ]
-
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-isl-prefix=#{Formula.factory("isl").opt_prefix}"
     system "make install"
   end
 
