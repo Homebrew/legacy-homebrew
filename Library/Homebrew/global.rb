@@ -46,7 +46,7 @@ undef cache # we use a function to prevent adding home_cache to the global scope
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
 
 if not defined? HOMEBREW_BREW_FILE
-  HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] || `which brew`.chomp
+  HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] || which('brew').to_s
 end
 
 HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under

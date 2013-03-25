@@ -2,8 +2,8 @@ require 'formula'
 
 class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
-  url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.1/gnuplot-4.6.1.tar.gz'
-  sha1 '1ea21a628223159b0297ae65fe8293afd5aab3c0'
+  url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.2/gnuplot-4.6.2.tar.gz'
+  sha1 '88748d4bc9bd41ba8a267a35b6e5b7427cd997cd'
 
   head 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot', :using => :cvs
 
@@ -33,6 +33,12 @@ class Gnuplot < Formula
   depends_on 'wxmac'       if build.include? 'wx'
   depends_on 'qt'          if build.include? 'qt'
   depends_on :tex          if build.include? 'latex'
+
+  def patches
+    # see discussion on this cairo issue: https://github.com/fontforge/fontforge/issues/222
+    # and the gnuplot bug report: https://sourceforge.net/p/gnuplot/bugs/1223/
+    DATA
+  end
 
   def install
     # Help configure find libraries
@@ -74,3 +80,17 @@ class Gnuplot < Formula
     system "#{bin}/gnuplot", "--version"
   end
 end
+
+__END__
+diff --git a/term/cairo.trm b/term/cairo.trm
+index 48fac72..c5d110f 100644
+--- a/term/cairo.trm
++++ b/term/cairo.trm
+@@ -615,6 +615,7 @@ TERM_PUBLIC void cairotrm_options()
+  * Is the 'main' function of the terminal. */
+ void cairotrm_init()
+ {
++	g_type_init();
+	cairo_surface_t *surface = NULL;
+
+	FPRINTF((stderr,"Init\n"));

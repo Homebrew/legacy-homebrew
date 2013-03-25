@@ -16,7 +16,7 @@ class Libinfinity < Formula
   # Supposedly fixed in HEAD, but still happens in 0.5.3, possibly
   # in a different place.
   fails_with :clang do
-    build 421
+    build 425
     cause 'Non-void function should return a value'
   end
 

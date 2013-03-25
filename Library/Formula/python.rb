@@ -16,7 +16,7 @@ class Python < Formula
   sha1 '842c4e2aff3f016feea3c6e992c7fa96e49c9aa0'
 
   option :universal
-  option 'quicktest', 'Run `make quicktest` after the build'
+  option 'quicktest', 'Run `make quicktest` after the build (for devs; may fail)'
   option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
   option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
   option 'with-poll', 'Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)'
@@ -28,7 +28,7 @@ class Python < Formula
   depends_on 'sqlite' => :recommended
   depends_on 'gdbm' => :recommended
   depends_on 'openssl' if build.include? 'with-brewed-openssl'
-  depends_on 'homebrew/dupes/tk' if build.include? 'with-brewed-tk'
+  depends_on 'homebrew/dupes/tcl-tk' if build.include? 'with-brewed-tk'
 
   def patches
     p = []
@@ -36,7 +36,8 @@ class Python < Formula
     # see http://bugs.python.org/issue14662
     p << "https://gist.github.com/raw/4349132/25662c6b382315b5db67bf949773d76471bbcee7/python-nfs-shutil.diff"
     p << 'https://raw.github.com/gist/3415636/2365dea8dc5415daa0148e98c394345e1191e4aa/pythondtrace-patch.diff' if build.include? 'with-dtrace'
-    # Patch to disable the search for Tk.frameworked, since homebrew's Tk is a plain unix build
+    # Patch to disable the search for Tk.frameworked, since homebrew's Tk is
+    # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
     p << DATA if build.include? 'with-brewed-tk'
     p
   end
@@ -179,9 +180,14 @@ class Python < Formula
   end
 
   def distutils_fix_superenv(args)
-    # To allow certain Python bindings to find brewed software:
+    # This is not for building python itself but to allow Python's build tools
+    # (pip) to find brewed stuff when installing python packages.
     cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
     ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
+    if build.include? 'with-brewed-tk'
+      cflags += " -I#{Formula.factory('tcl-tk').opt_prefix}/include"
+      ldflags += " -L#{Formula.factory('tcl-tk').opt_prefix}/lib"
+    end
     unless MacOS::CLT.installed?
       # Help Python's build system (distribute/pip) to build things on Xcode-only systems
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
@@ -269,19 +275,45 @@ end
 
 __END__
 diff --git a/setup.py b/setup.py
-index 6b47451..b0400f8 100644
+index 6b47451..36bc81d 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1702,9 +1702,9 @@ class PyBuildExt(build_ext):
+@@ -1702,9 +1702,6 @@ class PyBuildExt(build_ext):
          # AquaTk is a separate method. Only one Tkinter will be built on
          # Darwin - either AquaTk, if it is found, or X11 based Tk.
          platform = self.get_platform()
 -        if (platform == 'darwin' and
 -            self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
 -            return
-+        # if (platform == 'darwin' and
-+        #     self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
-+        #     return
-
+ 
          # Assume we haven't found any of the libraries or include files
          # The versions with dots are used on Unix, and the versions without
+@@ -1754,17 +1751,6 @@ class PyBuildExt(build_ext):
+         if platform == 'sunos5':
+             include_dirs.append('/usr/openwin/include')
+             added_lib_dirs.append('/usr/openwin/lib')
+-        elif os.path.exists('/usr/X11R6/include'):
+-            include_dirs.append('/usr/X11R6/include')
+-            added_lib_dirs.append('/usr/X11R6/lib64')
+-            added_lib_dirs.append('/usr/X11R6/lib')
+-        elif os.path.exists('/usr/X11R5/include'):
+-            include_dirs.append('/usr/X11R5/include')
+-            added_lib_dirs.append('/usr/X11R5/lib')
+-        else:
+-            # Assume default location for X11
+-            include_dirs.append('/usr/X11/include')
+-            added_lib_dirs.append('/usr/X11/lib')
+ 
+         # If Cygwin, then verify that X is installed before proceeding
+         if platform == 'cygwin':
+@@ -1790,8 +1776,8 @@ class PyBuildExt(build_ext):
+             libs.append('ld')
+ 
+         # Finally, link with the X11 libraries (not appropriate on cygwin)
+-        if platform != "cygwin":
+-            libs.append('X11')
++        # if platform != "cygwin":
++            # libs.append('X11')
+ 
+         ext = Extension('_tkinter', ['_tkinter.c', 'tkappinit.c'],
+                         define_macros=[('WITH_APPINIT', 1)] + defs,

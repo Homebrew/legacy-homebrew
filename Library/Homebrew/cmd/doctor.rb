@@ -38,23 +38,21 @@ end
 
 
 class Checks
-  # Sorry for the lack of an indent here, the diff would have been unreadable.
 
 ############# HELPERS
-def remove_trailing_slash s
-  (s[s.length-1] == '/') ? s[0,s.length-1] : s
-end
+  def remove_trailing_slash s
+    (s[s.length-1] == '/') ? s[0,s.length-1] : s
+  end
 
-
-def paths
-  @paths ||= ENV['PATH'].split(':').collect do |p|
-    begin
-      remove_trailing_slash(File.expand_path(p))
-    rescue ArgumentError
-      onoe "The following PATH component is invalid: #{p}"
-    end
-  end.uniq.compact
-end
+  def paths
+    @paths ||= ENV['PATH'].split(':').collect do |p|
+      begin
+        remove_trailing_slash(File.expand_path(p))
+      rescue ArgumentError
+        onoe "The following PATH component is invalid: #{p}"
+      end
+    end.uniq.compact
+  end
 
   # Finds files in HOMEBREW_PREFIX *and* /usr/local.
   # Specify paths relative to a prefix eg. "include/foo.h".
@@ -70,6 +68,7 @@ end
   end
 ############# END HELPERS
 
+# Sorry for the lack of an indent here, the diff would have been unreadable.
 # See https://github.com/mxcl/homebrew/pull/9986
 def check_path_for_trailing_slashes
   bad_paths = ENV['PATH'].split(':').select{|p| p[p.length-1, p.length] == '/'}
@@ -925,7 +924,7 @@ def check_git_status
       If this a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
-          cd #{HOMEBREW_REPOSITORY}/Library && git stash && git clean -f
+          cd #{HOMEBREW_REPOSITORY}/Library && git stash && git clean -d -f
       EOS
     end
   end
@@ -979,6 +978,14 @@ def check_for_bad_python_symlink
   unless $1 == "2" then <<-EOS.undent
     python is symlinked to python#$1
     This will confuse build scripts and in general lead to subtle breakage.
+    EOS
+  end
+end
+
+def check_for_non_prefixed_coreutils
+  gnubin = `brew --prefix coreutils`.chomp + "/libexec/gnubin"
+  if paths.include? gnubin then <<-EOS.undent
+    Putting non-prefixed coreutils in your path can cause gmp builds to fail.
     EOS
   end
 end

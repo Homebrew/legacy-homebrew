@@ -33,15 +33,14 @@ class Tty
   end
 end
 
-# args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title.to_s[0, Tty.width - 4] if $stdout.tty? unless ARGV.verbose?
+  title = title.to_s[0, Tty.width - 4] if $stdout.tty? && !ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput unless sput.empty?
 end
 
 def oh1 title
-  title = title.to_s[0, Tty.width - 4] if $stdout.tty? unless ARGV.verbose?
+  title = title.to_s[0, Tty.width - 4] if $stdout.tty? && !ARGV.verbose?
   puts "#{Tty.green}==>#{Tty.white} #{title}#{Tty.reset}"
 end
 

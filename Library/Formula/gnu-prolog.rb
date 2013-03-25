@@ -6,7 +6,6 @@ class GnuProlog < Formula
   sha1 '76d366910e50e56aa06c98a0a8903f98ec7f1c21'
 
   fails_with :clang do
-    build 421
     cause "Fatal Error: Segmentation Violation"
   end
 

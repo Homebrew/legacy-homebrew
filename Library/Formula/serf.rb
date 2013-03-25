@@ -16,9 +16,7 @@ class Serf < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
+    system "./configure", "--prefix=#{prefix}",
                           "--with-apr=#{apr_bin}"
     system "make install"
   end
