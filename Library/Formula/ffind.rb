@@ -12,7 +12,7 @@ class Ffind < Formula
     bin.install "ffind"
   end
 
-  def test
-    system "ffind"
+  test do
+    system "#{bin}/ffind"
   end
 end
