@@ -27,8 +27,7 @@ class Mosquitto < Formula
     system "#{sbin}/mosquitto -h > /dev/null ; [ $? -eq 3 ]"
   end
 
-  def caveats
-    return <<-EOD.undent
+  def caveats; <<-EOD.undent
     mosquitto has been installed with a default configuration file.
         You can make changes to the configuration by editing
         #{etc}/mosquitto/mosquitto.conf
