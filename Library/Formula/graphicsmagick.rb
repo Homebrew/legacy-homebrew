@@ -10,8 +10,8 @@ end
 
 class Graphicsmagick < Formula
   homepage 'http://www.graphicsmagick.org/'
-  url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.17/GraphicsMagick-1.3.17.tar.bz2'
-  sha256 'cb4e29543b2912657207016ad4c7a081a96b0e4a4d84520bd74d242b3d9a6a7e'
+  url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.18/GraphicsMagick-1.3.18.tar.bz2'
+  sha256 '768b89a685d29b0e463ade21bc0649f2727800ebc5a8e13fa6fc17ccb9da769b'
 
   head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
 
@@ -49,19 +49,12 @@ class Graphicsmagick < Formula
   def install
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
-    # Homebrew cleans ".la" files from lib but this configure looks for them.
-    # Maintainers: This will be fixed in the next version >= 1.3.18 (probably)
-    # Then the next line will not be needed anymore. Further the --with-ltdl... flags
-    # further down can be removed then!
-    inreplace 'configure', 'if test -f "$with_ltdl_lib/libltdl.la"', 'if test -f "$with_ltdl_lib/libltdl.a"'
 
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--enable-shared", "--disable-static"]
     args << "--without-magick-plus-plus" if build.include? 'without-magick-plus-plus'
     args << "--disable-openmp" if MacOS.version == :leopard or not ENV.compiler == :gcc # libgomp unavailable
-    args << "--with-ltdl-include=#{Formula.factory('libtool').opt_prefix}/include"  # avoid to ship it's own ltdl
-    args << "--with-ltdl-lib=#{Formula.factory('libtool').opt_prefix}/lib"  # avoid to ship it's own ltdl
     args << "--with-gslib" if ghostscript_srsly?
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
               unless ghostscript_fonts?

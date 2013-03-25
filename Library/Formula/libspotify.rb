@@ -17,11 +17,11 @@ class Libspotify < Formula
       ln_s "libspotify.12.1.51.dylib", "libspotify.12.dylib"
     end
 
-    (lib+'pkgconfig/libspotify.pc').write pc_content
+    (lib+'pkgconfig/libspotify.pc').write pc_file
   end
 
-  def pc_content; <<-EOS.undent
-    prefix=#{HOMEBREW_PREFIX}
+  def pc_file; <<-EOS.undent
+    prefix=#{opt_prefix}
     exec_prefix=${prefix}
     libdir=${exec_prefix}/lib
     includedir=${prefix}/include

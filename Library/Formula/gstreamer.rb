@@ -2,8 +2,8 @@ require 'formula'
 
 class Gstreamer < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.0.5.tar.xz'
-  sha256 '26c2827567f09a46d0a3bc1e7f8696b2ae72b047306539178079abae487c5b77'
+  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.0.6.tar.xz'
+  sha256 '50d4050cd6a23684b6bbf40a9b7c132edfb39fe9db2d81980adaa6e72f4d5826'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build

@@ -13,11 +13,11 @@ class Rbenv < Formula
   end
 
   def caveats; <<-EOS.undent
-    To enable shims and autocompletion add to your profile:
-      if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
     To use Homebrew's directories rather than ~/.rbenv add to your profile:
       export RBENV_ROOT=#{var}/rbenv
+
+    To enable shims and autocompletion add to your profile:
+      if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
     EOS
   end
 end
