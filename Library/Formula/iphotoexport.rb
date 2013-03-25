@@ -8,11 +8,11 @@ class Iphotoexport < Formula
   depends_on 'exiftool'
 
   def install
-    unzip_dir = @name+'-'+@version
+    unzip_dir = "#{name}-#{version}"
     # Change hardcoded exiftool path
     inreplace "#{unzip_dir}/tilutil/exiftool.py", "/usr/bin/exiftool", "exiftool"
 
-    prefix.install Dir[unzip_dir+'/*']
+    prefix.install Dir["#{unzip_dir}/*"]
     bin.install_symlink prefix+'iphotoexport.py' => 'iphotoexport'
   end
 end
