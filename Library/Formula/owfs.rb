@@ -35,8 +35,8 @@ class Owfs < Formula
     system "make install"
   end
 
-  def test
-    system "owserver --version"
+  test do
+    system "#{bin}/owserver", "--version"
   end
 end
 

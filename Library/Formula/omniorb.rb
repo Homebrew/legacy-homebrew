@@ -49,12 +49,12 @@ class Omniorb < Formula
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 
-  def test
-   system "omniidl", "-h"
+  test do
+    system "#{bin}/omniidl", "-h"
 
-   if build.include? 'python'
-       system "python", "-c", %(import omniORB; print 'omniORBpy', omniORB.__version__)
-   end
+    if build.include? 'python'
+      system "python", "-c", %(import omniORB; print 'omniORBpy', omniORB.__version__)
+    end
   end
 end
 

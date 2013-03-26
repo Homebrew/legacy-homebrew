@@ -10,7 +10,7 @@ class EasyGit < Formula
     bin.install "eg"
   end
 
-  def test
-    system "#{bin}/eg help"
+  test do
+    system "#{bin}/eg", "help"
   end
 end

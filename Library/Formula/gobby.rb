@@ -8,6 +8,7 @@ class Gobby < Formula
   head 'git://git.0x539.de/git/gobby.git'
 
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'gtkmm'
   depends_on 'libgsasl'
   depends_on 'libxml++'

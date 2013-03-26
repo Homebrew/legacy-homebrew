@@ -10,7 +10,7 @@ class Sec < Formula
     man1.install 'sec.man' => 'sec.1'
   end
 
-  def test
-    system "#{bin}/sec --version"
+  test do
+    system "#{bin}/sec", "--version"
   end
 end
