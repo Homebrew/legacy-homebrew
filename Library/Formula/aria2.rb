@@ -2,8 +2,8 @@ require 'formula'
 
 class Aria2 < Formula
   homepage 'http://aria2.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.16.3/aria2-1.16.3.tar.bz2'
-  sha1 'b167ebe325d05a5acd37dcc59300c4f46bfdd42d'
+  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.16.5/aria2-1.16.5.tar.bz2'
+  sha1 '04ce2ae2f6500f6bb49c926e414ddc9c1a6059c3'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnutls'

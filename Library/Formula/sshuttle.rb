@@ -2,8 +2,8 @@ require 'formula'
 
 class Sshuttle < Formula
   homepage 'https://github.com/apenwarr/sshuttle'
-  url 'https://github.com/apenwarr/sshuttle/zipball/sshuttle-0.61'
-  sha1 '81ad1b98b2aed6fefdc8993a72392969a1a9be01'
+  url 'https://github.com/apenwarr/sshuttle/archive/sshuttle-0.61.tar.gz'
+  sha1 '557455c7c38653bcb3cbb5051026af7d954fec83'
 
   head 'https://github.com/apenwarr/sshuttle.git'
 

@@ -15,7 +15,7 @@ class Weighttp < Formula
     bin.install "build/default/weighttp"
   end
 
-  def test
-    system "weighttp -n 1 http://redmine.lighttpd.net/projects/weighttp/wiki"
+  test do
+    system "#{bin}/weighttp", "-n", "1", "http://redmine.lighttpd.net/projects/weighttp/wiki"
   end
 end

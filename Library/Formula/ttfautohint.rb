@@ -14,7 +14,7 @@ class Ttfautohint < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/ttfautohint -V"
+  test do
+    system "#{bin}/ttfautohint", "-V"
   end
 end

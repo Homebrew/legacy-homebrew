@@ -14,11 +14,11 @@ class Rtpbreak < Formula
 
   def install
     system "make", "CC=#{ENV.cc}"
-    bin.install('src/rtpbreak')
+    bin.install "src/rtpbreak"
   end
 
-  def test
-    system "rtpbreak"
+  test do
+    system "#{bin}/rtpbreak"
   end
 end
 __END__
