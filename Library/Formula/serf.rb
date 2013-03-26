@@ -2,8 +2,8 @@ require 'formula'
 
 class Serf < Formula
   homepage 'http://code.google.com/p/serf/'
-  url 'http://serf.googlecode.com/files/serf-1.1.1.tar.bz2'
-  sha1 '1ec4689ef57e7c28e7371df00d0ccc3e32ef6457'
+  url 'http://serf.googlecode.com/files/serf-1.2.0.tar.bz2'
+  sha1 '30b29bd9214d50887abcc20cf82096aaaf5d1d61'
 
   option :universal
 
