@@ -11,7 +11,10 @@ class GitTracker < Formula
     rake 'standalone:install', "prefix=#{prefix}"
   end
 
-  def test
-    `#{bin}/git-tracker test-command`.chomp == 'git-tracker is here. How are you?'
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/git-tracker", "test-command") do |_, stdout, _|
+      "git-tracker is here. How are you?" == stdout.read.strip
+    end
   end
 end
