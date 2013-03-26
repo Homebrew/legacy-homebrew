@@ -40,8 +40,11 @@ class Unac < Formula
     system "make install"
   end
 
-  def test
-    `#{bin}/unaccent utf-8 fóó`.chomp == 'foo'
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/unaccent", "utf-8", "fóó") do |_, stdout, _|
+      "foo" == stdout.read.strip
+    end
   end
 end
 
