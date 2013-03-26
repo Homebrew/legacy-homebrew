@@ -87,25 +87,6 @@ class Geocouch < Formula
       "//  GeoCouch Tests...\n#{test_lines}//  ...GeoCouch Tests\n"
   end
 
-  def test
-    puts <<-EOS.undent
-      To test geocouch, start `couchdb` (with appropriate geocouch ERL_FLAGS)
-      in a terminal and then:
-
-        curl http://127.0.0.1:5984/
-
-      The reply should look like:
-
-        {"couchdb":"Welcome","version":"1.2.0"}
-
-      For more thorough testing, use your browser to visit:
-
-        http://127.0.0.1:5984/_utils/couch_tests.html?script/couch_tests.js
-
-      and press the "Run All" button.
-      EOS
-  end
-
   def caveats; <<-EOS.undent
     FYI:  geocouch installs as an extension of couchdb, so couchdb effectively
     becomes geocouch.  However, you can use couchdb normally (using geocouch
