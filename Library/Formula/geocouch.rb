@@ -2,10 +2,11 @@ require 'formula'
 
 class Geocouch < Formula
   homepage 'https://github.com/couchbase/geocouch'
-  head 'https://github.com/couchbase/geocouch.git', :tag => 'couchdb1.2.x'
-  url 'https://github.com/couchbase/geocouch/tarball/couchdb1.2.x_v0.3.0'
-  sha1 '413d1d3762850e72d6b3589417317894a2d14508'
+  url 'https://github.com/couchbase/geocouch/archive/couchdb1.2.x_v0.3.0.tar.gz'
+  sha1 'e829daa4fa21ee9b5a5ca9bd8a9bf7da28a43722'
   version '1.2.0'
+
+  head 'https://github.com/couchbase/geocouch.git', :tag => 'couchdb1.2.x'
 
   devel do
     url 'https://github.com/couchbase/geocouch.git', :tag => 'master'
