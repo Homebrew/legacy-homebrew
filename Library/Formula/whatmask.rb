@@ -12,8 +12,8 @@ class Whatmask < Formula
     system "make install"
   end
 
-  def test
-    %x[#{bin}/whatmask /24].eql? <<-EOS
+  test do
+    %x[#{bin}/whatmask /24] == <<-EOS
 
 ---------------------------------------------
        TCP/IP SUBNET MASK EQUIVALENTS
