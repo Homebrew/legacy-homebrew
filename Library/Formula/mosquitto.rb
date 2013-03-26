@@ -23,8 +23,9 @@ class Mosquitto < Formula
     (var+'mosquitto').mkpath
   end
 
-  def test
-    system "#{sbin}/mosquitto -h > /dev/null ; [ $? -eq 3 ]"
+  test do
+    quiet_system "#{sbin}/mosquitto", "-h"
+    $?.exitstatus == 3
   end
 
   def caveats; <<-EOD.undent
