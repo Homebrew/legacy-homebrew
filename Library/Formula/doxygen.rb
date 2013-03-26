@@ -25,7 +25,7 @@ class Doxygen < Formula
 
     args = ["--prefix", prefix]
     args << "--with-doxywizard" if build.include? 'with-doxywizard'
-    ENV['QTDIR'] = "/usr/local"
+    ENV['QTDIR'] = HOMEBREW_PREFIX
     system "./configure", *args
     # Per Macports:
     # https://trac.macports.org/browser/trunk/dports/textproc/doxygen/Portfile#L92
