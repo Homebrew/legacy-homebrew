@@ -2,8 +2,8 @@ require 'formula'
 
 class Qxmpp < Formula
   homepage 'https://code.google.com/p/qxmpp/'
-  url 'http://qxmpp.googlecode.com/files/qxmpp-0.7.5.tar.gz'
-  sha1 '184f658fa5b2e001f8fb24ad7c5bfa93ddfb2eb2'
+  url 'http://qxmpp.googlecode.com/files/qxmpp-0.7.6.tar.gz'
+  sha1 'a87b4b5c94d1f4dc723cbbb7799cf4067c7e5ea2'
 
   depends_on 'qt'
 
