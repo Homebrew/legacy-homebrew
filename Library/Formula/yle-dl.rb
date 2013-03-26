@@ -11,12 +11,10 @@ class YleDl < Formula
   depends_on LanguageModuleDependency.new :python, 'pycrypto', 'Crypto'
 
   def install
-    system "make install SYS=darwin prefix=#{prefix} mandir=#{man}"
+    system "make", "install", "SYS=darwin", "prefix=#{prefix}", "mandir=#{man}"
   end
 
   test do
-    news = "yle-areena-uutiset.flv"
-    system "yle-dl --latestepisode --resume -o #{news} http://areena.yle.fi/?q=uutiset"
-    File.exists?(news)
+    raise if (`#{bin}/yle-dl --help 2>&1` =~ /rtmpdump: This program dumps the media content streamed over RTMP/).nil?
   end
 end
