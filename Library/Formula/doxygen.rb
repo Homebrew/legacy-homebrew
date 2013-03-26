@@ -15,7 +15,18 @@ class Doxygen < Formula
   depends_on 'qt' if build.include? 'with-doxywizard'
 
   def install
-    system "./configure", "--prefix", prefix
+    if build.include? 'with-doxywizard'
+      # Name DoxyWizard application according to OS X conventions.
+      inreplace "addon/doxywizard/doxywizard.pro.in", /^TARGET\s+=.*$/, "TARGET = DoxyWizard"
+
+      # Fix installation of DoxyWizard
+      inreplace "addon/doxywizard/Makefile.in", /^\s.*\$\(INSTTOOL\).*bin\/doxywizard.*$/, "\t\$(CP) -r ../../bin/DoxyWizard.app \$(INSTALL)/bin"
+    end
+
+    args = ["--prefix", prefix]
+    args << "--with-doxywizard" if build.include? 'with-doxywizard'
+    ENV['QTDIR'] = "/usr/local"
+    system "./configure", *args
     # Per Macports:
     # https://trac.macports.org/browser/trunk/dports/textproc/doxygen/Portfile#L92
     inreplace %w[ libmd5/Makefile.libmd5
@@ -36,5 +47,14 @@ class Doxygen < Formula
     system "make"
     # MAN1DIR, relative to the given prefix
     system "make", "MAN1DIR=share/man/man1", "install"
+  end
+
+  if build.include? 'with-doxywizard'
+    def caveats
+      text = <<-EOS.undent
+        The DoxyWizard front-end has been installed.  To symlink it to ~/Applications, run `brew linkapps`.
+      EOS
+      return text
+    end
   end
 end
