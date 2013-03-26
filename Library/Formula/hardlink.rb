@@ -21,6 +21,6 @@ class Hardlink < Formula
   end
 
   test do
-    system "hardlink", "--help"
+    system "#{bin}/hardlink", "--help"
   end
 end
