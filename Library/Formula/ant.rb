@@ -1,8 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Ant < Formula
   homepage 'http://ant.apache.org/'
   url 'http://apache.mirrors.timporter.net//ant/binaries/apache-ant-1.9.0-bin.zip'
