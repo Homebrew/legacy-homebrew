@@ -19,7 +19,7 @@ class Go < Formula
   def install
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
-    zsh_completion.install 'misc/zsh/go' => '_go'
+    zsh_completion.install 'misc/zsh/go' => 'go'
 
     if build.include? 'cross-compile-all'
       targets = [
