@@ -8,17 +8,17 @@ class MitScheme < Formula
 
   depends_on :x11 if MacOS::X11.installed?
 
-  def patches
-    # fix installation issue with OS X 10.7 and Xcode in /Applications
-    # http://savannah.gnu.org/patch/?7775
-    DATA
-  end
-
   def install
     # The build breaks __HORRIBLY__ with parallel make -- one target will erase something
     # before another target gets it, so it's easier to change the environment than to
     # change_make_var, because there are Makefiles littered everywhere
     ENV.j1
+
+    # Fix hard-coded locations of MACOSX_SYSROOT.
+    ['src/lib/include/configure', 'src/configure'].each do |configure|
+      inreplace configure, 'MACOSX_SYSROOT=/Developer/SDKs/${SDK}.sdk',
+                           "MACOSX_SYSROOT=/#{MacOS.sdk_path}"
+    end
 
     # Liarc builds must launch within the src dir, not using the top-level Makefile
     cd "src"
@@ -34,41 +34,8 @@ class MitScheme < Formula
     # by default even Homebrew is installed in /usr/local. This breaks things when gdbm
     # or other optional dependencies was installed using Homebrew
     ENV.prepend 'CPPFLAGS', "-I#{HOMEBREW_PREFIX}/include"
-
+    ENV['MACOSX_SYSROOT'] = MacOS.sdk_path
     system "etc/make-liarc.sh", "--disable-debug", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end
 end
-
-__END__
-diff --git a/src/configure b/src/configure
-index 23187c9..4485b64 100755
---- a/src/configure
-+++ b/src/configure
-@@ -6257,7 +6257,10 @@ echo "$as_me: error: Unable to determine MacOSX version" >&2;}
-     else
- 	SDK=MacOSX${MACOSX}
-     fi
-+	MACOSX_SYSROOT=$(xcode-select --print-path)/Platforms/MacOSX.platform/Developer/SDKs/${SDK}.sdk
-+	if test ! -d "${MACOSX_SYSROOT}"; then
-     MACOSX_SYSROOT=/Developer/SDKs/${SDK}.sdk
-+	fi
-     if test ! -d "${MACOSX_SYSROOT}"; then
- 	{ { echo "$as_me:$LINENO: error: No MacOSX SDK for version: ${MACOSX}" >&5
- echo "$as_me: error: No MacOSX SDK for version: ${MACOSX}" >&2;}
-
-diff --git a/src/lib/include/configure b/src/lib/include/configure
-index d4c7717..49be0a2 100755
---- a/src/lib/include/configure
-+++ b/src/lib/include/configure
-@@ -5311,7 +5311,10 @@ echo "$as_me: error: Unable to determine MacOSX version" >&2;}
-     else
- 	SDK=MacOSX${MACOSX}
-     fi
-+	MACOSX_SYSROOT=$(xcode-select --print-path)/Platforms/MacOSX.platform/Developer/SDKs/${SDK}.sdk
-+	if test ! -d "${MACOSX_SYSROOT}"; then
-     MACOSX_SYSROOT=/Developer/SDKs/${SDK}.sdk
-+	fi
-     if test ! -d "${MACOSX_SYSROOT}"; then
- 	{ { echo "$as_me:$LINENO: error: No MacOSX SDK for version: ${MACOSX}" >&5
- echo "$as_me: error: No MacOSX SDK for version: ${MACOSX}" >&2;}
