@@ -1,3 +1,5 @@
+require "cmd/log"
+
 def gitk(path)
   # Calling 'gitk' directly doesn't open Wish in the foreground, so we use
   # 'open' instead. This requires us to set the following env variables, because
