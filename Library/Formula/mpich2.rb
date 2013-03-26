@@ -19,6 +19,8 @@ class Mpich2 < Formula
   option 'disable-fortran', "Do not attempt to build Fortran bindings"
   option 'enable-shared', "Build shared libraries"
 
+  conflicts_with 'open-mpi', :because => 'both install mpi__ compiler wrappers'
+
   # fails with clang from Xcode 4.5.1 on 10.7 and 10.8 (see #15533)
   # linker bug appears to have been fixed by Xcode 4.6
   fails_with :clang do
@@ -59,13 +61,6 @@ class Mpich2 < Formula
     system "./configure", *args
     system "make"
     system "make install"
-  end
-
-  def caveats; <<-EOS.undent
-    Please be aware that installing this formula along with the `openmpi`
-    formula will cause neither MPI installation to work correctly as
-    both packages install their own versions of mpicc/mpicxx and mpirun.
-    EOS
   end
 
   def test
