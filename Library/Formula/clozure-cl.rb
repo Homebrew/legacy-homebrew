@@ -43,14 +43,6 @@ class ClozureCl < Formula
     end
   end
 
-  def caveats
-    <<-CAVEATS
-    Run `ccl` to run a 32-bit session, and `ccl64` for a 64-bit one.
-
-    To test if everything works correctly, run `brew test #{name}`.
-    CAVEATS
-  end
-
   # Generates a string to test the ccl scripts that can be passed directly to `system'
   def test_ccl(bit = 32)
     ccl = bin + "ccl#{'64' if bit == 64}"
