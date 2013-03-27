@@ -71,6 +71,13 @@ module Homebrew extend self
     installer.install
     installer.caveats
     installer.finish
+
+    # If the formula was pinned, and we were force-upgrading it, unpin and
+    # pin it again to get a symlink pointing to the correct keg.
+    if f.pinned?
+      f.unpin
+      f.pin
+    end
   rescue FormulaInstallationAlreadyAttemptedError
     # We already attempted to upgrade f as part of the dependency tree of
     # another formula. In that case, don't generate an error, just move on.
