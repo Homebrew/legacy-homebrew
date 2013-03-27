@@ -31,6 +31,7 @@ class Mapserver < Formula
       "--with-proj",
       "--with-gdal",
       "--with-ogr",
+      "--with-wfs",
     ]
 
     args << "--with-geos" if build.with? 'geos'
