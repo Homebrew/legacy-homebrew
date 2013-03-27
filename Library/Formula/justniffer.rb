@@ -40,8 +40,11 @@ class Justniffer < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/justniffer --version | grep '^justniffer'"
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/justniffer", "--version") do |_, stdout, _|
+      /justniffer #{Regexp.escape(version)}/ === stdout.read
+    end
   end
 
   def caveats; <<-EOS.undent
