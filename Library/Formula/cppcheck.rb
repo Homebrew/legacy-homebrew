@@ -20,7 +20,7 @@ class Cppcheck < Formula
     if build.include? 'no-rules'
       system "make", "HAVE_RULES=no"
     else
-      system "make"
+      system "make", "HAVE_RULES=yes"
     end
 
     system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "install"
