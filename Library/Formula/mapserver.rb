@@ -10,7 +10,6 @@ class Mapserver < Formula
   option "with-php", "Build PHP MapScript module"
   option "with-postgresql", "Build support for PostgreSQL as a data source"
   option "with-python", "Build Python MapScript module"
-  option "with-wfs", "Build with WFS server support"
 
   # to find custom python
   env :userpaths
@@ -32,6 +31,7 @@ class Mapserver < Formula
       "--with-proj",
       "--with-gdal",
       "--with-ogr",
+      "--with-wfs",
     ]
 
     args << "--with-geos" if build.with? 'geos'
@@ -46,7 +46,6 @@ class Mapserver < Formula
     end
 
     args << "--with-fastcgi=#{HOMEBREW_PREFIX}" if build.include? 'with-fastcgi'
-    args << "--with-wfs" if build.include? 'with-wfs'
 
     system "./configure", *args
     system "make"
