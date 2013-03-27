@@ -2,8 +2,8 @@ require 'formula'
 
 class Rtorrent < Formula
   homepage 'http://libtorrent.rakshasa.no/'
-  url 'http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.2.tar.gz'
-  sha1 '2a642d722745091265037ed8929a23c237a3b99f'
+  url 'http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.3.tar.gz'
+  sha1 'e65a20b9e6d5c04b4e0849543d58befb60d948b7'
 
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
