@@ -694,7 +694,7 @@ private
       instance_eval(&block)
     end
 
-    def bottle url=nil, &block
+    def bottle *, &block
       return @bottle unless block_given?
       @bottle ||= Bottle.new
       @bottle.instance_eval(&block)
