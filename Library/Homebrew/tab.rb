@@ -1,5 +1,4 @@
 require 'ostruct'
-require 'formula'
 require 'options'
 require 'vendor/multi_json'
 
