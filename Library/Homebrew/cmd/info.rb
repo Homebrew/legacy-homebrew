@@ -10,7 +10,7 @@ module Homebrew extend self
     if ARGV.json == "v1"
       print_json
     elsif ARGV.flag? '--github'
-      exec_browser *ARGV.formulae.map { |f| github_info(f) }
+      exec_browser(*ARGV.formulae.map { |f| github_info(f) })
     else
       print_info
     end
