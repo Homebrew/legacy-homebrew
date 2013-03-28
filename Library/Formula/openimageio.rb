@@ -36,8 +36,8 @@ end
 
 class Openimageio < Formula
   homepage 'http://openimageio.org'
-  url 'https://github.com/OpenImageIO/oiio/archive/Release-1.1.7.tar.gz'
-  sha1 '435286ffad18169fd615cd33d95c2b49d3e4ec17'
+  url 'https://github.com/OpenImageIO/oiio/archive/Release-1.1.8.tar.gz'
+  sha1 '14ce1bb9067e70717de3f8d72c56342fa378a1e6'
 
   head 'https://github.com/OpenImageIO/oiio.git'
 
@@ -53,7 +53,7 @@ class Openimageio < Formula
   depends_on 'jpeg'
   depends_on 'openjpeg'
   depends_on 'cfitsio'
-  depends_on 'hdf5'
+  depends_on 'hdf5' => 'enable-cxx'
   depends_on 'field3d'
   depends_on 'webp'
   depends_on 'glew'

@@ -1,7 +1,7 @@
 require 'formula'
 
 class Mathomatic < Formula
-  homepage 'http://www.mathomatic.org/math/'
+  homepage 'http://www.mathomatic.org/'
   url 'http://mathomatic.org/mathomatic-16.0.5.tar.bz2'
   sha1 'aaaf4df4aa3dc9ea748211278e657c2195858c24'
 
