@@ -140,11 +140,19 @@ class FormulaAuditor
       end
 
       case dep.name
-      when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
+      when "git", "python", "ruby", "emacs", "mysql", "mercurial"
         problem <<-EOS.undent
           Don't use #{dep} as a dependency. We allow non-Homebrew
           #{dep} installations.
           EOS
+      when "postgresql"
+        # Postgis specifically requires a Homebrewed postgresql
+        unless f.name == "postgis"
+          problem <<-EOS.undent
+            Don't use #{dep} as a dependency. We allow non-Homebrew
+            #{dep} installations.
+          EOS
+        end
       when 'gfortran'
         problem "Use ENV.fortran during install instead of depends_on 'gfortran'"
       when 'open-mpi', 'mpich2'
