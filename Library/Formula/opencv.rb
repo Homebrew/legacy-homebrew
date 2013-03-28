@@ -35,6 +35,10 @@ class Opencv < Formula
   # you don't need unless you're doing video analysis, and some of it isn't
   # in Homebrew anyway. Will depend on openexr if it's installed.
 
+  # Fix non-ASCII characters breaking in Java 1.7
+  # https://github.com/Itseez/opencv/pull/718
+  def patches; DATA; end
+
   def install
     args = std_cmake_args + %w[
       -DCMAKE_OSX_DEPLOYMENT_TARGET=
@@ -102,3 +106,21 @@ class Opencv < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/modules/java/build.xml.in b/modules/java/build.xml.in
+index 98ba2e3..c1c1854 100644
+--- a/modules/java/build.xml.in
++++ b/modules/java/build.xml.in
+@@ -8,8 +8,9 @@
+     <!-- http://stackoverflow.com/questions/3584968/ant-how-to-compile-jar-that-includes-source-attachment -->
+     <javac sourcepath="" srcdir="src" destdir="src" debug="on" includeantruntime="false" >
+       <include name="**/*.java"/>
++      <compilerarg line="-encoding utf-8"/>
+     </javac>
+ 
+     <jar basedir="src" destfile="bin/@JAR_NAME@"/>
+   </target>
+-</project>
+\ No newline at end of file
++</project>
