@@ -71,7 +71,7 @@ class InstallTests < Test::Unit::TestCase
       keg=Keg.new f.prefix
       keg.link
       assert_equal 3, HOMEBREW_PREFIX.children.length
-      assert (HOMEBREW_PREFIX+'bin').directory?
+      assert((HOMEBREW_PREFIX+'bin').directory?)
       assert_equal 3, (HOMEBREW_PREFIX+'bin').children.length
     end
   end
