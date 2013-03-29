@@ -2,8 +2,8 @@ require 'formula'
 
 class F3 < Formula
   homepage 'http://oss.digirati.com.br/f3/'
-  url 'https://github.com/AltraMayor/f3/tarball/v2.1'
-  sha1 'c2b5d55e452a4d8c85649e198b028a7608ea6920'
+  url 'https://github.com/AltraMayor/f3/archive/v2.1.tar.gz'
+  sha1 '0e0f93e96f1d9c89227fcac1e5f80d5696d7c315'
 
   def install
     system "make mac"
