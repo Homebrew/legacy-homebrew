@@ -2,8 +2,10 @@ require 'formula'
 
 class Discount < Formula
   homepage 'http://www.pell.portland.or.us/~orc/Code/discount/'
-  url 'https://github.com/Orc/discount/tarball/v2.1.5a'
-  sha1 '73dcf117fa6ca15332c67f246544cd224bfc1774'
+  url 'https://github.com/Orc/discount/archive/v2.1.5a.tar.gz'
+  sha1 '83906e1f349eb13ea629f4f6e59a7f392e07a411'
+
+  version 'v2.1.5a'
 
   conflicts_with 'markdown',
     :because => 'both discount and markdown ship a `markdown` executable.'

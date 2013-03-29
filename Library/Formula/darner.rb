@@ -2,8 +2,8 @@ require 'formula'
 
 class Darner < Formula
   homepage 'https://github.com/wavii/darner'
-  url 'https://github.com/wavii/darner/tarball/v0.1.4'
-  sha1 '721e31ea843047536fb265eaca70ddc592d14f43'
+  url 'https://github.com/wavii/darner/archive/v0.1.4.tar.gz'
+  sha1 '3ed9df0db551243cc0811e525cc3b604203fd53a'
 
   head 'https://github.com/wavii/darner.git'
 
