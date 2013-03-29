@@ -2,9 +2,9 @@ require 'formula'
 
 class Mdxmini < Formula
   homepage 'http://clogging.web.fc2.com/psp/'
-  url 'https://github.com/BouKiCHi/mdxplayer/tarball/9afbc01f60a12052817cb14a81a8c3c976953506'
+  url 'https://github.com/BouKiCHi/mdxplayer/archive/9afbc01f60a12052817cb14a81a8c3c976953506.tar.gz'
   version '20130115'
-  sha1 '970f50f0c1fcabc6f9534233d7a2e4e0aeb9125e'
+  sha1 '8ca3b597f009ee7de697329e26b9f3c402dda173'
 
   option "lib-only", "Do not build commandline player"
 
