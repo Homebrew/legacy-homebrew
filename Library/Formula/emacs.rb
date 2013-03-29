@@ -30,6 +30,10 @@ class Emacs < Formula
     cause "Duplicate symbol errors while linking."
   end
 
+  if build.include? "info"
+    skip_clean "share/info"
+  end
+
   # Follow MacPorts and don't install ctags from Emacs. This allows Vim
   # and Emacs and ctags to play together without violence.
   def do_not_install_ctags
@@ -52,6 +56,10 @@ class Emacs < Formula
     # See: https://github.com/mxcl/homebrew/issues/4852
     if build.head? and File.exists? "./autogen/copy_autogen"
       system "autogen/copy_autogen"
+    end
+
+    if build.include? "info"
+      mkdir_p "#{info}/emacs"
     end
 
     if build.include? "cocoa"
