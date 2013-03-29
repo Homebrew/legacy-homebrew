@@ -1111,13 +1111,16 @@ module Homebrew extend self
       ARGV.named
     end.select{ |method| method =~ /^check_/ }.reverse.uniq.reverse
 
+    first_warning = true
     methods.each do |method|
       out = checks.send(method)
       unless out.nil? or out.empty?
         lines = out.to_s.split('\n')
+        puts unless first_warning
         opoo lines.shift
         Homebrew.failed = true
         puts lines
+        first_warning = false
       end
     end
 
