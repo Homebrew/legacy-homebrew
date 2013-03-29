@@ -2,8 +2,8 @@ require 'formula'
 
 class Mdbtools < Formula
   homepage 'https://github.com/brianb/mdbtools/'
-  url "https://github.com/brianb/mdbtools/tarball/0.7"
-  sha1 '62fe0703fd8691e4536e1012317406bdb72594cf'
+  url "https://github.com/brianb/mdbtools/archive/0.7.tar.gz"
+  sha1 '38e2ab418c7b5018f3f3e3e38734245c90aab3ce'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
