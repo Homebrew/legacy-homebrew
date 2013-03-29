@@ -11,6 +11,7 @@ class Emacs < Formula
   option "with-x", "Include X11 support"
   option "use-git-head", "Use Savannah git mirror for HEAD builds"
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
+  option "info", "Install the Info documentation"
 
   if build.include? "use-git-head"
     head 'http://git.sv.gnu.org/r/emacs.git'
@@ -66,6 +67,7 @@ class Emacs < Formula
       system "./configure", *args
       system "make bootstrap"
       system "make install"
+      system "make install info" if build.include? "info"
       prefix.install "nextstep/Emacs.app"
 
       # Don't cause ctags clash.
@@ -93,6 +95,7 @@ class Emacs < Formula
       system "./configure", *args
       system "make"
       system "make install"
+      system "make install info" if build.include? "info"
 
       # Don't cause ctags clash.
       do_not_install_ctags
