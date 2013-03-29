@@ -3,7 +3,6 @@ require 'formula'
 class Bup < Formula
   homepage 'https://github.com/apenwarr/bup'
   url 'https://github.com/apenwarr/bup/archive/bup-0.25-rc1.tar.gz'
-  version '0.25-rc1'
   sha1 'b88bd38d6f00a646faf0bd1f561595ebc0e55b30'
 
   head 'https://github.com/apenwarr/bup.git', :branch => 'master'
