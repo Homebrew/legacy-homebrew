@@ -232,6 +232,10 @@ class VersionParsingTests < Test::Unit::TestCase
     assert_version_detected '8d', 'http://www.ijg.org/files/jpegsrc.v8d.tar.gz'
   end
 
+  def test_jython_style
+    assert_version_detected '2.7-b1', 'http://example.com/jython-installer/2.7-b1/jython-installer-2.7-b1.jar'
+  end
+
   # def test_version_ghc_style
   #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2'
   #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2'
