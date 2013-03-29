@@ -2,8 +2,8 @@ require 'formula'
 
 class Serialosc < Formula
   homepage 'http://docs.monome.org/doku.php?id=app:serialosc'
-  url 'https://github.com/monome/serialosc/tarball/1.2'
-  sha1 'a5eb073df2e4882baf7adb3ae35a92b861652977'
+  url 'https://github.com/monome/serialosc/archive/1.2.tar.gz'
+  sha1 '230c3f0cb6176da6aec3b80500e175cb7f90a76a'
 
   head 'https://github.com/monome/serialosc.git'
 
