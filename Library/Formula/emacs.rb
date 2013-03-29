@@ -67,7 +67,7 @@ class Emacs < Formula
       system "./configure", *args
       system "make bootstrap"
       system "make install"
-      system "make install info" if build.include? "info"
+      system "make install-info" if build.include? "info"
       prefix.install "nextstep/Emacs.app"
 
       # Don't cause ctags clash.
@@ -95,7 +95,7 @@ class Emacs < Formula
       system "./configure", *args
       system "make"
       system "make install"
-      system "make install info" if build.include? "info"
+      system "make install-info" if build.include? "info"
 
       # Don't cause ctags clash.
       do_not_install_ctags
