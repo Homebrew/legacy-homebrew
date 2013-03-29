@@ -1,11 +1,20 @@
 require 'formula'
 
+class MplayerHeadDownloadStrategy < StrictSubversionDownloadStrategy
+  def stage
+    quiet_safe_system @@svn, 'export', '--force', @co, Dir.pwd
+    snapshot_file = File.join(Dir.pwd,'snapshot_version')
+    checkout = @co
+    quiet_safe_system ("svnversion #{checkout} > #{snapshot_file}")
+  end
+end
+
 class Mplayer < Formula
   homepage 'http://www.mplayerhq.hu/'
   url 'http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.1.tar.xz'
   sha1 '913a4bbeab7cbb515c2f43ad39bc83071b2efd75'
 
-  head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
+  head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => MplayerHeadDownloadStrategy
 
   option 'with-x', 'Build with X11 support'
   option 'without-osd', 'Build without OSD'
@@ -83,3 +92,22 @@ index a1fba5f..5deaa80 100755
      if ! git clone --depth 1 git://source.ffmpeg.org/ffmpeg.git ffmpeg ; then
          rm -rf ffmpeg
          echo "Failed to get a FFmpeg checkout"
+@@ -1729,7 +1729,6 @@
+ _getch=getch2.c
+ 
+ if darwin; then
+-  extra_cflags="-mdynamic-no-pic $extra_cflags"
+   _timer=timer-darwin.c
+ fi
+ 
+@@ -2771,6 +2770,10 @@
+     extra_ldflags="$extra_ldflags -pie"
+     relocatable=yes
+     res_comment="non-PIC"
++  elif x86_64 && test "$cc_vendor" = "clang" && darwin; then
++    extra_ldflags="$extra_ldflags -Wl,-pie"
++    relocatable=yes
++    res_comment="fast PIC"
+   elif x86_64 && cflag_check -fpie -pie ; then
+     extra_ldflags="$extra_ldflags -fpie -pie"
+     extra_cflags="$extra_cflags -fpie"
