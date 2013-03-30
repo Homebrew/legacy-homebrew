@@ -6,6 +6,6 @@ class Cloc < ScriptFileFormula
   sha1 'bf2b4478343da50d0eea83ad0ed3f126ff210d39'
 
   def install
-    bin.install 'cloc-1.58.pl' => 'cloc'
+    bin.install "cloc-#{version}.pl" => "cloc"
   end
 end
