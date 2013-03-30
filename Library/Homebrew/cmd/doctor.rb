@@ -857,7 +857,7 @@ def check_for_linked_keg_only_brews
     You may wish to `brew unlink` these brews:
 
     EOS
-    warnings.keys.each{ |f| s << "    #{f}\n" }
+    warnings.each_key { |f| s << "    #{f}\n" }
     s
   end
 end
