@@ -2,8 +2,8 @@ require 'formula'
 
 class XmlrpcC < Formula
   homepage 'http://xmlrpc-c.sourceforge.net/'
-  url 'http://svn.code.sf.net/p/xmlrpc-c/code/stable', :revision => 2452
-  version '1.25.21'
+  url 'http://svn.code.sf.net/p/xmlrpc-c/code/stable', :revision => 2489
+  version '1.33.03'
 
   def install
     ENV.deparallelize
