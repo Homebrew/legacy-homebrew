@@ -10,6 +10,11 @@ class GitHtmldocs < Formula
   sha1 'db1ca968f492f7ad1d4e0c13d07f23c745d10b74'
 end
 
+class GitNetSMTPSSL < Formula
+  url 'http://www.cpan.org/authors/id/C/CW/CWEST/Net-SMTP-SSL-1.01.tar.gz'
+  sha1 '2acccf803a6b0b5f71bd3ebed41434afb99d5e16'
+end
+
 class Git < Formula
   homepage 'http://git-scm.com'
   url 'http://git-core.googlecode.com/files/git-1.8.2.tar.gz'
@@ -80,6 +85,7 @@ class Git < Formula
     # on many other packages, and is somewhat crazy, this way is easier.
     GitManuals.new.brew { man.install Dir['*'] }
     GitHtmldocs.new.brew { (share+'doc/git-doc').install Dir['*'] }
+    GitNetSMTPSSL.new.brew { lib.install 'lib/Net' }
   end
 
   def caveats; <<-EOS.undent
