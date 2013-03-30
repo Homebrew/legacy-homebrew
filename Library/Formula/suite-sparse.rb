@@ -2,8 +2,8 @@ require 'formula'
 
 class SuiteSparse < Formula
   homepage 'http://www.cise.ufl.edu/research/sparse/SuiteSparse'
-  url 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-4.0.2.tar.gz'
-  sha1 '46b24a28eef4b040ea5a02d2c43e82e28b7d6195'
+  url 'http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-4.1.0.tar.gz'
+  sha1 '4f0bd70a87c89ed734558ece724a1bf99616f27b'
 
   option "without-tbb", "Do not link with tbb (Threading Building Block)"
   option "with-metis", "Compile in metis libraries"
