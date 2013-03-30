@@ -439,7 +439,7 @@ _brew ()
     missing)                    __brew_complete_formulae ;;
     options)                    _brew_options ;;
     outdated)                   _brew_outdated ;;
-    pin)                        _brew_complete_formulae ;;
+    pin)                        __brew_complete_formulae ;;
     search|-S)                  _brew_search ;;
     tap)                        __brew_complete_taps ;;
     uninstall|remove|rm)        _brew_uninstall ;;
