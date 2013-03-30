@@ -2,8 +2,8 @@ require 'formula'
 
 class Eet < Formula
   homepage 'http://trac.enlightenment.org/e/wiki/Eet'
-  url 'http://download.enlightenment.org/releases/eet-1.6.1.tar.gz'
-  sha1 '88dbbfae46ff7295fc7a9e3fcfef639b855d67ac'
+  url 'http://download.enlightenment.org/releases/eet-1.7.5.tar.gz'
+  sha1 'e418110ffdfe1a3ed32b9bc68e4f7bf628d16654'
 
   head 'http://svn.enlightenment.org/svn/e/trunk/eet/'
 
