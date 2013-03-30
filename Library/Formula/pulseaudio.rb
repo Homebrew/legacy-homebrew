@@ -2,8 +2,8 @@ require 'formula'
 
 class Pulseaudio < Formula
   homepage 'http://pulseaudio.org'
-  url 'http://freedesktop.org/software/pulseaudio/releases/pulseaudio-2.1.tar.gz'
-  sha1 '957399478456c1dd5632bc84e9ee06a07a9c4c9c'
+  url 'http://freedesktop.org/software/pulseaudio/releases/pulseaudio-3.0.tar.gz'
+  sha1 '875ee8c39bb8413007004ffd31f6b35d6508a194'
 
   head 'git://anongit.freedesktop.org/pulseaudio/pulseaudio'
 
@@ -44,6 +44,8 @@ class Pulseaudio < Formula
       system "./configure", *args
     end
 
+    # remove sconv_neon.c because it wont compile and is not needed.
+    system "echo > src/pulsecore/sconv_neon.c"
     system "make"
     system "make install"
   end
