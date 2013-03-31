@@ -27,7 +27,7 @@ class FormulaPin
   end
 
   def pinned?
-    @path.exist?
+    @path.symlink?
   end
 
   def pinable?
