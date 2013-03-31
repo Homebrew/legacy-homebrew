@@ -2,8 +2,8 @@ require 'formula'
 
 class HtopOsx < Formula
   homepage 'https://github.com/max-horvath/htop-osx'
-  url 'https://github.com/max-horvath/htop-osx/archive/0.8.2.1-2012-04-18.tar.gz'
-  sha1 '4f8cddb22aa398652a14cbe3168be9aeeecfff33'
+  url 'https://github.com/max-horvath/htop-osx/archive/0.8.2.1-2013-03-31.tar.gz'
+  sha1 '9c4bbe8517b59ca2ead8fedd4b8b24452f2ec55e'
   version '0.8.2.1'
 
   depends_on :autoconf
