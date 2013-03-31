@@ -50,13 +50,13 @@ def oh1 title
 end
 
 def opoo warning
-  puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
+  STDERR.puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
 end
 
 def onoe error
-  lines = error.to_s.split'\n'
-  puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
-  puts lines unless lines.empty?
+  lines = error.to_s.split("\n")
+  STDERR.puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
+  STDERR.puts lines unless lines.empty?
 end
 
 def ofail error
