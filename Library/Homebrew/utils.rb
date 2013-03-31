@@ -3,7 +3,7 @@ require 'exceptions'
 require 'macos'
 
 class Tty
-  class <<self
+  class << self
     def blue; bold 34; end
     def white; bold 39; end
     def red; underline 31; end
@@ -17,7 +17,12 @@ class Tty
       `/usr/bin/tput cols`.strip.to_i
     end
 
-  private
+    def truncate(str)
+      str.to_s[0, width - 4]
+    end
+
+    private
+
     def color n
       escape "0;#{n}"
     end
@@ -34,13 +39,13 @@ class Tty
 end
 
 def ohai title, *sput
-  title = title.to_s[0, Tty.width - 4] if $stdout.tty? && !ARGV.verbose?
+  title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput unless sput.empty?
 end
 
 def oh1 title
-  title = title.to_s[0, Tty.width - 4] if $stdout.tty? && !ARGV.verbose?
+  title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
   puts "#{Tty.green}==>#{Tty.white} #{title}#{Tty.reset}"
 end
 
