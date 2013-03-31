@@ -3,8 +3,8 @@ require 'formula'
 class V8 < Formula
   homepage 'http://code.google.com/p/v8/'
   # Use the official github mirror, it is easier to find tags there
-  url 'https://github.com/v8/v8/archive/3.17.10.tar.gz'
-  sha1 '693ff739edb90dde774bfa8d28fbcea3fc7d2f87'
+  url 'https://github.com/v8/v8/archive/3.17.15.tar.gz'
+  sha1 '611fa265cdaae74b00556de6576c07c4dcfb3efe'
 
   head 'https://github.com/v8/v8.git'
 

@@ -34,8 +34,8 @@ class CrosstoolNg < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/ct-ng version"
+  test do
+    system "#{bin}/ct-ng", "version"
   end
 
   def caveats; <<-EOS.undent

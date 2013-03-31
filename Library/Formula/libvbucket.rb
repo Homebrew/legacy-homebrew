@@ -13,12 +13,27 @@ class Libvbucket < Formula
     system "make install"
   end
 
-  def test
-    test_json = '{"hashAlgorithm":"CRC","numReplicas":2,"serverList":["server1:11211","server2:11210","server3:11211"],"vBucketMap":[[0,1,2],[1,2,0],[2,1,-1],[1,2,0]]}'
-    expected = <<OUT
-key: hello master: server1:11211 vBucketId: 0 couchApiBase: (null) replicas: server2:11210 server3:11211
-key: world master: server2:11210 vBucketId: 3 couchApiBase: (null) replicas: server3:11211 server1:11211
-OUT
-    `echo '#{test_json}' | #{bin}/vbuckettool - hello world` == expected
+  test do
+    require 'multi_json'
+    require 'open3'
+    json = MultiJson.encode(
+      {
+        "hashAlgorithm" => "CRC",
+        "numReplicas" => 2,
+        "serverList" => ["server1:11211","server2:11210","server3:11211"],
+        "vBucketMap" => [[0,1,2],[1,2,0],[2,1,-1],[1,2,0]],
+      }
+    )
+
+    expected = <<-EOS.undent
+      key: hello master: server1:11211 vBucketId: 0 couchApiBase: (null) replicas: server2:11210 server3:11211
+      key: world master: server2:11210 vBucketId: 3 couchApiBase: (null) replicas: server3:11211 server1:11211
+      EOS
+
+    Open3.popen3("#{bin}/vbuckettool", "-", "hello", "world") do |stdin, stdout, _|
+      stdin.write(json)
+      stdin.close
+      expected == stdout.read
+    end
   end
 end

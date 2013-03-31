@@ -17,7 +17,10 @@ class Mp3fs < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/mp3fs -V | grep MP3FS && true || false"
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/mp3fs", "-V") do |_, stdout, _|
+      /MP3FS version #{Regexp.escape(version)}/ === stdout.read
+    end
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Libmonome < Formula
   homepage 'http://illest.net/libmonome/'
-  url 'https://github.com/monome/libmonome/tarball/1.2'
-  sha1 '91ed3f7246e2f9462ff43c257fae5e34006a4c85'
+  url 'https://github.com/monome/libmonome/archive/1.2.tar.gz'
+  sha1 'a53a232a7b24614c865b7cb536f80cb0219ff1d1'
 
   head 'https://github.com/monome/libmonome.git'
 

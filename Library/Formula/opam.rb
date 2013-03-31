@@ -18,8 +18,8 @@ class Opam < Formula
     zsh_completion.install "shell/opam_completion_zsh.sh"
   end
 
-  def test
-    system "#{bin}/opam --help"
+  test do
+    system "#{bin}/opam", "--help"
   end
 
   def caveats; <<-EOS.undent

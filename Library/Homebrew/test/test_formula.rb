@@ -108,8 +108,8 @@ class FormulaTests < Test::Unit::TestCase
       when :lion            then 'baadf00d'*5
       when :mountain_lion   then '8badf00d'*5
       end, f.bottle.checksum.hexdigest
-    assert_match /[0-9a-fA-F]{40}/, f.stable.checksum.hexdigest
-    assert_match /[0-9a-fA-F]{64}/, f.devel.checksum.hexdigest
+    assert_match(/[0-9a-fA-F]{40}/, f.stable.checksum.hexdigest)
+    assert_match(/[0-9a-fA-F]{64}/, f.devel.checksum.hexdigest)
 
     assert_equal 1, f.stable.mirrors.length
     assert f.bottle.mirrors.empty?

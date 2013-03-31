@@ -15,7 +15,7 @@ class Hamlib < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/rigctl -V"
+  test do
+    system "#{bin}/rigctl", "-V"
   end
 end

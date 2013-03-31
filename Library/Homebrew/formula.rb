@@ -2,6 +2,7 @@ require 'download_strategy'
 require 'dependency_collector'
 require 'formula_support'
 require 'formula_lock'
+require 'formula_pin'
 require 'hardware'
 require 'bottles'
 require 'patches'
@@ -68,6 +69,8 @@ class Formula
       # make sure to strip "--" from the start of options
       self.class.build.add opt[/--(.+)$/, 1], desc
     end
+
+    @pin = FormulaPin.new(self)
   end
 
   def url;      @active_spec.url;     end
@@ -78,6 +81,22 @@ class Formula
   # if the dir is there, but it's empty we consider it not installed
   def installed?
     installed_prefix.children.length > 0 rescue false
+  end
+
+  def pinable?
+    @pin.pinable?
+  end
+
+  def pinned?
+    @pin.pinned?
+  end
+
+  def pin
+    @pin.pin
+  end
+
+  def unpin
+    @pin.unpin
   end
 
   def linked_keg
@@ -259,6 +278,9 @@ class Formula
   def to_s
     name
   end
+  def inspect
+    name
+  end
 
   # Standard parameters for CMake builds.
   # Using Build Type "None" tells cmake to use our CFLAGS,etc. settings.
@@ -302,17 +324,9 @@ class Formula
   class << self
     include Enumerable
   end
-  def self.all
-    opoo "Formula.all is deprecated, simply use Formula.map"
-    map
-  end
 
   def self.installed
     HOMEBREW_CELLAR.children.map{ |rack| factory(rack.basename) rescue nil }.compact
-  end
-
-  def inspect
-    name
   end
 
   def self.aliases
@@ -699,7 +713,7 @@ private
       instance_eval(&block)
     end
 
-    def bottle url=nil, &block
+    def bottle *, &block
       return @bottle unless block_given?
       @bottle ||= Bottle.new
       @bottle.instance_eval(&block)

@@ -12,7 +12,7 @@ class Vcsh < Formula
     bin.install 'vcsh'
   end
 
-  def test
-    system "vcsh"
+  test do
+    system "#{bin}/vcsh"
   end
 end

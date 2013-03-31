@@ -18,10 +18,7 @@ end
 
 def superenv?
   not (MacSystem.xcode43_without_clt? and
-    MacOS.sdk_path.nil?) and # because superenv will fail to find stuff
-  not (MacSystem.xcode43_without_clt? and
-    !MacSystem.xcode43_developer_dir) and # because superenv's logic might not find it
-  not MacOS::Xcode.folder.nil? and # because xcrun won't work
+  MacOS.sdk_path.nil?) and # because superenv will fail to find stuff
   superbin and superbin.directory? and
   not ARGV.include? "--env=std"
 rescue # blanket rescue because there are naked raises
@@ -112,8 +109,8 @@ class << ENV
   def determine_path
     paths = [superbin]
     if MacSystem.xcode43_without_clt?
-      paths << "#{MacSystem.xcode43_developer_dir}/usr/bin"
-      paths << "#{MacSystem.xcode43_developer_dir}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+      paths << "#{MacOS::Xcode.prefix}/usr/bin"
+      paths << "#{MacOS::Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
     end
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << "#{HOMEBREW_PREFIX}/opt/python/bin" if brewed_python?
@@ -197,11 +194,7 @@ class << ENV
     # If Xcode path is fucked then this is basically a fix. In the case where
     # nothing is valid, it still fixes most usage to supply a valid path that
     # is not "/".
-    if MacOS::Xcode.bad_xcode_select_path?
-      (MacOS::Xcode.prefix || HOMEBREW_PREFIX).to_s
-    elsif ENV['DEVELOPER_DIR']
-      ENV['DEVELOPER_DIR']
-    end
+    MacOS::Xcode.prefix || ENV['DEVELOPER_DIR']
   end
 
   def brewed_python?

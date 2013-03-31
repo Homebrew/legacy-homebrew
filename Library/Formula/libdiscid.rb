@@ -2,8 +2,8 @@ require 'formula'
 
 class Libdiscid < Formula
   homepage 'http://musicbrainz.org/doc/libdiscid'
-  url 'http://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/libdiscid-0.3.0.tar.gz'
-  sha1 '773a8de0fb4936e68e1848346fb1ead975222a7a'
+  url 'http://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/libdiscid-0.4.1.tar.gz'
+  sha1 '256f5d4d7fcfb99a6bee92971bfd9f6da96e9639'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

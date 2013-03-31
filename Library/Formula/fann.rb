@@ -52,6 +52,5 @@ class Fann < Formula
     system ENV.cc, "-o", "test", "test.c", "-lfann"
     system "./test"
     system "cat xor_float.net"
-    puts
   end
 end

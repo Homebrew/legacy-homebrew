@@ -357,7 +357,7 @@ class FormulaInstaller
 
   def fix_install_names
     Keg.new(f.prefix).fix_install_names
-    if @poured_bottle
+    if @poured_bottle and f.bottle
       old_prefix = f.bottle.prefix
       new_prefix = HOMEBREW_PREFIX.to_s
       old_cellar = f.bottle.cellar

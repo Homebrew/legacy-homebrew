@@ -29,19 +29,21 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  attr_reader :tarball_path, :local_bottle_path
-  attr_writer :local_bottle_path
+  attr_reader :tarball_path
+  attr_accessor :local_bottle_path
 
   def initialize name, package
     super
-    @mirrors = package.mirrors
-    @unique_token = "#{name}-#{package.version}" unless name.to_s.empty? or name == '__UNKNOWN__'
-    if @unique_token
-      @tarball_path=HOMEBREW_CACHE+(@unique_token+ext)
+
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      @tarball_path = HOMEBREW_CACHE + File.basename(@url)
     else
-      @tarball_path=HOMEBREW_CACHE+File.basename(@url)
+      @tarball_path = HOMEBREW_CACHE + "#{name}-#{package.version}#{ext}"
     end
-    @temporary_path=Pathname.new(@tarball_path.to_s + ".incomplete")
+
+    @mirrors = package.mirrors
+    @temporary_path = Pathname("#@tarball_path.incomplete")
+    @local_bottle_path = nil
   end
 
   def cached_location
