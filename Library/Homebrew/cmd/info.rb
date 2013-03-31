@@ -79,7 +79,7 @@ module Homebrew extend self
     specs << "devel #{f.devel.version}" if f.devel
     specs << "HEAD" if f.head
 
-    puts "#{f.name}: #{specs*', '}"
+    puts "#{f.name}: #{specs*', '}#{' (pinned)' if f.pinned?}"
 
     puts f.homepage
 
