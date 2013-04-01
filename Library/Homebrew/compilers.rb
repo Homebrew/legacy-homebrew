@@ -67,7 +67,7 @@ class CompilerSelector
 
   def priority_for(cc)
     case cc
-    when :clang then MacOS.clang_build_version >= 211 ? 3 : 0.5
+    when :clang then MacOS.clang_build_version >= 318 ? 3 : 0.5
     when :llvm  then 2
     when :gcc   then 1
     end
