@@ -5,7 +5,7 @@ class Inspircd < Formula
   url 'https://github.com/inspircd/inspircd/archive/v2.0.11.tar.gz'
   sha1 'c7badbc51983d78670281d2e00100676e1fc7b30'
 
-  head 'https://github.com/inspircd/inspircd.git', :branch => 'insp20'
+  head 'https://github.com/inspircd/inspircd.git', :branch => 'master'
 
   skip_clean 'data'
   skip_clean 'logs'
