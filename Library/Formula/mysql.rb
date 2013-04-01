@@ -46,9 +46,6 @@ class Mysql < Formula
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
-
     args = [".",
             "-DCMAKE_INSTALL_PREFIX=#{prefix}",
             "-DMYSQL_DATADIR=#{var}/mysql",
@@ -116,22 +113,18 @@ class Mysql < Formula
     mv "#{bin}/mysqlaccess.conf", libexec
   end
 
+  def post_install
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
+
+    unless File.exist? "#{var}/mysql/mysql/user.frm"
+      ENV['TMPDIR'] = nil
+      system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",
+        "--basedir=#{prefix}", "--datadir=#{var}/mysql", "--tmpdir=/tmp"
+    end
+  end
+
   def caveats; <<-EOS.undent
-    Set up databases to run AS YOUR USER ACCOUNT with:
-        unset TMPDIR
-        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=#{var}/mysql --tmpdir=/tmp
-
-    To set up base tables in another folder, or use a different user to run
-    mysqld, view the help for mysql_install_db:
-        mysql_install_db --help
-
-    and view the MySQL documentation:
-      * http://dev.mysql.com/doc/refman/5.6/en/mysql-install-db.html
-      * http://dev.mysql.com/doc/refman/5.6/en/default-privileges.html
-
-    To run as, for instance, user "mysql", you may need to `sudo`:
-        sudo mysql_install_db ...options...
-
     A "/etc/my.cnf" from another install may interfere with a Homebrew-built
     server starting up correctly.
 
