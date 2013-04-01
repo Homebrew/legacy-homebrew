@@ -42,7 +42,7 @@ class CompilerQueue
 end
 
 class CompilerSelector
-  def initialize(f, old_compiler=ENV.compiler)
+  def initialize(f, old_compiler)
     @f = f
     @old_compiler = old_compiler
     @compilers = CompilerQueue.new
