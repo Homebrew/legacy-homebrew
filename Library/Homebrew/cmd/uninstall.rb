@@ -10,9 +10,9 @@ module Homebrew extend self
         keg.lock do
           puts "Uninstalling #{keg}..."
           keg.unlink
-          Formula.factory(keg.fname).unpin
           keg.uninstall
           rm_opt_link keg.fname
+          unpin keg.fname
         end
       end
     else
@@ -49,4 +49,7 @@ module Homebrew extend self
     optlink.unlink if optlink.symlink?
   end
 
+  def unpin name
+    Formula.factory(name).unpin rescue nil
+  end
 end
