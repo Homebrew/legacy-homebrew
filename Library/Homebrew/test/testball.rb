@@ -45,53 +45,6 @@ class ConfigureFails < Formula
   end
 end
 
-class TestCompilerFailures < Formula
-  def initialize name=nil
-    @stable = SoftwareSpec.new "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    super "compilerfailures"
-  end
-end
-
-class TestAllCompilerFailures < TestCompilerFailures
-  fails_with :clang
-  fails_with :llvm
-  fails_with :gcc
-end
-
-class TestNoCompilerFailures < TestCompilerFailures
-  fails_with(:clang) { build 42 }
-  fails_with(:llvm) { build 42 }
-  fails_with(:gcc) { build 42 }
-end
-
-class TestLLVMFailure < TestCompilerFailures
-  fails_with :llvm
-end
-
-class TestMixedCompilerFailures < TestCompilerFailures
-  fails_with(:clang) { build MacOS.clang_build_version }
-  fails_with(:llvm) { build 42 }
-  fails_with(:gcc) { build 5666 }
-end
-
-class TestMoreMixedCompilerFailures < TestCompilerFailures
-  fails_with(:clang) { build 42 }
-  fails_with(:llvm) { build 2336 }
-  fails_with(:gcc) { build 5666 }
-end
-
-class TestEvenMoreMixedCompilerFailures < TestCompilerFailures
-  fails_with :clang
-  fails_with(:llvm) { build 2336 }
-  fails_with(:gcc) { build 5648 }
-end
-
-class TestBlockWithoutBuildCompilerFailure < TestCompilerFailures
-  fails_with :clang do
-    cause "failure"
-  end
-end
-
 class SpecTestBall < Formula
   homepage 'http://example.com'
   url 'file:///foo.com/testball-0.1.tbz'
