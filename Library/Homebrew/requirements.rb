@@ -334,3 +334,23 @@ class CLTDependency < Requirement
     EOS
   end
 end
+
+class ArchRequirement < Requirement
+  fatal true
+
+  def initialize(arch)
+    @arch = arch
+    super
+  end
+
+  satisfy do
+    case @arch
+    when :x86_64 then MacOS.prefer_64_bit?
+    end
+  end
+
+  def message; <<-EOS.undent
+    This formula requires an #{@arch} architecture.
+    EOS
+  end
+end

@@ -89,6 +89,7 @@ private
     when :postgresql then PostgresqlDependency.new(tag)
     when :tex        then TeXDependency.new(tag)
     when :clt        then CLTDependency.new(tag)
+    when :arch       then ArchRequirement.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
     end
