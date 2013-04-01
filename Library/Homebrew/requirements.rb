@@ -325,9 +325,7 @@ class CLTDependency < Requirement
   fatal true
   build true
 
-  def satisfied?
-    MacOS::CLT.installed?
-  end
+  satisfy(:build_env => false) { MacOS::CLT.installed? }
 
   def message; <<-EOS.undent
     The Command Line Tools for Xcode are required to compile this software.
