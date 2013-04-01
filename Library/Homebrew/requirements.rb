@@ -59,7 +59,7 @@ class X11Dependency < Requirement
 
   fatal true
 
-  env { x11 }
+  env { ENV.x11 }
 
   def initialize(name="x11", *tags)
     tags.flatten!
