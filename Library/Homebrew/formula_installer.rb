@@ -24,8 +24,8 @@ class FormulaInstaller
     check_install_sanity
   end
 
-  def pour_bottle?
-    (tab.used_options.empty? rescue true) && options.empty? && install_bottle?(f)
+  def pour_bottle? warn=false
+    (tab.used_options.empty? rescue true) && options.empty? && install_bottle?(f, warn)
   end
 
   def check_install_sanity
@@ -94,7 +94,7 @@ class FormulaInstaller
 
     poured_bottle = false
     begin
-      if pour_bottle?
+      if pour_bottle? true
         pour
         @poured_bottle = true
         tab = Tab.for_keg f.prefix
