@@ -39,13 +39,21 @@ class Pulseaudio < Formula
     args << "--disable-nls" if build.head? and not Formula.factory('libtool').installed?
 
     if build.head? then
+      # It uses `git describe` to set the version string.
+      system "ln -s #{cached_download}/.git"
+      # For `git describe`, we need the full history and tags.
+      # If we already unhallowed earlier, this fails but we can ignore that.
+      system "git fetch --unshallow || true"
+      system "git fetch --tags"
+      system "git describe" # just test
       system "./autogen.sh", *args
     else
       system "./configure", *args
     end
 
-    # remove sconv_neon.c because it wont compile and is not needed.
+    # remove sconv_neon.c, mix_neon.c because it wont compile and is not needed.
     system "echo > src/pulsecore/sconv_neon.c"
+    system "echo > src/pulsecore/mix_neon.c"
     system "make"
     system "make install"
   end
