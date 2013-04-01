@@ -11,9 +11,13 @@ class Rust < Formula
   end
 
   # Fix repl showstopper bug; can be removed for 0.6.
+  # and add clang 4.2 support for new XCode
   def patches
-    [ "https://github.com/gifnksm/rust/commit/9bf87bbf66227c132283ae59720f919601de9a56.patch",
-    "https://github.com/gifnksm/rust/commit/3ee1d3ebb81de199fc630a86933ac18c0a869482.patch" ]
+    [ "https://github.com/mozilla/rust/commit/9bf87bbf66227c132283ae59720f919601de9a56.patch",
+    "https://github.com/mozilla/rust/commit/37f97ff5041839aa42892115de954489f9eab5bc.patch",
+    "https://github.com/mozilla/rust/commit/bb51a8442fb16d71faccac1abfa953d8b1e37cb7.patch",
+    "https://github.com/mozilla/rust/commit/2c46bf7e318f585947c2146ce42c249fba3bc326.patch",
+    "https://github.com/mozilla/rust/commit/3ee1d3ebb81de199fc630a86933ac18c0a869482.patch" ]
   end
 
   def install

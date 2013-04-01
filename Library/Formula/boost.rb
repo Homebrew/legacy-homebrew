@@ -22,15 +22,15 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.52.0/boost_1_52_0.tar.bz2'
-  sha1 'cddd6b4526a09152ddc5db856463eaa1dc29c5d9'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.bz2'
+  sha1 'e6dd1b62ceed0a51add3dda6f3fc3ce0f636a7f3'
 
   head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
-    sha1 'a4e733fe67c15b7bfe500b0855d84616152f7042' => :mountainlion
-    sha1 'dd94aac5f03fb553c1c0e393fbd346748b0bc524' => :lion
-    sha1 '5fae01afa7e5c6e2d29ec32a24324fdaa14cf594' => :snowleopard
+    sha1 'fda423e53ed998d54c33cc91582c0d5e3e4ff91e' => :mountain_lion
+    sha1 '99fec23d1b79a510d8cd1f1f0cbd77cc73b4f4b5' => :lion
+    sha1 '15f74640979b95bd327be3b6ca2a5d18878a29ad' => :snow_leopard
   end
 
   env :userpaths
@@ -49,18 +49,6 @@ class Boost < Formula
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
-  end
-
-  def pour_bottle?
-    false
-  end
-
-  # Patch boost/config/stdlib/libcpp.hpp to fix the constexpr bug reported under Boost 1.52 in Ticket
-  # 7671.  This patch can be removed when upstream release an updated version including the fix.
-  def patches
-    if MacOS.version >= :lion and build.include? 'with-c++11'
-      {:p0 => "https://svn.boost.org/trac/boost/raw-attachment/ticket/7671/libcpp_c11_numeric_limits.patch"}
-    end
   end
 
   def install

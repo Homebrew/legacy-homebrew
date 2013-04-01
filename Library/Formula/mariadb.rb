@@ -2,8 +2,8 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.28/kvm-tarbake-jaunty-x86/mariadb-5.5.28.tar.gz'
-  sha1 '29ec3c64365e73dfda5f9d38c76de681b62a4987'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.30/kvm-tarbake-jaunty-x86/mariadb-5.5.30.tar.gz'
+  sha1 'aa0cb78b8d709d765e4a58953ecdceefc48af5a7'
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion

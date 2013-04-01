@@ -10,6 +10,7 @@ module Homebrew extend self
         keg.lock do
           puts "Uninstalling #{keg}..."
           keg.unlink
+          Formula.factory(keg.fname).unpin
           keg.uninstall
           rm_opt_link keg.fname
         end
@@ -28,6 +29,7 @@ module Homebrew extend self
             if keg.directory?
               keg = Keg.new(keg)
               keg.unlink
+              Formula.factory(keg.fname).unpin
               keg.rmtree
             end
           end

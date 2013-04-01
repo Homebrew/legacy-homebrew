@@ -2,31 +2,32 @@ require 'formula'
 
 class Ruby < Formula
   homepage 'http://www.ruby-lang.org/en/'
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p374.tar.gz'
-  sha256 '0d0e32a3554867e3eddbb23fbf30a72c4748622e010c23e31302d899fc005574'
+  url 'http://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p0.tar.bz2'
+  sha256 'c680d392ccc4901c32067576f5b474ee186def2fcd3fcbfa485739168093295f'
 
   head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
-  env :std
-
   option :universal
-  option 'with-suffix', 'Suffix commands with "19"'
+  option 'with-suffix', 'Suffix commands with "20"'
   option 'with-doc', 'Install documentation'
   option 'with-tcltk', 'Install with Tcl/Tk support'
 
-  depends_on :autoconf if build.head?
+  if build.universal?
+    depends_on 'autoconf' => :build
+  elsif build.head?
+    depends_on :autoconf
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'gdbm'
   depends_on 'libyaml'
+  depends_on 'openssl' if MacOS.version >= :mountain_lion
   depends_on :x11 if build.include? 'with-tcltk'
 
   fails_with :llvm do
     build 2326
   end
-
-  # https://github.com/ruby/ruby/commit/2741a598ff9e561c71eb39a57bb19c0a3205eaef
-  def patches; DATA end
 
   def install
     system "autoconf" if build.head?
@@ -34,10 +35,20 @@ class Ruby < Formula
     args = ["--prefix=#{prefix}",
             "--enable-shared"]
 
-    args << "--program-suffix=19" if build.include? "with-suffix"
+    args << "--program-suffix=20" if build.include? "with-suffix"
     args << "--with-arch=x86_64,i386" if build.universal?
     args << "--disable-tcltk-framework" <<  "--with-out-ext=tcl" <<  "--with-out-ext=tk" unless build.include? "with-tcltk"
     args << "--disable-install-doc" unless build.include? "with-doc"
+    args << "--disable-dtrace" unless MacOS::CLT.installed?
+
+    # OpenSSL is deprecated on OS X 10.8 and Ruby can't find the outdated
+    # version (0.9.8r 8 Feb 2011) that ships with the system.
+    # See discussion https://github.com/sstephenson/ruby-build/issues/304
+    # and https://github.com/mxcl/homebrew/pull/18054
+    if MacOS.version >= :mountain_lion
+      openssl = Formula.factory('openssl')
+      args << "--with-openssl-dir=#{openssl.opt_prefix}"
+    end
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
     ruby_lib = HOMEBREW_PREFIX/"lib/ruby"
@@ -53,7 +64,6 @@ class Ruby < Formula
     system "make"
     system "make install"
     system "make install-doc" if build.include? "with-doc"
-
   end
 
   def caveats; <<-EOS.undent
@@ -64,22 +74,3 @@ class Ruby < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/missing/setproctitle.c b/missing/setproctitle.c
-index 169ba8b..4dc6d03 100644
---- a/missing/setproctitle.c
-+++ b/missing/setproctitle.c
-@@ -48,6 +48,12 @@
- #endif
- #include <string.h>
- 
-+#if defined(__APPLE__)
-+#include <crt_externs.h>
-+#undef environ
-+#define environ (*_NSGetEnviron())
-+#endif
-+
- #define SPT_NONE	0	/* don't use it at all */
- #define SPT_PSTAT	1	/* use pstat(PSTAT_SETCMD, ...) */
- #define SPT_REUSEARGV	2	/* cover argv with title information */

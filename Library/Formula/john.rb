@@ -15,10 +15,11 @@ class John < Formula
 
   fails_with :llvm do
     build 2334
+    cause "Don't remember, but adding this to whitelist 2336."
   end
 
   fails_with :clang do
-    build 421
+    build 425
     cause "rawSHA1_ng_fmt.c:535:19: error: redefinition of '_mm_testz_si128'"
   end if build.include? 'jumbo'
 

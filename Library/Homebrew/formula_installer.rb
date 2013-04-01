@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'exceptions'
 require 'formula'
 require 'keg'
@@ -6,12 +8,9 @@ require 'bottles'
 require 'caveats'
 
 class FormulaInstaller
-  attr :f
-  attr :tab, true
-  attr :options, true
-  attr :show_summary_heading, true
-  attr :ignore_deps, true
-  attr :show_header, true
+  attr_reader :f
+  attr_accessor :tab, :options, :ignore_deps
+  attr_accessor :show_summary_heading, :show_header
 
   def initialize ff
     @f = ff
@@ -26,7 +25,7 @@ class FormulaInstaller
   end
 
   def pour_bottle?
-    install_bottle?(f) && (tab.used_options.empty? rescue true) && options.empty?
+    (tab.used_options.empty? rescue true) && options.empty? && install_bottle?(f)
   end
 
   def check_install_sanity
@@ -93,9 +92,21 @@ class FormulaInstaller
 
     @@attempted << f
 
-    if pour_bottle?
-      pour
-    else
+    poured_bottle = false
+    begin
+      if pour_bottle?
+        pour
+        @poured_bottle = true
+        tab = Tab.for_keg f.prefix
+        tab.poured_from_bottle = true
+        tab.tabfile.delete rescue nil
+        tab.write
+      end
+    rescue
+      opoo "Bottle installation failed: building from source."
+    end
+
+    unless @poured_bottle
       build
       clean
     end
@@ -109,7 +120,7 @@ class FormulaInstaller
         if req.optional? || req.recommended?
           Requirement.prune unless dependent.build.with?(req.name)
         elsif req.build?
-          Requirement.prune unless install_bottle?(dependent)
+          Requirement.prune if install_bottle?(dependent)
         end
 
         Requirement.prune if req.satisfied?
@@ -222,7 +233,7 @@ class FormulaInstaller
     if f.keg_only?
       begin
         Keg.new(f.prefix).optlink
-      rescue Exception => e
+      rescue Exception
         onoe "Failed to create: #{f.opt_prefix}"
         puts "Things that depend on #{f} will probably not build."
       end
@@ -277,8 +288,8 @@ class FormulaInstaller
     fork do
       begin
         read.close
-        exec '/usr/bin/nice',
-             '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby',
+        exec 'nice',
+             RUBY_PATH,
              '-W0',
              '-I', Pathname.new(__FILE__).dirname,
              '-rbuild',
@@ -305,7 +316,7 @@ class FormulaInstaller
 
     Tab.create(f, build_argv).write # INSTALL_RECEIPT.json
 
-  rescue Exception => e
+  rescue Exception
     ignore_interrupts do
       # any exceptions must leave us with nothing installed
       f.prefix.rmtree if f.prefix.directory?
@@ -346,6 +357,17 @@ class FormulaInstaller
 
   def fix_install_names
     Keg.new(f.prefix).fix_install_names
+    if @poured_bottle and f.bottle
+      old_prefix = f.bottle.prefix
+      new_prefix = HOMEBREW_PREFIX.to_s
+      old_cellar = f.bottle.cellar
+      new_cellar = HOMEBREW_CELLAR.to_s
+
+      if old_prefix != new_prefix or old_cellar != new_cellar
+        Keg.new(f.prefix).relocate_install_names \
+          old_prefix, new_prefix, old_cellar, new_cellar
+      end
+    end
   rescue Exception => e
     onoe "Failed to fix install names"
     puts "The formula built, but you may encounter issues using it or linking other"

@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# encoding: UTF-8
+
 require 'formula'
 
 class Unac < Formula
@@ -6,9 +7,9 @@ class Unac < Formula
   url 'http://ftp.de.debian.org/debian/pool/main/u/unac/unac_1.8.0.orig.tar.gz'
   sha1 '3e779bb7f3b505880ac4f43b48ee2f935ef8aa36'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
   depends_on 'gettext' => :build
 
   def patches
@@ -26,7 +27,7 @@ class Unac < Formula
     # Compatibility with Automake 1.13 and newer.
     inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
 
-    system "chmod", "+x", "./configure"
+    chmod 0755, "configure"
     touch "config.rpath"
     inreplace "autogen.sh", "libtool", "glibtool"
     system "./autogen.sh"
@@ -39,14 +40,15 @@ class Unac < Formula
     system "make install"
   end
 
-  def test
-    `#{bin}/unaccent utf-8 fóó`.chomp == 'foo'
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/unaccent", "utf-8", "fóó") do |_, stdout, _|
+      "foo" == stdout.read.strip
+    end
   end
 end
 
-#
 # configure.ac doesn't properly detect Mac OS's iconv library. This patch fixes that.
-#
 __END__
 diff --git a/configure.ac b/configure.ac
 index 4a4eab6..9f25d50 100644

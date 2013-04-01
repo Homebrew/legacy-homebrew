@@ -2,9 +2,9 @@ require 'formula'
 
 class Owfs < Formula
   homepage 'http://owfs.org/'
-  url 'http://downloads.sourceforge.net/project/owfs/owfs/2.8p20/owfs-2.8p20.tar.gz'
-  version '2.8p20'
-  sha1 'ccfe8b794fd224221538d2f85c6d9774254c58f5'
+  url 'http://sourceforge.net/projects/owfs/files/owfs/2.9p0/owfs-2.9p0.tar.gz'
+  version '2.9p0'
+  sha1 '21b28222e36aca35f62db17e84b0fdf3139aae60'
 
   depends_on 'libusb-compat'
 
@@ -35,8 +35,8 @@ class Owfs < Formula
     system "make install"
   end
 
-  def test
-    system "owserver --version"
+  test do
+    system "#{bin}/owserver", "--version"
   end
 end
 

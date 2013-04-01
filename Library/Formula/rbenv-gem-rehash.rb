@@ -9,8 +9,6 @@ class RbenvGemRehash < Formula
 
   def install
     prefix.install Dir['*']
-
-    ln_sf opt_prefix, "#{HOMEBREW_PREFIX}/var/lib/rbenv/plugins/#{name}"
   end
 
   def caveats; <<-EOS.undent

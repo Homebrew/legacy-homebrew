@@ -1,5 +1,4 @@
 require 'ostruct'
-require 'formula'
 require 'options'
 require 'vendor/multi_json'
 
@@ -21,6 +20,7 @@ class Tab < OpenStruct
             :unused_options => f.build.unused_options,
             :tabfile => f.prefix.join(FILENAME),
             :built_as_bottle => !!ARGV.build_bottle?,
+            :poured_from_bottle => false,
             :tapped_from => f.tap,
             :time => Time.now.to_i, # to_s would be better but Ruby has no from_s function :P
             :HEAD => sha
@@ -53,6 +53,7 @@ class Tab < OpenStruct
     Tab.new :used_options => [],
             :unused_options => (f.build.as_flags rescue []),
             :built_as_bottle => false,
+            :poured_from_bottle => false,
             :tapped_from => "",
             :time => nil,
             :HEAD => nil
@@ -93,6 +94,7 @@ class Tab < OpenStruct
       :used_options => used_options.to_a,
       :unused_options => unused_options.to_a,
       :built_as_bottle => built_as_bottle,
+      :poured_from_bottle => poured_from_bottle,
       :tapped_from => tapped_from,
       :time => time,
       :HEAD => send("HEAD")})
@@ -100,5 +102,19 @@ class Tab < OpenStruct
 
   def write
     tabfile.write to_json
+  end
+
+  def to_s
+    s = []
+    case poured_from_bottle
+    when true  then s << "Poured from bottle"
+    when false then s << "Built from source"
+    end
+    unless used_options.empty?
+      s << "Installed" if s.empty?
+      s << "with:"
+      s << used_options.to_a.join(", ")
+    end
+    s.join(" ")
   end
 end

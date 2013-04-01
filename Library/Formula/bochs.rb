@@ -5,6 +5,7 @@ class Bochs < Formula
   url 'http://downloads.sourceforge.net/project/bochs/bochs/2.6/bochs-2.6.tar.gz'
   sha1 '327e7a6b5163a2795adae4a617554de4925b5cfe'
 
+  depends_on 'pkg-config' => :build
   depends_on :x11
   depends_on 'gtk+'
 
@@ -35,7 +36,7 @@ class Bochs < Formula
             "--enable-cpu-level=6",
             "--enable-sb16",
             "--enable-clgd54xx",
-            "--with-term"
+            "--with-term",
             "--enable-ne2000"
 
     system "make"

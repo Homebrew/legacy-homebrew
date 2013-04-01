@@ -13,7 +13,7 @@ class Fuse4xKext < Formula
     # Bottle provided for Lion and newer since the Command Line Tools cannot
     # compile things that use `xcodebuild`. Actual compilation takes ~10
     # seconds so there is no need to bottle this for earlier systems.
-    version 2
+    revision 2
 
     sha1 '66e546c4d8b590b0c67584b73a6731757a5d87fb' => :mountainlion
     sha1 '08c877f8764d755e0574083ffc981105e3913a27' => :lion

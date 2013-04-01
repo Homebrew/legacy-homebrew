@@ -2,8 +2,8 @@ require 'formula'
 
 class GitArchiveAll < Formula
   homepage 'https://github.com/Kentzo/git-archive-all'
-  url 'https://github.com/Kentzo/git-archive-all/archive/1.4.2.zip'
-  sha1 'd2703fdc1061e23c4e9e76b6332d6db38ebe7c6d'
+  url 'https://github.com/Kentzo/git-archive-all/archive/1.6.zip'
+  sha1 '6147f79c73a569bfd808b5c3e041d54a2bc5554d'
 
   head 'https://github.com/Kentzo/git-archive-all.git'
 

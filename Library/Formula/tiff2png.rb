@@ -23,11 +23,9 @@ class Tiff2png < Formula
     bin.install 'tiff2png'
   end
 
-  def test
-    mktemp do
-      system "#{bin}/tiff2png", \
-        "/System/Library/Frameworks/AppKit.framework/Versions/C/Resources/GrammarDot.tiff"
-    end
+  test do
+    system "#{bin}/tiff2png", \
+      "/System/Library/Frameworks/AppKit.framework/Versions/C/Resources/GrammarDot.tiff"
   end
 end
 

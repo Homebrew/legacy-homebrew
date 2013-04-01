@@ -2,8 +2,8 @@ require 'formula'
 
 class Cppcheck < Formula
   homepage 'http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page'
-  url 'https://github.com/danmar/cppcheck/tarball/1.57'
-  sha1 'ec956a9ec0f224206bfcdff77051e83a4068c47f'
+  url 'https://github.com/danmar/cppcheck/archive/1.58.tar.gz'
+  sha1 'abf86608ea43641070e3a894092c8308bbdeb82d'
 
   head 'https://github.com/danmar/cppcheck.git'
 
@@ -20,7 +20,7 @@ class Cppcheck < Formula
     if build.include? 'no-rules'
       system "make", "HAVE_RULES=no"
     else
-      system "make"
+      system "make", "HAVE_RULES=yes"
     end
 
     system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "install"

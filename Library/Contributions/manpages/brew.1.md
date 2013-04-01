@@ -78,7 +78,7 @@ Note that these flags should only appear after a command.
     The options `--set-name` and `--set-version` each take an argument and allow
     you to explicitly set the name and version of the package you are creating.
 
-  * `deps [--1] [-n] [--tree] [--all]` <formula>:
+  * `deps [--1] [-n] [--tree] [--all] [--installed]` <formula>:
     Show <formula>'s dependencies.
 
     If `--1` is passed, only show dependencies one level down, instead of
@@ -140,14 +140,11 @@ Note that these flags should only appear after a command.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--force] [--debug] [--ignore-dependencies] [--fresh] [--use-clang] [--use-gcc] [--use-llvm] [--build-from-source] [--devel] [--HEAD]` <formula>:
+  * `install [--debug] [--ignore-dependencies] [--fresh] [--use-clang|--use-gcc|--use-llvm] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
     several different ways. See [SPECIFYING FORMULAE][].
-
-    If `--force` is passed, will install <formula> if it exists, even if it
-    is blacklisted.
 
     If `--debug` is passed and brewing fails, open a shell inside the
     temporary directory used for compiling.
@@ -176,8 +173,7 @@ Note that these flags should only appear after a command.
     aka master, trunk, unstable.
 
     To install a newer version of HEAD use
-    `brew rm <foo> && brew install --HEAD <foo>`
-    or `brew install --force --HEAD <foo>`.
+    `brew rm <foo> && brew install --HEAD <foo>`.
 
   * `install --interactive [--git]` <formula>:
     Download and patch <formula>, then open a shell. This allows the user to
@@ -199,7 +195,7 @@ Note that these flags should only appear after a command.
     be linked or which would be deleted by `brew link --overwrite`, but will not
     actually link or delete any files.
 
-  * `ls, list [--unbrewed] [--versions]` [<formulae>]:
+  * `ls, list [--unbrewed] [--versions] [--pinned]` [<formulae>]:
     Without any arguments, list all installed formulae.
 
     If <formulae> are given, list the installed files for <formulae>.
@@ -211,6 +207,10 @@ Note that these flags should only appear after a command.
 
     If `--versions` is passed, show the version number for installed formulae,
     or only the specified formulae if <formulae> are given.
+
+    If `--pinned` is passed, show the versions of pinned formulae, or only the
+    specified (pinned) formulae if <formulae> are given.
+    See also [`pin`][], [`unpin`][].
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
@@ -236,6 +236,10 @@ Note that these flags should only appear after a command.
 
     If `--quiet` is passed, list only the names of outdated brews. Otherwise,
     the versions are printed as well.
+
+  * `pin` <formulae>:
+    Pin the specified <formulae>, preventing them from being upgraded when
+    issuing the `brew upgrade` command without arguments. See also [`unpin`][].
 
   * `prune`:
     Remove dead symlinks from the Homebrew prefix. This is generally not
@@ -277,6 +281,10 @@ Note that these flags should only appear after a command.
     Unsymlink <formula> from the Homebrew prefix. This can be useful for
     temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
 
+  * `unpin` <formulae>:
+    Unpin <formulae>, allowing them to be upgraded by `brew upgrade`. See also
+    [`pin`][].
+
   * `untap` <tap>:
     Remove a tapped repository.
 
@@ -287,9 +295,10 @@ Note that these flags should only appear after a command.
     If `--rebase` is specified then `git pull --rebase` is used.
 
   * `upgrade` [<formulae>]:
-    Upgrade outdated brews.
+    Upgrade outdated, non-pinned brews.
 
-    If <formulae> are given, upgrade only the specified brews.
+    If <formulae> are given, upgrade only the specified brews (but do so even
+    if they are pinned; see [`pin`][], [`unpin`][]).
 
   * `uses [--installed] [--recursive]` <formula>:
     Show the formulae that specify <formula> as a dependency.
@@ -346,7 +355,7 @@ to create your own commands without modifying Homebrew's internals.
 A number of (useful, but unsupported) external commands are included and enabled
 by default:
 
-    $ ls `brew --repository`/Library/Contributions/cmds
+    $ ls `brew --repository`/Library/Contributions/cmd
 
 Documentation for the included external commands as well as instructions for
 creating your own can be found on the wiki:

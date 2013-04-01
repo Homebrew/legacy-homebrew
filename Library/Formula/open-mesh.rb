@@ -18,7 +18,7 @@ class OpenMesh < Formula
     end
   end
 
-  def test
-    system "#{bin}/mconvert", '-help'
+  test do
+    system "#{bin}/mconvert", "-help"
   end
 end

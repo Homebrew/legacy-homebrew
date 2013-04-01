@@ -15,36 +15,21 @@ class VersionComparisonTests < Test::Unit::TestCase
   include VersionAssertions
 
   def test_version_comparisons
-    assert_equal 0,  version('0.1') <=> version('0.1.0')
-    assert_equal -1, version('0.1') <=> version('0.2')
-    assert_equal 1,  version('1.2.3') <=> version('1.2.2')
-    assert_equal 1,  version('1.2.3-p34') <=> version('1.2.3-p33')
-    assert_equal -1, version('1.2.4') <=> version('1.2.4.1')
-    assert_equal 0,  version('HEAD') <=> version('HEAD')
-    assert_equal 1,  version('HEAD') <=> version('1.2.3')
-    assert_equal -1, version('1.2.3') <=> version('HEAD')
-    assert_equal -1, version('3.2.0b4') <=> version('3.2.0')
-    assert_equal -1, version('1.0beta6') <=> version('1.0b7')
-    assert_equal -1, version('1.0b6') <=> version('1.0beta7')
-    assert_equal -1, version('1.1alpha4') <=> version('1.1beta2')
-    assert_equal -1, version('1.1beta2') <=> version('1.1rc1')
-    assert_equal -1, version('1.0.0beta7') <=> version('1.0.0')
-    assert_equal 1,  version('3.2.1') <=> version('3.2beta4')
+    assert version('0.1') == version('0.1.0')
+    assert version('0.1') < version('0.2')
+    assert version('1.2.3') > version('1.2.2')
+    assert version('1.2.3-p34') > version('1.2.3-p33')
+    assert version('1.2.4') < version('1.2.4.1')
+    assert version('HEAD') > version('1.2.3')
+    assert version('1.2.3') < version('HEAD')
+    assert version('3.2.0b4') < version('3.2.0')
+    assert version('1.0beta6') < version('1.0b7')
+    assert version('1.0b6') < version('1.0beta7')
+    assert version('1.1alpha4') < version('1.1beta2')
+    assert version('1.1beta2') < version('1.1rc1')
+    assert version('1.0.0beta7') < version('1.0.0')
+    assert version('3.2.1') > version('3.2beta4')
     assert_nil version('1.0') <=> 'foo'
-  end
-
-  def test_macos_version_comparison
-    v = MacOSVersion.new(10.6)
-    assert v == 10.6
-    assert v == :snow_leopard
-    assert v < :lion
-    # Test that we can compare against different representations
-    assert v <= 10.8
-    assert v < "10.8"
-    assert v < :mountain_lion
-    assert v < 11
-    assert v < Version.new(10.8)
-    assert Version.new(10.5) < v
   end
 
   def test_version_interrogation
@@ -74,7 +59,7 @@ class VersionParsingTests < Test::Unit::TestCase
   end
 
   def test_bad_version
-    assert_raises(RuntimeError) { f = TestBadVersion.new }
+    assert_raises(RuntimeError) { TestBadVersion.new }
   end
 
   def test_version_all_dots

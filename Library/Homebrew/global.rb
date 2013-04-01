@@ -7,6 +7,7 @@ require 'extend/object'
 require 'utils'
 require 'exceptions'
 require 'set'
+require 'rbconfig'
 
 ARGV.extend(HomebrewArgvExtension)
 
@@ -45,7 +46,7 @@ undef cache # we use a function to prevent adding home_cache to the global scope
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
 
 if not defined? HOMEBREW_BREW_FILE
-  HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] || `which brew`.chomp
+  HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] || which('brew').to_s
 end
 
 HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
@@ -62,6 +63,10 @@ else
 end
 
 HOMEBREW_LOGS = Pathname.new('~/Library/Logs/Homebrew/').expand_path
+
+RUBY_CONFIG = RbConfig::CONFIG
+RUBY_BIN = Pathname.new("#{RUBY_CONFIG['bindir']}")
+RUBY_PATH = RUBY_BIN/RUBY_CONFIG['ruby_install_name'] + RUBY_CONFIG['EXEEXT']
 
 if RUBY_PLATFORM =~ /darwin/
   MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
@@ -88,7 +93,7 @@ end
 require 'metafiles'
 FORMULA_META_FILES = Metafiles.new
 ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/troubleshooting"
-HOMEBREW_PULL_URL_REGEX = 'https:\/\/github.com\/\w+\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
+HOMEBREW_PULL_URL_REGEX = 'https:\/\/github.com\/(\w+)\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
 
 unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
   $:.unshift(File.expand_path("#{__FILE__}/../compat"))

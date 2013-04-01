@@ -10,7 +10,7 @@ for command in (ls (brew --repository)/Library/Homebrew/cmd | sed -e "s/\.rb//g"
   set commands $command $commands
 end
 
-for command in (ls -p (brew --repository)/Library/Contributions/cmds | sed -e "s/\.rb//g" -e "s/brew-//g" -e "s/.*\///g")
+for command in (ls -p (brew --repository)/Library/Contributions/cmd | sed -e "s/\.rb//g" -e "s/brew-//g" -e "s/.*\///g")
   set commands $command $commands
 end
 
@@ -32,7 +32,7 @@ function __fish_complete_brew_argument
       return 0
     end
     
-    if contains -- $cmd cleanup link ln missing rm remove test unlink uninstall upgrade
+    if contains -- $cmd cleanup link ln missing rm remove test unlink uninstall upgrade pin unpin
       ls (brew --prefix)/Cellar
       return 0
     end
@@ -148,6 +148,7 @@ complete -c brew -s f -l force -n '__fish_complete_brew_command link ln' -d "Ove
 complete -c brew -s n -l dry-run -n '__fish_complete_brew_command link ln' -d "Show which files would be deleted"
 
 complete -c brew -l unbrewed -n '__fish_complete_brew_command list ls' -d "List files in Homebrew prefix not installed by Homebrew"
+complete -c brew -l pinned -n '__fish_complete_brew_command list ls' -d "Show the version number for (specified) pinned formulae"
 complete -c brew -l versions -n '__fish_complete_brew_command list ls' -d "Show the version number for specified formulae"
 
 complete -c brew -n '__fish_complete_brew_command log' -u

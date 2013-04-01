@@ -13,11 +13,10 @@ class Moreutils < Formula
     :because => "both install a 'ts' executable."
 
   def install
-    # Building the man pages requires DocBook, so we skip them.
-    scripts = %w[chronic combine ts vidir vipe zrun]
-    binaries = %w[isutf8 ifne pee sponge mispipe lckdo parallel]
-    # Just `make all` will try to build the man pages.
-    system "make", *binaries
-    bin.install scripts + binaries
+    # "make all" will try to build the man pages, which requires Docbook
+    scripts = %w{vidir vipe ts combine zrun chronic}
+    bins = %w{isutf8 ifne pee sponge mispipe lckdo parallel errno}
+    system "make", *bins
+    bin.install scripts + bins
   end
 end

@@ -143,7 +143,7 @@ class BeerTasting < Test::Unit::TestCase
         FileUtils.cp ABS__FILE__, abcd
         installed_paths=HOMEBREW_PREFIX.install abcd
         abcd = installed_paths[0]
-        assert (HOMEBREW_PREFIX+orig_abcd.basename).exist?
+        assert((HOMEBREW_PREFIX+orig_abcd.basename).exist?)
         assert abcd.exist?
         assert_equal HOMEBREW_PREFIX+'abcd', abcd
 
@@ -191,6 +191,6 @@ class BeerTasting < Test::Unit::TestCase
     assert f == f
     assert f == g
     assert f.eql? f
-    assert (not (f.eql? g))
+    assert !f.eql?(g)
   end
 end

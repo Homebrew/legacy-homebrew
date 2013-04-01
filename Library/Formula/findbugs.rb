@@ -2,8 +2,8 @@ require 'formula'
 
 class Findbugs < Formula
   homepage 'http://findbugs.sourceforge.net/index.html'
-  url 'http://sourceforge.net/projects/findbugs/files/findbugs/2.0.1/findbugs-2.0.1.tar.gz'
-  sha1 '8358d28d90baecbf8590ef00b69c194ff1a8475c'
+  url 'http://sourceforge.net/projects/findbugs/files/findbugs/2.0.2/findbugs-2.0.2.tar.gz'
+  sha1 '3817d96e5143f513cb2945f14f50cdb6720d1f49'
 
   def install
     # Remove windows files

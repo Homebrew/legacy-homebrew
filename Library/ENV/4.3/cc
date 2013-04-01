@@ -21,18 +21,20 @@ def syspath
     %W{/usr /usr/local}
   end
 end
-def exec *args
-  path = File.expand_path('~/Library/Logs/Homebrew/cc.log')
-  open(path, 'a') do |f|
-    f.print '[', $0
-    f.print " -%s" % ENV['HOMEBREW_CCCFG'] if ENV['HOMEBREW_CCCFG']
-    f.print '] '
-    f.puts args.join(' ')
-    f.puts
-  end
-  Kernel.exec *args
-end if ENV['HOMEBREW_LOG']
 
+module ExecLogExtension
+  def exec *args
+    path = File.expand_path('~/Library/Logs/Homebrew/cc.log')
+    open(path, 'a') do |f|
+      f.print '[', $0
+      f.print " -%s" % ENV['HOMEBREW_CCCFG'] if ENV['HOMEBREW_CCCFG']
+      f.print '] '
+      f.puts args.join(' ')
+      f.puts
+    end
+    Kernel.exec *args
+  end
+end
 
 class Cmd
   def initialize path, args
@@ -117,6 +119,9 @@ class Cmd
         args << arg if arg =~ /^-W[alp],/
       when '-macosx_version_min', '-dylib_install_name'
         args << "-Wl,#{arg},#{whittler.next}"
+      when /^-isysroot/
+        # We set the sysroot
+        whittler.next
       when '-dylib'
         args << "-Wl,#{arg}"
       when /^-I(.+)/
@@ -149,7 +154,7 @@ class Cmd
       args = %w{-pipe -w -Os}
       args << '-march=native' if tool =~ /clang/
       args += %w{-arch i386 -arch x86_64} if cccfg? 'u'
-      args << "--std=#{@arg0}" if @arg0 =~ /c[89]9/
+      args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
       args
     else
       []
@@ -196,14 +201,17 @@ class Cmd
   end
 end
 
-####################################################################### sanity
-abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
+if __FILE__ == $PROGRAM_NAME
+  ##################################################################### sanity
+  abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
 
-case ENV['HOMEBREW_CC'].chuzzle when 'cc', nil
-  # those values are not allowed
-  ENV['HOMEBREW_CC'] = 'clang'
+  case ENV['HOMEBREW_CC'].chuzzle when 'cc', nil
+    # those values are not allowed
+    ENV['HOMEBREW_CC'] = 'clang'
+  end
+
+  ####################################################################### main
+  extend(ExecLogExtension) if ENV['HOMEBREW_LOG']
+  cmd = Cmd.new($0, ARGV)
+  exec "xcrun", cmd.tool, *cmd.args
 end
-
-######################################################################### main
-cmd = Cmd.new($0, ARGV)
-exec "xcrun", cmd.tool, *cmd.args

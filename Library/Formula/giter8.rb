@@ -1,7 +1,7 @@
 require 'formula'
 
 class Giter8 < Formula
-  homepage 'http://github.com/n8han/giter8'
+  homepage 'https://github.com/n8han/giter8'
   url "https://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.12.1/sbt-launch.jar"
   sha1 '45c28c7c6328d6ecf8e9dc51003a0f1af71516ad'
   version '0.5.3'

@@ -28,6 +28,8 @@ class OpenSceneGraph < Formula
   # The mini-Boost finder in FindCOLLADA doesn't find our boost, so fix it.
   # Also CMakeLists is missing an OR plus code for 10.8.
   # Reported: http://forum.openscenegraph.org/viewtopic.php?t=10647
+  # Use /usr/bin/sw_vers to determine OS version; reported upstream:
+  # http://forum.openscenegraph.org/viewtopic.php?t=11878
   # Remove: Unknown. Neither fix is merged upstream yet.
   def patches
     DATA
@@ -91,6 +93,19 @@ index 428cb29..6206580 100644
          ${COLLADA_DOM_ROOT}/external-libs/boost/lib/mingw
 --- a/CMakeLists.txt    2012-03-23 03:21:51.000000000 -0700
 +++ b/CMakeLists.txt    2012-08-29 11:55:21.000000000 -0700
+@@ -189,9 +189,11 @@ ENDIF(OSG_MAINTAINER)
+ IF(NOT ANDROID)
+ IF(APPLE)
+     # Determine the canonical name of the selected Platform SDK
+-    EXECUTE_PROCESS(COMMAND "defaults" "read" "${CMAKE_OSX_SYSROOT}/SDKSettings.plist" "CanonicalName"
++    EXECUTE_PROCESS(COMMAND "/usr/bin/sw_vers" "-productVersion"
+                     OUTPUT_VARIABLE OSG_OSX_SDK_NAME
+                     OUTPUT_STRIP_TRAILING_WHITESPACE)
++    STRING(SUBSTRING "${OSG_OSX_SDK_NAME}" 0 4 OSG_OSX_SDK_NAME)
++    SET(OSG_OSX_SDK_NAME "macosx${OSG_OSX_SDK_NAME}")
+
+     # Trying to get CMake to generate an XCode IPhone project, current efforts are to get iphoneos sdk 3.1 working
+     # Added option which needs manually setting to select the IPhone SDK for building. We can only have one of the below
 @@ -824,16 +824,15 @@
          # FORCE is used because the options are not reflected in the UI otherwise.
          # Seems like a good place to add version specific compiler flags too.

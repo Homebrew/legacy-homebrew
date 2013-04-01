@@ -8,6 +8,7 @@ class Gtkglext < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'gtk+'
+  depends_on 'pangox-compat'
   depends_on :x11
 
   def patches

@@ -2,8 +2,8 @@ require 'formula'
 
 class Resty < Formula
   homepage 'https://github.com/micha/resty'
-  url 'https://github.com/micha/resty/tarball/2.2'
-  sha1 '0c5271dc66dae7466d8be91979c2c6839ab6af00'
+  url 'https://github.com/micha/resty/archive/2.2.tar.gz'
+  sha1 'a4dc1b55cee034e72fcf8d58831c734e19f5869a'
 
   head 'https://github.com/micha/resty.git'
 

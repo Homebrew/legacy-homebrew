@@ -11,7 +11,7 @@ class T1utils < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/t1mac --version | head -1"
+  test do
+    system "#{bin}/t1mac", "--version"
   end
 end

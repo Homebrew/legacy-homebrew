@@ -1,16 +1,21 @@
+require 'os/mac/version'
+
 module MacOS extend self
 
   # This can be compared to numerics, strings, or symbols
   # using the standard Ruby Comparable methods.
   def version
-    require 'version'
-    MacOSVersion.new(MACOS_VERSION.to_s)
+    Version.new(MACOS_VERSION)
   end
 
   def cat
+    # PowerPC builds per processor, not per OS
+    return Hardware::CPU.family if Hardware::CPU.type == :ppc
+
     if version == :mountain_lion then :mountain_lion
     elsif version == :lion then :lion
-    elsif version == :snow_leopard then :snow_leopard
+    elsif version == :snow_leopard
+      Hardware.is_64_bit? ? :snow_leopard : :snow_leopard_32
     elsif version == :leopard then :leopard
     else nil
     end
@@ -36,11 +41,10 @@ module MacOS extend self
         # look in dev_tools_path, and finally in xctoolchain_path, because the
         # tools were split over two locations beginning with Xcode 4.3+.
         xcrun_path = unless Xcode.bad_xcode_select_path?
-          `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+          path = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
+          # If xcrun finds a superenv tool then discard the result.
+          path unless path.include?("Library/ENV")
         end
-
-        # If xcrun finds a superenv tool then discard the result.
-        xcrun_path = nil if xcrun_path.include? HOMEBREW_PREFIX+"Library/ENV"
 
         paths = %W[#{xcrun_path}
                    #{dev_tools_path}/#{tool}
@@ -203,26 +207,22 @@ module MacOS extend self
     "4.5.1" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
     "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
     "4.6"   => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "4.6.1" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
   }
 
   def compilers_standard?
-    xcode = Xcode.version
-
-    unless STANDARD_COMPILERS.keys.include? xcode
-      onoe <<-EOS.undent
-        Homebrew doesn't know what compiler versions ship with your version of
-        Xcode. Please `brew update` and if that doesn't help, file an issue with
-        the output of `brew --config`:
-          https://github.com/mxcl/homebrew/issues
-
-        Thanks!
-        EOS
-      return
-    end
-
-    STANDARD_COMPILERS[xcode].all? do |method, build|
+    STANDARD_COMPILERS.fetch(Xcode.version.to_s).all? do |method, build|
       MacOS.send(:"#{method}_version") == build
     end
+  rescue IndexError
+    onoe <<-EOS.undent
+      Homebrew doesn't know what compiler versions ship with your version
+      of Xcode (#{Xcode.version}). Please `brew update` and if that doesn't help, file
+      an issue with the output of `brew --config`:
+        https://github.com/mxcl/homebrew/issues
+
+      Thanks!
+    EOS
   end
 
   def app_with_bundle_id id
@@ -231,33 +231,16 @@ module MacOS extend self
   end
 
   def mdfind id
-    `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
+    return [] unless MACOS
+    (@mdfind ||= {}).fetch(id.to_s) do
+      @mdfind[id.to_s] = `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
+    end
   end
 
   def pkgutil_info id
     `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
   end
-
-  def bottles_supported? raise_if_failed=false
-    # We support bottles on all versions of OS X except 32-bit Snow Leopard.
-    if Hardware.is_32_bit? and MacOS.version == :snow_leopard
-      return false unless raise_if_failed
-      raise "Bottles are not supported on 32-bit Snow Leopard."
-    end
-
-    unless HOMEBREW_PREFIX.to_s == '/usr/local'
-      return false unless raise_if_failed
-      raise "Bottles are only supported with a /usr/local prefix."
-    end
-
-    unless HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
-      return false unless raise_if_failed
-      raise "Bottles are only supported with a /usr/local/Cellar cellar."
-    end
-
-    true
-  end
 end
 
-require 'macos/xcode'
-require 'macos/xquartz'
+require 'os/mac/xcode'
+require 'os/mac/xquartz'

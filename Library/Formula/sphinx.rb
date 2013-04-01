@@ -15,6 +15,13 @@ class Sphinx < Formula
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
+  option 'mysql', 'Force compiling against MySQL'
+  option 'pgsql', 'Force compiling against PostgreSQL'
+  option 'id64',  'Force compiling with 64-bit ID support'
+
+  depends_on :mysql if build.include? 'mysql'
+  depends_on :postgresql if build.include? 'pgsql'
+
   fails_with :llvm do
     build 2334
     cause "ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)"
@@ -27,29 +34,23 @@ class Sphinx < Formula
     EOS
   end
 
-  option 'mysql', 'Force compiling against MySQL'
-  option 'pgsql', 'Force compiling against PostgreSQL'
-  option 'id64',  'Force compiling with 64-bit ID support'
-
   def install
     Libstemmer.new.brew { (buildpath/'libstemmer_c').install Dir['*'] }
 
     args = %W[--prefix=#{prefix}
               --disable-dependency-tracking
-              --localstatedir=#{var}]
+              --localstatedir=#{var}
+              --with-libstemmer]
 
-    # always build with libstemmer support
-    args << "--with-libstemmer"
+    args << "--enable-id64" if build.include? 'id64'
 
-    # configure script won't auto-select PostgreSQL
-    if build.include?('mysql') || which('mysql_config')
-      args << "--with-mysql"
-    else
-      args << "--without-mysql"
+    %w{mysql pgsql}.each do |db|
+      if build.include? db
+        args << "--with-#{db}"
+      else
+        args << "--without-#{db}"
+      end
     end
-
-    args << "--with-pgsql" if build.include?('pgsql') || which('pg_config')
-    args << "--enable-id64" if build.include?('id64')
 
     system "./configure", *args
     system "make install"

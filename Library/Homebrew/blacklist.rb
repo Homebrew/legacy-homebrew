@@ -20,7 +20,7 @@ def blacklisted? name
     The Python bindings (import wx) for wxWidgets are installed by:
         brew install wxwidgets
     EOS
-  when 'tex', 'tex-live', 'texlive' then <<-EOS.undent
+  when 'tex', 'tex-live', 'texlive', 'latex' then <<-EOS.undent
     Installing TeX from source is weird and gross, requires a lot of patches,
     and only builds 32-bit (and thus can't use Homebrew deps on Snow Leopard.)
 
@@ -46,6 +46,18 @@ def blacklisted? name
   when 'gmock', 'googlemock', 'google-mock' then <<-EOS.undent
     Installing gmock system-wide is not recommended; it should be vendored
     in your projects that use it.
+    EOS
+  when 'gcc' then <<-EOS.undent
+    GCC is now maintained in homebrew-versions, with major version
+    number in formula name as suffix. Please tap using:
+
+        brew tap homebrew/versions
+
+    and then install GCC based on its version, e.g., 'brew install gcc47'.
+    EOS
+  when 'sshpass' then <<-EOS.undent
+    We won't add sshpass because it makes it too easy for novice SSH users to
+    ruin SSH's security.
     EOS
   end
 end
