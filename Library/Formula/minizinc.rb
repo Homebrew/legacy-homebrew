@@ -1,24 +1,11 @@
 require 'formula'
 
-class X86_64_Architecture < Requirement
-  fatal true
-
-  satisfy MacOS.prefer_64_bit?
-
-  def message; <<-EOS.undent
-    Your system appears to run on a 32-bit architecture.
-    Minizinc only supports 64-bit architectures, sorry.
-    EOS
-  end
-end
-
-
 class Minizinc < Formula
   homepage 'http://www.g12.csse.unimelb.edu.au/minizinc/'
   url 'http://www.g12.csse.unimelb.edu.au/minizinc/downloads/release-1.6/minizinc-1.6-x86_64-apple-darwin.tar.gz'
   sha1 '71f0e08962eb8bb44c463851f0144c8b006fdb80'
 
-  depends_on X86_64_Architecture
+  depends_on :arch => :x86_64
 
   def patches
     # remove echoed recommendations about linking directories
