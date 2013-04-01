@@ -126,8 +126,8 @@ class Mysql < Formula
         mysql_install_db --help
 
     and view the MySQL documentation:
-      * http://dev.mysql.com/doc/refman/5.5/en/mysql-install-db.html
-      * http://dev.mysql.com/doc/refman/5.5/en/default-privileges.html
+      * http://dev.mysql.com/doc/refman/5.6/en/mysql-install-db.html
+      * http://dev.mysql.com/doc/refman/5.6/en/default-privileges.html
 
     To run as, for instance, user "mysql", you may need to `sudo`:
         sudo mysql_install_db ...options...
