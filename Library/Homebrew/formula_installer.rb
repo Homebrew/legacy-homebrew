@@ -111,6 +111,8 @@ class FormulaInstaller
       clean
     end
 
+    f.post_install
+
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
 
