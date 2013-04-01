@@ -2,8 +2,8 @@ require 'formula'
 
 class GlibNetworking < Formula
   homepage 'https://launchpad.net/glib-networking'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.32/glib-networking-2.32.3.tar.xz'
-  sha256 '39fe23e86a57bb7a8a67c65668394ad0fbe2d43960c1f9d68311d5d13ef1e5cf'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.36/glib-networking-2.36.0.tar.xz'
+  sha256 '190d66fbaeb023ba4f43c315f23c5372c43be6cbe857596e00990211514650d9'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
