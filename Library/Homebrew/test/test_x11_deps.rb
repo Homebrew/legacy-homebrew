@@ -46,6 +46,13 @@ class X11DependencyTests < Test::Unit::TestCase
     assert !x.eql?(p)
     assert !p.eql?(x)
   end
+
+  def test_x_env
+    x = X11Dependency.new
+    x.stubs(:satisfied?).returns(true)
+    ENV.expects(:x11)
+    x.modify_build_environment
+  end
 end
 
 class X11DepCollectionTests < Test::Unit::TestCase
