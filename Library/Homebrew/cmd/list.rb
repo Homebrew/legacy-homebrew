@@ -58,9 +58,9 @@ private
     else
       ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
     end.select do |d|
-      Formula.factory(d.basename.to_s).pinned?
+      (HOMEBREW_LIBRARY/"PinnedKegs"/d.basename.to_s).exist?
     end.each do |d|
-      puts "#{d.basename}"
+      puts d.basename
     end
   end
 end
