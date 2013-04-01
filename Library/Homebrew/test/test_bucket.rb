@@ -63,7 +63,7 @@ class BeerTasting < Test::Unit::TestCase
   end
 
   def test_zip
-    nostdout { assert_nothing_raised { TestZip.new.brew {} } }
+    shutup { assert_nothing_raised { TestZip.new.brew {} } }
   end
 
   # needs resurrecting
@@ -80,7 +80,7 @@ class BeerTasting < Test::Unit::TestCase
     require 'cmd/prune'
     require 'cleaner'
 
-    nostdout do
+    shutup do
       assert_nothing_raised do
         f=TestBallWithRealPath.new
         Homebrew.info_formula f
@@ -103,7 +103,7 @@ class BeerTasting < Test::Unit::TestCase
     f3.instance_eval { @version = Version.new("0.3") }
     f3.active_spec.instance_eval { @version = Version.new("0.3") }
 
-    nostdout do
+    shutup do
       f1.brew { f1.install }
       f2.brew { f2.install }
       f3.brew { f3.install }
@@ -113,7 +113,7 @@ class BeerTasting < Test::Unit::TestCase
     assert f2.installed?
     assert f3.installed?
 
-    nostdout do
+    shutup do
       Homebrew.cleanup_formula f3
     end
 
@@ -134,7 +134,7 @@ class BeerTasting < Test::Unit::TestCase
   end
 
   def test_pathname_plus_yeast
-    nostdout do
+    shutup do
       assert_nothing_raised do
         assert !Pathname.getwd.rmdir_if_possible
         assert !Pathname.getwd.abv.empty?
