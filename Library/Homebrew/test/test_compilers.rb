@@ -10,7 +10,7 @@ class CompilerTests < Test::Unit::TestCase
     assert f.fails_with? :llvm
     assert !(f.fails_with? :gcc)
     assert_equal case MacOS.clang_build_version
-      when 0..210 then :gcc
+      when 0..318 then :gcc
       else :clang
       end, cs.compiler
   end
