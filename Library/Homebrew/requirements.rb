@@ -325,14 +325,32 @@ class CLTDependency < Requirement
   fatal true
   build true
 
-  def satisfied?
-    MacOS::CLT.installed?
-  end
+  satisfy { MacOS::CLT.installed? }
 
   def message; <<-EOS.undent
     The Command Line Tools for Xcode are required to compile this software.
     The standalone package can be obtained from http://connect.apple.com,
     or it can be installed via Xcode's preferences.
+    EOS
+  end
+end
+
+class ArchRequirement < Requirement
+  fatal true
+
+  def initialize(arch)
+    @arch = arch
+    super
+  end
+
+  satisfy do
+    case @arch
+    when :x86_64 then MacOS.prefer_64_bit?
+    end
+  end
+
+  def message; <<-EOS.undent
+    This formula requires an #{@arch} architecture.
     EOS
   end
 end

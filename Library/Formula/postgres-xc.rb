@@ -1,23 +1,11 @@
 require 'formula'
 
-class X86_64_Architecture < Requirement
-  fatal true
-
-  satisfy MacOS.prefer_64_bit?
-
-  def message; <<-EOS.undent
-    Your system appears to run on a 32-bit architecture.
-    Postgres-XC only supports 64-bit architectures, sorry.
-    EOS
-  end
-end
-
 class PostgresXc < Formula
   homepage 'http://postgres-xc.sourceforge.net/'
   url 'http://sourceforge.net/projects/postgres-xc/files/Version_1.0/pgxc-v1.0.2.tar.gz'
   sha1 'f427f37eb141ad9d00374fc1100a55dd09718fed'
 
-  depends_on X86_64_Architecture
+  depends_on :arch => :x86_64
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version == :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' => :recommended
