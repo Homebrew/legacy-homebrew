@@ -54,8 +54,6 @@ class Pulseaudio < Formula
     # remove sconv_neon.c, mix_neon.c because it wont compile (it's ARM Neon related)  and is not needed.
     system "echo > src/pulsecore/sconv_neon.c"
     system "echo > src/pulsecore/mix_neon.c"
-    # as well as semaphore-osx.c (uses deprecated functions), which is covered by semphare-posix.c.
-    system "cat src/pulsecore/semaphore-posix.c > src/pulsecore/semaphore-osx.c"
     system "make"
     system "make install"
   end
