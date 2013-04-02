@@ -625,11 +625,8 @@ def check_for_config_scripts
 
     EOS
 
-    config_scripts.each do |pair|
-      dn = pair[0]
-      pair[1].each do |fn|
-        s << "    #{dn}/#{fn}\n"
-      end
+    config_scripts.each do |dir, files|
+      files.each { |fn| s << "    #{dir}/#{fn}\n" }
     end
     s
   end
@@ -857,7 +854,7 @@ def check_for_linked_keg_only_brews
     You may wish to `brew unlink` these brews:
 
     EOS
-    warnings.keys.each{ |f| s << "    #{f}\n" }
+    warnings.each_key { |f| s << "    #{f}\n" }
     s
   end
 end
@@ -1111,13 +1108,16 @@ module Homebrew extend self
       ARGV.named
     end.select{ |method| method =~ /^check_/ }.reverse.uniq.reverse
 
+    first_warning = true
     methods.each do |method|
       out = checks.send(method)
       unless out.nil? or out.empty?
         lines = out.to_s.split('\n')
+        puts unless first_warning
         opoo lines.shift
         Homebrew.failed = true
         puts lines
+        first_warning = false
       end
     end
 

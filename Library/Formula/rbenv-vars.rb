@@ -2,8 +2,8 @@ require 'formula'
 
 class RbenvVars < Formula
   homepage 'https://github.com/sstephenson/rbenv-vars'
-  url 'https://github.com/sstephenson/rbenv-vars/tarball/v1.2.0'
-  sha1 '26a248f5a5f0da0cbb7ad154da8a908341951a10'
+  url 'https://github.com/sstephenson/rbenv-vars/archive/v1.2.0.tar.gz'
+  sha1 '8953cecac154fac96dc1e68b54d66a4c8b569e08'
 
   head 'https://github.com/sstephenson/rbenv-vars.git'
 

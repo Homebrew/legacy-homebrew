@@ -59,7 +59,7 @@ class X11Dependency < Requirement
 
   fatal true
 
-  env { x11 }
+  env { ENV.x11 }
 
   def initialize(name="x11", *tags)
     tags.flatten!
@@ -179,11 +179,11 @@ class MPIDependency < Requirement
     @unknown_langs.empty? and @non_functional.empty?
   end
 
-  env do |req|
+  env do
     # Set environment variables to help configure scripts find MPI compilers.
     # Variable names taken from:
     # http://www.gnu.org/software/autoconf-archive/ax_mpi.html
-    req.lang_list.each do |lang|
+    @lang_list.each do |lang|
       compiler = 'mpi' + lang.to_s
       mpi_path = which compiler
 

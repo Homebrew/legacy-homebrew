@@ -2,8 +2,8 @@ require 'formula'
 
 class Graylog2Server < Formula
   homepage 'http://www.graylog2.org/'
-  url 'https://github.com/downloads/Graylog2/graylog2-server/graylog2-server-0.9.6.tar.gz'
-  sha1 '2c4d62ccf638d3d9526551b577c035c7f87a6789'
+  url 'http://download.graylog2.org/graylog2-server/graylog2-server-0.11.0.tar.gz'
+  sha1 '03c94ce8f255a486d13b38c9ebad159588b30bef'
 
   depends_on 'elasticsearch'
   depends_on 'mongodb'

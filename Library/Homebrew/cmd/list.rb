@@ -8,7 +8,10 @@ module Homebrew extend self
     # Things below use the CELLAR, which doesn't until the first formula is installed.
     return unless HOMEBREW_CELLAR.exist?
 
-    if ARGV.include? '--versions'
+    if ARGV.include? '--pinned'
+      require 'formula'
+      list_pinned
+    elsif ARGV.include? '--versions'
       list_versions
     elsif ARGV.named.empty?
       ENV['CLICOLOR'] = nil
@@ -46,6 +49,18 @@ private
     end.each do |d|
       versions = d.children.select{ |pn| pn.directory? }.map{ |pn| pn.basename.to_s }
       puts "#{d.basename} #{versions*' '}"
+    end
+  end
+
+  def list_pinned
+    if ARGV.named.empty?
+      HOMEBREW_CELLAR.children.select{ |pn| pn.directory? }
+    else
+      ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
+    end.select do |d|
+      (HOMEBREW_LIBRARY/"PinnedKegs"/d.basename.to_s).exist?
+    end.each do |d|
+      puts d.basename
     end
   end
 end

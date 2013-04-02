@@ -4,47 +4,47 @@
 
 # Require this file to build a testing environment.
 
-ABS__FILE__=File.expand_path(__FILE__)
-
+ABS__FILE__ = File.expand_path(__FILE__)
 $:.push(File.expand_path(__FILE__+'/../..'))
+
 require 'extend/fileutils'
 require 'extend/pathname'
 require 'extend/string'
 require 'exceptions'
 require 'utils'
 
-# these are defined in global.rb, but we don't want to break our actual
-# homebrew tree, and we do want to test everything :)
-HOMEBREW_PREFIX=Pathname.new '/private/tmp/testbrew/prefix'
-HOMEBREW_REPOSITORY=HOMEBREW_PREFIX
-HOMEBREW_LIBRARY=HOMEBREW_REPOSITORY+"Library"
-HOMEBREW_CACHE=HOMEBREW_PREFIX.parent+"cache"
-HOMEBREW_CACHE_FORMULA=HOMEBREW_PREFIX.parent+"formula_cache"
-HOMEBREW_CELLAR=HOMEBREW_PREFIX.parent+"cellar"
-HOMEBREW_LOGS = HOMEBREW_PREFIX.parent+"logs"
-HOMEBREW_USER_AGENT="Homebrew"
-HOMEBREW_WWW='http://example.com'
-HOMEBREW_CURL_ARGS = '-fsLA'
-HOMEBREW_VERSION = '0.9-test'
+# Constants normally defined in global.rb
+HOMEBREW_PREFIX        = Pathname.new('/private/tmp/testbrew/prefix')
+HOMEBREW_REPOSITORY    = HOMEBREW_PREFIX
+HOMEBREW_LIBRARY       = HOMEBREW_REPOSITORY+'Library'
+HOMEBREW_CACHE         = HOMEBREW_PREFIX.parent+'cache'
+HOMEBREW_CACHE_FORMULA = HOMEBREW_PREFIX.parent+'formula_cache'
+HOMEBREW_CELLAR        = HOMEBREW_PREFIX.parent+'cellar'
+HOMEBREW_LOGS          = HOMEBREW_PREFIX.parent+'logs'
+HOMEBREW_USER_AGENT    = 'Homebrew'
+HOMEBREW_WWW           = 'http://example.com'
+HOMEBREW_CURL_ARGS     = '-fsLA'
+HOMEBREW_VERSION       = '0.9-test'
 
 MACOS = true
 MACOS_VERSION = ENV.fetch('MACOS_VERSION', 10.6)
 MACOS_FULL_VERSION = '10.6.8'
 
+ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
+
+module Homebrew extend self
+  include FileUtils
+end
+
+# Test environment setup
 %w{Library/Formula Library/ENV}.each do |d|
   HOMEBREW_REPOSITORY.join(d).mkpath
 end
-
-ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 # Test fixtures and files can be found relative to this path
 TEST_FOLDER = Pathname.new(ABS__FILE__).parent.realpath
-
-module Homebrew extend self
-  include FileUtils
-end
 
 def shutup
   if ARGV.verbose?

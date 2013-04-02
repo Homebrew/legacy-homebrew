@@ -18,9 +18,13 @@ class Mpfr < Formula
 
   option '32-bit'
 
-  # Segfaults under superenv with clang 4.1/421. See:
-  # https://github.com/mxcl/homebrew/issues/15061
-  env :std if MacOS.clang_build_version < 425
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      clang build 421 segfaults while building in superenv;
+      see https://github.com/mxcl/homebrew/issues/15061
+      EOS
+  end
 
   def patches
     "https://gist.github.com/raw/4472199/42c0b207037a133527083d12adc9028b4da429ee/gistfile1.txt"

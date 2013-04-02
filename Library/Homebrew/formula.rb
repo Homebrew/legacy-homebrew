@@ -2,6 +2,7 @@ require 'download_strategy'
 require 'dependency_collector'
 require 'formula_support'
 require 'formula_lock'
+require 'formula_pin'
 require 'hardware'
 require 'bottles'
 require 'patches'
@@ -68,6 +69,8 @@ class Formula
       # make sure to strip "--" from the start of options
       self.class.build.add opt[/--(.+)$/, 1], desc
     end
+
+    @pin = FormulaPin.new(self)
   end
 
   def url;      @active_spec.url;     end
@@ -78,6 +81,22 @@ class Formula
   # if the dir is there, but it's empty we consider it not installed
   def installed?
     installed_prefix.children.length > 0 rescue false
+  end
+
+  def pinable?
+    @pin.pinable?
+  end
+
+  def pinned?
+    @pin.pinned?
+  end
+
+  def pin
+    @pin.pin
+  end
+
+  def unpin
+    @pin.unpin
   end
 
   def linked_keg
@@ -168,6 +187,9 @@ class Formula
   # Defaults to true so overridden version does not have to check if bottles
   # are supported.
   def pour_bottle?; true end
+
+  # Can be overridden to run commands on both source and bottle installation.
+  def post_install; end
 
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
@@ -694,7 +716,7 @@ private
       instance_eval(&block)
     end
 
-    def bottle url=nil, &block
+    def bottle *, &block
       return @bottle unless block_given?
       @bottle ||= Bottle.new
       @bottle.instance_eval(&block)
