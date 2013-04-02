@@ -1,11 +1,6 @@
 class Compiler < Struct.new(:name, :priority)
   def build
-    case name
-    when :clang, :llvm
-      MacOS.send("#{name}_build_version")
-    when :gcc
-      MacOS.gcc_42_build_version
-    end
+    MacOS.send("#{name}_build_version")
   end
 end
 
@@ -47,12 +42,14 @@ class CompilerQueue
 end
 
 class CompilerSelector
-  def initialize(f, old_compiler=ENV.compiler)
+  def initialize(f, old_compiler)
     @f = f
     @old_compiler = old_compiler
     @compilers = CompilerQueue.new
     %w{clang llvm gcc}.map(&:to_sym).each do |cc|
-      @compilers << Compiler.new(cc, priority_for(cc))
+      unless MacOS.send("#{cc}_build_version").nil?
+        @compilers << Compiler.new(cc, priority_for(cc))
+      end
     end
   end
 
@@ -67,7 +64,7 @@ class CompilerSelector
 
   def priority_for(cc)
     case cc
-    when :clang then MacOS.clang_build_version >= 211 ? 3 : 0.5
+    when :clang then MacOS.clang_build_version >= 318 ? 3 : 0.5
     when :llvm  then 2
     when :gcc   then 1
     end
