@@ -23,6 +23,14 @@ class LanguageModuleDependencyTests < Test::Unit::TestCase
     assert !y.eql?(x)
   end
 
+  def test_differing_module_and_import_name
+    mod_name = "foo"
+    import_name = "bar"
+    l = LanguageModuleDependency.new(:python, mod_name, import_name)
+    assert l.message.include?(mod_name)
+    assert l.the_test.one? { |c| c.include?(import_name) }
+  end
+
   def test_bad_perl_deps
     assert_deps_fail "notapackage" => :perl
   end
