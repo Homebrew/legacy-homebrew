@@ -1,5 +1,7 @@
 require 'testing_env'
-require 'requirements'
+require 'requirements/language_module_dependency'
+
+# XXX: Figure out what env file needs to require hardware
 require 'hardware'
 
 class LanguageModuleDependencyTests < Test::Unit::TestCase
