@@ -57,6 +57,8 @@ class Pulseaudio < Formula
     system "echo > src/pulsecore/mix_neon.c"
     # fix shm_open mode. see <https://bugs.freedesktop.org/show_bug.cgi?id=62988>.
     inreplace "src/pulsecore/shm.c", "& 0444", "& 0777"
+    # use rewritten semaphore-osx.c. see <https://bugs.freedesktop.org/show_bug.cgi?id=63014>.
+    system "curl https://gist.github.com/albertz/5291528/raw/semaphore-osx.c > src/pulsecore/semaphore-osx.c"
 
     system "make"
     system "make install"
