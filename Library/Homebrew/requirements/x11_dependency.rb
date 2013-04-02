@@ -1,4 +1,5 @@
 require 'requirement'
+require 'extend/set'
 
 class X11Dependency < Requirement
   include Comparable
