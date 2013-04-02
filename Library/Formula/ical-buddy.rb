@@ -2,8 +2,8 @@ require 'formula'
 
 class IcalBuddy < Formula
   homepage 'http://hasseg.org/icalBuddy/'
-  url 'http://hasseg.org/icalBuddy/1.8.7/icalBuddy-v1.8.7.zip'
-  sha1 'd2e18473de34792d3f1cd44233711857b05dc4d3'
+  url 'http://hasseg.org/icalBuddy/1.8.8/icalBuddy-v1.8.8.zip'
+  sha1 '037a92848464a6814a312fb73e4bcdafcb88331a'
 
   head 'http://hasseg.org/git-public/icalBuddy.git'
 
