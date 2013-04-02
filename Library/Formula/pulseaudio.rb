@@ -55,7 +55,7 @@ class Pulseaudio < Formula
     system "echo > src/pulsecore/sconv_neon.c"
     system "echo > src/pulsecore/mix_neon.c"
     # as well as semaphore-osx.c (uses deprecated functions), which is covered by semphare-posix.c.
-    system "echo > src/pulsecore/semaphore-osx.c"
+    system "cat src/pulsecore/semaphore-posix.c > src/pulsecore/semaphore-osx.c"
     system "make"
     system "make install"
   end
