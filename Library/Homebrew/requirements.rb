@@ -23,7 +23,7 @@ class LanguageModuleDependency < Requirement
 
   def the_test
     case @language
-      when :chicken then %W{/usr/bin/env csi -e (use #{@import_name})}
+      when :chicken then %W{/usr/bin/env csi -e (use\ #{@import_name})}
       when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{@import_name}'}
       when :lua then %W{/usr/bin/env luarocks show #{@import_name}}
       when :node then %W{/usr/bin/env node -e require('#{@import_name}');}
