@@ -20,7 +20,7 @@ class DependencyCollectorTests < Test::Unit::TestCase
   def test_dependency_creation
     @d.add 'foo' => :build
     @d.add 'bar' => ['--universal', :optional]
-    assert_not_nil @d.find_dependency('foo')
+    assert_instance_of Dependency, @d.find_dependency('foo')
     assert_equal 2, @d.find_dependency('bar').tags.length
   end
 
@@ -45,7 +45,7 @@ class DependencyCollectorTests < Test::Unit::TestCase
 
   def test_requirement_creation
     @d.add :x11
-    assert_not_nil @d.find_requirement(X11Dependency)
+    assert_instance_of X11Dependency, @d.find_requirement(X11Dependency)
   end
 
   def test_no_duplicate_requirements
