@@ -30,8 +30,8 @@ class PathnameInstallTests < Test::Unit::TestCase
     with_temp_folder do
       TARGET_FOLDER.install 'a.txt'
 
-      assert  (TARGET_FOLDER+'a.txt').exist?, "a.txt not installed."
-      assert !(TARGET_FOLDER+'b.txt').exist?, "b.txt was installed."
+      assert((TARGET_FOLDER+'a.txt').exist?, "a.txt not installed.")
+      assert(!(TARGET_FOLDER+'b.txt').exist?, "b.txt was installed.")
     end
   end
 
@@ -39,8 +39,8 @@ class PathnameInstallTests < Test::Unit::TestCase
     with_temp_folder do
       TARGET_FOLDER.install %w[a.txt b.txt]
 
-      assert (TARGET_FOLDER+'a.txt').exist?, "a.txt not installed."
-      assert (TARGET_FOLDER+'b.txt').exist?, "b.txt not installed."
+      assert((TARGET_FOLDER+'a.txt').exist?, "a.txt not installed.")
+      assert((TARGET_FOLDER+'b.txt').exist?, "b.txt not installed.")
     end
   end
 
@@ -48,8 +48,8 @@ class PathnameInstallTests < Test::Unit::TestCase
     with_temp_folder do
       TARGET_FOLDER.install Dir['*.txt']
 
-      assert (TARGET_FOLDER+'a.txt').exist?, "a.txt not installed."
-      assert (TARGET_FOLDER+'b.txt').exist?, "b.txt not installed."
+      assert((TARGET_FOLDER+'a.txt').exist?, "a.txt not installed.")
+      assert((TARGET_FOLDER+'b.txt').exist?, "b.txt not installed.")
     end
   end
 
@@ -60,8 +60,8 @@ class PathnameInstallTests < Test::Unit::TestCase
 
       TARGET_FOLDER.install "bin"
 
-      assert (TARGET_FOLDER+'bin/a.txt').exist?, "a.txt not installed."
-      assert (TARGET_FOLDER+'bin/b.txt').exist?, "b.txt not installed."
+      assert((TARGET_FOLDER+'bin/a.txt').exist?, "a.txt not installed.")
+      assert((TARGET_FOLDER+'bin/b.txt').exist?, "b.txt not installed.")
     end
   end
 
@@ -69,9 +69,9 @@ class PathnameInstallTests < Test::Unit::TestCase
     with_temp_folder do
       TARGET_FOLDER.install 'a.txt' => 'c.txt'
 
-      assert  (TARGET_FOLDER+'c.txt').exist?, "c.txt not installed."
-      assert !(TARGET_FOLDER+'a.txt').exist?, "a.txt was installed but not renamed."
-      assert !(TARGET_FOLDER+'b.txt').exist?, "b.txt was installed."
+      assert((TARGET_FOLDER+'c.txt').exist?, "c.txt not installed.")
+      assert(!(TARGET_FOLDER+'a.txt').exist?, "a.txt was installed but not renamed.")
+      assert(!(TARGET_FOLDER+'b.txt').exist?, "b.txt was installed.")
     end
   end
 
@@ -79,10 +79,10 @@ class PathnameInstallTests < Test::Unit::TestCase
     with_temp_folder do
       TARGET_FOLDER.install({'a.txt' => 'c.txt', 'b.txt' => 'd.txt'})
 
-      assert  (TARGET_FOLDER+'c.txt').exist?, "c.txt not installed."
-      assert  (TARGET_FOLDER+'d.txt').exist?, "d.txt not installed."
-      assert !(TARGET_FOLDER+'a.txt').exist?, "a.txt was installed but not renamed."
-      assert !(TARGET_FOLDER+'b.txt').exist?, "b.txt was installed but not renamed."
+      assert((TARGET_FOLDER+'c.txt').exist?, "c.txt not installed.")
+      assert((TARGET_FOLDER+'d.txt').exist?, "d.txt not installed.")
+      assert(!(TARGET_FOLDER+'a.txt').exist?, "a.txt was installed but not renamed.")
+      assert(!(TARGET_FOLDER+'b.txt').exist?, "b.txt was installed but not renamed.")
     end
   end
 
@@ -93,9 +93,9 @@ class PathnameInstallTests < Test::Unit::TestCase
 
       TARGET_FOLDER.install "bin" => "libexec"
 
-      assert !(TARGET_FOLDER+'bin').exist?, "bin was installed but not renamed."
-      assert  (TARGET_FOLDER+'libexec/a.txt').exist?, "a.txt not installed."
-      assert  (TARGET_FOLDER+'libexec/b.txt').exist?, "b.txt not installed."
+      assert(!(TARGET_FOLDER+'bin').exist?, "bin was installed but not renamed.")
+      assert((TARGET_FOLDER+'libexec/a.txt').exist?, "a.txt not installed.")
+      assert((TARGET_FOLDER+'libexec/b.txt').exist?, "b.txt not installed.")
     end
   end
 
