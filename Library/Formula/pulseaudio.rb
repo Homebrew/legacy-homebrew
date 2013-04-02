@@ -52,11 +52,31 @@ class Pulseaudio < Formula
     end
 
     # remove sconv_neon.c, mix_neon.c because it wont compile (it's ARM Neon related)  and is not needed.
+    # see <https://bugs.freedesktop.org/show_bug.cgi?id=62986>.
     system "echo > src/pulsecore/sconv_neon.c"
     system "echo > src/pulsecore/mix_neon.c"
-    inreplace "src/pulsecore/shm.c", "& 0444", "& 0777" # fix shm_open mode
+    # fix shm_open mode. see <https://bugs.freedesktop.org/show_bug.cgi?id=62988>.
+    inreplace "src/pulsecore/shm.c", "& 0444", "& 0777"
+
     system "make"
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    Edit `/usr/local/etc/pulse/default.pa` and remove the "module-detect" parts.
+    You might want to add these:
+    
+        # Detect the CoreAudio soundcard.
+        load-module module-coreaudio-detect
+        # Listen on TCP port 4713.
+        # Note that this allows anonymous access from any network!
+        load-module module-native-protocol-tcp auth-anonymous=1
+    
+    In `/usr/local/etc/pulse/daemon.conf`, you might want to set:
+    
+        # Disable autoexit on idle.
+        exit-idle-time = -1
+    EOS
   end
 
   def test
