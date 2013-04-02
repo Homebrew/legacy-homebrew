@@ -29,7 +29,7 @@ module Homebrew extend self
     files = []
     tapd.find_formula{ |file| files << tapd.basename.join(file) }
     link_tap_formula(files)
-    puts "Tapped #{files.count} formula"
+    puts "Tapped #{files.length} formula"
 
     # Figure out if this repo is private
     # curl will throw an exception if the repo is private (Github returns a 404)
