@@ -54,6 +54,7 @@ class Pulseaudio < Formula
     # remove sconv_neon.c, mix_neon.c because it wont compile (it's ARM Neon related)  and is not needed.
     system "echo > src/pulsecore/sconv_neon.c"
     system "echo > src/pulsecore/mix_neon.c"
+    inreplace "src/pulsecore/shm.c", "& 0444", "& 0777" # fix shm_open mode
     system "make"
     system "make install"
   end
