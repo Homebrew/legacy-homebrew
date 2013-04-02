@@ -160,7 +160,6 @@ class FormulaTests < Test::Unit::TestCase
   def test_head_only_specs
     f = HeadOnlySpecTestBall.new
 
-    assert_not_nil f.head
     assert_nil f.stable
     assert_nil f.bottle
     assert_nil f.devel
@@ -177,7 +176,6 @@ class FormulaTests < Test::Unit::TestCase
   def test_incomplete_stable_specs
     f = IncompleteStableSpecTestBall.new
 
-    assert_not_nil f.head
     assert_nil f.stable
     assert_nil f.bottle
     assert_nil f.devel
@@ -194,7 +192,6 @@ class FormulaTests < Test::Unit::TestCase
   def test_head_only_with_version_specs
     f = IncompleteStableSpecTestBall.new
 
-    assert_not_nil f.head
     assert_nil f.stable
     assert_nil f.bottle
     assert_nil f.devel
@@ -211,9 +208,9 @@ class FormulaTests < Test::Unit::TestCase
   def test_explicit_strategy_specs
     f = ExplicitStrategySpecTestBall.new
 
-    assert_not_nil f.stable
-    assert_not_nil f.devel
-    assert_not_nil f.head
+    assert_instance_of SoftwareSpec, f.stable
+    assert_instance_of SoftwareSpec, f.devel
+    assert_instance_of HeadSoftwareSpec, f.head
 
     assert_equal f.stable, f.active_spec
 
