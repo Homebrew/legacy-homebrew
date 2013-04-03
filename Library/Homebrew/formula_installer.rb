@@ -34,7 +34,7 @@ class FormulaInstaller
     if f.installed?
       msg = "#{f}-#{f.installed_version} already installed"
       msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
-      raise CannotInstallFormulaError, msg
+      raise FormulaAlreadyInstalledError, msg
     end
 
     # Building head-only without --HEAD is an error
