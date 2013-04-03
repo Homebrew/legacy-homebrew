@@ -215,7 +215,7 @@ If \fB\-\-overwrite\fR is passed, Homebrew will delete files which already exist
 If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, Homebrew will list all files which would be linked or which would be deleted by \fBbrew link \-\-overwrite\fR, but will not actually link or delete any files\.
 .
 .TP
-\fBls, list [\-\-unbrewed] [\-\-versions]\fR [\fIformulae\fR]
+\fBls, list [\-\-unbrewed] [\-\-versions] [\-\-pinned]\fR [\fIformulae\fR]
 Without any arguments, list all installed formulae\.
 .
 .IP
@@ -226,6 +226,9 @@ If \fB\-\-unbrewed\fR is passed, list all files in the Homebrew prefix not insta
 .
 .IP
 If \fB\-\-versions\fR is passed, show the version number for installed formulae, or only the specified formulae if \fIformulae\fR are given\.
+.
+.IP
+If \fB\-\-pinned\fR is passed, show the versions of pinned formulae, or only the specified (pinned) formulae if \fIformulae\fR are given\. See also [\fBpin\fR][], [\fBunpin\fR][]\.
 .
 .TP
 \fBlog [git\-log\-options]\fR \fIformula\fR \.\.\.
@@ -257,6 +260,10 @@ Show formulae that have an updated version available\.
 .
 .IP
 If \fB\-\-quiet\fR is passed, list only the names of outdated brews\. Otherwise, the versions are printed as well\.
+.
+.TP
+\fBpin\fR \fIformulae\fR
+Pin the specified \fIformulae\fR, preventing them from being upgraded when issuing the \fBbrew upgrade\fR command without arguments\. See also [\fBunpin\fR][]\.
 .
 .TP
 \fBprune\fR
@@ -302,6 +309,10 @@ Example: \fBbrew install jruby && brew test jruby\fR
 Unsymlink \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
 .
 .TP
+\fBunpin\fR \fIformulae\fR
+Unpin \fIformulae\fR, allowing them to be upgraded by \fBbrew upgrade\fR\. See also [\fBpin\fR][]\.
+.
+.TP
 \fBuntap\fR \fItap\fR
 Remove a tapped repository\.
 .
@@ -314,10 +325,10 @@ If \fB\-\-rebase\fR is specified then \fBgit pull \-\-rebase\fR is used\.
 .
 .TP
 \fBupgrade\fR [\fIformulae\fR]
-Upgrade outdated brews\.
+Upgrade outdated, non\-pinned brews\.
 .
 .IP
-If \fIformulae\fR are given, upgrade only the specified brews\.
+If \fIformulae\fR are given, upgrade only the specified brews (but do so even if they are pinned; see [\fBpin\fR][], [\fBunpin\fR][])\.
 .
 .TP
 \fBuses [\-\-installed] [\-\-recursive]\fR \fIformula\fR

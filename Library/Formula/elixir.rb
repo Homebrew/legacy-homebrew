@@ -38,7 +38,7 @@ class Elixir < Formula
     end
   end
 
-  def test
-    system "#{bin}/elixir -v"
+  test do
+    system "#{bin}/elixir", "-v"
   end
 end

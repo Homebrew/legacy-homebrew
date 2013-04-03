@@ -2,10 +2,11 @@ require 'formula'
 
 class Geocouch < Formula
   homepage 'https://github.com/couchbase/geocouch'
-  head 'https://github.com/couchbase/geocouch.git', :tag => 'couchdb1.2.x'
-  url 'https://github.com/couchbase/geocouch/tarball/couchdb1.2.x_v0.3.0'
-  sha1 '413d1d3762850e72d6b3589417317894a2d14508'
+  url 'https://github.com/couchbase/geocouch/archive/couchdb1.2.x_v0.3.0.tar.gz'
+  sha1 'e829daa4fa21ee9b5a5ca9bd8a9bf7da28a43722'
   version '1.2.0'
+
+  head 'https://github.com/couchbase/geocouch.git', :tag => 'couchdb1.2.x'
 
   devel do
     url 'https://github.com/couchbase/geocouch.git', :tag => 'master'
@@ -85,25 +86,6 @@ class Geocouch < Formula
     system "(echo;  echo '//REPLACE_ME') >> '#{couchdb_share}/www/script/couch_tests.js'"
     inreplace (couchdb_share/'www/script/couch_tests.js'), /^\/\/REPLACE_ME$/,  \
       "//  GeoCouch Tests...\n#{test_lines}//  ...GeoCouch Tests\n"
-  end
-
-  def test
-    puts <<-EOS.undent
-      To test geocouch, start `couchdb` (with appropriate geocouch ERL_FLAGS)
-      in a terminal and then:
-
-        curl http://127.0.0.1:5984/
-
-      The reply should look like:
-
-        {"couchdb":"Welcome","version":"1.2.0"}
-
-      For more thorough testing, use your browser to visit:
-
-        http://127.0.0.1:5984/_utils/couch_tests.html?script/couch_tests.js
-
-      and press the "Run All" button.
-      EOS
   end
 
   def caveats; <<-EOS.undent

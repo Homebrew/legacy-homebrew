@@ -82,9 +82,9 @@ class Go < Formula
     prefix.install(Dir['*'] - ['include'])
   end
 
-  def test
+  test do
     cd "#{prefix}/src" do
-      system './run.bash --no-rebuild'
+      system "./run.bash", "--no-rebuild"
     end
   end
 end

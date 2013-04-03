@@ -21,8 +21,8 @@ class Fishfish < Formula
     system "make install"
   end
 
-  def test
-    system "fish -c 'echo'"
+  test do
+    system "fish", "-c", "echo"
   end
 
   def caveats; <<-EOS.undent

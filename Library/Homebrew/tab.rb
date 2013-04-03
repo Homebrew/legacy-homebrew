@@ -1,5 +1,4 @@
 require 'ostruct'
-require 'formula'
 require 'options'
 require 'vendor/multi_json'
 
@@ -103,5 +102,19 @@ class Tab < OpenStruct
 
   def write
     tabfile.write to_json
+  end
+
+  def to_s
+    s = []
+    case poured_from_bottle
+    when true  then s << "Poured from bottle"
+    when false then s << "Built from source"
+    end
+    unless used_options.empty?
+      s << "Installed" if s.empty?
+      s << "with:"
+      s << used_options.to_a.join(", ")
+    end
+    s.join(" ")
   end
 end

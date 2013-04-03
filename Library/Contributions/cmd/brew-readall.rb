@@ -6,7 +6,7 @@
 require 'formula'
 Formula.names.each do |n|
   begin
-    f = Formula.factory(n)
+    Formula.factory(n)
   rescue Exception => e
     onoe "problem in #{Formula.path(n)}"
     puts e

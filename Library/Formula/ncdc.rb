@@ -15,7 +15,7 @@ class Ncdc < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/ncdc -v"
+  test do
+    system "#{bin}/ncdc", "-v"
   end
 end

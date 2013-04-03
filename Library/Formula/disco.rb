@@ -2,8 +2,8 @@ require 'formula'
 
 class Disco < Formula
   homepage 'http://discoproject.com/'
-  url 'https://github.com/tuulos/disco/tarball/0.3.2'
-  sha1 'f676e59b7bec0901566888533fd7eed5ff5c45d5'
+  url 'https://github.com/tuulos/disco/archive/0.3.2.tar.gz'
+  sha1 'c6e698d0ec1c73b55597251038ee20d9b8e5c289'
   # Periods in the install path cause disco-worker to complain so change to underscores.
   version '0_3_2'
   head 'https://github.com/tuulos/disco.git'

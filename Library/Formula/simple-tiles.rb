@@ -2,8 +2,8 @@ require 'formula'
 
 class SimpleTiles < Formula
   homepage 'http://propublica.github.com/simple-tiles/'
-  url 'https://github.com/propublica/simple-tiles/archive/0.3.0.tar.gz'
-  sha1 'c0c677b3b212457abc6a39ced4ee3e767be8e885'
+  url 'https://github.com/propublica/simple-tiles/archive/v0.3.1.tar.gz'
+  sha1 '9f5ff17cca9d9cacb36dcf971b57dd3b42b352e2'
 
   head 'https://github.com/propublica/simple-tiles.git'
 

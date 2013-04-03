@@ -15,8 +15,8 @@ end
 
 class Squid < Formula
   homepage 'http://www.squid-cache.org/'
-  url 'http://www.squid-cache.org/Versions/v3/3.2/squid-3.2.7.tar.gz'
-  sha1 '15df9b09c3eb2c964441e637a4d4cf0af11bcfd5'
+  url 'http://www.squid-cache.org/Versions/v3/3.2/squid-3.2.9.tar.gz'
+  sha1 'c1f5f8de4e622a1fe98e9f854507237fbae06be2'
 
   depends_on NoBdb5
 

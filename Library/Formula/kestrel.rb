@@ -38,7 +38,7 @@ class Kestrel < Formula
     EOS
   end
 
-  def test
-    system "#{bin}/kestrel status"
+  test do
+    system "#{bin}/kestrel", "status"
   end
 end

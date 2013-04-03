@@ -2,8 +2,8 @@ require 'formula'
 
 class Redsocks < Formula
   homepage 'http://darkk.net.ru/redsocks'
-  url 'https://github.com/darkk/redsocks/tarball/release-0.4'
-  sha1 'd8c04e12efc168f6a3910b17e84682aa869afdce'
+  url 'https://github.com/darkk/redsocks/archive/release-0.4.tar.gz'
+  sha1 '5bc432652b9776c3ee04a3ef58fc9adef8190901'
 
   depends_on 'libevent'
 

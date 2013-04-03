@@ -13,8 +13,8 @@ class Lbzip2 < Formula
   end
 
   test do
-    system 'touch', 'fish'
-    system 'lbzip2', 'fish'
-    system 'lbunzip2', 'fish.bz2'
+    touch "fish"
+    system "#{bin}/lbzip2", "fish"
+    system "#{bin}/lbunzip2", "fish.bz2"
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Pngquant < Formula
   homepage 'http://pngquant.org/'
-  url 'https://github.com/pornel/improved-pngquant/tarball/1.8.2'
-  sha1 '0ab2116897109a42aa92d3a5f47ea3cb9b1cf87c'
+  url 'https://github.com/pornel/improved-pngquant/archive/1.8.3.tar.gz'
+  sha1 'c2bb7e5fecc1137aa19cf684b2f05f0cb74ca6e0'
 
   head 'https://github.com/pornel/improved-pngquant.git'
 

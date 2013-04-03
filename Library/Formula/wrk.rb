@@ -10,7 +10,7 @@ class Wrk < Formula
     bin.install "wrk"
   end
 
-  def test
-    system "#{bin}/wrk -c 1 -r 1 -t 1 http://www.github.com/"
+  test do
+    system *%W{#{bin}/wrk -c 1 -r 1 -t 1 http://www.github.com/}
   end
 end
