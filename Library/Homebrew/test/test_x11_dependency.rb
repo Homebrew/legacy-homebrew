@@ -1,5 +1,6 @@
 require 'testing_env'
-require 'requirements'
+require 'extend/set'
+require 'requirements/x11_dependency'
 
 class X11DependencyTests < Test::Unit::TestCase
   def test_eql_instances_are_eql
