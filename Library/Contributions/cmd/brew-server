@@ -21,39 +21,36 @@ end
 
 require 'cgi'
 
-
 def link_to_formula name
   "<a href=\"/formula/#{CGI.escape(name)}\">#{name}</a>"
 end
 
-def css_style
-  <<-CSS
-    <link href="/bootstrap.min.css" rel="stylesheet"/>
-    <style>
-    .container {
-      text-align: center;
-    }
-    dl {
-      text-align: left;
-      width: 500px;
-      margin: 0 auto;
-    }
-    table.table {
-      width: 500px;
-      margin: 0 auto;
-    }
-    </style>
+def css_style; <<-CSS
+  <link href="/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+  .container {
+    text-align: center;
+  }
+  dl {
+    text-align: left;
+    width: 500px;
+    margin: 0 auto;
+  }
+  table.table {
+    width: 500px;
+    margin: 0 auto;
+  }
+  </style>
   CSS
 end
 
-def search_form
-  <<-EOS
-    <form action="/search" class="form-search">
-      <div class="input-append">
-        <input id="search" name="q" type="text" class="input-large">
-        <button class="btn btn-medium" type="submit"><i class="icon-search"></i>&nbsp;Search</button>
-      </div>
-    </form>
+def search_form; <<-EOS
+  <form action="/search" class="form-search">
+    <div class="input-append">
+      <input id="search" name="q" type="text" class="input-large">
+      <button class="btn btn-medium" type="submit"><i class="icon-search"></i>&nbsp;Search</button>
+    </div>
+  </form>
   EOS
 end
 
@@ -74,31 +71,35 @@ def html_page(title)
 
         <div id="informations">
   HTML
+
   yield body
-  body += <<-HTML
+
+  body << <<-HTML
         </div>
       </div>
     </body>
   </html>
   HTML
-  return body
+  body
 end
 
 get '/' do
-  return html_page("Homebrew Menu") do |s|
+  html_page("Homebrew Menu") do |s|
     s << <<-HTML
-    <div class="row">
-      <div class="span12"><div class="row">#{search_form}</div></div>
-    </div>
-    <div class="row">
-      <div class="span12"><p id="installed"><a class="btn btn-primary" href="/installed">Show installed packages</a></p></div>
-    </div>
-    <div class="row">
-      <ul>
+      <div class="row">
+        <div class="span12"><div class="row">#{search_form}</div></div>
+      </div>
+      <div class="row">
+        <div class="span12"><p id="installed"><a class="btn btn-primary" href="/installed">Show installed packages</a></p></div>
+      </div>
+      <div class="row">
+        <ul>
     HTML
+
     Formula.names do |name|
       s << "<li>#{link_to_formula(name)}</li>"
     end
+
     s << <<-HTML
       </ul>
     </div>
@@ -110,7 +111,7 @@ get '/search' do
   q = params['q']
   results = search_brews(q)
 
-  return html_page("Results") do |s|
+  html_page("Results") do |s|
     s << <<-HTML
       <div class="row">
         <div class="span12">
@@ -137,83 +138,76 @@ get '/search' do
         </div>
       </div>
     HTML
-
   end
 end
 
 get '/formula/:name' do
-  klass = Formula.factory(params[:name])
+  f = Formula.factory(params[:name])
 
-  installed = klass.installed? ? "Installed at" : "Not installed."
-  installed_dd = klass.installed? ? "<a href=\"file://#{klass.prefix}\">#{klass.prefix}</a>" : ""
+  installed = <<-EOS
+    <dt>Installed at</dt>
+      <dd><a href=\"file://#{f.prefix}\">#{f.prefix}</a></dd>
+  EOS
 
-  s = ""
-  s << html_page("Formula: #{klass.name}") do |s| s << <<-HTML
-        <h1>#{klass.name}</h1>
+  html_page("Formula: #{f.name}") do |s|
+    s << <<-HTML
+        <h1>#{f.name}</h1>
         <dl class="dl-horizontal">
           <dt>Version</dt>
-            <dd>#{klass.version}</dd>
+            <dd>#{f.version}</dd>
 
           <dt>Homepage</dt>
-            <dd><a href="#{klass.homepage}">#{klass.homepage}</a></dd>
+            <dd><a href="#{f.homepage}">#{f.homepage}</a></dd>
 
           <dt>Download</dt>
-            <dd><a href="#{klass.url}">#{klass.url}</a></dd>
+            <dd><a href="#{f.url}">#{f.url}</a></dd>
 
-          <dt>#{installed}</dt>
-            <dd>#{installed_dd}</dd>
+          #{installed if f.installed?}
       HTML
 
-  unless klass.deps.count == 0
+  unless f.deps.empty?
     s << <<-HTML
             <dt>Depends on</td>
     HTML
-    klass.deps.each do |dep|
+
+    f.deps.each do |dep|
       s << "<dd>#{link_to_formula(dep.name)}</dd>"
     end
   end
 
-  used_by = Formula.select{|ff| ff.deps.include?(klass)}.map{|f| f.name}.flatten.uniq.sort
+  used_by = Formula.select { |ff| ff.deps.include?(f) }.map(&:name).flatten.uniq.sort
+
   unless used_by.empty?
     s << <<-HTML
             <dt>Used by</td>
     HTML
-    if used_by != nil
-      used_by.each do |name|
-        s << "<dd>#{link_to_formula(name)}</dd>"
-      end
+
+    used_by.each do |name|
+      s << "<dd>#{link_to_formula(name)}</dd>"
     end
   end
 
-  s += <<-HTML
+  s << <<-HTML
         </dl>
   HTML
   end
-  return s
-end
-
-
-def installed_formulae
-  Formula.select{|formula| formula.installed?}
 end
 
 get '/installed' do
-
-  s = html_page("Installed formulae") do |s| s << <<-HTML
-       <h3>Installed Fomulas:</h3>
+  html_page("Installed Formulae") do |s|
+    s << <<-HTML
+       <h3>Installed Formulae:</h3>
        <table class="table"><tr><th>Name</th><th>Version</th></tr>
     HTML
 
-    installed_formulae.each do |formula|
-      s << "<tr><td>#{link_to_formula(formula.name)}</td><td>#{formula.version}</td></tr>"
+    Formula.installed.each do |f|
+      s << "<tr><td>#{link_to_formula(f.name)}</td><td>#{f.version}</td></tr>"
     end
 
     s << <<-HTML
       </table>
     HTML
   end
-  return s
 end
-
 
 puts "View our tasting menu at http://localhost:4567/\nUse \"Control-C\" to exit.\n\n"
