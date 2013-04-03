@@ -14,7 +14,11 @@ class Aamath < Formula
     prefix.install "testcases"
   end
 
-  def test
-    system "cat #{prefix}/testcases | #{bin}/aamath"
+  test do
+    IO.popen("#{bin}/aamath", "w+") do |pipe|
+      pipe.write((prefix/"testcases").read)
+      pipe.close_write
+      /#{Regexp.escape("f(x + h) = f(x) + h f'(x)")}/ === pipe.read
+    end
   end
 end

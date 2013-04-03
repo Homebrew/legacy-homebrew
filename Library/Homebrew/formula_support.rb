@@ -10,6 +10,8 @@ class SoftwareSpec
     @version = version
     @mirrors = []
     @specs = {}
+    @checksum = nil
+    @using = nil
   end
 
   def download_strategy

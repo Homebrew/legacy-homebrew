@@ -2,8 +2,8 @@ require 'formula'
 
 class Pit < Formula
   homepage 'https://github.com/michaeldv/pit'
-  url 'https://github.com/michaeldv/pit/tarball/0.1.0'
-  sha1 'c03e5d6b1ad0a59124be45aca9395dafac5260a4'
+  url 'https://github.com/michaeldv/pit/archive/0.1.0.tar.gz'
+  sha1 '867698a2ef4d01587d81fe89dfd0e549d5b42e49'
 
   def install
     system "make"

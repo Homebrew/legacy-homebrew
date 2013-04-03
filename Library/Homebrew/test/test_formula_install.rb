@@ -31,7 +31,7 @@ end
 class InstallTests < Test::Unit::TestCase
   def temporary_install f
     # Brew and install the given formula
-    nostdout do
+    shutup do
       f.brew { f.install }
     end
 
@@ -71,7 +71,7 @@ class InstallTests < Test::Unit::TestCase
       keg=Keg.new f.prefix
       keg.link
       assert_equal 3, HOMEBREW_PREFIX.children.length
-      assert (HOMEBREW_PREFIX+'bin').directory?
+      assert((HOMEBREW_PREFIX+'bin').directory?)
       assert_equal 3, (HOMEBREW_PREFIX+'bin').children.length
     end
   end
@@ -80,7 +80,7 @@ class InstallTests < Test::Unit::TestCase
     f=TestScriptFileFormula.new
 
     temporary_install f do
-      nostdout do
+      shutup do
         f.brew { f.install }
       end
 

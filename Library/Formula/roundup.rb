@@ -2,8 +2,8 @@ require 'formula'
 
 class Roundup < Formula
   homepage 'http://bmizerany.github.com/roundup'
-  url 'https://github.com/bmizerany/roundup/tarball/v0.0.5'
-  sha1 '9a68d8ccc6f3f609344781931561a574c581c7c0'
+  url 'https://github.com/bmizerany/roundup/archive/v0.0.5.tar.gz'
+  sha1 '76ad889ed8e4c32d24847ba2848a8515199e0966'
 
   head 'https://github.com/bmizerany/roundup.git'
 

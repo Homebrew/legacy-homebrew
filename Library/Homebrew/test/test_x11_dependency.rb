@@ -1,5 +1,6 @@
 require 'testing_env'
-require 'requirements'
+require 'extend/set'
+require 'requirements/x11_dependency'
 
 class X11DependencyTests < Test::Unit::TestCase
   def test_eql_instances_are_eql
@@ -45,6 +46,13 @@ class X11DependencyTests < Test::Unit::TestCase
     p = X11Dependency::Proxy.for("libpng")
     assert !x.eql?(p)
     assert !p.eql?(x)
+  end
+
+  def test_x_env
+    x = X11Dependency.new
+    x.stubs(:satisfied?).returns(true)
+    ENV.expects(:x11)
+    x.modify_build_environment
   end
 end
 

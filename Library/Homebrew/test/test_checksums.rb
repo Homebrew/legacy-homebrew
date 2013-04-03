@@ -3,12 +3,12 @@ require 'test/testball'
 
 class ChecksumTests < Test::Unit::TestCase
   def good_checksum f
-    assert_nothing_raised { nostdout { f.brew {} } }
+    assert_nothing_raised { shutup { f.brew {} } }
   end
 
   def bad_checksum f
     assert_raises ChecksumMismatchError do
-      nostdout { f.brew {} }
+      shutup { f.brew {} }
     end
   end
 
