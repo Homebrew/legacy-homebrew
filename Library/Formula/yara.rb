@@ -2,8 +2,8 @@ require 'formula'
 
 class Yara < Formula
   homepage 'http://code.google.com/p/yara-project/'
-  url 'http://yara-project.googlecode.com/files/yara-1.6.tar.gz'
-  sha1 'd51fe954992a5de8ebab91b5f53d31a8e7e76503'
+  url 'http://yara-project.googlecode.com/files/yara-1.7.tar.gz'
+  sha1 '25e90b79275124db3e592ccac1d44a9bba35d7ea'
 
   depends_on 'pcre'
 
