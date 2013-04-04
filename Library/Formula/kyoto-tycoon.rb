@@ -13,6 +13,7 @@ class KyotoTycoon < Formula
   def install
     args = ["--prefix=#{prefix}"]
     args << "--enable-lua" unless build.include? "no-lua"
+    args << "--with-kc=#{HOMEBREW_PREFIX}"
 
     system "./configure", *args
     system "make"
