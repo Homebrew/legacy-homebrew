@@ -71,6 +71,9 @@ end
 class CannotInstallFormulaError < RuntimeError
 end
 
+class FormulaAlreadyInstalledError < RuntimeError
+end
+
 class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   def message
     "Formula installation already attempted: #{formula}"
