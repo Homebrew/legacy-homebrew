@@ -1,0 +1,9 @@
+langs:
+  - langcode: en
+    lang_string: English Version
+  - langcode: fr-fr
+    lang_string: Version Francaise
+  - langcode: zh-cn
+    lang_string: 简体中文版
+  - langcode: zh-tw
+    lang_string: 繁體中文版

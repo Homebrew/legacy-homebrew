@@ -1,151 +1,26 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <title>Homebrew — MacPorts vous rend agressif? Essayez Homebrew!</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="dc.creator" content="Rémi Prévost - http://exomel.com" />
-    <link rel="stylesheet" href="./css/screen.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="./css/fonts/chunkfive/chunkfive.css" type="text/css" media="screen" />
-    <script type="text/javascript">
-        function selectText() {
-            if (document.selection) {
-                var range = document.body.createTextRange();
-                range.moveToElementText(document.getElementById('selectable'));
-                range.select();
-            } else if (window.getSelection) {
-                var range = document.createRange();
-                range.selectNode(document.getElementById('selectable'));
-                window.getSelection().addRange(range);
-            }
-        }
-    </script>
-  </head>
-  <body>
-    <div id="wrap">
-      <div id="header">
-        <h1><a href="./">Homebrew</a></h1>
-        <p id="subtitle"><strong>Le gestionnaire package pour OS X</strong></p>
-        <p><a href="index.html">English Version</a> | Version Francaise | <a href="index_zh-cn.html">简体中文版</a> | <a href="index_zh-tw.html">繁體中文版</a></p>
-      </div>
+---
+layout: index
+lang: fr-fr
+title: Homebrew — MacPorts vous rend agressif? Essayez Homebrew!
+subtitle: Le gestionnaire package pour OS X
 
-      <div id="informations">
-        <ul>
-          <li>
-            <div class="group row">
-              <div class="col-1">
-                <p>Homebrew installe <a href="https://github.com/mxcl/homebrew/tree/master/Library/Formula" title="Liste des packages Homebrew">ce dont vous avez besoin</a> et qu'Apple n'a pas installé.</p>
-              </div>
-              <div class="col-2">
-                <pre><code><span style="color: #e3d796;">$</span> brew install wget</code></pre>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="group row">
-              <div class="col-1">
-                <p>Homebrew installe les packages dans leurs propres répertoires et symlinks leurs fichiers vers <code>/usr/local</code>.</p>
-              </div>
-              <div class="col-2">
-                <pre><code><span style="color: #e3d796;">$</span> cd /usr/local
-<span style="color: #e3d796;">$</span> find Cellar
-Cellar/wget/1.12
-Cellar/wget/1.12/bin/wget
-Cellar/wget/1.12/share/man/man1/wget.1
-
-<span style="color: #e3d796;">$</span> ls -l bin
-bin/wget -&gt; ../Cellar/wget/1.12/bin/wget</code></pre>
-
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="group row">
-              <div class="col-1">
-                <p>Homebrew n'installera pas de fichiers en dehors de son préfixe, et vous pouvez placer Homebrew où vous le désirez.</p>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="group row">
-              <div class="col-1">
-                <p>Créez facilement vos propre packages Homebrew.</p>
-              </div>
-              <div class="col-2">
-                <pre><code><span style="color: #e3d796;">$</span> brew create http://foo.com/bar-1.0.tgz
-Created /usr/local/Library/Formula/bar.rb
-</code></pre>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="group row">
-              <div class="col-1">
-                <p>Homebrew utilise git et ruby, vous pouvez donc faire des modifications sans crainte, sachant que vous pourrez facilement les annuler et les intégrer avec les mises à jour future.</p>
-              </div>
-              <div class="col-2">
-                <pre><code><span style="color: #e3d796;">$</span> brew edit wget <span style="color: #666;"># opens in $EDITOR!</span></code></pre>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="group row">
-              <div class="col-1">
-                <p>Les formules Homebrew sont de simples scripts Ruby:</p>
-              </div>
-              <div class="col-2">
-                <pre class="overflow"><code><span style="color: #8a9597;">require</span> <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">formula</span><span style="color: #c2c98f;">'</span>
-
-<span style="color: #8a9597;">class</span> <span style="color: #e3d796;"><em>Wget</em></span> &lt; Formula
-  homepage <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">http://www.gnu.org/wget/</span><span style="color: #c2c98f;">'</span>
-  url <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">http://ftp.gnu.org/wget-1.12.tar.gz</span><span style="color: #c2c98f;">'</span>
-  md5 <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">308a5476fc096a8a525d07279a6f6aa3</span><span style="color: #c2c98f;">'</span>
-
-  <span style="color: #8a9597;">def</span> <span style="color: #a999ac;">install</span>
-    system <span style="color: #c2c98f;">"</span><span style="color: #a2a96f;">./configure</span><span style="color: #c2c98f;"> </span><span style="color: #a2a96f;">--prefix=</span><span style="color: #c2c98f;">#{</span>prefix<span style="color: #c2c98f;">}</span><span style="color: #c2c98f;">"</span>
-    system <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">make install</span><span style="color: #c2c98f;">'</span>
-  <span style="color: #8a9597;">end</span>
-<span style="color: #8a9597;">end</span></code></pre>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="group row">
-              <div class="col-1">
-                <p>Homebrew est un complément pour OS X. Installez vos gems avec <code>gem</code>, et leurs dépendances avec <code>brew</code>.</p>
-              </div>
-            </div>
-          </li>
-
-          <li>
-            <div class="group row">
-              <h2>Installer Homebrew</h2>
-              <pre style='clear:both;text-align:center;margin:0 -3em;margin-bottom:0.9em'><code id='selectable' onclick="selectText()">ruby -e &quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)&quot;</code></pre>
-              <div class="col-1">
-                <p>Copiez et collez dans une fenêtre du Terminal.</p>
-              </div>
-              <div class="col-2">
-                <p>Le script explique ce qu'il va faire, puis fait une pause avant de l'exécuter. Plus d'options d'installation sont disponibles <a href='https://github.com/mxcl/homebrew/wiki/Installation'>ici</a> (Requis sur 10.5).
-              </div>
-            </div>
-          </li>
-
-          <li>
-            <div class="group row">
-              <h2>Documentation additionnelle</h2>
-              <div class="button">
-                <p><a href="https://github.com/mxcl/homebrew/wiki">Wiki de Homebrew</a></p>
-              </div>
-            </div>
-          </li>
-
-          <li>
-            <div class="group row credits">
-              <p>Code original par <a href="http://methylblue.com/">Max Howell</a>. Site web par <a href="http://exomel.com">Rémi Prévost</a>. Traduction francaise par <a href="http://twitter.com/louim">Louis-Michel Couture</a></p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <a href="http://github.com/mxcl/homebrew"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub" /></a>
-  </body>
-</html>
+pagecontent:
+  what: Homebrew installe <a href="https://github.com/mxcl/homebrew/tree/master/Library/Formula" title="Liste des packages Homebrew">ce dont vous avez besoin</a> et qu'Apple n'a pas installé.
+  how: Homebrew installe les packages dans leurs propres répertoires et symlinks leurs fichiers vers <code>/usr/local</code>.
+  prefix: Homebrew n'installera pas de fichiers en dehors de son préfixe, et vous pouvez placer Homebrew où vous le désirez.
+  createpackages: Créez facilement vos propre packages Homebrew.
+  hack: Homebrew utilise git et ruby, vous pouvez donc faire des modifications sans crainte, sachant que vous pourrez facilement les annuler et les intégrer avec les mises à jour future.
+  formula: "Les formules Homebrew sont de simples scripts Ruby:"
+  complement: Homebrew est un complément pour OS X. Installez vos gems avec <code>gem</code>, et leurs dépendances avec <code>brew</code>.
+  install:
+    install: Installer Homebrew
+    paste: Copiez et collez dans une fenêtre du Terminal.
+    what: Le script explique ce qu'il va faire, puis fait une pause avant de l'exécuter. Plus d'options d'installation sont disponibles <a href="https://github.com/mxcl/homebrew/wiki/Installation">ici</a> (Requis sur 10.5).
+  doc:
+    further: Documentation additionnelle
+    wiki: Wiki de Homebrew
+  foot:
+    code: Code original par <a href="http://methylblue.com/">Max Howell</a>.
+    page: Site web par  <a href="http://exomel.com">Rémi Prévost</a>.
+    translation: Traduction francaise par <a href="http://twitter.com/louim">Louis-Michel Couture</a>.
+---
