@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <title>Homebrew — MacPorts vous rend agressif? Essayez Homebrew!</title>
+    <title>Homebrew — ¿Te has dado a la bebida por culpa de MacPorts? ¡Prueba Homebrew!</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="dc.creator" content="Rémi Prévost - http://exomel.com" />
+    <meta name="dc.creator" content="Andrés Catalán - http://catalandr.es" />
     <link rel="stylesheet" href="./css/screen.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="./css/fonts/chunkfive/chunkfive.css" type="text/css" media="screen" />
     <script type="text/javascript">
@@ -24,8 +24,8 @@
     <div id="wrap">
       <div id="header">
         <h1><a href="./">Homebrew</a></h1>
-        <p id="subtitle"><strong>Le gestionnaire package pour OS X</strong></p>
-        <p><a href="index.html">English</a> | <a href="index_es-es.html">Español</a> | Français | <a href="index_zh-cn.html">简体中文</a> | <a href="index_zh-tw.html">繁體中文</a></p>
+        <p id="subtitle"><strong>El gestor de paquetes para OS X que nos faltaba</strong></p>
+        <p><a href="index.html">English</a> | Español | <a href="index_fr-fr.html">Français</a> | <a href="index_zh-cn.html">简体中文</a> | <a href="index_zh-tw.html">繁體中文</a></p>
       </div>
 
       <div id="informations">
@@ -33,7 +33,7 @@
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew installe <a href="https://github.com/mxcl/homebrew/tree/master/Library/Formula" title="Liste des packages Homebrew">ce dont vous avez besoin</a> et qu'Apple n'a pas installé.</p>
+                <p>Homebrew instala <a href="https://github.com/mxcl/homebrew/tree/master/Library/Formula" title="List of Homebrew packages">todo aquello que necesitas</a> que Apple no te ha instalado de serie.</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> brew install wget</code></pre>
@@ -43,7 +43,7 @@
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew installe les packages dans leurs propres répertoires et symlinks leurs fichiers vers <code>/usr/local</code>.</p>
+                <p>Homebrew instala cada paquete en su propio directorio, creando enlaces simbólicos a sus archivos dentro de  <code>/usr/local</code>.</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> cd /usr/local
@@ -61,14 +61,14 @@ bin/wget -&gt; ../Cellar/wget/1.12/bin/wget</code></pre>
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew n'installera pas de fichiers en dehors de son préfixe, et vous pouvez placer Homebrew où vous le désirez.</p>
+                <p>Homebrew nunca instala archivos fuera de su prefijo, y puedes colocar la instalación de Homebrew donde quieras.</p>
               </div>
             </div>
           </li>
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Créez facilement vos propre packages Homebrew.</p>
+                <p>Crear tus propios paquetes de Homebrew no puede ser más fácil.</p>
               </div>
               <div class="col-2">
                 <pre><code><span style="color: #e3d796;">$</span> brew create http://foo.com/bar-1.0.tgz
@@ -80,17 +80,17 @@ Created /usr/local/Library/Formula/bar.rb
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew utilise git et ruby, vous pouvez donc faire des modifications sans crainte, sachant que vous pourrez facilement les annuler et les intégrer avec les mises à jour future.</p>
+                <p>Homebrew está basado únicamente en Git y Ruby: ya puedes desarrollar tranquilo, con la seguridad de que podrás deshacer tus cambios e integrar actualizaciones con total facilidad.</p>
               </div>
               <div class="col-2">
-                <pre><code><span style="color: #e3d796;">$</span> brew edit wget <span style="color: #666;"># s'ouvre dans $EDITOR!</span></code></pre>
+                <pre><code><span style="color: #e3d796;">$</span> brew edit wget <span style="color: #666;"># y lo abre en el $EDITOR!</span></code></pre>
               </div>
             </div>
           </li>
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Les formules Homebrew sont de simples scripts Ruby:</p>
+                <p>Las fórmulas de Homebrew son simples <i>scripts</i> en Ruby:</p>
               </div>
               <div class="col-2">
                 <pre class="overflow"><code><span style="color: #8a9597;">require</span> <span style="color: #c2c98f;">'</span><span style="color: #a2a96f;">formula</span><span style="color: #c2c98f;">'</span>
@@ -111,27 +111,27 @@ Created /usr/local/Library/Formula/bar.rb
           <li>
             <div class="group row">
               <div class="col-1">
-                <p>Homebrew est un complément pour OS X. Installez vos gems avec <code>gem</code>, et leurs dépendances avec <code>brew</code>.</p>
+                <p>Homebrew complementa OS X. Instala tus <i>gems</i> con <code>gem</code> y sus dependencias con <code>brew</code>.</p>
               </div>
             </div>
           </li>
 
           <li>
             <div class="group row">
-              <h2>Installer Homebrew</h2>
+              <h2>Instala Homebrew</h2>
               <pre style='clear:both;text-align:center;margin:0 -3em;margin-bottom:0.9em'><code id='selectable' onclick="selectText()">ruby -e &quot;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)&quot;</code></pre>
               <div class="col-1">
-                <p>Copiez et collez dans une fenêtre du Terminal.</p>
+                <p>Pega este código en una ventana del Terminal.</p>
               </div>
               <div class="col-2">
-                <p>Le script explique ce qu'il va faire, puis fait une pause avant de l'exécuter. Plus d'options d'installation sont disponibles <a href='https://github.com/mxcl/homebrew/wiki/Installation'>ici</a> (Requis sur 10.5).
+                <p>El programa de instalación explica en cada paso del proceso qué es lo que va a hacer y se toma una pausa para confirmar antes de empezar cada uno de los pasos. Puedes encontrar más opciones de instalación <a href='https://github.com/mxcl/homebrew/wiki/Installation'>aquí</a> (son necesarias para instalar Homebrew en 10.5).
               </div>
             </div>
           </li>
 
           <li>
             <div class="group row">
-              <h2>Documentation additionnelle</h2>
+              <h2>Documentos adicionales</h2>
               <div class="button">
                 <p><a href="https://github.com/mxcl/homebrew/wiki">Wiki de Homebrew</a></p>
               </div>
@@ -140,7 +140,7 @@ Created /usr/local/Library/Formula/bar.rb
 
           <li>
             <div class="group row credits">
-              <p>Code original par <a href="http://methylblue.com/">Max Howell</a>. Site web par <a href="http://exomel.com">Rémi Prévost</a>. Traduction francaise par <a href="http://twitter.com/louim">Louis-Michel Couture</a></p>
+              <p>Código original de <a href="http://methylblue.com/">Max Howell</a>. Sitio web de <a href="http://exomel.com">Rémi Prévost</a>. Traducción al castellano de <a href="http://catalandr.es">Andrés Catalán</a>.</p>
             </div>
           </li>
         </ul>
