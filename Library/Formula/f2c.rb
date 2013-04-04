@@ -10,7 +10,7 @@ class F2cHttpDownloadStrategy < CurlDownloadStrategy
 end
 
 class F2c < Formula
-  homepage ''
+  homepage 'http://www.netlib.org/f2c/'
   url 'http://netlib.sandia.gov/cgi-bin/netlib/netlibfiles.tar?filename=netlib/f2c',
       :using => F2cHttpDownloadStrategy
   sha1 '37c5b7a39d38efce47a504b78397dc928401a425'
