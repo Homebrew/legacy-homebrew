@@ -7,11 +7,6 @@ class Play < Formula
 
   head 'https://github.com/playframework/Play20.git'
 
-  devel do
-    url 'http://downloads.typesafe.com/play/2.1.1-RC2/play-2.1.1-RC2.zip'
-    sha1 '14d05de4d7d300c349debfbd210dc0578b879f3e'
-  end
-
   def install
     rm Dir['*.bat'] # remove windows' bat files
     libexec.install Dir['*']
