@@ -1,6 +1,8 @@
 langs:
   - langcode: en
     lang_string: English
+  - langcode: de
+    lang_string: Deutsch
   - langcode: es
     lang_string: Español
   - langcode: fr
