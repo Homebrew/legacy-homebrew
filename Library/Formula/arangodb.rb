@@ -7,6 +7,11 @@ class Arangodb < Formula
 
   head "https://github.com/triAGENS/ArangoDB.git"
 
+  devel do
+    url 'https://github.com/triAGENS/ArangoDB/archive/v1.3.alpha1.tar.gz'
+    sha1 '51173707f29bc7c239c06c5043776637b325766b'
+  end
+
   depends_on 'icu4c'
   depends_on 'libev'
   depends_on 'v8'
@@ -39,7 +44,7 @@ class Arangodb < Formula
       http:/www.arangodb.org/quickstart
 
     Upgrading ArangoDB:
-      http://www.arangodb.org/manuals/1.1/Upgrading.html
+      http://www.arangodb.org/manuals/1.2/Upgrading.html
 
     Configuration file:
       /usr/local/etc/arangodb/arangod.conf
