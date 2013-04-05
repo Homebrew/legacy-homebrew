@@ -287,17 +287,24 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
+    args = %W[
+      nice #{RUBY_PATH}
+      -W0
+      -I #{File.dirname(__FILE__)}
+      -rbuild
+      --
+      #{f.path}
+    ].concat(build_argv)
+
+    # Ruby 2.0+ sets close-on-exec on all file descriptors except for
+    # 0, 1, and 2 by default, so we have to specify that we want the pipe
+    # to remain open in the child process.
+    args << { write => write } if RUBY_VERSION >= "2.0"
+
     fork do
       begin
         read.close
-        exec 'nice',
-             RUBY_PATH,
-             '-W0',
-             '-I', Pathname.new(__FILE__).dirname,
-             '-rbuild',
-             '--',
-             f.path,
-             *build_argv
+        exec(*args)
       rescue Exception => e
         Marshal.dump(e, write)
         write.close
