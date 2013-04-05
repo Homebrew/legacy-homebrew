@@ -3,9 +3,9 @@ langs:
     lang_string: English
   - langcode: es
     lang_string: Español
-  - langcode: fr-fr
+  - langcode: fr
     lang_string: Française
-  - langcode: zh-cn
+  - langcode: zh-CN
     lang_string: 简体中文
-  - langcode: zh-tw
+  - langcode: zh-TW
     lang_string: 繁體中文

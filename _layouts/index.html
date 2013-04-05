@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ page.lang }}" lang="{{ page.lang }}">
   <head>
     <title>{{ page.title }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -29,7 +29,7 @@
             {% if page.lang == lang.langcode %}
                 {{ lang.lang_string }}
             {% else %}
-                <a href={% if lang.langcode == 'en' %}"index.html"{% else %}"index_{{ lang.langcode }}.html"{% endif %}>
+                <a href={% if lang.langcode == 'en' %}"index.html"{% else %}"index_{{ lang.langcode | downcase }}.html"{% endif %}>
                 {{ lang.lang_string }}
                 </a>
             {% endif %}
