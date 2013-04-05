@@ -11,6 +11,7 @@ class Emacs < Formula
   option "with-x", "Include X11 support"
   option "use-git-head", "Use Savannah git mirror for HEAD builds"
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
+  option "info", "Install the Info documentation"
 
   if build.include? "use-git-head"
     head 'http://git.sv.gnu.org/r/emacs.git'
@@ -27,6 +28,10 @@ class Emacs < Formula
   fails_with :llvm do
     build 2334
     cause "Duplicate symbol errors while linking."
+  end
+
+  if build.include? "info"
+    skip_clean "share/info"
   end
 
   # Follow MacPorts and don't install ctags from Emacs. This allows Vim
@@ -53,6 +58,10 @@ class Emacs < Formula
       system "autogen/copy_autogen"
     end
 
+    if build.include? "info"
+      mkdir_p "#{info}/emacs"
+    end
+
     if build.include? "cocoa"
       # Patch for color issues described here:
       # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
@@ -66,6 +75,7 @@ class Emacs < Formula
       system "./configure", *args
       system "make bootstrap"
       system "make install"
+      system "make install-info" if build.include? "info"
       prefix.install "nextstep/Emacs.app"
 
       # Don't cause ctags clash.
@@ -93,6 +103,7 @@ class Emacs < Formula
       system "./configure", *args
       system "make"
       system "make install"
+      system "make install-info" if build.include? "info"
 
       # Don't cause ctags clash.
       do_not_install_ctags
