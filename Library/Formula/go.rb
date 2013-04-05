@@ -2,15 +2,10 @@ require 'formula'
 
 class Go < Formula
   homepage 'http://golang.org'
-  url 'http://go.googlecode.com/files/go1.0.3.src.tar.gz'
+  url 'https://go.googlecode.com/files/go1.0.3.src.tar.gz'
   version '1.0.3'
   sha1 '1a67293c10d6c06c633c078a7ca67e98c8b58471'
   head 'https://go.googlecode.com/hg/'
-
-  skip_clean 'bin'
-
-  option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
-  option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
 
   devel do
     url 'https://go.googlecode.com/files/go1.1beta1.src.tar.gz'
@@ -18,7 +13,12 @@ class Go < Formula
     sha1 '73dacb991b3dbf50cf45be0ae9bfef52662eae4d'
   end
 
-  unless build.stable?
+  skip_clean 'bin'
+
+  option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
+  option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
+
+  if build.head? or build.devel?
     fails_with :clang do
       cause "clang: error: no such file or directory: 'libgcc.a'"
     end
