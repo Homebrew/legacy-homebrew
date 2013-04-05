@@ -4,7 +4,7 @@ langs:
   - langcode: es
     lang_string: Español
   - langcode: fr-fr
-    lang_string: Française
+    lang_string: Français
   - langcode: zh-cn
     lang_string: 简体中文
   - langcode: zh-tw
