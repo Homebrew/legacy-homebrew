@@ -2,7 +2,7 @@ langs:
   - langcode: en
     lang_string: English Version
   - langcode: fr-fr
-    lang_string: Version Francaise
+    lang_string: Version Française
   - langcode: zh-cn
     lang_string: 简体中文版
   - langcode: zh-tw
