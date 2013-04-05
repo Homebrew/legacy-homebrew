@@ -38,3 +38,14 @@ index 7df4be9..557d0c2 100644
  	CuAssertTrue (tc, rv == CKR_OK);
  	CuAssertTrue (tc, module != NULL);
  
+--- p11-kit-0.18.0/common/library.c.orig	2013-04-05 01:05:38.000000000 -0700
++++ p11-kit-0.18.0/common/library.c	2013-04-05 01:09:55.000000000 -0700
+@@ -125,7 +125,7 @@
+ 	uninit_common ();
+ 
+ 	/* Some cleanup to pacify valgrind */
+-	free (pthread_getspecific (thread_local));
++	/*free (pthread_getspecific (thread_local));*/
+ 	pthread_setspecific (thread_local, NULL);
+ 
+ 	p11_message_storage = dont_store_message;
