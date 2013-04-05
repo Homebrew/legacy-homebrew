@@ -1,7 +1,7 @@
 require 'formula'
 
 class Randpass < Formula
-  homepage 'https://github.com/dogriffiths/randpass/wiki'
+  homepage 'http://dogriffiths.github.com/randpass/'
   url 'https://github.com/dogriffiths/randpass/archive/v1.0.9.tar.gz'
   sha1 '207db253aa2f5d8b3e5a30b13929eb1d3cedf013'
 
