@@ -19,6 +19,7 @@ class Git < Formula
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
+  option 'without-osxkeychain', 'Do not install the OS X keychain credential helper'
 
   depends_on 'pcre' => :optional
 
@@ -48,13 +49,15 @@ class Git < Formula
                    "LDFLAGS=#{ENV.ldflags}",
                    "install"
 
-    # Install the OS X keychain credential helper
-    cd 'contrib/credential/osxkeychain' do
-      system "make", "CC=#{ENV.cc}",
-                     "CFLAGS=#{ENV.cflags}",
-                     "LDFLAGS=#{ENV.ldflags}"
-      bin.install 'git-credential-osxkeychain'
-      system "make", "clean"
+    unless build.without? 'osxkeychain'
+        # Install the OS X keychain credential helper
+        cd 'contrib/credential/osxkeychain' do
+          system "make", "CC=#{ENV.cc}",
+                         "CFLAGS=#{ENV.cflags}",
+                         "LDFLAGS=#{ENV.ldflags}"
+          bin.install 'git-credential-osxkeychain'
+          system "make", "clean"
+        end
     end
 
     # Install git-subtree
