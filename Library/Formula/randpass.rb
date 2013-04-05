@@ -2,8 +2,8 @@ require 'formula'
 
 class Randpass < Formula
   homepage 'https://github.com/dogriffiths/randpass/wiki'
-  url 'https://github.com/dogriffiths/randpass/archive/v1.0.8.tar.gz'
-  sha1 '3fb65eef53f0da5d7d1bc2469ec35ad00f1157d1'
+  url 'https://github.com/dogriffiths/randpass/archive/v1.0.9.tar.gz'
+  sha1 '207db253aa2f5d8b3e5a30b13929eb1d3cedf013'
 
   def install
     system "./configure"
