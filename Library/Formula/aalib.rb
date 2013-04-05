@@ -17,7 +17,8 @@ class Aalib < Formula
                           "--mandir=#{man}",
                           "--infodir=#{info}",
                           "--enable-shared=yes",
-                          "--enable-static=yes"
+                          "--enable-static=yes",
+                          "--without-x"
     system "make install"
   end
 end
