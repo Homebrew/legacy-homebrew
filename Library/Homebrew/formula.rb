@@ -173,8 +173,6 @@ class Formula
 
   def opt_prefix; HOMEBREW_PREFIX/:opt/name end
 
-  # Use the @active_spec to detect the download strategy.
-  # Can be overriden to force a custom download strategy
   def download_strategy
     @active_spec.download_strategy
   end
