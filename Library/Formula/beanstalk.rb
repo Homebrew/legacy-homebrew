@@ -29,8 +29,6 @@ class Beanstalk < Formula
         <true/>
         <key>KeepAlive</key>
         <true/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>WorkingDirectory</key>
         <string>#{var}</string>
         <key>StandardErrorPath</key>

@@ -44,8 +44,6 @@ class CouchdbLucene < Formula
         <array>
           <string>#{opt_prefix}/bin/run</string>
         </array>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>StandardOutPath</key>
         <string>/dev/null</string>
         <key>StandardErrorPath</key>
