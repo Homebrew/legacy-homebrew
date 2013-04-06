@@ -17,6 +17,7 @@ class FormulaInstaller
     @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @options = Options.new
+    @tab = Tab.dummy_tab(ff)
 
     @@attempted ||= Set.new
 
@@ -25,7 +26,7 @@ class FormulaInstaller
   end
 
   def pour_bottle? warn=false
-    (tab.used_options.empty? rescue true) && options.empty? && install_bottle?(f, warn)
+    tab.used_options.empty? && options.empty? && install_bottle?(f, warn)
   end
 
   def check_install_sanity
@@ -267,7 +268,7 @@ class FormulaInstaller
       opts = Options.coerce(ARGV.options_only)
       unless opts.include? '--fresh'
         opts.concat(options) # from a dependent formula
-        opts.concat((tab.used_options rescue [])) # from a previous install
+        opts.concat(tab.used_options) # from a previous install
       end
       opts << Option.new("--build-from-source") # don't download bottle
     end
