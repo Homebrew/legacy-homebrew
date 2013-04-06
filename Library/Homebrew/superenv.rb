@@ -246,6 +246,7 @@ class << ENV
   # This should be a safe hack to prevent that exception cropping up.
   # Main consqeuence of this is that ENV['CFLAGS'] is never nil even when it
   # is which can break if checks, but we don't do such a check in our code.
+  alias_method :"old_[]", :[]
   def [] key
     if has_key? key
       fetch(key)

@@ -67,7 +67,7 @@ module Homebrew extend self
       end
     end
 
-    puts_capture.instance_eval &block
+    puts_capture.instance_eval(&block)
 
   ensure
     puts unless $did_puts
