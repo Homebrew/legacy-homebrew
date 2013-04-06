@@ -93,7 +93,7 @@ class FormulaInstaller
 
     @@attempted << f
 
-    poured_bottle = false
+    @poured_bottle = false
     begin
       if pour_bottle? true
         pour
