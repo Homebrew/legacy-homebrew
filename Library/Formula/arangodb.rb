@@ -5,7 +5,7 @@ class Arangodb < Formula
   url 'https://github.com/triAGENS/ArangoDB/archive/v1.2.2.tar.gz'
   sha1 '1b4390e4ad100c93900651a522a21395d077b0e6'
 
-  head "https://github.com/triAGENS/ArangoDB.git"
+  head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
   devel do
     url 'https://github.com/triAGENS/ArangoDB/archive/v1.3.alpha1.tar.gz'
