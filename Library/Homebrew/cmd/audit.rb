@@ -195,7 +195,7 @@ class FormulaAuditor
     urls = [(f.stable.url rescue nil), (f.devel.url rescue nil), (f.head.url rescue nil)].compact
 
     # Check GNU urls; doesn't apply to mirrors
-    urls.grep(%r[^(https?|ftp)://(?!alpha).+/gnu/]).each do |u|
+    urls.grep(%r[^(?:https?|ftp)://(?!alpha).+/gnu/]).each do |u|
       problem "\"ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
     end
 
@@ -230,7 +230,7 @@ class FormulaAuditor
     end
 
     # Check for git:// GitHub repo urls, https:// is preferred.
-    urls.grep(%r[^git://([^/])*github\.com/]).each do |u|
+    urls.grep(%r[^git://[^/]*github\.com/]).each do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
     end
 
@@ -240,7 +240,7 @@ class FormulaAuditor
     end 
 
     # Use new-style archive downloads
-    urls.select { |u|  u =~ %r[https://.*/(tar|zip)ball/] and not u =~ %r[\.git$] }.each do |u|
+    urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] and not u =~ %r[\.git$] }.each do |u|
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
     end
 
@@ -368,7 +368,7 @@ class FormulaAuditor
     end
 
     # No trailing whitespace, please
-    if text =~ /(\t|[ ])+$/
+    if text =~ /[\t ]+$/
       problem "Trailing whitespace was found"
     end
 
