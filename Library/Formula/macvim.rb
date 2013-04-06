@@ -39,7 +39,7 @@ class Macvim < Formula
       --enable-pythoninterp
       --enable-rubyinterp
       --enable-tclinterp
-      --with-ruby-command=/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
+      --with-ruby-command=#{RUBY_PATH}
     ]
 
     args << "--enable-cscope" if build.include? "with-cscope"
