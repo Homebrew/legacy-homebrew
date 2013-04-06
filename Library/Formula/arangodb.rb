@@ -75,8 +75,6 @@ class Arangodb < Formula
         </array>
         <key>RunAtLoad</key>
         <true/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
       </dict>
     </plist>
     EOS

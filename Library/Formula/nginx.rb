@@ -100,8 +100,6 @@ class Nginx < Formula
         <true/>
         <key>KeepAlive</key>
         <false/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>ProgramArguments</key>
         <array>
             <string>#{opt_prefix}/sbin/nginx</string>
