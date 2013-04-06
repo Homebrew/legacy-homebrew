@@ -192,6 +192,10 @@ class FormulaAuditor
       problem "Google Code homepage should end with a slash (url is #{f.homepage})."
     end
 
+    if f.homepage =~ %r[^http://.*\.github\.com/]
+      problem "GitHub pages should use the github.io domain (url is #{f.homepage})"
+    end
+
     urls = [(f.stable.url rescue nil), (f.devel.url rescue nil), (f.head.url rescue nil)].compact
 
     # Check GNU urls; doesn't apply to mirrors
