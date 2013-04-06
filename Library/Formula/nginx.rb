@@ -17,7 +17,8 @@ class Nginx < Formula
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
   option 'with-debug', 'Compile with support for debug log'
-
+  option 'with-nhpm', 'Compile with support for NGiNX HTTP Push Module'
+  
   option 'with-spdy', 'Compile with support for SPDY module' if build.devel?
 
   skip_clean 'logs'
@@ -63,10 +64,21 @@ class Nginx < Formula
     if build.devel?
       args << "--with-http_spdy_module" if build.include? 'with-spdy'
     end
+    
+    if build.include? 'with-nhpm'
+      clone_dir = lib + 'nginx_http_push_module'
+      system "git clone https://github.com/slact/nginx_http_push_module.git #{clone_dir}"
+      args << "--add-module=#{clone_dir}"
+    end
 
     system "./configure", *args
     system "make"
     system "make install"
+    
+    if build.include? 'with-nhpm'
+      system "rm -rf #{clone_dir}"
+    end
+    
     man8.install "objs/nginx.8"
     (var/'run/nginx').mkpath
   end
