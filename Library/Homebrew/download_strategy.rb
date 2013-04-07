@@ -209,9 +209,14 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
     @@svn ||= 'svn'
-    @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @unique_token += "-HEAD" if ARGV.include? '--HEAD'
-    @co=HOMEBREW_CACHE+@unique_token
+
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      raise NotImplementedError, "strategy requires a name parameter"
+    else
+      @co = HOMEBREW_CACHE + "#{name}--svn"
+    end
+
+    @co << "-HEAD" if ARGV.build_head?
   end
 
   def cached_location
@@ -307,8 +312,12 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
     @@git ||= 'git'
-    @unique_token="#{name}--git" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @clone=HOMEBREW_CACHE+@unique_token
+
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      raise NotImplementedError, "strategy requires a name parameter"
+    else
+      @clone = HOMEBREW_CACHE + "#{name}--git"
+    end
   end
 
   def cached_location
@@ -457,8 +466,12 @@ end
 class CVSDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
-    @unique_token="#{name}--cvs" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @co=HOMEBREW_CACHE+@unique_token
+
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      raise NotImplementedError, "strategy requires a name parameter"
+    else
+      @co = HOMEBREW_CACHE + "#{name}--cvs"
+    end
   end
 
   def cached_location; @co; end
