@@ -92,9 +92,7 @@ class BeerTasting < Test::Unit::TestCase
     assert f2.installed?
     assert f3.installed?
 
-    shutup do
-      Homebrew.cleanup_formula f3
-    end
+    shutup { Homebrew.cleanup_formula(f3) }
 
     assert !f1.installed?
     assert !f2.installed?
@@ -113,39 +111,40 @@ class BeerTasting < Test::Unit::TestCase
   end
 
   def test_pathname_plus_yeast
+    abcd = orig_abcd = HOMEBREW_CACHE+'abcd'
+
     shutup do
-      assert_nothing_raised do
-        assert !Pathname.getwd.rmdir_if_possible
-        assert !Pathname.getwd.abv.empty?
+      assert !Pathname.getwd.rmdir_if_possible
+      assert !Pathname.getwd.abv.empty?
 
-        abcd=orig_abcd=HOMEBREW_CACHE+'abcd'
-        FileUtils.cp ABS__FILE__, abcd
-        installed_paths=HOMEBREW_PREFIX.install abcd
-        abcd = installed_paths[0]
-        assert((HOMEBREW_PREFIX+orig_abcd.basename).exist?)
-        assert abcd.exist?
-        assert_equal HOMEBREW_PREFIX+'abcd', abcd
+      FileUtils.cp ABS__FILE__, abcd
+      installed_paths = HOMEBREW_PREFIX.install(abcd)
 
-        assert_raises(RuntimeError) {abcd.write 'CONTENT'}
-        abcd.unlink
-        abcd.write 'HELLOWORLD'
-        assert_equal 'HELLOWORLD', File.read(abcd)
+      abcd = installed_paths[0]
+      assert((HOMEBREW_PREFIX+orig_abcd.basename).exist?)
+      assert abcd.exist?
+      assert_equal HOMEBREW_PREFIX+'abcd', abcd
 
-        assert !orig_abcd.exist?
-        rv=abcd.cp orig_abcd
-        assert orig_abcd.exist?
-        assert_equal rv, orig_abcd
+      assert_raises(RuntimeError) { abcd.write 'CONTENT' }
 
-        orig_abcd.unlink
-        assert !orig_abcd.exist?
-        abcd.cp HOMEBREW_CACHE
-        assert orig_abcd.exist?
+      abcd.unlink
+      abcd.write 'HELLOWORLD'
+      assert_equal 'HELLOWORLD', File.read(abcd)
 
-        HOMEBREW_CACHE.chmod_R 0777
+      assert !orig_abcd.exist?
+      rv=abcd.cp orig_abcd
+      assert orig_abcd.exist?
+      assert_equal rv, orig_abcd
 
-        abcd.unlink # teardown
-      end
+      orig_abcd.unlink
+      assert !orig_abcd.exist?
+      abcd.cp HOMEBREW_CACHE
+      assert orig_abcd.exist?
+
+      HOMEBREW_CACHE.chmod_R 0777
     end
+  ensure
+    abcd.unlink
   end
 
   def test_pathname_properties
