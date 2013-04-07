@@ -1,8 +1,8 @@
 require 'formula'
 
 class Distribute < Formula
-  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.35.tar.gz'
-  sha1 'a928104ea1bd1f85c35de6d0d5f1628d2602ac66'
+  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.36.tar.gz'
+  sha1 'ab69711e4ea85c84d6710ecadf1d77427539f702'
 end
 
 class Pip < Formula
@@ -12,8 +12,8 @@ end
 
 class Python < Formula
   homepage 'http://www.python.org'
-  url 'http://www.python.org/ftp/python/2.7.3/Python-2.7.3.tar.bz2'
-  sha1 '842c4e2aff3f016feea3c6e992c7fa96e49c9aa0'
+  url 'http://www.python.org/ftp/python/2.7.4/Python-2.7.4.tar.bz2'
+  sha1 'deb8609d8e356b3388f33b6a4d6526911994e5b1'
 
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build (for devs; may fail)'
@@ -32,9 +32,6 @@ class Python < Formula
 
   def patches
     p = []
-    # python fails to build on NFS; patch is merged upstream, will be in next release
-    # see http://bugs.python.org/issue14662
-    p << "https://gist.github.com/raw/4349132/25662c6b382315b5db67bf949773d76471bbcee7/python-nfs-shutil.diff"
     p << 'https://raw.github.com/gist/3415636/2365dea8dc5415daa0148e98c394345e1191e4aa/pythondtrace-patch.diff' if build.include? 'with-dtrace'
     # Patch to disable the search for Tk.frameworked, since homebrew's Tk is
     # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
