@@ -1,7 +1,7 @@
 require 'formula'
 
 class Crash < Formula
-  homepage 'http://vietj.github.com/crash/'
+  homepage 'http://vietj.github.io/crash/'
   url 'https://crsh.googlecode.com/files/crsh-all-1.1.0.tar.gz'
   sha1 'c7a331de9fcf036197b018b509d32322c785cc11'
 

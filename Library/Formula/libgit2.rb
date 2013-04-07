@@ -1,7 +1,7 @@
 require 'formula'
 
 class Libgit2 < Formula
-  homepage 'http://libgit2.github.com/'
+  homepage 'http://libgit2.github.io/'
   url 'https://github.com/libgit2/libgit2/archive/v0.17.0.tar.gz'
   sha1 '0887ce3aa2b22c3a256bf5cd80e13f3766b27480'
 

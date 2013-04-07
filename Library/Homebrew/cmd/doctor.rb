@@ -1095,7 +1095,7 @@ module Homebrew extend self
     checks = Checks.new
 
     if ARGV.include? '--list-checks'
-      checks.methods.select { |m| m =~ /^check_/ }.sort.each { |m| puts m }
+      checks.methods.grep(/^check_/).sort.each { |m| puts m }
       exit
     end
 
@@ -1106,7 +1106,7 @@ module Homebrew extend self
       checks.methods.sort << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
     else
       ARGV.named
-    end.select{ |method| method =~ /^check_/ }.reverse.uniq.reverse
+    end.grep(/^check_/).reverse.uniq.reverse
 
     first_warning = true
     methods.each do |method|

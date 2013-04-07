@@ -77,6 +77,11 @@ module MacCPUs
     type == :ppc && family != :g3
   end
 
+  def avx?
+    pre_sandy = [:core, :core2, :penryn, :nehalem, :arrandale].include? family
+    type == :intel && !pre_sandy
+  end
+
   def sse3?
     type == :intel
   end

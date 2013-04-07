@@ -90,6 +90,8 @@ Note that these flags should only appear after a command.
 
     If `--all` is passed, show dependencies for all formulae.
 
+    If `--installed` is passed, show dependencies for all installed formulae.
+
   * `diy [--set-name <name>] [--set-version <version>]`:
     Automatically determine the installation prefix for non-Homebrew software.
 

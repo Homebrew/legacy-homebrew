@@ -8,4 +8,11 @@ class CurlCaBundle < Formula
   def install
     share.install 'ca-bundle.crt'
   end
+
+  def caveats; <<-EOS.undent
+    To use these certificates with OpenSSL:
+
+      export SSL_CERT_FILE=#{opt_prefix}/share/ca-bundle.crt
+    EOS
+  end
 end

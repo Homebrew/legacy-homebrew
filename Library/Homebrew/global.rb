@@ -11,7 +11,7 @@ require 'rbconfig'
 ARGV.extend(HomebrewArgvExtension)
 
 HOMEBREW_VERSION = '0.9.4'
-HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
+HOMEBREW_WWW = 'http://brew.sh'
 
 def cache
   if ENV['HOMEBREW_CACHE']

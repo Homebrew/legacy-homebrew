@@ -3,6 +3,7 @@ require 'formula'
 class GstPluginsBad < Formula
   homepage 'http://gstreamer.freedesktop.org/'
   url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.0.6.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.0.6.tar.xz'
   sha256 '92130899d0b78b71f1551cada9b10b550e91506c2d7b8b748e5cc18a620d302d'
 
   depends_on 'pkg-config' => :build
