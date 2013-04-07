@@ -94,6 +94,7 @@ class FormulaAuditor
     @f = f
     @problems = []
     @text = f.text.without_patch
+    @specs = %w{stable devel head}.map { |s| f.send(s) }.compact
 
     # We need to do this in case the formula defines a patch that uses DATA.
     f.class.redefine_const :DATA, ""
@@ -196,7 +197,7 @@ class FormulaAuditor
       problem "GitHub pages should use the github.io domain (url is #{f.homepage})"
     end
 
-    urls = [(f.stable.url rescue nil), (f.devel.url rescue nil), (f.head.url rescue nil)].compact
+    urls = @specs.map(&:url)
 
     # Check GNU urls; doesn't apply to mirrors
     urls.grep(%r[^(?:https?|ftp)://(?!alpha).+/gnu/]).each do |u|
@@ -204,7 +205,7 @@ class FormulaAuditor
     end
 
     # the rest of the checks apply to mirrors as well
-    urls.concat([(f.stable.mirrors rescue nil), (f.devel.mirrors rescue nil)].flatten.compact)
+    urls.concat(@specs.map(&:mirrors).flatten)
 
     # Check SourceForge urls
     urls.each do |p|
