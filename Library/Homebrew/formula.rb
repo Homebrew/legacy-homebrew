@@ -528,7 +528,7 @@ class Formula
 
   end
 
-protected
+  protected
 
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -593,7 +593,7 @@ protected
     end if removed_ENV_variables
   end
 
-public
+  public
 
   # For brew-fetch and others.
   def fetch
@@ -621,7 +621,7 @@ public
     not self.class.instance_variable_get(:@test_defined).nil?
   end
 
-private
+  private
 
   def stage
     fetched, downloader = fetch
@@ -807,7 +807,7 @@ private
       @test = block
     end
 
-  private
+    private
 
     def post_depends_on(dep)
       # Generate with- or without- options for optional and recommended
