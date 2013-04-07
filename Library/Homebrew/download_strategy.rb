@@ -122,7 +122,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
-private
+  private
+
   def chdir
     entries=Dir['*']
     case entries.length
@@ -493,7 +494,8 @@ class CVSDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
-private
+  private
+
   def split_url(in_url)
     parts=in_url.sub(%r[^cvs://], '').split(/:/)
     mod=parts.pop

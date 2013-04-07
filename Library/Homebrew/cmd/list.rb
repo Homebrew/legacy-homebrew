@@ -23,7 +23,7 @@ module Homebrew extend self
     end
   end
 
-private
+  private
 
   def list_unbrewed
     dirs = HOMEBREW_PREFIX.children.select{ |pn| pn.directory? }.map{ |pn| pn.basename.to_s }
