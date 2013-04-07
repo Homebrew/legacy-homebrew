@@ -6,6 +6,7 @@ class Fftw < Formula
   sha1 '11487180928d05746d431ebe7a176b52fe205cf9'
 
   option "with-fortran", "Enable Fortran bindings"
+  option "without-avx",  "Disable AVX instruction set for SIMD speedup"
 
   def install
     args = ["--enable-shared",
@@ -14,6 +15,8 @@ class Fftw < Formula
             "--enable-threads",
             "--disable-dependency-tracking"]
 
+    simd_args = ["--enable-sse2"]
+    simd_args << "--enable-avx" unless build.include? "without-avx"
     if build.include? "with-fortran"
       ENV.fortran
     else
@@ -21,18 +24,16 @@ class Fftw < Formula
     end
 
     # single precision
-    # enable-sse only works with single
-    system "./configure", "--enable-single",
-                          "--enable-sse",
-                          *args
+    # enable-sse2 works for both single and double precisions
+    system "./configure", "--enable-single", *(args + simd_args)
     system "make install"
 
     # clean up so we can compile the double precision variant
     system "make clean"
 
     # double precision
-    # enable-sse2 only works with double precision (default)
-    system "./configure", "--enable-sse2", *args
+    # enable-sse2 works for both single and double precisions
+    system "./configure", *(args + simd_args)
     system "make install"
 
     # clean up so we can compile the long-double precision variant
