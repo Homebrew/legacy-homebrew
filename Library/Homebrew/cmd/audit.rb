@@ -130,7 +130,7 @@ class FormulaAuditor
     f.deps.each do |dep|
       begin
         dep_f = dep.to_formula
-      rescue
+      rescue FormulaUnavailableError
         problem "Can't find dependency #{dep.name.inspect}."
       end
 
