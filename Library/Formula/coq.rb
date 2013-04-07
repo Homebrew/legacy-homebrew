@@ -18,7 +18,7 @@ end
 
 class Coq < Formula
   homepage 'http://coq.inria.fr/'
-  url 'http://coq.inria.fr/distrib/V8.4pl1/files/coq-8.4pl2.tar.gz'
+  url 'http://coq.inria.fr/distrib/V8.4pl2/files/coq-8.4pl2.tar.gz'
   version '8.4pl2'
   sha1 'adcef430b8e27663e8ea075e646112f7d4d51fa6'
 
