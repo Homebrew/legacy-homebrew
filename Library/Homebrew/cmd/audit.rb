@@ -430,16 +430,17 @@ class FormulaAuditor
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
 
-    if text =~ /(MacOS.((snow_)?leopard|leopard|(mountain_)?lion)\?)/
-      problem "#{$1} is deprecated, use a comparison to MacOS.version instead"
+    cats = %w{leopard snow_leopard lion mountain_lion}.join("|")
+    if text =~ /MacOS\.(?:#{cats})\?/
+      problem "\"#{$&}\" is deprecated, use a comparison to MacOS.version instead"
     end
 
     if text =~ /skip_clean\s+:all/
       problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
     end
 
-    if text =~ /depends_on (.*)\.new$/
-      problem "`depends_on` can take requirement classes directly"
+    if text =~ /depends_on [A-Z][\w:]+\.new$/
+      problem "`depends_on` can take requirement classes instead of instances"
     end
   end
 
