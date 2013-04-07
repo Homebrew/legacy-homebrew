@@ -1,22 +1,19 @@
 class Checksum
   attr_reader :hash_type, :hexdigest
+  alias_method :to_s, :hexdigest
 
   TYPES = [:sha1, :sha256]
 
-  def initialize type=:sha1, val=nil
-    @hash_type = type
-    @hexdigest = val.to_s
+  def initialize(hash_type, hexdigest)
+    @hash_type = hash_type
+    @hexdigest = hexdigest
   end
 
   def empty?
-    @hexdigest.empty?
+    hexdigest.empty?
   end
 
-  def to_s
-    @hexdigest
-  end
-
-  def == other
-    @hash_type == other.hash_type and @hexdigest == other.hexdigest
+  def ==(other)
+    hash_type == other.hash_type && hexdigest == other.hexdigest
   end
 end
