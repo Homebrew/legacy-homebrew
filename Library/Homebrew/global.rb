@@ -63,9 +63,8 @@ end
 
 HOMEBREW_LOGS = Pathname.new('~/Library/Logs/Homebrew/').expand_path
 
-RUBY_CONFIG = RbConfig::CONFIG
-RUBY_BIN = Pathname.new("#{RUBY_CONFIG['bindir']}")
-RUBY_PATH = RUBY_BIN/RUBY_CONFIG['ruby_install_name'] + RUBY_CONFIG['EXEEXT']
+RUBY_BIN = Pathname.new("#{RbConfig::CONFIG['bindir']}")
+RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
 
 if RUBY_PLATFORM =~ /darwin/
   MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
