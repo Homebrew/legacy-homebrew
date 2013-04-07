@@ -12,9 +12,9 @@ class Pypy < Formula
   sha1 '825e15724419fbdb6fe215eeea044f9181883c90'
 
   devel do
-    url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.0-beta1-osx64.tar.bz2'
-    version '2.0-beta1'
-    sha1 'e4938fdf33072e457fee6cb22798ec08b5a01978'
+    url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.0-beta2-osx64.tar.bz2'
+    version '2.0-beta2'
+    sha1 'ec3d80d7806b0689d9da70ca27c741b1d9cea250'
   end
 
   depends_on :arch => :x86_64
