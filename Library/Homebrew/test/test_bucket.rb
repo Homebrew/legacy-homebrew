@@ -54,15 +54,6 @@ class BeerTasting < Test::Unit::TestCase
     shutup { assert_nothing_raised { TestZip.new.brew {} } }
   end
 
-  # needs resurrecting
-  # def test_no_ARGV_dupes
-  #   ARGV.reset
-  #   ARGV << 'foo' << 'foo'
-  #   n=0
-  #   ARGV.named.each{|f| n+=1 if f == 'foo'}
-  #   assert_equal 1, n
-  # end
-
   def test_brew_h
     require 'cmd/info'
     require 'cmd/prune'
