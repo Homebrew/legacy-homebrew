@@ -141,6 +141,11 @@ class FormulaAuditor
       end
 
       case dep.name
+      when *BUILD_TIME_DEPS
+        # Build deps should be tagged
+        problem <<-EOS.undent unless dep.tags.any? || f.name =~ /automake/ && dep.name == 'autoconf'
+        #{dep} dependency should be "depends_on '#{dep}' => :build"
+        EOS
       when "git", "python", "ruby", "emacs", "mysql", "mercurial"
         problem <<-EOS.undent
           Don't use #{dep} as a dependency. We allow non-Homebrew
@@ -314,12 +319,6 @@ class FormulaAuditor
     if (text =~ /# system "cmake/)
       problem "Commented cmake call found"
     end
-
-    # build tools should be flagged properly
-    # but don't complain about automake; it needs autoconf at runtime
-    if text =~ /depends_on ['"](#{BUILD_TIME_DEPS*'|'})['"]$/
-      problem "#{$1} dependency should be \"depends_on '#{$1}' => :build\""
-    end unless f.name =~ /automake/
 
     # FileUtils is included in Formula
     if text =~ /FileUtils\.(\w+)/
