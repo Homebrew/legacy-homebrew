@@ -31,15 +31,7 @@ class FormulaTests < Test::Unit::TestCase
 
   def test_cant_override_brew
     assert_raises(RuntimeError) do
-      eval <<-EOS
-      class TestBallOverrideBrew < Formula
-        def initialize
-          super "foo"
-        end
-        def brew
-        end
-      end
-      EOS
+      Class.new(Formula) { def brew; end }
     end
   end
 

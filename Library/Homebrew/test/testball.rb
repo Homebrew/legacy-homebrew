@@ -1,7 +1,6 @@
 require 'formula'
 
 class TestBall < Formula
-  # name parameter required for some Formula::factory
   def initialize name=nil
     @homepage = 'http://example.com/'
     @stable ||= SoftwareSpec.new
@@ -31,7 +30,6 @@ class TestBallWithMirror < Formula
 end
 
 class ConfigureFails < Formula
-  # name parameter required for some Formula::factory
   url "file:///#{TEST_FOLDER}/tarballs/configure_fails.tar.gz"
   version '1.0.0'
   sha1 'b36c65e5de86efef1b3a7e9cf78a98c186b400b3'
