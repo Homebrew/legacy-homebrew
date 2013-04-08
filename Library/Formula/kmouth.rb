@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Kmouth < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kmouth-4.9.4.tar.xz'
-  sha1 '5f7691f0306dd1690fbbf05d15c6c1636ecd80a9'
+  url 'http://download.kde.org/stable/4.10.2/src/kmouth-4.10.2.tar.xz'
+  sha1 '3ed90ae8a113264ef9b8c176c905f3d365443766'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kmouth-4.9.95.tar.xz'
-    sha1 '62eb1c7db5170f967069f7e3a97b4a94b8e4fc1f'
+    url 'http://download.kde.org/stable/4.10.2/src/kmouth-4.10.2.tar.xz'
+    sha1 '3ed90ae8a113264ef9b8c176c905f3d365443766'
   end
 
   depends_on 'kdelibs'

@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Libkcddb < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/libkcddb-4.9.4.tar.xz'
-  sha1 '862239eca7ff3bd68dfcbd0cd1b95c8d99b4bf61'
+  url 'http://download.kde.org/stable/4.10.2/src/libkcddb-4.10.2.tar.xz'
+  sha1 'c9e8d93ecf9f238bf12d98d27fc20421af5ae240'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/libkcddb-4.9.95.tar.xz'
-    sha1 '4689df4c9a053be41d089c13d038161953998513'
+    url 'http://download.kde.org/stable/4.10.2/src/libkcddb-4.10.2.tar.xz'
+    sha1 'c9e8d93ecf9f238bf12d98d27fc20421af5ae240'
   end
 
   depends_on 'kdelibs'

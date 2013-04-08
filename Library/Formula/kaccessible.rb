@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Kaccessible < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kaccessible-4.9.4.tar.xz'
-  sha1 '178b2f10621fbd50b7d4b5d50dfbae012f009551'
+  url 'http://download.kde.org/stable/4.10.2/src/kaccessible-4.10.2.tar.xz'
+  sha1 '453235676a1991e5f448497f8aa61d0e7ddd54f2'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kaccessible-4.9.95.tar.xz'
-    sha1 'c9fb5b6d2e6cd75f8ae54544ead0c1dc14be50ca'
+    url 'http://download.kde.org/stable/4.10.2/src/kaccessible-4.10.2.tar.xz'
+    sha1 '453235676a1991e5f448497f8aa61d0e7ddd54f2'
   end
 
   depends_on 'kdelibs'

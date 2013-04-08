@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Libkexiv2 < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/libkexiv2-4.9.4.tar.xz'
-  sha1 '130c9956c89076ba9df971ea72c0713fdcfee989'
+  url 'http://download.kde.org/stable/4.10.2/src/libkexiv2-4.10.2.tar.xz'
+  sha1 '02dce6eaf48c14f134f220eeed494d74d41f7226'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/libkexiv2-4.9.95.tar.xz'
-    sha1 '6f2ab9625abf99b9f78f959c0734b2b35b270662'
+    url 'http://download.kde.org/stable/4.10.2/src/libkexiv2-4.10.2.tar.xz'
+    sha1 '02dce6eaf48c14f134f220eeed494d74d41f7226'
   end
 
   depends_on 'kdelibs'

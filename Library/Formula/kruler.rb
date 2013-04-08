@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Kruler < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kruler-4.9.4.tar.xz'
-  sha1 '8df30ea040707fda547bde0435ab0843beb8a59f'
+  url 'http://download.kde.org/stable/4.10.2/src/kruler-4.10.2.tar.xz'
+  sha1 '9424591fe16cd1930f0a6bf89fcf7b56c0560227'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kruler-4.9.95.tar.xz'
-    sha1 '4cc104c7e6852989b12e76b6c725f27ca135cd3c'
+    url 'http://download.kde.org/stable/4.10.2/src/kruler-4.10.2.tar.xz'
+    sha1 '9424591fe16cd1930f0a6bf89fcf7b56c0560227'
   end
 
   depends_on 'kdelibs'

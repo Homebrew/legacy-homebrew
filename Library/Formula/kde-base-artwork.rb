@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class KdeBaseArtwork < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kde-base-artwork-4.9.4.tar.xz'
-  sha1 'ab7b1746ce7fce494e5b48c8e42675ce733eb6e8'
+  url 'http://download.kde.org/stable/4.10.2/src/kde-base-artwork-4.10.2.tar.xz'
+  sha1 '4071b07ebe544e7ec9032cf7fc2798eaa45ee39b'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kde-base-artwork-4.9.95.tar.xz'
-    sha1 'e1656e5eb8856f191e23cc004e591390d8b7d77f'
+    url 'http://download.kde.org/stable/4.10.2/src/kde-base-artwork-4.10.2.tar.xz'
+    sha1 '4071b07ebe544e7ec9032cf7fc2798eaa45ee39b'
   end
 
   depends_on 'kdelibs'

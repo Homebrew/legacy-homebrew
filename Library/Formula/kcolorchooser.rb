@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Kcolorchooser < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kcolorchooser-4.9.4.tar.xz'
-  sha1 'c8c41d4724e689cf70028bafb3bb705fe90607ea'
+  url 'http://download.kde.org/stable/4.10.2/src/kcolorchooser-4.10.2.tar.xz'
+  sha1 '71d7e8415c4583ef72598bb4a50d8b2c7c83a8e6'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kcolorchooser-4.9.95.tar.xz'
-    sha1 'd462db8957d92f642d635312858d137f65285e6f'
+    url 'http://download.kde.org/stable/4.10.2/src/kcolorchooser-4.10.2.tar.xz'
+    sha1 '71d7e8415c4583ef72598bb4a50d8b2c7c83a8e6'
   end
 
   depends_on 'kdelibs'

@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Qtruby < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/qtruby-4.9.4.tar.xz'
-  sha1 '4f6f57b7f99b540b126534b8f9208cc1419b7e9a'
+  url 'http://download.kde.org/stable/4.10.2/src/qtruby-4.10.2.tar.xz'
+  sha1 '5db91d696af4c9bcb784921ff7aa937bbc38ed01'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/qtruby-4.9.95.tar.xz'
-    sha1 '162e2bd2cd886e4b36321b22a5960b43de2dd46e'
+    url 'http://download.kde.org/stable/4.10.2/src/qtruby-4.10.2.tar.xz'
+    sha1 '5db91d696af4c9bcb784921ff7aa937bbc38ed01'
   end
 
   depends_on 'kdelibs'

@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Kdelibs < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kdelibs-4.9.4.tar.xz'
-  sha1 'b2fe70261207a96a26b5d8789379f134e3e070be'
+  url 'http://download.kde.org/stable/4.10.2/src/kdelibs-4.10.2.tar.xz'
+  sha1 '2f1f455c39fa33cc133db7ec6b3d2dbbabe03c85'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kdelibs-4.9.95.tar.xz'
-    sha1 'c770a1752fb0c7cb9e2df0e424051eef57c0c9ee'
+    url 'http://download.kde.org/stable/4.10.2/src/kdelibs-4.10.2.tar.xz'
+    sha1 '2f1f455c39fa33cc133db7ec6b3d2dbbabe03c85'
   end
   depends_on 'gettext'
   depends_on 'pcre'

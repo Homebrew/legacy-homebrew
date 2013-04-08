@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class KdegraphicsThumbnailers < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kdegraphics-thumbnailers-4.9.4.tar.xz'
-  sha1 'ea6156de54839157f933588eb7db6d94a2399f3b'
+  url 'http://download.kde.org/stable/4.10.2/src/kdegraphics-thumbnailers-4.10.2.tar.xz'
+  sha1 '7a3688aa23050967927e569f2b8d8c6841bf2401'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kdegraphics-thumbnailers-4.9.95.tar.xz'
-    sha1 '5d6374dcbc5991687367f678f53e289bbb434bd8'
+    url 'http://download.kde.org/stable/4.10.2/src/kdegraphics-thumbnailers-4.10.2.tar.xz'
+    sha1 '7a3688aa23050967927e569f2b8d8c6841bf2401'
   end
 
   depends_on 'kdelibs'

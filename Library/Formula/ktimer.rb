@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Ktimer < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/ktimer-4.9.4.tar.xz'
-  sha1 'eb0a962643bade40039b06fcf3d4d8a5eb1b9444'
+  url 'http://download.kde.org/stable/4.10.2/src/ktimer-4.10.2.tar.xz'
+  sha1 '2348d09267f173201b1ce426f0831e444602545d'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/ktimer-4.9.95.tar.xz'
-    sha1 '5b77c8be0b223bce6012f5d48f937ec487059208'
+    url 'http://download.kde.org/stable/4.10.2/src/ktimer-4.10.2.tar.xz'
+    sha1 '2348d09267f173201b1ce426f0831e444602545d'
   end
 
   depends_on 'kdelibs'

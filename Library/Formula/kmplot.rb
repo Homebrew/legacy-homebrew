@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Kmplot < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kmplot-4.9.4.tar.xz'
-  sha1 '07e94f3d66bae5bf518117d76d15f6d996174b5e'
+  url 'http://download.kde.org/stable/4.10.2/src/kmplot-4.10.2.tar.xz'
+  sha1 '938f0888702e3d294aba8084b4268d883fd7514e'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kmplot-4.9.95.tar.xz'
-    sha1 'd29c5464d7177092f2cfc44acc1b5654d3a708f0'
+    url 'http://download.kde.org/stable/4.10.2/src/kmplot-4.10.2.tar.xz'
+    sha1 '938f0888702e3d294aba8084b4268d883fd7514e'
   end
 
   depends_on 'kdelibs'

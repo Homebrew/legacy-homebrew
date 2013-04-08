@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class KdeBaseapps < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kde-baseapps-4.9.4.tar.xz'
-  sha1 'b68e76766331272a45b1d897adf4c1928a11e747'
+  url 'http://download.kde.org/stable/4.10.2/src/kde-baseapps-4.10.2.tar.xz'
+  sha1 '7f505292e95b35205cec3baa67e9e9b24f79b9b9'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kde-baseapps-4.9.95.tar.xz'
-    sha1 'a28eebf05bc484a2b91c33c8c700a0f09c57ed3d'
+    url 'http://download.kde.org/stable/4.10.2/src/kde-baseapps-4.10.2.tar.xz'
+    sha1 '7f505292e95b35205cec3baa67e9e9b24f79b9b9'
   end
 
   depends_on 'kdelibs'

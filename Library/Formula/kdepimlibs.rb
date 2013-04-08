@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Kdepimlibs < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kdepimlibs-4.9.4.tar.xz'
-  sha1 '78fb5ec8d8a0cbd145f44d76618705c1e3e3b0a3'
+  url 'http://download.kde.org/stable/4.10.2/src/kdepimlibs-4.10.2.tar.xz'
+  sha1 'ab163597d36b5457f9bcb0328f21c35777fffc34'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kdepimlibs-4.9.95.tar.xz'
-    sha1 '1a88826f75143ad2f2ab76d1c434a643ba1db5be'
+    url 'http://download.kde.org/stable/4.10.2/src/kdepimlibs-4.10.2.tar.xz'
+    sha1 'ab163597d36b5457f9bcb0328f21c35777fffc34'
   end
 
   depends_on 'kdelibs'

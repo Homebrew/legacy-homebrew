@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class KdeL10nPa < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kde-l10n/kde-l10n-pa-4.9.4.tar.xz'
-  sha1 '2fa443cd7dc738402bafd83374f2d9c21939806c'
+  url 'http://download.kde.org/stable/4.10.2/src/kde-l10n/kde-l10n-pa-4.10.2.tar.xz'
+  sha1 '59818bb999de4efb70d8a1fcd203beb542299ef5'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kde-l10n/kde-l10n-pa-4.9.95.tar.xz'
-    sha1 'e28c35e9b0ad39461ebb7bcad629319e3df00641'
+    url 'http://download.kde.org/stable/4.10.2/src/kde-l10n/kde-l10n-pa-4.10.2.tar.xz'
+    sha1 '59818bb999de4efb70d8a1fcd203beb542299ef5'
   end
 
   depends_on 'kdelibs'

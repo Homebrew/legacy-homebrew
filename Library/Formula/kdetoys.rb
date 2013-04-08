@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Kdetoys < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kdetoys-4.9.4.tar.xz'
-  sha1 'e59638143bdf75e09ef57658f1f8a53514004a14'
+  url 'http://download.kde.org/stable/4.10.2/src/kdetoys-4.10.2.tar.xz'
+  sha1 '3fa4fc9b9ec04e9967b9a326d9dc26c3055b5e2b'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kdetoys-4.9.95.tar.xz'
-    sha1 'da600b77ed84507f0e5de11e1d9e0b51be817c95'
+    url 'http://download.kde.org/stable/4.10.2/src/kdetoys-4.10.2.tar.xz'
+    sha1 '3fa4fc9b9ec04e9967b9a326d9dc26c3055b5e2b'
   end
 
   depends_on 'kdelibs'

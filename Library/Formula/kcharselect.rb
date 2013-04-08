@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Kcharselect < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kcharselect-4.9.4.tar.xz'
-  sha1 '6f2c822e8255a87ad1636265c47ac78b366ce0db'
+  url 'http://download.kde.org/stable/4.10.2/src/kcharselect-4.10.2.tar.xz'
+  sha1 '2e5b06c4be689097f3999ff772bc12373fa81e7c'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kcharselect-4.9.95.tar.xz'
-    sha1 '7cb85f9baf763165d5231e70bd4c87af039eec46'
+    url 'http://download.kde.org/stable/4.10.2/src/kcharselect-4.10.2.tar.xz'
+    sha1 '2e5b06c4be689097f3999ff772bc12373fa81e7c'
   end
 
   depends_on 'kdelibs'

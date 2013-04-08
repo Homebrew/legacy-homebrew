@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Smokeqt < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/smokeqt-4.9.4.tar.xz'
-  sha1 '171b3c1cc0e7986ffb2d96a9ff844300e98746bf'
+  url 'http://download.kde.org/stable/4.10.2/src/smokeqt-4.10.2.tar.xz'
+  sha1 '6a5743917aec02e6044c711c63acd229c67eff7b'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/smokeqt-4.9.95.tar.xz'
-    sha1 '9a859d3bf01aecfd08164b43cbd021330936b3e2'
+    url 'http://download.kde.org/stable/4.10.2/src/smokeqt-4.10.2.tar.xz'
+    sha1 '6a5743917aec02e6044c711c63acd229c67eff7b'
   end
 
   depends_on 'kdelibs'

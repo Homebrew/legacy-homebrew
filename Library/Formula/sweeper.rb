@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Sweeper < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/sweeper-4.9.4.tar.xz'
-  sha1 '5c0e489a470174a61a6bea88ac994e555ebdd1c9'
+  url 'http://download.kde.org/stable/4.10.2/src/sweeper-4.10.2.tar.xz'
+  sha1 'b817768cbf7c47ba8d0f61c714849e9074cebc43'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/sweeper-4.9.95.tar.xz'
-    sha1 '036ae7d74e4e7a464a060424a7972c9b7ceeb486'
+    url 'http://download.kde.org/stable/4.10.2/src/sweeper-4.10.2.tar.xz'
+    sha1 'b817768cbf7c47ba8d0f61c714849e9074cebc43'
   end
 
   depends_on 'kdelibs'

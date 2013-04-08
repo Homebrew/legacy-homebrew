@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Kdewebdev < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kdewebdev-4.9.4.tar.xz'
-  sha1 'f81a44220c5622b222cb032160be06bf1d965704'
+  url 'http://download.kde.org/stable/4.10.2/src/kdewebdev-4.10.2.tar.xz'
+  sha1 '3ab68cf5fefbfe09826e659a097d21821771a5b9'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kdewebdev-4.9.95.tar.xz'
-    sha1 '104f936fbaf9c882343db61acfcde26d762db954'
+    url 'http://download.kde.org/stable/4.10.2/src/kdewebdev-4.10.2.tar.xz'
+    sha1 '3ab68cf5fefbfe09826e659a097d21821771a5b9'
   end
 
   depends_on 'kdelibs'

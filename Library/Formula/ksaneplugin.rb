@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Ksaneplugin < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/ksaneplugin-4.9.4.tar.xz'
-  sha1 'e4d06db72f4b1d7268bdc31f760dea3e91a6c920'
+  url 'http://download.kde.org/stable/4.10.2/src/ksaneplugin-4.10.2.tar.xz'
+  sha1 '076c7ed01024c91bc690fe07e495e37444dbcdd5'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/ksaneplugin-4.9.95.tar.xz'
-    sha1 'b29c987dd00c41ab70a3bae97d6127a669308311'
+    url 'http://download.kde.org/stable/4.10.2/src/ksaneplugin-4.10.2.tar.xz'
+    sha1 '076c7ed01024c91bc690fe07e495e37444dbcdd5'
   end
 
   depends_on 'kdelibs'

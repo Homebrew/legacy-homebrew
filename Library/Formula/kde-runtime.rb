@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class KdeRuntime < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kde-runtime-4.9.4.tar.xz'
-  sha1 '8988c3684c05efc676d1bfe454480f60d75fac3b'
+  url 'http://download.kde.org/stable/4.10.2/src/kde-runtime-4.10.2.tar.xz'
+  sha1 'b7f3c3907b8f19dcd975b1724b8ae01c4cae638b'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kde-runtime-4.9.95.tar.xz'
-    sha1 'b5c271ddf335970d2d68395162b73f087efea4c4'
+    url 'http://download.kde.org/stable/4.10.2/src/kde-runtime-4.10.2.tar.xz'
+    sha1 'b7f3c3907b8f19dcd975b1724b8ae01c4cae638b'
   end
 
   depends_on 'kde-phonon'

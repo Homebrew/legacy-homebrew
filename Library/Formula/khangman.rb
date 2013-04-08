@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Khangman < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/khangman-4.9.4.tar.xz'
-  sha1 'a736204fd77a9652acf247681d0dc560afc45ddb'
+  url 'http://download.kde.org/stable/4.10.2/src/khangman-4.10.2.tar.xz'
+  sha1 '2795c1ada9898854fe3a8ffd8a92c8ad5cd3eb04'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/khangman-4.9.95.tar.xz'
-    sha1 '84fe69921859cd51672563d47fd3fdf6cf473b99'
+    url 'http://download.kde.org/stable/4.10.2/src/khangman-4.10.2.tar.xz'
+    sha1 '2795c1ada9898854fe3a8ffd8a92c8ad5cd3eb04'
   end
 
   depends_on 'kdelibs'

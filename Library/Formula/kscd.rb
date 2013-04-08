@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Kscd < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kscd-4.9.4.tar.xz'
-  sha1 '298472d76a84a9c7f46c27cc7c141c90e1a1fae5'
+  url 'http://download.kde.org/stable/4.10.2/src/kscd-4.10.2.tar.xz'
+  sha1 '10b7d920fc70b4001e6f7d20e643eb2b09a42dfa'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kscd-4.9.95.tar.xz'
-    sha1 '1d80e1ad8255a290596779fad7e557fe6fc69e23'
+    url 'http://download.kde.org/stable/4.10.2/src/kscd-4.10.2.tar.xz'
+    sha1 '10b7d920fc70b4001e6f7d20e643eb2b09a42dfa'
   end
 
   depends_on 'kdelibs'

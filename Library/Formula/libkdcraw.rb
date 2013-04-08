@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Libkdcraw < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/libkdcraw-4.9.4.tar.xz'
-  sha1 'b40cac622106dd45dd15e3ccc3b10480cc624bd8'
+  url 'http://download.kde.org/stable/4.10.2/src/libkdcraw-4.10.2.tar.xz'
+  sha1 '639bf3bf9a872cccbb39e5d16188dfa1d895463a'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/libkdcraw-4.9.95.tar.xz'
-    sha1 '6384b2950de83e1151f45d7b0f615632d3b7b990'
+    url 'http://download.kde.org/stable/4.10.2/src/libkdcraw-4.10.2.tar.xz'
+    sha1 '639bf3bf9a872cccbb39e5d16188dfa1d895463a'
   end
 
   depends_on 'kdelibs'

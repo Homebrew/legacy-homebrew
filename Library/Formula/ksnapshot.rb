@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Ksnapshot < BaseKdeFormula
   homepage 'http://www.kde.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/ksnapshot-4.9.4.tar.xz'
-  sha1 '0c38aaf8e536704a44b469d708e523f0247a8086'
+  url 'http://download.kde.org/stable/4.10.2/src/ksnapshot-4.10.2.tar.xz'
+  sha1 '4f3167a98d300a56abe91fb56785afc350439cbf'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/ksnapshot-4.9.95.tar.xz'
-    sha1 '6f8daa20f1ac77f1cb5b6737dc83c26073cf316b'
+    url 'http://download.kde.org/stable/4.10.2/src/ksnapshot-4.10.2.tar.xz'
+    sha1 '4f3167a98d300a56abe91fb56785afc350439cbf'
   end
 
   depends_on 'kdelibs'

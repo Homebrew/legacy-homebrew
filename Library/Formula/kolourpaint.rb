@@ -2,12 +2,12 @@ require 'base_kde_formula'
 
 class Kolourpaint < BaseKdeFormula
   homepage 'http://www.kolourpaint.org/'
-  url 'http://download.kde.org/stable/4.9.4/src/kolourpaint-4.9.4.tar.xz'
-  sha1 '04025967d768683ad9f310aab301b41cb000f51b'
+  url 'http://download.kde.org/stable/4.10.2/src/kolourpaint-4.10.2.tar.xz'
+  sha1 '54c0999d3ce68ff4a28c879ac3743d22c76b0937'
 
   devel do
-    url 'http://download.kde.org/unstable/4.9.95/src/kolourpaint-4.9.95.tar.xz'
-    sha1 'bb307d0fc805a32d0adcc593fefcb45107005a45'
+    url 'http://download.kde.org/stable/4.10.2/src/kolourpaint-4.10.2.tar.xz'
+    sha1 '54c0999d3ce68ff4a28c879ac3743d22c76b0937'
   end
 
   depends_on 'kdelibs'
