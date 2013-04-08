@@ -15,10 +15,8 @@ class Fftw < Formula
             "--disable-dependency-tracking"]
 
     simd_args = ["--enable-sse2"]
-    if ENV.compiler == :clang and Hardware::CPU.avx?
-      simd_args << "--enable-avx"
-    end
-        
+    simd_args << "--enable-avx" if ENV.compiler == :clang and Hardware::CPU.avx? and !ARGV.build_bottle?
+
     if build.include? "with-fortran"
       ENV.fortran
     else
