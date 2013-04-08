@@ -1,7 +1,6 @@
 require 'formula'
 
 class TestBall < Formula
-  # name parameter required for some Formula::factory
   def initialize name=nil
     @homepage = 'http://example.com/'
     @stable ||= SoftwareSpec.new
@@ -31,7 +30,6 @@ class TestBallWithMirror < Formula
 end
 
 class ConfigureFails < Formula
-  # name parameter required for some Formula::factory
   url "file:///#{TEST_FOLDER}/tarballs/configure_fails.tar.gz"
   version '1.0.0'
   sha1 'b36c65e5de86efef1b3a7e9cf78a98c186b400b3'
@@ -42,53 +40,6 @@ class ConfigureFails < Formula
 
   def install
     system "./configure"
-  end
-end
-
-class TestCompilerFailures < Formula
-  def initialize name=nil
-    @stable = SoftwareSpec.new "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    super "compilerfailures"
-  end
-end
-
-class TestAllCompilerFailures < TestCompilerFailures
-  fails_with :clang
-  fails_with :llvm
-  fails_with :gcc
-end
-
-class TestNoCompilerFailures < TestCompilerFailures
-  fails_with(:clang) { build 42 }
-  fails_with(:llvm) { build 42 }
-  fails_with(:gcc) { build 42 }
-end
-
-class TestLLVMFailure < TestCompilerFailures
-  fails_with :llvm
-end
-
-class TestMixedCompilerFailures < TestCompilerFailures
-  fails_with(:clang) { build MacOS.clang_build_version }
-  fails_with(:llvm) { build 42 }
-  fails_with(:gcc) { build 5666 }
-end
-
-class TestMoreMixedCompilerFailures < TestCompilerFailures
-  fails_with(:clang) { build 42 }
-  fails_with(:llvm) { build 2336 }
-  fails_with(:gcc) { build 5666 }
-end
-
-class TestEvenMoreMixedCompilerFailures < TestCompilerFailures
-  fails_with :clang
-  fails_with(:llvm) { build 2336 }
-  fails_with(:gcc) { build 5648 }
-end
-
-class TestBlockWithoutBuildCompilerFailure < TestCompilerFailures
-  fails_with :clang do
-    cause "failure"
   end
 end
 

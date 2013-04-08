@@ -17,15 +17,9 @@ end
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.3.tgz'
-  sha1 '6b81469374eb8d1b209fcdd8111d4e654573d095'
-  version '2.2.3-x86_64'
-
-  devel do
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.0-rc3.tgz'
-    sha1 '9ce2dc8b5fe8354131403c151167eb052df24a1f'
-    version '2.4.0-rc3-x86_64'
-  end
+  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.1.tgz'
+  sha1 'd11220cdaf5e8edb88b7b4cc0828ffa6149dd7b5'
+  version '2.4.1-x86_64'
 
   depends_on SixtyFourBitRequired
 
@@ -86,8 +80,6 @@ class Mongodb < Formula
       <true/>
       <key>KeepAlive</key>
       <false/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>
       <key>StandardErrorPath</key>

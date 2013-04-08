@@ -22,7 +22,7 @@ class Znc < Formula
   option 'enable-debug', "Compile ZNC with --enable-debug"
 
   def install
-    args = ["--prefix=#{prefix}", "--enable-extra"]
+    args = ["--prefix=#{prefix}"]
     args << "--enable-debug" if build.include? 'enable-debug'
 
     system "./autogen.sh" if build.head?

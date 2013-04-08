@@ -10,7 +10,7 @@ module Homebrew extend self
     if ARGV.json == "v1"
       print_json
     elsif ARGV.flag? '--github'
-      exec_browser *ARGV.formulae.map { |f| github_info(f) }
+      exec_browser(*ARGV.formulae.map { |f| github_info(f) })
     else
       print_info
     end
@@ -79,7 +79,7 @@ module Homebrew extend self
     specs << "devel #{f.devel.version}" if f.devel
     specs << "HEAD" if f.head
 
-    puts "#{f.name}: #{specs*', '}"
+    puts "#{f.name}: #{specs*', '}#{' (pinned)' if f.pinned?}"
 
     puts f.homepage
 
@@ -99,13 +99,9 @@ module Homebrew extend self
       kegs.reject! {|keg| keg.basename.to_s == '.DS_Store' }
       kegs = kegs.map {|keg| Keg.new(keg) }.sort_by {|keg| keg.version }
       kegs.each do |keg|
-        print "#{keg} (#{keg.abv})"
-        print " *" if keg.linked?
-        puts
-        tab = Tab.for_keg keg
-        unless tab.used_options.empty?
-          puts "  Installed with: #{tab.used_options*', '}"
-        end
+        puts "#{keg} (#{keg.abv})#{' *' if keg.linked?}"
+        tab = Tab.for_keg(keg).to_s
+        puts "  #{tab}" unless tab.empty?
       end
     else
       puts "Not installed"

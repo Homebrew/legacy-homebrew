@@ -47,6 +47,12 @@ class Imagemagick < Formula
     sha1 'b5b3ffb0c4bf9fe247b9fdeea789298c71904a12' => :snow_leopard
   end
 
+  def pour_bottle?
+    # If libtool is keg-only it currently breaks the bottle.
+    # This is a temporary workaround until we have a better fix.
+    not Formula.factory('libtool').keg_only?
+  end
+
   skip_clean :la
 
   def install

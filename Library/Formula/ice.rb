@@ -2,8 +2,8 @@ require 'formula'
 
 class Ice < Formula
   homepage 'http://www.zeroc.com'
-  url 'http://www.zeroc.com/download/Ice/3.4/Ice-3.4.2.tar.gz'
-  sha1 '8c84d6e3b227f583d05e08251e07047e6c3a6b42'
+  url 'http://www.zeroc.com/download/Ice/3.5/Ice-3.5.0.tar.gz'
+  sha1 '8501afaf86c0d62192cfc1b83c338178f73e98e9'
 
   option 'doc', 'Install documentation'
   option 'demo', 'Build demos'
@@ -11,23 +11,8 @@ class Ice < Formula
   depends_on 'berkeley-db'
   depends_on 'mcpp'
 
-  # * compile against Berkely DB 5.X
-  # * use our selected compiler
   def patches
-    [
-      "https://trac.macports.org/export/94734/trunk/dports/devel/ice-cpp/files/patch-ice.cpp.config.Make.rules.Darwin.diff",
-      DATA
-    ]
-  end
-
-  # http://www.zeroc.com/forums/bug-reports/4965-slice2cpp-output-does-not-compile-standards-conformant-compiler.html
-  fails_with :clang do
-    build 425
-    cause <<-EOS.undent
-      error: call to function 'upCast' that is
-        neither visible in the template definition nor found by argument-dependent
-        lookup
-    EOS
+    DATA
   end
 
   def install
@@ -58,19 +43,44 @@ class Ice < Formula
 end
 
 __END__
---- ./cpp/src/Freeze/MapI.cpp
-+++ ./cpp/src/Freeze/MapI.cpp
-@@ -1487,10 +1487,10 @@ Freeze::MapHelperI::size() const
-
-     try
-     {
--#if DB_VERSION_MAJOR != 4
--#error Freeze requires DB 4.x
-+#if DB_VERSION_MAJOR < 4
-+#error Freeze requires DB 4.x or greater
- #endif
--#if DB_VERSION_MINOR < 3
-+#if DB_VERSION_MAJOR == 4 && DB_VERSION_MINOR < 3
-         _db->stat(&s, 0);
- #else
-         _db->stat(_connection->dbTxn(), &s, 0);
+diff -urN Ice-3.5.0.original/cpp/config/Make.rules.Darwin Ice-3.5.0/cpp/config/Make.rules.Darwin
+--- ./cpp/config/Make.rules.Darwin	2013-03-11 15:19:46.000000000 +0000
++++ ./cpp/config/Make.rules.Darwin	2013-04-02 18:03:40.000000000 +0100
+@@ -11,25 +11,18 @@
+ # This file is included by Make.rules when uname is Darwin.
+ #
+ 
+-CXX			= xcrun clang++
++CXX			?= g++
+ 
+ CXXFLAGS		= -Wall -Werror -D_REENTRANT
+ 
+ ifeq ($(OPTIMIZE),yes)
+-     #
+-     # By default we build binaries with both architectures when optimization is enabled.
+-     #
+-     ifeq ($(CXXARCHFLAGS),)
+-     	CXXARCHFLAGS	:= -arch i386 -arch x86_64
+-     endif   
+-     CXXFLAGS		:= $(CXXARCHFLAGS) -O2 -DNDEBUG $(CXXFLAGS)
++     CXXFLAGS		:= -O2 -DNDEBUG $(CXXFLAGS)
+ else
+-     CXXFLAGS		:= $(CXXARCHFLAGS) -g $(CXXFLAGS)
++     CXXFLAGS		:= -g $(CXXFLAGS)
+ endif
+ 
+ ifeq ($(CPP11), yes)
+     CPPFLAGS += --std=c++11
+-    CXXFLAGS += --stdlib=libc++
+ endif
+ 
+ #
+@@ -72,7 +65,7 @@
+ ICEUTIL_OS_LIBS         = -lpthread
+ ICE_OS_LIBS             = -ldl
+ 
+-PLATFORM_HAS_READLINE   := no
++PLATFORM_HAS_READLINE   := yes
+ 
+ #
+ # QT is used only for the deprecated IceGrid and IceStorm SQL plugins

@@ -2,8 +2,8 @@ require 'formula'
 
 class Opam < Formula
   homepage 'https://github.com/OCamlPro/opam'
-  url 'https://github.com/OCamlPro/opam/archive/0.9.6.tar.gz'
-  sha1 '6361468864c4ea649152594d9471dc5a83de955c'
+  url 'https://github.com/OCamlPro/opam/archive/1.0.0.tar.gz'
+  sha1 '5e126f71c7e0caff3b61a751ef09dd66892720ae'
 
   head 'https://github.com/OCamlPro/opam.git'
 
@@ -18,8 +18,8 @@ class Opam < Formula
     zsh_completion.install "shell/opam_completion_zsh.sh"
   end
 
-  def test
-    system "#{bin}/opam --help"
+  test do
+    system "#{bin}/opam", "--help"
   end
 
   def caveats; <<-EOS.undent

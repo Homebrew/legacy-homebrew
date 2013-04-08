@@ -8,13 +8,23 @@ class Mpfr < Formula
   version '3.1.1-p2'
   sha1 'f632d43943ff9f13c184fa13b9a6e8c7f420f4dd'
 
+  bottle do
+    sha1 'ef221a793449407ea7726e5d160350a77a1d1e2e' => :mountain_lion
+    sha1 'afb92847f2b66872f615ba03e004f8e856dbc448' => :lion
+    sha1 'cab2e9af46a1006c7a062ea468167a4162e44a99' => :snow_leopard
+  end
+
   depends_on 'gmp'
 
   option '32-bit'
 
-  # Segfaults under superenv with clang 4.1/421. See:
-  # https://github.com/mxcl/homebrew/issues/15061
-  env :std
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      clang build 421 segfaults while building in superenv;
+      see https://github.com/mxcl/homebrew/issues/15061
+      EOS
+  end
 
   def patches
     "https://gist.github.com/raw/4472199/42c0b207037a133527083d12adc9028b4da429ee/gistfile1.txt"

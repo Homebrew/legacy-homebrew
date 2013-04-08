@@ -23,7 +23,7 @@ module MacOS::Xcode extend self
       when 10.6 then "3.2.6"
     else
       if MacOS.version >= 10.7
-        "4.6"
+        "4.6.1"
       else
         raise "Mac OS X `#{MacOS.version}' is invalid"
       end
@@ -76,7 +76,7 @@ module MacOS::Xcode extend self
 
     # this shortcut makes version work for people who don't realise you
     # need to install the CLI tools
-    xcode43build = V4_BUNDLE_PATH/'Contents/Developer/usr/bin/xcodebuild'
+    xcode43build = prefix/'usr/bin/xcodebuild'
     if xcode43build.file?
       `#{xcode43build} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
       return $1 if $1
@@ -155,7 +155,7 @@ module MacOS::CLT extend self
 
   def latest_version?
     `/usr/bin/clang --version` =~ %r{clang-(\d+)\.(\d+)\.(\d+)}
-    $1.to_i >= 425 and $3.to_i >= 24
+    $1.to_i >= 425 and $3.to_i >= 27
   end
 
   def version

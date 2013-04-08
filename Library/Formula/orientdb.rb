@@ -32,9 +32,9 @@ class Orientdb < Formula
     "Use `orientdb <start | stop | status>`, `orientdb-console` and `orientdb-gremlin`."
   end
 
-  def test
-    system "orientdb start"
-    system "orientdb status | grep PID"
-    system "orientdb stop"
+  test do
+    system "#{bin}/orientdb", "start"
+    system "#{bin}/orientdb status | grep PID"
+    system "#{bin}/orientdb", "stop"
   end
 end

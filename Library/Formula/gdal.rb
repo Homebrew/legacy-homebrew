@@ -65,7 +65,7 @@ class Gdal < Formula
   # Without Numpy, the Python bindings can't deal with raster data.
   depends_on 'numpy' => :python unless no_python?
 
-  depends_on 'armadillo' if armadillo?
+  depends_on 'homebrew/science/armadillo' if armadillo?
 
   if complete?
     # Raster libraries

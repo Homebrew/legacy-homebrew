@@ -4,7 +4,6 @@
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
 
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE']
-HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] ||= File.expand_path(__FILE__)
 
 if ARGV == %w{--prefix}
   puts File.dirname(File.dirname(HOMEBREW_BREW_FILE))
@@ -91,7 +90,7 @@ begin
       ENV["HOMEBREW_#{e}"] = Object.const_get "HOMEBREW_#{e}"
     end
     exec "brew-#{cmd}", *ARGV
-  elsif require? `/usr/bin/which brew-#{cmd}.rb`
+  elsif require? which("brew-#{cmd}.rb").to_s
     exit 0
   else
     onoe "Unknown command: #{cmd}"

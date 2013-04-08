@@ -27,6 +27,6 @@ class Podiff < Formula
   end
 
   test do
-    system "podiff -v"
+    system "#{bin}/podiff", "-v"
   end
 end

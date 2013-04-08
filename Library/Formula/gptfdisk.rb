@@ -14,7 +14,10 @@ class Gptfdisk < Formula
     man8.install ['gdisk.8','cgdisk.8','sgdisk.8','fixparts.8']
   end
 
-  def test
-    system "echo | #{sbin}/gdisk"
+  test do
+    IO.popen("#{sbin}/gdisk", "w+") do |pipe|
+      pipe.write("\n")
+      /GPT fdisk \(gdisk\) version #{Regexp.escape(version)}/ === pipe.read
+    end
   end
 end

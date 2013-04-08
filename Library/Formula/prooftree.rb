@@ -14,7 +14,7 @@ class Prooftree < Formula
     system "make install"
   end
 
-  def test
-    system "prooftree -help"
+  test do
+    system "#{bin}/prooftree", "-help"
   end
 end

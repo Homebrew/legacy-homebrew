@@ -34,8 +34,8 @@ class CrosstoolNg < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/ct-ng version"
+  test do
+    system "#{bin}/ct-ng", "version"
   end
 
   def caveats; <<-EOS.undent
@@ -44,7 +44,7 @@ class CrosstoolNg < Formula
 
     To fix it, perform the following:
       curl https://raw.github.com/gist/3769372/98e0a084470d2d6be7b4b61551ef00d44c682b4a/elf.h > elf.h
-      cp -p elf.h /usr/local/include/
+      cp -p elf.h #{HOMEBREW_PREFIX}/include/
     EOS
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Cassandra < Formula
   homepage 'http://cassandra.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.2.2/apache-cassandra-1.2.2-bin.tar.gz'
-  sha1 '3caabe51cbf3165ce0a20a668da40cb0a56b789b'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.2.3/apache-cassandra-1.2.3-bin.tar.gz'
+  sha1 'aac73b19728b82ee9cde942b9f00e24dc63425e0'
 
   def install
     (var+"lib/cassandra").mkpath

@@ -40,6 +40,9 @@ class Opensc < Formula
     system "./bootstrap" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--enable-sm",
+                          "--enable-openssl",
+                          "--enable-pcsc",
                           *extra_args
 
     system "make install"

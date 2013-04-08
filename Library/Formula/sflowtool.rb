@@ -13,7 +13,10 @@ class Sflowtool < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/sflowtool -h 2>&1 | grep version"
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/sflowtool", "-h") do |_, _, stderr|
+      /sflowtool version: #{Regexp.escape(version)}/ === stderr.read
+    end
   end
 end

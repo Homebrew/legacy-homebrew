@@ -36,7 +36,7 @@ class Yap < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/yap -dump-runtime-variables"
+  test do
+    system "#{bin}/yap", "-dump-runtime-variables"
   end
 end

@@ -67,15 +67,13 @@ class Formula
         path.write text_from_sha(sha)
 
         # Unload the class so Formula#version returns the correct value
-        # FIXME shouldn't have to do this?
         begin
-          version = nostdout { Formula.factory(path).version }
           Object.send(:remove_const, Formula.class_s(name))
-          version
-        rescue SyntaxError, TypeError, NameError, ArgumentError
+          nostdout { Formula.factory(path).version }
+        rescue SyntaxError, TypeError, NameError, ArgumentError => e
           # We rescue these so that we can skip bad versions and
           # continue walking the history
-          nil
+          ohai "#{e} in #{name} at revision #{sha}", e.backtrace if ARGV.debug?
         end
       end
     end

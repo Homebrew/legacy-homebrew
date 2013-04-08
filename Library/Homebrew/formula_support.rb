@@ -1,5 +1,5 @@
 require 'download_strategy'
-require 'checksums'
+require 'checksum'
 require 'version'
 
 class SoftwareSpec
@@ -10,6 +10,8 @@ class SoftwareSpec
     @version = version
     @mirrors = []
     @specs = {}
+    @checksum = nil
+    @using = nil
   end
 
   def download_strategy
@@ -33,12 +35,8 @@ class SoftwareSpec
   # The methods that follow are used in the block-form DSL spec methods
   Checksum::TYPES.each do |cksum|
     class_eval <<-EOS, __FILE__, __LINE__ + 1
-      def #{cksum}(val=nil)
-        if val.nil?
-          @checksum if @checksum.nil? or @checksum.hash_type == :#{cksum}
-        else
-          @checksum = Checksum.new(:#{cksum}, val)
-        end
+      def #{cksum}(val)
+        @checksum = Checksum.new(:#{cksum}, val)
       end
     EOS
   end
@@ -62,7 +60,6 @@ class SoftwareSpec
   end
 
   def mirror val
-    @mirrors ||= []
     @mirrors << val
   end
 end
@@ -94,11 +91,9 @@ class Bottle < SoftwareSpec
   # a Hash, which indicates the platform the checksum applies on.
   Checksum::TYPES.each do |cksum|
     class_eval <<-EOS, __FILE__, __LINE__ + 1
-      def #{cksum}(val=nil)
+      def #{cksum}(val)
         @#{cksum} ||= Hash.new
         case val
-        when nil
-          @#{cksum}[MacOS.cat]
         when Hash
           key, value = val.shift
           @#{cksum}[value] = Checksum.new(:#{cksum}, key)

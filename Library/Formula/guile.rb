@@ -12,6 +12,13 @@ class Guile < Formula
     sha1 '4425cc1a60ffe5637972a328880f98746c2a0f5b'
   end
 
+  head 'git://git.sv.gnu.org/guile.git'
+
+  if build.head?
+    depends_on 'automake' => :build
+    depends_on 'gettext' => :build
+  end
+
   depends_on 'pkg-config' => :build
   depends_on :libtool
   depends_on 'libffi'
@@ -33,6 +40,8 @@ class Guile < Formula
   end if build.devel?
 
   def install
+    system './autogen.sh' if build.head?
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libreadline-prefix=#{Formula.factory('readline').prefix}"

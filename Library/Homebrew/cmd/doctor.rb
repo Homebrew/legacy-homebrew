@@ -625,41 +625,32 @@ def check_for_config_scripts
 
     EOS
 
-    config_scripts.each do |pair|
-      dn = pair[0]
-      pair[1].each do |fn|
-        s << "    #{dn}/#{fn}\n"
-      end
+    config_scripts.each do |dir, files|
+      files.each { |fn| s << "    #{dir}/#{fn}\n" }
     end
     s
   end
 end
 
-def check_for_DYLD_LIBRARY_PATH
-  if ENV['DYLD_LIBRARY_PATH']
-    <<-EOS.undent
-      Setting DYLD_LIBRARY_PATH can break dynamic linking.
-      You should probably unset it.
+def check_DYLD_vars
+  found = ENV.keys.grep(/^DYLD_/)
+  unless found.empty?
+    s = <<-EOS.undent
+    Setting DYLD_* vars can break dynamic linking.
+    Set variables:
     EOS
-  end
-end
+    found.each do |e|
+      s << "    #{e}\n"
+    end
+    if found.include? 'DYLD_INSERT_LIBRARIES'
+      s += <<-EOS.undent
 
-def check_for_DYLD_FALLBACK_LIBRARY_PATH
-  if ENV['DYLD_FALLBACK_LIBRARY_PATH']
-    <<-EOS.undent
-      Setting DYLD_FALLBACK_LIBRARY_PATH can break dynamic linking.
-      You should probably unset it.
-    EOS
-  end
-end
-
-def check_for_DYLD_INSERT_LIBRARIES
-  if ENV['DYLD_INSERT_LIBRARIES']
-    <<-EOS.undent
       Setting DYLD_INSERT_LIBRARIES can cause Go builds to fail.
       Having this set is common if you use this software:
         http://asepsis.binaryage.com/
-    EOS
+      EOS
+    end
+    s
   end
 end
 
@@ -863,7 +854,7 @@ def check_for_linked_keg_only_brews
     You may wish to `brew unlink` these brews:
 
     EOS
-    warnings.keys.each{ |f| s << "    #{f}\n" }
+    warnings.each_key { |f| s << "    #{f}\n" }
     s
   end
 end
@@ -924,7 +915,7 @@ def check_git_status
       If this a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
-          cd #{HOMEBREW_REPOSITORY}/Library && git stash && git clean -f
+          cd #{HOMEBREW_REPOSITORY}/Library && git stash && git clean -d -f
       EOS
     end
   end
@@ -1104,7 +1095,7 @@ module Homebrew extend self
     checks = Checks.new
 
     if ARGV.include? '--list-checks'
-      checks.methods.select { |m| m =~ /^check_/ }.sort.each { |m| puts m }
+      checks.methods.grep(/^check_/).sort.each { |m| puts m }
       exit
     end
 
@@ -1115,15 +1106,18 @@ module Homebrew extend self
       checks.methods.sort << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
     else
       ARGV.named
-    end.select{ |method| method =~ /^check_/ }.reverse.uniq.reverse
+    end.grep(/^check_/).reverse.uniq.reverse
 
+    first_warning = true
     methods.each do |method|
       out = checks.send(method)
       unless out.nil? or out.empty?
         lines = out.to_s.split('\n')
+        puts unless first_warning
         opoo lines.shift
         Homebrew.failed = true
         puts lines
+        first_warning = false
       end
     end
 

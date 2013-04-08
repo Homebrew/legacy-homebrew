@@ -2,8 +2,8 @@ require 'formula'
 
 class Ettercap < Formula
   homepage 'http://ettercap.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/ettercap/ettercap/0.7.5-Assimilation/ettercap-0.7.5.3.tar.gz'
-  sha1 'b0be4c6fc9b7037366b3b2f919df2bb98add5e24'
+  url 'http://downloads.sourceforge.net/project/ettercap/ettercap/0.7.6-Locard/ettercap-0.7.6.tar.gz'
+  sha1 '55818952a8c28beb1b650f3ccc9600a2d784a18f'
 
   depends_on 'cmake' => :build
   depends_on 'ghostscript' => :build
