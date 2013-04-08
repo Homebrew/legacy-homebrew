@@ -16,7 +16,11 @@ class Openssl < Formula
                shared
              ]
 
-    args << (MacOS.prefer_64_bit? ? "darwin64-x86_64-cc" : "darwin-i386-cc")
+    if MacOS.prefer_64_bit?
+      args << "darwin64-x86_64-cc" << "enable-ec_nistp_64_gcc_128"
+    else
+      args << "darwin-i386-cc"
+    end
 
     system "perl", *args
 
