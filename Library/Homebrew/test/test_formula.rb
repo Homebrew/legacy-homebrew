@@ -119,24 +119,26 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_devel_active_spec
-    ARGV.push '--devel'
+    ARGV << '--devel'
     f = SpecTestBall.new
     assert_equal f.devel, f.active_spec
     assert_version_equal '0.2', f.version
     assert_equal 'file:///foo.com/testball-0.2.tbz', f.url
     assert_equal CurlDownloadStrategy, f.download_strategy
     assert_instance_of CurlDownloadStrategy, f.downloader
+  ensure
     ARGV.delete '--devel'
   end
 
   def test_head_active_spec
-    ARGV.push '--HEAD'
+    ARGV << '--HEAD'
     f = SpecTestBall.new
     assert_equal f.head, f.active_spec
     assert_version_equal 'HEAD', f.version
     assert_equal 'https://github.com/mxcl/homebrew.git', f.url
     assert_equal GitDownloadStrategy, f.download_strategy
     assert_instance_of GitDownloadStrategy, f.downloader
+  ensure
     ARGV.delete '--HEAD'
   end
 
