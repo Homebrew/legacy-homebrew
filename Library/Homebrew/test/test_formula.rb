@@ -13,12 +13,9 @@ class FormulaTests < Test::Unit::TestCase
   include VersionAssertions
 
   def test_prefix
-    shutup do
-      TestBall.new.brew do |f|
-        assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
-        assert_kind_of Pathname, f.prefix
-      end
-    end
+    f = TestBall.new
+    assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
+    assert_kind_of Pathname, f.prefix
   end
 
   def test_class_naming
@@ -234,9 +231,10 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_custom_version_scheme
-    f = CustomVersionSchemeTestBall.new
+    scheme = Class.new(Version)
+    f = Class.new(TestBall) { version '1.0' => scheme }.new
 
     assert_version_equal '1.0', f.version
-    assert_instance_of CustomVersionScheme, f.version
+    assert_instance_of scheme, f.version
   end
 end
