@@ -14,6 +14,11 @@ class Fftw < Formula
             "--enable-threads",
             "--disable-dependency-tracking"]
 
+    simd_args = ["--enable-sse2"]
+    if ENV.compiler == :clang and Hardware::CPU.avx?
+      simd_args << "--enable-avx"
+    end
+        
     if build.include? "with-fortran"
       ENV.fortran
     else
@@ -21,18 +26,16 @@ class Fftw < Formula
     end
 
     # single precision
-    # enable-sse only works with single
-    system "./configure", "--enable-single",
-                          "--enable-sse",
-                          *args
+    # enable-sse2 works for both single and double precisions
+    system "./configure", "--enable-single", *(args + simd_args)
     system "make install"
 
     # clean up so we can compile the double precision variant
     system "make clean"
 
     # double precision
-    # enable-sse2 only works with double precision (default)
-    system "./configure", "--enable-sse2", *args
+    # enable-sse2 works for both single and double precisions
+    system "./configure", *(args + simd_args)
     system "make install"
 
     # clean up so we can compile the long-double precision variant
