@@ -36,8 +36,6 @@ class Ser2net < Formula
         <true/>
         <key>KeepAlive</key>
         <true/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>ProgramArguments</key>
         <array>
             <string>#{opt_prefix}/sbin/ser2net</string>

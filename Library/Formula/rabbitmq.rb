@@ -72,8 +72,6 @@ class Rabbitmq < Formula
         <string>#{opt_prefix}/sbin/rabbitmq-server</string>
         <key>RunAtLoad</key>
         <true/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>EnvironmentVariables</key>
         <dict>
           <!-- need erl in the path -->

@@ -45,7 +45,7 @@ class DependencyCollector
     parse_spec(spec, tag)
   end
 
-private
+  private
 
   def parse_spec spec, tag
     case spec

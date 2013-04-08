@@ -144,8 +144,6 @@ class PerconaServer < Formula
       <string>#{opt_prefix}/bin/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{var}</string>
     </dict>
