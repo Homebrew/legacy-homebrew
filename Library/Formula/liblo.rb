@@ -14,8 +14,11 @@ class Liblo < Formula
   end
 
   option "enable-ipv6", "Compile with support for ipv6"
+  option :universal
 
   def install
+    ENV.universal_binary if build.universal?
+
     args = %W[--disable-debug
               --disable-dependency-tracking
               --prefix=#{prefix}]
