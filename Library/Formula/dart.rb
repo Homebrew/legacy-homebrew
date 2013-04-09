@@ -11,7 +11,7 @@ class Dart < Formula
     sha1 '512991bda44252d5825ecab088d9f17467dea716'
   end
 
-  version '20602'
+  version '21094'
 
   def install
     libexec.install Dir['*']
