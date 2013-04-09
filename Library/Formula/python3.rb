@@ -18,8 +18,8 @@ end
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.3.0/Python-3.3.0.tar.bz2'
-  sha1 '3e1464bc2c1dfa74287bc58da81168f50b0ae5c7'
+  url 'http://python.org/ftp/python/3.3.1/Python-3.3.1.tar.bz2'
+  sha1 'bec78674847a4dacc4717c93b32b6b07adb90afe'
   VER='3.3'  # The <major>.<minor> is used so often.
 
   depends_on 'pkg-config' => :build
