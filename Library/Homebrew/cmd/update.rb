@@ -19,7 +19,8 @@ module Homebrew extend self
 
     report = Report.new
     master_updater = Updater.new
-    master_updater.pull!
+    master_updater.pull! (if RUBY_PLATFORM =~ /linux/
+      then 'linuxbrew' else 'master' end)
     report.merge!(master_updater.report)
 
     Dir["Library/Taps/*"].each do |tapd|
@@ -71,8 +72,8 @@ end
 class Updater
   attr_reader :initial_revision, :current_revision
 
-  def pull!
-    safe_system "git checkout -q master"
+  def pull! branch = 'master'
+    safe_system "git checkout -q #{branch}"
 
     @initial_revision = read_current_revision
 
@@ -84,7 +85,7 @@ class Updater
     args << "-q" unless ARGV.verbose?
     args << "origin"
     # the refspec ensures that 'origin/master' gets updated
-    args << "refs/heads/master:refs/remotes/origin/master"
+    args << "refs/heads/#{branch}:refs/remotes/origin/#{branch}"
 
     safe_system "git", *args
 
