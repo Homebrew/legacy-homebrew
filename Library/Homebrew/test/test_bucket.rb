@@ -61,7 +61,12 @@ class BeerTasting < Test::Unit::TestCase
 
     shutup do
       assert_nothing_raised do
-        f=TestBallWithRealPath.new
+        f = Class.new(TestBall) do
+          def initialize(*)
+            super
+            @path = Pathname.new(__FILE__)
+          end
+        end.new
         Homebrew.info_formula f
         Homebrew.prune
         #TODO test diy function too
@@ -72,15 +77,9 @@ class BeerTasting < Test::Unit::TestCase
   def test_brew_cleanup
     require 'cmd/cleanup'
 
-    f1 = TestBall.new
-    f1.instance_eval { @version = Version.new("0.1") }
-    f1.active_spec.instance_eval { @version = Version.new("0.1") }
-    f2 = TestBall.new
-    f2.instance_eval { @version = Version.new("0.2") }
-    f2.active_spec.instance_eval { @version = Version.new("0.2") }
-    f3 = TestBall.new
-    f3.instance_eval { @version = Version.new("0.3") }
-    f3.active_spec.instance_eval { @version = Version.new("0.3") }
+    f1 = Class.new(TestBall) { version '0.1' }.new
+    f2 = Class.new(TestBall) { version '0.2' }.new
+    f3 = Class.new(TestBall) { version '0.3' }.new
 
     shutup do
       f1.brew { f1.install }

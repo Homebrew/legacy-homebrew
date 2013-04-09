@@ -1,10 +1,6 @@
 require 'testing_env'
 require 'test/testball'
 
-class AbstractDownloadStrategy
-  attr_reader :url
-end
-
 class MostlyAbstractFormula < Formula
   url ''
 end
@@ -13,12 +9,9 @@ class FormulaTests < Test::Unit::TestCase
   include VersionAssertions
 
   def test_prefix
-    shutup do
-      TestBall.new.brew do |f|
-        assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
-        assert_kind_of Pathname, f.prefix
-      end
-    end
+    f = TestBall.new
+    assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
+    assert_kind_of Pathname, f.prefix
   end
 
   def test_class_naming
@@ -43,13 +36,16 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_mirror_support
-    HOMEBREW_CACHE.mkpath unless HOMEBREW_CACHE.exist?
-    shutup do
-      f = TestBallWithMirror.new
-      _, downloader = f.fetch
-      assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
-      assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    end
+    f = Class.new(Formula) do
+      url "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
+      mirror "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    end.new("test_mirror_support")
+
+    shutup { f.fetch }
+
+    assert_equal "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz", f.url
+    assert_equal "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz",
+      f.downloader.instance_variable_get(:@url)
   end
 
   def test_formula_specs
@@ -234,9 +230,10 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_custom_version_scheme
-    f = CustomVersionSchemeTestBall.new
+    scheme = Class.new(Version)
+    f = Class.new(TestBall) { version '1.0' => scheme }.new
 
     assert_version_equal '1.0', f.version
-    assert_instance_of CustomVersionScheme, f.version
+    assert_instance_of scheme, f.version
   end
 end
