@@ -1,10 +1,6 @@
 require 'testing_env'
 require 'test/testball'
 
-class AbstractDownloadStrategy
-  attr_reader :url
-end
-
 class MostlyAbstractFormula < Formula
   url ''
 end
@@ -40,13 +36,16 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_mirror_support
-    HOMEBREW_CACHE.mkpath unless HOMEBREW_CACHE.exist?
-    shutup do
-      f = TestBallWithMirror.new
-      _, downloader = f.fetch
-      assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
-      assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    end
+    f = Class.new(Formula) do
+      url "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
+      mirror "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    end.new("test_mirror_support")
+
+    shutup { f.fetch }
+
+    assert_equal "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz", f.url
+    assert_equal "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz",
+      f.downloader.instance_variable_get(:@url)
   end
 
   def test_formula_specs

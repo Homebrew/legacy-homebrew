@@ -16,15 +16,6 @@ class TestBall < Formula
   end
 end
 
-class TestBallWithMirror < Formula
-  url "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
-  mirror "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-
-  def initialize(*)
-    super "testballwithmirror"
-  end
-end
-
 class ConfigureFails < Formula
   url "file:///#{TEST_FOLDER}/tarballs/configure_fails.tar.gz"
   version '1.0.0'
