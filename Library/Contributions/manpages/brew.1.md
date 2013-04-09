@@ -3,7 +3,7 @@ brew(1) -- The missing package manager for OS X
 
 ## SYNOPSIS
 
-`brew` --version
+`brew` --version  
 `brew` command [--verbose|-v] [options] [formula] ...
 
 ## DESCRIPTION
@@ -261,7 +261,7 @@ Note that these flags should only appear after a command.
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
 
-  * `sh [--env=std]`
+  * `sh [--env=std]`:
     Instantiate a Homebrew build environment. Uses our years-battle-hardened
     Homebrew build logic to help your `./configure && make && make install`
     or even your `gem install` succeeed. Especially handy if you run Homebrew
