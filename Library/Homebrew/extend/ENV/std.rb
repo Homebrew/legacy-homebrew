@@ -144,12 +144,13 @@ module Stdenv
     # However they still provide a gcc symlink to llvm
     # But we don't want LLVM of course.
 
-    self['CC'] = self['OBJC'] = MacOS.locate("gcc-4.2")
-    self['CXX'] = self['OBJCXX'] = MacOS.locate("g++-4.2")
+    cc, cxx = if MACOS then ['gcc-4.2', 'g++-4.2'] else ['gcc', 'g++'] end
+    self['CC'] = self['OBJC'] = MacOS.locate(cc)
+    self['CXX'] = self['OBJCXX'] = MacOS.locate(cxx)
 
     unless self['CC']
-      self['CC'] = self['OBJC'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
-      self['CXX'] = self['OBJCXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
+      self['CC'] = self['OBJC'] = "#{HOMEBREW_PREFIX}/bin/#{cc}"
+      self['CXX'] = self['OBJCXX'] = "#{HOMEBREW_PREFIX}/bin/#{cxx}"
       raise "GCC could not be found" unless File.exist? self['CC']
     end
 
