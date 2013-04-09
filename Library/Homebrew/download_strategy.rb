@@ -216,7 +216,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
       @co = HOMEBREW_CACHE + "#{name}--svn"
     end
 
-    @co << "-HEAD" if ARGV.build_head?
+    @co + "-HEAD" if ARGV.build_head?
   end
 
   def cached_location
