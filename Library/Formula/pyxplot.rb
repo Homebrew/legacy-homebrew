@@ -1,6 +1,5 @@
 require 'formula'
 
-
 class Pyxplot < Formula
   homepage 'http://pyxplot.org.uk/'
   url 'http://pyxplot.org.uk/src/pyxplot_0.9.1.tar.gz'
@@ -21,7 +20,7 @@ class Pyxplot < Formula
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make", "install" # if this fails, try separate make/make install steps
+    system "make", "install" 
   end
 
 end
