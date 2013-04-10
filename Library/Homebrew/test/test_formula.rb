@@ -14,6 +14,22 @@ class FormulaTests < Test::Unit::TestCase
     assert_kind_of Pathname, f.prefix
   end
 
+  def test_installed?
+    f = TestBall.new
+    f.stubs(:installed_prefix).returns(stub(:directory? => false))
+    assert !f.installed?
+
+    f.stubs(:installed_prefix).returns(
+      stub(:directory? => true, :children => [])
+    )
+    assert !f.installed?
+
+    f.stubs(:installed_prefix).returns(
+      stub(:directory? => true, :children => [stub])
+    )
+    assert f.installed?
+  end
+
   def test_class_naming
     assert_equal 'ShellFm', Formula.class_s('shell.fm')
     assert_equal 'Fooxx', Formula.class_s('foo++')
