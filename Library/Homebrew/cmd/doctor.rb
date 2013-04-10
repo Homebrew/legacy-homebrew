@@ -1009,8 +1009,9 @@ def check_for_outdated_homebrew
     end
 
     if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent
-      Your Homebrew is outdated
+      Your Homebrew is outdated.
       You haven't updated for at least 24 hours, this is a long time in brewland!
+      To update Homebrew, run `brew update`.
       EOS
     end
   end
