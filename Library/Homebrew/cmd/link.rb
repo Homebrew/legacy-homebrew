@@ -42,8 +42,7 @@ module Homebrew extend self
           puts "Note that doing so can interfere with building software."
           next
         end
-      rescue
-        # Nothing to see here
+      rescue FormulaUnavailableError
       end
 
       keg.lock do
