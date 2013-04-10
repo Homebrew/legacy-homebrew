@@ -68,7 +68,7 @@ class Requirement
     when Pathname
       self.class.env do
         unless ENV["PATH"].split(":").include?(o.parent.to_s)
-          append("PATH", o.parent, ":")
+          ENV.append("PATH", o.parent, ":")
         end
       end
     end

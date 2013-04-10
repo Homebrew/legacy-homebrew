@@ -238,10 +238,12 @@ _brew_list ()
             return
         elif __brewcomp_words_include "--verbose"; then
             return
+        elif __brewcomp_words_include "--pinned"; then
+            return
         elif __brewcomp_words_include "--versions"; then
             return
         else
-            __brewcomp "--unbrewed --verbose --versions"
+            __brewcomp "--unbrewed --verbose --pinned --versions"
             return
         fi
         ;;
@@ -400,11 +402,13 @@ _brew ()
             options
             outdated
             prune
+            pin
             search
             tap
             test
             uninstall remove rm
             unlink
+            unpin
             untap
             update
             upgrade
@@ -435,9 +439,11 @@ _brew ()
     missing)                    __brew_complete_formulae ;;
     options)                    _brew_options ;;
     outdated)                   _brew_outdated ;;
+    pin)                        __brew_complete_formulae ;;
     search|-S)                  _brew_search ;;
     tap)                        __brew_complete_taps ;;
     uninstall|remove|rm)        _brew_uninstall ;;
+    unpin)                      __brew_complete_formulae ;;
     untap)                      __brew_complete_tapped ;;
     update)                     _brew_update ;;
     uses)                       _brew_uses ;;

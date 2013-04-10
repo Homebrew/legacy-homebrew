@@ -24,18 +24,6 @@ end
 class BeerTasting < Test::Unit::TestCase
   include VersionAssertions
 
-  def test_supported_compressed_types
-    assert_nothing_raised do
-      MockFormula.new 'test-0.1.tar.gz'
-      MockFormula.new 'test-0.1.tar.bz2'
-      MockFormula.new 'test-0.1.tar.xz'
-      MockFormula.new 'test-0.1.tgz'
-      MockFormula.new 'test-0.1.bgz'
-      MockFormula.new 'test-0.1.txz'
-      MockFormula.new 'test-0.1.zip'
-    end
-  end
-
   FOOBAR='foo-bar'
   def test_formula_funcs
     classname=Formula.class_s(FOOBAR)
@@ -63,26 +51,22 @@ class BeerTasting < Test::Unit::TestCase
   end
 
   def test_zip
-    nostdout { assert_nothing_raised { TestZip.new.brew {} } }
+    shutup { assert_nothing_raised { TestZip.new.brew {} } }
   end
-
-  # needs resurrecting
-  # def test_no_ARGV_dupes
-  #   ARGV.reset
-  #   ARGV << 'foo' << 'foo'
-  #   n=0
-  #   ARGV.named.each{|f| n+=1 if f == 'foo'}
-  #   assert_equal 1, n
-  # end
 
   def test_brew_h
     require 'cmd/info'
     require 'cmd/prune'
     require 'cleaner'
 
-    nostdout do
+    shutup do
       assert_nothing_raised do
-        f=TestBallWithRealPath.new
+        f = Class.new(TestBall) do
+          def initialize(*)
+            super
+            @path = Pathname.new(__FILE__)
+          end
+        end.new
         Homebrew.info_formula f
         Homebrew.prune
         #TODO test diy function too
@@ -93,17 +77,11 @@ class BeerTasting < Test::Unit::TestCase
   def test_brew_cleanup
     require 'cmd/cleanup'
 
-    f1 = TestBall.new
-    f1.instance_eval { @version = Version.new("0.1") }
-    f1.active_spec.instance_eval { @version = Version.new("0.1") }
-    f2 = TestBall.new
-    f2.instance_eval { @version = Version.new("0.2") }
-    f2.active_spec.instance_eval { @version = Version.new("0.2") }
-    f3 = TestBall.new
-    f3.instance_eval { @version = Version.new("0.3") }
-    f3.active_spec.instance_eval { @version = Version.new("0.3") }
+    f1 = Class.new(TestBall) { version '0.1' }.new
+    f2 = Class.new(TestBall) { version '0.2' }.new
+    f3 = Class.new(TestBall) { version '0.3' }.new
 
-    nostdout do
+    shutup do
       f1.brew { f1.install }
       f2.brew { f2.install }
       f3.brew { f3.install }
@@ -113,9 +91,7 @@ class BeerTasting < Test::Unit::TestCase
     assert f2.installed?
     assert f3.installed?
 
-    nostdout do
-      Homebrew.cleanup_formula f3
-    end
+    shutup { Homebrew.cleanup_formula(f3) }
 
     assert !f1.installed?
     assert !f2.installed?
@@ -134,39 +110,40 @@ class BeerTasting < Test::Unit::TestCase
   end
 
   def test_pathname_plus_yeast
-    nostdout do
-      assert_nothing_raised do
-        assert !Pathname.getwd.rmdir_if_possible
-        assert !Pathname.getwd.abv.empty?
+    abcd = orig_abcd = HOMEBREW_CACHE+'abcd'
 
-        abcd=orig_abcd=HOMEBREW_CACHE+'abcd'
-        FileUtils.cp ABS__FILE__, abcd
-        installed_paths=HOMEBREW_PREFIX.install abcd
-        abcd = installed_paths[0]
-        assert (HOMEBREW_PREFIX+orig_abcd.basename).exist?
-        assert abcd.exist?
-        assert_equal HOMEBREW_PREFIX+'abcd', abcd
+    shutup do
+      assert !Pathname.getwd.rmdir_if_possible
+      assert !Pathname.getwd.abv.empty?
 
-        assert_raises(RuntimeError) {abcd.write 'CONTENT'}
-        abcd.unlink
-        abcd.write 'HELLOWORLD'
-        assert_equal 'HELLOWORLD', File.read(abcd)
+      FileUtils.cp ABS__FILE__, abcd
+      installed_paths = HOMEBREW_PREFIX.install(abcd)
 
-        assert !orig_abcd.exist?
-        rv=abcd.cp orig_abcd
-        assert orig_abcd.exist?
-        assert_equal rv, orig_abcd
+      abcd = installed_paths[0]
+      assert((HOMEBREW_PREFIX+orig_abcd.basename).exist?)
+      assert abcd.exist?
+      assert_equal HOMEBREW_PREFIX+'abcd', abcd
 
-        orig_abcd.unlink
-        assert !orig_abcd.exist?
-        abcd.cp HOMEBREW_CACHE
-        assert orig_abcd.exist?
+      assert_raises(RuntimeError) { abcd.write 'CONTENT' }
 
-        HOMEBREW_CACHE.chmod_R 0777
+      abcd.unlink
+      abcd.write 'HELLOWORLD'
+      assert_equal 'HELLOWORLD', File.read(abcd)
 
-        abcd.unlink # teardown
-      end
+      assert !orig_abcd.exist?
+      rv=abcd.cp orig_abcd
+      assert orig_abcd.exist?
+      assert_equal rv, orig_abcd
+
+      orig_abcd.unlink
+      assert !orig_abcd.exist?
+      abcd.cp HOMEBREW_CACHE
+      assert orig_abcd.exist?
+
+      HOMEBREW_CACHE.chmod_R 0777
     end
+  ensure
+    abcd.unlink
   end
 
   def test_pathname_properties
@@ -191,6 +168,6 @@ class BeerTasting < Test::Unit::TestCase
     assert f == f
     assert f == g
     assert f.eql? f
-    assert (not (f.eql? g))
+    assert !f.eql?(g)
   end
 end

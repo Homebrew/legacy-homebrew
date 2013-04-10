@@ -90,6 +90,8 @@ Note that these flags should only appear after a command.
 
     If `--all` is passed, show dependencies for all formulae.
 
+    If `--installed` is passed, show dependencies for all installed formulae.
+
   * `diy [--set-name <name>] [--set-version <version>]`:
     Automatically determine the installation prefix for non-Homebrew software.
 
@@ -195,7 +197,7 @@ Note that these flags should only appear after a command.
     be linked or which would be deleted by `brew link --overwrite`, but will not
     actually link or delete any files.
 
-  * `ls, list [--unbrewed] [--versions]` [<formulae>]:
+  * `ls, list [--unbrewed] [--versions] [--pinned]` [<formulae>]:
     Without any arguments, list all installed formulae.
 
     If <formulae> are given, list the installed files for <formulae>.
@@ -207,6 +209,10 @@ Note that these flags should only appear after a command.
 
     If `--versions` is passed, show the version number for installed formulae,
     or only the specified formulae if <formulae> are given.
+
+    If `--pinned` is passed, show the versions of pinned formulae, or only the
+    specified (pinned) formulae if <formulae> are given.
+    See also [`pin`][], [`unpin`][].
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
@@ -233,6 +239,10 @@ Note that these flags should only appear after a command.
     If `--quiet` is passed, list only the names of outdated brews. Otherwise,
     the versions are printed as well.
 
+  * `pin` <formulae>:
+    Pin the specified <formulae>, preventing them from being upgraded when
+    issuing the `brew upgrade` command without arguments. See also [`unpin`][].
+
   * `prune`:
     Remove dead symlinks from the Homebrew prefix. This is generally not
     needed, but can be useful when doing DIY installations.
@@ -250,6 +260,13 @@ Note that these flags should only appear after a command.
 
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
+
+  * `sh [--env=std]`:
+    Instantiate a Homebrew build environment. Uses our years-battle-hardened
+    Homebrew build logic to help your `./configure && make && make install`
+    or even your `gem install` succeeed. Especially handy if you run Homebrew
+    in a Xcode-only configuration since it adds tools like make to your PATH
+    which otherwise build-systems would not find.
 
   * `tap` [<tap>]:
     Tap a new formula repository from GitHub, or list existing taps.
@@ -273,6 +290,10 @@ Note that these flags should only appear after a command.
     Unsymlink <formula> from the Homebrew prefix. This can be useful for
     temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
 
+  * `unpin` <formulae>:
+    Unpin <formulae>, allowing them to be upgraded by `brew upgrade`. See also
+    [`pin`][].
+
   * `untap` <tap>:
     Remove a tapped repository.
 
@@ -283,9 +304,10 @@ Note that these flags should only appear after a command.
     If `--rebase` is specified then `git pull --rebase` is used.
 
   * `upgrade` [<formulae>]:
-    Upgrade outdated brews.
+    Upgrade outdated, non-pinned brews.
 
-    If <formulae> are given, upgrade only the specified brews.
+    If <formulae> are given, upgrade only the specified brews (but do so even
+    if they are pinned; see [`pin`][], [`unpin`][]).
 
   * `uses [--installed] [--recursive]` <formula>:
     Show the formulae that specify <formula> as a dependency.

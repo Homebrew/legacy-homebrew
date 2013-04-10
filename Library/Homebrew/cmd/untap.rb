@@ -21,7 +21,7 @@ module Homebrew extend self
     tapd.find_formula{ |file| files << Pathname.new("#{user}-#{repo}").join(file) }
     unlink_tap_formula(files)
     rm_rf tapd
-    puts "Untapped #{files.count} formula"
+    puts "Untapped #{files.length} formula"
   end
 
   def unlink_tap_formula formulae

@@ -15,4 +15,11 @@ class GnuSed < Formula
     system "./configure", *args
     system "make install"
   end
+
+  def caveats; <<-EOS.undent
+    The command has been installed with the prefix 'g'.
+    If you do not want the prefix, install using the 'default-names' option.
+    EOS
+  end
+
 end

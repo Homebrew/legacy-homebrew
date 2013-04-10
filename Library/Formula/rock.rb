@@ -2,8 +2,8 @@ require 'formula'
 
 class Rock < Formula
   homepage 'http://ooc-lang.org'
-  url 'https://github.com/downloads/nddrylliog/rock/rock-0.9.4-source.tar.bz2'
-  sha1 '9bba27995c90d029e3c5dc8b9591d819d8ce2531'
+  url 'https://github.com/nddrylliog/rock/archive/v0.9.6.tar.gz'
+  sha1 '5d1cc6f194f76a2b0a8c0ed0b48fcd0e26e75c95'
 
   head 'https://github.com/nddrylliog/rock.git'
 

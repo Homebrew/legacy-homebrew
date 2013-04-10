@@ -2,15 +2,10 @@ require 'formula'
 
 class Play < Formula
   homepage 'http://www.playframework.org/'
-  url 'http://downloads.typesafe.com/play/2.1.0/play-2.1.0.zip'
-  sha1 '0708a30906673b5cded859b9d3d772a01855e07a'
+  url 'http://downloads.typesafe.com/play/2.1.1/play-2.1.1.zip'
+  sha1 '3b1a0c3ca23dde36113d935b85d7f4d45f05923b'
 
   head 'https://github.com/playframework/Play20.git'
-
-  devel do
-    url 'http://downloads.typesafe.com/play/2.1.1-RC1/play-2.1.1-RC1.zip'
-    sha1 'c7e0a3e6b802efbce1f2422d6852ec4828731e30'
-  end
 
   def install
     rm Dir['*.bat'] # remove windows' bat files

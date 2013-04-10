@@ -1,5 +1,5 @@
 require 'download_strategy'
-require 'checksums'
+require 'checksum'
 require 'version'
 
 class SoftwareSpec
@@ -10,6 +10,8 @@ class SoftwareSpec
     @version = version
     @mirrors = []
     @specs = {}
+    @checksum = nil
+    @using = nil
   end
 
   def download_strategy
@@ -58,7 +60,6 @@ class SoftwareSpec
   end
 
   def mirror val
-    @mirrors ||= []
     @mirrors << val
   end
 end
