@@ -4,6 +4,7 @@ class Glade < Formula
   homepage 'http://glade.gnome.org/'
   url 'http://ftp.gnome.org/pub/GNOME/sources/glade3/3.8/glade3-3.8.3.tar.xz'
   sha256 '84bb2d7f782f203e4aab923e47db8d22529229b13e59570945261611c63941d6'
+  version '3.8.3'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
