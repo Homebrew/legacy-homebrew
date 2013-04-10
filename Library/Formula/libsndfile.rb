@@ -6,6 +6,9 @@ class Libsndfile < Formula
   sha1 'e95d9fca57f7ddace9f197071cbcfb92fa16748e'
 
   depends_on 'pkg-config' => :build
+  depends_on 'flac' => :optional
+  depends_on 'libogg' => :optional
+  depends_on 'libvorbis' => :optional
 
   option :universal
 
