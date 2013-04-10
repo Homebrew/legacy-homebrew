@@ -100,21 +100,6 @@ class Formula
     end
   end
 
-  # These methods return lists of Formula objects.
-  # They are eprecated in favor of Dependency::expand_dependencies
-  # and Formula#recursive_dependencies, which return lists of
-  # Dependency objects instead.
-  def self.expand_deps f
-    f.deps.map do |dep|
-      f_dep = Formula.factory dep.to_s
-      expand_deps(f_dep) << f_dep
-    end
-  end
-
-  def recursive_deps
-    Formula.expand_deps(self).flatten.uniq
-  end
-
   def self.all
     opoo "Formula.all is deprecated, use Formula.map instead"
     map

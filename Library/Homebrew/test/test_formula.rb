@@ -30,6 +30,26 @@ class FormulaTests < Test::Unit::TestCase
     assert f.installed?
   end
 
+  def test_equality
+    x = TestBall.new
+    y = TestBall.new
+    assert x == y
+    assert y == x
+    assert x.eql?(y)
+    assert y.eql?(x)
+    assert x.hash == y.hash
+  end
+
+  def test_inequality
+    x = TestBall.new("foo")
+    y = TestBall.new("bar")
+    assert x != y
+    assert y != x
+    assert x.hash != y.hash
+    assert !x.eql?(y)
+    assert !y.eql?(x)
+  end
+
   def test_class_naming
     assert_equal 'ShellFm', Formula.class_s('shell.fm')
     assert_equal 'Fooxx', Formula.class_s('foo++')
@@ -81,7 +101,7 @@ class FormulaTests < Test::Unit::TestCase
     assert_instance_of HeadSoftwareSpec, f.head
 
     assert_equal 'file:///foo.com/testball-0.1.tbz', f.stable.url
-    assert_equal "https://downloads.sf.net/project/machomebrew/Bottles/spectestball-0.1.#{MacOS.cat}.bottle.tar.gz",
+    assert_equal "https://downloads.sf.net/project/machomebrew/Bottles/spec_test_ball-0.1.#{MacOS.cat}.bottle.tar.gz",
       f.bottle.url
     assert_equal 'file:///foo.com/testball-0.2.tbz', f.devel.url
     assert_equal 'https://github.com/mxcl/homebrew.git', f.head.url
