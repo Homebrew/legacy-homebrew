@@ -2,22 +2,41 @@ require 'formula'
 
 class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
-  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/1.2.1/apache-couchdb-1.2.1.tar.gz'
-  sha1 '70dac0304cdc9f4313f524db583170a2c59e265c'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.3.0/apache-couchdb-1.3.0.tar.gz'
+  sha1 '1085297fcabb020f407283aba1f74302c9923fa0'
 
   head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
-  depends_on 'help2man' => :build
+  if build.devel? or build.head?
+    depends_on :automake => :build
+    depends_on :libtool => :build
+    # CouchDB >= 1.3.0 requires autoconf 2.63 or higher
+    depends_on 'autoconf' => :build
+    depends_on 'autoconf-archive' => :build
+    depends_on 'pkg-config' => :build
+    depends_on 'help2man' => :build
+  end
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
   depends_on 'curl' if MacOS.version == :leopard
 
+  # couchdb 1.3.0 supports vendor names and versioning
+  # in the welcome message
+  def patches; DATA; end
+
   def install
-    system "./bootstrap" if File.exists? "bootstrap"
+    if build.devel? or build.head?
+      # workaround for the auto-generation of THANKS file which assumes
+      # a developer build environment incl access to git sha
+      touch "THANKS"
+      system "./bootstrap"
+    end
+
     system "./configure", "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}",
+                          "--disable-init",
                           "--with-erlang=#{HOMEBREW_PREFIX}/lib/erlang/usr/include",
                           "--with-js-include=#{HOMEBREW_PREFIX}/include/js",
                           "--with-js-lib=#{HOMEBREW_PREFIX}/lib"
@@ -28,6 +47,11 @@ class Couchdb < Formula
     (lib+'couchdb/bin/couchjs').chmod 0755
     (var+'lib/couchdb').mkpath
     (var+'log/couchdb').mkpath
+  end
+
+  def test
+    # ensure couchdb embedded spidermonkey vm works
+    system "#{bin}/couchjs", "-h"
   end
 
   def caveats; <<-EOS.undent
@@ -47,8 +71,31 @@ class Couchdb < Formula
         sudo cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist /Library/LaunchDaemons/
         sudo launchctl load -w /Library/LaunchDaemons/org.apache.couchdb.plist
 
-    Or start manually as the current user with:
-        couchdb
+    Or start manually as the current user with `couchdb`.
+
+    To test CouchDB, start `couchdb` in a terminal and then:
+      curl http://127.0.0.1:5984/
+
+    The reply should look like:
+      {"couchdb":"Welcome","uuid":"....","version":"1.3.0",
+          "vendor":{"version":"1.3.0-1","name":"Homebrew"}}
     EOS
   end
 end
+
+__END__
+diff --git i/etc/couchdb/default.ini.tpl.in w/etc/couchdb/default.ini.tpl.in
+index 736d9cd..606e465 100644
+--- i/etc/couchdb/default.ini.tpl.in
++++ w/etc/couchdb/default.ini.tpl.in
+@@ -2,8 +2,8 @@
+
+ ; Upgrading CouchDB will overwrite this file.
+ [vendor]
+-name = %package_author_name%
+-version = %version%
++name = Homebrew
++version = %version%-1
+
+ [couchdb]
+ database_dir = %localstatelibdir%
