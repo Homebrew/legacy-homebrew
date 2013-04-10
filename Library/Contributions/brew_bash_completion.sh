@@ -92,6 +92,18 @@ __brew_complete_tapped ()
     __brewcomp "$(\ls $(brew --repository)/Library/Taps 2>/dev/null | sed 's/-/\//g')"
 }
 
+_brew_complete_tap ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--repair"
+        return
+        ;;
+    esac
+    __brew_complete_taps
+}
+
 __brew_complete_taps ()
 {
     if [[ -z "$__brew_cached_taps" ]]; then
@@ -441,7 +453,7 @@ _brew ()
     outdated)                   _brew_outdated ;;
     pin)                        __brew_complete_formulae ;;
     search|-S)                  _brew_search ;;
-    tap)                        __brew_complete_taps ;;
+    tap)                        _brew_complete_tap ;;
     uninstall|remove|rm)        _brew_uninstall ;;
     unpin)                      __brew_complete_formulae ;;
     untap)                      __brew_complete_tapped ;;
