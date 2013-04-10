@@ -152,16 +152,4 @@ class BeerTasting < Test::Unit::TestCase
     assert_equal 'foo-0.1', foo1.stem
     assert_version_equal '0.1', foo1.version
   end
-
-  def test_formula_equality
-    f = Class.new(Formula) do
-      url 'http://example.com/test-0.1.tgz'
-    end.new('test')
-    g = Struct.new(:name).new('test')
-
-    assert f == f
-    assert f == g
-    assert f.eql? f
-    assert !f.eql?(g)
-  end
 end
