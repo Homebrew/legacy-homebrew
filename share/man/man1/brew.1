@@ -288,6 +288,10 @@ Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is su
 Search for \fItext\fR on the MacPorts or Fink package search page\.
 .
 .TP
+\fBsh [\-\-env=std]\fR
+Instantiate a Homebrew build environment\. Uses our years\-battle\-hardened Homebrew build logic to help your \fB\./configure && make && make install\fR or even your \fBgem install\fR succeeed\. Especially handy if you run Homebrew in a Xcode\-only configuration since it adds tools like make to your PATH which otherwise build\-systems would not find\.
+.
+.TP
 \fBtap\fR [\fItap\fR]
 Tap a new formula repository from GitHub, or list existing taps\.
 .

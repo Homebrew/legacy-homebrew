@@ -1,23 +1,6 @@
 require 'testing_env'
 require 'test/testball'
 
-class MockFormula < Formula
-  def initialize url
-    @stable = SoftwareSpec.new(url)
-    super 'test'
-  end
-end
-
-class TestZip < Formula
-  def initialize
-    @homepage = 'http://example.com/'
-    zip=HOMEBREW_CACHE.parent+'test-0.1.zip'
-    Kernel.system '/usr/bin/zip', '-q', '-0', zip, ABS__FILE__
-    @stable = SoftwareSpec.new "file://#{zip}"
-    super 'testzip'
-  end
-end
-
 # All other tests so far -- feel free to break them out into
 # separate TestCase classes.
 
@@ -51,7 +34,18 @@ class BeerTasting < Test::Unit::TestCase
   end
 
   def test_zip
-    shutup { assert_nothing_raised { TestZip.new.brew {} } }
+    zip = HOMEBREW_CACHE.parent + 'test-0.1.zip'
+    Kernel.system '/usr/bin/zip', '-q', '-0', zip, ABS__FILE__
+
+    shutup do
+      assert_nothing_raised do
+        Class.new(Formula) do
+          url "file://#{zip}"
+        end.new("test_zip").brew {}
+      end
+    end
+  ensure
+    zip.unlink if zip.exist?
   end
 
   def test_brew_h
@@ -159,11 +153,11 @@ class BeerTasting < Test::Unit::TestCase
     assert_version_equal '0.1', foo1.version
   end
 
-  class MockMockFormula < Struct.new(:name); end
-
   def test_formula_equality
-    f = MockFormula.new('http://example.com/test-0.1.tgz')
-    g = MockMockFormula.new('test')
+    f = Class.new(Formula) do
+      url 'http://example.com/test-0.1.tgz'
+    end.new('test')
+    g = Struct.new(:name).new('test')
 
     assert f == f
     assert f == g
