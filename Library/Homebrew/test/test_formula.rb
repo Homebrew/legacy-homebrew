@@ -101,7 +101,7 @@ class FormulaTests < Test::Unit::TestCase
     assert_instance_of HeadSoftwareSpec, f.head
 
     assert_equal 'file:///foo.com/testball-0.1.tbz', f.stable.url
-    assert_equal "https://downloads.sf.net/project/machomebrew/Bottles/spectestball-0.1.#{MacOS.cat}.bottle.tar.gz",
+    assert_equal "https://downloads.sf.net/project/machomebrew/Bottles/spec_test_ball-0.1.#{MacOS.cat}.bottle.tar.gz",
       f.bottle.url
     assert_equal 'file:///foo.com/testball-0.2.tbz', f.devel.url
     assert_equal 'https://github.com/mxcl/homebrew.git', f.head.url
