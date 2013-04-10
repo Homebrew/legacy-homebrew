@@ -21,8 +21,8 @@ class ConfigureFails < Formula
   version '1.0.0'
   sha1 'b36c65e5de86efef1b3a7e9cf78a98c186b400b3'
 
-  def initialize(*)
-    super "configurefails"
+  def initialize(name="configure_fails", path=nil)
+    super
   end
 
   def install
@@ -51,8 +51,8 @@ class SpecTestBall < Formula
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
-  def initialize(*)
-    super "spectestball"
+  def initialize(name="spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -75,8 +75,8 @@ class ExplicitVersionSpecTestBall < Formula
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
-  def initialize(*)
-    super "explicitversionspectestball"
+  def initialize(name="explicit_version_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -84,8 +84,8 @@ class HeadOnlySpecTestBall < Formula
   homepage 'http://example.com'
   head 'https://github.com/mxcl/homebrew.git'
 
-  def initialize(*)
-    super "headyonlyspectestball"
+  def initialize(name="head_only_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -94,8 +94,8 @@ class IncompleteStableSpecTestBall < Formula
   head 'https://github.com/mxcl/homebrew.git'
   sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
 
-  def initialize(*)
-    super "incompletestablespectestball"
+  def initialize(name="incomplete_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -104,8 +104,8 @@ class HeadOnlyWithVersionSpecTestBall < Formula
   head 'https://github.com/mxcl/homebrew.git'
   version '0.3'
 
-  def initialize(*)
-    super "headonlywithversionspectestball"
+  def initialize(name="head_only_with_version_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -118,8 +118,8 @@ class ExplicitStrategySpecTestBall < Formula
     url 'file:///foo.com/testball-devel', :using => :bzr, :tag => '0.3'
   end
 
-  def initialize(*)
-    super "explicitstrategyspectestball"
+  def initialize(name="explicit_strategy_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -133,8 +133,8 @@ class SnowLeopardBottleSpecTestBall < Formula
     sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
   end
 
-  def initialize(*)
-    super "snowleopardbottlespectestball"
+  def initialize(name="snow_leopard_bottle_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -148,8 +148,8 @@ class LionBottleSpecTestBall < Formula
     sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :lion
   end
 
-  def initialize(*)
-    super "lionbottlespectestball"
+  def initialize(name="lion_bottle_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -167,8 +167,8 @@ class AllCatsBottleSpecTestBall < Formula
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
-  def initialize(*)
-    super "allcatsbottlespectestball"
+  def initialize(name="all_cats_bottle_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -185,7 +185,7 @@ class RevisedBottleSpecTestBall < Formula
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
-  def initialize(*)
-    super "revisedbottlespectestball"
+  def initialize(name="revised_bottle_spec_test_ball", path=nil)
+    super
   end
 end
