@@ -9,8 +9,7 @@ class Go < Formula
 
   skip_clean 'bin'
 
-  option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
-  option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
+  option '[linux|freebsd|netbsd|openbsd|windows]-[arm|amd64|386]', "Build cross-compilers and runtime support. Ex. --linux-arm"
 
   devel do
     url 'https://go.googlecode.com/files/go1.1beta2.src.tar.gz'
@@ -29,31 +28,28 @@ class Go < Formula
     (prefix/'etc/bash_completion.d').install 'misc/bash/go' => 'go-completion.bash'
     (share/'zsh/site-functions').install 'misc/zsh/go' => '_go'
 
-    if build.include? 'cross-compile-all'
-      targets = [
-        ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
-        ['freebsd', ['386', 'amd64'],        { :cgo => false }],
+   targets = []
+   targets << ['linux', ['arm'], { :cgo => false }] if build.include? 'linux-arm'
+   targets << ['linux', ['386'], { :cgo => false }] if build.include? 'linux-386'
+   targets << ['linux', ['amd64'], { :cgo => false }] if build.include? 'linux-amd64'
+   targets << ['freebsd', ['arm'], { :cgo => false }] if build.include? 'freebsd-arm'
+   targets << ['freebsd', ['386'], { :cgo => false }] if build.include? 'freebsd-386'
+   targets << ['freebsd', ['amd64'], { :cgo => false }] if build.include? 'freebsd-amd64'
+   targets << ['netbsd', ['arm'], { :cgo => false }] if build.include? 'netbsd-arm'
+   targets << ['netbsd', ['386'], { :cgo => false }] if build.include? 'netbsd-386'
+   targets << ['netbsd', ['amd64'], { :cgo => false }] if build.include? 'netbsd-amd64'
+   targets << ['openbsd', ['386'], { :cgo => false }] if build.include? 'openbsd-386'
+   targets << ['openbsd', ['amd64'], { :cgo => false }] if build.include? 'openbsd-amd64'
+   targets << ['windows', ['386'], { :cgo => false }] if build.include? 'windows-386'
+   targets << ['windows', ['amd64'], { :cgo => false }] if build.include? 'windows-amd64'
+   targets << ['darwin', ['386'], { :cgo => false }] if build.include? 'darwin-386'
+   targets << ['darwin', ['amd64'], { :cgo => false }] if build.include? 'darwin-amd64'
 
-        ['openbsd', ['386', 'amd64'],        { :cgo => false }],
-
-        ['windows', ['386', 'amd64'],        { :cgo => false }],
-
-        # Host platform (darwin/amd64) must always come last
-        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
-      ]
-    elsif build.include? 'cross-compile-common'
-      targets = [
-        ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
-        ['windows', ['386', 'amd64'],        { :cgo => false }],
-
-        # Host platform (darwin/amd64) must always come last
-        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
-      ]
-    else
-      targets = [
-        ['darwin', [''], { :cgo => true }]
-      ]
-    end
+   # We always build some form of darwin so that there is something
+   # that can create native go executables.
+   unless (build.include? 'darwin-386') || (build.include? 'darwin-amd64')
+      targets << ['darwin', [''], { :cgo => true }]
+   end
 
     # The version check is due to:
     # http://codereview.appspot.com/5654068
