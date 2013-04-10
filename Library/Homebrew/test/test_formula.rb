@@ -30,6 +30,26 @@ class FormulaTests < Test::Unit::TestCase
     assert f.installed?
   end
 
+  def test_equality
+    x = TestBall.new
+    y = TestBall.new
+    assert x == y
+    assert y == x
+    assert x.eql?(y)
+    assert y.eql?(x)
+    assert x.hash == y.hash
+  end
+
+  def test_inequality
+    x = TestBall.new("foo")
+    y = TestBall.new("bar")
+    assert x != y
+    assert y != x
+    assert x.hash != y.hash
+    assert !x.eql?(y)
+    assert !y.eql?(x)
+  end
+
   def test_class_naming
     assert_equal 'ShellFm', Formula.class_s('shell.fm')
     assert_equal 'Fooxx', Formula.class_s('foo++')
