@@ -25,7 +25,7 @@ class Midgard2 < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libgda4",
+                          "--with-libgda5",
                           "--with-dbus-support",
                           "--enable-introspection=no"
     system "make install"

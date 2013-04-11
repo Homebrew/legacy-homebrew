@@ -7,12 +7,13 @@ class Rrdtool < Formula
 
   option 'lua', "Compile with lua support"
 
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'pango'
 
   # Can use lua if it is found, but don't force users to install
   # TODO: Do something here
-  depends_on 'lua' => :optional if build.include? "lua"
+  depends_on 'lua' if build.include? "lua"
 
   # Ha-ha, but sleeping is annoying when running configure a lot
   def patches; DATA; end
@@ -22,9 +23,8 @@ class Rrdtool < Formula
 
     which_perl = which 'perl'
     which_ruby = which 'ruby'
-    ruby_path  = "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby"
 
-    opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby.realpath.to_s == ruby_path
+    opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby.realpath == RUBY_PATH
     opoo "Using system Perl. RRD module will be installed to /Library/Perl/..." if which_perl.to_s == "/usr/bin/perl"
 
     args = %W[
@@ -32,7 +32,7 @@ class Rrdtool < Formula
       --prefix=#{prefix}
     ]
     args << "--enable-perl-site-install" if which_perl.to_s == "/usr/bin/perl"
-    args << "--enable-ruby-site-install" if which_ruby.realpath.to_s == ruby_path
+    args << "--enable-ruby-site-install" if which_ruby.realpath == RUBY_PATH
 
     system "./configure", *args
 
@@ -43,11 +43,11 @@ class Rrdtool < Formula
     prefix.install "bindings/ruby/test.rb"
   end
 
-  def test
-    mktemp do
-      system "#{bin}/rrdtool", "create", "temperature.rrd", "--step", "300", "DS:temp:GAUGE:600:-273:5000", "RRA:AVERAGE:0.5:1:1200", "RRA:MIN:0.5:12:2400", "RRA:MAX:0.5:12:2400", "RRA:AVERAGE:0.5:12:2400"
-      system "#{bin}/rrdtool", "dump", "temperature.rrd"
-    end
+  test do
+    system "#{bin}/rrdtool", "create", "temperature.rrd", "--step", "300",
+      "DS:temp:GAUGE:600:-273:5000", "RRA:AVERAGE:0.5:1:1200",
+      "RRA:MIN:0.5:12:2400", "RRA:MAX:0.5:12:2400", "RRA:AVERAGE:0.5:12:2400"
+    system "#{bin}/rrdtool", "dump", "temperature.rrd"
   end
 end
 

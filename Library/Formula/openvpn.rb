@@ -2,26 +2,11 @@ require 'formula'
 
 class Openvpn < Formula
   homepage 'http://openvpn.net/'
-  url 'http://build.openvpn.net/downloads/releases/openvpn-2.2.2.tar.gz'
-  mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.2.2.tar.gz'
-  sha256 '54ca8b260e2ea3b26e84c2282ccb5f8cb149edcfd424b686d5fb22b8dbbeac00'
-
-  devel do
-    version '2.3-rc1'
-
-    url 'http://build.openvpn.net/downloads/releases/openvpn-2.3_rc1.tar.gz'
-    mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.3_rc1.tar.gz'
-    sha256 '5628423b18a0a05bff2169630e030bc4a440d0e92b820a1b78bc16357d5306e8'
-  end
+  url 'http://build.openvpn.net/downloads/releases/openvpn-2.3.0.tar.gz'
+  mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.3.0.tar.gz'
+  sha256 '4602a8d0f66dfa6ac10b7abfeba35260d7d4c570948f6eba5f8216ffa3a2c490'
 
   depends_on 'lzo'
-
-  # This patch fixes compilation on Lion
-  # There is a long history of confusion between these two consts:
-  # http://www.google.com/search?q=SOL_IP+IPPROTO_IP
-  def patches
-    DATA unless build.devel?
-  end
 
   def install
     # Build and install binary
@@ -32,25 +17,13 @@ class Openvpn < Formula
     system "make install"
 
     # Adjust sample file paths
-    if build.devel?
-      inreplace ["sample/sample-config-files/openvpn-startup.sh"] do |s|
-        s.gsub! "/etc/openvpn", etc+'openvpn'
-      end
+    inreplace ["sample/sample-config-files/openvpn-startup.sh"] do |s|
+      s.gsub! "/etc/openvpn", etc+'openvpn'
+    end
 
-      # Install sample files
-      Dir['sample/sample-*'].each do |d|
-        (share + 'doc/openvpn' + d).install Dir[d+'/*']
-      end
-    else
-      inreplace ["sample-config-files/openvpn-startup.sh", "sample-scripts/openvpn.init"] do |s|
-        s.gsub! "/etc/openvpn", etc+'openvpn'
-        s.gsub! "/var/run/openvpn", var+'run/openvpn'
-      end
-
-      # Install sample files
-      Dir['sample-*'].each do |d|
-        (share + 'doc/openvpn' + d).install Dir[d+'/*']
-      end
+    # Install sample files
+    Dir['sample/sample-*'].each do |d|
+      (share + 'doc/openvpn' + d).install Dir[d+'/*']
     end
 
     # Create etc & var paths
@@ -105,20 +78,3 @@ class Openvpn < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/socket.c b/socket.c
-index 4720398..faa1782 100644
---- a/socket.c
-+++ b/socket.c
-@@ -35,6 +35,10 @@
-
- #include "memdbg.h"
-
-+#ifndef SOL_IP
-+#define SOL_IP IPPROTO_IP
-+#endif
-+
- const int proto_overhead[] = { /* indexed by PROTO_x */
-   IPv4_UDP_HEADER_SIZE,
-   IPv4_TCP_HEADER_SIZE,

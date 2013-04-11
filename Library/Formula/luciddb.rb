@@ -40,8 +40,6 @@ class Luciddb < Formula
       <true/>
       <key>Label</key>
       <string>#{plist_name}</string>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>EnvironmentVariables</key>
       <dict>
         <key>JAVA_HOME</key>

@@ -2,8 +2,8 @@ require 'formula'
 
 class Tintin < Formula
   homepage 'http://tintin.sf.net'
-  url 'http://downloads.sourceforge.net/project/tintin/TinTin%2B%2B%20Source%20Code/2.00.8/tintin-2.00.8.tar.gz'
-  sha256 'e364a7fa7ed35a2d166a081cce4682d5fe2481ee9ce72c6a409903d097e1ae45'
+  url 'http://downloads.sourceforge.net/project/tintin/TinTin%2B%2B%20Source%20Code/2.00.9/tintin-2.00.9.tar.gz'
+  sha256 'cafeee9b60de39d957def5782fb4f8cb29a05af69dc96d3e5807c2d3fb541275'
 
   depends_on 'pcre'
 

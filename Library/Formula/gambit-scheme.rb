@@ -8,6 +8,12 @@ class GambitScheme < Formula
   option 'with-check', 'Execute "make check" before installing'
   option 'enable-shared', 'Build Gambit Scheme runtime as shared library'
 
+  # Gambit Scheme needs to know the real compilers used during compilation, as
+  # it writes these into its "gambit-cc" script. The superenv wrappers won't
+  # work for this.
+  # See: https://github.com/mxcl/homebrew/issues/17099
+  env :std
+
   fails_with :llvm do
     build 2335
     cause "ld crashes during the build process or segfault at runtime"
@@ -24,10 +30,13 @@ class GambitScheme < Formula
 
     unless ENV.compiler == :gcc
       opoo <<-EOS.undent
-        Compiling Gambit Scheme with Clang or LLVM-GCC takes a very long time.
-        If you have GCC, you can compile it much faster with:
-          brew install gambit-scheme --use-gcc
-        EOS
+        Gambit will build with GCC if an acceptable version is found on your
+        system, or Clang otherwise.  If it finds only Clang, the build will
+        take a very, very long time.  Programs built with Gambit after the
+        install may also tke a long time to compile.
+
+        You can remedy this by installing an apple-gcc* or gcc* package.
+      EOS
     end
 
     system "./configure", *args

@@ -1,32 +1,18 @@
 require 'formula'
 
-class X86_64_Architecture < Requirement
-  fatal true
-
-  def message; <<-EOS.undent
-    Your system appears to run on a 32-bit architecture.
-    Postgres-XC only supports 64-bit architectures, sorry.
-    EOS
-  end
-  def satisfied?
-    MacOS.prefer_64_bit?
-  end
-end
-
 class PostgresXc < Formula
   homepage 'http://postgres-xc.sourceforge.net/'
-  url 'http://sourceforge.net/projects/postgres-xc/files/Version_1.0/pgxc-v1.0.1.tar.gz'
-  sha1 '350277d7b32e54baffdd52fa98bac6b14f088c6d'
+  url 'http://sourceforge.net/projects/postgres-xc/files/Version_1.0/pgxc-v1.0.2.tar.gz'
+  sha1 'f427f37eb141ad9d00374fc1100a55dd09718fed'
 
-  depends_on X86_64_Architecture.new
+  depends_on :arch => :x86_64
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version == :leopard # Leopard libxml is too old
-  depends_on 'ossp-uuid' unless build.include? 'without-ossp-uuid'
+  depends_on 'ossp-uuid' => :recommended
 
   conflicts_with 'postgresql',
     :because => 'postgres-xc and postgresql install the same binaries.'
 
-  option 'without-ossp-uuid', 'Build without OSSP uuid'
   option 'no-python', 'Build without Python support'
   option 'no-perl', 'Build without Perl support'
   option 'enable-dtrace', 'Build with DTrace support'
@@ -57,13 +43,13 @@ class PostgresXc < Formula
             "--with-libxml",
             "--with-libxslt"]
 
-    args << "--with-ossp-uuid" unless build.include? 'without-ossp-uuid'
+    args << "--with-ossp-uuid" unless build.without? 'ossp-uuid'
     args << "--with-python" unless build.include? 'no-python'
     args << "--with-perl" unless build.include? 'no-perl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
     args << "ARCHFLAGS='-arch x86_64'"
 
-    unless build.include? 'without-ossp-uuid'
+    unless build.without? 'ossp-uuid'
       ENV.append 'CFLAGS', `uuid-config --cflags`.strip
       ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
       ENV.append 'LIBS', `uuid-config --libs`.strip
@@ -186,8 +172,6 @@ class PostgresXc < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>
       <key>StandardErrorPath</key>
@@ -222,8 +206,6 @@ class PostgresXc < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>
       <key>StandardErrorPath</key>
@@ -254,8 +236,6 @@ class PostgresXc < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>
       <key>StandardErrorPath</key>
@@ -286,8 +266,6 @@ class PostgresXc < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>
       <key>StandardErrorPath</key>

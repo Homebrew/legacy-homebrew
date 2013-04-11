@@ -18,6 +18,7 @@ class Logrotate < Formula
     ENV["COMPRESS_COMMAND"] = "/usr/bin/gzip"
     ENV["COMPRESS_EXT"] = ".gz"
     ENV["UNCOMPRESS_COMMAND"] = "/usr/bin/gunzip"
+    ENV["STATEFILE"] = "#{var}/lib/logrotate.status"
 
     system "make"
     sbin.install 'logrotate'
@@ -47,8 +48,6 @@ class Logrotate < Formula
         </array>
         <key>RunAtLoad</key>
         <false/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>StartCalendarInterval</key>
         <dict>
           <key>Hour</key>

@@ -1,5 +1,5 @@
 require 'download_strategy'
-require 'checksums'
+require 'checksum'
 require 'version'
 
 class SoftwareSpec
@@ -9,6 +9,9 @@ class SoftwareSpec
     @url = url
     @version = version
     @mirrors = []
+    @specs = {}
+    @checksum = nil
+    @using = nil
   end
 
   def download_strategy
@@ -31,24 +34,18 @@ class SoftwareSpec
 
   # The methods that follow are used in the block-form DSL spec methods
   Checksum::TYPES.each do |cksum|
-    class_eval %Q{
-      def #{cksum}(val=nil)
-        if val.nil?
-          @checksum if @checksum.nil? or @checksum.hash_type == :#{cksum}
-        else
-          @checksum = Checksum.new(:#{cksum}, val)
-        end
+    class_eval <<-EOS, __FILE__, __LINE__ + 1
+      def #{cksum}(val)
+        @checksum = Checksum.new(:#{cksum}, val)
       end
-    }
+    EOS
   end
 
-  def url val=nil, specs=nil
+  def url val=nil, specs={}
     return @url if val.nil?
     @url = val
-    unless specs.nil?
-      @using = specs.delete :using
-      @specs = specs
-    end
+    @using = specs.delete(:using)
+    @specs.merge!(specs)
   end
 
   def version val=nil
@@ -63,7 +60,6 @@ class SoftwareSpec
   end
 
   def mirror val
-    @mirrors ||= []
     @mirrors << val
   end
 end
@@ -80,46 +76,53 @@ end
 
 class Bottle < SoftwareSpec
   attr_writer :url
-  attr_reader :revision
+  # TODO: Can be removed when all bottles migrated to underscored cat symbols.
+  attr_reader :cat_without_underscores
 
-  def initialize url=nil, version=nil
+  def initialize
     super
     @revision = 0
+    @prefix = '/usr/local'
+    @cellar = '/usr/local/Cellar'
+    @cat_without_underscores = false
   end
 
   # Checksum methods in the DSL's bottle block optionally take
   # a Hash, which indicates the platform the checksum applies on.
   Checksum::TYPES.each do |cksum|
-    class_eval %Q{
-      def #{cksum}(val=nil)
+    class_eval <<-EOS, __FILE__, __LINE__ + 1
+      def #{cksum}(val)
         @#{cksum} ||= Hash.new
         case val
-        when nil
-          @#{cksum}[MacOS.cat]
-        when String
-          @#{cksum}[:lion] = Checksum.new(:#{cksum}, val)
         when Hash
           key, value = val.shift
           @#{cksum}[value] = Checksum.new(:#{cksum}, key)
         end
 
-        @checksum = @#{cksum}[MacOS.cat] if @#{cksum}.has_key? MacOS.cat
+        if @#{cksum}.has_key? MacOS.cat
+          @checksum = @#{cksum}[MacOS.cat]
+        elsif @#{cksum}.has_key? MacOS.cat_without_underscores
+          @checksum = @#{cksum}[MacOS.cat_without_underscores]
+          @cat_without_underscores = true
+        end
       end
-    }
+    EOS
   end
 
-  def url val=nil
-    val.nil? ? @url : @url = val
+  def root_url val=nil
+    val.nil? ? @root_url : @root_url = val
   end
 
-  # Used in the bottle DSL to set @revision, but acts as an
-  # as accessor for @version to preserve the interface
-  def version val=nil
-    if val.nil?
-      return @version ||= Version.parse(@url)
-    else
-      @revision = val
-    end
+  def prefix val=nil
+    val.nil? ? @prefix : @prefix = val
+  end
+
+  def cellar val=nil
+    val.nil? ? @cellar : @cellar = val
+  end
+
+  def revision val=nil
+    val.nil? ? @revision : @revision = val
   end
 end
 
@@ -158,99 +161,5 @@ class KegOnlyReason
     else
       @reason
     end.strip
-  end
-end
-
-
-# Represents a build-time option for a formula
-class Option
-  attr_reader :name, :description, :flag
-
-  def initialize name, description=nil
-    @name = name.to_s
-    @description = description.to_s
-    @flag = '--'+name.to_s
-  end
-
-  def eql?(other)
-    @name == other.name
-  end
-
-  def hash
-    @name.hash
-  end
-end
-
-
-# This class holds the build-time options defined for a Formula,
-# and provides named access to those options during install.
-class BuildOptions
-  include Enumerable
-
-  def initialize args
-    # Take a copy of the args (any string array, actually)
-    @args = Array.new(args)
-    # Extend it into an ARGV extension
-    @args.extend(HomebrewArgvExtension)
-    @options = Set.new
-  end
-
-  def add name, description=nil
-    if description.nil?
-      case name
-      when :universal, "universal"
-        description = "Build a universal binary"
-      when "32-bit"
-        description = "Build 32-bit only"
-      else
-        description = ""
-      end
-    end
-
-    @options << Option.new(name, description)
-  end
-
-  def has_option? name
-    any? { |opt| opt.name == name }
-  end
-
-  def empty?
-    @options.empty?
-  end
-
-  def each(&blk)
-    @options.each(&blk)
-  end
-
-  def as_flags
-    map { |opt| opt.flag }
-  end
-
-  def include? name
-    @args.include? '--' + name
-  end
-
-  def head?
-    @args.flag? '--HEAD'
-  end
-
-  def devel?
-    @args.include? '--devel'
-  end
-
-  def stable?
-    not (head? or devel?)
-  end
-
-  # True if the user requested a universal build.
-  def universal?
-    @args.include? '--universal'
-  end
-
-  # Request a 32-bit only build.
-  # This is needed for some use-cases though we prefer to build Universal
-  # when a 32-bit version is needed.
-  def build_32_bit?
-    @args.include? '--32-bit'
   end
 end

@@ -7,14 +7,6 @@ module HomebrewArgvExtension
     select {|arg| arg[0..0] == '-'}
   end
 
-  def used_options f
-    f.build.as_flags & options_only
-  end
-
-  def unused_options f
-    f.build.as_flags - options_only
-  end
-
   def formulae
     require 'formula'
     @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
@@ -134,7 +126,7 @@ module HomebrewArgvExtension
   end
 
   def build_bottle?
-    include? '--build-bottle' and MacOS.bottles_supported?(true)
+    include? '--build-bottle' or ENV['HOMEBREW_BUILD_BOTTLE']
   end
 
   def build_from_source?
@@ -181,10 +173,9 @@ module HomebrewArgvExtension
     flags_to_clear.concat %w[--verbose -v] if quieter?
     flags_to_clear.each {|flag| delete flag}
 
-    ret = yield
-
-    replace old_args
-    ret
+    yield
+  ensure
+    replace(old_args)
   end
 
   private

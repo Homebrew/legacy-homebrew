@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ncview < Formula
-  url 'ftp://cirrus.ucsd.edu/pub/ncview/ncview-2.1.1.tar.gz'
   homepage 'http://meteora.ucsd.edu/~pierce/ncview_home_page.html'
-  sha1 'e5f1c475d684f7d02ca33ca5444da4b4f828005b'
+  url 'ftp://cirrus.ucsd.edu/pub/ncview/ncview-2.1.2.tar.gz'
+  sha1 '425b0f5d505af9c1f974903435af385582be7ae4'
 
   depends_on :x11
   depends_on "netcdf"
@@ -15,8 +15,8 @@ class Ncview < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

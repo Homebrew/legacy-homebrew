@@ -2,9 +2,9 @@ require 'formula'
 
 class Automake < Formula
   homepage 'http://www.gnu.org/software/automake/'
-  url 'http://ftpmirror.gnu.org/automake/automake-1.13.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/automake/automake-1.13.tar.gz'
-  sha1 'cc01ed114f49dd7282e26b07400d9e503e2e4109'
+  url 'http://ftpmirror.gnu.org/automake/automake-1.13.1.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/automake/automake-1.13.1.tar.gz'
+  sha1 '1778a1ab4ec2587aeceaf43b43536f11393cc59e'
 
   # Always needs a newer autoconf, even on Snow Leopard.
   depends_on 'autoconf'

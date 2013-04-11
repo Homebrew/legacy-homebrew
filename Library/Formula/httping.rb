@@ -2,8 +2,8 @@ require 'formula'
 
 class Httping < Formula
   homepage 'http://www.vanheusden.com/httping/'
-  url 'http://www.vanheusden.com/httping/httping-1.5.6.tgz'
-  sha1 '146d114ff6359556ae5f720964aa091b39dbb506'
+  url 'http://www.vanheusden.com/httping/httping-2.1.tgz'
+  sha1 '882f3d34680b5d03693e710c5c7ccdbb8a145a5f'
 
   def patches
     # fixes conflicting definitions of strdup()

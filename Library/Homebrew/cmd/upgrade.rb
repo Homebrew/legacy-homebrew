@@ -16,11 +16,13 @@ module Homebrew extend self
 
     Homebrew.perform_preinstall_checks
 
-    outdated = if ARGV.named.empty?
+    if ARGV.named.empty?
       require 'cmd/outdated'
-      Homebrew.outdated_brews
+      upgrade_pinned = false
+      outdated = Homebrew.outdated_brews
     else
-      ARGV.formulae.select do |f|
+      upgrade_pinned = true
+      outdated = ARGV.formulae.select do |f|
         if f.installed?
           onoe "#{f}-#{f.installed_version} already installed"
         elsif not f.rack.exist? or f.rack.children.empty?
@@ -29,22 +31,21 @@ module Homebrew extend self
           true
         end
       end
+      exit 1 if outdated.empty?
     end
 
-    # Expand the outdated list to include outdated dependencies then sort and
-    # reduce such that dependencies are installed first and installation is not
-    # attempted twice. Sorting is implicit the way `recursive_deps` returns
-    # root dependencies at the head of the list and `uniq` keeps the first
-    # element it encounters and discards the rest.
-    ARGV.filter_for_dependencies do
-      outdated.map!{ |f| f.recursive_deps.reject{ |d| d.installed? } << f }
-      outdated.flatten!
-      outdated.uniq!
-    end unless ARGV.ignore_deps?
+    unless upgrade_pinned
+      pinned = outdated.select { |f| f.pinned? }
+      outdated -= pinned
+    end
 
-    if outdated.length > 1
+    if outdated.length > 0
       oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
       puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
+    end
+    if not upgrade_pinned and pinned.length > 0
+      oh1 "Not upgrading #{pinned.length} pinned package#{outdated.length.plural_s}:"
+      puts pinned.map{ |f| "#{f.name} #{f.version}" } * ", "
     end
 
     outdated.each do |f|
@@ -53,15 +54,12 @@ module Homebrew extend self
   end
 
   def upgrade_formula f
-    # Generate using `for_keg` since the formula object points to a newer version
-    # that doesn't exist yet. Use `opt_prefix` to guard against keg-only installs.
-    # Also, guard against old installs that may not have an `opt_prefix` symlink.
-    tab = (f.opt_prefix.exist? ? Tab.for_keg(f.opt_prefix) : Tab.dummy_tab(f))
+    tab = Tab.for_formula(f)
     outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
 
-    installer = FormulaInstaller.new(f, tab)
+    installer = FormulaInstaller.new(f)
+    installer.tab = tab
     installer.show_header = false
-    installer.install_bottle = (install_bottle?(f) and tab.used_options.empty?)
 
     oh1 "Upgrading #{f.name}"
 
@@ -73,6 +71,16 @@ module Homebrew extend self
     installer.install
     installer.caveats
     installer.finish
+
+    # If the formula was pinned, and we were force-upgrading it, unpin and
+    # pin it again to get a symlink pointing to the correct keg.
+    if f.pinned?
+      f.unpin
+      f.pin
+    end
+  rescue FormulaInstallationAlreadyAttemptedError
+    # We already attempted to upgrade f as part of the dependency tree of
+    # another formula. In that case, don't generate an error, just move on.
   rescue CannotInstallFormulaError => e
     ofail e
   rescue BuildError => e

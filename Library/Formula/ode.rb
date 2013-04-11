@@ -7,21 +7,26 @@ class Ode < Formula
 
   head 'http://opende.svn.sourceforge.net/svnroot/opende/trunk'
 
+  option 'enable-double-precision', 'Compile ODE with double precision'
+
   depends_on 'pkg-config' => :build
 
   if build.head?
-    # Requires newer automake and libtool
-    depends_on 'automake' => :build
-    depends_on 'libtool' => :build
+    depends_on :automake
+    depends_on :libtool
   end
 
   def install
+    args = ["--prefix=#{prefix}",
+            "--disable-demos"]
+    args << "--enable-double-precision" if build.include? 'enable-double-precision'
+
     if build.head?
       ENV['LIBTOOLIZE'] = 'glibtoolize'
       inreplace 'autogen.sh', 'libtoolize', '$LIBTOOLIZE'
       system "./autogen.sh"
     end
-    system "./configure", "--prefix=#{prefix}", "--disable-demos"
+    system "./configure", *args
     system "make"
     system "make install"
   end

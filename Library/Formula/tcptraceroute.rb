@@ -1,8 +1,8 @@
 require 'formula'
 
 class Tcptraceroute < Formula
-  url 'http://michael.toren.net/code/tcptraceroute/tcptraceroute-1.5beta7.tar.gz'
   homepage 'http://michael.toren.net/code/tcptraceroute/'
+  url 'http://michael.toren.net/code/tcptraceroute/tcptraceroute-1.5beta7.tar.gz'
   version '1.5beta7'
   sha1 '78847ef4ba7031cee660c540593256fd384a1a62'
 

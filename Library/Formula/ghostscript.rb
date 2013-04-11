@@ -8,10 +8,12 @@ end
 
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
-  url 'http://downloads.ghostscript.com/public/ghostscript-9.06.tar.gz'
-  sha1 'a3de8ccb877ee9b7437a598196eb6afa11bf31dc'
+  url 'http://downloads.ghostscript.com/public/ghostscript-9.07.tar.gz'
+  sha1 'b04a88ea8d661fc53d4f7eac34d84456272afc06'
 
   head 'git://git.ghostscript.com/ghostpdl.git'
+
+  option 'with-x11', 'Install with X11 support'
 
   if build.head?
     depends_on :automake
@@ -22,8 +24,8 @@ class Ghostscript < Formula
   depends_on 'jpeg'
   depends_on 'libtiff'
   depends_on 'jbig2dec'
-  depends_on 'little-cms2'
   depends_on :libpng
+  depends_on :x11 => '2.7.2' if build.include? 'with-x11'
 
   # Fix dylib names, per installation instructions
   def patches
@@ -34,7 +36,7 @@ class Ghostscript < Formula
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    renames = %w(jpeg libpng tiff zlib lcms2 jbig2dec)
+    renames = %w(jpeg libpng tiff zlib jbig2dec)
     renames << "freetype" if MacOS.version >= :lion
     renames.each do |lib|
       mv lib, "#{lib}_local"
@@ -54,8 +56,8 @@ class Ghostscript < Formula
         --disable-compile-inits
         --disable-gtk
         --with-system-libtiff
-        --without-x
       ]
+      args << '--without-x' unless build.include? 'with-x11'
 
       if build.head?
         system './autogen.sh', *args

@@ -8,6 +8,7 @@ class Gobby < Formula
   head 'git://git.0x539.de/git/gobby.git'
 
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'gtkmm'
   depends_on 'libgsasl'
   depends_on 'libxml++'
@@ -18,9 +19,18 @@ class Gobby < Formula
   depends_on 'libinfinity'
   depends_on :x11
 
+  # Fix compilation on clang per MacPorts
+  def patches
+    { :p0 => [
+      "https://trac.macports.org/export/101720/trunk/dports/x11/gobby/files/patch-code-util-config.hpp.diff"
+    ]}
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+    # Don't link this into share!
+    (share/"icons/hicolor/icon-theme.cache").unlink
   end
 end

@@ -6,6 +6,7 @@ class Libsoup < Formula
   sha256 '71b8923fc7a5fef9abc5420f7f3d666fdb589f43a8c50892d584d58b3c513f9a'
 
   depends_on 'xz' => :build
+  depends_on 'pkg-config' => :build
   depends_on 'glib-networking' # Required at runtime for TLS support
   depends_on 'gnutls' # Also required for TLS
   depends_on 'sqlite' # For SoupCookieJarSqlite
@@ -26,7 +27,8 @@ class Libsoup < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--without-gnome"
+                          "--without-gnome",
+                          "--disable-tls-check"
     system "make install"
   end
 end

@@ -1,9 +1,11 @@
 require 'formula'
 
 class Librsync < Formula
-  url 'http://downloads.sourceforge.net/project/librsync/librsync/0.9.7/librsync-0.9.7.tar.gz'
   homepage 'http://librsync.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/librsync/librsync/0.9.7/librsync-0.9.7.tar.gz'
   sha1 'd575eb5cae7a815798220c3afeff5649d3e8b4ab'
+
+  option :universal
 
   def patches
     # fixes librsync doesn't correctly export inlined functions:
@@ -14,7 +16,7 @@ class Librsync < Formula
   end
 
   def install
-    ENV.universal_binary
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",

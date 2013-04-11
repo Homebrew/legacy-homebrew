@@ -2,9 +2,8 @@ require 'formula'
 
 class Shiboken < Formula
   homepage 'http://www.pyside.org/docs/shiboken'
-  # See https://github.com/mxcl/homebrew/issues/15190
-  url 'https://distfiles.macports.org/py-shiboken/shiboken-1.1.2.tar.bz2'
-  # url 'http://pyside.org/files/shiboken-1.1.2.tar.bz2'
+  url 'http://qt-project.org/uploads/pyside/shiboken-1.1.2.tar.bz2'
+  mirror 'https://distfiles.macports.org/py-shiboken/shiboken-1.1.2.tar.bz2'
   sha1 '2ffe9d47a3f536840ed9d7eff766a53040bb2a2e'
 
   depends_on 'cmake' => :build

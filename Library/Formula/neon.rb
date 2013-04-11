@@ -1,9 +1,9 @@
 require 'formula'
 
 class Neon < Formula
+  homepage 'http://www.webdav.org/neon/'
   url 'http://www.webdav.org/neon/neon-0.29.6.tar.gz'
   sha1 'ae1109923303f67ed3421157927bc4bc29c58961'
-  homepage 'http://www.webdav.org/neon/'
 
   depends_on 'pkg-config' => :build
 
@@ -14,9 +14,9 @@ class Neon < Formula
 
   def install
     ENV.universal_binary if build.universal?
-
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
+    ENV.enable_warnings
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
                           "--enable-shared",
                           "--disable-static",
                           "--with-ssl"

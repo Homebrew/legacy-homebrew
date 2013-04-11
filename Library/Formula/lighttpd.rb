@@ -9,7 +9,8 @@ class Lighttpd < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
-  depends_on 'lua' => :optional if build.include? 'with-lua'
+  depends_on 'lua' => :optional
+  depends_on 'libev' => :optional
 
   def install
     args = %W[
@@ -17,8 +18,14 @@ class Lighttpd < Formula
       --prefix=#{prefix}
       --with-openssl
       --with-ldap
+      --with-zlib
+      --with-bzip2
+      --with-attr
     ]
-    args << "--with-lua" if build.include? 'with-lua'
+
+    args << "--with-lua" if build.with? 'lua'
+    args << "--with-libev" if build.with? 'libev'
+
     system "./configure", *args
     system "make install"
   end

@@ -1,10 +1,10 @@
 require 'formula'
 
 class Texinfo < Formula
-  url 'http://ftpmirror.gnu.org/texinfo/texinfo-4.13a.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/texinfo/texinfo-4.13a.tar.gz'
   homepage 'http://www.gnu.org/software/texinfo/'
-  sha1 'a1533cf8e03ea4fa6c443b73f4c85e4da04dead0'
+  url 'http://ftpmirror.gnu.org/texinfo/texinfo-5.1.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/texinfo/texinfo-5.1.tar.gz'
+  sha1 '8b642aea2f5ba8a1ba4b15f438a47c1d15dcd214'
 
   keg_only :provided_by_osx, <<-EOS.undent
     Software that uses TeX, such as lilypond and octave, require a newer version

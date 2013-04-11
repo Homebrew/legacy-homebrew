@@ -1,9 +1,9 @@
 require 'formula'
 
 class Talloc < Formula
-  url 'http://www.samba.org/ftp/talloc/talloc-2.0.7.tar.gz'
   homepage 'http://talloc.samba.org/'
-  sha1 'fb84ee401b6e094503056b030ce31fcbcc9d06aa'
+  url 'http://www.samba.org/ftp/talloc/talloc-2.0.8.tar.gz'
+  sha1 '5ca7710a3f95a1db873c97fcf83f92dddfd57907'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-rpath"

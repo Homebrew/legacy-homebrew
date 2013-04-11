@@ -3,48 +3,25 @@ require 'formula'
 require 'test/testball'
 require 'version'
 
-class TestBadVersion < TestBall
-  def initialize name=nil
-    @stable = SoftwareSpec.new
-    @stable.version "versions can't have spaces"
-    super 'testbadversion'
-  end
-end
-
 class VersionComparisonTests < Test::Unit::TestCase
   include VersionAssertions
 
   def test_version_comparisons
-    assert_equal 0,  version('0.1') <=> version('0.1.0')
-    assert_equal -1, version('0.1') <=> version('0.2')
-    assert_equal 1,  version('1.2.3') <=> version('1.2.2')
-    assert_equal 1,  version('1.2.3-p34') <=> version('1.2.3-p33')
-    assert_equal -1, version('1.2.4') <=> version('1.2.4.1')
-    assert_equal 0,  version('HEAD') <=> version('HEAD')
-    assert_equal 1,  version('HEAD') <=> version('1.2.3')
-    assert_equal -1, version('1.2.3') <=> version('HEAD')
-    assert_equal -1, version('3.2.0b4') <=> version('3.2.0')
-    assert_equal -1, version('1.0beta6') <=> version('1.0b7')
-    assert_equal -1, version('1.0b6') <=> version('1.0beta7')
-    assert_equal -1, version('1.1alpha4') <=> version('1.1beta2')
-    assert_equal -1, version('1.1beta2') <=> version('1.1rc1')
-    assert_equal -1, version('1.0.0beta7') <=> version('1.0.0')
-    assert_equal 1,  version('3.2.1') <=> version('3.2beta4')
+    assert version('0.1') == version('0.1.0')
+    assert version('0.1') < version('0.2')
+    assert version('1.2.3') > version('1.2.2')
+    assert version('1.2.3-p34') > version('1.2.3-p33')
+    assert version('1.2.4') < version('1.2.4.1')
+    assert version('HEAD') > version('1.2.3')
+    assert version('1.2.3') < version('HEAD')
+    assert version('3.2.0b4') < version('3.2.0')
+    assert version('1.0beta6') < version('1.0b7')
+    assert version('1.0b6') < version('1.0beta7')
+    assert version('1.1alpha4') < version('1.1beta2')
+    assert version('1.1beta2') < version('1.1rc1')
+    assert version('1.0.0beta7') < version('1.0.0')
+    assert version('3.2.1') > version('3.2beta4')
     assert_nil version('1.0') <=> 'foo'
-  end
-
-  def test_macos_version_comparison
-    v = MacOSVersion.new(10.6)
-    assert v == 10.6
-    assert v == :snow_leopard
-    assert v < :lion
-    # Test that we can compare against different representations
-    assert v <= 10.8
-    assert v < "10.8"
-    assert v < :mountain_lion
-    assert v < 11
-    assert v < Version.new(10.8)
-    assert Version.new(10.5) < v
   end
 
   def test_version_interrogation
@@ -74,7 +51,11 @@ class VersionParsingTests < Test::Unit::TestCase
   end
 
   def test_bad_version
-    assert_raises(RuntimeError) { f = TestBadVersion.new }
+    assert_raises(RuntimeError) do
+      Class.new(TestBall) do
+        version "versions can't have spaces"
+      end.new
+    end
   end
 
   def test_version_all_dots
@@ -212,19 +193,11 @@ class VersionParsingTests < Test::Unit::TestCase
   end
 
   def test_another_erlang_bottle_style
-    assert_version_detected 'R15B01', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B01.mountainlion.bottle.tar.gz'
+    assert_version_detected 'R15B01', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B01.mountain_lion.bottle.tar.gz'
   end
 
   def test_yet_another_erlang_bottle_style
     assert_version_detected 'R15B03-1', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B03-1.mountainlion.bottle.tar.gz'
-  end
-
-  def test_old_bottle_style
-    assert_version_detected '4.7.3', 'https://downloads.sf.net/project/machomebrew/Bottles/qt-4.7.3-bottle.tar.gz'
-  end
-
-  def test_old_erlang_bottle_style
-    assert_version_detected 'R15B', 'https://downloads.sf.net/project/machomebrew/Bottles/erlang-R15B-bottle.tar.gz'
   end
 
   def test_imagemagick_style
@@ -249,6 +222,10 @@ class VersionParsingTests < Test::Unit::TestCase
 
   def test_apache_version_style
     assert_version_detected '1.2.0-rc2', 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.2.0/apache-cassandra-1.2.0-rc2-bin.tar.gz'
+  end
+
+  def test_jpeg_style
+    assert_version_detected '8d', 'http://www.ijg.org/files/jpegsrc.v8d.tar.gz'
   end
 
   # def test_version_ghc_style

@@ -1,11 +1,9 @@
 require 'formula'
 
 class SixtyFourBitRequired < Requirement
-  def satisfied?
-    MacOS.prefer_64_bit?
-  end
+  fatal true
 
-  def fatal?; true end
+  satisfy MacOS.prefer_64_bit?
 
   def message; <<-EOS.undent
     32-bit MongoDB binaries are no longer available.
@@ -19,17 +17,11 @@ end
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.2.tgz'
-  sha1 'b3808eeb6fe481f87db176cd3ab31119f94f7cc1'
-  version '2.2.2-x86_64'
+  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.1.tgz'
+  sha1 'd11220cdaf5e8edb88b7b4cc0828ffa6149dd7b5'
+  version '2.4.1-x86_64'
 
-  devel do
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.3.1.tgz'
-    sha1 'ebb277337e66fe88dfd0bb4208f78e9fba5ca101'
-    version '2.3.1-x86_64'
-  end
-
-  depends_on SixtyFourBitRequired.new
+  depends_on SixtyFourBitRequired
 
   def install
     # Copy the prebuilt binaries to prefix
@@ -88,14 +80,22 @@ class Mongodb < Formula
       <true/>
       <key>KeepAlive</key>
       <false/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>
       <key>StandardErrorPath</key>
       <string>#{var}/log/mongodb/output.log</string>
       <key>StandardOutPath</key>
       <string>#{var}/log/mongodb/output.log</string>
+      <key>HardResourceLimits</key>
+      <dict>
+        <key>NumberOfFiles</key>
+        <integer>1024</integer>
+      </dict>
+      <key>SoftResourceLimits</key>
+      <dict>
+        <key>NumberOfFiles</key>
+        <integer>1024</integer>
+      </dict>
     </dict>
     </plist>
     EOS

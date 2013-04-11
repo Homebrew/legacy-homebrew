@@ -1,10 +1,6 @@
 require 'testing_env'
 require 'test/testball'
 
-class AbstractDownloadStrategy
-  attr_reader :url
-end
-
 class MostlyAbstractFormula < Formula
   url ''
 end
@@ -13,12 +9,45 @@ class FormulaTests < Test::Unit::TestCase
   include VersionAssertions
 
   def test_prefix
-    nostdout do
-      TestBall.new.brew do |f|
-        assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
-        assert_kind_of Pathname, f.prefix
-      end
-    end
+    f = TestBall.new
+    assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
+    assert_kind_of Pathname, f.prefix
+  end
+
+  def test_installed?
+    f = TestBall.new
+    f.stubs(:installed_prefix).returns(stub(:directory? => false))
+    assert !f.installed?
+
+    f.stubs(:installed_prefix).returns(
+      stub(:directory? => true, :children => [])
+    )
+    assert !f.installed?
+
+    f.stubs(:installed_prefix).returns(
+      stub(:directory? => true, :children => [stub])
+    )
+    assert f.installed?
+  end
+
+  def test_equality
+    x = TestBall.new
+    y = TestBall.new
+    assert x == y
+    assert y == x
+    assert x.eql?(y)
+    assert y.eql?(x)
+    assert x.hash == y.hash
+  end
+
+  def test_inequality
+    x = TestBall.new("foo")
+    y = TestBall.new("bar")
+    assert x != y
+    assert y != x
+    assert x.hash != y.hash
+    assert !x.eql?(y)
+    assert !y.eql?(x)
   end
 
   def test_class_naming
@@ -31,15 +60,7 @@ class FormulaTests < Test::Unit::TestCase
 
   def test_cant_override_brew
     assert_raises(RuntimeError) do
-      eval <<-EOS
-      class TestBallOverrideBrew < Formula
-        def initialize
-          super "foo"
-        end
-        def brew
-        end
-      end
-      EOS
+      Class.new(Formula) { def brew; end }
     end
   end
 
@@ -47,17 +68,20 @@ class FormulaTests < Test::Unit::TestCase
     f=MostlyAbstractFormula.new
     assert_equal '__UNKNOWN__', f.name
     assert_raises(RuntimeError) { f.prefix }
-    nostdout { assert_raises(RuntimeError) { f.brew } }
+    shutup { assert_raises(RuntimeError) { f.brew } }
   end
 
   def test_mirror_support
-    HOMEBREW_CACHE.mkpath unless HOMEBREW_CACHE.exist?
-    nostdout do
-      f = TestBallWithMirror.new
-      tarball, downloader = f.fetch
-      assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
-      assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    end
+    f = Class.new(Formula) do
+      url "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
+      mirror "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    end.new("test_mirror_support")
+
+    shutup { f.fetch }
+
+    assert_equal "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz", f.url
+    assert_equal "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz",
+      f.downloader.instance_variable_get(:@url)
   end
 
   def test_formula_specs
@@ -77,14 +101,14 @@ class FormulaTests < Test::Unit::TestCase
     assert_instance_of HeadSoftwareSpec, f.head
 
     assert_equal 'file:///foo.com/testball-0.1.tbz', f.stable.url
-    assert_equal "https://downloads.sf.net/project/machomebrew/Bottles/spectestball-0.1.#{MacOS.cat}.bottle.tar.gz",
+    assert_equal "https://downloads.sf.net/project/machomebrew/Bottles/spec_test_ball-0.1.#{MacOS.cat}.bottle.tar.gz",
       f.bottle.url
     assert_equal 'file:///foo.com/testball-0.2.tbz', f.devel.url
     assert_equal 'https://github.com/mxcl/homebrew.git', f.head.url
 
-    assert_nil f.stable.specs
-    assert_nil f.bottle.specs
-    assert_nil f.devel.specs
+    assert_empty f.stable.specs
+    assert_empty f.bottle.specs
+    assert_empty f.devel.specs
     assert_equal({ :tag => 'foo' }, f.head.specs)
 
     assert_equal CurlDownloadStrategy, f.stable.download_strategy
@@ -103,19 +127,13 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal :sha1, f.bottle.checksum.hash_type
     assert_equal :sha256, f.devel.checksum.hash_type
     assert_equal case MacOS.cat
-      when :snowleopard then 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
-      when :lion then 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
-      when :mountainlion then '8badf00d8badf00d8badf00d8badf00d8badf00d'
+      when :snow_leopard_32 then 'deadbeef'*5
+      when :snow_leopard    then 'faceb00c'*5
+      when :lion            then 'baadf00d'*5
+      when :mountain_lion   then '8badf00d'*5
       end, f.bottle.checksum.hexdigest
-    assert_match /[0-9a-fA-F]{40}/, f.stable.checksum.hexdigest
-    assert_match /[0-9a-fA-F]{64}/, f.devel.checksum.hexdigest
-
-    assert_nil f.stable.md5
-    assert_nil f.stable.sha256
-    assert_nil f.bottle.md5
-    assert_nil f.bottle.sha256
-    assert_nil f.devel.md5
-    assert_nil f.devel.sha1
+    assert_match(/[0-9a-fA-F]{40}/, f.stable.checksum.hexdigest)
+    assert_match(/[0-9a-fA-F]{64}/, f.devel.checksum.hexdigest)
 
     assert_equal 1, f.stable.mirrors.length
     assert f.bottle.mirrors.empty?
@@ -133,24 +151,26 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_devel_active_spec
-    ARGV.push '--devel'
+    ARGV << '--devel'
     f = SpecTestBall.new
     assert_equal f.devel, f.active_spec
     assert_version_equal '0.2', f.version
     assert_equal 'file:///foo.com/testball-0.2.tbz', f.url
     assert_equal CurlDownloadStrategy, f.download_strategy
     assert_instance_of CurlDownloadStrategy, f.downloader
+  ensure
     ARGV.delete '--devel'
   end
 
   def test_head_active_spec
-    ARGV.push '--HEAD'
+    ARGV << '--HEAD'
     f = SpecTestBall.new
     assert_equal f.head, f.active_spec
     assert_version_equal 'HEAD', f.version
     assert_equal 'https://github.com/mxcl/homebrew.git', f.url
     assert_equal GitDownloadStrategy, f.download_strategy
     assert_instance_of GitDownloadStrategy, f.downloader
+  ensure
     ARGV.delete '--HEAD'
   end
 
@@ -163,42 +183,9 @@ class FormulaTests < Test::Unit::TestCase
     assert !f.devel.version.detected_from_url?
   end
 
-  def test_old_bottle_specs
-    f = OldBottleSpecTestBall.new
-
-    case MacOS.cat
-    when :lion
-      assert_instance_of Bottle, f.bottle
-      assert_equal CurlBottleDownloadStrategy, f.bottle.download_strategy
-      assert_nil f.bottle.specs
-      assert f.bottle.mirrors.empty?
-
-      assert_equal 'file:///foo.com/testball-0.1-bottle.tar.gz', f.bottle.url
-
-      assert_instance_of Checksum, f.bottle.checksum
-      assert_equal :sha1, f.bottle.checksum.hash_type
-      assert !f.bottle.checksum.empty?
-      assert_equal 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef', f.bottle.sha1.hexdigest
-      assert_nil f.bottle.md5
-      assert_nil f.bottle.sha256
-
-      assert f.bottle.version.detected_from_url?
-      assert_equal 0, f.bottle.revision
-      assert_version_equal '0.1', f.bottle.version
-    else
-      assert_nil f.bottle
-    end
-  end
-
-  def test_ancient_bottle_specs
-    f = AncientBottleSpecTestBall.new
-    assert_nil f.bottle
-  end
-
   def test_head_only_specs
     f = HeadOnlySpecTestBall.new
 
-    assert_not_nil f.head
     assert_nil f.stable
     assert_nil f.bottle
     assert_nil f.devel
@@ -215,7 +202,6 @@ class FormulaTests < Test::Unit::TestCase
   def test_incomplete_stable_specs
     f = IncompleteStableSpecTestBall.new
 
-    assert_not_nil f.head
     assert_nil f.stable
     assert_nil f.bottle
     assert_nil f.devel
@@ -232,7 +218,6 @@ class FormulaTests < Test::Unit::TestCase
   def test_head_only_with_version_specs
     f = IncompleteStableSpecTestBall.new
 
-    assert_not_nil f.head
     assert_nil f.stable
     assert_nil f.bottle
     assert_nil f.devel
@@ -249,9 +234,9 @@ class FormulaTests < Test::Unit::TestCase
   def test_explicit_strategy_specs
     f = ExplicitStrategySpecTestBall.new
 
-    assert_not_nil f.stable
-    assert_not_nil f.devel
-    assert_not_nil f.head
+    assert_instance_of SoftwareSpec, f.stable
+    assert_instance_of SoftwareSpec, f.devel
+    assert_instance_of HeadSoftwareSpec, f.head
 
     assert_equal f.stable, f.active_spec
 
@@ -273,16 +258,43 @@ class FormulaTests < Test::Unit::TestCase
 
     assert_equal 1, f.bottle.revision
     assert_equal case MacOS.cat
-      when :snowleopard then 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
-      when :lion then 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d'
-      when :mountainlion then '8badf00d8badf00d8badf00d8badf00d8badf00d'
+      when :snow_leopard_32 then 'deadbeef'*5
+      when :snow_leopard    then 'faceb00k'*5
+      when :lion            then 'baadf00d'*5
+      when :mountain_lion   then '8badf00d'*5
       end, f.bottle.checksum.hexdigest
   end
 
   def test_custom_version_scheme
-    f = CustomVersionSchemeTestBall.new
+    scheme = Class.new(Version)
+    f = Class.new(TestBall) { version '1.0' => scheme }.new
 
     assert_version_equal '1.0', f.version
-    assert_instance_of CustomVersionScheme, f.version
+    assert_instance_of scheme, f.version
+  end
+
+  def test_formula_funcs
+    foobar = 'foo-bar'
+    path = Formula.path(foobar)
+
+    assert_match Regexp.new("^#{HOMEBREW_PREFIX}/Library/Formula"),
+      path.to_s
+
+    path = HOMEBREW_PREFIX+"Library/Formula/#{foobar}.rb"
+    path.dirname.mkpath
+    File.open(path, 'w') do |f|
+      f << %{
+        require 'formula'
+        class #{Formula.class_s(foobar)} < Formula
+          url ''
+          def initialize(*args)
+            @homepage = 'http://example.com/'
+            super
+          end
+        end
+      }
+    end
+
+    assert_not_nil Formula.factory(foobar)
   end
 end

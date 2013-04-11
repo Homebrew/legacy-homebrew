@@ -10,7 +10,7 @@ module Homebrew extend self
       bucket = []
       ARGV.formulae.each do |f|
         bucket << f
-        bucket << f.recursive_deps
+        bucket << f.recursive_dependencies.map(&:to_formula)
       end
 
       bucket = bucket.flatten.uniq
@@ -19,25 +19,26 @@ module Homebrew extend self
     end
 
     puts "Fetching: #{bucket * ', '}" if bucket.size > 1
+    bucket.each { |f| fetch_formula(f) }
+  end
 
-    bucket.each do |f|
-      already_downloaded = f.cached_download.exist?
-      f.cached_download.rmtree if already_downloaded and ARGV.force?
+  def already_fetched? f
+    f.cached_download.exist?
+  end
 
-      the_tarball, _ = f.fetch
-      next unless the_tarball.kind_of? Pathname
+  def fetch_formula f
+    f.cached_download.rmtree if already_fetched?(f) && ARGV.force?
+    tarball, _ = f.fetch
 
-      puts "Downloaded to: #{the_tarball}" unless already_downloaded
-      puts "MD5:  #{the_tarball.md5}"
-      puts "SHA1: #{the_tarball.sha1}"
-      puts "SHA256: #{the_tarball.sha2}"
+    # FIXME why are strategies returning different types?
+    return unless tarball.is_a? Pathname
 
-      begin
-        f.verify_download_integrity the_tarball
-      rescue ChecksumMismatchError => e
-        Homebrew.failed = true
-        opoo "Formula reports different #{e.hash_type}: #{e.expected}"
-      end
-    end
+    puts "Downloaded to: #{tarball}" unless already_fetched?(f)
+    puts Checksum::TYPES.map { |t| "#{t.to_s.upcase}: #{tarball.send(t)}" }
+
+    f.verify_download_integrity(tarball)
+  rescue ChecksumMismatchError => e
+    Homebrew.failed = true
+    opoo "Formula reports different #{e.hash_type}: #{e.expected}"
   end
 end

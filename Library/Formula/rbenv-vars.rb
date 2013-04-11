@@ -2,8 +2,8 @@ require 'formula'
 
 class RbenvVars < Formula
   homepage 'https://github.com/sstephenson/rbenv-vars'
-  url 'https://github.com/sstephenson/rbenv-vars/tarball/v1.1.0'
-  sha1 '40d57e4a1f64ef03efbf6fd5a15ef637d6a5755e'
+  url 'https://github.com/sstephenson/rbenv-vars/archive/v1.2.0.tar.gz'
+  sha1 '8953cecac154fac96dc1e68b54d66a4c8b569e08'
 
   head 'https://github.com/sstephenson/rbenv-vars.git'
 
@@ -11,7 +11,5 @@ class RbenvVars < Formula
 
   def install
     prefix.install Dir['*']
-
-    ln_sf opt_prefix, "#{HOMEBREW_PREFIX}/var/lib/rbenv/plugins/#{name}"
   end
 end

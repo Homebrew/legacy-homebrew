@@ -10,11 +10,11 @@ class Jack < Formula
 
   # default build assumes ppc+i386, changed to i386+x86_64
   def patches
-    "https://gist.github.com/raw/636194/jack-1.9.6_homebrew.patch"
+    "https://gist.github.com/raw/636194/a8f5326ea27faed38da6c188045dd166b1eb6af6/jack-1.9.6_homebrew.patch"
   end
 
   fails_with :clang do
-    build 421
+    build 425
     cause 'waf fails to find g++ when compiling with clang'
   end
 
