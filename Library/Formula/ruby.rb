@@ -37,7 +37,7 @@ class Ruby < Formula
 
     args << "--program-suffix=20" if build.include? "with-suffix"
     args << "--with-arch=x86_64,i386" if build.universal?
-    args << "--disable-tcltk-framework" <<  "--with-out-ext=tcl" <<  "--with-out-ext=tk" unless build.include? "with-tcltk"
+    args << "--with-out-ext=tk" unless build.include? "with-tcltk"
     args << "--disable-install-doc" unless build.include? "with-doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
 
