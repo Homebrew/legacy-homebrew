@@ -1,5 +1,6 @@
 require 'formula'
 
+# Stick with 0.10; PostGIS doesn't build against 0.11
 class JsonC < Formula
   homepage 'https://github.com/json-c/json-c/wiki'
   url 'https://github.com/downloads/json-c/json-c/json-c-0.10.tar.gz'
