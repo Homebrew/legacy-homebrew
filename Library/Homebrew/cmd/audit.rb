@@ -94,6 +94,7 @@ class FormulaAuditor
     @f = f
     @problems = []
     @text = f.text.without_patch
+    @specs = %w{stable devel head}.map { |s| f.send(s) }.compact
 
     # We need to do this in case the formula defines a patch that uses DATA.
     f.class.redefine_const :DATA, ""
@@ -129,7 +130,7 @@ class FormulaAuditor
     f.deps.each do |dep|
       begin
         dep_f = dep.to_formula
-      rescue
+      rescue FormulaUnavailableError
         problem "Can't find dependency #{dep.name.inspect}."
       end
 
@@ -140,6 +141,11 @@ class FormulaAuditor
       end
 
       case dep.name
+      when *BUILD_TIME_DEPS
+        # Build deps should be tagged
+        problem <<-EOS.undent unless dep.tags.any? || f.name =~ /automake/ && dep.name == 'autoconf'
+        #{dep} dependency should be "depends_on '#{dep}' => :build"
+        EOS
       when "git", "python", "ruby", "emacs", "mysql", "mercurial"
         problem <<-EOS.undent
           Don't use #{dep} as a dependency. We allow non-Homebrew
@@ -192,15 +198,19 @@ class FormulaAuditor
       problem "Google Code homepage should end with a slash (url is #{f.homepage})."
     end
 
-    urls = [(f.stable.url rescue nil), (f.devel.url rescue nil), (f.head.url rescue nil)].compact
+    if f.homepage =~ %r[^http://.*\.github\.com/]
+      problem "GitHub pages should use the github.io domain (url is #{f.homepage})"
+    end
+
+    urls = @specs.map(&:url)
 
     # Check GNU urls; doesn't apply to mirrors
-    urls.select { |u| u =~ %r[^(https?|ftp)://(?!alpha).+/gnu/] }.each do |u|
+    urls.grep(%r[^(?:https?|ftp)://(?!alpha).+/gnu/]).each do |u|
       problem "\"ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
     end
 
     # the rest of the checks apply to mirrors as well
-    urls.concat([(f.stable.mirrors rescue nil), (f.devel.mirrors rescue nil)].flatten.compact)
+    urls.concat(@specs.map(&:mirrors).flatten)
 
     # Check SourceForge urls
     urls.each do |p|
@@ -230,17 +240,17 @@ class FormulaAuditor
     end
 
     # Check for git:// GitHub repo urls, https:// is preferred.
-    urls.select { |u| u =~ %r[^git://([^/])*github\.com/] }.each do |u|
+    urls.grep(%r[^git://[^/]*github\.com/]).each do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
     end
 
     # Check for http:// GitHub repo urls, https:// is preferred.
-    urls.select { |u| u =~ %r[^http://github\.com/.*\.git$] }.each do |u|
+    urls.grep(%r[^http://github\.com/.*\.git$]).each do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
     end 
 
     # Use new-style archive downloads
-    urls.select { |u|  u =~ %r[https://.*/(tar|zip)ball/] and not u =~ %r[\.git$] }.each do |u|
+    urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] and not u =~ %r[\.git$] }.each do |u|
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
     end
 
@@ -310,12 +320,6 @@ class FormulaAuditor
       problem "Commented cmake call found"
     end
 
-    # build tools should be flagged properly
-    # but don't complain about automake; it needs autoconf at runtime
-    if text =~ /depends_on ['"](#{BUILD_TIME_DEPS*'|'})['"]$/
-      problem "#{$1} dependency should be \"depends_on '#{$1}' => :build\""
-    end unless f.name =~ /automake/
-
     # FileUtils is included in Formula
     if text =~ /FileUtils\.(\w+)/
       problem "Don't need 'FileUtils.' before #{$1}."
@@ -368,7 +372,7 @@ class FormulaAuditor
     end
 
     # No trailing whitespace, please
-    if text =~ /(\t|[ ])+$/
+    if text =~ /[\t ]+$/
       problem "Trailing whitespace was found"
     end
 
@@ -426,16 +430,17 @@ class FormulaAuditor
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
 
-    if text =~ /(MacOS.((snow_)?leopard|leopard|(mountain_)?lion)\?)/
-      problem "#{$1} is deprecated, use a comparison to MacOS.version instead"
+    cats = %w{leopard snow_leopard lion mountain_lion}.join("|")
+    if text =~ /MacOS\.(?:#{cats})\?/
+      problem "\"#{$&}\" is deprecated, use a comparison to MacOS.version instead"
     end
 
     if text =~ /skip_clean\s+:all/
       problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
     end
 
-    if text =~ /depends_on (.*)\.new$/
-      problem "`depends_on` can take requirement classes directly"
+    if text =~ /depends_on [A-Z][\w:]+\.new$/
+      problem "`depends_on` can take requirement classes instead of instances"
     end
   end
 

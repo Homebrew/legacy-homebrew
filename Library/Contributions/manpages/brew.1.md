@@ -90,6 +90,8 @@ Note that these flags should only appear after a command.
 
     If `--all` is passed, show dependencies for all formulae.
 
+    If `--installed` is passed, show dependencies for all installed formulae.
+
   * `diy [--set-name <name>] [--set-version <version>]`:
     Automatically determine the installation prefix for non-Homebrew software.
 
@@ -258,6 +260,13 @@ Note that these flags should only appear after a command.
 
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
+
+  * `sh [--env=std]`:
+    Instantiate a Homebrew build environment. Uses our years-battle-hardened
+    Homebrew build logic to help your `./configure && make && make install`
+    or even your `gem install` succeeed. Especially handy if you run Homebrew
+    in a Xcode-only configuration since it adds tools like make to your PATH
+    which otherwise build-systems would not find.
 
   * `tap` [<tap>]:
     Tap a new formula repository from GitHub, or list existing taps.

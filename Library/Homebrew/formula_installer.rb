@@ -17,6 +17,7 @@ class FormulaInstaller
     @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @options = Options.new
+    @tab = Tab.dummy_tab(ff)
 
     @@attempted ||= Set.new
 
@@ -25,7 +26,7 @@ class FormulaInstaller
   end
 
   def pour_bottle? warn=false
-    (tab.used_options.empty? rescue true) && options.empty? && install_bottle?(f, warn)
+    tab.used_options.empty? && options.empty? && install_bottle?(f, warn)
   end
 
   def check_install_sanity
@@ -34,7 +35,7 @@ class FormulaInstaller
     if f.installed?
       msg = "#{f}-#{f.installed_version} already installed"
       msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
-      raise CannotInstallFormulaError, msg
+      raise FormulaAlreadyInstalledError, msg
     end
 
     # Building head-only without --HEAD is an error
@@ -80,7 +81,7 @@ class FormulaInstaller
     unless ignore_deps
       # HACK: If readline is present in the dependency tree, it will clash
       # with the stdlib's Readline module when the debugger is loaded
-      if f.recursive_deps.any? { |d| d.name == "readline" } and ARGV.debug?
+      if f.recursive_dependencies.any? { |d| d.name == "readline" } and ARGV.debug?
         ENV['HOMEBREW_NO_READLINE'] = '1'
       end
 
@@ -92,7 +93,7 @@ class FormulaInstaller
 
     @@attempted << f
 
-    poured_bottle = false
+    @poured_bottle = false
     begin
       if pour_bottle? true
         pour
@@ -267,7 +268,7 @@ class FormulaInstaller
       opts = Options.coerce(ARGV.options_only)
       unless opts.include? '--fresh'
         opts.concat(options) # from a dependent formula
-        opts.concat((tab.used_options rescue [])) # from a previous install
+        opts.concat(tab.used_options) # from a previous install
       end
       opts << Option.new("--build-from-source") # don't download bottle
     end
@@ -287,17 +288,24 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
+    args = %W[
+      nice #{RUBY_PATH}
+      -W0
+      -I #{File.dirname(__FILE__)}
+      -rbuild
+      --
+      #{f.path}
+    ].concat(build_argv)
+
+    # Ruby 2.0+ sets close-on-exec on all file descriptors except for
+    # 0, 1, and 2 by default, so we have to specify that we want the pipe
+    # to remain open in the child process.
+    args << { write => write } if RUBY_VERSION >= "2.0"
+
     fork do
       begin
         read.close
-        exec 'nice',
-             RUBY_PATH,
-             '-W0',
-             '-I', Pathname.new(__FILE__).dirname,
-             '-rbuild',
-             '--',
-             f.path,
-             *build_argv
+        exec(*args)
       rescue Exception => e
         Marshal.dump(e, write)
         write.close

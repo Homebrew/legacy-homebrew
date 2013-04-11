@@ -63,7 +63,6 @@ class Ruby < Formula
     system "./configure", *args
     system "make"
     system "make install"
-    system "make install-doc" if build.include? "with-doc"
   end
 
   def caveats; <<-EOS.undent

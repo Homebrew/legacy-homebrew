@@ -2,8 +2,8 @@ require 'formula'
 
 class Pig < Formula
   homepage 'http://pig.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.11.0/pig-0.11.0.tar.gz'
-  sha1 'becdb938e0e76218650c16b55958a04460370181'
+  url 'http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.11.1/pig-0.11.1.tar.gz'
+  sha1 '1351b497b0628504b10533fe5c6451df14eee189'
 
   def patches
     DATA

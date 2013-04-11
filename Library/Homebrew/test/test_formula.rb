@@ -1,10 +1,6 @@
 require 'testing_env'
 require 'test/testball'
 
-class AbstractDownloadStrategy
-  attr_reader :url
-end
-
 class MostlyAbstractFormula < Formula
   url ''
 end
@@ -13,12 +9,45 @@ class FormulaTests < Test::Unit::TestCase
   include VersionAssertions
 
   def test_prefix
-    shutup do
-      TestBall.new.brew do |f|
-        assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
-        assert_kind_of Pathname, f.prefix
-      end
-    end
+    f = TestBall.new
+    assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
+    assert_kind_of Pathname, f.prefix
+  end
+
+  def test_installed?
+    f = TestBall.new
+    f.stubs(:installed_prefix).returns(stub(:directory? => false))
+    assert !f.installed?
+
+    f.stubs(:installed_prefix).returns(
+      stub(:directory? => true, :children => [])
+    )
+    assert !f.installed?
+
+    f.stubs(:installed_prefix).returns(
+      stub(:directory? => true, :children => [stub])
+    )
+    assert f.installed?
+  end
+
+  def test_equality
+    x = TestBall.new
+    y = TestBall.new
+    assert x == y
+    assert y == x
+    assert x.eql?(y)
+    assert y.eql?(x)
+    assert x.hash == y.hash
+  end
+
+  def test_inequality
+    x = TestBall.new("foo")
+    y = TestBall.new("bar")
+    assert x != y
+    assert y != x
+    assert x.hash != y.hash
+    assert !x.eql?(y)
+    assert !y.eql?(x)
   end
 
   def test_class_naming
@@ -31,15 +60,7 @@ class FormulaTests < Test::Unit::TestCase
 
   def test_cant_override_brew
     assert_raises(RuntimeError) do
-      eval <<-EOS
-      class TestBallOverrideBrew < Formula
-        def initialize
-          super "foo"
-        end
-        def brew
-        end
-      end
-      EOS
+      Class.new(Formula) { def brew; end }
     end
   end
 
@@ -51,13 +72,16 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_mirror_support
-    HOMEBREW_CACHE.mkpath unless HOMEBREW_CACHE.exist?
-    shutup do
-      f = TestBallWithMirror.new
-      _, downloader = f.fetch
-      assert_equal f.url, "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
-      assert_equal downloader.url, "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    end
+    f = Class.new(Formula) do
+      url "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
+      mirror "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+    end.new("test_mirror_support")
+
+    shutup { f.fetch }
+
+    assert_equal "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz", f.url
+    assert_equal "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz",
+      f.downloader.instance_variable_get(:@url)
   end
 
   def test_formula_specs
@@ -77,7 +101,7 @@ class FormulaTests < Test::Unit::TestCase
     assert_instance_of HeadSoftwareSpec, f.head
 
     assert_equal 'file:///foo.com/testball-0.1.tbz', f.stable.url
-    assert_equal "https://downloads.sf.net/project/machomebrew/Bottles/spectestball-0.1.#{MacOS.cat}.bottle.tar.gz",
+    assert_equal "https://downloads.sf.net/project/machomebrew/Bottles/spec_test_ball-0.1.#{MacOS.cat}.bottle.tar.gz",
       f.bottle.url
     assert_equal 'file:///foo.com/testball-0.2.tbz', f.devel.url
     assert_equal 'https://github.com/mxcl/homebrew.git', f.head.url
@@ -127,24 +151,26 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_devel_active_spec
-    ARGV.push '--devel'
+    ARGV << '--devel'
     f = SpecTestBall.new
     assert_equal f.devel, f.active_spec
     assert_version_equal '0.2', f.version
     assert_equal 'file:///foo.com/testball-0.2.tbz', f.url
     assert_equal CurlDownloadStrategy, f.download_strategy
     assert_instance_of CurlDownloadStrategy, f.downloader
+  ensure
     ARGV.delete '--devel'
   end
 
   def test_head_active_spec
-    ARGV.push '--HEAD'
+    ARGV << '--HEAD'
     f = SpecTestBall.new
     assert_equal f.head, f.active_spec
     assert_version_equal 'HEAD', f.version
     assert_equal 'https://github.com/mxcl/homebrew.git', f.url
     assert_equal GitDownloadStrategy, f.download_strategy
     assert_instance_of GitDownloadStrategy, f.downloader
+  ensure
     ARGV.delete '--HEAD'
   end
 
@@ -240,9 +266,35 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_custom_version_scheme
-    f = CustomVersionSchemeTestBall.new
+    scheme = Class.new(Version)
+    f = Class.new(TestBall) { version '1.0' => scheme }.new
 
     assert_version_equal '1.0', f.version
-    assert_instance_of CustomVersionScheme, f.version
+    assert_instance_of scheme, f.version
+  end
+
+  def test_formula_funcs
+    foobar = 'foo-bar'
+    path = Formula.path(foobar)
+
+    assert_match Regexp.new("^#{HOMEBREW_PREFIX}/Library/Formula"),
+      path.to_s
+
+    path = HOMEBREW_PREFIX+"Library/Formula/#{foobar}.rb"
+    path.dirname.mkpath
+    File.open(path, 'w') do |f|
+      f << %{
+        require 'formula'
+        class #{Formula.class_s(foobar)} < Formula
+          url ''
+          def initialize(*args)
+            @homepage = 'http://example.com/'
+            super
+          end
+        end
+      }
+    end
+
+    assert_not_nil Formula.factory(foobar)
   end
 end

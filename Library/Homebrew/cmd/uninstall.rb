@@ -12,7 +12,7 @@ module Homebrew extend self
           keg.unlink
           keg.uninstall
           rm_opt_link keg.fname
-          unpin keg.fname
+          rm_pin keg.fname
         end
       end
     else
@@ -49,7 +49,7 @@ module Homebrew extend self
     optlink.unlink if optlink.symlink?
   end
 
-  def unpin name
+  def rm_pin name
     Formula.factory(name).unpin rescue nil
   end
 end

@@ -1009,8 +1009,9 @@ def check_for_outdated_homebrew
     end
 
     if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent
-      Your Homebrew is outdated
+      Your Homebrew is outdated.
       You haven't updated for at least 24 hours, this is a long time in brewland!
+      To update Homebrew, run `brew update`.
       EOS
     end
   end
@@ -1095,7 +1096,7 @@ module Homebrew extend self
     checks = Checks.new
 
     if ARGV.include? '--list-checks'
-      checks.methods.select { |m| m =~ /^check_/ }.sort.each { |m| puts m }
+      checks.methods.grep(/^check_/).sort.each { |m| puts m }
       exit
     end
 
@@ -1106,7 +1107,7 @@ module Homebrew extend self
       checks.methods.sort << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
     else
       ARGV.named
-    end.select{ |method| method =~ /^check_/ }.reverse.uniq.reverse
+    end.grep(/^check_/).reverse.uniq.reverse
 
     first_warning = true
     methods.each do |method|

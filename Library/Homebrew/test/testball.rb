@@ -1,12 +1,14 @@
 require 'formula'
 
 class TestBall < Formula
-  # name parameter required for some Formula::factory
-  def initialize name=nil
+  def initialize(name="test_ball")
     @homepage = 'http://example.com/'
-    @stable ||= SoftwareSpec.new
-    @stable.url "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    super "testball"
+    self.class.instance_eval do
+      @stable ||= SoftwareSpec.new
+      @stable.url "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+      @stable.sha1 "482e737739d946b7c8cbaf127d9ee9c148b999f5"
+    end
+    super
   end
   def install
     prefix.install "bin"
@@ -14,30 +16,13 @@ class TestBall < Formula
   end
 end
 
-class TestBallWithRealPath < TestBall
-  def initialize name=nil
-    super "testballwithrealpath"
-    @path = Pathname.new(__FILE__)
-  end
-end
-
-class TestBallWithMirror < Formula
-  url "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
-  mirror "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-
-  def initialize name=nil
-    super "testballwithmirror"
-  end
-end
-
 class ConfigureFails < Formula
-  # name parameter required for some Formula::factory
   url "file:///#{TEST_FOLDER}/tarballs/configure_fails.tar.gz"
   version '1.0.0'
   sha1 'b36c65e5de86efef1b3a7e9cf78a98c186b400b3'
 
-  def initialize name=nil
-    super "configurefails"
+  def initialize(name="configure_fails", path=nil)
+    super
   end
 
   def install
@@ -66,8 +51,8 @@ class SpecTestBall < Formula
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
-  def initialize name=nil
-    super "spectestball"
+  def initialize(name="spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -90,8 +75,8 @@ class ExplicitVersionSpecTestBall < Formula
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
-  def initialize name=nil
-    super "explicitversionspectestball"
+  def initialize(name="explicit_version_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -99,8 +84,8 @@ class HeadOnlySpecTestBall < Formula
   homepage 'http://example.com'
   head 'https://github.com/mxcl/homebrew.git'
 
-  def initialize name=nil
-    super "headyonlyspectestball"
+  def initialize(name="head_only_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -109,8 +94,8 @@ class IncompleteStableSpecTestBall < Formula
   head 'https://github.com/mxcl/homebrew.git'
   sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
 
-  def initialize name=nil
-    super "incompletestablespectestball"
+  def initialize(name="incomplete_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -119,8 +104,8 @@ class HeadOnlyWithVersionSpecTestBall < Formula
   head 'https://github.com/mxcl/homebrew.git'
   version '0.3'
 
-  def initialize name=nil
-    super "headonlywithversionspectestball"
+  def initialize(name="head_only_with_version_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -133,8 +118,8 @@ class ExplicitStrategySpecTestBall < Formula
     url 'file:///foo.com/testball-devel', :using => :bzr, :tag => '0.3'
   end
 
-  def initialize name=nil
-    super "explicitstrategyspectestball"
+  def initialize(name="explicit_strategy_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -148,8 +133,8 @@ class SnowLeopardBottleSpecTestBall < Formula
     sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
   end
 
-  def initialize name=nil
-    super "snowleopardbottlespectestball"
+  def initialize(name="snow_leopard_bottle_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -163,8 +148,8 @@ class LionBottleSpecTestBall < Formula
     sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :lion
   end
 
-  def initialize name=nil
-    super "lionbottlespectestball"
+  def initialize(name="lion_bottle_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -182,8 +167,8 @@ class AllCatsBottleSpecTestBall < Formula
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
-  def initialize name=nil
-    super "allcatsbottlespectestball"
+  def initialize(name="all_cats_bottle_spec_test_ball", path=nil)
+    super
   end
 end
 
@@ -200,21 +185,7 @@ class RevisedBottleSpecTestBall < Formula
     sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
   end
 
-  def initialize name=nil
-    super "revisedbottlespectestball"
-  end
-end
-
-class CustomVersionScheme < Version
-end
-
-class CustomVersionSchemeTestBall < Formula
-  homepage 'http://example.com'
-  url 'file:///foo.com/testball-0.1.tbz'
-  sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
-  version '1.0' => CustomVersionScheme
-
-  def initialize name=nil
-    super "customversionschemetestball"
+  def initialize(name="revised_bottle_spec_test_ball", path=nil)
+    super
   end
 end
