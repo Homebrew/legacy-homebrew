@@ -12,6 +12,7 @@ class Curl < Formula
   option 'with-libmetalink', 'Build with Metalink support'
   option 'with-ares', 'Build with C-Ares async DNS support'
   option 'with-ssl', 'Build with Homebrew OpenSSL instead of the system version'
+  option 'with-darwinssl' 'Build with Secure Transport for SSL support'
 
   depends_on 'pkg-config' => :build
   depends_on 'libssh2' if build.include? 'with-ssh'
@@ -30,6 +31,7 @@ class Curl < Formula
     args << "--with-libmetalink" if build.include? 'with-libmetalink'
     args << "--enable-ares=#{Formula.factory("c-ares").opt_prefix}" if build.include? 'with-ares'
     args << "--with-ssl=#{Formula.factory("openssl").opt_prefix}" if build.include? 'with-ssl'
+    args << "--with-darwinssl" if build.include? 'with-darwinssl'
 
     system "./configure", *args
     system "make install"
