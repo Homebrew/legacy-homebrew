@@ -2,9 +2,8 @@ require 'formula'
 
 class Libwebsockets < Formula
   homepage 'http://git.warmcat.com/cgi-bin/cgit/libwebsockets'
-  url 'http://git.warmcat.com/cgi-bin/cgit/libwebsockets/snapshot/libwebsockets-1.22-chrome26-firefox18.tar.gz'
+  url 'git://git.warmcat.com/libwebsockets', :tag => 'v1.22-chrome26-firefox18'
   version '1.22'
-  sha1 'e1bc750cf206699a7fbafc59db82c33c49948680'
 
   depends_on 'cmake' => :build
 
