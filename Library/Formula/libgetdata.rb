@@ -7,15 +7,14 @@ class Libgetdata < Formula
 
   option 'lzma',        'Build with LZMA compression support'
   option 'zzip',        'Build with zzip compression support'
-  option 'with-perl',   'Build Perl bindings'
   option 'with-fortran','Build Fortran 77 bindings'
 
   depends_on 'xz'          if build.include? 'lzma'
   depends_on 'libzzip'     if build.include? 'zzip'
-  depends_on 'perl'        if build.include? 'with-perl'
-  depends_on 'gfortran'    if build.include? 'with-fortran'
 
   def install
+
+    ENV.fortran if build.with? 'fortran'
 
     args = %W[
       --disable-dependency-tracking
@@ -23,8 +22,7 @@ class Libgetdata < Formula
     ]
 
     system "./configure", *args
-
-    system "make", "install" # if this fails, try separate make/make install steps
+    system "make", "install"
   end
 
   def patches
