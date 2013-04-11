@@ -272,4 +272,29 @@ class FormulaTests < Test::Unit::TestCase
     assert_version_equal '1.0', f.version
     assert_instance_of scheme, f.version
   end
+
+  def test_formula_funcs
+    foobar = 'foo-bar'
+    path = Formula.path(foobar)
+
+    assert_match Regexp.new("^#{HOMEBREW_PREFIX}/Library/Formula"),
+      path.to_s
+
+    path = HOMEBREW_PREFIX+"Library/Formula/#{foobar}.rb"
+    path.dirname.mkpath
+    File.open(path, 'w') do |f|
+      f << %{
+        require 'formula'
+        class #{Formula.class_s(foobar)} < Formula
+          url ''
+          def initialize(*args)
+            @homepage = 'http://example.com/'
+            super
+          end
+        end
+      }
+    end
+
+    assert_not_nil Formula.factory(foobar)
+  end
 end
