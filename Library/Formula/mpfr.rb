@@ -3,10 +3,9 @@ require 'formula'
 class Mpfr < Formula
   homepage 'http://www.mpfr.org/'
   # Upstream is down a lot, so use the GNU mirror + Gist for patches
-  url 'http://ftpmirror.gnu.org/mpfr/mpfr-3.1.1.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.1.tar.bz2'
-  version '3.1.1-p2'
-  sha1 'f632d43943ff9f13c184fa13b9a6e8c7f420f4dd'
+  url 'http://ftpmirror.gnu.org/mpfr/mpfr-3.1.2.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.bz2'
+  sha1 '46d5a11a59a4e31f74f73dd70c5d57a59de2d0b4'
 
   bottle do
     sha1 'ef221a793449407ea7726e5d160350a77a1d1e2e' => :mountain_lion
@@ -24,10 +23,6 @@ class Mpfr < Formula
       clang build 421 segfaults while building in superenv;
       see https://github.com/mxcl/homebrew/issues/15061
       EOS
-  end
-
-  def patches
-    "https://gist.github.com/raw/4472199/42c0b207037a133527083d12adc9028b4da429ee/gistfile1.txt"
   end
 
   def install
