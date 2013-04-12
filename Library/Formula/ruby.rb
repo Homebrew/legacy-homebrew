@@ -23,7 +23,7 @@ class Ruby < Formula
   depends_on 'gdbm'
   depends_on 'libyaml'
   depends_on 'openssl' if MacOS.version >= :mountain_lion
-  depends_on :x11 if build.include? 'with-tcltk'
+  depends_on :x11 if build.with? 'tcltk'
 
   fails_with :llvm do
     build 2326
@@ -32,13 +32,11 @@ class Ruby < Formula
   def install
     system "autoconf" if build.head?
 
-    args = ["--prefix=#{prefix}",
-            "--enable-shared"]
-
-    args << "--program-suffix=20" if build.include? "with-suffix"
+    args = %W[--prefix=#{prefix} --enable-shared]
+    args << "--program-suffix=20" if build.with? "suffix"
     args << "--with-arch=x86_64,i386" if build.universal?
-    args << "--with-out-ext=tk" unless build.include? "with-tcltk"
-    args << "--disable-install-doc" unless build.include? "with-doc"
+    args << "--with-out-ext=tk" unless build.with? "tcltk"
+    args << "--disable-install-doc" unless build.with? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
 
     # OpenSSL is deprecated on OS X 10.8 and Ruby can't find the outdated
@@ -46,8 +44,7 @@ class Ruby < Formula
     # See discussion https://github.com/sstephenson/ruby-build/issues/304
     # and https://github.com/mxcl/homebrew/pull/18054
     if MacOS.version >= :mountain_lion
-      openssl = Formula.factory('openssl')
-      args << "--with-openssl-dir=#{openssl.opt_prefix}"
+      args << "--with-openssl-dir=#{Formula.factory('openssl').opt_prefix}"
     end
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
