@@ -56,7 +56,8 @@ class Nginx < Formula
             "--http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp",
             "--http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp",
             "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp",
-            "--http-log-path=#{var}/log/nginx"
+            "--http-log-path=#{var}/log/nginx",
+            "--with-http_gzip_static_module"
           ]
 
     args << passenger_config_args if build.include? 'with-passenger'
