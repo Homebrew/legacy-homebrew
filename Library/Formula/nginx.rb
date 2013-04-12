@@ -76,8 +76,8 @@ class Nginx < Formula
     prefix.cd do
       dst = HOMEBREW_PREFIX/"var/www"
       if not dst.exist?
+        dst.dirname.mkpath
         mv "html", dst
-        dst.dirname.mkdir_p
       else
         rm_rf "html"
         dst.mkpath
@@ -111,7 +111,7 @@ class Nginx < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/sbin/nginx</string>
+            <string>#{opt_prefix}/bin/nginx</string>
             <string>-g</string>
             <string>daemon off;</string>
         </array>
