@@ -19,7 +19,7 @@ class Ld64 < Formula
   keg_only :provided_by_osx,
     "ld64 is an updated version of the ld shipped by Apple."
 
-  fails_with(:gcc_4_0) do
+  fails_with :gcc_4_0 do
     build 5370
   end
   
