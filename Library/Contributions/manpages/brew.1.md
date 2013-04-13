@@ -185,7 +185,7 @@ Note that these flags should only appear after a command.
     If `--git` is passed, Homebrew will create a Git repository, useful for
     creating patches to the software.
 
-  * `ln`, `link [--overwrite] [--dry-run]` <formula>:
+  * `ln`, `link [--overwrite] [--dry-run] [--force]` <formula>:
     Symlink all of <formula>'s installed files into the Homebrew prefix. This
     is done automatically when you install formula, but can be useful for DIY
     installations.
@@ -196,6 +196,8 @@ Note that these flags should only appear after a command.
     If `--dry-run` or `-n` is passed, Homebrew will list all files which would
     be linked or which would be deleted by `brew link --overwrite`, but will not
     actually link or delete any files.
+
+    If `--force` is passed, Homebrew will allow keg-only formulae to be linked.
 
   * `ls, list [--unbrewed] [--versions] [--pinned]` [<formulae>]:
     Without any arguments, list all installed formulae.
