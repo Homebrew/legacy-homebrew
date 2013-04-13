@@ -208,7 +208,7 @@ Download and patch \fIformula\fR, then open a shell\. This allows the user to ru
 If \fB\-\-git\fR is passed, Homebrew will create a Git repository, useful for creating patches to the software\.
 .
 .TP
-\fBln\fR, \fBlink [\-\-overwrite] [\-\-dry\-run]\fR \fIformula\fR
+\fBln\fR, \fBlink [\-\-overwrite] [\-\-dry\-run] [\-\-force]\fR \fIformula\fR
 Symlink all of \fIformula\fR\'s installed files into the Homebrew prefix\. This is done automatically when you install formula, but can be useful for DIY installations\.
 .
 .IP
@@ -216,6 +216,9 @@ If \fB\-\-overwrite\fR is passed, Homebrew will delete files which already exist
 .
 .IP
 If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, Homebrew will list all files which would be linked or which would be deleted by \fBbrew link \-\-overwrite\fR, but will not actually link or delete any files\.
+.
+.IP
+If \fB\-\-force\fR is passed, Homebrew will allow keg\-only formulae to be linked\.
 .
 .TP
 \fBls, list [\-\-unbrewed] [\-\-versions] [\-\-pinned]\fR [\fIformulae\fR]
