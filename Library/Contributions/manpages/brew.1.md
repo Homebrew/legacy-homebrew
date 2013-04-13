@@ -142,14 +142,20 @@ Note that these flags should only appear after a command.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--debug] [--ignore-dependencies] [--fresh] [--use-clang|--use-gcc|--use-llvm] [--build-from-source] [--devel|--HEAD]` <formula>:
+  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--fresh] [--use-clang|--use-gcc|--use-llvm] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
     several different ways. See [SPECIFYING FORMULAE][].
 
-    If `--debug` is passed and brewing fails, open a shell inside the
-    temporary directory used for compiling.
+    If `--debug` is passed and brewing fails, open an interactive debugging
+    session with access to IRB, ruby-debug, or a shell inside the temporary
+    build directory.
+
+    If `--env=std` is passed, use the standard build environment instead of superenv.
+
+    If `--env=super` is passed, use superenv even if the formula specifies the
+    standard build environment.
 
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail
@@ -214,7 +220,7 @@ Note that these flags should only appear after a command.
 
     If `--pinned` is passed, show the versions of pinned formulae, or only the
     specified (pinned) formulae if <formulae> are given.
-    See also [`pin`][], [`unpin`][].
+    See also `pin`, `unpin`.
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
@@ -243,7 +249,7 @@ Note that these flags should only appear after a command.
 
   * `pin` <formulae>:
     Pin the specified <formulae>, preventing them from being upgraded when
-    issuing the `brew upgrade` command without arguments. See also [`unpin`][].
+    issuing the `brew upgrade` command without arguments. See also `unpin`.
 
   * `prune`:
     Remove dead symlinks from the Homebrew prefix. This is generally not
@@ -294,7 +300,7 @@ Note that these flags should only appear after a command.
 
   * `unpin` <formulae>:
     Unpin <formulae>, allowing them to be upgraded by `brew upgrade`. See also
-    [`pin`][].
+    `pin`.
 
   * `untap` <tap>:
     Remove a tapped repository.
@@ -305,11 +311,13 @@ Note that these flags should only appear after a command.
 
     If `--rebase` is specified then `git pull --rebase` is used.
 
-  * `upgrade` [<formulae>]:
-    Upgrade outdated, non-pinned brews.
+  * `upgrade [install-options]` [<formulae>]:
+    Upgrade outdated, unpinned brews.
+
+    Options for the `install` command are also valid here.
 
     If <formulae> are given, upgrade only the specified brews (but do so even
-    if they are pinned; see [`pin`][], [`unpin`][]).
+    if they are pinned; see `pin`, `unpin`).
 
   * `uses [--installed] [--recursive]` <formula>:
     Show the formulae that specify <formula> as a dependency.
