@@ -73,9 +73,11 @@ class Formula
     when @head && ARGV.build_head?        then @head    # --HEAD
     when @devel && ARGV.build_devel?      then @devel   # --devel
     when @bottle && install_bottle?(self) then @bottle  # bottle available
+    when @stable                          then @stable
     when @devel && @stable.nil?           then @devel   # devel-only
     when @head && @stable.nil?            then @head    # head-only
-    else @stable
+    else
+      raise "Formulae require at least a URL"
     end
   end
 
