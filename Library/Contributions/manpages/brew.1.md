@@ -351,6 +351,9 @@ Note that these flags should only appear after a command.
     a bug report, you will likely be asked for this information if you do not
     provide it.
 
+  * `--env`:
+    Show a summary of the Homebrew build environment.
+
   * `--prefix`:
     Display Homebrew's install path. *Default:* `/usr/local`
 
