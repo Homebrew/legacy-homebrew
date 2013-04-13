@@ -10,6 +10,10 @@ class FormulaSpecSelectionTests < Test::Unit::TestCase
     assert_equal @_f.send(spec), @_f.active_spec
   end
 
+  def assert_spec_unset(spec)
+    assert_nil @_f.send(spec)
+  end
+
   def test_selects_head_when_requested
     ARGV.stubs(:build_head?).returns(true)
 
@@ -95,5 +99,49 @@ class FormulaSpecSelectionTests < Test::Unit::TestCase
     end
 
     assert_spec_selected :head
+  end
+
+  def test_incomplete_spec_not_selected
+    formula do
+      sha1 'deadbeef'*5
+      version '1.0'
+      head 'foo'
+    end
+
+    assert_spec_selected :head
+  end
+
+  def test_incomplete_stable_not_set
+    formula do
+      sha1 'foo'
+      devel { url 'foo-1.1a' }
+      head 'foo'
+    end
+
+    assert_spec_unset :stable
+    assert_spec_selected :devel
+  end
+
+  def test_incomplete_devel_not_set
+    formula do
+      url 'foo-1.0'
+      devel { version '1.1a' }
+      head 'foo'
+    end
+
+    assert_spec_unset :devel
+    assert_spec_selected :stable
+  end
+
+  def test_incomplete_bottle_not_set
+    formula do
+      url 'foo-1.0'
+      bottle do
+        sha1 'deadbeef'*5 => :some_nonexistent_thing
+      end
+    end
+
+    assert_spec_unset :bottle
+    assert_spec_selected :stable
   end
 end
