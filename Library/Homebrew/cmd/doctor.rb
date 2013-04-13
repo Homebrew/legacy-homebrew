@@ -1100,7 +1100,7 @@ module Homebrew extend self
       end
     end
 
-    puts "Your system is raring to brew." unless Homebrew.failed?
+    puts "Your system is ready to brew." unless Homebrew.failed?
   end
 
   def inject_dump_stats checks
