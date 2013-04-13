@@ -59,6 +59,17 @@ class FormulaValidationTests < Test::Unit::TestCase
     end
   end
 
+  def test_devel_only_valid
+    assert_nothing_raised do
+      formula do
+        devel do
+          url "foo"
+          version "1.0"
+        end
+      end
+    end
+  end
+
   def test_head_only_valid
     assert_nothing_raised do
       formula do
