@@ -27,8 +27,8 @@ class Wine < Formula
     # updating too
     #  * http://wiki.winehq.org/Gecko
     #  * http://wiki.winehq.org/Mono
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.27.tar.bz2'
-    sha1 '457e75660312bd572ae85a567adf7805f482491e'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.28.tar.bz2'
+    sha1 'bc543b215dd25efc7d76c6ffa99672c6e3d15d61'
   end
 
   env :std
@@ -66,14 +66,6 @@ class Wine < Formula
   def wine_wrapper; <<-EOS.undent
     #!/bin/sh
     DYLD_FALLBACK_LIBRARY_PATH="#{MacOS::X11.lib}:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
-    EOS
-  end
-
-  def winemac_key; <<-EOS.undent
-    REGEDIT4
-    [HKEY_CURRENT_USER\\Software\\Wine\\Drivers]
-    "Graphics"="mac,x11"
-    "Ime"="osxime,mac,x11"
     EOS
   end
 
@@ -127,8 +119,6 @@ class Wine < Formula
     # and name our startup script wine
     mv bin/'wine', bin/'wine.bin'
     (bin/'wine').write(wine_wrapper)
-
-    (prefix/'winemac.key').write(winemac_key) unless build.stable?
   end
 
   def caveats
@@ -150,18 +140,6 @@ class Wine < Formula
         which may cause text rendering issues in applications such as Steam.
         We recommend that you run winecfg, add an override for dwrite in the
         Libraries tab, and edit the override mode to "disable".
-      EOS
-      s += <<-EOS.undent
-
-        Starting with wine 1.5.22 the new experimental Mac driver by CodeWeavers has
-        been included in the main distribution. This allows wine to run without X11
-        on MacOS X. To enable it execute the following command in your wine prefix:
-
-          wine regedit #{prefix/'winemac.key'}
-
-        To disable it execute:
-
-          wine regedit /D 'HKEY_CURRENT_USER\\Software\\Wine\\Drivers'
       EOS
     end
     return s
