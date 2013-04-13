@@ -21,6 +21,7 @@ class Git < Formula
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
 
   depends_on 'pcre' => :optional
+  depends_on 'gettext' => :optional
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -28,7 +29,6 @@ class Git < Formula
     ENV['NO_DARWIN_PORTS'] = '1'
     ENV['V'] = '1' # build verbosely
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
-    ENV['NO_GETTEXT'] = '1'
     ENV['PERL_PATH'] = which 'perl' # workaround for users of perlbrew
     ENV['PYTHON_PATH'] = which 'python' # python can be brewed or unbrewed
 
@@ -41,6 +41,8 @@ class Git < Formula
       ENV['USE_LIBPCRE'] = '1'
       ENV['LIBPCREDIR'] = HOMEBREW_PREFIX
     end
+
+    ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
 
     system "make", "prefix=#{prefix}",
                    "CC=#{ENV.cc}",
