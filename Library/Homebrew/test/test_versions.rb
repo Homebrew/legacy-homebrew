@@ -50,14 +50,6 @@ class VersionParsingTests < Test::Unit::TestCase
     assert_version_nil 'foo'
   end
 
-  def test_bad_version
-    assert_raises(RuntimeError) do
-      Class.new(TestBall) do
-        version "versions can't have spaces"
-      end.new
-    end
-  end
-
   def test_version_all_dots
     assert_version_detected '1.14', 'http://example.com/foo.bar.la.1.14.zip'
   end

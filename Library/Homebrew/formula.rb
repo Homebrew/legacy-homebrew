@@ -24,44 +24,31 @@ class Formula
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
-    set_instance_variable :homepage
-    set_instance_variable :stable
-    set_instance_variable :bottle
-    set_instance_variable :devel
-    set_instance_variable :head
-
     @name = name
-    validate_variable :name
-
-    # If a checksum or version was set in the DSL, but no stable URL
-    # was defined, make @stable nil and save callers some trouble
-    @stable = nil if @stable and @stable.url.nil?
-
-    # Ensure the bottle URL is set. If it does not have a checksum,
-    # then a bottle is not available for the current platform.
-    if @bottle and not (@bottle.checksum.nil? or @bottle.checksum.empty?)
-      @bottle.url ||= bottle_url(self)
-      if @bottle.cat_without_underscores
-        @bottle.url.gsub!(MacOS.cat.to_s, MacOS.cat_without_underscores.to_s)
-      end
-    else
-      @bottle = nil
-    end
-
-    @active_spec = if @head and ARGV.build_head? then @head # --HEAD
-      elsif @devel and ARGV.build_devel? then @devel        # --devel
-      elsif @bottle and install_bottle?(self) then @bottle  # bottle available
-      elsif @stable.nil? and @head then @head               # head-only
-      else @stable                                          # default
-      end
-
-    @version = @active_spec.version
-    validate_variable :version if @version
-
-    raise "No url provided for formula #{name}" if @active_spec.url.nil?
-
     # If we got an explicit path, use that, else determine from the name
     @path = path.nil? ? self.class.path(name) : Pathname.new(path)
+    @homepage = self.class.homepage
+
+    set_spec :stable
+    set_spec :devel
+    set_spec :head
+    set_spec :bottle do |bottle|
+      # Ensure the bottle URL is set. If it does not have a checksum,
+      # then a bottle is not available for the current platform.
+      # TODO: push this down into Bottle; we can pass the formula instance
+      # into a validation method on the bottle instance.
+      unless bottle.checksum.nil? || bottle.checksum.empty?
+        @bottle = bottle
+        bottle.url ||= bottle_url(self)
+        if bottle.cat_without_underscores
+          bottle.url.gsub!(MacOS.cat.to_s,
+                           MacOS.cat_without_underscores.to_s)
+        end
+      end
+    end
+
+    @active_spec = determine_active_spec
+    validate_attributes :url, :name, :version
     @downloader = download_strategy.new(name, @active_spec)
 
     # Combine DSL `option` and `def options`
@@ -73,10 +60,36 @@ class Formula
     @pin = FormulaPin.new(self)
   end
 
-  def url;      @active_spec.url;     end
-  def version;  @active_spec.version; end
-  def specs;    @active_spec.specs;   end
-  def mirrors;  @active_spec.mirrors; end
+  def set_spec(name)
+    spec = self.class.send(name)
+    return if spec.nil?
+    if block_given? && yield(spec) || !spec.url.nil?
+      instance_variable_set("@#{name}", spec)
+    end
+  end
+
+  def determine_active_spec
+    case
+    when @head && ARGV.build_head?        then @head    # --HEAD
+    when @devel && ARGV.build_devel?      then @devel   # --devel
+    when @bottle && install_bottle?(self) then @bottle  # bottle available
+    when @stable.nil? && @head            then @head    # head-only
+    else @stable
+    end
+  end
+
+  def validate_attributes(*attrs)
+    attrs.each do |attr|
+      if (value = send(attr).to_s).empty? || value =~ /\s/
+        raise FormulaValidationError.new(attr, value)
+      end
+    end
+  end
+
+  def url;      active_spec.url;     end
+  def version;  active_spec.version; end
+  def specs;    active_spec.specs;   end
+  def mirrors;  active_spec.mirrors; end
 
   # if the dir is there, but it's empty we consider it not installed
   def installed?
@@ -100,21 +113,21 @@ class Formula
   end
 
   def linked_keg
-    HOMEBREW_REPOSITORY/'Library/LinkedKegs'/@name
+    HOMEBREW_REPOSITORY/'Library/LinkedKegs'/name
   end
 
   def installed_prefix
-    devel_prefix = unless @devel.nil?
-      HOMEBREW_CELLAR/@name/@devel.version
+    devel_prefix = unless devel.nil?
+      HOMEBREW_CELLAR/name/devel.version
     end
 
-    head_prefix = unless @head.nil?
-      HOMEBREW_CELLAR/@name/@head.version
+    head_prefix = unless head.nil?
+      HOMEBREW_CELLAR/name/head.version
     end
 
-    if @active_spec == @head || @head and head_prefix.directory?
+    if active_spec == head || head and head_prefix.directory?
       head_prefix
-    elsif @active_spec == @devel || @devel and devel_prefix.directory?
+    elsif active_spec == devel || devel and devel_prefix.directory?
       devel_prefix
     else
       prefix
@@ -127,9 +140,7 @@ class Formula
   end
 
   def prefix
-    validate_variable :name
-    validate_variable :version
-    HOMEBREW_CELLAR/@name/@version
+    HOMEBREW_CELLAR/name/version
   end
   def rack; prefix.parent end
 
@@ -174,11 +185,11 @@ class Formula
   def opt_prefix; HOMEBREW_PREFIX/:opt/name end
 
   def download_strategy
-    @active_spec.download_strategy
+    active_spec.download_strategy
   end
 
   def cached_download
-    @downloader.cached_location
+    downloader.cached_location
   end
 
   # Can be overridden to selectively disable bottles from formulae.
@@ -237,8 +248,7 @@ class Formula
 
   # yields self with current working directory set to the uncompressed tarball
   def brew
-    validate_variable :name
-    validate_variable :version
+    validate_attributes :name, :version
 
     stage do
       begin
@@ -599,12 +609,12 @@ class Formula
   def fetch
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
-    return @downloader.fetch, @downloader
+    return downloader.fetch, downloader
   end
 
   # For FormulaInstaller.
   def verify_download_integrity fn
-    @active_spec.verify_download_integrity(fn)
+    active_spec.verify_download_integrity(fn)
   end
 
   def test
@@ -653,17 +663,6 @@ class Formula
       # -f means don't prompt the user if there are errors; just exit with non-zero status
       safe_system '/usr/bin/patch', '-f', *(p.patch_args)
     end
-  end
-
-  def validate_variable name
-    v = instance_variable_get("@#{name}")
-    raise "Invalid @#{name}" if v.to_s.empty? or v.to_s =~ /\s/
-  end
-
-  def set_instance_variable(type)
-    return if instance_variable_defined? "@#{type}"
-    class_value = self.class.send(type)
-    instance_variable_set("@#{type}", class_value) if class_value
   end
 
   def self.method_added method

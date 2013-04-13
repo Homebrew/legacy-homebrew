@@ -1,10 +1,6 @@
 require 'testing_env'
 require 'test/testball'
 
-class MostlyAbstractFormula < Formula
-  url ''
-end
-
 class FormulaTests < Test::Unit::TestCase
   include VersionAssertions
 
@@ -56,19 +52,6 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal 'SLang', Formula.class_s('s-lang')
     assert_equal 'PkgConfig', Formula.class_s('pkg-config')
     assert_equal 'FooBar', Formula.class_s('foo_bar')
-  end
-
-  def test_cant_override_brew
-    assert_raises(RuntimeError) do
-      Class.new(Formula) { def brew; end }
-    end
-  end
-
-  def test_abstract_formula
-    f=MostlyAbstractFormula.new
-    assert_equal '__UNKNOWN__', f.name
-    assert_raises(RuntimeError) { f.prefix }
-    shutup { assert_raises(RuntimeError) { f.brew } }
   end
 
   def test_mirror_support
@@ -286,7 +269,7 @@ class FormulaTests < Test::Unit::TestCase
       f << %{
         require 'formula'
         class #{Formula.class_s(foobar)} < Formula
-          url ''
+          url 'foo-1.0'
           def initialize(*args)
             @homepage = 'http://example.com/'
             super
