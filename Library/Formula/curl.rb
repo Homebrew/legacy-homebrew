@@ -12,7 +12,7 @@ class Curl < Formula
   option 'with-libmetalink', 'Build with Metalink support'
   option 'with-ares', 'Build with C-Ares async DNS support'
   option 'with-ssl', 'Build with Homebrew OpenSSL instead of the system version'
-  option 'with-darwinssl' 'Build with Secure Transport for SSL support'
+  option 'with-darwinssl', 'Build with Secure Transport for SSL support'
 
   depends_on 'pkg-config' => :build
   depends_on 'libssh2' if build.with? 'ssh'
