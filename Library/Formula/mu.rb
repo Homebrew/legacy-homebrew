@@ -35,17 +35,19 @@ class Mu < Formula
   depends_on 'glib'
   depends_on 'gmime'
   depends_on 'xapian'
-  depends_on Emacs23Installed if build.include? 'with-emacs'
+  depends_on Emacs23Installed if build.with? 'emacs'
 
   if build.head?
     depends_on 'automake' => :build
     depends_on 'libtool' => :build
   end
 
+  env :std if build.with? 'emacs'
+
   def install
     # Explicitly tell the build not to include emacs support as the version
     # shipped by default with Mac OS X is too old.
-    ENV['EMACS'] = 'no' unless build.include? 'with-emacs'
+    ENV['EMACS'] = 'no' unless build.with? 'emacs'
 
     system 'autoreconf', '-ivf' if build.head?
     system "./configure", "--disable-dependency-tracking",
