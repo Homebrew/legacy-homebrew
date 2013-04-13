@@ -15,10 +15,10 @@ class Curl < Formula
   option 'with-darwinssl' 'Build with Secure Transport for SSL support'
 
   depends_on 'pkg-config' => :build
-  depends_on 'libssh2' if build.include? 'with-ssh'
-  depends_on 'libmetalink' if build.include? 'with-libmetalink'
-  depends_on 'c-ares' if build.include? 'with-ares'
-  depends_on 'openssl' if build.include? 'with-ssl'
+  depends_on 'libssh2' if build.with? 'ssh'
+  depends_on 'libmetalink' if build.with? 'libmetalink'
+  depends_on 'c-ares' if build.with? 'ares'
+  depends_on 'openssl' if build.with? 'ssl'
 
   def install
     args = %W[
@@ -27,11 +27,11 @@ class Curl < Formula
       --prefix=#{prefix}
     ]
 
-    args << "--with-libssh2" if build.include? 'with-ssh'
-    args << "--with-libmetalink" if build.include? 'with-libmetalink'
-    args << "--enable-ares=#{Formula.factory("c-ares").opt_prefix}" if build.include? 'with-ares'
-    args << "--with-ssl=#{Formula.factory("openssl").opt_prefix}" if build.include? 'with-ssl'
-    args << "--with-darwinssl" if build.include? 'with-darwinssl'
+    args << "--with-libssh2" if build.with? 'ssh'
+    args << "--with-libmetalink" if build.with? 'libmetalink'
+    args << "--enable-ares=#{Formula.factory("c-ares").opt_prefix}" if build.with? 'ares'
+    args << "--with-ssl=#{Formula.factory("openssl").opt_prefix}" if build.with? 'ssl'
+    args << "--with-darwinssl" if build.with? 'darwinssl'
 
     system "./configure", *args
     system "make install"
