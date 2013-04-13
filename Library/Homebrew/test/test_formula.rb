@@ -67,12 +67,34 @@ class FormulaTests < Test::Unit::TestCase
       f.downloader.instance_variable_get(:@url)
   end
 
-  def test_formula_specs
-    f = SpecTestBall.new
+  def test_formula_spec_integration
+    f = Class.new(Formula) do
+      homepage 'http://example.com'
+      url 'file:///foo.com/testball-0.1.tbz'
+      mirror 'file:///foo.org/testball-0.1.tbz'
+      sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
+
+      head 'https://github.com/mxcl/homebrew.git', :tag => 'foo'
+
+      devel do
+        url 'file:///foo.com/testball-0.2.tbz'
+        mirror 'file:///foo.org/testball-0.2.tbz'
+        sha256 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
+      end
+
+      bottle do
+        sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard_32
+        sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
+        sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
+        sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
+      end
+
+      def initialize(name="spec_test_ball", path=nil)
+        super
+      end
+    end.new
 
     assert_equal 'http://example.com', f.homepage
-    assert_equal 'file:///foo.com/testball-0.1.tbz', f.url
-    assert_equal 1, f.mirrors.length
     assert_version_equal '0.1', f.version
     assert_equal f.stable, f.active_spec
     assert_equal CurlDownloadStrategy, f.download_strategy
@@ -82,178 +104,6 @@ class FormulaTests < Test::Unit::TestCase
     assert_instance_of Bottle, f.bottle
     assert_instance_of SoftwareSpec, f.devel
     assert_instance_of HeadSoftwareSpec, f.head
-
-    assert_equal 'file:///foo.com/testball-0.1.tbz', f.stable.url
-    assert_equal "https://downloads.sf.net/project/machomebrew/Bottles/spec_test_ball-0.1.#{MacOS.cat}.bottle.tar.gz",
-      f.bottle.url
-    assert_equal 'file:///foo.com/testball-0.2.tbz', f.devel.url
-    assert_equal 'https://github.com/mxcl/homebrew.git', f.head.url
-
-    assert_empty f.stable.specs
-    assert_empty f.bottle.specs
-    assert_empty f.devel.specs
-    assert_equal({ :tag => 'foo' }, f.head.specs)
-
-    assert_equal CurlDownloadStrategy, f.stable.download_strategy
-    assert_equal CurlBottleDownloadStrategy, f.bottle.download_strategy
-    assert_equal CurlDownloadStrategy, f.devel.download_strategy
-    assert_equal GitDownloadStrategy, f.head.download_strategy
-
-    assert_instance_of Checksum, f.stable.checksum
-    assert_instance_of Checksum, f.bottle.checksum
-    assert_instance_of Checksum, f.devel.checksum
-    assert !f.stable.checksum.empty?
-    assert !f.bottle.checksum.empty?
-    assert !f.devel.checksum.empty?
-    assert_nil f.head.checksum
-    assert_equal :sha1, f.stable.checksum.hash_type
-    assert_equal :sha1, f.bottle.checksum.hash_type
-    assert_equal :sha256, f.devel.checksum.hash_type
-    assert_equal case MacOS.cat
-      when :snow_leopard_32 then 'deadbeef'*5
-      when :snow_leopard    then 'faceb00c'*5
-      when :lion            then 'baadf00d'*5
-      when :mountain_lion   then '8badf00d'*5
-      end, f.bottle.checksum.hexdigest
-    assert_match(/[0-9a-fA-F]{40}/, f.stable.checksum.hexdigest)
-    assert_match(/[0-9a-fA-F]{64}/, f.devel.checksum.hexdigest)
-
-    assert_equal 1, f.stable.mirrors.length
-    assert f.bottle.mirrors.empty?
-    assert_equal 1, f.devel.mirrors.length
-    assert f.head.mirrors.empty?
-
-    assert f.stable.version.detected_from_url?
-    assert f.bottle.version.detected_from_url?
-    assert f.devel.version.detected_from_url?
-    assert_version_equal '0.1', f.stable.version
-    assert_version_equal '0.1', f.bottle.version
-    assert_version_equal '0.2', f.devel.version
-    assert_version_equal 'HEAD', f.head.version
-    assert_equal 0, f.bottle.revision
-  end
-
-  def test_devel_active_spec
-    ARGV << '--devel'
-    f = SpecTestBall.new
-    assert_equal f.devel, f.active_spec
-    assert_version_equal '0.2', f.version
-    assert_equal 'file:///foo.com/testball-0.2.tbz', f.url
-    assert_equal CurlDownloadStrategy, f.download_strategy
-    assert_instance_of CurlDownloadStrategy, f.downloader
-  ensure
-    ARGV.delete '--devel'
-  end
-
-  def test_head_active_spec
-    ARGV << '--HEAD'
-    f = SpecTestBall.new
-    assert_equal f.head, f.active_spec
-    assert_version_equal 'HEAD', f.version
-    assert_equal 'https://github.com/mxcl/homebrew.git', f.url
-    assert_equal GitDownloadStrategy, f.download_strategy
-    assert_instance_of GitDownloadStrategy, f.downloader
-  ensure
-    ARGV.delete '--HEAD'
-  end
-
-  def test_explicit_version_spec
-    f = ExplicitVersionSpecTestBall.new
-    assert_version_equal '0.3', f.version
-    assert_version_equal '0.3', f.stable.version
-    assert_version_equal '0.4', f.devel.version
-    assert !f.stable.version.detected_from_url?
-    assert !f.devel.version.detected_from_url?
-  end
-
-  def test_head_only_specs
-    f = HeadOnlySpecTestBall.new
-
-    assert_nil f.stable
-    assert_nil f.bottle
-    assert_nil f.devel
-
-    assert_equal f.head, f.active_spec
-    assert_version_equal 'HEAD', f.version
-    assert_nil f.head.checksum
-    assert_equal 'https://github.com/mxcl/homebrew.git', f.url
-    assert_equal GitDownloadStrategy, f.download_strategy
-    assert_instance_of GitDownloadStrategy, f.downloader
-    assert_instance_of HeadSoftwareSpec, f.head
-  end
-
-  def test_incomplete_stable_specs
-    f = IncompleteStableSpecTestBall.new
-
-    assert_nil f.stable
-    assert_nil f.bottle
-    assert_nil f.devel
-
-    assert_equal f.head, f.active_spec
-    assert_version_equal 'HEAD', f.version
-    assert_nil f.head.checksum
-    assert_equal 'https://github.com/mxcl/homebrew.git', f.url
-    assert_equal GitDownloadStrategy, f.download_strategy
-    assert_instance_of GitDownloadStrategy, f.downloader
-    assert_instance_of HeadSoftwareSpec, f.head
-  end
-
-  def test_head_only_with_version_specs
-    f = IncompleteStableSpecTestBall.new
-
-    assert_nil f.stable
-    assert_nil f.bottle
-    assert_nil f.devel
-
-    assert_equal f.head, f.active_spec
-    assert_version_equal 'HEAD', f.version
-    assert_nil f.head.checksum
-    assert_equal 'https://github.com/mxcl/homebrew.git', f.url
-    assert_equal GitDownloadStrategy, f.download_strategy
-    assert_instance_of GitDownloadStrategy, f.downloader
-    assert_instance_of HeadSoftwareSpec, f.head
-  end
-
-  def test_explicit_strategy_specs
-    f = ExplicitStrategySpecTestBall.new
-
-    assert_instance_of SoftwareSpec, f.stable
-    assert_instance_of SoftwareSpec, f.devel
-    assert_instance_of HeadSoftwareSpec, f.head
-
-    assert_equal f.stable, f.active_spec
-
-    assert_nil f.stable.checksum
-    assert_nil f.devel.checksum
-    assert_nil f.head.checksum
-
-    assert_equal MercurialDownloadStrategy, f.stable.download_strategy
-    assert_equal BazaarDownloadStrategy, f.devel.download_strategy
-    assert_equal SubversionDownloadStrategy, f.head.download_strategy
-
-    assert_equal({ :tag => '0.2' }, f.stable.specs)
-    assert_equal({ :tag => '0.3' }, f.devel.specs)
-    assert f.head.specs.empty?
-  end
-
-  def test_revised_bottle_specs
-    f = RevisedBottleSpecTestBall.new
-
-    assert_equal 1, f.bottle.revision
-    assert_equal case MacOS.cat
-      when :snow_leopard_32 then 'deadbeef'*5
-      when :snow_leopard    then 'faceb00k'*5
-      when :lion            then 'baadf00d'*5
-      when :mountain_lion   then '8badf00d'*5
-      end, f.bottle.checksum.hexdigest
-  end
-
-  def test_custom_version_scheme
-    scheme = Class.new(Version)
-    f = Class.new(TestBall) { version '1.0' => scheme }.new
-
-    assert_version_equal '1.0', f.version
-    assert_instance_of scheme, f.version
   end
 
   def test_formula_funcs
