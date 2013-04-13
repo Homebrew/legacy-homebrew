@@ -67,6 +67,7 @@ class CompilerSelector
     when :clang then MacOS.clang_build_version >= 318 ? 3 : 0.5
     when :llvm  then 2
     when :gcc   then 1
+    when :gcc_4_0 then 0.25
     end
   end
 end
