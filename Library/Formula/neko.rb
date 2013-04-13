@@ -2,14 +2,16 @@ require 'formula'
 
 class Neko < Formula
   homepage 'http://nekovm.org/'
-  url 'http://nekovm.org/_media/neko-1.8.2.tar.gz'
-  sha1 '59f0fa72485b4c39561efbb64fc8c7293d372b0b'
-
-  depends_on 'bdw-gc'
+  url 'http://nekovm.org/_media/neko-2.0.0-osx.tar.gz'
+  sha1 '7efe2932e9f3ddb795f758d0958978a4d62d8406'
 
   def install
-    ENV.deparallelize # parallel build fails
-    system "yes s | make MACOSX=1 INSTALL_PREFIX='#{prefix}'"
-    prefix.install %w{bin libs src}
+    lib.install 'libneko.dylib'
+    prefix.install Dir['*']
+  end
+  
+  def caveats; <<-EOS.undent
+    You may need to setup enviroment variable NEKOPATH=#{prefix} and add it to your path.
+    EOS
   end
 end
