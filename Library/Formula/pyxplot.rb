@@ -8,6 +8,7 @@ class Pyxplot < Formula
   depends_on :tex
   depends_on 'fftw'
   depends_on 'cfitsio' => :recommended
+  depends_on :x11
   depends_on 'ghostscript' => 'with-x11'
   depends_on 'gsl'
   depends_on 'gv' => :recommended
