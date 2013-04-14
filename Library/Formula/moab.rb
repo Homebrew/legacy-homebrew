@@ -1,8 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Moab < Formula
   homepage 'https://trac.mcs.anl.gov/projects/ITAPS/wiki/MOAB'
   url 'https://bitbucket.org/fathomteam/moab/get/master.tar.gz'
