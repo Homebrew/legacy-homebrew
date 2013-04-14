@@ -63,7 +63,7 @@ def bottle_suffix revision=nil
 end
 
 def bottle_native_regex
-  /(\.#{MacOS.cat}\.bottle\.(\d+\.)?tar\.gz)$/
+  /(\.#{MacOS.cat}\.bottle\.(\d+\.)?tar\.gz)$/o
 end
 
 def bottle_regex
