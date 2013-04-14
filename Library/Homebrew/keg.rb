@@ -1,5 +1,6 @@
 require 'extend/pathname'
 require 'formula_lock'
+require 'ostruct'
 
 class Keg < Pathname
   def initialize path
