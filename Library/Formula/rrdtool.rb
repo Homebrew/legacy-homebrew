@@ -15,6 +15,8 @@ class Rrdtool < Formula
   # TODO: Do something here
   depends_on 'lua' if build.include? "lua"
 
+  env :std # For perl, ruby
+
   # Ha-ha, but sleeping is annoying when running configure a lot
   def patches; DATA; end
 
