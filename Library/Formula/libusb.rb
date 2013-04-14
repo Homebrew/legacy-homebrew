@@ -7,7 +7,7 @@ class Libusb < Formula
 
   head 'git://git.libusb.org/libusb.git'
 
-  conflicts_with 'libusb',
+  conflicts_with 'libusbx',
     :because => 'both provide libusb compatible libraries'
 
   if build.head?
