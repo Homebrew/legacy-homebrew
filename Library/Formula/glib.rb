@@ -38,6 +38,7 @@ class Glib < Formula
       --disable-dependency-tracking
       --disable-dtrace
       --disable-modular-tests
+      --disable-libelf
       --prefix=#{prefix}
       --localstatedir=#{var}
       --with-gio-module-dir=#{HOMEBREW_PREFIX}/lib/gio/modules

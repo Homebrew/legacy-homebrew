@@ -3,14 +3,6 @@ require 'formula'
 require 'test/testball'
 require 'version'
 
-class TestBadVersion < TestBall
-  def initialize name=nil
-    @stable = SoftwareSpec.new
-    @stable.version "versions can't have spaces"
-    super 'testbadversion'
-  end
-end
-
 class VersionComparisonTests < Test::Unit::TestCase
   include VersionAssertions
 
@@ -56,10 +48,6 @@ class VersionParsingTests < Test::Unit::TestCase
   def test_no_version
     assert_version_nil 'http://example.com/blah.tar'
     assert_version_nil 'foo'
-  end
-
-  def test_bad_version
-    assert_raises(RuntimeError) { TestBadVersion.new }
   end
 
   def test_version_all_dots

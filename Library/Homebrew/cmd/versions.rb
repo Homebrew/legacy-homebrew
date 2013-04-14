@@ -37,23 +37,39 @@ class Formula
   end
 
   def pretty_relative_path
-    if Pathname.pwd == HOMEBREW_REPOSITORY
-      "Library/Formula/#{name}.rb"
+    if Pathname.pwd == repository
+      entry_name
     else
-      "#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"
+      repository/"#{entry_name}"
     end
   end
 
   private
+    def repository
+      @repository ||= begin
+        if path.realpath.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)}
+          HOMEBREW_REPOSITORY/"Library/Taps/#$1-#$2"
+        else
+          HOMEBREW_REPOSITORY
+        end
+      end
+    end
+
+    def entry_name
+      @entry_name ||= begin
+        repository == HOMEBREW_REPOSITORY ? "Library/Formula/#{name}.rb" : "#{name}.rb"
+      end
+    end
+
     def rev_list
-      HOMEBREW_REPOSITORY.cd do
-        `git rev-list --abbrev-commit HEAD -- Library/Formula/#{name}.rb`.split
+      repository.cd do
+        `git rev-list --abbrev-commit HEAD -- #{entry_name}`.split
       end
     end
 
     def text_from_sha sha
-      HOMEBREW_REPOSITORY.cd do
-        `git cat-file blob #{sha}:Library/Formula/#{name}.rb`
+      repository.cd do
+        `git cat-file blob #{sha}:#{entry_name}`
       end
     end
 

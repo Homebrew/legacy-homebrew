@@ -114,7 +114,9 @@ def install f
     end
   end
 
-  ENV.send(CompilerSelector.new(f).compiler) if f.fails_with? ENV.compiler
+  if f.fails_with? ENV.compiler
+    ENV.send CompilerSelector.new(f, ENV.compiler).compiler
+  end
 
   f.brew do
     if ARGV.flag? '--git'

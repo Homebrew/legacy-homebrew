@@ -60,8 +60,6 @@ class Mosquitto < Formula
       <true/>
       <key>KeepAlive</key>
       <false/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{var}/mosquitto</string>
     </dict>

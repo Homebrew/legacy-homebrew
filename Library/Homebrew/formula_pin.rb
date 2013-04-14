@@ -1,4 +1,3 @@
-require 'formula'
 require 'fileutils'
 
 class FormulaPin

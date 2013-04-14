@@ -12,7 +12,13 @@ class Go < Formula
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
 
-  if build.head?
+  devel do
+    url 'https://go.googlecode.com/files/go1.1beta2.src.tar.gz'
+    version '1.1beta2'
+    sha1 '70d7642a6ea065a23458b9ea28e370b19912e52d'
+  end
+
+  unless build.stable?
     fails_with :clang do
       cause "clang: error: no such file or directory: 'libgcc.a'"
     end

@@ -1,7 +1,7 @@
 require 'formula'
 
 class SimpleTiles < Formula
-  homepage 'http://propublica.github.com/simple-tiles/'
+  homepage 'http://propublica.github.io/simple-tiles/'
   url 'https://github.com/propublica/simple-tiles/archive/v0.3.1.tar.gz'
   sha1 '9f5ff17cca9d9cacb36dcf971b57dd3b42b352e2'
 

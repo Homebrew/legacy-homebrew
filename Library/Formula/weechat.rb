@@ -6,7 +6,6 @@ class Weechat < Formula
   sha1 'e4b891d9d3d68196f97d226f487c4a2382d59d99'
 
   depends_on 'cmake' => :build
-  depends_on 'gettext'
   depends_on 'gnutls'
   depends_on 'libgcrypt'
   depends_on 'guile' if build.include? 'guile'
@@ -52,6 +51,10 @@ class Weechat < Formula
     args << '-DENABLE_ASPELL=OFF' unless build.include? 'aspell'
     args << '-DENABLE_GUILE=OFF'  unless build.include? 'guile' and \
                                          Formula.factory('guile').linked_keg.exist?
+
+    # NLS/gettext support disabled for now since it doesn't work in stdenv
+    # see https://github.com/mxcl/homebrew/issues/18722
+    args << "-DENABLE_NLS=OFF"
     args << '..'
 
     mkdir 'build' do

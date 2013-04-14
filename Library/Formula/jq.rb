@@ -1,7 +1,7 @@
 require 'formula'
 
 class Jq < Formula
-  homepage 'http://stedolan.github.com/jq/'
+  homepage 'http://stedolan.github.io/jq/'
   url 'https://github.com/stedolan/jq/archive/jq-1.2.tar.gz'
   sha1 'cdc57153a8105d9918cb84dff183cca8aa36f6de'
 

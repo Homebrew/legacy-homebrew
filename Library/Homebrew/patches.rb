@@ -39,7 +39,7 @@ class Patches
     external_patches.each{|p| p.stage!}
   end
 
-private
+  private
 
   def external_patches
      @patches.select{|p| p.external?}
@@ -112,7 +112,7 @@ class Patch
     [@url, '-o', @patch_filename]
   end
 
-private
+  private
 
   # Detect compression type from the downloaded patch.
   def detect_compression!

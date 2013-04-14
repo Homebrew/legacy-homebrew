@@ -46,6 +46,7 @@ class Ffmpeg < Formula
   depends_on 'fdk-aac' => :optional
   depends_on 'opus' => :optional
   depends_on 'frei0r' => :optional
+  depends_on 'libcaca' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -82,6 +83,7 @@ class Ffmpeg < Formula
     args << "--enable-openssl" if build.with? 'openssl'
     args << "--enable-libopus" if build.with? 'opus'
     args << "--enable-frei0r" if build.with? 'frei0r'
+    args << "--enable-libcaca" if build.with? 'libcaca'
 
     if build.with? 'openjpeg'
       args << '--enable-libopenjpeg'
