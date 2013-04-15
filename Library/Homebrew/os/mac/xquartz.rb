@@ -70,27 +70,27 @@ module MacOS::X11 extend self
   # Confusingly, executables (e.g. config scripts) are only found under
   # /opt/X11/bin or /usr/X11/bin in all cases.
   def bin
-    prefix/'bin'
+    Pathname.new("#{prefix}/bin")
   end
 
   def include
     @include ||= if use_sdk?
-      MacOS.sdk_path/'usr/X11/include'
+      Pathname.new("#{MacOS.sdk_path}/usr/X11/include")
     else
-      prefix/'include'
+      Pathname.new("#{prefix}/include")
     end
   end
 
   def lib
     @lib ||= if use_sdk?
-      MacOS.sdk_path/'usr/X11/lib'
+      Pathname.new("#{MacOS.sdk_path}/usr/X11/lib")
     else
-      prefix/'lib'
+      Pathname.new("#{prefix}/lib")
     end
   end
 
   def share
-    prefix/'share'
+    Pathname.new("#{prefix}/share")
   end
 
   private

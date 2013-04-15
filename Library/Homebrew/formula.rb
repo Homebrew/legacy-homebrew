@@ -116,16 +116,16 @@ class Formula
   end
 
   def linked_keg
-    HOMEBREW_REPOSITORY/'Library/LinkedKegs'/name
+    Pathname.new("#{HOMEBREW_LIBRARY}/LinkedKegs/#{name}")
   end
 
   def installed_prefix
     devel_prefix = unless devel.nil?
-      HOMEBREW_CELLAR/name/devel.version
+      Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{devel.version}")
     end
 
     head_prefix = unless head.nil?
-      HOMEBREW_CELLAR/name/head.version
+      Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{head.version}")
     end
 
     if active_spec == head || head and head_prefix.directory?
@@ -143,7 +143,7 @@ class Formula
   end
 
   def prefix
-    HOMEBREW_CELLAR+name+version
+    Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{version}")
   end
   def rack; prefix.parent end
 
@@ -185,7 +185,9 @@ class Formula
   # Defined and active build-time options.
   def build; self.class.build; end
 
-  def opt_prefix; HOMEBREW_PREFIX/:opt/name end
+  def opt_prefix
+    Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
+  end
 
   def download_strategy
     active_spec.download_strategy
@@ -350,13 +352,14 @@ class Formula
   def self.canonical_name name
     name = name.to_s if name.kind_of? Pathname
 
-    formula_with_that_name = HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
-    possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
-    possible_cached_formula = HOMEBREW_CACHE_FORMULA+"#{name}.rb"
+    formula_with_that_name = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb")
+    possible_alias = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Aliases/#{name}")
+    possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{name}.rb")
 
     if name.include? "/"
       if name =~ %r{(.+)/(.+)/(.+)}
-        tapd = HOMEBREW_REPOSITORY/"Library/Taps"/"#$1-#$2".downcase
+        tap_name = "#$1-#$2".downcase
+        tapd = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Taps/#{tap_name}")
         tapd.find_formula do |relative_pathname|
           return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
         end if tapd.directory?
@@ -472,7 +475,7 @@ class Formula
   end
 
   def self.path name
-    HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
+    Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name.downcase}.rb")
   end
 
   def deps;         self.class.dependencies.deps;         end
