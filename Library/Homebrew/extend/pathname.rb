@@ -386,6 +386,18 @@ class Pathname
     end
   end
 
+  if RUBY_VERSION <= "1.8.7"
+    alias_method :old_chop_basename, :chop_basename
+    def chop_basename(path)
+      base = File.basename(path)
+      if /\A#{Pathname::SEPARATOR_PAT}?\z/o =~ base
+        return nil
+      else
+        return path[0, path.rindex(base)], base
+      end
+    end
+    private :chop_basename
+  end
 end
 
 # sets $n and $d so you can observe creation of stuff
