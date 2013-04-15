@@ -7,6 +7,12 @@ class Mpfr < Formula
   mirror 'http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.bz2'
   sha1 '46d5a11a59a4e31f74f73dd70c5d57a59de2d0b4'
 
+  bottle do
+    sha1 '1da827b2b2afce70c009900043d63731c46ded97' => :mountain_lion
+    sha1 '76cd548a47615fda27e53140a88e9873d55b6a0e' => :lion
+    sha1 'c5a3566bf11105c66823365f05d1dd6e01d69657' => :snow_leopard
+  end
+
   depends_on 'gmp'
 
   option '32-bit'
