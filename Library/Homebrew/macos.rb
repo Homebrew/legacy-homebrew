@@ -5,19 +5,25 @@ module MacOS extend self
   # This can be compared to numerics, strings, or symbols
   # using the standard Ruby Comparable methods.
   def version
-    Version.new(MACOS_VERSION)
+    @version ||= Version.new(MACOS_VERSION)
   end
 
   def cat
-    # PowerPC builds per processor, not per OS
-    return Hardware::CPU.family if Hardware::CPU.type == :ppc
+    @cat ||= uncached_cat
+  end
 
-    if version == :mountain_lion then :mountain_lion
-    elsif version == :lion then :lion
-    elsif version == :snow_leopard
+  def uncached_cat
+    case MacOS.version
+    when 10.8
+      :mountain_lion
+    when 10.7
+      :lion
+    when 10.6
       Hardware.is_64_bit? ? :snow_leopard : :snow_leopard_32
-    elsif version == :leopard then :leopard
-    else nil
+    when 10.5
+      :leopard
+    else
+      Hardware::CPU.family if Hardware::CPU.type == :ppc
     end
   end
 
