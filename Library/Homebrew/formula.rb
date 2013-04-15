@@ -143,7 +143,7 @@ class Formula
   end
 
   def prefix
-    HOMEBREW_CELLAR/name/version
+    HOMEBREW_CELLAR+name+version
   end
   def rack; prefix.parent end
 

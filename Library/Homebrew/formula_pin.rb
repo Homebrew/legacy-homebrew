@@ -1,13 +1,13 @@
 require 'fileutils'
 
 class FormulaPin
-  HOMEBREW_PINNED = HOMEBREW_LIBRARY/'PinnedKegs'
+  HOMEBREW_PINNED = HOMEBREW_LIBRARY+'PinnedKegs'
 
   def initialize(formula)
     @formula = formula
     @name = formula.name
     HOMEBREW_PINNED.mkdir unless HOMEBREW_PINNED.exist?
-    @path = HOMEBREW_PINNED/@name
+    @path = HOMEBREW_PINNED+@name
   end
 
   def pin_at(version)
