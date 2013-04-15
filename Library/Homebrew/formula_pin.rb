@@ -6,13 +6,16 @@ class FormulaPin
   def initialize(formula)
     @formula = formula
     @name = formula.name
-    HOMEBREW_PINNED.mkdir unless HOMEBREW_PINNED.exist?
-    @path = HOMEBREW_PINNED+@name
+  end
+
+  def path
+    HOMEBREW_PINNED+@name
   end
 
   def pin_at(version)
+    HOMEBREW_PINNED.mkpath unless HOMEBREW_PINNED.exist?
     version_path = @formula.installed_prefix.parent.join(version)
-    FileUtils.ln_s version_path, @path unless pinned? or not version_path.exist?
+    FileUtils.ln_s version_path, path unless pinned? or not version_path.exist?
   end
 
   def pin
@@ -22,11 +25,11 @@ class FormulaPin
   end
 
   def unpin
-    FileUtils.rm @path if pinned?
+    FileUtils.rm path if pinned?
   end
 
   def pinned?
-    @path.symlink?
+    path.symlink?
   end
 
   def pinable?
