@@ -326,8 +326,8 @@ class Formula
 
   def self.each
     names.each do |name|
-      yield begin
-        Formula.factory(name)
+      begin
+        yield Formula.factory(name)
       rescue
         # Don't let one broken formula break commands. But do complain.
         onoe "Failed to import: #{name}"
