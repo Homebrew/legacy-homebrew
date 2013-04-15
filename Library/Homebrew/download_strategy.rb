@@ -37,13 +37,13 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
-      @tarball_path = HOMEBREW_CACHE + File.basename(@url)
+      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{File.basename(@url)}")
     else
-      @tarball_path = HOMEBREW_CACHE + "#{name}-#{package.version}#{ext}"
+      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{package.version}#{ext}")
     end
 
     @mirrors = package.mirrors
-    @temporary_path = Pathname("#@tarball_path.incomplete")
+    @temporary_path = Pathname.new("#@tarball_path.incomplete")
     @local_bottle_path = nil
   end
 
@@ -213,7 +213,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
     if name.to_s.empty? || name == '__UNKNOWN__'
       raise NotImplementedError, "strategy requires a name parameter"
     else
-      @co = HOMEBREW_CACHE + "#{name}--svn"
+      @co = Pathname.new("#{HOMEBREW_CACHE}/#{name}--svn")
     end
 
     @co += "-HEAD" if ARGV.build_head?
@@ -316,7 +316,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     if name.to_s.empty? || name == '__UNKNOWN__'
       raise NotImplementedError, "strategy requires a name parameter"
     else
-      @clone = HOMEBREW_CACHE + "#{name}--git"
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--git")
     end
   end
 
