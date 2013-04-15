@@ -386,6 +386,9 @@ class Pathname
     end
   end
 
+  # We redefine these private methods in order to add the /o modifier to
+  # the Regexp literals, which forces string interpolation to happen only
+  # once instead of each time the method is called. This is fixed in 1.9+.
   if RUBY_VERSION <= "1.8.7"
     alias_method :old_chop_basename, :chop_basename
     def chop_basename(path)
@@ -397,6 +400,20 @@ class Pathname
       end
     end
     private :chop_basename
+
+    alias_method :old_prepend_prefix, :prepend_prefix
+    def prepend_prefix(prefix, relpath)
+      if relpath.empty?
+        File.dirname(prefix)
+      elsif /#{SEPARATOR_PAT}/o =~ prefix
+        prefix = File.dirname(prefix)
+        prefix = File.join(prefix, "") if File.basename(prefix + 'a') != 'a'
+        prefix + relpath
+      else
+        prefix + relpath
+      end
+    end
+    private :prepend_prefix
   end
 end
 
