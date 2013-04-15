@@ -88,6 +88,8 @@ module Homebrew extend self
     end
     puts "Pruned #{count} dead formula"
 
+    return unless HOMEBREW_REPOSITORY.join("Library/Taps").exist?
+
     count = 0
     # check symlinks are all set in each tap
     HOMEBREW_REPOSITORY.join("Library/Taps").children.each do |tap|
