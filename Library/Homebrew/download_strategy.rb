@@ -37,13 +37,13 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
-      @tarball_path = HOMEBREW_CACHE + File.basename(@url)
+      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{File.basename(@url)}")
     else
-      @tarball_path = HOMEBREW_CACHE + "#{name}-#{package.version}#{ext}"
+      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{package.version}#{ext}")
     end
 
     @mirrors = package.mirrors
-    @temporary_path = Pathname("#@tarball_path.incomplete")
+    @temporary_path = Pathname.new("#@tarball_path.incomplete")
     @local_bottle_path = nil
   end
 
@@ -213,7 +213,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
     if name.to_s.empty? || name == '__UNKNOWN__'
       raise NotImplementedError, "strategy requires a name parameter"
     else
-      @co = HOMEBREW_CACHE + "#{name}--svn"
+      @co = Pathname.new("#{HOMEBREW_CACHE}/#{name}--svn")
     end
 
     @co += "-HEAD" if ARGV.build_head?
@@ -316,7 +316,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     if name.to_s.empty? || name == '__UNKNOWN__'
       raise NotImplementedError, "strategy requires a name parameter"
     else
-      @clone = HOMEBREW_CACHE + "#{name}--git"
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--git")
     end
   end
 
@@ -470,7 +470,8 @@ class CVSDownloadStrategy < AbstractDownloadStrategy
     if name.to_s.empty? || name == '__UNKNOWN__'
       raise NotImplementedError, "strategy requires a name parameter"
     else
-      @co = HOMEBREW_CACHE + "#{name}--cvs"
+      @unique_token = "#{name}--cvs"
+      @co = Pathname.new("#{HOMEBREW_CACHE}/#{@unique_token}")
     end
   end
 
@@ -521,8 +522,12 @@ end
 class MercurialDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
-    @unique_token="#{name}--hg" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @clone=HOMEBREW_CACHE+@unique_token
+
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      raise NotImplementedError, "strategy requires a name parameter"
+    else
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--hg")
+    end
   end
 
   def cached_location; @clone; end
@@ -568,8 +573,12 @@ end
 class BazaarDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
-    @unique_token="#{name}--bzr" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @clone=HOMEBREW_CACHE+@unique_token
+
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      raise NotImplementedError, "strategy requires a name parameter"
+    else
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--bzr")
+    end
   end
 
   def cached_location; @clone; end
@@ -618,8 +627,11 @@ end
 class FossilDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
-    @unique_token="#{name}--fossil" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @clone=HOMEBREW_CACHE+@unique_token
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      raise NotImplementedError, "strategy requires a name parameter"
+    else
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--fossil")
+    end
   end
 
   def cached_location; @clone; end

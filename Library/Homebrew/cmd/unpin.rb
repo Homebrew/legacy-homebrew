@@ -6,11 +6,15 @@ module Homebrew extend self
       abort "Cowardly refusing to `sudo unpin'"
     end
     raise FormulaUnspecifiedError if ARGV.named.empty?
-    ARGV.formulae.each do |fmla|
-      f = Formula.factory(fmla.to_s)
-      onoe "Cannot unpin uninstalled formula #{f.name}!" unless f.pinable?
-      opoo "Formula #{f.name} already unpinned!" if f.pinable? and not f.pinned?
-      f.unpin if f.pinable? and f.pinned?
+
+    ARGV.formulae.each do |f|
+      if f.pinned?
+        f.unpin
+      elsif !f.pinnable?
+        onoe "#{f.name} not installed"
+      else
+        opoo "#{f.name} not pinned"
+      end
     end
   end
 end
