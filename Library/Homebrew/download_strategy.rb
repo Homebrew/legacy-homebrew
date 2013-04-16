@@ -217,7 +217,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
       @co = Pathname.new("#{HOMEBREW_CACHE}/#{name}--svn")
     end
 
-    @co += "-HEAD" if ARGV.build_head?
+    @co = Pathname.new(@co.to_s + '-HEAD') if ARGV.build_head?
   end
 
   def cached_location
