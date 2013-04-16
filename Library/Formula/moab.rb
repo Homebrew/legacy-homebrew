@@ -16,4 +16,4 @@ class Moab < Formula
                             "--prefix=#{prefix}"
       system "make install"
     end
-  end
+end
