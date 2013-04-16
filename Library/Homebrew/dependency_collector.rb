@@ -2,6 +2,7 @@ require 'dependency'
 require 'dependencies'
 require 'requirement'
 require 'requirements'
+require 'set'
 
 ## A dependency is a formula that another formula needs to install.
 ## A requirement is something other than a formula that another formula
@@ -15,7 +16,7 @@ require 'requirements'
 # specifications into the proper kinds of dependencies and requirements.
 class DependencyCollector
   # Define the languages that we can handle as external dependencies.
-  LANGUAGE_MODULES = [
+  LANGUAGE_MODULES = Set[
     :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
   ].freeze
 
@@ -52,7 +53,7 @@ class DependencyCollector
     when Symbol
       parse_symbol_spec(spec, tag)
     when String
-      if LANGUAGE_MODULES.include? tag
+      if tag && LANGUAGE_MODULES.include?(tag)
         LanguageModuleDependency.new(tag, spec)
       else
         Dependency.new(spec, tag)
