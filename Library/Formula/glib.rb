@@ -2,8 +2,8 @@ require 'formula'
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.36/glib-2.36.0.tar.xz'
-  sha256 '455a8abe8692c5174bcc7ffa15b96a7521a2f2f9fb47594405927c35cb9bb227'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.36/glib-2.36.1.tar.xz'
+  sha256 '7de37586794e92c024feebe5d306bf5f245fef4803c3666af1ae8dac6ee10b24'
 
   option :universal
   option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
@@ -21,7 +21,7 @@ class Glib < Formula
   def patches
     p = {}
     # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix.
-    p[:p1] = "https://raw.github.com/gist/3924879/f86903e0aea1458448507305d01b06a7d878c041/glib-configurable-paths.patch"
+    p[:p1] = "https://raw.github.com/gist/5393707/5a9047ab7838709084b36242a44471b02d036386/glib-configurable-paths.patch"
     p[:p0] = "https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/patch-configure.diff" if build.universal?
     p
   end
