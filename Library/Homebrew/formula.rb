@@ -99,8 +99,8 @@ class Formula
     (dir = installed_prefix).directory? && dir.children.length > 0
   end
 
-  def pinable?
-    @pin.pinable?
+  def pinnable?
+    @pin.pinnable?
   end
 
   def pinned?
