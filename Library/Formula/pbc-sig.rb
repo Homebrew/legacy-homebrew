@@ -3,7 +3,7 @@ require 'formula'
 class PbcSig < Formula
   homepage 'http://crypto.stanford.edu/pbc/sig/'
   url 'http://crypto.stanford.edu/pbc/sig/files/pbc_sig-0.0.8.tar.gz'
-  sha1 '718d86bca56c5e11ed87967770cb0d27533cd751'
+  sha256 '7a343bf342e709ea41beb7090c78078a9e57b833454c695f7bcad2475de9c4bb'
 
   depends_on 'pbc'
 
