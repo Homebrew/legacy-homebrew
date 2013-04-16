@@ -31,6 +31,7 @@ class Python < Formula
   depends_on 'gdbm' => :recommended
   depends_on 'openssl' if build.include? 'with-brewed-openssl'
   depends_on 'homebrew/dupes/tcl-tk' if build.include? 'with-brewed-tk'
+  depends_on :x11 if build.include? 'with-brewed-tk'
 
   def patches
     p = []
@@ -308,14 +309,3 @@ index ea8a5f5..0a001f9 100644
  
          # If Cygwin, then verify that X is installed before proceeding
          if host_platform == 'cygwin':
-@@ -1897,8 +1885,8 @@ class PyBuildExt(build_ext):
-             libs.append('ld')
- 
-         # Finally, link with the X11 libraries (not appropriate on cygwin)
--        if host_platform != "cygwin":
--            libs.append('X11')
-+        # if host_platform != "cygwin":
-+        #     libs.append('X11')
- 
-         ext = Extension('_tkinter', ['_tkinter.c', 'tkappinit.c'],
-                         define_macros=[('WITH_APPINIT', 1)] + defs,
