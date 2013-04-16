@@ -4,9 +4,9 @@ class VersionElement
   def initialize elem
     elem = elem.to_s.downcase
     @elem = case elem
+      when /\d+/ then elem.to_i
       when 'a', 'alpha' then 'alpha'
       when 'b', 'beta' then 'beta'
-      when /\d+/ then elem.to_i
       else elem
       end
   end
