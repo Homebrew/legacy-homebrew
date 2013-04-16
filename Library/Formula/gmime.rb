@@ -7,6 +7,7 @@ class Gmime < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
+  depends_on 'libgpg-error' => :build
   depends_on 'glib'
 
   def install

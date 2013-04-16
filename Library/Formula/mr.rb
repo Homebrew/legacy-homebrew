@@ -2,8 +2,8 @@ require 'formula'
 
 class Mr < Formula
   homepage 'http://kitenet.net/~joey/code/mr/'
-  url 'git://git.kitenet.net/mr', :tag => '1.13'
-  version '1.13'
+  url 'git://git.kitenet.net/mr', :tag => '1.14'
+  version '1.14'
 
   def install
     system "make"

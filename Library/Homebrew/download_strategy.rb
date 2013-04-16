@@ -4,7 +4,8 @@ require 'vendor/multi_json'
 class AbstractDownloadStrategy
   def initialize name, package
     @url = package.url
-    @spec, @ref = package.specs.dup.shift
+    specs = package.specs
+    @spec, @ref = specs.dup.shift unless specs.empty?
   end
 
   def expand_safe_system_args args
@@ -216,7 +217,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
       @co = Pathname.new("#{HOMEBREW_CACHE}/#{name}--svn")
     end
 
-    @co += "-HEAD" if ARGV.build_head?
+    @co = Pathname.new(@co.to_s + '-HEAD') if ARGV.build_head?
   end
 
   def cached_location
