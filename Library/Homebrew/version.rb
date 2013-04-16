@@ -108,32 +108,34 @@ class Version
   def self._parse spec
     spec = Pathname.new(spec) unless spec.is_a? Pathname
 
+    spec_s = spec.to_s
+
     stem = if spec.directory?
       spec.basename.to_s
-    elsif %r[((?:sourceforge.net|sf.net)/.*)/download$].match(spec.to_s)
+    elsif %r[((?:sourceforge.net|sf.net)/.*)/download$].match(spec_s)
       Pathname.new(spec.dirname).stem
     else
       spec.stem
     end
 
     # GitHub tarballs, e.g. v1.2.3
-    m = %r[github.com/.+/(?:zip|tar)ball/v?((\d+\.)+\d+)$].match(spec.to_s)
+    m = %r[github.com/.+/(?:zip|tar)ball/v?((\d+\.)+\d+)$].match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
-    m = %r[github.com/.+/(?:zip|tar)ball/.*-((\d+\.)+\d+)$].match(spec.to_s)
+    m = %r[github.com/.+/(?:zip|tar)ball/.*-((\d+\.)+\d+)$].match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. https://github.com/isaacs/npm/tarball/v0.2.5-1
-    m = %r[github.com/.+/(?:zip|tar)ball/v?((\d+\.)+\d+-(\d+))$].match(spec.to_s)
+    m = %r[github.com/.+/(?:zip|tar)ball/v?((\d+\.)+\d+-(\d+))$].match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. https://github.com/petdance/ack/tarball/1.93_02
-    m = %r[github.com/.+/(?:zip|tar)ball/v?((\d+\.)+\d+_(\d+))$].match(spec.to_s)
+    m = %r[github.com/.+/(?:zip|tar)ball/v?((\d+\.)+\d+_(\d+))$].match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. https://github.com/erlang/otp/tarball/OTP_R15B01 (erlang style)
-    m = /[-_](R\d+[AB]\d*(-\d+)?)/.match(spec.to_s)
+    m = /[-_](R\d+[AB]\d*(-\d+)?)/.match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. boost_1_39_0
@@ -182,7 +184,7 @@ class Version
     return m.captures.first unless m.nil?
 
     # e.g. http://mirrors.jenkins-ci.org/war/1.486/jenkins.war
-    m = /\/(\d\.\d+)\//.match(spec.to_s)
+    m = /\/(\d\.\d+)\//.match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. http://www.ijg.org/files/jpegsrc.v8d.tar.gz
