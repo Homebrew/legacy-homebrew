@@ -1,9 +1,9 @@
 require 'formula'
 
 class Opencc < Formula
-  homepage 'http://code.google.com/p/opencc/'
-  url 'http://opencc.googlecode.com/files/opencc-0.4.0.tar.gz'
-  sha1 'b5521bbaa04dfc8294fc214144ce59801d31dae8'
+  homepage 'https://github.com/BYVoid/OpenCC'
+  url 'http://opencc.googlecode.com/files/opencc-0.4.2.tar.gz'
+  sha1 '1e4216e5fe21b16836063f23d0341cb54dbce97c'
 
   depends_on 'cmake' => :build
 
