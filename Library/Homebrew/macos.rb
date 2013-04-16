@@ -215,6 +215,7 @@ module MacOS extend self
     "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
     "4.6"   => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "4.6.1" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "4.6.2" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
   }
 
   def compilers_standard?
