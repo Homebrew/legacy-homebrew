@@ -11,6 +11,8 @@ class VersionElement
       end
   end
 
+  ZERO = VersionElement.new(0)
+
   def <=>(other)
     return unless other.is_a? VersionElement
     return -1 if string? and other.numeric?
@@ -77,11 +79,12 @@ class Version
     return -1 if not head? and other.head?
 
     stuple, otuple = to_a, other.to_a
+    slen, olen = stuple.length, otuple.length
 
-    max = [stuple.length, otuple.length].max
+    max = [slen, olen].max
 
-    stuple.fill(VersionElement.new(0), stuple.length, max - stuple.length)
-    otuple.fill(VersionElement.new(0), otuple.length, max - otuple.length)
+    stuple.fill(VersionElement::ZERO, slen, max - slen)
+    otuple.fill(VersionElement::ZERO, olen, max - olen)
 
     stuple <=> otuple
   end

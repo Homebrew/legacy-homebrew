@@ -106,19 +106,19 @@ class FormulaTests < Test::Unit::TestCase
     assert_instance_of HeadSoftwareSpec, f.head
   end
 
-  def test_formula_funcs
-    foobar = 'foo-bar'
-    path = Formula.path(foobar)
+  def test_path
+    name = 'foo-bar'
+    assert_equal Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"), Formula.path(name)
+  end
 
-    assert_match Regexp.new("^#{HOMEBREW_PREFIX}/Library/Formula"),
-      path.to_s
-
-    path = HOMEBREW_PREFIX+"Library/Formula/#{foobar}.rb"
+  def test_factory
+    name = 'foo-bar'
+    path = HOMEBREW_PREFIX+"Library/Formula/#{name}.rb"
     path.dirname.mkpath
     File.open(path, 'w') do |f|
       f << %{
         require 'formula'
-        class #{Formula.class_s(foobar)} < Formula
+        class #{Formula.class_s(name)} < Formula
           url 'foo-1.0'
           def initialize(*args)
             @homepage = 'http://example.com/'
@@ -127,7 +127,8 @@ class FormulaTests < Test::Unit::TestCase
         end
       }
     end
-
-    assert_not_nil Formula.factory(foobar)
+    assert_kind_of Formula, Formula.factory(name)
+  ensure
+    path.unlink
   end
 end
