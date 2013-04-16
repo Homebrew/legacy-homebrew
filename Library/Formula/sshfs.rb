@@ -5,6 +5,7 @@ class Sshfs < Formula
   url 'https://github.com/fuse4x/sshfs/archive/sshfs_2_4_0.tar.gz'
   sha1 '30b81ac7f32125088652937568d8886e3bb3f6e2'
 
+  depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on :libtool
 
