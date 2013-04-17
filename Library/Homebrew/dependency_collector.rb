@@ -50,16 +50,14 @@ class DependencyCollector
 
   def parse_spec spec, tag
     case spec
-    when Symbol
-      parse_symbol_spec(spec, tag)
     when String
       if tag && LANGUAGE_MODULES.include?(tag)
         LanguageModuleDependency.new(tag, spec)
       else
         Dependency.new(spec, tag)
       end
-    when Formula
-      Dependency.new(spec.name, tag)
+    when Symbol
+      parse_symbol_spec(spec, tag)
     when Dependency, Requirement
       spec
     when Class
@@ -68,6 +66,8 @@ class DependencyCollector
       else
         raise "#{spec} is not a Requirement subclass"
       end
+    when Formula
+      Dependency.new(spec.name, tag)
     else
       raise "Unsupported type #{spec.class} for #{spec}"
     end
@@ -78,13 +78,13 @@ class DependencyCollector
     when :autoconf, :automake, :bsdmake, :libtool, :libltdl
       # Xcode no longer provides autotools or some other build tools
       autotools_dep(spec, tag)
+    when :x11        then X11Dependency.new(spec.to_s, tag)
     when *X11Dependency::Proxy::PACKAGES
       x11_dep(spec, tag)
     when :cairo, :pixman
       # We no longer use X11 psuedo-deps for cairo or pixman,
       # so just return a standard formula dependency.
       Dependency.new(spec.to_s, tag)
-    when :x11        then X11Dependency.new(spec.to_s, tag)
     when :xcode      then XcodeDependency.new(tag)
     when :mysql      then MysqlDependency.new(tag)
     when :postgresql then PostgresqlDependency.new(tag)
