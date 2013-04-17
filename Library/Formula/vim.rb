@@ -11,6 +11,8 @@ class Vim < Formula
 
   env :std # To find interpreters
 
+  depends_on :hg => :build
+
   LANGUAGES         = %w(lua mzscheme perl python python3 tcl ruby)
   DEFAULT_LANGUAGES = %w(ruby python)
 
