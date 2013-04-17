@@ -1,38 +1,31 @@
 require 'testing_env'
-require 'formula'
-require 'test/testball'
 require 'version'
 
 class VersionComparisonTests < Test::Unit::TestCase
   include VersionAssertions
 
   def test_version_comparisons
-    assert version('0.1') == version('0.1.0')
-    assert version('0.1') < version('0.2')
-    assert version('1.2.3') > version('1.2.2')
-    assert version('1.2.3-p34') > version('1.2.3-p33')
-    assert version('1.2.4') < version('1.2.4.1')
-    assert version('HEAD') > version('1.2.3')
-    assert version('1.2.3') < version('HEAD')
-    assert version('3.2.0b4') < version('3.2.0')
-    assert version('1.0beta6') < version('1.0b7')
-    assert version('1.0b6') < version('1.0beta7')
-    assert version('1.1alpha4') < version('1.1beta2')
-    assert version('1.1beta2') < version('1.1rc1')
-    assert version('1.0.0beta7') < version('1.0.0')
-    assert version('3.2.1') > version('3.2beta4')
+    assert_operator version('0.1'), :==, version('0.1.0')
+    assert_operator version('0.1'), :<, version('0.2')
+    assert_operator version('1.2.3'), :>, version('1.2.2')
+    assert_operator version('1.2.3-p34'), :>, version('1.2.3-p33')
+    assert_operator version('1.2.4'), :<, version('1.2.4.1')
+    assert_operator version('HEAD'), :>, version('1.2.3')
+    assert_operator version('1.2.3'), :<, version('HEAD')
+    assert_operator version('3.2.0b4'), :<, version('3.2.0')
+    assert_operator version('1.0beta6'), :<, version('1.0b7')
+    assert_operator version('1.0b6'), :<, version('1.0beta7')
+    assert_operator version('1.1alpha4'), :<, version('1.1beta2')
+    assert_operator version('1.1beta2'), :<, version('1.1rc1')
+    assert_operator version('1.0.0beta7'), :<, version('1.0.0')
+    assert_operator version('3.2.1'), :>, version('3.2beta4')
     assert_nil version('1.0') <=> 'foo'
   end
 
-  def test_version_interrogation
-    v = Version.new("1.1alpha1")
-    assert v.alpha?
-    v = Version.new("1.0beta2")
-    assert v.devel?
-    assert v.beta?
-    v = Version.new("1.0rc-1")
-    assert v.devel?
-    assert v.rc?
+  def test_version_queries
+    assert Version.new("1.1alpha1").alpha?
+    assert Version.new("1.0beta2").beta?
+    assert Version.new("1.0rc-1").rc?
   end
 end
 
@@ -42,7 +35,7 @@ class VersionParsingTests < Test::Unit::TestCase
   def test_pathname_version
     d = HOMEBREW_CELLAR/'foo-0.1.9'
     d.mkpath
-    assert_equal 0, version('0.1.9') <=> d.version
+    assert_equal version('0.1.9'), d.version
   end
 
   def test_no_version
