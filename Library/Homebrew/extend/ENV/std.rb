@@ -283,10 +283,12 @@ module Stdenv
   end
 
   def m64
+    return unless MACOS
     append_to_cflags '-m64'
     append 'LDFLAGS', "-arch #{Hardware::CPU.arch_64_bit}"
   end
   def m32
+    return unless MACOS
     append_to_cflags '-m32'
     append 'LDFLAGS', "-arch #{Hardware::CPU.arch_32_bit}"
   end
