@@ -31,9 +31,15 @@ class Caudec < Formula
     system "mkdir #{share}"
     system "mkdir #{share}/doc"
     system "mv caudecrc #{share}/doc/"
-    opoo "You can find an up-to-date caudecrc file in"
-    opoo "#{share}/doc/"
-    opoo "Copy it to ~/.caudecrc ('.caudecrc' in your home directory),"
-    opoo "or update your existing copy as needed."
+  end
+
+  def caveats; <<-EOS.undent
+    You can find an up-to-date caudecrc file in
+
+      #{share}/doc/
+
+    Copy it to ~/.caudecrc ('.caudecrc' in your home directory),
+    or update your existing copy as needed.
+    EOS
   end
 end
