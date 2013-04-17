@@ -31,9 +31,9 @@ class Caudec < Formula
     system "mkdir #{share}"
     system "mkdir #{share}/doc"
     system "mv caudecrc #{share}/doc/"
-    ohai "You can find an up-to-date caudecrc file in"
-    ohai "#{share}/doc/"
-    ohai "Copy it to ~/.caudecrc ('.caudecrc' in your home directory),"
-    ohai "or update your existing copy as needed."
+    opoo "You can find an up-to-date caudecrc file in"
+    opoo "#{share}/doc/"
+    opoo "Copy it to ~/.caudecrc ('.caudecrc' in your home directory),"
+    opoo "or update your existing copy as needed."
   end
 end
