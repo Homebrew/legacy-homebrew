@@ -15,6 +15,7 @@ class Imagemagick < Formula
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
   option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
+  option 'without-magick-plus-plus', 'disable build/install of Magick++'
 
   depends_on :libltdl
 
