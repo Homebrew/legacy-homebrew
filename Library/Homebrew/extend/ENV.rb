@@ -282,10 +282,12 @@ module HomebrewEnvExtension
   end
 
   def m64
+    return unless MACOS
     append_to_cflags '-m64'
     append 'LDFLAGS', '-arch x86_64'
   end
   def m32
+    return unless MACOS
     append_to_cflags '-m32'
     append 'LDFLAGS', '-arch i386'
   end
