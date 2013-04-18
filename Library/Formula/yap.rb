@@ -14,7 +14,6 @@ class Yap < Formula
   depends_on 'readline'
 
   fails_with :clang do
-    build 425
     cause "Undefined symbols linking for architecture x86_64"
   end
 
@@ -37,7 +36,7 @@ class Yap < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/yap -dump-runtime-variables"
+  test do
+    system "#{bin}/yap", "-dump-runtime-variables"
   end
 end

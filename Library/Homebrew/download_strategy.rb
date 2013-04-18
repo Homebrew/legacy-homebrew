@@ -4,10 +4,12 @@ require 'vendor/multi_json'
 class AbstractDownloadStrategy
   def initialize name, package
     @url = package.url
-    @spec, @ref = package.specs.dup.shift
+    specs = package.specs
+    @spec, @ref = specs.dup.shift unless specs.empty?
   end
 
   def expand_safe_system_args args
+    args = args.dup
     args.each_with_index do |arg, ii|
       if arg.is_a? Hash
         unless ARGV.verbose?
@@ -20,7 +22,7 @@ class AbstractDownloadStrategy
     end
     # 2 as default because commands are eg. svn up, git pull
     args.insert(2, '-q') unless ARGV.verbose?
-    return args
+    args
   end
 
   def quiet_safe_system *args
@@ -29,19 +31,21 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  attr_reader :tarball_path, :local_bottle_path
-  attr_writer :local_bottle_path
+  attr_reader :tarball_path
+  attr_accessor :local_bottle_path
 
   def initialize name, package
     super
-    @mirrors = package.mirrors
-    @unique_token = "#{name}-#{package.version}" unless name.to_s.empty? or name == '__UNKNOWN__'
-    if @unique_token
-      @tarball_path=HOMEBREW_CACHE+(@unique_token+ext)
+
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{File.basename(@url)}")
     else
-      @tarball_path=HOMEBREW_CACHE+File.basename(@url)
+      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{package.version}#{ext}")
     end
-    @temporary_path=Pathname.new(@tarball_path.to_s + ".incomplete")
+
+    @mirrors = package.mirrors
+    @temporary_path = Pathname.new("#@tarball_path.incomplete")
+    @local_bottle_path = nil
   end
 
   def cached_location
@@ -88,12 +92,12 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
     case @tarball_path.compression_type
     when :zip
-      quiet_safe_system '/usr/bin/unzip', {:quiet_flag => '-qq'}, @tarball_path
+      with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, @tarball_path }
       chdir
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
-      safe_system '/usr/bin/tar', 'xf', @tarball_path
+      with_system_path { safe_system 'tar', 'xf', @tarball_path }
       chdir
     when :xz
       raise "You must install XZutils: brew install xz" unless which "xz"
@@ -120,7 +124,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
-private
+  private
+
   def chdir
     entries=Dir['*']
     case entries.length
@@ -178,7 +183,7 @@ end
 class GzipOnlyDownloadStrategy < CurlDownloadStrategy
   def stage
     FileUtils.mv @tarball_path, File.basename(@url)
-    safe_system '/usr/bin/gunzip', '-f', File.basename(@url)
+    with_system_path { safe_system 'gunzip', '-f', File.basename(@url) }
   end
 end
 
@@ -205,9 +210,14 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
     @@svn ||= 'svn'
-    @unique_token="#{name}--svn" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @unique_token += "-HEAD" if ARGV.include? '--HEAD'
-    @co=HOMEBREW_CACHE+@unique_token
+
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      raise NotImplementedError, "strategy requires a name parameter"
+    else
+      @co = Pathname.new("#{HOMEBREW_CACHE}/#{name}--svn")
+    end
+
+    @co = Pathname.new(@co.to_s + '-HEAD') if ARGV.build_head?
   end
 
   def cached_location
@@ -303,8 +313,12 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
     @@git ||= 'git'
-    @unique_token="#{name}--git" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @clone=HOMEBREW_CACHE+@unique_token
+
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      raise NotImplementedError, "strategy requires a name parameter"
+    else
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--git")
+    end
   end
 
   def cached_location
@@ -453,8 +467,13 @@ end
 class CVSDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
-    @unique_token="#{name}--cvs" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @co=HOMEBREW_CACHE+@unique_token
+
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      raise NotImplementedError, "strategy requires a name parameter"
+    else
+      @unique_token = "#{name}--cvs"
+      @co = Pathname.new("#{HOMEBREW_CACHE}/#{@unique_token}")
+    end
   end
 
   def cached_location; @co; end
@@ -491,7 +510,8 @@ class CVSDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
-private
+  private
+
   def split_url(in_url)
     parts=in_url.sub(%r[^cvs://], '').split(/:/)
     mod=parts.pop
@@ -503,8 +523,12 @@ end
 class MercurialDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
-    @unique_token="#{name}--hg" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @clone=HOMEBREW_CACHE+@unique_token
+
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      raise NotImplementedError, "strategy requires a name parameter"
+    else
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--hg")
+    end
   end
 
   def cached_location; @clone; end
@@ -550,8 +574,12 @@ end
 class BazaarDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
-    @unique_token="#{name}--bzr" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @clone=HOMEBREW_CACHE+@unique_token
+
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      raise NotImplementedError, "strategy requires a name parameter"
+    else
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--bzr")
+    end
   end
 
   def cached_location; @clone; end
@@ -600,8 +628,11 @@ end
 class FossilDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
-    @unique_token="#{name}--fossil" unless name.to_s.empty? or name == '__UNKNOWN__'
-    @clone=HOMEBREW_CACHE+@unique_token
+    if name.to_s.empty? || name == '__UNKNOWN__'
+      raise NotImplementedError, "strategy requires a name parameter"
+    else
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--fossil")
+    end
   end
 
   def cached_location; @clone; end

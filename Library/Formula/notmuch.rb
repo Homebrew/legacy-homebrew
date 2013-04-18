@@ -28,7 +28,6 @@ class Notmuch < Formula
   depends_on 'gmime'
 
   fails_with :clang do
-    build 425
     cause "./lib/notmuch-private.h:478:8: error: visibility does not match previous declaration"
   end
 

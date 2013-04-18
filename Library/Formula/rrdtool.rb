@@ -15,6 +15,8 @@ class Rrdtool < Formula
   # TODO: Do something here
   depends_on 'lua' if build.include? "lua"
 
+  env :std # For perl, ruby
+
   # Ha-ha, but sleeping is annoying when running configure a lot
   def patches; DATA; end
 
@@ -23,9 +25,8 @@ class Rrdtool < Formula
 
     which_perl = which 'perl'
     which_ruby = which 'ruby'
-    ruby_path  = "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby"
 
-    opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby.realpath.to_s == ruby_path
+    opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby.realpath == RUBY_PATH
     opoo "Using system Perl. RRD module will be installed to /Library/Perl/..." if which_perl.to_s == "/usr/bin/perl"
 
     args = %W[
@@ -33,7 +34,7 @@ class Rrdtool < Formula
       --prefix=#{prefix}
     ]
     args << "--enable-perl-site-install" if which_perl.to_s == "/usr/bin/perl"
-    args << "--enable-ruby-site-install" if which_ruby.realpath.to_s == ruby_path
+    args << "--enable-ruby-site-install" if which_ruby.realpath == RUBY_PATH
 
     system "./configure", *args
 

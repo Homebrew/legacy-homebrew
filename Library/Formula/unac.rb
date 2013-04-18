@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# encoding: UTF-8
+
 require 'formula'
 
 class Unac < Formula
@@ -6,9 +7,9 @@ class Unac < Formula
   url 'http://ftp.de.debian.org/debian/pool/main/u/unac/unac_1.8.0.orig.tar.gz'
   sha1 '3e779bb7f3b505880ac4f43b48ee2f935ef8aa36'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
   depends_on 'gettext' => :build
 
   def patches
@@ -39,8 +40,11 @@ class Unac < Formula
     system "make install"
   end
 
-  def test
-    `#{bin}/unaccent utf-8 fóó`.chomp == 'foo'
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/unaccent", "utf-8", "fóó") do |_, stdout, _|
+      "foo" == stdout.read.strip
+    end
   end
 end
 
@@ -54,8 +58,7 @@ index 4a4eab6..9f25d50 100644
 
  AM_ICONV
 
--AC_CHECK_FUNCS(iconv_open,,AC_MSG_ERROR([
 +LIBS="$LIBS -liconv"
-+AC_CHECK_FUNCS(libiconv_open,,AC_MSG_ERROR([
+ AC_CHECK_FUNCS(iconv_open,,AC_MSG_ERROR([
  iconv_open not found try to install replacement from
  http://www.gnu.org/software/libiconv/

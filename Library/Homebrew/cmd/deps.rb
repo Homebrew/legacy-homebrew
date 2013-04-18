@@ -2,14 +2,18 @@ require 'formula'
 
 def recursive_deps_tree f, level
   f.deps.each do |dep|
-    puts "> "*level+dep.to_s
+    puts "|  "*(level-1)+"|- "+dep.to_s
     recursive_deps_tree(Formula.factory(dep), level+1)
   end
 end
 
 module Homebrew extend self
   def deps
-    if ARGV.include? '--all'
+    if ARGV.include? '--installed'
+        Formula.installed.each do |f|
+          puts "#{f.name}: #{f.deps*' '}"
+        end
+    elsif ARGV.include? '--all'
       Formula.each do |f|
         puts "#{f.name}: #{f.deps*' '}"
       end

@@ -4,12 +4,14 @@ class Vim < Formula
   homepage 'http://www.vim.org/'
   # Get stable versions from hg repo instead of downloading an increasing
   # number of separate patches.
-  url 'https://vim.googlecode.com/hg/', :tag => 'v7-3-831'
-  version '7.3.831'
+  url 'https://vim.googlecode.com/hg/', :tag => 'v7-3-905'
+  version '7.3.905'
 
   head 'https://vim.googlecode.com/hg/'
 
   env :std # To find interpreters
+
+  depends_on :hg => :build
 
   LANGUAGES         = %w(lua mzscheme perl python python3 tcl ruby)
   DEFAULT_LANGUAGES = %w(ruby python)
@@ -18,6 +20,8 @@ class Vim < Formula
     option "with-#{language}", "Build vim with #{language} support"
     option "without-#{language}", "Build vim without #{language} support"
   end
+
+  option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
 
   def install
     ENV['LUA_PREFIX'] = HOMEBREW_PREFIX
@@ -29,6 +33,9 @@ class Vim < Formula
         "--enable-#{language}interp"
       end
     end.compact
+
+    opts = language_opts
+    opts << "--disable-nls" if build.include? "disable-nls"
 
     # XXX: Please do not submit a pull request that hardcodes the path
     # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.
@@ -43,13 +50,15 @@ class Vim < Formula
                           "--mandir=#{man}",
                           "--enable-gui=no",
                           "--without-x",
-                          "--disable-nls",
                           "--enable-multibyte",
                           "--with-tlib=ncurses",
                           "--enable-cscope",
                           "--with-features=huge",
-                          *language_opts
+                          *opts
     system "make"
-    system "make", "install", "prefix=#{prefix}"
+    # If stripping the binaries is not enabled, vim will segfault with
+    # statically-linked interpreters like ruby
+    # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
+    system "make", "install", "prefix=#{prefix}", "STRIP=/usr/bin/true"
   end
 end

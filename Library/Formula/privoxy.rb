@@ -2,8 +2,8 @@ require 'formula'
 
 class Privoxy < Formula
   homepage 'http://www.privoxy.org'
-  url 'http://downloads.sourceforge.net/project/ijbswa/Sources/3.0.19%20%28stable%29/privoxy-3.0.19-stable-src.tar.gz'
-  sha1 'a82287cbf48375ef449d021473a366baeca49250'
+  url 'http://downloads.sourceforge.net/project/ijbswa/Sources/3.0.21%20%28stable%29/privoxy-3.0.21-stable-src.tar.gz'
+  sha1 '2d73a9146e87218b25989096f63ab0772ce24109'
 
   depends_on :automake
   depends_on :libtool

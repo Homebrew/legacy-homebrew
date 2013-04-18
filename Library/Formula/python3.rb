@@ -6,19 +6,20 @@ require 'formula'
 # `brew install python`.
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.34.tar.gz'
-  sha1 'b6f9cfbaf3e63833b71009812a613be13e68f5de'
+  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.36.tar.gz'
+  sha1 'ab69711e4ea85c84d6710ecadf1d77427539f702'
 end
 
 class Pip < Formula
-  url 'http://pypi.python.org/packages/source/p/pip/pip-1.2.1.tar.gz'
-  sha1 '35db84983ef3f66a8a161d320e61d192afc233d9'
+  url 'https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz'
+  sha1 '9c70d314e5dea6f41415af814056b0f63c3ffd14'
 end
+
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.3.0/Python-3.3.0.tar.bz2'
-  sha1 '3e1464bc2c1dfa74287bc58da81168f50b0ae5c7'
+  url 'http://python.org/ftp/python/3.3.1/Python-3.3.1.tar.bz2'
+  sha1 'bec78674847a4dacc4717c93b32b6b07adb90afe'
   VER='3.3'  # The <major>.<minor> is used so often.
 
   depends_on 'pkg-config' => :build
@@ -119,7 +120,7 @@ class Python3 < Formula
     # Install distribute for python3 and assure there's no name clash
     # with what the python (2.x) formula installs.
     scripts_folder.mkpath
-    setup_args = ["-s", "setup.py", "install", "--force", "--verbose", "--install-lib=#{site_packages_cellar}", "--install-scripts=#{bin}" ]
+    setup_args = ["-s", "setup.py", "install", "--force", "--verbose", "--install-lib=#{site_packages_cellar}", "--install-scripts=#{bin}"]
     Distribute.new.brew { system "#{bin}/python#{VER}", *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
     Pip.new.brew { system "#{bin}/python#{VER}", *setup_args }

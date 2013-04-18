@@ -4,14 +4,14 @@ require 'formula'
 
 class Gfortran < Formula
   homepage 'http://gcc.gnu.org/wiki/GFortran'
-  url 'http://ftpmirror.gnu.org/gcc/gcc-4.7.2/gcc-4.7.2.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gcc/gcc-4.7.2/gcc-4.7.2.tar.bz2'
-  sha1 'a464ba0f26eef24c29bcd1e7489421117fb9ee35'
+  url 'http://ftpmirror.gnu.org/gcc/gcc-4.8.0/gcc-4.8.0.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gcc/gcc-4.8.0/gcc-4.8.0.tar.bz2'
+  sha1 'b4ee6e9bdebc65223f95067d0cc1a634b59dad72'
 
   bottle do
-    sha1 '684879d100c02ac9ba5c23ded4860da19c02650d' => :mountainlion
-    sha1 '3d958ffe0f126d1add6e2f5236b333870b1a826b' => :lion
-    sha1 '9708ac5fa35db9789b8e050fbe410acee9ec9e45' => :snowleopard
+    sha1 '0a1a366a42607c3fd660b4cf6a147ab01d52f7a8' => :mountain_lion
+    sha1 'db7f52969509f631af7b1e4344c08c196e5a00d0' => :lion
+    sha1 'f764e279cc99f0fb9b73d6561a3f9ddef619fd8c' => :snow_leopard
   end
 
   option 'enable-profiled-build', 'Make use of profile guided optimization when bootstrapping GCC'

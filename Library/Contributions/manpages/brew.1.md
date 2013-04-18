@@ -78,7 +78,7 @@ Note that these flags should only appear after a command.
     The options `--set-name` and `--set-version` each take an argument and allow
     you to explicitly set the name and version of the package you are creating.
 
-  * `deps [--1] [-n] [--tree] [--all]` <formula>:
+  * `deps [--1] [-n] [--tree] [--all] [--installed]` <formula>:
     Show <formula>'s dependencies.
 
     If `--1` is passed, only show dependencies one level down, instead of
@@ -89,6 +89,8 @@ Note that these flags should only appear after a command.
     If `--tree` is passed, show dependencies as a tree.
 
     If `--all` is passed, show dependencies for all formulae.
+
+    If `--installed` is passed, show dependencies for all installed formulae.
 
   * `diy [--set-name <name>] [--set-version <version>]`:
     Automatically determine the installation prefix for non-Homebrew software.
@@ -140,14 +142,20 @@ Note that these flags should only appear after a command.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--debug] [--ignore-dependencies] [--fresh] [--use-clang|--use-gcc|--use-llvm] [--build-from-source] [--devel|--HEAD]` <formula>:
+  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--fresh] [--use-clang|--use-gcc|--use-llvm] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
     several different ways. See [SPECIFYING FORMULAE][].
 
-    If `--debug` is passed and brewing fails, open a shell inside the
-    temporary directory used for compiling.
+    If `--debug` is passed and brewing fails, open an interactive debugging
+    session with access to IRB, ruby-debug, or a shell inside the temporary
+    build directory.
+
+    If `--env=std` is passed, use the standard build environment instead of superenv.
+
+    If `--env=super` is passed, use superenv even if the formula specifies the
+    standard build environment.
 
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail
@@ -183,7 +191,7 @@ Note that these flags should only appear after a command.
     If `--git` is passed, Homebrew will create a Git repository, useful for
     creating patches to the software.
 
-  * `ln`, `link [--overwrite] [--dry-run]` <formula>:
+  * `ln`, `link [--overwrite] [--dry-run] [--force]` <formula>:
     Symlink all of <formula>'s installed files into the Homebrew prefix. This
     is done automatically when you install formula, but can be useful for DIY
     installations.
@@ -195,7 +203,9 @@ Note that these flags should only appear after a command.
     be linked or which would be deleted by `brew link --overwrite`, but will not
     actually link or delete any files.
 
-  * `ls, list [--unbrewed] [--versions]` [<formulae>]:
+    If `--force` is passed, Homebrew will allow keg-only formulae to be linked.
+
+  * `ls, list [--unbrewed] [--versions] [--pinned]` [<formulae>]:
     Without any arguments, list all installed formulae.
 
     If <formulae> are given, list the installed files for <formulae>.
@@ -207,6 +217,10 @@ Note that these flags should only appear after a command.
 
     If `--versions` is passed, show the version number for installed formulae,
     or only the specified formulae if <formulae> are given.
+
+    If `--pinned` is passed, show the versions of pinned formulae, or only the
+    specified (pinned) formulae if <formulae> are given.
+    See also `pin`, `unpin`.
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
@@ -233,6 +247,10 @@ Note that these flags should only appear after a command.
     If `--quiet` is passed, list only the names of outdated brews. Otherwise,
     the versions are printed as well.
 
+  * `pin` <formulae>:
+    Pin the specified <formulae>, preventing them from being upgraded when
+    issuing the `brew upgrade` command without arguments. See also `unpin`.
+
   * `prune`:
     Remove dead symlinks from the Homebrew prefix. This is generally not
     needed, but can be useful when doing DIY installations.
@@ -250,6 +268,13 @@ Note that these flags should only appear after a command.
 
   * `search --macports`|`--fink` <text>:
     Search for <text> on the MacPorts or Fink package search page.
+
+  * `sh [--env=std]`:
+    Instantiate a Homebrew build environment. Uses our years-battle-hardened
+    Homebrew build logic to help your `./configure && make && make install`
+    or even your `gem install` succeeed. Especially handy if you run Homebrew
+    in a Xcode-only configuration since it adds tools like make to your PATH
+    which otherwise build-systems would not find.
 
   * `tap` [<tap>]:
     Tap a new formula repository from GitHub, or list existing taps.
@@ -273,6 +298,10 @@ Note that these flags should only appear after a command.
     Unsymlink <formula> from the Homebrew prefix. This can be useful for
     temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
 
+  * `unpin` <formulae>:
+    Unpin <formulae>, allowing them to be upgraded by `brew upgrade`. See also
+    `pin`.
+
   * `untap` <tap>:
     Remove a tapped repository.
 
@@ -282,10 +311,13 @@ Note that these flags should only appear after a command.
 
     If `--rebase` is specified then `git pull --rebase` is used.
 
-  * `upgrade` [<formulae>]:
-    Upgrade outdated brews.
+  * `upgrade [install-options]` [<formulae>]:
+    Upgrade outdated, unpinned brews.
 
-    If <formulae> are given, upgrade only the specified brews.
+    Options for the `install` command are also valid here.
+
+    If <formulae> are given, upgrade only the specified brews (but do so even
+    if they are pinned; see `pin`, `unpin`).
 
   * `uses [--installed] [--recursive]` <formula>:
     Show the formulae that specify <formula> as a dependency.
@@ -318,6 +350,9 @@ Note that these flags should only appear after a command.
     Show Homebrew and system configuration useful for debugging. If you file
     a bug report, you will likely be asked for this information if you do not
     provide it.
+
+  * `--env`:
+    Show a summary of the Homebrew build environment.
 
   * `--prefix`:
     Display Homebrew's install path. *Default:* `/usr/local`

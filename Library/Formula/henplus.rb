@@ -17,7 +17,7 @@ class Henplus < Formula
               "share/libreadline-java/libreadline-java.jar"
     end
 
-    system 'ant', 'install' "-Dprefix=#{prefix}"
+    system 'ant', 'install', "-Dprefix=#{prefix}"
   end
 
   def caveats; <<-EOS.undent
