@@ -66,8 +66,6 @@ class DependencyCollector
       else
         raise "#{spec} is not a Requirement subclass"
       end
-    when Formula
-      Dependency.new(spec.name, tag)
     else
       raise "Unsupported type #{spec.class} for #{spec}"
     end
