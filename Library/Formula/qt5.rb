@@ -22,6 +22,12 @@ class Qt5 < Formula
   depends_on "mysql" if build.include? 'with-mysql'
   depends_on "jpeg"
 
+  def patches
+    # http://qt.gitorious.org/qt/qtbase/commit/655ba5?format=patch
+    # Inlined to fix paths.
+    DATA
+  end
+   
   def install
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
