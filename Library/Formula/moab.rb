@@ -2,8 +2,8 @@ require 'formula'
 
 class Moab < Formula
   homepage 'https://trac.mcs.anl.gov/projects/ITAPS/wiki/MOAB'
-  url 'https://bitbucket.org/fathomteam/moab/get/master.tar.gz'
-  sha1 'cc03c46938d053095082dc7af0ad82b1cc3c06d7'
+  url 'https://bitbucket.org/fathomteam/moab/get/4.6.0.tar.gz'
+  sha1 '0224188f423ee0fde92af86b8ececa86850bad02'
 
     depends_on :automake
     depends_on :libtool
@@ -16,4 +16,10 @@ class Moab < Formula
                             "--prefix=#{prefix}"
       system "make install"
     end
+
+  test do
+    system "which mbsize"
+    system "which mbconvert"
+    system "which mbskin"
+  end
 end
