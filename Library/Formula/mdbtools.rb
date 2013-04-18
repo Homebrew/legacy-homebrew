@@ -18,6 +18,7 @@ class Mdbtools < Formula
   end
 
   def install
+    ENV.deparallelize
     system "NOCONFIGURE='yes' ./autogen.sh"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
