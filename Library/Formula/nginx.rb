@@ -6,9 +6,11 @@ class Nginx < Formula
   sha1 'b8c193d841538c3c443d262a2ab815a9ce1faaf6'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.3.15.tar.gz'
-    sha1 '16488c527078e26c32b0e467120501abf927fc8f'
+    url 'http://nginx.org/download/nginx-1.3.16.tar.gz'
+    sha1 '773321c9c9c273e9a2da0ddfd07e8af271d09ca7'
   end
+
+  head 'svn://svn.nginx.org/nginx/trunk/'
 
   env :userpaths
 
@@ -64,11 +66,15 @@ class Nginx < Formula
     args << "--with-http_dav_module" if build.include? 'with-webdav'
     args << "--with-debug" if build.include? 'with-debug'
 
-    if build.devel?
+    if build.devel? or build.head?
       args << "--with-http_spdy_module" if build.include? 'with-spdy'
     end
 
-    system "./configure", *args
+    if build.head?
+      system "./auto/configure", *args
+    else
+      system "./configure", *args
+    end
     system "make"
     system "make install"
     man8.install "objs/nginx.8"
