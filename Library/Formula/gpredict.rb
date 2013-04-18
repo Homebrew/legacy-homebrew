@@ -17,8 +17,8 @@ class Gpredict < Formula
 
   def install
     gettext = Formula.factory('gettext')
-	ENV.append "CFLAGS", "-I#{gettext.include}"
-	ENV.append "LDFLAGS", "-L#{gettext.lib}"
+    ENV.append "CFLAGS", "-I#{gettext.include}"
+    ENV.append "LDFLAGS", "-L#{gettext.lib}"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
