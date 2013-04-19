@@ -2,15 +2,15 @@ require 'formula'
 
 class P11Kit < Formula
   homepage 'http://p11-glue.freedesktop.org'
-  url 'http://p11-glue.freedesktop.org/releases/p11-kit-0.18.0.tar.gz'
-  sha256 '9ebcdcf57b7686b92146cf475cb2b66cdf3757f6e62d8e77c39dae89ffb43e31'
+  url 'http://p11-glue.freedesktop.org/releases/p11-kit-0.18.1.tar.gz'
+  sha256 '6e87e72b7768288384de2ca1929b3cb45502e9e944fc075a8ce5df8f08f1ab29'
 
   option :universal
 
   depends_on 'pkg-config' => :build
   depends_on 'libtasn1'
 
-  def patches; DATA end
+  def patches; DATA; end
 
   def install
     ENV.universal_binary if build.universal?
@@ -25,21 +25,52 @@ class P11Kit < Formula
 end
 
 __END__
-diff --git a/p11-kit/tests/test-init.c b/p11-kit/tests/test-init.c
-index 7df4be9..557d0c2 100644
---- a/p11-kit/tests/test-init.c
-+++ b/p11-kit/tests/test-init.c
-@@ -274,7 +274,7 @@ test_load_and_initialize (CuTest *tc)
- 	CK_RV rv;
- 	int ret;
+diff --git a/configure.ac b/configure.ac
+index b3c7610..6614ae5 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -398,7 +398,17 @@ echo $PACKAGE_VERSION | tr '.' ' ' | while read major minor unused; do
+	break
+ done
  
--	rv = p11_kit_load_initialize_module (BUILDDIR "/.libs/mock-one" SHLEXT, &module);
-+	rv = p11_kit_load_initialize_module (BUILDDIR "/.libs/mock-one.so", &module);
- 	CuAssertTrue (tc, rv == CKR_OK);
- 	CuAssertTrue (tc, module != NULL);
+-eval SHLEXT=$shrext_cmds
++case "$host" in
++*-*-darwin*)
++	# It seems like libtool lies about this see:
++	# https://bugs.freedesktop.org/show_bug.cgi?id=57714
++	SHLEXT='.so'
++	;;
++*)
++	eval SHLEXT=$shrext_cmds
++	;;
++esac
++
+ AC_DEFINE_UNQUOTED(SHLEXT, ["$SHLEXT"], [File extension for shared libraries])
+ AC_SUBST(SHLEXT)
  
---- p11-kit-0.18.0/common/library.c.orig	2013-04-05 01:05:38.000000000 -0700
-+++ p11-kit-0.18.0/common/library.c	2013-04-05 01:09:55.000000000 -0700
+--- a/configure
++++ b/configure
+@@ -17315,7 +17201,17 @@
+        break
+ done
+
+-eval SHLEXT=$shrext_cmds
++case "$host" in
++*-*-darwin*)
++       # It seems like libtool lies about this see:
++       # https://bugs.freedesktop.org/show_bug.cgi?id=57714
++       SHLEXT='.so'
++       ;;
++*)
++       eval SHLEXT=$shrext_cmds
++       ;;
++esac
++
+
+ cat >>confdefs.h <<_ACEOF
+ #define SHLEXT "$SHLEXT"
+--- p11-kit-0.18.1.orig/common/library.c	2013-04-03 08:30:32.000000000 -0700
++++ p11-kit-0.18.1/common/library.c	2013-04-18 21:26:47.000000000 -0700
 @@ -125,7 +125,7 @@
  	uninit_common ();
  
