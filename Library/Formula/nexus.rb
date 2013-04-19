@@ -2,13 +2,13 @@ require 'formula'
 
 class Nexus < Formula
   homepage 'http://www.sonatype.org/'
-  url 'http://www.sonatype.org/downloads/nexus-2.3.0-04-bundle.tar.gz'
-  version '2.3.0-04'
-  sha1 '265a3a7bd09f5980d467367c729cf59f24865d11'
+  url 'http://download.sonatype.com/nexus/oss/nexus-2.3.1-01-bundle.tar.gz'
+  version '2.3.1-01'
+  sha1 'f064052500223e7af3e3323b6bc9fb7c047ac0e1'
 
   def install
     rm_f Dir['bin/*.bat']
-    libexec.install Dir['nexus-2.3.0-04/*']
+    libexec.install Dir["nexus-#{version}/*"]
     bin.install_symlink libexec/'bin/nexus'
   end
 

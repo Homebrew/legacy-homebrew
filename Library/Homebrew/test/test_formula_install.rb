@@ -19,11 +19,9 @@ end
 class ConfigureTests < Test::Unit::TestCase
   def test_detect_failed_configure
     f = ConfigureFails.new
-    begin
-      shutup { f.brew { f.install } }
-    rescue BuildError => e
-      assert e.was_running_configure?
-    end
+    shutup { f.brew { f.install } }
+  rescue BuildError => e
+    assert e.was_running_configure?
   end
 end
 

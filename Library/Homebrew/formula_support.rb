@@ -60,7 +60,6 @@ class SoftwareSpec
   end
 
   def mirror val
-    @mirrors ||= []
     @mirrors << val
   end
 end

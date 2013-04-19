@@ -107,3 +107,17 @@ class ArchRequirement < Requirement
     "This formula requires an #{@arch} architecture."
   end
 end
+
+class MercurialDependency < Requirement
+  fatal true
+
+  satisfy { which('hg') }
+
+  def message; <<-EOS.undent
+    Mercurial is needed to install this software.
+
+    You can install this with Homebrew using:
+      brew install mercurial
+    EOS
+  end
+end

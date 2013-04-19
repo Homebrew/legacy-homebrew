@@ -1,7 +1,4 @@
-abort if ARGV.include? "--skip-update"
-
 require 'testing_env'
-require 'formula'
 require 'cmd/update'
 require 'yaml'
 

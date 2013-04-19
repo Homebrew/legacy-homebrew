@@ -59,7 +59,7 @@ class Graylog2Server < Formula
       <key>RunAtLoad</key>
       <true/>
       <key>KeepAlive</key>
-      <false/>
+      <true/>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>
       <key>StandardErrorPath</key>
