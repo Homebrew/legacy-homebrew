@@ -11,6 +11,11 @@ class Ettercap < Formula
   depends_on 'libnet'
   depends_on 'curl' # require libcurl >= 7.26.0
 
+  # fixes absence of strndup function on 10.6 and lower; merged upstream
+  def patches
+    "https://github.com/Ettercap/ettercap/commit/1692218693ed419465466299c8c76da41c37c945.patch"
+  end if MacOS.version < 10.7
+
   def install
     libnet = Formula.factory 'libnet'
 
