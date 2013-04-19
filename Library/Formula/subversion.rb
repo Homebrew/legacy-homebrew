@@ -6,6 +6,10 @@ def build_python?; build.include? "python"; end
 def build_ruby?;   build.include? "ruby";   end
 def with_unicode_path?; build.include? "unicode-path"; end
 
+def find_interpreters?
+  build_perl? || build_python? || build_ruby?
+end
+
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
   url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.9.tar.bz2'
@@ -27,6 +31,9 @@ class Subversion < Formula
 
   # Building Ruby bindings requires libtool
   depends_on :libtool if build_ruby?
+
+  # If building bindings, allow non-system interpreters
+  env :userpaths if find_interpreters?
 
   def patches
     ps = []
@@ -52,7 +59,7 @@ class Subversion < Formula
   fails_with :clang do
     build 318
     cause "core.c:1: error: bad value (native) for -march= switch"
-  end if build_perl? or build_python? or build_ruby?
+  end if find_interpreters?
 
   def apr_bin
     superbin or "/usr/bin"
