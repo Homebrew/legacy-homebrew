@@ -16,6 +16,7 @@ class Vim < Formula
   LANGUAGES         = %w(lua mzscheme perl python python3 tcl ruby)
   DEFAULT_LANGUAGES = %w(ruby python)
 
+  option "override-system-vi", "Override system vi"
   LANGUAGES.each do |language|
     option "with-#{language}", "Build vim with #{language} support"
     option "without-#{language}", "Build vim without #{language} support"
@@ -60,5 +61,6 @@ class Vim < Formula
     # statically-linked interpreters like ruby
     # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
     system "make", "install", "prefix=#{prefix}", "STRIP=/usr/bin/true"
+    ln_s bin+'vim', bin+'vi' if build.include? 'override-system-vi'
   end
 end
