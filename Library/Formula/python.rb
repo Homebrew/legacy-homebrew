@@ -41,8 +41,12 @@ class Python < Formula
     p
   end
 
+  def lib_python_cellar
+    prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7"
+  end
+
   def site_packages_cellar
-    prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
+    lib_python_cellar/"site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
@@ -148,6 +152,12 @@ class Python < Formula
       #   This is needed for Python to parse *.pth files.
       site.addsitedir('#{site_packages}')
     EOF
+
+    # Fix this bug: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=704084
+    # Python claims to have fixed it upstream, but 'tis a dirty lie!
+    inreplace "#{lib_python_cellar}/sre_constants.py", 'from _sre import MAXREPEAT', 'MAXREPEAT = 65535'
+    inreplace "#{lib_python_cellar}/sre_compile.py", 'from _sre import MAXREPEAT', ''
+    inreplace "#{lib_python_cellar}/sre_parse.py", 'from _sre import MAXREPEAT', ''
 
     # Install distribute and pip
     # It's important to have these installers in our bin, because some users
