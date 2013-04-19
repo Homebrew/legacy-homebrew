@@ -2,8 +2,8 @@ require 'formula'
 
 class Ack < Formula
   homepage 'http://betterthangrep.com/'
-  url 'https://github.com/petdance/ack/archive/1.96.tar.gz'
-  sha1 '5d53b2b6f285e222a8459730495d6b07c692edd6'
+  url 'https://github.com/petdance/ack2/archive/2.02.tar.gz'
+  sha1 'bad4f48b0aa0e93cc5f526324837d9bce49bd7ac'
 
   def install
     system 'pod2man', 'ack', 'ack.1'
