@@ -31,9 +31,11 @@ class Cmake < Formula
     sha1 'c23c8c6124c1d59817301678cabad9517966d899' => :snow_leopard
   end
 
+  option :universal
   depends_on NoExpatFramework
 
   def install
+    ENV.universal_binary if build.universal?
     args = %W[
       --prefix=#{prefix}
       --system-libs
