@@ -35,6 +35,7 @@ class Imagemagick < Formula
   depends_on 'liblqr' => :optional
   depends_on 'openexr' => :optional
   depends_on 'ghostscript' => :optional
+  depends_on 'webp' => :optional
 
   opoo '--with-ghostscript is not recommended' if build.with? 'ghostscript'
   if build.with? 'openmp' and (MacOS.version == 10.5 or ENV.compiler == :clang)
@@ -83,10 +84,11 @@ class Imagemagick < Formula
     end
 
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
-    args << "--with-rsvg" if build.with? 'rsvg'
+    args << "--with-rsvg" if build.with? 'librsvg'
     args << "--without-x" unless build.with? 'x11'
     args << "--with-fontconfig=yes" if build.with? 'fontconfig'
     args << "--with-freetype=yes" if build.with? 'freetype'
+    args << "--with-webp=yes" if build.include? 'webp'
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
