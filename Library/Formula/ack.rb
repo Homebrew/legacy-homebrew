@@ -1,7 +1,7 @@
 require 'formula'
 
 class Ack < Formula
-  homepage 'http://betterthangrep.com/'
+  homepage 'http://beyondgrep.com/'
   url 'https://github.com/petdance/ack2/archive/2.02.tar.gz'
   sha1 'bad4f48b0aa0e93cc5f526324837d9bce49bd7ac'
 
