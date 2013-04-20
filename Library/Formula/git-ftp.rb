@@ -7,10 +7,6 @@ class GitFtp < Formula
 
   head 'https://github.com/git-ftp/git-ftp.git'
 
-  depends_on 'git'
-  depends_on 'curl' => %w{with-ssl with-ssh}
-  depends_on 'grep' => 'default-names'
-
   def install
     system "make", "prefix=#{prefix}", "install"
   end
