@@ -75,12 +75,12 @@ These wonderful people supported our Kickstarter by giving us £10 or more:
 * [Robert Clark](http://www.touchtech.co.nz)
 * [Wes Oldenbeuving](http://narnach.com/)
 * [Jon Fuller](http://erg7.com)
-* [PredictionIO](Open-source machine learning server) (http://prediction.io)
+* [PredictionIO (Open-source machine learning server)](http://prediction.io)
 * Nikolaus Wittenstein
 * [StormMQ](http://stormmq.com/)
 * [Barry Hoggard](http://www.tristanmedia.com/)
 * [Purplish Tree](http://PurplishTree.com)
-* Stefan Huber (http://signalwerk.ch/
+* [Stefan Huber](http://signalwerk.ch/)
 * Julien Palmas
 * [Cameron Spencer](http://eusonic.com)
 * [alesdotio](https://github.com/alesdotio)
