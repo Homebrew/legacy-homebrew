@@ -122,17 +122,17 @@ class Pathname
 
   # extended to support common double extensions
   alias extname_old extname
-  def extname
-    BOTTLE_EXTNAME_RX.match to_s
+  def extname(path=to_s)
+    BOTTLE_EXTNAME_RX.match(path)
     return $1 if $1
-    /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
+    /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match(path)
     return $1 if $1
-    return File.extname(to_s)
+    return File.extname(path)
   end
 
   # for filetypes we support, basename without extension
   def stem
-    return File.basename(to_s, extname)
+    File.basename((path = to_s), extname(path))
   end
 
   # I don't trust the children.length == 0 check particularly, not to mention
