@@ -9,6 +9,14 @@ class Orbit < Formula
   depends_on 'glib'
   depends_on 'libidl'
 
+  # per MacPorts, re-enable use of deprecated glib functions
+  def patches
+    {:p0 => [
+      "https://trac.macports.org/export/105275/trunk/dports/devel/orbit2/files/patch-linc2-src-Makefile.in.diff",
+      "https://trac.macports.org/export/105275/trunk/dports/devel/orbit2/files/patch-configure.diff"
+    ]}
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

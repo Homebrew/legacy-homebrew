@@ -204,7 +204,7 @@ def check_for_broken_symlinks
   Keg::PRUNEABLE_DIRECTORIES.each do |d|
     next unless d.directory?
     d.find do |pn|
-      broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/ and not pn.exist?
+      broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/o and not pn.exist?
     end
   end
   unless broken_symlinks.empty? then <<-EOS.undent
@@ -307,6 +307,14 @@ def __check_subdir_access base
   end
 end
 
+def check_access_share_locale
+  __check_subdir_access 'share/locale'
+end
+
+def check_access_share_man
+  __check_subdir_access 'share/man'
+end
+
 def check_access_usr_local
   return unless HOMEBREW_PREFIX.to_s == '/usr/local'
 
@@ -322,51 +330,21 @@ def check_access_usr_local
   end
 end
 
-def check_access_share_locale
-  __check_subdir_access 'share/locale'
-end
+%w{include etc lib lib/pkgconfig share}.each do |d|
+  class_eval <<-EOS, __FILE__, __LINE__ + 1
+    def check_access_#{d.sub("/", "_")}
+      if (dir = HOMEBREW_PREFIX+'#{d}').exist? && !dir.writable_real?
+        <<-EOF.undent
+        \#{dir} isn't writable.
+        This can happen if you "sudo make install" software that isn't managed by
+        by Homebrew. If a brew tries to write a file to this directory, the
+        install will fail during the link step.
 
-def check_access_share_man
-  __check_subdir_access 'share/man'
-end
-
-def __check_folder_access base, msg
-  folder = HOMEBREW_PREFIX+base
-  if folder.exist? and not folder.writable_real?
-    <<-EOS.undent
-      #{folder} isn't writable.
-      This can happen if you "sudo make install" software that isn't managed
-      by Homebrew.
-
-      #{msg}
-
-      You should probably `chown` #{folder}
+        You should probably `chown` \#{dir}
+        EOF
+      end
+    end
     EOS
-  end
-end
-
-def check_access_pkgconfig
-  __check_folder_access 'lib/pkgconfig',
-  'If a brew tries to write a .pc file to this directory, the install will\n'+
-  'fail during the link step.'
-end
-
-def check_access_include
-  __check_folder_access 'include',
-  'If a brew tries to write a header file to this directory, the install will\n'+
-  'fail during the link step.'
-end
-
-def check_access_etc
-  __check_folder_access 'etc',
-  'If a brew tries to write a file to this directory, the install will\n'+
-  'fail during the link step.'
-end
-
-def check_access_share
-  __check_folder_access 'share',
-  'If a brew tries to write a file to this directory, the install will\n'+
-  'fail during the link step.'
 end
 
 def check_access_logs
@@ -1122,7 +1100,7 @@ module Homebrew extend self
       end
     end
 
-    puts "Your system is raring to brew." unless Homebrew.failed?
+    puts "Your system is ready to brew." unless Homebrew.failed?
   end
 
   def inject_dump_stats checks

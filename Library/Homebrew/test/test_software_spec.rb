@@ -23,7 +23,7 @@ class SoftwareSpecTests < Test::Unit::TestCase
     assert_equal({ :branch => 'master' }, @spec.specs)
   end
 
-  def test_url_with_custom_download_strategy
+  def test_url_with_custom_download_strategy_class
     strategy = Class.new(AbstractDownloadStrategy)
     @spec.url('foo', :using => strategy)
     assert_equal 'foo', @spec.url
@@ -38,14 +38,22 @@ class SoftwareSpecTests < Test::Unit::TestCase
     assert_equal strategy, @spec.download_strategy
   end
 
+  def test_url_with_custom_download_strategy_symbol
+    @spec.url('foo', :using => :git)
+    assert_equal 'foo', @spec.url
+    assert_equal GitDownloadStrategy, @spec.download_strategy
+  end
+
   def test_version
     @spec.version('1.0')
     assert_version_equal '1.0', @spec.version
+    assert !@spec.version.detected_from_url?
   end
 
   def test_version_from_url
     @spec.url('http://foo.com/bar-1.0.tar.gz')
     assert_version_equal '1.0', @spec.version
+    assert @spec.version.detected_from_url?
   end
 
   def test_version_with_scheme
@@ -122,8 +130,6 @@ class HeadSoftwareSpecTests < Test::Unit::TestCase
 end
 
 class BottleTests < Test::Unit::TestCase
-  include VersionAssertions
-
   def setup
     @spec = Bottle.new
   end

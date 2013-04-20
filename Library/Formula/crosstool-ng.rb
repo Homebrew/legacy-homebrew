@@ -11,6 +11,7 @@ class CrosstoolNg < Formula
   depends_on 'gnu-sed'
   depends_on 'gawk'
   depends_on 'binutils'
+  depends_on 'libelf'
 
   env :std
 
@@ -36,16 +37,6 @@ class CrosstoolNg < Formula
 
   test do
     system "#{bin}/ct-ng", "version"
-  end
-
-  def caveats; <<-EOS.undent
-    If building a cross compiler your may expirience the following error:
-      error: elf.h: No such file or directory
-
-    To fix it, perform the following:
-      curl https://raw.github.com/gist/3769372/98e0a084470d2d6be7b4b61551ef00d44c682b4a/elf.h > elf.h
-      cp -p elf.h #{HOMEBREW_PREFIX}/include/
-    EOS
   end
 end
 
