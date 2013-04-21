@@ -465,7 +465,7 @@ class Aspell_zu < AspellLang
   mirror 'http://ftp.gnu.org/gnu/aspell/dict/zu/aspell-zu-0.50-0.tar.bz2'
   sha1 '0cba6163d1a1b9f63b1f5eaaeba466cdaf5f0742'
 end
-def available_languages
+def aspell_available_languages
   %w( af am ar ast az be bg bn br ca cs csb cy da de de_alt el en eo es et fa fi fo fr fy ga gd gl grc gu gv he hi hil hr hsb hu hus hy ia id is it kn ku ky la lt lv mg mi mk ml mn mr ms mt nb nds nl nn ny or pa pl pt_BR pt_PT qu ro ru rw sc sk sl sr sv sw ta te tet tk tl tn tr uk uz vi wa yi zu)
 end
 # END generated with brew-aspell-dictionaries
@@ -482,7 +482,7 @@ class Aspell < Formula
   end
 
   option "all", "Install all available dictionaries"
-  available_languages.each { |lang| option "with-lang-#{lang}", "Install #{lang} dictionary" }
+  aspell_available_languages.each { |lang| option "with-lang-#{lang}", "Install #{lang} dictionary" }
 
   def install
     system "./configure", "--prefix=#{prefix}"
