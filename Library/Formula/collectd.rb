@@ -61,4 +61,13 @@ class Collectd < Formula
     </plist>
     EOS
   end
+
+  def caveats; <<-EOS.undent
+    If the install fails with a "./configure failed for libltdl" error, unset
+    your JAVA_HOME and JDK_HOME environment vars and try again:
+      $ unset JAVA_HOME
+      $ unset JDK_HOME
+      $ brew install collectd
+    EOS
+  end
 end
