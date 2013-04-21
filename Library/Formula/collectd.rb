@@ -2,8 +2,8 @@ require 'formula'
 
 class Collectd < Formula
   homepage 'http://collectd.org/'
-  url 'http://collectd.org/files/collectd-5.1.0.tar.bz2'
-  sha1 '77545833b77a03ec02219bfb925e6a1f3463ddef'
+  url 'http://collectd.org/files/collectd-5.3.0.tar.gz'
+  sha256 'f84edbd78a00c8614956d44f2f53a435a8d981b62323b94fda88cfa50964dbc3'
 
   # Will fail against Java 1.7
   option "java", "Enable Java 1.6 support"
