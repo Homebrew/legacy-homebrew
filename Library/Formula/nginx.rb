@@ -2,13 +2,15 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.2.7.tar.gz'
-  sha1 '65309abde9d683ece737da7a354c8fae24e15ecb'
+  url 'http://nginx.org/download/nginx-1.2.8.tar.gz'
+  sha1 'b8c193d841538c3c443d262a2ab815a9ce1faaf6'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.3.13.tar.gz'
-    sha1 'b09b1c35b2b741292d41db1caa3b8a4123805a4c'
+    url 'http://nginx.org/download/nginx-1.3.16.tar.gz'
+    sha1 '773321c9c9c273e9a2da0ddfd07e8af271d09ca7'
   end
+
+  head 'svn://svn.nginx.org/nginx/trunk/'
 
   env :userpaths
 
@@ -17,6 +19,8 @@ class Nginx < Formula
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
   option 'with-debug', 'Compile with support for debug log'
+
+  option 'with-spdy', 'Compile with support for SPDY module' if build.devel?
 
   skip_clean 'logs'
 
@@ -43,6 +47,7 @@ class Nginx < Formula
             "--with-http_ssl_module",
             "--with-pcre",
             "--with-ipv6",
+            "--sbin-path=#{bin}/nginx",
             "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
             "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
             "--conf-path=#{etc}/nginx/nginx.conf",
@@ -52,34 +57,65 @@ class Nginx < Formula
             "--http-proxy-temp-path=#{var}/run/nginx/proxy_temp",
             "--http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp",
             "--http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp",
-            "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp"]
+            "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp",
+            "--http-log-path=#{var}/log/nginx",
+            "--with-http_gzip_static_module"
+          ]
 
     args << passenger_config_args if build.include? 'with-passenger'
     args << "--with-http_dav_module" if build.include? 'with-webdav'
     args << "--with-debug" if build.include? 'with-debug'
 
-    system "./configure", *args
+    if build.devel? or build.head?
+      args << "--with-http_spdy_module" if build.include? 'with-spdy'
+    end
+
+    if build.head?
+      system "./auto/configure", *args
+    else
+      system "./configure", *args
+    end
     system "make"
     system "make install"
     man8.install "objs/nginx.8"
     (var/'run/nginx').mkpath
+
+    # nginx’s docroot is #{prefix}/html, this isn't useful, so we symlink it
+    # to #{HOMEBREW_PREFIX}/var/www. The reason we symlink instead of patching
+    # is so the user can redirect it easily to something else if they choose.
+    prefix.cd do
+      dst = HOMEBREW_PREFIX/"var/www"
+      if not dst.exist?
+        dst.dirname.mkpath
+        mv "html", dst
+      else
+        rm_rf "html"
+        dst.mkpath
+      end
+      Pathname.new("#{prefix}/html").make_relative_symlink(dst)
+    end
+
+    # for most of this formula’s life the binary has been placed in sbin
+    # and Homebrew used to suggest the user copy the plist for nginx to their
+    # ~/Library/LaunchAgents directory. So we need to have a symlink there
+    # for such cases
+    if (HOMEBREW_CELLAR/'nginx').subdirs.any?{|d| (d/:sbin).directory? }
+      sbin.mkpath
+      sbin.cd do
+        (sbin/'nginx').make_relative_symlink(bin/'nginx')
+      end
+    end
   end
 
   def caveats; <<-EOS.undent
-    In the interest of allowing you to run `nginx` without `sudo`, the default
-    port is set to localhost:8080.
+    Docroot is: #{HOMEBREW_PREFIX}/var/www
 
-    If you want to host pages on your local machine to the public, you should
-    change that to localhost:80, and run `sudo nginx`. You'll need to turn off
-    any other web servers running port 80, of course.
+    The default port has been set to 8080 so that nginx can run without sudo.
 
-    You can start nginx automatically on login running as your user with:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+    If you want to host pages on your local machine to the wider network you
+    can change the port to 80 in: #{HOMEBREW_PREFIX}/etc/nginx/nginx.conf
 
-    Though note that if running as your user, the launch agent will fail if you
-    try to use a port below 1024 (such as http's default of 80.)
+    You will then need to run nginx as root: `sudo nginx`.
     EOS
   end
 
@@ -94,11 +130,9 @@ class Nginx < Formula
         <true/>
         <key>KeepAlive</key>
         <false/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/sbin/nginx</string>
+            <string>#{opt_prefix}/bin/nginx</string>
             <string>-g</string>
             <string>daemon off;</string>
         </array>

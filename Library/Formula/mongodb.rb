@@ -1,33 +1,12 @@
 require 'formula'
 
-class SixtyFourBitRequired < Requirement
-  fatal true
-
-  satisfy MacOS.prefer_64_bit?
-
-  def message; <<-EOS.undent
-    32-bit MongoDB binaries are no longer available.
-
-    If you need to run a 32-bit version of MongoDB, you can
-    compile the server from source:
-      http://www.mongodb.org/display/DOCS/Building+for+OS+X
-    EOS
-  end
-end
-
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.3.tgz'
-  sha1 '6b81469374eb8d1b209fcdd8111d4e654573d095'
-  version '2.2.3-x86_64'
+  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.2.tgz'
+  sha1 'e4e6a001a39b39a875bd24db986f3445400a8b64'
+  version '2.4.2-x86_64'
 
-  devel do
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.0-rc0.tgz'
-    sha1 '0c6bcabbf914436d265e16f2ca0cd49b63888e19'
-    version '2.4.0-rc0-x86_64'
-  end
-
-  depends_on SixtyFourBitRequired
+  depends_on :arch => :x86_64
 
   def install
     # Copy the prebuilt binaries to prefix
@@ -86,8 +65,6 @@ class Mongodb < Formula
       <true/>
       <key>KeepAlive</key>
       <false/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>
       <key>StandardErrorPath</key>

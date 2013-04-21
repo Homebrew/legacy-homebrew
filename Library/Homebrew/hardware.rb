@@ -1,47 +1,43 @@
+require 'hardware_compat'
+
 class Hardware
-  # These methods use info spewed out by sysctl.
-  # Look in <mach/machine.h> for decoding info.
+  module CPU extend self
+    def type
+      @type || :dunno
+    end
 
-  def self.cpu_type
-    @@cpu_type ||= `/usr/sbin/sysctl -n hw.cputype`.to_i
+    def family
+      @family || :dunno
+    end
 
-    case @@cpu_type
-    when 7
-      :intel
-    when 18
-      :ppc
-    else
-      :dunno
+    def cores
+      @cores || 1
+    end
+
+    def bits
+      @bits || 64
+    end
+
+    def is_32_bit?
+      bits == 32
+    end
+
+    def is_64_bit?
+      bits == 64
     end
   end
 
-  def self.intel_family
-    @@intel_family ||= `/usr/sbin/sysctl -n hw.cpufamily`.to_i
-
-    case @@intel_family
-    when 0x73d67300 # Yonah: Core Solo/Duo
-      :core
-    when 0x426f69ef # Merom: Core 2 Duo
-      :core2
-    when 0x78ea4fbc # Penryn
-      :penryn
-    when 0x6b5a4cd2 # Nehalem
-      :nehalem
-    when 0x573B5EEC # Arrandale
-      :arrandale
-    when 0x5490B78C # Sandy Bridge
-      :sandybridge
-    when 0x1F65E835 # Ivy Bridge
-      :ivybridge
-    else
-      :dunno
-    end
+  case RUBY_PLATFORM.downcase
+  when /darwin/
+    require 'os/mac/hardware'
+    CPU.extend MacCPUs
+  when /linux/
+    require 'os/linux/hardware'
+    CPU.extend LinuxCPUs
+  else
+    raise "The system `#{`uname`.chomp}' is not supported."
   end
 
-  def self.processor_count
-    @@processor_count ||= `/usr/sbin/sysctl -n hw.ncpu`.to_i
-  end
-  
   def self.cores_as_words
     case Hardware.processor_count
     when 1 then 'single'
@@ -50,27 +46,5 @@ class Hardware
     else
       Hardware.processor_count
     end
-  end
-
-  def self.is_32_bit?
-    not self.is_64_bit?
-  end
-
-  def self.is_64_bit?
-    return @@is_64_bit if defined? @@is_64_bit
-    @@is_64_bit = self.sysctl_bool("hw.cpu64bit_capable")
-  end
-  
-  def self.bits
-    Hardware.is_64_bit? ? 64 : 32
-  end
-
-protected
-  def self.sysctl_bool(property)
-    result = nil
-    IO.popen("/usr/sbin/sysctl -n #{property} 2>/dev/null") do |f|
-      result = f.gets.to_i # should be 0 or 1
-    end
-    $?.success? && result == 1 # sysctl call succeded and printed 1
   end
 end

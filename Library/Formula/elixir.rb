@@ -19,8 +19,8 @@ end
 
 class Elixir < Formula
   homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/tarball/v0.8.1'
-  sha1 '6805ffbfc75652b23952512fc86188db91c7d9c6'
+  url  'https://github.com/elixir-lang/elixir/archive/v0.8.2.tar.gz'
+  sha1 'c58ad161df6615be3e146aaf0dbb5cdf8003c601'
 
   head 'https://github.com/elixir-lang/elixir.git'
 
@@ -38,7 +38,7 @@ class Elixir < Formula
     end
   end
 
-  def test
-    system "#{bin}/elixir -v"
+  test do
+    system "#{bin}/elixir", "-v"
   end
 end

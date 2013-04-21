@@ -19,7 +19,7 @@ class Itex2mml < Formula
     end
   end
 
-  def test
-    system "#{bin}/itex2MML --version"
+  test do
+    system "#{bin}/itex2MML", "--version"
   end
 end

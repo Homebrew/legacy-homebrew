@@ -14,7 +14,12 @@ class Jshon < Formula
     man1.install 'jshon.1'
   end
 
-  def test
-    system "echo '[true,false,null]'| #{bin}/jshon -l"
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/jshon", "-l") do |stdin, stdout, _|
+      stdin.write("[true,false,null]")
+      stdin.close
+      "3" == stdout.read.strip
+    end
   end
 end

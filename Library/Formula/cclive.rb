@@ -2,8 +2,8 @@ require 'formula'
 
 class Cclive < Formula
   homepage 'http://cclive.sourceforge.net/'
-  url 'http://sourceforge.net/projects/cclive/files/0.7/cclive-0.7.11.tar.xz'
-  sha1 '5203d3fc905fe42412d3e466c2173755d2331411'
+  url 'http://sourceforge.net/projects/cclive/files/0.7/cclive-0.7.12.tar.xz'
+  sha1 'e921063f538032cf573793042b097cd35f1722f1'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build

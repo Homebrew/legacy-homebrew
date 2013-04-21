@@ -3,6 +3,7 @@ require 'formula'
 class Libxml2 < Formula
   homepage 'http://xmlsoft.org'
   url 'ftp://xmlsoft.org/libxml2/libxml2-2.9.0.tar.gz'
+  mirror 'http://xmlsoft.org/sources/libxml2-2.9.0.tar.gz'
   sha256 'ad25d91958b7212abdc12b9611cfb4dc4e5cddb6d1e9891532f48aacee422b82'
 
   keg_only :provided_by_osx

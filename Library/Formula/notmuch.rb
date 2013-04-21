@@ -28,7 +28,6 @@ class Notmuch < Formula
   depends_on 'gmime'
 
   fails_with :clang do
-    build 425
     cause "./lib/notmuch-private.h:478:8: error: visibility does not match previous declaration"
   end
 
@@ -40,6 +39,11 @@ class Notmuch < Formula
       args << "--without-emacs"
     end
     system "./configure", *args
-    system "make install"
+
+    if ARGV.verbose?
+      system "make install V=1"
+    else
+      system "make install"
+    end
   end
 end

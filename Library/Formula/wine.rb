@@ -27,8 +27,8 @@ class Wine < Formula
     # updating too
     #  * http://wiki.winehq.org/Gecko
     #  * http://wiki.winehq.org/Mono
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.24.tar.bz2'
-    sha1 'd96ad506e115659520ad24f30c87c7d04a810154'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.28.tar.bz2'
+    sha1 'bc543b215dd25efc7d76c6ffa99672c6e3d15d61'
   end
 
   env :std
@@ -69,20 +69,14 @@ class Wine < Formula
     EOS
   end
 
-  def winemac_key; <<-EOS.undent
-    REGEDIT4
-    [HKEY_CURRENT_USER\\Software\\Wine\\Drivers]
-    "Graphics"="mac,x11"
-    "Ime"="osxime,mac,x11"
-    EOS
-  end
-
   def install
     # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
     build32 = "-arch i386 -m32"
 
     ENV["LIBS"] = "-lGL -lGLU"
     ENV.append "CFLAGS", build32
+
+    # Still miscompiles at v1.5.25
     if ENV.compiler == :clang
       opoo <<-EOS.undent
         Clang currently miscompiles some parts of Wine. If you have gcc, you
@@ -90,6 +84,7 @@ class Wine < Formula
           brew install wine --use-gcc
       EOS
     end
+
     ENV.append "CXXFLAGS", "-D_DARWIN_NO_64_BIT_INODE"
     ENV.append "LDFLAGS", "#{build32} -framework CoreServices -lz -lGL -lGLU"
 
@@ -124,8 +119,6 @@ class Wine < Formula
     # and name our startup script wine
     mv bin/'wine', bin/'wine.bin'
     (bin/'wine').write(wine_wrapper)
-
-    (prefix/'winemac.key').write(winemac_key) unless build.stable?
   end
 
   def caveats
@@ -147,18 +140,6 @@ class Wine < Formula
         which may cause text rendering issues in applications such as Steam.
         We recommend that you run winecfg, add an override for dwrite in the
         Libraries tab, and edit the override mode to "disable".
-      EOS
-      s += <<-EOS.undent
-
-        Starting with wine 1.5.22 the new experimental Mac driver by CodeWeavers has
-        been included in the main distribution. This allows wine to run without X11
-        on MacOS X. To enable it execute the following command in your wine prefix:
-
-          wine regedit #{prefix/'winemac.key'}
-
-        To disable it execute:
-
-          wine regedit /D 'HKEY_CURRENT_USER\\Software\\Wine\\Drivers'
       EOS
     end
     return s

@@ -1,16 +1,15 @@
 require 'formula'
 
-class Ack < Formula
-  homepage 'http://betterthangrep.com/'
-  url "https://github.com/petdance/ack/tarball/1.96"
-  sha1 '547058c0571095beaee9b2e6a3accad52114e759'
+class Ack < ScriptFileFormula
+  homepage 'http://beyondgrep.com/'
+  url 'http://beyondgrep.com/ack-2.02-single-file'
+  sha1 '94b09ed23b50c0c644aa386f4a3c51ed2edea821'
+  version '2.02'
 
   def install
-    system 'pod2man', 'ack', 'ack.1'
-    man1.install 'ack.1'
-    bin.install 'ack'
-    bash_completion.install 'etc/ack.bash_completion.sh'
-    zsh_completion.install 'etc/ack.zsh_completion' => '_ack'
+    bin.install "ack-#{version}-single-file" => "ack"
+    system "pod2man", "#{bin}/ack", "ack.1"
+    man1.install "ack.1"
   end
 
   test do

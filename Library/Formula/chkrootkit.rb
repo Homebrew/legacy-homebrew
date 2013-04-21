@@ -22,8 +22,7 @@ class Chkrootkit < Formula
     doc.install %w{README README.chklastlog README.chkwtmp}
   end
 
-  def test
-    # pipe stdout to cat since chkrootkit -V exits with status 1
-    system "#{sbin}/chkrootkit -V | cat"
+  test do
+    `#{sbin}/chkrootkit -V 2>&1`.strip == "chkrootkit version #{version}"
   end
 end

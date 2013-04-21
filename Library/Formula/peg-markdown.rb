@@ -2,8 +2,8 @@ require 'formula'
 
 class PegMarkdown < Formula
   homepage 'https://github.com/jgm/peg-markdown'
-  url 'https://github.com/jgm/peg-markdown/tarball/0.4.14'
-  sha1 '5afa123c513fc259b270a0865bf8382fe314f086'
+  url 'https://github.com/jgm/peg-markdown/archive/0.4.14.tar.gz'
+  sha1 '95f3e824f97b3c572efe354c965767f46fcf8829'
 
   head 'https://github.com/jgm/peg-markdown.git'
 

@@ -2,8 +2,8 @@ require 'formula'
 
 class Clamav < Formula
   homepage 'http://www.clamav.net/'
-  url 'http://downloads.sourceforge.net/clamav/clamav-0.97.6.tar.gz'
-  sha1 '528f774b14b95fdfb8b377f8b41859c48b165e34'
+  url 'http://downloads.sourceforge.net/clamav/clamav-0.97.7.tar.gz'
+  sha1 '9b911c557e0b7b5079de86c65b5d83fa78fadfff'
 
   def install
     args = %W{--disable-dependency-tracking

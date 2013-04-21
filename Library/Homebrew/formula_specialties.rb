@@ -10,10 +10,9 @@ end
 # See flac.rb for an example
 class GithubGistFormula < ScriptFileFormula
   def initialize name='__UNKNOWN__', path=nil
-    super name, path
-    @stable.version(File.basename(File.dirname(url))[0,6])
-    @version = @active_spec.version
-    validate_variable :version
+    url = self.class.stable.url
+    self.class.stable.version(File.basename(File.dirname(url))[0,6])
+    super
   end
 end
 

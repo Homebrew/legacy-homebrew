@@ -10,12 +10,13 @@ end
 
 class Phantomjs < Formula
   homepage 'http://www.phantomjs.org/'
-  url 'http://phantomjs.googlecode.com/files/phantomjs-1.8.1-macosx.zip'
-  sha1 '69206ce980703e54160628614a6917d8ec19c281'
+  url 'http://phantomjs.googlecode.com/files/phantomjs-1.9.0-macosx.zip'
+  sha1 '784772eb8d01d26f86e474a410b0f820b6a65a6c'
 
   depends_on SnowLeopardOrNewer
 
   def install
     bin.install 'bin/phantomjs'
+    (share+'phantomjs').install 'examples'
   end
 end

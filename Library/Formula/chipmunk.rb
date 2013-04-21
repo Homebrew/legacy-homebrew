@@ -2,8 +2,8 @@ require 'formula'
 
 class Chipmunk < Formula
   homepage 'http://chipmunk-physics.net/'
-  url 'https://github.com/slembcke/Chipmunk-Physics/tarball/Chipmunk-6.1.2'
-  sha1 '8f4df376e6f45320c77e5ce9880c02ab7a284061'
+  url 'https://github.com/slembcke/Chipmunk-Physics/archive/Chipmunk-6.1.2.tar.gz'
+  sha1 'a432411e3d464a2a260a4eb8cd28313c66f7505c'
 
   head 'https://github.com/slembcke/Chipmunk-Physics.git'
 

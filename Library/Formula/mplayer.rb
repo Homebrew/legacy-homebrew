@@ -12,7 +12,11 @@ class Mplayer < Formula
 
   depends_on 'yasm' => :build
   depends_on 'xz' => :build
+<<<<<<< HEAD
   depends_on :freetype if build.include? 'with-freetype'
+=======
+  depends_on 'libcaca' => :optional
+>>>>>>> ec238c37ebb795e3ee1423c29205dc4b6a30f93e
   depends_on :x11 if build.include? 'with-x'
 
   unless build.include? 'without-osd' or build.include? 'with-x'
@@ -59,6 +63,7 @@ class Mplayer < Formula
 
     args << "--enable-menu" unless build.include? 'without-osd'
     args << "--disable-x11" unless build.include? 'with-x'
+    args << "--enable-caca" if build.with? 'libcaca'
 
     system "./configure", *args
     system "make"

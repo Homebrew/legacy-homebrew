@@ -65,7 +65,7 @@ class Gdal < Formula
   # Without Numpy, the Python bindings can't deal with raster data.
   depends_on 'numpy' => :python unless no_python?
 
-  depends_on 'armadillo' if armadillo?
+  depends_on 'homebrew/science/armadillo' if armadillo?
 
   if complete?
     # Raster libraries
@@ -121,6 +121,7 @@ class Gdal < Formula
       "--with-freexl=#{HOMEBREW_PREFIX}",
       "--with-spatialite=#{HOMEBREW_PREFIX}",
       "--with-geos=#{HOMEBREW_PREFIX}/bin/geos-config",
+      "--with-static-proj4=#{HOMEBREW_PREFIX}",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
       # Should be installed separately after GRASS installation using the

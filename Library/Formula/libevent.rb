@@ -17,9 +17,6 @@ class Libevent < Formula
   option :universal
   option 'enable-manpages', 'Install the libevent manpages (requires doxygen)'
 
-  conflicts_with 'libev',
-    :because => 'both install an event.h header file'
-
   fails_with :llvm do
     build 2326
     cause "Undefined symbol '_current_base' reported during linking."

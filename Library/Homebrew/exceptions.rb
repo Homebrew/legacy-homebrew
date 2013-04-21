@@ -22,6 +22,17 @@ class NoSuchKegError < RuntimeError
   end
 end
 
+class FormulaValidationError < StandardError
+  attr_reader :attr
+
+  def initialize(attr, value)
+    @attr = attr
+    msg = "invalid attribute: #{attr}"
+    msg << " (#{value.inspect})" unless value.empty?
+    super msg
+  end
+end
+
 class FormulaUnavailableError < RuntimeError
   attr_reader :name
   attr_accessor :dependent
@@ -69,6 +80,9 @@ module Homebrew
 end
 
 class CannotInstallFormulaError < RuntimeError
+end
+
+class FormulaAlreadyInstalledError < RuntimeError
 end
 
 class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError

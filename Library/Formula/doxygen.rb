@@ -22,8 +22,16 @@ class Doxygen < Formula
                   src/Makefile.libdoxycfg
                   tmake/lib/macosx-c++/tmake.conf
                   tmake/lib/macosx-intel-c++/tmake.conf
-                  tmake/lib/macosx-uni-c++/tmake.conf ],
-      '-Wno-invalid-source-encoding', ''
+                  tmake/lib/macosx-uni-c++/tmake.conf ] do |s|
+      # otherwise clang may use up large amounts of RAM while
+      # processing localization files
+      # gcc doesn't support the flag
+      s.gsub! '-Wno-invalid-source-encoding', '' \
+        unless ENV.compiler == :clang
+      # makefiles hardcode both cc and c++
+      s.gsub! /cc$/, ENV.cc
+      s.gsub! /c\+\+$/, ENV.cxx
+    end
 
     system "make"
     # MAN1DIR, relative to the given prefix
