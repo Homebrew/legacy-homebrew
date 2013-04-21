@@ -959,6 +959,14 @@ def check_for_non_prefixed_coreutils
   end
 end
 
+def check_for_non_prefixed_findutils
+  default_names = Tab.for_formula('findutils').used_options.include? 'default-names'
+  if default_names then <<-EOS.undent
+    Putting non-prefixed findutils in your path can cause python builds to fail.
+    EOS
+  end
+end
+
 def check_for_pydistutils_cfg_in_home
   if File.exist? ENV['HOME']+'/.pydistutils.cfg' then <<-EOS.undent
     A .pydistutils.cfg file was found in $HOME, which may cause Python
