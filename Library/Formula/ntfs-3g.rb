@@ -46,10 +46,9 @@ class Ntfs3g < Formula
         GROUP_ID=`/usr/bin/stat -f %g /dev/console`
       fi
 
-      #{bin}/ntfs-3g \\
+      #{opt_prefix}/bin/ntfs-3g \\
         -o volname="${VOLUME_NAME}" \\
         -o local \\
-        -o noappledouble \\
         -o negative_vncache \\
         -o auto_xattr \\
         -o auto_cache \\
@@ -71,12 +70,12 @@ class Ntfs3g < Formula
     <<-EOS.undent
     To replace the default Mac OSX automounter:
         sudo mv /sbin/mount_ntfs /sbin/mount_ntfs.orig
-        sudo ln -s #{sbin}/mount_ntfs /sbin/mount_ntfs
+        sudo ln -s #{opt_prefix}/sbin/mount_ntfs /sbin/mount_ntfs
 
     The automount will set the permissions for the current logged in user,
     otherwise it will set them for the user that installed ntfs-3g.
     The automount support script is based on the information provided at
-    http://fernandoff.posterous.com/ntfs-write-support-on-osx-lion-with-ntfs-3g-f
+    http://fernandofig.wordpress.com/2011/08/08/ntfs-write-support-on-osx-lion-with-ntfs-3g-f/
 
     Remember to install the fuse4x kernel extension as the root user.
     Instructions are found here:
