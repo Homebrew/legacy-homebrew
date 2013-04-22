@@ -155,8 +155,8 @@ class Gdal < Formula
     args.concat unsupported_backends.map {|b| '--without-' + b} unless build.include? 'enable-unsupported'
 
     # Database support.
-    args << (build.include? 'with-postgres' ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : '--without-pg')
-    args << (build.include? 'with-mysql' ? "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" : '--without-mysql')
+    args << (build.include?("with-postgres") ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : "--without-pg")
+    args << (build.include?("with-mysql") ? "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" : "--without-mysql")
 
     # Python is installed manually to ensure everything is properly sandboxed.
     args << '--without-python'
@@ -173,8 +173,8 @@ class Gdal < Formula
     args << "--without-php"
     args << "--without-ruby"
 
-    args << (build.include? 'enable-opencl' ? '--with-opencl' : '--without-opencl')
-    args << (build.include? 'enable-armadillo' ? '--with-armadillo=yes' : '--with-armadillo=no')
+    args << (build.include?("enable-opencl") ? "--with-opencl" : "--without-opencl")
+    args << (build.include?("enable-armadillo") ? "--with-armadillo=yes" : "--with-armadillo=no")
 
     return args
   end
