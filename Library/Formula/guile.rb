@@ -39,6 +39,11 @@ class Guile < Formula
     cause "Segfaults during compilation"
   end if build.devel?
 
+  def patches
+    # Only for 2.0.9: Fix shebang shell in build-aux/install-sh (remove /nix/store reference)
+    "https://gist.github.com/raw/5430031/54e3d24e39ac93998987ec3597b353458c45fb45/guile-2.0.9-osx-build-fix.patch"
+  end
+
   def install
     system './autogen.sh' if build.head?
 
