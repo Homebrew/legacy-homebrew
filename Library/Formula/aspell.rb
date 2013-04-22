@@ -490,12 +490,12 @@ class Aspell < Formula
 
     languages = []
 
-    available_languages.each do |lang|
+    aspell_available_languages.each do |lang|
       languages << lang if build.with? "lang-#{lang}"
     end
 
     if build.include? 'all'
-      languages << available_languages.to_a
+      languages << aspell_available_languages.to_a
     elsif languages.empty?
       languages << "en"
     end
