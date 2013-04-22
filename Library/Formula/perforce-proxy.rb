@@ -49,8 +49,6 @@ class PerforceProxy < Formula
       <true/>
       <key>KeepAlive</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{var}/p4p</string>
     </dict>

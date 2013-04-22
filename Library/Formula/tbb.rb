@@ -2,9 +2,9 @@ require 'formula'
 
 class Tbb < Formula
   homepage 'http://www.threadingbuildingblocks.org/'
-  url 'http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb41_20130116oss_src.tgz'
-  sha1 'fd7ea56612f145a1f9b3d961a424e9d553bab527'
-  version '4.1u2'
+  url 'http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb41_20130314oss_src.tgz'
+  sha1 'e2bf74c1e492b06faf3ecdf2321e64ca698c0921'
+  version '4.1u3'
 
   fails_with :clang do
     cause "Undefined symbols for architecture x86_64: vtable for tbb::tbb_exception"

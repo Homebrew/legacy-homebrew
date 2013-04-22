@@ -9,6 +9,8 @@ class Tuntap < Formula
   url 'git://git.code.sf.net/p/tuntaposx/code', :tag => 'release_20111101'
   version '20111101'
 
+  head 'git://git.code.sf.net/p/tuntaposx/code', :branch => 'master'
+
   def install
     ENV.j1 # to avoid race conditions (can't open: ../tuntap.o)
     cd 'tuntap' do

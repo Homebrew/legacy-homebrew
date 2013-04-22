@@ -131,8 +131,6 @@ class Mariadb < Formula
       <string>#{HOMEBREW_PREFIX}/bin/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{var}</string>
     </dict>

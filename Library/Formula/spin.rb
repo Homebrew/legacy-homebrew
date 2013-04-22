@@ -18,11 +18,12 @@ class Spin < Formula
   def install
     ENV.deparallelize
 
-    cd("Src#{version}") do
+    cd "Src#{version}" do
       system "make"
       bin.install "spin"
     end
 
+    bin.install "iSpin/ispin.tcl" => "ispin"
     man1.install "Man/spin.1"
   end
 end

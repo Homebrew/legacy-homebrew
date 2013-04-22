@@ -42,8 +42,7 @@ module Homebrew extend self
           puts "Note that doing so can interfere with building software."
           next
         end
-      rescue
-        # Nothing to see here
+      rescue FormulaUnavailableError
       end
 
       keg.lock do
@@ -67,7 +66,7 @@ module Homebrew extend self
       end
     end
 
-    puts_capture.instance_eval &block
+    puts_capture.instance_eval(&block)
 
   ensure
     puts unless $did_puts

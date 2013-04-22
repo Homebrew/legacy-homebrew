@@ -5,7 +5,7 @@ class Libicns < Formula
   url 'http://downloads.sourceforge.net/project/icns/libicns-0.8.1.tar.gz'
   sha256 '335f10782fc79855cf02beac4926c4bf9f800a742445afbbf7729dab384555c2'
 
-  option :uinversal
+  option :universal
 
   depends_on 'jasper'
   depends_on :libpng

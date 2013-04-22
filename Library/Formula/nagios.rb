@@ -63,8 +63,6 @@ class Nagios < Formula
             <string>/dev/null</string>
             <key>StandardOutPath</key>
             <string>/dev/null</string>
-            <key>UserName</key>
-            <string>#{user}</string>
     </dict>
     </plist>
     EOS

@@ -4,12 +4,14 @@ class Vim < Formula
   homepage 'http://www.vim.org/'
   # Get stable versions from hg repo instead of downloading an increasing
   # number of separate patches.
-  url 'https://vim.googlecode.com/hg/', :tag => 'v7-3-875'
-  version '7.3.875'
+  url 'https://vim.googlecode.com/hg/', :tag => 'v7-3-905'
+  version '7.3.905'
 
   head 'https://vim.googlecode.com/hg/'
 
   env :std # To find interpreters
+
+  depends_on :hg => :build
 
   LANGUAGES         = %w(lua mzscheme perl python python3 tcl ruby)
   DEFAULT_LANGUAGES = %w(ruby python)

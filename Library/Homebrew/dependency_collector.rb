@@ -2,6 +2,7 @@ require 'dependency'
 require 'dependencies'
 require 'requirement'
 require 'requirements'
+require 'set'
 
 ## A dependency is a formula that another formula needs to install.
 ## A requirement is something other than a formula that another formula
@@ -15,7 +16,7 @@ require 'requirements'
 # specifications into the proper kinds of dependencies and requirements.
 class DependencyCollector
   # Define the languages that we can handle as external dependencies.
-  LANGUAGE_MODULES = [
+  LANGUAGE_MODULES = Set[
     :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
   ].freeze
 
@@ -45,20 +46,18 @@ class DependencyCollector
     parse_spec(spec, tag)
   end
 
-private
+  private
 
   def parse_spec spec, tag
     case spec
-    when Symbol
-      parse_symbol_spec(spec, tag)
     when String
-      if LANGUAGE_MODULES.include? tag
+      if tag && LANGUAGE_MODULES.include?(tag)
         LanguageModuleDependency.new(tag, spec)
       else
         Dependency.new(spec, tag)
       end
-    when Formula
-      Dependency.new(spec.name, tag)
+    when Symbol
+      parse_symbol_spec(spec, tag)
     when Dependency, Requirement
       spec
     when Class
@@ -77,18 +76,20 @@ private
     when :autoconf, :automake, :bsdmake, :libtool, :libltdl
       # Xcode no longer provides autotools or some other build tools
       autotools_dep(spec, tag)
+    when :x11        then X11Dependency.new(spec.to_s, tag)
     when *X11Dependency::Proxy::PACKAGES
       x11_dep(spec, tag)
     when :cairo, :pixman
       # We no longer use X11 psuedo-deps for cairo or pixman,
       # so just return a standard formula dependency.
       Dependency.new(spec.to_s, tag)
-    when :x11        then X11Dependency.new(spec.to_s, tag)
     when :xcode      then XcodeDependency.new(tag)
     when :mysql      then MysqlDependency.new(tag)
     when :postgresql then PostgresqlDependency.new(tag)
     when :tex        then TeXDependency.new(tag)
     when :clt        then CLTDependency.new(tag)
+    when :arch       then ArchRequirement.new(tag)
+    when :hg         then MercurialDependency.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
     end

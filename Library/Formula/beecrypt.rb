@@ -12,9 +12,19 @@ class Beecrypt < Formula
     { :p0 => DATA }
   end
 
+  def darwin_major_version
+    # kern.osrelease: 11.4.2
+    full_version = `/usr/sbin/sysctl -n kern.osrelease`
+    full_version.split("\.")[0]
+  end
+
   def install
     ENV.remove_from_cflags /-march=\S*/
-    system "./configure", "--prefix=#{prefix}", "--disable-openmp", "--without-java", "--without-python"
+    args = ["--prefix=#{prefix}", "--disable-openmp", "--without-java", "--without-python"]
+    if MacOS.prefer_64_bit?
+      args << "--build=x86_64-apple-darwin#{darwin_major_version}"
+    end
+    system "./configure", *args
     system "make"
     system "make check"
     system "make install"

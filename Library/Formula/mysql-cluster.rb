@@ -208,8 +208,6 @@ class MysqlCluster < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{var}</string>
     </dict>
@@ -237,8 +235,6 @@ class MysqlCluster < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{var}</string>
       <key>StandardOutPath</key>
@@ -266,8 +262,6 @@ class MysqlCluster < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{var}</string>
       <key>StandardOutPath</key>

@@ -53,8 +53,6 @@ class Collectd < Formula
         </array>
         <key>RunAtLoad</key>
         <true/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>StandardErrorPath</key>
         <string>/usr/local/var/log/collectd.log</string>
         <key>StandardOutPath</key>
