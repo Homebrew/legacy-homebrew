@@ -39,6 +39,12 @@ class Guile < Formula
     cause "Segfaults during compilation"
   end if build.devel?
 
+  # Only for 2.0.9: Fix shebang shell in build-aux/install-sh.
+  # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14201#19
+  def patches
+    DATA if build.devel?
+  end
+
   def install
     system './autogen.sh' if build.head?
 
@@ -51,3 +57,13 @@ class Guile < Formula
     lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
   end
 end
+
+__END__
+--- guile-2.0.9.orig/build-aux/install-sh  2013-01-28 12:35:24.000000000 -0800
++++ guile-2.0.9/build-aux/install-sh	2013-04-21 08:41:10.000000000 -0700
+@@ -1,4 +1,4 @@
+-#!/nix/store/ryk1ywzz31kp4biclxq3yq6hpjycalyy-bash-4.2/bin/sh
++#!/bin/sh
+ # install - install a program, script, or datafile
+
+ scriptversion=2011-11-20.07; # UTC
