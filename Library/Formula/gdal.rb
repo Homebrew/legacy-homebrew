@@ -152,7 +152,7 @@ class Gdal < Formula
       podofo
       rasdaman
     ]
-    args.concat unsupported_backends.map {|b| '--without-' + b} unless build.include? 'enable-unsupported'
+    args.concat unsupported_backends.map {|b| '--without-' + b} unless build.include?("enable-unsupported")
 
     # Database support.
     args << (build.include?("with-postgres") ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : "--without-pg")
