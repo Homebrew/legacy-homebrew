@@ -41,7 +41,7 @@ class F2c < Formula
       EOS
     end
     system "#{bin}/f2c", 'hello.f'
-    system 'cc', 'hello.c', '-lf2c', '-o hello'
+    system ENV.cc, 'hello.c', '-lf2c', '-o hello'
   end
 
 end
