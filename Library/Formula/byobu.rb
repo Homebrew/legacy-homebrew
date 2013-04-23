@@ -2,8 +2,8 @@ require 'formula'
 
 class Byobu < Formula
   homepage 'http://byobu.co'
-  url 'https://launchpad.net/byobu/trunk/5.30/+download/byobu_5.30.orig.tar.gz'
-  sha1 '799a0cc7da20fe5cf68e91950d3782960c72d44c'
+  url 'https://launchpad.net/byobu/trunk/5.37/+download/byobu_5.37.orig.tar.gz'
+  sha1 '000c487b3f660af42976ae91c89e3f678dea7289'
 
   depends_on 'coreutils'
   depends_on 'gnu-sed' # fails with BSD sed

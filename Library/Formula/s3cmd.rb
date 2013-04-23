@@ -6,8 +6,8 @@ class S3cmd < Formula
   sha1 '89eb9974cb523e0410db735d9d9991b355d053c1'
 
   devel do
-    url 'http://downloads.sourceforge.net/project/s3tools/s3cmd/1.1.0-beta3/s3cmd-1.1.0-beta3.zip'
-    sha1 '4e8e8dd0b60c0e3e146550f34ac2e8cf0a088a25'
+    url 'http://downloads.sourceforge.net/project/s3tools/s3cmd/1.5.0-alpha3/s3cmd-1.5.0-alpha3.tar.gz'
+    sha1 '18e980c66bdf5fa1c606c95727d43978a4d90635'
   end
 
   def install

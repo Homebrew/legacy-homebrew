@@ -442,6 +442,10 @@ class FormulaAuditor
     if text =~ /depends_on [A-Z][\w:]+\.new$/
       problem "`depends_on` can take requirement classes instead of instances"
     end
+
+    if text =~ /^def (\w+).*$/
+      problem "Define method #{$1.inspect} in the class body, not at the top-level"
+    end
   end
 
   def audit

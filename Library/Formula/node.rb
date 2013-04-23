@@ -59,18 +59,16 @@ class Node < Formula
   depends_on PythonVersion
   depends_on 'v8' if build.with? 'shared-libs'
 
+  # gyp insists on using xcodebuild to find the SDK path, completely
+  # breaking CLT-only systems.
+  # See: https://code.google.com/p/gyp/issues/detail?id=292
+  depends_on :xcode
+
   fails_with :llvm do
     build 2326
   end
 
   def install
-    # Lie to `xcode-select` for now to work around a GYP bug that affects
-    # CLT-only systems:
-    #
-    #   http://code.google.com/p/gyp/issues/detail?id=292
-    #   joyent/node#3681
-    ENV['DEVELOPER_DIR'] = MacOS.dev_tools_path unless MacOS::Xcode.installed?
-
     args = %W{--prefix=#{prefix}}
 
     if build.with? 'shared-libs'
