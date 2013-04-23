@@ -2,8 +2,8 @@ require 'formula'
 
 class Dnsmasq < Formula
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.65.tar.gz'
-  sha256 'f5ddf3111b4ec372d0e07bcc036bbe3a4c5a1a68b60c2a1018102a0099bc0740'
+  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.66.tar.gz'
+  sha256 '36232fa23d1a8efc6f84a29da5ff829c2aa40df857b9116a9320ea37b651a982'
 
   option 'with-idn', 'Compile with IDN support'
 
