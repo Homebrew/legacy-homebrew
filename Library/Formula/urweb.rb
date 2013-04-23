@@ -9,8 +9,6 @@ class Urweb < Formula
   depends_on :automake
   depends_on :libtool
   depends_on 'mlton'
-  depends_on 'postgresql' => :optional
-  depends_on 'mysql' => :optional
 
   def install
     # The autoconf-generated shell scripts in the tarball
