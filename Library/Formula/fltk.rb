@@ -2,7 +2,7 @@ require 'formula'
 
 class Fltk < Formula
   homepage 'http://www.fltk.org/'
-  url 'http://ftp.easysw.com/pub/fltk/1.3.2/fltk-1.3.2-source.tar.gz'
+  url 'http://fossies.org/linux/misc/fltk-1.3.2-source.tar.gz'
   sha1 '25071d6bb81cc136a449825bfd574094b48f07fb'
 
   depends_on :libpng
