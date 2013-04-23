@@ -1,13 +1,5 @@
 require 'formula'
 
-def ghostscript_srsly?
-  build.include? 'with-ghostscript'
-end
-
-def ghostscript_fonts?
-  File.directory? "#{HOMEBREW_PREFIX}/share/ghostscript/fonts"
-end
-
 class Graphicsmagick < Formula
   homepage 'http://www.graphicsmagick.org/'
   url 'http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.18/GraphicsMagick-1.3.18.tar.bz2'
@@ -32,7 +24,7 @@ class Graphicsmagick < Formula
   depends_on :libpng
   depends_on :x11 if build.include? 'with-x'
 
-  depends_on 'ghostscript' if ghostscript_srsly?
+  depends_on 'ghostscript' if build.include? 'with-ghostscript'
 
   depends_on 'libtiff' if build.include? 'use-tiff'
   depends_on 'little-cms2' if build.include? 'use-cms'
@@ -46,6 +38,10 @@ class Graphicsmagick < Formula
 
   skip_clean :la
 
+  def ghostscript_fonts?
+    File.directory? "#{HOMEBREW_PREFIX}/share/ghostscript/fonts"
+  end
+
   def install
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
@@ -55,7 +51,7 @@ class Graphicsmagick < Formula
             "--enable-shared", "--disable-static"]
     args << "--without-magick-plus-plus" if build.include? 'without-magick-plus-plus'
     args << "--disable-openmp" if MacOS.version == :leopard or not ENV.compiler == :gcc # libgomp unavailable
-    args << "--with-gslib" if ghostscript_srsly?
+    args << "--with-gslib" if build.include? 'with-ghostscript'
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
               unless ghostscript_fonts?
 
