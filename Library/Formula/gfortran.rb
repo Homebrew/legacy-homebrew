@@ -1,7 +1,5 @@
 require 'formula'
 
-# todo: Use graphite loop optimizations? (would depends_on 'cloog')
-
 class Gfortran < Formula
   homepage 'http://gcc.gnu.org/wiki/GFortran'
   url 'http://ftpmirror.gnu.org/gcc/gcc-4.8.0/gcc-4.8.0.tar.bz2'
@@ -20,19 +18,11 @@ class Gfortran < Formula
   depends_on 'gmp'
   depends_on 'libmpc'
   depends_on 'mpfr'
+  depends_on 'cloog'
+  depends_on 'isl'
 
   # http://gcc.gnu.org/install/test.html
   depends_on 'dejagnu' if build.include? 'check'
-
-  fails_with :clang do
-    build 421
-    cause <<-EOS.undent
-      "fatal error: error in backend: ran out of registers during register allocation"
-
-      If you have any knowledge to share or can provide a fix, please open an issue.
-      Thanks!
-      EOS
-  end
 
   def install
     # Sandbox the GCC lib, libexec and include directories so they don't wander
@@ -49,11 +39,14 @@ class Gfortran < Formula
       "--datarootdir=#{share}",
       # ...and the binaries...
       "--bindir=#{bin}",
+      "--enable-languages=fortran",
       "--with-system-zlib",
       # ...opt_prefix survives upgrades and works even if `brew unlink gmp`
       "--with-gmp=#{Formula.factory('gmp').opt_prefix}",
       "--with-mpfr=#{Formula.factory('mpfr').opt_prefix}",
       "--with-mpc=#{Formula.factory('libmpc').opt_prefix}",
+      "--with-cloog=#{Formula.factory('cloog').opt_prefix}",
+      "--with-isl=#{Formula.factory('isl').opt_prefix}",
       # ...we build the stage 1 gcc with clang (which is know to fail checks)
       "--enable-checking=release",
       "--disable-stage1-checking",
@@ -72,7 +65,7 @@ class Gfortran < Formula
         args << "--with-sysroot=#{MacOS.sdk_path}"
       end
 
-      system '../configure', "--enable-languages=fortran", *args
+      system '../configure', *args
 
       if build.include? 'enable-profiled-build'
         # Takes longer to build, may bug out. Provided for those who want to
@@ -90,8 +83,9 @@ class Gfortran < Formula
     # This package installs a whole GCC suite. Removing non-fortran components:
     bin.children.reject{ |p| p.basename.to_s.match(/gfortran/) }.each{ |p| rm p }
     man1.children.reject{ |p| p.basename.to_s.match(/gfortran/) }.each{ |p| rm p }
-    man7.rmtree  # dupes: fsf fundraising and gpl will be added by gcc formula
+    man7.rmtree  # dupes: fsf fundraising and gpl
     # (share/'locale').rmtree
+    (share/"gcc-#{version}").rmtree # dupes: libstdc++ pretty printer, will be added by gcc* formula
   end
 
   test do
