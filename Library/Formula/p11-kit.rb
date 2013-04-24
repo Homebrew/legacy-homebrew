@@ -69,14 +69,14 @@ index b3c7610..6614ae5 100644
 
  cat >>confdefs.h <<_ACEOF
  #define SHLEXT "$SHLEXT"
---- p11-kit-0.18.1.orig/common/library.c	2013-04-03 08:30:32.000000000 -0700
-+++ p11-kit-0.18.1/common/library.c	2013-04-18 21:26:47.000000000 -0700
-@@ -125,7 +125,7 @@
- 	uninit_common ();
+--- p11-kit-0.18.1/common/library.c	2013-04-03 08:30:32.000000000 -0700
++++ p11-kit-0.18.1.new/common/library.c	2013-04-23 17:54:08.000000000 -0700
+@@ -60,7 +60,7 @@
+ p11_mutex_t p11_library_mutex;
  
- 	/* Some cleanup to pacify valgrind */
--	free (pthread_getspecific (thread_local));
-+	/*free (pthread_getspecific (thread_local));*/
- 	pthread_setspecific (thread_local, NULL);
+ #ifdef OS_UNIX
+-pthread_once_t p11_library_once;
++pthread_once_t p11_library_once = PTHREAD_ONCE_INIT;
+ #endif
  
- 	p11_message_storage = dont_store_message;
+ static char *
