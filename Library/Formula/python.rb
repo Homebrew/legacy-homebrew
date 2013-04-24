@@ -34,7 +34,8 @@ class Python < Formula
 
   def patches
     p = []
-    p << 'https://raw.github.com/gist/3415636/2365dea8dc5415daa0148e98c394345e1191e4aa/pythondtrace-patch.diff' if build.include? 'with-dtrace'
+    # Commenting out with-dtrace-specific patch until the option is re-enabled
+    # p << 'https://raw.github.com/gist/3415636/2365dea8dc5415daa0148e98c394345e1191e4aa/pythondtrace-patch.diff' if build.include? 'with-dtrace'
     # Patch to disable the search for Tk.frameworked, since homebrew's Tk is
     # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
     p << DATA if build.include? 'with-brewed-tk'
@@ -72,7 +73,8 @@ class Python < Formula
            ]
 
     args << '--without-gcc' if ENV.compiler == :clang
-    args << '--with-dtrace' if build.include? 'with-dtrace'
+    # Commented out until dtrace support is re-enabled
+    #args << '--with-dtrace' if build.include? 'with-dtrace'
 
     if superenv?
       distutils_fix_superenv(args)
