@@ -218,18 +218,51 @@ class VersionParsingTests < Test::Unit::TestCase
   #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2'
   # end
 
-  def test_more_versions
+  def test_pypy_version
     assert_version_detected '1.4.1', 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2'
+  end
+
+  def test_openssl_version
     assert_version_detected '0.9.8s', 'http://www.openssl.org/source/openssl-0.9.8s.tar.gz'
+  end
+
+  def test_xaw3d_version
     assert_version_detected '1.5E', 'ftp://ftp.visi.com/users/hawkeyd/X/Xaw3d-1.5E.tar.gz'
+  end
+
+  def test_assimp_version
     assert_version_detected '2.0.863', 'http://downloads.sourceforge.net/project/assimp/assimp-2.0/assimp--2.0.863-sdk.zip'
+  end
+
+  def test_cmucl_version
     assert_version_detected '20c', 'http://common-lisp.net/project/cmucl/downloads/release/20c/cmucl-20c-x86-darwin.tar.bz2'
+  end
+
+  def test_fann_version
     assert_version_detected '2.1.0beta', 'http://downloads.sourceforge.net/project/fann/fann/2.1.0beta/fann-2.1.0beta.zip'
+  end
+
+  def test_grads_version
     assert_version_detected '2.0.1', 'ftp://iges.org/grads/2.0/grads-2.0.1-bin-darwin9.8-intel.tar.gz'
+  end
+
+  def test_haxe_version
     assert_version_detected '2.08', 'http://haxe.org/file/haxe-2.08-osx.tar.gz'
+  end
+
+  def test_imap_version
     assert_version_detected '2007f', 'ftp://ftp.cac.washington.edu/imap/imap-2007f.tar.gz'
+  end
+
+  def test_suite3270_version
     assert_version_detected '3.3.12ga7', 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz'
+  end
+
+  def test_wwwoffle_version
     assert_version_detected '2.9h', 'http://www.gedanken.demon.co.uk/download-wwwoffle/wwwoffle-2.9h.tgz'
+  end
+
+  def test_synergy_version
     assert_version_detected '1.3.6p2', 'http://synergy.googlecode.com/files/synergy-1.3.6p2-MacOSX-Universal.zip'
   end
 end
