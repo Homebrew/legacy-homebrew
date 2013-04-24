@@ -2,8 +2,8 @@ require 'formula'
 
 class PostgresXc < Formula
   homepage 'http://postgres-xc.sourceforge.net/'
-  url 'http://sourceforge.net/projects/postgres-xc/files/Version_1.0/pgxc-v1.0.2.tar.gz'
-  sha1 'f427f37eb141ad9d00374fc1100a55dd09718fed'
+  url 'http://sourceforge.net/projects/postgres-xc/files/Version_1.0/pgxc-v1.0.3.tar.gz'
+  sha1 '76774cf32810dfa14b2174f2e939d3b28eb211a9'
 
   depends_on :arch => :x86_64
   depends_on 'readline'
