@@ -2,8 +2,8 @@ require 'formula'
 
 class Libusbx < Formula
   homepage 'http://libusbx.org'
-  url 'http://downloads.sourceforge.net/project/libusbx/releases/1.0.14/source/libusbx-1.0.14.tar.bz2'
-  sha1 '2896201c54a0a9d0aee724925ab58c96956d5251'
+  url 'http://sourceforge.net/projects/libusbx/files/releases/1.0.15/source/libusbx-1.0.15.tar.bz2'
+  sha1 '1ca868f775093b0109d9240cb3ccd36367764dc6'
 
   head 'https://github.com/libusbx/libusbx.git'
 
