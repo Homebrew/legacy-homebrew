@@ -265,4 +265,12 @@ class VersionParsingTests < Test::Unit::TestCase
   def test_synergy_version
     assert_version_detected '1.3.6p2', 'http://synergy.googlecode.com/files/synergy-1.3.6p2-MacOSX-Universal.zip'
   end
+
+  def test_fontforge_version
+    assert_version_detected '20120731', 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
+  end
+
+  def test_ezlupdate_version
+    assert_version_detected '2011.10', 'https://github.com/downloads/ezsystems/ezpublish-legacy/ezpublish_community_project-2011.10-with_ezc.tar.bz2'
+  end
 end
