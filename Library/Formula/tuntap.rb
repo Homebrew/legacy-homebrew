@@ -3,6 +3,7 @@ require 'formula'
 class Tuntap < Formula
   homepage 'http://tuntaposx.sourceforge.net/'
   url 'git://git.code.sf.net/p/tuntaposx/code', :tag => 'release_20111101'
+  head 'git://git.code.sf.net/p/tuntaposx/code', :branch => 'master'
   version '20111101'
 
   head 'git://git.code.sf.net/p/tuntaposx/code', :branch => 'master'
