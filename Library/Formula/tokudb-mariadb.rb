@@ -1,8 +1,9 @@
 require 'formula'
 
-class TokuDBmariadb < Formula
+class TokuDBMariaDB < Formula
   homepage 'http://www.tokutek.com/'
   url 'https://github.com/Tokutek/mariadb/archive/tokudb-7.0.1.tar.gz'
+  version '7.0.1'
   sha1 '00b9df441ac40ca3e9d70fb124d5ac15ac7bedbf'
 
   depends_on 'cmake' => :build
@@ -20,6 +21,9 @@ class TokuDBmariadb < Formula
 
   conflicts_with 'mysql',
     :because => "tokudb-mariadb and mysql install the same binaries."
+
+  conflicts_with 'tokudb-mysql',
+    :because => "tokudb-mariadb and tokudb-mysql install the same binaries."
 
   conflicts_with 'mariadb',
     :because => "tokudb-mariadb and mariadb install the same binaries."
