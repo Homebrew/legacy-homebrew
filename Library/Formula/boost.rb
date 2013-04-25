@@ -1,13 +1,5 @@
 require 'formula'
 
-def needs_universal_python?
-  build.universal? and not build.include? "without-python"
-end
-
-def boost_layout
-  (build.include? "use-system-layout") ? "system" : "tagged"
-end
-
 class UniversalPython < Requirement
   satisfy { archs_for_command("python").universal? }
 
@@ -42,7 +34,7 @@ class Boost < Formula
   option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
   option 'use-system-layout', 'Use system layout instead of tagged'
 
-  depends_on UniversalPython if needs_universal_python?
+  depends_on UniversalPython if build.universal? and not build.include? "without-python"
   depends_on "icu4c" if build.include? "with-icu"
   depends_on MPIDependency.new(:cc, :cxx) if build.include? "with-mpi"
 
@@ -88,6 +80,7 @@ class Boost < Formula
       bargs << '--without-icu'
     end
 
+    boost_layout = (build.include? "use-system-layout") ? "system" : "tagged"
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
             "-d2",

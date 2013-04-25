@@ -39,6 +39,11 @@ class Notmuch < Formula
       args << "--without-emacs"
     end
     system "./configure", *args
-    system "make install"
+
+    if ARGV.verbose?
+      system "make install V=1"
+    else
+      system "make install"
+    end
   end
 end

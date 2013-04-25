@@ -2,8 +2,8 @@ require 'formula'
 
 class Cgal < Formula
   homepage 'http://www.cgal.org/'
-  url 'https://gforge.inria.fr/frs/download.php/31175/CGAL-4.1.tar.gz'
-  sha1 'e80af4b1da25690df63ce83dd083710cc3db9697'
+  url 'https://gforge.inria.fr/frs/download.php/32359/CGAL-4.2.tar.gz'
+  sha1 'df2a873f0a6dd9a7863f85c3de96a4be551f7ffd'
 
   option 'imaging', "Build ImageIO and QT compoments of CGAL"
 

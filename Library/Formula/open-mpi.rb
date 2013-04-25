@@ -6,8 +6,8 @@ class OpenMpi < Formula
   sha1 '38095d3453519177272f488d5058a98f7ebdbf10'
 
   devel do
-    url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7rc8.tar.bz2'
-    sha1 '38b6f2598a071311ae6f5ccaf13dffd6154ccfff'
+    url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7.1.tar.bz2'
+    sha1 '35d166e2a1d8b88c44d61eaabb5086e2425c8eb8'
   end
 
   option 'disable-fortran', 'Do not build the Fortran bindings'

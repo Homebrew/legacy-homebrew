@@ -3,8 +3,8 @@ require 'formula'
 class V8 < Formula
   homepage 'http://code.google.com/p/v8/'
   # Use the official github mirror, it is easier to find tags there
-  url 'https://github.com/v8/v8/archive/3.17.15.tar.gz'
-  sha1 '611fa265cdaae74b00556de6576c07c4dcfb3efe'
+  url 'https://github.com/v8/v8/archive/3.18.2.tar.gz'
+  sha1 '9045aeb81688f6c56aba04af118e7762245cf005'
 
   head 'https://github.com/v8/v8.git'
 
@@ -23,7 +23,8 @@ class V8 < Formula
     prefix.install 'include'
     cd 'out/native' do
       lib.install Dir['lib*']
-      bin.install 'd8', 'lineprocessor', 'mksnapshot', 'preparser', 'process', 'shell' => 'v8'
+      bin.install 'd8', 'lineprocessor', 'preparser', 'process', 'shell' => 'v8'
+      bin.install Dir['mksnapshot.*']
     end
   end
 end
