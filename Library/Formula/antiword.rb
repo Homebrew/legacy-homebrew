@@ -17,6 +17,8 @@ class Antiword < Formula
                    "GLOBAL_INSTALL_DIR=#{bin}",
                    "GLOBAL_RESOURCES_DIR=#{share}/antiword"
     bin.install 'antiword'
+    # Resources directory has to be copied
+    cp_r "Resources/.", "#{share}/antiword"
     man1.install 'Docs/antiword.1'
   end
 

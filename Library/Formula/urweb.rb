@@ -2,13 +2,15 @@ require 'formula'
 
 class Urweb < Formula
   homepage 'http://impredicative.com/ur/'
-  url 'http://impredicative.com/ur/urweb-20120925.tgz'
-  sha1 'd68c1746a00d6c1fa847edf4130e89d15522be8e'
+  url 'http://impredicative.com/ur/urweb-20130421.tgz'
+  sha1 '944165b5f5f638ae54d804e4957618e1ae257b81'
   head 'http://hg.impredicative.com/urweb', :using => :hg
 
   depends_on :automake
   depends_on :libtool
   depends_on 'mlton'
+  depends_on 'postgresql' => :optional
+  depends_on 'mysql' => :optional
 
   def install
     # The autoconf-generated shell scripts in the tarball
