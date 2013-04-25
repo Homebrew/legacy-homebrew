@@ -2,8 +2,8 @@ require 'formula'
 
 class Hub < Formula
   homepage 'http://defunkt.io/hub/'
-  url 'https://github.com/defunkt/hub/archive/v1.10.5.tar.gz'
-  sha1 '1de6adcc6510f5ca890e55ede0d1fca0b06054cd'
+  url 'https://github.com/defunkt/hub/archive/v1.10.6.tar.gz'
+  sha1 'e29d158c65a10ef3889f4af438bf1fb50fbd0536'
   head 'https://github.com/defunkt/hub.git'
 
   def install
