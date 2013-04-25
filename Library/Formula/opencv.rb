@@ -1,27 +1,31 @@
 require 'formula'
 
-def which_python
-  "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-end
-
-def site_package_dir
-  "lib/#{which_python}/site-packages"
-end
-
 class Opencv < Formula
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  end
+
+  def site_package_dir
+    "lib/#{which_python}/site-packages"
+  end
+
   homepage 'http://opencv.org/'
-  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.3/OpenCV-2.4.3.tar.bz2'
-  sha1 '982be2c3e52dfc3e9d14692c60bc856b2b766be2'
+  url 'http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.5/opencv-2.4.5.tar.gz'
+  sha1 '9e25f821db9e25aa454a31976ba6b5a3a50b6fa4'
 
   option '32-bit'
   option 'with-qt',  'Build the Qt4 backend to HighGUI'
   option 'with-tbb', 'Enable parallel code in OpenCV using Intel TBB'
   option 'with-opencl', 'Enable gpu code in OpenCV using OpenCL'
+  option 'with-cuda',   'Enable gpu code in OpenCV using CUDA'
+  option 'with-gtk+',   'Enable the GTK+ backend to HighGUI'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
   depends_on 'numpy' => :python
 
+  depends_on 'gtk+'    => :optional
+  depends_on 'openexr' => :optional
   depends_on 'eigen'   => :optional
   depends_on 'libtiff' => :optional
   depends_on 'jasper'  => :optional
@@ -34,8 +38,10 @@ class Opencv < Formula
   # in Homebrew anyway. Will depend on openexr if it's installed.
 
   def install
-    args = std_cmake_args + %w[
-      -DWITH_CUDA=OFF
+    ENV.llvm if build.with? 'cuda'
+    args = std_cmake_args
+    args << '-DWITH_CUDA=OFF' if not(build.with? 'cuda')
+    args = args + %w[
       -DBUILD_ZLIB=OFF
       -DBUILD_TIFF=OFF
       -DBUILD_PNG=OFF
@@ -44,6 +50,8 @@ class Opencv < Formula
       -DBUILD_TESTS=OFF
       -DBUILD_PERF_TESTS=OFF
     ]
+    args << '-DWITH_GTK=ON' if build.with? 'gtk+'
+    args << '-DBUILD_OPENEXR=OFF' if build.with? 'openexr'
     if build.build_32_bit?
       args << "-DCMAKE_OSX_ARCHITECTURES=i386"
       args << "-DOPENCV_EXTRA_C_FLAGS='-arch i386 -m32'"
