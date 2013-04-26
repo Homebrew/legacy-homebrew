@@ -7,7 +7,7 @@ class Checkstyle < Formula
 
   def install
     libexec.install 'checkstyle-5.6-all.jar', 'sun_checks.xml'
-    bin.write_jar_script libexec/'checkstyle-5.5-all.jar', 'checkstyle'
+    bin.write_jar_script libexec/'checkstyle-5.6-all.jar', 'checkstyle'
   end
 
   test do
