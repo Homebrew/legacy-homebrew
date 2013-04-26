@@ -17,7 +17,12 @@ class Libmatio < Formula
       --with-zlib=/usr
       --enable-extended-sparse=yes
     ]
-    args << "--with-hdf5=#{HOMEBREW_PREFIX}" << "--enable-mat73=yes" if build.with? 'hdf5'
+
+    if build.with? 'hdf5'
+      args << "--with-hdf5=#{HOMEBREW_PREFIX}" << "--enable-mat73=yes"
+    else
+      args << "--with-hdf5=no"
+    end
 
     system "./configure", *args
     system "make"
