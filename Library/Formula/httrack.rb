@@ -8,8 +8,7 @@ class Httrack < Formula
   def install
     ENV.deparallelize
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-shared=no"
+                          "--prefix=#{prefix}"
     system "make install"
     # Don't need Gnome integration
     rm_rf share+'applications'
