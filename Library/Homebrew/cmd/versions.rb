@@ -86,7 +86,8 @@ class Formula
         begin
           Object.send(:remove_const, Formula.class_s(name))
           nostdout { Formula.factory(path).version }
-        rescue SyntaxError, TypeError, NameError, ArgumentError => e
+        rescue SyntaxError, TypeError, NameError, ArgumentError,
+          InvalidFormula => e
           # We rescue these so that we can skip bad versions and
           # continue walking the history
           ohai "#{e} in #{name} at revision #{sha}", e.backtrace if ARGV.debug?

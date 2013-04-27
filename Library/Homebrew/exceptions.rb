@@ -157,6 +157,11 @@ class BuildError < Homebrew::InstallationError
   end
 end
 
+# Raised in Formula.determine_active_spec to prevent `brew versions` from
+# spitting out an error even when successful.
+class InvalidFormula < RuntimeError
+end
+
 # raised in CurlDownloadStrategy.fetch
 class CurlDownloadStrategyError < RuntimeError
 end
