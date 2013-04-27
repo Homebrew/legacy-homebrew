@@ -1,12 +1,5 @@
 require 'formula'
 
-class CpioDownloadStrategy < CurlDownloadStrategy
-  def stage
-    system "gzcat #{@tarball_path} | cpio -id"
-    chdir
-  end
-end
-
 class Mksh < Formula
   homepage 'https://mirbsd.org/mksh.htm'
   url 'https://mirbsd.org/MirOS/dist/mir/mksh/mksh-R45.tgz'
