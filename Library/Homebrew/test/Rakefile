@@ -4,10 +4,19 @@ require 'pathname'
 
 TEST_DIRECTORY = Pathname.new(File.expand_path(__FILE__)).parent.realpath
 TEST_FILES = FileList["#{TEST_DIRECTORY}/test_*.rb"]
+GEM_DEPS = ['mocha']
 
 Dir.chdir(TEST_DIRECTORY)
 
 task :default => :test
+
+task :deps do
+  GEM_DEPS.each do |dep|
+    `gem list --installed #{dep}`
+    next if $?.success?
+    sh 'gem', 'install', '--no-ri', '--no-rdoc', '--user-install', dep
+  end
+end
 
 Rake::TestTask.new(:test) do |t|
   t.libs << Dir.pwd

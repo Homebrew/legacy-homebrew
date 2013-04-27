@@ -2,8 +2,8 @@ require 'formula'
 
 class LibquviScripts < Formula
   homepage 'http://quvi.sourceforge.net/'
-  url 'http://sourceforge.net/projects/quvi/files/0.4/libquvi-scripts/libquvi-scripts-0.4.9.tar.xz'
-  sha1 'babeceb964ef583928a3ddb389566432200c9342'
+  url 'http://sourceforge.net/projects/quvi/files/0.4/libquvi-scripts/libquvi-scripts-0.4.14.tar.xz'
+  sha1 'fe721c8d882c5c4a826f1339c79179c56bb0fe41'
 end
 
 class Libquvi < Formula
