@@ -3,6 +3,7 @@ require 'formula'
 class Visualnetkit < Formula
   homepage 'http://code.google.com/p/visual-netkit/'
   url 'http://visual-netkit.googlecode.com/files/visualnetkit-1.4.tar.bz'
+  version '1.4'
   sha1 '17dbc3a6b7e62b1b2183f2a4426b9021781e4ec4'
 
   depends_on 'qt'
