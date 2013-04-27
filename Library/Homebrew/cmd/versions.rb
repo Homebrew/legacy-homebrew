@@ -77,6 +77,9 @@ class Formula
       rev_list.find{ |sha| version == version_for_sha(sha) }
     end
 
+    IGNORED_EXCEPTIONS = [SyntaxError, TypeError, NameError,
+                          ArgumentError, FormulaSpecificationError]
+
     def version_for_sha sha
       mktemp do
         path = Pathname.new(Pathname.pwd+"#{name}.rb")
@@ -86,7 +89,7 @@ class Formula
         begin
           Object.send(:remove_const, Formula.class_s(name))
           nostdout { Formula.factory(path).version }
-        rescue SyntaxError, TypeError, NameError, ArgumentError => e
+        rescue *IGNORED_EXCEPTIONS => e
           # We rescue these so that we can skip bad versions and
           # continue walking the history
           ohai "#{e} in #{name} at revision #{sha}", e.backtrace if ARGV.debug?
