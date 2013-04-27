@@ -15,12 +15,16 @@ module Homebrew extend self
       dir.find do |path|
         path.extend ObserverPathnameExtension
         if path.symlink?
-          unless path.resolved_path_exists?
-            if ENV['HOMEBREW_KEEP_INFO'] and path.to_s =~ Keg::INFOFILE_RX
-              path.uninstall_info
+          begin
+            unless path.resolved_path_exists?
+              if ENV['HOMEBREW_KEEP_INFO'] and path.to_s =~ Keg::INFOFILE_RX
+                path.uninstall_info
+              end
+              path.unlink
             end
+          rescue ArgumentError
             path.unlink
-          end
+           end
         elsif path.directory?
           dirs << path
         end
