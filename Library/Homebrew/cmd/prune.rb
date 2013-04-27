@@ -24,7 +24,7 @@ module Homebrew extend self
             end
           rescue ArgumentError
             path.unlink
-           end
+          end
         elsif path.directory?
           dirs << path
         end
