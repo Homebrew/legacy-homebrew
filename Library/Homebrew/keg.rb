@@ -194,14 +194,14 @@ class Keg < Pathname
       puts "Skipping; already exists: #{dst}" if ARGV.verbose?
     # cf. git-clean -n: list files to delete, don't really link or delete
     elsif mode.dry_run and mode.overwrite
-      puts dst if dst.exist?
+      puts dst if dst.exist? or dst.symlink?
       return
     # list all link targets
     elsif mode.dry_run
       puts dst
       return
     else
-      dst.delete if mode.overwrite && dst.exist?
+      dst.delete if mode.overwrite && (dst.exist? or dst.symlink?)
       dst.make_relative_symlink src
     end
   end
