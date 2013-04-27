@@ -9,9 +9,9 @@ end
 
 class Mksh < Formula
   homepage 'https://mirbsd.org/mksh.htm'
-  url 'https://mirbsd.org/MirOS/dist/mir/mksh/mksh-R43.tgz'
-  version '0.43'
-  sha256 '65e54a0cd4189b80cf24fdf1b1b959a707522451025cc22f7d3ba451566ffc81'
+  url 'https://mirbsd.org/MirOS/dist/mir/mksh/mksh-R45.tgz'
+  version '45.1'
+  sha256 '90137336a836ad180c6e4f84065b993414aacb2e954afeac506cefb51d432cb8'
 
   def install
     system "sh", "./Build.sh", "-c", (ENV.compiler == :clang ? "lto" : "combine")
