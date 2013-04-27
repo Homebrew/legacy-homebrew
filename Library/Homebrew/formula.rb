@@ -77,7 +77,7 @@ class Formula
     when @devel && @stable.nil?           then @devel   # devel-only
     when @head && @stable.nil?            then @head    # head-only
     else
-      raise "Formulae require at least a URL"
+      raise FormulaSpecificationError, "formulae require at least a URL"
     end
   end
 
