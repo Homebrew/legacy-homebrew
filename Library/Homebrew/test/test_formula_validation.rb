@@ -78,7 +78,6 @@ class FormulaValidationTests < Test::Unit::TestCase
   end
 
   def test_empty_formula_invalid
-    e = assert_raises(FormulaSpecificationError) { formula {} }
-    assert_equal "formulae require at least a URL", e.message
+    assert_raises(FormulaSpecificationError) { formula {} }
   end
 end
