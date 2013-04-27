@@ -64,7 +64,7 @@ class Emacs < Formula
 
       args << "--with-ns" << "--disable-ns-self-contained"
       system "./configure", *args
-      system "make bootstrap"
+      system "make"
       system "make install"
       prefix.install "nextstep/Emacs.app"
 
