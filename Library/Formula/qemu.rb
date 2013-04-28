@@ -16,7 +16,6 @@ class Qemu < Formula
   depends_on 'sdl' => :optional
 
   def install
-    # Disable the sdl backend; use CoreAudio instead.
     args = %W[
       --prefix=#{prefix}
       --cc=#{ENV.cc}
