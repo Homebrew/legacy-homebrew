@@ -2,8 +2,8 @@ require 'formula'
 
 class Caudec < Formula
   homepage 'http://caudec.outpost.fr/'
-  url 'http://caudec.outpost.fr/downloads/caudec-1.6.3.tar.gz'
-  sha1 '1bb477d63a956caae5f7ef97f039dd37420ddb55'
+  url 'http://caudec.outpost.fr/downloads/caudec-1.6.4.tar.gz'
+  sha1 '4c4ad207e86c8f8bf15545bab1c434525cd79f7d'
 
   depends_on 'gnu-sed'
   depends_on 'shntool'
@@ -35,11 +35,11 @@ class Caudec < Formula
 
   def caveats; <<-EOS.undent
     You can find an up-to-date caudecrc file in
-
-      #{share}/doc/
+    #{share}/doc/
 
     Copy it to ~/.caudecrc ('.caudecrc' in your home directory),
     or update your existing copy as needed.
+
     EOS
   end
 end
