@@ -2,6 +2,7 @@ require 'formula'
 require 'tab'
 require 'keg'
 require 'caveats'
+require 'blacklist'
 
 module Homebrew extend self
   def info
@@ -29,7 +30,15 @@ module Homebrew extend self
     elsif valid_url ARGV[0]
       info_formula Formula.factory(ARGV.shift)
     else
-      ARGV.formulae.each{ |f| info_formula f }
+      ARGV.named.each do |f|
+        begin
+          info_formula Formula.factory(f)
+        rescue FormulaUnavailableError
+          # No formula with this name, try a blacklist lookup
+          blacklist = blacklisted?(f)
+          puts blacklist if blacklist
+        end
+      end
     end
   end
 
