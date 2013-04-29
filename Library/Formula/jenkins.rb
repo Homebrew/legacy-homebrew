@@ -30,7 +30,6 @@ class Jenkins < Formula
           <string>/usr/bin/java</string>
           <string>-jar</string>
           <string>#{opt_prefix}/libexec/jenkins.war</string>
-          <string>--httpListenAddress=127.0.0.1</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
