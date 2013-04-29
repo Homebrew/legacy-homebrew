@@ -27,8 +27,8 @@ class Wine < Formula
     # updating too
     #  * http://wiki.winehq.org/Gecko
     #  * http://wiki.winehq.org/Mono
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.28.tar.bz2'
-    sha1 'bc543b215dd25efc7d76c6ffa99672c6e3d15d61'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.5.29.tar.bz2'
+    sha1 '19c2ee4e44d9ef4db32cb2c16e5603c195c8f42d'
   end
 
   env :std
@@ -43,6 +43,7 @@ class Wine < Formula
   depends_on 'libicns'
   depends_on 'libtiff'
   depends_on 'little-cms'
+  depends_on 'gnutls' if build.devel?
 
   fails_with :llvm do
     build 2336

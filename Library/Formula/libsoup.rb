@@ -2,11 +2,12 @@ require 'formula'
 
 class Libsoup < Formula
   homepage 'http://live.gnome.org/LibSoup'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.38/libsoup-2.38.1.tar.xz'
-  sha256 '71b8923fc7a5fef9abc5420f7f3d666fdb589f43a8c50892d584d58b3c513f9a'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.42/libsoup-2.42.2.tar.xz'
+  sha256 '1f4f9cc55ba483dc8defea0c3f97cc507dc48384c5529179e29c1e6d05630dbf'
 
   depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'glib-networking' # Required at runtime for TLS support
   depends_on 'gnutls' # Also required for TLS
   depends_on 'sqlite' # For SoupCookieJarSqlite
