@@ -215,6 +215,7 @@ def check_for_broken_symlinks
 end
 
 def check_for_latest_xcode
+  return unless MACOS
   if not MacOS::Xcode.installed?
     if MacOS.version >= 10.7
       if not MacOS::CLT.installed?
