@@ -63,14 +63,10 @@ class Node < Formula
     build 2326
   end
 
-  def install
-    # Lie to `xcode-select` for now to work around a GYP bug that affects
-    # CLT-only systems:
-    #
-    #   http://code.google.com/p/gyp/issues/detail?id=292
-    #   joyent/node#3681
-    ENV['DEVELOPER_DIR'] = MacOS.dev_tools_path unless MacOS::Xcode.installed?
+  # fixes gyp's detection of system paths on CLT-only systems
+  def patches; DATA; end
 
+  def install
     args = %W{--prefix=#{prefix}}
 
     if build.with? 'shared-libs'
@@ -129,3 +125,83 @@ class Node < Formula
     end
   end
 end
+
+__END__
+diff --git a/tools/gyp/pylib/gyp/xcode_emulation.py b/tools/gyp/pylib/gyp/xcode_emulation.py
+index 806f92b..5256856 100644
+--- a/tools/gyp/pylib/gyp/xcode_emulation.py
++++ b/tools/gyp/pylib/gyp/xcode_emulation.py
+@@ -224,8 +224,7 @@ class XcodeSettings(object):
+ 
+   def _GetSdkVersionInfoItem(self, sdk, infoitem):
+     job = subprocess.Popen(['xcodebuild', '-version', '-sdk', sdk, infoitem],
+-                           stdout=subprocess.PIPE,
+-                           stderr=subprocess.STDOUT)
++                           stdout=subprocess.PIPE)
+     out = job.communicate()[0]
+     if job.returncode != 0:
+       sys.stderr.write(out + '\n')
+@@ -234,9 +233,17 @@ class XcodeSettings(object):
+ 
+   def _SdkPath(self):
+     sdk_root = self.GetPerTargetSetting('SDKROOT', default='macosx')
++    if sdk_root.startswith('/'):
++      return sdk_root
+     if sdk_root not in XcodeSettings._sdk_path_cache:
+-      XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
+-          sdk_root, 'Path')
++      try:
++        XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
++            sdk_root, 'Path')
++      except:
++        # if this fails it's because xcodebuild failed, which means
++        # the user is probably on a CLT-only system, where there
++        # is no valid SDK root
++        XcodeSettings._sdk_path_cache[sdk_root] = None
+     return XcodeSettings._sdk_path_cache[sdk_root]
+ 
+   def _AppendPlatformVersionMinFlags(self, lst):
+@@ -339,10 +346,11 @@ class XcodeSettings(object):
+ 
+     cflags += self._Settings().get('WARNING_CFLAGS', [])
+ 
+-    config = self.spec['configurations'][self.configname]
+-    framework_dirs = config.get('mac_framework_dirs', [])
+-    for directory in framework_dirs:
+-      cflags.append('-F' + directory.replace('$(SDKROOT)', sdk_root))
++    if 'SDKROOT' in self._Settings():
++      config = self.spec['configurations'][self.configname]
++      framework_dirs = config.get('mac_framework_dirs', [])
++      for directory in framework_dirs:
++        cflags.append('-F' + directory.replace('$(SDKROOT)', sdk_root))
+ 
+     self.configname = None
+     return cflags
+@@ -572,10 +580,11 @@ class XcodeSettings(object):
+     for rpath in self._Settings().get('LD_RUNPATH_SEARCH_PATHS', []):
+       ldflags.append('-Wl,-rpath,' + rpath)
+ 
+-    config = self.spec['configurations'][self.configname]
+-    framework_dirs = config.get('mac_framework_dirs', [])
+-    for directory in framework_dirs:
+-      ldflags.append('-F' + directory.replace('$(SDKROOT)', self._SdkPath()))
++    if 'SDKROOT' in self._Settings():
++      config = self.spec['configurations'][self.configname]
++      framework_dirs = config.get('mac_framework_dirs', [])
++      for directory in framework_dirs:
++        ldflags.append('-F' + directory.replace('$(SDKROOT)', self._SdkPath()))
+ 
+     self.configname = None
+     return ldflags
+@@ -700,7 +709,10 @@ class XcodeSettings(object):
+         l = '-l' + m.group(1)
+       else:
+         l = library
+-    return l.replace('$(SDKROOT)', self._SdkPath())
++    if self._SdkPath():
++      return l.replace('$(SDKROOT)', self._SdkPath())
++    else:
++      return l
+ 
+   def AdjustLibraries(self, libraries):
+     """Transforms entries like 'Cocoa.framework' in libraries into entries like
