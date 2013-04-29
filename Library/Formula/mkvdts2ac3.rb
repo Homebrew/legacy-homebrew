@@ -13,7 +13,4 @@ class Mkvdts2ac3 < Formula
     bin.install_symlink "#{libexec}/mkvdts2ac3.sh" => "mkvdts2ac3"
   end
 
-  def test
-    system "#{bin}/mkvdts2ac3", "-V"
-  end
 end
