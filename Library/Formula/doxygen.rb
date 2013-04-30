@@ -33,6 +33,22 @@ class Doxygen < Formula
       s.gsub! /c\+\+$/, ENV.cxx
     end
 
+    # This is a terrible hack; configure finds lex/yacc OK but
+    # one Makefile doesn't get generated with these, so pull
+    # them out of a known good file and cram them into the other.
+    lex = ''
+    yacc = ''
+
+    inreplace 'src/libdoxycfg.t' do |s|
+      lex = s.get_make_var 'LEX'
+      yacc = s.get_make_var 'YACC'
+    end
+
+    inreplace 'src/Makefile.libdoxycfg' do |s|
+      s.change_make_var! 'LEX', lex
+      s.change_make_var! 'YACC', yacc
+    end
+
     system "make"
     # MAN1DIR, relative to the given prefix
     system "make", "MAN1DIR=share/man/man1", "install"
