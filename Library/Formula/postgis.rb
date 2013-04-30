@@ -23,10 +23,10 @@ class Postgis < Formula
   depends_on 'json-c'
   depends_on 'gdal'
 
-  def postgresql
+  def postgres_realpath
     # Follow the PostgreSQL linked keg back to the active Postgres installation
     # as it is common for people to avoid upgrading Postgres.
-    Formula.factory('postgresql').linked_keg.realpath
+    Formula.factory('postgresql').opt_prefix.realpath
   end
 
   # Force GPP to be used when pre-processing SQL files. See:
@@ -45,7 +45,7 @@ class Postgis < Formula
       # This is against Homebrew guidelines, but we have to do it as the
       # PostGIS plugin libraries can only be properly inserted into Homebrew's
       # Postgresql keg.
-      "--with-pgconfig=#{postgresql}/bin/pg_config",
+      "--with-pgconfig=#{postgres_realpath}/bin/pg_config",
       # Unfortunately, NLS support causes all kinds of headaches because
       # PostGIS gets all of it's compiler flags from the PGXS makefiles. This
       # makes it nigh impossible to tell the buildsystem where our keg-only
@@ -70,11 +70,11 @@ class Postgis < Formula
     # Install PostGIS plugin libraries into the Postgres keg so that they can
     # be loaded and so PostGIS databases will continue to function even if
     # PostGIS is removed.
-    (postgresql/'lib').install Dir['stage/**/*.so']
+    (postgres_realpath/'lib').install Dir['stage/**/*.so']
 
     # Install extension scripts to the Postgres keg.
     # `CREATE EXTENSION postgis;` won't work if these are located elsewhere.
-    (postgresql/'share/postgresql/extension').install Dir['stage/**/extension/*']
+    (postgres_realpath/'share/postgresql/extension').install Dir['stage/**/extension/*']
 
     bin.install Dir['stage/**/bin/*']
     lib.install Dir['stage/**/lib/*']
@@ -108,9 +108,9 @@ class Postgis < Formula
       PostGIS SQL scripts installed to:
         #{HOMEBREW_PREFIX}/share/postgis
       PostGIS plugin libraries installed to:
-        #{postgresql}/lib
+        #{pg = Formula.factory('postgresql').opt_prefix}/lib
       PostGIS extension modules installed to:
-        #{postgresql}/share/postgresql/extension
+        #{pg}/share/postgresql/extension
       EOS
   end
 end
