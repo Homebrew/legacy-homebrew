@@ -13,6 +13,7 @@ class Cairo < Formula
 
   option :universal
   option 'without-x', 'Build without X11 support'
+  option 'with-glib', 'Build with glib (default when building with X)'
 
   env :std if build.universal?
 
@@ -20,8 +21,8 @@ class Cairo < Formula
   depends_on 'pixman'
   depends_on 'pkg-config' => :build
   depends_on 'xz'=> :build
-  depends_on 'glib' unless build.include? 'without-x'
-  depends_on :x11 unless build.include? 'without-x'
+  depends_on 'glib' if build.with? 'x' || build.with? 'glib'
+  depends_on :x11 if build.with? 'x'
 
   def install
     ENV.universal_binary if build.universal?
