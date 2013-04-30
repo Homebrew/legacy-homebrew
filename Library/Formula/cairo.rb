@@ -21,7 +21,7 @@ class Cairo < Formula
   depends_on 'pixman'
   depends_on 'pkg-config' => :build
   depends_on 'xz'=> :build
-  depends_on 'glib' if build.with? 'x' || build.with? 'glib'
+  depends_on 'glib' if build.with?('x') || build.with?('glib')
   depends_on :x11 if build.with? 'x'
 
   def install
