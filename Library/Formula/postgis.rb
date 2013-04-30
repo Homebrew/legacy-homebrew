@@ -35,14 +35,13 @@ class Postgis < Formula
 
   def install
     ENV.deparallelize
-    jsonc   = Formula.factory 'json-c'
 
     args = [
       "--disable-dependency-tracking",
       # Can't use --prefix, PostGIS disrespects it and flat-out refuses to
       # accept it with 2.0.
       "--with-projdir=#{HOMEBREW_PREFIX}",
-      "--with-jsondir=#{jsonc.linked_keg.realpath}",
+      "--with-jsondir=#{Formula.factory('json-c').opt_prefix}",
       # This is against Homebrew guidelines, but we have to do it as the
       # PostGIS plugin libraries can only be properly inserted into Homebrew's
       # Postgresql keg.
