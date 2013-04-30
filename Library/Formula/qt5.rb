@@ -2,8 +2,8 @@ require 'formula'
 
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
-  url 'http://releases.qt-project.org/qt5/5.0.1/single/qt-everywhere-opensource-src-5.0.1.tar.gz'
-  sha1 'fda04435b1d4069dc189ab4d22ed7a36fe6fa3e9'
+  url 'http://releases.qt-project.org/qt5/5.0.2/single/qt-everywhere-opensource-src-5.0.2.tar.gz'
+  sha1 '7df93ca2cc5274f0cef72ea71f06feed2594b92f'
 
   head 'git://gitorious.org/qt/qt5.git', :branch => 'master'
 
@@ -27,7 +27,7 @@ class Qt5 < Formula
     # Inlined to fix paths.
     DATA
   end
-
+   
   def install
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
