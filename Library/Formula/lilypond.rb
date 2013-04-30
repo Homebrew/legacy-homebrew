@@ -69,7 +69,6 @@ class Lilypond < Formula
       \\header { title = "Do-Re-Mi" }
       { c' d' e' }
     EOS
-    lilykeg = Formula.factory('lilypond').linked_keg
-    system "#{lilykeg}/bin/lilypond test.ly"
+    system "#{bin}/lilypond", "test.ly"
   end
 end
