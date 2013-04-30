@@ -38,10 +38,4 @@ class Gource < Formula
                           "--disable-freetypetest"
     system "make install"
   end
-
-  def test
-    cd HOMEBREW_REPOSITORY do
-      system "#{bin}/gource"
-    end
-  end
 end
