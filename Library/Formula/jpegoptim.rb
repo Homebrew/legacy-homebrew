@@ -2,8 +2,8 @@ require 'formula'
 
 class Jpegoptim < Formula
   homepage 'http://www.kokkonen.net/tjko/projects.html'
-  url 'http://www.kokkonen.net/tjko/src/jpegoptim-1.2.4.tar.gz'
-  sha1 '262774406d97653cc43bf2d19d91a85133f81f79'
+  url 'http://www.kokkonen.net/tjko/src/jpegoptim-1.3.0.tar.gz'
+  sha1 '5cf5945cbb2245fb7a2c7217947e43bcbd943b7d'
 
   depends_on 'jpeg'
 
