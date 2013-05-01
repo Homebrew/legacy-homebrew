@@ -1,19 +1,21 @@
 require 'formula'
 
-class NeedsLion < Requirement
+class LionOrNewer < Requirement
+  fatal true
+
   satisfy MacOS.version >= :lion
 
   def message
-    "wry requires Mac OS X 10.7 or newer"
+    "Wry requires Mac OS X 10.7 or newer."
   end
 end
 
 class Wry < Formula
   homepage 'http://grailbox.com/wry/'
-  url 'https://github.com/hoop33/wry.git', :tag => 'v1.4'
-  version '1.4'
+  url 'https://github.com/hoop33/wry/archive/v1.4.1.tar.gz'
+  head 'https://github.com/hoop33/wry.git'
 
-  depends_on NeedsLion
+  depends_on LionOrNewer
   depends_on :xcode # For working xcodebuild.
 
   def install
