@@ -9,7 +9,7 @@ class Mkvdts2ac3 < Formula
   depends_on 'ffmpeg'
 
   def install
-    libexec.install Dir['*']
+    libexec.install('mkvdts2ac3.sh')
     bin.install_symlink "#{libexec}/mkvdts2ac3.sh" => "mkvdts2ac3"
   end
 
