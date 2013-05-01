@@ -2,13 +2,12 @@ require 'formula'
 
 class Beanstalk < Formula
   homepage 'http://kr.github.io/beanstalkd/'
-  url 'https://github.com/downloads/kr/beanstalkd/beanstalkd-1.8.tar.gz'
-  sha1 'b8c274d7233e02c6793d8d119608ad7c878b0954'
+  url 'https://github.com/kr/beanstalkd/archive/v1.9.tar.gz'
+  sha1 'a3cdb93d9c7465491c58c8e7a99d63d779067845'
 
   def install
     system "make", "install", "PREFIX=#{prefix}"
   end
-
 
   plist_options :manual => "beanstalkd"
 
