@@ -1,5 +1,20 @@
 require 'formula'
 
+class SomeKindOfLuaRequirement < Requirement
+    fatal true
+
+    satisfy do
+        %w{lua lua52}.any? do |lua|
+            dep = Formula.factory(lua)
+            dep.installed? and dep.linked_keg.directory?
+        end
+    end
+
+    def message
+        "Some version of Lua needs to be installed for lua/TikZ terminal support."
+    end
+end
+
 class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
   url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.3/gnuplot-4.6.3.tar.gz'
@@ -28,7 +43,7 @@ class Gnuplot < Formula
   depends_on 'pango'       if build.include? 'cairo' or build.include? 'wx'
   depends_on :x11          if build.include? 'with-x' or MacOS::X11.installed?
   depends_on 'pdflib-lite' if build.include? 'pdf'
-  depends_on 'lua'         unless build.include? 'nolua'
+  depends_on SomeKindOfLuaRequirement unless build.include? 'nolua'
   depends_on 'gd'          unless build.include? 'nogd'
   depends_on 'wxmac'       if build.include? 'wx'
   depends_on 'qt'          if build.include? 'qt'
