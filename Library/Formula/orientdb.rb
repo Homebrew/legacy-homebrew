@@ -2,12 +2,12 @@ require 'formula'
 
 class Orientdb < Formula
   homepage 'http://www.orientdb.org/index.htm'
-  url 'http://orient.googlecode.com/files/orientdb-graphed-1.2.0.zip'
-  sha1 '7b6dc5740510f15150ee5eb457b717ecec468f7e'
+  url 'https://orient.googlecode.com/files/orientdb-graphed-1.3.0.tar.gz'
+  sha1 '124e37d2994d2908cc36fd036841b53caeed046c'
 
   def patches
     # Fixing OrientDB init scripts
-    "https://raw.github.com/gist/3965837/b464748b1759117ac5fb2039f54d5a5fd204f0b8/homebrew.patch"
+    "https://raw.github.com/gist/5468357/f4c926df7c31fe96425f2bf5feb68b52df31ebaf/homebrew.patch"
   end
 
   def install

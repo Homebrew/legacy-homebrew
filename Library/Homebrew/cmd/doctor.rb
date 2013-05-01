@@ -952,9 +952,17 @@ def check_for_bad_python_symlink
 end
 
 def check_for_non_prefixed_coreutils
-  gnubin = `brew --prefix coreutils`.chomp + "/libexec/gnubin"
+  gnubin = Formula.factory('coreutils').prefix.to_s + "/libexec/gnubin"
   if paths.include? gnubin then <<-EOS.undent
     Putting non-prefixed coreutils in your path can cause gmp builds to fail.
+    EOS
+  end
+end
+
+def check_for_non_prefixed_findutils
+  default_names = Tab.for_formula('findutils').used_options.include? 'default-names'
+  if default_names then <<-EOS.undent
+    Putting non-prefixed findutils in your path can cause python builds to fail.
     EOS
   end
 end

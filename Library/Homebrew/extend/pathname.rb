@@ -141,14 +141,14 @@ class Pathname
   def rmdir_if_possible
     rmdir
     true
-  rescue SystemCallError => e
-    # OK, maybe there was only a single `.DS_Store` file in that folder
-    if (self/'.DS_Store').exist? && self.children.length == 1
-      (self/'.DS_Store').unlink
+  rescue Errno::ENOTEMPTY
+    if (ds_store = self+'.DS_Store').exist? && children.length == 1
+      ds_store.unlink
       retry
+    else
+      false
     end
-
-    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno or e.errno == Errno::ENOENT::Errno
+  rescue Errno::EACCES, Errno::ENOENT
     false
   end
 

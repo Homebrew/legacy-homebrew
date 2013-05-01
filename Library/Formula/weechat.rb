@@ -49,8 +49,7 @@ class Weechat < Formula
     args << '-DENABLE_RUBY=OFF'   unless build.include? 'ruby'
     args << '-DENABLE_PYTHON=OFF' unless build.include? 'python'
     args << '-DENABLE_ASPELL=OFF' unless build.include? 'aspell'
-    args << '-DENABLE_GUILE=OFF'  unless build.include? 'guile' and \
-                                         Formula.factory('guile').linked_keg.exist?
+    args << '-DENABLE_GUILE=OFF'  unless build.include? 'guile'
 
     # NLS/gettext support disabled for now since it doesn't work in stdenv
     # see https://github.com/mxcl/homebrew/issues/18722

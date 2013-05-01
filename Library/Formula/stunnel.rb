@@ -2,9 +2,9 @@ require 'formula'
 
 class Stunnel < Formula
   homepage 'http://www.stunnel.org/'
-  url 'ftp://ftp.stunnel.org/stunnel/archive/4.x/stunnel-4.55.tar.gz'
-  mirror 'http://ftp.nluug.nl/pub/networking/stunnel/stunnel-4.55.tar.gz'
-  sha1 '9d29eb2f1880c7cf9ecbbd96dee8c0f8cc7e7f88'
+  url 'ftp://ftp.stunnel.org/stunnel/archive/4.x/stunnel-4.56.tar.gz'
+  mirror 'http://ftp.nluug.nl/pub/networking/stunnel/stunnel-4.56.tar.gz'
+  sha256 '9cae2cfbe26d87443398ce50d7d5db54e5ea363889d5d2ec8d2778a01c871293'
 
   # This patch installs a bogus .pem in lieu of interactive cert generation.
   # - additionally stripping carriage-returns
@@ -42,7 +42,7 @@ index d8c3174..5ad26e0 100644
 +++ b/tools/stunnel.cnf
 @@ -1,42 +1,30 @@
 -# OpenSSL configuration file to create a server certificate
--# by Michal Trojnara 1998-2012
+-# by Michal Trojnara 1998-2013
 -
 -[ req ]
 -# the default key length is secure and quite fast - do not change it
@@ -84,7 +84,7 @@ index d8c3174..5ad26e0 100644
 -nsCertType                      = server
 -
 +# OpenSSL configuration file to create a server certificate
-+# by Michal Trojnara 1998-2012
++# by Michal Trojnara 1998-2013
 +
 +[ req ]
 +# the default key length is secure and quite fast - do not change it

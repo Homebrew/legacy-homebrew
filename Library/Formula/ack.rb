@@ -2,12 +2,11 @@ require 'formula'
 
 class Ack < ScriptFileFormula
   homepage 'http://beyondgrep.com/'
-  url 'http://beyondgrep.com/ack-2.02-single-file'
-  sha1 '94b09ed23b50c0c644aa386f4a3c51ed2edea821'
-  version '2.02'
+  url 'https://github.com/petdance/ack2/archive/2.04.tar.gz'
+  sha1 'b9241ea000b089609d7e62f241c1ef7ad0d70cc6'
 
   def install
-    bin.install "ack-#{version}-single-file" => "ack"
+    bin.install "garage/ack-#{version}" => "ack"
     system "pod2man", "#{bin}/ack", "ack.1"
     man1.install "ack.1"
   end

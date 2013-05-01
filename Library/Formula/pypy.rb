@@ -52,6 +52,10 @@ class Pypy < Formula
       unless (scripts_folder+'easy_install_pypy').exist?
         ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install_pypy"
       end
+      # Symlink to pip_pypy.
+      unless (scripts_folder+'pip_pypy').exist?
+        ln_s "#{scripts_folder}/pip", "#{scripts_folder}/pip_pypy"
+      end
     end
   end
 
