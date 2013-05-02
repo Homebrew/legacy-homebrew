@@ -43,6 +43,9 @@ class Rabbitmq < Formula
 
   def caveats; <<-EOS.undent
     Management Plugin enabled by default at http://localhost:15672
+    
+    The RabbitMQ server scripts were installed into #{HOMEBREW_PREFIX}/sbin. 
+    This was not automatically added to your path, so you may wish to add PATH=$PATH:#{HOMEBREW_PREFIX}/sbin to your .bash_profile or .profile.
     EOS
   end
 
