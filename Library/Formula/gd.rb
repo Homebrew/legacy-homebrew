@@ -1,12 +1,14 @@
 require 'formula'
 
 class Gd < Formula
-  homepage 'http://bitbucket.org/pierrejoye/gd-libgd'
-  url 'http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz'
-  mirror 'http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz'
+  homepage 'https://bitbucket.org/libgd/gd-libgd'
+  # libgd doesn't have their latest (non-alpha) version.
+  # When they do release a stable version, use that url.
+  # Watch this space: http://libgd.bitbucket.org/pages/downloads.html
+  url 'http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz'
   sha1 '21cf2ec93fd80836fc0cb4741201f7cc5440819a'
 
-  head 'http://bitbucket.org/pierrejoye/gd-libgd', :using => :hg
+  head 'https://bitbucket.org/libgd/gd-libgd', :using => :hg
 
   depends_on :libpng => :recommended
   depends_on 'jpeg' => :recommended
