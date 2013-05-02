@@ -1,8 +1,8 @@
 require 'formula'
 
 class Flac2Mp3 < Formula
-  url 'https://github.com/rmndk/flac2mp3/tarball/v1.0'
-  sha1 '07d83e9264e7159a3df50d8422fb1db07f827f55'
+  url 'https://github.com/rmndk/flac2mp3/archive/v1.0.tar.gz'
+  sha1 '1fe176c715a6cd780179126d6aa95cf1f15e7ad8'
 end
 
 class Flac < Formula
@@ -19,8 +19,7 @@ class Flac < Formula
   end
 
   def install
-    # sadly the asm optimisations won't compile since Leopard, and nobody
-    # cares or knows how to fix it
+    # sadly the asm optimisations won't compile since Leopard
     system "./configure", "--disable-debug",
                           "--disable-asm-optimizations",
                           "--enable-sse",
