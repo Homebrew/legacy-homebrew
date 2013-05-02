@@ -5,6 +5,8 @@ class Inkscape < Formula
   url 'http://downloads.sourceforge.net/project/inkscape/inkscape/0.48.4/inkscape-0.48.4.tar.gz'
   sha1 'ce453cc9aff56c81d3b716020cd8cc7fa1531da0'
 
+  option 'with-poppler'
+
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
   depends_on 'boost-build' => :build
@@ -19,6 +21,7 @@ class Inkscape < Formula
   depends_on 'cairomm'
   depends_on 'pango'
   depends_on :x11
+  depends_on 'poppler' if build.include? "with-poppler"
 
   fails_with :clang
 
@@ -27,10 +30,12 @@ class Inkscape < Formula
   def patches; DATA end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-lcms",
-                          "--disable-poppler-cairo"
+    args = [ "--disable-dependency-tracking",
+             "--prefix=#{prefix}",
+             "--enable-lcms" ]
+    args << "--disable-poppler-cairo" if not build.include? "with-poppler"
+    system "./configure", *args
+
     system "make install"
   end
 
