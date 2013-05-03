@@ -61,20 +61,20 @@ class Step
     step.puts_command
 
     command = "#{step.command} &>#{step.log_file_path}"
-
-    output = nil
     if command.start_with? 'git '
       Dir.chdir step.repository do
-        output = `#{command}`
+        `#{command}`
       end
     else
-      output = `#{command}`
+      `#{command}`
     end
-    output = IO.read(step.log_file_path) rescue nil
 
     success = $?.success?
     step.status = success ? :passed : :failed
     step.puts_result
+
+    return unless File.exists?(step.log_file_path)
+    output = IO.read(step.log_file_path)
     if output and output.any? and (not success or puts_output_on_success)
       puts output
     end
