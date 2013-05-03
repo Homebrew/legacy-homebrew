@@ -17,6 +17,7 @@ class Yasm < Formula
   depends_on 'Cython' => :python if build.include? 'enable-python'
 
   def install
+    ENV.deparallelize
     args = %W[
       --disable-debug
       --prefix=#{prefix}
