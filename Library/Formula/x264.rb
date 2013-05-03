@@ -13,6 +13,8 @@ class X264 < Formula
   option '10-bit', 'Build a 10-bit x264 (default: 8-bit)'
 
   def install
+    # https://github.com/mxcl/homebrew/pull/19594    
+    ENV.deparallelize
     if build.head?
       ENV['GIT_DIR'] = cached_download/'.git'
       system './version.sh'
