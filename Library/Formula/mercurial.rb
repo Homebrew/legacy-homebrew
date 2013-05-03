@@ -16,8 +16,7 @@ class Mercurial < Formula
     # System-provided Python.
     ENV.minimal_optimization
 
-    # install the completion script
-    (prefix/'etc/bash_completion.d').install 'contrib/bash_completion' => 'hg-completion.bash'
+    bash_completion.install 'contrib/bash_completion' => 'hg-completion.bash'
 
     system "make doc" if build.head? or build.include? 'doc'
     system "make local"

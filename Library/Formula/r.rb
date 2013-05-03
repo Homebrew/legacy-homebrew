@@ -55,9 +55,7 @@ class R < Formula
     ln_s prefix+"R.framework/Resources/man1/R.1", man1
     ln_s prefix+"R.framework/Resources/man1/Rscript.1", man1
 
-    bash_dir = prefix + 'etc/bash_completion.d'
-    bash_dir.mkpath
-    RBashCompletion.new.brew { bash_dir.install 'R' }
+    RBashCompletion.new.brew { bash_completion.install 'R' }
 
     prefix.install 'make-check.log' if build.include? 'test'
   end

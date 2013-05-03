@@ -11,6 +11,6 @@ class Tig < Formula
     system "make install-doc-man"
 
     doc.install Dir['*.html']
-    (prefix+'etc/bash_completion.d').install 'contrib/tig-completion.bash'
+    bash_completion.install 'contrib/tig-completion.bash'
   end
 end
