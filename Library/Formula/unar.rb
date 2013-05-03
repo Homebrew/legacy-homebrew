@@ -22,8 +22,8 @@ class Unar < Formula
     bin.install "./Release/unar", "./Release/lsar"
 
     lib.install "./Release/libXADMaster.a"
-    (prefix/'Frameworks').install "./Release/XADMaster.framework"
-    (include/'libXADMaster').install_symlink Dir["#{prefix}/Frameworks/XADMaster.framework/Headers/*"]
+    frameworks.install "./Release/XADMaster.framework"
+    (include/'libXADMaster').install_symlink Dir["#{frameworks}/XADMaster.framework/Headers/*"]
 
     cd "./Extra" do
       man1.install "lsar.1", "unar.1"

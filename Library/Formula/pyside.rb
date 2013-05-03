@@ -18,13 +18,13 @@ class Pyside < Formula
     # unless the folder containing those frameworks is added to the compiler
     # search path.
     qt = Formula.factory 'qt'
-    ENV.append_to_cflags "-F#{qt.prefix}/Frameworks"
+    ENV.append_to_cflags "-F#{qt.frameworks}"
 
     # Also need `ALTERNATIVE_QT_INCLUDE_DIR` to prevent "missing file" errors.
     # Add out of tree build because one of its deps, shiboken, itself needs an
     # out of tree build in shiboken.rb.
     args = std_cmake_args + %W[
-      -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks
+      -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.frameworks}
       -DSITE_PACKAGE=lib/#{which_python}/site-packages
       -DBUILD_TESTS=NO
       ..

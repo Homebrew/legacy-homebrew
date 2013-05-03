@@ -165,6 +165,7 @@ class Formula
   def sbin;    prefix+'sbin'    end
   def share;   prefix+'share'   end
 
+  def frameworks; prefix+'Frameworks' end
   def kext_prefix; prefix+'Library/Extensions' end
 
   # configuration needs to be preserved past upgrades

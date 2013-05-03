@@ -76,10 +76,8 @@ class Qt5 < Formula
     (bin+'qhelpconverter.app').rmtree
 
     # Some config scripts will only find Qt in a "Frameworks" folder
-    # VirtualBox is an example of where this is needed
-    # See: https://github.com/mxcl/homebrew/issues/issue/745
     cd prefix do
-      ln_s lib, prefix + "Frameworks"
+      ln_s lib, frameworks
     end
 
     # The pkg-config files installed suggest that headers can be found in the
