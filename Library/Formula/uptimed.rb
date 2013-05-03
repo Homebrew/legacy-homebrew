@@ -1,8 +1,8 @@
 require 'formula'
 
 class Uptimed < Formula
-  url 'http://podgorny.cz/uptimed/releases/uptimed-0.3.12.tar.bz2'
   homepage 'http://podgorny.cz/moin/Uptimed'
+  url 'http://podgorny.cz/uptimed/releases/uptimed-0.3.12.tar.bz2'
   sha1 '753ab59bb99d7b88a35174ce83081ad0bb224e56'
 
   def install

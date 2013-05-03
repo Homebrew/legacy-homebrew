@@ -7,6 +7,9 @@ class Libusb < Formula
 
   head 'git://git.libusb.org/libusb.git'
 
+  conflicts_with 'libusbx',
+    :because => 'both provide libusb compatible libraries'
+
   if build.head?
     depends_on :automake
     depends_on :libtool
@@ -16,7 +19,12 @@ class Libusb < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "./autogen.sh" if build.head?
+
+    if build.head?
+      inreplace "configure.ac", "AM_CONFIG_HEADER", "AC_CONFIG_HEADERS"
+      system "./autogen.sh"
+    end
+
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end

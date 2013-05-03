@@ -2,8 +2,8 @@ require 'formula'
 
 class Vice < Formula
   homepage 'http://vice-emu.sourceforge.net/'
-  url "http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.3.tar.gz"
-  sha1 '5e7e1a375a4ca8c4895dc1552162955fdffce296'
+  url 'http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.4.tar.gz'
+  sha1 '719aa96cc72e7578983fadea1a31c21898362bc7'
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
@@ -23,7 +23,10 @@ class Vice < Formula
                           "--prefix=#{prefix}",
                           "--with-cocoa",
                           "--without-x",
-                          "--enable-static-lame"
+                          "--enable-static-lame",
+                          # VICE can't compile against FFMPEG newer than 0.11:
+                          # http://sourceforge.net/tracker/?func=detail&aid=3585471&group_id=223021&atid=1057617
+                          "--disable-ffmpeg"
     system "make"
     system "make bindist"
     prefix.install Dir['vice-macosx-*/*']

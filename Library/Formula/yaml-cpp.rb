@@ -2,10 +2,11 @@ require 'formula'
 
 class YamlCpp < Formula
   homepage 'http://code.google.com/p/yaml-cpp/'
-  url 'http://yaml-cpp.googlecode.com/files/yaml-cpp-0.3.0.tar.gz'
-  sha1 '28766efa95f1b0f697c4b4a1580a9972be7c9c41'
+  url 'http://yaml-cpp.googlecode.com/files/yaml-cpp-0.5.1.tar.gz'
+  sha1 '9c5414b4090491e96d1b808fe8628b31e625fdaa'
 
   depends_on 'cmake' => :build
+  depends_on 'boost'
 
   def install
     system "cmake", ".", *std_cmake_args

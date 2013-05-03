@@ -6,8 +6,8 @@ class Cutter < Formula
   sha1 'ce33471d343af21488ad0f36c8ed4f4ab3f6cd72'
 
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'glib'
-  depends_on 'intltool'
   depends_on 'gettext'
 
   def install

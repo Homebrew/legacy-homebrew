@@ -1,9 +1,9 @@
 require 'formula'
 
 class RbenvGemset < Formula
-  url 'https://github.com/jamis/rbenv-gemset/tarball/v0.3.0'
   homepage 'https://github.com/jamis/rbenv-gemset'
-  sha1 '52e058e43a4a1395c3fe923365cee53d0977c41a'
+  url 'https://github.com/jamis/rbenv-gemset/archive/v0.3.0.tar.gz'
+  sha1 '9c40f7efc3fea6e455adc3971d8e3ddd191e7560'
 
   head 'https://github.com/jamis/rbenv-gemset.git'
 
@@ -11,9 +11,5 @@ class RbenvGemset < Formula
 
   def install
     prefix.install Dir['*']
-
-    rbenv_plugins = "#{HOMEBREW_PREFIX}/var/lib/rbenv/plugins"
-    mkdir_p rbenv_plugins
-    ln_sf opt_prefix, "#{rbenv_plugins}/#{name}"
   end
 end

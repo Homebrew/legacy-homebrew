@@ -28,8 +28,8 @@ module Homebrew extend self
 
     files = []
     tapd.find_formula{ |file| files << tapd.basename.join(file) }
-    tapped = link_tap_formula(files)
-    puts "Tapped #{tapped} formula"
+    link_tap_formula(files)
+    puts "Tapped #{files.length} formula"
 
     # Figure out if this repo is private
     # curl will throw an exception if the repo is private (Github returns a 404)
@@ -88,11 +88,13 @@ module Homebrew extend self
     end
     puts "Pruned #{count} dead formula"
 
+    return unless HOMEBREW_REPOSITORY.join("Library/Taps").exist?
+
     count = 0
     # check symlinks are all set in each tap
     HOMEBREW_REPOSITORY.join("Library/Taps").children.each do |tap|
       files = []
-      tap.find_formula{ |file| files << tap.basename.join(file) }
+      tap.find_formula{ |file| files << tap.basename.join(file) } if tap.directory?
       count += link_tap_formula(files)
     end
 

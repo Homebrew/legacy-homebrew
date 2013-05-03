@@ -1,94 +1,83 @@
 require 'formula'
 
-class OasaPythonModule < Requirement
-  def message; <<-EOS.undent
-    The oasa Python module is required for some operations.
-    It can be downloaded from:
-      http://bkchem.zirael.org/oasa_en.html
-    EOS
-  end
-  def satisfied?
-    args = %W{/usr/bin/env python -c import\ oasa}
-    quiet_system *args
-  end
-end
-
 class OpenBabel < Formula
-  homepage 'http://openbabel.org/'
-  url 'http://sourceforge.net/projects/openbabel/files/openbabel/2.2.3/openbabel-2.2.3.tar.gz'
-  sha1 'e396b27551a106e001ca6c953181657a0a53f43f'
+  homepage 'http://www.openbabel.org'
+  url 'http://sourceforge.net/projects/openbabel/files/openbabel/2.3.2/openbabel-2.3.2.tar.gz'
+  sha1 'b8831a308617d1c78a790479523e43524f07d50d'
 
-  head 'https://openbabel.svn.sourceforge.net/svnroot/openbabel/openbabel/trunk'
+  option 'gui',    'Build the Graphical User Interface'
+  option 'png',    'Support PNG depiction'
+  option 'python', 'Compile Python language bindings'
+  option 'java',   'Compile Java language bindings'
 
-  depends_on OasaPythonModule.new
-
-  def options
-    [
-      ["--perl", "Perl bindings"],
-      ["--python", "Python bindings"],
-      ["--ruby", "Ruby bindings"]
-    ]
-  end
+  depends_on 'pkg-config' => :build
+  depends_on 'cmake' => :build
+  depends_on 'wxmac' if build.include? 'gui'
+  depends_on 'cairo' if build.include? 'png'
+  depends_on 'eigen' if build.include? 'python'
+  depends_on 'eigen' if build.include? 'java'
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}"]
-    args << '--enable-maintainer-mode' if ARGV.build_head?
+    args = %W[ -DCMAKE_INSTALL_PREFIX=#{prefix} ]
+    args << "-DPYTHON_BINDINGS=ON" if build.include? 'python'
+    args << "-DJAVA_BINDINGS=ON" if build.include? 'java'
+    args << "-DBUILD_GUI=ON" if build.include? 'gui'
+    args << "-DCAIRO_INCLUDE_DIRS=#{include}/cairo "\
+    "-DCAIRO_LIBRARIES=#{lib}/libcairo.dylib" if build.include? 'png'
 
-    system "./configure", *args
-    system "make"
-    system "make install"
-
-    ENV['OPENBABEL_INSTALL'] = prefix
-
-    # Install the python bindings
-    if ARGV.include? '--python'
-      cd 'scripts/python' do
-        system "python", "setup.py", "build"
-        system "python", "setup.py", "install", "--prefix=#{prefix}"
-      end
-    end
-
-    # Install the perl bindings.
-    if ARGV.include? '--perl'
-      cd 'scripts/perl' do
-        # because it's not yet been linked, the perl script won't find the newly
-        # compiled library unless we pass it in as LD_LIBRARY_PATH.
-        ENV['LD_LIBRARY_PATH'] = "lib"
-        system 'perl', 'Makefile.PL'
-        # With the additional argument "PREFIX=#{prefix}" it puts things in #{prefix} (where perl can't find them).
-        # Without, it puts them in /Library/Perl/...
-        inreplace "Makefile" do |s|
-          # Fix the broken Makefile (-bundle not allowed with -dynamiclib).
-          # I think this is a SWIG error, but I'm not sure.
-          s.gsub! '-bundle ', ''
-          # Don't waste time building PPC version.
-          s.gsub! '-arch ppc ', ''
-          # Don't build i386 version when libopenbabel can't link to it.
-          s.gsub! '-arch i386 ', ''
+    # Find the right pyhton installation (code from opencv.rb)
+    if build.include? 'python'
+      python_prefix = `python-config --prefix`.strip
+      # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
+      if File.exist? "#{python_prefix}/Python"
+        # Python was compiled with --framework:
+        args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+        if !MacOS::CLT.installed? and python_prefix.start_with? '/System/Library'
+          # For Xcode-only systems, the headers of system's python are inside of Xcode
+          args << "-DPYTHON_INCLUDE_DIR='#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/Headers'"
+        else
+          args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
         end
-        system "make"
-        system "make test"
-        system "make install"
+      else
+        python_lib = "#{python_prefix}/lib/lib#{which_python}"
+        if File.exists? "#{python_lib}.a"
+          args << "-DPYTHON_LIBRARY='#{python_lib}.a'"
+        else
+          args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
+        end
+        args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
       end
+      args << "-DPYTHON_PACKAGES_PATH='#{lib}/#{which_python}/site-packages'"
     end
 
-    # Install the ruby bindings.
-    if ARGV.include? '--ruby'
-      cd 'scripts/ruby' do
-        system "ruby", "extconf.rb",
-               "--with-openbabel-include=#{include}",
-               "--with-openbabel-lib=#{lib}"
+    args << '..'
 
-        # Don't build i386 version when libopenbabel can't link to it.
-        inreplace "Makefile", '-arch i386 ', ''
+    mkdir 'build' do
+      system "cmake", *args
+      system "make"
+      system "make install"
+    end
 
-        # With the following line it puts things in #{prefix} (where ruby can't find them).
-        # Without, it puts them in /Library/Ruby/...
-        #ENV['DESTDIR']=prefix
-        system "make"
-        system "make install"
+    if build.include? 'python'
+      pydir = lib/which_python/'site-packages'
+      pydir.install lib/'openbabel.py', lib/'pybel.py'
+      cd pydir do
+      `python -c 'import py_compile;py_compile.compile(\"openbabel.py\");py_compile.compile(\"pybel.py\")'`
       end
     end
+  end
+
+  def caveats; <<-EOS.undent
+    Python modules are installed to #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages
+    so the PYTHONPATH environment variable should include the paths
+    #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:#{HOMEBREW_PREFIX}/lib
+
+    Java libraries are installed to #{HOMEBREW_PREFIX}/lib so this path should be
+    included in the CLASSPATH environment variable.
+    EOS
+  end
+
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 end

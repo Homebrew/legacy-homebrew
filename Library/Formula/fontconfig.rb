@@ -2,8 +2,8 @@ require 'formula'
 
 class Fontconfig < Formula
   homepage 'http://fontconfig.org/'
-  url 'http://fontconfig.org/release/fontconfig-2.10.1.tar.gz'
-  sha1 'e377cbe989cd22d3a10020309c906ecbbcac0043'
+  url 'http://fontconfig.org/release/fontconfig-2.10.92.tar.bz2'
+  sha1 '5897402b2d05b7dca2843106b6a0e86c39ad0a4c'
 
   keg_only :provided_pre_mountain_lion
 

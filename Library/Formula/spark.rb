@@ -1,11 +1,15 @@
 require 'formula'
 
 class Spark < Formula
-  url 'https://github.com/holman/spark/zipball/v1.0.0'
-  homepage 'https://github.com/holman/spark'
-  sha1 '63971539fda9f7f3890b52ff131633f5bdda048b'
+  homepage 'http://zachholman.com/spark/'
+  url 'https://github.com/holman/spark/archive/v1.0.1.tar.gz'
+  sha1 '11c6a0c5e52720a1282c5da5019432c33dcf9403'
 
   def install
     bin.install "spark"
+  end
+
+  def test
+    system "#{bin}/spark"
   end
 end

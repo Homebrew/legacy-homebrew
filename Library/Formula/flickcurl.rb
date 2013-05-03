@@ -13,7 +13,7 @@ class Flickcurl < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/flickcurl -h"
+  test do
+    system "#{bin}/flickcurl", "-h"
   end
 end

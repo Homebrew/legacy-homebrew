@@ -20,8 +20,11 @@ class Iozone < Formula
     man1.install 'docs/iozone.1'
   end
 
-  def test
-    `#{bin}/iozone -I -s 16M | grep -c O_DIRECT`.chomp == '1'
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/iozone", "-I", "-s", "16M") do |_, stdout, _|
+      /File size set to 16384 KB/ === stdout.read
+    end
   end
 end
 

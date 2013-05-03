@@ -2,8 +2,8 @@ require 'formula'
 
 class Openfst < Formula
   homepage 'http://www.openfst.org/'
-  url 'http://openfst.cs.nyu.edu/twiki/pub/FST/FstDownload/openfst-1.3.2.tar.gz'
-  sha1 'b172439a9fcd5b8d4285a04d99d90e69cd7d12e9'
+  url 'http://openfst.cs.nyu.edu/twiki/pub/FST/FstDownload/openfst-1.3.3.tar.gz'
+  sha1 'd265fab57dd54c65bf200dd382afb490f2551c7d'
 
   def install
     system "./configure", "--disable-dependency-tracking",

@@ -2,8 +2,8 @@ require 'formula'
 
 class Dylibbundler < Formula
   homepage 'http://macdylibbundler.sourceforge.net'
-  url 'http://sourceforge.net/projects/macdylibbundler/files/macdylibbundler/0.4.1/dylibbundler0.4.1.zip'
-  sha1 'ea80b57a487da3df3e3cc508573bf18268100464'
+  url 'http://sourceforge.net/projects/macdylibbundler/files/macdylibbundler/0.4.3/dylibbundler-0.4.3.zip'
+  sha1 '9335f16ea90a375151707b03e59a7c5de41c39a9'
 
   def install
     system "make"

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pstree < Formula
-  url 'ftp://ftp.thp.uni-duisburg.de/pub/source/pstree-2.33.tar.gz'
   homepage 'http://freshmeat.net/projects/pstree/'
-  sha1 '2f29ea2618cb6fd90529a543a94ed89b79db58b8'
+  url 'ftp://ftp.thp.uni-duisburg.de/pub/source/pstree-2.35.tar.gz'
+  sha1 'e0b45290c0df1061581b45ce53b503d6fc6cfdf9'
 
   def install
     system "make pstree"

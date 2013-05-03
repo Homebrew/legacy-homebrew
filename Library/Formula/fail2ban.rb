@@ -42,6 +42,7 @@ class Fail2ban < Formula
         <key>ProgramArguments</key>
         <array>
           <string>#{opt_prefix}/bin/fail2ban-client</string>
+          <string>-x</string>
           <string>start</string>
         </array>
         <key>RunAtLoad</key>

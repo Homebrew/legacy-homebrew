@@ -23,8 +23,6 @@ class Tor < Formula
         <true/>
         <key>KeepAlive</key>
         <true/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>ProgramArguments</key>
         <array>
             <string>#{opt_prefix}/bin/tor</string>

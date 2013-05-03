@@ -5,7 +5,7 @@ class Swatchbooker < Formula
   url 'http://launchpad.net/swatchbooker/trunk/0.7.3/+download/SwatchBooker-0.7.3.tar.gz'
   sha1 'fd2e46c278e762dc0c3ed69f824ab620773f153e'
 
-  depends_on 'little-cms' # needs --with-python
+  depends_on 'little-cms' => 'with-python'
   depends_on 'pil'
   depends_on 'pyqt'
 

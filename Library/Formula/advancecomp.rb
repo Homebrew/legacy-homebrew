@@ -2,8 +2,8 @@ require 'formula'
 
 class Advancecomp < Formula
   homepage 'http://advancemame.sourceforge.net/comp-readme.html'
-  url 'http://downloads.sourceforge.net/advancemame/advancecomp-1.15.tar.gz'
-  sha1 '74fed754841efadcb8dd156d2c5e095bfaff83e6'
+  url 'http://downloads.sourceforge.net/advancemame/advancecomp-1.17.tar.gz'
+  sha1 '9197bc424d111575501221710301b44764150e85'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

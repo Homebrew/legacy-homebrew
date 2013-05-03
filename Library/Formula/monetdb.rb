@@ -2,8 +2,8 @@ require 'formula'
 
 class Monetdb < Formula
   homepage 'http://www.monetdb.org/'
-  url 'http://dev.monetdb.org/downloads/sources/Oct2012-SP1/MonetDB-11.13.5.tar.bz2'
-  sha1 'bf2d37cc4bb5a623a9fba65bc426ba38a525c808'
+  url 'http://dev.monetdb.org/downloads/sources/Feb2013-SP1/MonetDB-11.15.3.zip'
+  sha1 '2bc2e7bbdfc475c9d195e9d5d36a39757746cb0a'
 
   head 'http://dev.monetdb.org/hg/MonetDB', :using => :hg
 

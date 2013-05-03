@@ -2,8 +2,8 @@ require 'formula'
 
 class Io < Formula
   homepage 'http://iolanguage.com/'
-  url 'https://github.com/stevedekorte/io/tarball/2011.09.12'
-  sha1 '56720fe9b2c746ca817c15e48023b256363b3015'
+  url 'https://github.com/stevedekorte/io/archive/2011.09.12.tar.gz'
+  sha1 'edb63aa4ee87052f1512f0770e0c9a9b1ba91082'
 
   head 'https://github.com/stevedekorte/io.git'
 
@@ -16,6 +16,7 @@ class Io < Formula
   depends_on 'ossp-uuid'
   depends_on 'pcre'
   depends_on 'yajl'
+  depends_on 'xz'
 
   # Used by Bignum add-on
   depends_on 'gmp' unless build.include? 'without-addons'

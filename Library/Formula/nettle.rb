@@ -2,9 +2,8 @@ require 'formula'
 
 class Nettle < Formula
   homepage 'http://www.lysator.liu.se/~nisse/nettle/'
-  url 'http://www.lysator.liu.se/~nisse/archive/nettle-2.5.tar.gz'
-  mirror 'http://ftp.de.debian.org/debian/pool/main/n/nettle/nettle_2.5.orig.tar.gz'
-  sha256 '4aa142e908b0053082d7729fc0155dc90dbe71c8ef5f50f30034805ed5c92c72'
+  url 'http://www.lysator.liu.se/~nisse/archive/nettle-2.6.tar.gz'
+  sha1 '401f982a0b365e04c8c38c4da42afdd7d2d51d80'
 
   depends_on 'gmp'
 

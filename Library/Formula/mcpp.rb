@@ -1,8 +1,8 @@
 require 'formula'
 
 class Mcpp < Formula
-  url 'http://downloads.sourceforge.net/project/mcpp/mcpp/V.2.7.2/mcpp-2.7.2.tar.gz'
   homepage 'http://mcpp.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/mcpp/mcpp/V.2.7.2/mcpp-2.7.2.tar.gz'
   sha1 '703356b7c2cd30d7fb6000625bf3ccc2eb977ecb'
 
   # stpcpy is a macro on OS X; trying to define it as an extern is invalid.
@@ -12,7 +12,8 @@ class Mcpp < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--enable-mcpplib"
+                          "--prefix=#{prefix}",
+                          "--enable-mcpplib"
     system "make install"
   end
 end

@@ -18,7 +18,7 @@ Who Are You?
 I'm [Max Howell][mxcl] and I'm a splendid chap.
 
 
-[home]:http://mxcl.github.com/homebrew
+[home]:http://brew.sh
 [wiki]:http://wiki.github.com/mxcl/homebrew
 [mxcl]:http://twitter.com/mxcl
 [formula]:http://github.com/mxcl/homebrew/tree/master/Library/Formula/

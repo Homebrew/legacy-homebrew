@@ -2,8 +2,8 @@ require 'formula'
 
 class Fantom < Formula
   homepage 'http://fantom.org'
-  url 'http://fan.googlecode.com/files/fantom-1.0.63.zip'
-  sha1 '21042981b63da9e8f170c6d53d6abcede7d2ba25'
+  url 'http://fan.googlecode.com/files/fantom-1.0.64.zip'
+  sha1 'bc5c364fc943350c4b04d402ef0c2554681f3950'
 
   option 'with-src', 'Also install fantom source'
   option 'with-examples', 'Also install fantom examples'

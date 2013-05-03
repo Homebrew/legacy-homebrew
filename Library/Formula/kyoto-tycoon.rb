@@ -11,7 +11,9 @@ class KyotoTycoon < Formula
   depends_on 'kyoto-cabinet'
 
   def install
-    args = ["--prefix=#{prefix}"]
+    # Locate kyoto-cabinet for non-/usr/local builds
+    cabinet = Formula.factory("kyoto-cabinet")
+    args = ["--prefix=#{prefix}", "--with-kc=#{cabinet.opt_prefix}"]
     args << "--enable-lua" unless build.include? "no-lua"
 
     system "./configure", *args

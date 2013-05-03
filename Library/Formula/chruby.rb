@@ -1,10 +1,9 @@
 require 'formula'
 
 class Chruby < Formula
-
   homepage 'https://github.com/postmodern/chruby#readme'
-  url 'https://github.com/postmodern/chruby/archive/v0.2.5.tar.gz'
-  sha1 '0b4819754f320ea32a66aaae91a4e426dcc264fc'
+  url 'https://github.com/postmodern/chruby/archive/v0.3.4.tar.gz'
+  sha1 '28445cd75f514b299f6b2f2bf123793d8739a99b'
 
   head 'https://github.com/postmodern/chruby.git'
 
@@ -13,25 +12,29 @@ class Chruby < Formula
   end
 
   def caveats; <<-EOS.undent
-    For a system wide install, add the following to /etc/profile.d/chruby.sh.
+    Add the following to the /etc/profile.d/chruby.sh, ~/.bash_profile or
+    ~/.zprofile file:
 
-      #!/bin/sh
       source #{HOMEBREW_PREFIX}/opt/chruby/share/chruby/chruby.sh
-      RUBIES=(/opt/rubies/*)
 
-    For a local install, add the following to ~/.bashrc or ~/.zshrc.
+    By default chruby will search for Rubies installed into /opt/rubies/ or
+    ~/.rubies/. For non-standard installation locations, simply set the RUBIES
+    variable:
 
-      #!/bin/sh
-      source #{HOMEBREW_PREFIX}/opt/chruby/share/chruby/chruby.sh
-      RUBIES=(~/.rubies/*)
+      RUBIES=(
+        /opt/jruby-1.7.0
+        $HOME/src/rubinius
+      )
 
-    To use existing Rubies installed by RVM, rbenv or rbfu, set RUBIES to
-    the following:
+    If you are migrating from another Ruby manager, set `RUBIES` accordingly:
 
       RVM:   RUBIES=(~/.rvm/rubies/*)
       rbenv: RUBIES=(~/.rbenv/versions/*)
       rbfu:  RUBIES=('~/.rbfu/rubies/*)
 
+    To enable auto-switching of Rubies specified by .ruby-version files:
+
+      source #{HOMEBREW_PREFIX}/opt/chruby/share/chruby/auto.sh
     EOS
   end
 end

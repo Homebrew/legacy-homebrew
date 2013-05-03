@@ -11,7 +11,7 @@ module Homebrew extend self
         HOMEBREW_CELLAR.children.each do |rack|
           begin
             cleanup_formula rack.basename.to_s if rack.directory?
-          rescue FormulaUnavailableError => e
+          rescue FormulaUnavailableError
             # Don't complain about Cellar folders that are from DIY installs
             # instead of core formulae.
           end
@@ -37,11 +37,15 @@ module Homebrew extend self
       f.rack.children.each do |keg|
         if File.directory? keg and f.version > Keg.new(keg).version
           if f.can_cleanup?
-            if ARGV.dry_run?
-              puts "Would remove: #{keg}"
+            if !Keg.new(keg).linked?
+              if ARGV.dry_run?
+                puts "Would remove: #{keg}"
+              else
+                puts "Removing: #{keg}..."
+                rm_rf keg
+              end
             else
-              puts "Removing: #{keg}..."
-              rm_rf keg
+              opoo "Skipping (old) #{keg} due to it being linked"
             end
           else
             opoo "Skipping (old) keg-only: #{keg}"
@@ -77,7 +81,7 @@ module Homebrew extend self
   end
 
   def rm_DS_Store
-    system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete"
+    system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete 2>/dev/null"
   end
 
 end

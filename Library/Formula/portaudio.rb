@@ -5,6 +5,8 @@ class Portaudio < Formula
   url 'http://www.portaudio.com/archives/pa_stable_v19_20111121.tgz'
   sha1 'f07716c470603729a55b70f5af68f4a6807097eb'
 
+  head 'https://subversion.assembla.com/svn/portaudio/portaudio/trunk/', :using => :svn
+
   depends_on 'pkg-config' => :build
 
   option :universal
@@ -18,7 +20,7 @@ class Portaudio < Formula
     { :p0 =>
       "https://trac.macports.org/export/94150/trunk/dports/audio/portaudio/files/patch-include__pa_mac_core.h.diff"
     }
-  end if MacOS.version >= :lion
+  end if MacOS.version >= :lion and not build.head?
 
   def install
     ENV.universal_binary if build.universal?

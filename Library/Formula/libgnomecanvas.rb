@@ -6,7 +6,7 @@ class Libgnomecanvas < Formula
   sha256 '859b78e08489fce4d5c15c676fec1cd79782f115f516e8ad8bed6abcb8dedd40'
 
   depends_on 'pkg-config' => :build
-  depends_on 'intltool'
+  depends_on 'intltool' => :build
   depends_on 'libglade'
   depends_on 'libart'
   depends_on 'gettext'

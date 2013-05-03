@@ -2,11 +2,10 @@ require 'formula'
 
 class ClosureCompiler < Formula
   homepage 'http://code.google.com/p/closure-compiler/'
-  # Use an SVN download to get the externals as well
-  url 'svn+http://closure-compiler.googlecode.com/svn/trunk/', :revision => '2180'
-  version '20120917'
+  url 'https://code.google.com/p/closure-compiler/', :using => :git, :tag => 'v20130411'
+  version '20130411'
 
-  head 'svn+http://closure-compiler.googlecode.com/svn/trunk/'
+  head 'https://code.google.com/p/closure-compiler/', :using => :git
 
   def install
     system "ant", "clean"

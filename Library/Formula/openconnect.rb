@@ -1,14 +1,14 @@
 require 'formula'
 
 class VpncScript < Formula
-  url 'http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/a92baacc79914de9d29704f0fd2ac6fe7a0cd7c4:/vpnc-script'
-  sha1 'ee76aa0adc085784871cd55e2a4ab70310d848b8'
+  url 'http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/d2c5a77f3f0ea6ad80fc59158127d63ede81a6cb:/vpnc-script'
+  sha1 '9915539c34393c1f8d7de9c3fc2c7396476bd998'
 end
 
 class Openconnect < Formula
   homepage 'http://www.infradead.org/openconnect.html'
-  url 'ftp://ftp.infradead.org/pub/openconnect/openconnect-4.07.tar.gz'
-  sha1 '6ed84bda36578b4eb67beb4b39f03aec90270a77'
+  url 'ftp://ftp.infradead.org/pub/openconnect/openconnect-4.99.tar.gz'
+  sha1 '60a25be5014f5fdd49dc0b50649037cf51be8737'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'

@@ -2,9 +2,8 @@ require 'formula'
 
 class RdsCommandLineTools < AmazonWebServicesFormula
   homepage 'http://aws.amazon.com/developertools/2928'
-  url 'http://s3.amazonaws.com/rds-downloads/RDSCli.zip'
-  version '1.10.003'
-  sha1 '668cd776e88f76084164811cb4cab3e6373009dc'
+  url 'https://s3.amazonaws.com/rds-downloads/RDSCli-1.12.002.zip'
+  sha1 'ce457bd18a315003215323b10bcf22239b8e57f0'
 
   def install
     rm Dir['bin/*.cmd'] # Remove Windows command files

@@ -2,8 +2,8 @@ require 'formula'
 
 class Sickbeard < Formula
   homepage 'http://www.sickbeard.com/'
-  url 'https://github.com/midgetspy/Sick-Beard/tarball/build-497'
-  sha1 '6a0a30b2878a0d93ec22e2d2547673fa8b8d08ed'
+  url 'https://github.com/midgetspy/Sick-Beard/archive/build-498.tar.gz'
+  sha1 'd4374c2377d4731aea3b142c4bd14fa82c832951'
 
   head 'https://github.com/midgetspy/Sick-Beard.git'
 
@@ -33,8 +33,6 @@ class Sickbeard < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
     </dict>
     </plist>
     EOS

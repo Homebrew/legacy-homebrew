@@ -1,6 +1,5 @@
 require 'formula'
 
-
 class Darkstat < Formula
   homepage 'http://unix4lyfe.org/darkstat/'
   url 'http://unix4lyfe.org/darkstat/darkstat-3.0.715.tar.bz2'
@@ -11,7 +10,7 @@ class Darkstat < Formula
     system "make install"
   end
 
-  def test
-    system "#{sbin}/darkstat --version"
+  test do
+    system "#{sbin}/darkstat", "--version"
   end
 end

@@ -1,21 +1,18 @@
 require 'formula'
 
-def kext_prefix
-  prefix + 'Library' + 'Extensions'
-end
-
 class Fuse4xKext < Formula
   homepage 'http://fuse4x.github.com'
-  url 'https://github.com/fuse4x/kext/tarball/fuse4x_0_9_2'
-  sha1 'ff143cd14346a6b79769b745e117949baae86705'
+  url 'https://github.com/fuse4x/kext/archive/fuse4x_0_9_2.tar.gz'
+  sha1 '4222c14b38325d9e41fb0925d2681dda3e73e861'
 
   bottle do
     # Bottle provided for Lion and newer since the Command Line Tools cannot
     # compile things that use `xcodebuild`. Actual compilation takes ~10
     # seconds so there is no need to bottle this for earlier systems.
+    revision 2
 
     sha1 '66e546c4d8b590b0c67584b73a6731757a5d87fb' => :mountainlion
-    sha1 'b2586e3f78a709a0df0385868a540fda17a7a00a' => :lion
+    sha1 '08c877f8764d755e0574083ffc981105e3913a27' => :lion
   end
 
   def install

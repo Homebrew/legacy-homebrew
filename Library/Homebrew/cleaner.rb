@@ -26,7 +26,13 @@ class Cleaner
     # We want post-order traversal, so use a stack.
     paths = []
     f.prefix.find do |path|
-      paths << path if path.directory?
+      if path.directory?
+        if f.skip_clean? path
+          Find.prune
+        else
+          paths << path
+        end
+      end
     end
 
     paths.each do |d|
@@ -46,20 +52,19 @@ class Cleaner
     else
       0444
     end
-    # Uncomment this block to show permission changes using brew install -v
-    # if ARGV.verbose?
-    #   old_perms = path.stat.mode
-    #   if perms != old_perms
-    #     puts "Fixing #{path} permissions from #{old_perms.to_s(8)} to #{perms.to_s(8)}"
-    #   end
-    # end
+    if ARGV.debug?
+      old_perms = path.stat.mode
+      if perms != old_perms
+        puts "Fixing #{path} permissions from #{old_perms.to_s(8)} to #{perms.to_s(8)}"
+      end
+    end
     path.chmod perms
   end
 
   # Clean a single folder (non-recursively)
   def clean_dir d
     d.find do |path|
-      path.extend(NoiseyPathname) if ARGV.verbose?
+      path.extend(NoisyPathname) if ARGV.verbose?
 
       if path.directory?
         # Stop cleaning this subtree if protected
@@ -82,14 +87,9 @@ class Cleaner
 
 end
 
-
-class Pathname
-  alias_method :orig_unlink, :unlink
-end
-
-module NoiseyPathname
+module NoisyPathname
   def unlink
     puts "rm: #{self}"
-    orig_unlink
+    super
   end
 end

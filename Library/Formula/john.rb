@@ -5,10 +5,6 @@ class John < Formula
   url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
   sha1 '8f77bdd42b7cf94ec176f55ea69c4da9b2b8fe3b'
 
-  fails_with :llvm do
-    build 2334
-  end
-
   option 'jumbo', 'Build with jumbo-7 features'
 
   def patches
@@ -17,12 +13,29 @@ class John < Formula
     return p
   end
 
+  fails_with :llvm do
+    build 2334
+    cause "Don't remember, but adding this to whitelist 2336."
+  end
+
+  fails_with :clang do
+    build 425
+    cause "rawSHA1_ng_fmt.c:535:19: error: redefinition of '_mm_testz_si128'"
+  end if build.include? 'jumbo'
+
   def install
     ENV.deparallelize
     arch = Hardware.is_64_bit? ? '64' : 'sse2'
+    arch += '-opencl' if build.include? 'jumbo'
 
     cd 'src' do
-      system "make", "clean", "macosx-x86-#{arch}", "CC=#{ENV.cc}"
+      inreplace 'Makefile' do |s|
+        s.change_make_var! "CC", ENV.cc
+        if build.include?('jumbo') && MacOS.version != :leopard && ENV.compiler != :clang
+          s.change_make_var! "OMPFLAGS", "-fopenmp -msse2 -D_FORTIFY_SOURCE=0"
+        end
+      end
+      system "make", "clean", "macosx-x86-#{arch}"
     end
 
     # Remove the README symlink and install the real file

@@ -2,8 +2,8 @@ require 'formula'
 
 class Sdhash < Formula
   homepage 'http://roussev.net/sdhash/sdhash.html'
-  url 'http://roussev.net/sdhash/releases/packages/sdhash-2.3.tar.gz'
-  sha1 '711a7d3fdc2bf0d27e034078a4369b8489215654'
+  url 'http://roussev.net/sdhash/releases/packages/sdhash-3.1.tar.gz'
+  sha1 '0539d05a9c68aee509ca2d2dee30e5067dc211d0'
 
   def install
     inreplace "Makefile" do |s|

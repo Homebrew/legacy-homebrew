@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ledit < Formula
-  url 'http://pauillac.inria.fr/~ddr/ledit/distrib/src/ledit-2.01.tgz'
   homepage 'http://pauillac.inria.fr/~ddr/ledit/'
-  sha1 '97ee7ee60fb8e66cdcc8fc61339e8ab616bcd2df'
+  url 'http://pauillac.inria.fr/~ddr/ledit/distrib/src/ledit-2.03.tgz'
+  sha1 '8fef728f38e8d6fc30dd5f71dd5b6b647212a43a'
 
   depends_on 'objective-caml'
   depends_on 'camlp5'

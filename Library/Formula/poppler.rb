@@ -7,8 +7,8 @@ end
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.20.5.tar.gz'
-  sha1 '5eb351381e6d7994bdf7f09bb5c1075f41d79381'
+  url 'http://poppler.freedesktop.org/poppler-0.22.3.tar.gz'
+  sha1 '92fd3d2f56cf74bb76e4856a8ac606330343ba8d'
 
   option 'with-qt4', 'Build Qt backend'
   option 'with-glib', 'Build Glib backend'

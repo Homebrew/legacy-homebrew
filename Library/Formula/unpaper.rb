@@ -1,8 +1,8 @@
 require 'formula'
 
 class Unpaper < Formula
-  url 'http://download.berlios.de/unpaper/unpaper-0.3.tar.gz'
   homepage 'http://unpaper.berlios.de/'
+  url 'http://download.berlios.de/unpaper/unpaper-0.3.tar.gz'
   sha1 '120eee7c635eeb8ea75431c2dfba89bd8c132493'
 
   def install

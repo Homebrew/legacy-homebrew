@@ -5,6 +5,7 @@ class Libwpd < Formula
   url 'http://downloads.sourceforge.net/libwpd/libwpd-0.9.6.tar.bz2'
   sha1 '9219cd728f926299cafe8f3292e8be1b439bf35f'
 
+  depends_on 'pkg-config' => :build
   depends_on "glib"
   depends_on "libgsf"
 

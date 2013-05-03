@@ -68,14 +68,12 @@ class FormulaText
   end
 
   def has_trailing_newline?
-    /.+\z/ =~ @text
+    /\Z\n/ =~ @text
   end
 end
 
 class FormulaAuditor
-  attr :f
-  attr :text
-  attr :problems, true
+  attr_reader :f, :text, :problems
 
   BUILD_TIME_DEPS = %W[
     autoconf
@@ -84,6 +82,7 @@ class FormulaAuditor
     bsdmake
     cmake
     imake
+    intltool
     libtool
     pkg-config
     scons
@@ -95,6 +94,7 @@ class FormulaAuditor
     @f = f
     @problems = []
     @text = f.text.without_patch
+    @specs = %w{stable devel head}.map { |s| f.send(s) }.compact
 
     # We need to do this in case the formula defines a patch that uses DATA.
     f.class.redefine_const :DATA, ""
@@ -113,14 +113,12 @@ class FormulaAuditor
       problem "'__END__' was found, but 'DATA' is not used"
     end
 
-    if f.text.has_trailing_newline?
+    unless f.text.has_trailing_newline?
       problem "File should end with a newline"
     end
   end
 
   def audit_deps
-    problems = []
-
     # Don't depend_on aliases; use full name
     aliases = Formula.aliases
     f.deps.select { |d| aliases.include? d.name }.each do |d|
@@ -129,19 +127,38 @@ class FormulaAuditor
 
     # Check for things we don't like to depend on.
     # We allow non-Homebrew installs whenever possible.
-    f.deps.each do |d|
+    f.deps.each do |dep|
       begin
-        dep_f = Formula.factory d
-      rescue
-        problem "Can't find dependency \"#{d}\"."
+        dep_f = dep.to_formula
+      rescue FormulaUnavailableError
+        problem "Can't find dependency #{dep.name.inspect}."
       end
 
-      case d.name
-      when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
+      dep.options.reject do |opt|
+        dep_f.build.has_option?(opt.name)
+      end.each do |opt|
+        problem "Dependency #{dep} does not define option #{opt.name.inspect}"
+      end
+
+      case dep.name
+      when *BUILD_TIME_DEPS
+        # Build deps should be tagged
+        problem <<-EOS.undent unless dep.tags.any? || f.name =~ /automake/ && dep.name == 'autoconf'
+        #{dep} dependency should be "depends_on '#{dep}' => :build"
+        EOS
+      when "git", "python", "ruby", "emacs", "mysql", "mercurial"
         problem <<-EOS.undent
-          Don't use #{d} as a dependency. We allow non-Homebrew
-          #{d} installations.
+          Don't use #{dep} as a dependency. We allow non-Homebrew
+          #{dep} installations.
           EOS
+      when "postgresql"
+        # Postgis specifically requires a Homebrewed postgresql
+        unless f.name == "postgis"
+          problem <<-EOS.undent
+            Don't use #{dep} as a dependency. We allow non-Homebrew
+            #{dep} installations.
+          EOS
+        end
       when 'gfortran'
         problem "Use ENV.fortran during install instead of depends_on 'gfortran'"
       when 'open-mpi', 'mpich2'
@@ -155,26 +172,45 @@ class FormulaAuditor
     end
   end
 
+  def audit_conflicts
+    f.conflicts.each do |req|
+      begin
+        Formula.factory req.formula
+      rescue FormulaUnavailableError
+        problem "Can't find conflicting formula \"#{req.formula}\"."
+      end
+    end
+  end
 
   def audit_urls
     unless f.homepage =~ %r[^https?://]
-      problem "The homepage should start with http or https."
+      problem "The homepage should start with http or https (url is #{f.homepage})."
+    end
+
+    # Check for http:// GitHub homepage urls, https:// is preferred.
+    # Note: only check homepages that are repo pages, not *.github.com hosts
+    if f.homepage =~ %r[^http://github\.com/]
+      problem "Use https:// URLs for homepages on GitHub (url is #{f.homepage})."
     end
 
     # Google Code homepages should end in a slash
     if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
-      problem "Google Code homepage should end with a slash."
+      problem "Google Code homepage should end with a slash (url is #{f.homepage})."
     end
 
-    urls = [(f.stable.url rescue nil), (f.devel.url rescue nil), (f.head.url rescue nil)].compact
+    if f.homepage =~ %r[^http://.*\.github\.com/]
+      problem "GitHub pages should use the github.io domain (url is #{f.homepage})"
+    end
+
+    urls = @specs.map(&:url)
 
     # Check GNU urls; doesn't apply to mirrors
-    if urls.any? { |p| p =~ %r[^(https?|ftp)://(.+)/gnu/] }
-      problem "\"ftpmirror.gnu.org\" is preferred for GNU software."
+    urls.grep(%r[^(?:https?|ftp)://(?!alpha).+/gnu/]).each do |u|
+      problem "\"ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
     end
 
     # the rest of the checks apply to mirrors as well
-    urls.concat([(f.stable.mirrors rescue nil), (f.devel.mirrors rescue nil)].flatten.compact)
+    urls.concat(@specs.map(&:mirrors).flatten)
 
     # Check SourceForge urls
     urls.each do |p|
@@ -186,25 +222,40 @@ class FormulaAuditor
       next unless p =~ %r[^https?://.*\bsourceforge\.]
 
       if p =~ /(\?|&)use_mirror=/
-        problem "Update this url (don't use #{$1}use_mirror)."
+        problem "Don't use #{$1}use_mirror in SourceForge urls (url is #{p})."
       end
 
       if p =~ /\/download$/
-        problem "Update this url (don't use /download)."
+        problem "Don't use /download in SourceForge urls (url is #{p})."
       end
 
       if p =~ %r[^http://prdownloads\.]
-        problem "Update this url (don't use prdownloads). See:\nhttp://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
+        problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" + 
+                "\tSee: http://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
       end
 
       if p =~ %r[^http://\w+\.dl\.]
-        problem "Update this url (don't use specific dl mirrors)."
+        problem "Don't use specific dl mirrors in SourceForge urls (url is #{p})."
       end
     end
 
-    # Check for git:// urls; https:// is preferred.
-    if urls.any? { |p| p =~ %r[^git://github\.com/] }
-      problem "Use https:// URLs for accessing GitHub repositories."
+    # Check for git:// GitHub repo urls, https:// is preferred.
+    urls.grep(%r[^git://[^/]*github\.com/]).each do |u|
+      problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
+    end
+
+    # Check for http:// GitHub repo urls, https:// is preferred.
+    urls.grep(%r[^http://github\.com/.*\.git$]).each do |u|
+      problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
+    end 
+
+    # Use new-style archive downloads
+    urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] and not u =~ %r[\.git$] }.each do |u|
+      problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
+    end
+
+    if urls.any? { |u| u =~ /\.xz/ } && !f.deps.any? { |d| d.name == "xz" }
+      problem "Missing a build-time dependency on 'xz'"
     end
   end
 
@@ -229,12 +280,9 @@ class FormulaAuditor
       next if cksum.nil?
 
       len = case cksum.hash_type
-        when :md5 then 32
         when :sha1 then 40
         when :sha256 then 64
         end
-
-      problem "md5 is broken, deprecated: use sha1 instead" if cksum.hash_type == :md5
 
       if cksum.empty?
         problem "#{cksum.hash_type} is empty"
@@ -248,16 +296,16 @@ class FormulaAuditor
 
   def audit_patches
     # Some formulae use ENV in patches, so set up an environment
-    ENV.setup_build_environment
-
-    Patches.new(f.patches).select { |p| p.external? }.each do |p|
-      case p.url
-      when %r[raw\.github\.com], %r[gist\.github\.com/raw]
-        unless p.url =~ /[a-fA-F0-9]{40}/
-          problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
+    ENV.with_build_environment do
+      Patches.new(f.patches).select { |p| p.external? }.each do |p|
+        case p.url
+        when %r[raw\.github\.com], %r[gist\.github\.com/raw]
+          unless p.url =~ /[a-fA-F0-9]{40}/
+            problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
+          end
+        when %r[macports/trunk]
+          problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
         end
-      when %r[macports/trunk]
-        problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
       end
     end
   end
@@ -268,20 +316,9 @@ class FormulaAuditor
     end
 
     # Commented-out cmake support from default template
-    if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
-      problem "Commented cmake support found"
+    if (text =~ /# system "cmake/)
+      problem "Commented cmake call found"
     end
-
-    # 2 (or more in an if block) spaces before depends_on, please
-    if text =~ /^\ ?depends_on/
-      problem "Check indentation of 'depends_on'"
-    end
-
-    # build tools should be flagged properly
-    # but don't complain about automake; it needs autoconf at runtime
-    if text =~ /depends_on ['"](#{BUILD_TIME_DEPS*'|'})['"]$/
-      problem "#{$1} dependency should be \"depends_on '#{$1}' => :build\""
-    end unless f.name == "automake"
 
     # FileUtils is included in Formula
     if text =~ /FileUtils\.(\w+)/
@@ -294,7 +331,7 @@ class FormulaAuditor
     end
 
     # Check for string interpolation of single values.
-    if text =~ /(system|inreplace|gsub!|change_make_var!) .* ['"]#\{(\w+(\.\w+)?)\}['"]/
+    if text =~ /(system|inreplace|gsub!|change_make_var!).*[ ,]"#\{([\w.]+)\}"/
       problem "Don't need to interpolate \"#{$2}\" with #{$1}"
     end
 
@@ -335,7 +372,7 @@ class FormulaAuditor
     end
 
     # No trailing whitespace, please
-    if text =~ /(\t|[ ])+$/
+    if text =~ /[\t ]+$/
       problem "Trailing whitespace was found"
     end
 
@@ -361,11 +398,11 @@ class FormulaAuditor
     end
 
     # Avoid hard-coding compilers
-    if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]]
+    if text =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
       problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
     end
 
-    if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]]
+    if text =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}
       problem "Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
     end
 
@@ -381,7 +418,7 @@ class FormulaAuditor
       problem "Reference '#{$1}' without dashes"
     end
 
-    if text =~ /ARGV\.(?!(debug|verbose|find)\?)/
+    if text =~ /ARGV\.(?!(debug\?|verbose\?|find[\(\s]))/
       problem "Use build instead of ARGV to check options"
     end
 
@@ -393,12 +430,21 @@ class FormulaAuditor
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
 
-    if text =~ /(MacOS.((snow_)?leopard|leopard|(mountain_)?lion)\?)/
-      problem "#{$1} is deprecated, use a comparison to MacOS.version instead"
+    cats = %w{leopard snow_leopard lion mountain_lion}.join("|")
+    if text =~ /MacOS\.(?:#{cats})\?/
+      problem "\"#{$&}\" is deprecated, use a comparison to MacOS.version instead"
     end
 
     if text =~ /skip_clean\s+:all/
       problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
+    end
+
+    if text =~ /depends_on [A-Z][\w:]+\.new$/
+      problem "`depends_on` can take requirement classes instead of instances"
+    end
+
+    if text =~ /^def (\w+).*$/
+      problem "Define method #{$1.inspect} in the class body, not at the top-level"
     end
   end
 
@@ -407,6 +453,7 @@ class FormulaAuditor
     audit_specs
     audit_urls
     audit_deps
+    audit_conflicts
     audit_patches
     audit_text
   end

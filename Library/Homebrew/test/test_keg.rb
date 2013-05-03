@@ -43,14 +43,14 @@ class LinkTests < Test::Unit::TestCase
   def test_linking_fails_when_already_linked
     @keg.link
     assert_raise RuntimeError, "Cannot link testball" do
-      @keg.link
+      shutup { @keg.link }
     end
   end
 
   def test_linking_fails_when_files_exist
     FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
     assert_raise RuntimeError do
-      @keg.link
+      shutup { @keg.link }
     end
   end
 

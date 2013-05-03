@@ -1,15 +1,14 @@
 require 'formula'
 
 class UniversalPython < Requirement
+  satisfy { archs_for_command("python").universal? }
+
   def message; <<-EOS.undent
     A universal build was requested, but Python is not a universal build
 
     Boost compiles against the Python it finds in the path; if this Python
     is not a universal build then linking will likely fail.
     EOS
-  end
-  def satisfied?
-    archs_for_command("python").universal?
   end
 end
 
@@ -27,13 +26,18 @@ class Boost149 < Formula
   option 'without-python', 'Build without Python'
   option 'with-icu', 'Build regexp engine with icu support'
 
-  depends_on UniversalPython.new if build.universal? and not build.include? "without-python"
+  depends_on UniversalPython if build.universal? and not build.include? "without-python"
   depends_on "icu4c" if build.include? "with-icu"
   depends_on MPIDependency.new(:cc, :cxx) if build.include? "with-mpi"
 
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
+  end
+
+  def patches
+    # Security fix for Boost.Locale. For details: http://www.boost.org/users/news/boost_locale_security_notice.html
+    {:p0 => "http://cppcms.com/files/locale/boost_locale_utf.patch"}
   end
 
   def install

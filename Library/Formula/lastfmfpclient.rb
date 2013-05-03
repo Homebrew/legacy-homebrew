@@ -2,9 +2,9 @@ require 'formula'
 
 class Lastfmfpclient < Formula
   homepage 'https://github.com/lastfm/Fingerprinter'
-  url 'https://github.com/lastfm/Fingerprinter/tarball/9ee83a51ac9058ff53c9'
+  url 'https://github.com/lastfm/Fingerprinter/archive/9ee83a51ac9058ff53c9.tar.gz'
   version '1.6'
-  sha1 'dcb10b1bad1f1af30b43f1828f83c262e6dfb6df'
+  sha1 '79f6a7b8db33cb4f417d5ba9ef06884e5be1fa80'
 
   depends_on 'cmake' => :build
   depends_on 'taglib'

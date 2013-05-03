@@ -2,9 +2,8 @@ require 'formula'
 
 class Shiboken < Formula
   homepage 'http://www.pyside.org/docs/shiboken'
-  # See https://github.com/mxcl/homebrew/issues/15190
-  url 'https://distfiles.macports.org/py-shiboken/shiboken-1.1.2.tar.bz2'
-  # url 'http://pyside.org/files/shiboken-1.1.2.tar.bz2'
+  url 'http://qt-project.org/uploads/pyside/shiboken-1.1.2.tar.bz2'
+  mirror 'https://distfiles.macports.org/py-shiboken/shiboken-1.1.2.tar.bz2'
   sha1 '2ffe9d47a3f536840ed9d7eff766a53040bb2a2e'
 
   depends_on 'cmake' => :build
@@ -25,7 +24,7 @@ class Shiboken < Formula
       if File.exist? "#{python_prefix}/Python"
         # Python was compiled with --framework:
         args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
-        if !MacOS.clt_installed? and python_prefix.start_with? '/System/Library'
+        if !MacOS::CLT.installed? and python_prefix.start_with? '/System/Library'
           # For Xcode-only systems, the headers of system's python are inside of Xcode
           args << "-DPYTHON_INCLUDE_DIR='#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/Headers'"
         else
