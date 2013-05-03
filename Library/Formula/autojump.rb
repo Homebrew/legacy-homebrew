@@ -13,7 +13,7 @@ class Autojump < Formula
     bin.install 'bin/autojump'
     man1.install 'docs/autojump.1'
     (prefix+'etc').install 'bin/autojump.sh', 'bin/autojump.bash', 'bin/autojump.zsh'
-    (share+'zsh/site-functions').install 'bin/_j'
+    zsh_completion.install 'bin/_j'
   end
 
   def caveats; <<-EOS.undent
