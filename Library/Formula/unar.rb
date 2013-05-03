@@ -21,12 +21,9 @@ class Unar < Formula
 
     bin.install "./Release/unar", "./Release/lsar"
 
-    # Copy the headers from the Framework to include as well
-    # TODO - should they just be symlinked?
-    (include/'libXADMaster').mkpath
-    copy Dir["./Release/XADMaster.framework/Headers/*"], "#{include}/libXADMaster/"
-
-    lib.install "./Release/libXADMaster.a" , "./Release/XADMaster.framework"
+    lib.install "./Release/libXADMaster.a"
+    (prefix/'Frameworks').install "./Release/XADMaster.framework"
+    (include/'libXADMaster').install_symlink Dir["#{prefix}/Frameworks/XADMaster.framework/Headers/*"]
 
     cd "./Extra" do
       man1.install "lsar.1", "unar.1"
