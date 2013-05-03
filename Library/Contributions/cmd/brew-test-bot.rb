@@ -70,7 +70,7 @@ class Step
     else
       output = `#{command}`
     end
-    output = IO.read(step.log_file_path)
+    output = IO.read(step.log_file_path) rescue nil
 
     success = $?.success?
     step.status = success ? :passed : :failed
