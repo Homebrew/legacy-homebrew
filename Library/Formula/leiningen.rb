@@ -10,7 +10,7 @@ class Leiningen < Formula
   def install
     bin.install "bin/lein"
     system "#{bin}/lein", "self-install"
-    (etc+'bash_completion.d').install 'bash_completion.bash' => 'lein-completion.bash'
+    bash_completion.install 'bash_completion.bash' => 'lein-completion.bash'
   end
 
   def caveats; <<-EOS.undent
