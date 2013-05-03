@@ -51,10 +51,10 @@ class Nu < Formula
       arch = :x86_64 if arch == :i386 && Hardware.is_64_bit?
       s.sub!(/^;;\(set @arch '\("i386"\)\)$/, "(set @arch '(\"#{arch}\"))") unless arch.nil?
       s.gsub!('(SH "sudo ', '(SH "') # don't use sudo to install
-      s.gsub!('#{@destdir}/Library/Frameworks', '#{@prefix}/Library/Frameworks')
+      s.gsub!('#{@destdir}/Library/Frameworks', '#{@frameworks}')
       s.sub! /^;; source files$/, <<-EOS
 ;; source files
-(set @framework_install_path "#{prefix}/Library/Frameworks")
+(set @framework_install_path "#{frameworks}")
 EOS
     end
     system "make"
@@ -66,14 +66,14 @@ EOS
   end
 
   def caveats
-    if self.installed? and File.exists? prefix+"Library/Frameworks/Nu.framework"
+    if self.installed? and File.exists? frameworks+"Nu.framework"
       return <<-EOS.undent
         Nu.framework was installed to:
-          #{prefix}/Library/Frameworks/Nu.framework
+          #{frameworks}/Nu.framework
 
         You may want to symlink this Framework to a standard OS X location,
         such as:
-          ln -s "#{prefix}/Library/Frameworks/Nu.framework" /Library/Frameworks
+          ln -s "#{frameworks}/Nu.framework" /Library/Frameworks
       EOS
     end
     return nil
