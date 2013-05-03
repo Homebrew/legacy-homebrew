@@ -35,8 +35,11 @@ module Homebrew extend self
           info_formula Formula.factory(f)
         rescue FormulaUnavailableError
           # No formula with this name, try a blacklist lookup
-          blacklist = blacklisted?(f)
-          puts blacklist if blacklist
+          if (blacklist = blacklisted?(f))
+            puts blacklist
+          else
+            raise
+          end
         end
       end
     end

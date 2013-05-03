@@ -252,5 +252,3 @@ the PYTHONPATH:
     end
   end
 end
-
-__END__
