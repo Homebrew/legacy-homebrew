@@ -6,8 +6,8 @@ class Graphviz < Formula
   sha1 '96739220c4bbcf1bd3bd52e7111f4e60497185c6'
 
   devel do
-    url 'http://www.graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.31.20130217.0545.tar.gz'
-    sha1 '071e4fb02db53029615ec2023ca553fdcdd27a44'
+    url 'http://www.graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.31.20130502.2155.tar.gz'
+    sha1 'df9d2bb8788ad3266a1ab6a7fb6d0237bde5e28a'
   end
 
   env :std
