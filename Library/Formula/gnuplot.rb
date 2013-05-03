@@ -4,9 +4,10 @@ class SomeKindOfLuaRequirement < Requirement
     fatal true
 
     satisfy do
-        %w{lua lua52}.any? do |lua|
-            dep = Formula.factory(lua)
-            dep.installed? and dep.linked_keg.directory?
+        version = `which lua >/dev/null && lua -v 2>&1 | cut -d\\  -f2`
+        unless version.empty?
+            ohai "Using Lua #{version}"
+            true
         end
     end
 
