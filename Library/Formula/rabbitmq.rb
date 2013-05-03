@@ -37,7 +37,7 @@ class Rabbitmq < Formula
            "rabbitmq_management-#{version}/priv/www/cli/rabbitmqadmin"
 
     sbin.install 'rabbitmqadmin'
-
+    (sbin/'rabbitmqadmin').chmod 0755
     (bash_completion/'rabbitmqadmin.bash').write `#{sbin}/rabbitmqadmin --bash-completion`
   end
 
