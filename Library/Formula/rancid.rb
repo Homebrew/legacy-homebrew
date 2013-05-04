@@ -14,5 +14,4 @@ class Rancid < Formula
  def test
    system "#{bin}/rancid", "localhost"
  end
-
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-2.4.2.tar.gz'
-  sha1 'ade387c4c907abff235e887a9b4678450363c756'
+  url 'http://mercurial.selenic.com/release/mercurial-2.5.4.tar.gz'
+  sha1 '9a387a041fe808833fe3512229eb35c6d5274188'
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
@@ -16,8 +16,7 @@ class Mercurial < Formula
     # System-provided Python.
     ENV.minimal_optimization
 
-    # install the completion script
-    (prefix/'etc/bash_completion.d').install 'contrib/bash_completion' => 'hg-completion.bash'
+    bash_completion.install 'contrib/bash_completion' => 'hg-completion.bash'
 
     system "make doc" if build.head? or build.include? 'doc'
     system "make local"
@@ -43,7 +42,7 @@ class Mercurial < Formula
 
     s += <<-EOS.undent
       Extensions have been installed to:
-        #{libexec}/hgext
+        #{opt_prefix}/libexec/hgext
     EOS
 
     if build.head? then s += <<-EOS.undent

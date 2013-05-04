@@ -3,21 +3,26 @@ require 'formula'
 class Mpfr < Formula
   homepage 'http://www.mpfr.org/'
   # Upstream is down a lot, so use the GNU mirror + Gist for patches
-  url 'http://ftpmirror.gnu.org/mpfr/mpfr-3.1.1.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.1.tar.bz2'
-  version '3.1.1-p2'
-  sha1 'f632d43943ff9f13c184fa13b9a6e8c7f420f4dd'
+  url 'http://ftpmirror.gnu.org/mpfr/mpfr-3.1.2.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.bz2'
+  sha1 '46d5a11a59a4e31f74f73dd70c5d57a59de2d0b4'
+
+  bottle do
+    sha1 '1da827b2b2afce70c009900043d63731c46ded97' => :mountain_lion
+    sha1 '76cd548a47615fda27e53140a88e9873d55b6a0e' => :lion
+    sha1 'c5a3566bf11105c66823365f05d1dd6e01d69657' => :snow_leopard
+  end
 
   depends_on 'gmp'
 
   option '32-bit'
 
-  # Segfaults under superenv with clang 4.1/421. See:
-  # https://github.com/mxcl/homebrew/issues/15061
-  env :std
-
-  def patches
-    "https://gist.github.com/raw/4472199/42c0b207037a133527083d12adc9028b4da429ee/gistfile1.txt"
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      clang build 421 segfaults while building in superenv;
+      see https://github.com/mxcl/homebrew/issues/15061
+      EOS
   end
 
   def install

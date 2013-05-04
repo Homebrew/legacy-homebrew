@@ -2,9 +2,9 @@ require 'formula'
 
 class Ceylon < Formula
   homepage 'http://ceylon-lang.org/'
-  url 'http://ceylon-lang.org/download/dist/1_0_Milestone4'
-  version '1.0M4'
-  sha1 '0d4bb339759d9f0d55da1a89d87a13b160e51163'
+  url 'http://ceylon-lang.org/download/dist/1_0_Milestone5'
+  version '1.0M5'
+  sha1 'c013ce50ce2505f0b85fc18c9bf2ce8f13fca0ae'
 
   def install
     rm_f Dir["bin/*.bat"]

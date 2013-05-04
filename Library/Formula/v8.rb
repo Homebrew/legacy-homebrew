@@ -3,10 +3,14 @@ require 'formula'
 class V8 < Formula
   homepage 'http://code.google.com/p/v8/'
   # Use the official github mirror, it is easier to find tags there
-  url 'https://github.com/v8/v8/archive/3.15.11.tar.gz'
-  sha1 '0c47b3a5409d71d4fd6581520c8972f7451a87e4'
+  url 'https://github.com/v8/v8/archive/3.18.2.tar.gz'
+  sha1 '9045aeb81688f6c56aba04af118e7762245cf005'
 
   head 'https://github.com/v8/v8.git'
+
+  # gyp currently depends on a full xcode install
+  # https://code.google.com/p/gyp/issues/detail?id=292
+  depends_on :xcode
 
   def install
     system 'make dependencies'
@@ -19,7 +23,8 @@ class V8 < Formula
     prefix.install 'include'
     cd 'out/native' do
       lib.install Dir['lib*']
-      bin.install 'd8', 'lineprocessor', 'mksnapshot', 'preparser', 'process', 'shell' => 'v8'
+      bin.install 'd8', 'lineprocessor', 'preparser', 'process', 'shell' => 'v8'
+      bin.install Dir['mksnapshot.*']
     end
   end
 end

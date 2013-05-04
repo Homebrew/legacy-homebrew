@@ -2,11 +2,10 @@ require 'formula'
 
 class GnuProlog < Formula
   homepage 'http://www.gprolog.org/'
-  url 'http://www.gprolog.org/gprolog-1.4.2.tar.gz'
-  sha1 '76d366910e50e56aa06c98a0a8903f98ec7f1c21'
+  url 'http://www.gprolog.org/gprolog-1.4.4.tar.gz'
+  sha1 '658b0efa5d916510dcddbbd980d90bc4d43a6e58'
 
   fails_with :clang do
-    build 421
     cause "Fatal Error: Segmentation Violation"
   end
 

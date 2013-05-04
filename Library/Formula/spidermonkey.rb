@@ -62,10 +62,4 @@ class Spidermonkey < Formula
       bin.install "shell/js"
     end
   end
-
-  def caveats; <<-EOS.undent
-    This formula installs Spidermonkey 1.8.5.
-    If you are trying to compile MongoDB from scratch, you will need 1.7.x instead.
-    EOS
-  end
 end

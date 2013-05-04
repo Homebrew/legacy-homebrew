@@ -2,8 +2,8 @@ require 'formula'
 
 class Xdelta < Formula
   homepage 'http://xdelta.org'
-  url 'http://xdelta.googlecode.com/files/xdelta3-3.0.5.tar.gz'
-  sha1 'd760319a0484aa1b74a71fe6066a25eeabe7532a'
+  url 'http://xdelta.googlecode.com/files/xdelta3-3.0.6.tar.gz'
+  sha1 'a468ce0efb0cd1c7dbdff637731e9ac6470437c6'
 
   def install
     system "./configure", "--disable-dependency-tracking",

@@ -7,10 +7,13 @@ module Homebrew extend self
 
     if not ARGV.force?
       ARGV.kegs.each do |keg|
-        puts "Uninstalling #{keg}..."
-        keg.unlink
-        keg.uninstall
-        rm_opt_link keg.fname
+        keg.lock do
+          puts "Uninstalling #{keg}..."
+          keg.unlink
+          keg.uninstall
+          rm_opt_link keg.fname
+          rm_pin keg.fname
+        end
       end
     else
       ARGV.named.each do |name|
@@ -26,6 +29,7 @@ module Homebrew extend self
             if keg.directory?
               keg = Keg.new(keg)
               keg.unlink
+              Formula.factory(keg.fname).unpin
               keg.rmtree
             end
           end
@@ -45,4 +49,7 @@ module Homebrew extend self
     optlink.unlink if optlink.symlink?
   end
 
+  def rm_pin name
+    Formula.factory(name).unpin rescue nil
+  end
 end

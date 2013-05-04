@@ -2,8 +2,8 @@ require 'formula'
 
 class Colloquypush < Formula
   homepage 'https://github.com/wired/colloquypush'
-  url 'https://github.com/wired/colloquypush/tarball/colloquy-znc-1.1'
-  sha1 '6e17212680332e9a1975a68a118d0fd4e8883fc2'
+  url 'https://github.com/wired/colloquypush/archive/colloquy-znc-1.1.tar.gz'
+  sha1 '1563eb2c844b7ce4bfefd213fe85ef3e1c7a036a'
 
   head 'https://github.com/wired/colloquypush.git'
 

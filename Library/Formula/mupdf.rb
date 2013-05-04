@@ -17,10 +17,10 @@ end
 
 class Mupdf < Formula
   homepage 'http://mupdf.com'
-  url 'http://mupdf.googlecode.com/files/mupdf-1.1-source.tar.gz'
-  sha1 'e2c2cd555d790ed97bd6507accf29817945dfe81'
+  url 'https://mupdf.googlecode.com/files/mupdf-1.2-source.zip'
+  sha1 'd521382b80b3d1f7b8ad6e00ceb91721aa5e1917'
 
-  depends_on NeedsSnowLeopard.new
+  depends_on NeedsSnowLeopard
 
   depends_on 'jpeg'
   depends_on 'openjpeg'

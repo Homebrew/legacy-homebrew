@@ -2,10 +2,10 @@ require 'formula'
 
 class GitEncrypt < Formula
   homepage 'https://github.com/shadowhand/git-encrypt'
-  url 'https://github.com/shadowhand/git-encrypt/tarball/0.3.0'
-  sha1 '3b06d626e1eb33651de24ead3a5a9b10cdd8278a'
+  url 'https://github.com/shadowhand/git-encrypt/archive/0.3.0.tar.gz'
+  sha1 '24ce80398c003c082a21402eddf9e73387b6f885'
 
-  head 'http://github.com/shadowhand/git-encrypt.git', :branch => 'master'
+  head 'https://github.com/shadowhand/git-encrypt.git', :branch => 'master'
 
   def install
     bin.install 'gitcrypt'

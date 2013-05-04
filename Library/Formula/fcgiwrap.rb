@@ -6,6 +6,7 @@ class Fcgiwrap < Formula
   sha1 'f62722efd637aea8ce4e6325c85614cfe2345d8d'
 
   depends_on :autoconf
+  depends_on :automake
   depends_on 'fcgi'
 
   def install

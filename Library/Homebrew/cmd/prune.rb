@@ -1,4 +1,5 @@
 require 'keg'
+require 'cmd/tap'
 
 module Homebrew extend self
   # $n and $d are used by the ObserverPathnameExtension to keep track of
@@ -9,9 +10,9 @@ module Homebrew extend self
     $d = 0
     dirs = []
 
-    Keg::PRUNEABLE_DIRECTORIES.each do |path|
-      next unless path.directory?
-      path.find do |path|
+    Keg::PRUNEABLE_DIRECTORIES.each do |dir|
+      next unless dir.directory?
+      dir.find do |path|
         path.extend ObserverPathnameExtension
         if path.symlink?
           unless path.resolved_path_exists?
@@ -27,6 +28,8 @@ module Homebrew extend self
     end
 
     dirs.sort.reverse_each{ |d| d.rmdir_if_possible }
+
+    repair_taps
 
     if $n == 0 and $d == 0
       puts "Nothing pruned" if ARGV.verbose?

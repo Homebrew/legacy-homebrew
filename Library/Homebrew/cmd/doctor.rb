@@ -38,23 +38,21 @@ end
 
 
 class Checks
-  # Sorry for the lack of an indent here, the diff would have been unreadable.
 
 ############# HELPERS
-def remove_trailing_slash s
-  (s[s.length-1] == '/') ? s[0,s.length-1] : s
-end
+  def remove_trailing_slash s
+    (s[s.length-1] == '/') ? s[0,s.length-1] : s
+  end
 
-
-def paths
-  @paths ||= ENV['PATH'].split(':').collect do |p|
-    begin
-      remove_trailing_slash(File.expand_path(p))
-    rescue ArgumentError
-      onoe "The following PATH component is invalid: #{p}"
-    end
-  end.uniq.compact
-end
+  def paths
+    @paths ||= ENV['PATH'].split(':').collect do |p|
+      begin
+        remove_trailing_slash(File.expand_path(p))
+      rescue ArgumentError
+        onoe "The following PATH component is invalid: #{p}"
+      end
+    end.uniq.compact
+  end
 
   # Finds files in HOMEBREW_PREFIX *and* /usr/local.
   # Specify paths relative to a prefix eg. "include/foo.h".
@@ -70,6 +68,7 @@ end
   end
 ############# END HELPERS
 
+# Sorry for the lack of an indent here, the diff would have been unreadable.
 # See https://github.com/mxcl/homebrew/pull/9986
 def check_path_for_trailing_slashes
   bad_paths = ENV['PATH'].split(':').select{|p| p[p.length-1, p.length] == '/'}
@@ -205,7 +204,7 @@ def check_for_broken_symlinks
   Keg::PRUNEABLE_DIRECTORIES.each do |d|
     next unless d.directory?
     d.find do |pn|
-      broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/ and not pn.exist?
+      broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/o and not pn.exist?
     end
   end
   unless broken_symlinks.empty? then <<-EOS.undent
@@ -225,7 +224,7 @@ def check_for_latest_xcode
         EOS
       elsif not MacOS::CLT.latest_version?
         <<-EOS.undent
-        A newer Command Line Tools for Xcode release is avaliable
+        A newer Command Line Tools for Xcode release is available
         You should install the latest version from: http://connect.apple.com
         EOS
       end
@@ -308,6 +307,14 @@ def __check_subdir_access base
   end
 end
 
+def check_access_share_locale
+  __check_subdir_access 'share/locale'
+end
+
+def check_access_share_man
+  __check_subdir_access 'share/man'
+end
+
 def check_access_usr_local
   return unless HOMEBREW_PREFIX.to_s == '/usr/local'
 
@@ -323,51 +330,21 @@ def check_access_usr_local
   end
 end
 
-def check_access_share_locale
-  __check_subdir_access 'share/locale'
-end
+%w{include etc lib lib/pkgconfig share}.each do |d|
+  class_eval <<-EOS, __FILE__, __LINE__ + 1
+    def check_access_#{d.sub("/", "_")}
+      if (dir = HOMEBREW_PREFIX+'#{d}').exist? && !dir.writable_real?
+        <<-EOF.undent
+        \#{dir} isn't writable.
+        This can happen if you "sudo make install" software that isn't managed by
+        by Homebrew. If a brew tries to write a file to this directory, the
+        install will fail during the link step.
 
-def check_access_share_man
-  __check_subdir_access 'share/man'
-end
-
-def __check_folder_access base, msg
-  folder = HOMEBREW_PREFIX+base
-  if folder.exist? and not folder.writable_real?
-    <<-EOS.undent
-      #{folder} isn't writable.
-      This can happen if you "sudo make install" software that isn't managed
-      by Homebrew.
-
-      #{msg}
-
-      You should probably `chown` #{folder}
+        You should probably `chown` \#{dir}
+        EOF
+      end
+    end
     EOS
-  end
-end
-
-def check_access_pkgconfig
-  __check_folder_access 'lib/pkgconfig',
-  'If a brew tries to write a .pc file to this directory, the install will\n'+
-  'fail during the link step.'
-end
-
-def check_access_include
-  __check_folder_access 'include',
-  'If a brew tries to write a header file to this directory, the install will\n'+
-  'fail during the link step.'
-end
-
-def check_access_etc
-  __check_folder_access 'etc',
-  'If a brew tries to write a file to this directory, the install will\n'+
-  'fail during the link step.'
-end
-
-def check_access_share
-  __check_folder_access 'share',
-  'If a brew tries to write a file to this directory, the install will\n'+
-  'fail during the link step.'
 end
 
 def check_access_logs
@@ -534,6 +511,9 @@ def check_which_pkg_config
 
     This was most likely created by the Mono installer. `./configure` may
     have problems finding brew-installed packages using this other pkg-config.
+
+    Mono no longer installs this file as of 3.0.4. You should
+    `sudo rm /usr/bin/pkg-config` and upgrade to the latest version of Mono.
     EOS
   elsif binary.to_s != "#{HOMEBREW_PREFIX}/bin/pkg-config" then <<-EOS.undent
     You have a non-Homebrew 'pkg-config' in your PATH:
@@ -607,7 +587,7 @@ def check_for_config_scripts
 
     configs = Dir["#{p}/*-config"]
     # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
-    config_scripts << [p, configs.collect {|p| File.basename(p)}] unless configs.empty?
+    config_scripts << [p, configs.map { |c| File.basename(c) }] unless configs.empty?
   end
 
   unless config_scripts.empty?
@@ -623,41 +603,32 @@ def check_for_config_scripts
 
     EOS
 
-    config_scripts.each do |pair|
-      dn = pair[0]
-      pair[1].each do |fn|
-        s << "    #{dn}/#{fn}\n"
-      end
+    config_scripts.each do |dir, files|
+      files.each { |fn| s << "    #{dir}/#{fn}\n" }
     end
     s
   end
 end
 
-def check_for_DYLD_LIBRARY_PATH
-  if ENV['DYLD_LIBRARY_PATH']
-    <<-EOS.undent
-      Setting DYLD_LIBRARY_PATH can break dynamic linking.
-      You should probably unset it.
+def check_DYLD_vars
+  found = ENV.keys.grep(/^DYLD_/)
+  unless found.empty?
+    s = <<-EOS.undent
+    Setting DYLD_* vars can break dynamic linking.
+    Set variables:
     EOS
-  end
-end
+    found.each do |e|
+      s << "    #{e}\n"
+    end
+    if found.include? 'DYLD_INSERT_LIBRARIES'
+      s += <<-EOS.undent
 
-def check_for_DYLD_FALLBACK_LIBRARY_PATH
-  if ENV['DYLD_FALLBACK_LIBRARY_PATH']
-    <<-EOS.undent
-      Setting DYLD_FALLBACK_LIBRARY_PATH can break dynamic linking.
-      You should probably unset it.
-    EOS
-  end
-end
-
-def check_for_DYLD_INSERT_LIBRARIES
-  if ENV['DYLD_INSERT_LIBRARIES']
-    <<-EOS.undent
       Setting DYLD_INSERT_LIBRARIES can cause Go builds to fail.
       Having this set is common if you use this software:
         http://asepsis.binaryage.com/
-    EOS
+      EOS
+    end
+    s
   end
 end
 
@@ -707,6 +678,28 @@ def check_for_multiple_volumes
   end
 end
 
+def check_filesystem_case_sensitive
+  volumes = Volumes.new
+  tmp_prefix = Pathname.new(ENV['HOMEBREW_TEMP'] || '/tmp')
+  case_sensitive_vols = [HOMEBREW_PREFIX, HOMEBREW_REPOSITORY, HOMEBREW_CELLAR, tmp_prefix].select do |dir|
+    # We select the dir as being case-sensitive if either the UPCASED or the
+    # downcased variant is missing.
+    # Of course, on a case-insensitive fs, both exist because the os reports so.
+    # In the rare situation when the user has indeed a downcased and an upcased
+    # dir (e.g. /TMP and /tmp) this check falsely thinks it is case-insensitive
+    # but we don't care beacuse: 1. there is more than one dir checked, 2. the
+    # check is not vital and 3. we would have to touch files otherwise.
+    upcased = Pathname.new(dir.to_s.upcase)
+    downcased = Pathname.new(dir.to_s.downcase)
+    dir.exist? && !(upcased.exist? && downcased.exist?)
+  end.map { |case_sensitive_dir| volumes.get_mounts(case_sensitive_dir) }.uniq
+  return if case_sensitive_vols.empty?
+  <<-EOS.undent
+    Your file-system on #{case_sensitive_vols} appears to be CaSe SeNsItIvE.
+    Homebrew is less tested with that - don't worry but please report issues.
+  EOS
+end
+
 def check_for_git
   unless which "git" then <<-EOS.undent
     Git could not be found in your PATH.
@@ -721,23 +714,24 @@ def check_git_newline_settings
   return unless which "git"
 
   autocrlf = `git config --get core.autocrlf`.chomp
-  safecrlf = `git config --get core.safecrlf`.chomp
 
-  if autocrlf == 'input' and safecrlf == 'true' then <<-EOS.undent
+  if autocrlf == 'true' then <<-EOS.undent
     Suspicious Git newline settings found.
 
-    The detected Git newline settings can cause checkout problems:
+    The detected Git newline settings will cause checkout problems:
       core.autocrlf = #{autocrlf}
-      core.safecrlf = #{safecrlf}
 
     If you are not routinely dealing with Windows-based projects,
-    consider removing these settings.
+    consider removing these by running:
+    `git config --global --set core.autocrlf input`
     EOS
   end
 end
 
 def check_for_git_origin
   return unless which "git"
+  # otherwise this will nag users with no repo about their remote
+  return unless (HOMEBREW_REPOSITORY/'.git').exist?
 
   HOMEBREW_REPOSITORY.cd do
     if `git config --get remote.origin.url`.chomp.empty? then <<-EOS.undent
@@ -746,7 +740,7 @@ def check_for_git_origin
       Without a correctly configured origin, Homebrew won't update
       properly. You can solve this by adding the Homebrew remote:
         cd #{HOMEBREW_REPOSITORY}
-        git add remote origin https://github.com/mxcl/homebrew.git
+        git remote add origin https://github.com/mxcl/homebrew.git
       EOS
     end
   end
@@ -755,6 +749,9 @@ end
 def check_the_git_origin
   return unless which "git"
   return if check_for_git_origin
+
+  # otherwise this will nag users with no repo about their remote
+  return unless (HOMEBREW_REPOSITORY/'.git').exist?
 
   HOMEBREW_REPOSITORY.cd do
     origin = `git config --get remote.origin.url`.chomp
@@ -825,8 +822,8 @@ def check_for_linked_keg_only_brews
     s = <<-EOS.undent
     Some keg-only formula are linked into the Cellar.
     Linking a keg-only formula, such as gettext, into the cellar with
-    `brew link f` will cause other formulae to detect them during the
-    `./configure` step. This may cause problems when compiling those
+    `brew link <formula>` will cause other formulae to detect them during
+    the `./configure` step. This may cause problems when compiling those
     other formulae.
 
     Binaries provided by keg-only formulae may override system binaries
@@ -835,7 +832,7 @@ def check_for_linked_keg_only_brews
     You may wish to `brew unlink` these brews:
 
     EOS
-    warnings.keys.each{ |f| s << "    #{f}\n" }
+    warnings.each_key { |f| s << "    #{f}\n" }
     s
   end
 end
@@ -872,7 +869,7 @@ end
 def check_missing_deps
   return unless HOMEBREW_CELLAR.exist?
   s = Set.new
-  Homebrew.missing_deps(Homebrew.installed_brews).each do |_, deps|
+  Homebrew.missing_deps(Formula.installed).each do |_, deps|
     s.merge deps
   end
 
@@ -896,7 +893,7 @@ def check_git_status
       If this a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
-          cd #{HOMEBREW_REPOSITORY}/Library && git stash && git clean -f
+          cd #{HOMEBREW_REPOSITORY}/Library && git stash && git clean -d -f
       EOS
     end
   end
@@ -954,6 +951,22 @@ def check_for_bad_python_symlink
   end
 end
 
+def check_for_non_prefixed_coreutils
+  gnubin = Formula.factory('coreutils').prefix.to_s + "/libexec/gnubin"
+  if paths.include? gnubin then <<-EOS.undent
+    Putting non-prefixed coreutils in your path can cause gmp builds to fail.
+    EOS
+  end
+end
+
+def check_for_non_prefixed_findutils
+  default_names = Tab.for_formula('findutils').used_options.include? 'default-names'
+  if default_names then <<-EOS.undent
+    Putting non-prefixed findutils in your path can cause python builds to fail.
+    EOS
+  end
+end
+
 def check_for_pydistutils_cfg_in_home
   if File.exist? ENV['HOME']+'/.pydistutils.cfg' then <<-EOS.undent
     A .pydistutils.cfg file was found in $HOME, which may cause Python
@@ -982,8 +995,9 @@ def check_for_outdated_homebrew
     end
 
     if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent
-      Your Homebrew is outdated
+      Your Homebrew is outdated.
       You haven't updated for at least 24 hours, this is a long time in brewland!
+      To update Homebrew, run `brew update`.
       EOS
     end
   end
@@ -1068,7 +1082,7 @@ module Homebrew extend self
     checks = Checks.new
 
     if ARGV.include? '--list-checks'
-      checks.methods.select { |m| m =~ /^check_/ }.sort.each { |m| puts m }
+      checks.methods.grep(/^check_/).sort.each { |m| puts m }
       exit
     end
 
@@ -1079,19 +1093,22 @@ module Homebrew extend self
       checks.methods.sort << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
     else
       ARGV.named
-    end.select{ |method| method =~ /^check_/ }.reverse.uniq.reverse
+    end.grep(/^check_/).reverse.uniq.reverse
 
+    first_warning = true
     methods.each do |method|
       out = checks.send(method)
       unless out.nil? or out.empty?
         lines = out.to_s.split('\n')
+        puts unless first_warning
         opoo lines.shift
         Homebrew.failed = true
         puts lines
+        first_warning = false
       end
     end
 
-    puts "Your system is raring to brew." unless Homebrew.failed?
+    puts "Your system is ready to brew." unless Homebrew.failed?
   end
 
   def inject_dump_stats checks

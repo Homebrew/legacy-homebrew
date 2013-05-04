@@ -2,8 +2,8 @@ require 'formula'
 
 class Ngspice < Formula
   homepage 'http://ngspice.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/ngspice/ng-spice-rework/24/ngspice-24.tar.gz'
-  sha1 'a6bb0e65c1c07d48f1d3e4df44fc17f6262952eb'
+  url 'http://sourceforge.net/projects/ngspice/files/ng-spice-rework/25/ngspice-25.tar.gz'
+  sha1 '745c3c32385b7d5c808836e393fe7699f8568860'
 
   option "with-x", "Build with X support"
   option "without-xspice", "Build without x-spice extensions"

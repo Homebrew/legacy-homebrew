@@ -2,9 +2,9 @@ require 'formula'
 
 class Pmdmini < Formula
   homepage 'https://github.com/BouKiCHi/mdxplayer'
-  url 'https://github.com/BouKiCHi/mdxplayer/tarball/aa55d9d3128f06aac4a15d5cefc083bd7b66d814'
+  url 'https://github.com/BouKiCHi/mdxplayer/archive/aa55d9d3128f06aac4a15d5cefc083bd7b66d814.tar.gz'
   version '20120115'
-  sha1 '8a412d016ba8828932f6e0a64f1d3c061fe9a80e'
+  sha1 'b312f5b11b62a9d2be910252a97bed7decdef13f'
 
   option "lib-only", "Do not build commandline player"
 

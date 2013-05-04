@@ -1,30 +1,9 @@
 require 'formula'
 
 class Libid3tag < Formula
+  homepage 'http://www.underbit.com/products/mad/'
   url 'http://downloads.sourceforge.net/project/mad/libid3tag/0.15.1b/libid3tag-0.15.1b.tar.gz'
   sha1 '4d867e8a8436e73cd7762fe0e85958e35f1e4306'
-
-  def id3tag_pc
-    return <<-EOS
-prefix=#{HOMEBREW_PREFIX}
-exec_prefix=${prefix}
-libdir=${exec_prefix}/lib
-includedir=${prefix}/include
-
-Name: id3tag
-Description: ID3 tag reading library
-Version: #{@version}
-Requires:
-Conflicts:
-Libs: -L${libdir} -lid3tag -lz
-Cflags: -I${includedir}
-    EOS
-  end
-
-
-  def homepage
-    Formula.factory('mad').homepage
-  end
 
   # Fixes serious memory leaks; see https://bugs.launchpad.net/mixxx/+bug/403586
   def patches
@@ -52,6 +31,22 @@ Cflags: -I${includedir}
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make install"
 
-    (lib+'pkgconfig/id3tag.pc').write id3tag_pc
+    (lib+'pkgconfig/id3tag.pc').write pc_file
+  end
+
+  def pc_file; <<-EOS.undent
+    prefix=#{opt_prefix}
+    exec_prefix=${prefix}
+    libdir=${exec_prefix}/lib
+    includedir=${prefix}/include
+
+    Name: id3tag
+    Description: ID3 tag reading library
+    Version: #{version}
+    Requires:
+    Conflicts:
+    Libs: -L${libdir} -lid3tag -lz
+    Cflags: -I${includedir}
+    EOS
   end
 end

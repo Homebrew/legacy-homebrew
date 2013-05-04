@@ -15,19 +15,27 @@ class John < Formula
 
   fails_with :llvm do
     build 2334
+    cause "Don't remember, but adding this to whitelist 2336."
   end
 
   fails_with :clang do
-    build 421
+    build 425
     cause "rawSHA1_ng_fmt.c:535:19: error: redefinition of '_mm_testz_si128'"
   end if build.include? 'jumbo'
 
   def install
     ENV.deparallelize
     arch = Hardware.is_64_bit? ? '64' : 'sse2'
+    arch += '-opencl' if build.include? 'jumbo'
 
     cd 'src' do
-      system "make", "clean", "macosx-x86-#{arch}", "CC=#{ENV.cc}"
+      inreplace 'Makefile' do |s|
+        s.change_make_var! "CC", ENV.cc
+        if build.include?('jumbo') && MacOS.version != :leopard && ENV.compiler != :clang
+          s.change_make_var! "OMPFLAGS", "-fopenmp -msse2 -D_FORTIFY_SOURCE=0"
+        end
+      end
+      system "make", "clean", "macosx-x86-#{arch}"
     end
 
     # Remove the README symlink and install the real file

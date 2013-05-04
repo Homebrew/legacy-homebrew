@@ -3,7 +3,7 @@ require 'cmd/outdated'
 
 def ff
   if ARGV.include? "--all"
-    Formula
+    Formula.to_a
   elsif ARGV.include? "--installed"
     # outdated brews count as installed
     outdated = Homebrew.outdated_brews.collect{ |b| b.name }

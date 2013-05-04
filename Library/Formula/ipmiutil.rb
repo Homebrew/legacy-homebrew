@@ -26,8 +26,8 @@ class Ipmiutil < Formula
                    "install"
   end
 
-  def test
-    system "#{bin}/ipmiutil delloem help"
+  test do
+    system "#{bin}/ipmiutil", "delloem", "help"
   end
 end
 

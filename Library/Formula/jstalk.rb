@@ -13,7 +13,7 @@ class Jstalk < Formula
   url 'https://github.com/ccgus/jstalk.git', :tag => "v1.0.1"
   version '1.0.1'
 
-  depends_on NeedsSnowLeopard.new
+  depends_on NeedsSnowLeopard
   depends_on :xcode # For working xcodebuild.
 
   def install
@@ -24,18 +24,18 @@ class Jstalk < Formula
     cd 'build/Release' do
       bin.install 'jstalk'
       prefix.install "JSTalk Editor.app"
-      (prefix+'Frameworks').install 'JSTalk.framework'
+      frameworks.install 'JSTalk.framework'
     end
   end
 
   def caveats; <<-EOS.undent
      Framework JSTalk was installed to:
-       #{prefix}/Frameworks/JSTalk.framework
+       #{frameworks}/JSTalk.framework
 
      You may want to symlink this Framework to a standard OS X location,
      such as:
        mkdir ~/Frameworks
-       ln -s "#{prefix}/Frameworks/JSTalk.framework" ~/Frameworks
+       ln -s "#{frameworks}/JSTalk.framework" ~/Frameworks
 
     JSTalk Editor.app was installed in:
       #{prefix}

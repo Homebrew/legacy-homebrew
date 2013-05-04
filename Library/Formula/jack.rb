@@ -14,7 +14,7 @@ class Jack < Formula
   end
 
   fails_with :clang do
-    build 421
+    build 425
     cause 'waf fails to find g++ when compiling with clang'
   end
 

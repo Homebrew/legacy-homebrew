@@ -2,6 +2,8 @@ require 'cmd/tap' # for tap_args
 
 module Homebrew extend self
   def untap
+    raise "Usage is `brew untap <tap-name>`" if ARGV.empty?
+
     user, repo = tap_args
 
     # we consistently downcase in tap to ensure we are not bitten by case-insensive
@@ -17,9 +19,9 @@ module Homebrew extend self
 
     files = []
     tapd.find_formula{ |file| files << Pathname.new("#{user}-#{repo}").join(file) }
-    untapped = unlink_tap_formula(files)
+    unlink_tap_formula(files)
     rm_rf tapd
-    puts "Untapped #{untapped} formula"
+    puts "Untapped #{files.length} formula"
   end
 
   def unlink_tap_formula formulae

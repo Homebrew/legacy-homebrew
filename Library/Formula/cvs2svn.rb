@@ -21,7 +21,7 @@ class Cvs2svn < Formula
   url 'http://trac.macports.org/export/70472/distfiles/cvs2svn/cvs2svn-2.3.0.tar.gz'
   sha1 '545237805ddb241054ba40b105b9c29b705539b8'
 
-  depends_on PythonWithGdbm.new
+  depends_on PythonWithGdbm
 
   def install
     system "python", "setup.py", "install", "--prefix=#{prefix}"

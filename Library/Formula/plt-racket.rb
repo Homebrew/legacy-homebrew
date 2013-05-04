@@ -4,8 +4,8 @@ class PltRacket < Formula
   homepage 'http://racket-lang.org/'
   # Use GitHub tarball as the release tarball doesn't have
   # everything needed for building on OS X
-  url 'https://github.com/plt/racket/tarball/v5.2'
-  sha1 'bb2c6b6504796a88dada10b510f040b5bbec7b2e'
+  url 'https://github.com/plt/racket/archive/v5.2.tar.gz'
+  sha1 '313425909ff8d956c3e99d0a2b5b3cb12d0f98ad'
 
   def install
     cd 'src' do

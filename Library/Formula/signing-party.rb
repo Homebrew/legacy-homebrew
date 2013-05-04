@@ -23,7 +23,7 @@ class SigningParty < Formula
   url 'http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.4.orig.tar.gz'
   sha1 '092b7d644b7a8a8d2e82fd6ddb453ca58020ed31'
 
-  depends_on GnupgInstalled.new
+  depends_on GnupgInstalled
   depends_on 'dialog'
   depends_on 'qprint'
   depends_on 'MIME::Tools' => :perl

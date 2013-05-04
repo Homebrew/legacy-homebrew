@@ -1,14 +1,5 @@
 require 'formula'
 
-def headless?
-  # The GRASS GUI is based on WxPython. Unfortunately, Lion does not include
-  # this module so we have to drop it.
-  #
-  # This restriction can be lifted once WxMac hits a stable release that is
-  # 64-bit capable.
-  build.include? 'without-gui' or MacOS.version >= :lion
-end
-
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
   url 'http://grass.osgeo.org/grass64/source/grass-6.4.2.tar.gz'
@@ -31,16 +22,21 @@ class Grass < Formula
   def patches; DATA; end
 
   fails_with :clang do
-    build 421
-
-    cause <<-EOS.undent
-      Multiple build failures while compiling GRASS tools.
-      EOS
+    cause "Multiple build failures while compiling GRASS tools."
   end
 
   option "with-postgres", "specify PostgreSQL as a dependency."
   option "with-mysql", "Specify MySQL as a dependency."
   option "without-gui", "Build without WxPython interface. Command line tools still available."
+
+  def headless?
+    # The GRASS GUI is based on WxPython. Unfortunately, Lion does not include
+    # this module so we have to drop it.
+    #
+    # This restriction can be lifted once WxMac hits a stable release that is
+    # 64-bit capable.
+    build.include? 'without-gui' or MacOS.version >= :lion
+  end
 
   def install
     readline = Formula.factory('readline')

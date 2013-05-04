@@ -6,8 +6,8 @@ class TidypManual < Formula
 end
 
 class Tidyp < Formula
-  url 'https://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz'
   homepage 'http://tidyp.com/'
+  url 'https://github.com/downloads/petdance/tidyp/tidyp-1.04.tar.gz'
   sha1 '5d9050512259c3a67a2f48469555932e3a7b8bd0'
 
   def install

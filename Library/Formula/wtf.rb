@@ -1,8 +1,8 @@
 require 'formula'
 
 class Wtf < Formula
-  url 'http://mirror.aarnet.edu.au/pub/FreeBSD/ports/distfiles/wtf-20111107.tar.gz'
   homepage 'http://cvsweb.netbsd.org/bsdweb.cgi/src/games/wtf/'
+  url 'http://mirror.aarnet.edu.au/pub/FreeBSD/ports/distfiles/wtf-20111107.tar.gz'
   sha1 'c5b280cba0c92cf6a80480375bd189a19766e628'
 
   def install

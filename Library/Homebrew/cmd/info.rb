@@ -2,6 +2,7 @@ require 'formula'
 require 'tab'
 require 'keg'
 require 'caveats'
+require 'blacklist'
 
 module Homebrew extend self
   def info
@@ -9,6 +10,8 @@ module Homebrew extend self
     # awhile around for compatibility
     if ARGV.json == "v1"
       print_json
+    elsif ARGV.flag? '--github'
+      exec_browser(*ARGV.formulae.map { |f| github_info(f) })
     else
       print_info
     end
@@ -27,7 +30,18 @@ module Homebrew extend self
     elsif valid_url ARGV[0]
       info_formula Formula.factory(ARGV.shift)
     else
-      ARGV.formulae.each{ |f| info_formula f }
+      ARGV.named.each do |f|
+        begin
+          info_formula Formula.factory(f)
+        rescue FormulaUnavailableError
+          # No formula with this name, try a blacklist lookup
+          if (blacklist = blacklisted?(f))
+            puts blacklist
+          else
+            raise
+          end
+        end
+      end
     end
   end
 
@@ -70,16 +84,14 @@ module Homebrew extend self
   end
 
   def info_formula f
-    exec 'open', github_info(f) if ARGV.flag? '--github'
-
     specs = []
     stable = "stable #{f.stable.version}" if f.stable
-    stable += " (bottled)" if f.bottle and MacOS.bottles_supported?
+    stable += " (bottled)" if f.bottle
     specs << stable if stable
     specs << "devel #{f.devel.version}" if f.devel
     specs << "HEAD" if f.head
 
-    puts "#{f.name}: #{specs*', '}"
+    puts "#{f.name}: #{specs*', '}#{' (pinned)' if f.pinned?}"
 
     puts f.homepage
 
@@ -99,13 +111,9 @@ module Homebrew extend self
       kegs.reject! {|keg| keg.basename.to_s == '.DS_Store' }
       kegs = kegs.map {|keg| Keg.new(keg) }.sort_by {|keg| keg.version }
       kegs.each do |keg|
-        print "#{keg} (#{keg.abv})"
-        print " *" if keg.linked?
-        puts
-        tab = Tab.for_keg keg
-        unless tab.used_options.empty?
-          puts "  Installed with: #{tab.used_options*', '}"
-        end
+        puts "#{keg} (#{keg.abv})#{' *' if keg.linked?}"
+        tab = Tab.for_keg(keg).to_s
+        puts "  #{tab}" unless tab.empty?
       end
     else
       puts "Not installed"

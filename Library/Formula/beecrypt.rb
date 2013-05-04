@@ -1,8 +1,8 @@
 require 'formula'
 
 class Beecrypt < Formula
-  url 'http://sourceforge.net/projects/beecrypt/files/beecrypt/4.2.1/beecrypt-4.2.1.tar.gz'
   homepage 'http://beecrypt.sourceforge.net'
+  url 'http://sourceforge.net/projects/beecrypt/files/beecrypt/4.2.1/beecrypt-4.2.1.tar.gz'
   sha256 '286f1f56080d1a6b1d024003a5fa2158f4ff82cae0c6829d3c476a4b5898c55d'
 
   depends_on "icu4c"
@@ -12,9 +12,19 @@ class Beecrypt < Formula
     { :p0 => DATA }
   end
 
+  def darwin_major_version
+    # kern.osrelease: 11.4.2
+    full_version = `/usr/sbin/sysctl -n kern.osrelease`
+    full_version.split("\.")[0]
+  end
+
   def install
     ENV.remove_from_cflags /-march=\S*/
-    system "./configure", "--prefix=#{prefix}", "--disable-openmp", "--without-java", "--without-python"
+    args = ["--prefix=#{prefix}", "--disable-openmp", "--without-java", "--without-python"]
+    if MacOS.prefer_64_bit?
+      args << "--build=x86_64-apple-darwin#{darwin_major_version}"
+    end
+    system "./configure", *args
     system "make"
     system "make check"
     system "make install"

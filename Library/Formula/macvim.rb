@@ -2,9 +2,9 @@ require 'formula'
 
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/tarball/snapshot-66'
+  url 'https://github.com/b4winckler/macvim/archive/snapshot-66.tar.gz'
   version '7.3-66'
-  sha1 'd11696f7089688fa96a45fc57410c60f6ca5a394'
+  sha1 'd2915438c9405015e5e39099aecbbda20438ce81'
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
@@ -39,7 +39,7 @@ class Macvim < Formula
       --enable-pythoninterp
       --enable-rubyinterp
       --enable-tclinterp
-      --with-ruby-command=/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
+      --with-ruby-command=#{RUBY_PATH}
     ]
 
     args << "--enable-cscope" if build.include? "with-cscope"

@@ -2,23 +2,29 @@ require 'formula'
 
 class IrcdHybrid < Formula
   homepage 'http://www.ircd-hybrid.org/'
-  url 'http://sourceforge.net/projects/ircd-hybrid/files/ircd-hybrid/ircd-hybrid-8.0.4/ircd-hybrid-8.0.4.tgz'
-  sha1 '610df82fba0f5c21202c3d4910f9d68ae220ebcb'
+  url 'http://sourceforge.net/projects/ircd-hybrid/files/ircd-hybrid/ircd-hybrid-8.0.7/ircd-hybrid-8.0.7.tgz'
+  sha1 '9c6566dfd22d6e7908345771417a831b4e0218fd'
 
   # ircd-hybrid needs the .la files
   skip_clean :la
 
+  # system openssl fails with undefined symbols: "_SSL_CTX_clear_options"
+  depends_on 'openssl' if MacOS.version < :lion
+
   def install
+    ENV.j1 # build system trips over itself
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
+                          "--sysconfdir=#{etc}",
                           # there's no config setting for this so set it to something generous
                           "--with-nicklen=30"
     system "make install"
   end
 
   def test
-    system "ircd -version"
+    system "#{sbin}/ircd", "-version"
   end
 
   def caveats; <<-EOS.undent
@@ -44,8 +50,6 @@ class IrcdHybrid < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>
       <key>StandardErrorPath</key>

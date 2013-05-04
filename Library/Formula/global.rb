@@ -2,9 +2,9 @@ require 'formula'
 
 class Global < Formula
   homepage 'http://www.gnu.org/software/global/'
-  url 'http://ftpmirror.gnu.org/global/global-6.2.7.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/global/global-6.2.7.tar.gz'
-  sha1 '332606e3e864e65277a6d8d84ab87c8e198b2bd0'
+  url 'http://ftpmirror.gnu.org/global/global-6.2.8.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/global/global-6.2.8.tar.gz'
+  sha1 '2adabb332ecf31f0f7c951c3a6d260503a37c9ec'
 
   option 'with-exuberant-ctags', 'Enable Exuberant Ctags as a plug-in parser'
 

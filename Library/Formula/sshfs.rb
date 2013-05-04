@@ -2,10 +2,11 @@ require 'formula'
 
 class Sshfs < Formula
   homepage 'http://fuse.sourceforge.net/sshfs.html'
-  url 'https://github.com/fuse4x/sshfs/tarball/sshfs_2_4_0'
-  sha1 '37a9a49a3042fad43f168f25454b56060a48e210'
+  url 'https://github.com/fuse4x/sshfs/archive/sshfs_2_4_0.tar.gz'
+  sha1 '30b81ac7f32125088652937568d8886e3bb3f6e2'
 
-  depends_on :automake
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
   depends_on :libtool
 
   depends_on 'pkg-config' => :build

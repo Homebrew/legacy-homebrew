@@ -20,7 +20,7 @@ class Sqliteman < Formula
     end
   end
 
-  def test
-    system "#{bin}/sqliteman", '--langs'
+  test do
+    system "#{bin}/sqliteman", "--langs"
   end
 end

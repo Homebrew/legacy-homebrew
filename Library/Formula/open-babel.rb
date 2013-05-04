@@ -10,6 +10,7 @@ class OpenBabel < Formula
   option 'python', 'Compile Python language bindings'
   option 'java',   'Compile Java language bindings'
 
+  depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
   depends_on 'wxmac' if build.include? 'gui'
   depends_on 'cairo' if build.include? 'png'

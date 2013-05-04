@@ -1,5 +1,6 @@
 require 'testing_env'
 require 'dependencies'
+require 'dependency'
 
 class DependenciesTests < Test::Unit::TestCase
   def setup
@@ -33,7 +34,15 @@ class DependenciesTests < Test::Unit::TestCase
     assert_equal %q{foo, bar}, @deps*', '
   end
 
+  def test_to_a
+    dep = Dependency.new("foo")
+    @deps << dep
+    assert_equal [dep], @deps.to_a
+  end
+
   def test_to_ary
-    assert_instance_of Array, @deps.to_ary
+    dep = Dependency.new("foo")
+    @deps << dep
+    assert_equal [dep], @deps.to_ary
   end
 end

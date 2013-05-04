@@ -1,8 +1,8 @@
 require 'formula'
 
 class Putmail < Formula
-  url 'http://downloads.sourceforge.net/project/putmail/putmail.py/1.4/putmail.py-1.4.tar.bz2'
   homepage 'http://putmail.sourceforge.net/home.html'
+  url 'http://downloads.sourceforge.net/project/putmail/putmail.py/1.4/putmail.py-1.4.tar.bz2'
   sha1 '7903fd32a14192adb72560b99c01e6563bc9dd38'
 
   def install

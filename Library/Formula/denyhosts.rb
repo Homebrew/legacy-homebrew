@@ -22,6 +22,13 @@ class Denyhosts < Formula
     inreplace 'DenyHosts/constants.py' do |s|
       s.change_make_var! 'CONFIG_FILE', "'#{etc}/denyhosts.cfg'"
     end
+
+    unless MacOS.mountain_lion_or_newer?
+      inreplace 'denyhosts.cfg' do |s|
+        s.gsub! %r{^SECURE_LOG\s*=\s*/private/var/log/system\.log}, 'SECURE_LOG = /private/var/log/secure.log'
+      end
+    end
+
     # Install mostly into libexec (a la Duplicity)
     system "python", "setup.py", "install",
                      "--prefix=#{prefix}",
@@ -262,10 +269,10 @@ index 0000000..a140844
 +#
 +# Mac OS X (v10.4 or greater - 
 +#   also refer to:   http://www.denyhosts.net/faq.html#macos
-+SECURE_LOG = /private/var/log/secure.log
++#SECURE_LOG = /private/var/log/secure.log
 +#
 +# Mac OS X (v10.3 or earlier):
-+#SECURE_LOG=/private/var/log/system.log
++SECURE_LOG=/private/var/log/system.log
 +#
 +########################################################################
 +

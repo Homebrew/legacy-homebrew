@@ -5,13 +5,9 @@ class Leptonica < Formula
   url 'http://www.leptonica.org/source/leptonica-1.69.tar.gz'
   sha1 '91199f99d2e78b15b76ffa6fc4e86ee458a330e8'
 
-  option 'without-libpng', 'Build without PNG support'
-  option 'without-jpeg', 'Build without JPEG support'
-  option 'with-libtiff', 'Build with TIFF support'
-
-  depends_on :libpng unless build.include? "without-libpng"
-  depends_on 'jpeg' => :recommended unless build.include? "without-jpeg"
-  depends_on 'libtiff' => :optional if build.include? "with-libtiff"
+  depends_on :libpng => :recommended
+  depends_on 'jpeg' => :recommended
+  depends_on 'libtiff' => :optional
 
   def install
     system "./configure", "--disable-dependency-tracking",

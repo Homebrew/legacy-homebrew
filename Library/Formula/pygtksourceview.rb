@@ -26,7 +26,7 @@ class Pygtksourceview < Formula
     "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 
-  def test
-    system "python -c 'import gtksourceview2'"
+  test do
+    system "python", "-c", "import gtksourceview2"
   end
 end

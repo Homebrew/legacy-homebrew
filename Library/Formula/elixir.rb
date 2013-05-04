@@ -19,12 +19,12 @@ end
 
 class Elixir < Formula
   homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/tarball/v0.7.2'
-  sha1 '9f500bfe87c158f2142d226ced43105781a52a46'
+  url  'https://github.com/elixir-lang/elixir/archive/v0.8.2.tar.gz'
+  sha1 'c58ad161df6615be3e146aaf0dbb5cdf8003c601'
 
-  head 'https://github.com/elixir-lang/elixir.git', :branch => 'stable'
+  head 'https://github.com/elixir-lang/elixir.git'
 
-  depends_on ErlangInstalled.new
+  depends_on ErlangInstalled
 
   env :userpaths
 
@@ -38,7 +38,7 @@ class Elixir < Formula
     end
   end
 
-  def test
-    system "#{bin}/elixir -v"
+  test do
+    system "#{bin}/elixir", "-v"
   end
 end

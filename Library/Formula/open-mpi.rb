@@ -2,8 +2,19 @@ require 'formula'
 
 class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.6/downloads/openmpi-1.6.3.tar.bz2'
-  sha1 'a61aa2dee4c47d93d88e49ebed36de25df4f6492'
+  url 'http://www.open-mpi.org/software/ompi/v1.6/downloads/openmpi-1.6.4.tar.bz2'
+  sha1 '38095d3453519177272f488d5058a98f7ebdbf10'
+
+  devel do
+    url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7.1.tar.bz2'
+    sha1 '35d166e2a1d8b88c44d61eaabb5086e2425c8eb8'
+  end
+
+  option 'disable-fortran', 'Do not build the Fortran bindings'
+  option 'test', 'Verify the build with make check'
+  option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
+
+  conflicts_with 'mpich2', :because => 'both install mpi__ compiler wrappers'
 
   # Reported upstream at version 1.6, both issues
   # http://www.open-mpi.org/community/lists/devel/2012/05/11003.php
@@ -11,11 +22,7 @@ class OpenMpi < Formula
   fails_with :clang do
     build 421
     cause 'fails make check on Lion and ML'
-  end
-
-  option 'disable-fortran', 'Do not build the Fortran bindings'
-  option 'test', 'Verify the build with make check'
-  option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
+  end if not build.devel?
 
   def install
     args = %W[

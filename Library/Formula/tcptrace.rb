@@ -1,8 +1,8 @@
 require 'formula'
 
 class Tcptrace < Formula
-  url 'http://www.tcptrace.org/download/tcptrace-6.6.7.tar.gz'
   homepage 'http://www.tcptrace.org/'
+  url 'http://www.tcptrace.org/download/tcptrace-6.6.7.tar.gz'
   sha1 'ae4d10a0829c57f2eda17e63f593e558f52b7f24'
 
   def install

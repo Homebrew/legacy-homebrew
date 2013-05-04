@@ -15,8 +15,18 @@ class Nu < Formula
   url 'http://programming.nu/releases/Nu-2.0.1.tgz'
   sha1 'c0735f8f3daec9471b849f8e96827b5eef0ec44e'
 
-  depends_on NeedsLion.new
+  depends_on NeedsLion
   depends_on 'pcre'
+
+  fails_with :llvm do
+    build 2336
+    cause 'nu only builds with clang'
+  end
+
+  fails_with :gcc do
+    build 5666
+    cause 'nu only builds with clang'
+  end
 
   def install
 
@@ -25,9 +35,13 @@ class Nu < Formula
     inreplace "Makefile" do |s|
       cflags = s.get_make_var "CFLAGS"
       s.change_make_var! "CFLAGS", "#{cflags} #{ENV["CPPFLAGS"]}"
+      # nu hardcodes its compiler paths to a location which no longer works
+      # This should work for both Xcode-only and CLT-only systems
+      s.gsub! "$(DEVROOT)/usr/bin/clang", ENV.cc
     end
 
     inreplace "Nukefile" do |s|
+      s.gsub!'"#{DEVROOT}/usr/bin/clang"', "\"#{ENV.cc}\""
       case Hardware.cpu_type
       when :intel
         arch = :i386
@@ -40,7 +54,7 @@ class Nu < Formula
       s.gsub!('#{@destdir}/Library/Frameworks', '#{@prefix}/Library/Frameworks')
       s.sub! /^;; source files$/, <<-EOS
 ;; source files
-(set @framework_install_path "#{prefix}/Library/Frameworks")
+(set @framework_install_path "#{frameworks}")
 EOS
     end
     system "make"
@@ -52,14 +66,14 @@ EOS
   end
 
   def caveats
-    if self.installed? and File.exists? prefix+"Library/Frameworks/Nu.framework"
+    if self.installed? and File.exists? frameworks+"Nu.framework"
       return <<-EOS.undent
         Nu.framework was installed to:
-          #{prefix}/Library/Frameworks/Nu.framework
+          #{frameworks}/Nu.framework
 
         You may want to symlink this Framework to a standard OS X location,
         such as:
-          ln -s "#{prefix}/Library/Frameworks/Nu.framework" /Library/Frameworks
+          ln -s "#{frameworks}/Nu.framework" /Library/Frameworks
       EOS
     end
     return nil

@@ -7,7 +7,7 @@ class Ctags < Formula
 
   head 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
 
-  depends_on :autoconf => :build if build.head?
+  depends_on :autoconf if build.head?
 
   def patches
     # fixes http://sourceforge.net/tracker/?func=detail&aid=3247256&group_id=6556&atid=106556

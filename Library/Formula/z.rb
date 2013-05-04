@@ -2,8 +2,8 @@ require 'formula'
 
 class Z < Formula
   homepage 'https://github.com/rupa/z'
-  url 'https://github.com/rupa/z/tarball/v1.5'
-  sha1 '8a5286d6ed17b99259088e405fc2fcf923cf3b5f'
+  url 'https://github.com/rupa/z/archive/v1.6.tar.gz'
+  sha1 '3efddaddb4f68b76f91e504885bb7bf524730086'
 
   head 'https://github.com/rupa/z.git'
 

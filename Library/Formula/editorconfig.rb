@@ -2,8 +2,8 @@ require 'formula'
 
 class Editorconfig < Formula
   homepage 'http://editorconfig.org'
-  url 'https://github.com/editorconfig/editorconfig-core/tarball/v0.10.0'
-  sha1 'afae2e81cf130a0d1f9fbbcdd5e2ef5953af8bdc'
+  url 'https://github.com/editorconfig/editorconfig-core/archive/v0.11.3.zip'
+  sha1 '9e0c22e863dfb8b97526812ebe7c58c46604ebb8'
 
   depends_on 'cmake' => :build
 
@@ -12,7 +12,7 @@ class Editorconfig < Formula
     system "make install"
   end
 
-  def test
-    system "editorconfig"
+  test do
+    system "#{bin}/editorconfig"
   end
 end

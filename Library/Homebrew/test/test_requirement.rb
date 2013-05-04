@@ -1,5 +1,5 @@
 require 'testing_env'
-require 'dependencies'
+require 'requirement'
 
 class RequirementTests < Test::Unit::TestCase
   def test_accepts_single_tag
@@ -86,5 +86,18 @@ class RequirementTests < Test::Unit::TestCase
     ENV.expects(:append).with("PATH", which_path.parent, ":")
 
     req.modify_build_environment
+  end
+
+  def test_dsl_build
+    req = Class.new(Requirement) { build true }.new
+    assert req.build?
+  end
+
+  def test_infer_name_from_class
+    klass, const = self.class, :FooRequirement
+    klass.const_set(const, Class.new(Requirement))
+    assert_equal "foo", klass.const_get(const).new.name
+  ensure
+    klass.send(:remove_const, const) if klass.const_defined?(const)
   end
 end

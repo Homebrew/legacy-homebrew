@@ -18,8 +18,7 @@ class Texmacs < Formula
     system "make install"
   end
 
-  def caveats
-    general_caveats = <<-EOS.undent
+  def caveats; <<-EOS.undent
       TeXmacs has been installed! You can also check some dependencies :
        * Aspell for spell checking
        * Gnuplot for inline plotting

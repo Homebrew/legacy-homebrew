@@ -18,7 +18,10 @@ class Enscript < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/enscript -V | grep 'GNU Enscript #{version}'"
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/enscript", "-V") do |_, stdout, _|
+      /GNU Enscript #{Regexp.escape(version)}/ === stdout.read
+    end
   end
 end

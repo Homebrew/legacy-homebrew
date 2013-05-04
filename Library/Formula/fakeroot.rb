@@ -17,7 +17,7 @@ class Fakeroot < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/fakeroot -v"
+  test do
+    system "#{bin}/fakeroot", "-v"
   end
 end

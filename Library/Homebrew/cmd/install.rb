@@ -91,6 +91,8 @@ module Homebrew extend self
   rescue FormulaInstallationAlreadyAttemptedError
     # We already attempted to install f as part of the dependency tree of
     # another formula. In that case, don't generate an error, just move on.
+  rescue FormulaAlreadyInstalledError => e
+    opoo e.message
   rescue CannotInstallFormulaError => e
     ofail e.message
   end

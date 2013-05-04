@@ -7,8 +7,8 @@ end
 
 class Apktool < Formula
   homepage 'http://android-apktool.googlecode.com/'
-  url 'https://android-apktool.googlecode.com/files/apktool1.5.1.tar.bz2'
-  sha1 '73a0864d6910f40e6837b2777e2761a2952810eb'
+  url 'https://android-apktool.googlecode.com/files/apktool1.5.2.tar.bz2'
+  sha1 '2dd828cf79467730c7406aa918f1da1bd21aaec8'
 
   def install
     libexec.install 'apktool.jar'

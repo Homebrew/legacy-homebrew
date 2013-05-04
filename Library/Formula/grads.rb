@@ -1,14 +1,14 @@
 require 'formula'
 
 class GradsSupplementary < Formula
-  url 'ftp://grads.iges.org/grads/data2.tar.gz'
-  md5 'cacf16d75f53c876ff18bd4f8100fa66'
+  url 'ftp://cola.gmu.edu/grads/data2.tar.gz'
+  sha1 'e1cd5f9c4fe8d6ed344a29ee00413aeb6323b7cd'
 end
 
 class Grads < Formula
   homepage 'http://www.iges.org/grads/grads.html'
-  url 'ftp://cola.gmu.edu/grads/2.0/grads-2.0.1-bin-darwin9.8-intel.tar.gz'
-  sha1 '29191df3e25e9c7b70e730fcb7ddb65903e32a80'
+  url 'ftp://cola.gmu.edu/grads/2.0/grads-2.0.2-bin-darwin9.8-intel.tar.gz'
+  sha1 '0d42581c614ae627f4b53113c16c0695bd233362'
 
   def install
     rm 'bin/INSTALL'

@@ -2,8 +2,8 @@ require 'formula'
 
 class Gti < Formula
   homepage 'http://r-wos.org/hacks/gti'
-  url 'https://github.com/rwos/gti/tarball/v1.0.4'
-  sha1 '39a9780fc10663483f68ee6a4e69ad166ea21f62'
+  url 'https://github.com/rwos/gti/archive/v1.0.4.tar.gz'
+  sha1 '32005ae8bc8d10143b9078256463bc3aa9fa3a95'
 
   head 'https://github.com/rwos/gti.git'
 

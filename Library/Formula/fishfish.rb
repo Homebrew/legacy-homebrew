@@ -10,7 +10,7 @@ class Fishfish < Formula
   head 'https://github.com/fish-shell/fish-shell.git',
        :branch => 'master'
 
-  depends_on :autoconf => :build
+  depends_on :autoconf
   depends_on 'doxygen' => :build
 
   conflicts_with "fish"
@@ -21,8 +21,8 @@ class Fishfish < Formula
     system "make install"
   end
 
-  def test
-    system "fish -c 'echo'"
+  test do
+    system "fish", "-c", "echo"
   end
 
   def caveats; <<-EOS.undent

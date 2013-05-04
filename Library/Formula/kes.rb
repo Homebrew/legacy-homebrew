@@ -2,8 +2,8 @@ require 'formula'
 
 class Kes < Formula
   homepage 'https://github.com/epilnivek/kes'
-  url 'https://github.com/epilnivek/kes/tarball/v0.9'
-  sha1 '07cd04ecd000a8bcb1b091c7573e095b1af64563'
+  url 'https://github.com/epilnivek/kes/archive/v0.9.tar.gz'
+  sha1 '483ff8c76372bc12a852ae10d8d5edc7591cfe09'
 
   head 'https://github.com/epilnivek/kes.git'
 

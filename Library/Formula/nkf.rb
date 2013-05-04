@@ -1,8 +1,8 @@
 require 'formula'
 
 class Nkf < Formula
-  url 'http://dl.sourceforge.jp/nkf/53171/nkf-2.1.2.tar.gz'
   homepage 'http://sourceforge.jp/projects/nkf/'
+  url 'http://dl.sourceforge.jp/nkf/53171/nkf-2.1.2.tar.gz'
   sha1 'ca301d84e57787f566c933c2a1511f600183c8f1'
 
   def patches
