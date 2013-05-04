@@ -28,6 +28,7 @@ class Avidemux < Formula
   depends_on 'opencore-amr'
   depends_on 'xvid'
   depends_on 'x264'
+  depends_on 'qt' => :optional
 
   # Check if this still exists @ XCode-4.3.4 or 4.4.0.  I think it's fixed then
   # by llvm in clang svn.  So this will have to persist for older clang.
@@ -141,7 +142,7 @@ class Avidemux < Formula
       # Two dylibs that are only built as part of the Qt gui need an RPATH
       # set on their internal deps. Check if Qt4 exists before patching them,
       # otherwise the inreplaces will fail.
-      if Formula.factory('qt').linked_keg.exist?
+      if build.with? 'qt'
         inreplace 'ADM_videoEncoder/ADM_vidEnc_xvid/qt4/cmake_install.cmake',
           '"libADM_vidEnc_xvid.dylib"',
           '"${CMAKE_INSTALL_PREFIX}/lib/ADM_plugins/videoEncoder/libADM_vidEnc_xvid.dylib"'
@@ -175,13 +176,12 @@ class Avidemux < Formula
     end # of plugbuild
   end
 
-  def caveats; <<-EOS.undent
-    The command line program avidemux2_cli gets installed in your PATH.
-    The Qt gui is installed if you have Qt4, and its location is
-        #{prefix}/avidemux2.app
-    You can double-click it in Finder or link it into ~/Applications with
-        brew linkapps
-    EOS
+  def caveats
+    if build.with? 'qt' then <<-EOS.undent
+      The Qt GUI has been installed to
+        #{opt_prefix}/avidemux2.app
+      EOS
+    end
   end
 end
 
