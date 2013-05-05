@@ -24,9 +24,9 @@ class Nzbget < Formula
   homepage 'http://sourceforge.net/projects/nzbget/'
   url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/10.2/nzbget-10.2.tar.gz'
   sha1 'd113525d43eaa5e0f1a4a357d30fe44267f48138'
+
   head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk', :using => :svn
 
-  # Also depends on libxml2 and openssl but the ones in OS X are fine
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
 
@@ -39,7 +39,7 @@ class Nzbget < Formula
   end
 
   def install
-    # Install libpar2 inside nzbget, nothing else uses it
+    # Install libpar2 privately
     libpar2_prefix = libexec/'libpar2'
     Libpar2.new.brew do
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -49,9 +49,10 @@ class Nzbget < Formula
 
     # Tell configure where libpar2 is, and tell it to use OpenSSL
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--with-libpar2-includes=#{libpar2_prefix}/include",
                           "--with-libpar2-libraries=#{libpar2_prefix}/lib",
-                          "--with-tlslib=OpenSSL", "--prefix=#{prefix}"
+                          "--with-tlslib=OpenSSL"
     system "make"
     ENV.j1
     system "make install"
