@@ -509,7 +509,7 @@ class Formula
       "homepage" => homepage,
       "versions" => {
         "stable" => (stable.version.to_s if stable),
-        "bottle" => bottle || false,
+        "bottle" => bottle ? true : false,
         "devel" => (devel.version.to_s if devel),
         "head" => (head.version.to_s if head)
       },
