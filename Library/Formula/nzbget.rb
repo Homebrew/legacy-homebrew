@@ -8,7 +8,7 @@ class Libpar2 < Formula
   def initialize; super 'libpar2'; end
 
   fails_with :clang do
-    build 421
+    build 425
     cause <<-EOS.undent
       ./par2fileformat.h:87:25: error: flexible array member 'entries' of non-POD element type 'FILEVERIFICATIONENTRY []'
     EOS
@@ -31,7 +31,7 @@ class Nzbget < Formula
   depends_on 'libsigc++'
 
   fails_with :clang do
-    build 421
+    build 425
     cause <<-EOS.undent
       Configure errors out when testing the libpar2 headers because
       Clang does not support flexible arrays of non-POD types.
