@@ -47,15 +47,15 @@ class Nzbget < Formula
       system "make install"
     end
 
-    # Need to add -lcrypto
-    ENV["LIBS"] = "-lssl -lcrypto"
-
     # Tell configure where libpar2 is, and tell it to use OpenSSL
+    ENV.deparallelize
+    ENV.no_optimization
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--with-libpar2-includes=#{libpar2_prefix}/include",
                           "--with-libpar2-libraries=#{libpar2_prefix}/lib",
                           "--with-tlslib=OpenSSL", "--prefix=#{prefix}"
-    system "make install"
+    system "make"
+    system "make install-strip"
     system "make install-conf"
   end
 end
