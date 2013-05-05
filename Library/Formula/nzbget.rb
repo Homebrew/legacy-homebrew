@@ -22,8 +22,8 @@ end
 
 class Nzbget < Formula
   homepage 'http://sourceforge.net/projects/nzbget/'
-  url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/9.1/nzbget-9.1.tar.gz'
-  sha1 '779258e9349ebc1ea78ae1d7ba5d379af35d4040'
+  url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/10.2/nzbget-10.2.tar.gz'
+  sha1 'd113525d43eaa5e0f1a4a357d30fe44267f48138'
   head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk', :using => :svn
 
   # Also depends on libxml2 and openssl but the ones in OS X are fine
