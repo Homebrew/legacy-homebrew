@@ -2,8 +2,8 @@ require 'formula'
 
 class Inspircd < Formula
   homepage 'http://inspircd.github.com'
-  url 'https://github.com/inspircd/inspircd/archive/v2.0.11.tar.gz'
-  sha1 'c7badbc51983d78670281d2e00100676e1fc7b30'
+  url 'https://github.com/inspircd/inspircd/archive/v2.0.12.tar.gz'
+  sha1 'aaaa3153c8c2bf842642ca4f8b77c322f3d720d0'
 
   head 'https://github.com/inspircd/inspircd.git', :branch => 'master'
 

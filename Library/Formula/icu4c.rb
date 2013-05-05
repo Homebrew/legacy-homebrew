@@ -2,24 +2,19 @@ require 'formula'
 
 class Icu4c < Formula
   homepage 'http://site.icu-project.org/'
-  url 'http://download.icu-project.org/files/icu4c/50.1/icu4c-50_1-src.tgz'
-  version '50.1'
-  sha1 '9a3369c00a8be8eff935d2893849ad2eb246c0ef'
+  url 'http://download.icu-project.org/files/icu4c/51.1/icu4c-51_1-src.tgz'
+  version '51.1'
+  sha1 '7905632335e3dcd6667224da0fa087b49f9095e9'
 
   bottle do
-    revision 2
-    sha1 '34c2ab788c5ca698c1902d3d6c38db0461f8b100' => :mountain_lion
-    sha1 '899afa2267843f7204583884885f2c05f8189ddc' => :lion
-    sha1 'a54cbdd33dbdcb0fd8ed2441580e91e8ff114640' => :snow_leopard
+    sha1 '6b5b4ab5704cc2a8b17070a087c7f9594466cf1d' => :mountain_lion
+    sha1 'a555b051a65717e1ca731eec5743969d8190a9f8' => :lion
+    sha1 'bcb1ab988f67c3d48fb7c5829153c136c16c059b' => :snow_leopard
   end
 
   keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
 
   option :universal
-
-  fails_with :clang do
-    cause "Icu will turn on C++11 mode when built with clang, which causes incompatibilities."
-  end
 
   def install
     ENV.universal_binary if build.universal?

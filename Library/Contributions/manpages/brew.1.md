@@ -435,7 +435,7 @@ can take several different forms:
     If set, Homebrew will pass `--verbose` when invoking `curl`(1).
 
   * HOMEBREW\_DEBUG:
-    If set, Homebrew always assumes `--debug` when running commands.
+    If set, any commands that can emit debugging information will do so.
 
   * HOMEBREW\_DEBUG\_INSTALL:
     When `brew install -d` or `brew install -i` drops into a shell,

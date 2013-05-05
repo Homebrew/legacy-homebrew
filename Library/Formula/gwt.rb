@@ -2,8 +2,8 @@ require 'formula'
 
 class Gwt < Formula
   homepage 'https://developers.google.com/web-toolkit/'
-  url 'http://google-web-toolkit.googlecode.com/files/gwt-2.5.0.zip'
-  sha1 '59f04f2002a26451d83f8c82044c14d076059ee3'
+  url 'http://google-web-toolkit.googlecode.com/files/gwt-2.5.1.zip'
+  sha1 'd5f755b0a45fab577328a5ef6b96aa39b64cdb65'
 
   def install
     rm Dir['*.cmd'] # remove Windows cmd files

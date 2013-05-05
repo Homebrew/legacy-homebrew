@@ -10,8 +10,8 @@ end
 
 class GitFlowAvh < Formula
   homepage 'https://github.com/petervanderdoes/gitflow'
-  url 'https://github.com/petervanderdoes/gitflow/archive/1.5.1.tar.gz'
-  sha1 'bb984d36ce1c89fc07877d9a3ebd3540633efd9a'
+  url 'https://github.com/petervanderdoes/gitflow/archive/1.5.2.tar.gz'
+  sha1 'd344814a63bab81e4f713f133c2de0acff0cf726'
 
   head 'https://github.com/petervanderdoes/gitflow.git', :branch => 'develop'
 
@@ -23,8 +23,8 @@ class GitFlowAvh < Formula
     system "make", "prefix=#{prefix}", "install"
 
     GitFlowAvhCompletion.new('git-flow-avh-completion').brew do
-      (prefix+'etc/bash_completion.d').install "git-flow-completion.bash"
-      (share+'zsh/site-functions').install "git-flow-completion.zsh"
+      bash_completion.install "git-flow-completion.bash"
+      zsh_completion.install "git-flow-completion.zsh"
     end
   end
 

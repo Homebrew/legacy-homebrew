@@ -11,6 +11,13 @@ class OpenOcd < Formula
   depends_on 'libusb-compat'
   depends_on 'libftdi' if build.include? 'enable-ft2232_libftdi'
 
+  # Per MacPorts, remove -gstabs, which is not supported by clang.
+  def patches
+    {:p0 => [
+      "https://trac.macports.org/export/105669/trunk/dports/cross/openocd/files/patch-jimctl-configure.diff"
+    ]}
+  end
+
   def install
     # default options that don't imply additional dependencies
     args = %W[

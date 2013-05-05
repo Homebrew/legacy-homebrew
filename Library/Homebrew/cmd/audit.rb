@@ -331,7 +331,7 @@ class FormulaAuditor
     end
 
     # Check for string interpolation of single values.
-    if text =~ /(system|inreplace|gsub!|change_make_var!) .* ['"]#\{(\w+(\.\w+)?)\}['"]/
+    if text =~ /(system|inreplace|gsub!|change_make_var!).*[ ,]"#\{([\w.]+)\}"/
       problem "Don't need to interpolate \"#{$2}\" with #{$1}"
     end
 

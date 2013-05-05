@@ -8,6 +8,6 @@ class Ninja < Formula
   def install
     system "./bootstrap.py"
     bin.install "ninja"
-    (prefix/'etc/bash_completion.d').install 'misc/bash-completion' => 'ninja-completion.sh'
+    bash_completion.install 'misc/bash-completion' => 'ninja-completion.sh'
   end
 end

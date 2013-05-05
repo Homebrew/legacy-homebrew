@@ -60,13 +60,14 @@ __brewcomp ()
 __brew_complete_formulae ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
-    local ff=$(\ls $(brew --repository)/Library/Formula 2>/dev/null | sed 's/\.rb//g')
-    local af=$(\ls $(brew --repository)/Library/Aliases 2>/dev/null | sed 's/\.rb//g')
+    local lib=$(brew --repository)/Library
+    local ff=$(\ls ${lib}/Formula 2>/dev/null | sed 's/\.rb//g')
+    local af=$(\ls ${lib}/Aliases 2>/dev/null | sed 's/\.rb//g')
     local tf tap
 
-    for dir in $(\ls $(brew --repository)/Library/Taps 2>/dev/null); do
+    for dir in $(\ls ${lib}/Taps 2>/dev/null); do
         tap="$(echo "$dir" | sed 's|-|/|g')"
-        tf="$tf $(\ls -1R "$(brew --repository)/Library/Taps/$dir" 2>/dev/null |
+        tf="$tf $(\ls -1R "${lib}/Taps/${dir}" 2>/dev/null |
                   grep '.\+.rb' | sed -E 's|(.+)\.rb|'"${tap}"'/\1|g')"
     done
 

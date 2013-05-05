@@ -2,10 +2,8 @@ require 'formula'
 
 class Libnfc < Formula
   homepage 'http://www.libnfc.org/'
-  url 'http://libnfc.googlecode.com/files/libnfc-1.7.0-rc1.tar.gz'
-  sha1 'b8660604c950c50c12d68025672bf553e50f111d'
-
-  option 'with-pn532_uart', 'Enable PN532 UART support'
+  url 'http://libnfc.googlecode.com/files/libnfc-1.7.0-rc6.tar.gz'
+  sha1 'c4ff27dd126fad013297ea035a5f5a1fb02d8f33'
 
   depends_on 'pkg-config' => :build
   depends_on 'libusb-compat'
@@ -13,24 +11,16 @@ class Libnfc < Formula
   # Fixes the lack of MIN macro in sys/param.h on OS X which causes the formula not to compile
   # Reported upstream:
   # https://groups.google.com/forum/?fromgroups=#!topic/libnfc-devel/K0cwIdPuqJg
+  # Another patch adds support for USB CDC / ACM type serial ports (tty.usbmodem)
   def patches
     DATA
   end
 
   def install
-    args = %W[
-      --disable-debug
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-    ]
-
-    if build.include? 'with-pn532_uart'
-      args << "--enable-serial-autoprobe"
-      args << "--with-drivers=pn532_uart"
-    end
-
-    system "./configure", *args
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
+    (prefix/'etc/nfc/libnfc.conf').write "allow_intrusive_scan=yes"
   end
 end
 
@@ -55,3 +45,16 @@ index ec9e2fc..41797b2 100644
  /**
   * @macro HAL
   * @brief Execute corresponding driver function if exists.
+diff --git a/libnfc/buses/uart_posix.c b/libnfc/buses/uart_posix.c
+index 7b687c1..686f9ed 100644
+--- a/libnfc/buses/uart_posix.c
++++ b/libnfc/buses/uart_posix.c
+@@ -46,7 +46,7 @@
+ #define LOG_CATEGORY "libnfc.bus.uart"
+
+ #  if defined(__APPLE__)
+-const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", NULL };
++const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", "tty.usbmodem", NULL };
+ #  elif defined (__FreeBSD__) || defined (__OpenBSD__)
+ const char *serial_ports_device_radix[] = { "cuaU", "cuau", NULL };
+ #  elif defined (__linux__)

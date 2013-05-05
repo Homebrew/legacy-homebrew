@@ -2,9 +2,9 @@ require 'formula'
 
 class GstPluginsBase < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.0.6.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.0.6.tar.xz'
-  sha256 '85e5f99af690f720ccde5ea7e793269d35883a3ead80ca9985fa44e18bb1a4a5'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.0.7.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.0.7.tar.xz'
+  sha256 '014805e50b696bc06c3862ea656df079fc0b5fef0c10f16e9f085f290545677a'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
