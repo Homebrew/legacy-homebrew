@@ -8,7 +8,7 @@ class Libpar2 < Formula
   def initialize; super 'libpar2'; end
 
   fails_with :clang do
-    build 421
+    build 425
     cause <<-EOS.undent
       ./par2fileformat.h:87:25: error: flexible array member 'entries' of non-POD element type 'FILEVERIFICATIONENTRY []'
     EOS
@@ -22,8 +22,8 @@ end
 
 class Nzbget < Formula
   homepage 'http://sourceforge.net/projects/nzbget/'
-  url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/9.1/nzbget-9.1.tar.gz'
-  sha1 '779258e9349ebc1ea78ae1d7ba5d379af35d4040'
+  url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/10.2/nzbget-10.2.tar.gz'
+  sha1 'd113525d43eaa5e0f1a4a357d30fe44267f48138'
   head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk', :using => :svn
 
   # Also depends on libxml2 and openssl but the ones in OS X are fine
@@ -31,7 +31,7 @@ class Nzbget < Formula
   depends_on 'libsigc++'
 
   fails_with :clang do
-    build 421
+    build 425
     cause <<-EOS.undent
       Configure errors out when testing the libpar2 headers because
       Clang does not support flexible arrays of non-POD types.
@@ -47,14 +47,13 @@ class Nzbget < Formula
       system "make install"
     end
 
-    # Need to add -lcrypto
-    ENV["LIBS"] = "-lssl -lcrypto"
-
     # Tell configure where libpar2 is, and tell it to use OpenSSL
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--with-libpar2-includes=#{libpar2_prefix}/include",
                           "--with-libpar2-libraries=#{libpar2_prefix}/lib",
                           "--with-tlslib=OpenSSL", "--prefix=#{prefix}"
+    system "make"
+    ENV.j1
     system "make install"
     system "make install-conf"
   end
