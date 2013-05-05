@@ -45,8 +45,11 @@ class Keg < Pathname
         dst.extend ObserverPathnameExtension
 
         # check whether the file to be unlinked is from the current keg first
-        if !dst.symlink? || !dst.exist? || src != dst.resolved_path
-          next
+        begin
+          if !dst.symlink? || !dst.exist? || src != dst.resolved_path
+            next
+          end
+        rescue ArgumentError
         end
 
         dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
