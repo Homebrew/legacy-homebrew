@@ -59,7 +59,7 @@ class DependencyCollector
     when Class
       parse_class_spec(spec, tag)
     else
-      raise "Unsupported type #{spec.class} for #{spec}"
+      raise TypeError, "Unsupported type #{spec.class} for #{spec}"
     end
   end
 
@@ -99,7 +99,7 @@ class DependencyCollector
     if spec < Requirement
       spec.new(tag)
     else
-      raise "#{spec} is not a Requirement subclass"
+      raise TypeError, "#{spec} is not a Requirement subclass"
     end
   end
 
