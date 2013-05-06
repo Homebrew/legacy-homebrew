@@ -54,7 +54,7 @@ class DependencyCollector
       parse_string_spec(spec, tag)
     when Symbol
       parse_symbol_spec(spec, tag)
-    when Dependency, Requirement
+    when Requirement, Dependency
       spec
     when Class
       parse_class_spec(spec, tag)
