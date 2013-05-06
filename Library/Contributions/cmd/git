@@ -25,7 +25,7 @@ end
 
 case F.downcase
   when 'git' then %W{HOMEBREW_GIT GIT}
-  when 'svn' then "HOMEBREW_SVN"
+  when 'svn' then %W{HOMEBREW_SVN}
   else []
 end.each do |key|
   exec ENV[key], *ARGV if ENV[key] and File.executable? ENV[key]

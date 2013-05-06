@@ -54,7 +54,7 @@ class Nu < Formula
       s.gsub!('#{@destdir}/Library/Frameworks', '#{@prefix}/Library/Frameworks')
       s.sub! /^;; source files$/, <<-EOS
 ;; source files
-(set @framework_install_path "#{prefix}/Library/Frameworks")
+(set @framework_install_path "#{frameworks}")
 EOS
     end
     system "make"
@@ -66,14 +66,14 @@ EOS
   end
 
   def caveats
-    if self.installed? and File.exists? prefix+"Library/Frameworks/Nu.framework"
+    if self.installed? and File.exists? frameworks+"Nu.framework"
       return <<-EOS.undent
         Nu.framework was installed to:
-          #{prefix}/Library/Frameworks/Nu.framework
+          #{frameworks}/Nu.framework
 
         You may want to symlink this Framework to a standard OS X location,
         such as:
-          ln -s "#{prefix}/Library/Frameworks/Nu.framework" /Library/Frameworks
+          ln -s "#{frameworks}/Nu.framework" /Library/Frameworks
       EOS
     end
     return nil

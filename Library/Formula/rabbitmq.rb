@@ -37,8 +37,8 @@ class Rabbitmq < Formula
            "rabbitmq_management-#{version}/priv/www/cli/rabbitmqadmin"
 
     sbin.install 'rabbitmqadmin'
-
-    (prefix+'etc/bash_completion.d/rabbitmqadmin.bash').write `#{sbin}/rabbitmqadmin --bash-completion`
+    (sbin/'rabbitmqadmin').chmod 0755
+    (bash_completion/'rabbitmqadmin.bash').write `#{sbin}/rabbitmqadmin --bash-completion`
   end
 
   def caveats; <<-EOS.undent

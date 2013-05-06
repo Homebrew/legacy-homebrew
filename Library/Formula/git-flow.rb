@@ -23,8 +23,8 @@ class GitFlow < Formula
     system "make", "prefix=#{prefix}", "install"
 
     GitFlowCompletion.new('git-flow-completion').brew do
-      (prefix+'etc/bash_completion.d').install "git-flow-completion.bash"
-      (share+'zsh/site-functions').install "git-flow-completion.zsh"
+      bash_completion.install "git-flow-completion.bash"
+      zsh_completion.install "git-flow-completion.zsh"
     end
   end
 end
