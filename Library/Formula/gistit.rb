@@ -2,8 +2,8 @@ require 'formula'
 
 class Gistit < Formula
   homepage 'http://gistit.herokuapp.com/'
-  url 'https://github.com/jrbasso/gistit/archive/v0.1.1.tar.gz'
-  sha1 '882269ea6f88f46d9ca0a136fa96124c5cc8cd82'
+  url 'https://github.com/jrbasso/gistit/archive/v0.1.2.tar.gz'
+  sha1 '9b20f3c0f81a9cb07e904e4f98f727e07caab8f3'
 
   depends_on :autoconf
   depends_on :automake
