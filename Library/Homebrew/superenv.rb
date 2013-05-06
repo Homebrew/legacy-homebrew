@@ -43,16 +43,21 @@ class << ENV
 
   def setup_build_environment
     reset
-    ENV['CC'] = 'cc'
-    ENV['CXX'] = 'c++'
-    ENV['OBJC'] = 'cc'
-    ENV['OBJCXX'] = 'c++'
+    # For compatibilty reasons with build tools that hardcode their
+    # behavior on the presense of `CC=gcc` (and refuse to work with
+    # `CC=llvm-gcc`) we set this to 'gcc' here and later in the
+    # `Library/ENV/gcc` we use the true value of `ENV['HOMEBREW_CC']`,
+    # which is `llvm-gcc`. All this is ture for `CXX=g++`, too.
+    # I am looking at you homebrew/scinece/trinity!
+    ENV['CC'] = ENV['OBJC'] = (determine_cc == 'llvm-gcc')? 'gcc' : determine_cc
+    ENV['CXX'] = ENV['OBJCXX'] = (determine_cxx == 'llvm-g++')? 'g++' : determine_cxx
     ENV['DEVELOPER_DIR'] = determine_developer_dir # effects later settings
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
     ENV['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
     ENV['HOMEBREW_CC'] = determine_cc
+    ENV['HOMEBREW_CXX'] = determine_cxx
     ENV['HOMEBREW_CCCFG'] = determine_cccfg
     ENV['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
     ENV['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacSystem.xcode43_without_clt?
@@ -75,7 +80,7 @@ class << ENV
   private
 
   def determine_cc
-    if ARGV.include? '--use-gcc'
+    @determine_cc ||= if ARGV.include? '--use-gcc'
       # fall back to something else on systems without Apple gcc
       MacOS.locate('gcc-4.2') ? "gcc-4.2" : raise("gcc-4.2 not found!")
     elsif ARGV.include? '--use-llvm'
@@ -104,6 +109,40 @@ class << ENV
     end
   rescue
     "clang"
+  end
+
+  def determine_cxx
+    @determine_cxx ||= if ARGV.include? '--use-gcc'
+      # fall back to something else on systems without Apple gcc
+      gxx42 = 'gcc-4.2-++'
+      MacOS.locate(gxx42) ? gxx42 : raise(gxx42 + " not found!")
+    elsif ARGV.include? '--use-llvm'
+      "llvm-g++"
+    elsif ARGV.include? '--use-clang'
+      "clang++"
+    elsif ENV['HOMEBREW_USE_CLANG']
+      opoo %{HOMEBREW_USE_CLANG is deprecated, use HOMEBREW_CC="clang" instead}
+      "clang++"
+    elsif ENV['HOMEBREW_USE_LLVM']
+      opoo %{HOMEBREW_USE_LLVM is deprecated, use HOMEBREW_CC="llvm" instead}
+      "llvm-g++"
+    elsif ENV['HOMEBREW_USE_GCC']
+      opoo %{HOMEBREW_USE_GCC is deprecated, use HOMEBREW_CC="gcc" instead}
+      "g++"
+    elsif ENV['HOMEBREW_CC']
+      case ENV['HOMEBREW_CC']
+        when 'clang' then 'clang++'
+        when 'gcc' then 'g++'
+        when 'llvm', 'llvm-gcc' then 'llvm-g++'
+      else
+        opoo "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC']}"
+        raise # use default
+      end
+    else
+      raise
+    end
+  rescue
+    "clang++"
   end
 
   def determine_path
