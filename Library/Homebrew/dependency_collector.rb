@@ -38,87 +38,89 @@ class DependencyCollector
   end
 
   def build(spec)
-    spec, tag = case spec
-                when Hash then spec.shift
-                else spec
-                end
+    spec, tags = case spec
+                 when Hash then spec.shift
+                 else spec
+                 end
 
-    parse_spec(spec, tag)
+    parse_spec(spec, Array(tags))
   end
 
   private
 
-  def parse_spec spec, tag
+  def parse_spec(spec, tags)
     case spec
     when String
-      parse_string_spec(spec, tag)
+      parse_string_spec(spec, tags)
     when Symbol
-      parse_symbol_spec(spec, tag)
+      parse_symbol_spec(spec, tags)
     when Requirement, Dependency
       spec
     when Class
-      parse_class_spec(spec, tag)
+      parse_class_spec(spec, tags)
     else
       raise TypeError, "Unsupported type #{spec.class} for #{spec}"
     end
   end
 
-  def parse_string_spec(spec, tag)
-    if tag && LANGUAGE_MODULES.include?(tag)
+  def parse_string_spec(spec, tags)
+    if tags.empty?
+      Dependency.new(spec, tags)
+    elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
       LanguageModuleDependency.new(tag, spec)
     else
-      Dependency.new(spec, tag)
+      Dependency.new(spec, tags)
     end
   end
 
-  def parse_symbol_spec spec, tag
+  def parse_symbol_spec(spec, tags)
     case spec
     when :autoconf, :automake, :bsdmake, :libtool, :libltdl
       # Xcode no longer provides autotools or some other build tools
-      autotools_dep(spec, tag)
-    when :x11        then X11Dependency.new(spec.to_s, tag)
+      autotools_dep(spec, tags)
+    when :x11        then X11Dependency.new(spec.to_s, tags)
     when *X11Dependency::Proxy::PACKAGES
-      x11_dep(spec, tag)
+      x11_dep(spec, tags)
     when :cairo, :pixman
       # We no longer use X11 psuedo-deps for cairo or pixman,
       # so just return a standard formula dependency.
-      Dependency.new(spec.to_s, tag)
-    when :xcode      then XcodeDependency.new(tag)
-    when :mysql      then MysqlDependency.new(tag)
-    when :postgresql then PostgresqlDependency.new(tag)
-    when :tex        then TeXDependency.new(tag)
-    when :clt        then CLTDependency.new(tag)
-    when :arch       then ArchRequirement.new(tag)
-    when :hg         then MercurialDependency.new(tag)
+      Dependency.new(spec.to_s, tags)
+    when :xcode      then XcodeDependency.new(tags)
+    when :mysql      then MysqlDependency.new(tags)
+    when :postgresql then PostgresqlDependency.new(tags)
+    when :tex        then TeXDependency.new(tags)
+    when :clt        then CLTDependency.new(tags)
+    when :arch       then ArchRequirement.new(tags)
+    when :hg         then MercurialDependency.new(tags)
     else
       raise "Unsupported special dependency #{spec}"
     end
   end
 
-  def parse_class_spec(spec, tag)
+  def parse_class_spec(spec, tags)
     if spec < Requirement
-      spec.new(tag)
+      spec.new(tags)
     else
       raise TypeError, "#{spec} is not a Requirement subclass"
     end
   end
 
-  def x11_dep(spec, tag)
+  def x11_dep(spec, tags)
     if MacOS.version >= :mountain_lion
-      Dependency.new(spec.to_s, tag)
+      Dependency.new(spec.to_s, tags)
     else
-      X11Dependency::Proxy.for(spec.to_s, tag)
+      X11Dependency::Proxy.for(spec.to_s, tags)
     end
   end
 
-  def autotools_dep(spec, tag)
-    case spec
-    when :libltdl then spec, tag = :libtool, Array(tag)
-    else tag = Array(tag) << :build
-    end
-
+  def autotools_dep(spec, tags)
     unless MacOS::Xcode.provides_autotools?
-      Dependency.new(spec.to_s, tag)
+      case spec
+      when :libltdl then spec = :libtool
+      else tags << :build
+      end
+
+      Dependency.new(spec.to_s, tags)
     end
   end
 end

@@ -30,7 +30,7 @@ class DependencyCollectorTests < Test::Unit::TestCase
   end
 
   def test_dependency_tags
-    assert Dependency.new('foo', :build).build?
+    assert Dependency.new('foo', [:build]).build?
     assert Dependency.new('foo', [:build, :optional]).optional?
     assert Dependency.new('foo', [:universal]).options.include? '--universal'
     assert_empty Dependency.new('foo').tags
