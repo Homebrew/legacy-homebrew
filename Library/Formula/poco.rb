@@ -6,10 +6,10 @@ class Poco < Formula
   sha1 'c667c97b57d3f56b2884237a43d701b63e2be1f5'
   version '1.4.6p1-all'
 
-#  devel do
-#    url 'http://pocoproject.org/releases/poco-1.5.1/poco-1.5.1-all.tar.bz2'
-#    sha1 'bb8362aa868e6ac1d671167f1d88649c86f1a5e4'
-#  end
+  devel do
+    url 'http://pocoproject.org/releases/poco-1.5.1/poco-1.5.1-all.tar.bz2'
+    sha1 '2eaa44deb853a6f7ba7d9e4726a365ae45006ef1'
+  end
 
   def install
     arch = Hardware.is_64_bit? ? 'Darwin64': 'Darwin32'
