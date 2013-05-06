@@ -97,7 +97,7 @@ class Version
   protected
 
   def to_a
-    @array ||= @version.scan(/\d+|[a-zA-Z]+/).map { |e| VersionElement.new(e) }
+    @array ||= @version.scan(/\d+|[a-zA-Z]+/).map! { |e| VersionElement.new(e) }
   end
 
   def self.parse spec
