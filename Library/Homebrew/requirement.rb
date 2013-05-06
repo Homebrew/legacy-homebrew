@@ -10,8 +10,8 @@ class Requirement
 
   attr_reader :tags, :name
 
-  def initialize(*tags)
-    @tags = tags.flatten.compact
+  def initialize(tags=[])
+    @tags = tags
     @tags << :build if self.class.build
     @name ||= infer_name
   end

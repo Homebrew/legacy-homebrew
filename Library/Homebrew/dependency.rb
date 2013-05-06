@@ -6,9 +6,9 @@ class Dependency
 
   attr_reader :name, :tags
 
-  def initialize(name, *tags)
+  def initialize(name, tags=[])
     @name = name
-    @tags = tags.flatten.compact
+    @tags = tags
   end
 
   def to_s
