@@ -6,7 +6,7 @@ class HtmlXmlUtils < Formula
   sha1 '788f9eef4347e49f7e4880d99ad5d27c1e8776fd'
 
   fails_with :clang do
-    build 421
+    build 425
     cause <<-EOS.undent
       Undefined symbols for architecture x86_64:
         "_min", referenced from:
