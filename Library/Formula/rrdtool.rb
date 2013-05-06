@@ -5,17 +5,12 @@ class Rrdtool < Formula
   url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.7.tar.gz'
   sha1 'faab7df7696b69f85d6f89dd9708d7cf0c9a273b'
 
-  option 'lua', "Compile with lua support"
-
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'pango'
+  depends_on 'lua' => :optional
 
-  # Can use lua if it is found, but don't force users to install
-  # TODO: Do something here
-  depends_on 'lua' if build.include? "lua"
-
-  env :std # For perl, ruby
+  env :userpaths # For perl, ruby
 
   # Ha-ha, but sleeping is annoying when running configure a lot
   def patches; DATA; end
@@ -32,6 +27,8 @@ class Rrdtool < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --disable-tcl
+      --with-tcllib=/usr/lib
     ]
     args << "--enable-perl-site-install" if which_perl.to_s == "/usr/bin/perl"
     args << "--enable-ruby-site-install" if which_ruby.realpath == RUBY_PATH
