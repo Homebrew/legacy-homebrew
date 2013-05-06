@@ -50,6 +50,19 @@ class Python3 < Formula
     prefix/"Frameworks/Python.framework/Versions/#{VER}/lib"
   end
 
+  fails_with :llvm do
+    build '2336'
+    cause <<-EOS.undent
+      Could not find platform dependent libraries <exec_prefix>
+      Consider setting $PYTHONHOME to <prefix>[:<exec_prefix>]
+      python.exe(14122) malloc: *** mmap(size=7310873954244194304) failed (error code=12)
+      *** error: can't allocate region
+      *** set a breakpoint in malloc_error_break to debug
+      Could not import runpy module
+      make: *** [pybuilddir.txt] Segmentation fault: 11
+    EOS
+  end
+
   def install
     # Unset these so that installing pip and distribute puts them where we want
     # and not into some other Python the user has installed.
@@ -74,7 +87,9 @@ class Python3 < Formula
     distutils_fix_stdenv
 
     # Python does not need all of X11, these bundled Headers are enough
-    ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers" unless MacOS::CLT.installed?
+    unless MacOS::CLT.installed?
+      ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
+    end
 
     # Allow sqlite3 module to load extensions: http://docs.python.org/library/sqlite3.html#f1
     inreplace "setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', 'pass'
