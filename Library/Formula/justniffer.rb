@@ -8,7 +8,7 @@ class Justniffer < Formula
   depends_on "boost"
 
   fails_with :clang do
-    build 421
+    build 425
     cause <<-EOS.undent
           Symbols declared inline in headers are then expected by the linker.
           Probably declaring them static would fix it properly.
