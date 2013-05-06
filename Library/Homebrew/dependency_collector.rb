@@ -51,23 +51,23 @@ class DependencyCollector
   def parse_spec spec, tag
     case spec
     when String
-      if tag && LANGUAGE_MODULES.include?(tag)
-        LanguageModuleDependency.new(tag, spec)
-      else
-        Dependency.new(spec, tag)
-      end
+      parse_string_spec(spec, tag)
     when Symbol
       parse_symbol_spec(spec, tag)
     when Dependency, Requirement
       spec
     when Class
-      if spec < Requirement
-        spec.new(tag)
-      else
-        raise "#{spec} is not a Requirement subclass"
-      end
+      parse_class_spec(spec, tag)
     else
       raise "Unsupported type #{spec.class} for #{spec}"
+    end
+  end
+
+  def parse_string_spec(spec, tag)
+    if tag && LANGUAGE_MODULES.include?(tag)
+      LanguageModuleDependency.new(tag, spec)
+    else
+      Dependency.new(spec, tag)
     end
   end
 
@@ -92,6 +92,14 @@ class DependencyCollector
     when :hg         then MercurialDependency.new(tag)
     else
       raise "Unsupported special dependency #{spec}"
+    end
+  end
+
+  def parse_class_spec(spec, tag)
+    if spec < Requirement
+      spec.new(tag)
+    else
+      raise "#{spec} is not a Requirement subclass"
     end
   end
 
