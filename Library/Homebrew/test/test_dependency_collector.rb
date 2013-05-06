@@ -110,4 +110,12 @@ class DependencyCollectorTests < Test::Unit::TestCase
     MacOS.stubs(:version).returns(MacOS::Version.new(10.7))
     assert_equal X11Dependency::Proxy.new(:libpng), @d.build(:libpng)
   end
+
+  def test_raises_typeerror_for_unknown_classes
+    assert_raises(TypeError) { @d.add(Class.new) }
+  end
+
+  def test_raises_typeerror_for_unknown_types
+    assert_raises(TypeError) { @d.add(Object.new) }
+  end
 end
