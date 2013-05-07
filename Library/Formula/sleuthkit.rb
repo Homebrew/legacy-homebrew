@@ -7,6 +7,8 @@ class Sleuthkit < Formula
 
   head 'https://github.com/sleuthkit/sleuthkit.git'
 
+  option 'with-jni', "Build Sleuthkit with JNI bindings"
+
   if build.head?
     depends_on :autoconf
     depends_on :automake
@@ -25,5 +27,12 @@ class Sleuthkit < Formula
                           "--prefix=#{prefix}"
     system "make"
     system "make install"
+
+    if build.with? 'jni'
+      cd 'bindings/java' do
+        system 'ant'
+      end
+      prefix.install 'bindings'
+    end
   end
 end
