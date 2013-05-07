@@ -122,8 +122,8 @@ class FormulaAuditor
 
   def audit_deps
     # Don't depend_on aliases; use full name
-    aliases = Formula.aliases
-    f.deps.select { |d| aliases.include? d.name }.each do |d|
+    @@aliases ||= Formula.aliases
+    f.deps.select { |d| @@aliases.include? d.name }.each do |d|
       problem "Dependency #{d} is an alias; use the canonical name."
     end
 
