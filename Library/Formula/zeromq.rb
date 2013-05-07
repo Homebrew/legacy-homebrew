@@ -36,8 +36,10 @@ class Zeromq < Formula
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
-    system "make"
-    system "make install"
+    cd "src" do
+      system "make"
+      system "make install"
+    end
   end
 
   def caveats; <<-EOS.undent
