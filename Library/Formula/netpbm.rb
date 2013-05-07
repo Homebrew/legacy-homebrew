@@ -4,7 +4,7 @@ class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
   url 'svn+http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/', :revision => 1809
   version '10.60.05'
-  # Maintainers: Look http://netpbm.svn.sourceforge.net/viewvc/netpbm/
+  # Maintainers: Look at http://netpbm.svn.sourceforge.net/viewvc/netpbm/
   # for versions and matching revisions
 
   head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
@@ -15,9 +15,8 @@ class Netpbm < Formula
 
   def install
     system "cp", "config.mk.in", "config.mk"
-    config = "config.mk"
 
-    inreplace config do |s|
+    inreplace "config.mk" do |s|
       s.remove_make_var! "CC"
       s.change_make_var! "CFLAGS_SHLIB", "-fno-common"
       s.change_make_var! "NETPBMLIBTYPE", "dylib"
@@ -28,8 +27,10 @@ class Netpbm < Formula
       s.change_make_var! "PNGLIB", "-lpng"
       s.change_make_var! "ZLIB", "-lz"
       s.change_make_var! "JASPERLIB", "-ljasper"
-      s.change_make_var! "JASPERHDR_DIR", "#{HOMEBREW_PREFIX}/include/jasper"
+      s.change_make_var! "JASPERHDR_DIR", "#{Formula.factory('jasper').opt_prefix}/include/jasper"
     end
+
+    ENV.append 'LDFLAGS', '-Wl,-headerpad_max_install_names'
 
     ENV.deparallelize
     system "make"

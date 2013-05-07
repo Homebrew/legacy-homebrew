@@ -93,7 +93,7 @@ class ArchRequirement < Requirement
   fatal true
 
   def initialize(arch)
-    @arch = arch
+    @arch = arch.pop
     super
   end
 

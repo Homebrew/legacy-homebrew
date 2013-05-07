@@ -10,12 +10,10 @@ class Macvim < Formula
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
-  option "with-cscope", "Build with Cscope support"
-  option "with-lua", "Build with Lua scripting support"
   option "with-python3", "Build with Python 3 scripting support"
 
-  depends_on 'cscope' if build.include? 'with-cscope'
-  depends_on 'lua' if build.include? 'with-lua'
+  depends_on 'cscope' => :optional
+  depends_on 'lua' => :optional
 
   depends_on :xcode # For xcodebuild.
 
@@ -42,14 +40,14 @@ class Macvim < Formula
       --with-ruby-command=#{RUBY_PATH}
     ]
 
-    args << "--enable-cscope" if build.include? "with-cscope"
+    args << "--enable-cscope" if build.with? "cscope"
 
-    if build.include? "with-lua"
+    if build.with? "lua"
       args << "--enable-luainterp"
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
     end
 
-   args << "--enable-python3interp" if build.include? "with-python3"
+    args << "--enable-python3interp" if build.include? "with-python3"
 
     system "./configure", *args
 
