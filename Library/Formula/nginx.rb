@@ -5,6 +5,11 @@ class Nginx < Formula
   url 'http://nginx.org/download/nginx-1.4.1.tar.gz'
   sha1 '9c72838973572323535dae10f4e412d671b27a7e'
 
+  devel do
+    url 'http://nginx.org/download/nginx-1.5.0.tar.gz'
+    sha1 '4f61368d6a0e340d04d116400616bf3179463df2'
+  end
+
   head 'svn://svn.nginx.org/nginx/trunk/'
 
   env :userpaths
