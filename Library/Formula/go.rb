@@ -13,9 +13,9 @@ class Go < Formula
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
 
   devel do
-    url 'https://go.googlecode.com/files/go1.1rc1.src.tar.gz'
-    version '1.1rc1'
-    sha1 'c999c36e7bb5c9ef05d309b0bb4275feb62c44e3'
+    url 'https://go.googlecode.com/files/go1.1rc2.src.tar.gz'
+    version '1.1rc2'
+    sha1 '17d5dffb477c204d4e218ad53d81d0ac98d1dab6'
   end
 
   unless build.stable?
