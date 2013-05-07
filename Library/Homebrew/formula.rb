@@ -323,7 +323,7 @@ class Formula
 
     if name.include? "/"
       if name =~ %r{(.+)/(.+)/(.+)}
-        tapd = HOMEBREW_REPOSITORY/"Library/Taps"/"#$1-#$2".downcase
+        tapd = tap_path($1, $2)
         tapd.find_formula do |relative_pathname|
           return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
         end if tapd.directory?
@@ -436,6 +436,11 @@ class Formula
       # remotely installed formula are not mxcl/master but this will do for now
       "mxcl/master"
     end
+  end
+
+  def self.tap_path user, repo
+    # we downcase to avoid case-insensitive filesystem issues
+    HOMEBREW_REPOSITORY/"Library/Taps"/"#{user}-#{repo}".downcase
   end
 
   def self.path name

@@ -208,9 +208,14 @@ Note that these flags should only appear after a command.
     If `--versions` is passed, show the version number for installed formulae,
     or only the specified formulae if <formulae> are given.
 
-  * `log [git-log-options]` <formula> ...:
-    Show the git log for the given formulae. Options that `git-log`(1)
-    recognizes can be passed before the formula list.
+  * `log [git-log-options] [--tap=<tap>]`:
+    Show the git log for the entire repository, or the specified tapped
+    repository. Options that `git-log`(1) recognizes can be passed to this
+    command.
+
+  * `log [git-log-options]` <formulae>:
+    Show the git log for the given formulae. All specified formulae must be
+    from the same repository.
 
   * `missing` [<formulae>]:
     Check the given <formulae> for missing dependencies.

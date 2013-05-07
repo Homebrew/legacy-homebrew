@@ -1,3 +1,5 @@
+require "formula"
+
 module Homebrew extend self
 
   def tap
@@ -21,8 +23,7 @@ module Homebrew extend self
     repouser = if user == "homebrew" then "Homebrew" else user end
     user = "homebrew" if user == "Homebrew"
 
-    # we downcase to avoid case-insensitive filesystem issues
-    tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
+    tapd = Formula.tap_path(user, repo)
     raise "Already tapped!" if tapd.directory?
     abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
 

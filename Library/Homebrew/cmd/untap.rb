@@ -13,7 +13,7 @@ module Homebrew extend self
     user.downcase!
     repo.downcase!
 
-    tapd = HOMEBREW_LIBRARY/"Taps/#{user}-#{repo}"
+    tapd = Formula.tap_path(user, repo)
 
     raise "No such tap!" unless tapd.directory?
 

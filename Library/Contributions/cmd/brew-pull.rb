@@ -31,7 +31,7 @@ ARGV.named.each do|arg|
   end
 
   if tap url
-    Dir.chdir HOMEBREW_REPOSITORY/"Library/Taps/#{url_match[1].downcase}-#{tap url}"
+    Dir.chdir Formula.tap_path(url_match[1], tap url)
   else
     Dir.chdir HOMEBREW_REPOSITORY
   end

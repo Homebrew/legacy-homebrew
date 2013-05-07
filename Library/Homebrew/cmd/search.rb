@@ -58,7 +58,7 @@ module Homebrew extend self
   end
 
   def search_tap user, repo, rx
-    return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
+    return [] if Formula.tap_path(user, repo).directory?
 
     require 'open-uri'
     require 'vendor/multi_json'
