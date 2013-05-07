@@ -257,6 +257,11 @@ def nostdout
 end
 
 module GitHub extend self
+  def open url, headers={}, &block
+    require 'open-uri'
+    Kernel.open(url, headers.merge('User-Agent' => HOMEBREW_USER_AGENT), &block)
+  end
+  
   def issues_for_formula name
     # bit basic as depends on the issue at github having the exact name of the
     # formula in it. Which for stuff like objective-caml is unlikely. So we
@@ -264,7 +269,6 @@ module GitHub extend self
 
     name = f.name if Formula === name
 
-    require 'open-uri'
     require 'vendor/multi_json'
 
     issues = []
@@ -284,13 +288,12 @@ module GitHub extend self
   end
 
   def find_pull_requests rx
-    require 'open-uri'
     require 'vendor/multi_json'
 
     query = rx.source.delete('.*').gsub('\\', '')
     uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{query}")
 
-    open uri do |f|
+    GitHub.open uri do |f|
       MultiJson.decode(f.read)['issues'].each do |pull|
         yield pull['pull_request_url'] if rx.match pull['title'] and pull['pull_request_url']
       end
