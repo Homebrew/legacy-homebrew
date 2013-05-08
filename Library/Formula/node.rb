@@ -74,7 +74,7 @@ class Node < Formula
     system "make install"
 
     unless build.include? 'without-npm'
-      (lib/"node_modules/npm/npmrc").write(npmrc)
+      (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
     end
   end
 
@@ -88,12 +88,6 @@ class Node < Formula
 
   def modules_folder
     "#{HOMEBREW_PREFIX}/lib/node_modules"
-  end
-
-  def npmrc
-    <<-EOS.undent
-      prefix = #{npm_prefix}
-    EOS
   end
 
   def caveats
