@@ -102,8 +102,7 @@ module Homebrew extend self
       puts
     end
 
-    puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
-    conflicts = f.conflicts.map { |c| c.formula }.sort
+    conflicts = f.conflicts.map(&:formula).sort!
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
@@ -121,6 +120,14 @@ module Homebrew extend self
 
     history = github_info(f)
     puts history if history
+
+    unless f.deps.empty?
+      ohai "Dependencies"
+      %w{build required recommended optional}.map do |type|
+        deps = f.deps.send(type)
+        puts "#{type.capitalize}: #{deps*', '}" unless deps.empty?
+      end
+    end
 
     unless f.build.empty?
       require 'cmd/options'
