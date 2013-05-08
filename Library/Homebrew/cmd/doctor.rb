@@ -1,4 +1,5 @@
 require 'cmd/missing'
+require 'version'
 
 class Volumes
   def initialize
@@ -916,13 +917,14 @@ def check_for_leopard_ssl
 end
 
 def check_git_version
-  # see https://github.com/blog/642-smart-http-support
+  # https://help.github.com/articles/https-cloning-errors
   return unless which "git"
-  `git --version`.chomp =~ /git version (\d)\.(\d)\.(\d)/
 
-  if $2.to_i < 6 or $2.to_i == 6 and $3.to_i < 6 then <<-EOS.undent
+  `git --version`.chomp =~ /git version ((?:\d+\.?)+)/
+
+  if Version.new($1) < Version.new("1.7.10") then <<-EOS.undent
     An outdated version of Git was detected in your PATH.
-    Git 1.6.6 or newer is required to perform checkouts over HTTP from GitHub.
+    Git 1.7.10 or newer is required to perform checkouts over HTTPS from GitHub.
     Please upgrade: brew upgrade git
     EOS
   end
