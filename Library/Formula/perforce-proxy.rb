@@ -5,12 +5,12 @@ class PerforceProxy < Formula
 
   if MacOS.prefer_64_bit?
     url 'http://filehost.perforce.com/perforce/r12.2/bin.darwin90x86_64/p4p'
-    version '2012.2.572941-x86_64'
-    sha1 '691fe24d3d01c213237e28974df7e21cdc901c1b'
+    version '2012.2.631250-x86_64'
+    sha1 '573fc8cc97e6705e93b9a3c54b46ce832d970850'
   else
     url 'http://filehost.perforce.com/perforce/r12.2/bin.darwin90x86/p4p'
-    version '2012.2.572941-x86'
-    sha1 '2f662122e6aea27aab6684631635c741bd03f070'
+    version '2012.2.631250-x86'
+    sha1 '20ad474618670fdeb45ca23fe450162bb2b85c3c'
   end
 
   def install
