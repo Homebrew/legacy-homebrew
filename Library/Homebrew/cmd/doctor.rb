@@ -363,12 +363,11 @@ def check_access_logs
   end
 end
 
-def check_usr_bin_ruby
-  if /^1\.9/.match RUBY_VERSION
-    <<-EOS.undent
-      Ruby version #{RUBY_VERSION} is unsupported.
-      Homebrew is developed and tested on Ruby 1.8.x, and may not work correctly
-      on other Rubies. Patches are accepted as long as they don't break on 1.8.x.
+def check_ruby_version
+  if RUBY_VERSION.to_f > 1.8 then <<-EOS.undent
+    Ruby version #{RUBY_VERSION} is unsupported.
+    Homebrew is developed and tested on Ruby 1.8.x, and may not work correctly
+    on other Rubies. Patches are accepted as long as they don't break on 1.8.x.
     EOS
   end
 end
