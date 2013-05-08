@@ -12,7 +12,7 @@ class Macvim < Formula
   option "override-system-vim", "Override system vim"
   option "with-python3", "Build with Python 3 scripting support"
 
-  depends_on 'cscope' => :optional
+  depends_on 'cscope' => :recommended
   depends_on 'lua' => :optional
 
   depends_on :xcode # For xcodebuild.
