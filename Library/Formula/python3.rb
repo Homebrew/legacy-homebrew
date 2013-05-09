@@ -6,8 +6,8 @@ require 'formula'
 # `brew install python`.
 
 class Distribute < Formula
-  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.36.tar.gz'
-  sha1 'ab69711e4ea85c84d6710ecadf1d77427539f702'
+  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.38.tar.gz'
+  sha1 'dcd9d17db4e2df132f5c9c2e88c52d57ff6ff541'
 end
 
 class Pip < Formula
