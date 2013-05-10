@@ -51,7 +51,7 @@ class Qt < Formula
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
-    # we have to disable all tjos to avoid triggering optimization code
+    # we have to disable 3DNow! to avoid triggering optimization code
     # that will fail with clang. Only seems to occur in superenv, perhaps
     # because we rename clang to cc and Qt thinks it can build with special
     # assembler commands. In --env=std, Qt seems aware of this.)
