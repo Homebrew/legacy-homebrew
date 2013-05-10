@@ -93,9 +93,6 @@ FORMULA_META_FILES = Metafiles.new
 ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/troubleshooting"
 HOMEBREW_PULL_URL_REGEX = 'https:\/\/github.com\/(\w+)\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
 
-unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
-  $:.unshift(File.expand_path("#{__FILE__}/../compat"))
-  require 'compatibility'
-end
+require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
 
 ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
