@@ -12,8 +12,8 @@ end
 
 class IosWebkitDebugProxy < Formula
   homepage 'https://github.com/google/ios-webkit-debug-proxy'
-  url 'https://github.com/google/ios-webkit-debug-proxy/archive/1.1.tar.gz'
-  sha1 'fa4c8fa295f95d0f712d045da3d6f4f040dba9f5'
+  url 'https://github.com/google/ios-webkit-debug-proxy/archive/1.2.tar.gz'
+  sha1 'b0e72f586263da2e20c587fc479b8005edf396cf'
 
   depends_on LionOrNewer
   depends_on :autoconf => :build
