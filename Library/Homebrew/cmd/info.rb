@@ -106,9 +106,7 @@ module Homebrew extend self
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
-      kegs = f.rack.children
-      kegs.reject! {|keg| keg.basename.to_s == '.DS_Store' }
-      kegs = kegs.map {|keg| Keg.new(keg) }.sort_by {|keg| keg.version }
+      kegs = f.rack.subdirs.map { |keg| Keg.new(keg) }.sort_by(&:version)
       kegs.each do |keg|
         puts "#{keg} (#{keg.abv})#{' *' if keg.linked?}"
         tab = Tab.for_keg(keg).to_s
