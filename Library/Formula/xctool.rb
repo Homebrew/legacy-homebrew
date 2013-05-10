@@ -2,8 +2,8 @@ require 'formula'
 
 class Xctool < Formula
   homepage 'https://github.com/facebook/xctool'
-  url 'https://github.com/facebook/xctool/archive/v0.1.0.tar.gz'
-  sha1 'f5cf21d14f26127cea6b6b069fcc2c7387c41af6'
+  url 'https://github.com/facebook/xctool/archive/v0.1.2.tar.gz'
+  sha1 '86ac6dfb61fa80a62ecd80e3632fac091f665c8a'
   head 'https://github.com/facebook/xctool.git'
 
   depends_on :xcode
