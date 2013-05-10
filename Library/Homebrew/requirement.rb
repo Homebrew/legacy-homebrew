@@ -75,6 +75,11 @@ class Requirement
   end
 
   class << self
+    # The default formula to install to satisfy this requirement.
+    def default_formula(val=nil)
+      val.nil? ? @default_formula : @default_formula = val.to_s
+    end
+
     def fatal(val=nil)
       val.nil? ? @fatal : @fatal = val
     end
@@ -137,6 +142,13 @@ class Requirement
         end
 
         next if prune
+
+        # TODO: Do this in a cleaner way, perhaps with another type of
+        # dependency type.
+        if req.class.default_formula
+          dependent.class.depends_on(req.class.default_formula)
+          next
+        end
 
         reqs << req
       end
