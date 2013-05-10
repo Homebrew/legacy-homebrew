@@ -36,16 +36,6 @@ class Tesseract < Formula
     end
   end
 
-  def caveats; <<-EOF.undent
-    Tesseract is an OCR (Optical Character Recognition) engine.
-
-    The easiest way to use it is to convert the source to a Grayscale tiff:
-      `convert source.png -type Grayscale terre_input.tif`
-    then run tesseract:
-      `tesseract terre_input.tif output`
-    EOF
-  end
-
   def install_language_data
     langs = {
       'eng'     => '989ed4c3a5b246d7353893e466c353099d8b73a1',

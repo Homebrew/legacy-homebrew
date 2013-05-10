@@ -61,6 +61,15 @@ class LinkTests < Test::Unit::TestCase
     assert_equal 3, @keg.link(mode)
   end
 
+  def test_link_overwrite_broken_symlinks
+    FileUtils.cd HOMEBREW_PREFIX/"bin" do
+      FileUtils.ln_s "nowhere", "helloworld"
+    end
+    mode = OpenStruct.new
+    mode.overwrite = true
+    assert_equal 3, @keg.link(mode)
+  end
+
   def test_link_overwrite_dryrun
     FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
     mode = OpenStruct.new
