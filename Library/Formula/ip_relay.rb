@@ -6,13 +6,7 @@ class IpRelay < Formula
   sha1 '6644476f6b154218c77053658537e45b56286248'
 
   def install
-    # ENV.j1  # if your formula's build system can't parallelize
-
-    system "mv ip_relay.pl ip_relay"
+    File.rename "ip_relay.pl", "ip_relay"
     bin.install "ip_relay"
-  end
-
-  test do
-    system "false"
   end
 end
