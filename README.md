@@ -1,6 +1,14 @@
-Homebrew
-========
-Features, usage and installation instructions are [summarized on the homepage][home].
+Linuxbrew
+=========
+An experimental fork of Homebrew for Linux.
+
+Installation
+------------
+
+* Debian or Ubuntu: `sudo apt-get install build-essential curl git ruby`
+* `git clone https://github.com/Homebrew/linuxbrew.git ~/.linuxbrew`
+* Add to your `.bashrc`: `export PATH=~/.linuxbrew/bin:$PATH`
+* `brew install $WHATEVER_YOU_WANT`
 
 What Packages Are Available?
 ----------------------------
@@ -12,14 +20,3 @@ What Packages Are Available?
 More Documentation
 ------------------
 `brew help` or `man brew` or check our [wiki][].
-
-Who Are You?
-------------
-I'm [Max Howell][mxcl] and I'm a splendid chap.
-
-
-[home]:http://brew.sh
-[wiki]:http://wiki.github.com/mxcl/homebrew
-[mxcl]:http://twitter.com/mxcl
-[formula]:http://github.com/mxcl/homebrew/tree/master/Library/Formula/
-[braumeister]:http://braumeister.org
