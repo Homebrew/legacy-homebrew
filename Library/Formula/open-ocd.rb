@@ -2,21 +2,14 @@ require 'formula'
 
 class OpenOcd < Formula
   homepage 'http://sourceforge.net/projects/openocd/'
-  url 'http://downloads.sourceforge.net/project/openocd/openocd/0.6.1/openocd-0.6.1.tar.bz2'
-  sha1 'b286dd9c0c6ca5cc7a76d25e404ad99a488e2c61'
+  url 'http://downloads.sourceforge.net/project/openocd/openocd/0.7.0/openocd-0.7.0.tar.bz2'
+  sha1 '40fa518af4fae273f24478249fc03aa6fcce9176'
 
   option 'enable-ft2232_libftdi', 'Enable building support for FT2232 based devices with libftdi driver'
   option 'enable-ft2232_ftd2xx',  'Enable building support for FT2232 based devices with FTD2XX driver'
 
   depends_on 'libusb-compat'
   depends_on 'libftdi' if build.include? 'enable-ft2232_libftdi'
-
-  # Per MacPorts, remove -gstabs, which is not supported by clang.
-  def patches
-    {:p0 => [
-      "https://trac.macports.org/export/105669/trunk/dports/cross/openocd/files/patch-jimctl-configure.diff"
-    ]}
-  end
 
   def install
     # default options that don't imply additional dependencies
@@ -47,6 +40,8 @@ class OpenOcd < Formula
       args << "--enable-ft2232_ftd2xx"
       args << "--enable-presto_ftd2xx"
     end
+
+    ENV['CCACHE'] = 'none'
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
