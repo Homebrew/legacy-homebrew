@@ -869,7 +869,7 @@ end
 def check_missing_deps
   return unless HOMEBREW_CELLAR.exist?
   s = Set.new
-  Homebrew.missing_deps(Formula.installed).each do |_, deps|
+  Homebrew.missing_deps(Formula.installed).each_value do |deps|
     s.merge deps
   end
 
