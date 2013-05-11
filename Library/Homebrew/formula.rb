@@ -489,7 +489,7 @@ class Formula
   end
 
   def conflicts
-    requirements.select { |r| r.is_a? ConflictRequirement }
+    requirements.grep(ConflictRequirement)
   end
 
   # Returns a list of Dependency objects in an installable order, which
