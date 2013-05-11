@@ -13,14 +13,21 @@ class Flac < Formula
   depends_on 'lame'
   depends_on 'libogg' => :optional
 
+  option :universal
+
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
   end
 
   def install
+
+    ENV.universal_binary if build.universal?
+
     # sadly the asm optimisations won't compile since Leopard
-    system "./configure", "--disable-debug",
+			  
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-debug",
                           "--disable-asm-optimizations",
                           "--enable-sse",
                           "--prefix=#{prefix}",
