@@ -25,7 +25,7 @@ class Rpm < Formula
   version '5.4.10'
   sha1 'ce43b5871c4f884bea679f6c37d5cb9df7f2e520'
 
-  depends_on 'db'
+  depends_on 'berkeley-db'
   depends_on 'libmagic'
   depends_on 'popt'
   depends_on 'beecrypt'
