@@ -259,7 +259,7 @@ end
 module GitHub extend self
   def open url, headers={}, &block
     require 'open-uri'
-    Kernel.open(url, headers.merge('User-Agent' => 'homebrew'), &block)
+    Kernel.open(url, headers.merge('User-Agent' => HOMEBREW_USER_AGENT), &block)
   end
   
   def issues_for_formula name

@@ -34,7 +34,7 @@ module Homebrew extend self
     # Figure out if this repo is private
     # curl will throw an exception if the repo is private (Github returns a 404)
     begin
-      curl('-Ifso', '--user-agent', 'homebrew', '/dev/null', "https://api.github.com/repos/#{repouser}/homebrew-#{repo}")
+      curl('-Ifso', '/dev/null', "https://api.github.com/repos/#{repouser}/homebrew-#{repo}")
     rescue
       puts
       puts "It looks like you tapped a private repository"
