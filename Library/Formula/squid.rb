@@ -28,6 +28,7 @@ class Squid < Formula
       --localstatedir=#{var}
       --enable-ssl
       --enable-ssl-crtd
+      --disable-eui
     ]
 
     system "./configure", *args
