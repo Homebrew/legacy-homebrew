@@ -11,3 +11,5 @@ langs:
     lang_string: 简体中文
   - langcode: zh-TW
     lang_string: 繁體中文
+  - langcode: ja
+    lang_string: 日本語
