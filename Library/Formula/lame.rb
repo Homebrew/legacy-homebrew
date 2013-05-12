@@ -10,7 +10,8 @@ class Lame < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    system "./configure", "--disable-debug",
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-nasm"
     system "make install"
