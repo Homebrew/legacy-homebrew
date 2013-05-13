@@ -14,6 +14,9 @@ class Unittestxx < Formula
 
     # Install the compiled library
     lib.install 'libUnitTest++.a'
+
+    # Install the documentation
+    doc.install 'docs/UnitTest++.html'
   end
 
 end
