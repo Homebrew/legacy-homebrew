@@ -10,5 +10,20 @@ class Hiredis < Formula
     ENV["OBJARCH"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
     system "make", "install", "PREFIX=#{prefix}"
+    (lib+'pkgconfig/hiredis.pc').write pc_file
+  end
+
+  def pc_file; <<-EOS.undent
+    prefix=#{opt_prefix}
+    exec_prefix=${prefix}
+    libdir=${exec_prefix}/lib
+    includedir=${prefix}/include
+
+    Name: Hiredis
+    Description: Minimalistic C client for Redis >= 1.2
+    Version: #{version}
+    Libs: -L${libdir} -lhiredis
+    Cflags: -I${includedir}
+    EOS
   end
 end
