@@ -51,7 +51,7 @@ class Qt < Formula
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
-    # we have to disable all tjos to avoid triggering optimization code
+    # we have to disable 3DNow! to avoid triggering optimization code
     # that will fail with clang. Only seems to occur in superenv, perhaps
     # because we rename clang to cc and Qt thinks it can build with special
     # assembler commands. In --env=std, Qt seems aware of this.)
@@ -71,6 +71,8 @@ class Qt < Formula
     if build.with? 'qtdbus'
       args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
       args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
+      args << "-L#{Formula.factory('d-bus').lib}"
+      args << "-ldbus-1"
     end
 
     if build.with? 'qt3support'
