@@ -5,6 +5,8 @@ class Fltk < Formula
   url 'http://fossies.org/linux/misc/fltk-1.3.2-source.tar.gz'
   sha1 '25071d6bb81cc136a449825bfd574094b48f07fb'
 
+  option :universal
+
   depends_on :libpng
   depends_on 'jpeg'
 
@@ -14,7 +16,10 @@ class Fltk < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--enable-threads"
+    ENV.universal_binary if build.universal?
+    system "./configure", "--prefix=#{prefix}",
+                          "--enable-threads",
+                          "--enable-shared"
     system "make install"
   end
 end
