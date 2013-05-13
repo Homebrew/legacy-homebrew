@@ -1,11 +1,9 @@
 require 'formula'
 
-class Sdl < Formula
+class Sdl2 < Formula
   homepage 'http://www.libsdl.org/'
-  url 'http://www.libsdl.org/release/SDL-1.2.15.tar.gz'
-  sha1 '0c5f193ced810b0d7ce3ab06d808cbb5eef03a2c'
 
-  head 'http://hg.libsdl.org/SDL', :branch => 'SDL-1.2', :using => :hg
+  head 'http://hg.libsdl.org/SDL', :using => :hg
 
   if build.head?
     depends_on :automake
@@ -18,7 +16,7 @@ class Sdl < Formula
     # we have to do this because most build scripts assume that all sdl modules
     # are installed to the same prefix. Consequently SDL stuff cannot be
     # keg-only but I doubt that will be needed.
-    inreplace %w[sdl.pc.in sdl-config.in], '@prefix@', HOMEBREW_PREFIX
+    inreplace %w[sdl2.pc.in sdl2-config.in], '@prefix@', HOMEBREW_PREFIX
 
     ENV.universal_binary if build.universal?
 
@@ -38,6 +36,6 @@ class Sdl < Formula
   end
 
   def test
-    system "#{bin}/sdl-config", "--version"
+    system "#{bin}/sdl2-config", "--version"
   end
 end
