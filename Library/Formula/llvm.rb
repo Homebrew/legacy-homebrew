@@ -38,12 +38,9 @@ class Llvm < Formula
   option 'rtti', 'Build with C++ RTTI'
   option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
-  def install
-    if build.universal? and build.include? 'shared'
-      onoe "Cannot specify both shared and universal (will not build)"
-      exit 1
-    end
+  env :std if build.universal?
 
+  def install
     Clang.new("clang").brew do
       clang_dir.install Dir['*']
     end if build.include? 'with-clang'
