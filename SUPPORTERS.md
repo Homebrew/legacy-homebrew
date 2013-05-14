@@ -10,7 +10,7 @@ until then.
 
 These wonderful people supported our Kickstarter by giving us £10 or more:
 
-* Simon Rascovsky
+* [Simon Rascovsky](teleradiologia.com)
 * [silsha](http://felixarndt.de)
 * [Martin Kopischke](http://martin.kopischke.net)
 * [John Kary](http://johnkary.net)

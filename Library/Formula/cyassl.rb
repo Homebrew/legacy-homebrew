@@ -24,28 +24,28 @@ class Cyassl < Formula
               --enable-crl
               --enable-crl-monitor
               --enable-dtls
-              --enable-fortress
+              --disable-fortress
               --enable-hc128
               --enable-keygen
               --enable-ocsp
-              --enable-opensslExtra
+              --enable-opensslextra
               --enable-psk
               --enable-rabbit
               --enable-ripemd
               --enable-sha512
-              --enable-sniffer
-              --disable-ecc
-              --disable-noFilesystem
-              --disable-noInline
+              --disable-sniffer
+              --enable-ecc
+              --enable-filesystem
+              --enable-inline
               --disable-ntru
-              --disable-webServer
-              --with-libz
+              --disable-webserver
+              --disable-bump
     ]
 
     if MacOS.prefer_64_bit?
-      args << '--enable-fastmath' << '--enable-fasthugemath' << '--enable-bump'
+      args << '--enable-fastmath' << '--enable-fasthugemath'
     else
-      args << '--disable-fastmath' << '--disable-fasthugemath' << '--disable-bump'
+      args << '--disable-fastmath' << '--disable-fasthugemath'
     end
 
     # Extra flag is stated as a needed for the Mac platform.

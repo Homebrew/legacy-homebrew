@@ -77,7 +77,7 @@ class Formula
     when @devel && @stable.nil?           then @devel   # devel-only
     when @head && @stable.nil?            then @head    # head-only
     else
-      raise "Formulae require at least a URL"
+      raise FormulaSpecificationError, "formulae require at least a URL"
     end
   end
 
@@ -164,6 +164,9 @@ class Formula
   def man8;    man+'man8'       end
   def sbin;    prefix+'sbin'    end
   def share;   prefix+'share'   end
+
+  def frameworks; prefix+'Frameworks' end
+  def kext_prefix; prefix+'Library/Extensions' end
 
   # configuration needs to be preserved past upgrades
   def etc; HOMEBREW_PREFIX+'etc' end
@@ -486,7 +489,7 @@ class Formula
   end
 
   def conflicts
-    requirements.select { |r| r.is_a? ConflictRequirement }
+    requirements.grep(ConflictRequirement)
   end
 
   # Returns a list of Dependency objects in an installable order, which
@@ -506,7 +509,7 @@ class Formula
       "homepage" => homepage,
       "versions" => {
         "stable" => (stable.version.to_s if stable),
-        "bottle" => bottle || false,
+        "bottle" => bottle ? true : false,
         "devel" => (devel.version.to_s if devel),
         "head" => (head.version.to_s if head)
       },

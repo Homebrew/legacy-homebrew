@@ -1,9 +1,5 @@
 require 'formula'
 
-def kext_prefix
-  prefix + 'Library' + 'Extensions'
-end
-
 class Fuse4xKext < Formula
   homepage 'http://fuse4x.github.com'
   url 'https://github.com/fuse4x/kext/archive/fuse4x_0_9_2.tar.gz'

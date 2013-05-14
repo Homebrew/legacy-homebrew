@@ -2,12 +2,12 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.2.8.tar.gz'
-  sha1 'b8c193d841538c3c443d262a2ab815a9ce1faaf6'
+  url 'http://nginx.org/download/nginx-1.4.1.tar.gz'
+  sha1 '9c72838973572323535dae10f4e412d671b27a7e'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.3.16.tar.gz'
-    sha1 '773321c9c9c273e9a2da0ddfd07e8af271d09ca7'
+    url 'http://nginx.org/download/nginx-1.5.0.tar.gz'
+    sha1 '4f61368d6a0e340d04d116400616bf3179463df2'
   end
 
   head 'svn://svn.nginx.org/nginx/trunk/'
@@ -19,8 +19,8 @@ class Nginx < Formula
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
   option 'with-debug', 'Compile with support for debug log'
-
-  option 'with-spdy', 'Compile with support for SPDY module' if build.devel?
+  option 'with-spdy', 'Compile with support for SPDY module'
+  option 'with-gunzip', 'Compile with support for gunzip module'
 
   skip_clean 'logs'
 
@@ -65,10 +65,8 @@ class Nginx < Formula
     args << passenger_config_args if build.include? 'with-passenger'
     args << "--with-http_dav_module" if build.include? 'with-webdav'
     args << "--with-debug" if build.include? 'with-debug'
-
-    if build.devel? or build.head?
-      args << "--with-http_spdy_module" if build.include? 'with-spdy'
-    end
+    args << "--with-http_spdy_module" if build.include? 'with-spdy'
+    args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
 
     if build.head?
       system "./auto/configure", *args

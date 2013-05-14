@@ -2,8 +2,8 @@ require 'formula'
 
 class Astyle < Formula
   homepage 'http://astyle.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/sourceforge/astyle/astyle_2.02.1_macosx.tar.gz'
-  sha1 'b8e3e79c7134a0e97a1948608e3b58201d3af3de'
+  url 'http://sourceforge.net/projects/astyle/files/astyle/astyle%202.03/astyle_2.03_macosx.tar.gz'
+  sha1 '60595f6a4704e9c2b9cc6a24c3276695dc6288b2'
 
   def install
     cd 'src' do

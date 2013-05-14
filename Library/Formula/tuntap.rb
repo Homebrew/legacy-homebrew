@@ -1,9 +1,5 @@
 require 'formula'
 
-def kext_prefix
-  prefix/'Library/Extensions'
-end
-
 class Tuntap < Formula
   homepage 'http://tuntaposx.sourceforge.net/'
   url 'git://git.code.sf.net/p/tuntaposx/code', :tag => 'release_20111101'

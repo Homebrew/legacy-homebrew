@@ -1,13 +1,5 @@
 require 'formula'
 
-def needs_universal_python?
-  build.universal? and not build.include? "without-python"
-end
-
-def boost_layout
-  (build.include? "use-system-layout") ? "system" : "tagged"
-end
-
 class UniversalPython < Requirement
   satisfy { archs_for_command("python").universal? }
 
@@ -42,7 +34,7 @@ class Boost < Formula
   option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
   option 'use-system-layout', 'Use system layout instead of tagged'
 
-  depends_on UniversalPython if needs_universal_python?
+  depends_on UniversalPython if build.universal? and not build.include? "without-python"
   depends_on "icu4c" if build.include? "with-icu"
   depends_on MPIDependency.new(:cc, :cxx) if build.include? "with-mpi"
 
@@ -70,6 +62,10 @@ class Boost < Formula
     #   /usr/local/lib/libboost_system-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
     inreplace 'tools/build/v2/tools/darwin.jam', '-install_name "', "-install_name \"#{HOMEBREW_PREFIX}/lib/"
 
+    # boost will try to use cc, even if we'd rather it use, say, gcc-4.2
+    inreplace 'tools/build/v2/engine/build.sh', 'BOOST_JAM_CC=cc', "BOOST_JAM_CC=#{ENV.cc}"
+    inreplace 'tools/build/v2/engine/build.jam', 'toolset darwin cc', "toolset darwin #{ENV.cc}"
+
     # Force boost to compile using the appropriate GCC version
     open("user-config.jam", "a") do |file|
       file.write "using darwin : : #{ENV.cxx} ;\n"
@@ -88,6 +84,12 @@ class Boost < Formula
       bargs << '--without-icu'
     end
 
+    # The context library is implemented as x86_64 ASM, so it
+    # won't build on PPC or 32-bit builds
+    # see https://github.com/mxcl/homebrew/issues/17646
+    bargs << "--without-libraries=context" if Hardware::CPU.type == :ppc || Hardware::CPU.bits == 32 || build.universal?
+
+    boost_layout = (build.include? "use-system-layout") ? "system" : "tagged"
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
             "-d2",

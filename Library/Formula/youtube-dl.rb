@@ -2,14 +2,14 @@ require 'formula'
 
 class YoutubeDl < Formula
   homepage 'http://rg3.github.io/youtube-dl/'
-  url 'http://youtube-dl.org/downloads/2013.04.18/youtube-dl-2013.04.18.tar.gz'
-  sha1 'e1388be0c10541c951ec65a21d4ba2ad18cd2b2d'
+  url 'http://youtube-dl.org/downloads/2013.05.14/youtube-dl-2013.05.14.tar.gz'
+  sha1 'e2502f8261a69ec68c737182250d58e57735dd9e'
 
   def install
     system "make", "youtube-dl", "PREFIX=#{prefix}"
     bin.install 'youtube-dl'
     man1.install 'youtube-dl.1'
-    (prefix+'etc/bash_completion.d').install 'youtube-dl.bash-completion'
+    bash_completion.install 'youtube-dl.bash-completion'
   end
 
   def caveats

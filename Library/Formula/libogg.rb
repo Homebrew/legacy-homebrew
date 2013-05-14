@@ -7,6 +7,8 @@ class Libogg < Formula
 
   head 'http://svn.xiph.org/trunk/ogg'
 
+  option :universal
+
   if build.head?
     depends_on :autoconf
     depends_on :automake
@@ -14,6 +16,8 @@ class Libogg < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
