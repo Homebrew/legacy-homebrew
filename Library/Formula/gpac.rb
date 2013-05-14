@@ -19,6 +19,7 @@ class Gpac < Formula
 
   depends_on :x11
 
+  depends_on 'pkg-config' => :build
   depends_on 'a52dec' => :optional
   depends_on 'jpeg' => :optional
   depends_on 'faad2' => :optional

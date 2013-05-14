@@ -33,6 +33,9 @@ class FormulaValidationError < StandardError
   end
 end
 
+class FormulaSpecificationError < StandardError
+end
+
 class FormulaUnavailableError < RuntimeError
   attr_reader :name
   attr_accessor :dependent

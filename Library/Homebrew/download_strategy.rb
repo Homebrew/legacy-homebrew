@@ -69,10 +69,20 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
     ohai "Downloading #{@url}"
     unless @tarball_path.exist?
+      had_incomplete_download = @temporary_path.exist?
       begin
         _fetch
       rescue ErrorDuringExecution
-        raise CurlDownloadStrategyError, "Download failed: #{@url}"
+        # 33 == range not supported
+        # try wiping the incomplete download and retrying once
+        if $?.exitstatus == 33 && had_incomplete_download
+          ohai "Trying a full download"
+          @temporary_path.unlink
+          had_incomplete_download = false
+          retry
+        else
+          raise CurlDownloadStrategyError, "Download failed: #{@url}"
+        end
       end
       ignore_interrupts { @temporary_path.rename(@tarball_path) }
     else

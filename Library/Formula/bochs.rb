@@ -38,6 +38,12 @@ class Bochs < Formula
                           "--with-term",
                           "--enable-ne2000"
 
+    # See: http://sourceforge.net/p/bochs/discussion/39592/thread/9c22887c
+    inreplace 'config.h', 'define BX_HAVE_LTDL 1', 'define BX_HAVE_LTDL 0'
+    inreplace 'Makefile' do |s|
+      s.gsub! /\-lltdl/, 'ltdl.o'
+    end
+
     system "make"
     system "make install"
   end

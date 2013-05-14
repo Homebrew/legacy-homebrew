@@ -9,6 +9,7 @@ class Redland < Formula
   depends_on 'raptor'
   depends_on 'rasqal'
   depends_on 'berkeley-db' => :optional
+  depends_on 'sqlite' => :recommended
 
   fails_with :llvm do
     build 2334

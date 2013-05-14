@@ -8,7 +8,7 @@ class Calcurse < Formula
   depends_on 'gettext'
 
   fails_with :clang do
-    build 421
+    build 425
     cause "Issue with macro expansion in htable.h"
   end
 

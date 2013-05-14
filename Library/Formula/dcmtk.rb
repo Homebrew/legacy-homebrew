@@ -13,7 +13,8 @@ class Dcmtk < Formula
   depends_on 'doxygen' if build.include? 'with-docs'
 
   fails_with :clang do
-    build 421
+    build 425
+    cause "error: use of undeclared identifier 'scaleData'"
   end
 
   def install

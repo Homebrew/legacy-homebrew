@@ -10,7 +10,7 @@ class Task < Formula
   def install
     system "cmake", ".", *std_cmake_args
     system "make install"
-    (prefix/'etc/bash_completion.d').install 'scripts/bash/task.sh'
-    (share/'zsh/site-functions').install 'scripts/zsh/_task'
+    bash_completion.install 'scripts/bash/task.sh'
+    zsh_completion.install 'scripts/zsh/_task'
   end
 end

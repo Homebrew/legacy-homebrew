@@ -141,14 +141,14 @@ class Pathname
   def rmdir_if_possible
     rmdir
     true
-  rescue SystemCallError => e
-    # OK, maybe there was only a single `.DS_Store` file in that folder
-    if (self/'.DS_Store').exist? && self.children.length == 1
-      (self/'.DS_Store').unlink
+  rescue Errno::ENOTEMPTY
+    if (ds_store = self+'.DS_Store').exist? && children.length == 1
+      ds_store.unlink
       retry
+    else
+      false
     end
-
-    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno or e.errno == Errno::ENOENT::Errno
+  rescue Errno::EACCES, Errno::ENOENT
     false
   end
 
@@ -264,7 +264,20 @@ class Pathname
           raise <<-EOS.undent
             Could not symlink file: #{src.expand_path}
             Target #{self} already exists. You may need to delete it.
-            To force the link and delete this file, do:
+            To force the link and overwrite all other conflicting files, do:
+              brew link --overwrite formula_name
+
+            To list all files that would be deleted:
+              brew link --overwrite --dry-run formula_name
+            EOS
+        # #exist? will return false for symlinks whose target doesn't exist
+        elsif self.symlink?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            Target #{self} already exists as a symlink to #{readlink}.
+            If this file is from another formula, you may need to
+            `brew unlink` it. Otherwise, you may want to delete it.
+            To force the link and overwrite all other conflicting files, do:
               brew link --overwrite formula_name
 
             To list all files that would be deleted:

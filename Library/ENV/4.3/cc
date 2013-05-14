@@ -148,17 +148,22 @@ class Cmd
     args
   end
   def cflags
-    if cccfg? 'Ob'
-      %w{-mtune=generic -Oz}
-    elsif cccfg? 'O'
-      args = %w{-pipe -w -Os}
-      args << '-march=native' if tool =~ /clang/
-      args += %w{-arch i386 -arch x86_64} if cccfg? 'u'
-      args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
-      args
+    return [] unless cccfg? 'O'
+
+    args = %w{-pipe -w -Os}
+
+    # When bottling use the oldest supported CPU type.
+    if cccfg? 'bi6'
+      args << '-march=core2'
+    elsif cccfg? 'bi'
+      args << '-march=prescott'
     else
-      []
+      args << '-march=native' if tool =~ /clang/
     end
+
+    args += %w{-arch i386 -arch x86_64} if cccfg? 'u'
+    args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
+    args
   end
   def syslibpath
     # We reject brew's lib as we explicitly add this as a -L flag, thus it

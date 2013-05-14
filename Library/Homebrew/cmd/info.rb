@@ -2,6 +2,7 @@ require 'formula'
 require 'tab'
 require 'keg'
 require 'caveats'
+require 'blacklist'
 
 module Homebrew extend self
   def info
@@ -29,7 +30,18 @@ module Homebrew extend self
     elsif valid_url ARGV[0]
       info_formula Formula.factory(ARGV.shift)
     else
-      ARGV.formulae.each{ |f| info_formula f }
+      ARGV.named.each do |f|
+        begin
+          info_formula Formula.factory(f)
+        rescue FormulaUnavailableError
+          # No formula with this name, try a blacklist lookup
+          if (blacklist = blacklisted?(f))
+            puts blacklist
+          else
+            raise
+          end
+        end
+      end
     end
   end
 
@@ -90,14 +102,11 @@ module Homebrew extend self
       puts
     end
 
-    puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
-    conflicts = f.conflicts.map { |c| c.formula }.sort
+    conflicts = f.conflicts.map(&:formula).sort!
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
-      kegs = f.rack.children
-      kegs.reject! {|keg| keg.basename.to_s == '.DS_Store' }
-      kegs = kegs.map {|keg| Keg.new(keg) }.sort_by {|keg| keg.version }
+      kegs = f.rack.subdirs.map { |keg| Keg.new(keg) }.sort_by(&:version)
       kegs.each do |keg|
         puts "#{keg} (#{keg.abv})#{' *' if keg.linked?}"
         tab = Tab.for_keg(keg).to_s
@@ -109,6 +118,14 @@ module Homebrew extend self
 
     history = github_info(f)
     puts history if history
+
+    unless f.deps.empty?
+      ohai "Dependencies"
+      %w{build required recommended optional}.map do |type|
+        deps = f.deps.send(type)
+        puts "#{type.capitalize}: #{deps*', '}" unless deps.empty?
+      end
+    end
 
     unless f.build.empty?
       require 'cmd/options'

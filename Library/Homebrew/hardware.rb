@@ -1,5 +1,3 @@
-require 'hardware_compat'
-
 class Hardware
   module CPU extend self
     def type

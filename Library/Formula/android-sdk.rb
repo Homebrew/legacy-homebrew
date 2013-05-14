@@ -53,7 +53,7 @@ class AndroidSdk < Formula
     end
 
     AdbBashCompletion.new.brew do
-      (prefix+'etc/bash_completion.d').install 'adb.bash' => 'adb-completion.bash'
+      bash_completion.install 'adb.bash' => 'adb-completion.bash'
     end
   end
 

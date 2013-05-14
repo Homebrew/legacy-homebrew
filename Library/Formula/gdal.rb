@@ -2,8 +2,8 @@ require 'formula'
 
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
-  url 'http://download.osgeo.org/gdal/gdal-1.9.2.tar.gz'
-  sha1 '7eda6a4d735b8d6903740e0acdd702b43515e351'
+  url 'http://download.osgeo.org/gdal/1.10.0/gdal-1.10.0.tar.gz'
+  sha1 'e522b95056905e4c41047fdb42c0ca172ef3ad25'
 
   head 'https://svn.osgeo.org/gdal/trunk/gdal'
 
@@ -46,8 +46,6 @@ class Gdal < Formula
     depends_on "cfitsio"
     depends_on "epsilon"
     depends_on "libdap"
-    # Fix a bug in LibDAP detection: http://trac.osgeo.org/gdal/ticket/4630
-    def patches; DATA; end unless build.head?
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
@@ -254,21 +252,3 @@ the PYTHONPATH:
     end
   end
 end
-
-__END__
-Fix test for LibDAP >= 3.10.
-
-
-diff --git a/configure b/configure
-index 997bbbf..a1928d5 100755
---- a/configure
-+++ b/configure
-@@ -24197,7 +24197,7 @@ else
- rm -f islibdappost310.*
- echo '#include "Connect.h"' > islibdappost310.cpp
- echo 'int main(int argc, char** argv) { return 0; } ' >> islibdappost310.cpp
--if test -z "`${CXX} islibdappost310.cpp -c ${DODS_INC} 2>&1`" ; then
-+if test -z "`${CXX} islibdappost310.cpp -c ${DODS_INC} ${CPPFLAGS} 2>&1`" ; then
-     DODS_INC="$DODS_INC -DLIBDAP_310 -DLIBDAP_39"
-     { $as_echo "$as_me:${as_lineno-$LINENO}: result: libdap >= 3.10" >&5
- $as_echo "libdap >= 3.10" >&6; }
