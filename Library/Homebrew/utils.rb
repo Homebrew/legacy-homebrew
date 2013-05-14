@@ -259,7 +259,16 @@ end
 module GitHub extend self
   def open url, headers={}, &block
     require 'open-uri'
-    Kernel.open(url, headers.merge('User-Agent' => HOMEBREW_USER_AGENT), &block)
+    begin
+      Kernel.open(url, {'User-Agent' => HOMEBREW_USER_AGENT}.merge(headers), &block)
+    rescue OpenURI::HTTPError => e
+      if e.io.meta['x-ratelimit-remaining'].to_i <= 0
+        require 'vendor/multi_json'
+        raise "GitHub #{MultiJson.decode(e.io.read)['message']}"
+      else
+        raise e
+      end
+    end
   end
   
   def issues_for_formula name
@@ -276,15 +285,16 @@ module GitHub extend self
     uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{name}")
 
     open uri do |f|
-      MultiJson.decode(f.read)['issues'].each do |issue|
-        # don't include issues that just refer to the tool in their body
-        issues << issue['html_url'] if issue['title'].include? name
+      begin
+        MultiJson.decode(f.read)['issues'].each do |issue|
+          # don't include issues that just refer to the tool in their body
+          issues << issue['html_url'] if issue['title'].include? name
+        end
+      rescue
       end
     end
 
     issues
-  rescue
-    []
   end
 
   def find_pull_requests rx
@@ -294,11 +304,12 @@ module GitHub extend self
     uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{query}")
 
     GitHub.open uri do |f|
-      MultiJson.decode(f.read)['issues'].each do |pull|
-        yield pull['pull_request_url'] if rx.match pull['title'] and pull['pull_request_url']
+      begin
+        MultiJson.decode(f.read)['issues'].each do |pull|
+          yield pull['pull_request_url'] if rx.match pull['title'] and pull['pull_request_url']
+        end
+      rescue
       end
     end
-  rescue
-    nil
   end
 end
