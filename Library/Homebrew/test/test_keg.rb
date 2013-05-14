@@ -12,6 +12,8 @@ class LinkTests < Test::Unit::TestCase
     @keg = Keg.for @formula.prefix
     @keg.unlink
 
+    @mode = OpenStruct.new
+
     @old_stdout = $stdout
     $stdout = StringIO.new
 
@@ -28,10 +30,9 @@ class LinkTests < Test::Unit::TestCase
   end
 
   def test_link_dry_run
-    mode = OpenStruct.new
-    mode.dry_run = true
+    @mode.dry_run = true
 
-    assert_equal 0, @keg.link(mode)
+    assert_equal 0, @keg.link(@mode)
     assert !@keg.linked?
 
     ['hiworld', 'helloworld', 'goodbye_cruel_world'].each do |file|
@@ -56,27 +57,24 @@ class LinkTests < Test::Unit::TestCase
 
   def test_link_overwrite
     FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
-    mode = OpenStruct.new
-    mode.overwrite = true
-    assert_equal 3, @keg.link(mode)
+    @mode.overwrite = true
+    assert_equal 3, @keg.link(@mode)
   end
 
   def test_link_overwrite_broken_symlinks
     FileUtils.cd HOMEBREW_PREFIX/"bin" do
       FileUtils.ln_s "nowhere", "helloworld"
     end
-    mode = OpenStruct.new
-    mode.overwrite = true
-    assert_equal 3, @keg.link(mode)
+    @mode.overwrite = true
+    assert_equal 3, @keg.link(@mode)
   end
 
   def test_link_overwrite_dryrun
     FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
-    mode = OpenStruct.new
-    mode.overwrite = true
-    mode.dry_run = true
+    @mode.overwrite = true
+    @mode.dry_run = true
 
-    assert_equal 0, @keg.link(mode)
+    assert_equal 0, @keg.link(@mode)
     assert !@keg.linked?
 
     assert_equal "/private/tmp/testbrew/prefix/bin/helloworld\n", $stdout.string
