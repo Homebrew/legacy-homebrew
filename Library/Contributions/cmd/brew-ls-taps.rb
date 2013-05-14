@@ -1,7 +1,7 @@
 require 'vendor/multi_json'
 
-begin
-  GitHub.open "https://api.github.com/legacy/repos/search/homebrew" do |f|
+GitHub.open "https://api.github.com/legacy/repos/search/homebrew" do |f|
+  begin
     MultiJson.decode(f.read)["repositories"].each do |repo|
       if repo['name'] =~ /^homebrew-(\S+)$/
         puts tap = if repo['username'] == "Homebrew"
@@ -11,7 +11,6 @@ begin
         end
       end
     end
+  rescue
   end
-rescue
-  nil
 end
