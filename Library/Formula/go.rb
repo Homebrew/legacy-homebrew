@@ -18,10 +18,8 @@ class Go < Formula
     sha1 '211d0e17d3d3d2d57c2b93a4d5a3b450403044f1'
   end
 
-  unless build.stable?
-    fails_with :clang do
-      cause "clang: error: no such file or directory: 'libgcc.a'"
-    end
+  fails_with :clang do
+    cause "clang: error: no such file or directory: 'libgcc.a'"
   end
 
   def install
