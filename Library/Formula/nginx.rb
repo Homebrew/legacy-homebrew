@@ -21,6 +21,7 @@ class Nginx < Formula
   option 'with-debug', 'Compile with support for debug log'
   option 'with-spdy', 'Compile with support for SPDY module'
   option 'with-gunzip', 'Compile with support for gunzip module'
+  option 'with-secure-link', 'Compile with support for secure link module'
 
   skip_clean 'logs'
 
@@ -67,6 +68,7 @@ class Nginx < Formula
     args << "--with-debug" if build.include? 'with-debug'
     args << "--with-http_spdy_module" if build.include? 'with-spdy'
     args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
+    args << "--with-http_secure_link_module" if build.include? 'with-secure-link'
 
     if build.head?
       system "./auto/configure", *args
