@@ -84,6 +84,7 @@ class Erlang < Formula
     system "./configure", *args
     touch 'lib/wx/SKIP' if MacOS.version >= :snow_leopard
     system "make"
+    ENV.j1 # Install is not thread-safe; can try to create folder twice and fail
     system "make install"
 
     unless build.include? 'no-docs'
