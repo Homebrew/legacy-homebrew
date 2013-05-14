@@ -182,7 +182,17 @@ class << ENV
 
   def determine_cccfg
     s = ""
-    s << 'b' if ARGV.build_bottle?
+    if ARGV.build_bottle?
+      s << if Hardware::CPU.type == :intel
+        if Hardware::CPU.is_64_bit?
+          'bi6'
+        else
+          'bi'
+        end
+      else
+        'b'
+      end
+    end
     # Fix issue with sed barfing on unicode characters on Mountain Lion
     s << 's' if MacOS.version >= :mountain_lion
     # Fix issue with 10.8 apr-1-config having broken paths

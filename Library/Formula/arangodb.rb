@@ -2,16 +2,10 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://github.com/triAGENS/ArangoDB/archive/v1.2.3.tar.gz'
-  sha1 '14e77ce4c8fa0b55b371dee06d8ccf0edef5ba68'
+  url 'https://www.arangodb.org/repositories/archive/arangodb-1.3.0.tar.gz'
+  sha1 '469c4f4646af5194a0434a6774a633c9dc35f212'
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
-
-  devel do
-    version "1.3.0-alpha2"
-    url 'https://github.com/triAGENS/ArangoDB/archive/v1.3.0-alpha2.tar.gz'
-    sha1 '058c0edcba0d2e79c95b41ca2d717296d77dd9be'
-  end
 
   depends_on 'icu4c'
   depends_on 'libev'

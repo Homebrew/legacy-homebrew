@@ -326,7 +326,7 @@ module HomebrewEnvExtension
     append flags, xarch unless xarch.empty?
 
     if ARGV.build_bottle?
-      append flags, '-mtune=generic'
+      append flags, Hardware::CPU.optimization_flags[MacOS.oldest_cpu]
     else
       # Don't set -msse3 and older flags because -march does that for us
       append flags, map.fetch(Hardware::CPU.family, default)

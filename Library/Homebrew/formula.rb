@@ -165,6 +165,7 @@ class Formula
   def sbin;    prefix+'sbin'    end
   def share;   prefix+'share'   end
 
+  def frameworks; prefix+'Frameworks' end
   def kext_prefix; prefix+'Library/Extensions' end
 
   # configuration needs to be preserved past upgrades
@@ -488,7 +489,7 @@ class Formula
   end
 
   def conflicts
-    requirements.select { |r| r.is_a? ConflictRequirement }
+    requirements.grep(ConflictRequirement)
   end
 
   # Returns a list of Dependency objects in an installable order, which
@@ -508,7 +509,7 @@ class Formula
       "homepage" => homepage,
       "versions" => {
         "stable" => (stable.version.to_s if stable),
-        "bottle" => bottle || false,
+        "bottle" => bottle ? true : false,
         "devel" => (devel.version.to_s if devel),
         "head" => (head.version.to_s if head)
       },

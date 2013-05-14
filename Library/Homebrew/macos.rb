@@ -34,6 +34,18 @@ module MacOS extend self
     cat.to_s.gsub('_', '').to_sym
   end
 
+  def oldest_cpu
+    if Hardware::CPU.type == :intel
+      if Hardware::CPU.is_64_bit?
+        :core2
+      else
+        :core
+      end
+    else
+      Hardware::CPU.family
+    end
+  end
+
   def locate tool
     # Don't call tools (cc, make, strip, etc.) directly!
     # Give the name of the binary you look for as a string to this method
@@ -127,6 +139,7 @@ module MacOS extend self
       $1.to_i
     end
   end
+  alias_method :gcc_4_0_build_version, :gcc_40_build_version
 
   def gcc_42_build_version
     @gcc_42_build_version ||= if locate("gcc-4.2") \

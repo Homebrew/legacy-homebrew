@@ -105,7 +105,7 @@ class Subversion < Formula
     system "./configure", *args
     system "make"
     system "make install"
-    (prefix+'etc/bash_completion.d').install 'tools/client-side/bash_completion' => 'subversion'
+    bash_completion.install 'tools/client-side/bash_completion' => 'subversion'
 
     if build.include? 'python'
       system "make swig-py"

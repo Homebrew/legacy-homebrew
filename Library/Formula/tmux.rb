@@ -34,7 +34,7 @@ class Tmux < Formula
                           "--sysconfdir=#{etc}"
     system "make install"
 
-    (prefix+'etc/bash_completion.d').install "examples/bash_completion_tmux.sh" => 'tmux'
+    bash_completion.install "examples/bash_completion_tmux.sh" => 'tmux'
   end
 
   def test
