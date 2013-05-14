@@ -20,7 +20,7 @@ class Ekg2 < Formula
             "--without-gtk",
             "--enable-unicode"]
 
-    args << build.with?("libgadu") ? "--with-libgadu" : "--without-libgadu"
+    args << (build.with?("libgadu") ? "--with-libgadu" : "--without-libgadu")
 
     system "./configure", *args
     system "make install"
