@@ -89,7 +89,11 @@ class Erlang < Formula
 
     unless build.include? 'no-docs'
       manuals = build.head? ? ErlangHeadManuals : ErlangManuals
-      manuals.new.brew { man.install Dir['man/*'] }
+      manuals.new.brew {
+        man.install Dir['man/*']
+        # erl -man expects man pages in lib/erlang/man
+        (lib+'erlang').install_symlink man
+      }
 
       htmls = build.head? ? ErlangHeadHtmls : ErlangHtmls
       htmls.new.brew { doc.install Dir['*'] }
