@@ -4,6 +4,8 @@ require 'keg'
 require 'stringio'
 
 class LinkTests < Test::Unit::TestCase
+  include FileUtils
+
   def setup
     @formula = TestBall.new
     shutup do
@@ -17,7 +19,7 @@ class LinkTests < Test::Unit::TestCase
     @old_stdout = $stdout
     $stdout = StringIO.new
 
-    FileUtils.mkpath HOMEBREW_PREFIX/"bin"
+    mkpath HOMEBREW_PREFIX/"bin"
   end
 
   def test_linking_keg
@@ -49,28 +51,28 @@ class LinkTests < Test::Unit::TestCase
   end
 
   def test_linking_fails_when_files_exist
-    FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
+    touch HOMEBREW_PREFIX/"bin/helloworld"
     assert_raise RuntimeError do
       shutup { @keg.link }
     end
   end
 
   def test_link_overwrite
-    FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
+    touch HOMEBREW_PREFIX/"bin/helloworld"
     @mode.overwrite = true
     assert_equal 3, @keg.link(@mode)
   end
 
   def test_link_overwrite_broken_symlinks
-    FileUtils.cd HOMEBREW_PREFIX/"bin" do
-      FileUtils.ln_s "nowhere", "helloworld"
+    cd HOMEBREW_PREFIX/"bin" do
+      ln_s "nowhere", "helloworld"
     end
     @mode.overwrite = true
     assert_equal 3, @keg.link(@mode)
   end
 
   def test_link_overwrite_dryrun
-    FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
+    touch HOMEBREW_PREFIX/"bin/helloworld"
     @mode.overwrite = true
     @mode.dry_run = true
 
@@ -86,6 +88,6 @@ class LinkTests < Test::Unit::TestCase
 
     $stdout = @old_stdout
 
-    FileUtils.rmtree HOMEBREW_PREFIX/"bin"
+    rmtree HOMEBREW_PREFIX/"bin"
   end
 end
