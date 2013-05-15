@@ -21,9 +21,7 @@ class Wireshark < Formula
     depends_on 'gtk+'
   end
 
-  if build.with? 'qt'
-    depends_on 'qt'
-  end
+  depends_on 'qt' => :optional
 
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
