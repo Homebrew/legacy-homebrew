@@ -34,28 +34,29 @@ module Homebrew extend self
 
   def cleanup_formula f
     if f.installed?
-      f.rack.subdirs.map { |d| Keg.new(d) }.each do |keg|
-        if f.version > keg.version
-          if f.can_cleanup?
-            if !keg.linked?
-              if ARGV.dry_run?
-                puts "Would remove: #{keg}"
-              else
-                puts "Removing: #{keg}..."
-                keg.rmtree
-              end
-            else
-              opoo "Skipping (old) #{keg} due to it being linked"
-            end
-          else
-            opoo "Skipping (old) keg-only: #{keg}"
-          end
+      eligible_kegs = f.rack.subdirs.map { |d| Keg.new(d) }.select { |k| f.version > k.version }
+      eligible_kegs.each do |keg|
+        if f.can_cleanup?
+          cleanup_keg(keg)
+        else
+          opoo "Skipping (old) keg-only: #{keg}"
         end
       end
     elsif f.rack.subdirs.length > 1
       # If the cellar only has one version installed, don't complain
       # that we can't tell which one to keep.
       opoo "Skipping #{f.name}: most recent version #{f.version} not installed"
+    end
+  end
+
+  def cleanup_keg keg
+    if keg.linked?
+      opoo "Skipping (old) #{keg} due to it being linked"
+    elsif ARGV.dry_run?
+      puts "Would remove: #{keg}"
+    else
+      puts "Removing: #{keg}..."
+      keg.rmtree
     end
   end
 
