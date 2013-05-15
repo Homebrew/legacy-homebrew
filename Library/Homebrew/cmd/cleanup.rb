@@ -16,9 +16,9 @@ module Homebrew extend self
   def cleanup_all
     return unless HOMEBREW_CELLAR.directory?
 
-    HOMEBREW_CELLAR.children.each do |rack|
+    HOMEBREW_CELLAR.subdirs.each do |rack|
       begin
-        cleanup_formula Formula.factory(rack.basename.to_s) if rack.directory?
+        cleanup_formula Formula.factory(rack.basename.to_s)
       rescue FormulaUnavailableError
         # Don't complain about directories from DIY installs
       end
@@ -34,8 +34,8 @@ module Homebrew extend self
 
   def cleanup_formula f
     if f.installed?
-      f.rack.children.each do |keg|
-        if File.directory? keg and f.version > Keg.new(keg).version
+      f.rack.subdirs.each do |keg|
+        if f.version > Keg.new(keg).version
           if f.can_cleanup?
             if !Keg.new(keg).linked?
               if ARGV.dry_run?
@@ -52,7 +52,7 @@ module Homebrew extend self
           end
         end
       end
-    elsif f.rack.children.length > 1
+    elsif f.rack.subdirs.length > 1
       # If the cellar only has one version installed, don't complain
       # that we can't tell which one to keep.
       opoo "Skipping #{f.name}: most recent version #{f.version} not installed"
@@ -61,8 +61,7 @@ module Homebrew extend self
 
   def cleanup_cache
     return unless HOMEBREW_CACHE.directory?
-    HOMEBREW_CACHE.children.each do |pn|
-      next unless pn.file?
+    HOMEBREW_CACHE.children.select(&:file?).each do |pn|
       version = pn.version
       name = pn.basename.to_s.match(/(.*)-(#{version})/).captures.first rescue nil
       if name and version
@@ -99,7 +98,7 @@ class Formula
       # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks
       !Formula.installed.
         select{ |ff| ff.deps.map{ |d| d.to_s }.include? name }.
-        map{ |ff| ff.rack.children rescue [] }.
+        map{ |ff| ff.rack.subdirs rescue [] }.
         flatten.
         map{ |keg_path| Tab.for_keg(keg_path).send("HEAD") }.
         include? nil
