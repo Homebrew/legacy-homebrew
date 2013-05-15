@@ -16,7 +16,7 @@ module Homebrew extend self
   def outdated_brews
     Formula.installed.map do |f|
       kegs = f.rack.subdirs.map { |d| Keg.new(d) }
-      unless kegs.any? { |keg| keg.version >= f.version }
+      if kegs.all? { |k| f.version > k.version }
         yield f if block_given?
         f
       end
