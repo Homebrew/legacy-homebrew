@@ -6,29 +6,28 @@ require 'cmd/prune'
 module Homebrew extend self
 
   def cleanup
+    return unless HOMEBREW_CELLAR.directory?
+
     if ARGV.named.empty?
-      cleanup_all
+      cleanup_cellar
+      cleanup_cache
+
+      unless ARGV.dry_run?
+        Homebrew.prune
+        rm_DS_Store
+      end
     else
       ARGV.formulae.each { |f| cleanup_formula(f) }
     end
   end
 
-  def cleanup_all
-    return unless HOMEBREW_CELLAR.directory?
-
+  def cleanup_cellar
     HOMEBREW_CELLAR.subdirs.each do |rack|
       begin
         cleanup_formula Formula.factory(rack.basename.to_s)
       rescue FormulaUnavailableError
         # Don't complain about directories from DIY installs
       end
-    end
-
-    cleanup_cache
-
-    unless ARGV.dry_run?
-      Homebrew.prune
-      rm_DS_Store
     end
   end
 
@@ -61,8 +60,6 @@ module Homebrew extend self
   end
 
   def cleanup_cache
-    return unless HOMEBREW_CACHE.directory?
-
     HOMEBREW_CACHE.children.select(&:file?).each do |file|
       version = file.version
       name = file.basename.to_s.match(/(.*)-(?:#{Regexp.escape(version)})/).captures.first rescue nil
