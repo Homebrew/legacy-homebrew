@@ -33,6 +33,7 @@ class Wireshark < Formula
 
     # actually just disables the GTK GUI
     args << '--disable-wireshark' unless build.with? 'x'
+    args << '--disable-gtktest' if build.with? 'x'
 
     args << '--with-qt' if build.with? 'qt'
 
