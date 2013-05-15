@@ -273,7 +273,7 @@ class FormulaAuditor
       else
         version_text = s.version unless s.version.detected_from_url?
         version_url = Version.parse(s.url)
-        if version_url.to_s == version_text.to_s
+        if version_url.to_s == version_text.to_s && s.version.instance_of?(Version)
           problem "#{spec} version #{version_text} is redundant with version scanned from URL"
         end
       end
