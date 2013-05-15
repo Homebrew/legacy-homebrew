@@ -22,6 +22,17 @@ class Monotone < Formula
     cause "linker fails"
   end
 
+  # monotone 1.0 breaks with boost 1.53:
+  # http://permalink.gmane.org/gmane.comp.version-control.monotone.devel/19593
+  def patches
+    boost = Formula.factory('boost')
+    if (boost.installed? && boost.installed_version || boost.version) >= Version.new('1.53')
+      'http://alt.linux.kiev.ua/cgi-bin/srpm.pl/Sisyphus/monotone/getpatch/0'
+    else
+      []
+    end
+  end
+
   def install
     botan18_prefix = libexec+'botan18'
 
