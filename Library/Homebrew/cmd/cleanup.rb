@@ -14,13 +14,13 @@ module Homebrew extend self
   end
 
   def cleanup_all
-    if HOMEBREW_CELLAR.directory?
-      HOMEBREW_CELLAR.children.each do |rack|
-        begin
-          cleanup_formula Formula.factory(rack.basename.to_s) if rack.directory?
-        rescue FormulaUnavailableError
-          # Don't complain about directories from DIY installs
-        end
+    return unless HOMEBREW_CELLAR.directory?
+
+    HOMEBREW_CELLAR.children.each do |rack|
+      begin
+        cleanup_formula Formula.factory(rack.basename.to_s) if rack.directory?
+      rescue FormulaUnavailableError
+        # Don't complain about directories from DIY installs
       end
     end
     clean_cache
