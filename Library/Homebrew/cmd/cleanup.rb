@@ -10,10 +10,9 @@ module Homebrew extend self
       if HOMEBREW_CELLAR.directory?
         HOMEBREW_CELLAR.children.each do |rack|
           begin
-            cleanup_formula rack.basename.to_s if rack.directory?
+            cleanup_formula Formula.factory(rack.basename.to_s) if rack.directory?
           rescue FormulaUnavailableError
-            # Don't complain about Cellar folders that are from DIY installs
-            # instead of core formulae.
+            # Don't complain about directories from DIY installs
           end
         end
       end
@@ -31,8 +30,6 @@ module Homebrew extend self
   end
 
   def cleanup_formula f
-    f = Formula.factory f
-
     if f.installed? and f.rack.directory?
       f.rack.children.each do |keg|
         if File.directory? keg and f.version > Keg.new(keg).version
