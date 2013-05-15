@@ -11,11 +11,9 @@ module Homebrew extend self
     if ARGV.named.empty?
       cleanup_cellar
       cleanup_cache
+      Homebrew.prune
 
-      unless ARGV.dry_run?
-        Homebrew.prune
-        rm_DS_Store
-      end
+      rm_DS_Store unless ARGV.dry_run?
     else
       ARGV.formulae.each { |f| cleanup_formula(f) }
     end
