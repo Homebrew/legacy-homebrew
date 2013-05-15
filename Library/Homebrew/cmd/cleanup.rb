@@ -33,7 +33,7 @@ module Homebrew extend self
   end
 
   def cleanup_formula f
-    if f.installed? and f.rack.directory?
+    if f.installed?
       f.rack.children.each do |keg|
         if File.directory? keg and f.version > Keg.new(keg).version
           if f.can_cleanup?
