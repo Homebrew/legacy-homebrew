@@ -34,10 +34,10 @@ module Homebrew extend self
 
   def cleanup_formula f
     if f.installed?
-      f.rack.subdirs.each do |keg|
-        if f.version > Keg.new(keg).version
+      f.rack.subdirs.map { |d| Keg.new(d) }.each do |keg|
+        if f.version > keg.version
           if f.can_cleanup?
-            if !Keg.new(keg).linked?
+            if !keg.linked?
               if ARGV.dry_run?
                 puts "Would remove: #{keg}"
               else
