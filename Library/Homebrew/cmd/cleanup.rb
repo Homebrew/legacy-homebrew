@@ -23,8 +23,9 @@ module Homebrew extend self
         # Don't complain about directories from DIY installs
       end
     end
-    clean_cache
-    # seems like a good time to do some additional cleanup
+
+    cleanup_cache
+
     unless ARGV.dry_run?
       Homebrew.prune
       rm_DS_Store
@@ -58,7 +59,7 @@ module Homebrew extend self
     end
   end
 
-  def clean_cache
+  def cleanup_cache
     return unless HOMEBREW_CACHE.directory?
     HOMEBREW_CACHE.children.each do |pn|
       next unless pn.file?
