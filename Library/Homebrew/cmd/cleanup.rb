@@ -62,21 +62,30 @@ module Homebrew extend self
 
   def cleanup_cache
     return unless HOMEBREW_CACHE.directory?
+
     HOMEBREW_CACHE.children.select(&:file?).each do |file|
       version = file.version
-      name = file.basename.to_s.match(/(.*)-(#{version})/).captures.first rescue nil
-      if name and version
-        f = Formula.factory(name) rescue nil
-        old_bottle = bottle_file_outdated? f, file
-        if (f and f.version > version) or (ARGV.switch? "s" and (f and (not f.installed?))) or old_bottle
-          if ARGV.dry_run?
-            puts "Would remove: #{file}"
-          else
-            puts "Removing: #{file}..."
-            rm file
-          end
-        end
+      name = file.basename.to_s.match(/(.*)-(?:#{Regexp.escape(version)})/).captures.first rescue nil
+      next unless name && version
+
+      begin
+        f = Formula.factory(name)
+      rescue FormulaUnavailableError
+        next
       end
+
+      if f.version > version || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
+        cleanup_cached_file(file)
+      end
+    end
+  end
+
+  def cleanup_cached_file file
+    if ARGV.dry_run?
+      puts "Would remove: #{file}"
+    else
+      puts "Removing: #{file}..."
+      file.unlink
     end
   end
 
