@@ -7,25 +7,27 @@ module Homebrew extend self
 
   def cleanup
     if ARGV.named.empty?
-      if HOMEBREW_CELLAR.directory?
-        HOMEBREW_CELLAR.children.each do |rack|
-          begin
-            cleanup_formula Formula.factory(rack.basename.to_s) if rack.directory?
-          rescue FormulaUnavailableError
-            # Don't complain about directories from DIY installs
-          end
+      cleanup_all
+    else
+      ARGV.formulae.each { |f| cleanup_formula(f) }
+    end
+  end
+
+  def cleanup_all
+    if HOMEBREW_CELLAR.directory?
+      HOMEBREW_CELLAR.children.each do |rack|
+        begin
+          cleanup_formula Formula.factory(rack.basename.to_s) if rack.directory?
+        rescue FormulaUnavailableError
+          # Don't complain about directories from DIY installs
         end
       end
-      clean_cache
-      # seems like a good time to do some additional cleanup
-      unless ARGV.dry_run?
-        Homebrew.prune
-        rm_DS_Store
-      end
-    else
-      ARGV.formulae.each do |f|
-        cleanup_formula f
-      end
+    end
+    clean_cache
+    # seems like a good time to do some additional cleanup
+    unless ARGV.dry_run?
+      Homebrew.prune
+      rm_DS_Store
     end
   end
 
