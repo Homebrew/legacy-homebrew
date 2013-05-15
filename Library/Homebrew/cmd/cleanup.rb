@@ -42,7 +42,7 @@ module Homebrew extend self
                 puts "Would remove: #{keg}"
               else
                 puts "Removing: #{keg}..."
-                rm_rf keg
+                keg.rmtree
               end
             else
               opoo "Skipping (old) #{keg} due to it being linked"
