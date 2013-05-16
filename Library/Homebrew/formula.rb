@@ -208,6 +208,9 @@ class Formula
   # Can be overridden to run commands on both source and bottle installation.
   def post_install; end
 
+  # Can be overridden to finalize the dependency after it was successfully installed.
+  def finalize(fi); end
+
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
