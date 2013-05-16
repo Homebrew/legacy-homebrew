@@ -778,10 +778,8 @@ class Formula
     end
 
     def add_tap tap_name
-      require 'cmd/tap'
-      Homebrew.add_tap(tap_name)
-      oh1 "Tap #{Tty.green}#{tap_name}#{Tty.reset} is required!  Installing..." if show_header
       taps << tap_name
+      oh1 "Taps : #{taps.inspect}  are required.."
     end
 
     def depends_on dep
