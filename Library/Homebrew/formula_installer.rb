@@ -62,6 +62,7 @@ class FormulaInstaller
   rescue FormulaUnavailableError => e
     # this is sometimes wrong if the dependency chain is more than one deep
     # but can't easily fix this without a rewrite FIXME-brew2
+    opoo "in formula_install:  #{e.backtrace.join('\n')}"
     e.dependent = f.name
     raise
   end
