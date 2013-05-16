@@ -752,6 +752,11 @@ class Formula
     def dependencies
       @dependencies ||= DependencyCollector.new
     end
+    
+    def require_tap tap_name
+      require 'cmd/tap'
+      Homebrew.require_tap(tap_name)
+    end
 
     def depends_on dep
       d = dependencies.add(dep)

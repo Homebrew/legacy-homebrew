@@ -14,7 +14,13 @@ module Homebrew extend self
     end
   end
 
-  def install_tap user, repo
+  def require_tap(tap_name)
+    tap_name =~ %r{^(\S+)/(homebrew-)?(\w+)$}
+    raise "Invalid usage" unless $1 and $3
+    install_tap $1, $3, true
+  end
+
+  def install_tap user, repo, already_tapped_okay = false
     raise "brew install git" unless which 'git'
 
     # we special case homebrew so users don't have to shift in a terminal
@@ -23,7 +29,15 @@ module Homebrew extend self
 
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
-    raise "Already tapped!" if tapd.directory?
+    if tapd.directory?
+      if already_tapped_okay
+        return
+      else
+        raise "Already tapped!"
+      end
+    end
+
+    ohai "Tap #{Tty.green}#{user}/#{repo}#{Tty.reset} is required.  Installing..." if already_tapped_okay
     abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
 
     files = []
