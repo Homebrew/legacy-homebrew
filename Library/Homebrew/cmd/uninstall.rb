@@ -26,10 +26,7 @@ module Homebrew extend self
 
         if rack.directory?
           puts "Uninstalling #{name}..."
-          rack.subdirs.map { |d| Keg.new(d) }.each do |keg|
-            keg.unlink
-            keg.rmtree
-          end
+          rack.subdirs.each { |d| Keg.new(d).unlink }
           rack.rmtree
         end
 
