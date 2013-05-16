@@ -12,8 +12,8 @@ end
 
 class Python < Formula
   homepage 'http://www.python.org'
-  url 'http://www.python.org/ftp/python/2.7.4/Python-2.7.4.tar.bz2'
-  sha1 'deb8609d8e356b3388f33b6a4d6526911994e5b1'
+  url 'http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2'
+  sha1 '6cfada1a739544a6fa7f2601b500fba02229656b'
 
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build (for devs; may fail)'
