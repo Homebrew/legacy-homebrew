@@ -206,10 +206,9 @@ class FormulaInstaller
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
-    fi.caveats
+    fi.caveats unless f.suppress_caveats?(fi)
     fi.finish
 
-    oh1 "Giving parent a crack at it..."
     # Lastly, offer the parent formula a chance to finalize the
     # way its dependency was setup
     f.finalize(fi) 
