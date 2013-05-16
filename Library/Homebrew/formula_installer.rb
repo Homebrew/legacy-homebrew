@@ -206,7 +206,7 @@ class FormulaInstaller
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
-    fi.caveats
+    fi.caveats unless f.suppress_caveats?(fi)
     fi.finish
   ensure
     # restore previous installation state if build failed
