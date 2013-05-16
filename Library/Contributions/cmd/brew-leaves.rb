@@ -28,7 +28,7 @@ installed_formulae = installed.collect do |pn|
   end
 end
 
-deps_graph = get_used_by(Formula)
+deps_graph = get_used_by(installed_formulae)
 
 installed.each do |name|
   deps = deps_graph[name] || []
