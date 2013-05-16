@@ -209,7 +209,6 @@ class FormulaInstaller
     fi.caveats unless f.suppress_caveats?(fi)
     fi.finish
 
-    oh1 "Giving parent a crack at it..."
     # Lastly, offer the parent formula a chance to finalize the
     # way its dependency was setup
     finalize_method = "finalize_#{fi.f.to_s.split("/").last.gsub('-', '_').downcase}"
