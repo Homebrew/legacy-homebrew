@@ -210,7 +210,7 @@ class Formula
 
   # Can be overridden to suppress caveats.  This is useful when finalize will
   # take care of what the caveat would otherwise inform.
-  def suppress_caveats?(fi); end
+  def suppress_caveats?(fi); false; end
 
   # Can be overridden to finalize the dependency after it was successfully installed.
   def finalize(fi); end
