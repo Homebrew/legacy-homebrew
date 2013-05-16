@@ -208,6 +208,10 @@ class FormulaInstaller
     fi.install
     fi.caveats
     fi.finish
+
+    # Lastly, offer the parent formula a chance to finalize the
+    # way its dependency was setup
+    f.finalize(fi) 
   ensure
     # restore previous installation state if build failed
     outdated_keg.link if outdated_keg and not dep.installed? rescue nil
