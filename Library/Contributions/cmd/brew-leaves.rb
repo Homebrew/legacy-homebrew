@@ -19,9 +19,9 @@ def get_used_by(formulae)
   return used_by
 end
 
-deps_graph = get_used_by(Formula)
-
 installed = HOMEBREW_CELLAR.children.select { |pn| pn.directory? }.collect { |pn| pn.basename.to_s }
+
+deps_graph = get_used_by(Formula)
 
 installed.each do |name|
   deps = deps_graph[name] || []
