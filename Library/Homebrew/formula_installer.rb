@@ -209,6 +209,7 @@ class FormulaInstaller
     fi.caveats
     fi.finish
 
+    oh1 "Giving parent a crack at it..."
     # Lastly, offer the parent formula a chance to finalize the
     # way its dependency was setup
     f.finalize(fi) 
