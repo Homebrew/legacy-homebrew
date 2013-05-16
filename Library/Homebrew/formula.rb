@@ -398,6 +398,7 @@ class Formula
 
 
   def self.factory name
+    ohai "starting formula factory for : #{name} with taps #{taps.inspect}"
     # If an instance of Formula is passed, just return it
     return name if name.kind_of? Formula
 
@@ -488,6 +489,8 @@ class Formula
     # Catch NameError so that things that are invalid symbols still get
     # a useful error message.
     raise FormulaUnavailableError.new(name)
+  ensure
+    ohai "Ending formula factory for : #{name} with taps #{taps.inspect}"
   end
 
   def tap
