@@ -54,7 +54,7 @@ class FormulaInstaller
 
     unless ignore_deps
       ohai "installer tapping"
-      install_required_taps
+      #install_required_taps
       unlinked_deps = f.recursive_dependencies.map(&:to_formula).select do |dep|
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
@@ -70,6 +70,7 @@ class FormulaInstaller
     raise
   end
 
+=begin
   def install_required_taps
       ohai "start installer tapping"
     require 'cmd/tap'
@@ -80,6 +81,7 @@ class FormulaInstaller
       ohai "done installer tapping"
   end
 
+=end
 
   def install
     # not in initialize so upgrade can unlink the active keg before calling this
