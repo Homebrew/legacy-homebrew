@@ -778,12 +778,15 @@ class Formula
     end
 
     def requires_tap tap_name
+      oh1 "Tap #{Tty.green}#{tap_name}#{Tty.reset} is required!  Installing..." if show_header
       taps << tap_name
     end
 
     def depends_on dep
+      ohai "Depends on #{dep}..."
       d = dependencies.add(dep)
       post_depends_on(d) unless d.nil?
+      ohai "Ready with Depends on #{dep}..."
     end
 
     def option name, description=nil
