@@ -30,6 +30,7 @@ class FormulaInstaller
   end
 
   def check_install_sanity
+      ohai "checking sanity installer tapping"
     raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
 
     if f.installed?
@@ -52,6 +53,8 @@ class FormulaInstaller
     end
 
     unless ignore_deps
+      ohai "installer tapping"
+      #install_required_taps
       unlinked_deps = f.recursive_dependencies.map(&:to_formula).select do |dep|
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
@@ -62,9 +65,23 @@ class FormulaInstaller
   rescue FormulaUnavailableError => e
     # this is sometimes wrong if the dependency chain is more than one deep
     # but can't easily fix this without a rewrite FIXME-brew2
+    opoo "in formula_install:  #{e.backtrace.join('\n')}"
     e.dependent = f.name
     raise
   end
+
+=begin
+  def install_required_taps
+      ohai "start installer tapping"
+    require 'cmd/tap'
+    f.required_taps.each { |tap_name|
+      oh1 "Tap #{Tty.green}#{tap_name}#{Tty.reset} is required!  Installing..."
+      Homebrew.add_tap(tap_name)
+    }
+      ohai "done installer tapping"
+  end
+
+=end
 
   def install
     # not in initialize so upgrade can unlink the active keg before calling this
@@ -211,7 +228,8 @@ class FormulaInstaller
 
     # Lastly, offer the parent formula a chance to finalize the
     # way its dependency was setup
-    f.finalize(fi) 
+    finalize_method = "finalize_#{fi.f.to_s.gsub('-', '_').downcase}"
+    f.send(finalize_method, fi) if f.respond_type?(finalize_method)
   ensure
     # restore previous installation state if build failed
     outdated_keg.link if outdated_keg and not dep.installed? rescue nil

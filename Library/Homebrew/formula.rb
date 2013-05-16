@@ -387,12 +387,30 @@ class Formula
     end
   end
 
+
+=begin
+  def self.install_required_taps
+    require 'cmd/tap'
+    taps.each { |tap_name|
+      ohai "Tap #{Tty.green}#{tap_name}#{Tty.reset} is required!  Installing..."
+      Homebrew.add_tap(tap_name)
+    }
+  end
+=end
+
+
   def self.factory name
+    ohai "starting formula factory for : #{name} with taps #{taps.inspect}"
     # If an instance of Formula is passed, just return it
     return name if name.kind_of? Formula
 
     # Otherwise, convert to String in case a Pathname comes in
     name = name.to_s
+
+    # Start by installing any required taps
+    #ohai "installing taps in formula factory"
+    ##install_required_taps
+    #ohai "done installing taps in formula factory"
 
     # If a URL is passed, download to the cache and install
     if name =~ %r[(https?|ftp)://]
@@ -473,6 +491,8 @@ class Formula
     # Catch NameError so that things that are invalid symbols still get
     # a useful error message.
     raise FormulaUnavailableError.new(name)
+  ensure
+    ohai "Ending formula factory for : #{name} with taps #{taps.inspect}"
   end
 
   def tap
@@ -488,6 +508,7 @@ class Formula
     Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name.downcase}.rb")
   end
 
+  def required_taps; self.class.taps;                     end
   def deps;         self.class.dependencies.deps;         end
   def requirements; self.class.dependencies.requirements; end
 
@@ -757,13 +778,24 @@ class Formula
       @stable.mirror(val)
     end
 
+    def taps
+      @taps ||= Array.new
+    end
+
     def dependencies
       @dependencies ||= DependencyCollector.new
     end
 
+    def require_tap tap_name
+      taps << tap_name
+      ohai "Taps : #{taps.inspect}  are required.."
+    end
+
     def depends_on dep
+      ohai "Depends on #{dep}..."
       d = dependencies.add(dep)
       post_depends_on(d) unless d.nil?
+      ohai "Ready with Depends on #{dep}..."
     end
 
     def option name, description=nil

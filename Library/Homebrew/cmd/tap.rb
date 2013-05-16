@@ -14,6 +14,12 @@ module Homebrew extend self
     end
   end
 
+  def add_tap(tap_name)
+    tap_name =~ %r{^(\S+)/(homebrew-)?(\w+)$}
+    raise "Invalid usage" unless $1 and $3
+    install_tap $1, $3
+  end
+
   def install_tap user, repo
     raise "brew install git" unless which 'git'
 
