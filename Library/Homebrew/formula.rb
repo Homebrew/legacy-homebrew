@@ -208,6 +208,10 @@ class Formula
   # Can be overridden to run commands on both source and bottle installation.
   def post_install; end
 
+  # Can be overridden to suppress caveats.  This is useful when finalize will
+  # take care of what the caveat would otherwise inform.
+  def suppress_caveats?(fi); false; end
+
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
@@ -380,12 +384,25 @@ class Formula
     end
   end
 
+
+  def self.install_required_taps
+    require 'cmd/tap'
+    taps.each { |tap_name|
+      oh1 "Tap #{Tty.green}#{tap_name}#{Tty.reset} is required!  Installing..." if show_header
+      Homebrew.add_tap(tap_name)
+    }
+  end
+
   def self.factory name
+    ohai "starting formula factory for : #{name} with taps #{taps.inspect}"
     # If an instance of Formula is passed, just return it
     return name if name.kind_of? Formula
 
     # Otherwise, convert to String in case a Pathname comes in
     name = name.to_s
+
+    # Start by installing any required taps
+    install_required_taps
 
     # If a URL is passed, download to the cache and install
     if name =~ %r[(https?|ftp)://]
@@ -466,6 +483,8 @@ class Formula
     # Catch NameError so that things that are invalid symbols still get
     # a useful error message.
     raise FormulaUnavailableError.new(name)
+  ensure
+    ohai "Ending formula factory for : #{name} with taps #{taps.inspect}"
   end
 
   def tap
@@ -752,6 +771,11 @@ class Formula
 
     def dependencies
       @dependencies ||= DependencyCollector.new
+    end
+
+    def require_tap tap_name
+      require 'cmd/tap'
+      Homebrew.require_tap(tap_name)
     end
 
     def depends_on dep
