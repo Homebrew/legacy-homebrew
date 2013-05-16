@@ -183,7 +183,10 @@ class FormulaInstaller
 
   def install_required_taps
     require 'cmd/tap'
-    f.required_taps.each { |tap_name| Homebrew.add_tap(tap_name) }
+    f.required_taps.each { |tap_name|
+      oh1 "Tap #{Tty.green}#{tap_name}#{Tty.reset} is required!  Installing..." if show_header
+      Homebrew.add_tap(tap_name)
+    }
   end
 
   def install_dependencies
@@ -217,7 +220,7 @@ class FormulaInstaller
 
     # Lastly, offer the parent formula a chance to finalize the
     # way its dependency was setup
-    f.finalize(fi) 
+    f.send("finalize_#{fi.f.to_s.gsub('-', '_').downcase}".to_sym, fi)
   ensure
     # restore previous installation state if build failed
     outdated_keg.link if outdated_keg and not dep.installed? rescue nil
