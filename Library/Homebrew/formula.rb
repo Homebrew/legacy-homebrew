@@ -761,6 +761,11 @@ class Formula
       @dependencies ||= DependencyCollector.new
     end
 
+    def add_tap tap_name
+      require 'cmd/tap'
+      Homebrew.add_tap(tap_name)
+    end
+
     def depends_on dep
       d = dependencies.add(dep)
       post_depends_on(d) unless d.nil?
