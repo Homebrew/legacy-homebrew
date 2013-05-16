@@ -86,6 +86,7 @@ class FormulaInstaller
       end
 
       check_requirements
+      install_required_taps
       install_dependencies
     end
 
@@ -178,6 +179,11 @@ class FormulaInstaller
       # onto recursive_dependencies to preserve installation order
       f.recursive_dependencies.select { |d| deps.include? d }
     end
+  end
+
+  def install_required_taps
+    require 'cmd/tap'
+    f.required_taps.each { |tap_name| Homebrew.add_tap(tap_name) }
   end
 
   def install_dependencies

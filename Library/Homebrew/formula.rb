@@ -488,6 +488,7 @@ class Formula
     Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name.downcase}.rb")
   end
 
+  def required_taps; self.class.taps;                     end
   def deps;         self.class.dependencies.deps;         end
   def requirements; self.class.dependencies.requirements; end
 
@@ -757,13 +758,16 @@ class Formula
       @stable.mirror(val)
     end
 
+    def taps
+      @taps ||= Array.new
+    end
+
     def dependencies
       @dependencies ||= DependencyCollector.new
     end
 
-    def add_tap tap_name
-      require 'cmd/tap'
-      Homebrew.add_tap(tap_name)
+    def requires_tap tap_name
+      taps << tap_name
     end
 
     def depends_on dep
