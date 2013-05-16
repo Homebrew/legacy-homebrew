@@ -12,8 +12,8 @@ class Hardlink < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "gnu-getopt" => :build
-  depends_on "pcre" => :build
+  depends_on "gnu-getopt"
+  depends_on "pcre"
 
   def install
     system "make", "PREFIX=#{prefix}", "MANDIR=#{man}", "BINDIR=#{bin}",
