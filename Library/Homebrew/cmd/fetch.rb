@@ -10,10 +10,9 @@ module Homebrew extend self
       bucket = []
       ARGV.formulae.each do |f|
         bucket << f
-        bucket << f.recursive_dependencies.map(&:to_formula)
+        bucket.concat f.recursive_dependencies.map(&:to_formula)
       end
-
-      bucket = bucket.flatten.uniq
+      bucket.uniq!
     else
       bucket = ARGV.formulae
     end
