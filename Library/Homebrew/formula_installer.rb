@@ -52,7 +52,6 @@ class FormulaInstaller
     end
 
     unless ignore_deps
-      install_required_taps
       unlinked_deps = f.recursive_dependencies.map(&:to_formula).select do |dep|
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
@@ -179,14 +178,6 @@ class FormulaInstaller
       # onto recursive_dependencies to preserve installation order
       f.recursive_dependencies.select { |d| deps.include? d }
     end
-  end
-
-  def install_required_taps
-    require 'cmd/tap'
-    f.required_taps.each { |tap_name|
-      oh1 "Tap #{Tty.green}#{tap_name}#{Tty.reset} is required!  Installing..." if show_header
-      Homebrew.add_tap(tap_name)
-    }
   end
 
   def install_dependencies
