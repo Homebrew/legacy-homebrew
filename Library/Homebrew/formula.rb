@@ -388,15 +388,13 @@ class Formula
   end
 
 
-=begin
   def self.install_required_taps
     require 'cmd/tap'
     taps.each { |tap_name|
-      oh1 "Tap #{Tty.green}#{tap_name}#{Tty.reset} is required!  Installing..."
+      ohai "Tap #{Tty.green}#{tap_name}#{Tty.reset} is required!  Installing..."
       Homebrew.add_tap(tap_name)
     }
   end
-=end
 
 
   def self.factory name
@@ -407,7 +405,9 @@ class Formula
     name = name.to_s
 
     # Start by installing any required taps
-    #install_required_taps
+    ohai "installing taps in formula factory"
+    install_required_taps
+    ohai "done installing taps in formula factory"
 
     # If a URL is passed, download to the cache and install
     if name =~ %r[(https?|ftp)://]
@@ -783,7 +783,7 @@ class Formula
 
     def require_tap tap_name
       taps << tap_name
-      oh1 "Taps : #{taps.inspect}  are required.."
+      ohai "Taps : #{taps.inspect}  are required.."
     end
 
     def depends_on dep
