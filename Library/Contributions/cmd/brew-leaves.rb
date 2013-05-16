@@ -4,9 +4,9 @@
 
 require 'formula'
 
-def get_used_by
+def get_used_by(formulae)
   used_by = {}
-  Formula.each do |f|
+  formulae.each do |f|
     next if f.deps == nil
 
     f.deps.each do |dep|
@@ -19,7 +19,7 @@ def get_used_by
   return used_by
 end
 
-deps_graph = get_used_by()
+deps_graph = get_used_by(Formula)
 
 installed = HOMEBREW_CELLAR.children.select { |pn| pn.directory? }.collect { |pn| pn.basename.to_s }
 
