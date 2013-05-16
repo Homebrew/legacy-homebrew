@@ -20,7 +20,9 @@ def get_used_by
 end
 
 deps_graph = get_used_by()
+
 installed = HOMEBREW_CELLAR.children.select { |pn| pn.directory? }.collect { |pn| pn.basename.to_s }
+
 installed.each do |name|
   deps = deps_graph[name] || []
   puts name unless deps.any? { |dep| installed.include? dep.to_s }
