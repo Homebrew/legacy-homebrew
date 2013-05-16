@@ -20,6 +20,13 @@ def get_used_by(formulae)
 end
 
 installed = HOMEBREW_CELLAR.children.select { |pn| pn.directory? }.collect { |pn| pn.basename.to_s }
+installed_formulae = installed.collect do |pn|
+  begin
+    Formula.factory(pn)
+  rescue FormulaUnavailableError
+    # Don't complain about directories from DIY installs
+  end
+end
 
 deps_graph = get_used_by(Formula)
 
