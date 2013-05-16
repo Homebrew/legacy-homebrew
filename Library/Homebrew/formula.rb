@@ -619,6 +619,7 @@ class Formula
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
     downloader.fetch
+    cached_download
   end
 
   # For FormulaInstaller.
@@ -644,7 +645,7 @@ class Formula
 
   def stage
     fetched = fetch
-    verify_download_integrity(fetched) if fetched.kind_of? Pathname
+    verify_download_integrity(fetched) if fetched.file?
     mktemp do
       downloader.stage
       # Set path after the downloader changes the working folder.
