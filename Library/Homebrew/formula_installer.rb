@@ -52,6 +52,7 @@ class FormulaInstaller
     end
 
     unless ignore_deps
+      install_required_taps
       unlinked_deps = f.recursive_dependencies.map(&:to_formula).select do |dep|
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
@@ -86,7 +87,6 @@ class FormulaInstaller
       end
 
       check_requirements
-      install_required_taps
       install_dependencies
     end
 
