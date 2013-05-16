@@ -27,8 +27,7 @@ module Homebrew extend self
     f.cached_download.rmtree if already_fetched?(f) && ARGV.force?
     download = f.fetch
 
-    # FIXME why are strategies returning different types?
-    return unless download.is_a? Pathname
+    return unless download.file?
 
     puts "Downloaded to: #{download}" unless already_fetched?(f)
     puts Checksum::TYPES.map { |t| "#{t.to_s.upcase}: #{download.send(t)}" }
