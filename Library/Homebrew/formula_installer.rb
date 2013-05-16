@@ -213,7 +213,7 @@ class FormulaInstaller
     # Lastly, offer the parent formula a chance to finalize the
     # way its dependency was setup
     finalize_method = "finalize_#{fi.f.to_s.split("/").last.gsub('-', '_').downcase}"
-    f.send(finalize_method, fi) if f.respond_type?(finalize_method)
+    f.send(finalize_method, fi) if f.respond_to?(finalize_method)
   ensure
     # restore previous installation state if build failed
     outdated_keg.link if outdated_keg and not dep.installed? rescue nil
