@@ -19,8 +19,8 @@ end
 
 class Pius < Formula
   homepage 'http://www.phildev.net/pius/'
-  url 'http://downloads.sourceforge.net/project/pgpius/pius/2.0.9/pius-2.0.9.tar.bz2'
-  sha1 'c8ecdf74b3f704a29f828fdbe0575eb247e21524'
+  url 'http://downloads.sourceforge.net/project/pgpius/pius/2.0.10/pius-2.0.10.tar.bz2'
+  sha1 '47dadf604cb1eac7ad2ee6594745b0ecc4af4ede'
 
   depends_on GnupgInstalled
 
