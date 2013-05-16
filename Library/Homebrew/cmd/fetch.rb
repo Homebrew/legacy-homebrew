@@ -25,7 +25,7 @@ module Homebrew extend self
 
   def fetch_formula f
     f.cached_download.rmtree if already_fetched?(f) && ARGV.force?
-    download, _ = f.fetch
+    download = f.fetch
 
     # FIXME why are strategies returning different types?
     return unless download.is_a? Pathname
