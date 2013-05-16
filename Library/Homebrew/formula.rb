@@ -529,8 +529,7 @@ class Formula
     end
 
     if rack.directory?
-      rack.children.each do |keg|
-        next if keg.basename.to_s == '.DS_Store'
+      rack.subdirs.each do |keg|
         tab = Tab.for_keg keg
 
         hsh["installed"] << {
