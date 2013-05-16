@@ -20,6 +20,8 @@ class Gfortran < Formula
   depends_on 'gmp'
   depends_on 'libmpc'
   depends_on 'mpfr'
+  depends_on 'isl'
+  depends_on 'cloog'
 
   # http://gcc.gnu.org/install/test.html
   depends_on 'dejagnu' if build.include? 'check'
@@ -54,6 +56,8 @@ class Gfortran < Formula
       "--with-gmp=#{Formula.factory('gmp').opt_prefix}",
       "--with-mpfr=#{Formula.factory('mpfr').opt_prefix}",
       "--with-mpc=#{Formula.factory('libmpc').opt_prefix}",
+      "--with-isl=#{Formula.factory('isl').opt_prefix}",
+      "--with-cloog=#{Formula.factory('cloog').opt_prefix}",
       # ...we build the stage 1 gcc with clang (which is know to fail checks)
       "--enable-checking=release",
       "--disable-stage1-checking",
