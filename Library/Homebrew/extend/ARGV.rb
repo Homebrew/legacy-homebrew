@@ -47,7 +47,6 @@ module HomebrewArgvExtension
       end
     end
   rescue FormulaUnavailableError
-    opoo "in argv:  #{e.backtrace.join('\n')}"
     if rack
       raise <<-EOS.undent
         Multiple kegs installed to #{rack}
