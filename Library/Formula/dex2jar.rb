@@ -16,13 +16,13 @@ class Dex2jar < Formula
     libexec.install Dir['*']
 
     SCRIPTS.each do |script|
-        bin.install_symlink "#{libexec}/#{script}"          => "#{script}"
+      bin.install_symlink "#{libexec}/#{script}" => "#{script.gsub('.sh', '')}"
     end
   end
 
   test do
     SCRIPTS.each do |script|
-        system script
+      system script
     end
   end
 end
