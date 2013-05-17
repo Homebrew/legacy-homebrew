@@ -759,6 +759,7 @@ class Formula
     
     def repair_taps
       require 'cmd/tap'
+      ohai "Repairing Taps..."
       Homebrew.repair_taps
     end
 
