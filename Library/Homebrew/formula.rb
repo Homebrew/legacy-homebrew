@@ -757,6 +757,11 @@ class Formula
       @dependencies ||= DependencyCollector.new
     end
     
+    def repair_taps
+      require 'cmd/tap'
+      Homebrew.repair_taps
+    end
+
     def require_tap tap_name
       require 'cmd/tap'
       Homebrew.require_tap(tap_name)
