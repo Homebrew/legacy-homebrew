@@ -2,8 +2,8 @@ require 'formula'
 
 class Libmtp < Formula
   homepage 'http://libmtp.sourceforge.net/'
-  url 'http://sourceforge.net/projects/libmtp/files/libmtp/1.1.4/libmtp-1.1.4.tar.gz'
-  sha1 '07f6b64e4d3c4966fab8d6d507d90eb2e6dff538'
+  url 'http://sourceforge.net/projects/libmtp/files/libmtp/1.1.6/libmtp-1.1.6.tar.gz'
+  sha1 'f9e55c75399fc5f4deabcdfa58e1b01b2e6e3283'
 
   depends_on "pkg-config" => :build
   depends_on "libusb-compat"
