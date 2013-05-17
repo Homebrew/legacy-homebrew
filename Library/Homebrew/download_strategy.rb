@@ -31,7 +31,6 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  attr_reader :tarball_path
   attr_accessor :local_bottle_path
 
   def initialize name, package

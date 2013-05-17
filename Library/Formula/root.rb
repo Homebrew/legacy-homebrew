@@ -23,6 +23,7 @@ class Root < Formula
     system "./configure",
            "#{arch}",
            "--all",
+           "--enable-builtin-glew",
            "--prefix=#{prefix}",
            "--etcdir=#{prefix}/etc/root",
            "--mandir=#{man}"

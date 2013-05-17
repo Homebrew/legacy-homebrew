@@ -234,7 +234,7 @@ _brew_link ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--dry-run --overwrite"
+        __brewcomp "--dry-run --overwrite --force"
         return
         ;;
     esac

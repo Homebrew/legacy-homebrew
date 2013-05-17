@@ -406,8 +406,8 @@ class FormulaInstaller
   end
 
   def pour
-    fetched, downloader = f.fetch
-    f.verify_download_integrity fetched unless downloader.local_bottle_path
+    fetched, downloader = f.fetch, f.downloader
+    f.verify_download_integrity(fetched) unless downloader.local_bottle_path
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end
