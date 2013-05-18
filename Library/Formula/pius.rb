@@ -25,6 +25,8 @@ class Pius < Formula
   depends_on GnupgInstalled
 
   def install
+    # Replace hardcoded gpg path: https://sourceforge.net/p/pgpius/bugs/12/
+    inreplace 'pius', '/usr/bin/gpg', HOMEBREW_PREFIX/'bin/gpg'
     bin.install 'pius'
     bin.install 'pius-keyring-mgr'
     bin.install 'pius-party-worksheet'
