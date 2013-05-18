@@ -2,8 +2,8 @@ require 'formula'
 
 class Qscintilla2 < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/qscintilla/intro'
-  url 'http://downloads.sourceforge.net/project/pyqt/QScintilla2/QScintilla-2.6.2/QScintilla-gpl-2.6.2.tar.gz'
-  sha1 '6106c9e13983c086daf1fb0dba1180abed17588c'
+  url 'http://downloads.sf.net/project/pyqt/QScintilla2/QScintilla-2.7.1/QScintilla-gpl-2.7.1.tar.gz'
+  sha1 '646b5e6e6658c70d9bca034d670a3b56690662f2'
 
   depends_on 'pyqt'
   depends_on 'sip'
@@ -25,10 +25,12 @@ class Qscintilla2 < Formula
     end
 
     cd 'Python' do
+      (share/'sip').mkpath
       system 'python', 'configure.py', "-o", lib, "-n", include,
                        "--apidir=#{prefix}/qsci",
                        "--destdir=#{lib}/#{which_python}/site-packages/PyQt4",
-                       "--sipdir=#{share}/sip"
+                       "--qsci-sipdir=#{share}/sip",
+                       "--pyqt-sipdir=#{HOMEBREW_PREFIX}/share/sip"
       system 'make'
       system 'make', 'install'
     end
