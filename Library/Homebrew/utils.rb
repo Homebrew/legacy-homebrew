@@ -286,13 +286,10 @@ module GitHub extend self
 
     uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{name}")
 
-    open uri do |f|
-      begin
-        MultiJson.decode(f.read)['issues'].each do |issue|
-          # don't include issues that just refer to the tool in their body
-          issues << issue['html_url'] if issue['title'].include? name
-        end
-      rescue
+    GitHub.open uri do |f|
+      MultiJson.decode(f.read)['issues'].each do |issue|
+        # don't include issues that just refer to the tool in their body
+        issues << issue['html_url'] if issue['title'].include? name
       end
     end
 
@@ -306,11 +303,8 @@ module GitHub extend self
     uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{query}")
 
     GitHub.open uri do |f|
-      begin
-        MultiJson.decode(f.read)['issues'].each do |pull|
-          yield pull['pull_request_url'] if rx.match pull['title'] and pull['pull_request_url']
-        end
-      rescue
+      MultiJson.decode(f.read)['issues'].each do |pull|
+        yield pull['pull_request_url'] if rx.match pull['title'] and pull['pull_request_url']
       end
     end
   end
