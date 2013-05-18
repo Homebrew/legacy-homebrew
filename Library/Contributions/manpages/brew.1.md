@@ -459,6 +459,12 @@ can take several different forms:
     directories. TextMate can handle this correctly in project mode, but many
     editors will do strange things in this case.
 
+  * HOMEBREW\_GITHUB\_API\_TOKEN:
+    A personal GitHub API Access token, which you can be create at
+    <https://github.com/settings/applications>. If set, GitHub will allow you a
+    greater number of API requests. See
+    <http://developer.github.com/v3/#rate-limiting> for more information.
+
   * HOMEBREW\_KEEP\_INFO:
     If set, Homebrew will not remove files from `share/info`, allowing them
     to be linked from the Cellar. To access these info files, prepend
