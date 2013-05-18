@@ -9,8 +9,8 @@ require 'formula'
 
 class Sip < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
-  url 'http://www.riverbankcomputing.co.uk/hg/sip/archive/4.13.3.tar.gz'
-  sha1 '672f0bd9c13860979ab2a7753b2bf91475a4deeb'
+  url 'http://download.sf.net/project/pyqt/sip/sip-4.14.6/sip-4.14.6.tar.gz'
+  sha1 'e9dfe98ab1418914c78fd3ac457a4e724aac9821'
 
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
 
@@ -25,20 +25,19 @@ class Sip < Formula
       # buid.py can use it to figure out a version number.
       sip_version = "0.1.0"
       ln_s downloader.cached_location + '.hg', '.hg'
+      inreplace 'build.py', /@SIP_VERSION@/, sip_version.to_s.gsub('.', ',')
+      system "python", "build.py", "prepare"
     else
       sip_version = version
     end
-    inreplace 'build.py', /@SIP_VERSION@/, (sip_version.to_s.gsub '.', ',')
 
-    system "python", "build.py", "prepare"
-    # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
     system "python", "configure.py",
-                              "--destdir=#{lib}/#{which_python}/site-packages",
-                              "--bindir=#{bin}",
-                              "--incdir=#{include}",
-                              "--sipdir=#{HOMEBREW_PREFIX}/share/sip",
-                              "CFLAGS=#{ENV.cflags}",
-                              "LFLAGS=#{ENV.ldflags}"
+                     "--destdir=#{lib}/#{which_python}/site-packages",
+                     "--bindir=#{bin}",
+                     "--incdir=#{include}",
+                     "--sipdir=#{HOMEBREW_PREFIX}/share/sip",
+                     "CFLAGS=#{ENV.cflags}",
+                     "LFLAGS=#{ENV.ldflags}"
     system "make install"
   end
 
