@@ -18,10 +18,8 @@ module Homebrew extend self
 
     if ARGV.named.empty?
       require 'cmd/outdated'
-      upgrade_pinned = false
       outdated = Homebrew.outdated_brews
     else
-      upgrade_pinned = true
       outdated = ARGV.formulae.select do |f|
         if f.installed?
           onoe "#{f}-#{f.installed_version} already installed"
@@ -34,8 +32,8 @@ module Homebrew extend self
       exit 1 if outdated.empty?
     end
 
-    unless upgrade_pinned
-      pinned = outdated.select { |f| f.pinned? }
+    unless upgrade_pinned?
+      pinned = outdated.select(&:pinned?)
       outdated -= pinned
     end
 
@@ -43,14 +41,17 @@ module Homebrew extend self
       oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
       puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
     end
-    if not upgrade_pinned and pinned.length > 0
+
+    if not upgrade_pinned? and pinned.length > 0
       oh1 "Not upgrading #{pinned.length} pinned package#{outdated.length.plural_s}:"
       puts pinned.map{ |f| "#{f.name} #{f.version}" } * ", "
     end
 
-    outdated.each do |f|
-      upgrade_formula f
-    end
+    outdated.each { |f| upgrade_formula(f) }
+  end
+
+  def upgrade_pinned?
+    not ARGV.named.empty?
   end
 
   def upgrade_formula f
