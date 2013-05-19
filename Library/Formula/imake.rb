@@ -21,9 +21,9 @@ class Imake < Formula
 
   def install
     ENV.deparallelize
-    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-    # install X config files
+
     ImakeXorgCfFiles.new.brew do
       system "./configure", "--with-config-dir=#{lib}/X11/config"
       system "make install"
