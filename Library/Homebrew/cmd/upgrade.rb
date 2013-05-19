@@ -43,7 +43,7 @@ module Homebrew extend self
     end
 
     if not upgrade_pinned? and pinned.length > 0
-      oh1 "Not upgrading #{pinned.length} pinned package#{outdated.length.plural_s}:"
+      oh1 "Not upgrading #{pinned.length} pinned package#{pinned.length.plural_s}:"
       puts pinned.map{ |f| "#{f.name} #{f.version}" } * ", "
     end
 
