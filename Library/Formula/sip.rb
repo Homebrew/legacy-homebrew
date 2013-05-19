@@ -14,9 +14,7 @@ class Sip < Formula
 
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
 
-  def patches
-    DATA
-  end
+  def patches; DATA; end if build.head?
 
   def install
     if build.head?
