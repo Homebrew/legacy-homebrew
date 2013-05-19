@@ -2,9 +2,9 @@ require 'formula'
 
 class MediaInfo < Formula
   homepage 'http://mediainfo.sourceforge.net'
-  url 'http://downloads.sourceforge.net/mediainfo/MediaInfo_CLI_0.7.62_GNU_FromSource.tar.bz2'
-  version '0.7.62'
-  sha1 '6b6cdd93dd526e5e70e1d556055a117a8cb8a9ca'
+  url 'http://downloads.sourceforge.net/mediainfo/MediaInfo_CLI_0.7.63_GNU_FromSource.tar.bz2'
+  version '0.7.63'
+  sha1 '76be91f76729e025ba13954f9726b6ec81c19a85'
 
   depends_on 'pkg-config' => :build
 

@@ -7,9 +7,9 @@ end
 
 class Pypy < Formula
   homepage 'http://pypy.org/'
-  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.0-osx64.tar.bz2'
-  version '2.0'
-  sha1 '65ecb2ba570f05691978c64469cfe3e76bfd8e01'
+  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.0.1-osx64.tar.bz2'
+  version '2.0.1'
+  sha1 '811fd377ab2eda9233a0c34340f981f9aba1ba9a'
 
   depends_on :arch => :x86_64
 

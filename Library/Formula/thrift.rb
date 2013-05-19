@@ -21,11 +21,6 @@ class Thrift < Formula
   end
 
   def install
-    # No reason for this step is known. On Lion at least the pkg.m4 doesn't
-    # even exist. Turns out that it isn't needed on Lion either. Possibly it
-    # isn't needed anymore at all but I can't test that.
-    cp "#{MacOS::X11.share}/aclocal/pkg.m4", "aclocal" if MacOS.version < :lion
-
     system "./bootstrap.sh" if build.head?
 
     exclusions = ["--without-python", "--without-ruby"]
