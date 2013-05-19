@@ -13,6 +13,8 @@ class Imake < Formula
   depends_on 'pkg-config' => :build
   depends_on :x11
 
+  env :std # CPP issues under superenv
+
   def patches
     # Remove cpp whitespace check and add "-" to pass the cpp -undef test.
     # These are needed to support superenv (which uses clang)
