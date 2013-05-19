@@ -2,7 +2,7 @@ require 'formula'
 
 class Fish < Formula
   homepage 'http://fishshell.com'
-  url 'http://fishshell.com/files/2.0.0/fish.tar.gz'
+  url 'http://fishshell.com/files/2.0.0/fish-2.0.0.tar.gz'
   sha1 '2d28553e2ff975f8e5fed6b266f7a940493b6636'
   version '2.0.0'
 
