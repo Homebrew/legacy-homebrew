@@ -1,7 +1,6 @@
 require 'formula'
 require 'keg'
 require 'bottles'
-require 'cmd/prune'
 
 module Homebrew extend self
 
@@ -11,8 +10,6 @@ module Homebrew extend self
     if ARGV.named.empty?
       cleanup_cellar
       cleanup_cache
-      Homebrew.prune
-
       rm_DS_Store unless ARGV.dry_run?
     else
       ARGV.formulae.each { |f| cleanup_formula(f) }
