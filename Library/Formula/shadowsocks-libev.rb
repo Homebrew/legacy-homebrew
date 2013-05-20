@@ -2,7 +2,6 @@ require 'formula'
 
 class ShadowsocksLibev < Formula
   homepage 'https://github.com/madeye/shadowsocks-libev'
-  #jurl 'https://github.com/madeye/shadowsocks-libev.git'
   url 'https://github.com/madeye/shadowsocks-libev.git', :using => :git, :revision => '7288df7c844f837f9d943b8abc4e660396e7f0ef'
   version '1.2'
 
