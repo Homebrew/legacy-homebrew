@@ -1,4 +1,7 @@
 #!/bin/sh
+#
+# A shell wrapper script for brew.rb
+
 BREW_FILE_DIRECTORY=$(dirname "$0")
 BREW_FILE_DIRECTORY=$(cd "$BREW_FILE_DIRECTORY" && pwd -P)
 
