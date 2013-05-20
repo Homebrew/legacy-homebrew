@@ -12,7 +12,7 @@ class ShadowsocksLibev < Formula
   end
 
   def caveats; <<-EOS.undent
-   Run As
+   Run
         ss-local -s server_host -p server_port -l local_port -k password
         [-m encrypt_method] [-f pid_file] [-t timeout] [-c config_file]
    options:
