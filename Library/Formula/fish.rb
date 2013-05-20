@@ -13,12 +13,14 @@ class Fish < Formula
 
   skip_clean 'share/doc'
 
-  conflicts_with "fishfish"
-
   def install
     system "autoconf"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
+  end
+
+  test do
+    system "fish", "-c", "echo"
   end
 
   def caveats; <<-EOS.undent
