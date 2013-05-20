@@ -2,8 +2,8 @@ require 'formula'
 
 class Editorconfig < Formula
   homepage 'http://editorconfig.org'
-  url 'https://github.com/editorconfig/editorconfig-core/archive/v0.11.3.zip'
-  sha1 '9e0c22e863dfb8b97526812ebe7c58c46604ebb8'
+  url 'http://downloads.sourceforge.net/project/editorconfig/EditorConfig-C-Core/0.11.5/source/editorconfig-core-c-0.11.5.tar.gz'
+  sha1 '2fe9df54d49c17d7e62c3996f4095afcd79d4d28'
 
   depends_on 'cmake' => :build
 
