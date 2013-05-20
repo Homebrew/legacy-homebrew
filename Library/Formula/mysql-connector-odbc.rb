@@ -2,6 +2,7 @@ require 'formula'
 
 class MySqlInstalled < Requirement
   fatal true
+  default_formula 'mysql'
 
   satisfy { which 'mysql_config' }
 

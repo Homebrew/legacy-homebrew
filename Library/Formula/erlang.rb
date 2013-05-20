@@ -84,11 +84,16 @@ class Erlang < Formula
     system "./configure", *args
     touch 'lib/wx/SKIP' if MacOS.version >= :snow_leopard
     system "make"
+    ENV.j1 # Install is not thread-safe; can try to create folder twice and fail
     system "make install"
 
     unless build.include? 'no-docs'
       manuals = build.head? ? ErlangHeadManuals : ErlangManuals
-      manuals.new.brew { man.install Dir['man/*'] }
+      manuals.new.brew {
+        man.install Dir['man/*']
+        # erl -man expects man pages in lib/erlang/man
+        (lib+'erlang').install_symlink man
+      }
 
       htmls = build.head? ? ErlangHeadHtmls : ErlangHtmls
       htmls.new.brew { doc.install Dir['*'] }

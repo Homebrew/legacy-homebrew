@@ -6,7 +6,7 @@ class Cpputest < Formula
   sha1 '8ff6b764a9ca6202582ae0c94545f56b921f39d5'
 
   fails_with :clang do
-    build 421
+    build 425
     cause 'Uses -lgcov which only comes with llvm or gcc'
   end
 

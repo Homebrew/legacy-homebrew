@@ -30,7 +30,7 @@ class DependencyCollectorTests < Test::Unit::TestCase
   end
 
   def test_dependency_tags
-    assert Dependency.new('foo', :build).build?
+    assert Dependency.new('foo', [:build]).build?
     assert Dependency.new('foo', [:build, :optional]).optional?
     assert Dependency.new('foo', [:universal]).options.include? '--universal'
     assert_empty Dependency.new('foo').tags
@@ -109,5 +109,13 @@ class DependencyCollectorTests < Test::Unit::TestCase
   def test_x11_proxy_dep_lion_or_older
     MacOS.stubs(:version).returns(MacOS::Version.new(10.7))
     assert_equal X11Dependency::Proxy.new(:libpng), @d.build(:libpng)
+  end
+
+  def test_raises_typeerror_for_unknown_classes
+    assert_raises(TypeError) { @d.add(Class.new) }
+  end
+
+  def test_raises_typeerror_for_unknown_types
+    assert_raises(TypeError) { @d.add(Object.new) }
   end
 end

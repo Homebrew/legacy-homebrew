@@ -26,7 +26,7 @@ class Scala < Formula
     man1.install Dir['man/man1/*']
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
-    ScalaCompletion.new.brew { (prefix/'etc/bash_completion.d').install 'scala' }
+    ScalaCompletion.new.brew { bash_completion.install 'scala' }
     ScalaDocs.new.brew { doc.install Dir['*'] } if build.include? 'with-docs'
   end
 end

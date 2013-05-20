@@ -91,7 +91,6 @@ class Formula
 
   def url;      active_spec.url;     end
   def version;  active_spec.version; end
-  def specs;    active_spec.specs;   end
   def mirrors;  active_spec.mirrors; end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -165,6 +164,7 @@ class Formula
   def sbin;    prefix+'sbin'    end
   def share;   prefix+'share'   end
 
+  def frameworks; prefix+'Frameworks' end
   def kext_prefix; prefix+'Library/Extensions' end
 
   # configuration needs to be preserved past upgrades
@@ -488,7 +488,7 @@ class Formula
   end
 
   def conflicts
-    requirements.select { |r| r.is_a? ConflictRequirement }
+    requirements.grep(ConflictRequirement)
   end
 
   # Returns a list of Dependency objects in an installable order, which
@@ -508,7 +508,7 @@ class Formula
       "homepage" => homepage,
       "versions" => {
         "stable" => (stable.version.to_s if stable),
-        "bottle" => bottle || false,
+        "bottle" => bottle ? true : false,
         "devel" => (devel.version.to_s if devel),
         "head" => (head.version.to_s if head)
       },
@@ -529,8 +529,7 @@ class Formula
     end
 
     if rack.directory?
-      rack.children.each do |keg|
-        next if keg.basename.to_s == '.DS_Store'
+      rack.subdirs.each do |keg|
         tab = Tab.for_keg keg
 
         hsh["installed"] << {
@@ -617,7 +616,8 @@ class Formula
   def fetch
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
-    return downloader.fetch, downloader
+    downloader.fetch
+    cached_download
   end
 
   # For FormulaInstaller.
@@ -642,8 +642,8 @@ class Formula
   private
 
   def stage
-    fetched, downloader = fetch
-    verify_download_integrity fetched if fetched.kind_of? Pathname
+    fetched = fetch
+    verify_download_integrity(fetched) if fetched.file?
     mktemp do
       downloader.stage
       # Set path after the downloader changes the working folder.

@@ -10,6 +10,7 @@ end
 
 class MarkdownProvider < Requirement
   fatal true
+  default_formula 'markdown'
 
   satisfy { which 'markdown' }
 

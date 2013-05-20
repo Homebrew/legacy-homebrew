@@ -11,7 +11,7 @@ class ConflictRequirement < Requirement
     @formula = formula
     @name = name
     @opts = opts
-    super(formula)
+    super([formula])
   end
 
   def message

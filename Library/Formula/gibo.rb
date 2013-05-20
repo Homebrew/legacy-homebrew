@@ -7,7 +7,7 @@ class Gibo < Formula
 
   def install
     bin.install "gibo"
-    (prefix/'etc/bash_completion.d').install 'gibo-completion.bash'
-    (share/'zsh/site-functions').install 'gibo-completion.zsh' => '_gibo'
+    bash_completion.install 'gibo-completion.bash'
+    zsh_completion.install 'gibo-completion.zsh' => '_gibo'
   end
 end

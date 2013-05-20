@@ -90,14 +90,14 @@ class Version
   end
 
   def to_s
-    @version
+    @version.dup
   end
   alias_method :to_str, :to_s
 
   protected
 
   def to_a
-    @array ||= @version.scan(/\d+|[a-zA-Z]+/).map { |e| VersionElement.new(e) }
+    @array ||= @version.scan(/\d+|[a-zA-Z]+/).map! { |e| VersionElement.new(e) }
   end
 
   def self.parse spec

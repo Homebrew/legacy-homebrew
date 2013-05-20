@@ -20,7 +20,7 @@ class Spdylay < Formula
     ENV['ZLIB_CFLAGS'] = '-I/usr/include'
     ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
