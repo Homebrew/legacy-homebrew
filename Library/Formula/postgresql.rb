@@ -22,10 +22,15 @@ class Postgresql < Formula
     cause 'Miscompilation resulting in segfault on queries'
   end
 
-  # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
-  # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
   def patches
-    DATA
+    [
+    # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
+    # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
+    DATA,
+    # Fix Postgres 9.2.4 bug #8167. Fixed upstream; shouldn't be needed on new release.
+    # https://github.com/postgres/postgres/commit/6563fb2b45146852601e63828308fe04fb03b9e9
+    "https://gist.github.com/NelsonMinar/5612580/raw/846fb13aa450d1da009db128789b507a5f47f019/patch"
+    ]
   end
 
   def install
@@ -193,7 +198,7 @@ __END__
 -override python_libspec = -framework Python
 -override python_additional_libs =
  endif
- 
+
  # If we don't have a shared library and the platform doesn't allow it
 --- a/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:34:53.000000000 -0700
 +++ b/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:35:03.000000000 -0700
