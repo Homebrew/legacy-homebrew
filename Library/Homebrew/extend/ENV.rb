@@ -142,12 +142,13 @@ module HomebrewEnvExtension
     # However they still provide a gcc symlink to llvm
     # But we don't want LLVM of course.
 
-    self['CC'] = self['OBJC'] = MacOS.locate("gcc-4.2")
-    self['CXX'] = self['OBJCXX'] = MacOS.locate("g++-4.2")
+    cc, cxx = if MACOS then ['gcc-4.2', 'g++-4.2'] else ['gcc', 'g++'] end
+    self['CC'] = self['OBJC'] = MacOS.locate(cc)
+    self['CXX'] = self['OBJCXX'] = MacOS.locate(cxx)
 
     unless self['CC']
-      self['CC'] = self['OBJC'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
-      self['CXX'] = self['OBJCXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
+      self['CC'] = self['OBJC'] = "#{HOMEBREW_PREFIX}/bin/#{cc}"
+      self['CXX'] = self['OBJCXX'] = "#{HOMEBREW_PREFIX}/bin/#{cxx}"
       raise "GCC could not be found" unless File.exist? self['CC']
     end
 
@@ -281,16 +282,19 @@ module HomebrewEnvExtension
   end
 
   def m64
+    return unless MACOS
     append_to_cflags '-m64'
     append 'LDFLAGS', '-arch x86_64'
   end
   def m32
+    return unless MACOS
     append_to_cflags '-m32'
     append 'LDFLAGS', '-arch i386'
   end
 
   # i386 and x86_64 (no PPC)
   def universal_binary
+    return unless MACOS
     append_to_cflags '-arch i386 -arch x86_64'
     replace_in_cflags '-O4', '-O3' # O4 seems to cause the build to fail
     append 'LDFLAGS', '-arch i386 -arch x86_64'
