@@ -6,11 +6,15 @@ class Libmagic < Formula
   mirror 'http://fossies.org/unix/misc/file-5.14.tar.gz'
   sha1 '064c8f17a5f7ae1e336a9285131e046d3b2d04d7'
 
+  option :universal
+
   # Fixed upstream, should be in next release
   # See http://bugs.gw.com/view.php?id=230
   def patches; DATA; end if MacOS.version < :lion
 
   def install
+    ENV.universal_binary if build.universal?
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-fsect-man5"
@@ -30,7 +34,7 @@ index e3c41c4..74c314e 100644
 @@ -76,7 +76,7 @@ getdelim(char **buf, size_t *bufsiz, int delimiter, FILE *fp)
   }
  }
- 
+
 -ssize_t
 +public ssize_t
  getline(char **buf, size_t *bufsiz, FILE *fp)
