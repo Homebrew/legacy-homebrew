@@ -2,7 +2,8 @@ require 'formula'
 
 class ShadowsocksLibev < Formula
   homepage 'https://github.com/madeye/shadowsocks-libev'
-  url 'https://github.com/madeye/shadowsocks-libev.git'
+  #jurl 'https://github.com/madeye/shadowsocks-libev.git'
+  url 'https://github.com/madeye/shadowsocks-libev.git', :using => :git, :revision => '7288df7c844f837f9d943b8abc4e660396e7f0ef'
   version '1.2'
 
   def install
@@ -12,27 +13,20 @@ class ShadowsocksLibev < Formula
   end
 
   def caveats; <<-EOS.undent
-    usage:
+   Run As
         ss-local -s server_host -p server_port -l local_port -k password
         [-m encrypt_method] [-f pid_file] [-t timeout] [-c config_file]
-
-        ss-redir -s server_host -p server_port -l local_port -k password
-        [-m encrypt_method] [-f pid_file] [-t timeout] [-c config_file]
-
-        ss-server -s server_host -p server_port -k password
-        [-m encrypt_method] [-f pid_file] [-t timeout] [-c config_file]
-    options:
+   options:
         encrypt_method:         table, rc4
         pid_file:               valid path to the pid file
         timeout:                socket timeout in senconds
         config_file:            json format config file
-    notes:
-        ss-redir provides a transparent proxy function and only works on the
-        Linux platform with iptables.
     EOS
     end
 
   test do
-    system "false"
+    <<-eos
+    system `#{bin}/ss-server`
+    eos
   end
 end
