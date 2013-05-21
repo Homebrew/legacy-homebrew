@@ -34,7 +34,7 @@ index e3c41c4..74c314e 100644
 @@ -76,7 +76,7 @@ getdelim(char **buf, size_t *bufsiz, int delimiter, FILE *fp)
   }
  }
-
+ 
 -ssize_t
 +public ssize_t
  getline(char **buf, size_t *bufsiz, FILE *fp)
