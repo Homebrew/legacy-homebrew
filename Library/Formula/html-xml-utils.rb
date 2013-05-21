@@ -3,7 +3,7 @@ require 'formula'
 class HtmlXmlUtils < Formula
   homepage 'http://www.w3.org/Tools/HTML-XML-utils/'
   url 'http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-6.4.tar.gz'
-  sha1 'ff0084b617a1f8bee9353158a2a7dbf80f086373'
+  sha1 '6dc6ace41a4c3f692f79b16107d50d0e80d0ee40'
 
   fails_with :clang do
     build 425
