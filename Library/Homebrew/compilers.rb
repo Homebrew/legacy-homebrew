@@ -53,11 +53,18 @@ class CompilerSelector
     end
   end
 
+  # Attempts to select an appropriate alternate compiler, but
+  # if none can be found raises CompilerError instead
   def compiler
     begin
       cc = @compilers.pop
     end while @f.fails_with?(cc)
-    cc.nil? ? @old_compiler : cc.name
+
+    if cc.nil?
+      raise CompilerSelectionError
+    else
+      cc.name
+    end
   end
 
   private

@@ -115,7 +115,11 @@ def install f
   end
 
   if f.fails_with? ENV.compiler
-    ENV.send CompilerSelector.new(f, ENV.compiler).compiler
+    begin
+      ENV.send CompilerSelector.new(f, ENV.compiler).compiler
+    rescue CompilerSelectionError => e
+      raise e.message
+    end
   end
 
   f.brew do
