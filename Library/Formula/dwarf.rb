@@ -19,5 +19,6 @@ class Dwarf < Formula
   def install
     system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
     system "make install"
+    include.install Dir['src/libdwarf/*.h']
   end
 end
