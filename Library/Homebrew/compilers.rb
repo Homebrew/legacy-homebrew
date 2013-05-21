@@ -46,7 +46,7 @@ class CompilerSelector
     @f = f
     @old_compiler = old_compiler
     @compilers = CompilerQueue.new
-    %w{clang llvm gcc}.map(&:to_sym).each do |cc|
+    %w{clang llvm gcc gcc_4_0}.map(&:to_sym).each do |cc|
       unless MacOS.send("#{cc}_build_version").nil?
         @compilers << Compiler.new(cc, priority_for(cc))
       end
