@@ -2,8 +2,8 @@ require 'formula'
 
 class HtmlXmlUtils < Formula
   homepage 'http://www.w3.org/Tools/HTML-XML-utils/'
-  url 'http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-6.1.tar.gz'
-  sha1 '788f9eef4347e49f7e4880d99ad5d27c1e8776fd'
+  url 'http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-6.4.tar.gz'
+  sha1 '6dc6ace41a4c3f692f79b16107d50d0e80d0ee40'
 
   fails_with :clang do
     build 425
