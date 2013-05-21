@@ -123,7 +123,7 @@ def install f
       system "git init"
       system "git add -A"
     end
-    if ARGV.flag? '--interactive'
+    if ARGV.interactive?
       ohai "Entering interactive mode"
       puts "Type `exit' to return and finalize the installation"
       puts "Install to this prefix: #{f.prefix}"
