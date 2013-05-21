@@ -1,13 +1,15 @@
 require 'formula'
+require 'iconv'
 
 class Gforth < Formula
   homepage 'http://bernd-paysan.de/gforth.html'
-  url 'http://www.complang.tuwien.ac.at/forth/gforth/gforth-0.7.0.tar.gz'
-  sha1 '5bb357268cba683f2a8c63d2a4bcab8f41cb0086'
+  url 'http://www.complang.tuwien.ac.at/forth/gforth/gforth-0.7.2.tar.gz'
+  sha1 'fe662c60b74290b08b6245816b68faed2a1e5c20'
 
   depends_on :libtool
   depends_on 'libffi'
   depends_on 'pcre'
+  depends_on 'texi2html' => :build
 
   def darwin_major_version
     # kern.osrelease: 11.4.2
@@ -27,8 +29,18 @@ class Gforth < Formula
       args << "--build=x86_64-apple-darwin#{darwin_major_version}"
     end
 
+    # Convert AUTHORS to UTF-8
+    authors = ""
+    File.open('AUTHORS', 'rb') { |f| authors = f.read }
+    authors = Iconv.conv('UTF-8', 'ISO-8859-1', authors)
+    File.open('AUTHORS', 'wb') { |f| f.write(authors) }
+
     system "./configure", *args
     system "make" # Separate build steps.
+    system "make doc/gforth"
     system "make install"
+    # make install doesn't automatically copy documentation.
+    (doc+"html").install Dir.glob('doc/gforth/*')
+    doc.install Dir.glob('doc/*.ps')
   end
 end
