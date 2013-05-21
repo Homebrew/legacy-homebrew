@@ -31,7 +31,7 @@ class CompilerSelectorTests < Test::Unit::TestCase
 
   def test_all_compiler_failures
     @f << :clang << :llvm << :gcc
-    assert_equal @cc, actual_cc
+    assert_raise(CompilerSelectionError) { actual_cc }
   end
 
   def test_no_compiler_failures
@@ -77,13 +77,13 @@ class CompilerSelectorTests < Test::Unit::TestCase
   def test_missing_gcc
     MacOS.stubs(:gcc_build_version).returns(nil)
     @f << :clang << :llvm
-    assert_equal @cc, actual_cc
+    assert_raise(CompilerSelectionError) { actual_cc }
   end
 
   def test_missing_llvm_and_gcc
     MacOS.stubs(:gcc_build_version).returns(nil)
     MacOS.stubs(:llvm_build_version).returns(nil)
     @f << :clang
-    assert_equal @cc, actual_cc
+    assert_raise(CompilerSelectionError) { actual_cc }
   end
 end
