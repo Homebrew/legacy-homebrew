@@ -47,6 +47,7 @@ class Rpm < Formula
     args = %W[
         --prefix=#{prefix}
         --with-path-cfg=#{etc}/rpm
+        --with-path-lib=#{lib}/rpm
         --disable-openmp
         --disable-nls
         --disable-dependency-tracking
