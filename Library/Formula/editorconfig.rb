@@ -7,6 +7,8 @@ class Editorconfig < Formula
 
   depends_on 'cmake' => :build
 
+  head 'https://github.com/editorconfig/editorconfig-core-c.git', :branch => 'master'
+
   def install
     system "cmake", ".", "-DCMAKE_INSTALL_PREFIX:PATH=#{prefix}"
     system "make install"
