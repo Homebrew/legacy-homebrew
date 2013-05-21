@@ -46,7 +46,8 @@ class Rpm < Formula
   def install
     args = %W[
         --prefix=#{prefix}
-        --with-path-cfg=#{lib}/rpm
+        --with-path-cfg=#{etc}/rpm
+        --with-path-lib=#{lib}/rpm
         --disable-openmp
         --disable-nls
         --disable-dependency-tracking
