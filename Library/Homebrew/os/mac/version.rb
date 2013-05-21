@@ -8,6 +8,7 @@ module MacOS
           when :lion          then 10.7
           when :snow_leopard  then 10.6
           when :leopard       then 10.5
+          when :tiger         then 10.4
           else other.to_s
           end
       super(Version.new(v))

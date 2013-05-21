@@ -3,6 +3,7 @@ require 'formula'
 class When < Formula
   homepage 'http://www.lightandmatter.com/when/when.html'
   url 'http://www.lightandmatter.com/when/when_1.1.31-debian-source.tar.gz'
+  version '1.1.31'
   sha1 '2d986aadac5667b7eb50940a6aa547d50c9f8f82'
 
   def install

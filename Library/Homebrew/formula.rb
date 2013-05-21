@@ -91,7 +91,6 @@ class Formula
 
   def url;      active_spec.url;     end
   def version;  active_spec.version; end
-  def specs;    active_spec.specs;   end
   def mirrors;  active_spec.mirrors; end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -530,8 +529,7 @@ class Formula
     end
 
     if rack.directory?
-      rack.children.each do |keg|
-        next if keg.basename.to_s == '.DS_Store'
+      rack.subdirs.each do |keg|
         tab = Tab.for_keg keg
 
         hsh["installed"] << {
@@ -618,7 +616,8 @@ class Formula
   def fetch
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
-    return downloader.fetch, downloader
+    downloader.fetch
+    cached_download
   end
 
   # For FormulaInstaller.
@@ -643,8 +642,8 @@ class Formula
   private
 
   def stage
-    fetched, downloader = fetch
-    verify_download_integrity fetched if fetched.kind_of? Pathname
+    fetched = fetch
+    verify_download_integrity(fetched) if fetched.file?
     mktemp do
       downloader.stage
       # Set path after the downloader changes the working folder.

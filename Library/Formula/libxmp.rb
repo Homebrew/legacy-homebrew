@@ -2,8 +2,8 @@ require 'formula'
 
 class Libxmp < Formula
   homepage 'http://xmp.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/xmp/libxmp/4.1.1/libxmp-4.1.1.tar.gz'
-  sha1 '42896b910f496a974caae95f543e7a12b6ec35fe'
+  url 'http://downloads.sourceforge.net/project/xmp/libxmp/4.1.3/libxmp-4.1.3.tar.gz'
+  sha1 '1d8a2629e05abc45bf19f7f488a6c0368aa38bd7'
   head 'git://git.code.sf.net/p/xmp/libxmp'
 
   depends_on :autoconf if build.head?

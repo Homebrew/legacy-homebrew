@@ -7,16 +7,16 @@ class SqliteFunctions < Formula
 end
 
 class SqliteDocs < Formula
-  url 'http://www.sqlite.org/2013/sqlite-doc-3071602.zip'
-  version '3.7.16.2'
-  sha1 '998df3d9ada4a4a8a048bcf20613d1d02be77731'
+  url 'http://www.sqlite.org/2013/sqlite-doc-3071700.zip'
+  version '3.7.17'
+  sha1 '6b533b0a9a21eb2c2d1c9f278b8defbeb5a432a7'
 end
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://sqlite.org/2013/sqlite-autoconf-3071602.tar.gz'
-  version '3.7.16.2'
-  sha1 '85bf857cf86f34831d55d7ba97606dba581b8d62'
+  url 'http://sqlite.org/2013/sqlite-autoconf-3071700.tar.gz'
+  version '3.7.17'
+  sha1 'e31958e56b1d7bef9433b1ff2e875c8c290d37f4'
 
   depends_on 'readline' => :recommended
 
@@ -29,8 +29,8 @@ class Sqlite < Formula
   keg_only :provided_by_osx, "OS X already provides (an older) sqlite3."
 
   def install
-    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" unless build.include? "without-rtree"
-    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if build.include? "with-fts"
+    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" unless build.without? "rtree"
+    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if build.with? "fts"
 
     # enable these options by default
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_COLUMN_METADATA"
@@ -41,7 +41,7 @@ class Sqlite < Formula
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-dynamic-extensions"
     system "make install"
 
-    if build.include? "with-functions"
+    if build.with? "functions"
       SqliteFunctions.new.brew { mv 'extension-functions.c?get=25', buildpath/'extension-functions.c' }
       system ENV.cc, "-fno-common",
                      "-dynamiclib",
@@ -51,11 +51,11 @@ class Sqlite < Formula
       lib.install "libsqlitefunctions.dylib"
     end
 
-    SqliteDocs.new.brew { doc.install Dir['*'] } if build.include? "with-docs"
+    SqliteDocs.new.brew { doc.install Dir['*'] } if build.with? "docs"
   end
 
   def caveats
-    if build.include? 'with-functions' then <<-EOS.undent
+    if build.with? 'functions' then <<-EOS.undent
       Usage instructions for applications calling the sqlite3 API functions:
 
         In your application, call sqlite3_enable_load_extension(db,1) to
