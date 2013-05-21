@@ -198,7 +198,7 @@ __END__
 -override python_libspec = -framework Python
 -override python_additional_libs =
  endif
-
+ 
  # If we don't have a shared library and the platform doesn't allow it
 --- a/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:34:53.000000000 -0700
 +++ b/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:35:03.000000000 -0700
