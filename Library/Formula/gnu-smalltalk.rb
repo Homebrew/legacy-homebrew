@@ -2,9 +2,9 @@ require 'formula'
 
 class GnuSmalltalk < Formula
   homepage 'http://smalltalk.gnu.org/'
-  url 'http://ftpmirror.gnu.org/smalltalk/smalltalk-3.2.4.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.4.tar.xz'
-  sha1 '75b7077a02abb2ec01c5975e22d6138b541db38e'
+  url 'http://ftpmirror.gnu.org/smalltalk/smalltalk-3.2.5.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.5.tar.xz'
+  sha1 '0eb5895b9b5bebe4f75308efbe34f8721fc2fd6b'
 
   head 'https://github.com/bonzini/smalltalk.git'
 
@@ -47,11 +47,6 @@ class GnuSmalltalk < Formula
     if !MacOS.prefer_64_bit? or build.without? "libsigsegv"
       args << "--disable-generational-gc"
     end
-
-    # Compatibility with Automake 1.13+, fixed upstream
-    inreplace %w{configure.ac sigsegv/configure.ac},
-      'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
-    inreplace 'snprintfv/configure.ac', 'AM_PROG_CC_STD', ''
 
     system 'autoreconf', '-ivf'
     system "./configure", *args
