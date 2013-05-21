@@ -4,7 +4,7 @@ class PerconaServer < Formula
   homepage 'http://www.percona.com'
   url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.30-30.2/source/Percona-Server-5.5.30-rel30.2.tar.gz'
   version '5.5.30-30.2'
-  sha1 'ce47f5b470e229f3bbc99254bf5e81aecf9245ae'
+  sha1 'e876f00b6fbee0791b13ed40c3642fecc5cc76e6'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
