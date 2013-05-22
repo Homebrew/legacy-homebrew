@@ -9,6 +9,8 @@ class OpenSceneGraph < Formula
   option 'ffmpeg', 'Build with ffmpeg support'
   option 'docs', 'Build the documentation with Doxygen and Graphviz'
 
+  option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
+
   depends_on 'cmake' => :build
   depends_on 'jpeg'
   depends_on 'wget'
@@ -52,6 +54,10 @@ class OpenSceneGraph < Formula
     end
     if Formula.factory('collada-dom').installed?
       args << "-DCOLLADA_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/collada-dom"
+    end
+    if MacOS.version >= :lion and build.include? 'with-c++11'
+      args << "-DCMAKE_CXX_FLAGS=-stdlib=libc++"
+      args << "-DCMAKE_CXX_COMPILER=clang++"
     end
     args << '..'
 
