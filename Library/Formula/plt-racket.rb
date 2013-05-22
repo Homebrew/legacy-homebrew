@@ -1,26 +1,19 @@
 require 'formula'
 
-class PltRacket < Formula
+class Racket < Formula
   homepage 'http://racket-lang.org/'
-  # Use GitHub tarball as the release tarball doesn't have
-  # everything needed for building on OS X
-  url 'https://github.com/plt/racket/archive/v5.2.tar.gz'
-  sha1 '313425909ff8d956c3e99d0a2b5b3cb12d0f98ad'
+  url 'https://github.com/plt/racket/archive/v5.3.4.tar.gz'
+  sha1 'a004f838744009c729dc34744846e09022c0f0d7'
+
+  depends_on :xcode
+  depends_on :x11
+  depends_on :libpng
 
   def install
-    cd 'src' do
-      args = ["--disable-debug", "--disable-dependency-tracking",
-              "--enable-xonx",
-              "--enable-shared",
-              "--prefix=#{prefix}" ]
-
-      if MacOS.prefer_64_bit?
-        args += ["--enable-mac64", "--enable-sgc", "--disable-gracket"]
-      end
-
-      system "./configure", *args
+    cd "src" do
+      system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}", "--enable-macprefix"
       system "make"
-      ohai "Installing may take a long time (~40 minutes)" unless ARGV.verbose?
       system "make install"
     end
   end
