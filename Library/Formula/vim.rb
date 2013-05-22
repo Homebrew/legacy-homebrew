@@ -2,16 +2,14 @@ require 'formula'
 
 class Vim < Formula
   homepage 'http://www.vim.org/'
-  # Get stable versions from hg repo instead of downloading an increasing
-  # number of separate patches.
-  url 'https://vim.googlecode.com/hg/', :tag => 'v7-3-976'
-  version '7.3.976'
-
+  # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
+  url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.3.923.orig.tar.gz'
+  sha1 'f308d219dd9c6b56e84109ace4e7487a101088f5'
   head 'https://vim.googlecode.com/hg/'
 
   env :std # To find interpreters
 
-  depends_on :hg => :build
+  depends_on :hg => :build if build.head?
 
   LANGUAGES         = %w(lua mzscheme perl python python3 tcl ruby)
   DEFAULT_LANGUAGES = %w(ruby python)
