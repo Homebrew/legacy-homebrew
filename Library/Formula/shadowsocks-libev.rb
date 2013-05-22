@@ -11,21 +11,7 @@ class ShadowsocksLibev < Formula
     system "make install"
   end
 
-  def caveats; <<-EOS.undent
-   Run
-        ss-local -s server_host -p server_port -l local_port -k password
-        [-m encrypt_method] [-f pid_file] [-t timeout] [-c config_file]
-   options:
-        encrypt_method:         table, rc4
-        pid_file:               valid path to the pid file
-        timeout:                socket timeout in senconds
-        config_file:            json format config file
-    EOS
-    end
-
-  test do
-    <<-eos
-    system `#{bin}/ss-server`
-    eos
+  def test
+      system "ls #{bin}/ss-local"
   end
 end
