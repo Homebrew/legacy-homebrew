@@ -54,6 +54,7 @@ class Caveats
       plist_domain = f.plist_path.basename('.plist')
       destination_path = Pathname.new File.expand_path destination
       plist_path = destination_path/plist_filename
+      launchctl_load_params = MacOS.version >= :mountain_lion ? " -w -F" : ""
 
       # we readlink because this path probably doesn't exist since caveats
       # occurs before the link step of installation
@@ -69,9 +70,9 @@ class Caveats
         end
         s << "Then to load #{f.name} now:"
         if f.plist_startup
-          s << "    sudo launchctl load #{plist_link}"
+          s << "    sudo launchctl load#{launchctl_load_params} #{plist_link}"
         else
-          s << "    launchctl load #{plist_link}"
+          s << "    launchctl load#{launchctl_load_params} #{plist_link}"
         end
         if f.plist_manual
           s << "Or, if you don't want/need launchctl, you can just run:"
@@ -90,9 +91,9 @@ class Caveats
       else
         s << "To load #{f.name}:"
         if f.plist_startup
-          s << "    sudo launchctl load #{plist_link}"
+          s << "    sudo launchctl load#{launchctl_load_params} #{plist_link}"
         else
-          s << "    launchctl load #{plist_link}"
+          s << "    launchctl load#{launchctl_load_params} #{plist_link}"
         end
         if f.plist_manual
           s << "Or, if you don't want/need launchctl, you can just run:"
