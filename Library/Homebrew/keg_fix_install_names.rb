@@ -7,23 +7,9 @@ class Keg
           install_name_tool("-id", id, file) if file.dylib?
 
           bad_names.each do |bad_name|
-            # If file is a dylib or bundle itself, look for the dylib named by
-            # bad_name relative to the lib directory, so that we can skip the more
-            # expensive recursive search if possible.
-            if file.dylib? or file.mach_o_bundle? and (file.parent + bad_name).exist?
-              install_name_tool("-change", bad_name, "@loader_path/#{bad_name}", file)
-            elsif file.mach_o_executable? and (lib/bad_name).exist?
-              install_name_tool("-change", bad_name, "#{lib}/#{bad_name}", file)
-            else
-              # Otherwise, try and locate the dylib by walking the entire
-              # lib tree recursively.
-              abs_name = find_dylib(Pathname.new(bad_name).basename)
-
-              if abs_name and abs_name.exist?
-                install_name_tool("-change", bad_name, abs_name, file)
-              else
-                opoo "Could not fix install names for #{file}"
-              end
+            new_name = fixed_name(file, bad_name)
+            unless new_name.nil?
+              install_name_tool("-change", bad_name, new_name, file)
             end
           end
         end
@@ -62,6 +48,21 @@ class Keg
 
   def install_name_tool(*args)
     system(MacOS.locate("install_name_tool"), *args)
+  end
+
+  # If file is a dylib or bundle itself, look for the dylib named by
+  # bad_name relative to the lib directory, so that we can skip the more
+  # expensive recursive search if possible.
+  def fixed_name(file, bad_name)
+    if (file.dylib? || file.mach_o_bundle?) && (file.parent + bad_name).exist?
+      "@loader_path/#{bad_name}"
+    elsif file.mach_o_executable? && (lib + bad_name).exist?
+      "#{lib}/#{bad_name}"
+    elsif (abs_name = find_dylib(Pathname.new(bad_name).basename)) && abs_name.exist?
+      abs_name.to_s
+    else
+      opoo "Could not fix install names for #{file}"
+    end
   end
 
   def lib; join 'lib' end
