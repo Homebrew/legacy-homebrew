@@ -98,22 +98,6 @@ class Formula
     (dir = installed_prefix).directory? && dir.children.length > 0
   end
 
-  def pinnable?
-    @pin.pinnable?
-  end
-
-  def pinned?
-    @pin.pinned?
-  end
-
-  def pin
-    @pin.pin
-  end
-
-  def unpin
-    @pin.unpin
-  end
-
   def linked_keg
     Pathname.new("#{HOMEBREW_LIBRARY}/LinkedKegs/#{name}")
   end
@@ -279,6 +263,22 @@ class Formula
 
   def unlock
     @lock.unlock unless @lock.nil?
+  end
+
+  def pinnable?
+    @pin.pinnable?
+  end
+
+  def pinned?
+    @pin.pinned?
+  end
+
+  def pin
+    @pin.pin
+  end
+
+  def unpin
+    @pin.unpin
   end
 
   def == b
