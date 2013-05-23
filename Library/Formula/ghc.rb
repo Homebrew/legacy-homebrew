@@ -41,8 +41,8 @@ end
 
 class Ghctestsuite < Formula
   if build.include? 'current'
-    url 'http://www.haskell.org/ghc/dist/7.6.2/ghc-7.6.2-testsuite.tar.bz2'
-    sha1 'd3964077d68fe2c6bc5fd8eeeaa5cda541b20990'
+    url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-testsuite.tar.bz2'
+    sha1 'ba8f2555c2678f2c87e75a16631ff959efb95650'
   else
     url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-testsuite.tar.bz2'
     sha1 'b5f38937872f7a10aaf89b11b0b417870d2cff7c'
@@ -51,8 +51,8 @@ end
 
 class Ghcsource < Formula
   if build.include? 'current'
-    url 'http://www.haskell.org/ghc/dist/7.6.2/ghc-7.6.2-src.tar.bz2'
-    sha1 '17329b0f1a401f3402cce13ba5e4cf8fbfa41a1d'
+    url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2'
+    sha1 '8938e1ef08b37a4caa071fa169e79a3001d065ff'
   else
     url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-src.tar.bz2'
     sha1 '73b3b39dc164069bc80b69f7f2963ca1814ddf3d'
@@ -96,13 +96,13 @@ end
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
   if build.include? 'current'
-    version '7.6.2'
+    version '7.6.3'
     if Hardware.is_64_bit? and not build.build_32_bit?
-      url 'http://www.haskell.org/ghc/dist/7.6.2/ghc-7.6.2-x86_64-apple-darwin.tar.bz2', :using => OriginalNameDownloadStrategy
-      sha1 'c5f2c36badf2a1c79259ccb1b1f0dcb8ff801356'
+      url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2', :using => OriginalNameDownloadStrategy
+      sha1 'fb9f18197852181a9472221e1944081985b75992'
     else
-      url 'http://www.haskell.org/ghc/dist/7.6.2/ghc-7.6.2-i386-apple-darwin.tar.bz2', :using => OriginalNameDownloadStrategy
-      sha1 '8d93dc97bffdaf33e82a9425b8132aef054a001d'
+      url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-i386-apple-darwin.tar.bz2', :using => OriginalNameDownloadStrategy
+      sha1 '6a312263fef41e06003f0676b879f2d2d5a1f30c'
     end
   else
     version '7.4.2'
