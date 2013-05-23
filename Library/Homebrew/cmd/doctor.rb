@@ -202,10 +202,12 @@ end
 def check_for_broken_symlinks
   require 'keg'
   broken_symlinks = []
-  Keg::PRUNEABLE_DIRECTORIES.each do |d|
-    next unless d.directory?
-    d.find do |pn|
-      broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/o and not pn.exist?
+
+  Keg::PRUNEABLE_DIRECTORIES.select(&:directory?).each do |d|
+    d.find do |path|
+      if path.symlink? && !path.resolved_path_exists?
+        broken_symlinks << path
+      end
     end
   end
   unless broken_symlinks.empty? then <<-EOS.undent
