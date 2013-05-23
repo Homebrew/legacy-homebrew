@@ -8,7 +8,7 @@ class Keg
 
           bad_names.each do |bad_name|
             new_name = fixed_name(file, bad_name)
-            unless new_name.nil?
+            unless new_name == bad_name
               install_name_tool("-change", bad_name, new_name, file)
             end
           end
@@ -61,7 +61,8 @@ class Keg
     elsif (abs_name = find_dylib(Pathname.new(bad_name).basename)) && abs_name.exist?
       abs_name.to_s
     else
-      opoo "Could not fix install names for #{file}"
+      opoo "Could not fix #{bad_name} in #{file}"
+      bad_name
     end
   end
 
