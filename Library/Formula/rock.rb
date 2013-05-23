@@ -6,6 +6,8 @@ class Rock < Formula
   sha1 '5d1cc6f194f76a2b0a8c0ed0b48fcd0e26e75c95'
 
   head 'https://github.com/nddrylliog/rock.git'
+  
+  depends_on 'bdw-gc'
 
   def install
       # make rock using provided bootstrap
