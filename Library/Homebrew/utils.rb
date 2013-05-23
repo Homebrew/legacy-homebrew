@@ -260,16 +260,14 @@ end
 
 module GitHub extend self
   def open url, headers={}, &block
-    begin
-      default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
-      default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
-      Kernel.open(url, default_headers.merge(headers), &block)
-    rescue OpenURI::HTTPError => e
-      if e.io.meta['x-ratelimit-remaining'].to_i <= 0
-        raise "GitHub #{MultiJson.decode(e.io.read)['message']}"
-      else
-        raise e
-      end
+    default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
+    default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
+    Kernel.open(url, default_headers.merge(headers), &block)
+  rescue OpenURI::HTTPError => e
+    if e.io.meta['x-ratelimit-remaining'].to_i <= 0
+      raise "GitHub #{MultiJson.decode(e.io.read)['message']}"
+    else
+      raise e
     end
   end
   
