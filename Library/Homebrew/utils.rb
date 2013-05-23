@@ -1,6 +1,8 @@
 require 'pathname'
 require 'exceptions'
 require 'macos'
+require 'vendor/multi_json'
+require 'open-uri'
 
 class Tty
   class << self
@@ -257,6 +259,18 @@ def nostdout
 end
 
 module GitHub extend self
+  def open url, headers={}, &block
+    default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
+    default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
+    Kernel.open(url, default_headers.merge(headers), &block)
+  rescue OpenURI::HTTPError => e
+    if e.io.meta['x-ratelimit-remaining'].to_i <= 0
+      raise "GitHub #{MultiJson.decode(e.io.read)['message']}"
+    else
+      raise e
+    end
+  end
+  
   def issues_for_formula name
     # bit basic as depends on the issue at github having the exact name of the
     # formula in it. Which for stuff like objective-caml is unlikely. So we
@@ -264,14 +278,11 @@ module GitHub extend self
 
     name = f.name if Formula === name
 
-    require 'open-uri'
-    require 'vendor/multi_json'
-
     issues = []
 
     uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{name}")
 
-    open uri do |f|
+    GitHub.open uri do |f|
       MultiJson.decode(f.read)['issues'].each do |issue|
         # don't include issues that just refer to the tool in their body
         issues << issue['html_url'] if issue['title'].include? name
@@ -279,23 +290,16 @@ module GitHub extend self
     end
 
     issues
-  rescue
-    []
   end
 
   def find_pull_requests rx
-    require 'open-uri'
-    require 'vendor/multi_json'
-
     query = rx.source.delete('.*').gsub('\\', '')
     uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{query}")
 
-    open uri do |f|
+    GitHub.open uri do |f|
       MultiJson.decode(f.read)['issues'].each do |pull|
         yield pull['pull_request_url'] if rx.match pull['title'] and pull['pull_request_url']
       end
     end
-  rescue
-    nil
   end
 end
