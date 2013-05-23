@@ -215,29 +215,34 @@ def check_for_broken_symlinks
   end
 end
 
-def check_for_latest_xcode
-  if not MacOS::Xcode.installed?
-    if MacOS.version >= 10.7
-      if not MacOS::CLT.installed?
-        <<-EOS.undent
-        No developer tools installed
-        You should install the Command Line Tools: http://connect.apple.com
-        EOS
-      elsif not MacOS::CLT.latest_version?
-        <<-EOS.undent
-        A newer Command Line Tools for Xcode release is available
-        You should install the latest version from: http://connect.apple.com
-        EOS
-      end
-    else
-      <<-EOS.undent
-      Xcode not installed
-      Most stuff needs Xcode to build: http://developer.apple.com/xcode/
-      EOS
-    end
-  elsif MacOS::Xcode.version < MacOS::Xcode.latest_version then <<-EOS.undent
+def check_xcode_clt
+  if MacOS::Xcode.installed?
+    __check_xcode_up_to_date
+  elsif MacOS.version >= 10.7
+    __check_clt_up_to_date
+  else <<-EOS.undent
+    Xcode not installed
+    Most stuff needs Xcode to build: http://developer.apple.com/xcode/
+    EOS
+  end
+end
+
+def __check_xcode_up_to_date
+  if MacOS::Xcode.outdated? then <<-EOS.undent
     Your Xcode (#{MacOS::Xcode.version}) is outdated
     Please install Xcode #{MacOS::Xcode.latest_version}.
+    EOS
+  end
+end
+
+def __check_clt_up_to_date
+  if not MacOS::CLT.installed? then <<-EOS.undent
+    No developer tools installed
+    You should install the Command Line Tools: http://connect.apple.com
+    EOS
+  elsif MacOS::CLT.outdated? then <<-EOS.undent
+    A newer Command Line Tools for Xcode release is available
+    You should install the latest version from: http://connect.apple.com
     EOS
   end
 end
@@ -271,7 +276,7 @@ def check_cc
 end
 
 def check_standard_compilers
-  return if check_for_latest_xcode # only check if Xcode is up to date
+  return if check_xcode_clt # only check if Xcode is up to date
   compiler_status = MacOS.compilers_standard?
   if not compiler_status and not compiler_status.nil? then <<-EOS.undent
     Your compilers are different from the standard versions for your Xcode.
