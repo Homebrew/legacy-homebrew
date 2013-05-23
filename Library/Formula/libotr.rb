@@ -2,8 +2,8 @@ require 'formula'
 
 class Libotr < Formula
   homepage 'http://www.cypherpunks.ca/otr/'
-  url 'http://www.cypherpunks.ca/otr/libotr-3.2.1.tar.gz'
-  sha1 '898bf00d019f49ca34cd0116dd2e22685c67c394'
+  url 'http://www.cypherpunks.ca/otr/libotr-4.0.0.tar.gz'
+  sha1 '8865e9011b8674290837afcf7caf90c492ae09cc'
 
   depends_on 'libgcrypt'
 
