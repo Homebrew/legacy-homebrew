@@ -1,6 +1,8 @@
 require 'pathname'
 require 'exceptions'
 require 'macos'
+require 'vendor/multi_json'
+require 'open-uri'
 
 class Tty
   class << self
@@ -258,14 +260,12 @@ end
 
 module GitHub extend self
   def open url, headers={}, &block
-    require 'open-uri'
     begin
       default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
       default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
       Kernel.open(url, default_headers.merge(headers), &block)
     rescue OpenURI::HTTPError => e
       if e.io.meta['x-ratelimit-remaining'].to_i <= 0
-        require 'vendor/multi_json'
         raise "GitHub #{MultiJson.decode(e.io.read)['message']}"
       else
         raise e
@@ -279,8 +279,6 @@ module GitHub extend self
     # really should search for aliases too.
 
     name = f.name if Formula === name
-
-    require 'vendor/multi_json'
 
     issues = []
 
@@ -297,8 +295,6 @@ module GitHub extend self
   end
 
   def find_pull_requests rx
-    require 'vendor/multi_json'
-
     query = rx.source.delete('.*').gsub('\\', '')
     uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{query}")
 
