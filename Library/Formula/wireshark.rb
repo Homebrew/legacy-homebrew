@@ -2,8 +2,8 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://www.wireshark.org/download/src/wireshark-1.8.6.tar.bz2'
-  sha1 '0f51ed901b5e07cceb1373f3368f739be8f1e827'
+  url 'http://www.wireshark.org/download/src/wireshark-1.8.7.tar.bz2'
+  sha1 'c131ce10555e608e691aa36190c8d5a1b271c955'
 
   option 'with-x', 'Include X11 support'
   option 'with-python', 'Enable experimental Python bindings'
