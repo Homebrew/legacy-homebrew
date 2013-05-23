@@ -21,7 +21,7 @@ module MacOS::Xcode extend self
     case MacOS.version
     when 10.5       then "3.1.4"
     when 10.6       then "3.2.6"
-    when 10.7..10.8 then "4.6.2"
+    when 10.7, 10.8 then "4.6.2"
     else
       raise "Mac OS X '#{MacOS.version}' is invalid"
     end
