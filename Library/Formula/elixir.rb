@@ -2,15 +2,16 @@ require 'formula'
 
 class ErlangInstalled < Requirement
   fatal true
-  default_formula 'erlang'
 
   satisfy { which 'erl' }
 
   def message; <<-EOS.undent
-    Erlang is required to install.
+    Erlang R16 is required to install.
 
     You can install this with:
-      brew install erlang
+      brew tap homebrew/versions
+      brew unlink erlang
+      brew install erlang-r16
 
     Or you can use an official installer from:
       http://www.erlang.org/
