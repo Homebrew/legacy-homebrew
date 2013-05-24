@@ -87,6 +87,7 @@ class DependencyCollector
       # so just return a standard formula dependency.
       Dependency.new(spec.to_s, tags)
     when :xcode      then XcodeDependency.new(tags)
+    when :macos      then MinimumMacOSRequirement.new(tags)
     when :mysql      then MysqlDependency.new(tags)
     when :postgresql then PostgresqlDependency.new(tags)
     when :tex        then TeXDependency.new(tags)
