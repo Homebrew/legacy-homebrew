@@ -73,7 +73,7 @@ class MPIDependency < Requirement
         wrappers:
             #{@non_functional.join ', '}
 
-        If you have a MPI installation, please ensure the bin folder is on your
+        If you have a MPI installation, please ensure the bin directory is on your
         PATH and that all the wrappers are functional. Otherwise, a MPI
         installation can be obtained from homebrew by *picking one* of the
         following formulae:

@@ -388,7 +388,7 @@ def check_xcode_prefix_exists
   return if prefix.nil?
   unless prefix.exist?
     <<-EOS.undent
-      The folder Xcode is reportedly installed to doesn't exist:
+      The directory Xcode is reportedly installed to doesn't exist:
         #{prefix}
       You may need to `xcode-select` the proper path if you have moved Xcode.
     EOS
