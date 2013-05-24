@@ -41,14 +41,10 @@ end
 class Checks
 
 ############# HELPERS
-  def remove_trailing_slash s
-    (s[s.length-1] == '/') ? s[0,s.length-1] : s
-  end
-
   def paths
     @paths ||= ENV['PATH'].split(':').collect do |p|
       begin
-        remove_trailing_slash(File.expand_path(p))
+        File.expand_path(p).chomp('/')
       rescue ArgumentError
         onoe "The following PATH component is invalid: #{p}"
       end
@@ -72,7 +68,7 @@ class Checks
 # Sorry for the lack of an indent here, the diff would have been unreadable.
 # See https://github.com/mxcl/homebrew/pull/9986
 def check_path_for_trailing_slashes
-  bad_paths = ENV['PATH'].split(':').select{|p| p[p.length-1, p.length] == '/'}
+  bad_paths = ENV['PATH'].split(':').select { |p| p[-1..-1] == '/' }
   return if bad_paths.empty?
   s = <<-EOS.undent
     Some directories in your path end in a slash.
