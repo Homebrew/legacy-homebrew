@@ -41,14 +41,10 @@ end
 class Checks
 
 ############# HELPERS
-  def remove_trailing_slash s
-    (s[s.length-1] == '/') ? s[0,s.length-1] : s
-  end
-
   def paths
     @paths ||= ENV['PATH'].split(':').collect do |p|
       begin
-        remove_trailing_slash(File.expand_path(p))
+        File.expand_path(p).chomp('/')
       rescue ArgumentError
         onoe "The following PATH component is invalid: #{p}"
       end
@@ -72,7 +68,7 @@ class Checks
 # Sorry for the lack of an indent here, the diff would have been unreadable.
 # See https://github.com/mxcl/homebrew/pull/9986
 def check_path_for_trailing_slashes
-  bad_paths = ENV['PATH'].split(':').select{|p| p[p.length-1, p.length] == '/'}
+  bad_paths = ENV['PATH'].split(':').select { |p| p[-1..-1] == '/' }
   return if bad_paths.empty?
   s = <<-EOS.undent
     Some directories in your path end in a slash.
@@ -86,20 +82,29 @@ end
 # Installing MacGPG2 interferes with Homebrew in a big way
 # http://sourceforge.net/projects/macgpg2/files/
 def check_for_macgpg2
-  if %w{/Applications/start-gpg-agent.app
-        /Library/Receipts/libiconv1.pkg
-        /usr/local/MacGPG2}.any? { |f| File.exist? f }
-    <<-EOS.undent
+  return if File.exist? '/usr/local/MacGPG2/share/gnupg/VERSION'
+
+  suspects = %w{
+    /Applications/start-gpg-agent.app
+    /Library/Receipts/libiconv1.pkg
+    /usr/local/MacGPG2
+  }
+
+  if suspects.any? { |f| File.exist? f } then <<-EOS.undent
       You may have installed MacGPG2 via the package installer.
       Several other checks in this script will turn up problems, such as stray
       dylibs in /usr/local and permissions issues with share and man in /usr/local/.
     EOS
-  end unless File.exist? '/usr/local/MacGPG2/share/gnupg/VERSION'
+  end
+end
+
+def __check_stray_files(pattern, white_list, message)
+  files = Dir[pattern].select { |f| File.file? f and not File.symlink? f }
+  bad = files.reject {|d| white_list.key? File.basename(d) }
+  inject_file_list(bad, message) unless bad.empty?
 end
 
 def check_for_stray_dylibs
-  unbrewed_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
-
   # Dylibs which are generally OK should be added to this list,
   # with a short description of the software they come with.
   white_list = {
@@ -107,22 +112,16 @@ def check_for_stray_dylibs
     "libfuse_ino64.2.dylib" => "MacFuse"
   }
 
-  bad_dylibs = unbrewed_dylibs.reject {|d| white_list.key? File.basename(d) }
-  return if bad_dylibs.empty?
-
-  s = <<-EOS.undent
+  __check_stray_files '/usr/local/lib/*.dylib', white_list, <<-EOS.undent
     Unbrewed dylibs were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected dylibs:
   EOS
-  inject_file_list(bad_dylibs, s)
 end
 
 def check_for_stray_static_libs
-  unbrewed_alibs = Dir['/usr/local/lib/*.a'].select { |f| File.file? f and not File.symlink? f }
-
   # Static libs which are generally OK should be added to this list,
   # with a short description of the software they come with.
   white_list = {
@@ -130,58 +129,42 @@ def check_for_stray_static_libs
     "libsecurity_agent_server.a" => "OS X 10.8.2 Supplemental Update"
   }
 
-  bad_alibs = unbrewed_alibs.reject {|d| white_list.key? File.basename(d) }
-  return if bad_alibs.empty?
-
-  s = <<-EOS.undent
+  __check_stray_files '/usr/local/lib/*.a', white_list, <<-EOS.undent
     Unbrewed static libraries were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected static libraries:
   EOS
-  inject_file_list(bad_alibs, s)
 end
 
 def check_for_stray_pcs
-  unbrewed_pcs = Dir['/usr/local/lib/pkgconfig/*.pc'].select { |f| File.file? f and not File.symlink? f }
-
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = { }
+  white_list = {}
 
-  bad_pcs = unbrewed_pcs.reject {|d| white_list.key? File.basename(d) }
-  return if bad_pcs.empty?
-
-  s = <<-EOS.undent
+  __check_stray_files '/usr/local/lib/pkgconfig/*.pc', white_list, <<-EOS.undent
     Unbrewed .pc files were found in /usr/local/lib/pkgconfig.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected .pc files:
   EOS
-  inject_file_list(bad_pcs, s)
 end
 
 def check_for_stray_las
-  unbrewed_las = Dir['/usr/local/lib/*.la'].select { |f| File.file? f and not File.symlink? f }
-
   white_list = {
     "libfuse.la" => "MacFuse",
     "libfuse_ino64.la" => "MacFuse",
   }
 
-  bad_las = unbrewed_las.reject {|d| white_list.key? File.basename(d) }
-  return if bad_las.empty?
-
-  s = <<-EOS.undent
+  __check_stray_files '/usr/local/lib/*.la', white_list, <<-EOS.undent
     Unbrewed .la files were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected .la files:
   EOS
-  inject_file_list(bad_las, s)
 end
 
 def check_for_other_package_managers
@@ -202,10 +185,12 @@ end
 def check_for_broken_symlinks
   require 'keg'
   broken_symlinks = []
-  Keg::PRUNEABLE_DIRECTORIES.each do |d|
-    next unless d.directory?
-    d.find do |pn|
-      broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/o and not pn.exist?
+
+  Keg::PRUNEABLE_DIRECTORIES.select(&:directory?).each do |d|
+    d.find do |path|
+      if path.symlink? && !path.resolved_path_exists?
+        broken_symlinks << path
+      end
     end
   end
   unless broken_symlinks.empty? then <<-EOS.undent
@@ -403,7 +388,7 @@ def check_xcode_prefix_exists
   return if prefix.nil?
   unless prefix.exist?
     <<-EOS.undent
-      The folder Xcode is reportedly installed to doesn't exist:
+      The directory Xcode is reportedly installed to doesn't exist:
         #{prefix}
       You may need to `xcode-select` the proper path if you have moved Xcode.
     EOS

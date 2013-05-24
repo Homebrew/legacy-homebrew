@@ -24,6 +24,7 @@ class Mapnik < Formula
   depends_on 'jpeg'
   depends_on 'boost'
   depends_on 'gdal' => :optional
+  depends_on 'postgresql' => :optional
   depends_on 'geos' => :optional
   depends_on 'cairo' => :optional
 
@@ -70,6 +71,7 @@ class Mapnik < Formula
     end
     args << "GEOS_CONFIG=#{Formula.factory('geos').opt_prefix}/bin/geos-config" if build.with? 'geos'
     args << "GDAL_CONFIG=#{Formula.factory('gdal').opt_prefix}/bin/gdal-config" if build.with? 'gdal'
+    args << "PG_CONFIG=#{Formula.factory('postgresql').opt_prefix}/bin/pg_config" if build.with? 'postgresql'
 
     system "python", *args
 

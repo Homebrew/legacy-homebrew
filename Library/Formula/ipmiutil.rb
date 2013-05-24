@@ -2,8 +2,8 @@ require 'formula'
 
 class Ipmiutil < Formula
   homepage 'http://ipmiutil.sourceforge.net/'
-  url 'http://sourceforge.net/projects/ipmiutil/files/ipmiutil-2.8.7.tar.gz'
-  sha1 'c9bf5ccd855e67615b6e7bf59e74f8d4bbe9b259'
+  url 'http://sourceforge.net/projects/ipmiutil/files/ipmiutil-2.9.1.tar.gz'
+  sha1 'f23fabe8339842fea9b8c2a601717dc002e44a9d'
 
   # Make ipmiutil treat Darwin as BSD
   def patches
