@@ -2,8 +2,8 @@ require 'formula'
 
 class Languagetool < Formula
   homepage 'http://www.languagetool.org/'
-  url 'http://www.languagetool.org/download/LanguageTool-2.0.oxt'
-  sha1 'f21589f77511656bb7ca5e83b4c22f1660eb96d8'
+  url 'http://www.languagetool.org/download/LanguageTool-2.1.oxt'
+  sha1 '73310a2400378ea2fd302a6654df32a5b471aa3e'
 
   def install
     libexec.install Dir["*"]
