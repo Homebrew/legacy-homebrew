@@ -18,6 +18,7 @@ class CompilerSelectorTests < Test::Unit::TestCase
   end
 
   def setup
+    MacOS.stubs(:gcc_4_0_build_version).returns(nil)
     MacOS.stubs(:gcc_build_version).returns(5666)
     MacOS.stubs(:llvm_build_version).returns(2336)
     MacOS.stubs(:clang_build_version).returns(425)
