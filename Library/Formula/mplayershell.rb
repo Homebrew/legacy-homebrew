@@ -1,5 +1,23 @@
 require 'formula'
 
+class MplayerPresented < Requirement
+  fatal true
+  default_formula 'mplayer'
+
+  satisfy { which 'mplayer2' unless which 'mplayer'}
+
+  def message; <<-EOS.undent
+    MPlayerShell requires mplayer or mplayer2 to be installed.
+
+    You can use either
+      brew install mplayer
+    or
+      brew tap pigoz/mplayer2
+      brew install mplayer2
+    EOS
+  end
+end
+
 class Mplayershell < Formula
   homepage 'https://github.com/donmelton/MPlayerShell'
   url 'https://github.com/donmelton/MPlayerShell/archive/0.9.0.tar.gz'
@@ -7,23 +25,21 @@ class Mplayershell < Formula
 
   head 'https://github.com/donmelton/MPlayerShell.git', :using => :git
 
-  option 'with-mplayer2', 'Depend on mplayer2 package instead of mplayer'
-
-  if build.include? 'with-mplayer2' then
-    depends_on 'mplayer2' => :build
-  else
-    depends_on 'mplayer' => :build
-  end
-
+  depends_on MplayerPresented
   depends_on :xcode
 
   def install
-    system "xcodebuild", 'SYMROOT=build'
-    bin.install 'build/Release/mps'
-    man1.install 'Source/mps.1'
+    system "xcodebuild", "-project", "MPlayerShell.xcodeproj",
+                         "-target", "mps",
+                         "-configuration", "Release",
+                         "clean", "build",
+                         "SYMROOT=build",
+                         "DSTROOT=build"
+    bin.install "build/Release/mps"
+    man1.install "Source/mps.1"
   end
 
   test do
-    system "mps"
+    system "#{bin}/mps"
   end
 end
