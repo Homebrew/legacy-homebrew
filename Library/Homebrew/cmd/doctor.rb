@@ -97,9 +97,13 @@ def check_for_macgpg2
   end unless File.exist? '/usr/local/MacGPG2/share/gnupg/VERSION'
 end
 
-def check_for_stray_dylibs
-  unbrewed_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
+def __check_stray_files(pattern, white_list, message)
+  files = Dir[pattern].select { |f| File.file? f and not File.symlink? f }
+  bad = files.reject {|d| white_list.key? File.basename(d) }
+  inject_file_list(bad, message) unless bad.empty?
+end
 
+def check_for_stray_dylibs
   # Dylibs which are generally OK should be added to this list,
   # with a short description of the software they come with.
   white_list = {
@@ -107,22 +111,16 @@ def check_for_stray_dylibs
     "libfuse_ino64.2.dylib" => "MacFuse"
   }
 
-  bad_dylibs = unbrewed_dylibs.reject {|d| white_list.key? File.basename(d) }
-  return if bad_dylibs.empty?
-
-  s = <<-EOS.undent
+  __check_stray_files '/usr/local/lib/*.dylib', white_list, <<-EOS.undent
     Unbrewed dylibs were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected dylibs:
   EOS
-  inject_file_list(bad_dylibs, s)
 end
 
 def check_for_stray_static_libs
-  unbrewed_alibs = Dir['/usr/local/lib/*.a'].select { |f| File.file? f and not File.symlink? f }
-
   # Static libs which are generally OK should be added to this list,
   # with a short description of the software they come with.
   white_list = {
@@ -130,58 +128,42 @@ def check_for_stray_static_libs
     "libsecurity_agent_server.a" => "OS X 10.8.2 Supplemental Update"
   }
 
-  bad_alibs = unbrewed_alibs.reject {|d| white_list.key? File.basename(d) }
-  return if bad_alibs.empty?
-
-  s = <<-EOS.undent
+  __check_stray_files '/usr/local/lib/*.a', white_list, <<-EOS.undent
     Unbrewed static libraries were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected static libraries:
   EOS
-  inject_file_list(bad_alibs, s)
 end
 
 def check_for_stray_pcs
-  unbrewed_pcs = Dir['/usr/local/lib/pkgconfig/*.pc'].select { |f| File.file? f and not File.symlink? f }
-
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = { }
+  white_list = {}
 
-  bad_pcs = unbrewed_pcs.reject {|d| white_list.key? File.basename(d) }
-  return if bad_pcs.empty?
-
-  s = <<-EOS.undent
+  __check_stray_files '/usr/local/lib/pkgconfig/*.pc', white_list, <<-EOS.undent
     Unbrewed .pc files were found in /usr/local/lib/pkgconfig.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected .pc files:
   EOS
-  inject_file_list(bad_pcs, s)
 end
 
 def check_for_stray_las
-  unbrewed_las = Dir['/usr/local/lib/*.la'].select { |f| File.file? f and not File.symlink? f }
-
   white_list = {
     "libfuse.la" => "MacFuse",
     "libfuse_ino64.la" => "MacFuse",
   }
 
-  bad_las = unbrewed_las.reject {|d| white_list.key? File.basename(d) }
-  return if bad_las.empty?
-
-  s = <<-EOS.undent
+  __check_stray_files '/usr/local/lib/*.la', white_list, <<-EOS.undent
     Unbrewed .la files were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected .la files:
   EOS
-  inject_file_list(bad_las, s)
 end
 
 def check_for_other_package_managers
