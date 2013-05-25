@@ -55,17 +55,18 @@ rescue Exception => e
 end
 
 class Build
-  attr_reader :f, :deps
+  attr_reader :f, :deps, :reqs
 
   def initialize(f)
     @f = f
     @deps = expand_deps
+    @reqs = f.recursive_requirements
   end
 
   def post_superenv_hacks
     # Only allow Homebrew-approved directories into the PATH, unless
     # a formula opts-in to allowing the user's path.
-    if f.env.userpaths? or f.recursive_requirements.any? { |rq| rq.env.userpaths? }
+    if f.env.userpaths? || reqs.any? { |rq| rq.env.userpaths? }
       ENV.userpaths!
     end
   end
@@ -101,13 +102,13 @@ class Build
     if superenv?
       ENV.keg_only_deps = keg_only_deps.map(&:to_s)
       ENV.deps = deps.map(&:to_s)
-      ENV.x11 = f.recursive_requirements.detect { |rq| rq.kind_of?(X11Dependency) }
+      ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
       ENV.setup_build_environment
       post_superenv_hacks
-      f.recursive_requirements.each(&:modify_build_environment)
+      reqs.each(&:modify_build_environment)
     else
       ENV.setup_build_environment
-      f.recursive_requirements.each(&:modify_build_environment)
+      reqs.each(&:modify_build_environment)
 
       keg_only_deps.each do |dep|
         opt = dep.opt_prefix
