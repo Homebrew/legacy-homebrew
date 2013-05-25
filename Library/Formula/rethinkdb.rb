@@ -2,14 +2,14 @@ require 'formula'
 
 class Rethinkdb < Formula
   homepage 'http://www.rethinkdb.com/'
-  url 'http://download.rethinkdb.com/dist/rethinkdb-1.5.1-1.tgz'
-  sha1 'bea52834a3a1d1f643947efe963907898f9d7c9e'
+  url 'http://download.rethinkdb.com/dist/rethinkdb-1.5.2.tgz'
+  sha1 'de229816f17665c12f7c116fcbbc7a7a893b3a08'
 
   depends_on 'boost' => :build
   depends_on 'v8'
 
   def install
-    system "./configure --prefix=#{prefix} --fetch protobuf --fetch protoc"
+    system "./configure --prefix=#{prefix} --fetch protobuf"
     system "make"
     system "make install-osx"
   end
