@@ -55,10 +55,11 @@ rescue Exception => e
 end
 
 class Build
-  attr_reader :f
+  attr_reader :f, :deps
 
   def initialize(f)
     @f = f
+    @deps = expand_deps
   end
 
   def post_superenv_hacks
@@ -87,7 +88,6 @@ class Build
   end
 
   def install
-    deps = expand_deps
     keg_only_deps = deps.select(&:keg_only?)
 
     pre_superenv_hacks
