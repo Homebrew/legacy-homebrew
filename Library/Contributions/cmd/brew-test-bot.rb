@@ -317,8 +317,8 @@ if ARGV.include? "--junit"
   xml_erb = HOMEBREW_CONTRIBUTED_CMDS + "brew-test-bot.xml.erb"
   erb = ERB.new IO.read xml_erb
   open("brew-test-bot.xml", "w") do |xml|
-    # Remove empty lines from ERB result.
-    xml.write erb.result(binding).gsub /^\s*$\n/, ''
+    # Remove empty lines and null characters from ERB result.
+    xml.write erb.result(binding).gsub(/^\s*$\n|\000/, '')
   end
 end
 
