@@ -39,11 +39,6 @@ class Elasticsearch < Formula
       rm_rf "#{prefix}/target/"
     end
 
-    # Make sure runtime directories exist
-    (var/"elasticsearch/#{cluster_name}").mkpath
-    (var/"log/elasticsearch").mkpath
-    (var/"lib/elasticsearch/plugins").mkpath
-
     # Set up ElasticSearch for local development:
     inreplace "#{prefix}/config/elasticsearch.yml" do |s|
       # 1. Give the cluster a unique name
@@ -71,6 +66,13 @@ class Elasticsearch < Formula
       # Replace paths to use libexec instead of lib
       s.gsub! /\$ES_HOME\/lib\//, "$ES_CLASSPATH/"
     end
+  end
+
+  def post_install
+    # Make sure runtime directories exist
+    (var/"elasticsearch/#{cluster_name}").mkpath
+    (var/"log/elasticsearch").mkpath
+    (var/"lib/elasticsearch/plugins").mkpath
   end
 
   def caveats; <<-EOS.undent
