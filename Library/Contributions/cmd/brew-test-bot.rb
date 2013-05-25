@@ -16,17 +16,16 @@ require 'erb'
 HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 
 class Step
-  attr_reader :command, :repository, :name
-  attr_accessor :status
+  attr_reader :command, :name, :status, :output
 
-  def initialize test, command
+  def initialize test, command, puts_output_on_success = false
     @test = test
     @category = test.category
     @command = command
+    @puts_output_on_success = puts_output_on_success
     @name = command.split[1].delete '-'
     @status = :running
     @repository = HOMEBREW_REPOSITORY
-    @test.steps << self
   end
 
   def log_file_path full_path=true
@@ -47,6 +46,10 @@ class Step
     @status.to_s.upcase
   end
 
+  def passed?
+    @status == :passed
+  end
+
   def puts_command
     print "#{Tty.blue}==>#{Tty.white} #{@command}#{Tty.reset}"
     tabs = (80 - "PASSED".length + 1 - @command.length) / 8
@@ -58,36 +61,34 @@ class Step
     puts "#{Tty.send status_colour}#{status_upcase}#{Tty.reset}"
   end
 
-  def self.run test, command, puts_output_on_success = false
-    step = new test, command
-    step.puts_command
+  def run
+    puts_command
 
-    command = "#{step.command} &>#{step.log_file_path}"
-    if command.start_with? 'git '
-      Dir.chdir step.repository do
-        `#{command}`
+    run_command = "#{@command} &>#{log_file_path}"
+    if run_command.start_with? 'git '
+      Dir.chdir @repository do
+        `#{run_command}`
       end
     else
-      `#{command}`
+      `#{run_command}`
     end
 
     success = $?.success?
-    step.status = success ? :passed : :failed
-    step.puts_result
+    @status = success ? :passed : :failed
+    puts_result
 
-    return unless File.exists?(step.log_file_path)
-    output = IO.read(step.log_file_path)
-    if output and output.any? and (not success or puts_output_on_success)
-      puts output
+    return unless File.exists?(log_file_path)
+    @output = IO.read(log_file_path)
+    if @output and @output.any? \
+      and (not success or @puts_output_on_success)
+      puts @output
     end
-    FileUtils.rm step.log_file_path unless ARGV.include? "--keep-logs"
+    FileUtils.rm log_file_path unless ARGV.include? "--keep-logs"
   end
 end
 
 class Test
-  attr_reader :log_root, :category, :name
-  attr_reader :core_changed, :formulae
-  attr_accessor :steps
+  attr_reader :log_root, :category, :name, :core_changed, :formulae, :steps
 
   def initialize argument
     @hash = nil
@@ -249,7 +250,9 @@ class Test
   end
 
   def test cmd, puts_output_on_success = false
-    Step.run self, cmd, puts_output_on_success
+    step = Step.new self, cmd, puts_output_on_success
+    step.run
+    steps << step
   end
 
   def check_results

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="brew-test-bot">
-    <% tests.each do |test| %>
-    <testsuite name="<%= test.name %>" tests="<%= test.steps.count %>">
-        <% test.steps.each do |step| %>
-        <testcase name="<%= step.name %>" status="<%= step.status %>">
-            <% unless step.status == :passed %>
-            <failure />
-            <% end %>
-        </testcase>
-        <% end %>
-    </testsuite>
+<% tests.each do |test| %>
+<testsuite name="<%= test.name %>" tests="<%= test.steps.count %>">
+  <% test.steps.each do |step| %>
+  <testcase name="<%= step.name %>" status="<%= step.status %>">
+    <system-out><![CDATA[<%= step.output %>]]></system-out>
+    <% unless step.passed? %>
+      <failure />
     <% end %>
-</testsuites>
+  </testcase>
+  <% end %>
+</testsuite>
+<% end %>
