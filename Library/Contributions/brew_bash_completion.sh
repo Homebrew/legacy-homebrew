@@ -220,7 +220,7 @@ _brew_install ()
                 --use-gcc
                 --use-llvm
                 --verbose
-                $(brew options --compact "$prv")
+                $(brew options --compact "$prv" 2>/dev/null)
                 "
         fi
         return
