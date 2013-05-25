@@ -106,3 +106,9 @@ module Test::Unit::Assertions
     assert(obj.empty?, msg)
   end if RUBY_VERSION.to_f <= 1.8
 end
+
+class Test::Unit::TestCase
+  def formula(*args, &block)
+    @_f = Class.new(Formula, &block).new(*args)
+  end
+end
