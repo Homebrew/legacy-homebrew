@@ -6,15 +6,17 @@
 # --keep-logs:    Write and keep log files under ./brewbot/
 # --cleanup:      Clean the Homebrew directory. Very dangerous. Use with care.
 # --skip-setup:   Don't check the local system is setup correctly.
+# --junit:        Generate a JUnit XML test results file.
 
 require 'formula'
 require 'utils'
 require 'date'
+require 'erb'
 
 HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 
 class Step
-  attr_reader :command, :repository
+  attr_reader :command, :repository, :name
   attr_accessor :status
 
   def initialize test, command
@@ -269,17 +271,16 @@ class Test
     status == :passed
   end
 
-  def self.run argument
-    test = new argument
-    test.cleanup_before
-    test.download
-    test.setup unless ARGV.include? "--skip-setup"
-    test.formulae.each do |formula|
-      test.formula formula
+  def run
+    cleanup_before
+    download
+    setup unless ARGV.include? "--skip-setup"
+    formulae.each do |f|
+      formula(f)
     end
-    test.homebrew if test.core_changed
-    test.cleanup_after
-    test.check_results
+    homebrew if core_changed
+    cleanup_after
+    check_results
   end
 end
 
@@ -287,11 +288,27 @@ if Pathname.pwd == HOMEBREW_PREFIX and ARGV.include? "--cleanup"
   odie 'cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output.'
 end
 
+tests = []
 any_errors = false
 if ARGV.named.empty?
   # With no arguments just build the most recent commit.
-  any_errors = Test.run 'HEAD'
+  test = Test.new('HEAD')
+  any_errors = test.run
+  tests << test
 else
-  ARGV.named.each { |argument| any_errors = Test.run(argument) or any_errors }
+  ARGV.named.each do |argument|
+    test = Test.new(argument)
+    any_errors = test.run or any_errors
+    tests << test
+  end
 end
+
+if ARGV.include? "--junit"
+  xml_erb = HOMEBREW_CONTRIBUTED_CMDS + "brew-test-bot.xml.erb"
+  erb = ERB.new IO.read xml_erb
+  open("brew-test-bot.xml", "w") do |xml|
+    xml.write erb.result binding
+  end
+end
+
 exit any_errors ? 0 : 1
