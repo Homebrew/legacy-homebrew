@@ -73,8 +73,7 @@ class Build
 
   def pre_superenv_hacks
     # Allow a formula to opt-in to the std environment.
-    ARGV.unshift '--env=std' if (f.env.std? or
-      f.recursive_dependencies.detect{|d| d.name == 'scons' }) and
+    ARGV.unshift '--env=std' if (f.env.std? or deps.any? { |d| d.name == 'scons' }) and
       not ARGV.include? '--env=super'
   end
 
