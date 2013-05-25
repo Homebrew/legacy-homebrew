@@ -40,10 +40,6 @@ class Formula
       unless bottle.checksum.nil? || bottle.checksum.empty?
         @bottle = bottle
         bottle.url ||= bottle_url(self)
-        if bottle.cat_without_underscores
-          bottle.url.gsub!(MacOS.cat.to_s,
-                           MacOS.cat_without_underscores.to_s)
-        end
       end
     end
 

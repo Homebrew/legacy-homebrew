@@ -27,13 +27,6 @@ module MacOS extend self
     end
   end
 
-  # TODO: Can be removed when all bottles migrated to underscored cat symbols.
-  def cat_without_underscores
-    possibly_underscored_cat = cat
-    return nil unless possibly_underscored_cat
-    cat.to_s.gsub('_', '').to_sym
-  end
-
   def oldest_cpu
     if Hardware::CPU.type == :intel
       if Hardware::CPU.is_64_bit?

@@ -76,15 +76,12 @@ end
 
 class Bottle < SoftwareSpec
   attr_writer :url
-  # TODO: Can be removed when all bottles migrated to underscored cat symbols.
-  attr_reader :cat_without_underscores
 
   def initialize
     super
     @revision = 0
     @prefix = '/usr/local'
     @cellar = '/usr/local/Cellar'
-    @cat_without_underscores = false
   end
 
   # Checksum methods in the DSL's bottle block optionally take
@@ -101,9 +98,6 @@ class Bottle < SoftwareSpec
 
         if @#{cksum}.has_key? MacOS.cat
           @checksum = @#{cksum}[MacOS.cat]
-        elsif @#{cksum}.has_key? MacOS.cat_without_underscores
-          @checksum = @#{cksum}[MacOS.cat_without_underscores]
-          @cat_without_underscores = true
         end
       end
     EOS
