@@ -235,27 +235,24 @@ end
 def check_for_stray_developer_directory
   # if the uninstaller script isn't there, it's a good guess neither are
   # any troublesome leftover Xcode files
-  if MacOS::Xcode.version >= "4.3" and File.exist? "/Developer/Library/uninstall-developer-folder"
-    return <<-EOS.undent
+  uninstaller = Pathname.new("/Developer/Library/uninstall-developer-folder")
+  if MacOS::Xcode.version >= "4.3" && uninstaller.exist? then <<-EOS.undent
     You have leftover files from an older version of Xcode.
     You should delete them using:
-      /Developer/Library/uninstall-developer-folder
+      #{uninstaller}
     EOS
   end
 end
 
 def check_cc
   unless MacOS::CLT.installed?
-    if MacOS::Xcode.version >= "4.3"
-      return <<-EOS.undent
-        Experimental support for using Xcode without the "Command Line Tools".
-        You have only installed Xcode. If stuff is not building, try installing the
-        "Command Line Tools for Xcode" package provided by Apple.
+    if MacOS::Xcode.version >= "4.3" then <<-EOS.undent
+      Experimental support for using Xcode without the "Command Line Tools".
+      You have only installed Xcode. If stuff is not building, try installing the
+      "Command Line Tools for Xcode" package provided by Apple.
       EOS
     else
-      return <<-EOS.undent
-        No compiler found in /usr/bin!
-      EOS
+      'No compiler found in /usr/bin!'
     end
   end
 end
