@@ -25,6 +25,12 @@ class Cmake < Formula
   url 'http://www.cmake.org/files/v2.8/cmake-2.8.11.tar.gz'
   sha1 '7b7961402ec71d84052734da1bed2b28e6a2c4af'
 
+  bottle do
+    sha1 '26bf7589947785bd4e378acb6f12a03ba5ba5ce1' => :mountain_lion
+    sha1 '8d3f4a594696789193f5fc3b85b628a54099bc45' => :lion
+    sha1 'c54d3f869607b1b84c7c90cf6ef69dc7ffbf99d5' => :snow_leopard
+  end
+
   depends_on NoExpatFramework
 
   def install
