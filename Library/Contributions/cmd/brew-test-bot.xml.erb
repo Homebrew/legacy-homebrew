@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <% tests.each do |test| %>
-  <testsuite name="<%= test.name %>" package="brew-test-bot" tests="<%= test.steps.count %>">
+  <testsuite name="brew-test-bot.<%= test.name %>" tests="<%= test.steps.count %>">
     <% test.steps.each do |step| %>
-    <testcase name="<%= step.name %>" status="<%= step.status %>" time="<%= step.time %>">
+    <testcase name="<%= step.command %>" status="<%= step.status %>" time="<%= step.time %>">
       <% if step.has_output? %>
       <system-out><![CDATA[<%= step.output %>]]></system-out>
       <% end %>
