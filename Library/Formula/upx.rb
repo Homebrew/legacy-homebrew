@@ -7,8 +7,8 @@ end
 
 class Upx < Formula
   homepage 'http://upx.sourceforge.net'
-  url 'http://upx.sourceforge.net/download/upx-3.08-src.tar.bz2'
-  sha1 '5ccbc0aacfd3aaee407eceab06ec5989bf1d153a'
+  url 'http://upx.sourceforge.net/download/upx-3.09-src.tar.bz2'
+  sha1 'df474a9909e6697a4d3240767c34e2dcb39002c1'
   head 'http://upx.hg.sourceforge.net:8000/hgroot/upx/upx', :using => :hg
 
   depends_on 'ucl'
