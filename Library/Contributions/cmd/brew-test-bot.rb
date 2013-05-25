@@ -16,7 +16,7 @@ require 'erb'
 HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 
 class Step
-  attr_reader :command, :name, :status, :output
+  attr_reader :command, :name, :status, :output, :time
 
   def initialize test, command, puts_output_on_success = false
     @test = test
@@ -26,6 +26,7 @@ class Step
     @name = command.split[1].delete '-'
     @status = :running
     @repository = HOMEBREW_REPOSITORY
+    @time = 0
   end
 
   def log_file_path full_path=true
@@ -46,8 +47,8 @@ class Step
     @status.to_s.upcase
   end
 
-  def passed?
-    @status == :passed
+  def failed?
+    @status == :failed
   end
 
   def puts_command
@@ -61,9 +62,14 @@ class Step
     puts "#{Tty.send status_colour}#{status_upcase}#{Tty.reset}"
   end
 
+  def has_output?
+    @output and @output.any?
+  end
+
   def run
     puts_command
 
+    start_time = Time.now
     run_command = "#{@command} &>#{log_file_path}"
     if run_command.start_with? 'git '
       Dir.chdir @repository do
@@ -72,6 +78,8 @@ class Step
     else
       `#{run_command}`
     end
+    end_time = Time.now
+    @time = end_time - start_time
 
     success = $?.success?
     @status = success ? :passed : :failed
@@ -79,8 +87,7 @@ class Step
 
     return unless File.exists?(log_file_path)
     @output = IO.read(log_file_path)
-    if @output and @output.any? \
-      and (not success or @puts_output_on_success)
+    if has_output? and (not success or @puts_output_on_success)
       puts @output
     end
     FileUtils.rm log_file_path unless ARGV.include? "--keep-logs"
@@ -310,7 +317,8 @@ if ARGV.include? "--junit"
   xml_erb = HOMEBREW_CONTRIBUTED_CMDS + "brew-test-bot.xml.erb"
   erb = ERB.new IO.read xml_erb
   open("brew-test-bot.xml", "w") do |xml|
-    xml.write erb.result binding
+    # Remove empty lines from ERB result.
+    xml.write erb.result(binding).gsub /^\s*$\n/, ''
   end
 end
 
