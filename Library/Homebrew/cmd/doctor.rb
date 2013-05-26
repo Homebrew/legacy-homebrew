@@ -729,13 +729,13 @@ def check_git_newline_settings
   end
 end
 
-def check_for_git_origin
-  return unless which "git"
-  # otherwise this will nag users with no repo about their remote
-  return unless (HOMEBREW_REPOSITORY/'.git').exist?
+def check_git_origin
+  return unless which('git') && (HOMEBREW_REPOSITORY/'.git').exist?
 
   HOMEBREW_REPOSITORY.cd do
-    if `git config --get remote.origin.url`.chomp.empty? then <<-EOS.undent
+    origin = `git config --get remote.origin.url`.strip
+
+    if origin.empty? then <<-EOS.undent
       Missing git origin remote.
 
       Without a correctly configured origin, Homebrew won't update
@@ -743,21 +743,7 @@ def check_for_git_origin
         cd #{HOMEBREW_REPOSITORY}
         git remote add origin https://github.com/mxcl/homebrew.git
       EOS
-    end
-  end
-end
-
-def check_the_git_origin
-  return unless which "git"
-  return if check_for_git_origin
-
-  # otherwise this will nag users with no repo about their remote
-  return unless (HOMEBREW_REPOSITORY/'.git').exist?
-
-  HOMEBREW_REPOSITORY.cd do
-    origin = `git config --get remote.origin.url`.chomp
-
-    unless origin =~ /mxcl\/homebrew(\.git)?$/ then <<-EOS.undent
+    elsif origin !~ /mxcl\/homebrew(\.git)?$/ then <<-EOS.undent
       Suspicious git origin remote found.
 
       With a non-standard origin, Homebrew won't pull updates from
