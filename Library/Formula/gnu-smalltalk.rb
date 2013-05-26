@@ -6,6 +6,11 @@ class GnuSmalltalk < Formula
   mirror 'http://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.5.tar.xz'
   sha1 '0eb5895b9b5bebe4f75308efbe34f8721fc2fd6b'
 
+  devel do
+    url 'ftp://alpha.gnu.org/gnu/smalltalk/smalltalk-3.2.90.tar.gz'
+    sha1 'dd8bba5702591f0d5e2676878e1b3ee48f0ff37f'
+  end
+
   head 'https://github.com/bonzini/smalltalk.git'
 
   option 'tests', 'Verify the build with make check (this may hang)'
