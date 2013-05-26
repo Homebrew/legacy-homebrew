@@ -22,7 +22,9 @@ class Emacs < Formula
     depends_on :autoconf
     depends_on :automake
   end
+  depends_on 'pkg-config' => :build
   depends_on :x11 if build.include? "with-x"
+  depends_on 'gnutls' => :optional
 
   fails_with :llvm do
     build 2334
@@ -47,6 +49,11 @@ class Emacs < Formula
             "--without-dbus",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
+    if build.with? 'gnutls'
+      args << '--with-gnutls'
+    else
+      args << '--without-gnutls'
+    end
 
     # See: https://github.com/mxcl/homebrew/issues/4852
     if build.head? and File.exists? "./autogen/copy_autogen"
