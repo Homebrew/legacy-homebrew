@@ -28,6 +28,7 @@ class GnuSmalltalk < Formula
   depends_on 'libsigsegv' => :recommended
   depends_on 'glew'       => :optional
   depends_on :x11 if build.include? 'tcltk'
+  depends_on 'gnutls'
 
   fails_with :llvm do
     build 2334
