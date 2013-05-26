@@ -2,8 +2,8 @@ require 'formula'
 
 class Libpng < Formula
   homepage 'http://www.libpng.org/pub/png/libpng.html'
-  url 'http://downloads.sf.net/project/libpng/libpng15/1.5.14/libpng-1.5.14.tar.gz'
-  sha1 '67f20d69564a4a50204cb924deab029f11ad2d3c'
+  url 'http://download.sourceforge.net/libpng/libpng-1.6.2.tar.gz'
+  sha1 'd10af2004e7608425cbb8a8a99209a27af276ff7'
 
   keg_only :provided_pre_mountain_lion
 
