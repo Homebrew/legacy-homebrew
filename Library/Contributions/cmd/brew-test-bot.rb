@@ -47,6 +47,10 @@ class Step
     @status.to_s.upcase
   end
 
+  def passed?
+    @status == :passed
+  end
+
   def failed?
     @status == :failed
   end
@@ -140,7 +144,12 @@ class Test
     @category = __method__
     @start_branch = current_branch
 
-    if @hash or @url
+    # Use Jenkins environment variables if present.
+    if ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT']
+      diff_start_sha1 = ENV['GIT_PREVIOUS_COMMIT']
+      diff_end_sha1 = ENV['GIT_COMMIT']
+      test "brew update" if current_branch == "master"
+    elsif @hash or @url
       diff_start_sha1 = current_sha1
       test "brew update" if current_branch == "master"
       diff_end_sha1 = current_sha1
@@ -167,7 +176,7 @@ class Test
     FileUtils.mkdir_p @log_root
 
     return unless diff_start_sha1 != diff_end_sha1
-    return if @url and steps.last.status != :passed
+    return if @url and not steps.last.passed?
 
     diff_stat = git "diff #{diff_start_sha1}..#{diff_end_sha1} --name-status"
     diff_stat.each_line do |line|
@@ -206,7 +215,7 @@ class Test
     test "brew fetch --build-bottle #{formula}"
     test "brew install --verbose #{dependencies}" unless dependencies.empty?
     test "brew install --verbose --build-bottle #{formula}"
-    return unless steps.last.status == :passed
+    return unless steps.last.passed?
     test "brew bottle #{formula}", true
     bottle_revision = bottle_new_revision(formula_object)
     bottle_filename = bottle_filename(formula_object, bottle_revision)
