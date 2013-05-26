@@ -133,8 +133,12 @@ class Test
   end
 
   def download
+    def shorten_revision revision
+      git("rev-parse --short #{revision}").strip
+    end
+
     def current_sha1
-      git('rev-parse --short HEAD').strip
+      shorten_revision 'HEAD'
     end
 
     def current_branch
@@ -146,8 +150,8 @@ class Test
 
     # Use Jenkins environment variables if present.
     if ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT']
-      diff_start_sha1 = ENV['GIT_PREVIOUS_COMMIT']
-      diff_end_sha1 = ENV['GIT_COMMIT']
+      diff_start_sha1 = shorten_revision ENV['GIT_PREVIOUS_COMMIT']
+      diff_end_sha1 = shorten_revision ENV['GIT_COMMIT']
       test "brew update" if current_branch == "master"
     elsif @hash or @url
       diff_start_sha1 = current_sha1
