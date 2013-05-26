@@ -160,7 +160,11 @@ class Test
     end
 
     if @hash == 'HEAD'
-      @name = "#{diff_start_sha1}-#{diff_end_sha1}"
+      if diff_start_sha1 == diff_end_sha1
+        @name = diff_end_sha1
+      else
+        @name = "#{diff_start_sha1}-#{diff_end_sha1}"
+      end
     elsif @hash
       test "git checkout #{@hash}"
       diff_start_sha1 = "#{@hash}^"
