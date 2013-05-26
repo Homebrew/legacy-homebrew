@@ -687,8 +687,22 @@ def check_filesystem_case_sensitive
   EOS
 end
 
+def __check_git_version
+  # https://help.github.com/articles/https-cloning-errors
+  `git --version`.chomp =~ /git version ((?:\d+\.?)+)/
+
+  if Version.new($1) < Version.new("1.7.10") then <<-EOS.undent
+    An outdated version of Git was detected in your PATH.
+    Git 1.7.10 or newer is required to perform checkouts over HTTPS from GitHub.
+    Please upgrade: brew upgrade git
+    EOS
+  end
+end
+
 def check_for_git
-  unless which "git" then <<-EOS.undent
+  if which "git"
+    __check_git_version
+  else <<-EOS.undent
     Git could not be found in your PATH.
     Homebrew uses Git for several internal functions, and some formulae use Git
     checkouts instead of stable tarballs. You may want to install Git:
@@ -898,20 +912,6 @@ def check_for_leopard_ssl
 
       You can force Git to ignore these errors by setting GIT_SSL_NO_VERIFY.
         export GIT_SSL_NO_VERIFY=1
-    EOS
-  end
-end
-
-def check_git_version
-  # https://help.github.com/articles/https-cloning-errors
-  return unless which "git"
-
-  `git --version`.chomp =~ /git version ((?:\d+\.?)+)/
-
-  if Version.new($1) < Version.new("1.7.10") then <<-EOS.undent
-    An outdated version of Git was detected in your PATH.
-    Git 1.7.10 or newer is required to perform checkouts over HTTPS from GitHub.
-    Please upgrade: brew upgrade git
     EOS
   end
 end
