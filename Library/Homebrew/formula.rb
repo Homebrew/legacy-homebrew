@@ -40,10 +40,6 @@ class Formula
       unless bottle.checksum.nil? || bottle.checksum.empty?
         @bottle = bottle
         bottle.url ||= bottle_url(self)
-        if bottle.cat_without_underscores
-          bottle.url.gsub!(MacOS.cat.to_s,
-                           MacOS.cat_without_underscores.to_s)
-        end
       end
     end
 
@@ -103,17 +99,9 @@ class Formula
   end
 
   def installed_prefix
-    devel_prefix = unless devel.nil?
-      Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{devel.version}")
-    end
-
-    head_prefix = unless head.nil?
-      Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{head.version}")
-    end
-
-    if active_spec == head || head and head_prefix.directory?
+    if head && (head_prefix = prefix(head.version)).directory?
       head_prefix
-    elsif active_spec == devel || devel and devel_prefix.directory?
+    elsif devel && (devel_prefix = prefix(devel.version)).directory?
       devel_prefix
     else
       prefix
@@ -125,8 +113,8 @@ class Formula
     Keg.new(installed_prefix).version
   end
 
-  def prefix
-    Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{version}")
+  def prefix(v=version)
+    Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{v}")
   end
   def rack; prefix.parent end
 

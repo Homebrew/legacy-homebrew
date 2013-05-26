@@ -55,6 +55,9 @@ class Neo4j < Formula
     The manual can be found in:
         #{libexec}/doc/
 
+    You may need to add JAVA_HOME to your shell profile:
+        export JAVA_HOME="$(/usr/libexec/java_home)"
+
     EOS
   end
 end

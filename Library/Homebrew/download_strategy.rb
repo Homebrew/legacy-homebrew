@@ -28,6 +28,11 @@ class AbstractDownloadStrategy
   def quiet_safe_system *args
     safe_system(*expand_safe_system_args(args))
   end
+
+  # All download strategies are expected to implement these methods
+  def fetch; end
+  def stage; end
+  def cached_location; end
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
