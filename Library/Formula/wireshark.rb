@@ -6,6 +6,7 @@ class Wireshark < Formula
   sha1 'c131ce10555e608e691aa36190c8d5a1b271c955'
 
   option 'with-x', 'Include X11 support'
+  option 'with-qt', 'Use QT for GUI instead of GTK+'
   option 'with-python', 'Enable experimental Python bindings'
 
   depends_on 'pkg-config' => :build
@@ -20,6 +21,8 @@ class Wireshark < Formula
     depends_on 'gtk+'
   end
 
+  depends_on 'qt' => :optional
+
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
 
@@ -30,6 +33,9 @@ class Wireshark < Formula
 
     # actually just disables the GTK GUI
     args << '--disable-wireshark' unless build.with? 'x'
+    args << '--disable-gtktest' if build.with? 'x'
+
+    args << '--with-qt' if build.with? 'qt'
 
     system "./configure", *args
     system "make"
