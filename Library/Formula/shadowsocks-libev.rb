@@ -2,8 +2,10 @@ require 'formula'
 
 class ShadowsocksLibev < Formula
   homepage 'https://github.com/madeye/shadowsocks-libev'
-  url 'https://github.com/madeye/shadowsocks-libev.git', :using => :git, :revision => '5b7f057663898b91e174b9440864f51474cc780d'
+  url 'https://github.com/madeye/shadowsocks-libev.git', :using => :git, :tag => 'v1.3'
   version '1.3'
+
+  depends_on 'libev'
 
   def install
     system "./configure", "--prefix=#{prefix}"
