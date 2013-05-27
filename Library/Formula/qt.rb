@@ -116,7 +116,7 @@ class Qt < Formula
     (bin+'pixeltool.app').rmtree
     (bin+'qhelpconverter.app').rmtree
     # remove porting file for non-humans
-    (prefix+'q3porting.xml').unlink
+    (prefix+'q3porting.xml').unlink if build.without? 'qt3support'
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     cd prefix do

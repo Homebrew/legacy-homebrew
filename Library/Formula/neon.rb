@@ -19,6 +19,7 @@ class Neon < Formula
                           "--prefix=#{prefix}",
                           "--enable-shared",
                           "--disable-static",
+                          "--disable-nls",
                           "--with-ssl"
     system "make install"
   end

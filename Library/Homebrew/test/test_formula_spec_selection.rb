@@ -2,10 +2,6 @@ require 'testing_env'
 require 'formula'
 
 class FormulaSpecSelectionTests < Test::Unit::TestCase
-  def formula(*args, &block)
-    @_f = Class.new(Formula, &block).new(*args)
-  end
-
   def assert_spec_selected(spec)
     assert_equal @_f.send(spec), @_f.active_spec
   end
