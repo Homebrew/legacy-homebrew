@@ -886,18 +886,19 @@ def check_git_status
   end
 end
 
-def check_for_leopard_ssl
-  if MacOS.version == :leopard and not ENV['GIT_SSL_NO_VERIFY']
-    <<-EOS.undent
-      The version of libcurl provided with Mac OS X Leopard has outdated
-      SSL certificates.
+def check_git_ssl_verify
+  if MacOS.version <= :leopard && !ENV['GIT_SSL_NO_VERIFY'] then <<-EOS.undent
+    The version of libcurl provided with Mac OS X #{MacOS.version} has outdated
+    SSL certificates.
 
-      This can cause problems when running Homebrew commands that use Git to
-      fetch over HTTPS, e.g. `brew update` or installing formulae that perform
-      Git checkouts.
+    This can cause problems when running Homebrew commands that use Git to
+    fetch over HTTPS, e.g. `brew update` or installing formulae that perform
+    Git checkouts.
 
-      You can force Git to ignore these errors by setting GIT_SSL_NO_VERIFY.
-        export GIT_SSL_NO_VERIFY=1
+    You can force Git to ignore these errors:
+      export GIT_SSL_NO_VERIFY=1
+    or
+      git config --global http.sslVerify false
     EOS
   end
 end
