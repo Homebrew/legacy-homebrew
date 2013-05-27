@@ -31,6 +31,10 @@ class Option
     name.hash
   end
 
+  def inspect
+    "#<#{self.class}: #{flag.inspect}>"
+  end
+
   private
 
   def split_name(name)
@@ -100,6 +104,10 @@ class Options
     @options.to_a
   end
   alias_method :to_ary, :to_a
+
+  def inspect
+    "#<#{self.class}: #{@options.map(&:inspect).join(", ")}>"
+  end
 
   def self.coerce(arg)
     case arg

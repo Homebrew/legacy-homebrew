@@ -2,10 +2,6 @@ require 'testing_env'
 require 'formula'
 
 class FormulaValidationTests < Test::Unit::TestCase
-  def formula(*args, &block)
-    Class.new(Formula, &block).new(*args)
-  end
-
   def assert_invalid(attr, &block)
     e = assert_raises(FormulaValidationError, &block)
     assert_equal attr, e.attr

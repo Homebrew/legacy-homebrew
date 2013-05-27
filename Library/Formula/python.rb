@@ -164,6 +164,16 @@ class Python < Formula
       install-lib=#{site_packages}
     EOF
 
+     # Work-around this bug: http://bugs.python.org/issue18050
+     inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/re.py", 'import sys', <<-EOS.undent
+        import sys
+        try:
+            from _sre import MAXREPEAT
+        except ImportError:
+            import _sre
+            _sre.MAXREPEAT = 65535 # this monkey-patches all other places of "from _sre import MAXREPEAT"'
+        EOS
+
     makefile = prefix/'Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile'
     inreplace makefile do |s|
       unless MacOS::CLT.installed?

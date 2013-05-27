@@ -6,25 +6,27 @@
 # --keep-logs:    Write and keep log files under ./brewbot/
 # --cleanup:      Clean the Homebrew directory. Very dangerous. Use with care.
 # --skip-setup:   Don't check the local system is setup correctly.
+# --junit:        Generate a JUnit XML test results file.
 
 require 'formula'
 require 'utils'
 require 'date'
+require 'erb'
 
 HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 
 class Step
-  attr_reader :command, :repository
-  attr_accessor :status
+  attr_reader :command, :name, :status, :output, :time
 
-  def initialize test, command
+  def initialize test, command, puts_output_on_success = false
     @test = test
     @category = test.category
     @command = command
+    @puts_output_on_success = puts_output_on_success
     @name = command.split[1].delete '-'
     @status = :running
     @repository = HOMEBREW_REPOSITORY
-    @test.steps << self
+    @time = 0
   end
 
   def log_file_path full_path=true
@@ -45,6 +47,14 @@ class Step
     @status.to_s.upcase
   end
 
+  def passed?
+    @status == :passed
+  end
+
+  def failed?
+    @status == :failed
+  end
+
   def puts_command
     print "#{Tty.blue}==>#{Tty.white} #{@command}#{Tty.reset}"
     tabs = (80 - "PASSED".length + 1 - @command.length) / 8
@@ -56,36 +66,40 @@ class Step
     puts "#{Tty.send status_colour}#{status_upcase}#{Tty.reset}"
   end
 
-  def self.run test, command, puts_output_on_success = false
-    step = new test, command
-    step.puts_command
+  def has_output?
+    @output and @output.any?
+  end
 
-    command = "#{step.command} &>#{step.log_file_path}"
-    if command.start_with? 'git '
-      Dir.chdir step.repository do
-        `#{command}`
+  def run
+    puts_command
+
+    start_time = Time.now
+    run_command = "#{@command} &>#{log_file_path}"
+    if run_command.start_with? 'git '
+      Dir.chdir @repository do
+        `#{run_command}`
       end
     else
-      `#{command}`
+      `#{run_command}`
     end
+    end_time = Time.now
+    @time = end_time - start_time
 
     success = $?.success?
-    step.status = success ? :passed : :failed
-    step.puts_result
+    @status = success ? :passed : :failed
+    puts_result
 
-    return unless File.exists?(step.log_file_path)
-    output = IO.read(step.log_file_path)
-    if output and output.any? and (not success or puts_output_on_success)
-      puts output
+    return unless File.exists?(log_file_path)
+    @output = IO.read(log_file_path)
+    if has_output? and (not success or @puts_output_on_success)
+      puts @output
     end
-    FileUtils.rm step.log_file_path unless ARGV.include? "--keep-logs"
+    FileUtils.rm log_file_path unless ARGV.include? "--keep-logs"
   end
 end
 
 class Test
-  attr_reader :log_root, :category, :name
-  attr_reader :core_changed, :formulae
-  attr_accessor :steps
+  attr_reader :log_root, :category, :name, :core_changed, :formulae, :steps
 
   def initialize argument
     @hash = nil
@@ -119,8 +133,12 @@ class Test
   end
 
   def download
+    def shorten_revision revision
+      git("rev-parse --short #{revision}").strip
+    end
+
     def current_sha1
-      git('rev-parse --short HEAD').strip
+      shorten_revision 'HEAD'
     end
 
     def current_branch
@@ -130,14 +148,23 @@ class Test
     @category = __method__
     @start_branch = current_branch
 
-    if @hash or @url
+    # Use Jenkins environment variables if present.
+    if ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT']
+      diff_start_sha1 = shorten_revision ENV['GIT_PREVIOUS_COMMIT']
+      diff_end_sha1 = shorten_revision ENV['GIT_COMMIT']
+      test "brew update" if current_branch == "master"
+    elsif @hash or @url
       diff_start_sha1 = current_sha1
       test "brew update" if current_branch == "master"
       diff_end_sha1 = current_sha1
     end
 
     if @hash == 'HEAD'
-      @name = "#{diff_start_sha1}-#{diff_end_sha1}"
+      if diff_start_sha1 == diff_end_sha1
+        @name = diff_end_sha1
+      else
+        @name = "#{diff_start_sha1}-#{diff_end_sha1}"
+      end
     elsif @hash
       test "git checkout #{@hash}"
       diff_start_sha1 = "#{@hash}^"
@@ -157,7 +184,7 @@ class Test
     FileUtils.mkdir_p @log_root
 
     return unless diff_start_sha1 != diff_end_sha1
-    return if @url and steps.last.status != :passed
+    return if @url and not steps.last.passed?
 
     diff_stat = git "diff #{diff_start_sha1}..#{diff_end_sha1} --name-status"
     diff_stat.each_line do |line|
@@ -196,7 +223,7 @@ class Test
     test "brew fetch --build-bottle #{formula}"
     test "brew install --verbose #{dependencies}" unless dependencies.empty?
     test "brew install --verbose --build-bottle #{formula}"
-    return unless steps.last.status == :passed
+    return unless steps.last.passed?
     test "brew bottle #{formula}", true
     bottle_revision = bottle_new_revision(formula_object)
     bottle_filename = bottle_filename(formula_object, bottle_revision)
@@ -247,7 +274,9 @@ class Test
   end
 
   def test cmd, puts_output_on_success = false
-    Step.run self, cmd, puts_output_on_success
+    step = Step.new self, cmd, puts_output_on_success
+    step.run
+    steps << step
   end
 
   def check_results
@@ -269,17 +298,16 @@ class Test
     status == :passed
   end
 
-  def self.run argument
-    test = new argument
-    test.cleanup_before
-    test.download
-    test.setup unless ARGV.include? "--skip-setup"
-    test.formulae.each do |formula|
-      test.formula formula
+  def run
+    cleanup_before
+    download
+    setup unless ARGV.include? "--skip-setup"
+    formulae.each do |f|
+      formula(f)
     end
-    test.homebrew if test.core_changed
-    test.cleanup_after
-    test.check_results
+    homebrew if core_changed
+    cleanup_after
+    check_results
   end
 end
 
@@ -287,11 +315,28 @@ if Pathname.pwd == HOMEBREW_PREFIX and ARGV.include? "--cleanup"
   odie 'cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output.'
 end
 
+tests = []
 any_errors = false
 if ARGV.named.empty?
   # With no arguments just build the most recent commit.
-  any_errors = Test.run 'HEAD'
+  test = Test.new('HEAD')
+  any_errors = test.run
+  tests << test
 else
-  ARGV.named.each { |argument| any_errors = Test.run(argument) or any_errors }
+  ARGV.named.each do |argument|
+    test = Test.new(argument)
+    any_errors = test.run or any_errors
+    tests << test
+  end
 end
+
+if ARGV.include? "--junit"
+  xml_erb = HOMEBREW_CONTRIBUTED_CMDS + "brew-test-bot.xml.erb"
+  erb = ERB.new IO.read xml_erb
+  open("brew-test-bot.xml", "w") do |xml|
+    # Remove empty lines and null characters from ERB result.
+    xml.write erb.result(binding).gsub(/^\s*$\n|\000/, '')
+  end
+end
+
 exit any_errors ? 0 : 1
