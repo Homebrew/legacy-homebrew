@@ -61,6 +61,13 @@ class << ENV
     ENV['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
     ENV['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     ENV['ACLOCAL_PATH'] = determine_aclocal_path
+
+    # Homebrew's apple-gcc42 will be outside the PATH in superenv,
+    # so xcrun may not be able to find it
+    if ENV['HOMEBREW_CC'] == 'gcc-4.2' && !MacOS.locate('gcc-4.2')
+      apple_gcc42 = Formula.factory('apple-gcc42') rescue nil
+      ENV.append('PATH', apple_gcc42.opt_prefix/'bin', ':') if apple_gcc42
+    end
   end
 
   def universal_binary
@@ -76,8 +83,13 @@ class << ENV
 
   def determine_cc
     if ARGV.include? '--use-gcc'
+      gcc_installed = Formula.factory('apple-gcc42').installed? rescue false
       # fall back to something else on systems without Apple gcc
-      MacOS.locate('gcc-4.2') ? "gcc-4.2" : raise("gcc-4.2 not found!")
+      if MacOS.locate('gcc-4.2') || gcc_installed
+        "gcc-4.2"
+      else
+        raise("gcc-4.2 not found!")
+      end
     elsif ARGV.include? '--use-llvm'
       "llvm-gcc"
     elsif ARGV.include? '--use-clang'
@@ -93,7 +105,10 @@ class << ENV
       "gcc"
     elsif ENV['HOMEBREW_CC']
       case ENV['HOMEBREW_CC']
-        when 'clang', 'gcc', 'gcc-4.0' then ENV['HOMEBREW_CC']
+        when 'clang', 'gcc-4.0' then ENV['HOMEBREW_CC']
+        # depending on Xcode version plain 'gcc' could actually be
+        # gcc-4.0 or llvm-gcc
+        when 'gcc' then 'gcc-4.2'
         when 'llvm', 'llvm-gcc' then 'llvm-gcc'
       else
         opoo "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC']}"
@@ -106,7 +121,7 @@ class << ENV
     case MacOS.default_compiler
     when :clang   then 'clang'
     when :llvm    then 'llvm-gcc'
-    when :gcc     then 'gcc'
+    when :gcc     then 'gcc-4.2'
     when :gcc_4_0 then 'gcc-4.0'
     end
   end
