@@ -37,9 +37,6 @@ class Ld64 < Formula
   end
 
   def install
-    # ld64 itself can't build 64-bit on Leopard, and may be needed to link any 64-bit software
-    ENV.m32 if MacOS.version == :leopard
-
     File.open('Makefile', 'w') {|f| f.write DATA.read}
     inreplace 'src/ld/Options.cpp', '@@VERSION@@', version
 
