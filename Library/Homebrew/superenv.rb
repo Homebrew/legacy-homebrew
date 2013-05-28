@@ -93,7 +93,7 @@ class << ENV
       "gcc"
     elsif ENV['HOMEBREW_CC']
       case ENV['HOMEBREW_CC']
-        when 'clang', 'gcc' then ENV['HOMEBREW_CC']
+        when 'clang', 'gcc', 'gcc-4.0' then ENV['HOMEBREW_CC']
         when 'llvm', 'llvm-gcc' then 'llvm-gcc'
       else
         opoo "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC']}"
@@ -103,7 +103,12 @@ class << ENV
       raise
     end
   rescue
-    "clang"
+    case MacOS.default_compiler
+    when :clang   then 'clang'
+    when :llvm    then 'llvm-gcc'
+    when :gcc     then 'gcc'
+    when :gcc_4_0 then 'gcc-4.0'
+    end
   end
 
   def determine_path

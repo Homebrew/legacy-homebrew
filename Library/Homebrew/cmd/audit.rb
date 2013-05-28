@@ -207,7 +207,7 @@ class FormulaAuditor
     urls = @specs.map(&:url)
 
     # Check GNU urls; doesn't apply to mirrors
-    urls.grep(%r[^(?:https?|ftp)://(?!alpha).+/gnu/]).each do |u|
+    urls.grep(%r[^(?:https?|ftp)://(?!alpha).+/gnu/]) do |u|
       problem "\"ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
     end
 
@@ -242,12 +242,12 @@ class FormulaAuditor
     end
 
     # Check for git:// GitHub repo urls, https:// is preferred.
-    urls.grep(%r[^git://[^/]*github\.com/]).each do |u|
+    urls.grep(%r[^git://[^/]*github\.com/]) do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
     end
 
     # Check for http:// GitHub repo urls, https:// is preferred.
-    urls.grep(%r[^http://github\.com/.*\.git$]).each do |u|
+    urls.grep(%r[^http://github\.com/.*\.git$]) do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
     end 
 

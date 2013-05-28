@@ -19,8 +19,8 @@ class Weechat < Formula
   option 'python', 'Build the python module (requires framework Python)'
   option 'aspell', 'Build the aspell module that checks your spelling'
 
-  # cmake finds brewed python when installed, but when searching for the 
-  # libraries it searches for system libraries first. This patch disables 
+  # cmake finds brewed python when installed, but when searching for the
+  # libraries it searches for system libraries first. This patch disables
   # default search paths and ensures that brewed python is found first, if not
   # it falls back to system python.
   def patches

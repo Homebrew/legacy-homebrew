@@ -62,12 +62,15 @@ class Cmd
       # the work since Makefiles are dumb and include a lot of excess flags.
       ENV['HOMEBREW_CC']
     when 'c++'
-      if ENV['HOMEBREW_CC'] =~ /llvm-gcc/
-        'g++'
-      elsif ENV['HOMEBREW_CC'] =~ /gcc-4.2/
-        'g++-4.2'
-      else
+      case ENV['HOMEBREW_CC']
+      when /clang/
         'clang++'
+      when /llvm-gcc/
+        'g++'
+      when /gcc(-4.2)?$/
+        'g++-4.2'
+      when /gcc-4.0/
+        'g++-4.0'
       end
     else
       @arg0
