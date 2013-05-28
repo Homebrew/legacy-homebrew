@@ -23,14 +23,14 @@ class Ghcbinary < Formula
 end
 
 class Ghctestsuite < Formula
-  url 'https://github.com/ghc/testsuite/tarball/ghc-7.4.2-release'
-  sha1 '6b1f161a78a70638aacc931abfdef7dd50c7f923'
+  url 'https://github.com/ghc/testsuite/tarball/ghc-7.6.3-release'
+  sha1 '7f51a25a13edcdf6a8b9df3c13be78c9d41ce4e2'
 end
 
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
-  url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-src.tar.bz2'
-  sha1 '73b3b39dc164069bc80b69f7f2963ca1814ddf3d'
+  url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2'
+  sha1 '8938e1ef08b37a4caa071fa169e79a3001d065ff'
 
   env :std
 
@@ -40,10 +40,9 @@ class Ghc < Formula
   option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
 
   bottle do
-    revision 1
-    sha1 '45b4f126123e71613564084851a8470fa4b06e6b' => :mountain_lion
-    sha1 'a93d9aab9e3abfe586f9091f14057c6d90f6fdc0' => :lion
-    sha1 '7d284bd3f3263be11229ac45f340fbf742ebbea6' => :snow_leopard
+    sha1 '332ed50be17831557b5888f7e8395f1beb008731' => :mountain_lion
+    sha1 '64a7548eb2135a4b5f2276e59f435a39c2d2961f' => :lion
+    sha1 '166bf3c8a512b58da4119b2997a1f45c1f7c65b5' => :snow_leopard
   end
 
   fails_with :clang do
@@ -51,13 +50,6 @@ class Ghc < Formula
       Building with Clang configures GHC to use Clang as its preprocessor,
       which causes subsequent GHC-based builds to fail.
       EOS
-  end
-
-  def patches
-    # Explained: http://hackage.haskell.org/trac/ghc/ticket/7040
-    # Discussed: https://github.com/mxcl/homebrew/issues/13519
-    # Remove: version > 7.4.2
-    'http://hackage.haskell.org/trac/ghc/raw-attachment/ticket/7040/ghc7040.patch'
   end
 
   def install
@@ -88,6 +80,7 @@ class Ghc < Formula
 
       system "./configure", "--prefix=#{prefix}",
                             "--build=#{arch}-apple-darwin"
+      ENV.j1 # Fixes an intermittent race condition
       system 'make'
       if build.include? 'tests'
         Ghctestsuite.new.brew do
