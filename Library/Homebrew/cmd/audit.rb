@@ -294,6 +294,16 @@ class FormulaAuditor
         problem "#{cksum.hash_type} should be lowercase" unless cksum.hexdigest == cksum.hexdigest.downcase
       end
     end
+
+    # Check for :using that is already detected from the url
+    @specs.each do |s|
+      next if s.using.nil?
+
+      url_strategy = DownloadStrategyDetector.detect(s.url)
+      using_strategy = DownloadStrategyDetector.detect('', s.using)
+
+      problem "redundant :using specification in url or head" if url_strategy == using_strategy
+    end
   end
 
   def audit_patches

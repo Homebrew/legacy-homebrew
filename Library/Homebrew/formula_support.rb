@@ -4,6 +4,7 @@ require 'version'
 
 class SoftwareSpec
   attr_reader :checksum, :mirrors, :specs
+  attr_reader :using # for auditing
 
   def initialize url=nil, version=nil
     @url = url
