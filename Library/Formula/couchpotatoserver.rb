@@ -8,7 +8,8 @@ class Couchpotatoserver < Formula
   head 'https://github.com/RuudBurger/CouchPotatoServer.git'
 
   def install
-    prefix.install Dir['*']
+    prefix.install_metafiles
+    libexec.install Dir['*']
     (bin+"couchpotatoserver").write(startup_script)
   end
 
@@ -37,28 +38,15 @@ class Couchpotatoserver < Formula
   end
 
   def startup_script; <<-EOS.undent
-    #!/usr/bin/env ruby
-
-    me = begin
-      File.expand_path(
-        File.join(
-          File.dirname(__FILE__),
-          File.readlink(__FILE__)
-        )
-      )
-    rescue
-      __FILE__
-    end
-
-    path = File.join(File.dirname(me), '..', 'CouchPotato.py')
-    args = ["--pid_file=#{var}/run/couchpotatoserver.pid", "--data_dir=#{etc}/couchpotatoserver"]
-
-    exec("python", path, *(args + ARGV))
+    #!/bin/bash
+    python "#{libexec}/CouchPotato.py"\
+           "--pid_file=#{var}/run/couchpotatoserver.pid"\
+           "--data_dir=#{etc}/couchpotatoserver"\
+           "$@"
     EOS
   end
 
-  def caveats; <<-EOS.undent
-    CouchPotatoServer defaults to port 5050.
-    EOS
+  def caveats
+    "CouchPotatoServer defaults to port 5050."
   end
 end
