@@ -1,0 +1,2 @@
+#!/bin/sh
+PATH="$HOMEBREW_SHIM_PATH" exec $(basename "$0") "$@"
