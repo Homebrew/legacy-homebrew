@@ -12,8 +12,8 @@ class Newt < Formula
   depends_on 's-lang'
 
   def patches
-    { :p0 => "https://trac.macports.org/export/106061/trunk/dports/devel/libnewt/files/patch-configure.ac.diff" }
-    { :p0 => "https://trac.macports.org/export/106061/trunk/dports/devel/libnewt/files/patch-Makefile.in.diff" }
+    { :p0 => [ "https://trac.macports.org/export/106061/trunk/dports/devel/libnewt/files/patch-configure.ac.diff",
+               "https://trac.macports.org/export/106061/trunk/dports/devel/libnewt/files/patch-Makefile.in.diff" ] }
   end
 
   def install
