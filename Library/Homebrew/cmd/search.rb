@@ -8,6 +8,8 @@ module Homebrew extend self
       exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
+    elsif ARGV.include? '--debian'
+      exec_browser "http://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     else
       query = ARGV.first
       rx = case query
