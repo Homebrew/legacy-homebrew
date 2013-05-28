@@ -1,4 +1,15 @@
 require 'formula'
+require 'macos'
+
+class LionOrHigher < Requirement
+  fatal true
+
+  satisfy { MacOS.version >= :lion }
+
+  def message
+    "MPlayerShell requires OS X 10.7 (Lion) or newer"
+  end
+end
 
 class MplayerPresented < Requirement
   fatal true
@@ -26,6 +37,7 @@ class Mplayershell < Formula
   head 'https://github.com/donmelton/MPlayerShell.git', :using => :git
 
   depends_on MplayerPresented
+  depends_on LionOrHigher
   depends_on :xcode
 
   def install
