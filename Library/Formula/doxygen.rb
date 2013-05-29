@@ -17,11 +17,9 @@ class Doxygen < Formula
   depends_on 'llvm' if build.include? 'with-libclang'
 
   def install
-    if build.include? 'with-libclang'
-      system "./configure", "--prefix", prefix, "--with-libclang"
-    else
-      system "./configure", "--prefix", prefix
-    end
+    args = ["--prefix", prefix]
+    args << '--with-libclang' if build.with? 'libclang'
+    system "./configure", *args
     # Per Macports:
     # https://trac.macports.org/browser/trunk/dports/textproc/doxygen/Portfile#L92
     inreplace %w[ libmd5/Makefile.libmd5
