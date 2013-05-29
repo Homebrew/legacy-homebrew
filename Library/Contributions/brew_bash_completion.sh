@@ -313,7 +313,7 @@ _brew_search ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--fink --macports"
+        __brewcomp "--debian --fink --macports"
         return
         ;;
     esac
