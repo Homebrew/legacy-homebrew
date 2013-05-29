@@ -2,7 +2,7 @@ require 'formula'
 
 class Anttweakbar < Formula
   homepage 'http://www.antisphere.com/Wiki/tools:anttweakbar'
-  url 'http://sourceforge.net/projects/anttweakbar/files/AntTweakBar_116.zip/download'
+  url 'http://downloads.sourceforge.net/project/anttweakbar/AntTweakBar_116.zip'
   version '1.16'
   sha1 '5743321df3b074f9a82b5ef3e6b54830a715b938'
 
