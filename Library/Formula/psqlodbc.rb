@@ -5,13 +5,13 @@ class Psqlodbc < Formula
   url 'http://ftp.postgresql.org/pub/odbc/versions/src/psqlodbc-09.01.0200.tar.gz'
   sha1 '9ecee7c370ec6a0d87791490dea01723436a4e2b'
   
-  depends_on "libpqxx"
+  depends_on "postgresql"
   depends_on "unixodbc" => :optional
   depends_on "libiodbc" => [:optional, 'with-iodbc']
 
   def install
-    args = ["--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-pthreads"]
-    args << "--with-libpq=#{Formula.factory('libpqxx').prefix}"
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-pthreads"]
+    args << "--with-libpq=#{Formula.factory('postgresql').lib}"
     
     if build.include? "disable-unicode"
       args << "--disable-unicode"
