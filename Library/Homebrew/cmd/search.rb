@@ -1,5 +1,6 @@
 require "formula"
 require "blacklist"
+require "utils"
 
 module Homebrew extend self
   def search
@@ -7,6 +8,8 @@ module Homebrew extend self
       exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
+    elsif ARGV.include? '--debian'
+      exec_browser "http://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     else
       query = ARGV.first
       rx = case query
@@ -59,12 +62,10 @@ module Homebrew extend self
 
   def search_tap user, repo, rx
     return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
-
-    require 'open-uri'
     require 'vendor/multi_json'
 
     results = []
-    open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |f|
+    GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |f|
       user.downcase! if user == "Homebrew" # special handling for the Homebrew organization
       MultiJson.decode(f.read)["tree"].map{ |hash| hash['path'] }.compact.each do |file|
         name = File.basename(file, '.rb')
@@ -75,8 +76,6 @@ module Homebrew extend self
       end
     end
     results
-  rescue
-    []
   end
 
   def search_brews rx

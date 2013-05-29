@@ -2,9 +2,9 @@ require 'formula'
 
 class Libxml2 < Formula
   homepage 'http://xmlsoft.org'
-  url 'ftp://xmlsoft.org/libxml2/libxml2-2.9.0.tar.gz'
-  mirror 'http://xmlsoft.org/sources/libxml2-2.9.0.tar.gz'
-  sha256 'ad25d91958b7212abdc12b9611cfb4dc4e5cddb6d1e9891532f48aacee422b82'
+  url 'ftp://xmlsoft.org/libxml2/libxml2-2.9.1.tar.gz'
+  mirror 'http://xmlsoft.org/sources/libxml2-2.9.1.tar.gz'
+  sha256 'fd3c64cb66f2c4ea27e934d275904d92cec494a8e8405613780cbc8a71680fdb'
 
   keg_only :provided_by_osx
 
@@ -14,13 +14,6 @@ class Libxml2 < Formula
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
-  end
-
-  def patches
-    %w{
-    http://git.gnome.org/browse/libxml2/patch/?id=3f6cfbd1d38d0634a2ddcb9a0a13e1b5a2195a5e
-    http://git.gnome.org/browse/libxml2/patch/?id=713434d2309da469d64b35e163ea6556dadccada
-    }
   end
 
   def install

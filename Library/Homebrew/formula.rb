@@ -40,10 +40,6 @@ class Formula
       unless bottle.checksum.nil? || bottle.checksum.empty?
         @bottle = bottle
         bottle.url ||= bottle_url(self)
-        if bottle.cat_without_underscores
-          bottle.url.gsub!(MacOS.cat.to_s,
-                           MacOS.cat_without_underscores.to_s)
-        end
       end
     end
 
@@ -91,7 +87,6 @@ class Formula
 
   def url;      active_spec.url;     end
   def version;  active_spec.version; end
-  def specs;    active_spec.specs;   end
   def mirrors;  active_spec.mirrors; end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -99,38 +94,14 @@ class Formula
     (dir = installed_prefix).directory? && dir.children.length > 0
   end
 
-  def pinnable?
-    @pin.pinnable?
-  end
-
-  def pinned?
-    @pin.pinned?
-  end
-
-  def pin
-    @pin.pin
-  end
-
-  def unpin
-    @pin.unpin
-  end
-
   def linked_keg
     Pathname.new("#{HOMEBREW_LIBRARY}/LinkedKegs/#{name}")
   end
 
   def installed_prefix
-    devel_prefix = unless devel.nil?
-      Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{devel.version}")
-    end
-
-    head_prefix = unless head.nil?
-      Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{head.version}")
-    end
-
-    if active_spec == head || head and head_prefix.directory?
+    if head && (head_prefix = prefix(head.version)).directory?
       head_prefix
-    elsif active_spec == devel || devel and devel_prefix.directory?
+    elsif devel && (devel_prefix = prefix(devel.version)).directory?
       devel_prefix
     else
       prefix
@@ -142,8 +113,8 @@ class Formula
     Keg.new(installed_prefix).version
   end
 
-  def prefix
-    Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{version}")
+  def prefix(v=version)
+    Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{v}")
   end
   def rack; prefix.parent end
 
@@ -280,6 +251,22 @@ class Formula
 
   def unlock
     @lock.unlock unless @lock.nil?
+  end
+
+  def pinnable?
+    @pin.pinnable?
+  end
+
+  def pinned?
+    @pin.pinned?
+  end
+
+  def pin
+    @pin.pin
+  end
+
+  def unpin
+    @pin.unpin
   end
 
   def == b
@@ -530,8 +517,7 @@ class Formula
     end
 
     if rack.directory?
-      rack.children.each do |keg|
-        next if keg.basename.to_s == '.DS_Store'
+      rack.subdirs.each do |keg|
         tab = Tab.for_keg keg
 
         hsh["installed"] << {
@@ -618,7 +604,8 @@ class Formula
   def fetch
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
-    return downloader.fetch, downloader
+    downloader.fetch
+    cached_download
   end
 
   # For FormulaInstaller.
@@ -643,8 +630,8 @@ class Formula
   private
 
   def stage
-    fetched, downloader = fetch
-    verify_download_integrity fetched if fetched.kind_of? Pathname
+    fetched = fetch
+    verify_download_integrity(fetched) if fetched.file?
     mktemp do
       downloader.stage
       # Set path after the downloader changes the working folder.

@@ -30,12 +30,10 @@ class Avidemux < Formula
   depends_on 'x264'
   depends_on 'qt' => :optional
 
-  # Check if this still exists @ XCode-4.3.4 or 4.4.0.  I think it's fixed then
-  # by llvm in clang svn.  So this will have to persist for older clang.
   fails_with :clang do
-    build 421
-    cause "error in backend: Couldn't allocate input reg for constraint"
-  end unless build.include? 'with-debug'
+    build 425
+    cause "error: ambiguous instructions require an explicit suffix"
+  end
 
   def patches
     # Symbols undefined due to optimization.  Fixed in head. Remove @ 2.5.7.

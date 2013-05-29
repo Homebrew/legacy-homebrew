@@ -1,15 +1,15 @@
 require 'formula'
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.38.tar.gz'
-  sha1 'dcd9d17db4e2df132f5c9c2e88c52d57ff6ff541'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.40.tar.gz'
+  sha1 '46654be10177014bbb502a4c516627173de67d15'
 end
 
 class Pypy < Formula
   homepage 'http://pypy.org/'
-  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.0-osx64.tar.bz2'
-  version '2.0'
-  sha1 '65ecb2ba570f05691978c64469cfe3e76bfd8e01'
+  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.0.2-osx64.tar.bz2'
+  version '2.0.2'
+  sha1 'a53de7bc88b9caa635d9d679c6e63813881ea7e9'
 
   depends_on :arch => :x86_64
 

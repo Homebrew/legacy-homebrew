@@ -266,8 +266,8 @@ Note that these flags should only appear after a command.
     surrounded with slashes, then it is interpreted as a regular expression.
     If no search term is given, all available formula are displayed.
 
-  * `search --macports`|`--fink` <text>:
-    Search for <text> on the MacPorts or Fink package search page.
+  * `search --macports`|`--fink`|`--debian` <text>:
+    Search for <text> in MacPorts, Fink or Debian's package list.
 
   * `sh [--env=std]`:
     Instantiate a Homebrew build environment. Uses our years-battle-hardened
@@ -458,6 +458,13 @@ can take several different forms:
     *NOTE*: `brew edit` will open all of Homebrew as discontinuous files and
     directories. TextMate can handle this correctly in project mode, but many
     editors will do strange things in this case.
+
+  * HOMEBREW\_GITHUB\_API\_TOKEN:
+    A personal GitHub API Access token, which you can create at
+    <https://github.com/settings/applications>. If set, GitHub will allow you a
+    greater number of API requests. See
+    <http://developer.github.com/v3/#rate-limiting> for more information.
+    Homebrew uses the GitHub API for features such as `brew search`.
 
   * HOMEBREW\_KEEP\_INFO:
     If set, Homebrew will not remove files from `share/info`, allowing them

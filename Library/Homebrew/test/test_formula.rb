@@ -26,6 +26,84 @@ class FormulaTests < Test::Unit::TestCase
     assert f.installed?
   end
 
+  def test_installed_prefix
+    f = Class.new(TestBall).new
+    assert_equal f.prefix, f.installed_prefix
+  end
+
+  def test_installed_prefix_head_installed
+    f = formula do
+      head 'foo'
+      devel do
+        url 'foo'
+        version '1.0'
+      end
+    end
+    prefix = HOMEBREW_CELLAR+f.name+f.head.version
+    prefix.mkpath
+    assert_equal prefix, f.installed_prefix
+  ensure
+    prefix.rmtree
+  end
+
+  def test_installed_prefix_devel_installed
+    f = formula do
+      head 'foo'
+      devel do
+        url 'foo'
+        version '1.0'
+      end
+    end
+    prefix = HOMEBREW_CELLAR+f.name+f.devel.version
+    prefix.mkpath
+    assert_equal prefix, f.installed_prefix
+  ensure
+    prefix.rmtree
+  end
+
+  def test_installed_prefix_stable_installed
+    f = formula do
+      head 'foo'
+      devel do
+        url 'foo'
+        version '1.0-devel'
+      end
+    end
+    prefix = HOMEBREW_CELLAR+f.name+f.version
+    prefix.mkpath
+    assert_equal prefix, f.installed_prefix
+  ensure
+    prefix.rmtree
+  end
+
+  def test_installed_prefix_head_active_spec
+    ARGV.stubs(:build_head? => true)
+
+    f = formula do
+      head 'foo'
+      devel do
+        url 'foo'
+        version '1.0-devel'
+      end
+    end
+    prefix = HOMEBREW_CELLAR+f.name+f.head.version
+    assert_equal prefix, f.installed_prefix
+  end
+
+  def test_installed_prefix_devel_active_spec
+    ARGV.stubs(:build_devel? => true)
+
+    f = formula do
+      head 'foo'
+      devel do
+        url 'foo'
+        version '1.0-devel'
+      end
+    end
+    prefix = HOMEBREW_CELLAR+f.name+f.devel.version
+    assert_equal prefix, f.installed_prefix
+  end
+
   def test_equality
     x = TestBall.new
     y = TestBall.new

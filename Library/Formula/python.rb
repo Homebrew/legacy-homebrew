@@ -1,8 +1,8 @@
 require 'formula'
 
 class Distribute < Formula
-  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.38.tar.gz'
-  sha1 'dcd9d17db4e2df132f5c9c2e88c52d57ff6ff541'
+  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.40.tar.gz'
+  sha1 '46654be10177014bbb502a4c516627173de67d15'
 end
 
 class Pip < Formula
@@ -12,8 +12,8 @@ end
 
 class Python < Formula
   homepage 'http://www.python.org'
-  url 'http://www.python.org/ftp/python/2.7.4/Python-2.7.4.tar.bz2'
-  sha1 'deb8609d8e356b3388f33b6a4d6526911994e5b1'
+  url 'http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2'
+  sha1 '6cfada1a739544a6fa7f2601b500fba02229656b'
 
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build (for devs; may fail)'
@@ -163,6 +163,16 @@ class Python < Formula
       install-scripts=#{scripts_folder}
       install-lib=#{site_packages}
     EOF
+
+     # Work-around this bug: http://bugs.python.org/issue18050
+     inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/re.py", 'import sys', <<-EOS.undent
+        import sys
+        try:
+            from _sre import MAXREPEAT
+        except ImportError:
+            import _sre
+            _sre.MAXREPEAT = 65535 # this monkey-patches all other places of "from _sre import MAXREPEAT"'
+        EOS
 
     makefile = prefix/'Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile'
     inreplace makefile do |s|

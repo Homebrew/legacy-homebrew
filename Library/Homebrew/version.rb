@@ -90,7 +90,7 @@ class Version
   end
 
   def to_s
-    @version
+    @version.dup
   end
   alias_method :to_str, :to_s
 

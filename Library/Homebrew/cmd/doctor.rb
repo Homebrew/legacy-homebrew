@@ -41,14 +41,10 @@ end
 class Checks
 
 ############# HELPERS
-  def remove_trailing_slash s
-    (s[s.length-1] == '/') ? s[0,s.length-1] : s
-  end
-
   def paths
     @paths ||= ENV['PATH'].split(':').collect do |p|
       begin
-        remove_trailing_slash(File.expand_path(p))
+        File.expand_path(p).chomp('/')
       rescue ArgumentError
         onoe "The following PATH component is invalid: #{p}"
       end
@@ -72,7 +68,7 @@ class Checks
 # Sorry for the lack of an indent here, the diff would have been unreadable.
 # See https://github.com/mxcl/homebrew/pull/9986
 def check_path_for_trailing_slashes
-  bad_paths = ENV['PATH'].split(':').select{|p| p[p.length-1, p.length] == '/'}
+  bad_paths = ENV['PATH'].split(':').select { |p| p[-1..-1] == '/' }
   return if bad_paths.empty?
   s = <<-EOS.undent
     Some directories in your path end in a slash.
@@ -86,20 +82,29 @@ end
 # Installing MacGPG2 interferes with Homebrew in a big way
 # http://sourceforge.net/projects/macgpg2/files/
 def check_for_macgpg2
-  if %w{/Applications/start-gpg-agent.app
-        /Library/Receipts/libiconv1.pkg
-        /usr/local/MacGPG2}.any? { |f| File.exist? f }
-    <<-EOS.undent
+  return if File.exist? '/usr/local/MacGPG2/share/gnupg/VERSION'
+
+  suspects = %w{
+    /Applications/start-gpg-agent.app
+    /Library/Receipts/libiconv1.pkg
+    /usr/local/MacGPG2
+  }
+
+  if suspects.any? { |f| File.exist? f } then <<-EOS.undent
       You may have installed MacGPG2 via the package installer.
       Several other checks in this script will turn up problems, such as stray
       dylibs in /usr/local and permissions issues with share and man in /usr/local/.
     EOS
-  end unless File.exist? '/usr/local/MacGPG2/share/gnupg/VERSION'
+  end
+end
+
+def __check_stray_files(pattern, white_list, message)
+  files = Dir[pattern].select { |f| File.file? f and not File.symlink? f }
+  bad = files.reject {|d| white_list.key? File.basename(d) }
+  inject_file_list(bad, message) unless bad.empty?
 end
 
 def check_for_stray_dylibs
-  unbrewed_dylibs = Dir['/usr/local/lib/*.dylib'].select { |f| File.file? f and not File.symlink? f }
-
   # Dylibs which are generally OK should be added to this list,
   # with a short description of the software they come with.
   white_list = {
@@ -107,22 +112,16 @@ def check_for_stray_dylibs
     "libfuse_ino64.2.dylib" => "MacFuse"
   }
 
-  bad_dylibs = unbrewed_dylibs.reject {|d| white_list.key? File.basename(d) }
-  return if bad_dylibs.empty?
-
-  s = <<-EOS.undent
+  __check_stray_files '/usr/local/lib/*.dylib', white_list, <<-EOS.undent
     Unbrewed dylibs were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected dylibs:
   EOS
-  inject_file_list(bad_dylibs, s)
 end
 
 def check_for_stray_static_libs
-  unbrewed_alibs = Dir['/usr/local/lib/*.a'].select { |f| File.file? f and not File.symlink? f }
-
   # Static libs which are generally OK should be added to this list,
   # with a short description of the software they come with.
   white_list = {
@@ -130,58 +129,42 @@ def check_for_stray_static_libs
     "libsecurity_agent_server.a" => "OS X 10.8.2 Supplemental Update"
   }
 
-  bad_alibs = unbrewed_alibs.reject {|d| white_list.key? File.basename(d) }
-  return if bad_alibs.empty?
-
-  s = <<-EOS.undent
+  __check_stray_files '/usr/local/lib/*.a', white_list, <<-EOS.undent
     Unbrewed static libraries were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected static libraries:
   EOS
-  inject_file_list(bad_alibs, s)
 end
 
 def check_for_stray_pcs
-  unbrewed_pcs = Dir['/usr/local/lib/pkgconfig/*.pc'].select { |f| File.file? f and not File.symlink? f }
-
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = { }
+  white_list = {}
 
-  bad_pcs = unbrewed_pcs.reject {|d| white_list.key? File.basename(d) }
-  return if bad_pcs.empty?
-
-  s = <<-EOS.undent
+  __check_stray_files '/usr/local/lib/pkgconfig/*.pc', white_list, <<-EOS.undent
     Unbrewed .pc files were found in /usr/local/lib/pkgconfig.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected .pc files:
   EOS
-  inject_file_list(bad_pcs, s)
 end
 
 def check_for_stray_las
-  unbrewed_las = Dir['/usr/local/lib/*.la'].select { |f| File.file? f and not File.symlink? f }
-
   white_list = {
     "libfuse.la" => "MacFuse",
     "libfuse_ino64.la" => "MacFuse",
   }
 
-  bad_las = unbrewed_las.reject {|d| white_list.key? File.basename(d) }
-  return if bad_las.empty?
-
-  s = <<-EOS.undent
+  __check_stray_files '/usr/local/lib/*.la', white_list, <<-EOS.undent
     Unbrewed .la files were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected .la files:
   EOS
-  inject_file_list(bad_las, s)
 end
 
 def check_for_other_package_managers
@@ -202,10 +185,12 @@ end
 def check_for_broken_symlinks
   require 'keg'
   broken_symlinks = []
-  Keg::PRUNEABLE_DIRECTORIES.each do |d|
-    next unless d.directory?
-    d.find do |pn|
-      broken_symlinks << pn if pn.symlink? and pn.readlink.expand_path.to_s =~ /^#{HOMEBREW_PREFIX}/o and not pn.exist?
+
+  Keg::PRUNEABLE_DIRECTORIES.select(&:directory?).each do |d|
+    d.find do |path|
+      if path.symlink? && !path.resolved_path_exists?
+        broken_symlinks << path
+      end
     end
   end
   unless broken_symlinks.empty? then <<-EOS.undent
@@ -215,29 +200,34 @@ def check_for_broken_symlinks
   end
 end
 
-def check_for_latest_xcode
-  if not MacOS::Xcode.installed?
-    if MacOS.version >= 10.7
-      if not MacOS::CLT.installed?
-        <<-EOS.undent
-        No developer tools installed
-        You should install the Command Line Tools: http://connect.apple.com
-        EOS
-      elsif not MacOS::CLT.latest_version?
-        <<-EOS.undent
-        A newer Command Line Tools for Xcode release is available
-        You should install the latest version from: http://connect.apple.com
-        EOS
-      end
-    else
-      <<-EOS.undent
-      Xcode not installed
-      Most stuff needs Xcode to build: http://developer.apple.com/xcode/
-      EOS
-    end
-  elsif MacOS::Xcode.version < MacOS::Xcode.latest_version then <<-EOS.undent
+def check_xcode_clt
+  if MacOS::Xcode.installed?
+    __check_xcode_up_to_date
+  elsif MacOS.version >= 10.7
+    __check_clt_up_to_date
+  else <<-EOS.undent
+    Xcode not installed
+    Most stuff needs Xcode to build: http://developer.apple.com/xcode/
+    EOS
+  end
+end
+
+def __check_xcode_up_to_date
+  if MacOS::Xcode.outdated? then <<-EOS.undent
     Your Xcode (#{MacOS::Xcode.version}) is outdated
     Please install Xcode #{MacOS::Xcode.latest_version}.
+    EOS
+  end
+end
+
+def __check_clt_up_to_date
+  if not MacOS::CLT.installed? then <<-EOS.undent
+    No developer tools installed
+    You should install the Command Line Tools: http://connect.apple.com
+    EOS
+  elsif MacOS::CLT.outdated? then <<-EOS.undent
+    A newer Command Line Tools for Xcode release is available
+    You should install the latest version from: http://connect.apple.com
     EOS
   end
 end
@@ -245,33 +235,30 @@ end
 def check_for_stray_developer_directory
   # if the uninstaller script isn't there, it's a good guess neither are
   # any troublesome leftover Xcode files
-  if MacOS::Xcode.version >= "4.3" and File.exist? "/Developer/Library/uninstall-developer-folder"
-    return <<-EOS.undent
+  uninstaller = Pathname.new("/Developer/Library/uninstall-developer-folder")
+  if MacOS::Xcode.version >= "4.3" && uninstaller.exist? then <<-EOS.undent
     You have leftover files from an older version of Xcode.
     You should delete them using:
-      /Developer/Library/uninstall-developer-folder
+      #{uninstaller}
     EOS
   end
 end
 
 def check_cc
   unless MacOS::CLT.installed?
-    if MacOS::Xcode.version >= "4.3"
-      return <<-EOS.undent
-        Experimental support for using Xcode without the "Command Line Tools".
-        You have only installed Xcode. If stuff is not building, try installing the
-        "Command Line Tools for Xcode" package provided by Apple.
+    if MacOS::Xcode.version >= "4.3" then <<-EOS.undent
+      Experimental support for using Xcode without the "Command Line Tools".
+      You have only installed Xcode. If stuff is not building, try installing the
+      "Command Line Tools for Xcode" package provided by Apple.
       EOS
     else
-      return <<-EOS.undent
-        No compiler found in /usr/bin!
-      EOS
+      'No compiler found in /usr/bin!'
     end
   end
 end
 
 def check_standard_compilers
-  return if check_for_latest_xcode # only check if Xcode is up to date
+  return if check_xcode_clt # only check if Xcode is up to date
   compiler_status = MacOS.compilers_standard?
   if not compiler_status and not compiler_status.nil? then <<-EOS.undent
     Your compilers are different from the standard versions for your Xcode.
@@ -398,7 +385,7 @@ def check_xcode_prefix_exists
   return if prefix.nil?
   unless prefix.exist?
     <<-EOS.undent
-      The folder Xcode is reportedly installed to doesn't exist:
+      The directory Xcode is reportedly installed to doesn't exist:
         #{prefix}
       You may need to `xcode-select` the proper path if you have moved Xcode.
     EOS
@@ -700,8 +687,22 @@ def check_filesystem_case_sensitive
   EOS
 end
 
+def __check_git_version
+  # https://help.github.com/articles/https-cloning-errors
+  `git --version`.chomp =~ /git version ((?:\d+\.?)+)/
+
+  if Version.new($1) < Version.new("1.7.10") then <<-EOS.undent
+    An outdated version of Git was detected in your PATH.
+    Git 1.7.10 or newer is required to perform checkouts over HTTPS from GitHub.
+    Please upgrade: brew upgrade git
+    EOS
+  end
+end
+
 def check_for_git
-  unless which "git" then <<-EOS.undent
+  if which "git"
+    __check_git_version
+  else <<-EOS.undent
     Git could not be found in your PATH.
     Homebrew uses Git for several internal functions, and some formulae use Git
     checkouts instead of stable tarballs. You may want to install Git:
@@ -728,13 +729,13 @@ def check_git_newline_settings
   end
 end
 
-def check_for_git_origin
-  return unless which "git"
-  # otherwise this will nag users with no repo about their remote
-  return unless (HOMEBREW_REPOSITORY/'.git').exist?
+def check_git_origin
+  return unless which('git') && (HOMEBREW_REPOSITORY/'.git').exist?
 
   HOMEBREW_REPOSITORY.cd do
-    if `git config --get remote.origin.url`.chomp.empty? then <<-EOS.undent
+    origin = `git config --get remote.origin.url`.strip
+
+    if origin.empty? then <<-EOS.undent
       Missing git origin remote.
 
       Without a correctly configured origin, Homebrew won't update
@@ -742,21 +743,7 @@ def check_for_git_origin
         cd #{HOMEBREW_REPOSITORY}
         git remote add origin https://github.com/mxcl/homebrew.git
       EOS
-    end
-  end
-end
-
-def check_the_git_origin
-  return unless which "git"
-  return if check_for_git_origin
-
-  # otherwise this will nag users with no repo about their remote
-  return unless (HOMEBREW_REPOSITORY/'.git').exist?
-
-  HOMEBREW_REPOSITORY.cd do
-    origin = `git config --get remote.origin.url`.chomp
-
-    unless origin =~ /mxcl\/homebrew(\.git)?$/ then <<-EOS.undent
+    elsif origin !~ /mxcl\/homebrew(\.git)?$/ then <<-EOS.undent
       Suspicious git origin remote found.
 
       With a non-standard origin, Homebrew won't pull updates from
@@ -899,32 +886,19 @@ def check_git_status
   end
 end
 
-def check_for_leopard_ssl
-  if MacOS.version == :leopard and not ENV['GIT_SSL_NO_VERIFY']
-    <<-EOS.undent
-      The version of libcurl provided with Mac OS X Leopard has outdated
-      SSL certificates.
+def check_git_ssl_verify
+  if MacOS.version <= :leopard && !ENV['GIT_SSL_NO_VERIFY'] then <<-EOS.undent
+    The version of libcurl provided with Mac OS X #{MacOS.version} has outdated
+    SSL certificates.
 
-      This can cause problems when running Homebrew commands that use Git to
-      fetch over HTTPS, e.g. `brew update` or installing formulae that perform
-      Git checkouts.
+    This can cause problems when running Homebrew commands that use Git to
+    fetch over HTTPS, e.g. `brew update` or installing formulae that perform
+    Git checkouts.
 
-      You can force Git to ignore these errors by setting GIT_SSL_NO_VERIFY.
-        export GIT_SSL_NO_VERIFY=1
-    EOS
-  end
-end
-
-def check_git_version
-  # https://help.github.com/articles/https-cloning-errors
-  return unless which "git"
-
-  `git --version`.chomp =~ /git version ((?:\d+\.?)+)/
-
-  if Version.new($1) < Version.new("1.7.10") then <<-EOS.undent
-    An outdated version of Git was detected in your PATH.
-    Git 1.7.10 or newer is required to perform checkouts over HTTPS from GitHub.
-    Please upgrade: brew upgrade git
+    You can force Git to ignore these errors:
+      export GIT_SSL_NO_VERIFY=1
+    or
+      git config --global http.sslVerify false
     EOS
   end
 end
@@ -1027,26 +1001,6 @@ def check_for_unlinked_but_not_keg_only
 
         #{unlinked * "\n        "}
     EOS
-  end
-end
-
-def check_os_version
-  if MACOS_FULL_VERSION =~ /^10\.6(\.|$)/
-    unless (MACOS_FULL_VERSION == "10.6.8")
-      return <<-EOS.undent
-        Please update Snow Leopard.
-        10.6.8 is the supported version of Snow Leopard.
-        You are still running #{MACOS_FULL_VERSION}.
-      EOS
-    end
-  elsif MACOS_FULL_VERSION =~ /^10\.5(\.|$)/
-    unless (MACOS_FULL_VERSION == "10.5.8")
-      return <<-EOS.undent
-        Please update Leopard.
-        10.5.8 is the supported version of Leopard.
-        You are still running #{MACOS_FULL_VERSION}.
-      EOS
-    end
   end
 end
 

@@ -6,8 +6,8 @@ require 'formula'
 # `brew install python`.
 
 class Distribute < Formula
-  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.38.tar.gz'
-  sha1 'dcd9d17db4e2df132f5c9c2e88c52d57ff6ff541'
+  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.40.tar.gz'
+  sha1 '46654be10177014bbb502a4c516627173de67d15'
 end
 
 class Pip < Formula
@@ -18,8 +18,8 @@ end
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.3.1/Python-3.3.1.tar.bz2'
-  sha1 'bec78674847a4dacc4717c93b32b6b07adb90afe'
+  url 'http://python.org/ftp/python/3.3.2/Python-3.3.2.tar.bz2'
+  sha1 'b28c36a9752b690059dc6df4fb9b4ec9d6c5708a'
   VER='3.3'  # The <major>.<minor> is used so often.
 
   depends_on 'pkg-config' => :build

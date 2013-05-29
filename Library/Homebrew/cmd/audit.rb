@@ -207,7 +207,7 @@ class FormulaAuditor
     urls = @specs.map(&:url)
 
     # Check GNU urls; doesn't apply to mirrors
-    urls.grep(%r[^(?:https?|ftp)://(?!alpha).+/gnu/]).each do |u|
+    urls.grep(%r[^(?:https?|ftp)://(?!alpha).+/gnu/]) do |u|
       problem "\"ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
     end
 
@@ -242,12 +242,12 @@ class FormulaAuditor
     end
 
     # Check for git:// GitHub repo urls, https:// is preferred.
-    urls.grep(%r[^git://[^/]*github\.com/]).each do |u|
+    urls.grep(%r[^git://[^/]*github\.com/]) do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
     end
 
     # Check for http:// GitHub repo urls, https:// is preferred.
-    urls.grep(%r[^http://github\.com/.*\.git$]).each do |u|
+    urls.grep(%r[^http://github\.com/.*\.git$]) do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
     end 
 
@@ -273,7 +273,7 @@ class FormulaAuditor
       else
         version_text = s.version unless s.version.detected_from_url?
         version_url = Version.parse(s.url)
-        if version_url.to_s == version_text.to_s
+        if version_url.to_s == version_text.to_s && s.version.instance_of?(Version)
           problem "#{spec} version #{version_text} is redundant with version scanned from URL"
         end
       end
@@ -293,6 +293,16 @@ class FormulaAuditor
         problem "#{cksum.hash_type} contains invalid characters" unless cksum.hexdigest =~ /^[a-fA-F0-9]+$/
         problem "#{cksum.hash_type} should be lowercase" unless cksum.hexdigest == cksum.hexdigest.downcase
       end
+    end
+
+    # Check for :using that is already detected from the url
+    @specs.each do |s|
+      next if s.using.nil?
+
+      url_strategy = DownloadStrategyDetector.detect(s.url)
+      using_strategy = DownloadStrategyDetector.detect('', s.using)
+
+      problem "redundant :using specification in url or head" if url_strategy == using_strategy
     end
   end
 

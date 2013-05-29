@@ -87,6 +87,7 @@ class Subversion < Formula
             # use our neon, not OS X's
             "--disable-neon-version-check",
             "--disable-mod-activation",
+            "--disable-nls",
             "--without-apache-libexecdir",
             "--without-berkeley-db"]
 

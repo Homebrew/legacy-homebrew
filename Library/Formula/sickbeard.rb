@@ -10,7 +10,7 @@ class Sickbeard < Formula
   depends_on 'Cheetah' => :python
 
   def install
-    prefix.install Dir['*']
+    libexec.install Dir['*']
     (bin+"sickbeard").write(startup_script)
   end
 
@@ -25,11 +25,11 @@ class Sickbeard < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-           <string>#{opt_prefix}/bin/sickbeard</string>
-           <string>-q</string>
-           <string>--nolaunch</string>
-           <string>-p</string>
-           <string>8081</string>
+        <string>#{opt_prefix}/bin/sickbeard</string>
+        <string>-q</string>
+        <string>--nolaunch</string>
+        <string>-p</string>
+        <string>8081</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
@@ -39,28 +39,15 @@ class Sickbeard < Formula
   end
 
   def startup_script; <<-EOS.undent
-    #!/usr/bin/env ruby
-
-    me = begin
-      File.expand_path(
-        File.join(
-          File.dirname(__FILE__),
-          File.readlink(__FILE__)
-        )
-      )
-    rescue
-      __FILE__
-    end
-
-    path = File.join(File.dirname(me), '..', 'SickBeard.py')
-    args = ["--pidfile=#{var}/run/sickbeard.pid", "--datadir=#{etc}/sickbeard"]
-
-    exec("python", path, *(args + ARGV))
+    #!/bin/bash
+    python "#{libexec}/SickBeard.py"\
+           "--pid_file=#{var}/run/sickbeard.pid"\
+           "--data_dir=#{etc}/sickbeard"\
+           "$@"
     EOS
   end
 
-  def caveats; <<-EOS.undent
-    SickBeard defaults to port 8081.
-    EOS
+  def caveats
+    "SickBeard defaults to port 8081."
   end
 end

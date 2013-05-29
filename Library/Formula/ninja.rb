@@ -2,8 +2,8 @@ require 'formula'
 
 class Ninja < Formula
   homepage 'https://github.com/martine/ninja'
-  url 'https://github.com/martine/ninja/archive/v1.1.0.tar.gz'
-  sha1 'ce37677326997c70da4fe49c1e948aba5b77317f'
+  url 'https://github.com/martine/ninja/archive/v1.3.3.tar.gz'
+  sha1 '1e27d85316a267afa5e98ed62b660395ab5b9851'
 
   def install
     system "./bootstrap.py"
