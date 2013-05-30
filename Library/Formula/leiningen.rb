@@ -11,6 +11,7 @@ class Leiningen < Formula
     bin.install "bin/lein"
     system "#{bin}/lein", "self-install"
     bash_completion.install 'bash_completion.bash' => 'lein-completion.bash'
+    zsh_completion.install 'zsh_completion.zsh' => '_lein'
   end
 
   def caveats; <<-EOS.undent
