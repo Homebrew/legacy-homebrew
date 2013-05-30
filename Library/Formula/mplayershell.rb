@@ -15,7 +15,7 @@ class MplayerPresented < Requirement
   fatal true
   default_formula 'mplayer'
 
-  satisfy { which 'mplayer2' unless which 'mplayer'}
+  satisfy { which('mplayer') || which('mplayer2') }
 
   def message; <<-EOS.undent
     MPlayerShell requires mplayer or mplayer2 to be installed.
