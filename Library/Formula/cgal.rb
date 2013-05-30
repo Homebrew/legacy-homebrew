@@ -16,7 +16,6 @@ class Cgal < Formula
 
   depends_on 'qt' if build.include? 'imaging'
   depends_on 'eigen' if build.include? 'with-eigen3'
-  depends_on 'lapack' if build.include? 'with-lapack'
 
   def install
     args = ["-DCMAKE_INSTALL_PREFIX=#{prefix}",
