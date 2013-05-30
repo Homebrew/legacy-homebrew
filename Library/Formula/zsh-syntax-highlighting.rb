@@ -17,7 +17,7 @@ class ZshSyntaxHighlighting < Formula
 
       source #{HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-    You may also need to force reload of your .zshrc:
+    You will also need to force reload of your .zshrc:
 
       source ~/.zshrc
 
