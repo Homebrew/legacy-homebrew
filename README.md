@@ -17,6 +17,10 @@ What Packages Are Available?
 3. Or run `brew server` to browse packages off of a local web server.
 4. Or visit [braumeister](http://braumeister.org) to browse packages online.
 
+Requirement
+-----------
+* **Ruby** 1.8.6 or newer
+
 More Documentation
 ------------------
 `brew help` or `man brew` or check the Homebrew [wiki](https://github.com/mxcl/homebrew/wiki).
