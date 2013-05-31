@@ -19,15 +19,17 @@ module MacOS::Xcode extend self
 
   def latest_version
     case MacOS.version
-      when 10.5 then "3.1.4"
-      when 10.6 then "3.2.6"
+    when 10.4       then "2.5"
+    when 10.5       then "3.1.4"
+    when 10.6       then "3.2.6"
+    when 10.7, 10.8 then "4.6.2"
     else
-      if MacOS.version >= 10.7
-        "4.6.2"
-      else
-        raise "Mac OS X `#{MacOS.version}' is invalid"
-      end
+      raise "Mac OS X '#{MacOS.version}' is invalid"
     end
+  end
+
+  def outdated?
+    version < latest_version
   end
 
   def prefix
@@ -156,6 +158,10 @@ module MacOS::CLT extend self
   def latest_version?
     `/usr/bin/clang --version` =~ %r{clang-(\d+)\.(\d+)\.(\d+)}
     $1.to_i >= 425 and $3.to_i >= 28
+  end
+
+  def outdated?
+    !latest_version?
   end
 
   def version

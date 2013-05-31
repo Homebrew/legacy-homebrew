@@ -220,7 +220,7 @@ _brew_install ()
                 --use-gcc
                 --use-llvm
                 --verbose
-                $(brew options --compact "$prv")
+                $(brew options --compact "$prv" 2>/dev/null)
                 "
         fi
         return
@@ -313,7 +313,7 @@ _brew_search ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--fink --macports"
+        __brewcomp "--debian --fink --macports"
         return
         ;;
     esac

@@ -2,16 +2,22 @@ require 'formula'
 
 class Gearman < Formula
   homepage 'http://gearman.org/'
-  url 'https://launchpad.net/gearmand/1.2/1.1.5/+download/gearmand-1.1.5.tar.gz'
-  sha1 '516c7690551ea214198a7502a85e976c136b8d65'
+  url 'https://launchpad.net/gearmand/1.2/1.1.7/+download/gearmand-1.1.7.tar.gz'
+  sha1 '4dbbdfbbfd184f1902fc5b139ec250dc6f260bc8'
+
+  option 'with-mysql', 'Compile with MySQL persistent queue enabled'
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
   depends_on 'libevent'
   depends_on 'ossp-uuid'
+  depends_on :mysql if build.include? 'with-mysql'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--without-mysql"
+    args = ["--prefix=#{prefix}"]
+    args << "--with-mysql" if build.include? 'with-mysql'
+
+    system "./configure", *args
     system "make install"
   end
 

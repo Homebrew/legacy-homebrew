@@ -13,6 +13,8 @@ class Imake < Formula
   depends_on 'pkg-config' => :build
   depends_on :x11
 
+  env :std # CPP issues under superenv
+
   def patches
     # Remove cpp whitespace check and add "-" to pass the cpp -undef test.
     # These are needed to support superenv (which uses clang)
@@ -21,9 +23,9 @@ class Imake < Formula
 
   def install
     ENV.deparallelize
-    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-    # install X config files
+
     ImakeXorgCfFiles.new.brew do
       system "./configure", "--with-config-dir=#{lib}/X11/config"
       system "make install"

@@ -21,11 +21,14 @@ class Couchdb < Formula
   depends_on 'erlang'
   depends_on 'curl' if MacOS.version == :leopard
 
-  # couchdb 1.3.0 supports vendor names and versioning
-  # in the welcome message
-  def patches; DATA; end
-
   def install
+    # couchdb 1.3.0 supports vendor names and versioning
+    # in the welcome message
+    inreplace 'etc/couchdb/default.ini.tpl.in' do |s|
+      s.gsub! '%package_author_name%', 'Homebrew'
+      s.gsub! '%version%', '%version%-1'
+    end
+
     if build.devel? or build.head?
       # workaround for the auto-generation of THANKS file which assumes
       # a developer build environment incl access to git sha
@@ -82,20 +85,3 @@ class Couchdb < Formula
     EOS
   end
 end
-
-__END__
-diff --git i/etc/couchdb/default.ini.tpl.in w/etc/couchdb/default.ini.tpl.in
-index 736d9cd..606e465 100644
---- i/etc/couchdb/default.ini.tpl.in
-+++ w/etc/couchdb/default.ini.tpl.in
-@@ -2,8 +2,8 @@
-
- ; Upgrading CouchDB will overwrite this file.
- [vendor]
--name = %package_author_name%
--version = %version%
-+name = Homebrew
-+version = %version%-1
-
- [couchdb]
- database_dir = %localstatelibdir%

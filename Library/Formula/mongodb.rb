@@ -6,6 +6,12 @@ class Mongodb < Formula
   sha1 '9b9daa337c11789b832a9548bc2248d861e2ff6b'
   version '2.4.3-x86_64'
 
+  devel do
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.5.0.tgz'
+    sha1 '158335b4b2b8d53c8c6bd4f4d81c733e492f8339'
+    version '2.5.0-x86_64'
+  end
+
   depends_on :arch => :x86_64
 
   def install

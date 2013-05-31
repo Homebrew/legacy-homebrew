@@ -2,8 +2,8 @@ require 'formula'
 
 class Newlisp < Formula
   homepage 'http://www.newlisp.org/'
-  url 'http://www.newlisp.org/downloads/newlisp-10.4.5.tgz'
-  sha1 '8e81b73b8d141250ab773952259cd69b228ae824'
+  url 'http://www.newlisp.org/downloads/newlisp-10.5.0.tgz'
+  sha1 '647aa86af6edce30402da260fe7f3ea7d03a91f1'
 
   depends_on 'readline'
 
@@ -43,15 +43,6 @@ __END__
  
  ; newlisp-edit.lsp - multiple tab LISP editor and support for running code from the editor
  ; needs 9.9.2 version minimum to run
-@@ -17,7 +17,7 @@
- (set 'newlispDir (env "NEWLISPDIR"))
- 
- (set 'newlispDoc (if (= ostype "Win32") 
--	newlispDir (replace "newlisp" (copy newlispDir) "doc/newlisp")))
-+	newlispDir (join (reverse (cons "doc/newlisp" (rest (reverse (parse newlispDir "/"))))) "/")))
- 
- (load (string newlispDir "/guiserver.lsp"))
- 
 @@ -155,7 +155,7 @@
  			(write-file file (base64-dec text)))
  		(if (= ostype "Win32")

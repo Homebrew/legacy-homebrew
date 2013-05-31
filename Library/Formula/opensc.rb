@@ -23,18 +23,15 @@ class Opensc < Formula
     # installed docbook.
     docbook = Formula.factory 'docbook'
     if docbook.installed?
-      # Docbookxsl is a Formula defined in docbook.rb. Formula.factory
-      # for 'docbook' will cause 'docbook.rb' to be required, which
-      # makes Docbookxsl available. It would be nice if this didn't
-      # depend on internal implementation details of the docbook
-      # formula.
-      docbookxsl = Docbookxsl.new
-
       # OpenSC looks in a set of common paths for docbook's xsl files,
       # but not in /usr/local, and certainly not in homebrew's
       # cellar. This specifies the correct homebrew path.
+
+      # Avoid using information from the docbook formula here, as it
+      # will always refer to the latest version which is not
+      # necessarily the installed version.
       extra_args << "--with-xsl-stylesheetsdir=" +
-        docbook.prefix/docbookxsl.catalog
+        Dir[docbook.opt_prefix/'docbook/xsl/*'].first
     end
 
     system "./bootstrap" if build.head?

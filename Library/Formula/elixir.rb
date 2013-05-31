@@ -2,15 +2,16 @@ require 'formula'
 
 class ErlangInstalled < Requirement
   fatal true
-  default_formula 'erlang'
 
   satisfy { which 'erl' }
 
   def message; <<-EOS.undent
-    Erlang is required to install.
+    Erlang R16 is required to install.
 
     You can install this with:
-      brew install erlang
+      brew tap homebrew/versions
+      brew unlink erlang
+      brew install erlang-r16
 
     Or you can use an official installer from:
       http://www.erlang.org/
@@ -20,8 +21,8 @@ end
 
 class Elixir < Formula
   homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/archive/v0.8.2.tar.gz'
-  sha1 'c58ad161df6615be3e146aaf0dbb5cdf8003c601'
+  url  'https://github.com/elixir-lang/elixir/archive/v0.9.1.tar.gz'
+  sha1 '3896d566b6c4c75ac17fa64ee9290863b7b068f3'
 
   head 'https://github.com/elixir-lang/elixir.git'
 
