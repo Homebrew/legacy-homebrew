@@ -1,24 +1,18 @@
 require 'formula'
 
-class Jenkins < Formula
-  homepage 'http://jenkins-ci.org'
-  url 'http://mirrors.jenkins-ci.org/war/1.516/jenkins.war'
-  sha1 '92d712fd8ddbc30ef5609c395bf6a122bab32487'
-  conflicts_with 'jenkins-lts',
+class JenkinsLts < Formula
+  homepage 'http://jenkins-ci.org/#stable'
+  version '1.509.1'
+  url "http://mirrors.jenkins-ci.org/war-stable/#{version}/jenkins.war"
+  sha1 '6af69ba946bfeae8f7dc6e6318e30fe92ce56047'
+  conflicts_with 'jenkins',
     :because => 'both use the same data directory: $HOME/.jenkins'
 
-  head 'https://github.com/jenkinsci/jenkins.git'
-
   def install
-    if build.head?
-      system "mvn clean install -pl war -am -DskipTests"
-      libexec.install 'war/target/jenkins.war', '.'
-    else
-      libexec.install "jenkins.war"
-    end
+    libexec.install "jenkins.war"
   end
 
-  plist_options :manual => "java -jar #{HOMEBREW_PREFIX}/opt/jenkins/libexec/jenkins.war"
+  plist_options :manual => "java -jar #{HOMEBREW_PREFIX}/opt/jenkins-lts/libexec/jenkins.war"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -39,7 +33,7 @@ class Jenkins < Formula
         <true/>
       </dict>
     </plist>
-  EOS
+    EOS
   end
 
   def caveats; <<-EOS.undent
