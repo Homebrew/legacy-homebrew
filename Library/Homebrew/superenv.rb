@@ -47,7 +47,7 @@ class << ENV
     ENV['CXX'] = 'c++'
     ENV['OBJC'] = 'cc'
     ENV['OBJCXX'] = 'c++'
-    ENV['DEVELOPER_DIR'] = determine_developer_dir # effects later settings
+    ENV['DEVELOPER_DIR'] = determine_developer_dir
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
@@ -56,6 +56,7 @@ class << ENV
     ENV['HOMEBREW_CCCFG'] = determine_cccfg
     ENV['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
     ENV['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacSystem.xcode43_without_clt?
+    ENV['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
     ENV['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     ENV['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
     ENV['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
