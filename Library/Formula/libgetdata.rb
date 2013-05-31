@@ -6,6 +6,7 @@ class Libgetdata < Formula
   sha1 'fe50cc6a0a0be719a6ce06acc3beea19fcda13ce'
 
   option 'with-fortran', 'Build Fortran 77 bindings'
+  option 'with-perl', 'Build Perl binding'
   option 'lzma', 'Build with LZMA compression support'
   option 'zzip', 'Build with zzip compression support'
 
@@ -18,6 +19,9 @@ class Libgetdata < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
+
+    args << "--disable-perl" unless build.include?('with-perl')
+
     system "./configure", *args
     system "make"
     system "make", "install"
