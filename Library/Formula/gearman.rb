@@ -4,10 +4,9 @@ class Gearman < Formula
   homepage 'http://gearman.org/'
   url 'https://launchpad.net/gearmand/1.2/1.1.7/+download/gearmand-1.1.7.tar.gz'
   sha1 '4dbbdfbbfd184f1902fc5b139ec250dc6f260bc8'
-  version '1.1.7'
 
-  option 'with-mysql', 'Add as MySQL persisten queue.'
- 
+  option 'with-mysql','Compile with MySQL persistent queue enabled'
+
   depends_on 'pkg-config' => :build
   depends_on 'boost'
   depends_on 'libevent'
