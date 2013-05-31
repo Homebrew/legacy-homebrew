@@ -7,8 +7,13 @@ class Drush < Formula
 
   head 'git://git.drupal.org/project/drush.git', :branch => '8.x-6.x'
 
+  option 'without-completions', 'Disable drush bash completion'
+
   def install
     libexec.install Dir['*']
     bin.install_symlink libexec/'drush'
+    unless build.include? 'without-completions'
+      bash_completion.install libexec/'drush.complete.sh' => 'drush'
+    end
   end
 end
