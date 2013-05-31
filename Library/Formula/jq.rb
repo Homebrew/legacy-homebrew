@@ -11,5 +11,6 @@ class Jq < Formula
     system "./configure"
     system "make"
     bin.install 'jq'
+    man1.install 'jq.1'
   end
 end
