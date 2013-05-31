@@ -2,12 +2,12 @@ require 'formula'
 
 class PerlBuild < Formula
   homepage 'https://github.com/tokuhirom/Perl-Build'
-  url 'https://github.com/tokuhirom/Perl-Build/archive/1.02.tar.gz'
-  sha1 '30043e08e1bebbf9b41341bae816e7957d6167f3'
+  url 'https://github.com/tokuhirom/Perl-Build/archive/1.03.tar.gz'
+  sha1 'dda816ad6445d82b4be144dc426d33853a8b5344'
 
   head 'https://github.com/tokuhirom/perl-build.git'
 
   def install
-    bin.install "perl-build", "bin/perl-install", "bin/perl-uninstall"
+    bin.install "perl-build", "bin/plenv-install", "bin/plenv-uninstall"
   end
 end
