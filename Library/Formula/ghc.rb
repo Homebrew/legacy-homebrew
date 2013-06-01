@@ -23,8 +23,8 @@ class Ghcbinary < Formula
 end
 
 class Ghctestsuite < Formula
-  url 'https://github.com/ghc/testsuite/tarball/ghc-7.6.3-release'
-  sha1 '7f51a25a13edcdf6a8b9df3c13be78c9d41ce4e2'
+  url 'https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz'
+  sha1 '6a1973ae3cccdb2f720606032ae84ffee8680ca1'
 end
 
 class Ghc < Formula
