@@ -1,8 +1,5 @@
 require 'testing_env'
 require 'formula_support'
-
-# XXX: grrrrr
-require 'hardware'
 require 'bottles'
 
 class SoftwareSpecTests < Test::Unit::TestCase
