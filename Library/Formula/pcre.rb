@@ -23,6 +23,8 @@ class Pcre < Formula
                           "--enable-pcregrep-libz",
                           "--enable-pcregrep-libbz2",
                           "--enable-jit"
+    system "make"
+    ENV.deparallelize
     system "make test"
     system "make install"
   end
