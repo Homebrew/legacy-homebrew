@@ -43,4 +43,28 @@ class Fftw < Formula
     system "./configure", "--enable-long-double", *args
     system "make install"
   end
+
+  test do
+    # Adapted from the sample usage provided in the documentation:
+    # http://www.fftw.org/fftw3_doc/Complex-One_002dDimensional-DFTs.html
+    (testpath/'fftw.c').write <<-TEST_SCRIPT.undent
+      #include <fftw3.h>
+
+      int main(int argc, char* *argv)
+      {
+          fftw_complex *in, *out;
+          fftw_plan p;
+          long N = 1;
+          in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
+          out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
+          p = fftw_plan_dft_1d(N, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+          fftw_execute(p); /* repeat as needed */
+          fftw_destroy_plan(p);
+          fftw_free(in); fftw_free(out);
+      }
+    TEST_SCRIPT
+
+    system ENV.cc, '-o', 'fftw', 'fftw.c', '-lfftw3', *ENV.cflags.split
+    system './fftw'
+  end
 end
