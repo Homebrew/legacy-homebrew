@@ -63,7 +63,7 @@ class Step
   end
 
   def puts_result
-    puts "#{Tty.send status_colour}#{status_upcase}#{Tty.reset}"
+    puts " #{Tty.send status_colour}#{status_upcase}#{Tty.reset}"
   end
 
   def has_output?
