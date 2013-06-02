@@ -106,7 +106,7 @@ class Test
     @url = nil
     @formulae = []
 
-    url_match = argument.match HOMEBREW_PULL_URL_REGEX
+    url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
     formula = Formula.factory argument rescue FormulaUnavailableError
     git "rev-parse --verify #{argument} &>/dev/null"
     if $?.success?
