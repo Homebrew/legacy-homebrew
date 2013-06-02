@@ -11,6 +11,7 @@ class Basex < Formula
     rm_rf "repo"
     rm_rf "data"
     rm_rf "etc"
+    prefix.install_metafiles
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
