@@ -120,13 +120,16 @@ class FormulaInstaller
   def check_requirements
     unsatisfied = ARGV.filter_for_dependencies do
       f.recursive_requirements do |dependent, req|
-        if req.optional? || req.recommended?
-          Requirement.prune unless dependent.build.with?(req.name)
-        elsif req.build?
-          Requirement.prune if install_bottle?(dependent)
+        if (req.optional? || req.recommended?) && dependent.build.without?(req.name)
+          Requirement.prune
+        elsif req.build? && install_bottle?(dependent)
+          Requirement.prune
+        elsif req.satisfied?
+          Requirement.prune
+        elsif req.default_formula?
+          dependent.deps << req.to_dependency
+          Requirement.prune
         end
-
-        Requirement.prune if req.satisfied?
       end
     end
 
