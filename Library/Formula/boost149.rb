@@ -23,11 +23,11 @@ class Boost149 < Formula
 
   option :universal
   option 'with-mpi', 'Enable MPI support'
-  option 'with-icu4c', 'Build regexp engine with icu support'
+  option 'with-icu', 'Build regexp engine with icu support'
 
   depends_on :python => :recommended
   depends_on UniversalPython if build.universal? and build.with? "python"
-  depends_on "icu4c" => :optional
+  depends_on "icu4c" if build.with? 'icu'
   depends_on MPIDependency.new(:cc, :cxx) if build.with? "mpi"
 
   fails_with :llvm do
@@ -56,7 +56,7 @@ class Boost149 < Formula
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    if build.with? 'icu4c'
+    if build.with? 'icu'
       icu4c_prefix = Formula.factory('icu4c').opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
     else
