@@ -5,6 +5,8 @@ class GoogleAppEngine < Formula
   url 'http://googleappengine.googlecode.com/files/google_appengine_1.8.0.zip'
   sha1 '71b5f3ee06dce0a7d6af32d65ae27272eac038cb'
 
+  depends_on :python
+
   def install
     cd '..'
     share.install 'google_appengine' => name

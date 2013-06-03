@@ -15,6 +15,7 @@ class Mapnik < Formula
   head 'https://github.com/mapnik/mapnik.git'
 
   depends_on 'pkg-config' => :build
+  depends_on :python
   depends_on :libtool
   depends_on :freetype
   depends_on :libpng
@@ -46,9 +47,7 @@ class Mapnik < Formula
     jobs = ENV.make_jobs.to_i
     jobs /= 2 if jobs > 2
 
-    args = [ "scons/scons.py",
-             "configure",
-             "CC=\"#{ENV.cc}\"",
+    args = [ "CC=\"#{ENV.cc}\"",
              "CXX=\"#{ENV.cxx}\"",
              "JOBS=#{jobs}",
              "PREFIX=#{prefix}",
@@ -73,22 +72,16 @@ class Mapnik < Formula
     args << "GDAL_CONFIG=#{Formula.factory('gdal').opt_prefix}/bin/gdal-config" if build.with? 'gdal'
     args << "PG_CONFIG=#{Formula.factory('postgresql').opt_prefix}/bin/pg_config" if build.with? 'postgresql'
 
-    system "python", *args
-
-    system "python",
-           "scons/scons.py",
-           "install"
+    python do
+      system python, "scons/scons.py", "configure", *args
+      system python, "scons/scons.py", "install"
+    end
   end
 
-  def caveats; <<-EOS.undent
-    For non-homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-    EOS
+  def caveats
+    python.standard_caveats if python
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
 end
 
 __END__

@@ -11,9 +11,8 @@ class Omniorb < Formula
   url 'http://sourceforge.net/projects/omniorb/files/omniORB/omniORB-4.1.6/omniORB-4.1.6.tar.bz2'
   sha1 '383e3b3b605188fe6358316917576e0297c4e1a6'
 
-  option 'python', 'Enable Python mappings'
-
   depends_on 'pkg-config' => :build
+  depends_on :python => :recommended
 
   # http://www.omniorb-support.com/pipermail/omniorb-list/2012-February/031202.html
   def patches
@@ -21,12 +20,12 @@ class Omniorb < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "PYTHON=#{which 'python'}"]
+    args = ["--prefix=#{prefix}"]
     system "./configure", *args
     system "make"
     system "make install"
 
-    if  build.include? 'python'
+    python do
       OmniorbBindings.new.brew do
         system "./configure", *args
         system "make install"
@@ -35,25 +34,14 @@ class Omniorb < Formula
   end
 
   def caveats
-    s = ''
-    if build.include? 'python'
-      s += <<-EOS.undent
-        For non-homebrew Python, you need to amend your PYTHONPATH like so:
-        export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-      EOS
-    end
-    return s.empty? ? nil : s
-  end
-
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+    python.standard_caveats if python
   end
 
   test do
     system "#{bin}/omniidl", "-h"
 
-    if build.include? 'python'
-      system "python", "-c", %(import omniORB; print 'omniORBpy', omniORB.__version__)
+    if build.with? 'python'
+      system python, "-c", %(import omniORB; print 'omniORBpy', omniORB.__version__)
     end
   end
 end

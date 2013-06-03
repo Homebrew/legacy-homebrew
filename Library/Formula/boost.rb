@@ -1,7 +1,7 @@
 require 'formula'
 
 class UniversalPython < Requirement
-  satisfy { archs_for_command("python").universal? }
+  satisfy(:build_env => false) { archs_for_command("python").universal? }
 
   def message; <<-EOS.undent
     A universal build was requested, but Python is not a universal build
@@ -29,14 +29,14 @@ class Boost < Formula
 
   option :universal
   option 'with-mpi', 'Enable MPI support'
-  option 'without-python', 'Build without Python'
-  option 'with-icu', 'Build regexp engine with icu support'
+  option 'with-icu4c', 'Build regexp engine with icu support'
   option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
   option 'use-system-layout', 'Use system layout instead of tagged'
 
-  depends_on UniversalPython if build.universal? and not build.include? "without-python"
-  depends_on "icu4c" if build.include? "with-icu"
-  depends_on MPIDependency.new(:cc, :cxx) if build.include? "with-mpi"
+  depends_on :python => :recommended
+  depends_on UniversalPython if build.universal? and build.with? "python"
+  depends_on "icu4c" => :optional
+  depends_on MPIDependency.new(:cc, :cxx) if build.with? "mpi"
 
   fails_with :llvm do
     build 2335
@@ -69,15 +69,15 @@ class Boost < Formula
     # Force boost to compile using the appropriate GCC version
     open("user-config.jam", "a") do |file|
       file.write "using darwin : : #{ENV.cxx} ;\n"
-      file.write "using mpi ;\n" if build.include? 'with-mpi'
+      file.write "using mpi ;\n" if build.with? 'mpi'
     end
 
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    bargs << "--with-toolset=clang" if build.include? "with-c++11"
+    bargs << "--with-toolset=clang" if build.with? "c++11"
 
-    if build.include? 'with-icu'
+    if build.with? 'icu4c'
       icu4c_prefix = Formula.factory('icu4c').opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
     else
@@ -99,7 +99,7 @@ class Boost < Formula
             "threading=multi",
             "install"]
 
-    if MacOS.version >= :lion and build.include? 'with-c++11'
+    if MacOS.version >= :lion and build.with? 'c++11'
       args << "toolset=clang" << "cxxflags=-std=c++11"
       args << "cxxflags=-stdlib=libc++" << "cxxflags=-fPIC"
       args << "cxxflags=-arch x86_64" if MacOS.prefer_64_bit? or build.universal?
@@ -111,7 +111,7 @@ class Boost < Formula
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
-    args << "--without-python" if build.include? "without-python"
+    args << "--without-python" if build.without? 'python'
 
     system "./bootstrap.sh", *bargs
     system "./b2", *args
