@@ -1,7 +1,7 @@
 require 'formula'
 
 class Rgxg < Formula
-  homepage 'http://http://rgxg.sourceforge.net'
+  homepage 'http://rgxg.sourceforge.net'
   url 'http://downloads.sourceforge.net/project/rgxg/rgxg/rgxg-0.1.tar.gz'
   sha1 'c57ad6daae9bc1b706a1b641d8a3c3be5c9ae743'
 
