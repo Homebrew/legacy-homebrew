@@ -16,6 +16,8 @@ class Cairo < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'xz'=> :build
+  # harfbuzz requires cairo-ft to build
+  depends_on 'freetype' if build.without? 'x'
   depends_on :libpng
   depends_on 'pixman'
   depends_on 'glib' => :optional
