@@ -21,6 +21,12 @@ class Mercurial < Formula
     bash_completion.install 'contrib/bash_completion' => 'hg-completion.bash'
 
     python do
+      if python.from_osx? && !MacOS::CLT.installed?
+        # Help castrated system python on Xcode find the Python.h:
+        # Setting CFLAGS does not work :-(
+        # ENV['CFLAGS'] = "-I#{python.incdir}"
+        inreplace 'setup.py', 'get_python_inc()', "'#{python.incdir}'"
+      end
       system "make doc" if build.head? or build.include? 'doc'
       system "make local"
 
