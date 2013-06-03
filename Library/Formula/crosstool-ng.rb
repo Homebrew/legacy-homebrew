@@ -29,6 +29,8 @@ class CrosstoolNg < Formula
                           "--with-libtool=glibtool",
                           "--with-libtoolize=glibtoolize",
                           "--with-install=ginstall",
+                          "--with-sed=gsed",
+                          "--with-awk=gawk",
                           "CFLAGS=-std=gnu89"
     # Must be done in two steps
     system "make"
