@@ -62,7 +62,8 @@ class Asymptote < Formula
 
     If you wish to use xasy, you must first install the Python Imaging Library:
 
-       easy_install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
+       brew install pil
+
     EOS
   end
 end

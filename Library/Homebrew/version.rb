@@ -127,7 +127,7 @@ class Version
     return m.captures.first unless m.nil?
 
     # e.g. https://github.com/erlang/otp/tarball/OTP_R15B01 (erlang style)
-    m = /[-_](R\d+[AB]\d*(?:-\d+)?)/.match(spec_s)
+    m = /[-_]([Rr]\d+[AaBb]\d*(?:-\d+)?)/.match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. boost_1_39_0

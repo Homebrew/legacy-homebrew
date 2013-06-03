@@ -305,6 +305,21 @@ class Formula
     ]
   end
 
+  def python(options={:allowed_major_versions => [2, 3]}, &block)
+    require 'python_helper'
+    self.instance_eval{ python_helper(options, &block) }
+  end
+
+  # Explicitly only execute the block for 2.x (if a python 2.x is available)
+  def python2 &block
+    python(:allowed_major_versions => [2], &block)
+  end
+
+  # Explicitly only execute the block for 3.x (if a python 3.x is available)
+  def python3 &block
+    python(:allowed_major_versions => [3], &block)
+  end
+
   def self.class_s name
     # remove invalid characters and then camelcase it
     name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
@@ -558,7 +573,7 @@ class Formula
       @exec_count ||= 0
       @exec_count += 1
       logd = HOMEBREW_LOGS/name
-      logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
+      logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd.to_s).split(' ').first]
       mkdir_p(logd)
 
       rd, wr = IO.pipe
@@ -567,7 +582,7 @@ class Formula
         $stdout.reopen wr
         $stderr.reopen wr
         args.collect!{|arg| arg.to_s}
-        exec(cmd, *args) rescue nil
+        exec(cmd.to_s, *args) rescue nil
         puts "Failed to execute: #{cmd}"
         exit! 1 # never gets here unless exec threw or failed
       end

@@ -63,7 +63,7 @@ class Step
   end
 
   def puts_result
-    puts "#{Tty.send status_colour}#{status_upcase}#{Tty.reset}"
+    puts " #{Tty.send status_colour}#{status_upcase}#{Tty.reset}"
   end
 
   def has_output?
@@ -106,7 +106,7 @@ class Test
     @url = nil
     @formulae = []
 
-    url_match = argument.match HOMEBREW_PULL_URL_REGEX
+    url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
     formula = Formula.factory argument rescue FormulaUnavailableError
     git "rev-parse --verify #{argument} &>/dev/null"
     if $?.success?
@@ -145,6 +145,10 @@ class Test
       git('symbolic-ref HEAD').gsub('refs/heads/', '').strip
     end
 
+    def single_commit? start_revision, end_revision
+      git("rev-list --count #{start_revision}..#{end_revision}").to_i == 1
+    end
+
     @category = __method__
     @start_branch = current_branch
 
@@ -160,7 +164,8 @@ class Test
     end
 
     if @hash == 'HEAD'
-      if diff_start_sha1 == diff_end_sha1
+      if diff_start_sha1 == diff_end_sha1 or \
+        single_commit?(diff_start_sha1, diff_end_sha1)
         @name = diff_end_sha1
       else
         @name = "#{diff_start_sha1}-#{diff_end_sha1}"
@@ -174,7 +179,14 @@ class Test
       test "git checkout #{current_sha1}"
       test "brew pull --clean #{@url}"
       diff_end_sha1 = current_sha1
-      @name = "#{@url}-#{diff_end_sha1}"
+      @short_url = @url.gsub('https://github.com/', '')
+      if @short_url.include? '/commit/'
+        # 7 characters should be enough for a commit (not 40).
+        @short_url.gsub!(/(commit\/\w{7}).*/, '\1')
+        @name = @short_url
+      else
+        @name = "#{@short_url}-#{diff_end_sha1}"
+      end
     else
       diff_start_sha1 = diff_end_sha1 = current_sha1
       @name = "#{@formulae.first}-#{diff_end_sha1}"
@@ -217,6 +229,13 @@ class Test
     dependencies -= `brew list`.split("\n")
     dependencies = dependencies.join(' ')
     formula_object = Formula.factory(formula)
+    requirements = formula_object.recursive_requirements
+    unsatisfied_requirements = requirements.reject {|r| r.satisfied?}
+    unless unsatisfied_requirements.empty?
+      puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula}#{Tty.reset}"
+      unsatisfied_requirements.each {|r| puts r.message}
+      return
+    end
 
     test "brew audit #{formula}"
     test "brew fetch #{dependencies}" unless dependencies.empty?

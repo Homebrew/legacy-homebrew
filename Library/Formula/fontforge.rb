@@ -7,23 +7,20 @@ class Fontforge < Formula
 
   head 'https://github.com/fontforge/fontforge.git'
 
-  env :std
-
-  option 'without-python', 'Build without Python'
   option 'with-gif',       'Build with GIF support'
-  option 'with-x',         'Build with X'
 
   depends_on 'gettext'
-  depends_on :xcode # Because: #include </Developer/Headers/FlatCarbon/Files.h>
+  depends_on :python => :recommended
 
   depends_on :libpng    => :recommended
   depends_on 'jpeg'     => :recommended
   depends_on 'libtiff'  => :recommended
-  depends_on :x11 if build.with? 'x'
+  depends_on :x11 => :recommended
   depends_on 'giflib' if build.with? 'gif'
   depends_on 'cairo' => :optional
   depends_on 'pango' => :optional
   depends_on 'libspiro' => :optional
+  depends_on 'fontconfig'
 
   fails_with :llvm do
     build 2336
@@ -35,29 +32,30 @@ class Fontforge < Formula
             "--enable-double",
             "--without-freetype-bytecode"]
 
-    if build.without? "python"
-      args << "--without-python"
-    else
-      python_prefix = `python-config --prefix`.strip
-      python_version = `python-config --libs`.match('-lpython(\d+\.\d+)').captures.at(0)
-      args << "--with-python-headers=#{python_prefix}/include/python#{python_version}"
-      args << "--with-python-lib=-lpython#{python_version}"
+    args << "--without-cairo" unless build.with? "cairo"
+    args << "--without-pango" unless build.with? "pango"
+    args << "--without-x" unless build.with? 'x'
+
+    # To avoid "dlopen(/opt/local/lib/libpng.2.dylib, 1): image not found"
+    args << "--with-static-imagelibs"
+
+    if build.with? 'python'
       args << "--enable-pyextension"
+      # Fix linking to correct Python library
+      ENV.prepend "LDFLAGS", "-L#{python.libdir}"
+    else
+      args << "--without-python"
     end
 
-    # Fix linking to correct Python library
-    ENV.prepend "LDFLAGS", "-L#{python_prefix}/lib" unless build.without? "python"
     # Fix linker error; see: http://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
+
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
     # Set up framework paths so FlatCarbon replacement paths work (see below)
-    ENV.append "CFLAGS", "-F/System/Library/Frameworks/CoreServices.framework/Frameworks"
-    ENV.append "CFLAGS", "-F/System/Library/Frameworks/Carbon.framework/Frameworks"
-
-    args << "--without-cairo" unless build.with? "cairo"
-    args << "--without-pango" unless build.with? "pango"
+    ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/CoreServices.framework/Frameworks"
+    ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Frameworks"
 
     system "./configure", *args
 
@@ -70,7 +68,7 @@ class Fontforge < Formula
     # Fix install location of Python extension; see:
     # http://sourceforge.net/mailarchive/message.php?msg_id=26827938
     inreplace "Makefile" do |s|
-      s.gsub! "python setup.py install --prefix=$(prefix) --root=$(DESTDIR)", "python setup.py install --prefix=$(prefix)"
+      s.gsub! "python setup.py install --prefix=$(prefix) --root=$(DESTDIR)", "#{python} setup.py install --prefix=$(prefix)"
     end
 
     # Replace FlatCarbon headers with the real paths
@@ -86,12 +84,9 @@ class Fontforge < Formula
     system "make install"
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
-
   def test
     system "#{bin}/fontforge", "-version"
+    system python, "-c", "import fontforge"
   end
 
   def caveats
@@ -104,16 +99,9 @@ class Fontforge < Formula
         ln -s #{opt_prefix}/FontForge.app /Applications
     EOS
 
-    python_caveats = <<-EOS.undent
-
-      To use the Python extension with non-homebrew Python, you need to amend your
-      PYTHONPATH like so:
-        export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-    EOS
-
     s = ""
     s += x_caveats if build.with? "x"
-    s += python_caveats unless build.without? "python"
+    s += python.standard_caveats if python
     return s
   end
 

@@ -42,4 +42,15 @@ class BuildOptionsTests < Test::Unit::TestCase
   def test_unused_options
     assert @build.unused_options.include?("--without-baz")
   end
+
+  def test_implicit_options
+    # --without-baz is not explicitly specified on the command line
+    # therefore --with-baz should be implicitly assumed:
+    assert @build.implicit_options.include?("--with-baz")
+    # But all these should not be in the implict_options:
+    assert !@build.implicit_options.include?("--without-baz")
+    assert !@build.implicit_options.include?("--with-bar")
+    assert !@build.implicit_options.include?("--without-bar")
+    assert !@build.implicit_options.include?("--with-qux")
+  end
 end

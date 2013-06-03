@@ -5,9 +5,8 @@ class Ldns < Formula
   url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.16.tar.gz'
   sha1 '5b4fc6c5c3078cd061905c47178478cb1015c62a'
 
-  option "python", "Build Python pydns bindings"
-
-  depends_on 'swig' if build.include? 'python'
+  depends_on :python => :optional
+  depends_on 'swig' if build.with? 'python'
 
   def install
     # gost requires OpenSSL >= 1.0.0
@@ -15,12 +14,17 @@ class Ldns < Formula
       --prefix=#{prefix}
       --disable-gost
       --with-drill
+      --with-ssl=#{MacOS.sdk_path}/usr
     ]
-    args << "--with-pyldns" if build.include? 'python'
+
+    if build.with? 'python'
+      args << "--with-pyldns"
+      ENV['PYTHON_SITE_PKG'] = python.site_packages
+    end
 
     system "./configure", *args
     system "make"
     system "make install"
-    system "make install-pyldns" if build.include? 'python'
+    system "make", "install-pyldns"
   end
 end

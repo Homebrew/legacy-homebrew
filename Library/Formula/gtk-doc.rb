@@ -7,19 +7,16 @@ class GtkDoc < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gnome-doc-utils' => :build
+  depends_on :python
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'docbook'
-  depends_on 'libxml2'
+  depends_on 'docbook-xsl'
+  depends_on 'libxml2' => 'with-python'
 
   def install
-    # libxml2 must be installed with python support; this should be ensured
-    # by the gnome-doc-utils dependency. However it is keg-only, so we have
-    # to put its site-packages directory on the PYTHONPATH
-    pydir = 'python' + `python -c 'import sys;print(sys.version[:3])'`.strip
-    libxml2 = Formula.factory('libxml2')
-    ENV.prepend 'PYTHONPATH', libxml2.lib/pydir/'site-packages', ':'
-
+    # libxml2 is keg_only but we installed the python bindings globally, so
+    # configure should find them.
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

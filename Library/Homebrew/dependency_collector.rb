@@ -17,7 +17,7 @@ require 'set'
 class DependencyCollector
   # Define the languages that we can handle as external dependencies.
   LANGUAGE_MODULES = Set[
-    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
+    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :python2, :python3, :rbx, :ruby
   ].freeze
 
   attr_reader :deps, :requirements
@@ -92,6 +92,9 @@ class DependencyCollector
     when :clt        then CLTDependency.new(tags)
     when :arch       then ArchRequirement.new(tags)
     when :hg         then MercurialDependency.new(tags)
+    when :python     then PythonInstalled.new(tags)
+    when :python2    then PythonInstalled.new("2", tags)
+    when :python3    then PythonInstalled.new("3", tags)
     else
       raise "Unsupported special dependency #{spec}"
     end

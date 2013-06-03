@@ -5,10 +5,13 @@ class Grc < Formula
   url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.4.tar.gz'
   sha1 '79fd504d8291f13486d361611415ae60fa56712a'
 
+  depends_on :python
+
   def install
     #TODO we should deprefixify since it's python and thus possible
     inreplace ['grc', 'grc.1'], '/etc', etc
     inreplace ['grcat', 'grcat.1'], '/usr/local', prefix
+    inreplace ['grc', 'grcat'], '#! /usr/bin/python', '#!/usr/bin/env python'
 
     etc.install 'grc.conf'
     bin.install %w[grc grcat]

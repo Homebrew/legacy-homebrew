@@ -1,7 +1,6 @@
 require 'testing_env'
 require 'version'
 require 'os/mac/version'
-require 'hardware'
 
 class MacOSVersionTests < Test::Unit::TestCase
   def setup

@@ -14,6 +14,7 @@ class Thrift < Formula
   option "with-php", "Install Php binding"
 
   depends_on 'boost'
+  depends_on :python => :optional
 
   # Includes are fixed in the upstream. Please remove this patch in the next version > 0.9.0
   def patches
@@ -23,17 +24,17 @@ class Thrift < Formula
   def install
     system "./bootstrap.sh" if build.head?
 
-    exclusions = ["--without-python", "--without-ruby"]
+    exclusions = ["--without-ruby"]
 
+    exclusions << "--without-python" unless build.with? "python"
     exclusions << "--without-haskell" unless build.include? "with-haskell"
     exclusions << "--without-java" unless build.include? "with-java"
     exclusions << "--without-perl" unless build.include? "with-perl"
     exclusions << "--without-php" unless build.include? "with-php"
     exclusions << "--without-erlang" unless build.include? "with-erlang"
 
-    # Language bindings try to install outside of Homebrew's prefix, so
-    # omit them here. For ruby you can install the gem, and for Python
-    # you can use pip or easy_install.
+    ENV["PY_PREFIX"] = prefix  # So python bindins don't install to /usr!
+
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--libdir=#{lib}",
@@ -43,10 +44,8 @@ class Thrift < Formula
     system "make install"
   end
 
-  def caveats; <<-EOS.undent
-    To install Python bindings:
-      pip install thrift
-
+  def caveats
+    s = <<-EOS.undent
     To install Ruby bindings:
       gem install thrift
 
@@ -54,7 +53,9 @@ class Thrift < Formula
       export PHP_PREFIX=/path/to/homebrew/thrift/0.9.0/php
       export PHP_CONFIG_PREFIX=/path/to/homebrew/thrift/0.9.0/php_extensions
       brew install thrift --with-php
+
     EOS
+    s += python.standard_caveats if python
   end
 end
 __END__

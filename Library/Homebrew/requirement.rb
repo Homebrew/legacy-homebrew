@@ -20,7 +20,7 @@ class Requirement
   def message; "" end
 
   # Overriding #satisfied? is deprecated.
-  # Pass a block or boolean to the satisfied DSL method instead.
+  # Pass a block or boolean to the satisfy DSL method instead.
   def satisfied?
     result = self.class.satisfy.yielder do |proc|
       instance_eval(&proc)

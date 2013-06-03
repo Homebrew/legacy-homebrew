@@ -13,7 +13,7 @@ class Gtkx3 < Formula
   depends_on 'libtiff'
   depends_on 'gdk-pixbuf'
   depends_on 'pango'
-  depends_on 'cairo'
+  depends_on 'cairo' => 'with-glib'
   depends_on 'jasper' => :optional
   depends_on 'atk'
   depends_on 'at-spi2-atk'

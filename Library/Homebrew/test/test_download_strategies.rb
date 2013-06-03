@@ -1,7 +1,6 @@
 require 'testing_env'
 require 'download_strategy'
 require 'bottles' # XXX: hoist these regexps into constants in Pathname?
-require 'hardware' # XXX: wat. fix this require mess!
 
 class SoftwareSpecDouble
   attr_reader :url, :specs

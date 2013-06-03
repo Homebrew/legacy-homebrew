@@ -8,9 +8,9 @@ class Ledger < Formula
   head 'https://github.com/ledger/ledger.git', :branch => 'master'
 
   option 'debug', 'Build with debugging symbols enabled'
-  option 'python', 'Enable Python support'
 
   depends_on 'boost'
+  depends_on :python => :optional
   if build.head?
     depends_on 'cmake' => :build
     depends_on 'ninja' => :build
@@ -24,14 +24,23 @@ class Ledger < Formula
   end
 
   def install
+    opoo "Homebrew: Sorry, python bindings for --HEAD seem not to install. Help us fixing this!" if build.with? 'python'
+
     # find Homebrew's libpcre
     ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
 
     if build.head?
       args = [((build.include? 'debug') ? 'debug' : 'opt'), "make", "-N", "-j#{ENV.make_jobs}", "--output=build"]
-      args << '--python' if build.include? 'python'
-      system "./acprep", *args
-      system "cmake", "-D", "CMAKE_INSTALL_PREFIX=#{prefix}", "-P", "build/cmake_install.cmake"
+      if build.with? 'python'
+        args << '--python'
+        # acprep picks up system python because CMake is used
+        inreplace 'acprep', "self.configure_args  = []",
+                            "self.configure_args  = ['-DPYTHON_INCLUDE_DIR=#{python.incdir}', '-DPYTHON_LIBRARY=#{python.libdir}/lib#{python.xy}.dylib']"
+      end
+      # Support homebrew not at /usr/local. Also support Xcode-only setups:
+      inreplace 'acprep', 'search_prefixes = [', "search_prefixes = ['#{HOMEBREW_PREFIX}','#{MacOS.sdk_path}/usr',"
+      system "./acprep", "--prefix=#{prefix}", *args
+      system "cmake", "-P", "build/cmake_install.cmake", "-DUSE_PYTHON=ON"
     else
       args = []
       if build.with? 'libofx'
