@@ -24,7 +24,6 @@ class Mercurial < Formula
       if python.from_osx? && !MacOS::CLT.installed?
         # Help castrated system python on Xcode find the Python.h:
         # Setting CFLAGS does not work :-(
-        # ENV['CFLAGS'] = "-I#{python.incdir}"
         inreplace 'setup.py', 'get_python_inc()', "'#{python.incdir}'"
       end
       system "make doc" if build.head? or build.include? 'doc'
