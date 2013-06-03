@@ -9,7 +9,7 @@ class Pyside < Formula
   depends_on 'cmake' => :build
   depends_on :python => :recommended
   depends_on :python3 => :optional
-  depends_on 'shiboken' => '--with-python3' if build.with? 'python3'
+  depends_on 'shiboken' => 'with-python3' if build.with? 'python3'
   depends_on 'qt'
 
   def install
