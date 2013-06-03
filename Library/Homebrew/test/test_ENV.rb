@@ -1,5 +1,4 @@
 require 'testing_env'
-require 'hardware'
 
 class EnvironmentTests < Test::Unit::TestCase
   def test_ENV_options

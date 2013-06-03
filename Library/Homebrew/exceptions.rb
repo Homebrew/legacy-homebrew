@@ -153,7 +153,7 @@ class BuildError < Homebrew::InstallationError
       end
     end
     puts
-    unless issues.empty?
+    unless RUBY_VERSION < "1.8.6" || issues.empty?
       puts "These open issues may also help:"
       puts issues.map{ |s| "    #{s}" }.join("\n")
     end

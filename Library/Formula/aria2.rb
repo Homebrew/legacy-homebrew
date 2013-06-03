@@ -2,8 +2,10 @@ require 'formula'
 
 class Aria2 < Formula
   homepage 'http://aria2.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.16.5/aria2-1.16.5.tar.bz2'
-  sha1 '04ce2ae2f6500f6bb49c926e414ddc9c1a6059c3'
+  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.17.1/aria2-1.17.1.tar.bz2'
+  sha1 'a40730013501554cdb0ce2b56a919f3ee971c06e'
+
+  option 'with-appletls', 'Build with Secure Transport for SSL support'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnutls'
@@ -15,6 +17,11 @@ class Aria2 < Formula
   def install
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
     args << "--with-ca-bundle=#{HOMEBREW_PREFIX}/share/ca-bundle.crt" if build.with? 'curl-ca-bundle'
+    if build.with? 'appletls'
+      args << "--with-appletls"
+    else
+      args << "--without-appletls"
+    end
 
     system "./configure", *args
     system "make install"

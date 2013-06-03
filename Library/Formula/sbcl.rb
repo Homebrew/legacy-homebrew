@@ -8,8 +8,8 @@ end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.4/sbcl-1.1.4-source.tar.bz2'
-  sha1 '57c1055821e4ad1c9c1b2b75fa972c5ae7ca86d0'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.7/sbcl-1.1.7-source.tar.bz2'
+  sha1 '6ddfc4f6aa360971819532b9956323cfade6dfca'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
@@ -76,13 +76,5 @@ class Sbcl < Formula
 
     ENV['INSTALL_ROOT'] = prefix
     system "sh install.sh"
-  end
-
-  def caveats; <<-EOS.undent
-    If you are upgrading sbcl and you have installed maxima,
-    you have to reinstall maxima:
-
-      brew rm maxima && brew install maxima
-    EOS
   end
 end

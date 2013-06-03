@@ -8,6 +8,8 @@ class Swig < Formula
   option :universal
 
   depends_on 'pcre'
+  depends_on :python  # assure swig find the "right" python
+  depends_on :python3 => :optional
 
   def install
     ENV.universal_binary if build.universal?

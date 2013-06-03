@@ -7,7 +7,10 @@ class Vim < Formula
   sha1 'f308d219dd9c6b56e84109ace4e7487a101088f5'
   head 'https://vim.googlecode.com/hg/'
 
-  env :std # To find interpreters
+  # We only have special support for finding depends_on :python, but not yet for
+  # :ruby, :perl etc., so we use the standard environment that leaves the
+  # PATH as the user has set it right now.
+  env :std
 
   depends_on :hg => :build if build.head?
 
@@ -19,6 +22,9 @@ class Vim < Formula
     option "with-#{language}", "Build vim with #{language} support"
     option "without-#{language}", "Build vim without #{language} support"
   end
+
+  depends_on :python unless build.without? 'python'
+  depends_on :python3 if build.with? 'python3'
 
   option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
 

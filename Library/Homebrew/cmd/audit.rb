@@ -148,10 +148,17 @@ class FormulaAuditor
         problem <<-EOS.undent unless dep.tags.any? || f.name =~ /automake/ && dep.name == 'autoconf'
         #{dep} dependency should be "depends_on '#{dep}' => :build"
         EOS
-      when "git", "python", "ruby", "emacs", "mysql", "mercurial"
+      when "git", "ruby", "emacs", "mysql", "mercurial"
         problem <<-EOS.undent
           Don't use #{dep} as a dependency. We allow non-Homebrew
           #{dep} installations.
+          EOS
+      when 'python', 'python2', 'python3'
+        problem <<-EOS.undent
+          Don't use #{dep} as a dependency (string).
+             We have special `depends_on :python` (or :python2 or :python3 )
+             that works with brewed and system Python and allows us to support
+             bindings for 2.x and 3.x in parallel and much more.
           EOS
       when "postgresql"
         # Postgis specifically requires a Homebrewed postgresql
@@ -232,7 +239,7 @@ class FormulaAuditor
       end
 
       if p =~ %r[^http://prdownloads\.]
-        problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" + 
+        problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" +
                 "\tSee: http://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
       end
 
@@ -249,7 +256,7 @@ class FormulaAuditor
     # Check for http:// GitHub repo urls, https:// is preferred.
     urls.grep(%r[^http://github\.com/.*\.git$]) do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
-    end 
+    end
 
     # Use new-style archive downloads
     urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] and not u =~ %r[\.git$] }.each do |u|
@@ -427,6 +434,14 @@ class FormulaAuditor
       problem "Reference '#{$1}' without dashes"
     end
 
+    if text =~ /build\.with\?\s+['"]-?-?with-(.*)['"]/
+      problem "No double 'with': Use `build.with? '#{$1}'` to check for \"--with-#{$1}\""
+    end
+
+    if text =~ /build\.without\?\s+['"]-?-?without-(.*)['"]/
+      problem "No double 'without': Use `build.without? '#{$1}'` to check for \"--without-#{$1}\""
+    end
+
     if text =~ /ARGV\.(?!(debug\?|verbose\?|find[\(\s]))/
       problem "Use build instead of ARGV to check options"
     end
@@ -457,6 +472,52 @@ class FormulaAuditor
     end
   end
 
+  def audit_python
+    if text =~ /system\(?\s*['"]python/
+      # Todo: In `def test` it is okay to do it this way. It's even recommended!
+      problem "Instead of `system 'python', ...`, call `system python, ...`."
+    end
+
+    if text =~ /system\(?\s*python\.binary/
+      problem "Instead of `system python.binary, ...`, call `system python, ...`."
+    end
+
+    if text =~ /(def\s*)?which_python/
+      problem "Replace `which_python` by `python.xy`, which returns e.g. 'python2.7'."
+    end
+
+    if text =~ /which\(?["']python/
+      problem "Don't locate python with `which 'python'`, use `python.binary` instead"
+    end
+
+    if f.requirements.any?{ |r| r.kind_of?(PythonInstalled) }
+      # Don't check this for all formulae, because some are allowed to set the
+      # PYTHONPATH. E.g. python.rb itself needs to set it.
+      if text =~ /ENV\.append.*PYTHONPATH/ || text =~ /ENV\[['"]PYTHONPATH['"]\]\s*=[^=]/
+        problem "Don't set the PYTHONPATH, instead declare `depends_on :python`."
+      end
+    end
+
+    if text =~ /(\s*)def\s+caveats((.*\n)*?)(\1end)/ || /(\s*)def\s+caveats;(.*?)end/
+      caveats_body = $2
+        if caveats_body =~ /(python[23]?)\.(.*\w)/
+          # So if in the body of caveats there is a `python.whatever` called,
+          # check that there is a guard like `if python` or similiar:
+          python = $1
+          method = $2
+          unless caveats_body =~ /(if python[23]?)|(if build\.with\?\s?\(?['"]python)|(unless build.without\?\s?\(?['"]python)/
+          problem "Please guard `#{python}.#{method}` like so `#{python}.#{method} if #{python}`"
+        end
+      end
+    end
+
+    # Todo:
+    # The python do ... end block is possibly executed twice. Once for
+    # python 2.x and once for 3.x. So if a `system 'make'` is called, a
+    # `system 'make clean'` should also be called at the end of the block.
+
+  end
+
   def audit
     audit_file
     audit_specs
@@ -465,6 +526,7 @@ class FormulaAuditor
     audit_conflicts
     audit_patches
     audit_text
+    audit_python
   end
 
   private

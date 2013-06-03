@@ -10,7 +10,7 @@ class Nginx < Formula
     sha1 '4f61368d6a0e340d04d116400616bf3179463df2'
   end
 
-  head 'svn://svn.nginx.org/nginx/trunk/'
+  head 'http://hg.nginx.org/nginx/', :using => :hg
 
   env :userpaths
 

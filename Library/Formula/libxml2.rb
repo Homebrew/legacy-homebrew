@@ -9,7 +9,8 @@ class Libxml2 < Formula
   keg_only :provided_by_osx
 
   option :universal
-  option 'with-python', 'Compile the libxml2 Python 2.x modules'
+
+  depends_on :python => :recommended
 
   fails_with :llvm do
     build 2326
@@ -26,33 +27,40 @@ class Libxml2 < Formula
     ENV.deparallelize
     system "make install"
 
-    if build.include? 'with-python'
-      # Build Python bindings manually
+    python do
+      # This python do block sets up the site-packages in the Cellar.
       cd 'python' do
-        python_lib = lib/which_python/'site-packages'
-        ENV.append 'PYTHONPATH', python_lib
-        python_lib.mkpath
-
-        archs = archs_for_command("python")
-        archs.remove_ppc!
-        arch_flags = archs.as_arch_flags
-
-        ENV.append 'CFLAGS', arch_flags
-        ENV.append 'LDFLAGS', arch_flags
-
-        unless MacOS::CLT.installed?
-          # We can hijack /opt/include to insert SDKROOT/usr/include
-          inreplace 'setup.py', '"/opt/include",', "'#{MacOS.sdk_path}/usr/include',"
-        end
-
-        system "python", "setup.py",
-                         "install_lib",
-                         "--install-dir=#{python_lib}"
+        # We need to insert our include dir first
+        inreplace 'setup.py', 'includes_dir = [', "includes_dir = ['#{include}', '#{MacOS.sdk_path}/usr/include',"
+        system python, 'setup.py', "install", "--prefix=#{prefix}"
       end
+      # This is keg_only but it makes sense to have the python bindings:
+      ohai 'Linking python bindings'
+      Dir["#{python.site_packages}/*"].each{ |f|
+        path = python.global_site_packages/(Pathname.new(f).basename)
+        puts path
+        rm path if path.exist?
+        ln_s f, path
+      }
     end
+
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  def caveats
+    <<-EOS.undent
+      Even if this formula is keg_only, the python bindings have been linked
+      into the global site-packages for your convenience.
+        #{python.global_site_packages}
+
+      EOS
+  end if build.with? 'python'
+
+  def test
+    if build.with? 'python'
+      system python, '-c', "import libxml2"
+    else
+      puts "No tests beacuse build --wtihout-python."
+      true
+    end
   end
 end
