@@ -108,7 +108,7 @@ class << ENV
         when 'clang', 'gcc-4.0' then ENV['HOMEBREW_CC']
         # depending on Xcode version plain 'gcc' could actually be
         # gcc-4.0 or llvm-gcc
-        when 'gcc' then 'gcc-4.2'
+        when 'gcc', 'gcc-4.2' then 'gcc-4.2'
         when 'llvm', 'llvm-gcc' then 'llvm-gcc'
       else
         opoo "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC']}"
