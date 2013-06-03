@@ -12,7 +12,7 @@ class GtkDoc < Formula
   depends_on 'glib'
   depends_on 'docbook'
   depends_on 'docbook-xsl'
-  depends_on 'libxml2'
+  depends_on 'libxml2' => 'with-python'
 
   def install
     # libxml2 is keg_only but we installed the python bindings globally, so
