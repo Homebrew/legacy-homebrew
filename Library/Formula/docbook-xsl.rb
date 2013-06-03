@@ -2,8 +2,8 @@ require 'formula'
 
 class DocbookXsl < Formula
   homepage 'http://docbook.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl/1.78.0/docbook-xsl-1.78.0.tar.bz2'
-  sha1 '39a62791e7c1479e22d13d12a9ecbb2273d66229'
+  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl/1.78.1/docbook-xsl-1.78.1.tar.bz2'
+  sha1 '1d668c845bb43c65115d1a1d9542f623801cfb6f'
 
   depends_on 'docbook'
 
@@ -32,6 +32,6 @@ end
 
 class DocbookXslNs < Formula
   homepage 'http://docbook.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl-ns/1.78.0/docbook-xsl-ns-1.78.0.tar.bz2'
-  sha1 '377c7bc16af6779c827ac9e818b0f665c7a038f2'
+  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl-ns/1.78.1/docbook-xsl-ns-1.78.1.tar.bz2'
+  sha1 '6a0823039b22ae0e0e9bc5ecc0dc325acdc3218f'
 end

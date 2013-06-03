@@ -21,7 +21,11 @@ try `/usr/bin/xcrun --find #{arg0}`.chomp
 # Nuts, Xcode is not setup properly or something. Try to find the tools anyway!
 try "#{ENV['DEVELOPER_DIR']}/usr/bin/#{arg0}"
 try "#{ENV['DEVELOPER_DIR']}/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{arg0}"
-try "/usr/bin/#{arg0}"
+# xcrun won't always be able to find Homebrew's apple-gcc42,
+# even when it's in the PATH
+ENV['PATH'].split(':').each do |p|
+  try "#{p}/#{arg0}"
+end
 
 abort <<-EOS
 Your Xcode and or CLT are mis-configured. Try some or all of the following:

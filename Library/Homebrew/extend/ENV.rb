@@ -1,3 +1,5 @@
+require 'hardware'
+
 module HomebrewEnvExtension
   # -w: keep signal to noise high
   SAFE_CFLAGS_FLAGS = "-w -pipe"

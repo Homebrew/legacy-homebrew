@@ -1,4 +1,5 @@
 require 'os/mac/version'
+require 'hardware'
 
 module MacOS extend self
 
