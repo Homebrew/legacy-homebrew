@@ -36,7 +36,7 @@ class PythonInstalled < Requirement
     if /(\d+\.)*\d+/ === tags.first
       @min_version = PythonVersion.new(tags.shift)
     else
-      @min_version = PythonVersion.new("2.7")  # default
+      @min_version = PythonVersion.new("2.6")  # default
     end
 
     # often used idiom: e.g. sipdir = "share/sip" + python.if3then3
