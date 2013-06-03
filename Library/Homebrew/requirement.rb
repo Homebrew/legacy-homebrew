@@ -1,4 +1,5 @@
 require 'dependable'
+require 'dependency'
 require 'build_environment'
 
 # A base class for non-formula requirements needed by formulae.
@@ -36,6 +37,10 @@ class Requirement
     self.class.fatal || false
   end
 
+  def default_formula?
+    self.class.default_formula || false
+  end
+
   # Overriding #modify_build_environment is deprecated.
   # Pass a block to the the env DSL method instead.
   def modify_build_environment
@@ -52,6 +57,14 @@ class Requirement
 
   def hash
     [name, *tags].hash
+  end
+
+  def to_dependency
+    f = self.class.default_formula
+    raise "No default formula defined for #{inspect}" if f.nil?
+    dep = Dependency.new(f, tags)
+    dep.env_proc = method(:modify_build_environment)
+    dep
   end
 
   private
@@ -135,11 +148,6 @@ class Requirement
       formulae.map(&:requirements).each do |requirements|
         requirements.each do |req|
           if prune?(dependent, req, &block)
-            next
-          # TODO: Do this in a cleaner way, perhaps with another type of
-          # dependency type.
-          elsif req.class.default_formula
-            dependent.class.depends_on(req.class.default_formula)
             next
           else
             reqs << req
