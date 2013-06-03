@@ -33,7 +33,6 @@ class Macvim < Formula
       --with-features=huge
       --enable-multibyte
       --with-macarchs=#{arch}
-      --with-macsdk=10.8
       --enable-perlinterp
       --enable-rubyinterp
       --enable-tclinterp
@@ -43,6 +42,7 @@ class Macvim < Formula
       --with-local-dir=#{HOMEBREW_PREFIX}
     ]
 
+    args << "--with-macsdk=#{MacOS::version.to_s}" unless MacOS::CLT.installed?
     args << "--enable-cscope" if build.with? "cscope"
 
     if build.with? "lua"
