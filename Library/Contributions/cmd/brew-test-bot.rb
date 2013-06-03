@@ -229,6 +229,13 @@ class Test
     dependencies -= `brew list`.split("\n")
     dependencies = dependencies.join(' ')
     formula_object = Formula.factory(formula)
+    requirements = formula_object.recursive_requirements
+    unsatisfied_requirements = requirements.reject {|r| r.satisfied?}
+    unless unsatisfied_requirements.empty?
+      puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula}#{Tty.reset}"
+      unsatisfied_requirements.each {|r| puts r.message}
+      return
+    end
 
     test "brew audit #{formula}"
     test "brew fetch #{dependencies}" unless dependencies.empty?
