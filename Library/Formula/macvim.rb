@@ -42,7 +42,7 @@ class Macvim < Formula
       --with-local-dir=#{HOMEBREW_PREFIX}
     ]
 
-    args << "--with-macsdk=#{MacOS::version.to_s}" unless MacOS::CLT.installed?
+    args << "--with-macsdk=#{MacOS.version}" unless MacOS::CLT.installed?
     args << "--enable-cscope" if build.with? "cscope"
 
     if build.with? "lua"
