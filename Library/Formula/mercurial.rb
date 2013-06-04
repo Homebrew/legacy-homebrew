@@ -8,7 +8,7 @@ class Mercurial < Formula
   head 'http://selenic.com/repo/hg', :using => :hg
 
   depends_on :python # its written in Python, so this is a hard dep
-  depends_on 'docutils' => :python if build.head?
+  depends_on 'docutils' => :python
 
   def install
     python do
@@ -20,7 +20,7 @@ class Mercurial < Formula
       end
 
       # Man pages come pre-built in source releases
-      system "make doc" if build.head?
+      system "make doc"
       system "make", "PREFIX=#{prefix}", "install"
 
       # Install some contribs
