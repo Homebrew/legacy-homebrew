@@ -88,18 +88,7 @@ class Requirement
   end
 
   class << self
-    # The default formula to install to satisfy this requirement.
-    def default_formula(val=nil)
-      val.nil? ? @default_formula : @default_formula = val.to_s
-    end
-
-    def fatal(val=nil)
-      val.nil? ? @fatal : @fatal = val
-    end
-
-    def build(val=nil)
-      val.nil? ? @build : @build = val
-    end
+    attr_rw :fatal, :build, :default_formula
 
     def satisfy(options={}, &block)
       @satisfied ||= Requirement::Satisfier.new(options, &block)
