@@ -140,47 +140,44 @@ class FormulaInstaller
     end
   end
 
-  def effective_deps
-    @deps ||= begin
-      deps = Set.new
+  # Dependencies of f that were also explicitly requested on the command line.
+  # These honor options like --HEAD and --devel.
+  def requested_deps
+    f.recursive_dependencies.select { |dep| dep.requested? && !dep.installed? }
+  end
 
-      # If a dep was also requested on the command line, we let it honor
-      # any influential flags (--HEAD, --devel, etc.) the user has passed
-      # when we check the installed status.
-      requested_deps = f.recursive_dependencies.select do |dep|
-        dep.requested? && !dep.installed?
-      end
+  # All dependencies that we must install before installing f.
+  # These do not honor flags like --HEAD and --devel.
+  def necessary_deps
+    ARGV.filter_for_dependencies do
+      f.recursive_dependencies do |dependent, dep|
+        if dep.optional? || dep.recommended?
+          Dependency.prune unless dependent.build.with?(dep.name)
+        elsif dep.build?
+          Dependency.prune if install_bottle?(dependent)
+        end
 
-      # Otherwise, we filter these influential flags so that they do not
-      # affect installation prefixes and other properties when we decide
-      # whether or not the dep is needed.
-      necessary_deps = ARGV.filter_for_dependencies do
-        f.recursive_dependencies do |dependent, dep|
-          if dep.optional? || dep.recommended?
-            Dependency.prune unless dependent.build.with?(dep.name)
-          elsif dep.build?
-            Dependency.prune if install_bottle?(dependent)
-          end
+        if f.build.universal?
+          dep.universal! unless dep.build?
+        end
 
-          if f.build.universal?
-            dep.universal! unless dep.build?
-          end
-
-          if dep.satisfied?
-            Dependency.prune
-          elsif dep.installed?
-            raise UnsatisfiedDependencyError.new(f, dep)
-          end
+        if dep.satisfied?
+          Dependency.prune
+        elsif dep.installed?
+          raise UnsatisfiedDependencyError.new(f, dep)
         end
       end
-
-      deps.merge(requested_deps)
-      deps.merge(necessary_deps)
-
-      # Now that we've determined which deps we need, map them back
-      # onto recursive_dependencies to preserve installation order
-      f.recursive_dependencies.select { |d| deps.include? d }
     end
+  end
+
+  # Combine requested_deps and necessary deps.
+  def filter_deps
+    deps = Set.new.merge(requested_deps).merge(necessary_deps)
+    f.recursive_dependencies.select { |d| deps.include? d }
+  end
+
+  def effective_deps
+    @effective_deps ||= filter_deps
   end
 
   def install_dependencies
