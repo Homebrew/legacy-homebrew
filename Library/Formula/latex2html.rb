@@ -7,6 +7,7 @@ class Latex2html < Formula
 
   depends_on 'netpbm'
   depends_on 'ghostscript' => :optional
+  depends_on :tex => :recommended
 
   def install
     system "./configure", "--prefix=#{prefix}", "--without-mktexlsr"
