@@ -1,8 +1,11 @@
 require 'extend/ENV'
 require 'hardware'
 require 'keg'
+require 'timeout'
 
 module Homebrew extend self
+  TEST_TIMEOUT_SECONDS = 5*60
+
   def test
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
@@ -25,8 +28,10 @@ module Homebrew extend self
       puts "Testing #{f.name}"
       begin
         # tests can also return false to indicate failure
-        raise if f.test == false
-      rescue
+        Timeout::timeout TEST_TIMEOUT_SECONDS do
+          raise if f.test == false
+        end
+      rescue Exception
         ofail "#{f.name}: failed"
       end
     end
