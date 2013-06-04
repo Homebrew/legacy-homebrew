@@ -10,9 +10,10 @@ class Libzdb < Formula
   depends_on 'sqlite' => :recommended
 
   def install
-    args = ["--disable-debug",
-            "--disable-dependency-tracking",
-            "--prefix=#{prefix}"]
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
 
     args << "--without-postgresql" if build.without? 'postgresql'
     args << "--without-mysql" if build.without? 'mysql'
