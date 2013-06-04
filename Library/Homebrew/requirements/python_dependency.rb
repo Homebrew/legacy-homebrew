@@ -74,7 +74,7 @@ class PythonInstalled < Requirement
     elsif version < @min_version
       @unsatisfied_because += "Python version #{version} is too old (need at least #{@min_version})."
       false
-    elsif @min_version.major == 2 && `python -c "import sys; print(sys.version_info.major)"`.strip == "3"
+    elsif @min_version.major == 2 && `python -c "import sys; print(sys.version_info[0])"`.strip == "3"
       @unsatisfied_because += "Your `python` points to a Python 3.x. This is not supported."
       false
     else
@@ -240,7 +240,7 @@ class PythonInstalled < Requirement
       # Don't print from here, or else universe will collapse.
       import sys
 
-      if sys.version_info.major == #{version.major} and sys.version_info.minor == #{version.minor}:
+      if sys.version_info[0] == #{version.major} and sys.version_info[1] == #{version.minor}:
           if sys.executable.startswith('#{HOMEBREW_PREFIX}'):
               # Fix 1)
               #   A setuptools.pth and/or easy-install.pth sitting either in
