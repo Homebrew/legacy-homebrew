@@ -47,7 +47,9 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
     python_reqs.sort_by{ |py| py.version }.map do |py|
       # Now is the time to set the site_packages to the correct value
       py.site_packages = lib/py.xy/'site-packages'
-      if block_given?
+      if !block_given?
+        return py
+      else
         puts "brew: Python block (#{py.binary})..." if ARGV.verbose? && ARGV.debug?
         require 'superenv'
         # Ensure env changes are only temporary by using `with_build_environment`
@@ -70,9 +72,6 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
           @current_python = nil
           res
         end
-      else
-        # We return the first available python, because no block_given?
-        return py
       end
     end
   end
