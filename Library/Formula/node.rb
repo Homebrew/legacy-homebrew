@@ -1,15 +1,5 @@
 require 'formula'
 
-class PythonVersion < Requirement
-  env :userpaths
-
-  satisfy { `python -c 'import sys;print(sys.version[:3])'`.strip.to_f >= 2.6 }
-
-  def message
-    "Node's build system, gyp, requires Python 2.6 or newer."
-  end
-end
-
 class NpmNotInstalled < Requirement
   fatal true
 
@@ -55,7 +45,7 @@ class Node < Formula
   option 'without-npm', 'npm will not be installed'
 
   depends_on NpmNotInstalled unless build.without? 'npm'
-  depends_on PythonVersion
+  depends_on PythonInstalled.new("2.6") => :build
 
   fails_with :llvm do
     build 2326

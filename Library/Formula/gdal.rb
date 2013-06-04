@@ -10,7 +10,6 @@ class Gdal < Formula
   option 'complete', 'Use additional Homebrew libraries to provide more drivers.'
   option 'with-postgres', 'Specify PostgreSQL as a dependency.'
   option 'with-mysql', 'Specify MySQL as a dependency.'
-  option 'without-python', 'Build without Python support (disables a lot of tools).'
   option 'enable-opencl', 'Build with OpenCL acceleration.'
   option 'enable-armadillo', 'Build with Armadillo accelerated TPS transforms.'
   option 'enable-unsupported', "Allow configure to drag in any library it can find. Invoke this at your own risk."
@@ -18,6 +17,7 @@ class Gdal < Formula
   # For creating up to date man pages.
   depends_on 'doxygen' => :build if build.head?
 
+  depends_on :python => :recommended
   depends_on :libpng
   depends_on 'jpeg'
   depends_on 'giflib'
@@ -200,18 +200,7 @@ class Gdal < Formula
     system "make"
     system "make install"
 
-    unless build.include? 'without-python'
-      # If setuptools happens to be installed, setup.py will cowardly refuse to
-      # install to anywhere that is not on the PYTHONPATH.
-      #
-      # Really setuptools, we're all consenting adults here...
-      python_lib = lib + which_python + 'site-packages'
-      ENV.append 'PYTHONPATH', python_lib
-
-      # setuptools is also apparently incapable of making the directory it's
-      # self
-      python_lib.mkpath
-
+    python do
       # `python-config` may try to talk us into building bindings for more
       # architectures than we really should.
       if MacOS.prefer_64_bit?
@@ -221,7 +210,7 @@ class Gdal < Formula
       end
 
       cd 'swig/python' do
-        system "python", "setup.py", "install_lib", "--install-dir=#{python_lib}"
+        system python, "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt", "--single-version-externally-managed"
         bin.install Dir['scripts/*']
       end
     end
@@ -232,22 +221,13 @@ class Gdal < Formula
     Dir[bin + '*.dox'].each { |p| rm p }
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
-
-  unless build.include? 'without-python'
-    def caveats
-      <<-EOS
-This version of GDAL was built with Python support.  In addition to providing
-modules that makes GDAL functions available to Python scripts, the Python
-binding provides ~18 additional command line tools.
-
-Unless you are using Homebrew's Python, both the bindings and the
-additional tools will be unusable unless the following directory is added to
-the PYTHONPATH:
-
-    #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages
+  def caveats
+    if python
+      python.standard_caveats +
+      <<-EOS.undent
+        This version of GDAL was built with Python support. In addition to providing
+        modules that makes GDAL functions available to Python scripts, the Python
+        binding provides ~18 additional command line tools.
       EOS
     end
   end

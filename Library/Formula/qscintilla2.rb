@@ -7,9 +7,9 @@ class Qscintilla2 < Formula
 
   depends_on 'pyqt'
   depends_on 'sip'
+  depends_on :python
 
   def install
-    ENV.prepend 'PYTHONPATH', "#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages", ':'
 
     cd 'Qt4Qt5' do
       inreplace 'qscintilla.pro' do |s|
@@ -24,25 +24,22 @@ class Qscintilla2 < Formula
       system "make", "install"
     end
 
-    cd 'Python' do
-      (share/'sip').mkpath
-      system 'python', 'configure.py', "-o", lib, "-n", include,
-                       "--apidir=#{prefix}/qsci",
-                       "--destdir=#{lib}/#{which_python}/site-packages/PyQt4",
-                       "--qsci-sipdir=#{share}/sip",
-                       "--pyqt-sipdir=#{HOMEBREW_PREFIX}/share/sip"
-      system 'make'
-      system 'make', 'install'
+    python do
+      cd 'Python' do
+        (share/"sip#{python.if3then3}").mkpath
+        system python, 'configure.py', "-o", lib, "-n", include,
+                         "--apidir=#{prefix}/qsci",
+                         "--destdir=#{python.site_packages}/PyQt4",
+                         "--qsci-sipdir=#{share}/sip#{python.if3then3}",
+                         "--pyqt-sipdir=#{HOMEBREW_PREFIX}/share/sip#{python.if3then3}"
+        system 'make'
+        system 'make', 'install'
+      end
     end
   end
 
-  def caveats; <<-EOS.undent
-    For non-Homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-    EOS
+  def caveats
+    python.standard_caveats if python
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
 end

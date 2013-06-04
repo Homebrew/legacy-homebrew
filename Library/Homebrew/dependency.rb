@@ -5,6 +5,7 @@ class Dependency
   include Dependable
 
   attr_reader :name, :tags
+  attr_accessor :env_proc
 
   def initialize(name, tags=[])
     @name = name
@@ -47,11 +48,15 @@ class Dependency
   end
 
   def missing_options
-    options - Tab.for_formula(to_formula).used_options
+    options - Tab.for_formula(to_formula).used_options - to_formula.build.implicit_options
   end
 
   def universal!
     tags << 'universal' if to_formula.build.has_option? 'universal'
+  end
+
+  def modify_build_environment
+    env_proc.call unless env_proc.nil?
   end
 
   class << self

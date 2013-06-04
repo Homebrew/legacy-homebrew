@@ -49,17 +49,11 @@ class Python < Formula
     HOMEBREW_PREFIX/"lib/python2.7/site-packages"
   end
 
-  # Where distribute/pip will install executable scripts.
-  def scripts_folder
-    HOMEBREW_PREFIX/"share/python"
-  end
-
   def install
     opoo 'The given option --with-poll enables a somewhat broken poll() on OS X (http://bugs.python.org/issue5154).' if build.include? 'with-poll'
 
     # Unset these so that installing pip and distribute puts them where we want
     # and not into some other Python the user has installed.
-    ENV['PYTHONPATH'] = nil
     ENV['PYTHONHOME'] = nil
 
     args = %W[
@@ -85,7 +79,19 @@ class Python < Formula
     end
 
     # Allow sqlite3 module to load extensions: http://docs.python.org/library/sqlite3.html#f1
-    inreplace "setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', ''
+    inreplace("setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', '') if build.with? 'sqlite'
+
+    # Allow python modules to use ctypes.find_library to find homebrew's stuff
+    # even if homebrew is not a /usr/local/lib. Try this with:
+    # `brew install enchant && pip install pyenchant`
+    inreplace "./Lib/ctypes/macholib/dyld.py" do |f|
+      f.gsub! 'DEFAULT_LIBRARY_FALLBACK = [', "DEFAULT_LIBRARY_FALLBACK = [ '#{HOMEBREW_PREFIX}/lib',"
+      f.gsub! 'DEFAULT_FRAMEWORK_FALLBACK = [', "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
+    end
+
+    # Fix http://bugs.python.org/issue18071
+    inreplace "./Lib/_osx_support.py", "compiler_so = list(compiler_so)",
+              "if isinstance(compiler_so, (str,unicode)): compiler_so = compiler_so.split()"
 
     system "./configure", *args
 
@@ -103,89 +109,59 @@ class Python < Formula
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
     system "make", "quicktest" if build.include? 'quicktest'
 
-    # Post-install, fix up the site-packages and install-scripts folders
-    # so that user-installed Python software survives minor updates, such
-    # as going from 2.7.0 to 2.7.1:
+    # Post-install, fix up the site-packages so that user-installed Python
+    # software survives minor updates, such as going from 2.7.0 to 2.7.1:
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
-    # Create a site-packages in HOMEBREW_PREFIX/lib/python/site-packages
+    # Create a site-packages in HOMEBREW_PREFIX/lib/python2.7/site-packages
     site_packages.mkpath
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # Teach python not to use things from /System
-    # and tell it about the correct site-package dir because we moved it
-    sitecustomize = site_packages_cellar/"sitecustomize.py"
-    rm sitecustomize if File.exist? sitecustomize
-    sitecustomize.write <<-EOF.undent
-      # This file is created by `brew install python` and is executed on each
-      # python startup. Don't print from here, or else universe will collapse.
-      import sys
-      import site
+    # Write our sitecustomize.py to tell python about the correct site-package
+    # dir because we moved it.
+    # We reuse the PythonInstalled requirement here for the sitecustomize.py
+    PythonInstalled.new("2.7").modify_build_environment
+    # We ship distribute and pip.
+    # Our modify_build_environment need the opt/python already now, so we
+    # create it temporarily
+    (HOMEBREW_PREFIX/'opt/python/bin/python2').mkpath
+    ln_s bin/'python2', HOMEBREW_PREFIX/'opt/python/bin/python2'
+    setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
+                   "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
+    Distribute.new.brew { system "#{bin}/python2.7", *setup_args }
+    Pip.new.brew { system "#{bin}/python2.7", *setup_args }
+    (HOMEBREW_PREFIX/'opt/python').rmtree
 
-      # Only do fix 1 and 2, if the currently run python is a brewed one.
-      if sys.executable.startswith('#{HOMEBREW_PREFIX}'):
-          # Fix 1)
-          #   A setuptools.pth and/or easy-install.pth sitting either in
-          #   /Library/Python/2.7/site-packages or in
-          #   ~/Library/Python/2.7/site-packages can inject the
-          #   /System's Python site-packages. People then report
-          #   "OSError: [Errno 13] Permission denied" because pip/easy_install
-          #   attempts to install into
-          #   /System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python
-          #   See: https://github.com/mxcl/homebrew/issues/14712
-          sys.path = [ p for p in sys.path if not p.startswith('/System') ]
-
-          # Fix 2)
-          #   Remove brewed Python's hard-coded site-packages
-          if '#{site_packages_cellar}' in sys.path:
-              sys.path.remove('#{site_packages_cellar}')
-
-      # Fix 3)
-      #   For all Pythons: Tell about homebrew's site-packages location.
-      #   This is needed for Python to parse *.pth files.
-      site.addsitedir('#{site_packages}')
-    EOF
-
-    # Install distribute and pip
-    # It's important to have these installers in our bin, because some users
-    # forget to put #{script_folder} in PATH, then easy_install'ing
-    # into /Library/Python/X.Y/site-packages with /usr/bin/easy_install.
-    mkdir_p scripts_folder unless scripts_folder.exist?
-    setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose", "--install-lib=#{site_packages_cellar}", "--install-scripts=#{bin}"]
-    Distribute.new.brew { system "#{bin}/python", *setup_args }
-    Pip.new.brew { system "#{bin}/python", *setup_args }
-
-    # Tell distutils-based installers where to put scripts and python modules
-    (prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg").write <<-EOF.undent
+    # And now we write the distuitsl.cfg
+    cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"
+    cfg.delete if cfg.exist?
+    cfg.write <<-EOF.undent
+      [global]
+      verbose=1
       [install]
-      install-scripts=#{scripts_folder}
-      install-lib=#{site_packages}
+      force=1
+      prefix=#{HOMEBREW_PREFIX}
     EOF
 
-     # Work-around this bug: http://bugs.python.org/issue18050
-     inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/re.py", 'import sys', <<-EOS.undent
-        import sys
-        try:
-            from _sre import MAXREPEAT
-        except ImportError:
-            import _sre
-            _sre.MAXREPEAT = 65535 # this monkey-patches all other places of "from _sre import MAXREPEAT"'
-        EOS
+    # Work-around this bug: http://bugs.python.org/issue18050
+    inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/re.py", 'import sys', <<-EOS.undent
+      import sys
+      try:
+          from _sre import MAXREPEAT
+      except ImportError:
+          import _sre
+          _sre.MAXREPEAT = 65535 # this monkey-patches all other places of "from _sre import MAXREPEAT"'
+      EOS
 
-    makefile = prefix/'Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile'
-    inreplace makefile do |s|
-      unless MacOS::CLT.installed?
-        s.gsub!(/^CC=.*$/, "CC=xcrun clang")
-        s.gsub!(/^CXX=.*$/, "CXX=xcrun clang++")
-        s.gsub!(/^AR=.*$/, "AR=xcrun ar")
-        s.gsub!(/^RANLIB=.*$/, "RANLIB=xcrun ranlib")
-      end
-      # Should be fixed regardless of CLT (for `python-config --ldflags`)
-      s.gsub!(/^PYTHONFRAMEWORKDIR=\tPython\.framework/, "PYTHONFRAMEWORKDIR= #{opt_prefix}/Frameworks/Python.framework")
-    end
-
+    # Write our sitecustomize.py to tell python about the correct site-package
+    # dir because we moved it. (Note, we had to install distribute and pip
+    # without the help of sitecustomize.py because HOMEBREW_PREFIX/opt/python
+    # is not yet linked)
+    # We reuse the PythonInstalled requirement here for the sitecustomize.py
+    ENV.prepend_path 'PATH', bin
+    PythonInstalled.new("2.7").modify_build_environment
   end
 
   def distutils_fix_superenv(args)
@@ -246,9 +222,6 @@ class Python < Formula
 
   def caveats
     <<-EOS.undent
-      Homebrew's Python framework
-        #{prefix}/Frameworks/Python.framework
-
       Python demo
         #{HOMEBREW_PREFIX}/share/python/Extras
 
@@ -264,10 +237,6 @@ class Python < Formula
 
       They will install into the site-package directory
         #{site_packages}
-
-      Executable python scripts will be put in:
-        #{scripts_folder}
-      so you may want to put "#{scripts_folder}" in your PATH, too.
 
       See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
     EOS

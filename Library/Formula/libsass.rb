@@ -3,7 +3,7 @@ require 'formula'
 class Libsass < Formula
   homepage 'https://github.com/hcatlin/libsass'
   url 'https://github.com/hcatlin/libsass/archive/RELEASE-1.0.tar.gz'
-  sha1 '55a8775f2ae430f24b03964b3aa8e2a3565d613a'
+  sha1 '0f4a11ba44156b3d422a6ef7ca8301bfa37ece9d'
 
   def install
     system "./configure", "--prefix=#{prefix}"

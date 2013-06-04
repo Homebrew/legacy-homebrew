@@ -7,7 +7,6 @@ class Wireshark < Formula
 
   option 'with-x', 'Include X11 support'
   option 'with-qt', 'Use QT for GUI instead of GTK+'
-  option 'with-python', 'Enable experimental Python bindings'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnutls2' => :optional
@@ -15,6 +14,7 @@ class Wireshark < Formula
   depends_on 'c-ares' => :optional
   depends_on 'pcre' => :optional
   depends_on 'qt' => :optional
+  depends_on :python => :optional
   depends_on 'glib'
 
   if build.with? 'x'

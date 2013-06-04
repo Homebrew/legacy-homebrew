@@ -6,6 +6,7 @@ class Pygtksourceview < Formula
   sha256 'bfdde2ce4f61d461fb34dece9433cf81a73a9c9de6b62d4eb06177b8c9cec9c7'
 
   depends_on 'pkg-config' => :build
+  depends_on :python
   depends_on 'gtksourceview'
   depends_on 'pygtk'
 
@@ -16,14 +17,8 @@ class Pygtksourceview < Formula
     system "make install"
   end
 
-  def caveats; <<-EOS.undent
-    For non-homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-    EOS
-  end
-
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  def caveats
+    python.standard_caveats if python
   end
 
   test do

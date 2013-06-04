@@ -210,15 +210,18 @@ class Keg < Pathname
   def link_dir foo, mode=OpenStruct.new
     root = self+foo
     return unless root.exist?
-
     root.find do |src|
       next if src == root
-
       dst = HOMEBREW_PREFIX+src.relative_path_from(self)
       dst.extend ObserverPathnameExtension
 
       if src.file?
         Find.prune if File.basename(src) == '.DS_Store'
+        # Don't link pyc files because Python overwrites these cached object
+        # files and next time brew wants to link, the pyc file is in the way.
+        if src.extname.to_s == '.pyc' && src.to_s =~ /site-packages/
+          Find.prune
+        end
 
         case yield src.relative_path_from(root)
         when :skip_file, nil
@@ -233,7 +236,6 @@ class Keg < Pathname
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
         next if dst.directory? and not dst.symlink?
-
         # no need to put .app bundles in the path, the user can just use
         # spotlight, or the open command and actual mac apps use an equivalent
         Find.prune if src.extname.to_s == '.app'

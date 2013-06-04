@@ -7,10 +7,13 @@ class Discodex < Formula
   sha1 '03a9ce7a8d70c371f4dd3ce2a1e2c72cda1fc1f4'
 
   depends_on 'disco'
+  depends_on :python
 
   def install
-    # The make target only installs python libs; must manually install the rest
-    system "make", "install", "prefix=#{prefix}"
-    prefix.install(%w[bin doc])
+    python do
+      # The make target only installs python libs; must manually install the rest
+      system "make", "install", "prefix=#{prefix}"
+      prefix.install(%w[bin doc])
+    end
   end
 end
