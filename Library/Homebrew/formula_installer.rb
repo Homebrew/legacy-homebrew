@@ -151,17 +151,13 @@ class FormulaInstaller
   def necessary_deps
     ARGV.filter_for_dependencies do
       f.recursive_dependencies do |dependent, dep|
-        if dep.optional? || dep.recommended?
-          Dependency.prune unless dependent.build.with?(dep.name)
-        elsif dep.build?
-          Dependency.prune if install_bottle?(dependent)
-        end
+        dep.universal! if f.build.universal? && !dep.build?
 
-        if f.build.universal?
-          dep.universal! unless dep.build?
-        end
-
-        if dep.satisfied?
+        if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
+          Dependency.prune
+        elsif dep.build? && install_bottle?(dependent)
+          Dependency.prune
+        elsif dep.satisfied?
           Dependency.prune
         elsif dep.installed?
           raise UnsatisfiedDependencyError.new(f, dep)
