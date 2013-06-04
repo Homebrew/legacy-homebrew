@@ -24,7 +24,12 @@ module MacOS::Xcode extend self
     when 10.6       then "3.2.6"
     when 10.7, 10.8 then "4.6.2"
     else
-      raise "Mac OS X '#{MacOS.version}' is invalid"
+      # Default to newest known version of Xcode for unreleased OSX versions.
+      if MacOS.version > 10.8
+        "4.6.2"
+      else
+        raise "Mac OS X '#{MacOS.version}' is invalid"
+      end
     end
   end
 
