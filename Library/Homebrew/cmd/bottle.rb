@@ -8,6 +8,24 @@ module Homebrew extend self
     quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
   end
 
+  def bottle_output bottle
+    puts "bottle do"
+    prefix = bottle.prefix.to_s
+    puts "  prefix '#{prefix}'" if prefix != '/usr/local'
+    cellar = bottle.cellar.to_s
+    cellar = ":#{bottle.cellar}" if bottle.cellar.is_a? Symbol
+    puts "  cellar '#{cellar}'" if bottle.cellar.to_s != '/usr/local/Cellar'
+    puts "  revision #{bottle.revision}" if bottle.revision > 0
+    Checksum::TYPES.each do |checksum_type|
+      checksum_cat = bottle.send checksum_type
+      next unless checksum_cat
+      checksum_cat.each do |cat, checksum|
+        puts "  #{checksum_type} '#{checksum}' => :#{cat}"
+      end
+    end
+    puts "end"
+  end
+
   def bottle_formula f
     unless f.installed?
       return ofail "Formula not installed: #{f.name}"
@@ -49,25 +67,14 @@ module Homebrew extend self
         keg.relocate_install_names tmp_prefix, prefix, tmp_cellar, cellar
       end
 
-      prefix = cellar = nil
-      if relocatable
-        cellar = ':any'
-      else
-        if HOMEBREW_PREFIX.to_s != '/usr/local'
-          prefix = "'#{HOMEBREW_PREFIX}"
-        end
-        if HOMEBREW_CELLAR.to_s != '/usr/local/Cellar'
-          cellar = "'#{HOMEBREW_CELLAR}'"
-        end
-      end
+      bottle = Bottle.new
+      bottle.prefix HOMEBREW_PREFIX
+      bottle.cellar relocatable ? :any : HOMEBREW_CELLAR
+      bottle.revision bottle_revision
+      bottle.sha1 sha1 => bottle_tag
 
       puts "./#{filename}"
-      puts "bottle do"
-      puts "  prefix #{prefix}" if prefix
-      puts "  cellar #{cellar}" if cellar
-      puts "  revision #{bottle_revision}" if bottle_revision > 0
-      puts "  sha1 '#{sha1}' => :#{bottle_tag}"
-      puts "end"
+      bottle_output bottle
     end
   end
 
