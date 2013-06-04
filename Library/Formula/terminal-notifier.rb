@@ -50,12 +50,8 @@ class TerminalNotifier < Formula
            "-title",     "Homebrew",
            "-group",     "brew",
            "-message",   "terminal-notifier test successful!",
-           "-open",      "'http://brew.sh'"
-           # "-subtitle",  "Test CLI Notification",
-           # "-message",   "Run terminal-notifier (sans args) for usage info",
-      # We bind the notices' click event to a NOP, essentially,
-      # by stipulating the ID of the notice widget's own app bundle
-      # as that which it should 'activate'.
+           "-open",      "'http://brew.sh'",
+           "-subtitle",  "Test CLI Notification"
   end
 end
 
