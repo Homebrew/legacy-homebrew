@@ -44,15 +44,6 @@ class TerminalNotifier < Formula
     EOS
   end
 
-  test do
-    # Display a test notice
-    system "#{bin}/terminal-notifier",
-           "-title",     "Homebrew",
-           "-group",     "brew",
-           "-message",   "terminal-notifier test successful!",
-           "-open",      "'http://brew.sh'",
-           "-subtitle",  "Test CLI Notification"
-  end
 end
 
 __END__
