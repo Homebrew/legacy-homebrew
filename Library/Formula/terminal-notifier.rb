@@ -1,5 +1,14 @@
 require 'formula'
 
+class MountainLionOrNewer < Requirement
+  fatal true
+  satisfy MacOS.version >= :mountainlion
+
+  def message
+    "Terminal-notifier requires the Notification Center of OS X 10.8+."
+  end
+end
+
 class TerminalNotifier < Formula
   homepage 'https://github.com/alloy/terminal-notifier'
   url 'https://github.com/alloy/terminal-notifier/archive/1.4.2.tar.gz'
@@ -8,14 +17,18 @@ class TerminalNotifier < Formula
   head 'https://github.com/alloy/terminal-notifier.git'
 
   depends_on :xcode
+  depends_on MountainLionOrNewer
 
   def patches
-    DATA # Disable code signing because we don't have the cert of the dev.
+    # Disable code signing because we don't have the cert of the dev.
+    # However, terminal-notifier will not be able to open apps or URLs.
+    DATA
   end
 
   def install
     system 'xcodebuild', "-project", "Terminal Notifier.xcodeproj",
                          "-target", "terminal-notifier",
+                         "SYMROOT=build",
                          "-verbose"
     prefix.install Dir['build/Release/*']
     inner_binary = "#{prefix}/terminal-notifier.app/Contents/MacOS/terminal-notifier"
@@ -23,13 +36,23 @@ class TerminalNotifier < Formula
     chmod 0755, Pathname.new(bin+"terminal-notifier")
   end
 
+  def caveats
+    <<-EOS.undent
+      Homebrew built terminal-notifier, but without an developer certificate
+      from Apple, it will not be able to open URLs or execute commands when
+      the user clicks on a notification.
+    EOS
+  end
+
   test do
     # Display a test notice
     system "#{bin}/terminal-notifier",
            "-title",     "Homebrew",
-           "-subtitle",  "Test CLI Notification",
-           "-message",   "Run terminal-notifier (sans args) for usage info",
-           "-activate",  "com.apple.UserNotificationCenter"
+           "-group",     "brew",
+           "-message",   "terminal-notifier test successful!",
+           "-open",      "'http://brew.sh'"
+           # "-subtitle",  "Test CLI Notification",
+           # "-message",   "Run terminal-notifier (sans args) for usage info",
       # We bind the notices' click event to a NOP, essentially,
       # by stipulating the ID of the notice widget's own app bundle
       # as that which it should 'activate'.
