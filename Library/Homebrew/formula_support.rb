@@ -77,6 +77,7 @@ end
 
 class Bottle < SoftwareSpec
   attr_writer :url
+  attr_rw :root_url, :prefix, :cellar, :revision
 
   def initialize
     super
@@ -102,22 +103,6 @@ class Bottle < SoftwareSpec
         end
       end
     EOS
-  end
-
-  def root_url val=nil
-    val.nil? ? @root_url : @root_url = val
-  end
-
-  def prefix val=nil
-    val.nil? ? @prefix : @prefix = val
-  end
-
-  def cellar val=nil
-    val.nil? ? @cellar : @cellar = val
-  end
-
-  def revision val=nil
-    val.nil? ? @revision : @revision = val
   end
 end
 

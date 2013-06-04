@@ -688,16 +688,6 @@ class Formula
   class << self
     # The methods below define the formula DSL.
 
-    def self.attr_rw(*attrs)
-      attrs.each do |attr|
-        class_eval <<-EOS, __FILE__, __LINE__ + 1
-          def #{attr}(val=nil)
-            val.nil? ? @#{attr} : @#{attr} = val
-          end
-        EOS
-      end
-    end
-
     attr_rw :homepage, :keg_only_reason, :skip_clean_all, :cc_failures
     attr_rw :plist_startup, :plist_manual
 
