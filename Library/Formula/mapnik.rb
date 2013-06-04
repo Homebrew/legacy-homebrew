@@ -2,21 +2,13 @@ require 'formula'
 
 class Mapnik < Formula
   homepage 'http://www.mapnik.org/'
-  url 'https://github.com/downloads/mapnik/mapnik/mapnik-v2.1.0.tar.bz2'
-  sha1 'b1c6a138e65a5e20f0f312a559e2ae7185adf5b6'
-
-  # batch for building against boost >1.52
-  # can be removed at Mapnik >= 2.1.1
-  # https://github.com/mapnik/mapnik/issues/1716
-  def patches
-    DATA
-  end
+  url 'http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2'
+  sha1 'e493ad87ca83471374a3b080f760df4b25f7060d'
 
   head 'https://github.com/mapnik/mapnik.git'
 
   depends_on 'pkg-config' => :build
   depends_on :python
-  depends_on :libtool
   depends_on :freetype
   depends_on :libpng
   depends_on 'libtiff'
@@ -29,10 +21,7 @@ class Mapnik < Formula
   depends_on 'geos' => :optional
   depends_on 'cairo' => :optional
 
-  if build.with? 'cairo'
-    depends_on 'py2cairo'
-    depends_on 'cairomm'
-  end
+  depends_on 'py2cairo' if build.with? 'cairo'
 
   def install
     icu = Formula.factory("icu4c").opt_prefix
@@ -80,29 +69,4 @@ class Mapnik < Formula
   def caveats
     python.standard_caveats if python
   end
-
 end
-
-__END__
-diff --git a/src/json/feature_collection_parser.cpp b/src/json/feature_collection_parser.cpp
-index 3faeda7..51ad824 100644
---- a/src/json/feature_collection_parser.cpp
-+++ b/src/json/feature_collection_parser.cpp
-@@ -20,12 +20,17 @@
-  *
-  *****************************************************************************/
-
-+// TODO https://github.com/mapnik/mapnik/issues/1658
-+#include <boost/version.hpp>
-+#if BOOST_VERSION >= 105200
-+#define BOOST_SPIRIT_USE_PHOENIX_V3
-+#endif
-+
- // mapnik
- #include <mapnik/json/feature_collection_parser.hpp>
- #include <mapnik/json/feature_collection_grammar.hpp>
-
- // boost
--#include <boost/version.hpp>
- #include <boost/spirit/include/qi.hpp>
- #include <boost/spirit/include/support_multi_pass.hpp>
