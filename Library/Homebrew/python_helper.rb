@@ -48,7 +48,7 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
       # Now is the time to set the site_packages to the correct value
       py.site_packages = lib/py.xy/'site-packages'
       if block_given?
-        puts "brew: Python block (#{py.binary})..." if ARGV.verbose?
+        puts "brew: Python block (#{py.binary})..." if ARGV.verbose? && ARGV.debug?
         require 'superenv'
         # Ensure env changes are only temporary by using `with_build_environment`
         ENV.with_build_environment do
@@ -71,8 +71,7 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
           res
         end
       else
-        puts "brew: Using #{py.binary}" if ARGV.verbose?
-        # We return here with intention, because no block_given?
+        # We return the first available python, because no block_given?
         return py
       end
     end
