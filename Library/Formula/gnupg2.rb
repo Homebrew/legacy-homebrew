@@ -91,3 +91,16 @@ index 1a617e7..1af2d4b 100644
  
  TESTS = version.test mds.test \
  	decrypt.test decrypt-dsa.test \
+  diff --git a/scd/pcsc-wrapper.c b/scd/pcsc-wrapper.c
+  index 7d9415a..f3d92ff 100644
+--- a/scd/pcsc-wrapper.c
++++ b/scd/pcsc-wrapper.c
+@@ -66,7 +66,7 @@
+ static int verbose;
+
+ #if defined(__APPLE__) || defined(_WIN32) || defined(__CYGWIN__)
+-typedef unsinged int pcsc_dword_t;
++typedef unsigned int pcsc_dword_t;
+ #else
+ typedef unsigned long pcsc_dword_t;
+ #endif
