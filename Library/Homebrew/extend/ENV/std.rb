@@ -68,6 +68,10 @@ module Stdenv
       self.cxx = MacOS.locate("c++")
     end
 
+    if self['CC'] =~ GNU_GCC_REGEXP
+      warn_about_non_apple_gcc($1)
+    end
+
     # Add lib and include etc. from the current macosxsdk to compiler flags:
     macosxsdk MacOS.version
 
