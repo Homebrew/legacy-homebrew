@@ -19,10 +19,14 @@ class Git < Formula
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
+  option 'with-ssl', "Build with Homebrew OpenSSL instead of the system version"
+  option 'with-curl', "Use Homebrew's version of cURL library"
 
   depends_on :python
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
+  depends_on 'openssl' if build.with? 'ssl'
+  depends_on 'curl' if build.with? 'curl'
 
   def install
     # If these things are installed, tell Git build system to not use them
