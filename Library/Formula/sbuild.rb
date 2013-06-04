@@ -1,8 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Sbuild < Formula
   homepage 'http://sbuild.tototec.de/sbuild/projects/sbuild/wiki'
   url 'http://sbuild.tototec.de/sbuild/attachments/download/57/sbuild-0.4.0-dist.zip'
