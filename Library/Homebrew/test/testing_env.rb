@@ -7,9 +7,11 @@
 ABS__FILE__ = File.expand_path(__FILE__)
 $:.push(File.expand_path(__FILE__+'/../..'))
 
+require 'extend/module'
 require 'extend/fileutils'
 require 'extend/pathname'
 require 'extend/string'
+require 'extend/symbol'
 require 'exceptions'
 require 'utils'
 require 'rbconfig'
