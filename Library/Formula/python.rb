@@ -1,8 +1,8 @@
 require 'formula'
 
 class Distribute < Formula
-  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.40.tar.gz'
-  sha1 '46654be10177014bbb502a4c516627173de67d15'
+  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.45.tar.gz'
+  sha1 '55b15037f2222828496a96f38447c0fa0228df85'
 end
 
 class Pip < Formula
@@ -124,14 +124,14 @@ class Python < Formula
     # We reuse the PythonInstalled requirement here for the sitecustomize.py
     PythonInstalled.new("2.7").modify_build_environment
     # We ship distribute and pip.
-    # Our modify_build_environment need the opt/python already now, so we
-    # create it temporarily
-    (HOMEBREW_PREFIX/'opt/python/bin/python2').mkpath
+    # Our modify_build_environment need the opt/python/bin/python2 already now,
+    # so we create it temporarily
+    (HOMEBREW_PREFIX/'opt/python/bin').mkpath
     ln_s bin/'python2', HOMEBREW_PREFIX/'opt/python/bin/python2'
     setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Distribute.new.brew { system "#{bin}/python2.7", *setup_args }
-    Pip.new.brew { system "#{bin}/python2.7", *setup_args }
+    Distribute.new.brew { system "#{bin}/python2", *setup_args }
+    Pip.new.brew { system "#{bin}/python2", *setup_args }
     (HOMEBREW_PREFIX/'opt/python').rmtree
 
     # And now we write the distuitsl.cfg
