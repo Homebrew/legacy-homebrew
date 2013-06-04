@@ -40,7 +40,6 @@ class Mapnik < Formula
     proj = Formula.factory('proj').opt_prefix
     jpeg = Formula.factory('jpeg').opt_prefix
     libtiff = Formula.factory('libtiff').opt_prefix
-    cairo = Formula.factory('cairo').opt_prefix if build.with? 'cairo'
 
     # mapnik compiles can take ~1.5 GB per job for some .cpp files
     # so lets be cautious by limiting to CPUS/2
