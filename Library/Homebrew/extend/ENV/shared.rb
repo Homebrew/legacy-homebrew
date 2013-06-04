@@ -2,7 +2,7 @@ module SharedEnvExtension
   CC_FLAG_VARS = %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
   FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
 
-  COMPILERS = ['clang', 'gcc-4.0', 'gcc-4.2', 'llvm-gcc']
+  COMPILERS = ['clang', 'gcc-4.0', 'gcc-4.2', 'llvm-gcc', /(gcc-\d\.\d)/]
   COMPLER_ALIASES = {'gcc' => 'gcc-4.2', 'llvm' => 'llvm-gcc'}
   COMPILER_SYMBOL_MAP = { 'gcc-4.0'  => :gcc_4_0,
                           'gcc-4.2'  => :gcc,
@@ -149,5 +149,29 @@ module SharedEnvExtension
 
     flags.each { |key| self[key] = cflags }
     set_cpu_flags(flags)
+  end
+
+  def warn_about_non_apple_gcc(gcc)
+    opoo "Experimental support for non-Apple GCC enabled. Some builds may fail!"
+
+    begin
+      gcc_name = 'gcc' + gcc.delete('.')
+      gcc = Formula.factory(gcc_name)
+      if !gcc.installed?
+        raise <<-EOS.undent
+        The requested Homebrew GCC, #{gcc_name}, was not installed.
+        You must:
+          brew tap homebrew/versions
+          brew install #{gcc_name}
+        EOS
+      end
+
+      ENV.append('PATH', gcc.opt_prefix/'bin', ':')
+    rescue FormulaUnavailableError
+      raise <<-EOS.undent
+      Homebrew GCC requested, but formula #{gcc_name} not found!
+      You may need to: brew tap homebrew/versions
+      EOS
+    end
   end
 end
