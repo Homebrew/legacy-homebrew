@@ -61,7 +61,7 @@ class PythonInstalled < Requirement
   # We look for a brewed python or an external Python and store the loc of
   # that binary for later usage. (See Formula#python)
   satisfy :build_env => false do
-    @unsatisfied_because = "This formula needs #{@name}.\n"
+    @unsatisfied_because = ''
     if binary.nil?
       @unsatisfied_because += "But no `#{@name}` found in your PATH! Consider to `brew install #{@name}`."
       false
@@ -76,8 +76,17 @@ class PythonInstalled < Requirement
       false
     elsif @min_version.major == 2 && `python -c "import sys; print(sys.version_info[0])"`.strip == "3"
       @unsatisfied_because += "Your `python` points to a Python 3.x. This is not supported."
-      false
     else
+      # If everything satisfied, we check the PYTHONPATH, that has to be set for non-brewed Python
+      if !brewed? && (ENV['PYTHONPATH'].nil? || !ENV['PYTHONPATH'].include?(global_site_packages)) then
+        opoo <<-EOS.undent
+          For non-brewed Python, you have to set the PYTHONPATH in order to
+          find brewed Python modules.
+            export PYTHONPATH=#{global_site_packages}:$PYTHONPATH
+        EOS
+        # This is just to shut up a second run of satisfy.
+        ENV['PYTHONPATH'] = global_site_packages.to_s
+      end
       true
     end
   end
@@ -215,6 +224,7 @@ class PythonInstalled < Requirement
 
     ENV['PYTHONHOME'] = nil  # to avoid fuck-ups.
     ENV['PYTHONNOUSERSITE'] = '1'
+    ENV['PYTHONPATH'] = global_site_packages.to_s unless brewed?
     # Python respects the ARCHFLAGS var if set. Shall we set them here?
     # ENV['ARCHFLAGS'] = ??? # FIXME
     ENV.append 'CMAKE_INCLUDE_PATH', incdir, ':'
