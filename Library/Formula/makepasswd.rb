@@ -1,6 +1,8 @@
 require 'formula'
 
 class Makepasswd < Formula
+  depends_on 'docbook2x'
+
   homepage 'http://people.defora.org/~khorben/projects/makepasswd/'
   url 'http://people.defora.org/~khorben/projects/makepasswd/makepasswd-0.5.1.tar.gz'
   sha1 'bbb0a0d007aca9d47f456c8b2191d3ae23b3f37f'
@@ -11,10 +13,20 @@ class Makepasswd < Formula
     # (hardcoded LDFLAGS and PREFIX).  Build steps below circumvent that per
     # the project's homepage.
 
-    # TODO build and install man page
-
     system "make", "LDFLAGS="
     system "make", "install", "PREFIX=#{prefix}"
+
+    # Upstream project uses db2man.sh script -- wasn't able to find much info
+    # on this, plus the upstream doc Makefile expects only certain specific
+    # tool locations. Working around it was simple enough to get the formula
+    # working:
+
+    docbook2man_bin = "#{HOMEBREW_PREFIX}/bin/docbook2man"
+
+    cd "doc" do
+      system "#{docbook2man_bin}", "makepasswd.1.xml"
+      man1.install('MAKEPASSWD.1' => "makepasswd.1")
+    end
   end
 
   test do
