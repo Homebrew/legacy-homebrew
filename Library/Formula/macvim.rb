@@ -50,8 +50,8 @@ class Macvim < Formula
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
     end
 
-    args << "--enable-pythoninterp=dynamic" if build.with? 'python'
-    args << "--enable-python3interp=dynamic" if build.with? "python3"
+    args << "--enable-pythoninterp=yes" if build.with? 'python'
+    args << "--enable-python3interp=yes" if build.with? "python3"
 
     unless MacOS::CLT.installed?
       # On Xcode-only systems:
