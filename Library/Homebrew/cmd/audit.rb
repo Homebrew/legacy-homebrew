@@ -148,7 +148,7 @@ class FormulaAuditor
         problem <<-EOS.undent unless dep.tags.any? || f.name =~ /automake/ && dep.name == 'autoconf'
         #{dep} dependency should be "depends_on '#{dep}' => :build"
         EOS
-      when "git", "ruby", "emacs", "mysql", "mercurial"
+      when "git", "ruby", "emacs", "mercurial"
         problem <<-EOS.undent
           Don't use #{dep} as a dependency. We allow non-Homebrew
           #{dep} installations.
@@ -160,14 +160,6 @@ class FormulaAuditor
              that works with brewed and system Python and allows us to support
              bindings for 2.x and 3.x in parallel and much more.
           EOS
-      when "postgresql"
-        # Postgis specifically requires a Homebrewed postgresql
-        unless f.name == "postgis"
-          problem <<-EOS.undent
-            Don't use #{dep} as a dependency. We allow non-Homebrew
-            #{dep} installations.
-          EOS
-        end
       when 'gfortran'
         problem "Use ENV.fortran during install instead of depends_on 'gfortran'"
       when 'open-mpi', 'mpich2'

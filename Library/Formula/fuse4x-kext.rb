@@ -10,7 +10,6 @@ class Fuse4xKext < Formula
     revision 3
     sha1 'f571d853f081883d943a6e8c1b12753c96fa4b28' => :mountain_lion
     sha1 'd64873c1c3afa179929651ce2c08cd6f893b421f' => :lion
-    sha1 '759f3fadd80b79080a21e5cce3afe000bf410701' => :snow_leopard
   end
 
   def install

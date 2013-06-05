@@ -552,6 +552,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
     @path ||= %W[
       #{which("hg")}
       #{HOMEBREW_PREFIX}/bin/hg
+      #{Formula.factory('mercurial').opt_prefix}/bin/hg
       #{HOMEBREW_PREFIX}/share/python/hg
       ].find { |p| File.executable? p }
   end
