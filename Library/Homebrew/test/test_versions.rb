@@ -27,6 +27,10 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert Version.new("1.0beta2").beta?
     assert Version.new("1.0rc-1").rc?
   end
+
+  def test_compare_patchlevel_to_non_patchlevel
+    assert_operator version('9.9.3-P1'), :>, version('9.9.3')
+  end
 end
 
 class VersionParsingTests < Test::Unit::TestCase
