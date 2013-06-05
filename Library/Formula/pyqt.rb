@@ -8,8 +8,13 @@ class Pyqt < Formula
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
-  depends_on 'sip' => ['with-python3'] if build.with? 'python3'
   depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
+
+  if build.with? 'python3'
+    depends_on 'sip' => 'with-python3'
+  else
+    depends_on 'sip'
+  end
 
   def install
     python do
