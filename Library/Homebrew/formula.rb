@@ -548,6 +548,33 @@ class Formula
 
   end
 
+  # For brew-fetch and others.
+  def fetch
+    # Ensure the cache exists
+    HOMEBREW_CACHE.mkpath
+    downloader.fetch
+    cached_download
+  end
+
+  # For FormulaInstaller.
+  def verify_download_integrity fn
+    active_spec.verify_download_integrity(fn)
+  end
+
+  def test
+    ret = nil
+    mktemp do
+      @testpath = Pathname.pwd
+      ret = instance_eval(&self.class.test)
+      @testpath = nil
+    end
+    ret
+  end
+
+  def test_defined?
+    not self.class.instance_variable_get(:@test_defined).nil?
+  end
+
   protected
 
   # Pretty titles the command and buffers stdout/stderr
@@ -613,35 +640,6 @@ class Formula
     end if removed_ENV_variables
   end
 
-  public
-
-  # For brew-fetch and others.
-  def fetch
-    # Ensure the cache exists
-    HOMEBREW_CACHE.mkpath
-    downloader.fetch
-    cached_download
-  end
-
-  # For FormulaInstaller.
-  def verify_download_integrity fn
-    active_spec.verify_download_integrity(fn)
-  end
-
-  def test
-    ret = nil
-    mktemp do
-      @testpath = Pathname.pwd
-      ret = instance_eval(&self.class.test)
-      @testpath = nil
-    end
-    ret
-  end
-
-  def test_defined?
-    not self.class.instance_variable_get(:@test_defined).nil?
-  end
-
   private
 
   def stage
@@ -685,8 +683,8 @@ class Formula
     end
   end
 
+  # The methods below define the formula DSL.
   class << self
-    # The methods below define the formula DSL.
 
     attr_rw :homepage, :keg_only_reason, :skip_clean_all, :cc_failures
     attr_rw :plist_startup, :plist_manual
