@@ -14,7 +14,7 @@ class Macvim < Formula
   depends_on 'cscope' => :recommended
   depends_on 'lua' => :optional
   depends_on :python => :recommended
-  depends_on :python3 => :optional # Help us! :python3 is MacVim makes the window disappear!
+  depends_on :python3 => :optional # Help us! :python3 in MacVim makes the window disappear!
 
   depends_on :xcode # For xcodebuild.
 
