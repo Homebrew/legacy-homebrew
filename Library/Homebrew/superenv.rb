@@ -82,6 +82,10 @@ class << ENV
 
   private
 
+  def dep_names
+    deps.map{|dep| File.basename(dep) }
+  end
+
   def determine_cc
     if ARGV.include? '--use-gcc'
       gcc_installed = Formula.factory('apple-gcc42').installed? rescue false
@@ -133,15 +137,15 @@ class << ENV
       paths << "#{MacOS::Xcode.prefix}/usr/bin"
       paths << "#{MacOS::Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
     end
-    paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
+    paths += dep_names.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
     paths.to_path_s
   end
 
   def determine_pkg_config_path
-    paths  = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/lib/pkgconfig" }
-    paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/pkgconfig" }
+    paths  = dep_names.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/lib/pkgconfig" }
+    paths += dep_names.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/pkgconfig" }
     paths.to_path_s
   end
 
@@ -160,7 +164,7 @@ class << ENV
 
   def determine_cmake_frameworks_path
     # XXX: keg_only_deps perhaps? but Qt does not link its Frameworks because of Ruby's Find.find ignoring symlinks!!
-    paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/Frameworks" }
+    paths = dep_names.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/Frameworks" }
     paths << "#{MacOS.sdk_path}/System/Library/Frameworks" if MacSystem.xcode43_without_clt?
     paths.to_path_s
   end
