@@ -177,10 +177,14 @@ class PythonInstalled < Requirement
     @pypy ||= !(`#{binary} -c "import sys; print(sys.version)"`.downcase =~ /.*pypy.*/).nil?
   end
 
-  # Is this python a framework-style install (OS X only)?
-  def framework?
-    @framework ||= /Python[0-9]*\.framework/ === prefix.to_s
+  def framework
+    # We return the path to Frameworks and not the 'Python.framework', because
+    # the latter is (sadly) the same for 2.x and 3.x.
+    if prefix.to_s =~ /^(.*\/Frameworks)\/(Python\.framework).*$/
+      @framework = $1
+    end
   end
+  def framework?; not framework.nil? end
 
   def universal?
     @universal ||= archs_for_command(binary).universal?
@@ -215,6 +219,9 @@ class PythonInstalled < Requirement
     # ENV['ARCHFLAGS'] = ??? # FIXME
     ENV.append 'CMAKE_INCLUDE_PATH', incdir, ':'
     ENV.append 'PKG_CONFIG_PATH', pkg_config_path, ':' if pkg_config_path
+    # We don't set the -F#{framework} here, because if Python 2.x and 3.x are
+    # used, `Python.framework` is ambuig. However, in the `python do` block
+    # we can set LDFLAGS+="-F#{framework}" because only one is temporarily set.
 
     # Udpate distutils.cfg (later we can remove this, but people still have
     # their old brewed pythons and we have to update it here)
