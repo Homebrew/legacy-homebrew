@@ -1,6 +1,6 @@
 require 'formula'
 
-class Ack < ScriptFileFormula
+class Ack < Formula
   homepage 'http://beyondgrep.com/'
   url 'https://github.com/petdance/ack2/archive/2.04.tar.gz'
   sha1 'b9241ea000b089609d7e62f241c1ef7ad0d70cc6'
