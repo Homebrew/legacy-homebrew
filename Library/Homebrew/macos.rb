@@ -28,18 +28,6 @@ module MacOS extend self
     end
   end
 
-  def oldest_cpu
-    if Hardware::CPU.type == :intel
-      if Hardware::CPU.is_64_bit?
-        :core2
-      else
-        :core
-      end
-    else
-      Hardware::CPU.family
-    end
-  end
-
   def locate tool
     # Don't call tools (cc, make, strip, etc.) directly!
     # Give the name of the binary you look for as a string to this method
