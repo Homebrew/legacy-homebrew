@@ -12,6 +12,10 @@ class CurlCaBundle < Formula
   def caveats; <<-EOS.undent
     To use these certificates with OpenSSL:
 
+      ln -s #{opt_prefix}/share/ca-bundle.crt #{HOMEBREW_PREFIX}/etc/openssl/cert.pem
+
+    Or set this for your all your shells:
+
       export SSL_CERT_FILE=#{opt_prefix}/share/ca-bundle.crt
     EOS
   end
