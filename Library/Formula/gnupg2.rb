@@ -46,10 +46,10 @@ end
 
 __END__
 diff --git a/common/homedir.c b/common/homedir.c
-index 5f2e31e..d797b68 100644
+index 5adf46a..d0c5dec 100644
 --- a/common/homedir.c
 +++ b/common/homedir.c
-@@ -365,7 +365,7 @@ dirmngr_socket_name (void)
+@@ -368,7 +368,7 @@ dirmngr_socket_name (void)
      }
    return name;
  #else /*!HAVE_W32_SYSTEM*/
