@@ -8,10 +8,20 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert_operator version('0.1'), :==, version('0.1.0')
     assert_operator version('0.1'), :<, version('0.2')
     assert_operator version('1.2.3'), :>, version('1.2.2')
-    assert_operator version('1.2.3-p34'), :>, version('1.2.3-p33')
     assert_operator version('1.2.4'), :<, version('1.2.4.1')
+  end
+
+  def test_patchlevel
+    assert_operator version('1.2.3-p34'), :>, version('1.2.3-p33')
+    assert_operator version('1.2.3-p33'), :<, version('1.2.3-p34')
+  end
+
+  def test_HEAD
     assert_operator version('HEAD'), :>, version('1.2.3')
     assert_operator version('1.2.3'), :<, version('HEAD')
+  end
+
+  def test_alpha_beta_rc
     assert_operator version('3.2.0b4'), :<, version('3.2.0')
     assert_operator version('1.0beta6'), :<, version('1.0b7')
     assert_operator version('1.0b6'), :<, version('1.0beta7')
@@ -19,13 +29,18 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert_operator version('1.1beta2'), :<, version('1.1rc1')
     assert_operator version('1.0.0beta7'), :<, version('1.0.0')
     assert_operator version('3.2.1'), :>, version('3.2beta4')
-    assert_nil version('1.0') <=> 'foo'
   end
 
-  def test_version_queries
-    assert Version.new("1.1alpha1").alpha?
-    assert Version.new("1.0beta2").beta?
-    assert Version.new("1.0rc-1").rc?
+  def test_comparing_unevenly_padded_versions
+    assert_operator version('2.1.0-p194'), :<, version('2.1-p195')
+    assert_operator version('2.1-p195'), :>, version('2.1.0-p194')
+    assert_operator version('2.1-p194'), :<, version('2.1.0-p195')
+    assert_operator version('2.1.0-p195'), :>, version('2.1-p194')
+    assert_operator version('2-p194'), :<, version('2.1-p195')
+  end
+
+  def test_comparison_returns_nil_for_non_version
+    assert_nil version('1.0') <=> 'foo'
   end
 
   def test_compare_patchlevel_to_non_patchlevel
