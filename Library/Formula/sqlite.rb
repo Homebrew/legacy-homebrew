@@ -18,15 +18,15 @@ class Sqlite < Formula
   version '3.7.17'
   sha1 'e31958e56b1d7bef9433b1ff2e875c8c290d37f4'
 
-  depends_on 'readline' => :recommended
-
   option :universal
   option 'with-docs', 'Install HTML documentation'
   option 'without-rtree', 'Disable the R*Tree index module'
   option 'with-fts', 'Enable the FTS module'
   option 'with-functions', 'Enable more math and string functions for SQL queries'
 
-  keg_only :provided_by_osx, "OS X already provides (an older) sqlite3."
+  depends_on 'readline' => :recommended
+
+  keg_only :provided_by_osx, "OS X provides an older sqlite3."
 
   def install
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" unless build.without? "rtree"
