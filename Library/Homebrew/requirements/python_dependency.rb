@@ -128,8 +128,8 @@ class PythonInstalled < Requirement
     "python#{version.major}.#{version.minor}"
   end
 
-  # Homebrew's global site-packages. The local ones are populated by the
-  # python_helper method when the `prefix` of a formula is known.
+  # Homebrew's global site-packages. The local ones (just `site_packages`) are
+  # populated by the python_helper method when the `prefix` of a formula is known.
   def global_site_packages
     HOMEBREW_PREFIX/"lib/#{xy}/site-packages"
   end
@@ -230,7 +230,7 @@ class PythonInstalled < Requirement
     ENV.append 'CMAKE_INCLUDE_PATH', incdir, ':'
     ENV.append 'PKG_CONFIG_PATH', pkg_config_path, ':' if pkg_config_path
     # We don't set the -F#{framework} here, because if Python 2.x and 3.x are
-    # used, `Python.framework` is ambuig. However, in the `python do` block
+    # used, `Python.framework` is ambiguous. However, in the `python do` block
     # we can set LDFLAGS+="-F#{framework}" because only one is temporarily set.
 
     # Udpate distutils.cfg (later we can remove this, but people still have
