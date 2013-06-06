@@ -42,8 +42,8 @@ def bottle_file_outdated? f, file
   return nil unless f and f.bottle and f.bottle.url \
     and filename.match(bottle_regex)
 
-  bottle_ext = filename.match(bottle_native_regex).captures.first rescue nil
-  bottle_url_ext = f.bottle.url.match(bottle_native_regex).captures.first rescue nil
+  bottle_ext = filename[bottle_native_regex, 1]
+  bottle_url_ext = f.bottle.url[bottle_native_regex, 1]
 
   bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
 end
