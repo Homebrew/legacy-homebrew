@@ -1,18 +1,20 @@
 require 'formula'
 
 class Celt < Formula
-  url 'http://downloads.xiph.org/releases/celt/celt-0.8.1.tar.gz'
   homepage 'http://www.celt-codec.org/'
-  sha256 'cbaa8d2ba4d4807f29a5ed40b9f2be233f988c6e3ac8dd1737b6e2ac20174542'
+  url 'http://downloads.xiph.org/releases/celt/celt-0.11.1.tar.gz'
+  sha256 '01c2579fba8b283c9068cb704a70a6e654aa74ced064c091cafffbe6fb1d4cbf'
 
   depends_on 'libogg' => :optional
 
-  fails_with_llvm "1 test failed with llvm-gcc"
+  fails_with :llvm do
+    build 2335
+    cause "'make check' fails"
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-new-plc"
+                          "--prefix=#{prefix}"
     system "make check"
     system "make install"
   end

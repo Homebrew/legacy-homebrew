@@ -1,29 +1,42 @@
 require 'formula'
 
-class Flac2Mp3 < GithubGistFormula
-  url 'https://gist.github.com/raw/124242/79857936f1d72824be0fb5d2ac845c02322abea0/flac2mp3'
-  md5 '8351009b64afedfeb7a9e162ccd8d94c'
+class Flac2Mp3 < Formula
+  url 'https://github.com/rmndk/flac2mp3/archive/v1.0.tar.gz'
+  sha1 '1fe176c715a6cd780179126d6aa95cf1f15e7ad8'
 end
 
 class Flac < Formula
   homepage 'http://flac.sourceforge.net'
   url 'http://downloads.sourceforge.net/sourceforge/flac/flac-1.2.1.tar.gz'
-  md5 '153c8b15a54da428d1f0fadc756c22c7'
+  sha1 'bd54354900181b59db3089347cc84ad81e410b38'
+
+  option :universal
 
   depends_on 'lame'
   depends_on 'libogg' => :optional
 
-  fails_with_llvm "Undefined symbols when linking", :build => 2326
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
+  end
 
   def install
-    # sadly the asm optimisations won't compile since Leopard, and nobody
-    # cares or knows how to fix it
-    system "./configure", "--disable-debug",
+    ENV.universal_binary if build.universal?
+
+    # sadly the asm optimisations won't compile since Leopard
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-debug",
                           "--disable-asm-optimizations",
                           "--enable-sse",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     ENV['OBJ_FORMAT']='macho'
+
+    # adds universal flags to the generated libtool script
+    inreplace "libtool" do |s|
+      s.gsub! ":$verstring\"", ":$verstring -arch i386 -arch x86_64\""
+    end
+
     system "make install"
 
     Flac2Mp3.new.brew {|f| bin.install 'flac2mp3'}

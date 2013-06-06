@@ -1,11 +1,11 @@
 require 'formula'
 
 class Hornetq < Formula
-  url 'http://downloads.jboss.org/hornetq/hornetq-2.2.5.Final.tar.gz'
   homepage 'http://www.jboss.org/hornetq'
-  md5 'e83f9c87320d1d0fc5d836384110ca7d'
+  url 'http://downloads.jboss.org/hornetq/hornetq-2.2.14.Final.tar.gz'
+  sha1 'e02656a93ef9e3cb02cbb8b6e7953b591b59fa71'
 
-  version '2.2.5'
+  version '2.2.14'
 
   def wrapper_script target
     <<-EOS.undent
@@ -17,7 +17,6 @@ class Hornetq < Formula
 
   def install
     libexec.install Dir['*']
-    bin.mkpath
     (bin+'hornet-start').write wrapper_script('run.sh')
     (bin+'hornet-stop').write wrapper_script('stop.sh')
   end

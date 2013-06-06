@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libdshconfig < Formula
-  url 'http://www.netfort.gr.jp/~dancer/software/downloads/libdshconfig-0.20.13.tar.gz'
   homepage 'http://www.netfort.gr.jp/~dancer/software/dsh.html.en'
-  md5 'cb9db850231091a3a848e654d9f0806b'
+  url 'http://www.netfort.gr.jp/~dancer/software/downloads/libdshconfig-0.20.13.tar.gz'
+  sha1 'fc19f56ee61ff71ae5699bc97b89cc4931ce64a1'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

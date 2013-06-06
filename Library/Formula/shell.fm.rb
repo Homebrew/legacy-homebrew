@@ -1,9 +1,9 @@
 require 'formula'
 
 class ShellFm < Formula
-  url 'https://github.com/jkramer/shell-fm/tarball/v0.8'
+  url 'https://github.com/jkramer/shell-fm/archive/v0.8.tar.gz'
   homepage 'http://nex.scrapping.cc/shell-fm/'
-  md5 'ce5c45ead71a299edbff280d4007ad99'
+  sha1 '13d8c1f6ce9c24a99d0c3ee6a3ce138835d504a1'
   head 'https://github.com/jkramer/shell-fm.git'
 
   # homepage says that libao is optional, but it doesn't seem

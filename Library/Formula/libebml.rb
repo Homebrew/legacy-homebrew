@@ -1,14 +1,14 @@
 require 'formula'
 
 class Libebml < Formula
-  url 'http://dl.matroska.org/downloads/libebml/libebml-1.2.2.tar.bz2'
-  mirror 'http://www.bunkus.org/videotools/mkvtoolnix/sources/libebml-1.2.2.tar.bz2'
   homepage 'http://www.matroska.org/'
-  md5 '726cc2bd1a525929ff35ff9854c0ebab'
+  url 'http://dl.matroska.org/downloads/libebml/libebml-1.3.0.tar.bz2'
+  mirror 'http://www.bunkus.org/videotools/mkvtoolnix/sources/libebml-1.3.0.tar.bz2'
+  sha256 '83b074d6b62715aa0080406ea84d33df2e44b5d874096640233a4db49b8096de'
 
   def install
-    chdir 'make/linux' do
-      system "make install prefix=#{prefix} CXX=#{ENV.cxx}"
+    cd 'make/linux' do
+      system "make", "install", "prefix=#{prefix}", "CXX=#{ENV.cxx}"
     end
   end
 end

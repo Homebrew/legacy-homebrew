@@ -1,12 +1,15 @@
 require 'formula'
 
 class Jemalloc < Formula
-  url 'http://www.canonware.com/download/jemalloc/jemalloc-2.2.2.tar.bz2'
   homepage 'http://www.canonware.com/jemalloc/download.html'
-  md5 '65b2b3f68c9d229246a67f5a4d29ba83'
+  url 'http://www.canonware.com/download/jemalloc/jemalloc-3.3.1.tar.bz2'
+  sha1 '75266cf0356bad309503d16080fecd61c67c66c0'
 
   def install
-    system "./configure", "--disable-debug", "--prefix=#{prefix}"
-    system "make install"
+    system './configure', '--disable-debug', "--prefix=#{prefix}"
+    system 'make install'
+
+    # This otherwise conflicts with google-perftools
+    mv "#{bin}/pprof", "#{bin}/jemalloc-pprof"
   end
 end

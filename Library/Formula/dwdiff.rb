@@ -1,13 +1,10 @@
 require 'formula'
 
 class Dwdiff < Formula
-  url 'http://os.ghalkes.nl/dist/dwdiff-1.8.2.tgz'
   homepage 'http://os.ghalkes.nl/dwdiff.html'
-  md5 '3217486292ab4771f9bbc1097201a4e0'
+  url 'http://os.ghalkes.nl/dist/dwdiff-2.0.4.tgz'
+  sha1 '543a87f3de8c156d20b3ddf2bffd9331b7fb0575'
 
-  # TODO: possibly set command line arguments to compile without the below
-  # dependencies. Or set arguments to compile with and compile without by
-  # default.
   depends_on 'gettext'
   depends_on 'icu4c'
 
@@ -18,5 +15,10 @@ class Dwdiff < Formula
     ENV.append "LDFLAGS", "-L#{gettext.lib} -L#{icu4c.lib}"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
+
+    # Remove non-English man pages
+    (man+"nl").rmtree
+    (man+"nl.UTF-8").rmtree
+    (share+"locale/nl").rmtree
   end
 end

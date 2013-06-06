@@ -1,14 +1,12 @@
 require 'formula'
 
 class Enca < Formula
-  url 'http://dl.cihar.com/enca/enca-1.13.tar.gz'
   homepage 'http://freshmeat.net/projects/enca'
-  md5 '58fcf1fea7eeab70b64a2d61e14a967d'
-
-  depends_on 'libiconv'
+  url 'http://dl.cihar.com/enca/enca-1.13.tar.gz'
+  sha1 'c6e25ea4f4cc53100bd6dacd62ea22e39151d067'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

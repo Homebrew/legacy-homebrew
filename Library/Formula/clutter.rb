@@ -2,22 +2,37 @@ require 'formula'
 
 class Clutter < Formula
   homepage 'http://clutter-project.org/'
-  url 'http://source.clutter-project.org/sources/clutter/1.6/clutter-1.6.14.tar.bz2'
-  sha256 '0564e57ca8eb24e76014627c0bb28a80a6c01b620ba14bc4198365562549576d'
+  url 'http://ftp.gnome.org/pub/gnome/sources/clutter/1.12/clutter-1.12.2.tar.xz'
+  sha256 '27a8c4495099ea33de39c2d9a911a2c9e00ffa4dcc8f94fafedbcc752c0ddf13'
+
+  option 'without-x', 'Build without X11 support'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
+  depends_on 'glib'
+  depends_on 'gdk-pixbuf'
+  depends_on 'cogl'
+  depends_on 'cairo' # for cairo-gobject
   depends_on 'atk'
-  # Cairo is keg-only and usually only used for Leopard builds.
-  # But Clutter requires a newer version of Cairo that what comes with Snow Leopard.
-  depends_on 'cairo'
-  depends_on 'intltool'
-  depends_on 'json-glib'
   depends_on 'pango'
+  depends_on 'json-glib'
+  depends_on :x11 unless build.include? 'without-x'
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--with-flavour=osx",
-                          "--with-imagebackend=quartz"
-    system "make install"
+    args = %W[
+      --disable-dependency-tracking
+      --disable-debug
+      --prefix=#{prefix}
+      --disable-introspection
+      --disable-silent-rules
+      --disable-Bsymbolic
+      --disable-tests
+      --disable-examples
+      --disable-gtk-doc-html
+      --enable-quartz-backend
+    ]
+    args << '--disable-x11-backend' << '--without-x' if build.include? 'without-x'
+    system './configure', *args
+    system 'make install'
   end
 end

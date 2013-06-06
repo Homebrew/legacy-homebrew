@@ -1,19 +1,17 @@
 require 'formula'
 
 class Apg < Formula
-  url 'http://www.adel.nursat.kz/apg/download/apg-2.2.3.tar.gz'
   homepage 'http://www.adel.nursat.kz/apg/'
-  md5 '3b3fc4f11e90635519fe627c1137c9ac'
+  url 'http://www.adel.nursat.kz/apg/download/apg-2.2.3.tar.gz'
+  sha1 '7bdbc931ef8477717186dc3ab3a2d3c25012b4ca'
 
   def install
-    inreplace "Makefile" do |s|
-      s.remove_make_var! ["CC", "FLAGS", "LIBS", "LIBM"]
-    end
+    system "make", "standalone",
+                   "CC=#{ENV.cc}",
+                   "FLAGS=#{ENV.cflags}",
+                   "LIBS=", "LIBM="
 
-    system "make standalone"
-
-    # Install manually
-    bin.install ["apg", "apgbfm"]
-    man1.install ["doc/man/apg.1", "doc/man/apgbfm.1"]
+    bin.install 'apg', 'apgbfm'
+    man1.install 'doc/man/apg.1', 'doc/man/apgbfm.1'
   end
 end

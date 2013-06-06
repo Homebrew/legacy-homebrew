@@ -1,9 +1,9 @@
 require 'formula'
 
 class Abcde < Formula
-  url 'http://abcde.googlecode.com/files/abcde-2.4.2.tar.gz'
   homepage 'https://code.google.com/p/abcde/'
-  md5 '2147527c245ed70af7b218b642201669'
+  url 'http://abcde.googlecode.com/files/abcde-2.5.4.tar.gz'
+  sha1 'eb0a933f869faf0013bc1382511936797506d108'
 
   depends_on 'lame' => :optional
   depends_on 'vorbis-tools' => :optional
@@ -14,7 +14,8 @@ class Abcde < Formula
   depends_on 'mkcue'
 
   def install
-    inreplace 'Makefile', '-o 0', ''
-    system "export prefix=#{prefix};export DESTDIR=$prefix;make -e install"
+    bin.install 'abcde', 'abcde-musicbrainz-tool', 'cddb-tool'
+    etc.install 'abcde.conf' unless (etc/'abcde.conf').exist?
+    man1.install 'abcde.1', 'cddb-tool.1'
   end
 end

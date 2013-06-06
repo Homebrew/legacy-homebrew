@@ -1,9 +1,9 @@
 require 'formula'
 
 class Autopsy < Formula
-  url 'http://downloads.sourceforge.net/project/autopsy/autopsy/2.24/autopsy-2.24.tar.gz'
   homepage 'http://www.sleuthkit.org/autopsy/index.php'
-  md5 '4ed18aa9f79453d74957b5db220d0d59'
+  url 'http://downloads.sourceforge.net/project/autopsy/autopsy/2.24/autopsy-2.24.tar.gz'
+  sha1 '084a6554a1494f5f34df4a5a3635c8d3dc3b8822'
 
   depends_on 'sleuthkit'
   depends_on 'afflib' => :optional
@@ -52,7 +52,7 @@ class Autopsy < Formula
   def install
     (var+"lib/autopsy").mkpath
     mv 'lib', 'libexec'
-    prefix.install %w{ COPYING global.css help libexec pict }
+    prefix.install %w{ global.css help libexec pict }
     prefix.install Dir['*.txt']
     (prefix+"conf.pl").write autcfg
     inreplace 'base/autopsy.base', '/tmp/autopsy', prefix
@@ -61,9 +61,8 @@ class Autopsy < Formula
   end
 
   def caveats; <<-EOS.undent
-    To start autopsy:
-      autopsy
-    By default, the evidence locker is in #{var}/lib/autopsy
+    By default, the evidence locker is in:
+      #{var}/lib/autopsy
     EOS
   end
 end

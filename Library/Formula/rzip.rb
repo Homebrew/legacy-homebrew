@@ -1,13 +1,13 @@
 require 'formula'
 
 class Rzip < Formula
-  url 'http://rzip.samba.org/ftp/rzip/rzip-2.1.tar.gz'
   homepage 'http://rzip.samba.org/'
-  md5 '0a3ba55085661647c12f2b014c51c406'
+  url 'http://rzip.samba.org/ftp/rzip/rzip-2.1.tar.gz'
+  sha1 'efeafc7a5bdd7daa0cea8d797ff21aa28bdfc8d9'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
+                          "--prefix=#{prefix}"
 
     # --mandir doesn't seem to do anything, so we need to modify the
     # Makefile ourselves

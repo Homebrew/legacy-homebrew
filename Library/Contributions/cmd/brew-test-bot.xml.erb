@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <% tests.each do |test| %>
+  <testsuite name="brew-test-bot.<%= test.name %>" tests="<%= test.steps.count %>">
+    <% test.steps.each do |step| %>
+    <testcase name="<%= step.command %>" status="<%= step.status %>" time="<%= step.time %>">
+      <% if step.has_output? %>
+      <system-out><![CDATA[<%= step.output %>]]></system-out>
+      <% end %>
+      <% if step.failed? %>
+      <failure />
+      <% end %>
+    </testcase>
+    <% end %>
+  </testsuite>
+  <% end %>
+</testsuites>

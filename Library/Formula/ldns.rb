@@ -1,25 +1,30 @@
 require 'formula'
 
 class Ldns < Formula
-  url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.10.tar.gz'
   homepage 'http://nlnetlabs.nl/projects/ldns/'
-  sha1 '7798a32c6f50a4fb7d56ddf772163dc1cb79c1a4'
+  url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.16.tar.gz'
+  sha1 '5b4fc6c5c3078cd061905c47178478cb1015c62a'
+
+  depends_on :python => :optional
+  depends_on 'swig' if build.with? 'python'
 
   def install
-      system "./configure", "--prefix=#{prefix}", "--disable-gost"
-      system "make"
-      system "make install"
+    # gost requires OpenSSL >= 1.0.0
+    args = %W[
+      --prefix=#{prefix}
+      --disable-gost
+      --with-drill
+      --with-ssl=#{MacOS.sdk_path}/usr
+    ]
 
-      Dir.chdir('drill') do
-        system "./configure", "--prefix=#{prefix}", "--with-ldns=#{prefix}"
-        system "make"
-        system "make install"
-      end
+    if build.with? 'python'
+      args << "--with-pyldns"
+      ENV['PYTHON_SITE_PKG'] = python.site_packages
+    end
 
-      Dir.chdir('examples') do
-        system "./configure", "--prefix=#{prefix}", "--with-ldns=#{prefix}", "--disable-gost"
-        system "make"
-        system "make install"
-      end
+    system "./configure", *args
+    system "make"
+    system "make install"
+    system "make", "install-pyldns"
   end
 end

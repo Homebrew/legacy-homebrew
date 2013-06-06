@@ -1,10 +1,17 @@
 module Homebrew extend self
   def log
-    cd HOMEBREW_REPOSITORY
     if ARGV.named.empty?
+      cd HOMEBREW_REPOSITORY
       exec "git", "log", *ARGV.options_only
     else
-      exec "git", "log", *ARGV.options_only + ARGV.formulae.map(&:path)
+      begin
+        path = ARGV.formulae.first.path.realpath
+      rescue FormulaUnavailableError
+        # Maybe the formula was deleted
+        path = HOMEBREW_REPOSITORY/"Library/Formula/#{ARGV.named.first}.rb"
+      end
+      cd path.dirname # supports taps
+      exec "git", "log", *ARGV.options_only + ["--", path]
     end
   end
 end

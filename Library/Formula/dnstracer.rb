@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dnstracer < Formula
-  url 'http://www.mavetju.org/download/dnstracer-1.9.tar.gz'
   homepage 'http://www.mavetju.org/unix/dnstracer.php'
-  md5 '7db73ce3070119c98049a617fe52ea84'
+  url 'http://www.mavetju.org/download/dnstracer-1.9.tar.gz'
+  sha1 'b8c60b281c0eb309acd1b1551c51cccb951685c7'
 
   def install
     ENV.append 'LDFLAGS', '-lresolv'

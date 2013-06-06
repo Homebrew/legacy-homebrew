@@ -1,24 +1,26 @@
 require 'formula'
 
 class Zint < Formula
-  url 'http://downloads.sourceforge.net/project/zint/zint/2.4.3/zint-2.4.3.tar.gz'
-  homepage 'http://www.zint.org.uk'
-  md5 '2b47caff88cb746f212d6a0497185358'
+  homepage 'http://zint.github.io/'
+  url 'https://github.com/downloads/zint/zint/zint-2.4.3.tar.gz'
+  sha1 '300732d03c77ccf1031c485a20f09b51495ef5a3'
+
   head 'git://zint.git.sourceforge.net/gitroot/zint/zint'
 
+  option 'qt', 'Build the zint-qt GUI.'
+
   depends_on 'cmake' => :build
+  depends_on :libpng
+  depends_on 'qt' if build.include? 'qt'
 
   def install
-    mkdir 'zint-build'
-    cd 'zint-build'
-    system "cmake ..  #{std_cmake_parameters} -DCMAKE_PREFIX_PATH=#{prefix} -DCMAKE_C_FLAGS=-I/usr/X11/include"
-    system "make install"
+    mkdir 'zint-build' do
+      system "cmake", "..", *std_cmake_args
+      system "make install"
+    end
   end
 
-  def test
-    mktemp do
-      system "#{bin}/zint -o test-zing.png -d 'This Text'"
-      system "/usr/bin/open test-zing.png && sleep 3"
-    end
+  test do
+    system "#{bin}/zint", "-o", "test-zing.png", "-d", "This Text"
   end
 end

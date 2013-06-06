@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gplcver < Formula
-  url 'http://sourceforge.net/projects/gplcver/files/gplcver/2.12a/gplcver-2.12a.src.tar.bz2'
   homepage 'http://gplcver.sourceforge.net/'
-  md5 '857a15a9ebc8ef63ece01502509cbeb7'
+  url 'http://sourceforge.net/projects/gplcver/files/gplcver/2.12a/gplcver-2.12a.src.tar.bz2'
+  sha1 '946bb35b6279646c6e10c309922ed17deb2aca8a'
 
   def install
     inreplace 'src/makefile.osx' do |s|
@@ -11,7 +11,9 @@ class Gplcver < Formula
       s.change_make_var! 'CFLAGS', "$(INCS) $(OPTFLGS) #{ENV.cflags}"
     end
 
-    system "cd src ; make -f makefile.osx ; cd .."
+    cd 'src' do
+      system "make -f makefile.osx"
+    end
     bin.install 'bin/cver'
   end
 end

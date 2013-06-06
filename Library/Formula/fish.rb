@@ -1,33 +1,26 @@
 require 'formula'
 
 class Fish < Formula
-  url 'http://downloads.sourceforge.net/project/fish/fish/1.23.1/fish-1.23.1.tar.bz2'
   homepage 'http://fishshell.com'
-  md5 'ead6b7c6cdb21f35a3d4aa1d5fa596f1'
+  url 'http://fishshell.com/files/2.0.0/fish-2.0.0.tar.gz'
+  sha1 '2d28553e2ff975f8e5fed6b266f7a940493b6636'
 
-  head 'git://gitorious.org/fish-shell/fish-shell.git'
+  head 'https://github.com/fish-shell/fish-shell.git'
 
   # Indeed, the head build always builds documentation
-  depends_on 'doxygen' if ARGV.build_head?
+  depends_on 'doxygen' => :build if build.head?
+  depends_on :autoconf
 
-  depends_on 'readline'
   skip_clean 'share/doc'
 
-  def patches
-    p = []
-
-    unless ARGV.build_head?
-      # Reduces the timeout in select_try() from 5s to 10ms.
-      # The old timeout would cause fish to frequently freeze for a 5
-      # second period.
-      p << "http://gitorious.org/fish-shell/fish-shell/commit/6b8e7b16f6d4e11e168e3ce2effe2d8f0a53b184.patch?format=diff"
-    end
+  def install
+    system "autoconf"
+    system "./configure", "--prefix=#{prefix}"
+    system "make install"
   end
 
-  def install
-    system "autoconf" if ARGV.build_head?
-    system "./configure", "--prefix=#{prefix}", "--without-xsel"
-    system "make install"
+  test do
+    system "fish", "-c", "echo"
   end
 
   def caveats; <<-EOS.undent

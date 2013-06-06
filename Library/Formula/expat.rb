@@ -1,9 +1,9 @@
 require 'formula'
 
 class Expat < Formula
-  url 'http://downloads.sourceforge.net/project/expat/expat/2.0.1/expat-2.0.1.tar.gz'
   homepage 'http://expat.sourceforge.net/'
-  md5 'ee8b492592568805593f81f8cdf2a04c'
+  url 'http://downloads.sourceforge.net/project/expat/expat/2.1.0/expat-2.1.0.tar.gz'
+  sha1 'b08197d146930a5543a7b99e871cba3da614f6f0'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

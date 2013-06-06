@@ -1,12 +1,13 @@
 require 'formula'
 
 class Log4cpp < Formula
-  url 'http://downloads.sourceforge.net/project/log4cpp/log4cpp-1.0.x%20%28current%29/log4cpp-1.0/log4cpp-1.0.tar.gz'
   homepage 'http://log4cpp.sourceforge.net/'
-  md5 '1face50ead0790d1297dfb04bacf273c'
+  url 'http://sourceforge.net/projects/log4cpp/files/log4cpp-1.1.x%20%28new%29/log4cpp-1.1/log4cpp-1.1.tar.gz'
+  sha1 '6003105dd11b1fe6f0f88b5bc42c86cccd78d5ae'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

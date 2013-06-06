@@ -1,18 +1,17 @@
 require 'formula'
 
 class Leiningen < Formula
-  url 'http://github.com/technomancy/leiningen/tarball/1.6.1.1'
-  homepage 'http://github.com/technomancy/leiningen'
-  md5 'dbd6ac1df529e1e3b84814b8c44265ed'
+  homepage 'https://github.com/technomancy/leiningen'
+  url 'https://github.com/technomancy/leiningen/archive/2.2.0.tar.gz'
+  sha1 '0ca7e4ea68b490171d869bd5cc3912feba8d7ee9'
 
-  head 'https://github.com/technomancy/leiningen.git', :using => :git
+  head 'https://github.com/technomancy/leiningen.git'
 
   def install
     bin.install "bin/lein"
-    system "#{bin}/lein self-install"
-
-    # Install the lein bash completion file
-    (etc+'bash_completion.d').install 'bash_completion.bash' => 'lein-completion.bash'
+    system "#{bin}/lein", "self-install"
+    bash_completion.install 'bash_completion.bash' => 'lein-completion.bash'
+    zsh_completion.install 'zsh_completion.zsh' => '_lein'
   end
 
   def caveats; <<-EOS.undent

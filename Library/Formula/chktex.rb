@@ -1,18 +1,14 @@
 require 'formula'
 
 class Chktex < Formula
-  url 'http://baruch.ev-en.org/proj/chktex/chktex-1.6.4.tar.gz'
-  homepage 'http://baruch.ev-en.org/proj/chktex/'
-  md5 'e1d1f70d37e97734a69c94682a2038a0'
+  homepage 'http://www.nongnu.org/chktex/'
+  url 'http://download.savannah.gnu.org/releases/chktex/chktex-1.7.1.tar.gz'
+  sha1 'ed94b96ed8ce65fb1cef1b5fc019045c5b2dd8a8'
+
+  depends_on :tex
 
   def install
-    # Seriously, don't pause and show ASCII art
-    inreplace "configure", "sleep 1", ""
     system "./configure", "--prefix=#{prefix}"
     system "make install"
-  end
-
-  def caveats
-    "chktex requires a version of TeX, such as TeX Live or MacTeX."
   end
 end

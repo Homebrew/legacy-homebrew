@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ortp < Formula
-  url 'http://download.savannah.gnu.org/releases/linphone/ortp/sources/ortp-0.16.5.tar.gz'
   homepage 'http://www.linphone.org/eng/documentation/dev/ortp.html'
-  md5 '94546901d14b85f97342f4ecf39489b1'
+  url 'http://download.savannah.gnu.org/releases/linphone/ortp/sources/ortp-0.20.0.tar.gz'
+  sha1 '9c66fb9512134869d4d2eb7766b6a8c5e4da1cc7'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -1,14 +1,20 @@
 require 'formula'
 
 class Dirac < Formula
-  url 'http://diracvideo.org/download/dirac-research/dirac-1.0.2.tar.gz'
-  md5 'a57c2c5e58062d437d9ab13dffb28f0f'
   homepage 'http://diracvideo.org/'
+  url 'http://diracvideo.org/download/dirac-research/dirac-1.0.2.tar.gz'
+  sha1 '895aaad832a54b754e58f77c87d38c0c37752b0b'
 
-  fails_with_llvm
+  fails_with :llvm do
+    build 2334
+  end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    # BSD cp doesn't have '-d'
+    inreplace 'doc/Makefile.in', 'cp -dR', 'cp -R'
+
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

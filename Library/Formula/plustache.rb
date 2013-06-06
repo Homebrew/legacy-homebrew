@@ -1,13 +1,13 @@
 require 'formula'
 
 class Plustache < Formula
-  url 'https://github.com/mrtazz/plustache/tarball/v0.2.0'
   homepage 'https://github.com/mrtazz/plustache'
-  md5 '85b7a895ee2a023a1c8f4c09fb41b179'
+  url 'https://github.com/mrtazz/plustache/archive/v0.2.0.tar.gz'
+  sha1 '10096ccefed6669b5c87945d7fa6c0a011549eca'
 
   depends_on 'boost'
 
   def install
-    system "rake", "install", "prefix=#{prefix}"
+    rake "install", "prefix=#{prefix}"
   end
 end

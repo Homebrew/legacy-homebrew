@@ -1,9 +1,9 @@
 require 'formula'
 
 class IkeScan < Formula
-  url 'http://www.nta-monitor.com/tools/ike-scan/download/ike-scan-1.9.tar.gz'
   homepage 'http://www.nta-monitor.com/tools/ike-scan/'
-  md5 'bed63c7d2f54c482525a735be7b5e720'
+  url 'http://www.nta-monitor.com/tools/ike-scan/download/ike-scan-1.9.tar.gz'
+  sha1 'e973742c32c7b65fe134233482c94e3e94db3b32'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

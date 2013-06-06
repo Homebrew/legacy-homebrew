@@ -1,9 +1,10 @@
 require 'formula'
 
 class Rush < Formula
-  url 'http://ftpmirror.gnu.org/rush/rush-1.6.tar.gz'
   homepage 'http://www.gnu.org/software/rush/'
-  md5 '32087472928220d0009fd65670d42741'
+  url 'http://ftpmirror.gnu.org/rush/rush-1.7.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/rush/rush-1.7.tar.gz'
+  sha1 'f886eaf093332a8b8503afcf8ca2acff7eea7191'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -1,20 +1,20 @@
 require 'formula'
 
 class Glassfish < Formula
-  url 'http://download.java.net/glassfish/3.1.1/release/glassfish-3.1.1.zip'
-  homepage 'http://glassfish.org/'
-  md5 'bf92c2c99b3d53b83bbc8c7e2124a897'
+  homepage 'http://glassfish.java.net/'
+  url 'http://download.java.net/glassfish/3.1.2.2/release/glassfish-3.1.2.2.zip'
+  sha1 '627e67d7e7f06583beb284c56f76456913461722'
 
-  skip_clean :all
+  # To keep empty folders around
+  skip_clean 'libexec'
 
   def install
     rm_rf Dir['bin/*.bat']
-    libexec.install Dir['*']
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |f|
-      ln_s f, bin
-      chmod 0755, (bin + File.basename(f))
-    end
+
+    libexec.install Dir["*"]
+    libexec.install Dir[".org.opensolaris,pkg"]
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
+
     inreplace "#{libexec}/bin/asadmin" do |s|
       s.change_make_var! 'AS_INSTALL', "#{libexec}/glassfish"
     end

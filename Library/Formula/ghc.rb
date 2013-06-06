@@ -1,42 +1,105 @@
 require 'formula'
 
+class NeedsSnowLeopard < Requirement
+  satisfy MacOS.version >= :snow_leopard
+
+  def message; <<-EOS.undent
+    GHC requires OS X 10.6 or newer. The binary releases no longer work on
+    Leopard. See the following issue for details:
+        http://hackage.haskell.org/trac/ghc/ticket/6009
+    EOS
+  end
+end
+
+class Ghcbinary < Formula
+  if Hardware.is_64_bit? and not build.build_32_bit?
+    url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
+    sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
+  else
+    url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2'
+    sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
+  end
+  version '7.4.2'
+end
+
+class Ghctestsuite < Formula
+  url 'https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz'
+  sha1 '6a1973ae3cccdb2f720606032ae84ffee8680ca1'
+end
+
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
-  version '7.0.4'
-  if ARGV.include? '--64bit'
-    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2"
-    md5 'af89d3d2ca6e9b23384baacb7d8161dd'
-  else
-    url "http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2"
-    md5 'ce297e783d113cf1547386703d1b1061'
+  url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2'
+  sha1 '8938e1ef08b37a4caa071fa169e79a3001d065ff'
+
+  env :std
+
+  depends_on NeedsSnowLeopard
+
+  option '32-bit'
+  option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
+
+  bottle do
+    sha1 '332ed50be17831557b5888f7e8395f1beb008731' => :mountain_lion
+    sha1 '64a7548eb2135a4b5f2276e59f435a39c2d2961f' => :lion
+    sha1 '166bf3c8a512b58da4119b2997a1f45c1f7c65b5' => :snow_leopard
   end
 
-  # Avoid stripping the Haskell binaries & libraries.
-  # See: http://hackage.haskell.org/trac/ghc/ticket/2458
-  skip_clean ['bin', 'lib']
-
-  def options
-    [['--64bit', 'Install 64-bit version of GHC (experimental).']]
+  fails_with :clang do
+    cause <<-EOS.undent
+      Building with Clang configures GHC to use Clang as its preprocessor,
+      which causes subsequent GHC-based builds to fail.
+      EOS
   end
 
   def install
-    if ARGV.include? '--64bit'
-      if Hardware.is_64_bit?
-        opoo "The x86_64 version is experimental!"
-      else
-        onoe "The x86_64 version is only for 64-bit hardware."
-        exit 1
-      end
+    # Move the main tarball contents into a subdirectory
+    (buildpath+'Ghcsource').install Dir['*']
+
+    # Define where the subformula will temporarily install itself
+    subprefix = buildpath+'subfo'
+
+    Ghcbinary.new.brew do
+      system "./configure", "--prefix=#{subprefix}"
+      # Temporary j1 to stop an intermittent race condition
+      system 'make', '-j1', 'install'
+      ENV.prepend 'PATH', subprefix/'bin', ':'
     end
 
-    system "./configure --prefix=#{prefix}"
-    system "make install"
+    cd 'Ghcsource' do
+      # Fix an assertion when linking ghc with llvm-gcc
+      # https://github.com/mxcl/homebrew/issues/13650
+      ENV['LD'] = 'ld'
+
+      if Hardware.is_64_bit? and not build.build_32_bit?
+        arch = 'x86_64'
+      else
+        ENV.m32 # Need to force this to fix build error on internal libgmp.
+        arch = 'i386'
+      end
+
+      system "./configure", "--prefix=#{prefix}",
+                            "--build=#{arch}-apple-darwin"
+      ENV.j1 # Fixes an intermittent race condition
+      system 'make'
+      if build.include? 'tests'
+        Ghctestsuite.new.brew do
+          (buildpath+'Ghcsource/config').install Dir['config/*']
+          (buildpath+'Ghcsource/driver').install Dir['driver/*']
+          (buildpath+'Ghcsource/mk').install Dir['mk/*']
+          (buildpath+'Ghcsource/tests').install Dir['tests/*']
+          (buildpath+'Ghcsource/timeout').install Dir['timeout/*']
+          cd (buildpath+'Ghcsource/tests') do
+            system 'make', 'CLEANUP=1', "THREADS=#{ENV.make_jobs}", 'fast'
+          end
+        end
+      end
+      ENV.j1 # Fixes an intermittent race condition
+      system 'make', 'install'
+    end
   end
 
   def caveats; <<-EOS.undent
-    The 32-bit version of GHC is installed by default, as the x84_64 version is
-    labelled experimental. Override with `--64bit`.
-
     This brew is for GHC only; you might also be interested in haskell-platform.
     EOS
   end

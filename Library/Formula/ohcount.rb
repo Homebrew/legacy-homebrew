@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ohcount < Formula
-  url 'http://downloads.sourceforge.net/project/ohcount/ohcount-3.0.0.tar.gz'
   homepage 'http://sourceforge.net/apps/trac/ohcount/'
-  md5 '08f97d01adde8b45635abfe93f8a717a'
+  url 'http://downloads.sourceforge.net/project/ohcount/ohcount-3.0.0.tar.gz'
+  sha1 '5c1357b3094881ff9804fbf3002c9aaa16494cce'
 
   depends_on 'ragel'
   depends_on 'pcre'
@@ -13,6 +13,9 @@ class Ohcount < Formula
   end
 
   def install
+    # find Homebrew's libpcre
+    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+
     system "./build", "ohcount"
     bin.install 'bin/ohcount'
   end

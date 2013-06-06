@@ -1,24 +1,47 @@
 require 'formula'
 
 class Couchdb < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=couchdb/1.1.0/apache-couchdb-1.1.0.tar.gz'
   homepage "http://couchdb.apache.org/"
-  md5 '907b763d3a14b6649bf0371ffa75a36b'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.3.0/apache-couchdb-1.3.0.tar.gz'
+  sha1 '1085297fcabb020f407283aba1f74302c9923fa0'
 
-  head 'http://svn.apache.org/repos/asf/couchdb/trunk'
+  head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
+  if build.devel? or build.head?
+    depends_on :automake => :build
+    depends_on :libtool => :build
+    # CouchDB >= 1.3.0 requires autoconf 2.63 or higher
+    depends_on 'autoconf' => :build
+    depends_on 'autoconf-archive' => :build
+    depends_on 'pkg-config' => :build
+    depends_on 'help2man' => :build
+  end
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
-  depends_on 'curl' if MacOS.leopard?
+  depends_on 'curl' if MacOS.version == :leopard
 
   def install
-    system "./bootstrap" if File.exists? "bootstrap"
+    # couchdb 1.3.0 supports vendor names and versioning
+    # in the welcome message
+    inreplace 'etc/couchdb/default.ini.tpl.in' do |s|
+      s.gsub! '%package_author_name%', 'Homebrew'
+      s.gsub! '%version%', '%version%-1'
+    end
+
+    if build.devel? or build.head?
+      # workaround for the auto-generation of THANKS file which assumes
+      # a developer build environment incl access to git sha
+      touch "THANKS"
+      system "./bootstrap"
+    end
+
     system "./configure", "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}",
+                          "--disable-init",
                           "--with-erlang=#{HOMEBREW_PREFIX}/lib/erlang/usr/include",
-                          "--with-js-include=#{HOMEBREW_PREFIX}/include",
+                          "--with-js-include=#{HOMEBREW_PREFIX}/include/js",
                           "--with-js-lib=#{HOMEBREW_PREFIX}/lib"
     system "make"
     system "make install"
@@ -30,13 +53,8 @@ class Couchdb < Formula
   end
 
   def test
-    puts <<-EOS.undent
-      To test CouchDB, start `couchdb` in a terminal and then:
-        curl http://127.0.0.1:5984/
-
-      The reply should look like:
-        {"couchdb":"Welcome","version":"1.1.0"}
-    EOS
+    # ensure couchdb embedded spidermonkey vm works
+    system "#{bin}/couchjs", "-h"
   end
 
   def caveats; <<-EOS.undent
@@ -50,8 +68,20 @@ class Couchdb < Formula
         cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
 
-    Or start manually with:
-        couchdb
+    Alternatively, automatically run on startup as a daemon with:
+        sudo launchctl list org.apache.couchdb \>/dev/null 2\>\&1 \&\& \\
+          sudo launchctl unload -w /Library/LaunchDaemons/org.apache.couchdb.plist
+        sudo cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist /Library/LaunchDaemons/
+        sudo launchctl load -w /Library/LaunchDaemons/org.apache.couchdb.plist
+
+    Or start manually as the current user with `couchdb`.
+
+    To test CouchDB, start `couchdb` in a terminal and then:
+      curl http://127.0.0.1:5984/
+
+    The reply should look like:
+      {"couchdb":"Welcome","uuid":"....","version":"1.3.0",
+          "vendor":{"version":"1.3.0-1","name":"Homebrew"}}
     EOS
   end
 end

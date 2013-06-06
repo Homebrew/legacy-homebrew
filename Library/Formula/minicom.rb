@@ -1,9 +1,9 @@
 require 'formula'
 
 class Minicom < Formula
-  url 'http://alioth.debian.org/frs/download.php/3195/minicom-2.4.tar.gz'
   homepage 'http://alioth.debian.org/projects/minicom/'
-  md5 '700976a3c2dcc8bbd50ab9bb1c08837b'
+  url 'http://alioth.debian.org/frs/download.php/3700/minicom-2.6.1.tar.gz'
+  sha1 'ce6b5f3dab6b4179736152e38a806029f8ad222a'
 
   def install
     # There is a silly bug in the Makefile where it forgets to link to iconv. Workaround below.

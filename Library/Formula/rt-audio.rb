@@ -1,14 +1,14 @@
 require 'formula'
 
 class RtAudio < Formula
-  url 'http://www.music.mcgill.ca/~gary/rtaudio/release/rtaudio-4.0.7.tar.gz'
   homepage 'http://www.music.mcgill.ca/~gary/rtaudio/'
-  md5 '5d1292abccffa37505d9c4cc177b1e4f'
+  url 'http://www.music.mcgill.ca/~gary/rtaudio/release/rtaudio-4.0.7.tar.gz'
+  sha1 '56c647cc664dd021df1a6fa30fe96c04100c2b75'
 
   def install
     system "./configure"
     system "make"
     lib.install "librtaudio.a"
-    include.install ["RtAudio.h", "RtError.h"]
+    include.install "RtAudio.h", "RtError.h"
   end
 end

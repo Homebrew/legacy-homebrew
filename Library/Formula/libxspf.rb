@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libxspf < Formula
-  url 'http://downloads.xiph.org/releases/xspf/libxspf-1.2.0.tar.bz2'
   homepage 'http://libspiff.sourceforge.net/'
-  md5 'eceb3bf8fd4af3b09ea06c5c029cd647'
+  url 'http://downloads.xiph.org/releases/xspf/libxspf-1.2.0.tar.bz2'
+  sha1 '23bbc0573636928210f42699029941dd06b20a1d'
 
   depends_on 'cpptest'
   depends_on 'uriparser'

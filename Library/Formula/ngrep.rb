@@ -1,14 +1,14 @@
 require 'formula'
 
 class Ngrep < Formula
-  url 'http://downloads.sourceforge.net/project/ngrep/ngrep/1.45/ngrep-1.45.tar.bz2'
   homepage 'http://ngrep.sourceforge.net/'
-  md5 'bc8150331601f3b869549c94866b4f1c'
+  url 'http://downloads.sourceforge.net/project/ngrep/ngrep/1.45/ngrep-1.45.tar.bz2'
+  sha1 'f26090a6ac607db66df99c6fa9aef74968f3330f'
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
+    system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           # this line required to make configure succeed
                           "--with-pcap-includes=/usr/include"
     system "make install"

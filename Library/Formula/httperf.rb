@@ -1,12 +1,18 @@
 require 'formula'
 
 class Httperf < Formula
-  url 'http://httperf.googlecode.com/files/httperf-0.9.0.tar.gz'
   homepage 'http://code.google.com/p/httperf/'
-  md5 '2968c36b9ecf3d98fc1f2c1c9c0d9341'
+  url 'http://httperf.googlecode.com/files/httperf-0.9.0.tar.gz'
+  sha1 '2aa885c0c143d809c0e50a6eca5063090bddee35'
+
+  option 'enable-debug', 'Build with debugging support'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    debug = build.include?('enable-debug') ? '--enable-debug' : '--disable-debug'
+
+    system "./configure", debug,
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

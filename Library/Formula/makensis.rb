@@ -2,13 +2,13 @@ require 'formula'
 
 class NsisSupport < Formula
   url 'http://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46.zip'
-  md5 'd7e43beabc017a7d892a3d6663e988d4'
+  sha1 'adeff823a1f8af3c19783700a6b8d9054cf0f3c2'
 end
 
 class Makensis < Formula
-  url 'http://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-src.tar.bz2'
   homepage 'http://nsis.sourceforge.net/'
-  md5 '61c2e81739436b06d7cf7bcce1d533ac'
+  url 'http://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-src.tar.bz2'
+  sha1 '2cc9bff130031a0b1d76b01ec0a9136cdf5992ce'
 
   depends_on 'scons' => :build
 

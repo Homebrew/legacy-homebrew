@@ -1,3 +1,6 @@
+require 'keg'
+require 'cmd/tap'
+
 module Homebrew extend self
   # $n and $d are used by the ObserverPathnameExtension to keep track of
   # certain filesystem actions.
@@ -7,25 +10,43 @@ module Homebrew extend self
     $d = 0
     dirs = []
 
-    %w[bin sbin etc lib include share Library/LinkedKegs].map{ |d| HOMEBREW_PREFIX+d }.each do |path|
-      path.find do |path|
-        path.extend ObserverPathnameExtension
+    Keg::PRUNEABLE_DIRECTORIES.select(&:directory?).each do |dir|
+      dir.find do |path|
+        path.extend(ObserverPathnameExtension)
         if path.symlink?
-          path.unlink unless path.resolved_path_exists?
+          unless path.resolved_path_exists?
+            if ENV['HOMEBREW_KEEP_INFO'] and path.to_s =~ Keg::INFOFILE_RX
+              path.uninstall_info unless ARGV.dry_run?
+            end
+
+            if ARGV.dry_run?
+              puts "Would remove (broken link): #{path}"
+            else
+              path.unlink
+            end
+          end
         elsif path.directory?
           dirs << path
         end
       end
     end
 
-    dirs.sort.reverse_each{ |d| d.rmdir_if_possible }
+    dirs.sort.reverse_each do |d|
+      if ARGV.dry_run? && d.children.empty?
+        puts "Would remove (empty directory): #{d}"
+      else
+        d.rmdir_if_possible
+      end
+    end
 
-    if $n == 0 and $d == 0
+    repair_taps unless ARGV.dry_run?
+
+    if $n == 0 && $d == 0
       puts "Nothing pruned" if ARGV.verbose?
     else
       print "Pruned #{$n} symbolic links "
       print "and #{$d} directories " if $d > 0
       puts  "from #{HOMEBREW_PREFIX}"
-    end
+    end unless ARGV.dry_run?
   end
 end

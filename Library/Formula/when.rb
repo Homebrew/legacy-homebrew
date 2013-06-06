@@ -1,13 +1,18 @@
 require 'formula'
 
 class When < Formula
-  url 'http://www.lightandmatter.com/when/when.tar.gz'
   homepage 'http://www.lightandmatter.com/when/when.html'
-  md5 'f0abae65bbd53b07af7a29da8b817155'
-  version '1.1.28'
+  url 'http://www.lightandmatter.com/when/when_1.1.31-debian-source.tar.gz'
+  version '1.1.31'
+  sha1 '2d986aadac5667b7eb50940a6aa547d50c9f8f82'
 
   def install
-    bin.install 'when'
-    man1.install 'when.1'
+    # Double-gzipped.
+    system "tar xvf when_1.1.31.orig.tar.gz"
+    cd "when-1.1.31" do
+      prefix.install_metafiles
+      bin.install 'when'
+      man1.install 'when.1'
+    end
   end
 end

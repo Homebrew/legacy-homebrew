@@ -1,11 +1,13 @@
 require 'formula'
 
 class Syck < Formula
-  url 'http://cloud.github.com/downloads/indeyets/syck/syck-0.70.tar.gz'
   homepage 'https://wiki.github.com/indeyets/syck/'
-  md5 '198f925b4ed7fe04a182c35014498634'
+  url 'http://cloud.github.com/downloads/indeyets/syck/syck-0.70.tar.gz'
+  sha1 '30f89eba1fae0546ccfa75a9a3b865a3c8a9ac79'
 
-  fails_with_llvm
+  fails_with :llvm do
+    build 2334
+  end
 
   def install
     ENV.deparallelize # Not parallel safe.

@@ -2,8 +2,8 @@ require 'formula'
 
 class Classads < Formula
   homepage 'http://www.cs.wisc.edu/condor/classad/'
-  url 'ftp://ftp.cs.wisc.edu/condor/classad/c++/classads-1.0.9.tar.gz'
-  sha256 'f223b6d5954d3b1cd6b34dba7c7f67a69e959e350b4d9473b582895a326d3b60'
+  url 'ftp://ftp.cs.wisc.edu/condor/classad/c++/classads-1.0.10.tar.gz'
+  sha256 'cde2fe23962abb6bc99d8fc5a5cbf88f87e449b63c6bca991d783afb4691efb3'
 
   depends_on "pcre++"
 

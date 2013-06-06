@@ -1,42 +1,49 @@
 require 'formula'
 
 class Clojure < Formula
-  url 'http://repo1.maven.org/maven2/org/clojure/clojure/1.3.0/clojure-1.3.0.zip'
-  md5 'de91ee9914017a38c7cc391ab8fcbc1a'
-  head 'https://github.com/clojure/clojure.git'
   homepage 'http://clojure.org/'
+  url 'http://repo1.maven.org/maven2/org/clojure/clojure/1.5.1/clojure-1.5.1.zip'
+  sha1 '90d09dff6e6ded4382d06ff3b3ab03be471fcab2'
 
-  def script; <<-EOS.undent
-    #!/bin/sh
-    # Clojure wrapper script.
-    # With no arguments runs Clojure's REPL.
+  head 'https://github.com/clojure/clojure.git'
 
-    # Put the Clojure jar from the cellar and the current folder in the classpath.
-    CLOJURE=$CLASSPATH:#{prefix}/clojure-1.3.0.jar:${PWD}
+  depends_on 'rlwrap' => :optional
 
-    if [ "$#" -eq 0 ]; then
-        java -cp $CLOJURE clojure.main --repl
+  def script
+    if build.with? 'rlwrap'
+      rlwrap = "rlwrap "
     else
-        java -cp $CLOJURE clojure.main "$@"
-    fi
+      rlwrap = ""
+    end
+    <<-EOS.undent
+      #!/bin/sh
+      # Clojure wrapper script.
+      # With no arguments runs Clojure's REPL.
+
+      # Put the Clojure jar from the cellar and the current folder in the classpath.
+      CLOJURE=$CLASSPATH:#{prefix}/#{jar}:${PWD}
+
+      if [ "$#" -eq 0 ]; then
+          #{rlwrap}java -cp "$CLOJURE" clojure.main --repl
+      else
+          java -cp "$CLOJURE" clojure.main "$@"
+      fi
     EOS
   end
 
+  def jar
+    "clojure-#{version}.jar"
+  end
+
   def install
-    system "ant" if ARGV.build_head?
-    prefix.install 'clojure-1.3.0.jar'
+    system "ant" if build.head?
+    prefix.install jar
+    (prefix+jar).chmod(0644) # otherwise it's 0600
     (prefix+'classes').mkpath
     (bin+'clj').write script
   end
 
-  def caveats; <<-EOS.undent
-    If you `brew install repl` then you may find this wrapper script from
-    MacPorts useful:
-      http://trac.macports.org/browser/trunk/dports/lang/clojure/files/clj-rlwrap.sh?format=txt
-    EOS
-  end
-
   def test
-    system "#{bin}/clj -e \"(println \\\"Hello World\\\")\""
+    system "#{bin}/clj", "-e", '(println "Hello World")'
   end
 end

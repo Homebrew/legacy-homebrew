@@ -1,15 +1,16 @@
 require 'formula'
 
 class Atf < Formula
-  url 'ftp://ftp.NetBSD.org/pub/NetBSD/misc/jmmv/atf/0.12/atf-0.12.tar.gz'
-  homepage 'http://www.netbsd.org/~jmmv/atf/index.html'
-  md5 'e3681dcf39f514bcddf057cabecf4944'
+  homepage 'http://code.google.com/p/kyua/wiki/ATF'
+  url 'http://kyua.googlecode.com/files/atf-0.16.tar.gz'
+  sha256 'f33a85f4a0677f40be406baaf6a5a749ca02870af9707f7606a0f3fa613c8339'
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}",
-                          "--mandir=#{man}"
-    system "make install"
+                          "--sysconfdir=#{etc}"
+    system 'make'
+    ENV.j1  # Fixes an llvm race condition error where a file exists.
+    system 'make install'
   end
 end

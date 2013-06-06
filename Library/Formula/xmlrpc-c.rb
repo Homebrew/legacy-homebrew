@@ -1,16 +1,18 @@
 require 'formula'
 
 class XmlrpcC < Formula
-  url 'http://downloads.sourceforge.net/sourceforge/xmlrpc-c/xmlrpc-c-1.16.38.tgz'
-  md5 'fabb49e5f1efeffa1bedd15a9131699a'
   homepage 'http://xmlrpc-c.sourceforge.net/'
+  url 'http://svn.code.sf.net/p/xmlrpc-c/code/stable', :revision => 2489
+  version '1.33.03'
 
   def install
     ENV.deparallelize
-    # choosing --enable-libxml2-backend to lose some weight and not statically
-    # link in expat
-    #NOTE seemingly it isn't possible to build dylibs with this thing
-    system "./configure", "--disable-debug", "--enable-libxml2-backend", "--prefix=#{prefix}"
+    # --enable-libxml2-backend to lose some weight and not statically link in expat
+    system "./configure", "--enable-libxml2-backend",
+                          "--prefix=#{prefix}"
+
+    # xmlrpc-config.h cannot be found if only calling make install
+    system "make"
     system "make install"
   end
 end

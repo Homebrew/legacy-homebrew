@@ -1,24 +1,21 @@
 require 'formula'
 
 class Gv < Formula
-  url 'http://ftpmirror.gnu.org/gv/gv-3.7.2.tar.gz'
   homepage 'http://www.gnu.org/s/gv/'
-  md5 'eb47d465755b7291870af66431c6f2e1'
+  url 'http://ftpmirror.gnu.org/gv/gv-3.7.4.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/gv/gv-3.7.4.tar.gz'
+  sha1 'd5bc11a37136dff69248f943a632544a4036b63f'
 
-  depends_on 'ghostscript'
-  depends_on 'xaw3d'
+  depends_on 'pkg-config' => :build
+  depends_on 'ghostscript' => 'with-x11'
+  depends_on :x11 => '2.7.2'
 
   skip_clean 'share/gv/safe-gs-workdir'
 
-  def patches
-    # apply MacPorts typedef patch
-    { :p0 => "https://trac.macports.org/export/83941/trunk/dports/print/gv/files/patch-src-callbacks.c.diff" }
-  end
-
   def install
-    ENV.x11
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--enable-SIGCHLD-fallback"
+                          "--prefix=#{prefix}",
+                          "--enable-SIGCHLD-fallback"
     system "make install"
   end
 end

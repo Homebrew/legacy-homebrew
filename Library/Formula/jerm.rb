@@ -1,10 +1,10 @@
 require 'formula'
 
 class Jerm < Formula
+  homepage 'http://www.bsddiary.net/jerm/'
   url 'http://www.bsddiary.net/jerm/jerm-8096.tar.gz'
   version '0.8096'
-  homepage 'http://www.bsddiary.net/jerm/'
-  md5 'c178699945e60b32cfc8394c6aa5901c'
+  sha1 '09a301d9de423c44e60967f3f617a299427e356d'
 
   def install
     system "make all"

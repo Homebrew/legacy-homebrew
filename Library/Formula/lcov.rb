@@ -1,15 +1,15 @@
 require 'formula'
 
 class Lcov < Formula
-  url 'http://downloads.sourceforge.net/ltp/lcov-1.9.tar.gz'
   homepage 'http://ltp.sourceforge.net/coverage/lcov.php'
-  md5 '8b88cfc0200a8c176b879ac115a31379'
+  url 'http://downloads.sourceforge.net/ltp/lcov-1.10.tar.gz'
+  sha1 '70fb361bcfd7dd81ea30731d6fe532ddea56f283'
 
   def install
-    %w(bin/gendesc bin/genhtml bin/geninfo bin/genpng bin/lcov).each do |file|
+    %w(bin/genhtml bin/geninfo bin/lcov).each do |file|
       inreplace file, '/etc/lcovrc', "#{prefix}/etc/lcovrc"
     end
-    system "make PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 
   def patches

@@ -1,25 +1,17 @@
 require 'formula'
 
 class Qrencode < Formula
-  url 'http://megaui.net/fukuchi/works/qrencode/qrencode-3.1.1.tar.gz'
-  homepage 'http://megaui.net/fukuchi/works/qrencode/index.en.html'
-  md5 'd97f67cbefaf577e6c15923f3cc57b6a'
+  homepage 'http://fukuchi.org/works/qrencode/index.html.en'
+  url 'http://fukuchi.org/works/qrencode/qrencode-3.4.2.tar.gz'
+  sha1 '7daaad61f333ff6cdabfb0d925c3ab668d16dee2'
 
   depends_on 'pkg-config' => :build
+  depends_on :libpng
 
   def install
-    ENV.x11 # For libpng
-
-    # This may be removable in the next official release.
-    # See: https://github.com/fukuchi/libqrencode/issues/3
-    unless ARGV.build_head?
-      inreplace 'configure', "libpng12", "libpng"
-    end
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    ENV.j1 # Install isn't parallel-safe
     system "make install"
   end
 end

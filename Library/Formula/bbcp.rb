@@ -1,21 +1,23 @@
 require 'formula'
 
 class Bbcp < Formula
-  url 'http://www.slac.stanford.edu/~abh/bbcp/bbcp.tgz'
   homepage 'http://www.slac.stanford.edu/%7Eabh/bbcp'
-  md5 '1ed7e42aa6b9233bcc1ef8567c4bc7f9'
-  version "10.08.29.00.0"
+  url 'http://www.slac.stanford.edu/~abh/bbcp/bbcp.tgz'
+  version '13.05.03.00.0'
+  sha1 '218911904b46f7aff3784705581737f53eccbc53'
 
   def install
-    Dir.mkdir "bin"
-    Dir.mkdir "obj"
+    mkdir "bin"
+    mkdir "obj"
+
     cd "src" do
       system "make", "Darwin"
     end
+
     bin.install "bin/bbcp"
   end
 
   def test
-    system("#{bin}/bbcp","--help")
+    system "#{bin}/bbcp", "--help"
   end
 end

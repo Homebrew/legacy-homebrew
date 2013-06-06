@@ -1,15 +1,16 @@
 require 'formula'
 
 class Ntl < Formula
-  url 'http://www.shoup.net/ntl/ntl-5.5.2.tar.gz'
   homepage 'http://www.shoup.net/ntl'
-  md5 '2e0afa1fa3b325e562ce89da57cba983'
+  url 'http://www.shoup.net/ntl/ntl-6.0.0.tar.gz'
+  sha1 'ee71b1c6a94f34b8a3c226502a0a0c6c2d1bc3f9'
 
   def install
-    Dir.chdir "src"
-    system "./configure", "PREFIX=#{prefix}"
-    system "make"
-    system "make check"
-    system "make install"
+    cd "src" do
+      system "./configure", "PREFIX=#{prefix}"
+      system "make"
+      system "make check"
+      system "make install"
+    end
   end
 end

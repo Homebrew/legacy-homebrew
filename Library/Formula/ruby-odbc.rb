@@ -1,9 +1,9 @@
 require 'formula'
 
 class RubyOdbc < Formula
-  url 'http://www.ch-werner.de/rubyodbc/ruby-odbc-0.99991.tar.gz'
   homepage 'http://www.ch-werner.de/rubyodbc/'
-  md5 '64eaf6089e7ca17eeff54c4fe052ac96'
+  url 'http://www.ch-werner.de/rubyodbc/ruby-odbc-0.99995.tar.gz'
+  sha1 '8fc7bd34c582953e56478050a7b41b4b3e0efdd3'
 
   depends_on 'unixodbc'
   depends_on 'freetds'

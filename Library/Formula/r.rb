@@ -1,39 +1,32 @@
 require 'formula'
 
-def valgrind?
-  ARGV.include? '--with-valgrind'
-end
-
 class RBashCompletion < Formula
   # This is the same script that Debian packages use.
-  url 'http://rcompletion.googlecode.com/svn-history/r12/trunk/bash_completion/R', :using => :curl
-  version 'r12'
-  md5 '3c8f6cf1c07e052074ee843be00fa5d6'
+  url 'http://rcompletion.googlecode.com/svn-history/r28/trunk/bash_completion/R', :using => :curl
+  version 'r28'
+  sha1 'af734b8624b33f2245bf88d6782bea0dc5d829a4'
 end
 
 class R < Formula
-  url 'http://cran.r-project.org/src/base/R-2/R-2.13.2.tar.gz'
-  homepage 'http://www.r-project.org/'
-  md5 'fbad74f6415385f86425d0f3968dd684'
+  homepage 'http://www.r-project.org'
+  url 'http://cran.r-project.org/src/base/R-3/R-3.0.1.tar.gz'
+  sha1 '5cc65476837926fdf04105954ea94efa53ac85ce'
 
-  depends_on 'valgrind' if valgrind?
+  head 'https://svn.r-project.org/R/trunk'
 
-  def options
-    [
-      ['--with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger.']
-    ]
-  end
+  option 'with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger'
+  option 'test', 'Run tests before installing'
+
+  depends_on 'readline'
+  depends_on 'libtiff'
+  depends_on 'jpeg'
+  depends_on :x11
+
+  depends_on 'valgrind' if build.include? 'with-valgrind'
 
   def install
-    if valgrind?
-      ENV.remove_from_cflags /-O./
-      ENV.append_to_cflags '-O0'
-    end
-
+    ENV.Og if build.include? 'with-valgrind'
     ENV.fortran
-    ENV.x11 # So PNG gets added to the x11 and cairo plotting devices
-    ENV['OBJC'] = ENV['CC']
-    ENV['OBJCFLAGS'] = ENV['CFLAGS']
 
     args = [
       "--prefix=#{prefix}",
@@ -41,11 +34,15 @@ class R < Formula
       "--enable-R-framework",
       "--with-lapack"
     ]
-    args << '--with-valgrind-instrumentation=2' if valgrind?
+    args << '--with-valgrind-instrumentation=2' if build.include? 'with-valgrind'
+
+    # Pull down recommended packages if building from HEAD.
+    system './tools/rsync-recommended' if build.head?
 
     system "./configure", *args
     system "make"
     ENV.j1 # Serialized installs, please
+    system "make check 2>&1 | tee make-check.log" if build.include? 'test'
     system "make install"
 
     # Link binaries and manpages from the Framework
@@ -58,18 +55,21 @@ class R < Formula
     ln_s prefix+"R.framework/Resources/man1/R.1", man1
     ln_s prefix+"R.framework/Resources/man1/Rscript.1", man1
 
-    bash_dir = prefix + 'etc/bash_completion.d'
-    bash_dir.mkpath
-    RBashCompletion.new.brew { bash_dir.install 'R' }
+    RBashCompletion.new.brew { bash_completion.install 'R' }
+
+    prefix.install 'make-check.log' if build.include? 'test'
   end
 
   def caveats; <<-EOS.undent
     R.framework was installed to:
-      #{prefix}/R.framework
+      #{opt_prefix}/R.framework
 
     To use this Framework with IDEs such as RStudio, it must be linked
     to the standard OS X location:
-      ln -s "#{prefix}/R.framework" /Library/Frameworks
+      sudo ln -s "#{opt_prefix}/R.framework" /Library/Frameworks
+
+    To enable rJava support, run the following command:
+      R CMD javareconf JAVA_CPPFLAGS=-I/System/Library/Frameworks/JavaVM.framework/Headers
     EOS
   end
 end

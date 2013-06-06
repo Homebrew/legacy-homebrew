@@ -1,14 +1,14 @@
 require 'formula'
 
 class Opencc < Formula
-  url 'http://opencc.googlecode.com/files/opencc-0.2.0.tar.gz'
-  homepage 'http://code.google.com/p/opencc/'
-  md5 'fc5915f43f7bd30f0f30ccdc4ad3a7f1'
+  homepage 'https://github.com/BYVoid/OpenCC'
+  url 'http://opencc.googlecode.com/files/opencc-0.4.3.tar.gz'
+  sha1 '4677e63fa36fb2b92a52c01df2acc83664aaf882'
 
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
-    args = std_cmake_parameters.split
+    args = std_cmake_args
     args << '-DENABLE_GETTEXT:BOOL=OFF'
     system 'cmake', '.', *args
     system 'make'

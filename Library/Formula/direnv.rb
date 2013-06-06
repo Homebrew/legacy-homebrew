@@ -1,31 +1,19 @@
 require 'formula'
 
 class Direnv < Formula
-  homepage 'https://github.com/zimbatm/direnv'
-  url 'https://github.com/zimbatm/direnv/tarball/v0.1.72'
-  md5 '34fecdff4bc6a5cbe4890ad14e5f3438'
+  homepage 'http://www.direnv.net'
+  url 'https://github.com/zimbatm/direnv/archive/v0.1.154.tar.gz'
+  sha1 '86a87d7d3c193666ffde47b1fe52dfb2847786ff'
 
   head 'https://github.com/zimbatm/direnv.git'
 
   def install
-    # App and support files live in libexec
-    libexec.install Dir['libexec/*']
-    # Symlink into bin
-    bin.mkpath
-    ln_s libexec+'direnv', bin+'direnv'
+    system "make", "install", "DESTDIR=#{prefix}"
   end
 
-  def caveats
-    <<-EOS.undent
-    One last step.
-
+  def caveats; <<-EOS.undent
     At the END of your ~/.bashrc or ~/.zshrc, add the following line:
-
-      eval `direnv hook $0`
-
-    I mean, AFTER rvm, git-prompt and friends :)
-
-    Reload your shell, done.
+      eval "$(direnv hook $0)"
 
     See the wiki for docs and examples:
       https://github.com/zimbatm/direnv/wiki/

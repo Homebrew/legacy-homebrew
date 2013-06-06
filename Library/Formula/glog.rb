@@ -1,15 +1,15 @@
 require 'formula'
 
 class Glog < Formula
-  url 'http://google-glog.googlecode.com/files/glog-0.3.1-1.tar.gz'
   homepage 'http://code.google.com/p/google-glog/'
-  md5 '06f525c117fc37b19d12a527c65eab1d'
+  url 'http://google-glog.googlecode.com/files/glog-0.3.3.tar.gz'
+  sha1 'ed40c26ecffc5ad47c618684415799ebaaa30d65'
 
   depends_on 'gflags'
 
   def install
-    system "autoreconf -f -i"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

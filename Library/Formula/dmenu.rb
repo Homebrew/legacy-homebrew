@@ -1,12 +1,18 @@
 require 'formula'
 
 class Dmenu < Formula
-  url 'http://dl.suckless.org/tools/dmenu-4.4.tar.gz'
   homepage 'http://tools.suckless.org/dmenu/'
-  md5 'ae1902fc37716f739836fddce6123ebc'
+  url 'http://dl.suckless.org/tools/dmenu-4.5.tar.gz'
+  sha1 '70c1a13b950b7b0cb1bc35e30c6e861a78359953'
   head 'http://hg.suckless.org/dmenu/'
 
+  depends_on :x11
+
   def install
-    system "make PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
+  end
+
+  def test
+    system "#{bin}/dmenu", "-v"
   end
 end

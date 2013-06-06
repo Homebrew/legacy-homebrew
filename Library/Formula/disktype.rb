@@ -1,14 +1,11 @@
 require 'formula'
 
 class Disktype < Formula
-  head 'cvs://:pserver:anonymous@disktype.cvs.sourceforge.net:/cvsroot/disktype:disktype'
   homepage 'http://disktype.sourceforge.net/'
-  md5 '25a673f162b9c01cd565109202559489'
+  url 'http://downloads.sourceforge.net/project/disktype/disktype/9/disktype-9.tar.gz'
+  sha1 '5ccc55d1c47f9a37becce7336c4aa3a7a43cc89c'
 
-  # Fixes faulty Mac OS version checking
-  def patches
-    DATA if ARGV.build_head?
-  end
+  head 'cvs://:pserver:anonymous@disktype.cvs.sourceforge.net:/cvsroot/disktype:disktype'
 
   def install
     system "make"
@@ -16,33 +13,3 @@ class Disktype < Formula
     man1.install "disktype.1"
   end
 end
-
-__END__
-diff --git a/Makefile b/Makefile
-index b91d771..20396c6 100644
---- a/Makefile
-+++ b/Makefile
-@@ -30,23 +30,6 @@ ifeq ($(NOSYS),)
-   ifeq ($(system),Darwin)
-     CPPFLAGS += -DUSE_MACOS_TYPE -DUSE_IOCTL_DARWIN
-     LIBS     += -framework CoreServices
--    ifeq (/Developer/SDKs/MacOSX10.4u.sdk,$(wildcard /Developer/SDKs/MacOSX10.4u.sdk))
--      CPPFLAGS += -isysroot /Developer/SDKs/MacOSX10.4u.sdk
--      CFLAGS   += -arch i386 -arch ppc -mmacosx-version-min=10.4
--      LDFLAGS  += -arch i386 -arch ppc -mmacosx-version-min=10.4 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk
--    else
--      ifeq (/Developer/SDKs/MacOSX10.5.sdk,$(wildcard /Developer/SDKs/MacOSX10.5.sdk))
--        CPPFLAGS += -isysroot /Developer/SDKs/MacOSX10.5.sdk
--        CFLAGS   += -arch i386 -arch ppc -mmacosx-version-min=10.5
--        LDFLAGS  += -arch i386 -arch ppc -mmacosx-version-min=10.5 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.5.sdk
--      else
--        ifeq (/Developer/SDKs/MacOSX10.6.sdk,$(wildcard /Developer/SDKs/MacOSX10.6.sdk))
--          CPPFLAGS += -isysroot /Developer/SDKs/MacOSX10.6.sdk
--          CFLAGS   += -arch i386 -arch ppc -mmacosx-version-min=10.6
--          LDFLAGS  += -arch i386 -arch ppc -mmacosx-version-min=10.6 -Wl,-syslibroot,/Developer/SDKs/MacOSX10.6.sdk
--        endif
--      endif
--    endif
-   endif
-   ifeq ($(system),AmigaOS)
-     CC       += -noixemul

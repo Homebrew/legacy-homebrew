@@ -1,54 +1,67 @@
 require 'formula'
 
 class Sshguard < Formula
-  url 'http://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
   homepage 'http://www.sshguard.net/'
-  md5 '11b9f47f9051e25bdfe84a365c961ec1'
+  url 'http://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
+  sha1 'f8f713bfb3f5c9877b34f6821426a22a7eec8df3'
+
+  def patches
+    # Fix blacklist flag (-b) so that it doesn't abort on first usage.
+    # Upstream bug report:
+    # http://sourceforge.net/tracker/?func=detail&aid=3252151&group_id=188282&atid=924685
+    "https://sourceforge.net/tracker/download.php?group_id=188282&atid=924685&file_id=405677&aid=3252151"
+  end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-firewall=ipfw"
+                          "--with-firewall=#{firewall}"
     system "make install"
-
-    (prefix+'net.sshguard.plist').write startup_plist
-    (prefix+'net.sshguard.plist').chmod 0644
   end
 
-  def caveats; <<-EOS
-1) Install the launchd item in /Library/LaunchDaemons, like so:
-
-   sudo cp -vf #{prefix}/net.sshguard.plist /Library/LaunchDaemons/
-   sudo chown -v root:wheel /Library/LaunchDaemons/net.sshguard.plist
-
-2) Start the daemon using:
-
-   sudo launchctl load /Library/LaunchDaemons/net.sshguard.plist
-
-   Next boot of system will automatically start sshguard.
-EOS
+  def firewall
+    MacOS.version >= :lion ? "pf" : "ipfw"
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>net.sshguard</string>
-  <key>KeepAlive</key>
-  <true/>
-  <key>ProgramArguments</key>
-  <array>
-    <string>#{HOMEBREW_PREFIX}/sbin/sshguard</string>
-    <string>-l</string>
-    <string>/var/log/secure.log</string>
-  </array>
-  <key>RunAtLoad</key>
-  <true/>
-</dict>
-</plist>
-EOPLIST
+  def log_path
+    MacOS.version >= :lion ? "/var/log/system.log" : "/var/log/secure.log"
+  end
+
+  def caveats
+    if MacOS.version >= :lion then <<-EOS.undent
+      Add the following lines to /etc/pf.conf to block entries in the sshguard
+      table (replace $ext_if with your WAN interface):
+
+        table <sshguard> persist
+        block in quick on $ext_if proto tcp from any to any port 22 label "ssh bruteforce"
+
+      Then run sudo pfctl -f /etc/pf.conf to reload the rules.
+      EOS
+    end
+  end
+
+  plist_options :startup => true
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>KeepAlive</key>
+      <true/>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/sbin/sshguard</string>
+        <string>-l</string>
+        <string>#{log_path}</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+    </dict>
+    </plist>
+    EOS
   end
 end

@@ -1,13 +1,15 @@
 require 'formula'
 
 class Chuck < Formula
-  url 'http://chuck.cs.princeton.edu/release/files/chuck-1.2.1.3.tgz'
   homepage 'http://chuck.cs.princeton.edu/'
-  md5 'ac8459b4067c2491fbdeb61d122a5985'
+  url 'http://chuck.cs.princeton.edu/release/files/chuck-1.3.1.3.tgz'
+  sha1 '67d45941535f311b7700ed4958a4ad6929bca284'
 
   def install
-    system "make -C src/ osx-#{Hardware.cpu_type}"
-    bin.install "src/chuck"
-    (share+'chuck').install "examples/"
+    cd "src" do
+      system "make osx"
+      bin.install "chuck"
+    end
+    (share/'chuck').install "examples/"
   end
 end

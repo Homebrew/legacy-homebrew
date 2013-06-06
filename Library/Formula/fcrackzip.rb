@@ -1,9 +1,9 @@
 require 'formula'
 
 class Fcrackzip < Formula
-  url 'http://oldhome.schmorp.de/marc/data/fcrackzip-1.0.tar.gz'
   homepage 'http://oldhome.schmorp.de/marc/fcrackzip.html'
-  md5 '254941f51759f9425965f4b05fe7ac2c'
+  url 'http://oldhome.schmorp.de/marc/data/fcrackzip-1.0.tar.gz'
+  sha1 '92e4f8caa880c55b20e13feb7a25c8b8fd3accf8'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

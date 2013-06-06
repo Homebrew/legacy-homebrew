@@ -2,15 +2,15 @@ require 'formula'
 
 class VipMan < Formula
   url 'http://www.cs.duke.edu/~des/scripts/vip.man'
-  md5 'e94b80d7e594c68e13813e371250e521'
+  sha1 'd52ce874d594ca2c82538200706bffdf1313fdc1'
   version '19970805'
 end
 
 class Vip < Formula
+  homepage 'http://www.cs.duke.edu/~des/vip.html'
   url 'http://www.cs.duke.edu/~des/scripts/vip'
   version '19971113'
-  homepage 'http://www.cs.duke.edu/~des/vip.html'
-  md5 '46b21408dcbaa4e58a862207bb70c42f'
+  sha1 '0b2794b5ac2792af5fcf1d97f9aae04798eac049'
 
   # use awk and /var/tmp as temporary directory
   def patches; DATA; end

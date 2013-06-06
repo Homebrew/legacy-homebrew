@@ -7,19 +7,22 @@ require 'formula'
 
 module Homebrew extend self
   def uses
-    uses = Formula.all.select do |f|
+    raise FormulaUnspecifiedError if ARGV.named.empty?
+
+    uses = Formula.select do |f|
       ARGV.formulae.all? do |ff|
-        # For each formula given, show which other formulas depend on it.
-        # We only go one level up, ie. direct dependencies.
-        f.deps.include? ff.name
+        if ARGV.flag? '--recursive'
+          f.recursive_dependencies.any? { |dep| dep.name == ff.name }
+        else
+          f.deps.any? { |dep| dep.name == ff.name }
+        end
       end
     end
+
     if ARGV.include? "--installed"
-      uses = uses.select do |f|
-        keg = HOMEBREW_CELLAR/f
-        keg.directory? and not keg.subdirs.empty?
-      end
+      uses = uses.select { |f| Formula.installed.include? f }
     end
+
     puts_columns uses.map(&:to_s).sort
   end
 end

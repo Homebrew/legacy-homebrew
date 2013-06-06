@@ -1,13 +1,18 @@
 require 'formula'
 
 class Gts < Formula
-  url 'http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz'
   homepage 'http://gts.sourceforge.net/'
-  md5 '9f710aefd2ed9b3cc1b1216171fc5a8a'
-  depends_on 'glib'
+  url 'http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz'
+  sha1 '000720bebecf0b153eb28260bd30fbd979dcc040'
+
+  option :universal
+
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
+  depends_on 'glib'
 
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
 

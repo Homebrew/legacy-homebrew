@@ -2,9 +2,9 @@ require 'formula'
 
 class Runcocoa < Formula
   homepage 'https://github.com/michaeltyson/Commandline-Cocoa'
-  url 'https://github.com/michaeltyson/Commandline-Cocoa/tarball/e64b3666bca94c501c88'
-  md5 'bc396ac6ccab09e2f978b81771f13e3b'
-  version 'a'
+  url 'https://github.com/michaeltyson/Commandline-Cocoa/archive/834f73b4b5d0d2be0d336c9869973f5f0db55949.tar.gz'
+  sha1 '0a52052b329ca936735944de19989b6dbda6932b'
+  version '20120108'
 
   def install
     bin.install 'runcocoa.sh' => 'runcocoa'

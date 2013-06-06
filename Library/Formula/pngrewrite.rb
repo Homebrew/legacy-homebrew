@@ -1,13 +1,18 @@
 require 'formula'
 
 class Pngrewrite < Formula
-  url 'http://entropymine.com/jason/pngrewrite/pngrewrite-1.3.0.zip'
   homepage 'http://entropymine.com/jason/pngrewrite/'
-  md5 '37216932d12bf9b47dca1f45724080d6'
+  url 'http://entropymine.com/jason/pngrewrite/pngrewrite-1.4.0.zip'
+  sha1 'c959fbd507d84c6d4544d09493934b268e969b56'
+
+  depends_on :libpng
 
   def install
-    ENV.libpng
-    system "#{ENV.cc} #{ENV['CFLAGS']} #{ENV['CPPFLAGS']} -o pngrewrite pngrewrite.c #{ENV['LDFLAGS']} -lpng"
+    inreplace 'Makefile' do |f|
+      f.gsub! 'gcc', ENV.cc
+      f.gsub! '-Wall -O2', ENV.cflags
+    end
+    system 'make'
     bin.install 'pngrewrite'
   end
 end

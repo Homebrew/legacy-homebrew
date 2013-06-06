@@ -1,8 +1,14 @@
 require 'formula'
 
-class Rpm2cpio < ScriptFileFormula
-  url 'http://www.iagora.com/~espel/rpm2cpio'
-  homepage 'http://www.iagora.com/~espel/rpm2cpio'
-  md5 '4840560d114b469ebf5a3eea690319fa'
-  version '0.1'
+class Rpm2cpio < Formula
+  homepage 'http://svnweb.freebsd.org/ports/head/archivers/rpm2cpio/'
+  url 'http://svnweb.freebsd.org/ports/head/archivers/rpm2cpio/files/rpm2cpio?revision=259745'
+  version '1.3'
+  sha1 '7bd6e848eed9444a4dacf9759cc195ca56ab19b2'
+
+  depends_on 'xz'
+
+  def install
+    bin.install 'rpm2cpio?revision=259745' => 'rpm2cpio.pl'
+  end
 end

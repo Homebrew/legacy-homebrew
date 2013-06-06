@@ -1,10 +1,10 @@
 require 'formula'
 
 class Mkcue < Formula
-  url 'http://ftp.de.debian.org/debian/pool/main/m/mkcue/mkcue_1.orig.tar.gz'
   homepage 'http://packages.debian.org/source/stable/mkcue'
-  md5 'de082e40baf042e23246d54d28cbcdcc'
+  url 'http://ftp.de.debian.org/debian/pool/main/m/mkcue/mkcue_1.orig.tar.gz'
   version '1'
+  sha1 'd9a69718ba3d862b589588bdf61796f755200f9d'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

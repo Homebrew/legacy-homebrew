@@ -1,0 +1,11 @@
+#!/bin/bash
+export HOMEBREW_CCCFG="O$HOMEBREW_CCCFG"
+if [ $(basename "$0") == "bsdmake" ]; then
+  pwd="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  bsd="$pwd/../../../bin/bsdmake"
+  # bsdmake used to be keg-only: support users who don't run brew doctor
+  [ -x "$bsd" ] || bsd="$(${HOMEBREW_BREW_FILE} --prefix bsdmake)/bin/bsdmake"
+  exec "$bsd" "$@"
+else
+  exec xcrun make "$@"
+fi

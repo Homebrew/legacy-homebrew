@@ -1,9 +1,9 @@
 require 'formula'
 
 class Chmlib < Formula
-  url 'http://www.jedrea.com/chmlib/chmlib-0.40.tar.gz'
   homepage 'http://www.jedrea.com/chmlib'
-  md5 '96b8e9ac52015902941862171f5daa4c'
+  url 'http://www.jedrea.com/chmlib/chmlib-0.40.tar.gz'
+  sha1 '8d9e4b9b79a23974aa06fb792ae652560bac5c4e'
 
   def install
     system "./configure", "--disable-io64", "--enable-examples", "--prefix=#{prefix}"

@@ -1,43 +1,51 @@
 require 'formula'
 
-def fortran?
-  ARGV.include? '--enable-fortran'
-end
-
-def threadsafe?
-  ARGV.include? '--enable-threadsafe'
-end
-
 class Hdf5 < Formula
-  url 'http://www.hdfgroup.org/ftp/HDF5/hdf5-1.8.7/src/hdf5-1.8.7.tar.bz2'
-  homepage 'http://www.hdfgroup.org/HDF5/'
-  sha1 'be1daff26f066aca0b5be52d86dada6757fc4b95'
+  homepage 'http://www.hdfgroup.org/HDF5'
+  url 'http://www.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.11.tar.bz2'
+  sha1 '87ded0894b104cf23a4b965f4ac0a567f8612e5e'
+
+  # TODO - warn that these options conflict
+  option :universal
+  option 'enable-fortran', 'Compile Fortran bindings'
+  option 'enable-cxx', 'Compile C++ bindings'
+  option 'enable-threadsafe', 'Trade performance and C++ or Fortran support for thread safety'
+  option 'enable-parallel', 'Compile parallel bindings'
 
   depends_on 'szip'
-
-  def options
-    [
-      ['--enable-fortran', 'Compile Fortran bindings at the expense of having shared libraries'],
-      ['--enable-threadsafe', 'Trade performance and C++ or Fortran support for thread safety']
-    ]
-  end
+  depends_on MPIDependency.new(:cc, :cxx, :f90) if build.include? "enable-parallel"
 
   def install
-    ENV.fortran if fortran?
-
-    args = [
-      "--prefix=#{prefix}",
-      '--disable-debug',
-      '--disable-dependency-tracking',
-      '--enable-production',
-      '--with-zlib=yes',
-      '--with-szlib=yes',
-      '--enable-filters=all'
+    ENV.universal_binary if build.universal?
+    args = %W[
+      --prefix=#{prefix}
+      --enable-production
+      --enable-debug=no
+      --disable-dependency-tracking
+      --with-zlib=/usr
+      --with-szlib=#{HOMEBREW_PREFIX}
+      --enable-filters=all
+      --enable-static=yes
+      --enable-shared=yes
     ]
-    args.concat ['--with-pthread=/usr', '--enable-threadsafe'] if threadsafe?
-    args << '--enable-cxx' unless threadsafe?
-    args << '--enable-fortran' if fortran? and not threadsafe?
 
+    args << '--enable-parallel' if build.include? 'enable-parallel'
+    if build.include? 'enable-threadsafe'
+      args.concat %w[--with-pthread=/usr --enable-threadsafe]
+    else
+      if build.include? 'enable-cxx'
+        args << '--enable-cxx'
+      end
+      if build.include? 'enable-fortran'
+        args << '--enable-fortran'
+        ENV.fortran
+      end
+    end
+
+    if build.include? 'enable-parallel'
+      ENV['CC'] = 'mpicc'
+      ENV['FC'] = 'mpif90'
+    end
     system "./configure", *args
     system "make install"
   end

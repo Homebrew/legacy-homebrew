@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ttf2eot < Formula
-  url 'http://ttf2eot.googlecode.com/files/ttf2eot-0.0.2-2.tar.gz'
   homepage 'http://code.google.com/p/ttf2eot/'
-  md5 '97c9ceb0ded362bf2e6dd3a3a9360f8d'
+  url 'http://ttf2eot.googlecode.com/files/ttf2eot-0.0.2-2.tar.gz'
+  sha1 'c9a64216e7a090cb50f7a5074865218623dea75d'
 
   def install
     system "make"

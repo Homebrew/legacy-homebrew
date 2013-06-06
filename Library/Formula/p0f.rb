@@ -1,17 +1,14 @@
 require 'formula'
 
-# Official site is no longer responding; use
-# this GitHub mirror for now.
 class P0f < Formula
-  url 'https://github.com/downloads/skord/p0f/p0f-2.0.8.tgz'
-  homepage 'https://github.com/skord/p0f'
-  md5 '1ccbcd8d4c95ef6dae841120d23c56a5'
+  homepage 'http://lcamtuf.coredump.cx/p0f3/'
+  url 'http://lcamtuf.coredump.cx/p0f3/releases/p0f-3.06b.tgz'
+  sha1 'fecc9ed8b79dbf8e4d5ffbd22eda9d850b42c3c3'
 
   def install
-    inreplace "config.h", "/etc/p0f", "#{etc}/p0f"
-    system "make"
-    sbin.install ["p0frep", "p0f"]
-    (etc+"p0f").install Dir['*.fp']
-    man1.install gzip("p0f.1")
+    inreplace "config.h", "p0f.fp", "#{etc}/p0f/p0f.fp"
+    system "./build.sh"
+    sbin.install "p0f"
+    (etc+"p0f").install "p0f.fp"
   end
 end
