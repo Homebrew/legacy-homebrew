@@ -8,6 +8,7 @@ class YleDl < Formula
   head 'https://github.com/aajanki/yle-dl.git'
 
   depends_on 'rtmpdump'
+  depends_on :python  # use python because of pycrypto
   depends_on LanguageModuleDependency.new :python, 'pycrypto', 'Crypto'
 
   def install
