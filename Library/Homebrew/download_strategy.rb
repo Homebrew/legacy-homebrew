@@ -115,7 +115,9 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       chdir
     when :xz
       raise "You must install XZutils: brew install xz" unless which "xz"
-      safe_system "xz -dc \"#{@tarball_path}\" | /usr/bin/tar xf -"
+      with_system_path {
+        safe_system "#{Formula.factory('xz').bin}/xz -dc \"#{@tarball_path}\" | tar xf -"
+      }
       chdir
     when :pkg
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
