@@ -36,14 +36,6 @@ class TerminalNotifier < Formula
     chmod 0755, Pathname.new(bin+"terminal-notifier")
   end
 
-  def caveats
-    <<-EOS.undent
-      Homebrew built terminal-notifier, but without an developer certificate
-      from Apple, it will not be able to open URLs or execute commands when
-      the user clicks on a notification.
-    EOS
-  end
-
 end
 
 __END__
