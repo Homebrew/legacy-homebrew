@@ -14,7 +14,7 @@ class Macvim < Formula
   depends_on 'cscope' => :recommended
   depends_on 'lua' => :optional
   depends_on :python => :recommended
-  depends_on :python3 => :optional # Help us! :python3 is MacVim makes the window disappear!
+  depends_on :python3 => :optional # Help us! :python3 in MacVim makes the window disappear!
 
   depends_on :xcode # For xcodebuild.
 
@@ -50,8 +50,8 @@ class Macvim < Formula
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
     end
 
-    args << "--enable-pythoninterp=dynamic" if build.with? 'python'
-    args << "--enable-python3interp=dynamic" if build.with? "python3"
+    args << "--enable-pythoninterp=yes" if build.with? 'python'
+    args << "--enable-python3interp=yes" if build.with? "python3"
 
     unless MacOS::CLT.installed?
       # On Xcode-only systems:
