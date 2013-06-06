@@ -307,7 +307,7 @@ class Formula
 
   def python(options={:allowed_major_versions => [2, 3]}, &block)
     require 'python_helper'
-    Python::python_helper(options, &block)
+    python_helper(options, &block)
   end
 
   # Explicitly only execute the block for 2.x (if a python 2.x is available)
