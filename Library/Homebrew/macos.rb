@@ -220,6 +220,7 @@ module MacOS extend self
   }
 
   def compilers_standard?
+    return true unless MACOS
     STANDARD_COMPILERS.fetch(Xcode.version.to_s).all? do |method, build|
       MacOS.send(:"#{method}_version") == build
     end
