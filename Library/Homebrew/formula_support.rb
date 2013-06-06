@@ -16,11 +16,11 @@ class SoftwareSpec
   end
 
   def download_strategy
-    @download_strategy ||= DownloadStrategyDetector.detect(@url, @using)
+    @download_strategy ||= DownloadStrategyDetector.detect(url, using)
   end
 
   def verify_download_integrity fn
-    fn.verify_checksum @checksum
+    fn.verify_checksum(checksum)
   rescue ChecksumMissingError
     opoo "Cannot verify package integrity"
     puts "The formula did not provide a download checksum"
@@ -61,7 +61,7 @@ class SoftwareSpec
   end
 
   def mirror val
-    @mirrors << val
+    mirrors << val
   end
 end
 
