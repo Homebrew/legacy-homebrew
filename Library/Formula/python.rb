@@ -154,14 +154,6 @@ class Python < Formula
           import _sre
           _sre.MAXREPEAT = 65535 # this monkey-patches all other places of "from _sre import MAXREPEAT"'
       EOS
-
-    # Write our sitecustomize.py to tell python about the correct site-package
-    # dir because we moved it. (Note, we had to install distribute and pip
-    # without the help of sitecustomize.py because HOMEBREW_PREFIX/opt/python
-    # is not yet linked)
-    # We reuse the PythonInstalled requirement here for the sitecustomize.py
-    ENV.prepend_path 'PATH', bin
-    PythonInstalled.new("2.7").modify_build_environment
   end
 
   def distutils_fix_superenv(args)
