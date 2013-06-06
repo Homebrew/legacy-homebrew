@@ -206,7 +206,7 @@ class Keg < Pathname
     end
   end
 
-  # symlinks the contents of self+foo recursively into /usr/local/foo
+  # symlinks the contents of self+foo recursively into #{HOMEBREW_PREFIX}/foo
   def link_dir foo, mode=OpenStruct.new
     root = self+foo
     return unless root.exist?
