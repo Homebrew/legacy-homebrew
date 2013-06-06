@@ -13,6 +13,10 @@ class Version
     def inspect
       "#<#{self.class} #{value.inspect}>"
     end
+
+    def to_s
+      value.to_s
+    end
   end
 
   class NullToken < Token
