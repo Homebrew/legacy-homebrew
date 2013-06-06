@@ -465,15 +465,6 @@ class FormulaAuditor
   end
 
   def audit_python
-    if text =~ /system\(?\s*['"]python/
-      # Todo: In `def test` it is okay to do it this way. It's even recommended!
-      problem "Instead of `system 'python', ...`, call `system python, ...`."
-    end
-
-    if text =~ /system\(?\s*python\.binary/
-      problem "Instead of `system python.binary, ...`, call `system python, ...`."
-    end
-
     if text =~ /(def\s*)?which_python/
       problem "Replace `which_python` by `python.xy`, which returns e.g. 'python2.7'."
     end
@@ -482,23 +473,50 @@ class FormulaAuditor
       problem "Don't locate python with `which 'python'`, use `python.binary` instead"
     end
 
-    if f.requirements.any?{ |r| r.kind_of?(PythonInstalled) }
-      # Don't check this for all formulae, because some are allowed to set the
-      # PYTHONPATH. E.g. python.rb itself needs to set it.
-      if text =~ /ENV\.append.*PYTHONPATH/ || text =~ /ENV\[['"]PYTHONPATH['"]\]\s*=[^=]/
-        problem "Don't set the PYTHONPATH, instead declare `depends_on :python`."
+    # Checks that apply only to code in def install
+    if text =~ /(\s*)def\s+install((.*\n)*?)(\1end)/
+      install_body = $2
+
+      if install_body =~ /system\(?\s*['"]python/
+        problem "Instead of `system 'python', ...`, call `system python, ...`."
+      end
+
+      if text =~ /system\(?\s*python\.binary/
+        problem "Instead of `system python.binary, ...`, call `system python, ...`."
       end
     end
 
+    # Checks that apply only to code in def caveats
     if text =~ /(\s*)def\s+caveats((.*\n)*?)(\1end)/ || /(\s*)def\s+caveats;(.*?)end/
       caveats_body = $2
-        if caveats_body =~ /(python[23]?)\.(.*\w)/
+        if caveats_body =~ /[ \{=](python[23]?)\.(.*\w)/
           # So if in the body of caveats there is a `python.whatever` called,
           # check that there is a guard like `if python` or similiar:
           python = $1
           method = $2
           unless caveats_body =~ /(if python[23]?)|(if build\.with\?\s?\(?['"]python)|(unless build.without\?\s?\(?['"]python)/
           problem "Please guard `#{python}.#{method}` like so `#{python}.#{method} if #{python}`"
+        end
+      end
+    end
+
+    if f.requirements.any?{ |r| r.kind_of?(PythonInstalled) }
+      # Don't check this for all formulae, because some are allowed to set the
+      # PYTHONPATH. E.g. python.rb itself needs to set it.
+      if text =~ /ENV\.append.*PYTHONPATH/ || text =~ /ENV\[['"]PYTHONPATH['"]\]\s*=[^=]/
+        problem "Don't set the PYTHONPATH, instead declare `depends_on :python`."
+      end
+    else
+      # So if there is no PythonInstalled requirement, we can check if the
+      # formula still uses python and should add a `depends_on :python`
+      unless f.name.to_s =~ /(pypy[0-9]*)|(python[0-9]*)/
+        if text =~ /system.["' ]?python([0-9"'])?/
+          problem "If the formula uses Python, it should declare so by `depends_on :python#{$1}`"
+        end
+        if text =~ /setup\.py/
+          problem <<-EOS.undent
+            If the formula installs Python bindings you should declare `depends_on :python[3]`"
+          EOS
         end
       end
     end
