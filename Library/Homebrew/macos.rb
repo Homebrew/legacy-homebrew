@@ -19,6 +19,10 @@ module MacOS extend self
     end
   end
 
+  def pretty_name
+    cat.to_s.split('_').map(&:capitalize).join(' ')
+  end
+
   def locate tool
     # Don't call tools (cc, make, strip, etc.) directly!
     # Give the name of the binary you look for as a string to this method
