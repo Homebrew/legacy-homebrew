@@ -54,7 +54,7 @@ def bottle_new_revision f
 end
 
 def bottle_native_suffix revision=nil
-  ".#{MacOS.cat}#{bottle_suffix(revision)}"
+  ".#{bottle_tag}#{bottle_suffix(revision)}"
 end
 
 def bottle_suffix revision=nil
@@ -63,7 +63,7 @@ def bottle_suffix revision=nil
 end
 
 def bottle_native_regex
-  /(\.#{MacOS.cat}\.bottle\.(\d+\.)?tar\.gz)$/o
+  /(\.#{bottle_tag}\.bottle\.(\d+\.)?tar\.gz)$/o
 end
 
 def bottle_regex
@@ -77,4 +77,15 @@ end
 
 def bottle_url f
   "#{bottle_root_url(f)}/#{bottle_filename(f)}"
+end
+
+def bottle_tag
+  case MacOS.version
+  when 10.8, 10.7, 10.5
+    MacOS.cat
+  when 10.6
+    Hardware.is_64_bit? ? :snow_leopard : :snow_leopard_32
+  else
+    Hardware::CPU.type == :ppc ? Hardware::CPU.family : MacOS.cat
+  end
 end
