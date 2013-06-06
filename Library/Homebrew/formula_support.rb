@@ -98,8 +98,8 @@ class Bottle < SoftwareSpec
           @#{cksum}[value] = Checksum.new(:#{cksum}, key)
         end
 
-        if @#{cksum}.has_key? MacOS.cat
-          @checksum = @#{cksum}[MacOS.cat]
+        if @#{cksum}.has_key? bottle_tag
+          @checksum = @#{cksum}[bottle_tag]
         end
       end
     EOS

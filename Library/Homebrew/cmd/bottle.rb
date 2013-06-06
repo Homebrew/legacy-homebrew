@@ -66,7 +66,7 @@ module Homebrew extend self
       puts "  prefix #{prefix}" if prefix
       puts "  cellar #{cellar}" if cellar
       puts "  revision #{bottle_revision}" if bottle_revision > 0
-      puts "  sha1 '#{sha1}' => :#{MacOS.cat}"
+      puts "  sha1 '#{sha1}' => :#{bottle_tag}"
       puts "end"
     end
   end
