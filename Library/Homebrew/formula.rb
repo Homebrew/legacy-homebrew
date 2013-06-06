@@ -677,7 +677,7 @@ class Formula
   def self.method_added method
     case method
     when :brew
-      raise "You cannot override Formula#brew"
+      raise "You cannot override Formula#brew in class #{name}"
     when :test
       @test_defined = true
     end
