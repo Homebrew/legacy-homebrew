@@ -240,7 +240,7 @@ class Python < Formula
     EOS
   end
 
-  def test
+  test do
     # Check if sqlite is ok, because we build with --enable-loadable-sqlite-extensions
     # and it can occur that building sqlite silently fails if OSX's sqlite is used.
     system "#{bin}/python", "-c", "import sqlite3"
