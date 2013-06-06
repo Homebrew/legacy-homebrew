@@ -15,12 +15,13 @@ class Python < Formula
   url 'http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2'
   sha1 '6cfada1a739544a6fa7f2601b500fba02229656b'
 
+  head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
+
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build (for devs; may fail)'
   option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
   option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
   option 'with-poll', 'Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)'
-
   # --with-dtrace relies on CLT as dtrace hard-codes paths to /usr
   option 'with-dtrace', 'Experimental DTrace support (http://bugs.python.org/issue13405)' if MacOS::CLT.installed?
 
@@ -28,15 +29,15 @@ class Python < Formula
   depends_on 'readline' => :recommended
   depends_on 'sqlite' => :recommended
   depends_on 'gdbm' => :recommended
-  depends_on 'openssl' if build.include? 'with-brewed-openssl'
-  depends_on 'homebrew/dupes/tcl-tk' if build.include? 'with-brewed-tk'
+  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
 
   def patches
     p = []
-    p << 'https://gist.github.com/paxswill/5402840/raw/75646d5860685c8be98858288d1772f64d6d5193/pythondtrace-patch.diff' if build.include? 'with-dtrace'
+    p << 'https://gist.github.com/paxswill/5402840/raw/75646d5860685c8be98858288d1772f64d6d5193/pythondtrace-patch.diff' if build.with? 'dtrace'
     # Patch to disable the search for Tk.frameworked, since homebrew's Tk is
     # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
-    p << DATA if build.include? 'with-brewed-tk'
+    p << DATA if build.with? 'brewed-tk'
     p
   end
 
@@ -50,7 +51,7 @@ class Python < Formula
   end
 
   def install
-    opoo 'The given option --with-poll enables a somewhat broken poll() on OS X (http://bugs.python.org/issue5154).' if build.include? 'with-poll'
+    opoo 'The given option --with-poll enables a somewhat broken poll() on OS X (http://bugs.python.org/issue5154).' if build.with? 'poll'
 
     # Unset these so that installing pip and distribute puts them where we want
     # and not into some other Python the user has installed.
@@ -65,7 +66,7 @@ class Python < Formula
            ]
 
     args << '--without-gcc' if ENV.compiler == :clang
-    args << '--with-dtrace' if build.include? 'with-dtrace'
+    args << '--with-dtrace' if build.with? 'dtrace'
 
     if superenv?
       distutils_fix_superenv(args)
@@ -97,7 +98,7 @@ class Python < Formula
 
     # HAVE_POLL is "broken" on OS X
     # See: http://trac.macports.org/ticket/18376 and http://bugs.python.org/issue5154
-    inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1' unless build.include? "with-poll"
+    inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1' unless build.with? "poll"
 
     system "make"
 
@@ -119,20 +120,25 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # Write our sitecustomize.py to tell python about the correct site-package
-    # dir because we moved it.
-    # We reuse the PythonInstalled requirement here for the sitecustomize.py
-    PythonInstalled.new("2.7").modify_build_environment
-    # We ship distribute and pip.
-    # Our modify_build_environment need the opt/python/bin/python2 already now,
-    # so we create it temporarily
-    (HOMEBREW_PREFIX/'opt/python/bin').mkpath
-    ln_s bin/'python2', HOMEBREW_PREFIX/'opt/python/bin/python2'
-    setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
-                   "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Distribute.new.brew { system "#{bin}/python2", *setup_args }
-    Pip.new.brew { system "#{bin}/python2", *setup_args }
-    (HOMEBREW_PREFIX/'opt/python').rmtree
+    # We ship distribute and pip and we want to resue the
+    # PythonInstalled.modify_build_environment, so opt/python/bin/python2
+    # has to be there already now and so we create it temporarily:
+    begin
+      opt_python = HOMEBREW_PREFIX/"opt/#{name}/bin/python2"
+      unless opt_python.exist?
+        opt_python.dirname.mkpath
+        ln_s bin/'python2', opt_python
+      end
+      # We reuse the PythonInstalled requirement here to write the sitecustomize.py
+      PythonInstalled.new("2.7").modify_build_environment
+      setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
+                     "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
+      Distribute.new.brew { system "#{bin}/python2", *setup_args }
+      Pip.new.brew { system "#{bin}/python2", *setup_args }
+    ensure
+      # Cleanup, so brew can link this properly:
+      opt_python.dirname.rmtree
+    end
 
     # And now we write the distuitsl.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"
@@ -145,7 +151,7 @@ class Python < Formula
       prefix=#{HOMEBREW_PREFIX}
     EOF
 
-    # Work-around this bug: http://bugs.python.org/issue18050
+    # Work-around for that bug: http://bugs.python.org/issue18050
     inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/re.py", 'import sys', <<-EOS.undent
       import sys
       try:
@@ -161,7 +167,7 @@ class Python < Formula
     # (pip) to find brewed stuff when installing python packages.
     cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
     ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
-    if build.include? 'with-brewed-tk'
+    if build.with? 'brewed-tk'
       cflags += " -I#{Formula.factory('tcl-tk').opt_prefix}/include"
       ldflags += " -L#{Formula.factory('tcl-tk').opt_prefix}/lib"
     end
@@ -173,7 +179,7 @@ class Python < Formula
       # Same zlib.h-not-found-bug as in env :std (see below)
       args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
       # For the Xlib.h, Python needs this header dir with the system Tk
-      unless build.include? 'with-brewed-tk'
+      if build.without? 'brewed-tk'
         cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
       end
     end
