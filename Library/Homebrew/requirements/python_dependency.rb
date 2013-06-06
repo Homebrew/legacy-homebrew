@@ -129,7 +129,7 @@ class PythonInstalled < Requirement
   end
 
   # Homebrew's global site-packages. The local ones (just `site_packages`) are
-  # populated by the python_helper method when the `prefix` of a formula is known.
+  # populated by the python_helperg method when the `prefix` of a formula is known.
   def global_site_packages
     HOMEBREW_PREFIX/"lib/#{xy}/site-packages"
   end
