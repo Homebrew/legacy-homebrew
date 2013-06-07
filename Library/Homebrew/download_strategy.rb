@@ -114,10 +114,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       with_system_path { safe_system 'tar', 'xf', @tarball_path }
       chdir
     when :xz
-      raise "You must install XZutils: brew install xz" unless which "xz"
-      with_system_path {
-        safe_system "#{Formula.factory('xz').bin}/xz -dc \"#{@tarball_path}\" | tar xf -"
-      }
+      raise "You must install XZutils: brew install xz" unless File.executable? xzpath
+      with_system_path { safe_system "#{xzpath} -dc \"#{@tarball_path}\" | tar xf -" }
       chdir
     when :pkg
       safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
@@ -141,6 +139,10 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   private
+
+  def xzpath
+    "#{HOMEBREW_PREFIX}/opt/xz/bin/xz"
+  end
 
   def chdir
     entries=Dir['*']
