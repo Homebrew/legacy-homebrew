@@ -11,6 +11,9 @@
 # Second, inside the block, a formula author may call this method to access
 # certain convienience methods for the currently selected Python, e.g.
 # `python.site_packages`.
+# This method should be executed in the context of the formula, so that
+# prefix is defined. Note, that this method will set @current_python to be
+# able to refer to the current python if a block is executed for 2.x and 3.x.
 def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
   if !block_given? and !@current_python.nil?
     # We are already inside of a `python do ... end` block, so just return
@@ -64,6 +67,9 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
           ENV.prepend 'CMAKE_INCLUDE_PATH', py.incdir, ':'
           ENV.prepend 'PKG_CONFIG_PATH', py.pkg_config_path, ':' if py.pkg_config_path
           ENV.prepend 'PATH', py.binary.dirname, ':' unless py.from_osx?
+          #Note: Don't set LDFLAGS to point to the Python.framework, because
+          #      it breaks builds (for example scipy.)
+
           # Track the state of the currently selected python for this block,
           # so if this python_helper is called again _inside_ the block,
           # we can just return the right python (see `else`-branch a few lines down):
