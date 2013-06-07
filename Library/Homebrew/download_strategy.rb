@@ -42,7 +42,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
-      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{File.basename(@url)}")
+      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{basename_without_params}")
     else
       @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{package.version}#{ext}")
     end
@@ -118,7 +118,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       with_system_path { safe_system "#{xzpath} -dc \"#{@tarball_path}\" | tar xf -" }
       chdir
     when :pkg
-      safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
+      safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, basename_without_params
       chdir
     when :rar
       raise "You must install unrar: brew install unrar" unless which "unrar"
@@ -134,7 +134,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       # behaviour, just open an issue at github
       # We also do this for jar files, as they are in fact zip files, but
       # we don't want to unzip them
-      FileUtils.cp @tarball_path, File.basename(@url)
+      FileUtils.cp @tarball_path, basename_without_params
     end
   end
 
@@ -152,6 +152,11 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
+  def basename_without_params
+    # Strip any ?thing=wad out of .c?thing=wad style extensions
+    File.basename(@url)[/[^?]+/]
+  end
+
   def ext
     # GitHub uses odd URLs for zip files, so check for those
     rx=%r[https?://(www\.)?github\.com/.*/(zip|tar)ball/]
@@ -162,7 +167,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
         '.tgz'
       end
     else
-      Pathname.new(@url).extname
+      # Strip any ?thing=wad out of .c?thing=wad style extensions
+      (Pathname.new(@url).extname)[/[^?]+/]
     end
   end
 end
@@ -193,15 +199,15 @@ end
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   def stage
-    FileUtils.cp @tarball_path, File.basename(@url)
+    FileUtils.cp @tarball_path, basename_without_params
   end
 end
 
 # Normal strategy tries to untar as well
 class GzipOnlyDownloadStrategy < CurlDownloadStrategy
   def stage
-    FileUtils.mv @tarball_path, File.basename(@url)
-    with_system_path { safe_system 'gunzip', '-f', File.basename(@url) }
+    FileUtils.mv @tarball_path, basename
+    with_system_path { safe_system 'gunzip', '-f', basename_without_params }
   end
 end
 
