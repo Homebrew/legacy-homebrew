@@ -97,6 +97,11 @@ class Python3 < Formula
       f.gsub! 'DEFAULT_FRAMEWORK_FALLBACK = [', "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
     end
 
+    if build.with? 'brewed-tk'
+      ENV.append 'CPPFLAGS', "-I#{Formula.factory('tcl-tk').opt_prefix}/include"
+      ENV.append 'LDFLAGS', "-L#{Formula.factory('tcl-tk').opt_prefix}/lib"
+    end
+
     system "./configure", *args
 
     system "make"
@@ -154,11 +159,11 @@ class Python3 < Formula
     # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
     # https://github.com/mxcl/homebrew/issues/15943
     ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
-
+    rm prefix/"Frameworks/Python.framework/Versions/Current"
   end
 
   def distutils_fix_superenv(args)
-    # To allow certain Python bindings to find brewed software:
+    # To allow certain Python bindings to find brewed software (and sqlite):
     cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
     ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
     unless MacOS::CLT.installed?
@@ -246,20 +251,54 @@ class Python3 < Formula
 end
 
 __END__
+# Homebrew's tcl-tk is build in a standard unix fashion (due to link errors)
+# and we have to stop python from searching for frameworks and link against
+# X11.
+
 diff --git a/setup.py b/setup.py
-index 9ddf2e9..60ab152 100644
+index d4183d4..9f69520 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1624,9 +1624,9 @@ class PyBuildExt(build_ext):
+@@ -1623,9 +1623,6 @@ class PyBuildExt(build_ext):
          # Rather than complicate the code below, detecting and building
          # AquaTk is a separate method. Only one Tkinter will be built on
          # Darwin - either AquaTk, if it is found, or X11 based Tk.
 -        if (host_platform == 'darwin' and
 -            self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
 -            return
-+        # if (host_platform == 'darwin' and
-+            # self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
-+            # return
 
          # Assume we haven't found any of the libraries or include files
          # The versions with dots are used on Unix, and the versions without
+@@ -1671,21 +1668,6 @@ class PyBuildExt(build_ext):
+             if dir not in include_dirs:
+                 include_dirs.append(dir)
+
+-        # Check for various platform-specific directories
+-        if host_platform == 'sunos5':
+-            include_dirs.append('/usr/openwin/include')
+-            added_lib_dirs.append('/usr/openwin/lib')
+-        elif os.path.exists('/usr/X11R6/include'):
+-            include_dirs.append('/usr/X11R6/include')
+-            added_lib_dirs.append('/usr/X11R6/lib64')
+-            added_lib_dirs.append('/usr/X11R6/lib')
+-        elif os.path.exists('/usr/X11R5/include'):
+-            include_dirs.append('/usr/X11R5/include')
+-            added_lib_dirs.append('/usr/X11R5/lib')
+-        else:
+-            # Assume default location for X11
+-            include_dirs.append('/usr/X11/include')
+-            added_lib_dirs.append('/usr/X11/lib')
+
+         # If Cygwin, then verify that X is installed before proceeding
+         if host_platform == 'cygwin':
+@@ -1710,10 +1692,6 @@ class PyBuildExt(build_ext):
+         if host_platform in ['aix3', 'aix4']:
+             libs.append('ld')
+
+-        # Finally, link with the X11 libraries (not appropriate on cygwin)
+-        if host_platform != "cygwin":
+-            libs.append('X11')
+-
+         ext = Extension('_tkinter', ['_tkinter.c', 'tkappinit.c'],
+                         define_macros=[('WITH_APPINIT', 1)] + defs,
+                         include_dirs = include_dirs,
