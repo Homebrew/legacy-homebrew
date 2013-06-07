@@ -120,25 +120,15 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # We ship distribute and pip and we want to resue the
-    # PythonInstalled.modify_build_environment, so opt/python/bin/python2
-    # has to be there already now and so we create it temporarily:
-    begin
-      opt_python = HOMEBREW_PREFIX/"opt/#{name}/bin/python2"
-      unless opt_python.exist?
-        opt_python.dirname.mkpath
-        ln_s bin/'python2', opt_python
-      end
-      # We reuse the PythonInstalled requirement here to write the sitecustomize.py
-      PythonInstalled.new("2.7").modify_build_environment
-      setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
-                     "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-      Distribute.new.brew { system "#{bin}/python2", *setup_args }
-      Pip.new.brew { system "#{bin}/python2", *setup_args }
-    ensure
-      # Cleanup, so brew can link this properly:
-      opt_python.dirname.rmtree
-    end
+    # We ship distribute and pip and reuse the PythonInstalled
+    # Requirement here to write the sitecustomize.py
+    py = PythonInstalled.new("2.7")
+    py.binary = bin/'python'
+    py.modify_build_environment
+    setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
+                   "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
+    Distribute.new.brew { system "#{bin}/python2", *setup_args }
+    Pip.new.brew { system "#{bin}/python2", *setup_args }
 
     # And now we write the distuitsl.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"
