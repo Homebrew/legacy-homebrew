@@ -18,6 +18,7 @@ class PythonInstalled < Requirement
   attr_reader :if3then3
   attr_reader :site_packages
   attr_accessor :site_packages
+  attr_accessor :binary # The python.rb formula needs to set the binary
 
   fatal true  # you can still make Python optional by `depends_on :python => :optional`
 
@@ -62,14 +63,14 @@ class PythonInstalled < Requirement
   # that binary for later usage. (See Formula#python)
   satisfy :build_env => false do
     @unsatisfied_because = ''
-    if binary.nil?
-      @unsatisfied_because += "But no `#{@name}` found in your PATH! Consider to `brew install #{@name}`."
+    if binary.nil? || !binary.executable?
+      @unsatisfied_because += "No `#{@name}` found in your PATH! Consider to `brew install #{@name}`."
       false
     elsif pypy?
       @unsatisfied_because += "Your #{@name} executable appears to be a PyPy, which is not supported."
       false
     elsif version.major != @min_version.major
-      @unsatisfied_because += "No Python #{@min_version.major}.x found!"
+      @unsatisfied_because += "No Python #{@min_version.major}.x found in your PATH! --> `brew install #{@name}`?"
       false
     elsif version < @min_version
       @unsatisfied_because += "Python version #{version} is too old (need at least #{@min_version})."
@@ -77,30 +78,21 @@ class PythonInstalled < Requirement
     elsif @min_version.major == 2 && `python -c "import sys; print(sys.version_info[0])"`.strip == "3"
       @unsatisfied_because += "Your `python` points to a Python 3.x. This is not supported."
     else
-      # If everything satisfied, we check the PYTHONPATH, that has to be set for non-brewed Python
-      if !brewed? && (ENV['PYTHONPATH'].nil? || !ENV['PYTHONPATH'].include?(global_site_packages)) then
-        opoo <<-EOS.undent
-          For non-brewed Python, you have to set the PYTHONPATH in order to
-          find brewed Python modules.
-            export PYTHONPATH=#{global_site_packages}:$PYTHONPATH
-        EOS
-        # This is just to shut up a second run of satisfy.
-        ENV['PYTHONPATH'] = global_site_packages.to_s
-      end
       true
     end
   end
 
   # The full path to the python or python3 executable, depending on `version`.
   def binary
-    if brewed?
-      # If the python is brewed we always prefer it!
-      # Note, we don't support homebrew/versions/pythonXX.rb, though.
-      Formula.factory(@name).opt_prefix/"bin/python#{@min_version.major}"
-    else
-      p = which(@name)
-      raise "PythonInstalled: #{p} is not executable" if !p.nil? && !p.executable?
-      p
+    @binary ||= begin
+      if brewed?
+        # If the python is brewed we always prefer it!
+        # Note, we don't support homebrew/versions/pythonXX.rb, though.
+        Formula.factory(@name).opt_prefix/"bin/python#{@min_version.major}"
+      else
+        # This should find at least system python, because /usr/bin is in PATH:
+        which(@name)
+      end
     end
   end
 
@@ -168,8 +160,7 @@ class PythonInstalled < Requirement
   def brewed?
     @brewed ||= begin
       require 'formula'
-      f = Formula.factory(@name)
-      f.installed? && f.linked_keg.exist?
+      (Formula.factory(@name).opt_prefix/"bin/#{@name}").executable?
     end
   end
 
@@ -211,9 +202,12 @@ class PythonInstalled < Requirement
   end
 
   def modify_build_environment
+    # Most methods fail if we don't have a binary.
+    return false if binary.nil?
+
     # Write our sitecustomize.py
     file = global_site_packages/"sitecustomize.py"
-    ohai "Writing #{file}" if ARGV.verbose? || ARGV.homebrew_developer?
+    ohai "Writing #{file}" if ARGV.verbose? && ARGV.debug?
     [".pyc", ".pyo", ".py"].map{ |f|
       global_site_packages/"sitecustomize#{f}"
     }.each{ |f| f.delete if f.exist? }
@@ -239,7 +233,7 @@ class PythonInstalled < Requirement
     if brewed?
       require 'formula'
       file = Formula.factory(@name).prefix/"Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/lib/#{xy}/distutils/distutils.cfg"
-      ohai "Writing #{file}" if ARGV.verbose? || ARGV.homebrew_developer?
+      ohai "Writing #{file}" if ARGV.verbose? && ARGV.debug?
       file.delete if file.exist?
       file.write <<-EOF.undent
         [global]
@@ -249,6 +243,7 @@ class PythonInstalled < Requirement
         prefix=#{HOMEBREW_PREFIX}
       EOF
     end
+    true
   end
 
   def sitecustomize
