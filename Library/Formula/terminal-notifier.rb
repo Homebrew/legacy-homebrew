@@ -21,7 +21,6 @@ class TerminalNotifier < Formula
 
   def patches
     # Disable code signing because we don't have the cert of the dev.
-    # However, terminal-notifier will not be able to open apps or URLs.
     DATA
   end
 
