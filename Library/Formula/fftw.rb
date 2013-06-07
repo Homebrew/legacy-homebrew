@@ -61,6 +61,7 @@ class Fftw < Formula
           fftw_execute(p); /* repeat as needed */
           fftw_destroy_plan(p);
           fftw_free(in); fftw_free(out);
+          return 0;
       }
     TEST_SCRIPT
 
