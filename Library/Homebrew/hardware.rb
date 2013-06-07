@@ -45,4 +45,16 @@ class Hardware
       Hardware.processor_count
     end
   end
+
+  def self.oldest_cpu
+    if Hardware::CPU.type == :intel
+      if Hardware::CPU.is_64_bit?
+        :core2
+      else
+        :core
+      end
+    else
+      Hardware::CPU.family
+    end
+  end
 end

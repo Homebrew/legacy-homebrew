@@ -10,34 +10,17 @@ module MacOS extend self
   end
 
   def cat
-    @cat ||= uncached_cat
-  end
-
-  def uncached_cat
     case MacOS.version
-    when 10.8
-      :mountain_lion
-    when 10.7
-      :lion
-    when 10.6
-      Hardware.is_64_bit? ? :snow_leopard : :snow_leopard_32
-    when 10.5
-      :leopard
-    else
-      Hardware::CPU.family if Hardware::CPU.type == :ppc
+    when 10.8 then :mountain_lion
+    when 10.7 then :lion
+    when 10.6 then :snow_leopard
+    when 10.5 then :leopard
+    when 10.4 then :tiger
     end
   end
 
-  def oldest_cpu
-    if Hardware::CPU.type == :intel
-      if Hardware::CPU.is_64_bit?
-        :core2
-      else
-        :core
-      end
-    else
-      Hardware::CPU.family
-    end
+  def pretty_name
+    cat.to_s.split('_').map(&:capitalize).join(' ')
   end
 
   def locate tool

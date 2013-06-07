@@ -45,7 +45,7 @@ class Formula
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
-    @downloader = download_strategy.new(name, @active_spec)
+    @downloader = download_strategy.new(name, active_spec)
 
     # Combine DSL `option` and `def options`
     options.each do |opt, desc|
@@ -677,7 +677,7 @@ class Formula
   def self.method_added method
     case method
     when :brew
-      raise "You cannot override Formula#brew"
+      raise "You cannot override Formula#brew in class #{name}"
     when :test
       @test_defined = true
     end

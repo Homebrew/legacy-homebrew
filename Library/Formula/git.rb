@@ -30,18 +30,18 @@ class Git < Formula
     ENV['NO_DARWIN_PORTS'] = '1'
     ENV['V'] = '1' # build verbosely
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
-
-    ENV['PERL_PATH'] = which 'perl' # workaround for users of perlbrew
     ENV['PYTHON_PATH'] = python.binary if python
+    ENV['PERL_PATH'] = which 'perl'
 
-    # Clean XCode 4.x installs don't include Perl MakeMaker
-    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.version >= :lion
+    unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'
+      ENV['NO_PERL_MAKEMAKER'] = '1'
+    end
 
     ENV['BLK_SHA1'] = '1' if build.with? 'blk-sha1'
 
     if build.with? 'pcre'
       ENV['USE_LIBPCRE'] = '1'
-      ENV['LIBPCREDIR'] = HOMEBREW_PREFIX
+      ENV['LIBPCREDIR'] = Formula.factory('pcre').opt_prefix
     end
 
     ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
