@@ -59,6 +59,10 @@ class Dependency
     env_proc.call unless env_proc.nil?
   end
 
+  def inspect
+    "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
+  end
+
   class << self
     # Expand the dependencies of dependent recursively, optionally yielding
     # [dependent, dep] pairs to allow callers to apply arbitrary filters to
