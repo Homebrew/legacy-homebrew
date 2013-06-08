@@ -21,7 +21,7 @@ class Groovy < Formula
 
     prefix.install_metafiles
     libexec.install %w(bin conf lib embeddable)
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink Dir["#{libexec}/bin/*"] - Dir["#{libexec}/bin/*.icns"]
   end
 
   def caveats
