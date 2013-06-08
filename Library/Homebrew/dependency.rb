@@ -70,13 +70,15 @@ class Dependency
     # The default filter, which is applied when a block is not given, omits
     # optionals and recommendeds based on what the dependent has asked for.
     def expand(dependent, &block)
-      dependent.deps.map do |dep|
+      deps = dependent.deps.map do |dep|
         if prune?(dependent, dep, &block)
           next
         else
           expand(dep.to_formula, &block) << dep
         end
-      end.flatten.compact.uniq
+      end.flatten.compact
+
+      merge_repeats(deps)
     end
 
     def prune?(dependent, dep, &block)
@@ -92,6 +94,14 @@ class Dependency
     # Used to prune dependencies when calling expand with a block.
     def prune
       throw(:prune, true)
+    end
+
+    def merge_repeats(deps)
+      grouped = deps.group_by(&:name)
+
+      deps.uniq.map do |dep|
+        new(dep.name, grouped.fetch(dep.name).map(&:tags).flatten)
+      end
     end
   end
 end
