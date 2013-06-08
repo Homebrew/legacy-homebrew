@@ -94,6 +94,11 @@ class Python < Formula
     inreplace "./Lib/_osx_support.py", "compiler_so = list(compiler_so)",
               "if isinstance(compiler_so, (str,unicode)): compiler_so = compiler_so.split()"
 
+    if build.with? 'brewed-tk'
+      ENV.append 'CPPFLAGS', "-I#{Formula.factory('tcl-tk').opt_prefix}/include"
+      ENV.append 'LDFLAGS', "-L#{Formula.factory('tcl-tk').opt_prefix}/lib"
+    end
+
     system "./configure", *args
 
     # HAVE_POLL is "broken" on OS X
@@ -120,25 +125,15 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # We ship distribute and pip and we want to resue the
-    # PythonInstalled.modify_build_environment, so opt/python/bin/python2
-    # has to be there already now and so we create it temporarily:
-    begin
-      opt_python = HOMEBREW_PREFIX/"opt/#{name}/bin/python2"
-      unless opt_python.exist?
-        opt_python.dirname.mkpath
-        ln_s bin/'python2', opt_python
-      end
-      # We reuse the PythonInstalled requirement here to write the sitecustomize.py
-      PythonInstalled.new("2.7").modify_build_environment
-      setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
-                     "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-      Distribute.new.brew { system "#{bin}/python2", *setup_args }
-      Pip.new.brew { system "#{bin}/python2", *setup_args }
-    ensure
-      # Cleanup, so brew can link this properly:
-      opt_python.dirname.rmtree
-    end
+    # We ship distribute and pip and reuse the PythonInstalled
+    # Requirement here to write the sitecustomize.py
+    py = PythonInstalled.new("2.7")
+    py.binary = bin/'python'
+    py.modify_build_environment
+    setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
+                   "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
+    Distribute.new.brew { system "#{bin}/python2", *setup_args }
+    Pip.new.brew { system "#{bin}/python2", *setup_args }
 
     # And now we write the distuitsl.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"
@@ -240,7 +235,7 @@ class Python < Formula
     EOS
   end
 
-  def test
+  test do
     # Check if sqlite is ok, because we build with --enable-loadable-sqlite-extensions
     # and it can occur that building sqlite silently fails if OSX's sqlite is used.
     system "#{bin}/python", "-c", "import sqlite3"
@@ -251,24 +246,27 @@ end
 
 __END__
 diff --git a/setup.py b/setup.py
-index ea8a5f5..0a001f9 100644
+index 716f08e..66114ef 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1809,9 +1809,7 @@ class PyBuildExt(build_ext):
+@@ -1810,9 +1810,6 @@ class PyBuildExt(build_ext):
          # Rather than complicate the code below, detecting and building
          # AquaTk is a separate method. Only one Tkinter will be built on
          # Darwin - either AquaTk, if it is found, or X11 based Tk.
 -        if (host_platform == 'darwin' and
 -            self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
 -            return
-+
  
          # Assume we haven't found any of the libraries or include files
          # The versions with dots are used on Unix, and the versions without
-@@ -1861,17 +1859,7 @@ class PyBuildExt(build_ext):
-         if host_platform == 'sunos5':
-             include_dirs.append('/usr/openwin/include')
-             added_lib_dirs.append('/usr/openwin/lib')
+@@ -1858,21 +1855,6 @@ class PyBuildExt(build_ext):
+             if dir not in include_dirs:
+                 include_dirs.append(dir)
+
+-        # Check for various platform-specific directories
+-        if host_platform == 'sunos5':
+-            include_dirs.append('/usr/openwin/include')
+-            added_lib_dirs.append('/usr/openwin/lib')
 -        elif os.path.exists('/usr/X11R6/include'):
 -            include_dirs.append('/usr/X11R6/include')
 -            added_lib_dirs.append('/usr/X11R6/lib64')
@@ -280,18 +278,16 @@ index ea8a5f5..0a001f9 100644
 -            # Assume default location for X11
 -            include_dirs.append('/usr/X11/include')
 -            added_lib_dirs.append('/usr/X11/lib')
-+
  
          # If Cygwin, then verify that X is installed before proceeding
          if host_platform == 'cygwin':
-@@ -1897,8 +1885,8 @@ class PyBuildExt(build_ext):
+@@ -1897,9 +1879,6 @@ class PyBuildExt(build_ext):
+         if host_platform in ['aix3', 'aix4']:
              libs.append('ld')
  
-         # Finally, link with the X11 libraries (not appropriate on cygwin)
+-        # Finally, link with the X11 libraries (not appropriate on cygwin)
 -        if host_platform != "cygwin":
 -            libs.append('X11')
-+        # if host_platform != "cygwin":
-+        #     libs.append('X11')
  
          ext = Extension('_tkinter', ['_tkinter.c', 'tkappinit.c'],
                          define_macros=[('WITH_APPINIT', 1)] + defs,

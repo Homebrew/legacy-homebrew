@@ -21,7 +21,6 @@ class TerminalNotifier < Formula
 
   def patches
     # Disable code signing because we don't have the cert of the dev.
-    # However, terminal-notifier will not be able to open apps or URLs.
     DATA
   end
 
@@ -34,14 +33,6 @@ class TerminalNotifier < Formula
     inner_binary = "#{prefix}/terminal-notifier.app/Contents/MacOS/terminal-notifier"
     bin.write_exec_script inner_binary
     chmod 0755, Pathname.new(bin+"terminal-notifier")
-  end
-
-  def caveats
-    <<-EOS.undent
-      Homebrew built terminal-notifier, but without an developer certificate
-      from Apple, it will not be able to open URLs or execute commands when
-      the user clicks on a notification.
-    EOS
   end
 
 end
