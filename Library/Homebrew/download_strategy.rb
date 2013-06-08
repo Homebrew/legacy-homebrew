@@ -2,6 +2,8 @@ require 'open-uri'
 require 'vendor/multi_json'
 
 class AbstractDownloadStrategy
+  attr_accessor :local_bottle_path
+
   def initialize name, package
     @url = package.url
     specs = package.specs
@@ -36,8 +38,6 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  attr_accessor :local_bottle_path
-
   def initialize name, package
     super
 
@@ -49,7 +49,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
     @mirrors = package.mirrors
     @temporary_path = Pathname.new("#@tarball_path.incomplete")
-    @local_bottle_path = nil
   end
 
   def cached_location
@@ -66,11 +65,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    if @local_bottle_path
-      @tarball_path = @local_bottle_path
-      return @local_bottle_path
-    end
-
     ohai "Downloading #{@url}"
     unless @tarball_path.exist?
       had_incomplete_download = @temporary_path.exist?
@@ -227,6 +221,14 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
     @tarball_path = HOMEBREW_CACHE/"#{name}-#{package.version}#{ext}"
     mirror = ENV['HOMEBREW_SOURCEFORGE_MIRROR']
     @url = "#{@url}?use_mirror=#{mirror}" if mirror
+  end
+end
+
+# This strategy extracts local binary packages.
+class LocalBottleDownloadStrategy < CurlDownloadStrategy
+  def initialize formula, local_bottle_path
+    super formula.name, formula.active_spec
+    @tarball_path = local_bottle_path
   end
 end
 
