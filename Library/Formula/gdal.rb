@@ -30,11 +30,11 @@ class Gdal < Formula
   depends_on 'freexl'
   depends_on 'libspatialite'
 
-  depends_on "postgresql" if build.include? 'with-postgres'
-  depends_on "mysql" if build.include? 'with-mysql'
+  depends_on "postgresql" => :optional
+  depends_on "mysql" => :optional
 
   # Without Numpy, the Python bindings can't deal with raster data.
-  depends_on 'numpy' => :python unless build.include? 'without-python'
+  depends_on 'numpy' => :python if build.with? 'python'
 
   depends_on 'homebrew/science/armadillo' if build.include? 'enable-armadillo'
 
@@ -153,8 +153,8 @@ class Gdal < Formula
     args.concat unsupported_backends.map {|b| '--without-' + b} unless build.include? 'enable-unsupported'
 
     # Database support.
-    args << (build.include?("with-postgres") ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : "--without-pg")
-    args << (build.include?("with-mysql") ? "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" : "--without-mysql")
+    args << (build.with?("postgres") ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : "--without-pg")
+    args << (build.with?("mysql") ? "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" : "--without-mysql")
 
     # Python is installed manually to ensure everything is properly sandboxed.
     args << '--without-python'
@@ -186,6 +186,7 @@ class Gdal < Formula
     # Fortunately, this can be remedied using LDFLAGS.
     sqlite = Formula.factory 'sqlite'
     ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib -lsqlite3"
+    ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
     # Needed by libdap.
     ENV.append 'CPPFLAGS', '-I/usr/include/libxml2' if build.include? 'complete'
 
