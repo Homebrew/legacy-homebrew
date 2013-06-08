@@ -6,8 +6,8 @@ class Graphviz < Formula
   sha1 '96739220c4bbcf1bd3bd52e7111f4e60497185c6'
 
   devel do
-    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.31.20130523.0446.tar.gz'
-    sha1 'a1e6ba5d9298aa87b78170e2c74f21d7e579364e'
+    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.31.20130608.0446.tar.gz'
+    sha1 '390635729e799fbcc1d8025450b2bf4ad9627b13'
   end
 
   # To find Ruby and Co.
