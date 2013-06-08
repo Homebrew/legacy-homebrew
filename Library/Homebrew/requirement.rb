@@ -59,6 +59,10 @@ class Requirement
     [name, *tags].hash
   end
 
+  def inspect
+    "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
+  end
+
   def to_dependency
     f = self.class.default_formula
     raise "No default formula defined for #{inspect}" if f.nil?
