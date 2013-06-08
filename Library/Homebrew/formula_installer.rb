@@ -104,6 +104,7 @@ class FormulaInstaller
         tab.write
       end
     rescue
+      raise if ARGV.homebrew_developer?
       opoo "Bottle installation failed: building from source."
     end
 
