@@ -3,6 +3,13 @@ require 'bottles'
 require 'tab'
 require 'keg'
 
+class BottleMerger < Formula
+  # This provides a URL and Version which are the only needed properties of
+  # a Formula. This object is used to access the Formula bottle DSL to merge
+  # multiple outputs of `brew bottle`.
+  url '1'
+end
+
 module Homebrew extend self
   def keg_contains string, keg
     quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
@@ -79,7 +86,17 @@ module Homebrew extend self
   end
 
   def bottle
-    ARGV.formulae.each do|f|
+    if ARGV.include? '--merge'
+      ARGV.named.each do |argument|
+        bottle_block = IO.read(argument)
+        BottleMerger.class_eval bottle_block
+      end
+      bottle = BottleMerger.new.bottle
+      bottle_output bottle if bottle
+      exit 0
+    end
+
+    ARGV.formulae.each do |f|
       bottle_formula Formula.factory f
     end
   end
