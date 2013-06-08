@@ -3,7 +3,7 @@ require 'dependency'
 
 class DependencyExpansionTests < Test::Unit::TestCase
   def build_dep(name, deps=[])
-    dep = Dependency.new(name)
+    dep = Dependency.new(name.to_s)
     dep.stubs(:to_formula).returns(stub(:deps => deps))
     dep
   end
@@ -36,7 +36,7 @@ class DependencyExpansionTests < Test::Unit::TestCase
 
   def test_expand_selective_pruning
     deps = Dependency.expand(@f) do |_, dep|
-      Dependency.prune if dep.name == :foo
+      Dependency.prune if dep.name == 'foo'
     end
 
     assert_equal [@bar, @baz, @qux], deps
