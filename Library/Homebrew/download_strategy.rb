@@ -102,6 +102,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :zip
       with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, @tarball_path }
       chdir
+    when :gzip_only
+      with_system_path { safe_system 'gunzip', '-f', @tarball_path }
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
@@ -197,17 +199,9 @@ class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   end
 end
 
-# Normal strategy tries to untar as well
-class GzipOnlyDownloadStrategy < CurlDownloadStrategy
-  def stage
-    FileUtils.mv @tarball_path, basename
-    with_system_path { safe_system 'gunzip', '-f', basename_without_params }
-  end
-end
-
-# This Download Strategy is provided for use with sites that
-# only provide HTTPS and also have a broken cert.
-# Try not to need this, as we probably won't accept the formula.
+# This strategy is provided for use with sites that only provide HTTPS and
+# also have a broken cert. Try not to need this, as we probably won't accept
+# the formula.
 class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
     curl @url, '--insecure', '-C', downloaded_size, '-o', @temporary_path
