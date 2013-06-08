@@ -1,9 +1,9 @@
 require 'formula'
 
 class ProxychainsNG < Formula
-  url 'http://surfnet.dl.sourceforge.net/project/proxychains-ng/proxychains-4.5.tar.bz2'
   homepage 'https://sourceforge.net/projects/proxychains-ng'
-  md5 '2a83ef208499a208ea507e8dc054b901'
+  url 'http://surfnet.dl.sourceforge.net/project/proxychains-ng/proxychains-4.5.tar.bz2'
+  sha1 'b7d85c6dfae83ec50a92c232f674231192f1ca33'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{prefix}/etc"
