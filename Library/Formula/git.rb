@@ -1,5 +1,8 @@
 require 'formula'
 
+# Git 1.8.3 has a serious issue with .gitignore files being parsed incorrectly
+# on OS X. This issue has been fixed upstream. Waiting for 1.8.3.1 to update.
+
 class GitManuals < Formula
   url 'http://git-core.googlecode.com/files/git-manpages-1.8.2.3.tar.gz'
   sha1 'eb04a2540ff9998e0887a4b862641ac1db723f3e'
