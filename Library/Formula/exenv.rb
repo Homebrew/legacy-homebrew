@@ -2,7 +2,7 @@ require 'formula'
 
 class Exenv < Formula
   homepage 'https://github.com/mururu/exenv'
-  url 'https://github.com/mururu/exenv/archive/master.zip'
+  url 'https://github.com/mururu/exenv/archive/v0.1.0.zip'
   sha1 '2a796bca35136e2abc24a5fe2868dec3858edd3c'
   version '0.1.0'
   head 'https://github.com/mururu/exenv.git'
