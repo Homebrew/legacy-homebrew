@@ -90,7 +90,8 @@ class Bottle < SoftwareSpec
   # a Hash, which indicates the platform the checksum applies on.
   Checksum::TYPES.each do |cksum|
     class_eval <<-EOS, __FILE__, __LINE__ + 1
-      def #{cksum}(val)
+      def #{cksum}(val=nil)
+        return @#{cksum} if val.nil?
         @#{cksum} ||= Hash.new
         case val
         when Hash
