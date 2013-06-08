@@ -9,8 +9,7 @@ class Groovy < Formula
 
   def install
     # Don't need Windows files.
-    # Why are icons in bin?
-    rm_f Dir["bin/*.bat","bin/groovy.{icns,ico}"]
+    rm_f Dir["bin/*.bat"]
 
     if build.include? 'invokedynamic'
       Dir['indy/*.jar'].each do |src_path|
