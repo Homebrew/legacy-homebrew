@@ -2,16 +2,11 @@ require 'formula'
 
 class Libspatialite < Formula
   homepage 'https://www.gaia-gis.it/fossil/libspatialite/index'
-  url 'http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-3.0.1.tar.gz'
-  sha1 'a88c763302aabc3b74d44a88f969c8475f0c0d10'
-
-  devel do
-    url 'http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-4.0.0.tar.gz'
-    sha1 '3d20fcabcc5a951e7863d33b6b6ef3f78dbf006d'
-  end
+  url 'http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-4.1.0.tar.gz'
+  sha1 '33b45f3d00f6ba633c6e4d95387336e132a1d2e3'
 
   option 'without-freexl', 'Build without support for reading Excel files'
-  option 'with-lwgeom', 'Enable additional sanitization/segmentation routines provided by PostGIS 2.0+. (--devel builds only)'
+  option 'with-lwgeom', 'Enable additional sanitization/segmentation routines provided by PostGIS 2.0+.'
 
   depends_on 'proj'
   depends_on 'geos'
@@ -21,12 +16,13 @@ class Libspatialite < Formula
   depends_on 'sqlite'
 
   depends_on 'freexl' unless build.include? 'without-freexl'
-  depends_on 'postgis' if build.include? 'with-lwgeom' and build.devel?
+  depends_on 'postgis' if build.include? 'with-lwgeom'
 
   def install
     # Ensure Homebrew's libsqlite is found before the system version.
     sqlite = Formula.factory 'sqlite'
     ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib"
+    ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
 
     args = %W[
       --disable-dependency-tracking
@@ -34,16 +30,10 @@ class Libspatialite < Formula
       --with-sysroot=#{HOMEBREW_PREFIX}
     ]
     args << '--enable-freexl=no' if build.include? 'without-freexl'
-    args << '--enable-lwgeom' if build.include? 'with-lwgeom' and build.devel?
+    args << '--enable-lwgeom' if build.include? 'with-lwgeom'
 
     system './configure', *args
     system "make install"
   end
-
-  def caveats; <<-EOS.undent
-    Note that the SpatiaLite 4.x series is not compatible with QGIS 1.8.0 or
-    GDAL 1.9.2. Hopefully this situation will improve in future releases.
-    EOS
-  end if build.devel?
 
 end
