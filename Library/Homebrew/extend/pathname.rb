@@ -177,6 +177,10 @@ class Pathname
     # OS X installer package
     return :pkg if self.extname == '.pkg'
 
+    # If the filename ends with .gz not preceded by .tar
+    # then we want to gunzip but not tar
+    return :gzip_only if self.extname == '.gz'
+
     # Get enough of the file to detect common file types
     # POSIX tar magic has a 257 byte offset
     # magic numbers stolen from /usr/share/file/magic/
