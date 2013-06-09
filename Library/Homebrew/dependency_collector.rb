@@ -2,6 +2,7 @@ require 'dependency'
 require 'dependencies'
 require 'requirement'
 require 'requirements'
+require 'requirements/ld64_dependency'
 require 'set'
 
 ## A dependency is a formula that another formula needs to install.
@@ -95,6 +96,8 @@ class DependencyCollector
     when :python     then PythonInstalled.new(tags)
     when :python2    then PythonInstalled.new("2", tags)
     when :python3    then PythonInstalled.new("3", tags)
+    # Tiger's ld is too old to properly link some software
+    when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     else
       raise "Unsupported special dependency #{spec}"
     end
