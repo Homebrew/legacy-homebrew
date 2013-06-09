@@ -2,8 +2,8 @@ require 'formula'
 
 class Cpputest < Formula
   homepage 'http://www.cpputest.org/'
-  url 'https://github.com/cpputest/cpputest.github.io/blob/master/releases/cpputest-3.4.zip?raw=true'
-  sha1 'c3ff5fd822d59701ff55d0264b295e665ca35ce8'
+  url 'https://github.com/cpputest/cpputest.git', :tag => 'v3.4'
+  version '3.4'
 
   fails_with :clang do
     build 425
