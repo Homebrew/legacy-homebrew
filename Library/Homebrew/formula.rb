@@ -519,7 +519,7 @@ class Formula
       "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
       "keg_only" => keg_only?,
       "dependencies" => deps.map {|dep| dep.to_s},
-      "conflicts_with" => conflicts.map {|c| c.formula},
+      "conflicts_with" => conflicts.map(&:name),
       "options" => [],
       "caveats" => caveats
     }
