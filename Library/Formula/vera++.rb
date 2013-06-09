@@ -25,6 +25,6 @@ class Veraxx < Formula
   end
 
   test do
-    `#{bin}/vera++ --version`.chomp == '1.2.1'
+    assert_equal version.to_s, `#{bin}/vera++ --version`.strip
   end
 end
