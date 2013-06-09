@@ -2,8 +2,8 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.9.tar.bz2'
-  sha1 '453757bae78a800997559f2232483ab99238ec1e'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.10.tar.bz2'
+  sha1 'a4f3de0a13b034b0eab4d35512c6c91a4abcf4f5'
 
   option :universal
   option 'java', 'Build Java bindings'
@@ -14,7 +14,6 @@ class Subversion < Formula
   depends_on 'pkg-config' => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
-  depends_on 'neon'
   depends_on 'sqlite'
   depends_on 'serf'
   depends_on :python => :optional
@@ -56,10 +55,6 @@ class Subversion < Formula
   end
 
   def install
-    # We had weird issues with "make" apparently hanging on first run:
-    # https://github.com/mxcl/homebrew/issues/13226
-    ENV.deparallelize
-
     if build.include? 'java'
       unless build.universal?
         opoo "A non-Universal Java build was requested."
@@ -84,8 +79,7 @@ class Subversion < Formula
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula.factory('sqlite').opt_prefix}",
             "--with-serf=#{Formula.factory('serf').opt_prefix}",
-            # use our neon, not OS X's
-            "--disable-neon-version-check",
+            "--without-neon",
             "--disable-mod-activation",
             "--disable-nls",
             "--without-apache-libexecdir",
