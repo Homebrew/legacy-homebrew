@@ -135,16 +135,6 @@ module Homebrew extend self
 
     c = Caveats.new(f)
     ohai 'Caveats', c.caveats unless c.empty?
-
-  rescue FormulaUnavailableError
-    # check for DIY installation
-    d = HOMEBREW_PREFIX+name
-    if d.directory?
-      ohai "DIY Installation"
-      d.children.each{ |keg| puts "#{keg} (#{keg.abv})" }
-    else
-      raise "No such formula or keg"
-    end
   end
 
   private
