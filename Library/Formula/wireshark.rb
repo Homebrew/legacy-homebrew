@@ -2,7 +2,7 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://www.wireshark.org/download/src/wireshark-1.8.7.tar.bz2'
+  url 'http://www.wireshark.org/download/src/wireshark-1.10.0.tar.bz2'
   sha1 'c131ce10555e608e691aa36190c8d5a1b271c955'
 
   option 'with-x', 'Include X11 support'
