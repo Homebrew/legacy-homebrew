@@ -3,6 +3,7 @@ require 'formula'
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
   url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.0.tar.bz2'
+  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.0.tar.bz2'
   sha1 'c78a5d5e589edc8ebc702eb00a284ccbca7721bc'
 
   option 'with-x', 'Include X11 support'
