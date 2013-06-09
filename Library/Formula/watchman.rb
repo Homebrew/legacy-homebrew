@@ -11,13 +11,18 @@ class Watchman < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
 
+  def patches
+    # Fixes libwmanjson dependency issue with make command - it required a
+    # second 'make' to properly compile.
+    # See: https://github.com/facebook/watchman/issues/6
+    "https://gist.github.com/dsummersl/5737680/raw/"
+  end
+
   def install
     system "./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     # the first time it doesn't build an internal json library
-    # See: https://github.com/facebook/watchman/issues/6
-    system "make || true"
     # second time around works fine.
     system "make"
     system "make install"
