@@ -2,8 +2,8 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://www.wireshark.org/download/src/wireshark-1.8.7.tar.bz2'
-  sha1 'c131ce10555e608e691aa36190c8d5a1b271c955'
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.0.tar.bz2'
+  sha1 'c78a5d5e589edc8ebc702eb00a284ccbca7721bc'
 
   option 'with-x', 'Include X11 support'
   option 'with-qt', 'Use QT for GUI instead of GTK+'
@@ -14,8 +14,10 @@ class Wireshark < Formula
   depends_on 'c-ares' => :optional
   depends_on 'pcre' => :optional
   depends_on 'qt' => :optional
-  depends_on :python => :optional
+  depends_on 'lua' => :optional
+  depends_on 'portaudio' => :optional
   depends_on 'glib'
+  depends_on 'geoip' => :recommended
 
   if build.with? 'x'
     depends_on :x11
@@ -24,14 +26,6 @@ class Wireshark < Formula
 
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-
-    # Optionally enable experimental python bindings; is known to cause
-    # some runtime issues, e.g.
-    # "dlsym(0x8fe467fc, py_create_dissector_handle): symbol not found"
-    args << '--without-python' unless build.with? 'python'
-
-    # actually just disables the GTK GUI
-    args << '--disable-wireshark' unless build.with? 'x'
 
     args << '--with-qt' if build.with? 'qt'
 
