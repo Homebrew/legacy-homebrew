@@ -100,7 +100,7 @@ class Dependency
       grouped = deps.group_by(&:name)
 
       deps.uniq.map do |dep|
-        new(dep.name, grouped.fetch(dep.name).map(&:tags).flatten)
+        dep.class.new(dep.name, grouped.fetch(dep.name).map(&:tags).flatten)
       end
     end
   end
