@@ -3,27 +3,23 @@ require 'formula'
 class Watchman < Formula
   homepage 'https://github.com/facebook/watchman'
   head 'https://github.com/facebook/watchman.git'
-  url 'https://github.com/facebook/watchman/archive/v2.5.1.tar.gz'
-  sha1 '8d3ebb1326f0542ffac95502cb92ea7fbf9e5adb'
+  url 'https://github.com/facebook/watchman/archive/v2.6.tar.gz'
+  sha1 'dfae0fb3c61aa3751be998b2597ede54b85a6bef'
 
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'pkg-config' => :build
-  depends_on 'pcre'
-
-  def patches
-    # Fixes libwmanjson dependency issue with make command - it required a
-    # second 'make' to properly compile.
-    # See: https://github.com/facebook/watchman/issues/6
-    "https://gist.github.com/dsummersl/5737680/raw/"
-  end
+  depends_on 'pcre' => :recommended
 
   def install
     system "./autogen.sh"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    # the first time it doesn't build an internal json library
-    # second time around works fine.
+    if build.with? 'pcre'
+      system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                            "--with-pcre", "--prefix=#{prefix}"
+    else
+      system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}"
+    end
     system "make"
     system "make install"
   end
