@@ -13,3 +13,5 @@ langs:
     lang_string: 繁體中文
   - langcode: ja
     lang_string: 日本語
+	- langcode: ko
+	  lang_string: 한국어
