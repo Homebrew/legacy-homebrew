@@ -102,7 +102,7 @@ module Homebrew extend self
       puts
     end
 
-    conflicts = f.conflicts.map(&:formula).sort!
+    conflicts = f.conflicts.map(&:name).sort!
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?

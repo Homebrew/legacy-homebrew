@@ -491,7 +491,7 @@ class Formula
   end
 
   def conflicts
-    requirements.grep(ConflictRequirement)
+    self.class.conflicts
   end
 
   # Returns a list of Dependency objects in an installable order, which
@@ -764,8 +764,12 @@ class Formula
       @plist_manual = options[:manual]
     end
 
-    def conflicts_with formula, opts={}
-      dependencies.add ConflictRequirement.new(formula, name, opts)
+    def conflicts
+      @conflicts ||= []
+    end
+
+    def conflicts_with name, opts={}
+      conflicts << FormulaConflict.new(name, opts[:because])
     end
 
     def skip_clean *paths

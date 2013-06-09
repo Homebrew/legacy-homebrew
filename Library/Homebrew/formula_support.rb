@@ -2,6 +2,8 @@ require 'download_strategy'
 require 'checksum'
 require 'version'
 
+FormulaConflict = Struct.new(:name, :reason)
+
 class SoftwareSpec
   attr_reader :checksum, :mirrors, :specs
   attr_reader :using # for auditing

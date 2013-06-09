@@ -78,6 +78,8 @@ class FormulaInstaller
       EOS
     end
 
+    check_conflicts
+
     unless ignore_deps
       perform_readline_hack
       check_requirements
@@ -119,6 +121,17 @@ class FormulaInstaller
     if f.recursive_dependencies.any? { |d| d.name == "readline" } && ARGV.debug?
       ENV['HOMEBREW_NO_READLINE'] = '1'
     end
+  end
+
+  def check_conflicts
+    return if ARGV.force?
+
+    conflicts = f.conflicts.reject do |c|
+      keg = Formula.factory(c.name).prefix
+      not keg.directory? && Keg.new(keg).linked?
+    end
+
+    raise FormulaConflictError.new(f, conflicts) unless conflicts.empty?
   end
 
   def check_requirements
