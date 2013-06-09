@@ -213,11 +213,3 @@ class ChecksumMismatchError < RuntimeError
     super + advice.to_s
   end
 end
-
-module Homebrew extend self
-  SUDO_BAD_ERRMSG = <<-EOS.undent
-    You can use brew with sudo, but only if the brew executable is owned by root.
-    However, this is both not recommended and completely unsupported so do so at
-    your own risk.
-  EOS
-end

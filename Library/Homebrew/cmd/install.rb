@@ -18,10 +18,6 @@ module Homebrew extend self
       end
     end unless ARGV.force?
 
-    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      raise "Cowardly refusing to `sudo brew install'\n#{SUDO_BAD_ERRMSG}"
-    end
-
     install_formulae ARGV.formulae
   end
 
