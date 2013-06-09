@@ -5,7 +5,7 @@ class Libpar2 < Formula
   url 'http://sourceforge.net/projects/parchive/files/libpar2/0.2/libpar2-0.2.tar.gz'
   sha1 '4b3da928ea6097a8299aadafa703fc6d59bdfb4b'
 
-  def initialize; super 'libpar2'; end
+  def initialize(name='libpar2', path=nil); super; end
 
   fails_with :clang do
     build 425
