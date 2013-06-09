@@ -5,8 +5,6 @@ class Libpar2 < Formula
   url 'http://sourceforge.net/projects/parchive/files/libpar2/0.2/libpar2-0.2.tar.gz'
   sha1 '4b3da928ea6097a8299aadafa703fc6d59bdfb4b'
 
-  def initialize(name='libpar2', path=nil); super; end
-
   fails_with :clang do
     build 425
     cause <<-EOS.undent
@@ -41,7 +39,7 @@ class Nzbget < Formula
   def install
     # Install libpar2 privately
     libpar2_prefix = libexec/'libpar2'
-    Libpar2.new.brew do
+    Libpar2.new('libpar2').brew do
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
                             "--prefix=#{libpar2_prefix}"
       system "make install"
