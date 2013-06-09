@@ -16,6 +16,7 @@ class YleDl < Formula
   end
 
   test do
-    raise if (`#{bin}/yle-dl --help 2>&1` =~ /rtmpdump: This program dumps the media content streamed over RTMP/).nil?
+    assert_match /rtmpdump: This program dumps the media content streamed over RTMP/,
+      `#{bin}/yle-dl --help 2>&1`.strip
   end
 end

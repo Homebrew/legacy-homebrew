@@ -10,6 +10,6 @@ class Sendemail < Formula
   end
 
   test do
-    `#{bin}/sendemail`.strip =~ /sendemail-#{Regexp.escape(version)}/
+    assert_match /sendemail-#{Regexp.escape(version)}/, `#{bin}/sendemail`.strip
   end
 end
