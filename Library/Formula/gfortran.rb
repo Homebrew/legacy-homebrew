@@ -103,7 +103,7 @@ class Gfortran < Formula
     Pathname('in.f90').write(fixture)
     system "#{bin}/gfortran -c in.f90"
     system "#{bin}/gfortran -o test in.o"
-    `./test`.strip =='done'
+    assert_equal 'done', `./test`.strip
   end
 
   def caveats; <<-EOS.undent
