@@ -25,11 +25,6 @@ class Wireshark < Formula
   def install
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
 
-    # Optionally enable experimental python bindings; is known to cause
-    # some runtime issues, e.g.
-    # "dlsym(0x8fe467fc, py_create_dissector_handle): symbol not found"
-    args << '--without-python' unless build.with? 'python'
-
     # actually just disables the GTK GUI
     args << '--disable-wireshark' unless build.with? 'x'
 
