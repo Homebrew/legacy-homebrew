@@ -115,6 +115,38 @@ class UnsatisfiedRequirements < Homebrew::InstallationError
   end
 end
 
+class FormulaConflictError < Homebrew::InstallationError
+  attr_reader :f, :conflicts
+
+  def initialize(f, conflicts)
+    @f = f
+    @conflicts = conflicts
+    super f, message
+  end
+
+  def conflict_message(conflict)
+    message = []
+    message << "  #{conflict.name}"
+    message << ": because #{conflict.reason}" if conflict.reason
+    message.join
+  end
+
+  def message
+    message = []
+    message << "Cannot install #{f.name} because conflicting formulae are installed.\n"
+    message.concat conflicts.map { |c| conflict_message(c) } << ""
+    message << <<-EOS.undent
+      Please `brew unlink #{conflicts.map(&:name)*' '}` before continuing.
+
+      Unlinking removes a formula's symlinks from #{HOMEBREW_PREFIX}. You can
+      link the formula again after the install finishes. You can --force this
+      install, but the build may fail or cause obscure side-effects in the
+      resulting software.
+      EOS
+    message.join("\n")
+  end
+end
+
 class BuildError < Homebrew::InstallationError
   attr_reader :exit_status, :command, :env
 

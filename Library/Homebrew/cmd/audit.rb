@@ -174,11 +174,11 @@ class FormulaAuditor
   end
 
   def audit_conflicts
-    f.conflicts.each do |req|
+    f.conflicts.each do |c|
       begin
-        Formula.factory req.formula
+        Formula.factory(c.name)
       rescue FormulaUnavailableError
-        problem "Can't find conflicting formula \"#{req.formula}\"."
+        problem "Can't find conflicting formula #{c.name.inspect}."
       end
     end
   end
