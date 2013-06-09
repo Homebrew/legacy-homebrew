@@ -37,9 +37,13 @@ class MysqlConnectorOdbc < Formula
   def install
     args = ["-DCMAKE_INSTALL_PREFIX=#{prefix}"]
     args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
+    args << "-DMYSQL_LIB:FILEPATH=#{HOMEBREW_PREFIX}/lib/libmysqlclient_r.a"
     ENV['MYSQL_DIR'] = HOMEBREW_PREFIX
     system 'cmake', ".", *args
     fix_goofy_link_file_error
+    inreplace "driver/utility.c",
+        "max(cur_len, max_len);",
+        "myodbc_max(cur_len, max_len);"
     system 'make install'
   end
 
