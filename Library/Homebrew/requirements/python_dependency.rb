@@ -139,7 +139,11 @@ class PythonInstalled < Requirement
   # Dir containing e.g. libpython2.7.dylib
   def libdir
     if brewed? || from_osx?
-      prefix/"lib/#{xy}/config"
+      if @min_version.major == 3
+        prefix/"lib/#{xy}/config-#{version.major}.#{version.minor}m"
+      else
+        prefix/"lib/#{xy}/config"
+      end
     else
       Pathname.new(`#{binary} -c "from distutils import sysconfig; print(sysconfig.get_config_var('LIBPL'))"`.strip)
     end
