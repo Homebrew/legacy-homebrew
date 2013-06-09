@@ -1,6 +1,6 @@
 require 'formula'
 
-class Emacs < Requirement
+class EmacsRequirement < Requirement
   fatal true
   satisfy { which('emacs') }
 
@@ -27,7 +27,7 @@ class Gettext < Formula
   option 'with-emacs', 'Build with emacs support'
   option 'with-examples', 'Keep example files'
 
-  depends_on Emacs if build.include? "with-emacs"
+  depends_on EmacsRequirement if build.include? "with-emacs"
 
   def patches
     unless build.include? 'with-examples'
