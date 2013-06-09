@@ -23,7 +23,7 @@ class Bind < Formula
 
     # For Xcode-only systems we help a bit to find openssl.
     # If CLT.installed?, it evaluates to "/usr", which works.
-    args << "--with-openssl=#{MacOS.sdk_path.to_s}/usr" unless MacOS.version == :leopard
+    args << "--with-openssl=#{MacOS.sdk_path}/usr" unless MacOS.version == :leopard
 
     system "./configure", *args
 
