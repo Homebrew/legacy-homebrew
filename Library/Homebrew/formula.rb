@@ -562,6 +562,8 @@ class Formula
   end
 
   def test
+    require 'test/unit/assertions'
+    extend(Test::Unit::Assertions)
     ret = nil
     mktemp do
       @testpath = Pathname.pwd
