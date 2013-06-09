@@ -22,7 +22,7 @@ class Ld64 < Formula
   fails_with :gcc_4_0 do
     build 5370
   end
-  
+
   def patches
     {
       :p0 => [
