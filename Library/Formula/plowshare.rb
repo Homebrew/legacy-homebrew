@@ -2,8 +2,8 @@ require 'formula'
 
 class Plowshare < Formula
   homepage 'http://code.google.com/p/plowshare/'
-  url 'http://plowshare.googlecode.com/files/plowshare-snapshot-git20120930.tar.gz'
-  sha1 'd8272d2a325764f855d77158e0ed35e70d9d1968'
+  url 'http://plowshare.googlecode.com/files/plowshare3-snapshot-git20130520.c289008.tar.gz'
+  sha1 '4a69918dbf6faa1698ddcf581aeb7c15d829caf2'
 
   head 'https://code.google.com/p/plowshare/', :using => :git
 
@@ -34,7 +34,7 @@ class Plowshare < Formula
     EOS
   end
 end
-
+require 'formula'
 
 # This patch makes sure GNUtools are used on OSX.
 # gnu-getopt is keg-only hence the backtick expansion.
