@@ -34,7 +34,6 @@ class Plowshare < Formula
     EOS
   end
 end
-require 'formula'
 
 # This patch makes sure GNUtools are used on OSX.
 # gnu-getopt is keg-only hence the backtick expansion.
