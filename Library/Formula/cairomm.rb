@@ -9,7 +9,7 @@ class Cairomm < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
-  depends_on 'cairo'
+  depends_on 'cairo' => 'with-glib'
   depends_on :x11 unless build.include? 'without-x'
 
   def install
