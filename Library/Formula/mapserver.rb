@@ -36,6 +36,7 @@ class Mapserver < Formula
 
     args << "--with-geos" if build.with? 'geos'
     args << "--with-php=/usr/bin/php-config" if build.include? 'with-php'
+    args << "--with-cairo" if build.with? 'cairo'
 
     if build.include? 'with-postgresql'
       if MacOS.version >= :lion # Lion ships with PostgreSQL libs
