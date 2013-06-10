@@ -67,7 +67,7 @@ class AndroidSdk < Formula
     updates. If you want to try and fix this then see the comment in this formula.
 
     You may need to add the following to your .bashrc:
-      export ANDROID_SDK_ROOT=#{opt_prefix}
+      export ANDROID_HOME=#{opt_prefix}
     EOS
   end
 
