@@ -375,6 +375,13 @@ module HomebrewEnvExtension
       Hardware.processor_count
     end
   end
+
+  # ld64 is a newer linker provided for Xcode 2.5
+  def ld64
+    ld64 = Formula.factory('ld64')
+    self['LD'] = ld64.bin/'ld'
+    append "LDFLAGS", "-B#{ld64.bin.to_s+"/"}"
+  end
 end
 
 class << ENV

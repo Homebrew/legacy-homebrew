@@ -19,7 +19,7 @@ class Jshon < Formula
     Open3.popen3("#{bin}/jshon", "-l") do |stdin, stdout, _|
       stdin.write("[true,false,null]")
       stdin.close
-      "3" == stdout.read.strip
+      assert_equal "3", stdout.read.strip
     end
   end
 end

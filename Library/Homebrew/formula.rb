@@ -491,7 +491,7 @@ class Formula
   end
 
   def conflicts
-    requirements.grep(ConflictRequirement)
+    self.class.conflicts
   end
 
   # Returns a list of Dependency objects in an installable order, which
@@ -519,7 +519,7 @@ class Formula
       "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
       "keg_only" => keg_only?,
       "dependencies" => deps.map {|dep| dep.to_s},
-      "conflicts_with" => conflicts.map {|c| c.formula},
+      "conflicts_with" => conflicts.map(&:name),
       "options" => [],
       "caveats" => caveats
     }
@@ -562,6 +562,8 @@ class Formula
   end
 
   def test
+    require 'test/unit/assertions'
+    extend(Test::Unit::Assertions)
     ret = nil
     mktemp do
       @testpath = Pathname.pwd
@@ -762,8 +764,12 @@ class Formula
       @plist_manual = options[:manual]
     end
 
-    def conflicts_with formula, opts={}
-      dependencies.add ConflictRequirement.new(formula, name, opts)
+    def conflicts
+      @conflicts ||= []
+    end
+
+    def conflicts_with name, opts={}
+      conflicts << FormulaConflict.new(name, opts[:because])
     end
 
     def skip_clean *paths

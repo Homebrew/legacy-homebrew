@@ -2,8 +2,8 @@ require 'testing_env'
 require 'dependency'
 
 class DependencyExpansionTests < Test::Unit::TestCase
-  def build_dep(name, deps=[])
-    dep = Dependency.new(name.to_s)
+  def build_dep(name, tags=[], deps=[])
+    dep = Dependency.new(name.to_s, tags)
     dep.stubs(:to_formula).returns(stub(:deps => deps))
     dep
   end
@@ -57,5 +57,13 @@ class DependencyExpansionTests < Test::Unit::TestCase
     @foo.expects(:recommended?).returns(true)
     @f = stub(:deps => @deps, :build => stub(:with? => true))
     assert_equal @deps, Dependency.expand(@f)
+  end
+
+  def test_merges_repeated_deps_with_differing_options
+    @foo2 = build_dep(:foo, ['option'])
+    @baz2 = build_dep(:baz, ['option'])
+    @deps << @foo2 << @baz2
+    deps = [@foo2, @bar, @baz2, @qux]
+    assert_equal deps, Dependency.expand(@f)
   end
 end

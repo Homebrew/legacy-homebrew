@@ -2,12 +2,12 @@ require 'formula'
 
 class ScalaDocs < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.10.1.zip'
-  sha1 '7ff73776f7af9d6b2d5081a3a6ffa2a442640a59'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.10.2.zip'
+  sha1 '96107dafb44af30d24c07fc29feddbf470377cdd'
 
   devel do
-    url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.10.2-RC1.zip'
-    sha1 '76f70d77e6d42eaff12f4b76ee889467e4c77277'
+    url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.11.0-M3.zip'
+    sha1 '5c81f366ae6d1b471ef4e3ead3ad602d535a5ac1'
   end
 end
 
@@ -20,12 +20,12 @@ end
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.10.1.tgz'
-  sha1 '589cc2ba688510f2ec169837b44be5db9fd538b6'
+  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.10.2.tgz'
+  sha1 '86b4e38703d511ccf045e261a0e04f6e59e3c926'
 
   devel do
-    url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.10.2-RC1.tgz'
-    sha1 '1759bca778a7ca295490e9ea7a265ccc023e9ba8'
+    url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.11.0-M3.tgz'
+    sha1 '928a5c52f36b2189a8619580f2b9ac157749a968'
   end
 
   option 'with-docs', 'Also install library documentation'

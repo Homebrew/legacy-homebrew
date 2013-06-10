@@ -49,7 +49,7 @@ class Cmake < Formula
   end
 
   test do
-    File.open('CMakeLists.txt', 'w') {|f| f.write('find_package(Ruby)') }
+    (testpath/'CMakeLists.txt').write('find_package(Ruby)')
     system "#{bin}/cmake", '.'
   end
 end

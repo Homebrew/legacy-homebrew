@@ -29,6 +29,6 @@ class Dart < Formula
       }
     EOS
 
-    `#{bin}/dart sample.dart test message` == "test\nmessage\n"
+    assert_equal "test\nmessage\n", `#{bin}/dart sample.dart test message`
   end
 end

@@ -5,10 +5,6 @@ module Homebrew extend self
   def link
     raise KegUnspecifiedError if ARGV.named.empty?
 
-    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      raise "Cowardly refusing to `sudo brew link'\n#{SUDO_BAD_ERRMSG}"
-    end
-
     mode = OpenStruct.new
 
     mode.overwrite = true if ARGV.include? '--overwrite'
