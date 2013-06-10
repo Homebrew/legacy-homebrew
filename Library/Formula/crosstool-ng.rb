@@ -39,7 +39,18 @@ class CrosstoolNg < Formula
   end
 
   def caveats; <<-EOS.undent
-    You will need to install modern gcc compiler in order to use this tool.
+    You will need to install modern gcc compiler (such as 4.7) in order to use this tool.
+
+    Ensure that gsed, gawk and grep returns GNU versions of the utilities before using the tool.
+
+    Ensure that limit of max open file descriptors is suffician (e.g. `ulimit -n 2048`).
+
+    If your file system is key insesensetive, you will need to create 2 disk images via Disk Utility
+    with the "Mac OS Extended (Case-sensitive, Journaled)" FS. One drive (~11GB) should be used to build tools and
+    another drive (~200MB) should be used to install tools.
+
+    If toolchain building process ends with error due to missing "libintl.h", try to install gettext
+    and link it via `brew link --force`.
     EOS
   end
 
