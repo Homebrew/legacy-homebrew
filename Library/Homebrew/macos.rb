@@ -1,4 +1,5 @@
 require 'os/mac/version'
+require 'hardware'
 
 module MacOS extend self
 
@@ -9,29 +10,17 @@ module MacOS extend self
   end
 
   def cat
-    @cat ||= uncached_cat
-  end
-
-  def uncached_cat
     case MacOS.version
-    when 10.8
-      :mountain_lion
-    when 10.7
-      :lion
-    when 10.6
-      Hardware.is_64_bit? ? :snow_leopard : :snow_leopard_32
-    when 10.5
-      :leopard
-    else
-      Hardware::CPU.family if Hardware::CPU.type == :ppc
+    when 10.8 then :mountain_lion
+    when 10.7 then :lion
+    when 10.6 then :snow_leopard
+    when 10.5 then :leopard
+    when 10.4 then :tiger
     end
   end
 
-  # TODO: Can be removed when all bottles migrated to underscored cat symbols.
-  def cat_without_underscores
-    possibly_underscored_cat = cat
-    return nil unless possibly_underscored_cat
-    cat.to_s.gsub('_', '').to_sym
+  def pretty_name
+    cat.to_s.split('_').map(&:capitalize).join(' ')
   end
 
   def locate tool
@@ -127,6 +116,7 @@ module MacOS extend self
       $1.to_i
     end
   end
+  alias_method :gcc_4_0_build_version, :gcc_40_build_version
 
   def gcc_42_build_version
     @gcc_42_build_version ||= if locate("gcc-4.2") \

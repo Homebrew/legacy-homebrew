@@ -2,10 +2,15 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.4.0.tar.gz'
-  sha1 'a4343ed201b99d93ff06843600f3175270cb0a94'
+  url 'http://nginx.org/download/nginx-1.4.1.tar.gz'
+  sha1 '9c72838973572323535dae10f4e412d671b27a7e'
 
-  head 'svn://svn.nginx.org/nginx/trunk/'
+  devel do
+    url 'http://nginx.org/download/nginx-1.5.1.tar.gz'
+    sha1 'bd5a5e7dba39a4aa166918112367589f165ce5bc'
+  end
+
+  head 'http://hg.nginx.org/nginx/', :using => :hg
 
   env :userpaths
 

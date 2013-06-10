@@ -4,14 +4,14 @@ class Dart < Formula
   homepage 'http://www.dartlang.org/'
 
   if MacOS.prefer_64_bit?
-    url 'https://gsdview.appspot.com/dart-editor-archive-integration/22223/dartsdk-macos-64.zip'
-    sha1 '766856a36ce283951c577ecc102b8b3e2cb0a164'
+    url 'https://gsdview.appspot.com/dart-editor-archive-integration/23552/dartsdk-macos-64.zip'
+    sha1 '45cdf025db69a86b7448c57c2031f304439e0949'
   else
-    url 'https://gsdview.appspot.com/dart-editor-archive-integration/22223/dartsdk-macos-32.zip'
-    sha1 'fddd7f182e1c099428b53b3cb1fb2efd8b902a51'
+    url 'https://gsdview.appspot.com/dart-editor-archive-integration/23552/dartsdk-macos-32.zip'
+    sha1 '0ba113ca9a1c95e066752b856b9015d4b9398027'
   end
 
-  version '22223'
+  version '23552'
 
   def install
     libexec.install Dir['*']
@@ -29,6 +29,6 @@ class Dart < Formula
       }
     EOS
 
-    `#{bin}/dart sample.dart test message` == "test\nmessage\n"
+    assert_equal "test\nmessage\n", `#{bin}/dart sample.dart test message`
   end
 end

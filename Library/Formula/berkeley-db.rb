@@ -16,11 +16,14 @@ class BerkeleyDb < Formula
   def install
     # BerkeleyDB dislikes parallel builds
     ENV.deparallelize
+    # --enable-compat185 is necessary because our build shadows
+    # the system berkeley db 1.x
     args = %W[
       --disable-debug
       --prefix=#{prefix}
       --mandir=#{man}
       --enable-cxx
+      --enable-compat185
     ]
     args << "--enable-java" if build.include? "with-java"
     args << "--enable-sql" if build.include? "enable-sql"

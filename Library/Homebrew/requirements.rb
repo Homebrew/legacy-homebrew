@@ -1,8 +1,8 @@
 require 'requirement'
-require 'requirements/conflict_requirement'
 require 'requirements/language_module_dependency'
 require 'requirements/x11_dependency'
 require 'requirements/mpi_dependency'
+require 'requirements/python_dependency'
 
 class XcodeDependency < Requirement
   fatal true
@@ -19,6 +19,7 @@ end
 
 class MysqlDependency < Requirement
   fatal true
+  default_formula 'mysql'
 
   satisfy { which 'mysql_config' }
 
@@ -40,6 +41,7 @@ end
 
 class PostgresqlDependency < Requirement
   fatal true
+  default_formula 'postgresql'
 
   satisfy { which 'pg_config' }
 
@@ -93,7 +95,7 @@ class ArchRequirement < Requirement
   fatal true
 
   def initialize(arch)
-    @arch = arch
+    @arch = arch.pop
     super
   end
 
@@ -110,6 +112,7 @@ end
 
 class MercurialDependency < Requirement
   fatal true
+  default_formula 'mercurial'
 
   satisfy { which('hg') }
 

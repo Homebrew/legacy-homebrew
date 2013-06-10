@@ -2,9 +2,12 @@ require 'formula'
 
 class Lftp < Formula
   homepage 'http://lftp.yar.ru/'
-  url 'http://ftp.yar.ru/pub/source/lftp/lftp-4.4.5.tar.bz2'
-  mirror 'ftp://ftp.cs.tu-berlin.de/pub/net/ftp/lftp/lftp-4.4.5.tar.bz2'
-  sha1 'b985c5985b6663703d4cd815c27dc7e74103c975'
+  url 'http://ftp.yar.ru/pub/source/lftp/lftp-4.4.8.tar.bz2'
+  mirror 'ftp://ftp.cs.tu-berlin.de/pub/net/ftp/lftp/lftp-4.4.8.tar.bz2'
+  sha1 'c825849d90b8132ed43ea5b73fdbb6a63f3e44de'
+
+  # https://github.com/mxcl/homebrew/issues/18749
+  env :std
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'

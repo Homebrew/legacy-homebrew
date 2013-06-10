@@ -1,13 +1,15 @@
 require 'formula'
 
 class Bup < Formula
-  homepage 'https://github.com/apenwarr/bup'
-  url 'https://github.com/apenwarr/bup/archive/bup-0.25-rc1.tar.gz'
+  homepage 'https://github.com/bup/bup'
+  url 'https://github.com/bup/bup/archive/bup-0.25-rc1.tar.gz'
   sha1 'b88bd38d6f00a646faf0bd1f561595ebc0e55b30'
 
-  head 'https://github.com/apenwarr/bup.git', :branch => 'master'
+  head 'https://github.com/bup/bup.git', :branch => 'master'
 
   option "run-tests", "Run unit tests after compilation"
+
+  depends_on :python
 
   # patch to make the `--prefix` parameter work
   # found at https://github.com/apenwarr/bup/pull/5
@@ -16,9 +18,11 @@ class Bup < Formula
   end
 
   def install
-    ENV['PATH'] = '/usr/bin:' + ENV['PATH'] # make sure we Sytem Python
-    system "./configure", "--prefix=#{prefix}"
-    system "make"
+    python do
+      ohai ENV['PATH']
+      system "./configure", "--prefix=#{prefix}"
+      system "make"
+    end
     system "make test" if build.include? "run-tests"
     system "make install"
   end

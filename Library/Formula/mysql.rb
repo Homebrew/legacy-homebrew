@@ -42,6 +42,12 @@ class Mysql < Formula
   end
 
   def install
+    # Don't hard-code the libtool path. See:
+    # https://github.com/mxcl/homebrew/issues/20185
+    inreplace "cmake/libutils.cmake",
+      "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
+      "COMMAND libtool -static -o ${TARGET_LOCATION}"
+
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
@@ -144,8 +150,11 @@ class Mysql < Formula
       <true/>
       <key>Label</key>
       <string>#{plist_name}</string>
-      <key>Program</key>
-      <string>#{opt_prefix}/bin/mysqld_safe</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/bin/mysqld_safe</string>
+        <string>--bind-address=127.0.0.1</string>
+      </array>
       <key>RunAtLoad</key>
       <true/>
       <key>WorkingDirectory</key>

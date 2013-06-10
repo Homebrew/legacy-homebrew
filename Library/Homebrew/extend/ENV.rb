@@ -1,3 +1,5 @@
+require 'hardware'
+
 module HomebrewEnvExtension
   # -w: keep signal to noise high
   SAFE_CFLAGS_FLAGS = "-w -pipe"
@@ -326,7 +328,7 @@ module HomebrewEnvExtension
     append flags, xarch unless xarch.empty?
 
     if ARGV.build_bottle?
-      append flags, '-mtune=generic'
+      append flags, Hardware::CPU.optimization_flags[Hardware.oldest_cpu]
     else
       # Don't set -msse3 and older flags because -march does that for us
       append flags, map.fetch(Hardware::CPU.family, default)
@@ -372,6 +374,13 @@ module HomebrewEnvExtension
     else
       Hardware.processor_count
     end
+  end
+
+  # ld64 is a newer linker provided for Xcode 2.5
+  def ld64
+    ld64 = Formula.factory('ld64')
+    self['LD'] = ld64.bin/'ld'
+    append "LDFLAGS", "-B#{ld64.bin.to_s+"/"}"
   end
 end
 
@@ -438,6 +447,8 @@ class << ENV
   def userpaths!
     paths = ORIGINAL_PATHS.map { |p| p.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
     self['PATH'] = paths.unshift(*self['PATH'].split(":")).uniq.join(":")
+    # XXX hot fix to prefer brewed stuff (e.g. python) over /usr/bin.
+    prepend 'PATH', HOMEBREW_PREFIX/'bin', ':'
   end
 
   def with_build_environment
@@ -468,7 +479,7 @@ class << ENV
         flags_to_set.each {|key| self[key] = cflags}
 
         # Ensure we use architecture optimizations for GCC 4.2.x
-        set_cpu_flags flags_to_set, 'core2 -msse4',
+        set_cpu_flags flags_to_set, '-march=core2 -msse4',
           Hardware::CPU.optimization_flags
       elsif not self['FCFLAGS'] or self['FFLAGS']
         opoo <<-EOS.undent
@@ -489,7 +500,7 @@ class << ENV
 
       fc_flag_vars.each {|key| self[key] = cflags}
       # Ensure we use architecture optimizations for GCC 4.2.x
-      set_cpu_flags fc_flag_vars, 'core2 -msse4',
+      set_cpu_flags fc_flag_vars, '-march=core2 -msse4',
         Hardware::CPU.optimization_flags
 
     else

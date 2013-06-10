@@ -2,8 +2,8 @@ require 'formula'
 
 class Librasterlite < Formula
   homepage 'https://www.gaia-gis.it/fossil/librasterlite/index'
-  url 'http://www.gaia-gis.it/gaia-sins/librasterlite-sources/librasterlite-1.1e.tar.gz'
-  sha1 'ac6d15e20aa02553b6a37cf36ebbea4b0c45a881'
+  url 'http://www.gaia-gis.it/gaia-sins/librasterlite-sources/librasterlite-1.1g.tar.gz'
+  sha1 '87f0abab90600db64a7d468343163e760769f0c7'
 
   depends_on "pkg-config" => :build
   depends_on :libpng

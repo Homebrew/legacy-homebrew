@@ -2,15 +2,19 @@ require 'formula'
 
 class Libmagic < Formula
   homepage 'http://www.darwinsys.com/file/'
-  url 'ftp://ftp.astron.com/pub/file/file-5.13.tar.gz'
-  mirror 'http://fossies.org/unix/misc/file-5.13.tar.gz'
-  sha1 '927651df90ead6b3e036e243109137c7d42c4fb6'
+  url 'ftp://ftp.astron.com/pub/file/file-5.14.tar.gz'
+  mirror 'http://fossies.org/unix/misc/file-5.14.tar.gz'
+  sha1 '064c8f17a5f7ae1e336a9285131e046d3b2d04d7'
+
+  option :universal
 
   # Fixed upstream, should be in next release
   # See http://bugs.gw.com/view.php?id=230
   def patches; DATA; end if MacOS.version < :lion
 
   def install
+    ENV.universal_binary if build.universal?
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-fsect-man5"

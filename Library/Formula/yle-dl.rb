@@ -8,6 +8,7 @@ class YleDl < Formula
   head 'https://github.com/aajanki/yle-dl.git'
 
   depends_on 'rtmpdump'
+  depends_on :python  # use python because of pycrypto
   depends_on LanguageModuleDependency.new :python, 'pycrypto', 'Crypto'
 
   def install
@@ -15,6 +16,7 @@ class YleDl < Formula
   end
 
   test do
-    raise if (`#{bin}/yle-dl --help 2>&1` =~ /rtmpdump: This program dumps the media content streamed over RTMP/).nil?
+    assert_match /rtmpdump: This program dumps the media content streamed over RTMP/,
+      `#{bin}/yle-dl --help 2>&1`.strip
   end
 end

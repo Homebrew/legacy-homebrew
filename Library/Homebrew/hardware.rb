@@ -1,5 +1,3 @@
-require 'hardware_compat'
-
 class Hardware
   module CPU extend self
     def type
@@ -45,6 +43,18 @@ class Hardware
     when 4 then 'quad'
     else
       Hardware.processor_count
+    end
+  end
+
+  def self.oldest_cpu
+    if Hardware::CPU.type == :intel
+      if Hardware::CPU.is_64_bit?
+        :core2
+      else
+        :core
+      end
+    else
+      Hardware::CPU.family
     end
   end
 end

@@ -2,9 +2,9 @@ require 'formula'
 
 class Go < Formula
   homepage 'http://golang.org'
-  url 'http://go.googlecode.com/files/go1.0.3.src.tar.gz'
-  version '1.0.3'
-  sha1 '1a67293c10d6c06c633c078a7ca67e98c8b58471'
+  url 'https://go.googlecode.com/files/go1.1.src.tar.gz'
+  version '1.1'
+  sha1 'a464704ebbbdd552a39b5f9429b059c117d165b3'
   head 'https://go.googlecode.com/hg/'
 
   skip_clean 'bin'
@@ -12,22 +12,14 @@ class Go < Formula
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
 
-  devel do
-    url 'https://go.googlecode.com/files/go1.1rc1.src.tar.gz'
-    version '1.1rc1'
-    sha1 'c999c36e7bb5c9ef05d309b0bb4275feb62c44e3'
-  end
-
-  unless build.stable?
-    fails_with :clang do
-      cause "clang: error: no such file or directory: 'libgcc.a'"
-    end
+  fails_with :clang do
+    cause "clang: error: no such file or directory: 'libgcc.a'"
   end
 
   def install
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
-    zsh_completion.install 'misc/zsh/go' => '_go'
+    zsh_completion.install 'misc/zsh/go' => 'go'
 
     if build.include? 'cross-compile-all'
       targets = [
@@ -82,15 +74,38 @@ class Go < Formula
     Pathname.new('pkg/obj').rmtree
 
     # Don't install header files; they aren't necessary and can
-    # cause problems with other builds. See:
+    # cause problems with other builds.
+    # See:
     # http://trac.macports.org/ticket/30203
     # http://code.google.com/p/go/issues/detail?id=2407
     prefix.install(Dir['*'] - ['include'])
   end
 
+  def caveats; <<-EOS.undent
+    The go get command no longer allows $GOROOT as
+    the default destination in Go 1.1 when downloading package source.
+    To use the go get command, a valid $GOPATH is now required.
+
+    As a result of the previous change, the go get command will also fail
+    when $GOPATH and $GOROOT are set to the same value.
+
+    More information here: http://golang.org/doc/code.html#GOPATH
+    EOS
+  end
+
   test do
-    cd "#{prefix}/src" do
-      system "./run.bash", "--no-rebuild"
-    end
+    (testpath/'hello.go').write <<-EOS.undent
+    package main
+
+    import "fmt"
+
+    func main() {
+        fmt.Println("Hello World")
+    }
+    EOS
+    # Run go vet check for no errors then run the program.
+    # This is a a bare minimum of go working as it uses vet, build, and run.
+    assert_empty `#{bin}/go vet hello.go`
+    assert_equal "Hello World\n", `#{bin}/go run hello.go`
   end
 end

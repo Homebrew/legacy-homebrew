@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "April 2013" "Homebrew" "brew"
+.TH "BREW" "1" "May 2013" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -293,8 +293,8 @@ If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR i
 Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
 .
 .TP
-\fBsearch \-\-macports\fR|\fB\-\-fink\fR \fItext\fR
-Search for \fItext\fR on the MacPorts or Fink package search page\.
+\fBsearch \-\-macports\fR|\fB\-\-fink\fR|\fB\-\-debian\fR \fItext\fR
+Search for \fItext\fR in MacPorts, Fink or Debian\'s package list\.
 .
 .TP
 \fBsh [\-\-env=std]\fR
@@ -498,6 +498,10 @@ If set, Homebrew will use this editor when editing a single formula, or several 
 .
 .IP
 \fINOTE\fR: \fBbrew edit\fR will open all of Homebrew as discontinuous files and directories\. TextMate can handle this correctly in project mode, but many editors will do strange things in this case\.
+.
+.TP
+HOMEBREW_GITHUB_API_TOKEN
+A personal GitHub API Access token, which you can create at \fIhttps://github\.com/settings/applications\fR\. If set, GitHub will allow you a greater number of API requests\. See \fIhttp://developer\.github\.com/v3/#rate\-limiting\fR for more information\. Homebrew uses the GitHub API for features such as \fBbrew search\fR\.
 .
 .TP
 HOMEBREW_KEEP_INFO
