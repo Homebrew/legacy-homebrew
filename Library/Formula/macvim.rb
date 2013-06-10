@@ -14,7 +14,7 @@ class Macvim < Formula
   depends_on 'cscope' => :recommended
   depends_on 'lua' => :optional
   depends_on :python => :recommended
-  depends_on :python3 => :optional # Help us! :python3 in MacVim makes the window disappear!
+  # Help us! :python3 in MacVim makes the window disappear, so only 2.x bindings!
 
   depends_on :xcode # For xcodebuild.
 
@@ -51,7 +51,16 @@ class Macvim < Formula
     end
 
     args << "--enable-pythoninterp=yes" if build.with? 'python'
-    args << "--enable-python3interp=yes" if build.with? "python3"
+
+    # MacVim seems to link Python by `-framework Python` (instead of
+    # `python-config --ldflags`) and so we have to pass the -F to point to
+    # where the Python.framework is located, we want it to use!
+    # Also the -L is needed for the correct linking. This is a mess but we have
+    # to wait until MacVim is really able to link against different Python's
+    # on the Mac. Note configure detects brewed python correctly, but that
+    # is ignored.
+    # See https://github.com/mxcl/homebrew/issues/17908
+    ENV.prepend 'LDFLAGS', "-L#{python2.libdir} -F#{python2.framework}" if python.brewed?
 
     unless MacOS::CLT.installed?
       # On Xcode-only systems:
