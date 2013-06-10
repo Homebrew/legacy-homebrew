@@ -24,8 +24,8 @@ end
 
 class MysqlConnectorOdbc < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.1/en/connector-odbc.html'
-  url 'http://mysql.mirror.iweb.ca/Downloads/Connector-ODBC/5.1/mysql-connector-odbc-5.1.11-src.tar.gz'
-  sha1 '46aeaf721eddedaed239c4a688faee1990dcec62'
+  url 'http://mysql.mirror.iweb.ca/Downloads/Connector-ODBC/5.1/mysql-connector-odbc-5.1.12-src.tar.gz'
+  sha1 '6ee162de8a277cdb017c5c8eee6284601837e7da'
 
   # Won't compile against mysql-connector-c, as the C connector exports an API version
   # that causes issues with how "my_free" is declared
@@ -41,9 +41,6 @@ class MysqlConnectorOdbc < Formula
     ENV['MYSQL_DIR'] = HOMEBREW_PREFIX
     system 'cmake', ".", *args
     fix_goofy_link_file_error
-    inreplace "driver/utility.c",
-        "max(cur_len, max_len);",
-        "myodbc_max(cur_len, max_len);"
     system 'make install'
   end
 
