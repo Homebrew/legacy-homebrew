@@ -6,12 +6,13 @@ class Flac2Mp3 < Formula
 end
 
 class Flac < Formula
-  homepage 'http://flac.sourceforge.net'
-  url 'http://downloads.sourceforge.net/sourceforge/flac/flac-1.2.1.tar.gz'
-  sha1 'bd54354900181b59db3089347cc84ad81e410b38'
+  homepage 'http://xiph.org/flac/'
+  url 'http://downloads.xiph.org/releases/flac/flac-1.3.0.tar.xz'
+  sha1 'a136e5748f8fb1e6c524c75000a765fc63bb7b1b'
 
   option :universal
 
+  depends_on 'xz' => :build
   depends_on 'lame'
   depends_on 'libogg' => :optional
 
@@ -28,6 +29,7 @@ class Flac < Formula
                           "--disable-debug",
                           "--disable-asm-optimizations",
                           "--enable-sse",
+                          "--enable-static",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     ENV['OBJ_FORMAT']='macho'
