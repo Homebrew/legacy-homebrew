@@ -12,6 +12,7 @@ class CrosstoolNg < Formula
   depends_on 'gawk'
   depends_on 'binutils'
   depends_on 'libelf'
+  depends_on 'grep' => '--default-names'
 
   env :std
 
