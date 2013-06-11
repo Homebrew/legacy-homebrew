@@ -12,7 +12,6 @@ class Glfw < Formula
 
   option :universal
 
-  depends_on 'make' => :build
   if build.devel?
     depends_on 'cmake' => :build
   end
