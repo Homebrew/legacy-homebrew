@@ -1,5 +1,8 @@
 require 'formula'
 
+# Git 1.8.3 has a serious issue with .gitignore files being parsed incorrectly
+# on OS X. This issue has been fixed upstream. Waiting for 1.8.3.1 to update.
+
 class GitManuals < Formula
   url 'http://git-core.googlecode.com/files/git-manpages-1.8.2.3.tar.gz'
   sha1 'eb04a2540ff9998e0887a4b862641ac1db723f3e'
@@ -30,18 +33,18 @@ class Git < Formula
     ENV['NO_DARWIN_PORTS'] = '1'
     ENV['V'] = '1' # build verbosely
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
-
-    ENV['PERL_PATH'] = which 'perl' # workaround for users of perlbrew
     ENV['PYTHON_PATH'] = python.binary if python
+    ENV['PERL_PATH'] = which 'perl'
 
-    # Clean XCode 4.x installs don't include Perl MakeMaker
-    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.version >= :lion
+    unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'
+      ENV['NO_PERL_MAKEMAKER'] = '1'
+    end
 
     ENV['BLK_SHA1'] = '1' if build.with? 'blk-sha1'
 
     if build.with? 'pcre'
       ENV['USE_LIBPCRE'] = '1'
-      ENV['LIBPCREDIR'] = HOMEBREW_PREFIX
+      ENV['LIBPCREDIR'] = Formula.factory('pcre').opt_prefix
     end
 
     ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
@@ -97,7 +100,7 @@ class Git < Formula
 
   test do
     HOMEBREW_REPOSITORY.cd do
-      `#{bin}/git ls-files -- bin`.chomp == 'bin/brew'
+      assert_equal 'bin/brew', `#{bin}/git ls-files -- bin`.strip
     end
   end
 end

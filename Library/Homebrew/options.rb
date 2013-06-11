@@ -106,7 +106,7 @@ class Options
   alias_method :to_ary, :to_a
 
   def inspect
-    "#<#{self.class}: #{@options.map(&:inspect).join(", ")}>"
+    "#<#{self.class}: #{to_a.inspect}>"
   end
 
   def self.coerce(arg)

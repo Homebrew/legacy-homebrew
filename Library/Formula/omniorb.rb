@@ -20,14 +20,13 @@ class Omniorb < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}"]
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
 
     python do
       OmniorbBindings.new.brew do
-        system "./configure", *args
+        system "./configure", "--prefix=#{prefix}"
         system "make install"
       end
     end

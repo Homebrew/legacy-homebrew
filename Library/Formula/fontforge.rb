@@ -7,7 +7,8 @@ class Fontforge < Formula
 
   head 'https://github.com/fontforge/fontforge.git'
 
-  option 'with-gif',       'Build with GIF support'
+  option 'with-gif', 'Build with GIF support'
+  option 'with-x', 'Build with X'
 
   depends_on 'gettext'
   depends_on :python => :recommended
@@ -15,7 +16,7 @@ class Fontforge < Formula
   depends_on :libpng    => :recommended
   depends_on 'jpeg'     => :recommended
   depends_on 'libtiff'  => :recommended
-  depends_on :x11 => :recommended
+  depends_on :x11 if build.with? 'x'
   depends_on 'giflib' if build.with? 'gif'
   depends_on 'cairo' => :optional
   depends_on 'pango' => :optional

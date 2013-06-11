@@ -111,6 +111,16 @@ class DependencyCollectorTests < Test::Unit::TestCase
     assert_equal X11Dependency::Proxy.new(:libpng), @d.build(:libpng)
   end
 
+  def test_ld64_dep_pre_leopard
+    MacOS.stubs(:version).returns(MacOS::Version.new(10.4))
+    assert_equal LD64Dependency.new, @d.build(:ld64)
+  end
+
+  def test_ld64_dep_leopard_or_newer
+    MacOS.stubs(:version).returns(MacOS::Version.new(10.5))
+    assert_nil @d.build(:ld64)
+  end
+
   def test_raises_typeerror_for_unknown_classes
     assert_raises(TypeError) { @d.add(Class.new) }
   end

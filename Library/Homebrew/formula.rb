@@ -45,7 +45,7 @@ class Formula
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
-    @downloader = download_strategy.new(name, @active_spec)
+    @downloader = download_strategy.new(name, active_spec)
 
     # Combine DSL `option` and `def options`
     options.each do |opt, desc|
@@ -307,7 +307,7 @@ class Formula
 
   def python(options={:allowed_major_versions => [2, 3]}, &block)
     require 'python_helper'
-    self.instance_eval{ python_helper(options, &block) }
+    python_helper(options, &block)
   end
 
   # Explicitly only execute the block for 2.x (if a python 2.x is available)
@@ -491,7 +491,7 @@ class Formula
   end
 
   def conflicts
-    requirements.grep(ConflictRequirement)
+    self.class.conflicts
   end
 
   # Returns a list of Dependency objects in an installable order, which
@@ -519,7 +519,7 @@ class Formula
       "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
       "keg_only" => keg_only?,
       "dependencies" => deps.map {|dep| dep.to_s},
-      "conflicts_with" => conflicts.map {|c| c.formula},
+      "conflicts_with" => conflicts.map(&:name),
       "options" => [],
       "caveats" => caveats
     }
@@ -546,6 +546,35 @@ class Formula
 
     hsh
 
+  end
+
+  # For brew-fetch and others.
+  def fetch
+    # Ensure the cache exists
+    HOMEBREW_CACHE.mkpath
+    downloader.fetch
+    cached_download
+  end
+
+  # For FormulaInstaller.
+  def verify_download_integrity fn
+    active_spec.verify_download_integrity(fn)
+  end
+
+  def test
+    require 'test/unit/assertions'
+    extend(Test::Unit::Assertions)
+    ret = nil
+    mktemp do
+      @testpath = Pathname.pwd
+      ret = instance_eval(&self.class.test)
+      @testpath = nil
+    end
+    ret
+  end
+
+  def test_defined?
+    not self.class.instance_variable_get(:@test_defined).nil?
   end
 
   protected
@@ -613,35 +642,6 @@ class Formula
     end if removed_ENV_variables
   end
 
-  public
-
-  # For brew-fetch and others.
-  def fetch
-    # Ensure the cache exists
-    HOMEBREW_CACHE.mkpath
-    downloader.fetch
-    cached_download
-  end
-
-  # For FormulaInstaller.
-  def verify_download_integrity fn
-    active_spec.verify_download_integrity(fn)
-  end
-
-  def test
-    ret = nil
-    mktemp do
-      @testpath = Pathname.pwd
-      ret = instance_eval(&self.class.test)
-      @testpath = nil
-    end
-    ret
-  end
-
-  def test_defined?
-    not self.class.instance_variable_get(:@test_defined).nil?
-  end
-
   private
 
   def stage
@@ -679,24 +679,14 @@ class Formula
   def self.method_added method
     case method
     when :brew
-      raise "You cannot override Formula#brew"
+      raise "You cannot override Formula#brew in class #{name}"
     when :test
       @test_defined = true
     end
   end
 
+  # The methods below define the formula DSL.
   class << self
-    # The methods below define the formula DSL.
-
-    def self.attr_rw(*attrs)
-      attrs.each do |attr|
-        class_eval <<-EOS, __FILE__, __LINE__ + 1
-          def #{attr}(val=nil)
-            val.nil? ? @#{attr} : @#{attr} = val
-          end
-        EOS
-      end
-    end
 
     attr_rw :homepage, :keg_only_reason, :skip_clean_all, :cc_failures
     attr_rw :plist_startup, :plist_manual
@@ -774,8 +764,12 @@ class Formula
       @plist_manual = options[:manual]
     end
 
-    def conflicts_with formula, opts={}
-      dependencies.add ConflictRequirement.new(formula, name, opts)
+    def conflicts
+      @conflicts ||= []
+    end
+
+    def conflicts_with name, opts={}
+      conflicts << FormulaConflict.new(name, opts[:because])
     end
 
     def skip_clean *paths

@@ -12,13 +12,13 @@ class RabbitmqC < Formula
 
   head 'https://github.com/alanxz/rabbitmq-c.git'
 
+  option :universal
+
   depends_on :autoconf
   depends_on :automake
   depends_on :libtool
   depends_on 'rabbitmq'
   depends_on 'simplejson' => :python if MacOS.version == :leopard
-
-  option :universal
 
   def install
     ENV.universal_binary if build.universal?

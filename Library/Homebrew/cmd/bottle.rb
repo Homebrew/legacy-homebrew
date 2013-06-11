@@ -3,9 +3,34 @@ require 'bottles'
 require 'tab'
 require 'keg'
 
+class BottleMerger < Formula
+  # This provides a URL and Version which are the only needed properties of
+  # a Formula. This object is used to access the Formula bottle DSL to merge
+  # multiple outputs of `brew bottle`.
+  url '1'
+end
+
 module Homebrew extend self
   def keg_contains string, keg
     quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
+  end
+
+  def bottle_output bottle
+    puts "bottle do"
+    prefix = bottle.prefix.to_s
+    puts "  prefix '#{prefix}'" if prefix != '/usr/local'
+    cellar = bottle.cellar.to_s
+    cellar = ":#{bottle.cellar}" if bottle.cellar.is_a? Symbol
+    puts "  cellar '#{cellar}'" if bottle.cellar.to_s != '/usr/local/Cellar'
+    puts "  revision #{bottle.revision}" if bottle.revision > 0
+    Checksum::TYPES.each do |checksum_type|
+      checksum_cat = bottle.send checksum_type
+      next unless checksum_cat
+      checksum_cat.each do |cat, checksum|
+        puts "  #{checksum_type} '#{checksum}' => :#{cat}"
+      end
+    end
+    puts "end"
   end
 
   def bottle_formula f
@@ -49,30 +74,29 @@ module Homebrew extend self
         keg.relocate_install_names tmp_prefix, prefix, tmp_cellar, cellar
       end
 
-      prefix = cellar = nil
-      if relocatable
-        cellar = ':any'
-      else
-        if HOMEBREW_PREFIX.to_s != '/usr/local'
-          prefix = "'#{HOMEBREW_PREFIX}"
-        end
-        if HOMEBREW_CELLAR.to_s != '/usr/local/Cellar'
-          cellar = "'#{HOMEBREW_CELLAR}'"
-        end
-      end
+      bottle = Bottle.new
+      bottle.prefix HOMEBREW_PREFIX
+      bottle.cellar relocatable ? :any : HOMEBREW_CELLAR
+      bottle.revision bottle_revision
+      bottle.sha1 sha1 => bottle_tag
 
       puts "./#{filename}"
-      puts "bottle do"
-      puts "  prefix #{prefix}" if prefix
-      puts "  cellar #{cellar}" if cellar
-      puts "  revision #{bottle_revision}" if bottle_revision > 0
-      puts "  sha1 '#{sha1}' => :#{MacOS.cat}"
-      puts "end"
+      bottle_output bottle
     end
   end
 
   def bottle
-    ARGV.formulae.each do|f|
+    if ARGV.include? '--merge'
+      ARGV.named.each do |argument|
+        bottle_block = IO.read(argument)
+        BottleMerger.class_eval bottle_block
+      end
+      bottle = BottleMerger.new.bottle
+      bottle_output bottle if bottle
+      exit 0
+    end
+
+    ARGV.formulae.each do |f|
       bottle_formula Formula.factory f
     end
   end

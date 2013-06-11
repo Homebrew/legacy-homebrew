@@ -20,7 +20,7 @@ class Mp3fs < Formula
   test do
     require 'open3'
     Open3.popen3("#{bin}/mp3fs", "-V") do |_, stdout, _|
-      /MP3FS version #{Regexp.escape(version)}/ === stdout.read
+      assert_match /MP3FS version #{Regexp.escape(version)}/, stdout.read
     end
   end
 end

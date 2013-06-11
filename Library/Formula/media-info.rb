@@ -7,6 +7,8 @@ class MediaInfo < Formula
   sha1 '76be91f76729e025ba13954f9726b6ec81c19a85'
 
   depends_on 'pkg-config' => :build
+  # fails to build against Leopard's older libcurl
+  depends_on 'curl' if MacOS.version < :snow_leopard
 
   def install
     cd 'ZenLib/Project/GNU/Library' do
