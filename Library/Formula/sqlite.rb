@@ -42,7 +42,7 @@ class Sqlite < Formula
     system "make install"
 
     if build.with? "functions"
-      SqliteFunctions.new.brew { mv 'extension-functions.c?get=25', buildpath/'extension-functions.c' }
+      SqliteFunctions.new.brew { mv 'extension-functions.c', buildpath/'extension-functions.c' }
       system ENV.cc, "-fno-common",
                      "-dynamiclib",
                      "extension-functions.c",
