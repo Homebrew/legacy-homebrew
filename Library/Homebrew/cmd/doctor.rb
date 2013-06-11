@@ -243,6 +243,14 @@ def check_for_osx_gcc_installer
   end
 end
 
+def check_for_unsupported_osx
+  if MacOS.version > 10.8 then <<-EOS.undent
+    You are using Mac OS X #{MacOS.version}.
+    We do not yet provide support for this (unreleased) version.
+    EOS
+  end
+end
+
 def check_for_stray_developer_directory
   # if the uninstaller script isn't there, it's a good guess neither are
   # any troublesome leftover Xcode files
