@@ -276,7 +276,7 @@ class Version
     return m.captures.first unless m.nil?
 
     # e.g. http://www.openssl.org/source/openssl-0.9.8s.tar.gz
-    m = /-([^-]+)/.match(stem)
+    m = /-v?([^-]+)/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. astyle_1.23_macosx.tar.gz
