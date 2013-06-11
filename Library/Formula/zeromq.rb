@@ -49,9 +49,6 @@ class Zeromq < Formula
     you may need to do:
 
         ARCHFLAGS="-arch x86_64" gem install zmq -- --with-zmq-dir=#{opt_prefix}
-
-    If you want to build the Java bindings from https://github.com/zeromq/jzmq
-    you will need the Java Developer Package from http://connect.apple.com/
     EOS
   end
 end
