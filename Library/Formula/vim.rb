@@ -40,7 +40,11 @@ class Vim < Formula
     opts = language_opts
     opts << "--disable-nls" if build.include? "disable-nls"
 
-    ENV.prepend 'LDFLAGS', "-F#{python.framework}" if python && python.brewed?
+    # Avoid that vim always links System's Python even if configure tells us
+    # it has found a brewed Python. Verify with `otool -L`.
+    if python && python.brewed?
+      ENV.prepend 'LDFLAGS', "-F#{python.framework}"
+    end
 
     # XXX: Please do not submit a pull request that hardcodes the path
     # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.
