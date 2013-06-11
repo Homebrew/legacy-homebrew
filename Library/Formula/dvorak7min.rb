@@ -7,6 +7,7 @@ class Dvorak7min < Formula
   sha1 'e531ce2e6c64a4867f5bb7e03d64f8fbb0ce8707'
 
   def install
+    system "make clean"
     system "make"
     system "make INSTALL=#{prefix}/bin install"
   end
