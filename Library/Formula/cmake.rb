@@ -22,8 +22,8 @@ end
 
 class Cmake < Formula
   homepage 'http://www.cmake.org/'
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.11.tar.gz'
-  sha1 '7b7961402ec71d84052734da1bed2b28e6a2c4af'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.11.1.tar.gz'
+  sha1 '0ee6702155dcef6aa3e123394378ec66ea700a14'
 
   bottle do
     sha1 '26bf7589947785bd4e378acb6f12a03ba5ba5ce1' => :mountain_lion
