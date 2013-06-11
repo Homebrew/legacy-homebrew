@@ -4,6 +4,7 @@ module MacOS
   class Version < ::Version
     def <=>(other)
       v = case other
+          when :mavericks     then 10.9
           when :mountain_lion then 10.8
           when :lion          then 10.7
           when :snow_leopard  then 10.6

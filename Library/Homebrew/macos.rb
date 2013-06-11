@@ -11,6 +11,7 @@ module MacOS extend self
 
   def cat
     case MacOS.version
+    when 10.9 then :mavericks
     when 10.8 then :mountain_lion
     when 10.7 then :lion
     when 10.6 then :snow_leopard
@@ -206,6 +207,7 @@ module MacOS extend self
     "4.6"   => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "4.6.1" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "4.6.2" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "5.0"   => { :llvm_build => 2336, :clang => "5.0", :clang_build => 500 },
   }
 
   def compilers_standard?
