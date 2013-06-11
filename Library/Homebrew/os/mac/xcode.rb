@@ -129,7 +129,7 @@ module MacOS::Xcode extend self
       when 41      then "4.5"
       when 42      then "4.6"
       when 50      then "5.0"
-      else "5.0"
+      else "4.6"
       end
     end
   end
