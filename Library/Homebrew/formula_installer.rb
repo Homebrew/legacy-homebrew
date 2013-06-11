@@ -268,7 +268,7 @@ class FormulaInstaller
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
     puts
-
+  ensure
     unlock if hold_locks?
   end
 
