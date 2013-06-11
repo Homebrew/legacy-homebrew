@@ -16,6 +16,14 @@ class Serf < Formula
 
   def install
     ENV.universal_binary if build.universal?
+    if MacOS.version > 10.8
+      # Fixes a bad path returned by `apr-1-config --cpp` on ML.
+      # https://github.com/mxcl/homebrew/issues/13586
+      ENV['CPP'] = "#{ENV.cc} -E"
+      # Use HB libtool not the one from apr that also has a bad path.
+      ENV['APR_LIBTOOL'] = 'glibtool'
+    end
+
     system "./configure", "--prefix=#{prefix}",
                           "--with-apr=#{apr_bin}"
     system "make install"
