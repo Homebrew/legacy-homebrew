@@ -232,6 +232,25 @@ def __check_clt_up_to_date
   end
 end
 
+def check_for_osx_gcc_installer
+  if (MacOS.version < 10.7 || MacOS::Xcode.version < "4.1") && \
+    MacOS.clang_version == "2.1" then <<-EOS.undent
+    You have osx-gcc-installer installed.
+    Homebrew doesn't support osx-gcc-installer, and it is known to cause
+    some builds to fail.
+    Please install Xcode #{MacOS::Xcode.latest_version}.
+    EOS
+  end
+end
+
+def check_for_unsupported_osx
+  if MacOS.version > 10.8 then <<-EOS.undent
+    You are using Mac OS X #{MacOS.version}.
+    We do not yet provide support for this (unreleased) version.
+    EOS
+  end
+end
+
 def check_for_stray_developer_directory
   # if the uninstaller script isn't there, it's a good guess neither are
   # any troublesome leftover Xcode files
