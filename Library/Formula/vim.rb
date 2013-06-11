@@ -12,21 +12,19 @@ class Vim < Formula
   # PATH as the user has set it right now.
   env :std
 
-  depends_on :hg => :build if build.head?
-
-  LANGUAGES         = %w(lua mzscheme perl python python3 tcl ruby)
+  LANGUAGES         = %w(lua mzscheme perl python tcl ruby)
   DEFAULT_LANGUAGES = %w(ruby python)
 
   option "override-system-vi", "Override system vi"
+  option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
+
   LANGUAGES.each do |language|
     option "with-#{language}", "Build vim with #{language} support"
     option "without-#{language}", "Build vim without #{language} support"
   end
 
-  depends_on :python unless build.without? 'python'
-  depends_on :python3 if build.with? 'python3'
-
-  option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
+  depends_on :hg => :build if build.head?
+  depends_on :python => :recommended
 
   def install
     ENV['LUA_PREFIX'] = HOMEBREW_PREFIX
@@ -41,6 +39,8 @@ class Vim < Formula
 
     opts = language_opts
     opts << "--disable-nls" if build.include? "disable-nls"
+
+    ENV.prepend 'LDFLAGS', "-F#{python.framework}" if python && python.brewed?
 
     # XXX: Please do not submit a pull request that hardcodes the path
     # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.

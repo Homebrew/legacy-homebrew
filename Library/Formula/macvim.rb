@@ -60,7 +60,7 @@ class Macvim < Formula
     # on the Mac. Note configure detects brewed python correctly, but that
     # is ignored.
     # See https://github.com/mxcl/homebrew/issues/17908
-    ENV.prepend 'LDFLAGS', "-L#{python2.libdir} -F#{python2.framework}" if python.brewed?
+    ENV.prepend 'LDFLAGS', "-L#{python2.libdir} -F#{python2.framework}" if python && python.brewed?
 
     unless MacOS::CLT.installed?
       # On Xcode-only systems:
