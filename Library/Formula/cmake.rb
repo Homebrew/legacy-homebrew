@@ -26,9 +26,10 @@ class Cmake < Formula
   sha1 '0ee6702155dcef6aa3e123394378ec66ea700a14'
 
   bottle do
-    sha1 '' => :mountain_lion
-    sha1 '' => :lion
-    sha1 '' => :snow_leopard
+    revision 1
+    sha1 'abfa087de1aef0e4e5f5ad5232e3ddabc8e6f24c' => :mountain_lion
+    sha1 'd9492e796d09419a87d1820bfb457a83763e216a' => :lion
+    sha1 'dc4f545e66e3eb16b4ca496fe7425d739e29b40a' => :snow_leopard
   end
 
   depends_on NoExpatFramework
