@@ -58,7 +58,8 @@ module Homebrew extend self
     else
       ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
     end.select do |d|
-      (HOMEBREW_LIBRARY/"PinnedKegs"/d.basename.to_s).exist?
+      keg_pin = (HOMEBREW_LIBRARY/"PinnedKegs"/d.basename.to_s)
+      keg_pin.exist? or keg_pin.symlink?
     end.each do |d|
       puts d.basename
     end
