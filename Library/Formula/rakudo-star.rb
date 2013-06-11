@@ -5,6 +5,8 @@ class RakudoStar < Formula
   url 'http://rakudo.org/downloads/star/rakudo-star-2013.05.tar.gz'
   sha256 '4eeb7116bf432a8c439fc0db53294364fa723ae32659f31547a62fa7cd2e3384'
 
+  conflicts_with 'parrot'
+
   depends_on 'gmp' => :optional
   depends_on 'icu4c' => :optional
   depends_on 'pcre' => :optional
@@ -21,12 +23,5 @@ class RakudoStar < Formula
     system "make install"
     # move the man pages out of the top level into share.
     mv "#{prefix}/man", share
-  end
-
-  def caveats; <<-EOS
-    Rakudo Star comes with its own specific version of Parrot. Installing the
-    Parrot formula along side the Rakudo Star formula will override a number
-    of the binaries (eg. parrot, nqp, winxed, etc.).
-    EOS
   end
 end
