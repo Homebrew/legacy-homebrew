@@ -14,17 +14,17 @@ class Nginx < Formula
 
   env :userpaths
 
-  depends_on 'pcre'
-  # SPDY needs openssl >= 1.0.1 for NPN; see:
-  # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
-  # http://www.openssl.org/news/changelog.html
-  depends_on 'openssl' if build.with? 'spdy'
-
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
   option 'with-debug', 'Compile with support for debug log'
   option 'with-spdy', 'Compile with support for SPDY module'
   option 'with-gunzip', 'Compile with support for gunzip module'
+
+  depends_on 'pcre'
+  # SPDY needs openssl >= 1.0.1 for NPN; see:
+  # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
+  # http://www.openssl.org/news/changelog.html
+  depends_on 'openssl' if build.with? 'spdy'
 
   skip_clean 'logs'
 
