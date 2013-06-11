@@ -15,6 +15,10 @@ class Nginx < Formula
   env :userpaths
 
   depends_on 'pcre'
+  # SPDY needs openssl >= 1.0.1 for NPN; see:
+  # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
+  # http://www.openssl.org/news/changelog.html
+  depends_on 'openssl' if build.with? 'spdy'
 
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
@@ -43,13 +47,22 @@ class Nginx < Formula
   end
 
   def install
+    cc_opt = "-I#{HOMEBREW_PREFIX}/include"
+    ld_opt = "-L#{HOMEBREW_PREFIX}/lib"
+
+    if build.with? 'spdy'
+      openssl_path = Formula.factory("openssl").opt_prefix
+      cc_opt += " -I#{openssl_path}/include"
+      ld_opt += " -L#{openssl_path}/lib"
+    end
+
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
             "--with-ipv6",
             "--sbin-path=#{bin}/nginx",
-            "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
-            "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
+            "--with-cc-opt=#{cc_opt}",
+            "--with-ld-opt=#{ld_opt}",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/run/nginx.lock",
