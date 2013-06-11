@@ -15,12 +15,13 @@ class Nginx < Formula
   env :userpaths
 
   depends_on 'pcre'
+  depends_on 'openssl' if build.with? 'spdy'
 
-  option 'with-passenger', 'Compile with support for Phusion Passenger module'
-  option 'with-webdav', 'Compile with support for WebDAV module'
   option 'with-debug', 'Compile with support for debug log'
-  option 'with-spdy', 'Compile with support for SPDY module'
   option 'with-gunzip', 'Compile with support for gunzip module'
+  option 'with-passenger', 'Compile with support for Phusion Passenger module'
+  option 'with-spdy', 'Compile with support for SPDY module'
+  option 'with-webdav', 'Compile with support for WebDAV module'
 
   skip_clean 'logs'
 
@@ -43,13 +44,22 @@ class Nginx < Formula
   end
 
   def install
+    cc_opt = "-I#{HOMEBREW_PREFIX}/include"
+    ld_opt = "-L#{HOMEBREW_PREFIX}/lib"
+
+    if build.with? 'spdy'
+      openssl_path = Formula.factory("openssl").opt_prefix
+      cc_opt += " -I#{openssl_path}/include"
+      ld_opt += " -L#{openssl_path}/lib"
+    end
+
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
             "--with-ipv6",
             "--sbin-path=#{bin}/nginx",
-            "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
-            "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
+            "--with-cc-opt=#{cc_opt}",
+            "--with-ld-opt=#{ld_opt}",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/run/nginx.lock",
@@ -62,11 +72,11 @@ class Nginx < Formula
             "--with-http_gzip_static_module"
           ]
 
-    args << passenger_config_args if build.include? 'with-passenger'
-    args << "--with-http_dav_module" if build.include? 'with-webdav'
-    args << "--with-debug" if build.include? 'with-debug'
-    args << "--with-http_spdy_module" if build.include? 'with-spdy'
-    args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
+    args << "--with-debug" if build.with? 'debug'
+    args << "--with-http_gunzip_module" if build.with? 'gunzip'
+    args << passenger_config_args if build.with? 'passenger'
+    args << "--with-http_spdy_module" if build.with? 'spdy'
+    args << "--with-http_dav_module" if build.with? 'webdav'
 
     if build.head?
       system "./auto/configure", *args
