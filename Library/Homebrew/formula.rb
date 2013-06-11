@@ -179,6 +179,10 @@ class Formula
   # Can be overridden to run commands on both source and bottle installation.
   def post_install; end
 
+  # Can be overridden to suppress caveats.  This is useful when finalize will
+  # take care of what the caveat would otherwise inform.
+  def suppress_caveats?(fi); false; end
+
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
@@ -744,6 +748,17 @@ class Formula
 
     def dependencies
       @dependencies ||= DependencyCollector.new
+    end
+    
+    def repair_taps
+      require 'cmd/tap'
+      ohai "Repairing Taps..."
+      Homebrew.repair_taps
+    end
+
+    def require_tap tap_name
+      require 'cmd/tap'
+      Homebrew.require_tap(tap_name)
     end
 
     def depends_on dep

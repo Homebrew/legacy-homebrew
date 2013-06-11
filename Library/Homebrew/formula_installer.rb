@@ -219,8 +219,15 @@ class FormulaInstaller
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
-    fi.caveats
+    fi.caveats unless f.suppress_caveats?(fi)
     fi.finish
+
+    # After dependent formula is fully installed, notify containing
+    # formula that this dependent is ready to go. This gives the
+    # containing formula the option to inject some additional steps
+    # in between successful installs of its dependents.
+    finalize_method = "finalize_#{fi.f.to_s.split("/").last.gsub('-', '_').downcase}"
+    f.send(finalize_method, fi) if f.respond_to?(finalize_method)
   ensure
     # restore previous installation state if build failed
     outdated_keg.link if outdated_keg and not dep.installed? rescue nil
