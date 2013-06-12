@@ -27,7 +27,7 @@ module Homebrew extend self
       end
 
       if query
-        $found = search_results.length
+        found = search_results.length
 
         threads = []
         results = []
@@ -42,12 +42,13 @@ module Homebrew extend self
         threads << Thread.new { search_tap "Homebrew", "x11", rx }
 
         threads.each do |t|
-          results << t.value
+          results.concat(t.value)
         end
 
-        results.each { |r| puts_columns r }
+        puts_columns(results)
+        found += results.length
 
-        if $found == 0 and not blacklisted? query
+        if found == 0 and not blacklisted? query
           puts "No formula found for #{query.inspect}. Searching open pull requests..."
           GitHub.find_pull_requests(rx) { |pull| puts pull }
         end
@@ -73,7 +74,6 @@ module Homebrew extend self
         name = File.basename(file, '.rb')
         if file =~ /\.rb$/ and name =~ rx
           results << "#{user}/#{repo}/#{name}"
-          $found += 1
         end
       end
     end
