@@ -19,7 +19,7 @@ class Libxml2 < Formula
     depends_on :libtool
   else
     # 2.9.1 cannot build with Python 2.6: https://github.com/mxcl/homebrew/issues/20249
-    depends_on PythonInstalled.new("2.7") => :recommended
+    depends_on PythonInstalled.new("2.7", :recommended)
   end
 
   fails_with :llvm do
