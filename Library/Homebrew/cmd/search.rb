@@ -26,7 +26,7 @@ module Homebrew extend self
       if not query.to_s.empty? and $stdout.tty? and msg = blacklisted?(query)
         unless search_results.empty?
           puts
-          puts "If you meant `#{query}' precisely:"
+          puts "If you meant #{query.inspect} precisely:"
           puts
         end
         puts msg
@@ -54,7 +54,7 @@ module Homebrew extend self
         results.each { |r| puts_columns r }
 
         if $found == 0 and not blacklisted? query
-          puts "No formula found for \"#{query}\". Searching open pull requests..."
+          puts "No formula found for #{query.inspect}. Searching open pull requests..."
           GitHub.find_pull_requests(rx) { |pull| puts pull }
         end
       end
