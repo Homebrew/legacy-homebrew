@@ -1,7 +1,7 @@
 require 'formula'
 
 class Mpd < Formula
-  homepage 'http://mpd.wikia.com'
+  homepage 'http://www.musicpd.org/'
   url 'http://www.musicpd.org/download/mpd/0.17/mpd-0.17.4.tar.bz2'
   sha1 'e3a16b5d784c3699b151e72cfa58d0ea54a49b13'
 
