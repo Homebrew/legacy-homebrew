@@ -14,11 +14,11 @@ module Homebrew extend self
     else
       query = ARGV.first
       rx = query_regexp(query)
-      search_results = search_formulae rx
-      puts_columns search_results
+      local_results = search_formulae(rx)
+      puts_columns(local_results)
 
       if not query.to_s.empty? and $stdout.tty? and msg = blacklisted?(query)
-        unless search_results.empty?
+        unless local_results.empty?
           puts
           puts "If you meant #{query.inspect} precisely:"
           puts
@@ -27,12 +27,11 @@ module Homebrew extend self
       end
 
       if query
-        found = search_results.length
-        results = search_taps(rx)
-        puts_columns(results)
-        found += results.length
+        tap_results = search_taps(rx)
+        puts_columns(tap_results)
+        count = local_results.length + tap_results.length
 
-        if found == 0 and not blacklisted? query
+        if count == 0 and not blacklisted? query
           puts "No formula found for #{query.inspect}. Searching open pull requests..."
           GitHub.find_pull_requests(rx) { |pull| puts pull }
         end
