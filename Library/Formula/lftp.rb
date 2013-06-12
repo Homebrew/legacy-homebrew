@@ -12,8 +12,15 @@ class Lftp < Formula
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'gnutls'
+  depends_on 'homebrew/dupes/zlib' if  MacOS.version <= :snow_leopard
 
   def install
+    if MacOS.version <= :snow_leopard
+        zlib = Formula.factory('zlib')
+        ENV.append 'CPPFLAGS', "-I#{zlib.opt_prefix}/include"
+        ENV.append 'LDFLAGS', "-L#{zlib.opt_prefix}/lib"
+    end
+
     # Bus error
     ENV.no_optimization if MacOS.version == :leopard
 
