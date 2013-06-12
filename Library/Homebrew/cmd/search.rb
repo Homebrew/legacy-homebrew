@@ -1,6 +1,7 @@
-require "formula"
-require "blacklist"
-require "utils"
+require 'formula'
+require 'blacklist'
+require 'utils'
+require 'vendor/multi_json'
 
 module Homebrew extend self
   def search
@@ -62,7 +63,6 @@ module Homebrew extend self
 
   def search_tap user, repo, rx
     return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
-    require 'vendor/multi_json'
 
     results = []
     GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |f|
