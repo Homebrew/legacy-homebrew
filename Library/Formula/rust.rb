@@ -5,7 +5,7 @@ class Rust < Formula
   url 'http://static.rust-lang.org/dist/rust-0.6.tar.gz'
   sha256 'e11cb529a1e20f27d99033181a9e0e131817136b46d2742f0fa1afa1210053e5'
 
-  head 'https://github.com/mozilla/rust.git'
+  head 'https://github.com/mozilla/rust.git', :branch => 'incoming'
 
   fails_with :clang do
     build 318
