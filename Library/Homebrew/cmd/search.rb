@@ -14,7 +14,7 @@ module Homebrew extend self
     else
       query = ARGV.first
       rx = query_regexp(query)
-      search_results = search_brews rx
+      search_results = search_formulae rx
       puts_columns search_results
 
       if not query.to_s.empty? and $stdout.tty? and msg = blacklisted?(query)
@@ -80,7 +80,7 @@ module Homebrew extend self
     results
   end
 
-  def search_brews rx
+  def search_formulae rx
     if rx.to_s.empty?
       Formula.names
     else
