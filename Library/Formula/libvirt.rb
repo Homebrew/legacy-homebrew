@@ -11,6 +11,7 @@ class Libvirt < Formula
   depends_on 'gnutls'
   depends_on 'libgcrypt'
   depends_on 'yajl'
+  depends_on :python => :recommended
 
   if MacOS.version == :leopard
     # Definitely needed on Leopard, but not on Snow Leopard.
@@ -38,6 +39,11 @@ class Libvirt < Formula
             "--without-qemu"]
 
     args << "--without-libvirtd" if build.include? 'without-libvirtd'
+    if build.with? 'python'
+      args << "--with-python=#{python.binary}"
+    else
+      args << "--without-python"
+    end
 
     system "./configure", *args
 
