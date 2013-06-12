@@ -29,19 +29,11 @@ module Homebrew extend self
       if query
         found = search_results.length
 
-        threads = []
         results = []
-        threads << Thread.new { search_tap "josegonzalez", "php", rx }
-        threads << Thread.new { search_tap "samueljohn", "python", rx }
-        threads << Thread.new { search_tap "Homebrew", "apache", rx }
-        threads << Thread.new { search_tap "Homebrew", "versions", rx }
-        threads << Thread.new { search_tap "Homebrew", "dupes", rx }
-        threads << Thread.new { search_tap "Homebrew", "games", rx }
-        threads << Thread.new { search_tap "Homebrew", "science", rx }
-        threads << Thread.new { search_tap "Homebrew", "completions", rx }
-        threads << Thread.new { search_tap "Homebrew", "x11", rx }
 
-        threads.each do |t|
+        SEARCHABLE_TAPS.map do |user, repo|
+          Thread.new { search_tap(user, repo, rx) }
+        end.each do |t|
           results.concat(t.value)
         end
 
@@ -55,6 +47,18 @@ module Homebrew extend self
       end
     end
   end
+
+  SEARCHABLE_TAPS = [
+    %w{josegonzalez php},
+    %w{samueljohn python},
+    %w{Homebrew apache},
+    %w{Homebrew versions},
+    %w{Homebrew dupes},
+    %w{Homebrew games},
+    %w{Homebrew science},
+    %w{Homebrew completions},
+    %w{Homebrew x11},
+  ]
 
   def query_regexp(query)
     case query
