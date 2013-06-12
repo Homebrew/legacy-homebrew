@@ -395,6 +395,10 @@ class Pathname
     end
   end
 
+  def cat other
+    File.open(self, 'a'){|f|f.write(IO.read(other))}
+  end
+
   # We redefine these private methods in order to add the /o modifier to
   # the Regexp literals, which forces string interpolation to happen only
   # once instead of each time the method is called. This is fixed in 1.9+.
