@@ -28,15 +28,7 @@ module Homebrew extend self
 
       if query
         found = search_results.length
-
-        results = []
-
-        SEARCHABLE_TAPS.map do |user, repo|
-          Thread.new { search_tap(user, repo, rx) }
-        end.each do |t|
-          results.concat(t.value)
-        end
-
+        results = search_taps(rx)
         puts_columns(results)
         found += results.length
 
@@ -65,6 +57,14 @@ module Homebrew extend self
     when nil then ""
     when %r{^/(.*)/$} then Regexp.new($1)
     else /.*#{Regexp.escape(query)}.*/i
+    end
+  end
+
+  def search_taps(rx)
+    SEARCHABLE_TAPS.map do |user, repo|
+      Thread.new { search_tap(user, repo, rx) }
+    end.inject([]) do |results, t|
+      results.concat(t.value)
     end
   end
 
