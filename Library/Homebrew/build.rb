@@ -140,7 +140,7 @@ class Build
 
     if f.fails_with? ENV.compiler
       begin
-        ENV.send CompilerSelector.new(f, ENV.compiler).compiler
+        ENV.send CompilerSelector.new(f).compiler
       rescue CompilerSelectionError => e
         raise e.message
       end
