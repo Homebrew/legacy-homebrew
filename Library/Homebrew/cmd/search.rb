@@ -13,13 +13,7 @@ module Homebrew extend self
       exec_browser "http://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     else
       query = ARGV.first
-      rx = case query
-      when nil then ""
-      when %r{^/(.*)/$} then Regexp.new($1)
-      else
-        /.*#{Regexp.escape query}.*/i
-      end
-
+      rx = query_regexp(query)
       search_results = search_brews rx
       puts_columns search_results
 
@@ -58,6 +52,14 @@ module Homebrew extend self
           GitHub.find_pull_requests(rx) { |pull| puts pull }
         end
       end
+    end
+  end
+
+  def query_regexp(query)
+    case query
+    when nil then ""
+    when %r{^/(.*)/$} then Regexp.new($1)
+    else /.*#{Regexp.escape(query)}.*/i
     end
   end
 
