@@ -39,7 +39,7 @@ class Libvirt < Formula
             "--without-qemu"]
 
     args << "--without-libvirtd" if build.without? 'libvirtd'
-    args << "--without-python" if build.wihtout? 'python'
+    args << "--without-python" if build.without? 'python'
 
     system "./configure", *args
 
