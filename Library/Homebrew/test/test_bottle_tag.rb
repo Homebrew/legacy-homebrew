@@ -22,13 +22,13 @@ class BottleTagTests < Test::Unit::TestCase
 
   def test_cat_snow_leopard_32
     MacOS.stubs(:version).returns(MacOS::Version.new(10.6))
-    Hardware.stubs(:is_64_bit?).returns(false)
+    Hardware::CPU.stubs(:is_64_bit?).returns(false)
     assert_equal :snow_leopard_32, bottle_tag
   end
 
   def test_cat_snow_leopard_64
     MacOS.stubs(:version).returns(MacOS::Version.new(10.6))
-    Hardware.stubs(:is_64_bit?).returns(true)
+    Hardware::CPU.stubs(:is_64_bit?).returns(true)
     assert_equal :snow_leopard, bottle_tag
   end
 
