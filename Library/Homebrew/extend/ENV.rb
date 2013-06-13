@@ -311,10 +311,8 @@ module HomebrewEnvExtension
   end
 
   # Convenience method to set all C compiler flags in one shot.
-  def set_cflags f
-    CC_FLAG_VARS.each do |key|
-      self[key] = f
-    end
+  def set_cflags val
+    CC_FLAG_VARS.each { |key| self[key] = val }
   end
 
   # Sets architecture-specific flags for every environment variable
@@ -397,8 +395,8 @@ class << ENV
   def append_to_cflags newflags
     append(CC_FLAG_VARS, newflags)
   end
-  def remove_from_cflags f
-    remove CC_FLAG_VARS, f
+  def remove_from_cflags val
+    remove CC_FLAG_VARS, val
   end
   def append keys, value, separator = ' '
     value = value.to_s
