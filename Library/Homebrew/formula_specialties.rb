@@ -10,7 +10,9 @@ class ScriptFileFormula < Formula
     super method
     case method
     when :install
-      opoo "#{name}: if you are overriding ScriptFileFormula#install, use a Formula instead"
+      unless self.ancestors.include? GithubGistFormula
+        opoo "#{name}: if you are overriding ScriptFileFormula#install, use a Formula instead"
+      end
     end
   end
 end
