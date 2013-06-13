@@ -340,9 +340,6 @@ module HomebrewEnvExtension
 
   # actually c-compiler, so cc would be a better name
   def compiler
-    # TODO seems that ENV.clang in a Formula.install should warn when called
-    # if the user has set something that is tested here
-
     # test for --flags first so that installs can be overridden on a per
     # install basis. Then test for ENVs in inverse order to flags, this is
     # sensible, trust me
