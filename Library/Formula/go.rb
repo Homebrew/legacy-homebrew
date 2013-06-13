@@ -2,9 +2,9 @@ require 'formula'
 
 class Go < Formula
   homepage 'http://golang.org'
-  url 'https://go.googlecode.com/files/go1.1.src.tar.gz'
-  version '1.1'
-  sha1 'a464704ebbbdd552a39b5f9429b059c117d165b3'
+  url 'https://go.googlecode.com/files/go1.1.1.src.tar.gz'
+  version '1.1.1'
+  sha1 'f365aed8183e487a48a66ace7bf36e5974dffbb3'
   head 'https://go.googlecode.com/hg/'
 
   skip_clean 'bin'
@@ -83,7 +83,7 @@ class Go < Formula
 
   def caveats; <<-EOS.undent
     The go get command no longer allows $GOROOT as
-    the default destination in Go 1.1 when downloading package source.
+    the default destination in Go 1.1.1 when downloading package source.
     To use the go get command, a valid $GOPATH is now required.
 
     As a result of the previous change, the go get command will also fail
