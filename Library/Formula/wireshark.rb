@@ -8,36 +8,33 @@ class Wireshark < Formula
 
   option 'with-x', 'Include X11 support'
   option 'with-qt', 'Use QT for GUI instead of GTK+'
-  option 'with-ssl', 'Enable SSL support'
 
   depends_on 'pkg-config' => :build
-  depends_on 'c-ares' => :optional
-  depends_on 'pcre' => :optional
-  depends_on 'qt' => :optional
-  depends_on 'lua' => :optional
-  depends_on 'portaudio' => :optional
+
   depends_on 'glib'
+  depends_on 'gnutls2'
+  depends_on 'libgcrypt'
+
   depends_on 'geoip' => :recommended
+
+  depends_on 'c-ares' => :optional
+  depends_on 'lua' => :optional
+  depends_on 'pcre' => :optional
+  depends_on 'portaudio' => :optional
+  depends_on 'qt' => :optional
 
   if build.with? 'x'
     depends_on :x11
     depends_on 'gtk+'
   end
 
-  if build.with? 'ssl'
-    depends_on 'gnutls2'
-    depends_on 'libgcrypt'
-  end
-
   def install
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args = ["--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--with-gnutls",
+            "--with-ssl"]
 
-    args << '--with-qt' if build.with? 'qt'
-
-    if build.with? 'ssl'
-      args << '--with-gnutls'
-      args << '--with-ssl'
-    end
+    args << "--with-qt" if build.with? "qt"
 
     system "./configure", *args
     system "make"
