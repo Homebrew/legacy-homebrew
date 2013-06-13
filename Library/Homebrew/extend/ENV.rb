@@ -299,7 +299,7 @@ module HomebrewEnvExtension
 
     unless compiler == :clang
       # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
-      replace_in_cflags(/-march=\S*/, '-Xarch_i386 \0') if Hardware.is_32_bit?
+      replace_in_cflags(/-march=\S*/, '-Xarch_i386 \0') if Hardware::CPU.is_32_bit?
     end
   end
 
@@ -372,7 +372,7 @@ module HomebrewEnvExtension
     if self['HOMEBREW_MAKE_JOBS'].to_i > 0
       self['HOMEBREW_MAKE_JOBS'].to_i
     else
-      Hardware.processor_count
+      Hardware::CPU.cores
     end
   end
 
