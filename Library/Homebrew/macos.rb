@@ -11,6 +11,7 @@ module MacOS extend self
 
   def cat
     case MacOS.version
+    when 10.9 then :mavericks
     when 10.8 then :mountain_lion
     when 10.7 then :lion
     when 10.6 then :snow_leopard
