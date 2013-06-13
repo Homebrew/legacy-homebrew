@@ -39,38 +39,33 @@ class Pgplot < Formula
     inreplace 'drivers/pndriv.c', 'setjmp(png_ptr->jmpbuf)', 'setjmp(png_jmpbuf(png_ptr))'
 
     # configure options
-    mkdir 'sys_darwin' do
-      File.open('homebrew.conf', 'w') do |conf|
-        conf.write(<<-EOS
-XINCL="#{ENV.cppflags}"
-MOTIF_INCL=""
-ATHENA_INCL=""
-TK_INCL=""
-RV_INCL=""
-FCOMPL="#{ENV['FC']}"
-FFLAGC="#{ENV['FCFLAGS']}"
-FFLAGD=""
-CCOMPL="#{ENV.cc}"
-CFLAGC="#{ENV.cppflags}"
-CFLAGD=""
-PGBIND_FLAGS="bsd"
-LIBS="#{ENV.ldflags} -lX11"
-MOTIF_LIBS=""
-ATHENA_LIBS=""
-TK_LIBS=""
-RANLIB="#{which 'ranlib'}"
-SHARED_LIB="libpgplot.dylib"
-SHARED_LD="#{ENV['FC']} -dynamiclib -single_module $LDFLAGS -lX11 -install_name libpgplot.dylib"
-SHARED_LIB_LIBS="#{ENV.ldflags} -lpng -lX11"
-MCOMPL=""
-MFLAGC=""
-SYSDIR="$SYSDIR"
-CSHARED_LIB="libcpgplot.dylib"
-CSHARED_LD="#{ENV['FC']} -dynamiclib -single_module $LDFLAGS -lX11"
-EOS
-                   )
-      end
-    end
+    (buildpath/'sys_darwin/homebrew.conf').write <<-EOS.undent
+      XINCL="#{ENV.cppflags}"
+      MOTIF_INCL=""
+      ATHENA_INCL=""
+      TK_INCL=""
+      RV_INCL=""
+      FCOMPL="#{ENV['FC']}"
+      FFLAGC="#{ENV['FCFLAGS']}"
+      FFLAGD=""
+      CCOMPL="#{ENV.cc}"
+      CFLAGC="#{ENV.cppflags}"
+      CFLAGD=""
+      PGBIND_FLAGS="bsd"
+      LIBS="#{ENV.ldflags} -lX11"
+      MOTIF_LIBS=""
+      ATHENA_LIBS=""
+      TK_LIBS=""
+      RANLIB="#{which 'ranlib'}"
+      SHARED_LIB="libpgplot.dylib"
+      SHARED_LD="#{ENV['FC']} -dynamiclib -single_module $LDFLAGS -lX11 -install_name libpgplot.dylib"
+      SHARED_LIB_LIBS="#{ENV.ldflags} -lpng -lX11"
+      MCOMPL=""
+      MFLAGC=""
+      SYSDIR="$SYSDIR"
+      CSHARED_LIB="libcpgplot.dylib"
+      CSHARED_LD="#{ENV['FC']} -dynamiclib -single_module $LDFLAGS -lX11"
+      EOS
 
     mkdir 'build' do
       # activate drivers
