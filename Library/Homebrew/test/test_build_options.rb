@@ -1,9 +1,9 @@
-require 'testing_env'
+  require 'testing_env'
 require 'build_options'
 
 class BuildOptionsTests < Test::Unit::TestCase
   def setup
-    args = %w{--with-foo --with-bar --without-qux}
+    args = %w{--with-foo --with-bar --without-qux} # args fake the command line
     @build = BuildOptions.new(args)
     @build.add("with-foo")
     @build.add("with-bar")
@@ -44,7 +44,7 @@ class BuildOptionsTests < Test::Unit::TestCase
   end
 
   def test_implicit_options
-    # --without-baz is not explicitly specified on the command line
+    # --without-baz is not explicitly specified on the command line (i.e. args)
     # therefore --with-baz should be implicitly assumed:
     assert @build.implicit_options.include?("--with-baz")
     # But all these should not be in the implict_options:
@@ -52,5 +52,19 @@ class BuildOptionsTests < Test::Unit::TestCase
     assert !@build.implicit_options.include?("--with-bar")
     assert !@build.implicit_options.include?("--without-bar")
     assert !@build.implicit_options.include?("--with-qux")
+  end
+
+  def test_opposite_of
+    assert @build.opposite_of(Option.new("with-foo")) == Option.new("without-foo")
+    assert @build.opposite_of("without-foo") == Option.new("with-foo")
+    assert @build.opposite_of(Option.new("enable-spam")) == Option.new("disable-spam")
+    assert @build.opposite_of("disable-beer") == Option.new("enable-beer")
+  end
+
+  def test_has_opposite_of?
+    assert @build.has_opposite_of?("--without-foo")
+    assert @build.has_opposite_of?(Option.new("--with-qux"))
+    assert !@build.has_opposite_of?("--without-qux")
+    assert !@build.has_opposite_of?("--without-nonexisting")
   end
 end
