@@ -123,8 +123,7 @@ module HomebrewEnvExtension
     self['CC'] = self['OBJC'] = "#{MacOS.dev_tools_path}/gcc-4.0"
     self['CXX'] = self['OBJCXX'] = "#{MacOS.dev_tools_path}/g++-4.0"
     replace_in_cflags '-O4', '-O3'
-    set_cpu_cflags '-march=nocona -mssse3',
-      Hardware::CPU.optimization_flags
+    set_cpu_cflags '-march=nocona -mssse3'
     @compiler = :gcc
   end
   alias_method :gcc_4_0, :gcc_4_0_1
@@ -158,7 +157,7 @@ module HomebrewEnvExtension
     end
 
     replace_in_cflags '-O4', '-O3'
-    set_cpu_cflags '-march=core2 -msse4', Hardware::CPU.optimization_flags
+    set_cpu_cflags
     @compiler = :gcc
   end
   alias_method :gcc_4_2, :gcc
@@ -166,7 +165,7 @@ module HomebrewEnvExtension
   def llvm
     self['CC'] = self['OBJC'] = MacOS.locate("llvm-gcc")
     self['CXX'] = self['OBJCXX'] = MacOS.locate("llvm-g++")
-    set_cpu_cflags '-march=core2 -msse4', Hardware::CPU.optimization_flags
+    set_cpu_cflags
     @compiler = :llvm
   end
 
@@ -318,7 +317,7 @@ module HomebrewEnvExtension
 
   # Sets architecture-specific flags for every environment variable
   # given in the list `flags`.
-  def set_cpu_flags flags, default, map = {}
+  def set_cpu_flags flags, default='-march=core2 -msse4', map=Hardware::CPU.optimization_flags
     cflags =~ %r{(-Xarch_i386 )-march=}
     xarch = $1.to_s
     remove flags, %r{(-Xarch_i386 )?-march=\S*}
@@ -338,7 +337,7 @@ module HomebrewEnvExtension
     remove flags, '-Qunused-arguments'
   end
 
-  def set_cpu_cflags default, map = {}
+  def set_cpu_cflags default='-march=core2 -msse4', map=Hardware::CPU.optimization_flags
     set_cpu_flags cc_flag_vars, default, map
   end
 
@@ -475,12 +474,8 @@ class << ENV
         flags_to_set = []
         flags_to_set << 'FCFLAGS' unless self['FCFLAGS']
         flags_to_set << 'FFLAGS' unless self['FFLAGS']
-
         flags_to_set.each {|key| self[key] = cflags}
-
-        # Ensure we use architecture optimizations for GCC 4.2.x
-        set_cpu_flags flags_to_set, '-march=core2 -msse4',
-          Hardware::CPU.optimization_flags
+        set_cpu_flags(flags_to_set)
       elsif not self['FCFLAGS'] or self['FFLAGS']
         opoo <<-EOS.undent
           No Fortran optimization information was provided.  You may want to consider
@@ -499,10 +494,7 @@ class << ENV
       self['F77'] = self['FC']
 
       fc_flag_vars.each {|key| self[key] = cflags}
-      # Ensure we use architecture optimizations for GCC 4.2.x
-      set_cpu_flags fc_flag_vars, '-march=core2 -msse4',
-        Hardware::CPU.optimization_flags
-
+      set_cpu_flags(fc_flag_vars)
     else
       onoe <<-EOS
 This formula requires a fortran compiler, but we could not find one by
