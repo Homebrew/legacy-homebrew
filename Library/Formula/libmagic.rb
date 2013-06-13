@@ -12,6 +12,8 @@ class Libmagic < Formula
   # See http://bugs.gw.com/view.php?id=230
   def patches; DATA; end if MacOS.version < :lion
 
+  option "python", "Build Python bindings."
+
   def install
     ENV.universal_binary if build.universal?
 
@@ -19,6 +21,11 @@ class Libmagic < Formula
                           "--prefix=#{prefix}",
                           "--enable-fsect-man5"
     system "make install"
+
+    cd "python" do
+      system "python setup.py build"
+      system "python setup.py install --prefix={prefix}"
+    end if build.include? "python"
 
     # Don't dupe this system utility
     rm bin/"file"
