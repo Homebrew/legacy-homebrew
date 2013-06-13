@@ -181,16 +181,15 @@ module HomebrewEnvExtension
     @compiler = :clang
   end
 
-  def remove_macosxsdk v=MacOS.version
+  def remove_macosxsdk version=MacOS.version
     # Clear all lib and include dirs from CFLAGS, CPPFLAGS, LDFLAGS that were
     # previously added by macosxsdk
-    v = v.to_s
+    version = version.to_s
     remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
     delete('MACOSX_DEPLOYMENT_TARGET')
     delete('CPATH')
     remove 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
-    sdk = MacOS.sdk_path(v)
-    unless sdk.nil? or MacOS::CLT.installed?
+    unless (sdk = MacOS.sdk_path(version)).nil? or MacOS::CLT.installed?
       delete('SDKROOT')
       remove_from_cflags "-isysroot #{sdk}"
       remove 'CPPFLAGS', "-isysroot #{sdk}"
@@ -205,18 +204,16 @@ module HomebrewEnvExtension
     end
   end
 
-  def macosxsdk v=MacOS.version
+  def macosxsdk version=MacOS.version
     return unless MACOS
     # Sets all needed lib and include dirs to CFLAGS, CPPFLAGS, LDFLAGS.
     remove_macosxsdk
-    # Allow cool style of ENV.macosxsdk 10.8 here (no "" :)
-    v = v.to_s
-    append_to_cflags("-mmacosx-version-min=#{v}")
-    self['MACOSX_DEPLOYMENT_TARGET'] = v
+    version = version.to_s
+    append_to_cflags("-mmacosx-version-min=#{version}")
+    self['MACOSX_DEPLOYMENT_TARGET'] = version
     self['CPATH'] = "#{HOMEBREW_PREFIX}/include"
     prepend 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
-    sdk = MacOS.sdk_path(v)
-    unless sdk.nil? or MacOS::CLT.installed?
+    unless (sdk = MacOS.sdk_path(version)).nil? or MacOS::CLT.installed?
       # Extra setup to support Xcode 4.3+ without CLT.
       self['SDKROOT'] = sdk
       # Tell clang/gcc where system include's are:
