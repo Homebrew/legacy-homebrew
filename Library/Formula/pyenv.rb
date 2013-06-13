@@ -2,8 +2,9 @@ require 'formula'
 
 class Pyenv < Formula
   homepage 'https://github.com/yyuu/pyenv'
-  url 'https://github.com/yyuu/pyenv/archive/v0.2.0.tar.gz'
-  sha1 '5006b20f5e19e5de765410986054c98c6d83494b'
+  version "20130613"
+  url 'https://github.com/yyuu/pyenv/archive/v0.4.0-20130613.tar.gz'
+  sha1 '58fab2ac96b66583299be48394b3dece2eb84155'
 
   head 'https://github.com/yyuu/pyenv.git'
 
