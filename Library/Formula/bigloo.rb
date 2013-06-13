@@ -20,26 +20,26 @@ class Bigloo < Formula
 
   def install
     args = ["--disable-debug",
-      "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
-      "--mandir=#{man1}",
-      "--infodir=#{info}",
-      "--customgc=yes",
-      "--os-macosx",
-      "--native=yes"]
+            "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--mandir=#{man1}",
+            "--infodir=#{info}",
+            "--customgc=yes",
+            "--os-macosx",
+            "--native=yes"]
 
-      args << "--jvm=yes" if build.include? 'with-jvm'
+    args << "--jvm=yes" if build.include? 'with-jvm'
 
-      # SRFI 27 is 32-bit only
-      args << "--disable-srfi27" if MacOS.prefer_64_bit?
+    # SRFI 27 is 32-bit only
+    args << "--disable-srfi27" if MacOS.prefer_64_bit?
 
-      system "./configure", *args
+    system "./configure", *args
 
-      system "make"
-      system "make install"
+    system "make"
+    system "make install"
 
-      # Install the other manpages too
-      manpages = %w( bgldepend bglmake bglpp bgltags bglafile bgljfile bglmco bglprof )
-      manpages.each {|m| man1.install "manuals/#{m}.man" => "#{m}.1"}
+    # Install the other manpages too
+    manpages = %w( bgldepend bglmake bglpp bgltags bglafile bgljfile bglmco bglprof )
+    manpages.each {|m| man1.install "manuals/#{m}.man" => "#{m}.1"}
   end
 end
