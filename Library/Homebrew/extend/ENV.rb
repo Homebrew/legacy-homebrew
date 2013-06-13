@@ -1,8 +1,10 @@
 require 'hardware'
 
 module HomebrewEnvExtension
-  # -w: keep signal to noise high
   SAFE_CFLAGS_FLAGS = "-w -pipe"
+  CC_FLAG_VARS = %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
+  FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
+  DEFAULT_FLAGS = '-march=core2 -msse4'
 
   def setup_build_environment
     # Clear CDPATH to avoid make issues that depend on changing directories
@@ -303,21 +305,21 @@ module HomebrewEnvExtension
   end
 
   def replace_in_cflags before, after
-    cc_flag_vars.each do |key|
+    CC_FLAG_VARS.each do |key|
       self[key] = self[key].sub before, after if self[key]
     end
   end
 
   # Convenience method to set all C compiler flags in one shot.
   def set_cflags f
-    cc_flag_vars.each do |key|
+    CC_FLAG_VARS.each do |key|
       self[key] = f
     end
   end
 
   # Sets architecture-specific flags for every environment variable
   # given in the list `flags`.
-  def set_cpu_flags flags, default='-march=core2 -msse4', map=Hardware::CPU.optimization_flags
+  def set_cpu_flags flags, default=DEFAULT_FLAGS, map=Hardware::CPU.optimization_flags
     cflags =~ %r{(-Xarch_i386 )-march=}
     xarch = $1.to_s
     remove flags, %r{(-Xarch_i386 )?-march=\S*}
@@ -337,8 +339,8 @@ module HomebrewEnvExtension
     remove flags, '-Qunused-arguments'
   end
 
-  def set_cpu_cflags default='-march=core2 -msse4', map=Hardware::CPU.optimization_flags
-    set_cpu_flags cc_flag_vars, default, map
+  def set_cpu_cflags default=DEFAULT_FLAGS, map=Hardware::CPU.optimization_flags
+    set_cpu_flags CC_FLAG_VARS, default, map
   end
 
   # actually c-compiler, so cc would be a better name
@@ -392,14 +394,11 @@ class << ENV
     end
     removed
   end
-  def cc_flag_vars
-    %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
-  end
   def append_to_cflags newflags
-    append(cc_flag_vars, newflags)
+    append(CC_FLAG_VARS, newflags)
   end
   def remove_from_cflags f
-    remove cc_flag_vars, f
+    remove CC_FLAG_VARS, f
   end
   def append keys, value, separator = ' '
     value = value.to_s
@@ -459,8 +458,6 @@ class << ENV
   end
 
   def fortran
-    fc_flag_vars = %w{FCFLAGS FFLAGS}
-
     # superenv removes these PATHs, but this option needs them
     # TODO fix better, probably by making a super-fc
     ENV['PATH'] += ":#{HOMEBREW_PREFIX}/bin:/usr/local/bin"
@@ -493,8 +490,8 @@ class << ENV
       self['FC'] = which 'gfortran'
       self['F77'] = self['FC']
 
-      fc_flag_vars.each {|key| self[key] = cflags}
-      set_cpu_flags(fc_flag_vars)
+      FC_FLAG_VARS.each {|key| self[key] = cflags}
+      set_cpu_flags(FC_FLAG_VARS)
     else
       onoe <<-EOS
 This formula requires a fortran compiler, but we could not find one by
