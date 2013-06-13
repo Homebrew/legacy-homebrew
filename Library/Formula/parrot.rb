@@ -12,6 +12,8 @@ class Parrot < Formula
 
   head 'https://github.com/parrot/parrot.git'
 
+  conflicts_with 'rakudo-star'
+
   depends_on 'gmp' => :optional
   depends_on 'icu4c' => :optional
   depends_on 'pcre' => :optional

@@ -52,15 +52,6 @@ class Zabbix < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
-    Please read the fine manual for post-install instructions:
-      http://www.zabbix.com/documentation/2.0/manual
-
-    Or just use Puppet:
-      https://github.com/bjoernalbers/puppet-zabbix_osx
-    EOS
-  end
-
   def test
     system "#{sbin}/zabbix_agentd", "--print"
   end
