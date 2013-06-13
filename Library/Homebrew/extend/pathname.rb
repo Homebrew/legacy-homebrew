@@ -344,14 +344,6 @@ class Pathname
   end
 
   def find_formula
-    # remove special casing once tap is established and alt removed
-    if self == HOMEBREW_LIBRARY/"Taps/adamv-alt"
-      all_formula do |file|
-        yield file
-      end
-      return
-    end
-
     [self/:Formula, self/:HomebrewFormula, self].each do |d|
       if d.exist?
         d.children.map{ |child| child.relative_path_from(self) }.each do |pn|

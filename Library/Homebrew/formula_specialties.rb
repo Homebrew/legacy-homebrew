@@ -5,14 +5,6 @@ class ScriptFileFormula < Formula
   def install
     bin.install Dir['*']
   end
-
-  def self.method_added method
-    super method
-    case method
-    when :install
-      opoo "#{name}: if you are overriding ScriptFileFormula#install, use a Formula instead"
-    end
-  end
 end
 
 # See browser for an example
