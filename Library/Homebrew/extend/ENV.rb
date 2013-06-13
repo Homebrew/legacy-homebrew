@@ -306,7 +306,7 @@ module HomebrewEnvExtension
 
   def replace_in_cflags before, after
     CC_FLAG_VARS.each do |key|
-      self[key] = self[key].sub before, after if self[key]
+      self[key] = self[key].sub(before, after) if has_key?(key)
     end
   end
 
