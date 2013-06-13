@@ -196,7 +196,7 @@ class << ENV
 
   def determine_make_jobs
     if (j = ENV['HOMEBREW_MAKE_JOBS'].to_i) < 1
-      Hardware.processor_count
+      Hardware::CPU.cores
     else
       j
     end

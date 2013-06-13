@@ -84,7 +84,7 @@ def bottle_tag
   when 10.8, 10.7, 10.5
     MacOS.cat
   when 10.6
-    Hardware.is_64_bit? ? :snow_leopard : :snow_leopard_32
+    Hardware::CPU.is_64_bit? ? :snow_leopard : :snow_leopard_32
   else
     Hardware::CPU.type == :ppc ? Hardware::CPU.family : MacOS.cat
   end

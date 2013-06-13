@@ -184,7 +184,7 @@ module MacOS extend self
   end
 
   def prefer_64_bit?
-    Hardware.is_64_bit? and version != :leopard
+    Hardware::CPU.is_64_bit? and version != :leopard
   end
 
   STANDARD_COMPILERS = {
