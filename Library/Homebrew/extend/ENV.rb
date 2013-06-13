@@ -298,9 +298,9 @@ module HomebrewEnvExtension
     replace_in_cflags '-O4', '-O3' # O4 seems to cause the build to fail
     append 'LDFLAGS', '-arch i386 -arch x86_64'
 
-    unless compiler == :clang
+    if compiler != :clang && Hardware.is_32_bit?
       # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
-      replace_in_cflags(/-march=\S*/, '-Xarch_i386 \0') if Hardware::CPU.is_32_bit?
+      replace_in_cflags(/-march=\S*/, '-Xarch_i386 \0')
     end
   end
 
