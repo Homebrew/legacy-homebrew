@@ -186,17 +186,17 @@ module HomebrewEnvExtension
     # previously added by macosxsdk
     v = v.to_s
     remove_from_cflags(/ ?-mmacosx-version-min=10\.\d/)
-    self['MACOSX_DEPLOYMENT_TARGET'] = nil
-    self['CPATH'] = nil
+    delete('MACOSX_DEPLOYMENT_TARGET')
+    delete('CPATH')
     remove 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
     sdk = MacOS.sdk_path(v)
     unless sdk.nil? or MacOS::CLT.installed?
-      self['SDKROOT'] = nil
+      delete('SDKROOT')
       remove_from_cflags "-isysroot #{sdk}"
       remove 'CPPFLAGS', "-isysroot #{sdk}"
       remove 'LDFLAGS', "-isysroot #{sdk}"
       if HOMEBREW_PREFIX.to_s == '/usr/local'
-        self['CMAKE_PREFIX_PATH'] = nil
+        delete('CMAKE_PREFIX_PATH')
       else
         # It was set in setup_build_environment, so we have to restore it here.
         self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
