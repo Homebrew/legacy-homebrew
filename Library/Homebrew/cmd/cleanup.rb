@@ -56,9 +56,8 @@ module Homebrew extend self
 
   def cleanup_cache
     HOMEBREW_CACHE.children.select(&:file?).each do |file|
-      version = file.version
-      name = file.basename.to_s.match(/(.*)-(?:#{Regexp.escape(version)})/).captures.first rescue nil
-      next unless name && version
+      next unless (version = file.version)
+      next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])
 
       begin
         f = Formula.factory(name)

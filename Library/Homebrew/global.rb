@@ -1,8 +1,10 @@
+require 'extend/module'
 require 'extend/fileutils'
 require 'extend/pathname'
 require 'extend/ARGV'
 require 'extend/string'
 require 'extend/symbol'
+require 'extend/enumerable'
 require 'utils'
 require 'exceptions'
 require 'set'
@@ -97,3 +99,9 @@ HOMEBREW_PULL_OR_COMMIT_URL_REGEX = 'https:\/\/github.com\/(\w+)\/homebrew(-\w+)
 require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
 
 ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
+
+SUDO_BAD_ERRMSG = <<-EOS.undent
+  You can use brew with sudo, but only if the brew executable is owned by root.
+  However, this is both not recommended and completely unsupported so do so at
+  your own risk.
+EOS

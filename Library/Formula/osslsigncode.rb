@@ -6,6 +6,7 @@ class Osslsigncode < Formula
   sha1 'b33139d3fe41fa4dd8093d325fd02d165314a48b'
 
   depends_on 'pkg-config' => :build
+  depends_on 'openssl'
 
   def install
     system "./configure", "--prefix=#{prefix}"

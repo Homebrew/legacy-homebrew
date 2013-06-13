@@ -18,11 +18,11 @@ HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 class Step
   attr_reader :command, :name, :status, :output, :time
 
-  def initialize test, command, puts_output_on_success = false
+  def initialize test, command, options={}
     @test = test
     @category = test.category
     @command = command
-    @puts_output_on_success = puts_output_on_success
+    @puts_output_on_success = options[:puts_output_on_success]
     @name = command.split[1].delete '-'
     @status = :running
     @repository = HOMEBREW_REPOSITORY
@@ -243,9 +243,16 @@ class Test
     test "brew install --verbose #{dependencies}" unless dependencies.empty?
     test "brew install --verbose --build-bottle #{formula}"
     return unless steps.last.passed?
-    test "brew bottle #{formula}", true
+    bottle_step = test "brew bottle #{formula}", :puts_output_on_success => true
     bottle_revision = bottle_new_revision(formula_object)
     bottle_filename = bottle_filename(formula_object, bottle_revision)
+    if bottle_step.passed? and bottle_step.has_output?
+      bottle_base = bottle_filename.gsub(bottle_suffix(bottle_revision), '')
+      bottle_output = bottle_step.output.gsub /.*(bottle do.*end)/m, '\1'
+      File.open "#{bottle_base}.bottle.rb", 'w' do |file|
+        file.write bottle_output
+      end
+    end
     test "brew uninstall #{formula}"
     test "brew install #{bottle_filename}"
     test "brew test #{formula}" if formula_object.test_defined?
@@ -292,10 +299,11 @@ class Test
     FileUtils.rm_rf @brewbot_root unless ARGV.include? "--keep-logs"
   end
 
-  def test cmd, puts_output_on_success = false
-    step = Step.new self, cmd, puts_output_on_success
+  def test cmd, options={}
+    step = Step.new self, cmd, options
     step.run
     steps << step
+    step
   end
 
   def check_results

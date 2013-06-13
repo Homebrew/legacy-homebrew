@@ -49,6 +49,6 @@ class Avian < Formula
       }
     EOS
     system 'javac', 'Test.java'
-    %x[avian Test] == 'OK'
+    assert_equal 'OK', `avian Test`.strip
   end
 end

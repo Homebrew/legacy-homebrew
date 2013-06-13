@@ -29,18 +29,24 @@ class Boost < Formula
 
   option :universal
   option 'with-mpi', 'Enable MPI support'
-  option 'with-icu4c', 'Build regexp engine with icu support'
+  option 'with-icu', 'Build regexp engine with icu support'
   option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
   option 'use-system-layout', 'Use system layout instead of tagged'
 
   depends_on :python => :recommended
   depends_on UniversalPython if build.universal? and build.with? "python"
-  depends_on "icu4c" => :optional
+  depends_on "icu4c" if build.with? 'icu'
   depends_on MPIDependency.new(:cc, :cxx) if build.with? "mpi"
 
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
+  end
+
+  def pour_bottle?
+    # Don't use the bottle if there is a Homebrew python installed as users
+    # will probably want to link against that instead.
+    not Formula.factory('python').installed?
   end
 
   def install
@@ -77,7 +83,7 @@ class Boost < Formula
 
     bargs << "--with-toolset=clang" if build.with? "c++11"
 
-    if build.with? 'icu4c'
+    if build.with? 'icu'
       icu4c_prefix = Formula.factory('icu4c').opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
     else

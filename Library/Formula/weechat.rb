@@ -5,6 +5,8 @@ class Weechat < Formula
   url 'http://www.weechat.net/files/src/weechat-0.4.1.tar.bz2'
   sha1 'a5185d6b8a2b330713ea354f06601a205270e3a2'
 
+  head 'git://git.savannah.nongnu.org/weechat.git'
+
   depends_on 'cmake' => :build
   depends_on 'gnutls'
   depends_on 'libgcrypt'

@@ -18,7 +18,7 @@ class Grass < Formula
   depends_on "unixodbc"
   depends_on "fftw"
   depends_on 'wxmac' => :recommended # prefer over OS X's version because of 64bit
-  depends_on 'postgres' => :optional
+  depends_on :postgresql => :optional
   depends_on :mysql => :optional
   depends_on "cairo" if MacOS.version == :leopard
   depends_on :x11  # needs to find at least X11/include/GL/gl.h

@@ -9,14 +9,14 @@ class Libpst < Formula
 
   depends_on 'boost'
   depends_on :python => :optional
-  depends_on 'gd' if build.with? 'pst2dii'
+  depends_on 'gd' if build.include? 'pst2dii'
 
   def install
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
-    args << '--disable-dii' unless build.with? 'pst2dii'
+    args << '--disable-dii' unless build.include? 'pst2dii'
     if build.with? 'python'
       # ENV['PYTHON_EXTRA_LDFLAGS'] = '-u _PyMac_Error'
       args << '--enable-python' << '--with-boost-python=mt'

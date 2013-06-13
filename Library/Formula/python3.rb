@@ -6,8 +6,8 @@ require 'formula'
 # `brew install python`.
 
 class Distribute < Formula
-  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.40.tar.gz'
-  sha1 '46654be10177014bbb502a4c516627173de67d15'
+  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.45.tar.gz'
+  sha1 '55b15037f2222828496a96f38447c0fa0228df85'
 end
 
 class Pip < Formula
@@ -21,6 +21,8 @@ class Python3 < Formula
   sha1 'b28c36a9752b690059dc6df4fb9b4ec9d6c5708a'
   VER='3.3'  # The <major>.<minor> is used so often.
 
+  head 'http://hg.python.org/cpython', :using => :hg, :branch => VER
+
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build'
   option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
@@ -30,11 +32,12 @@ class Python3 < Formula
   depends_on 'readline' => :recommended
   depends_on 'sqlite' => :recommended
   depends_on 'gdbm' => :recommended
-  depends_on 'openssl' if build.include? 'with-brewed-openssl'
-  depends_on 'homebrew/dupes/tcl-tk' if build.include? 'with-brewed-tk'
+  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'xz' => :recommended  # for the lzma module added in 3.3
+  depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
 
   def patches
-    DATA if build.include? 'with-brewed-tk'
+    DATA if build.with? 'brewed-tk'
   end
 
   def site_packages_cellar
@@ -95,6 +98,11 @@ class Python3 < Formula
       f.gsub! 'DEFAULT_FRAMEWORK_FALLBACK = [', "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
     end
 
+    if build.with? 'brewed-tk'
+      ENV.append 'CPPFLAGS', "-I#{Formula.factory('tcl-tk').opt_prefix}/include"
+      ENV.append 'LDFLAGS', "-L#{Formula.factory('tcl-tk').opt_prefix}/lib"
+    end
+
     system "./configure", *args
 
     system "make"
@@ -112,9 +120,8 @@ class Python3 < Formula
       mv app, app.gsub(".app", " 3.app")
     end
 
-    # Post-install, fix up the site-packages and install-scripts folders
-    # so that user-installed Python software survives minor updates, such
-    # as going from 3.3.0 to 3.3.1:
+    # Post-install, fix up the site-packages so that user-installed Python
+    # software survives minor updates, such as going from 3.3.2 to 3.3.3:
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
@@ -127,11 +134,13 @@ class Python3 < Formula
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
 
-    # Install distribute and pip for python3 and assure there's no name clash
-    # with what the python (2.x) formula installs.
-    ENV['PYTHONPATH'] = site_packages
-    setup_args = ["-s", "setup.py", "install", "--force", "--verbose",
-                  "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
+    # We ship distribute and pip and reuse the PythonInstalled
+    # Requirement here to write the sitecustomize.py
+    py = PythonInstalled.new(VER)
+    py.binary = bin/"python#{VER}"
+    py.modify_build_environment
+    setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
+                   "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
     Distribute.new.brew { system "#{bin}/python#{VER}", *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
     Pip.new.brew { system "#{bin}/python#{VER}", *setup_args }
@@ -147,30 +156,15 @@ class Python3 < Formula
       prefix=#{HOMEBREW_PREFIX}
     EOF
 
-    # Write our sitecustomize.py and distutils.cfg to tell python about the
-    # correct site-package dir because we moved it.
-    # We reuse the PythonInstalled requirement here.
-    ENV.prepend_path 'PATH', bin
-    PythonInstalled.new(VER).modify_build_environment
-
-    unless MacOS::CLT.installed?
-      makefile = prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/config-#{VER}m/Makefile"
-      inreplace makefile do |s|
-        s.gsub!(/^CC=.*$/, "CC=xcrun clang")
-        s.gsub!(/^CXX=.*$/, "CXX=xcrun clang++")
-        s.gsub!(/^AR=.*$/, "AR=xcrun ar")
-        s.gsub!(/^RANLIB=.*$/, "RANLIB=xcrun ranlib")
-      end
-    end
-
     # A fix, because python and python3 both want to install Python.framework
+    # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
     # https://github.com/mxcl/homebrew/issues/15943
     ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
-
+    rm prefix/"Frameworks/Python.framework/Versions/Current"
   end
 
   def distutils_fix_superenv(args)
-    # To allow certain Python bindings to find brewed software:
+    # To allow certain Python bindings to find brewed software (and sqlite):
     cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
     ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
     unless MacOS::CLT.installed?
@@ -180,7 +174,7 @@ class Python3 < Formula
       ldflags += " -isysroot #{MacOS.sdk_path}"
       # Same zlib.h-not-found-bug as in env :std (see below)
       args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
-      unless build.include? 'with-brewed-tk'
+      unless build.with? 'brewed-tk'
         cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
       end
     end
@@ -248,7 +242,7 @@ class Python3 < Formula
     return text
   end
 
-  def test
+  test do
     # Check if sqlite is ok, because we build with --enable-loadable-sqlite-extensions
     # and it can occur that building sqlite silently fails if OSX's sqlite is used.
     system "#{bin}/python#{VER}", "-c", "import sqlite3"
@@ -258,20 +252,54 @@ class Python3 < Formula
 end
 
 __END__
+# Homebrew's tcl-tk is build in a standard unix fashion (due to link errors)
+# and we have to stop python from searching for frameworks and link against
+# X11.
+
 diff --git a/setup.py b/setup.py
-index 9ddf2e9..60ab152 100644
+index d4183d4..9f69520 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1624,9 +1624,9 @@ class PyBuildExt(build_ext):
+@@ -1623,9 +1623,6 @@ class PyBuildExt(build_ext):
          # Rather than complicate the code below, detecting and building
          # AquaTk is a separate method. Only one Tkinter will be built on
          # Darwin - either AquaTk, if it is found, or X11 based Tk.
 -        if (host_platform == 'darwin' and
 -            self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
 -            return
-+        # if (host_platform == 'darwin' and
-+            # self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
-+            # return
 
          # Assume we haven't found any of the libraries or include files
          # The versions with dots are used on Unix, and the versions without
+@@ -1671,21 +1668,6 @@ class PyBuildExt(build_ext):
+             if dir not in include_dirs:
+                 include_dirs.append(dir)
+
+-        # Check for various platform-specific directories
+-        if host_platform == 'sunos5':
+-            include_dirs.append('/usr/openwin/include')
+-            added_lib_dirs.append('/usr/openwin/lib')
+-        elif os.path.exists('/usr/X11R6/include'):
+-            include_dirs.append('/usr/X11R6/include')
+-            added_lib_dirs.append('/usr/X11R6/lib64')
+-            added_lib_dirs.append('/usr/X11R6/lib')
+-        elif os.path.exists('/usr/X11R5/include'):
+-            include_dirs.append('/usr/X11R5/include')
+-            added_lib_dirs.append('/usr/X11R5/lib')
+-        else:
+-            # Assume default location for X11
+-            include_dirs.append('/usr/X11/include')
+-            added_lib_dirs.append('/usr/X11/lib')
+
+         # If Cygwin, then verify that X is installed before proceeding
+         if host_platform == 'cygwin':
+@@ -1710,10 +1692,6 @@ class PyBuildExt(build_ext):
+         if host_platform in ['aix3', 'aix4']:
+             libs.append('ld')
+
+-        # Finally, link with the X11 libraries (not appropriate on cygwin)
+-        if host_platform != "cygwin":
+-            libs.append('X11')
+-
+         ext = Extension('_tkinter', ['_tkinter.c', 'tkappinit.c'],
+                         define_macros=[('WITH_APPINIT', 1)] + defs,
+                         include_dirs = include_dirs,

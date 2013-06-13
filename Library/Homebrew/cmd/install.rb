@@ -18,11 +18,8 @@ module Homebrew extend self
       end
     end unless ARGV.force?
 
-    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      raise "Cowardly refusing to `sudo brew install'\n#{SUDO_BAD_ERRMSG}"
-    end
-
-    install_formulae ARGV.formulae
+    perform_preinstall_checks
+    ARGV.formulae.each { |f| install_formula(f) }
   end
 
   def check_ppc
@@ -71,16 +68,6 @@ module Homebrew extend self
     check_xcode
     check_macports
     check_cellar
-  end
-
-  def install_formulae formulae
-    formulae = [formulae].flatten.compact
-    unless formulae.empty?
-      perform_preinstall_checks
-      formulae.each do |f|
-        install_formula(f)
-      end
-    end
   end
 
   def install_formula f

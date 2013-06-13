@@ -19,7 +19,7 @@ class Go < Formula
   def install
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
-    zsh_completion.install 'misc/zsh/go' => '_go'
+    zsh_completion.install 'misc/zsh/go' => 'go'
 
     if build.include? 'cross-compile-all'
       targets = [
@@ -105,7 +105,7 @@ class Go < Formula
     EOS
     # Run go vet check for no errors then run the program.
     # This is a a bare minimum of go working as it uses vet, build, and run.
-    `#{bin}/go vet hello.go` == ""
-    `#{bin}/go run hello.go` == "Hello World\n"
+    assert_empty `#{bin}/go vet hello.go`
+    assert_equal "Hello World\n", `#{bin}/go run hello.go`
   end
 end

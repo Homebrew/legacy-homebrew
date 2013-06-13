@@ -7,9 +7,12 @@
 ABS__FILE__ = File.expand_path(__FILE__)
 $:.push(File.expand_path(__FILE__+'/../..'))
 
+require 'extend/module'
 require 'extend/fileutils'
 require 'extend/pathname'
 require 'extend/string'
+require 'extend/symbol'
+require 'extend/enumerable'
 require 'exceptions'
 require 'utils'
 require 'rbconfig'
@@ -104,7 +107,7 @@ module Test::Unit::Assertions
   def assert_empty(obj, msg=nil)
     assert_respond_to(obj, :empty?, msg)
     assert(obj.empty?, msg)
-  end if RUBY_VERSION.to_f <= 1.8
+  end unless method_defined?(:assert_empty)
 end
 
 class Test::Unit::TestCase

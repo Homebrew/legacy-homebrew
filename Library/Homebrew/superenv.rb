@@ -161,7 +161,6 @@ class << ENV
   def determine_cmake_frameworks_path
     # XXX: keg_only_deps perhaps? but Qt does not link its Frameworks because of Ruby's Find.find ignoring symlinks!!
     paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/Frameworks" }
-    paths << "#{HOMEBREW_PREFIX}/Frameworks"
     paths << "#{MacOS.sdk_path}/System/Library/Frameworks" if MacSystem.xcode43_without_clt?
     paths.to_path_s
   end
