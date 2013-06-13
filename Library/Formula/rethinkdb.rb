@@ -10,7 +10,7 @@ class Rethinkdb < Formula
 
   def install
     # Disable drivers because right now we don't build Python/Ruby bindings. Pull request welcome.
-    system "./configure --prefix=#{prefix} --fetch protobuf --disable-drivers"
+    system "./configure", "--prefix=#{prefix}", "--fetch", "protobuf", "--disable-drivers"
     system "make"
     system "make install-osx"
   end
