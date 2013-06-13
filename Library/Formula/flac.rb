@@ -29,6 +29,7 @@ class Flac < Formula
                           "--disable-debug",
                           "--disable-asm-optimizations",
                           "--enable-sse",
+                          "--enable-static",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     ENV['OBJ_FORMAT']='macho'
