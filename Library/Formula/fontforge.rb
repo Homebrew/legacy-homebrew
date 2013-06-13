@@ -85,12 +85,10 @@ class Fontforge < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/fontforge", "-version"
-    if build.with? 'python'
-      python do
-        system python, "-c", "import fontforge"
-      end
+    python do
+      system python, "-c", "import fontforge"
     end
   end
 

@@ -43,8 +43,8 @@ class Portmidi < Formula
   end
 
   test do
-    if build.with?('python') || Tab.for_name('portmidi').with?('python')
-      system "python", "-c", "import pyportmidi; pyportmidi.init()"
+    python do
+      system python, "-c", "import pyportmidi; pyportmidi.init()"
     end
   end
 
