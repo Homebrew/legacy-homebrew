@@ -14,8 +14,9 @@ class Subversion < Formula
   depends_on 'pkg-config' => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
-  depends_on 'sqlite'
+  depends_on 'neon'
   depends_on 'serf'
+  depends_on 'sqlite'
   depends_on :python => :optional
 
   # Building Ruby bindings requires libtool
@@ -79,7 +80,7 @@ class Subversion < Formula
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula.factory('sqlite').opt_prefix}",
             "--with-serf=#{Formula.factory('serf').opt_prefix}",
-            "--without-neon",
+            "--disable-neon-version-check",
             "--disable-mod-activation",
             "--disable-nls",
             "--without-apache-libexecdir",
