@@ -165,9 +165,14 @@ class << ENV
     paths.to_path_s
   end
 
-  def determine_cmake_include_path
-    sdk = MacOS.sdk_path if MacSystem.xcode43_without_clt?
+  def determine_cmake_include_path    
+    if MacSystem.xcode43_without_clt? || MacOS.version > :mountain_lion
+      # There is no /usr/include in OSX 10.9 (yet)
+      # Meanwhile we react similar to 10.8 without CLT
+      sdk = MacOS.sdk_path 
+    end
     paths = []
+    paths << "#{sdk}/usr/include" if MacOS.version > :mountain_lion
     paths << "#{MacSystem.x11_prefix}/include/freetype2" if x11?
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     if MacSystem.xcode43_without_clt?
