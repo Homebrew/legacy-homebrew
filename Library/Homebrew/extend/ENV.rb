@@ -389,10 +389,10 @@ class << ENV
     removed
   end
   def append_to_cflags newflags
-    append(CC_FLAG_VARS, newflags)
+    append(HomebrewEnvExtension::CC_FLAG_VARS, newflags)
   end
   def remove_from_cflags val
-    remove CC_FLAG_VARS, val
+    remove HomebrewEnvExtension::CC_FLAG_VARS, val
   end
   def append keys, value, separator = ' '
     value = value.to_s
