@@ -457,7 +457,7 @@ class << ENV
     if self['FC']
       ohai "Building with an alternative Fortran compiler"
       puts "This is unsupported."
-      self['F77'] = self['FC'] unless self['F77']
+      self['F77'] ||= self['FC']
 
       if ARGV.include? '--default-fortran-flags'
         flags_to_set = []
