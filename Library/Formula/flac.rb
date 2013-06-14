@@ -1,17 +1,13 @@
 require 'formula'
 
-class Flac2Mp3 < Formula
-  url 'https://github.com/rmndk/flac2mp3/archive/v1.0.tar.gz'
-  sha1 '1fe176c715a6cd780179126d6aa95cf1f15e7ad8'
-end
-
 class Flac < Formula
-  homepage 'http://flac.sourceforge.net'
-  url 'http://downloads.sourceforge.net/sourceforge/flac/flac-1.2.1.tar.gz'
-  sha1 'bd54354900181b59db3089347cc84ad81e410b38'
+  homepage 'http://xiph.org/flac/'
+  url 'http://downloads.xiph.org/releases/flac/flac-1.3.0.tar.xz'
+  sha1 'a136e5748f8fb1e6c524c75000a765fc63bb7b1b'
 
   option :universal
 
+  depends_on 'xz' => :build
   depends_on 'lame'
   depends_on 'libogg' => :optional
 
@@ -28,6 +24,7 @@ class Flac < Formula
                           "--disable-debug",
                           "--disable-asm-optimizations",
                           "--enable-sse",
+                          "--enable-static",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     ENV['OBJ_FORMAT']='macho'
@@ -38,7 +35,34 @@ class Flac < Formula
     end
 
     system "make install"
-
-    Flac2Mp3.new.brew {|f| bin.install 'flac2mp3'}
+    (bin/'flac2mp3').write DATA.read
   end
 end
+
+__END__
+#!/usr/bin/env ruby
+# http://gist.github.com/gists/2998853/
+# Forked from http://gist.github.com/gists/124242
+
+filename, quality = ARGV[0], ARGV[1]
+abort "Usage: flac2mp3 FLACFILE [V2|V1|V0|320]\nDefault (and recommended) quality is V0." if filename.nil?
+
+qualarg = case quality
+    when "V0","V1","V2" then quality
+    when "320" then "b 320"
+    else "V0"
+end
+
+map = {"TITLE" => "--tt", "ARTIST" => "--ta", "ALBUM" => "--tl", "TRACKNUMBER" => "--tn", "GENRE" => "--tg", "DATE" => "--ty"}
+args = ""
+
+`metaflac --export-tags-to=- "#{filename}"`.each_line do |line|
+    key, value = line.strip.split('=', 2)
+    key.upcase!
+    args << %Q{#{map[key]} "#{value.gsub('"', '\"')}" } if map[key]
+end
+
+basename = File.basename(filename, File.extname(filename))
+
+puts "Encoding #{basename}.mp3"
+exec %Q[flac -sdc "#{filename}" | lame -#{qualarg} #{args} - "#{basename}.mp3"]
