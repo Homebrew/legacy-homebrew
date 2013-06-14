@@ -189,7 +189,8 @@ module HomebrewEnvExtension
     delete('MACOSX_DEPLOYMENT_TARGET')
     delete('CPATH')
     remove 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
-    unless (sdk = MacOS.sdk_path(version)).nil? or MacOS::CLT.installed?
+
+    if (sdk = MacOS.sdk_path(version)) && !MacOS::CLT.installed?
       delete('SDKROOT')
       remove_from_cflags "-isysroot #{sdk}"
       remove 'CPPFLAGS', "-isysroot #{sdk}"
@@ -213,7 +214,8 @@ module HomebrewEnvExtension
     self['MACOSX_DEPLOYMENT_TARGET'] = version
     self['CPATH'] = "#{HOMEBREW_PREFIX}/include"
     prepend 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
-    unless (sdk = MacOS.sdk_path(version)).nil? or MacOS::CLT.installed?
+
+    if (sdk = MacOS.sdk_path(version)) && !MacOS::CLT.installed?
       # Extra setup to support Xcode 4.3+ without CLT.
       self['SDKROOT'] = sdk
       # Tell clang/gcc where system include's are:
