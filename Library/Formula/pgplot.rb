@@ -96,15 +96,4 @@ class Pgplot < Formula
       end
     end
   end
-
-  test do
-    (testpath/'test_pgplot').write <<-EOS.undent
-      spawn #{prefix}/examples/pgdemo1
-      expect {
-        NULL     {send "/XWINDOW\n"; exp_continue}
-        RETURN   {send "\n"; exp_continue}
-      }
-      EOS
-    system "expect test_pgplot; killall pgxwin_server"
-  end
 end
