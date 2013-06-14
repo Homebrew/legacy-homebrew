@@ -13,5 +13,9 @@ module MacOS
           end
       super(Version.new(v))
     end
+
+    def pretty_name
+      @version.split('_').map(&:capitalize).join(' ')
+    end
   end
 end
