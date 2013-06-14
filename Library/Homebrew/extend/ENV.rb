@@ -484,8 +484,8 @@ class << ENV
       self['FC'] = which 'gfortran'
       self['F77'] = self['FC']
 
-      FC_FLAG_VARS.each {|key| self[key] = cflags}
-      set_cpu_flags(FC_FLAG_VARS)
+      HomebrewEnvExtension::FC_FLAG_VARS.each {|key| self[key] = cflags}
+      set_cpu_flags(HomebrewEnvExtension::FC_FLAG_VARS)
     else
       onoe <<-EOS
 This formula requires a fortran compiler, but we could not find one by
