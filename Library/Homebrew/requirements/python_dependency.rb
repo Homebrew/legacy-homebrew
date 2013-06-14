@@ -24,10 +24,10 @@ class PythonInstalled < Requirement
 
   class PythonVersion < Version
     def major
-      to_a[0].to_s.to_i  # Python's major.minor are always ints.
+      tokens[0].to_s.to_i  # Python's major.minor are always ints.
     end
     def minor
-      to_a[1].to_s.to_i
+      tokens[1].to_s.to_i
     end
   end
 
