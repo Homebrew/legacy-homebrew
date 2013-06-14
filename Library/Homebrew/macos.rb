@@ -20,7 +20,7 @@ module MacOS extend self
   end
 
   def pretty_name
-    cat.to_s.split('_').map(&:capitalize).join(' ')
+    MacOS.version.pretty_name
   end
 
   def locate tool
