@@ -17,7 +17,7 @@ class Opendylan < Formula
   url 'http://opendylan.org/downloads/opendylan/2012.1/opendylan-2012.1-x86-darwin.tar.bz2'
   sha1 '5f2e471e18a2e5ee7c2156593427a63c1d4415b2'
 
-  depends_on LionOrNewer.new
+  depends_on LionOrNewer
 
   def install
     prefix.install Dir['*']
