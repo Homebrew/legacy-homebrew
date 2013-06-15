@@ -162,6 +162,17 @@ class Test
       diff_end_sha1 = current_sha1
     end
 
+    # Handle Jenkins pull request builder plugin.
+    if ENV['ghprbPullId'] and ENV['GIT_URL']
+      git_url = ENV['GIT_URL']
+      git_match = git_url.match %r{.*github.com[:/](\w+/\w+).*}
+      if git_match
+        github_repo = git_match[1]
+        pull_id = ENV['ghprbPullId']
+        @url = "https://github.com/#{github_repo}/pull/#{pull_id}"
+      end
+    end
+
     if @hash == 'HEAD'
       if diff_start_sha1 == diff_end_sha1 or \
         single_commit?(diff_start_sha1, diff_end_sha1)
