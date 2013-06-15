@@ -166,8 +166,9 @@ class Python < Formula
       cflags += " -I#{Formula.factory('tcl-tk').opt_prefix}/include"
       ldflags += " -L#{Formula.factory('tcl-tk').opt_prefix}/lib"
     end
-    unless MacOS::CLT.installed?
+    if !MacOS::CLT.installed? || MacOS.version > :mountain_lion
       # Help Python's build system (distribute/pip) to build things on Xcode-only systems
+      # This is also needed on OSX 10.9 with Xcode and CLT installed
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
       cflags += " -isysroot #{MacOS.sdk_path}"
       ldflags += " -isysroot #{MacOS.sdk_path}"
