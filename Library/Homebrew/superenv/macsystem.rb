@@ -1,7 +1,10 @@
 # new code because I don't really trust the Xcode code now having researched it more
 module MacSystem extend self
   def xcode_clt_installed?
-    File.executable? "/usr/bin/clang" and File.executable? "/usr/bin/lldb" and File.executable? "/usr/bin/make"
+    # TODO: handle 10.9 CLT which has headers under:
+    # /Library/Developer/CommandLineTools/usr/include
+    File.executable? "/usr/bin/clang" and File.executable? "/usr/bin/lldb" and
+      File.executable? "/usr/bin/make" and File.directory? "/usr/include"
   end
 
   def xcode43_without_clt?

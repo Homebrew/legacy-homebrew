@@ -158,8 +158,12 @@ module MacOS::CLT extend self
   # This is true ift he standard UNIX tools are present under /usr. For
   # Xcode < 4.3, this is the standard location. Otherwise, it means that
   # the user has installed the "Command Line Tools for Xcode" package.
+  # TODO: handle 10.9 CLT which has headers under:
+  # /Library/Developer/CommandLineTools/usr/include
   def installed?
-    MacOS.dev_tools_path == Pathname.new("/usr/bin")
+    return false if MacOS.version > :mountain_lion
+    MacOS.dev_tools_path == Pathname.new("/usr/bin") and
+      File.directory? "/usr/include"
   end
 
   def latest_version?
