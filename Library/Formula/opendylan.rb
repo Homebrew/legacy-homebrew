@@ -37,9 +37,7 @@ class Opendylan < Formula
       system "make 3-stage-bootstrap"
       system "make install"
     else
-      prefix.install Dir['bin']
-      prefix.install Dir['lib/*.jam']
-      prefix.install Dir['sources']
+      prefix.install Dir['*']
     end
   end
 
