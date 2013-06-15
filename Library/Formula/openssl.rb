@@ -6,6 +6,8 @@ class Openssl < Formula
   mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1e.tar.gz'
   sha256 'f74f15e8c8ff11aa3d5bb5f276d202ec18d7246e95f961db76054199c69c1ae3'
 
+  depends_on 'curl-ca-bundle'
+
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
 
@@ -29,12 +31,13 @@ class Openssl < Formula
     system "make"
     system "make", "test"
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
-  end
 
-  def caveats; <<-EOS.undent
-    To install updated CA certs from Mozilla.org:
+    # Install the ca-bundle as the default cert.pem
+    cert_pem = etc + 'openssl' + 'cert.pem'
 
-        brew install curl-ca-bundle
-    EOS
+    if !cert_pem.exist?
+      cert_pem.unlink if cert_pem.symlink? # It's a broken link.
+      ln_s "../../share/ca-bundle.crt", cert_pem.to_s
+    end
   end
 end
