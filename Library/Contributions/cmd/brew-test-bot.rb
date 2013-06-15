@@ -99,7 +99,7 @@ class Step
 end
 
 class Test
-  attr_reader :log_root, :category, :name, :core_changed, :formulae, :steps
+  attr_reader :log_root, :category, :name, :formulae, :steps
 
   def initialize argument
     @hash = nil
@@ -121,7 +121,6 @@ class Test
 
     @category = __method__
     @steps = []
-    @core_changed = false
     @brewbot_root = Pathname.pwd + "brewbot"
     FileUtils.mkdir_p @brewbot_root
   end
@@ -206,10 +205,6 @@ class Test
         if filename.include? '/Formula/'
           @formulae << File.basename(filename, '.rb')
         end
-      end
-      if filename.include? '/Homebrew/' or filename.include? '/ENV/' \
-        or filename.include? 'bin/brew'
-        @core_changed = true
       end
     end
   end
@@ -329,10 +324,10 @@ class Test
     cleanup_before
     download
     setup unless ARGV.include? "--skip-setup"
+    homebrew
     formulae.each do |f|
       formula(f)
     end
-    homebrew if core_changed
     cleanup_after
     check_results
   end
