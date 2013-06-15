@@ -159,7 +159,7 @@ module MacOS::CLT extend self
   # Xcode < 4.3, this is the standard location. Otherwise, it means that
   # the user has installed the "Command Line Tools for Xcode" package.
   def installed?
-    MacOS.dev_tools_path == Pathname.new("/usr/bin")
+    (MacOS.dev_tools_path == Pathname.new("/usr/bin")) and File.directory? "/usr/include"
   end
 
   def latest_version?
