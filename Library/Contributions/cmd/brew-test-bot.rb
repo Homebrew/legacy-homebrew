@@ -152,7 +152,8 @@ class Test
     @start_branch = current_branch
 
     # Use Jenkins environment variables if present.
-    if ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT']
+    if ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT'] \
+       and not ENV['ghprbPullId']
       diff_start_sha1 = shorten_revision ENV['GIT_PREVIOUS_COMMIT']
       diff_end_sha1 = shorten_revision ENV['GIT_COMMIT']
       test "brew update" if current_branch == "master"
@@ -171,6 +172,8 @@ class Test
         pull_id = ENV['ghprbPullId']
         @url = "https://github.com/#{github_repo}/pull/#{pull_id}"
         @hash = nil
+      else
+        puts "Invalid 'ghprbPullId' environment variable value!"
       end
     end
 
