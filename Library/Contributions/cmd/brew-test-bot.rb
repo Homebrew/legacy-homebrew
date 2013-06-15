@@ -170,6 +170,7 @@ class Test
         github_repo = git_match[1]
         pull_id = ENV['ghprbPullId']
         @url = "https://github.com/#{github_repo}/pull/#{pull_id}"
+        @hash = nil
       end
     end
 
