@@ -10,17 +10,7 @@ module MacOS extend self
   end
 
   def cat
-    case MacOS.version
-    when "10.8" then :mountain_lion
-    when "10.7" then :lion
-    when "10.6" then :snow_leopard
-    when "10.5" then :leopard
-    when "10.4" then :tiger
-    end
-  end
-
-  def pretty_name
-    MacOS.version.pretty_name
+    version.to_sym
   end
 
   def locate tool
