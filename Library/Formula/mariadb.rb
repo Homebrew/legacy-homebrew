@@ -2,8 +2,8 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.30/kvm-tarbake-jaunty-x86/mariadb-5.5.30.tar.gz'
-  sha1 'aa0cb78b8d709d765e4a58953ecdceefc48af5a7'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.31/kvm-tarbake-jaunty-x86/mariadb-5.5.31.tar.gz'
+  sha1 '45268a0603db8674ecabbc510ad0fcad88a730f7'
 
   devel do
     url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.2/kvm-tarbake-jaunty-x86/mariadb-10.0.2.tar.gz'
