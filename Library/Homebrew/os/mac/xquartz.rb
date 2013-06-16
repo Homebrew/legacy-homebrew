@@ -24,7 +24,7 @@ module MacOS::XQuartz extend self
       else
         # Finally, try to find it via pkgutil. This is slow, and only works
         # for the upstream XQuartz package, so use it as a last resort.
-        MacOS.pkgutil_info(FORGE_PKG_ID) =~ /version: (\d\.\d\.\d).+$/ and $1
+        MacOS.pkgutil_info(FORGE_PKG_ID)[/version: (\d\.\d\.\d).+$/, 1]
       end
     end
   end
