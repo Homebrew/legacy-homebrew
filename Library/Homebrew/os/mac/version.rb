@@ -2,15 +2,21 @@ require 'version'
 
 module MacOS
   class Version < ::Version
+    SYMBOLS = {
+      :mavericks     => '10.9',
+      :mountain_lion => '10.8',
+      :lion          => '10.7',
+      :snow_leopard  => '10.6',
+      :leopard       => '10.5',
+      :tiger         => '10.4',
+    }
+
+    def self.from_symbol(sym)
+      new(SYMBOLS.fetch(sym))
+    end
+
     def <=>(other)
-      v = case other
-          when :mountain_lion then "10.8"
-          when :lion          then "10.7"
-          when :snow_leopard  then "10.6"
-          when :leopard       then "10.5"
-          when :tiger         then "10.4"
-          else other.to_s
-          end
+      v = SYMBOLS.fetch(other, other.to_s)
       super(Version.new(v))
     end
 
