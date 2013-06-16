@@ -89,6 +89,11 @@ class Mariadb < Formula
     system "make"
     system "make install"
 
+    # Fix my.cnf to point to #{etc} instead of /etc
+    inreplace "#{etc}/my.cnf" do |s|
+      s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
+    end
+
     unless build.include? 'client-only'
       # Don't create databases inside of the prefix!
       # See: https://github.com/mxcl/homebrew/issues/4975
@@ -105,11 +110,6 @@ class Mariadb < Formula
         s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
         # pidof can be replaced with pgrep from proctools on Mountain Lion
         s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
-      end
-
-      # Fix my.cnf to point to #{etc} instead of /etc
-      inreplace "#{etc}/my.cnf" do |s|
-        s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
       end
 
       ln_s "#{prefix}/support-files/mysql.server", bin
