@@ -5,6 +5,7 @@ class Go < Formula
   url 'https://go.googlecode.com/files/go1.1.1.src.tar.gz';
   version '1.1.1'
   sha1 'f365aed8183e487a48a66ace7bf36e5974dffbb3'
+
   head 'https://go.googlecode.com/hg/'
 
   skip_clean 'bin'
@@ -25,7 +26,7 @@ class Go < Formula
       targets = [
         ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
         ['freebsd', ['386', 'amd64'],        { :cgo => false }],
-
+        ['netbsd',  ['386', 'amd64'],        { :cgo => false }],
         ['openbsd', ['386', 'amd64'],        { :cgo => false }],
 
         ['windows', ['386', 'amd64'],        { :cgo => false }],
