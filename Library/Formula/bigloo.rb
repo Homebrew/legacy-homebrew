@@ -26,7 +26,10 @@ class Bigloo < Formula
             "--infodir=#{info}",
             "--customgc=yes",
             "--os-macosx",
-            "--native=yes"]
+            "--native=yes",
+            "--disable-alsa",
+            "--disable-mpg123",
+            "--disable-flac"]
 
     args << "--jvm=yes" if build.include? 'with-jvm'
 
