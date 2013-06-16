@@ -16,10 +16,10 @@ module MacOS::XQuartz extend self
         # system X11 distribution, we can't get the version from pkgutil, so
         # just use the expected version.
         case MacOS.version
-        when 10.5 then "2.1.6"
-        when 10.6 then "2.3.6"
-        when 10.7 then "2.6.3"
-        else "dunno"
+        when '10.5' then '2.1.6'
+        when '10.6' then '2.3.6'
+        when '10.7' then '2.6.3'
+        else 'dunno'
         end
       else
         # Finally, try to find it via pkgutil. This is slow, and only works
