@@ -20,16 +20,20 @@ module MacOS
       super(Version.new(v))
     end
 
-    def pretty_name
+    def to_sym
       case @version
-      when "10.9" then "Mavericks"
-      when "10.8" then "Mountain Lion"
-      when "10.7" then "Lion"
-      when "10.6" then "Snow Leopard"
-      when "10.5" then "Leopard"
-      when "10.4" then "Tiger"
-      else @version
+      when '10.9' then :mavericks
+      when '10.8' then :mountain_lion
+      when '10.7' then :lion
+      when '10.6' then :snow_leopard
+      when '10.5' then :leopard
+      when '10.4' then :tiger
+      else :dunno
       end
+    end
+
+    def pretty_name
+      to_sym.to_s.split('_').map(&:capitalize).join(' ')
     end
   end
 end
