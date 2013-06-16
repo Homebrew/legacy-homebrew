@@ -4,8 +4,8 @@ require 'formula'
 # https://github.com/mxcl/homebrew/issues/20339
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
-  url 'http://cfengine.com/source-code/download?file=cfengine-3.4.4.tar.gz'
-  sha1 'f99174fcb358a263b1a1090668d7ba2ba849bbc1'
+  url 'http://cfengine.com/source-code/download?file=cfengine-3.5.0.tar.gz'
+  sha1 'bddb179b5015d4d9d45fba3c2e63ca764bc46bf3'
 
   depends_on 'pcre'
   depends_on 'tokyo-cabinet'
