@@ -25,7 +25,7 @@ class Go < Formula
       targets = [
         ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
         ['freebsd', ['386', 'amd64'],        { :cgo => false }],
-
+        ['netbsd',  ['386', 'amd64'],        { :cgo => false }],
         ['openbsd', ['386', 'amd64'],        { :cgo => false }],
 
         ['windows', ['386', 'amd64'],        { :cgo => false }],
