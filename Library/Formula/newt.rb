@@ -17,9 +17,7 @@ class Newt < Formula
 
   def install
     args = ["--prefix=#{prefix}", "--without-tcl"]
-    unless build.with? 'python'
-      args << "--without-python"
-    end
+    args << "--without-python" if build.without? 'python'
     system "./configure", *args
     system "make install"
   end
