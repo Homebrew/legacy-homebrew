@@ -12,7 +12,7 @@ class Wireshark < Formula
   depends_on 'pkg-config' => :build
 
   depends_on 'glib'
-  depends_on 'gnutls2'
+  depends_on 'gnutls'
   depends_on 'libgcrypt'
 
   depends_on 'geoip' => :recommended
