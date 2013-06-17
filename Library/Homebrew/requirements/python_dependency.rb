@@ -31,13 +31,12 @@ class PythonInstalled < Requirement
     end
   end
 
-  def initialize(*tags)
+  def initialize(version="2.6", *tags )
     # Extract the min_version if given. Default to python 2.X else
-    tags.flatten!
-    if /(\d+\.)*\d+/ === tags.first
-      @min_version = PythonVersion.new(tags.shift)
+    if /(\d+\.)*\d+/ === version.to_s
+      @min_version = PythonVersion.new(version)
     else
-      @min_version = PythonVersion.new("2.6")  # default
+      raise "Invalid version specification for Python: '#{version}'"
     end
 
     # often used idiom: e.g. sipdir = "share/sip" + python.if3then3
@@ -50,6 +49,18 @@ class PythonInstalled < Requirement
     # Set name according to the major version.
     # The name is used to generate the options like --without-python3
     @name = "python" + @if3then3
+
+    # Check if any python modules should be importable. We use a hash to store
+    # the corresponding name on PyPi "<import_name>" => "<name_on_PyPi>".
+    # Example: `depends_on :python => ['enchant' => 'pyenchant']
+    @imports = {}
+    tags.each do |tag|
+      if tag.kind_of? String
+        @imports[tag] = tag
+      elsif tag.kind_of? Hash
+        @imports.merge!(tag)
+      end
+    end
 
     # will be set later by the python_helper, because it needs the
     # formula prefix to set site_packages
@@ -78,8 +89,27 @@ class PythonInstalled < Requirement
     elsif @min_version.major == 2 && `python -c "import sys; print(sys.version_info[0])"`.strip == "3"
       @unsatisfied_because += "Your `python` points to a Python 3.x. This is not supported."
     else
-      true
+      @imports.keys.map do |module_name|
+        if not importable? module_name
+          @unsatisfied_because += "Unsatisfied dependency: #{module_name}\n"
+          @unsatisfied_because += "OS X System's " if from_osx?
+          @unsatisfied_because += "Brewed " if brewed?
+          @unsatisfied_because += "External " unless brewed? || from_osx?
+          @unsatisfied_because += "Python cannot `import #{module_name}`. Install with:\n  "
+          unless importable? 'pip'
+            @unsatisfied_because += "sudo easy_install pip\n  "
+          end
+          @unsatisfied_because += "pip-#{version.major}.#{version.minor} install #{@imports[module_name]}"
+          false
+        else
+          true
+        end
+      end.all?  # all given `module_name`s have to be `importable?`
     end
+  end
+
+  def importable? module_name
+    quiet_system(binary, "-c", "import #{module_name}")
   end
 
   # The full path to the python or python3 executable, depending on `version`.
@@ -90,8 +120,15 @@ class PythonInstalled < Requirement
         # Note, we don't support homebrew/versions/pythonXX.rb, though.
         Formula.factory(@name).opt_prefix/"bin/python#{@min_version.major}"
       else
-        # This should find at least system python, because /usr/bin is in PATH:
-        which(@name)
+        begin
+          # Using the ORIGINAL_PATHS here because in superenv, the user
+          # installed external Python is not visible otherwise.
+          tmp_PATH = ENV['PATH']
+          ENV['PATH'] = ORIGINAL_PATHS.join(':')
+          which(@name)
+        ensure
+          ENV['PATH'] = tmp_PATH
+        end
       end
     end
   end
@@ -257,7 +294,7 @@ class PythonInstalled < Requirement
       import sys
 
       if sys.version_info[0] == #{version.major} and sys.version_info[1] == #{version.minor}:
-          if sys.executable.startswith('#{HOMEBREW_PREFIX}'):
+          if sys.executable.startswith('#{HOMEBREW_PREFIX}/opt/python'):
               # Fix 1)
               #   A setuptools.pth and/or easy-install.pth sitting either in
               #   /Library/Python/2.7/site-packages or in
@@ -285,7 +322,7 @@ class PythonInstalled < Requirement
                   from _sysconfigdata import build_time_vars
                   build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{HOMEBREW_PREFIX}/opt/#{name}/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/Python'
               except:
-                  pass  # remember: don't print here. Better to fail silent.
+                  pass  # remember: don't print here. Better to fail silently.
           # Fix 5)
           #   For all Pythons of the right major.minor version: Tell about homebrew's
           #   site-packages location. This is needed for Python to parse *.pth.
@@ -307,6 +344,10 @@ class PythonInstalled < Requirement
   end
 
   def hash
-    to_s.hash
+    # Requirements are a ComparableSet. So we define our identity by the
+    # selected python binary plus the @imports in order to support multiple:
+    #    depends_on :python => 'module1'
+    #    depends_on :python => 'module2'
+    (binary.to_s+@imports.to_s).hash
   end
 end
