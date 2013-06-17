@@ -23,7 +23,7 @@ module Homebrew extend self
   end
 
   def check_ppc
-    case Hardware.cpu_type when :ppc, :dunno
+    case Hardware::CPU.type when :ppc, :dunno
       abort <<-EOS.undent
         Sorry, Homebrew does not support your computer's CPU architecture.
         For PPC support, see: https://github.com/mistydemeo/tigerbrew

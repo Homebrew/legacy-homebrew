@@ -184,7 +184,6 @@ class Version
   def tokens
     @tokens ||= tokenize
   end
-  alias_method :to_a, :tokens
 
   def tokenize
     @version.scan(
