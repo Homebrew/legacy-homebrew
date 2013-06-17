@@ -115,7 +115,6 @@ class Keg < Pathname
     link_dir('bin', mode) {:skip_dir}
     link_dir('sbin', mode) {:skip_dir}
     link_dir('include', mode) {:link}
-    link_dir('Frameworks', mode) { :link }
 
     link_dir('share', mode) do |path|
       case path.to_s
@@ -145,6 +144,18 @@ class Keg < Pathname
       when 'ruby' then :mkpath
       # Everything else is symlinked to the cellar
       else :link
+      end
+    end
+
+    link_dir('Frameworks', mode) do |path|
+      # Frameworks contain symlinks pointing into a subdir, so we have to use
+      # the :link strategy. However, for Foo.framework and
+      # Foo.framework/Versions we have to use :mkpath so that multiple formulae
+      # can link their versions into it and `brew [un]link` works.
+      if path.to_s =~ /[^\/]*\.framework(\/Versions)?$/
+        :mkpath
+      else
+        :link
       end
     end
 
