@@ -37,6 +37,8 @@ class Inkscape < Formula
     system "./configure", *args
 
     system "make install"
+    # Don't link this into share!
+    (share/"icons/hicolor/icon-theme.cache").unlink
   end
 
   def test
