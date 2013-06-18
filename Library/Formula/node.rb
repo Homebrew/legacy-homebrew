@@ -31,8 +31,8 @@ end
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.11/node-v0.10.11.tar.gz'
-  sha1 '4f646bb3418d1c177ce28cdbc61e71de35b38aea'
+  url 'http://nodejs.org/dist/v0.10.12/node-v0.10.12.tar.gz'
+  sha1 '3e4f692fb9156c0cee4dd35bd8a6be4ff89a29de'
 
   devel do
     url 'http://nodejs.org/dist/v0.11.2/node-v0.11.2.tar.gz'
