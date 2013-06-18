@@ -4,8 +4,8 @@ class Libslax < Formula
   homepage 'http://www.libslax.org/'
   url 'https://github.com/Juniper/libslax/archive/libslax-0.16.0.tar.gz'
   sha1 'c89b46387050fe8b201f8a0f1676e504aac1b80e'
+  head 'https://github.com/Juniper/libslax.git'
 
-  depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'libtool'  => :build
 
