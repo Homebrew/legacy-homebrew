@@ -5,6 +5,8 @@ class Jstalk < Formula
   url 'https://github.com/ccgus/jstalk/archive/v1.0.1.tar.gz'
   sha1 '9257333ca347bc29cfc5e97cc199b61cfefa2168'
 
+  head 'https://github.com/ccgus/jstalk.git'
+
   depends_on :macos => :snow_leopard
   depends_on :xcode # For working xcodebuild.
 
