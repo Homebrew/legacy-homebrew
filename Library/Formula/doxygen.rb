@@ -10,12 +10,16 @@ class Doxygen < Formula
 
   option 'with-dot', 'Build with dot command support from Graphviz.'
   option 'with-doxywizard', 'Build GUI frontend with qt support.'
+  option 'with-libclang', 'Build with libclang support.'
 
   depends_on 'graphviz' if build.include? 'with-dot'
   depends_on 'qt' if build.include? 'with-doxywizard'
+  depends_on 'llvm' if build.include? 'with-libclang'
 
   def install
-    system "./configure", "--prefix", prefix
+    args = ["--prefix", prefix]
+    args << '--with-libclang' if build.with? 'libclang'
+    system "./configure", *args
     # Per Macports:
     # https://trac.macports.org/browser/trunk/dports/textproc/doxygen/Portfile#L92
     inreplace %w[ libmd5/Makefile.libmd5

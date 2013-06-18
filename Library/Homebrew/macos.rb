@@ -10,17 +10,7 @@ module MacOS extend self
   end
 
   def cat
-    case MacOS.version
-    when 10.8 then :mountain_lion
-    when 10.7 then :lion
-    when 10.6 then :snow_leopard
-    when 10.5 then :leopard
-    when 10.4 then :tiger
-    end
-  end
-
-  def pretty_name
-    cat.to_s.split('_').map(&:capitalize).join(' ')
+    version.to_sym
   end
 
   def locate tool
@@ -184,7 +174,7 @@ module MacOS extend self
   end
 
   def prefer_64_bit?
-    Hardware.is_64_bit? and version != :leopard
+    Hardware::CPU.is_64_bit? and version != :leopard
   end
 
   STANDARD_COMPILERS = {
@@ -206,6 +196,7 @@ module MacOS extend self
     "4.6"   => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "4.6.1" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "4.6.2" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "4.6.3" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "5.0"   => { :clang => "5.0", :clang_build => 500 },
   }
 

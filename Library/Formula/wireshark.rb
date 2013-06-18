@@ -10,15 +10,18 @@ class Wireshark < Formula
   option 'with-qt', 'Use QT for GUI instead of GTK+'
 
   depends_on 'pkg-config' => :build
-  depends_on 'gnutls2' => :optional
-  depends_on 'libgcrypt' => :optional
-  depends_on 'c-ares' => :optional
-  depends_on 'pcre' => :optional
-  depends_on 'qt' => :optional
-  depends_on 'lua' => :optional
-  depends_on 'portaudio' => :optional
+
   depends_on 'glib'
+  depends_on 'gnutls'
+  depends_on 'libgcrypt'
+
   depends_on 'geoip' => :recommended
+
+  depends_on 'c-ares' => :optional
+  depends_on 'lua' => :optional
+  depends_on 'pcre' => :optional
+  depends_on 'portaudio' => :optional
+  depends_on 'qt' => :optional
 
   if build.with? 'x'
     depends_on :x11
@@ -26,9 +29,13 @@ class Wireshark < Formula
   end
 
   def install
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args = ["--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--with-gnutls",
+            "--with-ssl"]
 
-    args << '--with-qt' if build.with? 'qt'
+    args << "--disable-wireshark" << "--disable-gtktest" unless build.with? "x"
+    args << "--with-qt" if build.with? "qt"
 
     system "./configure", *args
     system "make"

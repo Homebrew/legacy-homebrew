@@ -1,15 +1,5 @@
 require 'formula'
 
-class LionOrNewer < Requirement
-  fatal true
-
-  satisfy MacOS.version >= :lion
-
-  def message
-    "Avian requires Mac OS X 10.7 (Lion) or newer."
-  end
-end
-
 class JdkInstalled < Requirement
   fatal true
 
@@ -32,7 +22,7 @@ class Avian < Formula
   head 'https://github.com/ReadyTalk/avian.git'
 
   depends_on JdkInstalled
-  depends_on LionOrNewer
+  depends_on :macos => :lion
 
   def install
     system 'make', 'JAVA_HOME=/Library/Java/Home'

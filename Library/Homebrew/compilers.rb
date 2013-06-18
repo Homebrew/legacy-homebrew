@@ -35,9 +35,8 @@ class CompilerQueue
 end
 
 class CompilerSelector
-  def initialize(f, old_compiler)
+  def initialize(f)
     @f = f
-    @old_compiler = old_compiler
     @compilers = CompilerQueue.new
     %w{clang llvm gcc gcc_4_0}.map(&:to_sym).each do |cc|
       unless MacOS.send("#{cc}_build_version").nil?

@@ -64,7 +64,7 @@ class Libxml2 < Formula
     if build.with? 'python'
       <<-EOS.undent
         Even if this formula is keg_only, the python bindings have been linked
-        into the global site-packages for your convenience.
+        into Homebrew's global site-packages for your convenience.
           #{python.global_site_packages}
 
       EOS
