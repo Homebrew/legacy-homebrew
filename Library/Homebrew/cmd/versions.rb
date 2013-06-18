@@ -47,7 +47,7 @@ class Formula
   private
     def repository
       @repository ||= begin
-        if path.realpath.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)}
+        if path.realpath.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/([\w-]+)-(\w+)}
           HOMEBREW_REPOSITORY/"Library/Taps/#$1-#$2"
         else
           HOMEBREW_REPOSITORY
