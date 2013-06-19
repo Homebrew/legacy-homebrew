@@ -40,7 +40,9 @@ class Postgresql < Formula
       --with-bonjour
       --with-gssapi
       --with-krb5
+      --with-ldap
       --with-openssl
+      --with-pam
       --with-libxml
       --with-libxslt
     ]
