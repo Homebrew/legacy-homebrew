@@ -1,5 +1,6 @@
 require 'formula'
 
+# Reference: https://github.com/b4winckler/macvim/wiki/building
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
   url 'https://github.com/b4winckler/macvim/archive/snapshot-66.tar.gz'
@@ -26,7 +27,6 @@ class Macvim < Formula
     ENV['ARCHFLAGS'] = "-arch #{arch}"
 
     # If building for 10.7 or up, make sure that CC is set to "clang".
-    # Reference: https://github.com/b4winckler/macvim/wiki/building
     ENV.clang if MacOS.version >= :lion
 
     args = %W[
@@ -73,15 +73,15 @@ class Macvim < Formula
 
     system "./configure", *args
 
-    # Building custom icons fails for many users, so off by default.
-    unless build.include? "custom-icons"
+    if build.include? "custom-icons"
+      # Get the custom font used by the icons
+      cd 'src/MacVim/icons' do
+        system "make getenvy"
+      end
+    else
+      # Building custom icons fails for many users, so off by default.
       inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
       inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
-    end
-
-    # Reference: https://github.com/b4winckler/macvim/wiki/building
-    cd 'src/MacVim/icons' do
-      system "make getenvy"
     end
 
     system "make"
