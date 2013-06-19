@@ -23,17 +23,15 @@ class Postgis < Formula
   depends_on 'json-c'
   depends_on 'gdal'
 
-  def postgres_realpath
-    # Follow the PostgreSQL linked keg back to the active Postgres installation
-    # as it is common for people to avoid upgrading Postgres.
-    Formula.factory('postgresql').opt_prefix.realpath
-  end
-
   # Force GPP to be used when pre-processing SQL files. See:
   #   http://trac.osgeo.org/postgis/ticket/1694
   def patches; DATA end
 
   def install
+    # Follow the PostgreSQL linked keg back to the active Postgres installation
+    # as it is common for people to avoid upgrading Postgres.
+    postgres_realpath = Formula.factory('postgresql').opt_prefix.realpath
+
     ENV.deparallelize
 
     args = [
@@ -54,7 +52,6 @@ class Postgis < Formula
     ]
     args << '--with-gui' if build.include? 'with-gui'
 
-
     system './autogen.sh'
     system './configure', *args
     system 'make'
@@ -63,7 +60,7 @@ class Postgis < Formula
     # into the Postgres keg instead of the PostGIS keg. Unfortunately, some
     # things have to be inside the Postgres keg in order to be function. So, we
     # install everything to a staging directory and manually move the pieces
-    # into the appropriate prefixes.
+    # into the appropriate prefixes.    
     mkdir 'stage'
     system 'make', 'install', "DESTDIR=#{buildpath}/stage"
 
@@ -81,7 +78,7 @@ class Postgis < Formula
     include.install Dir['stage/**/include/*']
 
     # Stand-alone SQL files will be installed the share folder
-    (share + 'postgis').install Dir['stage/**/contrib/postgis-2.0/*']
+    (share/'postgis').install Dir['stage/**/contrib/postgis-2.0/*']
 
     # Extension scripts
     bin.install %w[
@@ -99,6 +96,7 @@ class Postgis < Formula
   end
 
   def caveats;
+    pg = Formula.factory('postgresql').opt_prefix
     <<-EOS.undent
       To create a spatially-enabled database, see the documentation:
         http://postgis.refractions.net/documentation/manual-2.0/postgis_installation.html#create_new_db_extensions
@@ -108,12 +106,13 @@ class Postgis < Formula
       PostGIS SQL scripts installed to:
         #{HOMEBREW_PREFIX}/share/postgis
       PostGIS plugin libraries installed to:
-        #{pg = Formula.factory('postgresql').opt_prefix}/lib
+        #{pg}/lib
       PostGIS extension modules installed to:
         #{pg}/share/postgresql/extension
       EOS
   end
 end
+
 __END__
 Force usage of GPP as the SQL pre-processor as Clang chokes.
 
