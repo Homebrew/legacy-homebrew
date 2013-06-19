@@ -25,9 +25,9 @@ class Macvim < Formula
     arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
 
-    # If building for 10.8, make sure that CC is set to "clang".
+    # If building for 10.7 or up, make sure that CC is set to "clang".
     # Reference: https://github.com/b4winckler/macvim/wiki/building
-    ENV.clang if MacOS.version >= :mountain_lion
+    ENV.clang if MacOS.version >= :lion
 
     args = %W[
       --with-features=huge
