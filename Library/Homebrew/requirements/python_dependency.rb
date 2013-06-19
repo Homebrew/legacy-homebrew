@@ -258,7 +258,6 @@ class PythonInstalled < Requirement
     ENV.prepend 'PATH', binary.dirname, ':' unless from_osx?
 
     ENV['PYTHONHOME'] = nil  # to avoid fuck-ups.
-    ENV['PYTHONNOUSERSITE'] = '1'
     ENV['PYTHONPATH'] = global_site_packages.to_s unless brewed?
     # Python respects the ARCHFLAGS var if set. Shall we set them here?
     # ENV['ARCHFLAGS'] = ??? # FIXME
