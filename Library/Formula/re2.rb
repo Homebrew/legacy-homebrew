@@ -10,3 +10,4 @@ class Re2 < Formula
   end
 
 end
+
