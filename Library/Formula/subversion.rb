@@ -56,11 +56,11 @@ class Subversion < Formula
   end
 
   def install
-    # Java support doesn't build correctly in parallel:
-    # https://github.com/mxcl/homebrew/issues/20415
-    ENV.deparallelize
-
     if build.include? 'java'
+      # Java support doesn't build correctly in parallel:
+      # https://github.com/mxcl/homebrew/issues/20415
+      ENV.deparallelize
+
       unless build.universal?
         opoo "A non-Universal Java build was requested."
         puts "To use Java bindings with various Java IDEs, you might need a universal build:"
