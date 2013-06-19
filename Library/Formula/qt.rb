@@ -119,9 +119,8 @@ class Qt < Formula
     (prefix+'q3porting.xml').unlink if build.without? 'qt3support'
 
     # Some config scripts will only find Qt in a "Frameworks" folder
-    cd prefix do
-      ln_s lib, frameworks
-    end
+    frameworks.mkpath
+    ln_s Dir['lib/*.framework'], frameworks
 
     # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to
