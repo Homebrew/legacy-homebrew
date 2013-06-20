@@ -1,7 +1,7 @@
 require 'formula'
 
 class Lzma < Formula
-  url 'http://sourceforge.net/projects/sevenzip/files/LZMA%20SDK/4.65/lzma465.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/sevenzip/LZMA%20SDK/4.65/lzma465.tar.bz2'
   sha1 '5ec1c4606fec88c770a9712073e83916f8aed173'
 end
 

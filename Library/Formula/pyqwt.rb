@@ -2,7 +2,7 @@ require 'formula'
 
 class Pyqwt < Formula
   homepage 'http://pyqwt.sourceforge.net'
-  url 'http://sourceforge.net/projects/pyqwt/files/pyqwt5/PyQwt-5.2.0/PyQwt-5.2.0.tar.gz'
+  url 'http://downloads.sourceforge.net/project/pyqwt/pyqwt5/PyQwt-5.2.0/PyQwt-5.2.0.tar.gz'
   sha1 '797f37c63dec660272f6a8ccfd16a017df0ad640'
 
   depends_on :python => :recommended
