@@ -781,7 +781,7 @@ class Formula
     end
 
     def skip_clean *paths
-      paths = [paths].flatten
+      paths.flatten!
 
       # :all is deprecated though
       if paths.include? :all
