@@ -8,7 +8,7 @@ end
 
 class GsDjVU < Formula
   homepage 'http://djvu.sourceforge.net/gsdjvu.html'
-  url 'http://sourceforge.net/projects/djvu/files/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
+  url 'http://downloads.sourceforge.net/project/djvu/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
   version '1.5'
   sha1 'c7d0677dae5fe644cf3d714c04b3c2c343906342'
 

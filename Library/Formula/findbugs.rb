@@ -2,7 +2,7 @@ require 'formula'
 
 class Findbugs < Formula
   homepage 'http://findbugs.sourceforge.net/index.html'
-  url 'http://sourceforge.net/projects/findbugs/files/findbugs/2.0.2/findbugs-2.0.2.tar.gz'
+  url 'http://downloads.sourceforge.net/project/findbugs/findbugs/2.0.2/findbugs-2.0.2.tar.gz'
   sha1 '3817d96e5143f513cb2945f14f50cdb6720d1f49'
 
   def install
