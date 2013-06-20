@@ -185,20 +185,22 @@ class Subversion < Formula
 end
 
 __END__
---- subversion/bindings/swig/perl/native/Makefile.PL.in~	2011-07-16 04:47:59.000000000 -0700
-+++ subversion/bindings/swig/perl/native/Makefile.PL.in	2012-06-27 17:45:57.000000000 -0700
-@@ -57,10 +57,13 @@
- 
+--- subversion/bindings/swig/perl/native/Makefile.PL.in~ 2013-06-20 18:58:55.000000000 +0200
++++ subversion/bindings/swig/perl/native/Makefile.PL.in	2013-06-20 19:00:49.000000000 +0200
+@@ -69,10 +69,15 @@
+
  chomp $apr_shlib_path_var;
- 
+
 +my $config_ccflags = $Config{ccflags};
-+$config_ccflags =~ s/-arch\s+\S+//g; # remove any -arch arguments, since the ones we want will already be in $cflags
++# remove any -arch arguments, since those
++# we want will already be in $cflags
++$config_ccflags =~ s/-arch\s+\S+//g;
 +
  my %config = (
      ABSTRACT => 'Perl bindings for Subversion',
      DEFINE => $cppflags,
 -    CCFLAGS => join(' ', $cflags, $Config{ccflags}),
 +    CCFLAGS => join(' ', $cflags, $config_ccflags),
-     INC  => join(' ',$apr_cflags, $apu_cflags,
+     INC  => join(' ', $includes, $cppflags,
                   " -I$swig_srcdir/perl/libsvn_swig_perl",
                   " -I$svnlib_srcdir/include",
