@@ -789,10 +789,9 @@ class Formula
         return
       end
 
-      @skip_clean_paths ||= []
       paths.each do |p|
         p = p.to_s unless p == :la # Keep :la in paths as a symbol
-        @skip_clean_paths << p unless @skip_clean_paths.include? p
+        skip_clean_paths << p
       end
     end
 
@@ -801,7 +800,7 @@ class Formula
     end
 
     def skip_clean_paths
-      @skip_clean_paths or []
+      @skip_clean_paths ||= Set.new
     end
 
     def keg_only reason, explanation=nil
