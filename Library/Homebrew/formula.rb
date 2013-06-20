@@ -696,7 +696,7 @@ class Formula
   # The methods below define the formula DSL.
   class << self
 
-    attr_rw :homepage, :keg_only_reason, :skip_clean_all, :cc_failures
+    attr_rw :homepage, :keg_only_reason, :cc_failures
     attr_rw :plist_startup, :plist_manual
 
     Checksum::TYPES.each do |cksum|
