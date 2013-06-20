@@ -2,8 +2,8 @@ require 'formula'
 
 class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
-  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.3.0/apache-couchdb-1.3.0.tar.gz'
-  sha1 '1085297fcabb020f407283aba1f74302c9923fa0'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.3.1/apache-couchdb-1.3.1.tar.gz'
+  sha1 'eaec2cde365c5eb9651bb3230f777c6c728ffaae'
 
   head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
@@ -58,6 +58,9 @@ class Couchdb < Formula
   end
 
   def caveats; <<-EOS.undent
+
+    You can start CouchDB manually as the current user with `couchdb`.
+
     If this is your first install, automatically load on login with:
         mkdir -p ~/Library/LaunchAgents
         cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents/
@@ -68,20 +71,23 @@ class Couchdb < Formula
         cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist ~/Library/LaunchAgents/
         launchctl load -w ~/Library/LaunchAgents/org.apache.couchdb.plist
 
-    Alternatively, automatically run on startup as a daemon with:
+    Alternatively, automatically run on startup as a daemon. You must
+    create a named user 'couchdb' for the daemon, and then execute:
+
         sudo launchctl list org.apache.couchdb \>/dev/null 2\>\&1 \&\& \\
           sudo launchctl unload -w /Library/LaunchDaemons/org.apache.couchdb.plist
         sudo cp #{prefix}/Library/LaunchDaemons/org.apache.couchdb.plist /Library/LaunchDaemons/
         sudo launchctl load -w /Library/LaunchDaemons/org.apache.couchdb.plist
 
-    Or start manually as the current user with `couchdb`.
+    See https://github.com/apache/couchdb/blob/1.3.x/INSTALL.Unix#L208-L236
+    more more details, including resetting any filesystem permissions.
 
     To test CouchDB, start `couchdb` in a terminal and then:
       curl http://127.0.0.1:5984/
 
     The reply should look like:
-      {"couchdb":"Welcome","uuid":"....","version":"1.3.0",
-          "vendor":{"version":"1.3.0-1","name":"Homebrew"}}
+      {"couchdb":"Welcome","uuid":"....","version":"1.3.1",
+          "vendor":{"version":"1.3.1-1","name":"Homebrew"}}
     EOS
   end
 end
