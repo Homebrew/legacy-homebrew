@@ -41,8 +41,8 @@ class Sickbeard < Formula
   def startup_script; <<-EOS.undent
     #!/bin/bash
     python "#{libexec}/SickBeard.py"\
-           "--pid_file=#{var}/run/sickbeard.pid"\
-           "--data_dir=#{etc}/sickbeard"\
+           "--pidfile=#{var}/run/sickbeard.pid"\
+           "--datadir=#{etc}/sickbeard"\
            "$@"
     EOS
   end
