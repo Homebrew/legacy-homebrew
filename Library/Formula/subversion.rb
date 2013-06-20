@@ -9,6 +9,7 @@ class Subversion < Formula
   option 'java', 'Build Java bindings'
   option 'perl', 'Build Perl bindings'
   option 'ruby', 'Build Ruby bindings'
+  option 'unicode-path', 'Include support for UTF-8-MAC filenames'
 
   depends_on 'pkg-config' => :build
 
@@ -29,6 +30,11 @@ class Subversion < Formula
     # Patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
     if build.include? 'perl'
       ps << DATA
+    end
+
+    # Patch for Subversion handling of OS X UTF-8-MAC filename.
+    if build.include? 'unicode-path'
+      ps << "http://gist.github.com/clemensg/5824307/raw/8f6b431d61472fa895b6e66c2a8b6030c4cc7375/utf8_fix.diff"
     end
 
     unless ps.empty?
@@ -167,6 +173,18 @@ class Subversion < Formula
       s += <<-EOS.undent
         You may need to add the Ruby bindings to your RUBYLIB from:
           #{HOMEBREW_PREFIX}/lib/ruby
+
+      EOS
+    end
+
+    if build.include? 'unicode-path'
+      s += <<-EOS.undent
+        This unicode-path version implements a hack to deal with composed/decomposed
+        unicode handling on Mac OS X which is different from linux and windows.
+        It is an implementation of solution 1 from
+        http://svn.collab.net/repos/svn/trunk/notes/unicode-composition-for-filenames
+        which _WILL_ break some setups. Please be sure you understand what you
+        are asking for when you install this version.
 
       EOS
     end
