@@ -2,8 +2,8 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/stable_updates/libvirt-1.0.5.1.tar.gz'
-  sha256 '38a67d9dc979ed28440791eb3fd63e94e4d04e4efbe7554a83bdf0cc614d0a6e'
+  url 'http://libvirt.org/sources/libvirt-1.0.6.tar.gz'
+  sha256 'a188eb2056d7936c4c9605f4d435b9097880ec359e10be6546f2c9fa665de67d'
 
   option 'without-libvirtd', 'Build only the virsh client and development libraries'
 
@@ -11,6 +11,7 @@ class Libvirt < Formula
   depends_on 'gnutls'
   depends_on 'libgcrypt'
   depends_on 'yajl'
+  depends_on :python => :recommended
 
   if MacOS.version == :leopard
     # Definitely needed on Leopard, but not on Snow Leopard.
@@ -37,7 +38,8 @@ class Libvirt < Formula
             "--with-yajl",
             "--without-qemu"]
 
-    args << "--without-libvirtd" if build.include? 'without-libvirtd'
+    args << "--without-libvirtd" if build.without? 'libvirtd'
+    args << "--without-python" if build.without? 'python'
 
     system "./configure", *args
 
@@ -57,6 +59,14 @@ class Libvirt < Formula
         s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
         s.gsub! "/var/", "#{HOMEBREW_PREFIX}/var/"
       end
+    end
+  end
+
+  test do
+    if build.with? 'python'
+      # Testing to import the mod because that is a .so file where linking
+      # can break.
+      system python, '-c', "import libvirtmod"
     end
   end
 end

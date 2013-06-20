@@ -2,6 +2,8 @@ require 'open-uri'
 require 'vendor/multi_json'
 
 class AbstractDownloadStrategy
+  attr_accessor :local_bottle_path
+
   def initialize name, package
     @url = package.url
     specs = package.specs
@@ -36,20 +38,17 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  attr_accessor :local_bottle_path
-
   def initialize name, package
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
-      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{File.basename(@url)}")
+      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{basename_without_params}")
     else
       @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{package.version}#{ext}")
     end
 
     @mirrors = package.mirrors
     @temporary_path = Pathname.new("#@tarball_path.incomplete")
-    @local_bottle_path = nil
   end
 
   def cached_location
@@ -66,11 +65,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    if @local_bottle_path
-      @tarball_path = @local_bottle_path
-      return @local_bottle_path
-    end
-
     ohai "Downloading #{@url}"
     unless @tarball_path.exist?
       had_incomplete_download = @temporary_path.exist?
@@ -108,17 +102,19 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :zip
       with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, @tarball_path }
       chdir
+    when :gzip_only
+      with_system_path { safe_system 'gunzip', '-f', @tarball_path }
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
       with_system_path { safe_system 'tar', 'xf', @tarball_path }
       chdir
     when :xz
-      raise "You must install XZutils: brew install xz" unless which "xz"
-      safe_system "xz -dc \"#{@tarball_path}\" | /usr/bin/tar xf -"
+      raise "You must install XZutils: brew install xz" unless File.executable? xzpath
+      with_system_path { safe_system "#{xzpath} -dc \"#{@tarball_path}\" | tar xf -" }
       chdir
     when :pkg
-      safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, File.basename(@url)
+      safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, basename_without_params
       chdir
     when :rar
       raise "You must install unrar: brew install unrar" unless which "unrar"
@@ -134,11 +130,15 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       # behaviour, just open an issue at github
       # We also do this for jar files, as they are in fact zip files, but
       # we don't want to unzip them
-      FileUtils.cp @tarball_path, File.basename(@url)
+      FileUtils.cp @tarball_path, basename_without_params
     end
   end
 
   private
+
+  def xzpath
+    "#{HOMEBREW_PREFIX}/opt/xz/bin/xz"
+  end
 
   def chdir
     entries=Dir['*']
@@ -146,6 +146,11 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       when 0 then raise "Empty archive"
       when 1 then Dir.chdir entries.first rescue nil
     end
+  end
+
+  def basename_without_params
+    # Strip any ?thing=wad out of .c?thing=wad style extensions
+    File.basename(@url)[/[^?]+/]
   end
 
   def ext
@@ -158,7 +163,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
         '.tgz'
       end
     else
-      Pathname.new(@url).extname
+      # Strip any ?thing=wad out of .c?thing=wad style extensions
+      (Pathname.new(@url).extname)[/[^?]+/]
     end
   end
 end
@@ -189,21 +195,13 @@ end
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   def stage
-    FileUtils.cp @tarball_path, File.basename(@url)
+    FileUtils.cp @tarball_path, basename_without_params
   end
 end
 
-# Normal strategy tries to untar as well
-class GzipOnlyDownloadStrategy < CurlDownloadStrategy
-  def stage
-    FileUtils.mv @tarball_path, File.basename(@url)
-    with_system_path { safe_system 'gunzip', '-f', File.basename(@url) }
-  end
-end
-
-# This Download Strategy is provided for use with sites that
-# only provide HTTPS and also have a broken cert.
-# Try not to need this, as we probably won't accept the formula.
+# This strategy is provided for use with sites that only provide HTTPS and
+# also have a broken cert. Try not to need this, as we probably won't accept
+# the formula.
 class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
     curl @url, '--insecure', '-C', downloaded_size, '-o', @temporary_path
@@ -217,6 +215,14 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
     @tarball_path = HOMEBREW_CACHE/"#{name}-#{package.version}#{ext}"
     mirror = ENV['HOMEBREW_SOURCEFORGE_MIRROR']
     @url = "#{@url}?use_mirror=#{mirror}" if mirror
+  end
+end
+
+# This strategy extracts local binary packages.
+class LocalBottleDownloadStrategy < CurlDownloadStrategy
+  def initialize formula, local_bottle_path
+    super formula.name, formula.active_spec
+    @tarball_path = local_bottle_path
   end
 end
 
@@ -548,9 +554,11 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   def cached_location; @clone; end
 
   def hgpath
+    # #{HOMEBREW_PREFIX}/share/python/hg is deprecated, but we levae it in for a while
     @path ||= %W[
       #{which("hg")}
       #{HOMEBREW_PREFIX}/bin/hg
+      #{Formula.factory('mercurial').opt_prefix}/bin/hg
       #{HOMEBREW_PREFIX}/share/python/hg
       ].find { |p| File.executable? p }
   end

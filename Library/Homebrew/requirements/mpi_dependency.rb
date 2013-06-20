@@ -9,6 +9,8 @@ class MPIDependency < Requirement
 
   fatal true
 
+  default_formula 'open-mpi'
+
   env :userpaths
 
   def initialize *lang_list

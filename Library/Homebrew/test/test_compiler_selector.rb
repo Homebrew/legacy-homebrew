@@ -27,7 +27,7 @@ class CompilerSelectorTests < Test::Unit::TestCase
   end
 
   def actual_cc
-    CompilerSelector.new(@f, @cc).compiler
+    CompilerSelector.new(@f).compiler
   end
 
   def test_all_compiler_failures

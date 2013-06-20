@@ -45,7 +45,7 @@ class Formula
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
-    @downloader = download_strategy.new(name, @active_spec)
+    @downloader = download_strategy.new(name, active_spec)
 
     # Combine DSL `option` and `def options`
     options.each do |opt, desc|
@@ -305,6 +305,21 @@ class Formula
     ]
   end
 
+  def python(options={:allowed_major_versions => [2, 3]}, &block)
+    require 'python_helper'
+    python_helper(options, &block)
+  end
+
+  # Explicitly only execute the block for 2.x (if a python 2.x is available)
+  def python2 &block
+    python(:allowed_major_versions => [2], &block)
+  end
+
+  # Explicitly only execute the block for 3.x (if a python 3.x is available)
+  def python3 &block
+    python(:allowed_major_versions => [3], &block)
+  end
+
   def self.class_s name
     # remove invalid characters and then camelcase it
     name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
@@ -391,7 +406,15 @@ class Formula
     elsif name.match bottle_regex
       bottle_filename = Pathname(name).realpath
       version = Version.parse(bottle_filename).to_s
-      name = bottle_filename.basename.to_s.rpartition("-#{version}").first
+      bottle_basename = bottle_filename.basename.to_s
+      name_without_version = bottle_basename.rpartition("-#{version}").first
+      if name_without_version.empty?
+        if ARGV.homebrew_developer?
+          opoo "Add a new version regex to version.rb to parse this filename."
+        end
+      else
+        name = name_without_version
+      end
       path = Formula.path(name)
       install_type = :from_local_bottle
     else
@@ -476,7 +499,7 @@ class Formula
   end
 
   def conflicts
-    requirements.grep(ConflictRequirement)
+    self.class.conflicts
   end
 
   # Returns a list of Dependency objects in an installable order, which
@@ -504,7 +527,7 @@ class Formula
       "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
       "keg_only" => keg_only?,
       "dependencies" => deps.map {|dep| dep.to_s},
-      "conflicts_with" => conflicts.map {|c| c.formula},
+      "conflicts_with" => conflicts.map(&:name),
       "options" => [],
       "caveats" => caveats
     }
@@ -533,6 +556,35 @@ class Formula
 
   end
 
+  # For brew-fetch and others.
+  def fetch
+    # Ensure the cache exists
+    HOMEBREW_CACHE.mkpath
+    downloader.fetch
+    cached_download
+  end
+
+  # For FormulaInstaller.
+  def verify_download_integrity fn
+    active_spec.verify_download_integrity(fn)
+  end
+
+  def test
+    require 'test/unit/assertions'
+    extend(Test::Unit::Assertions)
+    ret = nil
+    mktemp do
+      @testpath = Pathname.pwd
+      ret = instance_eval(&self.class.test)
+      @testpath = nil
+    end
+    ret
+  end
+
+  def test_defined?
+    not self.class.instance_variable_get(:@test_defined).nil?
+  end
+
   protected
 
   # Pretty titles the command and buffers stdout/stderr
@@ -558,7 +610,7 @@ class Formula
       @exec_count ||= 0
       @exec_count += 1
       logd = HOMEBREW_LOGS/name
-      logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
+      logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd.to_s).split(' ').first]
       mkdir_p(logd)
 
       rd, wr = IO.pipe
@@ -567,7 +619,7 @@ class Formula
         $stdout.reopen wr
         $stderr.reopen wr
         args.collect!{|arg| arg.to_s}
-        exec(cmd, *args) rescue nil
+        exec(cmd.to_s, *args) rescue nil
         puts "Failed to execute: #{cmd}"
         exit! 1 # never gets here unless exec threw or failed
       end
@@ -596,35 +648,6 @@ class Formula
     removed_ENV_variables.each do |key, value|
       ENV[key] = value
     end if removed_ENV_variables
-  end
-
-  public
-
-  # For brew-fetch and others.
-  def fetch
-    # Ensure the cache exists
-    HOMEBREW_CACHE.mkpath
-    downloader.fetch
-    cached_download
-  end
-
-  # For FormulaInstaller.
-  def verify_download_integrity fn
-    active_spec.verify_download_integrity(fn)
-  end
-
-  def test
-    ret = nil
-    mktemp do
-      @testpath = Pathname.pwd
-      ret = instance_eval(&self.class.test)
-      @testpath = nil
-    end
-    ret
-  end
-
-  def test_defined?
-    not self.class.instance_variable_get(:@test_defined).nil?
   end
 
   private
@@ -664,26 +687,16 @@ class Formula
   def self.method_added method
     case method
     when :brew
-      raise "You cannot override Formula#brew"
+      raise "You cannot override Formula#brew in class #{name}"
     when :test
       @test_defined = true
     end
   end
 
+  # The methods below define the formula DSL.
   class << self
-    # The methods below define the formula DSL.
 
-    def self.attr_rw(*attrs)
-      attrs.each do |attr|
-        class_eval <<-EOS, __FILE__, __LINE__ + 1
-          def #{attr}(val=nil)
-            val.nil? ? @#{attr} : @#{attr} = val
-          end
-        EOS
-      end
-    end
-
-    attr_rw :homepage, :keg_only_reason, :skip_clean_all, :cc_failures
+    attr_rw :homepage, :keg_only_reason, :cc_failures
     attr_rw :plist_startup, :plist_manual
 
     Checksum::TYPES.each do |cksum|
@@ -759,12 +772,16 @@ class Formula
       @plist_manual = options[:manual]
     end
 
-    def conflicts_with formula, opts={}
-      dependencies.add ConflictRequirement.new(formula, name, opts)
+    def conflicts
+      @conflicts ||= []
+    end
+
+    def conflicts_with name, opts={}
+      conflicts << FormulaConflict.new(name, opts[:because])
     end
 
     def skip_clean *paths
-      paths = [paths].flatten
+      paths.flatten!
 
       # :all is deprecated though
       if paths.include? :all
@@ -772,10 +789,9 @@ class Formula
         return
       end
 
-      @skip_clean_paths ||= []
       paths.each do |p|
         p = p.to_s unless p == :la # Keep :la in paths as a symbol
-        @skip_clean_paths << p unless @skip_clean_paths.include? p
+        skip_clean_paths << p
       end
     end
 
@@ -784,7 +800,7 @@ class Formula
     end
 
     def skip_clean_paths
-      @skip_clean_paths or []
+      @skip_clean_paths ||= Set.new
     end
 
     def keg_only reason, explanation=nil

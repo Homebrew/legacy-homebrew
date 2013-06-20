@@ -18,11 +18,11 @@ HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 class Step
   attr_reader :command, :name, :status, :output, :time
 
-  def initialize test, command, puts_output_on_success = false
+  def initialize test, command, options={}
     @test = test
     @category = test.category
     @command = command
-    @puts_output_on_success = puts_output_on_success
+    @puts_output_on_success = options[:puts_output_on_success]
     @name = command.split[1].delete '-'
     @status = :running
     @repository = HOMEBREW_REPOSITORY
@@ -63,7 +63,7 @@ class Step
   end
 
   def puts_result
-    puts "#{Tty.send status_colour}#{status_upcase}#{Tty.reset}"
+    puts " #{Tty.send status_colour}#{status_upcase}#{Tty.reset}"
   end
 
   def has_output?
@@ -99,14 +99,14 @@ class Step
 end
 
 class Test
-  attr_reader :log_root, :category, :name, :core_changed, :formulae, :steps
+  attr_reader :log_root, :category, :name, :formulae, :steps
 
   def initialize argument
     @hash = nil
     @url = nil
     @formulae = []
 
-    url_match = argument.match HOMEBREW_PULL_URL_REGEX
+    url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
     formula = Formula.factory argument rescue FormulaUnavailableError
     git "rev-parse --verify #{argument} &>/dev/null"
     if $?.success?
@@ -121,7 +121,6 @@ class Test
 
     @category = __method__
     @steps = []
-    @core_changed = false
     @brewbot_root = Pathname.pwd + "brewbot"
     FileUtils.mkdir_p @brewbot_root
   end
@@ -145,11 +144,16 @@ class Test
       git('symbolic-ref HEAD').gsub('refs/heads/', '').strip
     end
 
+    def single_commit? start_revision, end_revision
+      git("rev-list --count #{start_revision}..#{end_revision}").to_i == 1
+    end
+
     @category = __method__
     @start_branch = current_branch
 
     # Use Jenkins environment variables if present.
-    if ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT']
+    if ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT'] \
+       and not ENV['ghprbPullId']
       diff_start_sha1 = shorten_revision ENV['GIT_PREVIOUS_COMMIT']
       diff_end_sha1 = shorten_revision ENV['GIT_COMMIT']
       test "brew update" if current_branch == "master"
@@ -159,8 +163,23 @@ class Test
       diff_end_sha1 = current_sha1
     end
 
+    # Handle Jenkins pull request builder plugin.
+    if ENV['ghprbPullId'] and ENV['GIT_URL']
+      git_url = ENV['GIT_URL']
+      git_match = git_url.match %r{.*github.com[:/](\w+/\w+).*}
+      if git_match
+        github_repo = git_match[1]
+        pull_id = ENV['ghprbPullId']
+        @url = "https://github.com/#{github_repo}/pull/#{pull_id}"
+        @hash = nil
+      else
+        puts "Invalid 'ghprbPullId' environment variable value!"
+      end
+    end
+
     if @hash == 'HEAD'
-      if diff_start_sha1 == diff_end_sha1
+      if diff_start_sha1 == diff_end_sha1 or \
+        single_commit?(diff_start_sha1, diff_end_sha1)
         @name = diff_end_sha1
       else
         @name = "#{diff_start_sha1}-#{diff_end_sha1}"
@@ -174,7 +193,14 @@ class Test
       test "git checkout #{current_sha1}"
       test "brew pull --clean #{@url}"
       diff_end_sha1 = current_sha1
-      @name = "#{@url}-#{diff_end_sha1}"
+      @short_url = @url.gsub('https://github.com/', '')
+      if @short_url.include? '/commit/'
+        # 7 characters should be enough for a commit (not 40).
+        @short_url.gsub!(/(commit\/\w{7}).*/, '\1')
+        @name = @short_url
+      else
+        @name = "#{@short_url}-#{diff_end_sha1}"
+      end
     else
       diff_start_sha1 = diff_end_sha1 = current_sha1
       @name = "#{@formulae.first}-#{diff_end_sha1}"
@@ -195,10 +221,6 @@ class Test
           @formulae << File.basename(filename, '.rb')
         end
       end
-      if filename.include? '/Homebrew/' or filename.include? '/ENV/' \
-        or filename.include? 'bin/brew'
-        @core_changed = true
-      end
     end
   end
 
@@ -217,16 +239,31 @@ class Test
     dependencies -= `brew list`.split("\n")
     dependencies = dependencies.join(' ')
     formula_object = Formula.factory(formula)
+    requirements = formula_object.recursive_requirements
+    unsatisfied_requirements = requirements.reject {|r| r.satisfied?}
+    unless unsatisfied_requirements.empty?
+      puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula}#{Tty.reset}"
+      unsatisfied_requirements.each {|r| puts r.message}
+      return
+    end
 
     test "brew audit #{formula}"
     test "brew fetch #{dependencies}" unless dependencies.empty?
     test "brew fetch --build-bottle #{formula}"
+    test "brew uninstall #{formula}" if formula_object.installed?
     test "brew install --verbose #{dependencies}" unless dependencies.empty?
     test "brew install --verbose --build-bottle #{formula}"
     return unless steps.last.passed?
-    test "brew bottle #{formula}", true
+    bottle_step = test "brew bottle #{formula}", :puts_output_on_success => true
     bottle_revision = bottle_new_revision(formula_object)
     bottle_filename = bottle_filename(formula_object, bottle_revision)
+    if bottle_step.passed? and bottle_step.has_output?
+      bottle_base = bottle_filename.gsub(bottle_suffix(bottle_revision), '')
+      bottle_output = bottle_step.output.gsub /.*(bottle do.*end)/m, '\1'
+      File.open "#{bottle_base}.bottle.rb", 'w' do |file|
+        file.write bottle_output
+      end
+    end
     test "brew uninstall #{formula}"
     test "brew install #{bottle_filename}"
     test "brew test #{formula}" if formula_object.test_defined?
@@ -273,10 +310,11 @@ class Test
     FileUtils.rm_rf @brewbot_root unless ARGV.include? "--keep-logs"
   end
 
-  def test cmd, puts_output_on_success = false
-    step = Step.new self, cmd, puts_output_on_success
+  def test cmd, options={}
+    step = Step.new self, cmd, options
     step.run
     steps << step
+    step
   end
 
   def check_results
@@ -302,10 +340,10 @@ class Test
     cleanup_before
     download
     setup unless ARGV.include? "--skip-setup"
+    homebrew
     formulae.each do |f|
       formula(f)
     end
-    homebrew if core_changed
     cleanup_after
     check_results
   end

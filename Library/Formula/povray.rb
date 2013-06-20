@@ -1,25 +1,12 @@
 require 'formula'
 
-class NeedsLion < Requirement
-  fatal true
-  satisfy MacOS.version >= :lion
-
-  def message; <<-EOS.undent
-    PovRay 3.7.0.RC6 requires Mac OS X 10.7 or newer.
-    To install on Leopard or Snow Leopard:
-      brew tap homebrew/versions
-      brew install povray36
-    EOS
-  end
-end
-
 class Povray < Formula
   homepage 'http://www.povray.org/'
   url 'http://www.povray.org/beta/source/povray-3.7.0.RC6.tar.gz'
   version '3.7.0.RC6'
   sha256 '374957bdb90fb7be5f36f839b3f04ab0a4340f6e8cf369f658d6592a342803e3'
 
-  depends_on NeedsLion
+  depends_on :macos => :lion
   depends_on :libpng
   depends_on 'boost'
   depends_on 'jpeg'

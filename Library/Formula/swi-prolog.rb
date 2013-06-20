@@ -5,6 +5,11 @@ class SwiProlog < Formula
   url 'http://www.swi-prolog.org/download/stable/src/pl-6.2.6.tar.gz'
   sha256 '9412f0753a61c30dbcf1afac01fe7c9168002854709e00e09c21f959e1232146'
 
+  devel do
+    url 'http://www.swi-prolog.org/download/devel/src/pl-6.3.17.tar.gz'
+    sha1 '93bf9a0f824a3d1ce8a189a37d0c186de6479d42'
+  end
+
   head 'git://www.swi-prolog.org/home/pl/git/pl.git'
 
   option 'lite', "Disable all packages"

@@ -1,16 +1,5 @@
 require 'formula'
 
-class NeedsSnowLeopard < Requirement
-  satisfy MacOS.version >= :snow_leopard
-
-  def message; <<-EOS.undent
-    GHC requires OS X 10.6 or newer. The binary releases no longer work on
-    Leopard. See the following issue for details:
-        http://hackage.haskell.org/trac/ghc/ticket/6009
-    EOS
-  end
-end
-
 class Ghcbinary < Formula
   if Hardware.is_64_bit? and not build.build_32_bit?
     url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
@@ -23,8 +12,8 @@ class Ghcbinary < Formula
 end
 
 class Ghctestsuite < Formula
-  url 'https://github.com/ghc/testsuite/tarball/ghc-7.6.3-release'
-  sha1 '7f51a25a13edcdf6a8b9df3c13be78c9d41ce4e2'
+  url 'https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz'
+  sha1 '6a1973ae3cccdb2f720606032ae84ffee8680ca1'
 end
 
 class Ghc < Formula
@@ -34,7 +23,8 @@ class Ghc < Formula
 
   env :std
 
-  depends_on NeedsSnowLeopard
+  # http://hackage.haskell.org/trac/ghc/ticket/6009
+  depends_on :macos => :snow_leopard
 
   option '32-bit'
   option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'

@@ -115,6 +115,38 @@ class UnsatisfiedRequirements < Homebrew::InstallationError
   end
 end
 
+class FormulaConflictError < Homebrew::InstallationError
+  attr_reader :f, :conflicts
+
+  def initialize(f, conflicts)
+    @f = f
+    @conflicts = conflicts
+    super f, message
+  end
+
+  def conflict_message(conflict)
+    message = []
+    message << "  #{conflict.name}"
+    message << ": because #{conflict.reason}" if conflict.reason
+    message.join
+  end
+
+  def message
+    message = []
+    message << "Cannot install #{f.name} because conflicting formulae are installed.\n"
+    message.concat conflicts.map { |c| conflict_message(c) } << ""
+    message << <<-EOS.undent
+      Please `brew unlink #{conflicts.map(&:name)*' '}` before continuing.
+
+      Unlinking removes a formula's symlinks from #{HOMEBREW_PREFIX}. You can
+      link the formula again after the install finishes. You can --force this
+      install, but the build may fail or cause obscure side-effects in the
+      resulting software.
+      EOS
+    message.join("\n")
+  end
+end
+
 class BuildError < Homebrew::InstallationError
   attr_reader :exit_status, :command, :env
 
@@ -153,7 +185,7 @@ class BuildError < Homebrew::InstallationError
       end
     end
     puts
-    unless issues.empty?
+    unless RUBY_VERSION < "1.8.6" || issues.empty?
       puts "These open issues may also help:"
       puts issues.map{ |s| "    #{s}" }.join("\n")
     end
@@ -212,12 +244,4 @@ class ChecksumMismatchError < RuntimeError
   def to_s
     super + advice.to_s
   end
-end
-
-module Homebrew extend self
-  SUDO_BAD_ERRMSG = <<-EOS.undent
-    You can use brew with sudo, but only if the brew executable is owned by root.
-    However, this is both not recommended and completely unsupported so do so at
-    your own risk.
-  EOS
 end

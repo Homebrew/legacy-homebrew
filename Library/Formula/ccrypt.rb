@@ -2,15 +2,16 @@ require 'formula'
 
 class Ccrypt < Formula
   homepage 'http://ccrypt.sourceforge.net/'
-  url 'http://ccrypt.sourceforge.net/download/ccrypt-1.9.tar.gz'
-  sha1 '5ad1889c71be905c3004c80dc011948c9c35c814'
+  url 'http://ccrypt.sourceforge.net/download/ccrypt-1.10.tar.gz'
+  sha1 '95d4e524abb146946fe6af9d53ed0e5e294b34e2'
+
+  fails_with :clang do
+    build 318
+    cause "Tests fail when optimizations are enabled"
+  end
 
   def install
-    # Tests fail with clang (build 318) at higher optimization
-    ENV.no_optimization if ENV.compiler == :clang
-
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make install"

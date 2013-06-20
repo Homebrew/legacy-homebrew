@@ -2,9 +2,10 @@ require 'formula'
 
 class Go < Formula
   homepage 'http://golang.org'
-  url 'https://go.googlecode.com/files/go1.1.src.tar.gz'
-  version '1.1'
-  sha1 'a464704ebbbdd552a39b5f9429b059c117d165b3'
+  url 'https://go.googlecode.com/files/go1.1.1.src.tar.gz';
+  version '1.1.1'
+  sha1 'f365aed8183e487a48a66ace7bf36e5974dffbb3'
+
   head 'https://go.googlecode.com/hg/'
 
   skip_clean 'bin'
@@ -19,13 +20,13 @@ class Go < Formula
   def install
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
-    zsh_completion.install 'misc/zsh/go' => '_go'
+    zsh_completion.install 'misc/zsh/go' => 'go'
 
     if build.include? 'cross-compile-all'
       targets = [
         ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
         ['freebsd', ['386', 'amd64'],        { :cgo => false }],
-
+        ['netbsd',  ['386', 'amd64'],        { :cgo => false }],
         ['openbsd', ['386', 'amd64'],        { :cgo => false }],
 
         ['windows', ['386', 'amd64'],        { :cgo => false }],
@@ -105,7 +106,7 @@ class Go < Formula
     EOS
     # Run go vet check for no errors then run the program.
     # This is a a bare minimum of go working as it uses vet, build, and run.
-    `#{bin}/go vet hello.go` == ""
-    `#{bin}/go run hello.go` == "Hello World\n"
+    assert_empty `#{bin}/go vet hello.go`
+    assert_equal "Hello World\n", `#{bin}/go run hello.go`
   end
 end

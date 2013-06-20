@@ -13,7 +13,7 @@ class Apktool < Formula
   def install
     libexec.install 'apktool.jar'
 
-    ApktoolExecutables.new.brew do |f|
+    ApktoolExecutables.new.brew do
       libexec.install 'aapt', 'apktool'
     end
 

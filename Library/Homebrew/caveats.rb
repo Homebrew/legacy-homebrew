@@ -8,7 +8,7 @@ class Caveats
   def caveats
     caveats = []
     caveats << f.caveats
-    caveats << f.keg_only_text rescue nil if f.keg_only?
+    caveats << f.keg_only_text if f.keg_only? && f.respond_to?(:keg_only_text)
     caveats << bash_completion_caveats
     caveats << zsh_completion_caveats
     caveats << plist_caveats

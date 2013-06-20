@@ -23,6 +23,6 @@ class Rust < Formula
   def test
     system "#{bin}/rustc"
     system "#{bin}/rustdoc"
-    system "#{bin}/cargo"
+    system "#{bin}/rustpkg"
   end
 end

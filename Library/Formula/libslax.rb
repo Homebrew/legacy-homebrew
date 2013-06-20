@@ -1,10 +1,13 @@
 require 'formula'
 
 class Libslax < Formula
-  homepage 'https://code.google.com/p/libslax/'
-  url 'http://libslax.googlecode.com/files/libslax-0.14.8.tar.gz'
-  sha1 '86447eb486044008aa54bd3f3af491da8dc0fda7'
+  homepage 'http://www.libslax.org/'
+  url 'https://github.com/Juniper/libslax/archive/libslax-0.16.0.tar.gz'
+  sha1 'c89b46387050fe8b201f8a0f1676e504aac1b80e'
 
+  head 'https://github.com/Juniper/libslax.git'
+
+  depends_on 'automake' => :build
   depends_on 'libtool'  => :build
 
   # Need newer versions of these libraries
@@ -15,6 +18,7 @@ class Libslax < Formula
   end
 
   def install
+    system "sh ./bin/setup.sh"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
