@@ -21,6 +21,7 @@ class Nginx < Formula
   option 'with-gunzip', 'Compile with support for gunzip module'
 
   depends_on 'pcre'
+  depends_on 'passenger' if build.with? 'passenger'
   # SPDY needs openssl >= 1.0.1 for NPN; see:
   # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
   # http://www.openssl.org/news/changelog.html
@@ -119,7 +120,16 @@ class Nginx < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
+  def passenger_caveats; <<-EOS.undent
+
+    To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf:
+      passenger_root #{HOMEBREW_PREFIX}/opt/passenger
+      passenger_ruby /usr/bin/ruby
+    EOS
+  end
+
+  def caveats
+    s = <<-EOS.undent
     Docroot is: #{HOMEBREW_PREFIX}/var/www
 
     The default port has been set to 8080 so that nginx can run without sudo.
@@ -129,6 +139,8 @@ class Nginx < Formula
 
     You will then need to run nginx as root: `sudo nginx`.
     EOS
+    s << passenger_caveats if build.include? 'with-passenger'
+    s
   end
 
   def plist; <<-EOS.undent
