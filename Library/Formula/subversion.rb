@@ -73,7 +73,6 @@ class Subversion < Formula
     args = ["--disable-debug",
             "--prefix=#{prefix}",
             "--with-apr=#{apr_bin}",
-            "--with-ssl",
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula.factory('sqlite').opt_prefix}",
             "--with-serf=#{Formula.factory('serf').opt_prefix}",
