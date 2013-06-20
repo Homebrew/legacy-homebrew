@@ -2,19 +2,17 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.10.tar.bz2'
-  sha1 'a4f3de0a13b034b0eab4d35512c6c91a4abcf4f5'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.0.tar.bz2'
+  sha1 '45d227511507c5ed99e07f9d42677362c18b364c'
 
   option :universal
   option 'java', 'Build Java bindings'
   option 'perl', 'Build Perl bindings'
   option 'ruby', 'Build Ruby bindings'
-  option 'unicode-path', 'Include support for OS X UTF-8-MAC filename'
 
   depends_on 'pkg-config' => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
-  depends_on 'neon'
   depends_on 'serf'
   depends_on 'sqlite'
   depends_on :python => :optional
@@ -27,11 +25,6 @@ class Subversion < Formula
 
   def patches
     ps = []
-
-    # Patch for Subversion handling of OS X UTF-8-MAC filename.
-    if build.include? 'unicode-path'
-      ps << "https://raw.github.com/gist/3044094/1648c28f6133bcbb68b76b42669b0dc237c02dba/patch-path.c.diff"
-    end
 
     # Patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
     if build.include? 'perl'
@@ -56,11 +49,11 @@ class Subversion < Formula
   end
 
   def install
-    # Java support doesn't build correctly in parallel:
-    # https://github.com/mxcl/homebrew/issues/20415
-    ENV.deparallelize
-
     if build.include? 'java'
+      # Java support doesn't build correctly in parallel:
+      # https://github.com/mxcl/homebrew/issues/20415
+      ENV.deparallelize
+
       unless build.universal?
         opoo "A non-Universal Java build was requested."
         puts "To use Java bindings with various Java IDEs, you might need a universal build:"
@@ -84,7 +77,6 @@ class Subversion < Formula
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula.factory('sqlite').opt_prefix}",
             "--with-serf=#{Formula.factory('serf').opt_prefix}",
-            "--disable-neon-version-check",
             "--disable-mod-activation",
             "--disable-nls",
             "--without-apache-libexecdir",
@@ -113,7 +105,6 @@ class Subversion < Formula
       svn-populate-node-origins-index
       svn-rep-sharing-stats
       svnauthz-validate
-      svnmucc
       svnraisetreeconflict
     ].each do |prog|
       bin.install_symlink bin/"svn-tools"/prog
@@ -185,18 +176,6 @@ class Subversion < Formula
         You may need to link the Java bindings into the Java Extensions folder:
           sudo mkdir -p /Library/Java/Extensions
           sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions/libsvnjavahl-1.dylib
-
-      EOS
-    end
-
-    if build.include? 'unicode-path'
-      s += <<-EOS.undent
-        This unicode-path version implements a hack to deal with composed/decomposed
-        unicode handling on Mac OS X which is different from linux and windows.
-        It is an implementation of solution 1 from
-        http://svn.collab.net/repos/svn/trunk/notes/unicode-composition-for-filenames
-        which _WILL_ break some setups. Please be sure you understand what you
-        are asking for when you install this version.
 
       EOS
     end

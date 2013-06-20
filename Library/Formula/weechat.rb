@@ -15,8 +15,8 @@ class Weechat < Formula
   depends_on 'lua' => :optional
   depends_on :python => :optional
 
-  option 'perl', 'Build the perl module'
-  option 'ruby', 'Build the ruby module'
+  option 'with-perl', 'Build the perl module'
+  option 'with-ruby', 'Build the ruby module'
 
   # cmake finds brewed python when installed, but when searching for the
   # libraries it searches for system libraries first. This patch disables
