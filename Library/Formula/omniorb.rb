@@ -2,13 +2,13 @@ require 'formula'
 
 class OmniorbBindings < Formula
   homepage 'http://omniorb.sourceforge.net/'
-  url 'http://sourceforge.net/projects/omniorb/files/omniORBpy/omniORBpy-3.6/omniORBpy-3.6.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/omniorb/omniORBpy/omniORBpy-3.6/omniORBpy-3.6.tar.bz2'
   sha1 '2def5ded7cd30e8d298113ed450b7bd09eaaf26f'
 end
 
 class Omniorb < Formula
   homepage 'http://omniorb.sourceforge.net/'
-  url 'http://sourceforge.net/projects/omniorb/files/omniORB/omniORB-4.1.6/omniORB-4.1.6.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-4.1.6/omniORB-4.1.6.tar.bz2'
   sha1 '383e3b3b605188fe6358316917576e0297c4e1a6'
 
   depends_on 'pkg-config' => :build

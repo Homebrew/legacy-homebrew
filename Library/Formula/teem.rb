@@ -2,7 +2,7 @@ require 'formula'
 
 class Teem < Formula
   homepage 'http://teem.sourceforge.net/'
-  url 'http://sourceforge.net/projects/teem/files/teem/1.11.0/teem-1.11.0-src.tar.gz'
+  url 'http://downloads.sourceforge.net/project/teem/teem/1.11.0/teem-1.11.0-src.tar.gz'
   sha1 'faafa0362abad37591bc1d01441730af462212f9'
 
   head 'https://teem.svn.sourceforge.net/svnroot/teem/teem/trunk'

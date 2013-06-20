@@ -2,7 +2,7 @@ require 'formula'
 
 class Minidjvu < Formula
   homepage 'http://minidjvu.sourceforge.net/'
-  url 'http://sourceforge.net/projects/minidjvu/files/minidjvu/0.8/minidjvu-0.8.tar.gz'
+  url 'http://downloads.sourceforge.net/project/minidjvu/minidjvu/0.8/minidjvu-0.8.tar.gz'
   sha1 '23835f73bc3580b72c6afe1f77feaf1e2611e714'
 
   depends_on 'djvulibre'

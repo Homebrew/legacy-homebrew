@@ -2,7 +2,7 @@ require 'formula'
 
 class Libodbcxx < Formula
   homepage 'http://libodbcxx.sourceforge.net'
-  url 'http://sourceforge.net/projects/libodbcxx/files/libodbc++/0.2.5/libodbc++-0.2.5.tar.gz'
+  url 'http://downloads.sourceforge.net/project/libodbcxx/libodbc++/0.2.5/libodbc++-0.2.5.tar.gz'
   sha1 'e59842266b981caab24a6fae1f7d48b6799420f8'
 
   # Two patches are included:

@@ -2,7 +2,7 @@ require 'formula'
 
 class Libming < Formula
   homepage 'http://www.libming.org'
-  url 'http://sourceforge.net/projects/ming/files/Releases/ming-0.4.4.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/ming/Releases/ming-0.4.4.tar.bz2'
   sha1 'e803b3b94a00a361e3415105f26112cf6f7bac81'
 
   option 'perl', 'Build the perl extension'

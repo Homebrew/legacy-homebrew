@@ -2,7 +2,7 @@ require 'formula'
 
 class Fatsort < Formula
   homepage 'http://fatsort.sourceforge.net/'
-  url 'http://sourceforge.net/projects/fatsort/files/fatsort-1.1.1.336.tar.gz'
+  url 'http://downloads.sourceforge.net/project/fatsort/fatsort-1.1.1.336.tar.gz'
   sha1 '03a070603e7d48a98efd13166a2cc798141d0678'
 
   def install
