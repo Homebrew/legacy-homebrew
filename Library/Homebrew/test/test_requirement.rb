@@ -96,4 +96,28 @@ class RequirementTests < Test::Unit::TestCase
   ensure
     klass.send(:remove_const, const) if klass.const_defined?(const)
   end
+
+  def test_dsl_default_formula
+    req = Class.new(Requirement) { default_formula 'foo' }.new
+    assert req.default_formula?
+  end
+
+  def test_to_dependency
+    req = Class.new(Requirement) { default_formula 'foo' }.new
+    assert_equal Dependency.new('foo'), req.to_dependency
+  end
+
+  def test_to_dependency_calls_requirement_modify_build_environment
+    error = Class.new(StandardError)
+
+    req = Class.new(Requirement) do
+      default_formula 'foo'
+      satisfy { true }
+      env { raise error }
+    end.new
+
+    assert_raises(error) do
+      req.to_dependency.modify_build_environment
+    end
+  end
 end

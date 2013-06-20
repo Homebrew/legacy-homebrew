@@ -2,9 +2,9 @@ require 'formula'
 
 class Parallel < Formula
   homepage 'http://savannah.gnu.org/projects/parallel/'
-  url 'http://ftpmirror.gnu.org/parallel/parallel-20130422.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/parallel/parallel-20130422.tar.bz2'
-  sha256 '3090bb1ce3d56fe8c844a6ba4faa2ada69554f50c2ec46bdcd5d382d9a61cf2b'
+  url 'http://ftpmirror.gnu.org/parallel/parallel-20130522.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/parallel/parallel-20130522.tar.bz2'
+  sha256 'e9ea6fa2644e8504a85a518edb246783f2ccace58f21d101712b28bf781d7d2b'
 
   conflicts_with 'moreutils',
     :because => "both install a 'parallel' executable."

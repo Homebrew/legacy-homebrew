@@ -6,13 +6,13 @@ class Aplus < Formula
   mirror 'http://ftp.us.debian.org/debian/pool/main/a/aplus-fsf/aplus-fsf_4.22.1.orig.tar.gz'
   sha1 'e757cc7654cf35dba15a6a5d6cac5320146558fc'
 
+  depends_on :automake
+  depends_on :libtool
+
   # Fix the missing CoreServices include (via Fink version of aplus)
   def patches
     DATA
   end
-
-  depends_on :automake
-  depends_on :libtool
 
   def install
     # replace placeholder w/ actual prefix

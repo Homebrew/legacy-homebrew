@@ -19,15 +19,23 @@ module MacOS::Xcode extend self
 
   def latest_version
     case MacOS.version
-      when 10.5 then "3.1.4"
-      when 10.6 then "3.2.6"
+    when "10.4"         then "2.5"
+    when "10.5"         then "3.1.4"
+    when "10.6"         then "3.2.6"
+    when "10.7", "10.8" then "4.6.3"
+    when "10.9"         then "5.0"
     else
-      if MacOS.version >= 10.7
-        "4.6.2"
+      # Default to newest known version of Xcode for unreleased OSX versions.
+      if MacOS.version > 10.9
+        "5.0"
       else
-        raise "Mac OS X `#{MacOS.version}' is invalid"
+        raise "Mac OS X '#{MacOS.version}' is invalid"
       end
     end
+  end
+
+  def outdated?
+    version < latest_version
   end
 
   def prefix
@@ -120,6 +128,7 @@ module MacOS::Xcode extend self
       when 40      then "4.4"
       when 41      then "4.5"
       when 42      then "4.6"
+      when 50      then "5.0"
       else "4.6"
       end
     end
@@ -149,13 +158,21 @@ module MacOS::CLT extend self
   # This is true ift he standard UNIX tools are present under /usr. For
   # Xcode < 4.3, this is the standard location. Otherwise, it means that
   # the user has installed the "Command Line Tools for Xcode" package.
+  # TODO: handle 10.9 CLT which has headers under:
+  # /Library/Developer/CommandLineTools/usr/include
   def installed?
-    MacOS.dev_tools_path == Pathname.new("/usr/bin")
+    return false if MacOS.version > :mountain_lion
+    MacOS.dev_tools_path == Pathname.new("/usr/bin") and
+      File.directory? "/usr/include"
   end
 
   def latest_version?
     `/usr/bin/clang --version` =~ %r{clang-(\d+)\.(\d+)\.(\d+)}
     $1.to_i >= 425 and $3.to_i >= 28
+  end
+
+  def outdated?
+    !latest_version?
   end
 
   def version

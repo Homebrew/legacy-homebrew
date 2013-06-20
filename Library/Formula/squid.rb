@@ -21,6 +21,8 @@ class Squid < Formula
   depends_on NoBdb5
 
   def install
+    # For --disable-eui, see:
+    # http://squid-web-proxy-cache.1019090.n4.nabble.com/ERROR-ARP-MAC-EUI-operations-not-supported-on-this-operating-system-td4659335.html
     args =%W[
       --disable-debug
       --disable-dependency-tracking
@@ -28,6 +30,7 @@ class Squid < Formula
       --localstatedir=#{var}
       --enable-ssl
       --enable-ssl-crtd
+      --disable-eui
     ]
 
     system "./configure", *args

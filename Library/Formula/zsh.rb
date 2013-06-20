@@ -35,6 +35,12 @@ class Zsh < Formula
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
+
+    # See http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Accessing-On_002dLine-Help
+    mkdir "helpfiles" do
+      system "man zshall | colcrt - | perl ../Util/helpfiles"
+      (share+"zsh/helpfiles").install Dir["*"]
+    end
   end
 
   def test
@@ -50,8 +56,12 @@ class Zsh < Formula
     non-interactively by scripts.
 
     Alternatively, install Zsh with /etc disabled:
-
       brew install --disable-etcdir zsh
+
+    Add the following to your zshrc to access the online help:
+      unalias run-help
+      autoload run-help
+      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/helpfiles
     EOS
   end
 end

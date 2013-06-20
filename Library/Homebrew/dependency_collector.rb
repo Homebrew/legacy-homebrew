@@ -2,6 +2,7 @@ require 'dependency'
 require 'dependencies'
 require 'requirement'
 require 'requirements'
+require 'requirements/ld64_dependency'
 require 'set'
 
 ## A dependency is a formula that another formula needs to install.
@@ -67,6 +68,9 @@ class DependencyCollector
     if tags.empty?
       Dependency.new(spec, tags)
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
+      # Next line only for legacy support of `depends_on 'module' => :python`
+      # It should be replaced by `depends_on :python => 'module'`
+      return PythonInstalled.new("2", spec, *tags) if tag == :python
       LanguageModuleDependency.new(tag, spec)
     else
       Dependency.new(spec, tags)
@@ -86,12 +90,17 @@ class DependencyCollector
       # so just return a standard formula dependency.
       Dependency.new(spec.to_s, tags)
     when :xcode      then XcodeDependency.new(tags)
+    when :macos      then MinimumMacOSRequirement.new(tags)
     when :mysql      then MysqlDependency.new(tags)
     when :postgresql then PostgresqlDependency.new(tags)
     when :tex        then TeXDependency.new(tags)
     when :clt        then CLTDependency.new(tags)
     when :arch       then ArchRequirement.new(tags)
     when :hg         then MercurialDependency.new(tags)
+    when :python, :python2 then PythonInstalled.new("2", *tags)
+    when :python3    then PythonInstalled.new("3", *tags)
+    # Tiger's ld is too old to properly link some software
+    when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     else
       raise "Unsupported special dependency #{spec}"
     end

@@ -2,9 +2,9 @@ require 'formula'
 
 class Gmp < Formula
   homepage 'http://gmplib.org/'
-  url 'ftp://ftp.gmplib.org/pub/gmp-5.1.1/gmp-5.1.1.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gmp/gmp-5.1.1.tar.bz2'
-  sha1 '21d037f7fb32ae305a2e4157cff0c8caab06fe84'
+  url 'ftp://ftp.gmplib.org/pub/gmp-5.1.2/gmp-5.1.2.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gmp/gmp-5.1.2.tar.bz2'
+  sha1 '2cb498322b9be4713829d94dee944259c017d615'
 
   option '32-bit'
 

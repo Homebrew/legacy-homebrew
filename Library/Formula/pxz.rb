@@ -9,7 +9,6 @@ class Pxz < Formula
   depends_on 'xz'
 
   fails_with :clang do
-    build 421
     cause "pxz requires OpenMP support"
   end
 

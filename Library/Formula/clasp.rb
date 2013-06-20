@@ -2,8 +2,8 @@ require 'formula'
 
 class Clasp < Formula
   homepage 'http://potassco.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/potassco/clasp/2.1.1/clasp-2.1.1-source.tar.gz'
-  sha1 '4c2bc5fc4b7c9ccfc461dc86a1d449a337602dfe'
+  url 'http://downloads.sourceforge.net/project/potassco/clasp/2.1.3/clasp-2.1.3-source.tar.gz'
+  sha1 '2332c9263429d089bb6cd9f2ae96d9e37d614e12'
 
   option 'with-mt', 'Enable multi-thread support'
 

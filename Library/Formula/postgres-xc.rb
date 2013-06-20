@@ -6,6 +6,7 @@ class PostgresXc < Formula
   sha1 '76774cf32810dfa14b2174f2e939d3b28eb211a9'
 
   depends_on :arch => :x86_64
+  depends_on :python => :recommended
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version == :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' => :recommended
@@ -13,7 +14,6 @@ class PostgresXc < Formula
   conflicts_with 'postgresql',
     :because => 'postgres-xc and postgresql install the same binaries.'
 
-  option 'no-python', 'Build without Python support'
   option 'no-perl', 'Build without Perl support'
   option 'enable-dtrace', 'Build with DTrace support'
 
@@ -44,7 +44,7 @@ class PostgresXc < Formula
             "--with-libxslt"]
 
     args << "--with-ossp-uuid" unless build.without? 'ossp-uuid'
-    args << "--with-python" unless build.include? 'no-python'
+    args << "--with-python" if build.with? 'python'
     args << "--with-perl" unless build.include? 'no-perl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
     args << "ARCHFLAGS='-arch x86_64'"
@@ -55,7 +55,7 @@ class PostgresXc < Formula
       ENV.append 'LIBS', `uuid-config --libs`.strip
     end
 
-    check_python_arch unless build.include? 'no-python'
+    check_python_arch if build.with? 'python'
 
     system "./configure", *args
     system "make install-world"
@@ -73,27 +73,25 @@ class PostgresXc < Formula
   end
 
   def check_python_arch
-    # On 64-bit systems, we need to look for a 32-bit Framework Python.
-    # The configure script prefers this Python version, and if it doesn't
-    # have 64-bit support then linking will fail.
-    framework_python = Pathname.new "/Library/Frameworks/Python.framework/Versions/Current/Python"
-    return unless framework_python.exist?
-    unless (archs_for_command framework_python).include? :x86_64
-      opoo "Detected a framework Python that does not have 64-bit support in:"
-      puts <<-EOS.undent
-          #{framework_python}
+    # On 64-bit systems, we need to avoid a 32-bit Framework Python.
+    if python.framework?
+      unless archs_for_command(python.binary).include? :x86_64
+        opoo "Detected a framework Python that does not have 64-bit support in:"
+        puts <<-EOS.undent
+          #{python.prefix}
 
-        The configure script seems to prefer this version of Python over any others,
-        so you may experience linker problems as described in:
-          http://osdir.com/ml/pgsql-general/2009-09/msg00160.html
+          The configure script seems to prefer this version of Python over any others,
+          so you may experience linker problems as described in:
+            http://osdir.com/ml/pgsql-general/2009-09/msg00160.html
 
-        To fix this issue, you may need to either delete the version of Python
-        shown above, or move it out of the way before brewing PostgreSQL.
+          To fix this issue, you may need to either delete the version of Python
+          shown above, or move it out of the way before brewing PostgreSQL.
 
-        Note that a framework Python in /Library/Frameworks/Python.framework is
-        the "MacPython" version, and not the system-provided version which is in:
-          /System/Library/Frameworks/Python.framework
-      EOS
+          Note that a framework Python in /Library/Frameworks/Python.framework is
+          the "MacPython" version, and not the system-provided version which is in:
+            /System/Library/Frameworks/Python.framework
+        EOS
+      end
     end
   end
 

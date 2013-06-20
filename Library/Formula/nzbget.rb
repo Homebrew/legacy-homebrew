@@ -1,11 +1,9 @@
 require 'formula'
 
 class Libpar2 < Formula
-  url 'http://sourceforge.net/projects/parchive/files/libpar2/0.2/libpar2-0.2.tar.gz'
   homepage 'http://parchive.sourceforge.net/'
+  url 'http://sourceforge.net/projects/parchive/files/libpar2/0.2/libpar2-0.2.tar.gz'
   sha1 '4b3da928ea6097a8299aadafa703fc6d59bdfb4b'
-
-  def initialize; super 'libpar2'; end
 
   fails_with :clang do
     build 425
@@ -25,7 +23,7 @@ class Nzbget < Formula
   url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/10.2/nzbget-10.2.tar.gz'
   sha1 'd113525d43eaa5e0f1a4a357d30fe44267f48138'
 
-  head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk', :using => :svn
+  head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk'
 
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
@@ -41,7 +39,7 @@ class Nzbget < Formula
   def install
     # Install libpar2 privately
     libpar2_prefix = libexec/'libpar2'
-    Libpar2.new.brew do
+    Libpar2.new('libpar2').brew do
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
                             "--prefix=#{libpar2_prefix}"
       system "make install"

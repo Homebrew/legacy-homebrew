@@ -2,36 +2,29 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.7.9.tar.bz2'
-  sha1 '453757bae78a800997559f2232483ab99238ec1e'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.0.tar.bz2'
+  sha1 '45d227511507c5ed99e07f9d42677362c18b364c'
 
   option :universal
   option 'java', 'Build Java bindings'
   option 'perl', 'Build Perl bindings'
-  option 'python', 'Build Python bindings'
   option 'ruby', 'Build Ruby bindings'
-  option 'unicode-path', 'Include support for OS X UTF-8-MAC filename'
 
   depends_on 'pkg-config' => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
-  depends_on 'neon'
-  depends_on 'sqlite'
   depends_on 'serf'
+  depends_on 'sqlite'
+  depends_on :python => :optional
 
   # Building Ruby bindings requires libtool
   depends_on :libtool if build.include? 'ruby'
 
   # If building bindings, allow non-system interpreters
-  env :userpaths if (build.include? 'perl') or (build.include? 'python') or (build.include? 'ruby')
+  env :userpaths if (build.include? 'perl') or (build.include? 'ruby')
 
   def patches
     ps = []
-
-    # Patch for Subversion handling of OS X UTF-8-MAC filename.
-    if build.include? 'unicode-path'
-      ps << "https://raw.github.com/gist/3044094/1648c28f6133bcbb68b76b42669b0dc237c02dba/patch-path.c.diff"
-    end
 
     # Patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
     if build.include? 'perl'
@@ -43,24 +36,24 @@ class Subversion < Formula
     end
   end
 
-  # When building Perl, Python or Ruby bindings, need to use a compiler that
+  # When building Perl or Ruby bindings, need to use a compiler that
   # recognizes GCC-style switches, since that's what the system languages
   # were compiled against.
   fails_with :clang do
     build 318
     cause "core.c:1: error: bad value (native) for -march= switch"
-  end if (build.include? 'perl') or (build.include? 'python') or (build.include? 'ruby')
+  end if (build.include? 'perl') or (build.include? 'ruby')
 
   def apr_bin
     superbin or "/usr/bin"
   end
 
   def install
-    # We had weird issues with "make" apparently hanging on first run:
-    # https://github.com/mxcl/homebrew/issues/13226
-    ENV.deparallelize
-
     if build.include? 'java'
+      # Java support doesn't build correctly in parallel:
+      # https://github.com/mxcl/homebrew/issues/20415
+      ENV.deparallelize
+
       unless build.universal?
         opoo "A non-Universal Java build was requested."
         puts "To use Java bindings with various Java IDEs, you might need a universal build:"
@@ -84,9 +77,8 @@ class Subversion < Formula
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula.factory('sqlite').opt_prefix}",
             "--with-serf=#{Formula.factory('serf').opt_prefix}",
-            # use our neon, not OS X's
-            "--disable-neon-version-check",
             "--disable-mod-activation",
+            "--disable-nls",
             "--without-apache-libexecdir",
             "--without-berkeley-db"]
 
@@ -107,7 +99,18 @@ class Subversion < Formula
     system "make install"
     bash_completion.install 'tools/client-side/bash_completion' => 'subversion'
 
-    if build.include? 'python'
+    system "make tools"
+    system "make install-tools"
+    %w[
+      svn-populate-node-origins-index
+      svn-rep-sharing-stats
+      svnauthz-validate
+      svnraisetreeconflict
+    ].each do |prog|
+      bin.install_symlink bin/"svn-tools"/prog
+    end
+
+    python do
       system "make swig-py"
       system "make install-swig-py"
     end
@@ -150,13 +153,7 @@ class Subversion < Formula
   def caveats
     s = ""
 
-    if build.include? 'python'
-      s += <<-EOS.undent
-        You may need to add the Python bindings to your PYTHONPATH from:
-          #{HOMEBREW_PREFIX}/lib/svn-python
-
-      EOS
-    end
+    s += python.standard_caveats if python
 
     if build.include? 'perl'
       s += <<-EOS.undent
@@ -179,18 +176,6 @@ class Subversion < Formula
         You may need to link the Java bindings into the Java Extensions folder:
           sudo mkdir -p /Library/Java/Extensions
           sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions/libsvnjavahl-1.dylib
-
-      EOS
-    end
-
-    if build.include? 'unicode-path'
-      s += <<-EOS.undent
-        This unicode-path version implements a hack to deal with composed/decomposed
-        unicode handling on Mac OS X which is different from linux and windows.
-        It is an implementation of solution 1 from
-        http://svn.collab.net/repos/svn/trunk/notes/unicode-composition-for-filenames
-        which _WILL_ break some setups. Please be sure you understand what you
-        are asking for when you install this version.
 
       EOS
     end

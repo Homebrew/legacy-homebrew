@@ -2,8 +2,8 @@ require 'formula'
 
 class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
-  url 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.0.tar.gz'
-  sha1 '92b8c07b51cedda7c8148eceb23bbcb79bccf230'
+  url 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.1.tar.gz'
+  sha1 '01e641c5780d87f540891d269052704ef8152a9d'
 
   head 'https://github.com/elasticsearch/elasticsearch.git'
 
@@ -66,6 +66,13 @@ class Elasticsearch < Formula
       # Replace paths to use libexec instead of lib
       s.gsub! /\$ES_HOME\/lib\//, "$ES_CLASSPATH/"
     end
+  end
+
+  def post_install
+    # Make sure runtime directories exist
+    (var/"elasticsearch/#{cluster_name}").mkpath
+    (var/"log/elasticsearch").mkpath
+    (var/"lib/elasticsearch/plugins").mkpath
   end
 
   def caveats; <<-EOS.undent

@@ -2,8 +2,8 @@ require 'formula'
 
 class X3270 < Formula
   homepage 'http://x3270.bgp.nu/'
-  url 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga12/suite3270-3.3.12ga12-src.tgz'
-  sha1 '23a25021b6a0c9442cbd59aec9907c37f48d1c36'
+  url 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga13/suite3270-3.3.12ga13-src.tgz'
+  sha1 '4c031a7da1d13550ec85726846e31c34d819f971'
 
   depends_on :x11
 

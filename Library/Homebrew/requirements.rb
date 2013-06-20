@@ -1,8 +1,9 @@
 require 'requirement'
-require 'requirements/conflict_requirement'
 require 'requirements/language_module_dependency'
 require 'requirements/x11_dependency'
 require 'requirements/mpi_dependency'
+require 'requirements/python_dependency'
+require 'requirements/macos_requirement'
 
 class XcodeDependency < Requirement
   fatal true
@@ -41,7 +42,7 @@ end
 
 class PostgresqlDependency < Requirement
   fatal true
-  default_formula 'postgres'
+  default_formula 'postgresql'
 
   satisfy { which 'pg_config' }
 
