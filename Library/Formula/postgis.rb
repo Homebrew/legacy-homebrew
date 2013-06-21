@@ -114,10 +114,10 @@ class Postgis < Formula
 end
 
 __END__
-Force usage of GPP as the SQL pre-processor as Clang chokes.
+Force usage of GPP as the SQL pre-processor as Clang chokes and fix json-c link error
 
 diff --git a/configure.ac b/configure.ac
-index 136a1d6..c953c69 100644
+index 68d9240..8514041 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -31,17 +31,8 @@ AC_SUBST([ANT])
@@ -140,3 +140,15 @@ index 136a1d6..c953c69 100644
  AC_SUBST([SQLPP])
  
  dnl
+@@ -740,7 +731,9 @@ CPPFLAGS="$CPPFLAGS_SAVE"
+ dnl Ensure we can link against libjson
+ LIBS_SAVE="$LIBS"
+ LIBS="$JSON_LDFLAGS"
+-AC_CHECK_LIB([json], [json_object_get], [HAVE_JSON=yes], [], [])
++AC_CHECK_LIB([json-c], [json_object_get], [HAVE_JSON=yes; JSON_LDFLAGS="-ljson-c"], [
++  AC_CHECK_LIB([json], [json_object_get], [HAVE_JSON=yes; JSON_LDFLAGS="-ljson"], [], [])
++], [])
+ LIBS="$LIBS_SAVE"
+ 
+ if test "$HAVE_JSON" = "yes"; then
+
