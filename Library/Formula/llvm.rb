@@ -23,6 +23,12 @@ class Llvm < Formula
 
   head      'http://llvm.org/git/llvm.git'
 
+  bottle do
+    sha1 '61854a2cf08a1398577f74fea191a749bec3e72d' => :mountain_lion
+    sha1 'fbe7b85a50f4b283ad55be020c7ddfbf655435ad' => :lion
+    sha1 'f68fdb89d44a72c83db1e55e25444de4dcde5375' => :snow_leopard
+  end
+
   option :universal
   option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
   option 'with-asan', 'Include support for -faddress-sanitizer (from compiler-rt)'
