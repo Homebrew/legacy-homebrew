@@ -6,11 +6,13 @@ class Parrot < Formula
   sha256 '40c7176059e4462c722511a29450a4b80867a8459e273b602fbeaac2a22457f9'
 
   devel do
-    url 'ftp://ftp.parrot.org/pub/parrot/releases/devel/5.1.0/parrot-5.1.0.tar.bz2'
-    sha256 'af26c2fcc806505ec516ebb013bdd37b218633f5fe63faaa6b843ffe55e0135e'
+    url 'ftp://ftp.parrot.org/pub/parrot/releases/devel/5.4.0/parrot-5.4.0.tar.bz2'
+    sha256 '91d0e46fe3ef08e692e80756f26ee0e7311fe58e49d6c31f3f5180d4eb475696'
   end
 
   head 'https://github.com/parrot/parrot.git'
+
+  conflicts_with 'rakudo-star'
 
   depends_on 'gmp' => :optional
   depends_on 'icu4c' => :optional

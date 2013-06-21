@@ -2,20 +2,29 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.4.0.tar.gz'
-  sha1 'a4343ed201b99d93ff06843600f3175270cb0a94'
+  url 'http://nginx.org/download/nginx-1.4.1.tar.gz'
+  sha1 '9c72838973572323535dae10f4e412d671b27a7e'
 
-  head 'svn://svn.nginx.org/nginx/trunk/'
+  devel do
+    url 'http://nginx.org/download/nginx-1.5.1.tar.gz'
+    sha1 'bd5a5e7dba39a4aa166918112367589f165ce5bc'
+  end
+
+  head 'http://hg.nginx.org/nginx/', :using => :hg
 
   env :userpaths
-
-  depends_on 'pcre'
 
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
   option 'with-debug', 'Compile with support for debug log'
   option 'with-spdy', 'Compile with support for SPDY module'
   option 'with-gunzip', 'Compile with support for gunzip module'
+
+  depends_on 'pcre'
+  # SPDY needs openssl >= 1.0.1 for NPN; see:
+  # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
+  # http://www.openssl.org/news/changelog.html
+  depends_on 'openssl' if build.with? 'spdy'
 
   skip_clean 'logs'
 
@@ -38,13 +47,22 @@ class Nginx < Formula
   end
 
   def install
+    cc_opt = "-I#{HOMEBREW_PREFIX}/include"
+    ld_opt = "-L#{HOMEBREW_PREFIX}/lib"
+
+    if build.with? 'spdy'
+      openssl_path = Formula.factory("openssl").opt_prefix
+      cc_opt += " -I#{openssl_path}/include"
+      ld_opt += " -L#{openssl_path}/lib"
+    end
+
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
             "--with-ipv6",
             "--sbin-path=#{bin}/nginx",
-            "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
-            "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
+            "--with-cc-opt=#{cc_opt}",
+            "--with-ld-opt=#{ld_opt}",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/run/nginx.lock",

@@ -16,7 +16,7 @@ class Sflowtool < Formula
   test do
     require 'open3'
     Open3.popen3("#{bin}/sflowtool", "-h") do |_, _, stderr|
-      /sflowtool version: #{Regexp.escape(version)}/ === stderr.read
+      assert_match /sflowtool version: #{Regexp.escape(version)}/, stderr.read
     end
   end
 end

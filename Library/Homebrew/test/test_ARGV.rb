@@ -38,6 +38,16 @@ class ArgvExtensionTests < Test::Unit::TestCase
     %w{b ns bar --bar -n}.each { |s| assert !@argv.switch?(s) }
   end
 
+  def test_flag?
+    @argv << "--foo" << "-bq" << "--bar"
+    assert @argv.flag?("--foo")
+    assert @argv.flag?("--bar")
+    assert @argv.flag?("--baz")
+    assert @argv.flag?("--qux")
+    assert !@argv.flag?("--frotz")
+    assert !@argv.flag?("--debug")
+  end
+
   def test_filter_for_dependencies_clears_flags
     @argv << "--debug"
     @argv.filter_for_dependencies { assert @argv.empty? }

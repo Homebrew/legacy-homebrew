@@ -8,10 +8,20 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert_operator version('0.1'), :==, version('0.1.0')
     assert_operator version('0.1'), :<, version('0.2')
     assert_operator version('1.2.3'), :>, version('1.2.2')
-    assert_operator version('1.2.3-p34'), :>, version('1.2.3-p33')
     assert_operator version('1.2.4'), :<, version('1.2.4.1')
+  end
+
+  def test_patchlevel
+    assert_operator version('1.2.3-p34'), :>, version('1.2.3-p33')
+    assert_operator version('1.2.3-p33'), :<, version('1.2.3-p34')
+  end
+
+  def test_HEAD
     assert_operator version('HEAD'), :>, version('1.2.3')
     assert_operator version('1.2.3'), :<, version('HEAD')
+  end
+
+  def test_alpha_beta_rc
     assert_operator version('3.2.0b4'), :<, version('3.2.0')
     assert_operator version('1.0beta6'), :<, version('1.0b7')
     assert_operator version('1.0b6'), :<, version('1.0beta7')
@@ -19,13 +29,22 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert_operator version('1.1beta2'), :<, version('1.1rc1')
     assert_operator version('1.0.0beta7'), :<, version('1.0.0')
     assert_operator version('3.2.1'), :>, version('3.2beta4')
+  end
+
+  def test_comparing_unevenly_padded_versions
+    assert_operator version('2.1.0-p194'), :<, version('2.1-p195')
+    assert_operator version('2.1-p195'), :>, version('2.1.0-p194')
+    assert_operator version('2.1-p194'), :<, version('2.1.0-p195')
+    assert_operator version('2.1.0-p195'), :>, version('2.1-p194')
+    assert_operator version('2-p194'), :<, version('2.1-p195')
+  end
+
+  def test_comparison_returns_nil_for_non_version
     assert_nil version('1.0') <=> 'foo'
   end
 
-  def test_version_queries
-    assert Version.new("1.1alpha1").alpha?
-    assert Version.new("1.0beta2").beta?
-    assert Version.new("1.0rc-1").rc?
+  def test_compare_patchlevel_to_non_patchlevel
+    assert_operator version('9.9.3-P1'), :>, version('9.9.3')
   end
 end
 
@@ -272,5 +291,15 @@ class VersionParsingTests < Test::Unit::TestCase
 
   def test_ezlupdate_version
     assert_version_detected '2011.10', 'https://github.com/downloads/ezsystems/ezpublish-legacy/ezpublish_community_project-2011.10-with_ezc.tar.bz2'
+  end
+
+  def test_aespipe_version_style
+    assert_version_detected '2.4c',
+      'http://loop-aes.sourceforge.net/aespipe/aespipe-v2.4c.tar.bz2'
+  end
+
+  def test_perforce_style
+    assert_version_detected '2013.1.610569-x86_64',
+      '/usr/local/perforce-2013.1.610569-x86_64.mountain_lion.bottle.tar.gz'
   end
 end

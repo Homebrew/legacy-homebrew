@@ -102,14 +102,11 @@ module Homebrew extend self
       puts
     end
 
-    puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
-    conflicts = f.conflicts.map { |c| c.formula }.sort
+    conflicts = f.conflicts.map(&:name).sort!
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
-      kegs = f.rack.children
-      kegs.reject! {|keg| keg.basename.to_s == '.DS_Store' }
-      kegs = kegs.map {|keg| Keg.new(keg) }.sort_by {|keg| keg.version }
+      kegs = f.rack.subdirs.map { |keg| Keg.new(keg) }.sort_by(&:version)
       kegs.each do |keg|
         puts "#{keg} (#{keg.abv})#{' *' if keg.linked?}"
         tab = Tab.for_keg(keg).to_s
@@ -122,6 +119,14 @@ module Homebrew extend self
     history = github_info(f)
     puts history if history
 
+    unless f.deps.empty?
+      ohai "Dependencies"
+      %w{build required recommended optional}.map do |type|
+        deps = f.deps.send(type)
+        puts "#{type.capitalize}: #{deps*', '}" unless deps.empty?
+      end
+    end
+
     unless f.build.empty?
       require 'cmd/options'
       ohai "Options"
@@ -130,16 +135,6 @@ module Homebrew extend self
 
     c = Caveats.new(f)
     ohai 'Caveats', c.caveats unless c.empty?
-
-  rescue FormulaUnavailableError
-    # check for DIY installation
-    d = HOMEBREW_PREFIX+name
-    if d.directory?
-      ohai "DIY Installation"
-      d.children.each{ |keg| puts "#{keg} (#{keg.abv})" }
-    else
-      raise "No such formula or keg"
-    end
   end
 
   private

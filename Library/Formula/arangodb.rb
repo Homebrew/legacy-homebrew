@@ -2,16 +2,10 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://github.com/triAGENS/ArangoDB/archive/v1.2.3.tar.gz'
-  sha1 '14e77ce4c8fa0b55b371dee06d8ccf0edef5ba68'
+  url 'https://www.arangodb.org/repositories/archive/arangodb-1.3.1.tar.gz'
+  sha1 'f0ea2344967c28310d2490594084813eb4a904db'
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
-
-  devel do
-    version "1.3.0-alpha2"
-    url 'https://github.com/triAGENS/ArangoDB/archive/v1.3.0-alpha2.tar.gz'
-    sha1 '058c0edcba0d2e79c95b41ca2d717296d77dd9be'
-  end
 
   depends_on 'icu4c'
   depends_on 'libev'
@@ -56,7 +50,7 @@ class Arangodb < Formula
       http:/www.arangodb.org/quickstart
 
     Upgrading ArangoDB:
-      http://www.arangodb.org/manuals/1.2/Upgrading.html
+      http://www.arangodb.org/manuals/current/Upgrading.html
 
     Configuration file:
       /usr/local/etc/arangodb/arangod.conf

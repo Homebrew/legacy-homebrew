@@ -1,82 +1,82 @@
 require 'formula'
 require 'keg'
 require 'bottles'
-require 'cmd/prune'
 
 module Homebrew extend self
 
   def cleanup
+    return unless HOMEBREW_CELLAR.directory?
+
     if ARGV.named.empty?
-      if HOMEBREW_CELLAR.directory?
-        HOMEBREW_CELLAR.children.each do |rack|
-          begin
-            cleanup_formula rack.basename.to_s if rack.directory?
-          rescue FormulaUnavailableError
-            # Don't complain about Cellar folders that are from DIY installs
-            # instead of core formulae.
-          end
-        end
-      end
-      clean_cache
-      # seems like a good time to do some additional cleanup
-      unless ARGV.dry_run?
-        Homebrew.prune
-        rm_DS_Store
-      end
+      cleanup_cellar
+      cleanup_cache
+      rm_DS_Store unless ARGV.dry_run?
     else
-      ARGV.formulae.each do |f|
-        cleanup_formula f
+      ARGV.formulae.each { |f| cleanup_formula(f) }
+    end
+  end
+
+  def cleanup_cellar
+    HOMEBREW_CELLAR.subdirs.each do |rack|
+      begin
+        cleanup_formula Formula.factory(rack.basename.to_s)
+      rescue FormulaUnavailableError
+        # Don't complain about directories from DIY installs
       end
     end
   end
 
   def cleanup_formula f
-    f = Formula.factory f
-
-    if f.installed? and f.rack.directory?
-      f.rack.children.each do |keg|
-        if File.directory? keg and f.version > Keg.new(keg).version
-          if f.can_cleanup?
-            if !Keg.new(keg).linked?
-              if ARGV.dry_run?
-                puts "Would remove: #{keg}"
-              else
-                puts "Removing: #{keg}..."
-                rm_rf keg
-              end
-            else
-              opoo "Skipping (old) #{keg} due to it being linked"
-            end
-          else
-            opoo "Skipping (old) keg-only: #{keg}"
-          end
+    if f.installed?
+      eligible_kegs = f.rack.subdirs.map { |d| Keg.new(d) }.select { |k| f.version > k.version }
+      eligible_kegs.each do |keg|
+        if f.can_cleanup?
+          cleanup_keg(keg)
+        else
+          opoo "Skipping (old) keg-only: #{keg}"
         end
       end
-    elsif f.rack.children.length > 1
+    elsif f.rack.subdirs.length > 1
       # If the cellar only has one version installed, don't complain
       # that we can't tell which one to keep.
       opoo "Skipping #{f.name}: most recent version #{f.version} not installed"
     end
   end
 
-  def clean_cache
-    return unless HOMEBREW_CACHE.directory?
-    HOMEBREW_CACHE.children.each do |pn|
-      next unless pn.file?
-      version = pn.version
-      name = pn.basename.to_s.match(/(.*)-(#{version})/).captures.first rescue nil
-      if name and version
-        f = Formula.factory(name) rescue nil
-        old_bottle = bottle_file_outdated? f, pn
-        if (f and f.version > version) or (ARGV.switch? "s" and (f and (not f.installed?))) or old_bottle
-          if ARGV.dry_run?
-            puts "Would remove: #{pn}"
-          else
-            puts "Removing: #{pn}..."
-            rm pn
-          end
-        end
+  def cleanup_keg keg
+    if keg.linked?
+      opoo "Skipping (old) #{keg} due to it being linked"
+    elsif ARGV.dry_run?
+      puts "Would remove: #{keg}"
+    else
+      puts "Removing: #{keg}..."
+      keg.rmtree
+    end
+  end
+
+  def cleanup_cache
+    HOMEBREW_CACHE.children.select(&:file?).each do |file|
+      next unless (version = file.version)
+      next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])
+
+      begin
+        f = Formula.factory(name)
+      rescue FormulaUnavailableError
+        next
       end
+
+      if f.version > version || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
+        cleanup_cached_file(file)
+      end
+    end
+  end
+
+  def cleanup_cached_file file
+    if ARGV.dry_run?
+      puts "Would remove: #{file}"
+    else
+      puts "Removing: #{file}..."
+      file.unlink
     end
   end
 
@@ -99,7 +99,7 @@ class Formula
       # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks
       !Formula.installed.
         select{ |ff| ff.deps.map{ |d| d.to_s }.include? name }.
-        map{ |ff| ff.rack.children rescue [] }.
+        map{ |ff| ff.rack.subdirs rescue [] }.
         flatten.
         map{ |keg_path| Tab.for_keg(keg_path).send("HEAD") }.
         include? nil

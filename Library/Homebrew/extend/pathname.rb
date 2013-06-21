@@ -177,6 +177,10 @@ class Pathname
     # OS X installer package
     return :pkg if self.extname == '.pkg'
 
+    # If the filename ends with .gz not preceded by .tar
+    # then we want to gunzip but not tar
+    return :gzip_only if self.extname == '.gz'
+
     # Get enough of the file to detect common file types
     # POSIX tar magic has a 257 byte offset
     # magic numbers stolen from /usr/share/file/magic/
@@ -264,7 +268,20 @@ class Pathname
           raise <<-EOS.undent
             Could not symlink file: #{src.expand_path}
             Target #{self} already exists. You may need to delete it.
-            To force the link and delete this file, do:
+            To force the link and overwrite all other conflicting files, do:
+              brew link --overwrite formula_name
+
+            To list all files that would be deleted:
+              brew link --overwrite --dry-run formula_name
+            EOS
+        # #exist? will return false for symlinks whose target doesn't exist
+        elsif self.symlink?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            Target #{self} already exists as a symlink to #{readlink}.
+            If this file is from another formula, you may need to
+            `brew unlink` it. Otherwise, you may want to delete it.
+            To force the link and overwrite all other conflicting files, do:
               brew link --overwrite formula_name
 
             To list all files that would be deleted:
@@ -327,14 +344,6 @@ class Pathname
   end
 
   def find_formula
-    # remove special casing once tap is established and alt removed
-    if self == HOMEBREW_LIBRARY/"Taps/adamv-alt"
-      all_formula do |file|
-        yield file
-      end
-      return
-    end
-
     [self/:Formula, self/:HomebrewFormula, self].each do |d|
       if d.exist?
         d.children.map{ |child| child.relative_path_from(self) }.each do |pn|
@@ -347,7 +356,7 @@ class Pathname
 
   # Writes an exec script in this folder for each target pathname
   def write_exec_script *targets
-    targets = [targets].flatten
+    targets.flatten!
     if targets.empty?
       opoo "tried to write exec sripts to #{self} for an empty list of targets"
     end

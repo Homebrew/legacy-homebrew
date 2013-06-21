@@ -1,4 +1,5 @@
 require 'os/mac/version'
+require 'hardware'
 
 module MacOS extend self
 
@@ -9,29 +10,7 @@ module MacOS extend self
   end
 
   def cat
-    @cat ||= uncached_cat
-  end
-
-  def uncached_cat
-    case MacOS.version
-    when 10.8
-      :mountain_lion
-    when 10.7
-      :lion
-    when 10.6
-      Hardware.is_64_bit? ? :snow_leopard : :snow_leopard_32
-    when 10.5
-      :leopard
-    else
-      Hardware::CPU.family if Hardware::CPU.type == :ppc
-    end
-  end
-
-  # TODO: Can be removed when all bottles migrated to underscored cat symbols.
-  def cat_without_underscores
-    possibly_underscored_cat = cat
-    return nil unless possibly_underscored_cat
-    cat.to_s.gsub('_', '').to_sym
+    version.to_sym
   end
 
   def locate tool
@@ -127,6 +106,7 @@ module MacOS extend self
       $1.to_i
     end
   end
+  alias_method :gcc_4_0_build_version, :gcc_40_build_version
 
   def gcc_42_build_version
     @gcc_42_build_version ||= if locate("gcc-4.2") \
@@ -194,7 +174,7 @@ module MacOS extend self
   end
 
   def prefer_64_bit?
-    Hardware.is_64_bit? and version != :leopard
+    Hardware::CPU.is_64_bit? and version != :leopard
   end
 
   STANDARD_COMPILERS = {
@@ -216,6 +196,8 @@ module MacOS extend self
     "4.6"   => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "4.6.1" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "4.6.2" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "4.6.3" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "5.0"   => { :clang => "5.0", :clang_build => 500 },
   }
 
   def compilers_standard?

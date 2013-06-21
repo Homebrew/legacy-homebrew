@@ -135,22 +135,17 @@ module HomebrewArgvExtension
   end
 
   def flag? flag
-    options_only.each do |arg|
-      return true if arg == flag
-      next if arg[1..1] == '-'
-      return true if arg.include? flag[2..2]
+    options_only.any? do |arg|
+      arg == flag || arg[1..1] != '-' && arg.include?(flag[2..2])
     end
-    return false
   end
 
   # eg. `foo -ns -i --bar` has three switches, n, s and i
   def switch? switch_character
     return false if switch_character.length > 1
-    options_only.each do |arg|
-      next if arg[1..1] == '-'
-      return true if arg.include? switch_character
+    options_only.any? do |arg|
+      arg[1..1] != '-' && arg.include?(switch_character)
     end
-    return false
   end
 
   def usage

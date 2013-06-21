@@ -28,6 +28,7 @@ class LanguageModuleDependency < Requirement
       when :ocaml then %W{/usr/bin/env opam list #{@import_name} | grep #{@import_name}}
       when :perl then %W{/usr/bin/env perl -e use\ #{@import_name}}
       when :python then %W{/usr/bin/env python -c import\ #{@import_name}}
+      when :python3 then %W{/usr/bin/env python3 -c import\ #{@import_name}}
       when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{@import_name}'}
       when :rbx then %W{/usr/bin/env rbx -rubygems -e require\ '#{@import_name}'}
     end
@@ -42,6 +43,7 @@ class LanguageModuleDependency < Requirement
       when :ocaml   then "opam install"
       when :perl    then "cpan -i"
       when :python  then "pip install"
+      when :python3 then "pip3 install"
       when :rbx     then "rbx gem install"
       when :ruby    then "gem install"
     end

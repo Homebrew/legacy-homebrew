@@ -2,8 +2,8 @@ require 'formula'
 
 class S3fs < Formula
   homepage 'http://code.google.com/p/s3fs/'
-  url 'http://s3fs.googlecode.com/files/s3fs-1.61.tar.gz'
-  sha1 '8f6561ce00b41c667b738595fdb7b42196c5eee6'
+  url 'http://s3fs.googlecode.com/files/s3fs-1.70.tar.gz'
+  sha1 '6e0c8d3ff67843c0baa7326128bc2be702e2f5a0'
 
   depends_on 'pkg-config' => :build
   depends_on 'fuse4x'

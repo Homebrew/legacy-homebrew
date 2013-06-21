@@ -24,24 +24,27 @@ class Llvm < Formula
   head      'http://llvm.org/git/llvm.git'
 
   bottle do
-    revision 1
-    sha1 '2908621be867da84962d2e4b8d6a083bd6bf4995' => :mountain_lion
-    sha1 '91dfa26392b9699750a04fa934ee8ec9dc98407a' => :lion
-    sha1 '259f39608d50dd3aba0eb3ff28b603d795af9eac' => :snow_leopard
+    revision 2
+    sha1 'beec50e270e10df5a8286919d1a7a18e7e21146b' => :lion
+    sha1 'e1570f49b4c31efbc8dbaac0134a84677ee47a1c' => :snow_leopard
+    sha1 '5f61eb469603f59d354d0eb1a95990fb44f12f56' => :mountain_lion
   end
 
   option :universal
   option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
   option 'with-asan', 'Include support for -faddress-sanitizer (from compiler-rt)'
-  option 'shared', 'Build LLVM as a shared library'
+  option 'disable-shared', "Don't build LLVM as a shared library"
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
   option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
+  depends_on :python => :recommended
+
+  env :std if build.universal?
+
   def install
-    if build.universal? and build.include? 'shared'
-      onoe "Cannot specify both shared and universal (will not build)"
-      exit 1
+    if build.with? 'python' and build.include? 'disable-shared'
+      raise 'The Python bindings need the shared library.'
     end
 
     Clang.new("clang").brew do
@@ -72,7 +75,7 @@ class Llvm < Formula
     else
       args << "--enable-targets=host"
     end
-    args << "--enable-shared" if build.include? 'shared'
+    args << "--enable-shared" unless build.include? 'disable-shared'
 
     args << "--disable-assertions" if build.include? 'disable-assertions'
 
@@ -80,13 +83,18 @@ class Llvm < Formula
     system "make install"
 
     # install llvm python bindings
-    (share/'llvm/bindings').install buildpath/'bindings/python'
+    if python
+      unless build.head?
+        inreplace buildpath/'bindings/python/llvm/common.py', 'LLVM-3.1svn', "libLLVM-#{version}svn"
+      end
+      python.site_packages.install buildpath/'bindings/python/llvm'
+    end
 
     # install clang tools and bindings
     cd clang_dir do
       system 'make install'
       (share/'clang/tools').install 'tools/scan-build', 'tools/scan-view'
-      (share/'clang/bindings').install 'bindings/python'
+      python.site_packages.install 'bindings/python/clang' if python
     end if build.include? 'with-clang'
   end
 
@@ -94,12 +102,15 @@ class Llvm < Formula
     system "#{bin}/llvm-config", "--version"
   end
 
-  def caveats; <<-EOS.undent
-    Extra tools and bindings are installed in #{share}/llvm and #{share}/clang.
+  def caveats
+    s = ''
+    s += python.standard_caveats if python
+    s += <<-EOS.undent
+      Extra tools are installed in #{share}/llvm and #{share}/clang.
 
-    If you already have LLVM installed, then "brew upgrade llvm" might not work.
-    Instead, try:
-        brew rm llvm && brew install llvm
+      If you already have LLVM installed, then "brew upgrade llvm" might not work.
+      Instead, try:
+          brew rm llvm && brew install llvm
     EOS
   end
 

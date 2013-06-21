@@ -13,13 +13,14 @@ class Xapian < Formula
 
   option "java",   "Java bindings"
   option "php",    "PHP bindings"
-  option "python", "Python bindings"
   option "ruby",   "Ruby bindings"
+
+  depends_on :python => :optional
 
   skip_clean :la
 
   def build_any_bindings?
-    build.include? 'ruby' or build.include? 'python' or build.include? 'java' or build.include? 'php'
+    build.include? 'ruby' or build.with? 'python' or build.include? 'java' or build.include? 'php'
   end
 
   def install
@@ -51,12 +52,8 @@ class Xapian < Formula
         args << '--without-ruby'
       end
 
-      if build.include? 'python'
-        python_lib = lib/which_python/'site-packages'
-        python_lib.mkpath
-        ENV.append 'PYTHONPATH', python_lib
-        ENV['OVERRIDE_MACOSX_DEPLOYMENT_TARGET'] = '10.4'
-        ENV['PYTHON_LIB'] = python_lib
+      if build.with? 'python'
+        ENV['PYTHON_LIB'] = python.site_packages
         args << "--with-python"
       else
         args << "--without-python"
@@ -76,13 +73,7 @@ class Xapian < Formula
 
   def caveats
     s = ''
-    if build.include? 'python'
-      s += <<-EOS.undent
-        The Python bindings won't function until you amend your PYTHONPATH like so:
-          export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-
-      EOS
-    end
+    s += python.standard_caveats if python
     if build.include? 'ruby'
       s += <<-EOS.undent
         You may need to add the Ruby bindings to your RUBYLIB from:
@@ -93,7 +84,4 @@ class Xapian < Formula
     return s.empty? ? nil : s
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
 end

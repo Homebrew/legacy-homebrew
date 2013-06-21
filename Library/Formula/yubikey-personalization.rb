@@ -2,8 +2,8 @@ require 'formula'
 
 class YubikeyPersonalization < Formula
   homepage 'https://www.yubico.com/develop/open-source-software/personalization-libraries/'
-  url 'https://github.com/Yubico/yubikey-personalization/archive/v1.12.0.zip'
-  sha1 'd0b12de3b2dcc83a11dd340e97a45aa2eb080fd0'
+  url 'https://github.com/Yubico/yubikey-personalization/archive/v1.13.0.zip'
+  sha1 'e82def981f5b2278593fe3366b68069085ceeb42'
 
   depends_on 'libtool' => :build
   depends_on 'automake' => :build

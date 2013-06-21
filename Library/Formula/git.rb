@@ -1,25 +1,26 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.8.2.2.tar.gz'
-  sha1 'ffde312471c4b391a47426948be25629582a77ab'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.8.3.1.tar.gz'
+  sha1 '0cd759579d4bd75f1cf1ba073b1ab96c49390426'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.2.2.tar.gz'
-  sha1 '8f334c0f5433ad7513680ffd0bf0f29dd5821450'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.3.1.tar.gz'
+  sha1 '94d48f6f8684aec851124e7d0b835b338a9187ad'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.2.2.tar.gz'
-  sha1 '47a86a0a4f92998f21ada77be146676ecfd2e4af'
+  url 'http://git-core.googlecode.com/files/git-1.8.3.1.tar.gz'
+  sha1 '32562a231fe4422bc033bf872fffa61f41ee2669'
 
   head 'https://github.com/git/git.git'
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
 
+  depends_on :python
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
 
@@ -29,17 +30,18 @@ class Git < Formula
     ENV['NO_DARWIN_PORTS'] = '1'
     ENV['V'] = '1' # build verbosely
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
-    ENV['PERL_PATH'] = which 'perl' # workaround for users of perlbrew
-    ENV['PYTHON_PATH'] = which 'python' # python can be brewed or unbrewed
+    ENV['PYTHON_PATH'] = python.binary if python
+    ENV['PERL_PATH'] = which 'perl'
 
-    # Clean XCode 4.x installs don't include Perl MakeMaker
-    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.version >= :lion
+    unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'
+      ENV['NO_PERL_MAKEMAKER'] = '1'
+    end
 
     ENV['BLK_SHA1'] = '1' if build.with? 'blk-sha1'
 
     if build.with? 'pcre'
       ENV['USE_LIBPCRE'] = '1'
-      ENV['LIBPCREDIR'] = HOMEBREW_PREFIX
+      ENV['LIBPCREDIR'] = Formula.factory('pcre').opt_prefix
     end
 
     ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
@@ -95,7 +97,7 @@ class Git < Formula
 
   test do
     HOMEBREW_REPOSITORY.cd do
-      `#{bin}/git ls-files -- bin`.chomp == 'bin/brew'
+      assert_equal 'bin/brew', `#{bin}/git ls-files -- bin`.strip
     end
   end
 end

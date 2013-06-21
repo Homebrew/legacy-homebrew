@@ -21,6 +21,7 @@ class CmuSphinxbase < Formula
   sha1 'c0c4d52e143d07cd593bd6bcaeb92b9a8a5a8c8e'
 
   depends_on 'pkg-config' => :build
+  depends_on :python
   depends_on HomebrewedPython
 
   def install

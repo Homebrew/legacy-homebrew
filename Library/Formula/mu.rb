@@ -3,6 +3,7 @@ require 'formula'
 class Emacs23Installed < Requirement
   fatal true
   env :userpaths
+  default_formula 'emacs'
 
   satisfy do
     `emacs --version 2>/dev/null` =~ /^GNU Emacs (\d{2})/

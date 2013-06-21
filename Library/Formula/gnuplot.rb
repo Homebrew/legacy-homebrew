@@ -5,7 +5,7 @@ class Gnuplot < Formula
   url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.3/gnuplot-4.6.3.tar.gz'
   sha256 'df5ffafa25fb32b3ecc0206a520f6bca8680e6dcc961efd30df34c0a1b7ea7f5'
 
-  head 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot', :using => :cvs
+  head 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot'
 
   option 'pdf',    'Build the PDF terminal using pdflib-lite'
   option 'wx',     'Build the wxWidgets terminal using pango'

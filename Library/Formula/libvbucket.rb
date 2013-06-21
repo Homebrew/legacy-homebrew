@@ -33,7 +33,7 @@ class Libvbucket < Formula
     Open3.popen3("#{bin}/vbuckettool", "-", "hello", "world") do |stdin, stdout, _|
       stdin.write(json)
       stdin.close
-      expected == stdout.read
+      assert_equal expected, stdout.read
     end
   end
 end

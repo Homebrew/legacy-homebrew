@@ -2,12 +2,12 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'svn+http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/', :revision => 1809
+  url 'svn+http://svn.code.sf.net/p/netpbm/code/advanced/', :revision => 1809
   version '10.60.05'
   # Maintainers: Look at http://netpbm.svn.sourceforge.net/viewvc/netpbm/
   # for versions and matching revisions
 
-  head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
+  head 'http://svn.code.sf.net/p/netpbm/code/trunk'
 
   depends_on "libtiff"
   depends_on "jasper"
