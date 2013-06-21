@@ -10,7 +10,10 @@ module Homebrew extend self
     if ARGV.named.empty?
       cleanup_cellar
       cleanup_cache
-      rm_DS_Store unless ARGV.dry_run?
+      unless ARGV.dry_run?
+        cleanup_lockfiles
+        rm_DS_Store
+      end
     else
       ARGV.formulae.each { |f| cleanup_formula(f) }
     end
@@ -77,6 +80,14 @@ module Homebrew extend self
     else
       puts "Removing: #{file}..."
       file.unlink
+    end
+  end
+
+  def cleanup_lockfiles
+    candidates = HOMEBREW_CACHE_FORMULA.children
+    lockfiles  = candidates.select { |f| f.file? && f.extname == '.brewing' }
+    lockfiles.select(&:readable?).each do |file|
+      file.open.flock(File::LOCK_EX | File::LOCK_NB) and file.unlink
     end
   end
 
