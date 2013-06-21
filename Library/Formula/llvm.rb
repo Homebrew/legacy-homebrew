@@ -24,10 +24,10 @@ class Llvm < Formula
   head      'http://llvm.org/git/llvm.git'
 
   bottle do
-    revision 1
-    sha1 '2908621be867da84962d2e4b8d6a083bd6bf4995' => :mountain_lion
-    sha1 '91dfa26392b9699750a04fa934ee8ec9dc98407a' => :lion
-    sha1 '259f39608d50dd3aba0eb3ff28b603d795af9eac' => :snow_leopard
+    revision 2
+    sha1 'beec50e270e10df5a8286919d1a7a18e7e21146b' => :lion
+    sha1 'e1570f49b4c31efbc8dbaac0134a84677ee47a1c' => :snow_leopard
+    sha1 '5f61eb469603f59d354d0eb1a95990fb44f12f56' => :mountain_lion
   end
 
   option :universal
