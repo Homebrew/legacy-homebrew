@@ -84,6 +84,7 @@ module Homebrew extend self
   end
 
   def cleanup_lockfiles
+    return unless HOMEBREW_CACHE_FORMULA.directory?
     candidates = HOMEBREW_CACHE_FORMULA.children
     lockfiles  = candidates.select { |f| f.file? && f.extname == '.brewing' }
     lockfiles.select(&:readable?).each do |file|
