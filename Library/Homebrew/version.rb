@@ -237,6 +237,10 @@ class Version
     m = /[-_]([Rr]\d+[AaBb]\d*(?:-\d+)?)/.match(spec_s)
     return m.captures.first unless m.nil?
 
+    # e.g. perforce-2013.1.610569-x86_64
+    m = /-([\d\.]+-x86(_64)?)/.match(stem)
+    return m.captures.first unless m.nil?
+
     # e.g. boost_1_39_0
     m = /((?:\d+_)+\d+)$/.match(stem)
     return m.captures.first.gsub('_', '.') unless m.nil?

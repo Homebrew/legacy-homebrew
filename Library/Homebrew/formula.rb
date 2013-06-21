@@ -406,7 +406,15 @@ class Formula
     elsif name.match bottle_regex
       bottle_filename = Pathname(name).realpath
       version = Version.parse(bottle_filename).to_s
-      name = bottle_filename.basename.to_s.rpartition("-#{version}").first
+      bottle_basename = bottle_filename.basename.to_s
+      name_without_version = bottle_basename.rpartition("-#{version}").first
+      if name_without_version.empty?
+        if ARGV.homebrew_developer?
+          opoo "Add a new version regex to version.rb to parse this filename."
+        end
+      else
+        name = name_without_version
+      end
       path = Formula.path(name)
       install_type = :from_local_bottle
     else
@@ -688,7 +696,7 @@ class Formula
   # The methods below define the formula DSL.
   class << self
 
-    attr_rw :homepage, :keg_only_reason, :skip_clean_all, :cc_failures
+    attr_rw :homepage, :keg_only_reason, :cc_failures
     attr_rw :plist_startup, :plist_manual
 
     Checksum::TYPES.each do |cksum|
@@ -773,7 +781,7 @@ class Formula
     end
 
     def skip_clean *paths
-      paths = [paths].flatten
+      paths.flatten!
 
       # :all is deprecated though
       if paths.include? :all
@@ -781,10 +789,9 @@ class Formula
         return
       end
 
-      @skip_clean_paths ||= []
       paths.each do |p|
         p = p.to_s unless p == :la # Keep :la in paths as a symbol
-        @skip_clean_paths << p unless @skip_clean_paths.include? p
+        skip_clean_paths << p
       end
     end
 
@@ -793,7 +800,7 @@ class Formula
     end
 
     def skip_clean_paths
-      @skip_clean_paths or []
+      @skip_clean_paths ||= Set.new
     end
 
     def keg_only reason, explanation=nil
