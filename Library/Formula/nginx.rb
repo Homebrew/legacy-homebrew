@@ -14,11 +14,29 @@ class Nginx < Formula
 
   env :userpaths
 
-  option 'with-passenger', 'Compile with support for Phusion Passenger module'
-  option 'with-webdav', 'Compile with support for WebDAV module'
+  # Inbuilt compile-time flags
   option 'with-debug', 'Compile with support for debug log'
-  option 'with-spdy', 'Compile with support for SPDY module'
+  option 'with-addition', 'Compile with Addition module'
+  option 'with-degredation', 'Compile with http degredation module'
+  option 'with-perl', 'Compile with Embedded Perl module'
+  option 'with-flv', 'Compile with flv module'
+  option 'with-geoip', 'Compile with geoip module'
+  option 'with-google=perftools', 'Compile with Google Performance tools module'
   option 'with-gunzip', 'Compile with support for gunzip module'
+  option 'with-gzip-static', 'Compile with gzip static module'
+  option 'with-image-filter', 'Compile with Image Filter module'
+  option 'with-mp4', 'Compile with mp4 module'
+  option 'with-random-index', 'Compile with random index module'
+  option 'with-realip', 'Compile with RealIP support'
+  option 'with-secure-link', 'Compile with secure link module'
+  option 'with-spdy', 'Compile with support for SPDY module'
+  option 'with-ssl', 'Compile with support for SSL module'
+  option 'with-stub', 'Compile with stub status module'
+  option 'with-sub', 'Compile with Substitution module'
+  option 'with-webdav', 'Compile with support for WebDAV module'
+  option 'with-xslt', 'Compile with XSLT module'
+  # Additional
+  option 'with-passenger', 'Compile with support for Phusion Passenger module'
 
   depends_on 'pcre'
   # SPDY needs openssl >= 1.0.1 for NPN; see:
@@ -57,7 +75,6 @@ class Nginx < Formula
     end
 
     args = ["--prefix=#{prefix}",
-            "--with-http_ssl_module",
             "--with-pcre",
             "--with-ipv6",
             "--sbin-path=#{bin}/nginx",
@@ -71,15 +88,32 @@ class Nginx < Formula
             "--http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp",
             "--http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp",
             "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp",
-            "--http-log-path=#{var}/log/nginx",
-            "--with-http_gzip_static_module"
+            "--http-log-path=#{var}/log/nginx"
           ]
 
-    args << passenger_config_args if build.include? 'with-passenger'
-    args << "--with-http_dav_module" if build.include? 'with-webdav'
+    #inbuilt compile-time flags
     args << "--with-debug" if build.include? 'with-debug'
-    args << "--with-http_spdy_module" if build.include? 'with-spdy'
+    args << "--with-http_addition_module" if build.include? 'with-addition'
+    args << "--with-http_degradation_module" if build.include? 'with-degredation'
+    args << "--with-http_perl_module" if build.include? 'with-perl'
+    args << "--with-http_flv_module" if build.include? 'with-flv'
+    args << "--with-http_geoip_module" if build.include? 'with-geoip'
+    args << "--with-google_perftools_module" if build.include? 'with-google-pertools'
     args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
+    args << "--with-http_gzip_static_module" if build.include? 'with-gzip-static'
+    args << "--with-http_image_filter_module" if build.include? 'with-image-filter'
+    args << "--with-http_mp4_module" if build.include? 'with-mp4'
+    args << "--with-http_random_index_module" if build.include? 'with-random-index'
+    args << "--with-http_realip_module" if build.include? 'with-realip'
+    args << "--with-http_secure_link_module" if build.include? 'with-secure-link'
+    args << "--with-http_spdy_module" if build.include? 'with-spdy'
+    args << "--with-http_ssl_module" if build.include? 'with-ssl'
+    args << "--with-http_stub_status_module" if build.include? 'with-stub-status'
+    args << "--with-http_sub_module" if build.include? 'with-sub'
+    args << "--with-http_dav_module" if build.include? 'with-webdav'
+    args << "--with-http_xslt_module" if build.include? 'with-xslt'
+    # Additional
+    args << passenger_config_args if build.include? 'with-passenger'
 
     if build.head?
       system "./auto/configure", *args
