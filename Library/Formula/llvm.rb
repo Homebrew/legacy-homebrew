@@ -2,33 +2,26 @@ require 'formula'
 
 class Clang < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.2/clang-3.2.src.tar.gz'
-  sha1      'b0515298c4088aa294edc08806bd671f8819f870'
+  url       'http://llvm.org/releases/3.3/cfe-3.3.src.tar.gz'
+  sha1      'ccd6dbf2cdb1189a028b70bcb8a22509c25c74c8'
 
   head      'http://llvm.org/git/clang.git'
 end
 
 class CompilerRt < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.2/compiler-rt-3.2.src.tar.gz'
-  sha1      '718c0249a00e928f8bba32c84771da998ea4d42f'
+  url       'http://llvm.org/releases/3.3/compiler-rt-3.3.src.tar.gz'
+  sha1      '745386ec046e3e49742e1ecb6912c560ccd0a002'
 
   head      'http://llvm.org/git/compiler-rt.git'
 end
 
 class Llvm < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.2/llvm-3.2.src.tar.gz'
-  sha1      '42d139ab4c9f0c539c60f5ac07486e9d30fc1280'
+  url       'http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz'
+  sha1      'c6c22d5593419e3cb47cbcf16d967640e5cce133'
 
   head      'http://llvm.org/git/llvm.git'
-
-  bottle do
-    revision 2
-    sha1 'beec50e270e10df5a8286919d1a7a18e7e21146b' => :lion
-    sha1 'e1570f49b4c31efbc8dbaac0134a84677ee47a1c' => :snow_leopard
-    sha1 '5f61eb469603f59d354d0eb1a95990fb44f12f56' => :mountain_lion
-  end
 
   option :universal
   option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
