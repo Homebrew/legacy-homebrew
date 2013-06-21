@@ -2,8 +2,8 @@ require 'formula'
 
 class Highlight < Formula
   homepage 'http://www.andre-simon.de/doku/highlight/en/highlight.html'
-  url 'http://www.andre-simon.de/zip/highlight-3.12.tar.bz2'
-  sha1 '4d96b4d91ff08268a338847b9ea408d741b91573'
+  url 'http://www.andre-simon.de/zip/highlight-3.14.tar.bz2'
+  sha1 '02dd278367e9029baeb396cd6af77f11ceb731c5'
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
