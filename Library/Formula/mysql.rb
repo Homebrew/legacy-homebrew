@@ -6,6 +6,12 @@ class Mysql < Formula
   version '5.6.12'
   sha1 '852e168fd39bb24adf8805642be20a59042c2e6c'
 
+  bottle do
+    sha1 'bbfa381e1c2ac2c3dc2a3811bc530116343d94be' => :mountain_lion
+    sha1 'a85dd6452d140c708057ed1ef96638eeaf57fb72' => :lion
+    sha1 'acc9217c05e777c02ba9e2088456db491d7476a5' => :snow_leopard
+  end
+
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
 
