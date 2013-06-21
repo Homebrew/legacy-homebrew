@@ -8,7 +8,7 @@ class Glfw < Formula
   depends_on 'cmake' => :build
 
   option :universal
-  option :static, 'Build static libraries'
+  option 'static', 'Build static libraries'
   option 'build-examples', 'Build examples'
   option 'build-tests', 'Build test programs'
 
@@ -16,9 +16,6 @@ class Glfw < Formula
     ENV.universal_binary if build.universal?
 
     args = std_cmake_args
-    args.delete '-DCMAKE_BUILD_TYPE=None'
-    args.push '-DCMAKE_BUILD_TYPE=Release'
-
     args << '-DBUILD_SHARED_LIBS=FALSE' if build.include? 'static'
     args << '-DGLFW_BUILD_EXAMPLES=TRUE' if build.include? 'build-examples'
     args << '-DGLFW_BUILD_TESTS=TRUE' if build.include? 'build-tests'
