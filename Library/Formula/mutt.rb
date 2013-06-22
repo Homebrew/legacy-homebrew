@@ -28,7 +28,15 @@ class Mutt < Formula
   option "with-regex",              "Use the GNU regex library"
   option "with-slang",              "Build against slang instead of ncurses"
   option "disable-smime",           "Disable SMIME support"
-  # These are brew-specific ones:
+  # These are for individually overriding the defaults.
+  option "disable-smtp",            "Don't include internal SMTP relay support"
+  option "disable-imap",            "Don't enable IMAP support"
+  option "disable-pop",             "Don't enable POP3 support"
+  option "disable-hcache",          "Don't enable header caching"
+  option "without-ssl",             "Don't enable TLS support using OpenSSL"
+  option "without-sasl",            "Don't use SASL network security library"
+  option "without-gss",             "Don't compile in GSSAPI authentication for IMAP"
+  # This one is brew-specific:
   option "with-brewed-ssl",         "Use a brewed openssl instead of system openssl"
 
   # Patches (sorted by name)
@@ -172,6 +180,15 @@ class Mutt < Formula
     args << "--with-regex"              if build.include? 'with-regex'
     args << "--with-slang"              if build.include? 'with-slang'
     args << "--disable-smime"           if build.include? 'disable-smime'
+    # These will invidually override the defaults.
+    args << "--disable-smtp"            if build.include? 'disable-smtp'
+    args << "--disable-imap"            if build.include? 'disable-imap'
+    args << "--disable-pop"             if build.include? 'disable-pop'
+    args << "--disable-hcache"          if build.include? 'disable-hcache'
+    args << "--without-ssl"             if build.include? 'without-ssl'
+    args << "--without-sasl"            if build.include? 'without-sasl'
+    args << "--without-gss"             if build.include? 'without-gss'
+
 
     # Mutt does NOT require a brewed openssl.  Let nobody alter this with a
     # gratuitous depends_on.
