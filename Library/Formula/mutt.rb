@@ -13,30 +13,23 @@ class Mutt < Formula
   option "without-gdbm",            "Don't use gdbm even if it is available"
   option "with-qdbm",               "Use qdbm as hcache backend"
   option "without-qdbm",            "Don't use qdbm even if it is available"
-  option "with-tokyocabinet",       "Use tokyocabinet as hcache backend"
-  option "without-tokyocabinet",    "Don't use tokyocabinet even if it is available"
+  option "with-tokyo-cabinet",       "Use tokyocabinet as hcache backend"
+  option "without-tokyo-cabinet",    "Don't use tokyocabinet even if it is available"
   option "enable-debug",            "Enable debugging support"
   option "enable-exact-address",    "Enable regeneration of email addresses"
   option "with-gnutls",             "Enable TLS support using gnutls"
   option "with-gpgme",              "Enable GPGME support"
   option "with-gss",                "Compile in GSSAPI authentication for IMAP"
-  option "enable-hcache",           "Enable header caching"
   option "disable-iconv",           "Disable iconv support"
   option "with-libidn",             "Use GNU libidn for internationalized domain names"
-  option "enable-imap",             "Enable IMAP support"
   option "disable-largefile",       "Omit support for large files"
   option "enable-nls",              "Use Native Language Support"
   option "disable-pgp",             "Disable PGP support"
-  option "enable-pop",              "Enable POP3 support"
   option "with-regex",              "Use the GNU regex library"
-  option "with-sasl",               "Use SASL network security library"
   option "with-slang",              "Build against slang instead of ncurses"
   option "disable-smime",           "Disable SMIME support"
-  option "enable-smtp",             "Include internal SMTP relay support"
-  option "with-ssl",                "Enable TLS support using OpenSSL"
   # These are brew-specific ones:
   option "with-brewed-ssl",         "Use a brewed openssl instead of system openssl"
-  option "with-old-brewflags",      "Use the flags passed by prior versions of this formula"
 
   # Patches (sorted by name)
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
@@ -85,10 +78,9 @@ class Mutt < Formula
   depends_on 'gdbm'          => :optional
   depends_on 'berkeley-db4'  => :optional
   depends_on 'qdbm'          => :optional
-  depends_on 'tokyo-cabinet' if build.include? 'with-tokyocabinet' or
-                                  build.include? 'with-old-brewflags'
+  depends_on 'tokyo-cabinet' => :optional
   depends_on 'gettext'       if build.include? 'enable-nls' # See below
-  depends_on 'gnutls'        if build.include? 'with-gnutls' and build.head?
+  depends_on 'gnutls'        => :optional if build.head?
   depends_on 'gpgme'         => :optional
   depends_on 'libidn'        => :optional
   depends_on 'openssl'       if build.include? 'with-brewed-ssl' # New!
@@ -129,21 +121,17 @@ class Mutt < Formula
   def install
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}",
+            "--enable-pop",
+            "--enable-imap",
+            "--enable-smtp",
+            "--enable-hcache",
+            "--with-gss",
+            "--with-ssl",
+            "--with-sasl",
             # This is just a trick to keep 'make install' from trying to chgrp
             # the mutt_dotlock file (which we can't do if we're running as an
             # unpriviledged user)
             "--with-homespool=.mbox"]
-
-    oldflags = ["--enable-pop",
-                "--enable-imap",
-                "--enable-smtp",
-                "--enable-hcache",
-                "--with-tokyocabinet",
-                "--with-gss",
-                "--with-ssl",
-                "--with-sasl"]
-
-    args += oldflags if build.include? 'with-old-brewflags'
 
     # Now for the myriad options one can pass.  Other than the hcache backends
     # and the NLS one, all the rest of these reflect mutt defaults.
@@ -158,15 +146,13 @@ class Mutt < Formula
     args << "--without-gdbm"            if build.include? 'without-gdbm'
     args << "--with-qdbm"               if build.include? 'with-qdbm'
     args << "--without-qdbm"            if build.include? 'without-qdbm'
-    args << "--with-tokyocabinet"       if build.include? 'with-tokyocabinet'
-    args << "--without-tokyocabinet"    if build.include? 'without-tokyocabinet'
+    args << "--with-tokyo-cabinet"      unless build.include? 'without-tokyo-cabinet'
+    args << "--without-tokyo-cabinet"   if build.include? 'without-tokyo-cabinet'
 
     args << "--enable-debug"            if build.include? 'enable-debug'
     args << "--enable-exact-address"    if build.include? 'enable-exact-address'
     args << "--with-gnutls"             if build.include? 'with-gnutls' and build.head?
     args << "--enable-gpgme"            if build.include? 'with-gpgme'
-    args << "--with-gss"                if build.include? 'with-gss'
-    args << "--enable-hcache"           if build.include? 'enable-hcache'
     args << "--disable-iconv"           if build.include? 'disable-iconv'
     args << "--with-idn"                if build.include? 'with-libidn'
     args << "--enable-imap"             if build.include? 'enable-imap'
@@ -183,13 +169,9 @@ class Mutt < Formula
     args << "--disable-nls"             unless build.include? 'enable-nls'
 
     args << "--disable-pgp"             if build.include? 'disable-pgp'
-    args << "--enable-pop"              if build.include? 'enable-pop'
     args << "--with-regex"              if build.include? 'with-regex'
-    args << "--with-sasl"               if build.include? 'with-sasl'
     args << "--with-slang"              if build.include? 'with-slang'
     args << "--disable-smime"           if build.include? 'disable-smime'
-    args << "--enable-smtp"             if build.include? 'enable-smtp'
-    args << "--with-ssl"                if build.include? 'with-ssl'
 
     # Mutt does NOT require a brewed openssl.  Let nobody alter this with a
     # gratuitous depends_on.
