@@ -94,13 +94,13 @@ class Mutt < Formula
     exit 1
   end
 
-  depends_on 'gdbm'          if build.include? 'with-gdbm'
+  depends_on 'gdbm'          => :optional
   depends_on 'berkeley-db4'  if build.include? 'with-bdb'
-  depends_on 'qdbm'          if build.include? 'with-qdbm'
+  depends_on 'qdbm'          => :optional
   depends_on 'tokyo-cabinet' if build.include? 'with-tokyocabinet' or
                                   build.include? 'with-old-brewflags'
-  depends_on 'slang'         if build.include? 'with-slang'
-  depends_on 'gnutls'        if build.include? 'with-gnutls' and build.head?
+  depends_on 'slang'         => :optional
+  (depends_on 'gnutls'       => :optional) if build.head?
   depends_on 'gpgme'         if build.include? 'enable-gpgme'
   depends_on 'libidn'        if build.include? 'with-idn'
   depends_on 'gettext'       if build.include? 'enable-nls' # See below
