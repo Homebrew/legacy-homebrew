@@ -51,10 +51,13 @@ class Mutt < Formula
   option "with-old-brewflags",      "Use the flags passed by prior versions of this formula"
 
   # Patches (sorted by name)
-  option "with-ignore-thread-patch", "Apply ignore-thread patch"
-  option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
-  option "with-sidebar-patch", "Apply sidebar (folder list) patch"
-  option "with-trash-patch", "Apply trash folder patch"
+  option "with-confirm-attachment-patch", "Apply confirm attachment patch"
+  option "with-confirm-crypt-hook-patch", "Apply confirm crypt hook patch"
+  option "with-ignore-thread-patch",      "Apply ignore-thread patch"
+  option "with-pgp-verbose-mime-patch",   "Apply PGP verbose mime patch"
+  option "with-sidebar-patch",            "Apply sidebar (folder list) patch"
+  option "with-trash-patch",              "Apply trash folder patch"
+
 
   # If (building from HEAD & Lion or greater), need both autoconf and automake:
   if build.head? and MacOS.version >= :lion
@@ -104,15 +107,20 @@ class Mutt < Formula
   depends_on 'openssl'       if build.include? 'with-brewed-ssl' # New!
 
 
+  # Sort by patch name
   def patches
     urls = [
-      ['with-sidebar-patch', 'http://lunar-linux.org/~tchan/mutt/patch-1.5.21.sidebar.20130219.txt'],
-      ['with-trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features/trash-folder'],
+      # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=182069
+      ['with-confirm-attachment-patch', 'https://gist.github.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch'],
+      # http://www.woolridge.ca/mutt/confirm-crypt-hook.html
+      ['with-confirm-crypt-hook-patch', 'http://www.woolridge.ca/mutt/patches/patch-1.5.6.dw.confirm-crypt-hook.1'],
       # original source for this went missing, patch sourced from Arch at
       # https://aur.archlinux.org/packages/mutt-ignore-thread/
       ['with-ignore-thread-patch', 'https://gist.github.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch'],
       ['with-pgp-verbose-mime-patch',
-          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+        'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+      ['with-sidebar-patch', 'http://lunar-linux.org/~tchan/mutt/patch-1.5.21.sidebar.20130219.txt'],
+      ['with-trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features/trash-folder'],
     ]
 
     if build.include? "with-ignore-thread-patch" and build.include? "with-sidebar-patch"
