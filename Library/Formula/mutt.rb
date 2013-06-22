@@ -22,7 +22,7 @@ class Mutt < Formula
   #option "enable-flock",            "Use flock() to lock files"
   #option "disable-full-doc",        "Omit disabled variables"
   option "with-gnutls",             "Enable TLS support using gnutls"
-  option "enable-gpgme",            "Enable GPGME support"
+  option "with-gpgme",              "Enable GPGME support"
   option "with-gss",                "Compile in GSSAPI authentication for IMAP"
   option "enable-hcache",           "Enable header caching"
   option "disable-iconv",           "Disable iconv support"
@@ -101,7 +101,7 @@ class Mutt < Formula
                                   build.include? 'with-old-brewflags'
   depends_on 'slang'         => :optional
   (depends_on 'gnutls'       => :optional) if build.head?
-  depends_on 'gpgme'         if build.include? 'enable-gpgme'
+  depends_on 'gpgme'         => :optional
   depends_on 'libidn'        => :optional
   depends_on 'gettext'       if build.include? 'enable-nls' # See below
   depends_on 'openssl'       if build.include? 'with-brewed-ssl' # New!
@@ -180,7 +180,7 @@ class Mutt < Formula
     #args << "--enable-flock"            if build.include? 'enable-flock'
     #args << "--disable-full-doc"        if build.include? 'disable-full-doc'
     args << "--with-gnutls"             if build.include? 'with-gnutls' and build.head?
-    args << "--enable-gpgme"            if build.include? 'enable-gpgme'
+    args << "--enable-gpgme"            if build.include? 'with-gpgme'
     args << "--with-gss"                if build.include? 'with-gss'
     args << "--enable-hcache"           if build.include? 'enable-hcache'
     args << "--disable-iconv"           if build.include? 'disable-iconv'
