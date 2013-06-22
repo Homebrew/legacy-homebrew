@@ -10,7 +10,9 @@ module Homebrew extend self
       :topo_order? => ARGV.include?('-n')
     )
 
-    if mode.installed?
+    if mode.installed? && mode.tree?
+      puts_deps_tree Formula.installed
+    elsif mode.installed?
       puts_deps Formula.installed
     elsif mode.all?
       puts_deps Formula
