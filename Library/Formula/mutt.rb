@@ -102,7 +102,7 @@ class Mutt < Formula
   depends_on 'slang'         if build.include? 'with-slang'
   depends_on 'gnutls'        if build.include? 'with-gnutls' and build.head?
   depends_on 'gpgme'         if build.include? 'enable-gpgme'
-  depends_on 'libidn'        if build.include? 'with-libidn'
+  depends_on 'libidn'        if build.include? 'with-idn'
   depends_on 'gettext'       if build.include? 'enable-nls' # See below
   depends_on 'openssl'       if build.include? 'with-brewed-ssl' # New!
 
