@@ -12,16 +12,25 @@ class Dmd < Formula
     mv 'README.TXT', 'README'
 
     cd 'osx/bin' do
-      mv 'dmdx.conf', 'dmd.conf'
-      inreplace 'dmd.conf', '~/dmd2', prefix
+      rm 'dmdx.conf'
+      rm 'dmd.conf'
     end
 
     rmtree 'src/dmd'
-    prefix.install 'osx/bin', 'osx/lib', 'src'
+    libexec.install 'osx/bin', 'osx/lib', 'src'
 
     man.install 'man/man1'
     man5.install man1/'dmd.conf.5'
 
     (share+'d/examples').install Dir['samples/d/*.d']
+    (libexec+'bin/dmd.conf').open('w') do |f|
+      f.puts "[Environment]"
+      f.puts "DFLAGS=-I#{libexec}/src/phobos -I#{libexec}/src/druntime/import -L-L#{libexec}/lib"
+    end
+    bin.write_exec_script libexec/'bin/dmd'
+  end
+  def test
+    system "dmd", "#{prefix}/share/d/examples/hello.d"
+    system "./hello"
   end
 end
