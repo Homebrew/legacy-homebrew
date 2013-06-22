@@ -10,6 +10,8 @@ class Gd < Formula
 
   head 'https://bitbucket.org/libgd/gd-libgd', :using => :hg
 
+  option :universal
+
   depends_on :libpng => :recommended
   depends_on 'jpeg' => :recommended
   depends_on 'giflib' => :optional
@@ -21,6 +23,7 @@ class Gd < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
     args = ["--prefix=#{prefix}"]
     args << "--without-freetype" unless build.with? 'freetype'
     system "./configure", *args
