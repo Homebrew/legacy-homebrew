@@ -61,6 +61,35 @@ class Mutt < Formula
     depends_on 'automake' => :build
   end
 
+  # Don't let the brewer enable header caching without selecting a backend.  The
+  # build will choke if there is no backend on the system.  Better to error-out
+  # and tell the brewer what will happen up-front.
+  if build.include? 'enable-hcache'
+    if !build.include? 'with-gdbm' and !build.include? 'with-bdb' and
+       !build.include? 'with-qdbm' and !build.include? 'with-tokyocabinet'
+      puts "\n"
+      onoe <<-EOS.undent
+          If you --enable-hcache, you must enable a backend.
+          Possible choices are: --with-[gdbm,bdb,qdbm,tokyocabinet].
+          Whichever one you pick will be brewed for you.
+      EOS
+      exit 1
+    end
+  end
+
+  # A non-HEAD build with gnutls will fail, at least on 10.8.4.  A HEAD build
+  # will work just fine.  Better to tell the brewer up-front instead of waiting
+  # for a build to crap out.
+  if build.include? 'with-gnutls' and !build.head?
+    puts "\n"
+    onoe <<-EOS.undent
+      You tried to build --with-gnutls, which doesn't work
+      with a plain 1.5.21.  You can get gnutls if you include
+      --HEAD among your options passed to brew.
+    EOS
+    exit 1
+  end
+
   depends_on 'gdbm'          if build.include? 'with-gdbm'
   depends_on 'berkeley-db4'  if build.include? 'with-bdb'
   depends_on 'qdbm'          if build.include? 'with-qdbm'
