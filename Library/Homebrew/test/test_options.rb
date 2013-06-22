@@ -14,10 +14,6 @@ class OptionTests < Test::Unit::TestCase
     assert_equal "--foo", @option.to_str
   end
 
-  def test_to_json
-    assert_equal %q{"--foo"}, @option.to_json
-  end
-
   def test_equality
     foo = Option.new("foo")
     bar = Option.new("bar")

@@ -91,8 +91,8 @@ class Tab < OpenStruct
 
   def to_json
     Utils::JSON.dump({
-      :used_options => used_options.to_a,
-      :unused_options => unused_options.to_a,
+      :used_options => used_options.map(&:to_s),
+      :unused_options => unused_options.map(&:to_s),
       :built_as_bottle => built_as_bottle,
       :poured_from_bottle => poured_from_bottle,
       :tapped_from => tapped_from,
