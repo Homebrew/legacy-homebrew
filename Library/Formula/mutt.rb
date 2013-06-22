@@ -32,7 +32,7 @@ class Mutt < Formula
   option "disable-largefile",       "Omit support for large files"
   #option "enable-locales-fix",      "The result of isprint() is unreliable"
   #option "enable-mailtool",         "Enable Sun mailtool attachments support"
-  option "with-mixmaster",          "Include Mixmaster support"
+  #option "with-mixmaster",          "Include Mixmaster support"
   #option "enable-nfs-fix",          "Work around an NFS with broken attributes caching"
   option "enable-nls",              "Use Native Language Support"
   #option "disable-nls",             "Do not use Native Language Support"
@@ -190,7 +190,7 @@ class Mutt < Formula
     args << "--disable-largefile"       if build.include? 'disable-largefile'
     #args << "--enable-locales-fix"      if build.include? 'enable-locales-fix'
     #args << "--enable-mailtool"         if build.include? 'enable-mailtool'
-    args << "--with-mixmaster"          if build.include? 'with-mixmaster'
+    #args << "--with-mixmaster"          if build.include? 'with-mixmaster'
     #args << "--enable-nfs-fix"          if build.include? 'enable-nfs-fix'
     args << "--enable-nls"              if build.include? 'enable-nls'
 
