@@ -36,9 +36,13 @@ class Wine < Formula
   # this tells Homebrew that dependencies must be built universal
   def build.universal? ; true; end
 
-  depends_on :x11
-  # note: we get freetype from :x11, but if the freetype formula has been installed
-  # separately and not built universal, it's going to get picked up and break the build
+  if build.devel?
+    # Once 1.6 goes stable this should perhaps be inverted to --with-x11 since
+    # Wine now has a native Mac driver.
+    option 'without-x11', 'Build without X11 support'
+  end
+  depends_on :x11 if build.with? 'x11'
+  depends_on 'freetype'
   depends_on 'jpeg'
   depends_on 'libicns'
   depends_on 'libtiff'
@@ -74,7 +78,7 @@ class Wine < Formula
     # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
     build32 = "-arch i386 -m32"
 
-    ENV["LIBS"] = "-lGL -lGLU"
+    ENV["LIBS"] = "-lGL -lGLU" if build.with? 'x11'
     ENV.append "CFLAGS", build32
 
     # Still miscompiles at v1.5.25
@@ -87,7 +91,8 @@ class Wine < Formula
     end
 
     ENV.append "CXXFLAGS", "-D_DARWIN_NO_64_BIT_INODE"
-    ENV.append "LDFLAGS", "#{build32} -framework CoreServices -lz -lGL -lGLU"
+    ENV.append "LDFLAGS", "#{build32} -framework CoreServices"
+    ENV.append "LDFLAGS", "-lz -lGL -lGLU" if build.with? 'x11'
 
     # Workarounds for XCode not including pkg-config files
     ENV.libxml2
@@ -95,10 +100,9 @@ class Wine < Formula
 
     args = %W[--prefix=#{prefix}
               --with-coreaudio
-              --with-opengl
-              --with-x
-              --x-include=#{MacOS::X11.include}
-              --x-lib=#{MacOS::X11.lib}]
+              --with-opengl]
+    args << "--with-x --x-include=#{MacOS::X11.include} --x-lib=#{MacOS::X11.lib}" if build.with? 'x11'
+    args << "--without-x" unless build.with? 'x11'
     args << "--disable-win16" if MacOS.version == :leopard or ENV.compiler == :clang
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
@@ -124,15 +128,19 @@ class Wine < Formula
 
   def caveats
     s = <<-EOS.undent
-      For best results, you will want to install the latest version of XQuartz:
-        http://xquartz.macosforge.org/
-
-      You may also want to get winetricks:
+      You may want to get winetricks:
         brew install winetricks
 
       Or check out:
         http://code.google.com/p/osxwinebuilder/
     EOS
+    if build.with? 'x11'
+      s += <<-EOS.undent
+
+        For best results, you will want to install the latest version of XQuartz:
+        http://xquartz.macosforge.org/
+     EOS
+    end
     unless build.stable?
       # see http://bugs.winehq.org/show_bug.cgi?id=31374
       s += <<-EOS.undent
