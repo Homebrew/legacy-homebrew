@@ -47,6 +47,7 @@ class Mutt < Formula
   option "disable-warnings",        "Turn off compiler warnings (not recommended)"
   option "without-wc-funcs",        "Do not use the system's wchar_t functions"
   # These are brew-specific ones:
+  option "with-brewed-ssl",         "Use a brewed openssl instead of system openssl"
   option "with-old-brewflags",      "Use the flags passed by prior versions of this formula"
 
   # Patches (sorted by name)
@@ -100,6 +101,7 @@ class Mutt < Formula
   depends_on 'gpgme'         if build.include? 'enable-gpgme'
   depends_on 'libidn'        if build.include? 'with-libidn'
   depends_on 'gettext'       if build.include? 'enable-nls' # See below
+  depends_on 'openssl'       if build.include? 'with-brewed-ssl' # New!
 
 
   def patches
@@ -203,6 +205,11 @@ class Mutt < Formula
     args << "--with-ssl"                if build.include? 'with-ssl'
     args << "--disable-warnings"        if build.include? 'disable-warnings'
     args << "--without-wc-funcs"        if build.include? 'without-wc-funcs'
+
+    # Mutt does NOT require a brewed openssl.  Let nobody alter this with a
+    # gratuitous depends_on.
+    if build.include? 'with-brewed-ssl'
+      args << "--with-ssl=#{Formula.factory("openssl").opt_prefix}"
     end
 
     if build.head?
