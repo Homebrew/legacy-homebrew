@@ -1,6 +1,6 @@
 require 'ostruct'
 require 'options'
-require 'vendor/multi_json'
+require 'utils/json'
 
 # Inherit from OpenStruct to gain a generic initialization method that takes a
 # hash and creates an attribute for each key and value. `Tab.new` probably
@@ -27,7 +27,7 @@ class Tab < OpenStruct
   end
 
   def self.from_file path
-    tab = Tab.new MultiJson.decode(open(path).read)
+    tab = Tab.new Utils::JSON.load(open(path).read)
     tab.tabfile = path
     tab
   end
@@ -90,7 +90,7 @@ class Tab < OpenStruct
   end
 
   def to_json
-    MultiJson.encode({
+    Utils::JSON.dump({
       :used_options => used_options.to_a,
       :unused_options => unused_options.to_a,
       :built_as_bottle => built_as_bottle,
