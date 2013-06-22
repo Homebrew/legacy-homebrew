@@ -11,12 +11,16 @@ module Homebrew extend self
       puts_deps_tree ARGV.formulae
     else
       raise FormulaUnspecifiedError if ARGV.named.empty?
-      all_deps = ARGV.formulae.map do |f|
-        ARGV.one? ? f.deps.default : f.recursive_dependencies
-      end.intersection.map(&:name)
+      all_deps = deps_for_formulae ARGV.formulae
       all_deps.sort! unless ARGV.include? "-n"
       puts all_deps
     end
+  end
+
+  def deps_for_formulae(formulae)
+    formulae.map do |f|
+      ARGV.one? ? f.deps.default : f.recursive_dependencies
+    end.inject(&:&).map(&:name)
   end
 
   def puts_deps(formulae)
@@ -36,14 +40,5 @@ module Homebrew extend self
       puts "|  "*(level-1)+"|- "+dep.to_s
       recursive_deps_tree(Formula.factory(dep), level+1)
     end
-  end
-end
-
-class Array
-  def intersection
-    a = []
-    each{ |b| a |= b }
-    each{ |c| a &= c }
-    a
   end
 end
