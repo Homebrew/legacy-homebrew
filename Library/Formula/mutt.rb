@@ -154,8 +154,8 @@ class Mutt < Formula
     args << "--without-gdbm"            if build.include? 'without-gdbm'
     args << "--with-qdbm"               if build.include? 'with-qdbm'
     args << "--without-qdbm"            if build.include? 'without-qdbm'
-    args << "--with-tokyo-cabinet"      unless build.include? 'without-tokyo-cabinet'
-    args << "--without-tokyo-cabinet"   if build.include? 'without-tokyo-cabinet'
+    args << "--with-tokyocabinet"      unless build.include? 'without-tokyo-cabinet'
+    args << "--without-tokyocabinet"   if build.include? 'without-tokyo-cabinet'
 
     args << "--enable-debug"            if build.include? 'enable-debug'
     args << "--enable-exact-address"    if build.include? 'enable-exact-address'
