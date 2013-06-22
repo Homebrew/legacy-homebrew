@@ -7,8 +7,8 @@ class Mutt < Formula
 
   head 'http://dev.mutt.org/hg/mutt#HEAD', :using => :hg
 
-  option "with-bdb",                "Use BerkeleyDB4 if gdbm is not available"
-  option "without-bdb",             "Don't use BerkeleyDB4 even if it is available"
+  option "with-berkeley-db4",       "Use BerkeleyDB4 if gdbm is not available"
+  option "without-berkeley-db4",    "Don't use BerkeleyDB4 even if it is available"
   option "with-gdbm",               "Use gdbm as hcache backend"
   option "without-gdbm",            "Don't use gdbm even if it is available"
   option "with-qdbm",               "Use qdbm as hcache backend"
@@ -26,7 +26,7 @@ class Mutt < Formula
   option "with-gss",                "Compile in GSSAPI authentication for IMAP"
   option "enable-hcache",           "Enable header caching"
   option "disable-iconv",           "Disable iconv support"
-  option "with-idn",                "Use GNU libidn for internationalized domain names"
+  option "with-libidn",             "Use GNU libidn for internationalized domain names"
   option "enable-imap",             "Enable IMAP support"
   #option "with-included-gettext",   "Use the GNU gettext library included here"
   option "disable-largefile",       "Omit support for large files"
@@ -95,14 +95,14 @@ class Mutt < Formula
   end
 
   depends_on 'gdbm'          => :optional
-  depends_on 'berkeley-db4'  if build.include? 'with-bdb'
+  depends_on 'berkeley-db4'  => :optional
   depends_on 'qdbm'          => :optional
   depends_on 'tokyo-cabinet' if build.include? 'with-tokyocabinet' or
                                   build.include? 'with-old-brewflags'
   depends_on 'slang'         => :optional
   (depends_on 'gnutls'       => :optional) if build.head?
   depends_on 'gpgme'         if build.include? 'enable-gpgme'
-  depends_on 'libidn'        if build.include? 'with-idn'
+  depends_on 'libidn'        => :optional
   depends_on 'gettext'       if build.include? 'enable-nls' # See below
   depends_on 'openssl'       if build.include? 'with-brewed-ssl' # New!
 
@@ -164,8 +164,8 @@ class Mutt < Formula
     # here, because historically sometimes if you have more than one backend on
     # your system, mutt will pick one that isn't what you told it to pick.
     # Hence the 'without': force mutt to not do that.
-    args << "--with-bdb"                if build.include? 'with-bdb'
-    args << "--without-bdb"             if build.include? 'without-bdb'
+    args << "--with-bdb"                if build.include? 'with-berkeley-db4'
+    args << "--without-bdb"             if build.include? 'without-berkeley-db4'
     args << "--with-gdbm"               if build.include? 'with-gdbm'
     args << "--without-gdbm"            if build.include? 'without-gdbm'
     args << "--with-qdbm"               if build.include? 'with-qdbm'
@@ -184,7 +184,7 @@ class Mutt < Formula
     args << "--with-gss"                if build.include? 'with-gss'
     args << "--enable-hcache"           if build.include? 'enable-hcache'
     args << "--disable-iconv"           if build.include? 'disable-iconv'
-    args << "--with-idn"                if build.include? 'with-idn'
+    args << "--with-idn"                if build.include? 'with-libidn'
     args << "--enable-imap"             if build.include? 'enable-imap'
     #args << "--with-included-gettext"   if build.include? 'with-included-gettext'
     args << "--disable-largefile"       if build.include? 'disable-largefile'
