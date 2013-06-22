@@ -44,6 +44,8 @@ class Wine < Formula
   depends_on 'libtiff'
   depends_on 'little-cms'
   depends_on 'gnutls' if build.devel?
+  depends_on 'sane-backends' if build.devel?
+  depends_on 'libgphoto2' if build.devel?
 
   fails_with :llvm do
     build 2336
