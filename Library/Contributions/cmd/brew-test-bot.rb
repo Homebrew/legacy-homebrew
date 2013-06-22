@@ -7,6 +7,7 @@
 # --cleanup:      Clean the Homebrew directory. Very dangerous. Use with care.
 # --skip-setup:   Don't check the local system is setup correctly.
 # --junit:        Generate a JUnit XML test results file.
+# --email:        Generate an email subject file.
 
 require 'formula'
 require 'utils'
@@ -374,6 +375,26 @@ if ARGV.include? "--junit"
   open("brew-test-bot.xml", "w") do |xml|
     # Remove empty lines and null characters from ERB result.
     xml.write erb.result(binding).gsub(/^\s*$\n|\000/, '')
+  end
+end
+
+if ARGV.include? "--email"
+  failed_steps = []
+  tests.each do |test|
+    test.steps.each do |step|
+      next unless step.failed?
+      failed_steps << step.command.gsub(/(brew|--verbose) /, '')
+    end
+  end
+
+  if failed_steps.empty?
+    email_subject = 'brew test-bot: PASSED'
+  else
+    email_subject = "brew test-bot: FAILED: #{failed_steps.join ', '}"
+  end
+
+  File.open "brew test-bot.email.txt", 'w' do |file|
+    file.write email_subject
   end
 end
 
