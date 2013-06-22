@@ -97,38 +97,18 @@ class Postgresql < Formula
 
   def caveats
     s = <<-EOS.undent
-    # Build Notes
-
     If builds of PostgreSQL 9 are failing and you have version 8.x installed,
     you may need to remove the previous version first. See:
       https://github.com/mxcl/homebrew/issues/issue/2510
 
-    # Create/Upgrade a Database
 
     If this is your first install, create a database with:
       initdb #{var}/postgres -E utf8
 
+
     To migrate existing data from a previous major version (pre-9.2) of PostgreSQL, see:
       http://www.postgresql.org/docs/9.2/static/upgrading.html
 
-    # Loading Extensions
-
-    By default, Homebrew builds all available Contrib extensions. To see a list of all
-    available extensions, from the psql command line, run:
-      SELECT * FROM pg_available_extensions;
-
-    To load any of the extension names, navigate to the desired database and run:
-      CREATE EXTENSION [extension name];
-
-    For instance, to load the tablefunc extension in the current database, run:
-      CREATE EXTENSION tablefunc;
-
-    For more information on the CREATE EXTENSION command, see:
-      http://www.postgresql.org/docs/9.2/static/sql-createextension.html
-    For more information on extensions, see:
-      http://www.postgresql.org/docs/9.2/static/contrib.html
-
-    # Other
 
     Some machines may require provisioning of shared memory:
       http://www.postgresql.org/docs/9.2/static/kernel-resources.html#SYSVIPC
