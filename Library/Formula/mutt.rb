@@ -5,12 +5,20 @@ class Mutt < Formula
   url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
   sha1 'a8475f2618ce5d5d33bff85c0affdf21ab1d76b9'
 
+  head 'http://dev.mutt.org/hg/mutt#HEAD', :using => :hg
+
   option "with-debug", "Build with debug option enabled"
   option "with-sidebar-patch", "Apply sidebar (folder list) patch"
   option "with-trash-patch", "Apply trash folder patch"
   option "with-slang", "Build against slang instead of ncurses"
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
+
+  # If (building from HEAD & Lion or greater), need both autoconf and automake:
+  if build.head? and MacOS.version >= :lion
+    depends_on 'autoconf' => :build
+    depends_on 'automake' => :build
+  end
 
   depends_on 'tokyo-cabinet'
   depends_on 'slang' if build.include? 'with-slang'
@@ -64,7 +72,31 @@ class Mutt < Formula
       args << "--disable-debug"
     end
 
-    system "./configure", *args
-    system "make install"
+    if build.head?
+      system "./prepare", *args
+    else
+      system "./configure", *args
+    end
+
+    system "make"
+    system "make", "install"
   end
+
+  def caveats
+    s = ''
+    if build.head?
+      s += <<-EOS.undent
+        Unless you have docbook installed and setup properly, the docs
+        didn't build.  If you want them, grab them from
+
+          http://dev.mutt.org/doc/manual.html
+
+        and put them here:
+
+          #{share}/doc/mutt/manual.html
+      EOS
+    end
+    return s.empty? ? nil : s
+  end
+
 end
