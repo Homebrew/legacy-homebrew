@@ -1,7 +1,7 @@
 require 'pathname'
 require 'exceptions'
 require 'macos'
-require 'vendor/multi_json'
+require 'utils/json'
 require 'open-uri'
 
 class Tty
@@ -265,7 +265,7 @@ module GitHub extend self
     Kernel.open(url, default_headers.merge(headers), &block)
   rescue OpenURI::HTTPError => e
     if e.io.meta['x-ratelimit-remaining'].to_i <= 0
-      raise "GitHub #{MultiJson.decode(e.io.read)['message']}"
+      raise "GitHub #{Utils::JSON.load(e.io.read)['message']}"
     else
       raise e
     end
@@ -283,7 +283,7 @@ module GitHub extend self
     uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{name}")
 
     GitHub.open uri do |f|
-      MultiJson.decode(f.read)['issues'].each do |issue|
+      Utils::JSON.load(f.read)['issues'].each do |issue|
         # don't include issues that just refer to the tool in their body
         issues << issue['html_url'] if issue['title'].include? name
       end
@@ -297,7 +297,7 @@ module GitHub extend self
     uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{query}")
 
     GitHub.open uri do |f|
-      MultiJson.decode(f.read)['issues'].each do |pull|
+      Utils::JSON.load(f.read)['issues'].each do |pull|
         yield pull['pull_request_url'] if rx.match pull['title'] and pull['pull_request_url']
       end
     end
