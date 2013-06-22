@@ -5,6 +5,8 @@ class SaneBackends < Formula
   url 'ftp://ftp2.sane-project.org/pub/sane/sane-backends-1.0.22.tar.gz'
   sha1 'dc04d6e6fd18791d8002c3fdb23e89fef3327135'
 
+  option :universal
+
   depends_on 'jpeg'
   depends_on 'libtiff'
   depends_on 'libusb-compat'
@@ -17,6 +19,7 @@ class SaneBackends < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
     ENV.j1 # Makefile does not seem to be parallel-safe
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
