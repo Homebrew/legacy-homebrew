@@ -7,9 +7,10 @@ class Libxc < Formula
 
   def install
     ENV.fortran
-    system "./configure", "FCCPP=clang -E -C -ansi",
-           "CC=clang", "CFLAGS=-pipe",
+    system "./configure", "FCCPP=#{ENV.cc} -E -C -ansi",
+           "CC=#{ENV.cc}", "CFLAGS=-pipe",
            "--prefix=#{prefix}", "--enable-shared"
+    system "make"
     system "make install"
   end
 end
