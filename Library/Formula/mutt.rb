@@ -35,7 +35,7 @@ class Mutt < Formula
   option "with-mixmaster",          "Include Mixmaster support"
   #option "enable-nfs-fix",          "Work around an NFS with broken attributes caching"
   option "enable-nls",              "Use Native Language Support"
-  option "disable-nls",             "Do not use Native Language Support"
+  #option "disable-nls",             "Do not use Native Language Support"
   option "disable-pgp",             "Disable PGP support"
   option "enable-pop",              "Enable POP3 support"
   option "with-regex",              "Use the GNU regex library"
