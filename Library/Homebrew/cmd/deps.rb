@@ -3,20 +3,12 @@ require 'formula'
 module Homebrew extend self
   def deps
     if ARGV.include? '--installed'
-        Formula.installed.each do |f|
-          puts "#{f.name}: #{f.deps*' '}"
-        end
+      puts_deps Formula.installed
     elsif ARGV.include? '--all'
-      Formula.each do |f|
-        puts "#{f.name}: #{f.deps*' '}"
-      end
+      puts_deps Formula
     elsif ARGV.include? '--tree'
       raise FormulaUnspecifiedError if ARGV.named.empty?
-      ARGV.formulae.each do |f|
-        puts f
-        recursive_deps_tree(f, 1)
-        puts
-      end
+      puts_deps_tree ARGV.formulae
     else
       raise FormulaUnspecifiedError if ARGV.named.empty?
       all_deps = ARGV.formulae.map do |f|
@@ -24,6 +16,18 @@ module Homebrew extend self
       end.intersection.map(&:name)
       all_deps.sort! unless ARGV.include? "-n"
       puts all_deps
+    end
+  end
+
+  def puts_deps(formulae)
+    formulae.each { |f| puts "#{f.name}: #{f.deps*' '}" }
+  end
+
+  def puts_deps_tree(formulae)
+    formulae.each do |f|
+      puts f.name
+      recursive_deps_tree(f, 1)
+      puts
     end
   end
 
