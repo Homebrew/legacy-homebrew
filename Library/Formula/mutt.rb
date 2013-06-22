@@ -17,10 +17,10 @@ class Mutt < Formula
   option "without-tokyocabinet",    "Don't use tokyocabinet even if it is available"
   option "enable-debug",            "Enable debugging support"
   option "enable-exact-address",    "Enable regeneration of email addresses"
-  option "enable-external-dotlock", "Force use of an external dotlock program"
-  option "disable-fcntl",           "Do NOT use fcntl() to lock files"
-  option "enable-flock",            "Use flock() to lock files"
-  option "disable-full-doc",        "Omit disabled variables"
+  #option "enable-external-dotlock", "Force use of an external dotlock program"
+  #option "disable-fcntl",           "Do NOT use fcntl() to lock files"
+  #option "enable-flock",            "Use flock() to lock files"
+  #option "disable-full-doc",        "Omit disabled variables"
   option "with-gnutls",             "Enable TLS support using gnutls"
   option "enable-gpgme",            "Enable GPGME support"
   option "with-gss",                "Compile in GSSAPI authentication for IMAP"
@@ -28,12 +28,12 @@ class Mutt < Formula
   option "disable-iconv",           "Disable iconv support"
   option "with-idn",                "Use GNU libidn for internationalized domain names"
   option "enable-imap",             "Enable IMAP support"
-  option "with-included-gettext",   "Use the GNU gettext library included here"
+  #option "with-included-gettext",   "Use the GNU gettext library included here"
   option "disable-largefile",       "Omit support for large files"
-  option "enable-locales-fix",      "The result of isprint() is unreliable"
-  option "enable-mailtool",         "Enable Sun mailtool attachments support"
+  #option "enable-locales-fix",      "The result of isprint() is unreliable"
+  #option "enable-mailtool",         "Enable Sun mailtool attachments support"
   option "with-mixmaster",          "Include Mixmaster support"
-  option "enable-nfs-fix",          "Work around an NFS with broken attributes caching"
+  #option "enable-nfs-fix",          "Work around an NFS with broken attributes caching"
   option "enable-nls",              "Use Native Language Support"
   option "disable-nls",             "Do not use Native Language Support"
   option "disable-pgp",             "Disable PGP support"
@@ -44,8 +44,8 @@ class Mutt < Formula
   option "disable-smime",           "Disable SMIME support"
   option "enable-smtp",             "Include internal SMTP relay support"
   option "with-ssl",                "Enable TLS support using OpenSSL"
-  option "disable-warnings",        "Turn off compiler warnings (not recommended)"
-  option "without-wc-funcs",        "Do not use the system's wchar_t functions"
+  #option "disable-warnings",        "Turn off compiler warnings (not recommended)"
+  #option "without-wc-funcs",        "Do not use the system's wchar_t functions"
   # These are brew-specific ones:
   option "with-brewed-ssl",         "Use a brewed openssl instead of system openssl"
   option "with-old-brewflags",      "Use the flags passed by prior versions of this formula"
@@ -175,10 +175,10 @@ class Mutt < Formula
 
     args << "--enable-debug"            if build.include? 'enable-debug'
     args << "--enable-exact-address"    if build.include? 'enable-exact-address'
-    args << "--enable-external-dotlock" if build.include? 'enable-external-dotlock'
-    args << "--disable-fcntl"           if build.include? 'disable-fcntl'
-    args << "--enable-flock"            if build.include? 'enable-flock'
-    args << "--disable-full-doc"        if build.include? 'disable-full-doc'
+    #args << "--enable-external-dotlock" if build.include? 'enable-external-dotlock'
+    #args << "--disable-fcntl"           if build.include? 'disable-fcntl'
+    #args << "--enable-flock"            if build.include? 'enable-flock'
+    #args << "--disable-full-doc"        if build.include? 'disable-full-doc'
     args << "--with-gnutls"             if build.include? 'with-gnutls' and build.head?
     args << "--enable-gpgme"            if build.include? 'enable-gpgme'
     args << "--with-gss"                if build.include? 'with-gss'
@@ -186,12 +186,12 @@ class Mutt < Formula
     args << "--disable-iconv"           if build.include? 'disable-iconv'
     args << "--with-idn"                if build.include? 'with-idn'
     args << "--enable-imap"             if build.include? 'enable-imap'
-    args << "--with-included-gettext"   if build.include? 'with-included-gettext'
+    #args << "--with-included-gettext"   if build.include? 'with-included-gettext'
     args << "--disable-largefile"       if build.include? 'disable-largefile'
-    args << "--enable-locales-fix"      if build.include? 'enable-locales-fix'
-    args << "--enable-mailtool"         if build.include? 'enable-mailtool'
+    #args << "--enable-locales-fix"      if build.include? 'enable-locales-fix'
+    #args << "--enable-mailtool"         if build.include? 'enable-mailtool'
     args << "--with-mixmaster"          if build.include? 'with-mixmaster'
-    args << "--enable-nfs-fix"          if build.include? 'enable-nfs-fix'
+    #args << "--enable-nfs-fix"          if build.include? 'enable-nfs-fix'
     args << "--enable-nls"              if build.include? 'enable-nls'
 
     # NLS will be off by default, on if brewer asks for it.  The alternative is
@@ -211,8 +211,8 @@ class Mutt < Formula
     args << "--disable-smime"           if build.include? 'disable-smime'
     args << "--enable-smtp"             if build.include? 'enable-smtp'
     args << "--with-ssl"                if build.include? 'with-ssl'
-    args << "--disable-warnings"        if build.include? 'disable-warnings'
-    args << "--without-wc-funcs"        if build.include? 'without-wc-funcs'
+    #args << "--disable-warnings"        if build.include? 'disable-warnings'
+    #args << "--without-wc-funcs"        if build.include? 'without-wc-funcs'
 
     # Mutt does NOT require a brewed openssl.  Let nobody alter this with a
     # gratuitous depends_on.
