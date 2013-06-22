@@ -1,18 +1,26 @@
 require 'formula'
+require 'ostruct'
 
 module Homebrew extend self
   def deps
-    if ARGV.include? '--installed'
+    mode = OpenStruct.new(
+      :installed?  => ARGV.include?('--installed'),
+      :tree?       => ARGV.include?('--tree'),
+      :all?        => ARGV.include?('--all'),
+      :topo_order? => ARGV.include?('-n')
+    )
+
+    if mode.installed?
       puts_deps Formula.installed
-    elsif ARGV.include? '--all'
+    elsif mode.all?
       puts_deps Formula
-    elsif ARGV.include? '--tree'
+    elsif mode.tree?
       raise FormulaUnspecifiedError if ARGV.named.empty?
       puts_deps_tree ARGV.formulae
     else
       raise FormulaUnspecifiedError if ARGV.named.empty?
       all_deps = deps_for_formulae ARGV.formulae
-      all_deps.sort! unless ARGV.include? "-n"
+      all_deps.sort! unless mode.topo_order?
       puts all_deps
     end
   end
