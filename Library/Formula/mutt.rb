@@ -99,12 +99,12 @@ class Mutt < Formula
   depends_on 'qdbm'          => :optional
   depends_on 'tokyo-cabinet' if build.include? 'with-tokyocabinet' or
                                   build.include? 'with-old-brewflags'
-  depends_on 'slang'         => :optional
-  (depends_on 'gnutls'       => :optional) if build.head?
+  depends_on 'gettext'       if build.include? 'enable-nls' # See below
+  depends_on 'gnutls'        if build.include? 'with-gnutls' and build.head?
   depends_on 'gpgme'         => :optional
   depends_on 'libidn'        => :optional
-  depends_on 'gettext'       if build.include? 'enable-nls' # See below
   depends_on 'openssl'       if build.include? 'with-brewed-ssl' # New!
+  depends_on 'slang'         => :optional
 
 
   # Sort by patch name
