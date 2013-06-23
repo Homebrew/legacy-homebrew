@@ -259,6 +259,8 @@ def nostdout
 end
 
 module GitHub extend self
+  ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/")
+
   def open url, headers={}, &block
     default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
     default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
@@ -272,7 +274,7 @@ module GitHub extend self
   end
 
   def each_issue_matching(query, &block)
-    uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{query}")
+    uri = ISSUES_URI + query
     open(uri) { |f| Utils::JSON.load(f.read)['issues'].each(&block) }
   end
 
