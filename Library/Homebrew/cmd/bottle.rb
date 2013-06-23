@@ -101,7 +101,7 @@ module Homebrew extend self
     end
 
     ARGV.formulae.each do |f|
-      bottle_formula Formula.factory f
+      bottle_formula f
     end
   end
 end
