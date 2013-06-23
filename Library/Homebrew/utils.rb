@@ -270,7 +270,7 @@ module GitHub extend self
       raise e
     end
   end
-  
+
   def issues_for_formula name
     # bit basic as depends on the issue at github having the exact name of the
     # formula in it. Which for stuff like objective-caml is unlikely. So we
