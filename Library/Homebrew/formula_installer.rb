@@ -6,6 +6,7 @@ require 'keg'
 require 'tab'
 require 'bottles'
 require 'caveats'
+require 'cleaner'
 
 class FormulaInstaller
   attr_reader :f
@@ -409,7 +410,6 @@ class FormulaInstaller
       puts "in the formula."
       return
     end
-    require 'cleaner'
     Cleaner.new f
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
