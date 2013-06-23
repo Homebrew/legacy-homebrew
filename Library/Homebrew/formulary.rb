@@ -1,6 +1,10 @@
 # The Formulary is responsible for creating instances of Formula.
 class Formulary
 
+  def self.unload_formula formula_name
+    Object.send(:remove_const, Formula.class_s(formula_name))
+  end
+
   def self.formula_class_defined? formula_name
     Object.const_defined?(Formula.class_s(formula_name))
   end
