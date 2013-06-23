@@ -2,15 +2,15 @@ require 'formula'
 
 class Geocouch < Formula
   homepage 'https://github.com/couchbase/geocouch'
-  url 'https://github.com/couchbase/geocouch/archive/couchdb1.2.x_v0.3.0.tar.gz'
-  sha1 'e829daa4fa21ee9b5a5ca9bd8a9bf7da28a43722'
-  version '1.2.0'
+  url 'https://github.com/couchbase/geocouch/archive/couchdb1.3.x.tar.gz'
+  sha1 '73f5586c06cdec2fb6c5ab88da1ff99ef76beeb7'
+  version '1.3.0'
 
-  head 'https://github.com/couchbase/geocouch.git', :tag => 'couchdb1.2.x'
+  head 'https://github.com/couchbase/geocouch.git', :tag => 'couchdb1.3.x'
 
   devel do
     url 'https://github.com/couchbase/geocouch.git', :tag => 'master'
-    version '1.3.x'
+    version '1.4.x'
   end
 
   def couchdb_share
@@ -25,10 +25,10 @@ class Geocouch < Formula
   depends_on 'couchdb'
 
   #  GeoCouch currently supports couch_version(s) 1.1.x and 1.2.x (other
-  #  versions at your own risk).  This formula supports GeoCouch 1.2.0 on top
-  #  of Apache couchdb 1.2.0.
+  #  versions at your own risk).  This formula supports GeoCouch 1.3.0 on top
+  #  of Apache couchdb 1.3.0.
   def install
-    #  Grab couchdb 1.2.x.
+    #  Grab couchdb 1.3.x.
     couchdb_dir = buildpath/'couchdb-src'
     couchdb = Formula.factory 'couchdb'
     couchdb.brew { couchdb_dir.install Dir['*'] }

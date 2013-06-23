@@ -2,8 +2,8 @@ require 'formula'
 
 class Rrdtool < Formula
   homepage 'http://oss.oetiker.ch/rrdtool/index.en.html'
-  url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.7.tar.gz'
-  sha1 'faab7df7696b69f85d6f89dd9708d7cf0c9a273b'
+  url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.8.tar.gz'
+  sha1 '56d68857f39e70bfa32360947614d8220702ed02'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -52,11 +52,11 @@ end
 
 __END__
 diff --git a/configure b/configure
-index 7487ad2..e7b85c1 100755
+index 266754d..d21ab33 100755
 --- a/configure
 +++ b/configure
-@@ -31663,18 +31663,6 @@ $as_echo_n "checking in... " >&6; }
- { $as_echo "$as_me:$LINENO: result: and out again" >&5
+@@ -23868,18 +23868,6 @@ $as_echo_n "checking in... " >&6; }
+ { $as_echo "$as_me:${as_lineno-$LINENO}: result: and out again" >&5
  $as_echo "and out again" >&6; }
 
 -echo $ECHO_N "ordering CD from http://tobi.oetiker.ch/wish $ECHO_C" 1>&6
@@ -69,7 +69,7 @@ index 7487ad2..e7b85c1 100755
 -sleep 1
 -echo $ECHO_N ".$ECHO_C" 1>&6
 -sleep 1
--{ $as_echo "$as_me:$LINENO: result:  just kidding ;-)" >&5
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: result:  just kidding ;-)" >&5
 -$as_echo " just kidding ;-)" >&6; }
  echo
  echo "----------------------------------------------------------------"
