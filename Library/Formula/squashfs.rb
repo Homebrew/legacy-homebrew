@@ -2,7 +2,7 @@ require 'formula'
 
 class Squashfs < Formula
   homepage 'http://squashfs.sourceforge.net/'
-  url 'http://sourceforge.net/projects/squashfs/files/squashfs/squashfs4.2/squashfs4.2.tar.gz'
+  url 'http://downloads.sourceforge.net/project/squashfs/squashfs/squashfs4.2/squashfs4.2.tar.gz'
   sha256 'd9e0195aa922dbb665ed322b9aaa96e04a476ee650f39bbeadb0d00b24022e96'
 
   depends_on 'lzo'

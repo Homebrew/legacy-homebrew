@@ -2,7 +2,7 @@ require 'formula'
 
 class Xmlsh < Formula
   homepage 'http://www.xmlsh.org'
-  url 'http://sourceforge.net/projects/xmlsh/files/xmlsh/1.2.2/xmlsh_1_2_2.zip'
+  url 'http://downloads.sourceforge.net/project/xmlsh/xmlsh/1.2.2/xmlsh_1_2_2.zip'
   sha1 '4965af46566e205355536f2ec0b03da1c03a9363'
 
   def shim_script target

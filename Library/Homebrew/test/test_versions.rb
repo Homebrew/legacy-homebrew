@@ -274,7 +274,7 @@ class VersionParsingTests < Test::Unit::TestCase
   end
 
   def test_suite3270_version
-    assert_version_detected '3.3.12ga7', 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz'
+    assert_version_detected '3.3.12ga7', 'http://downloads.sourceforge.net/project/x3270/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz'
   end
 
   def test_wwwoffle_version

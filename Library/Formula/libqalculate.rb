@@ -2,7 +2,7 @@ require 'formula'
 
 class Libqalculate < Formula
   homepage 'http://qalculate.sourceforge.net/'
-  url 'http://sourceforge.net/projects/qalculate/files/libqalculate/libqalculate-0.9.7/libqalculate-0.9.7.tar.gz'
+  url 'http://downloads.sourceforge.net/project/qalculate/libqalculate/libqalculate-0.9.7/libqalculate-0.9.7.tar.gz'
   sha1 'c15f7f3a97995decf62cc964956fc1e374ecd78c'
 
   depends_on 'pkg-config' => :build

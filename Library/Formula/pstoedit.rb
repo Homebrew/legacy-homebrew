@@ -2,7 +2,7 @@ require 'formula'
 
 class Pstoedit < Formula
   homepage 'http://www.pstoedit.net'
-  url 'https://sourceforge.net/projects/pstoedit/files/pstoedit/3.62/pstoedit-3.62.tar.gz'
+  url 'http://downloads.sourceforge.net/project/pstoedit/pstoedit/3.62/pstoedit-3.62.tar.gz'
   sha1 '50d5a4e2fe0e0ff2f73cb094cb945b221083e742'
 
   depends_on 'pkg-config' => :build

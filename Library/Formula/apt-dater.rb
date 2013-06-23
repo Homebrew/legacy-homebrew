@@ -2,7 +2,7 @@ require 'formula'
 
 class AptDater < Formula
   homepage 'http://www.ibh.de/apt-dater/'
-  url 'http://sourceforge.net/projects/apt-dater/files/apt-dater/0.9.0/apt-dater-0.9.0.tar.gz'
+  url 'http://downloads.sourceforge.net/project/apt-dater/apt-dater/0.9.0/apt-dater-0.9.0.tar.gz'
   sha1 'f62fe55602f2526f2830c3c266b8c392bb908d92'
 
   depends_on 'pkg-config' => :build

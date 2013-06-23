@@ -2,7 +2,7 @@ require 'formula'
 
 class Orfeo < Formula
   homepage 'http://www.orfeo-toolbox.org/otb/'
-  url 'http://sourceforge.net/projects/orfeo-toolbox/files/OTB/OTB-3.14.1/OrfeoToolbox-3.14.1.tgz'
+  url 'http://downloads.sourceforge.net/project/orfeo-toolbox/OTB/OTB-3.14.1/OrfeoToolbox-3.14.1.tgz'
   sha1 '2cdef44fc4119ef410f750001c18aabc6be3a48c'
 
   depends_on 'cmake' => :build

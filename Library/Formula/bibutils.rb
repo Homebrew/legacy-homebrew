@@ -2,7 +2,7 @@ require 'formula'
 
 class Bibutils < Formula
   homepage 'http://sourceforge.net/p/bibutils/home/Bibutils/'
-  url 'http://sourceforge.net/projects/bibutils/files/bibutils_5.0_src.tgz'
+  url 'http://downloads.sourceforge.net/project/bibutils/bibutils_5.0_src.tgz'
   sha1 'cf9b6d7e4d0a679f734e9c477798219dc016a3da'
 
   def install

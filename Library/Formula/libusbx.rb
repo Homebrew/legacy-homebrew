@@ -2,7 +2,7 @@ require 'formula'
 
 class Libusbx < Formula
   homepage 'http://libusbx.org'
-  url 'http://sourceforge.net/projects/libusbx/files/releases/1.0.15/source/libusbx-1.0.15.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/libusbx/releases/1.0.15/source/libusbx-1.0.15.tar.bz2'
   sha1 '1ca868f775093b0109d9240cb3ccd36367764dc6'
 
   head 'https://github.com/libusbx/libusbx.git'

@@ -2,7 +2,7 @@ require 'formula'
 
 class Mpd < Formula
   homepage 'http://mpd.wikia.com'
-  url 'http://sourceforge.net/projects/musicpd/files/mpd/0.17.3/mpd-0.17.3.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/musicpd/mpd/0.17.3/mpd-0.17.3.tar.bz2'
   sha1 'f684d73a7517371a4461afdb2439f9533b51a49d'
 
   head "git://git.musicpd.org/master/mpd.git"
