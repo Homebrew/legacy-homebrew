@@ -87,7 +87,7 @@ class Formula
 
         # Unload the class so Formula#version returns the correct value
         begin
-          Object.send(:remove_const, Formula.class_s(name))
+          Formulary.unload_formula name
           nostdout { Formula.factory(path).version }
         rescue *IGNORED_EXCEPTIONS => e
           # We rescue these so that we can skip bad versions and
