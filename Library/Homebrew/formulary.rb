@@ -1,5 +1,4 @@
-# The Formulary is responsible for creating instances
-# of Formula.
+# The Formulary is responsible for creating instances of Formula.
 class Formulary
 
   def self.formula_class_defined? formula_name
@@ -34,7 +33,6 @@ class Formulary
           # have a "no such formula" message.
           raise
         rescue LoadError, NameError
-          # TODO - show exception details
           raise FormulaUnavailableError.new(name)
         end
       end
@@ -99,13 +97,13 @@ class Formulary
     end
   end
 
-  # Loads formulae from URLs.
+  # Loads formulae from URLs
   class FromUrlLoader < FormulaLoader
     attr_reader :url
 
     def initialize url
       @url = url
-      @path = (HOMEBREW_CACHE_FORMULA/(File.basename(url)))
+      @path = HOMEBREW_CACHE_FORMULA/File.basename(url)
       @name = File.basename(url, '.rb')
     end
 
@@ -136,22 +134,12 @@ class Formulary
   end
 
   # Return a Formula instance for the given reference.
-  # `ref` may be:
-  # * a Formula instance, in which case it is returned
-  #   TODO: is this code path used?
-  # * a Pathname to a local formula
-  # * a string containing a formula pathname
-  # * a string containing a formula URL
-  # * a string containing a formula name
-  # * a string containing a local bottle reference
+  # `ref` is string containing:
+  # * a formula name
+  # * a formula pathname
+  # * a formula URL
+  # * a local bottle reference
   def self.factory ref
-    # If an instance of Formula is passed, just return it
-    return ref if ref.kind_of? Formula
-
-    # Otherwise, convert to String in case a Pathname comes in
-    # TODO - do we call with a Pathname instead of a string anywhere?
-    ref = ref.to_s
-
     # If a URL is passed, download to the cache and install
     if ref =~ %r[(https?|ftp)://]
       f = FromUrlLoader.new(ref)
