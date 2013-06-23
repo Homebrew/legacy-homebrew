@@ -13,6 +13,8 @@ class Lua < Formula
   option 'with-completion', 'Enables advanced readline support'
   option 'without-sigaction', 'Revert to ANSI signal instead of improved POSIX sigaction'
 
+  V = version.to_s.split('.')[0..1].join('.')
+
   def patches
     p = []
     # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
@@ -45,10 +47,27 @@ class Lua < Formula
 
     # this ensures that this symlinking for lua starts at lib/lua/5.2 and not
     # below that, thus making luarocks work
-    (HOMEBREW_PREFIX/"lib/lua"/version.to_s.split('.')[0..1].join('.')).mkpath
+    (HOMEBREW_PREFIX/"lib/lua/#{V}").mkpath
 
     system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
+    (lib+"pkgconfig/lua#{V}.pc").write pc_file
+    (lib+"pkgconfig/lua.pc").make_relative_symlink (lib+"pkgconfig/lua#{V}.pc")
+  end
+
+  def pc_file; <<-EOS.undent
+    prefix=#{opt_prefix}
+    exec_prefix=${prefix}
+    libdir=${exec_prefix}/lib
+    includedir=${prefix}/include/lua-#{V}
+
+    Name: Lua
+    Description: An Extensible Extension Language
+    Version: #{version}
+    Requires:
+    Libs: -L${libdir} -llua.#{V} -lm
+    Cflags: -I${includedir}
+    EOS
   end
 end
 
