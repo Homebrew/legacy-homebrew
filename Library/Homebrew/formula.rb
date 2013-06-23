@@ -495,6 +495,11 @@ class Formula
     end
   end
 
+  # True if this formula is provided by Homebrew itself
+  def core_formula?
+    path.realpath.to_s == Formula.path(name).to_s
+  end
+
   def self.path name
     Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name.downcase}.rb")
   end
