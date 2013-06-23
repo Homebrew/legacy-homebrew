@@ -12,7 +12,6 @@ class Highlight < Formula
   def install
     inreplace "src/makefile" do |s|
       s.change_make_var! "CXX", ENV.cxx
-      s.gsub! /lua5.1/, "lua"
     end
 
     conf_dir = etc+'highlight/' # highlight needs a final / for conf_dir
