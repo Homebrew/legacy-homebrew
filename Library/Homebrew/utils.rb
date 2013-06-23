@@ -271,6 +271,11 @@ module GitHub extend self
     end
   end
 
+  def each_issue_matching(query, &block)
+    uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{query}")
+    open(uri) { |f| Utils::JSON.load(f.read)['issues'].each(&block) }
+  end
+
   def issues_for_formula name
     # bit basic as depends on the issue at github having the exact name of the
     # formula in it. Which for stuff like objective-caml is unlikely. So we
@@ -280,13 +285,9 @@ module GitHub extend self
 
     issues = []
 
-    uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{name}")
-
-    GitHub.open uri do |f|
-      Utils::JSON.load(f.read)['issues'].each do |issue|
-        # don't include issues that just refer to the tool in their body
-        issues << issue['html_url'] if issue['title'].include? name
-      end
+    each_issue_matching(name) do |issue|
+      # don't include issues that just refer to the tool in their body
+      issues << issue['html_url'] if issue['title'].include? name
     end
 
     issues
@@ -294,11 +295,10 @@ module GitHub extend self
 
   def find_pull_requests rx
     query = rx.source.delete('.*').gsub('\\', '')
-    uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{query}")
 
-    GitHub.open uri do |f|
-      Utils::JSON.load(f.read)['issues'].each do |pull|
-        yield pull['pull_request_url'] if rx.match pull['title'] and pull['pull_request_url']
+    each_issue_matching(query) do |issue|
+      if rx === issue['title'] && issue.has_key?('pull_request_url')
+        yield issue['pull_request_url']
       end
     end
   end
