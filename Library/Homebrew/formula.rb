@@ -357,10 +357,7 @@ class Formula
   def self.canonical_name name
     name = name.to_s if name.kind_of? Pathname
 
-    formula_with_that_name = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb")
-    possible_alias = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Aliases/#{name}")
-    possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{name}.rb")
-
+    # if name includes a '/', it may be a tap reference, path, or URL
     if name.include? "/"
       if name =~ %r{(.+)/(.+)/(.+)}
         tap_name = "#$1-#$2".downcase
@@ -370,16 +367,29 @@ class Formula
         end if tapd.directory?
       end
       # Otherwise don't resolve paths or URLs
-      name
-    elsif formula_with_that_name.file? and formula_with_that_name.readable?
-      name
-    elsif possible_alias.file?
-      possible_alias.realpath.basename('.rb').to_s
-    elsif possible_cached_formula.file?
-      possible_cached_formula.to_s
-    else
-      name
+      return name
     end
+
+    # test if the name is a core formula
+    formula_with_that_name = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb")
+    if formula_with_that_name.file? and formula_with_that_name.readable?
+      return name
+    end
+
+    # test if the name is a formula alias
+    possible_alias = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Aliases/#{name}")
+    if possible_alias.file?
+      return possible_alias.realpath.basename('.rb').to_s
+    end
+
+    # test if the name is a cached downloaded formula
+    possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{name}.rb")
+    if possible_cached_formula.file?
+      return possible_cached_formula.to_s
+    end
+
+    # dunno, pass through the name
+    return name
   end
 
   def self.factory name
