@@ -8,6 +8,7 @@ class Root < Formula
 
   depends_on 'fftw' => :optional
   depends_on :x11
+  depends_on :python
 
   def install
     #Determine architecture
