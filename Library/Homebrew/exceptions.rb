@@ -176,7 +176,7 @@ class BuildError < Homebrew::InstallationError
 
       unless formula.core_formula?
         ohai "Formula"
-        puts "Tap: #{formula.tap}" unless formula.tap == "mxcl/master" # tap lies about non-tap externals
+        puts "Tap: #{formula.tap}"
         puts "Path: #{formula.path.realpath}"
       end
       ohai "Configuration"

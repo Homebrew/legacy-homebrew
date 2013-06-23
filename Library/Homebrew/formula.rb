@@ -489,9 +489,10 @@ class Formula
   def tap
     if path.realpath.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)}
       "#$1/#$2"
-    else
-      # remotely installed formula are not mxcl/master but this will do for now
+    elsif core_formula?
       "mxcl/master"
+    else
+      "path or URL"
     end
   end
 
