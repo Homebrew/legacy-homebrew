@@ -364,6 +364,10 @@ class FormulaInstaller
       onoe "The `brew link` step did not complete successfully"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts "You can try again using `brew link #{f.name}'"
+      puts
+      puts "Possible conflicting files are:"
+      mode = OpenStruct.new(:dry_run => true, :overwrite => true)
+      keg.link(mode)
       ohai e, e.backtrace if ARGV.debug?
       @show_summary_heading = true
       ignore_interrupts{ keg.unlink }
