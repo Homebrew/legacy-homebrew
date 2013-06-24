@@ -8,7 +8,7 @@ class Doxymacs < Formula
   # see http://librelist.com/browser/homebrew/2012/10/14/problems-building-doxymacs-on-mountain-lion/
   # reported as https://sourceforge.net/tracker/?func=detail&aid=3577208&group_id=23584&atid=378985
   fails_with :clang do
-    build 421
+    build 425
     cause "missing symbols while linking"
   end
 

@@ -1,5 +1,7 @@
-require "formula"
-require "blacklist"
+require 'formula'
+require 'blacklist'
+require 'utils'
+require 'utils/json'
 
 module Homebrew extend self
   def search
@@ -7,79 +9,81 @@ module Homebrew extend self
       exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? '--fink'
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
+    elsif ARGV.include? '--debian'
+      exec_browser "http://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     else
       query = ARGV.first
-      rx = case query
-      when nil then ""
-      when %r{^/(.*)/$} then Regexp.new($1)
-      else
-        /.*#{Regexp.escape query}.*/i
-      end
-
-      search_results = search_brews rx
-      puts_columns search_results
+      rx = query_regexp(query)
+      local_results = search_formulae(rx)
+      puts_columns(local_results)
 
       if not query.to_s.empty? and $stdout.tty? and msg = blacklisted?(query)
-        unless search_results.empty?
+        unless local_results.empty?
           puts
-          puts "If you meant `#{query}' precisely:"
+          puts "If you meant #{query.inspect} precisely:"
           puts
         end
         puts msg
       end
 
       if query
-        $found = search_results.length
+        tap_results = search_taps(rx)
+        puts_columns(tap_results)
+        count = local_results.length + tap_results.length
 
-        threads = []
-        results = []
-        threads << Thread.new { search_tap "josegonzalez", "php", rx }
-        threads << Thread.new { search_tap "samueljohn", "python", rx }
-        threads << Thread.new { search_tap "Homebrew", "apache", rx }
-        threads << Thread.new { search_tap "Homebrew", "versions", rx }
-        threads << Thread.new { search_tap "Homebrew", "dupes", rx }
-        threads << Thread.new { search_tap "Homebrew", "games", rx }
-        threads << Thread.new { search_tap "Homebrew", "science", rx }
-        threads << Thread.new { search_tap "Homebrew", "completions", rx }
-        threads << Thread.new { search_tap "Homebrew", "x11", rx }
-
-        threads.each do |t|
-          results << t.value
-        end
-
-        results.each { |r| puts_columns r }
-
-        if $found == 0 and not blacklisted? query
-          puts "No formula found for \"#{query}\". Searching open pull requests..."
+        if count == 0 and not blacklisted? query
+          puts "No formula found for #{query.inspect}. Searching open pull requests..."
           GitHub.find_pull_requests(rx) { |pull| puts pull }
         end
       end
     end
   end
 
+  SEARCHABLE_TAPS = [
+    %w{josegonzalez php},
+    %w{samueljohn python},
+    %w{Homebrew apache},
+    %w{Homebrew versions},
+    %w{Homebrew dupes},
+    %w{Homebrew games},
+    %w{Homebrew science},
+    %w{Homebrew completions},
+    %w{Homebrew x11},
+  ]
+
+  def query_regexp(query)
+    case query
+    when nil then ""
+    when %r{^/(.*)/$} then Regexp.new($1)
+    else /.*#{Regexp.escape(query)}.*/i
+    end
+  end
+
+  def search_taps(rx)
+    SEARCHABLE_TAPS.map do |user, repo|
+      Thread.new { search_tap(user, repo, rx) }
+    end.inject([]) do |results, t|
+      results.concat(t.value)
+    end
+  end
+
   def search_tap user, repo, rx
     return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
 
-    require 'open-uri'
-    require 'vendor/multi_json'
-
     results = []
-    open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |f|
+    GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |f|
       user.downcase! if user == "Homebrew" # special handling for the Homebrew organization
-      MultiJson.decode(f.read)["tree"].map{ |hash| hash['path'] }.compact.each do |file|
+      Utils::JSON.load(f.read)["tree"].map{ |hash| hash['path'] }.compact.each do |file|
         name = File.basename(file, '.rb')
         if file =~ /\.rb$/ and name =~ rx
           results << "#{user}/#{repo}/#{name}"
-          $found += 1
         end
       end
     end
     results
-  rescue
-    []
   end
 
-  def search_brews rx
+  def search_formulae rx
     if rx.to_s.empty?
       Formula.names
     else

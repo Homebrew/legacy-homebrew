@@ -2,8 +2,13 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.29/kvm-tarbake-jaunty-x86/mariadb-5.5.29.tar.gz'
-  sha1 '4548876e9c6a17a8d11e4e585d9d05b6fbcf4654'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.31/kvm-tarbake-jaunty-x86/mariadb-5.5.31.tar.gz'
+  sha1 '45268a0603db8674ecabbc510ad0fcad88a730f7'
+
+  devel do
+    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.2/kvm-tarbake-jaunty-x86/mariadb-10.0.2.tar.gz'
+    sha1 '17deec36fd26124c357d43d520199c115c46caa1'
+  end
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -84,29 +89,31 @@ class Mariadb < Formula
     system "make"
     system "make install"
 
-    # Don't create databases inside of the prefix!
-    # See: https://github.com/mxcl/homebrew/issues/4975
-    rm_rf prefix+'data'
-
-    (prefix+'mysql-test').rmtree unless build.include? 'with-tests' # save 121MB!
-    (prefix+'sql-bench').rmtree unless build.include? 'with-bench'
-
-    # Link the setup script into bin
-    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
-
-    # Fix up the control script and link into bin
-    inreplace "#{prefix}/support-files/mysql.server" do |s|
-      s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
-      # pidof can be replaced with pgrep from proctools on Mountain Lion
-      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
-    end
-
     # Fix my.cnf to point to #{etc} instead of /etc
     inreplace "#{etc}/my.cnf" do |s|
       s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
     end
 
-    ln_s "#{prefix}/support-files/mysql.server", bin
+    unless build.include? 'client-only'
+      # Don't create databases inside of the prefix!
+      # See: https://github.com/mxcl/homebrew/issues/4975
+      rm_rf prefix+'data'
+
+      (prefix+'mysql-test').rmtree unless build.include? 'with-tests' # save 121MB!
+      (prefix+'sql-bench').rmtree unless build.include? 'with-bench'
+
+      # Link the setup script into bin
+      ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+
+      # Fix up the control script and link into bin
+      inreplace "#{prefix}/support-files/mysql.server" do |s|
+        s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+        # pidof can be replaced with pgrep from proctools on Mountain Lion
+        s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
+      end
+
+      ln_s "#{prefix}/support-files/mysql.server", bin
+    end
   end
 
   def caveats; <<-EOS.undent
@@ -131,8 +138,6 @@ class Mariadb < Formula
       <string>#{HOMEBREW_PREFIX}/bin/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{var}</string>
     </dict>

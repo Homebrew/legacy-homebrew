@@ -2,8 +2,8 @@ require 'formula'
 
 class CouchdbLucene < Formula
   homepage 'https://github.com/rnewson/couchdb-lucene'
-  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.9.0'
-  sha1 'f5c29f5d76c70ef25ed240b0a04658ec6120a0fd'
+  url 'https://github.com/rnewson/couchdb-lucene/archive/v0.9.0.tar.gz'
+  sha1 '99b8f8f1e644e6840896ee6c9b19c402042c1896'
 
   depends_on 'couchdb'
   depends_on 'maven'
@@ -44,8 +44,6 @@ class CouchdbLucene < Formula
         <array>
           <string>#{opt_prefix}/bin/run</string>
         </array>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>StandardOutPath</key>
         <string>/dev/null</string>
         <key>StandardErrorPath</key>

@@ -10,7 +10,6 @@ class Irrlicht < Formula
   depends_on :xcode
 
   fails_with :clang do
-    build 425
     cause <<-EOS.undent
       COpenGLExtensionHandler.h:2390:31: error: expected ')'
               glProgramParameteriEXT((long GLuint)program, pname, value);

@@ -38,7 +38,7 @@ module Homebrew extend self
           raise FormulaUnavailableError, path.basename('.rb').to_s unless path.file?
         end
       end
-      exec_editor *paths
+      exec_editor(*paths)
     end
   end
 

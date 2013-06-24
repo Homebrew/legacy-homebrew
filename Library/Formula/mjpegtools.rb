@@ -15,7 +15,6 @@ class Mjpegtools < Formula
   depends_on 'sdl_gfx' => :optional
 
   fails_with :clang do
-    build 421
     cause <<-EOS.undent
       In file included from newdenoise.cc:19:
       ./MotionSearcher.hh:2199:3: error: use of undeclared identifier 'DeleteRegion'

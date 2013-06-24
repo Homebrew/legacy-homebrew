@@ -7,6 +7,8 @@ class Libvorbis < Formula
 
   head 'http://svn.xiph.org/trunk/vorbis'
 
+  option :universal
+
   depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'libogg'
@@ -18,6 +20,8 @@ class Libvorbis < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

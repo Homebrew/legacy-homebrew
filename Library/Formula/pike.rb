@@ -1,9 +1,5 @@
 require 'formula'
 
-def option? opt
-  build.include? opt or build.include? 'with-all'
-end
-
 class Pike < Formula
   homepage 'http://pike.lysator.liu.se'
   url 'http://pike.lysator.liu.se/pub/pike/latest-stable/Pike-v7.8.700.tar.gz'
@@ -16,14 +12,14 @@ class Pike < Formula
   depends_on 'libtiff' => :recommended
 
   # optional dependencies
-  depends_on 'gettext'       if option? 'with-gettext'
-  depends_on 'gdbm'          if option? 'with-gdbm'
-  depends_on 'gtk+'          if option? 'with-gtk2'
-  depends_on 'mysql'         if option? 'with-mysql'
-  depends_on 'sdl'           if option? 'with-sdl'
-  depends_on 'sane-backends' if option? 'with-sane'
-  depends_on 'pdflib-lite'   if option? 'with-pdf'
-  depends_on 'mesalib-glw'   if option? 'with-gl'
+  depends_on 'gettext'       if build.include? 'with-gettext' or build.include? 'with-all'
+  depends_on 'gdbm'          if build.include? 'with-gdbm'    or build.include? 'with-all'
+  depends_on 'gtk+'          if build.include? 'with-gtk2'    or build.include? 'with-all'
+  depends_on 'mysql'         if build.include? 'with-mysql'   or build.include? 'with-all'
+  depends_on 'sdl'           if build.include? 'with-sdl'     or build.include? 'with-all'
+  depends_on 'sane-backends' if build.include? 'with-sane'    or build.include? 'with-all'
+  depends_on 'pdflib-lite'   if build.include? 'with-pdf'     or build.include? 'with-all'
+  depends_on 'mesalib-glw'   if build.include? 'with-gl'      or build.include? 'with-all'
 
   option 'with-gettext', 'Include Gettext support'
   option 'with-gdbm', 'Include Gdbm support'

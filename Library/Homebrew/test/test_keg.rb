@@ -4,6 +4,8 @@ require 'keg'
 require 'stringio'
 
 class LinkTests < Test::Unit::TestCase
+  include FileUtils
+
   def setup
     @formula = TestBall.new
     shutup do
@@ -12,10 +14,12 @@ class LinkTests < Test::Unit::TestCase
     @keg = Keg.for @formula.prefix
     @keg.unlink
 
+    @mode = OpenStruct.new
+
     @old_stdout = $stdout
     $stdout = StringIO.new
 
-    FileUtils.mkpath HOMEBREW_PREFIX/"bin"
+    mkpath HOMEBREW_PREFIX/"bin"
   end
 
   def test_linking_keg
@@ -28,10 +32,9 @@ class LinkTests < Test::Unit::TestCase
   end
 
   def test_link_dry_run
-    mode = OpenStruct.new
-    mode.dry_run = true
+    @mode.dry_run = true
 
-    assert_equal 0, @keg.link(mode)
+    assert_equal 0, @keg.link(@mode)
     assert !@keg.linked?
 
     ['hiworld', 'helloworld', 'goodbye_cruel_world'].each do |file|
@@ -43,31 +46,37 @@ class LinkTests < Test::Unit::TestCase
   def test_linking_fails_when_already_linked
     @keg.link
     assert_raise RuntimeError, "Cannot link testball" do
-      @keg.link
+      shutup { @keg.link }
     end
   end
 
   def test_linking_fails_when_files_exist
-    FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
+    touch HOMEBREW_PREFIX/"bin/helloworld"
     assert_raise RuntimeError do
-      @keg.link
+      shutup { @keg.link }
     end
   end
 
   def test_link_overwrite
-    FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
-    mode = OpenStruct.new
-    mode.overwrite = true
-    assert_equal 3, @keg.link(mode)
+    touch HOMEBREW_PREFIX/"bin/helloworld"
+    @mode.overwrite = true
+    assert_equal 3, @keg.link(@mode)
+  end
+
+  def test_link_overwrite_broken_symlinks
+    cd HOMEBREW_PREFIX/"bin" do
+      ln_s "nowhere", "helloworld"
+    end
+    @mode.overwrite = true
+    assert_equal 3, @keg.link(@mode)
   end
 
   def test_link_overwrite_dryrun
-    FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
-    mode = OpenStruct.new
-    mode.overwrite = true
-    mode.dry_run = true
+    touch HOMEBREW_PREFIX/"bin/helloworld"
+    @mode.overwrite = true
+    @mode.dry_run = true
 
-    assert_equal 0, @keg.link(mode)
+    assert_equal 0, @keg.link(@mode)
     assert !@keg.linked?
 
     assert_equal "/private/tmp/testbrew/prefix/bin/helloworld\n", $stdout.string
@@ -79,6 +88,6 @@ class LinkTests < Test::Unit::TestCase
 
     $stdout = @old_stdout
 
-    FileUtils.rmtree HOMEBREW_PREFIX/"bin"
+    rmtree HOMEBREW_PREFIX/"bin"
   end
 end

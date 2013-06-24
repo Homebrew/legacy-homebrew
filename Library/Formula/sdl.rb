@@ -5,7 +5,7 @@ class Sdl < Formula
   url 'http://www.libsdl.org/release/SDL-1.2.15.tar.gz'
   sha1 '0c5f193ced810b0d7ce3ab06d808cbb5eef03a2c'
 
-  head 'http://hg.libsdl.org/SDL', :using => :hg
+  head 'http://hg.libsdl.org/SDL', :branch => 'SDL-1.2', :using => :hg
 
   if build.head?
     depends_on :automake
@@ -18,11 +18,7 @@ class Sdl < Formula
     # we have to do this because most build scripts assume that all sdl modules
     # are installed to the same prefix. Consequently SDL stuff cannot be
     # keg-only but I doubt that will be needed.
-    if build.stable?
-      inreplace %w[sdl.pc.in sdl-config.in], '@prefix@', HOMEBREW_PREFIX
-    else
-      inreplace %w[sdl2.pc.in sdl2-config.in], '@prefix@', HOMEBREW_PREFIX
-    end
+    inreplace %w[sdl.pc.in sdl-config.in], '@prefix@', HOMEBREW_PREFIX
 
     ENV.universal_binary if build.universal?
 

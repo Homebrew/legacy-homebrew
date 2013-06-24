@@ -1,13 +1,13 @@
 require 'formula'
 
 class Chcase < ScriptFileFormula
+  homepage 'http://www.primaledge.ca/chcase.html'
   url 'http://www.primaledge.ca/chcase'
   version '2.0'
   sha1 'ec81ad76d85cf9162d422e801092ddc5e0841e39'
-  homepage 'http://www.primaledge.ca/chcase.html'
 
+  # add a shebang so that brew properly sets it executable
   def patches
-    # add a shebang so that brew properly sets it executable
     DATA
   end
 end

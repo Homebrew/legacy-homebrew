@@ -2,13 +2,8 @@ require 'formula'
 
 class SpatialiteTools < Formula
   homepage 'https://www.gaia-gis.it/fossil/spatialite-tools/index'
-  url 'http://www.gaia-gis.it/gaia-sins/spatialite-tools-sources/spatialite-tools-3.1.0b.tar.gz'
-  sha1 '82d40a4ef92d86a310e07f0e7e43372904bdbba9'
-
-  devel do
-    url 'http://www.gaia-gis.it/gaia-sins/spatialite-tools-sources/spatialite-tools-4.0.0.tar.gz'
-    sha1 'ab70abdc487a869252b0042f51813c6ff6ffdadb'
-  end
+  url 'http://www.gaia-gis.it/gaia-sins/spatialite-tools-sources/spatialite-tools-4.1.0.tar.gz'
+  sha1 '8c5edbed7e3326a679b336532e0add313b2af8b5'
 
   depends_on 'pkg-config' => :build
 
@@ -21,6 +16,7 @@ class SpatialiteTools < Formula
     # Ensure Homebrew SQLite is found before system SQLite.
     sqlite = Formula.factory 'sqlite'
     ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib"
+    ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

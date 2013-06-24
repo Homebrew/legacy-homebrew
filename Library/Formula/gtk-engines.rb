@@ -17,9 +17,10 @@ class GtkEngines < Formula
     system "make install"
   end
 
-  def test
-    system "/bin/sh", "-c", "GTK2_RC_FILES=#{share}/themes/Clearlooks/gtk-2.0/gtkrc " \
-      "GTK_PATH=#{HOMEBREW_PREFIX}/lib/gtk-2.0 " "#{HOMEBREW_PREFIX}/bin/gtk-demo"
+  test do
+    ENV['GTK2_RC_FILES'] = "#{share}/themes/Clearlooks/gtk-2.0/gtkrc"
+    ENV['GTK_PATH'] = "#{HOMEBREW_PREFIX}/lib/gtk-2.0"
+    system "#{HOMEBREW_PREFIX}/bin/gtk-demo"
   end
 
   def caveats; <<-EOS.undent

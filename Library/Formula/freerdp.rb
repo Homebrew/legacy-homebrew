@@ -2,8 +2,8 @@ require 'formula'
 
 class Freerdp < Formula
   homepage 'http://www.freerdp.com/'
-  url 'https://github.com/FreeRDP/FreeRDP/tarball/1.0.2'
-  sha1 '9310e99b428230c10a67bb955c9ce486c5b807b9'
+  url 'https://github.com/FreeRDP/FreeRDP/archive/1.0.2.tar.gz'
+  sha1 'aa521fc9b0610df6c03c2297c1230348805b0010'
 
   head 'https://github.com/FreeRDP/FreeRDP.git'
 

@@ -6,10 +6,11 @@ class Graphviz < Formula
   sha1 '96739220c4bbcf1bd3bd52e7111f4e60497185c6'
 
   devel do
-    url 'http://www.graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.31.20130217.0545.tar.gz'
-    sha1 '071e4fb02db53029615ec2023ca553fdcdd27a44'
+    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.31.20130608.0446.tar.gz'
+    sha1 '390635729e799fbcc1d8025450b2bf4ad9627b13'
   end
 
+  # To find Ruby and Co.
   env :std
 
   option :universal
@@ -25,6 +26,7 @@ class Graphviz < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pango' if build.include? 'with-pangocairo'
   depends_on 'swig' if build.include? 'with-bindings'
+  depends_on :python if build.include? 'with-bindings'  # this will set up python
   depends_on 'gts' if build.include? 'with-gts'
   depends_on :freetype if build.include? 'with-freetype' or MacOS::X11.installed?
   depends_on :x11 if build.include? 'with-x' or MacOS::X11.installed?

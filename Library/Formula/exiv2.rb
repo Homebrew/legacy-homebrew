@@ -5,7 +5,10 @@ class Exiv2 < Formula
   url 'http://www.exiv2.org/exiv2-0.23.tar.gz'
   sha1 '5f342bf642477526f41add11d6ee7787cdcd639f'
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end

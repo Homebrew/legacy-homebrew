@@ -3,6 +3,7 @@ require 'formula'
 class Openssl < Formula
   homepage 'http://openssl.org'
   url 'http://openssl.org/source/openssl-1.0.1e.tar.gz'
+  mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1e.tar.gz'
   sha256 'f74f15e8c8ff11aa3d5bb5f276d202ec18d7246e95f961db76054199c69c1ae3'
 
   keg_only :provided_by_osx,
@@ -16,7 +17,11 @@ class Openssl < Formula
                shared
              ]
 
-    args << (MacOS.prefer_64_bit? ? "darwin64-x86_64-cc" : "darwin-i386-cc")
+    if MacOS.prefer_64_bit?
+      args << "darwin64-x86_64-cc" << "enable-ec_nistp_64_gcc_128"
+    else
+      args << "darwin-i386-cc"
+    end
 
     system "perl", *args
 

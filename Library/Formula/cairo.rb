@@ -14,14 +14,16 @@ class Cairo < Formula
   option :universal
   option 'without-x', 'Build without X11 support'
 
-  env :std if build.universal?
-
-  depends_on :libpng
-  depends_on 'pixman'
   depends_on 'pkg-config' => :build
   depends_on 'xz'=> :build
-  depends_on 'glib' unless build.include? 'without-x'
-  depends_on :x11 unless build.include? 'without-x'
+  # harfbuzz requires cairo-ft to build
+  depends_on 'freetype' if build.without? 'x'
+  depends_on :libpng
+  depends_on 'pixman'
+  depends_on 'glib' => :optional
+  depends_on :x11 if build.with? 'x'
+
+  env :std if build.universal?
 
   def install
     ENV.universal_binary if build.universal?
@@ -31,10 +33,16 @@ class Cairo < Formula
       --prefix=#{prefix}
     ]
 
-    if build.include? 'without-x'
+    if build.without? 'x'
       args << '--enable-xlib=no' << '--enable-xlib-xrender=no'
     else
       args << '--with-x'
+    end
+
+    if build.with? 'glib'
+      args << '--enable-gobject=yes'
+    else
+      args << '--enable-gobject=no'
     end
 
     args << '--enable-xcb=no' if MacOS.version == :leopard

@@ -1,16 +1,18 @@
 require 'formula'
 
+# https version doesn't download with system curl on Snow Leopard
+# https://github.com/mxcl/homebrew/issues/20339
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
-  url 'https://cfengine.com/source-code/download?file=cfengine-3.4.3.tar.gz'
-  sha1 '71240fc35ab0a14783544af819cbf50543341b66'
+  url 'http://cfengine.com/source-code/download?file=cfengine-3.5.0.tar.gz'
+  sha1 'bddb179b5015d4d9d45fba3c2e63ca764bc46bf3'
 
-  depends_on 'tokyo-cabinet'
   depends_on 'pcre'
+  depends_on 'tokyo-cabinet'
 
   def install
     # Find our libpcre
-    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+    ENV.append 'LDFLAGS', "-L#{Formula.factory('pcre').opt_prefix}/lib"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

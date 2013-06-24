@@ -2,8 +2,8 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.0.2/rabbitmq-server-generic-unix-3.0.2.tar.gz'
-  sha1 '83e3d01cf1d901b72b2110751405c53c4f50eb16'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.2/rabbitmq-server-generic-unix-3.1.2.tar.gz'
+  sha1 '382187e7c40fba1c40963f12172c0f572c1655b9'
 
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MacOS.version == :leopard
@@ -37,8 +37,8 @@ class Rabbitmq < Formula
            "rabbitmq_management-#{version}/priv/www/cli/rabbitmqadmin"
 
     sbin.install 'rabbitmqadmin'
-
-    (prefix+'etc/bash_completion.d/rabbitmqadmin.bash').write `#{sbin}/rabbitmqadmin --bash-completion`
+    (sbin/'rabbitmqadmin').chmod 0755
+    (bash_completion/'rabbitmqadmin.bash').write `#{sbin}/rabbitmqadmin --bash-completion`
   end
 
   def caveats; <<-EOS.undent
@@ -72,8 +72,6 @@ class Rabbitmq < Formula
         <string>#{opt_prefix}/sbin/rabbitmq-server</string>
         <key>RunAtLoad</key>
         <true/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>EnvironmentVariables</key>
         <dict>
           <!-- need erl in the path -->

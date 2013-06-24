@@ -7,9 +7,11 @@ class Pidof < Formula
   version '0.1.4'
 
   bottle do
-    sha1 '77c1d4049ffb4ec5eabb25c04ac916c2a74b7fc3' => :mountainlion
-    sha1 '55132e9ded5e165405777ba4a5b97b41ca476fc9' => :lion
-    sha1 'e43a932c884f17e71b00ac3b76c44bd51af285fe' => :snowleopard
+    cellar :any
+    revision 1
+    sha1 'da148135814b86ac578de9d0b19f1f2deda0a312' => :mountain_lion
+    sha1 'e818806883c83e6315d68fc93a37071c90c9f2ea' => :lion
+    sha1 '6b950109d55d192d6e95dd23912ecb13ffa2e94f' => :snow_leopard
   end
 
   def install

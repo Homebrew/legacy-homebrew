@@ -2,8 +2,8 @@ require 'formula'
 
 class Field3d < Formula
   homepage 'https://sites.google.com/site/field3d/'
-  url 'https://github.com/imageworks/Field3D/tarball/v1.3.2'
-  sha1 '6f4de442869587f7fa5ce6f5f8bd0630b6ae7192'
+  url 'https://github.com/imageworks/Field3D/archive/v1.3.2.tar.gz'
+  sha1 '08e9d70ffa23b0fb087f3a1d74d54f11f4875e2a'
 
   depends_on 'cmake' => :build
   depends_on 'boost'

@@ -1,9 +1,17 @@
 require 'formula'
 
+class GitFlowAvhCompletion < Formula
+  homepage 'https://github.com/petervanderdoes/git-flow-completion'
+  url 'https://github.com/petervanderdoes/git-flow-completion/archive/0.4.2.tar.gz'
+  sha1 '5e311225fccc22e22c7f00abf8989c853bd2b48b'
+
+  head 'https://github.com/petervanderdoes/git-flow-completion.git', :branch => 'develop'
+end
+
 class GitFlowAvh < Formula
   homepage 'https://github.com/petervanderdoes/gitflow'
-  url 'https://github.com/petervanderdoes/gitflow/archive/1.4.2.tar.gz'
-  sha1 '8ea7ac31e062ff01de6203d30de9fc049891589e'
+  url 'https://github.com/petervanderdoes/gitflow/archive/1.5.3.tar.gz'
+  sha1 '061dea5da1fb2c84a790be3563f08c043fb96f6e'
 
   head 'https://github.com/petervanderdoes/gitflow.git', :branch => 'develop'
 
@@ -13,6 +21,11 @@ class GitFlowAvh < Formula
 
   def install
     system "make", "prefix=#{prefix}", "install"
+
+    GitFlowAvhCompletion.new('git-flow-avh-completion').brew do
+      bash_completion.install "git-flow-completion.bash"
+      zsh_completion.install "git-flow-completion.zsh"
+    end
   end
 
   def caveats; <<-EOS.undent
@@ -21,7 +34,7 @@ class GitFlowAvh < Formula
      EOS
   end
 
-  def test
-    system "#{bin}/git-flow version"
+  test do
+    system "#{bin}/git-flow", "version"
   end
 end

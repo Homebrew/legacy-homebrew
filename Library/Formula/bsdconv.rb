@@ -1,19 +1,25 @@
+# encoding: UTF-8
+
 require 'formula'
 
 class Bsdconv < Formula
   homepage 'https://github.com/buganini/bsdconv'
-  url 'https://github.com/buganini/bsdconv/tarball/9.0'
-  sha1 '5b82f097575c9bbb0a1b809846c23f582da72bef'
+  url 'https://github.com/buganini/bsdconv/archive/10.0.tar.gz'
+  sha1 'cc5ad82723f989f93edf8ab83e36a7e89763649c'
 
   head 'https://github.com/buganini/bsdconv.git'
 
   def install
-    ENV.j1 # Library must be built before the codec tables are generated
     system "make", "PREFIX=#{prefix}"
     system "make", "PREFIX=#{prefix}", "install"
   end
 
-  def test
-    system "#{bin}/bsdconv"
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/bsdconv", "big5:utf-8") do |stdin, stdout, _|
+      stdin.write("\263\134\245\134\273\134")
+      stdin.close
+      assert_equal "許功蓋", stdout.read
+    end
   end
 end

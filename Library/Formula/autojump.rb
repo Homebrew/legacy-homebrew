@@ -2,8 +2,8 @@ require 'formula'
 
 class Autojump < Formula
   homepage 'https://github.com/joelthelion/autojump#name'
-  url 'https://github.com/joelthelion/autojump/archive/release-v21.4.2.tar.gz'
-  sha1 '6876838c570542a8af90b5850d5e17c8d656c50a'
+  url 'https://github.com/joelthelion/autojump/archive/release-v21.6.9.tar.gz'
+  sha1 '9d13e56ec1abf76e0e955d754e8a62616bb102a7'
 
   head 'https://github.com/joelthelion/autojump.git'
 
@@ -13,6 +13,7 @@ class Autojump < Formula
     bin.install 'bin/autojump'
     man1.install 'docs/autojump.1'
     (prefix+'etc').install 'bin/autojump.sh', 'bin/autojump.bash', 'bin/autojump.zsh'
+    zsh_completion.install 'bin/_j'
   end
 
   def caveats; <<-EOS.undent

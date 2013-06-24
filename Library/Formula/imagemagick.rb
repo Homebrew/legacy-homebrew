@@ -15,6 +15,7 @@ class Imagemagick < Formula
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
   option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
+  option 'without-magick-plus-plus', 'disable build/install of Magick++'
 
   depends_on :libltdl
 
@@ -34,6 +35,7 @@ class Imagemagick < Formula
   depends_on 'liblqr' => :optional
   depends_on 'openexr' => :optional
   depends_on 'ghostscript' => :optional
+  depends_on 'webp' => :optional
 
   opoo '--with-ghostscript is not recommended' if build.with? 'ghostscript'
   if build.with? 'openmp' and (MacOS.version == 10.5 or ENV.compiler == :clang)
@@ -41,9 +43,16 @@ class Imagemagick < Formula
   end
 
   bottle do
-    sha1 '543ce5bf72c3897f25b54523a5c3de355a84ff44' => :mountainlion
-    sha1 '1966734b73b2cf77f47e639fe7ae48603dec15bd' => :lion
-    sha1 '1068830a71fb1f990d8fcb06495693eaeb4edafc' => :snowleopard
+    revision 1
+    sha1 '8a1a49f25274e34d73c1c0af27424fa68006f34f' => :mountain_lion
+    sha1 'b0027bd4b4e6a82d3958eee18e5aaf3bffe1f4f1' => :lion
+    sha1 'b5b3ffb0c4bf9fe247b9fdeea789298c71904a12' => :snow_leopard
+  end
+
+  def pour_bottle?
+    # If libtool is keg-only it currently breaks the bottle.
+    # This is a temporary workaround until we have a better fix.
+    not Formula.factory('libtool').keg_only?
   end
 
   skip_clean :la
@@ -75,10 +84,11 @@ class Imagemagick < Formula
     end
 
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
-    args << "--with-rsvg" if build.with? 'rsvg'
-    args << "--without-x" unless build.with? 'x'
-    args << "--with-fontconfig=yes" if build.with? 'fontconfig' or MacOS::X11.installed?
-    args << "--with-freetype=yes" if build.with? 'freetype' or MacOS::X11.installed?
+    args << "--with-rsvg" if build.with? 'librsvg'
+    args << "--without-x" unless build.with? 'x11'
+    args << "--with-fontconfig=yes" if build.with? 'fontconfig'
+    args << "--with-freetype=yes" if build.with? 'freetype'
+    args << "--with-webp=yes" if build.include? 'webp'
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'

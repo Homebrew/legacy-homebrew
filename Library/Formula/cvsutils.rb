@@ -11,7 +11,7 @@ class Cvsutils < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/cvsu --help"
+  test do
+    system "#{bin}/cvsu", "--help"
   end
 end

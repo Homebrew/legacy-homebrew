@@ -52,28 +52,28 @@ class Nss < Formula
       cp file, lib
     end
 
-    (lib+'pkgconfig/nss.pc').write pkg_file
+    (lib+'pkgconfig/nss.pc').write pc_file
   end
 
   test do
     # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
-    File.open('passwd', 'w') {|f| f.write("It's a secret to everyone.") }
+    (testpath/'passwd').write("It's a secret to everyone.")
     system "#{bin}/certutil", "-N", "-d", pwd, "-f", "passwd"
     system "#{bin}/certutil", "-L", "-d", pwd
   end
 
-  def pkg_file; <<-EOF
-prefix=#{HOMEBREW_PREFIX}
-exec_prefix=${prefix}
-libdir=${exec_prefix}/lib
-includedir=${prefix}/include/nss
+  def pc_file; <<-EOS.undent
+    prefix=#{opt_prefix}
+    exec_prefix=${prefix}
+    libdir=${exec_prefix}/lib
+    includedir=${prefix}/include/nss
 
-Name: NSS
-Description: Mozilla Network Security Services
-Version: 3.14.1
-Requires: nspr
-Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
-Cflags: -I${includedir}
-EOF
+    Name: NSS
+    Description: Mozilla Network Security Services
+    Version: #{version}
+    Requires: nspr
+    Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
+    Cflags: -I${includedir}
+    EOS
   end
 end

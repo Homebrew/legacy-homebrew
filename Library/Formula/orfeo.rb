@@ -6,12 +6,12 @@ class Orfeo < Formula
   sha1 '2cdef44fc4119ef410f750001c18aabc6be3a48c'
 
   depends_on 'cmake' => :build
+  depends_on :python => :optional
   depends_on 'fltk'
   depends_on 'gdal'
   depends_on 'qt'
 
   option 'examples', 'Compile and install various examples'
-  option 'python', 'Enable Python support'
   option 'java', 'Enable Java support'
   option 'patented', 'Enable patented algorithms'
 
@@ -25,9 +25,17 @@ class Orfeo < Formula
     ]
 
     args << '-DBUILD_EXAMPLES=' + ((build.include? 'examples') ? 'ON' : 'OFF')
-    args << '-DOTB_WRAP_PYTHON=' + ((build.include? 'python') ? 'ON' : 'OFF')
     args << '-DOTB_WRAP_JAVA=' + ((build.include? 'java') ? 'ON' : 'OFF')
     args << '-DOTB_USE_PATENTED=' + ((build.include? 'patented') ? 'ON' : 'OFF')
+    if python do
+      args << '-DOTB_WRAP_PYTHON=ON'
+      # For Xcode-only systems, the headers of system's python are inside of Xcode:
+      args << "-DPYTHON_INCLUDE_DIR='#{python.incdir}'"
+      # Cmake picks up the system's python dylib, even if we have a brewed one:
+      args << "-DPYTHON_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'"
+    end; else
+      args << '-DOTB_WRAP_PYTHON=OFF'
+    end
 
     mkdir 'build' do
       system 'cmake', '..', *args

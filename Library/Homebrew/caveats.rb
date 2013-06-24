@@ -8,7 +8,7 @@ class Caveats
   def caveats
     caveats = []
     caveats << f.caveats
-    caveats << f.keg_only_text rescue nil if f.keg_only?
+    caveats << f.keg_only_text if f.keg_only? && f.respond_to?(:keg_only_text)
     caveats << bash_completion_caveats
     caveats << zsh_completion_caveats
     caveats << plist_caveats
@@ -78,7 +78,7 @@ class Caveats
           s << "    #{f.plist_manual}"
         end
       elsif Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
-        s << "You should reload #{f.name}:"
+        s << "To reload #{f.name} after an upgrade:"
         if f.plist_startup
           s << "    sudo launchctl unload #{plist_link}"
           s << "    sudo cp -fv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}"

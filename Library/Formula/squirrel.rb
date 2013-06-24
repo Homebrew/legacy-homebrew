@@ -13,11 +13,11 @@ class Squirrel < Formula
     doc.install Dir['doc/*.pdf']
     doc.install %w[etc samples]
     # See: https://github.com/mxcl/homebrew/pull/9977
-    (lib+'pkgconfig/libsquirrel.pc').write pkg_file
+    (lib+'pkgconfig/libsquirrel.pc').write pc_file
   end
 
-  def pkg_file; <<-EOS.undent
-    prefix=#{prefix}
+  def pc_file; <<-EOS.undent
+    prefix=#{opt_prefix}
     exec_prefix=${prefix}
     libdir=/${exec_prefix}/lib
     includedir=/${prefix}/include
@@ -26,7 +26,7 @@ class Squirrel < Formula
 
     Name: libsquirrel
     Description: squirrel library
-    Version: 3.0.2
+    Version: #{version}
 
     Requires:
     Libs: -L${libdir} -lsquirrel -lsqstdlib

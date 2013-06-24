@@ -1,10 +1,9 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
-# -*- coding: utf-8 -*-
+# encoding: UTF-8
 
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
 
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE']
-HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] ||= File.expand_path(__FILE__)
 
 if ARGV == %w{--prefix}
   puts File.dirname(File.dirname(HOMEBREW_BREW_FILE))
@@ -59,17 +58,17 @@ end
 begin
   trap("INT", std_trap) # restore default CTRL-C handler
 
-  aliases = {'ls' => :list,
-             'homepage' => :home,
-             '-S' => :search,
-             'up' => :update,
-             'ln' => :link,
-             'instal' => :install, # gem does the same
-             'rm' => :uninstall,
-             'remove' => :uninstall,
-             'configure' => :diy,
-             'abv' => :info,
-             'dr' => :doctor,
+  aliases = {'ls' => 'list',
+             'homepage' => 'home',
+             '-S' => 'search',
+             'up' => 'update',
+             'ln' => 'link',
+             'instal' => 'install', # gem does the same
+             'rm' => 'uninstall',
+             'remove' => 'uninstall',
+             'configure' => 'diy',
+             'abv' => 'info',
+             'dr' => 'doctor',
              '--repo' => '--repository',
              'environment' => '--env'  # same as gem
              }
@@ -77,9 +76,17 @@ begin
   cmd = ARGV.shift
   cmd = aliases[cmd] if aliases[cmd]
 
-  if cmd == '-c1'
+  if cmd == '-c1' # Shortcut for one line of configuration
     cmd = '--config'
     ARGV.unshift('-1')
+  end
+
+  sudo_check = Set.new %w[ install link pin unpin upgrade ]
+
+  if sudo_check.include? cmd
+    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
+      raise "Cowardly refusing to `sudo brew #{cmd}`\n#{SUDO_BAD_ERRMSG}"
+    end
   end
 
   # Add example external commands to PATH before checking.
@@ -91,7 +98,7 @@ begin
       ENV["HOMEBREW_#{e}"] = Object.const_get "HOMEBREW_#{e}"
     end
     exec "brew-#{cmd}", *ARGV
-  elsif require? `/usr/bin/which brew-#{cmd}.rb`
+  elsif require? which("brew-#{cmd}.rb").to_s
     exit 0
   else
     onoe "Unknown command: #{cmd}"

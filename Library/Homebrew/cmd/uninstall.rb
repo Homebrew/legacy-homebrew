@@ -12,6 +12,7 @@ module Homebrew extend self
           keg.unlink
           keg.uninstall
           rm_opt_link keg.fname
+          rm_pin keg.fname
         end
       end
     else
@@ -22,19 +23,15 @@ module Homebrew extend self
         raise "Invalid usage" if name.include? '/'
 
         rack = HOMEBREW_CELLAR/name
+
         if rack.directory?
           puts "Uninstalling #{name}..."
-          rack.children.each do |keg|
-            if keg.directory?
-              keg = Keg.new(keg)
-              keg.unlink
-              keg.rmtree
-            end
-          end
+          rack.subdirs.each { |d| Keg.new(d).unlink }
           rack.rmtree
         end
 
         rm_opt_link name
+        rm_pin name
       end
     end
   rescue MultipleVersionsInstalledError => e
@@ -47,4 +44,7 @@ module Homebrew extend self
     optlink.unlink if optlink.symlink?
   end
 
+  def rm_pin name
+    Formula.factory(name).unpin rescue nil
+  end
 end

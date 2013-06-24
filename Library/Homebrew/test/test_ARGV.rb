@@ -1,65 +1,67 @@
 require 'testing_env'
+require 'extend/ARGV'
 
-module ExtendArgvPlusYeast
-  def reset
-    @named = nil
-    @downcased_unique_named = nil
-    @formulae = nil
-    @kegs = nil
-    ARGV.shift while ARGV.length > 0
-  end
-end
-ARGV.extend ExtendArgvPlusYeast
-
-
-class ARGVTests < Test::Unit::TestCase
-
-  def teardown
-    ARGV.reset
+class ArgvExtensionTests < Test::Unit::TestCase
+  def setup
+    @argv = [].extend(HomebrewArgvExtension)
   end
 
-  def test_ARGV
-    assert ARGV.named.empty?
+  def test_argv_formulae
+    @argv.unshift 'mxcl'
+    assert_raises(FormulaUnavailableError) { @argv.formulae }
+  end
 
-    (HOMEBREW_CELLAR+'mxcl/10.0').mkpath
+  def test_argv_kegs
+    keg = HOMEBREW_CELLAR + "mxcl/10.0"
+    keg.mkpath
+    @argv << 'mxcl'
+    assert_equal 1, @argv.kegs.length
+  ensure
+    keg.rmtree
+  end
 
-    ARGV.reset
-    ARGV.unshift 'mxcl'
-    assert_equal 1, ARGV.named.length
-    assert_equal 1, ARGV.kegs.length
-    assert_raises(FormulaUnavailableError) { ARGV.formulae }
+  def test_argv_named
+    @argv << 'mxcl' << '--debug' << '-v'
+    assert_equal 1, @argv.named.length
+  end
+
+  def test_empty_argv
+    assert_empty @argv.named
+    assert_empty @argv.kegs
+    assert_empty @argv.formulae
+    assert_empty @argv
   end
 
   def test_switch?
-    ARGV.unshift "-ns"
-    ARGV.unshift "-i"
-    ARGV.unshift "--bar"
-    assert ARGV.switch?('n')
-    assert ARGV.switch?('s')
-    assert ARGV.switch?('i')
-    assert !ARGV.switch?('b')
-    assert !ARGV.switch?('ns')
-    assert !ARGV.switch?('bar')
-    assert !ARGV.switch?('--bar')
-    assert !ARGV.switch?('-n')
+    @argv << "-ns" << "-i" << "--bar"
+    %w{n s i}.each { |s| assert @argv.switch?(s) }
+    %w{b ns bar --bar -n}.each { |s| assert !@argv.switch?(s) }
+  end
+
+  def test_flag?
+    @argv << "--foo" << "-bq" << "--bar"
+    assert @argv.flag?("--foo")
+    assert @argv.flag?("--bar")
+    assert @argv.flag?("--baz")
+    assert @argv.flag?("--qux")
+    assert !@argv.flag?("--frotz")
+    assert !@argv.flag?("--debug")
   end
 
   def test_filter_for_dependencies_clears_flags
-    ARGV.unshift("--debug")
-    ARGV.filter_for_dependencies do
-      assert ARGV.empty?
-    end
+    @argv << "--debug"
+    @argv.filter_for_dependencies { assert @argv.empty? }
   end
 
   def test_filter_for_dependencies_ensures_argv_restored
-    ARGV.expects(:replace).with(ARGV.clone)
+    @argv.expects(:replace).with(@argv.clone)
     begin
-      ARGV.filter_for_dependencies { raise Exception }
+      @argv.filter_for_dependencies { raise Exception }
     rescue Exception
     end
   end
 
   def test_filter_for_dependencies_returns_block_value
-    assert_equal 1, ARGV.filter_for_dependencies { 1 }
+    assert_equal 1, @argv.filter_for_dependencies { 1 }
   end
 end

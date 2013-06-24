@@ -24,9 +24,9 @@ class Tinysvm < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/svm_learn --help"
-    system "#{bin}/svm_classify --help"
-    system "#{bin}/svm_model --help"
+  test do
+    system "#{bin}/svm_learn", "--help"
+    system "#{bin}/svm_classify", "--help"
+    system "#{bin}/svm_model", "--help"
   end
 end

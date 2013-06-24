@@ -6,10 +6,10 @@ class Portmidi < Formula
   sha1 'f45bf4e247c0d7617deacd6a65d23d9fddae6117'
 
   option 'with-java', 'Build java based app and bindings. You need the Java SDK for this.'
-  option 'with-python', 'Build the pyportmidi python module.'
 
   depends_on 'cmake' => :build
-  depends_on 'Cython' => :python if build.include? 'with-python'
+  depends_on :python => :optional
+  depends_on 'Cython' => :python if build.with? 'python'
 
   def patches
     # Avoid that the Makefile.osx builds the java app and fails because: fatal error: 'jni.h' file not found
@@ -30,23 +30,7 @@ class Portmidi < Formula
     system 'make -f pm_mac/Makefile.osx'
     system 'make -f pm_mac/Makefile.osx install'
 
-    if build.include? 'with-python'
-      # In order to install into the Cellar, the dir must exist and be in the
-      # PYTHONPATH.
-      temp_site_packages = lib/which_python/'site-packages'
-      mkdir_p temp_site_packages
-      ENV['PYTHONPATH'] = temp_site_packages
-
-      args = [
-        "--no-user-cfg",
-        "--verbose",
-        "install",
-        "--force",
-        "--install-scripts=#{bin}",
-        "--install-lib=#{temp_site_packages}",
-        "--install-data=#{share}",
-        "--install-headers=#{include}",
-      ]
+    python do
       cd 'pm_python' do
         # There is no longer a CHANGES.txt or TODO.txt.
         inreplace 'setup.py', "CHANGES = open('CHANGES.txt').read()", 'CHANGES = ""'
@@ -54,14 +38,17 @@ class Portmidi < Formula
         # Provide correct dirs (that point into the Cellar)
         ENV.append 'CFLAGS', "-I#{include}"
         ENV.append 'LDFLAGS', "-L#{lib}"
-        system "python", "-s", "setup.py", *args
+        system python, "setup.py", "install", "--prefix=#{prefix}"
       end
     end
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  def test
+    if build.with?('python') || Tab.for_formula('portmidi').with?('python')
+      system "python", "-c", "import pyportmidi; pyportmidi.init()"
+    end
   end
+
 end
 
 __END__

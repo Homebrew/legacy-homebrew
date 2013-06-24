@@ -40,8 +40,10 @@ EOF
 done
 
 cat <<EOF >> $brew_formulae_tmp_file
-def available_languages
-  %w(${langs})
+class Aspell < Formula
+  def self.available_languages
+    %w(${langs})
+  end
 end
 # END generated with `basename $0`
 EOF

@@ -40,6 +40,8 @@ module MachO
         end
       when 0xcefaedfe, 0xcffaedfe, 0xfeedface, 0xfeedfacf # Single arch
         offsets << 0
+      when 0x7f454c46 # ELF
+        mach_data << { :arch => :x86_64, :type => :executable }
       else
         raise "Not a Mach-O binary."
       end
@@ -64,9 +66,6 @@ module MachO
       end
       mach_data
     rescue
-      # read() will raise if it sees EOF, which should only happen if the
-      # file is < 8 bytes. Otherwise, we raise if the file is not a Mach-O 
-      # binary. In both cases, we want to return an empty array.
       []
     end
   end

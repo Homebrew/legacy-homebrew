@@ -9,7 +9,9 @@ class Coreutils < Formula
   depends_on 'xz' => :build
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--program-prefix=g"
+    system "./configure", "--prefix=#{prefix}",
+                          "--program-prefix=g",
+                          "--without-gmp"
     system "make install"
 
     # Symlink all commands into libexec/gnubin without the 'g' prefix

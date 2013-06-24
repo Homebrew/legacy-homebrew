@@ -11,6 +11,7 @@ class CrosstoolNg < Formula
   depends_on 'gnu-sed'
   depends_on 'gawk'
   depends_on 'binutils'
+  depends_on 'libelf'
 
   env :std
 
@@ -28,24 +29,21 @@ class CrosstoolNg < Formula
                           "--with-libtool=glibtool",
                           "--with-libtoolize=glibtoolize",
                           "--with-install=ginstall",
+                          "--with-sed=gsed",
+                          "--with-awk=gawk",
                           "CFLAGS=-std=gnu89"
     # Must be done in two steps
     system "make"
     system "make install"
   end
 
-  def test
-    system "#{bin}/ct-ng version"
+  def caveats; <<-EOS.undent
+    You will need to install modern gcc compiler in order to use this tool.
+    EOS
   end
 
-  def caveats; <<-EOS.undent
-    If building a cross compiler your may expirience the following error:
-      error: elf.h: No such file or directory
-
-    To fix it, perform the following:
-      curl https://raw.github.com/gist/3769372/98e0a084470d2d6be7b4b61551ef00d44c682b4a/elf.h > elf.h
-      cp -p elf.h /usr/local/include/
-    EOS
+  test do
+    system "#{bin}/ct-ng", "version"
   end
 end
 

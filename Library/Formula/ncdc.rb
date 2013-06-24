@@ -2,8 +2,8 @@ require 'formula'
 
 class Ncdc < Formula
   homepage 'http://dev.yorhel.nl/ncdc'
-  url 'http://dev.yorhel.nl/download/ncdc-1.14.tar.gz'
-  sha1 'ff2ae3107097ce4cd03862841421f157198217ea'
+  url 'http://dev.yorhel.nl/download/ncdc-1.16.1.tar.gz'
+  sha1 '3bdbf8c58a95eab2dc318bd853be991343f88fe9'
 
   depends_on 'glib'
   depends_on 'sqlite'
@@ -15,7 +15,7 @@ class Ncdc < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/ncdc -v"
+  test do
+    system "#{bin}/ncdc", "-v"
   end
 end

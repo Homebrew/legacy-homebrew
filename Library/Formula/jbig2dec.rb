@@ -6,12 +6,11 @@ class Jbig2dec < Formula
   sha1 '349cd765616db7aac1f4dd1d45957d1da65ea925'
 
   def install
-    system './configure', '--disable-debug', '--disable-dependency-tracking',
-                          "--prefix=#{prefix}"
-    system 'make install'
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "make install"
   end
 
-  def test
-    system "#{bin}/jbig2dec", '--version'
+  test do
+    system "#{bin}/jbig2dec", "--version"
   end
 end

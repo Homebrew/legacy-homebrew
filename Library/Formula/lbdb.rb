@@ -5,8 +5,8 @@ require 'formula'
 
 class Lbdb < Formula
   homepage 'https://github.com/tgray/lbdb/'
-  url 'https://github.com/tgray/lbdb/tarball/v0.38.1'
-  sha1 '4678fe00c86850fd4f40891518a8d37ee3f5020b'
+  url 'https://github.com/tgray/lbdb/archive/v0.38.2.tar.gz'
+  sha1 '2a278fe7bffad6e7572c1c76f9568e4737c68e07'
 
   head 'https://github.com/tgray/lbdb.git'
 

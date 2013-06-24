@@ -9,14 +9,13 @@ class Formula
 
     # Force the downloader to attempt the download by removing the tarball if
     # it is allready cached.
-    tarball_path = downloader.tarball_path
-    tarball_path.unlink if tarball_path.exist?
+    cached_download.unlink if cached_download.exist?
 
-    fetched = downloader.fetch
+    downloader.fetch
   rescue StandardError
     opoo "Failed to fetch from URL: #{url}"
   else
-    verify_download_integrity fetched if fetched.kind_of? Pathname
+    verify_download_integrity(cached_download) if cached_download.file?
   end
 end
 

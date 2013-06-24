@@ -15,6 +15,6 @@ class Savana < Formula
     libexec.install %w[bin lib logging.properties]
     bin.write_exec_script libexec/'bin/sav'
 
-    (prefix+'etc/bash_completion.d').install 'etc/bash_completion' => 'savana-completion.bash'
+    bash_completion.install 'etc/bash_completion' => 'savana-completion.bash'
   end
 end

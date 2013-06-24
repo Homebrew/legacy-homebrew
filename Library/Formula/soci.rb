@@ -2,8 +2,8 @@ require 'formula'
 
 class Soci < Formula
   homepage 'http://soci.sourceforge.net/'
-  url 'http://download.sourceforge.net/project/soci/soci/soci-3.1.0/soci-3.1.0.zip'
-  sha1 '9cb4491c09d7330a45cdfff6ed4931d8bd2731e0'
+  url 'http://download.sourceforge.net/project/soci/soci/soci-3.2.1/soci-3.2.1.zip'
+  sha1 '6ad37cd6f048b5de55308eda645c15637466ac18'
 
   depends_on 'cmake' => :build
   depends_on 'boost' => :build if build.include? 'with-boost'

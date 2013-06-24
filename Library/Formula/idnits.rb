@@ -2,8 +2,8 @@ require 'formula'
 
 class Idnits < Formula
   homepage 'http://tools.ietf.org/tools/idnits/'
-  url 'http://tools.ietf.org/tools/idnits/idnits-2.12.15.tgz'
-  sha1 '54c7a6de881f4cdf8ceaae0042dc9d28e07d1641'
+  url 'http://tools.ietf.org/tools/idnits/idnits-2.12.17.tgz'
+  sha1 'c8ccc80ee524dd200af5f34d266393301d60bdf5'
 
   depends_on 'aspell'
 

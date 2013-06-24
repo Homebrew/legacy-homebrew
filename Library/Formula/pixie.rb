@@ -9,6 +9,7 @@ class Pixie < Formula
   depends_on 'fltk'
   depends_on 'openexr'
   depends_on :libpng
+  depends_on :x11
 
   def install
     openexr = Formula.factory('openexr')

@@ -1,15 +1,7 @@
 require 'formula'
 
-def needs_universal_python?
-  build.universal? and not build.include? "without-python"
-end
-
-def boost_layout
-  (build.include? "use-system-layout") ? "system" : "tagged"
-end
-
 class UniversalPython < Requirement
-  satisfy { archs_for_command("python").universal? }
+  satisfy(:build_env => false) { archs_for_command("python").universal? }
 
   def message; <<-EOS.undent
     A universal build was requested, but Python is not a universal build
@@ -37,18 +29,24 @@ class Boost < Formula
 
   option :universal
   option 'with-mpi', 'Enable MPI support'
-  option 'without-python', 'Build without Python'
   option 'with-icu', 'Build regexp engine with icu support'
   option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
   option 'use-system-layout', 'Use system layout instead of tagged'
 
-  depends_on UniversalPython if needs_universal_python?
-  depends_on "icu4c" if build.include? "with-icu"
-  depends_on MPIDependency.new(:cc, :cxx) if build.include? "with-mpi"
+  depends_on :python => :recommended
+  depends_on UniversalPython if build.universal? and build.with? "python"
+  depends_on "icu4c" if build.with? 'icu'
+  depends_on MPIDependency.new(:cc, :cxx) if build.with? "mpi"
 
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
+  end
+
+  def pour_bottle?
+    # Don't use the bottle if there is a Homebrew python installed as users
+    # will probably want to link against that instead.
+    not Formula.factory('python').installed?
   end
 
   def install
@@ -70,24 +68,34 @@ class Boost < Formula
     #   /usr/local/lib/libboost_system-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
     inreplace 'tools/build/v2/tools/darwin.jam', '-install_name "', "-install_name \"#{HOMEBREW_PREFIX}/lib/"
 
+    # boost will try to use cc, even if we'd rather it use, say, gcc-4.2
+    inreplace 'tools/build/v2/engine/build.sh', 'BOOST_JAM_CC=cc', "BOOST_JAM_CC=#{ENV.cc}"
+    inreplace 'tools/build/v2/engine/build.jam', 'toolset darwin cc', "toolset darwin #{ENV.cc}"
+
     # Force boost to compile using the appropriate GCC version
     open("user-config.jam", "a") do |file|
       file.write "using darwin : : #{ENV.cxx} ;\n"
-      file.write "using mpi ;\n" if build.include? 'with-mpi'
+      file.write "using mpi ;\n" if build.with? 'mpi'
     end
 
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    bargs << "--with-toolset=clang" if build.include? "with-c++11"
+    bargs << "--with-toolset=clang" if build.with? "c++11"
 
-    if build.include? 'with-icu'
+    if build.with? 'icu'
       icu4c_prefix = Formula.factory('icu4c').opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
     else
       bargs << '--without-icu'
     end
 
+    # The context library is implemented as x86_64 ASM, so it
+    # won't build on PPC or 32-bit builds
+    # see https://github.com/mxcl/homebrew/issues/17646
+    bargs << "--without-libraries=context" if Hardware::CPU.type == :ppc || Hardware::CPU.bits == 32 || build.universal?
+
+    boost_layout = (build.include? "use-system-layout") ? "system" : "tagged"
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
             "-d2",
@@ -97,7 +105,7 @@ class Boost < Formula
             "threading=multi",
             "install"]
 
-    if MacOS.version >= :lion and build.include? 'with-c++11'
+    if MacOS.version >= :lion and build.with? 'c++11'
       args << "toolset=clang" << "cxxflags=-std=c++11"
       args << "cxxflags=-stdlib=libc++" << "cxxflags=-fPIC"
       args << "cxxflags=-arch x86_64" if MacOS.prefer_64_bit? or build.universal?
@@ -109,7 +117,7 @@ class Boost < Formula
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
-    args << "--without-python" if build.include? "without-python"
+    args << "--without-python" if build.without? 'python'
 
     system "./bootstrap.sh", *bargs
     system "./b2", *args

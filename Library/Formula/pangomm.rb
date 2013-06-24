@@ -2,9 +2,10 @@ require 'formula'
 
 class Pangomm < Formula
   homepage 'http://www.pango.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pangomm/2.28/pangomm-2.28.4.tar.bz2'
-  sha256 '933631c110e091f42d16a0f7d7d8f0249b2c762b83db9cfd9091e8fda1b772a5'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pangomm/2.34/pangomm-2.34.0.tar.xz'
+  sha256 '0e82bbff62f626692a00f3772d8b17169a1842b8cc54d5f2ddb1fec2cede9e41'
 
+  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'pango'
   depends_on 'glibmm'

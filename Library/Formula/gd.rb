@@ -1,12 +1,16 @@
 require 'formula'
 
 class Gd < Formula
-  homepage 'http://bitbucket.org/pierrejoye/gd-libgd'
-  url 'http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz'
-  mirror 'http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz'
+  homepage 'https://bitbucket.org/libgd/gd-libgd'
+  # libgd doesn't have their latest (non-alpha) version.
+  # When they do release a stable version, use that url.
+  # Watch this space: http://libgd.bitbucket.org/pages/downloads.html
+  url 'http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz'
   sha1 '21cf2ec93fd80836fc0cb4741201f7cc5440819a'
 
-  head 'http://bitbucket.org/pierrejoye/gd-libgd', :using => :hg
+  head 'https://bitbucket.org/libgd/gd-libgd', :using => :hg
+
+  option :universal
 
   depends_on :libpng => :recommended
   depends_on 'jpeg' => :recommended
@@ -19,29 +23,30 @@ class Gd < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
     args = ["--prefix=#{prefix}"]
     args << "--without-freetype" unless build.with? 'freetype'
     system "./configure", *args
     system "make install"
-    (lib+'pkgconfig/gdlib.pc').write pkg_file
+    (lib+'pkgconfig/gdlib.pc').write pc_file
   end
 
-  def pkg_file; <<-EOF
-prefix=#{prefix}
-exec_prefix=${prefix}
-libdir=/${exec_prefix}/lib
-includedir=/${prefix}/include
-bindir=/${prefix}/bin
-ldflags=  -L/${prefix}/lib
+  def pc_file; <<-EOS.undent
+    prefix=#{opt_prefix}
+    exec_prefix=${prefix}
+    libdir=/${exec_prefix}/lib
+    includedir=/${prefix}/include
+    bindir=/${prefix}/bin
+    ldflags=  -L/${prefix}/lib
 
-Name: gd
-Description: A graphics library for quick creation of PNG or JPEG images
-Version: 2.0.36RC1
-Requires:
-Libs: -L${libdir} -lgd
-Libs.private: -ljpeg -lpng12 -lz -lm
-Cflags: -I${includedir}
-EOF
+    Name: gd
+    Description: A graphics library for quick creation of PNG or JPEG images
+    Version: #{version}
+    Requires:
+    Libs: -L${libdir} -lgd
+    Libs.private: -ljpeg -lpng12 -lz -lm
+    Cflags: -I${includedir}
+    EOS
   end
 
   test do

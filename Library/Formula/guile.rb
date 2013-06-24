@@ -7,9 +7,16 @@ class Guile < Formula
   sha1 '548d6927aeda332b117f8fc5e4e82c39a05704f9'
 
   devel do
-    url 'http://ftpmirror.gnu.org/guile/guile-2.0.7.tar.gz'
-    mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.7.tar.gz'
-    sha1 '4425cc1a60ffe5637972a328880f98746c2a0f5b'
+    url 'http://ftpmirror.gnu.org/guile/guile-2.0.9.tar.gz'
+    mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.9.tar.gz'
+    sha1 'fc5d770e8b1d364b2f222a8f8c96ccf740b2956f'
+  end
+
+  head 'git://git.sv.gnu.org/guile.git'
+
+  if build.head?
+    depends_on 'automake' => :build
+    depends_on 'gettext' => :build
   end
 
   depends_on 'pkg-config' => :build
@@ -32,7 +39,15 @@ class Guile < Formula
     cause "Segfaults during compilation"
   end if build.devel?
 
+  # Only for 2.0.9: Fix shebang shell in build-aux/install-sh.
+  # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14201#19
+  def patches
+    DATA if build.devel?
+  end
+
   def install
+    system './autogen.sh' if build.head?
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libreadline-prefix=#{Formula.factory('readline').prefix}"
@@ -42,3 +57,13 @@ class Guile < Formula
     lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
   end
 end
+
+__END__
+--- guile-2.0.9.orig/build-aux/install-sh  2013-01-28 12:35:24.000000000 -0800
++++ guile-2.0.9/build-aux/install-sh	2013-04-21 08:41:10.000000000 -0700
+@@ -1,4 +1,4 @@
+-#!/nix/store/ryk1ywzz31kp4biclxq3yq6hpjycalyy-bash-4.2/bin/sh
++#!/bin/sh
+ # install - install a program, script, or datafile
+
+ scriptversion=2011-11-20.07; # UTC

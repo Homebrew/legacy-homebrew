@@ -2,24 +2,44 @@ require 'formula'
 
 class Rethinkdb < Formula
   homepage 'http://www.rethinkdb.com/'
-  url 'https://github.com/rethinkdb/rethinkdb/archive/v1.3.2.tar.gz'
-  sha1 '8956087fb98f32fa5a320e696e28b239afe03ab4'
+  url 'http://download.rethinkdb.com/dist/rethinkdb-1.6.1.tgz'
+  sha1 'fdb3acb5febbe3f7cd4d3afd1592e5c4149f7b73'
 
-  head 'https://github.com/rethinkdb/rethinkdb.git'
-
-  depends_on 'node' => :build
-  depends_on 'protobuf' => :build
   depends_on 'boost' => :build
   depends_on 'v8'
-  depends_on 'less' => :node
-  depends_on 'coffee-script' => :node
-  depends_on 'handlebars' => :node if build.head?
 
   def install
-    cd "src" do
-      system "make DEBUG=0 WEBRESDIR=#{share}/rethinkdb/web"
-    end
-    bin.install 'build/release/rethinkdb'
-    (share/'rethinkdb').install 'build/release/web'
+    # Disable drivers because right now we don't build Python/Ruby bindings. Pull request welcome.
+    system "./configure", "--prefix=#{prefix}", "--fetch", "protobuf", "--disable-drivers"
+    system "make"
+    system "make install-osx"
+  end
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+          <string>#{opt_prefix}/bin/rethinkdb</string>
+          <string>-d</string>
+          <string>#{var}/rethinkdb</string>
+      </array>
+      <key>WorkingDirectory</key>
+      <string>#{HOMEBREW_PREFIX}</string>
+      <key>StandardOutPath</key>
+      <string>#{var}/log/rethinkdb/rethinkdb.log</string>
+      <key>StandardErrorPath</key>
+      <string>#{var}/log/rethinkdb/rethinkdb.log</string>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>KeepAlive</key>
+      <true/>
+    </dict>
+    </plist>
+    EOS
   end
 end

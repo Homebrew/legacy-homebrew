@@ -9,7 +9,6 @@ class Dpkg < Formula
   depends_on 'gnu-tar'
 
   fails_with :clang do
-    build 425
     cause 'cstdlib:142:3: error: declaration conflicts with target of using declaration already in scope'
   end
 
@@ -26,6 +25,12 @@ class Dpkg < Formula
                           "--without-start-stop-daemon"
     system "make"
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    This installation of dpkg is not configured to install software, so
+    commands such as `dpkg -i`, `dpkg --configure` will fail.
+    EOS
   end
 end
 

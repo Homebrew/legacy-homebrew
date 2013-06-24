@@ -2,13 +2,13 @@ require 'formula'
 
 class SvtplayDl < Formula
   homepage 'https://github.com/spaam/svtplay-dl'
-  url 'https://github.com/spaam/svtplay-dl/archive/0.9.2013.02.22.tar.gz'
-  sha1 'aa19ba16dc110cabd7e61753ad20c2a8f751e740'
+  url 'https://github.com/spaam/svtplay-dl/archive/0.9.2013.05.06.tar.gz'
+  sha1 '246c0ccaf1df0656a8d5ee0df8cf14aac2fecd96'
 
   depends_on 'rtmpdump'
 
   def install
-    bin.install 'svtplay_dl.py' => "svtplay-dl"
+    bin.install 'svtplay-dl'
   end
 
   def caveats; <<-EOS.undent

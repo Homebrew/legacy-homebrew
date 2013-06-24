@@ -1,47 +1,50 @@
 require 'testing_env'
-require 'formula'
-require 'test/testball'
 require 'version'
-
-class TestBadVersion < TestBall
-  def initialize name=nil
-    @stable = SoftwareSpec.new
-    @stable.version "versions can't have spaces"
-    super 'testbadversion'
-  end
-end
 
 class VersionComparisonTests < Test::Unit::TestCase
   include VersionAssertions
 
   def test_version_comparisons
-    assert_equal 0,  version('0.1') <=> version('0.1.0')
-    assert_equal -1, version('0.1') <=> version('0.2')
-    assert_equal 1,  version('1.2.3') <=> version('1.2.2')
-    assert_equal 1,  version('1.2.3-p34') <=> version('1.2.3-p33')
-    assert_equal -1, version('1.2.4') <=> version('1.2.4.1')
-    assert_equal 0,  version('HEAD') <=> version('HEAD')
-    assert_equal 1,  version('HEAD') <=> version('1.2.3')
-    assert_equal -1, version('1.2.3') <=> version('HEAD')
-    assert_equal -1, version('3.2.0b4') <=> version('3.2.0')
-    assert_equal -1, version('1.0beta6') <=> version('1.0b7')
-    assert_equal -1, version('1.0b6') <=> version('1.0beta7')
-    assert_equal -1, version('1.1alpha4') <=> version('1.1beta2')
-    assert_equal -1, version('1.1beta2') <=> version('1.1rc1')
-    assert_equal -1, version('1.0.0beta7') <=> version('1.0.0')
-    assert_equal 1,  version('3.2.1') <=> version('3.2beta4')
+    assert_operator version('0.1'), :==, version('0.1.0')
+    assert_operator version('0.1'), :<, version('0.2')
+    assert_operator version('1.2.3'), :>, version('1.2.2')
+    assert_operator version('1.2.4'), :<, version('1.2.4.1')
+  end
+
+  def test_patchlevel
+    assert_operator version('1.2.3-p34'), :>, version('1.2.3-p33')
+    assert_operator version('1.2.3-p33'), :<, version('1.2.3-p34')
+  end
+
+  def test_HEAD
+    assert_operator version('HEAD'), :>, version('1.2.3')
+    assert_operator version('1.2.3'), :<, version('HEAD')
+  end
+
+  def test_alpha_beta_rc
+    assert_operator version('3.2.0b4'), :<, version('3.2.0')
+    assert_operator version('1.0beta6'), :<, version('1.0b7')
+    assert_operator version('1.0b6'), :<, version('1.0beta7')
+    assert_operator version('1.1alpha4'), :<, version('1.1beta2')
+    assert_operator version('1.1beta2'), :<, version('1.1rc1')
+    assert_operator version('1.0.0beta7'), :<, version('1.0.0')
+    assert_operator version('3.2.1'), :>, version('3.2beta4')
+  end
+
+  def test_comparing_unevenly_padded_versions
+    assert_operator version('2.1.0-p194'), :<, version('2.1-p195')
+    assert_operator version('2.1-p195'), :>, version('2.1.0-p194')
+    assert_operator version('2.1-p194'), :<, version('2.1.0-p195')
+    assert_operator version('2.1.0-p195'), :>, version('2.1-p194')
+    assert_operator version('2-p194'), :<, version('2.1-p195')
+  end
+
+  def test_comparison_returns_nil_for_non_version
     assert_nil version('1.0') <=> 'foo'
   end
 
-  def test_version_interrogation
-    v = Version.new("1.1alpha1")
-    assert v.alpha?
-    v = Version.new("1.0beta2")
-    assert v.devel?
-    assert v.beta?
-    v = Version.new("1.0rc-1")
-    assert v.devel?
-    assert v.rc?
+  def test_compare_patchlevel_to_non_patchlevel
+    assert_operator version('9.9.3-P1'), :>, version('9.9.3')
   end
 end
 
@@ -51,16 +54,12 @@ class VersionParsingTests < Test::Unit::TestCase
   def test_pathname_version
     d = HOMEBREW_CELLAR/'foo-0.1.9'
     d.mkpath
-    assert_equal 0, version('0.1.9') <=> d.version
+    assert_equal version('0.1.9'), d.version
   end
 
   def test_no_version
     assert_version_nil 'http://example.com/blah.tar'
     assert_version_nil 'foo'
-  end
-
-  def test_bad_version
-    assert_raises(RuntimeError) { TestBadVersion.new }
   end
 
   def test_version_all_dots
@@ -238,18 +237,69 @@ class VersionParsingTests < Test::Unit::TestCase
   #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2'
   # end
 
-  def test_more_versions
+  def test_pypy_version
     assert_version_detected '1.4.1', 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2'
+  end
+
+  def test_openssl_version
     assert_version_detected '0.9.8s', 'http://www.openssl.org/source/openssl-0.9.8s.tar.gz'
+  end
+
+  def test_xaw3d_version
     assert_version_detected '1.5E', 'ftp://ftp.visi.com/users/hawkeyd/X/Xaw3d-1.5E.tar.gz'
+  end
+
+  def test_assimp_version
     assert_version_detected '2.0.863', 'http://downloads.sourceforge.net/project/assimp/assimp-2.0/assimp--2.0.863-sdk.zip'
+  end
+
+  def test_cmucl_version
     assert_version_detected '20c', 'http://common-lisp.net/project/cmucl/downloads/release/20c/cmucl-20c-x86-darwin.tar.bz2'
+  end
+
+  def test_fann_version
     assert_version_detected '2.1.0beta', 'http://downloads.sourceforge.net/project/fann/fann/2.1.0beta/fann-2.1.0beta.zip'
+  end
+
+  def test_grads_version
     assert_version_detected '2.0.1', 'ftp://iges.org/grads/2.0/grads-2.0.1-bin-darwin9.8-intel.tar.gz'
+  end
+
+  def test_haxe_version
     assert_version_detected '2.08', 'http://haxe.org/file/haxe-2.08-osx.tar.gz'
+  end
+
+  def test_imap_version
     assert_version_detected '2007f', 'ftp://ftp.cac.washington.edu/imap/imap-2007f.tar.gz'
+  end
+
+  def test_suite3270_version
     assert_version_detected '3.3.12ga7', 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz'
+  end
+
+  def test_wwwoffle_version
     assert_version_detected '2.9h', 'http://www.gedanken.demon.co.uk/download-wwwoffle/wwwoffle-2.9h.tgz'
+  end
+
+  def test_synergy_version
     assert_version_detected '1.3.6p2', 'http://synergy.googlecode.com/files/synergy-1.3.6p2-MacOSX-Universal.zip'
+  end
+
+  def test_fontforge_version
+    assert_version_detected '20120731', 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
+  end
+
+  def test_ezlupdate_version
+    assert_version_detected '2011.10', 'https://github.com/downloads/ezsystems/ezpublish-legacy/ezpublish_community_project-2011.10-with_ezc.tar.bz2'
+  end
+
+  def test_aespipe_version_style
+    assert_version_detected '2.4c',
+      'http://loop-aes.sourceforge.net/aespipe/aespipe-v2.4c.tar.bz2'
+  end
+
+  def test_perforce_style
+    assert_version_detected '2013.1.610569-x86_64',
+      '/usr/local/perforce-2013.1.610569-x86_64.mountain_lion.bottle.tar.gz'
   end
 end

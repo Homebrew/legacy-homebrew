@@ -2,8 +2,8 @@ require 'formula'
 
 class Hub < Formula
   homepage 'http://defunkt.io/hub/'
-  url 'https://github.com/defunkt/hub/tarball/v1.10.4'
-  sha1 'b43f69f20563cb779d77a6beaf773bad8c49ad4c'
+  url 'https://github.com/defunkt/hub/archive/v1.10.6.tar.gz'
+  sha1 'e29d158c65a10ef3889f4af438bf1fb50fbd0536'
   head 'https://github.com/defunkt/hub.git'
 
   def install
@@ -14,7 +14,7 @@ class Hub < Formula
 
   test do
     HOMEBREW_REPOSITORY.cd do
-      `#{bin}/hub ls-files -- bin`.chomp == 'bin/brew'
+      assert_equal 'bin/brew', `#{bin}/git ls-files -- bin`.strip
     end
   end
 end

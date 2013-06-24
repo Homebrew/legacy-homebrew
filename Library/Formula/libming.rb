@@ -5,12 +5,12 @@ class Libming < Formula
   url 'http://sourceforge.net/projects/ming/files/Releases/ming-0.4.4.tar.bz2'
   sha1 'e803b3b94a00a361e3415105f26112cf6f7bac81'
 
-  option 'python', 'Build the python extension'
   option 'perl', 'Build the perl extension'
   option 'php', 'Build the php extension'
 
   depends_on :libpng
   depends_on :freetype
+  depends_on :python => :optional
   depends_on 'giflib' => :optional
 
   # Helps us find libgif.dylib, not libungif.dylib which is retired.
@@ -20,7 +20,7 @@ class Libming < Formula
 
   def install
     # TODO: Libming also includes scripting front-ends for Perl, Python, TCL
-    # and PHP.  These are disabled by default.  Figure out what it would take to
+    # and PHP. These are disabled by default. Figure out what it would take to
     # enable them.
     # - python works if we tell it to use our giflib not ungif.
     # - perl works without any change
@@ -31,9 +31,9 @@ class Libming < Formula
       --disable-silent-rules
       --prefix=#{prefix}
     ]
-    args << '--enable-python' if build.include? 'python'
-    args << '--enable-perl' if build.include? 'perl'
-    args << '--enable-php' if build.include? 'php'
+    args << '--enable-python' if build.with? 'python'
+    args << '--enable-perl' if build.with? 'perl'
+    args << '--enable-php' if build.with? 'php'
 
     system './configure', *args
     system 'make'

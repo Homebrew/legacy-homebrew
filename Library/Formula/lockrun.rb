@@ -3,8 +3,8 @@ require 'formula'
 class Lockrun < Formula
   homepage 'http://unixwiz.net/tools/lockrun.html'
   url 'http://unixwiz.net/tools/lockrun.c'
-  version '20090625'
-  sha1 '04c6df93c3ac5b2cdedfb25615f39c9ed50c0663'
+  version '20120905'
+  sha1 'dc8442d806608c45bab9d9062e5028b6d8f35c0c'
 
   def install
     system "#{ENV.cc} #{ENV.cflags} lockrun.c -o lockrun"

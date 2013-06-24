@@ -2,8 +2,10 @@ require 'formula'
 
 class Libgphoto2 < Formula
   homepage 'http://www.gphoto.org/proj/libgphoto2/'
-  url 'http://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.0/libgphoto2-2.5.0.tar.bz2'
-  sha1 'b8383933525b71308b3b24ba43c88a4c5d999cf8'
+  url 'http://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.2/libgphoto2-2.5.2.tar.bz2'
+  sha1 '6b70ff6feec62a955bef1fc9a2b16dd07f0e277a'
+
+  option :universal
 
   depends_on 'pkg-config' => :build
   depends_on :libtool # Configure script uses this
@@ -11,8 +13,9 @@ class Libgphoto2 < Formula
   depends_on 'libexif' => :optional
 
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}", "CFLAGS=-D_DARWIN_C_SOURCE"
     system "make install"
   end
 end

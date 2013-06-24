@@ -20,8 +20,8 @@ class Bullet < Formula
 
     if build.include? "framework"
       args << "-DBUILD_SHARED_LIBS=ON" << "-DFRAMEWORK=ON"
-      args << "-DCMAKE_INSTALL_PREFIX=#{prefix}/Frameworks"
-      args << "-DCMAKE_INSTALL_NAME_DIR=#{prefix}/Frameworks"
+      args << "-DCMAKE_INSTALL_PREFIX=#{frameworks}"
+      args << "-DCMAKE_INSTALL_NAME_DIR=#{frameworks}"
     else
       args << "-DBUILD_SHARED_LIBS=ON" if build.include? "shared"
       args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"

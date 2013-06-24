@@ -17,4 +17,10 @@ class Qwt < Formula
     system "make"
     system "make install"
   end
+
+  def caveats; <<-EOS.undent
+      The qwtmathml library contains code of the MML Widget from the Qt solutions package.
+      Beside the Qwt license you also have to take care of its license.
+    EOS
+  end
 end

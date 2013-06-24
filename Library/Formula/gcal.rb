@@ -2,9 +2,9 @@ require 'formula'
 
 class Gcal < Formula
   homepage 'http://www.gnu.org/software/gcal/'
-  url 'http://ftpmirror.gnu.org/gcal/gcal-3.6.2.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/gcal/gcal-3.6.2.tar.xz'
-  sha1 '45dfa00e362d9c4ab8978a7a2f2ab898b156a3c4'
+  url 'http://ftpmirror.gnu.org/gcal/gcal-3.6.3.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/gcal/gcal-3.6.3.tar.xz'
+  sha1 'a5d68216d8b0735c9b095fb81a08d6dbf5cdeedd'
 
   depends_on 'xz' => :build
 

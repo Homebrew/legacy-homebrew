@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# encoding: UTF-8
 
 require 'exceptions'
 require 'formula'
@@ -6,6 +6,7 @@ require 'keg'
 require 'tab'
 require 'bottles'
 require 'caveats'
+require 'cleaner'
 
 class FormulaInstaller
   attr_reader :f
@@ -17,6 +18,7 @@ class FormulaInstaller
     @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @options = Options.new
+    @tab = Tab.dummy_tab(ff)
 
     @@attempted ||= Set.new
 
@@ -24,8 +26,8 @@ class FormulaInstaller
     check_install_sanity
   end
 
-  def pour_bottle?
-    install_bottle?(f) && (tab.used_options.empty? rescue true) && options.empty?
+  def pour_bottle? warn=false
+    tab.used_options.empty? && options.empty? && install_bottle?(f, warn)
   end
 
   def check_install_sanity
@@ -34,7 +36,7 @@ class FormulaInstaller
     if f.installed?
       msg = "#{f}-#{f.installed_version} already installed"
       msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
-      raise CannotInstallFormulaError, msg
+      raise FormulaAlreadyInstalledError, msg
     end
 
     # Building head-only without --HEAD is an error
@@ -77,13 +79,10 @@ class FormulaInstaller
       EOS
     end
 
-    unless ignore_deps
-      # HACK: If readline is present in the dependency tree, it will clash
-      # with the stdlib's Readline module when the debugger is loaded
-      if f.recursive_deps.any? { |d| d.name == "readline" } and ARGV.debug?
-        ENV['HOMEBREW_NO_READLINE'] = '1'
-      end
+    check_conflicts
 
+    unless ignore_deps
+      perform_readline_hack
       check_requirements
       install_dependencies
     end
@@ -92,26 +91,63 @@ class FormulaInstaller
 
     @@attempted << f
 
-    if pour_bottle?
-      pour
-    else
+    @poured_bottle = false
+    begin
+      if pour_bottle? true
+        pour
+        @poured_bottle = true
+        tab = Tab.for_keg f.prefix
+        tab.poured_from_bottle = true
+        tab.tabfile.delete rescue nil
+        tab.write
+      end
+    rescue
+      raise if ARGV.homebrew_developer?
+      opoo "Bottle installation failed: building from source."
+    end
+
+    unless @poured_bottle
       build
       clean
     end
 
+    f.post_install
+
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
+  end
+
+  # HACK: If readline is present in the dependency tree, it will clash
+  # with the stdlib's Readline module when the debugger is loaded
+  def perform_readline_hack
+    if f.recursive_dependencies.any? { |d| d.name == "readline" } && ARGV.debug?
+      ENV['HOMEBREW_NO_READLINE'] = '1'
+    end
+  end
+
+  def check_conflicts
+    return if ARGV.force?
+
+    conflicts = f.conflicts.reject do |c|
+      keg = Formula.factory(c.name).prefix
+      not keg.directory? && Keg.new(keg).linked?
+    end
+
+    raise FormulaConflictError.new(f, conflicts) unless conflicts.empty?
   end
 
   def check_requirements
     unsatisfied = ARGV.filter_for_dependencies do
       f.recursive_requirements do |dependent, req|
-        if req.optional? || req.recommended?
-          Requirement.prune unless dependent.build.with?(req.name)
-        elsif req.build?
-          Requirement.prune if install_bottle?(dependent)
+        if (req.optional? || req.recommended?) && dependent.build.without?(req.name)
+          Requirement.prune
+        elsif req.build? && install_bottle?(dependent)
+          Requirement.prune
+        elsif req.satisfied?
+          Requirement.prune
+        elsif req.default_formula?
+          dependent.deps << req.to_dependency
+          Requirement.prune
         end
-
-        Requirement.prune if req.satisfied?
       end
     end
 
@@ -122,47 +158,40 @@ class FormulaInstaller
     end
   end
 
-  def effective_deps
-    @deps ||= begin
-      deps = Set.new
+  # Dependencies of f that were also explicitly requested on the command line.
+  # These honor options like --HEAD and --devel.
+  def requested_deps
+    f.recursive_dependencies.select { |dep| dep.requested? && !dep.installed? }
+  end
 
-      # If a dep was also requested on the command line, we let it honor
-      # any influential flags (--HEAD, --devel, etc.) the user has passed
-      # when we check the installed status.
-      requested_deps = f.recursive_dependencies.select do |dep|
-        dep.requested? && !dep.installed?
-      end
+  # All dependencies that we must install before installing f.
+  # These do not honor flags like --HEAD and --devel.
+  def necessary_deps
+    ARGV.filter_for_dependencies do
+      f.recursive_dependencies do |dependent, dep|
+        dep.universal! if f.build.universal? && !dep.build?
 
-      # Otherwise, we filter these influential flags so that they do not
-      # affect installation prefixes and other properties when we decide
-      # whether or not the dep is needed.
-      necessary_deps = ARGV.filter_for_dependencies do
-        f.recursive_dependencies do |dependent, dep|
-          if dep.optional? || dep.recommended?
-            Dependency.prune unless dependent.build.with?(dep.name)
-          elsif dep.build?
-            Dependency.prune if install_bottle?(dependent)
-          end
-
-          if f.build.universal?
-            dep.universal! unless dep.build?
-          end
-
-          if dep.satisfied?
-            Dependency.prune
-          elsif dep.installed?
-            raise UnsatisfiedDependencyError.new(f, dep)
-          end
+        if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
+          Dependency.prune
+        elsif dep.build? && install_bottle?(dependent)
+          Dependency.prune
+        elsif dep.satisfied?
+          Dependency.prune
+        elsif dep.installed?
+          raise UnsatisfiedDependencyError.new(f, dep)
         end
       end
-
-      deps.merge(requested_deps)
-      deps.merge(necessary_deps)
-
-      # Now that we've determined which deps we need, map them back
-      # onto recursive_dependencies to preserve installation order
-      f.recursive_dependencies.select { |d| deps.include? d }
     end
+  end
+
+  # Combine requested_deps and necessary deps.
+  def filter_deps
+    deps = Set.new.merge(requested_deps).merge(necessary_deps)
+    f.recursive_dependencies.select { |d| deps.include? d }
+  end
+
+  def effective_deps
+    @effective_deps ||= filter_deps
   end
 
   def install_dependencies
@@ -235,12 +264,12 @@ class FormulaInstaller
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
     unless ENV['HOMEBREW_NO_EMOJI']
-      print "🍺  " if MacOS.version >= :lion
+      print "\xf0\x9f\x8d\xba  " if MacOS.version >= :lion
     end
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
     puts
-
+  ensure
     unlock if hold_locks?
   end
 
@@ -253,7 +282,7 @@ class FormulaInstaller
       opts = Options.coerce(ARGV.options_only)
       unless opts.include? '--fresh'
         opts.concat(options) # from a dependent formula
-        opts.concat((tab.used_options rescue [])) # from a previous install
+        opts.concat(tab.used_options) # from a previous install
       end
       opts << Option.new("--build-from-source") # don't download bottle
     end
@@ -273,17 +302,24 @@ class FormulaInstaller
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
 
+    args = %W[
+      nice #{RUBY_PATH}
+      -W0
+      -I #{File.dirname(__FILE__)}
+      -rbuild
+      --
+      #{f.path}
+    ].concat(build_argv)
+
+    # Ruby 2.0+ sets close-on-exec on all file descriptors except for
+    # 0, 1, and 2 by default, so we have to specify that we want the pipe
+    # to remain open in the child process.
+    args << { write => write } if RUBY_VERSION >= "2.0"
+
     fork do
       begin
         read.close
-        exec '/usr/bin/nice',
-             '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby',
-             '-W0',
-             '-I', Pathname.new(__FILE__).dirname,
-             '-rbuild',
-             '--',
-             f.path,
-             *build_argv
+        exec(*args)
       rescue Exception => e
         Marshal.dump(e, write)
         write.close
@@ -328,6 +364,10 @@ class FormulaInstaller
       onoe "The `brew link` step did not complete successfully"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts "You can try again using `brew link #{f.name}'"
+      puts
+      puts "Possible conflicting files are:"
+      mode = OpenStruct.new(:dry_run => true, :overwrite => true)
+      keg.link(mode)
       ohai e, e.backtrace if ARGV.debug?
       @show_summary_heading = true
       ignore_interrupts{ keg.unlink }
@@ -345,6 +385,17 @@ class FormulaInstaller
 
   def fix_install_names
     Keg.new(f.prefix).fix_install_names
+    if @poured_bottle and f.bottle
+      old_prefix = f.bottle.prefix
+      new_prefix = HOMEBREW_PREFIX.to_s
+      old_cellar = f.bottle.cellar
+      new_cellar = HOMEBREW_CELLAR.to_s
+
+      if old_prefix != new_prefix or old_cellar != new_cellar
+        Keg.new(f.prefix).relocate_install_names \
+          old_prefix, new_prefix, old_cellar, new_cellar
+      end
+    end
   rescue Exception => e
     onoe "Failed to fix install names"
     puts "The formula built, but you may encounter issues using it or linking other"
@@ -363,7 +414,6 @@ class FormulaInstaller
       puts "in the formula."
       return
     end
-    require 'cleaner'
     Cleaner.new f
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
@@ -373,8 +423,14 @@ class FormulaInstaller
   end
 
   def pour
-    fetched, downloader = f.fetch
-    f.verify_download_integrity fetched unless downloader.local_bottle_path
+    downloader = f.downloader
+    if downloader.local_bottle_path
+      downloader = LocalBottleDownloadStrategy.new f,
+                     downloader.local_bottle_path
+    else
+      fetched = f.fetch
+      f.verify_download_integrity fetched
+    end
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end
@@ -403,6 +459,7 @@ class FormulaInstaller
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 

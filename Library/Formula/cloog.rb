@@ -10,17 +10,13 @@ class Cloog < Formula
   depends_on 'isl'
 
   def install
-    args = [
-      "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
-      "--with-isl-prefix=#{Formula.factory('isl').opt_prefix}"
-    ]
-
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-isl-prefix=#{Formula.factory("isl").opt_prefix}"
     system "make install"
   end
 
-  def test
+  test do
     cloog_source = <<-EOS.undent
       c
 
@@ -37,8 +33,11 @@ class Cloog < Formula
       0
     EOS
 
-    pipe = IO.popen("cloog /dev/stdin", "w+")
-    pipe.write(cloog_source)
-    pipe.read =~ /Generated\ from \/dev\/stdin\ by\ CLooG/
+    require 'open3'
+    Open3.popen3("#{bin}/cloog", "/dev/stdin") do |stdin, stdout, _|
+      stdin.write(cloog_source)
+      stdin.close
+      assert_match /Generated from \/dev\/stdin by CLooG/, stdout.read
+    end
   end
 end

@@ -15,7 +15,7 @@ class GitNow < Formula
 
   def install
     system "make", "prefix=#{prefix}", "install"
-    (share+'zsh/site-functions').install 'etc/_git-now'
+    zsh_completion.install 'etc/_git-now'
   end
 end
 

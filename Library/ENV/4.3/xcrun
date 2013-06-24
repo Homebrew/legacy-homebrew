@@ -7,6 +7,9 @@
 require "#{File.dirname __FILE__}/../libsuperenv"
 SUPERBIN = __FILE__.dirname.cleanpath.freeze
 
+# Some build tools are stupid and still set DEVELOPER_DIR to old /Developer
+ENV['DEVELOPER_DIR'] = ENV['HOMEBREW_DEVELOPER_DIR']
+
 exec "/usr/bin/xcrun", *ARGV if ARGV.empty? or ARGV[0][0..0] == '-'
 if File.exist?("/usr/bin/#{ARGV.first}")
   exec "/usr/bin/#{ARGV.shift}", *ARGV unless ENV['HOMEBREW_SDKROOT'].directory?
@@ -19,9 +22,13 @@ end
 arg0 = ARGV.shift
 try `/usr/bin/xcrun --find #{arg0}`.chomp
 # Nuts, Xcode is not setup properly or something. Try to find the tools anyway!
-try "/Applications/Xcode.app/Contents/Developer/usr/bin/#{arg0}"
-try "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{arg0}"
-try "/usr/bin/#{arg0}"
+try "#{ENV['HOMEBREW_DEVELOPER_DIR']}/usr/bin/#{arg0}"
+try "#{ENV['HOMEBREW_DEVELOPER_DIR']}/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{arg0}"
+# xcrun won't always be able to find Homebrew's apple-gcc42,
+# even when it's in the PATH
+ENV['PATH'].split(':').each do |p|
+  try "#{p}/#{arg0}"
+end
 
 abort <<-EOS
 Your Xcode and or CLT are mis-configured. Try some or all of the following:

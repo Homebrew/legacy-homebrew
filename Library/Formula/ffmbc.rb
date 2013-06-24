@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffmbc < Formula
   homepage 'http://code.google.com/p/ffmbc/'
-  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc7.tar.bz2'
-  sha1 '79d125cd5d420e61120e2a66b018b0be096ad088'
+  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc8.tar.bz2'
+  sha1 '85a9673ac82a698bb96057fe027222efe6ebae28'
 
   option "without-x264", "Disable H.264 encoder"
   option "without-lame", "Disable MP3 encoder"

@@ -20,7 +20,7 @@ end
 class CleanerTests < Test::Unit::TestCase
   def test_clean_file
     f = CleanerTestBall.new
-    nostdout { f.brew { f.install } }
+    shutup { f.brew { f.install } }
 
     assert_nothing_raised { Cleaner.new f }
     assert_equal 0100555, (f.bin/'a.out').stat.mode

@@ -23,7 +23,7 @@ class BuildEnvironmentTests < Test::Unit::TestCase
   def test_modify_build_environment
     @env << Proc.new { raise StandardError }
     assert_raises(StandardError) do
-      @env.modify_build_environment
+      @env.modify_build_environment(self)
     end
   end
 
@@ -38,7 +38,7 @@ class BuildEnvironmentTests < Test::Unit::TestCase
     foo = mock("foo")
     @env << Proc.new { foo.some_message }
     foo.expects(:some_message)
-    @env.modify_build_environment
+    @env.modify_build_environment(self)
   end
 
   def test_env_block_with_argument

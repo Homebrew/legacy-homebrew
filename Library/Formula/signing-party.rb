@@ -2,6 +2,7 @@ require 'formula'
 
 class GnupgInstalled < Requirement
   fatal true
+  default_formula 'gnupg2'
 
   satisfy { which('gpg') || which('gpg2') }
 

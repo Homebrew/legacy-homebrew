@@ -9,8 +9,8 @@ class Hugs98 < Formula
   depends_on 'readline'
 
   fails_with :clang do
-    build 421
-    cause %[runhugs: Error occurred\nERROR "libraries/bootlib/Data/Bits.hs":192 - Syntax error in declaration (unexpected `}', possibly due to bad layout)]
+    build 425
+    cause %[ERROR "libraries/bootlib/Data/Dynamic.hs" - Module "Main" already loaded]
   end
 
   def patches

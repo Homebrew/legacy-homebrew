@@ -2,21 +2,29 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.2.7.tar.gz'
-  sha1 '65309abde9d683ece737da7a354c8fae24e15ecb'
+  url 'http://nginx.org/download/nginx-1.4.1.tar.gz'
+  sha1 '9c72838973572323535dae10f4e412d671b27a7e'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.3.13.tar.gz'
-    sha1 'b09b1c35b2b741292d41db1caa3b8a4123805a4c'
+    url 'http://nginx.org/download/nginx-1.5.1.tar.gz'
+    sha1 'bd5a5e7dba39a4aa166918112367589f165ce5bc'
   end
 
-  env :userpaths
+  head 'http://hg.nginx.org/nginx/', :using => :hg
 
-  depends_on 'pcre'
+  env :userpaths
 
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
   option 'with-debug', 'Compile with support for debug log'
+  option 'with-spdy', 'Compile with support for SPDY module'
+  option 'with-gunzip', 'Compile with support for gunzip module'
+
+  depends_on 'pcre'
+  # SPDY needs openssl >= 1.0.1 for NPN; see:
+  # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
+  # http://www.openssl.org/news/changelog.html
+  depends_on 'openssl' if build.with? 'spdy'
 
   skip_clean 'logs'
 
@@ -39,12 +47,22 @@ class Nginx < Formula
   end
 
   def install
+    cc_opt = "-I#{HOMEBREW_PREFIX}/include"
+    ld_opt = "-L#{HOMEBREW_PREFIX}/lib"
+
+    if build.with? 'spdy'
+      openssl_path = Formula.factory("openssl").opt_prefix
+      cc_opt += " -I#{openssl_path}/include"
+      ld_opt += " -L#{openssl_path}/lib"
+    end
+
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
             "--with-ipv6",
-            "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
-            "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
+            "--sbin-path=#{bin}/nginx",
+            "--with-cc-opt=#{cc_opt}",
+            "--with-ld-opt=#{ld_opt}",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/run/nginx.lock",
@@ -52,34 +70,63 @@ class Nginx < Formula
             "--http-proxy-temp-path=#{var}/run/nginx/proxy_temp",
             "--http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp",
             "--http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp",
-            "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp"]
+            "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp",
+            "--http-log-path=#{var}/log/nginx",
+            "--with-http_gzip_static_module"
+          ]
 
     args << passenger_config_args if build.include? 'with-passenger'
     args << "--with-http_dav_module" if build.include? 'with-webdav'
     args << "--with-debug" if build.include? 'with-debug'
+    args << "--with-http_spdy_module" if build.include? 'with-spdy'
+    args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
 
-    system "./configure", *args
+    if build.head?
+      system "./auto/configure", *args
+    else
+      system "./configure", *args
+    end
     system "make"
     system "make install"
     man8.install "objs/nginx.8"
     (var/'run/nginx').mkpath
+
+    # nginx’s docroot is #{prefix}/html, this isn't useful, so we symlink it
+    # to #{HOMEBREW_PREFIX}/var/www. The reason we symlink instead of patching
+    # is so the user can redirect it easily to something else if they choose.
+    prefix.cd do
+      dst = HOMEBREW_PREFIX/"var/www"
+      if not dst.exist?
+        dst.dirname.mkpath
+        mv "html", dst
+      else
+        rm_rf "html"
+        dst.mkpath
+      end
+      Pathname.new("#{prefix}/html").make_relative_symlink(dst)
+    end
+
+    # for most of this formula’s life the binary has been placed in sbin
+    # and Homebrew used to suggest the user copy the plist for nginx to their
+    # ~/Library/LaunchAgents directory. So we need to have a symlink there
+    # for such cases
+    if (HOMEBREW_CELLAR/'nginx').subdirs.any?{|d| (d/:sbin).directory? }
+      sbin.mkpath
+      sbin.cd do
+        (sbin/'nginx').make_relative_symlink(bin/'nginx')
+      end
+    end
   end
 
   def caveats; <<-EOS.undent
-    In the interest of allowing you to run `nginx` without `sudo`, the default
-    port is set to localhost:8080.
+    Docroot is: #{HOMEBREW_PREFIX}/var/www
 
-    If you want to host pages on your local machine to the public, you should
-    change that to localhost:80, and run `sudo nginx`. You'll need to turn off
-    any other web servers running port 80, of course.
+    The default port has been set to 8080 so that nginx can run without sudo.
 
-    You can start nginx automatically on login running as your user with:
-      mkdir -p ~/Library/LaunchAgents
-      cp #{plist_path} ~/Library/LaunchAgents/
-      launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
+    If you want to host pages on your local machine to the wider network you
+    can change the port to 80 in: #{HOMEBREW_PREFIX}/etc/nginx/nginx.conf
 
-    Though note that if running as your user, the launch agent will fail if you
-    try to use a port below 1024 (such as http's default of 80.)
+    You will then need to run nginx as root: `sudo nginx`.
     EOS
   end
 
@@ -94,11 +141,9 @@ class Nginx < Formula
         <true/>
         <key>KeepAlive</key>
         <false/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/sbin/nginx</string>
+            <string>#{opt_prefix}/bin/nginx</string>
             <string>-g</string>
             <string>daemon off;</string>
         </array>

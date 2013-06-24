@@ -10,7 +10,11 @@ class Cbmbasic < Formula
     bin.install 'cbmbasic'
   end
 
-  def test
-    system "echo \"PRINT 1\" | #{bin}/cbmbasic"
+  test do
+    IO.popen("#{bin}/cbmbasic", "w+") do |pipe|
+      pipe.write("PRINT 1\n")
+      pipe.close_write
+      assert_match /READY.\r\n 1/, pipe.read
+    end
   end
 end

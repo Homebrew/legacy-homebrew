@@ -82,7 +82,7 @@ changes.
       stage_dir = unpack_dir + [f.name, f.version].join('-')
 
       if stage_dir.exist?
-        raise "Destination #{stage_dir} allready exists!" unless ARGV.force?
+        raise "Destination #{stage_dir} already exists!" unless ARGV.force?
         rm_rf stage_dir
       end
 

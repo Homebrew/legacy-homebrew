@@ -1,5 +1,6 @@
 require 'extend/pathname'
 require 'formula_lock'
+require 'ostruct'
 
 class Keg < Pathname
   def initialize path
@@ -114,7 +115,6 @@ class Keg < Pathname
     link_dir('bin', mode) {:skip_dir}
     link_dir('sbin', mode) {:skip_dir}
     link_dir('include', mode) {:link}
-    link_dir('Frameworks', mode) { :link }
 
     link_dir('share', mode) do |path|
       case path.to_s
@@ -147,6 +147,18 @@ class Keg < Pathname
       end
     end
 
+    link_dir('Frameworks', mode) do |path|
+      # Frameworks contain symlinks pointing into a subdir, so we have to use
+      # the :link strategy. However, for Foo.framework and
+      # Foo.framework/Versions we have to use :mkpath so that multiple formulae
+      # can link their versions into it and `brew [un]link` works.
+      if path.to_s =~ /[^\/]*\.framework(\/Versions)?$/
+        :mkpath
+      else
+        :link
+      end
+    end
+
     unless mode.dry_run
       linked_keg_record.make_relative_symlink(self)
       optlink
@@ -171,7 +183,8 @@ class Keg < Pathname
     from.make_relative_symlink(self)
   end
 
-protected
+  protected
+
   def resolve_any_conflicts dst
     # if it isn't a directory then a severe conflict is about to happen. Let
     # it, and the exception that is generated will message to the user about
@@ -192,31 +205,34 @@ protected
       puts "Skipping; already exists: #{dst}" if ARGV.verbose?
     # cf. git-clean -n: list files to delete, don't really link or delete
     elsif mode.dry_run and mode.overwrite
-      puts dst if dst.exist?
+      puts dst if dst.exist? or dst.symlink?
       return
     # list all link targets
     elsif mode.dry_run
       puts dst
       return
     else
-      dst.delete if mode.overwrite && dst.exist?
+      dst.delete if mode.overwrite && (dst.exist? or dst.symlink?)
       dst.make_relative_symlink src
     end
   end
 
-  # symlinks the contents of self+foo recursively into /usr/local/foo
+  # symlinks the contents of self+foo recursively into #{HOMEBREW_PREFIX}/foo
   def link_dir foo, mode=OpenStruct.new
     root = self+foo
     return unless root.exist?
-
     root.find do |src|
       next if src == root
-
       dst = HOMEBREW_PREFIX+src.relative_path_from(self)
       dst.extend ObserverPathnameExtension
 
       if src.file?
         Find.prune if File.basename(src) == '.DS_Store'
+        # Don't link pyc files because Python overwrites these cached object
+        # files and next time brew wants to link, the pyc file is in the way.
+        if src.extname.to_s == '.pyc' && src.to_s =~ /site-packages/
+          Find.prune
+        end
 
         case yield src.relative_path_from(root)
         when :skip_file, nil
@@ -231,7 +247,6 @@ protected
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
         next if dst.directory? and not dst.symlink?
-
         # no need to put .app bundles in the path, the user can just use
         # spotlight, or the open command and actual mac apps use an equivalent
         Find.prune if src.extname.to_s == '.app'

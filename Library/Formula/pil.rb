@@ -6,6 +6,7 @@ class Pil < Formula
   sha1 '76c37504251171fda8da8e63ecb8bc42a69a5c81'
 
   depends_on :freetype
+  depends_on :python
   depends_on 'jpeg' => :recommended
   depends_on 'little-cms' => :optional
 
@@ -18,7 +19,7 @@ class Pil < Formula
   def install
     # Find the arch for the Python we are building against.
     # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
-    archs = archs_for_command("python")
+    archs = archs_for_command(python.binary)
     archs.remove_ppc!
     # Can't build universal on 32-bit hardware. See:
     # https://github.com/mxcl/homebrew/issues/5844
@@ -44,36 +45,11 @@ class Pil < Formula
               "add_directory(include_dirs, \"#{HOMEBREW_PREFIX}/include\")"
     end
 
-    # In order to install into the Cellar, the dir must exist and be in the
-    # PYTHONPATH.
-    temp_site_packages = lib/which_python/'site-packages'
-    mkdir_p temp_site_packages
-    ENV['PYTHONPATH'] = temp_site_packages
-    args = [
-      "--no-user-cfg",
-      "--verbose",
-      "install",
-      "--force",
-      "--install-scripts=#{share}/python",
-      "--install-lib=#{temp_site_packages}",
-      "--install-data=#{share}",
-      "--install-headers=#{include}",
-      "--record=installed-files.txt"
-    ]
-    system "python", "-s", "setup.py", *args
-
+    python do
+      system python, "setup.py", "install" ,"--prefix=#{prefix}"
+    end
   end
 
-  def caveats; <<-EOS.undent
-    This formula installs PIL against whatever Python is first in your path.
-    This Python needs to have either setuptools or distribute installed or
-    the build will fail.
-    EOS
-  end
-
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
 end
 
 __END__

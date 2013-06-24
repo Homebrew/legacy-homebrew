@@ -20,7 +20,7 @@ class Metafiles
     not include? file
   end
 
-private
+  private
 
   def include? p
     p = p.to_s # Might be a pathname

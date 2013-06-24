@@ -2,8 +2,8 @@ require 'formula'
 
 class YamlCpp < Formula
   homepage 'http://code.google.com/p/yaml-cpp/'
-  url 'http://yaml-cpp.googlecode.com/files/yaml-cpp-0.5.0.tar.gz'
-  sha1 '575ece77122bffc392e6e9bc7389a1efcdb6bc97'
+  url 'http://yaml-cpp.googlecode.com/files/yaml-cpp-0.5.1.tar.gz'
+  sha1 '9c5414b4090491e96d1b808fe8628b31e625fdaa'
 
   depends_on 'cmake' => :build
   depends_on 'boost'

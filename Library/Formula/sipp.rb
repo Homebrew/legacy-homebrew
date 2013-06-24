@@ -2,8 +2,8 @@ require 'formula'
 
 class Sipp < Formula
   homepage 'http://sipp.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/sipp/sipp/3.2/sipp.svn.tar.gz'
-  sha1 'cef9e061b3223b228ae403f897edc192b3ce2ce7'
+  url 'http://sourceforge.net/projects/sipp/files/sipp/3.3/sipp-3.3.tar.gz'
+  sha1 'a8e088b7e1e3673eddfbe2fd4e1486dd87919520'
 
   def install
     system "make", "DESTDIR=#{prefix}"

@@ -2,8 +2,9 @@ require 'formula'
 
 class GstPluginsUgly < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.0.5.tar.xz'
-  sha256 'a62a182ea96d9b2783b493b46d531914db9d2ebb9e537e9c84668fe752791331'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.0.7.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.0.7.tar.xz'
+  sha256 'b78b8cfabe322497da432a0f297dbb21862a033f95e8d4cd8f207eccb5288f2b'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
@@ -38,16 +39,25 @@ class GstPluginsUgly < Formula
   def install
     ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
 
-    # Fixes build error, missing includes.
-    # https://github.com/mxcl/homebrew/issues/14078
-    nbcflags = `pkg-config --cflags opencore-amrnb`.chomp
-    wbcflags = `pkg-config --cflags opencore-amrwb`.chomp
-    ENV['AMRNB_CFLAGS'] = nbcflags + "-I#{HOMEBREW_PREFIX}/include/opencore-amrnb"
-    ENV['AMRWB_CFLAGS'] = wbcflags + "-I#{HOMEBREW_PREFIX}/include/opencore-amrwb"
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --mandir=#{man}
+    ]
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    if build.with? "opencore-amr"
+      # Fixes build error, missing includes.
+      # https://github.com/mxcl/homebrew/issues/14078
+      nbcflags = `pkg-config --cflags opencore-amrnb`.chomp
+      wbcflags = `pkg-config --cflags opencore-amrwb`.chomp
+      ENV['AMRNB_CFLAGS'] = nbcflags + "-I#{HOMEBREW_PREFIX}/include/opencore-amrnb"
+      ENV['AMRWB_CFLAGS'] = wbcflags + "-I#{HOMEBREW_PREFIX}/include/opencore-amrwb"
+    else
+      args << "--disable-amrnb" << "--disable-amrwb"
+    end
+
+    system "./configure", *args
     system "make"
     system "make install"
   end

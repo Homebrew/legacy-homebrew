@@ -10,6 +10,12 @@ class Cdrtools < Formula
   conflicts_with 'dvdrtools',
     :because => 'both dvdrtools and cdrtools install binaries by the same name'
 
+  def patches
+  {:p0 => [
+    "https://trac.macports.org/export/104091/trunk/dports/sysutils/cdrtools/files/patch-include_schily_sha2.h"
+  ]}
+  end
+
   def install
     system "smake", "INS_BASE=#{prefix}", "INS_RBASE=#{prefix}", "install"
     # cdrtools tries to install some generic smake headers, libraries and

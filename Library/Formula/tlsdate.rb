@@ -17,7 +17,7 @@ class Tlsdate < Formula
     system 'make', 'install'
   end
 
-  def test
-    system 'tlsdate', '--verbose', '--dont-set-clock'
+  test do
+    system "#{bin}/tlsdate", "--verbose", "--dont-set-clock"
   end
 end

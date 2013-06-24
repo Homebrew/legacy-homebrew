@@ -4,6 +4,7 @@ class FormulaLock
   def initialize(name)
     @name = name
     @path = LOCKDIR.join("#{@name}.brewing")
+    @lockfile = nil
   end
 
   def lock

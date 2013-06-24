@@ -5,6 +5,7 @@ class Pyqwt < Formula
   url 'http://sourceforge.net/projects/pyqwt/files/pyqwt5/PyQwt-5.2.0/PyQwt-5.2.0.tar.gz'
   sha1 '797f37c63dec660272f6a8ccfd16a017df0ad640'
 
+  depends_on :python => :recommended
   depends_on 'qt'
   depends_on 'qwt'
   depends_on 'sip'
@@ -13,33 +14,32 @@ class Pyqwt < Formula
   def patches
     # Patch to build system to allow for specific
     #  installation directories.
-    {:p0 => DATA}
+    { :p0 => DATA }
   end
 
   def install
     cd "configure" do
-      system "python",
-             "configure.py",
-             "--module-install-path=#{lib}/#{which_python}/site-packages/PyQt4/Qwt5",
-             "--sip-install-path=#{share}/sip/Qwt5",
-             "--uic-install-path=#{lib}/#{which_python}/site-packages/PyQt4",
-             "-Q", "../qwt-5.2"
-      system "make install"
+      python do
+        system python,
+               "configure.py",
+               "--module-install-path=#{lib}/#{python.xy}/site-packages/PyQt4/Qwt5",
+               "--sip-install-path=#{share}/sip#{python.if3then3}/Qwt5",
+               "--uic-install-path=#{lib}/#{python.xy}/site-packages/PyQt4",
+               "-Q", "../qwt-5.2"
+        system "make install"
+        system 'make clean'
+      end
     end
   end
 
-  def caveats; <<-EOS.undent
-    For non-homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-    EOS
-  end
-
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  def caveats
+    python.standard_caveats if python
   end
 
   def test
-    system "python", "-c", "from PyQt4 import Qwt5 as Qwt"
+    python do
+      system python, "-c", "from PyQt4 import Qwt5 as Qwt"
+    end
   end
 end
 

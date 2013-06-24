@@ -29,7 +29,7 @@ class Pce < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/pce-ibmpc -V"
+  test do
+    system "#{bin}/pce-ibmpc", "-V"
   end
 end

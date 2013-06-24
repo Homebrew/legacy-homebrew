@@ -1,29 +1,5 @@
 require 'formula'
 
-class LionOrNewer < Requirement
-  fatal true
-
-  satisfy MacOS.version >= :lion
-
-  def message
-    "Avian requires Mac OS X 10.7 (Lion) or newer."
-  end
-end
-
-class JdkInstalled < Requirement
-  fatal true
-
-  satisfy { which 'javac' }
-
-  def message; <<-EOS.undent
-    A JDK is required.
-
-    You can get the official Oracle installers from:
-    http://www.oracle.com/technetwork/java/javase/downloads/index.html
-    EOS
-  end
-end
-
 class Avian < Formula
   homepage 'http://oss.readytalk.com/avian/'
   url 'http://oss.readytalk.com/avian/avian-0.6.tar.bz2'
@@ -31,8 +7,7 @@ class Avian < Formula
 
   head 'https://github.com/ReadyTalk/avian.git'
 
-  depends_on JdkInstalled
-  depends_on LionOrNewer
+  depends_on :macos => :lion
 
   def install
     system 'make', 'JAVA_HOME=/Library/Java/Home'
@@ -49,6 +24,6 @@ class Avian < Formula
       }
     EOS
     system 'javac', 'Test.java'
-    %x[avian Test] == 'OK'
+    assert_equal 'OK', `avian Test`.strip
   end
 end
