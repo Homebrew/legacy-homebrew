@@ -17,7 +17,7 @@ class Fftw < Formula
     if build.include? "with-fortran"
       ENV.fortran
     else
-      args << "--disable-fortran" unless which 'gfortran'
+      args << "--disable-fortran"
     end
 
     # single precision
