@@ -11,7 +11,7 @@ class Dotwrp < Formula
 
   def install
     # note: fno-underscoring is vital to override the symbols in Accelerate
-    system "#{ENV["FC"]} #{ENV["FFLAGS"]} -fno-underscoring -c dotwrp.f90"
+    system "#{ENV.fc} #{ENV.fflags} -fno-underscoring -c dotwrp.f90"
     system "ar -cru libdotwrp.a dotwrp.o"
     system "ranlib libdotwrp.a"
 

@@ -12,8 +12,8 @@ class Slicot < Formula
 
   def install
     args = [
-      "FORTRAN=#{ENV['FC']}",
-      "LOADER=#{ENV['FC']}",
+      "FORTRAN=#{ENV.fc}",
+      "LOADER=#{ENV.fc}",
       "LAPACKLIB='-framework Accelerate'",
     ]
 
