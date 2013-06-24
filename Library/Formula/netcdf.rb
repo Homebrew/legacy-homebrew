@@ -36,7 +36,7 @@ class Netcdf < Formula
       # the library libnetcdff.dylib to be missing all the f90 symbols.
       # http://www.unidata.ucar.edu/software/netcdf/docs/known_problems.html#intel-fortran-macosx
       # https://github.com/mxcl/homebrew/issues/13050
-      ENV['lt_cv_ld_force_load'] = 'no' if ENV['FC'] == 'ifort'
+      ENV['lt_cv_ld_force_load'] = 'no' if ENV.fc == 'ifort'
     end
 
     common_args = %W[
