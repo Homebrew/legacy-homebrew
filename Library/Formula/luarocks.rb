@@ -7,16 +7,9 @@ class Luarocks < Formula
 
   head 'https://github.com/keplerproject/luarocks.git'
 
-  option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
-  option 'with-lua52', 'Use Lua 5.2 instead of the stock Lua'
+  depends_on 'lua'
 
-  if build.include? 'with-luajit'
-    depends_on 'luajit'
-  elsif build.include? 'with-lua52'
-    depends_on 'lua52'
-  else
-    depends_on 'lua'
-  end
+  V = 5.2
 
   fails_with :llvm do
     cause "Lua itself compiles with llvm, but may fail when other software tries to link."
@@ -31,23 +24,47 @@ class Luarocks < Formula
     # Install to the Cellar, but direct modules to HOMEBREW_PREFIX
     args = ["--prefix=#{prefix}",
             "--rocks-tree=#{HOMEBREW_PREFIX}",
-            "--sysconfdir=#{etc}/luarocks"]
-
-    if build.include? 'with-luajit'
-      args << "--with-lua-include=#{HOMEBREW_PREFIX}/include/luajit-2.0"
-      args << "--lua-suffix=jit"
-    end
+	    "--lua-version=#{V}",
+            "--sysconfdir=#{etc}/luarocks",
+            "--with-lua-include=#{HOMEBREW_PREFIX}/include/lua-#{V}",
+            "--lua-suffix=-#{V}"]
 
     system "./configure", *args
     system "make"
     system "make install"
+
+    # Wrapper scripts to set up access to the correct rocktrees.
+    (prefix+"bin/luarocks-5.1").write wrap_script ("luarocks", "5.1", "-")
+    (prefix+"bin/luarocks-admin-5.1").write wrap_script ("luarocks-admin", "5.1", "-")
+    (prefix+"bin/luarocks-jit-2.0").write wrap_script ("luarocks", "jit-2.0")
+    (prefix+"bin/luarocks-admin-jit-2.0").write wrap_script ("luarocks-admin", "jit-2.0")
   end
 
   def caveats; <<-EOS.undent
-    Rocks install to: #{HOMEBREW_PREFIX}/lib/luarocks/rocks
+    By default, rocks install to: #{HOMEBREW_PREFIX}/lib/luarocks/rocks
+
+    To manage rocks trees for other Lua interpreters, set LUAROCKS_CONFIG to the
+    #{HOMEBREW_PREFIX}/lib/lua/<version>/luarocks-config.lua each installs before
+    running luarocks or luarocks-admin; or source #{etc}/luarocks/init.sh from
+    your shell startup, and select the current tree using the rockstree command.
 
     You may need to run `luarocks install` inside the Homebrew build
     environment for rocks to successfully build. To do this, first run `brew sh`.
+    EOS
+  end
+
+  def wrap_script (wrapped, suffix, sep = ""); <<-EOS.undent
+    #!/bin/sh
+    export LUA='#{HOMEBREW_PREFIX}/bin/lua#{sep}#{suffix}'
+    export LUAROCKS_CONFIG='#{HOMEBREW_PREFIX}/lib/lua/#{suffix}/luarocks-config.lua'
+
+    test -f "$LUAROCKS_CONFIG" || {
+      echo "error: please install lua#{sep}#{suffix} and try again!" >&2
+      exit 1
+    }
+
+    eval `"$LUA" '#{HOMEBREW_PREFIX}/bin/luarocks' path`
+    exec "$LUA" '#{opt_prefix}/bin/#{wrapped}' ${1+"$@"}
     EOS
   end
 

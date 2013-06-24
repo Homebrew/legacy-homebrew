@@ -14,12 +14,14 @@ class Lua51 < Formula
   option 'with-completion', 'Enables advanced readline support'
   option 'without-sigaction', 'Use ANSI signal instead of POSIX sigaction'
 
+  V = 5.1
+
   def patches
     p = []
     # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
     # See: https://github.com/mxcl/homebrew/pull/5043
     # Also, take care of versioned file suffixes to support parallel installation with other releases.
-    p << 'https://gist.github.com/gvvaughan/5832455/raw/9d8addeeddb181126e49f6dbf16e8852fadebab6/lua-5.1-homebrew.diff'
+    p << 'https://gist.github.com/gvvaughan/5832455/raw/aad4b63f2fbc7646c62274ef44bb204e5cb5fc7f/lua-5.1-homebrew.diff'
     # sigaction provided by posix signalling power patch from
     # http://lua-users.org/wiki/LuaPowerPatches
     unless build.without? 'sigaction'
@@ -51,9 +53,35 @@ class Lua51 < Formula
 
     # this ensures that this symlinking for lua starts at lib/lua/5.1 and not
     # below that, thus making luarocks work
-    (HOMEBREW_PREFIX/"lib/lua/5.1").mkpath
+    (HOMEBREW_PREFIX/"lib/lua/#{V}").mkpath
 
     system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
+
+    # Make wrappers that set environment to find correct rocktree.
+    (prefix+"bin/lua-#{V}").write wrap_script ("#{V}", "-")
+    (prefix+"bin/luac-#{V}").write wrap_script ("#{V}", "-")
+
+    (lib+"lua/#{V}/luarocks-config.lua").write luarocks_cfg_file
+  end
+
+  def luarocks_cfg_file; <<-EOS.undent
+    rocks_trees = { "#{HOMEBREW_PREFIX}/lib/luarocks/rocks-#{V}" }
+    variables = {
+      LUA = "#{opt_prefix}/bin/lua-#{V}",
+      LUA_BINDIR = "#{opt_prefix}/bin",
+      LUA_INCDIR = "#{opt_prefix}/include/lua-#{V}",
+      LUA_LIBDIR = "#{opt_prefix}/lib",
+    }
+    EOS
+  end
+
+  def wrap_script (suffix, sep = ""); <<-EOS.undent
+    #!/bin/sh
+    export LUA='#{opt_prefix}/libexec/lua#{sep}#{suffix}'
+    export LUAROCKS_CONFIG='#{HOMEBREW_PREFIX}/lib/lua/#{suffix}/luarocks-config.lua'
+    eval `"$LUA" '#{HOMEBREW_PREFIX}/bin/luarocks' path 2>/dev/null`
+    exec "$LUA" ${1+"$@"}
+    EOS
   end
 end
