@@ -64,7 +64,10 @@ class DependencyExpansionTests < Test::Unit::TestCase
     @baz2 = build_dep(:baz, ['option'])
     @deps << @foo2 << @baz2
     deps = [@foo2, @bar, @baz2, @qux]
-    assert_equal deps, Dependency.expand(@f)
+    deps.zip(Dependency.expand(@f)) do |expected, actual|
+      assert_equal expected.tags, actual.tags
+      assert_equal expected, actual
+    end
   end
 
   def test_merger_preserves_env_proc
