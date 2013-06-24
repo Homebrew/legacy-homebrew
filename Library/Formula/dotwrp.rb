@@ -7,9 +7,9 @@ class Dotwrp < Formula
 
   head 'https://github.com/tenomoto/dotwrp.git'
 
-  def install
-    ENV.fortran
+  depends_on :fortran
 
+  def install
     # note: fno-underscoring is vital to override the symbols in Accelerate
     system "#{ENV["FC"]} #{ENV["FFLAGS"]} -fno-underscoring -c dotwrp.f90"
     system "ar -cru libdotwrp.a dotwrp.o"

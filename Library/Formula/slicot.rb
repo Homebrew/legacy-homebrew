@@ -8,9 +8,9 @@ class Slicot < Formula
 
   option 'with-default-integer-8', 'Build with 8-byte-wide integer type'
 
-  def install
-    ENV.fortran
+  depends_on :fortran
 
+  def install
     args = [
       "FORTRAN=#{ENV['FC']}",
       "LOADER=#{ENV['FC']}",
