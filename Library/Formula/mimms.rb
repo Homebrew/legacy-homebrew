@@ -15,8 +15,19 @@ class Mimms < Formula
   end
 
   def install
+    args = [
+      "--no-user-cfg",
+      "--verbose",
+      "install",
+      "--force",
+      "--prefix=#{prefix}",
+      "--install-scripts=#{bin}",
+      "--install-lib=#{lib}",
+      "--install-data=#{share}",
+      "--install-headers=#{include}",
+    ]
     python do
-      system python, "setup.py", "install", "--prefix=#{prefix}"
+      system python, "setup.py", *args
     end
   end
 
@@ -25,7 +36,7 @@ class Mimms < Formula
   end
 
   test do
-    system "#{HOMEBREW_PREFIX}/share/python/mimms", "--version"
+    system "mimms", "--version"
   end
 end
 __END__
