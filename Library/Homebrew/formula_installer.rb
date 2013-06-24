@@ -459,6 +459,7 @@ class FormulaInstaller
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 
