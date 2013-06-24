@@ -9,12 +9,16 @@ class Gmp < Formula
   option '32-bit'
 
   def install
+    args = ["--prefix=#{prefix}", "--enable-cxx"]
+
     if build.build_32_bit?
       ENV.m32
       ENV.append 'ABI', '32'
+      # https://github.com/mxcl/homebrew/issues/20693
+      args << "--disable-assembly"
     end
 
-    system "./configure", "--prefix=#{prefix}", "--enable-cxx"
+    system "./configure", *args
     system "make"
     system "make check"
     ENV.deparallelize

@@ -6,6 +6,7 @@ require 'keg'
 require 'tab'
 require 'bottles'
 require 'caveats'
+require 'cleaner'
 
 class FormulaInstaller
   attr_reader :f
@@ -263,7 +264,7 @@ class FormulaInstaller
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
     unless ENV['HOMEBREW_NO_EMOJI']
-      print "🍺  " if MacOS.version >= :lion
+      print "\xf0\x9f\x8d\xba  " if MacOS.version >= :lion
     end
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
@@ -409,7 +410,6 @@ class FormulaInstaller
       puts "in the formula."
       return
     end
-    require 'cleaner'
     Cleaner.new f
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"

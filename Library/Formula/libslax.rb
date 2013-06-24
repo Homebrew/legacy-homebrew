@@ -2,8 +2,8 @@ require 'formula'
 
 class Libslax < Formula
   homepage 'http://www.libslax.org/'
-  url 'https://github.com/Juniper/libslax/archive/libslax-0.16.0.tar.gz'
-  sha1 'c89b46387050fe8b201f8a0f1676e504aac1b80e'
+  url 'https://github.com/Juniper/libslax/archive/0.16.2.tar.gz'
+  sha1 'a2270ec7e67c540889894b732e7d4387592c7500'
 
   head 'https://github.com/Juniper/libslax.git'
 

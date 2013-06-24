@@ -3,6 +3,7 @@ require 'tab'
 require 'keg'
 require 'caveats'
 require 'blacklist'
+require 'utils/json'
 
 module Homebrew extend self
   def info
@@ -46,14 +47,12 @@ module Homebrew extend self
   end
 
   def print_json
-    require 'vendor/multi_json'
-
     formulae = ARGV.include?("--all") ? Formula : ARGV.formulae
     json = formulae.map {|f| f.to_hash}
     if json.size == 1
-      puts MultiJson.encode json.pop
+      puts Utils::JSON.dump(json.pop)
     else
-      puts MultiJson.encode json
+      puts Utils::JSON.dump(json)
     end
   end
 
