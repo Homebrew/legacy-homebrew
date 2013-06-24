@@ -26,7 +26,7 @@ class Pianobar < Formula
                     # Or it doesn't build at all
                     "-std=c99 " +
                     # build if we aren't /usr/local'
-                    "#{ENV["CPPFLAGS"]} #{ENV["LDFLAGS"]}"
+                    "#{ENV.cppflags} #{ENV.ldflags}"
 
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"

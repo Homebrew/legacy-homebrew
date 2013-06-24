@@ -11,7 +11,7 @@ class Bind < Formula
   def install
     ENV.libxml2
     # libxml2 appends one inc dir to CPPFLAGS but bind ignores CPPFLAGS
-    ENV.append 'CFLAGS', ENV['CPPFLAGS']
+    ENV.append 'CFLAGS', ENV.cppflags
 
     ENV['STD_CDEFINES'] = '-DDIG_SIGCHASE=1'
 
