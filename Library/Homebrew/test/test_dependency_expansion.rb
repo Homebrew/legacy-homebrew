@@ -66,4 +66,9 @@ class DependencyExpansionTests < Test::Unit::TestCase
     deps = [@foo2, @bar, @baz2, @qux]
     assert_equal deps, Dependency.expand(@f)
   end
+
+  def test_merger_preserves_env_proc
+    env_proc = @foo.env_proc = stub
+    assert_equal env_proc, Dependency.expand(@f).first.env_proc
+  end
 end
