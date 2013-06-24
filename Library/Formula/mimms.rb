@@ -9,6 +9,7 @@ class Mimms < Formula
   depends_on 'libmms'
 
   # Switch shared library loading to Mach-O naming convention (.dylib)
+  # Matching upstream bug report: http://savannah.nongnu.org/bugs/?29684
   # Fix installation path for man page to $(brew --prefix)/share/man
   def patches
      DATA
@@ -26,10 +27,11 @@ class Mimms < Formula
 
   test do
     python do
-      system("mimms","--version")
+      system "#{bin}/mimms", "--version"
     end
   end
 end
+
 __END__
 diff --git a/libmimms/libmms.py b/libmimms/libmms.py
 index fb59207..ac42ba4 100644
