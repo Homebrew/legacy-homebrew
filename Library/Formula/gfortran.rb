@@ -107,16 +107,8 @@ class Gfortran < Formula
   end
 
   def caveats; <<-EOS.undent
-    Brews that require a Fortran compiler should not use:
-      depends_on 'gfortran'
-
-    The preferred method of declaring Fortran support is to use:
-      def install
-        ...
-        ENV.fortran
-        ...
-      end
-
+    Brews that require a Fortran compiler should use:
+      depends_on :fortran
     EOS
   end
 end
