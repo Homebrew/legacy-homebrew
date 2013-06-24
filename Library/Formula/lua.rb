@@ -13,7 +13,7 @@ class Lua < Formula
   option 'with-completion', 'Enables advanced readline support'
   option 'without-sigaction', 'Revert to ANSI signal instead of improved POSIX sigaction'
 
-  V = version.to_s.split('.')[0..1].join('.')
+  V = 5.2
 
   def patches
     p = []
