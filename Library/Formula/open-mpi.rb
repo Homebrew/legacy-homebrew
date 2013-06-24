@@ -16,6 +16,8 @@ class OpenMpi < Formula
 
   conflicts_with 'mpich2', :because => 'both install mpi__ compiler wrappers'
 
+  depends_on :fortran unless build.include? 'disable-fortran'
+
   # Reported upstream at version 1.6, both issues
   # http://www.open-mpi.org/community/lists/devel/2012/05/11003.php
   # http://www.open-mpi.org/community/lists/devel/2012/08/11362.php
@@ -32,8 +34,6 @@ class OpenMpi < Formula
     ]
     if build.include? 'disable-fortran'
       args << '--disable-mpi-f77' << '--disable-mpi-f90'
-    else
-      ENV.fortran
     end
 
     if build.include? 'enable-mpi-thread-multiple'
