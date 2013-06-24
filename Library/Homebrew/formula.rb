@@ -355,8 +355,6 @@ class Formula
   end
 
   def self.canonical_name name
-    name = name.to_s if name.kind_of? Pathname
-
     # if name includes a '/', it may be a tap reference, path, or URL
     if name.include? "/"
       if name =~ %r{(.+)/(.+)/(.+)}
