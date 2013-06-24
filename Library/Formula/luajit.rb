@@ -10,6 +10,8 @@ class Luajit < Formula
 
   option "enable-debug", "Build with debugging symbols"
 
+  V = "jit-2.0"
+
   def install
     # 1 - Remove the '-O2' so we can set Og if needed.  Leave the -fomit part.
     # 2 - Override the hardcoded gcc.
@@ -20,6 +22,13 @@ class Luajit < Formula
       f.change_make_var! 'CC', ENV.cc
       f.change_make_var! 'CCOPT_x86', ''
     end
+    # 1 - Remove the micro version from the installed binary name.
+    # 2 - Install executable to libexec ready to be called by wrapper script
+    inreplace 'Makefile' do |f|
+      f.change_make_var! 'INSTALL_TNAME', "lua#{V}"
+      f.change_make_var! 'INSTALL_T', '$(DPREFIX)/libexec/$(INSTALL_TNAME)'
+    end
+    (prefix+"libexec").mkpath       # needed by 'make install'
 
     ENV.O2                          # Respect the developer's choice.
     args = ["PREFIX=#{prefix}"]
@@ -28,10 +37,39 @@ class Luajit < Formula
       args << 'CCDEBUG=-g'
     end
 
+    # this ensures that this symlinking for lua starts at lib/lua/jit-2.0 and not
+    # below that, thus making luarocks work
+    (HOMEBREW_PREFIX/"lib/lua/#{V}").mkpath
+
     bldargs = args
     bldargs << 'amalg'
     system 'make', *bldargs
     args << 'install'
     system 'make', *args            # Build requires args during install
+
+    # Make wrapper that sets environment to find correct rocktree.
+    (prefix+"bin/lua#{V}").write wrap_script ("#{V}")
+
+    (lib+"lua/#{V}/luarocks-config.lua").write luarocks_cfg_file
+  end
+
+  def luarocks_cfg_file; <<-EOS.undent
+    rocks_trees = { "#{HOMEBREW_PREFIX}/lib/luarocks/rocks-#{V}" }
+    variables = {
+      LUA = "#{opt_prefix}/bin/luajit",
+      LUA_BINDIR = "#{opt_prefix}/bin",
+      LUA_INCDIR = "#{opt_prefix}/include/lua#{V}",
+      LUA_LIBDIR = "#{opt_prefix}/lib",
+    }
+    EOS
+  end
+
+  def wrap_script (suffix, sep = ""); <<-EOS.undent
+    #!/bin/sh
+    export LUA='#{opt_prefix}/libexec/lua#{sep}#{suffix}'
+    export LUAROCKS_CONFIG='#{HOMEBREW_PREFIX}/lib/lua/#{suffix}/luarocks-config.lua'
+    eval `"$LUA" '#{HOMEBREW_PREFIX}/bin/luarocks' path 2>/dev/null`
+    exec "$LUA" ${1+"$@"}
+    EOS
   end
 end
