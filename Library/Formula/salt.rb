@@ -73,6 +73,8 @@ class Salt < Formula
   url 'http://supernovae.in2p3.fr/~guy/salt/download/snfit-2.2.2b.tar.gz'
   sha1 'e435ca19d22800f95f5363038297593ec4dae97f'
 
+  depends_on :fortran
+
   def install_subbrew(subbrew, installdir)
     s = subbrew.new
     s.brew do
@@ -92,7 +94,6 @@ class Salt < Formula
 
   def install
     ENV.deparallelize
-    ENV.fortran
     # the libgfortran.a path needs to be set explicitly
     # for the --enable-gfortran option to work
     libgfortran = `$FC --print-file-name libgfortran.a`.chomp

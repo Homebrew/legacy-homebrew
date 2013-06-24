@@ -15,6 +15,7 @@ class Pgplot < Formula
   option 'with-button', 'Install libbutton'
 
   depends_on :x11
+  depends_on :fortran
 
   def patches
     # from MacPorts: https://trac.macports.org/browser/trunk/dports/graphics/pgplot/files
@@ -26,7 +27,6 @@ class Pgplot < Formula
 
   def install
     ENV.deparallelize
-    ENV.fortran
     ENV.append 'CPPFLAGS', "-DPG_PPU"
     # allow long lines in the fortran code (for long homebrew PATHs)
     ENV.append 'FCFLAGS', "-ffixed-line-length-none"

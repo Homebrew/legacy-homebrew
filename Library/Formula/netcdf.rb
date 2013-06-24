@@ -23,6 +23,7 @@ class Netcdf < Formula
   url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.2.1.1.tar.gz'
   sha1 '76631cb4e6b767c224338415cf6e5f5ff9bd1238'
 
+  depends_on :fortran if build.include? 'enable-fortran'
   depends_on 'hdf5'
 
   option 'enable-fortran', 'Compile Fortran bindings'
@@ -31,7 +32,6 @@ class Netcdf < Formula
 
   def install
     if build.include? 'enable-fortran'
-      ENV.fortran
       # fix for ifort not accepting the --force-load argument, causing
       # the library libnetcdff.dylib to be missing all the f90 symbols.
       # http://www.unidata.ucar.edu/software/netcdf/docs/known_problems.html#intel-fortran-macosx
