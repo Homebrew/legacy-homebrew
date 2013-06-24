@@ -15,7 +15,6 @@ class Sdcv < Formula
   depends_on 'readline'
 
   fails_with :clang do
-    build 421
     cause <<-EOS.undent
       In C++, clang supports variable length arrays in very limited
       circumstances, the element type of a variable length array must

@@ -25,6 +25,6 @@ class Ldns < Formula
     system "./configure", *args
     system "make"
     system "make install"
-    system "make", "install-pyldns"
+    system "make", "install-pyldns" if build.with? 'python'
   end
 end

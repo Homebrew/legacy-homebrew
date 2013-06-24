@@ -78,7 +78,7 @@ class Caveats
           s << "    #{f.plist_manual}"
         end
       elsif Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
-        s << "You should reload #{f.name}:"
+        s << "To reload #{f.name} after an upgrade:"
         if f.plist_startup
           s << "    sudo launchctl unload #{plist_link}"
           s << "    sudo cp -fv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}"

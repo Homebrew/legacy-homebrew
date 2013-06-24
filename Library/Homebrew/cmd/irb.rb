@@ -4,7 +4,7 @@ require 'irb'
 
 class Symbol
   def f
-    Formula.factory(self)
+    Formula.factory(self.to_s)
   end
 end
 class String

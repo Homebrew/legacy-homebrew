@@ -14,6 +14,7 @@ class Lua < Formula
 
   option :universal
   option 'completion', 'Enables advanced readline support'
+  option 'sigaction', 'Signal handling improvements for interpreter'
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/mxcl/homebrew/pull/5043
@@ -23,6 +24,11 @@ class Lua < Formula
     # http://lua-users.org/wiki/LuaPowerPatches
     if build.include? 'completion'
       p << 'http://luajit.org/patches/lua-5.1.4-advanced_readline.patch'
+    end
+    # sigaction provided by posix signalling power patch from
+    # http://lua-users.org/wiki/LuaPowerPatches
+    if build.include? 'sigaction'
+      p << 'http://lua-users.org/files/wiki_insecure/power_patches/5.1/sig_catch.patch'
     end
     p
   end

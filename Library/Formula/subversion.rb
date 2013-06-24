@@ -9,6 +9,7 @@ class Subversion < Formula
   option 'java', 'Build Java bindings'
   option 'perl', 'Build Perl bindings'
   option 'ruby', 'Build Ruby bindings'
+  option 'unicode-path', 'Include experimental support for UTF-8-MAC filenames'
 
   depends_on 'pkg-config' => :build
 
@@ -29,6 +30,12 @@ class Subversion < Formula
     # Patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
     if build.include? 'perl'
       ps << DATA
+    end
+
+    # Experimental patch to support UTF-8-MAC filenames
+    # http://subversion.tigris.org/issues/show_bug.cgi?id=2464
+    if build.include? 'unicode-path'
+      ps << "https://gist.github.com/clemensg/5835253/raw/cd719fa206e92519911ad0ab97fdc3822b252429/svn_status_utf8_fix.diff"
     end
 
     unless ps.empty?
@@ -73,7 +80,6 @@ class Subversion < Formula
     args = ["--disable-debug",
             "--prefix=#{prefix}",
             "--with-apr=#{apr_bin}",
-            "--with-ssl",
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula.factory('sqlite').opt_prefix}",
             "--with-serf=#{Formula.factory('serf').opt_prefix}",
@@ -180,25 +186,39 @@ class Subversion < Formula
       EOS
     end
 
+    if build.include? 'unicode-path'
+      s += <<-EOS.undent
+        This unicode-path version implements a hack to deal with composed/decomposed
+        unicode handling on Mac OS X which is different from Linux and Windows.
+        It is an implementation of solution 1 from
+        https://svn.apache.org/repos/asf/subversion/trunk/notes/unicode-composition-for-filenames
+        which _WILL_ break some setups. Please be sure you understand what you
+        are asking for when you install this version.
+
+      EOS
+    end
+
     return s.empty? ? nil : s
   end
 end
 
 __END__
---- subversion/bindings/swig/perl/native/Makefile.PL.in~	2011-07-16 04:47:59.000000000 -0700
-+++ subversion/bindings/swig/perl/native/Makefile.PL.in	2012-06-27 17:45:57.000000000 -0700
-@@ -57,10 +57,13 @@
- 
+--- subversion/bindings/swig/perl/native/Makefile.PL.in~ 2013-06-20 18:58:55.000000000 +0200
++++ subversion/bindings/swig/perl/native/Makefile.PL.in	2013-06-20 19:00:49.000000000 +0200
+@@ -69,10 +69,15 @@
+
  chomp $apr_shlib_path_var;
- 
+
 +my $config_ccflags = $Config{ccflags};
-+$config_ccflags =~ s/-arch\s+\S+//g; # remove any -arch arguments, since the ones we want will already be in $cflags
++# remove any -arch arguments, since those
++# we want will already be in $cflags
++$config_ccflags =~ s/-arch\s+\S+//g;
 +
  my %config = (
      ABSTRACT => 'Perl bindings for Subversion',
      DEFINE => $cppflags,
 -    CCFLAGS => join(' ', $cflags, $Config{ccflags}),
 +    CCFLAGS => join(' ', $cflags, $config_ccflags),
-     INC  => join(' ',$apr_cflags, $apu_cflags,
+     INC  => join(' ', $includes, $cppflags,
                   " -I$swig_srcdir/perl/libsvn_swig_perl",
                   " -I$svnlib_srcdir/include",

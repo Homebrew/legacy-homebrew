@@ -6,9 +6,9 @@
 # * sets permissions on executables
 class Cleaner
 
-  # Create a cleaner for the given formula name, and clean the keg
+  # Create a cleaner for the given formula and clean its keg
   def initialize f
-    @f = Formula.factory f
+    @f = f
     [f.bin, f.sbin, f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
 
     if ENV['HOMEBREW_KEEP_INFO']

@@ -2,8 +2,8 @@ require 'formula'
 
 class Groovy < Formula
   homepage 'http://groovy.codehaus.org/'
-  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-2.1.4.zip'
-  sha1 '3e1dbf3469c6485448d555f7cba9ab4e7445760b'
+  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-2.1.5.zip'
+  sha1 'a2f00ff8389eb10f6fb6d9b8c1bb9cd626b70b36'
 
   option 'invokedynamic', "Install the InvokeDynamic version of Groovy (only works with Java 1.7+)"
 
