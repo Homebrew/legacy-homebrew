@@ -2,7 +2,7 @@ require 'formula'
 
 class Mr < Formula
   homepage 'http://kitenet.net/~joey/code/mr/'
-  url 'git://git.kitenet.net/mr', :tag => '1.15'
+  url 'http://git.kitenet.net/git/mr.git', :tag => '1.15'
   version '1.15'
 
   def install

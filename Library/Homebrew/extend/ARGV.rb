@@ -71,10 +71,10 @@ module HomebrewArgvExtension
     flag? '--force'
   end
   def verbose?
-    flag? '--verbose' or ENV['VERBOSE'] or ENV['HOMEBREW_VERBOSE']
+    flag? '--verbose' or !ENV['VERBOSE'].nil? or !ENV['HOMEBREW_VERBOSE'].nil?
   end
   def debug?
-    flag? '--debug' or ENV['HOMEBREW_DEBUG']
+    flag? '--debug' or !ENV['HOMEBREW_DEBUG'].nil?
   end
   def quieter?
     flag? '--quieter'
@@ -90,7 +90,7 @@ module HomebrewArgvExtension
   end
 
   def homebrew_developer?
-    include? '--homebrew-developer' or ENV['HOMEBREW_DEVELOPER']
+    include? '--homebrew-developer' or !ENV['HOMEBREW_DEVELOPER'].nil?
   end
 
   def ignore_deps?
@@ -126,11 +126,11 @@ module HomebrewArgvExtension
   end
 
   def build_bottle?
-    include? '--build-bottle' or ENV['HOMEBREW_BUILD_BOTTLE']
+    include? '--build-bottle' or !ENV['HOMEBREW_BUILD_BOTTLE'].nil?
   end
 
   def build_from_source?
-    include? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
+    include? '--build-from-source' or !ENV['HOMEBREW_BUILD_FROM_SOURCE'].nil? \
       or build_head? or build_devel? or build_universal? or build_bottle?
   end
 

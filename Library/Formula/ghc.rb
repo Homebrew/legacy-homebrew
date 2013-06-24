@@ -43,6 +43,8 @@ class Ghc < Formula
   end
 
   def install
+    ENV.j1 # Fixes an intermittent race condition
+
     # Move the main tarball contents into a subdirectory
     (buildpath+'Ghcsource').install Dir['*']
 
@@ -52,7 +54,7 @@ class Ghc < Formula
     Ghcbinary.new.brew do
       system "./configure", "--prefix=#{subprefix}"
       # Temporary j1 to stop an intermittent race condition
-      system 'make', '-j1', 'install'
+      system 'make install'
       ENV.prepend 'PATH', subprefix/'bin', ':'
     end
 
@@ -70,7 +72,6 @@ class Ghc < Formula
 
       system "./configure", "--prefix=#{prefix}",
                             "--build=#{arch}-apple-darwin"
-      ENV.j1 # Fixes an intermittent race condition
       system 'make'
       if build.include? 'tests'
         Ghctestsuite.new.brew do
@@ -84,8 +85,7 @@ class Ghc < Formula
           end
         end
       end
-      ENV.j1 # Fixes an intermittent race condition
-      system 'make', 'install'
+      system 'make install'
     end
   end
 

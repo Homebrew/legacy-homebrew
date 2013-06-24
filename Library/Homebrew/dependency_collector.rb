@@ -93,6 +93,7 @@ class DependencyCollector
     when :macos      then MinimumMacOSRequirement.new(tags)
     when :mysql      then MysqlDependency.new(tags)
     when :postgresql then PostgresqlDependency.new(tags)
+    when :fortran    then FortranRequired.new(tags)
     when :tex        then TeXDependency.new(tags)
     when :clt        then CLTDependency.new(tags)
     when :arch       then ArchRequirement.new(tags)

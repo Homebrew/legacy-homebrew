@@ -6,6 +6,7 @@ require 'keg'
 require 'tab'
 require 'bottles'
 require 'caveats'
+require 'cleaner'
 
 class FormulaInstaller
   attr_reader :f
@@ -263,7 +264,7 @@ class FormulaInstaller
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
     unless ENV['HOMEBREW_NO_EMOJI']
-      print "🍺  " if MacOS.version >= :lion
+      print "\xf0\x9f\x8d\xba  " if MacOS.version >= :lion
     end
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
@@ -363,6 +364,10 @@ class FormulaInstaller
       onoe "The `brew link` step did not complete successfully"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts "You can try again using `brew link #{f.name}'"
+      puts
+      puts "Possible conflicting files are:"
+      mode = OpenStruct.new(:dry_run => true, :overwrite => true)
+      keg.link(mode)
       ohai e, e.backtrace if ARGV.debug?
       @show_summary_heading = true
       ignore_interrupts{ keg.unlink }
@@ -409,7 +414,6 @@ class FormulaInstaller
       puts "in the formula."
       return
     end
-    require 'cleaner'
     Cleaner.new f
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
@@ -455,6 +459,7 @@ class FormulaInstaller
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 

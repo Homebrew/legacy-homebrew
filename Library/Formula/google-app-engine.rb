@@ -3,7 +3,7 @@ require 'formula'
 class GoogleAppEngine < Formula
   homepage 'https://developers.google.com/appengine/'
   url 'http://googleappengine.googlecode.com/files/google_appengine_1.8.1.zip'
-  sha1 'd0d45953a61f5456c1681c8b0f84a1962f7c5999'
+  sha1 'bb674f9a7060d441fbf4f4e5b5174adc7f9f5235'
 
   depends_on :python
 

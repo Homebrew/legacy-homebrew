@@ -1,5 +1,5 @@
 require 'open-uri'
-require 'vendor/multi_json'
+require 'utils/json'
 
 class AbstractDownloadStrategy
   attr_accessor :local_bottle_path
@@ -172,12 +172,12 @@ end
 # Detect and download from Apache Mirror
 class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   def _fetch
-    mirrors = MultiJson.decode(open("#{@url}&asjson=1").read)
+    mirrors = Utils::JSON.load(open("#{@url}&asjson=1").read)
     url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
 
     ohai "Best Mirror #{url}"
     curl url, '-C', downloaded_size, '-o', @temporary_path
-  rescue IndexError, MultiJson::DecodeError
+  rescue IndexError, Utils::JSON::Error
     raise "Couldn't determine mirror. Try again later."
   end
 end

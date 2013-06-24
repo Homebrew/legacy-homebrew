@@ -2,6 +2,8 @@ require 'tab'
 require 'macos'
 require 'extend/ARGV'
 
+# TODO: use options={} for some arguments.
+
 def bottle_filename f, bottle_revision=nil
   name = f.name.downcase
   version = f.stable.version

@@ -84,7 +84,6 @@ class Emacs < Formula
         #!/bin/bash
         #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
       EOS
-      (bin/"emacs").chmod 0755
     else
       if build.include? "with-x"
         # These libs are not specified in xft's .pc. See:

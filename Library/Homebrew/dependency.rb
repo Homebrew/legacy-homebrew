@@ -100,7 +100,10 @@ class Dependency
       grouped = deps.group_by(&:name)
 
       deps.uniq.map do |dep|
-        dep.class.new(dep.name, grouped.fetch(dep.name).map(&:tags).flatten)
+        tags = grouped.fetch(dep.name).map(&:tags).flatten
+        merged_dep = dep.class.new(dep.name, tags)
+        merged_dep.env_proc = dep.env_proc
+        merged_dep
       end
     end
   end
