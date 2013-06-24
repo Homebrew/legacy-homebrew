@@ -51,7 +51,7 @@ class Lua51 < Formula
 
     # this ensures that this symlinking for lua starts at lib/lua/5.1 and not
     # below that, thus making luarocks work
-    (HOMEBREW_PREFIX/"lib/lua"/version.to_s.split('.')[0..1].join('.')).mkpath
+    (HOMEBREW_PREFIX/"lib/lua/5.1").mkpath
 
     system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
