@@ -2,8 +2,8 @@ require 'formula'
 
 class Mimms < Formula
   homepage 'http://savannah.nongnu.org/projects/mimms/'
-  url 'https://launchpad.net/mimms/trunk/3.2/+download/mimms-3.2.tar.bz2'
-  sha1 'e8ddf9905919e7eb6602e2c9547ba537e2f69d88'
+  url 'https://launchpad.net/mimms/trunk/3.2.1/+download/mimms-3.2.1.tar.bz2'
+  sha1 '279eee76dd4032cd2c1dddf1d49292a952c57b80'
 
   depends_on :python
   depends_on 'libmms'
