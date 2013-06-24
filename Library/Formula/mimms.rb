@@ -25,7 +25,7 @@ class Mimms < Formula
   end
 
   test do
-    system "mimms"
+    system "#{HOMEBREW_PREFIX}/share/python/mimms", "--version"
   end
 end
 __END__
