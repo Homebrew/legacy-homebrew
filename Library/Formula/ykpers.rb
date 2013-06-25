@@ -6,6 +6,8 @@ class Ykpers < Formula
   sha1 'dcf3b1d8749c3bfda9bc84e469d4676fdb22ae23'
 
   depends_on 'libyubikey'
+  depends_on 'json-c' => :recommended
+  depends_on 'pkg-config' => :build
 
   # Pre-Lion fix, per MacPorts. See:
   # https://trac.macports.org/ticket/34910
@@ -21,6 +23,7 @@ class Ykpers < Formula
                           "--with-libyubikey-prefix=#{libyubikey_prefix}",
                           '--with-backend=osx',
                           '--disable-dependency-tracking'
+    system "make check"
     system "make install"
   end
 end
