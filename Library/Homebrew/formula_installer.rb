@@ -147,15 +147,14 @@ class FormulaInstaller
         elsif req.default_formula?
           dependent.deps << req.to_dependency
           Requirement.prune
+        else
+          puts "#{dependent}: #{req.message}"
         end
       end
     end
 
-    unless unsatisfied.empty?
-      puts unsatisfied.map(&:message) * "\n"
-      fatals = unsatisfied.select(&:fatal?)
-      raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
-    end
+    fatals = unsatisfied.select(&:fatal?)
+    raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
   end
 
   # Dependencies of f that were also explicitly requested on the command line.
