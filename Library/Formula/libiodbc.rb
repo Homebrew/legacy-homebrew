@@ -14,11 +14,9 @@ class Libiodbc < Formula
   def install
     # run bootstrap.sh
     system "sh",  "./bootstrap.sh"
-    # ENV.j1  # if your formula's build system can't parallelize
     
     system "./configure", "--prefix=#{prefix}"
-    # system "cmake", ".", *std_cmake_args
-    system "make", "install" # if this fails, try separate make/make install steps
+    system "make", "install" 
   end
 
   test do
