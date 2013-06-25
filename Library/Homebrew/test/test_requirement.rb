@@ -81,6 +81,7 @@ class RequirementTests < Test::Unit::TestCase
     ENV.expects(:userpaths!)
     ENV.expects(:append).with("PATH", which_path.parent, ":")
 
+    req.satisfied?
     req.modify_build_environment
   end
 

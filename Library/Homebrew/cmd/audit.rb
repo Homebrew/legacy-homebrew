@@ -161,7 +161,7 @@ class FormulaAuditor
              bindings for 2.x and 3.x in parallel and much more.
           EOS
       when 'gfortran'
-        problem "Use ENV.fortran during install instead of depends_on 'gfortran'"
+        problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
       when 'open-mpi', 'mpich2'
         problem <<-EOS.undent
           There are multiple conflicting ways to install MPI. Use an MPIDependency:
@@ -461,6 +461,10 @@ class FormulaAuditor
 
     if text =~ /^def (\w+).*$/
       problem "Define method #{$1.inspect} in the class body, not at the top-level"
+    end
+
+    if text =~ /ENV.fortran/
+      problem "Use `depends_on :fortran` instead of `ENV.fortran`"
     end
   end
 
