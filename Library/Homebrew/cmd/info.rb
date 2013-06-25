@@ -79,7 +79,11 @@ module Homebrew extend self
       path = "Library/Formula/#{path.basename}"
     end
 
-    "From: https://github.com/#{user}/#{repo}/commits/master/#{path}"
+    if repo == "mxcl" && !f.core_formula?
+      "From: unknown"
+    else
+      "From: https://github.com/#{user}/#{repo}/commits/master/#{path}"
+    end
   end
 
   def info_formula f
