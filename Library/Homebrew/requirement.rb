@@ -140,9 +140,9 @@ class Requirement
       formulae = dependent.recursive_dependencies.map(&:to_formula)
       formulae.unshift(dependent)
 
-      formulae.map(&:requirements).each do |requirements|
-        requirements.each do |req|
-          if prune?(dependent, req, &block)
+      formulae.each do |f|
+        f.requirements.each do |req|
+          if prune?(f, req, &block)
             next
           else
             reqs << req
