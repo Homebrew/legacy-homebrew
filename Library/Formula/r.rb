@@ -14,6 +14,7 @@ class R < Formula
 
   head 'https://svn.r-project.org/R/trunk'
 
+  option 'with-openblas', 'Compile linking to OpenBLAS'
   option 'with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger'
   option 'test', 'Run tests before installing'
 
@@ -23,6 +24,7 @@ class R < Formula
   depends_on 'jpeg'
   depends_on :x11
 
+  depends_on 'openblas' if build.include? 'with-openblas'
   depends_on 'valgrind' if build.include? 'with-valgrind'
 
   def install
@@ -34,6 +36,7 @@ class R < Formula
       "--enable-R-framework",
       "--with-lapack"
     ]
+    args << '--with-blas="-lgoto2"' if build.include? 'with-openblas'
     args << '--with-valgrind-instrumentation=2' if build.include? 'with-valgrind'
 
     # Pull down recommended packages if building from HEAD.
