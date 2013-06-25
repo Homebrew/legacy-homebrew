@@ -19,9 +19,6 @@ class Sfml < Formula
   depends_on 'glew' => :build
   depends_on 'libsndfile' => :build
 
-  # libsndfile depends on them (it is all or none)
-  # flac, libogg, libvorbis
-
   option :universal
   option :static, 'Build Static Libraries'
 
@@ -29,9 +26,6 @@ class Sfml < Formula
   option :xcode, 'Install XCode 4 Templates (requires sudo to install)'
 
   option 'build-examples', 'Build Examples'
-
-#  def patches; DATA; end
-
 
   def install
     ENV.universal_binary if build.include? 'universal'
