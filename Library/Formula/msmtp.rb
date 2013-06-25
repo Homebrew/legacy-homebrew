@@ -10,9 +10,14 @@ class Msmtp < Formula
   # msmtp enables OS X Keychain support by default, so no need to ask for it.
 
   def install
+    # Msmtp will build against gnutls by default if it exists on the
+    # system.  This sets up problems if the user later removes gnutls.
+    # So explicitly ask for openssl, and ye shall receive it whether
+    # or not gnutls is present.
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --with-ssl=openssl
     ]
 
     system "./configure", *args
