@@ -28,7 +28,7 @@ class Luajit < Formula
       f.change_make_var! 'INSTALL_TNAME', "lua#{V}"
       f.change_make_var! 'INSTALL_T', '$(DPREFIX)/libexec/$(INSTALL_TNAME)'
     end
-    (prefix+"libexec").mkpath       # needed by 'make install'
+    libexec.mkpath                  # needed by 'make install'
 
     ENV.O2                          # Respect the developer's choice.
     args = ["PREFIX=#{prefix}"]
@@ -48,7 +48,7 @@ class Luajit < Formula
     system 'make', *args            # Build requires args during install
 
     # Make wrapper that sets environment to find correct rocktree.
-    (prefix+"bin/lua#{V}").write wrap_script
+    (bin+"lua#{V}").write wrap_script
 
     (lib+"lua/#{V}/luarocks-config.lua").write luarocks_cfg_file
   end

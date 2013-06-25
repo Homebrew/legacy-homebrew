@@ -54,8 +54,8 @@ class Lua < Formula
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
 
     # Make wrappers that set environment to find correct rocktree.
-    (prefix+"bin/lua-#{V}").write wrap_script
-    (prefix+"bin/luac-#{V}").write wrap_script
+    (bin+"lua-#{V}").write wrap_script
+    (bin+"luac-#{V}").write wrap_script
 
     (lib+"lua/#{V}/luarocks-config.lua").write luarocks_cfg_file
     (lib+"pkgconfig/lua#{V}.pc").write pc_file
