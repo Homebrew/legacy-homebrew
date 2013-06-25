@@ -6,9 +6,9 @@ class Haproxy < Formula
   sha1 'a171a98e58a853e6487ff768db53a496012fd704'
 
   devel do
-    url 'http://haproxy.1wt.eu/download/1.5/src/devel/haproxy-1.5-dev18.tar.gz'
-    sha1 '791fba9a596c30d1bbb7871ffb8b05e1fd4ecf8b'
-    version '1.5-dev18'
+    url 'http://haproxy.1wt.eu/download/1.5/src/devel/haproxy-1.5-dev19.tar.gz'
+    sha1 '5c16686c516dbeaab8ada6c17c25e9629ab4f7d3'
+    version '1.5-dev19'
   end
 
   depends_on 'pcre'
