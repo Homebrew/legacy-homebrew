@@ -68,6 +68,7 @@ begin
              'remove' => 'uninstall',
              'configure' => 'diy',
              'abv' => 'info',
+             'show' => 'info',             
              'dr' => 'doctor',
              '--repo' => '--repository',
              'environment' => '--env'  # same as gem
