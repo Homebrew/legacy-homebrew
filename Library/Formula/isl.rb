@@ -11,12 +11,7 @@ class Isl < Formula
   depends_on 'gmp'
 
   def install
-    args = [
-      "--prefix=#{prefix}",
-      "--disable-dependency-tracking"
-    ]
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
 
     # move gdb helper to proper location
@@ -26,4 +21,5 @@ class Isl < Formula
       ohai "#{gdbf} moved to #{share+'gdb/auto-load/'}"
       FileUtils.move gdbf, share+'gdb/auto-load/'
     end
+  end
 end
