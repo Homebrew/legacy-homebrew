@@ -11,7 +11,19 @@ class Isl < Formula
   depends_on 'gmp'
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    args = [
+      "--prefix=#{prefix}",
+      "--disable-dependency-tracking"
+    ]
+
+    system "./configure", *args
     system "make install"
-  end
+
+    # move gdb helper to proper location
+    (share+'gdb/auto-load').mkpath
+
+    Dir.glob(lib+'*-gdb.py', File::FNM_DOTMATCH).each do |gdbf|
+      ohai "#{gdbf} moved to #{share+'gdb/auto-load/'}"
+      FileUtils.move gdbf, share+'gdb/auto-load/'
+    end
 end
