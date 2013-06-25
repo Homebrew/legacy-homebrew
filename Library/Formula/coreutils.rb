@@ -22,12 +22,19 @@ class Coreutils < Formula
     coreutils_filenames(man1).each do |cmd|
       (libexec/'gnuman'/'man1').install_symlink man1/"g#{cmd}" => cmd
     end
+    # Symlink all commands that do not conflict with existing OSX or builtins
+    coreutils_non_conflicting_filenames.each do |cmd|
+      bin.install_symlink "g#{cmd}" => cmd
+      man1.install_symlink "g#{cmd}.1" => "#{cmd}.1"
+    end
   end
 
   def caveats; <<-EOS.undent
-    All commands have been installed with the prefix 'g'.
+    All commands have been installed with the prefix 'g'. Additionally, commands
+    which do not conflict with shell builtins or OSX commands have been linked
+    with their standard names, e.g. "dircolors".
 
-    If you really need to use these commands with their normal names, you
+    If you really need to use all commands with their normal names, you
     can add a "gnubin" directory to your PATH from your bashrc like:
 
         PATH="#{opt_prefix}/libexec/gnubin:$PATH"
@@ -47,5 +54,11 @@ class Coreutils < Formula
       filenames << path.basename.to_s.sub(/^g/,'')
     end
     filenames.sort
+  end
+
+  def coreutils_non_conflicting_filenames
+    %w[chcon dir dircolors factor hostid nproc numfmt pinky pix ptx realpath runcon
+       sha1sum sha224sum sha256sum sha384sum sha512sum shred shuf tac timeout truncate
+       vdir]
   end
 end
