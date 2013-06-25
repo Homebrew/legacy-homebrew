@@ -1,13 +1,17 @@
 require 'formula'
 
 class Watch < Formula
-  homepage 'http://procps.sourceforge.net/'
-  url 'http://procps.sourceforge.net/procps-3.2.8.tar.gz'
-  sha1 'a0c86790569dec26b5d9037e8868ca907acc9829'
+  homepage 'https://github.com/whit537/watch'
+  url 'https://github.com/whit537/watch/archive/0.3.0.tar.gz'
+  version '0.3.0'
+  sha1 '1b355d16d729d5fe4c0ce90ec92b45946cfa4a5a'
 
   def install
-    system "make", "watch", "PKG_LDFLAGS=-Wl"
     bin.install "watch"
     man1.install "watch.1"
+  end
+
+  def test
+    system "#{bin}/watch", "-v"
   end
 end
