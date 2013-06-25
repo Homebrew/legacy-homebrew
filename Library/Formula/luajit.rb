@@ -48,7 +48,7 @@ class Luajit < Formula
     system 'make', *args            # Build requires args during install
 
     # Make wrapper that sets environment to find correct rocktree.
-    (prefix+"bin/lua#{V}").write wrap_script ("#{V}")
+    (prefix+"bin/lua#{V}").write wrap_script
 
     (lib+"lua/#{V}/luarocks-config.lua").write luarocks_cfg_file
   end
@@ -56,7 +56,7 @@ class Luajit < Formula
   def luarocks_cfg_file; <<-EOS.undent
     rocks_trees = { "#{HOMEBREW_PREFIX}/lib/luarocks/rocks-#{V}" }
     variables = {
-      LUA = "#{opt_prefix}/bin/luajit",
+      LUA = "#{opt_prefix}/bin/lua#{V}",
       LUA_BINDIR = "#{opt_prefix}/bin",
       LUA_INCDIR = "#{opt_prefix}/include/lua#{V}",
       LUA_LIBDIR = "#{opt_prefix}/lib",
@@ -64,10 +64,10 @@ class Luajit < Formula
     EOS
   end
 
-  def wrap_script (suffix, sep = ""); <<-EOS.undent
+  def wrap_script; <<-EOS.undent
     #!/bin/sh
-    export LUA='#{opt_prefix}/libexec/lua#{sep}#{suffix}'
-    export LUAROCKS_CONFIG='#{HOMEBREW_PREFIX}/lib/lua/#{suffix}/luarocks-config.lua'
+    export LUA='#{opt_prefix}/libexec/lua#{V}'
+    export LUAROCKS_CONFIG='#{HOMEBREW_PREFIX}/lib/lua/#{V}/luarocks-config.lua'
     eval `"$LUA" '#{HOMEBREW_PREFIX}/bin/luarocks' path 2>/dev/null`
     exec "$LUA" ${1+"$@"}
     EOS

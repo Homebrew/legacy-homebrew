@@ -54,8 +54,8 @@ class Lua < Formula
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
 
     # Make wrappers that set environment to find correct rocktree.
-    (prefix+"bin/lua-#{V}").write wrap_script ("#{V}", "-")
-    (prefix+"bin/luac-#{V}").write wrap_script ("#{V}", "-")
+    (prefix+"bin/lua-#{V}").write wrap_script
+    (prefix+"bin/luac-#{V}").write wrap_script
 
     (lib+"lua/#{V}/luarocks-config.lua").write luarocks_cfg_file
     (lib+"pkgconfig/lua#{V}.pc").write pc_file
@@ -88,10 +88,10 @@ class Lua < Formula
     EOS
   end
 
-  def wrap_script (suffix, sep = ""); <<-EOS.undent
+  def wrap_script; <<-EOS.undent
     #!/bin/sh
-    export LUA='#{opt_prefix}/libexec/lua#{sep}#{suffix}'
-    export LUAROCKS_CONFIG='#{HOMEBREW_PREFIX}/lib/lua/#{suffix}/luarocks-config.lua'
+    export LUA='#{opt_prefix}/libexec/lua-#{V}'
+    export LUAROCKS_CONFIG='#{HOMEBREW_PREFIX}/lib/lua/#{V}/luarocks-config.lua'
     eval `"$LUA" '#{HOMEBREW_PREFIX}/bin/luarocks' path 2>/dev/null`
     exec "$LUA" ${1+"$@"}
     EOS
