@@ -16,8 +16,10 @@ class Binutils < Formula
                           "--disable-werror",
                           "--enable-interwork",
                           "--enable-multilib",
-                          "--enable-targets=x86_64-elf,arm-none-eabi,m32r"
+                          "--enable-targets=x86_64-elf,arm-none-eabi,m32r",
+                          "--enable-install-libiberty"
     system "make"
     system "make install"
+    lib.install "./libiberty/libiberty.a"
   end
 end
