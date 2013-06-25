@@ -64,7 +64,7 @@ class Ghostscript < Formula
         (buildpath+'base').install 'gdevdjvu.c'
         (buildpath+'lib').install 'ps2utf8.ps'
         ENV['EXTRA_INIT_FILES'] = 'ps2utf8.ps'
-        (buildpath/'base/contrib.mak').open('a').write(File.read('gsdjvi.mak'))
+        (buildpath/'base/contrib.mak').open('a').write(File.read('gsdjvu.mak'))
       end
     end
 
