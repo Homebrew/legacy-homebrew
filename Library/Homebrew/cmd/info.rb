@@ -79,7 +79,7 @@ module Homebrew extend self
       path = "Library/Formula/#{path.basename}"
     end
 
-    "From: https://github.com/#{user}/#{repo}/commits/master/#{path}"
+    "https://github.com/#{user}/#{repo}/commits/master/#{path}"
   end
 
   def info_formula f
@@ -116,7 +116,7 @@ module Homebrew extend self
     end
 
     history = github_info(f)
-    puts history if history
+    puts "From: #{history}" if history
 
     unless f.deps.empty?
       ohai "Dependencies"
