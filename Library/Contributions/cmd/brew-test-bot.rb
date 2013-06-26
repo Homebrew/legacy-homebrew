@@ -387,9 +387,9 @@ if ARGV.include? "--email"
   end
 
   if failed_steps.empty?
-    email_subject = 'brew test-bot: PASSED'
+    email_subject = 'PASSED'
   else
-    email_subject = "brew test-bot: FAILED: #{failed_steps.join ', '}"
+    email_subject = "#{failed_steps.join ', '}"
   end
 
   File.open "brew test-bot.email.txt", 'w' do |file|
