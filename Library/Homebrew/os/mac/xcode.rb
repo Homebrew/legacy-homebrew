@@ -154,16 +154,19 @@ end
 module MacOS::CLT extend self
   STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
   FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
+  STANDALONE_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
 
-  # This is true ift he standard UNIX tools are present under /usr. For
+  # This is true if the standard UNIX tools are present under /usr. For
   # Xcode < 4.3, this is the standard location. Otherwise, it means that
   # the user has installed the "Command Line Tools for Xcode" package.
-  # TODO: handle 10.9 CLT which has headers under:
-  # /Library/Developer/CommandLineTools/usr/include
   def installed?
-    return false if MacOS.version > :mountain_lion
-    MacOS.dev_tools_path == Pathname.new("/usr/bin") and
-      File.directory? "/usr/include"
+    if MacOS.version > :mountain_lion
+      MacOS.dev_tools_path == Pathname.new("#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin") and
+        File.directory? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/include"
+    else
+      MacOS.dev_tools_path == Pathname.new("/usr/bin") and
+        File.directory? "/usr/include"
+    end
   end
 
   def latest_version?
