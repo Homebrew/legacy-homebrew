@@ -20,6 +20,6 @@ class Libiodbc < Formula
   end
 
   test do
-    system "make", "check"
+    system "#{bin}/iodbc-config", "--version"
   end
 end
