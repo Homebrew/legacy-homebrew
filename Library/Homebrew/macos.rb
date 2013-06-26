@@ -40,9 +40,11 @@ module MacOS extend self
   end
 
   def dev_tools_path
-    @dev_tools_path ||= if File.exist? "/Library/Developer/CommandLineTools"
-      # in OS 10.9 Command Line Tools installable without Xcode
-      Pathname.new "/Library/Developer/CommandLineTools/usr/bin"
+    @dev_tools_path ||= if File.exist? MacOS::CLT::STANDALONE_PKG_PATH and
+      File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/cc" and
+      File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/make"
+      # in OS 10.9 Command Line Tools installable standalone without Xcode
+      Pathname.new "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin"
     elsif File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
