@@ -2,7 +2,7 @@ require 'formula'
 
 class Tcptraceroute < Formula
   homepage 'http://michael.toren.net/code/tcptraceroute/'
-  url 'http://michael.toren.net/code/tcptraceroute/tcptraceroute-1.5beta7.tar.gz'
+  url 'http://pkgs.fedoraproject.org/repo/pkgs/tcptraceroute/tcptraceroute-1.5beta7.tar.gz/65d1001509f971ea986fcbc2dd009643/tcptraceroute-1.5beta7.tar.gz'
   version '1.5beta7'
   sha1 '78847ef4ba7031cee660c540593256fd384a1a62'
 
