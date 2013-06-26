@@ -205,7 +205,7 @@ class FormulaInstaller
   end
 
   def install_dependency dep
-    dep_tab = Tab.for_formula(dep)
+    dep_tab = Tab.for_formula(dep.to_formula)
     dep_options = dep.options
     dep = dep.to_formula
 
