@@ -392,7 +392,7 @@ if ARGV.include? "--email"
     email_subject = "#{failed_steps.join ', '}"
   end
 
-  File.open "brew test-bot.email.txt", 'w' do |file|
+  File.open "brew-test-bot.email.txt", 'w' do |file|
     file.write email_subject
   end
 end
