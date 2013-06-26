@@ -10,7 +10,7 @@ class Libgetdata < Formula
   option 'lzma', 'Build with LZMA compression support'
   option 'zzip', 'Build with zzip compression support'
 
-  depends_on :fortran if build.with? 'fortran'
+  depends_on :fortran => :optional
   depends_on 'xz' if build.include? 'lzma'
   depends_on 'libzzip' if build.include? 'zzip'
 
