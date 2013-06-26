@@ -218,7 +218,7 @@ def inreplace paths, before=nil, after=nil
     f = File.open(path, 'r')
     s = f.read
 
-    if before == nil and after == nil
+    if before.nil? && after.nil?
       s.extend(StringInreplaceExtension)
       yield s
     else
