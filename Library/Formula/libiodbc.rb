@@ -10,7 +10,6 @@ class Libiodbc < Formula
   depends_on 'libtool' => :build
 
   def install
-    # run bootstrap.sh
     system "sh",  "./bootstrap.sh"
     system "./configure", "--prefix=#{prefix}"
     system "make", "install" 
