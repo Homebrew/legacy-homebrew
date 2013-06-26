@@ -2,8 +2,8 @@ require 'formula'
 
 class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
-  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.3.0/apache-couchdb-1.3.0.tar.gz'
-  sha1 '1085297fcabb020f407283aba1f74302c9923fa0'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.3.1/apache-couchdb-1.3.1.tar.gz'
+  sha1 'eaec2cde365c5eb9651bb3230f777c6c728ffaae'
 
   head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
