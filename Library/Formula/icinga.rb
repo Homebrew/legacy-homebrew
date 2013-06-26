@@ -2,7 +2,7 @@ require 'formula'
 
 
 class Icinga < Formula
-  homepage ''
+  homepage 'https://www.icinga.org'
   url 'http://downloads.sourceforge.net/project/icinga/icinga/1.9.1/icinga-1.9.1.tar.gz'
   sha1 '353fb915120d7814da4a6a097fd586d3989b90f9'
 
