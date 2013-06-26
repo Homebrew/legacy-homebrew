@@ -70,7 +70,7 @@ RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG[
 
 if RUBY_PLATFORM =~ /darwin/
   MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
-  MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
+  MACOS_VERSION = MACOS_FULL_VERSION[/10\.\d+/].to_f
   OS_VERSION = "Mac OS X #{MACOS_FULL_VERSION}"
   MACOS = true
 else

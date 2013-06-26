@@ -2,32 +2,31 @@ require 'formula'
 
 class Clang < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.2/clang-3.2.src.tar.gz'
-  sha1      'b0515298c4088aa294edc08806bd671f8819f870'
+  url       'http://llvm.org/releases/3.3/cfe-3.3.src.tar.gz'
+  sha1      'ccd6dbf2cdb1189a028b70bcb8a22509c25c74c8'
 
   head      'http://llvm.org/git/clang.git'
 end
 
 class CompilerRt < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.2/compiler-rt-3.2.src.tar.gz'
-  sha1      '718c0249a00e928f8bba32c84771da998ea4d42f'
+  url       'http://llvm.org/releases/3.3/compiler-rt-3.3.src.tar.gz'
+  sha1      '745386ec046e3e49742e1ecb6912c560ccd0a002'
 
   head      'http://llvm.org/git/compiler-rt.git'
 end
 
 class Llvm < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.2/llvm-3.2.src.tar.gz'
-  sha1      '42d139ab4c9f0c539c60f5ac07486e9d30fc1280'
+  url       'http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz'
+  sha1      'c6c22d5593419e3cb47cbcf16d967640e5cce133'
 
   head      'http://llvm.org/git/llvm.git'
 
   bottle do
-    revision 1
-    sha1 '2908621be867da84962d2e4b8d6a083bd6bf4995' => :mountain_lion
-    sha1 '91dfa26392b9699750a04fa934ee8ec9dc98407a' => :lion
-    sha1 '259f39608d50dd3aba0eb3ff28b603d795af9eac' => :snow_leopard
+    sha1 '61854a2cf08a1398577f74fea191a749bec3e72d' => :mountain_lion
+    sha1 'fbe7b85a50f4b283ad55be020c7ddfbf655435ad' => :lion
+    sha1 'f68fdb89d44a72c83db1e55e25444de4dcde5375' => :snow_leopard
   end
 
   option :universal

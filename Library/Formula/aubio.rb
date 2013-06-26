@@ -1,21 +1,11 @@
 require 'formula'
 
-class LionOrNewer < Requirement
-  fatal true
-
-  satisfy MacOS.version >= :lion
-
-  def message
-    "Aubio will only build with Lion or newer."
-  end
-end
-
 class Aubio < Formula
   homepage 'http://aubio.org/'
   url 'http://aubio.org/pub/aubio-0.3.2.tar.gz'
   sha1 '8ef7ccbf18a4fa6db712a9192acafc9c8d080978'
 
-  depends_on LionOrNewer
+  depends_on :macos => :lion
   depends_on 'pkg-config' => :build
   depends_on :libtool => :build
   depends_on 'swig' => :build

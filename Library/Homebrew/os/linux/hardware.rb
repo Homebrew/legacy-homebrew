@@ -1,6 +1,6 @@
 module LinuxCPUs
-  OPTIMIZATION_FLAGS = {}
-  def optimization_flags; OPTIMIZATION_FLAGS.dup; end
+  OPTIMIZATION_FLAGS = {}.freeze
+  def optimization_flags; OPTIMIZATION_FLAGS; end
 
   def type
     @cpu_type ||= case `uname -m`

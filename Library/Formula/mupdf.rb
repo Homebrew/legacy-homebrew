@@ -1,26 +1,11 @@
 require 'formula'
 
-class NeedsSnowLeopard < Requirement
-  fatal true
-
-  satisfy MacOS.version >= :snow_leopard
-
-  def message; <<-EOS.undent
-    The version of Freetype that comes with Leopard is too old to build MuPDF
-    against. It is possible to get MuPDF working on Leopard using the Freetype
-    formula from Homebrew-Dupes and some tweaks to the Makefile.
-
-    Doing so is left as an exercise for the reader.
-    EOS
-  end
-end
-
 class Mupdf < Formula
   homepage 'http://mupdf.com'
   url 'https://mupdf.googlecode.com/files/mupdf-1.2-source.zip'
   sha1 'd521382b80b3d1f7b8ad6e00ceb91721aa5e1917'
 
-  depends_on NeedsSnowLeopard
+  depends_on :macos => :snow_leopard
 
   depends_on 'jpeg'
   depends_on 'openjpeg'

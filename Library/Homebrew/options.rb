@@ -15,10 +15,6 @@ class Option
   end
   alias_method :to_str, :to_s
 
-  def to_json
-    flag.inspect
-  end
-
   def <=>(other)
     name <=> other.name
   end

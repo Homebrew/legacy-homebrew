@@ -1,8 +1,8 @@
 require 'formula'
 
 class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.40.tar.gz'
-  sha1 '46654be10177014bbb502a4c516627173de67d15'
+  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.45.tar.gz'
+  sha1 '55b15037f2222828496a96f38447c0fa0228df85'
 end
 
 class Pypy < Formula
@@ -41,15 +41,16 @@ class Pypy < Formula
     # to get newer versions of distribute outside of Homebrew.
     Distribute.new.brew do
       system "#{bin}/pypy", "setup.py", "install"
+    end
 
-      # Symlink to easy_install_pypy.
-      unless (scripts_folder+'easy_install_pypy').exist?
-        ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install_pypy"
-      end
-      # Symlink to pip_pypy.
-      unless (scripts_folder+'pip_pypy').exist?
-        ln_s "#{scripts_folder}/pip", "#{scripts_folder}/pip_pypy"
-      end
+    # Symlink to easy_install_pypy.
+    unless (scripts_folder+'easy_install_pypy').exist?
+      ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install_pypy"
+    end
+
+    # Symlink to pip_pypy.
+    unless (scripts_folder+'pip_pypy').exist?
+      ln_s "#{scripts_folder}/pip", "#{scripts_folder}/pip_pypy"
     end
   end
 

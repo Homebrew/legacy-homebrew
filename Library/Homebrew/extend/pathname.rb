@@ -356,7 +356,7 @@ class Pathname
 
   # Writes an exec script in this folder for each target pathname
   def write_exec_script *targets
-    targets = [targets].flatten
+    targets.flatten!
     if targets.empty?
       opoo "tried to write exec sripts to #{self} for an empty list of targets"
     end

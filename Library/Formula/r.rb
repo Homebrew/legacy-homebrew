@@ -17,6 +17,7 @@ class R < Formula
   option 'with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger'
   option 'test', 'Run tests before installing'
 
+  depends_on :fortran
   depends_on 'readline'
   depends_on 'libtiff'
   depends_on 'jpeg'
@@ -26,7 +27,6 @@ class R < Formula
 
   def install
     ENV.Og if build.include? 'with-valgrind'
-    ENV.fortran
 
     args = [
       "--prefix=#{prefix}",

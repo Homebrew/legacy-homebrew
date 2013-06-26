@@ -14,9 +14,9 @@ class Libvbucket < Formula
   end
 
   test do
-    require 'multi_json'
+    require 'utils/json'
     require 'open3'
-    json = MultiJson.encode(
+    json = Utils::JSON.dump(
       {
         "hashAlgorithm" => "CRC",
         "numReplicas" => 2,

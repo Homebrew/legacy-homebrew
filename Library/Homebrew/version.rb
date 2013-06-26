@@ -184,7 +184,6 @@ class Version
   def tokens
     @tokens ||= tokenize
   end
-  alias_method :to_a, :tokens
 
   def tokenize
     @version.scan(
@@ -236,6 +235,10 @@ class Version
 
     # e.g. https://github.com/erlang/otp/tarball/OTP_R15B01 (erlang style)
     m = /[-_]([Rr]\d+[AaBb]\d*(?:-\d+)?)/.match(spec_s)
+    return m.captures.first unless m.nil?
+
+    # e.g. perforce-2013.1.610569-x86_64
+    m = /-([\d\.]+-x86(_64)?)/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. boost_1_39_0

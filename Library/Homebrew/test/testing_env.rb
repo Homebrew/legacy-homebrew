@@ -1,7 +1,3 @@
-# This software is in the public domain, furnished "as is", without technical
-# support, and with no warranty, express or implied, as to its usefulness for
-# any purpose.
-
 # Require this file to build a testing environment.
 
 ABS__FILE__ = File.expand_path(__FILE__)
@@ -34,8 +30,8 @@ RUBY_BIN = Pathname.new("#{RbConfig::CONFIG['bindir']}")
 RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
 
 MACOS = true
-MACOS_VERSION = ENV.fetch('MACOS_VERSION', 10.6)
-MACOS_FULL_VERSION = '10.6.8'
+MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
+MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }.to_f
 
 ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 

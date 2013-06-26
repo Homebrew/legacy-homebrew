@@ -8,6 +8,8 @@ class Libmagic < Formula
 
   option :universal
 
+  depends_on :python => :optional
+
   # Fixed upstream, should be in next release
   # See http://bugs.gw.com/view.php?id=230
   def patches; DATA; end if MacOS.version < :lion
@@ -20,9 +22,21 @@ class Libmagic < Formula
                           "--enable-fsect-man5"
     system "make install"
 
+    python do
+      cd "python" do
+        system python, "setup.py", "install", "--prefix=#{prefix}"
+      end
+    end
+
     # Don't dupe this system utility
     rm bin/"file"
     rm man1/"file.1"
+  end
+
+  test do
+    if build.with? 'python'
+      system 'python', '-c', "import magic; magic._init()"
+    end
   end
 end
 

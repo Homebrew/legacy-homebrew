@@ -932,6 +932,26 @@ def check_for_enthought_python
   end
 end
 
+def check_for_old_homebrew_share_python_in_path
+  s = ''
+  ['', '3'].map do |suffix|
+    if paths.include?((HOMEBREW_PREFIX/"share/python#{suffix}").to_s)
+      s += "#{HOMEBREW_PREFIX}/share/python#{suffix} is not needed in PATH.\n"
+    end
+  end
+  unless s.empty?
+    s += <<-EOS.undent
+      Formerly homebrew put Python scripts you installed via `pip` or `pip3`
+      (or `easy_install`) into that directory above but now it can be removed
+      from your PATH variable.
+      Python scripts will now install into #{HOMEBREW_PREFIX}/bin.
+      You can delete anything, except 'Extras', from the #{HOMEBREW_PREFIX}/share/python
+      (and #{HOMEBREW_PREFIX}/share/python3) dir and install affected Python packages
+      anew with `pip install --upgrade`.
+    EOS
+  end
+end
+
 def check_for_bad_python_symlink
   return unless which "python"
   # Indeed Python -V outputs to stderr (WTF?)
