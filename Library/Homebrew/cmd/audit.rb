@@ -134,6 +134,7 @@ class FormulaAuditor
         dep_f = dep.to_formula
       rescue FormulaUnavailableError
         problem "Can't find dependency #{dep.name.inspect}."
+        next
       end
 
       dep.options.reject do |opt|
