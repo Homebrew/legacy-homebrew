@@ -1,7 +1,5 @@
 require 'formula'
 
-# Documentation: http://www.iodbc.org/dataspace/iodbc/wiki/iODBC/About 
-
 class Libiodbc < Formula
   homepage 'http://www.iodbc.org/dataspace/iodbc/wiki/iODBC/'
   url 'http://sourceforge.net/projects/iodbc/files/iodbc/3.52.8/libiodbc-3.52.8.tar.gz/download'
