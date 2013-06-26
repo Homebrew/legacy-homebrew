@@ -1,6 +1,6 @@
 require 'requirement'
 
-class FortranRequired < Requirement
+class FortranDependency < Requirement
   fatal true
 
   default_formula 'gfortran'
