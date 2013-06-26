@@ -5,10 +5,10 @@ class Tor < Formula
   url 'https://www.torproject.org/dist/tor-0.2.3.25.tar.gz'
   sha1 'ef02e5b0eb44ab1a5d6108c39bd4e28918de79dc'
 
-  option 'with-ssl', 'Build with Homebrew OpenSSL instead of the system version'
+  option 'with-brewed-openssl', 'Build with Homebrew OpenSSL instead of the system version'
 
   depends_on 'libevent'
-  depends_on 'openssl' if build.with? 'ssl'
+  depends_on 'openssl' if build.with? 'brewed-openssl'
 
   def install
     args = %W[
@@ -16,7 +16,8 @@ class Tor < Formula
         --prefix=#{prefix}
     ]
 
-    args << "-with-ssl=#{Formula.factory('openssl').opt_prefix}" if build.with? 'ssl'
+    args << "-with-ssl=#{Formula.factory('openssl').opt_prefix}" if build.with? 'brewed-openssl'
+
     system "./configure", *args
     system "make install"
   end
