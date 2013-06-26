@@ -62,7 +62,7 @@ class Postgis < Formula
     # into the Postgres keg instead of the PostGIS keg. Unfortunately, some
     # things have to be inside the Postgres keg in order to be function. So, we
     # install everything to a staging directory and manually move the pieces
-    # into the appropriate prefixes.    
+    # into the appropriate prefixes.
     mkdir 'stage'
     system 'make', 'install', "DESTDIR=#{buildpath}/stage"
 

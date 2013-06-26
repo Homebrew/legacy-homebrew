@@ -250,9 +250,8 @@ class Test
 
     test "brew audit #{formula}"
     test "brew fetch #{dependencies}" unless dependencies.empty?
-    test "brew fetch --build-bottle #{formula}"
+    test "brew fetch --force --build-bottle #{formula}"
     test "brew uninstall #{formula}" if formula_object.installed?
-    test "brew install --verbose #{dependencies}" unless dependencies.empty?
     test "brew install --verbose --build-bottle #{formula}"
     return unless steps.last.passed?
     bottle_step = test "brew bottle #{formula}", :puts_output_on_success => true
@@ -388,12 +387,12 @@ if ARGV.include? "--email"
   end
 
   if failed_steps.empty?
-    email_subject = 'brew test-bot: PASSED'
+    email_subject = 'PASSED'
   else
-    email_subject = "brew test-bot: FAILED: #{failed_steps.join ', '}"
+    email_subject = "#{failed_steps.join ', '}"
   end
 
-  File.open "brew test-bot.email.txt", 'w' do |file|
+  File.open "brew-test-bot.email.txt", 'w' do |file|
     file.write email_subject
   end
 end

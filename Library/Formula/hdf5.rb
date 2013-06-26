@@ -13,6 +13,7 @@ class Hdf5 < Formula
   option 'enable-parallel', 'Compile parallel bindings'
   option 'enable-fortran2003', 'Compile Fortran 2003 bindings. Requires enable-fortran.'
 
+  depends_on :fortran if build.include? 'enable-fortran' or build.include? 'enable-fortran2003'
   depends_on 'szip'
   depends_on MPIDependency.new(:cc, :cxx, :f90) if build.include? "enable-parallel"
 
@@ -39,7 +40,6 @@ class Hdf5 < Formula
       end
       if build.include? 'enable-fortran' or build.include? 'enable-fortran2003'
         args << '--enable-fortran'
-        ENV.fortran
         args << '--enable-fortran2003' if build.include? 'enable-fortran2003'
       end
     end

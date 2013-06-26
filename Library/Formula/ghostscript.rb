@@ -22,7 +22,6 @@ class Ghostscript < Formula
 
   head 'git://git.ghostscript.com/ghostpdl.git'
 
-  option 'with-x11', 'Install with X11 support'
   option 'with-djvu', 'Build drivers for DjVU file format'
 
   if build.head?
@@ -35,7 +34,7 @@ class Ghostscript < Formula
   depends_on 'libtiff'
   depends_on 'jbig2dec'
   depends_on :libpng
-  depends_on :x11 => '2.7.2' if build.include? 'with-x11'
+  depends_on :x11 => ['2.7.2', :optional]
   depends_on 'djvulibre' if build.include? 'with-djvu'
 
   # Fix dylib names, per installation instructions
@@ -78,7 +77,7 @@ class Ghostscript < Formula
         --disable-gtk
         --with-system-libtiff
       ]
-      args << '--without-x' unless build.include? 'with-x11'
+      args << '--without-x' unless build.with? 'x11'
 
       if build.head?
         system './autogen.sh', *args

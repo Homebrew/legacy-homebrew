@@ -24,7 +24,7 @@ class Nu < Formula
 
     inreplace "Makefile" do |s|
       cflags = s.get_make_var "CFLAGS"
-      s.change_make_var! "CFLAGS", "#{cflags} #{ENV["CPPFLAGS"]}"
+      s.change_make_var! "CFLAGS", "#{cflags} #{ENV.cppflags}"
       # nu hardcodes its compiler paths to a location which no longer works
       # This should work for both Xcode-only and CLT-only systems
       s.gsub! "$(DEVROOT)/usr/bin/clang", ENV.cc

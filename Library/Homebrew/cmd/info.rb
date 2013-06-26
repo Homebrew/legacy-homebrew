@@ -116,7 +116,7 @@ module Homebrew extend self
     end
 
     history = github_info(f)
-    puts history if history
+    puts "From: #{history}" if history
 
     unless f.deps.empty?
       ohai "Dependencies"
