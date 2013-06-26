@@ -13,12 +13,8 @@ class Isl < Formula
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
-    
-    # move gdb helper to proper location
-    (share+'gdb/auto-load').mkpath
 
-    Dir.glob(lib+'*-gdb.py', File::FNM_DOTMATCH).each do |gdbf|
-      FileUtils.move gdbf, share+'gdb/auto-load/'
-    end
+    # move gdb helper to proper location
+    (share+'gdb/auto-load').install Dir[lib+'*-gdb.py']
   end
 end
