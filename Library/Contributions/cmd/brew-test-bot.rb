@@ -250,7 +250,7 @@ class Test
 
     test "brew audit #{formula}"
     test "brew fetch #{dependencies}" unless dependencies.empty?
-    test "brew fetch --build-bottle #{formula}"
+    test "brew fetch --force --build-bottle #{formula}"
     test "brew uninstall #{formula}" if formula_object.installed?
     test "brew install --verbose #{dependencies}" unless dependencies.empty?
     test "brew install --verbose --build-bottle #{formula}"
