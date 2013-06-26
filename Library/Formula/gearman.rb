@@ -11,11 +11,11 @@ class Gearman < Formula
   depends_on 'boost'
   depends_on 'libevent'
   depends_on 'ossp-uuid'
-  depends_on :mysql if build.include? 'with-mysql'
+  depends_on :mysql => :optional
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--with-mysql" if build.include? 'with-mysql'
+    args << "--with-mysql" if build.with? 'mysql'
 
     system "./configure", *args
     system "make install"
