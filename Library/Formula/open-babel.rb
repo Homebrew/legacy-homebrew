@@ -15,12 +15,19 @@ class OpenBabel < Formula
   depends_on 'cairo' => :optional
   depends_on 'eigen' if build.with?('python') || build.with?('java')
 
+  # Patch to fix Molecule.draw() in pybel in accordance with upstream commit df59c4a630cf753723d1318c40479d48b7507e1c
+  def patches
+    "https://gist.github.com/fredrikw/5858168/raw"
+  end
+
   def install
     args = %W[ -DCMAKE_INSTALL_PREFIX=#{prefix} ]
     args << "-DJAVA_BINDINGS=ON" if build.with? 'java'
     args << "-DBUILD_GUI=ON" if build.with? 'wxmac'
-    args << "-DCAIRO_INCLUDE_DIRS=#{include}/cairo "\
-    "-DCAIRO_LIBRARIES=#{lib}/libcairo.dylib" if build.with? 'cairo'
+    # Looking for Cairo in HOMEBREW_PREFIX
+    # setting the arguments separately, joining them in one string fails with the 'system "cmake", *args' command
+    args << "-DCAIRO_INCLUDE_DIRS='#{HOMEBREW_PREFIX}/include/cairo'" if build.with? 'cairo'
+    args << "-DCAIRO_LIBRARIES='#{HOMEBREW_PREFIX}/lib/libcairo.dylib'" if build.with? 'cairo'
 
     python do
       args << "-DPYTHON_BINDINGS=ON"
