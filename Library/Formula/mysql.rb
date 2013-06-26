@@ -4,7 +4,7 @@ class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
   url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.12.tar.gz/from/http://cdn.mysql.com/'
   version '5.6.12'
-  sha1 '852e168fd39bb24adf8805642be20a59042c2e6c'
+  sha1 'c48ae4061c23db89de7ebd2d25abbc36283bab69'
 
   bottle do
     sha1 'bbfa381e1c2ac2c3dc2a3811bc530116343d94be' => :mountain_lion

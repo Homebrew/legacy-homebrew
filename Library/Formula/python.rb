@@ -155,6 +155,13 @@ class Python < Formula
           import _sre
           _sre.MAXREPEAT = 65535 # this monkey-patches all other places of "from _sre import MAXREPEAT"'
       EOS
+
+      # Fixes setting Python build flags for certain software
+      # See: https://github.com/mxcl/homebrew/pull/20182
+      # http://bugs.python.org/issue3588
+      inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile",
+        "LINKFORSHARED= -u _PyMac_Error $(PYTHONFRAMEWORKDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)",
+        "LINKFORSHARED= -u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
   end
 
   def distutils_fix_superenv(args)
