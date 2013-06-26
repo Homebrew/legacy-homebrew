@@ -10,7 +10,7 @@ class Libgetdata < Formula
   option 'lzma', 'Build with LZMA compression support'
   option 'zzip', 'Build with zzip compression support'
 
-  depends_on :fortran if build.with? 'fortran'
+  depends_on :fortran => :optional
   depends_on 'xz' if build.include? 'lzma'
   depends_on 'libzzip' if build.include? 'zzip'
 
@@ -21,7 +21,7 @@ class Libgetdata < Formula
       --prefix=#{prefix}
     ]
 
-    args << "--disable-perl" unless build.include?('with-perl')
+    args << "--disable-perl" unless build.with? "perl"
 
     system "./configure", *args
     system "make"
