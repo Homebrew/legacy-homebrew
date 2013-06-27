@@ -21,13 +21,18 @@ class V8 < Formula
   # https://code.google.com/p/gyp/issues/detail?id=292
   depends_on :xcode
 
+  option 'shared', 'Build shared libraries'
+
   def install
+    args = [
+      '-j#{ENV.make_jobs}',
+      'snapshot=on',
+      'console=readline'
+    ]
+    args << 'library=shared' if build.include? 'shared'
+
     system 'make dependencies'
-    system 'make', 'native',
-                   "-j#{ENV.make_jobs}",
-                   "library=shared",
-                   "snapshot=on",
-                   "console=readline"
+    system 'make', 'native', *args
 
     prefix.install 'include'
     cd 'out/native' do
