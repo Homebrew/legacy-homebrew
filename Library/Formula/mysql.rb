@@ -1,10 +1,10 @@
 require 'formula'
 
 class Mysql < Formula
-  homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.12.tar.gz/from/http://cdn.mysql.com/'
-  version '5.6.12'
-  sha1 'c48ae4061c23db89de7ebd2d25abbc36283bab69'
+  homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.30.tar.gz/from/http://cdn.mysql.com/'
+  version '5.5.30'
+  sha1 'd7e31246d29f6ed4a9c4b966d6896bf920b68351'
 
   bottle do
     sha1 'bbfa381e1c2ac2c3dc2a3811bc530116343d94be' => :mountain_lion
@@ -22,7 +22,6 @@ class Mysql < Formula
   option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
   option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
   option 'enable-local-infile', 'Build with local infile loading support'
-  option 'enable-memcached', 'Enable innodb-memcached support'
   option 'enable-debug', 'Build with debug support'
 
   conflicts_with 'mariadb',
@@ -89,9 +88,6 @@ class Mysql < Formula
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
-
-    # Build with memcached support
-    args << "-DWITH_INNODB_MEMCACHED=1" if build.include? 'enable-memcached'
 
     # Build with debug support
     args << "-DWITH_DEBUG=1" if build.include? 'enable-debug'
