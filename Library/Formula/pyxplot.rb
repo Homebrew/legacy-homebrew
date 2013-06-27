@@ -2,8 +2,8 @@ require 'formula'
 
 class Pyxplot < Formula
   homepage 'http://pyxplot.org.uk/'
-  url 'http://pyxplot.org.uk/src/pyxplot_0.9.1.tar.gz'
-  sha1 '3b97367a1532b14360fcac3e715e9307f05a0703'
+  url 'http://pyxplot.org.uk/src/pyxplot_0.9.2.tar.gz'
+  sha1 '5f09399bd00a4ae94a07ac186cf0e8e7761de625'
 
   depends_on :tex
   depends_on 'fftw'
