@@ -93,6 +93,11 @@ class Wine < Formula
     ENV.libxml2
     ENV.append "LDFLAGS", "-lxslt"
 
+    # As of 1.4 these don't do anything, but under 1.6 they will *possibly*
+    # resolve our issues with conflicting freetype installations
+    ENV['FREETYPE_CFLAGS'] = "-I#{MacOS::X11.include}/freetype2 -I#{MacOS::X11.include}"
+    ENV['FREETYPE_LIBS'] = "-L#{MacOS::X11.lib} -lfreetype"
+
     args = %W[--prefix=#{prefix}
               --with-coreaudio
               --with-opengl
