@@ -356,6 +356,7 @@ class Formula
     Dir["#{HOMEBREW_REPOSITORY}/Library/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
+  # TODO - document what this returns and why
   def self.canonical_name name
     # if name includes a '/', it may be a tap reference, path, or URL
     if name.include? "/"
