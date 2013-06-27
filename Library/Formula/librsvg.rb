@@ -9,15 +9,21 @@ class Librsvg < Formula
   depends_on 'xz' => :build
   depends_on 'gtk+'
   depends_on 'libcroco'
+  depends_on 'libgsf' => :optional
   depends_on :x11
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-Bsymbolic",
-                          "--enable-tools=yes",
-                          "--enable-pixbuf-loader=yes",
-                          "--enable-introspection=no"
+    args = [ "--disable-dependency-tracking",
+             "--prefix=#{prefix}",
+             "--disable-Bsymbolic",
+             "--enable-tools=yes",
+             "--enable-pixbuf-loader=yes",
+             "--enable-introspection=no"
+             ]
+             
+    args << "--enable-svgz" if build.with? 'libgsf'
+    
+    system "./configure", *args
     system "make install"
   end
 end
