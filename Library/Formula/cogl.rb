@@ -10,10 +10,9 @@ class Cogl < Formula
   option 'without-x', 'Build without X11 support'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
+  depends_on 'cairo' # needs cairo-gobject
   depends_on 'glib'
   depends_on 'pango'
-  depends_on 'cairo' # needs cairo-gobject
   depends_on :x11 if MacOS::X11.installed? or not build.include? 'without-x'
 
   def install

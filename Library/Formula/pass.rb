@@ -7,11 +7,10 @@ class Pass < Formula
 
   head 'http://git.zx2c4.com/password-store', :using => :git
 
-  depends_on 'xz' => :build
-  depends_on 'pwgen'
-  depends_on 'tree'
   depends_on 'gnu-getopt'
   depends_on 'gnupg2'
+  depends_on 'pwgen'
+  depends_on 'tree'
 
   def install
     system "make DESTDIR=#{prefix} PREFIX=/ install"

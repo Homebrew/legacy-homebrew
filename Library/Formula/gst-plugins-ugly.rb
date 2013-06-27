@@ -7,7 +7,6 @@ class GstPluginsUgly < Formula
   sha256 'b78b8cfabe322497da432a0f297dbb21862a033f95e8d4cd8f207eccb5288f2b'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
 

@@ -6,8 +6,6 @@ class Gawk < Formula
   mirror 'http://ftp.gnu.org/gnu/gawk/gawk-4.1.0.tar.xz'
   sha1 'caabca3c1a59d05807c826c45a4639b82cad612a'
 
-  depends_on 'xz' => :build
-
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"

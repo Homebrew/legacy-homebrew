@@ -9,7 +9,6 @@ class Libvorbis < Formula
 
   option :universal
 
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'libogg'
 

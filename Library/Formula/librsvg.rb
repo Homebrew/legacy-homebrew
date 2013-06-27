@@ -6,7 +6,6 @@ class Librsvg < Formula
   sha256 '3d7d583271030e21acacc60cb6b81ee305713c9da5e98429cbd609312aea3632'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gtk+'
   depends_on 'libcroco'
   depends_on :x11

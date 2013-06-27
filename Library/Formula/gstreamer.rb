@@ -7,7 +7,6 @@ class Gstreamer < Formula
   sha256 '68cada7ee24ede23e15dc81ccde11898eed1a7a3c6a2d81a8c31596fccb1b5ce'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gobject-introspection' => :optional
   depends_on 'gettext'
   depends_on 'glib'

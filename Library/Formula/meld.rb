@@ -6,7 +6,6 @@ class Meld < Formula
   sha1 '660e47ceb06fd9035a6fcac12da373f8a60fec31'
 
   depends_on 'intltool' => :build
-  depends_on 'xz' => :build
   depends_on :x11
   depends_on 'pygtk'
   depends_on 'pygobject'

@@ -7,7 +7,6 @@ class GstPluginsBad < Formula
   sha256 '5f49e6353fdc855834b5beb054b3a47ef5fa558006c7eda6d2ec07b36315c2ab'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
 
