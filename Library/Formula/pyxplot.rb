@@ -19,9 +19,11 @@ class Pyxplot < Formula
 
   def install
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    system "make", "install" 
+    # changes install directory to Cellar
+    inreplace "Makefile.skel", "USRDIR=/usr/local", "USRDIR=#{prefix}" 
+
+    system "./configure"
+    system "make install" 
   end
 
 end
