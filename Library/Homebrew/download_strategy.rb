@@ -35,6 +35,8 @@ class AbstractDownloadStrategy
   def fetch; end
   def stage; end
   def cached_location; end
+
+  def requirements; []; end
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
@@ -598,6 +600,10 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
         safe_system hgpath, 'archive', '--subrepos', '-y', '-t', 'files', dst
       end
     end
+  end
+
+  def requirements
+    [:hg]
   end
 end
 

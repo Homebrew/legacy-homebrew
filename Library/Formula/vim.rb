@@ -1,10 +1,11 @@
 require 'formula'
 
+# This package tracks debian-unstable: http://packages.debian.org/unstable/vim
 class Vim < Formula
   homepage 'http://www.vim.org/'
-  # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
   url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.3.923.orig.tar.gz'
   sha1 'f308d219dd9c6b56e84109ace4e7487a101088f5'
+
   head 'https://vim.googlecode.com/hg/'
 
   # We only have special support for finding depends_on :python, but not yet for
@@ -23,7 +24,6 @@ class Vim < Formula
     option "without-#{language}", "Build vim without #{language} support"
   end
 
-  depends_on :hg => :build if build.head?
   depends_on :python => :recommended
 
   def install
