@@ -166,9 +166,9 @@ class FormulaAuditor
       when 'open-mpi', 'mpich2'
         problem <<-EOS.undent
           There are multiple conflicting ways to install MPI. Use an MPIDependency:
-            depends_on MPIDependency.new(<lang list>)
+            depends_on :mpi => [<lang list>]
           Where <lang list> is a comma delimited list that can include:
-            :cc, :cxx, :f90, :f77
+            :cc, :cxx, :f77, :f90
           EOS
       end
     end
