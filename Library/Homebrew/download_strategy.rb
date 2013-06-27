@@ -351,6 +351,10 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
+  def requirements
+    ['git']
+  end
+
   def cached_location
     @clone
   end
@@ -561,6 +565,10 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
+  def requirements
+    [:hg]
+  end
+
   def cached_location; @clone; end
 
   def hgpath
@@ -600,10 +608,6 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
         safe_system hgpath, 'archive', '--subrepos', '-y', '-t', 'files', dst
       end
     end
-  end
-
-  def requirements
-    [:hg]
   end
 end
 
