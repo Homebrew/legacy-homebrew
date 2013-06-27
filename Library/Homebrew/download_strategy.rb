@@ -53,6 +53,14 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     @temporary_path = Pathname.new("#@tarball_path.incomplete")
   end
 
+  def requirements
+    if @url =~ /\.xz$/
+      [{'xz' => :build}]
+    else
+      []
+    end
+  end
+
   def cached_location
     @tarball_path
   end
