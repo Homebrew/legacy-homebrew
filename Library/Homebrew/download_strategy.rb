@@ -631,6 +631,10 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
+  def requirements
+    ['bazaar']
+  end
+
   def cached_location; @clone; end
 
   def bzrpath
@@ -682,6 +686,10 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
     else
       @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--fossil")
     end
+  end
+
+  def requirements
+    ['fossil']
   end
 
   def cached_location; @clone; end
