@@ -7,6 +7,9 @@ class Glfw < Formula
 
   option :universal
 
+  conflicts_with 'glfw3',
+    :because => "glfw and glfw3 install the same library libglfw.dylib."
+
   def install
     ENV.universal_binary if build.universal?
     system 'make', "PREFIX=#{prefix}", 'cocoa-dist-install'
