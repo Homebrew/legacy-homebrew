@@ -632,7 +632,7 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
   end
 
   def requirements
-    ['bazaar']
+    [:bzr]
   end
 
   def cached_location; @clone; end
@@ -689,7 +689,7 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
   end
 
   def requirements
-    ['fossil']
+    [:fossil]
   end
 
   def cached_location; @clone; end
