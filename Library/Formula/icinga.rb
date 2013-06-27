@@ -1,6 +1,5 @@
 require 'formula'
 
-
 class Icinga < Formula
   homepage 'https://www.icinga.org'
   url 'http://downloads.sourceforge.net/project/icinga/icinga/1.9.1/icinga-1.9.1.tar.gz'
@@ -46,21 +45,21 @@ class Icinga < Formula
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
     <dict>
-    <key>KeepAlive</key>
-    <true/>
-    <key>Label</key>
-    <string>#{plist_name}</string>
-    <key>ProgramArguments</key>
-    <array>
-    <string>#{opt_prefix}/bin/icinga</string>
-    <string>#{icinga_etc}/icinga.cfg</string>
-    </array>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>StandardErrorPath</key>
-    <string>/dev/null</string>
-    <key>StandardOutPath</key>
-    <string>/dev/null</string>
+        <key>KeepAlive</key>
+        <true/>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>#{opt_prefix}/bin/icinga</string>
+            <string>#{icinga_etc}/icinga.cfg</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>StandardErrorPath</key>
+        <string>/dev/null</string>
+        <key>StandardOutPath</key>
+        <string>/dev/null</string>
     </dict>
     </plist>
     EOS
@@ -77,7 +76,7 @@ class Icinga < Formula
 
     1) Turn on Personal Web Sharing.
 
-    2) Load the php module by patching /etc/apache2/httpd.conf:
+    2) Load the php module by changing /etc/apache2/httpd.conf:
 
     -#LoadModule php5_module libexec/apache2/libphp5.so
     +LoadModule php5_module libexec/apache2/libphp5.so
@@ -86,7 +85,10 @@ class Icinga < Formula
 
     sudo ln -sf #{share}/icinga.conf /etc/apache2/other/
     htpasswd -cs #{icinga_etc}/htpasswd.users icingaadmin
-    sudo apachectl restart
+
+    4) Reload the configuration. Restart Apache Web Server
+
+    sudo apachectl -k graceful
 
     Log in with your web account (and don't forget to RTFM :-)
 
