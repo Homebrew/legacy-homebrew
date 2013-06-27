@@ -335,9 +335,10 @@ class Formula
     names.each do |name|
       begin
         yield Formula.factory(name)
-      rescue
+      rescue StandardError => e
         # Don't let one broken formula break commands. But do complain.
         onoe "Failed to import: #{name}"
+        puts e
         next
       end
     end

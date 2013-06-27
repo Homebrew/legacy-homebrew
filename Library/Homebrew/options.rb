@@ -20,7 +20,7 @@ class Option
   end
 
   def eql?(other)
-    other.is_a?(self.class) && hash == other.hash
+    instance_of?(other.class) && name == other.name
   end
 
   def hash

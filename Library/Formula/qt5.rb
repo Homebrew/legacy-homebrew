@@ -19,7 +19,7 @@ class Qt5 < Formula
   depends_on :libpng
 
   depends_on "d-bus" if build.include? 'with-qtdbus'
-  depends_on "mysql" if build.include? 'with-mysql'
+  depends_on "mysql" => :optional
   depends_on "jpeg"
 
   def install
@@ -36,7 +36,7 @@ class Qt5 < Formula
 
     args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
-    args << "-plugin-sql-mysql" if build.include? 'with-mysql'
+    args << "-plugin-sql-mysql" if build.with? 'mysql'
 
     if build.include? 'with-qtdbus'
       args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"

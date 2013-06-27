@@ -40,7 +40,13 @@ module MacOS extend self
   end
 
   def dev_tools_path
-    @dev_tools_path ||= if File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
+    @dev_tools_path ||= \
+    if File.exist? MacOS::CLT::STANDALONE_PKG_PATH and
+       File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/cc" and
+       File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/make"
+      # In 10.9 the CLT moved from /usr into /Library/Developer/CommandLineTools.
+      Pathname.new "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin"
+    elsif File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
     # Note that the exit status of system "xcrun foo" isn't always accurate

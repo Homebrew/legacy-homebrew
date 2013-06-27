@@ -25,7 +25,7 @@ module Homebrew extend self
           info_formula f
           puts '---'
         end
-      else
+      elsif HOMEBREW_CELLAR.exist?
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
     elsif valid_url ARGV[0]

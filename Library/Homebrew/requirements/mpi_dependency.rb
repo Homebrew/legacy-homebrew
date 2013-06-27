@@ -13,11 +13,14 @@ class MPIDependency < Requirement
 
   env :userpaths
 
-  def initialize *lang_list
-    @lang_list = lang_list
+  # This method must accept varargs rather than an array for
+  # backwards compatibility with formulae that call it directly.
+  def initialize(*tags)
     @non_functional = []
     @unknown_langs = []
-    super()
+    @lang_list = [:cc, :cxx, :f77, :f90] & tags
+    tags -= @lang_list
+    super(tags)
   end
 
   def mpi_wrapper_works? compiler
