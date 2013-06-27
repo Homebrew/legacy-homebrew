@@ -359,9 +359,10 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
-  def requirements
-    ['git']
-  end
+  # --HEAD git depends on git itself, so comment-out for now
+  # def requirements
+  #   ['git']
+  # end
 
   def cached_location
     @clone
