@@ -2,10 +2,9 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.2/rabbitmq-server-generic-unix-3.1.2.tar.gz'
-  sha1 '382187e7c40fba1c40963f12172c0f572c1655b9'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server-mac-standalone-3.1.3.tar.gz'
+  sha1 '631b9e46e046db9f591d6027ee690ffaaab20a45'
 
-  depends_on 'erlang'
   depends_on 'simplejson' => :python if MacOS.version == :leopard
 
   def install
@@ -16,19 +15,23 @@ class Rabbitmq < Formula
     (var+'lib/rabbitmq').mkpath
     (var+'log/rabbitmq').mkpath
 
-    # Replace the SYS_PREFIX for things like rabbitmq-plugins
-    inreplace (sbin + 'rabbitmq-defaults'), 'SYS_PREFIX=${RABBITMQ_HOME}', "SYS_PREFIX=#{HOMEBREW_PREFIX}"
+    # Correct SYS_PREFIX for things like rabbitmq-plugins
+    inreplace sbin/'rabbitmq-defaults' do |s|
+      s.gsub! 'SYS_PREFIX=${RABBITMQ_HOME}', "SYS_PREFIX=#{HOMEBREW_PREFIX}"
+      s.gsub! 'CLEAN_BOOT_FILE="${SYS_PREFIX}', "CLEAN_BOOT_FILE=\"#{prefix}"
+      s.gsub! 'SASL_BOOT_FILE="${SYS_PREFIX}', "SASL_BOOT_FILE=\"#{prefix}"
+    end
 
-    # Set the RABBITMQ_HOME in rabbitmq-env
+    # Set RABBITMQ_HOME in rabbitmq-env
     inreplace (sbin + 'rabbitmq-env'), 'RABBITMQ_HOME="${SCRIPT_DIR}/.."', "RABBITMQ_HOME=#{prefix}"
 
     # Create the rabbitmq-env.conf file
     rabbitmq_env_conf = etc+'rabbitmq/rabbitmq-env.conf'
     rabbitmq_env_conf.write rabbitmq_env unless rabbitmq_env_conf.exist?
 
-    # Enable the management web UI and visualiser
+    # Enable plugins - management web UI and visualiser; STOMP, MQTT, AMQP 1.0 protocols
     enabled_plugins_path = etc+'rabbitmq/enabled_plugins'
-    enabled_plugins_path.write enabled_plugins unless enabled_plugins_path.exist?
+    enabled_plugins_path.write '[rabbitmq_management,rabbitmq_management_visualiser,rabbitmq_stomp,rabbitmq_amqp1_0,rabbitmq_mqtt].' unless enabled_plugins_path.exist?
 
     # Extract rabbitmqadmin and install to sbin
     # use it to generate, then install the bash completion file
@@ -43,11 +46,6 @@ class Rabbitmq < Formula
 
   def caveats; <<-EOS.undent
     Management Plugin enabled by default at http://localhost:15672
-    EOS
-  end
-
-  def enabled_plugins; <<-EOS.undent
-      [rabbitmq_management,rabbitmq_management_visualiser].
     EOS
   end
 
