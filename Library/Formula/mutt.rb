@@ -1,9 +1,7 @@
 require 'formula'
 
 class MuttHtmldocs < Formula
-  url 'http://www.mutt.org/doc/devel/manual.html.gz'
-  sha1 '0016bebb759a9f9500f3a57978682118bc2e8263'
-  version 'HEAD'
+  head 'http://dev.mutt.org/doc/manual.html', :using => :nounzip
 end
 
 class Mutt < Formula
