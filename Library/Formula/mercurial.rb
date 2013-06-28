@@ -12,7 +12,7 @@ class Mercurial < Formula
   def install
     python do
       # Inside this python do block, the PYTHONPATH (and more) is alreay set up
-      if python.from_osx? && !MacOS::CLT.installed?
+      if python.from_osx? && (!MacOS::CLT.installed? || MacOS.version >= :mavericks)
         # Help castrated system python on Xcode find the Python.h:
         # Setting CFLAGS does not work :-(
         inreplace 'setup.py', 'get_python_inc()', "'#{python.incdir}'"
