@@ -52,13 +52,11 @@ class SoftwareSpec
   end
 
   def version val=nil
-    @version ||= case val
-      when nil then Version.parse(@url)
-      when Hash
-        key, value = val.shift
-        scheme = VersionSchemeDetector.new(value).detect
-        scheme.new(key)
-      else Version.new(val)
+    @version ||=
+      case val
+      when nil  then Version.parse(@url)
+      when Hash then Version.new_with_scheme(*val.shift)
+      else           Version.new(val)
       end
   end
 

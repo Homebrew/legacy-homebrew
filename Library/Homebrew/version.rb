@@ -146,6 +146,14 @@ class Version
     end
   end
 
+  def self.new_with_scheme(value, scheme)
+    if Class === scheme && scheme.ancestors.include?(Version)
+      scheme.new(value)
+    else
+      raise TypeError, "Unknown version scheme #{scheme.inspect}"
+    end
+  end
+
   def initialize(val, detected=false)
     @version = val.to_s
     @detected_from_url = detected
@@ -293,26 +301,5 @@ class Version
     # e.g. http://www.ijg.org/files/jpegsrc.v8d.tar.gz
     m = /\.v(\d+[a-z]?)/.match(stem)
     return m.captures.first unless m.nil?
-  end
-end
-
-class VersionSchemeDetector
-  def initialize scheme
-    @scheme = scheme
-  end
-
-  def detect
-    if @scheme.is_a? Class and @scheme.ancestors.include? Version
-      @scheme
-    elsif @scheme.is_a? Symbol then detect_from_symbol
-    else
-      raise "Unknown version scheme #{@scheme} was requested."
-    end
-  end
-
-  private
-
-  def detect_from_symbol
-    raise "Unknown version scheme #{@scheme} was requested."
   end
 end
