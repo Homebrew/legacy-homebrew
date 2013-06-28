@@ -36,7 +36,7 @@ class Node < Formula
 
   devel do
     url 'http://nodejs.org/dist/v0.11.3/node-v0.11.3.tar.gz'
-    sha1 '4f646bb3418d1c177ce28cdbc61e71de35b38aea'
+    sha1 '4b82d58ed3ce38fa67a8484b42cfd47179b6a4a5'
   end
 
   head 'https://github.com/joyent/node.git'
