@@ -1,19 +1,31 @@
 require 'formula'
 
+class MuttHtmldocs < Formula
+  url 'http://www.mutt.org/doc/devel/manual.html.gz'
+  sha1 '0016bebb759a9f9500f3a57978682118bc2e8263'
+  version 'HEAD'
+end
+
 class Mutt < Formula
   homepage 'http://www.mutt.org/'
   url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
   sha1 'a8475f2618ce5d5d33bff85c0affdf21ab1d76b9'
 
+  head 'http://dev.mutt.org/hg/mutt#HEAD', :using => :hg
+
   option "with-debug", "Build with debug option enabled"
-  option "with-sidebar-patch", "Apply sidebar (folder list) patch"
+  option "with-sidebar-patch", "Apply sidebar (folder list) patch" unless build.head?
   option "with-trash-patch", "Apply trash folder patch"
   option "with-slang", "Build against slang instead of ncurses"
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
 
   depends_on 'tokyo-cabinet'
-  depends_on 'slang' if build.include? 'with-slang'
+  depends_on 'slang' if build.with? 'slang'
+  if build.head?
+    depends_on :autoconf
+    depends_on :automake
+  end
 
   def patches
     urls = [
@@ -26,9 +38,15 @@ class Mutt < Formula
           'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
     ]
 
-    if build.include? "with-ignore-thread-patch" and build.include? "with-sidebar-patch"
+    if build.with? "ignore-thread-patch" and build.with? "sidebar-patch"
       puts "\n"
       onoe "The ignore-thread-patch and sidebar-patch options are mutually exlusive. Please pick one"
+      exit 1
+    end
+
+    if build.head? and build.with? "sidebar-patch"
+      puts "\n"
+      onoe "You cannot use the sidebar patch with HEAD. Please pick one."
       exit 1
     end
 
@@ -56,15 +74,24 @@ class Mutt < Formula
             # the mutt_dotlock file (which we can't do if we're running as an
             # unpriviledged user)
             "--with-homespool=.mbox"]
-    args << "--with-slang" if build.include? 'with-slang'
+    args << "--with-slang" if build.with? 'slang'
 
-    if build.include? 'with-debug'
+    if build.with? 'debug'
       args << "--enable-debug"
     else
       args << "--disable-debug"
     end
 
-    system "./configure", *args
-    system "make install"
+    if build.head?
+      system "./prepare", *args
+    else
+      system "./configure", *args
+    end
+    system "make"
+    system "make", "install"
+
+    if build.head?
+      MuttHtmldocs.new.brew { (share/'doc/mutt').install 'manual.html' }
+    end
   end
 end
