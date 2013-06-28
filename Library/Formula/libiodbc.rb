@@ -12,7 +12,7 @@ class Libiodbc < Formula
   def install
     system "sh",  "./bootstrap.sh"
     system "./configure", "--prefix=#{prefix}"
-    system "make", "install" 
+    system "make", "install"
   end
 
   test do
