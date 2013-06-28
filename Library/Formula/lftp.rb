@@ -11,7 +11,9 @@ class Lftp < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'
-  depends_on 'gnutls'
+  if not build.include? 'with-openssl'
+    depends_on 'gnutls'
+  end
 
   # Hotfix for compiling on Snow Leopard; check if still needed in next release
   # https://github.com/mxcl/homebrew/pull/20435
@@ -24,8 +26,11 @@ class Lftp < Formula
     # Bus error
     ENV.no_optimization if MacOS.version == :leopard
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = ["--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+    ]
+    args << "--with-openssl" if build.include? 'with-openssl'
+    system "./configure", *args
     system "make install"
   end
 end
