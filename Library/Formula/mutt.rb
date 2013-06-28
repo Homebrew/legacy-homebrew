@@ -12,7 +12,11 @@ class Mutt < Formula
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
 
-  depends_on 'tokyo-cabinet'
+  if build.include? 'with-gdbm'
+    depends_on 'gdbm'
+  else
+    depends_on 'tokyo-cabinet'
+  end
   depends_on 'slang' if build.include? 'with-slang'
 
   def patches
@@ -51,12 +55,16 @@ class Mutt < Formula
             "--enable-smtp",
             "--enable-pop",
             "--enable-hcache",
-            "--with-tokyocabinet",
             # This is just a trick to keep 'make install' from trying to chgrp
             # the mutt_dotlock file (which we can't do if we're running as an
             # unpriviledged user)
             "--with-homespool=.mbox"]
     args << "--with-slang" if build.include? 'with-slang'
+    if build.include? 'with-gdbm'
+      args << "--without-tokyocabinet"
+    else
+      args << "--with-tokyocabinet"
+    end
 
     if build.include? 'with-debug'
       args << "--enable-debug"
