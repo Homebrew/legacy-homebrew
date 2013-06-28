@@ -167,6 +167,16 @@ module Stdenv
   end
   alias_method :gcc_4_2, :gcc
 
+  GNU_GCC_VERSIONS.each do |n|
+    define_method(:"gcc-4.#{n}") do
+      gcc = "gcc-4.#{n}"
+      self.cc = self['OBJC'] = gcc
+      self.cxx = self['OBJCXX'] = gcc.gsub('c', '+')
+      set_cpu_cflags
+      @compiler = gcc
+    end
+  end
+
   def llvm
     self.cc  = MacOS.locate("llvm-gcc")
     self.cxx = MacOS.locate("llvm-g++")

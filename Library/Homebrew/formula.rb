@@ -212,7 +212,12 @@ class Formula
   def fails_with? cc
     cc = Compiler.new(cc) unless cc.is_a? Compiler
     (self.class.cc_failures || []).any? do |failure|
-      failure.compiler == cc.name && failure.build >= cc.build
+      if cc.version
+        # non-Apple GCCs don't have builds, just version numbers
+        failure.compiler == cc.name && failure.version >= cc.version
+      else
+        failure.compiler == cc.name && failure.build >= cc.build
+      end
     end
   end
 
