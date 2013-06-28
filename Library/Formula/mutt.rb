@@ -36,6 +36,8 @@ class Mutt < Formula
       ['with-ignore-thread-patch', 'https://gist.github.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch'],
       ['with-pgp-verbose-mime-patch',
           'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+      ['with-xtitles-patch',
+          'https://gist.github.com/simmel/5883831/raw/5a8450250f02ada695f170d46eee24aae2cc8aa0/patch-1.5.21.nt%2Bab.xtitles.5.patch'],
     ]
 
     if build.with? "ignore-thread-patch" and build.with? "sidebar-patch"
