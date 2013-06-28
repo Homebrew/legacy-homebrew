@@ -13,10 +13,6 @@ class Go < Formula
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
 
-  fails_with :clang do
-    cause "clang: error: no such file or directory: 'libgcc.a'"
-  end
-
   def install
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
@@ -53,10 +49,12 @@ class Go < Formula
     Pathname.new('VERSION').write 'default' if build.head?
 
     cd 'src' do
+	    system "sed -i -e 's/C.malloc(C.size_t/C.malloc(C.ulong/' pkg/os/user/lookup_unix.go"
       # Build only. Run `brew test go` to run distrib's tests.
       targets.each do |(os, archs, opts)|
       archs.each do |arch|
-        ENV['GOROOT_FINAL'] = prefix
+        ENV['CC']           = "clang"
+	ENV['GOROOT_FINAL'] = prefix
         ENV['GOOS']         = os
         ENV['GOARCH']       = arch
         ENV['CGO_ENABLED']  = opts[:cgo] ? "1" : "0"
