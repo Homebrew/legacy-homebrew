@@ -30,7 +30,7 @@ class Dmd < Formula
     bin.write_exec_script libexec/'bin/dmd'
   end
   def test
-    system "dmd", "#{prefix}/share/d/examples/hello.d"
+    system "dmd", "#{share}/d/examples/hello.d"
     system "./hello"
   end
 end
