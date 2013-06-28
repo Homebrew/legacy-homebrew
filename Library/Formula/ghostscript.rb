@@ -24,6 +24,9 @@ class Ghostscript < Formula
 
   option 'with-djvu', 'Build drivers for DjVU file format'
 
+  # TODO - figure out why this is needed
+  env :std if build.include? 'with-djvu'
+
   if build.head?
     depends_on :automake
     depends_on :libtool
@@ -64,7 +67,7 @@ class Ghostscript < Formula
         (buildpath+'base').install 'gdevdjvu.c'
         (buildpath+'lib').install 'ps2utf8.ps'
         ENV['EXTRA_INIT_FILES'] = 'ps2utf8.ps'
-        (buildpath/'base/contrib.mak').open('a').write(File.read('gsdjvi.mak'))
+        (buildpath/'base/contrib.mak').open('a').write(File.read('gsdjvu.mak'))
       end
     end
 
