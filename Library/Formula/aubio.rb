@@ -30,10 +30,8 @@ class Aubio < Formula
     system "make install"
   end
 
-  def caveats; <<-EOS.undent
-    For non-homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{python.xy}/site-packages:$PYTHONPATH
-    EOS
+  def caveats
+    python.standard_caveats if python
   end
 
   def test
