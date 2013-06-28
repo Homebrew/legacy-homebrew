@@ -12,8 +12,8 @@ class Dmd < Formula
     mv 'README.TXT', 'README'
 
     cd 'osx/bin' do
-      mv 'dmdx.conf', 'dmd.conf'
-      inreplace 'dmd.conf', '~/dmd2', prefix
+      rm 'dmdx.conf'
+      rm 'dmd.conf'
     end
 
     rmtree 'src/dmd'
@@ -23,5 +23,12 @@ class Dmd < Formula
     man5.install man1/'dmd.conf.5'
 
     (share+'d/examples').install Dir['samples/d/*.d']
+    (bin+'dmd.conf').open('w') do |f|
+      f.puts "[Environment]"
+      f.puts "DFLAGS=-I#{prefix}/src/phobos -I#{prefix}/src/druntime/import -L-L#{prefix}/lib"
+    end
+  end
+  def test
+    system "dmd", "#{prefix}/share/d/examples/hello.d"
   end
 end
