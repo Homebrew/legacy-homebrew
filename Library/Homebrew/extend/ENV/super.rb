@@ -266,6 +266,13 @@ module Superenv
     self.cc  = self['HOMEBREW_CC'] = "clang"
     self.cxx = "clang++"
   end
+  GNU_GCC_VERSIONS.each do |n|
+    define_method(:"gcc-4.#{n}") do
+      gcc = "gcc-4.#{n}"
+      self.cc = self['HOMEBREW_CC'] = gcc
+      self.cxx = gcc.gsub('c', '+')
+    end
+  end
   def make_jobs
     self['MAKEFLAGS'] =~ /-\w*j(\d)+/
     [$1.to_i, 1].max
