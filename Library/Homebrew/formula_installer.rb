@@ -518,6 +518,7 @@ class FormulaInstaller
       puts "The offending files are:"
       puts non_exes
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 
@@ -532,6 +533,7 @@ class FormulaInstaller
       puts "The offending files are:"
       puts non_exes
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 
