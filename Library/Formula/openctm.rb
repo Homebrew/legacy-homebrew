@@ -8,8 +8,6 @@ class Openctm < Formula
   depends_on 'gtk+'
 
   def install
-    build_cmd = []
-
     system "make", "-f", "Makefile.macosx"
 
     system "mkdir", "-p", lib, include, bin, man1
