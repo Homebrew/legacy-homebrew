@@ -6,12 +6,15 @@ class Aubio < Formula
   sha1 '8ef7ccbf18a4fa6db712a9192acafc9c8d080978'
 
   depends_on :macos => :lion
+  depends_on :python
+
   depends_on 'pkg-config' => :build
   depends_on :libtool => :build
   depends_on 'swig' => :build
-  depends_on 'libsndfile'
-  depends_on 'libsamplerate'
+
   depends_on 'fftw'
+  depends_on 'libsamplerate'
+  depends_on 'libsndfile'
 
   # get rid of -Wno-long-double in configure.  otherwise, breaks with modern xcode.
   # updates for py2.6+ compatibility (with is now a keyword)
@@ -29,12 +32,8 @@ class Aubio < Formula
 
   def caveats; <<-EOS.undent
     For non-homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
+      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{python.xy}/site-packages:$PYTHONPATH
     EOS
-  end
-
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
   end
 
   def test
