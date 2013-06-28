@@ -21,7 +21,7 @@ class Mutt < Formula
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
 
   depends_on 'tokyo-cabinet'
-  depends_on 'slang' if build.with? 'slang'
+  depends_on 'slang' => :optional
   if build.head?
     depends_on :autoconf
     depends_on :automake
@@ -41,12 +41,6 @@ class Mutt < Formula
     if build.with? "ignore-thread-patch" and build.with? "sidebar-patch"
       puts "\n"
       onoe "The ignore-thread-patch and sidebar-patch options are mutually exlusive. Please pick one"
-      exit 1
-    end
-
-    if build.head? and build.with? "sidebar-patch"
-      puts "\n"
-      onoe "You cannot use the sidebar patch with HEAD. Please pick one."
       exit 1
     end
 
