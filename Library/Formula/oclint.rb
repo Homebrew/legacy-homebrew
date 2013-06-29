@@ -13,10 +13,7 @@ class Oclint < Formula
   end
 
   def install
-    clang_version = build.devel? ? 3.4 : 3.3
-
-    lib.install Dir['lib/clang'] unless File.directory? "#{lib}/clang"
-    "#{lib}/clang".install Dir['lib/clang/#{clang_version}'] unless File.directory? "#{lib}/clang/#{clang_version}"
+    lib.install Dir['lib/clang']
     lib.install Dir['lib/oclint']
     bin.install Dir['bin/*']
   end
