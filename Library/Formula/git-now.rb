@@ -13,7 +13,8 @@ class GitNow < Formula
   end
 
   def install
-    system "make", "prefix=#{prefix}", "install"
+    system "make", "prefix=#{libexec}", "install"
+    bin.write_exec_script libexec/'bin/git-now'
     zsh_completion.install 'etc/_git-now'
   end
 end
