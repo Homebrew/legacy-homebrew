@@ -13,7 +13,6 @@ class GitFlow < Formula
 
   # Use the tag instead of the tarball to get submodules
   url 'https://github.com/nvie/gitflow.git', :tag => '0.4.1'
-  version '0.4.1'
 
   head 'https://github.com/nvie/gitflow.git', :branch => 'develop'
 

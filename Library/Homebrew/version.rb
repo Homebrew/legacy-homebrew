@@ -154,6 +154,14 @@ class Version
     end
   end
 
+  def self.detect(url, specs={})
+    if specs.has_key?(:tag)
+      new(specs[:tag][/((?:\d+\.)*\d+)/, 1], true)
+    else
+      parse(url)
+    end
+  end
+
   def initialize(val, detected=false)
     @version = val.to_s
     @detected_from_url = detected
