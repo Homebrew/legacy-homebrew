@@ -22,6 +22,6 @@ class Oclint < Formula
   end
 
   def test
-    system "#{bin}/oclint", "-version"
+    system "#{bin}/oclint-json-compilation-database", "-help"
   end
 end
