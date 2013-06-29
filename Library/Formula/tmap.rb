@@ -18,7 +18,7 @@ class Tmap < Formula
   depends_on 'google-perftools' if build.include? 'perf'
 
   fails_with :clang do
-    build 421
+    build 425
     cause 'Missing symbols being discussed in iontorrent/TMAP#3'
   end
 
