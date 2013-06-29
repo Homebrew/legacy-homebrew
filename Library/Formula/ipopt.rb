@@ -6,9 +6,9 @@ class Ipopt < Formula
   sha1 '3dec7e71f93756865cc83275f7ddb22e1dc5edcc'
 
   depends_on 'pkg-config' => :build
+  depends_on :fortran
 
   def install
-    ENV.fortran
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

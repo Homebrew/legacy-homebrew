@@ -1,21 +1,11 @@
 require 'formula'
 
-class NeedsLion < Requirement
-  fatal true
-
-  satisfy MacOS.version >= :lion
-
-  def message
-    "Nu requires Mac OS X 10.7 or newer"
-  end
-end
-
 class Nu < Formula
   homepage 'http://programming.nu'
   url 'http://programming.nu/releases/Nu-2.0.1.tgz'
   sha1 'c0735f8f3daec9471b849f8e96827b5eef0ec44e'
 
-  depends_on NeedsLion
+  depends_on :macos => :lion
   depends_on 'pcre'
 
   fails_with :llvm do
@@ -34,7 +24,7 @@ class Nu < Formula
 
     inreplace "Makefile" do |s|
       cflags = s.get_make_var "CFLAGS"
-      s.change_make_var! "CFLAGS", "#{cflags} #{ENV["CPPFLAGS"]}"
+      s.change_make_var! "CFLAGS", "#{cflags} #{ENV.cppflags}"
       # nu hardcodes its compiler paths to a location which no longer works
       # This should work for both Xcode-only and CLT-only systems
       s.gsub! "$(DEVROOT)/usr/bin/clang", ENV.cc

@@ -1,16 +1,16 @@
 require 'testing_env'
-require 'vendor/multi_json'
+require 'utils/json'
 
 class JsonSmokeTest < Test::Unit::TestCase
   def test_encode
     hash = { "foo" => ["bar", "baz"] }
     json = %q|{"foo":["bar","baz"]}|
-    assert_equal json, MultiJson.encode(hash)
+    assert_equal json, Utils::JSON.dump(hash)
   end
 
   def test_decode
     hash = { "foo" => ["bar", "baz"], "qux" => 1 }
     json = %q|{"foo":["bar","baz"],"qux":1}|
-    assert_equal hash, MultiJson.decode(json)
+    assert_equal hash, Utils::JSON.load(json)
   end
 end

@@ -2,13 +2,12 @@ require 'formula'
 
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-2.6.1.tar.gz'
-  sha1 'ee9b2ae1cf2518c90b55f9429bf4ed9f2d4fced6'
+  url 'http://mercurial.selenic.com/release/mercurial-2.6.2.tar.gz'
+  sha1 '861c1df8f50347c8381df3aa7e296113ecf24ae6'
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
-  depends_on :python # its written in Python, so this is a hard dep
-  depends_on 'docutils' => :python
+  depends_on :python => 'docutils'
 
   def install
     python do
@@ -23,8 +22,6 @@ class Mercurial < Formula
       system "make doc"
       system "make", "PREFIX=#{prefix}", "install"
 
-      # Install some contribs
-      bin.install "contrib/hgk"
       # Install man pages
       man1.install 'doc/hg.1'
       man5.install 'doc/hgignore.5', 'doc/hgrc.5'
@@ -36,14 +33,7 @@ class Mercurial < Formula
   end
 
   def caveats
-    s = <<-EOS.undent
-      In order to use the graphical `hgk`, you may have to set:
-        export HG=hg
-      and add to your ~/.hgrc file:
-        [extensions]
-        hgk=
-    EOS
-
+    s = ''
     if build.head? then s += <<-EOS.undent
         To install the --HEAD version of mercurial, you have to:
           1. `brew install mercurial`  # so brew can use this to fetch sources!

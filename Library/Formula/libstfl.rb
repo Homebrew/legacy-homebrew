@@ -6,7 +6,7 @@ class Libstfl < Formula
   sha1 '226488be2b33867dfb233f0fa2dde2d066e494bd'
 
   depends_on :python => :recommended
-  depends_on 'swig'
+  depends_on 'swig' => :build
 
   def patches; DATA; end
 

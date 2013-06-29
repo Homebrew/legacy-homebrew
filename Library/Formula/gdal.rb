@@ -188,7 +188,7 @@ class Gdal < Formula
     ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib -lsqlite3"
     ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
     # Needed by libdap.
-    ENV.append 'CPPFLAGS', '-I/usr/include/libxml2' if build.include? 'complete'
+    ENV.libxml2 if build.include? 'complete'
 
     # Reset ARCHFLAGS to match how we build.
     if MacOS.prefer_64_bit?

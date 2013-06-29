@@ -292,4 +292,14 @@ class VersionParsingTests < Test::Unit::TestCase
   def test_ezlupdate_version
     assert_version_detected '2011.10', 'https://github.com/downloads/ezsystems/ezpublish-legacy/ezpublish_community_project-2011.10-with_ezc.tar.bz2'
   end
+
+  def test_aespipe_version_style
+    assert_version_detected '2.4c',
+      'http://loop-aes.sourceforge.net/aespipe/aespipe-v2.4c.tar.bz2'
+  end
+
+  def test_perforce_style
+    assert_version_detected '2013.1.610569-x86_64',
+      '/usr/local/perforce-2013.1.610569-x86_64.mountain_lion.bottle.tar.gz'
+  end
 end

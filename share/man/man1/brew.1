@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "May 2013" "Homebrew" "brew"
+.TH "BREW" "1" "June 2013" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -368,7 +368,7 @@ If \fB\-\-compact\fR is passed, show all options on a single line separated by s
 .
 .TP
 \fB\-\-cache\fR
-Display Homebrew\'s download cache\. \fIDefault:\fR \fB~/Library/Caches/Homebrew\fR
+Display Homebrew\'s download cache\. See also \fBHOMEBREW_CACHE\fR\.
 .
 .TP
 \fB\-\-cache\fR \fIformula\fR
@@ -467,10 +467,10 @@ If set, instructs Homebrew to compile from source even when a formula provides a
 .
 .TP
 HOMEBREW_CACHE
-If set, instructs Homebrew to use the given directory as the download cache\. Otherwise, \fB~/Library/Caches/Homebrew\fR is used\.
+If set, instructs Homebrew to use the given directory as the download cache\.
 .
 .IP
-This can be used to keep downloads out of your home directory, if you have it mounted on an SSD or are using FileVault for instance\.
+\fIDefault:\fR \fB~/Library/Caches/Homebrew\fR if it exists; otherwise, \fB/Library/Caches/Homebrew\fR\.
 .
 .TP
 HOMEBREW_CURL_VERBOSE

@@ -1,5 +1,6 @@
 require 'formula'
 
+# Reference: https://github.com/b4winckler/macvim/wiki/building
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
   url 'https://github.com/b4winckler/macvim/archive/snapshot-66.tar.gz'
@@ -14,7 +15,7 @@ class Macvim < Formula
   depends_on 'cscope' => :recommended
   depends_on 'lua' => :optional
   depends_on :python => :recommended
-  depends_on :python3 => :optional # Help us! :python3 in MacVim makes the window disappear!
+  # Help us! :python3 in MacVim makes the window disappear, so only 2.x bindings!
 
   depends_on :xcode # For xcodebuild.
 
@@ -25,9 +26,8 @@ class Macvim < Formula
     arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
     ENV['ARCHFLAGS'] = "-arch #{arch}"
 
-    # If building for 10.8, make sure that CC is set to "clang".
-    # Reference: https://github.com/b4winckler/macvim/wiki/building
-    ENV.clang if MacOS.version >= :mountain_lion
+    # If building for 10.7 or up, make sure that CC is set to "clang".
+    ENV.clang if MacOS.version >= :lion
 
     args = %W[
       --with-features=huge
@@ -51,7 +51,16 @@ class Macvim < Formula
     end
 
     args << "--enable-pythoninterp=yes" if build.with? 'python'
-    args << "--enable-python3interp=yes" if build.with? "python3"
+
+    # MacVim seems to link Python by `-framework Python` (instead of
+    # `python-config --ldflags`) and so we have to pass the -F to point to
+    # where the Python.framework is located, we want it to use!
+    # Also the -L is needed for the correct linking. This is a mess but we have
+    # to wait until MacVim is really able to link against different Python's
+    # on the Mac. Note configure detects brewed python correctly, but that
+    # is ignored.
+    # See https://github.com/mxcl/homebrew/issues/17908
+    ENV.prepend 'LDFLAGS', "-L#{python2.libdir} -F#{python2.framework}" if python && python.brewed?
 
     unless MacOS::CLT.installed?
       # On Xcode-only systems:
@@ -64,15 +73,15 @@ class Macvim < Formula
 
     system "./configure", *args
 
-    # Building custom icons fails for many users, so off by default.
-    unless build.include? "custom-icons"
+    if build.include? "custom-icons"
+      # Get the custom font used by the icons
+      cd 'src/MacVim/icons' do
+        system "make getenvy"
+      end
+    else
+      # Building custom icons fails for many users, so off by default.
       inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
       inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
-    end
-
-    # Reference: https://github.com/b4winckler/macvim/wiki/building
-    cd 'src/MacVim/icons' do
-      system "make getenvy"
     end
 
     system "make"

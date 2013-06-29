@@ -1,11 +1,11 @@
 require 'formula'
 
 class GitFtp < Formula
-  homepage 'https://github.com/resmo/git-ftp'
-  url 'https://github.com/resmo/git-ftp/archive/0.8.1.tar.gz'
-  sha1 '073040fd59b838c68499b98cc98bfd01a9feff09'
+  homepage 'http://git-ftp.github.io/git-ftp/'
+  url 'https://github.com/git-ftp/git-ftp/archive/0.8.4.tar.gz'
+  sha1 '77b615993d0095ad700e6ee6d82ef4005e5e2269'
 
-  head 'https://github.com/resmo/git-ftp.git'
+  head 'https://github.com/git-ftp/git-ftp.git'
 
   def install
     system "make", "prefix=#{prefix}", "install"

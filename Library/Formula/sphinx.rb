@@ -29,9 +29,7 @@ class Sphinx < Formula
 
   fails_with :clang do
     build 421
-    cause <<-EOS.undent
-      sphinxexpr.cpp:1802:11: error: use of undeclared identifier 'ExprEval'
-    EOS
+    cause "sphinxexpr.cpp:1802:11: error: use of undeclared identifier 'ExprEval'"
   end
 
   def install

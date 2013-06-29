@@ -7,8 +7,8 @@ module MacCPUs
     :g4 => '-mcpu=7400',
     :g4e => '-mcpu=7450',
     :g5 => '-mcpu=970'
-  }
-  def optimization_flags; OPTIMIZATION_FLAGS.dup; end
+  }.freeze
+  def optimization_flags; OPTIMIZATION_FLAGS; end
 
   # These methods use info spewed out by sysctl.
   # Look in <mach/machine.h> for decoding info.

@@ -6,6 +6,7 @@ require 'keg'
 require 'tab'
 require 'bottles'
 require 'caveats'
+require 'cleaner'
 
 class FormulaInstaller
   attr_reader :f
@@ -146,15 +147,14 @@ class FormulaInstaller
         elsif req.default_formula?
           dependent.deps << req.to_dependency
           Requirement.prune
+        else
+          puts "#{dependent}: #{req.message}"
         end
       end
     end
 
-    unless unsatisfied.empty?
-      puts unsatisfied.map(&:message) * "\n"
-      fatals = unsatisfied.select(&:fatal?)
-      raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
-    end
+    fatals = unsatisfied.select(&:fatal?)
+    raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
   end
 
   # Dependencies of f that were also explicitly requested on the command line.
@@ -205,7 +205,7 @@ class FormulaInstaller
   end
 
   def install_dependency dep
-    dep_tab = Tab.for_formula(dep)
+    dep_tab = Tab.for_formula(dep.to_formula)
     dep_options = dep.options
     dep = dep.to_formula
 
@@ -263,12 +263,12 @@ class FormulaInstaller
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
     unless ENV['HOMEBREW_NO_EMOJI']
-      print "🍺  " if MacOS.version >= :lion
+      print "\xf0\x9f\x8d\xba  " if MacOS.version >= :lion
     end
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
     puts
-
+  ensure
     unlock if hold_locks?
   end
 
@@ -363,6 +363,10 @@ class FormulaInstaller
       onoe "The `brew link` step did not complete successfully"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts "You can try again using `brew link #{f.name}'"
+      puts
+      puts "Possible conflicting files are:"
+      mode = OpenStruct.new(:dry_run => true, :overwrite => true)
+      keg.link(mode)
       ohai e, e.backtrace if ARGV.debug?
       @show_summary_heading = true
       ignore_interrupts{ keg.unlink }
@@ -409,7 +413,6 @@ class FormulaInstaller
       puts "in the formula."
       return
     end
-    require 'cleaner'
     Cleaner.new f
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
@@ -455,6 +458,7 @@ class FormulaInstaller
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 
@@ -514,6 +518,7 @@ class FormulaInstaller
       puts "The offending files are:"
       puts non_exes
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 
@@ -528,6 +533,7 @@ class FormulaInstaller
       puts "The offending files are:"
       puts non_exes
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 

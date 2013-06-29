@@ -1,14 +1,5 @@
 require 'formula'
 
-class EmacsRequirement < Requirement
-  fatal true
-  satisfy { which('emacs') }
-
-  def message
-    "Emacs support requires Emacs to be installed."
-  end
-end
-
 class Gettext < Formula
   homepage 'http://www.gnu.org/software/gettext/'
   url 'http://ftpmirror.gnu.org/gettext/gettext-0.18.2.tar.gz'
@@ -24,10 +15,7 @@ class Gettext < Formula
   end
 
   option :universal
-  option 'with-emacs', 'Build with emacs support'
   option 'with-examples', 'Keep example files'
-
-  depends_on EmacsRequirement if build.include? "with-emacs"
 
   def patches
     unless build.include? 'with-examples'
@@ -41,22 +29,17 @@ class Gettext < Formula
     ENV.libxml2
     ENV.universal_binary if build.universal?
 
-    args = ["--disable-dependency-tracking",
-            "--disable-debug",
-            "--prefix=#{prefix}",
-            "--with-included-gettext",
-            "--with-included-glib",
-            "--with-included-libcroco",
-            "--with-included-libunistring",
-            # Don't use VCS systems to create these archives
-            "--without-git",
-            "--without-cvs"]
-    if build.include? "with-emacs"
-      args << "--with-emacs"
-    else
-      args << "--without-emacs"
-    end
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--with-included-gettext",
+                          "--with-included-glib",
+                          "--with-included-libcroco",
+                          "--with-included-libunistring",
+                          "--with-emacs",
+                          # Don't use VCS systems to create these archives
+                          "--without-git",
+                          "--without-cvs"
     system "make"
     ENV.deparallelize # install doesn't support multiple make jobs
     system "make install"

@@ -27,7 +27,7 @@ class Graphviz < Formula
   depends_on 'pango' if build.include? 'with-pangocairo'
   depends_on 'swig' if build.include? 'with-bindings'
   depends_on :python if build.include? 'with-bindings'  # this will set up python
-  depends_on 'gts' if build.include? 'with-gts'
+  depends_on 'gts' => :optional
   depends_on :freetype if build.include? 'with-freetype' or MacOS::X11.installed?
   depends_on :x11 if build.include? 'with-x' or MacOS::X11.installed?
   depends_on :xcode if build.include? 'with-app'
@@ -49,7 +49,7 @@ class Graphviz < Formula
             "--prefix=#{prefix}",
             "--without-qt",
             "--with-quartz"]
-    args << "--with-gts" if build.include? 'with-gts'
+    args << "--with-gts" if build.with? 'gts'
     args << "--disable-swig" unless build.include? 'with-bindings'
     args << "--without-pangocairo" unless build.include? 'with-pangocairo'
     args << "--without-freetype2" unless build.include? 'with-freetype' or MacOS::X11.installed?

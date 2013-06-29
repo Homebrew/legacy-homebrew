@@ -29,25 +29,30 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
     if python_reqs.empty?
       raise "If you use python in the formula, you have to add `depends_on :python` (or :python3)!"
     end
-    # Now select those that are satisfied and matching the version.major
-    python_reqs = python_reqs.select do |p|
-      p.satisfied? &&
-      options[:allowed_major_versions].include?(p.version.major) &&
-      if p.optional? || p.recommended?
-        self.build.with?(p.name)
-      else
-        true
+    # Now select those that are satisfied and matching the version.major and
+    # check that no two python binaries are the same (which could be the case
+    # because more than one `depends_on :python => 'module_name' may be present).
+    filtered_python_reqs = []
+    while !python_reqs.empty?
+      py = python_reqs.shift
+      # this is ulgy but Ruby 1.8 has no `uniq! { }`
+      if !filtered_python_reqs.map{ |fpr| fpr.binary }.include?(py.binary) &&
+         py.satisfied? &&
+         options[:allowed_major_versions].include?(py.version.major) &&
+         self.build.with?(py.name) || !(py.optional? || py.recommended?)
+      then
+        filtered_python_reqs << py
       end
     end
 
     # Allow to use an else-branch like so: `if python do ... end; else ... end`
-    return false if python_reqs.empty?
+    return false if filtered_python_reqs.empty?
 
     # Sort by version, so the older 2.x will be used first and if no
     # block_given? then 2.x is preferred because it is returned.
     # Further note, having 3.x last allows us to run `2to3 --write .`
     # which modifies the sources in-place (for some packages that need this).
-    python_reqs.sort_by{ |py| py.version }.map do |py|
+    filtered_python_reqs.sort_by{ |py| py.version }.map do |py|
       # Now is the time to set the site_packages to the correct value
       py.site_packages = lib/py.xy/'site-packages'
       if !block_given?

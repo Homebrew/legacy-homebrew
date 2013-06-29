@@ -10,17 +10,7 @@ module MacOS extend self
   end
 
   def cat
-    case MacOS.version
-    when 10.8 then :mountain_lion
-    when 10.7 then :lion
-    when 10.6 then :snow_leopard
-    when 10.5 then :leopard
-    when 10.4 then :tiger
-    end
-  end
-
-  def pretty_name
-    cat.to_s.split('_').map(&:capitalize).join(' ')
+    version.to_sym
   end
 
   def locate tool
@@ -50,7 +40,13 @@ module MacOS extend self
   end
 
   def dev_tools_path
-    @dev_tools_path ||= if File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
+    @dev_tools_path ||= \
+    if File.exist? MacOS::CLT::STANDALONE_PKG_PATH and
+       File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/cc" and
+       File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/make"
+      # In 10.9 the CLT moved from /usr into /Library/Developer/CommandLineTools.
+      Pathname.new "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin"
+    elsif File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
     # Note that the exit status of system "xcrun foo" isn't always accurate
@@ -184,7 +180,7 @@ module MacOS extend self
   end
 
   def prefer_64_bit?
-    Hardware.is_64_bit? and version != :leopard
+    Hardware::CPU.is_64_bit? and version != :leopard
   end
 
   STANDARD_COMPILERS = {
@@ -206,6 +202,8 @@ module MacOS extend self
     "4.6"   => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "4.6.1" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "4.6.2" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "4.6.3" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "5.0"   => { :clang => "5.0", :clang_build => 500 },
   }
 
   def compilers_standard?

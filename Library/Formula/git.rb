@@ -1,22 +1,19 @@
 require 'formula'
 
-# Git 1.8.3 has a serious issue with .gitignore files being parsed incorrectly
-# on OS X. This issue has been fixed upstream. Waiting for 1.8.3.1 to update.
-
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.8.2.3.tar.gz'
-  sha1 'eb04a2540ff9998e0887a4b862641ac1db723f3e'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.8.3.2.tar.gz'
+  sha1 '5ce8c00fe9e2755c67d29b2f2135fc8c4202fc1f'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.2.3.tar.gz'
-  sha1 'b8d6b3c4077d37b34bf08b6eb53c4ee5901fa2f9'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.3.2.tar.gz'
+  sha1 'adffaa379e1994fc6d6cb6491aed680ad6bb37ad'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.2.3.tar.gz'
-  sha1 '2831f7deec472db4d0d0cdffb4d82d91cecdf295'
+  url 'http://git-core.googlecode.com/files/git-1.8.3.2.tar.gz'
+  sha1 '4a6585dd81a542e7803e5f54a5c85b1c1a5869aa'
 
   head 'https://github.com/git/git.git'
 

@@ -2,8 +2,8 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.30/kvm-tarbake-jaunty-x86/mariadb-5.5.30.tar.gz'
-  sha1 'aa0cb78b8d709d765e4a58953ecdceefc48af5a7'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.31/kvm-tarbake-jaunty-x86/mariadb-5.5.31.tar.gz'
+  sha1 '45268a0603db8674ecabbc510ad0fcad88a730f7'
 
   devel do
     url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.2/kvm-tarbake-jaunty-x86/mariadb-10.0.2.tar.gz'
@@ -89,29 +89,31 @@ class Mariadb < Formula
     system "make"
     system "make install"
 
-    # Don't create databases inside of the prefix!
-    # See: https://github.com/mxcl/homebrew/issues/4975
-    rm_rf prefix+'data'
-
-    (prefix+'mysql-test').rmtree unless build.include? 'with-tests' # save 121MB!
-    (prefix+'sql-bench').rmtree unless build.include? 'with-bench'
-
-    # Link the setup script into bin
-    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
-
-    # Fix up the control script and link into bin
-    inreplace "#{prefix}/support-files/mysql.server" do |s|
-      s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
-      # pidof can be replaced with pgrep from proctools on Mountain Lion
-      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
-    end
-
     # Fix my.cnf to point to #{etc} instead of /etc
     inreplace "#{etc}/my.cnf" do |s|
       s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
     end
 
-    ln_s "#{prefix}/support-files/mysql.server", bin
+    unless build.include? 'client-only'
+      # Don't create databases inside of the prefix!
+      # See: https://github.com/mxcl/homebrew/issues/4975
+      rm_rf prefix+'data'
+
+      (prefix+'mysql-test').rmtree unless build.include? 'with-tests' # save 121MB!
+      (prefix+'sql-bench').rmtree unless build.include? 'with-bench'
+
+      # Link the setup script into bin
+      ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+
+      # Fix up the control script and link into bin
+      inreplace "#{prefix}/support-files/mysql.server" do |s|
+        s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+        # pidof can be replaced with pgrep from proctools on Mountain Lion
+        s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
+      end
+
+      ln_s "#{prefix}/support-files/mysql.server", bin
+    end
   end
 
   def caveats; <<-EOS.undent

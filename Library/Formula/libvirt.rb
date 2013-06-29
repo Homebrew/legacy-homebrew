@@ -11,6 +11,7 @@ class Libvirt < Formula
   depends_on 'gnutls'
   depends_on 'libgcrypt'
   depends_on 'yajl'
+  depends_on :python => :recommended
 
   if MacOS.version == :leopard
     # Definitely needed on Leopard, but not on Snow Leopard.
@@ -37,7 +38,8 @@ class Libvirt < Formula
             "--with-yajl",
             "--without-qemu"]
 
-    args << "--without-libvirtd" if build.include? 'without-libvirtd'
+    args << "--without-libvirtd" if build.without? 'libvirtd'
+    args << "--without-python" if build.without? 'python'
 
     system "./configure", *args
 
@@ -57,6 +59,14 @@ class Libvirt < Formula
         s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
         s.gsub! "/var/", "#{HOMEBREW_PREFIX}/var/"
       end
+    end
+  end
+
+  test do
+    if build.with? 'python'
+      # Testing to import the mod because that is a .so file where linking
+      # can break.
+      system python, '-c', "import libvirtmod"
     end
   end
 end

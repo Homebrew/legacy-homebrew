@@ -2,6 +2,8 @@ require 'tab'
 require 'macos'
 require 'extend/ARGV'
 
+# TODO: use options={} for some arguments.
+
 def bottle_filename f, bottle_revision=nil
   name = f.name.downcase
   version = f.stable.version
@@ -26,11 +28,9 @@ def install_bottle? f, warn=false
 end
 
 def built_as_bottle? f
-  f = Formula.factory f unless f.kind_of? Formula
   return false unless f.installed?
   tab = Tab.for_keg(f.installed_prefix)
-  # Need to still use the old "built_bottle" until all bottles are updated.
-  tab.built_as_bottle or tab.built_bottle
+  tab.built_as_bottle
 end
 
 def bottle_current? f
@@ -81,10 +81,10 @@ end
 
 def bottle_tag
   case MacOS.version
-  when 10.8, 10.7, 10.5
+  when "10.8", "10.7", "10.5"
     MacOS.cat
-  when 10.6
-    Hardware.is_64_bit? ? :snow_leopard : :snow_leopard_32
+  when "10.6"
+    Hardware::CPU.is_64_bit? ? :snow_leopard : :snow_leopard_32
   else
     Hardware::CPU.type == :ppc ? Hardware::CPU.family : MacOS.cat
   end

@@ -196,7 +196,7 @@ class << ENV
 
   def determine_make_jobs
     if (j = ENV['HOMEBREW_MAKE_JOBS'].to_i) < 1
-      Hardware.processor_count
+      Hardware::CPU.cores
     else
       j
     end
@@ -217,8 +217,8 @@ class << ENV
     end
     # Fix issue with sed barfing on unicode characters on Mountain Lion
     s << 's' if MacOS.version >= :mountain_lion
-    # Fix issue with 10.8 apr-1-config having broken paths
-    s << 'a' if MacOS.version == :mountain_lion
+    # Fix issue with >= 10.8 apr-1-config having broken paths
+    s << 'a' if MacOS.version >= :mountain_lion
     s
   end
 
@@ -254,11 +254,11 @@ class << ENV
   alias_method :j1, :deparallelize
   def gcc
     ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "gcc"
-    ENV['CXX'] = ENV['OBJCXX'] = "g++"
+    ENV['CXX'] = ENV['OBJCXX'] = "g++-4.2"
   end
   def llvm
     ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "llvm-gcc"
-    ENV['CXX'] = ENV['OBJCXX'] = "g++"
+    ENV['CXX'] = ENV['OBJCXX'] = "llvm-g++-4.2"
   end
   def clang
     ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "clang"

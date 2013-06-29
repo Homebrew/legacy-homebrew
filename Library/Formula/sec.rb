@@ -2,8 +2,8 @@ require 'formula'
 
 class Sec < Formula
   homepage 'http://simple-evcorr.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/simple-evcorr/sec/2.6.2/sec-2.6.2.tar.gz'
-  sha1 'bce0717c59ef1310fcad14ee1f90f4c05f89c4c0'
+  url 'http://downloads.sourceforge.net/project/simple-evcorr/sec/2.7.3/sec-2.7.3.tar.gz'
+  sha1 '926747fb34e45597d24cf6b7a44b9d23be01f7d0'
 
   def install
     bin.install 'sec'
