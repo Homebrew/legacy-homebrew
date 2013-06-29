@@ -1,19 +1,27 @@
 require 'formula'
 
-class RakudoStar <Formula
-  url 'https://github.com/downloads/rakudo/star/rakudo-star-2010.10.tar.gz'
+class RakudoStar < Formula
   homepage 'http://rakudo.org/'
-  md5 '02b426572fe2f42514940f485bcf1d91'
+  url 'http://rakudo.org/downloads/star/rakudo-star-2013.05.tar.gz'
+  sha256 '4eeb7116bf432a8c439fc0db53294364fa723ae32659f31547a62fa7cd2e3384'
 
-  depends_on 'parrot'
+  conflicts_with 'parrot'
+
+  depends_on 'gmp' => :optional
+  depends_on 'icu4c' => :optional
+  depends_on 'pcre' => :optional
+  depends_on 'libffi'
 
   def install
-    parrot_bin = Formula.factory('parrot').bin
+    libffi = Formula.factory("libffi")
+    ENV.remove 'CPPFLAGS', "-I#{libffi.include}"
+    ENV.prepend 'CPPFLAGS', "-I#{libffi.lib}/libffi-3.0.11/include"
 
-    system "perl Configure.pl --parrot-config=#{parrot_bin}/parrot_config"
+    ENV.j1  # An intermittent race condition causes random build failures.
+    system "perl", "Configure.pl", "--prefix=#{prefix}", "--gen-parrot"
     system "make"
     system "make install"
-
-    bin.install "perl6"
+    # move the man pages out of the top level into share.
+    mv "#{prefix}/man", share
   end
 end

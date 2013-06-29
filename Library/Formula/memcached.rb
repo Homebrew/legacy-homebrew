@@ -1,62 +1,47 @@
 require 'formula'
 
-class Memcached <Formula
-  url "http://memcached.googlecode.com/files/memcached-1.4.5.tar.gz"
-  homepage 'http://www.danga.com/memcached/'
-  sha1 'c7d6517764b82d23ae2de76b56c2494343c53f02'
+class Memcached < Formula
+  homepage 'http://memcached.org/'
+  url "http://memcached.googlecode.com/files/memcached-1.4.15.tar.gz"
+  sha1 '12ec84011f408846250a462ab9e8e967a2e8cbbc'
 
   depends_on 'libevent'
 
-  def options
-    [
-      ["--enable-sasl", "Enable SASL support -- disables ASCII protocol!"],
-    ]
-  end
+  option "enable-sasl", "Enable SASL support -- disables ASCII protocol!"
+  option "enable-sasl-pwdb", "Enable SASL with memcached's own plain text password db support -- disables ASCII protocol!"
 
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--enable-sasl" if ARGV.include? "--enable-sasl"
+    args = ["--prefix=#{prefix}", "--disable-coverage"]
+    args << "--enable-sasl" if build.include? "enable-sasl"
+    args << "--enable-sasl-pwdb" if build.include? "enable-sasl-pwdb"
 
     system "./configure", *args
     system "make install"
-
-    (prefix+'com.danga.memcached.plist').write startup_plist
   end
 
-  def caveats; <<-EOS
-You can enabled memcached to automatically load on login with:
-    cp #{prefix}/com.danga.memcached.plist ~/Library/LaunchAgents/
-    launchctl load -w ~/Library/LaunchAgents/com.danga.memcached.plist
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/memcached/bin/memcached"
 
-Or start it manually:
-    #{HOMEBREW_PREFIX}/bin/memcached
-
-Add "-d" to start it as a daemon.
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>KeepAlive</key>
+      <true/>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/bin/memcached</string>
+        <string>-l</string>
+        <string>localhost</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>WorkingDirectory</key>
+      <string>#{HOMEBREW_PREFIX}</string>
+    </dict>
+    </plist>
     EOS
-  end
-
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>com.danga.memcached</string>
-  <key>KeepAlive</key>
-  <true/>
-  <key>ProgramArguments</key>
-  <array>
-    <string>#{HOMEBREW_PREFIX}/bin/memcached</string>
-    <string>-l</string>
-    <string>127.0.0.1</string>
-  </array>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>WorkingDirectory</key>
-  <string>#{HOMEBREW_PREFIX}</string>
-</dict>
-</plist>
-    EOPLIST
   end
 end

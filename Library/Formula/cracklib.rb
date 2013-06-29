@@ -1,9 +1,9 @@
 require 'formula'
 
-class Cracklib <Formula
-  url 'http://downloads.sourceforge.net/project/cracklib/cracklib/2.8.16/cracklib-2.8.16.tar.gz'
+class Cracklib < Formula
   homepage 'http://cracklib.sourceforge.net/'
-  md5 '3bfb22db8fcffd019463ee415a1b25b7'
+  url 'http://sourceforge.net/projects/cracklib/files/cracklib/2.9.0/cracklib-2.9.0.tar.gz'
+  sha1 '827dcd24b14bf23911c34f4226b4453b24f949a3'
 
   depends_on "gettext"
 

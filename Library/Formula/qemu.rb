@@ -1,18 +1,32 @@
 require 'formula'
 
-class Qemu <Formula
-  url 'http://download.savannah.gnu.org/releases/qemu/qemu-0.13.0.tar.gz'
+class Qemu < Formula
   homepage 'http://www.qemu.org/'
-  md5 '397a0d665da8ba9d3b9583629f3d6421'
+  url 'http://wiki.qemu-project.org/download/qemu-1.5.0.tar.bz2'
+  sha1 '52d1bd7f8627bb435b95b88ea005b71b9b1a0098'
 
+  head 'git://git.qemu-project.org/qemu.git'
+
+  depends_on 'pkg-config' => :build
+  depends_on :libtool
   depends_on 'jpeg'
   depends_on 'gnutls'
+  depends_on 'glib'
+  depends_on 'pixman'
+  depends_on 'sdl' => :optional
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-darwin-user",
-                          "--enable-cocoa",
-                          "--disable-bsd-user"
+    args = %W[
+      --prefix=#{prefix}
+      --cc=#{ENV.cc}
+      --host-cc=#{ENV.cc}
+      --enable-cocoa
+      --disable-bsd-user
+      --disable-guest-agent
+    ]
+    args << (build.with?('sdl') ? '--enable-sdl' : '--disable-sdl')
+    ENV['LIBTOOL'] = 'glibtool'
+    system "./configure", *args
     system "make install"
   end
 end

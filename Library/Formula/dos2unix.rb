@@ -1,22 +1,20 @@
 require 'formula'
 
-class Dos2unix <Formula
-  url 'http://www.sfr-fresh.com/linux/misc/old/dos2unix-3.1.tar.gz'
-  md5 '25ff56bab202de63ea6f6c211c416e96'
-  homepage 'http://www.sfr-fresh.com/linux/misc/'
+class Dos2unix < Formula
+  homepage 'http://waterlan.home.xs4all.nl/dos2unix.html'
+  url 'http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.0.3.tar.gz'
+  sha1 '2c9ae9177fcb0d8b63d141f73a75c928c38ace01'
+
+  depends_on 'gettext'
 
   def install
-    File.unlink 'dos2unix'
-
-    # we don't use the Makefile as it doesn't optimize
-    system "#{ENV.cc} #{ENV.cflags} dos2unix.c -o dos2unix"
-
-    # make install is broken due to INSTALL file, but also it sucks so we'll do it
-    # also Ruby 1.8 is broken, it won't allow you to move a symlink that's
-    # target is invalid. FFS very dissapointed with dependability of
-    # fundamental Ruby functions. Maybe we shouldn't use them?
-    # Anyway, that is why the symlink is installed first.
-    bin.install %w[mac2unix dos2unix]
-    man1.install %w[mac2unix.1 dos2unix.1]
+    gettext = Formula.factory("gettext")
+    system "make", "prefix=#{prefix}",
+                   "CC=#{ENV.cc}",
+                   "CPP=#{ENV.cc}",
+                   "CFLAGS=#{ENV.cflags}",
+                   "CFLAGS_OS=-I#{gettext.include}",
+                   "LDFLAGS_EXTRA=-L#{gettext.lib} -lintl",
+                   "install"
   end
 end

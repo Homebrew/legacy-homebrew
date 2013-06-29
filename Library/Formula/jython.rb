@@ -1,22 +1,18 @@
 require 'formula'
 
-class Jython <Formula
-  url "http://downloads.sourceforge.net/project/jython/jython/2.5.1/jython_installer-2.5.1.jar",
-    :using => :nounzip
+class Jython < Formula
   homepage 'http://www.jython.org'
+  url 'http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.5.3/jython-installer-2.5.3.jar'
+  sha1 '6b6ac4354733b6d68d51acf2f3d5c823a10a4ce4'
 
-  head "http://downloads.sourceforge.net/project/jython/jython-dev/2.5.2rc3/jython_installer-2.5.2rc3.jar",
-    :using => :nounzip
-
-  if ARGV.build_head?
-    sha1 '547c424a119661ed1901079ff8f4e45af7d57b56'
-  else
-    md5 '2ee978eff4306b23753b3fe9d7af5b37'
+  devel do
+    url 'http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7-b1/jython-installer-2.7-b1.jar'
+    version '2.7-b1'
+    sha1 '385a52a8a3c5d941d61a7b2ed76e8a351b3658f2'
   end
 
   def install
-    system "java", "-jar", Pathname.new(@url).basename, "-s", "-d", libexec
-    bin.mkpath
-    ln_s libexec+'bin/jython', bin
+    system "java", "-jar", cached_download, "-s", "-d", libexec
+    bin.install_symlink libexec/'bin/jython'
   end
 end

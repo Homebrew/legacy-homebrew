@@ -1,49 +1,30 @@
-class ExecutionError <RuntimeError
-  attr :exit_status
-  attr :command
-
-  def initialize cmd, args = [], es = nil
-    @command = cmd
-    super "Failure while executing: #{cmd} #{pretty(args)*' '}"
-    @exit_status = es.exitstatus rescue 1
-  end
-
-  def was_running_configure?
-    @command == './configure'
-  end
-
-  private
-
-  def pretty args
-    args.collect do |arg|
-      if arg.to_s.include? ' '
-        "'#{ arg.gsub "'", "\\'" }'"
-      else
-        arg
-      end
-    end
-  end
-end
-
-class BuildError <ExecutionError
-  attr :env
-
-  def initialize cmd, args = [], es = nil
-    super
-    @env = ENV.to_hash
-  end
-end
+require 'pathname'
+require 'exceptions'
+require 'macos'
+require 'utils/json'
+require 'open-uri'
 
 class Tty
-  class <<self
+  class << self
     def blue; bold 34; end
     def white; bold 39; end
     def red; underline 31; end
     def yellow; underline 33 ; end
     def reset; escape 0; end
     def em; underline 39; end
-    
-  private
+    def green; color 92 end
+    def gray; bold 30 end
+
+    def width
+      `/usr/bin/tput cols`.strip.to_i
+    end
+
+    def truncate(str)
+      str.to_s[0, width - 4]
+    end
+
+    private
+
     def color n
       escape "0;#{n}"
     end
@@ -59,21 +40,35 @@ class Tty
   end
 end
 
-# args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title.to_s[0, `/usr/bin/tput cols`.strip.to_i-4] unless ARGV.verbose?
+  title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput unless sput.empty?
 end
 
+def oh1 title
+  title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
+  puts "#{Tty.green}==>#{Tty.white} #{title}#{Tty.reset}"
+end
+
 def opoo warning
-  puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
+  STDERR.puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
 end
 
 def onoe error
-  lines = error.to_s.split'\n'
-  puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
-  puts lines unless lines.empty?
+  lines = error.to_s.split("\n")
+  STDERR.puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
+  STDERR.puts lines unless lines.empty?
+end
+
+def ofail error
+  onoe error
+  Homebrew.failed = true
+end
+
+def odie error
+  onoe error
+  exit 1
 end
 
 def pretty_duration s
@@ -102,7 +97,7 @@ module Homebrew
     fork do
       yield if block_given?
       args.collect!{|arg| arg.to_s}
-      exec(cmd, *args) rescue nil
+      exec(cmd.to_s, *args) rescue nil
       exit! 1 # never gets here unless exec failed
     end
     Process.wait
@@ -110,25 +105,51 @@ module Homebrew
   end
 end
 
+def with_system_path
+  old_path = ENV['PATH']
+  ENV['PATH'] = '/usr/bin:/bin'
+  yield
+ensure
+  ENV['PATH'] = old_path
+end
+
 # Kernel.system but with exceptions
 def safe_system cmd, *args
-  raise ExecutionError.new(cmd, args, $?) unless Homebrew.system(cmd, *args)
+  unless Homebrew.system cmd, *args
+    args = args.map{ |arg| arg.to_s.gsub " ", "\\ " } * " "
+    raise ErrorDuringExecution, "Failure while executing: #{cmd} #{args}"
+  end
 end
 
 # prints no output
 def quiet_system cmd, *args
   Homebrew.system(cmd, *args) do
-    $stdout.close
-    $stderr.close
+    # Redirect output streams to `/dev/null` instead of closing as some programs
+    # will fail to execute if they can't write to an open stream.
+    $stdout.reopen('/dev/null')
+    $stderr.reopen('/dev/null')
   end
 end
 
 def curl *args
-  safe_system '/usr/bin/curl', '-f#LA', HOMEBREW_USER_AGENT, *args unless args.empty?
+  curl = Pathname.new '/usr/bin/curl'
+  raise "#{curl} is not executable" unless curl.exist? and curl.executable?
+
+  args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
+  # See https://github.com/mxcl/homebrew/issues/6103
+  args << "--insecure" if MacOS.version < 10.6
+  args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
+  args << "--silent" unless $stdout.tty?
+
+  safe_system curl, *args
 end
 
-def puts_columns items, cols = 4
+def puts_columns items, star_items=[]
   return if items.empty?
+
+  if star_items && star_items.any?
+    items = items.map{|item| star_items.include?(item) ? "#{item}*" : item}
+  end
 
   if $stdout.tty?
     # determine the best width to display for different console sizes
@@ -144,96 +165,68 @@ def puts_columns items, cols = 4
   end
 end
 
-def exec_editor *args
-  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
-  if editor.nil?
-    if system "/usr/bin/which -s mate"
-      # TextMate
-      editor='mate'
-    elsif system "/usr/bin/which -s edit"
-      # BBEdit / TextWrangler
-      editor='edit'
-    else
-      # Default to vim
-      editor='/usr/bin/vim'
-    end
-  end
-  # we split the editor because especially on mac "mate -w" is common
-  # but we still want to use the comma-delimited version of exec because then
-  # we don't have to escape args, and escaping 100% is tricky
-  exec(*(editor.split+args))
+def which cmd
+  dir = ENV['PATH'].split(':').find {|p| File.executable? File.join(p, cmd)}
+  Pathname.new(File.join(dir, cmd)) unless dir.nil?
 end
 
-# GZips the given path, and returns the gzipped file
+def which_editor
+  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
+  # If an editor wasn't set, try to pick a sane default
+  return editor unless editor.nil?
+
+  # Find Textmate
+  return 'mate' if which "mate"
+  # Find # BBEdit / TextWrangler
+  return 'edit' if which "edit"
+  # Default to vim
+  return '/usr/bin/vim'
+end
+
+def exec_editor *args
+  return if args.to_s.empty?
+  safe_exec(which_editor, *args)
+end
+
+def exec_browser *args
+  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || "open"
+  safe_exec(browser, *args)
+end
+
+def safe_exec cmd, *args
+  # This buys us proper argument quoting and evaluation
+  # of environment variables in the cmd parameter.
+  exec "/bin/sh", "-i", "-c", cmd + ' "$@"', "--", *args
+end
+
+# GZips the given paths, and returns the gzipped paths
 def gzip *paths
   paths.collect do |path|
     system "/usr/bin/gzip", path
-    Pathname.new(path+".gz")
-  end
-end
-
-module ArchitectureListExtension
-  def universal?
-    self.include? :i386 and self.include? :x86_64
+    Pathname.new("#{path}.gz")
   end
 end
 
 # Returns array of architectures that the given command or library is built for.
 def archs_for_command cmd
-  cmd = cmd.to_s # If we were passed a Pathname, turn it into a string.
-  cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
-  cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
-
-  archs = IO.popen("/usr/bin/file -L #{cmd}").readlines.inject([]) do |archs, line|
-    case line
-    when /Mach-O (executable|dynamically linked shared library) ppc/
-      archs << :ppc7400
-    when /Mach-O 64-bit (executable|dynamically linked shared library) ppc64/
-      archs << :ppc64
-    when /Mach-O (executable|dynamically linked shared library) i386/
-      archs << :i386
-    when /Mach-O 64-bit (executable|dynamically linked shared library) x86_64/
-      archs << :x86_64
-    else
-      archs
-    end
-  end
-  archs.extend(ArchitectureListExtension)
+  cmd = which(cmd) unless Pathname.new(cmd).absolute?
+  Pathname.new(cmd).archs
 end
 
-# String extensions added by inreplace below.
-module HomebrewInreplaceExtension
-  # Looks for Makefile style variable defintions and replaces the
-  # value with "new_value", or removes the definition entirely.
-  def change_make_var! flag, new_value
-    new_value = "#{flag}=#{new_value}"
-    gsub! Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$"), new_value
-  end
-  # Removes variable assignments completely.
-  def remove_make_var! flags
-    flags.each do |flag|
-      # Also remove trailing \n, if present.
-      gsub! Regexp.new("^#{flag}[ \\t]*=(.*)$\n?"), ""
-    end
-  end
-  # Finds the specified variable
-  def get_make_var flag
-    m = match Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$")
-    return m[1] if m
-    return nil
-  end
-end
-
-def inreplace path, before=nil, after=nil
-  [*path].each do |path|
+def inreplace paths, before=nil, after=nil
+  Array(paths).each do |path|
     f = File.open(path, 'r')
     s = f.read
 
-    if before == nil and after == nil
-      s.extend(HomebrewInreplaceExtension)
+    if before.nil? && after.nil?
+      s.extend(StringInreplaceExtension)
       yield s
     else
-      s.gsub!(before, after)
+      sub = s.gsub!(before, after)
+      if sub.nil?
+        opoo "inreplace in '#{path}' failed"
+        puts "Expected replacement of '#{before}' with '#{after}'"
+      end
     end
 
     f.reopen(path, 'w').write(s)
@@ -241,8 +234,10 @@ def inreplace path, before=nil, after=nil
   end
 end
 
-def ignore_interrupts
-  std_trap = trap("INT") {}
+def ignore_interrupts(opt = nil)
+  std_trap = trap("INT") do
+    puts "One sec, just cleaning up" unless opt == :quietly
+  end
   yield
 ensure
   trap("INT", std_trap)
@@ -263,28 +258,50 @@ def nostdout
   end
 end
 
-def dump_build_env env
-  puts "\"--use-llvm\" was specified" if ARGV.include? '--use-llvm'
+module GitHub extend self
+  ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/")
 
-  %w[ CC CXX LD ].each do |k|
-    value = env[k]
-    if value
-      results = value
-      if File.exists? value and File.symlink? value
-        target = Pathname.new(value)
-        results += " => #{target.realpath}"
-      end
-      puts "#{k}: #{results}"
+  def open url, headers={}, &block
+    default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
+    default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
+    Kernel.open(url, default_headers.merge(headers), &block)
+  rescue OpenURI::HTTPError => e
+    if e.io.meta['x-ratelimit-remaining'].to_i <= 0
+      raise "GitHub #{Utils::JSON.load(e.io.read)['message']}"
+    else
+      raise e
     end
   end
 
-  %w[ CFLAGS CXXFLAGS CPPFLAGS LDFLAGS MACOSX_DEPLOYMENT_TARGET MAKEFLAGS PKG_CONFIG_PATH
-      HOMEBREW_DEBUG HOMEBREW_VERBOSE HOMEBREW_USE_LLVM HOMEBREW_SVN ].each do |k|
-    value = env[k]
-    puts "#{k}: #{value}" if value
+  def each_issue_matching(query, &block)
+    uri = ISSUES_URI + query
+    open(uri) { |f| Utils::JSON.load(f.read)['issues'].each(&block) }
   end
-end
 
-def x11_installed?
-  Pathname.new('/usr/X11/lib/libpng.dylib').exist?
+  def issues_for_formula name
+    # bit basic as depends on the issue at github having the exact name of the
+    # formula in it. Which for stuff like objective-caml is unlikely. So we
+    # really should search for aliases too.
+
+    name = f.name if Formula === name
+
+    issues = []
+
+    each_issue_matching(name) do |issue|
+      # don't include issues that just refer to the tool in their body
+      issues << issue['html_url'] if issue['title'].include? name
+    end
+
+    issues
+  end
+
+  def find_pull_requests rx
+    query = rx.source.delete('.*').gsub('\\', '')
+
+    each_issue_matching(query) do |issue|
+      if rx === issue['title'] && issue.has_key?('pull_request_url')
+        yield issue['pull_request_url']
+      end
+    end
+  end
 end

@@ -1,15 +1,16 @@
 require 'formula'
 
-class ClosureCompiler <Formula
-  url 'http://closure-compiler.googlecode.com/files/compiler-20100917.tar.gz'
+class ClosureCompiler < Formula
   homepage 'http://code.google.com/p/closure-compiler/'
-  md5 '581e7d667103d8bee08ff8adf7e39e56'
+  url 'https://code.google.com/p/closure-compiler/', :using => :git, :tag => 'v20130603'
+
+  head 'https://code.google.com/p/closure-compiler/', :using => :git
 
   def install
-    libexec.install "compiler.jar"
-    (bin+'closure').write <<-EOS.undent
-      #!/bin/bash
-      java -jar #{libexec}/compiler.jar $@
-    EOS
+    system "ant", "clean"
+    system "ant"
+
+    libexec.install Dir['*']
+    bin.write_jar_script libexec/'build/compiler.jar', 'closure-compiler'
   end
 end

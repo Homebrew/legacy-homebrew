@@ -1,22 +1,37 @@
 require 'formula'
 
-class Pianobar <Formula
-  url 'https://github.com/PromyLOPh/pianobar/tarball/2011.01.24'
-  version '2011.01.24'
+class Pianobar < Formula
   homepage 'https://github.com/PromyLOPh/pianobar/'
-  md5 '97ee5b39e5e9006f6139db2787f346a0'
+  url 'https://github.com/PromyLOPh/pianobar/archive/2013.05.19.tar.gz'
+  sha256 'fa4cf45c3f6143b5597269ce2a5178a49acee5b279cc2d9a132e40fa845bb647'
 
-  head 'git://github.com/PromyLOPh/pianobar.git'
+  head 'https://github.com/PromyLOPh/pianobar.git'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libao'
   depends_on 'mad'
   depends_on 'faad2'
+  depends_on 'gnutls'
+  depends_on 'libgcrypt'
+  depends_on 'json-c'
 
-  skip_clean :bin
+  fails_with :llvm do
+    build 2334
+    cause "Reports of this not compiling on Xcode 4"
+  end
 
   def install
-    ENV.delete "CFLAGS"
+    # Discard Homebrew's CFLAGS as Pianobar reportedly doesn't like them
+    ENV['CFLAGS'] = "-O2 -DNDEBUG " +
+                    # Or it doesn't build at all
+                    "-std=c99 " +
+                    # build if we aren't /usr/local'
+                    "#{ENV.cppflags} #{ENV.ldflags}"
+
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
+
+    # Install contrib folder too, why not.
+    prefix.install 'contrib'
   end
 end

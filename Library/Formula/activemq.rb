@@ -1,25 +1,19 @@
 require 'formula'
 
-class Activemq <Formula
-  url 'http://www.reverse.net/pub/apache/activemq/apache-activemq/5.4.1/apache-activemq-5.4.1-bin.tar.gz'
+class Activemq < Formula
   homepage 'http://activemq.apache.org/'
-  md5 '9cac63ecfd93852cda8dec35e5feb56a'
+  url 'http://www.apache.org/dyn/closer.cgi?path=activemq/apache-activemq/5.8.0/apache-activemq-5.8.0-bin.tar.gz'
+  sha1 '426150ee260d3ab57e9c8674944ca7d171646056'
 
   skip_clean 'libexec/webapps/admin/WEB-INF/jsp'
-
-  def startup_script name
-    <<-EOS.undent
-      #!/bin/bash
-      exec #{libexec}/bin/#{name} $@
-    EOS
-  end
 
   def install
     rm_rf Dir['bin/linux-x86-*']
 
-    prefix.install %w{ LICENSE NOTICE README.txt }
+    prefix.install_metafiles
     libexec.install Dir['*']
 
-    (bin+'activemq-admin').write startup_script('activemq-admin')
+    bin.write_exec_script libexec/'bin/activemq'
+    bin.write_exec_script libexec/'bin/activemq-admin'
   end
 end

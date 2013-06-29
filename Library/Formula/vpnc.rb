@@ -1,22 +1,25 @@
 require 'formula'
 
-class Vpnc <Formula
-  url 'http://www.unix-ag.uni-kl.de/~massar/vpnc/vpnc-0.5.3.tar.gz'
+class Vpnc < Formula
   homepage 'http://www.unix-ag.uni-kl.de/~massar/vpnc/'
+  url 'http://www.unix-ag.uni-kl.de/~massar/vpnc/vpnc-0.5.3.tar.gz'
   sha256 '46cea3bd02f207c62c7c6f2f22133382602baeda1dc320747809e94881414884'
 
   depends_on 'libgcrypt'
   depends_on 'libgpg-error'
 
-  skip_clean 'etc'
-  skip_clean 'var'
+  fails_with :llvm do
+    build 2334
+  end
 
-  def options
-    [["--hybrid", "Use vpnc hybrid authentication."]]
+  option "hybrid", "Use vpnc hybrid authentication"
+
+  # Patch from user @Imagesafari to enable compilation on Lion
+  def patches
+    DATA if MacOS.version >= :lion
   end
 
   def install
-    fails_with_llvm
     ENV.no_optimization
     ENV.deparallelize
 
@@ -32,7 +35,7 @@ class Vpnc <Formula
       s.change_make_var! "PREFIX", prefix
       s.change_make_var! "ETCDIR", (etc + 'vpnc')
 
-      s.gsub! /^#OPENSSL/, "OPENSSL" if ARGV.include? "--hybrid"
+      s.gsub! /^#OPENSSL/, "OPENSSL" if build.include? "hybrid"
     end
 
     inreplace "config.c" do |s|
@@ -44,10 +47,16 @@ class Vpnc <Formula
     (var + 'run/vpnc').mkpath
     system "make install"
   end
-
-  def caveats; <<-EOS
-    To use vpnc hybrid authentification:
-      brew install vpnc --hybrid
-    EOS
-  end
 end
+
+__END__
+--- vpnc-0.5.3/sysdep.h	2008-11-19 15:36:12.000000000 -0500
++++ vpnc-0.5.3.patched/sysdep.h	2011-07-14 12:49:18.000000000 -0400
+@@ -109,6 +109,7 @@
+ #define HAVE_FGETLN    1
+ #define HAVE_UNSETENV  1
+ #define HAVE_SETENV    1
++#define HAVE_GETLINE   1
+ #endif
+ 
+ /***************************************************************************/

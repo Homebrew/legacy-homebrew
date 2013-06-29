@@ -1,14 +1,16 @@
 require 'formula'
 
-class Jpegoptim <Formula
-  url 'http://www.kokkonen.net/tjko/src/jpegoptim-1.2.3.tar.gz'
+class Jpegoptim < Formula
   homepage 'http://www.kokkonen.net/tjko/projects.html'
-  md5 '36afa60f8baac825935e215eb19e41e0'
+  url 'http://www.kokkonen.net/tjko/src/jpegoptim-1.3.0.tar.gz'
+  sha1 '5cf5945cbb2245fb7a2c7217947e43bcbd943b7d'
 
   depends_on 'jpeg'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    ENV.j1 # Install is not parallel-safe
     system "make install"
   end
 end

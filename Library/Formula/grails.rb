@@ -1,18 +1,20 @@
 require 'formula'
 
-class Grails <Formula
-  url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-1.3.6.zip'
+class Grails < Formula
   homepage 'http://grails.org'
-  md5 '56fc68a118ca9c65e2c4391c3226a120'
+  url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-2.2.3.zip'
+  sha1 '55c18cd7fe3128648c5928cd60c562b5a0abdcf8'
 
   def install
     rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]
-    prefix.install %w[LICENSE README]
+    prefix.install_metafiles
     libexec.install Dir['*']
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |f|
-      next unless File.extname(f).empty?
-      ln_s f, bin+File.basename(f)
-    end
+    bin.install_symlink Dir["#{libexec}/bin/*"]
+  end
+
+  def caveats; <<-EOS.undent
+    The GRAILS_HOME directory is:
+      #{opt_prefix}/libexec
+    EOS
   end
 end

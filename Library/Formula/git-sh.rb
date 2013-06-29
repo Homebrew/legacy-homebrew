@@ -1,17 +1,14 @@
 require 'formula'
 
 class GitSh < Formula
-  url 'https://github.com/rtomayko/git-sh/tarball/a6eba8824586ce34aff9907af448b3336f7c83d2'
   homepage 'https://github.com/rtomayko/git-sh'
-  md5 '061c56717564651dd99f5cd14b2b1569'
-  version '20100401'
-  head 'git://github.com/rtomayko/git-sh.git'
+  url 'https://github.com/rtomayko/git-sh/archive/1.3.tar.gz'
+  sha1 'b96801ed2a63ef510583e7f1c1b4bc234d991507'
 
-  # Not depending on git because people might have it
-  # installed through another means
+  head 'https://github.com/rtomayko/git-sh.git'
 
   def install
     system "make"
-    system "make install PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end

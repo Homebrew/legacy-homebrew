@@ -1,17 +1,21 @@
 require 'formula'
 
-class Gmime <Formula
-  url 'http://ftp.acc.umu.se/pub/GNOME/sources/gmime/2.4/gmime-2.4.20.tar.bz2'
+class Gmime < Formula
   homepage 'http://spruce.sourceforge.net/gmime/'
-  sha256 'e13ea84678d92fd08a44b06b589a25e07af093634d490caad123b2eead14b990'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gmime/2.6/gmime-2.6.15.tar.xz'
+  sha256 'b4c2a0b99b82063387cd750a38421ebaa0636f339e67984a84371bcb697dc99a'
 
+  depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
+  depends_on 'libgpg-error' => :build
   depends_on 'glib'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-largefile",
-                          "--disable-mono"
+                          "--disable-mono",
+                          "--disable-glibtest"
     system "make install"
   end
 end

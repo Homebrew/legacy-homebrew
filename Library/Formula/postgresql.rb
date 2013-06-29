@@ -1,159 +1,183 @@
 require 'formula'
-require 'hardware'
 
-class Postgresql <Formula
+class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp9.us.postgresql.org/pub/mirrors/postgresql/source/v9.0.3/postgresql-9.0.3.tar.bz2'
-  md5 '928df8c40bb012ad10756e58b70516fb'
+  url 'http://ftp.postgresql.org/pub/source/v9.2.4/postgresql-9.2.4.tar.bz2'
+  sha1 '75b53c884cb10ed9404747b51677358f12082152'
 
   depends_on 'readline'
-  depends_on 'libxml2' if MACOS_VERSION < 10.6 # Leopard libxml is too old
-  depends_on 'ossp-uuid'
+  depends_on 'libxml2' if MacOS.version == :leopard # Leopard libxml is too old
+  depends_on 'ossp-uuid' => :recommended
+  depends_on :python => :recommended
 
-  def options
-    [
-      ['--no-python', 'Build without Python support.'],
-      ['--no-perl', 'Build without Perl support.']
-    ]
+  conflicts_with 'postgres-xc',
+    :because => 'postgresql and postgres-xc install the same binaries.'
+
+  option '32-bit'
+  option 'no-perl', 'Build without Perl support'
+  option 'enable-dtrace', 'Build with DTrace support'
+
+  fails_with :clang do
+    build 211
+    cause 'Miscompilation resulting in segfault on queries'
   end
 
-  skip_clean :all
+  # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
+  # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
+  def patches
+    DATA
+  end
 
   def install
-    ENV.libxml2 if MACOS_VERSION >= 10.6
+    ENV.libxml2 if MacOS.version >= :snow_leopard
 
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
-            "--enable-thread-safety",
-            "--with-bonjour",
-            "--with-gssapi",
-            "--with-krb5",
-            "--with-openssl",
-            "--with-libxml", "--with-libxslt"]
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+      --datadir=#{share}/#{name}
+      --docdir=#{doc}
+      --enable-thread-safety
+      --with-bonjour
+      --with-gssapi
+      --with-krb5
+      --with-ldap
+      --with-openssl
+      --with-pam
+      --with-libxml
+      --with-libxslt
+    ]
 
-    args << "--with-python" unless ARGV.include? '--no-python'
-    args << "--with-perl" unless ARGV.include? '--no-perl'
+    args << "--with-ossp-uuid" if build.with? 'ossp-uuid'
+    args << "--with-python" if build.with? 'python'
+    args << "--with-perl" unless build.include? 'no-perl'
+    args << "--enable-dtrace" if build.include? 'enable-dtrace'
 
-    args << "--with-ossp-uuid"
-    ENV.append 'CFLAGS', `uuid-config --cflags`.strip
-    ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
-    ENV.append 'LIBS', `uuid-config --libs`.strip
+    if build.with? 'ossp-uuid'
+      ENV.append 'CFLAGS', `uuid-config --cflags`.strip
+      ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
+      ENV.append 'LIBS', `uuid-config --libs`.strip
+    end
 
-    if snow_leopard_64? and not ARGV.include? '--no-python'
+    if not build.build_32_bit? and MacOS.prefer_64_bit? and build.with? 'python'
       args << "ARCHFLAGS='-arch x86_64'"
       check_python_arch
     end
 
-    # Fails on Core Duo with O4 and O3
-    ENV.O2 if Hardware.intel_family == :core
-
-    system "./configure", *args
-    system "make install"
-
-    contrib_directories = Dir.glob("contrib/*").select{ |path| File.directory?(path) } - ['contrib/start-scripts']
-
-    contrib_directories.each do |contrib_directory|
-      system "cd #{contrib_directory}; make install"
+    if build.build_32_bit?
+      ENV.append 'CFLAGS', '-arch i386'
+      ENV.append 'LDFLAGS', '-arch i386'
     end
 
-    (prefix+'org.postgresql.postgres.plist').write startup_plist
+    system "./configure", *args
+    system "make install-world"
   end
 
   def check_python_arch
-    # On 64-bit systems, we need to look for a 32-bit Framework Python.
-    # The configure script prefers this Python version, and if it doesn't
-    # have 64-bit support then linking will fail.
-    framework_python = Pathname.new "/Library/Frameworks/Python.framework/Versions/Current/Python"
-    return unless framework_python.exist?
-    unless (archs_for_command framework_python).include? :x86_64
-      opoo "Detected a framework Python that does not have 64-bit support in:"
-      puts <<-EOS.undent
-          #{framework_python}
+    # On 64-bit systems, we need to avoid a 32-bit Framework Python.
+    if python.framework?
+      unless archs_for_command(python.binary).include? :x86_64
+        opoo "Detected a framework Python that does not have 64-bit support in:"
+        puts <<-EOS.undent
+          #{python.prefix}
 
-        The configure script seems to prefer this version of Python over any others,
-        so you may experience linker problems as described in:
-          http://osdir.com/ml/pgsql-general/2009-09/msg00160.html
+          The configure script seems to prefer this version of Python over any others,
+          so you may experience linker problems as described in:
+            http://osdir.com/ml/pgsql-general/2009-09/msg00160.html
 
-        To fix this issue, you may need to either delete the version of Python
-        shown above, or move it out of the way before brewing PostgreSQL.
+          To fix this issue, you may need to either delete the version of Python
+          shown above, or move it out of the way before brewing PostgreSQL.
 
-        Note that a framework Python in /Library/Frameworks/Python.framework is
-        the "MacPython" verison, and not the system-provided version which is in:
-          /System/Library/Frameworks/Python.framework
-      EOS
+          Note that a framework Python in /Library/Frameworks/Python.framework is
+          the "MacPython" version, and not the system-provided version which is in:
+            /System/Library/Frameworks/Python.framework
+        EOS
+      end
     end
   end
 
   def caveats
-    s = <<-EOS
-If builds of PostgreSQL 9 are failing and you have version 8.x installed,
-you may need to remove the previous version first. See:
-  https://github.com/mxcl/homebrew/issues/issue/2510
-
-To build plpython against a specific Python, set PYTHON prior to brewing:
-  PYTHON=/usr/local/bin/python  brew install postgresql
-See:
-  http://www.postgresql.org/docs/9.0/static/install-procedure.html
+    s = <<-EOS.undent
+    If builds of PostgreSQL 9 are failing and you have version 8.x installed,
+    you may need to remove the previous version first. See:
+      https://github.com/mxcl/homebrew/issues/issue/2510
 
 
-If this is your first install, create a database with:
-    initdb #{var}/postgres
+    If this is your first install, create a database with:
+      initdb #{var}/postgres -E utf8
 
-If this is your first install, automatically load on login with:
-    cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents
-    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
 
-If this is an upgrade and you already have the org.postgresql.postgres.plist loaded:
-    launchctl unload -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
-    cp #{prefix}/org.postgresql.postgres.plist ~/Library/LaunchAgents
-    launchctl load -w ~/Library/LaunchAgents/org.postgresql.postgres.plist
+    To migrate existing data from a previous major version (pre-9.2) of PostgreSQL, see:
+      http://www.postgresql.org/docs/9.2/static/upgrading.html
 
-Or start manually with:
-    pg_ctl -D #{var}/postgres -l #{var}/postgres/server.log start
 
-And stop with:
-    pg_ctl -D #{var}/postgres stop -s -m fast
-EOS
+    Some machines may require provisioning of shared memory:
+      http://www.postgresql.org/docs/9.2/static/kernel-resources.html#SYSVIPC
+    EOS
 
-    if snow_leopard_64? then
-      s << <<-EOS
-
-If you want to install the postgres gem, including ARCHFLAGS is recommended:
-    env ARCHFLAGS="-arch x86_64" gem install pg
-
-To install gems without sudo, see the Homebrew wiki.
-      EOS
-    end
-
+    s << gem_caveats if MacOS.prefer_64_bit?
     return s
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>KeepAlive</key>
-  <true/>
-  <key>Label</key>
-  <string>org.postgresql.postgres</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>#{bin}/postgres</string>
-    <string>-D</string>
-    <string>#{var}/postgres</string>
-    <string>-r</string>
-    <string>#{var}/postgres/server.log</string>
-  </array>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>UserName</key>
-  <string>#{`whoami`.chomp}</string>
-  <key>WorkingDirectory</key>
-  <string>#{HOMEBREW_PREFIX}</string>
-</dict>
-</plist>
-    EOPLIST
+  def gem_caveats; <<-EOS.undent
+    When installing the postgres gem, including ARCHFLAGS is recommended:
+      ARCHFLAGS="-arch x86_64" gem install pg
+
+    To install gems without sudo, see the Homebrew wiki.
+    EOS
+  end
+
+  plist_options :manual => "pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres -l #{HOMEBREW_PREFIX}/var/postgres/server.log start"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>KeepAlive</key>
+      <true/>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/bin/postgres</string>
+        <string>-D</string>
+        <string>#{var}/postgres</string>
+        <string>-r</string>
+        <string>#{var}/postgres/server.log</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>WorkingDirectory</key>
+      <string>#{HOMEBREW_PREFIX}</string>
+      <key>StandardErrorPath</key>
+      <string>#{var}/postgres/server.log</string>
+    </dict>
+    </plist>
+    EOS
   end
 end
+
+
+__END__
+--- a/src/pl/plpython/Makefile	2011-09-23 08:03:52.000000000 +1000
++++ b/src/pl/plpython/Makefile	2011-10-26 21:43:40.000000000 +1100
+@@ -24,8 +24,6 @@
+ # Darwin (OS X) has its own ideas about how to do this.
+ ifeq ($(PORTNAME), darwin)
+ shared_libpython = yes
+-override python_libspec = -framework Python
+-override python_additional_libs =
+ endif
+ 
+ # If we don't have a shared library and the platform doesn't allow it
+--- a/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:34:53.000000000 -0700
++++ b/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:35:03.000000000 -0700
+@@ -9,6 +9,8 @@
+  *-------------------------------------------------------------------------
+  */
+
++#define _XOPEN_SOURCE
++
+ #include "postgres.h"
+ #include "fmgr.h"
+ #include "utils/builtins.h"

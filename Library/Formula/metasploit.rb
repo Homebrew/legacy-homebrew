@@ -1,13 +1,17 @@
 require 'formula'
 
-class Metasploit <Formula
-  url "https://www.metasploit.com/svn/framework3/trunk/", :using => :svn, :revision => "9321"
-  version "3.4.0"
+class Metasploit < Formula
   homepage 'http://www.metasploit.com/framework/'
+  head 'https://github.com/rapid7/metasploit-framework.git'
+  url 'https://github.com/rapid7/metasploit-framework/archive/2013021301.tar.gz'
+  version '4.5.0-2013021301'
+  sha1 '63934228ec316ca6c2313b151eab6e3bd91f5508'
 
   def install
-    libexec.install Dir["msf*",'data','external','lib','modules','plugins','scripts','test','tools']
-    bin.mkpath
-    Dir["#{libexec}/msf*"].each {|f| ln_s f, bin}
+    libexec.install Dir["msf*"]
+    libexec.install 'armitage', 'HACKING', 'data', 'documentation',
+                    'external', 'lib', 'modules', 'plugins',
+                    'scripts', 'test', 'tools'
+    bin.install_symlink Dir["#{libexec}/msf*","#{libexec}/armitage"]
   end
 end

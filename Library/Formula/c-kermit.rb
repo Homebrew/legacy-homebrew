@@ -1,13 +1,13 @@
 require 'formula'
 
-class CKermit <Formula
-  url 'ftp://kermit.columbia.edu/kermit/archives/cku211.tar.gz'
-  homepage 'http://www.columbia.edu/kermit/'
-  md5 '5767ec5e6ff0857cbfe2d3ec1ee0e2bc'
-  version '8.0.211'
+class CKermit < Formula
+  homepage 'http://www.kermitproject.org/'
+  url 'http://www.kermitproject.org/ftp/kermit/archives/cku302.tar.gz'
+  version '9.0.302'
+  sha1 'd04c8b5600bc0bb0f163d294881f7a5a0d4395b5'
 
   def install
-    system "make macosx103"
+    system "make macosx"
     man1.mkpath
 
     # The makefile adds /man to the end of manroot when running install

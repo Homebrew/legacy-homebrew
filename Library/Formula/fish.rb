@@ -1,20 +1,34 @@
 require 'formula'
 
-class Fish <Formula
-  url 'http://downloads.sourceforge.net/project/fish/fish/1.23.1/fish-1.23.1.tar.bz2'
-  homepage 'http://fishshell.org/'
-  md5 'ead6b7c6cdb21f35a3d4aa1d5fa596f1'
+class Fish < Formula
+  homepage 'http://fishshell.com'
+  url 'http://fishshell.com/files/2.0.0/fish-2.0.0.tar.gz'
+  sha1 '2d28553e2ff975f8e5fed6b266f7a940493b6636'
 
-  depends_on 'readline'
+  head 'https://github.com/fish-shell/fish-shell.git'
+
+  # Indeed, the head build always builds documentation
+  depends_on 'doxygen' => :build if build.head?
+  depends_on :autoconf
+
   skip_clean 'share/doc'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--without-xsel"
+    system "autoconf"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 
-  def caveats
-    "You will need to add #{HOMEBREW_PREFIX}/bin/fish to /etc/shells\n"+
-    "Run `chsh -s #{HOMEBREW_PREFIX}/bin/fish' to make fish your default shell."
+  test do
+    system "fish", "-c", "echo"
+  end
+
+  def caveats; <<-EOS.undent
+    You will need to add:
+      #{HOMEBREW_PREFIX}/bin/fish
+    to /etc/shells. Run:
+      chsh -s #{HOMEBREW_PREFIX}/bin/fish
+    to make fish your default shell.
+    EOS
   end
 end

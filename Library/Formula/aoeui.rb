@@ -1,10 +1,10 @@
 require 'formula'
 
-class Aoeui <Formula
-  url 'http://aoeui.googlecode.com/files/aoeui-1.4.tgz'
-  head 'http://aoeui.googlecode.com/svn/trunk/'
+class Aoeui < Formula
   homepage 'http://aoeui.googlecode.com/'
-  md5 '8df4615fdf854838fe6c8ca773d0a6ea'
+  url 'http://aoeui.googlecode.com/files/aoeui-1.6.tgz'
+  sha1 '6dd4949b844cad1f1380b1f218088c7b385f589f'
+  head 'http://aoeui.googlecode.com/svn/trunk/'
 
   def install
     system "make", "INST_DIR=#{prefix}", "install"

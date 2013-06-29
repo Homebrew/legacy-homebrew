@@ -1,25 +1,26 @@
 require 'formula'
 
-class Putty <Formula
-  url 'http://the.earth.li/~sgtatham/putty/latest/putty-0.60.tar.gz'
+class Putty < Formula
   homepage 'http://www.chiark.greenend.org.uk/~sgtatham/putty/'
-  md5 '07e65fd98b16d115ae38a180bfb242e2'
+  url 'http://the.earth.li/~sgtatham/putty/0.62/putty-0.62.tar.gz'
+  sha1 '5898438614117ee7e3704fc3f30a3c4bf2041380'
+
+  depends_on 'pkg-config' => :build
+  depends_on 'gtk+' => :optional
 
   def install
-    # use the unix build to make all PuTTY command line tools
-    cd "unix"
-    # disable GTK upon configure
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-gtktest", "--with-gtk-prefix=/dev/null"
-    system "make VER=-DRELEASE=#{version} all-cli"
-    # install manually
-    bin.install %w{ plink pscp psftp puttygen }
-    cd "../doc"
-    man1.install %w{ plink.1 pscp.1 psftp.1 puttygen.1 }
-  end
+    cd "unix" do
+      system "./configure", "--prefix=#{prefix}", "--disable-gtktest"
+      system "make", "VER=-DRELEASE=#{version}",
+                     (build.with?('gtk+') ? "all" : "all-cli")
 
-  def caveats
-    "This formula did not build the Mac OS X GUI PuTTY.app."
+      bin.install %w{ putty puttytel pterm } if build.with? 'gtk+'
+      bin.install %w{ plink pscp psftp puttygen }
+    end
+
+    cd "doc" do
+      man1.install %w{ putty.1 puttytel.1 pterm.1 } if build.with? 'gtk+'
+      man1.install %w{ plink.1 pscp.1 psftp.1 puttygen.1 }
+    end
   end
 end

@@ -1,12 +1,13 @@
 require 'formula'
 
 class AutoconfArchive < Formula
-  url 'http://download.savannah.nongnu.org/releases/autoconf-archive/autoconf-archive-2010.02.14.tar.bz2'
   homepage 'http://savannah.gnu.org/projects/autoconf-archive/'
-  md5 '8dbbc4b75b518ca6d16826be9515a1ac'
+  url 'http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2013.04.06.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/autoconf-archive/autoconf-archive-2013.04.06.tar.bz2'
+  sha1 'e52250911531c0ba0382c823c544e00e38750240'
 
   def install
-    system './configure', "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system 'make install'
   end
 end

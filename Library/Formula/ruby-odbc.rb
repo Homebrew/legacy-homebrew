@@ -1,9 +1,9 @@
 require 'formula'
 
 class RubyOdbc < Formula
-  url 'http://www.ch-werner.de/rubyodbc/ruby-odbc-0.99991.tar.gz'
   homepage 'http://www.ch-werner.de/rubyodbc/'
-  md5 '64eaf6089e7ca17eeff54c4fe052ac96'
+  url 'http://www.ch-werner.de/rubyodbc/ruby-odbc-0.99995.tar.gz'
+  sha1 '8fc7bd34c582953e56478050a7b41b4b3e0efdd3'
 
   depends_on 'unixodbc'
   depends_on 'freetds'
@@ -19,7 +19,7 @@ class RubyOdbc < Formula
       s.change_make_var! "prefix", prefix
       s.change_make_var! "sitearchdir", lib
 
-      if snow_leopard_64?
+      if MacOS.prefer_64_bit?
         # ruby-odbc still chooses iODBC over unixODBC (even with --with-odbc-dir)
         # apparently because unixODBC is compiled for only x86_64 and ruby-odbc
         # and iODBC are both i386 and x86_64. The solution (which works for me on Snow Leopard)

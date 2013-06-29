@@ -1,19 +1,22 @@
 require 'formula'
 
-class Gwyddion <Formula
-  url 'http://downloads.sourceforge.net/project/gwyddion/gwyddion/2.21/gwyddion-2.21.tar.bz2'
+class Gwyddion < Formula
   homepage 'http://gwyddion.net/'
-  md5 '7330a22460743c9da8dceec03f7924e9'
+  url 'http://downloads.sourceforge.net/project/gwyddion/gwyddion/2.31/gwyddion-2.31.tar.xz'
+  sha1 '0e0b78970bd3c8272f69f48fc5c7180514c859a1'
 
+  depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'gtk+'
   depends_on 'libxml2'
   depends_on 'fftw'
   depends_on 'gtkglext'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-desktop-file-update",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-html-dir=#{doc}"
     system "make install"
   end
 end

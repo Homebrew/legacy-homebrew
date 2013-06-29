@@ -1,13 +1,15 @@
 require 'formula'
 
 class Mg < Formula
-  url 'http://pintday.org/hack/mg/mg-p-080818.tgz'
-  homepage 'http://pintday.org/hack/mg/'
-  md5 '5cdd46b226586306bde2dd5d47920d66'
+  homepage 'http://homepage.boetes.org/software/mg/'
+  url 'http://homepage.boetes.org/software/mg/mg-20110905.tar.gz'
+  sha1 '51d2bac801cab33c9b552c36db5f8637fbbe9363'
 
   def install
-    system "make PREFIX=#{prefix}"
-    bin.mkpath # otherwise install copies 'mg' to 'bin'
-    system "make install PREFIX=#{prefix}"
+    # -Wno-error=unused-but-set-variable requires GCC 4.6+
+    inreplace 'Makefile.in', '-Wno-error=unused-but-set-variable', ''
+    system "./configure"
+    system "make", "install", "prefix=#{prefix}", "mandir=#{man}"
+    doc.install "tutorial"
   end
 end

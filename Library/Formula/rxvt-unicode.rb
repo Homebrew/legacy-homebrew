@@ -1,24 +1,42 @@
 require 'formula'
 
 class RxvtUnicode < Formula
-  url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.07.tar.bz2'
   homepage 'http://software.schmorp.de/pkg/rxvt-unicode.html'
-  md5 '49bb52c99e002bf85eb41d8385d903b5'
+  url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.15.tar.bz2'
+  sha1 'e6fdf091860ecb458730dc68b0176f67f207a2f7'
+
+  option "disable-iso14755", "Disable ISO 14775 Shift+Ctrl hotkey"
+
+  depends_on 'pkg-config' => :build
+  depends_on :x11
 
   def patches
-    # Add 256 color support
-    {:p1 => ["doc/urxvt-8.2-256color.patch", DATA]}
+    # Patch hunks 1 and 2 allow perl support to compile on Intel.
+    # Hunk 3 is taken from http://aur.archlinux.org/packages.php?ID=44649
+    # which removes an extra 10% font width that urxvt adds.
+    DATA
+  end
+
+  fails_with :llvm do
+    build 2336
+    cause "memory fences not defined for your architecture"
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-afterimage",
-                          "--enable-perl",
-                          "--enable-256-color",
-                          "--with-term=rxvt-256color"
+    args = ["--prefix=#{prefix}",
+            "--mandir=#{man}",
+            "--disable-afterimage",
+            "--enable-perl",
+            "--enable-256-color",
+            "--with-term=rxvt-unicode-256color",
+            "--with-terminfo=/usr/share/terminfo",
+            "--enable-smart-resize"]
+
+    args << "--disable-iso14755" if build.include? "disable-iso14755"
+
+    system "./configure", *args
     system "make"
-    # `make` won't work unless we rename this
+    # `make` won't work unless we rename this because of HFS's default case-insensitivity
     system "mv INSTALL README.install"
     system "make install"
   end
@@ -29,21 +47,21 @@ class RxvtUnicode < Formula
 end
 
 __END__
---- a/configure	2009-12-30 07:13:23.000000000 +0100
-+++ b/configure	2010-07-12 20:36:58.000000000 +0200
-@@ -11810,8 +11810,8 @@
- 
+--- a/configure   2010-12-13 11:48:00.000000000 -0500
++++ b/configure   2011-04-13 13:15:00.000000000 -0400
+@@ -8255,8 +8255,8 @@
+
       save_CXXFLAGS="$CXXFLAGS"
       save_LIBS="$LIBS"
 -     CXXFLAGS="$CXXFLAGS `$PERL -MExtUtils::Embed -e ccopts`"
 -     LIBS="$LIBS `$PERL -MExtUtils::Embed -e ldopts`"
 +     CXXFLAGS="$CXXFLAGS `$PERL -MExtUtils::Embed -e ccopts|sed -E 's/ -arch [^ ]+//g'`"
 +     LIBS="$LIBS `$PERL -MExtUtils::Embed -e ldopts|sed -E 's/ -arch [^ ]+//g'`"
-      cat >conftest.$ac_ext <<_ACEOF
- /* confdefs.h.  */
- _ACEOF
-@@ -11874,8 +11874,8 @@
- 
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+
+@@ -8292,8 +8292,8 @@
+
          IF_PERL=
          PERL_O=rxvtperl.o
 -        PERLFLAGS="`$PERL -MExtUtils::Embed -e ccopts`"
@@ -52,4 +70,30 @@ __END__
 +        PERLLIB="`$PERL -MExtUtils::Embed -e ldopts|sed -E 's/ -arch [^ ]+//g'`"
          PERLPRIVLIBEXP="`$PERL -MConfig -e 'print $Config{privlibexp}'`"
       else
-         { { echo "$as_me:$LINENO: error: no, unable to link" >&5
+         as_fn_error $? "no, unable to link" "$LINENO" 5
+
+--- a/src/rxvtfont.C.bukind 2007-11-30 14:36:33.000000000 +0600
++++ b/src/rxvtfont.C  2007-11-30 14:39:29.000000000 +0600
+@@ -1262,12 +1262,21 @@
+           XGlyphInfo g;
+           XftTextExtents16 (disp, f, &ch, 1, &g);
+ 
++/*
++ * bukind: don't use g.width as a width of a character!
++ * instead use g.xOff, see e.g.: http://keithp.com/~keithp/render/Xft.tutorial
++
+           g.width -= g.x;
+ 
+           int wcw = WCWIDTH (ch);
+           if (wcw > 0) g.width = (g.width + wcw - 1) / wcw;
+ 
+           if (width    < g.width       ) width    = g.width;
++ */
++          int wcw = WCWIDTH (ch);
++          if (wcw > 1) g.xOff = g.xOff / wcw;
++          if (width < g.xOff) width = g.xOff;
++
+           if (height   < g.height      ) height   = g.height;
+           if (glheight < g.height - g.y) glheight = g.height - g.y;
+         }
+

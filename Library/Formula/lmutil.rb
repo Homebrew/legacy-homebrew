@@ -1,13 +1,10 @@
 require 'formula'
 
-class Lmutil <Formula
-  url 'http://www.globes.com/products/utilities/v11.8/lmutil_universal_mac10.tar.gz'
-  version '11.8'
+class Lmutil < Formula
   homepage 'http://www.globes.com/support/fnp_utilities_download.htm'
-  md5 '9754ab4101edf450de31454b6da0eec3'
-
-  # Stripping the binaries would invalidate the code signatures
-  skip_clean ['bin']
+  url 'http://www.globes.com/products/utilities/v11.11/lmutil_universal_mac10.tar.gz'
+  version '11.11'
+  sha1 '9eb15dd48a79304cec7c03a2716970dea2d047e2'
 
   def install
     bin.install 'lmutil'

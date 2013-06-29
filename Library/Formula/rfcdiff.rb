@@ -1,15 +1,14 @@
 require 'formula'
 
-class Rfcdiff <Formula
-  url 'http://tools.ietf.org/tools/rfcdiff/rfcdiff-1.40.tgz'
+class Rfcdiff < Formula
   homepage 'http://tools.ietf.org/tools/rfcdiff/'
-  md5 '9b29508e080edbc329e959620502b19b'
+  url 'http://tools.ietf.org/tools/rfcdiff/rfcdiff-1.41.tgz'
+  sha1 '02bcd3bf6078caec001bf677530c97893edf34a1'
 
   depends_on 'wdiff'
   depends_on 'gawk' => :recommended
 
   def install
     bin.install "rfcdiff"
-    prefix.install "todo"
   end
 end

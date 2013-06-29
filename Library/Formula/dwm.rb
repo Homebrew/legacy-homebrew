@@ -1,10 +1,13 @@
 require 'formula'
 
-class Dwm <Formula
-  url 'http://dl.suckless.org/dwm/dwm-5.8.2.tar.gz'
+class Dwm < Formula
   homepage 'http://dwm.suckless.org/'
-  md5 'f0b422bfeaa812d66c6dd15c3cc92a6b'
+  url 'http://dl.suckless.org/dwm/dwm-6.0.tar.gz'
+  sha1 '35346f873a27f219ae266594b3690407f95d06ef'
+
   head 'http://hg.suckless.org/dwm'
+
+  depends_on :x11
 
   def install
     # The dwm default quit keybinding Mod1-Shift-q collides with
@@ -13,11 +16,10 @@ class Dwm <Formula
     '{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },',
     '{ MODKEY|ControlMask,           XK_q,      quit,           {0} },'
     inreplace 'dwm.1', '.B Mod1\-Shift\-q', '.B Mod1\-Control\-q'
-    system "make PREFIX=#{prefix} install"
+    system "make", "PREFIX=#{prefix}", "install"
   end
 
-  def caveats
-    <<-EOS
+  def caveats; <<-EOS.undent
     In order to use the Mac OS X command key for dwm commands,
     change the X11 keyboard modifier map using xmodmap (1).
 

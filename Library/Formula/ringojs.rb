@@ -1,24 +1,15 @@
 require 'formula'
 
-class Ringojs <Formula
-  url 'https://github.com/downloads/ringo/ringojs/ringojs-0.6.tar.gz'
+class Ringojs < Formula
   homepage 'http://ringojs.org'
-  md5 '9a18e2bc6624df43010c61d2ef0d65ee'
+  url 'http://ringojs.org/downloads/ringojs-0.9.tar.gz'
+  sha1 '1b0b7efcad323d5dd7ce3b1dbdfc079914e8713a'
 
-  def shim_script target
-    <<-EOS.undent
-      #!/bin/bash
-      #{libexec}/bin/#{target} $*
-    EOS
-  end
+  skip_clean 'libexec/packages'
 
   def install
     rm Dir['bin/*.cmd']
     libexec.install Dir['*']
-
-    Dir["#{libexec}/bin/*"].each do |b|
-      n = Pathname.new(b).basename
-      (bin+n).write shim_script(n)
-    end
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 end

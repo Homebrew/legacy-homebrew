@@ -2,17 +2,12 @@ require 'formula'
 
 class Arm < Formula
   homepage 'http://www.atagar.com/arm/'
-  url 'http://www.atagar.com/arm/resources/arm-1.3.7-1.tar.bz2'
-  sha256 '2d815dbf9608e501ab8d40f9f785c13308cd282821e36bda5bbbb62d548e0e0b'
+  url 'http://www.atagar.com/arm/resources/static/arm-1.4.5.0.tar.bz2'
+  sha256 'fc0e771585dde3803873b4807578060f0556cf1cac6c38840a714ffada3b28fa'
 
   def install
-    (share+"arm").mkpath
     (share+"arm").install Dir["*"]
-
-    (bin+'arm').write <<-EOS
-#!/bin/sh
-cd #{share}/arm; arm $@
-    EOS
+    bin.write_exec_script share/'arm/arm'
   end
 
   def caveats; <<-EOS.undent
@@ -21,7 +16,7 @@ cd #{share}/arm; arm $@
 
     To configure Arm, copy the sample configuration from
     #{share}/arm/armrc.sample
-    to ~/.armrc, adjusting as needed.
+    to ~/.arm/.armrc, adjusting as needed.
     EOS
   end
 end

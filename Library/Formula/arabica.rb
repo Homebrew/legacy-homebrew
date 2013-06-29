@@ -1,14 +1,15 @@
 require 'formula'
 
-class Arabica <Formula
+class Arabica < Formula
   homepage 'http://www.jezuk.co.uk/cgi-bin/view/arabica'
-  url 'https://github.com/ashb/Arabica/tarball/20100203'
-  version '20100203'
-  md5 '9318c4d498957cd356e533f2132d6956'
+  url 'http://sourceforge.net/projects/arabica/files/arabica/November-12/arabica-2012-November.tar.gz'
+  version '20121126'
+  sha1 '34d043607e048e0972a57e31bfff09086d893d14'
 
   def install
-    system "autoreconf"
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

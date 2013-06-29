@@ -1,129 +1,161 @@
 require 'formula'
 
 class Nginx < Formula
-  url 'http://nginx.org/download/nginx-0.8.54.tar.gz'
-  head 'http://nginx.org/download/nginx-0.9.4.tar.gz'
   homepage 'http://nginx.org/'
+  url 'http://nginx.org/download/nginx-1.4.1.tar.gz'
+  sha1 '9c72838973572323535dae10f4e412d671b27a7e'
 
-  if ARGV.build_head?
-    @md5='055eb48433ec5ab5f25c5d186144e461'
-  else
-    @md5='44df4eb6a22d725021288c570789046f'
+  devel do
+    url 'http://nginx.org/download/nginx-1.5.1.tar.gz'
+    sha1 'bd5a5e7dba39a4aa166918112367589f165ce5bc'
   end
 
+  head 'http://hg.nginx.org/nginx/', :using => :hg
+
+  env :userpaths
+
+  option 'with-passenger', 'Compile with support for Phusion Passenger module'
+  option 'with-webdav', 'Compile with support for WebDAV module'
+  option 'with-debug', 'Compile with support for debug log'
+  option 'with-spdy', 'Compile with support for SPDY module'
+  option 'with-gunzip', 'Compile with support for gunzip module'
+
   depends_on 'pcre'
+  # SPDY needs openssl >= 1.0.1 for NPN; see:
+  # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
+  # http://www.openssl.org/news/changelog.html
+  depends_on 'openssl' if build.with? 'spdy'
 
   skip_clean 'logs'
 
+  # Changes default port to 8080
   def patches
-    # Changes default port to 8080
-    # Set configure to look in homebrew prefix for pcre
     DATA
   end
 
-  def options
-    [
-      ['--with-passenger', "Compile with support for Phusion Passenger module"],
-      ['--with-webdav',    "Compile with support for WebDAV module"]
-    ]
-  end
-
   def passenger_config_args
-      passenger_root = `passenger-config --root`.chomp
+    passenger_root = `passenger-config --root`.chomp
 
-      if File.directory?(passenger_root)
-        return "--add-module=#{passenger_root}/ext/nginx"
-      end
+    if File.directory?(passenger_root)
+      return "--add-module=#{passenger_root}/ext/nginx"
+    end
 
-      puts "Unable to install nginx with passenger support. The passenger"
-      puts "gem must be installed and passenger-config must be in your path"
-      puts "in order to continue."
-      exit
+    puts "Unable to install nginx with passenger support. The passenger"
+    puts "gem must be installed and passenger-config must be in your path"
+    puts "in order to continue."
+    exit
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--with-http_ssl_module", "--with-pcre",
-            "--conf-path=#{etc}/nginx/nginx.conf", "--pid-path=#{var}/run/nginx.pid",
-            "--lock-path=#{var}/nginx/nginx.lock"]
-    args << passenger_config_args if ARGV.include? '--with-passenger'
-    args << "--with-http_dav_module" if ARGV.include? '--with-webdav'
+    cc_opt = "-I#{HOMEBREW_PREFIX}/include"
+    ld_opt = "-L#{HOMEBREW_PREFIX}/lib"
 
-    system "./configure", *args
+    if build.with? 'spdy'
+      openssl_path = Formula.factory("openssl").opt_prefix
+      cc_opt += " -I#{openssl_path}/include"
+      ld_opt += " -L#{openssl_path}/lib"
+    end
+
+    args = ["--prefix=#{prefix}",
+            "--with-http_ssl_module",
+            "--with-pcre",
+            "--with-ipv6",
+            "--sbin-path=#{bin}/nginx",
+            "--with-cc-opt=#{cc_opt}",
+            "--with-ld-opt=#{ld_opt}",
+            "--conf-path=#{etc}/nginx/nginx.conf",
+            "--pid-path=#{var}/run/nginx.pid",
+            "--lock-path=#{var}/run/nginx.lock",
+            "--http-client-body-temp-path=#{var}/run/nginx/client_body_temp",
+            "--http-proxy-temp-path=#{var}/run/nginx/proxy_temp",
+            "--http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp",
+            "--http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp",
+            "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp",
+            "--http-log-path=#{var}/log/nginx",
+            "--with-http_gzip_static_module"
+          ]
+
+    args << passenger_config_args if build.include? 'with-passenger'
+    args << "--with-http_dav_module" if build.include? 'with-webdav'
+    args << "--with-debug" if build.include? 'with-debug'
+    args << "--with-http_spdy_module" if build.include? 'with-spdy'
+    args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
+
+    if build.head?
+      system "./auto/configure", *args
+    else
+      system "./configure", *args
+    end
+    system "make"
     system "make install"
+    man8.install "objs/nginx.8"
+    (var/'run/nginx').mkpath
 
-    (prefix+'org.nginx.plist').write startup_plist
+    # nginx’s docroot is #{prefix}/html, this isn't useful, so we symlink it
+    # to #{HOMEBREW_PREFIX}/var/www. The reason we symlink instead of patching
+    # is so the user can redirect it easily to something else if they choose.
+    prefix.cd do
+      dst = HOMEBREW_PREFIX/"var/www"
+      if not dst.exist?
+        dst.dirname.mkpath
+        mv "html", dst
+      else
+        rm_rf "html"
+        dst.mkpath
+      end
+      Pathname.new("#{prefix}/html").make_relative_symlink(dst)
+    end
+
+    # for most of this formula’s life the binary has been placed in sbin
+    # and Homebrew used to suggest the user copy the plist for nginx to their
+    # ~/Library/LaunchAgents directory. So we need to have a symlink there
+    # for such cases
+    if (HOMEBREW_CELLAR/'nginx').subdirs.any?{|d| (d/:sbin).directory? }
+      sbin.mkpath
+      sbin.cd do
+        (sbin/'nginx').make_relative_symlink(bin/'nginx')
+      end
+    end
   end
 
-  def caveats
-    <<-CAVEATS
-In the interest of allowing you to run `nginx` without `sudo`, the default
-port is set to localhost:8080.
+  def caveats; <<-EOS.undent
+    Docroot is: #{HOMEBREW_PREFIX}/var/www
 
-If you want to host pages on your local machine to the public, you should
-change that to localhost:80, and run `sudo nginx`. You'll need to turn off
-any other web servers running port 80, of course.
+    The default port has been set to 8080 so that nginx can run without sudo.
 
-You can start nginx automatically on login with:
-    cp #{prefix}/org.nginx.plist ~/Library/LaunchAgents
-    launchctl load -w ~/Library/LaunchAgents/org.nginx.plist
+    If you want to host pages on your local machine to the wider network you
+    can change the port to 80 in: #{HOMEBREW_PREFIX}/etc/nginx/nginx.conf
 
-    CAVEATS
+    You will then need to run nginx as root: `sudo nginx`.
+    EOS
   end
 
-  def startup_plist
-    return <<-EOPLIST
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>Label</key>
-    <string>org.nginx</string>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>KeepAlive</key>
-    <true/>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-    <key>ProgramArguments</key>
-    <array>
-        <string>#{sbin}/nginx</string>
-        <string>-g</string>
-        <string>daemon off;</string>
-    </array>
-    <key>WorkingDirectory</key>
-    <string>#{HOMEBREW_PREFIX}</string>
-  </dict>
-</plist>
-    EOPLIST
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <false/>
+        <key>ProgramArguments</key>
+        <array>
+            <string>#{opt_prefix}/bin/nginx</string>
+            <string>-g</string>
+            <string>daemon off;</string>
+        </array>
+        <key>WorkingDirectory</key>
+        <string>#{HOMEBREW_PREFIX}</string>
+      </dict>
+    </plist>
+    EOS
   end
 end
 
 __END__
---- a/auto/lib/pcre/conf
-+++ b/auto/lib/pcre/conf
-@@ -155,6 +155,22 @@ else
-             . auto/feature
-         fi
-
-+        if [ $ngx_found = no ]; then
-+
-+            # Homebrew
-+            HOMEBREW_PREFIX=${NGX_PREFIX%Cellar*}
-+            ngx_feature="PCRE library in ${HOMEBREW_PREFIX}"
-+            ngx_feature_path="${HOMEBREW_PREFIX}/include"
-+
-+            if [ $NGX_RPATH = YES ]; then
-+                ngx_feature_libs="-R${HOMEBREW_PREFIX}/lib -L${HOMEBREW_PREFIX}/lib -lpcre"
-+            else
-+                ngx_feature_libs="-L${HOMEBREW_PREFIX}/lib -lpcre"
-+            fi
-+
-+            . auto/feature
-+        fi
-+
-         if [ $ngx_found = yes ]; then
-             CORE_DEPS="$CORE_DEPS $REGEX_DEPS"
-             CORE_SRCS="$CORE_SRCS $REGEX_SRCS"
 --- a/conf/nginx.conf
 +++ b/conf/nginx.conf
 @@ -33,7 +33,7 @@

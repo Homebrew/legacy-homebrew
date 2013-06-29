@@ -1,13 +1,9 @@
 require 'formula'
 
-class Ecl <Formula
-  url 'http://downloads.sourceforge.net/project/ecls/ecls/10.4/ecl-10.4.1.tar.gz'
+class Ecl < Formula
   homepage 'http://ecls.sourceforge.net/'
-  md5 'be53f5e55a3f07c7cfb5fb5cd9a2a3f0'
-
-  # doesn't start otherwise
-  skip_clean 'bin'
-  skip_clean 'lib'
+  url 'http://sourceforge.net/projects/ecls/files/ecls/12.7/ecl-12.7.1.tar.gz'
+  sha1 'c5b81d0dc5fdd6c72af99dc883752bfee85028dc'
 
   def install
     ENV.deparallelize

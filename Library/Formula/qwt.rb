@@ -1,18 +1,26 @@
 require 'formula'
 
-class Qwt <Formula
-  url 'http://sourceforge.net/projects/qwt/files/qwt/5.2.1/qwt-5.2.1.tar.bz2'
+class Qwt < Formula
   homepage 'http://qwt.sourceforge.net/'
-  md5 '4a595b8db0ec3856b117836c1d60cb27'
+  url 'http://sourceforge.net/projects/qwt/files/qwt/6.0.1/qwt-6.0.1.tar.bz2'
+  sha1 '301cca0c49c7efc14363b42e082b09056178973e'
 
   depends_on 'qt'
 
   def install
     inreplace 'qwtconfig.pri' do |s|
-      s.gsub! /\/usr\/local\/qwt-5\.2\.1/, prefix
+      # change_make_var won't work because there are leading spaces
+      s.gsub! /^\s*QWT_INSTALL_PREFIX\s*=(.*)$/, "QWT_INSTALL_PREFIX=#{prefix}"
     end
 
-    system "qmake -config release"
+    system "qmake -spec macx-g++ -config release"
+    system "make"
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+      The qwtmathml library contains code of the MML Widget from the Qt solutions package.
+      Beside the Qwt license you also have to take care of its license.
+    EOS
   end
 end

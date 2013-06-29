@@ -1,13 +1,22 @@
 require 'formula'
 
-class Highlight <Formula
-  url 'http://www.andre-simon.de/zip/highlight-2.16.tar.bz2'
+class Highlight < Formula
   homepage 'http://www.andre-simon.de/doku/highlight/en/highlight.html'
-  sha1 'b5fed14bb1a973fe134dd2133766bb86fdc7494e'
+  url 'http://www.andre-simon.de/zip/highlight-3.14.tar.bz2'
+  sha1 '02dd278367e9029baeb396cd6af77f11ceb731c5'
+
+  depends_on 'pkg-config' => :build
+  depends_on 'boost'
+  depends_on 'lua'
 
   def install
-    conf = etc+'highlight/'
-    system "make", "PREFIX=#{prefix}", "conf_dir=#{conf}"
-    system "make", "PREFIX=#{prefix}", "conf_dir=#{conf}", "install"
+    inreplace "src/makefile" do |s|
+      s.change_make_var! "CXX", ENV.cxx
+      s.gsub! /lua5.1/, "lua"
+    end
+
+    conf_dir = etc+'highlight/' # highlight needs a final / for conf_dir
+    system "make", "PREFIX=#{prefix}", "conf_dir=#{conf_dir}"
+    system "make", "PREFIX=#{prefix}", "conf_dir=#{conf_dir}", "install"
   end
 end

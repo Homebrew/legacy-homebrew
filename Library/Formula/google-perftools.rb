@@ -1,15 +1,19 @@
 require 'formula'
 
-class GooglePerftools <Formula
-  url 'http://google-perftools.googlecode.com/files/google-perftools-1.6.tar.gz'
-  homepage 'http://code.google.com/p/google-perftools/'
-  md5 '7acfee8d3e2ba968d20684e9f7033015'
+class GooglePerftools < Formula
+  # TODO rename to gperftools when renames are supported
+  homepage 'http://code.google.com/p/gperftools/'
+  url 'http://gperftools.googlecode.com/files/gperftools-2.0.tar.gz'
+  sha1 'da7181a7ba9b5ee7302daf6c16e886c179fe8d1b'
+
+  fails_with :llvm do
+    build 2326
+    cause "Segfault during linking"
+  end
 
   def install
-    fails_with_llvm "Segfault during linking", :build => 2326
-
     ENV.append_to_cflags '-D_XOPEN_SOURCE'
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
     system "make install"

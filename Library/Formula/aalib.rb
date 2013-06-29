@@ -1,19 +1,24 @@
 require 'formula'
 
-class Aalib <Formula
-  url 'http://downloads.sourceforge.net/aa-project/aalib-1.4rc4.tar.gz'
+class Aalib < Formula
   homepage 'http://aa-project.sourceforge.net/aalib/'
-  md5 'd5aa8e9eae07b7441298b5c30490f6a6'
+  url 'http://downloads.sourceforge.net/aa-project/aalib-1.4rc5.tar.gz'
+  sha1 'a23269e950a249d2ef93625837cace45ddbce03b'
 
-  def patches
-    DATA
-  end
+  # Fix malloc/stdlib issue on OS X
+  # Fix underquoted definition of AM_PATH_AALIB in aalib.m4
+  def patches; DATA end
 
   def install
     ENV.ncurses_define
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--mandir=#{man}", "--infodir=#{info}",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "--infodir=#{info}",
+                          "--enable-shared=yes",
+                          "--enable-static=yes",
+                          "--without-x"
     system "make install"
   end
 end
@@ -31,16 +36,6 @@ index 09534d2..2ea52f9 100644
  #include "aalib.h"
  #include "aaint.h"
  static void aa_editdisplay(struct aa_edit *e)
-diff --git a/src/aafire.c b/src/aafire.c
-index 6144cff..313f08d 100644
---- a/src/aafire.c
-+++ b/src/aafire.c
-@@ -1,6 +1,5 @@
- #include <stdio.h>
- #include <string.h>
--#include <malloc.h>
- #include <stdlib.h>
- #include "aalib.h"
  
 diff --git a/src/aakbdreg.c b/src/aakbdreg.c
 index def65fe..f4f8efb 100644
@@ -122,4 +117,16 @@ index 9935b03..7e725ad 100644
  #include <stdlib.h>
  #include <string.h>
  #include <stdio.h>
-
+diff --git a/aalib.m4 b/aalib.m4
+index c40b8db..991fbda 100644
+--- a/aalib.m4
++++ b/aalib.m4
+@@ -9,7 +9,7 @@
+ dnl AM_PATH_AALIB([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
+ dnl Test for AALIB, and define AALIB_CFLAGS and AALIB_LIBS
+ dnl
+-AC_DEFUN(AM_PATH_AALIB,
++AC_DEFUN([AM_PATH_AALIB],
+ [dnl 
+ dnl Get the cflags and libraries from the aalib-config script
+ dnl

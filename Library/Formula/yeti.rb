@@ -1,19 +1,20 @@
 require 'formula'
 
-class Yeti <Formula
-  url 'http://linux.ee/~mzz/yeti/yeti.jar'
-  homepage 'http://mth.github.com/yeti/'
-  md5 '9be281e8b6cfe3e96f9ea95155d1dc97'
-  version '2010.04' # Yeti doesn't do any versioning that I can see, so use date
+class Yeti < Formula
+  homepage 'http://mth.github.io/yeti/'
+  url 'https://github.com/mth/yeti/archive/v0.9.8.tar.gz'
+  sha1 '64e6174f765fd1444eff70c4a96ae76b2daa6c79'
 
-  head 'git://github.com/mth/yeti.git'
+  head 'https://github.com/mth/yeti.git'
 
   def install
+    system "ant jar"
+
     prefix.install "yeti.jar"
-    (bin+'yeti').write <<-EOS
-#!/bin/sh
-YETI=#{prefix}/yeti.jar
-java -server -jar $YETI $@
-EOS
+    (bin+'yeti').write <<-EOS.undent
+      #!/bin/sh
+      YETI=#{prefix}/yeti.jar
+      java -server -jar "$YETI" "$@"
+      EOS
   end
 end

@@ -1,9 +1,9 @@
 require 'formula'
 
-class Splint <Formula
-  url 'http://www.splint.org/downloads/splint-3.1.2.src.tgz'
+class Splint < Formula
   homepage 'http://www.splint.org/'
-  md5 '25f47d70bd9c8bdddf6b03de5949c4fd'
+  url 'http://www.splint.org/downloads/splint-3.1.2.src.tgz'
+  sha1 '0df489cb228dcfffb149b38c57614c2c3e200501'
 
   def patches
     # fix compiling error of osd.c
@@ -11,11 +11,12 @@ class Splint <Formula
   end
 
   def install
+    ENV.j1 # build is not parallel-safe
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--infodir=#{info}", "--mandir=#{man}"
+                          "--infodir=#{info}",
+                          "--mandir=#{man}"
     system "make"
-    ENV.j1 # Install fails on 8-core without this.
     system "make install"
   end
 end

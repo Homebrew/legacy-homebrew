@@ -1,44 +1,29 @@
-# -*- coding: utf-8 -*-
 require 'formula'
 
-class GitFlowCompletion <Formula
-  url 'git://github.com/bobthecow/git-flow-completion.git', :tag => '0.4.0.2'
-  version '0.4.0.2'
-  head 'git://github.com/bobthecow/git-flow-completion.git', :branch => 'develop'
-
-  def initialize
-    # We need to hard-code the formula name since Homebrew can't
-    # deduce it from the formula's filename, and the git download
-    # strategy really needs a valid name.
-
-    super "git-flow-completion"
-  end
-
+class GitFlowCompletion < Formula
   homepage 'https://github.com/bobthecow/git-flow-completion'
+  url 'https://github.com/bobthecow/git-flow-completion/archive/0.4.2.2.tar.gz'
+  sha1 'd6a041b22ebdfad40efd3dedafd84c020d3f4cb4'
+
+  head 'https://github.com/bobthecow/git-flow-completion.git', :branch => 'develop'
 end
 
-class GitFlow <Formula
-  url 'git://github.com/nvie/gitflow.git', :tag => '0.4.1'
-  version '0.4.1'
-  head 'git://github.com/nvie/gitflow.git', :branch => 'develop'
-
+class GitFlow < Formula
   homepage 'https://github.com/nvie/gitflow'
+
+  # Use the tag instead of the tarball to get submodules
+  url 'https://github.com/nvie/gitflow.git', :tag => '0.4.1'
+
+  head 'https://github.com/nvie/gitflow.git', :branch => 'develop'
+
+  conflicts_with 'git-flow-avh'
 
   def install
     system "make", "prefix=#{prefix}", "install"
 
-    # Normally, etc files are installed directly into HOMEBREW_PREFIX,
-    # rather than being linked from the Cellar — this is so that
-    # configuration files don't get clobbered when you update.  The
-    # bash-completion file isn't really configuration, though; it
-    # should be updated when we upgrade the package.
-
-    cellar_etc = prefix + 'etc'
-    bash_completion_d = cellar_etc + "bash_completion.d"
-
-    completion = GitFlowCompletion.new
-    completion.brew do
-      bash_completion_d.install "git-flow-completion.bash"
+    GitFlowCompletion.new('git-flow-completion').brew do
+      bash_completion.install "git-flow-completion.bash"
+      zsh_completion.install "git-flow-completion.zsh"
     end
   end
 end

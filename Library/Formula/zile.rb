@@ -1,12 +1,16 @@
 require 'formula'
 
-class Zile <Formula
-  url 'http://ftp.gnu.org/gnu/zile/zile-2.3.17.tar.gz'
+class Zile < Formula
   homepage 'http://www.gnu.org/software/zile/'
-  md5 'd4a4409fd457e0cb51c76dd8dc09d18b'
+  url 'http://ftpmirror.gnu.org/zile/zile-2.4.9.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/zile/zile-2.4.9.tar.gz'
+  sha1 'f233487e2d0ce99d7670832d106d1a2503d4c925'
+
+  depends_on 'bdw-gc'
+  depends_on 'gettext'
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

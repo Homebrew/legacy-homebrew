@@ -1,9 +1,9 @@
 require 'formula'
 
-class Cln <Formula
-  url 'http://www.ginac.de/CLN/cln-1.3.1.tar.bz2'
+class Cln < Formula
   homepage 'http://www.ginac.de/CLN/'
-  md5 'ede584cb1cafa66d56f42a3cf420469d'
+  url 'http://www.ginac.de/CLN/cln-1.3.2.tar.bz2'
+  sha1 'c30dca80e75f45e2107f233075e6d0339ea884b0'
 
   depends_on "gmp"
 

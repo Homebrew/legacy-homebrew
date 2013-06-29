@@ -1,10 +1,10 @@
 require 'formula'
 
-class Tcptraceroute <Formula
-  url 'http://michael.toren.net/code/tcptraceroute/tcptraceroute-1.5beta7.tar.gz'
+class Tcptraceroute < Formula
   homepage 'http://michael.toren.net/code/tcptraceroute/'
+  url 'https://github.com/mct/tcptraceroute/archive/tcptraceroute-1.5beta7.tar.gz'
   version '1.5beta7'
-  md5 '65d1001509f971ea986fcbc2dd009643'
+  sha1 '36b325a73d814cd62932f0def43e7d8e952474c1'
 
   depends_on 'libnet'
 

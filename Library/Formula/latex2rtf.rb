@@ -1,16 +1,17 @@
 require 'formula'
 
-class Latex2rtf <Formula
-  url 'http://downloads.sourceforge.net/project/latex2rtf/latex2rtf-unix/2.0.0/latex2rtf-2.0.0.tar.gz'
+class Latex2rtf < Formula
   homepage 'http://latex2rtf.sourceforge.net/'
-  md5 '39611b6dbb5ce78b48c7695f3fcafb88'
+  url 'http://downloads.sourceforge.net/project/latex2rtf/latex2rtf-unix/2.3.3/latex2rtf-2.3.3.tar.gz'
+  sha1 '85dd36e8595f92f41b0b173a6b42279333bbb1a9'
 
   def install
-    inreplace "Makefile" do |s|
-      s.remove_make_var! 'PREFIX?'
-      s.change_make_var! 'MAN_INSTALL', man1
-    end
-
-    system "make PREFIX=#{prefix} install"
+    system "make", "DESTDIR=",
+                   "BINDIR=#{bin}",
+                   "MANDIR=#{man1}",
+                   "INFODIR=#{info}",
+                   "SUPPORTDIR=#{share}/latex2rtf",
+                   "CFGDIR=#{share}/latex2rtf/cfg",
+                   "install"
   end
 end

@@ -1,13 +1,15 @@
 require 'formula'
 
-class Libzip <Formula
-  url 'http://www.nih.at/libzip/libzip-0.9.3.tar.bz2'
+class Libzip < Formula
   homepage 'http://www.nih.at/libzip/'
-  md5 '27610091ca27bf843a6646cd05de35b9'
+  url 'http://www.nih.at/libzip/libzip-0.11.1.tar.gz'
+  sha1 '729a141fd3b47f34a94e8fd8a9ee1b25f0c8e922'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}",
-                          "CXX=#{ENV.cxx}", "CXXFLAGS=#{ENV.cflags}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
+                          "CXX=#{ENV.cxx}",
+                          "CXXFLAGS=#{ENV.cflags}"
     system "make install"
   end
 end

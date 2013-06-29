@@ -1,21 +1,55 @@
 require 'formula'
 
-class Pango <Formula
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.28/pango-1.28.3.tar.bz2'
+class Pango < Formula
   homepage 'http://www.pango.org/'
-  sha256 '5e278bc9430cc7bb00270f183360d262c5006b51248e8b537ea904573f200632'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.34/pango-1.34.1.tar.xz'
+  sha256 '1aea30df34a8ae4fcce71afd22aa5b57224b52916d46e3ea81ff9f1eb130e64c'
+
+  option 'without-x', 'Build without X11 support'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'glib'
+  depends_on 'harfbuzz'
 
-  if MACOS_VERSION < 10.6
-    depends_on 'fontconfig' # Leopard's fontconfig is too old.
-    depends_on 'cairo' # Leopard doesn't come with Cairo.
+  unless build.include? 'without-x'
+    depends_on :x11
+    # Needs fontconfig 2.10.91, which is newer than what XQuartz provides
+    depends_on 'fontconfig'
+  end
+
+  # The Cairo library shipped with Lion contains a flaw that causes Graphviz
+  # to segfault. See the following ticket for information:
+  #   https://trac.macports.org/ticket/30370
+  # We depend on our cairo on all platforms for consistency
+  depends_on 'cairo'
+
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
   end
 
   def install
-    fails_with_llvm "Undefined symbols when linking", :build => "2326"
-    system "./configure", "--prefix=#{prefix}", "--with-x"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-man
+      --with-html-dir=#{share}/doc
+      --disable-introspection
+    ]
+
+    if build.include? 'without-x'
+      args << '--without-xft'
+    else
+      args << '--with-xft'
+    end
+
+    system "./configure", *args
+    system "make"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/pango-querymodules", "--version"
   end
 end

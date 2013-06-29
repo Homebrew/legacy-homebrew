@@ -1,53 +1,27 @@
-update_git_pull_output_without_formulae_changes: |
-  remote: counting objects: 58, done.
-  remote: Compressing objects: 100% (35/35), done.
-  remote: Total 39 (delta 20), reused 0 (delta 0)
-  Unpacking objects: 100% (39/39), done.
-  From git://github.com/mxcl/homebrew
-   * branch            master -> FETCH_HEAD
-  Updating 14ef7f9..f414bc8
-  Fast forward
-   Library/Homebrew/ARGV+yeast.rb                |   35 ++--
-   Library/Homebrew/beer_events.rb               |  181 +++++++++++++
-   Library/Homebrew/hardware.rb                  |   71 ++++++
-   Library/Homebrew/hw.model.c                   |   17 --
-   README                                        |  337 +++++++++++++------------
-   bin/brew                                      |  137 ++++++++---
-   40 files changed, 1107 insertions(+), 426 deletions(-)
-   create mode 100644 Library/Homebrew/beer_events.rb
-   create mode 100644 Library/Homebrew/hardware.rb
-   delete mode 100644 Library/Homebrew/hw.model.c
-   delete mode 100644 Library/Homebrew/hw.model.rb
-update_git_pull_output_with_formulae_changes: |
-  remote: counting objects: 58, done.
-  remote: Compressing objects: 100% (35/35), done.
-  remote: Total 39 (delta 20), reused 0 (delta 0)
-  Unpacking objects: 100% (39/39), done.
-  From git://github.com/mxcl/homebrew
-   * branch            master -> FETCH_HEAD
-  Updating 14ef7f9..f414bc8
-  Fast forward
-   Library/Contributions/brew_bash_completion.sh |    6 +-
-   Library/Formula/antiword.rb                   |   13 +
-   Library/Formula/bash-completion.rb            |   25 ++
-   Library/Formula/xar.rb                        |   19 ++
-   Library/Formula/yajl.rb                       |    2 +-
-   Library/Homebrew/ARGV+yeast.rb                |   35 ++--
-   Library/Homebrew/beer_events.rb               |  181 +++++++++++++
-   Library/Homebrew/hardware.rb                  |   71 ++++++
-   Library/Homebrew/hw.model.c                   |   17 --
-   Library/Homebrew/pathname+yeast.rb            |   28 ++-
-   Library/Homebrew/unittest.rb                  |  106 ++++++++-
-   Library/Homebrew/utils.rb                     |   36 ++-
-   README                                        |  337 +++++++++++++------------
-   bin/brew                                      |  137 ++++++++---
-   40 files changed, 1107 insertions(+), 426 deletions(-)
-   create mode 100644 Library/Formula/antiword.rb
-   create mode 100644 Library/Formula/bash-completion.rb
-   create mode 100644 Library/Formula/ddrescue.rb
-   create mode 100644 Library/Formula/dict.rb
-   create mode 100644 Library/Formula/lua.rb
-   create mode 100644 Library/Homebrew/beer_events.rb
-   create mode 100644 Library/Homebrew/hardware.rb
-   delete mode 100644 Library/Homebrew/hw.model.c
-   delete mode 100644 Library/Homebrew/hw.model.rb
+update_git_diff_output_without_formulae_changes: |
+  :100644 100644 9dde0708e2db78e1aa697782bd2ab2ddfd8da984 ee0a81cbe3757e9a4b5aab1c41457f65fed9f258 M	Library/Homebrew/ARGV+yeast.rb
+  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Homebrew/beer_events.rb
+  :100644 100644 b4b6d4f7837585bea2608da6eac4864bc410b319 f2f02310189f2114c033fd50e453aabbaa5ec111 A	Library/Homebrew/hardware.rb
+  :100644 100644 69b22663da0e9060c18143d96d37ab2f5d618579 d18b0e7161b73e7e1a0090b6d1d42a2569efb682 D	Library/Homebrew/hw.model.c
+  :100644 100644 0bdadb080de7bfb1dd0d5ef5aafbc65da35791ae 39b3e237b773d7eed584996d7c2541de0f36996c M	README
+  :100644 100644 5bec138e6ce67d3d80446740c309ef40652cebc2 0955e96cb368c95a73f2b01bfd060e575c445152 M	bin/brew
+update_git_diff_output_with_formulae_changes: |
+  :100644 100644 9dde0708e2db78e1aa697782bd2ab2ddfd8da984 ee0a81cbe3757e9a4b5aab1c41457f65fed9f258 M	Library/Contributions/brew_bash_completion.sh
+  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Formula/antiword.rb
+  :100644 100644 b4b6d4f7837585bea2608da6eac4864bc410b319 f2f02310189f2114c033fd50e453aabbaa5ec111 A	Library/Formula/bash-completion.rb
+  :100644 100644 9dde0708e2db78e1aa697782bd2ab2ddfd8da984 ee0a81cbe3757e9a4b5aab1c41457f65fed9f258 A	Library/Formula/ddrescue.rb
+  :100644 100644 a054cd648c85515484aee25ba22611423b603c69 e0b6354360bff68a6c5a612bf6e2918ceeb2ea0a A	Library/Formula/dict.rb
+  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Formula/lua.rb
+  :100644 100644 27740424d7cd046815eb67d253e08641d0c80fc7 d75a4b08302a9d0c741f969aa784878eb45d8366 R094	Library/Formula/shapefile.rb	Library/Formula/shapelib.rb
+  :100644 100644 69b22663da0e9060c18143d96d37ab2f5d618579 d18b0e7161b73e7e1a0090b6d1d42a2569efb682 M	Library/Formula/xar.rb
+  :100644 100644 0bdadb080de7bfb1dd0d5ef5aafbc65da35791ae 39b3e237b773d7eed584996d7c2541de0f36996c M	Library/Formula/yajl.rb
+  :100644 100644 5bec138e6ce67d3d80446740c309ef40652cebc2 0955e96cb368c95a73f2b01bfd060e575c445152 M	Library/Homebrew/ARGV+yeast.rb
+  :100644 100644 b4b6d4f7837585bea2608da6eac4864bc410b319 f2f02310189f2114c033fd50e453aabbaa5ec111 M	Library/Homebrew/beer_events.rb
+  :100644 100644 de9faee9b6859d0f4146b60caff1e7643af01a4c 47976729f566a14290d5efe061bbe4547e2d1b9e M	Library/Homebrew/hardware.rb
+  :100644 100644 69b22663da0e9060c18143d96d37ab2f5d618579 d18b0e7161b73e7e1a0090b6d1d42a2569efb682 M	Library/Homebrew/hw.model.c
+  :100644 100644 0bdadb080de7bfb1dd0d5ef5aafbc65da35791ae 39b3e237b773d7eed584996d7c2541de0f36996c M	Library/Homebrew/hw.model.rb
+  :100644 100644 0811641e6101d39b2d832539de01a104e052a97e dc66b94c51c1c2750d4a31e83c41f100c4d079b7 M	Library/Homebrew/pathname+yeast.rb
+  :100644 100644 440f1c9b10775150999264eb96e93fcfbd7727da 64bb503c712208d00d7cc2d0428d67d482685c22 M	Library/Homebrew/unittest.rb
+  :100644 100644 cc176d388507c7ed9381a36fd42ae0feceaad593 6a7a2385d89a12b5c7369fa0a87980b285ee5fd8 M	Library/Homebrew/utils.rb
+  :100644 100644 d1d9c62e6280bcb06c8b884c188d7bd37f8754e3 4aa0473705264cac864bd09f8a9d419d805e4774 M	README
+  :100644 100644 c0084b02faf7ab04abcffb3d5688e9d7c1ff7ae8 25cae981801e21cde048cd28747241d18093ca71 M	bin/brew

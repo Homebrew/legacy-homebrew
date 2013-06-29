@@ -1,9 +1,9 @@
 require 'formula'
 
-class Scamper <Formula
-  url 'http://www.wand.net.nz/scamper/scamper-cvs-20101102.tar.gz'
+class Scamper < Formula
   homepage 'http://www.wand.net.nz/scamper/'
-  md5 'd2540fe85c56a3ea146ba4d10525433c'
+  url 'http://www.wand.net.nz/scamper/scamper-cvs-20111202c.tar.gz'
+  sha1 'eb0dc6bf13a0d568f65e079ad39be53c3e8457d9'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

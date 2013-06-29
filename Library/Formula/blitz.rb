@@ -1,13 +1,22 @@
 require 'formula'
 
-class Blitz <Formula
-  url 'http://downloads.sourceforge.net/project/blitz/blitz/Blitz%2B%2B%200.9/blitz-0.9.tar.gz'
-  homepage 'http://oonumerics.org/blitz'
-  md5 '031df2816c73e2d3bd6d667bbac19eca'
-  version '0.9'
+class Blitz < Formula
+  homepage 'http://blitz.sourceforge.net'
+  url 'http://sourceforge.net/projects/blitz/files/blitz/Blitz%2B%2B%200.10/blitz-0.10.tar.gz'
+  sha1 '7e157ec22ed2d261e896b7de4e8e8d3bf7d780e2'
+
+  head 'http://blitz.hg.sourceforge.net:8000/hgroot/blitz/blitz', :using => :hg
+
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "autoreconf", "-fi" if build.head?
+
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--infodir=#{info}",
                           "--enable-shared",
                           "--disable-doxygen",

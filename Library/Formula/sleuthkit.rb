@@ -1,23 +1,38 @@
 require 'formula'
 
-class Sleuthkit <Formula
-  head 'http://svn.sleuthkit.org/repos/sleuthkit/trunk', :using => :svn
-  url 'http://downloads.sourceforge.net/project/sleuthkit/sleuthkit/3.2.0/sleuthkit-3.2.0.tar.gz'
+class Sleuthkit < Formula
   homepage 'http://www.sleuthkit.org/'
-  md5 '05517963942aa92be77c05ca1c47f0de'
+  url 'http://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.1.0/sleuthkit-4.1.0.tar.gz'
+  sha1 '0622173bd4f20bc83cbea4e20e7db4c5b2d6c9c1'
+
+  head 'https://github.com/sleuthkit/sleuthkit.git'
+
+  option 'with-jni', "Build Sleuthkit with JNI bindings"
+
+  if build.head?
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional
 
+  conflicts_with 'ffind',
+    :because => "both install a 'ffind' executable."
+
   def install
-    if ARGV.build_head?
-      system "glibtoolize"
-      system "aclocal"
-      system "automake", "--add-missing", "--copy"
-      system "autoconf"
-    end
+    system "./bootstrap" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "make"
     system "make install"
+
+    if build.with? 'jni'
+      cd 'bindings/java' do
+        system 'ant'
+      end
+      prefix.install 'bindings'
+    end
   end
 end

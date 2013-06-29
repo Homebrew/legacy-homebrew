@@ -1,93 +1,119 @@
 require 'formula'
 
-def build_clang?; ARGV.include? '--with-clang'; end
-def build_universal?; ARGV.include? '--universal'; end
-def build_shared?; ARGV.include? '--shared'; end
-def build_rtti?; ARGV.include? '--rtti'; end
-
-class Clang <Formula
-  url       'http://llvm.org/releases/2.8/clang-2.8.tgz'
+class Clang < Formula
   homepage  'http://llvm.org/'
-  md5       '10e14c901fc3728eecbd5b829e011b59'
+  url       'http://llvm.org/releases/3.3/cfe-3.3.src.tar.gz'
+  sha1      'ccd6dbf2cdb1189a028b70bcb8a22509c25c74c8'
+
+  head      'http://llvm.org/git/clang.git'
 end
 
-class Llvm <Formula
-  url       'http://llvm.org/releases/2.8/llvm-2.8.tgz'
+class CompilerRt < Formula
   homepage  'http://llvm.org/'
-  md5       '220d361b4d17051ff4bb21c64abe05ba'
+  url       'http://llvm.org/releases/3.3/compiler-rt-3.3.src.tar.gz'
+  sha1      '745386ec046e3e49742e1ecb6912c560ccd0a002'
 
-  def patches
-    # changes the link options for the shared library build
-    # to use the preferred way to build libraries in Mac OS X
-    # Reported upstream: http://llvm.org/bugs/show_bug.cgi?id=8985
-    DATA if build_shared?
+  head      'http://llvm.org/git/compiler-rt.git'
+end
+
+class Llvm < Formula
+  homepage  'http://llvm.org/'
+  url       'http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz'
+  sha1      'c6c22d5593419e3cb47cbcf16d967640e5cce133'
+
+  head      'http://llvm.org/git/llvm.git'
+
+  bottle do
+    sha1 '61854a2cf08a1398577f74fea191a749bec3e72d' => :mountain_lion
+    sha1 'fbe7b85a50f4b283ad55be020c7ddfbf655435ad' => :lion
+    sha1 'f68fdb89d44a72c83db1e55e25444de4dcde5375' => :snow_leopard
   end
 
-  def options
-    [['--with-clang', 'Also build & install clang'],
-     ['--shared', 'Build shared library'],
-     ['--rtti', 'Build with RTTI information'],
-     ['--universal', 'Build both i386 and x86_64 architectures']]
-  end
+  option :universal
+  option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
+  option 'with-asan', 'Include support for -faddress-sanitizer (from compiler-rt)'
+  option 'disable-shared', "Don't build LLVM as a shared library"
+  option 'all-targets', 'Build all target backends'
+  option 'rtti', 'Build with C++ RTTI'
+  option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
+
+  depends_on :python => :recommended
+
+  env :std if build.universal?
 
   def install
-    ENV.gcc_4_2 # llvm can't compile itself
-
-    if build_shared? && build_universal?
-      onoe "Cannot specify both shared and universal (will not build)"
-      exit 1
+    if build.with? 'python' and build.include? 'disable-shared'
+      raise 'The Python bindings need the shared library.'
     end
 
-    if build_clang?
-      clang_dir = Pathname.new(Dir.pwd)+'tools/clang'
-      Clang.new.brew { clang_dir.install Dir['*'] }
-    end
+    Clang.new("clang").brew do
+      clang_dir.install Dir['*']
+    end if build.include? 'with-clang'
 
-    if build_universal?
+    CompilerRt.new("compiler-rt").brew do
+      (buildpath/'projects/compiler-rt').install Dir['*']
+    end if build.include? 'with-asan'
+
+    if build.universal?
       ENV['UNIVERSAL'] = '1'
       ENV['UNIVERSAL_ARCH'] = 'i386 x86_64'
     end
 
-    ENV['REQUIRES_RTTI'] = '1' if build_rtti?
+    ENV['REQUIRES_RTTI'] = '1' if build.include? 'rtti'
 
-    configure_options = ["--prefix=#{prefix}",
-                         "--enable-targets=host-only",
-                         "--enable-optimized"]
+    args = [
+      "--prefix=#{prefix}",
+      "--enable-optimized",
+      # As of LLVM 3.1, attempting to build ocaml bindings with Homebrew's
+      # OCaml 3.12.1 results in errors.
+      "--disable-bindings",
+    ]
 
-    configure_options << "--enable-shared" if build_shared?
+    if build.include? 'all-targets'
+      args << "--enable-targets=all"
+    else
+      args << "--enable-targets=host"
+    end
+    args << "--enable-shared" unless build.include? 'disable-shared'
 
-    system "./configure", *configure_options
+    args << "--disable-assertions" if build.include? 'disable-assertions'
 
-    system "make" # separate steps required, otherwise the build fails
+    system "./configure", *args
     system "make install"
 
-    if build_clang?
-      Dir.chdir clang_dir do
-        system "make install"
+    # install llvm python bindings
+    if python
+      unless build.head?
+        inreplace buildpath/'bindings/python/llvm/common.py', 'LLVM-3.1svn', "libLLVM-#{version}svn"
       end
+      python.site_packages.install buildpath/'bindings/python/llvm'
     end
+
+    # install clang tools and bindings
+    cd clang_dir do
+      system 'make install'
+      (share/'clang/tools').install 'tools/scan-build', 'tools/scan-view'
+      python.site_packages.install 'bindings/python/clang' if python
+    end if build.include? 'with-clang'
   end
 
-  def caveats; <<-EOS
-    If you already have LLVM installed, then "brew upgrade llvm" might not
-    work. Instead, try:
-        $ brew rm llvm
-        $ brew install llvm
+  def test
+    system "#{bin}/llvm-config", "--version"
+  end
+
+  def caveats
+    s = ''
+    s += python.standard_caveats if python
+    s += <<-EOS.undent
+      Extra tools are installed in #{share}/llvm and #{share}/clang.
+
+      If you already have LLVM installed, then "brew upgrade llvm" might not work.
+      Instead, try:
+          brew rm llvm && brew install llvm
     EOS
   end
+
+  def clang_dir
+    buildpath/'tools/clang'
+  end
 end
-
-__END__
-diff --git a/Makefile.rules b/Makefile.rules
-index 9cff105..44d5b2d 100644
---- a/Makefile.rules
-+++ b/Makefile.rules
-@@ -497,7 +497,7 @@ ifeq ($(HOST_OS),Darwin)
-   # Get "4" out of 10.4 for later pieces in the makefile.
-   DARWIN_MAJVERS := $(shell echo $(DARWIN_VERSION)| sed -E 's/10.([0-9]).*/\1/')
-
--  SharedLinkOptions=-Wl,-flat_namespace -Wl,-undefined,suppress \
-+  SharedLinkOptions=-Wl,-undefined,dynamic_lookup \
-                     -dynamiclib
-   ifneq ($(ARCH),ARM)
-     SharedLinkOptions += -mmacosx-version-min=$(DARWIN_VERSION)

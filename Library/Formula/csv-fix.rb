@@ -1,13 +1,13 @@
 require 'formula'
 
-class CsvFix <Formula
-  url 'http://csvfix.googlecode.com/files/csvfix_src_097a.zip'
+class CsvFix < Formula
   homepage 'http://code.google.com/p/csvfix/'
-  version '0.97a'
-  sha1 'f990ba6676159dc27e0d90aee02d1eb043140c5f'
+  url 'http://csvfix.googlecode.com/files/csvfix_src_120.zip'
+  version '1.20'
+  sha1 'ec0b6d491429d908a9208d6e474591f30dec654c'
 
   def install
     system "make lin"
-    bin.install 'bin/csvfix'
+    bin.install 'csvfix/bin/csvfix'
   end
 end

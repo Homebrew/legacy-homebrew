@@ -1,14 +1,17 @@
 require 'formula'
 
-class Grc <Formula
+class Grc < Formula
   homepage 'http://korpus.juls.savba.sk/~garabik/software/grc.html'
-  url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.3.tar.gz'
-  md5 'a4814dcee965c3ff67681f6b59e6378c'
+  url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.4.tar.gz'
+  sha1 '79fd504d8291f13486d361611415ae60fa56712a'
+
+  depends_on :python
 
   def install
     #TODO we should deprefixify since it's python and thus possible
     inreplace ['grc', 'grc.1'], '/etc', etc
     inreplace ['grcat', 'grcat.1'], '/usr/local', prefix
+    inreplace ['grc', 'grcat'], '#! /usr/bin/python', '#!/usr/bin/env python'
 
     etc.install 'grc.conf'
     bin.install %w[grc grcat]
@@ -20,7 +23,7 @@ class Grc <Formula
 
   def rc_script; <<-EOS.undent
     GRC=`which grc`
-    if [ "$TERM" != dumb ] && [ -n GRC ]
+    if [ "$TERM" != dumb ] && [ -n "$GRC" ]
     then
         alias colourify="$GRC -es --colour=auto"
         alias configure='colourify ./configure'
@@ -39,8 +42,8 @@ class Grc <Formula
   end
 
   def caveats; <<-EOS.undent
-    New shell sessions will start using GRC after you run the following command:
-      echo 'source "`brew --prefix grc`/etc/grc.bashrc"' >> ~/.bashrc
+    New shell sessions will start using GRC after you add this to your profile:
+      source "`brew --prefix`/etc/grc.bashrc"
     EOS
   end
 end

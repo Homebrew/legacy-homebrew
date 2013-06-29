@@ -1,55 +1,63 @@
 require 'formula'
 
-# References:
-# * http://smalltalk.gnu.org/wiki/building-gst-guides
-#
-# Note that we build 32-bit, which means that 64-bit
-# optional dependencies will break the build. You may need
-# to "brew unlink" these before installing GNU Smalltalk and
-# "brew link" them afterwards:
-# * gdbm
-
-class GnuSmalltalk <Formula
-  url 'ftp://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.2.tar.gz'
+class GnuSmalltalk < Formula
   homepage 'http://smalltalk.gnu.org/'
-  sha1 'a985d69e4760420614c9dfe4d3605e47c5eb8faa'
+  url 'http://ftpmirror.gnu.org/smalltalk/smalltalk-3.2.5.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.5.tar.xz'
+  sha1 '0eb5895b9b5bebe4f75308efbe34f8721fc2fd6b'
 
-  # 'gmp' is an optional dep, it is built 64-bit on Snow Leopard
-  # (and this brew is forced to build in 32-bit mode.)
+  devel do
+    url 'ftp://alpha.gnu.org/gnu/smalltalk/smalltalk-3.2.90.tar.gz'
+    sha1 'dd8bba5702591f0d5e2676878e1b3ee48f0ff37f'
+  end
 
-  depends_on 'readline'
+  head 'https://github.com/bonzini/smalltalk.git'
+
+  option 'tests', 'Verify the build with make check (this may hang)'
+  option 'tcltk', 'Build the Tcl/Tk module that requires X11'
+
+  # Need newer versions on Snow Leopard
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
+
+  depends_on 'pkg-config' => :build
+  depends_on 'xz'         => :build
+  depends_on 'gawk'       => :build
+  depends_on 'readline'   => :build
+  depends_on 'libffi'     => :recommended
+  depends_on 'libsigsegv' => :recommended
+  depends_on 'glew'       => :optional
+  depends_on :x11 if build.include? 'tcltk'
+  depends_on 'gnutls'
+
+  fails_with :llvm do
+    build 2334
+    cause "Codegen problems with LLVM"
+  end
 
   def install
-    fails_with_llvm "Codegen problems with LLVM"
+    ENV.m32 unless MacOS.prefer_64_bit?
 
-    # 64-bit version doesn't build, so force 32 bits.
-    ENV.m32
-
-    if snow_leopard_64? and Formula.factory('gdbm').installed?
-      onoe "A 64-bit gdbm will cause linker errors"
-      puts <<-EOS.undent
-        GNU Smalltak doesn't compile 64-bit clean on OS X, so having a
-        64-bit gdbm installed will break linking you may want to do:
-          $ brew unlink gdbm
-          $ brew install gnu-smalltalk
-          $ brew link gdbm
-      EOS
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-gtk
+      --with-readline=#{Formula.factory('readline').lib}
+    ]
+    unless build.include? 'tcltk'
+      args << '--without-tcl' << '--without-tk' << '--without-x'
     end
 
-    readline = Formula.factory('readline')
+    # disable generational gc in 32-bit and if libsigsegv is absent
+    if !MacOS.prefer_64_bit? or build.without? "libsigsegv"
+      args << "--disable-generational-gc"
+    end
 
-    # GNU Smalltalk thinks it needs GNU awk, but it works fine
-    # with OS X awk, so let's trick configure.
-    here = Dir.pwd
-    system "ln -s /usr/bin/awk #{here}/gawk"
-    ENV['AWK'] = "#{here}/gawk"
-
-    ENV['FFI_CFLAGS'] = '-I/usr/include/ffi'
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-readline=#{readline.lib}"
+    system 'autoreconf', '-ivf'
+    system "./configure", *args
     system "make"
-    ENV.j1 # Parallel install doesn't work
+    system 'make', '-j1', 'check' if build.include? 'tests'
     system "make install"
   end
 end

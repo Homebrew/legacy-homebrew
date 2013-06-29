@@ -1,26 +1,67 @@
 require 'formula'
 
-class Zsh <Formula
-  url 'http://downloads.sourceforge.net/project/zsh/zsh-dev/4.3.11/zsh-4.3.11.tar.gz'
+class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  md5 '127e2a3b9100d6f2fddb6a32cd4aca40'
+  url 'http://www.zsh.org/pub/zsh-5.0.2.tar.bz2'
+  mirror 'http://sourceforge.net/projects/zsh/files/zsh/5.0.2/zsh-5.0.2.tar.bz2'
+  sha1 '9f55ecaaae7cdc1495f91237ba2ec087777a4ad9'
 
-  depends_on 'gdbm' => :optional
+  depends_on 'gdbm'
+  depends_on 'pcre'
 
-  skip_clean :all
+  option 'disable-etcdir', 'Disable the reading of Zsh rc files in /etc'
 
   def install
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
-                          # don't version stuff in Homebrew, we already do that!
-                          "--enable-fndir=#{share}/zsh/functions",
-                          "--enable-scriptdir=#{share}/zsh/scripts"
+    args = %W[
+      --prefix=#{prefix}
+      --enable-fndir=#{share}/zsh/functions
+      --enable-scriptdir=#{share}/zsh/scripts
+      --enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions
+      --enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts
+      --enable-cap
+      --enable-maildir-support
+      --enable-multibyte
+      --enable-pcre
+      --enable-zsh-secure-free
+      --with-tcsetpgrp
+    ]
 
-    # Again, don't version installation directories
+    args << '--disable-etcdir' if build.include? 'disable-etcdir'
+
+    system "./configure", *args
+
+    # Do not version installation directories.
     inreplace ["Makefile", "Src/Makefile"],
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
+
+    # See http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Accessing-On_002dLine-Help
+    mkdir "helpfiles" do
+      system "man zshall | colcrt - | perl ../Util/helpfiles"
+      (share+"zsh/helpfiles").install Dir["*"]
+    end
+  end
+
+  def test
+    system "#{bin}/zsh", "--version"
+  end
+
+  def caveats; <<-EOS.undent
+    To use this build of Zsh as your login shell, add it to /etc/shells.
+
+    If you have administrator privileges, you must fix an Apple miss
+    configuration in Mac OS X 10.7 Lion by renaming /etc/zshenv to
+    /etc/zprofile, or Zsh will have the wrong PATH when executed
+    non-interactively by scripts.
+
+    Alternatively, install Zsh with /etc disabled:
+      brew install --disable-etcdir zsh
+
+    Add the following to your zshrc to access the online help:
+      unalias run-help
+      autoload run-help
+      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/helpfiles
+    EOS
   end
 end

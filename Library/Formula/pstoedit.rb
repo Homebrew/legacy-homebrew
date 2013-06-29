@@ -1,19 +1,19 @@
 require 'formula'
 
-class Pstoedit <Formula
-  url 'http://downloads.sourceforge.net/project/pstoedit/pstoedit/3.50/pstoedit-3.50.tar.gz'
+class Pstoedit < Formula
   homepage 'http://www.pstoedit.net'
-  md5 '97d649305ad90fab7a569154f17e0916'
+  url 'https://sourceforge.net/projects/pstoedit/files/pstoedit/3.62/pstoedit-3.62.tar.gz'
+  sha1 '50d5a4e2fe0e0ff2f73cb094cb945b221083e742'
 
-  depends_on 'libpng'
+  depends_on 'pkg-config' => :build
   depends_on 'plotutils'
-  depends_on 'imagemagick'
   depends_on 'ghostscript'
+  depends_on 'imagemagick'
 
   def install
     ENV.deparallelize
-
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

@@ -1,19 +1,22 @@
 require 'formula'
 
-class Netpbm <Formula
+class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.77/netpbm-10.35.77.tgz'
-  md5 '65d1b81d72341530f65d66dcd95786ad'
+  url 'svn+http://svn.code.sf.net/p/netpbm/code/advanced/', :revision => 1809
+  version '10.60.05'
+  # Maintainers: Look at http://netpbm.svn.sourceforge.net/viewvc/netpbm/
+  # for versions and matching revisions
+
+  head 'http://svn.code.sf.net/p/netpbm/code/trunk'
 
   depends_on "libtiff"
   depends_on "jasper"
+  depends_on :libpng
 
   def install
-    ENV.x11 # For PNG
+    system "cp", "config.mk.in", "config.mk"
 
-    system "cp", "Makefile.config.in", "Makefile.config"
-
-    inreplace "Makefile.config" do |s|
+    inreplace "config.mk" do |s|
       s.remove_make_var! "CC"
       s.change_make_var! "CFLAGS_SHLIB", "-fno-common"
       s.change_make_var! "NETPBMLIBTYPE", "dylib"
@@ -24,18 +27,19 @@ class Netpbm <Formula
       s.change_make_var! "PNGLIB", "-lpng"
       s.change_make_var! "ZLIB", "-lz"
       s.change_make_var! "JASPERLIB", "-ljasper"
-      s.change_make_var! "JASPERHDR_DIR", "#{HOMEBREW_PREFIX}/include/jasper"
+      s.change_make_var! "JASPERHDR_DIR", "#{Formula.factory('jasper').opt_prefix}/include/jasper"
     end
+
+    ENV.append 'LDFLAGS', '-Wl,-headerpad_max_install_names'
 
     ENV.deparallelize
     system "make"
-
-    stage_dir = Pathname(Dir.pwd) + 'stage'
-    system "make", "package", "pkgdir=#{stage_dir}"
-
-    Dir.chdir stage_dir do
+    system "make", "package", "pkgdir=#{buildpath}/stage"
+    cd 'stage' do
       prefix.install %w{ bin include lib misc }
-      share.install Dir['man']
+      # do man pages explicitly; otherwise a junk file is installed in man/web
+      man1.install Dir['man/man1/*.1']
+      man5.install Dir['man/man5/*.5']
       lib.install Dir['link/*.a']
     end
   end

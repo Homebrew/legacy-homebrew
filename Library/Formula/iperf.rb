@@ -1,12 +1,13 @@
 require 'formula'
 
-class Iperf <Formula
-  url 'http://downloads.sourceforge.net/project/iperf/iperf/2.0.4%20source/iperf-2.0.4.tar.gz'
+class Iperf < Formula
   homepage 'http://iperf.sourceforge.net/'
-  md5 '8c5bc14cc2ea55f18f22afe3c23e3dcb'
+  url 'http://downloads.sourceforge.net/project/iperf/iperf-2.0.5.tar.gz'
+  sha1 '7302792dcb1bd7aeba032fef6d3dcc310e4d113f'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

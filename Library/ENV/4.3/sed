@@ -1,0 +1,7 @@
+#!/bin/bash
+if [[ $HOMEBREW_CCCFG == *s* ]]; then
+  # Fix issue with sed barfing on unicode characters on Mountain Lion
+  unset LC_ALL
+  export LC_CTYPE='C'
+fi
+exec /usr/bin/sed "$@"

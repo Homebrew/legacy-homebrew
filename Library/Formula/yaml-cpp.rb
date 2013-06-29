@@ -1,20 +1,15 @@
 require 'formula'
 
-class YamlCpp <Formula
-  url 'http://yaml-cpp.googlecode.com/files/yaml-cpp-0.2.5.tar.gz'
+class YamlCpp < Formula
   homepage 'http://code.google.com/p/yaml-cpp/'
-  md5 'b17dc36055cd2259c88b2602601415d9'
+  url 'http://yaml-cpp.googlecode.com/files/yaml-cpp-0.5.1.tar.gz'
+  sha1 '9c5414b4090491e96d1b808fe8628b31e625fdaa'
 
-  depends_on 'cmake'
-  depends_on 'libyaml'
+  depends_on 'cmake' => :build
+  depends_on 'boost'
 
   def install
-
-    # Fix for building on 10.6
-    # See: http://code.google.com/p/yaml-cpp/issues/detail?id=68 (Fixed in revision r363)
-    inreplace 'src/token.h', '<ios>', '<iostream>'
-
-    system "cmake . #{std_cmake_parameters}"
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 end

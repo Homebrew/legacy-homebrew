@@ -1,12 +1,16 @@
 require 'formula'
 
-class Libyaml <Formula
-  url 'http://pyyaml.org/download/libyaml/yaml-0.1.3.tar.gz'
+class Libyaml < Formula
   homepage 'http://pyyaml.org/wiki/LibYAML'
-  md5 'b8ab9064e8e0330423fe640de76608cd'
+  url 'http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz'
+  sha1 'e0e5e09192ab10a607e3da2970db492118f560f2'
+
+  option :universal
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    ENV.universal_binary if build.universal?
+
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

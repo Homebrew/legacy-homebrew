@@ -1,82 +1,59 @@
 require 'formula'
 
-class CouchdbLucene <Formula
-  url 'https://github.com/rnewson/couchdb-lucene/tarball/v0.6.0'
+class CouchdbLucene < Formula
   homepage 'https://github.com/rnewson/couchdb-lucene'
-  md5 'b55610d4c054987a5c69183585a31d8b'
+  url 'https://github.com/rnewson/couchdb-lucene/archive/v0.9.0.tar.gz'
+  sha1 '99b8f8f1e644e6840896ee6c9b19c402042c1896'
 
   depends_on 'couchdb'
   depends_on 'maven'
 
   def install
-    # Skipping tests because the integration test assumes that couchdb-lucene
-    # has been integrated with a local couchdb instance. Not sure if there's a
-    # way to only disable the integration test.
-    system "mvn", "-DskipTests=true"
+    system "mvn"
 
-    system "tar -xzf target/couchdb-lucene-#{version}-dist.tar.gz"
-    system "mv couchdb-lucene-#{version}/* #{prefix}"
+    system "tar", "-xzf", "target/couchdb-lucene-#{version}-dist.tar.gz"
+    prefix.install Dir["couchdb-lucene-#{version}/*"]
 
     (etc + "couchdb/local.d/couchdb-lucene.ini").write ini_file
-    (prefix + "couchdb-lucene.plist").write plist_file
   end
 
-  def caveats; <<-EOS
-You can enable couchdb-lucene to automatically load on login with:
-
-  cp "#{prefix}/couchdb-lucene.plist" ~/Library/LaunchAgents/
-  launchctl load -w ~/Library/LaunchAgents/couchdb-lucene.plist
-
-Or start it manually with:
-  #{bin}/run
-EOS
+  def ini_file; <<-EOS.undent
+    [httpd_global_handlers]
+    _fti = {couch_httpd_proxy, handle_proxy_req, <<"http://127.0.0.1:5985">>}
+    EOS
   end
 
-  def ini_file
-    return <<-EOS
-[couchdb]
-os_process_timeout=60000 ; increase the timeout from 5 seconds.
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/couchdb-lucene/bin/run"
 
-[external]
-fti=#{`which python`.chomp} #{prefix}/tools/couchdb-external-hook.py
-
-[httpd_db_handlers]
-_fti = {couch_httpd_external, handle_external_req, <<"fti">>}
-EOS
-  end
-
-  def plist_file
-    return <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
-  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-  <dict>
-    <key>Label</key>
-    <string>couchdb-lucene</string>
-    <key>EnvironmentVariables</key>
-    <dict>
-      <key>HOME</key>
-      <string>~</string>
-      <key>DYLD_LIBRARY_PATH</key>
-      <string>/opt/local/lib:$DYLD_LIBRARY_PATH</string>
-    </dict>
-    <key>ProgramArguments</key>
-    <array>
-      <string>#{bin}/run</string>
-    </array>
-    <key>UserName</key>
-    <string>#{`whoami`.chomp}</string>
-    <key>StandardOutPath</key>
-    <string>/dev/null</string>
-    <key>StandardErrorPath</key>
-    <string>/dev/null</string>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>KeepAlive</key>
-    <true/>
-  </dict>
-</plist>
-EOS
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+      "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>EnvironmentVariables</key>
+        <dict>
+          <key>HOME</key>
+          <string>~</string>
+          <key>DYLD_LIBRARY_PATH</key>
+          <string>/opt/local/lib:$DYLD_LIBRARY_PATH</string>
+        </dict>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_prefix}/bin/run</string>
+        </array>
+        <key>StandardOutPath</key>
+        <string>/dev/null</string>
+        <key>StandardErrorPath</key>
+        <string>/dev/null</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+      </dict>
+    </plist>
+    EOS
   end
 end

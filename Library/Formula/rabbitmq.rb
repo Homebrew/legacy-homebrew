@@ -1,55 +1,86 @@
 require 'formula'
 
-class Rabbitmq <Formula
-  homepage 'http://rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v2.3.1/rabbitmq-server-2.3.1.tar.gz'
-  md5 'ebd57fe2286a4e4e9ce0e3bf88134fe0'
+class Rabbitmq < Formula
+  homepage 'http://www.rabbitmq.com'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server-mac-standalone-3.1.3.tar.gz'
+  sha1 '631b9e46e046db9f591d6027ee690ffaaab20a45'
 
-  depends_on 'erlang'
-  depends_on 'simplejson' => :python if MACOS_VERSION < 10.6
-
-  def patches
-    # Can't build manpages without a lot of other junk, so disable
-    DATA
-  end
+  depends_on 'simplejson' => :python if MacOS.version == :leopard
 
   def install
-    target_dir = "#{lib}/rabbitmq/erlang/lib/rabbitmq-#{version}"
-    system "make"
-    ENV['TARGET_DIR'] = target_dir
-    ENV['MAN_DIR'] = man
-    ENV['SBIN_DIR'] = sbin
-    system "make install"
+    # Install the base files
+    prefix.install Dir['*']
 
-    (etc+'rabbitmq').mkpath
+    # Setup the lib files
     (var+'lib/rabbitmq').mkpath
     (var+'log/rabbitmq').mkpath
 
-    %w{rabbitmq-server rabbitmq-multi rabbitmqctl rabbitmq-env}.each do |script|
-      inreplace sbin+script do |s|
-        s.gsub! '/etc/rabbitmq', "#{etc}/rabbitmq"
-        s.gsub! '/var/lib/rabbitmq', "#{var}/lib/rabbitmq"
-        s.gsub! '/var/log/rabbitmq', "#{var}/log/rabbitmq"
-      end
+    # Correct SYS_PREFIX for things like rabbitmq-plugins
+    inreplace sbin/'rabbitmq-defaults' do |s|
+      s.gsub! 'SYS_PREFIX=${RABBITMQ_HOME}', "SYS_PREFIX=#{HOMEBREW_PREFIX}"
+      s.gsub! 'CLEAN_BOOT_FILE="${SYS_PREFIX}', "CLEAN_BOOT_FILE=\"#{prefix}"
+      s.gsub! 'SASL_BOOT_FILE="${SYS_PREFIX}', "SASL_BOOT_FILE=\"#{prefix}"
     end
 
-    # RabbitMQ Erlang binaries are installed in lib/rabbitmq/erlang/lib/rabbitmq-x.y.z/ebin
-    # therefore need to add this path for erl -pa
-    inreplace sbin+'rabbitmq-env', '${SCRIPT_DIR}/..', target_dir
+    # Set RABBITMQ_HOME in rabbitmq-env
+    inreplace (sbin + 'rabbitmq-env'), 'RABBITMQ_HOME="${SCRIPT_DIR}/.."', "RABBITMQ_HOME=#{prefix}"
+
+    # Create the rabbitmq-env.conf file
+    rabbitmq_env_conf = etc+'rabbitmq/rabbitmq-env.conf'
+    rabbitmq_env_conf.write rabbitmq_env unless rabbitmq_env_conf.exist?
+
+    # Enable plugins - management web UI and visualiser; STOMP, MQTT, AMQP 1.0 protocols
+    enabled_plugins_path = etc+'rabbitmq/enabled_plugins'
+    enabled_plugins_path.write '[rabbitmq_management,rabbitmq_management_visualiser,rabbitmq_stomp,rabbitmq_amqp1_0,rabbitmq_mqtt].' unless enabled_plugins_path.exist?
+
+    # Extract rabbitmqadmin and install to sbin
+    # use it to generate, then install the bash completion file
+    system "/usr/bin/unzip", "-qq", "-j",
+           "#{prefix}/plugins/rabbitmq_management-#{version}.ez",
+           "rabbitmq_management-#{version}/priv/www/cli/rabbitmqadmin"
+
+    sbin.install 'rabbitmqadmin'
+    (sbin/'rabbitmqadmin').chmod 0755
+    (bash_completion/'rabbitmqadmin.bash').write `#{sbin}/rabbitmqadmin --bash-completion`
+  end
+
+  def caveats; <<-EOS.undent
+    Management Plugin enabled by default at http://localhost:15672
+    EOS
+  end
+
+  def rabbitmq_env; <<-EOS.undent
+    CONFIG_FILE=#{etc}/rabbitmq/rabbitmq
+    NODE_IP_ADDRESS=127.0.0.1
+    NODENAME=rabbit@localhost
+    EOS
+  end
+
+  plist_options :manual => 'rabbitmq-server'
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>Program</key>
+        <string>#{opt_prefix}/sbin/rabbitmq-server</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>EnvironmentVariables</key>
+        <dict>
+          <!-- need erl in the path -->
+          <key>PATH</key>
+          <string>/usr/local/sbin:/usr/bin:/bin:/usr/local/bin</string>
+          <!-- specify the path to the rabbitmq-env.conf file -->
+          <key>CONF_ENV_FILE</key>
+          <string>#{etc}/rabbitmq/rabbitmq-env.conf</string>
+        </dict>
+      </dict>
+    </plist>
+    EOS
   end
 end
-
-__END__
-diff --git a/Makefile b/Makefile
-index d3f052f..98ce763 100644
---- a/Makefile
-+++ b/Makefile
-@@ -267,7 +267,7 @@ $(SOURCE_DIR)/%_usage.erl:
-
- docs_all: $(MANPAGES) $(WEB_MANPAGES)
-
--install: install_bin install_docs
-+install: install_bin
-
- install_bin: all install_dirs
-	cp -r ebin include LICENSE LICENSE-MPL-RabbitMQ INSTALL $(TARGET_DIR)

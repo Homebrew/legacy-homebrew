@@ -1,30 +1,30 @@
 require 'formula'
 
-class Sqsh <Formula
-  url 'http://downloads.sourceforge.net/sourceforge/sqsh/sqsh-2.1.7.tar.gz'
+class Sqsh < Formula
   homepage 'http://www.sqsh.org/'
-  md5 'ce929dc8e23cedccac98288d24785e2d'
+  url 'http://sourceforge.net/projects/sqsh/files/sqsh/sqsh-2.2.0/sqsh-2.2.0.tgz'
+  sha1 'f3c2276fe53c05ddf51173fd109c5111c90879c6'
 
+  option "enable-x", "Enable X windows support"
+
+  depends_on :x11 if build.include? "enable-x"
   depends_on 'freetds'
   depends_on 'readline'
 
-  def options
-    [["--with-x", "Enable X windows support."]]
-  end
-
   def install
-    args = ["--disable-debug", "--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--mandir=#{man}",
-            "--with-readline"]
+    args = %W[
+      --prefix=#{prefix}
+      --mandir=#{man}
+      --with-readline
+    ]
 
     ENV['LIBDIRS'] = Readline.new('readline').lib
     ENV['INCDIRS'] = Readline.new('readline').include
 
-    if ARGV.include? "--with-x"
+    if build.include? "enable-x"
       args << "--with-x"
-      args << "--x-libraries=/usr/X11/lib"
-      args << "--x-includes=/usr/X11/includes"
+      args << "--x-libraries=#{MacOS::X11.lib}"
+      args << "--x-includes=#{MacOS::X11.include}"
     end
 
     ENV['SYBASE'] = Freetds.new("freetds").prefix

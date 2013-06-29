@@ -1,9 +1,9 @@
 require 'formula'
 
-class GnuGetopt <Formula
-  url 'http://software.frodo.looijaard.name/getopt/files/getopt-1.1.4.tar.gz'
-  md5 '02188ca68da27c4175d6e9f3da732101'
+class GnuGetopt < Formula
   homepage 'http://software.frodo.looijaard.name/getopt/'
+  url 'http://software.frodo.looijaard.name/getopt/files/getopt-1.1.5.tar.gz'
+  sha1 '9090eb46ac92f2fd2749ca4121e81aaad40f325d'
 
   depends_on 'gettext'
 

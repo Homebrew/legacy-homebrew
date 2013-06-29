@@ -1,15 +1,21 @@
 require 'formula'
 
-class Fping <Formula
-  url 'http://fping.sourceforge.net/download/fping.tar.gz'
-  homepage 'http://fping.sourceforge.net/'
-  md5 'd5e8be59e307cef76bc479e1684df705'
-  version '2.4b2_to-ipv6'
+class Fping < Formula
+  homepage 'http://fping.org/'
+  url 'http://fping.org/dist/fping-3.5.tar.gz'
+  sha1 'b2552aa5b9450c660e37761c3e5efe8ac28c83d2'
+
+  head 'https://github.com/schweikert/fping.git'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    fping can only be run by root by default so either use sudo to run fping or
+        setuid root #{sbin}/fping
+    EOS
   end
 end

@@ -1,22 +1,21 @@
 require 'formula'
 
-class Antiword <Formula
-  url 'http://www.winfield.demon.nl/linux/antiword-0.37.tar.gz'
+class Antiword < Formula
   homepage 'http://www.winfield.demon.nl/'
-  md5 'f868e2a269edcbc06bf77e89a55898d1'
-
-  skip_clean 'share/antiword'
+  url 'http://www.winfield.demon.nl/linux/antiword-0.37.tar.gz'
+  sha1 '4364f7f99cb2d37f7d1d5bc14a335ccc0c67292e'
 
   def install
-    inreplace "Makefile" do |s|
-      s.change_make_var! "GLOBAL_INSTALL_DIR", bin
-      s.change_make_var! "GLOBAL_RESOURCES_DIR", share+'antiword'
-    end
+    inreplace 'antiword.h', '/usr/share/antiword', "#{share}/antiword"
 
-    system 'make'
+    system "make", "CC=#{ENV.cc}",
+                   "LD=#{ENV.cc}",
+                   "CFLAGS=#{ENV.cflags} -DNDEBUG",
+                   "GLOBAL_INSTALL_DIR=#{bin}",
+                   "GLOBAL_RESOURCES_DIR=#{share}/antiword"
     bin.install 'antiword'
+    (share+'antiword').install Dir["Resources/*"]
     man1.install 'Docs/antiword.1'
-    (share+'antiword').mkpath
   end
 
   def caveats; <<-EOS.undent

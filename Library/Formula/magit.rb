@@ -1,14 +1,13 @@
 require 'formula'
 
-class Magit <Formula
-  url 'https://github.com/downloads/philjackson/magit/magit-0.8.2.tar.gz'
-  homepage 'https://github.com/philjackson/magit'
-  md5 'fe7e1a1085190ede6bed49e406fe0ce9'
-  head 'git://github.com/philjackson/magit.git'
+class Magit < Formula
+  homepage 'https://github.com/magit/magit'
+  url 'https://github.com/magit/magit/archive/1.2.0.tar.gz'
+  sha1 '8ad7947a29d4d852f35f94a6821d038fe43a7c31'
+
+  head 'https://github.com/magit/magit.git'
 
   def install
-    system "./autogen.sh" if File.exist? "autogen.sh"
-    system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install", "DESTDIR=#{prefix}", "PREFIX="
   end
 end

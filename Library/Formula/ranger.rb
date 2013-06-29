@@ -1,15 +1,15 @@
 require 'formula'
 
-class Ranger <Formula
-  url 'http://download.savannah.gnu.org/releases/ranger/releases/ranger-1.2.3.tar.gz'
-  version '1.2.3'
+class Ranger < Formula
   homepage 'http://ranger.nongnu.org/'
-  md5 '11fda1144d85532786ddc59221147884'
+  url 'http://nongnu.org/ranger/ranger-1.6.0.tar.gz'
+  sha1 'dc40ccf941b15bcd1654b32c9b55de18b0840e30'
+
+  head 'git://git.savannah.nongnu.org/ranger.git'
 
   def install
     man1.install 'doc/ranger.1'
-    libexec.install ['ranger.py', 'ranger']
-    bin.mkpath
-    ln_s libexec+'ranger.py', bin+'ranger'
+    libexec.install 'ranger.py', 'ranger'
+    bin.install_symlink libexec+'ranger.py' => 'ranger'
   end
 end

@@ -1,12 +1,17 @@
 require 'formula'
 
-class Fio <Formula
-  url 'http://brick.kernel.dk/snaps/fio-1.37.tar.bz2'
-  homepage 'http://freshmeat.net/projects/fio/'
-  md5 'a6b64ffef21c0c9e3dc3c36e87f988a5'
+class Fio < Formula
+  homepage 'http://freecode.com/projects/fio'
+  url 'http://brick.kernel.dk/snaps/fio-2.0.15.tar.bz2'
+  sha1 '3b672f19ef37d0f4d733dc78820a5e4a735b9a7f'
 
   def install
-    make_cmd = "make -f Makefile.mac prefix=#{prefix}"
-    system "#{make_cmd} && #{make_cmd} install"
+    system "./configure"
+    # fio's CFLAGS passes vital stuff around, and crushing it will break the build
+    system "make", "prefix=#{prefix}",
+                   "mandir=#{man}",
+                   "CC=#{ENV.cc}",
+                   "V=true", # get normal verbose output from fio's makefile
+                   "install"
   end
 end

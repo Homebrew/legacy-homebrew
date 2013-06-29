@@ -1,12 +1,13 @@
 require 'formula'
 
-class Ktoblzcheck <Formula
-  url 'http://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.29.tar.gz'
+class Ktoblzcheck < Formula
   homepage 'http://ktoblzcheck.sourceforge.net/'
-  md5 '49b3d70f8c735bfb6060edec349565c0'
+  url 'http://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.42.tar.gz'
+  sha1 '1a756886ed2ca1dcff3113391a204675f6be236a'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make"
     ENV.j1
     system "make install"

@@ -1,39 +1,32 @@
 require 'formula'
 
-class Hbase <Formula
-  url 'http://apache.tradebit.com/pub/hbase/hbase-0.89.20100924/hbase-0.89.20100924-bin.tar.gz'
+class Hbase < Formula
   homepage 'http://hbase.apache.org'
-  md5 '6fdefc110c4d6414cc2b7e3697244e95'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hbase/hbase-0.94.8/hbase-0.94.8.tar.gz'
+  sha1 '1319376422770a6f1ecd9a1a43854064c205aca5'
 
   depends_on 'hadoop'
-
-  def shim_script target
-    <<-EOS.undent
-      #!/bin/bash
-      exec #{libexec}/bin/#{target} $*
-    EOS
-  end
 
   def install
     rm_f Dir["bin/*.bat"]
     libexec.install %w[bin conf docs lib hbase-webapps]
     libexec.install Dir['*.jar']
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |b|
-      n = Pathname.new(b).basename
-      (bin+n).write shim_script(n)
-    end
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
+
+    inreplace "#{libexec}/conf/hbase-env.sh",
+      "# export JAVA_HOME=/usr/java/jdk1.6.0/",
+      "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
   end
 
   def caveats; <<-EOS.undent
-    Requires Java 1.6.0 or greater, and  $JAVA_HOME must be set before use.
+    Requires Java 1.6.0 or greater.
 
     You must also edit the configs in:
       #{libexec}/conf
     to reflect your environment.
 
     For more details:
-      http://hbase.apache.org/docs/current/api/overview-summary.html
+      http://wiki.apache.org/hadoop/Hbase
     EOS
   end
 end

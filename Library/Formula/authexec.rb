@@ -1,13 +1,13 @@
 require 'formula'
 
-class Authexec <Formula
-  url 'http://vafer.org/pub/cocoa/authexec.zip'
-  homepage 'http://vafer.org/blog/20060211170210'
-  md5 '0644931a28960a59b7720eb37d035c2e'
-  version '2010-01-28'
+class Authexec < Formula
+  homepage 'https://github.com/tcurdt/authexec'
+  url 'https://github.com/tcurdt/authexec/archive/1.0.tar.gz'
+  sha1 '73d8fb4202ae99057691788442bb192972ef304c'
+
+  head 'https://github.com/tcurdt/authexec.git'
 
   def install
-    inreplace "Makefile", "gcc", "$(CC)"
     system 'make all'
     bin.install 'authexec'
   end

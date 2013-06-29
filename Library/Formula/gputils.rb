@@ -1,9 +1,9 @@
 require 'formula'
 
-class Gputils <Formula
-  url 'http://downloads.sourceforge.net/project/gputils/gputils/0.13.7/gputils-0.13.7.tar.gz'
+class Gputils < Formula
   homepage 'http://gputils.sourceforge.net/'
-  md5 '242e33919e9c318d6ac58b6db291d20e'
+  url 'http://sourceforge.net/projects/gputils/files/gputils/1.2.0/gputils-1.2.0.tar.gz'
+  sha1 '9f3a5d9ee7e2f4f897cd5f8ac56d6679b7c4faba'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"

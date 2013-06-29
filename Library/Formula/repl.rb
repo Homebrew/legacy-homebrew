@@ -1,9 +1,9 @@
 require 'formula'
 
 class Repl < Formula
-  url 'https://github.com/defunkt/repl/tarball/v0.2.1'
   homepage 'https://github.com/defunkt/repl'
-  md5 '5b9d43038f1b561bd3215a01ee3cb766'
+  url 'https://github.com/defunkt/repl/archive/v1.0.0.tar.gz'
+  sha1 'd47d31856a0c474daf54707d1575b45f01ef5cda'
 
   depends_on 'rlwrap' => :optional
 

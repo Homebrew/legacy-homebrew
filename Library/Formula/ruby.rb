@@ -1,81 +1,70 @@
 require 'formula'
 
-class Ruby <Formula
-  url 'http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.2-p136.tar.bz2'
+class Ruby < Formula
   homepage 'http://www.ruby-lang.org/en/'
-  head 'http://svn.ruby-lang.org/repos/ruby/trunk/', :using => :svn
-  md5 '52958d35d1b437f5d9d225690de94c13'
+  url 'http://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p195.tar.bz2'
+  sha256 '0be32aef7a7ab6e3708cc1d65cd3e0a99fa801597194bbedd5799c11d652eb5b'
 
-  depends_on 'readline'
-  depends_on 'libyaml'
+  head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
 
-  def options
-    [
-      ["--with-suffix", "Add a 19 suffix to commands"],
-      ["--with-doc", "Install with the Ruby documentation"],
-      ["--universal", "Compile a universal binary (arch=x86_64,i386)"],
-    ]
+  option :universal
+  option 'with-suffix', 'Suffix commands with "20"'
+  option 'with-doc', 'Install documentation'
+  option 'with-tcltk', 'Install with Tcl/Tk support'
+
+  if build.universal?
+    depends_on 'autoconf' => :build
+  elsif build.head?
+    depends_on :autoconf
   end
 
-  # Stripping breaks dynamic linking
-  skip_clean :all
+  depends_on 'pkg-config' => :build
+  depends_on 'readline'
+  depends_on 'gdbm'
+  depends_on 'libyaml'
+  depends_on 'openssl' if MacOS.version >= :mountain_lion
+  depends_on :x11 if build.with? 'tcltk'
+
+  fails_with :llvm do
+    build 2326
+  end
 
   def install
-    fails_with_llvm
+    system "autoconf" if build.head?
 
-    ruby_lib = HOMEBREW_PREFIX+"lib/ruby"
+    args = %W[--prefix=#{prefix} --enable-shared]
+    args << "--program-suffix=20" if build.with? "suffix"
+    args << "--with-arch=x86_64,i386" if build.universal?
+    args << "--with-out-ext=tk" unless build.with? "tcltk"
+    args << "--disable-install-doc" unless build.with? "doc"
+    args << "--disable-dtrace" unless MacOS::CLT.installed?
 
-    if File.exist? ruby_lib and File.symlink? ruby_lib
-      opoo "#{ruby_lib} exists as a symlink"
-      puts <<-EOS.undent
-        The previous Ruby formula symlinked #{ruby_lib} into Ruby's Cellar.
-
-        This version creates this as a "real folder" in HOMEBREW_PREFIX
-        so that installed gems will survive between Ruby updates.
-
-        Please remove this existing symlink before continuing:
-          rm #{ruby_lib}
-      EOS
-      exit 1
+    # OpenSSL is deprecated on OS X 10.8 and Ruby can't find the outdated
+    # version (0.9.8r 8 Feb 2011) that ships with the system.
+    # See discussion https://github.com/sstephenson/ruby-build/issues/304
+    # and https://github.com/mxcl/homebrew/pull/18054
+    if MacOS.version >= :mountain_lion
+      args << "--with-openssl-dir=#{Formula.factory('openssl').opt_prefix}"
     end
 
-    system "autoconf" unless File.exists? 'configure'
-
-    # Configure claims that "--with-readline-dir" is unused, but it works.
-    args = ["--prefix=#{prefix}",
-            "--with-readline-dir=#{Formula.factory('readline').prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
-            "--enable-shared"]
-
-    args << "--program-suffix=19" if ARGV.include? "--with-suffix"
-    args << "--with-arch=x86_64,i386" if ARGV.include? "--universal"
-
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
+    ruby_lib = HOMEBREW_PREFIX/"lib/ruby"
+    (ruby_lib/'site_ruby').mkpath
+    (ruby_lib/'vendor_ruby').mkpath
+    (ruby_lib/'gems').mkpath
 
-    (ruby_lib+'site_ruby').mkpath
-    (ruby_lib+'vendor_ruby').mkpath
-    (ruby_lib+'gems').mkpath
-
-    (lib+'ruby').mkpath
-    ln_s (ruby_lib+'site_ruby'), (lib+'ruby')
-    ln_s (ruby_lib+'vendor_ruby'), (lib+'ruby')
-    ln_s (ruby_lib+'gems'), (lib+'ruby')
+    (lib/'ruby').install_symlink ruby_lib/'site_ruby',
+                                 ruby_lib/'vendor_ruby',
+                                 ruby_lib/'gems'
 
     system "./configure", *args
     system "make"
     system "make install"
-    system "make install-doc" if ARGV.include? "--with-doc"
-
   end
 
   def caveats; <<-EOS.undent
-    Consider using RVM or Cinderella to manage Ruby environments:
-      * RVM: http://rvm.beginrescueend.com/
-      * Cinderella: http://www.atmos.org/cinderella/
-
     NOTE: By default, gem installed binaries will be placed into:
-      #{bin}
+      #{opt_prefix}/bin
 
     You may want to add this to your PATH.
     EOS

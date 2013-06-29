@@ -1,40 +1,27 @@
 require 'formula'
 
-class Gmp <Formula
-  url 'ftp://ftp.gnu.org/gnu/gmp/gmp-5.0.1.tar.bz2'
+class Gmp < Formula
   homepage 'http://gmplib.org/'
-  sha1 '6340edc7ceb95f9015a758c7c0d196eb0f441d49'
+  url 'ftp://ftp.gmplib.org/pub/gmp-5.1.2/gmp-5.1.2.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gmp/gmp-5.1.2.tar.bz2'
+  sha1 '2cb498322b9be4713829d94dee944259c017d615'
 
-  def options
-    [
-      ["--32-bit", "Force 32-bit."],
-      ["--skip-check", "Do not run 'make check' to verify libraries."]
-    ]
-  end
+  option '32-bit'
 
   def install
-    # Reports of problems using gcc 4.0 on Leopard
-    # https://github.com/mxcl/homebrew/issues/issue/2302
-    ENV.gcc_4_2 if MACOS_VERSION < 10.6
+    args = ["--prefix=#{prefix}", "--enable-cxx"]
 
-    fails_with_llvm "Tests fail to compile; missing references in 'llvm bitcode in libtests.a(misc.o)'."
-
-    args = ["--prefix=#{prefix}", "--infodir=#{info}", "--enable-cxx"]
-
-    if Hardware.is_32_bit? or ARGV.include? "--32-bit"
+    if build.build_32_bit?
       ENV.m32
-      args << "--host=none-apple-darwin"
-    else
-      ENV.m64
+      ENV.append 'ABI', '32'
+      # https://github.com/mxcl/homebrew/issues/20693
+      args << "--disable-assembly"
     end
 
     system "./configure", *args
     system "make"
-    ENV.j1 # Don't install in parallel
+    system "make check"
+    ENV.deparallelize
     system "make install"
-
-    # Different compilers and options can cause tests to fail even
-    # if everything compiles, so yes, we want to do this step.
-    system "make check" unless ARGV.include? "--skip-check"
   end
 end

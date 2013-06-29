@@ -1,19 +1,19 @@
 require 'formula'
 
-class Quvi <Formula
-  url 'http://quvi.googlecode.com/files/quvi-0.2.2.tar.bz2'
-  sha1 'cfeacf4c0a9958ba42ecab65098d71ecdcdd02f4'
-  homepage 'http://code.google.com/p/quvi/'
+class Quvi < Formula
+  homepage 'http://quvi.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/quvi/0.4/quvi/quvi-0.4.2.tar.bz2'
+  sha1 'ba67a380785212886089d75f8aa1480d6c05936e'
 
   depends_on 'pkg-config' => :build
-  depends_on 'pcre'
-  depends_on 'lua'
+  depends_on 'libquvi'
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-smut",
-                          "--enable-broken"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/quvi", "--version"
   end
 end

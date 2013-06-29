@@ -1,16 +1,20 @@
 require 'formula'
 
-class Libgit2 <Formula
-  url 'https://github.com/libgit2/libgit2/tarball/v0.3.0'
-  md5 'ae156dfa1db98ca046b23542e91d0f27'
-  homepage 'http://libgit2.github.com/'
+class Libgit2 < Formula
+  homepage 'http://libgit2.github.io/'
+  url 'https://github.com/libgit2/libgit2/archive/v0.18.0.tar.gz'
+  sha1 '08b6b7520580615c5549ff739ba7d0c8e3617188'
 
-  head 'git://github.com/libgit2/libgit2.git', :branch => 'master'
+  head 'https://github.com/libgit2/libgit2.git', :branch => 'development'
+
+  depends_on 'cmake' => :build
 
   def install
-    system "./waf", "configure", "--prefix=#{prefix}"
-    system "./waf", "build-static"
-    system "./waf", "build-shared"
-    system "./waf", "install"
+    mkdir 'build' do
+      system "cmake", "..",
+                      "-DBUILD_TESTS=NO",
+                      *std_cmake_args
+      system "make install"
+    end
   end
 end

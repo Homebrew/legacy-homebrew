@@ -1,13 +1,17 @@
 require 'formula'
 
 class Vimpager < Formula
-  url 'http://www.vim.org/scripts/download_script.php?src_id=14694'
-  version '1.4'
-  homepage 'http://www.vim.org/scripts/script.php?script_id=1723'
-  md5 'b2c4c978c826876e11bf5453eb19c2a7'
+  homepage 'https://github.com/rkitover/vimpager'
+  url 'https://github.com/rkitover/vimpager/archive/1.8.2.tar.gz'
+  sha1 '7856566eb4f81429922fafccf4e7271c0117d476'
+  head 'https://github.com/rkitover/vimpager.git'
 
   def install
-    bin.install 'download_script.php?src_id=14694' => 'vimpager'
+    inreplace 'vimpager.1', '~/bin/', ''
+
+    bin.install 'vimcat'
+    bin.install 'vimpager'
+    man1.install gzip('vimpager.1')
   end
 
   def caveats; <<-EOS.undent

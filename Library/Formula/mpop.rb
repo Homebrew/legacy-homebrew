@@ -1,12 +1,14 @@
 require 'formula'
 
-class Mpop <Formula
-  url 'http://downloads.sourceforge.net/project/mpop/mpop/1.0.19/mpop-1.0.19.tar.bz2'
+class Mpop < Formula
   homepage 'http://mpop.sourceforge.net/'
-  md5 '40a48d486121a15075faee944a7b8fb7'
+  url 'http://downloads.sourceforge.net/project/mpop/mpop/1.0.28/mpop-1.0.28.tar.bz2'
+  sha1 'bfc2447adb25081aacb6999c5badaf86d5a39741'
+
+  depends_on 'pkg-config' => :build
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
     system "make install"
   end
 end

@@ -1,19 +1,20 @@
 require 'formula'
 
-class Languagetool <Formula
-  url 'http://www.languagetool.org/download/LanguageTool-1.1.oxt'
+class Languagetool < Formula
   homepage 'http://www.languagetool.org/'
-  md5 '80abc0901135afa25385e519d44f802e'
+  url 'http://www.languagetool.org/download/LanguageTool-2.1.zip'
+  sha1 'a9ce558e42710dfd97a43928e0917dec4cab8762'
 
-  def startup_script
-    <<-EOS
-#!/bin/bash
-java -jar #{libexec}/LanguageTool.jar $*
-EOS
+  def server_script server_jar; <<-EOS.undent
+    #!/bin/bash
+    exec java -cp #{server_jar} org.languagetool.server.HTTPServer "$@"
+    EOS
   end
 
   def install
-    (bin+"languagetool").write startup_script
     libexec.install Dir["*"]
+    bin.write_jar_script libexec/'languagetool-commandline.jar', 'languagetool'
+    (bin+'languagetool-server').write server_script(libexec/'languagetool-server.jar')
+    bin.write_jar_script libexec/'languagetool-standalone.jar', 'languagetool-gui'
   end
 end

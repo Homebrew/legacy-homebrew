@@ -1,9 +1,9 @@
 require 'formula'
 
-class CenterIm <Formula
-  url 'http://www.centerim.org/download/releases/centerim-4.22.9.tar.gz'
+class CenterIm < Formula
   homepage 'http://www.centerim.org/index.php/Main_Page'
-  md5 'c43911508205e0277529230c8316a298'
+  url 'http://www.centerim.org/download/releases/centerim-4.22.10.tar.gz'
+  sha1 '46fbac7a55f33b0d4f42568cca21ed83770650e5'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'

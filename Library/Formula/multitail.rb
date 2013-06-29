@@ -1,12 +1,13 @@
 require 'formula'
 
-class Multitail <Formula
-  url 'http://www.vanheusden.com/multitail/multitail-5.2.6.tgz'
+class Multitail < Formula
   homepage 'http://www.vanheusden.com/multitail/download.html'
-  md5 '6496b3d78660ff8d11c743a0d03cca34'
+  url 'http://www.vanheusden.com/multitail/multitail-5.2.12.tgz'
+  sha1 '3d4979b8be1daaf99e4fd983366e0131aa3d0d3b'
 
   def install
-    system "env", "DESTDIR=#{prefix}", "make", "-f", "makefile.macosx", "multitail"
+    ENV['DESTDIR'] = prefix
+    system "make", "-f", "makefile.macosx", "multitail"
 
     bin.install "multitail"
     man1.install gzip("multitail.1")
