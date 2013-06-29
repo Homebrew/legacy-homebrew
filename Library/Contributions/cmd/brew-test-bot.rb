@@ -49,6 +49,10 @@ class Step
     @status.to_s.upcase
   end
 
+  def command_short
+    @command.gsub(/(brew|--verbose|--build-bottle) /, '')
+  end
+
   def passed?
     @status == :passed
   end
@@ -389,7 +393,7 @@ if ARGV.include? "--email"
   tests.each do |test|
     test.steps.each do |step|
       next unless step.failed?
-      failed_steps << step.command.gsub(/(brew|--verbose) /, '')
+      failed_steps << step.command_short
     end
   end
 
