@@ -35,6 +35,14 @@ class SoftwareSpec
     raise e
   end
 
+  def detect_version(val)
+    case val
+    when nil    then Version.detect(url, specs)
+    when String then Version.new(val)
+    when Hash   then Version.new_with_scheme(*val.shift)
+    end
+  end
+
   # The methods that follow are used in the block-form DSL spec methods
   Checksum::TYPES.each do |cksum|
     class_eval <<-EOS, __FILE__, __LINE__ + 1
@@ -52,12 +60,7 @@ class SoftwareSpec
   end
 
   def version val=nil
-    @version ||=
-      case val
-      when nil  then Version.parse(@url)
-      when Hash then Version.new_with_scheme(*val.shift)
-      else           Version.new(val)
-      end
+    @version ||= detect_version(val)
   end
 
   def mirror val

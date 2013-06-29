@@ -3,8 +3,6 @@ require 'formula'
 class Tmap < Formula
   homepage 'https://github.com/iontorrent/TMAP'
   url 'https://github.com/iontorrent/TMAP.git', :tag => 'tmap.3.2.0'
-  sha1 'da3eb4ce3428cec1f5ac12467af4802df6188711'
-  version '3.2.0'
 
   head 'https://github.com/iontorrent/TMAP.git'
 

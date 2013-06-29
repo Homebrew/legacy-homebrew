@@ -60,6 +60,12 @@ class SoftwareSpecTests < Test::Unit::TestCase
     assert_instance_of scheme, @spec.version
   end
 
+  def test_version_from_tag
+    @spec.url('http://foo.com/bar-1.0.tar.gz', :tag => 'v1.0.2')
+    assert_version_equal '1.0.2', @spec.version
+    assert @spec.version.detected_from_url?
+  end
+
   def test_mirrors
     assert_empty @spec.mirrors
     @spec.mirror('foo')
