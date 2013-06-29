@@ -40,6 +40,8 @@ class SoftwareSpec
     when nil    then Version.detect(url, specs)
     when String then Version.new(val)
     when Hash   then Version.new_with_scheme(*val.shift)
+    else
+      raise TypeError, "version '#{val.inspect}' should be a string"
     end
   end
 
