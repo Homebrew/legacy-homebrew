@@ -4,9 +4,7 @@ module LinuxCPUs
 
   def type
     @cpu_type ||= case `uname -m`
-      when /x86_64/
-        :intel
-      when /i386/
+      when /i[3-6]86/, /x86_64/
         :intel
       else
         :dunno
