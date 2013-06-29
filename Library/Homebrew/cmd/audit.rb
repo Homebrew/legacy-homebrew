@@ -285,10 +285,13 @@ class FormulaAuditor
       cksum = s.checksum
       next if cksum.nil?
 
-      len = case cksum.hash_type
-        when :sha1 then 40
-        when :sha256 then 64
-        end
+      case cksum.hash_type
+      when :md5
+        problem "md5 checksums are deprecated, please use sha1 or sha256"
+        next
+      when :sha1   then len = 40
+      when :sha256 then len = 64
+      end
 
       if cksum.empty?
         problem "#{cksum.hash_type} is empty"
