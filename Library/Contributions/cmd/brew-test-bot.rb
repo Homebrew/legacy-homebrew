@@ -360,7 +360,9 @@ end
 
 if ARGV.include? "--email"
   File.open EMAIL_SUBJECT_FILE, 'w' do |file|
-    file.write "FAILED"
+    # The file should be written at the end but in case we don't get to that
+    # point ensure that we have something valid.
+    file.write "INTERNAL ERROR"
   end
 end
 
