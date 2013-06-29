@@ -66,6 +66,12 @@ class SoftwareSpecTests < Test::Unit::TestCase
     assert @spec.version.detected_from_url?
   end
 
+  def test_rejects_non_string_versions
+    assert_raises(TypeError) { @spec.version(1) }
+    assert_raises(TypeError) { @spec.version(2.0) }
+    assert_raises(TypeError) { @spec.version(Object.new) }
+  end
+
   def test_mirrors
     assert_empty @spec.mirrors
     @spec.mirror('foo')
