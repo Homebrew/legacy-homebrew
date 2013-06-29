@@ -19,7 +19,8 @@ class GitFlow < Formula
   conflicts_with 'git-flow-avh'
 
   def install
-    system "make", "prefix=#{prefix}", "install"
+    system "make", "prefix=#{libexec}", "install"
+    bin.write_exec_script libexec/'bin/git-flow'
 
     GitFlowCompletion.new('git-flow-completion').brew do
       bash_completion.install "git-flow-completion.bash"
