@@ -2,7 +2,7 @@ require 'formula'
 
 class Pil < Formula
   homepage 'http://www.pythonware.com/products/pil/'
-  url 'http://effbot.org/downloads/Imaging-1.1.7.tar.gz'
+  url 'http://effbot.org/media/downloads/Imaging-1.1.7.tar.gz'
   sha1 '76c37504251171fda8da8e63ecb8bc42a69a5c81'
 
   depends_on :freetype

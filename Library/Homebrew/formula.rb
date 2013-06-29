@@ -335,9 +335,10 @@ class Formula
     names.each do |name|
       begin
         yield Formula.factory(name)
-      rescue
+      rescue StandardError => e
         # Don't let one broken formula break commands. But do complain.
         onoe "Failed to import: #{name}"
+        puts e
         next
       end
     end
@@ -347,20 +348,17 @@ class Formula
   end
 
   def self.installed
-    HOMEBREW_CELLAR.children.map{ |rack| factory(rack.basename) rescue nil }.compact
+    # `rescue nil` is here to skip kegs with no corresponding formulae
+    HOMEBREW_CELLAR.children.map{ |rack| factory(rack.basename.to_s) rescue nil }.compact
   end
 
   def self.aliases
     Dir["#{HOMEBREW_REPOSITORY}/Library/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
+  # TODO - document what this returns and why
   def self.canonical_name name
-    name = name.to_s if name.kind_of? Pathname
-
-    formula_with_that_name = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb")
-    possible_alias = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Aliases/#{name}")
-    possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{name}.rb")
-
+    # if name includes a '/', it may be a tap reference, path, or URL
     if name.include? "/"
       if name =~ %r{(.+)/(.+)/(.+)}
         tap_name = "#$1-#$2".downcase
@@ -370,16 +368,29 @@ class Formula
         end if tapd.directory?
       end
       # Otherwise don't resolve paths or URLs
-      name
-    elsif formula_with_that_name.file? and formula_with_that_name.readable?
-      name
-    elsif possible_alias.file?
-      possible_alias.realpath.basename('.rb').to_s
-    elsif possible_cached_formula.file?
-      possible_cached_formula.to_s
-    else
-      name
+      return name
     end
+
+    # test if the name is a core formula
+    formula_with_that_name = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb")
+    if formula_with_that_name.file? and formula_with_that_name.readable?
+      return name
+    end
+
+    # test if the name is a formula alias
+    possible_alias = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Aliases/#{name}")
+    if possible_alias.file?
+      return possible_alias.realpath.basename('.rb').to_s
+    end
+
+    # test if the name is a cached downloaded formula
+    possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{name}.rb")
+    if possible_cached_formula.file?
+      return possible_cached_formula.to_s
+    end
+
+    # dunno, pass through the name
+    return name
   end
 
   def self.factory name
@@ -481,10 +492,16 @@ class Formula
   def tap
     if path.realpath.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)}
       "#$1/#$2"
-    else
-      # remotely installed formula are not mxcl/master but this will do for now
+    elsif core_formula?
       "mxcl/master"
+    else
+      "path or URL"
     end
+  end
+
+  # True if this formula is provided by Homebrew itself
+  def core_formula?
+    path.realpath.to_s == Formula.path(name).to_s
   end
 
   def self.path name

@@ -2,8 +2,8 @@ require 'formula'
 
 class Hatari < Formula
   homepage 'http://hatari.tuxfamily.org'
-  url 'http://download.tuxfamily.org/hatari/1.6.2/hatari-1.6.2.tar.bz2'
-  sha1 'fce28eb59d7b1574537bfdba757fddc31534bb17'
+  url 'http://download.tuxfamily.org/hatari/1.7.0/hatari-1.7.0.tar.bz2'
+  sha1 '9961171c6d5f3742f93c903606c4956ce2e15ea0'
 
   head 'http://hg.tuxfamily.org/mercurialroot/hatari/hatari', :using => :hg, :branch => 'default'
 

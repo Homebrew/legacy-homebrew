@@ -147,15 +147,14 @@ class FormulaInstaller
         elsif req.default_formula?
           dependent.deps << req.to_dependency
           Requirement.prune
+        else
+          puts "#{dependent}: #{req.message}"
         end
       end
     end
 
-    unless unsatisfied.empty?
-      puts unsatisfied.map(&:message) * "\n"
-      fatals = unsatisfied.select(&:fatal?)
-      raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
-    end
+    fatals = unsatisfied.select(&:fatal?)
+    raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
   end
 
   # Dependencies of f that were also explicitly requested on the command line.
@@ -206,7 +205,7 @@ class FormulaInstaller
   end
 
   def install_dependency dep
-    dep_tab = Tab.for_formula(dep)
+    dep_tab = Tab.for_formula(dep.to_formula)
     dep_options = dep.options
     dep = dep.to_formula
 
@@ -364,6 +363,10 @@ class FormulaInstaller
       onoe "The `brew link` step did not complete successfully"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts "You can try again using `brew link #{f.name}'"
+      puts
+      puts "Possible conflicting files are:"
+      mode = OpenStruct.new(:dry_run => true, :overwrite => true)
+      keg.link(mode)
       ohai e, e.backtrace if ARGV.debug?
       @show_summary_heading = true
       ignore_interrupts{ keg.unlink }
@@ -455,6 +458,7 @@ class FormulaInstaller
       puts "Homebrew requires that man pages live under share."
       puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 
@@ -514,6 +518,7 @@ class FormulaInstaller
       puts "The offending files are:"
       puts non_exes
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 
@@ -528,6 +533,7 @@ class FormulaInstaller
       puts "The offending files are:"
       puts non_exes
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 

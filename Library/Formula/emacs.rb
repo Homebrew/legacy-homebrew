@@ -9,7 +9,7 @@ class Emacs < Formula
   option "cocoa", "Build a Cocoa version of emacs"
   option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
   option "with-x", "Include X11 support"
-  option "use-git-head", "Use Savannah git mirror for HEAD builds"
+  option "use-git-head", "Use Savannah (faster) git mirror for HEAD builds"
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
 
   if build.include? "use-git-head"
@@ -121,26 +121,6 @@ class Emacs < Formula
           #{bin}/emacs
       EOS
     end
-
-    s += <<-EOS.undent
-      Because the official bazaar repository might be slow, we include an option for
-      pulling HEAD from an unofficial Git mirror:
-
-        brew install emacs --HEAD --use-git-head
-
-      There is inevitably some lag between checkins made to the official Emacs bazaar
-      repository and their appearance on the Savannah mirror. See
-      http://git.savannah.gnu.org/cgit/emacs.git for the mirror's status. The Emacs
-      devs do not provide support for the git mirror, and they might reject bug
-      reports filed with git version information. Use it at your own risk.
-
-      Emacs creates an executable `ctags` that stomps on exuberant-ctags. In
-      order to prevent that, we remove `ctags` and its manpage from the emacs
-      build before linking. (Add the flag "--keep-ctags" to keep it.) You can
-      install exuberant-ctags via brew with `brew install ctags`.
-      (exuberant-ctags can provide both vim-style and emacs-style tags.)
-    EOS
-
     return s
   end
 end

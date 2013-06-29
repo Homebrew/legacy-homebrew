@@ -15,6 +15,7 @@ class Pgplot < Formula
   option 'with-button', 'Install libbutton'
 
   depends_on :x11
+  depends_on :fortran
 
   def patches
     # from MacPorts: https://trac.macports.org/browser/trunk/dports/graphics/pgplot/files
@@ -26,7 +27,6 @@ class Pgplot < Formula
 
   def install
     ENV.deparallelize
-    ENV.fortran
     ENV.append 'CPPFLAGS', "-DPG_PPU"
     # allow long lines in the fortran code (for long homebrew PATHs)
     ENV.append 'FCFLAGS', "-ffixed-line-length-none"
@@ -45,8 +45,8 @@ class Pgplot < Formula
       ATHENA_INCL=""
       TK_INCL=""
       RV_INCL=""
-      FCOMPL="#{ENV['FC']}"
-      FFLAGC="#{ENV['FCFLAGS']}"
+      FCOMPL="#{ENV.fc}"
+      FFLAGC="#{ENV.fcflags}"
       FFLAGD=""
       CCOMPL="#{ENV.cc}"
       CFLAGC="#{ENV.cppflags}"
@@ -58,13 +58,13 @@ class Pgplot < Formula
       TK_LIBS=""
       RANLIB="#{which 'ranlib'}"
       SHARED_LIB="libpgplot.dylib"
-      SHARED_LD="#{ENV['FC']} -dynamiclib -single_module $LDFLAGS -lX11 -install_name libpgplot.dylib"
+      SHARED_LD="#{ENV.fc} -dynamiclib -single_module $LDFLAGS -lX11 -install_name libpgplot.dylib"
       SHARED_LIB_LIBS="#{ENV.ldflags} -lpng -lX11"
       MCOMPL=""
       MFLAGC=""
       SYSDIR="$SYSDIR"
       CSHARED_LIB="libcpgplot.dylib"
-      CSHARED_LD="#{ENV['FC']} -dynamiclib -single_module $LDFLAGS -lX11"
+      CSHARED_LD="#{ENV.fc} -dynamiclib -single_module $LDFLAGS -lX11"
       EOS
 
     mkdir 'build' do
@@ -90,7 +90,7 @@ class Pgplot < Formula
     # install libbutton
     if build.include? 'with-button'
       Button.new.brew do
-        inreplace 'Makefile', 'f77', "#{ENV['FC']} #{ENV['FCFLAGS']}"
+        inreplace 'Makefile', 'f77', "#{ENV.fc} #{ENV.fcflags}"
         system "make"
         lib.install 'libbutton.a'
       end

@@ -103,7 +103,15 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, @tarball_path }
       chdir
     when :gzip_only
-      with_system_path { safe_system 'gunzip', '-f', @tarball_path }
+      # gunzip writes the compressed data in the location of the original,
+      # regardless of the current working directory; the only way to
+      # write elsewhere is to use the stdout
+      with_system_path do
+        data = `gunzip -f "#{@tarball_path}" -c`
+        File.open(File.basename(basename_without_params, '.gz'), 'w') do |f|
+          f.write data
+        end
+      end
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
