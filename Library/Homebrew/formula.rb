@@ -348,7 +348,8 @@ class Formula
   end
 
   def self.installed
-    HOMEBREW_CELLAR.children.map{ |rack| factory(rack.basename) rescue nil }.compact
+    # `rescue nil` is here to skip kegs with no corresponding formulae
+    HOMEBREW_CELLAR.children.map{ |rack| factory(rack.basename.to_s) rescue nil }.compact
   end
 
   def self.aliases
