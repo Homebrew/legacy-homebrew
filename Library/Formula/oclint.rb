@@ -19,6 +19,7 @@ class Oclint < Formula
   end
 
   def test
-    system "#{bin}/oclint-json-compilation-database", "-help"
+    system "echo \"int main() { return 0; }\" > #{prefix}/test.m"
+    system "#{bin}/oclint #{prefix}/test.m -- -c"
   end
 end
