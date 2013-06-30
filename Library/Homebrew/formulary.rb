@@ -97,7 +97,7 @@ class Formulary
     def initialize path
       # require allows filenames to drop the .rb extension, but everything else
       # in our codebase will require an exact and fullpath.
-      path = "#{name}.rb" unless path =~ /\.rb$/
+      path = "#{path}.rb" unless path =~ /\.rb$/
 
       @path = Pathname.new(path)
       @name = @path.stem
