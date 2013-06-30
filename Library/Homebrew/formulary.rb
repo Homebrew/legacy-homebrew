@@ -28,7 +28,13 @@ class Formulary
     # Return the Class for this formula, `require`-ing it if
     # it has not been parsed before.
     def klass
-      unless Formulary.formula_class_defined? name
+      begin
+        have_klass = Formulary.formula_class_defined? name
+      rescue NameError
+        raise FormulaUnavailableError.new(name)
+      end
+
+      unless have_klass
         puts "#{$0}: loading #{path}" if ARGV.debug?
         begin
           require path.to_s
@@ -40,6 +46,7 @@ class Formulary
           raise FormulaUnavailableError.new(name)
         end
       end
+
       klass = Formulary.get_formula_class(name)
       if (klass == Formula) || !klass.ancestors.include?(Formula)
         raise FormulaUnavailableError.new(name)
