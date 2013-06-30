@@ -15,10 +15,12 @@ end
 
 class Squid < Formula
   homepage 'http://www.squid-cache.org/'
-  url 'http://www.squid-cache.org/Versions/v3/3.2/squid-3.2.9.tar.gz'
-  sha1 'c1f5f8de4e622a1fe98e9f854507237fbae06be2'
+  url 'http://www.squid-cache.org/Versions/v3/3.3/squid-3.3.5.tar.gz'
+  sha1 '66210259645f50bd4af0f6aa4e871381c0bf35be'
 
   depends_on NoBdb5
+
+  option "with-ipfw-transparent", "Enable Transparent Proxy support for systems using FreeBSD IPFW-style firewalling. Also works with PF"
 
   def install
     # For --disable-eui, see:
@@ -32,6 +34,8 @@ class Squid < Formula
       --enable-ssl-crtd
       --disable-eui
     ]
+
+    args << "--enable-ipfw-transparent" if build.with?("ipfw-transparent")
 
     system "./configure", *args
     system "make install"
