@@ -2,12 +2,12 @@ require 'formula'
 
 class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.6/downloads/openmpi-1.6.4.tar.bz2'
-  sha1 '38095d3453519177272f488d5058a98f7ebdbf10'
+  url 'http://www.open-mpi.org/software/ompi/v1.6/downloads/openmpi-1.6.5.tar.bz2'
+  sha1 '93859d515b33dd9a0ee6081db285a2d1dffe21ce'
 
   devel do
-    url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7.1.tar.bz2'
-    sha1 '35d166e2a1d8b88c44d61eaabb5086e2425c8eb8'
+    url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7.2.tar.bz2'
+    sha1 '89676c1171784b1c26e1598caf88e87f897f6653'
   end
 
   option 'disable-fortran', 'Do not build the Fortran bindings'
