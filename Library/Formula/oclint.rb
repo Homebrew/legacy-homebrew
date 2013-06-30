@@ -2,9 +2,9 @@ require 'formula'
 
 class Oclint < Formula
   homepage 'http://oclint.org'
-  url 'http://archives.oclint.org/releases/0.7/oclint-0.7-x86_64-apple-darwin12.tar.gz'
+  url 'http://archives.oclint.org/releases/0.7/oclint-0.7-x86_64-apple-darwin-10.tar.gz'
   version '0.7'
-  sha1 'a8cc6b53fb1b843b16c8e5dd66086d8a950b990d'
+  sha1 '867751f9e1b73515c22a014b22592b31c92f81bb'
 
   devel do
     url 'http://archives.oclint.org/nightly/oclint-0.8.dev.d78537d-x64_64-apple-darwin-12.tar.gz'
