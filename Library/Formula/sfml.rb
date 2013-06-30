@@ -2,27 +2,22 @@ require 'formula'
 
 class Sfml < Formula
   homepage 'http://www.sfml-dev.org'
-
-  version '2.0'
   url 'http://www.sfml-dev.org/download/sfml/2.0/SFML-2.0-sources.zip'
+  version '2.0'
   sha1 'ff8cf290f49e1a1d8517a4a344e9214139da462f'
-
   head 'https://github.com/LaurentGomila/SFML/archive/master.zip'
-
-
-  depends_on 'cmake' => :build
-  depends_on 'freetype' => :build
-  depends_on 'jpeg' => :build
-  depends_on 'glew' => :build
-  depends_on 'libsndfile' => :build
 
   option :universal
   option :static, 'Build Static Libraries'
-
   option :framework, 'Build Framework'
   option :xcode, 'Install XCode 4 Templates (requires sudo to install)'
-
   option 'build-examples', 'Build Examples'
+
+  depends_on 'cmake' => :build
+  depends_on 'freetype'
+  depends_on 'jpeg'
+  depends_on 'glew'
+  depends_on 'libsndfile'
 
   def install
     ENV.universal_binary if build.include? 'universal'
