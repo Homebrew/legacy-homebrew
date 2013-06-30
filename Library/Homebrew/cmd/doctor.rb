@@ -1023,7 +1023,11 @@ def check_for_unlinked_but_not_keg_only
     if not rack.directory?
       true
     elsif not (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
-      Formula.factory(rack.basename.to_s).keg_only? rescue nil
+      begin
+        Formula.factory(rack.basename.to_s).keg_only?
+      rescue FormulaUnavailableError
+        false
+      end
     else
       true
     end

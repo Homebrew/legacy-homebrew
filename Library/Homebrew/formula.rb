@@ -350,8 +350,12 @@ class Formula
   end
 
   def self.installed
-    # `rescue nil` is here to skip kegs with no corresponding formulae
-    HOMEBREW_CELLAR.children.map{ |rack| factory(rack.basename.to_s) rescue nil }.compact
+    HOMEBREW_CELLAR.children.map do |rack|
+      begin
+        factory(rack.basename.to_s)
+      rescue FormulaUnavailableError
+      end
+    end.compact
   end
 
   def self.aliases
