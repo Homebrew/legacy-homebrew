@@ -246,6 +246,8 @@ class FormulaInstaller
   def finish
     ohai 'Finishing up' if ARGV.verbose?
 
+    install_plist
+
     if f.keg_only?
       begin
         Keg.new(f.prefix).optlink
@@ -258,7 +260,6 @@ class FormulaInstaller
       check_PATH unless f.keg_only?
     end
 
-    install_plist
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
