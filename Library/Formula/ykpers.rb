@@ -19,10 +19,10 @@ class Ykpers < Formula
 
   def install
     libyubikey_prefix = Formula.factory('libyubikey').opt_prefix
-    system "./configure", "--prefix=#{prefix}",
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--with-libyubikey-prefix=#{libyubikey_prefix}",
-                          '--with-backend=osx',
-                          '--disable-dependency-tracking'
+                          "--with-backend=osx"
     system "make check"
     system "make install"
   end
