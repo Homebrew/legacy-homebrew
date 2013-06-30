@@ -9,28 +9,23 @@ class Libpurple < Formula
   depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'glib'
-  depends_on 'libidn'
   depends_on 'gnutls'
-  # guntls used to use libgcrypt, and the configure script links this
-  # library when testing for gnutls, so include it as a build-time
-  # dependency. See:
-  # https://github.com/mxcl/homebrew/issues/17129
-  depends_on 'libgcrypt' => :build
+  depends_on 'libidn'
 
   def install
     # Just build the library, so disable all this UI stuff
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-gtkui",
+                          "--disable-avahi",
                           "--disable-consoleui",
                           "--disable-dbus",
-                          "--without-x",
+                          "--disable-doxygen",
                           "--disable-gstreamer",
-                          "--disable-vv",
+                          "--disable-gtkui",
                           "--disable-meanwhile",
-                          "--disable-avahi",
-                          "--disable-perl",
-                          "--disable-doxygen"
+                          "--disable-vv",
+                          "--without-x",
+                          "--disable-perl"
     system "make install"
   end
 end
