@@ -18,7 +18,7 @@ class Ykpers < Formula
   end
 
   def install
-    libyubikey_prefix = Formula.factory('libyubikey').prefix
+    libyubikey_prefix = Formula.factory('libyubikey').opt_prefix
     system "./configure", "--prefix=#{prefix}",
                           "--with-libyubikey-prefix=#{libyubikey_prefix}",
                           '--with-backend=osx',
