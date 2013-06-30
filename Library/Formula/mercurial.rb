@@ -7,43 +7,56 @@ class Mercurial < Formula
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
-  depends_on :python => 'docutils'
+  depends_on 'docutils' => :python if build.head? or build.include? 'doc'
+
+  option 'doc', "Build the documentation"
 
   def install
-    python do
-      # Inside this python do block, the PYTHONPATH (and more) is alreay set up
-      if python.from_osx? && !MacOS::CLT.installed?
-        # Help castrated system python on Xcode find the Python.h:
-        # Setting CFLAGS does not work :-(
-        inreplace 'setup.py', 'get_python_inc()', "'#{python.incdir}'"
-      end
+    # Don't add compiler specific flags so we can build against
+    # System-provided Python.
+    ENV.minimal_optimization
 
-      # Man pages come pre-built in source releases
-      system "make doc"
-      system "make", "PREFIX=#{prefix}", "install"
-
-      # Install man pages
-      man1.install 'doc/hg.1'
-      man5.install 'doc/hgignore.5', 'doc/hgrc.5'
-    end
-
-    # install the completion scripts
     bash_completion.install 'contrib/bash_completion' => 'hg-completion.bash'
-    zsh_completion.install 'contrib/zsh_completion' => '_hg'
+
+    system "make doc" if build.head? or build.include? 'doc'
+    system "make local"
+
+    libexec.install 'hg', 'mercurial', 'hgext'
+
+    # Symlink the hg binary into bin
+    bin.install_symlink libexec/'hg'
+
+    # Remove the hard-coded python invocation from hg
+    inreplace bin/'hg', %r[^#!.*$], '#!/usr/bin/env python'
+
+    # Install some contribs
+    bin.install 'contrib/hgk'
+
+    # Install man pages
+    man1.install 'doc/hg.1'
+    man5.install 'doc/hgignore.5', 'doc/hgrc.5'
   end
 
   def caveats
     s = ''
+
+    s += <<-EOS.undent
+      Extensions have been installed to:
+        #{opt_prefix}/libexec/hgext
+    EOS
+
     if build.head? then s += <<-EOS.undent
-        To install the --HEAD version of mercurial, you have to:
-          1. `brew install mercurial`  # so brew can use this to fetch sources!
-          2. `brew unlink mercurial`
-          3. `brew install mercurial --HEAD`
-          4. `brew cleanup mercurial`  # to remove the older non-HEAD version
+
+      Mercurial is required to fetch its own repository, so there are now two
+      installations of mercurial on this machine. If the previous installation
+      was done via Homebrew, the old version may need to be cleaned up and new
+      version linked:
+
+        brew cleanup mercurial && brew link mercurial
       EOS
     end
-    s += python.standard_caveats if python
-    s
+
+    return s
   end
 
   def test

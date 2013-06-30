@@ -2,7 +2,7 @@ require 'formula'
 
 class Djvulibre < Formula
   homepage 'http://djvu.sourceforge.net/'
-  url 'http://sourceforge.net/projects/djvu/files/DjVuLibre/3.5.25/djvulibre-3.5.25.3.tar.gz'
+  url 'http://downloads.sourceforge.net/project/djvu/DjVuLibre/3.5.25/djvulibre-3.5.25.3.tar.gz'
   sha1 'ad35056aabb1950f385360ff59520a82a6f779ec'
 
   depends_on 'jpeg'

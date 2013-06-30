@@ -147,15 +147,14 @@ class FormulaInstaller
         elsif req.default_formula?
           dependent.deps << req.to_dependency
           Requirement.prune
+        else
+          puts "#{dependent}: #{req.message}"
         end
       end
     end
 
-    unless unsatisfied.empty?
-      puts unsatisfied.map(&:message) * "\n"
-      fatals = unsatisfied.select(&:fatal?)
-      raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
-    end
+    fatals = unsatisfied.select(&:fatal?)
+    raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
   end
 
   # Dependencies of f that were also explicitly requested on the command line.
@@ -206,7 +205,7 @@ class FormulaInstaller
   end
 
   def install_dependency dep
-    dep_tab = Tab.for_formula(dep)
+    dep_tab = Tab.for_formula(dep.to_formula)
     dep_options = dep.options
     dep = dep.to_formula
 
@@ -247,6 +246,8 @@ class FormulaInstaller
   def finish
     ohai 'Finishing up' if ARGV.verbose?
 
+    install_plist
+
     if f.keg_only?
       begin
         Keg.new(f.prefix).optlink
@@ -259,7 +260,6 @@ class FormulaInstaller
       check_PATH unless f.keg_only?
     end
 
-    install_plist
     fix_install_names
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
@@ -519,6 +519,7 @@ class FormulaInstaller
       puts "The offending files are:"
       puts non_exes
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 
@@ -533,6 +534,7 @@ class FormulaInstaller
       puts "The offending files are:"
       puts non_exes
       @show_summary_heading = true
+      Homebrew.failed = true # fatal to Brew Bot
     end
   end
 

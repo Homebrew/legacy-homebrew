@@ -342,6 +342,10 @@ class PythonInstalled < Requirement
     binary.to_s
   end
 
+  def eql?(other)
+    instance_of?(other.class) && hash == other.hash
+  end
+
   def hash
     # Requirements are a ComparableSet. So we define our identity by the
     # selected python binary plus the @imports in order to support multiple:

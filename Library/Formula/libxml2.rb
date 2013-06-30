@@ -11,6 +11,8 @@ class Libxml2 < Formula
   keg_only :provided_by_osx
 
   option :universal
+  # Silence audit warnings
+  option 'with-python', 'Build Python bindings'
 
   if build.head?
     depends_on :python => :recommended # satisfied by Python 2.6+

@@ -14,6 +14,7 @@ require 'utils'
 require 'date'
 require 'erb'
 
+EMAIL_SUBJECT_FILE = "brew-test-bot.email.txt"
 HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 
 class Step
@@ -48,6 +49,10 @@ class Step
     @status.to_s.upcase
   end
 
+  def command_short
+    @command.gsub(/(brew|--verbose|--build-bottle) /, '')
+  end
+
   def passed?
     @status == :passed
   end
@@ -75,7 +80,7 @@ class Step
     puts_command
 
     start_time = Time.now
-    run_command = "#{@command} &>#{log_file_path}"
+    run_command = "#{@command} &>'#{log_file_path}'"
     if run_command.start_with? 'git '
       Dir.chdir @repository do
         `#{run_command}`
@@ -250,9 +255,8 @@ class Test
 
     test "brew audit #{formula}"
     test "brew fetch #{dependencies}" unless dependencies.empty?
-    test "brew fetch --build-bottle #{formula}"
+    test "brew fetch --force --build-bottle #{formula}"
     test "brew uninstall #{formula}" if formula_object.installed?
-    test "brew install --verbose #{dependencies}" unless dependencies.empty?
     test "brew install --verbose --build-bottle #{formula}"
     return unless steps.last.passed?
     bottle_step = test "brew bottle #{formula}", :puts_output_on_success => true
@@ -354,6 +358,14 @@ if Pathname.pwd == HOMEBREW_PREFIX and ARGV.include? "--cleanup"
   odie 'cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output.'
 end
 
+if ARGV.include? "--email"
+  File.open EMAIL_SUBJECT_FILE, 'w' do |file|
+    # The file should be written at the end but in case we don't get to that
+    # point ensure that we have something valid.
+    file.write "INTERNAL ERROR"
+  end
+end
+
 tests = []
 any_errors = false
 if ARGV.named.empty?
@@ -383,17 +395,17 @@ if ARGV.include? "--email"
   tests.each do |test|
     test.steps.each do |step|
       next unless step.failed?
-      failed_steps << step.command.gsub(/(brew|--verbose) /, '')
+      failed_steps << step.command_short
     end
   end
 
   if failed_steps.empty?
-    email_subject = 'brew test-bot: PASSED'
+    email_subject = 'PASSED'
   else
-    email_subject = "brew test-bot: FAILED: #{failed_steps.join ', '}"
+    email_subject = "#{failed_steps.join ', '}"
   end
 
-  File.open "brew test-bot.email.txt", 'w' do |file|
+  File.open EMAIL_SUBJECT_FILE, 'w' do |file|
     file.write email_subject
   end
 end

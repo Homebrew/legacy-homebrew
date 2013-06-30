@@ -5,7 +5,6 @@ class Multimarkdown < Formula
 
   # Use the tag instead of the tarball to get submodules
   url 'https://github.com/fletcher/peg-multimarkdown.git', :tag => '3.7'
-  version '3.7'
 
   head 'https://github.com/fletcher/peg-multimarkdown.git', :branch => 'development'
 

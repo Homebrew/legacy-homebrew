@@ -74,4 +74,12 @@ class DependencyExpansionTests < Test::Unit::TestCase
     env_proc = @foo.env_proc = stub
     assert_equal env_proc, Dependency.expand(@f).first.env_proc
   end
+
+  def test_merged_tags_no_dupes
+    @foo2 = build_dep(:foo, ['option'])
+    @foo3 = build_dep(:foo, ['option'])
+    @deps << @foo2 << @foo3
+
+    assert_equal %w{option}, Dependency.expand(@f).first.tags
+  end
 end

@@ -54,7 +54,7 @@ class Requirement
   end
 
   def eql?(other)
-    instance_of?(other.class) && hash == other.hash
+    instance_of?(other.class) && name == other.name && tags == other.tags
   end
 
   def hash
@@ -140,9 +140,9 @@ class Requirement
       formulae = dependent.recursive_dependencies.map(&:to_formula)
       formulae.unshift(dependent)
 
-      formulae.map(&:requirements).each do |requirements|
-        requirements.each do |req|
-          if prune?(dependent, req, &block)
+      formulae.each do |f|
+        f.requirements.each do |req|
+          if prune?(f, req, &block)
             next
           else
             reqs << req

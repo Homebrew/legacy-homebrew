@@ -2,7 +2,7 @@ require 'formula'
 
 class Libp11 < Formula
   homepage 'https://github.com/OpenSC/libp11/wiki'
-  url 'http://sourceforge.net/projects/opensc/files/libp11/libp11-0.2.8.tar.gz'
+  url 'http://downloads.sourceforge.net/project/opensc/libp11/libp11-0.2.8.tar.gz'
   sha1 '2d1f6dc4200038f55a0cb7e22858f93e484b0724'
 
   head 'https://github.com/OpenSC/libp11.git'
