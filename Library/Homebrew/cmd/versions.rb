@@ -88,7 +88,7 @@ class Formula
         # Unload the class so Formula#version returns the correct value
         begin
           Formulary.unload_formula name
-          nostdout { Formula.factory(path).version }
+          nostdout { Formula.factory(path.to_s).version }
         rescue *IGNORED_EXCEPTIONS => e
           # We rescue these so that we can skip bad versions and
           # continue walking the history
