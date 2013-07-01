@@ -33,7 +33,11 @@ module Homebrew extend self
 
         if count == 0 and not blacklisted? query
           puts "No formula found for #{query.inspect}. Searching open pull requests..."
-          GitHub.find_pull_requests(rx) { |pull| puts pull }
+          begin
+            GitHub.find_pull_requests(rx) { |pull| puts pull }
+          rescue GitHub::Error => e
+            opoo e.message
+          end
         end
       end
     end
@@ -81,6 +85,8 @@ module Homebrew extend self
       end
     end
     results
+  rescue GitHub::Error
+    []
   end
 
   def search_formulae rx
