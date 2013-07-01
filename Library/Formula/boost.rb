@@ -14,16 +14,10 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.bz2'
-  sha1 'e6dd1b62ceed0a51add3dda6f3fc3ce0f636a7f3'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.54.0/boost_1_54_0.tar.bz2'
+  sha1 '230782c7219882d0fab5f1effbe86edb85238bf4'
 
   head 'http://svn.boost.org/svn/boost/trunk'
-
-  bottle do
-    sha1 'fda423e53ed998d54c33cc91582c0d5e3e4ff91e' => :mountain_lion
-    sha1 '99fec23d1b79a510d8cd1f1f0cbd77cc73b4f4b5' => :lion
-    sha1 '15f74640979b95bd327be3b6ca2a5d18878a29ad' => :snow_leopard
-  end
 
   env :userpaths
 
@@ -40,6 +34,16 @@ class Boost < Formula
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
+  end
+
+  def patches
+    # upstream backported patches for 1.54.0: http://www.boost.org/patches
+    [
+      'http://www.boost.org/patches/1_54_0/001-coroutine.patch',
+      'http://www.boost.org/patches/1_54_0/002-date-time.patch',
+      'http://www.boost.org/patches/1_54_0/003-log.patch',
+      'http://www.boost.org/patches/1_54_0/004-thread.patch'
+    ]
   end
 
   def pour_bottle?
@@ -93,6 +97,10 @@ class Boost < Formula
     # won't build on PPC or 32-bit builds
     # see https://github.com/mxcl/homebrew/issues/17646
     bargs << "--without-libraries=context" if Hardware::CPU.type == :ppc || Hardware::CPU.bits == 32 || build.universal?
+
+    # Boost.Log cannot be built using Apple GCC at the moment. Disabled
+    # on such systems.
+    bargs << "--without-libraries=log" if MacOS.version <= :snow_leopard
 
     boost_layout = (build.include? "use-system-layout") ? "system" : "tagged"
     args = ["--prefix=#{prefix}",
