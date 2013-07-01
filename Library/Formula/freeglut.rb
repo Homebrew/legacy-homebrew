@@ -2,7 +2,7 @@ require 'formula'
 
 class Freeglut < Formula
   homepage 'http://freeglut.sourceforge.net/'
-  url 'http://sourceforge.net/projects/freeglut/files/freeglut/2.8.1/freeglut-2.8.1.tar.gz'
+  url 'http://downloads.sourceforge.net/project/freeglut/freeglut/2.8.1/freeglut-2.8.1.tar.gz'
   sha1 '7330b622481e2226c0c9f6d2e72febe96b03f9c4'
 
   # Examples won't build on Snow Leopard as one of them requires

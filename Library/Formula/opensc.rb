@@ -2,7 +2,7 @@ require 'formula'
 
 class Opensc < Formula
   homepage 'https://github.com/OpenSC/OpenSC/wiki'
-  url 'http://sourceforge.net/projects/opensc/files/OpenSC/opensc-0.13.0/opensc-0.13.0.tar.gz'
+  url 'http://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.13.0/opensc-0.13.0.tar.gz'
   sha1 '9285ccbed7b49f63e488c8fb1b3e102994a28218'
   head 'https://github.com/OpenSC/OpenSC.git'
 

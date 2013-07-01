@@ -235,7 +235,11 @@ class FormulaAuditor
         problem "Don't use /download in SourceForge urls (url is #{p})."
       end
 
-      if p =~ %r[^http://prdownloads\.]
+      if p =~ %r[^https?://sourceforge\.]
+        problem "Use http://downloads.sourceforge.net to get geolocation (url is #{p})."
+      end
+
+      if p =~ %r[^https?://prdownloads\.]
         problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" +
                 "\tSee: http://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
       end
@@ -276,7 +280,7 @@ class FormulaAuditor
         problem "Invalid or missing #{spec} version"
       else
         version_text = s.version unless s.version.detected_from_url?
-        version_url = Version.parse(s.url)
+        version_url = Version.detect(s.url, s.specs)
         if version_url.to_s == version_text.to_s && s.version.instance_of?(Version)
           problem "#{spec} version #{version_text} is redundant with version scanned from URL"
         end
@@ -285,10 +289,13 @@ class FormulaAuditor
       cksum = s.checksum
       next if cksum.nil?
 
-      len = case cksum.hash_type
-        when :sha1 then 40
-        when :sha256 then 64
-        end
+      case cksum.hash_type
+      when :md5
+        problem "md5 checksums are deprecated, please use sha1 or sha256"
+        next
+      when :sha1   then len = 40
+      when :sha256 then len = 64
+      end
 
       if cksum.empty?
         problem "#{cksum.hash_type} is empty"

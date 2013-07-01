@@ -2,7 +2,7 @@ require 'formula'
 
 class Xplanet < Formula
   homepage 'http://xplanet.sourceforge.net/'
-  url 'http://sourceforge.net/projects/xplanet/files/xplanet/1.3.0/xplanet-1.3.0.tar.gz'
+  url 'http://downloads.sourceforge.net/project/xplanet/xplanet/1.3.0/xplanet-1.3.0.tar.gz'
   sha1 '7c5208b501b441a0184cbb334a5658d0309d7dac'
 
   option "with-x", "Build for X11 instead of Aqua"

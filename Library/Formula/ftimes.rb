@@ -2,7 +2,7 @@ require 'formula'
 
 class Ftimes < Formula
   homepage 'http://ftimes.sourceforge.net/FTimes/index.shtml'
-  url 'http://sourceforge.net/projects/ftimes/files/ftimes/3.10.0/ftimes-3.10.0.tgz'
+  url 'http://downloads.sourceforge.net/project/ftimes/ftimes/3.10.0/ftimes-3.10.0.tgz'
   sha1 '96a59d7524d6b2013d0dc42c91e3e5a420667398'
 
   depends_on 'pcre'

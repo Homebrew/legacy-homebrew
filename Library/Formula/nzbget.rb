@@ -2,7 +2,7 @@ require 'formula'
 
 class Libpar2 < Formula
   homepage 'http://parchive.sourceforge.net/'
-  url 'http://sourceforge.net/projects/parchive/files/libpar2/0.2/libpar2-0.2.tar.gz'
+  url 'http://downloads.sourceforge.net/project/parchive/libpar2/0.2/libpar2-0.2.tar.gz'
   sha1 '4b3da928ea6097a8299aadafa703fc6d59bdfb4b'
 
   fails_with :clang do

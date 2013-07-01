@@ -2,7 +2,7 @@ require 'formula'
 
 class Ssreflect < Formula
   homepage 'http://www.msr-inria.inria.fr/Projects/math-components'
-  url 'http://www.msr-inria.inria.fr/Projects/math-components/ssreflect-1.4-coq8.4.tar.gz'
+  url 'http://ssr.msr-inria.inria.fr/FTP/ssreflect-1.4-coq8.4.tar.gz'
   version '1.4'
   sha1 'c9e678a362973b202a5d90d2abf6436fa1ab4dcf'
 

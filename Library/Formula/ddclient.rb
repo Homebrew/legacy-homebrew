@@ -2,7 +2,7 @@ require 'formula'
 
 class Ddclient < Formula
   homepage 'http://sourceforge.net/apps/trac/ddclient'
-  url 'http://sourceforge.net/projects/ddclient/files/ddclient/ddclient-3.8.1/ddclient-3.8.1.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.1/ddclient-3.8.1.tar.bz2'
   sha1 '2fc0909cf25ab03019214e52d66c7fcd449f8bbe'
 
   def install

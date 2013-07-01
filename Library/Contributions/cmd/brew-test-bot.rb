@@ -49,6 +49,10 @@ class Step
     @status.to_s.upcase
   end
 
+  def command_short
+    @command.gsub(/(brew|--verbose|--build-bottle) /, '')
+  end
+
   def passed?
     @status == :passed
   end
@@ -76,7 +80,7 @@ class Step
     puts_command
 
     start_time = Time.now
-    run_command = "#{@command} &>#{log_file_path}"
+    run_command = "#{@command} &>'#{log_file_path}'"
     if run_command.start_with? 'git '
       Dir.chdir @repository do
         `#{run_command}`
@@ -356,7 +360,9 @@ end
 
 if ARGV.include? "--email"
   File.open EMAIL_SUBJECT_FILE, 'w' do |file|
-    file.write "FAILED"
+    # The file should be written at the end but in case we don't get to that
+    # point ensure that we have something valid.
+    file.write "INTERNAL ERROR"
   end
 end
 
@@ -389,7 +395,7 @@ if ARGV.include? "--email"
   tests.each do |test|
     test.steps.each do |step|
       next unless step.failed?
-      failed_steps << step.command.gsub(/(brew|--verbose) /, '')
+      failed_steps << step.command_short
     end
   end
 
