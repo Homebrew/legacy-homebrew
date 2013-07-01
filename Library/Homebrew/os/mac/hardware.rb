@@ -42,6 +42,8 @@ module MacCPUs
         :sandybridge
       when 0x1F65E835 # Ivy Bridge
         :ivybridge
+      when 0x10B282DC # Haswell
+        :haswell
       else
         :dunno
       end
