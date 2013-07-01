@@ -3,10 +3,10 @@ require 'formula'
 class Denominator < ScriptFileFormula
   # This is a shell script wrapping a java jar; download as single file using nounzip
   homepage 'https://github.com/Netflix/denominator/tree/master/denominator-cli'
-  url 'http://dl.bintray.com/content/netflixoss/denominator/denominator-cli/release/2.0.0/denominator?direct',
+  url 'http://dl.bintray.com/content/netflixoss/denominator/denominator-cli/release/2.1.0/denominator?direct',
     :using  => :nounzip
-  version '2.0.0'
-  sha1 '759d6168a28007699177dd0f593e19f41aafa545'
+  version '2.1.0'
+  sha1 '7a4ec95250e83c29c1d789c1fb23c4da649df35e'
 
   test do
     system "#{bin}/denominator", "help"
