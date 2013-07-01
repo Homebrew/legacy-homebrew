@@ -28,13 +28,13 @@ class Finch < Formula
       --disable-gtkui
       --disable-meanwhile
       --disable-vv
+      --without-x
     ]
 
     args << '--disable-perl' unless build.include? 'perl'
 
     if build.include? 'purple'
       args << '--disable-consoleui'
-      args << '--without-x'
     end
 
     system "./configure", *args
