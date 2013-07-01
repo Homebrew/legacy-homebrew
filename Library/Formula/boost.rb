@@ -17,6 +17,12 @@ class Boost < Formula
   url 'http://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.bz2'
   sha1 'e6dd1b62ceed0a51add3dda6f3fc3ce0f636a7f3'
 
+  devel do
+    url 'http://downloads.sourceforge.net/project/boost/boost/1.54.0.beta.1/boost_1_54_0_beta1.tar.bz2'
+    version '1.54.0.beta.1'
+    sha1 '54d862d4171ccaaa03e860f7a63143ca7f1c84b2'
+  end
+
   head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
