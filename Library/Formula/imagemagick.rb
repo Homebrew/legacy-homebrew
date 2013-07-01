@@ -97,12 +97,6 @@ class Imagemagick < Formula
   end
 
   test do
-    if MacOS.version > :snow_leopard
-      file = 'Key_Large.png'
-    else
-      file = 'Key Large.tif'
-    end
-    system "#{bin}/identify",
-      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/#{file}"
+    system "#{bin}/identify", "/usr/share/doc/cups/images/smiley.jpg"
   end
 end
