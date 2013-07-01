@@ -35,4 +35,3 @@ class UpnpRouterControl < Formula
     system "make", "install"
   end
 end
-
