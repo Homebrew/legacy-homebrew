@@ -37,6 +37,9 @@ class Scala < Formula
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
     ScalaCompletion.new.brew { bash_completion.install 'scala' }
-    ScalaDocs.new.brew { doc.install Dir['*'] } if build.include? 'with-docs'
+    ScalaDocs.new.brew do
+      branch = build.stable? ? 'scala-2.10' : 'scala-2.11'
+      (share/'doc'/branch).install Dir['*']
+    end if build.include? 'with-docs'
   end
 end
