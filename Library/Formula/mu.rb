@@ -9,17 +9,6 @@ class Emacs23Installed < Requirement
     `emacs --version 2>/dev/null` =~ /^GNU Emacs (\d{2})/
     $1.to_i >= 23
   end
-
-  def message; <<-EOS.undent
-    Emacs 23 or greater is required to build this software.
-
-    You can install this with Homebrew:
-      brew install emacs
-
-    Or you can use any other Emacs distribution
-    that provides version 23 or greater.
-    EOS
-  end
 end
 
 class Mu < Formula

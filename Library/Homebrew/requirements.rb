@@ -24,21 +24,6 @@ class MysqlDependency < Requirement
   default_formula 'mysql'
 
   satisfy { which 'mysql_config' }
-
-  def message; <<-EOS.undent
-    MySQL is required to install.
-
-    You can install this with Homebrew using:
-      brew install mysql-connector-c
-        For MySQL client libraries only.
-
-      brew install mysql
-        For MySQL server.
-
-    Or you can use an official installer from:
-      http://dev.mysql.com/downloads/mysql/
-    EOS
-  end
 end
 
 class PostgresqlDependency < Requirement
@@ -46,18 +31,6 @@ class PostgresqlDependency < Requirement
   default_formula 'postgresql'
 
   satisfy { which 'pg_config' }
-
-  def message
-    <<-EOS.undent
-      Postgres is required to install.
-
-      You can install this with Homebrew using:
-        brew install postgres
-
-      Or you can use an official installer from:
-        http://www.postgresql.org/download/macosx/
-    EOS
-  end
 end
 
 class TeXDependency < Requirement
@@ -117,12 +90,4 @@ class MercurialDependency < Requirement
   default_formula 'mercurial'
 
   satisfy { which('hg') }
-
-  def message; <<-EOS.undent
-    Mercurial is needed to install this software.
-
-    You can install this with Homebrew using:
-      brew install mercurial
-    EOS
-  end
 end
