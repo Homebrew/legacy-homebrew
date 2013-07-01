@@ -86,7 +86,7 @@ class CLTDependency < Requirement
   satisfy(:build_env => false) { MacOS::CLT.installed? }
 
   def message; <<-EOS.undent
-    The Command Line Tools for Xcode are required to compile this software.
+    The Command Line Tools are required to compile this software.
     The standalone package can be obtained from http://connect.apple.com,
     or it can be installed via Xcode's preferences.
     EOS

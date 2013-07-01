@@ -226,7 +226,7 @@ def __check_clt_up_to_date
     You should install the Command Line Tools: http://connect.apple.com
     EOS
   elsif MacOS::CLT.outdated? then <<-EOS.undent
-    A newer Command Line Tools for Xcode release is available
+    A newer Command Line Tools release is available
     You should install the latest version from: http://connect.apple.com
     EOS
   end
@@ -268,7 +268,7 @@ def check_cc
     if MacOS::Xcode.version >= "4.3" then <<-EOS.undent
       Experimental support for using Xcode without the "Command Line Tools".
       You have only installed Xcode. If stuff is not building, try installing the
-      "Command Line Tools for Xcode" package provided by Apple.
+      "Command Line Tools" package provided by Apple.
       EOS
     else
       'No compiler found in /usr/bin!'

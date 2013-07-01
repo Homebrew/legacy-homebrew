@@ -159,7 +159,7 @@ module MacOS::CLT extend self
   # This is true if the standard UNIX tools are present in the expected location. For
   # Mavericks and above this is /Library/Developer/CommandLineTools otherwise it is /usr.
   # For Xcode < 4.3, this is the standard location. Otherwise, it means that the user has
-  # installed the "Command Line Tools for Xcode" package.
+  # installed the "Command Line Tools" package.
   def installed?
     (MacOS.dev_tools_path == Pathname.new("#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin") \
       and File.directory? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/include") or
