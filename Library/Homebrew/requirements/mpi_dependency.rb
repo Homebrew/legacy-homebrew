@@ -60,28 +60,4 @@ class MPIDependency < Requirement
       ENV[compiler.upcase] = mpi_path
     end
   end
-
-  def message
-    if not @unknown_langs.empty?
-      <<-EOS.undent
-        There is no MPI compiler wrapper for:
-            #{@unknown_langs.join ', '}
-
-        The following values are valid arguments to `MPIDependency.new`:
-            :cc, :cxx, :f90, :f77
-        EOS
-    else
-      <<-EOS.undent
-        Homebrew could not locate working copies of the following MPI compiler
-        wrappers:
-            #{@non_functional.join ', '}
-
-        If you have a MPI installation, please ensure the bin directory is on your
-        PATH and that all the wrappers are functional. Otherwise, a MPI
-        installation can be obtained from homebrew by *picking one* of the
-        following formulae:
-            open-mpi, mpich2
-        EOS
-    end
-  end
 end
