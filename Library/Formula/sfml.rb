@@ -3,7 +3,6 @@ require 'formula'
 class Sfml < Formula
   homepage 'http://www.sfml-dev.org'
   url 'http://www.sfml-dev.org/download/sfml/2.0/SFML-2.0-sources.zip'
-  version '2.0'
   sha1 'ff8cf290f49e1a1d8517a4a344e9214139da462f'
   head 'https://github.com/LaurentGomila/SFML/archive/master.zip'
 
