@@ -20,7 +20,7 @@ class Mutt < Formula
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
 
   depends_on 'tokyo-cabinet'
-  depends_on 'slang' => :optional
+  depends_on 's-lang' => :optional
   if build.head?
     depends_on :autoconf
     depends_on :automake
