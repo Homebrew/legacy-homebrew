@@ -2,7 +2,7 @@ require 'formula'
 
 class Libgetdata < Formula
   homepage 'http://getdata.sourceforge.net/'
-  url 'http://sourceforge.net/projects/getdata/files/getdata/0.8.4/getdata-0.8.4.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/getdata/getdata/0.8.4/getdata-0.8.4.tar.bz2'
   sha1 'fe50cc6a0a0be719a6ce06acc3beea19fcda13ce'
 
   option 'with-fortran', 'Build Fortran 77 bindings'

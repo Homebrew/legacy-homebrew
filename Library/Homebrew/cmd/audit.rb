@@ -235,7 +235,11 @@ class FormulaAuditor
         problem "Don't use /download in SourceForge urls (url is #{p})."
       end
 
-      if p =~ %r[^http://prdownloads\.]
+      if p =~ %r[^https?://sourceforge\.]
+        problem "Use http://downloads.sourceforge.net to get geolocation (url is #{p})."
+      end
+
+      if p =~ %r[^https?://prdownloads\.]
         problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" +
                 "\tSee: http://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
       end

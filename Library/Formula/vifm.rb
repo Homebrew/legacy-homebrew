@@ -2,7 +2,7 @@ require 'formula'
 
 class Vifm < Formula
   homepage 'http://vifm.sourceforge.net/index.html'
-  url 'http://sourceforge.net/projects/vifm/files/vifm-0.7.5.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/vifm/vifm/vifm-0.7.5.tar.bz2'
   sha1 '202b369b45d741e32a50084d902c4dcc33014915'
 
   def install

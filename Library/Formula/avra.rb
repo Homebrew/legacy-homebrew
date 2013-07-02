@@ -2,7 +2,7 @@ require 'formula'
 
 class Avra < Formula
   homepage 'http://avra.sourceforge.net/'
-  url 'http://sourceforge.net/projects/avra/files/1.3.0/avra-1.3.0.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/avra/1.3.0/avra-1.3.0.tar.bz2'
   sha1 '7ad7d168b02107d4f2d72951155798c2fd87d5a9'
 
   depends_on :automake

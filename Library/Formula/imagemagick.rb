@@ -97,7 +97,6 @@ class Imagemagick < Formula
   end
 
   test do
-    system "#{bin}/identify", \
-      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png"
+    system "#{bin}/identify", "/usr/share/doc/cups/images/smiley.jpg"
   end
 end
