@@ -68,7 +68,7 @@ class Mutt < Formula
             # the mutt_dotlock file (which we can't do if we're running as an
             # unpriviledged user)
             "--with-homespool=.mbox"]
-    args << "--with-slang" if build.with? 'slang'
+    args << "--with-slang" if build.with? 's-lang'
 
     if build.with? 'debug'
       args << "--enable-debug"
