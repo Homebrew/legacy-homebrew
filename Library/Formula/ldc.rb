@@ -1,8 +1,8 @@
 require 'formula'
 
 class Ldc < Formula
-  url 'https://github.com/downloads/ldc-developers/ldc/ldc-0.10.0-src.tar.gz'
-  sha1 '6cfd64f89d74655dc2896d428ac26331c963f00a'
+  url 'http://d32gngvpvl2pi1.cloudfront.net/ldc-0.11.0-src.tar.gz'
+  sha1 '2c43e359d4e432611ff46b7bd6703f712f32d5cc'
 
   head 'https://github.com/ldc-developers/ldc.git'
   homepage 'https://github.com/ldc-developers/ldc/wiki'
