@@ -17,12 +17,12 @@ class Kdelibs < BaseKdeFormula
   depends_on 'shared-desktop-ontologies'
   depends_on 'shared-mime-info'
   depends_on 'attica'
-  depends_on 'strigi'
+  #depends_on 'strigi' # does not build, it requires DBus which is problematic on OSX
   depends_on 'xz'
   depends_on 'docbook'
   depends_on 'd-bus'
   depends_on 'qt'
-  depends_on 'libdbusmenu-qt'
+  #depends_on 'libdbusmenu-qt' also need dbus and the recipe need to be ported to my system.
   depends_on 'aspell' => :optional
   depends_on 'enchant' => :optional
 

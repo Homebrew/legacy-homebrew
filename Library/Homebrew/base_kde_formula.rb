@@ -31,7 +31,8 @@ class BaseKdeFormula < Formula
   def extra_prefix_path
   end
   def kde_default_cmake_args
-    raise "std_cmake_parameters has changed... #{std_cmake_parameters}" if std_cmake_parameters != "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -Wno-dev"
+    puts prefix
+    raise "std_cmake_parameters has changed... #{std_cmake_parameters}, prefix is #{prefix}" if std_cmake_parameters != "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -DCMAKE_FIND_FRAMEWORK=LAST -Wno-dev"
     s = extra_prefix_path
     if s.nil?
       s = kdedir
@@ -40,9 +41,10 @@ class BaseKdeFormula < Formula
     end
     cmake_args = [
       '..',
+      #"-DCMAKE_FIND_FRAMEWORK=LAST",
       "-DCMAKE_INSTALL_PREFIX=#{kdedir}",
       #'-DCMAKE_BUILD_TYPE=None',
-      '-Wno-dev',
+      '-Wdev --trace --debug-output',
       '-DKDE_DEFAULT_HOME=Library/Preferences/KDE',
       #"-DCMAKE_OSX_ARCHITECTURES='#{build_arch}'",
       #"-DCMAKE_PREFIX_PATH=#{s}:#{qjson_prefix}:#{gettext_prefix}",
