@@ -5,7 +5,6 @@ class Libsoup < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.42/libsoup-2.42.2.tar.xz'
   sha256 '1f4f9cc55ba483dc8defea0c3f97cc507dc48384c5529179e29c1e6d05630dbf'
 
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
   depends_on 'glib-networking' # Required at runtime for TLS support

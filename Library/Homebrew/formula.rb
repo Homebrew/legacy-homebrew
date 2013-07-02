@@ -48,6 +48,8 @@ class Formula
     validate_attributes :url, :name, :version
     @downloader = download_strategy.new(name, active_spec)
 
+    @downloader.requirements.each {|r| self.class.dependencies.add(r)}
+
     # Combine DSL `option` and `def options`
     options.each do |opt, desc|
       # make sure to strip "--" from the start of options

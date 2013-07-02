@@ -5,7 +5,6 @@ class AptCacherNg < Formula
   url 'http://ftp.debian.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.7.13.orig.tar.xz'
   sha1 'bb6c3cf8e116ed9800543b7864a3a7b406aa4d5a'
 
-  depends_on 'xz' => :build
   depends_on 'cmake' => :build
   depends_on 'fuse4x' => :build
 

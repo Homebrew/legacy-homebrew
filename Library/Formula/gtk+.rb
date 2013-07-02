@@ -6,7 +6,6 @@ class Gtkx < Formula
   sha256 '15b8bf463eba99abfa58270662914e8e9b83568ab4945b5f0ef1aa29e90becb8'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'jpeg'
   depends_on 'libtiff'

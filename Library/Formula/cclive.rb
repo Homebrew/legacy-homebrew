@@ -6,10 +6,9 @@ class Cclive < Formula
   sha1 '008ebd2e8a92e1ba07f11e7467dac48fe4acc0d4'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
-  depends_on 'quvi'
   depends_on 'boost'
   depends_on 'pcre'
+  depends_on 'quvi'
 
   def install
     system "./configure", "--disable-dependency-tracking",

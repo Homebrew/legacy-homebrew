@@ -7,7 +7,6 @@ class GstLibav < Formula
   sha256 'aefa679d14e7a6558673cfbf401b9c01f1903bb52e5dc08332e9001d25a7ba7a'
 
   depends_on "pkg-config" => :build
-  depends_on "xz" => :build
   depends_on "gst-plugins-base"
 
   def install

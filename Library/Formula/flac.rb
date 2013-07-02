@@ -7,7 +7,6 @@ class Flac < Formula
 
   option :universal
 
-  depends_on 'xz' => :build
   depends_on 'lame'
   depends_on 'libogg' => :optional
 

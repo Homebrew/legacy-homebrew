@@ -8,7 +8,6 @@ class Pango < Formula
   option 'without-x', 'Build without X11 support'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'harfbuzz'
 

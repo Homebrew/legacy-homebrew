@@ -7,7 +7,6 @@ class GstPluginsBase < Formula
   sha256 '014805e50b696bc06c3862ea656df079fc0b5fef0c10f16e9f085f290545677a'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'gstreamer'
 

@@ -35,6 +35,8 @@ class AbstractDownloadStrategy
   def fetch; end
   def stage; end
   def cached_location; end
+
+  def requirements; []; end
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
@@ -49,6 +51,14 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
     @mirrors = package.mirrors
     @temporary_path = Pathname.new("#@tarball_path.incomplete")
+  end
+
+  def requirements
+    if @url =~ /\.xz$/
+      [{'xz' => :build}]
+    else
+      []
+    end
   end
 
   def cached_location
@@ -349,6 +359,11 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
+  # --HEAD git depends on git itself, so comment-out for now
+  # def requirements
+  #   ['git']
+  # end
+
   def cached_location
     @clone
   end
@@ -559,6 +574,10 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
+  def requirements
+    [:hg]
+  end
+
   def cached_location; @clone; end
 
   def hgpath
@@ -612,6 +631,10 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
+  def requirements
+    [:bzr]
+  end
+
   def cached_location; @clone; end
 
   def bzrpath
@@ -663,6 +686,10 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
     else
       @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--fossil")
     end
+  end
+
+  def requirements
+    [:fossil]
   end
 
   def cached_location; @clone; end

@@ -91,3 +91,33 @@ class MercurialDependency < Requirement
 
   satisfy { which('hg') }
 end
+
+class BazaarDependency < Requirement
+  fatal true
+  default_formula 'bazaar'
+
+  satisfy { which('bzr') }
+
+  def message; <<-EOS.undent
+    Bazaar is needed to install this software.
+
+    You can install this with Homebrew using:
+      brew install bazaar
+    EOS
+  end
+end
+
+class FossilDependency < Requirement
+  fatal true
+  default_formula 'fossil'
+
+  satisfy { which('fossile') }
+
+  def message; <<-EOS.undent
+    Fossil is needed to install this software.
+
+    You can install this with Homebrew using:
+      brew install fossil
+    EOS
+  end
+end

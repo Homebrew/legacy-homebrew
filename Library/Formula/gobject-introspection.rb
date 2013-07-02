@@ -8,7 +8,6 @@ class GobjectIntrospection < Formula
   option :universal
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'libffi'
 

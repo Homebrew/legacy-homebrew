@@ -7,7 +7,6 @@ class Librsvg < Formula
 
   depends_on :x11
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gtk+'
   depends_on 'libcroco'
   depends_on 'libgsf' => :optional

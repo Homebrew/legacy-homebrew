@@ -99,6 +99,8 @@ class DependencyCollector
     when :clt        then CLTDependency.new(tags)
     when :arch       then ArchRequirement.new(tags)
     when :hg         then MercurialDependency.new(tags)
+    when :bzr        then BazaarDependency.new(tags)
+    when :fossil     then FossilDependency.new(tags)
     when :python, :python2 then PythonInstalled.new("2", *tags)
     when :python3    then PythonInstalled.new("3", *tags)
     # Tiger's ld is too old to properly link some software

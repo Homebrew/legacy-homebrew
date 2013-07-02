@@ -6,7 +6,6 @@ class Gmime < Formula
   sha256 'b4c2a0b99b82063387cd750a38421ebaa0636f339e67984a84371bcb697dc99a'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'libgpg-error' => :build
   depends_on 'glib'
 
