@@ -1,9 +1,7 @@
 require 'formula'
 
 class MuttHtmldocs < Formula
-  url 'http://www.mutt.org/doc/devel/manual.html.gz'
-  sha1 '0016bebb759a9f9500f3a57978682118bc2e8263'
-  version 'HEAD'
+  head 'http://dev.mutt.org/doc/manual.html', :using => :nounzip
 end
 
 class Mutt < Formula
@@ -19,9 +17,10 @@ class Mutt < Formula
   option "with-slang", "Build against slang instead of ncurses"
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
+  option "with-confirm-attachment-patch", "Apply confirm attachment patch"
 
   depends_on 'tokyo-cabinet'
-  depends_on 'slang' => :optional
+  depends_on 's-lang' => :optional
   if build.head?
     depends_on :autoconf
     depends_on :automake
@@ -36,6 +35,7 @@ class Mutt < Formula
       ['with-ignore-thread-patch', 'https://gist.github.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch'],
       ['with-pgp-verbose-mime-patch',
           'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+      ['with-confirm-attachment-patch', 'https://gist.github.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch'],
     ]
 
     if build.with? "ignore-thread-patch" and build.with? "sidebar-patch"
@@ -68,7 +68,7 @@ class Mutt < Formula
             # the mutt_dotlock file (which we can't do if we're running as an
             # unpriviledged user)
             "--with-homespool=.mbox"]
-    args << "--with-slang" if build.with? 'slang'
+    args << "--with-slang" if build.with? 's-lang'
 
     if build.with? 'debug'
       args << "--enable-debug"

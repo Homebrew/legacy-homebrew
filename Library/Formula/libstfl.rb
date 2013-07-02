@@ -15,6 +15,16 @@ class Libstfl < Formula
 
     args << "FOUND_RUBY = 0" unless MacOS::CLT.installed? # Ruby does not build on Xcode only. Help us fix this!
 
+    # See https://github.com/mistydemeo/tigerbrew/issues/83
+    `ruby --version` =~ /ruby (\d\.\d).\d/
+    if $1.to_f > 1.9
+      opoo <<-EOS.undent
+      libstfl currently cannot be built against Ruby 2.0.
+               Ruby bindings will not be built.
+      EOS
+      args << "FOUND_RUBY=0"
+    end
+
     if build.with? 'python'
       # Install into the site-packages in the Cellar (so uninstall works)
       inreplace 'python/Makefile.snippet' do |s|
