@@ -2,8 +2,8 @@ require 'base_kde_formula'
 
 class Akonadi < BaseKdeFormula
   homepage 'http://pim.kde.org/akonadi/'
-  url 'ftp://ftp.kde.org/pub/kde/stable/akonadi/src/akonadi-1.7.1.tar.bz2'
-  md5 '54e0556d73c22c7b3393069071e0b717'
+  url 'ftp://ftp.kde.org/pub/kde/stable/akonadi/src/akonadi-1.9.1.tar.bz2'
+  sha1 '955ea3ccca2c81db8b81deea9a45921c89687bda'
 
   depends_on 'shared-mime-info'
   depends_on 'mysql'
@@ -11,10 +11,10 @@ class Akonadi < BaseKdeFormula
   depends_on 'boost'
   depends_on 'qt'
 
-  def patches
-    {:p0 => [
-      "http://bugsfiles.kde.org/attachment.cgi?id=69519"
-    ]}
-  end
+  #def patches
+  #  {:p0 => [
+  #    "http://bugsfiles.kde.org/attachment.cgi?id=69519"
+  #  ]}
+  #end
   
 end
