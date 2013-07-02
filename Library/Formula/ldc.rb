@@ -5,7 +5,7 @@ class Ldc < Formula
   sha1 '2c43e359d4e432611ff46b7bd6703f712f32d5cc'
 
   head 'https://github.com/ldc-developers/ldc.git'
-  homepage 'https://github.com/ldc-developers/ldc/wiki'
+  homepage 'http://wiki.dlang.org/LDC'
 
   depends_on 'cmake' => :build
   depends_on 'llvm'
