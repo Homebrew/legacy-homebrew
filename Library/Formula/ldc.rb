@@ -29,6 +29,6 @@ class Ldc < Formula
       EOF
     }
     system "ldc2", "test.d"
-    system "./test"
+    `"./test"`.strip == "Test passed."
   end
 end
