@@ -13,17 +13,6 @@ class MarkdownProvider < Requirement
   default_formula 'markdown'
 
   satisfy { which 'markdown' }
-
-  def message; <<-EOS.undent
-    shocco requires a `markdown` command.
-
-    You can satisfy this requirement with either of two formulae:
-      brew install markdown
-      brew install discount
-
-    Please install one and try again.
-    EOS
-  end
 end
 
 class Shocco < Formula

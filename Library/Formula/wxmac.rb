@@ -15,7 +15,7 @@ end
 
 class Wxmac < Formula
   homepage 'http://www.wxwidgets.org'
-  url 'http://sourceforge.net/projects/wxpython/files/wxPython/2.9.4.0/wxPython-src-2.9.4.0.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/wxpython/wxPython/2.9.4.0/wxPython-src-2.9.4.0.tar.bz2'
   sha1 'c292cd45b51e29c558c4d9cacf93c4616ed738b9'
 
   depends_on :python => :recommended

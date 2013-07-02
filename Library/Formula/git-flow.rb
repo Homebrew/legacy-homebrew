@@ -13,14 +13,14 @@ class GitFlow < Formula
 
   # Use the tag instead of the tarball to get submodules
   url 'https://github.com/nvie/gitflow.git', :tag => '0.4.1'
-  version '0.4.1'
 
   head 'https://github.com/nvie/gitflow.git', :branch => 'develop'
 
   conflicts_with 'git-flow-avh'
 
   def install
-    system "make", "prefix=#{prefix}", "install"
+    system "make", "prefix=#{libexec}", "install"
+    bin.write_exec_script libexec/'bin/git-flow'
 
     GitFlowCompletion.new('git-flow-completion').brew do
       bash_completion.install "git-flow-completion.bash"

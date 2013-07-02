@@ -57,6 +57,12 @@ class Gfortran < Formula
       '--disable-nls'
     ]
 
+    # https://github.com/mxcl/homebrew/issues/19584#issuecomment-19661219
+    unless MacOS.prefer_64_bit?
+      args << "--disable-multiarch"
+      args << "--disable-multilib"
+    end
+
     mkdir 'build' do
       unless MacOS::CLT.installed?
         # For Xcode-only systems, we need to tell the sysroot path.

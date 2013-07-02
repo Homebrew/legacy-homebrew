@@ -5,7 +5,7 @@ class GitMultipush < Formula
   url 'http://git-multipush.googlecode.com/files/git-multipush-2.3.tar.bz2'
   sha1 'a53f171af5e794afe9b1de6ccd9bd0661db6fd91'
 
-  head 'https://github.com/gavinbeatty/git-multipush.git', :revision => 'HEAD'
+  head 'https://github.com/gavinbeatty/git-multipush.git'
 
   depends_on 'asciidoc' => :build if build.head?
 

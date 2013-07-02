@@ -43,6 +43,7 @@ class Postgresql < Formula
       --with-ldap
       --with-openssl
       --with-pam
+      --with-tcl
       --with-libxml
       --with-libxslt
     ]

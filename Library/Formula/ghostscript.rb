@@ -8,7 +8,7 @@ end
 
 class GsDjVU < Formula
   homepage 'http://djvu.sourceforge.net/gsdjvu.html'
-  url 'http://sourceforge.net/projects/djvu/files/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
+  url 'http://downloads.sourceforge.net/project/djvu/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
   version '1.5'
   sha1 'c7d0677dae5fe644cf3d714c04b3c2c343906342'
 
@@ -23,6 +23,9 @@ class Ghostscript < Formula
   head 'git://git.ghostscript.com/ghostpdl.git'
 
   option 'with-djvu', 'Build drivers for DjVU file format'
+
+  # TODO - figure out why this is needed
+  env :std if build.include? 'with-djvu'
 
   if build.head?
     depends_on :automake
@@ -64,7 +67,7 @@ class Ghostscript < Formula
         (buildpath+'base').install 'gdevdjvu.c'
         (buildpath+'lib').install 'ps2utf8.ps'
         ENV['EXTRA_INIT_FILES'] = 'ps2utf8.ps'
-        (buildpath/'base/contrib.mak').open('a').write(File.read('gsdjvi.mak'))
+        (buildpath/'base/contrib.mak').open('a').write(File.read('gsdjvu.mak'))
       end
     end
 

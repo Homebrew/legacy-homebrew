@@ -14,6 +14,7 @@ require 'utils'
 require 'date'
 require 'erb'
 
+EMAIL_SUBJECT_FILE = "brew-test-bot.email.txt"
 HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 
 class Step
@@ -48,6 +49,10 @@ class Step
     @status.to_s.upcase
   end
 
+  def command_short
+    @command.gsub(/(brew|--verbose|--build-bottle) /, '')
+  end
+
   def passed?
     @status == :passed
   end
@@ -75,7 +80,7 @@ class Step
     puts_command
 
     start_time = Time.now
-    run_command = "#{@command} &>#{log_file_path}"
+    run_command = "#{@command} &>'#{log_file_path}'"
     if run_command.start_with? 'git '
       Dir.chdir @repository do
         `#{run_command}`
@@ -353,6 +358,14 @@ if Pathname.pwd == HOMEBREW_PREFIX and ARGV.include? "--cleanup"
   odie 'cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output.'
 end
 
+if ARGV.include? "--email"
+  File.open EMAIL_SUBJECT_FILE, 'w' do |file|
+    # The file should be written at the end but in case we don't get to that
+    # point ensure that we have something valid.
+    file.write "INTERNAL ERROR"
+  end
+end
+
 tests = []
 any_errors = false
 if ARGV.named.empty?
@@ -382,7 +395,7 @@ if ARGV.include? "--email"
   tests.each do |test|
     test.steps.each do |step|
       next unless step.failed?
-      failed_steps << step.command.gsub(/(brew|--verbose) /, '')
+      failed_steps << step.command_short
     end
   end
 
@@ -392,7 +405,7 @@ if ARGV.include? "--email"
     email_subject = "#{failed_steps.join ', '}"
   end
 
-  File.open "brew-test-bot.email.txt", 'w' do |file|
+  File.open EMAIL_SUBJECT_FILE, 'w' do |file|
     file.write email_subject
   end
 end
