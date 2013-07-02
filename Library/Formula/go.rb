@@ -94,6 +94,7 @@ class Go < Formula
     EOS
   end
 
+  #test comment
   test do
     (testpath/'hello.go').write <<-EOS.undent
     package main
