@@ -1,6 +1,5 @@
 require 'formula'
 
-
 class Npth < Formula
   homepage 'http://lwn.net/Articles/496268/'
   url 'ftp://ftp.gnupg.org/gcrypt/npth/npth-0.91.tar.bz2'
@@ -9,10 +8,5 @@ class Npth < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make", "install" # if this fails, try separate make/make install steps
-  end
-
-  test do
-
-  end
+    system "make", "install"
 end
