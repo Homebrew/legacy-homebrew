@@ -340,6 +340,14 @@ class FormulaAuditor
       problem "Commented cmake call found"
     end
 
+    # Comments from default template
+    if (text =~ /# if this fails, try separate make\/make install steps/)
+      problem "Please remove default template comments"
+    end
+    if (text =~ /# PLEASE REMOVE/)
+      problem "Please remove default template comments"
+    end
+
     # FileUtils is included in Formula
     if text =~ /FileUtils\.(\w+)/
       problem "Don't need 'FileUtils.' before #{$1}."
