@@ -19,12 +19,6 @@ class Yarp < Formula
   depends_on 'jpeg'
   depends_on :x11
 
-  # Fix bad includes with gtkmm-2.24.3
-  # Check if this is still needed with new versions of yarp and gtkmm
-  def patches
-    DATA
-  end
-
   def install
     args = std_cmake_args + %W[
       -DCREATE_LIB_MATH=TRUE
@@ -50,54 +44,3 @@ class Yarp < Formula
     system "make install"
   end
 end
-
-__END__
-diff --git a/extern/gtkdataboxmm/gtkdataboxmm/gtkdatabox/gtkdataboxmm/init.cc b/extern/gtkdataboxmm/gtkdataboxmm/gtkdatabox/gtkdataboxmm/init.cc
-index 42270cb..e05fa62 100644
---- a/extern/gtkdataboxmm/gtkdataboxmm/gtkdatabox/gtkdataboxmm/init.cc
-+++ b/extern/gtkdataboxmm/gtkdataboxmm/gtkdatabox/gtkdataboxmm/init.cc
-@@ -17,6 +17,7 @@
-  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  */
- 
-+#include <glibmm.h>
- #include <gtkmm/main.h>
- #include <gtkdataboxmmconfig.h>
- #include <gtkdataboxmm/wrap_init.h>
-diff --git a/src/yarpmanager/gymanager/gymanager.cpp b/src/yarpmanager/gymanager/gymanager.cpp
-index c7fee0b..8f68836 100644
---- a/src/yarpmanager/gymanager/gymanager.cpp
-+++ b/src/yarpmanager/gymanager/gymanager.cpp
-@@ -13,6 +13,7 @@
- #endif
- 
- #include <iostream>
-+#include <glibmm.h>
- #include <gtkmm/main.h>
- 
- #include <yarp/os/Network.h>
-diff --git a/src/yarpscope/src/main.cpp b/src/yarpscope/src/main.cpp
-index 1073ca0..6afd0e2 100644
---- a/src/yarpscope/src/main.cpp
-+++ b/src/yarpscope/src/main.cpp
-@@ -11,6 +11,7 @@
- #include <yarp/os/ResourceFinder.h>
- #include <yarp/os/Network.h>
- 
-+#include <glibmm.h>
- #include <gtkmm/main.h>
- 
- //#include <glibmm/i18n.h>
-diff --git a/src/yarpscope/src/Graph.cpp b/src/yarpscope/src/Graph.cpp
-index b825c40..8d3dec3 100644
---- a/src/yarpscope/src/Graph.cpp
-+++ b/src/yarpscope/src/Graph.cpp
-@@ -10,6 +10,8 @@
- #include "Debug.h"
- #include "PortReader.h"
- 
-+#include <glibmm.h>
-+
- #include <gtkdataboxmm/lines.h>
- #include <gtkdataboxmm/bars.h>
- #include <gtkdataboxmm/points.h>
