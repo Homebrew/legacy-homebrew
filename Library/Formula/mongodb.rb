@@ -2,9 +2,9 @@ require 'formula'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.4.tgz'
-  sha1 'd9abc5c3aa6e7c6c29bc7b4a15028091931ec7bb'
-  version '2.4.4-x86_64'
+  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.5.tgz'
+  sha1 '04de29aab4ba532aa4c963113cb648b0c3d1b68e'
+  version '2.4.5-x86_64'
 
   devel do
     url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.5.0.tgz'
