@@ -106,7 +106,7 @@ class Subversion < Formula
       svnauthz-validate
       svnraisetreeconflict
     ].each do |prog|
-      bin.install_symlink bin/"svn-tools"/prog
+      bin.install_symlink bin/prog
     end
 
     python do
