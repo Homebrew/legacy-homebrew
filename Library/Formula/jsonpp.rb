@@ -2,9 +2,9 @@ require 'formula'
 
 class Jsonpp < Formula
   homepage 'http://jmhodges.github.io/jsonpp/'
-  url 'http://projects.somethingsimilar.com/jsonpp/downloads/jsonpp-1.1.0-osx-x86_64.zip'
-  version '1.1.0'
-  sha1 '2392c3c1c4ff38a0a1ed59e5cb23ac633d7fb54d'
+  url 'https://github.com/jmhodges/jsonpp/releases/v1.2.0/715/jsonpp-1.2.0-osx-x86_64.zip'
+  version '1.2.0'
+  sha1 '7aec425f3604d8c8e20f597d13df5bc5d9044a5f'
 
   def install
     bin.install 'jsonpp'
