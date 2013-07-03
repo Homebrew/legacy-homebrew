@@ -1,5 +1,12 @@
 require 'formula'
 
+# Necessary until upstream resolves the incompatibility issue with texinfo 5
+class Texinfo4 < Formula
+  homepage 'http://www.gnu.org/software/texinfo/'
+  url 'http://ftp.gnu.org/gnu/texinfo/texinfo-4.13a.tar.gz'
+  sha1 'a1533cf8e03ea4fa6c443b73f4c85e4da04dead0'
+end
+
 class Lilypond < Formula
   homepage 'http://lilypond.org/'
   url 'http://download.linuxaudio.org/lilypond/sources/v2.16/lilypond-2.16.2.tar.gz'
@@ -23,7 +30,8 @@ class Lilypond < Formula
   depends_on 'ghostscript'
   depends_on 'mftrace'
   depends_on 'fontforge' => ["with-x", "with-cairo"]
-  depends_on 'texinfo'
+  # Uncomment the following line once upstream resolve the aforementioned issue:
+  # depends_on 'texinfo'
   depends_on 'fondu'
   # Add dependency on keg-only Homebrew 'flex' because Apple bundles an older and incompatible
   # version of the library with 10.7 at least, seems slow keeping up with updates,
@@ -44,6 +52,17 @@ class Lilypond < Formula
   end
 
   def install
+    # This texinfo4 business will be no longer needed, either,
+    # once the aforementioned issue is resolved.
+    texinfo4_prefix = libexec+'texinfo4'
+    Texinfo4.new.brew do
+      system "./configure", "--disable-dependency-tracking",
+                            "--disable-install-warnings",
+                            "--prefix=#{texinfo4_prefix}"
+      system "make CXX=#{ENV.cxx} install"
+    end
+    ENV.prepend_path 'PATH', "#{texinfo4_prefix}/bin"
+
     gs = Formula.factory('ghostscript')
 
     args = ["--prefix=#{prefix}",
