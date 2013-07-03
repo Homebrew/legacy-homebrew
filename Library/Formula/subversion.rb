@@ -56,7 +56,7 @@ class Subversion < Formula
         Upgrading from a 1.7 version built with this patch is not supported.
 
         You should stay on 1.7, install 1.7 from homebrew-versions, or
-          brew rm subveresion && brew install subversion
+          brew rm subversion && brew install subversion
         to build a new version of 1.8 without this patch.
       EOS
       )
