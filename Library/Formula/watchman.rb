@@ -27,30 +27,10 @@ class Watchman < Formula
   def caveats
     # display OSX specific notes about file handle size limits:
     <<-EOS.undent
-
-    The default per-process descriptor limit on current versions of OS X is
-    extremely low (256!). Since kqueue() requires an open descriptor for each
-    watched directory, you will very quickly run into resource limits if your trees
-    are large or if you do not raise the limits in your system configuration.
-
-    Watchman will attempt to raise its descriptor limit to match
-    kern.maxfilesperproc when it starts up, so you shouldn't need to mess with
-    ulimit; just raising the sysctl should do the trick.
-
-    The following will raise the limits to allow 10 million files total, with 1
-    million files per process until your next reboot.
-
-    sudo sysctl -w kern.maxfiles=10485760
-    sudo sysctl -w kern.maxfilesperproc=1048576
-
-    Putting the following into a file named /etc/sysctl.conf on OS X will cause
-    these values to persist across reboots:
-
-    kern.maxfiles=10485760
-    kern.maxfilesperproc=1048576
+To increase file limits add 'kern.maxfiles=10485760' and 'kern.maxfilesperproc=10485760'
+to /etc/sysctl.conf (use 'sysctl -w' to do so immediately).
     
-    For more information see https://github.com/facebook/watchman#max-os-file-descriptor-limits
-
+See https://github.com/facebook/watchman#max-os-file-descriptor-limits
     EOS
   end
 
