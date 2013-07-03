@@ -10,6 +10,7 @@ class Minbif < Formula
 
   option 'pam', 'Build with PAM support, patching for OSX PAM headers'
 
+  depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
   depends_on 'glib'
   depends_on 'gettext'

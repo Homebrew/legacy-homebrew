@@ -6,6 +6,7 @@ class Skipfish < Formula
   sha1 '2564162a13d02f8310eef5edcbaf74ed6043be99'
 
   depends_on 'libidn'
+  depends_on 'pcre'
 
   def install
     ENV.append "CFLAGS", "-I#{HOMEBREW_PREFIX}/include"

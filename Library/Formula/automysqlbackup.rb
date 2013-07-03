@@ -45,8 +45,6 @@ class Automysqlbackup < Formula
           <key>Hour</key>
           <integer>04</integer>
         </dict>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>ProgramArguments</key>
         <array>
             <string>#{sbin}/automysqlbackup</string>

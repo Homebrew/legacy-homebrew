@@ -16,7 +16,7 @@ class Libinfinity < Formula
   # Supposedly fixed in HEAD, but still happens in 0.5.3, possibly
   # in a different place.
   fails_with :clang do
-    build 421
+    build 425
     cause 'Non-void function should return a value'
   end
 
@@ -31,7 +31,5 @@ class Libinfinity < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
-    # Don't link this into share!
-    (share/"icons/hicolor/icon-theme.cache").unlink
   end
 end

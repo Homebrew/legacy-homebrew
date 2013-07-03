@@ -8,15 +8,15 @@ end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.3/sbcl-1.1.3-source.tar.bz2'
-  sha1 '9c3027899a4d40f95549768f51f2aa010e84c009'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.8/sbcl-1.1.8-source.tar.bz2'
+  sha1 '559b6d0ae455fbf42188b43f8900cba6adb0747f'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    sha1 '1387c2961aba507cf285c74276fa5aa38fd6476f' => :mountainlion
-    sha1 'b5f26fbd0e88997429fbe1cad42143bcb19f0d4b' => :lion
-    sha1 'd5a1b5303a386871512ff4acdcf3447d460ddd8f' => :snowleopard
+    sha1 'f3a56af6651fad229616ce0ad182fa4829b1c0f2' => :mountain_lion
+    sha1 'cec671e27e8a23ff8b9c6f8d15549a7cfc688bcb' => :lion
+    sha1 'f148420a1d44f0a8e5fe56ac57639fe6421a22c3' => :snow_leopard
   end
 
   fails_with :llvm do
@@ -59,7 +59,7 @@ class Sbcl < Formula
     # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
     ENV.delete_if do |key, value|
-      value =~ /[\x80-\xff]/
+      value =~ /[\x80-\xff]/n
     end
 
     SbclBootstrapBinaries.new.brew do
@@ -76,13 +76,5 @@ class Sbcl < Formula
 
     ENV['INSTALL_ROOT'] = prefix
     system "sh install.sh"
-  end
-
-  def caveats; <<-EOS.undent
-    If you are upgrading sbcl and you have installed maxima,
-    you have to reinstall maxima:
-
-      brew rm maxima && brew install maxima
-    EOS
   end
 end

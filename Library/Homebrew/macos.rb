@@ -1,26 +1,16 @@
+require 'os/mac/version'
+require 'hardware'
+
 module MacOS extend self
 
   # This can be compared to numerics, strings, or symbols
   # using the standard Ruby Comparable methods.
   def version
-    require 'version'
-    MacOSVersion.new(MACOS_VERSION.to_s)
+    @version ||= Version.new(MACOS_VERSION)
   end
 
   def cat
-    if version == :mountain_lion then :mountain_lion
-    elsif version == :lion then :lion
-    elsif version == :snow_leopard then :snow_leopard
-    elsif version == :leopard then :leopard
-    else nil
-    end
-  end
-
-  # TODO: Can be removed when all bottles migrated to underscored cat symbols.
-  def cat_without_underscores
-    possibly_underscored_cat = cat
-    return nil unless possibly_underscored_cat
-    cat.to_s.gsub('_', '').to_sym
+    version.to_sym
   end
 
   def locate tool
@@ -38,7 +28,7 @@ module MacOS extend self
         xcrun_path = unless Xcode.bad_xcode_select_path?
           path = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
           # If xcrun finds a superenv tool then discard the result.
-          path unless path.include?(HOMEBREW_PREFIX/"Library/ENV")
+          path unless path.include?("Library/ENV")
         end
 
         paths = %W[#{xcrun_path}
@@ -50,7 +40,13 @@ module MacOS extend self
   end
 
   def dev_tools_path
-    @dev_tools_path ||= if File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
+    @dev_tools_path ||= \
+    if File.exist? MacOS::CLT::STANDALONE_PKG_PATH and
+       File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/cc" and
+       File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/make"
+      # In 10.9 the CLT moved from /usr into /Library/Developer/CommandLineTools.
+      Pathname.new "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin"
+    elsif File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
     # Note that the exit status of system "xcrun foo" isn't always accurate
@@ -116,6 +112,7 @@ module MacOS extend self
       $1.to_i
     end
   end
+  alias_method :gcc_4_0_build_version, :gcc_40_build_version
 
   def gcc_42_build_version
     @gcc_42_build_version ||= if locate("gcc-4.2") \
@@ -124,6 +121,7 @@ module MacOS extend self
       $1.to_i
     end
   end
+  alias_method :gcc_build_version, :gcc_42_build_version
 
   def llvm_build_version
     # for Xcode 3 on OS X 10.5 this will not exist
@@ -182,7 +180,7 @@ module MacOS extend self
   end
 
   def prefer_64_bit?
-    Hardware.is_64_bit? and version != :leopard
+    Hardware::CPU.is_64_bit? and version != :leopard
   end
 
   STANDARD_COMPILERS = {
@@ -202,26 +200,25 @@ module MacOS extend self
     "4.5.1" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
     "4.5.2" => { :llvm_build => 2336, :clang => "4.1", :clang_build => 421 },
     "4.6"   => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "4.6.1" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "4.6.2" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "4.6.3" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
+    "5.0"   => { :clang => "5.0", :clang_build => 500 },
   }
 
   def compilers_standard?
-    xcode = Xcode.version
-
-    unless STANDARD_COMPILERS.keys.include? xcode
-      onoe <<-EOS.undent
-        Homebrew doesn't know what compiler versions ship with your version of
-        Xcode. Please `brew update` and if that doesn't help, file an issue with
-        the output of `brew --config`:
-          https://github.com/mxcl/homebrew/issues
-
-        Thanks!
-        EOS
-      return
-    end
-
-    STANDARD_COMPILERS[xcode].all? do |method, build|
+    STANDARD_COMPILERS.fetch(Xcode.version.to_s).all? do |method, build|
       MacOS.send(:"#{method}_version") == build
     end
+  rescue IndexError
+    onoe <<-EOS.undent
+      Homebrew doesn't know what compiler versions ship with your version
+      of Xcode (#{Xcode.version}). Please `brew update` and if that doesn't help, file
+      an issue with the output of `brew --config`:
+        https://github.com/mxcl/homebrew/issues
+
+      Thanks!
+    EOS
   end
 
   def app_with_bundle_id id
@@ -230,33 +227,16 @@ module MacOS extend self
   end
 
   def mdfind id
-    `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
+    return [] unless MACOS
+    (@mdfind ||= {}).fetch(id.to_s) do
+      @mdfind[id.to_s] = `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
+    end
   end
 
   def pkgutil_info id
     `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
   end
-
-  def bottles_supported? raise_if_failed=false
-    # We support bottles on all versions of OS X except 32-bit Snow Leopard.
-    if Hardware.is_32_bit? and MacOS.version == :snow_leopard
-      return false unless raise_if_failed
-      raise "Bottles are not supported on 32-bit Snow Leopard."
-    end
-
-    unless HOMEBREW_PREFIX.to_s == '/usr/local'
-      return false unless raise_if_failed
-      raise "Bottles are only supported with a /usr/local prefix."
-    end
-
-    unless HOMEBREW_CELLAR.to_s == '/usr/local/Cellar'
-      return false unless raise_if_failed
-      raise "Bottles are only supported with a /usr/local/Cellar cellar."
-    end
-
-    true
-  end
 end
 
-require 'macos/xcode'
-require 'macos/xquartz'
+require 'os/mac/xcode'
+require 'os/mac/xquartz'

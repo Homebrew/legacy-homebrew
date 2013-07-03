@@ -2,8 +2,8 @@ require 'formula'
 
 class Udis86 < Formula
   homepage 'http://udis86.sourceforge.net'
-  url 'http://downloads.sourceforge.net/udis86/udis86-1.7.tar.gz'
-  sha1 '1a9949e33024542a24a948af5d9cbee34ff64695'
+  url 'http://downloads.sourceforge.net/udis86/udis86-1.7.1.tar.gz'
+  sha1 '45fd0b93ca671683d978c7faf9eda195f0f8fde9'
 
   option :universal
 

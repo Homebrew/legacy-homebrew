@@ -14,7 +14,8 @@ class Ecasound < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
-    args << "--enable-rubyecasound=yes" if build.include? 'with-ruby'
+    # Always explicitly control ruby, since there's some confusion about the default
+    args << ("--enable-rubyecasound=%s" % ((build.include? 'with-ruby') ? 'yes' : 'no'))
     system "./configure", *args
     system "make install"
   end

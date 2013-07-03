@@ -2,11 +2,13 @@ require 'cmd/tap'
 require 'cmd/untap'
 
 module Homebrew extend self
-
-  DEPRECATED_TAPS = ['adamv-alt']
-
   def update
-    abort "This command updates brew itself, and does not take formula names." unless ARGV.named.empty?
+    unless ARGV.named.empty?
+      abort <<-EOS.undent
+        This command updates brew itself, and does not take formula names.
+        Use `brew upgrade <formula>`.
+      EOS
+    end
     abort "Please `brew install git' first." unless which "git"
 
     # ensure GIT_CONFIG is unset as we need to operate on .git/config
@@ -20,15 +22,8 @@ module Homebrew extend self
     master_updater.pull!
     report.merge!(master_updater.report)
 
-    new_files = []
     Dir["Library/Taps/*"].each do |tapd|
       next unless File.directory?(tapd)
-
-      basename = Pathname.new(tapd).basename.to_s
-      if DEPRECATED_TAPS.include?(basename)
-        opoo "#{basename} is deprecated; please untap it"
-        next
-      end
 
       cd tapd do
         begin
@@ -178,7 +173,7 @@ class Report < Hash
     formula = select_formula(key)
     unless formula.empty?
       ohai title
-      puts_columns formula
+      puts_columns formula.uniq
     end
   end
 

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Htpdate < Formula
-  homepage 'http://www.clevervest.com/htp'
-  url 'http://www.clevervest.com/htp/archive/c/htpdate-0.9.1.tar.gz'
-  sha1 '0c8ca300491d12d0bbb3950c8b6c41ba5225c3fa'
+  homepage 'http://www.vervest.org/fiki/bin/view/HTP'
+  url 'http://www.vervest.org/htp/archive/c/htpdate-0.9.1.tar.bz2'
+  sha1 'e0b1a3ae9ba755471102f28a2b8a7e2dc77addc7'
 
   def install
     system "make", "prefix=#{prefix}",

@@ -2,8 +2,8 @@ require 'formula'
 
 class Chruby < Formula
   homepage 'https://github.com/postmodern/chruby#readme'
-  url 'https://github.com/postmodern/chruby/archive/v0.3.2.tar.gz'
-  sha1 '32d951eb41af4c6ebccdf26eb43742591213daf6'
+  url 'https://github.com/postmodern/chruby/archive/v0.3.6.tar.gz'
+  sha1 'b492b1b5661a53c853f4e6ee8f5b67d4d75d0c39'
 
   head 'https://github.com/postmodern/chruby.git'
 

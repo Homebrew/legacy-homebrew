@@ -1,13 +1,10 @@
 require 'formula'
 
-def kext_prefix
-  prefix/'Library/Extensions'
-end
-
 class Tuntap < Formula
   homepage 'http://tuntaposx.sourceforge.net/'
   url 'git://git.code.sf.net/p/tuntaposx/code', :tag => 'release_20111101'
-  version '20111101'
+
+  head 'git://git.code.sf.net/p/tuntaposx/code', :branch => 'master'
 
   def install
     ENV.j1 # to avoid race conditions (can't open: ../tuntap.o)
@@ -18,8 +15,7 @@ class Tuntap < Formula
     end
   end
 
-  def caveats
-    message = <<-EOS.undent
+  def caveats; <<-EOS.undent
       In order for TUN/TAP network devices to work, the tun/tap kernel extensions
       must be installed by the root user:
 
@@ -32,7 +28,9 @@ class Tuntap < Formula
       To load the extensions at startup, you have to install those scripts too:
 
         sudo cp -pR #{prefix}/tap /Library/StartupItems/
+        sudo chown -R root:wheel /Library/StartupItems/tap
         sudo cp -pR #{prefix}/tun /Library/StartupItems/
+        sudo chown -R root:wheel /Library/StartupItems/tun
 
       If upgrading from a previous version of tuntap, the old kernel extension
       will need to be unloaded before performing the steps listed above. First,

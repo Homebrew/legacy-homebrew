@@ -2,9 +2,9 @@ require 'formula'
 
 class Openvpn < Formula
   homepage 'http://openvpn.net/'
-  url 'http://build.openvpn.net/downloads/releases/openvpn-2.3.0.tar.gz'
-  mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.3.0.tar.gz'
-  sha256 '4602a8d0f66dfa6ac10b7abfeba35260d7d4c570948f6eba5f8216ffa3a2c490'
+  url 'http://build.openvpn.net/downloads/releases/openvpn-2.3.2.tar.gz'
+  mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.3.2.tar.gz'
+  sha256 '20bda3f9debb9a52db262aecddfa4e814050a9404a9106136b7e3b6f7ef36ffc'
 
   depends_on 'lzo'
 

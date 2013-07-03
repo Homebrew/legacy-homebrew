@@ -16,5 +16,5 @@ class Toilet < Formula
 
   def test
     system "#{bin}/toilet", "--version"
-   end
+  end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class HerokuToolbelt < Formula
   homepage 'https://toolbelt.heroku.com/other'
-  url 'http://assets.heroku.com.s3.amazonaws.com/heroku-client/heroku-client-2.34.0.tgz'
-  sha1 'cc2616af9940516f3c265a27e740ae7b3c36eef8'
+  url 'http://assets.heroku.com.s3.amazonaws.com/heroku-client/heroku-client-2.39.4.tgz'
+  sha1 'b6764c20b5b820d55855795ac87f7efe79d30f8e'
 
   def install
     libexec.install Dir["*"]

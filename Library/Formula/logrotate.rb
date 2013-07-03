@@ -48,8 +48,6 @@ class Logrotate < Formula
         </array>
         <key>RunAtLoad</key>
         <false/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>StartCalendarInterval</key>
         <dict>
           <key>Hour</key>

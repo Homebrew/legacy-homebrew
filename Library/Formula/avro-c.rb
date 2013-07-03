@@ -2,8 +2,8 @@ require 'formula'
 
 class AvroC < Formula
   homepage 'http://avro.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=avro/avro-1.7.3/c/avro-c-1.7.3.tar.gz'
-  sha1 '5fc1ec23974f49527173d734b1a1c9286b6ce9fe'
+  url 'http://www.apache.org/dyn/closer.cgi?path=avro/avro-1.7.4/c/avro-c-1.7.4.tar.gz'
+  sha1 '1bd4c2fde2c9291bb50e05679f3e3e48c9c9eefa'
 
   # probably should be an optional dep
   conflicts_with 'xz'

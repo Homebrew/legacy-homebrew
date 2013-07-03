@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-1.1.tar.bz2'
-  sha1 'a006d8833dd7a03dd5b7823671995640322177fe'
+  url 'http://ffmpeg.org/releases/ffmpeg-1.2.1.tar.bz2'
+  sha1 '930e5612d75d04fdf7c0579f4d85d47e31e38945'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -45,6 +45,8 @@ class Ffmpeg < Formula
   depends_on 'schroedinger' => :optional
   depends_on 'fdk-aac' => :optional
   depends_on 'opus' => :optional
+  depends_on 'frei0r' => :optional
+  depends_on 'libcaca' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -55,6 +57,7 @@ class Ffmpeg < Formula
             "--enable-nonfree",
             "--enable-hardcoded-tables",
             "--enable-avresample",
+            "--enable-vda",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
             "--host-ldflags=#{ENV.ldflags}"
@@ -79,6 +82,8 @@ class Ffmpeg < Formula
     args << "--enable-libfdk-aac" if build.with? 'fdk-aac'
     args << "--enable-openssl" if build.with? 'openssl'
     args << "--enable-libopus" if build.with? 'opus'
+    args << "--enable-frei0r" if build.with? 'frei0r'
+    args << "--enable-libcaca" if build.with? 'libcaca'
 
     if build.with? 'openjpeg'
       args << '--enable-libopenjpeg'
@@ -87,7 +92,7 @@ class Ffmpeg < Formula
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    ENV.append_to_cflags "-mdynamic-no-pic" if MacOS.version == :leopard or Hardware.is_32_bit?
+    ENV.append_to_cflags "-mdynamic-no-pic" if Hardware.is_32_bit? && Hardware.cpu_type == :intel && ENV.compiler == :clang
 
     system "./configure", *args
 

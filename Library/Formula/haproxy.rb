@@ -2,13 +2,13 @@ require 'formula'
 
 class Haproxy < Formula
   homepage 'http://haproxy.1wt.eu'
-  url 'http://haproxy.1wt.eu/download/1.4/src/haproxy-1.4.22.tar.gz'
-  sha1 'ed8918c950bdb5b4b96d62c23073b7972443fe94'
+  url 'http://haproxy.1wt.eu/download/1.4/src/haproxy-1.4.23.tar.gz'
+  sha1 'a171a98e58a853e6487ff768db53a496012fd704'
 
   devel do
-    url 'http://haproxy.1wt.eu/download/1.5/src/devel/haproxy-1.5-dev17.tar.gz'
-    sha1 '0a11803fc7a1b313f56e5a989cbaad7cec6ddcf1'
-    version '1.5-dev17'
+    url 'http://haproxy.1wt.eu/download/1.5/src/devel/haproxy-1.5-dev19.tar.gz'
+    sha1 '5c16686c516dbeaab8ada6c17c25e9629ab4f7d3'
+    version '1.5-dev19'
   end
 
   depends_on 'pcre'

@@ -2,8 +2,8 @@ require 'formula'
 
 class Minc < Formula
   homepage 'http://en.wikibooks.org/wiki/MINC'
-  url 'https://github.com/BIC-MNI/minc/tarball/release-2.2.00'
-  sha1 '558300240a67b9f849a98622d0e8ec3aad76c6d1'
+  url 'https://github.com/BIC-MNI/minc/archive/release-2.2.00.tar.gz'
+  sha1 'f66f44ece374940bd006f321a7206f16165f74e0'
 
   head 'https://github.com/BIC-MNI/minc.git'
 

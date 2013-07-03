@@ -14,7 +14,7 @@ class Jasmin < Formula
     bin.write_jar_script libexec/'jasmin.jar', 'jasmin'
   end
 
-  def test
-    system "#{bin}/jasmin -version"
+  test do
+    system "#{bin}/jasmin", "-version"
   end
 end

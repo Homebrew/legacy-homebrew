@@ -2,8 +2,8 @@ require 'formula'
 
 class Vf < Formula
   homepage 'https://github.com/glejeune/vf'
-  url 'https://github.com/glejeune/vf/tarball/0.0.1'
-  sha1 '7284328776ada13bafd91e08b8cc90f1239e96b5'
+  url 'https://github.com/glejeune/vf/archive/0.0.1.tar.gz'
+  sha1 '288086b41857c292207f0dc1c69e0f4435e0195b'
 
   head 'https://github.com/glejeune/vf.git'
 

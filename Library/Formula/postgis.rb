@@ -1,9 +1,9 @@
 require 'formula'
 
 class Postgis < Formula
-  homepage 'http://postgis.refractions.net'
-  url 'http://download.osgeo.org/postgis/source/postgis-2.0.2.tar.gz'
-  sha1 'a3fe6c4ea4c50dc3f586e804c863ba5eff23bf06'
+  homepage 'http://postgis.net'
+  url 'http://download.osgeo.org/postgis/source/postgis-2.0.3.tar.gz'
+  sha1 '825c1718cf2603fa0f1c2de802989dff7239f9bc'
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
@@ -23,30 +23,29 @@ class Postgis < Formula
   depends_on 'json-c'
   depends_on 'gdal'
 
-  def postgresql
-    # Follow the PostgreSQL linked keg back to the active Postgres installation
-    # as it is common for people to avoid upgrading Postgres.
-    Formula.factory('postgresql').linked_keg.realpath
-  end
-
   # Force GPP to be used when pre-processing SQL files. See:
-  #   http://trac.osgeo.org/postgis/ticket/1694
+  # http://trac.osgeo.org/postgis/ticket/1694
+  # Fix linking aganist json-c, upstream in:
+  # https://github.com/postgis/postgis/commit/1c988618c9448dcdc43bc8ffe4ef8ff1d4dae838
   def patches; DATA end
 
   def install
+    # Follow the PostgreSQL linked keg back to the active Postgres installation
+    # as it is common for people to avoid upgrading Postgres.
+    postgres_realpath = Formula.factory('postgresql').opt_prefix.realpath
+
     ENV.deparallelize
-    jsonc   = Formula.factory 'json-c'
 
     args = [
       "--disable-dependency-tracking",
       # Can't use --prefix, PostGIS disrespects it and flat-out refuses to
       # accept it with 2.0.
       "--with-projdir=#{HOMEBREW_PREFIX}",
-      "--with-jsondir=#{jsonc.linked_keg.realpath}",
+      "--with-jsondir=#{Formula.factory('json-c').opt_prefix}",
       # This is against Homebrew guidelines, but we have to do it as the
       # PostGIS plugin libraries can only be properly inserted into Homebrew's
       # Postgresql keg.
-      "--with-pgconfig=#{postgresql}/bin/pg_config",
+      "--with-pgconfig=#{postgres_realpath}/bin/pg_config",
       # Unfortunately, NLS support causes all kinds of headaches because
       # PostGIS gets all of it's compiler flags from the PGXS makefiles. This
       # makes it nigh impossible to tell the buildsystem where our keg-only
@@ -54,7 +53,6 @@ class Postgis < Formula
       "--disable-nls"
     ]
     args << '--with-gui' if build.include? 'with-gui'
-
 
     system './autogen.sh'
     system './configure', *args
@@ -71,18 +69,18 @@ class Postgis < Formula
     # Install PostGIS plugin libraries into the Postgres keg so that they can
     # be loaded and so PostGIS databases will continue to function even if
     # PostGIS is removed.
-    (postgresql/'lib').install Dir['stage/**/*.so']
+    (postgres_realpath/'lib').install Dir['stage/**/*.so']
 
     # Install extension scripts to the Postgres keg.
     # `CREATE EXTENSION postgis;` won't work if these are located elsewhere.
-    (postgresql/'share/postgresql/extension').install Dir['stage/**/extension/*']
+    (postgres_realpath/'share/postgresql/extension').install Dir['stage/**/extension/*']
 
     bin.install Dir['stage/**/bin/*']
     lib.install Dir['stage/**/lib/*']
     include.install Dir['stage/**/include/*']
 
     # Stand-alone SQL files will be installed the share folder
-    (share + 'postgis').install Dir['stage/**/contrib/postgis-2.0/*']
+    (share/'postgis').install Dir['stage/**/contrib/postgis-2.0/*']
 
     # Extension scripts
     bin.install %w[
@@ -100,6 +98,7 @@ class Postgis < Formula
   end
 
   def caveats;
+    pg = Formula.factory('postgresql').opt_prefix
     <<-EOS.undent
       To create a spatially-enabled database, see the documentation:
         http://postgis.refractions.net/documentation/manual-2.0/postgis_installation.html#create_new_db_extensions
@@ -109,17 +108,18 @@ class Postgis < Formula
       PostGIS SQL scripts installed to:
         #{HOMEBREW_PREFIX}/share/postgis
       PostGIS plugin libraries installed to:
-        #{postgresql}/lib
+        #{pg}/lib
       PostGIS extension modules installed to:
-        #{postgresql}/share/postgresql/extension
+        #{pg}/share/postgresql/extension
       EOS
   end
 end
+
 __END__
-Force usage of GPP as the SQL pre-processor as Clang chokes.
+Force usage of GPP as the SQL pre-processor as Clang chokes and fix json-c link error
 
 diff --git a/configure.ac b/configure.ac
-index 136a1d6..c953c69 100644
+index 68d9240..8514041 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -31,17 +31,8 @@ AC_SUBST([ANT])
@@ -142,3 +142,14 @@ index 136a1d6..c953c69 100644
  AC_SUBST([SQLPP])
  
  dnl
+@@ -740,7 +731,9 @@ CPPFLAGS="$CPPFLAGS_SAVE"
+ dnl Ensure we can link against libjson
+ LIBS_SAVE="$LIBS"
+ LIBS="$JSON_LDFLAGS"
+-AC_CHECK_LIB([json], [json_object_get], [HAVE_JSON=yes], [], [])
++AC_CHECK_LIB([json-c], [json_object_get], [HAVE_JSON=yes; JSON_LDFLAGS="-ljson-c"], [
++  AC_CHECK_LIB([json], [json_object_get], [HAVE_JSON=yes; JSON_LDFLAGS="-ljson"], [], [])
++], [])
+ LIBS="$LIBS_SAVE"
+
+ if test "$HAVE_JSON" = "yes"; then

@@ -22,8 +22,7 @@ class TeeClc < Formula
     share.install 'help'
   end
 
-  def test
-    system "mvn", "test" unless build.stable?
+  test do
     system "#{bin}/tf"
   end
 end

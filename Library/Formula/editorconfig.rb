@@ -2,17 +2,19 @@ require 'formula'
 
 class Editorconfig < Formula
   homepage 'http://editorconfig.org'
-  url 'https://github.com/editorconfig/editorconfig-core/tarball/v0.10.0'
-  sha1 'afae2e81cf130a0d1f9fbbcdd5e2ef5953af8bdc'
+  url 'http://downloads.sourceforge.net/project/editorconfig/EditorConfig-C-Core/0.11.5/source/editorconfig-core-c-0.11.5.tar.gz'
+  sha1 '2fe9df54d49c17d7e62c3996f4095afcd79d4d28'
 
   depends_on 'cmake' => :build
+
+  head 'https://github.com/editorconfig/editorconfig-core-c.git', :branch => 'master'
 
   def install
     system "cmake", ".", "-DCMAKE_INSTALL_PREFIX:PATH=#{prefix}"
     system "make install"
   end
 
-  def test
-    system "editorconfig"
+  test do
+    system "#{bin}/editorconfig"
   end
 end

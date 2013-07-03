@@ -2,8 +2,8 @@ require 'formula'
 
 class Scheme48 < Formula
   homepage 'http://www.s48.org/'
-  url 'http://www.s48.org/1.8/scheme48-1.8.tgz'
-  sha1 '75299fe9de4bf239fc1d5a7dfa2ec377e0e98df1'
+  url 'http://s48.org/1.9/scheme48-1.9.tgz'
+  sha1 '8fd78d328a8c39ecd848e849ade094c30c2bb4ba'
 
   def install
     ENV.deparallelize

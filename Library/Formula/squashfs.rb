@@ -2,7 +2,7 @@ require 'formula'
 
 class Squashfs < Formula
   homepage 'http://squashfs.sourceforge.net/'
-  url 'http://sourceforge.net/projects/squashfs/files/squashfs/squashfs4.2/squashfs4.2.tar.gz'
+  url 'http://downloads.sourceforge.net/project/squashfs/squashfs/squashfs4.2/squashfs4.2.tar.gz'
   sha256 'd9e0195aa922dbb665ed322b9aaa96e04a476ee650f39bbeadb0d00b24022e96'
 
   depends_on 'lzo'
@@ -19,7 +19,7 @@ class Squashfs < Formula
 
   def install
     cd 'squashfs-tools' do
-      system "make XATTR_SUPPORT=0 EXTRA_CFLAGS=-std=gnu89 LZO_SUPPORT=1 LZO_DIR='#{HOMEBREW_PREFIX}' XZ_SUPPORT=1 XZ_DIR='#{HOMEBREW_PREFIX}'"
+      system "make XATTR_SUPPORT=0 EXTRA_CFLAGS=-std=gnu89 LZO_SUPPORT=1 LZO_DIR='#{HOMEBREW_PREFIX}' XZ_SUPPORT=1 XZ_DIR='#{HOMEBREW_PREFIX}' LZMA_XZ_SUPPORT=1"
       bin.install %w{mksquashfs unsquashfs}
     end
     doc.install %w{ACKNOWLEDGEMENTS CHANGES COPYING INSTALL OLD-READMEs PERFORMANCE.README README README-4.2}

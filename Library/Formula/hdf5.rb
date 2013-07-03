@@ -2,8 +2,8 @@ require 'formula'
 
 class Hdf5 < Formula
   homepage 'http://www.hdfgroup.org/HDF5'
-  url 'http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.9/src/hdf5-1.8.9.tar.bz2'
-  sha1 '7d5e5e8caa5970c65e70a5b4ad6787efe0bf70bb'
+  url 'http://www.hdfgroup.org/ftp/HDF5/current/src/hdf5-1.8.11.tar.bz2'
+  sha1 '87ded0894b104cf23a4b965f4ac0a567f8612e5e'
 
   # TODO - warn that these options conflict
   option :universal
@@ -11,9 +11,11 @@ class Hdf5 < Formula
   option 'enable-cxx', 'Compile C++ bindings'
   option 'enable-threadsafe', 'Trade performance and C++ or Fortran support for thread safety'
   option 'enable-parallel', 'Compile parallel bindings'
+  option 'enable-fortran2003', 'Compile Fortran 2003 bindings. Requires enable-fortran.'
 
+  depends_on :fortran if build.include? 'enable-fortran' or build.include? 'enable-fortran2003'
   depends_on 'szip'
-  depends_on MPIDependency.new(:cc, :cxx, :f90) if build.include? "enable-parallel"
+  depends_on :mpi => [:cc, :cxx, :f90] if build.include? "enable-parallel"
 
   def install
     ENV.universal_binary if build.universal?
@@ -36,9 +38,9 @@ class Hdf5 < Formula
       if build.include? 'enable-cxx'
         args << '--enable-cxx'
       end
-      if build.include? 'enable-fortran'
+      if build.include? 'enable-fortran' or build.include? 'enable-fortran2003'
         args << '--enable-fortran'
-        ENV.fortran
+        args << '--enable-fortran2003' if build.include? 'enable-fortran2003'
       end
     end
 
@@ -46,6 +48,7 @@ class Hdf5 < Formula
       ENV['CC'] = 'mpicc'
       ENV['FC'] = 'mpif90'
     end
+
     system "./configure", *args
     system "make install"
   end

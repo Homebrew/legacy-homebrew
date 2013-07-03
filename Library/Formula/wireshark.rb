@@ -2,34 +2,40 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://www.wireshark.org/download/src/wireshark-1.8.4.tar.bz2'
-  sha1 '00265d9196f030848c78025f30556cd014be843d'
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.0.tar.bz2'
+  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.0.tar.bz2'
+  sha1 'c78a5d5e589edc8ebc702eb00a284ccbca7721bc'
+
+  option 'with-x', 'Include X11 support'
+  option 'with-qt', 'Use QT for GUI instead of GTK+'
 
   depends_on 'pkg-config' => :build
-  depends_on 'gnutls2' => :optional
-  depends_on 'libgcrypt' => :optional
-  depends_on 'c-ares' => :optional
-  depends_on 'pcre' => :optional
-  depends_on 'glib'
 
-  if build.include? 'with-x'
+  depends_on 'glib'
+  depends_on 'gnutls'
+  depends_on 'libgcrypt'
+
+  depends_on 'geoip' => :recommended
+
+  depends_on 'c-ares' => :optional
+  depends_on 'lua' => :optional
+  depends_on 'pcre' => :optional
+  depends_on 'portaudio' => :optional
+  depends_on 'qt' => :optional
+
+  if build.with? 'x'
     depends_on :x11
     depends_on 'gtk+'
   end
 
-  option 'with-x', 'Include X11 support'
-  option 'with-python', 'Enable experimental Python bindings'
-
   def install
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args = ["--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--with-gnutls",
+            "--with-ssl"]
 
-    # Optionally enable experimental python bindings; is known to cause
-    # some runtime issues, e.g.
-    # "dlsym(0x8fe467fc, py_create_dissector_handle): symbol not found"
-    args << '--without-python' unless build.include? 'with-python'
-
-    # actually just disables the GTK GUI
-    args << '--disable-wireshark' unless build.include? 'with-x'
+    args << "--disable-wireshark" << "--disable-gtktest" unless build.with? "x"
+    args << "--with-qt" if build.with? "qt"
 
     system "./configure", *args
     system "make"
@@ -55,4 +61,3 @@ class Wireshark < Formula
     EOS
   end
 end
-

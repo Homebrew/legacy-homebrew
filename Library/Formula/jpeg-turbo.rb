@@ -2,15 +2,15 @@ require 'formula'
 
 class JpegTurbo < Formula
   homepage 'http://www.libjpeg-turbo.org/'
-  url 'http://downloads.sourceforge.net/project/libjpeg-turbo/1.2.1/libjpeg-turbo-1.2.1.tar.gz'
-  sha1 'a4992e102c6d88146709e8e6ce5896d5d0b5a361'
+  url 'http://downloads.sourceforge.net/project/libjpeg-turbo/1.3.0/libjpeg-turbo-1.3.0.tar.gz'
+  sha1 '1792c964b35604cebd3a8846f1ca6de5976e9c28'
 
   depends_on 'nasm' => :build if MacOS.prefer_64_bit?
 
   keg_only "libjpeg-turbo is not linked to prevent conflicts with the standard libjpeg."
 
   def install
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--with-jpeg8"]
     if MacOS.prefer_64_bit?
       args << "--host=x86_64-apple-darwin"
       # Auto-detect our 64-bit nasm

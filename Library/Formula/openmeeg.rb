@@ -2,8 +2,8 @@ require 'formula'
 
 class Openmeeg < Formula
   homepage 'http://www-sop.inria.fr/athena/software/OpenMEEG/'
-  url 'https://github.com/openmeeg/openmeeg/tarball/release-2.1'
-  sha1 'b779f95db3687e5e338f889d9510b5777fdbdb79'
+  url 'https://github.com/openmeeg/openmeeg/archive/release-2.1.tar.gz'
+  sha1 'c19896bde64e751142c74d15bf99defec518a054'
 
   head 'https://github.com/openmeeg/openmeeg.git'
 

@@ -17,9 +17,13 @@ Who Are You?
 ------------
 I'm [Max Howell][mxcl] and I'm a splendid chap.
 
+License
+-------
+Code is under the [BSD 2 Clause (NetBSD) license][license].
 
-[home]:http://mxcl.github.com/homebrew
+[home]:http://brew.sh
 [wiki]:http://wiki.github.com/mxcl/homebrew
 [mxcl]:http://twitter.com/mxcl
 [formula]:http://github.com/mxcl/homebrew/tree/master/Library/Formula/
 [braumeister]:http://braumeister.org
+[license]:https://github.com/mxcl/homebrew/tree/master/Library/Homebrew/LICENSE

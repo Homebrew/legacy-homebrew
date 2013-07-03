@@ -15,15 +15,26 @@ end
 
 class Squid < Formula
   homepage 'http://www.squid-cache.org/'
-  url 'http://www.squid-cache.org/Versions/v3/3.2/squid-3.2.5.tar.gz'
-  sha1 '17c6f03ca90b0918b847e9e34669ba827da7edba'
+  url 'http://www.squid-cache.org/Versions/v3/3.3/squid-3.3.5.tar.gz'
+  sha1 '66210259645f50bd4af0f6aa4e871381c0bf35be'
 
   depends_on NoBdb5
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--localstatedir=#{var}"
+    # For --disable-eui, see:
+    # http://squid-web-proxy-cache.1019090.n4.nabble.com/ERROR-ARP-MAC-EUI-operations-not-supported-on-this-operating-system-td4659335.html
+    args =%W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --localstatedir=#{var}
+      --enable-ssl
+      --enable-ssl-crtd
+      --disable-eui
+      --enable-ipfw-transparent
+    ]
+
+    system "./configure", *args
     system "make install"
   end
 
@@ -45,8 +56,6 @@ class Squid < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{var}</string>
     </dict>

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Imapfilter < Formula
-  homepage 'http://github.com/lefcha/imapfilter/'
-  url 'https://github.com/lefcha/imapfilter/tarball/v2.5.3'
-  sha1 '7159c9875a2cb5f15e4fddb88a1ce6521995675e'
+  homepage 'https://github.com/lefcha/imapfilter/'
+  url 'https://github.com/lefcha/imapfilter/archive/v2.5.4.tar.gz'
+  sha1 '79b5985d8ccdefb72ea2d3a71192590221a44684'
 
   depends_on 'lua'
   depends_on 'pcre'

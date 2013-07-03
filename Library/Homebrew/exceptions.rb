@@ -3,7 +3,7 @@ class FormulaUnspecifiedError < UsageError; end
 class KegUnspecifiedError < UsageError; end
 
 class MultipleVersionsInstalledError < RuntimeError
-  attr :name
+  attr_reader :name
 
   def initialize name
     @name = name
@@ -14,7 +14,7 @@ end
 class NotAKegError < RuntimeError; end
 
 class NoSuchKegError < RuntimeError
-  attr :name
+  attr_reader :name
 
   def initialize name
     @name = name
@@ -22,9 +22,23 @@ class NoSuchKegError < RuntimeError
   end
 end
 
+class FormulaValidationError < StandardError
+  attr_reader :attr
+
+  def initialize(attr, value)
+    @attr = attr
+    msg = "invalid attribute: #{attr}"
+    msg << " (#{value.inspect})" unless value.empty?
+    super msg
+  end
+end
+
+class FormulaSpecificationError < StandardError
+end
+
 class FormulaUnavailableError < RuntimeError
-  attr :name
-  attr :dependent, true
+  attr_reader :name
+  attr_accessor :dependent
 
   def dependent_s
     "(dependency of #{dependent})" if dependent and dependent != name
@@ -59,7 +73,7 @@ end
 
 module Homebrew
   class InstallationError < RuntimeError
-    attr :formula
+    attr_reader :formula
 
     def initialize formula, message=""
       super message
@@ -69,6 +83,9 @@ module Homebrew
 end
 
 class CannotInstallFormulaError < RuntimeError
+end
+
+class FormulaAlreadyInstalledError < RuntimeError
 end
 
 class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
@@ -87,7 +104,7 @@ class UnsatisfiedDependencyError < Homebrew::InstallationError
 end
 
 class UnsatisfiedRequirements < Homebrew::InstallationError
-  attr :reqs
+  attr_reader :reqs
 
   def initialize formula, reqs
     @reqs = reqs
@@ -98,10 +115,40 @@ class UnsatisfiedRequirements < Homebrew::InstallationError
   end
 end
 
+class FormulaConflictError < Homebrew::InstallationError
+  attr_reader :f, :conflicts
+
+  def initialize(f, conflicts)
+    @f = f
+    @conflicts = conflicts
+    super f, message
+  end
+
+  def conflict_message(conflict)
+    message = []
+    message << "  #{conflict.name}"
+    message << ": because #{conflict.reason}" if conflict.reason
+    message.join
+  end
+
+  def message
+    message = []
+    message << "Cannot install #{f.name} because conflicting formulae are installed.\n"
+    message.concat conflicts.map { |c| conflict_message(c) } << ""
+    message << <<-EOS.undent
+      Please `brew unlink #{conflicts.map(&:name)*' '}` before continuing.
+
+      Unlinking removes a formula's symlinks from #{HOMEBREW_PREFIX}. You can
+      link the formula again after the install finishes. You can --force this
+      install, but the build may fail or cause obscure side-effects in the
+      resulting software.
+      EOS
+    message.join("\n")
+  end
+end
+
 class BuildError < Homebrew::InstallationError
-  attr :exit_status
-  attr :command
-  attr :env
+  attr_reader :exit_status, :command, :env
 
   def initialize formula, cmd, args, es
     @command = cmd
@@ -126,6 +173,12 @@ class BuildError < Homebrew::InstallationError
     else
       require 'cmd/--config'
       require 'cmd/--env'
+
+      unless formula.core_formula?
+        ohai "Formula"
+        puts "Tap: #{formula.tap}"
+        puts "Path: #{formula.path.realpath}"
+      end
       ohai "Configuration"
       Homebrew.dump_build_config
       ohai "ENV"
@@ -134,13 +187,33 @@ class BuildError < Homebrew::InstallationError
       onoe "#{formula.name} did not build"
       unless (logs = Dir["#{ENV['HOME']}/Library/Logs/Homebrew/#{formula}/*"]).empty?
         print "Logs: "
-        puts *logs.map{|fn| "      #{fn}"}
+        puts logs.map{|fn| "      #{fn}"}.join("\n")
       end
     end
     puts
-    unless issues.empty?
+    unless RUBY_VERSION < "1.8.6" || issues.empty?
       puts "These open issues may also help:"
-      puts *issues.map{ |s| "    #{s}" }
+      puts issues.map{ |s| "    #{s}" }.join("\n")
+    end
+  end
+end
+
+# raised by CompilerSelector if the formula fails with all of
+# the compilers available on the user's system
+class CompilerSelectionError < StandardError
+  def message
+    if MacOS.version > :tiger then <<-EOS.undent
+      This formula cannot be built with any available compilers.
+      To install this formula, you may need to:
+        brew tap homebrew/dupes
+        brew install apple-gcc42
+      EOS
+    # tigerbrew has a separate apple-gcc42 for Xcode 2.5
+    else <<-EOS.undent
+      This formula cannot be built with any available compilers.
+      To install this formula, you need to:
+        brew install apple-gcc42
+      EOS
     end
   end
 end
@@ -159,10 +232,8 @@ end
 
 # raised by Pathname#verify_checksum when verification fails
 class ChecksumMismatchError < RuntimeError
-  attr :advice, true
-  attr :expected
-  attr :actual
-  attr :hash_type
+  attr_accessor :advice
+  attr_reader :expected, :actual, :hash_type
 
   def initialize expected, actual
     @expected = expected
@@ -179,12 +250,4 @@ class ChecksumMismatchError < RuntimeError
   def to_s
     super + advice.to_s
   end
-end
-
-module Homebrew extend self
-  SUDO_BAD_ERRMSG = <<-EOS.undent
-    You can use brew with sudo, but only if the brew executable is owned by root.
-    However, this is both not recommended and completely unsupported so do so at
-    your own risk.
-  EOS
 end

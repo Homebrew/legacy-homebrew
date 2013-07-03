@@ -2,8 +2,8 @@ require 'formula'
 
 class Lolcode < Formula
   homepage 'http://www.icanhaslolcode.org/'
-  url 'https://github.com/justinmeza/lci/tarball/v0.10.3'
-  sha1 'c3e4b2b0b83a5e257c2e0e3b613c83c3cae4d084'
+  url 'https://github.com/justinmeza/lci/archive/v0.11.1.tar.gz'
+  sha1 '9949a2480a738ac566dbe66142dd351f778fb8b7'
 
   head 'https://github.com/justinmeza/lolcode.git'
 

@@ -85,4 +85,19 @@ class BuildOptions
   def unused_options
     Options.new(@options - @args)
   end
+
+  # Some options are implicitly ON because they are not explictly turned off
+  # by their counterpart option. This applies only to with-/without- options.
+  # implicit_options are needed because `depends_on 'spam' => 'with-stuff'`
+  # complains if 'spam' has stuff as default and only defines `--without-stuff`.
+  def implicit_options
+    implicit = unused_options.map do |o|
+      if o.name =~ /^with-(.+)$/ && without?($1)
+        Option.new("without-#{$1}")  # we loose the description, but that's ok
+      elsif o.name =~ /^without-(.+)$/ && with?($1)
+        Option.new("with-#{$1}")
+      end
+    end.compact
+    Options.new(implicit)
+  end
 end

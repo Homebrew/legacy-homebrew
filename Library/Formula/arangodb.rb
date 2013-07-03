@@ -2,26 +2,37 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://github.com/triAGENS/ArangoDB/zipball/v1.1.2'
-  sha1 'e5a723475f5d1083cb3c377139222aaff898fe94'
+  url 'https://www.arangodb.org/repositories/archive/arangodb-1.3.2.tar.gz'
+  sha1 '00d59f4f61f6c94c6d6a0a0673949f4f27693633'
 
-  head "https://github.com/triAGENS/ArangoDB.git"
+  head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
   depends_on 'icu4c'
   depends_on 'libev'
   depends_on 'v8'
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-relative",
-                          "--disable-all-in-one-icu",
-                          "--disable-all-in-one-libev",
-                          "--disable-all-in-one-v8",
-                          "--enable-mruby",
-                          "--datadir=#{share}",
-                          "--localstatedir=#{var}"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-relative
+      --disable-all-in-one-icu
+      --disable-all-in-one-libev
+      --disable-all-in-one-v8
+      --enable-mruby
+      --datadir=#{share}
+      --localstatedir=#{var}
+    ]
 
+    if build.devel?
+      args << "--program-suffix=-#{version}"
+    end
+
+    if build.head?
+      args << "--program-suffix=-unstable"
+    end
+
+    system "./configure", *args
     system "make install"
 
     (var+'arangodb').mkpath
@@ -39,7 +50,7 @@ class Arangodb < Formula
       http:/www.arangodb.org/quickstart
 
     Upgrading ArangoDB:
-      http://www.arangodb.org/manuals/1.1/Upgrading.html
+      http://www.arangodb.org/manuals/current/Upgrading.html
 
     Configuration file:
       /usr/local/etc/arangodb/arangod.conf
@@ -70,8 +81,6 @@ class Arangodb < Formula
         </array>
         <key>RunAtLoad</key>
         <true/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
       </dict>
     </plist>
     EOS

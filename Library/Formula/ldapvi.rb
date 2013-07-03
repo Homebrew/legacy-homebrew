@@ -5,6 +5,7 @@ class Ldapvi < Formula
   url 'http://www.lichteblau.com/download/ldapvi-1.7.tar.gz'
   sha1 'd1cde4cbb618180f9ae0e77c56a1520b8ad61c9a'
 
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'popt'

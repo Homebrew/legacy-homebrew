@@ -1,5 +1,6 @@
 require 'extend/ENV'
 require 'macos'
+require 'superenv/macsystem'
 
 ### Why `superenv`?
 # 1) Only specify the environment we need (NO LDFLAGS for cmake)
@@ -16,22 +17,24 @@ def superbin
 end
 
 def superenv?
-  not MacOS::Xcode.folder.nil? and # because xcrun won't work
+  not (MacSystem.xcode43_without_clt? and
+  MacOS.sdk_path.nil?) and # because superenv will fail to find stuff
   superbin and superbin.directory? and
   not ARGV.include? "--env=std"
+rescue # blanket rescue because there are naked raises
+  false
 end
 
 class << ENV
-  attr :deps, true
-  attr :all_deps, true # above is just keg-only-deps
-  attr :x11, true
+  attr_accessor :keg_only_deps, :deps, :x11
   alias_method :x11?, :x11
 
   def reset
-    %w{CC CXX OBJC OBJCXX CPP MAKE LD
+    %w{CC CXX OBJC OBJCXX CPP MAKE LD LDSHARED
       CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
       MACOS_DEPLOYMENT_TARGET SDKROOT
-      CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH}.
+      CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH
+      CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH}.
       each{ |x| delete(x) }
     delete('CDPATH') # avoid make issues that depend on changing directories
     delete('GREP_OPTIONS') # can break CMake
@@ -40,28 +43,32 @@ class << ENV
 
   def setup_build_environment
     reset
-    check
     ENV['CC'] = 'cc'
     ENV['CXX'] = 'c++'
     ENV['OBJC'] = 'cc'
     ENV['OBJCXX'] = 'c++'
-    ENV['DEVELOPER_DIR'] = determine_developer_dir # effects later settings
+    ENV['DEVELOPER_DIR'] = determine_developer_dir
     ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     ENV['PATH'] = determine_path
     ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
+    ENV['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
     ENV['HOMEBREW_CC'] = determine_cc
     ENV['HOMEBREW_CCCFG'] = determine_cccfg
     ENV['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
     ENV['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacSystem.xcode43_without_clt?
+    ENV['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
     ENV['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
-    ENV['CMAKE_FRAMEWORK_PATH'] = "#{MacOS.sdk_path}/System/Library/Frameworks" if MacSystem.xcode43_without_clt?
+    ENV['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
     ENV['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
     ENV['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     ENV['ACLOCAL_PATH'] = determine_aclocal_path
-  end
 
-  def check
-    raise if MacSystem.xcode43_without_clt? and MacOS.sdk_path.nil?
+    # Homebrew's apple-gcc42 will be outside the PATH in superenv,
+    # so xcrun may not be able to find it
+    if ENV['HOMEBREW_CC'] == 'gcc-4.2' && !MacOS.locate('gcc-4.2')
+      apple_gcc42 = Formula.factory('apple-gcc42') rescue nil
+      ENV.append('PATH', apple_gcc42.opt_prefix/'bin', ':') if apple_gcc42
+    end
   end
 
   def universal_binary
@@ -77,8 +84,13 @@ class << ENV
 
   def determine_cc
     if ARGV.include? '--use-gcc'
+      gcc_installed = Formula.factory('apple-gcc42').installed? rescue false
       # fall back to something else on systems without Apple gcc
-      MacOS.locate('gcc-4.2') ? "gcc-4.2" : raise("gcc-4.2 not found!")
+      if MacOS.locate('gcc-4.2') || gcc_installed
+        "gcc-4.2"
+      else
+        raise("gcc-4.2 not found!")
+      end
     elsif ARGV.include? '--use-llvm'
       "llvm-gcc"
     elsif ARGV.include? '--use-clang'
@@ -94,7 +106,10 @@ class << ENV
       "gcc"
     elsif ENV['HOMEBREW_CC']
       case ENV['HOMEBREW_CC']
-        when 'clang', 'gcc' then ENV['HOMEBREW_CC']
+        when 'clang', 'gcc-4.0' then ENV['HOMEBREW_CC']
+        # depending on Xcode version plain 'gcc' could actually be
+        # gcc-4.0 or llvm-gcc
+        when 'gcc', 'gcc-4.2' then 'gcc-4.2'
         when 'llvm', 'llvm-gcc' then 'llvm-gcc'
       else
         opoo "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC']}"
@@ -104,17 +119,21 @@ class << ENV
       raise
     end
   rescue
-    "clang"
+    case MacOS.default_compiler
+    when :clang   then 'clang'
+    when :llvm    then 'llvm-gcc'
+    when :gcc     then 'gcc-4.2'
+    when :gcc_4_0 then 'gcc-4.0'
+    end
   end
 
   def determine_path
     paths = [superbin]
     if MacSystem.xcode43_without_clt?
-      paths << "#{MacSystem.xcode43_developer_dir}/usr/bin"
-      paths << "#{MacSystem.xcode43_developer_dir}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+      paths << "#{MacOS::Xcode.prefix}/usr/bin"
+      paths << "#{MacOS::Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
     end
-    paths += all_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
-    paths << "#{HOMEBREW_PREFIX}/opt/python/bin" if brewed_python?
+    paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << "#{MacSystem.x11_prefix}/bin" if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
     paths.to_path_s
@@ -123,19 +142,26 @@ class << ENV
   def determine_pkg_config_path
     paths  = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/lib/pkgconfig" }
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/pkgconfig" }
-    paths << "#{HOMEBREW_PREFIX}/lib/pkgconfig"
-    paths << "#{HOMEBREW_PREFIX}/share/pkgconfig"
-    # we put our paths before X because we dupe some of the X libraries
+    paths.to_path_s
+  end
+
+  def determine_pkg_config_libdir
+    paths = %W{/usr/lib/pkgconfig #{HOMEBREW_REPOSITORY}/Library/ENV/pkgconfig/#{MacOS.version}}
     paths << "#{MacSystem.x11_prefix}/lib/pkgconfig" << "#{MacSystem.x11_prefix}/share/pkgconfig" if x11?
-    # Mountain Lion no longer ships some .pcs; ensure we pick up our versions
-    paths << "#{HOMEBREW_REPOSITORY}/Library/ENV/pkgconfig/mountain_lion" if MacOS.version >= :mountain_lion
     paths.to_path_s
   end
 
   def determine_cmake_prefix_path
-    paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}" }
+    paths = keg_only_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}" }
     paths << HOMEBREW_PREFIX.to_s # put ourselves ahead of everything else
     paths << "#{MacOS.sdk_path}/usr" if MacSystem.xcode43_without_clt?
+    paths.to_path_s
+  end
+
+  def determine_cmake_frameworks_path
+    # XXX: keg_only_deps perhaps? but Qt does not link its Frameworks because of Ruby's Find.find ignoring symlinks!!
+    paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/Frameworks" }
+    paths << "#{MacOS.sdk_path}/System/Library/Frameworks" if MacSystem.xcode43_without_clt?
     paths.to_path_s
   end
 
@@ -146,11 +172,6 @@ class << ENV
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     if MacSystem.xcode43_without_clt?
       paths << "#{sdk}/usr/include/apache2"
-      paths << if brewed_python?
-        "#{HOMEBREW_PREFIX}/opt/python/Frameworks/Python.framework/Headers"
-      else
-        "#{sdk}/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7"
-      end
     end
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/" unless x11?
     paths << "#{MacSystem.x11_prefix}/include" if x11?
@@ -167,7 +188,7 @@ class << ENV
   end
 
   def determine_aclocal_path
-    paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/aclocal" }
+    paths = keg_only_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/aclocal" }
     paths << "#{HOMEBREW_PREFIX}/share/aclocal"
     paths << "/opt/X11/share/aclocal" if x11?
     paths.to_path_s
@@ -175,7 +196,7 @@ class << ENV
 
   def determine_make_jobs
     if (j = ENV['HOMEBREW_MAKE_JOBS'].to_i) < 1
-      Hardware.processor_count
+      Hardware::CPU.cores
     else
       j
     end
@@ -183,11 +204,21 @@ class << ENV
 
   def determine_cccfg
     s = ""
-    s << 'b' if ARGV.build_bottle?
+    if ARGV.build_bottle?
+      s << if Hardware::CPU.type == :intel
+        if Hardware::CPU.is_64_bit?
+          'bi6'
+        else
+          'bi'
+        end
+      else
+        'b'
+      end
+    end
     # Fix issue with sed barfing on unicode characters on Mountain Lion
     s << 's' if MacOS.version >= :mountain_lion
-    # Fix issue with 10.8 apr-1-config having broken paths
-    s << 'a' if MacOS.version == :mountain_lion
+    # Fix issue with >= 10.8 apr-1-config having broken paths
+    s << 'a' if MacOS.version >= :mountain_lion
     s
   end
 
@@ -195,16 +226,7 @@ class << ENV
     # If Xcode path is fucked then this is basically a fix. In the case where
     # nothing is valid, it still fixes most usage to supply a valid path that
     # is not "/".
-    if MacOS::Xcode.bad_xcode_select_path?
-      (MacOS::Xcode.prefix || HOMEBREW_PREFIX).to_s
-    elsif ENV['DEVELOPER_DIR']
-      ENV['DEVELOPER_DIR']
-    end
-  end
-
-  def brewed_python?
-    require 'formula'
-    Formula.factory('python').linked_keg.directory?
+    MacOS::Xcode.prefix || ENV['DEVELOPER_DIR']
   end
 
   public
@@ -232,11 +254,11 @@ class << ENV
   alias_method :j1, :deparallelize
   def gcc
     ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "gcc"
-    ENV['CXX'] = ENV['OBJCXX'] = "g++"
+    ENV['CXX'] = ENV['OBJCXX'] = "g++-4.2"
   end
   def llvm
     ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "llvm-gcc"
-    ENV['CXX'] = ENV['OBJCXX'] = "g++"
+    ENV['CXX'] = ENV['OBJCXX'] = "llvm-g++-4.2"
   end
   def clang
     ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "clang"
@@ -251,12 +273,13 @@ class << ENV
   # This should be a safe hack to prevent that exception cropping up.
   # Main consqeuence of this is that ENV['CFLAGS'] is never nil even when it
   # is which can break if checks, but we don't do such a check in our code.
+  alias_method :"old_[]", :[]
   def [] key
     if has_key? key
       fetch(key)
     elsif %w{CPPFLAGS CFLAGS LDFLAGS}.include? key
       class << (a = "")
-        attr :key, true
+        attr_accessor :key
         def + value
           ENV[key] = value
         end
@@ -275,47 +298,13 @@ if not superenv?
   # we must do this or tools like pkg-config won't get found by configure scripts etc.
   ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
 else
+  ENV.keg_only_deps = []
   ENV.deps = []
-  ENV.all_deps = []
 end
 
 
 class Array
   def to_path_s
     map(&:to_s).uniq.select{|s| File.directory? s }.join(':').chuzzle
-  end
-end
-
-# new code because I don't really trust the Xcode code now having researched it more
-module MacSystem extend self
-  def xcode_clt_installed?
-    File.executable? "/usr/bin/clang" and File.executable? "/usr/bin/lldb"
-  end
-
-  def xcode43_without_clt?
-    MacOS::Xcode.version >= "4.3" and not MacSystem.xcode_clt_installed?
-  end
-
-  def x11_prefix
-    @x11_prefix ||= %W[/opt/X11 /usr/X11
-      #{MacOS.sdk_path}/usr/X11].find{|path| File.directory? "#{path}/include" }
-  end
-
-  def xcode43_developer_dir
-    @xcode43_developer_dir ||=
-      tst(ENV['DEVELOPER_DIR']) ||
-      tst(`xcode-select -print-path 2>/dev/null`) ||
-      tst("/Applications/Xcode.app/Contents/Developer") ||
-      MacOS.mdfind("com.apple.dt.Xcode").find{|path| tst(path) }
-    raise unless @xcode43_developer_dir
-    @xcode43_developer_dir
-  end
-
-  private
-
-  def tst prefix
-    prefix = prefix.to_s.chomp
-    xcrun = "#{prefix}/usr/bin/xcrun"
-    prefix if xcrun != "/usr/bin/xcrun" and File.executable? xcrun
   end
 end

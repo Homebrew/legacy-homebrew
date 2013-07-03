@@ -5,9 +5,9 @@ require 'formula'
 # is a candidate for removal if no new maintainer is found.
 class Contacts < Formula
   homepage 'http://www.gnufoo.org/contacts/contacts.html'
-  url 'https://github.com/dhess/contacts/tarball/4092a3c6615d7a22852a3bafc44e4aeeb698aa8f'
+  url 'https://github.com/dhess/contacts/archive/4092a3c6615d7a22852a3bafc44e4aeeb698aa8f.tar.gz'
   version '1.1a-3'
-  sha1 '644f449f0d01ddf62236ce82240f4757921cca17'
+  sha1 '79526dd96e5b5297daaae6327c79de9366f94c87'
 
   def install
     system "make"

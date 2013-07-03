@@ -5,6 +5,8 @@ class Irssi < Formula
   url 'http://irssi.org/files/irssi-0.8.15.tar.bz2'
   sha1 'b79ce8c2c98a76b004f63706e7868cd363000d89'
 
+  option "without-perl", "Build without perl support."
+
   depends_on 'pkg-config' => :build
   depends_on 'glib'
 
@@ -12,15 +14,25 @@ class Irssi < Formula
   def patches; DATA; end
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}",
-                          "--with-perl=yes",
-                          "--with-perl-lib=#{lib}/perl5/site_perl",
-                          "--with-bot",
-                          "--with-proxy",
-                          "--enable-ssl",
-                          "--enable-ipv6",
-                          "--with-socks"
+    args =%W[
+      --prefix=#{prefix}
+      --sysconfdir=#{etc}
+      --with-bot
+      --with-proxy
+      --enable-ssl
+      --enable-ipv6
+      --with-socks
+    ]
+
+    if build.with? "perl"
+      args << "--with-perl=yes"
+      args << "--with-perl-lib=#{lib}/perl5/site_perl"
+    else
+      args << "--with-perl=no"
+    end
+
+    system "./configure", *args
+
     # 'make' and 'make install' must be done separately on some systems
     system "make"
     system "make install"

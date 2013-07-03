@@ -2,8 +2,8 @@ require 'formula'
 
 class Afuse < Formula
   homepage 'https://github.com/pcarrier/afuse/'
-  url 'https://afuse.googlecode.com/files/afuse-0.4.tar.gz'
-  sha1 '8587b9c590310a63519054c4a577388d15a3d7bb'
+  url 'https://afuse.googlecode.com/files/afuse-0.4.1.tar.gz'
+  sha1 '156b196a27c181eee8b192e7922fbe3c32c858e3'
 
   depends_on :automake
   depends_on :libtool

@@ -2,8 +2,8 @@ require 'formula'
 
 class Webp < Formula
   homepage 'http://code.google.com/speed/webp/'
-  url 'http://webp.googlecode.com/files/libwebp-0.2.0.tar.gz'
-  sha1 'ac169a819cb4e7ece8d50d3f9f2608dac87a90e2'
+  url 'http://webp.googlecode.com/files/libwebp-0.3.0.tar.gz'
+  sha1 'a20acf2f180d3eae77e24a63371b01fa412fa2f1'
 
   depends_on :libpng
   depends_on 'jpeg' => :recommended

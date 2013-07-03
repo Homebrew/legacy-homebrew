@@ -4,7 +4,6 @@ class Rtmpdump < Formula
   homepage 'http://rtmpdump.mplayerhq.hu'
   url 'http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.4.tar.gz'
   sha1 '975f8c79788d1f9fcc66f572509f0203982b17ac'
-  version '2.4'
 
   head 'git://git.ffmpeg.org/rtmpdump'
 

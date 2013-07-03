@@ -2,7 +2,7 @@ require 'formula'
 
 class PythonWithoutPPC < Requirement
   fatal true
-  satisfy { not archs_for_command("python").ppc? }
+  satisfy(:build_env => false) { not archs_for_command("python").ppc? }
 
   def message
     "This software will not compile if your default Python is built with PPC support."
@@ -14,18 +14,18 @@ class Distcc < Formula
   url 'http://distcc.googlecode.com/files/distcc-3.2rc1.tar.gz'
   sha1 '7cd46fe0926a3a859a516274e6ae59fa8ba0262d'
 
+  depends_on :python
   depends_on PythonWithoutPPC
 
   def install
-    # Prevent distcc from finding the System Python 2.6
-    ENV['PYTHON'] = which('python')
-    # Make sure python stuff is put into the Cellar.
-    # --root triggers a bug and installs into HOMEBREW_PREFIX/lib/python2.7/site-packages instead of the Cellar.
-    inreplace 'Makefile.in', '--root="$$DESTDIR"', ""
+    python do
+      # Make sure python stuff is put into the Cellar.
+      # --root triggers a bug and installs into HOMEBREW_PREFIX/lib/python2.7/site-packages instead of the Cellar.
+      inreplace 'Makefile.in', '--root="$$DESTDIR"', ""
 
-    system "./configure", "--prefix=#{prefix}"
-    system "make install"
-
+      system "./configure", "--prefix=#{prefix}"
+      system "make install"
+    end
     plist_path.write startup_plist
     plist_path.chmod 0644
   end

@@ -5,10 +5,9 @@ class Libdnet < Formula
   url 'http://libdnet.googlecode.com/files/libdnet-1.12.tgz'
   sha1 '71302be302e84fc19b559e811951b5d600d976f8'
 
-  depends_on :automake
-  depends_on :libtool
-
-  option 'with-python', 'Build Python module'
+  depends_on :automake => :build
+  depends_on :libtool => :build
+  depends_on :python => :optional
 
   # Fix use of deprecated macros
   # http://code.google.com/p/libdnet/issues/detail?id=27
@@ -26,7 +25,7 @@ class Libdnet < Formula
       --prefix=#{prefix}
       --mandir=#{man}
     ]
-    args << "--with-python" if build.include? "with-python"
+    args << "--with-python" if build.with? "python"
     system "./configure", *args
     system "make install"
   end

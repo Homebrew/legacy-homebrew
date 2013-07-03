@@ -6,9 +6,9 @@
 # * sets permissions on executables
 class Cleaner
 
-  # Create a cleaner for the given formula name, and clean the keg
+  # Create a cleaner for the given formula and clean its keg
   def initialize f
-    @f = Formula.factory f
+    @f = f
     [f.bin, f.sbin, f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
 
     if ENV['HOMEBREW_KEEP_INFO']
@@ -52,20 +52,19 @@ class Cleaner
     else
       0444
     end
-    # Uncomment this block to show permission changes using brew install -v
-    # if ARGV.verbose?
-    #   old_perms = path.stat.mode
-    #   if perms != old_perms
-    #     puts "Fixing #{path} permissions from #{old_perms.to_s(8)} to #{perms.to_s(8)}"
-    #   end
-    # end
+    if ARGV.debug?
+      old_perms = path.stat.mode
+      if perms != old_perms
+        puts "Fixing #{path} permissions from #{old_perms.to_s(8)} to #{perms.to_s(8)}"
+      end
+    end
     path.chmod perms
   end
 
   # Clean a single folder (non-recursively)
   def clean_dir d
     d.find do |path|
-      path.extend(NoiseyPathname) if ARGV.verbose?
+      path.extend(NoisyPathname) if ARGV.verbose?
 
       if path.directory?
         # Stop cleaning this subtree if protected
@@ -88,14 +87,9 @@ class Cleaner
 
 end
 
-
-class Pathname
-  alias_method :orig_unlink, :unlink
-end
-
-module NoiseyPathname
+module NoisyPathname
   def unlink
     puts "rm: #{self}"
-    orig_unlink
+    super
   end
 end

@@ -2,8 +2,13 @@ require 'formula'
 
 class SwiProlog < Formula
   homepage 'http://www.swi-prolog.org/'
-  url 'http://www.swi-prolog.org/download/stable/src/pl-6.2.5.tar.gz'
-  sha256 '0613e40ebfe7329e542a042587f2e593a74f5710dbbfcf1e116ddba1e6c35167'
+  url 'http://www.swi-prolog.org/download/stable/src/pl-6.2.6.tar.gz'
+  sha256 '9412f0753a61c30dbcf1afac01fe7c9168002854709e00e09c21f959e1232146'
+
+  devel do
+    url 'http://www.swi-prolog.org/download/devel/src/pl-6.3.17.tar.gz'
+    sha1 '93bf9a0f824a3d1ce8a189a37d0c186de6479d42'
+  end
 
   head 'git://www.swi-prolog.org/home/pl/git/pl.git'
 
@@ -39,8 +44,8 @@ class SwiProlog < Formula
     # SWI-Prolog's Makefiles don't add CPPFLAGS to the compile command, but do
     # include CIFLAGS. Setting it here. Also, they clobber CFLAGS, so including
     # the Homebrew-generated CFLAGS into COFLAGS here.
-    ENV['CIFLAGS'] = ENV['CPPFLAGS']
-    ENV['COFLAGS'] = ENV['CFLAGS']
+    ENV['CIFLAGS'] = ENV.cppflags
+    ENV['COFLAGS'] = ENV.cflags
 
     # Build the packages unless --lite option specified
     args << "--with-world" unless build.include? "lite"

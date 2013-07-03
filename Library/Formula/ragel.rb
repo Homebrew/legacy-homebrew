@@ -1,23 +1,16 @@
 require 'formula'
 
 class RagelUserGuide < Formula
-  url 'http://www.complang.org/ragel/ragel-guide-6.7.pdf'
-  sha1 '6f3483fea075941c989ac37e6c49afabc7e181c0'
+  url 'http://www.complang.org/ragel/ragel-guide-6.8.pdf'
+  sha1 'e57ee7f740dd395d4d5330949594a02c91ad0308'
 end
 
 class Ragel < Formula
   homepage 'http://www.complang.org/ragel/'
-  url 'http://www.complang.org/ragel/ragel-6.7.tar.gz'
-  sha1 'bf12b634f5a25e5ba305edfee59a455069ed3b0a'
+  url 'http://www.complang.org/ragel/ragel-6.8.tar.gz'
+  sha1 '95cabbcd52bd25d76c588ddf11e1fd242d7cbcc7'
 
   def install
-    if ENV.compiler == :clang
-      # fix build with clang
-      inreplace ["aapl/avlcommon.h", "aapl/bstcommon.h", "aapl/bubblesort.h", "aapl/mergesort.h"], /([^:.])(compare)/, '\1this->\2'
-      # fix build with libc++
-      inreplace 'ragel/javacodegen.cpp', /setiosflags/, 'std::\&'
-    end
-
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
 

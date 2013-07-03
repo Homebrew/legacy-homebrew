@@ -8,13 +8,11 @@ class Libshout < Formula
   depends_on 'pkg-config' => :build
   depends_on 'libogg'
   depends_on 'libvorbis'
-
-  depends_on 'theora' => :optional
-  depends_on 'speex'  => :optional
+  depends_on 'theora'
+  depends_on 'speex'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

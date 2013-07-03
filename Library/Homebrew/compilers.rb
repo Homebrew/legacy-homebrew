@@ -1,162 +1,72 @@
-class Compilers
-  include Enumerable
-
-  def initialize(*args)
-    @compilers = Array.new(*args)
-  end
-
-  def each(*args, &block)
-    @compilers.each(*args, &block)
-  end
-
-  def include?(cc)
-    cc = cc.name if cc.is_a? Compiler
-    @compilers.any? { |c| c.name == cc }
-  end
-
-  def <<(o)
-    @compilers << o
-    self
+class Compiler < Struct.new(:name, :priority)
+  def build
+    MacOS.send("#{name}_build_version")
   end
 end
-
-
-class CompilerFailures
-  include Enumerable
-
-  def initialize(*args)
-    @failures = Array.new(*args)
-  end
-
-  def each(*args, &block)
-    @failures.each(*args, &block)
-  end
-
-  def include?(cc)
-    cc = Compiler.new(cc) unless cc.is_a? Compiler
-    @failures.any? { |failure| failure.compiler == cc.name }
-  end
-
-  def <<(o)
-    @failures << o unless include? o.compiler
-    self
-  end
-end
-
-
-class Compiler
-  attr_reader :name, :build
-
-  def initialize name
-    @name = name
-    @build = case name
-    when :clang then MacOS.clang_build_version.to_i
-    when :llvm then MacOS.llvm_build_version.to_i
-    when :gcc then MacOS.gcc_42_build_version.to_i
-    end
-  end
-
-  def ==(other)
-    @name.to_sym == other.to_sym
-  end
-end
-
 
 class CompilerFailure
   attr_reader :compiler
+  attr_rw :build, :cause
 
   def initialize compiler, &block
     @compiler = compiler
     instance_eval(&block) if block_given?
-  end
-
-  def build val=nil
-    val.nil? ? @build.to_i : @build = val.to_i
-  end
-
-  def cause val=nil
-    val.nil? ? @cause : @cause = val
+    @build = (@build || 9999).to_i
   end
 end
 
+class CompilerQueue
+  def initialize
+    @array = []
+  end
 
-# CompilerSelector is used to process a formula's CompilerFailures.
-# If no viable compilers are available, ENV.compiler is left as-is.
+  def <<(o)
+    @array << o
+    self
+  end
+
+  def pop
+    @array.delete(@array.max { |a, b| a.priority <=> b.priority })
+  end
+
+  def empty?
+    @array.empty?
+  end
+end
+
 class CompilerSelector
-  NAMES = { :clang => "Clang", :gcc => "GCC", :llvm => "LLVM" }
-
-  def initialize f
+  def initialize(f)
     @f = f
-    @old_compiler = ENV.compiler
-    @compilers = Compilers.new
-    @compilers << Compiler.new(:clang) if MacOS.clang_build_version
-    @compilers << Compiler.new(:llvm) if MacOS.llvm_build_version
-    @compilers << Compiler.new(:gcc) if MacOS.gcc_42_build_version
-  end
-
-  def select_compiler
-    # @compilers is our list of available compilers. If @f declares a
-    # failure with compiler foo, then we remove foo from the list if
-    # the failing build is >= the currently installed version of foo.
-    @compilers = @compilers.reject do |cc|
-      failure = @f.fails_with? cc
-      next unless failure
-      failure.build >= cc.build
-    end
-
-    return if @compilers.empty? or @compilers.include? ENV.compiler
-
-    ENV.send case ENV.compiler
-    when :clang
-      if @compilers.include? :llvm then :llvm
-      elsif @compilers.include? :gcc then :gcc
-      else ENV.compiler
-      end
-    when :llvm
-      if @compilers.include? :clang and MacOS.clang_build_version >= 211 then :clang
-      elsif @compilers.include? :gcc then :gcc
-      elsif @compilers.include? :clang then :clang
-      else ENV.compiler
-      end
-    when :gcc
-      if @compilers.include? :clang and MacOS.clang_build_version >= 211 then :clang
-      elsif @compilers.include? :llvm then :llvm
-      elsif @compilers.include? :clang then :clang
-      else ENV.compiler
+    @compilers = CompilerQueue.new
+    %w{clang llvm gcc gcc_4_0}.map(&:to_sym).each do |cc|
+      unless MacOS.send("#{cc}_build_version").nil?
+        @compilers << Compiler.new(cc, priority_for(cc))
       end
     end
   end
 
-  def advise
-    failure = @f.fails_with? @old_compiler
-    return unless failure
+  # Attempts to select an appropriate alternate compiler, but
+  # if none can be found raises CompilerError instead
+  def compiler
+    begin
+      cc = @compilers.pop
+    end while @f.fails_with?(cc)
 
-    # If we're still using the original ENV.compiler, then the formula did not
-    # declare a specific failing build, so we continue and print some advice.
-    # Otherwise, tell the user that we're switching compilers.
-    if @old_compiler == ENV.compiler
-      cc = Compiler.new(ENV.compiler)
-      subject = "#{@f.name}-#{@f.version}: builds with #{NAMES[cc.name]}-#{cc.build}-#{MACOS_VERSION}"
-      warning = "Using #{NAMES[cc.name]}, but this formula is reported to fail with #{NAMES[cc.name]}."
-      warning += "\n\n#{failure.cause.strip}\n" unless failure.cause.nil?
-      warning += <<-EOS.undent
+    if cc.nil?
+      raise CompilerSelectionError
+    else
+      cc.name
+    end
+  end
 
-        We are continuing anyway so if the build succeeds, please open a ticket with
-        the subject
+  private
 
-          #{subject}
-
-        so that we can update the formula accordingly. Thanks!
-        EOS
-
-      viable = @compilers.reject { |cc| @f.fails_with? cc }
-      unless viable.empty?
-        warning += "\nIf it fails you can use "
-        options = viable.map { |cc| "--use-#{cc.name}" }
-        warning += "#{options*' or '} to try a different compiler."
-      end
-
-      opoo warning
+  def priority_for(cc)
+    case cc
+    when :clang then MacOS.clang_build_version >= 318 ? 3 : 0.5
+    when :llvm  then 2
+    when :gcc   then 1
+    when :gcc_4_0 then 0.25
     end
   end
 end

@@ -7,46 +7,34 @@ class Yasm < Formula
 
   head 'https://github.com/yasm/yasm.git'
 
-  option 'enable-python', 'Enable Python bindings'
-
   if build.head?
     depends_on 'gettext'
     depends_on :automake
   end
 
-  depends_on 'Cython' => :python if build.include? 'enable-python'
+  depends_on :python => :optional
+  depends_on 'Cython' => :python if build.with? 'python'
 
   def install
+    # https://github.com/mxcl/homebrew/pull/19593
+    ENV.deparallelize
     args = %W[
       --disable-debug
       --prefix=#{prefix}
     ]
 
-    if build.include? 'enable-python'
+    if build.with? 'python'
       args << '--enable-python'
       args << '--enable-python-bindings'
     end
 
-    # Avoid "ld: library not found for -lcrt1.10.6.o" on Xcode without CLT
-    ENV['LIBS'] = ENV.ldflags
-    ENV['INCLUDES'] = ENV.cppflags
     system './autogen.sh' if build.head?
     system './configure', *args
     system 'make install'
   end
 
   def caveats
-    if build.include? 'enable-python' then <<-EOS.undent
-      Python bindings installed to:
-        #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages
-
-      For non-homebrew Python, you need to amend your PYTHONPATH like so:
-        export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-      EOS
-    end
+    python.standard_caveats if python
   end
 
-  def which_python
-    'python' + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
 end

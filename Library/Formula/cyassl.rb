@@ -2,58 +2,53 @@ require 'formula'
 
 class Cyassl < Formula
   homepage 'http://yassl.com/yaSSL/Products-cyassl.html'
-  url 'https://github.com/cyassl/cyassl/archive/v2.4.6.tar.gz'
-  sha256 '0a51ac204edd38ab01b226e7248d7e01753a750276dc5e75159f5b0090be3eeb'
+  url 'https://github.com/cyassl/cyassl/archive/v2.7.0.tar.gz'
+  sha256 'fa3aebfe8d5304e283b91cd83cd211dd3239243101e9e618d034cd475d7bbe54'
 
-  # Enable when the next release it shipped. Breaks with inline patch.
   head 'https://github.com/cyassl/cyassl.git'
 
-  depends_on :automake
-  depends_on :libtool
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
 
-  option 'enable-dtsl', 'Enable DTLS support.'
-  option 'enable-sniffer', 'Enable sniffer support.'
-
-  def patches
-    # The patch contain two bits. One that needs to be added as we use autogen.sh,
-    # and this is broken for CyaSSL. They depend on a .git folder present.
-    # The second part can be removed with the next release. Fixed upstream.
-    DATA
-  end
-
-  fails_with :clang do
-    build 421
-  end
+  fails_with :clang
 
   def install
-    args = %W[--prefix=#{prefix}
+    args = %W[--infodir=#{info}
+              --mandir=#{man}
+              --prefix=#{prefix}
+              --disable-bump
+              --disable-fortress
+              --disable-ntru
+              --disable-sniffer
+              --disable-webserver
+              --enable-aesccm
               --enable-aesgcm
+              --enable-blake2
+              --enable-camellia
               --enable-certgen
               --enable-crl
               --enable-crl-monitor
-              --enable-fortress
+              --enable-dtls
+              --enable-ecc
+              --enable-filesystem
               --enable-hc128
+              --enable-inline
               --enable-keygen
+              --enable-md4
               --enable-ocsp
-              --enable-opensslExtra
+              --enable-opensslextra
+              --enable-psk
+              --enable-rabbit
               --enable-ripemd
               --enable-sha512
-              --disable-debug
-              --disable-ecc
-              --disable-noFilesystem
-              --disable-noInline
-              --disable-ntru
-              --disable-small
-              --with-libz
+              --enable-sni
     ]
 
-    args << '--enable-dtsl' if build.include? 'enable-dtsl'
-    args << '--enable-sniffer' if build.include? 'enable-sniffer'
-
     if MacOS.prefer_64_bit?
-      args << '--enable-fastmath' << '--enable-fasthugemath' << '--enable-bump'
+      args << '--enable-fastmath' << '--enable-fasthugemath'
     else
-      args << '--disable-fastmath' << '--disable-fasthugemath' << '--disable-bump'
+      args << '--disable-fastmath' << '--disable-fasthugemath'
     end
 
     # Extra flag is stated as a needed for the Mac platform.
@@ -61,22 +56,11 @@ class Cyassl < Formula
     # Also, only applies if fastmath is enabled.
     ENV.append_to_cflags '-mdynamic-no-pic' if MacOS.prefer_64_bit?
 
-    # They don't provide a public release, so that we use a tag from their repo instead.
-    system "./autogen.sh"
+    # No public release available, Git tag is therefore used.
+    system "autoreconf --verbose --install --force"
     system "./configure", *args
 
     system "make"
     system "make install"
   end
 end
-
-__END__
-diff --git a/autogen.sh b/autogen.sh
-index f16dbd7..ed78895 100755
---- a/autogen.sh
-+++ b/autogen.sh
-@@ -10,4 +10,3 @@ else
- fi
-
- autoreconf --install --force --verbose
--ln -s -f ../../pre-commit.sh .git/hooks/pre-commit

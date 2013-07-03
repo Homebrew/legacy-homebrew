@@ -5,8 +5,8 @@ require 'formula'
 
 class XbeeComm < Formula
   homepage 'https://github.com/guyzmo/xbee-comm.git'
-  url 'https://github.com/guyzmo/xbee-comm/tarball/v1.5'
-  sha1 '260e4ca71dabde120fd90089f0dada68d3123dcf'
+  url 'https://github.com/guyzmo/xbee-comm/archive/v1.5.tar.gz'
+  sha1 '1eefd2818fcffb2da9e217c7df48b1ff4f72ef3a'
 
   head 'https://github.com/guyzmo/xbee-comm.git'
 

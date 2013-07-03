@@ -2,8 +2,8 @@ require 'formula'
 
 class Cdo < Formula
   homepage 'https://code.zmaw.de/projects/cdo'
-  url 'https://code.zmaw.de/attachments/download/4824/cdo-1.5.9.tar.gz'
-  sha1 '94add81a8f6e8e964ed0b12ed23014ad54764735'
+  url 'https://code.zmaw.de/attachments/download/5287/cdo-1.6.0.tar.gz'
+  sha1 '0a91c996f6d802ce2276c2371fee0a8ea5f6289a'
 
   option 'enable-grib2', 'Compile Fortran bindings'
 

@@ -2,7 +2,7 @@ require 'formula'
 
 class Luciddb < Formula
   homepage 'http://www.luciddb.org/'
-  url 'http://sourceforge.net/projects/luciddb/files/luciddb/luciddb-0.9.4/luciddb-bin-macos32-0.9.4.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/luciddb/luciddb/luciddb-0.9.4/luciddb-bin-macos32-0.9.4.tar.bz2'
   sha1 'b0a7b9dbe997a1754d48856c866ffedf4d276eae'
 
   def shim_script target
@@ -40,8 +40,6 @@ class Luciddb < Formula
       <true/>
       <key>Label</key>
       <string>#{plist_name}</string>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>EnvironmentVariables</key>
       <dict>
         <key>JAVA_HOME</key>

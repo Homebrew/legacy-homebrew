@@ -2,54 +2,83 @@ require 'formula'
 
 class Libxml2 < Formula
   homepage 'http://xmlsoft.org'
-  url 'ftp://xmlsoft.org/libxml2/libxml2-2.8.0.tar.gz'
-  sha256 'f2e2d0e322685193d1affec83b21dc05d599e17a7306d7b90de95bb5b9ac622a'
+  url 'ftp://xmlsoft.org/libxml2/libxml2-2.9.1.tar.gz'
+  mirror 'http://xmlsoft.org/sources/libxml2-2.9.1.tar.gz'
+  sha256 'fd3c64cb66f2c4ea27e934d275904d92cec494a8e8405613780cbc8a71680fdb'
+
+  head 'https://git.gnome.org/browse/libxml2', :using => :git
 
   keg_only :provided_by_osx
+
+  option :universal
+  # Silence audit warnings
+  option 'with-python', 'Build Python bindings'
+
+  if build.head?
+    depends_on :python => :recommended # satisfied by Python 2.6+
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  else
+    # 2.9.1 cannot build with Python 2.6: https://github.com/mxcl/homebrew/issues/20249
+    depends_on PythonInstalled.new("2.7") => :recommended
+  end
 
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
   end
 
-  option :universal
-  option 'with-python', 'Compile the libxml2 Python 2.x modules'
-
   def install
     ENV.universal_binary if build.universal?
+    if build.head?
+      inreplace 'autogen.sh', 'libtoolize', 'glibtoolize'
+      system './autogen.sh'
+    end
 
-    system "./configure", "--prefix=#{prefix}", "--without-python"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--without-python"
     system "make"
     ENV.deparallelize
     system "make install"
 
-    if build.include? 'with-python'
-      # Build Python bindings manually
+    python do
+      # This python do block sets up the site-packages in the Cellar.
       cd 'python' do
-        python_lib = lib/which_python/'site-packages'
-        ENV.append 'PYTHONPATH', python_lib
-        python_lib.mkpath
-
-        archs = archs_for_command("python")
-        archs.remove_ppc!
-        arch_flags = archs.as_arch_flags
-
-        ENV.append 'CFLAGS', arch_flags
-        ENV.append 'LDFLAGS', arch_flags
-
-        unless MacOS::CLT.installed?
-          # We can hijack /opt/include to insert SDKROOT/usr/include
-          inreplace 'setup.py', '"/opt/include",', "'#{MacOS.sdk_path}/usr/include',"
-        end
-
-        system "python", "setup.py",
-                         "install_lib",
-                         "--install-dir=#{python_lib}"
+        # We need to insert our include dir first
+        inreplace 'setup.py', 'includes_dir = [', "includes_dir = ['#{include}', '#{MacOS.sdk_path}/usr/include',"
+        system python, 'setup.py', "install", "--prefix=#{prefix}"
       end
+      # This is keg_only but it makes sense to have the python bindings:
+      ohai 'Linking python bindings'
+      Dir["#{python.site_packages}/*"].each{ |f|
+        path = python.global_site_packages/(Pathname.new(f).basename)
+        puts path
+        rm path if path.exist?
+        ln_s f, path
+      }
+    end
+
+  end
+
+  def caveats
+    if build.with? 'python'
+      <<-EOS.undent
+        Even if this formula is keg_only, the python bindings have been linked
+        into Homebrew's global site-packages for your convenience.
+          #{python.global_site_packages}
+
+      EOS
     end
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  def test
+    if build.with? 'python'
+      system python, '-c', "import libxml2"
+    else
+      puts "No tests beacuse build --wtihout-python."
+      true
+    end
   end
 end

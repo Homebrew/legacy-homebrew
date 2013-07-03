@@ -1,25 +1,28 @@
 require 'formula'
 
 class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.8.1.2.tar.gz'
-  sha1 '142222a27dfec52256831f2d0e2ee655f75c1077'
+  url 'http://git-core.googlecode.com/files/git-manpages-1.8.3.2.tar.gz'
+  sha1 '5ce8c00fe9e2755c67d29b2f2135fc8c4202fc1f'
 end
 
 class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.1.2.tar.gz'
-  sha1 '3df491003d026b8f4b2de378e57b930a98f0a595'
+  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.3.2.tar.gz'
+  sha1 'adffaa379e1994fc6d6cb6491aed680ad6bb37ad'
 end
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.1.2.tar.gz'
-  sha1 '29a2dee568b1f86e9d3d8f9dcc376f24439b6a0c'
+  url 'http://git-core.googlecode.com/files/git-1.8.3.2.tar.gz'
+  sha1 '4a6585dd81a542e7803e5f54a5c85b1c1a5869aa'
 
   head 'https://github.com/git/git.git'
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
+  option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
 
+  depends_on :python
   depends_on 'pcre' => :optional
+  depends_on 'gettext' => :optional
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -27,19 +30,21 @@ class Git < Formula
     ENV['NO_DARWIN_PORTS'] = '1'
     ENV['V'] = '1' # build verbosely
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
-    ENV['NO_GETTEXT'] = '1'
-    ENV['PERL_PATH'] = which 'perl' # workaround for users of perlbrew
-    ENV['PYTHON_PATH'] = which 'python' # python can be brewed or unbrewed
+    ENV['PYTHON_PATH'] = python.binary if python
+    ENV['PERL_PATH'] = which 'perl'
 
-    # Clean XCode 4.x installs don't include Perl MakeMaker
-    ENV['NO_PERL_MAKEMAKER'] = '1' if MacOS.version >= :lion
+    unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'
+      ENV['NO_PERL_MAKEMAKER'] = '1'
+    end
 
-    ENV['BLK_SHA1'] = '1' if build.include? 'with-blk-sha1'
+    ENV['BLK_SHA1'] = '1' if build.with? 'blk-sha1'
 
     if build.with? 'pcre'
       ENV['USE_LIBPCRE'] = '1'
-      ENV['LIBPCREDIR'] = HOMEBREW_PREFIX
+      ENV['LIBPCREDIR'] = Formula.factory('pcre').opt_prefix
     end
+
+    ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
 
     system "make", "prefix=#{prefix}",
                    "CC=#{ENV.cc}",
@@ -64,12 +69,14 @@ class Git < Formula
       bin.install 'git-subtree'
     end
 
-    # install the completion script first because it is inside 'contrib'
-    bash_completion.install 'contrib/completion/git-completion.bash'
-    bash_completion.install 'contrib/completion/git-prompt.sh'
+    unless build.without? 'completions'
+      # install the completion script first because it is inside 'contrib'
+      bash_completion.install 'contrib/completion/git-completion.bash'
+      bash_completion.install 'contrib/completion/git-prompt.sh'
 
-    zsh_completion.install 'contrib/completion/git-completion.zsh' => '_git'
-    ln_sf "#{etc}/bash_completion.d/git-completion.bash", zsh_completion
+      zsh_completion.install 'contrib/completion/git-completion.zsh' => '_git'
+      cp "#{bash_completion}/git-completion.bash", zsh_completion
+    end
 
     (share+'git-core').install 'contrib'
 
@@ -90,7 +97,7 @@ class Git < Formula
 
   test do
     HOMEBREW_REPOSITORY.cd do
-      `#{bin}/git ls-files -- bin`.chomp == 'bin/brew'
+      assert_equal 'bin/brew', `#{bin}/git ls-files -- bin`.strip
     end
   end
 end

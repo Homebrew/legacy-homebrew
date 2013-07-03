@@ -2,7 +2,7 @@ require 'formula'
 
 class Dylibbundler < Formula
   homepage 'http://macdylibbundler.sourceforge.net'
-  url 'http://sourceforge.net/projects/macdylibbundler/files/macdylibbundler/0.4.3/dylibbundler-0.4.3.zip'
+  url 'http://downloads.sourceforge.net/project/macdylibbundler/macdylibbundler/0.4.3/dylibbundler-0.4.3.zip'
   sha1 '9335f16ea90a375151707b03e59a7c5de41c39a9'
 
   def install

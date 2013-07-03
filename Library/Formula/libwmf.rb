@@ -7,12 +7,16 @@ class Libwmf < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gd'
+  depends_on :freetype
   depends_on :libpng
 
   def install
+    dep_prefix = (MacOS.version >= :mountain_lion) ? HOMEBREW_PREFIX : MacOS::X11.prefix
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-freetype=#{MacOS::X11.prefix}"
+                          "--with-png=#{dep_prefix}",
+                          "--with-freetype=#{dep_prefix}"
     system "make"
     ENV.j1 # yet another rubbish Makefile
     system "make install"

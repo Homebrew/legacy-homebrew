@@ -2,16 +2,12 @@ require 'formula'
 
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
-  url 'http://releases.qt-project.org/qt5/5.0.0/single/qt-everywhere-opensource-src-5.0.0.tar.gz'
-  sha1 '42f4b11389fe1361352cdd04f258f0d6f175ebfd'
+  url 'http://releases.qt-project.org/qt5/5.0.2/single/qt-everywhere-opensource-src-5.0.2.tar.gz'
+  sha1 '7df93ca2cc5274f0cef72ea71f06feed2594b92f'
 
   head 'git://gitorious.org/qt/qt5.git', :branch => 'master'
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
-
-  fails_with :clang do
-    build 425
-  end
 
   option :universal
   option 'with-qtdbus', 'Enable QtDBus module'
@@ -23,17 +19,24 @@ class Qt5 < Formula
   depends_on :libpng
 
   depends_on "d-bus" if build.include? 'with-qtdbus'
-  depends_on "mysql" if build.include? 'with-mysql'
+  depends_on "mysql" => :optional
+  depends_on "jpeg"
 
   def install
     args = ["-prefix", prefix,
             "-system-libpng", "-system-zlib",
-            "-confirm-license", "-opensource",
-            "-fast" ]
+            "-confirm-license", "-opensource"]
+
+    unless MacOS::CLT.installed?
+      # Qt hard-codes paths (and uses -I flags) and linking fails on Xcode-only
+      args += ["-sdk", MacOS.sdk_path]
+      # Even with sdk given, Qt5 is too stupid to find CFNumber.h, so we give a hint:
+      ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
+    end
 
     args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
-    args << "-plugin-sql-mysql" if build.include? 'with-mysql'
+    args << "-plugin-sql-mysql" if build.with? 'mysql'
 
     if build.include? 'with-qtdbus'
       args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
@@ -73,10 +76,8 @@ class Qt5 < Formula
     (bin+'qhelpconverter.app').rmtree
 
     # Some config scripts will only find Qt in a "Frameworks" folder
-    # VirtualBox is an example of where this is needed
-    # See: https://github.com/mxcl/homebrew/issues/issue/745
     cd prefix do
-      ln_s lib, prefix + "Frameworks"
+      ln_s lib, frameworks
     end
 
     # The pkg-config files installed suggest that headers can be found in the

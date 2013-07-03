@@ -18,4 +18,18 @@ class Asciidoc < Formula
     inreplace 'Makefile', '-f manpage', '-f manpage -L'
     system "make install"
   end
+
+  def caveats; <<-EOS.undent
+      If you intend to process AsciiDoc files through an XML stage
+      (such as a2x for manpage generation) you need to add something
+      like:
+
+        export XML_CATALOG_FILES=#{HOMEBREW_PREFIX}/etc/xml/catalog
+
+      to your shell rc file so that xmllint can find AsciiDoc's
+      catalog files.
+
+      See `man 1 xmllint' for more.
+    EOS
+  end
 end

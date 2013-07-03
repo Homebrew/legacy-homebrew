@@ -3,13 +3,20 @@ require 'formula'
 class ErlangInstalled < Requirement
   fatal true
 
-  satisfy { which 'erl' }
+  satisfy {
+    which 'erl' and begin
+      `erl -noshell -eval 'io:fwrite("~s~n", [erlang:system_info(otp_release)]).' -s erlang halt | grep -q '^R1[6789]'`
+      $?.exitstatus == 0
+    end
+  }
 
   def message; <<-EOS.undent
-    Erlang is required to install.
+    Erlang R16 is required to install.
 
     You can install this with:
-      brew install erlang
+      brew tap homebrew/versions
+      brew unlink erlang
+      brew install erlang-r16
 
     Or you can use an official installer from:
       http://www.erlang.org/
@@ -19,8 +26,8 @@ end
 
 class Elixir < Formula
   homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/tarball/v0.8.0'
-  sha1 'c548335f5d072ae4da52520d95b5be22941de330'
+  url  'https://github.com/elixir-lang/elixir/archive/v0.9.3.tar.gz'
+  sha1 'd0d848b14b41884efc4a968bb537c98f4b556d17'
 
   head 'https://github.com/elixir-lang/elixir.git'
 
@@ -38,7 +45,7 @@ class Elixir < Formula
     end
   end
 
-  def test
-    system "#{bin}/elixir -v"
+  test do
+    system "#{bin}/elixir", "-v"
   end
 end

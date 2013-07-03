@@ -36,7 +36,7 @@ class Gettext < Formula
                           "--with-included-glib",
                           "--with-included-libcroco",
                           "--with-included-libunistring",
-                          "--without-emacs",
+                          "--with-emacs",
                           # Don't use VCS systems to create these archives
                           "--without-git",
                           "--without-cvs"

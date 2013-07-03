@@ -2,8 +2,8 @@ require 'formula'
 
 class Crfxx < Formula
   homepage 'http://code.google.com/p/crfpp/'
-  url 'http://crfpp.googlecode.com/files/CRF++-0.57.tar.gz'
-  sha1 'bb80676edd8fee5835b967700c30884b50a7c766'
+  url 'http://crfpp.googlecode.com/files/CRF++-0.58.tar.gz'
+  sha1 '979a686a6d73d14cdd0c96a310888fb6bffd2e91'
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

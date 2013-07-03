@@ -1,15 +1,15 @@
 require 'formula'
 
 class Mysql < Formula
-  homepage 'http://dev.mysql.com/doc/refman/5.5/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.29.tar.gz/from/http://cdn.mysql.com/'
-  version '5.5.29'
-  sha1 '40e26b193b6ece86ce97896c0c9c524d479e37be'
+  homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.12.tar.gz/from/http://cdn.mysql.com/'
+  version '5.6.12'
+  sha1 'c48ae4061c23db89de7ebd2d25abbc36283bab69'
 
   bottle do
-    sha1 '3c5b57df466eb538db58654c5f046ddf7bc675e9' => :mountainlion
-    sha1 '6595eb3f79224193a17159934220bed94fbc2df4' => :lion
-    sha1 '57992bbcc2820ffe41ae9317da81aba7480b0268' => :snowleopard
+    sha1 'bbfa381e1c2ac2c3dc2a3811bc530116343d94be' => :mountain_lion
+    sha1 'a85dd6452d140c708057ed1ef96638eeaf57fb72' => :lion
+    sha1 'acc9217c05e777c02ba9e2088456db491d7476a5' => :snow_leopard
   end
 
   depends_on 'cmake' => :build
@@ -22,6 +22,7 @@ class Mysql < Formula
   option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
   option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
   option 'enable-local-infile', 'Build with local infile loading support'
+  option 'enable-memcached', 'Enable innodb-memcached support'
   option 'enable-debug', 'Build with debug support'
 
   conflicts_with 'mariadb',
@@ -41,12 +42,15 @@ class Mysql < Formula
   end
 
   def install
+    # Don't hard-code the libtool path. See:
+    # https://github.com/mxcl/homebrew/issues/20185
+    inreplace "cmake/libutils.cmake",
+      "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
+      "COMMAND libtool -static -o ${TARGET_LOCATION}"
+
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
-
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
 
     args = [".",
             "-DCMAKE_INSTALL_PREFIX=#{prefix}",
@@ -86,6 +90,9 @@ class Mysql < Formula
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
 
+    # Build with memcached support
+    args << "-DWITH_INNODB_MEMCACHED=1" if build.include? 'enable-memcached'
+
     # Build with debug support
     args << "-DWITH_DEBUG=1" if build.include? 'enable-debug'
 
@@ -112,22 +119,18 @@ class Mysql < Formula
     mv "#{bin}/mysqlaccess.conf", libexec
   end
 
+  def post_install
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
+
+    unless File.exist? "#{var}/mysql/mysql/user.frm"
+      ENV['TMPDIR'] = nil
+      system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",
+        "--basedir=#{prefix}", "--datadir=#{var}/mysql", "--tmpdir=/tmp"
+    end
+  end
+
   def caveats; <<-EOS.undent
-    Set up databases to run AS YOUR USER ACCOUNT with:
-        unset TMPDIR
-        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix mysql)" --datadir=#{var}/mysql --tmpdir=/tmp
-
-    To set up base tables in another folder, or use a different user to run
-    mysqld, view the help for mysql_install_db:
-        mysql_install_db --help
-
-    and view the MySQL documentation:
-      * http://dev.mysql.com/doc/refman/5.5/en/mysql-install-db.html
-      * http://dev.mysql.com/doc/refman/5.5/en/default-privileges.html
-
-    To run as, for instance, user "mysql", you may need to `sudo`:
-        sudo mysql_install_db ...options...
-
     A "/etc/my.cnf" from another install may interfere with a Homebrew-built
     server starting up correctly.
 
@@ -147,12 +150,13 @@ class Mysql < Formula
       <true/>
       <key>Label</key>
       <string>#{plist_name}</string>
-      <key>Program</key>
-      <string>#{opt_prefix}/bin/mysqld_safe</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/bin/mysqld_safe</string>
+        <string>--bind-address=127.0.0.1</string>
+      </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{var}</string>
     </dict>
@@ -161,7 +165,7 @@ class Mysql < Formula
   end
 
   test do
-    (opt_prefix+'mysql-test').cd do
+    (prefix+'mysql-test').cd do
       system './mysql-test-run.pl', 'status'
     end
   end

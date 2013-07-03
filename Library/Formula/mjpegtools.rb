@@ -7,6 +7,7 @@ class Mjpegtools < Formula
 
   depends_on :x11 if MacOS::X11.installed?
 
+  depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libquicktime' => :optional
   depends_on 'libdv' => :optional
@@ -14,7 +15,6 @@ class Mjpegtools < Formula
   depends_on 'sdl_gfx' => :optional
 
   fails_with :clang do
-    build 421
     cause <<-EOS.undent
       In file included from newdenoise.cc:19:
       ./MotionSearcher.hh:2199:3: error: use of undeclared identifier 'DeleteRegion'

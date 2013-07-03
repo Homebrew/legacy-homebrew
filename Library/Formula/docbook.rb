@@ -13,9 +13,7 @@ class Docbook < Formula
                 Docbookxml43,
                 Docbookxml44,
                 Docbookxml45,
-                Docbookxml50,
-                Docbookxsl,
-                Docbookxslns]
+                Docbookxml50]
 
     (etc/'xml').mkpath
     system "xmlcatalog", "--noout", "--create", "#{etc}/xml/catalog"
@@ -93,43 +91,4 @@ end
 class Docbookxml50 < Docbookxml
   url 'http://www.docbook.org/xml/5.0/docbook-5.0.zip'
   sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
-end
-
-class Docbookxsl < Formula
-  homepage 'http://docbook.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl/1.76.1/docbook-xsl-1.76.1.tar.bz2'
-  sha1 'dc9fa422c53e0a4f0e32b5c8ec896b39080bc14d'
-
-  def install
-    doc_files = %w[AUTHORS BUGS README RELEASE-NOTES.txt TODO VERSION NEWS COPYING]
-    xsl_files = %w[catalog.xml common eclipse epub extensions fo highlighting html
-                   htmlhelp images javahelp lib manpages params profiling roundtrip
-                   slides template tools website xhtml xhtml-1_1]
-    docbook = Formula.factory 'docbook'
-    (docbook.prefix/'docbook/xsl'/version).install xsl_files + doc_files
-  end
-
-  def catalog
-    "docbook/xsl/#{version}"
-  end
-end
-
-class Docbookxslns < Formula
-  homepage 'http://docbook.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl-ns/1.77.1/docbook-xsl-ns-1.77.1.tar.bz2'
-  sha1 '01fe5f2d41af272fd97d24ffbfa4b97a5d78f125'
-
-  def install
-    doc_files = %w[AUTHORS BUGS COPYING NEWS README RELEASE-NOTES.txt TODO VERSION VERSION.xsl]
-    xsl_files = %w[assembly catalog.xml common docsrc eclipse epub epub3 extensions
-                   fo highlighting html htmlhelp images javahelp lib log manpages
-                   params profiling roundtrip slides template tests tools webhelp
-                   website xhtml xhtml-1_1 xhtml5]
-    docbook = Formula.factory 'docbook'
-    (docbook.prefix/'docbook/xsl-ns'/version).install xsl_files + doc_files
-  end
-
-  def catalog
-    "docbook/xsl-ns/#{version}"
-  end
 end

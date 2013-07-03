@@ -57,4 +57,10 @@ class InreplaceTest < Test::Unit::TestCase
     s1.remove_make_var! ["FLAG", "FLAG2"]
     assert_equal "OTHER=def\nOTHER2=def", s1
   end
+
+  def test_get_make_var
+    s = "CFLAGS = -Wall -O2\nLDFLAGS = -lcrypto -lssl"
+    s.extend(StringInreplaceExtension)
+    assert_equal "-Wall -O2", s.get_make_var("CFLAGS")
+  end
 end

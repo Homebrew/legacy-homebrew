@@ -71,12 +71,8 @@ module Homebrew extend self
 end
 
 class FormulaCreator
-  attr :url
-  attr :sha1
-  attr :name, true
-  attr :version, true
-  attr :path, true
-  attr :mode, true
+  attr_reader :url, :sha1
+  attr_accessor :name, :version, :path, :mode
 
   def url= url
     @url = url
@@ -122,14 +118,14 @@ class FormulaCreator
     class #{Formula.class_s name} < Formula
       homepage ''
       url '#{url}'
-    <% unless version.nil? %>
+    <% if not version.nil? and not version.detected_from_url? %>
       version '#{version}'
     <% end %>
       sha1 '#{sha1}'
 
     <% if mode == :cmake %>
       depends_on 'cmake' => :build
-    <% elsif mode == nil %>
+    <% elsif mode.nil? %>
       # depends_on 'cmake' => :build
     <% end %>
       depends_on :x11 # if your formula requires any X11/XQuartz components
@@ -147,10 +143,12 @@ class FormulaCreator
                               "--prefix=\#{prefix}"
         # system "cmake", ".", *std_cmake_args
     <% end %>
-        system "make install" # if this fails, try separate make/make install steps
+        system "make", "install" # if this fails, try separate make/make install steps
       end
 
-      def test
+      test do
+        # `test do` will create, run in and delete a temporary directory.
+        #
         # This test will fail and we won't accept that! It's enough to just replace
         # "false" with the main program this formula installs, but it'd be nice if you
         # were more thorough. Run the test with `brew test #{name}`.

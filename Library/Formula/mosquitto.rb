@@ -2,8 +2,8 @@ require 'formula'
 
 class Mosquitto < Formula
   homepage 'http://mosquitto.org/'
-  url 'http://mosquitto.org/files/source/mosquitto-1.1.1.tar.gz'
-  sha1 '8fb14a8d50bade0339b2365c5f9f16a1e36a8b7c'
+  url 'http://mosquitto.org/files/source/mosquitto-1.1.3.tar.gz'
+  sha1 '38faf05f696b6a8183c6f5e06fdba78ffb632316'
 
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
@@ -23,12 +23,12 @@ class Mosquitto < Formula
     (var+'mosquitto').mkpath
   end
 
-  def test
-    system "#{sbin}/mosquitto -h > /dev/null ; [ $? -eq 3 ]"
+  test do
+    quiet_system "#{sbin}/mosquitto", "-h"
+    $?.exitstatus == 3
   end
 
-  def caveats
-    return <<-EOD.undent
+  def caveats; <<-EOD.undent
     mosquitto has been installed with a default configuration file.
         You can make changes to the configuration by editing
         #{etc}/mosquitto/mosquitto.conf
@@ -60,8 +60,6 @@ class Mosquitto < Formula
       <true/>
       <key>KeepAlive</key>
       <false/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
       <key>WorkingDirectory</key>
       <string>#{var}/mosquitto</string>
     </dict>

@@ -2,8 +2,8 @@ require 'formula'
 
 class DnscryptProxy < Formula
   homepage 'http://dnscrypt.org'
-  url 'https://github.com/opendns/dnscrypt-proxy/archive/1.2.0.tar.gz'
-  sha256 'ad2cd0ecd3b8650877ee54f31cc8d38474c5da7a70c6fb417da856835713662b'
+  url 'http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.3.0.tar.bz2'
+  sha256 '211ee2d75acd631b09d012229c73654c2302234d73c9f12425e1c906520dc7c5'
 
   head 'https://github.com/opendns/dnscrypt-proxy.git', :branch => 'master'
 

@@ -5,7 +5,7 @@ require 'mach'
 class Pathname
   include MachO
 
-  BOTTLE_EXTNAME_RX = /(\.[a-z_]+\.bottle\.(\d+\.)?tar\.gz)$/
+  BOTTLE_EXTNAME_RX = /(\.[a-z_]+(32)?\.bottle\.(\d+\.)?tar\.gz)$/
 
   def install *sources
     results = []
@@ -122,17 +122,17 @@ class Pathname
 
   # extended to support common double extensions
   alias extname_old extname
-  def extname
-    BOTTLE_EXTNAME_RX.match to_s
+  def extname(path=to_s)
+    BOTTLE_EXTNAME_RX.match(path)
     return $1 if $1
-    /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
+    /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match(path)
     return $1 if $1
-    return File.extname(to_s)
+    return File.extname(path)
   end
 
   # for filetypes we support, basename without extension
   def stem
-    return File.basename(to_s, extname)
+    File.basename((path = to_s), extname(path))
   end
 
   # I don't trust the children.length == 0 check particularly, not to mention
@@ -141,14 +141,14 @@ class Pathname
   def rmdir_if_possible
     rmdir
     true
-  rescue SystemCallError => e
-    # OK, maybe there was only a single `.DS_Store` file in that folder
-    if (self/'.DS_Store').exist? && self.children.length == 1
-      (self/'.DS_Store').unlink
+  rescue Errno::ENOTEMPTY
+    if (ds_store = self+'.DS_Store').exist? && children.length == 1
+      ds_store.unlink
       retry
+    else
+      false
     end
-
-    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno or e.errno == Errno::ENOENT::Errno
+  rescue Errno::EACCES, Errno::ENOENT
     false
   end
 
@@ -177,27 +177,28 @@ class Pathname
     # OS X installer package
     return :pkg if self.extname == '.pkg'
 
+    # If the filename ends with .gz not preceded by .tar
+    # then we want to gunzip but not tar
+    return :gzip_only if self.extname == '.gz'
+
     # Get enough of the file to detect common file types
     # POSIX tar magic has a 257 byte offset
-    magic_bytes = nil
-    File.open(self) { |f| magic_bytes = f.read(262) }
-
     # magic numbers stolen from /usr/share/file/magic/
-    case magic_bytes
-    when /^PK\003\004/   then :zip
-    when /^\037\213/     then :gzip
-    when /^BZh/          then :bzip2
-    when /^\037\235/     then :compress
-    when /^.{257}ustar/  then :tar
-    when /^\xFD7zXZ\x00/ then :xz
-    when /^Rar!/         then :rar
+    case open { |f| f.read(262) }
+    when /^PK\003\004/n         then :zip
+    when /^\037\213/n           then :gzip
+    when /^BZh/n                then :bzip2
+    when /^\037\235/n           then :compress
+    when /^.{257}ustar/n        then :tar
+    when /^\xFD7zXZ\x00/n       then :xz
+    when /^Rar!/n               then :rar
+    when /^7z\xBC\xAF\x27\x1C/n then :p7zip
     else
       # This code so that bad-tarballs and zips produce good error messages
       # when they don't unarchive properly.
       case extname
-        when ".tar.gz", ".tgz", ".tar.bz2", ".tbz" then :tar
-        when ".zip" then :zip
-        when ".7z" then :p7zip
+      when ".tar.gz", ".tgz", ".tar.bz2", ".tbz" then :tar
+      when ".zip" then :zip
       end
     end
   end
@@ -267,7 +268,20 @@ class Pathname
           raise <<-EOS.undent
             Could not symlink file: #{src.expand_path}
             Target #{self} already exists. You may need to delete it.
-            To force the link and delete this file, do:
+            To force the link and overwrite all other conflicting files, do:
+              brew link --overwrite formula_name
+
+            To list all files that would be deleted:
+              brew link --overwrite --dry-run formula_name
+            EOS
+        # #exist? will return false for symlinks whose target doesn't exist
+        elsif self.symlink?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            Target #{self} already exists as a symlink to #{readlink}.
+            If this file is from another formula, you may need to
+            `brew unlink` it. Otherwise, you may want to delete it.
+            To force the link and overwrite all other conflicting files, do:
               brew link --overwrite formula_name
 
             To list all files that would be deleted:
@@ -330,14 +344,6 @@ class Pathname
   end
 
   def find_formula
-    # remove special casing once tap is established and alt removed
-    if self == HOMEBREW_LIBRARY/"Taps/adamv-alt"
-      all_formula do |file|
-        yield file
-      end
-      return
-    end
-
     [self/:Formula, self/:HomebrewFormula, self].each do |d|
       if d.exist?
         d.children.map{ |child| child.relative_path_from(self) }.each do |pn|
@@ -350,7 +356,7 @@ class Pathname
 
   # Writes an exec script in this folder for each target pathname
   def write_exec_script *targets
-    targets = [targets].flatten
+    targets.flatten!
     if targets.empty?
       opoo "tried to write exec sripts to #{self} for an empty list of targets"
     end
@@ -389,6 +395,35 @@ class Pathname
     end
   end
 
+  # We redefine these private methods in order to add the /o modifier to
+  # the Regexp literals, which forces string interpolation to happen only
+  # once instead of each time the method is called. This is fixed in 1.9+.
+  if RUBY_VERSION <= "1.8.7"
+    alias_method :old_chop_basename, :chop_basename
+    def chop_basename(path)
+      base = File.basename(path)
+      if /\A#{Pathname::SEPARATOR_PAT}?\z/o =~ base
+        return nil
+      else
+        return path[0, path.rindex(base)], base
+      end
+    end
+    private :chop_basename
+
+    alias_method :old_prepend_prefix, :prepend_prefix
+    def prepend_prefix(prefix, relpath)
+      if relpath.empty?
+        File.dirname(prefix)
+      elsif /#{SEPARATOR_PAT}/o =~ prefix
+        prefix = File.dirname(prefix)
+        prefix = File.join(prefix, "") if File.basename(prefix + 'a') != 'a'
+        prefix + relpath
+      else
+        prefix + relpath
+      end
+    end
+    private :prepend_prefix
+  end
 end
 
 # sets $n and $d so you can observe creation of stuff

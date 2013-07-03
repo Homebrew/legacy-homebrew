@@ -28,13 +28,12 @@ class Avidemux < Formula
   depends_on 'opencore-amr'
   depends_on 'xvid'
   depends_on 'x264'
+  depends_on 'qt' => :optional
 
-  # Check if this still exists @ XCode-4.3.4 or 4.4.0.  I think it's fixed then
-  # by llvm in clang svn.  So this will have to persist for older clang.
   fails_with :clang do
-    build 421
-    cause "error in backend: Couldn't allocate input reg for constraint"
-  end unless build.include? 'with-debug'
+    build 425
+    cause "error: ambiguous instructions require an explicit suffix"
+  end
 
   def patches
     # Symbols undefined due to optimization.  Fixed in head. Remove @ 2.5.7.
@@ -45,7 +44,7 @@ class Avidemux < Formula
     # Avidemux is coded to use the .svn or .git directory to find its revision,
     # but neither vcs copies those during clone from the cache to the stagedir.
     # Modify cmake/admMainChecks.cmake to look in the Homebrew cache.
-    if build.head? then
+    if build.head?
       inreplace 'CMakeLists.txt',
         'admGetRevision(${PROJECT_SOURCE_DIR} ADM_SUBVERSION)',
         "admGetRevision(\"#{cached_download}\" ADM_SUBVERSION)"
@@ -78,14 +77,20 @@ class Avidemux < Formula
         -DGTK=OFF
         -DSDL=OFF
       ]
-      if build.include? 'with-debug' then
-        (ENV.compiler == :clang) ? ENV.Og : ENV.O2
+
+      if build.with? 'debug'
         ENV.deparallelize
-        ENV.remove_from_cflags '-w'
+        ENV.enable_warnings
         args << '-DCMAKE_BUILD_TYPE=Debug'
         args << '-DCMAKE_VERBOSE_MAKEFILE=true'
-        args << '-DCMAKE_C_FLAGS_DEBUG=-ggdb3' if ENV.compiler != :clang
-        args << '-DCMAKE_CXX_FLAGS_DEBUG=-ggdb3' if ENV.compiler != :clang
+
+        if ENV.compiler == :clang
+          ENV.Og
+        else
+          ENV.O2
+          args << '-DCMAKE_C_FLAGS_DEBUG=-ggdb3'
+          args << '-DCMAKE_CXX_FLAGS_DEBUG=-ggdb3'
+        end
       end
       args << buildpath
       system "cmake", *args
@@ -126,7 +131,8 @@ class Avidemux < Formula
         -DAVIDEMUX_INSTALL_PREFIX=#{prefix}
         -DAVIDEMUX_CORECONFIG_DIR=#{buildpath}/corebuild/config
       ]
-      if build.include? 'with-debug' then
+
+      if build.with? 'debug'
         args << '-DCMAKE_BUILD_TYPE=Debug'
         args << '-DCMAKE_VERBOSE_MAKEFILE=true'
         if ENV.compiler != :clang
@@ -141,7 +147,7 @@ class Avidemux < Formula
       # Two dylibs that are only built as part of the Qt gui need an RPATH
       # set on their internal deps. Check if Qt4 exists before patching them,
       # otherwise the inreplaces will fail.
-      if Formula.factory('qt').linked_keg.exist?
+      if build.with? 'qt'
         inreplace 'ADM_videoEncoder/ADM_vidEnc_xvid/qt4/cmake_install.cmake',
           '"libADM_vidEnc_xvid.dylib"',
           '"${CMAKE_INSTALL_PREFIX}/lib/ADM_plugins/videoEncoder/libADM_vidEnc_xvid.dylib"'
@@ -162,7 +168,7 @@ class Avidemux < Formula
       #   3. and copy all the plugins we made to it,
       #   4. but omit any plugins that are for the CLI only.
       #   5. CLI only files end in cli.dylib.
-      if File.exists? prefix+'avidemux2.app' then
+      if File.exists? prefix+'avidemux2.app'
         app_lib_path = prefix+'avidemux2.app/Contents/lib'
         app_plug_path = prefix+'avidemux2.app/Contents/lib/ADM_plugins'
         cellar_plug_path = lib+'ADM_plugins'
@@ -175,13 +181,12 @@ class Avidemux < Formula
     end # of plugbuild
   end
 
-  def caveats; <<-EOS.undent
-    The command line program avidemux2_cli gets installed in your PATH.
-    The Qt gui is installed if you have Qt4, and its location is
-        #{prefix}/avidemux2.app
-    You can double-click it in Finder or link it into ~/Applications with
-        brew linkapps
-    EOS
+  def caveats
+    if build.with? 'qt' then <<-EOS.undent
+      The Qt GUI has been installed to
+        #{opt_prefix}/avidemux2.app
+      EOS
+    end
   end
 end
 

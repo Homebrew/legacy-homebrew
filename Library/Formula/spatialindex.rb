@@ -2,11 +2,11 @@ require 'formula'
 
 class Spatialindex < Formula
   homepage 'http://libspatialindex.github.com'
-  url 'http://download.osgeo.org/libspatialindex/spatialindex-src-1.7.1.tar.gz'
-  sha1 '1c08fe9e25679b26bf4d26dddf4bbc2e828a35e9'
+  url 'http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.0.tar.gz'
+  sha1 '490347eaedc543298687dfbdf74853808b0afb3f'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug"
+    system "./configure", "--disable-debug", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end

@@ -84,7 +84,7 @@ class Hyperestraier < Formula
     system "make install-mac"
   end
 
-  def test
-    system "#{bin}/estcmd version"
+  test do
+    system "#{bin}/estcmd", "version"
   end
 end

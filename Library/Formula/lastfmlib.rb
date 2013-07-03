@@ -8,7 +8,7 @@ class Lastfmlib < Formula
   depends_on 'pkg-config' => :build
 
   fails_with :clang do
-    build 318
+    build 425
     cause <<-EOS.undent
       lastfmlib/utils/stringoperations.h:62:16: error: no viable conversion from
             '__string_type' (aka 'basic_string<wchar_t, std::char_traits<wchar_t>,

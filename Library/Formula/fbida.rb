@@ -5,12 +5,14 @@ class Fbida < Formula
   url 'http://dl.bytesex.org/releases/fbida/fbida-2.09.tar.gz'
   sha1 '5838b2cb7188481fece6159fccb3b121acd906e7'
 
+  depends_on 'libexif'
+  depends_on 'jpeg'
+
+  env :std # uses 'cpp' in a pipeline
+
   # Fix for build failure in fbida 2.09 (and earlier)
   # Check again in fbida 2.10
   def patches; DATA; end
-
-  depends_on 'libexif'
-  depends_on 'jpeg'
 
   def install
     ENV.append 'LDFLAGS', '-liconv'
