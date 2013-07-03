@@ -56,6 +56,19 @@ class Subversion < Formula
   end
 
   def install
+    if build.include? 'unicode-path'
+      raise Homebrew::InstallationError.new(self, <<-EOS.undent
+        The --unicode-path patch is not supported on Subversion 1.8.
+
+        Upgrading from a 1.7 version built with this patch is not supported.
+
+        You should stay on 1.7, install 1.7 from homebrew-versions, or
+          brew rm subveresion && brew install subversion
+        to build a new version of 1.8 without this patch.
+      EOS
+      )
+    end
+
     if build.include? 'java'
       # Java support doesn't build correctly in parallel:
       # https://github.com/mxcl/homebrew/issues/20415
