@@ -29,8 +29,6 @@ class Gobby < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
-    # Don't link this into share!
-    (share/"icons/hicolor/icon-theme.cache").unlink
   end
 end
 
