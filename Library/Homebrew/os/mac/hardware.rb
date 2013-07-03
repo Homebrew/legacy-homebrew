@@ -76,20 +76,23 @@ module MacCPUs
   end
 
   def altivec?
-    type == :ppc && family != :g3
+    @altivec ||= sysctl_bool('hw.optional.altivec')
   end
 
   def avx?
-    pre_sandy = [:core, :core2, :penryn, :nehalem, :arrandale].include? family
-    type == :intel && !pre_sandy
+    @avx ||= sysctl_bool('hw.optional.avx1_0')
   end
 
   def sse3?
-    type == :intel
+    @sse3 ||= sysctl_bool('hw.optional.sse3')
   end
 
   def sse4?
-    type == :intel && (family != :core && family != :core2)
+    @sse4 ||= sysctl_bool('hw.optional.sse4_1')
+  end
+
+  def sse4_2?
+    @sse4 ||= sysctl_bool('hw.optional.sse4_2')
   end
 
   protected
