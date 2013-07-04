@@ -18,7 +18,11 @@ class GpgAgent < Formula
 
   def install
     # so we don't use Clang's internal stdint.h
-    ENV['gl_cv_absolute_stdint_h'] = '/usr/include/stdint.h'
+    if MacOS.version < :mavericks
+      ENV['gl_cv_absolute_stdint_h'] = '/usr/include/stdint.h'
+    else
+      ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
+    end
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
