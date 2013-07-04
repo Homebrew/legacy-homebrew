@@ -32,6 +32,19 @@ __END__
 Remove some Makefile rules that Homebrew takes care of through CFLAGS and
 LDFLAGS. MuPDF doesn't look at CPPFLAGS, so we piggyback it onto CFLAGS.
 
+diff --git a/Makefile b/Makefile
+index 0371def..02dfdfe 100644
+--- a/Makefile
++++ b/Makefile
+@@ -212,7 +212,7 @@ install: $(FITZ_LIB) $(MUVIEW) $(MUDRAW) $(MUTOOL)
+ 	install -d $(DESTDIR)$(bindir) $(DESTDIR)$(libdir) $(DESTDIR)$(incdir) $(DESTDIR)$(mandir)/man1
+ 	install $(FITZ_LIB) $(DESTDIR)$(libdir)
+ 	install fitz/memento.h fitz/fitz.h pdf/mupdf.h xps/muxps.h cbz/mucbz.h $(DESTDIR)$(incdir)
+-	install $(MUVIEW) $(MUDRAW) $(MUBUSY) $(DESTDIR)$(bindir)
++	install $(MUVIEW) $(MUDRAW) $(MUBUSY)  $(MUTOOL) $(DESTDIR)$(bindir)
+ 	install $(wildcard apps/man/*.1) $(DESTDIR)$(mandir)/man1
+ 
+ # --- Clean and Default ---
 diff --git a/Makerules b/Makerules
 index 3e036f6..c9ddc69 100644
 --- a/Makerules
