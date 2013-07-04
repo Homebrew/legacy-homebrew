@@ -89,3 +89,10 @@ def bottle_tag
     Hardware::CPU.type == :ppc ? Hardware::CPU.family : MacOS.cat
   end
 end
+
+def bottle_filename_formula_name filename
+  version = Version.parse(filename).to_s
+  path = Pathname.new filename
+  basename = path.basename.to_s
+  basename.rpartition("-#{version}").first
+end
