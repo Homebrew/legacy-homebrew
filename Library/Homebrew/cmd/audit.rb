@@ -286,6 +286,10 @@ class FormulaAuditor
         end
       end
 
+      if s.version.to_s =~ /^v/
+        problem "#{spec} version #{s.version} should not have a leading 'v'"
+      end
+
       cksum = s.checksum
       next if cksum.nil?
 
