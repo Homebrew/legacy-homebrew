@@ -5,13 +5,13 @@ class Gnupg2 < Formula
   url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.20.tar.bz2'
   sha1 '7ddfefa37ee9da89a8aaa8f9059d251b4cd02562'
 
-  depends_on 'libgpg-error'
-  depends_on 'libgcrypt'
-  depends_on 'libksba'
+  depends_on 'gpg-agent'
   depends_on 'libassuan'
+  depends_on 'libgcrypt'
+  depends_on 'libgpg-error'
+  depends_on 'libksba'
   depends_on 'pinentry'
   depends_on 'pth'
-  depends_on 'gpg-agent'
   depends_on 'dirmngr' => :recommended
   depends_on 'libusb-compat' => :recommended
 
@@ -25,10 +25,6 @@ class Gnupg2 < Formula
 
   def install
     (var/'run').mkpath
-
-    # so we don't use Clang's internal stdint.h
-    ENV['gl_cv_absolute_stdint_h'] = '/usr/include/stdint.h'
-
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--enable-symcryptrun",

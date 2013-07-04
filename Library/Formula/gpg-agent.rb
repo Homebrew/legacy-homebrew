@@ -5,21 +5,18 @@ class GpgAgent < Formula
   url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.20.tar.bz2'
   sha1 '7ddfefa37ee9da89a8aaa8f9059d251b4cd02562'
 
-  depends_on 'libgpg-error'
-  depends_on 'libgcrypt'
-  depends_on 'libksba'
   depends_on 'libassuan'
-  depends_on 'pth'
+  depends_on 'libgcrypt'
+  depends_on 'libgpg-error'
+  depends_on 'libksba'
   depends_on 'pinentry'
+  depends_on 'pth'
 
   # Adjust package name to fit our scheme of packaging both
   # gnupg 1.x and 2.x, and gpg-agent separately
   def patches; DATA; end
 
   def install
-    # so we don't use Clang's internal stdint.h
-    ENV['gl_cv_absolute_stdint_h'] = '/usr/include/stdint.h'
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-agent-only",
