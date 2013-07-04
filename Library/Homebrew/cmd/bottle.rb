@@ -51,6 +51,11 @@ module Homebrew extend self
 
     bottle_revision = bottle_new_revision f
     filename = bottle_filename f, bottle_revision
+
+    if bottle_filename_formula_name(filename).empty?
+      return ofail "Add a new version regex to version.rb to parse the bottle filename."
+    end
+
     bottle_path = Pathname.pwd/filename
     sha1 = nil
 
