@@ -7,7 +7,7 @@ require 'extend/ARGV'
 def bottle_filename f, bottle_revision=nil
   name = f.name.downcase
   version = f.stable.version
-  bottle_revision ||= f.bottle.revision.to_i
+  bottle_revision ||= f.bottle.revision.to_i if f.bottle
   "#{name}-#{version}#{bottle_native_suffix(bottle_revision)}"
 end
 
