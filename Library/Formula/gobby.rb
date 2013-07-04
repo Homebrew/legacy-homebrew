@@ -22,7 +22,7 @@ class Gobby < Formula
   def patches
     { :p0 => [ # Fix compilation on clang per MacPorts
       "https://trac.macports.org/export/101720/trunk/dports/x11/gobby/files/patch-code-util-config.hpp.diff"
-    ], :p1 => DATA } # Fix gtkmm issues
+    ]}
   end
 
   def install
@@ -31,30 +31,3 @@ class Gobby < Formula
     system "make install"
   end
 end
-
-__END__
-diff --git a/code/util/config.hpp b/code/util/config.hpp
-index 61c0cf4..7fcfe46 100644
---- a/code/util/config.hpp
-+++ b/code/util/config.hpp
-@@ -23,6 +23,7 @@
- 
- #include <map>
- #include <memory>
-+#include <glibmm.h>
- #include <glibmm/error.h>
- #include <glibmm/ustring.h>
- #include <gdkmm/color.h>
-diff --git a/code/util/color.hpp b/code/util/color.hpp
-index 476a26c..8fad8b1 100644
---- a/code/util/color.hpp
-+++ b/code/util/color.hpp
-@@ -18,7 +18,7 @@
- 
- #ifndef _GOBBY_COLORUTIL_HPP_
- #define _GOBBY_COLORUTIL_HPP_
--
-+#include <glibmm.h>
- #include <gdkmm/color.h>
- 
- namespace Gobby
