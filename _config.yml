@@ -17,3 +17,5 @@ langs:
     lang_string: 한국어
   - langcode: pt-BR
     lang_string: Português Brasileiro
+  - langcode: ru
+    lang_string: Русский
