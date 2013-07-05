@@ -20,7 +20,7 @@ class Redis < Formula
     src = (buildpath/'src/Makefile').exist? ? buildpath/'src' : buildpath
     system "make", "-C", src, "CC=#{ENV.cc}"
 
-    %w[benchmark cli server check-dump check-aof].each { |p| bin.install src/"redis-#{p}" }
+    %w[benchmark cli server check-dump check-aof sentinel].each { |p| bin.install src/"redis-#{p}" }
     %w[run db/redis log].each { |p| (var+p).mkpath }
 
     # Fix up default conf file to match our paths
@@ -37,6 +37,7 @@ class Redis < Formula
     end
 
     etc.install 'redis.conf' unless (etc/'redis.conf').exist?
+    etc.install_p 'sentinel.conf', 'redis-sentinel.conf' unless (etc/'redis-sentinel.conf').exist?
   end
 
   plist_options :manual => "redis-server #{HOMEBREW_PREFIX}/etc/redis.conf"

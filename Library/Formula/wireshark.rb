@@ -34,7 +34,8 @@ class Wireshark < Formula
             "--with-gnutls",
             "--with-ssl"]
 
-    args << "--disable-wireshark" << "--disable-gtktest" unless build.with? "x"
+    args << "--disable-wireshark" unless build.with? "x" or build.with? "qt"
+    args << "--disable-gtktest" unless build.with? "x"
     args << "--with-qt" if build.with? "qt"
 
     system "./configure", *args
