@@ -10,7 +10,7 @@ until then.
 
 These mindblowing people supported our Kickstarter by giving us £450 or more:
 
-* [Hashrocket](http://hashrocket.com/)
+[![Hashrocket](https://s3.amazonaws.com/hashrocket-misc/hr_180x50.png)](http://hashrocket.com/)
 
 These spectacular people supported our Kickstarter by giving us £400 or more:
 
