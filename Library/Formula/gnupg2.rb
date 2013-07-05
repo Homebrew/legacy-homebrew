@@ -26,8 +26,7 @@ class Gnupg2 < Formula
   def install
     (var/'run').mkpath
 
-    # so we don't use Clang's internal stdint.h
-    ENV['gl_cv_absolute_stdint_h'] = '/usr/include/stdint.h'
+    ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
