@@ -16,6 +16,11 @@ These spectacular people supported our Kickstarter by giving us £400 or more:
 
 * [Cargo Media](http://www.cargomedia.ch/)
 
+These incredible people supported our Kickstarter by giving us £200 or more:
+
+* Stephan Toggweiler
+* [The Tor Project](https://www.torproject.org)
+
 These amazing people supported our Kickstarter by giving us £100 or more:
 
 * [Mac Mini Vault](www.macminivault.com)
