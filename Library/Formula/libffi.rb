@@ -10,7 +10,6 @@ class Libffi < Formula
 
   def install
     ENV.deparallelize # https://github.com/mxcl/homebrew/pull/19267
-    ENV.universal_binary
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
