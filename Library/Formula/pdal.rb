@@ -5,6 +5,8 @@ class Pdal < Formula
   url 'https://github.com/PDAL/PDAL/archive/0.1.0.tar.gz'
   sha1 '74f3f5d8b58c52b7eb2afe260a0020b7c4a6906e'
 
+  head 'https://github.com/PDAL/PDAL.git'
+
   depends_on 'cmake' => :build
   depends_on 'boost'
 
