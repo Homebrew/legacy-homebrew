@@ -20,5 +20,7 @@ class Ioke < Formula
     end
 
     bin.install_symlink libexec/'bin/ioke'
+    bin.install_symlink libexec/'bin/ispec'
+    bin.install_symlink libexec/'bin/dokgen'
   end
 end
