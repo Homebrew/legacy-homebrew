@@ -7,22 +7,36 @@ class Pidgin < Formula
 
   depends_on :x11
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'gnutls'
   depends_on 'gtk+'
-  depends_on 'intltool'
+
+  option 'perl', 'Build pidgin with perl support'
 
   def install
-    system "./configure", "--disable-debug", "--disable-gevolution",
-                          "--enable-gnutls=yes", "--disable-gtkspell",
-                          "--disable-vv", "--disable-meanwhile",
-                          "--disable-avahi", "--disable-dbus",
-                          "--disable-gstreamer-interfaces", "--disable-gstreamer",
-                          "--disable-idn", "--prefix=#{prefix}"
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+      --disable-avahi
+      --disable-dbus
+      --disable-gevolution
+      --disable-gstreamer
+      --disable-gstreamer-interfaces
+      --disable-gtkspell
+      --disable-idn
+      --disable-meanwhile
+      --disable-vv
+      --enable-gnutls=yes
+    ]
+
+    args << '--disable-perl' unless build.include? 'perl'
+
+    system "./configure", *args
     system "make install"
   end
 
-  def test
-    system "pidgin --version"
+  test do
+    system "#{bin}/pidgin --version"
   end
 end
