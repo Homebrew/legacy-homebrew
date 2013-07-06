@@ -286,6 +286,10 @@ class FormulaAuditor
         end
       end
 
+      if s.version.to_s =~ /^v/
+        problem "#{spec} version #{s.version} should not have a leading 'v'"
+      end
+
       cksum = s.checksum
       next if cksum.nil?
 
@@ -338,6 +342,20 @@ class FormulaAuditor
     # Commented-out cmake support from default template
     if (text =~ /# system "cmake/)
       problem "Commented cmake call found"
+    end
+
+    # Comments from default template
+    if (text =~ /# PLEASE REMOVE/)
+      problem "Please remove default template comments"
+    end
+    if (text =~ /# if this fails, try separate make\/make install steps/)
+      problem "Please remove default template comments"
+    end
+    if (text =~ /# if your formula requires any X11\/XQuartz components/)
+      problem "Please remove default template comments"
+    end
+    if (text =~ /# if your formula's build system can't parallelize/)
+      problem "Please remove default template comments"
     end
 
     # FileUtils is included in Formula

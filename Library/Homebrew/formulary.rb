@@ -66,7 +66,7 @@ class Formulary
         if ARGV.homebrew_developer?
           opoo "Add a new version regex to version.rb to parse this filename."
         end
-        @name = name
+        @name = bottle_name
       else
         @name = name_without_version
       end
@@ -166,8 +166,9 @@ class Formulary
       elsif name_or_path.include? "/"
         # If name was a path or mapped to a cached formula
         f = FromPathLoader.new(name_or_path)
+      elsif name_or_path =~ /\.rb$/
+        f = FromPathLoader.new("./#{name_or_path}")
       else
-        # For names, map to the path and then require
         f = StandardLoader.new(name_or_path)
       end
     end
