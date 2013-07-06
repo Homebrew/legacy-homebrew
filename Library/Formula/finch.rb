@@ -12,17 +12,32 @@ class Finch < Formula
   depends_on 'gnutls'
   depends_on 'libidn'
 
+  option 'purple' 'Only build libpurple'
+  option 'perl', 'Build libpurple with perl support'
+
   def install
-    # Builds the UI
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-avahi",
-                          "--disable-dbus",
-                          "--disable-gstreamer",
-                          "--disable-gtkui",
-                          "--disable-meanwhile",
-                          "--disable-vv",
-                          "--disable-perl"
+    # Common options
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-avahi
+      --disable-dbus
+      --disable-doxygen
+      --disable-gstreamer
+      --disable-gtkui
+      --disable-meanwhile
+      --disable-vv
+      --without-x
+    ]
+
+    args << '--disable-perl' unless build.include? 'perl'
+
+    if build.include? 'purple'
+      args << '--disable-consoleui'
+    end
+
+    system "./configure", *args
     system "make install"
   end
 end
