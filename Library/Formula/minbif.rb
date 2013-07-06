@@ -5,8 +5,8 @@ require 'formula'
 class Minbif < Formula
   homepage 'http://minbif.im/'
   url 'http://ftp.de.debian.org/debian/pool/main/m/minbif/minbif_1.0.5+git20120508.orig.tar.gz'
-  sha1 '5827df8954e29df80d1e81ee5df354b76c5fd86a'
   version '1.0.5'
+  sha1 '5827df8954e29df80d1e81ee5df354b76c5fd86a'
 
   option 'pam', 'Build with PAM support, patching for OSX PAM headers'
 
@@ -14,7 +14,7 @@ class Minbif < Formula
   depends_on 'cmake' => :build
   depends_on 'glib'
   depends_on 'gettext'
-  depends_on 'libpurple'
+  depends_on 'finch'
   depends_on 'imlib2' => :optional
   depends_on 'libcaca' => :optional
 
