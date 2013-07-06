@@ -5,7 +5,7 @@ class Snownews < Formula
   url 'https://kiza.eu/media/software/snownews/snownews-1.5.12.tar.gz'
   sha1 'b3addaac25c2c093aa5e60b8b89e50e7d7450bcf'
 
-  depends_on 'gettext'
+  depends_on 'gettext' => :build
 
   option 'without-nls', "Build without translations"
 
