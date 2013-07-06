@@ -8,8 +8,10 @@ class Avrdude < Formula
   head 'svn://svn.savannah.nongnu.org/avrdude/trunk/avrdude/'
 
   option 'with-usb', 'Compile AVRDUDE with USB support.'
+  option 'with-ftdi', 'Compile AVRDUDE with FTDI support.'
 
   depends_on 'libusb-compat' if build.include? 'with-usb'
+  depends_on 'libftdi' if build.include? 'with-ftdi'
 
   if build.head?
     depends_on :autoconf
