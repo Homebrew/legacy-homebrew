@@ -5,9 +5,11 @@ class Snownews < Formula
   url 'https://kiza.eu/media/software/snownews/snownews-1.5.12.tar.gz'
   sha1 'b3addaac25c2c093aa5e60b8b89e50e7d7450bcf'
 
-  depends_on 'gettext' => :build
-
   option 'without-nls', "Build without translations"
+
+    if not build.without? 'nls'
+      depends_on 'gettext'
+    end
 
   # Fix zlib linking issue on OS X
   def patches
@@ -23,7 +25,7 @@ class Snownews < Formula
 
     system "./configure", *args
 
-    system "make", "install"
+    system "make", "install", "EXTRA_LDFLAGS=#{ENV.ldflags}", "CC=#{ENV.cc}"
   end
 
 end
