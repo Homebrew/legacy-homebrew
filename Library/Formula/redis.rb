@@ -37,7 +37,7 @@ class Redis < Formula
     end
 
     etc.install 'redis.conf' unless (etc/'redis.conf').exist?
-    etc.install_p 'sentinel.conf', 'redis-sentinel.conf' unless (etc/'redis-sentinel.conf').exist?
+    etc.install 'sentinel.conf' => 'redis-sentinel.conf' unless (etc/'redis-sentinel.conf').exist?
   end
 
   plist_options :manual => "redis-server #{HOMEBREW_PREFIX}/etc/redis.conf"
