@@ -10,16 +10,18 @@ class Curl < Formula
             "The libcurl provided by Leopard is too old for CouchDB to use."
 
   option 'with-ssh', 'Build with scp and sftp support'
-  option 'with-libmetalink', 'Build with Metalink support'
   option 'with-ares', 'Build with C-Ares async DNS support'
   option 'with-ssl', 'Build with Homebrew OpenSSL instead of the system version'
   option 'with-darwinssl', 'Build with Secure Transport for SSL support'
 
   depends_on 'pkg-config' => :build
+  depends_on 'curl-ca-bundle' => :recommended
   depends_on 'libssh2' if build.with? 'ssh'
-  depends_on 'libmetalink' if build.with? 'libmetalink'
+  depends_on 'libmetalink' => :optional
   depends_on 'c-ares' if build.with? 'ares'
   depends_on 'openssl' if build.with? 'ssl'
+  depends_on 'gnutls' => :optional
+  depends_on 'polarssl' => :optional
 
   def install
     args = %W[
@@ -28,11 +30,15 @@ class Curl < Formula
       --prefix=#{prefix}
     ]
 
+    args << "--with-ca-bundle=#{Formula.factory("curl-ca-bundle").opt_prefix}/share/ca-bundle.crt" if build.with? 'curl-ca-bundle'
     args << "--with-libssh2" if build.with? 'ssh'
     args << "--with-libmetalink" if build.with? 'libmetalink'
     args << "--enable-ares=#{Formula.factory("c-ares").opt_prefix}" if build.with? 'ares'
     args << "--with-ssl=#{Formula.factory("openssl").opt_prefix}" if build.with? 'ssl'
     args << "--with-darwinssl" if build.with? 'darwinssl'
+    args << "--without-ssl" if build.with? 'gnutls' or build.with? 'polarssl'
+    args << "--with-gnutls" if build.with? 'gnutls'
+    args << "--with-polarssl" if build.with? 'polarssl'
 
     system "./configure", *args
     system "make install"
