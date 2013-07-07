@@ -12,8 +12,8 @@ class Chruby < Formula
   end
 
   def caveats; <<-EOS.undent
-    Add the following to the /etc/profile.d/chruby.sh, ~/.bash_profile or
-    ~/.zprofile file:
+    Add the following to the /etc/profile.d/chruby.sh, ~/.bashrc or
+    ~/.zshrc file:
 
       source #{HOMEBREW_PREFIX}/opt/chruby/share/chruby/chruby.sh
 
@@ -32,7 +32,8 @@ class Chruby < Formula
       rbenv: RUBIES=(~/.rbenv/versions/*)
       rbfu:  RUBIES=('~/.rbfu/rubies/*)
 
-    To enable auto-switching of Rubies specified by .ruby-version files:
+    To enable auto-switching of Rubies specified by .ruby-version files,
+    add the following to ~/.bash_profile or ~/.zshrc:
 
       source #{HOMEBREW_PREFIX}/opt/chruby/share/chruby/auto.sh
     EOS
