@@ -30,6 +30,10 @@ class Cassandra < Formula
   end
 
   def caveats; <<-EOS.undent
+    Cassandra requires the most stable version of Java 1.6.
+    If you got an error, try to install Java 1.6 additionally.
+    launchctl automatically set JAVA_HOME for Java 1.6, even if Java 1.7 is also installed.
+
     If you plan to use the CQL shell (cqlsh), you will need the Python CQL library
     installed. Since Homebrew prefers using pip for Python packages, you can
     install that using:
@@ -48,6 +52,12 @@ class Cassandra < Formula
 
         <key>Label</key>
         <string>#{plist_name}</string>
+
+        <key>EnvironmentVariables</key>
+        <dict>
+          <key>JAVA_HOME</key>
+          <string>#{`/usr/libexec/java_home -v 1.6`.chomp!}</string>
+        </dict>
 
         <key>ProgramArguments</key>
         <array>
