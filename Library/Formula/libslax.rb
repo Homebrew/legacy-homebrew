@@ -2,8 +2,8 @@ require 'formula'
 
 class Libslax < Formula
   homepage 'http://www.libslax.org/'
-  url 'https://github.com/Juniper/libslax/archive/libslax-0.16.0.tar.gz'
-  sha1 'c89b46387050fe8b201f8a0f1676e504aac1b80e'
+  url 'https://github.com/Juniper/libslax/archive/0.16.9.tar.gz'
+  sha1 '96676aed054ad25e3a71b9c383a96ba86222438b'
 
   head 'https://github.com/Juniper/libslax.git'
 
@@ -11,11 +11,9 @@ class Libslax < Formula
   depends_on 'libtool'  => :build
 
   # Need newer versions of these libraries
-  if MacOS.version <= :lion
-    depends_on 'libxml2'
-    depends_on 'libxslt'
-    depends_on 'curl'
-  end
+  depends_on 'libxml2'
+  depends_on 'libxslt'
+  depends_on 'curl' if MacOS.version <= :lion
 
   def install
     system "sh ./bin/setup.sh"

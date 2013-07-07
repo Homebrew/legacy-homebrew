@@ -28,7 +28,6 @@ class Boost < Formula
   env :userpaths
 
   option :universal
-  option 'with-mpi', 'Enable MPI support'
   option 'with-icu', 'Build regexp engine with icu support'
   option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
   option 'use-system-layout', 'Use system layout instead of tagged'
@@ -36,7 +35,7 @@ class Boost < Formula
   depends_on :python => :recommended
   depends_on UniversalPython if build.universal? and build.with? "python"
   depends_on "icu4c" if build.with? 'icu'
-  depends_on MPIDependency.new(:cc, :cxx) if build.with? "mpi"
+  depends_on :mpi => [:cc, :cxx, :optional]
 
   fails_with :llvm do
     build 2335

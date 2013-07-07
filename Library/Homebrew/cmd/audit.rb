@@ -134,6 +134,7 @@ class FormulaAuditor
         dep_f = dep.to_formula
       rescue FormulaUnavailableError
         problem "Can't find dependency #{dep.name.inspect}."
+        next
       end
 
       dep.options.reject do |opt|
@@ -144,10 +145,14 @@ class FormulaAuditor
 
       case dep.name
       when *BUILD_TIME_DEPS
-        # Build deps should be tagged
-        problem <<-EOS.undent unless dep.tags.any? || f.name =~ /automake/ && dep.name == 'autoconf'
-        #{dep} dependency should be "depends_on '#{dep}' => :build"
-        EOS
+        # TODO: this should really be only dep.build? but maybe some formula
+        # depends on the current behavior to be audit-clean?
+        next if dep.tags.any?
+        next if f.name =~ /automake/ && dep.name == 'autoconf'
+        # This is actually a libltdl dep that gets converted to a non-build time
+        # libtool dep, but I don't of a good way to encode this in the dep object
+        next if f.name == 'imagemagick' && dep.name == 'libtool'
+        problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
       when "git", "ruby", "emacs", "mercurial"
         problem <<-EOS.undent
           Don't use #{dep} as a dependency. We allow non-Homebrew
@@ -161,13 +166,13 @@ class FormulaAuditor
              bindings for 2.x and 3.x in parallel and much more.
           EOS
       when 'gfortran'
-        problem "Use ENV.fortran during install instead of depends_on 'gfortran'"
+        problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
       when 'open-mpi', 'mpich2'
         problem <<-EOS.undent
           There are multiple conflicting ways to install MPI. Use an MPIDependency:
-            depends_on MPIDependency.new(<lang list>)
+            depends_on :mpi => [<lang list>]
           Where <lang list> is a comma delimited list that can include:
-            :cc, :cxx, :f90, :f77
+            :cc, :cxx, :f77, :f90
           EOS
       end
     end
@@ -230,7 +235,11 @@ class FormulaAuditor
         problem "Don't use /download in SourceForge urls (url is #{p})."
       end
 
-      if p =~ %r[^http://prdownloads\.]
+      if p =~ %r[^https?://sourceforge\.]
+        problem "Use http://downloads.sourceforge.net to get geolocation (url is #{p})."
+      end
+
+      if p =~ %r[^https?://prdownloads\.]
         problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" +
                 "\tSee: http://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
       end
@@ -271,19 +280,26 @@ class FormulaAuditor
         problem "Invalid or missing #{spec} version"
       else
         version_text = s.version unless s.version.detected_from_url?
-        version_url = Version.parse(s.url)
+        version_url = Version.detect(s.url, s.specs)
         if version_url.to_s == version_text.to_s && s.version.instance_of?(Version)
           problem "#{spec} version #{version_text} is redundant with version scanned from URL"
         end
       end
 
+      if s.version.to_s =~ /^v/
+        problem "#{spec} version #{s.version} should not have a leading 'v'"
+      end
+
       cksum = s.checksum
       next if cksum.nil?
 
-      len = case cksum.hash_type
-        when :sha1 then 40
-        when :sha256 then 64
-        end
+      case cksum.hash_type
+      when :md5
+        problem "md5 checksums are deprecated, please use sha1 or sha256"
+        next
+      when :sha1   then len = 40
+      when :sha256 then len = 64
+      end
 
       if cksum.empty?
         problem "#{cksum.hash_type} is empty"
@@ -326,6 +342,20 @@ class FormulaAuditor
     # Commented-out cmake support from default template
     if (text =~ /# system "cmake/)
       problem "Commented cmake call found"
+    end
+
+    # Comments from default template
+    if (text =~ /# PLEASE REMOVE/)
+      problem "Please remove default template comments"
+    end
+    if (text =~ /# if this fails, try separate make\/make install steps/)
+      problem "Please remove default template comments"
+    end
+    if (text =~ /# if your formula requires any X11\/XQuartz components/)
+      problem "Please remove default template comments"
+    end
+    if (text =~ /# if your formula's build system can't parallelize/)
+      problem "Please remove default template comments"
     end
 
     # FileUtils is included in Formula
@@ -461,6 +491,10 @@ class FormulaAuditor
 
     if text =~ /^def (\w+).*$/
       problem "Define method #{$1.inspect} in the class body, not at the top-level"
+    end
+
+    if text =~ /ENV.fortran/
+      problem "Use `depends_on :fortran` instead of `ENV.fortran`"
     end
   end
 

@@ -27,8 +27,8 @@ class Wine < Formula
     # updating too
     #  * http://wiki.winehq.org/Gecko
     #  * http://wiki.winehq.org/Mono
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6-rc2.tar.bz2'
-    sha1 'b4bf142b956d62da68a9babfc9385781e7dcff6d'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6-rc4.tar.bz2'
+    sha1 '8980040f6c27df4e4fd54eb7b29cdac93635b68f'
   end
 
   env :std
@@ -44,6 +44,8 @@ class Wine < Formula
   depends_on 'libtiff'
   depends_on 'little-cms'
   depends_on 'gnutls' if build.devel?
+  depends_on 'sane-backends' if build.devel?
+  depends_on 'libgphoto2' if build.devel?
 
   fails_with :llvm do
     build 2336
@@ -92,6 +94,11 @@ class Wine < Formula
     # Workarounds for XCode not including pkg-config files
     ENV.libxml2
     ENV.append "LDFLAGS", "-lxslt"
+
+    # As of 1.4 these don't do anything, but under 1.6 they will *possibly*
+    # resolve our issues with conflicting freetype installations
+    ENV['FREETYPE_CFLAGS'] = "-I#{MacOS::X11.include}/freetype2 -I#{MacOS::X11.include}"
+    ENV['FREETYPE_LIBS'] = "-L#{MacOS::X11.lib} -lfreetype"
 
     args = %W[--prefix=#{prefix}
               --with-coreaudio

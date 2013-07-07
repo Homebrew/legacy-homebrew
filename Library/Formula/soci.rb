@@ -6,7 +6,7 @@ class Soci < Formula
   sha1 '6ad37cd6f048b5de55308eda645c15637466ac18'
 
   depends_on 'cmake' => :build
-  depends_on 'boost' => :build if build.include? 'with-boost'
+  depends_on 'boost' => [:build, :optional]
 
   option 'with-oracle', 'Enable Oracle support.'
   option 'with-boost', 'Enable boost support.'

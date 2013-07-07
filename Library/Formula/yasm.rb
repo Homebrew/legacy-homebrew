@@ -16,6 +16,8 @@ class Yasm < Formula
   depends_on 'Cython' => :python if build.with? 'python'
 
   def install
+    # https://github.com/mxcl/homebrew/pull/19593
+    ENV.deparallelize
     args = %W[
       --disable-debug
       --prefix=#{prefix}

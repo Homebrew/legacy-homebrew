@@ -12,7 +12,7 @@ class Bitlbee < Formula
   depends_on 'glib'
   depends_on 'gnutls'
   depends_on 'libgcrypt'
-  depends_on 'libpurple' => :optional
+  depends_on 'finch' => :optional
   depends_on 'libotr' => :optional
 
   def install

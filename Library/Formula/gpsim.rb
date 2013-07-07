@@ -2,7 +2,7 @@ require 'formula'
 
 class Gpsim < Formula
   homepage 'http://gpsim.sourceforge.net/'
-  url 'http://sourceforge.net/projects/gpsim/files/gpsim/0.26.0/gpsim-0.26.1.tar.gz'
+  url 'http://downloads.sourceforge.net/project/gpsim/gpsim/0.26.0/gpsim-0.26.1.tar.gz'
   sha1 '7e1c3cc5a821b3458717a94a09bc484bf6937b25'
 
   head 'svn://svn.code.sf.net/p/gpsim/code/trunk'
