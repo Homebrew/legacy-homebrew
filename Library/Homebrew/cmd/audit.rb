@@ -463,7 +463,7 @@ class FormulaAuditor
       problem "No double 'without': Use `build.without? '#{$1}'` to check for \"--without-#{$1}\""
     end
 
-    if line =~ /ARGV\.(?!(debug\?|verbose\?|find[\(\s]))/
+    if line =~ /ARGV\.(?!(debug\?|verbose\?|value[\(\s]))/
       problem "Use build instead of ARGV to check options"
     end
 
