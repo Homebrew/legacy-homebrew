@@ -93,6 +93,8 @@ class Formula
           # We rescue these so that we can skip bad versions and
           # continue walking the history
           ohai "#{e} in #{name} at revision #{sha}", e.backtrace if ARGV.debug?
+        rescue FormulaUnavailableError
+          # Suppress this error
         end
       end
     end

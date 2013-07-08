@@ -269,7 +269,11 @@ module GitHub extend self
     Kernel.open(url, default_headers.merge(headers), &block)
   rescue OpenURI::HTTPError => e
     if e.io.meta['x-ratelimit-remaining'].to_i <= 0
-      raise "GitHub #{Utils::JSON.load(e.io.read)['message']}"
+      raise <<-EOS.undent
+        GitHub #{Utils::JSON.load(e.io.read)['message']}
+        You may want to create an API token: https://github.com/settings/applications
+        and then set HOMEBREW_GITHUB_API_TOKEN.
+        EOS
     else
       raise e
     end
