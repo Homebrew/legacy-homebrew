@@ -1,28 +1,38 @@
 require 'formula'
+require 'ostruct'
 
 class ProofGeneral < Formula
   homepage 'http://proofgeneral.inf.ed.ac.uk'
   url 'http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz'
   sha1 'c8d2e4457478b9dbf4080d3cf8255325fcffe619'
 
-  option 'with-doc', 'Install documentations'
-  option 'with-emacs=</path/to/emacs>', 'Re-compile the lisp files with a specified emacs'
+  option 'with-doc', 'Install HTML documentation'
+  option 'with-emacs', 'Re-compile lisp files with specified emacs'
 
   def which_emacs
     ARGV.each do |a|
-      if a.index('--with-emacs')
-        emacs = a.sub('--with-emacs=', '')
-        raise "#{emacs} not found" if not File.exists? "#{emacs}"
-        ohai "Use Emacs: #{emacs}"
+      if a.index('--with-emacs=')
+        emacs_binary = a.sub('--with-emacs=', '')
+        raise "#{emacs_binary} not found" if not File.exists? "#{emacs_binary}"
 
-        version = `#{emacs} --version | grep -Eo "GNU Emacs \\d+(\\.\\d+)+"`.gsub /\n/, ""
-        ohai "Emacs version: #{version}"
-        major = `echo "#{version}" | awk {'print $3'} | cut -d "." -f 1`.gsub /\n/, ""
-        raise "Only Emacs of major version 23 is supported." if major != "23"
-        return emacs
+        version_info = `#{emacs_binary} --version`
+        version_info =~ /GNU Emacs (\d+)\./
+        major = $1
+
+        if major != '23' && major != '24'
+          raise "Emacs 23.x or 24.x is required; #{major}.x provided."
+        end
+
+        return OpenStruct.new(
+          :binary => emacs_binary,
+          :major  => major,
+          :empty? => false)
       end
     end
-    return ""
+    return OpenStruct.new(
+      :binary => "",
+      :major  => 0,
+      :empty? => true)
   end
 
   def install
@@ -31,10 +41,14 @@ class ProofGeneral < Formula
             "DEST_PREFIX=#{prefix}",
             "ELISPP=share/emacs/site-lisp/ProofGeneral",
             "ELISP_START=#{share}/emacs/site-lisp/site-start.d",
-            "EMACS=#{emacs}"];
+            "EMACS=#{emacs.binary}"];
 
     Dir.chdir "ProofGeneral" do
-      if emacs != ""
+      unless emacs.empty?
+        # http://proofgeneral.inf.ed.ac.uk/trac/ticket/458
+        if emacs.major == "24"
+          inreplace 'Makefile', '(setq byte-compile-error-on-warn t)', ''
+        end
         system "make clean"
         system "make", "compile", *args
       end
@@ -50,8 +64,8 @@ class ProofGeneral < Formula
     doc = ""
     if build.include? 'with-doc'
       doc += <<-EOS.undent
-         The HTML documentations are available in:
-               #{HOMEBREW_PREFIX}/share/doc/proof-general
+         HTML documentation is available in:
+           #{HOMEBREW_PREFIX}/share/doc/proof-general
       EOS
     end
 
