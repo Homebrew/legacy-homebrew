@@ -93,6 +93,7 @@ class Imagemagick < Formula
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
     system "./configure", *args
     system "make install"
+    system "ln -s #{include}/ImageMagick-6 #{include}/ImageMagick"
   end
 
   test do
