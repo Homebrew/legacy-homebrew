@@ -36,6 +36,8 @@ class ProofGeneral < Formula
   end
 
   def install
+    ENV.j1 # Otherwise lisp compilation can result in 0-byte files
+
     emacs = which_emacs
     args = ["PREFIX=#{prefix}",
             "DEST_PREFIX=#{prefix}",
