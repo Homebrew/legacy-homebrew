@@ -109,7 +109,7 @@ class Keg < Pathname
     share_mkpaths.concat((1..8).map { |i| "man/man#{i}" })
     share_mkpaths.concat((1..8).map { |i| "man/cat#{i}" })
     # Paths used by Gnome Desktop support
-    share_mkpaths.concat %w[applications icons pixmaps sounds]
+    share_mkpaths.concat %w[applications icons mime-info pixmaps sounds]
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
