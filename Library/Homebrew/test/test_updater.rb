@@ -102,4 +102,28 @@ class UpdaterTests < Test::Unit::TestCase
       assert_equal %w{ shapelib }, report.select_formula(:R)
     end
   end
+
+  def test_update_homebrew_with_tapped_formula_changes
+    diff_output = fixture('update_git_diff_output_with_tapped_formulae_changes')
+    HOMEBREW_REPOSITORY.cd do
+      updater = UpdaterMock.new
+      updater.in_repo_expect("git checkout -q master")
+      updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
+      updater.in_repo_expect("git config core.autocrlf false")
+      updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
+      updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
+      updater.in_repo_expect("git diff-tree -r --raw -M85% 1234abcd 3456cdef", diff_output)
+      updater.pull!
+      report = Report.new
+      report.merge!(updater.report)
+
+      assert updater.expectations_met?
+      assert_equal [
+        Pathname('someuser-sometap/Formula/antiword.rb'),
+        Pathname('someuser-sometap/HomebrewFormula/lua.rb'),
+        Pathname('someuser-sometap/custom-formula.rb'),
+      ], report.tapped_formula_for(:A)
+    end
+
+  end
 end
