@@ -11,6 +11,7 @@ class Qt < Formula
   option 'with-qtdbus', 'Enable QtDBus module'
   option 'with-qt3support', 'Enable deprecated Qt3Support module'
   option 'with-demos-examples', 'Enable Qt demos and examples'
+  option 'with-docs', 'Build Qt documentation'
   option 'with-debug-and-release', 'Compile Qt in debug and release mode'
   option 'developer', 'Compile and link Qt with developer options'
 
@@ -60,6 +61,10 @@ class Qt < Formula
       args << "-nomake" << "demos" << "-nomake" << "examples"
     end
 
+    unless build.with? 'docs'
+      args << "-nomake" << "docs"
+    end
+
     if MacOS.prefer_64_bit? or build.universal?
       args << '-arch' << 'x86_64'
     end
@@ -83,10 +88,7 @@ class Qt < Formula
     system "make"
     ENV.j1
     system "make install"
-
-    # stop crazy disk usage
-    (prefix+'doc/html').rmtree
-    (prefix+'doc/src').rmtree
+    
     # what are these anyway?
     (bin+'pixeltool.app').rmtree
     (bin+'qhelpconverter.app').rmtree
