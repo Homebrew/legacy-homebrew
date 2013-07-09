@@ -14,7 +14,7 @@ class Doxygen < Formula
 
   depends_on 'graphviz' if build.include? 'with-dot'
   depends_on 'qt' if build.include? 'with-doxywizard'
-  depends_on 'llvm' if build.include? 'with-libclang'
+  depends_on 'llvm' => '--with-clang' if build.include? 'with-libclang'
 
   def install
     args = ["--prefix", prefix]
