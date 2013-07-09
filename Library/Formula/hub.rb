@@ -1,10 +1,10 @@
 require 'formula'
 
 class Hub < Formula
-  homepage 'http://defunkt.io/hub/'
-  url 'https://github.com/defunkt/hub/archive/v1.10.6.tar.gz'
+  homepage 'http://github.github.com/hub/'
+  url 'https://github.com/github/hub/archive/v1.10.6.tar.gz'
   sha1 'e29d158c65a10ef3889f4af438bf1fb50fbd0536'
-  head 'https://github.com/defunkt/hub.git'
+  head 'https://github.com/github/hub.git'
 
   def install
     rake "install", "prefix=#{prefix}"
