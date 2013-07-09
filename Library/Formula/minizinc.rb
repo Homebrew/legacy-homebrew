@@ -14,10 +14,11 @@ class Minizinc < Formula
   end
 
   def install
-    system "sh", "SETUP", prefix
-    bin.install Dir['bin/*']
+    system "sh", "SETUP", libexec
     man.install Dir['doc/man/*']
-    lib.install Dir['lib/*']
+    libexec.install 'bin', 'lib'
+    bin.install_symlink Dir["#{libexec}/bin/*"]
+    (bin/'private').unlink
   end
 
   def test
