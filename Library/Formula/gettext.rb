@@ -2,17 +2,17 @@ require 'formula'
 
 class Gettext < Formula
   homepage 'http://www.gnu.org/software/gettext/'
-  url 'http://ftpmirror.gnu.org/gettext/gettext-0.18.2.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/gettext/gettext-0.18.2.tar.gz'
-  sha256 '516a6370b3b3f46e2fc5a5e222ff5ecd76f3089bc956a7587a6e4f89de17714c'
-
-  keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
+  url 'http://ftpmirror.gnu.org/gettext/gettext-0.18.3.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/gettext/gettext-0.18.3.tar.gz'
+  sha256 '36f3c1043df803565d4977c1efbd41e1ec0f0301acf5f057984406c34cb9f948'
 
   bottle do
-   sha1 'f5347eea2def6a8649075fe2ca306ce5fa2a5338' => :mountain_lion
-   sha1 '003ba77411550fd471b599c2694bba36d343e98f' => :lion
-   sha1 '976ec00f7046b639b8a687b3316a575031859114' => :snow_leopard
+    sha1 '79adee5b9ef6a3411d609afca2887a363f1d0958' => :mountain_lion
+    sha1 '8386ce4774898214f4f778edf5832b8fb8dde16a' => :lion
+    sha1 'cb4fc21bfbe71b0df276e2d02e584d15a0f2af0d' => :snow_leopard
   end
+
+  keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
 
   option :universal
   option 'with-examples', 'Keep example files'
