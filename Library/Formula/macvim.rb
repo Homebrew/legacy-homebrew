@@ -19,6 +19,10 @@ class Macvim < Formula
 
   depends_on :xcode # For xcodebuild.
 
+  # Fix compilation on 10.9, not yet fixed upstream
+  # https://groups.google.com/d/msg/vim_dev/YHo51sA46fU/MrSa8pg-uDcJ
+  def patches; DATA; end
+
   def install
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in
@@ -108,3 +112,19 @@ class Macvim < Formula
     EOS
   end
 end
+
+__END__
+diff --git i/src/os_unix.c w/src/os_unix.c
+index a1f6928..c4ee324 100644
+--- i/src/os_unix.c
++++ w/src/os_unix.c
+@@ -827,7 +827,8 @@ init_signal_stack()
+ 		|| MAC_OS_X_VERSION_MAX_ALLOWED <= 1040)
+ 	/* missing prototype.  Adding it to osdef?.h.in doesn't work, because
+ 	 * "struct sigaltstack" needs to be declared. */
+-	extern int sigaltstack __ARGS((const struct sigaltstack *ss, struct sigaltstack *oss));
++    extern int sigaltstack __ARGS((const stack_t *restrict ss, stack_t *restrict oss));
++
+ #  endif
+
+ #  ifdef HAVE_SS_BASE
