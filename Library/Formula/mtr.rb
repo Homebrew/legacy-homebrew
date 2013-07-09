@@ -7,11 +7,13 @@ class Mtr < Formula
   sha1 'f1319de27324d85898a9df0a293a438bbaaa12b5'
 
   depends_on 'pkg-config' => :build
+  depends_on 'libbind' => :build
   depends_on 'gtk+' => :optional
 
   def install
     # We need to add this because nameserver8_compat.h has been removed in Snow Leopard
-    ENV['LIBS'] = "-lresolv"
+    # Mavericks even needs libbind!
+    ENV['LIBS'] = "-lbind -lresolv"
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
