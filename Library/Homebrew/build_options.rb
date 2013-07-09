@@ -93,7 +93,7 @@ class BuildOptions
   def implicit_options
     implicit = unused_options.map do |o|
       if o.name =~ /^with-(.+)$/ && without?($1)
-        Option.new("without-#{$1}")  # we loose the description, but that's ok
+        Option.new("without-#{$1}")  # we lose the description, but that's ok
       elsif o.name =~ /^without-(.+)$/ && with?($1)
         Option.new("with-#{$1}")
       end
