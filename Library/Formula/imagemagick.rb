@@ -64,7 +64,6 @@ class Imagemagick < Formula
              "--enable-shared",
              "--disable-static",
              "--without-pango",
-             "--with-included-ltdl",
              "--with-modules"]
 
     args << "--disable-openmp" unless build.include? 'enable-openmp'
