@@ -7,9 +7,10 @@ class Gettext < Formula
   sha256 '36f3c1043df803565d4977c1efbd41e1ec0f0301acf5f057984406c34cb9f948'
 
   bottle do
-    sha1 '79adee5b9ef6a3411d609afca2887a363f1d0958' => :mountain_lion
-    sha1 '8386ce4774898214f4f778edf5832b8fb8dde16a' => :lion
-    sha1 'cb4fc21bfbe71b0df276e2d02e584d15a0f2af0d' => :snow_leopard
+    revision 1
+    sha1 '392d49de19c44238cb3d25cc43ab5884c3558fe8' => :mountain_lion
+    sha1 '71b16d1305a221ea5ea15e1bb8d2819e4b62a045' => :lion
+    sha1 'bdfe4889e7da5e25f4cf7c42a4d591794afc4e43' => :snow_leopard
   end
 
   keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
@@ -37,6 +38,7 @@ class Gettext < Formula
                           "--with-included-libcroco",
                           "--with-included-libunistring",
                           "--with-emacs",
+                          "--disable-java",
                           # Don't use VCS systems to create these archives
                           "--without-git",
                           "--without-cvs"
