@@ -41,89 +41,53 @@ class UpdaterTests < Test::Unit::TestCase
     YAML.load_file(Pathname.new(ABS__FILE__).parent.realpath + 'fixtures/updater_fixture.yaml')
   end
 
-  def test_update_homebrew_without_any_changes
-    HOMEBREW_REPOSITORY.cd do
-      updater = UpdaterMock.new
-      updater.in_repo_expect("git checkout -q master")
-      updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
-      updater.in_repo_expect("git config core.autocrlf false")
-      updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
-      updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
-      updater.in_repo_expect("git diff-tree -r --raw -M85% 1234abcd 3456cdef")
-      updater.pull!
-      report = Report.new
-      report.merge!(updater.report)
+  def setup
+    @updater = UpdaterMock.new
+    @report = Report.new
+  end
 
-      assert updater.expectations_met?
-      assert report.empty?
+  def perform_update(diff_output="")
+    HOMEBREW_REPOSITORY.cd do
+      @updater.in_repo_expect("git checkout -q master")
+      @updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
+      @updater.in_repo_expect("git config core.autocrlf false")
+      @updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
+      @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
+      @updater.in_repo_expect("git diff-tree -r --raw -M85% 1234abcd 3456cdef", diff_output)
+      @updater.pull!
+      @report.merge!(@updater.report)
     end
+  end
+
+  def test_update_homebrew_without_any_changes
+    perform_update
+    assert @updater.expectations_met?
+    assert @report.empty?
   end
 
   def test_update_homebrew_without_formulae_changes
-    diff_output = fixture('update_git_diff_output_without_formulae_changes')
-
-    HOMEBREW_REPOSITORY.cd do
-      updater = UpdaterMock.new
-      updater.in_repo_expect("git checkout -q master")
-      updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
-      updater.in_repo_expect("git config core.autocrlf false")
-      updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
-      updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
-      updater.in_repo_expect("git diff-tree -r --raw -M85% 1234abcd 3456cdef", diff_output)
-      updater.pull!
-      report = Report.new
-      report.merge!(updater.report)
-
-      assert updater.expectations_met?
-      assert report.select_formula(:M).empty?
-      assert report.select_formula(:A).empty?
-      assert report.select_formula(:R).empty?
-    end
+    perform_update(fixture('update_git_diff_output_without_formulae_changes'))
+    assert @updater.expectations_met?
+    assert @report.select_formula(:M).empty?
+    assert @report.select_formula(:A).empty?
+    assert @report.select_formula(:R).empty?
   end
 
   def test_update_homebrew_with_formulae_changes
-    diff_output = fixture('update_git_diff_output_with_formulae_changes')
-
-    HOMEBREW_REPOSITORY.cd do
-      updater = UpdaterMock.new
-      updater.in_repo_expect("git checkout -q master")
-      updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
-      updater.in_repo_expect("git config core.autocrlf false")
-      updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
-      updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
-      updater.in_repo_expect("git diff-tree -r --raw -M85% 1234abcd 3456cdef", diff_output)
-      updater.pull!
-      report = Report.new
-      report.merge!(updater.report)
-
-      assert updater.expectations_met?
-      assert_equal %w{ xar yajl }, report.select_formula(:M)
-      assert_equal %w{ antiword bash-completion ddrescue dict lua }, report.select_formula(:A)
-      assert_equal %w{ shapelib }, report.select_formula(:R)
-    end
+    perform_update(fixture('update_git_diff_output_with_formulae_changes'))
+    assert @updater.expectations_met?
+    assert_equal %w{ xar yajl }, @report.select_formula(:M)
+    assert_equal %w{ antiword bash-completion ddrescue dict lua }, @report.select_formula(:A)
+    assert_equal %w{ shapelib }, @report.select_formula(:R)
   end
 
   def test_update_homebrew_with_tapped_formula_changes
-    diff_output = fixture('update_git_diff_output_with_tapped_formulae_changes')
-    HOMEBREW_REPOSITORY.cd do
-      updater = UpdaterMock.new
-      updater.in_repo_expect("git checkout -q master")
-      updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
-      updater.in_repo_expect("git config core.autocrlf false")
-      updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
-      updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
-      updater.in_repo_expect("git diff-tree -r --raw -M85% 1234abcd 3456cdef", diff_output)
-      updater.pull!
-      report = Report.new
-      report.merge!(updater.report)
-
-      assert updater.expectations_met?
-      assert_equal [
-        Pathname('someuser-sometap/Formula/antiword.rb'),
-        Pathname('someuser-sometap/HomebrewFormula/lua.rb'),
-        Pathname('someuser-sometap/custom-formula.rb'),
-      ], report.tapped_formula_for(:A)
-    end
-
+    perform_update(fixture('update_git_diff_output_with_tapped_formulae_changes'))
+    assert @updater.expectations_met?
+    assert_equal [
+      Pathname('someuser-sometap/Formula/antiword.rb'),
+      Pathname('someuser-sometap/HomebrewFormula/lua.rb'),
+      Pathname('someuser-sometap/custom-formula.rb'),
+    ], @report.tapped_formula_for(:A)
   end
 end
