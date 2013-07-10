@@ -208,18 +208,27 @@ class Keg < Pathname
   def make_relative_symlink dst, src, mode=OpenStruct.new
     if dst.exist? and dst.realpath == src.realpath
       puts "Skipping; already exists: #{dst}" if ARGV.verbose?
-    # cf. git-clean -n: list files to delete, don't really link or delete
-    elsif mode.dry_run and mode.overwrite
-      puts dst if dst.exist? or dst.symlink?
       return
+    end
+
+    # cf. git-clean -n: list files to delete, don't really link or delete
+    if mode.dry_run and mode.overwrite
+      if dst.symlink?
+        puts "#{dst} -> #{dst.resolved_path}"
+      elsif dst.exist?
+        puts dst
+      end
+      return
+    end
+
     # list all link targets
-    elsif mode.dry_run
+    if mode.dry_run
       puts dst
       return
-    else
-      dst.delete if mode.overwrite && (dst.exist? or dst.symlink?)
-      dst.make_relative_symlink src
     end
+
+    dst.delete if mode.overwrite && (dst.exist? or dst.symlink?)
+    dst.make_relative_symlink src
   end
 
   # symlinks the contents of self+foo recursively into #{HOMEBREW_PREFIX}/foo
