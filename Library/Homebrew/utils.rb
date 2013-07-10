@@ -171,7 +171,7 @@ def which cmd
 end
 
 def which_editor
-  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
+  editor = ENV.values_at('HOMEBREW_EDITOR', 'VISUAL', 'EDITOR').compact.first
   # If an editor wasn't set, try to pick a sane default
   return editor unless editor.nil?
 

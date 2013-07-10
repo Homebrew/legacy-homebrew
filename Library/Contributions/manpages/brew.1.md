@@ -64,8 +64,8 @@ Note that these flags should only appear after a command.
     deleted. If you want to delete those too: `rm -rf $(brew --cache)`
 
   * `create [--autotools|--cmake] [--no-fetch] [--set-name <name>] [--set-version <version>]` <URL>:
-    Generate a formula for the downloadable file at <URL> and open it in
-    `EDITOR`. Homebrew will attempt to automatically derive the formula name
+    Generate a formula for the downloadable file at <URL> and open it in the editor.
+    Homebrew will attempt to automatically derive the formula name
     and version, but if it fails, you'll have to make your own template. The wget
     formula serves as a simple example.
 
@@ -109,7 +109,7 @@ Note that these flags should only appear after a command.
     Open all of Homebrew for editing.
 
   * `edit` <formula>:
-    Open <formula> in `EDITOR`.
+    Open <formula> in the editor.
 
   * `fetch [--force] [-v] [--HEAD] [--deps]` <formulae>:
     Download the source packages for the given <formulae>.
@@ -408,7 +408,7 @@ can take several different forms:
     when opening project homepages.
 
   * EDITOR:
-    If set, and `HOMEBREW_EDITOR` is not, use `EDITOR` as the text editor.
+    If set, and `HOMEBREW_EDITOR` and `VISUAL` are not, use `EDITOR` as the text editor.
 
   * GIT:
     When using Git, Homebrew will use `GIT` if set,
@@ -515,6 +515,9 @@ can take several different forms:
 
   * HOMEBREW\_VERBOSE:
     If set, Homebrew always assumes `--verbose` when running commands.
+
+  * VISUAL:
+    If set, and `HOMEBREW_EDITOR` is not, use `VISUAL` as the text editor.
 
 ## USING HOMEBREW BEHIND A PROXY
 
