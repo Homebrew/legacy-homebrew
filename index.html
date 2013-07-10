@@ -1,37 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
 <html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Homebrew : The missing package manager for OS X." />
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+  <title>Homebrew</title>
+  <meta name="description" content="The missing package manager for OS X.">
 
-    <title>Homebrew</title>
-  </head>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <body>
+</head>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/johnsir/homebrew">View on GitHub</a>
+<body>
 
-          <h1 id="project_title">Homebrew</h1>
-          <h2 id="project_tagline">The missing package manager for OS X.</h2>
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Homebrew</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">The missing package manager for OS X.</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/johnsir/homebrew/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/johnsir/homebrew/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/johnsir/homebrew" class="code">View Homebrew on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/johnsir/homebrew/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/johnsir/homebrew/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+<h1>
+<a name="homebrew-webpage" class="anchor" href="#homebrew-webpage"><span class="octicon octicon-link"></span></a>Homebrew webpage</h1>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
+<p>The webpage uses <a href="https://github.com/mojombo/jekyll">jekyll</a>. The template for the index is at layouts/index.html.</p>
+
+<h2>
+<a name="translations" class="anchor" href="#translations"><span class="octicon octicon-link"></span></a>Translations</h2>
+
+<p>If you want to add a new translation, follow these steps:</p>
+
+<ol>
+<li>
+<p>In _config.yml append this:</p>
+
+<pre><code>- langcode: {the_lang_code}
+  lang_string: {the_link_string}
+</code></pre>
+</li>
+<li><p>Copy index.html as index_{langcode}.html</p></li>
+<li><p>Change the values of the strings to the translated strings.</p></li>
+</ol><h1>
+<a name="you-can-see-the-translated-webpage-by-running-jekyll---server-and-opening-httplocalhost4000" class="anchor" href="#you-can-see-the-translated-webpage-by-running-jekyll---server-and-opening-httplocalhost4000"><span class="octicon octicon-link"></span></a>You can see the translated webpage by running <code>jekyll --server</code> and opening http://localhost:4000/</h1>
+
+<h1>
 <a name="homebrew" class="anchor" href="#homebrew"><span class="octicon octicon-link"></span></a>Homebrew</h1>
 
 <p>Features, usage and installation instructions are <a href="http://brew.sh">summarized on the homepage</a>.</p>
@@ -53,18 +83,47 @@
 <a name="who-are-you" class="anchor" href="#who-are-you"><span class="octicon octicon-link"></span></a>Who Are You?</h2>
 
 <p>I'm <a href="http://twitter.com/mxcl">Max Howell</a> and I'm a splendid chap.</p>
-      </section>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Code is under the <a href="https://github.com/mxcl/homebrew/tree/master/Library/Homebrew/LICENSE">BSD 2 Clause (NetBSD) license</a>.</p>
+
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>origin/wine-x11</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+        </article>
+      </div>
     </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/johnsir" class="avatar"><img src="https://secure.gravatar.com/avatar/15db9e092054e3fbffbb592d2b665707?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" width="48" height="48"/></a> <a href="https://github.com/johnsir">johnsir</a> maintains <a href="https://github.com/johnsir/homebrew">Homebrew</a></p>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Homebrew maintained by <a href="https://github.com/johnsir">johnsir</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
 
-    
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/johnsir/homebrew/tarball/master" class="tar">tar</a><a href="https://github.com/johnsir/homebrew/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
 
-  </body>
+  
+</body>
 </html>
