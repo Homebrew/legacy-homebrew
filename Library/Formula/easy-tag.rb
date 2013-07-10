@@ -24,9 +24,11 @@ class EasyTag < Formula
   depends_on 'id3lib'
   depends_on 'libvorbis' => :optional
   depends_on 'speex' => :optional
-  depends_on 'flac' => :optional
   depends_on 'mp4v2' => :optional
   depends_on 'wavpack' => :optional
+
+  depends_on 'flac' => :optional
+  depends_on 'libogg' if build.with? 'flac'
 
   def install
     system "./configure", "--disable-dependency-tracking",
