@@ -22,6 +22,6 @@ class Libcouchbase < Formula
   end
 
   def test
-    system "#{bin}/cbc-version"
+    system "#{bin}/cbc", "version"
   end
 end
