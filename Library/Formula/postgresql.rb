@@ -6,7 +6,7 @@ class Postgresql < Formula
   sha1 '75b53c884cb10ed9404747b51677358f12082152'
 
   depends_on 'readline'
-  depends_on 'libxml2' if MacOS.version == :leopard # Leopard libxml is too old
+  depends_on 'libxml2' if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' => :recommended
   depends_on :python => :recommended
 

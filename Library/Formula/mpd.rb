@@ -63,7 +63,7 @@ class Mpd < Formula
     ]
 
     args << '--disable-mad'
-    args << '--disable-curl' if MacOS.version == :leopard
+    args << '--disable-curl' if MacOS.version <= :leopard
 
     args << "--with-faad=#{Formula.factory('faad2').opt_prefix}"
     args << '--enable-zzip' if build.with? 'libzzip'
