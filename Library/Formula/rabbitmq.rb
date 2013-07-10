@@ -5,7 +5,7 @@ class Rabbitmq < Formula
   url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.1.3/rabbitmq-server-mac-standalone-3.1.3.tar.gz'
   sha1 '631b9e46e046db9f591d6027ee690ffaaab20a45'
 
-  depends_on 'simplejson' => :python if MacOS.version == :leopard
+  depends_on 'simplejson' => :python if MacOS.version <= :leopard
 
   def install
     # Install the base files
