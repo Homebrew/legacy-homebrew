@@ -7,8 +7,8 @@ class Binutils < Formula
   sha1 'c3fb8bab921678b3e40a14e648c89d24b1d6efec'
 
   def patches
-    # Make functions defined in include files static to avoid “duplicate
-    # symbol” error when building with clang
+    # Make functions defined in include files static to avoid "duplicate
+    # symbol" error when building with clang
     DATA 
   end
 
