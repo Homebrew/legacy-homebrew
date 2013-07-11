@@ -20,15 +20,16 @@ class EasyTag < Formula
   depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'gtk+'
-  depends_on 'libid3tag'
   depends_on 'id3lib'
-  depends_on 'libvorbis' => :optional
-  depends_on 'speex' => :optional
-  depends_on 'mp4v2' => :optional
-  depends_on 'wavpack' => :optional
+  depends_on 'libid3tag'
 
-  depends_on 'flac' => :optional
+  depends_on 'libvorbis' => :recommended
+  depends_on 'flac' => :recommended
   depends_on 'libogg' if build.with? 'flac'
+
+  depends_on 'mp4v2' => :optional
+  depends_on 'speex' => :optional
+  depends_on 'wavpack' => :optional
 
   def install
     system "./configure", "--disable-dependency-tracking",
