@@ -8,7 +8,7 @@ class SalesforceAnt < Formula
   depends_on 'ant'
 
   def install
-    libexec.install Dir['ant-salesforce.jar']
+    libexec.install 'ant-salesforce.jar'
     system "ln -sf /usr/local/opt/salesforce_ant/libexec/ant-salesforce.jar /usr/local/opt/ant/libexec/lib/ant-salesforce.jar"
   end
 
