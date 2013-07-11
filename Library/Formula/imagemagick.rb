@@ -58,7 +58,7 @@ class Imagemagick < Formula
   depends_on 'openexr' => :optional if build.include? 'use-exr'
 
   bottle do
-    version 3
+    version "3"
     sha1 '0d7ca4e54a1d3090e8b5a85663f0efa857ea52b7' => :mountainlion
     sha1 '64fca6d7c75407dd1942a271a4df837ab02bbeb0' => :lion
     sha1 'b8d1a9b2de7b1961da311df77922d326c2b6723f' => :snowleopard
