@@ -490,22 +490,6 @@ class << ENV
 
       HomebrewEnvExtension::FC_FLAG_VARS.each {|key| self[key] = cflags}
       set_cpu_flags(HomebrewEnvExtension::FC_FLAG_VARS)
-    else
-      onoe <<-EOS
-This formula requires a fortran compiler, but we could not find one by
-looking at the FC environment variable or searching your PATH for `gfortran`.
-Please take one of the following actions:
-
-  - Decide to use the build of gfortran 4.2.x provided by Homebrew using
-        `brew install gfortran`
-
-  - Choose another Fortran compiler by setting the FC environment variable:
-        export FC=/path/to/some/fortran/compiler
-    Using an alternative compiler may produce more efficient code, but we will
-    not be able to provide support for build errors.
-      EOS
-      exit 1
     end
   end
-
 end
