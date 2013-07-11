@@ -11,7 +11,6 @@ class Libxml2 < Formula
   keg_only :provided_by_osx
 
   option :universal
-  # Silence audit warnings
   option 'with-python', 'Build Python bindings'
 
   if build.head?
