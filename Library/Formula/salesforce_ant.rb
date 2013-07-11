@@ -1,7 +1,7 @@
 require 'formula'
 
 class SalesforceAnt < Formula
-  homepage 'http://www.salesforce.com/us/developer/docs/daas/salesforce_migration_guide.pdf'
+  homepage 'http://wiki.developerforce.com/page/Migration_Tool_Guide'
   url 'https://login.salesforce.com/dwnld/SfdcAnt/salesforce_ant_28.0.zip'
   sha1 '99c4e2aaec3d266dbbf15a7714a3a733604319ab'
 
