@@ -38,6 +38,7 @@ class SoftwareSpec
   def detect_version(val)
     case val
     when nil    then Version.detect(url, specs)
+    when Fixnum then Version.new(val)
     when String then Version.new(val)
     when Hash   then Version.new_with_scheme(*val.shift)
     else
