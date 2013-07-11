@@ -58,6 +58,7 @@ class Vim < Formula
     system "./configure", "--prefix=#{HOMEBREW_PREFIX}",
                           "--mandir=#{man}",
                           "--enable-gui=no",
+                          "--enable-clipboard",
                           "--without-x",
                           "--enable-multibyte",
                           "--with-tlib=ncurses",
