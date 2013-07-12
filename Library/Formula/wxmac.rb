@@ -55,6 +55,10 @@ class Wxmac < Formula
   def install
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
     args = [
+      "--enable-shared",
+      "--enable-monolithic",
+      "--enable-macosx_arch=x86_64",
+      "--with-macosx-sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.Platform/Developer/SDKs/MacOSX#{MacOS.version}.sdk",
       "--disable-debug",
       "--prefix=#{prefix}",
       "--enable-unicode",
