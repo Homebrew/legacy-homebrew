@@ -2,8 +2,8 @@ require 'formula'
 
 class Fceux < Formula
   homepage 'http://fceux.com'
-  url 'http://downloads.sourceforge.net/project/fceultra/Source%20Code/2.2.0%20src/fceux-2.2.0.src.tar.gz'
-  sha1 '2af9ae6ce7684d45821b85fe571ee8fa566b3eb0'
+  url 'http://downloads.sourceforge.net/project/fceultra/Source%20Code/2.2.1%20src/fceux-2.2.1.1.src.tar.gz'
+  sha1 'a9e7babf7a883bfa17ee7cc4a1989382dfbced65'
 
   option 'no-gtk', "Build without Gtk+ support"
 
