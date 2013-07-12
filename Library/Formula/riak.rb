@@ -13,12 +13,15 @@ class Riak < Formula
   def install
     libexec.install Dir['*']
 
-    # The scripts don't dereference symlinks correctly.
-    # Help them find stuff in libexec. - @adamv
-    inreplace Dir["#{libexec}/bin/*"] do |s|
-      s.change_make_var! "RUNNER_SCRIPT_DIR", "#{libexec}/bin"
+    # These scripts don't dereference symlinks correctly.
+    # Point them to #{libexec}.
+    inreplace(Dir["#{libexec}/bin/*"]) do |s|
+      a = %($(cd ${0%/*} && pwd)/../)
+      b = %(#{libexec}/)
+      s.gsub! a, b
     end
 
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
+
 end
