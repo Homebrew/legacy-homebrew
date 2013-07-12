@@ -1,7 +1,7 @@
 require 'formula'
 
 class Riak < Formula
-  homepage 'http://docs.basho.com/riak/latest/tutorials/installation/Installing-on-Mac-OS-X/'
+  homepage 'http://docs.basho.com/riak/latest/'
 
   if Hardware.is_64_bit?
     url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.0/osx/10.8/riak-1.4.0-OSX-x86_64.tar.gz'
