@@ -34,8 +34,7 @@ class Swftools < Formula
   end
 
   test do
-    system "#{bin}/png2swf", "swftools_test.swf", \
-      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png"
+    system "#{bin}/png2swf", "swftools_test.swf", "/usr/share/doc/cups/images/cups.png"
   end
 end
 

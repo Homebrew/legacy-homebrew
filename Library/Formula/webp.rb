@@ -19,8 +19,7 @@ class Webp < Formula
 
   test do
     system "#{bin}/cwebp", \
-      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png", \
-      "-o", "webp_test.png"
+      "/usr/share/doc/cups/images/cups.png", "-o", "webp_test.png"
     system "#{bin}/dwebp", "webp_test.png", "-o", "webp_test.webp"
   end
 end
