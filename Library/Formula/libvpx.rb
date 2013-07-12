@@ -4,6 +4,11 @@ class Libvpx < Formula
   homepage 'http://www.webmproject.org/code/'
   url 'http://webm.googlecode.com/files/libvpx-v1.1.0.tar.bz2'
   sha1 '356af5f770c50cd021c60863203d8f30164f6021'
+#  head 'http://git.chromium.org/webm/libvpx.git', :branch => 'vp9-preview'
+
+#  devel do
+#    head 'https://github.com/some/package.git', :branch => 'experimental'
+#  end
 
   depends_on 'yasm' => :build
 
