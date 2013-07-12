@@ -71,7 +71,6 @@ class Graphicsmagick < Formula
   end
 
   def test
-    system "#{bin}/gm", "identify", \
-      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png"
+    system "#{bin}/gm", "identify", "/usr/share/doc/cups/images/cups.png"
   end
 end

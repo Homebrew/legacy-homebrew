@@ -95,6 +95,6 @@ class Imagemagick < Formula
   end
 
   test do
-    system "#{bin}/identify", "/usr/share/doc/cups/images/smiley.jpg"
+    system "#{bin}/identify", "/usr/share/doc/cups/images/cups.png"
   end
 end
