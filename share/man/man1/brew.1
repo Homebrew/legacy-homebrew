@@ -125,7 +125,7 @@ Open all of Homebrew for editing\.
 Open \fIformula\fR in the editor\.
 .
 .TP
-\fBfetch [\-\-force] [\-v] [\-\-HEAD] [\-\-deps]\fR \fIformulae\fR
+\fBfetch [\-\-force] [\-v] [\-\-HEAD] [\-\-deps] [\-\-build\-from\-source]\fR \fIformulae\fR
 Download the source packages for the given \fIformulae\fR\. For tarballs, also print SHA1 and SHA\-256 checksums\.
 .
 .IP
@@ -136,6 +136,9 @@ If \fB\-\-force\fR is passed, remove a previously cached version and re\-fetch\.
 .
 .IP
 If \fB\-\-deps\fR is passed, also download dependencies for any listed \fIformulae\fR\.
+.
+.IP
+If \fB\-\-build\-from\-source\fR is passed, download the source rather than a bottle\.
 .
 .TP
 \fBhome\fR
