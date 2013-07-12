@@ -4,17 +4,18 @@ class Libvpx < Formula
   homepage 'http://www.webmproject.org/code/'
   url 'http://webm.googlecode.com/files/libvpx-v1.1.0.tar.bz2'
   sha1 '356af5f770c50cd021c60863203d8f30164f6021'
-#  head 'http://git.chromium.org/webm/libvpx.git', :branch => 'vp9-preview'
+  head 'http://git.chromium.org/webm/libvpx.git', :branch => 'vp9-preview'
 
-#  devel do
-#    head 'https://github.com/some/package.git', :branch => 'experimental'
-#  end
+  devel do
+    head 'https://github.com/some/package.git', :branch => 'experimental'
+  end
 
   depends_on 'yasm' => :build
 
   option 'gcov', 'Enable code coverage'
   option 'mem-tracker', 'Enable tracking memory usage'
   option 'visualizer', 'Enable post processing visualizer'
+  option 'vp9', 'Support vp9 for (-HEAD) and (-devel)'
 
   # Fixes build error on ML, discussed in:
   # https://github.com/mxcl/homebrew/issues/12567
@@ -30,6 +31,7 @@ class Libvpx < Formula
             "--disable-runtime-cpu-detect"]
     args << "--enable-gcov" if build.include? "gcov" and not ENV.compiler == :clang
     args << "--enable-mem-tracker" if build.include? "mem-tracker"
+    args << "--enable-vp9" if build.include? "vp9" and build.head?
     args << "--enable-postproc-visualizer" if build.include? "visualizer"
 
     # see http://code.google.com/p/webm/issues/detail?id=401
