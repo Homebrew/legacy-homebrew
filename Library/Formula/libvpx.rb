@@ -7,7 +7,7 @@ class Libvpx < Formula
   head 'http://git.chromium.org/webm/libvpx.git', :branch => 'vp9-preview'
 
   devel do
-    head 'https://github.com/some/package.git', :branch => 'experimental'
+    head 'http://git.chromium.org/webm/libvpx.git', :branch => 'experimental'
   end
 
   depends_on 'yasm' => :build
