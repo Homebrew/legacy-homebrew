@@ -2,8 +2,8 @@ require 'formula'
 
 class ProxychainsNg < Formula
   homepage 'https://sourceforge.net/projects/proxychains-ng'
-  url 'http://downloads.sourceforge.net/project/proxychains-ng/proxychains-4.5.tar.bz2'
-  sha1 'b7d85c6dfae83ec50a92c232f674231192f1ca33'
+  url 'http://downloads.sourceforge.net/project/proxychains-ng/proxychains-4.6.tar.bz2'
+  sha1 '8f1fb3fa4c391cd2e07f0a7dd0bc4cc55550cb6b'
 
   head 'https://github.com/rofl0r/proxychains-ng.git'
 
