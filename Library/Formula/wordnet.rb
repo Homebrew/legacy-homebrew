@@ -20,6 +20,8 @@ class Wordnet < Formula
     WordnetDictionaryUpdate.new.brew do
       (prefix+"dict").install Dir['*']
     end
+
+    # During compilation code calls deprecated fields within Tcl_Interp, solution found here: (https://bugzilla.redhat.com/show_bug.cgi?id=902561) is to remove the use of those fields with a compiler flag
     ENV.append_to_cflags "-DUSE_INTERP_RESULT"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
