@@ -32,7 +32,6 @@ end
 class Oclint < Formula
   homepage 'http://oclint.org'
   url 'http://archives.oclint.org/releases/0.7/oclint-0.7-src.tar.gz'
-  version '0.7'
   sha1 '6621d62764a27a4e9c12e0877bb3a927005aaaae'
   head 'https://github.com/oclint/oclint.git'
 
