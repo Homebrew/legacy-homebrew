@@ -3,11 +3,9 @@ require 'formula'
 class Riak < Formula
   homepage 'http://wiki.basho.com/Riak.html'
 
-  if Hardware.is_64_bit? and not build.build_32_bit?
-    url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.0/osx/10.8/riak-1.4.0-OSX-x86_64.tar.gz'
-    version '1.4.0-x86_64'
-    sha256 '4830b9e00b520b8494264017bfc2ff10753fd51b9e013bafd3054e29e5be1443'
-  end
+  url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.0/osx/10.8/riak-1.4.0-OSX-x86_64.tar.gz'
+  version '1.4.0-x86_64'
+  sha256 '4830b9e00b520b8494264017bfc2ff10753fd51b9e013bafd3054e29e5be1443'
 
   depends_on :arch => :x86_64
 
