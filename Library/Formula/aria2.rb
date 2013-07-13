@@ -12,7 +12,7 @@ class Aria2 < Formula
   depends_on 'curl-ca-bundle' => :recommended
 
   # Leopard's libxml2 is too old.
-  depends_on 'libxml2' if MacOS.version == :leopard
+  depends_on 'libxml2' if MacOS.version <= :leopard
 
   def install
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]

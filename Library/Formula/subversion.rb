@@ -131,7 +131,7 @@ class Subversion < Formula
       # Remove hard-coded ppc target, add appropriate ones
       if build.universal?
         arches = "-arch x86_64 -arch i386"
-      elsif MacOS.version == :leopard
+      elsif MacOS.version <= :leopard
         arches = "-arch i386"
       else
         arches = "-arch x86_64"

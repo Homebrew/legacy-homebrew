@@ -50,7 +50,7 @@ class Graphicsmagick < Formula
             "--prefix=#{prefix}",
             "--enable-shared", "--disable-static"]
     args << "--without-magick-plus-plus" if build.include? 'without-magick-plus-plus'
-    args << "--disable-openmp" if MacOS.version == :leopard or not ENV.compiler == :gcc # libgomp unavailable
+    args << "--disable-openmp" if MacOS.version <= :leopard or not ENV.compiler == :gcc # libgomp unavailable
     args << "--with-gslib" if build.include? 'with-ghostscript'
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
               unless ghostscript_fonts?
@@ -71,7 +71,6 @@ class Graphicsmagick < Formula
   end
 
   def test
-    system "#{bin}/gm", "identify", \
-      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png"
+    system "#{bin}/gm", "identify", "/usr/share/doc/cups/images/cups.png"
   end
 end

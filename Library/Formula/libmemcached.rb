@@ -8,7 +8,7 @@ class Libmemcached < Formula
   depends_on 'memcached'
 
   def install
-    ENV.append_to_cflags "-undefined dynamic_lookup" if MacOS.version == :leopard
+    ENV.append_to_cflags "-undefined dynamic_lookup" if MacOS.version <= :leopard
 
     system "./configure", "--prefix=#{prefix}"
     system "make install"

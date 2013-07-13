@@ -2,8 +2,9 @@ require 'formula'
 
 class Curl < Formula
   homepage 'http://curl.haxx.se/'
-  url 'http://curl.haxx.se/download/curl-7.30.0.tar.gz'
-  sha256 '361669c3c4b9baa5343e7e83bce695e60683d0b97b402e664bbaed42c15e95a8'
+  url 'http://curl.haxx.se/download/curl-7.31.0.tar.gz'
+  mirror 'ftp://ftp.sunet.se/pub/www/utilities/curl/curl-7.31.0.tar.gz'
+  sha256 '2c3a65eecca799f57f57163d40644ba642426230274a2dc51d0a6d049a63616a'
 
   keg_only :provided_by_osx,
             "The libcurl provided by Leopard is too old for CouchDB to use."

@@ -2,8 +2,8 @@ require 'formula'
 
 class Bogofilter < Formula
   homepage 'http://bogofilter.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/bogofilter/bogofilter-1.2.3/bogofilter-1.2.3.tar.bz2'
-  sha1 '1597e52140c9b3894d5d7ced11a67dcaf2444b58'
+  url 'http://downloads.sourceforge.net/project/bogofilter/bogofilter-1.2.4/bogofilter-1.2.4.tar.bz2'
+  sha1 'f51c02162fc31116e583197840a87d76ddcb9536'
 
   depends_on 'berkeley-db'
 

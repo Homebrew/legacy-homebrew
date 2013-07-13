@@ -10,6 +10,7 @@ class Avrdude < Formula
   option 'with-usb', 'Compile AVRDUDE with USB support.'
 
   depends_on 'libusb-compat' if build.include? 'with-usb'
+  depends_on 'libftdi' => :optional
 
   if build.head?
     depends_on :autoconf

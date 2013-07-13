@@ -2,8 +2,8 @@ require 'formula'
 
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
-  url 'http://releases.qt-project.org/qt5/5.0.2/single/qt-everywhere-opensource-src-5.0.2.tar.gz'
-  sha1 '7df93ca2cc5274f0cef72ea71f06feed2594b92f'
+  url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.0/single/qt-everywhere-opensource-src-5.1.0.tar.gz'
+  sha1 '12d706124dbfac3d542dd3165176a978d478c085'
 
   head 'git://gitorious.org/qt/qt5.git', :branch => 'master'
 
@@ -34,6 +34,7 @@ class Qt5 < Formula
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
     end
 
+    args << "-I#{HOMEBREW_PREFIX}/include" << "-L#{HOMEBREW_PREFIX}/lib"
     args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
@@ -70,10 +71,6 @@ class Qt5 < Formula
     system "make"
     ENV.j1
     system "make install"
-
-    # what are these anyway?
-    (bin+'pixeltool.app').rmtree
-    (bin+'qhelpconverter.app').rmtree
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     cd prefix do
