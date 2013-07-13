@@ -20,6 +20,7 @@ class Wordnet < Formula
     WordnetDictionaryUpdate.new.brew do
       (prefix+"dict").install Dir['*']
     end
+    ENV.append_to_cflags "-DUSE_INTERP_RESULT"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
