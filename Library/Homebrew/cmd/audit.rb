@@ -216,7 +216,7 @@ class FormulaAuditor
 
     # Check SourceForge urls
     urls.each do |p|
-      # Is it a filedownload (instead of svnroot)
+      # Skip if the URL looks like a SVN repo
       next if p =~ %r[/svnroot/]
       next if p =~ %r[svn\.sourceforge]
 
