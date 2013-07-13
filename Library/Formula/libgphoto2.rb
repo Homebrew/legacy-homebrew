@@ -7,9 +7,11 @@ class Libgphoto2 < Formula
 
   option :universal
 
+  depends_on 'libtool' => :build
   depends_on 'pkg-config' => :build
   depends_on :libltdl # Configure script uses this
   depends_on 'libusb-compat'
+  depends_on 'gd'
   depends_on 'libexif' => :optional
 
   def install
