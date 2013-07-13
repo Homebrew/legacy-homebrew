@@ -14,7 +14,14 @@ module Homebrew extend self
       dir.find do |path|
         path.extend(ObserverPathnameExtension)
         if path.symlink?
-          unless path.resolved_path_exists?
+          # path.resolved_path_exists? may throw exception -- if so, consider that path does not exist
+          path_exists = false
+          begin
+            path_exists = path.resolved_path_exists?
+          rescue
+            # if that threw an exception, path_exists is still false
+          end
+          unless path_exists
             if ENV['HOMEBREW_KEEP_INFO'] and path.to_s =~ Keg::INFOFILE_RX
               path.uninstall_info unless ARGV.dry_run?
             end
