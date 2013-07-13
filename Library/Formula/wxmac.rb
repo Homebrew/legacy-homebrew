@@ -57,8 +57,6 @@ class Wxmac < Formula
     args = [
       "--enable-shared",
       "--enable-monolithic",
-      "--enable-macosx_arch=x86_64",
-      "--with-macosx-sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.Platform/Developer/SDKs/MacOSX#{MacOS.version}.sdk",
       "--disable-debug",
       "--prefix=#{prefix}",
       "--enable-unicode",
@@ -77,6 +75,14 @@ class Wxmac < Formula
       "--with-expat",
       "--with-macosx-version-min=#{MacOS.version}"
     ]
+    
+    # Set configure to appropriate architecture
+   if MacOS.prefer_64_bit?
+   	args << '--enable-macosx_arch=x86_64' 
+   else
+   	args << '--enable-macosx_arch=i386'
+   end 
+   
 
     system "./configure", *args
     system "make install"
