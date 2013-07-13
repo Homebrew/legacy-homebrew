@@ -188,8 +188,16 @@ def check_for_broken_symlinks
 
   Keg::PRUNEABLE_DIRECTORIES.select(&:directory?).each do |d|
     d.find do |path|
-      if path.symlink? && !path.resolved_path_exists?
-        broken_symlinks << path
+      # path.resolved_path_exists? may throw exception -- if so, consider that path does not exist
+      if path.symlink?
+        begin
+          if !path.resolved_path_exists?
+            broken_symlinks << path
+          end
+        rescue
+          # exception thrown by path.resolved_path_exists? -> add the path to the list of broken symlinksß
+          broken_symlinks << path
+        end
       end
     end
   end
