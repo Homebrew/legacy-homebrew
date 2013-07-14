@@ -9,6 +9,7 @@ class Aria2 < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gnutls'
+  depends_on 'sqlite'
   depends_on 'curl-ca-bundle' => :recommended
 
   # Leopard's libxml2 is too old.
@@ -25,5 +26,7 @@ class Aria2 < Formula
 
     system "./configure", *args
     system "make install"
+
+    bash_completion.install "doc/bash_completion/aria2c"
   end
 end
