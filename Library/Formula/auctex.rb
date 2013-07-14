@@ -9,7 +9,6 @@ class Auctex < Formula
   head 'git://git.savannah.gnu.org/auctex.git'
 
   depends_on :tex
-
   depends_on :autoconf if build.head?
 
   def options
@@ -72,5 +71,4 @@ class Auctex < Formula
 #{dot_emacs}
     EOS
   end
-
 end
