@@ -34,7 +34,6 @@ class Qt5 < Formula
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
     end
 
-    args << "-I#{HOMEBREW_PREFIX}/include" << "-L#{HOMEBREW_PREFIX}/lib"
     args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
