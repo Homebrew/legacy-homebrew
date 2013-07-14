@@ -15,16 +15,6 @@ class Fceux < Formula
   depends_on :x11
 
   def install
-    # Propagate PKG_CONFIG_PATH to Scons environment
-    pkg_config_path = "#{MacOS::X11.lib}/pkgconfig:#{ENV['PKG_CONFIG_PATH']}"
-    inreplace "Sconstruct",
-      "env.ParseConfig('pkg-config --cflags --libs gtk+-2.0')",
-      "env.ParseConfig('PKG_CONFIG_PATH=#{pkg_config_path} pkg-config --cflags --libs gtk+-2.0')"
-
-    inreplace "src/drivers/sdl/SConscript",
-      "env.ParseConfig('pkg-config --cflags --libs x11')",
-      "env.ParseConfig('PKG_CONFIG_PATH=#{pkg_config_path} pkg-config --cflags --libs x11')"
-
     if build.include? "no-gtk"
       inreplace "SConstruct",
         "BoolVariable('GTK', 'Enable GTK2 GUI (SDL only)', 1),",
