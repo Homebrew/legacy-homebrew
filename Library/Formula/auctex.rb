@@ -6,7 +6,13 @@ class Auctex < Formula
   mirror 'http://ftp.gnu.org/gnu/auctex/auctex-11.87.tar.gz'
   sha1 '0be92c7d8f89d57346fe07f05a1a045ffd11cd71'
 
+  head 'git://git.savannah.gnu.org/auctex.git'
+
   depends_on :tex
+
+  if build.head?
+    depends_on :autoconf
+  end
 
   def options
     [['--with-emacs=</full/path/to/emacs>', "Force a different emacs"]]
@@ -26,6 +32,10 @@ class Auctex < Formula
     # configure fails if the texmf dir is not there yet
     brew_texmf = share + 'texmf'
     brew_texmf.mkpath
+
+    if build.head?
+      system "./autogen.sh"
+    end
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-texmf-dir=#{brew_texmf}",
