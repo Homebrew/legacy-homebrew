@@ -1,25 +1,129 @@
----
-layout: index
-lang: en
-title: Homebrew — MacPorts driving you to drink? Try Homebrew!
-subtitle: The missing package manager for OS X
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-pagecontent:
-  what: Homebrew installs <a href="https://github.com/mxcl/homebrew/tree/master/Library/Formula" title="List of Homebrew packages">the stuff you need</a> that Apple didn’t.
-  how: Homebrew installs packages to their own directory and then symlinks their files into <code>/usr/local</code>.
-  prefix: Homebrew won’t install files outside its prefix, and you can place a Homebrew installation wherever you like.
-  createpackages: Trivially create your own Homebrew packages.
-  hack: It's all git and ruby underneath, so hack away with the knowledge that you can easily revert your modifications and merge upstream updates.
-  formula: "Homebrew formula are simple Ruby scripts:"
-  complement: Homebrew complements OS X. Install your gems with <code>gem</code>, and their dependencies with <code>brew</code>.
-  install:
-    install: Install Homebrew
-    paste: Paste that at a Terminal prompt.
-    what: The script explains what it will do and then pauses before it does it. There are more installation options <a href='https://github.com/mxcl/homebrew/wiki/Installation'>here</a> (needed on 10.5).
-  doc:
-    further: Further Documentation
-    wiki: Homebrew Wiki
-  foot:
-    code: Original code by <a href="http://methylblue.com/">Max Howell</a>.
-    page: Website by <a href="http://exomel.com">Rémi Prévost</a>.
----
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Homebrew</title>
+  <meta name="description" content="The missing package manager for OS X.">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Homebrew</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">The missing package manager for OS X.</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/johnsir/homebrew/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/johnsir/homebrew/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/johnsir/homebrew" class="code">View Homebrew on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+
+<h1>
+<a name="homebrew-webpage" class="anchor" href="#homebrew-webpage"><span class="octicon octicon-link"></span></a>Homebrew webpage</h1>
+
+<p>The webpage uses <a href="https://github.com/mojombo/jekyll">jekyll</a>. The template for the index is at layouts/index.html.</p>
+
+<h2>
+<a name="translations" class="anchor" href="#translations"><span class="octicon octicon-link"></span></a>Translations</h2>
+
+<p>If you want to add a new translation, follow these steps:</p>
+
+<ol>
+<li>
+<p>In _config.yml append this:</p>
+
+<pre><code>- langcode: {the_lang_code}
+  lang_string: {the_link_string}
+</code></pre>
+</li>
+<li><p>Copy index.html as index_{langcode}.html</p></li>
+<li><p>Change the values of the strings to the translated strings.</p></li>
+</ol><h1>
+<a name="you-can-see-the-translated-webpage-by-running-jekyll---server-and-opening-httplocalhost4000" class="anchor" href="#you-can-see-the-translated-webpage-by-running-jekyll---server-and-opening-httplocalhost4000"><span class="octicon octicon-link"></span></a>You can see the translated webpage by running <code>jekyll --server</code> and opening http://localhost:4000/</h1>
+
+<h1>
+<a name="homebrew" class="anchor" href="#homebrew"><span class="octicon octicon-link"></span></a>Homebrew</h1>
+
+<p>Features, usage and installation instructions are <a href="http://brew.sh">summarized on the homepage</a>.</p>
+
+<h2>
+<a name="what-packages-are-available" class="anchor" href="#what-packages-are-available"><span class="octicon octicon-link"></span></a>What Packages Are Available?</h2>
+
+<ol>
+<li>You can <a href="http://github.com/mxcl/homebrew/tree/master/Library/Formula/">browse the Formula directory on GitHub</a>.</li>
+<li>Or type <code>brew search</code> for a list.</li>
+<li>Or run <code>brew server</code> to browse packages off of a local web server.</li>
+<li>Or visit <a href="http://braumeister.org">braumeister.org</a> to browse packages online.</li>
+</ol><h2>
+<a name="more-documentation" class="anchor" href="#more-documentation"><span class="octicon octicon-link"></span></a>More Documentation</h2>
+
+<p><code>brew help</code> or <code>man brew</code> or check our <a href="http://wiki.github.com/mxcl/homebrew">wiki</a>.</p>
+
+<h2>
+<a name="who-are-you" class="anchor" href="#who-are-you"><span class="octicon octicon-link"></span></a>Who Are You?</h2>
+
+<p>I'm <a href="http://twitter.com/mxcl">Max Howell</a> and I'm a splendid chap.</p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Code is under the <a href="https://github.com/mxcl/homebrew/tree/master/Library/Homebrew/LICENSE">BSD 2 Clause (NetBSD) license</a>.</p>
+
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>origin/wine-x11</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/johnsir" class="avatar"><img src="https://secure.gravatar.com/avatar/15db9e092054e3fbffbb592d2b665707?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" width="48" height="48"/></a> <a href="https://github.com/johnsir">johnsir</a> maintains <a href="https://github.com/johnsir/homebrew">Homebrew</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/johnsir/homebrew/tarball/master" class="tar">tar</a><a href="https://github.com/johnsir/homebrew/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
