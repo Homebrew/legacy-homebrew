@@ -41,11 +41,11 @@ class Mercurial < Formula
   def caveats
     s = ''
     if build.head? then s += <<-EOS.undent
-        To install the --HEAD version of mercurial, you have to:
-          1. `brew install mercurial`  # so brew can use this to fetch sources!
-          2. `brew unlink mercurial`
-          3. `brew install mercurial --HEAD`
-          4. `brew cleanup mercurial`  # to remove the older non-HEAD version
+      To install the --HEAD version of mercurial, you have to:
+        1. `brew install mercurial`  # so brew can use this to fetch sources!
+        2. `brew unlink mercurial`
+        3. `brew install mercurial --HEAD`
+        4. `brew cleanup mercurial`  # to remove the older non-HEAD version
       EOS
     end
     s += python.standard_caveats if python
