@@ -40,6 +40,8 @@ class Qt5 < Formula
     if build.include? 'with-qtdbus'
       args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
       args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
+      args << "-L#{Formula.factory('d-bus').lib}"
+      args << "-ldbus-1"
     end
 
     unless build.include? 'with-demos-examples'
