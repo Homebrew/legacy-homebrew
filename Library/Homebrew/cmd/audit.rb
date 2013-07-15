@@ -204,10 +204,6 @@ class FormulaAuditor
       problem "Google Code homepage should end with a slash (url is #{f.homepage})."
     end
 
-    if f.homepage =~ %r[^http://.*\.github\.com/]
-      problem "GitHub pages should use the github.io domain (url is #{f.homepage})"
-    end
-
     urls = @specs.map(&:url)
 
     # Check GNU urls; doesn't apply to mirrors
@@ -220,7 +216,7 @@ class FormulaAuditor
 
     # Check SourceForge urls
     urls.each do |p|
-      # Is it a filedownload (instead of svnroot)
+      # Skip if the URL looks like a SVN repo
       next if p =~ %r[/svnroot/]
       next if p =~ %r[svn\.sourceforge]
 
@@ -286,6 +282,10 @@ class FormulaAuditor
         end
       end
 
+      if s.version.to_s =~ /^v/
+        problem "#{spec} version #{s.version} should not have a leading 'v'"
+      end
+
       cksum = s.checksum
       next if cksum.nil?
 
@@ -341,10 +341,16 @@ class FormulaAuditor
     end
 
     # Comments from default template
+    if (text =~ /# PLEASE REMOVE/)
+      problem "Please remove default template comments"
+    end
     if (text =~ /# if this fails, try separate make\/make install steps/)
       problem "Please remove default template comments"
     end
-    if (text =~ /# PLEASE REMOVE/)
+    if (text =~ /# if your formula requires any X11\/XQuartz components/)
+      problem "Please remove default template comments"
+    end
+    if (text =~ /# if your formula's build system can't parallelize/)
       problem "Please remove default template comments"
     end
 

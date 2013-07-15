@@ -19,7 +19,7 @@ class Couchdb < Formula
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
-  depends_on 'curl' if MacOS.version == :leopard
+  depends_on 'curl' if MacOS.version <= :leopard
 
   def install
     # couchdb 1.3.0 supports vendor names and versioning

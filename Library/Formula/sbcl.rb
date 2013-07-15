@@ -8,8 +8,8 @@ end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.8/sbcl-1.1.8-source.tar.bz2'
-  sha1 '559b6d0ae455fbf42188b43f8900cba6adb0747f'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.9/sbcl-1.1.9-source.tar.bz2'
+  sha1 'a2a2e165429940ecd5cf1c3bc3068898c4b864ea'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
@@ -76,5 +76,9 @@ class Sbcl < Formula
 
     ENV['INSTALL_ROOT'] = prefix
     system "sh install.sh"
+  end
+
+  test do
+    system "#{bin}/sbcl", "--version"
   end
 end

@@ -66,7 +66,7 @@ class Formulary
         if ARGV.homebrew_developer?
           opoo "Add a new version regex to version.rb to parse this filename."
         end
-        @name = name
+        @name = bottle_name
       else
         @name = name_without_version
       end

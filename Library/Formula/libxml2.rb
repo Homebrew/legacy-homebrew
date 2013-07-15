@@ -11,7 +11,6 @@ class Libxml2 < Formula
   keg_only :provided_by_osx
 
   option :universal
-  # Silence audit warnings
   option 'with-python', 'Build Python bindings'
 
   if build.head?
@@ -21,7 +20,7 @@ class Libxml2 < Formula
     depends_on :libtool
   else
     # 2.9.1 cannot build with Python 2.6: https://github.com/mxcl/homebrew/issues/20249
-    depends_on PythonInstalled.new("2.7") => :recommended
+    depends_on PythonInstalled.new("2.7") if build.with? 'python'
   end
 
   fails_with :llvm do
@@ -58,8 +57,7 @@ class Libxml2 < Formula
         rm path if path.exist?
         ln_s f, path
       }
-    end
-
+    end if build.with? 'python'
   end
 
   def caveats

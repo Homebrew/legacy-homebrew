@@ -45,7 +45,7 @@ class Cairo < Formula
       args << '--enable-gobject=no'
     end
 
-    args << '--enable-xcb=no' if MacOS.version == :leopard
+    args << '--enable-xcb=no' if MacOS.version <= :leopard
 
     system "./configure", *args
     system "make install"

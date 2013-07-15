@@ -1,5 +1,12 @@
 require 'formula'
 
+class LuaRequirement < Requirement
+  fatal true
+  default_formula 'lua'
+
+  satisfy { which 'pg_config' }
+end
+
 class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
   url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.3/gnuplot-4.6.3.tar.gz'
@@ -24,11 +31,11 @@ class Gnuplot < Formula
   end
 
   depends_on 'pkg-config' => :build
+  depends_on LuaRequirement unless build.include? 'nolua'
   depends_on 'readline'
   depends_on 'pango'       if build.include? 'cairo' or build.include? 'wx'
   depends_on :x11          if build.include? 'with-x' or MacOS::X11.installed?
   depends_on 'pdflib-lite' if build.include? 'pdf'
-  depends_on 'lua'         unless build.include? 'nolua'
   depends_on 'gd'          unless build.include? 'nogd'
   depends_on 'wxmac'       if build.include? 'wx'
   depends_on 'qt'          if build.include? 'qt'

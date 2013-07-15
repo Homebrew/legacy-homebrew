@@ -14,6 +14,10 @@ _brew_installed_formulae() {
   installed_formulae=(`brew list`)
 }
 
+_brew_installed_taps() {
+  installed_taps=(`brew tap`)
+}
+
 _brew_outdated_formulae() {
   outdated_formulae=(`brew outdated`)
 }
@@ -49,7 +53,7 @@ _1st_arguments=(
 )
 
 local expl
-local -a formulae installed_formulae outdated_formulae
+local -a formulae installed_formulae installed_taps outdated_formulae
 
 _arguments \
   '(-v)-v[verbose]' \
@@ -92,4 +96,7 @@ case "$words[1]" in
   upgrade)
     _brew_outdated_formulae
     _wanted outdated_formulae expl 'outdated formulae' compadd -a outdated_formulae ;;
+  untap)
+    _brew_installed_taps
+    _wanted installed_taps expl 'installed taps' compadd -a installed_taps ;;
 esac

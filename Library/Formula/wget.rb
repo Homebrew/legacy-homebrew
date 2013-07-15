@@ -14,7 +14,7 @@ class Wget < Formula
   option "enable-iri", "Enable iri support"
   option "enable-debug", "Build with debug support"
 
-  depends_on "openssl" if MacOS.version == :leopard
+  depends_on "openssl" if MacOS.version <= :leopard
   depends_on "libidn" if build.include? "enable-iri"
 
   if build.head?
