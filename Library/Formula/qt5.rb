@@ -28,12 +28,11 @@ class Qt5 < Formula
             "-confirm-license", "-opensource"]
 
     unless MacOS::CLT.installed?
-      # Qt hard-codes paths (and uses -I flags) and linking fails on Xcode-only
-      args += ["-sdk", MacOS.sdk_path]
-      # Even with sdk given, Qt5 is too stupid to find CFNumber.h, so we give a hint:
+      # ... too stupid to find CFNumber.h, so we give a hint:
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
     end
 
+    args << "-L#{Formula.factory('jpeg').opt_prefix}/lib" << "-I#{Formula.factory('jpeg').opt_prefix}/include"
     args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
@@ -43,9 +42,10 @@ class Qt5 < Formula
       args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
     end
 
-    unless build.include? 'with-demos-examples' or build.head?
+    unless build.include? 'with-demos-examples'
+      args << "-nomake" << "examples"
       # In latest head `-nomake demos` is no longer recognized
-      args << "-nomake" << "demos" << "-nomake" << "examples"
+      args << "-nomake" << "demos" unless build.head?
     end
 
     if MacOS.prefer_64_bit? or build.universal?
