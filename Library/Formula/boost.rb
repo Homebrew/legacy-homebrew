@@ -116,7 +116,7 @@ class Boost < Formula
             "-j#{ENV.make_jobs}",
             "--layout=#{boost_layout}",
             "--user-config=user-config.jam",
-            "threading=multi",
+            "threading=multi,single/link=static",
             "install"]
 
     if MacOS.version >= :lion and build.with? 'c++11'
