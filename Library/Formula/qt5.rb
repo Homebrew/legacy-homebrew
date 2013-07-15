@@ -5,7 +5,7 @@ class Qt5 < Formula
   url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.0/single/qt-everywhere-opensource-src-5.1.0.tar.gz'
   sha1 '12d706124dbfac3d542dd3165176a978d478c085'
 
-  head 'git://gitorious.org/qt/qt5.git', :branch => 'master'
+  head 'git://gitorious.org/qt/qt5.git', :branch => 'stable'
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
@@ -43,7 +43,8 @@ class Qt5 < Formula
       args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
     end
 
-    unless build.include? 'with-demos-examples'
+    unless build.include? 'with-demos-examples' or build.head?
+      # In latest head `-nomake demos` is no longer recognized
       args << "-nomake" << "demos" << "-nomake" << "examples"
     end
 
@@ -89,7 +90,7 @@ class Qt5 < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/qmake", "--version"
   end
 
