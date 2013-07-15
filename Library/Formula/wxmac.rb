@@ -54,6 +54,9 @@ class Wxmac < Formula
 
   def install
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
+    # need to enable universal binary build in order to build all x86_64 headers
+    # need to specify x86_64 and i386 or will try to build for ppc arch and fail on newer OSes
+    # https://trac.macports.org/browser/trunk/dports/graphics/wxWidgets30/Portfile#L80
     args = [
       "--enable-shared",
       "--enable-monolithic",
@@ -73,15 +76,10 @@ class Wxmac < Formula
       "--enable-webkit",
       "--enable-svg",
       "--with-expat",
-      "--with-macosx-version-min=#{MacOS.version}"
+      "--with-macosx-version-min=#{MacOS.version}",
+      "--with-macosx-sdk=#{MacOS.sdk_path}",
+      "--enable-universal_binary=x86_64,i386"
     ]
-
-    # Set configure to appropriate architecture
-   if MacOS.prefer_64_bit?
-    args << '--enable-macosx_arch=x86_64'
-   else
-    args << '--enable-macosx_arch=i386'
-   end
 
 
     system "./configure", *args
