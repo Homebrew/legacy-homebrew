@@ -11,13 +11,14 @@ module Homebrew extend self
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     elsif ARGV.include? '--debian'
       exec_browser "http://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
+    elsif (query = ARGV.first).nil?
+      puts_columns Formula.names
     else
-      query = ARGV.first
       rx = query_regexp(query)
       local_results = search_formulae(rx)
       puts_columns(local_results)
 
-      if not query.to_s.empty? and $stdout.tty? and msg = blacklisted?(query)
+      if not query.empty? and $stdout.tty? and msg = blacklisted?(query)
         unless local_results.empty?
           puts
           puts "If you meant #{query.inspect} precisely:"
@@ -26,18 +27,16 @@ module Homebrew extend self
         puts msg
       end
 
-      if query
-        tap_results = search_taps(rx)
-        puts_columns(tap_results)
-        count = local_results.length + tap_results.length
+      tap_results = search_taps(rx)
+      puts_columns(tap_results)
+      count = local_results.length + tap_results.length
 
-        if count == 0 and not blacklisted? query
-          puts "No formula found for #{query.inspect}. Searching open pull requests..."
-          begin
-            GitHub.find_pull_requests(rx) { |pull| puts pull }
-          rescue GitHub::Error => e
-            opoo e.message
-          end
+      if count == 0 and not blacklisted? query
+        puts "No formula found for #{query.inspect}. Searching open pull requests..."
+        begin
+          GitHub.find_pull_requests(rx) { |pull| puts pull }
+        rescue GitHub::Error => e
+          opoo e.message
         end
       end
     end
@@ -57,7 +56,6 @@ module Homebrew extend self
 
   def query_regexp(query)
     case query
-    when nil then ""
     when %r{^/(.*)/$} then Regexp.new($1)
     else /.*#{Regexp.escape(query)}.*/i
     end
@@ -90,18 +88,14 @@ module Homebrew extend self
   end
 
   def search_formulae rx
-    if rx.to_s.empty?
-      Formula.names
-    else
-      aliases = Formula.aliases
-      results = (Formula.names+aliases).grep rx
+    aliases = Formula.aliases
+    results = (Formula.names+aliases).grep(rx)
 
-      # Filter out aliases when the full name was also found
-      results.reject do |alias_name|
-        if aliases.include? alias_name
-          resolved_name = (HOMEBREW_REPOSITORY+"Library/Aliases"+alias_name).readlink.basename('.rb').to_s
-          results.include? resolved_name
-        end
+    # Filter out aliases when the full name was also found
+    results.reject do |alias_name|
+      if aliases.include? alias_name
+        resolved_name = (HOMEBREW_REPOSITORY+"Library/Aliases"+alias_name).readlink.basename('.rb').to_s
+        results.include? resolved_name
       end
     end
   end
