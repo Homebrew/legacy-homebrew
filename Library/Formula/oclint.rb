@@ -1,20 +1,20 @@
 require 'formula'
 
-class Clang < Formula
+class OCLintClang < Formula
   homepage 'http://llvm.org/'
   url 'http://llvm.org/releases/3.3/cfe-3.3.src.tar.gz'
   sha1 'ccd6dbf2cdb1189a028b70bcb8a22509c25c74c8'
   head 'http://llvm.org/git/clang.git'
 end
 
-class CompilerRT < Formula
+class OCLintCompilerRT < Formula
   homepage 'http://llvm.org/'
   url 'http://llvm.org/releases/3.3/compiler-rt-3.3.src.tar.gz'
   sha1 '745386ec046e3e49742e1ecb6912c560ccd0a002'
   head 'http://llvm.org/git/compiler-rt.git'
 end
 
-class Llvm < Formula
+class OCLintLLVM < Formula
   homepage 'http://llvm.org/'
   url 'http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz'
   sha1 'c6c22d5593419e3cb47cbcf16d967640e5cce133'
@@ -40,15 +40,15 @@ class Oclint < Formula
   option 'with-debug', 'Build in debug mode'
 
   def install
-    Llvm.new("llvm").brew do
+    OCLintLLVM.new("llvm").brew do
       llvm_dir.install Dir['*']
     end
 
-    Clang.new("clang").brew do
+    OCLintClang.new("clang").brew do
       clang_dir.install Dir['*']
     end
 
-    CompilerRT.new("compiler-rt").brew do
+    OCLintCompilerRT.new("compiler-rt").brew do
       compiler_rt_dir.install Dir['*']
     end
 
