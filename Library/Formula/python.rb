@@ -1,8 +1,8 @@
 require 'formula'
 
-class Distribute < Formula
-  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.45.tar.gz'
-  sha1 '55b15037f2222828496a96f38447c0fa0228df85'
+class Setuptools < Formula
+  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.8.tar.gz'
+  sha1 '172bd5917b1823a481c1c6274da84a3bd8a8f1a3'
 end
 
 class Pip < Formula
@@ -53,7 +53,7 @@ class Python < Formula
   def install
     opoo 'The given option --with-poll enables a somewhat broken poll() on OS X (http://bugs.python.org/issue5154).' if build.with? 'poll'
 
-    # Unset these so that installing pip and distribute puts them where we want
+    # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
     ENV['PYTHONHOME'] = nil
 
@@ -125,14 +125,14 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # We ship distribute and pip and reuse the PythonInstalled
+    # We ship setuptools and pip and reuse the PythonInstalled
     # Requirement here to write the sitecustomize.py
     py = PythonInstalled.new("2.7")
     py.binary = bin/'python'
     py.modify_build_environment
     setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Distribute.new.brew { system "#{bin}/python2", *setup_args }
+    Setuptools.new.brew { system "#{bin}/python2", *setup_args }
     Pip.new.brew { system "#{bin}/python2", *setup_args }
 
     # And now we write the distuitsl.cfg
@@ -175,7 +175,7 @@ class Python < Formula
       ldflags += " -L#{Formula.factory('tcl-tk').opt_prefix}/lib"
     end
     unless MacOS::CLT.installed?
-      # Help Python's build system (distribute/pip) to build things on Xcode-only systems
+      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
       cflags += " -isysroot #{MacOS.sdk_path}"
       ldflags += " -isysroot #{MacOS.sdk_path}"
@@ -226,8 +226,8 @@ class Python < Formula
       Python demo
         #{HOMEBREW_PREFIX}/share/python/Extras
 
-      Distribute and Pip have been installed. To update them
-        pip install --upgrade distribute
+      Setuptools and Pip have been installed. To update them
+        pip install --upgrade setuptools
         pip install --upgrade pip
 
       To symlink "Idle" and the "Python Launcher" to ~/Applications
