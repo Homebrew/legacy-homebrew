@@ -15,6 +15,7 @@ class Ffmpeg < Formula
   option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
   option "with-libass", "Enable ASS/SSA subtitle format"
   option "with-openjpeg", 'Enable JPEG 2000 image format'
+  option 'with-openssl', 'Enable SSL support'
   option 'with-schroedinger', 'Enable Dirac video format'
   option 'with-ffplay', 'Enable FFplay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'

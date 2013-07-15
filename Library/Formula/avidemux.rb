@@ -1,5 +1,4 @@
 require 'formula'
-require 'find'
 
 class Avidemux < Formula
   homepage 'http://avidemux.sourceforge.net/'
@@ -62,7 +61,7 @@ class Avidemux < Formula
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    if MacOS.version == :leopard or Hardware.is_32_bit?
+    if MacOS.version <= :leopard or Hardware.is_32_bit?
       inreplace 'cmake/admFFmpegBuild.cmake',
         '${CMAKE_INSTALL_PREFIX})',
         '${CMAKE_INSTALL_PREFIX} --extra-cflags=-mdynamic-no-pic)'
@@ -174,7 +173,7 @@ class Avidemux < Formula
         cellar_plug_path = lib+'ADM_plugins'
         mkdir_p app_lib_path
         cp_r cellar_plug_path, app_lib_path
-        Find.find(app_plug_path) do |f|
+        app_plug_path.find do |f|
           rm f if File.fnmatch('*cli.dylib', f)
         end
       end

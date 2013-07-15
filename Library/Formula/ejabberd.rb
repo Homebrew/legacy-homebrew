@@ -5,7 +5,7 @@ class Ejabberd < Formula
   url "http://www.process-one.net/downloads/ejabberd/2.1.13/ejabberd-2.1.13.tgz"
   sha1 '6343186be2e84824d2da32e36110b72d6673730e'
 
-  depends_on "openssl" if MacOS.version == :leopard
+  depends_on "openssl" if MacOS.version <= :leopard
   depends_on "erlang"
 
   option "32-bit"
@@ -28,7 +28,7 @@ class Ejabberd < Formula
               "--sysconfdir=#{etc}",
               "--localstatedir=#{var}"]
 
-      if MacOS.version == :leopard
+      if MacOS.version <= :leopard
         openssl = Formula.factory('openssl')
         args << "--with-openssl=#{openssl.prefix}"
       end

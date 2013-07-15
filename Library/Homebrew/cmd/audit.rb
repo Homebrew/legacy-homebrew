@@ -204,10 +204,6 @@ class FormulaAuditor
       problem "Google Code homepage should end with a slash (url is #{f.homepage})."
     end
 
-    if f.homepage =~ %r[^http://.*\.github\.com/]
-      problem "GitHub pages should use the github.io domain (url is #{f.homepage})"
-    end
-
     urls = @specs.map(&:url)
 
     # Check GNU urls; doesn't apply to mirrors
@@ -220,7 +216,7 @@ class FormulaAuditor
 
     # Check SourceForge urls
     urls.each do |p|
-      # Is it a filedownload (instead of svnroot)
+      # Skip if the URL looks like a SVN repo
       next if p =~ %r[/svnroot/]
       next if p =~ %r[svn\.sourceforge]
 

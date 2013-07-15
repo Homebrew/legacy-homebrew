@@ -18,7 +18,7 @@ class RabbitmqC < Formula
   depends_on :automake
   depends_on :libtool
   depends_on 'rabbitmq'
-  depends_on 'simplejson' => :python if MacOS.version == :leopard
+  depends_on 'simplejson' => :python if MacOS.version <= :leopard
 
   def install
     ENV.universal_binary if build.universal?

@@ -13,7 +13,7 @@ class Libvirt < Formula
   depends_on 'yajl'
   depends_on :python => :recommended
 
-  if MacOS.version == :leopard
+  if MacOS.version <= :leopard
     # Definitely needed on Leopard, but not on Snow Leopard.
     depends_on "readline"
     depends_on "libxml2"

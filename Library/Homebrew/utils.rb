@@ -2,6 +2,7 @@ require 'pathname'
 require 'exceptions'
 require 'macos'
 require 'utils/json'
+require 'utils/inreplace'
 require 'open-uri'
 
 class Tty
@@ -171,7 +172,7 @@ def which cmd
 end
 
 def which_editor
-  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
+  editor = ENV.values_at('HOMEBREW_EDITOR', 'VISUAL', 'EDITOR').compact.first
   # If an editor wasn't set, try to pick a sane default
   return editor unless editor.nil?
 
@@ -211,27 +212,6 @@ end
 def archs_for_command cmd
   cmd = which(cmd) unless Pathname.new(cmd).absolute?
   Pathname.new(cmd).archs
-end
-
-def inreplace paths, before=nil, after=nil
-  Array(paths).each do |path|
-    f = File.open(path, 'r')
-    s = f.read
-
-    if before.nil? && after.nil?
-      s.extend(StringInreplaceExtension)
-      yield s
-    else
-      sub = s.gsub!(before, after)
-      if sub.nil?
-        opoo "inreplace in '#{path}' failed"
-        puts "Expected replacement of '#{before}' with '#{after}'"
-      end
-    end
-
-    f.reopen(path, 'w').write(s)
-    f.close
-  end
 end
 
 def ignore_interrupts(opt = nil)
@@ -277,7 +257,7 @@ module GitHub extend self
     else
       raise e
     end
-  rescue SocketError => e
+  rescue SocketError, OpenSSL::SSL::SSLError => e
     raise Error, "Failed to connect to: #{url}\n#{e.message}"
   end
 

@@ -14,6 +14,7 @@ require 'formulary'
 
 class Formula
   include FileUtils
+  include Utils::Inreplace
   extend BuildEnvironmentDSL
 
   attr_reader :name, :path, :homepage, :downloader

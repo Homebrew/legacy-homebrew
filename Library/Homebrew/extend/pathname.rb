@@ -253,7 +253,12 @@ class Pathname
   end
 
   def resolved_path_exists?
-    (dirname+readlink).exist?
+    link = readlink
+  rescue ArgumentError
+    # The link target contains NUL bytes
+    false
+  else
+    (dirname+link).exist?
   end
 
   # perhaps confusingly, this Pathname object becomes the symlink pointing to
