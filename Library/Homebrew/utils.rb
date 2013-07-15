@@ -257,7 +257,7 @@ module GitHub extend self
     else
       raise e
     end
-  rescue SocketError => e
+  rescue SocketError, OpenSSL::SSL::SSLError => e
     raise Error, "Failed to connect to: #{url}\n#{e.message}"
   end
 
