@@ -1,8 +1,8 @@
 require 'formula'
 
 class WineGecko < Formula
-  url 'http://downloads.sourceforge.net/wine/wine_gecko-1.4-x86.msi', :using => :nounzip
-  sha1 'c30aa99621e98336eb4b7e2074118b8af8ea2ad5'
+  url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
+  sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
 
   devel do
     url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
@@ -17,8 +17,8 @@ end
 
 class Wine < Formula
   homepage 'http://winehq.org/'
-  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.4.1.tar.bz2'
-  sha256 '3c233e3811e42c2f3623413783dbcd0f2288014b5645211f669ffd0ba6ae1856'
+  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
+  sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
 
   head 'git://source.winehq.org/git/wine.git'
 
@@ -27,8 +27,8 @@ class Wine < Formula
     # updating too
     #  * http://wiki.winehq.org/Gecko
     #  * http://wiki.winehq.org/Mono
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6-rc5.tar.bz2'
-    sha1 'a19c39fab54c83d9e03e06bb506b7885fc45e94b'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
+    sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
   end
 
   env :std
@@ -36,30 +36,27 @@ class Wine < Formula
   # this tells Homebrew that dependencies must be built universal
   def build.universal? ; true; end
 
-  depends_on :x11
-  # note: we get freetype from :x11, but if the freetype formula has been installed
-  # separately and not built universal, it's going to get picked up and break the build
+  # note that all wine dependencies should declare a --universal option in their formula,
+  # otherwise homebrew will not notice that they are not built universal
+
+  # Wine will build both the Mac and the X11 driver by default, and you can switch
+  # between them. But if you really want to build without X11, you can.
+  depends_on :x11 => :recommended
+  depends_on 'freetype' if build.without? 'x11'
   depends_on 'jpeg'
   depends_on 'libicns'
   depends_on 'libtiff'
   depends_on 'little-cms'
-  depends_on 'gnutls' if build.devel?
-  depends_on 'sane-backends' if build.devel?
-  depends_on 'libgphoto2' if build.devel?
+  depends_on 'sane-backends'
+  depends_on 'libgphoto2'
 
   fails_with :llvm do
     build 2336
     cause 'llvm-gcc does not respect force_align_arg_pointer'
   end
 
-  # Wine tests CFI support by calling clang, but then attempts to use as, which
-  # does not work. Use clang for assembling too.
-  def patches
-    DATA if ENV.compiler == :clang and !build.devel?
-  end
-
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
-  # configure: libsane, libv4l, libgphoto2, gstreamer-0.10, libcapi20, libgsm
+  # configure: libv4l, gstreamer-0.10, libcapi20, libgsm
 
   # Wine loads many libraries lazily using dlopen calls, so it needs these paths
   # to be searched by dyld.
@@ -76,10 +73,10 @@ class Wine < Formula
     # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
     build32 = "-arch i386 -m32"
 
-    ENV["LIBS"] = "-lGL -lGLU"
     ENV.append "CFLAGS", build32
+    ENV.append "LDFLAGS", build32
 
-    # Still miscompiles at v1.5.25
+    # Still miscompiles at v1.6
     if ENV.compiler == :clang
       opoo <<-EOS.undent
         Clang currently miscompiles some parts of Wine. If you have gcc, you
@@ -88,30 +85,31 @@ class Wine < Formula
       EOS
     end
 
-    ENV.append "CXXFLAGS", "-D_DARWIN_NO_64_BIT_INODE"
-    ENV.append "LDFLAGS", "#{build32} -framework CoreServices -lz -lGL -lGLU"
-
     # Workarounds for XCode not including pkg-config files
     ENV.libxml2
     ENV.append "LDFLAGS", "-lxslt"
 
-    # As of 1.4 these don't do anything, but under 1.6 they will *possibly*
-    # resolve our issues with conflicting freetype installations
-    ENV['FREETYPE_CFLAGS'] = "-I#{MacOS::X11.include}/freetype2 -I#{MacOS::X11.include}"
-    ENV['FREETYPE_LIBS'] = "-L#{MacOS::X11.lib} -lfreetype"
+    # Note: we get freetype from :x11, but if the freetype formula has been installed
+    # separately and not built universal, it's going to get picked up and break the build.
+    # We cannot use FREETYPE_LIBS because it is inserted after LDFLAGS and thus cannot
+    # take precedence over the homebrew freetype.
+    ENV.prepend "LDFLAGS", "-L#{MacOS::X11.lib}" unless build.without? 'x11'
 
-    args = %W[--prefix=#{prefix}
-              --with-coreaudio
-              --with-opengl
-              --with-x
-              --x-include=#{MacOS::X11.include}
-              --x-lib=#{MacOS::X11.lib}]
+    args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
 
     system "./configure", *args
+
+    unless ENV.compiler == :clang or ENV.compiler == :llvm
+      # The Mac driver uses blocks and must be compiled with clang even if the rest of
+      # Wine is built with gcc. This must be done after configure.
+      system 'make', 'dlls/winemac.drv/Makefile'
+      inreplace 'dlls/winemac.drv/Makefile', /^CC\s*=\s*[^\s]+/, "CC = clang"
+    end
+
     system "make install"
 
     # Don't need Gnome desktop support
@@ -131,45 +129,22 @@ class Wine < Formula
 
   def caveats
     s = <<-EOS.undent
-      For best results, you will want to install the latest version of XQuartz:
-        http://xquartz.macosforge.org/
-
-      You may also want to get winetricks:
+      You may want to get winetricks:
         brew install winetricks
 
-      Or check out:
-        http://code.google.com/p/osxwinebuilder/
-    EOS
-    unless build.stable?
-      # see http://bugs.winehq.org/show_bug.cgi?id=31374
-      s += <<-EOS.undent
+      By default Wine uses a native Mac driver. To switch to the X11 driver, use
+      regedit to set the "graphics" key under "HKCU\Software\Wine\Drivers" to
+      "x11" (or use winetricks).
 
-        The current version of Wine contains a partial implementation of dwrite.dll
-        which may cause text rendering issues in applications such as Steam.
-        We recommend that you run winecfg, add an override for dwrite in the
-        Libraries tab, and edit the override mode to "disable".
-      EOS
-    end
+      For best results with X11, install the latest version of XQuartz:
+        http://xquartz.macosforge.org/
+
+      The current version of Wine contains a partial implementation of dwrite.dll
+      which may cause text rendering issues in applications such as Steam.
+      We recommend that you run winecfg, add an override for dwrite in the
+      Libraries tab, and edit the override mode to "disable".
+    EOS
+    # see http://bugs.winehq.org/show_bug.cgi?id=31374
     return s
   end
 end
-
-__END__
-diff --git a/tools/winebuild/utils.c b/tools/winebuild/utils.c
-index 09f9b73..ed198f8 100644
---- a/tools/winebuild/utils.c
-+++ b/tools/winebuild/utils.c
-@@ -345,10 +345,11 @@ struct strarray *get_as_command(void)
- 
-     if (!as_command)
-     {
--        static const char * const commands[] = { "gas", "as", NULL };
--        as_command = find_tool( "as", commands );
-+        static const char * const commands[] = { "clang", NULL };
-+        as_command = find_tool( "clang", commands );
-     }
-     strarray_add_one( args, as_command );
-+    strarray_add_one( args, "-c" );
- 
-     if (force_pointer_size)
-     {
