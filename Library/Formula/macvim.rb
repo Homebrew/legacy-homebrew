@@ -8,9 +8,9 @@ class Macvim < Formula
   sha1 'd2915438c9405015e5e39099aecbbda20438ce81'
 
   devel do
-    url 'https://github.com/b4winckler/macvim/archive/snapshot-67.tar.gz'
-    version '7.4a-BETA-67'
-    sha1 '7404747fbc1db9c8a8717ccdb1a04d365da498e6'
+    url 'https://github.com/b4winckler/macvim/archive/snapshot-68.tar.gz'
+    version '7.4a-BETA-68'
+    sha1 'bb764139a3637cd48015207dc91d7470814b37cc'
   end
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
