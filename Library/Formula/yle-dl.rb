@@ -2,8 +2,8 @@ require 'formula'
 
 class YleDl < Formula
   homepage 'http://aajanki.github.io/yle-dl/'
-  url 'https://github.com/downloads/aajanki/yle-dl/yle-dl-2.0.2.tar.gz'
-  sha1 'c48866daf24e9f427184c8bc51a018d250a003cf'
+  url 'https://github.com/aajanki/yle-dl/archive/2.1.0.tar.gz'
+  sha1 'c2c05e3693737e864c4b296de022dc016c9f6865'
 
   head 'https://github.com/aajanki/yle-dl.git'
 
