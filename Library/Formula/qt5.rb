@@ -16,11 +16,8 @@ class Qt5 < Formula
   option 'with-mysql', 'Enable MySQL plugin'
   option 'developer', 'Compile and link Qt with developer options'
 
-  depends_on :libpng
-
   depends_on "d-bus" if build.include? 'with-qtdbus'
   depends_on "mysql" => :optional
-  depends_on "jpeg"
 
   def install
     args = ["-prefix", prefix,
@@ -33,13 +30,6 @@ class Qt5 < Formula
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
     end
 
-    if MacOS.version < :mountain_lion
-      args << "-system-libpng"
-    else
-      args << "-L#{Formula.factory('libpng').opt_prefix}/lib" << "-L#{Formula.factory('libpng').opt_prefix}/include"
-    end
-
-    args << "-L#{Formula.factory('jpeg').opt_prefix}/lib" << "-I#{Formula.factory('jpeg').opt_prefix}/include"
     args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
