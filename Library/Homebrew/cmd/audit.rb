@@ -148,13 +148,11 @@ class FormulaAuditor
 
       case dep.name
       when *BUILD_TIME_DEPS
-        # TODO: this should really be only dep.build? but maybe some formula
-        # depends on the current behavior to be audit-clean?
-        next if dep.tags.any?
-        next if f.name =~ /automake/ && dep.name == 'autoconf'
-        # This is actually a libltdl dep that gets converted to a non-build time
-        # libtool dep, but I don't of a good way to encode this in the dep object
-        next if f.name == 'imagemagick' && dep.name == 'libtool'
+        next if dep.build?
+        next if dep.name == 'autoconf' && f.name =~ /automake/
+        next if dep.name == 'libtool' && %w{imagemagick libgphoto2 libp11}.any? { |n| f.name == n }
+        next if dep.name =~ /autoconf|pkg-config/ && f.name == 'ruby-build'
+
         problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
       when "git", "ruby", "emacs", "mercurial"
         problem <<-EOS.undent
