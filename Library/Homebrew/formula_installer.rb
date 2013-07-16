@@ -449,13 +449,11 @@ class FormulaInstaller
   end
 
   def audit_bin
-    return unless f.bin.directory?
     print_check_output(check_PATH(f.bin)) unless f.keg_only?
     print_check_output(check_non_executables(f.bin))
   end
 
   def audit_sbin
-    return unless f.sbin.directory?
     print_check_output(check_PATH(f.sbin)) unless f.keg_only?
     print_check_output(check_non_executables(f.sbin))
   end
