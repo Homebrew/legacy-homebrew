@@ -1,6 +1,7 @@
 require 'formula'
 require 'utils'
 require 'superenv'
+require 'formula_cellar_checks'
 
 module Homebrew extend self
   def audit
@@ -75,6 +76,8 @@ class FormulaText
 end
 
 class FormulaAuditor
+  include FormulaCellarChecks
+
   attr_reader :f, :text, :problems
 
   BUILD_TIME_DEPS = %W[
@@ -565,6 +568,21 @@ class FormulaAuditor
 
   end
 
+  def audit_check_output warning_and_description
+    return unless warning_and_description
+    warning, _ = *warning_and_description
+    problem warning
+  end
+
+  def audit_installed
+    audit_check_output(check_manpages)
+    audit_check_output(check_infopages)
+    audit_check_output(check_jars)
+    audit_check_output(check_non_libraries)
+    audit_check_output(check_non_executables(f.bin))
+    audit_check_output(check_non_executables(f.sbin))
+  end
+
   def audit
     audit_file
     audit_specs
@@ -574,6 +592,7 @@ class FormulaAuditor
     audit_patches
     audit_text
     audit_python
+    audit_installed
   end
 
   private
