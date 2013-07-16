@@ -288,8 +288,8 @@ class Test
     git 'stash'
     git 'am --abort 2>/dev/null'
     git 'rebase --abort 2>/dev/null'
-    git 'checkout -f master'
     git 'reset --hard'
+    git 'checkout -f master'
     git 'clean --force -dx'
   end
 
