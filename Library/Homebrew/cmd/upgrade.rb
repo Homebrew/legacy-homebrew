@@ -1,4 +1,5 @@
 require 'cmd/install'
+require 'cmd/outdated'
 
 class Fixnum
   def plural_s
@@ -11,7 +12,6 @@ module Homebrew extend self
     Homebrew.perform_preinstall_checks
 
     if ARGV.named.empty?
-      require 'cmd/outdated'
       outdated = Homebrew.outdated_brews
     else
       outdated = ARGV.formulae.select do |f|
