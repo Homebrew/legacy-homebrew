@@ -2,8 +2,8 @@ require 'formula'
 
 class Libgit2 < Formula
   homepage 'http://libgit2.github.io/'
-  url 'https://github.com/libgit2/libgit2/archive/v0.18.0.tar.gz'
-  sha1 '08b6b7520580615c5549ff739ba7d0c8e3617188'
+  url 'https://github.com/libgit2/libgit2/archive/v0.19.0.tar.gz'
+  sha1 '72cc461d366c5ace3385470a1f209ff84d0a4bb3'
 
   head 'https://github.com/libgit2/libgit2.git', :branch => 'development'
 
