@@ -103,6 +103,10 @@ class PerconaServer < Formula
     end
 
     ln_s "#{prefix}/support-files/mysql.server", bin
+
+    # Move mysqlaccess to libexec
+    mv "#{bin}/mysqlaccess", libexec
+    mv "#{bin}/mysqlaccess.conf", libexec
   end
 
   def caveats; <<-EOS.undent
