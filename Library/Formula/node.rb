@@ -65,39 +65,31 @@ class Node < Formula
 
     unless build.include? 'without-npm'
       (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
+      # we need to force make this directory, or node modules installed here
+      # by npm will end up in the node keg and won't survive upgrades
+      mkdir_p "#{HOMEBREW_PREFIX}/lib/node_modules"
     end
   end
 
   def npm_prefix
-    "#{HOMEBREW_PREFIX}/share/npm"
-  end
-
-  def npm_bin
-    "#{npm_prefix}/bin"
-  end
-
-  def modules_folder
-    "#{HOMEBREW_PREFIX}/lib/node_modules"
+    d = "#{HOMEBREW_PREFIX}/share/npm"
+    if File.directory? d
+      d
+    else
+      HOMEBREW_PREFIX.to_s
+    end
   end
 
   def caveats
-    if build.include? 'without-npm'
-      <<-EOS.undent
-        Homebrew has NOT installed npm. We recommend the following method of
-        installation:
-          curl https://npmjs.org/install.sh | sh
-
-        After installing, add the following path to your NODE_PATH environment
-        variable to have npm libraries picked up:
-          #{modules_folder}
-      EOS
-    elsif not ENV['PATH'].split(':').include? npm_bin
-      <<-EOS.undent
-        Homebrew installed npm.
-        We recommend prepending the following path to your PATH environment
-        variable to have npm-installed binaries picked up:
-          #{npm_bin}
-      EOS
+    if build.include? 'without-npm' then <<-end.undent
+      Homebrew has NOT installed npm. If you later install it, you should supplement
+      your NODE_PATH with the npm module folder:
+          #{npm_prefix}/lib/node_modules
+      end
+    elsif not ENV['PATH'].split(':').include? "#{npm_prefix}/bin"; <<-end.undent
+      Probably you should amend your PATH to include npm-installed binaries:
+          #{npm_prefix}/bin
+      end
     end
   end
 end
