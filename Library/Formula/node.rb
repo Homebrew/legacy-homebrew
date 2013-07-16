@@ -45,7 +45,7 @@ class Node < Formula
   option 'without-npm', 'npm will not be installed'
 
   depends_on NpmNotInstalled unless build.without? 'npm'
-  depends_on PythonInstalled.new("2.6") => :build
+  depends_on :python => ["2.6", :build]
 
   fails_with :llvm do
     build 2326
