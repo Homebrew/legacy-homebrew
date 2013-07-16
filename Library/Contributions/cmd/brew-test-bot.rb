@@ -253,15 +253,17 @@ class Test
       return
     end
 
-    test "brew audit #{formula}"
     test "brew fetch #{dependencies}" unless dependencies.empty?
     test "brew fetch --force --build-bottle #{formula}"
     test "brew uninstall --force #{formula}" if formula_object.installed?
     test "brew install --verbose --build-bottle #{formula}"
-    return unless steps.last.passed?
-    bottle_step = test "brew bottle #{formula}", :puts_output_on_success => true
+    install_passed = steps.last.passed?
+    test "brew audit #{formula}"
+    return unless install_passed
+    test "brew bottle #{formula}", :puts_output_on_success => true
     bottle_revision = bottle_new_revision(formula_object)
     bottle_filename = bottle_filename(formula_object, bottle_revision)
+    bottle_step = steps.last
     if bottle_step.passed? and bottle_step.has_output?
       bottle_base = bottle_filename.gsub(bottle_suffix(bottle_revision), '')
       bottle_output = bottle_step.output.gsub /.*(bottle do.*end)/m, '\1'
