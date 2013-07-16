@@ -31,10 +31,8 @@ module Homebrew extend self
       outdated -= pinned
     end
 
-    if outdated.length > 0
-      oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
-      puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
-    end
+    oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
+    puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
 
     if not upgrade_pinned? and pinned.length > 0
       oh1 "Not upgrading #{pinned.length} pinned package#{pinned.length.plural_s}:"
