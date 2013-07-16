@@ -2,8 +2,8 @@ require 'formula'
 
 class Fcgiwrap < Formula
   homepage 'http://nginx.localdomain.pl/wiki/FcgiWrap'
-  url 'https://github.com/downloads/gnosek/fcgiwrap/fcgiwrap-1.0.3.tar.gz'
-  sha1 'f62722efd637aea8ce4e6325c85614cfe2345d8d'
+  url 'https://github.com/gnosek/fcgiwrap/archive/1.1.0.tar.gz'
+  sha1 '8e7b9140b3d96f4635352bb967715477b35caf84'
 
   depends_on :autoconf
   depends_on :automake
