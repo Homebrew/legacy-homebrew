@@ -7,8 +7,11 @@ require 'tab'
 require 'bottles'
 require 'caveats'
 require 'cleaner'
+require 'formula_cellar_checks'
 
 class FormulaInstaller
+  include FormulaCellarChecks
+
   attr_reader :f
   attr_accessor :tab, :options, :ignore_deps
   attr_accessor :show_summary_heading, :show_header
@@ -437,110 +440,37 @@ class FormulaInstaller
 
   ## checks
 
-  def check_PATH bin
-    # warn the user if stuff was installed outside of their PATH
-    if bin.directory? and bin.children.length > 0
-      bin = (HOMEBREW_PREFIX/bin.basename).realpath
-      unless ORIGINAL_PATHS.include? bin
-        opoo "#{bin} is not in your PATH"
-        puts "You can amend this by altering your ~/.bashrc file"
-        @show_summary_heading = true
-      end
-    end
-  end
-
-  def check_manpages
-    # Check for man pages that aren't in share/man
-    if (f.prefix+'man').directory?
-      opoo 'A top-level "man" directory was found.'
-      puts "Homebrew requires that man pages live under share."
-      puts 'This can often be fixed by passing "--mandir=#{man}" to configure.'
-      @show_summary_heading = true
-      Homebrew.failed = true # fatal to Brew Bot
-    end
-  end
-
-  def check_infopages
-    # Check for info pages that aren't in share/info
-    if (f.prefix+'info').directory?
-      opoo 'A top-level "info" directory was found.'
-      puts "Homebrew suggests that info pages live under share."
-      puts 'This can often be fixed by passing "--infodir=#{info}" to configure.'
-      @show_summary_heading = true
-    end
-  end
-
-  def check_jars
-    return unless f.lib.directory?
-
-    jars = f.lib.children.select{|g| g.to_s =~ /\.jar$/}
-    unless jars.empty?
-      opoo 'JARs were installed to "lib".'
-      puts "Installing JARs to \"lib\" can cause conflicts between packages."
-      puts "For Java software, it is typically better for the formula to"
-      puts "install to \"libexec\" and then symlink or wrap binaries into \"bin\"."
-      puts "See \"activemq\", \"jruby\", etc. for examples."
-      puts "The offending files are:"
-      puts jars
-      @show_summary_heading = true
-    end
-  end
-
-  def check_non_libraries
-    return unless f.lib.directory?
-
-    valid_extensions = %w(.a .dylib .framework .jnilib .la .o .so
-                          .jar .prl .pm .sh)
-    non_libraries = f.lib.children.select do |g|
-      next if g.directory?
-      not valid_extensions.include? g.extname
-    end
-
-    unless non_libraries.empty?
-      opoo 'Non-libraries were installed to "lib".'
-      puts "Installing non-libraries to \"lib\" is bad practice."
-      puts "The offending files are:"
-      puts non_libraries
-      @show_summary_heading = true
-    end
-  end
-
-  def check_non_executables bin
-    non_exes = bin.children.select { |g| g.directory? or not g.executable? }
-
-    unless non_exes.empty?
-      opoo 'Non-executables were installed to "bin".'
-      puts "Installing non-executables to \"bin\" is bad practice."
-      puts "The offending files are:"
-      puts non_exes
-      @show_summary_heading = true
-      Homebrew.failed = true # fatal to Brew Bot
-    end
+  def print_check_output warning_and_description
+    return unless warning_and_description
+    warning, description = *warning_and_description
+    opoo warning
+    puts description
+    @show_summary_heading = true
   end
 
   def audit_bin
     return unless f.bin.directory?
-    check_PATH f.bin unless f.keg_only?
-    check_non_executables f.bin
+    print_check_output(check_PATH(f.bin)) unless f.keg_only?
+    print_check_output(check_non_executables(f.bin))
   end
 
   def audit_sbin
     return unless f.sbin.directory?
-    check_PATH f.sbin unless f.keg_only?
-    check_non_executables f.sbin
+    print_check_output(check_PATH(f.sbin)) unless f.keg_only?
+    print_check_output(check_non_executables(f.sbin))
   end
 
   def audit_lib
-    check_jars
-    check_non_libraries
+    print_check_output(check_jars)
+    print_check_output(check_non_libraries)
   end
 
   def audit_man
-    check_manpages
+    print_check_output(check_manpages)
   end
 
   def audit_info
-    check_infopages
+    print_check_output(check_infopages)
   end
 
   private
