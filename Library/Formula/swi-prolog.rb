@@ -6,8 +6,8 @@ class SwiProlog < Formula
   sha256 '9412f0753a61c30dbcf1afac01fe7c9168002854709e00e09c21f959e1232146'
 
   devel do
-    url 'http://www.swi-prolog.org/download/devel/src/pl-6.3.17.tar.gz'
-    sha1 '93bf9a0f824a3d1ce8a189a37d0c186de6479d42'
+    url 'http://www.swi-prolog.org/download/devel/src/pl-6.3.19.tar.gz'
+    sha1 'b81e2866b48342007541d4574f46aeb57fac78ab'
   end
 
   head 'git://www.swi-prolog.org/home/pl/git/pl.git'
