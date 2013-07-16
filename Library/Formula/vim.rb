@@ -3,8 +3,8 @@ require 'formula'
 class Vim < Formula
   homepage 'http://www.vim.org/'
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
-  url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.3.923.orig.tar.gz'
-  sha1 'f308d219dd9c6b56e84109ace4e7487a101088f5'
+  url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.4a.012.orig.tar.gz'
+  sha1 '3d7ec9c846a356bbaeab96692db31b07ccb946f4'
   head 'https://vim.googlecode.com/hg/'
 
   # We only have special support for finding depends_on :python, but not yet for
