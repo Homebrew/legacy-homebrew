@@ -5,6 +5,12 @@ class Qt < Formula
   url 'http://download.qt-project.org/official_releases/qt/4.8/4.8.5/qt-everywhere-opensource-src-4.8.5.tar.gz'
   sha1 '745f9ebf091696c0d5403ce691dc28c039d77b9e'
 
+  bottle do
+    sha1 '78b8d1b8dc9a818d8892b15622333281c61b3895' => :mountain_lion
+    sha1 '48a529ef5d464f5f292749e807008cfa46e9693b' => :lion
+    sha1 '28c3e000141789fffe06c676391a569acdbea5f2' => :snow_leopard
+  end
+
   head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
 
   option :universal
