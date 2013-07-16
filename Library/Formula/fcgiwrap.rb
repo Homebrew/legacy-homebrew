@@ -11,7 +11,7 @@ class Fcgiwrap < Formula
 
   def install
     system "autoreconf", "-i"
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end
 end
