@@ -9,7 +9,7 @@ class Leiningen < Formula
 
   def install
     bin.install "bin/lein"
-    system "#{bin}/lein", "self-install"
+    system "#{bin}/lein", "upgrade"
     bash_completion.install 'bash_completion.bash' => 'lein-completion.bash'
     zsh_completion.install 'zsh_completion.zsh' => '_lein'
   end
