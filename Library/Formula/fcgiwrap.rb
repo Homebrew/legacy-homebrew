@@ -5,6 +5,7 @@ class Fcgiwrap < Formula
   url 'https://github.com/gnosek/fcgiwrap/archive/1.1.0.tar.gz'
   sha1 '8e7b9140b3d96f4635352bb967715477b35caf84'
 
+  depends_on 'pkg-config' => :build
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'fcgi'
