@@ -231,8 +231,8 @@ class FormulaInstaller
       audit_bin
       audit_sbin
       audit_lib
-      check_manpages
-      check_infopages
+      audit_man
+      audit_info
     end
 
     c = Caveats.new(f)
@@ -257,7 +257,6 @@ class FormulaInstaller
       end
     else
       link
-      check_PATH unless f.keg_only?
     end
 
     fix_install_names
@@ -438,16 +437,14 @@ class FormulaInstaller
 
   ## checks
 
-  def check_PATH
+  def check_PATH bin
     # warn the user if stuff was installed outside of their PATH
-    [f.bin, f.sbin].each do |bin|
-      if bin.directory? and bin.children.length > 0
-        bin = (HOMEBREW_PREFIX/bin.basename).realpath
-        unless ORIGINAL_PATHS.include? bin
-          opoo "#{bin} is not in your PATH"
-          puts "You can amend this by altering your ~/.bashrc file"
-          @show_summary_heading = true
-        end
+    if bin.directory? and bin.children.length > 0
+      bin = (HOMEBREW_PREFIX/bin.basename).realpath
+      unless ORIGINAL_PATHS.include? bin
+        opoo "#{bin} is not in your PATH"
+        puts "You can amend this by altering your ~/.bashrc file"
+        @show_summary_heading = true
       end
     end
   end
@@ -508,10 +505,8 @@ class FormulaInstaller
     end
   end
 
-  def audit_bin
-    return unless f.bin.directory?
-
-    non_exes = f.bin.children.select { |g| g.directory? or not g.executable? }
+  def check_non_executables bin
+    non_exes = bin.children.select { |g| g.directory? or not g.executable? }
 
     unless non_exes.empty?
       opoo 'Non-executables were installed to "bin".'
@@ -523,24 +518,29 @@ class FormulaInstaller
     end
   end
 
+  def audit_bin
+    return unless f.bin.directory?
+    check_PATH f.bin unless f.keg_only?
+    check_non_executables f.bin
+  end
+
   def audit_sbin
     return unless f.sbin.directory?
-
-    non_exes = f.sbin.children.select { |g| g.directory? or not g.executable? }
-
-    unless non_exes.empty?
-      opoo 'Non-executables were installed to "sbin".'
-      puts "Installing non-executables to \"sbin\" is bad practice."
-      puts "The offending files are:"
-      puts non_exes
-      @show_summary_heading = true
-      Homebrew.failed = true # fatal to Brew Bot
-    end
+    check_PATH f.sbin unless f.keg_only?
+    check_non_executables f.sbin
   end
 
   def audit_lib
     check_jars
     check_non_libraries
+  end
+
+  def audit_man
+    check_manpages
+  end
+
+  def audit_info
+    check_infopages
   end
 
   private
