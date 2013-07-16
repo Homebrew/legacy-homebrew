@@ -31,15 +31,16 @@ class PythonInstalled < Requirement
     end
   end
 
-  def initialize(version="2.6", *tags )
-    # Extract the min_version if given. Default to python 2.X else
-    if /(\d+\.)*\d+/ === version.to_s
-      @min_version = PythonVersion.new(version)
+  def initialize(default_version="2.6", tags=[] )
+    tags = [tags].flatten
+    # Extract the min_version if given. Default to default_version else
+    if /(\d+\.)*\d+/ === tags.first.to_s
+      @min_version = PythonVersion.new(tags.shift)
     else
-      raise "Invalid version specification for Python: '#{version}'"
+      @min_version = PythonVersion.new(default_version)
     end
 
-    # often used idiom: e.g. sipdir = "share/sip" + python.if3then3
+    # often used idiom: e.g. sipdir = "share/sip#{python.if3then3}"
     if @min_version.major == 3
       @if3then3 = "3"
     else
@@ -56,7 +57,7 @@ class PythonInstalled < Requirement
     @imports = {}
     tags.each do |tag|
       if tag.kind_of? String
-        @imports[tag] = tag
+        @imports[tag] = tag  # if the module name is the same as the PyPi name
       elsif tag.kind_of? Hash
         @imports.merge!(tag)
       end
