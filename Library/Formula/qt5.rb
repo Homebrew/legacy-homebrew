@@ -33,8 +33,11 @@ class Qt5 < Formula
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
     end
 
-    args << "-system-libpng" if MacOS.version < :mountain_lion
-    args << "-L#{Formula.factory('libpng').lib}" << "-I#{Formula.factory('libpng').include}" if MacOS.version >= :mountain_lion
+    if MacOS.version < :mountain_lion
+      args << "-system-libpng"
+    else
+      args << "-L#{Formula.factory('libpng').opt_prefix}/lib" << "-L#{Formula.factory('libpng').opt_prefix}/include"
+    end
 
     args << "-L#{Formula.factory('jpeg').opt_prefix}/lib" << "-I#{Formula.factory('jpeg').opt_prefix}/include"
     args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
