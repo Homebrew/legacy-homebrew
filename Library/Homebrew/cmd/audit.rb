@@ -496,11 +496,18 @@ class FormulaAuditor
 
   def audit_python
     if text =~ /(def\s*)?which_python/
-      problem "Replace `which_python` by `python.xy`, which returns e.g. 'python2.7'."
+      problem "Replace `which_python` by `python.xy`, which returns e.g. 'python2.7'"
     end
 
     if text =~ /which\(?["']python/
       problem "Don't locate python with `which 'python'`, use `python.binary` instead"
+    end
+
+    if text =~ /LanguageModuleDependency.new\s?\(\s?:python/
+      problem <<-EOS.undent
+        Python: Replace `LanguageModuleDependency.new(:python,'PyPi-name','module')`
+           by the new `depends_on :python => ['module' => 'PyPi-name']`
+      EOS
     end
 
     # Checks that apply only to code in def install
@@ -508,11 +515,11 @@ class FormulaAuditor
       install_body = $2
 
       if install_body =~ /system\(?\s*['"]python/
-        problem "Instead of `system 'python', ...`, call `system python, ...`."
+        problem "Instead of `system 'python', ...`, call `system python, ...`"
       end
 
       if text =~ /system\(?\s*python\.binary/
-        problem "Instead of `system python.binary, ...`, call `system python, ...`."
+        problem "Instead of `system python.binary, ...`, call `system python, ...`"
       end
     end
 
@@ -534,7 +541,7 @@ class FormulaAuditor
       # Don't check this for all formulae, because some are allowed to set the
       # PYTHONPATH. E.g. python.rb itself needs to set it.
       if text =~ /ENV\.append.*PYTHONPATH/ || text =~ /ENV\[['"]PYTHONPATH['"]\]\s*=[^=]/
-        problem "Don't set the PYTHONPATH, instead declare `depends_on :python`."
+        problem "Don't set the PYTHONPATH, instead declare `depends_on :python`"
       end
     else
       # So if there is no PythonInstalled requirement, we can check if the
