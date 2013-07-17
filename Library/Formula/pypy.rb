@@ -1,8 +1,8 @@
 require 'formula'
 
-class Distribute < Formula
-  url 'http://pypi.python.org/packages/source/d/distribute/distribute-0.6.45.tar.gz'
-  sha1 '55b15037f2222828496a96f38447c0fa0228df85'
+class Setuptools < Formula
+  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.5.tar.gz'
+  sha1 'a6ea38fb68f32abf7c1b1fe9a9c56c413f096c3a'
 end
 
 class Pypy < Formula
@@ -35,11 +35,11 @@ class Pypy < Formula
       install-scripts=#{scripts_folder}
     EOF
 
-    # Install distribute. The user can then do:
+    # Install setuptools. The user can then do:
     # $ easy_install pip
-    # $ pip install --upgrade distribute
-    # to get newer versions of distribute outside of Homebrew.
-    Distribute.new.brew do
+    # $ pip install --upgrade setuptools
+    # to get newer versions of setuptools outside of Homebrew.
+    Setuptools.new.brew do
       system "#{bin}/pypy", "setup.py", "install"
     end
 
@@ -64,10 +64,10 @@ class Pypy < Formula
     any provided scripts will go into the install-scripts folder above, so you may
     want to add it to your PATH.
 
-    Distribute has been installed, so easy_install is available.
-    To update distribute itself outside of Homebrew:
+    Setuptools has been installed, so easy_install is available.
+    To update setuptools itself outside of Homebrew:
         #{scripts_folder}/easy_install pip
-        #{scripts_folder}/pip install --upgrade distribute
+        #{scripts_folder}/pip install --upgrade setuptools
 
     See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
     EOS
@@ -78,7 +78,7 @@ class Pypy < Formula
     HOMEBREW_PREFIX+"lib/pypy/site-packages"
   end
 
-  # Where distribute will install executable scripts
+  # Where setuptools will install executable scripts
   def scripts_folder
     HOMEBREW_PREFIX+"share/pypy"
   end
