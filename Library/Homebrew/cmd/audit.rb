@@ -331,8 +331,8 @@ class FormulaAuditor
     end
   end
 
-  def audit_text
-    if text =~ /<(Formula|AmazonWebServicesFormula|ScriptFileFormula|GithubGistFormula)/
+  def audit_text(line)
+    if line =~ /<(Formula|AmazonWebServicesFormula|ScriptFileFormula|GithubGistFormula)/
       problem "Use a space in class inheritance: class Foo < #{$1}"
     end
 
@@ -356,149 +356,149 @@ class FormulaAuditor
     end
 
     # FileUtils is included in Formula
-    if text =~ /FileUtils\.(\w+)/
+    if line =~ /FileUtils\.(\w+)/
       problem "Don't need 'FileUtils.' before #{$1}."
     end
 
     # Check for long inreplace block vars
-    if text =~ /inreplace .* do \|(.{2,})\|/
+    if line =~ /inreplace .* do \|(.{2,})\|/
       problem "\"inreplace <filenames> do |s|\" is preferred over \"|#{$1}|\"."
     end
 
     # Check for string interpolation of single values.
-    if text =~ /(system|inreplace|gsub!|change_make_var!).*[ ,]"#\{([\w.]+)\}"/
+    if line =~ /(system|inreplace|gsub!|change_make_var!).*[ ,]"#\{([\w.]+)\}"/
       problem "Don't need to interpolate \"#{$2}\" with #{$1}"
     end
 
     # Check for string concatenation; prefer interpolation
-    if text =~ /(#\{\w+\s*\+\s*['"][^}]+\})/
+    if line =~ /(#\{\w+\s*\+\s*['"][^}]+\})/
       problem "Try not to concatenate paths in string interpolation:\n   #{$1}"
     end
 
     # Prefer formula path shortcuts in Pathname+
-    if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share)[/'"])}
+    if line =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share)[/'"])}
       problem "\"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
     end
 
-    if text =~ %r[((man)\s*\+\s*(['"])(man[1-8])(['"]))]
+    if line =~ %r[((man)\s*\+\s*(['"])(man[1-8])(['"]))]
       problem "\"#{$1}\" should be \"#{$4}\""
     end
 
     # Prefer formula path shortcuts in strings
-    if text =~ %r[(\#\{prefix\}/(bin|include|libexec|lib|sbin|share))]
+    if line =~ %r[(\#\{prefix\}/(bin|include|libexec|lib|sbin|share))]
       problem "\"#{$1}\" should be \"\#{#{$2}}\""
     end
 
-    if text =~ %r[((\#\{prefix\}/share/man/|\#\{man\}/)(man[1-8]))]
+    if line =~ %r[((\#\{prefix\}/share/man/|\#\{man\}/)(man[1-8]))]
       problem "\"#{$1}\" should be \"\#{#{$3}}\""
     end
 
-    if text =~ %r[((\#\{share\}/(man)))[/'"]]
+    if line =~ %r[((\#\{share\}/(man)))[/'"]]
       problem "\"#{$1}\" should be \"\#{#{$3}}\""
     end
 
-    if text =~ %r[(\#\{prefix\}/share/(info|man))]
+    if line =~ %r[(\#\{prefix\}/share/(info|man))]
       problem "\"#{$1}\" should be \"\#{#{$2}}\""
     end
 
     # Commented-out depends_on
-    if text =~ /#\s*depends_on\s+(.+)\s*$/
+    if line =~ /#\s*depends_on\s+(.+)\s*$/
       problem "Commented-out dep #{$1}"
     end
 
     # No trailing whitespace, please
-    if text =~ /[\t ]+$/
+    if line =~ /[\t ]+$/
       problem "Trailing whitespace was found"
     end
 
-    if text =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
+    if line =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
       problem "Use \"if ARGV.build_#{$1.downcase}?\" instead"
     end
 
-    if text =~ /make && make/
+    if line =~ /make && make/
       problem "Use separate make calls"
     end
 
-    if text =~ /^[ ]*\t/
+    if line =~ /^[ ]*\t/
       problem "Use spaces instead of tabs for indentation"
     end
 
     # xcodebuild should specify SYMROOT
-    if text =~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
+    if line =~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
       problem "xcodebuild should be passed an explicit \"SYMROOT\""
     end
 
-    if text =~ /ENV\.x11/
+    if line =~ /ENV\.x11/
       problem "Use \"depends_on :x11\" instead of \"ENV.x11\""
     end
 
     # Avoid hard-coding compilers
-    if text =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
+    if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
       problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
     end
 
-    if text =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}
+    if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}
       problem "Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
     end
 
-    if text =~ /system\s+['"](env|export)/
+    if line =~ /system\s+['"](env|export)/
       problem "Use ENV instead of invoking '#{$1}' to modify the environment"
     end
 
-    if text =~ /version == ['"]HEAD['"]/
+    if line =~ /version == ['"]HEAD['"]/
       problem "Use 'build.head?' instead of inspecting 'version'"
     end
 
-    if text =~ /build\.include\?\s+['"]\-\-(.*)['"]/
+    if line =~ /build\.include\?\s+['"]\-\-(.*)['"]/
       problem "Reference '#{$1}' without dashes"
     end
 
-    if text =~ /build\.with\?\s+['"]-?-?with-(.*)['"]/
+    if line =~ /build\.with\?\s+['"]-?-?with-(.*)['"]/
       problem "No double 'with': Use `build.with? '#{$1}'` to check for \"--with-#{$1}\""
     end
 
-    if text =~ /build\.without\?\s+['"]-?-?without-(.*)['"]/
+    if line =~ /build\.without\?\s+['"]-?-?without-(.*)['"]/
       problem "No double 'without': Use `build.without? '#{$1}'` to check for \"--without-#{$1}\""
     end
 
-    if text =~ /ARGV\.(?!(debug\?|verbose\?|find[\(\s]))/
+    if line =~ /ARGV\.(?!(debug\?|verbose\?|find[\(\s]))/
       problem "Use build instead of ARGV to check options"
     end
 
-    if text =~ /def options/
+    if line =~ /def options/
       problem "Use new-style option definitions"
     end
 
-    if text =~ /MACOS_VERSION/
+    if line =~ /MACOS_VERSION/
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
 
     cats = %w{leopard snow_leopard lion mountain_lion}.join("|")
-    if text =~ /MacOS\.(?:#{cats})\?/
+    if line =~ /MacOS\.(?:#{cats})\?/
       problem "\"#{$&}\" is deprecated, use a comparison to MacOS.version instead"
     end
 
-    if text =~ /skip_clean\s+:all/
+    if line =~ /skip_clean\s+:all/
       problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
     end
 
-    if text =~ /depends_on [A-Z][\w:]+\.new$/
+    if line =~ /depends_on [A-Z][\w:]+\.new$/
       problem "`depends_on` can take requirement classes instead of instances"
     end
 
-    if text =~ /^def (\w+).*$/
+    if line =~ /^def (\w+).*$/
       problem "Define method #{$1.inspect} in the class body, not at the top-level"
     end
 
-    if text =~ /ENV.fortran/
+    if line =~ /ENV.fortran/
       problem "Use `depends_on :fortran` instead of `ENV.fortran`"
     end
 
-    if text =~ /depends_on :(.+) (if.+|unless.+)$/
+    if line =~ /depends_on :(.+) (if.+|unless.+)$/
       audit_conditional_dep($1.to_sym, $2, $&)
     end
 
-    if text =~ /depends_on ['"](.+)['"] (if.+|unless.+)$/
+    if line =~ /depends_on ['"](.+)['"] (if.+|unless.+)$/
       audit_conditional_dep($1, $2, $&)
     end
   end
@@ -609,7 +609,7 @@ class FormulaAuditor
     audit_deps
     audit_conflicts
     audit_patches
-    audit_text
+    text.each_line { |line| audit_text(line) }
     audit_python
     audit_installed
   end
