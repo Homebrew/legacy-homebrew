@@ -82,7 +82,7 @@ module FormulaCellarChecks
     ["Non-executables were installed to \"#{bin}\".",
       <<-EOS.undent
         The offending files are:
-        #{non_exes}"
+        #{non_exes}
       EOS
     ]
   end
