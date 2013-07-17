@@ -13,6 +13,7 @@ class Mercurial < Formula
   depends_on :python => 'docutils' if build.include? 'enable-docs'
 
   def install
+    ENV.minimal_optimization if MacOS.version <= :snow_leopard
     python do
       # Inside this python do block, the PYTHONPATH (and more) is alreay set up
       if python.from_osx? && !MacOS::CLT.installed?
