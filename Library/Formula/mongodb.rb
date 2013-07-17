@@ -7,9 +7,9 @@ class Mongodb < Formula
   version '2.4.5-x86_64'
 
   devel do
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.5.0.tgz'
-    sha1 '158335b4b2b8d53c8c6bd4f4d81c733e492f8339'
-    version '2.5.0-x86_64'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.5.1.tgz'
+    sha1 '09b94856e6488a266b084355842b95cbd97cfd1e'
+    version '2.5.1-x86_64'
   end
 
   depends_on :arch => :x86_64
