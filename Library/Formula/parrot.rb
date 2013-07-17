@@ -22,6 +22,7 @@ class Parrot < Formula
 
   def install
     system "perl", "Configure.pl", "--prefix=#{prefix}",
+                                   "--mandir=#{man}",
                                    "--debugging=0",
                                    "--cc=#{ENV.cc}"
 
