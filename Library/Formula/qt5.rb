@@ -37,10 +37,11 @@ class Qt5 < Formula
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
-    if build.include? 'with-qtdbus'
-      args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
-      args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
-      args << "-L#{Formula.factory('d-bus').lib}"
+    if build.with? 'qtdbus'
+      dbus_opt = Formula.factory('d-bus').opt_prefix
+      args << "-I#{dbus_opt}/lib/dbus-1.0/include"
+      args << "-I#{dbus_opt}/include/dbus-1.0"
+      args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
     end
 
