@@ -4,12 +4,10 @@ class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
   url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.5.tgz'
   sha1 '04de29aab4ba532aa4c963113cb648b0c3d1b68e'
-  version '2.4.5-x86_64'
 
   devel do
     url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.5.1.tgz'
     sha1 '09b94856e6488a266b084355842b95cbd97cfd1e'
-    version '2.5.1-x86_64'
   end
 
   depends_on :arch => :x86_64
