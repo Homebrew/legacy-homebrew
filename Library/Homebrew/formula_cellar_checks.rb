@@ -4,10 +4,13 @@ module FormulaCellarChecks
     return unless bin.directory?
     return unless bin.children.length > 0
 
-    bin = (HOMEBREW_PREFIX/bin.basename).realpath
-    return if ORIGINAL_PATHS.include? bin
+    prefix_bin = (HOMEBREW_PREFIX/bin.basename)
+    return unless prefix_bin.directory?
 
-    ["#{bin} is not in your PATH",
+    prefix_bin = prefix_bin.realpath
+    return if ORIGINAL_PATHS.include? prefix_bin
+
+    ["#{prefix_bin} is not in your PATH",
       "You can amend this by altering your ~/.bashrc file"]
   end
 
