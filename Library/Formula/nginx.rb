@@ -19,12 +19,21 @@ class Nginx < Formula
   option 'with-debug', 'Compile with support for debug log'
   option 'with-spdy', 'Compile with support for SPDY module'
   option 'with-gunzip', 'Compile with support for gunzip module'
+  option 'with-luajit', 'Compile LUA scripting support'
 
   depends_on 'pcre'
   # SPDY needs openssl >= 1.0.1 for NPN; see:
   # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
   # http://www.openssl.org/news/changelog.html
   depends_on 'openssl' if build.with? 'spdy'
+
+  if build.with? 'luajit'
+    depends_on 'luajit'
+    depends_on 'ngx_devel_kit'
+    depends_on 'lua-nginx-module'
+    ENV['LUAJIT_LIB'] = `pkg-config --libs-only-L luajit`.strip.sub '-L', ''
+    ENV['LUAJIT_INC'] = `pkg-config --cflags-only-I luajit`.strip.sub '-I', ''
+  end
 
   skip_clean 'logs'
 
@@ -80,6 +89,11 @@ class Nginx < Formula
     args << "--with-debug" if build.include? 'with-debug'
     args << "--with-http_spdy_module" if build.include? 'with-spdy'
     args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
+
+    if build.include? 'with-luajit'
+      args << "--add-module=#{ `brew --prefix ngx_devel_kit`.chomp }"
+      args << "--add-module=#{ `brew --prefix lua-nginx-module`.chomp }"
+    end
 
     if build.head?
       system "./auto/configure", *args
