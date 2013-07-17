@@ -21,8 +21,6 @@ class Qt < Formula
   option 'with-debug-and-release', 'Compile Qt in debug and release mode'
   option 'developer', 'Compile and link Qt with developer options'
 
-  depends_on :libpng
-
   depends_on "d-bus" if build.with? 'qtdbus'
   depends_on "mysql" => :optional
 
@@ -30,7 +28,7 @@ class Qt < Formula
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
 
     args = ["-prefix", prefix,
-            "-system-libpng", "-system-zlib",
+            "-system-zlib",
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
