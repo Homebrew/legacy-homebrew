@@ -60,9 +60,10 @@ class Pypy < Formula
     specifing the install-scripts folder as:
       #{scripts_folder}
 
-    If you install Python packages via "pypy setup.py install", easy_install, pip,
-    any provided scripts will go into the install-scripts folder above, so you may
-    want to add it to your PATH.
+    If you install Python packages via "pypy setup.py install", easy_install_pypy,
+    pip_pypy, any provided scripts will go into the install-scripts folder above,
+    so you may want to add it to your PATH *after* the `$(brew --prefix)/bin`
+    so you don't overwrite tools from CPython.
 
     Setuptools has been installed, so easy_install is available.
     To update setuptools itself outside of Homebrew:
