@@ -7,6 +7,10 @@ class Newlisp < Formula
 
   depends_on 'readline'
 
+  def patches
+    DATA
+  end
+
   def install
     # Required to use our configuration
     ENV.append_to_cflags "-DNEWCONFIG -c"
@@ -21,15 +25,6 @@ class Newlisp < Formula
     If you have brew in a custom prefix, the included examples
     will need to be be pointed to your newlisp executable.
     EOS
-  end
-
-  def patches
-    DATA
-  end
-
-  # Use the IDE to test a complete installation
-  def test
-    system "#{bin}/newlisp-edit"
   end
 end
 
