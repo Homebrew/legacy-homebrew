@@ -337,21 +337,21 @@ class FormulaAuditor
     end
 
     # Commented-out cmake support from default template
-    if (text =~ /# system "cmake/)
+    if line =~ /# system "cmake/
       problem "Commented cmake call found"
     end
 
     # Comments from default template
-    if (text =~ /# PLEASE REMOVE/)
+    if line =~ /# PLEASE REMOVE/
       problem "Please remove default template comments"
     end
-    if (text =~ /# if this fails, try separate make\/make install steps/)
+    if line =~ /# if this fails, try separate make\/make install steps/
       problem "Please remove default template comments"
     end
-    if (text =~ /# if your formula requires any X11\/XQuartz components/)
+    if line =~ /# if your formula requires any X11\/XQuartz components/
       problem "Please remove default template comments"
     end
-    if (text =~ /# if your formula's build system can't parallelize/)
+    if line =~ /# if your formula's build system can't parallelize/
       problem "Please remove default template comments"
     end
 
@@ -424,7 +424,7 @@ class FormulaAuditor
     end
 
     # xcodebuild should specify SYMROOT
-    if line =~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
+    if line =~ /system\s+['"]xcodebuild/ and not line =~ /SYMROOT=/
       problem "xcodebuild should be passed an explicit \"SYMROOT\""
     end
 
