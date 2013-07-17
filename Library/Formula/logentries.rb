@@ -2,8 +2,8 @@ require 'formula'
 
 class Logentries < Formula
   homepage 'https://logentries.com/doc/agent/'
-  url 'https://github.com/logentries/le/archive/v1.2.11.tar.gz'
-  sha1 'f10a172a792799e4e75a93d55e2746631a845dab'
+  url 'https://github.com/logentries/le/archive/v1.2.12.tar.gz'
+  sha1 '7dc003bee3c3169fc88a34aa21cdc3e606e194df'
 
   def install
     bin.install 'le'

@@ -10,9 +10,11 @@ class Libgphoto2 < Formula
   depends_on 'pkg-config' => :build
   depends_on :libltdl # Configure script uses this
   depends_on 'libusb-compat'
+  depends_on 'gd'
   depends_on 'libexif' => :optional
 
   def install
+    ENV.libxml2 # https://sourceforge.net/p/gphoto/bugs/957/; check at 2.5.3
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "CFLAGS=-D_DARWIN_C_SOURCE"

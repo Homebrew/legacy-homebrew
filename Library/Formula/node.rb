@@ -35,8 +35,8 @@ class Node < Formula
   sha1 'f73d5f134296ed0aa16cbec5d727f94587844155'
 
   devel do
-    url 'http://nodejs.org/dist/v0.11.3/node-v0.11.3.tar.gz'
-    sha1 '4b82d58ed3ce38fa67a8484b42cfd47179b6a4a5'
+    url 'http://nodejs.org/dist/v0.11.4/node-v0.11.4.tar.gz'
+    sha1 '0035d18e2dcf9aad669b1c7c07319e17abfe3762'
   end
 
   head 'https://github.com/joyent/node.git'
@@ -45,7 +45,7 @@ class Node < Formula
   option 'without-npm', 'npm will not be installed'
 
   depends_on NpmNotInstalled unless build.without? 'npm'
-  depends_on PythonInstalled.new("2.6") => :build
+  depends_on :python => ["2.6", :build]
 
   fails_with :llvm do
     build 2326

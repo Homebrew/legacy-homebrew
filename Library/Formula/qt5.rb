@@ -5,7 +5,7 @@ class Qt5 < Formula
   url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.0/single/qt-everywhere-opensource-src-5.1.0.tar.gz'
   sha1 '12d706124dbfac3d542dd3165176a978d478c085'
 
-  head 'git://gitorious.org/qt/qt5.git', :branch => 'master'
+  head 'git://gitorious.org/qt/qt5.git', :branch => 'stable'
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
@@ -28,12 +28,11 @@ class Qt5 < Formula
             "-confirm-license", "-opensource"]
 
     unless MacOS::CLT.installed?
-      # Qt hard-codes paths (and uses -I flags) and linking fails on Xcode-only
-      args += ["-sdk", MacOS.sdk_path]
-      # Even with sdk given, Qt5 is too stupid to find CFNumber.h, so we give a hint:
+      # ... too stupid to find CFNumber.h, so we give a hint:
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
     end
 
+    args << "-L#{Formula.factory('jpeg').opt_prefix}/lib" << "-I#{Formula.factory('jpeg').opt_prefix}/include"
     args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
@@ -41,10 +40,14 @@ class Qt5 < Formula
     if build.include? 'with-qtdbus'
       args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
       args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
+      args << "-L#{Formula.factory('d-bus').lib}"
+      args << "-ldbus-1"
     end
 
     unless build.include? 'with-demos-examples'
-      args << "-nomake" << "demos" << "-nomake" << "examples"
+      args << "-nomake" << "examples"
+      # In latest head `-nomake demos` is no longer recognized
+      args << "-nomake" << "demos" unless build.head?
     end
 
     if MacOS.prefer_64_bit? or build.universal?
@@ -89,7 +92,7 @@ class Qt5 < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/qmake", "--version"
   end
 

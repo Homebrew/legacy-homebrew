@@ -2,8 +2,8 @@ require 'formula'
 
 class Pdal < Formula
   homepage 'http://pointcloud.org'
-  url 'https://github.com/PDAL/PDAL/archive/0.1.0.tar.gz'
-  sha1 '74f3f5d8b58c52b7eb2afe260a0020b7c4a6906e'
+  url 'https://github.com/PDAL/PDAL/archive/0.9.8.tar.gz'
+  sha1 '6a6a76e6531473541746c19154630ff403099547'
 
   head 'https://github.com/PDAL/PDAL.git'
 
