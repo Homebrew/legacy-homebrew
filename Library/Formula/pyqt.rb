@@ -2,8 +2,8 @@ require 'formula'
 
 class Pyqt < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  url 'http://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.1/PyQt-mac-gpl-4.10.1.tar.gz'
-  sha1 'cf20699c4db8d3031c19dd51df8857bba1a4956b'
+  url 'http://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.2/PyQt-mac-gpl-4.10.2.tar.gz'
+  sha1 '40362e6b9f476683e4e35b83369e30a8dfff99ad'
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
@@ -23,8 +23,8 @@ class Pyqt < Formula
                                        "--destdir=#{lib}/#{python.xy}/site-packages",
                                        "--sipdir=#{share}/sip#{python.if3then3}"
       system "make"
-      system "make install"
-      system "make clean"  # because this python block may be run twice
+      system "make", "install"
+      system "make", "clean"  # because this python block may be run twice
     end
 
     if python3
