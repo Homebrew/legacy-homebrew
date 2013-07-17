@@ -103,7 +103,11 @@ class Boost < Formula
     # The context library is implemented as x86_64 ASM, so it
     # won't build on PPC or 32-bit builds
     # see https://github.com/mxcl/homebrew/issues/17646
-    bargs << "--without-libraries=context" if Hardware::CPU.type == :ppc || Hardware::CPU.bits == 32 || build.universal?
+    if Hardware::CPU.type == :ppc || Hardware::CPU.bits == 32 || build.universal?
+      bargs << "--without-libraries=context"
+      # The coroutine library depends on the context library.
+      bargs << "--without-libraries=coroutine"
+    end
 
     # Boost.Log cannot be built using Apple GCC at the moment. Disabled
     # on such systems.
