@@ -226,7 +226,7 @@ def __check_clt_up_to_date
     You should install the Command Line Tools: http://connect.apple.com
     EOS
   elsif MacOS::CLT.outdated? then <<-EOS.undent
-    A newer Command Line Tools for Xcode release is available
+    A newer Command Line Tools release is available
     You should install the latest version from: http://connect.apple.com
     EOS
   end
@@ -264,15 +264,8 @@ def check_for_stray_developer_directory
 end
 
 def check_cc
-  unless MacOS::CLT.installed?
-    if MacOS::Xcode.version >= "4.3" then <<-EOS.undent
-      Experimental support for using Xcode without the "Command Line Tools".
-      You have only installed Xcode. If stuff is not building, try installing the
-      "Command Line Tools for Xcode" package provided by Apple.
-      EOS
-    else
-      'No compiler found in /usr/bin!'
-    end
+  if !MacOS::CLT.installed? && MacOS::Xcode.version < "4.3"
+    'No compiler found in /usr/bin!'
   end
 end
 
@@ -974,7 +967,7 @@ def check_for_non_prefixed_coreutils
 end
 
 def check_for_non_prefixed_findutils
-  default_names = Tab.for_formula('findutils').used_options.include? 'default-names'
+  default_names = Tab.for_name('findutils').used_options.include? 'default-names'
   if default_names then <<-EOS.undent
     Putting non-prefixed findutils in your path can cause python builds to fail.
     EOS
@@ -1023,7 +1016,11 @@ def check_for_unlinked_but_not_keg_only
     if not rack.directory?
       true
     elsif not (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
-      Formula.factory(rack.basename).keg_only? rescue nil
+      begin
+        Formula.factory(rack.basename.to_s).keg_only?
+      rescue FormulaUnavailableError
+        false
+      end
     else
       true
     end

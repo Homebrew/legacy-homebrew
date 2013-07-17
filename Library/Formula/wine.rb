@@ -27,8 +27,8 @@ class Wine < Formula
     # updating too
     #  * http://wiki.winehq.org/Gecko
     #  * http://wiki.winehq.org/Mono
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6-rc3.tar.bz2'
-    sha1 '9533d9e6da23d69c6e5b22b45e1507c721d66ebf'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6-rc5.tar.bz2'
+    sha1 'a19c39fab54c83d9e03e06bb506b7885fc45e94b'
   end
 
   env :std
@@ -44,6 +44,8 @@ class Wine < Formula
   depends_on 'libtiff'
   depends_on 'little-cms'
   depends_on 'gnutls' if build.devel?
+  depends_on 'sane-backends' if build.devel?
+  depends_on 'libgphoto2' if build.devel?
 
   fails_with :llvm do
     build 2336
@@ -93,13 +95,18 @@ class Wine < Formula
     ENV.libxml2
     ENV.append "LDFLAGS", "-lxslt"
 
+    # As of 1.4 these don't do anything, but under 1.6 they will *possibly*
+    # resolve our issues with conflicting freetype installations
+    ENV['FREETYPE_CFLAGS'] = "-I#{MacOS::X11.include}/freetype2 -I#{MacOS::X11.include}"
+    ENV['FREETYPE_LIBS'] = "-L#{MacOS::X11.lib} -lfreetype"
+
     args = %W[--prefix=#{prefix}
               --with-coreaudio
               --with-opengl
               --with-x
               --x-include=#{MacOS::X11.include}
               --x-lib=#{MacOS::X11.lib}]
-    args << "--disable-win16" if MacOS.version == :leopard or ENV.compiler == :clang
+    args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?

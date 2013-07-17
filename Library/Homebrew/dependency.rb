@@ -21,7 +21,7 @@ class Dependency
   end
 
   def eql?(other)
-    instance_of?(other.class) && hash == other.hash
+    instance_of?(other.class) && name == other.name
   end
 
   def hash

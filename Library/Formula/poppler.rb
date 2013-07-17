@@ -18,12 +18,12 @@ class Poppler < Formula
   depends_on :fontconfig
   depends_on 'openjpeg'
 
-  depends_on 'qt' if build.include? 'with-qt4'
-  depends_on 'glib' if build.include? 'with-glib'
-  depends_on 'cairo' if build.include? 'with-glib' # Needs a newer Cairo build than OS X 10.6.7 provides
+  depends_on 'qt' if build.with? 'qt4'
+  depends_on 'glib' => :optional
+  depends_on 'cairo' if build.with? 'glib' # Needs a newer Cairo build than OS X 10.6.7 provides
 
   def install
-    if build.include? 'with-qt4'
+    if build.with? 'qt4'
       ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp
       ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
     end
@@ -35,8 +35,8 @@ class Poppler < Formula
     # Also, explicitly disable Glib as Poppler will find it and set up to
     # build, but Superenv will have stripped the Glib utilities out of the
     # PATH.
-    args << ( build.include?('with-qt4') ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
-    args << ( build.include?('with-glib') ? '--enable-poppler-glib' : '--disable-poppler-glib' )
+    args << ( build.with?('qt4') ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
+    args << ( build.with?('glib') ? '--enable-poppler-glib' : '--disable-poppler-glib' )
 
     system "./configure", *args
     system "make install"

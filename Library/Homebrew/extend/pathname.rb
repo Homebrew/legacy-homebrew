@@ -62,6 +62,7 @@ class Pathname
 
     return return_value
   end
+  protected :install_p
 
   # Creates symlinks to sources in this folder.
   def install_symlink *sources
@@ -94,6 +95,7 @@ class Pathname
 
     return dst
   end
+  protected :install_symlink_p
 
   # we assume this pathname object is a file obviously
   def write content
@@ -251,7 +253,12 @@ class Pathname
   end
 
   def resolved_path_exists?
-    (dirname+readlink).exist?
+    link = readlink
+  rescue ArgumentError
+    # The link target contains NUL bytes
+    false
+  else
+    (dirname+link).exist?
   end
 
   # perhaps confusingly, this Pathname object becomes the symlink pointing to

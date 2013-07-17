@@ -48,7 +48,7 @@ module Homebrew extend self
   def recursive_deps_tree f, level
     f.deps.default.each do |dep|
       puts "|  "*(level-1)+"|- "+dep.to_s
-      recursive_deps_tree(Formula.factory(dep), level+1)
+      recursive_deps_tree(Formula.factory(dep.to_s), level+1)
     end
   end
 end

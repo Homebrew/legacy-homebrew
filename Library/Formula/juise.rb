@@ -1,26 +1,27 @@
 require 'formula'
 
 class Juise < Formula
-  homepage 'http://code.google.com/p/juise/'
-  url 'http://juise.googlecode.com/files/juise-0.3.21.tar.gz'
-  sha1 '1d58b182ce60edc275f6574bc72c128a799438e0'
+  homepage 'https://github.com/Juniper/juise/wiki'
+  url 'https://github.com/Juniper/juise/releases/0.5.3/3012/juise-0.5.3.tar.gz'
+  sha1 'aacc8414f0ce278bc080ce3b41225a94e3000173'
 
+  head 'https://github.com/Juniper/juise.git'
+
+  depends_on 'automake' => :build if build.head?
   depends_on 'libtool'  => :build
   depends_on 'libslax'
   depends_on 'libssh2'
   depends_on 'pcre'
-
-  # Need newer versions of these libraries
-  if MacOS.version <= :lion
-    depends_on 'libxml2'
-    depends_on 'libxslt'
-    depends_on 'curl'
-  end
+  depends_on 'sqlite'
 
   def install
+    # If build from read run script to run autoconf
+    system "sh ./bin/setup.sh" if build.head?
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libssh2-prefix=#{HOMEBREW_PREFIX}"
+                          "--with-libssh2-prefix=#{HOMEBREW_PREFIX}",
+                          "--with-sqlite3-prefix=#{Formula.factory('sqlite').opt_prefix}"
     system "make install"
   end
 end

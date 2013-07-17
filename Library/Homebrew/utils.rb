@@ -2,6 +2,7 @@ require 'pathname'
 require 'exceptions'
 require 'macos'
 require 'utils/json'
+require 'utils/inreplace'
 require 'open-uri'
 
 class Tty
@@ -171,7 +172,7 @@ def which cmd
 end
 
 def which_editor
-  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
+  editor = ENV.values_at('HOMEBREW_EDITOR', 'VISUAL', 'EDITOR').compact.first
   # If an editor wasn't set, try to pick a sane default
   return editor unless editor.nil?
 
@@ -213,27 +214,6 @@ def archs_for_command cmd
   Pathname.new(cmd).archs
 end
 
-def inreplace paths, before=nil, after=nil
-  Array(paths).each do |path|
-    f = File.open(path, 'r')
-    s = f.read
-
-    if before == nil and after == nil
-      s.extend(StringInreplaceExtension)
-      yield s
-    else
-      sub = s.gsub!(before, after)
-      if sub.nil?
-        opoo "inreplace in '#{path}' failed"
-        puts "Expected replacement of '#{before}' with '#{after}'"
-      end
-    end
-
-    f.reopen(path, 'w').write(s)
-    f.close
-  end
-end
-
 def ignore_interrupts(opt = nil)
   std_trap = trap("INT") do
     puts "One sec, just cleaning up" unless opt == :quietly
@@ -261,16 +241,24 @@ end
 module GitHub extend self
   ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/")
 
+  Error = Class.new(StandardError)
+
   def open url, headers={}, &block
     default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
     default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
     Kernel.open(url, default_headers.merge(headers), &block)
   rescue OpenURI::HTTPError => e
     if e.io.meta['x-ratelimit-remaining'].to_i <= 0
-      raise "GitHub #{Utils::JSON.load(e.io.read)['message']}"
+      raise <<-EOS.undent
+        GitHub #{Utils::JSON.load(e.io.read)['message']}
+        You may want to create an API token: https://github.com/settings/applications
+        and then set HOMEBREW_GITHUB_API_TOKEN.
+        EOS
     else
       raise e
     end
+  rescue SocketError, OpenSSL::SSL::SSLError => e
+    raise Error, "Failed to connect to: #{url}\n#{e.message}"
   end
 
   def each_issue_matching(query, &block)

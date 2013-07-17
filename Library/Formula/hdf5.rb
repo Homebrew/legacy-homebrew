@@ -15,7 +15,7 @@ class Hdf5 < Formula
 
   depends_on :fortran if build.include? 'enable-fortran' or build.include? 'enable-fortran2003'
   depends_on 'szip'
-  depends_on MPIDependency.new(:cc, :cxx, :f90) if build.include? "enable-parallel"
+  depends_on :mpi => [:cc, :cxx, :f90] if build.include? "enable-parallel"
 
   def install
     ENV.universal_binary if build.universal?

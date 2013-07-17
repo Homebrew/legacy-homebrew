@@ -31,15 +31,16 @@ class PythonInstalled < Requirement
     end
   end
 
-  def initialize(version="2.6", *tags )
-    # Extract the min_version if given. Default to python 2.X else
-    if /(\d+\.)*\d+/ === version.to_s
-      @min_version = PythonVersion.new(version)
+  def initialize(default_version="2.6", tags=[] )
+    tags = [tags].flatten
+    # Extract the min_version if given. Default to default_version else
+    if /(\d+\.)*\d+/ === tags.first.to_s
+      @min_version = PythonVersion.new(tags.shift)
     else
-      raise "Invalid version specification for Python: '#{version}'"
+      @min_version = PythonVersion.new(default_version)
     end
 
-    # often used idiom: e.g. sipdir = "share/sip" + python.if3then3
+    # often used idiom: e.g. sipdir = "share/sip#{python.if3then3}"
     if @min_version.major == 3
       @if3then3 = "3"
     else
@@ -56,7 +57,7 @@ class PythonInstalled < Requirement
     @imports = {}
     tags.each do |tag|
       if tag.kind_of? String
-        @imports[tag] = tag
+        @imports[tag] = tag  # if the module name is the same as the PyPi name
       elsif tag.kind_of? Hash
         @imports.merge!(tag)
       end
@@ -312,7 +313,7 @@ class PythonInstalled < Requirement
               # Set the sys.executable to use the opt_prefix
               sys.executable = '#{HOMEBREW_PREFIX}/opt/#{name}/bin/python#{version.major}.#{version.minor}'
               # Fix 4)
-              # Make LINKFORSHARED (and python-confing --ldflags) return the
+              # Make LINKFORSHARED (and python-config --ldflags) return the
               # full path to the lib (yes, "Python" is actually the lib, not a
               # dir) so that third-party software does not need to add the
               # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
@@ -340,6 +341,10 @@ class PythonInstalled < Requirement
 
   def to_s
     binary.to_s
+  end
+
+  def eql?(other)
+    instance_of?(other.class) && hash == other.hash
   end
 
   def hash

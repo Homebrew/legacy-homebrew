@@ -9,6 +9,11 @@ class Libgcrypt < Formula
 
   option :universal
 
+  fails_with :clang do
+    build 77
+    cause "basic test fails"
+  end
+
   def patches
     if ENV.compiler == :clang
       {:p0 =>

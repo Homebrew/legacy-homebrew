@@ -6,8 +6,8 @@ class Mariadb < Formula
   sha1 '45268a0603db8674ecabbc510ad0fcad88a730f7'
 
   devel do
-    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.2/kvm-tarbake-jaunty-x86/mariadb-10.0.2.tar.gz'
-    sha1 '17deec36fd26124c357d43d520199c115c46caa1'
+    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.3/kvm-tarbake-jaunty-x86/mariadb-10.0.3.tar.gz'
+    sha1 'c36c03ad78bdadf9a10e7b695159857d6432726d'
   end
 
   depends_on 'cmake' => :build
@@ -38,18 +38,16 @@ class Mariadb < Formula
     build 421
   end
 
-  def patches
-    # fix build on Xcode only systems
-    DATA
-  end
-
   def install
+    # Don't hard-code the libtool path. See:
+    # https://github.com/mxcl/homebrew/issues/20185
+    inreplace "cmake/libutils.cmake",
+      "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
+      "COMMAND libtool -static -o ${TARGET_LOCATION}"
+
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
-
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
 
     cmake_args = %W[
       .
@@ -116,10 +114,23 @@ class Mariadb < Formula
     end
   end
 
+  def post_install
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
+
+    unless File.exist? "#{var}/mysql/mysql/user.frm"
+      ENV['TMPDIR'] = nil
+      system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",
+        "--basedir=#{prefix}", "--datadir=#{var}/mysql", "--tmpdir=/tmp"
+    end
+  end
+
   def caveats; <<-EOS.undent
-    Set up databases with:
-        unset TMPDIR
-        mysql_install_db --user=\`whoami\` --basedir="$(brew --prefix mariadb)" --datadir=#{var}/mysql --tmpdir=/tmp
+    A "/etc/my.cnf" from another install may interfere with a Homebrew-built
+    server starting up correctly.
+
+    To connect:
+        mysql -uroot
     EOS
   end
 
@@ -134,8 +145,11 @@ class Mariadb < Formula
       <true/>
       <key>Label</key>
       <string>#{plist_name}</string>
-      <key>Program</key>
-      <string>#{HOMEBREW_PREFIX}/bin/mysqld_safe</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/bin/mysqld_safe</string>
+        <string>--bind-address=127.0.0.1</string>
+      </array>
       <key>RunAtLoad</key>
       <true/>
       <key>WorkingDirectory</key>
@@ -144,19 +158,10 @@ class Mariadb < Formula
     </plist>
     EOS
   end
-end
 
-__END__
-diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
-index 7c13df0..c82de4d 100644
---- a/cmake/libutils.cmake
-+++ b/cmake/libutils.cmake
-@@ -183,7 +183,7 @@ MACRO(MERGE_STATIC_LIBS TARGET OUTPUT_NAME LIBS_TO_MERGE)
-       # binaries properly)
-       ADD_CUSTOM_COMMAND(TARGET ${TARGET} POST_BUILD
-         COMMAND rm ${TARGET_LOCATION}
--        COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION} 
-+        COMMAND libtool -static -o ${TARGET_LOCATION} 
-         ${STATIC_LIBS}
-       )  
-     ELSE()
+  test do
+    (prefix+'mysql-test').cd do
+      system './mysql-test-run.pl', 'status'
+    end
+  end
+end

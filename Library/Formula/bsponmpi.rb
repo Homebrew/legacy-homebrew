@@ -6,7 +6,7 @@ class Bsponmpi < Formula
   sha1 '07380f8c4e72a69dddf5deae786ecbb37811b489'
 
   depends_on 'scons' => :build
-  depends_on MPIDependency.new(:cc, :cxx)
+  depends_on :mpi => [:cc, :cxx]
 
   def install
     # Don't install 'CVS' folders from tarball

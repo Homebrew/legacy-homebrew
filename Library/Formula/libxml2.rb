@@ -19,7 +19,11 @@ class Libxml2 < Formula
     depends_on :libtool
   else
     # 2.9.1 cannot build with Python 2.6: https://github.com/mxcl/homebrew/issues/20249
-    depends_on PythonInstalled.new("2.7") => :recommended
+    if MacOS.version <= :snow_leopard
+      depends_on :python => ["2.7", :optional]
+    else
+      depends_on :python => ["2.7", :recommended]
+    end
   end
 
   fails_with :llvm do
@@ -56,8 +60,7 @@ class Libxml2 < Formula
         rm path if path.exist?
         ln_s f, path
       }
-    end
-
+    end if build.with? 'python'
   end
 
   def caveats
@@ -71,7 +74,7 @@ class Libxml2 < Formula
     end
   end
 
-  def test
+  test do
     if build.with? 'python'
       system python, '-c', "import libxml2"
     else

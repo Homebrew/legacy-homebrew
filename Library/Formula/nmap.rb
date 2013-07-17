@@ -8,7 +8,7 @@ class Nmap < Formula
   head 'https://guest:@svn.nmap.org/nmap/', :using => :svn
 
   # Leopard's version of OpenSSL isn't new enough
-  depends_on "openssl" if MacOS.version == :leopard
+  depends_on "openssl" if MacOS.version <= :leopard
 
   fails_with :llvm do
     build 2334
@@ -23,7 +23,7 @@ class Nmap < Formula
               --without-zenmap
               --disable-universal]
 
-    if MacOS.version == :leopard
+    if MacOS.version <= :leopard
       openssl = Formula.factory('openssl')
       args << "--with-openssl=#{openssl.prefix}"
     end

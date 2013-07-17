@@ -5,9 +5,9 @@ require 'formula'
 # "python" will always point to the 2.x version which you can get by
 # `brew install python`.
 
-class Distribute < Formula
-  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.45.tar.gz'
-  sha1 '55b15037f2222828496a96f38447c0fa0228df85'
+class Setuptools < Formula
+  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.5.tar.gz'
+  sha1 'a6ea38fb68f32abf7c1b1fe9a9c56c413f096c3a'
 end
 
 class Pip < Formula
@@ -63,7 +63,7 @@ class Python3 < Formula
   end
 
   def install
-    # Unset these so that installing pip and distribute puts them where we want
+    # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
     ENV['PYTHONHOME'] = nil
 
@@ -134,14 +134,14 @@ class Python3 < Formula
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
 
-    # We ship distribute and pip and reuse the PythonInstalled
+    # We ship setuptools and pip and reuse the PythonInstalled
     # Requirement here to write the sitecustomize.py
     py = PythonInstalled.new(VER)
     py.binary = bin/"python#{VER}"
     py.modify_build_environment
     setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Distribute.new.brew { system "#{bin}/python#{VER}", *setup_args }
+    Setuptools.new.brew { system "#{bin}/python#{VER}", *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
     Pip.new.brew { system "#{bin}/python#{VER}", *setup_args }
     mv bin/'pip', bin/'pip3'
@@ -168,7 +168,7 @@ class Python3 < Formula
     cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
     ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
     unless MacOS::CLT.installed?
-      # Help Python's build system (distribute/pip) to build things on Xcode-only systems
+      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
       cflags += " -isysroot #{MacOS.sdk_path}"
       ldflags += " -isysroot #{MacOS.sdk_path}"
@@ -215,8 +215,8 @@ class Python3 < Formula
 
   def caveats
     text = <<-EOS.undent
-      Distribute and Pip have been installed. To update them
-        pip3 install --upgrade distribute
+      Setuptools and Pip have been installed. To update them
+        pip3 install --upgrade setuptools
         pip3 install --upgrade pip
 
       To symlink "Idle 3" and the "Python Launcher 3" to ~/Applications

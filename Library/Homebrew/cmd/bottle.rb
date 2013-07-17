@@ -19,9 +19,12 @@ module Homebrew extend self
     puts "bottle do"
     prefix = bottle.prefix.to_s
     puts "  prefix '#{prefix}'" if prefix != '/usr/local'
-    cellar = bottle.cellar.to_s
-    cellar = ":#{bottle.cellar}" if bottle.cellar.is_a? Symbol
-    puts "  cellar '#{cellar}'" if bottle.cellar.to_s != '/usr/local/Cellar'
+    cellar = if bottle.cellar.is_a? Symbol
+      ":#{bottle.cellar}"
+    elsif bottle.cellar.to_s != '/usr/local/Cellar'
+      "'bottle.cellar'"
+    end
+    puts "  cellar #{cellar}" if cellar
     puts "  revision #{bottle.revision}" if bottle.revision > 0
     Checksum::TYPES.each do |checksum_type|
       checksum_os_versions = bottle.send checksum_type

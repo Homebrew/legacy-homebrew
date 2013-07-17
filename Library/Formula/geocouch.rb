@@ -6,12 +6,7 @@ class Geocouch < Formula
   sha1 '73f5586c06cdec2fb6c5ab88da1ff99ef76beeb7'
   version '1.3.0'
 
-  head 'https://github.com/couchbase/geocouch.git', :tag => 'couchdb1.3.x'
-
-  devel do
-    url 'https://github.com/couchbase/geocouch.git', :tag => 'master'
-    version '1.4.x'
-  end
+  head 'https://github.com/couchbase/geocouch.git'
 
   def couchdb_share
     HOMEBREW_PREFIX/'share/couchdb'

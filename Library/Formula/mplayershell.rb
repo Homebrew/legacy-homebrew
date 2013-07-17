@@ -5,17 +5,6 @@ class MPlayerPresented < Requirement
   default_formula 'mplayer'
 
   satisfy { which('mplayer') || which('mplayer2') }
-
-  def message; <<-EOS.undent
-    MPlayerShell requires mplayer or mplayer2 to be installed.
-
-    You can use either
-      brew install mplayer
-    or
-      brew tap pigoz/mplayer2
-      brew install mplayer2
-    EOS
-  end
 end
 
 class Mplayershell < Formula

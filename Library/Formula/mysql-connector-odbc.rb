@@ -1,27 +1,5 @@
 require 'formula'
 
-class MySqlInstalled < Requirement
-  fatal true
-  default_formula 'mysql'
-
-  satisfy { which 'mysql_config' }
-
-  def message; <<-EOS.undent
-    MySQL is required to install.
-
-    You can install this with Homebrew using:
-      brew install mysql
-
-    If you plan to install mysql-odbc-connector as universal (32- and 64-bit),
-    install MySQL using:
-      brew install mysql --universal
-
-    Or, you can use an official installer from:
-      http://dev.mysql.com/downloads/mysql/
-    EOS
-  end
-end
-
 class MysqlConnectorOdbc < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.1/en/connector-odbc.html'
   url 'http://mysql.mirror.iweb.ca/Downloads/Connector-ODBC/5.1/mysql-connector-odbc-5.1.12-src.tar.gz'
@@ -29,7 +7,7 @@ class MysqlConnectorOdbc < Formula
 
   # Won't compile against mysql-connector-c, as the C connector exports an API version
   # that causes issues with how "my_free" is declared
-  depends_on MySqlInstalled
+  depends_on MysqlDependency
   depends_on 'cmake' => :build
 
   option :universal
