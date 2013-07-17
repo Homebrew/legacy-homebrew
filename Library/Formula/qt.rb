@@ -21,8 +21,6 @@ class Qt < Formula
   option 'with-debug-and-release', 'Compile Qt in debug and release mode'
   option 'developer', 'Compile and link Qt with developer options'
 
-  depends_on :libpng
-
   depends_on "d-bus" if build.with? 'qtdbus'
   depends_on "mysql" => :optional
 
@@ -30,7 +28,7 @@ class Qt < Formula
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
 
     args = ["-prefix", prefix,
-            "-system-libpng", "-system-zlib",
+            "-system-zlib",
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
@@ -49,9 +47,10 @@ class Qt < Formula
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
     if build.with? 'qtdbus'
-      args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
-      args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
-      args << "-L#{Formula.factory('d-bus').lib}"
+      dbus_opt = Formula.factory('d-bus').opt_prefix
+      args << "-I#{dbus_opt}/lib/dbus-1.0/include"
+      args << "-I#{dbus_opt}/include/dbus-1.0"
+      args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
     end
 

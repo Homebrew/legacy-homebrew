@@ -16,15 +16,12 @@ class Qt5 < Formula
   option 'with-mysql', 'Enable MySQL plugin'
   option 'developer', 'Compile and link Qt with developer options'
 
-  depends_on :libpng
-
   depends_on "d-bus" if build.include? 'with-qtdbus'
   depends_on "mysql" => :optional
-  depends_on "jpeg"
 
   def install
     args = ["-prefix", prefix,
-            "-system-libpng", "-system-zlib",
+            "-system-zlib",
             "-confirm-license", "-opensource"]
 
     unless MacOS::CLT.installed?
@@ -32,15 +29,15 @@ class Qt5 < Formula
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
     end
 
-    args << "-L#{Formula.factory('jpeg').opt_prefix}/lib" << "-I#{Formula.factory('jpeg').opt_prefix}/include"
     args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
-    if build.include? 'with-qtdbus'
-      args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
-      args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
-      args << "-L#{Formula.factory('d-bus').lib}"
+    if build.with? 'qtdbus'
+      dbus_opt = Formula.factory('d-bus').opt_prefix
+      args << "-I#{dbus_opt}/lib/dbus-1.0/include"
+      args << "-I#{dbus_opt}/include/dbus-1.0"
+      args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
     end
 
