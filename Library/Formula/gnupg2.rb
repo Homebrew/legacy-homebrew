@@ -5,6 +5,8 @@ class Gnupg2 < Formula
   url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.20.tar.bz2'
   sha1 '7ddfefa37ee9da89a8aaa8f9059d251b4cd02562'
 
+  option '8192', 'Build with support for private keys of up to 8192 bits'
+
   depends_on 'libgpg-error'
   depends_on 'libgcrypt'
   depends_on 'libksba'
@@ -24,6 +26,8 @@ class Gnupg2 < Formula
   def patches; DATA; end
 
   def install
+    inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if build.include? '8192'
+
     (var/'run').mkpath
 
     ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
