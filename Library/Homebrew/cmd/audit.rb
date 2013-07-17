@@ -331,7 +331,14 @@ class FormulaAuditor
     end
   end
 
-  def audit_text(line)
+  def audit_text
+    # xcodebuild should specify SYMROOT
+    if text=~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
+      problem "xcodebuild should be passed an explicit \"SYMROOT\""
+    end
+  end
+
+  def audit_line(line)
     if line =~ /<(Formula|AmazonWebServicesFormula|ScriptFileFormula|GithubGistFormula)/
       problem "Use a space in class inheritance: class Foo < #{$1}"
     end
@@ -421,11 +428,6 @@ class FormulaAuditor
 
     if line =~ /^[ ]*\t/
       problem "Use spaces instead of tabs for indentation"
-    end
-
-    # xcodebuild should specify SYMROOT
-    if line =~ /system\s+['"]xcodebuild/ and not line =~ /SYMROOT=/
-      problem "xcodebuild should be passed an explicit \"SYMROOT\""
     end
 
     if line =~ /ENV\.x11/
@@ -609,7 +611,8 @@ class FormulaAuditor
     audit_deps
     audit_conflicts
     audit_patches
-    text.each_line { |line| audit_text(line) }
+    audit_text
+    text.each_line { |line| audit_line(line) }
     audit_python
     audit_installed
   end
