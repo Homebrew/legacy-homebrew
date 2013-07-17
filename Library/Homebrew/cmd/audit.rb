@@ -493,6 +493,27 @@ class FormulaAuditor
     if text =~ /ENV.fortran/
       problem "Use `depends_on :fortran` instead of `ENV.fortran`"
     end
+
+    if text =~ /depends_on :(.+) (if.+|unless.+)$/
+      audit_conditional_dep($1.to_sym, $2, $&)
+    end
+
+    if text =~ /depends_on ['"](.+)['"] (if.+|unless.+)$/
+      audit_conditional_dep($1, $2, $&)
+    end
+  end
+
+  def audit_conditional_dep(dep, condition, line)
+    case condition
+    when /if build\.include\? ['"]with-#{dep}['"]$/, /if build\.with\? ['"]#{dep}['"]$/
+      problem %{Replace #{line.inspect} with "depends_on #{quote_dep(dep)} => :optional"}
+    when /unless build\.include\? ['"]without-#{dep}['"]$/, /unless build\.without\? ['"]#{dep}['"]$/
+      problem %{Replace #{line.inspect} with "depends_on #{quote_dep(dep)} => :recommended"}
+    end
+  end
+
+  def quote_dep(dep)
+    Symbol === dep ? dep.inspect : "'#{dep}'"
   end
 
   def audit_python

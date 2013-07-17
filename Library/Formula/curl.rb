@@ -10,14 +10,13 @@ class Curl < Formula
             "The libcurl provided by Leopard is too old for CouchDB to use."
 
   option 'with-ssh', 'Build with scp and sftp support'
-  option 'with-libmetalink', 'Build with Metalink support'
   option 'with-ares', 'Build with C-Ares async DNS support'
   option 'with-ssl', 'Build with Homebrew OpenSSL instead of the system version'
   option 'with-darwinssl', 'Build with Secure Transport for SSL support'
 
   depends_on 'pkg-config' => :build
+  depends_on 'libmetalink' => :optional
   depends_on 'libssh2' if build.with? 'ssh'
-  depends_on 'libmetalink' if build.with? 'libmetalink'
   depends_on 'c-ares' if build.with? 'ares'
   depends_on 'openssl' if build.with? 'ssl'
 
