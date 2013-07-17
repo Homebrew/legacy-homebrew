@@ -41,7 +41,7 @@ module FormulaCellarChecks
     jars = f.lib.children.select{|g| g.to_s =~ /\.jar$/}
     return if jars.empty?
 
-    ['JARs were installed to "lib".',
+    ["JARs were installed to \"#{f.lib}\".",
       <<-EOS.undent
         Installing JARs to "lib" can cause conflicts between packages.
         For Java software, it is typically better for the formula to
@@ -64,7 +64,7 @@ module FormulaCellarChecks
     end
     return if non_libraries.empty?
 
-    ['Non-libraries were installed to "lib".',
+    ["Non-libraries were installed to \"#{f.lib}\".",
       <<-EOS.undent
         Installing non-libraries to "lib" is bad practice.
         The offending files are:
