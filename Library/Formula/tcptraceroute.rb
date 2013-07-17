@@ -15,4 +15,16 @@ class Tcptraceroute < Formula
                           "--mandir=#{man}"
     system "make install"
   end
+
+  def caveats; <<-EOS.undent
+    tcptraceroute requires superuser privileges. You can either run the program
+    via `sudo`, or change its ownership to root and set the setuid bit:
+
+      sudo chown root:wheel #{sbin}/tcptraceroute
+      sudo chmod u+s #{sbin}/tcptraceroute
+
+    In any case, you should be certain that you trust the software you
+    are executing with elevated privileges.
+    EOS
+  end
 end
