@@ -13,6 +13,7 @@ module Homebrew extend self
 
     if ARGV.named.empty?
       outdated = Homebrew.outdated_brews
+      exit 0 if outdated.empty?
     else
       outdated = ARGV.formulae.select do |f|
         if f.installed?
@@ -25,8 +26,8 @@ module Homebrew extend self
           true
         end
       end
+      exit 1 if outdated.empty?
     end
-    exit 1 if outdated.empty?
 
     unless upgrade_pinned?
       pinned = outdated.select(&:pinned?)
