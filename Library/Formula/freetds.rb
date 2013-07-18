@@ -33,4 +33,8 @@ class Freetds < Formula
     ENV.j1 # Or fails to install on multi-core machines
     system 'make install'
   end
+
+  def test
+    system "#{bin}/tsql", "-C"
+  end
 end
