@@ -78,7 +78,7 @@ class Libxml2 < Formula
     if build.with? 'python'
       system python, '-c', "import libxml2"
     else
-      puts "No tests beacuse build --wtihout-python."
+      puts "No tests because built --without-python."
       true
     end
   end
