@@ -313,7 +313,7 @@ class PythonInstalled < Requirement
               # Set the sys.executable to use the opt_prefix
               sys.executable = '#{HOMEBREW_PREFIX}/opt/#{name}/bin/python#{version.major}.#{version.minor}'
               # Fix 4)
-              # Make LINKFORSHARED (and python-confing --ldflags) return the
+              # Make LINKFORSHARED (and python-config --ldflags) return the
               # full path to the lib (yes, "Python" is actually the lib, not a
               # dir) so that third-party software does not need to add the
               # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
