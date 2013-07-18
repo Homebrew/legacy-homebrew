@@ -98,6 +98,7 @@ class Mysql < Formula
 
     system "cmake", *args
     system "make"
+    inreplace "scripts/mysql_config", / -W[\w-]+ /, " "
     system "make install"
 
     # Don't create databases inside of the prefix!
