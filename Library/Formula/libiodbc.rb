@@ -5,10 +5,6 @@ class Libiodbc < Formula
   url 'http://sourceforge.net/projects/iodbc/files/iodbc/3.52.8/libiodbc-3.52.8.tar.gz'
   sha1 '93a3f061afff3152c5fcee1e5af8b802760a7e74'
 
-  depends_on 'automake' => :build
-  depends_on 'autoconf' => :build
-  depends_on 'libtool' => :build
-
   def install
     system "sh",  "./bootstrap.sh"
     system "./configure", "--prefix=#{prefix}"
