@@ -20,7 +20,7 @@ class Cairo < Formula
   depends_on 'freetype' if build.without? 'x'
   depends_on :libpng
   depends_on 'pixman'
-  depends_on 'glib' => :optional
+  depends_on 'glib' => :recommended
   depends_on :x11 if build.with? 'x'
 
   env :std if build.universal?
