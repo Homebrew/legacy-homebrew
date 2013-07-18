@@ -8,6 +8,8 @@
 # --skip-setup:   Don't check the local system is setup correctly.
 # --junit:        Generate a JUnit XML test results file.
 # --email:        Generate an email subject file.
+# --HEAD:         Run brew install with --HEAD
+# --devel:        Run brew install with --devel
 
 require 'formula'
 require 'utils'
@@ -256,7 +258,10 @@ class Test
     test "brew fetch #{dependencies}" unless dependencies.empty?
     test "brew fetch --force --build-bottle #{formula}"
     test "brew uninstall --force #{formula}" if formula_object.installed?
-    test "brew install --verbose --build-bottle #{formula}"
+    install_args = '--verbose --build-bottle'
+    install_args << ' --HEAD' if ARGV.include? '--HEAD'
+    install_args << ' --devel' if ARGV.include? '--devel'
+    test "brew install #{install_args} #{formula}"
     install_passed = steps.last.passed?
     test "brew audit #{formula}"
     return unless install_passed
