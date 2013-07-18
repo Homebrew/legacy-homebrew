@@ -6,7 +6,6 @@ class Sam2p < Formula
   sha1 '5922e6029e2ed4e524066080476e02ddfdbcc18e'
 
   fails_with :clang do
-    build 421
     cause "treating 'c' input as 'c++' when in C++ mode, this behavior is deprecated"
   end
 
