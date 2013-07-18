@@ -256,7 +256,9 @@ class Test
     end
 
     test "brew fetch #{dependencies}" unless dependencies.empty?
-    test "brew fetch --force --build-bottle #{formula}"
+    formula_fetch_options = "--build-bottle"
+    formula_fetch_options << " --force" if ARGV.include? '--cleanup'
+    test "brew fetch #{formula_fetch_options} #{formula}"
     test "brew uninstall --force #{formula}" if formula_object.installed?
     install_args = '--verbose --build-bottle'
     install_args << ' --HEAD' if ARGV.include? '--HEAD'
