@@ -504,6 +504,8 @@ class Formula
   def test
     require 'test/unit/assertions'
     extend(Test::Unit::Assertions)
+    # TODO: move this into PythonInstalled.
+    ENV['PYTHONPATH'] = PythonInstalled.new.global_site_packages
     ret = nil
     mktemp do
       @testpath = Pathname.pwd
