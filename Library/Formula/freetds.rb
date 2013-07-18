@@ -5,10 +5,19 @@ class Freetds < Formula
   url 'http://mirrors.ibiblio.org/freetds/stable/freetds-0.91.tar.gz'
   sha1 '3ab06c8e208e82197dc25d09ae353d9f3be7db52'
 
+  head 'https://git.gitorious.org/freetds/freetds.git'
+
   depends_on "pkg-config" => :build
   depends_on "unixodbc" => :optional
 
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   def install
+    system "autoreconf -i" if build.head?
+
     args = %W[--prefix=#{prefix}
               --with-openssl=/usr/bin
               --with-tdsver=7.1
