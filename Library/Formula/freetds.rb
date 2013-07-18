@@ -15,6 +15,8 @@ class Freetds < Formula
     depends_on :libtool
   end
 
+  option :universal
+
   def install
     system "autoreconf -i" if build.head?
 
@@ -28,6 +30,7 @@ class Freetds < Formula
       args << "--with-unixodbc=#{Formula.factory('unixodbc').prefix}"
     end
 
+    ENV.universal_binary if build.universal?
     system "./configure", *args
     system 'make'
     ENV.j1 # Or fails to install on multi-core machines
