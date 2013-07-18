@@ -6,6 +6,15 @@
     <title>{{ page.title }}</title>
     <link rel="stylesheet" href="./css/screen.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="./css/fonts/chunkfive/chunkfive.css" type="text/css" media="screen" />
+    {% if page.lang == "ru" %}
+    <link href='http://fonts.googleapis.com/css?family=PT+Serif:700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+      h2, h3 {
+        font-family: 'Pt Serif', helvetica, sans-serif;
+        font-weight: bold;
+      }
+    </style>
+    {% endif %}
     <script type="text/javascript">
         function selectText() {
             if (document.selection) {
