@@ -20,8 +20,8 @@ class Tcptraceroute < Formula
     tcptraceroute requires superuser privileges. You can either run the program
     via `sudo`, or change its ownership to root and set the setuid bit:
 
-      sudo chown root:wheel #{sbin}/tcptraceroute
-      sudo chmod u+s #{sbin}/tcptraceroute
+      sudo chown root:wheel #{bin}/tcptraceroute
+      sudo chmod u+s #{bin}/tcptraceroute
 
     In any case, you should be certain that you trust the software you
     are executing with elevated privileges.
