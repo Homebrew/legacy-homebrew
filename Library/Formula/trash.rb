@@ -2,7 +2,7 @@ require 'formula'
 
 class Trash < Formula
   homepage 'http://hasseg.org/trash/'
-  url 'https://github.com/hasseg/trash/archive/v0.8.2.zip'
+  url 'https://github.com/hasseg/trash/archive/v0.8.3.zip'
 
   def install
     system "make"
