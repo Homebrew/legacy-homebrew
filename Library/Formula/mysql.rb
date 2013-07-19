@@ -100,7 +100,7 @@ class Mysql < Formula
     system "make"
     # Reported upstream:
     # http://bugs.mysql.com/bug.php?id=69645
-    inreplace "scripts/mysql_config", / -W[\w-]+ /, " "
+    inreplace "scripts/mysql_config", / +-Wno[\w-]+/, ""
     system "make install"
 
     # Don't create databases inside of the prefix!
