@@ -8,5 +8,15 @@ class Fop < Formula
   def install
     libexec.install Dir["*"]
     bin.write_exec_script libexec/'fop'
+
+    FopHyph.new.brew do
+      (libexec/'build').install 'fop-hyph.jar'
+    end
   end
+end
+
+class FopHyph < Formula
+  homepage 'http://offo.sourceforge.net/hyphenation/'
+  url 'http://downloads.sourceforge.net/project/offo/offo-hyphenation-utf8/0.1/offo-hyphenation-fop-stable-utf8.zip'
+  sha1 'c2a3f6e985b21c9702a714942ac747864c8b1759'
 end
