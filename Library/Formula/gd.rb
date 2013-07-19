@@ -24,7 +24,7 @@ class Gd < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    args = ["--prefix=#{prefix}"]
+    args = %W{--disable-dependency-tracking --prefix=#{prefix}}
     args << "--without-freetype" unless build.with? 'freetype'
     system "./configure", *args
     system "make install"
