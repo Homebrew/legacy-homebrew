@@ -8,6 +8,8 @@
 # --skip-setup:   Don't check the local system is setup correctly.
 # --junit:        Generate a JUnit XML test results file.
 # --email:        Generate an email subject file.
+# --HEAD:         Run brew install with --HEAD
+# --devel:        Run brew install with --devel
 
 require 'formula'
 require 'utils'
@@ -254,25 +256,30 @@ class Test
     end
 
     test "brew fetch #{dependencies}" unless dependencies.empty?
-    test "brew fetch --force --build-bottle #{formula}"
+    formula_fetch_options = "--build-bottle"
+    formula_fetch_options << " --force" if ARGV.include? '--cleanup'
+    test "brew fetch #{formula_fetch_options} #{formula}"
     test "brew uninstall --force #{formula}" if formula_object.installed?
-    test "brew install --verbose --build-bottle #{formula}"
+    install_args = '--verbose --build-bottle'
+    install_args << ' --HEAD' if ARGV.include? '--HEAD'
+    install_args << ' --devel' if ARGV.include? '--devel'
+    test "brew install #{install_args} #{formula}"
     install_passed = steps.last.passed?
     test "brew audit #{formula}"
     return unless install_passed
     test "brew bottle #{formula}", :puts_output_on_success => true
-    bottle_revision = bottle_new_revision(formula_object)
-    bottle_filename = bottle_filename(formula_object, bottle_revision)
     bottle_step = steps.last
     if bottle_step.passed? and bottle_step.has_output?
+      bottle_revision = bottle_new_revision(formula_object)
+      bottle_filename = bottle_filename(formula_object, bottle_revision)
       bottle_base = bottle_filename.gsub(bottle_suffix(bottle_revision), '')
       bottle_output = bottle_step.output.gsub /.*(bottle do.*end)/m, '\1'
       File.open "#{bottle_base}.bottle.rb", 'w' do |file|
         file.write bottle_output
       end
+      test "brew uninstall --force #{formula}"
+      test "brew install #{bottle_filename}"
     end
-    test "brew uninstall --force #{formula}"
-    test "brew install #{bottle_filename}"
     test "brew test #{formula}" if formula_object.test_defined?
     test "brew uninstall --force #{formula}"
     test "brew uninstall --force #{dependencies}" unless dependencies.empty?
