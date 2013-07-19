@@ -5,6 +5,11 @@ class Postgresql < Formula
   url 'http://ftp.postgresql.org/pub/source/v9.2.4/postgresql-9.2.4.tar.bz2'
   sha1 '75b53c884cb10ed9404747b51677358f12082152'
 
+  option '32-bit'
+  option 'no-perl', 'Build without Perl support'
+  option 'no-tcl', 'Build without Tcl support'
+  option 'enable-dtrace', 'Build with DTrace support'
+
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' => :recommended
@@ -12,10 +17,6 @@ class Postgresql < Formula
 
   conflicts_with 'postgres-xc',
     :because => 'postgresql and postgres-xc install the same binaries.'
-
-  option '32-bit'
-  option 'no-perl', 'Build without Perl support'
-  option 'enable-dtrace', 'Build with DTrace support'
 
   fails_with :clang do
     build 211
@@ -43,7 +44,6 @@ class Postgresql < Formula
       --with-ldap
       --with-openssl
       --with-pam
-      --with-tcl
       --with-libxml
       --with-libxslt
     ]
@@ -51,6 +51,7 @@ class Postgresql < Formula
     args << "--with-ossp-uuid" if build.with? 'ossp-uuid'
     args << "--with-python" if build.with? 'python'
     args << "--with-perl" unless build.include? 'no-perl'
+    args << "--with-tcl" unless build.include? 'no-tcl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
 
     if build.with? 'ossp-uuid'
