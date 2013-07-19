@@ -260,8 +260,13 @@ class PythonInstalled < Requirement
 
     ENV['PYTHONHOME'] = nil  # to avoid fuck-ups.
     ENV['PYTHONPATH'] = global_site_packages.to_s unless brewed?
-    # Python respects the ARCHFLAGS var if set. Shall we set them here?
-    # ENV['ARCHFLAGS'] = ??? # FIXME
+
+    # Python respects the ARCHFLAGS var if set
+    python_arch = archs_for_command(binary)
+    python_arch.remove_ppc! unless Hardware.cpu_type == :ppc
+    python_arch.delete :x86_64 if Hardware.is_32_bit?
+    ENV['ARCHFLAGS'] = python_arch.as_arch_flags
+
     ENV.append 'CMAKE_INCLUDE_PATH', incdir, ':'
     ENV.append 'PKG_CONFIG_PATH', pkg_config_path, ':' if pkg_config_path
     # We don't set the -F#{framework} here, because if Python 2.x and 3.x are
