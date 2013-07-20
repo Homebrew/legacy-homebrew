@@ -3,11 +3,6 @@ require 'formula'
 class WineGecko < Formula
   url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
   sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
-
-  devel do
-    url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
-    sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
-  end
 end
 
 class WineMono < Formula
