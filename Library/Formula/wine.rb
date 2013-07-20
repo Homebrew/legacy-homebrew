@@ -102,13 +102,11 @@ class Wine < Formula
     system "make install"
 
     # Don't need Gnome desktop support
-    rm_rf share+'applications'
+    (share/'applications').rmtree
 
     # Download Gecko and Mono once so we don't need to redownload for each prefix
-    gecko = WineGecko.new
-    gecko.brew { (share+'wine/gecko').install Dir["*"] }
-    mono = WineMono.new
-    mono.brew { (share+'wine/mono').install Dir["*"] }
+    WineGecko.new('winegecko').brew { (share+'wine/gecko').install Dir["*"] }
+    WineMono.new('winemono').brew { (share+'wine/mono').install Dir["*"] }
 
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine
