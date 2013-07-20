@@ -8,15 +8,15 @@ class LittleCms < Formula
   option :universal
 
   depends_on :python => :optional
-  depends_on 'jpeg' => :optional
-  depends_on 'libtiff' => :optional
+  depends_on 'jpeg' => :recommended
+  depends_on 'libtiff' => :recommended
 
   def install
     ENV.universal_binary if build.universal?
     args = %W{--disable-dependency-tracking --disable-debug --prefix=#{prefix}}
     args << "--with-python" if build.with? "python"
-    args << "--without-tiff" unless build.with? "tiff"
-    args << "--without-jpeg" unless build.with? "jpeg"
+    args << "--without-tiff" if build.without? "libtiff"
+    args << "--without-jpeg" if build.without? "jpeg"
 
     system "./configure", *args
     system "make install"
