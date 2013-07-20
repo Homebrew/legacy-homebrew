@@ -3,7 +3,6 @@ require 'formula'
 class VertX < Formula
   homepage 'http://vertx.io/'
   url 'http://dl.bintray.com/vertx/downloads/vert.x-2.0.0-final.tar.gz'
-  version '2.0.0'
   sha1 'afc65d74af1c603469869d99c7db129226ac0cbf'
 
   def install
