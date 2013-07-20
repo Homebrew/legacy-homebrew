@@ -201,6 +201,9 @@ class Gdal < Formula
       ENV['ARCHFLAGS'] = "-arch i386"
     end
 
+    # Fix hardcoded mandir: http://trac.osgeo.org/gdal/ticket/5092
+    inreplace 'configure', %r[^mandir='\$\{prefix\}/man'$], ''
+
     system "./configure", *get_configure_args
     system "make"
     system "make install"
