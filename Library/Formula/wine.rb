@@ -15,21 +15,15 @@ class WineMono < Formula
   sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
 end
 
+# NOTE: when updating Wine, please check Wine-Gecko and Wine-Mono for updates
+#  http://wiki.winehq.org/Gecko
+#  http://wiki.winehq.org/Mono
 class Wine < Formula
   homepage 'http://winehq.org/'
   url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
   sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
 
   head 'git://source.winehq.org/git/wine.git'
-
-  devel do
-    # NOTE: when updating Wine, please check if Wine-Gecko and Wine-Mono needs
-    # updating too
-    #  * http://wiki.winehq.org/Gecko
-    #  * http://wiki.winehq.org/Mono
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
-    sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
-  end
 
   env :std
 
