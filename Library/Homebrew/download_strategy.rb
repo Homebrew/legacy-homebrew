@@ -418,7 +418,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
   def clone_args
     args = %w{clone}
-    args << '--depth' << '1' if support_depth?
+    args << '--depth' << '1' if support_depth? and @spec != :all
 
     case @spec
     when :branch, :tag then args << '--branch' << @ref
@@ -431,6 +431,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     case @spec
     when :branch then "+refs/heads/#@ref:refs/remotes/origin/#@ref"
     when :tag    then "+refs/tags/#@ref:refs/tags/#@ref"
+    when :all    then "+refs/heads/*:refs/remotes/origin/*"
     else              "+refs/heads/master:refs/remotes/origin/master"
     end
   end
