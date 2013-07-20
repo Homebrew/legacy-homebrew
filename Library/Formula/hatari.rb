@@ -7,6 +7,8 @@ class Hatari < Formula
 
   head 'http://hg.tuxfamily.org/mercurialroot/hatari/hatari', :using => :hg, :branch => 'default'
 
+  head 'http://hg.tuxfamily.org/mercurialroot/hatari/hatari', :using => :hg, :branch => 'default'
+
   depends_on 'cmake' => :build
   depends_on 'sdl'
 
