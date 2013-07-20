@@ -121,24 +121,22 @@ class Wine < Formula
     (bin/'wine').write(wine_wrapper)
   end
 
-  def caveats
-    s = <<-EOS.undent
-      You may want to get winetricks:
-        brew install winetricks
+  def caveats; <<-EOS.undent
+    You may want to get winetricks:
+      brew install winetricks
 
-      By default Wine uses a native Mac driver. To switch to the X11 driver, use
-      regedit to set the "graphics" key under "HKCU\Software\Wine\Drivers" to
-      "x11" (or use winetricks).
+    By default Wine uses a native Mac driver. To switch to the X11 driver, use
+    regedit to set the "graphics" key under "HKCU\Software\Wine\Drivers" to
+    "x11" (or use winetricks).
 
-      For best results with X11, install the latest version of XQuartz:
-        http://xquartz.macosforge.org/
+    For best results with X11, install the latest version of XQuartz:
+      http://xquartz.macosforge.org/
 
-      The current version of Wine contains a partial implementation of dwrite.dll
-      which may cause text rendering issues in applications such as Steam.
-      We recommend that you run winecfg, add an override for dwrite in the
-      Libraries tab, and edit the override mode to "disable".
+    The current version of Wine contains a partial implementation of dwrite.dll
+    which may cause text rendering issues in applications such as Steam.
+    We recommend that you run winecfg, add an override for dwrite in the
+    Libraries tab, and edit the override mode to "disable". See:
+      http://bugs.winehq.org/show_bug.cgi?id=31374
     EOS
-    # see http://bugs.winehq.org/show_bug.cgi?id=31374
-    return s
   end
 end
