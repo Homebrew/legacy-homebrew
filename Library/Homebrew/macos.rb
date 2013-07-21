@@ -39,6 +39,7 @@ module MacOS extend self
     end
   end
 
+
   def dev_tools_path
     @dev_tools_path ||= \
     if File.exist? MacOS::CLT::STANDALONE_PKG_PATH and
@@ -107,19 +108,18 @@ module MacOS extend self
   end
 
   def gcc_40_build_version
-    @gcc_40_build_version ||= if locate("gcc-4.0")
-      `#{locate("gcc-4.0")} --version` =~ /build (\d{4,})/
-      $1.to_i
-    end
+    @gcc_40_build_version ||=
+      if (path = locate("gcc-4.0"))
+        %x{#{path} --version}[/build (\d{4,})/, 1]
+      end
   end
   alias_method :gcc_4_0_build_version, :gcc_40_build_version
 
   def gcc_42_build_version
-    @gcc_42_build_version ||= if locate("gcc-4.2") \
-      and not locate("gcc-4.2").realpath.basename.to_s =~ /^llvm/
-      `#{locate("gcc-4.2")} --version` =~ /build (\d{4,})/
-      $1.to_i
-    end
+    @gcc_42_build_version ||=
+      if (path = locate("gcc-4.2")) && path.realpath.basename.to_s !~ /^llvm/
+        %x{#{path} --version}[/build (\d{4,})/, 1].to_i
+      end
   end
   alias_method :gcc_build_version, :gcc_42_build_version
 
@@ -133,17 +133,17 @@ module MacOS extend self
   end
 
   def clang_version
-    @clang_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ /(?:clang|LLVM) version (\d\.\d)/
-      $1
-    end
+    @clang_version ||=
+      if (path = locate("clang"))
+        %x{#{path} --version}[/(?:clang|LLVM) version (\d\.\d)/, 1]
+      end
   end
 
   def clang_build_version
-    @clang_build_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ %r[clang-(\d{2,})]
-      $1.to_i
-    end
+    @clang_build_version ||=
+      if (path = locate("clang"))
+        %x{#{path} --version}[%r[clang-(\d{2,})], 1]
+      end
   end
 
   # See these issues for some history:
