@@ -50,13 +50,9 @@ module MacOS::Xcode extend self
       elsif File.executable? "#{V4_BUNDLE_PATH}/Contents/Developer/usr/bin/make"
         # fallback for broken Xcode 4.3 installs
         Pathname.new("#{V4_BUNDLE_PATH}/Contents/Developer")
-      else
-        path = bundle_path
-
-        unless path.nil?
-          path += "Contents/Developer"
-          path if File.executable? "#{path}/usr/bin/make"
-        end
+      elsif (path = bundle_path)
+        path += "Contents/Developer"
+        path if File.executable? "#{path}/usr/bin/make"
       end
     end
   end
