@@ -38,11 +38,11 @@ class Nginx < Formula
   option 'with-upload-progress',  'Compile with support for Upload Progress module'
 
   depends_on 'pcre'
-  depends_on 'passenger' => :optional if build.with? 'passenger'
+  depends_on 'passenger' => 'with-passenger'
   # SPDY needs openssl >= 1.0.1 for NPN; see:
   # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
   # http://www.openssl.org/news/changelog.html
-  depends_on 'openssl' if build.with? 'spdy'
+  depends_on 'openssl' => 'with-spdy'
   # depends_on 'geoip' => :optional if build.with? 'geoip'
 
   skip_clean 'logs'
