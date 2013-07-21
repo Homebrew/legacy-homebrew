@@ -21,7 +21,7 @@ class Nginx < Formula
   option 'with-gunzip', 'Compile with support for gunzip module'
 
   depends_on 'pcre'
-  depends_on 'passenger' if build.with? 'passenger'
+  depends_on 'passenger' => :optional
   # SPDY needs openssl >= 1.0.1 for NPN; see:
   # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
   # http://www.openssl.org/news/changelog.html
