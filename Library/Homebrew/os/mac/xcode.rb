@@ -51,11 +51,7 @@ module MacOS::Xcode extend self
         # fallback for broken Xcode 4.3 installs
         Pathname.new("#{V4_BUNDLE_PATH}/Contents/Developer")
       else
-        # Ask Spotlight where Xcode is. If the user didn't install the
-        # helper tools and installed Xcode in a non-conventional place, this
-        # is our only option. See: http://superuser.com/questions/390757
-        path = MacOS.app_with_bundle_id(V4_BUNDLE_ID) ||
-          MacOS.app_with_bundle_id(V3_BUNDLE_ID)
+        path = bundle_path
 
         unless path.nil?
           path += "Contents/Developer"
@@ -63,6 +59,13 @@ module MacOS::Xcode extend self
         end
       end
     end
+  end
+
+  # Ask Spotlight where Xcode is. If the user didn't install the
+  # helper tools and installed Xcode in a non-conventional place, this
+  # is our only option. See: http://superuser.com/questions/390757
+  def bundle_path
+    MacOS.app_with_bundle_id(V4_BUNDLE_ID) || MacOS.app_with_bundle_id(V3_BUNDLE_ID)
   end
 
   def installed?
