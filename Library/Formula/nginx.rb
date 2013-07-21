@@ -23,11 +23,11 @@ class Nginx < Formula
   option 'with-degredation', 'Compile with http degredation module'
   option 'with-perl', 'Compile with Embedded Perl module'
   option 'with-flv', 'Compile with flv module'
-  #option 'with-geoip', 'Compile with geoip module'
+  option 'with-geoip', 'Compile with geoip module'
   option 'with-google=perftools', 'Compile with Google Performance tools module'
   option 'with-gzip-static', 'Compile with gzip static module'
   option 'with-image-filter', 'Compile with Image Filter module'
-  #option 'with-mp4', 'Compile with mp4 module'
+  option 'with-mp4', 'Compile with mp4 module'
   option 'with-random-index', 'Compile with random index module'
   option 'with-realip', 'Compile with RealIP support'
   option 'with-secure-link', 'Compile with secure link module'
@@ -43,7 +43,7 @@ class Nginx < Formula
   # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
   # http://www.openssl.org/news/changelog.html
   depends_on 'openssl' => 'with-spdy'
-  # depends_on 'geoip' => :optional if build.with? 'geoip'
+  depends_on 'geoip' => 'with-geoip'
 
   skip_clean 'logs'
 
@@ -104,11 +104,11 @@ class Nginx < Formula
     args << "--with-http_degradation_module" if build.include? 'with-degredation'
     args << "--with-http_perl_module" if build.include? 'with-perl'
     args << "--with-http_flv_module" if build.include? 'with-flv'
-    #args << "--with-http_geoip_module" if build.include? 'with-geoip'
+    args << "--with-http_geoip_module" if build.include? 'with-geoip'
     args << "--with-google_perftools_module" if build.include? 'with-google-pertools'
     args << "--with-http_gzip_static_module" if build.include? 'with-gzip-static'
     args << "--with-http_image_filter_module" if build.include? 'with-image-filter'
-    #args << "--with-http_mp4_module" if build.include? 'with-mp4'
+    args << "--with-http_mp4_module" if build.include? 'with-mp4'
     args << "--with-http_random_index_module" if build.include? 'with-random-index'
     args << "--with-http_realip_module" if build.include? 'with-realip'
     args << "--with-http_secure_link_module" if build.include? 'with-secure-link'
