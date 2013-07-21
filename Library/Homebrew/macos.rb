@@ -40,23 +40,25 @@ module MacOS extend self
   end
 
   def dev_tools_path
-    @dev_tools_path ||= \
-    if File.exist? MacOS::CLT::STANDALONE_PKG_PATH and
-       File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/cc" and
-       File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/make"
+    @dev_tools_path ||= if tools_in_prefix? CLT::STANDALONE_PKG_PATH
       # In 10.9 the CLT moved from /usr into /Library/Developer/CommandLineTools.
-      Pathname.new "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin"
-    elsif File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
+      Pathname.new "#{CLT::STANDALONE_PKG_PATH}/usr/bin"
+    elsif tools_in_prefix? "/"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
-    # Note that the exit status of system "xcrun foo" isn't always accurate
     elsif not Xcode.bad_xcode_select_path? and not `/usr/bin/xcrun -find make 2>/dev/null`.empty?
+      # Note that the exit status of system "xcrun foo" isn't always accurate
       # Wherever "make" is there are the dev tools.
       Pathname.new(`/usr/bin/xcrun -find make`.chomp).dirname
     elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{Xcode.prefix}/usr/bin"
     end
+  end
+
+  def tools_in_prefix?(prefix)
+    File.directory?(prefix) &&
+      %w{cc make}.all? { |tool| File.executable? "#{prefix}/usr/bin/#{tool}" }
   end
 
   def xctoolchain_path
