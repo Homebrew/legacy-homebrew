@@ -126,10 +126,10 @@ module MacOS extend self
   def llvm_build_version
     # for Xcode 3 on OS X 10.5 this will not exist
     # NOTE may not be true anymore but we can't test
-    @llvm_build_version ||= if locate("llvm-gcc")
-      `#{locate("llvm-gcc")} --version` =~ /LLVM build (\d{4,})/
-      $1.to_i
-    end
+    @llvm_build_version ||=
+      if (path = locate("llvm-gcc")) && path.realpath.basename.to_s !~ /^clang/
+        %x{#{path} --version}[/LLVM build (\d{4,})/, 1].to_i
+      end
   end
 
   def clang_version
