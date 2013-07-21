@@ -39,7 +39,6 @@ module MacOS extend self
     end
   end
 
-
   def dev_tools_path
     @dev_tools_path ||= \
     if File.exist? MacOS::CLT::STANDALONE_PKG_PATH and
@@ -110,7 +109,7 @@ module MacOS extend self
   def gcc_40_build_version
     @gcc_40_build_version ||=
       if (path = locate("gcc-4.0"))
-        %x{#{path} --version}[/build (\d{4,})/, 1]
+        %x{#{path} --version}[/build (\d{4,})/, 1].to_i
       end
   end
   alias_method :gcc_4_0_build_version, :gcc_40_build_version
@@ -142,7 +141,7 @@ module MacOS extend self
   def clang_build_version
     @clang_build_version ||=
       if (path = locate("clang"))
-        %x{#{path} --version}[%r[clang-(\d{2,})], 1]
+        %x{#{path} --version}[%r[clang-(\d{2,})], 1].to_i
       end
   end
 
