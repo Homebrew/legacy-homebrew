@@ -2,11 +2,12 @@ require 'formula'
 
 class Pandoc < Formula
   homepage 'http://johnmacfarlane.net/pandoc/index.html'
-  url 'https://pandoc.googlecode.com/files/pandoc-1.11.1.tar.gz'
-  sha1 '1498554ebfd18436eea401f1cb41d1075569ad03'
+
+  depends_on 'cabal-install'
 
   def install
-    system 'make install'
+    system 'cabal update'
+    system 'cabal install pandoc'
   end
 
   def caveats
