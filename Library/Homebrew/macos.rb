@@ -57,8 +57,7 @@ module MacOS extend self
   end
 
   def tools_in_prefix?(prefix)
-    File.directory?(prefix) &&
-      %w{cc make}.all? { |tool| File.executable? "#{prefix}/usr/bin/#{tool}" }
+    %w{cc make}.all? { |tool| File.executable? "#{prefix}/usr/bin/#{tool}" }
   end
 
   def xctoolchain_path
