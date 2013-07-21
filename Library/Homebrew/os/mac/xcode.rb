@@ -156,10 +156,11 @@ module MacOS::CLT extend self
   FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
   STANDALONE_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
 
-  # This is true if the standard UNIX tools are present in the expected location. For
-  # Mavericks and above this is /Library/Developer/CommandLineTools otherwise it is /usr.
-  # For Xcode < 4.3, this is the standard location. Otherwise, it means that the user has
-  # installed the "Command Line Tools" package.
+  # True if:
+  #  - Xcode < 4.3 is installed. The tools are found under /usr.
+  #  - The "Command Line Tools" package has been installed
+  #    For OS X < 10.9, the tools are found under /usr. For 10.9,
+  #    they are found under /Library/Developer/CommandLineTools.
   def installed?
     mavericks_dev_tools? || usr_dev_tools?
   end
