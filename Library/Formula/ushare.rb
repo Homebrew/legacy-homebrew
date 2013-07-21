@@ -13,7 +13,8 @@ class Ushare < Formula
   # Correct "OPTFLAGS" to "CFLAGS"
   def patches
   { :p0 =>
-    "https://trac.macports.org/export/89267/trunk/dports/net/ushare/files/patch-configure.diff"
+    "https://trac.macports.org/export/89267/trunk/dports/net/ushare/files/patch-configure.diff",
+    :p1 => DATA,
   }
   end
 
@@ -39,3 +40,18 @@ class Ushare < Formula
     man1.install "src/ushare.1"
   end
 end
+
+__END__
+diff --git a/src/ushare.c b/src/ushare.c
+index 717e862..8e51bf7 100644
+--- a/src/ushare.c
++++ b/src/ushare.c
+@@ -188,7 +188,7 @@ handle_action_request (struct Upnp_Action_Request *request)
+   if (strcmp (request->DevUDN + 5, ut->udn))
+     return;
+ 
+-  ip = request->CtrlPtIPAddr.s_addr;
++  ip = ((struct sockaddr *) &request->CtrlPtIPAddr)->sa_data;
+   ip = ntohl (ip);
+   sprintf (val, "%d.%d.%d.%d",
+            (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);
