@@ -182,16 +182,17 @@ module MacOS::CLT extend self
     !latest_version?
   end
 
+  # Version string (a pretty damn long one) of the CLT package.
+  # Note, that different ways to install the CLTs lead to different
+  # version numbers.
   def version
-    # The pkgutils calls are slow, don't repeat if no CLT installed.
-    return @version if @version_determined
+    @version ||= detect_version
+  end
 
-    @version_determined = true
-    # Version string (a pretty damn long one) of the CLT package.
-    # Note, that different ways to install the CLTs lead to different
-    # version numbers.
-    @version ||= [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
-      MacOS.pkgutil_info(id) =~ /version: (.+)$/
-    end && $1
+  def detect_version
+    [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+      version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
+      return version if version
+    end
   end
 end

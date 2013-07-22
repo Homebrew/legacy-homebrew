@@ -234,7 +234,9 @@ module MacOS extend self
   end
 
   def pkgutil_info id
-    `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
+    (@pkginfo ||= {}).fetch(id.to_s) do
+      @pkginfo[id.to_s] = `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
+    end
   end
 end
 
