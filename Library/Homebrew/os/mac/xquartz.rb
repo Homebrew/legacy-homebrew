@@ -8,7 +8,7 @@ module MacOS::XQuartz extend self
   # by this method.
   def version
     @version ||= begin
-      path = MacOS.app_with_bundle_id(FORGE_BUNDLE_ID) || MacOS.app_with_bundle_id(APPLE_BUNDLE_ID)
+      path = bundle_path
       if not path.nil? and path.exist?
         `mdls -raw -name kMDItemVersion "#{path}" 2>/dev/null`.strip
       elsif prefix.to_s == "/usr/X11"
@@ -31,6 +31,10 @@ module MacOS::XQuartz extend self
 
   def latest_version
     "2.7.4"
+  end
+
+  def bundle_path
+    MacOS.app_with_bundle_id(FORGE_BUNDLE_ID) || MacOS.app_with_bundle_id(APPLE_BUNDLE_ID)
   end
 
   def provided_by_apple?
