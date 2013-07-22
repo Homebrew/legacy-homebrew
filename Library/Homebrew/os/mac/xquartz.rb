@@ -7,15 +7,16 @@ module MacOS::XQuartz extend self
   # The X11.app distributed by Apple is also XQuartz, and therefore covered
   # by this method.
   def version
-    @version ||= begin
-      path = bundle_path
-      if not path.nil? and path.exist?
-        version_from_mdls(path)
-      elsif prefix.to_s == "/usr/X11"
-        guess_system_version
-      else
-        version_from_pkgutil
-      end
+    @version ||= detect_version
+  end
+
+  def detect_version
+    if (path = bundle_path) && path.exist?
+      version_from_mdls(path)
+    elsif prefix.to_s == "/usr/X11"
+      guess_system_version
+    else
+      version_from_pkgutil
     end
   end
 
