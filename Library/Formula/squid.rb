@@ -52,7 +52,6 @@ class Squid < Formula
         <string>#{opt_prefix}/sbin/squid</string>
         <string>-N</string>
         <string>-d 1</string>
-        <string>-D</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
