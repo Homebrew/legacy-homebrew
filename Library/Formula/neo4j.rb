@@ -2,9 +2,9 @@ require 'formula'
 
 class Neo4j < Formula
   homepage 'http://neo4j.org'
-  url 'http://dist.neo4j.org/neo4j-community-1.9.1-unix.tar.gz'
-  sha1 'd6b4e783b9071af3b081a71ecebff0d24b1e9f03'
-  version 'community-1.9.1-unix'
+  url 'http://dist.neo4j.org/neo4j-community-1.9.2-unix.tar.gz'
+  sha1 '7713b9d6f0780afbe58eae01b2ebf09ca002aecb'
+  version 'community-1.9.2-unix'
 
   devel do
     url 'http://dist.neo4j.org/neo4j-community-2.0.0-M03-unix.tar.gz'
