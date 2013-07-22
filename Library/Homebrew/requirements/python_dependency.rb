@@ -18,7 +18,7 @@ class PythonInstalled < Requirement
   attr_reader :if3then3
   attr_reader :imports
   attr_accessor :site_packages
-  attr_accessor :binary # The python.rb formula needs to set the binary
+  attr_writer :binary # The python.rb formula needs to set the binary
 
   fatal true  # you can still make Python optional by `depends_on :python => :optional`
 
