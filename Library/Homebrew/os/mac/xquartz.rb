@@ -12,15 +12,7 @@ module MacOS::XQuartz extend self
       if not path.nil? and path.exist?
         `mdls -raw -name kMDItemVersion "#{path}" 2>/dev/null`.strip
       elsif prefix.to_s == "/usr/X11"
-        # Some users disable Spotlight indexing. If we're working with the
-        # system X11 distribution, we can't get the version from pkgutil, so
-        # just use the expected version.
-        case MacOS.version
-        when '10.5' then '2.1.6'
-        when '10.6' then '2.3.6'
-        when '10.7' then '2.6.3'
-        else 'dunno'
-        end
+        guess_system_version
       else
         # Finally, try to find it via pkgutil. This is slow, and only works
         # for the upstream XQuartz package, so use it as a last resort.
@@ -35,6 +27,18 @@ module MacOS::XQuartz extend self
 
   def bundle_path
     MacOS.app_with_bundle_id(FORGE_BUNDLE_ID) || MacOS.app_with_bundle_id(APPLE_BUNDLE_ID)
+  end
+
+  # The XQuartz that Apple shipped in OS X through 10.7 does not have a
+  # pkg-util entry, so if Spotlight indexing is disabled we must make an
+  # educated guess as to what version is installed.
+  def guess_system_version
+    case MacOS.version
+    when '10.5' then '2.1.6'
+    when '10.6' then '2.3.6'
+    when '10.7' then '2.6.3'
+    else 'dunno'
+    end
   end
 
   def provided_by_apple?
