@@ -11,8 +11,8 @@ module MacOS::XQuartz extend self
   end
 
   def detect_version
-    if (path = bundle_path) && path.exist?
-      version_from_mdls(path)
+    if (path = bundle_path) && path.exist? && (version = version_from_mdls(path))
+      version
     elsif prefix.to_s == "/usr/X11"
       guess_system_version
     else
@@ -29,7 +29,8 @@ module MacOS::XQuartz extend self
   end
 
   def version_from_mdls(path)
-    `mdls -raw -name kMDItemVersion "#{path}" 2>/dev/null`.strip
+    version = `mdls -raw -nullMarker "" -name kMDItemVersion "#{path}" 2>/dev/null`.strip
+    version unless version.empty?
   end
 
   # The XQuartz that Apple shipped in OS X through 10.7 does not have a
