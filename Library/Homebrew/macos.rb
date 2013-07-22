@@ -40,23 +40,24 @@ module MacOS extend self
   end
 
   def dev_tools_path
-    @dev_tools_path ||= \
-    if File.exist? MacOS::CLT::STANDALONE_PKG_PATH and
-       File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/cc" and
-       File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/make"
+    @dev_tools_path ||= if tools_in_prefix? CLT::STANDALONE_PKG_PATH
       # In 10.9 the CLT moved from /usr into /Library/Developer/CommandLineTools.
-      Pathname.new "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin"
-    elsif File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
+      Pathname.new "#{CLT::STANDALONE_PKG_PATH}/usr/bin"
+    elsif tools_in_prefix? "/"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
-    # Note that the exit status of system "xcrun foo" isn't always accurate
     elsif not Xcode.bad_xcode_select_path? and not `/usr/bin/xcrun -find make 2>/dev/null`.empty?
+      # Note that the exit status of system "xcrun foo" isn't always accurate
       # Wherever "make" is there are the dev tools.
       Pathname.new(`/usr/bin/xcrun -find make`.chomp).dirname
     elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{Xcode.prefix}/usr/bin"
     end
+  end
+
+  def tools_in_prefix?(prefix)
+    %w{cc make}.all? { |tool| File.executable? "#{prefix}/usr/bin/#{tool}" }
   end
 
   def xctoolchain_path
@@ -107,43 +108,42 @@ module MacOS extend self
   end
 
   def gcc_40_build_version
-    @gcc_40_build_version ||= if locate("gcc-4.0")
-      `#{locate("gcc-4.0")} --version` =~ /build (\d{4,})/
-      $1.to_i
-    end
+    @gcc_40_build_version ||=
+      if (path = locate("gcc-4.0"))
+        %x{#{path} --version}[/build (\d{4,})/, 1].to_i
+      end
   end
   alias_method :gcc_4_0_build_version, :gcc_40_build_version
 
   def gcc_42_build_version
-    @gcc_42_build_version ||= if locate("gcc-4.2") \
-      and not locate("gcc-4.2").realpath.basename.to_s =~ /^llvm/
-      `#{locate("gcc-4.2")} --version` =~ /build (\d{4,})/
-      $1.to_i
-    end
+    @gcc_42_build_version ||=
+      if (path = locate("gcc-4.2")) && path.realpath.basename.to_s !~ /^llvm/
+        %x{#{path} --version}[/build (\d{4,})/, 1].to_i
+      end
   end
   alias_method :gcc_build_version, :gcc_42_build_version
 
   def llvm_build_version
     # for Xcode 3 on OS X 10.5 this will not exist
     # NOTE may not be true anymore but we can't test
-    @llvm_build_version ||= if locate("llvm-gcc")
-      `#{locate("llvm-gcc")} --version` =~ /LLVM build (\d{4,})/
-      $1.to_i
-    end
+    @llvm_build_version ||=
+      if (path = locate("llvm-gcc")) && path.realpath.basename.to_s !~ /^clang/
+        %x{#{path} --version}[/LLVM build (\d{4,})/, 1].to_i
+      end
   end
 
   def clang_version
-    @clang_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ /(?:clang|LLVM) version (\d\.\d)/
-      $1
-    end
+    @clang_version ||=
+      if (path = locate("clang"))
+        %x{#{path} --version}[/(?:clang|LLVM) version (\d\.\d)/, 1]
+      end
   end
 
   def clang_build_version
-    @clang_build_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ %r[clang-(\d{2,})]
-      $1.to_i
-    end
+    @clang_build_version ||=
+      if (path = locate("clang"))
+        %x{#{path} --version}[%r[clang-(\d{2,})], 1].to_i
+      end
   end
 
   # See these issues for some history:
@@ -234,7 +234,9 @@ module MacOS extend self
   end
 
   def pkgutil_info id
-    `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
+    (@pkginfo ||= {}).fetch(id.to_s) do
+      @pkginfo[id.to_s] = `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
+    end
   end
 end
 
