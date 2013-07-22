@@ -3,6 +3,17 @@ module MacOS::XQuartz extend self
   APPLE_BUNDLE_ID = "org.x.X11"
   FORGE_PKG_ID = "org.macosforge.xquartz.pkg"
 
+  PKGINFO_VERSION_MAP = {
+    "2.6.34" => "2.6.3",
+    "2.7.4"  => "2.7.0",
+    "2.7.14" => "2.7.1",
+    "2.7.28" => "2.7.2",
+    "2.7.32" => "2.7.3",
+    "2.7.43" => "2.7.4",
+    "2.7.50" => "2.7.5_rc1",
+    "2.7.51" => "2.7.5_rc2",
+  }.freeze
+
   # This returns the version number of XQuartz, not of the upstream X.org.
   # The X11.app distributed by Apple is also XQuartz, and therefore covered
   # by this method.
@@ -47,10 +58,9 @@ module MacOS::XQuartz extend self
 
   # Upstream XQuartz *does* have a pkg-info entry, so if we can't get it
   # from mdls, we can try pkgutil. This is very slow.
-  # NOTE: this sacrifices correctness, as it returns an internal version
-  # that may not always match the "user-facing" version string.
   def version_from_pkgutil
-    MacOS.pkgutil_info(FORGE_PKG_ID)[/version: (\d\.\d\.\d).+$/, 1]
+    str = MacOS.pkgutil_info(FORGE_PKG_ID)[/version: (\d\.\d\.\d+)$/, 1]
+    PKGINFO_VERSION_MAP.fetch(str, str)
   end
 
   def provided_by_apple?
