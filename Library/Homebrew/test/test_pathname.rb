@@ -64,11 +64,11 @@ class PathnameExtensionTests < Test::Unit::TestCase
 
     @file.cp(@dir)
     assert @file.file?
-    assert (@dir+@file.basename).file?
+    assert((@dir+@file.basename).file?)
 
     @dir.cp(@dst)
     assert @dir.directory?
-    assert (@dst+@dir.basename).directory?
+    assert((@dst+@dir.basename).directory?)
   end
 
   def test_ensure_writable
