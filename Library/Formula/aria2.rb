@@ -15,6 +15,11 @@ class Aria2 < Formula
   # Leopard's libxml2 is too old.
   depends_on 'libxml2' if MacOS.version <= :leopard
 
+  def patches
+    #Fixes compile error with clang 5.0+
+    "https://github.com/tatsuhiro-t/aria2/commit/6bcf33a69e1bfa9f7679b78f9f287d84798015aa.patch"
+  end
+
   def install
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
     args << "--with-ca-bundle=#{HOMEBREW_PREFIX}/share/ca-bundle.crt" if build.with? 'curl-ca-bundle'
@@ -29,4 +34,5 @@ class Aria2 < Formula
 
     bash_completion.install "doc/bash_completion/aria2c"
   end
+  
 end
