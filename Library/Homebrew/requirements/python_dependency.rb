@@ -16,7 +16,6 @@ require 'requirement'
 class PythonInstalled < Requirement
   attr_reader :min_version
   attr_reader :if3then3
-  attr_reader :site_packages
   attr_accessor :site_packages
   attr_accessor :binary # The python.rb formula needs to set the binary
 
