@@ -2,7 +2,7 @@ require 'formula'
 
 class Sdf < Formula
   homepage 'http://strategoxt.org/Sdf/WebHome'
-  url 'ftp://ftp.stratego-language.org/pub/stratego/StrategoXT/strategoxt-0.17/sdf2-bundle-2.4.tar.gz'
+  url 'ftp://ftp.strategoxt.org/pub/stratego/StrategoXT/strategoxt-0.17/sdf2-bundle-2.4.tar.gz'
   sha1 'b9be75d56503e7f06fcc9cc543303bae123c0845'
 
   depends_on 'aterm'
