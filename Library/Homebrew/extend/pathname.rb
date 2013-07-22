@@ -365,7 +365,7 @@ class Pathname
   def write_exec_script *targets
     targets.flatten!
     if targets.empty?
-      opoo "tried to write exec sripts to #{self} for an empty list of targets"
+      opoo "tried to write exec scripts to #{self} for an empty list of targets"
     end
     targets.each do |target|
       target = Pathname.new(target) # allow pathnames or strings
