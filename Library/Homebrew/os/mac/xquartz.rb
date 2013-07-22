@@ -14,9 +14,7 @@ module MacOS::XQuartz extend self
       elsif prefix.to_s == "/usr/X11"
         guess_system_version
       else
-        # Finally, try to find it via pkgutil. This is slow, and only works
-        # for the upstream XQuartz package, so use it as a last resort.
-        MacOS.pkgutil_info(FORGE_PKG_ID)[/version: (\d\.\d\.\d).+$/, 1]
+        version_from_pkgutil
       end
     end
   end
@@ -43,6 +41,14 @@ module MacOS::XQuartz extend self
     when '10.7' then '2.6.3'
     else 'dunno'
     end
+  end
+
+  # Upstream XQuartz *does* have a pkg-info entry, so if we can't get it
+  # from mdls, we can try pkgutil. This is very slow.
+  # NOTE: this sacrifices correctness, as it returns an internal version
+  # that may not always match the "user-facing" version string.
+  def version_from_pkgutil
+    MacOS.pkgutil_info(FORGE_PKG_ID)[/version: (\d\.\d\.\d).+$/, 1]
   end
 
   def provided_by_apple?
