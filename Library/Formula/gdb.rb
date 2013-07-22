@@ -27,10 +27,12 @@ class Gdb < Formula
   option 'with-brewed-python', 'Use the Homebrew version of Python'
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
-            "--with-system-readline"]
+    args = [
+      "--prefix=#{prefix}",
+      "--disable-debug",
+      "--disable-dependency-tracking",
+      "--with-system-readline"
+    ]
 
     if build.include? 'with-brewed-python'
       args << "--with-python=#{HOMEBREW_PREFIX}"
