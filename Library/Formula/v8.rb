@@ -1,7 +1,5 @@
 require 'formula'
 
-# Use the official github mirror, it is easier to find tags there
-# .even versions are stable, .odd releases are devel. Kind of:
 # https://code.google.com/p/v8/issues/detail?id=2545
 # http://omahaproxy.appspot.com/
 
