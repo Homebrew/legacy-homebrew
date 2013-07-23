@@ -17,13 +17,8 @@ class Ice < Formula
 
   def install
     ENV.O2
-    inreplace "cpp/config/Make.rules" do |s|
-      s.gsub! "#OPTIMIZE", "OPTIMIZE"
-      s.gsub! "/opt/Ice-$(VERSION)", prefix
-      s.gsub! "/opt/Ice-$(VERSION_MAJOR).$(VERSION_MINOR)", prefix
-    end
 
-    # what want we build?
+    # what do we want to build?
     wb = 'config src include'
     wb += ' doc' if build.include? 'doc'
     wb += ' demo' if build.include? 'demo'
@@ -31,13 +26,16 @@ class Ice < Formula
       s.change_make_var! "SUBDIRS", wb
     end
 
-    inreplace "cpp/config/Make.rules.Darwin" do |s|
-      s.change_make_var! "CXXFLAGS", "#{ENV.cflags} -Wall -D_REENTRANT"
-    end
+    args = %W[
+      prefix=#{prefix}
+      embedded_runpath_prefix=#{prefix}
+      OPTIMIZE=yes
+    ]
+    args << "CXXFLAGS=#{ENV.cflags} -Wall -D_REENTRANT"
 
     cd "cpp" do
-      system "make"
-      system "make install"
+      system "make", *args
+      system "make", "install", *args
     end
   end
 end
