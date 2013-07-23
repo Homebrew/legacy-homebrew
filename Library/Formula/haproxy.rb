@@ -21,6 +21,7 @@ class Haproxy < Formula
 
     if build.devel?
       args << "USE_OPENSSL=1"
+      args << "USE_ZLIB=1"
       args << "ADDLIB=-lcrypto"
     end
 
