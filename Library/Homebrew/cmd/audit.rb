@@ -511,6 +511,7 @@ class FormulaAuditor
   end
 
   def audit_conditional_dep(dep, condition, line)
+    dep = Regexp.escape(dep)
     case condition
     when /if build\.include\? ['"]with-#{dep}['"]$/, /if build\.with\? ['"]#{dep}['"]$/
       problem %{Replace #{line.inspect} with "depends_on #{quote_dep(dep)} => :optional"}
