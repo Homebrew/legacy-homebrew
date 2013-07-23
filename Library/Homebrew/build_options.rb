@@ -20,8 +20,21 @@ class BuildOptions
     @options << Option.new(name, description)
   end
 
+  # True if the strictly named option is defined
   def has_option? name
     any? { |opt| opt.name == name }
+  end
+
+  # True if:
+  # * the strictly named option is defined
+  # * a 'with' option is defined and requesting a 'without' option
+  # * a 'without' option is defined and requesting a 'with' option
+  def defines_option? name
+    if (name =~ /^(with(?:out)?)-(.+)/)
+      has_option?("with-#{$2}") || has_option?("without-#{$2}")
+    else
+      has_option? name
+    end
   end
 
   def empty?
