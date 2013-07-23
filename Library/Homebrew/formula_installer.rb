@@ -178,7 +178,7 @@ class FormulaInstaller
         elsif dep.build? && install_bottle?(dependent)
           Dependency.prune
         elsif dep.satisfied?
-          Dependency.prune
+          Dependency.skip
         elsif dep.installed?
           raise UnsatisfiedDependencyError.new(f, dep)
         end
