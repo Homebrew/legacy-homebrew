@@ -2,8 +2,8 @@ require 'formula'
 
 class Mongrel2 < Formula
   homepage 'http://mongrel2.org/'
-  url 'https://github.com/zedshaw/mongrel2/archive/v1.8.0.tar.gz'
-  sha1 '3c6e57caec19df92ff6af28301d70af05ec3e456'
+  url 'https://github.com/zedshaw/mongrel2/archive/v1.8.1.tar.gz'
+  sha1 '11230cb59aa4834e017023c8f9b6519831d91767'
 
   head 'https://github.com/zedshaw/mongrel2.git'
 

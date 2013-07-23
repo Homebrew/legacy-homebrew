@@ -13,6 +13,7 @@ class Mercurial < Formula
   depends_on :python => 'docutils' if build.include? 'enable-docs'
 
   def install
+    ENV.minimal_optimization if MacOS.version <= :snow_leopard
     python do
       # Inside this python do block, the PYTHONPATH (and more) is alreay set up
       if python.from_osx? && !MacOS::CLT.installed?
@@ -40,11 +41,11 @@ class Mercurial < Formula
   def caveats
     s = ''
     if build.head? then s += <<-EOS.undent
-        To install the --HEAD version of mercurial, you have to:
-          1. `brew install mercurial`  # so brew can use this to fetch sources!
-          2. `brew unlink mercurial`
-          3. `brew install mercurial --HEAD`
-          4. `brew cleanup mercurial`  # to remove the older non-HEAD version
+      To install the --HEAD version of mercurial, you have to:
+        1. `brew install mercurial`  # so brew can use this to fetch sources!
+        2. `brew unlink mercurial`
+        3. `brew install mercurial --HEAD`
+        4. `brew cleanup mercurial`  # to remove the older non-HEAD version
       EOS
     end
     s += python.standard_caveats if python

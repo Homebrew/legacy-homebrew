@@ -2,8 +2,8 @@ require 'formula'
 
 class Orfeo < Formula
   homepage 'http://www.orfeo-toolbox.org/otb/'
-  url 'http://downloads.sourceforge.net/project/orfeo-toolbox/OTB/OTB-3.14.1/OrfeoToolbox-3.14.1.tgz'
-  sha1 '2cdef44fc4119ef410f750001c18aabc6be3a48c'
+  url 'http://downloads.sourceforge.net/project/orfeo-toolbox/OTB/OTB-3.18/OTB-3.18.0.tgz'
+  sha1 '1e05296ce3e6e4d80a9d0087428d54fbfb83918b'
 
   depends_on 'cmake' => :build
   depends_on :python => :optional

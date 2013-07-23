@@ -11,18 +11,12 @@ class Auctex < Formula
   depends_on :tex
   depends_on :autoconf if build.head?
 
-  def options
-    [['--with-emacs=</full/path/to/emacs>', "Force a different emacs"]]
-  end
+  option "with-emacs=", "Path to an emacs binary"
 
   def which_emacs
-    # check arguments for a different emacs
-    ARGV.each do |a|
-      if a.index('--with-emacs')
-        return a.sub('--with-emacs=', '')
-      end
-    end
-    which('emacs').to_s
+    emacs = ARGV.value('with-emacs') || which('emacs').to_s
+    raise "#{emacs} not found" if not File.exists? emacs
+    return emacs
   end
 
   def install

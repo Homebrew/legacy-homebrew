@@ -264,15 +264,8 @@ def check_for_stray_developer_directory
 end
 
 def check_cc
-  unless MacOS::CLT.installed?
-    if MacOS::Xcode.version >= "4.3" then <<-EOS.undent
-      Experimental support for using Xcode without the "Command Line Tools".
-      You have only installed Xcode. If stuff is not building, try installing the
-      "Command Line Tools" package provided by Apple.
-      EOS
-    else
-      'No compiler found in /usr/bin!'
-    end
+  if !MacOS::CLT.installed? && MacOS::Xcode.version < "4.3"
+    'No compiler found in /usr/bin!'
   end
 end
 

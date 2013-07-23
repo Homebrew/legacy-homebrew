@@ -59,9 +59,7 @@ class Formulary
   class BottleLoader < FormulaLoader
     def initialize bottle_name
       @bottle_filename = Pathname(bottle_name).realpath
-      version = Version.parse(@bottle_filename).to_s
-      bottle_basename = @bottle_filename.basename.to_s
-      name_without_version = bottle_basename.rpartition("-#{version}").first
+      name_without_version = bottle_filename_formula_name @bottle_filename
       if name_without_version.empty?
         if ARGV.homebrew_developer?
           opoo "Add a new version regex to version.rb to parse this filename."
