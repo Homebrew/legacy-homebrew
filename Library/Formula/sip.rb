@@ -16,8 +16,6 @@ class Sip < Formula
       # buid.py can use it to figure out a version number.
       ln_s downloader.cached_location + '.hg', '.hg'
       system python, "build.py", "prepare"
-    else
-      sip_version = version
     end
 
     # The python block is run once for each python (2.x and 3.x if requested)
