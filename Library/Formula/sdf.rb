@@ -6,6 +6,7 @@ class Sdf < Formula
   sha1 'b9be75d56503e7f06fcc9cc543303bae123c0845'
 
   depends_on 'aterm'
+  depends_on 'pkg-config' => :build
 
   def install
     system "./configure", "--prefix=#{prefix}"
