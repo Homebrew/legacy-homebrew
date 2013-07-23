@@ -257,7 +257,7 @@ class FormulaAuditor
     end
 
     # Use new-style archive downloads
-    urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] and not u =~ %r[\.git$] }.each do |u|
+    urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
     end
 
@@ -335,8 +335,7 @@ class FormulaAuditor
   end
 
   def audit_text
-    # xcodebuild should specify SYMROOT
-    if text=~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
+    if text =~ /system\s+['"]xcodebuild/ && text !~ /SYMROOT=/
       problem "xcodebuild should be passed an explicit \"SYMROOT\""
     end
   end
