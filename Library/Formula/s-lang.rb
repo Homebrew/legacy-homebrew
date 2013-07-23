@@ -16,7 +16,7 @@ class SLang < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          "--with-pnglib=#{png_prefix}/lib"
+                          "--with-pnglib=#{png_prefix}/lib",
                           "--with-pnginc=#{png_prefix}/include"
     ENV.j1
     system "make"
