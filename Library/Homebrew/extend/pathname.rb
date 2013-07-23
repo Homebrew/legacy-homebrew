@@ -99,7 +99,7 @@ class Pathname
 
   # we assume this pathname object is a file obviously
   def write content
-    raise "Will not overwrite #{to_s}" if exist? and not ARGV.force?
+    raise "Will not overwrite #{to_s}" if exist?
     dirname.mkpath
     File.open(self, 'w') {|f| f.write content }
   end
