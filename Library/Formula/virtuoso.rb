@@ -2,8 +2,8 @@ require 'formula'
 
 class Virtuoso < Formula
   homepage 'http://virtuoso.openlinksw.com/wiki/main/'
-  url 'http://downloads.sourceforge.net/project/virtuoso/virtuoso/6.1.6/virtuoso-opensource-6.1.6.tar.gz'
-  sha1 '03bc14b1627d16d76687f8b8659801966aab3fb4'
+  url 'http://downloads.sourceforge.net/project/virtuoso/virtuoso/6.1.7/virtuoso-opensource-6.1.7.tar.gz'
+  sha256 'c82c1ee90810db5ccd725f7d0d68b42aa6db9a1c8bf6fe2a4dd0ca91a271aa7f'
 
   head 'https://github.com/openlink/virtuoso-opensource.git', :branch => 'develop/6'
 
@@ -17,6 +17,12 @@ class Virtuoso < Formula
   end
 
   skip_clean :la
+
+  def patches
+    # hotfix for https://github.com/openlink/virtuoso-opensource/issues/68
+    # should be applied only to 6.1.7 — remove when building newer versions
+    "https://github.com/openlink/virtuoso-opensource/commit/fd538a973b773443323939544b018a40ce4c8fee.patch"
+  end if build.stable?
 
   def install
     ENV.m64 if MacOS.prefer_64_bit?
