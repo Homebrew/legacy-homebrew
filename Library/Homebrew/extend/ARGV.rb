@@ -67,6 +67,11 @@ module HomebrewArgvExtension
     at @n+1 or raise UsageError
   end
 
+  def value arg
+    arg = find {|o| o =~ /--#{arg}=(.+)/}
+    $1 if arg
+  end
+
   def force?
     flag? '--force'
   end
@@ -98,8 +103,7 @@ module HomebrewArgvExtension
   end
 
   def json
-    json_rev = find {|o| o =~ /--json=.+/}
-    json_rev.split("=").last if json_rev
+    value 'json'
   end
 
   def build_head?

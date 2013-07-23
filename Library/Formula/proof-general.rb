@@ -7,32 +7,31 @@ class ProofGeneral < Formula
   sha1 'c8d2e4457478b9dbf4080d3cf8255325fcffe619'
 
   option 'with-doc', 'Install HTML documentation'
-  option 'with-emacs', 'Re-compile lisp files with specified emacs'
+  option 'with-emacs=', 'Re-compile lisp files with specified emacs'
 
   def which_emacs
-    ARGV.each do |a|
-      if a.index('--with-emacs=')
-        emacs_binary = a.sub('--with-emacs=', '')
-        raise "#{emacs_binary} not found" if not File.exists? "#{emacs_binary}"
-
-        version_info = `#{emacs_binary} --version`
-        version_info =~ /GNU Emacs (\d+)\./
-        major = $1
-
-        if major != '23' && major != '24'
-          raise "Emacs 23.x or 24.x is required; #{major}.x provided."
-        end
-
-        return OpenStruct.new(
-          :binary => emacs_binary,
-          :major  => major,
-          :empty? => false)
-      end
+    emacs_binary = ARGV.value('with-emacs')
+    if emacs_binary.nil?
+      return OpenStruct.new(
+        :binary => "",
+        :major  => 0,
+        :empty? => true)
     end
+
+    raise "#{emacs_binary} not found" if not File.exists? "#{emacs_binary}"
+
+    version_info = `#{emacs_binary} --version`
+    version_info =~ /GNU Emacs (\d+)\./
+    major = $1
+
+    if major != '23' && major != '24'
+      raise "Emacs 23.x or 24.x is required; #{major}.x provided."
+    end
+
     return OpenStruct.new(
-      :binary => "",
-      :major  => 0,
-      :empty? => true)
+      :binary => emacs_binary,
+      :major  => major,
+      :empty? => false)
   end
 
   def install

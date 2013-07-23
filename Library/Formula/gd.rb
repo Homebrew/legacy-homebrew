@@ -24,7 +24,7 @@ class Gd < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    args = ["--prefix=#{prefix}"]
+    args = %W{--disable-dependency-tracking --prefix=#{prefix}}
     args << "--without-freetype" unless build.with? 'freetype'
     system "./configure", *args
     system "make install"
@@ -50,9 +50,7 @@ class Gd < Formula
   end
 
   test do
-    system "#{bin}/pngtogd", \
-      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png", \
-      "gd_test.gd"
+    system "#{bin}/pngtogd", "/usr/share/doc/cups/images/cups.png", "gd_test.gd"
     system "#{bin}/gdtopng", "gd_test.gd", "gd_test.png"
   end
 end

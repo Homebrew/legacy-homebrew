@@ -7,17 +7,22 @@ class Macvim < Formula
   version '7.3-66'
   sha1 'd2915438c9405015e5e39099aecbbda20438ce81'
 
+  devel do
+    url 'https://github.com/b4winckler/macvim/archive/snapshot-68.tar.gz'
+    version '7.4a-BETA-68'
+    sha1 'bb764139a3637cd48015207dc91d7470814b37cc'
+  end
+
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
 
+  depends_on :xcode
   depends_on 'cscope' => :recommended
   depends_on 'lua' => :optional
   depends_on :python => :recommended
   # Help us! :python3 in MacVim makes the window disappear, so only 2.x bindings!
-
-  depends_on :xcode # For xcodebuild.
 
   def install
     # Set ARCHFLAGS so the Python app (with C extension) that is

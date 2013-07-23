@@ -64,7 +64,6 @@ class Imagemagick < Formula
              "--enable-shared",
              "--disable-static",
              "--without-pango",
-             "--with-included-ltdl",
              "--with-modules"]
 
     args << "--disable-openmp" unless build.include? 'enable-openmp'
@@ -96,6 +95,6 @@ class Imagemagick < Formula
   end
 
   test do
-    system "#{bin}/identify", "/usr/share/doc/cups/images/smiley.jpg"
+    system "#{bin}/identify", "/usr/share/doc/cups/images/cups.png"
   end
 end

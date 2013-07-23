@@ -14,15 +14,16 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.bz2'
-  sha1 'e6dd1b62ceed0a51add3dda6f3fc3ce0f636a7f3'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.54.0/boost_1_54_0.tar.bz2'
+  sha1 '230782c7219882d0fab5f1effbe86edb85238bf4'
 
   head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
-    sha1 'fda423e53ed998d54c33cc91582c0d5e3e4ff91e' => :mountain_lion
-    sha1 '99fec23d1b79a510d8cd1f1f0cbd77cc73b4f4b5' => :lion
-    sha1 '15f74640979b95bd327be3b6ca2a5d18878a29ad' => :snow_leopard
+    cellar :any
+    sha1 '767a67f4400e5273db3443e10a6e07704b4cbd0f' => :mountain_lion
+    sha1 '5f487b4a1d131722dd673d7ee2de418adf3b5322' => :lion
+    sha1 'cedd9bd34e6dbebc073beeb12fb3aa7a3cb5ecb6' => :snow_leopard
   end
 
   env :userpaths
@@ -30,7 +31,8 @@ class Boost < Formula
   option :universal
   option 'with-icu', 'Build regexp engine with icu support'
   option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
-  option 'use-system-layout', 'Use system layout instead of tagged'
+  option 'without-single', 'Disable building single-threading variant'
+  option 'without-static', 'Disable building static library variant'
 
   depends_on :python => :recommended
   depends_on UniversalPython if build.universal? and build.with? "python"
@@ -40,6 +42,16 @@ class Boost < Formula
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
+  end
+
+  def patches
+    # upstream backported patches for 1.54.0: http://www.boost.org/patches
+    [
+      'http://www.boost.org/patches/1_54_0/001-coroutine.patch',
+      'http://www.boost.org/patches/1_54_0/002-date-time.patch',
+      'http://www.boost.org/patches/1_54_0/003-log.patch',
+      'http://www.boost.org/patches/1_54_0/004-thread.patch'
+    ]
   end
 
   def pour_bottle?
@@ -92,17 +104,35 @@ class Boost < Formula
     # The context library is implemented as x86_64 ASM, so it
     # won't build on PPC or 32-bit builds
     # see https://github.com/mxcl/homebrew/issues/17646
-    bargs << "--without-libraries=context" if Hardware::CPU.type == :ppc || Hardware::CPU.bits == 32 || build.universal?
+    if Hardware::CPU.type == :ppc || Hardware::CPU.bits == 32 || build.universal?
+      bargs << "--without-libraries=context"
+      # The coroutine library depends on the context library.
+      bargs << "--without-libraries=coroutine"
+    end
 
-    boost_layout = (build.include? "use-system-layout") ? "system" : "tagged"
+    # Boost.Log cannot be built using Apple GCC at the moment. Disabled
+    # on such systems.
+    bargs << "--without-libraries=log" if MacOS.version <= :snow_leopard
+
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
             "-d2",
             "-j#{ENV.make_jobs}",
-            "--layout=#{boost_layout}",
+            "--layout=tagged",
             "--user-config=user-config.jam",
-            "threading=multi",
             "install"]
+
+    if build.include? 'without-single'
+      args << "threading=multi"
+    else
+      args << "threading=multi,single"
+    end
+
+    if build.include? 'without-static'
+      args << "link=shared"
+    else
+      args << "link=shared,static"
+    end
 
     if MacOS.version >= :lion and build.with? 'c++11'
       args << "toolset=clang" << "cxxflags=-std=c++11"

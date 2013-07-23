@@ -16,8 +16,6 @@ class Sip < Formula
       # buid.py can use it to figure out a version number.
       ln_s downloader.cached_location + '.hg', '.hg'
       system python, "build.py", "prepare"
-    else
-      sip_version = version
     end
 
     # The python block is run once for each python (2.x and 3.x if requested)
@@ -32,10 +30,7 @@ class Sip < Formula
                               "--incdir=#{include}",
                               "--sipdir=#{HOMEBREW_PREFIX}/share/sip#{python.if3then3}"
       system "make"
-      if python3
-        bin.mkdir unless bin.exist?
-        bin.install 'sipgen/sip' => 'sip3'
-      end
+      bin.install 'sipgen/sip' => 'sip3' if python3
       system "make install"
       system "make clean"
     end
@@ -48,5 +43,4 @@ class Sip < Formula
     s += "The sip-dir for Python #{python.version.major}.x is #{HOMEBREW_PREFIX}/share/sip#{python.if3then3}."
     s
   end
-
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Dex2jar < Formula
   homepage 'https://code.google.com/p/dex2jar/'
-  url 'https://dex2jar.googlecode.com/files/dex2jar-0.0.9.13.zip'
-  sha1 '89057a41d646b15a1a9bb38747371b35d32b326b'
+  url 'https://dex2jar.googlecode.com/files/dex2jar-0.0.9.15.zip'
+  sha1 'cc9366836d576ce22a18de8f214368636db9fcba'
 
   def install
     # Remove Windows scripts

@@ -7,7 +7,7 @@ class Appledoc < Formula
 
   head 'https://github.com/tomaz/appledoc.git', :branch => 'master'
 
-  depends_on :xcode # For working xcodebuild.
+  depends_on :xcode
   depends_on :macos => :lion
 
   def install
