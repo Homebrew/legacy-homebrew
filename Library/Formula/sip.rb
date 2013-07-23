@@ -30,10 +30,7 @@ class Sip < Formula
                               "--incdir=#{include}",
                               "--sipdir=#{HOMEBREW_PREFIX}/share/sip#{python.if3then3}"
       system "make"
-      if python3
-        bin.mkdir unless bin.exist?
-        bin.install 'sipgen/sip' => 'sip3'
-      end
+      bin.install 'sipgen/sip' => 'sip3' if python3
       system "make install"
       system "make clean"
     end
@@ -46,5 +43,4 @@ class Sip < Formula
     s += "The sip-dir for Python #{python.version.major}.x is #{HOMEBREW_PREFIX}/share/sip#{python.if3then3}."
     s
   end
-
 end
