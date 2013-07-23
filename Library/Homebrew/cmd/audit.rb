@@ -555,12 +555,12 @@ class FormulaAuditor
     # Checks that apply only to code in def caveats
     if text =~ /(\s*)def\s+caveats((.*\n)*?)(\1end)/ || text =~ /(\s*)def\s+caveats;(.*?)end/
       caveats_body = $2
-        if caveats_body =~ /[ \{=](python[23]?)\.(.*\w)/
-          # So if in the body of caveats there is a `python.whatever` called,
-          # check that there is a guard like `if python` or similiar:
-          python = $1
-          method = $2
-          unless caveats_body =~ /(if python[23]?)|(if build\.with\?\s?\(?['"]python)|(unless build.without\?\s?\(?['"]python)/
+      if caveats_body =~ /[ \{=](python[23]?)\.(.*\w)/
+        # So if in the body of caveats there is a `python.whatever` called,
+        # check that there is a guard like `if python` or similiar:
+        python = $1
+        method = $2
+        unless caveats_body =~ /(if python[23]?)|(if build\.with\?\s?\(?['"]python)|(unless build.without\?\s?\(?['"]python)/
           problem "Please guard `#{python}.#{method}` like so `#{python}.#{method} if #{python}`"
         end
       end
