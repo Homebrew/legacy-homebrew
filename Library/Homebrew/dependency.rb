@@ -94,11 +94,12 @@ class Dependency
       end
     end
 
-    # Used to prune dependencies when calling expand with a block.
+    # Prune a dependency and its dependencies recursively
     def prune
       throw(:action, :prune)
     end
 
+    # Prune a single dependency but do not prune its dependencies
     def skip
       throw(:action, :skip)
     end
