@@ -141,6 +141,7 @@ class FormulaAuditor
       end
 
       dep.options.reject do |opt|
+        # TODO -- fix for :recommended, should still allow --with-xyz
         dep_f.build.has_option?(opt.name)
       end.each do |opt|
         problem "Dependency #{dep} does not define option #{opt.name.inspect}"
