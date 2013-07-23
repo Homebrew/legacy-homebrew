@@ -553,7 +553,7 @@ class FormulaAuditor
     end
 
     # Checks that apply only to code in def caveats
-    if text =~ /(\s*)def\s+caveats((.*\n)*?)(\1end)/ || /(\s*)def\s+caveats;(.*?)end/
+    if text =~ /(\s*)def\s+caveats((.*\n)*?)(\1end)/ || text =~ /(\s*)def\s+caveats;(.*?)end/
       caveats_body = $2
         if caveats_body =~ /[ \{=](python[23]?)\.(.*\w)/
           # So if in the body of caveats there is a `python.whatever` called,
