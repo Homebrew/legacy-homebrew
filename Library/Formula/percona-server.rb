@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.5/Percona-Server-5.5.32-31.0/source/Percona-Server-5.5.32-rel31.0.tar.gz'
-  version '5.5.32-31.0'
-  sha1 'ec5bcf0acb7a6147c2b34b4b37d23da999c6218f'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/Percona-Server-5.6.12-rc60.4/source/Percona-Server-5.6.12-rc60.4.tar.gz'
+  version '5.6.12-rc60.4'
+  sha1 '5508a47d5f834adc306bceb8cc60a48797441e15'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
@@ -88,6 +88,9 @@ class PerconaServer < Formula
 
     system "cmake", *args
     system "make"
+    # Reported upstream:
+    # http://bugs.mysql.com/bug.php?id=69645
+    inreplace "scripts/mysql_config", / +-Wno[\w-]+/, ""
     system "make install"
 
     # Don't create databases inside of the prefix!

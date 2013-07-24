@@ -16,9 +16,9 @@ require 'requirement'
 class PythonInstalled < Requirement
   attr_reader :min_version
   attr_reader :if3then3
-  attr_reader :site_packages
+  attr_reader :imports
   attr_accessor :site_packages
-  attr_accessor :binary # The python.rb formula needs to set the binary
+  attr_writer :binary # The python.rb formula needs to set the binary
 
   fatal true  # you can still make Python optional by `depends_on :python => :optional`
 
@@ -343,15 +343,14 @@ class PythonInstalled < Requirement
     binary.to_s
   end
 
+  # Objects of this class are used to represent dependencies on Python and
+  # dependencies on Python modules, so the combination of name + imports is
+  # enough to identify them uniquely.
   def eql?(other)
-    instance_of?(other.class) && hash == other.hash
+    instance_of?(other.class) && name == other.name && imports == other.imports
   end
 
   def hash
-    # Requirements are a ComparableSet. So we define our identity by the
-    # selected python binary plus the @imports in order to support multiple:
-    #    depends_on :python => 'module1'
-    #    depends_on :python => 'module2'
-    (binary.to_s+@imports.to_s).hash
+    [name, *imports].hash
   end
 end
