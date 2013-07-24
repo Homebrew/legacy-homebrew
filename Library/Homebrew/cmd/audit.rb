@@ -141,6 +141,7 @@ class FormulaAuditor
       end
 
       dep.options.reject do |opt|
+        # TODO -- fix for :recommended, should still allow --with-xyz
         dep_f.build.has_option?(opt.name)
       end.each do |opt|
         problem "Dependency #{dep} does not define option #{opt.name.inspect}"
@@ -257,7 +258,7 @@ class FormulaAuditor
     end
 
     # Use new-style archive downloads
-    urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] and not u =~ %r[\.git$] }.each do |u|
+    urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
     end
 
@@ -335,8 +336,7 @@ class FormulaAuditor
   end
 
   def audit_text
-    # xcodebuild should specify SYMROOT
-    if text=~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
+    if text =~ /system\s+['"]xcodebuild/ && text !~ /SYMROOT=/
       problem "xcodebuild should be passed an explicit \"SYMROOT\""
     end
   end
@@ -511,12 +511,14 @@ class FormulaAuditor
   end
 
   def audit_conditional_dep(dep, condition, line)
-    dep = Regexp.escape(dep)
+    quoted_dep = quote_dep(dep)
+    dep = Regexp.escape(dep.to_s)
+
     case condition
     when /if build\.include\? ['"]with-#{dep}['"]$/, /if build\.with\? ['"]#{dep}['"]$/
-      problem %{Replace #{line.inspect} with "depends_on #{quote_dep(dep)} => :optional"}
+      problem %{Replace #{line.inspect} with "depends_on #{quoted_dep} => :optional"}
     when /unless build\.include\? ['"]without-#{dep}['"]$/, /unless build\.without\? ['"]#{dep}['"]$/
-      problem %{Replace #{line.inspect} with "depends_on #{quote_dep(dep)} => :recommended"}
+      problem %{Replace #{line.inspect} with "depends_on #{quoted_dep} => :recommended"}
     end
   end
 
