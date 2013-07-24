@@ -18,6 +18,14 @@ class Virtuoso < Formula
 
   skip_clean :la
 
+  def patches
+    if not build.head?
+      # hotfix for https://github.com/openlink/virtuoso-opensource/issues/68
+      # should be applied only to 6.1.7 — remove when building newer versions
+      "https://github.com/openlink/virtuoso-opensource/commit/fd538a973b773443323939544b018a40ce4c8fee.patch"
+    end
+  end
+
   def install
     ENV.m64 if MacOS.prefer_64_bit?
     system "./autogen.sh" if build.head?
