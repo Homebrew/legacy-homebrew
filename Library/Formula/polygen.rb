@@ -7,6 +7,10 @@ class Polygen < Formula
 
   depends_on 'objective-caml' => :build
 
+  def patches
+    DATA
+  end
+
   def install
     cd 'src' do
         system 'make'
@@ -14,3 +18,18 @@ class Polygen < Formula
     end
   end
 end
+
+__END__
+diff --git a/src/makefile b/src/makefile
+index b228601..10542b1 100644
+--- a/src/makefile
++++ b/src/makefile
+@@ -49,7 +49,7 @@ parser.mli parser.ml lexer.ml: lexer.mll parser.mly
+ 	$(MLYACC) parser.mly
+     # workaround for ocamlyacc "open" lack
+ 	@mv parser.mli _parser.mli
+-	@echo -e "open Absyn\n" >parser.mli
++	@echo "open Absyn" >parser.mli
+ 	@cat <_parser.mli >>parser.mli
+ 	@rm -f _parser.mli
+ 
