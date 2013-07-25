@@ -4,7 +4,7 @@ class LuaRequirement < Requirement
   fatal true
   default_formula 'lua'
 
-  satisfy { which 'pg_config' }
+  satisfy { which 'lua' }
 end
 
 class Gnuplot < Formula
