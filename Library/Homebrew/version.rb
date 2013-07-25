@@ -80,12 +80,12 @@ class Version
 
   class CompositeToken < StringToken
     def rev
-      value[/([0-9]+)/, 1]
+      value[/([0-9]+)/, 1] || "0"
     end
   end
 
   class AlphaToken < CompositeToken
-    PATTERN = /a(?:lpha)?[0-9]+/i
+    PATTERN = /a(?:lpha)?[0-9]*/i
 
     def <=>(other)
       case other
@@ -98,7 +98,7 @@ class Version
   end
 
   class BetaToken < CompositeToken
-    PATTERN = /b(?:eta)?[0-9]+/i
+    PATTERN = /b(?:eta)?[0-9]*/i
 
     def <=>(other)
       case other
@@ -115,7 +115,7 @@ class Version
   end
 
   class RCToken < CompositeToken
-    PATTERN = /rc[0-9]+/i
+    PATTERN = /rc[0-9]*/i
 
     def <=>(other)
       case other
@@ -132,7 +132,7 @@ class Version
   end
 
   class PatchToken < CompositeToken
-    PATTERN = /p[0-9]+/i
+    PATTERN = /p[0-9]*/i
 
     def <=>(other)
       case other
@@ -192,9 +192,18 @@ class Version
 
   protected
 
+  def begins_with_numeric?
+    NumericToken === tokens.first
+  end
+
   def pad_to(length)
-    nums, rest = tokens.partition { |t| NumericToken === t }
-    nums.concat([NULL_TOKEN]*(length - tokens.length)).concat(rest)
+    if begins_with_numeric?
+      nums, rest = tokens.partition { |t| NumericToken === t }
+      nums.fill(NULL_TOKEN, nums.length, length - tokens.length)
+      nums.concat(rest)
+    else
+      tokens.dup.fill(NULL_TOKEN, tokens.length, length - tokens.length)
+    end
   end
 
   def tokens
