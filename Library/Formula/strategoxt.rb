@@ -5,6 +5,7 @@ class Strategoxt < Formula
   url 'ftp://ftp.strategoxt.org/pub/stratego/StrategoXT/strategoxt-0.17/strategoxt-0.17.tar.gz'
   sha1 '65fbd0a394917747366ce5c7c83ba6e3883cbb5c'
 
+  depends_on 'pkg-config' => :build
   depends_on 'aterm'
   depends_on 'sdf'
 
