@@ -1,21 +1,21 @@
 require 'formula'
 
 class TikaRestServer < Formula
-  url 'http://repo1.maven.org/maven2/org/apache/tika/tika-server/1.3/tika-server-1.3.jar'
-  sha1 '8d96bc0fa171c48018ebdce62f1204cb79de250b'
+  url 'http://repo1.maven.org/maven2/org/apache/tika/tika-server/1.4/tika-server-1.4.jar'
+  sha1 '52c6a2ca5be920ead267ecce191b1644232244ee'
 end
 
 class Tika < Formula
   homepage 'http://tika.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tika/tika-app-1.3.jar'
-  sha1 'fb5786dfe4fa19a651c9f6d9417336127b34ddc2'
+  url 'http://www.apache.org/dyn/closer.cgi?path=tika/tika-app-1.4.jar'
+  sha1 'e91c758149ce9ce799fff184e9bf3aabda394abc'
 
   def install
     libexec.install "tika-app-#{version}.jar"
-    bin.write_jar_script libexec/"tika-app-1.3.jar", "tika"
+    bin.write_jar_script libexec/"tika-app-1.4.jar", "tika"
     TikaRestServer.new.brew do
-      libexec.install "tika-server-1.3.jar"
-      bin.write_jar_script libexec/"tika-server-1.3.jar", "tika-rest-server"
+      libexec.install "tika-server-1.4.jar"
+      bin.write_jar_script libexec/"tika-server-1.4.jar", "tika-rest-server"
     end
   end
 
