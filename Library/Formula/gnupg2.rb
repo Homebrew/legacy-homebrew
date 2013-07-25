@@ -30,6 +30,8 @@ class Gnupg2 < Formula
 
     (var/'run').mkpath
 
+    ENV.append 'LDFLAGS', '-lresolv'
+
     ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
 
     system "./configure", "--prefix=#{prefix}",
