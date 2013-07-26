@@ -13,8 +13,7 @@ class Serf < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "scons", "PREFIX=#{prefix}", "CC=#{ENV.cc}",
-      "CFLAGS=#{ENV.cflags}", "LINKFLAGS=#{ENV.ldflags}", "CPPFLAGS=#{ENV.cppflags}"
+    system "scons", "PREFIX=#{prefix}"
     system "scons install"
   end
 end
