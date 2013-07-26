@@ -2,7 +2,8 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.0.tar.bz2'
+  url 'http://archive.apache.org/dist/subversion/subversion-1.8.0.tar.bz2'
+  # url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.0.tar.bz2'
   sha1 '45d227511507c5ed99e07f9d42677362c18b364c'
 
   bottle do
