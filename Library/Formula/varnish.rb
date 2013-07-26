@@ -2,8 +2,8 @@ require 'formula'
 
 class Varnish < Formula
   homepage 'http://www.varnish-cache.org/'
-  url 'http://repo.varnish-cache.org/source/varnish-3.0.3.tar.gz'
-  sha1 '6e1535caa30c3f61af00160c59d318e470cd6f57'
+  url 'http://repo.varnish-cache.org/source/varnish-3.0.4.tar.gz'
+  sha1 '6ac72f0bcaf92c9716d6fd8cc790c8f3333c4cb7'
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
