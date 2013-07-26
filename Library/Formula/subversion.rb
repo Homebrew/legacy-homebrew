@@ -154,6 +154,8 @@ class Subversion < Formula
       end
       system "make swig-pl"
       system "make", "install-swig-pl", "DESTDIR=#{prefix}"
+      lib.install_symlink Dir["#{prefix}/#{lib}/*"]
+      man3.install_symlink Dir["#{prefix}/#{HOMEBREW_PREFIX}/share/man/man3/*"]
     end
 
     if build.include? 'java'
