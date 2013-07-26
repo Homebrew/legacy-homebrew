@@ -169,13 +169,19 @@ class FormulaInstaller
   # All dependencies that we must install before installing f.
   # These do not honor flags like --HEAD and --devel.
   def necessary_deps
+    # FIXME: can't check this inside the block for the top-level dependent
+    # because it depends on the contents of ARGV.
+    pour_bottle = pour_bottle?
+
     ARGV.filter_for_dependencies do
       f.recursive_dependencies do |dependent, dep|
         dep.universal! if f.build.universal? && !dep.build?
 
         if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
           Dependency.prune
-        elsif dep.build? && install_bottle?(dependent)
+        elsif dep.build? && dependent == f && pour_bottle
+          Dependency.prune
+        elsif dep.build? && dependent != f && install_bottle?(dependent)
           Dependency.prune
         elsif dep.satisfied?
           Dependency.skip
