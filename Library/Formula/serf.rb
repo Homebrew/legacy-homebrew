@@ -7,6 +7,11 @@ class Serf < Formula
 
   option :universal
 
+  # Note, with proper editing this can be made to work with an
+  # Xcode-only build, but by default scons strips the system PATH
+  # when building.
+  depends_on :clt
+
   depends_on :libtool
   depends_on 'sqlite'
   depends_on 'scons' => :build
