@@ -13,6 +13,7 @@ at_exit do
 end
 
 require 'global'
+require 'cxxstdlib'
 require 'debrew' if ARGV.debug?
 
 def main
@@ -148,6 +149,14 @@ class Build
       end
     end
 
+    # We only support libstdc++ right now
+    stdlib_in_use = CxxStdlib.new(:libstdcxx, ENV.compiler)
+
+    # This is a bad place for this check, but we don't have access to
+    # compiler selection within the formula installer, only inside the
+    # build instance.
+    stdlib_in_use.check_dependencies(f, deps)
+
     f.brew do
       if ARGV.flag? '--git'
         system "git init"
@@ -170,7 +179,7 @@ class Build
 
         begin
           f.install
-          Tab.create(f, ENV.compiler,
+          Tab.create(f, :libstdcxx, ENV.compiler,
             Options.coerce(ARGV.options_only)).write
         rescue Exception => e
           if ARGV.debug?
