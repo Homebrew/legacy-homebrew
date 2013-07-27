@@ -18,11 +18,16 @@ module MacOS extend self
     # Give the name of the binary you look for as a string to this method
     # in order to get the full path back as a Pathname.
     (@locate ||= {}).fetch(tool.to_s) do
-      @locate[tool.to_s] = if File.executable? "/usr/bin/#{tool}"
-        Pathname.new "/usr/bin/#{tool}"
+      @locate[tool.to_s] = if File.executable?(path = "/usr/bin/#{tool}")
+        Pathname.new path
+      # Homebrew GCCs most frequently; much faster to check this before xcrun
+      # This also needs to be queried if xcrun won't work, e.g. CLT-only
+      elsif File.executable?(path = "#{HOMEBREW_PREFIX}/bin/#{tool}")
+        Pathname.new path
       else
-        # If the tool isn't in /usr/bin, then we first try to use xcrun to find
-        # it. If it's not there, or xcode-select is misconfigured, we have to
+        # If the tool isn't in /usr/bin or from Homebrew,
+        # then we first try to use xcrun to find it.
+        # If it's not there, or xcode-select is misconfigured, we have to
         # look in dev_tools_path, and finally in xctoolchain_path, because the
         # tools were split over two locations beginning with Xcode 4.3+.
         xcrun_path = unless Xcode.bad_xcode_select_path?
