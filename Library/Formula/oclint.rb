@@ -41,15 +41,15 @@ class Oclint < Formula
 
   def install
     OCLintLLVM.new("llvm").brew do
-      llvm_dir.install Dir['*']
+      (buildpath/'llvm').install Dir['*']
     end
 
     OCLintClang.new("clang").brew do
-      clang_dir.install Dir['*']
+      (buildpath/'llvm/tools/clang').install Dir['*']
     end
 
     OCLintCompilerRT.new("compiler-rt").brew do
-      compiler_rt_dir.install Dir['*']
+      (buildpath/'llvm/projects/compiler-rt').install Dir['*']
     end
 
     if build.head?
@@ -65,12 +65,12 @@ class Oclint < Formula
     args = []
     args << "release" unless build.with? 'debug'
 
-    cd oclint_script_dir do
+    cd buildpath/'oclint-scripts' do
       system './buildClang.sh', *args
       system './buildAll.sh', *args
     end
 
-    cd oclint_release_dir do
+    cd buildpath/'build/oclint-release' do
       lib.install Dir['lib/clang']
       lib.install Dir['lib/oclint']
       bin.install Dir['bin/*']
@@ -82,23 +82,4 @@ class Oclint < Formula
     system "#{bin}/oclint #{prefix}/test.m -- -c"
   end
 
-  def oclint_script_dir
-    buildpath/'oclint-scripts'
-  end
-
-  def oclint_release_dir
-    buildpath/'build/oclint-release'
-  end
-
-  def llvm_dir
-    buildpath/'llvm'
-  end
-
-  def clang_dir
-    llvm_dir/'tools/clang'
-  end
-
-  def compiler_rt_dir
-    llvm_dir/'projects/compiler-rt'
-  end
 end
