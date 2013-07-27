@@ -138,8 +138,8 @@ class Python < Formula
 
     py.binary = bin/'python'
     py.modify_build_environment
-    setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
-                   "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
+    setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force",
+                   "--prefix=#{HOMEBREW_PREFIX}", "--verbose" ]
     Setuptools.new.brew { system "#{bin}/python2", *setup_args }
     Pip.new.brew { system "#{bin}/python2", *setup_args }
 
