@@ -1,5 +1,6 @@
 # encoding: UTF-8
 
+require 'cxxstdlib'
 require 'exceptions'
 require 'formula'
 require 'keg'
@@ -92,6 +93,17 @@ class FormulaInstaller
 
     if ARGV.build_bottle? && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
+    end
+
+    if pour_bottle? true
+      # TODO We currently only support building with libstdc++ as
+      # the default case, and all Apple libstdc++s are compatible, so
+      # this default is sensible.
+      # In the future we need to actually provide a way to read this from
+      # the bottle, or update the default should that change
+      # at some other point.
+      stdlib_in_use = CxxStdlib.new(:libstdcxx, :clang)
+      stdlib_in_use.check_dependencies(f, f.deps)
     end
 
     oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
