@@ -170,6 +170,7 @@ class Build
 
         begin
           f.install
+          Tab.create(f, Options.coerce(ARGV.options_only)).write
         rescue Exception => e
           if ARGV.debug?
             debrew e, f
