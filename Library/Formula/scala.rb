@@ -29,6 +29,7 @@ class Scala < Formula
   end
 
   option 'with-docs', 'Also install library documentation'
+  option 'idea', 'Create symlinks for use with IntelliJ Idea'
 
   def install
     rm_f Dir["bin/*.bat"]
@@ -41,5 +42,14 @@ class Scala < Formula
       branch = build.stable? ? 'scala-2.10' : 'scala-2.11'
       (share/'doc'/branch).install Dir['*']
     end if build.include? 'with-docs'
+
+    if build.include? 'idea'
+      ohai 'Creating symlinks for IntelliJ Idea'
+      mkpath "#{prefix}/idea/doc/scala-devel-docs"
+      File.symlink "#{libexec}/src", "#{prefix}/idea/src"
+      File.symlink "#{libexec}/lib", "#{prefix}/idea/lib"
+      File.symlink "#{doc}", "#{prefix}/idea/doc/scala-devel-docs/api"
+    end
   end
 end
+
