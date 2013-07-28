@@ -36,10 +36,22 @@ class Scala < Formula
     man1.install Dir['man/man1/*']
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
+
     ScalaCompletion.new.brew { bash_completion.install 'scala' }
+
     ScalaDocs.new.brew do
       branch = build.stable? ? 'scala-2.10' : 'scala-2.11'
       (share/'doc'/branch).install Dir['*']
     end if build.include? 'with-docs'
+
+    idea = prefix/'idea'
+    idea.install_symlink libexec/'src', libexec/'lib'
+    (idea/'doc/scala-devel-docs').install_symlink doc => 'api'
+  end
+
+  def caveats; <<-EOS.undent
+    To use with IntelliJ, set the Scala home to:
+      #{prefix}/idea
+    EOS
   end
 end
