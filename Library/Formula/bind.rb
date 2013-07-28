@@ -2,9 +2,9 @@ require 'formula'
 
 class Bind < Formula
   homepage 'http://www.isc.org/software/bind/'
-  url 'http://ftp.isc.org/isc/bind9/9.9.3-P1/bind-9.9.3-P1.tar.gz'
-  sha1 '9e1a9e5e45685befce6b93d4fcfd63e50eaeb2cf'
-  version '9.9.3-P1'
+  url 'http://ftp.isc.org/isc/bind9/9.9.3-P2/bind-9.9.3-P2.tar.gz'
+  sha1 'a0235692c488b3fadf54a15858b1f13ae2ab6979'
+  version '9.9.3-P2'
 
   depends_on "openssl" if MacOS.version <= :leopard
 
