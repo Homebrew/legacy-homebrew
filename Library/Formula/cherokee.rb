@@ -2,8 +2,8 @@ require 'formula'
 
 class Cherokee < Formula
   homepage 'http://www.cherokee-project.com/'
-  url 'http://www.cherokee-project.com/download/1.2/1.2.101/cherokee-1.2.101.tar.gz'
-  sha1 'b27f149c7d7111207ac8c3cd8a4856c05490d136'
+  url 'https://github.com/cherokee/webserver/archive/v1.2.103.zip'
+  sha1 '26f6c3e37447b466c2e36f9312277a4408823672'
 
   head 'https://github.com/cherokee/webserver.git'
 
