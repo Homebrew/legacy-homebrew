@@ -83,7 +83,7 @@ module Homebrew extend self
       end
     end
     results
-  rescue GitHub::Error
+  rescue GitHub::Error, Utils::JSON::Error
     []
   end
 
