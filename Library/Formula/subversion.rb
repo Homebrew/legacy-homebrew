@@ -2,7 +2,8 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.0.tar.bz2'
+  url 'http://archive.apache.org/dist/subversion/subversion-1.8.0.tar.bz2'
+  # url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.0.tar.bz2'
   sha1 '45d227511507c5ed99e07f9d42677362c18b364c'
 
   bottle do
@@ -27,7 +28,7 @@ class Subversion < Formula
   depends_on :libtool if build.include? 'ruby'
 
   # If building bindings, allow non-system interpreters
-  env :userpaths if (build.include? 'perl') or (build.include? 'ruby')
+  env :userpaths if build.include? 'perl' or build.include? 'ruby'
 
   def patches
     ps = []
@@ -48,7 +49,7 @@ class Subversion < Formula
   fails_with :clang do
     build 318
     cause "core.c:1: error: bad value (native) for -march= switch"
-  end if (build.include? 'perl') or (build.include? 'ruby')
+  end if build.include? 'perl' or build.include? 'ruby'
 
   def apr_bin
     superbin or "/usr/bin"
@@ -79,7 +80,7 @@ class Subversion < Formula
         puts "  brew install subversion --universal --java"
       end
 
-      unless (ENV["JAVA_HOME"] or "").empty?
+      ENV.fetch('JAVA_HOME') do
         opoo "JAVA_HOME is set. Try unsetting it if JNI headers cannot be found."
       end
     end

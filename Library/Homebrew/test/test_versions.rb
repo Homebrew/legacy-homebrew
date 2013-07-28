@@ -46,6 +46,12 @@ class VersionComparisonTests < Test::Unit::TestCase
   def test_compare_patchlevel_to_non_patchlevel
     assert_operator version('9.9.3-P1'), :>, version('9.9.3')
   end
+
+  def test_erlang_version
+    versions = %w{R16B R15B03-1 R15B03 R15B02 R15B01 R14B04 R14B03
+                  R14B02 R14B01 R14B R13B04 R13B03 R13B02-1}.reverse
+    assert_equal versions, versions.sort_by { |v| version(v) }
+  end
 end
 
 class VersionParsingTests < Test::Unit::TestCase
