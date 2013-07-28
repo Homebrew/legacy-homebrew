@@ -36,6 +36,7 @@ class Llvm < Formula
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
   option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
+  option 'enable-libcpp', 'Build with libc++ instead of libstdc++'
 
   depends_on :python => :recommended
 
@@ -77,6 +78,7 @@ class Llvm < Formula
     args << "--enable-shared" unless build.include? 'disable-shared'
 
     args << "--disable-assertions" if build.include? 'disable-assertions'
+    args << "--enable-libcpp" if build.include? 'enable-libcpp'
 
     system "./configure", *args
     system "make install"
