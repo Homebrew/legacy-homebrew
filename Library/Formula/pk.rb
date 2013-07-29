@@ -2,8 +2,8 @@ require 'formula'
 
 class Pk < Formula
   homepage 'https://github.com/johnmorrow/pk'
-  url 'https://github.com/johnmorrow/pk/releases/download/v1.0.0/pk-1.0.0.tar.gz'
-  sha1 '43add5386e49c9e7a22c2a9a26d8630ee3e57d0e'
+  url 'https://github.com/johnmorrow/pk/releases/download/v1.0.1/pk-1.0.1.tar.gz'
+  sha1 '8213fc0f80da79783baf0968cb7c7237ee901f4e'
 
   depends_on 'argp-standalone'
 
