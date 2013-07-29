@@ -7,9 +7,9 @@ class Sbt < Formula
   sha1 '701af98879a5c2d89c089d69e96e5d1c3bcfafaa'
 
   devel do
-    url 'http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.0-RC1/sbt-launch.jar'
-    sha1 '44a212e646866fc64b23d2f7a1dc02c986b7e7f1'
-    version '0.13.0-RC1'
+    url 'http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.0-RC3/sbt-launch.jar'
+    sha1 '8faebf882cc1844a99c25220a8c506fed26c7718'
+    version '0.13.0-RC3'
   end
 
   def install
