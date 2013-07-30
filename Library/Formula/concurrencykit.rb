@@ -7,9 +7,17 @@ class Concurrencykit < Formula
 
   head 'git://git.concurrencykit.org/ck.git'
 
+  option 'enable-pointer-packing', 'Build with pointer-packing enabled'
+  option 'enable-rtm',             'Build with support for Intel TSX'
+  option 'run-check',              'Run regression suite (takes long time)'
+
   def install
-    system "./configure", "--prefix=#{prefix}"
+    args = [ "--prefix=#{prefix}" ]
+    args << '--enable-pointer-packing' if build.include? 'enable-pointer-packing'
+    args << '--enable-rtm'             if build.include? 'enable-rtm'
+    system "./configure", *args
     system "make", "CC=#{ENV.cc}"
     system "make install"
+    system "make check" if build.include? 'run-check'
   end
 end
