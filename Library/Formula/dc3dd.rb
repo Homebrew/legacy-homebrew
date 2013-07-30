@@ -11,10 +11,15 @@ class Dc3dd < Formula
   def patches; DATA; end
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--infodir=#{info}"
+    args = %W[--disable-debug
+              --disable-dependency-tracking
+              --prefix=#{prefix}
+              --infodir=#{info}]
+
+    # Check for stpncpy is broken, and the replacement fails to compile
+    # on Lion and newer; see https://github.com/mxcl/homebrew/issues/21510
+    args << "gl_cv_func_stpncpy=yes" if MacOS.version >= :lion
+    system "./configure", *args
     system "make"
     system "make install"
     prefix.install %w[Options_Reference.txt Sample_Commands.txt]
