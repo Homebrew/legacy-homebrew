@@ -11,7 +11,4 @@ class Dbacl < Formula
     system "make", "install"
   end
 
-  test do
-    system "false"
-  end
 end
