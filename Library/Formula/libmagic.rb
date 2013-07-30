@@ -12,7 +12,13 @@ class Libmagic < Formula
 
   # Fixed upstream, should be in next release
   # See http://bugs.gw.com/view.php?id=230
-  def patches; DATA; end if MacOS.version < :lion
+  def patches
+    p = []
+    p << DATA if MacOS.version < :lion
+    # Fixes generaly incorrect code, plus issues with certain
+    # versions of cpp.
+    p << 'https://gist.github.com/kwilczynski/6108866/raw/15d1f0a2dba5da23e820b503e8551346a4d235eb/file-5.14.diff'
+  end
 
   def install
     ENV.universal_binary if build.universal?
