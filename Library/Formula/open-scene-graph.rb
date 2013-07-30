@@ -9,6 +9,8 @@ class OpenSceneGraph < Formula
   option 'ffmpeg', 'Build with ffmpeg support'
   option 'docs', 'Build the documentation with Doxygen and Graphviz'
 
+  option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
+
   depends_on 'cmake' => :build
   depends_on 'jpeg'
   depends_on 'wget'
@@ -52,6 +54,10 @@ class OpenSceneGraph < Formula
     end
     if Formula.factory('collada-dom').installed?
       args << "-DCOLLADA_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/collada-dom"
+    end
+    if MacOS.version >= :lion and build.include? 'with-c++11'
+      args << "-DCMAKE_CXX_FLAGS=-stdlib=libc++"
+      args << "-DCMAKE_CXX_COMPILER=clang++"
     end
     args << '..'
 
@@ -126,3 +132,80 @@ index 428cb29..6206580 100644
                  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.5 -ftree-vectorize -fvisibility-inlines-hidden" CACHE STRING "Flags used by the compiler during all build types." FORCE)
              ELSEIF(${OSG_OSX_SDK_NAME} STREQUAL "macosx10.4")
                  SET(OSG_DEFAULT_IMAGE_PLUGIN_FOR_OSX "quicktime" CACHE STRING "Forced imageio default image plugin for OSX" FORCE)
+diff --git a/include/osg/Uniform b/include/osg/Uniform
+index 2563559..1f52363 100644
+--- a/include/osg/Uniform
++++ b/include/osg/Uniform
+@@ -106,6 +106,8 @@ class Matrix2Template : public MatrixTemplate<T, 2, 2>
+         }
+         ~Matrix2Template() {}
+ 
++	using base_class::set;
++
+         void set(value_type a00, value_type a10,
+                  value_type a01, value_type a11)
+          {
+@@ -139,6 +141,8 @@ class Matrix2x3Template : public MatrixTemplate<T, 2, 3>
+         }
+         ~Matrix2x3Template() {}
+ 
++	using base_class::set;
++
+         void set(value_type a00, value_type a10,
+                  value_type a01, value_type a11,
+                  value_type a02, value_type a12)
+@@ -172,6 +176,8 @@ class Matrix2x4Template : public MatrixTemplate<T, 2, 4>
+         }
+         ~Matrix2x4Template() {}
+ 
++	using base_class::set;
++
+         void set(value_type a00, value_type a10,
+                  value_type a01, value_type a11,
+                  value_type a02, value_type a12,
+@@ -202,6 +208,8 @@ class Matrix3x2Template : public MatrixTemplate<T, 3, 2>
+         }
+         ~Matrix3x2Template() {}
+ 
++	using base_class::set;
++
+         void set( value_type a00, value_type a10, value_type a20,
+                   value_type a01, value_type a11, value_type a21 )
+          {
+@@ -230,6 +238,8 @@ class Matrix3Template : public MatrixTemplate<T, 3, 3>
+         }
+         ~Matrix3Template() {}
+ 
++	using base_class::set;
++
+         void set( value_type a00, value_type a10, value_type a20,
+                   value_type a01, value_type a11, value_type a21,
+                   value_type a02, value_type a12, value_type a22 )
+@@ -269,6 +279,8 @@ class Matrix3x4Template : public MatrixTemplate<T, 3, 4>
+         }
+         ~Matrix3x4Template() {}
+ 
++	using base_class::set;
++
+         void set( value_type a00, value_type a10, value_type a20,
+                   value_type a01, value_type a11, value_type a21,
+                   value_type a02, value_type a12, value_type a22,
+@@ -299,6 +311,8 @@ class Matrix4x2Template : public MatrixTemplate<T, 4, 2>
+         }
+         ~Matrix4x2Template() {}
+ 
++	using base_class::set;
++
+         void set( value_type a00, value_type a10, value_type a20, value_type a30,
+                   value_type a01, value_type a11, value_type a21, value_type a31 )
+          {
+@@ -326,6 +340,8 @@ class Matrix4x3Template : public MatrixTemplate<T, 4, 3>
+         }
+         ~Matrix4x3Template() {}
+ 
++	using base_class::set;
++
+         void set( value_type a00, value_type a10, value_type a20, value_type a30,
+                   value_type a01, value_type a11, value_type a21, value_type a31,
+                   value_type a02, value_type a12, value_type a22, value_type a32 )
+
