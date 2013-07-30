@@ -1,9 +1,10 @@
 require 'formula'
 
 class AwsElasticbeanstalk < AmazonWebServicesFormula
-  homepage 'http://aws.amazon.com/code/AWS-Elastic-Beanstalk/6752709412171743'
-  url 'https://s3.amazonaws.com/elasticbeanstalk/cli/AWS-ElasticBeanstalk-CLI-2.4.0.zip'
-  sha1 'dedd4bbdd037c52ab417f80170f3109319f0dce2'
+  homepage 'http://aws.amazon.com/code/6752709412171743'
+  url 'https://s3.amazonaws.com/elasticbeanstalk/cli/AWS-ElasticBeanstalk-CLI-2.5.1.zip'
+  sha1 'ad55ba660ff6852742ec1066abba506378049078'
+  version '2.5.1'
 
   def install
     # Remove versions for other platforms.
