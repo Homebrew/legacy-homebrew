@@ -55,7 +55,8 @@ class Cmd
   def tool
     @tool ||= case @arg0
     when 'ld' then 'ld'
-    when 'cc', 'c99', 'c89', 'cpp'
+    when 'cpp' then 'cpp'
+    when 'cc', 'c99', 'c89'
       # Ideally we would run `cx9`, however these tools are POSIX compliant
       # and don't support many flags. We need -isystem for instance, but also
       # reliability is generally much higher if we just get clang/gcc to do
