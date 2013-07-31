@@ -23,6 +23,8 @@ class CmuSphinxbase < Formula
   depends_on 'pkg-config' => :build
   depends_on :python
   depends_on HomebrewedPython
+  depends_on 'libsndfile' => :optional
+  depends_on 'libsamplerate' => :optional
 
   def install
     system "./configure", "--disable-debug",
