@@ -8,7 +8,6 @@ class Cattle < Formula
   depends_on 'glib'
   depends_on 'gobject-introspection'
   depends_on 'gtk-doc' => :build
-  depends_on 'm4' => :build
   depends_on 'pkg-config' => :build
 
   def install
