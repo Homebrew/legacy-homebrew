@@ -15,6 +15,11 @@ class Lesstif < Formula
 
     # Shame on you LessTif! *wags finger*
 
+    # 'sed' fails if LANG=en_US.UTF-8 as is often the case on Macs.
+    # The configure script finds our superenv sed wrapper, sets SED,
+    # but then doesn't use that variable.
+    ENV['LANG'] = 'C'
+
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--enable-production",
