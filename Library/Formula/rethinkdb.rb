@@ -7,7 +7,6 @@ class Rethinkdb < Formula
 
   depends_on :macos => :lion
   depends_on 'boost' => :build
-  depends_on 'v8'
 
   fails_with :gcc do
     build 5666 # GCC 4.2.1
@@ -15,7 +14,7 @@ class Rethinkdb < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--fetch", "protobuf"
+    system "./configure", "--prefix=#{prefix}", "--fetch", "protobuf", "--fetch", "v8"
     system "make"
     system "make install-osx"
   end

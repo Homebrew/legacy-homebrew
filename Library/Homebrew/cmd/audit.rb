@@ -282,9 +282,6 @@ class FormulaAuditor
         if version_url.to_s == version_text.to_s && s.version.instance_of?(Version)
           problem "#{spec} version #{version_text} is redundant with version scanned from URL"
         end
-        if bottle_filename_formula_name(bottle_filename(f)).empty?
-          problem "Add a new version regex to version.rb to parse the bottle filename."
-        end
       end
 
       if s.version.to_s =~ /^v/

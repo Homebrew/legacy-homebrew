@@ -11,8 +11,8 @@ class Setuptools < Formula
 end
 
 class Pip < Formula
-  url 'https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz'
-  sha1 '9c70d314e5dea6f41415af814056b0f63c3ffd14'
+  url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.tar.gz'
+  sha1 '3149dc77c66b77d02497205fca5df56ae9d3e753'
 end
 
 class Python3 < Formula

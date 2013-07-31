@@ -2,7 +2,8 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.0.tar.bz2'
+  url 'http://archive.apache.org/dist/subversion/subversion-1.8.0.tar.bz2'
+  # url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.0.tar.bz2'
   sha1 '45d227511507c5ed99e07f9d42677362c18b364c'
 
   bottle do
@@ -27,19 +28,12 @@ class Subversion < Formula
   depends_on :libtool if build.include? 'ruby'
 
   # If building bindings, allow non-system interpreters
-  env :userpaths if (build.include? 'perl') or (build.include? 'ruby')
+  env :userpaths if build.include? 'perl' or build.include? 'ruby'
 
+  # One patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags},
+  # and another one to put the svn-tools directory into libexec instead of bin
   def patches
-    ps = []
-
-    # Patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
-    if build.include? 'perl'
-      ps << DATA
-    end
-
-    unless ps.empty?
-      { :p0 => ps }
-    end
+    { :p0 => DATA }
   end
 
   # When building Perl or Ruby bindings, need to use a compiler that
@@ -48,7 +42,7 @@ class Subversion < Formula
   fails_with :clang do
     build 318
     cause "core.c:1: error: bad value (native) for -march= switch"
-  end if (build.include? 'perl') or (build.include? 'ruby')
+  end if build.include? 'perl' or build.include? 'ruby'
 
   def apr_bin
     superbin or "/usr/bin"
@@ -79,7 +73,7 @@ class Subversion < Formula
         puts "  brew install subversion --universal --java"
       end
 
-      unless (ENV["JAVA_HOME"] or "").empty?
+      ENV.fetch('JAVA_HOME') do
         opoo "JAVA_HOME is set. Try unsetting it if JNI headers cannot be found."
       end
     end
@@ -119,14 +113,6 @@ class Subversion < Formula
 
     system "make tools"
     system "make install-tools"
-    %w[
-      svn-populate-node-origins-index
-      svn-rep-sharing-stats
-      svnauthz-validate
-      svnraisetreeconflict
-    ].each do |prog|
-      bin.install_symlink bin/"svn-tools"/prog
-    end
 
     python do
       system "make swig-py"
@@ -169,7 +155,11 @@ class Subversion < Formula
   end
 
   def caveats
-    s = ""
+    s = <<-EOS.undent
+      svntools have been installed to:
+        #{opt_prefix}/libexec
+
+    EOS
 
     s += python.standard_caveats if python
 
@@ -222,3 +212,15 @@ __END__
      INC  => join(' ', $includes, $cppflags,
                   " -I$swig_srcdir/perl/libsvn_swig_perl",
                   " -I$svnlib_srcdir/include",
+
+--- Makefile.in~ 2013-07-25 16:55:27.000000000 +0200
++++ Makefile.in 2013-07-25 17:02:02.000000000 +0200
+@@ -85,7 +85,7 @@
+ swig_pydir_extra = @libdir@/svn-python/svn
+ swig_pldir = @libdir@/svn-perl
+ swig_rbdir = $(SWIG_RB_SITE_ARCH_DIR)/svn/ext
+-toolsdir = @bindir@/svn-tools
++toolsdir = @libexecdir@/svn-tools
+
+ javahl_javadir = @libdir@/svn-javahl
+ javahl_javahdir = @libdir@/svn-javahl/include
