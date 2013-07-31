@@ -23,7 +23,8 @@ class GpgAgent < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-agent-only",
-                          "--with-pinentry-pgm=#{HOMEBREW_PREFIX}/bin/pinentry"
+                          "--with-pinentry-pgm=#{Formula.factory('pinentry').opt_prefix}/bin/pinentry",
+                          "--with-scdaemon-pgm=#{Formula.factory('gnupg2').opt_prefix}/libexec/scdaemon"
     system "make install"
   end
 end
