@@ -65,9 +65,6 @@ class Node < Formula
 
     unless build.include? 'without-npm'
       (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
-      # we need to force make this directory, or node modules installed here
-      # by npm will end up in the node keg and won't survive upgrades
-      mkdir_p "#{HOMEBREW_PREFIX}/lib/node_modules"
     end
   end
 
