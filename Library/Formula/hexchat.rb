@@ -38,7 +38,7 @@ class Hexchat < Formula
     end
 
     # The locations of the gettext dependencies are hardcoded, so copy them
-    gettext = "#{HOMEBREW_PREFIX}/opt/gettext/share/gettext"
+    gettext = Formula.factory('gettext').opt_prefix/'share/gettext'
     cp_r ["#{gettext}/intl", "#{gettext}/po"], "."
 
     system "autoreconf -vi"
@@ -46,6 +46,6 @@ class Hexchat < Formula
     system "make"
     system "make install"
 
-    rm_rf share+"applications"
+    rm_rf share/"applications"
   end
 end
