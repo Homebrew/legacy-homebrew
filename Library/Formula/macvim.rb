@@ -17,6 +17,7 @@ class Macvim < Formula
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
+  option "use-rbenv-ruby", "Use rbenv ruby for ruby interface"
 
   depends_on :xcode
   depends_on 'cscope' => :recommended
@@ -41,7 +42,6 @@ class Macvim < Formula
       --enable-perlinterp
       --enable-rubyinterp
       --enable-tclinterp
-      --with-ruby-command=#{RUBY_PATH}
       --with-tlib=ncurses
       --with-compiledby=Homebrew
       --with-local-dir=#{HOMEBREW_PREFIX}
@@ -49,6 +49,20 @@ class Macvim < Formula
 
     args << "--with-macsdk=#{MacOS.version}" unless MacOS::CLT.installed?
     args << "--enable-cscope" if build.with? "cscope"
+
+    if build.include? "use-rbenv-ruby"
+      rbenv_path = %w[/usr/local/bin/rbenv ~/.rbenv/bin/rbenv].find do |p|
+        File.executable?(File.expand_path p)
+      end
+      if rbenv_path
+        args << "--with-ruby-command=#{`#{rbenv_path} which ruby`.chomp}"
+      else
+        onoe "Error! rbenv is not found. #{RUBY_PATH} is used."
+        args << "--with-ruby-command=#{RUBY_PATH}"
+      end
+    else
+      args << "--with-ruby-command=#{RUBY_PATH}"
+    end
 
     if build.with? "lua"
       args << "--enable-luainterp"
