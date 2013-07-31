@@ -1,9 +1,11 @@
 require 'formula'
 
-class HomebrewedPython < Requirement
+class NoPpcPython < Requirement
   fatal true
 
-  satisfy(:build_env => false) { Formula.factory('python').installed? }
+  satisfy(:build_env => false) do
+    !archs_for_command('python').ppc?
+  end
 
   def message; <<-EOS.undent
     Compiling against the system-provided Python will likely fail.
@@ -22,7 +24,7 @@ class CmuSphinxbase < Formula
 
   depends_on 'pkg-config' => :build
   depends_on :python
-  depends_on HomebrewedPython
+  depends_on NoPpcPython
   depends_on 'libsndfile' => :optional
   depends_on 'libsamplerate' => :optional
 
