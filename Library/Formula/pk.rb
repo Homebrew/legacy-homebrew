@@ -2,8 +2,8 @@ require 'formula'
 
 class Pk < Formula
   homepage 'https://github.com/johnmorrow/pk'
-  url 'https://github.com/johnmorrow/pk/releases/download/v1.0.1/pk-1.0.1.tar.gz'
-  sha1 '8213fc0f80da79783baf0968cb7c7237ee901f4e'
+  url 'https://github.com/johnmorrow/pk/releases/download/v1.0.2/pk-1.0.2.tar.gz'
+  sha1 'cb8e6bb08d1c31d35e6be823d7c082e9fa700edb'
 
   depends_on 'argp-standalone'
 
@@ -11,10 +11,11 @@ class Pk < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    system "make", "install"
+    system "make test"
+    system "make install"
   end
 
   test do
-    system "echo","A","B","|","pk","2"
+    system "test \"`echo 1 2 | \"#{bin}/pk\" ..`\" = \"1 2\""
   end
 end
