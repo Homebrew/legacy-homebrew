@@ -34,11 +34,11 @@ class Gnupg2 < Formula
 
     ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--enable-symcryptrun",
                           "--disable-agent",
-                          "--with-agent-pgm=#{HOMEBREW_PREFIX}/bin/gpg-agent"
+                          "--with-agent-pgm=#{Formula.factory('gpg-agent').opt_prefix}/bin/gpg-agent"
     system "make"
     system "make check"
     system "make install"
