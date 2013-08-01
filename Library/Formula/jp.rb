@@ -11,7 +11,7 @@ class Jp < Formula
     ENV['GOPATH'] = pwd
     mkdir_p 'src'
     mv 'jp', 'src/jp'
-    `go get jp`
+    system 'go get jp'
     bin.install 'bin/jp'
   end
 
