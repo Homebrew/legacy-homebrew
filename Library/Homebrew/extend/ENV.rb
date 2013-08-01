@@ -28,6 +28,7 @@ module HomebrewEnvExtension
     # make any aclocal stuff installed in Homebrew available
     self['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS::Xcode.provides_autotools?
 
+    # default to one make job per core
     self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
