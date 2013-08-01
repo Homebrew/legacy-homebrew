@@ -7,6 +7,10 @@ class Emacs24Requirement < Requirement
   satisfy do
     system 'emacs --batch --eval="(require \'package)"'
   end
+
+  def message
+    'Please install a version of Emacs >= 24.'
+  end
 end
 
 class Carton < Formula
