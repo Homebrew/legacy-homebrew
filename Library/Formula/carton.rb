@@ -23,7 +23,9 @@ class Carton < Formula
   # Carton has started to provide a version of `package` for users of Emacs 23.
 
   def install
-    prefix.install Dir['*']
+    prefix.install %w{carton.el templates/}
+    bin.install 'bin/carton'
+    prefix.install 'carton-package.el' if build.head?
   end
 
   test do
