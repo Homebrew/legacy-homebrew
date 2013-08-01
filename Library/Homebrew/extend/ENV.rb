@@ -7,6 +7,7 @@ module HomebrewEnvExtension
   DEFAULT_FLAGS = '-march=core2 -msse4'
 
   def setup_build_environment
+    ohai "setting up std env"
     # Clear CDPATH to avoid make issues that depend on changing directories
     delete('CDPATH')
     delete('GREP_OPTIONS') # can break CMake (lol)

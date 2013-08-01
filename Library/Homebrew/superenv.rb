@@ -42,6 +42,7 @@ class << ENV
   end
 
   def setup_build_environment
+    ohai "setting up super env"
     reset
     ENV['CC'] = 'cc'
     ENV['CXX'] = 'c++'
