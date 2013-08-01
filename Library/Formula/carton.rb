@@ -1,4 +1,13 @@
 require 'formula'
+require 'requirement'
+
+class Emacs24Requirement < Requirement
+  fatal true
+
+  satisfy do
+    system 'emacs --batch --eval="(require \'package)"'
+  end
+end
 
 class Carton < Formula
   homepage 'https://github.com/rejeep/carton#readme'
@@ -6,8 +15,8 @@ class Carton < Formula
   sha1 'd8c76e6db32d319f95bfec1abad4627c144dd9df'
   head 'https://github.com/rejeep/carton.git'
 
-  # `package.el` is only included by default in Emacs >= 24
-  depends_on 'emacs'
+  depends_on Emacs24Requirement unless build.head?
+  # Carton has started to provide a version of `package` for users of Emacs 23.
 
   def install
     prefix.install Dir['*']
