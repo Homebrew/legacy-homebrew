@@ -31,12 +31,12 @@ end
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.13/node-v0.10.13.tar.gz'
-  sha1 'f73d5f134296ed0aa16cbec5d727f94587844155'
+  url 'http://nodejs.org/dist/v0.10.15/node-v0.10.15.tar.gz'
+  sha1 '14174896de074c244b0ed2251a95d7163d5a5e87'
 
   devel do
-    url 'http://nodejs.org/dist/v0.11.3/node-v0.11.3.tar.gz'
-    sha1 '4b82d58ed3ce38fa67a8484b42cfd47179b6a4a5'
+    url 'http://nodejs.org/dist/v0.11.4/node-v0.11.4.tar.gz'
+    sha1 '0035d18e2dcf9aad669b1c7c07319e17abfe3762'
   end
 
   head 'https://github.com/joyent/node.git'
@@ -45,7 +45,7 @@ class Node < Formula
   option 'without-npm', 'npm will not be installed'
 
   depends_on NpmNotInstalled unless build.without? 'npm'
-  depends_on PythonInstalled.new("2.6") => :build
+  depends_on :python => ["2.6", :build]
 
   fails_with :llvm do
     build 2326
@@ -69,35 +69,24 @@ class Node < Formula
   end
 
   def npm_prefix
-    "#{HOMEBREW_PREFIX}/share/npm"
-  end
-
-  def npm_bin
-    "#{npm_prefix}/bin"
-  end
-
-  def modules_folder
-    "#{HOMEBREW_PREFIX}/lib/node_modules"
+    d = "#{HOMEBREW_PREFIX}/share/npm"
+    if File.directory? d
+      d
+    else
+      HOMEBREW_PREFIX.to_s
+    end
   end
 
   def caveats
-    if build.include? 'without-npm'
-      <<-EOS.undent
-        Homebrew has NOT installed npm. We recommend the following method of
-        installation:
-          curl https://npmjs.org/install.sh | sh
-
-        After installing, add the following path to your NODE_PATH environment
-        variable to have npm libraries picked up:
-          #{modules_folder}
-      EOS
-    elsif not ENV['PATH'].split(':').include? npm_bin
-      <<-EOS.undent
-        Homebrew installed npm.
-        We recommend prepending the following path to your PATH environment
-        variable to have npm-installed binaries picked up:
-          #{npm_bin}
-      EOS
+    if build.include? 'without-npm' then <<-end.undent
+      Homebrew has NOT installed npm. If you later install it, you should supplement
+      your NODE_PATH with the npm module folder:
+          #{npm_prefix}/lib/node_modules
+      end
+    elsif not ENV['PATH'].split(':').include? "#{npm_prefix}/bin"; <<-end.undent
+      Probably you should amend your PATH to include npm-installed binaries:
+          #{npm_prefix}/bin
+      end
     end
   end
 end

@@ -39,7 +39,8 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
     if !filtered_python_reqs.map{ |fpr| fpr.binary }.include?(py.binary) &&
        py.satisfied? &&
        options[:allowed_major_versions].include?(py.version.major) &&
-       self.build.with?(py.name) || !(py.optional? || py.recommended?)
+       # if optional or recommended then check the build.with?
+       (self.build.with?(py.name) || !(py.optional? || py.recommended?))
     then
       filtered_python_reqs << py
     end

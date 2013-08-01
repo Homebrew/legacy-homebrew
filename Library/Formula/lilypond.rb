@@ -14,8 +14,8 @@ class Lilypond < Formula
   sha1 '1eb3b0e5c117a8669dba19ab28f933351e51e39a'
 
   devel do
-    url 'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.21.tar.gz'
-    sha1 '4c208ae1569edb59a598219277eaf6a4a1258205'
+    url 'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.23.tar.gz'
+    sha1 'd729fede319f8b580a709fd0c91b79a227eb3f8c'
   end
 
   env :std
@@ -42,7 +42,7 @@ class Lilypond < Formula
     depends_on 'netpbm'
     depends_on 'imagemagick'
     depends_on 'docbook'
-    depends_on LanguageModuleDependency.new(:python, 'dblatex', 'dbtexmf.dblatex')
+    depends_on :python => ['dbtexmf.dblatex' => 'dblatex']
     depends_on 'texi2html'
   end
 

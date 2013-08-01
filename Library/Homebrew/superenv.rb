@@ -65,7 +65,7 @@ class << ENV
 
     # Homebrew's apple-gcc42 will be outside the PATH in superenv,
     # so xcrun may not be able to find it
-    if ENV['HOMEBREW_CC'] == 'gcc-4.2' && !MacOS.locate('gcc-4.2')
+    if ENV['HOMEBREW_CC'] == 'gcc-4.2'
       apple_gcc42 = Formula.factory('apple-gcc42') rescue nil
       ENV.append('PATH', apple_gcc42.opt_prefix/'bin', ':') if apple_gcc42
     end

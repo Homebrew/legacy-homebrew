@@ -7,7 +7,6 @@ class Graphicsmagick < Formula
 
   head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
 
-  option 'with-ghostscript', 'Compile against ghostscript (not recommended.)'
   option 'use-tiff', 'Compile with libtiff support.'
   option 'use-cms', 'Compile with little-cms support.'
   option 'use-jpeg2000', 'Compile with jasper support.'
@@ -24,7 +23,7 @@ class Graphicsmagick < Formula
   depends_on :libpng
   depends_on :x11 if build.include? 'with-x'
 
-  depends_on 'ghostscript' if build.include? 'with-ghostscript'
+  depends_on 'ghostscript' => :optional
 
   depends_on 'libtiff' if build.include? 'use-tiff'
   depends_on 'little-cms2' if build.include? 'use-cms'
@@ -51,7 +50,7 @@ class Graphicsmagick < Formula
             "--enable-shared", "--disable-static"]
     args << "--without-magick-plus-plus" if build.include? 'without-magick-plus-plus'
     args << "--disable-openmp" if MacOS.version <= :leopard or not ENV.compiler == :gcc # libgomp unavailable
-    args << "--with-gslib" if build.include? 'with-ghostscript'
+    args << "--with-gslib" if build.with? 'ghostscript'
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" \
               unless ghostscript_fonts?
 

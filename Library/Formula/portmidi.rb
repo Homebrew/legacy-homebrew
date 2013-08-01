@@ -8,8 +8,7 @@ class Portmidi < Formula
   option 'with-java', 'Build java based app and bindings. You need the Java SDK for this.'
 
   depends_on 'cmake' => :build
-  depends_on :python => :optional
-  depends_on 'Cython' => :python if build.with? 'python'
+  depends_on :python => [:optional, 'Cython']
 
   def patches
     # Avoid that the Makefile.osx builds the java app and fails because: fatal error: 'jni.h' file not found
@@ -43,8 +42,8 @@ class Portmidi < Formula
     end
   end
 
-  def test
-    if build.with?('python') || Tab.for_formula('portmidi').with?('python')
+  test do
+    if build.with?('python') || Tab.for_name('portmidi').with?('python')
       system "python", "-c", "import pyportmidi; pyportmidi.init()"
     end
   end

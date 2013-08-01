@@ -2,8 +2,8 @@ require 'formula'
 
 class Le < Formula
   homepage 'http://freecode.com/projects/leeditor'
-  url 'http://ftp.yar.ru/pub/source/le/le-1.14.6.tar.xz'
-  sha1 '8f2088c95d2707c464edc122543414af287e0fdb'
+  url 'http://ftp.yar.ru/pub/source/le/le-1.14.9.tar.xz'
+  sha1 '1ee2cf4a236a8a429bb20040dda172c7f985916e'
 
   depends_on 'xz' => :build
 
