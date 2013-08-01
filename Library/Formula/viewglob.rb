@@ -11,15 +11,15 @@ class Viewglob < Formula
   depends_on 'gettext'
   depends_on :x11
 
+  def patches
+    # Don't include the <sys/stropts.h> header, it's not available on OS X.
+    DATA
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"
     system "make", "install"
-  end
-
-  def patches
-    # Don't include the <sys/stropts.h> header, it's not available on OS X.
-    DATA
   end
 
   def caveats; <<-EOS.undent
