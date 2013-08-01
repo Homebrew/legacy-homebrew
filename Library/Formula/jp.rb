@@ -9,10 +9,14 @@ class Jp < Formula
 
   def install
     ENV['GOPATH'] = pwd
-    mkdir_p 'src'
-    mv 'jp', 'src/jp'
+    mkdir_p 'src/jp'
+    mv 'jp.go', 'src/jp/jp.go'
     system 'go get jp'
-    bin.install 'bin/jp'
+    inreplace 'jp/main.go', 'github.com/paulhammond/jp', 'jp'
+    system 'go build jp/main.go'
+    rm_rf 'jp'
+    mv 'main', 'jp'
+    bin.install 'jp'
   end
 
   test do
