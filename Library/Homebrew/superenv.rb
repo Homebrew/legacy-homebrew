@@ -89,11 +89,13 @@ class << ENV
 
   def universal_binary
     append 'HOMEBREW_CCCFG', "u", ''
+    self['ARCHFLAGS'] = '-arch i386 -arch x86_64'
   end
 
   # m32 on superenv does not add any CC flags. It prevents "-m32" from being erased.
   def m32
     append 'HOMEBREW_CCCFG', "3", ''
+    self['ARCHFLAGS'] = '-arch i386'
   end
 
   private
