@@ -48,7 +48,7 @@ class Zookeeper < Formula
     if Hardware.is_32_bit?
       ENV['ARCHFLAGS'] = "-arch #{Hardware::CPU.arch_32_bit}"
     else
-      ENV['ARCHFLAGS'] = "-arch i386 -arch x86_64"
+      ENV['ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
     end
 
     # Prep work for svn compile.
