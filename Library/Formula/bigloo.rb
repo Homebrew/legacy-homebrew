@@ -1,14 +1,16 @@
-require 'formula'
+require "formula"
 
 class Bigloo < Formula
-  homepage 'http://www-sop.inria.fr/indes/fp/Bigloo/'
-  url 'ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo4.0a.tar.gz'
-  version '4.0a'
-  sha1 '63e0e363a7900d9e7d02f63c50ba2079053ef2d1'
+  homepage "http://www-sop.inria.fr/indes/fp/Bigloo/"
+  url "ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo4.0b.tar.gz"
+  version "4.0b"
+  sha1 "2c70863de59d1d92b63aee3f1ee2f39c6672e732"
 
-  depends_on 'gmp'
+  option "without-gmp", "Disable GMP library dependence"
 
-  option 'with-jvm', 'Enable JVM support'
+  depends_on "gmp" unless build.include? "without-gmp"
+
+  option "with-jvm", "Enable JVM support"
 
   fails_with :clang do
     build 425
@@ -31,7 +33,9 @@ class Bigloo < Formula
             "--disable-mpg123",
             "--disable-flac"]
 
-    args << "--jvm=yes" if build.include? 'with-jvm'
+    args << "--jvm=yes" if build.include? "with-jvm"
+
+    args << "--no-gmp" if build.include? "without-gmp"
 
     # SRFI 27 is 32-bit only
     args << "--disable-srfi27" if MacOS.prefer_64_bit?
