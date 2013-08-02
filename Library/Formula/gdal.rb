@@ -195,11 +195,7 @@ class Gdal < Formula
     ENV.libxml2 if build.include? 'complete'
 
     # Reset ARCHFLAGS to match how we build.
-    if MacOS.prefer_64_bit?
-      ENV['ARCHFLAGS'] = "-arch x86_64"
-    else
-      ENV['ARCHFLAGS'] = "-arch i386"
-    end
+    ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}"
 
     # Fix hardcoded mandir: http://trac.osgeo.org/gdal/ticket/5092
     inreplace 'configure', %r[^mandir='\$\{prefix\}/man'$], ''
