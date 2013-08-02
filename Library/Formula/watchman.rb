@@ -3,8 +3,8 @@ require 'formula'
 class Watchman < Formula
   homepage 'https://github.com/facebook/watchman'
   head 'https://github.com/facebook/watchman.git'
-  url 'https://github.com/facebook/watchman/archive/v2.6.tar.gz'
-  sha1 'dfae0fb3c61aa3751be998b2597ede54b85a6bef'
+  url 'https://github.com/facebook/watchman/archive/v2.8.1.tar.gz'
+  sha1 'ff0a0b57365f9c10cc9a3c4c9df42783dbc75977'
 
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
@@ -32,10 +32,5 @@ to /etc/sysctl.conf (use 'sysctl -w' to do so immediately).
     
 See https://github.com/facebook/watchman#max-os-file-descriptor-limits
     EOS
-  end
-
-  test do
-    # TODO testing requires 'arc': https://github.com/facebook/watchman#tools
-    system "false"
   end
 end
