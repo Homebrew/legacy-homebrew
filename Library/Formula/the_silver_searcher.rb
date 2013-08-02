@@ -12,7 +12,7 @@ class TheSilverSearcher < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
-  depends_on 'xz' if build.head?
+  depends_on 'xz'
 
   def install
     # Stable tarball does not include pre-generated configure script
