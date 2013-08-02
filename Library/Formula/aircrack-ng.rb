@@ -16,8 +16,8 @@ class AircrackNg < Formula
     #  sha1-sse2.S:190:32-bit absolute addressing is not supported for x86-64
     #  sha1-sse2.S:190:cannot do signed 4 byte relocation
     %w{ CFLAGS CXXFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
-      ENV.remove compiler_flag, "-arch x86_64"
-      ENV.append compiler_flag, "-arch i386"
+      ENV.remove compiler_flag, "-arch #{Hardware::CPU.arch_64_bit}"
+      ENV.append compiler_flag, "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
     # Fix incorrect OUI url
