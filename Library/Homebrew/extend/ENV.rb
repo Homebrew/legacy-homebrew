@@ -174,7 +174,7 @@ module HomebrewEnvExtension
   def clang
     self['CC'] = self['OBJC'] = MacOS.locate("clang")
     self['CXX'] = self['OBJCXX'] = MacOS.locate("clang++")
-    replace_in_cflags(/-Xarch_i386 (-march=\S*)/, '\1')
+    replace_in_cflags(/-Xarch_#{Hardware::CPU.arch_32_bit} (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags '-march=native', :nehalem => '-march=native -Xclang -target-feature -Xclang -aes'
     append_to_cflags '-Qunused-arguments'
@@ -284,22 +284,21 @@ module HomebrewEnvExtension
 
   def m64
     append_to_cflags '-m64'
-    append 'LDFLAGS', '-arch x86_64'
+    append 'LDFLAGS', "-arch #{Hardware::CPU.arch_64_bit}"
   end
   def m32
     append_to_cflags '-m32'
-    append 'LDFLAGS', '-arch i386'
+    append 'LDFLAGS', "-arch #{Hardware::CPU.arch_32_bit}"
   end
 
-  # i386 and x86_64 (no PPC)
   def universal_binary
-    append_to_cflags '-arch i386 -arch x86_64'
+    append_to_cflags "-arch #{Hardware::CPU.arch_32_bit} -arch #{Hardware::CPU.arch_64_bit}"
     replace_in_cflags '-O4', '-O3' # O4 seems to cause the build to fail
-    append 'LDFLAGS', '-arch i386 -arch x86_64'
+    append 'LDFLAGS', "-arch #{Hardware::CPU.arch_32_bit} -arch #{Hardware::CPU.arch_64_bit}"
 
     if compiler != :clang && Hardware.is_32_bit?
       # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
-      replace_in_cflags(/-march=\S*/, '-Xarch_i386 \0')
+      replace_in_cflags(/-march=\S*/, "-Xarch_#{Hardware::CPU.arch_32_bit} \0")
     end
   end
 
@@ -317,9 +316,9 @@ module HomebrewEnvExtension
   # Sets architecture-specific flags for every environment variable
   # given in the list `flags`.
   def set_cpu_flags flags, default=DEFAULT_FLAGS, map=Hardware::CPU.optimization_flags
-    cflags =~ %r{(-Xarch_i386 )-march=}
+    cflags =~ %r{(-Xarch_#{Hardware::CPU.arch_32_bit} )-march=}
     xarch = $1.to_s
-    remove flags, %r{(-Xarch_i386 )?-march=\S*}
+    remove flags, %r{(-Xarch_#{Hardware::CPU.arch_32_bit} )?-march=\S*}
     remove flags, %r{( -Xclang \S+)+}
     remove flags, %r{-mssse3}
     remove flags, %r{-msse4(\.\d)?}
