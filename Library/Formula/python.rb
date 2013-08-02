@@ -38,6 +38,7 @@ class Python < Formula
     # Patch to disable the search for Tk.frameworked, since homebrew's Tk is
     # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
     p << DATA if build.with? 'brewed-tk'
+    p << 'http://bugs.python.org/file30761/python-2.7.5-tls1.1-and-tls1.2.patch' if build.with? 'brewed-openssl'
     p
   end
 
