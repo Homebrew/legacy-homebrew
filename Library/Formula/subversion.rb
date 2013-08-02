@@ -124,9 +124,9 @@ class Subversion < Formula
       if build.universal?
         arches = "-arch x86_64 -arch i386"
       elsif MacOS.version <= :leopard
-        arches = "-arch i386"
+        arches = "-arch #{Hardware::CPU.arch_32_bit}"
       else
-        arches = "-arch x86_64"
+        arches = "-arch #{Hardware::CPU.arch_64_bit}"
       end
 
       perl_core = Pathname.new(`perl -MConfig -e 'print $Config{archlib}'`)+'CORE'
