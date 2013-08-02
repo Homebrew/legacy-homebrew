@@ -2,12 +2,12 @@ require 'formula'
 
 class Nspr < Formula
   homepage 'http://www.mozilla.org/projects/nspr/'
-  url 'https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.9.3/src/nspr-4.9.3.tar.gz'
-  sha256 '9ca3f30b5ae6784f9820b32939284a7f14f67230a916c5752acd8ddace72f3c5'
+  url 'https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.10/src/nspr-4.10.tar.gz'
+  sha256 '0cfbe561676b92e5af3ddc7ac77452014e3da8885da66baec811e7354138cc16'
 
   def install
     ENV.deparallelize
-    cd "mozilla/nsprpub" do
+    cd "nspr" do
       # Fixes a bug with linking against CoreFoundation, needed to work with SpiderMonkey
       # See: http://openradar.appspot.com/7209349
       target_frameworks = (Hardware.is_32_bit? or MacOS.version <= :leopard) ? "-framework Carbon" : ""
