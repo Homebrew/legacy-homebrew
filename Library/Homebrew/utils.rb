@@ -244,6 +244,8 @@ module GitHub extend self
   Error = Class.new(StandardError)
 
   def open url, headers={}, &block
+    require 'net/https' # for exception classes below
+
     default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
     default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
     Kernel.open(url, default_headers.merge(headers), &block)
