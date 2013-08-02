@@ -2,13 +2,14 @@ require 'formula'
 
 class Ansible < Formula
   homepage 'http://www.ansibleworks.com/'
-  url 'https://github.com/ansible/ansible/archive/v1.2.2.zip'
-  sha1 '75b4b87b4372025aba4ed50c0df61d6fd669e800'
+  url 'http://ansibleworks.com/releases/ansible-1.2.2.tar.gz'
+  sha1 '41672bf49ccdfcfe09a3614171a80e979304e071'
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
   depends_on :python => ['paramiko', 'jinja2']
   depends_on :python => ['yaml' => 'PyYAML']
+  depends_on 'libyaml' => :recommended
 
   def install
     files = Dir['**/*'].select { |path| File.file? path }
