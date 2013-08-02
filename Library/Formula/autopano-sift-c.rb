@@ -15,6 +15,6 @@ class AutopanoSiftC < Formula
 
   test do
     pipe = IO.popen("#{bin}/autopano-sift-c")
-    /Version #{Regexp.escape(version)}/ === pipe.read
+    assert_match /Version #{Regexp.escape(version)}/, pipe.read
   end
 end

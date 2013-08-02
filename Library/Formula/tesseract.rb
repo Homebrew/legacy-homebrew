@@ -97,8 +97,7 @@ class Tesseract < Formula
 
     langs_old.each do |lang, sha|
       klass = Class.new(Formula) do
-        url "http://tesseract-ocr.googlecode.com/files/#{lang}.traineddata.gz",
-          :using => GzipOnlyDownloadStrategy
+        url "http://tesseract-ocr.googlecode.com/files/#{lang}.traineddata.gz"
         version '3.00'
         sha1 sha
       end

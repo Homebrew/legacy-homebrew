@@ -1,7 +1,9 @@
 require 'open-uri'
-require 'vendor/multi_json'
+require 'utils/json'
 
 class AbstractDownloadStrategy
+  attr_accessor :local_bottle_path
+
   def initialize name, package
     @url = package.url
     specs = package.specs
@@ -36,8 +38,6 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  attr_accessor :local_bottle_path
-
   def initialize name, package
     super
 
@@ -49,7 +49,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
     @mirrors = package.mirrors
     @temporary_path = Pathname.new("#@tarball_path.incomplete")
-    @local_bottle_path = nil
   end
 
   def cached_location
@@ -66,11 +65,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    if @local_bottle_path
-      @tarball_path = @local_bottle_path
-      return @local_bottle_path
-    end
-
     ohai "Downloading #{@url}"
     unless @tarball_path.exist?
       had_incomplete_download = @temporary_path.exist?
@@ -108,6 +102,16 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :zip
       with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, @tarball_path }
       chdir
+    when :gzip_only
+      # gunzip writes the compressed data in the location of the original,
+      # regardless of the current working directory; the only way to
+      # write elsewhere is to use the stdout
+      with_system_path do
+        data = `gunzip -f "#{@tarball_path}" -c`
+        File.open(File.basename(basename_without_params, '.gz'), 'w') do |f|
+          f.write data
+        end
+      end
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
@@ -176,12 +180,12 @@ end
 # Detect and download from Apache Mirror
 class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   def _fetch
-    mirrors = MultiJson.decode(open("#{@url}&asjson=1").read)
+    mirrors = Utils::JSON.load(open("#{@url}&asjson=1").read)
     url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
 
     ohai "Best Mirror #{url}"
     curl url, '-C', downloaded_size, '-o', @temporary_path
-  rescue IndexError, MultiJson::DecodeError
+  rescue IndexError, Utils::JSON::Error
     raise "Couldn't determine mirror. Try again later."
   end
 end
@@ -203,17 +207,9 @@ class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   end
 end
 
-# Normal strategy tries to untar as well
-class GzipOnlyDownloadStrategy < CurlDownloadStrategy
-  def stage
-    FileUtils.mv @tarball_path, basename
-    with_system_path { safe_system 'gunzip', '-f', basename_without_params }
-  end
-end
-
-# This Download Strategy is provided for use with sites that
-# only provide HTTPS and also have a broken cert.
-# Try not to need this, as we probably won't accept the formula.
+# This strategy is provided for use with sites that only provide HTTPS and
+# also have a broken cert. Try not to need this, as we probably won't accept
+# the formula.
 class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
     curl @url, '--insecure', '-C', downloaded_size, '-o', @temporary_path
@@ -227,6 +223,14 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
     @tarball_path = HOMEBREW_CACHE/"#{name}-#{package.version}#{ext}"
     mirror = ENV['HOMEBREW_SOURCEFORGE_MIRROR']
     @url = "#{@url}?use_mirror=#{mirror}" if mirror
+  end
+end
+
+# This strategy extracts local binary packages.
+class LocalBottleDownloadStrategy < CurlDownloadStrategy
+  def initialize formula, local_bottle_path
+    super formula.name, formula.active_spec
+    @tarball_path = local_bottle_path
   end
 end
 

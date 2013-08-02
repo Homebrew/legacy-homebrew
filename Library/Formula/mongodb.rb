@@ -2,14 +2,12 @@ require 'formula'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.4.tgz'
-  sha1 'd9abc5c3aa6e7c6c29bc7b4a15028091931ec7bb'
-  version '2.4.4-x86_64'
+  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.5.tgz'
+  sha1 '04de29aab4ba532aa4c963113cb648b0c3d1b68e'
 
   devel do
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.5.0.tgz'
-    sha1 '158335b4b2b8d53c8c6bd4f4d81c733e492f8339'
-    version '2.5.0-x86_64'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.5.1.tgz'
+    sha1 '09b94856e6488a266b084355842b95cbd97cfd1e'
   end
 
   depends_on :arch => :x86_64

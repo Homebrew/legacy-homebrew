@@ -14,9 +14,9 @@ class Libvbucket < Formula
   end
 
   test do
-    require 'multi_json'
+    require 'utils/json'
     require 'open3'
-    json = MultiJson.encode(
+    json = Utils::JSON.dump(
       {
         "hashAlgorithm" => "CRC",
         "numReplicas" => 2,
@@ -33,7 +33,7 @@ class Libvbucket < Formula
     Open3.popen3("#{bin}/vbuckettool", "-", "hello", "world") do |stdin, stdout, _|
       stdin.write(json)
       stdin.close
-      expected == stdout.read
+      assert_equal expected, stdout.read
     end
   end
 end

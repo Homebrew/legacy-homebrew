@@ -29,10 +29,17 @@ class CrosstoolNg < Formula
                           "--with-libtool=glibtool",
                           "--with-libtoolize=glibtoolize",
                           "--with-install=ginstall",
+                          "--with-sed=gsed",
+                          "--with-awk=gawk",
                           "CFLAGS=-std=gnu89"
     # Must be done in two steps
     system "make"
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    You will need to install modern gcc compiler in order to use this tool.
+    EOS
   end
 
   test do

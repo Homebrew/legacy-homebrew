@@ -2,7 +2,7 @@ require 'formula'
 
 class Ipmiutil < Formula
   homepage 'http://ipmiutil.sourceforge.net/'
-  url 'http://sourceforge.net/projects/ipmiutil/files/ipmiutil-2.9.1.tar.gz'
+  url 'http://downloads.sourceforge.net/project/ipmiutil/ipmiutil-2.9.1.tar.gz'
   sha1 'f23fabe8339842fea9b8c2a601717dc002e44a9d'
 
   # Make ipmiutil treat Darwin as BSD

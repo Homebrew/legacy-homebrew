@@ -14,7 +14,7 @@ class GitTracker < Formula
   test do
     require 'open3'
     Open3.popen3("#{bin}/git-tracker", "test-command") do |_, stdout, _|
-      "git-tracker is here. How are you?" == stdout.read.strip
+      assert_equal "git-tracker is here. How are you?", stdout.read.strip
     end
   end
 end

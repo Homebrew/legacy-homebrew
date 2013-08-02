@@ -13,7 +13,7 @@ class Whatmask < Formula
   end
 
   test do
-    %x[#{bin}/whatmask /24] == <<-EOS
+    assert_equal <<-EOS, `#{bin}/whatmask /24`
 
 ---------------------------------------------
        TCP/IP SUBNET MASK EQUIVALENTS

@@ -1,5 +1,11 @@
 require 'formula'
 
+class FopHyph < Formula
+  homepage 'http://offo.sourceforge.net/hyphenation/'
+  url 'http://downloads.sourceforge.net/project/offo/offo-hyphenation-utf8/0.1/offo-hyphenation-fop-stable-utf8.zip'
+  sha1 'c2a3f6e985b21c9702a714942ac747864c8b1759'
+end
+
 class Fop < Formula
   homepage "http://xmlgraphics.apache.org/fop/index.html"
   url "http://www.apache.org/dyn/closer.cgi?path=/xmlgraphics/fop/binaries/fop-1.1-bin.tar.gz"
@@ -8,5 +14,9 @@ class Fop < Formula
   def install
     libexec.install Dir["*"]
     bin.write_exec_script libexec/'fop'
+
+    FopHyph.new.brew do
+      (libexec/'build').install 'fop-hyph.jar'
+    end
   end
 end

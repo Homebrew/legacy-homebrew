@@ -5,6 +5,13 @@ class Vim < Formula
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
   url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.3.923.orig.tar.gz'
   sha1 'f308d219dd9c6b56e84109ace4e7487a101088f5'
+
+  devel do
+    url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.4a.012.orig.tar.gz'
+    version '7.4a.012'
+    sha1 '3d7ec9c846a356bbaeab96692db31b07ccb946f4'
+  end
+
   head 'https://vim.googlecode.com/hg/'
 
   # We only have special support for finding depends_on :python, but not yet for
@@ -12,21 +19,19 @@ class Vim < Formula
   # PATH as the user has set it right now.
   env :std
 
-  depends_on :hg => :build if build.head?
-
-  LANGUAGES         = %w(lua mzscheme perl python python3 tcl ruby)
+  LANGUAGES         = %w(lua mzscheme perl python tcl ruby)
   DEFAULT_LANGUAGES = %w(ruby python)
 
   option "override-system-vi", "Override system vi"
+  option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
+
   LANGUAGES.each do |language|
     option "with-#{language}", "Build vim with #{language} support"
     option "without-#{language}", "Build vim without #{language} support"
   end
 
-  depends_on :python unless build.without? 'python'
-  depends_on :python3 if build.with? 'python3'
-
-  option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
+  depends_on :hg => :build if build.head?
+  depends_on :python => :recommended
 
   def install
     ENV['LUA_PREFIX'] = HOMEBREW_PREFIX
@@ -41,6 +46,12 @@ class Vim < Formula
 
     opts = language_opts
     opts << "--disable-nls" if build.include? "disable-nls"
+
+    # Avoid that vim always links System's Python even if configure tells us
+    # it has found a brewed Python. Verify with `otool -L`.
+    if python && python.brewed?
+      ENV.prepend 'LDFLAGS', "-F#{python.framework}"
+    end
 
     # XXX: Please do not submit a pull request that hardcodes the path
     # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.

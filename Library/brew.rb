@@ -58,17 +58,17 @@ end
 begin
   trap("INT", std_trap) # restore default CTRL-C handler
 
-  aliases = {'ls' => :list,
-             'homepage' => :home,
-             '-S' => :search,
-             'up' => :update,
-             'ln' => :link,
-             'instal' => :install, # gem does the same
-             'rm' => :uninstall,
-             'remove' => :uninstall,
-             'configure' => :diy,
-             'abv' => :info,
-             'dr' => :doctor,
+  aliases = {'ls' => 'list',
+             'homepage' => 'home',
+             '-S' => 'search',
+             'up' => 'update',
+             'ln' => 'link',
+             'instal' => 'install', # gem does the same
+             'rm' => 'uninstall',
+             'remove' => 'uninstall',
+             'configure' => 'diy',
+             'abv' => 'info',
+             'dr' => 'doctor',
              '--repo' => '--repository',
              'environment' => '--env'  # same as gem
              }
@@ -76,9 +76,17 @@ begin
   cmd = ARGV.shift
   cmd = aliases[cmd] if aliases[cmd]
 
-  if cmd == '-c1'
+  if cmd == '-c1' # Shortcut for one line of configuration
     cmd = '--config'
     ARGV.unshift('-1')
+  end
+
+  sudo_check = Set.new %w[ install link pin unpin upgrade ]
+
+  if sudo_check.include? cmd
+    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
+      raise "Cowardly refusing to `sudo brew #{cmd}`\n#{SUDO_BAD_ERRMSG}"
+    end
   end
 
   # Add example external commands to PATH before checking.

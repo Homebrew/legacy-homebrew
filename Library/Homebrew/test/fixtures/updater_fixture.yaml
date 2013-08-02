@@ -25,3 +25,9 @@ update_git_diff_output_with_formulae_changes: |
   :100644 100644 cc176d388507c7ed9381a36fd42ae0feceaad593 6a7a2385d89a12b5c7369fa0a87980b285ee5fd8 M	Library/Homebrew/utils.rb
   :100644 100644 d1d9c62e6280bcb06c8b884c188d7bd37f8754e3 4aa0473705264cac864bd09f8a9d419d805e4774 M	README
   :100644 100644 c0084b02faf7ab04abcffb3d5688e9d7c1ff7ae8 25cae981801e21cde048cd28747241d18093ca71 M	bin/brew
+update_git_diff_output_with_tapped_formulae_changes: |
+  :100644 100644 9dde0708e2db78e1aa697782bd2ab2ddfd8da984 ee0a81cbe3757e9a4b5aab1c41457f65fed9f258 M	Library/Contributions/brew_bash_completion.sh
+  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Taps/someuser-sometap/Formula/antiword.rb
+  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Taps/someuser-sometap/HomebrewFormula/lua.rb
+  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Taps/someuser-sometap/custom-formula.rb
+  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Taps/someuser-sometap/lib/not-a-formula.rb

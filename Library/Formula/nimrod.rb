@@ -19,7 +19,7 @@ class Nimrod < Formula
     (testpath/'hello.nim').write <<-EOS.undent
       echo("Hi!")
     EOS
-    system "#{libexec}/bin/nimrod compile --run hello.nim"
+    system "#{libexec}/bin/nimrod", "compile", "--run", "hello.nim"
   end
 
   def caveats; <<-EOS.undent

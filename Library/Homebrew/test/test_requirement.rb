@@ -81,6 +81,7 @@ class RequirementTests < Test::Unit::TestCase
     ENV.expects(:userpaths!)
     ENV.expects(:append).with("PATH", which_path.parent, ":")
 
+    req.satisfied?
     req.modify_build_environment
   end
 
@@ -119,5 +120,19 @@ class RequirementTests < Test::Unit::TestCase
     assert_raises(error) do
       req.to_dependency.modify_build_environment
     end
+  end
+
+  def test_eql
+    a, b = Requirement.new, Requirement.new
+    assert a.eql?(b)
+    assert b.eql?(a)
+    assert_equal a.hash, b.hash
+  end
+
+  def test_not_eql
+    a, b = Requirement.new([:optional]), Requirement.new
+    assert_not_equal a.hash, b.hash
+    assert !a.eql?(b)
+    assert !b.eql?(a)
   end
 end

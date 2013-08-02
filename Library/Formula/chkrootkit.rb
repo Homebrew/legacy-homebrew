@@ -23,6 +23,6 @@ class Chkrootkit < Formula
   end
 
   test do
-    `#{sbin}/chkrootkit -V 2>&1`.strip == "chkrootkit version #{version}"
+    assert_equal "chkrootkit version #{version}", `#{sbin}/chkrootkit -V 2>&1`.strip
   end
 end

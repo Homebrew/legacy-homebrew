@@ -2,8 +2,8 @@ require 'formula'
 
 class Gptfdisk < Formula
   homepage 'http://www.rodsbooks.com/gdisk/'
-  url 'http://sourceforge.net/projects/gptfdisk/files/gptfdisk/0.8.6/gptfdisk-0.8.6.tar.gz'
-  sha1 '87dc5704b19173c7536c7fa991912a81e69c5020'
+  url 'http://downloads.sourceforge.net/project/gptfdisk/gptfdisk/0.8.7/gptfdisk-0.8.7.tar.gz'
+  sha1 'a134cdf28d0130bc0d3e459c0098b9109d9d3fb6'
 
   depends_on 'popt'
   depends_on 'icu4c'
@@ -17,7 +17,7 @@ class Gptfdisk < Formula
   test do
     IO.popen("#{sbin}/gdisk", "w+") do |pipe|
       pipe.write("\n")
-      /GPT fdisk \(gdisk\) version #{Regexp.escape(version)}/ === pipe.read
+      assert_match /GPT fdisk \(gdisk\) version #{Regexp.escape(version)}/, pipe.read
     end
   end
 end

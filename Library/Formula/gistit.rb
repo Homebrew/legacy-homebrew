@@ -18,6 +18,6 @@ class Gistit < Formula
   end
 
   test do
-    system "#{bin}/gistit -v"
+    system "#{bin}/gistit", "-v"
   end
 end

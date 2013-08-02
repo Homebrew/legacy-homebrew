@@ -43,8 +43,10 @@ class Requirement
 
   # Overriding #modify_build_environment is deprecated.
   # Pass a block to the the env DSL method instead.
+  # Note: #satisfied? should be called before invoking this method
+  # as the env modifications may depend on its side effects.
   def modify_build_environment
-    satisfied? and env.modify_build_environment(self)
+    env.modify_build_environment(self)
   end
 
   def env
@@ -52,7 +54,7 @@ class Requirement
   end
 
   def eql?(other)
-    instance_of?(other.class) && hash == other.hash
+    instance_of?(other.class) && name == other.name && tags == other.tags
   end
 
   def hash
@@ -138,9 +140,9 @@ class Requirement
       formulae = dependent.recursive_dependencies.map(&:to_formula)
       formulae.unshift(dependent)
 
-      formulae.map(&:requirements).each do |requirements|
-        requirements.each do |req|
-          if prune?(dependent, req, &block)
+      formulae.each do |f|
+        f.requirements.each do |req|
+          if prune?(f, req, &block)
             next
           else
             reqs << req

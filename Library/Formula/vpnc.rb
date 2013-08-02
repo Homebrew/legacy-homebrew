@@ -47,12 +47,6 @@ class Vpnc < Formula
     (var + 'run/vpnc').mkpath
     system "make install"
   end
-
-  def caveats; <<-EOS
-    To use vpnc hybrid authentification:
-      brew install vpnc --hybrid
-    EOS
-  end
 end
 
 __END__

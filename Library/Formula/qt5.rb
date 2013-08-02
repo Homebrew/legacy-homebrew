@@ -2,10 +2,10 @@ require 'formula'
 
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
-  url 'http://releases.qt-project.org/qt5/5.0.2/single/qt-everywhere-opensource-src-5.0.2.tar.gz'
-  sha1 '7df93ca2cc5274f0cef72ea71f06feed2594b92f'
+  url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.0/single/qt-everywhere-opensource-src-5.1.0.tar.gz'
+  sha1 '12d706124dbfac3d542dd3165176a978d478c085'
 
-  head 'git://gitorious.org/qt/qt5.git', :branch => 'master'
+  head 'git://gitorious.org/qt/qt5.git', :branch => 'stable'
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
@@ -16,35 +16,35 @@ class Qt5 < Formula
   option 'with-mysql', 'Enable MySQL plugin'
   option 'developer', 'Compile and link Qt with developer options'
 
-  depends_on :libpng
-
   depends_on "d-bus" if build.include? 'with-qtdbus'
-  depends_on "mysql" if build.include? 'with-mysql'
-  depends_on "jpeg"
+  depends_on "mysql" => :optional
 
   def install
     args = ["-prefix", prefix,
-            "-system-libpng", "-system-zlib",
+            "-system-zlib",
             "-confirm-license", "-opensource"]
 
     unless MacOS::CLT.installed?
-      # Qt hard-codes paths (and uses -I flags) and linking fails on Xcode-only
-      args += ["-sdk", MacOS.sdk_path]
-      # Even with sdk given, Qt5 is too stupid to find CFNumber.h, so we give a hint:
+      # ... too stupid to find CFNumber.h, so we give a hint:
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
     end
 
     args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
 
-    args << "-plugin-sql-mysql" if build.include? 'with-mysql'
+    args << "-plugin-sql-mysql" if build.with? 'mysql'
 
-    if build.include? 'with-qtdbus'
-      args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
-      args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
+    if build.with? 'qtdbus'
+      dbus_opt = Formula.factory('d-bus').opt_prefix
+      args << "-I#{dbus_opt}/lib/dbus-1.0/include"
+      args << "-I#{dbus_opt}/include/dbus-1.0"
+      args << "-L#{dbus_opt}/lib"
+      args << "-ldbus-1"
     end
 
     unless build.include? 'with-demos-examples'
-      args << "-nomake" << "demos" << "-nomake" << "examples"
+      args << "-nomake" << "examples"
+      # In latest head `-nomake demos` is no longer recognized
+      args << "-nomake" << "demos" unless build.head?
     end
 
     if MacOS.prefer_64_bit? or build.universal?
@@ -71,10 +71,6 @@ class Qt5 < Formula
     ENV.j1
     system "make install"
 
-    # what are these anyway?
-    (bin+'pixeltool.app').rmtree
-    (bin+'qhelpconverter.app').rmtree
-
     # Some config scripts will only find Qt in a "Frameworks" folder
     cd prefix do
       ln_s lib, frameworks
@@ -93,7 +89,7 @@ class Qt5 < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/qmake", "--version"
   end
 

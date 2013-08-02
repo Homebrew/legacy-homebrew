@@ -7,22 +7,26 @@
 # --cleanup:      Clean the Homebrew directory. Very dangerous. Use with care.
 # --skip-setup:   Don't check the local system is setup correctly.
 # --junit:        Generate a JUnit XML test results file.
+# --email:        Generate an email subject file.
+# --HEAD:         Run brew install with --HEAD
+# --devel:        Run brew install with --devel
 
 require 'formula'
 require 'utils'
 require 'date'
 require 'erb'
 
+EMAIL_SUBJECT_FILE = "brew-test-bot.email.txt"
 HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 
 class Step
   attr_reader :command, :name, :status, :output, :time
 
-  def initialize test, command, puts_output_on_success = false
+  def initialize test, command, options={}
     @test = test
     @category = test.category
     @command = command
-    @puts_output_on_success = puts_output_on_success
+    @puts_output_on_success = options[:puts_output_on_success]
     @name = command.split[1].delete '-'
     @status = :running
     @repository = HOMEBREW_REPOSITORY
@@ -45,6 +49,10 @@ class Step
 
   def status_upcase
     @status.to_s.upcase
+  end
+
+  def command_short
+    @command.gsub(/(brew|--force|--verbose|--build-bottle) /, '')
   end
 
   def passed?
@@ -74,7 +82,7 @@ class Step
     puts_command
 
     start_time = Time.now
-    run_command = "#{@command} &>#{log_file_path}"
+    run_command = "#{@command} &>'#{log_file_path}'"
     if run_command.start_with? 'git '
       Dir.chdir @repository do
         `#{run_command}`
@@ -99,7 +107,7 @@ class Step
 end
 
 class Test
-  attr_reader :log_root, :category, :name, :core_changed, :formulae, :steps
+  attr_reader :log_root, :category, :name, :formulae, :steps
 
   def initialize argument
     @hash = nil
@@ -121,7 +129,6 @@ class Test
 
     @category = __method__
     @steps = []
-    @core_changed = false
     @brewbot_root = Pathname.pwd + "brewbot"
     FileUtils.mkdir_p @brewbot_root
   end
@@ -153,7 +160,8 @@ class Test
     @start_branch = current_branch
 
     # Use Jenkins environment variables if present.
-    if ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT']
+    if ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT'] \
+       and not ENV['ghprbPullId']
       diff_start_sha1 = shorten_revision ENV['GIT_PREVIOUS_COMMIT']
       diff_end_sha1 = shorten_revision ENV['GIT_COMMIT']
       test "brew update" if current_branch == "master"
@@ -161,6 +169,20 @@ class Test
       diff_start_sha1 = current_sha1
       test "brew update" if current_branch == "master"
       diff_end_sha1 = current_sha1
+    end
+
+    # Handle Jenkins pull request builder plugin.
+    if ENV['ghprbPullId'] and ENV['GIT_URL']
+      git_url = ENV['GIT_URL']
+      git_match = git_url.match %r{.*github.com[:/](\w+/\w+).*}
+      if git_match
+        github_repo = git_match[1]
+        pull_id = ENV['ghprbPullId']
+        @url = "https://github.com/#{github_repo}/pull/#{pull_id}"
+        @hash = nil
+      else
+        puts "Invalid 'ghprbPullId' environment variable value!"
+      end
     end
 
     if @hash == 'HEAD'
@@ -207,10 +229,6 @@ class Test
           @formulae << File.basename(filename, '.rb')
         end
       end
-      if filename.include? '/Homebrew/' or filename.include? '/ENV/' \
-        or filename.include? 'bin/brew'
-        @core_changed = true
-      end
     end
   end
 
@@ -237,20 +255,34 @@ class Test
       return
     end
 
-    test "brew audit #{formula}"
     test "brew fetch #{dependencies}" unless dependencies.empty?
-    test "brew fetch --build-bottle #{formula}"
-    test "brew install --verbose #{dependencies}" unless dependencies.empty?
-    test "brew install --verbose --build-bottle #{formula}"
-    return unless steps.last.passed?
-    test "brew bottle #{formula}", true
-    bottle_revision = bottle_new_revision(formula_object)
-    bottle_filename = bottle_filename(formula_object, bottle_revision)
-    test "brew uninstall #{formula}"
-    test "brew install #{bottle_filename}"
+    formula_fetch_options = "--build-bottle"
+    formula_fetch_options << " --force" if ARGV.include? '--cleanup'
+    test "brew fetch #{formula_fetch_options} #{formula}"
+    test "brew uninstall --force #{formula}" if formula_object.installed?
+    install_args = '--verbose --build-bottle'
+    install_args << ' --HEAD' if ARGV.include? '--HEAD'
+    install_args << ' --devel' if ARGV.include? '--devel'
+    test "brew install #{install_args} #{formula}"
+    install_passed = steps.last.passed?
+    test "brew audit #{formula}"
+    return unless install_passed
+    test "brew bottle #{formula}", :puts_output_on_success => true
+    bottle_step = steps.last
+    if bottle_step.passed? and bottle_step.has_output?
+      bottle_revision = bottle_new_revision(formula_object)
+      bottle_filename = bottle_filename(formula_object, bottle_revision)
+      bottle_base = bottle_filename.gsub(bottle_suffix(bottle_revision), '')
+      bottle_output = bottle_step.output.gsub /.*(bottle do.*end)/m, '\1'
+      File.open "#{bottle_base}.bottle.rb", 'w' do |file|
+        file.write bottle_output
+      end
+      test "brew uninstall --force #{formula}"
+      test "brew install #{bottle_filename}"
+    end
     test "brew test #{formula}" if formula_object.test_defined?
-    test "brew uninstall #{formula}"
-    test "brew uninstall #{dependencies}" unless dependencies.empty?
+    test "brew uninstall --force #{formula}"
+    test "brew uninstall --force #{dependencies}" unless dependencies.empty?
   end
 
   def homebrew
@@ -265,8 +297,8 @@ class Test
     git 'stash'
     git 'am --abort 2>/dev/null'
     git 'rebase --abort 2>/dev/null'
-    git 'checkout -f master'
     git 'reset --hard'
+    git 'checkout -f master'
     git 'clean --force -dx'
   end
 
@@ -292,10 +324,11 @@ class Test
     FileUtils.rm_rf @brewbot_root unless ARGV.include? "--keep-logs"
   end
 
-  def test cmd, puts_output_on_success = false
-    step = Step.new self, cmd, puts_output_on_success
+  def test cmd, options={}
+    step = Step.new self, cmd, options
     step.run
     steps << step
+    step
   end
 
   def check_results
@@ -321,10 +354,10 @@ class Test
     cleanup_before
     download
     setup unless ARGV.include? "--skip-setup"
+    homebrew
     formulae.each do |f|
       formula(f)
     end
-    homebrew if core_changed
     cleanup_after
     check_results
   end
@@ -332,6 +365,14 @@ end
 
 if Pathname.pwd == HOMEBREW_PREFIX and ARGV.include? "--cleanup"
   odie 'cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output.'
+end
+
+if ARGV.include? "--email"
+  File.open EMAIL_SUBJECT_FILE, 'w' do |file|
+    # The file should be written at the end but in case we don't get to that
+    # point ensure that we have something valid.
+    file.write "INTERNAL ERROR"
+  end
 end
 
 tests = []
@@ -355,6 +396,26 @@ if ARGV.include? "--junit"
   open("brew-test-bot.xml", "w") do |xml|
     # Remove empty lines and null characters from ERB result.
     xml.write erb.result(binding).gsub(/^\s*$\n|\000/, '')
+  end
+end
+
+if ARGV.include? "--email"
+  failed_steps = []
+  tests.each do |test|
+    test.steps.each do |step|
+      next unless step.failed?
+      failed_steps << step.command_short
+    end
+  end
+
+  if failed_steps.empty?
+    email_subject = 'PASSED'
+  else
+    email_subject = "#{failed_steps.join ', '}"
+  end
+
+  File.open EMAIL_SUBJECT_FILE, 'w' do |file|
+    file.write email_subject
   end
 end
 

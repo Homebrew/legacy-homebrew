@@ -1,4 +1,5 @@
 require 'cmd/install'
+require 'cmd/outdated'
 
 class Fixnum
   def plural_s
@@ -8,23 +9,19 @@ end
 
 module Homebrew extend self
   def upgrade
-    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      # note we only abort if Homebrew is *not* installed as sudo and the user
-      # calls brew as root. The fix is to chown brew to root.
-      abort "Cowardly refusing to `sudo brew upgrade'"
-    end
-
     Homebrew.perform_preinstall_checks
 
     if ARGV.named.empty?
-      require 'cmd/outdated'
       outdated = Homebrew.outdated_brews
+      exit 0 if outdated.empty?
     else
       outdated = ARGV.formulae.select do |f|
         if f.installed?
           onoe "#{f}-#{f.installed_version} already installed"
+          false
         elsif not f.rack.directory? or f.rack.subdirs.empty?
           onoe "#{f} not installed"
+          false
         else
           true
         end
@@ -37,12 +34,10 @@ module Homebrew extend self
       outdated -= pinned
     end
 
-    if outdated.length > 0
-      oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
-      puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
-    end
+    oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
+    puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
 
-    if not upgrade_pinned? and pinned.length > 0
+    unless upgrade_pinned? || pinned.empty?
       oh1 "Not upgrading #{pinned.length} pinned package#{pinned.length.plural_s}:"
       puts pinned.map{ |f| "#{f.name} #{f.version}" } * ", "
     end

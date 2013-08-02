@@ -80,12 +80,12 @@ class Version
 
   class CompositeToken < StringToken
     def rev
-      value[/([0-9]+)/, 1]
+      value[/([0-9]+)/, 1] || "0"
     end
   end
 
   class AlphaToken < CompositeToken
-    PATTERN = /a(?:lpha)?[0-9]+/i
+    PATTERN = /a(?:lpha)?[0-9]*/i
 
     def <=>(other)
       case other
@@ -98,7 +98,7 @@ class Version
   end
 
   class BetaToken < CompositeToken
-    PATTERN = /b(?:eta)?[0-9]+/i
+    PATTERN = /b(?:eta)?[0-9]*/i
 
     def <=>(other)
       case other
@@ -115,7 +115,7 @@ class Version
   end
 
   class RCToken < CompositeToken
-    PATTERN = /rc[0-9]+/i
+    PATTERN = /rc[0-9]*/i
 
     def <=>(other)
       case other
@@ -132,7 +132,7 @@ class Version
   end
 
   class PatchToken < CompositeToken
-    PATTERN = /p[0-9]+/i
+    PATTERN = /p[0-9]*/i
 
     def <=>(other)
       case other
@@ -143,6 +143,22 @@ class Version
       else
         super
       end
+    end
+  end
+
+  def self.new_with_scheme(value, scheme)
+    if Class === scheme && scheme.ancestors.include?(Version)
+      scheme.new(value)
+    else
+      raise TypeError, "Unknown version scheme #{scheme.inspect}"
+    end
+  end
+
+  def self.detect(url, specs={})
+    if specs.has_key?(:tag)
+      new(specs[:tag][/((?:\d+\.)*\d+)/, 1], true)
+    else
+      parse(url)
     end
   end
 
@@ -176,15 +192,23 @@ class Version
 
   protected
 
+  def begins_with_numeric?
+    NumericToken === tokens.first
+  end
+
   def pad_to(length)
-    nums, rest = tokens.partition { |t| NumericToken === t }
-    nums.concat([NULL_TOKEN]*(length - tokens.length)).concat(rest)
+    if begins_with_numeric?
+      nums, rest = tokens.partition { |t| NumericToken === t }
+      nums.fill(NULL_TOKEN, nums.length, length - tokens.length)
+      nums.concat(rest)
+    else
+      tokens.dup.fill(NULL_TOKEN, tokens.length, length - tokens.length)
+    end
   end
 
   def tokens
     @tokens ||= tokenize
   end
-  alias_method :to_a, :tokens
 
   def tokenize
     @version.scan(
@@ -238,6 +262,10 @@ class Version
     m = /[-_]([Rr]\d+[AaBb]\d*(?:-\d+)?)/.match(spec_s)
     return m.captures.first unless m.nil?
 
+    # e.g. perforce-2013.1.610569-x86_64
+    m = /-([\d\.]+-x86(_64)?)/.match(stem)
+    return m.captures.first unless m.nil?
+
     # e.g. boost_1_39_0
     m = /((?:\d+_)+\d+)$/.match(stem)
     return m.captures.first.gsub('_', '.') unless m.nil?
@@ -276,7 +304,7 @@ class Version
     return m.captures.first unless m.nil?
 
     # e.g. http://www.openssl.org/source/openssl-0.9.8s.tar.gz
-    m = /-([^-]+)/.match(stem)
+    m = /-v?([^-]+)/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. astyle_1.23_macosx.tar.gz
@@ -290,26 +318,5 @@ class Version
     # e.g. http://www.ijg.org/files/jpegsrc.v8d.tar.gz
     m = /\.v(\d+[a-z]?)/.match(stem)
     return m.captures.first unless m.nil?
-  end
-end
-
-class VersionSchemeDetector
-  def initialize scheme
-    @scheme = scheme
-  end
-
-  def detect
-    if @scheme.is_a? Class and @scheme.ancestors.include? Version
-      @scheme
-    elsif @scheme.is_a? Symbol then detect_from_symbol
-    else
-      raise "Unknown version scheme #{@scheme} was requested."
-    end
-  end
-
-  private
-
-  def detect_from_symbol
-    raise "Unknown version scheme #{@scheme} was requested."
   end
 end

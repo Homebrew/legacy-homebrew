@@ -2,14 +2,15 @@ require 'formula'
 
 class Zabbix < Formula
   homepage 'http://www.zabbix.com/'
-  url 'http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/2.0.6/zabbix-2.0.6.tar.gz'
+  url 'http://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.0.6/zabbix-2.0.6.tar.gz'
   sha1 '75a747ddcfa4bcd5792f69dc8d7de9c5839b8595'
 
   option 'with-mysql', 'Use Zabbix Server with MySQL library instead PostgreSQL.'
   option 'agent-only', 'Install only the Zabbix Agent without Server and Proxy.'
 
-  unless build.include?('agent-only')
-    depends_on (build.include?('with-mysql') ? :mysql : :postgresql)
+  unless build.include? 'agent-only'
+    depends_on :mysql => :optional
+    depends_on :postgresql unless build.with? 'mysql'
     depends_on 'fping'
     depends_on 'libssh2'
   end
@@ -26,39 +27,29 @@ class Zabbix < Formula
       --enable-agent
     }
 
-    unless build.include?('agent-only')
-      db_adapter = if build.include?('with-mysql')
-        "--with-mysql=#{brewed_or_shipped('mysql_config')}"
-      else
-        "--with-postgresql=#{brewed_or_shipped('pg_config')}"
-      end
+    unless build.include? 'agent-only'
       args += %W{
         --enable-server
         --enable-proxy
-        #{db_adapter}
         --enable-ipv6
         --with-net-snmp
         --with-libcurl
         --with-ssh2
       }
+      if build.with? 'mysql'
+        args << "--with-mysql=#{brewed_or_shipped('mysql_config')}"
+      else
+        args << "--with-postgresql=#{brewed_or_shipped('pg_config')}"
+      end
     end
 
     system "./configure", *args
     system "make install"
 
-    unless build.include?('agent-only')
-      (share/'zabbix').install 'frontends/php',
-        "database/#{build.include?('with-mysql') ? :mysql : :postgresql}"
+    unless build.include? 'agent-only'
+      db = build.with?('mysql') ? 'mysql' : 'postgresql'
+      (share/'zabbix').install 'frontends/php', "database/#{db}"
     end
-  end
-
-  def caveats; <<-EOS.undent
-    Please read the fine manual for post-install instructions:
-      http://www.zabbix.com/documentation/2.0/manual
-
-    Or just use Puppet:
-      https://github.com/bjoernalbers/puppet-zabbix_osx
-    EOS
   end
 
   def test

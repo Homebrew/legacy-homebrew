@@ -2,8 +2,8 @@ require 'formula'
 
 class Dwdiff < Formula
   homepage 'http://os.ghalkes.nl/dwdiff.html'
-  url 'http://os.ghalkes.nl/dist/dwdiff-2.0.4.tgz'
-  sha1 '543a87f3de8c156d20b3ddf2bffd9331b7fb0575'
+  url 'http://os.ghalkes.nl/dist/dwdiff-2.0.5.tgz'
+  sha1 '896f3b8e7210c8e73c8850f88c9d3b6ba0c382f0'
 
   depends_on 'gettext'
   depends_on 'icu4c'

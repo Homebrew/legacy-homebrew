@@ -1,13 +1,13 @@
 require 'formula'
 
-class Distribute < Formula
-  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.45.tar.gz'
-  sha1 '55b15037f2222828496a96f38447c0fa0228df85'
+class Setuptools < Formula
+  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.7.tar.gz'
+  sha1 'c56c5cc55b678c25a0a06f25a122f6492d62e2d3'
 end
 
 class Pip < Formula
-  url 'https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz'
-  sha1 '9c70d314e5dea6f41415af814056b0f63c3ffd14'
+  url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.tar.gz'
+  sha1 '3149dc77c66b77d02497205fca5df56ae9d3e753'
 end
 
 class Python < Formula
@@ -53,7 +53,7 @@ class Python < Formula
   def install
     opoo 'The given option --with-poll enables a somewhat broken poll() on OS X (http://bugs.python.org/issue5154).' if build.with? 'poll'
 
-    # Unset these so that installing pip and distribute puts them where we want
+    # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
     ENV['PYTHONHOME'] = nil
 
@@ -125,14 +125,22 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # We ship distribute and pip and reuse the PythonInstalled
+    # We ship setuptools and pip and reuse the PythonInstalled
     # Requirement here to write the sitecustomize.py
     py = PythonInstalled.new("2.7")
+
+    # Remove old setuptools installations that may still fly around and be
+    # listed in the easy_install.pth. This can break setuptools build with
+    # zipimport.ZipImportError: bad local file header
+    # setuptools-0.9.5-py3.3.egg
+    rm_rf Dir["#{py.global_site_packages}/setuptools*"]
+    rm_rf Dir["#{py.global_site_packages}/distribute*"]
+
     py.binary = bin/'python'
     py.modify_build_environment
     setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Distribute.new.brew { system "#{bin}/python2", *setup_args }
+    Setuptools.new.brew { system "#{bin}/python2", *setup_args }
     Pip.new.brew { system "#{bin}/python2", *setup_args }
 
     # And now we write the distuitsl.cfg
@@ -155,6 +163,14 @@ class Python < Formula
           import _sre
           _sre.MAXREPEAT = 65535 # this monkey-patches all other places of "from _sre import MAXREPEAT"'
       EOS
+
+      # Fixes setting Python build flags for certain software
+      # See: https://github.com/mxcl/homebrew/pull/20182
+      # http://bugs.python.org/issue3588
+      inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile" do |s|
+        s.change_make_var! "LINKFORSHARED",
+          "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
+      end
   end
 
   def distutils_fix_superenv(args)
@@ -167,7 +183,7 @@ class Python < Formula
       ldflags += " -L#{Formula.factory('tcl-tk').opt_prefix}/lib"
     end
     unless MacOS::CLT.installed?
-      # Help Python's build system (distribute/pip) to build things on Xcode-only systems
+      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
       cflags += " -isysroot #{MacOS.sdk_path}"
       ldflags += " -isysroot #{MacOS.sdk_path}"
@@ -218,8 +234,8 @@ class Python < Formula
       Python demo
         #{HOMEBREW_PREFIX}/share/python/Extras
 
-      Distribute and Pip have been installed. To update them
-        pip install --upgrade distribute
+      Setuptools and Pip have been installed. To update them
+        pip install --upgrade setuptools
         pip install --upgrade pip
 
       To symlink "Idle" and the "Python Launcher" to ~/Applications

@@ -11,6 +11,6 @@ class Ghi < Formula
   end
 
   test do
-    system "ghi --version"
+    system "#{bin}/ghi", "--version"
   end
 end

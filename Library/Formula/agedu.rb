@@ -14,6 +14,6 @@ class Agedu < Formula
 
   test do
     system "#{bin}/agedu", "-s", "."
-    File.exist? "agedu.dat"
+    assert File.exist?("agedu.dat")
   end
 end

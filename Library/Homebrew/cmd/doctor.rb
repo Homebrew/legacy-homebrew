@@ -226,8 +226,27 @@ def __check_clt_up_to_date
     You should install the Command Line Tools: http://connect.apple.com
     EOS
   elsif MacOS::CLT.outdated? then <<-EOS.undent
-    A newer Command Line Tools for Xcode release is available
+    A newer Command Line Tools release is available
     You should install the latest version from: http://connect.apple.com
+    EOS
+  end
+end
+
+def check_for_osx_gcc_installer
+  if (MacOS.version < 10.7 || MacOS::Xcode.version < "4.1") && \
+    MacOS.clang_version == "2.1" then <<-EOS.undent
+    You have osx-gcc-installer installed.
+    Homebrew doesn't support osx-gcc-installer, and it is known to cause
+    some builds to fail.
+    Please install Xcode #{MacOS::Xcode.latest_version}.
+    EOS
+  end
+end
+
+def check_for_unsupported_osx
+  if MacOS.version > 10.8 then <<-EOS.undent
+    You are using Mac OS X #{MacOS.version}.
+    We do not yet provide support for this (unreleased) version.
     EOS
   end
 end
@@ -245,15 +264,8 @@ def check_for_stray_developer_directory
 end
 
 def check_cc
-  unless MacOS::CLT.installed?
-    if MacOS::Xcode.version >= "4.3" then <<-EOS.undent
-      Experimental support for using Xcode without the "Command Line Tools".
-      You have only installed Xcode. If stuff is not building, try installing the
-      "Command Line Tools for Xcode" package provided by Apple.
-      EOS
-    else
-      'No compiler found in /usr/bin!'
-    end
+  if !MacOS::CLT.installed? && MacOS::Xcode.version < "4.3"
+    'No compiler found in /usr/bin!'
   end
 end
 
@@ -913,6 +925,26 @@ def check_for_enthought_python
   end
 end
 
+def check_for_old_homebrew_share_python_in_path
+  s = ''
+  ['', '3'].map do |suffix|
+    if paths.include?((HOMEBREW_PREFIX/"share/python#{suffix}").to_s)
+      s += "#{HOMEBREW_PREFIX}/share/python#{suffix} is not needed in PATH.\n"
+    end
+  end
+  unless s.empty?
+    s += <<-EOS.undent
+      Formerly homebrew put Python scripts you installed via `pip` or `pip3`
+      (or `easy_install`) into that directory above but now it can be removed
+      from your PATH variable.
+      Python scripts will now install into #{HOMEBREW_PREFIX}/bin.
+      You can delete anything, except 'Extras', from the #{HOMEBREW_PREFIX}/share/python
+      (and #{HOMEBREW_PREFIX}/share/python3) dir and install affected Python packages
+      anew with `pip install --upgrade`.
+    EOS
+  end
+end
+
 def check_for_bad_python_symlink
   return unless which "python"
   # Indeed Python -V outputs to stderr (WTF?)
@@ -935,7 +967,7 @@ def check_for_non_prefixed_coreutils
 end
 
 def check_for_non_prefixed_findutils
-  default_names = Tab.for_formula('findutils').used_options.include? 'default-names'
+  default_names = Tab.for_name('findutils').used_options.include? 'default-names'
   if default_names then <<-EOS.undent
     Putting non-prefixed findutils in your path can cause python builds to fail.
     EOS
@@ -984,7 +1016,11 @@ def check_for_unlinked_but_not_keg_only
     if not rack.directory?
       true
     elsif not (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
-      Formula.factory(rack.basename).keg_only? rescue nil
+      begin
+        Formula.factory(rack.basename.to_s).keg_only?
+      rescue FormulaUnavailableError
+        false
+      end
     else
       true
     end

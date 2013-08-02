@@ -2,14 +2,15 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.10.tar.gz/from/http://cdn.mysql.com/'
-  version '5.6.10'
-  sha1 'f37979eafc241a0ebeac9548cb3f4113074271b7'
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.12.tar.gz/from/http://cdn.mysql.com/'
+  version '5.6.12'
+  sha1 'c48ae4061c23db89de7ebd2d25abbc36283bab69'
 
   bottle do
-    sha1 'e07b9a207364b6e020fc96f49116b58d33d0eb78' => :mountain_lion
-    sha1 'b9b38e2ed705a3fcd79bb549f32e49b455f31917' => :lion
-    sha1 '30978684ee72c4dfb0b20263331b0c93972b3092' => :snow_leopard
+    revision 1
+    sha1 '9d12112f31fad2af789363b2006c8e3f53518211' => :mountain_lion
+    sha1 'e986049a132e7a54b86c7b4fa2551c2dbc1667d7' => :lion
+    sha1 '47e7ee873ca5bfd8f84a3f53c8744517affc89d7' => :snow_leopard
   end
 
   depends_on 'cmake' => :build
@@ -42,6 +43,12 @@ class Mysql < Formula
   end
 
   def install
+    # Don't hard-code the libtool path. See:
+    # https://github.com/mxcl/homebrew/issues/20185
+    inreplace "cmake/libutils.cmake",
+      "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
+      "COMMAND libtool -static -o ${TARGET_LOCATION}"
+
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
@@ -92,6 +99,9 @@ class Mysql < Formula
 
     system "cmake", *args
     system "make"
+    # Reported upstream:
+    # http://bugs.mysql.com/bug.php?id=69645
+    inreplace "scripts/mysql_config", / +-Wno[\w-]+/, ""
     system "make install"
 
     # Don't create databases inside of the prefix!

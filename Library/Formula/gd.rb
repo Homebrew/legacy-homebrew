@@ -10,6 +10,8 @@ class Gd < Formula
 
   head 'https://bitbucket.org/libgd/gd-libgd', :using => :hg
 
+  option :universal
+
   depends_on :libpng => :recommended
   depends_on 'jpeg' => :recommended
   depends_on 'giflib' => :optional
@@ -21,7 +23,8 @@ class Gd < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}"]
+    ENV.universal_binary if build.universal?
+    args = %W{--disable-dependency-tracking --prefix=#{prefix}}
     args << "--without-freetype" unless build.with? 'freetype'
     system "./configure", *args
     system "make install"
@@ -47,9 +50,7 @@ class Gd < Formula
   end
 
   test do
-    system "#{bin}/pngtogd", \
-      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png", \
-      "gd_test.gd"
+    system "#{bin}/pngtogd", "/usr/share/doc/cups/images/cups.png", "gd_test.gd"
     system "#{bin}/gdtopng", "gd_test.gd", "gd_test.png"
   end
 end

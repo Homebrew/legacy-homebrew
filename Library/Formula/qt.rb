@@ -2,52 +2,34 @@ require 'formula'
 
 class Qt < Formula
   homepage 'http://qt-project.org/'
-  url 'http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.4.tar.gz'
-  sha1 'f5880f11c139d7d8d01ecb8d874535f7d9553198'
+  url 'http://download.qt-project.org/official_releases/qt/4.8/4.8.5/qt-everywhere-opensource-src-4.8.5.tar.gz'
+  sha1 '745f9ebf091696c0d5403ce691dc28c039d77b9e'
 
   bottle do
     revision 1
-    sha1 '7fb679119b8b463055849dea791cc7fca62c62d1' => :mountain_lion
-    sha1 'b456ff5f8d18fc53b4546119d00d8ff0dda92f90' => :lion
-    sha1 '920992e5059a5c816b4eb245597fc028ff6b09ae' => :snow_leopard
+    sha1 '7f1901dfac85006e37599a87b4e703fe461bdc54' => :mountain_lion
+    sha1 '6ad69314c99323a5ad13e25f46c2c4d5f23dcfa4' => :lion
+    sha1 '9501177ed38218f500eee8f1eb7d2ae00e4993c4' => :snow_leopard
   end
 
-  head 'git://gitorious.org/qt/qt.git', :branch => 'master'
+  head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
 
   option :universal
   option 'with-qtdbus', 'Enable QtDBus module'
   option 'with-qt3support', 'Enable deprecated Qt3Support module'
   option 'with-demos-examples', 'Enable Qt demos and examples'
+  option 'with-docs', 'Build Qt documentation'
   option 'with-debug-and-release', 'Compile Qt in debug and release mode'
   option 'developer', 'Compile and link Qt with developer options'
 
-  depends_on :libpng
-
   depends_on "d-bus" if build.with? 'qtdbus'
   depends_on "mysql" => :optional
-  depends_on 'sqlite' if MacOS.version == :leopard
-
-  def patches
-    # Fixes compilation failure on Leopard.
-    # https://bugreports.qt-project.org/browse/QTBUG-23258
-    if MacOS.version == :leopard
-      "http://bugreports.qt-project.org/secure/attachment/26712/Patch-Qt-4.8-for-10.5"
-    end
-  end
 
   def install
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
 
-    # clang complains about extra qualifier since Xcode 4.6 (clang build 425)
-    # https://bugreports.qt-project.org/browse/QTBUG-29373
-    if MacOS.clang_build_version >= 425
-      inreplace "src/gui/kernel/qt_cocoa_helpers_mac_p.h",
-                "::TabletProximityRec",
-                "TabletProximityRec"
-    end
-
     args = ["-prefix", prefix,
-            "-system-libpng", "-system-zlib",
+            "-system-zlib",
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
@@ -63,15 +45,13 @@ class Qt < Formula
 
     args << "-platform" << "unsupported/macx-clang" if ENV.compiler == :clang
 
-    # See: https://github.com/mxcl/homebrew/issues/issue/744
-    args << "-system-sqlite" if MacOS.version == :leopard
-
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
     if build.with? 'qtdbus'
-      args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
-      args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
-      args << "-L#{Formula.factory('d-bus').lib}"
+      dbus_opt = Formula.factory('d-bus').opt_prefix
+      args << "-I#{dbus_opt}/lib/dbus-1.0/include"
+      args << "-I#{dbus_opt}/include/dbus-1.0"
+      args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
     end
 
@@ -83,6 +63,10 @@ class Qt < Formula
 
     unless build.with? 'demos-examples'
       args << "-nomake" << "demos" << "-nomake" << "examples"
+    end
+
+    unless build.with? 'docs'
+      args << "-nomake" << "docs"
     end
 
     if MacOS.prefer_64_bit? or build.universal?
@@ -109,9 +93,6 @@ class Qt < Formula
     ENV.j1
     system "make install"
 
-    # stop crazy disk usage
-    (prefix+'doc/html').rmtree
-    (prefix+'doc/src').rmtree
     # what are these anyway?
     (bin+'pixeltool.app').rmtree
     (bin+'qhelpconverter.app').rmtree
@@ -119,9 +100,8 @@ class Qt < Formula
     (prefix+'q3porting.xml').unlink if build.without? 'qt3support'
 
     # Some config scripts will only find Qt in a "Frameworks" folder
-    cd prefix do
-      ln_s lib, frameworks
-    end
+    frameworks.mkpath
+    ln_s Dir['lib/*.framework'], frameworks
 
     # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to

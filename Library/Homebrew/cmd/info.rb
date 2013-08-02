@@ -3,6 +3,7 @@ require 'tab'
 require 'keg'
 require 'caveats'
 require 'blacklist'
+require 'utils/json'
 
 module Homebrew extend self
   def info
@@ -24,7 +25,7 @@ module Homebrew extend self
           info_formula f
           puts '---'
         end
-      else
+      elsif HOMEBREW_CELLAR.exist?
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
     elsif valid_url ARGV[0]
@@ -46,14 +47,12 @@ module Homebrew extend self
   end
 
   def print_json
-    require 'vendor/multi_json'
-
     formulae = ARGV.include?("--all") ? Formula : ARGV.formulae
     json = formulae.map {|f| f.to_hash}
     if json.size == 1
-      puts MultiJson.encode json.pop
+      puts Utils::JSON.dump(json.pop)
     else
-      puts MultiJson.encode json
+      puts Utils::JSON.dump(json)
     end
   end
 
@@ -102,7 +101,7 @@ module Homebrew extend self
       puts
     end
 
-    conflicts = f.conflicts.map(&:formula).sort!
+    conflicts = f.conflicts.map(&:name).sort!
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
@@ -117,7 +116,7 @@ module Homebrew extend self
     end
 
     history = github_info(f)
-    puts history if history
+    puts "From: #{history}" if history
 
     unless f.deps.empty?
       ohai "Dependencies"
@@ -135,16 +134,6 @@ module Homebrew extend self
 
     c = Caveats.new(f)
     ohai 'Caveats', c.caveats unless c.empty?
-
-  rescue FormulaUnavailableError
-    # check for DIY installation
-    d = HOMEBREW_PREFIX+name
-    if d.directory?
-      ohai "DIY Installation"
-      d.children.each{ |keg| puts "#{keg} (#{keg.abv})" }
-    else
-      raise "No such formula or keg"
-    end
   end
 
   private

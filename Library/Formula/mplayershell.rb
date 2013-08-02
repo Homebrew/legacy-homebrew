@@ -1,32 +1,10 @@
 require 'formula'
-require 'macos'
-
-class LionOrHigher < Requirement
-  fatal true
-
-  satisfy { MacOS.version >= :lion }
-
-  def message
-    "MPlayerShell requires OS X 10.7 (Lion) or newer"
-  end
-end
 
 class MPlayerPresented < Requirement
   fatal true
   default_formula 'mplayer'
 
   satisfy { which('mplayer') || which('mplayer2') }
-
-  def message; <<-EOS.undent
-    MPlayerShell requires mplayer or mplayer2 to be installed.
-
-    You can use either
-      brew install mplayer
-    or
-      brew tap pigoz/mplayer2
-      brew install mplayer2
-    EOS
-  end
 end
 
 class Mplayershell < Formula
@@ -37,7 +15,7 @@ class Mplayershell < Formula
   head 'https://github.com/donmelton/MPlayerShell.git'
 
   depends_on MPlayerPresented
-  depends_on LionOrHigher
+  depends_on :macos => :lion
   depends_on :xcode
 
   def install

@@ -13,7 +13,7 @@ class ZshSyntaxHighlighting < Formula
 
   def caveats
     <<-EOS.undent
-    To activate the syntax highlighting, add the following AT THE END of your .zshrc:
+    To activate the syntax highlighting, add the following at the end of your .zshrc:
 
       source #{HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
@@ -21,7 +21,7 @@ class ZshSyntaxHighlighting < Formula
 
       source ~/.zshrc
 
-    Additionnaly, if your receive "highlighters directory not found" error message,
+    Additionally, if your receive "highlighters directory not found" error message,
     you may need to add the following to your .zshenv:
 
       export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=#{HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/highlighters

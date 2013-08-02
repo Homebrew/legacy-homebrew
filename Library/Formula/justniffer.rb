@@ -43,7 +43,7 @@ class Justniffer < Formula
   test do
     require 'open3'
     Open3.popen3("#{bin}/justniffer", "--version") do |_, stdout, _|
-      /justniffer #{Regexp.escape(version)}/ === stdout.read
+      assert_match /justniffer #{Regexp.escape(version)}/, stdout.read
     end
   end
 

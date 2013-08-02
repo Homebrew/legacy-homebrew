@@ -19,7 +19,7 @@ class Bsdconv < Formula
     Open3.popen3("#{bin}/bsdconv", "big5:utf-8") do |stdin, stdout, _|
       stdin.write("\263\134\245\134\273\134")
       stdin.close
-      stdout.read == "許功蓋"
+      assert_equal "許功蓋", stdout.read
     end
   end
 end

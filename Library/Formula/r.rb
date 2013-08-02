@@ -17,24 +17,25 @@ class R < Formula
   option 'with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger'
   option 'test', 'Run tests before installing'
 
+  depends_on :fortran
   depends_on 'readline'
   depends_on 'libtiff'
   depends_on 'jpeg'
   depends_on :x11
-
-  depends_on 'valgrind' if build.include? 'with-valgrind'
+  depends_on 'valgrind' => :optional
 
   def install
-    ENV.Og if build.include? 'with-valgrind'
-    ENV.fortran
-
     args = [
       "--prefix=#{prefix}",
       "--with-aqua",
       "--enable-R-framework",
       "--with-lapack"
     ]
-    args << '--with-valgrind-instrumentation=2' if build.include? 'with-valgrind'
+
+    if build.with? 'valgrind'
+      args << '--with-valgrind-instrumentation=2'
+      ENV.Og
+    end
 
     # Pull down recommended packages if building from HEAD.
     system './tools/rsync-recommended' if build.head?

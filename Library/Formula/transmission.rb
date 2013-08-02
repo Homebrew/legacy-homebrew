@@ -2,11 +2,12 @@ require 'formula'
 
 class Transmission < Formula
   homepage 'http://www.transmissionbt.com/'
-  url 'http://download.transmissionbt.com/files/transmission-2.77.tar.bz2'
-  sha1 'a26298dc814b3995a7e4a7f6566fc16b1463bbbb'
+  url 'http://download.transmissionbt.com/files/transmission-2.81.tar.xz'
+  sha1 '2ca458982054b4ad21bdbdb8cf085c96e5118e34'
 
   option 'with-nls', 'Build with native language support'
 
+  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build # So it will find system libcurl
   depends_on 'libevent'
 
@@ -16,6 +17,9 @@ class Transmission < Formula
   end
 
   def install
+    ENV.append 'LDFLAGS', '-framework Foundation -prebind'
+    ENV.append 'LDFLAGS', '-liconv'
+
     args = %W[--disable-dependency-tracking
               --prefix=#{prefix}
               --disable-mac

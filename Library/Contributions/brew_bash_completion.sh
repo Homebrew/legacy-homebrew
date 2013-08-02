@@ -168,9 +168,14 @@ _brew_diy ()
 _brew_fetch ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
+    local prv=$(__brewcomp_prev)
     case "$cur" in
     --*)
-        __brewcomp "--deps --force --HEAD"
+        __brewcomp "
+          --deps --force
+          --devel --HEAD
+          $(brew options --compact "$prv" 2>/dev/null)
+          "
         return
         ;;
     esac
