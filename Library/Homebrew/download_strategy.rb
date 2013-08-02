@@ -234,6 +234,20 @@ class LocalBottleDownloadStrategy < CurlDownloadStrategy
   end
 end
 
+class CurlTimedOutDownloadStrategy < CurlDownloadStrategy
+  def initialize name, package, timedout = 5
+    super name, package
+  end
+  def _fetch
+    if @mirrors.empty?
+      curl @url, '-C', downloaded_size, '-o', @temporary_path
+    else
+      curl @url, '-C', downloaded_size, '-o', @temporary_path, '--connect-timeout', 5
+    end
+  end
+end
+
+
 class SubversionDownloadStrategy < AbstractDownloadStrategy
   def initialize name, package
     super
@@ -731,14 +745,14 @@ class DownloadStrategyDetector
     when bottle_native_regex, bottle_regex
       CurlBottleDownloadStrategy
       # Otherwise just try to download
-    else CurlDownloadStrategy
+    else CurlTimedOutDownloadStrategy
     end
   end
 
   def self.detect_from_symbol(symbol)
     case symbol
     when :bzr then BazaarDownloadStrategy
-    when :curl then CurlDownloadStrategy
+    when :curl then CurlTimedOutDownloadStrategy
     when :cvs then CVSDownloadStrategy
     when :git then GitDownloadStrategy
     when :hg then MercurialDownloadStrategy

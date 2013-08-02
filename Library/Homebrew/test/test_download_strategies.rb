@@ -49,6 +49,6 @@ class DownloadStrategyDetectorTests < Test::Unit::TestCase
 
   def test_default_to_curl_strategy
     @d = DownloadStrategyDetector.detect(Object.new)
-    assert_equal CurlDownloadStrategy, @d
+    assert_equal CurlTimedOutDownloadStrategy, @d
   end
 end
