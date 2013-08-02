@@ -188,6 +188,14 @@ module MacOS extend self
     Hardware::CPU.is_64_bit? and version != :leopard
   end
 
+  def preferred_arch
+    @preferred_arch ||= if prefer_64_bit? 
+      Hardware::CPU.arch_64_bit
+    else
+      Hardware::CPU.arch_32_bit
+    end
+  end
+
   STANDARD_COMPILERS = {
     "3.1.4" => { :gcc_40_build => 5493, :gcc_42_build => 5577 },
     "3.2.6" => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "1.7", :clang_build => 77 },
