@@ -61,7 +61,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
   # Private method, can be overridden if needed.
   def _fetch
-    curl @url, '-C', downloaded_size, '-o', @temporary_path
+    curl @url, '-C', downloaded_size, '-o', @temporary_path, '--connect-timeout', 5
   end
 
   def fetch
