@@ -1,3 +1,5 @@
+require 'mach'
+
 module MacCPUs
   OPTIMIZATION_FLAGS = {
     :penryn => '-march=core2 -msse4.1',
@@ -81,6 +83,18 @@ module MacCPUs
 
   def arch_64_bit
     type == :intel ? :x86_64 : :ppc64
+  end
+
+  # Returns an array that's been extended with ArchitectureListExtension,
+  # which provides helpers like #as_arch_flags and #as_cmake_arch_flags.
+  def universal_archs
+    # Building 64-bit is a no-go on Tiger, and pretty hit or miss on Leopard.
+    # Don't even try unless Tigerbrew's experimental 64-bit Leopard support is enabled.
+    if MacOS.version <= :leopard and !MacOS.prefer_64_bit?
+      [arch_32_bit].extend ArchitectureListExtension
+    else
+      [arch_32_bit, arch_64_bit].extend ArchitectureListExtension
+    end
   end
 
   def altivec?
