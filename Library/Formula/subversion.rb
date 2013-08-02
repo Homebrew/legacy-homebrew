@@ -122,7 +122,7 @@ class Subversion < Formula
     if build.include? 'perl'
       # Remove hard-coded ppc target, add appropriate ones
       if build.universal?
-        arches = "-arch x86_64 -arch i386"
+        arches = Hardware::CPU.universal_archs.as_arch_flags
       elsif MacOS.version <= :leopard
         arches = "-arch #{Hardware::CPU.arch_32_bit}"
       else
