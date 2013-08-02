@@ -74,7 +74,7 @@ class MysqlCluster < Formula
     args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
