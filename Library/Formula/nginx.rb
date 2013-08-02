@@ -19,6 +19,7 @@ class Nginx < Formula
   option 'with-debug', 'Compile with support for debug log'
   option 'with-spdy', 'Compile with support for SPDY module'
   option 'with-gunzip', 'Compile with support for gunzip module'
+  option 'with-image', 'Compile with support for image module'
 
   depends_on 'pcre'
   depends_on 'passenger' => :optional
@@ -26,6 +27,7 @@ class Nginx < Formula
   # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
   # http://www.openssl.org/news/changelog.html
   depends_on 'openssl' if build.with? 'spdy'
+  depends_on 'gd' if build.with? 'image'
 
   skip_clean 'logs'
 
@@ -82,6 +84,7 @@ class Nginx < Formula
     args << "--with-debug" if build.include? 'with-debug'
     args << "--with-http_spdy_module" if build.include? 'with-spdy'
     args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
+    args << "--with-http_image_filter_module" if build.include? 'with-image'
 
     if build.head?
       system "./auto/configure", *args
