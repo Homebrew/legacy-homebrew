@@ -6,6 +6,13 @@ class GstPluginsUgly < Formula
   mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.0.8.tar.xz'
   sha256 '58cbae3cad52a91526d599fc90793147e934078055126865ee019bf97f1e0b84'
 
+  head 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
+
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'gettext'
@@ -37,14 +44,22 @@ class GstPluginsUgly < Formula
   # Does not work with libcdio 0.9
 
   def install
+    ENV.append "NOCONFIGURE", "yes" if build.head?
+
     ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
 
     args = %W[
-      --disable-debug
-      --disable-dependency-tracking
       --prefix=#{prefix}
       --mandir=#{man}
     ]
+
+    args << "--enable-debug" if build.head?
+    args << "--enable-dependency-tracking" if build.head?
+
+    args << "--disable-debug" if not build.head?
+    args << "--disable-dependency-tracking" if not build.head?
+
+    system "./autogen.sh" if build.head?
 
     if build.with? "opencore-amr"
       # Fixes build error, missing includes.

@@ -6,6 +6,13 @@ class GstPluginsBad < Formula
   mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.0.8.tar.xz'
   sha256 '6949b5532034fc37d5a874e4e3330107767238bc4def9f769b8193124e2420cc'
 
+  head 'git://anongit.freedesktop.org/gstreamer/gst-plugins-bad'
+
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'gettext'
@@ -26,14 +33,28 @@ class GstPluginsBad < Formula
   depends_on 'rtmpdump' => :optional
 
   def install
+    ENV.append "NOCONFIGURE", "yes" if build.head?
+
     ENV.append "CFLAGS", "-no-cpp-precomp" unless ENV.compiler == :clang
     ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing"
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-sdl",
-                          # gst/interfaces/propertyprobe.h is missing from gst-plugins-base 1.0.x
-                          "--disable-osx_video"
+
+    args = %W[
+      --prefix=#{prefix}
+      --disable-apple_media
+      --disable-yadif
+      --disable-sdl
+      --disable-osx_video
+    ]
+
+    args << "--enable-debug" if build.head?
+    args << "--enable-dependency-tracking" if build.head?
+
+    args << "--disable-debug" if not build.head?
+    args << "--disable-dependency-tracking" if not build.head?
+
+    system "./autogen.sh" if build.head?
+
+    system "./configure", *args
     system "make"
     system "make install"
   end
