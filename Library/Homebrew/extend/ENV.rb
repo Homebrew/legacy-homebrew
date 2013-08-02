@@ -7,6 +7,7 @@ module HomebrewEnvExtension
   DEFAULT_FLAGS = '-march=core2 -msse4'
 
   def setup_build_environment
+    ohai "setting up std env"
     # Clear CDPATH to avoid make issues that depend on changing directories
     delete('CDPATH')
     delete('GREP_OPTIONS') # can break CMake (lol)
@@ -28,6 +29,7 @@ module HomebrewEnvExtension
     # make any aclocal stuff installed in Homebrew available
     self['ACLOCAL_PATH'] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS::Xcode.provides_autotools?
 
+    # default to one make job per core
     self['MAKEFLAGS'] = "-j#{self.make_jobs}"
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
@@ -285,10 +287,12 @@ module HomebrewEnvExtension
   def m64
     append_to_cflags '-m64'
     append 'LDFLAGS', '-arch x86_64'
+    self['ARCHFLAGS'] = '-arch x86_64'
   end
   def m32
     append_to_cflags '-m32'
     append 'LDFLAGS', '-arch i386'
+    self['ARCHFLAGS'] = '-arch i386'
   end
 
   # i386 and x86_64 (no PPC)
@@ -296,6 +300,7 @@ module HomebrewEnvExtension
     append_to_cflags '-arch i386 -arch x86_64'
     replace_in_cflags '-O4', '-O3' # O4 seems to cause the build to fail
     append 'LDFLAGS', '-arch i386 -arch x86_64'
+    self['ARCHFLAGS'] = '-arch i386 -arch x86_64'
 
     if compiler != :clang && Hardware.is_32_bit?
       # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"

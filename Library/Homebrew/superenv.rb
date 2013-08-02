@@ -25,6 +25,7 @@ rescue # blanket rescue because there are naked raises
   false
 end
 
+# Note that this block is guarded with `if superenv?`
 class << ENV
   attr_accessor :keg_only_deps, :deps, :x11
   alias_method :x11?, :x11
@@ -42,6 +43,7 @@ class << ENV
   end
 
   def setup_build_environment
+    ohai "setting up super env"
     reset
     ENV['CC'] = 'cc'
     ENV['CXX'] = 'c++'
@@ -63,6 +65,20 @@ class << ENV
     ENV['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     ENV['ACLOCAL_PATH'] = determine_aclocal_path
 
+    # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
+    # compiler flag stripping. It consists of a string of characters which act
+    # as flags. Some of these flags are mutually exclusive.
+    #
+    # u - A universal build was requested
+    # 3 - A 32-bit build was requested
+    # b - Installing from a bottle
+    # i - Installing from a bottle on Intel
+    # 6 - Installing from a bottle on 64-bit Intel
+    #
+    # On 10.8 and newer, these flags may also be present:
+    # s - apply fix for sed's Unicode support
+    # a - apply fix for apr-1-config path
+
     # Homebrew's apple-gcc42 will be outside the PATH in superenv,
     # so xcrun may not be able to find it
     if ENV['HOMEBREW_CC'] == 'gcc-4.2'
@@ -73,11 +89,13 @@ class << ENV
 
   def universal_binary
     append 'HOMEBREW_CCCFG', "u", ''
+    self['ARCHFLAGS'] = '-arch i386 -arch x86_64'
   end
 
-  # m32 on superenv does not add any flags. It prevents "-m32" from being erased.
+  # m32 on superenv does not add any CC flags. It prevents "-m32" from being erased.
   def m32
     append 'HOMEBREW_CCCFG', "3", ''
+    self['ARCHFLAGS'] = '-arch i386'
   end
 
   private
