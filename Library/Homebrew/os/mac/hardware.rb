@@ -75,6 +75,14 @@ module MacCPUs
     @bits ||= is_64_bit ? 64 : 32
   end
 
+  def arch_32_bit
+    type == :intel ? :i386 : :ppc
+  end
+
+  def arch_64_bit
+    type == :intel ? :x86_64 : :ppc64
+  end
+
   def altivec?
     @altivec ||= sysctl_bool('hw.optional.altivec')
   end
