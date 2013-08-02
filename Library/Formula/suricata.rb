@@ -9,6 +9,7 @@ class Suricata < Formula
   depends_on :automake
   depends_on :libtool
   depends_on 'pkg-config' => :build
+  depends_on 'libmagic'
   depends_on 'libnet'
   depends_on 'libyaml'
   depends_on 'pcre'
