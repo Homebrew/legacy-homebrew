@@ -46,7 +46,7 @@ class Zookeeper < Formula
   def install
     # Don't try to build extensions for PPC
     if Hardware.is_32_bit?
-      ENV['ARCHFLAGS'] = "-arch i386"
+      ENV['ARCHFLAGS'] = "-arch #{Hardware::CPU.arch_32_bit}"
     else
       ENV['ARCHFLAGS'] = "-arch i386 -arch x86_64"
     end

@@ -147,12 +147,12 @@ class Boost < Formula
     if MacOS.version >= :lion and build.with? 'c++11'
       args << "toolset=clang" << "cxxflags=-std=c++11"
       args << "cxxflags=-stdlib=libc++" << "cxxflags=-fPIC"
-      args << "cxxflags=-arch x86_64" if MacOS.prefer_64_bit? or build.universal?
-      args << "cxxflags=-arch i386" if !MacOS.prefer_64_bit? or build.universal?
+      args << "cxxflags=-arch #{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit? or build.universal?
+      args << "cxxflags=-arch #{Hardware::CPU.arch_32_bit}" if !MacOS.prefer_64_bit? or build.universal?
       args << "linkflags=-stdlib=libc++"
       args << "linkflags=-headerpad_max_install_names"
-      args << "linkflags=-arch x86_64" if MacOS.prefer_64_bit? or build.universal?
-      args << "linkflags=-arch i386" if !MacOS.prefer_64_bit? or build.universal?
+      args << "linkflags=-arch #{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit? or build.universal?
+      args << "linkflags=-arch #{Hardware::CPU.arch_32_bit}" if !MacOS.prefer_64_bit? or build.universal?
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?

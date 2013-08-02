@@ -18,12 +18,12 @@ class Cantera < Formula
   def install
     if MacOS.prefer_64_bit?
       # There is probably a better way to do this, but this seems to work for my purposes:
-      ENV['CFLAGS'] += " -arch x86_64"
-      ENV['CXX_OPT'] = "-arch x86_64"
-      ENV['ARCHFLAGS'] = "-arch x86_64"
+      ENV['CFLAGS'] += " -arch #{Hardware::CPU.arch_64_bit}"
+      ENV['CXX_OPT'] = "-arch #{Hardware::CPU.arch_64_bit}"
+      ENV['ARCHFLAGS'] = "-arch #{Hardware::CPU.arch_64_bit}"
       # Maybe this does all that's needed?
       ENV['BITCOMPILE'] = '64'
-      buildname = "x86_64-apple-darwin"
+      buildname = "#{Hardware::CPU.arch_64_bit}-apple-darwin"
     else
       buildname = nil # let autoconf guess
     end
