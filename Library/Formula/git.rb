@@ -23,6 +23,7 @@ class Git < Formula
   depends_on :python
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
+  depends_on 'curl' => :recommended
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -45,6 +46,8 @@ class Git < Formula
     end
 
     ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
+    ENV['NO_CURL'] = '1' if build.without? 'curl'
+    ENV['CURLDIR'] = Formula.factory('curl').opt_prefix if build.with? 'curl'
 
     system "make", "prefix=#{prefix}",
                    "CC=#{ENV.cc}",
