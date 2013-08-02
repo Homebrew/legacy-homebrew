@@ -14,7 +14,7 @@ class XcodeDependency < Requirement
 
   def message; <<-EOS.undent
     A full installation of Xcode.app is required to compile this software.
-    Installing just the Command Line Tools is not sufficent.
+    Installing just the Command Line Tools is not sufficient.
     EOS
   end
 end
@@ -77,6 +77,7 @@ class ArchRequirement < Requirement
   satisfy do
     case @arch
     when :x86_64 then MacOS.prefer_64_bit?
+    when :intel, :ppc then Hardware::CPU.type == @arch
     end
   end
 
