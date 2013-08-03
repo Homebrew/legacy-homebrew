@@ -15,6 +15,15 @@ class Serf < Formula
   end
 
   def install
+    if MacOS.version >= :mountaion_lion
+      # Fixes a bad path returned by `apr-1-config --cpp` on ML.
+      # https://github.com/mxcl/homebrew/issues/13586
+      ENV['CPP'] = "#{ENV.cc} -E"
+      # Use HB libtool not the one from apr that also has a bad path.
+      ENV['APR_LIBTOOL'] = 'glibtool'
+      ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include/apr-1"
+    end
+
     ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}",
                           "--with-apr=#{apr_bin}"
