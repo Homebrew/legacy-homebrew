@@ -86,6 +86,7 @@ class << ENV
   end
 
   def universal_binary
+    ENV['HOMEBREW_ARCHS'] = Hardware::CPU.universal_archs.join(',')
     append 'HOMEBREW_CCCFG', "u", ''
   end
 
