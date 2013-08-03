@@ -19,6 +19,10 @@ EOS
   # reduce bug reports.
   # Upstream patches can be found in:
   # http://ftpmirror.gnu.org/readline/readline-6.2-patches
+  #
+  # We are carrying an additional patch to add Darwin 13 as a build target.
+  # Presumably when 10.9 comes out this patch will move upstream.
+  # https://github.com/mxcl/homebrew/pull/21625
   def patches; DATA; end
 
   def install
@@ -100,7 +104,7 @@ index 5a63e80..c61dc78 100644
  
  # Darwin/MacOS X
 -darwin[89]*|darwin10*)
-+darwin[89]*|darwin1[012]*)
++darwin[89]*|darwin1[0123]*)
  	SHOBJ_STATUS=supported
  	SHLIB_STATUS=supported
  	
@@ -109,7 +113,7 @@ index 5a63e80..c61dc78 100644
  
  	case "${host_os}" in
 -	darwin[789]*|darwin10*)	SHOBJ_LDFLAGS=''
-+	darwin[789]*|darwin1[012]*)	SHOBJ_LDFLAGS=''
++	darwin[789]*|darwin1[0123]*)	SHOBJ_LDFLAGS=''
  			SHLIB_XLDFLAGS='-dynamiclib -arch_only `/usr/bin/arch` -install_name $(libdir)/$@ -current_version $(SHLIB_MAJOR)$(SHLIB_MINOR) -compatibility_version $(SHLIB_MAJOR) -v'
  			;;
  	*)		SHOBJ_LDFLAGS='-dynamic'
