@@ -260,8 +260,6 @@ class PythonInstalled < Requirement
 
     ENV['PYTHONHOME'] = nil  # to avoid fuck-ups.
     ENV['PYTHONPATH'] = global_site_packages.to_s unless brewed?
-    # Python respects the ARCHFLAGS var if set. Shall we set them here?
-    # ENV['ARCHFLAGS'] = ??? # FIXME
     ENV.append 'CMAKE_INCLUDE_PATH', incdir, ':'
     ENV.append 'PKG_CONFIG_PATH', pkg_config_path, ':' if pkg_config_path
     # We don't set the -F#{framework} here, because if Python 2.x and 3.x are
