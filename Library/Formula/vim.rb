@@ -7,9 +7,9 @@ class Vim < Formula
   sha1 'f308d219dd9c6b56e84109ace4e7487a101088f5'
 
   devel do
-    url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.4a.012.orig.tar.gz'
-    version '7.4a.012'
-    sha1 '3d7ec9c846a356bbaeab96692db31b07ccb946f4'
+    url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.4b.004.orig.tar.gz'
+    version '7.4b.004'
+    sha1 'af303d0833dcfb63792639bf0d98cd0025276e09'
   end
 
   head 'https://vim.googlecode.com/hg/'
