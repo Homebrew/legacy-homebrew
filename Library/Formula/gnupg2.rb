@@ -16,6 +16,7 @@ class Gnupg2 < Formula
   depends_on 'gpg-agent'
   depends_on 'dirmngr' => :recommended
   depends_on 'libusb-compat' => :recommended
+  depends_on 'readline' => :optional
 
   # Fix hardcoded runtime data location
   # upstream: http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;h=c3f08dc
@@ -34,11 +35,19 @@ class Gnupg2 < Formula
 
     ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-symcryptrun",
-                          "--disable-agent",
-                          "--with-agent-pgm=#{Formula.factory('gpg-agent').opt_prefix}/bin/gpg-agent"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-symcryptrun
+      --disable-agent
+      --with-agent-pgm=#{Formula.factory('gpg-agent').opt_prefix}/bin/gpg-agent
+    ]
+
+    if build.with? 'readline'
+      args << "--with-readline=#{Formula.factory('readline').opt_prefix}"
+    end
+
+    system "./configure", *args
     system "make"
     system "make check"
     system "make install"
