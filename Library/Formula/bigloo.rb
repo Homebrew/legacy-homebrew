@@ -2,11 +2,11 @@ require 'formula'
 
 class Bigloo < Formula
   homepage 'http://www-sop.inria.fr/indes/fp/Bigloo/'
-  url 'ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo4.0a.tar.gz'
-  version '4.0a'
-  sha1 '63e0e363a7900d9e7d02f63c50ba2079053ef2d1'
+  url 'ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo4.0b.tar.gz'
+  version '4.0b'
+  sha1 '2c70863de59d1d92b63aee3f1ee2f39c6672e732'
 
-  depends_on 'gmp'
+  depends_on 'gmp' => :recommended
 
   option 'with-jvm', 'Enable JVM support'
 
@@ -31,7 +31,8 @@ class Bigloo < Formula
             "--disable-mpg123",
             "--disable-flac"]
 
-    args << "--jvm=yes" if build.include? 'with-jvm'
+    args << "--jvm=yes" if build.with? 'jvm'
+    args << "--no-gmp" if build.without? "gmp"
 
     # SRFI 27 is 32-bit only
     args << "--disable-srfi27" if MacOS.prefer_64_bit?
