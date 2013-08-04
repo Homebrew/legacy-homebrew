@@ -12,6 +12,6 @@ class Remake < Formula
   end
 
   test do
-    system "remake"
+    system bin/"remake", "-v"
   end
 end
