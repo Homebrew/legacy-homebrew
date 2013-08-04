@@ -44,6 +44,11 @@ class Wine < Formula
     cause 'llvm-gcc does not respect force_align_arg_pointer'
   end
 
+  fails_with :clang do
+    build 421
+    cause 'error: invalid operand for instruction lretw'
+  end
+
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libv4l, gstreamer-0.10, libcapi20, libgsm
 
@@ -64,15 +69,6 @@ class Wine < Formula
 
     ENV.append "CFLAGS", build32
     ENV.append "LDFLAGS", build32
-
-    # Still miscompiles at v1.6
-    if ENV.compiler == :clang
-      opoo <<-EOS.undent
-        Clang currently miscompiles some parts of Wine. If you have gcc, you
-        can get a more stable build with:
-          brew install wine --use-gcc
-      EOS
-    end
 
     # Workarounds for XCode not including pkg-config files
     ENV.libxml2

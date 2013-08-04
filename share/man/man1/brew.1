@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "July 2013" "Homebrew" "brew"
+.TH "BREW" "1" "August 2013" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -71,7 +71,7 @@ If \fB\-n\fR is passed, show what would be removed, but do not actually remove a
 If \fB\-s\fR is passed, scrubs the cache, removing downloads for even the latest versions of formula\. Note downloads for any installed formula will still not be deleted\. If you want to delete those too: \fBrm \-rf $(brew \-\-cache)\fR
 .
 .TP
-\fBcreate [\-\-autotools|\-\-cmake] [\-\-no\-fetch] [\-\-set\-name <name>] [\-\-set\-version <version>]\fR \fIURL\fR
+\fBcreate <URL> [\-\-autotools|\-\-cmake] [\-\-no\-fetch] [\-\-set\-name <name>] [\-\-set\-version <version>]\fR
 Generate a formula for the downloadable file at \fIURL\fR and open it in the editor\. Homebrew will attempt to automatically derive the formula name and version, but if it fails, you\'ll have to make your own template\. The wget formula serves as a simple example\.
 .
 .IP

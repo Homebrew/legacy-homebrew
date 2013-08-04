@@ -25,6 +25,7 @@ rescue # blanket rescue because there are naked raises
   false
 end
 
+# Note that this block is guarded with `if superenv?`
 class << ENV
   attr_accessor :keg_only_deps, :deps, :x11
   alias_method :x11?, :x11
