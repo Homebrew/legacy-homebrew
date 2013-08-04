@@ -29,6 +29,6 @@ class Voltdb < Formula
 
   test do
     f = File.read("#{prefix}/version.txt")
-    f == '3.4\n' ? true : false
+    f == "3.4\n" ? true : false
   end
 end
