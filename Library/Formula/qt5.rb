@@ -19,6 +19,8 @@ class Qt5 < Formula
   depends_on "d-bus" if build.include? 'with-qtdbus'
   depends_on "mysql" => :optional
 
+  env :std if build.universal?
+
   def install
     args = ["-prefix", prefix,
             "-system-zlib",
