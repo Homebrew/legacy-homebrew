@@ -40,7 +40,7 @@ class Headphones < Formula
 
   def startup_script; <<-EOS.undent
     #!/bin/bash
-w    python "#{libexec}/Headphones.py"\
+    python "#{libexec}/Headphones.py"\
             "--datadir=#{etc}/headphones"\
            "$@"
     EOS
