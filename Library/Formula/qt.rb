@@ -25,9 +25,8 @@ class Qt < Formula
   depends_on "d-bus" if build.with? 'qtdbus'
   depends_on "mysql" => :optional
 
-  ENV.universal_binary if build.universal?
-
   def install
+    ENV.universal_binary if build.universal?
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
 
     args = ["-prefix", prefix,
