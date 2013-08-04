@@ -8,11 +8,9 @@ class Omnetpp < Formula
   depends_on :x11
 
   def install
-
     system "./configure", "--disable-debug", "--disable-dependency-tracking"
     system "PATH=\"$PATH:\`pwd\`/bin\" make"
     prefix.install Dir['*']
-
   end
 
   def caveats; <<-EOS.undent
@@ -23,7 +21,4 @@ class Omnetpp < Formula
     EOS
   end
 
-  test do
-    system "false"
-  end
 end
