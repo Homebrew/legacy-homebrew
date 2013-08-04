@@ -15,6 +15,7 @@ class Voltdb < Formula
 
   def install
     system 'ant'
+
     bin.install Dir['bin/*']
     Dir['lib/*'].each do |f|
       (lib/'voltdb').install f
@@ -25,6 +26,11 @@ class Voltdb < Formula
     voltdb.install Dir['voltdb/*']
     doc.install Dir['doc/*']
     prefix.install 'version.txt'
+
+    file_to_mod = prefix/'bin/voltdb'
+    system("chmod +w #{file_to_mod}")
+    system("sed -i '' 's/VOLTDB_LIB=\$VOLTDB_HOME\\/lib/VOLTDB_LIB=\$VOLTDB_HOME\\/lib\\/voltdb/' #{file_to_mod}")
+    system("chmod -w #{file_to_mod}")
   end
 
   test do
