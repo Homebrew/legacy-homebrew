@@ -3,52 +3,55 @@ require 'test/testball'
 require 'set'
 
 # Expose some internals
-class Patches
-  attr_reader :patches
-end
-
 class Patch
   attr_reader :patch_p
   attr_reader :patch_filename
 end
 
-
 class PatchingTests < Test::Unit::TestCase
+  def formula_with_patches &block
+    formula do
+      url "http://example.com/foo"
+      version "0.0"
+      define_method :patches, &block
+    end
+  end
+
   def test_patchSingleString
-    patches = Patches.new("http://example.com/patch.diff")
-    assert_equal 1, patches.patches.length
-    p = patches.patches[0]
+    f = formula_with_patches { "http://example.com/patch.diff" }
+    assert_equal 1, f.patchlist.length
+    p = f.patchlist[0]
     assert_equal :p1, p.patch_p
   end
 
   def test_patchArray
-    patches = Patches.new(["http://example.com/patch1.diff", "http://example.com/patch2.diff"])
-    assert_equal 2, patches.patches.length
+    f = formula_with_patches { ["http://example.com/patch1.diff", "http://example.com/patch2.diff"] }
+    assert_equal 2, f.patchlist.length
 
-    p1 = patches.patches[0]
+    p1 = f.patchlist[0]
     assert_equal :p1, p1.patch_p
 
-    p2 = patches.patches[0]
+    p2 = f.patchlist[0]
     assert_equal :p1, p2.patch_p
   end
 
   def test_p0_hash_to_string
-    patches = Patches.new({
+    f = formula_with_patches do {
       :p0 => "http://example.com/patch.diff"
-    })
-    assert_equal 1, patches.patches.length
+    } end
+    assert_equal 1, f.patchlist.length
 
-    p = patches.patches[0]
+    p = f.patchlist[0]
     assert_equal :p0, p.patch_p
   end
 
   def test_p1_hash_to_string
-    patches = Patches.new({
+    f = formula_with_patches do {
       :p1 => "http://example.com/patch.diff"
-    })
-    assert_equal 1, patches.patches.length
+    } end
+    assert_equal 1, f.patchlist.length
 
-    p = patches.patches[0]
+    p = f.patchlist[0]
     assert_equal :p1, p.patch_p
   end
 
@@ -57,12 +60,12 @@ class PatchingTests < Test::Unit::TestCase
       :p1 => "http://example.com/patch1.diff",
       :p0 => "http://example.com/patch0.diff"
     }
-    patches = Patches.new(expected)
-    assert_equal 2, patches.patches.length
+    f = formula_with_patches { expected }
+    assert_equal 2, f.patchlist.length
 
     # Make sure unique filenames were assigned
     filenames = Set.new
-    patches.each do |p|
+    f.patchlist.each do |p|
       filenames << p.patch_filename
     end
 
@@ -74,12 +77,12 @@ class PatchingTests < Test::Unit::TestCase
       :p1 => ["http://example.com/patch10.diff","http://example.com/patch11.diff"],
       :p0 => ["http://example.com/patch00.diff","http://example.com/patch01.diff"]
     }
-    patches = Patches.new(expected)
-    assert_equal 4, patches.patches.length
+    f = formula_with_patches { expected }
+    assert_equal 4, f.patchlist.length
 
     # Make sure unique filenames were assigned
     filenames = Set.new
-    patches.each do |p|
+    f.patchlist.each do |p|
       filenames << p.patch_filename
     end
 
