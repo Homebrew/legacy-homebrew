@@ -15,6 +15,7 @@ require 'formulary'
 class Formula
   include FileUtils
   include Utils::Inreplace
+  include Patches
   extend BuildEnvironmentDSL
 
   attr_reader :name, :path, :homepage, :downloader
@@ -187,17 +188,6 @@ class Formula
   # any e.g. configure options for this package
   def options; [] end
 
-  # patches are automatically applied after extracting the tarball
-  # return an array of strings, or if you need a patch level other than -p1
-  # return a Hash eg.
-  #   {
-  #     :p0 => ['http://foo.com/patch1', 'http://foo.com/patch2'],
-  #     :p1 =>  'http://bar.com/patch2'
-  #   }
-  # The final option is to return DATA, then put a diff after __END__. You
-  # can still return a Hash with DATA as the value for a patch level key.
-  def patches; end
-
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
   def keg_only?
@@ -233,7 +223,7 @@ class Formula
 
     stage do
       begin
-        patch
+        apply_patches
         # we allow formulae to do anything they want to the Ruby process
         # so load any deps before this point! And exit asap afterwards
         yield self
@@ -595,26 +585,6 @@ class Formula
       @buildpath = Pathname.pwd
       yield
       @buildpath = nil
-    end
-  end
-
-  def patch
-    patch_list = Patches.new(patches)
-    return if patch_list.empty?
-
-    if patch_list.external_patches?
-      ohai "Downloading patches"
-      patch_list.download!
-    end
-
-    ohai "Patching"
-    patch_list.each do |p|
-      case p.compression
-        when :gzip  then safe_system "/usr/bin/gunzip",  p.compressed_filename
-        when :bzip2 then safe_system "/usr/bin/bunzip2", p.compressed_filename
-      end
-      # -f means don't prompt the user if there are errors; just exit with non-zero status
-      safe_system '/usr/bin/patch', '-f', *(p.patch_args)
     end
   end
 
