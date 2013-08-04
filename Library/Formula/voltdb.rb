@@ -16,7 +16,11 @@ class Voltdb < Formula
   def install
     system 'ant'
     bin.install Dir['bin/*']
-    lib.install Dir['lib/*']
+    Dir['lib/*'].each do |f|
+      (lib/'voltdb').install f
+    end
+    ln_s lib/'voltdb/python', lib/'python'
+    ln_s lib/'voltdb/extension', lib/'extension'
     tools.install Dir['tools/*']
     voltdb.install Dir['voltdb/*']
     doc.install Dir['doc/*']
@@ -25,6 +29,6 @@ class Voltdb < Formula
 
   test do
     f = File.read("#{prefix}/version.txt")
-    f == "3.4\n" ? true : false
+    f == '3.4\n' ? true : false
   end
 end
