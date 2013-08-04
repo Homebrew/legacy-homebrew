@@ -10,4 +10,9 @@ class BottleVersionParsingTests < Test::Unit::TestCase
     assert_version_detected '2013.1.610569-x86_64',
       '/usr/local/perforce-2013.1.610569-x86_64.mountain_lion.bottle.tar.gz'
   end
+
+  def test_ssh_copy_id_style
+    assert_version_detected '6.2p2',
+      '/usr/local/ssh-copy-id-6.2p2.mountain_lion.bottle.tar.gz'
+  end
 end

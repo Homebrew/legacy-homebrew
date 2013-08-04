@@ -7,6 +7,10 @@ class BottleVersion < Version
     m = /-([\d\.]+-x86(_64)?)/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. ssh-copy-id-6.2p2.bottle.tar.gz
+    m = /(\d\.(\d)+(p(\d)+)?)/.match(stem)
+    return m.captures.first unless m.nil?
+
     super
   end
 end
