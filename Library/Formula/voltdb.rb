@@ -7,15 +7,11 @@ end
 
 class Voltdb < Formula
   homepage 'https://github.com/VoltDB/voltdb'
-  head 'https://github.com/VoltDB/voltdb.git', :using => :git
+  head 'https://github.com/VoltDB/voltdb.git'
   url 'https://github.com/VoltDB/voltdb/archive/voltdb-3.4.tar.gz'
-  sha1 '9a45ee70b99ea32c0c919b786ba528677db3d28'
+  sha1 '9a45ee70b99ea32c0c919b786ba528677db3d284'
 
-  depends_on 'ant'
   depends_on :python
-  depends_on 'valgrind' => :optional
-
-  env :userpaths
 
   def install
     system 'ant'
@@ -28,6 +24,7 @@ class Voltdb < Formula
   end
 
   test do
-    system 'false'
+    f = File.read("#{prefix}/version.txt")
+    f == "3.4\n" ? true : false
   end
 end
