@@ -52,6 +52,7 @@ module Homebrew extend self
     %w{Homebrew science},
     %w{Homebrew completions},
     %w{Homebrew x11},
+    %w{Homebrew binary},
   ]
 
   def query_regexp(query)

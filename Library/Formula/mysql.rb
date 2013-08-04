@@ -2,15 +2,14 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.12.tar.gz/from/http://cdn.mysql.com/'
-  version '5.6.12'
-  sha1 'c48ae4061c23db89de7ebd2d25abbc36283bab69'
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.13.tar.gz/from/http://cdn.mysql.com/'
+  version '5.6.13'
+  sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
 
   bottle do
-    revision 1
-    sha1 '9d12112f31fad2af789363b2006c8e3f53518211' => :mountain_lion
-    sha1 'e986049a132e7a54b86c7b4fa2551c2dbc1667d7' => :lion
-    sha1 '47e7ee873ca5bfd8f84a3f53c8744517affc89d7' => :snow_leopard
+    sha1 '98152e8145a6b505706a6bdbc896c8443436c2fc' => :mountain_lion
+    sha1 '9883662840fdc7582911f2e703990a61a1e40161' => :lion
+    sha1 '82577b2851ac1040593e1b22ccf26cff6475b33b' => :snow_leopard
   end
 
   depends_on 'cmake' => :build
