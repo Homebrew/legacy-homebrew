@@ -94,10 +94,10 @@ class Build
 
   def expand_deps
     f.recursive_dependencies do |dependent, dep|
-      if dep.optional? || dep.recommended?
-        Dependency.prune unless dependent.build.with?(dep.name)
-      elsif dep.build?
-        Dependency.prune unless dependent == f
+      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
+        Dependency.prune
+      elsif dep.build? && dependent != f
+        Dependency.prune
       end
     end
   end
@@ -108,14 +108,14 @@ class Build
     pre_superenv_hacks
     require 'superenv'
 
-    deps.each do |dep|
+    deps.map(&:to_formula).each do |dep|
       opt = HOMEBREW_PREFIX/:opt/dep
-      fixopt(dep.to_formula) unless opt.directory? or ARGV.ignore_deps?
+      fixopt(dep) unless opt.directory? or ARGV.ignore_deps?
     end
 
     if superenv?
       ENV.keg_only_deps = keg_only_deps.map(&:to_s)
-      ENV.deps = deps.map(&:to_s)
+      ENV.deps = deps.map { |d| d.to_formula.to_s }
       ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
       ENV.setup_build_environment
       post_superenv_hacks
@@ -140,7 +140,7 @@ class Build
 
     if f.fails_with? ENV.compiler
       begin
-        ENV.send CompilerSelector.new(f, ENV.compiler).compiler
+        ENV.send CompilerSelector.new(f).compiler
       rescue CompilerSelectionError => e
         raise e.message
       end

@@ -9,10 +9,16 @@ class Aria2 < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gnutls'
+  depends_on 'sqlite'
   depends_on 'curl-ca-bundle' => :recommended
 
   # Leopard's libxml2 is too old.
-  depends_on 'libxml2' if MacOS.version == :leopard
+  depends_on 'libxml2' if MacOS.version <= :leopard
+
+  # Fixes compile error with clang 5; already upstream
+  def patches
+    "https://github.com/tatsuhiro-t/aria2/commit/6bcf33a69e1bfa9f7679b78f9f287d84798015aa.patch"
+  end
 
   def install
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
@@ -25,5 +31,7 @@ class Aria2 < Formula
 
     system "./configure", *args
     system "make install"
+
+    bash_completion.install "doc/bash_completion/aria2c"
   end
 end

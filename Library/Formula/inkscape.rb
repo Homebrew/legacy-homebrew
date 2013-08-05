@@ -19,14 +19,17 @@ class Inkscape < Formula
   depends_on 'cairomm'
   depends_on 'pango'
   depends_on :x11
+  depends_on 'poppler' => :optional
 
   fails_with :clang
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-lcms",
-                          "--disable-poppler-cairo"
+    args = [ "--disable-dependency-tracking",
+             "--prefix=#{prefix}",
+             "--enable-lcms" ]
+    args << "--disable-poppler-cairo" unless build.with? "poppler"
+    system "./configure", *args
+
     system "make install"
   end
 

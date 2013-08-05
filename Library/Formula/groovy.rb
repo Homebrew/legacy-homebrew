@@ -2,8 +2,8 @@ require 'formula'
 
 class Groovy < Formula
   homepage 'http://groovy.codehaus.org/'
-  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-2.1.4.zip'
-  sha1 '3e1dbf3469c6485448d555f7cba9ab4e7445760b'
+  url 'http://dist.groovy.codehaus.org/distributions/groovy-binary-2.1.6.zip'
+  sha1 '9f565e7362bd28ffe7c6616356a6a9fb5b42a3b2'
 
   option 'invokedynamic', "Install the InvokeDynamic version of Groovy (only works with Java 1.7+)"
 
@@ -21,7 +21,7 @@ class Groovy < Formula
 
     prefix.install_metafiles
     libexec.install %w(bin conf lib embeddable)
-    bin.install_symlink Dir["#{libexec}/bin/*"] - Dir["#{libexec}/bin/*.icns"]
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   def caveats

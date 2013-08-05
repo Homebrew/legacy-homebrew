@@ -1,9 +1,12 @@
 require 'formula'
 
+# Upstream project has requested we use a mirror as the main URL
+# https://github.com/mxcl/homebrew/pull/21419
 class Xz < Formula
   homepage 'http://tukaani.org/xz/'
-  url 'http://tukaani.org/xz/xz-5.0.4.tar.bz2'
-  sha256 '5cd9b060d3a1ad396b3be52c9b9311046a1c369e6062aea752658c435629ce92'
+  url 'http://fossies.org/linux/misc/xz-5.0.5.tar.gz'
+  mirror 'http://tukaani.org/xz/xz-5.0.5.tar.gz'
+  sha256 '5dcffe6a3726d23d1711a65288de2e215b4960da5092248ce63c99d50093b93a'
 
   option :universal
 

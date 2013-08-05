@@ -2,25 +2,30 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.4.1.tar.gz'
-  sha1 '9c72838973572323535dae10f4e412d671b27a7e'
+  url 'http://nginx.org/download/nginx-1.4.2.tar.gz'
+  sha1 '8f006dc773840b6624a137a584ff8850d5155e3f'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.5.1.tar.gz'
-    sha1 'bd5a5e7dba39a4aa166918112367589f165ce5bc'
+    url 'http://nginx.org/download/nginx-1.5.3.tar.gz'
+    sha1 '88f4548e46c25d32f08681c0aba39b86b84ec3a3'
   end
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
 
   env :userpaths
 
-  depends_on 'pcre'
-
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
   option 'with-webdav', 'Compile with support for WebDAV module'
   option 'with-debug', 'Compile with support for debug log'
   option 'with-spdy', 'Compile with support for SPDY module'
   option 'with-gunzip', 'Compile with support for gunzip module'
+
+  depends_on 'pcre'
+  depends_on 'passenger' => :optional
+  # SPDY needs openssl >= 1.0.1 for NPN; see:
+  # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
+  # http://www.openssl.org/news/changelog.html
+  depends_on 'openssl' if build.with? 'spdy'
 
   skip_clean 'logs'
 
@@ -43,13 +48,22 @@ class Nginx < Formula
   end
 
   def install
+    cc_opt = "-I#{HOMEBREW_PREFIX}/include"
+    ld_opt = "-L#{HOMEBREW_PREFIX}/lib"
+
+    if build.with? 'spdy'
+      openssl_path = Formula.factory("openssl").opt_prefix
+      cc_opt += " -I#{openssl_path}/include"
+      ld_opt += " -L#{openssl_path}/lib"
+    end
+
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
             "--with-pcre",
             "--with-ipv6",
             "--sbin-path=#{bin}/nginx",
-            "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
-            "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib",
+            "--with-cc-opt=#{cc_opt}",
+            "--with-ld-opt=#{ld_opt}",
             "--conf-path=#{etc}/nginx/nginx.conf",
             "--pid-path=#{var}/run/nginx.pid",
             "--lock-path=#{var}/run/nginx.lock",
@@ -58,7 +72,8 @@ class Nginx < Formula
             "--http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp",
             "--http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp",
             "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp",
-            "--http-log-path=#{var}/log/nginx",
+            "--http-log-path=#{var}/log/nginx/access.log",
+            "--error-log-path=#{var}/log/nginx/error.log",
             "--with-http_gzip_static_module"
           ]
 
@@ -105,7 +120,16 @@ class Nginx < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
+  def passenger_caveats; <<-EOS.undent
+
+    To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf:
+      passenger_root #{HOMEBREW_PREFIX}/opt/passenger
+      passenger_ruby /usr/bin/ruby
+    EOS
+  end
+
+  def caveats
+    s = <<-EOS.undent
     Docroot is: #{HOMEBREW_PREFIX}/var/www
 
     The default port has been set to 8080 so that nginx can run without sudo.
@@ -115,6 +139,8 @@ class Nginx < Formula
 
     You will then need to run nginx as root: `sudo nginx`.
     EOS
+    s << passenger_caveats if build.include? 'with-passenger'
+    s
   end
 
   def plist; <<-EOS.undent

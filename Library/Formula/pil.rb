@@ -2,7 +2,7 @@ require 'formula'
 
 class Pil < Formula
   homepage 'http://www.pythonware.com/products/pil/'
-  url 'http://effbot.org/downloads/Imaging-1.1.7.tar.gz'
+  url 'http://effbot.org/media/downloads/Imaging-1.1.7.tar.gz'
   sha1 '76c37504251171fda8da8e63ecb8bc42a69a5c81'
 
   depends_on :freetype
@@ -16,6 +16,10 @@ class Pil < Formula
     DATA
   end
 
+  def freetype_prefix
+    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/freetype" : MacOS::X11.prefix
+  end
+
   def install
     # Find the arch for the Python we are building against.
     # We remove 'ppc' support, so we can pass Intel-optimized CFLAGS.
@@ -25,9 +29,6 @@ class Pil < Formula
     # https://github.com/mxcl/homebrew/issues/5844
     archs.delete :x86_64 if Hardware.is_32_bit?
     ENV['ARCHFLAGS'] = archs.as_arch_flags
-
-    freetype = Formula.factory('freetype')
-    freetype_prefix = Formula.factory('freetype').installed? ? freetype.prefix : MacOS::X11.prefix
 
     inreplace "setup.py" do |s|
       # Tell setup where Freetype2 is on 10.5/10.6

@@ -18,7 +18,7 @@ require 'set'
 class DependencyCollector
   # Define the languages that we can handle as external dependencies.
   LANGUAGE_MODULES = Set[
-    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :python2, :python3, :rbx, :ruby
+    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
   ].freeze
 
   attr_reader :deps, :requirements
@@ -60,7 +60,7 @@ class DependencyCollector
     when Class
       parse_class_spec(spec, tags)
     else
-      raise TypeError, "Unsupported type #{spec.class} for #{spec}"
+      raise TypeError, "Unsupported type #{spec.class} for #{spec.inspect}"
     end
   end
 
@@ -68,6 +68,9 @@ class DependencyCollector
     if tags.empty?
       Dependency.new(spec, tags)
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
+      # Next line only for legacy support of `depends_on 'module' => :python`
+      # It should be replaced by `depends_on :python => 'module'`
+      return PythonInstalled.new("2", spec) if tag == :python
       LanguageModuleDependency.new(tag, spec)
     else
       Dependency.new(spec, tags)
@@ -87,19 +90,21 @@ class DependencyCollector
       # so just return a standard formula dependency.
       Dependency.new(spec.to_s, tags)
     when :xcode      then XcodeDependency.new(tags)
+    when :macos      then MinimumMacOSRequirement.new(tags)
     when :mysql      then MysqlDependency.new(tags)
     when :postgresql then PostgresqlDependency.new(tags)
+    when :fortran    then FortranDependency.new(tags)
+    when :mpi        then MPIDependency.new(*tags)
     when :tex        then TeXDependency.new(tags)
     when :clt        then CLTDependency.new(tags)
     when :arch       then ArchRequirement.new(tags)
     when :hg         then MercurialDependency.new(tags)
-    when :python     then PythonInstalled.new(tags)
-    when :python2    then PythonInstalled.new("2", tags)
+    when :python, :python2 then PythonInstalled.new("2", tags)
     when :python3    then PythonInstalled.new("3", tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     else
-      raise "Unsupported special dependency #{spec}"
+      raise "Unsupported special dependency #{spec.inspect}"
     end
   end
 
@@ -107,7 +112,7 @@ class DependencyCollector
     if spec < Requirement
       spec.new(tags)
     else
-      raise TypeError, "#{spec} is not a Requirement subclass"
+      raise TypeError, "#{spec.inspect} is not a Requirement subclass"
     end
   end
 

@@ -15,8 +15,8 @@ class Weechat < Formula
   depends_on 'lua' => :optional
   depends_on :python => :optional
 
-  option 'perl', 'Build the perl module'
-  option 'ruby', 'Build the ruby module'
+  option 'with-perl', 'Build the perl module'
+  option 'with-ruby', 'Build the ruby module'
 
   # cmake finds brewed python when installed, but when searching for the
   # libraries it searches for system libraries first. This patch disables
@@ -66,7 +66,7 @@ class Weechat < Formula
   end
 
   def caveats; <<-EOS.undent
-      Weechat can depend on Aspell if you choose the --aspell option, but
+      Weechat can depend on Aspell if you choose the --with-aspell option, but
       Aspell should be installed manually before installing Weechat so that
       you can choose the dictionaries you want.  If Aspell was installed
       automatically as part of weechat, there won't be any dictionaries.

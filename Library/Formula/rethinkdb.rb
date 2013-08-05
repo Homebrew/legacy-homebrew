@@ -2,14 +2,19 @@ require 'formula'
 
 class Rethinkdb < Formula
   homepage 'http://www.rethinkdb.com/'
-  url 'http://download.rethinkdb.com/dist/rethinkdb-1.5.2.tgz'
-  sha1 'de229816f17665c12f7c116fcbbc7a7a893b3a08'
+  url 'http://download.rethinkdb.com/dist/rethinkdb-1.7.3.tgz'
+  sha1 '81bfcb7fc88ef61d83f84bab5c25d1a92d8687c5'
 
+  depends_on :macos => :lion
   depends_on 'boost' => :build
-  depends_on 'v8'
+
+  fails_with :gcc do
+    build 5666 # GCC 4.2.1
+    cause 'RethinkDB uses C++0x'
+  end
 
   def install
-    system "./configure --prefix=#{prefix} --fetch protobuf"
+    system "./configure", "--prefix=#{prefix}", "--fetch", "protobuf", "--fetch", "v8"
     system "make"
     system "make install-osx"
   end
@@ -26,10 +31,6 @@ class Rethinkdb < Formula
           <string>#{opt_prefix}/bin/rethinkdb</string>
           <string>-d</string>
           <string>#{var}/rethinkdb</string>
-          <string>--bind</string>
-          <string>all</string>
-          <string>--http-port</string>
-          <string>8080</string>
       </array>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>

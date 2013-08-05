@@ -18,12 +18,13 @@ class GpgAgent < Formula
 
   def install
     # so we don't use Clang's internal stdint.h
-    ENV['gl_cv_absolute_stdint_h'] = '/usr/include/stdint.h'
+    ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-agent-only",
-                          "--with-pinentry-pgm=#{HOMEBREW_PREFIX}/bin/pinentry"
+                          "--with-pinentry-pgm=#{Formula.factory('pinentry').opt_prefix}/bin/pinentry",
+                          "--with-scdaemon-pgm=#{Formula.factory('gnupg2').opt_prefix}/libexec/scdaemon"
     system "make install"
   end
 end

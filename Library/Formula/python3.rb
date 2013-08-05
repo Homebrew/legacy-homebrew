@@ -5,14 +5,14 @@ require 'formula'
 # "python" will always point to the 2.x version which you can get by
 # `brew install python`.
 
-class Distribute < Formula
-  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.45.tar.gz'
-  sha1 '55b15037f2222828496a96f38447c0fa0228df85'
+class Setuptools < Formula
+  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.7.tar.gz'
+  sha1 'c56c5cc55b678c25a0a06f25a122f6492d62e2d3'
 end
 
 class Pip < Formula
-  url 'https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz'
-  sha1 '9c70d314e5dea6f41415af814056b0f63c3ffd14'
+  url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.tar.gz'
+  sha1 '3149dc77c66b77d02497205fca5df56ae9d3e753'
 end
 
 class Python3 < Formula
@@ -33,6 +33,7 @@ class Python3 < Formula
   depends_on 'sqlite' => :recommended
   depends_on 'gdbm' => :recommended
   depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'xz' => :recommended  # for the lzma module added in 3.3
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
 
   def patches
@@ -62,7 +63,7 @@ class Python3 < Formula
   end
 
   def install
-    # Unset these so that installing pip and distribute puts them where we want
+    # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
     ENV['PYTHONHOME'] = nil
 
@@ -133,14 +134,22 @@ class Python3 < Formula
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
 
-    # We ship distribute and pip and reuse the PythonInstalled
+    # We ship setuptools and pip and reuse the PythonInstalled
     # Requirement here to write the sitecustomize.py
     py = PythonInstalled.new(VER)
+
+    # Remove old setuptools installations that may still fly around and be
+    # listed in the easy_install.pth. This can break setuptools build with
+    # zipimport.ZipImportError: bad local file header
+    # setuptools-0.9.5-py3.3.egg
+    rm_rf Dir["#{py.global_site_packages}/setuptools*"]
+    rm_rf Dir["#{py.global_site_packages}/distribute*"]
+
     py.binary = bin/"python#{VER}"
     py.modify_build_environment
     setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Distribute.new.brew { system "#{bin}/python#{VER}", *setup_args }
+    Setuptools.new.brew { system "#{bin}/python#{VER}", *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
     Pip.new.brew { system "#{bin}/python#{VER}", *setup_args }
     mv bin/'pip', bin/'pip3'
@@ -167,7 +176,7 @@ class Python3 < Formula
     cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
     ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
     unless MacOS::CLT.installed?
-      # Help Python's build system (distribute/pip) to build things on Xcode-only systems
+      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
       cflags += " -isysroot #{MacOS.sdk_path}"
       ldflags += " -isysroot #{MacOS.sdk_path}"
@@ -214,8 +223,8 @@ class Python3 < Formula
 
   def caveats
     text = <<-EOS.undent
-      Distribute and Pip have been installed. To update them
-        pip3 install --upgrade distribute
+      Setuptools and Pip have been installed. To update them
+        pip3 install --upgrade setuptools
         pip3 install --upgrade pip
 
       To symlink "Idle 3" and the "Python Launcher 3" to ~/Applications

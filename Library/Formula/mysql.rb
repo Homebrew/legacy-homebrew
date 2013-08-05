@@ -2,14 +2,14 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.10.tar.gz/from/http://cdn.mysql.com/'
-  version '5.6.10'
-  sha1 'f37979eafc241a0ebeac9548cb3f4113074271b7'
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.13.tar.gz/from/http://cdn.mysql.com/'
+  version '5.6.13'
+  sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
 
   bottle do
-    sha1 'e07b9a207364b6e020fc96f49116b58d33d0eb78' => :mountain_lion
-    sha1 'b9b38e2ed705a3fcd79bb549f32e49b455f31917' => :lion
-    sha1 '30978684ee72c4dfb0b20263331b0c93972b3092' => :snow_leopard
+    sha1 '98152e8145a6b505706a6bdbc896c8443436c2fc' => :mountain_lion
+    sha1 '9883662840fdc7582911f2e703990a61a1e40161' => :lion
+    sha1 '82577b2851ac1040593e1b22ccf26cff6475b33b' => :snow_leopard
   end
 
   depends_on 'cmake' => :build
@@ -98,6 +98,9 @@ class Mysql < Formula
 
     system "cmake", *args
     system "make"
+    # Reported upstream:
+    # http://bugs.mysql.com/bug.php?id=69645
+    inreplace "scripts/mysql_config", / +-Wno[\w-]+/, ""
     system "make install"
 
     # Don't create databases inside of the prefix!

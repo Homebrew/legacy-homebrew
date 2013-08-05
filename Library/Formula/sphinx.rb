@@ -15,6 +15,11 @@ class Sphinx < Formula
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
+  devel do
+    url 'http://sphinxsearch.com/files/sphinx-2.1.1-beta.tar.gz'
+    sha1 '2ccbf75146f54338834a6e37250f1af3c73b9746'
+  end
+
   option 'mysql', 'Force compiling against MySQL'
   option 'pgsql', 'Force compiling against PostgreSQL'
   option 'id64',  'Force compiling with 64-bit ID support'
@@ -29,9 +34,7 @@ class Sphinx < Formula
 
   fails_with :clang do
     build 421
-    cause <<-EOS.undent
-      sphinxexpr.cpp:1802:11: error: use of undeclared identifier 'ExprEval'
-    EOS
+    cause "sphinxexpr.cpp:1802:11: error: use of undeclared identifier 'ExprEval'"
   end
 
   def install

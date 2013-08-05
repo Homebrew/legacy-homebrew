@@ -2,7 +2,7 @@ require 'formula'
 
 class Tmux < Formula
   homepage 'http://tmux.sourceforge.net'
-  url 'http://sourceforge.net/projects/tmux/files/tmux/tmux-1.8/tmux-1.8.tar.gz'
+  url 'http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.8/tmux-1.8.tar.gz'
   sha1 '08677ea914e1973ce605b0008919717184cbd033'
 
   head 'git://tmux.git.sourceforge.net/gitroot/tmux/tmux'
@@ -21,7 +21,7 @@ class Tmux < Formula
     # http://sourceforge.net/p/tmux/tickets/41/
     # Fixes abnormal displaying Korean letters on Mac OS X
     # https://gist.github.com/niceview/5343842
-    # Accepted upstream, can be removedin next version.
+    # Accepted upstream, can be removed in next version.
     DATA
   end
 
@@ -35,6 +35,13 @@ class Tmux < Formula
     system "make install"
 
     bash_completion.install "examples/bash_completion_tmux.sh" => 'tmux'
+    (share/'tmux').install "examples"
+  end
+
+  def caveats; <<-EOS.undent
+    Exmample configurations have been installed to:
+      #{share}/tmux/examples
+    EOS
   end
 
   def test

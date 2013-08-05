@@ -2,8 +2,8 @@ require 'formula'
 
 class Redis < Formula
   homepage 'http://redis.io/'
-  url 'http://redis.googlecode.com/files/redis-2.6.13.tar.gz'
-  sha1 '2ef8ea6a67465b6c5a5ea49241313d3dbc0de11b'
+  url 'http://redis.googlecode.com/files/redis-2.6.14.tar.gz'
+  sha1 'f56a5d4891e94ebd89f7e63c3e9151d1106dedd5'
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
@@ -20,7 +20,7 @@ class Redis < Formula
     src = (buildpath/'src/Makefile').exist? ? buildpath/'src' : buildpath
     system "make", "-C", src, "CC=#{ENV.cc}"
 
-    %w[benchmark cli server check-dump check-aof].each { |p| bin.install src/"redis-#{p}" }
+    %w[benchmark cli server check-dump check-aof sentinel].each { |p| bin.install src/"redis-#{p}" }
     %w[run db/redis log].each { |p| (var+p).mkpath }
 
     # Fix up default conf file to match our paths
@@ -37,6 +37,7 @@ class Redis < Formula
     end
 
     etc.install 'redis.conf' unless (etc/'redis.conf').exist?
+    etc.install 'sentinel.conf' => 'redis-sentinel.conf' unless (etc/'redis-sentinel.conf').exist?
   end
 
   plist_options :manual => "redis-server #{HOMEBREW_PREFIX}/etc/redis.conf"

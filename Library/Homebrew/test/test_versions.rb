@@ -46,6 +46,12 @@ class VersionComparisonTests < Test::Unit::TestCase
   def test_compare_patchlevel_to_non_patchlevel
     assert_operator version('9.9.3-P1'), :>, version('9.9.3')
   end
+
+  def test_erlang_version
+    versions = %w{R16B R15B03-1 R15B03 R15B02 R15B01 R14B04 R14B03
+                  R14B02 R14B01 R14B R13B04 R13B03 R13B02-1}.reverse
+    assert_equal versions, versions.sort_by { |v| version(v) }
+  end
 end
 
 class VersionParsingTests < Test::Unit::TestCase
@@ -274,7 +280,7 @@ class VersionParsingTests < Test::Unit::TestCase
   end
 
   def test_suite3270_version
-    assert_version_detected '3.3.12ga7', 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz'
+    assert_version_detected '3.3.12ga7', 'http://downloads.sourceforge.net/project/x3270/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz'
   end
 
   def test_wwwoffle_version
@@ -291,5 +297,10 @@ class VersionParsingTests < Test::Unit::TestCase
 
   def test_ezlupdate_version
     assert_version_detected '2011.10', 'https://github.com/downloads/ezsystems/ezpublish-legacy/ezpublish_community_project-2011.10-with_ezc.tar.bz2'
+  end
+
+  def test_aespipe_version_style
+    assert_version_detected '2.4c',
+      'http://loop-aes.sourceforge.net/aespipe/aespipe-v2.4c.tar.bz2'
   end
 end

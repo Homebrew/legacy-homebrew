@@ -25,6 +25,7 @@ rescue # blanket rescue because there are naked raises
   false
 end
 
+# Note that this block is guarded with `if superenv?`
 class << ENV
   attr_accessor :keg_only_deps, :deps, :x11
   alias_method :x11?, :x11
@@ -63,9 +64,25 @@ class << ENV
     ENV['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     ENV['ACLOCAL_PATH'] = determine_aclocal_path
 
+    # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
+    # compiler flag stripping. It consists of a string of characters which act
+    # as flags. Some of these flags are mutually exclusive.
+    #
+    # u - A universal build was requested
+    # 3 - A 32-bit build was requested
+    # b - Installing from a bottle
+    # i - Installing from a bottle on Intel
+    # 6 - Installing from a bottle on 64-bit Intel
+    # O - Enables argument refurbishing. Only active under the
+    #     make/bsdmake wrappers currently.
+    #
+    # On 10.8 and newer, these flags will also be present:
+    # s - apply fix for sed's Unicode support
+    # a - apply fix for apr-1-config path
+
     # Homebrew's apple-gcc42 will be outside the PATH in superenv,
     # so xcrun may not be able to find it
-    if ENV['HOMEBREW_CC'] == 'gcc-4.2' && !MacOS.locate('gcc-4.2')
+    if ENV['HOMEBREW_CC'] == 'gcc-4.2'
       apple_gcc42 = Formula.factory('apple-gcc42') rescue nil
       ENV.append('PATH', apple_gcc42.opt_prefix/'bin', ':') if apple_gcc42
     end
@@ -75,7 +92,7 @@ class << ENV
     append 'HOMEBREW_CCCFG', "u", ''
   end
 
-  # m32 on superenv does not add any flags. It prevents "-m32" from being erased.
+  # m32 on superenv does not add any CC flags. It prevents "-m32" from being erased.
   def m32
     append 'HOMEBREW_CCCFG', "3", ''
   end
@@ -196,7 +213,7 @@ class << ENV
 
   def determine_make_jobs
     if (j = ENV['HOMEBREW_MAKE_JOBS'].to_i) < 1
-      Hardware.processor_count
+      Hardware::CPU.cores
     else
       j
     end
@@ -217,8 +234,8 @@ class << ENV
     end
     # Fix issue with sed barfing on unicode characters on Mountain Lion
     s << 's' if MacOS.version >= :mountain_lion
-    # Fix issue with 10.8 apr-1-config having broken paths
-    s << 'a' if MacOS.version == :mountain_lion
+    # Fix issue with >= 10.8 apr-1-config having broken paths
+    s << 'a' if MacOS.version >= :mountain_lion
     s
   end
 
@@ -254,11 +271,11 @@ class << ENV
   alias_method :j1, :deparallelize
   def gcc
     ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "gcc"
-    ENV['CXX'] = ENV['OBJCXX'] = "g++"
+    ENV['CXX'] = ENV['OBJCXX'] = "g++-4.2"
   end
   def llvm
     ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "llvm-gcc"
-    ENV['CXX'] = ENV['OBJCXX'] = "g++"
+    ENV['CXX'] = ENV['OBJCXX'] = "llvm-g++-4.2"
   end
   def clang
     ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "clang"

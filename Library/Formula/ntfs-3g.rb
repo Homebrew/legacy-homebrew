@@ -68,15 +68,6 @@ class Ntfs3g < Formula
 
   def caveats
     <<-EOS.undent
-    To replace the default Mac OSX automounter:
-        sudo mv /sbin/mount_ntfs /sbin/mount_ntfs.orig
-        sudo ln -s #{opt_prefix}/sbin/mount_ntfs /sbin/mount_ntfs
-
-    The automount will set the permissions for the current logged in user,
-    otherwise it will set them for the user that installed ntfs-3g.
-    The automount support script is based on the information provided at
-    http://fernandofig.wordpress.com/2011/08/08/ntfs-write-support-on-osx-lion-with-ntfs-3g-f/
-
     Remember to install the fuse4x kernel extension as the root user.
     Instructions are found here:
         brew info fuse4x-kext

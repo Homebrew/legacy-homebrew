@@ -2,8 +2,8 @@ require 'formula'
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.36/glib-2.36.2.tar.xz'
-  sha256 '5ea98451fb57d0ba523a1e836545f0a919b498863056fdd9da69d148c1347f80'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.36/glib-2.36.3.tar.xz'
+  sha256 '5ec433bf6ce02e4c436619c3d0b9cecdd1898469398a636bad27c1f5804c761e'
 
   option :universal
   option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'

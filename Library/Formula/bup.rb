@@ -19,7 +19,6 @@ class Bup < Formula
 
   def install
     python do
-      ohai ENV['PATH']
       system "./configure", "--prefix=#{prefix}"
       system "make"
     end

@@ -3,7 +3,6 @@ require 'formula'
 class GitNow < Formula
   homepage 'https://github.com/iwata/git-now'
   url 'https://github.com/iwata/git-now.git', :tag => 'v0.1.0.9'
-  version '0.1.0.9'
 
   head 'https://github.com/iwata/git-now.git', :branch => 'develop'
 
@@ -14,7 +13,8 @@ class GitNow < Formula
   end
 
   def install
-    system "make", "prefix=#{prefix}", "install"
+    system "make", "prefix=#{libexec}", "install"
+    bin.write_exec_script libexec/'bin/git-now'
     zsh_completion.install 'etc/_git-now'
   end
 end

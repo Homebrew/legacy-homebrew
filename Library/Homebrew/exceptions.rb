@@ -173,6 +173,12 @@ class BuildError < Homebrew::InstallationError
     else
       require 'cmd/--config'
       require 'cmd/--env'
+
+      unless formula.core_formula?
+        ohai "Formula"
+        puts "Tap: #{formula.tap}"
+        puts "Path: #{formula.path.realpath}"
+      end
       ohai "Configuration"
       Homebrew.dump_build_config
       ohai "ENV"

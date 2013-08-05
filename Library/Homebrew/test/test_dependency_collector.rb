@@ -102,22 +102,22 @@ class DependencyCollectorTests < Test::Unit::TestCase
   end
 
   def test_x11_proxy_dep_mountain_lion
-    MacOS.stubs(:version).returns(MacOS::Version.new(10.8))
+    MacOS.stubs(:version).returns(MacOS::Version.new("10.8"))
     assert_equal Dependency.new("libpng"), @d.build(:libpng)
   end
 
   def test_x11_proxy_dep_lion_or_older
-    MacOS.stubs(:version).returns(MacOS::Version.new(10.7))
+    MacOS.stubs(:version).returns(MacOS::Version.new("10.7"))
     assert_equal X11Dependency::Proxy.new(:libpng), @d.build(:libpng)
   end
 
   def test_ld64_dep_pre_leopard
-    MacOS.stubs(:version).returns(MacOS::Version.new(10.4))
+    MacOS.stubs(:version).returns(MacOS::Version.new("10.4"))
     assert_equal LD64Dependency.new, @d.build(:ld64)
   end
 
   def test_ld64_dep_leopard_or_newer
-    MacOS.stubs(:version).returns(MacOS::Version.new(10.5))
+    MacOS.stubs(:version).returns(MacOS::Version.new("10.5"))
     assert_nil @d.build(:ld64)
   end
 

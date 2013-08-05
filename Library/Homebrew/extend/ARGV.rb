@@ -67,14 +67,19 @@ module HomebrewArgvExtension
     at @n+1 or raise UsageError
   end
 
+  def value arg
+    arg = find {|o| o =~ /--#{arg}=(.+)/}
+    $1 if arg
+  end
+
   def force?
     flag? '--force'
   end
   def verbose?
-    flag? '--verbose' or ENV['VERBOSE'] or ENV['HOMEBREW_VERBOSE']
+    flag? '--verbose' or !ENV['VERBOSE'].nil? or !ENV['HOMEBREW_VERBOSE'].nil?
   end
   def debug?
-    flag? '--debug' or ENV['HOMEBREW_DEBUG']
+    flag? '--debug' or !ENV['HOMEBREW_DEBUG'].nil?
   end
   def quieter?
     flag? '--quieter'
@@ -90,7 +95,7 @@ module HomebrewArgvExtension
   end
 
   def homebrew_developer?
-    include? '--homebrew-developer' or ENV['HOMEBREW_DEVELOPER']
+    include? '--homebrew-developer' or !ENV['HOMEBREW_DEVELOPER'].nil?
   end
 
   def ignore_deps?
@@ -98,8 +103,7 @@ module HomebrewArgvExtension
   end
 
   def json
-    json_rev = find {|o| o =~ /--json=.+/}
-    json_rev.split("=").last if json_rev
+    value 'json'
   end
 
   def build_head?
@@ -126,11 +130,11 @@ module HomebrewArgvExtension
   end
 
   def build_bottle?
-    include? '--build-bottle' or ENV['HOMEBREW_BUILD_BOTTLE']
+    include? '--build-bottle' or !ENV['HOMEBREW_BUILD_BOTTLE'].nil?
   end
 
   def build_from_source?
-    include? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
+    include? '--build-from-source' or !ENV['HOMEBREW_BUILD_FROM_SOURCE'].nil? \
       or build_head? or build_devel? or build_universal? or build_bottle?
   end
 
@@ -159,6 +163,7 @@ module HomebrewArgvExtension
     old_args = clone
 
     flags_to_clear = %w[
+      --build-bottle
       --debug -d
       --devel
       --fresh
