@@ -70,6 +70,7 @@ class Vim < Formula
                           "--with-tlib=ncurses",
                           "--enable-cscope",
                           "--with-features=huge",
+                          "--with-compiledby=Homebrew",
                           *opts
     system "make"
     # If stripping the binaries is not enabled, vim will segfault with
