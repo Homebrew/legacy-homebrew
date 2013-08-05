@@ -11,7 +11,6 @@ class Gd < Formula
 
   depends_on :libpng => :recommended
   depends_on 'jpeg' => :recommended
-  depends_on 'giflib' => :optional
   depends_on :freetype => :optional
 
   fails_with :llvm do
