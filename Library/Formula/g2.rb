@@ -12,8 +12,12 @@ class G2 < Formula
   end
 
   def caveats; <<-EOS.undent
-     For Bash, put something like this in your $HOME/.bashrc:
-       . #{prefix}/g2-install.sh
-     EOS
+    To complete the installation:
+      . #{prefix}/g2-install.sh
+
+    NOTE: This will install a new ~/.gitconfig, backing up any existing
+    file first. For more information view:
+      #{prefix}/README.md
+    EOS
   end
 end
