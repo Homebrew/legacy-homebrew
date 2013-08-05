@@ -2,7 +2,7 @@ require 'formula'
 
 class Torrentcheck < Formula
   homepage 'http://torrentcheck.sourceforge.net/'
-  url 'http://sourceforge.net/projects/torrentcheck/files/torrentcheck-1.00.zip'
+  url 'http://downloads.sourceforge.net/project/torrentcheck/torrentcheck-1.00.zip'
   sha256 'a839f9ac9669d942f83af33db96ce9902d84f85592c99b568ef0f5232ff318c5'
 
   def install
