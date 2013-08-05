@@ -16,6 +16,14 @@ class CompilerRt < Formula
   head      'http://llvm.org/git/compiler-rt.git'
 end
 
+class LibCpp < Formula
+  homepage 'http://llvm.org/'
+  url       'http://llvm.org/releases/3.3/libcxx-3.3.src.tar.gz'
+  sha1      '7bea00bc1031bf3bf6c248e57c1f4e0874c18c04'
+
+  head      'http://llvm.org/git/libcxx.git'
+end
+
 class Llvm < Formula
   homepage  'http://llvm.org/'
   url       'http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz'
@@ -31,6 +39,7 @@ class Llvm < Formula
 
   option :universal
   option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
+  option 'with-libcxx', 'Build with libc++ support'
   option 'with-asan', 'Include support for -faddress-sanitizer (from compiler-rt)'
   option 'disable-shared', "Don't build LLVM as a shared library"
   option 'all-targets', 'Build all target backends'
@@ -53,6 +62,10 @@ class Llvm < Formula
     CompilerRt.new("compiler-rt").brew do
       (buildpath/'projects/compiler-rt').install Dir['*']
     end if build.include? 'with-asan'
+
+    LibCpp.new("libcxx").brew do
+      (buildpath/'projects/libcxx').install Dir['*']
+    end if build.include? 'with-libcxx'
 
     if build.universal?
       ENV['UNIVERSAL'] = '1'
@@ -77,6 +90,8 @@ class Llvm < Formula
     args << "--enable-shared" unless build.include? 'disable-shared'
 
     args << "--disable-assertions" if build.include? 'disable-assertions'
+
+    args << "--enable-libcpp" if build.include? 'with-libcxx'
 
     system "./configure", *args
     system "make install"
