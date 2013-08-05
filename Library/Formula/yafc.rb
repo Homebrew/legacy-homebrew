@@ -5,6 +5,7 @@ class Yafc < Formula
   url 'http://www.yafc-ftp.com/upload/yafc-1.2.5.tar.xz'
   sha1 'b8156689f92a5d9b684180394f1763500a25c1a5'
 
+  depends_on 'xz'
   depends_on 'readline'  # we get a compilation error with system readline
 
   def install
