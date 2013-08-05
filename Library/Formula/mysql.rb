@@ -54,6 +54,7 @@ class Mysql < Formula
     args = [".",
             "-DCMAKE_INSTALL_PREFIX=#{prefix}",
             "-DMYSQL_DATADIR=#{var}/mysql",
+            "-DINSTALL_INCLUDEDIR=include/mysql",
             "-DINSTALL_MANDIR=#{man}",
             "-DINSTALL_DOCDIR=#{doc}",
             "-DINSTALL_INFODIR=#{info}",
