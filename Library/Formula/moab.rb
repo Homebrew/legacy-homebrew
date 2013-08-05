@@ -2,8 +2,8 @@ require 'formula'
 
 class Moab < Formula
   homepage 'https://trac.mcs.anl.gov/projects/ITAPS/wiki/MOAB'
-  url 'https://bitbucket.org/fathomteam/moab/get/4.6.0.tar.gz'
-  sha1 '0224188f423ee0fde92af86b8ececa86850bad02'
+  url 'https://bitbucket.org/fathomteam/moab/get/4.6.1.tar.gz'
+  sha1 '6fad0bc6ff6c8c067edbfb56b5e7068c92a8e7cd'
 
   depends_on :automake
   depends_on :libtool
