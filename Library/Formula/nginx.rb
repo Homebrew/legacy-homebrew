@@ -19,6 +19,9 @@ class Nginx < Formula
   option 'with-debug', 'Compile with support for debug log'
   option 'with-spdy', 'Compile with support for SPDY module'
   option 'with-gunzip', 'Compile with support for gunzip module'
+  option 'with-status', 'Compile with support for stub status module'
+  option 'with-mp4', 'Compile with support for mp4 module'
+  option 'with-realip', 'Compile with support for real IP module'
 
   depends_on 'pcre'
   depends_on 'passenger' => :optional
@@ -82,6 +85,9 @@ class Nginx < Formula
     args << "--with-debug" if build.include? 'with-debug'
     args << "--with-http_spdy_module" if build.include? 'with-spdy'
     args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
+    args << "--with-http_stub_status_module" if build.include? 'with-status'
+    args << "--with-http_mp4_module" if build.include? 'with-mp4'
+    args << "--with-http_realip_module" if build.include? 'with-realip'
 
     if build.head?
       system "./auto/configure", *args
