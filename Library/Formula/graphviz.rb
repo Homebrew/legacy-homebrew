@@ -2,12 +2,12 @@ require 'formula'
 
 class Graphviz < Formula
   homepage 'http://graphviz.org/'
-  url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.30.1.tar.gz'
-  sha1 '96739220c4bbcf1bd3bd52e7111f4e60497185c6'
+  url 'http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.32.0.tar.gz'
+  sha1 'a64f4a409012d13d18338ecb8bd7253083ebc35e'
 
   devel do
-    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.31.20130608.0446.tar.gz'
-    sha1 '390635729e799fbcc1d8025450b2bf4ad9627b13'
+    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.33.20130804.0447.tar.gz'
+    sha1 'f76db7f31dc3dd76bc6ba946c0dd90376dfb6cfa'
   end
 
   # To find Ruby and Co.
