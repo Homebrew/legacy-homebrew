@@ -38,6 +38,15 @@ module Patches
     end
   end
 
+  # Note that the DSL consists of class methods, and thus the patchlist is
+  # created as a variable on the class object. On the other hand, the old
+  # patches method is an instance method, so the patchlist can only be
+  # completed when an instance of the formula is created. Here we make it so
+  # that the patchlist in both contexts refers to the same list. This is ok
+  # because we won't have multiple instances of the same formula subclass.
+  # The same assumption is made in several places in formula.rb (e.g. in the
+  # handling of options), but we're documenting it here for the benefit of
+  # future maintainers.
   def patchlist
     unless @patchlist
       @patchlist = self.class.patchlist
@@ -69,10 +78,13 @@ module Patches
       curl *(external_patches.collect{|p| p.curl_args}.flatten)
       external_patches.each do |p|
         p.stage!
+        pf = Pathname.new(p.compressed_filename)
         begin
-          Pathname.new(p.compressed_filename).verify_checksum p.checksum
+          pf.verify_checksum p.checksum
         rescue ChecksumMissingError
-          # accept this silently for now
+          opoo "Cannot verify patch integrity"
+          puts "The formula did not provide a checksum for the patch: #{p.url}"
+          puts "For your reference the SHA256 is: #{pf.sha256}"
         rescue ChecksumMismatchError => e
           e.advice = "Bad patch: " + p.url
           raise e
