@@ -519,6 +519,50 @@ class Formula
     not self.class.instance_variable_get(:@test_defined).nil?
   end
 
+  def repo_dir
+     if path.realpath.to_s =~ %r{^(#{HOMEBREW_REPOSITORY}(?:/Library/Taps/[\w\d\-]+|))} then $1 end
+  end
+
+  def repo_url
+    if repo_dir then Dir.chdir(repo_dir) { `git config --get remote.origin.url`.chomp } end
+  end
+
+  def repo_name
+    @repo_name ||= if repo_url =~ %r{github.com(?:/|:)((?:[\w\d]+)/(?:[\w\d\-]+))} then $1 end
+  end
+
+  def repo_relative_path
+    if repo_dir && path.realpath.to_s =~ %r{^#{repo_dir}/(.+)} then $1 end
+  end
+
+  def latest?
+    return true unless repo_name and repo_relative_path
+
+    _url = "https://raw.github.com/#{repo_name}/master/#{repo_relative_path}"
+
+    hash = `curl -sf #{_url} | openssl sha1`.chomp
+
+    return true if hash == 'da39a3ee5e6b4b0d3255bfef95601890afd80709'
+
+    hash == path.sha1
+  end
+
+  def repo_latest?
+    return true unless repo_name
+
+    _url = "https://api.github.com/repos/#{repo_name}/git/refs/heads/master"
+
+    rem_master = `curl -sf #{_url}`.chomp
+
+    return true if $?.exitstatus > 0
+
+    rem_master = Utils::JSON.load(rem_master)['object']['sha']
+
+    loc_master = Dir.chdir(repo_dir) { `git show-ref --heads --hash master`.chomp }
+
+    loc_master == rem_master
+  end
+
   protected
 
   # Pretty titles the command and buffers stdout/stderr

@@ -71,6 +71,9 @@ module Homebrew extend self
   end
 
   def install_formula f
+    if !f.latest?
+      opoo "Formula is outdated, please #{Tty.white}brew update#{Tty.reset} to get latest formula."
+    end
     fi = FormulaInstaller.new(f)
     fi.install
     fi.caveats

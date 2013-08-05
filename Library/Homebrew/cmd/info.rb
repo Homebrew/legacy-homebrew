@@ -56,33 +56,15 @@ module Homebrew extend self
     end
   end
 
-  def github_fork
-    if which 'git' and (HOMEBREW_REPOSITORY/".git").directory?
-      if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
-        $2
-      end
-    end
-  end
-
   def github_info f
-    path = f.path.realpath
-
-    if path.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)/(.*)}
-      user = $1
-      repo = "homebrew-#$2"
-      path = $3
-    else
-      path.parent.cd do
-        user = github_fork
-      end
-      repo = "homebrew"
-      path = "Library/Formula/#{path.basename}"
-    end
-
-    "https://github.com/#{user}/#{repo}/commits/master/#{path}"
+    return unless f.repo_relative_path
+    "https://github.com/#{f.repo_name}/commits/master/#{f.repo_relative_path}"
   end
 
   def info_formula f
+    if !f.latest?
+      opoo "Formula is outdated, please #{Tty.white}brew update#{Tty.reset} to get latest formula."
+    end
     specs = []
     stable = "stable #{f.stable.version}" if f.stable
     stable += " (bottled)" if f.bottle
