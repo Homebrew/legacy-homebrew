@@ -9,21 +9,15 @@ class Voltdb < Formula
   def install
     system 'ant'
 
-    bin.install Dir['bin/*']
-    Dir['lib/*'].each do |f|
-      (lib/'voltdb').install f
-    end
-    ln_s lib/'voltdb/python', lib/'python'
-    prefix.install 'tools'
-    prefix.install 'voltdb'
-    doc.install Dir['doc/*']
-    prefix.install 'version.txt'
+    inreplace 'bin/voltdb', /VOLTDB_LIB=\$VOLTDB_HOME\/lib/, 'VOLTDB_LIB=$VOLTDB_HOME/lib/voltdb'
 
-    inreplace prefix/'bin/voltdb', /VOLTDB_LIB=\$VOLTDB_HOME\/lib/, 'VOLTDB_LIB=$VOLTDB_HOME/lib/voltdb'
+    Dir['lib/*'].each do |f| (lib/'voltdb').install f end
+    ln_s lib/'voltdb/python', lib/'python'
+    prefix.install 'bin', 'tools', 'voltdb', 'version.txt'
+    doc.install Dir['doc/*']
   end
 
   test do
-    f = File.read("#{prefix}/version.txt")
-    f == "3.4\n" ? true : false
+    assert_equal "3.4\n", File.read("#{prefix}/version.txt")
   end
 end
