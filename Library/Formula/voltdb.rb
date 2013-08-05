@@ -13,8 +13,7 @@ class Voltdb < Formula
 
     Dir['lib/*'].each do |f| (lib/'voltdb').install f end
     ln_s lib/'voltdb/python', lib/'python'
-    prefix.install 'bin', 'tools', 'voltdb', 'version.txt'
-    doc.install Dir['doc/*']
+    prefix.install 'bin', 'tools', 'voltdb', 'version.txt', 'doc'
   end
 
   test do
