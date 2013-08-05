@@ -87,7 +87,8 @@ module Superenv
     # compiler flag stripping. It consists of a string of characters which act
     # as flags. Some of these flags are mutually exclusive.
     #
-    # u - A universal build was requested
+    # U - Universal build are allowed (no -arch arg filtering)
+    # u - A universal build was requested (implies U)
     # 3 - A 32-bit build was requested
     # b - Installing from a bottle
     # c - Installing from a bottle with a custom architecture
@@ -108,9 +109,15 @@ module Superenv
     warn_about_non_apple_gcc($1) if ENV['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
   end
 
-  def universal_binary
+  def allow_universal_binary
     self['HOMEBREW_ARCHS'] = Hardware::CPU.universal_archs.join(',')
+    append 'HOMEBREW_CCCFG', "U", ''
+  end
+
+  def universal_binary
+    #Archs are handled by U
     append 'HOMEBREW_CCCFG', "u", ''
+    ENV.allow_universal_binary
   end
 
   def cxx11

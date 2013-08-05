@@ -85,6 +85,7 @@ class Cmd
     else
       refurbished_args
     end
+    ENV['HOMEBREW_ARCHS'].split(',').each { |a| args << "-arch" << a } if cccfg? 'u' and not (mode == :cpp or mode == :ccE)
     if tool != 'ld'
       args << "--sysroot=#$sdkroot"
     else
@@ -106,40 +107,69 @@ class Cmd
     allflags
   end
   def refurbished_args
-    lset = Set.new(libpath + syslibpath)
-    iset = Set.new(cpath.flatten)
-
+    lsets = { :all => Set.new(libpath + syslibpath)}
+    isets = { :all => Set.new(cpath.flatten)}
+    valid_arch_set=Set.new(ENV['HOMEBREW_ARCHS'].split(','))
+    arch_set = Set.new()
+    valid_arch_set.each do |architecture|
+      lsets[architecture]=Set.new
+      isets[architecture]=Set.new
+    end
     args = []
+    arch = :all
     whittler = @args.each
     loop do
       case arg = whittler.next
-      when '-arch', /^-Xarch_/
-        whittler.next
+      when /^-Xarch_/
+        arch = $' #/^-Xarch_/ matched.
+      when '-arch'
+        arch = whittler.next
+        args << "-arch" << arch if cccfg? 'U' and valid_arch_set.include?(arch) and arch_set.add?(arch) # -Xarch_XXX -arch is stupid, overlooking it
       when '-m32'
         # If ENV.m32 was set, we allow the "-m32" flag, but we don't add anything
-        args << '-m32' if cccfg? '3'
-      when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
-           /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/, '-m64',
-           /^-O[0-9zs]?$/, '-fast',
+        args << "-Xarch_#{arch}" unless arch == :all
+        args << '-m32' if ccfg? '3'
+      when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',# this removes debug information (so what's the point of having 
+           /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/, '-m64',              # formulae which can build debug eg qt.rb
+           /^-O[0-9zs]?$/, '-fast',                                      # same for release optimization
            '-pedantic', '-pedantic-errors'
       when '-fopenmp', '-lgomp'
         # clang doesn't support OpenMP
-        args << arg if not tool =~ /^clang/
+        if not tool =~ /^clang/
+          args << "-Xarch_#{arch}" unless arch == :all
+          args << arg
+        end
       when /^-W.*/
-        args << arg if arg =~ /^-W[alp],/
+        if arg =~ /^-W[alp],/
+          args << "-Xarch_#{arch}" unless arch == :all
+          args << arg if arg =~ /^-W[alp],/
+        end
       when '-macosx_version_min', '-dylib_install_name'
-        args << "-Wl,#{arg},#{whittler.next}"
+        if arch == :all
+          args << "-Wl,#{arg},#{whittler.next}"
+        else
+          flag = arg
+          arg = whittler.next
+          arg = whittler.next if arg == "-Xarch_#{arch}"
+          args << "-Xarch_#{arch}" << "-Wl,#{arg},#{whittler.next}"
+        end
       when /^-isysroot/
         # We set the sysroot
         whittler.next
+        whittler.next unless arch == :all
       when '-dylib'
+        args << "-Xarch_#{arch}" unless arch == :all
         args << "-Wl,#{arg}"
       when /^-I(.+)/
         # it is okay to add a space after the -I; so let's support it
-        path = $1.chuzzle || whittler.next
-        args << "-I#{path}" if iset.add?(path.cleanpath)
+        path = $1.chuzzle || whittler.next # just assume we haven't -Xarch_XXX -I -Xarch_XXX path
+        if not isets[:all].include?(path.cleanpath) and isets[arch].add?(path.cleanpath)
+          args << "-Xarch_#{arch}" unless arch == :all
+          args << "-I#{path}"
+        end
       when /^-L(.+)/
-        path = $1.chuzzle || whittler.next
+        # it is okay to add a space after the -L; so let's support it
+        path = $1.chuzzle || whittler.next # just assume we haven't -Xarch_XXX -L -Xarch_XXX path
         doit = case path.cleanpath
         when %r{^#$brewfix}
           # maybe homebrew is installed to /sw or /opt/brew
@@ -149,10 +179,15 @@ class Cmd
         else
           true
         end
-        args << "-L#{path}" if doit and lset.add?(path.cleanpath)
+          if doit and not lsets[:all].include?(path.cleanpath) and lsets[arch].add?(path.cleanpath)
+            args << "-Xarch_#{arch}" unless arch == :all
+            args << "-L#{path}"
+          end
       else
+        args << "-Xarch_#{arch}" unless arch == :all
         args << arg
       end
+      arch = :all unless arg =~ /^-Xarch_/ #reset -Xarch_
     end
     args
   end
@@ -184,7 +219,6 @@ class Cmd
       args << '-march=native' if tool =~ /clang/
     end
 
-    ENV['HOMEBREW_ARCHS'].split(',').each { |a| args << "-arch" << a } if cccfg? 'u'
     args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
     args
   end
