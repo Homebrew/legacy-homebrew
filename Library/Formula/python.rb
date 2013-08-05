@@ -35,7 +35,7 @@ class Python < Formula
   def patches
     p = []
     p << 'https://gist.github.com/paxswill/5402840/raw/75646d5860685c8be98858288d1772f64d6d5193/pythondtrace-patch.diff' if build.with? 'dtrace'
-    # Patch to disable the search for Tk.frameworked, since homebrew's Tk is
+    # Patch to disable the search for Tk.framework, since Homebrew's Tk is
     # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
     p << DATA if build.with? 'brewed-tk'
     p

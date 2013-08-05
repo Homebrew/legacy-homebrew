@@ -26,6 +26,7 @@ class Qt < Formula
   depends_on "mysql" => :optional
 
   def install
+    ENV.universal_binary if build.universal?
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
 
     args = ["-prefix", prefix,

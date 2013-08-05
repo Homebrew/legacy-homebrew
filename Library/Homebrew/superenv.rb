@@ -25,6 +25,7 @@ rescue # blanket rescue because there are naked raises
   false
 end
 
+# Note that this block is guarded with `if superenv?`
 class << ENV
   attr_accessor :keg_only_deps, :deps, :x11
   alias_method :x11?, :x11
@@ -72,6 +73,8 @@ class << ENV
     # b - Installing from a bottle
     # i - Installing from a bottle on Intel
     # 6 - Installing from a bottle on 64-bit Intel
+    # O - Enables argument refurbishing. Only active under the
+    #     make/bsdmake wrappers currently.
     #
     # On 10.8 and newer, these flags will also be present:
     # s - apply fix for sed's Unicode support
