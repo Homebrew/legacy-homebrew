@@ -128,7 +128,7 @@ class Cmd
       when '-m32'
         # If ENV.m32 was set, we allow the "-m32" flag, but we don't add anything
         args << "-Xarch_#{arch}" unless arch == :all
-        args << '-m32' if ccfg? '3'
+        args << '-m32' if cccfg? '3'
       when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',# this removes debug information (so what's the point of having 
            /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/, '-m64',              # formulae which can build debug eg qt.rb
            /^-O[0-9zs]?$/, '-fast',                                      # same for release optimization

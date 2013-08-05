@@ -27,25 +27,18 @@ class Qt < Formula
   odie 'qt: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
 
   def install
-    ENV.universal_binary if build.universal?
+    ENV.allow_universal_binary if build.universal?
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
 
     args = ["-prefix", prefix,
             "-system-zlib",
             "-confirm-license", "-opensource",
             "-nomake", "demos", "-nomake", "examples",
-            "-cocoa", "-fast", "-release"]
+            "-cocoa", "-fast", "-release" ]
+    args << "-verbose" if build.include? "verbose"
 
-    # we have to disable these to avoid triggering optimization code
-    # that will fail in superenv, perhaps because we rename clang to cc and
-    # Qt thinks it can build with special assembler commands.
-    # In --env=std, Qt seems aware of this.
-    # But we want superenv, because it allows to build Qt in non-standard
-    # locations and with Xcode-only.
-    if superenv?
-      args << '-no-3dnow'
-      args << '-no-ssse3' if MacOS.version <= :snow_leopard
-    end
+    # no optimization in bottle, that's more robust.
+    args << "-no-3dnow" << "-no-ssse3" if superenv? and build.include? "build-bottle"
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 

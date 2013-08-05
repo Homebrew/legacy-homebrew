@@ -27,7 +27,7 @@ class Qt5 < Formula
   odie 'qt5: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
 
   def install
-    ENV.universal_binary if build.universal?
+    ENV.allow_universal_binary if build.universal?
     args = ["-prefix", prefix,
             "-system-zlib",
             "-confirm-license", "-opensource",

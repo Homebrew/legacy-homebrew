@@ -115,7 +115,7 @@ module Superenv
   end
 
   def universal_binary
-    #Archs are handled by U
+    # archs are handled by U
     append 'HOMEBREW_CCCFG', "u", ''
     ENV.allow_universal_binary
   end
