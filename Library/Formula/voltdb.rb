@@ -14,7 +14,6 @@ class Voltdb < Formula
       (lib/'voltdb').install f
     end
     ln_s lib/'voltdb/python', lib/'python'
-    ln_s lib/'voltdb/extension', lib/'extension'
     prefix.install 'tools'
     prefix.install 'voltdb'
     doc.install Dir['doc/*']
