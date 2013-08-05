@@ -45,6 +45,7 @@ module Homebrew extend self
   SEARCHABLE_TAPS = [
     %w{josegonzalez php},
     %w{samueljohn python},
+    %w{marcqualie nginx},
     %w{Homebrew apache},
     %w{Homebrew versions},
     %w{Homebrew dupes},
