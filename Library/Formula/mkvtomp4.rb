@@ -15,8 +15,4 @@ class Mkvtomp4 < Formula
     system python, "setup.py", "build"
     system python, "setup.py", "install", "--prefix=#{prefix}"
   end
-
-  test do
-    system "mkvtomp4"
-  end
 end
