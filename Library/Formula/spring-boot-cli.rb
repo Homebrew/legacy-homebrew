@@ -8,11 +8,7 @@ class SpringBootCli < Formula
 
   def install
     libexec.install 'spring-boot-cli-0.5.0.M1.jar'
-    (buildpath/'spring').write <<-EOS.undent
-      #!/bin/sh
-      java -jar #{libexec}/spring-boot-cli-0.5.0.M1.jar $*
-    EOS
-    bin.install('spring')
+    bin.write_jar_script libexec/'spring-boot-cli-0.5.0.M1.jar', 'spring'
   end
 
 end
