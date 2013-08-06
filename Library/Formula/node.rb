@@ -29,6 +29,7 @@ class NpmNotInstalled < Requirement
   end
 end
 
+# Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
   url 'http://nodejs.org/dist/v0.10.15/node-v0.10.15.tar.gz'

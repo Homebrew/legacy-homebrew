@@ -25,9 +25,8 @@ class Qt < Formula
   depends_on "d-bus" if build.with? 'qtdbus'
   depends_on "mysql" => :optional
 
-  env :std if build.universal?
-
   def install
+    ENV.universal_binary if build.universal?
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
 
     args = ["-prefix", prefix,
@@ -43,7 +42,7 @@ class Qt < Formula
     # locations and with Xcode-only.
     args << "-no-3dnow" if superenv?
 
-    args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
+    args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
     args << "-platform" << "unsupported/macx-clang" if ENV.compiler == :clang
 

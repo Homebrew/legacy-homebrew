@@ -5,7 +5,10 @@ class Popt < Formula
   url 'http://rpm5.org/files/popt/popt-1.16.tar.gz'
   sha1 'cfe94a15a2404db85858a81ff8de27c8ff3e235e'
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

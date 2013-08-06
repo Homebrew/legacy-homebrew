@@ -2,8 +2,10 @@ require 'formula'
 
 class Libsigcxx < Formula
   homepage 'http://libsigc.sourceforge.net'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2/libsigc++-2.2.10.tar.bz2'
-  sha256 'd3d810c2ad469edfb2d4db29643bef189b7613019eadbd4a72823af3c73c959c'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2/libsigc++-2.2.11.tar.xz'
+  sha256 '9834045f74f56752c2c6b3cdc195c30ab8314ad22dc8e626d6f67f940f1e4957'
+
+  depends_on 'xz' => :build
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
