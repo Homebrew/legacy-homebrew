@@ -18,6 +18,8 @@ class Wxmac < Formula
   url 'http://downloads.sourceforge.net/project/wxpython/wxPython/2.9.4.0/wxPython-src-2.9.4.0.tar.bz2'
   sha1 'c292cd45b51e29c558c4d9cacf93c4616ed738b9'
 
+  head 'https://github.com/wxWidgets/wxWidgets.git'
+
   depends_on :python => :recommended
   depends_on FrameworkPython if build.with? "python"
 
@@ -35,7 +37,12 @@ class Wxmac < Formula
       "BUILD_GIZMOS=1",
       "BUILD_STC=1"
     ]
+    system "git clone --depth 1 https://github.com/wxWidgets/wxPython.git" if build.head?
     cd "wxPython" do
+      if build.head?
+        inreplace "bin/subrepos-make", "svn co", "svn --non-interactive --trust-server-cert co"
+        system "bin/subrepos-make"
+      end
       ENV.append_to_cflags '-arch x86_64' if MacOS.prefer_64_bit?
 
       python do
