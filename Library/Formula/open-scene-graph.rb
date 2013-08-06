@@ -7,7 +7,6 @@ class OpenSceneGraph < Formula
 
   head 'http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/'
 
-  option 'ffmpeg', 'Build with ffmpeg support'
   option 'docs', 'Build the documentation with Doxygen and Graphviz'
 
   depends_on 'cmake' => :build
@@ -22,7 +21,7 @@ class OpenSceneGraph < Formula
   depends_on 'librsvg' => :optional
   depends_on 'collada-dom' => :optional
   depends_on 'gnuplot' => :optional
-  depends_on 'ffmpeg' if build.include? 'ffmpeg'
+  depends_on 'ffmpeg' => :optional
 
   if build.include? 'docs'
     depends_on 'doxygen'
@@ -31,12 +30,13 @@ class OpenSceneGraph < Formula
 
   def install
     # Turning off FFMPEG takes this change or a dozen "-DFFMPEG_" variables
-    unless build.include? 'ffmpeg'
+    unless build.with? 'ffmpeg'
       inreplace 'CMakeLists.txt', 'FIND_PACKAGE(FFmpeg)', '#FIND_PACKAGE(FFmpeg)'
     end
 
     args = std_cmake_args
     args << '-DBUILD_DOCUMENTATION=' + ((build.include? 'docs') ? 'ON' : 'OFF')
+
     if MacOS.prefer_64_bit?
       args << "-DCMAKE_OSX_ARCHITECTURES=x86_64"
       args << "-DOSG_DEFAULT_IMAGE_PLUGIN_FOR_OSX=imageio"
@@ -44,9 +44,11 @@ class OpenSceneGraph < Formula
     else
       args << "-DCMAKE_OSX_ARCHITECTURES=i386"
     end
+
     if Formula.factory('collada-dom').installed?
       args << "-DCOLLADA_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/collada-dom"
     end
+
     args << '..'
 
     mkdir 'build' do
