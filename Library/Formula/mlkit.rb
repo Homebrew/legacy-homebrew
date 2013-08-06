@@ -15,7 +15,7 @@ end
 
 class Mlkit < Formula
   homepage 'http://sourceforge.net/apps/mediawiki/mlkit'
-  url 'http://sourceforge.net/projects/mlkit/files/mlkit-4.3.7/mlkit-4.3.7.tgz'
+  url 'http://downloads.sourceforge.net/project/mlkit/mlkit-4.3.7/mlkit-4.3.7.tgz'
   sha1 '7c1f69f0cde271f50776d33b194699b403bab598'
 
   depends_on StandardHomebrewLocation
