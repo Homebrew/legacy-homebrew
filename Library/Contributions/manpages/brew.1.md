@@ -63,7 +63,7 @@ Note that these flags should only appear after a command.
     versions of formula. Note downloads for any installed formula will still not be
     deleted. If you want to delete those too: `rm -rf $(brew --cache)`
 
-  * `create [--autotools|--cmake] [--no-fetch] [--set-name <name>] [--set-version <version>]` <URL>:
+  * `create <URL> [--autotools|--cmake] [--no-fetch] [--set-name <name>] [--set-version <version>]`:
     Generate a formula for the downloadable file at <URL> and open it in the editor.
     Homebrew will attempt to automatically derive the formula name
     and version, but if it fails, you'll have to make your own template. The wget
@@ -269,8 +269,8 @@ Note that these flags should only appear after a command.
     surrounded with slashes, then it is interpreted as a regular expression.
     If no search term is given, all available formula are displayed.
 
-  * `search --macports`|`--fink`|`--debian` <text>:
-    Search for <text> in MacPorts, Fink or Debian's package list.
+  * `search --macports`|`--fink`|`--debian`|`--opensuse` <text>:
+    Search for <text> in the given package manager's list.
 
   * `sh [--env=std]`:
     Instantiate a Homebrew build environment. Uses our years-battle-hardened

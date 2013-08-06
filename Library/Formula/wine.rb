@@ -44,6 +44,11 @@ class Wine < Formula
     cause 'llvm-gcc does not respect force_align_arg_pointer'
   end
 
+  fails_with :clang do
+    build 421
+    cause 'error: invalid operand for instruction lretw'
+  end
+
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
   # configure: libv4l, gstreamer-0.10, libcapi20, libgsm
 
@@ -64,15 +69,6 @@ class Wine < Formula
 
     ENV.append "CFLAGS", build32
     ENV.append "LDFLAGS", build32
-
-    # Still miscompiles at v1.6
-    if ENV.compiler == :clang
-      opoo <<-EOS.undent
-        Clang currently miscompiles some parts of Wine. If you have gcc, you
-        can get a more stable build with:
-          brew install wine --use-gcc
-      EOS
-    end
 
     # Workarounds for XCode not including pkg-config files
     ENV.libxml2
@@ -114,22 +110,29 @@ class Wine < Formula
     (bin/'wine').write(wine_wrapper)
   end
 
-  def caveats; <<-EOS.undent
-    You may want to get winetricks:
-      brew install winetricks
+  def caveats
+    s = <<-EOS.undent
+      You may want to get winetricks:
+        brew install winetricks
 
-    By default Wine uses a native Mac driver. To switch to the X11 driver, use
-    regedit to set the "graphics" key under "HKCU\Software\Wine\Drivers" to
-    "x11" (or use winetricks).
-
-    For best results with X11, install the latest version of XQuartz:
-      http://xquartz.macosforge.org/
-
-    The current version of Wine contains a partial implementation of dwrite.dll
-    which may cause text rendering issues in applications such as Steam.
-    We recommend that you run winecfg, add an override for dwrite in the
-    Libraries tab, and edit the override mode to "disable". See:
-      http://bugs.winehq.org/show_bug.cgi?id=31374
+      The current version of Wine contains a partial implementation of dwrite.dll
+      which may cause text rendering issues in applications such as Steam.
+      We recommend that you run winecfg, add an override for dwrite in the
+      Libraries tab, and edit the override mode to "disable". See:
+        http://bugs.winehq.org/show_bug.cgi?id=31374
     EOS
+
+    unless build.without? 'x11'
+      s += <<-EOS.undent
+
+        By default Wine uses a native Mac driver. To switch to the X11 driver, use
+        regedit to set the "graphics" key under "HKCU\Software\Wine\Drivers" to
+        "x11" (or use winetricks).
+
+        For best results with X11, install the latest version of XQuartz:
+          http://xquartz.macosforge.org/
+      EOS
+    end
+    return s
   end
 end

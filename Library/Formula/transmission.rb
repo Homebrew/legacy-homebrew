@@ -27,6 +27,11 @@ class Transmission < Formula
 
     args << "--disable-nls" unless build.with? 'nls'
 
+    #fixes issue w/ webui files not being found #21151
+    #submitted upstream: https://trac.transmissionbt.com/ticket/5304
+    inreplace 'libtransmission/platform.c', 'SYS_DARWIN', 'BUILD_MAC_CLIENT'
+    inreplace 'libtransmission/utils.c', 'SYS_DARWIN', 'BUILD_MAC_CLIENT'
+
     system "./configure", *args
     system "make" # Make and install in one step fails
     system "make install"

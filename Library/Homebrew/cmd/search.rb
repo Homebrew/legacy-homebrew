@@ -11,6 +11,8 @@ module Homebrew extend self
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     elsif ARGV.include? '--debian'
       exec_browser "http://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
+    elsif ARGV.include? '--opensuse'
+      exec_browser "http://software.opensuse.org/search?q=#{ARGV.next}"
     elsif (query = ARGV.first).nil?
       puts_columns Formula.names
     else
@@ -45,6 +47,7 @@ module Homebrew extend self
   SEARCHABLE_TAPS = [
     %w{josegonzalez php},
     %w{samueljohn python},
+    %w{marcqualie nginx},
     %w{Homebrew apache},
     %w{Homebrew versions},
     %w{Homebrew dupes},
@@ -52,6 +55,7 @@ module Homebrew extend self
     %w{Homebrew science},
     %w{Homebrew completions},
     %w{Homebrew x11},
+    %w{Homebrew binary},
   ]
 
   def query_regexp(query)

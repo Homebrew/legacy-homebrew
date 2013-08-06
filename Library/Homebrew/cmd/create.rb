@@ -84,7 +84,9 @@ class FormulaCreator
     else
       @path = Formula.path name
     end
-    if @version.nil?
+    if @version
+      @version = Version.new(@version)
+    else
       @version = Pathname.new(url).version
     end
   end
