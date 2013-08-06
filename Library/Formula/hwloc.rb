@@ -6,7 +6,7 @@ class Hwloc < Formula
   sha1 'b975dd60b72859deafb6b7cfa184595614bb4683'
 
   depends_on 'pkg-config' => :build
-  depends_on :cairo => :optional
+  depends_on 'cairo' => :optional
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
