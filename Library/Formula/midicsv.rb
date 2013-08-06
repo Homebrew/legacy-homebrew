@@ -7,8 +7,8 @@ class Midicsv < Formula
 
   def install
     inreplace 'Makefile' do |s|
-        # Change man folders to correct location.
-        s.gsub! '/usr/local/man', '/usr/local/share/man'
+        # Change installation location to homebrew location.
+        s.gsub! '/usr/local', 'HOMEBREW_PREFIX'
     end
 
     system "make"
