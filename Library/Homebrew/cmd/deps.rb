@@ -7,13 +7,27 @@ module Homebrew extend self
       :installed?  => ARGV.include?('--installed'),
       :tree?       => ARGV.include?('--tree'),
       :all?        => ARGV.include?('--all'),
+      :of_none?    => ARGV.include?('--of-none'),
+      :of_any?     => ARGV.include?('--of-any'),
       :topo_order? => ARGV.include?('-n')
     )
 
     if mode.installed? && mode.tree?
       puts_deps_tree Formula.installed
+    elsif mode.installed? && mode.of_any?
+      all_deps = deps_of_any Formula.installed
+      all_deps.sort! unless mode.topo_order?
+      puts all_deps
+    elsif mode.installed? && mode.of_none?
+      puts deps_of_none Formula.installed
     elsif mode.installed?
       puts_deps Formula.installed
+    elsif mode.all? && mode.of_any?
+      all_deps = deps_of_any Formula
+      all_deps.sort! unless mode.topo_order?
+      puts all_deps
+    elsif mode.all? && mode.of_none?
+      puts deps_of_none Formula
     elsif mode.all?
       puts_deps Formula
     elsif mode.tree?
@@ -31,6 +45,16 @@ module Homebrew extend self
     formulae.map do |f|
       ARGV.one? ? f.deps.default : f.recursive_dependencies
     end.inject(&:&).map(&:name)
+  end
+
+  def deps_of_any(formulae)
+    formulae.map do |f|
+      ARGV.one? ? f.deps.default : f.recursive_dependencies
+    end.flatten.map(&:name).uniq
+  end
+
+  def deps_of_none(formulae)
+    formulae.map(&:name) - deps_of_any(formulae)
   end
 
   def puts_deps(formulae)

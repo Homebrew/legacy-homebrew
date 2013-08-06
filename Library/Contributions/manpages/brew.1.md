@@ -78,7 +78,7 @@ Note that these flags should only appear after a command.
     The options `--set-name` and `--set-version` each take an argument and allow
     you to explicitly set the name and version of the package you are creating.
 
-  * `deps [--1] [-n] [--tree] [--all] [--installed]` <formula>:
+  * `deps [--1] [-n] [--tree] [--of-any|--of-none] [--all|--installed]` <formula>:
     Show <formula>'s dependencies.
 
     If `--1` is passed, only show dependencies one level down, instead of
@@ -91,6 +91,12 @@ Note that these flags should only appear after a command.
     If `--all` is passed, show dependencies for all formulae.
 
     If `--installed` is passed, show dependencies for all installed formulae.
+
+    If `--of-any` is passed, show formulae that are dependencies of any formula
+    among `--all` or `--installed` formulae.
+
+    If `--of-none` is passed, show formulae that are not dependencies of any
+    formula among `--all` or `--installed` formulae.
 
   * `diy [--set-name <name>] [--set-version <version>]`:
     Automatically determine the installation prefix for non-Homebrew software.

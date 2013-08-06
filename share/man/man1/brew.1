@@ -84,7 +84,7 @@ If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the ca
 The options \fB\-\-set\-name\fR and \fB\-\-set\-version\fR each take an argument and allow you to explicitly set the name and version of the package you are creating\.
 .
 .TP
-\fBdeps [\-\-1] [\-n] [\-\-tree] [\-\-all] [\-\-installed]\fR \fIformula\fR
+\fBdeps [\-\-1] [\-n] [\-\-tree] [\-\-of\-any|\-\-of\-none] [\-\-all|\-\-installed]\fR \fIformula\fR
 Show \fIformula\fR\'s dependencies\.
 .
 .IP
@@ -101,6 +101,12 @@ If \fB\-\-all\fR is passed, show dependencies for all formulae\.
 .
 .IP
 If \fB\-\-installed\fR is passed, show dependencies for all installed formulae\.
+.
+.IP
+If \fB\-\-of\-any\fR is passed, show formulae that are dependencies of any formula among \fB\-\-all\fR or \fB\-\-installed\fR formulae\.
+.
+.IP
+If \fB\-\-of\-none\fR is passed, show formulae that are not dependencies of any formula among \fB\-\-all\fR or \fB\-\-installed\fR formulae\.
 .
 .TP
 \fBdiy [\-\-set\-name <name>] [\-\-set\-version <version>]\fR
