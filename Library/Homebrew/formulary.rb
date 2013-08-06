@@ -43,6 +43,7 @@ class Formulary
           # have a "no such formula" message.
           raise
         rescue LoadError, NameError
+          raise if ARGV.debug?  # let's see the REAL error
           raise FormulaUnavailableError.new(name)
         end
       end

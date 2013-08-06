@@ -199,6 +199,13 @@ class CurlPostDownloadStrategy < CurlDownloadStrategy
   end
 end
 
+# Download from an SSL3-only host.
+class CurlSSL3DownloadStrategy < CurlDownloadStrategy
+  def _fetch
+    curl @url, '-3', '-C', downloaded_size, '-o', @temporary_path
+  end
+end
+
 # Use this strategy to download but not unzip a file.
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
@@ -745,6 +752,7 @@ class DownloadStrategyDetector
     when :nounzip then NoUnzipCurlDownloadStrategy
     when :post then CurlPostDownloadStrategy
     when :svn then SubversionDownloadStrategy
+    when :ssl3 then CurlSSL3DownloadStrategy
     else
       raise "Unknown download strategy #{strategy} was requested."
     end
