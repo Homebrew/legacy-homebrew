@@ -46,6 +46,7 @@ class Clojure < Formula
   def test
     system "#{bin}/clj", "-e", '(println "Hello World")'
   end
+
   def caveats
     s = <<-EOS.undent
       This is NOT the recommended way to use Clojure.
