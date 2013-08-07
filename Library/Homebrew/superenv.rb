@@ -21,8 +21,6 @@ def superenv?
   MacOS.sdk_path.nil?) and # because superenv will fail to find stuff
   superbin and superbin.directory? and
   not ARGV.include? "--env=std"
-rescue # blanket rescue because there are naked raises
-  false
 end
 
 # Note that this block is guarded with `if superenv?`
