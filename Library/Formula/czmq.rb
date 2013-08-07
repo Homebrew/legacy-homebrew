@@ -8,21 +8,17 @@ class Czmq < Formula
 
   option :universal
 
-  depends_on 'zeromq'
-
   if build.head?
     depends_on 'autoconf'
     depends_on 'automake'
     depends_on 'libtool'
   end
 
+  depends_on 'zeromq'
+
   def install
     ENV.universal_binary if build.universal?
-
-    if build.head?
-      system "./autogen.sh"
-    end
-
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
