@@ -27,6 +27,7 @@ class Leiningen < Formula
     Dependencies will be installed to:
       $HOME/.m2/repository
     To play around with Clojure run `lein repl`, or `lein help`.
+    For more information see: http://leiningen.org/#docs
     EOS
   end
 end
