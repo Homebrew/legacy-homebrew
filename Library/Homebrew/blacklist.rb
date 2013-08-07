@@ -63,4 +63,11 @@ def blacklisted? name
     Install gsutil with `pip install gsutil`
     EOS
   end
+  when 'clojure' then <<-EOS.undent
+      This is NOT the recommended way to use Clojure.
+
+      You should install Leiningen either via homebrew or from https://github.com/technomancy/leiningen in order to use Clojure or ClojureScript.
+
+      Clojure isn't really a program but a library managed as part of a project and leiningen is the user interface to that library.
+    EOS
 end
