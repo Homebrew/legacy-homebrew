@@ -17,10 +17,10 @@ def superbin
 end
 
 def superenv?
-  not (MacSystem.xcode43_without_clt? and
-  MacOS.sdk_path.nil?) and # because superenv will fail to find stuff
-  superbin and superbin.directory? and
-  not ARGV.include? "--env=std"
+  return false if MacSystem.xcode43_without_clt? && MacOS.sdk_path.nil?
+  return false unless superbin && superbin.directory?
+  return false if ARGV.include? "--env=std"
+  true
 end
 
 # Note that this block is guarded with `if superenv?`
