@@ -18,6 +18,12 @@ class Clojurescript < Formula
     system "cljsc"
   end
 
+  def caveats; <<-EOS.undent
+    This formula is useful if for some reason you need to use the ClojureScript compiler directly.  
+    For a more integrated workflow, Leiningen with lein-cljsbuild is recommended.
+    EOS
+  end
+  
   private
 
   def set_env(file)
