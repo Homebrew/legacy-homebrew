@@ -104,7 +104,7 @@ class << ENV
       if MacOS.locate('gcc-4.2') || gcc_installed
         "gcc-4.2"
       else
-        raise("gcc-4.2 not found!")
+        raise "gcc-4.2 not found!"
       end
     elsif ARGV.include? '--use-llvm'
       "llvm-gcc"
