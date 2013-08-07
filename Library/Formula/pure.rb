@@ -1,33 +1,32 @@
 require 'formula'
 
-class PureDocs < Formula
-  url 'https://bitbucket.org/purelang/pure-lang/downloads/pure-docs-0.57.tar.gz'
-  sha1 '7f2c6051b831d3de887f2182e8b29b1716ab45fd'
-end
-
 class Pure < Formula
   homepage 'http://purelang.bitbucket.org/'
   url 'https://bitbucket.org/purelang/pure-lang/downloads/pure-0.57.tar.gz'
   sha1 '5c7441993752d0e2cba74912521d6df865e5dc0b'
+
+  # Autotools are needed due to patching configure.ac. Remove on new releases.
+  depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
 
   depends_on 'llvm'
   depends_on 'gmp'
   depends_on 'readline'
   depends_on 'mpfr'
 
-  # Autotools are needed due to patching configure.ac. Remove on new
-  # releases.
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  resource 'docs' do
+    url 'https://bitbucket.org/purelang/pure-lang/downloads/pure-docs-0.57.tar.gz'
+    sha1 '7f2c6051b831d3de887f2182e8b29b1716ab45fd'
+  end
 
-  # Patches backported from trunk for llvm 3.3 compatibility.
+  # Patches backported from trunk for llvm 3.3 compatibility. Originally:
+  # https://bitbucket.org/purelang/pure-lang/commits/2866a677f3362ccfd0ced24b9dd235bff627f4c5/raw/
+  # removing changes to ChangeLog to apply.
   def patches
     {
       :p2 => [
-        DATA, # Originally
-              # https://bitbucket.org/purelang/pure-lang/commits/2866a677f3362ccfd0ced24b9dd235bff627f4c5/raw/,
-              # removing changes to ChangeLog to apply.
+        DATA, 
         'https://bitbucket.org/purelang/pure-lang/commits/387a67f2f9943640c05b3e8d796ddf7f06febe3f/raw/'
       ]
     }
@@ -45,8 +44,7 @@ class Pure < Formula
     system "make"
     system "make check"
     system "make install"
-
-    PureDocs.new.brew { system "make", "prefix=#{prefix}", "install" }
+    resource('docs').stage { system "make", "prefix=#{prefix}", "install" }
   end
 end
 
