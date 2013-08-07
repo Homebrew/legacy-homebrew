@@ -144,6 +144,11 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
   private
 
+  def curl(*args)
+    args << '--connect-timeout' << '5' unless @mirrors.empty?
+    super
+  end
+
   def xzpath
     "#{HOMEBREW_PREFIX}/opt/xz/bin/xz"
   end
