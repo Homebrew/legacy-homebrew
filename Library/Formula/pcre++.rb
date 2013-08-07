@@ -8,11 +8,12 @@ class Pcrexx < Formula
   depends_on 'pcre'
 
   def install
+    pcre = Formula.factory('pcre').opt_prefix
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
-                          "--with-pcre-dir-lib=#{HOMEBREW_PREFIX}"
+                          "--with-pcre-dir-lib=#{pcre}"
     system "make install"
   end
 end
