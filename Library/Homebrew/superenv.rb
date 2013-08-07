@@ -127,7 +127,7 @@ class << ENV
         when 'gcc', 'gcc-4.2' then 'gcc-4.2'
         when 'llvm', 'llvm-gcc' then 'llvm-gcc'
       else
-        opoo "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC']}"
+        opoo "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC'].inspect}"
         raise # use default
       end
     else
@@ -260,7 +260,7 @@ class << ENV
       when "gcc-4.2" then :gcc
       when "gcc", "clang" then ENV['HOMEBREW_CC'].to_sym
     else
-      raise
+      raise "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC'].inspect}"
     end
   end
   def deparallelize
