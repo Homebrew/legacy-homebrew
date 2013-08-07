@@ -46,4 +46,18 @@ class Clojure < Formula
   def test
     system "#{bin}/clj", "-e", '(println "Hello World")'
   end
+
+  def caveats
+    s = <<-EOS.undent
+      This is NOT the recommended way to use Clojure.
+
+     You should install Leiningen either via homebrew or from https://github.com/technomancy/leiningen in order to use Clojure or ClojureScript.
+
+     Clojure isn't really a program but a library, and leiningen is the user interface to that library.
+
+     You can't build a real project with this homebrew formula for Clojure, and you can't work with existing code and libraries. If you come into the IRC channel looking for help with a Clojure project and you're using homebrew, we CANNOT help you.
+
+     Please uninstall this and use Leiningen instead.
+    EOS
+  end
 end
