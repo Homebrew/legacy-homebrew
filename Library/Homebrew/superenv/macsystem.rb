@@ -15,12 +15,4 @@ module MacSystem extend self
     @x11_prefix ||= %W[/opt/X11 /usr/X11
       #{MacOS.sdk_path}/usr/X11].find{|path| File.directory? "#{path}/include" }
   end
-
-  private
-
-  def tst prefix
-    prefix = prefix.to_s.chomp
-    xcrun = "#{prefix}/usr/bin/xcrun"
-    prefix if xcrun != "/usr/bin/xcrun" and File.executable? xcrun
-  end
 end
