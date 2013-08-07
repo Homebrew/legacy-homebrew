@@ -92,7 +92,6 @@ class Postgresql < Formula
         To fix this issue, you may need to either delete the version of Python
         shown above, or move it out of the way before brewing PostgreSQL.
       EOS
-      end
     end
   end
 

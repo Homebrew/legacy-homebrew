@@ -17,9 +17,6 @@ class Cmus < Formula
   depends_on 'mp4v2'
   depends_on 'libcue'
 
-  skip_clean 'bin/cmus'
-  skip_clean 'bin/cmus-remote'
-
   def install
     # We add this to CPPFLAGS and LDFLAGS in ENV, but cmus doesn't
     # pick up on that. Adding this patch because I am too lazy to

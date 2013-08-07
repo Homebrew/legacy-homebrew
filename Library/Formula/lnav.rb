@@ -8,6 +8,7 @@ class Lnav < Formula
   head 'https://github.com/tstack/lnav.git'
 
   depends_on 'readline'
+  depends_on 'pcre'
 
   def install
     system "./configure", "--disable-dependency-tracking",

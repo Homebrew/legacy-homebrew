@@ -11,8 +11,8 @@ class V8 < Formula
   sha1 'f44c8eed0fe93b2d04d1d547a1e2640f41161354'
 
   devel do
-    url 'https://github.com/v8/v8/archive/3.20.11.1.tar.gz'
-    sha1 '620ff5aed665b448f1d18a698e016735c57c55cc'
+    url 'https://github.com/v8/v8/archive/3.20.12.tar.gz'
+    sha1 '1463f4b8b33674bfd366e84b739713a727e9f9ac'
   end
 
   head 'https://github.com/v8/v8.git'
