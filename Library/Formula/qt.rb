@@ -34,13 +34,13 @@ class Qt < Formula
             "-confirm-license", "-opensource",
             "-cocoa", "-fast" ]
 
-    # we have to disable 3DNow! to avoid triggering optimization code
-    # that will fail with clang. Only seems to occur in superenv, perhaps
-    # because we rename clang to cc and Qt thinks it can build with special
-    # assembler commands. In --env=std, Qt seems aware of this.)
+    # we have to disable these to avoid triggering optimization code
+    # that will fail in superenv, perhaps because we rename clang to cc and
+    # Qt thinks it can build with special assembler commands.
+    # In --env=std, Qt seems aware of this.)
     # But we want superenv, because it allows to build Qt in non-standard
     # locations and with Xcode-only.
-    args << "-no-3dnow" if superenv?
+    args << "-no-3dnow" << "-no-ssse3" if superenv?
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
