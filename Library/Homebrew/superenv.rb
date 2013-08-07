@@ -156,7 +156,7 @@ class << ENV
       paths << "#{MacOS::Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
     end
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
-    paths << "#{MacOS::X11.prefix}/bin" if x11?
+    paths << MacOS::X11.bin if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
     paths.to_path_s
   end
@@ -169,7 +169,7 @@ class << ENV
 
   def determine_pkg_config_libdir
     paths = %W{/usr/lib/pkgconfig #{HOMEBREW_REPOSITORY}/Library/ENV/pkgconfig/#{MacOS.version}}
-    paths << "#{MacOS::X11.prefix}/lib/pkgconfig" << "#{MacOS::X11.prefix}/share/pkgconfig" if x11?
+    paths << "#{MacOS::X11.lib}/pkgconfig" << "#{MacOS::X11.share}/pkgconfig" if x11?
     paths.to_path_s
   end
 
@@ -190,13 +190,13 @@ class << ENV
   def determine_cmake_include_path
     sdk = MacOS.sdk_path if MacOS.xcode43_without_clt?
     paths = []
-    paths << "#{MacOS::X11.prefix}/include/freetype2" if x11?
+    paths << "#{MacOS::X11.include}/freetype2" if x11?
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     if MacOS.xcode43_without_clt?
       paths << "#{sdk}/usr/include/apache2"
     end
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/" unless x11?
-    paths << "#{MacOS::X11.prefix}/include" if x11?
+    paths << MacOS::X11.include if x11?
     paths.to_path_s
   end
 
@@ -205,7 +205,7 @@ class << ENV
     paths = []
     # things expect to find GL headers since X11 used to be a default, so we add them
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries" unless x11?
-    paths << "#{MacOS::X11.prefix}/lib" if x11?
+    paths << MacOS::X11.lib if x11?
     paths.to_path_s
   end
 
