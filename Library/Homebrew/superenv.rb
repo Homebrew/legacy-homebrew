@@ -128,12 +128,14 @@ class << ENV
         when 'llvm', 'llvm-gcc' then 'llvm-gcc'
       else
         opoo "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC'].inspect}"
-        raise # use default
+        default_cc
       end
     else
-      raise
+      default_cc
     end
-  rescue
+  end
+
+  def default_cc
     case MacOS.default_compiler
     when :clang   then 'clang'
     when :llvm    then 'llvm-gcc'
