@@ -33,8 +33,7 @@ class FormulaValidationError < StandardError
   end
 end
 
-class FormulaSpecificationError < StandardError
-end
+class FormulaSpecificationError < StandardError; end
 
 class FormulaUnavailableError < RuntimeError
   attr_reader :name
@@ -82,11 +81,9 @@ module Homebrew
   end
 end
 
-class CannotInstallFormulaError < RuntimeError
-end
+class CannotInstallFormulaError < RuntimeError; end
 
-class FormulaAlreadyInstalledError < RuntimeError
-end
+class FormulaAlreadyInstalledError < RuntimeError; end
 
 class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   def message
@@ -219,16 +216,13 @@ class CompilerSelectionError < StandardError
 end
 
 # raised in CurlDownloadStrategy.fetch
-class CurlDownloadStrategyError < RuntimeError
-end
+class CurlDownloadStrategyError < RuntimeError; end
 
 # raised by safe_system in utils.rb
-class ErrorDuringExecution < RuntimeError
-end
+class ErrorDuringExecution < RuntimeError; end
 
 # raised by Pathname#verify_checksum when "expected" is nil or empty
-class ChecksumMissingError < ArgumentError
-end
+class ChecksumMissingError < ArgumentError; end
 
 # raised by Pathname#verify_checksum when verification fails
 class ChecksumMismatchError < RuntimeError
