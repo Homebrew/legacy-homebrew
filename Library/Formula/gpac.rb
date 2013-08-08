@@ -15,7 +15,7 @@ class Gpac < Formula
 
   head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac'
 
-  depends_on :x11
+  depends_on :x11 => MacOS::X11.installed? ? :recommended : :optional
 
   depends_on 'pkg-config' => :build
   depends_on 'a52dec' => :optional
@@ -34,11 +34,14 @@ class Gpac < Formula
 
     args = ["--disable-wx",
             "--prefix=#{prefix}",
-            "--mandir=#{man}",
-            # gpac build system is barely functional
-            "--extra-cflags=-I#{MacOS::X11.include}",
-            # Force detection of X libs on 64-bit kernel
-            "--extra-ldflags=-L#{MacOS::X11.lib}"]
+            "--mandir=#{man}"]
+
+    if build.with? 'x11'
+      # gpac build system is barely functional
+      args << "--extra-cflags=-I#{MacOS::X11.include}",
+      # Force detection of X libs on 64-bit kernel
+      args << "--extra-ldflags=-L#{MacOS::X11.lib}"
+    end
 
     chmod 0700, "configure"
     system "./configure", *args
