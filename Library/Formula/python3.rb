@@ -4,17 +4,6 @@ require 'formula'
 # It's somewhat incompatible with Python 2.x, therefore, the executable
 # "python" will always point to the 2.x version which you can get by
 # `brew install python`.
-
-class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.4.tar.gz'
-  sha1 'b8bf9c2b8a114045598f0e16681d6a63a4d6cdf9'
-end
-
-class Pip < Formula
-  url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
-  sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
-end
-
 class Python3 < Formula
   homepage 'http://www.python.org/'
   url 'http://python.org/ftp/python/3.3.2/Python-3.3.2.tar.bz2'
@@ -39,6 +28,16 @@ class Python3 < Formula
 
   skip_clean "bin/pip3", "bin/pip-#{VER}"
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
+
+  resource 'setuptools' do
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.4.tar.gz'
+    sha1 'b8bf9c2b8a114045598f0e16681d6a63a4d6cdf9'
+  end
+
+  resource 'pip' do
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
+    sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
+  end
 
   def patches
     DATA if build.with? 'brewed-tk'
@@ -155,10 +154,10 @@ class Python3 < Formula
     setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
 
-    Setuptools.new.brew { system py.binary, *setup_args }
+    resource('setuptools').stage { system py.binary, *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
 
-    Pip.new.brew { system py.binary, *setup_args }
+    resource('pip').stage { system py.binary, *setup_args }
     mv bin/'pip', bin/'pip3'
 
     # And now we write the distutils.cfg
