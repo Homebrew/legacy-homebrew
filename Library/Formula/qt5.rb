@@ -64,14 +64,19 @@ class Qt5 < Formula
 
     if build.include? 'with-debug-and-release'
       args << "-debug-and-release"
-      # Debug symbols need to find the source so build in the prefix
-      mv "../qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
-      cd "#{prefix}/src"
     else
       args << "-release"
     end
 
     args << '-developer-build' if build.include? 'developer'
+
+    # We move the source and build in-place because:
+    # - Debug symbols need to find the source
+    # - to fix https://github.com/mxcl/homebrew/issues/20020
+    # - PySide `make apidoc` needs the src
+    (prefix/"src").mkdir
+    mv Dir['*'], "#{prefix}/src/"
+    cd "#{prefix}/src"
 
     system "./configure", *args
     system "make"
