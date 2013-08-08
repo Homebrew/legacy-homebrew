@@ -62,11 +62,11 @@ def blacklisted? name
   when 'gsutil' then <<-EOS.undent
     Install gsutil with `pip install gsutil`
     EOS
-  end
   when 'clojure' then <<-EOS.undent
     To install Clojure or ClojureScript you should install Leiningen:
       brew install leiningen
     Clojure isn't really a program but a library managed as part of a
     project and leiningen is the user interface to that library.
     EOS
+  end
 end
