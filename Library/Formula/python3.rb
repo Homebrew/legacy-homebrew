@@ -131,13 +131,15 @@ class Python3 < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # "python3" and executable is forgotten for framework builds.
+    # "python3" executable is forgotten for framework builds.
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
 
     # We ship setuptools and pip and reuse the PythonInstalled
     # Requirement here to write the sitecustomize.py
     py = PythonInstalled.new(VER)
+    py.binary = bin/"python#{VER}"
+    py.modify_build_environment
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
@@ -146,13 +148,13 @@ class Python3 < Formula
     rm_rf Dir["#{py.global_site_packages}/setuptools*"]
     rm_rf Dir["#{py.global_site_packages}/distribute*"]
 
-    py.binary = bin/"python#{VER}"
-    py.modify_build_environment
     setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Setuptools.new.brew { system "#{bin}/python#{VER}", *setup_args }
+
+    Setuptools.new.brew { system py.binary, *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
-    Pip.new.brew { system "#{bin}/python#{VER}", *setup_args }
+
+    Pip.new.brew { system py.binary, *setup_args }
     mv bin/'pip', bin/'pip3'
 
     # And now we write the distuitsl.cfg
