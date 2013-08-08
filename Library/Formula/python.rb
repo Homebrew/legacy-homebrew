@@ -31,6 +31,7 @@ class Python < Formula
   depends_on 'gdbm' => :recommended
   depends_on 'openssl' if build.with? 'brewed-openssl'
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
+  depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
 
   def patches
     p = []
