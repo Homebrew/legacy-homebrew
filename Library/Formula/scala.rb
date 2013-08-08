@@ -51,7 +51,7 @@ class Scala < Formula
 
   def caveats; <<-EOS.undent
     To use with IntelliJ, set the Scala home to:
-      #{prefix}/idea
+      #{opt_prefix}/idea
     EOS
   end
 end
