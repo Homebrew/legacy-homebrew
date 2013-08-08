@@ -158,7 +158,7 @@ class Python3 < Formula
     Pip.new.brew { system py.binary, *setup_args }
     mv bin/'pip', bin/'pip3'
 
-    # And now we write the distuitsl.cfg
+    # And now we write the distutils.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/distutils/distutils.cfg"
     cfg.delete if cfg.exist?
     cfg.write <<-EOF.undent

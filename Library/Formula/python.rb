@@ -145,7 +145,7 @@ class Python < Formula
     Setuptools.new.brew { system py.binary, *setup_args }
     Pip.new.brew { system py.binary, *setup_args }
 
-    # And now we write the distuitsl.cfg
+    # And now we write the distutils.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"
     cfg.delete if cfg.exist?
     cfg.write <<-EOF.undent
