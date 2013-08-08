@@ -5,6 +5,8 @@ class PysideTools < Formula
   url 'http://qt-project.org/uploads/pyside/pyside-tools-0.2.14.tar.bz2'
   sha1 'f654553bc9bfb35dbc5673da26830969393f9fe8'
 
+  head 'git://gitorious.org/pyside/pyside-tools.git'
+
   depends_on 'cmake' => :build
   depends_on :python => :recommended
   depends_on :python3 => :optional
@@ -13,7 +15,7 @@ class PysideTools < Formula
   def install
     python do
       args = std_cmake_args
-      args << "-DSITE_PACKAGE=#{lib}/#{python.xy}/site-packages"
+      args << "-DSITE_PACKAGE=#{python.site_packages}"
       # The next two lines are because pyside needs this to switch Python
       # versions in HOMEBREW_PREFIX/lib/cmake/PySide-X.Y.Z/PySideConfig.cmake
       args << "-DPYTHON_BASENAME=-python2.7" if python2

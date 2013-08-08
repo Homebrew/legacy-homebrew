@@ -6,8 +6,8 @@ require 'formula'
 # `brew install python`.
 
 class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.7.tar.gz'
-  sha1 'c56c5cc55b678c25a0a06f25a122f6492d62e2d3'
+  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.8.tar.gz'
+  sha1 'a13ad9411149c52501a15c702a4f3a3c757b5ba9'
 end
 
 class Pip < Formula
@@ -35,6 +35,7 @@ class Python3 < Formula
   depends_on 'openssl' if build.with? 'brewed-openssl'
   depends_on 'xz' => :recommended  # for the lzma module added in 3.3
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
+  depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
 
   def patches
     DATA if build.with? 'brewed-tk'
@@ -66,6 +67,7 @@ class Python3 < Formula
     # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
     ENV['PYTHONHOME'] = nil
+    ENV['PYTHONPATH'] = nil
 
     args = %W[
       --prefix=#{prefix}
@@ -130,31 +132,33 @@ class Python3 < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # "python3" and executable is forgotten for framework builds.
+    # "python3" executable is forgotten for framework builds.
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
 
     # We ship setuptools and pip and reuse the PythonInstalled
     # Requirement here to write the sitecustomize.py
     py = PythonInstalled.new(VER)
+    py.binary = bin/"python#{VER}"
+    py.modify_build_environment
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
-    # setuptools-0.9.5-py3.3.egg
+    # setuptools-0.9.8-py3.3.egg
     rm_rf Dir["#{py.global_site_packages}/setuptools*"]
     rm_rf Dir["#{py.global_site_packages}/distribute*"]
 
-    py.binary = bin/"python#{VER}"
-    py.modify_build_environment
     setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Setuptools.new.brew { system "#{bin}/python#{VER}", *setup_args }
+
+    Setuptools.new.brew { system py.binary, *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
-    Pip.new.brew { system "#{bin}/python#{VER}", *setup_args }
+
+    Pip.new.brew { system py.binary, *setup_args }
     mv bin/'pip', bin/'pip3'
 
-    # And now we write the distuitsl.cfg
+    # And now we write the distutils.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/distutils/distutils.cfg"
     cfg.delete if cfg.exist?
     cfg.write <<-EOF.undent
