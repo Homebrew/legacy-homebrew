@@ -9,9 +9,8 @@ class Clojurescript < Formula
 
   def install
     system "./script/bootstrap"
-    prefix.install Dir['*'] 
-    [bin/'cljsc', prefix/'script/repl', prefix/'script/repljs', prefix/'script/browser-repl'].map { | file | set_env(file) }
-    [prefix/'script/repljs', prefix/'script/browser-repl'].map { | file | bin.install(file) }
+    ['bin/cljsc', 'script/repl', 'script/repljs', 'script/browser-repl'].map { | file | set_env(file) } 
+    prefix.install Dir['*']
   end
 
   test do
