@@ -38,7 +38,7 @@ class Gpac < Formula
 
     if build.with? 'x11'
       # gpac build system is barely functional
-      args << "--extra-cflags=-I#{MacOS::X11.include}",
+      args << "--extra-cflags=-I#{MacOS::X11.include}"
       # Force detection of X libs on 64-bit kernel
       args << "--extra-ldflags=-L#{MacOS::X11.lib}"
     end
