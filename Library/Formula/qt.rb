@@ -107,7 +107,7 @@ class Qt < Formula
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     frameworks.mkpath
-    ln_s Dir['lib/*.framework'], frameworks
+    ln_s Dir["#{lib}/*.framework"], frameworks
 
     # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to
