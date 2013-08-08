@@ -35,6 +35,7 @@ class Python3 < Formula
   depends_on 'openssl' if build.with? 'brewed-openssl'
   depends_on 'xz' => :recommended  # for the lzma module added in 3.3
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
+  depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
 
   def patches
     DATA if build.with? 'brewed-tk'
