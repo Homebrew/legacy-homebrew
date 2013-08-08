@@ -2,17 +2,15 @@ require 'formula'
 
 class Tegh < Formula
   homepage 'https://github.com/D1plo1d/tegh'
-  url 'https://github.com/D1plo1d/tegh.git', :tag => '0.2.0'
-  head 'https://github.com/D1plo1d/tegh.git', :branch => 'develop'
+  head 'https://github.com/D1plo1d/tegh.git'
+  url 'https://s3.amazonaws.com/tegh_binaries/0.2.0/tegh-0.2.0-brew.tar.gz'
+  sha1 '5c62b5cae11138b7773ad5fd4c596eb7990366e2'
 
   depends_on 'node'
 
   def install
-    system "npm", "install"
-    prefix.install 'package.json'
-    prefix.install Dir['src']
-    prefix.install Dir['node_modules']
-    bin.install Dir['bin/tegh']
+    system "npm", "install" if build.head?
+    prefix.install Dir['*']
   end
 
   test do
