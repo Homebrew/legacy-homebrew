@@ -12,6 +12,6 @@ class Mergelog < Formula
   end
 
   test do
-    system "mergelog"
+    system "mergelog", "/dev/null"
   end
 end
