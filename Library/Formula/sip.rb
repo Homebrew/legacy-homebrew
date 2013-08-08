@@ -20,9 +20,7 @@ class Sip < Formula
 
     # The python block is run once for each python (2.x and 3.x if requested)
     python do
-      # To have sip (for 2.x) and sip3 for python3, we rename the sip binary:
-      inreplace "configure.py", 'os.path.join(opts.sipbindir, "sip")', "os.path.join(opts.sipbindir, 'sip3')" if python3
-
+      # Note the binary `sip` is the same for python 2.x and 3.x
       # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
       system python, "configure.py",
                               "--destdir=#{lib}/#{python.xy}/site-packages",
@@ -30,7 +28,6 @@ class Sip < Formula
                               "--incdir=#{include}",
                               "--sipdir=#{HOMEBREW_PREFIX}/share/sip#{python.if3then3}"
       system "make"
-      bin.install 'sipgen/sip' => 'sip3' if python3
       system "make install"
       system "make clean"
     end
