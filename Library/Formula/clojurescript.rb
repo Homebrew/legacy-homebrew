@@ -9,7 +9,7 @@ class Clojurescript < Formula
 
   def install
     system "./script/bootstrap"
-    ['bin/cljsc', 'script/repl', 'script/repljs', 'script/browser-repl'].map { | file | set_env(file) } 
+    ['bin/cljsc', 'script/repl', 'script/repljs', 'script/browser-repl'].each { |file| set_env(file) } 
     prefix.install Dir['*']
   end
 
@@ -18,7 +18,7 @@ class Clojurescript < Formula
   end
 
   def caveats; <<-EOS.undent
-    This formula is useful if for some reason you need to use the ClojureScript compiler directly.  
+    This formula is useful if you need to use the ClojureScript compiler directly.  
     For a more integrated workflow, Leiningen with lein-cljsbuild is recommended.
     EOS
   end
