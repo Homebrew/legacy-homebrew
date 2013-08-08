@@ -144,7 +144,8 @@ class Pathname
     rmdir
     true
   rescue Errno::ENOTEMPTY
-    if (ds_store = self+'.DS_Store').exist? && children.length == 1
+    # If the dir was not empty but has a .DS_Store, we delete that and retry
+    if (ds_store = self+'.DS_Store').exist?
       ds_store.unlink
       retry
     else
