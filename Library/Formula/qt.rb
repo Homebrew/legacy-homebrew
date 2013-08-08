@@ -78,11 +78,16 @@ class Qt < Formula
       args << '-arch' << 'x86'
     end
 
+    # We move the source and build in-place because:
+    # - Debug symbols need to find the source so build in the prefix
+    # - to fix https://github.com/mxcl/homebrew/issues/20020
+    # - PySide `make apidoc` needs the src
+    (prefix/"src").mkdir
+    mv Dir['*'], "#{prefix}/src/"
+    cd "#{prefix}/src"
+
     if build.with? 'debug-and-release'
       args << "-debug-and-release"
-      # Debug symbols need to find the source so build in the prefix
-      mv "../qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
-      cd "#{prefix}/src"
     else
       args << "-release"
     end
