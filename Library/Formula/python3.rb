@@ -6,8 +6,8 @@ require 'formula'
 # `brew install python`.
 
 class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.7.tar.gz'
-  sha1 'c56c5cc55b678c25a0a06f25a122f6492d62e2d3'
+  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.8.tar.gz'
+  sha1 'a13ad9411149c52501a15c702a4f3a3c757b5ba9'
 end
 
 class Pip < Formula
@@ -141,7 +141,7 @@ class Python3 < Formula
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
-    # setuptools-0.9.5-py3.3.egg
+    # setuptools-0.9.8-py3.3.egg
     rm_rf Dir["#{py.global_site_packages}/setuptools*"]
     rm_rf Dir["#{py.global_site_packages}/distribute*"]
 
