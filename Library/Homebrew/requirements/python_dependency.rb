@@ -16,9 +16,9 @@ require 'requirement'
 class PythonInstalled < Requirement
   attr_reader :min_version
   attr_reader :if3then3
-  attr_reader :site_packages
+  attr_reader :imports
   attr_accessor :site_packages
-  attr_accessor :binary # The python.rb formula needs to set the binary
+  attr_writer :binary # The python.rb formula needs to set the binary
 
   fatal true  # you can still make Python optional by `depends_on :python => :optional`
 
@@ -31,15 +31,16 @@ class PythonInstalled < Requirement
     end
   end
 
-  def initialize(version="2.6", *tags )
-    # Extract the min_version if given. Default to python 2.X else
-    if /(\d+\.)*\d+/ === version.to_s
-      @min_version = PythonVersion.new(version)
+  def initialize(default_version="2.6", tags=[] )
+    tags = [tags].flatten
+    # Extract the min_version if given. Default to default_version else
+    if /(\d+\.)*\d+/ === tags.first.to_s
+      @min_version = PythonVersion.new(tags.shift)
     else
-      raise "Invalid version specification for Python: '#{version}'"
+      @min_version = PythonVersion.new(default_version)
     end
 
-    # often used idiom: e.g. sipdir = "share/sip" + python.if3then3
+    # often used idiom: e.g. sipdir = "share/sip#{python.if3then3}"
     if @min_version.major == 3
       @if3then3 = "3"
     else
@@ -56,7 +57,7 @@ class PythonInstalled < Requirement
     @imports = {}
     tags.each do |tag|
       if tag.kind_of? String
-        @imports[tag] = tag
+        @imports[tag] = tag  # if the module name is the same as the PyPi name
       elsif tag.kind_of? Hash
         @imports.merge!(tag)
       end
@@ -259,8 +260,6 @@ class PythonInstalled < Requirement
 
     ENV['PYTHONHOME'] = nil  # to avoid fuck-ups.
     ENV['PYTHONPATH'] = global_site_packages.to_s unless brewed?
-    # Python respects the ARCHFLAGS var if set. Shall we set them here?
-    # ENV['ARCHFLAGS'] = ??? # FIXME
     ENV.append 'CMAKE_INCLUDE_PATH', incdir, ':'
     ENV.append 'PKG_CONFIG_PATH', pkg_config_path, ':' if pkg_config_path
     # We don't set the -F#{framework} here, because if Python 2.x and 3.x are
@@ -312,7 +311,7 @@ class PythonInstalled < Requirement
               # Set the sys.executable to use the opt_prefix
               sys.executable = '#{HOMEBREW_PREFIX}/opt/#{name}/bin/python#{version.major}.#{version.minor}'
               # Fix 4)
-              # Make LINKFORSHARED (and python-confing --ldflags) return the
+              # Make LINKFORSHARED (and python-config --ldflags) return the
               # full path to the lib (yes, "Python" is actually the lib, not a
               # dir) so that third-party software does not need to add the
               # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
@@ -342,15 +341,14 @@ class PythonInstalled < Requirement
     binary.to_s
   end
 
+  # Objects of this class are used to represent dependencies on Python and
+  # dependencies on Python modules, so the combination of name + imports is
+  # enough to identify them uniquely.
   def eql?(other)
-    instance_of?(other.class) && hash == other.hash
+    instance_of?(other.class) && name == other.name && imports == other.imports
   end
 
   def hash
-    # Requirements are a ComparableSet. So we define our identity by the
-    # selected python binary plus the @imports in order to support multiple:
-    #    depends_on :python => 'module1'
-    #    depends_on :python => 'module2'
-    (binary.to_s+@imports.to_s).hash
+    [name, *imports].hash
   end
 end

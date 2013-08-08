@@ -20,8 +20,8 @@ end
 
 class Nzbget < Formula
   homepage 'http://sourceforge.net/projects/nzbget/'
-  url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/10.2/nzbget-10.2.tar.gz'
-  sha1 'd113525d43eaa5e0f1a4a357d30fe44267f48138'
+  url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/11.0/nzbget-11.0.tar.gz'
+  sha1 '0c0f83de3ef25a6117c1c988d99db9d92c3739eb'
 
   head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk'
 

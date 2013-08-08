@@ -5,6 +5,13 @@ class Vim < Formula
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
   url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.3.923.orig.tar.gz'
   sha1 'f308d219dd9c6b56e84109ace4e7487a101088f5'
+
+  devel do
+    url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.4b.004.orig.tar.gz'
+    version '7.4b.004'
+    sha1 'af303d0833dcfb63792639bf0d98cd0025276e09'
+  end
+
   head 'https://vim.googlecode.com/hg/'
 
   # We only have special support for finding depends_on :python, but not yet for
@@ -63,6 +70,7 @@ class Vim < Formula
                           "--with-tlib=ncurses",
                           "--enable-cscope",
                           "--with-features=huge",
+                          "--with-compiledby=Homebrew",
                           *opts
     system "make"
     # If stripping the binaries is not enabled, vim will segfault with

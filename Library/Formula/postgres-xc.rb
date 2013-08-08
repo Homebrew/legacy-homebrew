@@ -8,7 +8,7 @@ class PostgresXc < Formula
   depends_on :arch => :x86_64
   depends_on :python => :recommended
   depends_on 'readline'
-  depends_on 'libxml2' if MacOS.version == :leopard # Leopard libxml is too old
+  depends_on 'libxml2' if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' => :recommended
 
   conflicts_with 'postgresql',

@@ -35,6 +35,7 @@ class Imagemagick < Formula
   depends_on :fontconfig => :optional
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
+  depends_on 'little-cms2' => :optional
   depends_on 'jasper' => :optional
   depends_on 'libwmf' => :optional
   depends_on 'librsvg' => :optional
@@ -64,7 +65,6 @@ class Imagemagick < Formula
              "--enable-shared",
              "--disable-static",
              "--without-pango",
-             "--with-included-ltdl",
              "--with-modules"]
 
     args << "--disable-openmp" unless build.include? 'enable-openmp'
@@ -96,6 +96,6 @@ class Imagemagick < Formula
   end
 
   test do
-    system "#{bin}/identify", "/usr/share/doc/cups/images/smiley.jpg"
+    system "#{bin}/identify", "/usr/share/doc/cups/images/cups.png"
   end
 end

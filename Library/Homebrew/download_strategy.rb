@@ -144,6 +144,11 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
   private
 
+  def curl(*args)
+    args << '--connect-timeout' << '5' unless @mirrors.empty?
+    super
+  end
+
   def xzpath
     "#{HOMEBREW_PREFIX}/opt/xz/bin/xz"
   end
@@ -196,6 +201,13 @@ class CurlPostDownloadStrategy < CurlDownloadStrategy
   def _fetch
     base_url,data = @url.split('?')
     curl base_url, '-d', data, '-C', downloaded_size, '-o', @temporary_path
+  end
+end
+
+# Download from an SSL3-only host.
+class CurlSSL3DownloadStrategy < CurlDownloadStrategy
+  def _fetch
+    curl @url, '-3', '-C', downloaded_size, '-o', @temporary_path
   end
 end
 
@@ -745,6 +757,7 @@ class DownloadStrategyDetector
     when :nounzip then NoUnzipCurlDownloadStrategy
     when :post then CurlPostDownloadStrategy
     when :svn then SubversionDownloadStrategy
+    when :ssl3 then CurlSSL3DownloadStrategy
     else
       raise "Unknown download strategy #{strategy} was requested."
     end

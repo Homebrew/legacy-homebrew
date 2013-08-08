@@ -1,6 +1,7 @@
 require 'tab'
 require 'macos'
 require 'extend/ARGV'
+require 'bottle_version'
 
 # TODO: use options={} for some arguments.
 
@@ -88,4 +89,11 @@ def bottle_tag
   else
     Hardware::CPU.type == :ppc ? Hardware::CPU.family : MacOS.cat
   end
+end
+
+def bottle_filename_formula_name filename
+  path = Pathname.new filename
+  version = BottleVersion.parse(path).to_s
+  basename = path.basename.to_s
+  basename.rpartition("-#{version}").first
 end

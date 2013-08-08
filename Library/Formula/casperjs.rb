@@ -13,4 +13,9 @@ class Casperjs < Formula
     libexec.install Dir['*']
     bin.install_symlink libexec+'bin/casperjs'
   end
+
+  devel do
+    url 'https://github.com/n1k0/casperjs/archive/1.1-beta1.tar.gz'
+    sha1 '9e49094c1123ba2bbf610672443bb69a55a350f2'
+  end
 end

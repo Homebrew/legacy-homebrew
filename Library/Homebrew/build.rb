@@ -94,10 +94,10 @@ class Build
 
   def expand_deps
     f.recursive_dependencies do |dependent, dep|
-      if dep.optional? || dep.recommended?
-        Dependency.prune unless dependent.build.with?(dep.name)
-      elsif dep.build?
-        Dependency.prune unless dependent == f
+      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
+        Dependency.prune
+      elsif dep.build? && dependent != f
+        Dependency.prune
       end
     end
   end

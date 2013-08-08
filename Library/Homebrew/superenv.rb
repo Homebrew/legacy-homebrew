@@ -1,6 +1,5 @@
 require 'extend/ENV'
 require 'macos'
-require 'superenv/macsystem'
 
 ### Why `superenv`?
 # 1) Only specify the environment we need (NO LDFLAGS for cmake)
@@ -12,19 +11,24 @@ require 'superenv/macsystem'
 # 7) Simpler formula that *just work*
 # 8) Build-system agnostic configuration of the tool-chain
 
+module MacOS
+  def xcode43_without_clt?
+    MacOS::Xcode.version >= "4.3" and not MacOS::CLT.installed?
+  end
+end
+
 def superbin
   @bin ||= (HOMEBREW_REPOSITORY/"Library/ENV").children.reject{|d| d.basename.to_s > MacOS::Xcode.version }.max
 end
 
 def superenv?
-  not (MacSystem.xcode43_without_clt? and
-  MacOS.sdk_path.nil?) and # because superenv will fail to find stuff
-  superbin and superbin.directory? and
-  not ARGV.include? "--env=std"
-rescue # blanket rescue because there are naked raises
-  false
+  return false if MacOS.xcode43_without_clt? && MacOS.sdk_path.nil?
+  return false unless superbin && superbin.directory?
+  return false if ARGV.include? "--env=std"
+  true
 end
 
+# Note that this block is guarded with `if superenv?`
 class << ENV
   attr_accessor :keg_only_deps, :deps, :x11
   alias_method :x11?, :x11
@@ -55,7 +59,7 @@ class << ENV
     ENV['HOMEBREW_CC'] = determine_cc
     ENV['HOMEBREW_CCCFG'] = determine_cccfg
     ENV['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
-    ENV['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacSystem.xcode43_without_clt?
+    ENV['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS.xcode43_without_clt?
     ENV['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
     ENV['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     ENV['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
@@ -63,9 +67,25 @@ class << ENV
     ENV['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     ENV['ACLOCAL_PATH'] = determine_aclocal_path
 
+    # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
+    # compiler flag stripping. It consists of a string of characters which act
+    # as flags. Some of these flags are mutually exclusive.
+    #
+    # u - A universal build was requested
+    # 3 - A 32-bit build was requested
+    # b - Installing from a bottle
+    # i - Installing from a bottle on Intel
+    # 6 - Installing from a bottle on 64-bit Intel
+    # O - Enables argument refurbishing. Only active under the
+    #     make/bsdmake wrappers currently.
+    #
+    # On 10.8 and newer, these flags will also be present:
+    # s - apply fix for sed's Unicode support
+    # a - apply fix for apr-1-config path
+
     # Homebrew's apple-gcc42 will be outside the PATH in superenv,
     # so xcrun may not be able to find it
-    if ENV['HOMEBREW_CC'] == 'gcc-4.2' && !MacOS.locate('gcc-4.2')
+    if ENV['HOMEBREW_CC'] == 'gcc-4.2'
       apple_gcc42 = Formula.factory('apple-gcc42') rescue nil
       ENV.append('PATH', apple_gcc42.opt_prefix/'bin', ':') if apple_gcc42
     end
@@ -75,7 +95,7 @@ class << ENV
     append 'HOMEBREW_CCCFG', "u", ''
   end
 
-  # m32 on superenv does not add any flags. It prevents "-m32" from being erased.
+  # m32 on superenv does not add any CC flags. It prevents "-m32" from being erased.
   def m32
     append 'HOMEBREW_CCCFG', "3", ''
   end
@@ -89,7 +109,7 @@ class << ENV
       if MacOS.locate('gcc-4.2') || gcc_installed
         "gcc-4.2"
       else
-        raise("gcc-4.2 not found!")
+        raise "gcc-4.2 not found!"
       end
     elsif ARGV.include? '--use-llvm'
       "llvm-gcc"
@@ -112,13 +132,15 @@ class << ENV
         when 'gcc', 'gcc-4.2' then 'gcc-4.2'
         when 'llvm', 'llvm-gcc' then 'llvm-gcc'
       else
-        opoo "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC']}"
-        raise # use default
+        opoo "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC'].inspect}"
+        default_cc
       end
     else
-      raise
+      default_cc
     end
-  rescue
+  end
+
+  def default_cc
     case MacOS.default_compiler
     when :clang   then 'clang'
     when :llvm    then 'llvm-gcc'
@@ -129,12 +151,12 @@ class << ENV
 
   def determine_path
     paths = [superbin]
-    if MacSystem.xcode43_without_clt?
+    if MacOS.xcode43_without_clt?
       paths << "#{MacOS::Xcode.prefix}/usr/bin"
       paths << "#{MacOS::Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
     end
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
-    paths << "#{MacSystem.x11_prefix}/bin" if x11?
+    paths << MacOS::X11.bin if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
     paths.to_path_s
   end
@@ -147,43 +169,43 @@ class << ENV
 
   def determine_pkg_config_libdir
     paths = %W{/usr/lib/pkgconfig #{HOMEBREW_REPOSITORY}/Library/ENV/pkgconfig/#{MacOS.version}}
-    paths << "#{MacSystem.x11_prefix}/lib/pkgconfig" << "#{MacSystem.x11_prefix}/share/pkgconfig" if x11?
+    paths << "#{MacOS::X11.lib}/pkgconfig" << "#{MacOS::X11.share}/pkgconfig" if x11?
     paths.to_path_s
   end
 
   def determine_cmake_prefix_path
     paths = keg_only_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}" }
     paths << HOMEBREW_PREFIX.to_s # put ourselves ahead of everything else
-    paths << "#{MacOS.sdk_path}/usr" if MacSystem.xcode43_without_clt?
+    paths << "#{MacOS.sdk_path}/usr" if MacOS.xcode43_without_clt?
     paths.to_path_s
   end
 
   def determine_cmake_frameworks_path
     # XXX: keg_only_deps perhaps? but Qt does not link its Frameworks because of Ruby's Find.find ignoring symlinks!!
     paths = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/Frameworks" }
-    paths << "#{MacOS.sdk_path}/System/Library/Frameworks" if MacSystem.xcode43_without_clt?
+    paths << "#{MacOS.sdk_path}/System/Library/Frameworks" if MacOS.xcode43_without_clt?
     paths.to_path_s
   end
 
   def determine_cmake_include_path
-    sdk = MacOS.sdk_path if MacSystem.xcode43_without_clt?
+    sdk = MacOS.sdk_path if MacOS.xcode43_without_clt?
     paths = []
-    paths << "#{MacSystem.x11_prefix}/include/freetype2" if x11?
+    paths << "#{MacOS::X11.include}/freetype2" if x11?
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
-    if MacSystem.xcode43_without_clt?
+    if MacOS.xcode43_without_clt?
       paths << "#{sdk}/usr/include/apache2"
     end
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/" unless x11?
-    paths << "#{MacSystem.x11_prefix}/include" if x11?
+    paths << MacOS::X11.include if x11?
     paths.to_path_s
   end
 
   def determine_cmake_library_path
-    sdk = MacOS.sdk_path if MacSystem.xcode43_without_clt?
+    sdk = MacOS.sdk_path if MacOS.xcode43_without_clt?
     paths = []
     # things expect to find GL headers since X11 used to be a default, so we add them
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries" unless x11?
-    paths << "#{MacSystem.x11_prefix}/lib" if x11?
+    paths << MacOS::X11.lib if x11?
     paths.to_path_s
   end
 
@@ -245,7 +267,7 @@ class << ENV
       when "gcc-4.2" then :gcc
       when "gcc", "clang" then ENV['HOMEBREW_CC'].to_sym
     else
-      raise
+      raise "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC'].inspect}"
     end
   end
   def deparallelize
