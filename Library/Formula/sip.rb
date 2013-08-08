@@ -37,7 +37,8 @@ class Sip < Formula
   def caveats
     s = ''
     s += python.standard_caveats if python
-    s += "The sip-dir for Python #{python.version.major}.x is #{HOMEBREW_PREFIX}/share/sip#{python.if3then3}."
+    s += "The sip-dir for Python 2.x is #{HOMEBREW_PREFIX}/share/sip.\n"
+    s += "The sip-dir for Python 3.x is #{HOMEBREW_PREFIX}/share/sip3."
     s
   end
 end
