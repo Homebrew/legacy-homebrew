@@ -1,5 +1,4 @@
 require 'testing_env'
-require 'test/testball'
 require 'keg'
 require 'stringio'
 
@@ -7,12 +6,15 @@ class LinkTests < Test::Unit::TestCase
   include FileUtils
 
   def setup
-    @formula = TestBall.new
-    shutup do
-      @formula.brew { @formula.install }
+    @keg = HOMEBREW_CELLAR/"foo/1.0"
+    @keg.mkpath
+    (@keg/"bin").mkpath
+
+    %w{hiworld helloworld goodbye_cruel_world}.each do |file|
+      touch @keg/"bin/#{file}"
     end
-    @keg = Keg.for @formula.prefix
-    @keg.unlink
+
+    @keg = Keg.new(@keg)
 
     @mode = OpenStruct.new
 
@@ -45,7 +47,7 @@ class LinkTests < Test::Unit::TestCase
 
   def test_linking_fails_when_already_linked
     @keg.link
-    assert_raise RuntimeError, "Cannot link testball" do
+    assert_raise RuntimeError do
       shutup { @keg.link }
     end
   end
