@@ -19,12 +19,10 @@ class Grads < Formula
     GradsSupplementary.new.brew{ (lib+'grads').install Dir['*'] }
   end
 
-  def caveats
-    if HOMEBREW_PREFIX.to_s != '/usr/local' then <<-EOS.undent
-      In order to use the GrADS tools, you will need to set the GADDIR
-      environment variable to:
-        #{HOMEBREW_PREFIX}/lib/grads
-      EOS
-    end
+  def caveats; <<-EOS.undent
+    In order to use the GrADS tools, you may need to set some environmental
+    variables. See the documentation at:
+      http://www.iges.org/grads/gadoc/gradcomdgrads.html
+    EOS
   end
 end
