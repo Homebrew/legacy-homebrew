@@ -35,8 +35,7 @@ class Monotone < Formula
     ENV['botan_CFLAGS'] = "-I#{botan18_prefix}/include"
     ENV['botan_LIBS'] = "-L#{botan18_prefix}/lib -lbotan"
 
-    # Monotone only needs headers from Boost (it's templates all the way down!),
-    # so let's avoid building boost.
+    # Monotone only needs headers from Boost, so let's avoid building the libraries.
     # This is suggested in the Monotone installation instructions.
 
     boost_prefix = buildpath/'boost'
