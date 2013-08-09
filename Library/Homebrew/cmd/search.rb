@@ -13,6 +13,8 @@ module Homebrew extend self
       exec_browser "http://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     elsif ARGV.include? '--opensuse'
       exec_browser "http://software.opensuse.org/search?q=#{ARGV.next}"
+    elsif ARGV.include? '--fedora'
+      exec_browser "https://admin.fedoraproject.org/pkgdb/acls/list/*#{ARGV.next}*"
     elsif (query = ARGV.first).nil?
       puts_columns Formula.names
     else
