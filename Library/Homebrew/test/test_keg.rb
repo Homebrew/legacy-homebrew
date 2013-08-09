@@ -22,6 +22,7 @@ class LinkTests < Test::Unit::TestCase
     $stdout = StringIO.new
 
     mkpath HOMEBREW_PREFIX/"bin"
+    mkpath HOMEBREW_PREFIX/"lib"
   end
 
   def test_linking_keg
@@ -84,6 +85,28 @@ class LinkTests < Test::Unit::TestCase
     assert_equal "#{HOMEBREW_PREFIX}/bin/helloworld\n", $stdout.string
   end
 
+  def test_unlink_prunes_empty_toplevel_directories_fails
+    mkpath HOMEBREW_PREFIX/"lib/foo/bar"
+    mkpath @keg/"lib/foo/bar"
+    touch @keg/"lib/foo/bar/file1"
+
+    @keg.unlink
+
+    assert File.directory?(HOMEBREW_PREFIX/"lib/foo")
+  end
+
+  def test_unlink_ignores_DS_Store_when_pruning_empty_dirs_fails
+    mkpath HOMEBREW_PREFIX/"lib/foo/bar"
+    touch HOMEBREW_PREFIX/"lib/foo/.DS_Store"
+    mkpath @keg/"lib/foo/bar"
+    touch @keg/"lib/foo/bar/file1"
+
+    @keg.unlink
+
+    assert File.directory?(HOMEBREW_PREFIX/"lib/foo")
+    assert File.exist?(HOMEBREW_PREFIX/"lib/foo/.DS_Store")
+  end
+
   def teardown
     @keg.unlink
     @keg.rmtree
@@ -91,5 +114,6 @@ class LinkTests < Test::Unit::TestCase
     $stdout = @old_stdout
 
     rmtree HOMEBREW_PREFIX/"bin"
+    rmtree HOMEBREW_PREFIX/"lib"
   end
 end
