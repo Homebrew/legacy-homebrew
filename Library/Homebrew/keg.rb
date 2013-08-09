@@ -41,8 +41,8 @@ class Keg < Pathname
       next unless dir.exist?
       dir.find do |src|
         next if src == self
-        dst=HOMEBREW_PREFIX+src.relative_path_from(self)
-        dst.extend ObserverPathnameExtension
+        dst = HOMEBREW_PREFIX + src.relative_path_from(self)
+        dst.extend(ObserverPathnameExtension)
 
         # check whether the file to be unlinked is from the current keg first
         if !dst.symlink? || !dst.exist? || src != dst.resolved_path
@@ -51,7 +51,7 @@ class Keg < Pathname
 
         dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
         dst.unlink
-        dst.parent.rmdir_if_possible
+        dst.parent.extend(ObserverPathnameExtension).rmdir_if_possible
         Find.prune if src.directory?
       end
     end
