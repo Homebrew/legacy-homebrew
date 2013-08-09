@@ -83,6 +83,14 @@ class Qt5 < Formula
     ENV.j1
     system "make install"
 
+    # Fix https://github.com/mxcl/homebrew/issues/20020 (upstream: https://bugreports.qt-project.org/browse/QTBUG-32417)
+    system "install_name_tool", "-change", "#{pwd}/qt-everywhere-opensource-src-5.1.0/qtwebkit/lib/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets", #old
+                                           "#{lib}/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets",  #new
+                                           "#{libexec}/QtWebProcess" # in this lib
+    system "install_name_tool", "-change", "#{pwd}/qt-everywhere-opensource-src-5.1.0/qtwebkit/lib/QtWebKit.framework/Versions/5/QtWebKit",
+                                           "#{lib}/QtWebKit.framework/Versions/5/QtWebKit",
+                                           "#{prefix}/qml/QtWebKit/libqmlwebkitplugin.dylib"
+
     # Some config scripts will only find Qt in a "Frameworks" folder
     cd prefix do
       ln_s lib, frameworks
