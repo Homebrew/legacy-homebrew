@@ -26,14 +26,13 @@ class Libraw < Formula
   depends_on 'little-cms2'
 
   def install
-    d = buildpath.dirname
-    LibrawDemosaicGPL2.new.brew { d.install Dir['*'] }
-    LibrawDemosaicGPL3.new.brew { d.install Dir['*'] }
+    LibrawDemosaicGPL2.new.brew { (buildpath/'gpl2').install Dir['*'] }
+    LibrawDemosaicGPL3.new.brew { (buildpath/'gpl3').install Dir['*'] }
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
-                          "--enable-demosaic-pack-gpl2=#{d}",
-                          "--enable-demosaic-pack-gpl3=#{d}"
+                          "--enable-demosaic-pack-gpl2=#{buildpath}/gpl2",
+                          "--enable-demosaic-pack-gpl3=#{buildpath}/gpl3"
     system "make"
     system "make install"
     doc.install Dir['doc/*']
