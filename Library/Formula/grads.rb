@@ -12,8 +12,7 @@ class Grads < Formula
 
   def install
     rm 'bin/INSTALL'
-    prefix.install 'bin/COPYRIGHT'
-    prefix.install 'bin'
+    prefix.install 'bin/COPYRIGHT', 'bin'
 
     # Install the required supplementary files
     GradsSupplementary.new.brew{ (lib+'grads').install Dir['*'] }
