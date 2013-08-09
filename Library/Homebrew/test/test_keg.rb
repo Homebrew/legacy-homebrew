@@ -40,7 +40,7 @@ class LinkTests < Test::Unit::TestCase
     assert !@keg.linked?
 
     ['hiworld', 'helloworld', 'goodbye_cruel_world'].each do |file|
-      assert_match "/private/tmp/testbrew/prefix/bin/#{file}", $stdout.string
+      assert_match "#{HOMEBREW_PREFIX}/bin/#{file}", $stdout.string
     end
     assert_equal 3, $stdout.string.lines.count
   end
@@ -81,7 +81,7 @@ class LinkTests < Test::Unit::TestCase
     assert_equal 0, @keg.link(@mode)
     assert !@keg.linked?
 
-    assert_equal "/private/tmp/testbrew/prefix/bin/helloworld\n", $stdout.string
+    assert_equal "#{HOMEBREW_PREFIX}/bin/helloworld\n", $stdout.string
   end
 
   def teardown
