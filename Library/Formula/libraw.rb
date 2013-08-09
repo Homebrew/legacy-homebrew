@@ -35,8 +35,7 @@ class Libraw < Formula
     system "make"
     system "make install"
     doc.install Dir['doc/*']
-    (prefix+'samples').mkpath
-    (prefix+'samples').install Dir['samples/*']
+    prefix.install 'samples'
   end
 
   def test
