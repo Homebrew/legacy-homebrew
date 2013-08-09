@@ -757,8 +757,8 @@ class DownloadStrategyDetector
     when :hg then MercurialDownloadStrategy
     when :nounzip then NoUnzipCurlDownloadStrategy
     when :post then CurlPostDownloadStrategy
-    when :svn then SubversionDownloadStrategy
     when :ssl3 then CurlSSL3DownloadStrategy
+    when :svn then SubversionDownloadStrategy
     else
       raise "Unknown download strategy #{strategy} was requested."
     end
