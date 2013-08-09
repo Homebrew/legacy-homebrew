@@ -21,6 +21,8 @@ class Libraw < Formula
   url 'http://www.libraw.org/data/LibRaw-0.14.7.tar.gz'
   sha1 'e924527bed3d72ee4756da0c9383dc74c584799f'
 
+  depends_on 'pkg-config' => :build
+  depends_on 'jasper'
   depends_on 'little-cms2'
 
   def install
