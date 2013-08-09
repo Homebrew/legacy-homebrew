@@ -31,7 +31,7 @@ class LinkTests < Test::Unit::TestCase
 
   def test_unlinking_keg
     @keg.link
-    assert_equal 3, @keg.unlink
+    assert_equal 4, @keg.unlink
   end
 
   def test_link_dry_run
