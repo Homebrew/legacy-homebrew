@@ -33,9 +33,7 @@ class Keg < Pathname
   end
 
   def unlink
-    # these are used by the ObserverPathnameExtension to count the number
-    # of files and directories linked
-    $n=$d=0
+    ObserverPathnameExtension.reset_counts!
 
     dirs = []
 
@@ -62,7 +60,7 @@ class Keg < Pathname
 
     dirs.reverse_each(&:rmdir_if_possible)
 
-    $n+$d
+    ObserverPathnameExtension.total
   end
 
   def fname
@@ -108,8 +106,7 @@ class Keg < Pathname
   def link mode=OpenStruct.new
     raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
 
-    $n=0
-    $d=0
+    ObserverPathnameExtension.reset_counts!
 
     share_mkpaths = %w[aclocal doc info locale man]
     share_mkpaths.concat((1..8).map { |i| "man/man#{i}" })
@@ -175,7 +172,7 @@ class Keg < Pathname
       optlink
     end
 
-    return $n + $d
+    ObserverPathnameExtension.total
   rescue Exception
     opoo "Could not link #{fname}. Unlinking..."
     unlink
