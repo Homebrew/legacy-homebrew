@@ -98,11 +98,11 @@ class SoftwareSpecTests < Test::Unit::TestCase
 
   def test_verify_download_integrity_missing
     fn = Object.new
-    checksum = @spec.sha1('baadidea'*5)
+    checksum = @spec.sha256('baadidea'*8)
 
     fn.expects(:verify_checksum).
       with(checksum).raises(ChecksumMissingError)
-    fn.expects(:sha1)
+    fn.expects(:sha256)
 
     shutup { @spec.verify_download_integrity(fn) }
   end

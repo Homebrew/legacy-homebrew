@@ -26,7 +26,7 @@ class SoftwareSpec
   rescue ChecksumMissingError
     opoo "Cannot verify package integrity"
     puts "The formula did not provide a download checksum"
-    puts "For your reference the SHA1 is: #{fn.sha1}"
+    puts "For your reference the SHA256 is: #{fn.sha256}"
   rescue ChecksumMismatchError => e
     e.advice = <<-EOS.undent
     Archive: #{fn}
