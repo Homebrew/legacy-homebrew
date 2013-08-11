@@ -9,9 +9,7 @@ class Namebench < Formula
 
   def install
     python do
-      system python, "setup.py", "install", "--prefix=#{prefix}", "--install-data=#{prefix}/bin"
-      
+      system python, "setup.py", "install", "--prefix=#{prefix}", "--install-data=#{bin}"
     end
   end
-
 end
