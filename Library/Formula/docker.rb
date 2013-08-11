@@ -1,8 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Docker < Formula
   homepage 'http://docker.io/'
   url 'https://github.com/dotcloud/docker/archive/v0.5.2.tar.gz'
