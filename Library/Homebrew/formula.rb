@@ -355,6 +355,8 @@ class Formula
   end
 
   def self.installed
+    return [] unless HOMEBREW_CELLAR.directory?
+
     HOMEBREW_CELLAR.children.map do |rack|
       begin
         factory(rack.basename.to_s)
