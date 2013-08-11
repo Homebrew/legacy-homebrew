@@ -229,7 +229,7 @@ def __check_clt_up_to_date
   elsif MacOS::CLT.outdated? then <<-EOS.undent
     A newer Command Line Tools release is available
     You should install the latest version from:
-      http://connect.apple.com
+      https://developer.apple.com/downloads
     EOS
   end
 end
