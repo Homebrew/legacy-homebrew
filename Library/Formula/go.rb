@@ -2,7 +2,7 @@ require 'formula'
 
 class Go < Formula
   homepage 'http://golang.org'
-  url 'https://go.googlecode.com/files/go1.1.1.src.tar.gz';
+  url 'https://go.googlecode.com/files/go1.1.1.src.tar.gz'
   version '1.1.1'
   sha1 'f365aed8183e487a48a66ace7bf36e5974dffbb3'
 
@@ -53,24 +53,16 @@ class Go < Formula
     Pathname.new('VERSION').write 'default' if build.head?
 
     cd 'src' do
-      # Build only. Run `brew test go` to run distrib's tests.
-      targets.each do |(os, archs, opts)|
-      archs.each do |arch|
-        ENV['GOROOT_FINAL'] = prefix
-        ENV['GOOS']         = os
-        ENV['GOARCH']       = arch
-        ENV['CGO_ENABLED']  = opts[:cgo] ? "1" : "0"
-        allow_fail = opts[:allow_fail] ? "|| true" : ""
-        system "./make.bash --no-clean #{allow_fail}"
-      end
+      targets.each do |os, archs, opts|
+        archs.each do |arch|
+          ENV['GOROOT_FINAL'] = prefix
+          ENV['GOOS']         = os
+          ENV['GOARCH']       = arch
+          ENV['CGO_ENABLED']  = opts[:cgo] ? "1" : "0"
+          system "./make.bash", "--no-clean"
+        end
       end
     end
-
-    # cleanup ENV
-    ENV.delete('GOROOT_FINAL')
-    ENV.delete('GOOS')
-    ENV.delete('GOARCH')
-    ENV.delete('CGO_ENABLED')
 
     Pathname.new('pkg/obj').rmtree
 
