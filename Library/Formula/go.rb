@@ -98,7 +98,7 @@ class Go < Formula
     EOS
     # Run go vet check for no errors then run the program.
     # This is a a bare minimum of go working as it uses vet, build, and run.
-    assert_empty `#{bin}/go vet hello.go`
+    system "#{bin}/go", "vet", "hello.go"
     assert_equal "Hello World\n", `#{bin}/go run hello.go`
   end
 end
