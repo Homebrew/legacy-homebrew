@@ -37,7 +37,7 @@ def blacklisted? name
     "lzma is now part of the xz formula."
   when 'xcode' then <<-EOS.undent
     Xcode can be installed via the App Store (on Lion or newer), or from:
-      http://connect.apple.com/
+      https://developer.apple.com/downloads/
     EOS
   when 'gtest', 'googletest', 'google-test' then <<-EOS.undent
     Installing gtest system-wide is not recommended; it should be vendored

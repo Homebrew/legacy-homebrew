@@ -223,11 +223,13 @@ end
 def __check_clt_up_to_date
   if not MacOS::CLT.installed? then <<-EOS.undent
     No developer tools installed
-    You should install the Command Line Tools: http://connect.apple.com
+    You should install the Command Line Tools:
+      https://developer.apple.com/downloads/
     EOS
   elsif MacOS::CLT.outdated? then <<-EOS.undent
     A newer Command Line Tools release is available
-    You should install the latest version from: http://connect.apple.com
+    You should install the latest version from:
+      http://connect.apple.com
     EOS
   end
 end
