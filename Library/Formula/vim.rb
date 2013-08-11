@@ -2,15 +2,11 @@ require 'formula'
 
 class Vim < Formula
   homepage 'http://www.vim.org/'
-  # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
-  url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.3.923.orig.tar.gz'
-  sha1 'f308d219dd9c6b56e84109ace4e7487a101088f5'
-
-  devel do
-    url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.4b.004.orig.tar.gz'
-    version '7.4b.004'
-    sha1 'af303d0833dcfb63792639bf0d98cd0025276e09'
-  end
+  # Get the base 7.4 tarball from Vim.org. But once patches start again, go
+  # back to tracking Debian unstable here:
+  # http://ftp.de.debian.org/debian/pool/main/v/vim/
+  url 'http://ftp.vim.org/pub/vim/unix/vim-7.4.tar.bz2'
+  sha1 '601abf7cc2b5ab186f40d8790e542f86afca86b7'
 
   head 'https://vim.googlecode.com/hg/'
 
