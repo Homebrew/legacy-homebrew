@@ -10,15 +10,22 @@ class WineMono < Formula
   sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
 end
 
-# NOTE: when updating Wine, please check Wine-Gecko and Wine-Mono for updates
-#  http://wiki.winehq.org/Gecko
-#  http://wiki.winehq.org/Mono
 class Wine < Formula
   homepage 'http://winehq.org/'
   url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
   sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
 
+  # NOTE: when updating Wine, please check Wine-Gecko and Wine-Mono for updates too:
+  #  * http://wiki.winehq.org/Gecko
+  #  * http://wiki.winehq.org/Mono
+
   head 'git://source.winehq.org/git/wine.git'
+
+  devel do
+    # NOTE: See above about updating Wine-Gecko and Wine-Mono.
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.0.tar.bz2'
+    sha256 '0106ba3c8f0699cc7ae6edfcf505f7709c9e6d963bf32ff9c690607def9d4d77'
+  end
 
   env :std
 
@@ -35,7 +42,8 @@ class Wine < Formula
   depends_on 'jpeg'
   depends_on 'libicns'
   depends_on 'libtiff'
-  depends_on 'little-cms'
+  depends_on 'little-cms' unless build.devel?
+  depends_on 'little-cms2' if build.devel?
   depends_on 'sane-backends'
   depends_on 'libgphoto2'
 
@@ -47,6 +55,11 @@ class Wine < Formula
   fails_with :clang do
     build 421
     cause 'error: invalid operand for instruction lretw'
+  end
+
+  def patches
+    # http://bugs.winehq.org/show_bug.cgi?id=34188
+    ['http://bugs.winehq.org/attachment.cgi?id=45477']
   end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
@@ -69,6 +82,15 @@ class Wine < Formula
 
     ENV.append "CFLAGS", build32
     ENV.append "LDFLAGS", build32
+
+    # Still miscompiles at v1.6
+    if ENV.compiler == :clang
+      opoo <<-EOS.undent
+        Clang currently miscompiles some parts of Wine. If you have gcc, you
+        can get a more stable build with:
+          brew install wine --use-gcc
+      EOS
+    end
 
     # Workarounds for XCode not including pkg-config files
     ENV.libxml2
