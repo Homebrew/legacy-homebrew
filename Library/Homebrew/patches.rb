@@ -32,8 +32,8 @@ module Patches
       end
 
       # This is the new, preferred DSL that allows a checksum to be specified.
-      def self.patch patch_p, url_or_io, sha256=nil
-        patchlist << Patch.new(patch_p, '%03d-homebrew.diff' % patchlist.length, url_or_io, sha256)
+      def self.patch patch_p, url_or_io, sha1_or_256=nil
+        patchlist << Patch.new(patch_p, '%03d-homebrew.diff' % patchlist.length, url_or_io, sha1_or_256)
       end
     end
   end
@@ -111,14 +111,15 @@ class Patch
   # Used by audit
   attr_reader :url
 
-  def initialize patch_p, filename, url, sha256
+  def initialize patch_p, filename, url, sha1_or_256
     @patch_p = patch_p
     @patch_filename = filename
     @compressed_filename = @patch_filename
     @compression = nil
     @url = nil
     @data = nil
-    @checksum = Checksum.new(:sha256, sha256)
+    checksumtype = (sha1_or_256 && sha1_or_256.length == 40) ? :sha1 : :sha256
+    @checksum = Checksum.new(checksumtype, sha1_or_256)
 
     if url.kind_of? IO or url.kind_of? StringIO
       @data = url.read.to_s
