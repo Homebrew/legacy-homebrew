@@ -1,15 +1,5 @@
 require 'formula'
 
-class WineGecko < Formula
-  url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
-  sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
-end
-
-class WineMono < Formula
-  url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
-  sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
-end
-
 # NOTE: When updating Wine, please check Wine-Gecko and Wine-Mono for updates too:
 # http://wiki.winehq.org/Gecko
 # http://wiki.winehq.org/Mono
@@ -48,6 +38,16 @@ class Wine < Formula
     depends_on 'little-cms'
   else
     depends_on 'little-cms2'
+  end
+
+  resource 'gecko' do
+    url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
+    sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
+  end
+
+  resource 'mono do'
+    url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+    sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
   end
 
   fails_with :llvm do
@@ -123,18 +123,16 @@ class Wine < Formula
     end
 
     system "make install"
-
-    # Don't need Gnome desktop support
-    (share/'applications').rmtree
-
-    # Download Gecko and Mono once so we don't need to redownload for each prefix
-    WineGecko.new('winegecko').brew { (share+'wine/gecko').install Dir["*"] }
-    WineMono.new('winemono').brew { (share+'wine/mono').install Dir["*"] }
+    (share/'wine/gecko').install resource('gecko')
+    (share/'wine/mono').install resource('mono')
 
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine
     mv bin/'wine', bin/'wine.bin'
     (bin/'wine').write(wine_wrapper)
+
+    # Don't need Gnome desktop support
+    (share/'applications').rmtree
   end
 
   def caveats
