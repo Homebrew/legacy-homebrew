@@ -15,7 +15,7 @@ class Neko < Formula
     ENV.deparallelize
     system "make", "os=osx", "LIB_PREFIX=#{HOMEBREW_PREFIX}", "INSTALL_FLAGS="
 
-    lib.install 'bin/libneko.dylib'
+    (lib/'neko').install 'bin/libneko.dylib'
     include.install Dir['vm/neko*.h']
     neko = lib/'neko'
     neko.install Dir['bin/*']
