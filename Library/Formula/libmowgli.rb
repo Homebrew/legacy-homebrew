@@ -28,7 +28,7 @@ class Libmowgli < Formula
         return EXIT_SUCCESS;
       }
     EOS
-    system ENV.cc, "-I#{self.installed_prefix}/include/libmowgli-2", "-o", "test", "test.c", "-lmowgli-2"
+    system ENV.cc, "-I#{include}/libmowgli-2", "-o", "test", "test.c", "-lmowgli-2"
     system "./test"
   end
 end
