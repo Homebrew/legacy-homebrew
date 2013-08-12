@@ -1,19 +1,43 @@
 module ArchitectureListExtension
+  def fat?
+    length > 1
+  end
+
+  def intel_universal?
+    intersects_all?(Hardware::CPU::INTEL_32BIT_ARCHS, Hardware::CPU::INTEL_64BIT_ARCHS)
+  end
+
+  def ppc_universal?
+    intersects_all?(Hardware::CPU::PPC_32BIT_ARCHS, Hardware::CPU::PPC_64BIT_ARCHS)
+  end
+
+  # Old-style 32-bit PPC/Intel universal, e.g. ppc7400 and i386
+  def cross_universal?
+    intersects_all?(Hardware::CPU::PPC_32BIT_ARCHS, Hardware::CPU::INTEL_32BIT_ARCHS)
+  end
+
   def universal?
-    self.include? :i386 and self.include? :x86_64
+    intel_universal? || ppc_universal? || cross_universal?
   end
 
   def ppc?
-    self.include? :ppc7400 or self.include? :ppc64
+    (PPC_32BIT_ARCHS+PPC_64BIT_ARCHS).any? {|a| self.include? a}
   end
 
   def remove_ppc!
-    self.delete :ppc7400
-    self.delete :ppc64
+    (Hardware::CPU::PPC_32BIT_ARCHS+Hardware::CPU::PPC_64BIT_ARCHS).each {|a| self.delete a}
   end
 
   def as_arch_flags
     self.collect{ |a| "-arch #{a}" }.join(' ')
+  end
+
+  protected
+
+  def intersects_all?(*set)
+    set.all? do |archset|
+      archset.any? {|a| self.include? a}
+    end
   end
 end
 
