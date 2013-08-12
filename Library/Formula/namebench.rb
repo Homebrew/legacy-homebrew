@@ -7,9 +7,16 @@ class Namebench < Formula
 
   depends_on :python
 
+  option 'no-third-party', 'Does not install bundled third-party modules'
+
   def install
+    ENV['NO_THIRD_PARTY']='1' if build.include? 'no-third-party'
+
     python do
-      system python, "setup.py", "install", "--prefix=#{prefix}", "--install-data=#{bin}"
+      system python, "setup.py", "install", "--prefix=#{prefix}", "--install-data=#{python.site_packages}"
     end
+
+    bin.install 'namebench.py' => 'namebench'
+    rm bin/'namebench.py'
   end
 end
