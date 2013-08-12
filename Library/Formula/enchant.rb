@@ -1,11 +1,5 @@
 require 'formula'
 
-class PyEnchant < Formula
-  homepage 'http://pythonhosted.org/pyenchant/'
-  url 'https://pypi.python.org/packages/source/p/pyenchant/pyenchant-1.6.5.tar.gz'
-  sha1 '6f01b8657b64e970a11945c2a9b4d6d8023997bc'
-end
-
 class Enchant < Formula
   homepage 'http://www.abisource.com/projects/enchant/'
   url 'http://www.abisource.com/downloads/enchant/1.6.0/enchant-1.6.0.tar.gz'
@@ -16,6 +10,12 @@ class Enchant < Formula
   depends_on 'glib'
   depends_on 'aspell'
 
+  # http://pythonhosted.org/pyenchant/
+  resource 'pyenchant' do
+    url 'https://pypi.python.org/packages/source/p/pyenchant/pyenchant-1.6.5.tar.gz'
+    sha1 '6f01b8657b64e970a11945c2a9b4d6d8023997bc'
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -23,11 +23,11 @@ class Enchant < Formula
                           "--disable-myspell"
     system "make", "install"
 
-    python do
-      # Now we handle the python bindings from the subformulae PyEnchant
-      PyEnchant.new.brew do
-        # Don't download and install distribute now
-        inreplace 'setup.py', "distribute_setup.use_setuptools()", ""
+    if build.with? 'python'
+      python do
+        resource('pyenchant').stage do
+          # Don't download and install distribute now
+          inreplace 'setup.py', "distribute_setup.use_setuptools()", ""
           ENV['PYENCHANT_LIBRARY_PATH'] = lib/'libenchant.dylib'
           system python, 'setup.py', 'install', "--prefix=#{prefix}",
                                 '--single-version-externally-managed',
