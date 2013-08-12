@@ -31,9 +31,12 @@ class Vim < Formula
   depends_on 'lua' => :optional
   depends_on 'gtk+' if build.with? 'client-server'
 
-  # vim uses the obsolete Apple-only -no-cpp-precomp flag, which
+  # First patch: vim uses the obsolete Apple-only -no-cpp-precomp flag, which
   # FSF GCC can't understand; reported upstream:
   # https://groups.google.com/forum/#!topic/vim_dev/X5yG3-IiUp8
+  # 
+  # Second patch: includes Mac OS X version macros not included by default on 10.9
+  # Reported upstream: https://groups.google.com/forum/#!topic/vim_mac/5kVAMSPb6uU
   def patches; DATA; end
 
   def install
@@ -130,3 +133,17 @@ index d7d4f2a..7015d7b 100755
  esac
  
 
+diff --git a/src/os_mac.h b/src/os_mac.h
+index 78b79c2..54009ab 100644
+--- a/src/os_mac.h
++++ b/src/os_mac.h
+@@ -16,6 +16,9 @@
+ # define OPAQUE_TOOLBOX_STRUCTS 0
+ #endif
+ 
++/* Include MAC_OS_X_VERSION_* macros */
++#include <AvailabilityMacros.h>
++
+ /*
+  * Macintosh machine-dependent things.
+  *
