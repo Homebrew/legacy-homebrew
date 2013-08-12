@@ -2,13 +2,8 @@ require 'formula'
 
 class Bazaar < Formula
   homepage 'http://bazaar-vcs.org/'
-  url 'https://launchpad.net/bzr/2.5/2.5.1/+download/bzr-2.5.1.tar.gz'
-  sha1 '7e2776e3aaf8fb48828026d3fc2a3047465eea5e'
-
-  devel do
-    url 'https://launchpad.net/bzr/2.6/2.6b2/+download/bzr-2.6b2.tar.gz'
-    sha1 'f10e193bc18096ee82dd923a424df2b086f95c4c'
-  end
+  url 'https://launchpad.net/bzr/2.6/2.6.0/+download/bzr-2.6.0.tar.gz'
+  sha1 '5eb4d0367c6d83396250165da5bb2c8a9f378293'
 
   depends_on :python
 
