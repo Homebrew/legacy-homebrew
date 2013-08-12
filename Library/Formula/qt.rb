@@ -37,7 +37,7 @@ class Qt < Formula
     # we have to disable these to avoid triggering optimization code
     # that will fail in superenv, perhaps because we rename clang to cc and
     # Qt thinks it can build with special assembler commands.
-    # In --env=std, Qt seems aware of this.)
+    # In --env=std, Qt seems aware of this.
     # But we want superenv, because it allows to build Qt in non-standard
     # locations and with Xcode-only.
     args << "-no-3dnow" << "-no-ssse3" if superenv?
@@ -102,7 +102,7 @@ class Qt < Formula
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     frameworks.mkpath
-    ln_s Dir['lib/*.framework'], frameworks
+    ln_s Dir["#{lib}/*.framework"], frameworks
 
     # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to

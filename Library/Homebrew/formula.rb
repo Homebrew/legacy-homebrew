@@ -307,6 +307,10 @@ class Formula
     ]
   end
 
+  # Install python bindings inside of a block given to this method and/or
+  # call python so: `system python, "setup.py", "install", "--prefix=#{prefix}"
+  # Note that there are no quotation marks around python!
+  # <https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python>
   def python(options={:allowed_major_versions => [2, 3]}, &block)
     require 'python_helper'
     python_helper(options, &block)
@@ -351,6 +355,8 @@ class Formula
   end
 
   def self.installed
+    return [] unless HOMEBREW_CELLAR.directory?
+
     HOMEBREW_CELLAR.children.map do |rack|
       begin
         factory(rack.basename.to_s)
@@ -504,8 +510,6 @@ class Formula
   def test
     require 'test/unit/assertions'
     extend(Test::Unit::Assertions)
-    # TODO: move this into PythonInstalled.
-    ENV['PYTHONPATH'] = PythonInstalled.new.global_site_packages
     ret = nil
     mktemp do
       @testpath = Pathname.pwd

@@ -33,16 +33,18 @@ class Keg < Pathname
   end
 
   def unlink
-    # these are used by the ObserverPathnameExtension to count the number
-    # of files and directories linked
-    $n=$d=0
+    ObserverPathnameExtension.reset_counts!
+
+    dirs = []
 
     TOP_LEVEL_DIRECTORIES.map{ |d| self/d }.each do |dir|
       next unless dir.exist?
       dir.find do |src|
         next if src == self
-        dst=HOMEBREW_PREFIX+src.relative_path_from(self)
-        dst.extend ObserverPathnameExtension
+        dst = HOMEBREW_PREFIX + src.relative_path_from(self)
+        dst.extend(ObserverPathnameExtension)
+
+        dirs << dst if dst.directory? && !dst.symlink?
 
         # check whether the file to be unlinked is from the current keg first
         if !dst.symlink? || !dst.exist? || src != dst.resolved_path
@@ -51,12 +53,14 @@ class Keg < Pathname
 
         dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
         dst.unlink
-        dst.parent.rmdir_if_possible
         Find.prune if src.directory?
       end
     end
     linked_keg_record.unlink if linked_keg_record.symlink?
-    $n+$d
+
+    dirs.reverse_each(&:rmdir_if_possible)
+
+    ObserverPathnameExtension.total
   end
 
   def fname
@@ -102,8 +106,7 @@ class Keg < Pathname
   def link mode=OpenStruct.new
     raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
 
-    $n=0
-    $d=0
+    ObserverPathnameExtension.reset_counts!
 
     share_mkpaths = %w[aclocal doc info locale man]
     share_mkpaths.concat((1..8).map { |i| "man/man#{i}" })
@@ -169,7 +172,7 @@ class Keg < Pathname
       optlink
     end
 
-    return $n + $d
+    ObserverPathnameExtension.total
   rescue Exception
     opoo "Could not link #{fname}. Unlinking..."
     unlink

@@ -1,8 +1,8 @@
 require 'formula'
 
 class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.7.tar.gz'
-  sha1 'c56c5cc55b678c25a0a06f25a122f6492d62e2d3'
+  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.8.tar.gz'
+  sha1 'a13ad9411149c52501a15c702a4f3a3c757b5ba9'
 end
 
 class Pip < Formula
@@ -31,6 +31,7 @@ class Python < Formula
   depends_on 'gdbm' => :recommended
   depends_on 'openssl' if build.with? 'brewed-openssl'
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
+  depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
 
   def patches
     p = []
@@ -56,6 +57,7 @@ class Python < Formula
     # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
     ENV['PYTHONHOME'] = nil
+    ENV['PYTHONPATH'] = nil
 
     args = %W[
              --prefix=#{prefix}
@@ -89,10 +91,6 @@ class Python < Formula
       f.gsub! 'DEFAULT_LIBRARY_FALLBACK = [', "DEFAULT_LIBRARY_FALLBACK = [ '#{HOMEBREW_PREFIX}/lib',"
       f.gsub! 'DEFAULT_FRAMEWORK_FALLBACK = [', "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
     end
-
-    # Fix http://bugs.python.org/issue18071
-    inreplace "./Lib/_osx_support.py", "compiler_so = list(compiler_so)",
-              "if isinstance(compiler_so, (str,unicode)): compiler_so = compiler_so.split()"
 
     if build.with? 'brewed-tk'
       ENV.append 'CPPFLAGS', "-I#{Formula.factory('tcl-tk').opt_prefix}/include"
@@ -128,6 +126,8 @@ class Python < Formula
     # We ship setuptools and pip and reuse the PythonInstalled
     # Requirement here to write the sitecustomize.py
     py = PythonInstalled.new("2.7")
+    py.binary = bin/'python'
+    py.modify_build_environment
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
@@ -136,14 +136,12 @@ class Python < Formula
     rm_rf Dir["#{py.global_site_packages}/setuptools*"]
     rm_rf Dir["#{py.global_site_packages}/distribute*"]
 
-    py.binary = bin/'python'
-    py.modify_build_environment
     setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Setuptools.new.brew { system "#{bin}/python2", *setup_args }
-    Pip.new.brew { system "#{bin}/python2", *setup_args }
+    Setuptools.new.brew { system py.binary, *setup_args }
+    Pip.new.brew { system py.binary, *setup_args }
 
-    # And now we write the distuitsl.cfg
+    # And now we write the distutils.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"
     cfg.delete if cfg.exist?
     cfg.write <<-EOF.undent
@@ -261,6 +259,29 @@ class Python < Formula
 end
 
 __END__
+# http://bugs.python.org/issue18071 (Remove this hung for 2.7.6!)
+diff --git a/Lib/_osx_support.py b/Lib/_osx_support.py
+--- a/Lib/_osx_support.py
++++ b/Lib/_osx_support.py
+@@ -53,7 +53,7 @@ def _find_executable(executable, path=No
+
+
+ def _read_output(commandstring):
+-    """Output from succesful command execution or None"""
++    """Output from successful command execution or None"""
+     # Similar to os.popen(commandstring, "r").read(),
+     # but without actually using os.popen because that
+     # function is not usable during python bootstrap.
+@@ -68,7 +68,7 @@ def _read_output(commandstring):
+
+     with contextlib.closing(fp) as fp:
+         cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
+-        return fp.read().decode('utf-8').strip() if not os.system(cmd) else None
++        return fp.read().strip() if not os.system(cmd) else None
+
+
+# X11 header find fix (and let homebrew handle this.)
+
 diff --git a/setup.py b/setup.py
 index 716f08e..66114ef 100644
 --- a/setup.py

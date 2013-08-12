@@ -736,6 +736,7 @@ class DownloadStrategyDetector
     when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
     when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
     when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
+    when %r[^https?://(.+?\.)?sourceforge\.net/hgweb/] then MercurialDownloadStrategy
     when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
     when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
       # Common URL patterns
@@ -756,8 +757,8 @@ class DownloadStrategyDetector
     when :hg then MercurialDownloadStrategy
     when :nounzip then NoUnzipCurlDownloadStrategy
     when :post then CurlPostDownloadStrategy
-    when :svn then SubversionDownloadStrategy
     when :ssl3 then CurlSSL3DownloadStrategy
+    when :svn then SubversionDownloadStrategy
     else
       raise "Unknown download strategy #{strategy} was requested."
     end

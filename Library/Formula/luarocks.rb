@@ -2,10 +2,9 @@ require 'formula'
 
 class Luarocks < Formula
   homepage 'http://luarocks.org'
+  head 'https://github.com/keplerproject/luarocks.git'
   url 'http://luarocks.org/releases/luarocks-2.0.13.tar.gz'
   sha1 'fb9d818c17d1ecb54fe23a53e31e52284b41e58e'
-
-  head 'https://github.com/keplerproject/luarocks.git'
 
   option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
   option 'with-lua52', 'Use Lua 5.2 instead of the stock Lua'
@@ -22,9 +21,13 @@ class Luarocks < Formula
     cause "Lua itself compiles with llvm, but may fail when other software tries to link."
   end
 
-  # See comments at __END__
+  # Remove writability checks in the install script.
+  # Homebrew checks that its install targets are writable, or fails with
+  # appropriate messaging if not. The check that luarocks does has been
+  # seen to have false positives, so remove it.
+  # TODO: better document the false positive cases, or remove this patch.
   def patches
-    DATA if HOMEBREW_PREFIX.to_s == '/usr/local'
+    DATA
   end
 
   def install
@@ -58,12 +61,6 @@ class Luarocks < Formula
   end
 end
 
-
-# This patch because we set the permissions of /usr/local to root owned
-# not user writable to be "good" citizens of /usr/local. Actually LUA is being
-# pedantic since all the directories it wants under /usr/local are writable
-# so we just return true. Naughty, but I don't know LUA and don't want to
-# write a better patch.
 __END__
 diff --git a/src/luarocks/fs/lua.lua b/src/luarocks/fs/lua.lua
 index 67c3ce0..2d149c7 100644

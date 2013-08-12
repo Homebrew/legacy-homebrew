@@ -121,15 +121,9 @@ class PythonInstalled < Requirement
         # Note, we don't support homebrew/versions/pythonXX.rb, though.
         Formula.factory(@name).opt_prefix/"bin/python#{@min_version.major}"
       else
-        begin
-          # Using the ORIGINAL_PATHS here because in superenv, the user
-          # installed external Python is not visible otherwise.
-          tmp_PATH = ENV['PATH']
-          ENV['PATH'] = ORIGINAL_PATHS.join(':')
-          which(@name)
-        ensure
-          ENV['PATH'] = tmp_PATH
-        end
+        # Using the ORIGINAL_PATHS here because in superenv, the user
+        # installed external Python is not visible otherwise.
+        which(@name, ORIGINAL_PATHS.join(':'))
       end
     end
   end
@@ -259,7 +253,7 @@ class PythonInstalled < Requirement
     ENV.prepend 'PATH', binary.dirname, ':' unless from_osx?
 
     ENV['PYTHONHOME'] = nil  # to avoid fuck-ups.
-    ENV['PYTHONPATH'] = global_site_packages.to_s unless brewed?
+    ENV['PYTHONPATH'] = if brewed? then nil; else global_site_packages.to_s; end
     ENV.append 'CMAKE_INCLUDE_PATH', incdir, ':'
     ENV.append 'PKG_CONFIG_PATH', pkg_config_path, ':' if pkg_config_path
     # We don't set the -F#{framework} here, because if Python 2.x and 3.x are
@@ -288,30 +282,32 @@ class PythonInstalled < Requirement
   def sitecustomize
     <<-EOF.undent
       # This file is created by Homebrew and is executed on each python startup.
-      # Don't print from here, or else universe will collapse.
+      # Don't print from here, or else python command line scripts may fail!
+      # <https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python>
       import sys
 
-      if sys.version_info[0] == #{version.major} and sys.version_info[1] == #{version.minor}:
-          if sys.executable.startswith('#{HOMEBREW_PREFIX}/opt/python'):
-              # Fix 1)
-              #   A setuptools.pth and/or easy-install.pth sitting either in
-              #   /Library/Python/2.7/site-packages or in
-              #   ~/Library/Python/2.7/site-packages can inject the
-              #   /System's Python site-packages. People then report
-              #   "OSError: [Errno 13] Permission denied" because pip/easy_install
-              #   attempts to install into
-              #   /System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python
-              #   See: https://github.com/mxcl/homebrew/issues/14712
-              # Fix 2)
-              #   Remove brewed Python's hard-coded Cellar-site-packages
+      if sys.version_info[0] != #{version.major}:
+          import os
+          # This can only happen if the user has set the PYTHONPATH for 3.x and run Python 2.x or vice versa.
+          # Every Python looks at the PYTHONPATH variable and we can't fix it here in sitecustomize.py,
+          # because the PYTHONPATH is evaluated after the sitecustomize.py. Many modules (e.g. PyQt4) are
+          # built only for a specific version of Python and will fail with cryptic error messages.
+          # In the end this means: Don't set the PYTHONPATH permanently if you use different Python versions.
+          exit('Your PYTHONPATH points to a site-packages dir for Python #{version.major}.x but you are running Python ' +
+               str(sys.version_info[0]) + '.x!\\n     PYTHONPATH is currently: "' + str(os.environ['PYTHONPATH']) + '"\\n' +
+               '     You should `unset PYTHONPATH` to fix this.')
+      else:
+          # Only do this for a brewed python:
+          if sys.executable.startswith('#{HOMEBREW_PREFIX}'):
+              # Remove /System site-packages, and the Cellar site-packages
+              # which we moved to lib/pythonX.Y/site-packages. Further, remove
+              # HOMEBREW_PREFIX/lib/python because we later addsitedir(...).
               sys.path = [ p for p in sys.path
-                           if not (p.startswith('/System') or
-                                   p.startswith('#{HOMEBREW_PREFIX}/Cellar/python') and p.endswith('site-packages')) ]
-              # Fix 3)
-              # Set the sys.executable to use the opt_prefix
-              sys.executable = '#{HOMEBREW_PREFIX}/opt/#{name}/bin/python#{version.major}.#{version.minor}'
-              # Fix 4)
-              # Make LINKFORSHARED (and python-config --ldflags) return the
+                           if (not p.startswith('/System') and
+                               not p.startswith('#{HOMEBREW_PREFIX}/lib/python') and
+                               not (p.startswith('#{HOMEBREW_PREFIX}/Cellar/python') and p.endswith('site-packages'))) ]
+
+              # LINKFORSHARED (and python-config --ldflags) return the
               # full path to the lib (yes, "Python" is actually the lib, not a
               # dir) so that third-party software does not need to add the
               # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
@@ -321,11 +317,14 @@ class PythonInstalled < Requirement
                   build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{HOMEBREW_PREFIX}/opt/#{name}/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/Python'
               except:
                   pass  # remember: don't print here. Better to fail silently.
-          # Fix 5)
-          #   For all Pythons of the right major.minor version: Tell about homebrew's
-          #   site-packages location. This is needed for Python to parse *.pth.
+
+              # Set the sys.executable to use the opt_prefix
+              sys.executable = '#{HOMEBREW_PREFIX}/opt/#{name}/bin/#{xy}'
+
+          # Tell about homebrew's site-packages location.
+          # This is needed for Python to parse *.pth.
           import site
-          site.addsitedir('#{global_site_packages}')
+          site.addsitedir('#{HOMEBREW_PREFIX}/lib/#{xy}/site-packages')
     EOF
   end
 

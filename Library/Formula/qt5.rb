@@ -6,9 +6,10 @@ class Qt5 < Formula
   sha1 '12d706124dbfac3d542dd3165176a978d478c085'
 
   bottle do
-    sha1 '9d960fcb287cd7005fc781dcd06dff80df16794f' => :mountain_lion
-    sha1 'b36c733d6c041ec4dea65ae991bb1d75d4893fd6' => :lion
-    sha1 '446e73fbf472c0ba5a8eee0e40b076c6b7605acc' => :snow_leopard
+    revision 1
+    sha1 '559797c1240c758aea1755b664fb898d492fca03' => :mountain_lion
+    sha1 '67d969a4a260f4576f3fcaf5e1cef23edfd35177' => :lion
+    sha1 '61cfa853784d2493ffa00b3e2897f6f46df5815f' => :snow_leopard
   end
 
   head 'git://gitorious.org/qt/qt5.git', :branch => 'stable'
@@ -64,19 +65,32 @@ class Qt5 < Formula
 
     if build.include? 'with-debug-and-release'
       args << "-debug-and-release"
-      # Debug symbols need to find the source so build in the prefix
-      mv "../qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
-      cd "#{prefix}/src"
     else
       args << "-release"
     end
 
     args << '-developer-build' if build.include? 'developer'
 
+    # We move the source and build in-place because:
+    # - Debug symbols need to find the source
+    # - to fix https://github.com/mxcl/homebrew/issues/20020
+    # - PySide `make apidoc` needs the src
+    (prefix/"src").mkdir
+    mv Dir['*'], "#{prefix}/src/"
+    cd "#{prefix}/src"
+
     system "./configure", *args
     system "make"
     ENV.j1
     system "make install"
+
+    # Fix https://github.com/mxcl/homebrew/issues/20020 (upstream: https://bugreports.qt-project.org/browse/QTBUG-32417)
+    system "install_name_tool", "-change", "#{pwd}/qt-everywhere-opensource-src-5.1.0/qtwebkit/lib/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets", #old
+                                           "#{lib}/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets",  #new
+                                           "#{libexec}/QtWebProcess" # in this lib
+    system "install_name_tool", "-change", "#{pwd}/qt-everywhere-opensource-src-5.1.0/qtwebkit/lib/QtWebKit.framework/Versions/5/QtWebKit",
+                                           "#{lib}/QtWebKit.framework/Versions/5/QtWebKit",
+                                           "#{prefix}/qml/QtWebKit/libqmlwebkitplugin.dylib"
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     cd prefix do

@@ -21,8 +21,8 @@ class Wordnet < Formula
       (prefix+"dict").install Dir['*']
     end
 
-   # Disable calling deprecated fields within the Tcl_Interp during compilation.
-   # https://bugzilla.redhat.com/show_bug.cgi?id=902561
+    # Disable calling deprecated fields within the Tcl_Interp during compilation.
+    # https://bugzilla.redhat.com/show_bug.cgi?id=902561
     ENV.append_to_cflags "-DUSE_INTERP_RESULT"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

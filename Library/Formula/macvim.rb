@@ -3,15 +3,9 @@ require 'formula'
 # Reference: https://github.com/b4winckler/macvim/wiki/building
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/archive/snapshot-66.tar.gz'
-  version '7.3-66'
-  sha1 'd2915438c9405015e5e39099aecbbda20438ce81'
-
-  devel do
-    url 'https://github.com/b4winckler/macvim/archive/snapshot-69.tar.gz'
-    version '7.4b-BETA-69'
-    sha1 '73568543e146ade2c8548a561ce76eaecccc7f4d'
-  end
+  url 'https://github.com/b4winckler/macvim/archive/snapshot-70.tar.gz'
+  version '7.4-70'
+  sha1 '66432ae0fe81b2787b23343b6c99ef81f6b52c3e'
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 

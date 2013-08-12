@@ -269,7 +269,7 @@ Note that these flags should only appear after a command.
     surrounded with slashes, then it is interpreted as a regular expression.
     If no search term is given, all available formula are displayed.
 
-  * `search --macports`|`--fink`|`--debian`|`--opensuse` <text>:
+  * `search --debian`|`--fedora`|`--fink`|`--macports`|`--opensuse` <text>:
     Search for <text> in the given package manager's list.
 
   * `sh [--env=std]`:
