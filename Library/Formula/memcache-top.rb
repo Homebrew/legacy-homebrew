@@ -7,6 +7,6 @@ class MemcacheTop < Formula
   sha1 'eaac357e13ac2a531c28081783fdcc3ddbe98ede'
 
   def install
-    bin.install 'memcache-top-v0.6' => 'memcache-top'
+    bin.install "memcache-top-v#{version}" => "memcache-top"
   end
 end
