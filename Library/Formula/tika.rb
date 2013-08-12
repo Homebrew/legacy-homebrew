@@ -12,10 +12,11 @@ class Tika < Formula
 
   def install
     libexec.install "tika-app-#{version}.jar"
-    bin.write_jar_script libexec/"tika-app-1.4.jar", "tika"
-    TikaRestServer.new.brew do
-      libexec.install "tika-server-1.4.jar"
-      bin.write_jar_script libexec/"tika-server-1.4.jar", "tika-rest-server"
+    bin.write_jar_script libexec/"tika-app-#{version}.jar", "tika"
+
+    TikaRestServer.new.brew do |server|
+      libexec.install "tika-server-#{server.version}.jar"
+      bin.write_jar_script libexec/"tika-server-#{server.version}.jar", "tika-rest-server"
     end
   end
 
