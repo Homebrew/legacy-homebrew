@@ -15,30 +15,26 @@ class Neko < Formula
     ENV.deparallelize
     system "make", "os=osx", "LIB_PREFIX=#{HOMEBREW_PREFIX}", "INSTALL_FLAGS="
 
-    (lib/'neko').install 'bin/libneko.dylib'
     include.install Dir['vm/neko*.h']
     neko = lib/'neko'
     neko.install Dir['bin/*']
 
     # Symlink into bin so libneko.dylib resolves correctly for custom prefix
     bin.mkpath
-    for file in ['neko', 'nekoc', 'nekoml', 'nekotools'] do
+    %w(neko nekoc nekoml nekotools).each do |file|
       (bin/file).make_relative_symlink(neko/file)
     end
-  end
-
-  def custom_prefix?
-    HOMEBREW_PREFIX.to_s != '/usr/local'
+    (lib/'libneko.dylib').make_relative_symlink(neko/'libneko.dylib')
   end
 
   test do
-    ENV["NEKOPATH"] = "#{HOMEBREW_PREFIX}/lib/neko" if custom_prefix?
+    ENV["NEKOPATH"] = "#{HOMEBREW_PREFIX}/lib/neko"
     system "#{bin}/neko", "#{HOMEBREW_PREFIX}/lib/neko/test.n"
   end
 
   def caveats
     s = ''
-    if custom_prefix?
+    if HOMEBREW_PREFIX.to_s != '/usr/local'
       s << <<-EOS.undent
         You must add the following line to your .bashrc or equivalent:
           export NEKOPATH="#{HOMEBREW_PREFIX}/lib/neko"
