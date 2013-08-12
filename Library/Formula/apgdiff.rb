@@ -6,7 +6,7 @@ class Apgdiff < Formula
   sha1 '1150d44e9da2c1417767d4106bdb297ed0adfed8'
 
   def install
-    libexec.install "apgdiff-2.4.jar"
-    bin.write_jar_script libexec/"apgdiff-2.4.jar", "apgdiff"
+    libexec.install "apgdiff-#{version}.jar"
+    bin.write_jar_script libexec/"apgdiff-#{version}.jar", "apgdiff"
   end
 end
