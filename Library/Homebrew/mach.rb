@@ -32,6 +32,10 @@ module ArchitectureListExtension
     self.collect{ |a| "-arch #{a}" }.join(' ')
   end
 
+  def as_cmake_arch_flags
+    self.join(';')
+  end
+
   protected
 
   def intersects_all?(*set)
