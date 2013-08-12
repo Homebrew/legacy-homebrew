@@ -9,8 +9,8 @@ class CracklibWords < Formula
   depends_on 'cracklib'
 
   def install
-    system "gzip", "-d", "cracklib-words-20080507.gz"
-    share.install "cracklib-words-20080507" => "cracklib-words"
+    system "gzip", "-d", "cracklib-words-#{version}.gz"
+    share.install "cracklib-words-#{version}" => "cracklib-words"
     system "/bin/sh", "-c", "#{HOMEBREW_PREFIX}/sbin/cracklib-packer < #{share}/cracklib-words"
   end
 end
