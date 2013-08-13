@@ -1,7 +1,7 @@
 require 'formula'
 
 class DatomicFree < Formula
-  homepage ''
+  homepage 'http://www.datomic.com/'
   url 'http://downloads.datomic.com/0.8.4122/datomic-free-0.8.4122.zip'
   sha1 '83d13aa53d6d2ab3d61efed02b233ed19f695b34'
 
@@ -12,7 +12,6 @@ class DatomicFree < Formula
       s.gsub! /#data-dir=.*$/, "data-dir=#{var}/datomic"
       s.gsub! /#log-dir=.*$/, "log-dir=#{var}/log/datomic/"
     end
-
   end
 
   def plist; <<-EOS.undent
@@ -43,5 +42,4 @@ class DatomicFree < Formula
       </plist>
     EOS
   end
-
 end
