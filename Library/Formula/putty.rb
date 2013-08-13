@@ -3,7 +3,7 @@ require 'formula'
 class Putty < Formula
   homepage 'http://www.chiark.greenend.org.uk/~sgtatham/putty/'
   url 'http://the.earth.li/~sgtatham/putty/0.63/putty-0.63.tar.gz'
-  sha1 ''
+  sha256 '81e8eaaf31be7d9a46b4f3fb80d1d9540776f142cd89d0a11f2f8082dc68f8b5'
 
   depends_on 'pkg-config' => :build
   depends_on 'gtk+' => :optional
