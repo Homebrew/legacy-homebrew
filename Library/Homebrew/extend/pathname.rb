@@ -211,11 +211,8 @@ class Pathname
 
   def incremental_hash(hasher)
     incr_hash = hasher.new
-    self.open('r') do |f|
-      while(buf = f.read(1024))
-        incr_hash << buf
-      end
-    end
+    buf = ""
+    open('r') { |f| incr_hash << buf while f.read(1024, buf) }
     incr_hash.hexdigest
   end
 
