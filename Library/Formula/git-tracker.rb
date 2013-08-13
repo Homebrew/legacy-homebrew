@@ -3,7 +3,7 @@ require 'formula'
 class GitTracker < Formula
   homepage 'https://github.com/stevenharman/git_tracker'
   url 'https://github.com/stevenharman/git_tracker/archive/v1.6.1.tar.gz'
-  sha1 '0943101480ca59a9b7188fa7767a15156756566c'
+  sha1 'e1ea5ce789100a3e197dfcfb8b4d697d70018237'
 
   head 'https://github.com/stevenharman/git_tracker.git'
 
