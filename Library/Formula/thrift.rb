@@ -7,6 +7,9 @@ class Thrift < Formula
 
   head 'http://svn.apache.org/repos/asf/thrift/trunk'
 
+  # Prefer Homebrew stuff ie. local php
+  env :userpaths
+
   option "with-haskell", "Install Haskell binding"
   option "with-erlang", "Install Erlang binding"
   option "with-java", "Install Java binding"
@@ -15,6 +18,9 @@ class Thrift < Formula
 
   depends_on 'boost'
   depends_on :python => :optional
+  depends_on "php53" => [:optional, 'with-php'] if Formula.factory("php53").installed?
+  depends_on "php54" => [:optional, 'with-php'] if Formula.factory("php54").installed?
+  depends_on "php55" => [:optional, 'with-php'] if Formula.factory("php55").installed?
 
   # Includes are fixed in the upstream. Please remove this patch in the next version > 0.9.0
   def patches
@@ -22,6 +28,7 @@ class Thrift < Formula
   end
 
   def install
+
     system "./bootstrap.sh" if build.head?
 
     exclusions = ["--without-ruby"]
@@ -34,6 +41,16 @@ class Thrift < Formula
     exclusions << "--without-erlang" unless build.include? "with-erlang"
 
     ENV["PY_PREFIX"] = prefix  # So python bindins don't install to /usr!
+
+    # So PHP bindings don't install to /usr!
+    if build.include? "with-php"
+        # ENV["PHP_PREFIX"] = %x(php-config --prefix).chomp + "/lib/php"
+	# Rather than installing to a version specific internal php dir as above, use /usr/local/lib/Thrift
+        ENV["PHP_PREFIX"] = "#{HOMEBREW_PREFIX}/lib"
+        ENV["PHP_CONFIG_PREFIX"] = "#{HOMEBREW_PREFIX}/etc/php/5.3/conf.d" if Formula.factory("php53").installed?
+        ENV["PHP_CONFIG_PREFIX"] = "#{HOMEBREW_PREFIX}/etc/php/5.4/conf.d" if Formula.factory("php54").installed?
+        ENV["PHP_CONFIG_PREFIX"] = "#{HOMEBREW_PREFIX}/etc/php/5.5/conf.d" if Formula.factory("php55").installed?
+    end
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
