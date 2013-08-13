@@ -7,10 +7,7 @@ class HerokuToolbelt < Formula
 
   def install
     libexec.install Dir["*"]
-    (bin/'heroku').write <<-EOS.undent
-      #!/usr/bin/env sh
-      exec "#{libexec}/bin/heroku" "$@"
-    EOS
+    bin.write_exec_script libexec/"bin/heroku"
   end
 
   def test
