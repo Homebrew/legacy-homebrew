@@ -14,6 +14,7 @@ class Picocom < Formula
   def install
     system "make"
     bin.install "picocom"
+    man8.install "picocom.8"
   end
 end
 

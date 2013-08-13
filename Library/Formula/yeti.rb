@@ -9,12 +9,7 @@ class Yeti < Formula
 
   def install
     system "ant jar"
-
-    prefix.install "yeti.jar"
-    (bin+'yeti').write <<-EOS.undent
-      #!/bin/sh
-      YETI=#{prefix}/yeti.jar
-      java -server -jar "$YETI" "$@"
-      EOS
+    libexec.install "yeti.jar"
+    bin.write_jar_script libexec/"yeti.jar", "yeti", "-server"
   end
 end

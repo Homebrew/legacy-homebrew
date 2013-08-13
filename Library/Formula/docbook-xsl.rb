@@ -23,10 +23,7 @@ class DocbookXsl < Formula
       system "xmlcatalog", "--noout", "--add", "nextCatalog", "", "file://#{catalog}", "#{etc}/xml/catalog"
     end
 
-    (bin/'dbtoepub').write <<-EOS.undent
-      #!/bin/sh
-      exec "#{prefix}/docbook-xsl/epub/bin/dbtoepub" "$@"
-    EOS
+    bin.write_exec_script "#{prefix}/docbook-xsl/epub/bin/dbtoepub"
   end
 end
 
