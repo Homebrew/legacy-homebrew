@@ -1,24 +1,19 @@
 require 'formula'
 
-BUILD="1"
-SERIES="1.12"
-VERSION="1.12.0"
-
 class Juju < Formula
   homepage 'https://launchpad.net/juju-core'
 
-  version "#{VERSION}-#{BUILD}"
-  url "https://launchpad.net/juju-core/#{SERIES}/#{VERSION}/+download/juju-core_#{VERSION}-#{BUILD}.tar.gz"
+  version "1.12.0-1"
+  url "https://launchpad.net/juju-core/1.12/1.12.0/+download/juju-core_1.12.0-1.tar.gz"
   sha1 "b552919f5f4ed5a34885a2a6a8a4a0d7be485267"
 
   depends_on 'go' => :build
 
   def install
-    # set GOPATH to current working directory
-    ENV['GOPATH']=Dir.pwd
+    ENV['GOPATH'] = buildpath
 
     system "go", "install", "launchpad.net/juju-core/cmd/juju"
-    prefix.install(Dir['bin'])
+    prefix.install 'bin'
   end
 
   def caveats
