@@ -2,8 +2,8 @@ require 'formula'
 
 class Putty < Formula
   homepage 'http://www.chiark.greenend.org.uk/~sgtatham/putty/'
-  url 'http://the.earth.li/~sgtatham/putty/0.62/putty-0.62.tar.gz'
-  sha1 '5898438614117ee7e3704fc3f30a3c4bf2041380'
+  url 'http://the.earth.li/~sgtatham/putty/0.63/putty-0.63.tar.gz'
+  sha1 ''
 
   depends_on 'pkg-config' => :build
   depends_on 'gtk+' => :optional
@@ -11,8 +11,7 @@ class Putty < Formula
   def install
     cd "unix" do
       system "./configure", "--prefix=#{prefix}", "--disable-gtktest"
-      system "make", "VER=-DRELEASE=#{version}",
-                     (build.with?('gtk+') ? "all" : "all-cli")
+      system "make", "VER=-DRELEASE=#{version}"
 
       bin.install %w{ putty puttytel pterm } if build.with? 'gtk+'
       bin.install %w{ plink pscp psftp puttygen }
