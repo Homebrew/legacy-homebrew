@@ -2,8 +2,8 @@ require 'formula'
 
 class Cassandra < Formula
   homepage 'http://cassandra.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.2.6/apache-cassandra-1.2.6-bin.tar.gz'
-  sha1 '25b9c63eb33c3ce483390e6edab4a5d1bb95eb4c'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.2.8/apache-cassandra-1.2.8-bin.tar.gz'
+  sha1 'cf6fb4a01d767a1167f600d316c226abe3aeaac4'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -15,11 +15,11 @@ class Cassandra < Formula
     inreplace "conf/cassandra-env.sh", "/lib/", "/"
 
     inreplace "bin/cassandra.in.sh" do |s|
-      s.gsub! "CASSANDRA_HOME=`dirname $0`/..", "CASSANDRA_HOME=#{prefix}"
+      s.gsub! "CASSANDRA_HOME=\"`dirname \"$0\"`/..\"", "CASSANDRA_HOME=\"#{prefix}\""
       # Store configs in etc, outside of keg
-      s.gsub! "CASSANDRA_CONF=$CASSANDRA_HOME/conf", "CASSANDRA_CONF=#{etc}/cassandra"
+      s.gsub! "CASSANDRA_CONF=\"$CASSANDRA_HOME/conf\"", "CASSANDRA_CONF=\"#{etc}/cassandra\""
       # Jars installed to prefix, no longer in a lib folder
-      s.gsub! "$CASSANDRA_HOME/lib/*.jar", "$CASSANDRA_HOME/*.jar"
+      s.gsub! "\"$CASSANDRA_HOME\"/lib/*.jar", "\"$CASSANDRA_HOME\"/*.jar"
     end
 
     rm Dir["bin/*.bat"]
