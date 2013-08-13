@@ -7,6 +7,6 @@ class Linklint < Formula
 
   def install
     mv 'READ_ME.txt', 'README'
-    bin.install 'linklint-2.3.5' => 'linklint'
+    bin.install "linklint-#{version}" => "linklint"
   end
 end

@@ -7,6 +7,6 @@ class Briss < Formula
 
   def install
     libexec.install Dir['*.jar']
-    bin.write_jar_script libexec/'briss-0.9.jar', 'briss'
+    bin.write_jar_script libexec/"briss-#{version}.jar", "briss"
   end
 end
