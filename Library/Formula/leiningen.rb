@@ -1,7 +1,7 @@
 require 'formula'
 
 class LeiningenJar < Formula
-  url 'https://leiningen.s3.amazonaws.com/downloads/leiningen-2.3.0-standalone.jar', :using => :nounzip
+  url 'https://leiningen.s3.amazonaws.com/downloads/leiningen-2.3.0-standalone.jar'
   sha1 '17d7347a8bee5ee34c6191ded0af0f8d6b348319'
 end
 
