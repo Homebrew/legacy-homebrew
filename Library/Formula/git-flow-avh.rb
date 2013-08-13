@@ -10,8 +10,8 @@ end
 
 class GitFlowAvh < Formula
   homepage 'https://github.com/petervanderdoes/gitflow'
-  url 'https://github.com/petervanderdoes/gitflow/archive/1.6.0.tar.gz'
-  sha1 '1ca7f88f5733a7ad927f7679204c5381f0f1ba33'
+  url 'https://github.com/petervanderdoes/gitflow/archive/1.6.1.tar.gz'
+  sha1 '15c76911026fa648356d24bf53a1875ebb729857'
 
   head 'https://github.com/petervanderdoes/gitflow.git', :branch => 'develop'
 
