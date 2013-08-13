@@ -135,13 +135,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       raise "You must install 7zip: brew install p7zip" unless which "7zr"
       safe_system '7zr', 'x', @tarball_path
     else
-      # we are assuming it is not an archive, use original filename
-      # this behaviour is due to ScriptFileFormula expectations
-      # So I guess we should cp, but we mv, for this historic reason
-      # HOWEVER if this breaks some expectation you had we *will* change the
-      # behaviour, just open an issue at github
-      # We also do this for jar files, as they are in fact zip files, but
-      # we don't want to unzip them
       FileUtils.cp @tarball_path, basename_without_params
     end
   end
