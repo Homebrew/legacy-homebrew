@@ -8,36 +8,32 @@ class Pathname
   BOTTLE_EXTNAME_RX = /(\.[a-z_]+(32)?\.bottle\.(\d+\.)?tar\.gz)$/
 
   def install *sources
-    results = []
     sources.each do |src|
       case src
       when Array
         if src.empty?
           opoo "tried to install empty array to #{self}"
-          return []
+          return
         end
-        src.each {|s| results << install_p(s) }
+        src.each {|s| install_p(s) }
       when Hash
         if src.empty?
           opoo "tried to install empty hash to #{self}"
-          return []
+          return
         end
-        src.each {|s, new_basename| results << install_p(s, new_basename) }
+        src.each {|s, new_basename| install_p(s, new_basename) }
       else
-        results << install_p(src)
+        install_p(src)
       end
     end
-    return results
   end
 
   def install_p src, new_basename = nil
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
-      return_value = Pathname.new(dst)
     else
       dst = self
-      return_value = self+File.basename(src)
     end
 
     src = src.to_s
@@ -59,25 +55,21 @@ class Pathname
       # this function when installing from the temporary build directory
       FileUtils.mv src, dst
     end
-
-    return return_value
   end
   protected :install_p
 
   # Creates symlinks to sources in this folder.
   def install_symlink *sources
-    results = []
     sources.each do |src|
       case src
       when Array
-        src.each {|s| results << install_symlink_p(s) }
+        src.each {|s| install_symlink_p(s) }
       when Hash
-        src.each {|s, new_basename| results << install_symlink_p(s, new_basename) }
+        src.each {|s, new_basename| install_symlink_p(s, new_basename) }
       else
-        results << install_symlink_p(src)
+        install_symlink_p(src)
       end
     end
-    return results
   end
 
   def install_symlink_p src, new_basename = nil
@@ -86,14 +78,8 @@ class Pathname
     else
       dst = self+File.basename(new_basename)
     end
-
-    src = src.to_s
-    dst = dst.to_s
-
     mkpath
-    FileUtils.ln_s src, dst
-
-    return dst
+    FileUtils.ln_s src.to_s, dst.to_s
   end
   protected :install_symlink_p
 
