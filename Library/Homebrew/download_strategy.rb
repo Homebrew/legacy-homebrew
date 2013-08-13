@@ -107,9 +107,13 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       # regardless of the current working directory; the only way to
       # write elsewhere is to use the stdout
       with_system_path do
-        data = `gunzip -f "#{@tarball_path}" -c`
-        File.open(File.basename(basename_without_params, '.gz'), 'w') do |f|
-          f.write data
+        target = File.basename(basename_without_params, ".gz")
+
+        IO.popen("gunzip -f '#{@tarball_path}' -c") do |pipe|
+          File.open(target, "w") do |f|
+            buf = ""
+            f.write(buf) while pipe.read(1024, buf)
+          end
         end
       end
     when :gzip, :bzip2, :compress, :tar
