@@ -243,9 +243,12 @@ class PythonInstalled < Requirement
     # Write our sitecustomize.py
     file = global_site_packages/"sitecustomize.py"
     ohai "Writing #{file}" if ARGV.verbose? && ARGV.debug?
-    [".pyc", ".pyo", ".py"].map{ |f|
-      global_site_packages/"sitecustomize#{f}"
-    }.each{ |f| f.delete if f.exist? }
+
+    %w{.pyc .pyo .py}.each do |ext|
+      f = global_site_packages/"sitecustomize#{ext}"
+      f.unlink if f.exist?
+    end
+
     file.write(sitecustomize)
 
     # For non-system python's we add the opt_prefix/bin of python to the path.
