@@ -98,9 +98,7 @@ class PythonInstalled < Requirement
           @unsatisfied_because += "Brewed " if brewed?
           @unsatisfied_because += "External " unless brewed? || from_osx?
           @unsatisfied_because += "Python cannot `import #{module_name}`. Install with:\n  "
-          unless importable? 'pip'
-            @unsatisfied_because += "sudo easy_install pip\n  "
-          end
+          @unsatisfied_because += "sudo easy_install pip\n  " unless importable? 'pip'
           @unsatisfied_because += "pip-#{version.major}.#{version.minor} install #{@imports[module_name]}"
           false
         else
