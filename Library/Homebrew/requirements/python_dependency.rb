@@ -89,6 +89,7 @@ class PythonInstalled < Requirement
       false
     elsif @min_version.major == 2 && `python -c "import sys; print(sys.version_info[0])"`.strip == "3"
       @unsatisfied_because += "Your `python` points to a Python 3.x. This is not supported."
+      false
     else
       @imports.keys.map do |module_name|
         if not importable? module_name
