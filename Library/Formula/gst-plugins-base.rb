@@ -6,6 +6,13 @@ class GstPluginsBase < Formula
   mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.0.9.tar.xz'
   sha256 '963e3b83d651661f495ca2e44ccd2d5c61e986e9d7706246e568276689a372ea'
 
+  head 'git://anongit.freedesktop.org/gstreamer/gst-plugins-base'
+
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'gettext'
@@ -22,11 +29,10 @@ class GstPluginsBase < Formula
   depends_on 'libvorbis' => :optional
 
   def install
+
     # gnome-vfs turned off due to lack of formula for it.
     args = %W[
       --prefix=#{prefix}
-      --disable-debug
-      --disable-dependency-tracking
       --enable-experimental
       --disable-libvisual
       --disable-alsa
@@ -35,9 +41,17 @@ class GstPluginsBase < Formula
       --disable-x
       --disable-xvideo
       --disable-xshm
+      --disable-debug
+      --disable-dependency-tracking
     ]
+
+    if build.head?
+      ENV.append "NOCONFIGURE", "yes"
+      system "./autogen.sh"
+    end
+
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
