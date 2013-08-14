@@ -61,6 +61,16 @@ class Boost < Formula
   end
 
   def install
+    # https://svn.boost.org/trac/boost/ticket/8841
+    if build.with? 'mpi' and !build.without? 'single'
+      onoe <<-EOS.undent
+        Building MPI support for both single and multi-threaded flavors
+        is not supported.  Please use '--with-mpi' together with
+        '--disable-single'.
+      EOS
+      exit -1
+    end
+
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a
     # non-/usr/local location.

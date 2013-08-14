@@ -107,9 +107,13 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       # regardless of the current working directory; the only way to
       # write elsewhere is to use the stdout
       with_system_path do
-        data = `gunzip -f "#{@tarball_path}" -c`
-        File.open(File.basename(basename_without_params, '.gz'), 'w') do |f|
-          f.write data
+        target = File.basename(basename_without_params, ".gz")
+
+        IO.popen("gunzip -f '#{@tarball_path}' -c") do |pipe|
+          File.open(target, "w") do |f|
+            buf = ""
+            f.write(buf) while pipe.read(1024, buf)
+          end
         end
       end
     when :gzip, :bzip2, :compress, :tar
@@ -131,13 +135,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       raise "You must install 7zip: brew install p7zip" unless which "7zr"
       safe_system '7zr', 'x', @tarball_path
     else
-      # we are assuming it is not an archive, use original filename
-      # this behaviour is due to ScriptFileFormula expectations
-      # So I guess we should cp, but we mv, for this historic reason
-      # HOWEVER if this breaks some expectation you had we *will* change the
-      # behaviour, just open an issue at github
-      # We also do this for jar files, as they are in fact zip files, but
-      # we don't want to unzip them
       FileUtils.cp @tarball_path, basename_without_params
     end
   end

@@ -14,26 +14,26 @@ class Mosquitto < Formula
     system "cmake", ".", *std_cmake_args
     system "make install"
 
-    # Create the working directory under var
-    (var+'mosquitto').mkpath
+    # Create the working directory
+    (var/'mosquitto').mkpath
   end
 
   test do
     quiet_system "#{sbin}/mosquitto", "-h"
-    $?.exitstatus == 3
+    assert_equal 3, $?.exitstatus
   end
 
   def caveats; <<-EOD.undent
     mosquitto has been installed with a default configuration file.
-        You can make changes to the configuration by editing
+    You can make changes to the configuration by editing:
         #{etc}/mosquitto/mosquitto.conf
 
-    Python client bindings can be installed from the Python Package Index
+    Python client bindings can be installed from the Python Package Index:
         pip install mosquitto
 
-    Javascript client is available at
+    Javascript client is available at:
         http://mosquitto.org/js/
-      EOD
+    EOD
   end
 
   plist_options :manual => "mosquitto -c #{HOMEBREW_PREFIX}/etc/mosquitto/mosquitto.conf"
