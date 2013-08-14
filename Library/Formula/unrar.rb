@@ -19,7 +19,5 @@ class Unrar < Formula
     end
 
     bin.install 'unrar'
-    prefix.install 'license.txt' => 'COPYING'
-    prefix.install 'readme.txt' => 'README'
   end
 end
