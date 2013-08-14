@@ -72,7 +72,7 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
 
       # Track the state of the currently selected python for this block,
       # so if this python_helper is called again _inside_ the block,
-      # we can just return the right python (see `else`-branch a few lines down):
+      # we can just return the right python
       @current_python = py
       res = instance_eval(&block)
       @current_python = nil
