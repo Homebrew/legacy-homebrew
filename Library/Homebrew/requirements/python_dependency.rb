@@ -31,7 +31,7 @@ class PythonInstalled < Requirement
     end
   end
 
-  def initialize(default_version="2.6", tags=[] )
+  def initialize(default_version="2.6", tags=[])
     tags = [tags].flatten
     # Extract the min_version if given. Default to default_version else
     if /(\d+\.)*\d+/ === tags.first.to_s
