@@ -91,7 +91,7 @@ class PythonInstalled < Requirement
       @unsatisfied_because += "Your `python` points to a Python 3.x. This is not supported."
       false
     else
-      @imports.keys.map do |module_name|
+      @imports.keys.all? do |module_name|
         if not importable? module_name
           @unsatisfied_because += "Unsatisfied dependency: #{module_name}\n"
           @unsatisfied_because += "OS X System's " if from_osx?
@@ -106,7 +106,7 @@ class PythonInstalled < Requirement
         else
           true
         end
-      end.all?  # all given `module_name`s have to be `importable?`
+      end
     end
   end
 
