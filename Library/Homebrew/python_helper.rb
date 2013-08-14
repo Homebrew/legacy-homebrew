@@ -33,8 +33,7 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
   # check that no two python binaries are the same (which could be the case
   # because more than one `depends_on :python => 'module_name' may be present).
   filtered_python_reqs = []
-  while !python_reqs.empty?
-    py = python_reqs.shift
+  python_reqs.each do |py|
     next if filtered_python_reqs.any? { |req| req.binary == py.binary }
     next unless py.satisfied?
     next unless options[:allowed_major_versions].include?(py.version.major)
