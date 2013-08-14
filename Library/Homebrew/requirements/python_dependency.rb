@@ -238,7 +238,7 @@ class PythonInstalled < Requirement
 
   def modify_build_environment
     # Most methods fail if we don't have a binary.
-    return false if binary.nil?
+    return if binary.nil?
 
     # Write our sitecustomize.py
     file = global_site_packages/"sitecustomize.py"
@@ -275,7 +275,6 @@ class PythonInstalled < Requirement
         prefix=#{HOMEBREW_PREFIX}
       EOF
     end
-    true
   end
 
   def sitecustomize
