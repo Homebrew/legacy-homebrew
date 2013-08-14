@@ -92,7 +92,9 @@ class PythonInstalled < Requirement
       false
     else
       @imports.keys.all? do |module_name|
-        if not importable? module_name
+        if importable? module_name
+          true
+        else
           @unsatisfied_because += "Unsatisfied dependency: #{module_name}\n"
           @unsatisfied_because += "OS X System's " if from_osx?
           @unsatisfied_because += "Brewed " if brewed?
@@ -101,8 +103,6 @@ class PythonInstalled < Requirement
           @unsatisfied_because += "sudo easy_install pip\n  " unless importable? 'pip'
           @unsatisfied_because += "pip-#{version.major}.#{version.minor} install #{@imports[module_name]}"
           false
-        else
-          true
         end
       end
     end
