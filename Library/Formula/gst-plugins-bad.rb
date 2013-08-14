@@ -6,6 +6,13 @@ class GstPluginsBad < Formula
   mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.0.9.tar.xz'
   sha256 '69d236b1d8188270a3f51f6710146d0ca63c2f1a9f6cfbab3399ef01b9498f75'
 
+  head 'git://anongit.freedesktop.org/gstreamer/gst-plugins-bad'
+
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'gettext'
@@ -28,13 +35,24 @@ class GstPluginsBad < Formula
   def install
     ENV.append "CFLAGS", "-no-cpp-precomp" unless ENV.compiler == :clang
     ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing"
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-sdl",
-                          # gst/interfaces/propertyprobe.h is missing from gst-plugins-base 1.0.x
-                          "--disable-osx_video"
+
+    args = %W[
+      --prefix=#{prefix}
+      --disable-apple_media
+      --disable-yadif
+      --disable-sdl
+      --disable-osx_video
+      --disable-debug
+      --disable-dependency-tracking
+    ]
+
+    if build.head?
+      ENV.append "NOCONFIGURE", "yes"
+      system "./autogen.sh"
+    end
+
+    system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
