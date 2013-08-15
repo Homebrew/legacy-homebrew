@@ -98,7 +98,7 @@ HOMEBREW_PULL_OR_COMMIT_URL_REGEX = 'https:\/\/github.com\/(\w+)\/homebrew(-\w+)
 
 require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
 
-ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
+ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
 SUDO_BAD_ERRMSG = <<-EOS.undent
   You can use brew with sudo, but only if the brew executable is owned by root.
