@@ -81,7 +81,7 @@ class << ENV
     # so xcrun may not be able to find it
     if ENV['HOMEBREW_CC'] == 'gcc-4.2'
       apple_gcc42 = Formula.factory('apple-gcc42') rescue nil
-      ENV.append('PATH', apple_gcc42.opt_prefix/'bin', ':') if apple_gcc42
+      ENV.append('PATH', apple_gcc42.opt_prefix/'bin', File::PATH_SEPARATOR) if apple_gcc42
     end
   end
 
@@ -311,7 +311,7 @@ end if superenv?
 if not superenv?
   ENV.extend(HomebrewEnvExtension)
   # we must do this or tools like pkg-config won't get found by configure scripts etc.
-  ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
+  ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", File::PATH_SEPARATOR unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
 else
   ENV.keg_only_deps = []
   ENV.deps = []
@@ -320,6 +320,6 @@ end
 
 class Array
   def to_path_s
-    map(&:to_s).uniq.select{|s| File.directory? s }.join(':').chuzzle
+    map(&:to_s).uniq.select{|s| File.directory? s }.join(File::PATH_SEPARATOR).chuzzle
   end
 end
