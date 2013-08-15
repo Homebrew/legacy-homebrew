@@ -1,7 +1,7 @@
 require 'formula'
 
 class Juju < Formula
-  homepage 'https://launchpad.net/juju-core'
+  homepage 'https://juju.ubuntu.com'
 
   version "1.12.0-1"
   url "https://launchpad.net/juju-core/1.12/1.12.0/+download/juju-core_1.12.0-1.tar.gz"
