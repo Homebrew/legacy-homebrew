@@ -298,8 +298,9 @@ Note that these flags should only appear after a command.
     Example: `brew install jruby && brew test jruby`
 
   * `unlink` <formula>:
-    Unsymlink <formula> from the Homebrew prefix. This can be useful for
-    temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
+    Remove symlinks for <formula> from the Homebrew prefix. This can be useful
+    for temporarily disabling a formula:
+    `brew unlink foo && commands && brew link foo`.
 
   * `unpin` <formulae>:
     Unpin <formulae>, allowing them to be upgraded by `brew upgrade`. See also
