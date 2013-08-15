@@ -36,7 +36,7 @@ module SharedEnvExtension
     end
   end
   def prepend_path key, path
-    prepend key, path, ':' if File.directory? path
+    prepend key, path, File::PATH_SEPARATOR if File.directory? path
   end
   def remove keys, value
     Array(keys).each do |key|
@@ -65,9 +65,9 @@ module SharedEnvExtension
 
   def userpaths!
     paths = ORIGINAL_PATHS.map { |p| p.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
-    self['PATH'] = paths.unshift(*self['PATH'].split(":")).uniq.join(":")
+    self['PATH'] = paths.unshift(*self['PATH'].split(PATH_SEPARATOR)).uniq.join(File::PATH_SEPARATOR)
     # XXX hot fix to prefer brewed stuff (e.g. python) over /usr/bin.
-    prepend 'PATH', HOMEBREW_PREFIX/'bin', ':'
+    prepend 'PATH', HOMEBREW_PREFIX/'bin', File::PATH_SEPARATOR
   end
 
   def fortran

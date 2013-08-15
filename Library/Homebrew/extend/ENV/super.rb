@@ -96,7 +96,7 @@ module Superenv
     # so xcrun may not be able to find it
     if self['HOMEBREW_CC'] == 'gcc-4.2'
       apple_gcc42 = Formula.factory('apple-gcc42') rescue nil
-      append('PATH', apple_gcc42.opt_prefix/'bin', ':') if apple_gcc42
+      append('PATH', apple_gcc42.opt_prefix/'bin', File::PATH_SEPARATOR) if apple_gcc42
     end
   end
 
@@ -303,6 +303,6 @@ end
 
 class Array
   def to_path_s
-    map(&:to_s).uniq.select{|s| File.directory? s }.join(':').chuzzle
+    map(&:to_s).uniq.select{|s| File.directory? s }.join(File::PATH_SEPARATOR).chuzzle
   end
 end
