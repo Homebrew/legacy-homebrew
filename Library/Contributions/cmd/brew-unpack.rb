@@ -34,18 +34,17 @@ class Formula
   alias do_patch patch
   def patch
     if ARGV.flag? '--patch'
-      # Yes Ruby, we are about to redefine a constant. Just breathe.
-      orig_v = $VERBOSE; $VERBOSE = nil
-      Formula.const_set 'DATA', ScriptDataReader.load(path)
-      $VERBOSE = orig_v
+      begin
+        old_verbose = $VERBOSE
+        $VERBOSE = nil
+        Formula.const_set 'DATA', ScriptDataReader.load(path)
+      ensure
+        $VERBOSE = old_verbose
+      end
 
       do_patch
     end
   end
-
-  # handle_llvm_failure() requires extend/ENV, so let's never fail
-  # with llvm since we don't particularly care in this context.
-  def fails_with_llvm?; false; end
 end
 
 module Homebrew extend self
@@ -67,11 +66,10 @@ changes.
     formulae = ARGV.formulae
     raise FormulaUnspecifiedError if formulae.empty?
 
-    unpack_dir = ARGV.options_only.select {|o| o.start_with? "--destdir="}
-    if unpack_dir.empty?
-      unpack_dir = Pathname.new Dir.getwd
+    if (dir = ARGV.value('destdir')).nil?
+      unpack_dir = Pathname.pwd
     else
-      unpack_dir = Pathname.new(unpack_dir.first.split('=')[1]).realpath
+      unpack_dir = Pathname.new(dir).realpath
       unpack_dir.mkpath unless unpack_dir.exist?
     end
 

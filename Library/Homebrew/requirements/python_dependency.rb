@@ -31,7 +31,7 @@ class PythonInstalled < Requirement
     end
   end
 
-  def initialize(default_version="2.6", tags=[] )
+  def initialize(default_version="2.6", tags=[])
     tags = [tags].flatten
     # Extract the min_version if given. Default to default_version else
     if /(\d+\.)*\d+/ === tags.first.to_s
@@ -89,23 +89,22 @@ class PythonInstalled < Requirement
       false
     elsif @min_version.major == 2 && `python -c "import sys; print(sys.version_info[0])"`.strip == "3"
       @unsatisfied_because += "Your `python` points to a Python 3.x. This is not supported."
+      false
     else
-      @imports.keys.map do |module_name|
-        if not importable? module_name
+      @imports.keys.all? do |module_name|
+        if importable? module_name
+          true
+        else
           @unsatisfied_because += "Unsatisfied dependency: #{module_name}\n"
           @unsatisfied_because += "OS X System's " if from_osx?
           @unsatisfied_because += "Brewed " if brewed?
           @unsatisfied_because += "External " unless brewed? || from_osx?
           @unsatisfied_because += "Python cannot `import #{module_name}`. Install with:\n  "
-          unless importable? 'pip'
-            @unsatisfied_because += "sudo easy_install pip\n  "
-          end
+          @unsatisfied_because += "sudo easy_install pip\n  " unless importable? 'pip'
           @unsatisfied_because += "pip-#{version.major}.#{version.minor} install #{@imports[module_name]}"
           false
-        else
-          true
         end
-      end.all?  # all given `module_name`s have to be `importable?`
+      end
     end
   end
 
@@ -192,11 +191,11 @@ class PythonInstalled < Requirement
     end
   end
 
-  # Is the Python brewed (and linked)?
+  # Is the brewed Python installed
   def brewed?
     @brewed ||= begin
       require 'formula'
-      (Formula.factory(@name).opt_prefix/"bin/#{@name}").executable?
+      Formula.factory(@name).linked_keg.exist?
     end
   end
 
@@ -239,14 +238,17 @@ class PythonInstalled < Requirement
 
   def modify_build_environment
     # Most methods fail if we don't have a binary.
-    return false if binary.nil?
+    return if binary.nil?
 
     # Write our sitecustomize.py
     file = global_site_packages/"sitecustomize.py"
     ohai "Writing #{file}" if ARGV.verbose? && ARGV.debug?
-    [".pyc", ".pyo", ".py"].map{ |f|
-      global_site_packages/"sitecustomize#{f}"
-    }.each{ |f| f.delete if f.exist? }
+
+    %w{.pyc .pyo .py}.each do |ext|
+      f = global_site_packages/"sitecustomize#{ext}"
+      f.unlink if f.exist?
+    end
+
     file.write(sitecustomize)
 
     # For non-system python's we add the opt_prefix/bin of python to the path.
@@ -276,7 +278,6 @@ class PythonInstalled < Requirement
         prefix=#{HOMEBREW_PREFIX}
       EOF
     end
-    true
   end
 
   def sitecustomize
