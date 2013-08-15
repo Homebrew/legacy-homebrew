@@ -34,10 +34,13 @@ class Formula
   alias do_patch patch
   def patch
     if ARGV.flag? '--patch'
-      # Yes Ruby, we are about to redefine a constant. Just breathe.
-      orig_v = $VERBOSE; $VERBOSE = nil
-      Formula.const_set 'DATA', ScriptDataReader.load(path)
-      $VERBOSE = orig_v
+      begin
+        old_verbose = $VERBOSE
+        $VERBOSE = nil
+        Formula.const_set 'DATA', ScriptDataReader.load(path)
+      ensure
+        $VERBOSE = old_verbose
+      end
 
       do_patch
     end
