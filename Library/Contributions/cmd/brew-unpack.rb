@@ -66,11 +66,10 @@ changes.
     formulae = ARGV.formulae
     raise FormulaUnspecifiedError if formulae.empty?
 
-    unpack_dir = ARGV.options_only.select {|o| o.start_with? "--destdir="}
-    if unpack_dir.empty?
-      unpack_dir = Pathname.new Dir.getwd
+    if (dir = ARGV.value('destdir')).nil?
+      unpack_dir = Pathname.pwd
     else
-      unpack_dir = Pathname.new(unpack_dir.first.split('=')[1]).realpath
+      unpack_dir = Pathname.new(dir).realpath
       unpack_dir.mkpath unless unpack_dir.exist?
     end
 
