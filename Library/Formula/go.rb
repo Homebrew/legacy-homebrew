@@ -53,7 +53,7 @@ class Go < Formula
 
     # The version check is due to:
     # http://codereview.appspot.com/5654068
-    Pathname.new('VERSION').write 'default' if build.head?
+    (buildpath/'VERSION').write('default') if build.head?
 
     cd 'src' do
       targets.each do |os, archs, opts|
@@ -67,7 +67,7 @@ class Go < Formula
       end
     end
 
-    Pathname.new('pkg/obj').rmtree
+    (buidpath/'pkg/obj').rmtree
 
     # Don't install header files; they aren't necessary and can
     # cause problems with other builds.
