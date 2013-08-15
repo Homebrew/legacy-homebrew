@@ -1,7 +1,7 @@
 require 'formula'
 
 class SonarRunner < Formula
-  homepage 'http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+Sonar+Runner'
+  homepage 'http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner'
   url 'http://repo1.maven.org/maven2/org/codehaus/sonar/runner/sonar-runner-dist/2.3/sonar-runner-dist-2.3.zip'
   sha1 '802312f74f55d671f6ae08f21e965fd66ca1853e'
 
