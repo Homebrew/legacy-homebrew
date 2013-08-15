@@ -23,9 +23,8 @@ class TerminalNotifier < Formula
     prefix.install Dir['build/Release/*']
     inner_binary = "#{prefix}/terminal-notifier.app/Contents/MacOS/terminal-notifier"
     bin.write_exec_script inner_binary
-    chmod 0755, Pathname.new(bin+"terminal-notifier")
+    chmod 0755, bin/'terminal-notifier'
   end
-
 end
 
 __END__
