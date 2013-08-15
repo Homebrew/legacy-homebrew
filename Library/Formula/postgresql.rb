@@ -101,14 +101,11 @@ class Postgresql < Formula
     you may need to remove the previous version first. See:
       https://github.com/mxcl/homebrew/issues/issue/2510
 
-
     If this is your first install, create a database with:
       initdb #{var}/postgres -E utf8
 
-
     To migrate existing data from a previous major version (pre-9.2) of PostgreSQL, see:
       http://www.postgresql.org/docs/9.2/static/upgrading.html
-
 
     Some machines may require provisioning of shared memory:
       http://www.postgresql.org/docs/9.2/static/kernel-resources.html#SYSVIPC
