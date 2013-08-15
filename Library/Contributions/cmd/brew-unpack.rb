@@ -70,7 +70,7 @@ module Homebrew extend self
     if (dir = ARGV.value('destdir')).nil?
       unpack_dir = Pathname.pwd
     else
-      unpack_dir = Pathname.new(dir).realpath
+      unpack_dir = Pathname.new(dir)
       unpack_dir.mkpath unless unpack_dir.exist?
     end
 
