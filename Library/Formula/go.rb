@@ -67,7 +67,7 @@ class Go < Formula
       end
     end
 
-    (buidpath/'pkg/obj').rmtree
+    (buildpath/'pkg/obj').rmtree
 
     # Don't install header files; they aren't necessary and can
     # cause problems with other builds.
