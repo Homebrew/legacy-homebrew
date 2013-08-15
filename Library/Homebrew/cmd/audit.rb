@@ -127,7 +127,8 @@ class FormulaAuditor
     # Don't depend_on aliases; use full name
     @@aliases ||= Formula.aliases
     f.deps.select { |d| @@aliases.include? d.name }.each do |d|
-      problem "Dependency #{d} is an alias; use the canonical name."
+      real_name = d.to_formula.name
+      problem "Dependency '#{d}' is an alias; use the canonical name '#{real_name}'."
     end
 
     # Check for things we don't like to depend on.
