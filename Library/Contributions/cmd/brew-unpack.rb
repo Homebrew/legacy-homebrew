@@ -48,19 +48,20 @@ class Formula
 end
 
 module Homebrew extend self
-  def unpack
-    unpack_usage = <<-EOS
-Usage: brew unpack [-pg] [--destdir=path/to/extract/in] <formulae ...>
+  def unpack_usage; <<-EOS.undent
+    Usage: brew unpack [-pg] [--destdir=path/to/extract/in] <formulae ...>
 
-Unpack formulae source code for inspection.
+    Unpack formulae source code for inspection.
 
-Formulae archives will be extracted to subfolders inside the current working
-directory or a directory specified by `--destdir`. If the `-p` option is
-supplied, patches will also be downloaded and applied. If the `-g` option is
-specified a git repository is created and all files added so that you can diff
-changes.
+    Formulae archives will be extracted to subfolders inside the current working
+    directory or a directory specified by `--destdir`. If the `-p` option is
+    supplied, patches will also be downloaded and applied. If the `-g` option is
+    specified a git repository is created and all files added so that you can diff
+    changes.
     EOS
+  end
 
+  def unpack
     abort unpack_usage if ARGV.empty?
 
     formulae = ARGV.formulae
