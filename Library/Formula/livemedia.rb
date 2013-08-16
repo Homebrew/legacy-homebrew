@@ -13,12 +13,52 @@ class Livemedia < Formula
   def install
     system "./genMakefiles", "macosx"
     system "make"
-    prefix.install Dir['*']
-    lib.install_symlink prefix => 'live'
+
+    modules = %w[ groupsock liveMedia BasicUsageEnvironment UsageEnvironment ]
+
+    # Retain the relative directory structure of the source package
+    modules.each do |m|
+      Dir["#{m}/include/*"].each do |header|
+        ( prefix + 'include' + File.dirname(header) ).install header
+      end
+      Dir["#{m}/*.a"].each do |library|
+        ( prefix + 'lib' + File.dirname(library) ).install library
+      end
+    end
+
+    # Make the include files and libraries available at locations where Mplayer
+    # expects to find them.
+
+    # expose the include files at: $(brew --prefix)/include/live
+    include.install_symlink( prefix + 'include' => 'live' )
+
+    # expose the libraries at: $(brew --prefix)/lib/live
+    lib.install_symlink( prefix + 'lib' => 'live' )
   end
 
   test do
-    system "#{prefix}/testProgs/openRTSP 2>&1|grep -q startPortNum"
+    src = <<-EOS.undent
+      #include "BasicHashTable.hh"
+      int main(){
+        BasicHashTable* ht = new BasicHashTable(1);
+        return 0;
+      }
+    EOS
+    cmd = %W[c++ %s -o %s
+                 -I#{include}/live/UsageEnvironment/include
+                 -I#{include}/live/BasicUsageEnvironment/include
+                 -I#{include}/live/groupsock/include
+                 #{lib}/live/BasicUsageEnvironment/libBasicUsageEnvironment.a
+                 #{lib}/live/UsageEnvironment/libUsageEnvironment.a  ]
+
+    require 'tempfile'
+    Tempfile.open(['test','.cpp']) do |cpp|
+      Tempfile.open(['test','.o']) do |o|
+        cpp.puts src
+        cpp.close
+        system cmd.join(" ") % [cpp.path, o.path]
+      end
+    end
   end
 end
 
