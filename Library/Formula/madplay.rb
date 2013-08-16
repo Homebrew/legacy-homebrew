@@ -17,7 +17,7 @@ class Madplay < Formula
             "--prefix=#{prefix}",
             "--mandir=#{man}"]
     # Avoid "error: CPU you selected does not support x86-64 instruction set"
-    args << "--build=x86_64" if MacOS.prefer_64_bit?
+    args << "--build=#{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit?
     system "./configure", *args
     system "make install"
   end

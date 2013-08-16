@@ -12,6 +12,7 @@ class Go < Formula
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
+  option 'without-cgo', "Build without cgo"
 
   fails_with :clang do
     cause "clang: error: no such file or directory: 'libgcc.a'"
@@ -21,6 +22,8 @@ class Go < Formula
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
     zsh_completion.install 'misc/zsh/go' => 'go'
+
+    cgo = build.with? 'cgo'
 
     if build.include? 'cross-compile-all'
       targets = [
@@ -32,7 +35,7 @@ class Go < Formula
         ['windows', ['386', 'amd64'],        { :cgo => false }],
 
         # Host platform (darwin/amd64) must always come last
-        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
+        ['darwin',  ['386', 'amd64'],        { :cgo => cgo  }],
       ]
     elsif build.include? 'cross-compile-common'
       targets = [
@@ -40,17 +43,17 @@ class Go < Formula
         ['windows', ['386', 'amd64'],        { :cgo => false }],
 
         # Host platform (darwin/amd64) must always come last
-        ['darwin',  ['386', 'amd64'],        { :cgo => true  }],
+        ['darwin',  ['386', 'amd64'],        { :cgo => cgo  }],
       ]
     else
       targets = [
-        ['darwin', [''], { :cgo => true }]
+        ['darwin', [''], { :cgo => cgo }]
       ]
     end
 
     # The version check is due to:
     # http://codereview.appspot.com/5654068
-    Pathname.new('VERSION').write 'default' if build.head?
+    (buildpath/'VERSION').write('default') if build.head?
 
     cd 'src' do
       targets.each do |os, archs, opts|
@@ -64,7 +67,7 @@ class Go < Formula
       end
     end
 
-    Pathname.new('pkg/obj').rmtree
+    (buildpath/'pkg/obj').rmtree
 
     # Don't install header files; they aren't necessary and can
     # cause problems with other builds.

@@ -36,7 +36,7 @@ class Wxmac < Formula
       "BUILD_STC=1"
     ]
     cd "wxPython" do
-      ENV.append_to_cflags '-arch x86_64' if MacOS.prefer_64_bit?
+      ENV.append_to_cflags "-arch #{MacOS.preferred_arch}"
 
       python do
         system python, "setup.py",

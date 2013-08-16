@@ -296,7 +296,7 @@ If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR i
 Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
 .
 .TP
-\fBsearch \-\-debian\fR|\fB\-\-fedora\fR|\fB\-\-fink\fR|\fB\-\-macports\fR|\fB\-\-opensuse\fR \fItext\fR
+\fBsearch \-\-debian\fR|\fB\-\-fedora\fR|\fB\-\-fink\fR|\fB\-\-macports\fR|\fB\-\-opensuse\fR|\fB\-\-ubuntu\fR \fItext\fR
 Search for \fItext\fR in the given package manager\'s list\.
 .
 .TP
@@ -325,7 +325,7 @@ Example: \fBbrew install jruby && brew test jruby\fR
 .
 .TP
 \fBunlink\fR \fIformula\fR
-Unsymlink \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
+Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
 .
 .TP
 \fBunpin\fR \fIformulae\fR

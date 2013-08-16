@@ -191,11 +191,11 @@ class PythonInstalled < Requirement
     end
   end
 
-  # Is the Python brewed (and linked)?
+  # Is the brewed Python installed
   def brewed?
     @brewed ||= begin
       require 'formula'
-      (Formula.factory(@name).opt_prefix/"bin/#{@name}").executable?
+      Formula.factory(@name).linked_keg.exist?
     end
   end
 

@@ -269,7 +269,7 @@ Note that these flags should only appear after a command.
     surrounded with slashes, then it is interpreted as a regular expression.
     If no search term is given, all available formula are displayed.
 
-  * `search --debian`|`--fedora`|`--fink`|`--macports`|`--opensuse` <text>:
+  * `search --debian`|`--fedora`|`--fink`|`--macports`|`--opensuse`|`--ubuntu` <text>:
     Search for <text> in the given package manager's list.
 
   * `sh [--env=std]`:
@@ -298,8 +298,9 @@ Note that these flags should only appear after a command.
     Example: `brew install jruby && brew test jruby`
 
   * `unlink` <formula>:
-    Unsymlink <formula> from the Homebrew prefix. This can be useful for
-    temporarily disabling a formula: `brew unlink foo && commands && brew link foo`.
+    Remove symlinks for <formula> from the Homebrew prefix. This can be useful
+    for temporarily disabling a formula:
+    `brew unlink foo && commands && brew link foo`.
 
   * `unpin` <formulae>:
     Unpin <formulae>, allowing them to be upgraded by `brew upgrade`. See also
