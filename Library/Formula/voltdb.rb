@@ -9,10 +9,8 @@ class Voltdb < Formula
   def install
     system 'ant'
 
-    inreplace 'bin/voltdb', /VOLTDB_LIB=\$VOLTDB_HOME\/lib/, 'VOLTDB_LIB=$VOLTDB_HOME/lib/voltdb'
-
-    Dir['lib/*'].each do |f| (lib/'voltdb').install f end
-    ln_s lib/'voltdb/python', lib/'python'
+    Dir['lib/*'].each do |f| libexec.install f end
+    lib.install_symlink Dir["#{libexec}/*"]
     prefix.install 'bin', 'tools', 'voltdb', 'version.txt', 'doc'
   end
 
