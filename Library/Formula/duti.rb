@@ -14,7 +14,7 @@ class Duti < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    inreplace "Makefile", "@@ARCH@@", MacOS.preferred_arch
+    inreplace "Makefile", "@@ARCH@@", MacOS.preferred_arch.to_s
     system "make install"
   end
 
