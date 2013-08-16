@@ -53,10 +53,12 @@ class Livemedia < Formula
 
     require 'tempfile'
     Tempfile.open(['test','.cpp']) do |cpp|
-      Tempfile.open(['test','.o']) do |o|
+      Tempfile.open('test') do |exe|
         cpp.puts src
         cpp.close
-        system cmd.join(" ") % [cpp.path, o.path]
+        system cmd.join(" ") % [cpp.path, exe.path]
+        system 'chmod', '777', exe.path
+        system exe.path
       end
     end
   end
