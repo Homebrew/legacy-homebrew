@@ -19,10 +19,10 @@ class Livemedia < Formula
     # Retain the relative directory structure of the source package
     modules.each do |m|
       Dir["#{m}/include/*"].each do |header|
-        ( prefix + 'include' + File.dirname(header) ).install header
+        ( include + File.dirname(header) ).install header
       end
       Dir["#{m}/*.a"].each do |library|
-        ( prefix + 'lib' + File.dirname(library) ).install library
+        ( lib + File.dirname(library) ).install library
       end
     end
 
@@ -30,10 +30,10 @@ class Livemedia < Formula
     # expects to find them.
 
     # expose the include files at: $(brew --prefix)/include/live
-    include.install_symlink( prefix + 'include' => 'live' )
+    include.install_symlink( include => 'live' )
 
     # expose the libraries at: $(brew --prefix)/lib/live
-    lib.install_symlink( prefix + 'lib' => 'live' )
+    lib.install_symlink( lib => 'live' )
   end
 
   test do
