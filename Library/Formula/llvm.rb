@@ -6,6 +6,11 @@ class Clang < Formula
   sha1      'ccd6dbf2cdb1189a028b70bcb8a22509c25c74c8'
 
   head      'http://llvm.org/git/clang.git'
+
+  # add libcxx path to include paths
+  def patches
+    { :p1 => "https://gist.github.com/rhysd/6147430/raw" }
+  end if File.directory? '/usr/local/lib/c++/v1'
 end
 
 class CompilerRt < Formula
@@ -14,6 +19,14 @@ class CompilerRt < Formula
   sha1      '745386ec046e3e49742e1ecb6912c560ccd0a002'
 
   head      'http://llvm.org/git/compiler-rt.git'
+end
+
+class Libcxx < Formula
+  homepage 'http://llvm.org/'
+  url 'http://llvm.org/releases/3.3/libcxx-3.3.src.tar.gz'
+  sha1 '7bea00bc1031bf3bf6c248e57c1f4e0874c18c04'
+
+  head 'http://llvm.org/git/libcxx.git'
 end
 
 class Llvm < Formula
@@ -36,6 +49,7 @@ class Llvm < Formula
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
   option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
+  option 'with-libcxx', ''
 
   depends_on :python => :recommended
 
@@ -45,6 +59,25 @@ class Llvm < Formula
     if build.with? 'python' and build.include? 'disable-shared'
       raise 'The Python bindings need the shared library.'
     end
+
+    Libcxx.new("libcxx").brew do
+      (buildpath/'libcxx').install Dir['*']
+
+      cd (buildpath/'libcxx/lib') do
+        ENV["TRIPLE"] = '-apple-'
+        system './buildit'
+      end
+
+      # from https://gist.github.com/iofg2100/5840630
+      libcxx_name = 'libc++.1.dylib'
+      libcxx_shorten_name = 'libc++.dylib'
+
+      lib.install buildpath/'libcxx/lib'/libcxx_name
+      lib.install buildpath/'libcxx/lib'/libcxx_shorten_name
+      system "install_name_tool -id #{lib/libcxx_name} #{lib/libcxx_name}"
+      (lib/'c++').install buildpath/'libcxx/include'
+      FileUtils.mv lib/'c++/include', lib/'c++/v1'
+    end if %w[with-clang with-libcxx].all?{|o| build.include? o}
 
     Clang.new("clang").brew do
       clang_dir.install Dir['*']
