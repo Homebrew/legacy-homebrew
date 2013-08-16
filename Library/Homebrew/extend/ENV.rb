@@ -292,9 +292,9 @@ module HomebrewEnvExtension
   end
 
   def universal_binary
-    append_to_cflags "-arch #{Hardware::CPU.arch_32_bit} -arch #{Hardware::CPU.arch_64_bit}"
+    append_to_cflags Hardware::CPU.universal_archs.as_arch_flags
     replace_in_cflags '-O4', '-O3' # O4 seems to cause the build to fail
-    append 'LDFLAGS', "-arch #{Hardware::CPU.arch_32_bit} -arch #{Hardware::CPU.arch_64_bit}"
+    append 'LDFLAGS', Hardware::CPU.universal_archs.as_arch_flags
 
     if compiler != :clang && Hardware.is_32_bit?
       # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
