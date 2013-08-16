@@ -10,8 +10,4 @@ class Tractorgen < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
-
-  test do
-    system "tractorgen 5"
-  end
 end
