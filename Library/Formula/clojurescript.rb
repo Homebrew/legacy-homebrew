@@ -16,9 +16,7 @@ class Clojurescript < Formula
     # environment to get its value, saving the end-user 
     # from extraneous configuration.
 
-    ['bin/cljsc', 'script/repl', 'script/repljs', 'script/browser-repl'].each do |file| 
-      inreplace file, "#!/bin/sh", "#!/bin/sh\nCLOJURESCRIPT_HOME=#{prefix}" 
-    end
+    inreplace %w(bin/cljsc script/repl script/repljs script/browser-repl), "#!/bin/sh", "#!/bin/sh\nCLOJURESCRIPT_HOME=#{prefix}" 
     prefix.install Dir['*']
   end
 
