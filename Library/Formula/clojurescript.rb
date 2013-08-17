@@ -9,6 +9,13 @@ class Clojurescript < Formula
 
   def install
     system "./script/bootstrap"
+  
+    # Before copying the temporary directory tree, 
+    # we are setting a home variable in three shell 
+    # executables that otherwise would poke the shell 
+    # environment to get its value, saving the end-user 
+    # from extraneous configuration.
+
     ['bin/cljsc', 'script/repl', 'script/repljs', 'script/browser-repl'].each do |file| 
       inreplace file, "#!/bin/sh", "#!/bin/sh\nCLOJURESCRIPT_HOME=#{prefix}" 
     end
