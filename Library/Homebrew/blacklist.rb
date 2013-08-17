@@ -62,5 +62,14 @@ def blacklisted? name
   when 'gsutil' then <<-EOS.undent
     Install gsutil with `pip install gsutil`
     EOS
+  when 'clojure' then <<-EOS.undent
+    Clojure isn't really a program but a library managed as part of a
+    project and Leiningen is the user interface to that library.
+
+    To install Clojure you should install Leiningen:
+      brew install leiningen
+    and then follow the tutorial:
+      https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md
+    EOS
   end
 end
