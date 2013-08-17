@@ -2,9 +2,8 @@ require 'formula'
 
 class Libcppa < Formula
   homepage 'http://libcppa.blogspot.it'
-  version '0.7.1'
-  url 'https://github.com/Neverlord/libcppa.git'
-  sha1 '7a8f36499ffacf2f471252280977eb5d877af759'
+  url 'https://github.com/Neverlord/libcppa/archive/V0.7.1.tar.gz'
+  sha1 '0f1f685e94bfa16625370b978ff26deaf799b94e'
 
   option 'dual-build', 'Build both with gcc and clang'
   option 'no-examples', 'Build libcppa without examples'
@@ -20,7 +19,7 @@ class Libcppa < Formula
   depends_on 'cmake' => :build
 
   def install
-    system "./configure"
+    system "./configure", "--prefix=#{prefix}"
     system "make", "install"
     system "make", "test"
   end
