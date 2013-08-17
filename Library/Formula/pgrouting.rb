@@ -2,9 +2,9 @@ require 'formula'
 
 class Pgrouting < Formula
   homepage 'http://www.pgrouting.org'
-  version "2.0.0-beta"
-  url 'https://github.com/pgRouting/pgrouting/archive/v2.0.0-beta.tar.gz'
-  sha1 'fbe661aae7e2474114f8bd9b71138986b3addf0b'
+  version "2.0.0-rc1"
+  url "https://github.com/pgRouting/pgrouting/archive/v2.0.0-rc1.tar.gz"
+  sha1 "481077067c754a92f82dabaeaa2a9140881bda25"
 
   depends_on 'postgresql'
   depends_on 'postgis'
@@ -13,7 +13,7 @@ class Pgrouting < Formula
   depends_on 'cmake' => :build
   
   def install
-    system "cmake -DWITH_DD=ON"
+    system "cmake -DWITH_DD=ON", "..", *std_cmake_args
     system "make", "install" 
   end
 end
