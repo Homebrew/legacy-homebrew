@@ -9,7 +9,13 @@ class Clojurescript < Formula
 
   def install
     system "./script/bootstrap"
-    ['bin/cljsc', 'script/repl', 'script/repljs', 'script/browser-repl'].each { |file| set_env(file) } 
+    ['bin/cljsc', 'script/repl', 'script/repljs', 'script/browser-repl'].each do |file| 
+      lines = IO.readlines(file)
+      lines.insert(1, "CLOJURESCRIPT_HOME=#{prefix}")
+      File.open(file, 'w') do |file|
+        file.puts lines
+      end  
+    end
     prefix.install Dir['*']
   end
 
@@ -23,14 +29,4 @@ class Clojurescript < Formula
     EOS
   end
   
-  private
-
-  def set_env(file)
-    lines = IO.readlines(file)
-    lines.insert(1, "CLOJURESCRIPT_HOME=#{prefix}")
-    File.open(file, 'w') do |file|
-      file.puts lines
-    end
-  end
-
 end
