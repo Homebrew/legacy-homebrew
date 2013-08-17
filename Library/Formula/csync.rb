@@ -2,24 +2,20 @@ require 'formula'
 
 class Csync < Formula
   homepage 'http://www.csync.org/'
+  head 'git://git.csync.org/projects/csync.git'
   url 'http://www.csync.org/files/csync-0.49.9.tar.gz'
   sha1 'fd7df6c13aa6fc6de74cb48c2ac35ad11f6d895d'
 
-  # Note: HEAD requires git:// protocol, https:// does not work.
-  head 'git://git.csync.org/projects/csync.git'
-
-  depends_on 'doxygen' => :build
-  depends_on 'cmake' => :build
   depends_on 'check' => :build
-  depends_on 'sqlite'
-  depends_on 'iniparser'
+  depends_on 'cmake' => :build
+  depends_on 'doxygen' => :build
   depends_on 'argp-standalone'
+  depends_on 'iniparser'
+  depends_on 'sqlite'
   depends_on 'libssh' => :optional
 
   if build.head?
-    # Log4c and libsmbclient are optional in HEAD. See
-    # http://git.csync.org/projects/csync.git/commit/?id=13f05db93484ad6100c1987d11e7a6d33bd5d754
-    # http://git.csync.org/projects/csync.git/commit/?id=f064dbcde4e25cb4661be77a76be7279946be3d6
+    # Log4c and libsmbclient are optional in HEAD.
     depends_on 'log4c' => :optional
     depends_on 'samba' => :optional
   else
@@ -41,10 +37,8 @@ class Csync < Formula
       # yet. We also have to patch "link.txt" for all module
       # targets. This should probably be reported upstream.
       system "make csync"
-      Dir['modules/CMakeFiles/*/link.txt'].each do |f|
-        inreplace f do |s|
-          s.gsub! '-o', "../src/libcsync.dylib ../src/std/libcstdlib.a -o"
-        end
+      inreplace Dir['modules/CMakeFiles/*/link.txt'] do |s|
+        s.gsub! '-o', "../src/libcsync.dylib ../src/std/libcstdlib.a -o"
       end
       # Now we can make and install.
       system "make all"
