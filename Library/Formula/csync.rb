@@ -8,7 +8,7 @@ class Csync < Formula
 
   depends_on 'check' => :build
   depends_on 'cmake' => :build
-  depends_on 'doxygen' => :build
+  depends_on 'doxygen' => [:build, :optional]
   depends_on 'argp-standalone'
   depends_on 'iniparser'
   depends_on 'sqlite'
