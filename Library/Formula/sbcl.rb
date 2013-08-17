@@ -8,8 +8,8 @@ end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.9/sbcl-1.1.9-source.tar.bz2'
-  sha1 'a2a2e165429940ecd5cf1c3bc3068898c4b864ea'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.10/sbcl-1.1.10-source.tar.bz2'
+  sha1 '3a7706423ad25c0728f370f1373ad009fd96b1cf'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
