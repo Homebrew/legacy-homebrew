@@ -10,11 +10,7 @@ class Clojurescript < Formula
   def install
     system "./script/bootstrap"
     ['bin/cljsc', 'script/repl', 'script/repljs', 'script/browser-repl'].each do |file| 
-      lines = IO.readlines(file)
-      lines.insert(1, "CLOJURESCRIPT_HOME=#{prefix}")
-      File.open(file, 'w') do |file|
-        file.puts lines
-      end  
+      inreplace file, "#!/bin/sh", "#!/bin/sh\nCLOJURESCRIPT_HOME=#{prefix}" 
     end
     prefix.install Dir['*']
   end
