@@ -38,13 +38,17 @@ class Wine < Formula
   depends_on :x11 => :recommended
   depends_on 'freetype' if build.without? 'x11'
   depends_on 'jpeg'
+  depends_on 'libgphoto2'
   depends_on 'libicns'
   depends_on 'libtiff'
-  depends_on 'little-cms' unless build.devel?
-  depends_on 'little-cms2' if build.devel?
   depends_on 'sane-backends'
-  depends_on 'libgphoto2'
   depends_on 'libgsm' => :optional
+
+  if build.stable?
+    depends_on 'little-cms'
+  else
+    depends_on 'little-cms2'
+  end
 
   fails_with :llvm do
     build 2336
