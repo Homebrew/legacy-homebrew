@@ -23,3 +23,4 @@ class Voltdb < Formula
     assert_equal "3.5\n", File.read("#{prefix}/version.txt")
   end
 end
+
