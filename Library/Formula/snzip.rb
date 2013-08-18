@@ -13,6 +13,8 @@ class Snzip < Formula
   end
 
   test do
-    system "snzip", "-h"
+    (testpath/'test.out').write "test"
+    system "snzip", "test.out"
+    system "snzip", "-d", "test.out.snz"
   end
 end
