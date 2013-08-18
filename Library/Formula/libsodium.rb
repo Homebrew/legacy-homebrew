@@ -2,8 +2,8 @@ require 'formula'
 
 class Libsodium < Formula
   homepage 'https://github.com/jedisct1/libsodium/'
-  url 'http://download.dnscrypt.org/libsodium/releases/libsodium-0.3.tar.gz'
-  sha1 '3d486dc40e7cbd9542d00088d3b73a719d7746fa'
+  url 'http://download.dnscrypt.org/libsodium/releases/libsodium-0.4.2.tar.gz'
+  sha1 '7654452a6433d4bee985505be5d338e137e6fba0'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
