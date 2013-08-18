@@ -111,6 +111,8 @@ class Wine < Formula
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
 
+    args << "--without-x" if build.without? 'x11'
+
     system "./configure", *args
 
     unless ENV.compiler == :clang or ENV.compiler == :llvm
