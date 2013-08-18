@@ -5,22 +5,28 @@ class Libcppa < Formula
   url 'https://github.com/Neverlord/libcppa/archive/V0.7.1.tar.gz'
   sha1 '0f1f685e94bfa16625370b978ff26deaf799b94e'
 
-  option 'dual-build', 'Build both with gcc and clang'
-  option 'no-examples', 'Build libcppa without examples'
-  option 'no-qt-examples', 'Build libcppa with all but Qt examples'
-  option 'build-static', 'Build libcppa as static and shared library'
-  option 'build-static-only', 'Build libcppa as static library only'
+  depends_on 'cmake' => :build
+
   option 'with-opencl', 'Build with OpenCL actors'
   option 'disable-context-switching', 'Compile libcppa without context-switching actors even if Boost.Context is available'
 
-  option 'enable-debug', 'Compile in debugging mode'
-  option 'enable-perftools', 'Use Google perftools'
-
-  depends_on 'cmake' => :build
-
   def install
-    system "./configure", "--prefix=#{prefix}"
-    system "make", "install"
+    args = %W[
+      --prefix=#{prefix}
+      --build-static
+    ]
+
+    if build.with? 'opencl'
+      args << "--with-opencl"
+    end
+
+    if build.include? 'disable-context-switching'
+      args << "--disable-context-switching"
+    end
+
+    system "./configure", *args
+    system "make"
     system "make", "test"
+    system "make", "install"
   end
 end
