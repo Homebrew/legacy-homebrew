@@ -13,8 +13,8 @@ class Vimpc < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'pcre++'
   depends_on 'libmpdclient'
+  depends_on 'pcre'
 
   def install
     if build.head?
