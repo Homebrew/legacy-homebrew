@@ -10,10 +10,8 @@ class Lesstif < Formula
   def install
     # LessTif does naughty, naughty, things by assuming we want autoconf macros
     # to live in wherever `aclocal --print-ac-dir` says they should.
-
-    inreplace ['configure'], "`aclocal --print-ac-dir`", "#{share}/aclocal"
-
     # Shame on you LessTif! *wags finger*
+    inreplace 'configure', "`aclocal --print-ac-dir`", "#{share}/aclocal"
 
     # 'sed' fails if LANG=en_US.UTF-8 as is often the case on Macs.
     # The configure script finds our superenv sed wrapper, sets SED,
