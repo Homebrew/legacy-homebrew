@@ -15,6 +15,9 @@ class Lesstif < Formula
 
     # Shame on you LessTif! *wags finger*
 
+    # 'sed' fails if LANG=en_US.UTF-8 as is often the case on Macs.
+    ENV['LANG'] = 'C'
+
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--enable-production",
