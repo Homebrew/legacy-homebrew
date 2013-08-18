@@ -12,6 +12,7 @@ class Xrootd < Formula
       system "cmake", "..", *std_cmake_args
       system "make install"
     end
+    share.install prefix/"man" # Put man pages in correct place
   end
 
   def test
