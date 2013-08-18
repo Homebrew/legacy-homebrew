@@ -9,15 +9,9 @@ class Clojurescript < Formula
 
   def install
     system "./script/bootstrap"
-  
-    # Before copying the temporary directory tree, 
-    # we are setting a home variable in three shell 
-    # executables that otherwise would poke the shell 
-    # environment to get its value, saving the end-user 
-    # from extraneous configuration.
-
-    inreplace %w(bin/cljsc script/repl script/repljs script/browser-repl), "#!/bin/sh", "#!/bin/sh\nCLOJURESCRIPT_HOME=#{prefix}" 
-    prefix.install Dir['*']
+    inreplace %w(bin/cljsc script/repl script/repljs script/browser-repl), "#!/bin/sh", "#!/bin/sh\nCLOJURESCRIPT_HOME=#{libexec}"
+    libexec.install Dir['*']
+    bin.write_exec_script libexec/'bin/cljsc'
   end
 
   test do
@@ -25,9 +19,8 @@ class Clojurescript < Formula
   end
 
   def caveats; <<-EOS.undent
-    This formula is useful if you need to use the ClojureScript compiler directly.  
+    This formula is useful if you need to use the ClojureScript compiler directly.
     For a more integrated workflow, Leiningen with lein-cljsbuild is recommended.
     EOS
   end
-  
 end
