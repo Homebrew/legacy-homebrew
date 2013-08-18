@@ -1,5 +1,6 @@
 require 'extend/ENV'
 require 'macos'
+require 'formula'
 
 ### Why `superenv`?
 # 1) Only specify the environment we need (NO LDFLAGS for cmake)
@@ -196,6 +197,12 @@ class << ENV
   def determine_cmake_library_path
     sdk = MacOS.sdk_path if MacOS::Xcode.without_clt?
     paths = []
+    # when using gcc-4.2, some formulaes like go link against libgcc.a provided by apple-gcc42, so 
+    # we need to add the its lib directory as well
+    if ENV['HOMEBREW_CC'] == 'gcc-4.2'
+      apple_gcc42 = Formula.factory('apple-gcc42')
+      paths << apple_gcc42.prefix.to_s + '/lib' if apple_gcc42.installed?
+    end
     # things expect to find GL headers since X11 used to be a default, so we add them
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries" unless x11?
     paths << MacOS::X11.lib if x11?
