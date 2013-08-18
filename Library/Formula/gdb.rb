@@ -43,6 +43,11 @@ class Gdb < Formula
     system "./configure", *args
     system "make"
     system "make install"
+
+    # Remove conflicting items with binutils
+    rm_rf include
+    rm_rf lib
+    rm_rf share/'locale'
   end
 
   def caveats; <<-EOS.undent
