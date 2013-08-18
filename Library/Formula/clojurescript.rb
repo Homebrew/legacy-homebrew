@@ -15,7 +15,7 @@ class Clojurescript < Formula
   end
 
   test do
-    system "cljsc"
+    system "#{bin}/cljsc"
   end
 
   def caveats; <<-EOS.undent
