@@ -11,13 +11,9 @@ require 'macos'
 # 7) Simpler formula that *just work*
 # 8) Build-system agnostic configuration of the tool-chain
 
-def superbin
-  @bin ||= (HOMEBREW_REPOSITORY/"Library/ENV").children.reject{|d| d.basename.to_s > MacOS::Xcode.version }.max
-end
-
 def superenv?
   return false if MacOS::Xcode.without_clt? && MacOS.sdk_path.nil?
-  return false unless superbin && superbin.directory?
+  return false unless Superenv.bin && Superenv.bin.directory?
   return false if ARGV.include? "--env=std"
   true
 end
@@ -29,6 +25,10 @@ module Superenv
   def self.extended(base)
     base.keg_only_deps = []
     base.deps = []
+  end
+
+  def self.bin
+    @bin ||= (HOMEBREW_REPOSITORY/"Library/ENV").children.reject{|d| d.basename.to_s > MacOS::Xcode.version }.max
   end
 
   def reset
@@ -149,7 +149,7 @@ module Superenv
   end
 
   def determine_path
-    paths = [superbin]
+    paths = [Superenv.bin]
     if MacOS::Xcode.without_clt?
       paths << "#{MacOS::Xcode.prefix}/usr/bin"
       paths << "#{MacOS::Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
