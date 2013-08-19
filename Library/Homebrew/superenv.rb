@@ -1,4 +1,3 @@
-require 'extend/ENV'
 require 'macos'
 
 ### Why `superenv`?
@@ -10,26 +9,6 @@ require 'macos'
 # 6) Simpler code
 # 7) Simpler formula that *just work*
 # 8) Build-system agnostic configuration of the tool-chain
-
-def superenv?
-  return false if MacOS::Xcode.without_clt? && MacOS.sdk_path.nil?
-  return false unless Superenv.bin && Superenv.bin.directory?
-  return false if ARGV.include? "--env=std"
-  true
-end
-
-module EnvActivation
-  def activate_extensions!
-    if superenv?
-      extend(Superenv)
-    else
-      extend(HomebrewEnvExtension)
-      prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
-    end
-  end
-end
-
-ENV.extend(EnvActivation)
 
 module Superenv
   attr_accessor :keg_only_deps, :deps, :x11

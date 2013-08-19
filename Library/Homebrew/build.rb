@@ -34,7 +34,7 @@ def main
 
   require 'hardware'
   require 'keg'
-  require 'superenv'
+  require 'extend/ENV'
 
   # Force any future invocations of sudo to require the user's password to be
   # re-entered. This is in-case any build script call sudo. Certainly this is

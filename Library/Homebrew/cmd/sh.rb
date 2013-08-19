@@ -1,4 +1,4 @@
-require 'superenv'
+require 'extend/ENV'
 require 'formula'
 
 module Homebrew extend self

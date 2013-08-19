@@ -1,4 +1,4 @@
-require 'superenv'
+require 'extend/ENV'
 require 'hardware'
 
 module Homebrew extend self
