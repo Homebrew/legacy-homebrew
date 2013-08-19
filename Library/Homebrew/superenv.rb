@@ -22,8 +22,7 @@ def superenv?
   true
 end
 
-# Note that this block is guarded with `if superenv?`
-class << ENV
+module Superenv
   attr_accessor :keg_only_deps, :deps, :x11
   alias_method :x11?, :x11
 
@@ -288,7 +287,6 @@ class << ENV
   # This should be a safe hack to prevent that exception cropping up.
   # Main consqeuence of this is that ENV['CFLAGS'] is never nil even when it
   # is which can break if checks, but we don't do such a check in our code.
-  alias_method :"old_[]", :[]
   def [] key
     if has_key? key
       fetch(key)
@@ -304,8 +302,7 @@ class << ENV
       a
     end
   end
-
-end if superenv?
+end
 
 
 if not superenv?
@@ -313,6 +310,7 @@ if not superenv?
   # we must do this or tools like pkg-config won't get found by configure scripts etc.
   ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
 else
+  ENV.extend(Superenv)
   ENV.keg_only_deps = []
   ENV.deps = []
 end
