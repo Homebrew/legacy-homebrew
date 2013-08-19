@@ -37,25 +37,25 @@ module Superenv
 
   def setup_build_environment
     reset
-    ENV['CC'] = 'cc'
-    ENV['CXX'] = 'c++'
-    ENV['OBJC'] = 'cc'
-    ENV['OBJCXX'] = 'c++'
-    ENV['DEVELOPER_DIR'] = determine_developer_dir
-    ENV['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
-    ENV['PATH'] = determine_path
-    ENV['PKG_CONFIG_PATH'] = determine_pkg_config_path
-    ENV['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
-    ENV['HOMEBREW_CC'] = determine_cc
-    ENV['HOMEBREW_CCCFG'] = determine_cccfg
-    ENV['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
-    ENV['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
-    ENV['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
-    ENV['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
-    ENV['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
-    ENV['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
-    ENV['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
-    ENV['ACLOCAL_PATH'] = determine_aclocal_path
+    self['CC'] = 'cc'
+    self['CXX'] = 'c++'
+    self['OBJC'] = 'cc'
+    self['OBJCXX'] = 'c++'
+    self['DEVELOPER_DIR'] = determine_developer_dir
+    self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
+    self['PATH'] = determine_path
+    self['PKG_CONFIG_PATH'] = determine_pkg_config_path
+    self['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
+    self['HOMEBREW_CC'] = determine_cc
+    self['HOMEBREW_CCCFG'] = determine_cccfg
+    self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
+    self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
+    self['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
+    self['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
+    self['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
+    self['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
+    self['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
+    self['ACLOCAL_PATH'] = determine_aclocal_path
 
     # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
     # compiler flag stripping. It consists of a string of characters which act
@@ -75,14 +75,14 @@ module Superenv
 
     # Homebrew's apple-gcc42 will be outside the PATH in superenv,
     # so xcrun may not be able to find it
-    if ENV['HOMEBREW_CC'] == 'gcc-4.2'
+    if self['HOMEBREW_CC'] == 'gcc-4.2'
       apple_gcc42 = Formula.factory('apple-gcc42') rescue nil
-      ENV.append('PATH', apple_gcc42.opt_prefix/'bin', ':') if apple_gcc42
+      append('PATH', apple_gcc42.opt_prefix/'bin', ':') if apple_gcc42
     end
   end
 
   def universal_binary
-    ENV['HOMEBREW_ARCHS'] = Hardware::CPU.universal_archs.join(',')
+    self['HOMEBREW_ARCHS'] = Hardware::CPU.universal_archs.join(',')
     append 'HOMEBREW_CCCFG', "u", ''
   end
 
@@ -106,24 +106,24 @@ module Superenv
       "llvm-gcc"
     elsif ARGV.include? '--use-clang'
       "clang"
-    elsif ENV['HOMEBREW_USE_CLANG']
+    elsif self['HOMEBREW_USE_CLANG']
       opoo %{HOMEBREW_USE_CLANG is deprecated, use HOMEBREW_CC="clang" instead}
       "clang"
-    elsif ENV['HOMEBREW_USE_LLVM']
+    elsif self['HOMEBREW_USE_LLVM']
       opoo %{HOMEBREW_USE_LLVM is deprecated, use HOMEBREW_CC="llvm" instead}
       "llvm-gcc"
-    elsif ENV['HOMEBREW_USE_GCC']
+    elsif self['HOMEBREW_USE_GCC']
       opoo %{HOMEBREW_USE_GCC is deprecated, use HOMEBREW_CC="gcc" instead}
       "gcc"
-    elsif ENV['HOMEBREW_CC']
-      case ENV['HOMEBREW_CC']
-        when 'clang', 'gcc-4.0' then ENV['HOMEBREW_CC']
+    elsif self['HOMEBREW_CC']
+      case self['HOMEBREW_CC']
+        when 'clang', 'gcc-4.0' then self['HOMEBREW_CC']
         # depending on Xcode version plain 'gcc' could actually be
         # gcc-4.0 or llvm-gcc
         when 'gcc', 'gcc-4.2' then 'gcc-4.2'
         when 'llvm', 'llvm-gcc' then 'llvm-gcc'
       else
-        opoo "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC'].inspect}"
+        opoo "Invalid value for HOMEBREW_CC: #{self['HOMEBREW_CC'].inspect}"
         default_cc
       end
     else
@@ -206,7 +206,7 @@ module Superenv
   end
 
   def determine_make_jobs
-    if (j = ENV['HOMEBREW_MAKE_JOBS'].to_i) < 1
+    if (j = self['HOMEBREW_MAKE_JOBS'].to_i) < 1
       Hardware::CPU.cores
     else
       j
@@ -237,7 +237,7 @@ module Superenv
     # If Xcode path is fucked then this is basically a fix. In the case where
     # nothing is valid, it still fixes most usage to supply a valid path that
     # is not "/".
-    MacOS::Xcode.prefix || ENV['DEVELOPER_DIR']
+    MacOS::Xcode.prefix || self['DEVELOPER_DIR']
   end
 
   public
@@ -251,12 +251,12 @@ module Superenv
 
 ### DEPRECATE THESE
   def compiler
-    case ENV['HOMEBREW_CC']
+    case self['HOMEBREW_CC']
       when "llvm-gcc" then :llvm
       when "gcc-4.2" then :gcc
-      when "gcc", "clang" then ENV['HOMEBREW_CC'].to_sym
+      when "gcc", "clang" then self['HOMEBREW_CC'].to_sym
     else
-      raise "Invalid value for HOMEBREW_CC: #{ENV['HOMEBREW_CC'].inspect}"
+      raise "Invalid value for HOMEBREW_CC: #{self['HOMEBREW_CC'].inspect}"
     end
   end
   def deparallelize
@@ -264,25 +264,25 @@ module Superenv
   end
   alias_method :j1, :deparallelize
   def gcc
-    ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "gcc"
-    ENV['CXX'] = ENV['OBJCXX'] = "g++-4.2"
+    self['CC'] = self['OBJC'] = self['HOMEBREW_CC'] = "gcc"
+    self['CXX'] = self['OBJCXX'] = "g++-4.2"
   end
   def llvm
-    ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "llvm-gcc"
-    ENV['CXX'] = ENV['OBJCXX'] = "llvm-g++-4.2"
+    self['CC'] = self['OBJC'] = self['HOMEBREW_CC'] = "llvm-gcc"
+    self['CXX'] = self['OBJCXX'] = "llvm-g++-4.2"
   end
   def clang
-    ENV['CC'] = ENV['OBJC'] = ENV['HOMEBREW_CC'] = "clang"
-    ENV['CXX'] = ENV['OBJCXX'] = "clang++"
+    self['CC'] = self['OBJC'] = self['HOMEBREW_CC'] = "clang"
+    self['CXX'] = self['OBJCXX'] = "clang++"
   end
   def make_jobs
-    ENV['MAKEFLAGS'] =~ /-\w*j(\d)+/
+    self['MAKEFLAGS'] =~ /-\w*j(\d)+/
     [$1.to_i, 1].max
   end
 
   # Many formula assume that CFLAGS etc. will not be nil.
   # This should be a safe hack to prevent that exception cropping up.
-  # Main consqeuence of this is that ENV['CFLAGS'] is never nil even when it
+  # Main consqeuence of this is that self['CFLAGS'] is never nil even when it
   # is which can break if checks, but we don't do such a check in our code.
   def [] key
     if has_key? key
