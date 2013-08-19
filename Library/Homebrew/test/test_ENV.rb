@@ -1,42 +1,59 @@
 require 'testing_env'
+require 'extend/ENV'
 
 class EnvironmentTests < Test::Unit::TestCase
+  def setup
+    @env = {}.extend(EnvActivation)
+    @env.activate_extensions!
+  end
+
   def test_ENV_options
-    ENV.gcc_4_0
-    ENV.O3
-    ENV.minimal_optimization
-    ENV.no_optimization
-    ENV.libxml2
-    ENV.enable_warnings
-    assert !ENV.cc.empty?
-    assert !ENV.cxx.empty?
+    @env.gcc_4_0
+    @env.O3
+    @env.minimal_optimization
+    @env.no_optimization
+    @env.libxml2
+    @env.enable_warnings
+    assert !@env.cc.empty?
+    assert !@env.cxx.empty?
   end
 
   def test_switching_compilers
-    ENV.llvm
-    ENV.clang
-    assert_nil ENV['LD']
-    assert_equal ENV['OBJC'], ENV['CC']
+    @env.llvm
+    @env.clang
+    assert_nil @env['LD']
+    assert_equal @env['OBJC'], @env['CC']
   end
 
   def test_with_build_environment_restores_env
-    before = ENV.to_hash
-    ENV.with_build_environment do
-      ENV['foo'] = 'bar'
+    before = @env.dup
+    @env.with_build_environment do
+      @env['foo'] = 'bar'
     end
-    assert_nil ENV['foo']
-    assert_equal before, ENV.to_hash
+    assert_nil @env['foo']
+    assert_equal before, @env
   end
 
   def test_with_build_environment_ensures_env_restored
-    ENV.expects(:replace).with(ENV.to_hash)
+    before = @env.dup
     begin
-      ENV.with_build_environment { raise Exception }
+      @env.with_build_environment do
+        @env['foo'] = 'bar'
+        raise Exception
+      end
     rescue Exception
     end
+    assert_nil @env['foo']
+    assert_equal before, @env
   end
 
   def test_with_build_environment_returns_block_value
-    assert_equal 1, ENV.with_build_environment { 1 }
+    assert_equal 1, @env.with_build_environment { 1 }
+  end
+
+  def test_with_build_environment_does_not_mutate_interface
+    expected = @env.methods
+    @env.with_build_environment { assert_equal expected, @env.methods }
+    assert_equal expected, @env.methods
   end
 end
