@@ -254,8 +254,8 @@ class PythonInstalled < Requirement
 
     ENV['PYTHONHOME'] = nil  # to avoid fuck-ups.
     ENV['PYTHONPATH'] = if brewed? then nil; else global_site_packages.to_s; end
-    ENV.append 'CMAKE_INCLUDE_PATH', incdir, File::PATH_SEPARATOR
-    ENV.append 'PKG_CONFIG_PATH', pkg_config_path, File::PATH_SEPARATOR if pkg_config_path
+    ENV.append_path 'CMAKE_INCLUDE_PATH', incdir
+    ENV.append_path 'PKG_CONFIG_PATH', pkg_config_path if pkg_config_path
     # We don't set the -F#{framework} here, because if Python 2.x and 3.x are
     # used, `Python.framework` is ambiguous. However, in the `python do` block
     # we can set LDFLAGS+="-F#{framework}" because only one is temporarily set.

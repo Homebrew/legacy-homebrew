@@ -72,9 +72,9 @@ module Stdenv
     # For Xcode 4.3 (*without* the "Command Line Tools for Xcode") compiler and tools inside of Xcode:
     if not MacOS::CLT.installed? and MacOS::Xcode.installed? and MacOS::Xcode.version >= "4.3"
       # Some tools (clang, etc.) are in the xctoolchain dir of Xcode
-      append 'PATH', "#{MacOS.xctoolchain_path}/usr/bin", File::PATH_SEPARATOR if MacOS.xctoolchain_path
+      append_path 'PATH', "#{MacOS.xctoolchain_path}/usr/bin" if MacOS.xctoolchain_path
       # Others are now at /Applications/Xcode.app/Contents/Developer/usr/bin
-      append 'PATH', "#{MacOS.dev_tools_path}", File::PATH_SEPARATOR
+      append_path 'PATH', MacOS.dev_tools_path
     end
   end
 
@@ -217,15 +217,15 @@ module Stdenv
       # Extra setup to support Xcode 4.3+ without CLT.
       self['SDKROOT'] = sdk
       # Tell clang/gcc where system include's are:
-      append 'CPATH', "#{sdk}/usr/include", File::PATH_SEPARATOR
+      append_path 'CPATH', "#{sdk}/usr/include"
       # The -isysroot is needed, too, because of the Frameworks
       append_to_cflags "-isysroot #{sdk}"
       append 'CPPFLAGS', "-isysroot #{sdk}"
       # And the linker needs to find sdk/usr/lib
       append 'LDFLAGS', "-isysroot #{sdk}"
       # Needed to build cmake itself and perhaps some cmake projects:
-      append 'CMAKE_PREFIX_PATH', "#{sdk}/usr", File::PATH_SEPARATOR
-      append 'CMAKE_FRAMEWORK_PATH', "#{sdk}/System/Library/Frameworks", File::PATH_SEPARATOR
+      append_path 'CMAKE_PREFIX_PATH', "#{sdk}/usr"
+      append_path 'CMAKE_FRAMEWORK_PATH', "#{sdk}/System/Library/Frameworks"
     end
   end
 
@@ -250,24 +250,24 @@ module Stdenv
 
   def x11
     # There are some config scripts here that should go in the PATH
-    append 'PATH', MacOS::X11.bin, File::PATH_SEPARATOR
+    append_path 'PATH', MacOS::X11.bin
 
     # Append these to PKG_CONFIG_LIBDIR so they are searched
     # *after* our own pkgconfig directories, as we dupe some of the
     # libs in XQuartz.
-    append 'PKG_CONFIG_LIBDIR', MacOS::X11.lib/'pkgconfig', File::PATH_SEPARATOR
-    append 'PKG_CONFIG_LIBDIR', MacOS::X11.share/'pkgconfig', File::PATH_SEPARATOR
+    append_path 'PKG_CONFIG_LIBDIR', MacOS::X11.lib/'pkgconfig'
+    append_path 'PKG_CONFIG_LIBDIR', MacOS::X11.share/'pkgconfig'
 
     append 'LDFLAGS', "-L#{MacOS::X11.lib}"
-    append 'CMAKE_PREFIX_PATH', MacOS::X11.prefix, File::PATH_SEPARATOR
-    append 'CMAKE_INCLUDE_PATH', MacOS::X11.include, File::PATH_SEPARATOR
+    append_path 'CMAKE_PREFIX_PATH', MacOS::X11.prefix
+    append_path 'CMAKE_INCLUDE_PATH', MacOS::X11.include
 
     append 'CPPFLAGS', "-I#{MacOS::X11.include}"
 
-    append 'ACLOCAL_PATH', MacOS::X11.share/'aclocal', File::PATH_SEPARATOR
+    append_path 'ACLOCAL_PATH', MacOS::X11.share/'aclocal'
 
     unless MacOS::CLT.installed?
-      append 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11', File::PATH_SEPARATOR
+      append_path 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11'
       append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
       append 'CFLAGS', "-I#{MacOS::X11.include}"
     end
