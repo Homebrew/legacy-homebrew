@@ -26,6 +26,11 @@ module Superenv
   attr_accessor :keg_only_deps, :deps, :x11
   alias_method :x11?, :x11
 
+  def self.extended(base)
+    base.keg_only_deps = []
+    base.deps = []
+  end
+
   def reset
     %w{CC CXX OBJC OBJCXX CPP MAKE LD LDSHARED
       CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
@@ -311,8 +316,6 @@ if not superenv?
   ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
 else
   ENV.extend(Superenv)
-  ENV.keg_only_deps = []
-  ENV.deps = []
 end
 
 
