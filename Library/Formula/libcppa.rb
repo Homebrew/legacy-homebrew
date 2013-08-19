@@ -10,17 +10,13 @@ class Libcppa < Formula
   option 'with-opencl', 'Build with OpenCL actors'
 
   fails_with :gcc do
-    build 2336
-    cause <<-EOS.undent
-      libcppa requires a C++11 capable compiler.
-      EOS
+    build 5666
+    cause 'libcppa requires a C++11 capable compiler.'
   end
 
   fails_with :llvm do
     build 2336
-    cause <<-EOS.undent
-      libcppa requires a C++11 capable compiler.
-      EOS
+    cause 'libcppa requires a C++11 capable compiler.'
   end
 
   def install
