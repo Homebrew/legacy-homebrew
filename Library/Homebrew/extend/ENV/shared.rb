@@ -70,14 +70,6 @@ module SharedEnvExtension
     prepend 'PATH', HOMEBREW_PREFIX/'bin', ':'
   end
 
-  def with_build_environment
-    old_env = to_hash
-    setup_build_environment
-    yield
-  ensure
-    replace(old_env)
-  end
-
   def fortran
     # superenv removes these PATHs, but this option needs them
     # TODO fix better, probably by making a super-fc
