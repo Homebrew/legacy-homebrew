@@ -7,9 +7,9 @@ class Nutch < Formula
 
   def install
     system "ant runtime"
-    libexec.install Dir['runtime/local']
-    bin.install_symlink libexec/'local/bin/nutch'
-    bin.install_symlink libexec/'local/bin/crawl'
+    libexec.install Dir['runtime/local/*']
+    bin.install_symlink libexec/'bin/nutch'
+    bin.install_symlink libexec/'bin/crawl'
   end
 
   test do
