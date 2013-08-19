@@ -13,6 +13,7 @@ class Qemu < Formula
   depends_on 'gnutls'
   depends_on 'glib'
   depends_on 'pixman'
+  depends_on 'vde' => :optional
   depends_on 'sdl' => :optional
 
   def install
@@ -25,6 +26,7 @@ class Qemu < Formula
       --disable-guest-agent
     ]
     args << (build.with?('sdl') ? '--enable-sdl' : '--disable-sdl')
+    args << (build.with?('vde') ? '--enable-vde' : '--disable-vde')
     ENV['LIBTOOL'] = 'glibtool'
     system "./configure", *args
     system "make install"
