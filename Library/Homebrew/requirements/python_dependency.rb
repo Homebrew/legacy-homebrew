@@ -120,9 +120,7 @@ class PythonInstalled < Requirement
         # Note, we don't support homebrew/versions/pythonXX.rb, though.
         Formula.factory(@name).opt_prefix/"bin/python#{@min_version.major}"
       else
-        # Using the ORIGINAL_PATHS here because in superenv, the user
-        # installed external Python is not visible otherwise.
-        which(@name, ORIGINAL_PATHS.join(File::PATH_SEPARATOR))
+        which(@name)
       end
     end
   end
