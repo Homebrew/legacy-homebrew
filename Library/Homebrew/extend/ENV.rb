@@ -1,5 +1,5 @@
 require 'hardware'
-require 'superenv'
+require 'extend/ENV/super'
 
 def superenv?
   return false if MacOS::Xcode.without_clt? && MacOS.sdk_path.nil?
