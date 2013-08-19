@@ -1,11 +1,14 @@
-require 'superenv'
+require 'extend/ENV'
 require 'hardware'
 
 module Homebrew extend self
   def __env
+    ENV.activate_extensions!
+
     if superenv?
       ENV.deps = ARGV.formulae.map(&:name) unless ARGV.named.empty?
     end
+
     ENV.setup_build_environment
     ENV.universal_binary if ARGV.build_universal?
     if $stdout.tty?

@@ -1,6 +1,7 @@
 require 'dependable'
 require 'dependency'
 require 'build_environment'
+require 'extend/ENV'
 
 # A base class for non-formula requirements needed by formulae.
 # A "fatal" requirement is one that will fail the build if it is not present.
@@ -93,6 +94,10 @@ class Requirement
     end
   end
 
+  def which(cmd)
+    super(cmd, ORIGINAL_PATHS.join(File::PATH_SEPARATOR))
+  end
+
   class << self
     attr_rw :fatal, :build, :default_formula
 
@@ -117,11 +122,7 @@ class Requirement
       if instance_variable_defined?(:@satisfied)
         @satisfied
       elsif @options[:build_env]
-        require 'superenv'
-        ENV.with_build_environment do
-          ENV.userpaths!
-          yield @proc
-        end
+        ENV.with_build_environment { yield @proc }
       else
         yield @proc
       end
