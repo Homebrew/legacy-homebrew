@@ -195,11 +195,7 @@ class Gdal < Formula
     ENV.libxml2 if build.include? 'complete'
 
     # Reset ARCHFLAGS to match how we build.
-    if MacOS.prefer_64_bit?
-      ENV['ARCHFLAGS'] = "-arch x86_64"
-    else
-      ENV['ARCHFLAGS'] = "-arch i386"
-    end
+    ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}"
 
     # Fix hardcoded mandir: http://trac.osgeo.org/gdal/ticket/5092
     inreplace 'configure', %r[^mandir='\$\{prefix\}/man'$], ''
@@ -212,9 +208,9 @@ class Gdal < Formula
       # `python-config` may try to talk us into building bindings for more
       # architectures than we really should.
       if MacOS.prefer_64_bit?
-        ENV.append_to_cflags '-arch x86_64'
+        ENV.append_to_cflags "-arch #{Hardware::CPU.arch_64_bit}"
       else
-        ENV.append_to_cflags '-arch i386'
+        ENV.append_to_cflags "-arch #{Hardware::CPU.arch_32_bit}"
       end
 
       cd 'swig/python' do

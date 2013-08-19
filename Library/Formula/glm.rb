@@ -2,8 +2,8 @@ require 'formula'
 
 class Glm < Formula
   homepage 'http://glm.g-truc.net/'
-  url 'http://downloads.sourceforge.net/project/ogl-math/glm-0.9.4.4/glm-0.9.4.4.zip'
-  sha1 'a4f24a9721caf50791c75b740fa2474f95b6c228'
+  url 'http://downloads.sourceforge.net/project/ogl-math/glm-0.9.4.5/glm-0.9.4.5.zip'
+  sha1 '034ff832393633211c23d3805392e426604184fb'
   head 'https://github.com/Groovounet/glm.git'
 
   def install

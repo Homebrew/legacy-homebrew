@@ -52,7 +52,7 @@ class Fontforge < Formula
     ENV.append "LDFLAGS", "-lintl"
 
     # Reset ARCHFLAGS to match how we build
-    ENV["ARCHFLAGS"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
+    ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
     # Set up framework paths so FlatCarbon replacement paths work (see below)
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/CoreServices.framework/Frameworks"

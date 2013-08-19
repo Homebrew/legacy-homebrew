@@ -27,7 +27,7 @@ class Monotone < Formula
 
     Botan18.new.brew do
       args = ["--prefix=#{botan18_prefix}"]
-      args << "--cpu=x86_64" if MacOS.prefer_64_bit?
+      args << "--cpu=#{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit?
       system "./configure.py", *args
       system "make", "CXX=#{ENV.cxx}", "install"
     end

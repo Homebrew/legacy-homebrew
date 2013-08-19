@@ -60,14 +60,14 @@ class Postgresql < Formula
       ENV.append 'LIBS', `uuid-config --libs`.strip
     end
 
-    if build.with? 'python' and MacOS.prefer_64_bit? and not build.build_32_bit?
-      args << "ARCHFLAGS='-arch x86_64'"
+    if build.with? 'python'
+      args << "ARCHFLAGS='-arch #{MacOS.preferred_arch}'"
       check_python_arch
     end
 
     if build.build_32_bit?
-      ENV.append 'CFLAGS', '-arch i386'
-      ENV.append 'LDFLAGS', '-arch i386'
+      ENV.append 'CFLAGS', "-arch #{MacOS.preferred_arch}"
+      ENV.append 'LDFLAGS', "-arch #{MacOS.preferred_arch}"
     end
 
     system "./configure", *args
