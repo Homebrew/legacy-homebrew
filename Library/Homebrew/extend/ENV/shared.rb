@@ -65,7 +65,7 @@ module SharedEnvExtension
 
   def userpaths!
     paths = ORIGINAL_PATHS.map { |p| p.realpath.to_s rescue nil } - %w{/usr/X11/bin /opt/X11/bin}
-    self['PATH'] = paths.unshift(*self['PATH'].split(PATH_SEPARATOR)).uniq.join(File::PATH_SEPARATOR)
+    self['PATH'] = paths.unshift(*self['PATH'].split(File::PATH_SEPARATOR)).uniq.join(File::PATH_SEPARATOR)
     # XXX hot fix to prefer brewed stuff (e.g. python) over /usr/bin.
     prepend 'PATH', HOMEBREW_PREFIX/'bin', File::PATH_SEPARATOR
   end
