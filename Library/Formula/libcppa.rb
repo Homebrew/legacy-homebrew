@@ -10,12 +10,10 @@ class Libcppa < Formula
   option 'with-opencl', 'Build with OpenCL actors'
 
   fails_with :gcc do
-    build 5666
     cause 'libcppa requires a C++11 capable compiler.'
   end
 
   fails_with :llvm do
-    build 2336
     cause 'libcppa requires a C++11 capable compiler.'
   end
 
