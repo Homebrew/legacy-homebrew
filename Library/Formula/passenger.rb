@@ -2,9 +2,9 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'https://phusion-passenger.googlecode.com/files/passenger-4.0.5.tar.gz'
-  sha1 '4c1e12dae0c972e1498f2dae258929d8fa4ba42d'
-  head 'https://github.com/FooBarWidget/passenger.git'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.14.tar.gz'
+  sha1 '44ef5775dd66a61a739f139c147b0aed83e144bb'
+  head 'https://github.com/phusion/passenger.git'
 
   depends_on 'curl'
 
