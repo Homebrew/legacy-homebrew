@@ -62,11 +62,11 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
       # so that lib points to the HOMEBREW_PREFIX/Cellar/<formula>/<version>/lib
       puts "brew: Prepending to PYTHONPATH: #{py.site_packages}" if ARGV.verbose?
       mkdir_p py.site_packages
-      ENV.prepend 'PYTHONPATH', py.site_packages, File::PATH_SEPARATOR
+      ENV.prepend_path 'PYTHONPATH', py.site_packages
       ENV['PYTHON'] = py.binary
-      ENV.prepend 'CMAKE_INCLUDE_PATH', py.incdir, File::PATH_SEPARATOR
-      ENV.prepend 'PKG_CONFIG_PATH', py.pkg_config_path, File::PATH_SEPARATOR if py.pkg_config_path
-      ENV.prepend 'PATH', py.binary.dirname, File::PATH_SEPARATOR unless py.from_osx?
+      ENV.prepend_path 'CMAKE_INCLUDE_PATH', py.incdir
+      ENV.prepend_path 'PKG_CONFIG_PATH', py.pkg_config_path if py.pkg_config_path
+      ENV.prepend_path 'PATH', py.binary.dirname unless py.from_osx?
       #Note: Don't set LDFLAGS to point to the Python.framework, because
       #      it breaks builds (for example scipy.)
 
