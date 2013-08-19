@@ -1,6 +1,6 @@
 require 'formula'
 require 'utils'
-require 'superenv'
+require 'extend/ENV'
 require 'formula_cellar_checks'
 
 module Homebrew extend self
