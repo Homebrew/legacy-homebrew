@@ -250,7 +250,7 @@ class PythonInstalled < Requirement
     file.write(sitecustomize)
 
     # For non-system python's we add the opt_prefix/bin of python to the path.
-    ENV.prepend 'PATH', binary.dirname, File::PATH_SEPARATOR unless from_osx?
+    ENV.prepend_path 'PATH', binary.dirname unless from_osx?
 
     ENV['PYTHONHOME'] = nil  # to avoid fuck-ups.
     ENV['PYTHONPATH'] = if brewed? then nil; else global_site_packages.to_s; end
