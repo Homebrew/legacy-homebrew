@@ -94,6 +94,10 @@ class Requirement
     end
   end
 
+  def which(cmd)
+    super(cmd, ORIGINAL_PATHS.join(File::PATH_SEPARATOR))
+  end
+
   class << self
     attr_rw :fatal, :build, :default_formula
 
@@ -118,10 +122,7 @@ class Requirement
       if instance_variable_defined?(:@satisfied)
         @satisfied
       elsif @options[:build_env]
-        ENV.with_build_environment do
-          ENV.userpaths!
-          yield @proc
-        end
+        ENV.with_build_environment { yield @proc }
       else
         yield @proc
       end

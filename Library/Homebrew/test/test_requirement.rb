@@ -50,12 +50,10 @@ class RequirementTests < Test::Unit::TestCase
 
   def test_satisfy_sets_up_build_env_by_default
     req = Class.new(Requirement) do
-      env :userpaths
       satisfy { true }
     end.new
 
     ENV.expects(:with_build_environment).yields.returns(true)
-    ENV.expects(:userpaths!)
 
     assert req.satisfied?
   end
@@ -66,7 +64,6 @@ class RequirementTests < Test::Unit::TestCase
     end.new
 
     ENV.expects(:with_build_environment).never
-    ENV.expects(:userpaths!).never
 
     assert req.satisfied?
   end
@@ -78,7 +75,6 @@ class RequirementTests < Test::Unit::TestCase
     end.new
 
     ENV.expects(:with_build_environment).yields.returns(which_path)
-    ENV.expects(:userpaths!)
     ENV.expects(:append).with("PATH", which_path.parent, ":")
 
     req.satisfied?
