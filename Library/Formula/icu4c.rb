@@ -5,6 +5,7 @@ class Icu4c < Formula
   url 'http://download.icu-project.org/files/icu4c/51.1/icu4c-51_1-src.tgz'
   version '51.1'
   sha1 '7905632335e3dcd6667224da0fa087b49f9095e9'
+  head 'http://source.icu-project.org/repos/icu/icu/trunk/', :using => :svn
 
   bottle do
     sha1 '6b5b4ab5704cc2a8b17070a087c7f9594466cf1d' => :mountain_lion
