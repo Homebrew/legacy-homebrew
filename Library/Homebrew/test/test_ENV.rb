@@ -56,4 +56,18 @@ class EnvironmentTests < Test::Unit::TestCase
     @env.with_build_environment { assert_equal expected, @env.methods }
     assert_equal expected, @env.methods
   end
+
+  def test_append_path
+    @env.append_path 'FOO', '/usr/bin'
+    assert_equal '/usr/bin', @env['FOO']
+    @env.append_path 'FOO', '/bin'
+    assert_equal "/usr/bin#{File::PATH_SEPARATOR}/bin", @env['FOO']
+  end
+
+  def test_prepend_path
+    @env.prepend_path 'FOO', '/usr/bin'
+    assert_equal '/usr/bin', @env['FOO']
+    @env.prepend_path 'FOO', '/bin'
+    assert_equal "/bin#{File::PATH_SEPARATOR}/usr/bin", @env['FOO']
+  end
 end
