@@ -35,9 +35,15 @@ module SharedEnvExtension
       end
     end
   end
+
+  def append_path key, path
+    append key, path, File::PATH_SEPARATOR if File.directory? path
+  end
+
   def prepend_path key, path
     prepend key, path, File::PATH_SEPARATOR if File.directory? path
   end
+
   def remove keys, value
     Array(keys).each do |key|
       next unless self[key]
