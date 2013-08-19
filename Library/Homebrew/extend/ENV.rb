@@ -14,7 +14,6 @@ module EnvActivation
       extend(Superenv)
     else
       extend(HomebrewEnvExtension)
-      prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
     end
   end
 end
@@ -26,6 +25,12 @@ module HomebrewEnvExtension
   CC_FLAG_VARS = %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
   FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
   DEFAULT_FLAGS = '-march=core2 -msse4'
+
+  def self.extended(base)
+    unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
+      base.prepend_path 'PATH', "#{HOMEBREW_PREFIX}/bin"
+    end
+  end
 
   def setup_build_environment
     # Clear CDPATH to avoid make issues that depend on changing directories
