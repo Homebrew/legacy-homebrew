@@ -7,10 +7,14 @@ class Geos < Formula
 
   option :universal
 
-  def install
-    ENV.universal_binary if build.universal?
+  depends_on 'cmake' => :build
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+  def install
+    if build.universal?
+      ENV.universal_binary
+      ENV['CMAKE_OSX_ARCHITECTURES'] = Hardware::CPU.universal_archs.as_cmake_arch_flags
+    end
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 end
