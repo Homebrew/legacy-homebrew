@@ -18,6 +18,19 @@ def superenv?
   true
 end
 
+module EnvActivation
+  def activate_extensions!
+    if superenv?
+      extend(Superenv)
+    else
+      extend(HomebrewEnvExtension)
+      prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
+    end
+  end
+end
+
+ENV.extend(EnvActivation)
+
 module Superenv
   attr_accessor :keg_only_deps, :deps, :x11
   alias_method :x11?, :x11
@@ -307,15 +320,6 @@ module Superenv
       a
     end
   end
-end
-
-
-if not superenv?
-  ENV.extend(HomebrewEnvExtension)
-  # we must do this or tools like pkg-config won't get found by configure scripts etc.
-  ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
-else
-  ENV.extend(Superenv)
 end
 
 

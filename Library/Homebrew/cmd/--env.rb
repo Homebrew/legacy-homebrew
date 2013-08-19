@@ -3,6 +3,8 @@ require 'hardware'
 
 module Homebrew extend self
   def __env
+    ENV.activate_extensions!
+
     if superenv?
       ENV.deps = ARGV.formulae.map(&:name) unless ARGV.named.empty?
     end
