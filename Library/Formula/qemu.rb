@@ -13,6 +13,7 @@ class Qemu < Formula
   depends_on 'gnutls'
   depends_on 'glib'
   depends_on 'pixman'
+  depends_on 'vde'
   depends_on 'sdl' => :optional
 
   def install
@@ -21,6 +22,7 @@ class Qemu < Formula
       --cc=#{ENV.cc}
       --host-cc=#{ENV.cc}
       --enable-cocoa
+      --enable-vde
       --disable-bsd-user
       --disable-guest-agent
     ]
