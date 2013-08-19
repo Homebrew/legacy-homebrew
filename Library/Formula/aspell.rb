@@ -3,7 +3,7 @@ require 'formula'
 class AspellLang < Formula
   def install
     aspell = Formula.factory 'aspell'
-    ENV.prepend 'PATH', aspell.bin, ':'
+    ENV.prepend_path 'PATH', aspell.bin
     system "./configure", "--vars", "ASPELL=#{aspell.bin}/aspell", "PREZIP=#{aspell.bin}/prezip"
     system "make install"
   end
