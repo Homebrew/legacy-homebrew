@@ -29,15 +29,7 @@ module Superenv
         if has_key? key
           fetch(key)
         elsif %w{CPPFLAGS CFLAGS LDFLAGS}.include? key
-          class << (a = "")
-            attr_accessor :key
-            def + value
-              ENV[key] = value
-            end
-            alias_method '<<', '+'
-          end
-          a.key = key
-          a
+          self[key] = ""
         end
       end
     end
