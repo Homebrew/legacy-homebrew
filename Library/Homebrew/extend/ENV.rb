@@ -484,7 +484,7 @@ class << ENV
   def fortran
     # superenv removes these PATHs, but this option needs them
     # TODO fix better, probably by making a super-fc
-    ENV['PATH'] += ":#{HOMEBREW_PREFIX}/bin:/usr/local/bin"
+    self['PATH'] += ":#{HOMEBREW_PREFIX}/bin:/usr/local/bin"
 
     if self['FC']
       ohai "Building with an alternative Fortran compiler"
