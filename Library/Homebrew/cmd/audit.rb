@@ -8,6 +8,7 @@ module Homebrew extend self
     formula_count = 0
     problem_count = 0
 
+    ENV.activate_extensions!
     ENV.setup_build_environment
 
     ff = if ARGV.named.empty?
