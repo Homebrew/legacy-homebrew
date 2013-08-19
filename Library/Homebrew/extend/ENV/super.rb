@@ -1,4 +1,5 @@
 require 'macos'
+require 'extend/ENV/shared'
 
 ### Why `superenv`?
 # 1) Only specify the environment we need (NO LDFLAGS for cmake)
@@ -11,6 +12,8 @@ require 'macos'
 # 8) Build-system agnostic configuration of the tool-chain
 
 module Superenv
+  include SharedEnvExtension
+
   attr_accessor :keg_only_deps, :deps, :x11
   alias_method :x11?, :x11
 
