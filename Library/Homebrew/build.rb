@@ -34,6 +34,7 @@ def main
 
   require 'hardware'
   require 'keg'
+  require 'superenv'
 
   # Force any future invocations of sudo to require the user's password to be
   # re-entered. This is in-case any build script call sudo. Certainly this is
@@ -106,7 +107,8 @@ class Build
     keg_only_deps = deps.map(&:to_formula).select(&:keg_only?)
 
     pre_superenv_hacks
-    require 'superenv'
+
+    ENV.activate_extensions!
 
     deps.map(&:to_formula).each do |dep|
       opt = HOMEBREW_PREFIX/:opt/dep

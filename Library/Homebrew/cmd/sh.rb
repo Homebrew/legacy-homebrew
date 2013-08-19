@@ -3,6 +3,8 @@ require 'formula'
 
 module Homebrew extend self
   def sh
+    ENV.activate_extensions!
+
     if superenv?
       ENV.x11 = true
       ENV.deps = Formula.installed.select{|f| f.keg_only? and f.opt_prefix.directory? }.map(&:name)
