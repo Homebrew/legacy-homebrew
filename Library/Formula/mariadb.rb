@@ -79,7 +79,7 @@ class Mariadb < Formula
     cmake_args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    cmake_args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
+    cmake_args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
 
     # Build with local infile loading support
     cmake_args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'

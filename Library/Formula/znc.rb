@@ -2,10 +2,11 @@ require 'formula'
 
 class Znc < Formula
   homepage 'http://wiki.znc.in/ZNC'
+  head 'https://github.com/znc/znc.git'
   url 'http://znc.in/releases/archive/znc-1.0.tar.gz'
   sha1 '50e6e3aacb67cf0a63d77f5031d4b75264cee294'
 
-  head 'https://github.com/znc/znc.git'
+  option 'enable-debug', "Compile ZNC with --enable-debug"
 
   if build.head?
     depends_on :automake
@@ -13,12 +14,6 @@ class Znc < Formula
   end
 
   depends_on 'pkg-config' => :build
-
-  skip_clean 'bin/znc'
-  skip_clean 'bin/znc-config'
-  skip_clean 'bin/znc-buildmod'
-
-  option 'enable-debug', "Compile ZNC with --enable-debug"
 
   def install
     args = ["--prefix=#{prefix}"]

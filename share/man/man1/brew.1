@@ -72,7 +72,10 @@ If \fB\-s\fR is passed, scrubs the cache, removing downloads for even the latest
 .
 .TP
 \fBcreate <URL> [\-\-autotools|\-\-cmake] [\-\-no\-fetch] [\-\-set\-name <name>] [\-\-set\-version <version>]\fR
-Generate a formula for the downloadable file at \fIURL\fR and open it in the editor\. Homebrew will attempt to automatically derive the formula name and version, but if it fails, you\'ll have to make your own template\. The wget formula serves as a simple example\.
+Generate a formula for the downloadable file at \fIURL\fR and open it in the editor\. Homebrew will attempt to automatically derive the formula name and version, but if it fails, you\'ll have to make your own template\. The wget formula serves as a simple example\. For a complete cheat\-sheet, have a look at
+.
+.IP
+\fB$(brew \-\-prefix)/Library/Contributions/example\-formula\.rb\fR
 .
 .IP
 If \fB\-\-autotools\fR is passed, create a basic template for an Autotools\-style build\. If \fB\-\-cmake\fR is passed, create a basic template for a CMake\-style build\.
@@ -296,7 +299,7 @@ If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR i
 Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
 .
 .TP
-\fBsearch \-\-macports\fR|\fB\-\-fink\fR|\fB\-\-debian\fR|\fB\-\-opensuse\fR \fItext\fR
+\fBsearch \-\-debian\fR|\fB\-\-fedora\fR|\fB\-\-fink\fR|\fB\-\-macports\fR|\fB\-\-opensuse\fR|\fB\-\-ubuntu\fR \fItext\fR
 Search for \fItext\fR in the given package manager\'s list\.
 .
 .TP
@@ -325,7 +328,7 @@ Example: \fBbrew install jruby && brew test jruby\fR
 .
 .TP
 \fBunlink\fR \fIformula\fR
-Unsymlink \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
+Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
 .
 .TP
 \fBunpin\fR \fIformulae\fR

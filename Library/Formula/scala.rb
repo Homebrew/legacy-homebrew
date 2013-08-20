@@ -44,6 +44,7 @@ class Scala < Formula
       (share/'doc'/branch).install Dir['*']
     end if build.include? 'with-docs'
 
+    # Set up an IntelliJ compatible symlink farm in 'idea'
     idea = prefix/'idea'
     idea.install_symlink libexec/'src', libexec/'lib'
     (idea/'doc/scala-devel-docs').install_symlink doc => 'api'
@@ -51,7 +52,7 @@ class Scala < Formula
 
   def caveats; <<-EOS.undent
     To use with IntelliJ, set the Scala home to:
-      #{prefix}/idea
+      #{opt_prefix}/idea
     EOS
   end
 end

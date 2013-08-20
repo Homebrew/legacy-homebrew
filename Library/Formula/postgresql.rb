@@ -60,14 +60,14 @@ class Postgresql < Formula
       ENV.append 'LIBS', `uuid-config --libs`.strip
     end
 
-    if build.with? 'python' and MacOS.prefer_64_bit? and not build.build_32_bit?
-      args << "ARCHFLAGS='-arch x86_64'"
+    if build.with? 'python'
+      args << "ARCHFLAGS='-arch #{MacOS.preferred_arch}'"
       check_python_arch
     end
 
     if build.build_32_bit?
-      ENV.append 'CFLAGS', '-arch i386'
-      ENV.append 'LDFLAGS', '-arch i386'
+      ENV.append 'CFLAGS', "-arch #{MacOS.preferred_arch}"
+      ENV.append 'LDFLAGS', "-arch #{MacOS.preferred_arch}"
     end
 
     system "./configure", *args
@@ -101,14 +101,11 @@ class Postgresql < Formula
     you may need to remove the previous version first. See:
       https://github.com/mxcl/homebrew/issues/issue/2510
 
-
     If this is your first install, create a database with:
       initdb #{var}/postgres -E utf8
 
-
     To migrate existing data from a previous major version (pre-9.2) of PostgreSQL, see:
       http://www.postgresql.org/docs/9.2/static/upgrading.html
-
 
     Some machines may require provisioning of shared memory:
       http://www.postgresql.org/docs/9.2/static/kernel-resources.html#SYSVIPC

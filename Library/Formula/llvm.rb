@@ -56,7 +56,7 @@ class Llvm < Formula
 
     if build.universal?
       ENV['UNIVERSAL'] = '1'
-      ENV['UNIVERSAL_ARCH'] = 'i386 x86_64'
+      ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
     end
 
     ENV['REQUIRES_RTTI'] = '1' if build.include? 'rtti'

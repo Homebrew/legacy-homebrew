@@ -2,8 +2,8 @@ require 'formula'
 
 class Grc < Formula
   homepage 'http://korpus.juls.savba.sk/~garabik/software/grc.html'
-  url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.4.tar.gz'
-  sha1 '79fd504d8291f13486d361611415ae60fa56712a'
+  url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.5.tar.gz'
+  sha1 'bcbe45992d2c4cb1d33e76aac6aa79b448124ce2'
 
   depends_on :python
 

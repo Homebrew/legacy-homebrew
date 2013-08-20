@@ -8,36 +8,32 @@ class Pathname
   BOTTLE_EXTNAME_RX = /(\.[a-z_]+(32)?\.bottle\.(\d+\.)?tar\.gz)$/
 
   def install *sources
-    results = []
     sources.each do |src|
       case src
       when Array
         if src.empty?
           opoo "tried to install empty array to #{self}"
-          return []
+          return
         end
-        src.each {|s| results << install_p(s) }
+        src.each {|s| install_p(s) }
       when Hash
         if src.empty?
           opoo "tried to install empty hash to #{self}"
-          return []
+          return
         end
-        src.each {|s, new_basename| results << install_p(s, new_basename) }
+        src.each {|s, new_basename| install_p(s, new_basename) }
       else
-        results << install_p(src)
+        install_p(src)
       end
     end
-    return results
   end
 
   def install_p src, new_basename = nil
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
-      return_value = Pathname.new(dst)
     else
       dst = self
-      return_value = self+File.basename(src)
     end
 
     src = src.to_s
@@ -59,25 +55,21 @@ class Pathname
       # this function when installing from the temporary build directory
       FileUtils.mv src, dst
     end
-
-    return return_value
   end
   protected :install_p
 
   # Creates symlinks to sources in this folder.
   def install_symlink *sources
-    results = []
     sources.each do |src|
       case src
       when Array
-        src.each {|s| results << install_symlink_p(s) }
+        src.each {|s| install_symlink_p(s) }
       when Hash
-        src.each {|s, new_basename| results << install_symlink_p(s, new_basename) }
+        src.each {|s, new_basename| install_symlink_p(s, new_basename) }
       else
-        results << install_symlink_p(src)
+        install_symlink_p(src)
       end
     end
-    return results
   end
 
   def install_symlink_p src, new_basename = nil
@@ -86,14 +78,8 @@ class Pathname
     else
       dst = self+File.basename(new_basename)
     end
-
-    src = src.to_s
-    dst = dst.to_s
-
     mkpath
-    FileUtils.ln_s src, dst
-
-    return dst
+    FileUtils.ln_s src.to_s, dst.to_s
   end
   protected :install_symlink_p
 
@@ -211,11 +197,8 @@ class Pathname
 
   def incremental_hash(hasher)
     incr_hash = hasher.new
-    self.open('r') do |f|
-      while(buf = f.read(1024))
-        incr_hash << buf
-      end
-    end
+    buf = ""
+    open('r') { |f| incr_hash << buf while f.read(1024, buf) }
     incr_hash.hexdigest
   end
 
@@ -433,21 +416,36 @@ class Pathname
   end
 end
 
-# sets $n and $d so you can observe creation of stuff
 module ObserverPathnameExtension
+  class << self
+    attr_accessor :n, :d
+
+    def reset_counts!
+      @n = @d = 0
+    end
+
+    def total
+      n + d
+    end
+
+    def counts
+      [n, d]
+    end
+  end
+
   def unlink
     super
     puts "rm #{to_s}" if ARGV.verbose?
-    $n+=1
+    ObserverPathnameExtension.n += 1
   end
   def rmdir
     super
     puts "rmdir #{to_s}" if ARGV.verbose?
-    $d+=1
+    ObserverPathnameExtension.d += 1
   end
   def make_relative_symlink src
     super
-    $n+=1
+    ObserverPathnameExtension.n += 1
   end
   def install_info
     super
@@ -458,6 +456,3 @@ module ObserverPathnameExtension
     puts "uninfo #{to_s}" if ARGV.verbose?
   end
 end
-
-$n=0
-$d=0

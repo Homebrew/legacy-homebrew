@@ -46,27 +46,27 @@ class Pyqt5 < Formula
   end
 
   test do
+    # To test Python 2.x, you have to `brew test pyqt --with-python`
+    (testpath/'test.py').write <<-EOS.undent
+      import sys
+      from PyQt5 import QtGui, QtCore, QtWidgets
+
+      class Test(QtWidgets.QWidget):
+          def __init__(self, parent=None):
+              QtWidgets.QWidget.__init__(self, parent)
+              self.setGeometry(300, 300, 400, 150)
+              self.setWindowTitle('Homebrew')
+              QtWidgets.QLabel("Python " + "{0}.{1}.{2}".format(*sys.version_info[0:3]) +
+                               " working with PyQt5. Quitting now...", self).move(50, 50)
+              QtCore.QTimer.singleShot(1500, QtWidgets.qApp.quit)
+
+      app = QtWidgets.QApplication([])
+      window = Test()
+      window.show()
+      sys.exit(app.exec_())
+    EOS
     python do
-      (testpath/'test.py').write <<-EOS.undent
-        import sys
-        from PyQt5 import QtGui, QtCore, QtWidgets
-
-        class Test(QtWidgets.QWidget):
-            def __init__(self, parent=None):
-                QtWidgets.QWidget.__init__(self, parent)
-                self.setGeometry(300, 300, 400, 150)
-                self.setWindowTitle('Homebrew')
-                QtWidgets.QLabel("Python #{python.version} working with PyQt5. Quitting now...", self).move(50, 50)
-                QtCore.QTimer.singleShot(2500, QtWidgets.qApp.quit)
-
-        app = QtWidgets.QApplication([])
-        window = Test()
-        window.show()
-        sys.exit(app.exec_())
-      EOS
-
-      system "python#{python.if3then3}", "test.py"
-      rm testpath/'test.py'
+      system python, "test.py"
     end
   end
 end

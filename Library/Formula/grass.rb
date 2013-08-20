@@ -75,12 +75,8 @@ class Grass < Formula
       args << "--with-wxwidgets=#{Formula.factory('wxmac').opt_prefix}/bin/wx-config"
     end
 
-    if MacOS.prefer_64_bit?
-      args << "--enable-64bit"
-      args << "--with-macosx-archs=x86_64"
-    else
-      args << "--with-macosx-archs=i386"
-    end
+    args << "--enable-64bit" if MacOS.prefer_64_bit?
+    args << "--with-macos-archs=#{MacOS.preferred_arch}"
 
     # Deal with Cairo support
     if MacOS.version <= :leopard

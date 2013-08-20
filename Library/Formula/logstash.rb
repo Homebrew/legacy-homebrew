@@ -6,7 +6,7 @@ class Logstash < Formula
   sha1 '8eb1bde96a2d92b2c8157330858b4da190df8900'
 
   def install
-    libexec.install "logstash-1.1.13-flatjar.jar"
-    bin.write_jar_script libexec/'logstash-1.1.13-flatjar.jar', 'logstash'
+    libexec.install "logstash-#{version}-flatjar.jar"
+    bin.write_jar_script libexec/"logstash-#{version}-flatjar.jar", "logstash"
   end
 end

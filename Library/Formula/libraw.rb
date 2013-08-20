@@ -21,22 +21,22 @@ class Libraw < Formula
   url 'http://www.libraw.org/data/LibRaw-0.14.7.tar.gz'
   sha1 'e924527bed3d72ee4756da0c9383dc74c584799f'
 
+  depends_on 'pkg-config' => :build
+  depends_on 'jasper'
   depends_on 'little-cms2'
 
   def install
-    d = buildpath.dirname
-    LibrawDemosaicGPL2.new.brew { d.install Dir['*'] }
-    LibrawDemosaicGPL3.new.brew { d.install Dir['*'] }
+    LibrawDemosaicGPL2.new.brew { (buildpath/'gpl2').install Dir['*'] }
+    LibrawDemosaicGPL3.new.brew { (buildpath/'gpl3').install Dir['*'] }
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
-                          "--enable-demosaic-pack-gpl2=#{d}",
-                          "--enable-demosaic-pack-gpl3=#{d}"
+                          "--enable-demosaic-pack-gpl2=#{buildpath}/gpl2",
+                          "--enable-demosaic-pack-gpl3=#{buildpath}/gpl3"
     system "make"
     system "make install"
     doc.install Dir['doc/*']
-    (prefix+'samples').mkpath
-    (prefix+'samples').install Dir['samples/*']
+    prefix.install 'samples'
   end
 
   def test

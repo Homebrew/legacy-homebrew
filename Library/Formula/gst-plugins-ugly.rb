@@ -2,9 +2,9 @@ require 'formula'
 
 class GstPluginsUgly < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.0.8.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.0.8.tar.xz'
-  sha256 '58cbae3cad52a91526d599fc90793147e934078055126865ee019bf97f1e0b84'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.0.9.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.0.9.tar.xz'
+  sha256 '11250fe9e44b0169c3a289e981b31874b483643ed78f619682ae1644d7088379'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build

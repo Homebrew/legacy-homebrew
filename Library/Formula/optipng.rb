@@ -2,6 +2,7 @@ require 'formula'
 
 class Optipng < Formula
   homepage 'http://optipng.sourceforge.net/'
+  head 'http://optipng.hg.sourceforge.net/hgweb/optipng/optipng'
   url 'http://downloads.sourceforge.net/project/optipng/OptiPNG/optipng-0.7.4/optipng-0.7.4.tar.gz'
   sha1 'dcde17501cfb7a425b6cc23cfed482bbfd4867bb'
 

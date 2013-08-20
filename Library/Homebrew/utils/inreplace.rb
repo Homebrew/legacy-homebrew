@@ -9,6 +9,7 @@ module Utils
           s.extend(StringInreplaceExtension)
           yield s
         else
+          after = after.to_s if Symbol === after
           sub = s.gsub!(before, after)
           if sub.nil?
             opoo "inreplace in '#{path}' failed"

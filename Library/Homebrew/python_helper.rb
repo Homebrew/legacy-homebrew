@@ -1,4 +1,4 @@
-# This is used in the Formula class when the user calls
+# This helper method is used in the Formula class when the user calls
 # `python`, `python2` or `python3`.
 
 # This method has a dual nature. For one, it takes a &block and sets up
@@ -33,17 +33,12 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
   # check that no two python binaries are the same (which could be the case
   # because more than one `depends_on :python => 'module_name' may be present).
   filtered_python_reqs = []
-  while !python_reqs.empty?
-    py = python_reqs.shift
-    # this is ulgy but Ruby 1.8 has no `uniq! { }`
-    if !filtered_python_reqs.map{ |fpr| fpr.binary }.include?(py.binary) &&
-       py.satisfied? &&
-       options[:allowed_major_versions].include?(py.version.major) &&
-       # if optional or recommended then check the build.with?
-       (self.build.with?(py.name) || !(py.optional? || py.recommended?))
-    then
-      filtered_python_reqs << py
-    end
+  python_reqs.each do |py|
+    next if filtered_python_reqs.any? { |req| req.binary == py.binary }
+    next unless py.satisfied?
+    next unless options[:allowed_major_versions].include?(py.version.major)
+    next if (py.optional? || py.recommended?) && build.without?(py.name)
+    filtered_python_reqs << py
   end
 
   # Allow to use an else-branch like so: `if python do ... end; else ... end`
@@ -65,19 +60,19 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
       # In order to install into the Cellar, the dir must exist and be in the
       # PYTHONPATH. This will be executed in the context of the formula
       # so that lib points to the HOMEBREW_PREFIX/Cellar/<formula>/<version>/lib
-      puts "brew: Appending to PYTHONPATH: #{py.site_packages}" if ARGV.verbose?
+      puts "brew: Prepending to PYTHONPATH: #{py.site_packages}" if ARGV.verbose?
       mkdir_p py.site_packages
-      ENV.append 'PYTHONPATH', py.site_packages, ':'
+      ENV.prepend_path 'PYTHONPATH', py.site_packages
       ENV['PYTHON'] = py.binary
-      ENV.prepend 'CMAKE_INCLUDE_PATH', py.incdir, ':'
-      ENV.prepend 'PKG_CONFIG_PATH', py.pkg_config_path, ':' if py.pkg_config_path
-      ENV.prepend 'PATH', py.binary.dirname, ':' unless py.from_osx?
+      ENV.prepend_path 'CMAKE_INCLUDE_PATH', py.incdir
+      ENV.prepend_path 'PKG_CONFIG_PATH', py.pkg_config_path if py.pkg_config_path
+      ENV.prepend_path 'PATH', py.binary.dirname unless py.from_osx?
       #Note: Don't set LDFLAGS to point to the Python.framework, because
       #      it breaks builds (for example scipy.)
 
       # Track the state of the currently selected python for this block,
       # so if this python_helper is called again _inside_ the block,
-      # we can just return the right python (see `else`-branch a few lines down):
+      # we can just return the right python
       @current_python = py
       res = instance_eval(&block)
       @current_python = nil

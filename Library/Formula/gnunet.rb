@@ -8,6 +8,7 @@ class Gnunet < Formula
 
   depends_on 'libgcrypt'
   depends_on 'libextractor'
+  depends_on 'libunistring'
   depends_on 'curl' if MacOS.version < :lion # needs >= v7.20.1
 
   def install

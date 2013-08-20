@@ -5,7 +5,7 @@ class Tmux < Formula
   url 'http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.8/tmux-1.8.tar.gz'
   sha1 '08677ea914e1973ce605b0008919717184cbd033'
 
-  head 'git://tmux.git.sourceforge.net/gitroot/tmux/tmux'
+  head 'git://git.code.sf.net/p/tmux/tmux-code'
 
   depends_on 'pkg-config' => :build
   depends_on 'libevent'
@@ -22,7 +22,7 @@ class Tmux < Formula
     # Fixes abnormal displaying Korean letters on Mac OS X
     # https://gist.github.com/niceview/5343842
     # Accepted upstream, can be removed in next version.
-    DATA
+    DATA unless build.head?
   end
 
   def install

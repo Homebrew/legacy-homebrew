@@ -38,7 +38,7 @@ class OpenSceneGraph < Formula
     args << '-DBUILD_DOCUMENTATION=' + ((build.include? 'docs') ? 'ON' : 'OFF')
 
     if MacOS.prefer_64_bit?
-      args << "-DCMAKE_OSX_ARCHITECTURES=x86_64"
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.arch_64_bit}"
       args << "-DOSG_DEFAULT_IMAGE_PLUGIN_FOR_OSX=imageio"
       args << "-DOSG_WINDOWING_SYSTEM=Cocoa"
     else

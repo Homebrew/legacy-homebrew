@@ -21,8 +21,7 @@ class AndroidSdk < Formula
   skip_clean var_dirs
 
   def install
-    mv 'SDK Readme.txt', prefix/'README'
-    mv 'tools', prefix
+    prefix.install 'tools', 'SDK Readme.txt' => 'README'
 
     %w[android apkbuilder ddms dmtracedump draw9patch etc1tool emulator
     emulator-arm emulator-x86 hierarchyviewer hprof-conv lint mksdcard

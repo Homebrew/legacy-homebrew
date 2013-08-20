@@ -14,6 +14,8 @@ class Automake < Formula
   end
 
   def install
+    ENV['PERL'] = '/usr/bin/perl'
+
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 

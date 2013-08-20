@@ -14,7 +14,7 @@ class Redis < Formula
 
   def install
     # Architecture isn't detected correctly on 32bit Snow Leopard without help
-    ENV["OBJARCH"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
+    ENV["OBJARCH"] = "-arch #{MacOS.preferred_arch}"
 
     # Head and stable have different code layouts
     src = (buildpath/'src/Makefile').exist? ? buildpath/'src' : buildpath

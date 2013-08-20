@@ -21,7 +21,7 @@ class Libquvi < Formula
       system "./configure", "--prefix=#{scripts}", "--with-nsfw"
       system "make install"
     end
-    ENV.append 'PKG_CONFIG_PATH', "#{scripts}/lib/pkgconfig", ':'
+    ENV.append_path 'PKG_CONFIG_PATH', "#{scripts}/lib/pkgconfig"
 
     # Lua 5.2 does not have a proper lua.pc
     ENV['liblua_CFLAGS'] = ' '

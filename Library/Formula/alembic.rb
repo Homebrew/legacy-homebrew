@@ -16,8 +16,8 @@ class Alembic < Formula
     system "cmake", *cmake_args
     system "make", "install"
     #move everything upwards
-    lib.install_symlink Dir[prefix/"alembic-1.1.5/lib/static/*"]
-    include.install_symlink Dir[prefix/"alembic-1.1.5/include/*"]
-    bin.install_symlink Dir[prefix/"alembic-1.1.5/bin/*"]
+    lib.install_symlink Dir[prefix/"alembic-#{version}/lib/static/*"]
+    include.install_symlink Dir[prefix/"alembic-#{version}/include/*"]
+    bin.install_symlink Dir[prefix/"alembic-#{version}/bin/*"]
   end
 end

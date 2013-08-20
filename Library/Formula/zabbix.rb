@@ -2,8 +2,8 @@ require 'formula'
 
 class Zabbix < Formula
   homepage 'http://www.zabbix.com/'
-  url 'http://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.0.6/zabbix-2.0.6.tar.gz'
-  sha1 '75a747ddcfa4bcd5792f69dc8d7de9c5839b8595'
+  url 'http://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.0.7/zabbix-2.0.7.tar.gz'
+  sha1 'd7b6e97af514afd131d38dd692b75644080a4aaa'
 
   option 'with-mysql', 'Use Zabbix Server with MySQL library instead PostgreSQL.'
   option 'agent-only', 'Install only the Zabbix Agent without Server and Proxy.'

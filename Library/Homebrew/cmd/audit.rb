@@ -1,6 +1,6 @@
 require 'formula'
 require 'utils'
-require 'superenv'
+require 'extend/ENV'
 require 'formula_cellar_checks'
 
 module Homebrew extend self
@@ -8,6 +8,7 @@ module Homebrew extend self
     formula_count = 0
     problem_count = 0
 
+    ENV.activate_extensions!
     ENV.setup_build_environment
 
     ff = if ARGV.named.empty?
@@ -127,7 +128,8 @@ class FormulaAuditor
     # Don't depend_on aliases; use full name
     @@aliases ||= Formula.aliases
     f.deps.select { |d| @@aliases.include? d.name }.each do |d|
-      problem "Dependency #{d} is an alias; use the canonical name."
+      real_name = d.to_formula.name
+      problem "Dependency '#{d}' is an alias; use the canonical name '#{real_name}'."
     end
 
     # Check for things we don't like to depend on.

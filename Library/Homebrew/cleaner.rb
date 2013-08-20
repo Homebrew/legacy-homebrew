@@ -35,7 +35,7 @@ class Cleaner
       end
     end
 
-    paths.each do |d|
+    paths.reverse_each do |d|
       if d.children.empty? and not f.skip_clean? d
         puts "rmdir: #{d} (empty)" if ARGV.verbose?
         d.rmdir

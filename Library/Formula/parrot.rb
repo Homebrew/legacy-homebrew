@@ -6,8 +6,8 @@ class Parrot < Formula
   sha256 '40c7176059e4462c722511a29450a4b80867a8459e273b602fbeaac2a22457f9'
 
   devel do
-    url 'ftp://ftp.parrot.org/pub/parrot/releases/devel/5.5.0/parrot-5.5.0.tar.bz2'
-    sha256 'eb7b7d461e627673e77f5e875154506054ce9950d63b263875d9272c7814fd30'
+    url 'ftp://ftp.parrot.org/pub/parrot/releases/devel/5.6.0/parrot-5.6.0.tar.bz2'
+    sha256 '5cd1a7d413eee32fa9d1218b8475d810fbc7a80c4112a5590c8b060255f95fd7'
   end
 
   head 'https://github.com/parrot/parrot.git'

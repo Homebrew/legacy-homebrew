@@ -37,7 +37,7 @@ def blacklisted? name
     "lzma is now part of the xz formula."
   when 'xcode' then <<-EOS.undent
     Xcode can be installed via the App Store (on Lion or newer), or from:
-      http://connect.apple.com/
+      https://developer.apple.com/downloads/
     EOS
   when 'gtest', 'googletest', 'google-test' then <<-EOS.undent
     Installing gtest system-wide is not recommended; it should be vendored
@@ -61,6 +61,15 @@ def blacklisted? name
     EOS
   when 'gsutil' then <<-EOS.undent
     Install gsutil with `pip install gsutil`
+    EOS
+  when 'clojure' then <<-EOS.undent
+    Clojure isn't really a program but a library managed as part of a
+    project and Leiningen is the user interface to that library.
+
+    To install Clojure you should install Leiningen:
+      brew install leiningen
+    and then follow the tutorial:
+      https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md
     EOS
   end
 end

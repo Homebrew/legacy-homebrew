@@ -20,8 +20,8 @@ class Figlet < Formula
   def install
     share_fonts = share+"figlet/fonts"
 
-    File.chmod 0666, 'Makefile'
-    File.chmod 0666, 'showfigfonts'
+    chmod 0666, 'Makefile'
+    chmod 0666, 'showfigfonts'
     man6.mkpath
     bin.mkpath
 

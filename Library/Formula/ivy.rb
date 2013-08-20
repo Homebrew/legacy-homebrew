@@ -8,6 +8,6 @@ class Ivy < Formula
   def install
     libexec.install Dir['ivy*']
     doc.install Dir['doc/*']
-    bin.write_jar_script libexec/'ivy-2.3.0.jar', 'ivy', '$JAVA_OPTS'
+    bin.write_jar_script libexec/"ivy-#{version}.jar", "ivy", "$JAVA_OPTS"
   end
 end

@@ -73,13 +73,13 @@ class Dependency
       deps = dependent.deps.map do |dep|
         case action(dependent, dep, &block)
         when :prune
-          next
+          next []
         when :skip
           expand(dep.to_formula, &block)
         else
           expand(dep.to_formula, &block) << dep
         end
-      end.flatten.compact
+      end.flatten
 
       merge_repeats(deps)
     end

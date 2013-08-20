@@ -18,19 +18,17 @@ class Pyqt < Formula
 
   def install
     python do
-      system python, "./configure.py", "--confirm-license",
-                                       "--bindir=#{bin}#{python.if3then3}",
-                                       "--destdir=#{lib}/#{python.xy}/site-packages",
-                                       "--sipdir=#{share}/sip#{python.if3then3}"
+      system python, "./configure-ng.py", "--confirm-license",
+                                          "--bindir=#{bin}",
+                                          "--destdir=#{lib}/#{python.xy}/site-packages",
+                                          "--sipdir=#{share}/sip#{python.if3then3}"
       system "make"
       system "make", "install"
       system "make", "clean"  # because this python block may be run twice
     end
 
-    if python3
-      # These tools need a unique suffix for python3.
-      ['pyuic4', 'pyrcc4', 'pylupdate4'].each { |f| mv(prefix/"bin3/#{f}", bin/"#{f}-py3")}
-      rm_rf prefix/'bin3'
+    if build.with? 'python3' and build.with? 'python'
+      ['pyuic4', 'pyrcc4', 'pylupdate4'].each { |f| mv(bin/f, bin/"#{f}-py3")}
     end
   end
 
@@ -39,28 +37,27 @@ class Pyqt < Formula
   end
 
   test do
+    # To test Python 3.x, you have to `brew test pyqt --with-python3`
+    Pathname('test.py').write <<-EOS.undent
+      import sys
+      from PyQt4 import QtGui, QtCore
+
+      class Test(QtGui.QWidget):
+          def __init__(self, parent=None):
+              QtGui.QWidget.__init__(self, parent)
+              self.setGeometry(300, 300, 400, 150)
+              self.setWindowTitle('Homebrew')
+              QtGui.QLabel("Python " + "{0}.{1}.{2}".format(*sys.version_info[0:3]) +
+                           " working with PyQt4. Quitting now...", self).move(50, 50)
+              QtCore.QTimer.singleShot(1500, QtGui.qApp, QtCore.SLOT('quit()'))
+
+      app = QtGui.QApplication([])
+      window = Test()
+      window.show()
+      sys.exit(app.exec_())
+    EOS
     python do
-      # Reference: http://zetcode.com/tutorials/pyqt4/firstprograms/
-      (testpath/'test.py').write <<-EOS.undent
-        import sys
-        from PyQt4 import QtGui, QtCore
-
-        class Test(QtGui.QWidget):
-            def __init__(self, parent=None):
-                QtGui.QWidget.__init__(self, parent)
-                self.setGeometry(300, 300, 400, 150)
-                self.setWindowTitle('Homebrew')
-                QtGui.QLabel("Python #{python.version} working with PyQt4. Quitting now...", self).move(50, 50)
-                QtCore.QTimer.singleShot(2500, QtGui.qApp, QtCore.SLOT('quit()'))
-
-        app = QtGui.QApplication([])
-        window = Test()
-        window.show()
-        sys.exit(app.exec_())
-        EOS
-
       system python, "test.py"
-      rm testpath/'test.py'
     end
   end
 end

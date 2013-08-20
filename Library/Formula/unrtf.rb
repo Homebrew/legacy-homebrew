@@ -2,9 +2,9 @@ require 'formula'
 
 class Unrtf < Formula
   homepage 'http://www.gnu.org/software/unrtf/'
-  url 'http://ftpmirror.gnu.org/unrtf/unrtf-0.21.4.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/unrtf/unrtf-0.21.4.tar.gz'
-  sha1 '336e015707a61f14f2c4e0ef006d581ee4704305'
+  url 'http://ftpmirror.gnu.org/unrtf/unrtf-0.21.5.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/unrtf/unrtf-0.21.5.tar.gz'
+  sha1 '73d22805eb7a83edf5c3c27fe036e3c33248902d'
 
   # Per MacPorts, add a return value to fix compiling with clang, and fix
   # a bad memory access.

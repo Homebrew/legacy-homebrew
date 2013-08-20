@@ -86,6 +86,72 @@ These awesome people supported our Kickstarter by giving us £50 or more:
 * [Paul Howard](https://github.com/pauldhoward)
 * [Mårten Gustafson](http://marten.gustafson.pp.se)
 * [Markus Heurung](http://markusheurung.de)
+* [Rajiv Aaron Manglani](http://www.rajivmanglani.com/)
+* Zachary Elliott
+* [Justin Weiss](http://www.justinweiss.com)
+* Matt Dickoff
+* [Pivotal Ops](http://pivotallabs.com)
+* [William Woodall](http://williamjwoodall.com)
+* [Jiayong Ou](http://orly.ch)
+* [Joshua Peek](https://github.com/josh)
+* [Sifter](https://sifterapp.com)
+* [Morten Bight](http://justabeech.com)
+* Markus Heurung
+* David Hardiman
+* [Olly Legg](http://51degrees.net)
+* [Ben Darlow](http://www.darlow.eu/)
+* [Alexey Zakhlestin](https://github.com/indeyets)
+* Fernando Blat
+* [Adam Holt](http://adamholt.co.uk)
+* Trevor Turk
+* [Jochen Weiland](http://jweiland.net)
+* Paul Mietz Egli
+* Petr Olah
+* Ken Mayer
+* [Jeremy D. Frens](http://www.norecess.org/)
+* Peter Quade
+* C J Silverio
+* [Roddi](http://www.winkenschuerfel.de)
+* Jeffrey Sullivan Jr
+* Jonathan Borzilleri
+* Ethan Bruning
+* Nick Mixdorf
+* Alex Duryee
+* Zac Ragan
+* [Lane Lillquist](http://www.lillq.com)
+* [Robert Schmidl](https://github.com/RobRoy)
+* [Collective Idea](http://collectiveidea.com)
+* Thomas Fuchs
+* Hans-Christian Otto
+* Dan Lane
+* Seth Szymanski
+* [osh Runge](http://joshrunge.com)
+* Glen Hunt
+* [Venantius](http://www.venanti.us)
+* Matt Jones
+* [Jen Savage](http://savagejen.github.io/)
+* [Trenton Schulz](http://www.norwegianrockcat.com)
+* Jake Kaufman
+* [Hiro](http://blog.qli.jp/)
+* Debreczeni Barnabás
+* [Scott Handley](http://evomics.org)
+* [Scott Lipsig](https://github.com/scottscott)
+* Nick Zadrozny
+* Mikael Roos
+* Stephen Eckenrode
+* Kevin Sumner
+* Rahul
+* [Nothing Interactive](http://www.nothing.ch)
+* [Nick Sivo](http://nicksivo.com)
+* [Claus Pfisterer](http://www.apochroma.ch)
+* Bob Doyle
+* Gabriel Boyer
+* Tom
+* Yann Lawrence
+* Frederick Ostrander
+* [David Wagner](http://noiseandheat.com)
+* [Craig Labenz and Matt Kahl](http://www.Stik.com)
+* Alan Grosskurth
 
 These brilliant people supported our Kickstarter by giving us £15 or more:
 
