@@ -42,7 +42,7 @@ class Checks
 
 ############# HELPERS
   def paths
-    @paths ||= ENV['PATH'].split(':').collect do |p|
+    @paths ||= ENV['PATH'].split(File::PATH_SEPARATOR).collect do |p|
       begin
         File.expand_path(p).chomp('/')
       rescue ArgumentError
@@ -68,7 +68,7 @@ class Checks
 # Sorry for the lack of an indent here, the diff would have been unreadable.
 # See https://github.com/mxcl/homebrew/pull/9986
 def check_path_for_trailing_slashes
-  bad_paths = ENV['PATH'].split(':').select { |p| p[-1..-1] == '/' }
+  bad_paths = ENV['PATH'].split(File::PATH_SEPARATOR).select { |p| p[-1..-1] == '/' }
   return if bad_paths.empty?
   s = <<-EOS.undent
     Some directories in your path end in a slash.

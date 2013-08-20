@@ -2,8 +2,8 @@ require 'formula'
 
 class Postgis < Formula
   homepage 'http://postgis.net'
-  url 'http://download.osgeo.org/postgis/source/postgis-2.0.3.tar.gz'
-  sha1 '825c1718cf2603fa0f1c2de802989dff7239f9bc'
+  url 'http://download.osgeo.org/postgis/source/postgis-2.1.0.tar.gz'
+  sha1 'e8a428348e93f204fdf4838ebedcad9306b29a5e'
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
@@ -22,12 +22,6 @@ class Postgis < Formula
   # For GeoJSON and raster handling
   depends_on 'json-c'
   depends_on 'gdal'
-
-  # Force GPP to be used when pre-processing SQL files. See:
-  # http://trac.osgeo.org/postgis/ticket/1694
-  # Fix linking aganist json-c, upstream in:
-  # https://github.com/postgis/postgis/commit/1c988618c9448dcdc43bc8ffe4ef8ff1d4dae838
-  def patches; DATA end
 
   def install
     # Follow the PostgreSQL linked keg back to the active Postgres installation
@@ -80,7 +74,7 @@ class Postgis < Formula
     include.install Dir['stage/**/include/*']
 
     # Stand-alone SQL files will be installed the share folder
-    (share/'postgis').install Dir['stage/**/contrib/postgis-2.0/*']
+    (share/'postgis').install Dir['stage/**/contrib/postgis-2.1/*']
 
     # Extension scripts
     bin.install %w[
@@ -101,9 +95,11 @@ class Postgis < Formula
     pg = Formula.factory('postgresql').opt_prefix
     <<-EOS.undent
       To create a spatially-enabled database, see the documentation:
-        http://postgis.refractions.net/documentation/manual-2.0/postgis_installation.html#create_new_db_extensions
-      and to upgrade your existing spatial databases, see here:
-        http://postgis.refractions.net/documentation/manual-2.0/postgis_installation.html#upgrading
+        http://postgis.net/docs/manual-2.1/postgis_installation.html#create_new_db_extensions
+      If you are currently using PostGIS 2.0+, you can go the soft upgrade path:
+        ALTER EXTENSION postgis UPDATE TO "2.1.0";
+      Users of 1.5 and below will need to go the hard-upgrade path, see here:
+        http://postgis.net/docs/manual-2.1/postgis_installation.html#upgrading
 
       PostGIS SQL scripts installed to:
         #{HOMEBREW_PREFIX}/share/postgis
@@ -114,42 +110,3 @@ class Postgis < Formula
       EOS
   end
 end
-
-__END__
-Force usage of GPP as the SQL pre-processor as Clang chokes and fix json-c link error
-
-diff --git a/configure.ac b/configure.ac
-index 68d9240..8514041 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -31,17 +31,8 @@ AC_SUBST([ANT])
- dnl
- dnl SQL Preprocessor
- dnl
--AC_PATH_PROG([CPPBIN], [cpp], [])
--if test "x$CPPBIN" != "x"; then
--  SQLPP="${CPPBIN} -traditional-cpp -P"
--else
--  AC_PATH_PROG([GPP], [gpp_], [])
--  if test "x$GPP" != "x"; then
--    SQLPP="${GPP} -C -s \'" dnl Use better string support
--  else
--    SQLPP="${CPP} -traditional-cpp"
--  fi
--fi
-+AC_PATH_PROG([GPP], [gpp], [])
-+SQLPP="${GPP} -C -s \'" dnl Use better string support
- AC_SUBST([SQLPP])
- 
- dnl
-@@ -740,7 +731,9 @@ CPPFLAGS="$CPPFLAGS_SAVE"
- dnl Ensure we can link against libjson
- LIBS_SAVE="$LIBS"
- LIBS="$JSON_LDFLAGS"
--AC_CHECK_LIB([json], [json_object_get], [HAVE_JSON=yes], [], [])
-+AC_CHECK_LIB([json-c], [json_object_get], [HAVE_JSON=yes; JSON_LDFLAGS="-ljson-c"], [
-+  AC_CHECK_LIB([json], [json_object_get], [HAVE_JSON=yes; JSON_LDFLAGS="-ljson"], [], [])
-+], [])
- LIBS="$LIBS_SAVE"
-
- if test "$HAVE_JSON" = "yes"; then

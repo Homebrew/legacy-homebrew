@@ -10,7 +10,7 @@ class Pgtap < Formula
   skip_clean 'share'
 
   def install
-    ENV.prepend 'PATH', Formula.factory('postgresql').bin, ':'
+    ENV.prepend_path 'PATH', Formula.factory('postgresql').bin
     system "make install"
   end
 end

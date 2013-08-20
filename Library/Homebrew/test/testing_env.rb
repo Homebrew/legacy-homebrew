@@ -33,7 +33,7 @@ MACOS = true
 MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
 MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }.to_f
 
-ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
+ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
 module Homebrew extend self
   include FileUtils
@@ -72,7 +72,7 @@ require 'test/unit' # must be after at_exit
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 require 'extend/ENV'
 ARGV.extend(HomebrewArgvExtension)
-ENV.extend(HomebrewEnvExtension)
+ENV.extend(Stdenv)
 
 begin
   require 'rubygems'
