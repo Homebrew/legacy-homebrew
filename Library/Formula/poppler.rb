@@ -14,6 +14,7 @@ class Poppler < Formula
   option 'with-glib', 'Build Glib backend'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
 
   depends_on :fontconfig
   depends_on 'openjpeg'
