@@ -25,6 +25,7 @@ class Passenger < Formula
         exec #{orig_script} "$@"
       EOS
     end
+    mv prefix/'man', share
   end
 
   def caveats; <<-EOS.undent
