@@ -115,6 +115,7 @@ class FormulaCreator
     require 'formula'
 
     # Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
+    #                #{HOMEBREW_PREFIX}/Library/Contributions/example-formula.rb
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
     class #{Formula.class_s name} < Formula
