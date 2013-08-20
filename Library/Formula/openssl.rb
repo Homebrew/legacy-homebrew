@@ -25,7 +25,7 @@ class Openssl < Formula
 
     system "perl", *args
 
-    ENV.deparallelize # Parallel compilation fails
+    ENV.deparallelize
     system "make"
     system "make", "test"
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
