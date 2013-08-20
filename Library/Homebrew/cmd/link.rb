@@ -15,7 +15,19 @@ module Homebrew extend self
         opoo "Already linked: #{keg}"
         puts "To relink: brew unlink #{keg.fname} && brew link #{keg.fname}"
         next
-      elsif keg_only?(keg.fname) && !ARGV.force?
+      end
+
+      begin
+        f = Formula.factory(keg.fname)
+        conflicts = f.conflicts.reject do |c|
+          c_prefix = Formula.factory(c.name).prefix
+          not c_prefix.directory? && Keg.new(c_prefix).linked?
+        end
+        raise FormulaLinkConflictError.new(f, conflicts) unless conflicts.empty?
+      rescue FormulaUnavailableError
+      end
+
+      if keg_only?(keg.fname) && !ARGV.force?
         opoo "#{keg.fname} is keg-only and must be linked with --force"
         puts "Note that doing so can interfere with building software."
         next
