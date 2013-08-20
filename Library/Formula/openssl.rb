@@ -19,6 +19,11 @@ class Openssl < Formula
 
     if MacOS.prefer_64_bit?
       args << "darwin64-x86_64-cc" << "enable-ec_nistp_64_gcc_128"
+
+      # -O3 is used under stdenv, which results in test failures when using clang
+      inreplace 'Configure',
+        %{"darwin64-x86_64-cc","cc:-arch x86_64 -O3},
+        %{"darwin64-x86_64-cc","cc:-arch x86_64 -Os}
     else
       args << "darwin-i386-cc"
     end
