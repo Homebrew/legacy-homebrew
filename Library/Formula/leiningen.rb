@@ -26,6 +26,7 @@ class Leiningen < Formula
   def caveats; <<-EOS.undent
     Dependencies will be installed to:
       $HOME/.m2/repository
+    To play around with Clojure run `lein repl` or `lein help`.
     EOS
   end
 end

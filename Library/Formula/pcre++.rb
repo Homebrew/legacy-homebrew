@@ -15,5 +15,17 @@ class Pcrexx < Formula
                           "--mandir=#{man}",
                           "--with-pcre-dir-lib=#{pcre}"
     system "make install"
+
+    # Pcre++ ships Pcre.3, which causes a conflict with pcre.3 from pcre
+    # in case-insensitive file system. Rename it to pcre++.3 to avoid
+    # this problem.
+    mv man3/'Pcre.3', man3/'pcre++.3'
+  end
+
+  def caveats; <<-EOS.undent
+    The man page has been renamed to pcre++.3 to avoid conflicts with
+    pcre in case-insensitive file system.  Please use "man pcre++"
+    instead.
+    EOS
   end
 end

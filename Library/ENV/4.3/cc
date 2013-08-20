@@ -165,7 +165,7 @@ class Cmd
       args << '-march=native' if tool =~ /clang/
     end
 
-    args += ENV['HOMEBREW_ARCHS'].split(',').map {|a| "-arch #{a}"} if cccfg? 'u'
+    ENV['HOMEBREW_ARCHS'].split(',').each { |a| args << "-arch" << a } if cccfg? 'u'
     args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
     args
   end

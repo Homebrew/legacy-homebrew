@@ -14,6 +14,7 @@ class Gfortran < Formula
 
   option 'enable-profiled-build', 'Make use of profile guided optimization when bootstrapping GCC'
   option 'check', 'Run the make check fortran. This is for maintainers.'
+  option 'enable-multilib', 'Build with multilib support' if MacOS.prefer_64_bit?
 
   depends_on 'gmp'
   depends_on 'libmpc'
@@ -58,9 +59,10 @@ class Gfortran < Formula
     ]
 
     # https://github.com/mxcl/homebrew/issues/19584#issuecomment-19661219
-    unless MacOS.prefer_64_bit?
-      args << "--disable-multiarch"
-      args << "--disable-multilib"
+    if build.include? 'enable-multilib' and MacOS.prefer_64_bit?
+      args << '--enable-multilib'
+    else
+      args << '--disable-multilib'
     end
 
     mkdir 'build' do

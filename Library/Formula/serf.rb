@@ -11,7 +11,7 @@ class Serf < Formula
   depends_on 'sqlite'
 
   def apr_bin
-    superbin or "/usr/bin"
+    Superenv.bin or "/usr/bin"
   end
 
   def install

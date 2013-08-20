@@ -1,4 +1,3 @@
-require 'compat/env'
 require 'compat/fails_with_llvm'
 require 'compat/formula'
 require 'compat/hardware'

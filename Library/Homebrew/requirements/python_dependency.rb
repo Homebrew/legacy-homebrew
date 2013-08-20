@@ -120,9 +120,7 @@ class PythonInstalled < Requirement
         # Note, we don't support homebrew/versions/pythonXX.rb, though.
         Formula.factory(@name).opt_prefix/"bin/python#{@min_version.major}"
       else
-        # Using the ORIGINAL_PATHS here because in superenv, the user
-        # installed external Python is not visible otherwise.
-        which(@name, ORIGINAL_PATHS.join(':'))
+        which(@name)
       end
     end
   end
@@ -252,12 +250,12 @@ class PythonInstalled < Requirement
     file.write(sitecustomize)
 
     # For non-system python's we add the opt_prefix/bin of python to the path.
-    ENV.prepend 'PATH', binary.dirname, ':' unless from_osx?
+    ENV.prepend_path 'PATH', binary.dirname unless from_osx?
 
     ENV['PYTHONHOME'] = nil  # to avoid fuck-ups.
     ENV['PYTHONPATH'] = if brewed? then nil; else global_site_packages.to_s; end
-    ENV.append 'CMAKE_INCLUDE_PATH', incdir, ':'
-    ENV.append 'PKG_CONFIG_PATH', pkg_config_path, ':' if pkg_config_path
+    ENV.append_path 'CMAKE_INCLUDE_PATH', incdir
+    ENV.append_path 'PKG_CONFIG_PATH', pkg_config_path if pkg_config_path
     # We don't set the -F#{framework} here, because if Python 2.x and 3.x are
     # used, `Python.framework` is ambiguous. However, in the `python do` block
     # we can set LDFLAGS+="-F#{framework}" because only one is temporarily set.
