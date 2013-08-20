@@ -13,6 +13,11 @@ class Juju < Formula
 
   depends_on 'go' => :build
 
+  devel do
+    url "https://launchpad.net/juju-core/trunk/1.13.1/+download/juju-core_1.13.1.tar.gz"
+    sha1 "1c1346378763d6aa469c434c1467b8ea4f8530be"
+  end
+
   def install
     ENV['GOPATH'] = buildpath
     args = %w(install launchpad.net/juju-core/cmd/juju)
