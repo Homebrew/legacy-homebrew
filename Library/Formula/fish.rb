@@ -17,6 +17,8 @@ class Fish < Formula
   def patches; DATA; end
 
   def install
+    # compile in C++11 mode post-ML since clang++ doesn't have tr1 headers
+    ENV.append 'EXTRA_CXXFLAGS', '--std=c++11' if MacOS.version > :mountain_lion
     system "autoconf"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
