@@ -7,13 +7,14 @@ end
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.22.5.tar.gz'
-  sha1 '9491bb33788d7f0ee67da572dc4798004f98323a'
+  url 'http://poppler.freedesktop.org/poppler-0.24.0.tar.xz'
+  sha1 'fd40adf10127d040f16e00ce2497fc5e8f5e5753'
 
   option 'with-qt4', 'Build Qt backend'
   option 'with-glib', 'Build Glib backend'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
 
   depends_on :fontconfig
   depends_on 'openjpeg'
