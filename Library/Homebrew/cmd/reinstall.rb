@@ -6,9 +6,6 @@ module Homebrew extend self
     # At first save the named formulae and remove them from ARGV
     named = ARGV.named
     ARGV.delete_if { |arg| named.include? arg }
-    # We add --force because then uninstall always succeeds and so reinstall
-    # works for formulae not yet installed.
-    ARGV << "--force"
     clean_ARGV = ARGV.clone
 
     # Add the used_options for each named formula separately so
