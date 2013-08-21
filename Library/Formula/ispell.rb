@@ -15,6 +15,7 @@ class Ispell < Formula
     inreplace "local.h" do |s|
       s.gsub! '/usr/local', prefix
       s.gsub! '/man/man', '/share/man/man'
+      s.gsub! '/lib', '/lib/ispell'
     end
 
     chmod 0644, "correct.c"
@@ -27,7 +28,7 @@ class Ispell < Formula
       s.gsub! /yacc/, MacOS.locate('yacc')
     end
 
-    lib.mkpath
+    (lib/'ispell').mkpath
     system "make all"
     system "make install"
   end
