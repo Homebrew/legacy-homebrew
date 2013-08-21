@@ -8,7 +8,7 @@ class Drush < Formula
 
   def install
     prefix.install_metafiles
-    libexec.install Dir['*']
+    libexec.install Dir['*'] -['drush.bat']
     bin.install_symlink libexec/'drush'
     bash_completion.install libexec/'drush.complete.sh' => 'drush'
   end
