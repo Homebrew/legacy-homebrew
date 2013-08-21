@@ -583,9 +583,7 @@ class Formula
     raise BuildError.new(self, cmd, args, $?)
   ensure
     f.close if f and not f.closed?
-    removed_ENV_variables.each do |key, value|
-      ENV[key] = value
-    end if removed_ENV_variables
+    ENV.update(removed_ENV_variables) if removed_ENV_variables
   end
 
   private
