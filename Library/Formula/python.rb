@@ -1,13 +1,13 @@
 require 'formula'
 
 class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.8.tar.gz'
-  sha1 'a13ad9411149c52501a15c702a4f3a3c757b5ba9'
+  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.0.tar.gz'
+  sha1 '6ff4d37b567d54763cc55ca70ff8058286b8e2c3'
 end
 
 class Pip < Formula
-  url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.tar.gz'
-  sha1 '3149dc77c66b77d02497205fca5df56ae9d3e753'
+  url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
+  sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
 end
 
 class Python < Formula
