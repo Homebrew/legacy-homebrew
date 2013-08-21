@@ -1,8 +1,8 @@
 require 'formula'
 
 class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.8.tar.gz'
-  sha1 'a13ad9411149c52501a15c702a4f3a3c757b5ba9'
+  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.0.tar.gz'
+  sha1 '6ff4d37b567d54763cc55ca70ff8058286b8e2c3'
 end
 
 class Pypy < Formula
