@@ -10,15 +10,15 @@ class Uberftp < Formula
 
   def install
     # get the flavor
-    if (`#{HOMEBREW_PREFIX}/sbin/gpt-query globus_core | grep gcc64dbg`!="")
-        flavor = "gcc64dbg" 
-    elsif (`#{HOMEBREW_PREFIX}/sbin/gpt-query globus_core | grep gcc32dbg`!="")
-        flavor = "gcc32dbg"
-    else
-        flavor = ""
+    globus = Formula.factory('globus-toolkit').opt_prefix
+
+    core = `"#{globus}/sbin/gpt-query" globus_core`
+    flavor = case core
+      when /gcc64dbg/ then "gcc64dbg"
+      when /gcc32dbg/ then "gcc32dbg"
     end
     
-    system "./configure", "--prefix=#{prefix}", "--with-globus-flavor=#{flavor}", "--with-globus=#{Formula.factory('globus-toolkit').opt_prefix}"
+    system "./configure", "--prefix=#{prefix}", "--with-globus-flavor=#{flavor}", "--with-globus=#{globus}"
     system "make"
     system "make install"
   end
