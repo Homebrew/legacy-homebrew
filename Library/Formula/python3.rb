@@ -227,9 +227,7 @@ class Python3 < Formula
 
   def caveats
     text = <<-EOS.undent
-      Setuptools and Pip have been installed. To update them
-        pip3 install --upgrade setuptools
-        pip3 install --upgrade pip
+      Setuptools and Pip have been installed, too.
 
       To symlink "Idle 3" and the "Python Launcher 3" to ~/Applications
         `brew linkapps`
