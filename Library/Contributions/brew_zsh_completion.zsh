@@ -33,7 +33,7 @@ _1st_arguments=(
   'home:visit the homepage of a formula or the brew project'
   'info:information about a formula'
   'install:install a formula'
-  'reinstal:reinstall a formula'
+  'reinstall a formula with its current options'
   'link:link a formula'
   'list:list files in a formula or not-installed formulae'
   'log:git commit log for a formula'
