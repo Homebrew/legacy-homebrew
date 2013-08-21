@@ -42,5 +42,7 @@ class Netpbm < Formula
       man5.install Dir['man/man5/*.5']
       lib.install Dir['link/*.a']
     end
+
+    (bin/'doc.url').unlink
   end
 end
