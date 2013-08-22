@@ -54,6 +54,15 @@ class OptionsTests < Test::Unit::TestCase
     assert_equal 1, @options.count
   end
 
+  def test_preserves_existing_member_when_pushing_duplicate
+    a = Option.new("foo", "bar")
+    b = Option.new("foo", "qux")
+    @options << a << b
+    assert_equal 1, @options.count
+    assert_same a, @options.first
+    assert_equal a.description, @options.first.description
+  end
+
   def test_include
     @options << Option.new("foo")
     assert @options.include? "--foo"
