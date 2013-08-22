@@ -17,7 +17,7 @@ class Nexus < Formula
     bin.install_symlink libexec/'bin/nexus'
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/nexus/libexec/bin/nexus { console | start | stop | restart | status | dump }"
+  plist_options :manual => "#{opt_prefix}/libexec/bin/nexus { console | start | stop | restart | status | dump }"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -28,7 +28,7 @@ class Nexus < Formula
         <string>com.sonatype.nexus</string>
         <key>ProgramArguments</key>
         <array>
-          <string>/usr/local/opt/nexus/bin/nexus</string>
+          <string>#{opt_prefix}/bin/nexus</string>
           <string>start</string>
         </array>
         <key>RunAtLoad</key>
