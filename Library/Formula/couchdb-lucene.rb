@@ -23,7 +23,7 @@ class CouchdbLucene < Formula
     EOS
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/couchdb-lucene/bin/run"
+  plist_options :manual => "#{opt_prefix}/bin/run"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
