@@ -9,7 +9,7 @@ class SeleniumServerStandalone < Formula
     prefix.install "selenium-server-standalone-#{version}.jar"
   end
 
-  plist_options :manual => "java -jar #{HOMEBREW_PREFIX}/opt/selenium-server-standalone/selenium-server-standalone-#{version}.jar -p 4444"
+  plist_options :manual => "java -jar #{opt_prefix}/selenium-server-standalone-#{version}.jar -p 4444"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
