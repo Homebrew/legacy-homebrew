@@ -5,9 +5,14 @@ class Libcppa < Formula
   url 'https://github.com/Neverlord/libcppa/archive/V0.7.1.tar.gz'
   sha1 '0f1f685e94bfa16625370b978ff26deaf799b94e'
 
+  depends_on :macos => :lion
   depends_on 'cmake' => :build
 
   option 'with-opencl', 'Build with OpenCL actors'
+
+  def caveats
+      "Libcppa requires a C++11 capable compiler"
+  end
 
   fails_with :gcc do
     cause 'libcppa requires a C++11 capable compiler.'
