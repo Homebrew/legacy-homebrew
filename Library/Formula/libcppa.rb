@@ -11,15 +11,15 @@ class Libcppa < Formula
   option 'with-opencl', 'Build with OpenCL actors'
 
   def caveats
-      "Libcppa requires a C++11 capable compiler"
+      "Libcppa requires a C++11 compliant compiler"
   end
 
   fails_with :gcc do
-    cause 'libcppa requires a C++11 capable compiler.'
+    cause 'libcppa requires a C++11 compliant compiler.'
   end
 
   fails_with :llvm do
-    cause 'libcppa requires a C++11 capable compiler.'
+    cause 'libcppa requires a C++11 compliant compiler.'
   end
 
   def install
