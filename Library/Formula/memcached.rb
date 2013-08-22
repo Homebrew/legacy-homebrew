@@ -19,7 +19,7 @@ class Memcached < Formula
     system "make install"
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/memcached/bin/memcached"
+  plist_options :manual => "#{opt_prefix}/bin/memcached"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
