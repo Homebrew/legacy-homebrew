@@ -39,7 +39,7 @@ class Arangodb < Formula
     (var+'log/arangodb').mkpath
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod"
+  plist_options :manual => "#{opt_prefix}/sbin/arangod"
 
   def caveats; <<-EOS.undent
     ArangoDB (http://www.arangodb.org)
