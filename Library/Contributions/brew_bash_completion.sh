@@ -422,6 +422,7 @@ _brew ()
             prune
             pin
             search
+            reinstall
             tap
             test
             uninstall remove rm
@@ -451,6 +452,7 @@ _brew ()
     fetch)                      _brew_fetch ;;
     info|abv)                   _brew_info ;;
     install|instal)             _brew_install ;;
+    reinstall|reinstal)         _brew_install ;;
     link|ln)                    _brew_link ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;

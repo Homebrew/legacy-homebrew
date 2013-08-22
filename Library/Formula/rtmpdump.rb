@@ -1,9 +1,12 @@
 require 'formula'
 
+# Use a newer version instead of the upstream tarball:
+# http://livestreamer.tanuki.se/en/latest/issues.html#installed-rtmpdump-does-not-support-jtv-argument
 class Rtmpdump < Formula
   homepage 'http://rtmpdump.mplayerhq.hu'
-  url 'http://rtmpdump.mplayerhq.hu/download/rtmpdump-2.4.tar.gz'
-  sha1 '975f8c79788d1f9fcc66f572509f0203982b17ac'
+  url 'http://ftp.de.debian.org/debian/pool/main/r/rtmpdump/rtmpdump_2.4+20121230.gitdf6c518.orig.tar.gz'
+  version '2.4+20121230'
+  sha1 'a58e8a9c9f99f721389215dd16162a698734f03b'
 
   head 'git://git.ffmpeg.org/rtmpdump'
 

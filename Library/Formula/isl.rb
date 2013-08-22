@@ -14,5 +14,6 @@ class Isl < Formula
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
+    (share/"gdb/auto-load").install Dir["#{lib}/*-gdb.py"]
   end
 end
