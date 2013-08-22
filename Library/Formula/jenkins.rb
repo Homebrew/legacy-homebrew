@@ -16,7 +16,7 @@ class Jenkins < Formula
     end
   end
 
-  plist_options :manual => "java -jar #{HOMEBREW_PREFIX}/opt/jenkins/libexec/jenkins.war"
+  plist_options :manual => "java -jar #{opt_prefix}/libexec/jenkins.war"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
