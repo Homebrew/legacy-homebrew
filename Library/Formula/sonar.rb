@@ -26,7 +26,7 @@ class Sonar < Formula
     end
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/sonar/bin/sonar console"
+  plist_options :manual => "#{opt_prefix}/bin/sonar console"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
