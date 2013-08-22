@@ -54,6 +54,11 @@ class Options
     @options = Set.new(*args)
   end
 
+  def initialize_copy(other)
+    super
+    @options = @options.dup
+  end
+
   def each(*args, &block)
     @options.each(*args, &block)
   end
