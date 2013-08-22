@@ -51,7 +51,7 @@ class Boost < Formula
       'http://www.boost.org/patches/1_54_0/002-date-time.patch',
       'http://www.boost.org/patches/1_54_0/003-log.patch',
       'http://www.boost.org/patches/1_54_0/004-thread.patch'
-    ]
+    ] unless build.head?
   end
 
   def pour_bottle?
