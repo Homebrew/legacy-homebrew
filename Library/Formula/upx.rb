@@ -9,7 +9,7 @@ class Upx < Formula
   homepage 'http://upx.sourceforge.net'
   url 'http://upx.sourceforge.net/download/upx-3.09-src.tar.bz2'
   sha1 'df474a9909e6697a4d3240767c34e2dcb39002c1'
-  head 'http://upx.hg.sourceforge.net:8000/hgroot/upx/upx', :using => :hg
+  head 'https://www.pysol.org:4443/hg/upx.hg', :using => :hg
 
   depends_on 'ucl'
 
