@@ -10,12 +10,13 @@ class Pngtools < Formula
   head 'http://www.stillhq.com/svn/trunk/pngtools/', :using => :svn
 
   depends_on :libpng
-  depends_on 'automake' => :build
+
+  def patches
+    # Could accomplish this with autotools, but that requires several steps and having autotools installed, vs a quick patch...
+    DATA
+  end
 
   def install
-    # pretty standard, except we seem to need to call automake because the configure script in the repo isn't up to date!
-    # it would also be an option to patch Makefile.in based on the changes that automake runs on it.  That would let people avoid running automake, but seems conceptually less elegant
-    system "automake"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
@@ -26,3 +27,22 @@ class Pngtools < Formula
     system 'pnginfo "`find /System/Library/CoreServices/Dock.app/Contents/Resources/*.png | head -1`"'
   end
 end
+
+__END__
+diff --git a/Makefile.in b/Makefile.in
+index 488aaf5..7f356af 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -57,10 +57,10 @@ pngchunks_LDADD = $(LDADD)
+ am_pngcp_OBJECTS = pngcp.$(OBJEXT) pngread.$(OBJEXT) \
+ 	pngwrite.$(OBJEXT) inflateraster.$(OBJEXT)
+ pngcp_OBJECTS = $(am_pngcp_OBJECTS)
+-pngcp_LDADD = $(LDADD)
++pnginfo_LDADD = -lpng
+ am_pnginfo_OBJECTS = pnginfo.$(OBJEXT)
+ pnginfo_OBJECTS = $(am_pnginfo_OBJECTS)
+-pnginfo_LDADD = $(LDADD)
++pngcp_LDADD = -lpng
+ DEFAULT_INCLUDES = -I.@am__isrc@
+ depcomp = $(SHELL) $(top_srcdir)/config/depcomp
+ am__depfiles_maybe = depfiles
