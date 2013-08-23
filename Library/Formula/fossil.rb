@@ -8,8 +8,15 @@ class Fossil < Formula
 
   head 'fossil://http://www.fossil-scm.org/'
 
+  option 'without-json', 'Build without "json" command support.'
+  option 'without-tcl', "Build without the tcl-th1 command bridge."
+
   def install
-    system "./configure"
+    args = []
+    args << "--json" if build.with? 'json'
+    args << "--with-tcl" if build.with? 'tcl'
+
+    system "./configure", *args
     system "make"
     bin.install 'fossil'
   end
