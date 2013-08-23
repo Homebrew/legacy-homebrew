@@ -110,7 +110,7 @@ module Superenv
       append_path('PATH', apple_gcc42.opt_prefix/'bin') if apple_gcc42
     end
 
-    if ENV['HOMEBREW_CC'] =~ /gcc-(\d\.\d)/ && $1 != '4.2'
+    if ENV['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
       warn_about_non_apple_gcc($1)
     end
   end

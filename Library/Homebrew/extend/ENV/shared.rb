@@ -2,7 +2,10 @@ module SharedEnvExtension
   CC_FLAG_VARS = %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
   FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
 
-  COMPILERS = ['clang', 'gcc-4.0', 'gcc-4.2', 'llvm-gcc', /(gcc-\d\.\d)/]
+  # Update these every time a new GNU GCC branch is released
+  GNU_GCC_VERSIONS = (3..9)
+  GNU_GCC_REGEXP = /gcc-(4\.[3-9])/
+
   COMPLER_ALIASES = {'gcc' => 'gcc-4.2', 'llvm' => 'llvm-gcc'}
   COMPILER_SYMBOL_MAP = { 'gcc-4.0'  => :gcc_4_0,
                           'gcc-4.2'  => :gcc,
@@ -80,8 +83,12 @@ module SharedEnvExtension
 
   def compiler
     if (cc = ARGV.cc)
-      raise("Invalid value for --cc: #{cc}") if COMPILERS.grep(cc).empty?
-      COMPILER_SYMBOL_MAP.fetch(cc, cc)
+      COMPILER_SYMBOL_MAP.fetch(cc) do |other|
+        if other =~ GNU_GCC_REGEXP then other
+        else
+          raise "Invalid value for --cc: #{other}"
+        end
+      end
     elsif ARGV.include? '--use-gcc'
       gcc_installed = Formula.factory('apple-gcc42').installed? rescue false
       # fall back to something else on systems without Apple gcc
