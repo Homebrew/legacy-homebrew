@@ -283,7 +283,7 @@ module Superenv
   end
   alias_method :j1, :deparallelize
   def gcc
-    self['CC'] = self['OBJC'] = self['HOMEBREW_CC'] = "gcc"
+    self['CC'] = self['OBJC'] = self['HOMEBREW_CC'] = "gcc-4.2"
     self['CXX'] = self['OBJCXX'] = "g++-4.2"
   end
   def llvm
