@@ -18,6 +18,9 @@ class Macvim < Formula
   depends_on :python => :recommended
   # Help us! :python3 in MacVim makes the window disappear, so only 2.x bindings!
 
+  env :std if MacOS.version <= :snow_leopard
+  # Help us! We'd like to use superenv in these environments too
+
   def install
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in
