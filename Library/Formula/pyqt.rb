@@ -2,8 +2,8 @@ require 'formula'
 
 class Pyqt < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  url 'http://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.2/PyQt-mac-gpl-4.10.2.tar.gz'
-  sha1 '40362e6b9f476683e4e35b83369e30a8dfff99ad'
+  url 'http://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.3/PyQt-mac-gpl-4.10.3.tar.gz'
+  sha1 'ba5465f92fb43c9f0a5b948fa25df5045f160bf0'
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
