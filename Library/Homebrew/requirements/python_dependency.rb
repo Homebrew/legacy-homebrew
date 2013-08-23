@@ -74,6 +74,7 @@ class PythonInstalled < Requirement
   # We look for a brewed python or an external Python and store the loc of
   # that binary for later usage. (See Formula#python)
   satisfy :build_env => false do
+    ENV['PYTHONPATH'] = nil
     @unsatisfied_because = ''
     if binary.nil? || !binary.executable?
       @unsatisfied_because += "No `#{@name}` found in your PATH! Consider to `brew install #{@name}`."
