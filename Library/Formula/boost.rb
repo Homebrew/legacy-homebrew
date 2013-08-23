@@ -150,7 +150,6 @@ class Boost < Formula
       args << "cxxflags=-arch #{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit? or build.universal?
       args << "cxxflags=-arch #{Hardware::CPU.arch_32_bit}" if !MacOS.prefer_64_bit? or build.universal?
       args << "linkflags=-stdlib=libc++"
-      args << "linkflags=-headerpad_max_install_names"
       args << "linkflags=-arch #{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit? or build.universal?
       args << "linkflags=-arch #{Hardware::CPU.arch_32_bit}" if !MacOS.prefer_64_bit? or build.universal?
     end
