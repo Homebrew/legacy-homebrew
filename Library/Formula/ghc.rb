@@ -1,14 +1,34 @@
 require 'formula'
 
 class Ghcbinary < Formula
-  if Hardware.is_64_bit? and not build.build_32_bit?
-    url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
-    sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
-  else
-    url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2'
-    sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
+  if MacOS.version <= :tiger
+    raise Homebrew::InstallationError.new(self, <<-EOS.undent
+      Mac OS X versions 10.4 and earlier are not supported by the GHC formula.
+      EOS
+    )
   end
-  version '7.4.2'
+  if Hardware.is_64_bit? and not build.build_32_bit?
+    if MacOS.version >= :lion
+      url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2'
+      sha1 'fb9f18197852181a9472221e1944081985b75992'
+    elsif MacOS.version == :snow_leopard
+      url 'http://www.haskell.org/ghc/dist/7.2.2/ghc-7.2.2-x86_64-apple-darwin.tar.bz2'
+      sha1 'a21bf999f07aa4e976dfff6c7f708287291d1b31'
+    end
+  else
+    if MacOS.version >= :lion
+      url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-i386-apple-darwin.tar.bz2'
+      sha1 '6a312263fef41e06003f0676b879f2d2d5a1f30c'
+    elsif MacOS.version == :snow_leopard
+      url 'http://www.haskell.org/ghc/dist/7.2.2/ghc-7.2.2-i386-apple-darwin.tar.bz2'
+      sha1 'd04525570d3122e2a4b5dfed738b7b146813406b'
+    end
+  end
+  if MacOS.version >= :lion
+    version '7.6.3'
+  elsif MacOS.version == :snow_leopard
+    version '7.2.2'
+  end
 end
 
 class Ghctestsuite < Formula
@@ -42,9 +62,12 @@ class Ghc < Formula
       EOS
   end
 
-  def install
-    ENV.j1 # Fixes an intermittent race condition
+  def patches
+    # fixes ghc 7.6.3 compilation on 10.9
+    DATA if MacOS.version >= :mavericks
+  end
 
+  def install
     # Move the main tarball contents into a subdirectory
     (buildpath+'Ghcsource').install Dir['*']
 
@@ -52,8 +75,11 @@ class Ghc < Formula
     subprefix = buildpath+'subfo'
 
     Ghcbinary.new.brew do
-      system "./configure", "--prefix=#{subprefix}"
-      # Temporary j1 to stop an intermittent race condition
+      # ensure configure script does not use Xcode 5 "gcc" aka clang on 10.9
+      bin_cfg_args =  %W[ --prefix=#{subprefix} ]
+      bin_cfg_args << "--with-gcc=#{ENV.cc}" if MacOS.version >= :mavericks
+
+      system "./configure", *bin_cfg_args
       system 'make install'
       ENV.prepend 'PATH', subprefix/'bin', ':'
     end
@@ -70,8 +96,11 @@ class Ghc < Formula
         arch = 'i386'
       end
 
-      system "./configure", "--prefix=#{prefix}",
-                            "--build=#{arch}-apple-darwin"
+      # ensure configure script does not use Xcode 5 "gcc" aka clang on 10.9
+      src_cfg_args = %W[ --prefix=#{prefix} --build=#{arch}-apple-darwin ]
+      src_cfg_args << "--with-gcc=#{ENV.cc}" if MacOS.version >= :mavericks
+
+      system "./configure", *src_cfg_args
       system 'make'
       if build.include? 'tests'
         Ghctestsuite.new.brew do
@@ -85,6 +114,7 @@ class Ghc < Formula
           end
         end
       end
+      ENV.j1 # Fixes an intermittent race condition
       system 'make install'
     end
   end
@@ -94,3 +124,45 @@ class Ghc < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/includes/HsFFI.h b/includes/HsFFI.h
+index 652fbea..a21811e 100644
+--- a/includes/HsFFI.h
++++ b/includes/HsFFI.h
+@@ -21,7 +21,7 @@ extern "C" {
+ #include "stg/Types.h"
+ 
+ /* get limits for integral types */
+-#ifdef HAVE_STDINT_H
++#if defined HAVE_STDINT_H && !defined USE_INTTYPES_H_FOR_RTS_PROBES_D
+ /* ISO C 99 says:
+  * "C++ implementations should define these macros only when
+  * __STDC_LIMIT_MACROS is defined before <stdint.h> is included."
+diff --git a/rts/RtsProbes.d b/rts/RtsProbes.d
+index 13f40f8..226f881 100644
+--- a/rts/RtsProbes.d
++++ b/rts/RtsProbes.d
+@@ -6,6 +6,12 @@
+  *
+  * ---------------------------------------------------------------------------*/
+ 
++#ifdef __APPLE__ && __MACH__
++# if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_9
++#  define USE_INTTYPES_H_FOR_RTS_PROBES_D
++# endif
++#endif
++
+ #include "HsFFI.h"
+ #include "rts/EventLogFormat.h"
+ 
+diff --git a/utils/mkdirhier/mkdirhier.sh b/utils/mkdirhier/mkdirhier.sh
+index 4c5d5f7..80762f4 100644
+--- a/utils/mkdirhier/mkdirhier.sh
++++ b/utils/mkdirhier/mkdirhier.sh
+@@ -1,4 +1,4 @@
+ #!/bin/sh
+ 
+-mkdir -p ${1+"$@"}
++mkdir -p ${1+"./$@"}
+ 
