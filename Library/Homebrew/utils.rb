@@ -203,7 +203,7 @@ end
 # GZips the given paths, and returns the gzipped paths
 def gzip *paths
   paths.collect do |path|
-    system "/usr/bin/gzip", path
+    with_system_path { safe_system 'gzip', path }
     Pathname.new("#{path}.gz")
   end
 end
