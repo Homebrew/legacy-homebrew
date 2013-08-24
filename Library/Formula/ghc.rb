@@ -60,8 +60,7 @@ class Ghc < Formula
       args << "--with-gcc=#{ENV.cc}" if ENV.compiler == :gcc
 
       system "./configure", *args
-      ENV.j1 # Fixes an intermittent race condition
-      system 'make install'
+      system 'make -j1 install' # -j1 fixes an intermittent race condition
       ENV.prepend 'PATH', subprefix/'bin', ':'
     end
 
@@ -96,8 +95,7 @@ class Ghc < Formula
         end
       end
       system 'make'
-      ENV.j1 # Fixes an intermittent race condition
-      system 'make install'
+      system 'make -j1 install' # -j1 fixes an intermittent race condition
     end
   end
 
