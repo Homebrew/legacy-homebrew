@@ -25,7 +25,12 @@ class Zeromq < Formula
 
   # Address lack of strndup on 10.6, fixed upstream
   # https://github.com/zeromq/zeromq3-x/commit/400cbc208a768c4df5039f401dd2688eede6e1ca
-  def patches; DATA; end
+  def patches
+    if build.head?
+      return
+    end
+    DATA
+  end
 
   def install
     ENV.universal_binary if build.universal?
