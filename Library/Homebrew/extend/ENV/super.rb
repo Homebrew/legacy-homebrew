@@ -122,7 +122,9 @@ module Superenv
   private
 
   def determine_cc
-    if ARGV.include? '--use-gcc'
+    if (cc = ARGV.cc)
+      COMPILERS.grep(cc).pop ? cc : raise("Invalid value for --cc: #{cc}")
+    elsif ARGV.include? '--use-gcc'
       gcc_installed = Formula.factory('apple-gcc42').installed? rescue false
       # fall back to something else on systems without Apple gcc
       if MacOS.locate('gcc-4.2') || gcc_installed
