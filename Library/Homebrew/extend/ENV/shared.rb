@@ -3,6 +3,11 @@ module SharedEnvExtension
   FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
 
   COMPILERS = ['clang', 'gcc-4.0', 'gcc-4.2', 'llvm-gcc']
+  COMPLER_ALIASES = {'gcc' => 'gcc-4.2', 'llvm' => 'llvm-gcc'}
+  COMPILER_SYMBOL_MAP = { 'gcc-4.0'  => :gcc_4_0,
+                          'gcc-4.2'  => :gcc,
+                          'llvm-gcc' => :llvm,
+                          'clang'    => :clang }
 
   def remove_cc_etc
     keys = %w{CC CXX OBJC OBJCXX LD CPP CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS}
@@ -64,6 +69,33 @@ module SharedEnvExtension
   def fc;       self['FC'];           end
   def fflags;   self['FFLAGS'];       end
   def fcflags;  self['FCFLAGS'];      end
+
+  def compiler
+    if (cc = ARGV.cc)
+      raise("Invalid value for --cc: #{cc}") if COMPILERS.grep(cc).empty?
+      COMPILER_SYMBOL_MAP.fetch(cc, cc)
+    elsif ARGV.include? '--use-gcc'
+      gcc_installed = Formula.factory('apple-gcc42').installed? rescue false
+      # fall back to something else on systems without Apple gcc
+      if MacOS.locate('gcc-4.2') || gcc_installed
+        :gcc
+      else
+        raise "gcc-4.2 not found!"
+      end
+    elsif ARGV.include? '--use-llvm'
+      :llvm
+    elsif ARGV.include? '--use-clang'
+      :clang
+    elsif self['HOMEBREW_CC']
+      cc = COMPLER_ALIASES.fetch(self['HOMEBREW_CC'], self['HOMEBREW_CC'])
+      COMPILER_SYMBOL_MAP.fetch(cc) do |invalid|
+        opoo "Invalid value for HOMEBREW_CC: #{invalid}"
+        MacOS.default_compiler
+      end
+    else
+      MacOS.default_compiler
+    end
+  end
 
   # Snow Leopard defines an NCURSES value the opposite of most distros
   # See: http://bugs.python.org/issue6848
