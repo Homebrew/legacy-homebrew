@@ -4,8 +4,8 @@ class ErlangInstalled < Requirement
   fatal true
 
   satisfy {
-    which 'erl' and begin
-      `erl -noshell -eval 'io:fwrite("~s~n", [erlang:system_info(otp_release)]).' -s erlang halt | grep -q '^R1[6789]'`
+    erl = which('erl') and begin
+      `#{erl} -noshell -eval 'io:fwrite("~s~n", [erlang:system_info(otp_release)]).' -s erlang halt | grep -q '^R1[6789]'`
       $?.exitstatus == 0
     end
   }

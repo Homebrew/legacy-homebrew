@@ -30,8 +30,6 @@ class Netpbm < Formula
       s.change_make_var! "JASPERHDR_DIR", "#{Formula.factory('jasper').opt_prefix}/include/jasper"
     end
 
-    ENV.append 'LDFLAGS', '-Wl,-headerpad_max_install_names'
-
     ENV.deparallelize
     system "make"
     system "make", "package", "pkgdir=#{buildpath}/stage"

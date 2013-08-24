@@ -24,6 +24,8 @@ class Openssl < Formula
       inreplace 'Configure',
         %{"darwin64-x86_64-cc","cc:-arch x86_64 -O3},
         %{"darwin64-x86_64-cc","cc:-arch x86_64 -Os}
+
+      setup_makedepend_shim
     else
       args << "darwin-i386-cc"
     end
@@ -31,9 +33,20 @@ class Openssl < Formula
     system "perl", *args
 
     ENV.deparallelize
+    system "make", "depend" if MacOS.prefer_64_bit?
     system "make"
     system "make", "test"
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
+  end
+
+  def setup_makedepend_shim
+    path = buildpath/"brew/makedepend"
+    path.write <<-EOS.undent
+      #!/bin/sh
+      exec "#{ENV.cc}" -M "$@"
+      EOS
+    path.chmod 0755
+    ENV.prepend_path 'PATH', path.parent
   end
 
   def openssldir

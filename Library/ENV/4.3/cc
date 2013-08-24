@@ -191,7 +191,12 @@ class Cmd
     syslibpath
   end
   def ldflags
-    libpath.to_flags('-L')
+    args = libpath.to_flags('-L')
+    case mode
+    when :ld   then args << '-headerpad_max_install_names'
+    when :ccld then args << '-Wl,-headerpad_max_install_names'
+    end
+    args
   end
   def cppflags
     sys, opt = cpath
