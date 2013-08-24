@@ -183,6 +183,10 @@ module HomebrewArgvExtension
     replace(old_args)
   end
 
+  def cc
+    value 'cc'
+  end
+
   private
 
   def downcased_unique_named

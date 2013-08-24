@@ -344,7 +344,9 @@ module Stdenv
     # test for --flags first so that installs can be overridden on a per
     # install basis. Then test for ENVs in inverse order to flags, this is
     # sensible, trust me
-    @compiler ||= if ARGV.include? '--use-gcc'
+    @compiler ||= if (cc = ARGV.cc)
+      COMPILERS.grep(cc).pop ? cc : raise("Invalid value for --cc: #{cc}")
+    elsif ARGV.include? '--use-gcc'
       :gcc
     elsif ARGV.include? '--use-llvm'
       :llvm
