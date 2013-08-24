@@ -339,30 +339,6 @@ module Stdenv
     set_cpu_flags CC_FLAG_VARS, default, map
   end
 
-  # actually c-compiler, so cc would be a better name
-  def compiler
-    # test for --flags first so that installs can be overridden on a per
-    # install basis. Then test for ENVs in inverse order to flags, this is
-    # sensible, trust me
-    @compiler ||= if (cc = ARGV.cc)
-      COMPILERS.grep(cc).pop ? cc : raise("Invalid value for --cc: #{cc}")
-    elsif ARGV.include? '--use-gcc'
-      :gcc
-    elsif ARGV.include? '--use-llvm'
-      :llvm
-    elsif ARGV.include? '--use-clang'
-      :clang
-    elsif self['HOMEBREW_USE_CLANG']
-      :clang
-    elsif self['HOMEBREW_USE_LLVM']
-      :llvm
-    elsif self['HOMEBREW_USE_GCC']
-      :gcc
-    else
-      MacOS.default_compiler
-    end
-  end
-
   def make_jobs
     # '-j' requires a positive integral argument
     if self['HOMEBREW_MAKE_JOBS'].to_i > 0

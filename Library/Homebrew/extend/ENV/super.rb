@@ -122,52 +122,8 @@ module Superenv
   private
 
   def determine_cc
-    if (cc = ARGV.cc)
-      COMPILERS.grep(cc).pop ? cc : raise("Invalid value for --cc: #{cc}")
-    elsif ARGV.include? '--use-gcc'
-      gcc_installed = Formula.factory('apple-gcc42').installed? rescue false
-      # fall back to something else on systems without Apple gcc
-      if MacOS.locate('gcc-4.2') || gcc_installed
-        "gcc-4.2"
-      else
-        raise "gcc-4.2 not found!"
-      end
-    elsif ARGV.include? '--use-llvm'
-      "llvm-gcc"
-    elsif ARGV.include? '--use-clang'
-      "clang"
-    elsif self['HOMEBREW_USE_CLANG']
-      opoo %{HOMEBREW_USE_CLANG is deprecated, use HOMEBREW_CC="clang" instead}
-      "clang"
-    elsif self['HOMEBREW_USE_LLVM']
-      opoo %{HOMEBREW_USE_LLVM is deprecated, use HOMEBREW_CC="llvm" instead}
-      "llvm-gcc"
-    elsif self['HOMEBREW_USE_GCC']
-      opoo %{HOMEBREW_USE_GCC is deprecated, use HOMEBREW_CC="gcc" instead}
-      "gcc"
-    elsif self['HOMEBREW_CC']
-      case self['HOMEBREW_CC']
-        when 'clang', 'gcc-4.0' then self['HOMEBREW_CC']
-        # depending on Xcode version plain 'gcc' could actually be
-        # gcc-4.0 or llvm-gcc
-        when 'gcc', 'gcc-4.2' then 'gcc-4.2'
-        when 'llvm', 'llvm-gcc' then 'llvm-gcc'
-      else
-        opoo "Invalid value for HOMEBREW_CC: #{self['HOMEBREW_CC'].inspect}"
-        default_cc
-      end
-    else
-      default_cc
-    end
-  end
-
-  def default_cc
-    case MacOS.default_compiler
-    when :clang   then 'clang'
-    when :llvm    then 'llvm-gcc'
-    when :gcc     then 'gcc-4.2'
-    when :gcc_4_0 then 'gcc-4.0'
-    end
+    cc = compiler
+    COMPILER_SYMBOL_MAP.invert.fetch(cc, cc)
   end
 
   def determine_path
@@ -288,15 +244,6 @@ module Superenv
     macosxsdk remove_macosxsdk].each{|s| alias_method s, :noop }
 
 ### DEPRECATE THESE
-  def compiler
-    case self['HOMEBREW_CC']
-      when "llvm-gcc" then :llvm
-      when "gcc-4.2" then :gcc
-      when "gcc", "clang" then self['HOMEBREW_CC'].to_sym
-    else
-      raise "Invalid value for HOMEBREW_CC: #{self['HOMEBREW_CC'].inspect}"
-    end
-  end
   def deparallelize
     delete('MAKEFLAGS')
   end
