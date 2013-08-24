@@ -11,6 +11,7 @@ class Vcsh < Formula
   def install
     bin.install 'vcsh'
     man1.install 'vcsh.1'
+    zsh_completion.install '_vcsh'
   end
 
   test do
