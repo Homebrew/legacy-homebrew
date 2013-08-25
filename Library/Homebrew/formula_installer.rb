@@ -90,6 +90,10 @@ class FormulaInstaller
       install_dependencies
     end
 
+    if ARGV.build_bottle? && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
+      raise "Unrecognized architecture for --bottle-arch: #{arch}"
+    end
+
     oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
     @@attempted << f
