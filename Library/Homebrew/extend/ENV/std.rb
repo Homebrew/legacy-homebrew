@@ -324,7 +324,8 @@ module Stdenv
     append flags, xarch unless xarch.empty?
 
     if ARGV.build_bottle?
-      append flags, Hardware::CPU.optimization_flags[Hardware.oldest_cpu]
+      arch = ARGV.bottle_arch || Hardware.oldest_cpu
+      append flags, Hardware::CPU.optimization_flags[arch]
     else
       # Don't set -msse3 and older flags because -march does that for us
       append flags, map.fetch(Hardware::CPU.family, default)

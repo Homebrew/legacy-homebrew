@@ -76,6 +76,12 @@ module Superenv
     self['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     self['ACLOCAL_PATH'] = determine_aclocal_path
 
+    # For custom bottles, need to specify the arch in the environment
+    # so that the compiler shims have access
+    if (arch = ARGV.bottle_arch)
+      self['HOMEBREW_ARCHFLAGS'] = Hardware::CPU.optimization_flags[arch]
+    end
+
     # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
     # compiler flag stripping. It consists of a string of characters which act
     # as flags. Some of these flags are mutually exclusive.
@@ -83,6 +89,7 @@ module Superenv
     # u - A universal build was requested
     # 3 - A 32-bit build was requested
     # b - Installing from a bottle
+    # c - Installing from a bottle with a custom architecture
     # i - Installing from a bottle on Intel
     # 6 - Installing from a bottle on 64-bit Intel
     # p - Installing from a bottle on PPC
@@ -237,7 +244,9 @@ module Superenv
   def determine_cccfg
     s = ""
     if ARGV.build_bottle?
-      s << if Hardware::CPU.type == :intel
+      s << if ARGV.bottle_arch
+        'bc'
+      elsif Hardware::CPU.type == :intel
         if Hardware::CPU.is_64_bit?
           'bi6'
         else
