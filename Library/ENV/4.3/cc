@@ -161,6 +161,10 @@ class Cmd
       args << '-march=core2'
     elsif cccfg? 'bi'
       args << '-march=prescott'
+    elsif cccfg? 'bpA'
+      args << '-mcpu=7400'
+    elsif cccfg? 'bp'
+      args << '-mcpu=750'
     else
       args << '-march=native' if tool =~ /clang/
     end
