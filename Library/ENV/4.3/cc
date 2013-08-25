@@ -157,7 +157,10 @@ class Cmd
     args = %w{-pipe -w -Os}
 
     # When bottling use the oldest supported CPU type.
-    if cccfg? 'bi6'
+    if cccfg? 'bc'
+      # Custom bottle specified during the build
+      args << ENV['HOMEBREW_ARCHFLAGS']
+    elsif cccfg? 'bi6'
       args << '-march=core2'
     elsif cccfg? 'bi'
       args << '-march=prescott'
