@@ -15,22 +15,13 @@ class Play < Formula
 
   def install
     rm Dir['*.bat'] # remove windows' bat files
-    if build.head?
-      ohai "have a brew, may take a few minutes..."
-      system "./framework/build", "publish-local"      
-    end
+    system "./framework/build", "publish-local" if build.head?
     libexec.install Dir['*']
-    if build.head?
-      ohai "#{libexec}/**/*.bat"
-      rm Dir["#{libexec}/**/*.bat"]
-    end
-    # apply workaround for relative symlink, remove block when stable version reaches 2.2.x 
-    # https://github.com/playframework/playframework/issues/1516
-    # https://github.com/playframework/playframework/pull/777
-    if !build.devel? && !build.head?
+    rm Dir["#{libexec}/**/*.bat"] if build.head?
+    if build.stable? # apply workaround for relative symlink, remove block when stable version reaches 2.2.x. https://github.com/playframework/playframework/issues/1516 https://github.com/playframework/playframework/pull/777
       inreplace libexec+"play" do |s|
-      s.gsub! "$dir/", "$dir/../libexec/"
-      s.gsub! "dir=`dirname $PRG`", "dir=`dirname $0` && dir=$dir/`dirname $PRG`"
+        s.gsub! "$dir/", "$dir/../libexec/"
+        s.gsub! "dir=`dirname $PRG`", "dir=`dirname $0` && dir=$dir/`dirname $PRG`"
       end
     end
     bin.install_symlink libexec+'play'
