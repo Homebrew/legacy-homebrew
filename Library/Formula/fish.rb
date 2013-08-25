@@ -14,7 +14,7 @@ class Fish < Formula
   skip_clean 'share/doc'
 
   # Don't search extra folders for libiconv
-  def patches; DATA; end
+  def patches; DATA; end unless build.head?
 
   def install
     system "autoconf"
