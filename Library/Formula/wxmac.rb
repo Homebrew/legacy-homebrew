@@ -78,9 +78,8 @@ class Wxmac < Formula
       "--with-expat",
       "--with-macosx-version-min=#{MacOS.version}",
       "--with-macosx-sdk=#{MacOS.sdk_path}",
-      "--enable-universal_binary=x86_64,i386"
+      "--enable-universal_binary=#{Hardware::CPU.universal_archs.join(',')}"
     ]
-
 
     system "./configure", *args
     system "make install"
