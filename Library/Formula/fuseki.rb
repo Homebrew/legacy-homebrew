@@ -1,9 +1,9 @@
 require 'formula'
 
 class Fuseki < Formula
-  version "0.2.7"
   homepage 'http://jena.apache.org/documentation/serving_data/'
-  url "http://www.apache.org/dist/jena/binaries/jena-fuseki-#{version}-distribution.tar.gz"
+  url "http://www.apache.org/dist/jena/binaries/jena-fuseki-0.2.7-distribution.tar.gz"
+  version "0.2.7"
   sha1 'a5b426d7142e8058c2b1f557ab344f02e07dc299'
 
   def install
