@@ -17,17 +17,18 @@ class Vim < Formula
   option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
 
-  LANGUAGES_OPTIONAL = %w(lua mzscheme perl tcl)
+  LANGUAGES_OPTIONAL = %w(lua mzscheme perl python3 tcl)
   LANGUAGES_DEFAULT  = %w(ruby python)
 
-  LANGUAGES_OPTIONAL.each do |language|
+  (LANGUAGES_OPTIONAL - %w[python3]).each do |language|
     option "with-#{language}", "Build vim with #{language} support"
   end
-  LANGUAGES_DEFAULT.each do |language|
+  (LANGUAGES_DEFAULT - %w[python]).each do |language|
     option "without-#{language}", "Build vim without #{language} support"
   end
 
   depends_on :python => :recommended
+  depends_on :python3 => :optional
   depends_on 'lua' => :optional
   depends_on 'gtk+' if build.with? 'client-server'
 
@@ -53,7 +54,7 @@ class Vim < Formula
     opts << "--disable-nls" if build.include? "disable-nls"
 
     if python
-      if python.brewed?
+      if !python.from_osx? && python.framework?
         # Avoid that vim always links System's Python even if configure tells us
         # it has found a brewed Python. Verify with `otool -L`.
         ENV.prepend 'LDFLAGS', "-F#{python.framework}"

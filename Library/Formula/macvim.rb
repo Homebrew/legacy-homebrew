@@ -17,7 +17,7 @@ class Macvim < Formula
   depends_on 'lua' => :optional
   depends_on 'luajit' => :optional
   depends_on :python => :recommended
-  # Help us! :python3 in MacVim makes the window disappear, so only 2.x bindings!
+  depends_on :python3 => :optional
 
   env :std if MacOS.version <= :snow_leopard
   # Help us! We'd like to use superenv in these environments too
@@ -31,6 +31,10 @@ class Macvim < Formula
   end
 
   def install
+    if build.with? 'python' and build.with? 'python3'
+      opoo "MacVim will build Python 3 binding only."
+    end
+
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in
     # PPC support (which isn't needed in Homebrew-supported systems.)
@@ -70,6 +74,7 @@ class Macvim < Formula
     end
 
     args << "--enable-pythoninterp=yes" if build.with? 'python'
+    args << "--enable-python3interp=yes" if build.with? 'python3'
 
     # MacVim seems to link Python by `-framework Python` (instead of
     # `python-config --ldflags`) and so we have to pass the -F to point to
@@ -79,7 +84,7 @@ class Macvim < Formula
     # on the Mac. Note configure detects brewed python correctly, but that
     # is ignored.
     # See https://github.com/mxcl/homebrew/issues/17908
-    ENV.prepend 'LDFLAGS', "-L#{python2.libdir} -F#{python2.framework}" if python && python.brewed?
+    ENV.prepend 'LDFLAGS', "-L#{python.libdir} -F#{python.framework}" if python && python.framework?
 
     unless MacOS::CLT.installed?
       # On Xcode-only systems:
