@@ -17,6 +17,7 @@ class PythonInstalled < Requirement
   attr_reader :min_version
   attr_reader :if3then3
   attr_reader :imports
+  attr_reader :python
   attr_accessor :site_packages
   attr_writer :binary # The python.rb formula needs to set the binary
 
@@ -47,9 +48,7 @@ class PythonInstalled < Requirement
       @if3then3 = ""
     end
 
-    # Set name according to the major version.
-    # The name is used to generate the options like --without-python3
-    @name = "python" + @if3then3
+    @python = "python"+@if3then3
 
     # Check if any python modules should be importable. We use a hash to store
     # the corresponding name on PyPi "<import_name>" => "<name_on_PyPi>".
@@ -62,6 +61,11 @@ class PythonInstalled < Requirement
         @imports.merge!(tag)
       end
     end
+
+    # Set name according to the major version and optionally python modules:
+    # Used to generate the options like --without-python3, --with-python-numpy
+    @name = "python#{@if3then3}"
+    @name += "-#{@imports.values*'-'}" unless @imports.empty?
 
     # will be set later by the python_helper, because it needs the
     # formula prefix to set site_packages
@@ -77,13 +81,13 @@ class PythonInstalled < Requirement
     ENV['PYTHONPATH'] = nil
     @unsatisfied_because = ''
     if binary.nil? || !binary.executable?
-      @unsatisfied_because += "No `#{@name}` found in your PATH! Consider to `brew install #{@name}`."
+      @unsatisfied_because += "No `#{@python}` found in your PATH! Consider to `brew install #{@python}`."
       false
     elsif pypy?
-      @unsatisfied_because += "Your #{@name} executable appears to be a PyPy, which is not supported."
+      @unsatisfied_because += "Your #{@python} executable appears to be a PyPy, which is not supported."
       false
     elsif version.major != @min_version.major
-      @unsatisfied_because += "No Python #{@min_version.major}.x found in your PATH! --> `brew install #{@name}`?"
+      @unsatisfied_because += "No Python #{@min_version.major}.x found in your PATH! --> `brew install #{@python}`?"
       false
     elsif version < @min_version
       @unsatisfied_because += "Python version #{version} is too old (need at least #{@min_version})."
@@ -119,9 +123,9 @@ class PythonInstalled < Requirement
       if brewed?
         # If the python is brewed we always prefer it!
         # Note, we don't support homebrew/versions/pythonXX.rb, though.
-        Formula.factory(@name).opt_prefix/"bin/python#{@min_version.major}"
+        Formula.factory(@python).opt_prefix/"bin/python#{@min_version.major}"
       else
-        which(@name)
+        which(@python)
       end
     end
   end
@@ -130,7 +134,7 @@ class PythonInstalled < Requirement
   def prefix
     if brewed?
       # Homebrew since a long while only supports frameworked python
-      HOMEBREW_PREFIX/"opt/#{name}/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}"
+      HOMEBREW_PREFIX/"opt/#{python}/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}"
     elsif from_osx?
       # Python on OS X has been stripped off its includes (unless you install the CLT), therefore we use the MacOS.sdk.
       Pathname.new("#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}")
@@ -194,7 +198,7 @@ class PythonInstalled < Requirement
   def brewed?
     @brewed ||= begin
       require 'formula'
-      Formula.factory(@name).linked_keg.exist?
+      Formula.factory(@python).linked_keg.exist?
     end
   end
 
@@ -229,7 +233,7 @@ class PythonInstalled < Requirement
       ""  # empty string, so we can concat this
     else
       <<-EOS.undent
-        For non-homebrew #{@name} (#{@min_version.major}.x), you need to amend your PYTHONPATH like so:
+        For non-homebrew #{@python} (#{@min_version.major}.x), you need to amend your PYTHONPATH like so:
           export PYTHONPATH=#{global_site_packages}:$PYTHONPATH
       EOS
     end
@@ -266,7 +270,7 @@ class PythonInstalled < Requirement
     # Todo: If Jack's formula revisions arrive, we can get rid of this here!
     if brewed?
       require 'formula'
-      file = Formula.factory(@name).prefix/"Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/lib/#{xy}/distutils/distutils.cfg"
+      file = Formula.factory(@python).prefix/"Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/lib/#{xy}/distutils/distutils.cfg"
       ohai "Writing #{file}" if ARGV.verbose? && ARGV.debug?
       file.delete if file.exist?
       file.write <<-EOF.undent
@@ -314,12 +318,12 @@ class PythonInstalled < Requirement
               # Assume Framework style build (default since months in brew)
               try:
                   from _sysconfigdata import build_time_vars
-                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{HOMEBREW_PREFIX}/opt/#{name}/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/Python'
+                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{HOMEBREW_PREFIX}/opt/#{python}/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/Python'
               except:
                   pass  # remember: don't print here. Better to fail silently.
 
               # Set the sys.executable to use the opt_prefix
-              sys.executable = '#{HOMEBREW_PREFIX}/opt/#{name}/bin/#{xy}'
+              sys.executable = '#{HOMEBREW_PREFIX}/opt/#{python}/bin/#{xy}'
 
           # Tell about homebrew's site-packages location.
           # This is needed for Python to parse *.pth.
@@ -341,13 +345,12 @@ class PythonInstalled < Requirement
   end
 
   # Objects of this class are used to represent dependencies on Python and
-  # dependencies on Python modules, so the combination of name + imports is
-  # enough to identify them uniquely.
+  # dependencies on Python modules. Both are already included in `name`
   def eql?(other)
-    instance_of?(other.class) && name == other.name && imports == other.imports
+    instance_of?(other.class) && name == other.name
   end
 
   def hash
-    [name, *imports].hash
+    name.hash
   end
 end
