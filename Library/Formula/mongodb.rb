@@ -6,8 +6,8 @@ class Mongodb < Formula
   sha1 '36886ec043e660db00f2bb6b18d32f507b63a041'
 
   devel do
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.5.1.tgz'
-    sha1 '09b94856e6488a266b084355842b95cbd97cfd1e'
+    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.5.2.tgz'
+    sha1 '3f1f4d1b6f0cae4f70d9599d969ac4f7d0a0c579'
   end
 
   depends_on :arch => :x86_64
