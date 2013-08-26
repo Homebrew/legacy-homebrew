@@ -20,7 +20,6 @@ class Icu4c < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    ENV.append "LDFLAGS", "-headerpad_max_install_names"
     args = ["--prefix=#{prefix}", "--disable-samples", "--disable-tests", "--enable-static"]
     args << "--with-library-bits=64" if MacOS.prefer_64_bit?
     cd "source" do

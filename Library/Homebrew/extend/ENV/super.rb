@@ -85,6 +85,8 @@ module Superenv
     # b - Installing from a bottle
     # i - Installing from a bottle on Intel
     # 6 - Installing from a bottle on 64-bit Intel
+    # p - Installing from a bottle on PPC
+    # A - Installing from a bottle on PPC with Altivec
     # O - Enables argument refurbishing. Only active under the
     #     make/bsdmake wrappers currently.
     #
@@ -240,6 +242,12 @@ module Superenv
           'bi6'
         else
           'bi'
+        end
+      elsif Hardware::CPU.type == :ppc
+        if Hardware::CPU.altivec?
+          'bpA'
+        else
+          'bp'
         end
       else
         'b'

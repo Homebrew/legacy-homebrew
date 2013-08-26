@@ -161,6 +161,10 @@ class Cmd
       args << '-march=core2'
     elsif cccfg? 'bi'
       args << '-march=prescott'
+    elsif cccfg? 'bpA'
+      args << '-mcpu=7400'
+    elsif cccfg? 'bp'
+      args << '-mcpu=750'
     else
       args << '-march=native' if tool =~ /clang/
     end
@@ -191,7 +195,12 @@ class Cmd
     syslibpath
   end
   def ldflags
-    libpath.to_flags('-L')
+    args = libpath.to_flags('-L')
+    case mode
+    when :ld   then args << '-headerpad_max_install_names'
+    when :ccld then args << '-Wl,-headerpad_max_install_names'
+    end
+    args
   end
   def cppflags
     sys, opt = cpath

@@ -21,7 +21,7 @@ module ArchitectureListExtension
   end
 
   def ppc?
-    (PPC_32BIT_ARCHS+PPC_64BIT_ARCHS).any? {|a| self.include? a}
+    (Hardware::CPU::PPC_32BIT_ARCHS+Hardware::CPU::PPC_64BIT_ARCHS).any? {|a| self.include? a}
   end
 
   def remove_ppc!
