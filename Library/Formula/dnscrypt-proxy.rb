@@ -2,8 +2,8 @@ require 'formula'
 
 class DnscryptProxy < Formula
   homepage 'http://dnscrypt.org'
-  url 'http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.3.0.tar.bz2'
-  sha256 '211ee2d75acd631b09d012229c73654c2302234d73c9f12425e1c906520dc7c5'
+  url 'http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.3.3.tar.bz2'
+  sha256 'd9aca5253b9fe0fd0bb756201e837d3b723c091e5be0eb3a81cf5432cedaec47'
 
   head 'https://github.com/opendns/dnscrypt-proxy.git', :branch => 'master'
 
@@ -13,6 +13,8 @@ class DnscryptProxy < Formula
     depends_on :automake
     depends_on :libtool
   end
+
+  depends_on 'libsodium'
 
   def install
     system "autoreconf", "-if" if build.head?
