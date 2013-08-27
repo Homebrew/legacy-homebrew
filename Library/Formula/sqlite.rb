@@ -16,7 +16,7 @@ class Sqlite < Formula
   homepage 'http://sqlite.org/'
   url 'http://www.sqlite.org/2013/sqlite-autoconf-3080000.tar.gz'
   version '3.8.0'
-  sha1 '610d01764c2fc6c6220ab88a57ac4de86515ebc8'
+  sha1 '94280dbeeb24e22bcfa492a48226cabad2e32208'
 
   option :universal
   option 'with-docs', 'Install HTML documentation'
