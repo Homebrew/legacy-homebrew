@@ -20,18 +20,19 @@ module SharedEnvExtension
     value = value.to_s
     Array(keys).each do |key|
       unless self[key].to_s.empty?
-        self[key] = self[key] + separator + value.to_s
+        self[key] = self[key] + separator + value
       else
-        self[key] = value.to_s
+        self[key] = value
       end
     end
   end
   def prepend keys, value, separator = ' '
+    value = value.to_s
     Array(keys).each do |key|
       unless self[key].to_s.empty?
-        self[key] = value.to_s + separator + self[key]
+        self[key] = value + separator + self[key]
       else
-        self[key] = value.to_s
+        self[key] = value
       end
     end
   end
