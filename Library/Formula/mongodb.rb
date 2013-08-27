@@ -23,7 +23,8 @@ class Mongodb < Formula
     # Optionally build with openssl
     if build.with? 'openssl'
       args << '--ssl'
-      args << '--extrapath=/usr/local/opt/openssl'
+      openssl = Formula.factory('openssl')
+      args << "--extrapath=#{openssl.opt_prefix}"
     end
 
     args << 'install'
