@@ -10,6 +10,8 @@ class Mongodb < Formula
     sha1 'e6b0aa35ea78e6bf9d7791a04810a4db4d69decc'
   end
 
+  head 'https://github.com/mongodb/mongo.git'
+
   depends_on 'scons' => :build
   depends_on 'openssl' => :optional
 
