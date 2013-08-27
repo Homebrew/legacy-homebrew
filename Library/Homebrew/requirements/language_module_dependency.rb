@@ -31,6 +31,7 @@ class LanguageModuleDependency < Requirement
       when :python3 then %W{/usr/bin/env python3 -c import\ #{@import_name}}
       when :ruby then %W{/usr/bin/env ruby -rubygems -e require\ '#{@import_name}'}
       when :rbx then %W{/usr/bin/env rbx -rubygems -e require\ '#{@import_name}'}
+      when :haskell then %{/usr/bin/env ghc-pkg list '#{@import_name}' --global --simple-output --names-only | grep .}
     end
   end
 
@@ -46,6 +47,7 @@ class LanguageModuleDependency < Requirement
       when :python3 then "pip3 install"
       when :rbx     then "rbx gem install"
       when :ruby    then "gem install"
+      when :haskell then "cabal install --global"
     end
   end
 end

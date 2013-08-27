@@ -93,3 +93,10 @@ class MercurialDependency < Requirement
 
   satisfy { which('hg') }
 end
+
+class CabalDependency < Requirement
+  fatal true
+  default_formula 'cabal-install'
+
+  satisfy { which('cabal') }
+end
