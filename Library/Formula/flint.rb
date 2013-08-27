@@ -2,14 +2,22 @@ require 'formula'
 
 class Flint < Formula
   homepage 'http://www.flintlib.org/'
-
   head 'https://github.com/wbhart/flint2.git', :branch => 'trunk'
-
   url 'http://www.flintlib.org/flint-2.3.tar.gz'
   sha1 '58534b28ba30e63b183476b2b914cb767d1ec919'
 
   depends_on 'mpir'
   depends_on 'mpfr'
+
+  fails_with :gcc do
+    build 463
+    cause 'Configuration step: Testing native popcount...no'
+  end
+
+  fails_with :llvm do
+    build 2336
+    cause 'Configuration step: Testing __builtin_popcountl...no'
+  end
 
   def patches
     # Fix library name on Darwin64
@@ -21,24 +29,6 @@ class Flint < Formula
 
     system "make"
     system "make", "install"
-  end
-
-  def test
-    system "make", "check"
-  end
-
-  fails_with :gcc do
-    build 463
-    cause <<-EOS.undent
-      Configuration step: Testing native popcount...no
-      EOS
-  end
-
-  fails_with :llvm do
-    build 2336
-    cause <<-EOS.undent
-      Configuration step: Testing __builtin_popcountl...no
-      EOS
   end
 end
 
