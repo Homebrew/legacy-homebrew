@@ -10,27 +10,27 @@ class Mongodb < Formula
     sha1 'e6b0aa35ea78e6bf9d7791a04810a4db4d69decc'
   end
 
-  depends_on :arch => :x86_64
   depends_on 'scons' => :build
   depends_on 'openssl' => :optional
 
   def install
-    cmd = 'scons'
-
     # Always build with 64-bit
-    args = ['--64', "--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
+    build_cmd = ['scons', 'install', "--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
+
+    # Build with 64-bit support if available
+    if MacOS.prefer_64_bit?
+      build_cmd << '--64'
+    end
 
     # Optionally build with openssl
     if build.with? 'openssl'
-      args << '--ssl'
+      build_cmd << '--ssl'
       openssl = Formula.factory('openssl')
-      args << "--extrapath=#{openssl.opt_prefix}"
+      build_cmd << "--extrapath=#{openssl.opt_prefix}"
     end
 
-    args << 'install'
-
     # Build and install MongoDB
-    system cmd, *args
+    system *build_cmd
 
     # Create the data and log directories under /var
     (var+'mongodb').mkpath
