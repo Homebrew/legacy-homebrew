@@ -6,12 +6,6 @@ class Subversion < Formula
   # url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.0.tar.bz2'
   sha1 '45d227511507c5ed99e07f9d42677362c18b364c'
 
-  bottle do
-    sha1 '4b8920c129cfc8adbf491a69d836a5a8f7455409' => :mountain_lion
-    sha1 'ee99dbd0f7b7d4abfdfc5d7a82a008d720713e47' => :lion
-    sha1 '733d68a8bfd92a64270fb67f0bc4cc0974602bf0' => :snow_leopard
-  end
-
   option :universal
   option 'java', 'Build Java bindings'
   option 'perl', 'Build Perl bindings'
