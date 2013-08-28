@@ -15,6 +15,8 @@ class Serf < Formula
   end
 
   def install
+    # Hotfix for failing CPP sanity check until we fix this properly on superenv
+    ENV['CPP'] = "#{ENV['CC']} -E -" if ENV.compiler == :clang
     ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}",
                           "--with-apr=#{apr_bin}"
