@@ -2,13 +2,21 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://www.arangodb.org/repositories/archive/arangodb-1.3.2.tar.gz'
-  sha1 '00d59f4f61f6c94c6d6a0a0673949f4f27693633'
+  url 'https://www.arangodb.org/repositories/archive/arangodb-1.3.3.tar.gz'
+  sha1 'd642d7bdfd03e1c94341714ce087f80b17832296'
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
   depends_on 'icu4c'
   depends_on 'libev'
+
+  def suffix
+    if build.stable?
+      return ""
+    else
+      return "-" + (build.devel? ? version : "unstable")
+    end
+  end
 
   def install
     args = %W[
@@ -21,21 +29,14 @@ class Arangodb < Formula
       --enable-mruby
       --datadir=#{share}
       --localstatedir=#{var}
+      --program-suffix=#{suffix}
     ]
-
-    if build.devel?
-      args << "--program-suffix=-#{version}"
-    end
-
-    if build.head?
-      args << "--program-suffix=-unstable"
-    end
 
     system "./configure", *args
     system "make install"
 
-    (var+'arangodb').mkpath
-    (var+'log/arangodb').mkpath
+    (var/'arangodb').mkpath
+    (var/'log/arangodb').mkpath
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod"
@@ -55,10 +56,10 @@ class Arangodb < Formula
       /usr/local/etc/arangodb/arangod.conf
 
     Start ArangoDB server:
-      unix> /usr/local/sbin/arangod
+      unix> /usr/local/sbin/arangod#{suffix}
 
     Start ArangoDB shell client (use empty password):
-      unix> /usr/local/bin/arangosh
+      unix> /usr/local/bin/arangosh#{suffix}
 
     EOS
   end
