@@ -16,7 +16,7 @@ class Mongodb < Formula
   depends_on 'openssl' => :optional
 
   def install
-    # Always build with 64-bit
+    # Required args
     args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
 
     # Build with 64-bit support if available
