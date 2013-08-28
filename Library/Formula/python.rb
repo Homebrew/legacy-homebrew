@@ -33,6 +33,9 @@ class Python < Formula
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
   depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
 
+  skip_clean 'bin/pip', 'bin/pip-2.7'
+  skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
+
   def patches
     p = []
     p << 'https://gist.github.com/paxswill/5402840/raw/75646d5860685c8be98858288d1772f64d6d5193/pythondtrace-patch.diff' if build.with? 'dtrace'
