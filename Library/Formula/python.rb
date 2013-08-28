@@ -235,7 +235,9 @@ class Python < Formula
       Python demo
         #{HOMEBREW_PREFIX}/share/python/Extras
 
-      Setuptools and Pip have been installed, too.
+      Setuptools and Pip have been installed. To update them
+        pip install --upgrade setuptools
+        pip install --upgrade pip
 
       To symlink "Idle" and the "Python Launcher" to ~/Applications
         `brew linkapps`
