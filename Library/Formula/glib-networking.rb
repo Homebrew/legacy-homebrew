@@ -12,10 +12,18 @@ class GlibNetworking < Formula
   depends_on 'glib'
   depends_on 'gnutls'
   depends_on 'gsettings-desktop-schemas'
+  depends_on 'curl-ca-bundle' => :optional
 
   def install
+    if build.with? "curl-ca-bundle"
+      curl_ca_bundle = Formula.factory('curl-ca-bundle').opt_prefix
+      certs_options = "--with-ca-certificates=#{curl_ca_bundle}/share/ca-bundle.crt"
+    else
+      certs_options = "--without-ca-certificates"
+    end
+
     system "./configure", "--disable-dependency-tracking",
-                          "--without-ca-certificates",
+                          certs_options,
                           "--prefix=#{prefix}"
     system "make install"
   end
