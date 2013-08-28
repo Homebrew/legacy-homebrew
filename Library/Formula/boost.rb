@@ -51,7 +51,7 @@ class Boost < Formula
       'http://www.boost.org/patches/1_54_0/002-date-time.patch',
       'http://www.boost.org/patches/1_54_0/003-log.patch',
       'http://www.boost.org/patches/1_54_0/004-thread.patch'
-    ]
+    ] unless build.head?
   end
 
   def pour_bottle?
@@ -150,7 +150,6 @@ class Boost < Formula
       args << "cxxflags=-arch #{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit? or build.universal?
       args << "cxxflags=-arch #{Hardware::CPU.arch_32_bit}" if !MacOS.prefer_64_bit? or build.universal?
       args << "linkflags=-stdlib=libc++"
-      args << "linkflags=-headerpad_max_install_names"
       args << "linkflags=-arch #{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit? or build.universal?
       args << "linkflags=-arch #{Hardware::CPU.arch_32_bit}" if !MacOS.prefer_64_bit? or build.universal?
     end

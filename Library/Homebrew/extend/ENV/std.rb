@@ -55,6 +55,8 @@ module Stdenv
     # Os is the default Apple uses for all its stuff so let's trust them
     set_cflags "-Os #{SAFE_CFLAGS_FLAGS}"
 
+    append 'LDFLAGS', '-Wl,-headerpad_max_install_names'
+
     # set us up for the user's compiler choice
     self.send self.compiler
 
@@ -69,8 +71,7 @@ module Stdenv
     # Add lib and include etc. from the current macosxsdk to compiler flags:
     macosxsdk MacOS.version
 
-    # For Xcode 4.3 (*without* the "Command Line Tools for Xcode") compiler and tools inside of Xcode:
-    if not MacOS::CLT.installed? and MacOS::Xcode.installed? and MacOS::Xcode.version >= "4.3"
+    if MacOS::Xcode.without_clt?
       # Some tools (clang, etc.) are in the xctoolchain dir of Xcode
       append_path 'PATH', "#{MacOS.xctoolchain_path}/usr/bin" if MacOS.xctoolchain_path
       # Others are now at /Applications/Xcode.app/Contents/Developer/usr/bin

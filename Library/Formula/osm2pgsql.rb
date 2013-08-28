@@ -13,9 +13,12 @@ class Osm2pgsql < Formula
   depends_on "protobuf-c" => :optional
 
   def install
-    proj = Formula.factory('proj')
+    args = ["--with-proj=#{Formula.factory('proj').opt_prefix}"]
+    if build.with? "protobuf-c"
+      args << "--with-protobuf-c=#{Formula.factory('protobuf-c').opt_prefix}"
+    end
     system "./autogen.sh"
-    system "./configure", "--with-proj=#{proj.opt_prefix}"
+    system "./configure", *args
     system "make"
     bin.install "osm2pgsql"
     (share+'osm2pgsql').install 'default.style'

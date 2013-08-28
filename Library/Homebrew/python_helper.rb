@@ -60,9 +60,9 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
       # In order to install into the Cellar, the dir must exist and be in the
       # PYTHONPATH. This will be executed in the context of the formula
       # so that lib points to the HOMEBREW_PREFIX/Cellar/<formula>/<version>/lib
-      puts "brew: Prepending to PYTHONPATH: #{py.site_packages}" if ARGV.verbose?
+      puts "brew: setting PYTHONPATH to: #{py.site_packages}" if ARGV.verbose?
       mkdir_p py.site_packages
-      ENV.prepend_path 'PYTHONPATH', py.site_packages
+      ENV['PYTHONPATH'] = py.site_packages
       ENV['PYTHON'] = py.binary
       ENV.prepend_path 'CMAKE_INCLUDE_PATH', py.incdir
       ENV.prepend_path 'PKG_CONFIG_PATH', py.pkg_config_path if py.pkg_config_path
