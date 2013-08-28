@@ -6,13 +6,13 @@ class Irrtoolset < Formula
   sha1 '19510275f5f64608e4a683c744c14f8e900ea19e'
   head 'svn://irrtoolset.isc.org/trunk'
 
-  depends_on 'autoconf' if build.head?
-  depends_on 'automake' if build.head?
-  depends_on 'libtool'  if build.head?
   depends_on 'pkg-config' => :build
 
   def install
     if build.head?
+      depends_on :autoconf
+      depends_on :automake
+      depends_on :libtool
       system "glibtoolize"
       system "autoreconf -i"
     end
