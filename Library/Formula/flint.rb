@@ -9,16 +9,6 @@ class Flint < Formula
   depends_on 'mpir'
   depends_on 'mpfr'
 
-  fails_with :gcc do
-    build 463
-    cause 'Configuration step: Testing native popcount...no'
-  end
-
-  fails_with :llvm do
-    build 2336
-    cause 'Configuration step: Testing __builtin_popcountl...no'
-  end
-
   def patches
     # Fix library name on Darwin64
     DATA if version.to_s == '2.3'
