@@ -17,22 +17,20 @@ class Mongodb < Formula
 
   def install
     # Always build with 64-bit
-    build_cmd = ['scons', 'install', "--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
+    args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
 
     # Build with 64-bit support if available
-    if MacOS.prefer_64_bit?
-      build_cmd << '--64'
-    end
+    args << '--64' if MacOS.prefer_64_bit?
 
     # Optionally build with openssl
     if build.with? 'openssl'
-      build_cmd << '--ssl'
+      args << '--ssl'
       openssl = Formula.factory('openssl')
-      build_cmd << "--extrapath=#{openssl.opt_prefix}"
+      args << "--extrapath=#{openssl.opt_prefix}"
     end
 
     # Build and install MongoDB
-    system *build_cmd
+    system 'scons', 'install', *args
 
     # Create the data and log directories under /var
     (var+'mongodb').mkpath
