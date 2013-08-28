@@ -6,6 +6,7 @@
 #TODO create mechanism to specify build effects like %w{-O0 -O4 vanilla-arg-parsing sdk=10.6} etc.
 
 require "#{File.dirname __FILE__}/../libsuperenv"
+require 'io/wait'
 require 'set'
 
 def cccfg? flags
@@ -55,8 +56,7 @@ class Cmd
   def tool
     @tool ||= case @arg0
     when 'ld' then 'ld'
-    when 'cpp' then 'cpp'
-    when 'cc', 'c99', 'c89'
+    when 'cc', 'cpp', 'c99', 'c89'
       # Ideally we would run `cx9`, however these tools are POSIX compliant
       # and don't support many flags. We need -isystem for instance, but also
       # reliability is generally much higher if we just get clang/gcc to do
@@ -90,7 +90,8 @@ class Cmd
     end if nclt?
     case mode
     when :cpp
-      %w{-E} + args + cppflags
+      args = %w{-E} + args + cppflags
+      STDIN.ready? ? args + %w{-} : args
     when :ld
       ldflags + args
     when :cc
