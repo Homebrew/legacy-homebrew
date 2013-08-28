@@ -1,6 +1,5 @@
 require 'formula'
 
-
 class Sdl2Ttf < Formula
   homepage 'http://www.libsdl.org/projects/SDL_ttf/'
   url 'http://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.12.tar.gz'
