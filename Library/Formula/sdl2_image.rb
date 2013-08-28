@@ -1,6 +1,5 @@
 require 'formula'
 
-
 class Sdl2Image < Formula
   homepage 'http://www.libsdl.org/projects/SDL_image/'
   url 'http://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.0.tar.gz'
