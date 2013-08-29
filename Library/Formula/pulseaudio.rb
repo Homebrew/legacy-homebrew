@@ -23,7 +23,7 @@ class Pulseaudio < Formula
   depends_on 'gdbm'
   depends_on 'liboil'
   depends_on 'json-c'
-  depends_on 'dbus' => :optional
+  depends_on 'd-bus' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
