@@ -37,6 +37,9 @@ class Python3 < Formula
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
   depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
 
+  skip_clean "bin/pip3", "bin/pip-#{VER}"
+  skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
+
   def patches
     DATA if build.with? 'brewed-tk'
   end
@@ -227,7 +230,9 @@ class Python3 < Formula
 
   def caveats
     text = <<-EOS.undent
-      Setuptools and Pip have been installed, too.
+      Setuptools and Pip have been installed. To update them
+        pip3 install --upgrade setuptools
+        pip3 install --upgrade pip
 
       To symlink "Idle 3" and the "Python Launcher 3" to ~/Applications
         `brew linkapps`
