@@ -7,9 +7,6 @@ class Pdf2image < Formula
 
   depends_on :x11
 
-  # superenv strips flags that are needed for the build to succeed
-  env :std
-
   def install
     system "./configure", "--prefix=#{prefix}"
 
