@@ -7,6 +7,9 @@ class Pdf2image < Formula
 
   depends_on :x11
 
+  conflicts_with 'poppler'
+  conflicts_with 'xpdf'
+
   def install
     system "./configure", "--prefix=#{prefix}"
 

@@ -23,6 +23,9 @@ class Poppler < Formula
   depends_on 'glib' => :optional
   depends_on 'cairo' if build.with? 'glib' # Needs a newer Cairo build than OS X 10.6.7 provides
 
+  conflicts_with 'pdf2image'
+  conflicts_with 'xpdf'
+
   def install
     if build.with? 'qt4'
       ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp
