@@ -71,7 +71,8 @@ class Wxmac < Formula
       "--enable-webkit",
       "--enable-svg",
       "--with-expat",
-      "--with-macosx-version-min=#{MacOS.version}"
+      "--with-macosx-version-min=#{MacOS.version}",
+      "--disable-precomp-headers"
     ]
 
     system "./configure", *args
