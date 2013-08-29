@@ -133,6 +133,11 @@ module HomebrewArgvExtension
     include? '--build-bottle' or !ENV['HOMEBREW_BUILD_BOTTLE'].nil?
   end
 
+  def bottle_arch
+    arch = value 'bottle-arch'
+    arch.to_sym if arch
+  end
+
   def build_from_source?
     include? '--build-from-source' or !ENV['HOMEBREW_BUILD_FROM_SOURCE'].nil? \
       or build_head? or build_devel? or build_universal? or build_bottle?
