@@ -23,7 +23,7 @@ class Cairo < Formula
   depends_on 'glib' => :recommended
   depends_on :x11 if build.with? 'x'
 
-  env :std if build.universal?
+  def build.universal?; true; end
 
   def install
     ENV.universal_binary if build.universal?
@@ -31,6 +31,7 @@ class Cairo < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      ac_cv_type___uint128_t=no
     ]
 
     if build.without? 'x'
