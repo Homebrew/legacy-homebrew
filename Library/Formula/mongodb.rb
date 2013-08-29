@@ -26,7 +26,7 @@ class Mongodb < Formula
     if build.with? 'openssl'
       args << '--ssl'
       openssl = Formula.factory('openssl')
-      args << "--extrapath=#{openssl.opt_prefix}"
+      args << "--extrapathdyn=#{openssl.opt_prefix}"
     end
 
     # Build and install MongoDB
