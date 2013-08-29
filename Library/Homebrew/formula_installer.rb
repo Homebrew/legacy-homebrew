@@ -203,6 +203,7 @@ class FormulaInstaller
   end
 
   def install_dependencies
+    oh1 "#{f} depends on: #{Tty.green}#{effective_deps.join(", ")}#{Tty.reset}" if effective_deps
     effective_deps.each do |dep|
       if dep.requested?
        install_dependency(dep)
