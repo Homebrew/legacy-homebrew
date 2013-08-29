@@ -113,7 +113,7 @@ class Cmd
         # If ENV.m32 was set, we allow the "-m32" flag, but we don't add anything
         args << '-m32' if cccfg? '3'
       when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
-           /^-march=.+/, /^-mtune=.+/, '-m64',
+           /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/, '-m64',
            /^-O[0-9zs]?$/, '-fast',
            '-pedantic', '-pedantic-errors'
       when '-fopenmp', '-lgomp'
