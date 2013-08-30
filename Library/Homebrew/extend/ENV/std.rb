@@ -61,7 +61,7 @@ module Stdenv
     self.send self.compiler
 
     # we must have a working compiler!
-    unless self['CC']
+    unless cc
       @compiler = MacOS.default_compiler
       self.send @compiler
       self.cc  = MacOS.locate("cc")
@@ -147,14 +147,14 @@ module Stdenv
     self.cc  = MacOS.locate("gcc-4.2")
     self.cxx = MacOS.locate("g++-4.2")
 
-    unless self['CC']
+    unless cc
       self.cc  = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
       self.cxx = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
-      raise "GCC could not be found" unless File.exist? self['CC']
+      raise "GCC could not be found" unless File.exist? cc
     end
 
-    if not self['CC'] =~ %r{^/usr/bin/xcrun }
-      raise "GCC could not be found" if Pathname.new(self['CC']).realpath.to_s =~ /llvm/
+    unless cc =~ %r{^/usr/bin/xcrun }
+      raise "GCC could not be found" if Pathname.new(cc).realpath.to_s =~ /llvm/
     end
 
     replace_in_cflags '-O4', '-O3'
