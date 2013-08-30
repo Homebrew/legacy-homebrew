@@ -231,11 +231,11 @@ module Stdenv
   end
 
   def minimal_optimization
-    self['CFLAGS'] = self['CXXFLAGS'] = "-Os #{SAFE_CFLAGS_FLAGS}"
+    set_cflags "-Os #{SAFE_CFLAGS_FLAGS}"
     macosxsdk unless MacOS::CLT.installed?
   end
   def no_optimization
-    self['CFLAGS'] = self['CXXFLAGS'] = SAFE_CFLAGS_FLAGS
+    set_cflags SAFE_CFLAGS_FLAGS
     macosxsdk unless MacOS::CLT.installed?
   end
 
