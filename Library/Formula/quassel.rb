@@ -2,8 +2,8 @@ require 'formula'
 
 class Quassel < Formula
   homepage 'http://www.quassel-irc.org/'
-  url 'http://www.quassel-irc.org/pub/quassel-0.8.0.tar.bz2'
-  sha1 'b74967fa9f19b5d7c708279075cc0ef3a3dbbe8b'
+  url 'http://www.quassel-irc.org/pub/quassel-0.9.0.tar.bz2'
+  sha1 '07f562c692738c09891ebd8bea703f68ba695180'
 
   head 'git://git.quassel-irc.org/quassel.git'
 
