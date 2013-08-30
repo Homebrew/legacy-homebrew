@@ -53,8 +53,8 @@ module SharedEnvExtension
     end if value
   end
 
-  def cc;       self['CC'] or "cc";   end
-  def cxx;      self['CXX'] or "c++"; end
+  def cc;       self['CC'];           end
+  def cxx;      self['CXX'];          end
   def cflags;   self['CFLAGS'];       end
   def cxxflags; self['CXXFLAGS'];     end
   def cppflags; self['CPPFLAGS'];     end
