@@ -39,7 +39,7 @@ module MacOS::Xcode extend self
   end
 
   def without_clt?
-    version >= "4.3" and not MacOS::CLT.installed?
+    installed? && version >= "4.3" && !MacOS::CLT.installed?
   end
 
   def prefix
