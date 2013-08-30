@@ -2,19 +2,35 @@ require 'formula'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.6.tgz'
-  sha1 '36886ec043e660db00f2bb6b18d32f507b63a041'
+  url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.6.tar.gz'
+  sha1 '32066d405f3bed175c9433dc4ac455c2e0091b53'
 
   devel do
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.5.2.tgz'
-    sha1 '3f1f4d1b6f0cae4f70d9599d969ac4f7d0a0c579'
+    url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.2.tar.gz'
+    sha1 'e6b0aa35ea78e6bf9d7791a04810a4db4d69decc'
   end
 
-  depends_on :arch => :x86_64
+  head 'https://github.com/mongodb/mongo.git'
+
+  depends_on 'scons' => :build
+  depends_on 'openssl' => :optional
 
   def install
-    # Copy the prebuilt binaries to prefix
-    prefix.install Dir['*']
+    # Required args
+    args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
+
+    # Build with 64-bit support if available
+    args << '--64' if MacOS.prefer_64_bit?
+
+    # Optionally build with openssl
+    if build.with? 'openssl'
+      args << '--ssl'
+      openssl = Formula.factory('openssl')
+      args << "--extrapathdyn=#{openssl.opt_prefix}"
+    end
+
+    # Build and install MongoDB
+    system 'scons', 'install', *args
 
     # Create the data and log directories under /var
     (var+'mongodb').mkpath
