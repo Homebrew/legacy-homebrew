@@ -118,9 +118,7 @@ module SharedEnvExtension
       self['F77'] ||= self['FC']
 
       if ARGV.include? '--default-fortran-flags'
-        flags_to_set = []
-        flags_to_set << 'FCFLAGS' unless self['FCFLAGS']
-        flags_to_set << 'FFLAGS' unless self['FFLAGS']
+        flags_to_set = FC_FLAG_VARS.reject { |key| self[key] }
         flags_to_set.each {|key| self[key] = cflags}
         set_cpu_flags(flags_to_set)
       elsif not self['FCFLAGS'] or self['FFLAGS']
