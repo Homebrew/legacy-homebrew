@@ -9,7 +9,6 @@ class Arangodb < Formula
 
   depends_on 'icu4c'
   depends_on 'libev'
-  depends_on 'v8'
 
   def install
     args = %W[
@@ -18,7 +17,7 @@ class Arangodb < Formula
       --disable-relative
       --disable-all-in-one-icu
       --disable-all-in-one-libev
-      --disable-all-in-one-v8
+      --enable-all-in-one-v8
       --enable-mruby
       --datadir=#{share}
       --localstatedir=#{var}
