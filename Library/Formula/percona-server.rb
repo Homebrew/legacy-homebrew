@@ -16,14 +16,9 @@ class PerconaServer < Formula
   option 'with-libedit', 'Compile with editline wrapper instead of readline'
   option 'enable-local-infile', 'Build with local infile loading support'
 
-  conflicts_with 'mysql',
-    :because => "percona-server and mysql install the same binaries."
 
-  conflicts_with 'mariadb',
-    :because => "percona-server and mariadb install the same binaries."
-
-  conflicts_with 'mysql-cluster',
-    :because => "percona-server and mysql-cluster install the same binaries."
+  conflicts_with 'mariadb', 'mysql', 'mysql-cluster',
+    :because => "percona, mariadb, and mysql install the same binaries."
 
   env :std if build.universal?
 
