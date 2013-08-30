@@ -35,18 +35,20 @@ class Erlang < Formula
     sha1 'afafe2a4b51272eb6ed0f6bfdc4cbdfae0cdc19c' => :snow_leopard
   end
 
+  option 'disable-hipe', 'Disable building hipe; fails on various OS X systems'
+  option 'halfword', 'Enable halfword emulator (64-bit builds only)'
+  option 'time', '`brew test --time` to include a time-consuming test'
+  option 'no-docs', 'Do not install documentation'
+  option 'with-openssl', 'Use brewed OpenSSL instead of OS X provided one'
+
   # remove the autoreconf if possible
   depends_on :automake
   depends_on :libtool
+  depends_on 'openssl' if build.with? 'openssl'
 
   fails_with :llvm do
     build 2334
   end
-
-  option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
-  option 'halfword', 'Enable halfword emulator (64-bit builds only)'
-  option 'time', '`brew test --time` to include a time-consuming test'
-  option 'no-docs', 'Do not install documentation'
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
@@ -64,13 +66,19 @@ class Erlang < Formula
             "--prefix=#{prefix}",
             "--enable-kernel-poll",
             "--enable-threads",
-            "--enable-dynamic-ssl-lib",
             "--enable-shared-zlib",
             "--enable-smp-support"]
 
     args << "--with-dynamic-trace=dtrace" unless MacOS.version <= :leopard or not MacOS::CLT.installed?
 
-    unless build.include? 'disable-hipe'
+    if build.with? 'openssl'
+          args << "--disable-dynamic-ssl-lib"
+          args << "--with-ssl=#{Formula.factory("openssl").opt_prefix}"
+    else
+      args << "--enable-dynamic-ssl-lib"
+    end
+
+    unless build.include? 'disable-hipe' or build.include? 'halfword'
       # HIPE doesn't strike me as that reliable on OS X
       # http://syntatic.wordpress.com/2008/06/12/macports-erlang-bus-error-due-to-mac-os-x-1053-update/
       # http://www.erlang.org/pipermail/erlang-patches/2008-September/000293.html
