@@ -180,7 +180,7 @@ class Cmd
     # We reject brew's lib as we explicitly add this as a -L flag, thus it
     # is given higher priority by cc, so it surpasses the system libpath.
     # NOTE this only counts if Homebrew is installed at /usr/local
-    syspath.map{|d| "#{d}/lib" }.reject{ "#$brewfix/lib" }
+    syspath.map{|d| "#{d}/lib" }.reject{|d| d == "#$brewfix/lib" }
   end
   def syscpath
     isystem, _ = cpath
