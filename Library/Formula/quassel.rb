@@ -45,3 +45,15 @@ __END__
  
  WebPreviewItem::WebPreviewItem(const QUrl &url)
    : QGraphicsItem(0), // needs to be a top level item as we otherwise cannot guarantee that it's on top of other chatlines
+--- a/src/common/quassel.cpp
++++ b/src/common/quassel.cpp
+@@ -495,7 +495,7 @@ void Quassel::loadTranslation(const QLocale &locale)
+     quasselTranslator->setObjectName("QuasselTr");
+     qApp->installTranslator(quasselTranslator);
+ 
+-#if QT_VERSION >= 0x040800
++#if QT_VERSION >= 0x040800 && !defined Q_OS_MAC
+     bool success = qtTranslator->load(locale, QString("qt_"), translationDirPath());
+     if (!success)
+         qtTranslator->load(locale, QString("qt_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+
