@@ -60,6 +60,14 @@ module SharedEnvExtension
     end if value
   end
 
+  def cc= val
+    self['CC'] = self['OBJC'] = val
+  end
+
+  def cxx= val
+    self['CXX'] = self['OBJCXX'] = val
+  end
+
   def cc;       self['CC'];           end
   def cxx;      self['CXX'];          end
   def cflags;   self['CFLAGS'];       end
