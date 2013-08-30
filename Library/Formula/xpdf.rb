@@ -8,8 +8,8 @@ class Xpdf < Formula
   depends_on 'lesstif'
   depends_on :x11
 
-  conflicts_with 'pdf2image'
-  conflicts_with 'poppler'
+  conflicts_with 'pdf2image', 'poppler',
+    :because => 'xpdf, pdf2image, and poppler install conflicting executables'
 
   # see: http://gnats.netbsd.org/45562
   def patches; DATA; end
