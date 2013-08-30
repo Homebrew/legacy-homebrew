@@ -64,8 +64,8 @@ module Stdenv
     unless self['CC']
       @compiler = MacOS.default_compiler
       self.send @compiler
-      self['CC'] = self['OBJC'] = MacOS.locate("cc")
-      self['CXX'] = self['OBJCXX'] = MacOS.locate("c++")
+      self.cc  = MacOS.locate("cc")
+      self.cxx = MacOS.locate("c++")
     end
 
     # Add lib and include etc. from the current macosxsdk to compiler flags:
@@ -131,8 +131,8 @@ module Stdenv
 
   def gcc_4_0_1
     # we don't use locate because gcc 4.0 has not been provided since Xcode 4
-    self['CC'] = self['OBJC'] = "#{MacOS.dev_tools_path}/gcc-4.0"
-    self['CXX'] = self['OBJCXX'] = "#{MacOS.dev_tools_path}/g++-4.0"
+    self.cc  = "#{MacOS.dev_tools_path}/gcc-4.0"
+    self.cxx = "#{MacOS.dev_tools_path}/g++-4.0"
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags '-march=nocona -mssse3'
     @compiler = :gcc
@@ -144,12 +144,12 @@ module Stdenv
     # However they still provide a gcc symlink to llvm
     # But we don't want LLVM of course.
 
-    self['CC'] = self['OBJC'] = MacOS.locate("gcc-4.2")
-    self['CXX'] = self['OBJCXX'] = MacOS.locate("g++-4.2")
+    self.cc  = MacOS.locate("gcc-4.2")
+    self.cxx = MacOS.locate("g++-4.2")
 
     unless self['CC']
-      self['CC'] = self['OBJC'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
-      self['CXX'] = self['OBJCXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
+      self.cc  = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
+      self.cxx = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
       raise "GCC could not be found" unless File.exist? self['CC']
     end
 
@@ -164,15 +164,15 @@ module Stdenv
   alias_method :gcc_4_2, :gcc
 
   def llvm
-    self['CC'] = self['OBJC'] = MacOS.locate("llvm-gcc")
-    self['CXX'] = self['OBJCXX'] = MacOS.locate("llvm-g++")
+    self.cc  = MacOS.locate("llvm-gcc")
+    self.cxx = MacOS.locate("llvm-g++")
     set_cpu_cflags
     @compiler = :llvm
   end
 
   def clang
-    self['CC'] = self['OBJC'] = MacOS.locate("clang")
-    self['CXX'] = self['OBJCXX'] = MacOS.locate("clang++")
+    self.cc  = MacOS.locate("clang")
+    self.cxx = MacOS.locate("clang++")
     replace_in_cflags(/-Xarch_#{Hardware::CPU.arch_32_bit} (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags '-march=native', :nehalem => '-march=native -Xclang -target-feature -Xclang -aes'
