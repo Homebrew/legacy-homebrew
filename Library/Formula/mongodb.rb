@@ -12,6 +12,12 @@ class Mongodb < Formula
 
   head 'https://github.com/mongodb/mongo.git'
 
+  bottle do
+    sha1 'ddac997b68deff5bfa04d22f5ddef44f895e6629' => :mountain_lion
+    sha1 '85ed3769ab3bc301dd044c94522fea24fb91d16f' => :lion
+    sha1 '2e5a28f2a9c97058b5e3b002403ed2fb3439cd8c' => :snow_leopard
+  end
+
   depends_on 'scons' => :build
   depends_on 'openssl' => :optional
 
