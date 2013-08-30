@@ -25,8 +25,8 @@ class Fontforge < Formula
   depends_on 'fontconfig'
   
   if build.head?
-    depends_on 'automake' => :build
-    depends_on 'libtool'  => :build
+    depends_on :automake
+    depends_on :libtool
     depends_on 'pkg-config' => :build
     depends_on 'glib' => :build
     depends_on 'pango' => :build
@@ -38,7 +38,6 @@ class Fontforge < Formula
   end
 
   def install
-    ENV.prepend 'PKG_CONFIG_PATH', "#{HOMEBREW_PREFIX}/lib/pkgconfig", ':'
     args = ["--prefix=#{prefix}",
             "--enable-double",
             "--without-freetype-bytecode"]
@@ -123,7 +122,7 @@ class Fontforge < Formula
     return s
   end
 
-  if not build.head?
+  unless build.head?
     def patches
       # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
       "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
