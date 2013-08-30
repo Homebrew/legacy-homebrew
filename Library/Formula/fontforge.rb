@@ -38,6 +38,7 @@ class Fontforge < Formula
   end
 
   def install
+    ENV.prepend 'PKG_CONFIG_PATH', "#{HOMEBREW_PREFIX}/lib/pkgconfig", ':'
     args = ["--prefix=#{prefix}",
             "--enable-double",
             "--without-freetype-bytecode"]
