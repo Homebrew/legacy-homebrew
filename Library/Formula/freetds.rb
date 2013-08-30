@@ -13,6 +13,7 @@ class Freetds < Formula
   if build.head?
     depends_on :automake
     depends_on :libtool
+    depends_on :openssl
   end
 
   option :universal
@@ -21,7 +22,7 @@ class Freetds < Formula
     system "autoreconf -i" if build.head?
 
     args = %W[--prefix=#{prefix}
-              --with-openssl=/usr/bin
+              --with-openssl=#{Formula.factory('openssl').prefix}
               --with-tdsver=7.1
               --mandir=#{man}
             ]
