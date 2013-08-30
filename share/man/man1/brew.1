@@ -170,7 +170,7 @@ To view formula history locally: \fBbrew log \-p <formula>\fR\.
 Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
-\fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-fresh] [\-\-use\-clang|\-\-use\-gcc|\-\-use\-llvm] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-fresh] [\-\-cc=<compiler>] [\-\-use\-clang|\-\-use\-gcc|\-\-use\-llvm] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -190,6 +190,9 @@ If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of
 .
 .IP
 If \fB\-\-fresh\fR is passed, the installation process will not re\-use any options from previous installs\.
+.
+.IP
+If \fB\-\-cc=<compiler>\fR is passed, attempt to compile using the specified compiler\. The specified argument should be the name of the compiler\'s executable, for instance \fBgcc\-4\.2\fR for Apple\'s GCC 4\.2\.
 .
 .IP
 If \fB\-\-use\-clang\fR is passed, attempt to compile using clang\.
@@ -550,18 +553,6 @@ If set, instructs Homebrew to use \fBHOMEBREW_TEMP\fR as the temporary directory
 .
 .IP
 This issue typically occurs when using FileVault or custom SSD configurations\.
-.
-.TP
-HOMEBREW_USE_CLANG
-If set, forces Homebrew to compile using clang\.
-.
-.TP
-HOMEBREW_USE_GCC
-If set, forces Homebrew to compile using gcc\.
-.
-.TP
-HOMEBREW_USE_LLVM
-If set, forces Homebrew to compile using LLVM\.
 .
 .TP
 HOMEBREW_VERBOSE
