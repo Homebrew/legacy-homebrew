@@ -129,7 +129,7 @@ module SharedEnvExtension
         flags_to_set = FC_FLAG_VARS.reject { |key| self[key] }
         flags_to_set.each {|key| self[key] = cflags}
         set_cpu_flags(flags_to_set)
-      elsif not self['FCFLAGS'] or self['FFLAGS']
+      elsif values_at(*FC_FLAG_VARS).compact.empty?
         opoo <<-EOS.undent
           No Fortran optimization information was provided.  You may want to consider
           setting FCFLAGS and FFLAGS or pass the `--default-fortran-flags` option to
