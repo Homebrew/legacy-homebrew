@@ -2,8 +2,8 @@ require 'formula'
 
 class Quassel < Formula
   homepage 'http://www.quassel-irc.org/'
-  url 'http://www.quassel-irc.org/pub/quassel-0.8.0.tar.bz2'
-  sha1 'b74967fa9f19b5d7c708279075cc0ef3a3dbbe8b'
+  url 'http://www.quassel-irc.org/pub/quassel-0.9.0.tar.bz2'
+  sha1 '07f562c692738c09891ebd8bea703f68ba695180'
 
   head 'git://git.quassel-irc.org/quassel.git'
 
@@ -45,3 +45,15 @@ __END__
  
  WebPreviewItem::WebPreviewItem(const QUrl &url)
    : QGraphicsItem(0), // needs to be a top level item as we otherwise cannot guarantee that it's on top of other chatlines
+--- a/src/common/quassel.cpp
++++ b/src/common/quassel.cpp
+@@ -495,7 +495,7 @@ void Quassel::loadTranslation(const QLocale &locale)
+     quasselTranslator->setObjectName("QuasselTr");
+     qApp->installTranslator(quasselTranslator);
+ 
+-#if QT_VERSION >= 0x040800
++#if QT_VERSION >= 0x040800 && !defined Q_OS_MAC
+     bool success = qtTranslator->load(locale, QString("qt_"), translationDirPath());
+     if (!success)
+         qtTranslator->load(locale, QString("qt_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+
