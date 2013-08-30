@@ -112,10 +112,6 @@ module SharedEnvExtension
   end
 
   def fortran
-    # superenv removes these PATHs, but this option needs them
-    # TODO fix better, probably by making a super-fc
-    self['PATH'] += ":#{HOMEBREW_PREFIX}/bin:/usr/local/bin"
-
     if self['FC']
       ohai "Building with an alternative Fortran compiler"
       puts "This is unsupported."
@@ -138,11 +134,10 @@ module SharedEnvExtension
         EOS
       end
 
-    elsif which 'gfortran'
+    elsif (gfortran = which('gfortran', ORIGINAL_PATHS.join(File::PATH_SEPARATOR)))
       ohai "Using Homebrew-provided fortran compiler."
       puts "This may be changed by setting the FC environment variable."
-      self['FC'] = which 'gfortran'
-      self['F77'] = self['FC']
+      self['FC'] = self['F77'] = gfortran
 
       FC_FLAG_VARS.each {|key| self[key] = cflags}
       set_cpu_flags(FC_FLAG_VARS)
