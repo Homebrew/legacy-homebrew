@@ -18,7 +18,7 @@ class Fontforge < Formula
   depends_on 'libtiff'  => :recommended
   depends_on :x11 if build.with? 'x'
   depends_on 'giflib' if build.with? 'gif'
-  depends_on 'cairo' => :optional
+  depends_on 'cairo' => :optional if build.stable?
   depends_on 'pango' => :optional
   depends_on 'libspiro' => :optional
   depends_on 'czmq'=> :optional
