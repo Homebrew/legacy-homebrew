@@ -177,13 +177,6 @@ module Stdenv
     end
   end
 
-  def llvm
-    self.cc  = MacOS.locate("llvm-gcc")
-    self.cxx = MacOS.locate("llvm-g++")
-    set_cpu_cflags
-    @compiler = :llvm
-  end
-
   def clang
     self.cc  = MacOS.locate("clang")
     self.cxx = MacOS.locate("clang++")

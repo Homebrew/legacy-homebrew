@@ -66,8 +66,6 @@ class Cmd
       case ENV['HOMEBREW_CC']
       when /clang/
         'clang++'
-      when /llvm-gcc/
-        'llvm-g++-4.2'
       when /gcc(-\d\.\d)?$/
         'g++' + $1.to_s
       end

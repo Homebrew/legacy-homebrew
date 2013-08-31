@@ -209,7 +209,6 @@ _brew_install ()
                 --HEAD
                 --use-clang
                 --use-gcc
-                --use-llvm
                 "
         else
             __brewcomp "
@@ -223,7 +222,6 @@ _brew_install ()
                 --interactive
                 --use-clang
                 --use-gcc
-                --use-llvm
                 --verbose
                 $(brew options --compact "$prv" 2>/dev/null)
                 "

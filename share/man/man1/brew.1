@@ -170,7 +170,7 @@ To view formula history locally: \fBbrew log \-p <formula>\fR\.
 Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
-\fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-fresh] [\-\-cc=<compiler>] [\-\-use\-clang|\-\-use\-gcc|\-\-use\-llvm] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-fresh] [\-\-cc=<compiler>] [\-\-use\-clang|\-\-use\-gcc] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -198,10 +198,7 @@ If \fB\-\-cc=<compiler>\fR is passed, attempt to compile using the specified com
 If \fB\-\-use\-clang\fR is passed, attempt to compile using clang\.
 .
 .IP
-If \fB\-\-use\-gcc\fR is passed, attempt to compile using GCC\. This is useful for systems whose default compiler is LLVM\-GCC\.
-.
-.IP
-If \fB\-\-use\-llvm\fR is passed, attempt to compile using the LLVM front\-end to GCC\. \fINOTE\fR: Not all formulae will build with LLVM\.
+If \fB\-\-use\-gcc\fR is passed, attempt to compile using GCC\. This is useful for systems whose default compiler is clang\.
 .
 .IP
 If \fB\-\-build\-from\-source\fR is passed, compile from source even if a bottle is provided for \fIformula\fR\.

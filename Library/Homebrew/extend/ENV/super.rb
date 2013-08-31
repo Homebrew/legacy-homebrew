@@ -258,10 +258,6 @@ module Superenv
     self.cc  = self['HOMEBREW_CC'] = "gcc-4.2"
     self.cxx = "g++-4.2"
   end
-  def llvm
-    self.cc  = self['HOMEBREW_CC'] = "llvm-gcc"
-    self.cxx = "llvm-g++-4.2"
-  end
   def clang
     self.cc  = self['HOMEBREW_CC'] = "clang"
     self.cxx = "clang++"
