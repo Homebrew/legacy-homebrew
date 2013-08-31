@@ -47,7 +47,7 @@ class Cmd
     elsif @args.include? '-c'
       :cc
     elsif @args.include? '-E'
-      :cpp
+      :ccE
     else
       :ccld
     end
@@ -93,8 +93,10 @@ class Cmd
       cflags + args + cppflags + ldflags
     when :cc
       cflags + args + cppflags
-    when :cpp
+    when :ccE
       %w{-E} + args + cppflags
+    when :cpp
+      args + cppflags
     when :ld
       ldflags + args
     end.compact
