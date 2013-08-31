@@ -18,8 +18,8 @@ class Fontforge < Formula
   depends_on 'libtiff'  => :recommended
   depends_on :x11 if build.with? 'x'
   depends_on 'giflib' if build.with? 'gif'
-  depends_on 'cairo' => :optional if build.stable?
-  depends_on 'pango' => :optional
+  depends_on 'cairo' => :optional
+  depends_on 'pango' => :optional if build.stable?
   depends_on 'libspiro' => :optional
   depends_on 'czmq'=> :optional
   depends_on 'fontconfig'
@@ -38,7 +38,6 @@ class Fontforge < Formula
   end
 
   def install
-    ENV.prepend 'PKG_CONFIG_PATH', "#{HOMEBREW_PREFIX}/lib/pkgconfig", ':'
     args = ["--prefix=#{prefix}",
             "--enable-double",
             "--without-freetype-bytecode"]
