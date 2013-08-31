@@ -11,16 +11,4 @@ class V < Formula
     bin.install 'v'
     man1.install 'v.1'
   end
-
-  def caveats; <<-EOS.undent
-    NAME
-       v - z for vim
-
-    SYNOPSIS
-          v [-a] [-l] [-[0-9]] [--debug] [--help] [regex1 regex2 ... regexn]
-
-    AVAILABILITY
-          bash, vim
-    EOS
-  end
 end
