@@ -120,15 +120,15 @@ module SharedEnvExtension
   end
 
   def fortran
+    flags = []
+
     if fc
       ohai "Building with an alternative Fortran compiler"
       puts "This is unsupported."
       self['F77'] ||= fc
 
       if ARGV.include? '--default-fortran-flags'
-        flags_to_set = FC_FLAG_VARS.reject { |key| self[key] }
-        flags_to_set.each {|key| self[key] = cflags}
-        set_cpu_flags(flags_to_set)
+        flags = FC_FLAG_VARS.reject { |key| self[key] }
       elsif values_at(*FC_FLAG_VARS).compact.empty?
         opoo <<-EOS.undent
           No Fortran optimization information was provided.  You may want to consider
@@ -144,9 +144,10 @@ module SharedEnvExtension
       ohai "Using Homebrew-provided fortran compiler."
       puts "This may be changed by setting the FC environment variable."
       self['FC'] = self['F77'] = gfortran
-
-      FC_FLAG_VARS.each {|key| self[key] = cflags}
-      set_cpu_flags(FC_FLAG_VARS)
+      flags = FC_FLAG_VARS
     end
+
+    flags.each { |key| self[key] = cflags }
+    set_cpu_flags(flags)
   end
 end
