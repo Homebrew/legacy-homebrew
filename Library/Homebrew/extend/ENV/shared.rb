@@ -120,10 +120,10 @@ module SharedEnvExtension
   end
 
   def fortran
-    if self['FC']
+    if fc
       ohai "Building with an alternative Fortran compiler"
       puts "This is unsupported."
-      self['F77'] ||= self['FC']
+      self['F77'] ||= fc
 
       if ARGV.include? '--default-fortran-flags'
         flags_to_set = FC_FLAG_VARS.reject { |key| self[key] }
