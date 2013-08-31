@@ -20,6 +20,15 @@ class BuildOptions
     @options << Option.new(name, description)
   end
 
+  def add_dep_option(dep)
+    name = dep.name.split("/").last # strip any tap prefix
+    if dep.optional? && !has_option?("with-#{name}")
+      add("with-#{name}", "Build with #{name} support")
+    elsif dep.recommended? && !has_option?("without-#{name}")
+      add("without-#{name}", "Build without #{name} support")
+    end
+  end
+
   def has_option? name
     any? { |opt| opt.name == name }
   end
