@@ -102,7 +102,11 @@ module Superenv
     # Homebrew's apple-gcc42 will be outside the PATH in superenv,
     # so xcrun may not be able to find it
     if self['HOMEBREW_CC'] == 'gcc-4.2'
-      apple_gcc42 = Formula.factory('apple-gcc42') rescue nil
+      apple_gcc42 = begin
+        Formulary.factory('apple-gcc42')
+      rescue Exception # in --debug, catch bare exceptions too
+        nil
+      end
       append_path('PATH', apple_gcc42.opt_prefix/'bin') if apple_gcc42
     end
   end
