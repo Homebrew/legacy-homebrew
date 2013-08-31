@@ -692,7 +692,7 @@ class Formula
 
     def depends_on dep
       d = dependencies.add(dep)
-      post_depends_on(d) unless d.nil?
+      build.add_dep_option(d) unless d.nil?
     end
 
     def option name, description=nil
@@ -753,19 +753,6 @@ class Formula
       return @test unless block_given?
       @test_defined = true
       @test = block
-    end
-
-    private
-
-    def post_depends_on(dep)
-      # Generate with- or without- options for optional and recommended
-      # dependencies and requirements
-      name = dep.name.split("/").last # strip any tap prefix
-      if dep.optional? && !build.has_option?("with-#{name}")
-        build.add("with-#{name}", "Build with #{name} support")
-      elsif dep.recommended? && !build.has_option?("without-#{name}")
-        build.add("without-#{name}", "Build without #{name} support")
-      end
     end
   end
 end
