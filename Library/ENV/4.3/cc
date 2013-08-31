@@ -89,14 +89,14 @@ class Cmd
       args << "-syslibroot" << $sdkroot
     end if nclt?
     case mode
+    when :ccld
+      cflags + args + cppflags + ldflags
+    when :cc
+      cflags + args + cppflags
     when :cpp
       %w{-E} + args + cppflags
     when :ld
       ldflags + args
-    when :cc
-      cflags + args + cppflags
-    when :ccld
-      cflags + args + cppflags + ldflags
     end.compact
   end
   def refurbished_args
