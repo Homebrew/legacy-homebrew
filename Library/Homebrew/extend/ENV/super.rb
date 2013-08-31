@@ -56,10 +56,8 @@ module Superenv
 
   def setup_build_environment
     reset
-    self['CC'] = 'cc'
-    self['CXX'] = 'c++'
-    self['OBJC'] = 'cc'
-    self['OBJCXX'] = 'c++'
+    self.cc  = 'cc'
+    self.cxx = 'c++'
     self['DEVELOPER_DIR'] = determine_developer_dir
     self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     self['PATH'] = determine_path
@@ -104,7 +102,11 @@ module Superenv
     # Homebrew's apple-gcc42 will be outside the PATH in superenv,
     # so xcrun may not be able to find it
     if self['HOMEBREW_CC'] == 'gcc-4.2'
-      apple_gcc42 = Formula.factory('apple-gcc42') rescue nil
+      apple_gcc42 = begin
+        Formulary.factory('apple-gcc42')
+      rescue Exception # in --debug, catch bare exceptions too
+        nil
+      end
       append_path('PATH', apple_gcc42.opt_prefix/'bin') if apple_gcc42
     end
   end
@@ -249,16 +251,16 @@ module Superenv
   end
   alias_method :j1, :deparallelize
   def gcc
-    self['CC'] = self['OBJC'] = self['HOMEBREW_CC'] = "gcc-4.2"
-    self['CXX'] = self['OBJCXX'] = "g++-4.2"
+    self.cc  = self['HOMEBREW_CC'] = "gcc-4.2"
+    self.cxx = "g++-4.2"
   end
   def llvm
-    self['CC'] = self['OBJC'] = self['HOMEBREW_CC'] = "llvm-gcc"
-    self['CXX'] = self['OBJCXX'] = "llvm-g++-4.2"
+    self.cc  = self['HOMEBREW_CC'] = "llvm-gcc"
+    self.cxx = "llvm-g++-4.2"
   end
   def clang
-    self['CC'] = self['OBJC'] = self['HOMEBREW_CC'] = "clang"
-    self['CXX'] = self['OBJCXX'] = "clang++"
+    self.cc  = self['HOMEBREW_CC'] = "clang"
+    self.cxx = "clang++"
   end
   def make_jobs
     self['MAKEFLAGS'] =~ /-\w*j(\d)+/

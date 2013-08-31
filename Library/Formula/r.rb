@@ -14,6 +14,7 @@ class R < Formula
 
   head 'https://svn.r-project.org/R/trunk'
 
+  option 'with-openblas', 'Compile linking to OpenBLAS'
   option 'with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger'
   option 'test', 'Run tests before installing'
 
@@ -23,6 +24,7 @@ class R < Formula
   depends_on 'jpeg'
   depends_on :x11
   depends_on 'valgrind' => :optional
+  depends_on 'homebrew/science/openblas' if build.with? 'openblas'
 
   def install
     args = [
@@ -36,6 +38,8 @@ class R < Formula
       args << '--with-valgrind-instrumentation=2'
       ENV.Og
     end
+
+    args << '--with-blas="-lgoto2"' if build.with? 'openblas'
 
     # Pull down recommended packages if building from HEAD.
     system './tools/rsync-recommended' if build.head?
