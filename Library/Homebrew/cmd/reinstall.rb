@@ -18,7 +18,9 @@ module Homebrew extend self
       ARGV << name
       tab = Tab.for_name(name)
       tab.used_options.each { |option| ARGV << option.to_s }
-      ARGV << '--build-bottle' if tab.built_as_bottle
+      if tab.built_as_bottle and not tab.poured_from_bottle
+        ARGV << '--build-bottle'
+      end
       # Todo: Be as smart as upgrade to restore the old state if reinstall fails.
       self.uninstall
       oh1 "Reinstalling #{name} #{ARGV.options_only*' '}"
