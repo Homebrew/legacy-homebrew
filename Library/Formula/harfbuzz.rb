@@ -10,9 +10,6 @@ class Harfbuzz < Formula
   depends_on 'cairo'
   depends_on 'icu4c' => :recommended
 
-  # Needs newer fontconfig than XQuartz provides for pango
-  depends_on 'fontconfig'
-
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
