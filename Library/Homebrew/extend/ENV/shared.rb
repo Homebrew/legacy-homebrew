@@ -104,7 +104,6 @@ module SharedEnvExtension
     elsif self['HOMEBREW_CC']
       cc = COMPLER_ALIASES.fetch(self['HOMEBREW_CC'], self['HOMEBREW_CC'])
       COMPILER_SYMBOL_MAP.fetch(cc) do |invalid|
-        opoo "Invalid value for HOMEBREW_CC: #{invalid}"
         MacOS.default_compiler
       end
     else
