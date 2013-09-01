@@ -220,4 +220,14 @@ class FormulaTests < Test::Unit::TestCase
     assert f.build.has_option?('with-foo')
     assert f.build.has_option?('without-bar')
   end
+
+  def test_explicit_options_override_default_dep_option_description
+    f = formula do
+      url 'foo-1.0'
+      option 'with-foo', 'blah'
+      depends_on 'foo' => :optional
+    end
+
+    assert_equal 'blah', f.build.first.description
+  end
 end
