@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "August 2013" "Homebrew" "brew"
+.TH "BREW" "1" "September 2013" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -192,7 +192,7 @@ If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of
 If \fB\-\-fresh\fR is passed, the installation process will not re\-use any options from previous installs\.
 .
 .IP
-If \fB\-\-cc=<compiler>\fR is passed, attempt to compile using the specified compiler\. The specified argument should be the name of the compiler\'s executable, for instance \fBgcc\-4\.2\fR for Apple\'s GCC 4\.2\.
+If \fB\-\-cc=<compiler>\fR is passed, attempt to compile using the specified compiler\. The specified argument should be the name of the compiler\'s executable, for instance \fBgcc\-4\.2\fR for Apple\'s GCC 4\.2\. This option is the only way to select a non\-Apple compiler; for instance, to build using a Homebrew\-provided GCC 4\.8, use \fB\-\-cc=gcc\-4\.8\fR
 .
 .IP
 If \fB\-\-use\-clang\fR is passed, attempt to compile using clang\.
