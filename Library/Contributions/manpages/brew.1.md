@@ -172,6 +172,8 @@ Note that these flags should only appear after a command.
     If `--cc=<compiler>` is passed, attempt to compile using the specified
     compiler. The specified argument should be the name of the compiler's
     executable, for instance `gcc-4.2` for Apple's GCC 4.2.
+    This option is the only way to select a non-Apple compiler; for instance,
+    to build using a Homebrew-provided GCC 4.8, use `--cc=gcc-4.8`
 
     If `--use-clang` is passed, attempt to compile using clang.
 
