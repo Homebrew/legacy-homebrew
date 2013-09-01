@@ -23,7 +23,10 @@ module Homebrew extend self
       end
       # Todo: Be as smart as upgrade to restore the old state if reinstall fails.
       self.uninstall
-      oh1 "Reinstalling #{name} #{ARGV.options_only*' '}"
+      # Don't display --force in options; user didn't request it so a bit scary.
+      options_only = ARGV.options_only
+      options_only.delete "--force"
+      oh1 "Reinstalling #{name} #{options_only*' '}"
       self.install
     end
   end
