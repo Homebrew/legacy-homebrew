@@ -118,7 +118,11 @@ class FormulaInstaller
       clean
     end
 
-    f.post_install
+    begin
+      f.post_install
+    rescue
+      opoo "#{f.name} post_install failed. Rerun with `brew postinstall #{f.name}`."
+    end
 
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
