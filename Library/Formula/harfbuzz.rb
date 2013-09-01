@@ -9,6 +9,7 @@ class Harfbuzz < Formula
   depends_on 'glib'
   depends_on 'cairo'
   depends_on 'icu4c' => :recommended
+  depends_on :freetype
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
