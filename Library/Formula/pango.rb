@@ -10,19 +10,10 @@ class Pango < Formula
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'glib'
-  depends_on 'harfbuzz'
-
-  unless build.include? 'without-x'
-    depends_on :x11
-    # Needs fontconfig 2.10.91, which is newer than what XQuartz provides
-    depends_on 'fontconfig'
-  end
-
-  # The Cairo library shipped with Lion contains a flaw that causes Graphviz
-  # to segfault. See the following ticket for information:
-  #   https://trac.macports.org/ticket/30370
-  # We depend on our cairo on all platforms for consistency
   depends_on 'cairo'
+  depends_on 'harfbuzz'
+  depends_on 'fontconfig'
+  depends_on :x11 unless build.without? 'x'
 
   fails_with :llvm do
     build 2326
