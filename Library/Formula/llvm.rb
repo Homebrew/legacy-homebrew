@@ -18,7 +18,7 @@ class Llvm < Formula
   end
 
   option :universal
-  option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
+  option 'with-clang', 'Build Clang support library'
   option 'disable-shared', "Don't build LLVM as a shared library"
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
@@ -87,7 +87,7 @@ class Llvm < Formula
     s += python.standard_caveats if python
     s += <<-EOS.undent
       This formula only provide library components of LLVM. To use full
-      featured LLVM please try the llvm3* formulae in homebrew-versions tap,
+      featured LLVM please try the llvm* formulae in homebrew-versions tap,
       for instance:
 
           brew tap homebrew/versions
