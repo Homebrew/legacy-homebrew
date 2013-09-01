@@ -7,12 +7,17 @@ class Libspiro < Formula
 
   head 'https://github.com/fontforge/libspiro.git'
 
+  if build.head?
+    depends_on :automake
+    depends_on :libtool
+  end
+
   def install
 
     # Create ./configure script if building head
     if build.head?
       system "./autoreconf", "-i"
-      system "./automake", "--foreign -Wall"
+      system "./automake"
     end
 
     system "./configure", "--prefix=#{prefix}"
