@@ -149,6 +149,10 @@ module HomebrewArgvExtension
     end
   end
 
+  def force_bottle?
+    include? '--force-bottle'
+  end
+
   # eg. `foo -ns -i --bar` has three switches, n, s and i
   def switch? switch_character
     return false if switch_character.length > 1

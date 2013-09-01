@@ -17,6 +17,7 @@ def install_bottle? f, warn=false
     and f.downloader.local_bottle_path
 
   return false if ARGV.build_from_source?
+  return true if ARGV.force_bottle?
   return false unless f.pour_bottle?
   return false unless f.build.used_options.empty?
   return false unless bottle_current?(f)
