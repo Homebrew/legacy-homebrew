@@ -12,7 +12,9 @@ class Harfbuzz < Formula
   depends_on :freetype
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args << "--with-icu" if build.with? 'icu4c'
+    system "./configure", *args
     system "make install"
   end
 end
