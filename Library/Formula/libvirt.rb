@@ -2,8 +2,8 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/libvirt-1.1.1.tar.gz'
-  sha256 'dc6f1e1e15b9b190eaa706e76edabcfc94b239c012f5afc22b22357a4b3b22c2'
+  url 'http://libvirt.org/sources/libvirt-1.1.2.tar.gz'
+  sha256 '16648af54d3e162f5cc5445d970ec29a0bd55b1dbcb568a05533c4c2f25965e3'
 
   option 'without-libvirtd', 'Build only the virsh client and development libraries'
 
@@ -59,14 +59,6 @@ class Libvirt < Formula
         s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
         s.gsub! "/var/", "#{HOMEBREW_PREFIX}/var/"
       end
-    end
-  end
-
-  test do
-    if build.with? 'python'
-      # Testing to import the mod because that is a .so file where linking
-      # can break.
-      system python, '-c', "import libvirtmod"
     end
   end
 end
