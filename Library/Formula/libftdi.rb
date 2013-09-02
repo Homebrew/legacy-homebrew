@@ -6,7 +6,7 @@ class Libftdi < Formula
   sha1 '5be76cfd7cd36c5291054638f7caf4137303386f'
 
   depends_on 'cmake' => :build
-  depends_on 'libusb-compat'
+  depends_on 'libusb'
 
   def install
     mkdir 'libftdi-build' do
