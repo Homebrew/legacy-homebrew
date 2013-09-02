@@ -49,8 +49,10 @@ class Shiboken < Formula
   end
 
   test do
-    python do
-      system python, "-c", "import shiboken"
+    if build.with? 'python'
+      python do
+        system python, "-c", "import shiboken"
+      end
     end
   end
 end

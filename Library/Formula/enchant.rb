@@ -37,8 +37,10 @@ class Enchant < Formula
   end
 
   def test
-    python do
-      system python, "-c", "import enchant; d=enchant.Dict('en_US'); print(d.suggest('homebrew'))"
+    if build.with? 'python'
+      python do
+        system python, "-c", "import enchant; d=enchant.Dict('en_US'); print(d.suggest('homebrew'))"
+      end
     end
   end
 end
