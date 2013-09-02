@@ -9,6 +9,7 @@ class Libspiro < Formula
 
   if build.head?
     depends_on :automake
+    depends_on :autoconf
     depends_on :libtool
   end
 
