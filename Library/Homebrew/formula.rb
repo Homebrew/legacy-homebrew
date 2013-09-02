@@ -28,7 +28,7 @@ class Formula
   def initialize name='__UNKNOWN__', path=nil
     @name = name
     # If we got an explicit path, use that, else determine from the name
-    @path = path.nil? ? self.class.path(name) : Pathname.new(path)
+    @path = path.nil? ? self.class.path(name) : Pathname.new(path).expand_path
     @homepage = self.class.homepage
 
     set_spec :stable
