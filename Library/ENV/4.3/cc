@@ -47,7 +47,7 @@ class Cmd
     elsif @args.include? '-c'
       :cc
     elsif @args.include? '-E'
-      :cpp
+      :ccE
     else
       :ccld
     end
@@ -68,10 +68,8 @@ class Cmd
         'clang++'
       when /llvm-gcc/
         'llvm-g++-4.2'
-      when /gcc(-4.2)?$/
-        'g++-4.2'
-      when /gcc-4.0/
-        'g++-4.0'
+      when /gcc(-\d\.\d)?$/
+        'g++' + $1.to_s
       end
     else
       @arg0
@@ -89,14 +87,16 @@ class Cmd
       args << "-syslibroot" << $sdkroot
     end if nclt?
     case mode
-    when :cpp
-      %w{-E} + args + cppflags
-    when :ld
-      ldflags + args
-    when :cc
-      cflags + args + cppflags
     when :ccld
       cflags + args + cppflags + ldflags
+    when :cc
+      cflags + args + cppflags
+    when :ccE
+      args + cppflags
+    when :cpp
+      args + cppflags
+    when :ld
+      ldflags + args
     end.compact
   end
   def refurbished_args
