@@ -61,4 +61,14 @@ class Libvirt < Formula
       end
     end
   end
+
+  test do
+    if build.with? 'python'
+      python do
+        # Testing to import the mod because that is a .so file where linking
+        # can break.
+        system python, '-c', "import libvirtmod"
+      end
+    end
+  end
 end
