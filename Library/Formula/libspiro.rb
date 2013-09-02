@@ -16,8 +16,8 @@ class Libspiro < Formula
 
     # Create ./configure script if building head
     if build.head?
-      system "./autoreconf", "-i"
-      system "./automake"
+      system "autoreconf", "-i"
+      system "automake"
     end
 
     system "./configure", "--prefix=#{prefix}"
