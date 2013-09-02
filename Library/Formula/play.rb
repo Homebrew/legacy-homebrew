@@ -8,7 +8,6 @@ class Play < Formula
 
   devel do
     url 'http://downloads.typesafe.com/play/2.2.0-RC1/play-2.2.0-RC1.zip'
-    version '2.2.0-RC1'
     sha1 'f4f7d577220c7f9be4020517d256f827b5a7d36d'
   end
 
