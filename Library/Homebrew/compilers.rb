@@ -10,7 +10,7 @@ end
 
 class CompilerFailure
   attr_reader :compiler, :version
-  attr_rw :build, :version, :cause
+  attr_rw :build, :cause
 
   def initialize compiler, &block
     # Non-Apple compilers are in the format fails_with compiler => version
