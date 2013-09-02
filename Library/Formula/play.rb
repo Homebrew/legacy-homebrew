@@ -3,8 +3,8 @@ require 'formula'
 class Play < Formula
   homepage 'http://www.playframework.org/'
   head 'https://github.com/playframework/playframework.git'
-  url 'http://downloads.typesafe.com/play/2.1.3/play-2.1.3.zip'
-  sha1 'f399da960980edc929011c07ef64ee868eca8a9f'
+  url 'http://downloads.typesafe.com/play/2.0.6/play-2.0.6.zip'
+  sha1 '6eab8a0d4058762be6d916a4e0062647ad16ca79'
 
   devel do
     url 'http://downloads.typesafe.com/play/2.2.0-M2/play-2.2.0-M2.zip'
