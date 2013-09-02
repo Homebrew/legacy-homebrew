@@ -15,7 +15,6 @@ class Juise < Formula
   depends_on 'sqlite'
 
   def install
-    # If build from read run script to run autoconf
     system "sh ./bin/setup.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
