@@ -30,10 +30,11 @@ Note that these flags should only appear after a command.
   * `list`:
     List all installed formulae.
 
-  * `search`, `-S` <text>|/<text>/:
+  * `search` <text>|/<text>/:
     Perform a substring search of formula names for <text>. If <text> is
     surrounded with slashes, then it is interpreted as a regular expression.
-    If no search term is given, all available formula are displayed.
+    The search for <text> is extended online to some popular taps.
+    If no search term is given, all locally available formulae are listed.
 
 ## COMMANDS
 
@@ -272,10 +273,19 @@ Note that these flags should only appear after a command.
     If `--force` is passed, and there are multiple versions of <formula>
     installed, delete all installed versions.
 
-  * `search`, `-S` <text>|/<text>/:
+  * `search`, `-S`:
+    Display all locally available formulae for brewing (including tapped ones).
+    No online search is performed if called without arguments.
+
+  * `search`, `-S` <tap>:
+    Display all formulae in a <tap>, even if not yet tapped.
+    <tap> is of the form <user>/<repo>, e.g. `brew search homebrew/dupes`.
+
+  * `search`, `-S` [<tap>] <text>|/<text>/:
     Perform a substring search of formula names for <text>. If <text> is
     surrounded with slashes, then it is interpreted as a regular expression.
-    If no search term is given, all available formula are displayed.
+    The search for <text> is extended online to some popular taps.
+    If a <tap> is specified, the search is restricted to it.
 
   * `search --debian`|`--fedora`|`--fink`|`--macports`|`--opensuse`|`--ubuntu` <text>:
     Search for <text> in the given package manager's list.
