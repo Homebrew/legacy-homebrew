@@ -80,38 +80,44 @@ class PythonInstalled < Requirement
   # We look for a brewed python or an external Python and store the loc of
   # that binary for later usage. (See Formula#python)
   satisfy :build_env => false do
-    ENV['PYTHONPATH'] = nil
-    @unsatisfied_because = ''
-    if binary.nil? || !binary.executable?
-      @unsatisfied_because += "No `#{@python}` found in your PATH! Consider to `brew install #{@python}`."
-      false
-    elsif pypy?
-      @unsatisfied_because += "Your #{@python} executable appears to be a PyPy, which is not supported."
-      false
-    elsif version.major != @min_version.major
-      @unsatisfied_because += "No Python #{@min_version.major}.x found in your PATH! --> `brew install #{@python}`?"
-      false
-    elsif version < @min_version
-      @unsatisfied_because += "Python version #{version} is too old (need at least #{@min_version})."
-      false
-    elsif @min_version.major == 2 && `python -c "import sys; print(sys.version_info[0])"`.strip == "3"
-      @unsatisfied_because += "Your `python` points to a Python 3.x. This is not supported."
-      false
-    else
-      @imports.keys.all? do |module_name|
-        if importable? module_name
-          true
-        else
-          @unsatisfied_because += "Unsatisfied dependency: #{module_name}\n"
-          @unsatisfied_because += "OS X System's " if from_osx?
-          @unsatisfied_because += "Brewed " if brewed?
-          @unsatisfied_because += "External " unless brewed? || from_osx?
-          @unsatisfied_because += "Python cannot `import #{module_name}`. Install with:\n  "
-          @unsatisfied_because += "sudo easy_install pip\n  " unless importable? 'pip'
-          @unsatisfied_because += "pip-#{version.major}.#{version.minor} install #{@imports[module_name]}"
-          false
+    begin
+      # Unset the PYTHONPATH during these tests, but later ensure it is restored.
+      pythonpath = ENV['PYTHONPATH']
+      ENV['PYTHONPATH'] = nil
+      @unsatisfied_because = ''
+      if binary.nil? || !binary.executable?
+        @unsatisfied_because += "No `#{@python}` found in your PATH! Consider to `brew install #{@python}`."
+        false
+      elsif pypy?
+        @unsatisfied_because += "Your #{@python} executable appears to be a PyPy, which is not supported."
+        false
+      elsif version.major != @min_version.major
+        @unsatisfied_because += "No Python #{@min_version.major}.x found in your PATH! --> `brew install #{@python}`?"
+        false
+      elsif version < @min_version
+        @unsatisfied_because += "Python version #{version} is too old (need at least #{@min_version})."
+        false
+      elsif @min_version.major == 2 && `python -c "import sys; print(sys.version_info[0])"`.strip == "3"
+        @unsatisfied_because += "Your `python` points to a Python 3.x. This is not supported."
+        false
+      else
+        @imports.keys.all? do |module_name|
+          if importable? module_name
+            true
+          else
+            @unsatisfied_because += "Unsatisfied dependency: #{module_name}\n"
+            @unsatisfied_because += "OS X System's " if from_osx?
+            @unsatisfied_because += "Brewed " if brewed?
+            @unsatisfied_because += "External " unless brewed? || from_osx?
+            @unsatisfied_because += "Python cannot `import #{module_name}`. Install with:\n  "
+            @unsatisfied_because += "sudo easy_install pip\n  " unless importable? 'pip'
+            @unsatisfied_because += "pip-#{version.major}.#{version.minor} install #{@imports[module_name]}"
+            false
+          end
         end
       end
+    ensure
+      ENV['PYTHONPATH'] = pythonpath
     end
   end
 
@@ -196,7 +202,7 @@ class PythonInstalled < Requirement
     end
   end
 
-  # Is the brewed Python installed
+  # Is the brewed Python installed?
   def brewed?
     @brewed ||= begin
       require 'formula'
@@ -245,6 +251,18 @@ class PythonInstalled < Requirement
     # Most methods fail if we don't have a binary.
     return if binary.nil?
 
+    ENV['PYTHONHOME'] = nil  # to avoid fuck-ups.
+    ENV['PYTHONPATH'] = nil  # first unset, because global_site_packages may fail
+    ENV['PYTHONPATH'] = if brewed? then nil; else global_site_packages.to_s; end
+
+    # For non-system python's we add the opt_prefix/bin of python to the path.
+    ENV.prepend_path 'PATH', binary.dirname unless from_osx?
+    ENV.append_path 'CMAKE_INCLUDE_PATH', incdir
+    ENV.append_path 'PKG_CONFIG_PATH', pkg_config_path if pkg_config_path
+    # We don't set the -F#{framework} here, because if Python 2.x and 3.x are
+    # used, `Python.framework` is ambiguous. However, in the `python do` block
+    # we can set LDFLAGS+="-F#{framework}" because only one is temporarily set.
+
     # Write our sitecustomize.py
     file = global_site_packages/"sitecustomize.py"
     ohai "Writing #{file}" if ARGV.verbose? && ARGV.debug?
@@ -255,17 +273,6 @@ class PythonInstalled < Requirement
     end
 
     file.write(sitecustomize)
-
-    # For non-system python's we add the opt_prefix/bin of python to the path.
-    ENV.prepend_path 'PATH', binary.dirname unless from_osx?
-
-    ENV['PYTHONHOME'] = nil  # to avoid fuck-ups.
-    ENV['PYTHONPATH'] = if brewed? then nil; else global_site_packages.to_s; end
-    ENV.append_path 'CMAKE_INCLUDE_PATH', incdir
-    ENV.append_path 'PKG_CONFIG_PATH', pkg_config_path if pkg_config_path
-    # We don't set the -F#{framework} here, because if Python 2.x and 3.x are
-    # used, `Python.framework` is ambiguous. However, in the `python do` block
-    # we can set LDFLAGS+="-F#{framework}" because only one is temporarily set.
 
     # Udpate distutils.cfg (later we can remove this, but people still have
     # their old brewed pythons and we have to update it here)
