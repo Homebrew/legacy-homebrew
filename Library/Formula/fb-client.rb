@@ -2,8 +2,8 @@ require 'formula'
 
 class FbClient < Formula
   homepage 'https://paste.xinu.at'
-  url 'https://paste.xinu.at/data/client/fb-1.1.4.tar.gz'
-  sha1 '03483b5cdda9d27121941ddd10ffd20967f3f63b'
+  url 'https://paste.xinu.at/data/client/fb-1.3.0.tar.gz'
+  sha1 '4ecf517def1f56a4bfccbea9fc977ce0923566fb'
 
   conflicts_with 'findbugs',
     :because => "findbugs and fb-client both install a `fb` binary"
