@@ -24,7 +24,7 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
     end
   end
 
-  # Look for PythonInstalled requirements for this formula
+  # Look for PythonInstalled requirements for this formula:
   python_reqs = requirements.select{ |r| r.kind_of?(PythonInstalled) }
   if python_reqs.empty?
     raise "If you use python in the formula, you have to add `depends_on :python` (or :python3)!"
@@ -41,7 +41,7 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
     filtered_python_reqs << py
   end
 
-  # Allow to use an else-branch like so: `if python do ... end; else ... end`
+  # Allow to use an else-branch like so: `if python do ... end; else ... end`.
   return false if filtered_python_reqs.empty?
 
   # Sort by version, so the older 2.x will be used first and if no
@@ -49,18 +49,22 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
   # Further note, having 3.x last allows us to run `2to3 --write .`
   # which modifies the sources in-place (for some packages that need this).
   filtered_python_reqs.sort_by{ |py| py.version }.map do |py|
-    # Now is the time to set the site_packages to the correct value
+    # Now is the time to `site_packages` to the correct value in the Cellar.
     py.site_packages = lib/py.xy/'site-packages'
     return py if !block_given?
 
     puts "brew: Python block (#{py.binary})..." if ARGV.verbose? && ARGV.debug?
     # Ensure env changes are only temporary
+    # Ensure env changes are only temporary:
     begin
       old_env = ENV.to_hash
       # In order to install into the Cellar, the dir must exist and be in the
       # PYTHONPATH. This will be executed in the context of the formula
       # so that lib points to the HOMEBREW_PREFIX/Cellar/<formula>/<version>/lib
       puts "brew: setting PYTHONPATH to: #{py.site_packages}" if ARGV.verbose?
+      # In order to install into the `Cellar`, the dir must exist and be in the
+      # `PYTHONPATH`. This will be executed in the context of the formula and
+      # lib points to the `HOMEBREW_PREFIX/Cellar/<formula>/<version>/lib`.
       mkdir_p py.site_packages
       ENV['PYTHONPATH'] = py.site_packages
       ENV['PYTHON'] = py.binary
@@ -73,6 +77,7 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
       # Track the state of the currently selected python for this block,
       # so if this python_helper is called again _inside_ the block,
       # we can just return the right python
+      # we can just return the right python.
       @current_python = py
       res = instance_eval(&block)
       @current_python = nil
