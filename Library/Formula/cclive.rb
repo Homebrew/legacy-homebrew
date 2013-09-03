@@ -4,14 +4,14 @@ class Cclive < Formula
   homepage 'http://cclive.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/cclive/0.7/cclive-0.7.14.tar.xz'
   sha1 '2e4dafd7266095610a2154117a15682e5987ed89'
-  
+
   devel do
     url 'http://downloads.sourceforge.net/project/cclive/0.9/cclive-0.9.2.tar.xz'
     sha1 '4c0671dd7c47dde5843b24dc5b9c59e93fe17b23'
   end
-  
+
   head 'https://github.com/legatvs/cclive.git', :branch => 'next'
-  
+
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'automake' => :build if build.head?
@@ -22,11 +22,11 @@ class Cclive < Formula
   depends_on 'boost149'
   depends_on 'quvi'
   depends_on 'pcre'
-  
+
   def patches
     DATA
   end if build.head?
-  
+
   def install
     if build.head?
       File.open('VERSION', 'w') {|f| f.write 'v' + devel.version}
@@ -37,7 +37,7 @@ class Cclive < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
-  
+
   test do
     system "cclive", "-v"
   end
