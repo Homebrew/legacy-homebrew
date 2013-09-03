@@ -14,16 +14,17 @@ class Go < Formula
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
   option 'without-cgo', "Build without cgo"
 
-  fails_with :clang do
-    cause "clang: error: no such file or directory: 'libgcc.a'"
-  end
-
   def install
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
     zsh_completion.install 'misc/zsh/go' => 'go'
 
-    cgo = build.with? 'cgo'
+    cgo = if ENV.cc == :clang
+      # this module cannot build with clang… yet.
+      false
+    else
+      build.with? 'cgo'
+    end
 
     if build.include? 'cross-compile-all'
       targets = [
