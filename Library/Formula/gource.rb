@@ -33,9 +33,7 @@ class Gource < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-sdltest",
-                          "--without-x",
-                          "--disable-freetypetest"
+                          "--without-x"
     system "make install"
   end
 end
