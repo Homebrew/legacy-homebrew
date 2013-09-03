@@ -22,6 +22,8 @@ class OpenSceneGraph < Formula
   depends_on 'collada-dom' => :optional
   depends_on 'gnuplot' => :optional
   depends_on 'ffmpeg' => :optional
+  depends_on 'qt5' => :optional
+  depends_on 'qt' => :optional
 
   if build.include? 'docs'
     depends_on 'doxygen'
@@ -47,6 +49,12 @@ class OpenSceneGraph < Formula
 
     if Formula.factory('collada-dom').installed?
       args << "-DCOLLADA_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/collada-dom"
+    end
+
+    if Formula.factory('qt5').installed?
+      args << "-DCMAKE_PREFIX_PATH=#{HOMEBREW_PREFIX}/opt/qt5"
+    elsif Formula.factory('qt').installed?
+      args << "-DCMAKE_PREFIX_PATH=#{HOMEBREW_PREFIX}/opt/qt"
     end
 
     args << '..'
