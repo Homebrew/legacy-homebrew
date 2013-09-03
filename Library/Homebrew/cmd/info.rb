@@ -11,6 +11,8 @@ module Homebrew extend self
     # awhile around for compatibility
     if ARGV.json == "v1"
       print_json
+    elsif ARGV.flag? '--homepage'
+      exec_browser(*ARGV.formulae.map { |f| homepage_info(f) })
     elsif ARGV.flag? '--github'
       exec_browser(*ARGV.formulae.map { |f| github_info(f) })
     else
@@ -62,6 +64,10 @@ module Homebrew extend self
         $2
       end
     end
+  end
+
+  def homepage_info f
+    f.homepage
   end
 
   def github_info f

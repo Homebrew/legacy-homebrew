@@ -139,6 +139,9 @@ Note that these flags should only appear after a command.
 
     If `--all` is passed, show info for all formulae.
 
+  * `info --homepage` <formula>:
+    Open a browser to the homepage for formula <formula>.
+
   * `info --github` <formula>:
     Open a browser to the GitHub History page for formula <formula>.
 
