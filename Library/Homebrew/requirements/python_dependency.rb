@@ -19,6 +19,7 @@ class PythonInstalled < Requirement
   attr_reader :imports
   attr_reader :python
   attr_accessor :site_packages
+  attr_accessor :private_site_packages
   attr_writer :binary # The python.rb formula needs to set the binary
 
   fatal true  # you can still make Python optional by `depends_on :python => :optional`
@@ -70,6 +71,7 @@ class PythonInstalled < Requirement
     # will be set later by the python_helper, because it needs the
     # formula prefix to set site_packages
     @site_packages = nil
+    @private_site_packages = nil
 
     super tags
   end
