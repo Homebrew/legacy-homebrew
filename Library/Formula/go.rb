@@ -19,7 +19,7 @@ class Go < Formula
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
     zsh_completion.install 'misc/zsh/go' => 'go'
 
-    cgo = if ENV.cc == :clang
+    cgo = if ENV.compiler == :clang
       # this module cannot build with clang… yet.
       false
     else
