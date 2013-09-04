@@ -36,7 +36,8 @@ class Pygobject3 < Formula
     python do
       if build.with? 'tests'
         # autogen.sh is necessary to update the build system after the above
-        # patch
+        # patch and XDG_DATA_DIRS needs to be fixed for some tests to run
+        inreplace 'tests/Makefile.am', '/usr/share', HOMEBREW_PREFIX/'share'
         system "./autogen.sh"
       end
 
