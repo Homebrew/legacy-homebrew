@@ -76,7 +76,7 @@ class Ansible < Formula
     man1.install Dir['docs/man/man1/*.1']
 
     Dir["#{bin}/*"].each do |script|
-      wrap script, pythonpath=python.private_site_packages
+      wrap script, pythonpath=python.site_packages
     end
   end
 end
