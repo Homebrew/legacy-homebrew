@@ -17,6 +17,10 @@ class GobjectIntrospection < Formula
   def install
     ENV.universal_binary if build.universal?
     inreplace 'giscanner/transformer.py', '/usr/share', HOMEBREW_PREFIX/'share'
+    inreplace 'configure' do |s|
+      s.change_make_var! 'GOBJECT_INTROSPECTION_LIBDIR', HOMEBREW_PREFIX/'lib'
+    end
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           # Tests require (at least) cairo, disable them.
