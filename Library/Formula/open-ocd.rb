@@ -9,7 +9,7 @@ class OpenOcd < Formula
   option 'enable-ft2232_ftd2xx',  'Enable building support for FT2232 based devices with FTD2XX driver'
 
   depends_on 'libusb-compat'
-  depends_on 'libftdi' if build.include? 'enable-ft2232_libftdi'
+  depends_on 'libftdi0' if build.include? 'enable-ft2232_libftdi'
 
   def install
     # default options that don't imply additional dependencies
