@@ -64,11 +64,11 @@ module SharedEnvExtension
   end
 
   def cc= val
-    self['CC'] = self['OBJC'] = val
+    self['CC'] = self['OBJC'] = val.to_s
   end
 
   def cxx= val
-    self['CXX'] = self['OBJCXX'] = val
+    self['CXX'] = self['OBJCXX'] = val.to_s
   end
 
   def cc;       self['CC'];           end
