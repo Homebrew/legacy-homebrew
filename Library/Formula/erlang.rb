@@ -20,6 +20,9 @@ class ErlangHeadHtmls < Formula
   sha1 '6741e15e0b3e58736987e38fb8803084078ff99f'
 end
 
+# Major releases of erlang should typically start out as separate formula in
+# Homebrew-versions, and only be merged to master when things like couchdb and
+# elixir are compatible.
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
