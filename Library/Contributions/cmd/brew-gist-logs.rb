@@ -4,11 +4,7 @@ require 'net/https'
 
 def gist_logs f
   if ARGV.include? '--new-issue'
-    unless HOMEBREW_GITHUB_API_TOKEN
-      puts 'You need to create an API token: https://github.com/settings/applications'
-      puts 'and then set HOMEBREW_GITHUB_API_TOKEN to use --new-issue option.'
-      exit 1
-    end
+    login unless HOMEBREW_GITHUB_API_TOKEN
     repo = repo_name(f)
   end
 
@@ -71,11 +67,29 @@ def post path, data
   request['Content-Type'] = 'application/json'
   if HOMEBREW_GITHUB_API_TOKEN
     request['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}"
+  elsif @github_user and @github_password
+    request.basic_auth(@github_user, @github_password)
   end
   request.body = Utils::JSON.dump(data)
   response = http.request(request)
   raise HTTP_Error, response if response.code != '201'
   Utils::JSON.load(response.body)
+end
+
+#This hack is required for ruby < 1.9.3
+def noecho_gets
+  system 'stty -echo'
+  result = $stdin.gets
+  system 'stty echo'
+  puts
+  result
+end
+
+def login
+  print 'github user: '
+  @github_user = $stdin.gets.chomp
+  print 'password: '
+  @github_password = noecho_gets.chomp
 end
 
 class HTTP_Error < RuntimeError
