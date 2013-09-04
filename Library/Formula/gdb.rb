@@ -25,6 +25,7 @@ class Gdb < Formula
   end
 
   option 'with-brewed-python', 'Use the Homebrew version of Python'
+  option 'with-version-suffix', 'Add a version suffix to program'
 
   def install
     args = [
@@ -40,9 +41,13 @@ class Gdb < Formula
       args << "--with-python=/usr"
     end
 
+    if build.include? 'with-version-suffix'
+      args << "--program-suffix=-#{version.to_s.slice(/^\d/)}"
+    end
+
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Remove conflicting items with binutils
     rm_rf include
