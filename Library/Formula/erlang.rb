@@ -35,7 +35,6 @@ class Erlang < Formula
     sha1 'afafe2a4b51272eb6ed0f6bfdc4cbdfae0cdc19c' => :snow_leopard
   end
 
-  # remove the autoreconf if possible
   depends_on :automake
   depends_on :libtool
 
