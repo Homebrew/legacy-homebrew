@@ -12,8 +12,9 @@ class OpenOcd < Formula
   depends_on 'libftdi0' if build.include? 'enable-ft2232_libftdi'
 
   def install
-    # default options that don't imply additional dependencies
     args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
       --enable-ftdi
       --enable-arm-jtag-ew
       --enable-jlink
@@ -43,9 +44,7 @@ class OpenOcd < Formula
 
     ENV['CCACHE'] = 'none'
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          *args
+    system "./configure", *args
     system "make install"
   end
 end
