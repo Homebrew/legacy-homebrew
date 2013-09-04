@@ -10,7 +10,7 @@ class Libftdi < Formula
 
   def install
     mkdir 'libftdi-build' do
-      system "cmake", "..", *std_cmake_args
+      system "cmake", "..", "-DLIBUSB_INCLUDE_DIR=/usr/local/include/libusb-1.0", *std_cmake_args
       system "make install"
     end
   end
