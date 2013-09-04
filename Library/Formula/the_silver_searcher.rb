@@ -25,6 +25,8 @@ class TheSilverSearcher < Formula
                           "--prefix=#{prefix}"
     system "make"
     system "make install"
+
+    bash_completion.install 'ag.bashcomp.sh'
   end
 
   def test
