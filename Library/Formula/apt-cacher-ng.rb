@@ -2,8 +2,8 @@ require 'formula'
 
 class AptCacherNg < Formula
   homepage 'http://www.unix-ag.uni-kl.de/~bloch/acng/'
-  url 'http://ftp.debian.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.7.13.orig.tar.xz'
-  sha1 'bb6c3cf8e116ed9800543b7864a3a7b406aa4d5a'
+  url 'http://ftp.debian.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.7.18.orig.tar.xz'
+  sha1 'cfac54eddad558819144dc90a54d00632eb6296a'
 
   depends_on 'xz' => :build
   depends_on 'cmake' => :build

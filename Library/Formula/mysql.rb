@@ -25,14 +25,8 @@ class Mysql < Formula
   option 'enable-memcached', 'Enable innodb-memcached support'
   option 'enable-debug', 'Build with debug support'
 
-  conflicts_with 'mariadb',
-    :because => "mysql and mariadb install the same binaries."
-
-  conflicts_with 'percona-server',
-    :because => "mysql and percona-server install the same binaries."
-
-  conflicts_with 'mysql-cluster',
-    :because => "mysql and mysql-cluster install the same binaries."
+  conflicts_with 'mysql-cluster', 'mariadb', 'percona-server',
+    :because => "mysql, mariadb, and percona install the same binaries."
 
   env :std if build.universal?
 

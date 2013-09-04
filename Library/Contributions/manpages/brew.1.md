@@ -30,10 +30,11 @@ Note that these flags should only appear after a command.
   * `list`:
     List all installed formulae.
 
-  * `search`, `-S` <text>|/<text>/:
+  * `search` <text>|/<text>/:
     Perform a substring search of formula names for <text>. If <text> is
     surrounded with slashes, then it is interpreted as a regular expression.
-    If no search term is given, all available formula are displayed.
+    The search for <text> is extended online to some popular taps.
+    If no search term is given, all locally available formulae are listed.
 
 ## COMMANDS
 
@@ -147,7 +148,7 @@ Note that these flags should only appear after a command.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--fresh] [--use-clang|--use-gcc|--use-llvm] [--build-from-source] [--devel|--HEAD]` <formula>:
+  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--fresh] [--cc=<compiler>] [--use-clang|--use-gcc|--use-llvm] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
@@ -168,6 +169,12 @@ Note that these flags should only appear after a command.
 
     If `--fresh` is passed, the installation process will not re-use any
     options from previous installs.
+
+    If `--cc=<compiler>` is passed, attempt to compile using the specified
+    compiler. The specified argument should be the name of the compiler's
+    executable, for instance `gcc-4.2` for Apple's GCC 4.2.
+    This option is the only way to select a non-Apple compiler; for instance,
+    to build using a Homebrew-provided GCC 4.8, use `--cc=gcc-4.8`
 
     If `--use-clang` is passed, attempt to compile using clang.
 
@@ -266,10 +273,19 @@ Note that these flags should only appear after a command.
     If `--force` is passed, and there are multiple versions of <formula>
     installed, delete all installed versions.
 
-  * `search`, `-S` <text>|/<text>/:
+  * `search`, `-S`:
+    Display all locally available formulae for brewing (including tapped ones).
+    No online search is performed if called without arguments.
+
+  * `search`, `-S` <tap>:
+    Display all formulae in a <tap>, even if not yet tapped.
+    <tap> is of the form <user>/<repo>, e.g. `brew search homebrew/dupes`.
+
+  * `search`, `-S` [<tap>] <text>|/<text>/:
     Perform a substring search of formula names for <text>. If <text> is
     surrounded with slashes, then it is interpreted as a regular expression.
-    If no search term is given, all available formula are displayed.
+    The search for <text> is extended online to some popular taps.
+    If a <tap> is specified, the search is restricted to it.
 
   * `search --debian`|`--fedora`|`--fink`|`--macports`|`--opensuse`|`--ubuntu` <text>:
     Search for <text> in the given package manager's list.
@@ -509,15 +525,6 @@ can take several different forms:
 
     This issue typically occurs when using FileVault or custom SSD
     configurations.
-
-  * HOMEBREW\_USE\_CLANG:
-    If set, forces Homebrew to compile using clang.
-
-  * HOMEBREW\_USE\_GCC:
-    If set, forces Homebrew to compile using gcc.
-
-  * HOMEBREW\_USE\_LLVM:
-    If set, forces Homebrew to compile using LLVM.
 
   * HOMEBREW\_VERBOSE:
     If set, Homebrew always assumes `--verbose` when running commands.

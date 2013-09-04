@@ -9,6 +9,15 @@ class Openvpn < Formula
   depends_on 'lzo'
 
   def install
+    # pam_appl header is installed in a different location on Leopard
+    # and older; reported upstream https://community.openvpn.net/openvpn/ticket/326
+    if MacOS.version < :snow_leopard
+      %w[auth-pam.c pamdl.c].each do |file|
+        inreplace "src/plugins/auth-pam/#{file}",
+          "security/pam_appl.h", "pam/pam_appl.h"
+      end
+    end
+
     # Build and install binary
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

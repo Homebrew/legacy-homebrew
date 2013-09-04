@@ -5,7 +5,7 @@ module LinuxCPUs
   # Linux supports x86 only, and universal archs do not apply
   def arch_32_bit; :i386; end
   def arch_64_bit; :x86_64; end
-  def universal_archs; []; end
+  def universal_archs; [].extend ArchitectureListExtension; end
 
   def type
     @cpu_type ||= case `uname -m`

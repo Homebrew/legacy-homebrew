@@ -29,6 +29,9 @@ def blacklisted? name
   when 'pip' then <<-EOS.undent
     pip is installed by `brew install python`
     EOS
+  when 'pil' then <<-EOS.undent
+    Instead of PIL, consider to `pip install pillow` or `brew install samueljohn/python/pillow`.
+    EOS
   when 'macruby' then <<-EOS.undent
     MacRuby works better when you install their package:
       http://www.macruby.org/
