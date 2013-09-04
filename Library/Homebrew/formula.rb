@@ -28,7 +28,7 @@ class Formula
   def initialize name='__UNKNOWN__', path=nil
     @name = name
     # If we got an explicit path, use that, else determine from the name
-    @path = path.nil? ? self.class.path(name) : Pathname.new(path)
+    @path = path.nil? ? self.class.path(name) : Pathname.new(path).expand_path
     @homepage = self.class.homepage
 
     set_spec :stable
@@ -212,7 +212,12 @@ class Formula
   def fails_with? cc
     cc = Compiler.new(cc) unless cc.is_a? Compiler
     (self.class.cc_failures || []).any? do |failure|
-      failure.compiler == cc.name && failure.build >= cc.build
+      if cc.version
+        # non-Apple GCCs don't have builds, just version numbers
+        failure.compiler == cc.name && failure.version >= cc.version
+      else
+        failure.compiler == cc.name && failure.build >= cc.build
+      end
     end
   end
 

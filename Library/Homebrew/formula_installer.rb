@@ -1,5 +1,6 @@
 # encoding: UTF-8
 
+require 'cxxstdlib'
 require 'exceptions'
 require 'formula'
 require 'keg'
@@ -94,6 +95,17 @@ class FormulaInstaller
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
+    if pour_bottle? true
+      # TODO We currently only support building with libstdc++ as
+      # the default case, and all Apple libstdc++s are compatible, so
+      # this default is sensible.
+      # In the future we need to actually provide a way to read this from
+      # the bottle, or update the default should that change
+      # at some other point.
+      stdlib_in_use = CxxStdlib.new(:libstdcxx, :clang)
+      stdlib_in_use.check_dependencies(f, f.deps)
+    end
+
     oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
     @@attempted << f
@@ -118,7 +130,11 @@ class FormulaInstaller
       clean
     end
 
-    f.post_install
+    begin
+      f.post_install
+    rescue
+      opoo "#{f.name} post_install failed. Rerun with `brew postinstall #{f.name}`."
+    end
 
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
@@ -350,8 +366,6 @@ class FormulaInstaller
     end
 
     raise "Empty installation" if Dir["#{f.prefix}/*"].empty?
-
-    Tab.create(f, build_argv).write # INSTALL_RECEIPT.json
 
   rescue Exception
     ignore_interrupts do

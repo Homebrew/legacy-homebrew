@@ -109,6 +109,10 @@ module Superenv
       end
       append_path('PATH', apple_gcc42.opt_prefix/'bin') if apple_gcc42
     end
+
+    if ENV['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
+      warn_about_non_apple_gcc($1)
+    end
   end
 
   def universal_binary
@@ -261,6 +265,13 @@ module Superenv
   def clang
     self.cc  = self['HOMEBREW_CC'] = "clang"
     self.cxx = "clang++"
+  end
+  GNU_GCC_VERSIONS.each do |n|
+    define_method(:"gcc-4.#{n}") do
+      gcc = "gcc-4.#{n}"
+      self.cc = self['HOMEBREW_CC'] = gcc
+      self.cxx = gcc.gsub('c', '+')
+    end
   end
   def make_jobs
     self['MAKEFLAGS'] =~ /-\w*j(\d)+/

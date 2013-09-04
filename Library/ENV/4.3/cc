@@ -68,10 +68,8 @@ class Cmd
         'clang++'
       when /llvm-gcc/
         'llvm-g++-4.2'
-      when /gcc(-4.2)?$/
-        'g++-4.2'
-      when /gcc-4.0/
-        'g++-4.0'
+      when /gcc(-\d\.\d)?$/
+        'g++' + $1.to_s
       end
     else
       @arg0

@@ -68,6 +68,10 @@ module Stdenv
       self.cxx = MacOS.locate("c++")
     end
 
+    if cc =~ GNU_GCC_REGEXP
+      warn_about_non_apple_gcc($1)
+    end
+
     # Add lib and include etc. from the current macosxsdk to compiler flags:
     macosxsdk MacOS.version
 
@@ -162,6 +166,16 @@ module Stdenv
     @compiler = :gcc
   end
   alias_method :gcc_4_2, :gcc
+
+  GNU_GCC_VERSIONS.each do |n|
+    define_method(:"gcc-4.#{n}") do
+      gcc = "gcc-4.#{n}"
+      self.cc = self['OBJC'] = gcc
+      self.cxx = self['OBJCXX'] = gcc.gsub('c', '+')
+      set_cpu_cflags
+      @compiler = gcc
+    end
+  end
 
   def llvm
     self.cc  = MacOS.locate("llvm-gcc")

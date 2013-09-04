@@ -112,6 +112,21 @@ class UnsatisfiedRequirements < Homebrew::InstallationError
   end
 end
 
+class IncompatibleCxxStdlibs < Homebrew::InstallationError
+  def initialize(f, dep, wrong, right)
+    super f, <<-EOS.undent
+    #{f} dependency #{dep} was built with the following
+    C++ standard library: #{wrong.type_string} (from #{wrong.compiler})
+
+    This is incompatible with the standard library being used
+    to build #{f}: #{right.type_string} (from #{right.compiler})
+
+    Please reinstall #{dep} using a compatible compiler.
+    hint: Check https://github.com/mxcl/homebrew/wiki/C++-Standard-Libraries
+    EOS
+  end
+end
+
 class FormulaConflictError < Homebrew::InstallationError
   attr_reader :f, :conflicts
 

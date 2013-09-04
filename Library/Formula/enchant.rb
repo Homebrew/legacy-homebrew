@@ -26,6 +26,8 @@ class Enchant < Formula
     if build.with? 'python'
       # Now we handle the python bindings from the subformulae PyEnchant
       PyEnchant.new.brew do
+        # Don't download and install distribute now
+        inreplace 'setup.py', "distribute_setup.use_setuptools()", ""
         python do
           ENV['PYENCHANT_LIBRARY_PATH'] = lib/'libenchant.dylib'
           system python, 'setup.py', 'install', "--prefix=#{prefix}",
@@ -37,8 +39,10 @@ class Enchant < Formula
   end
 
   def test
-    python do
-      system python, "-c", "import enchant; d=enchant.Dict('en_US'); print(d.suggest('homebrew'))"
+    if build.with? 'python'
+      python do
+        system python, "-c", "import enchant; d=enchant.Dict('en_US'); print(d.suggest('homebrew'))"
+      end
     end
   end
 end

@@ -87,7 +87,11 @@ class Fontforge < Formula
 
   def test
     system "#{bin}/fontforge", "-version"
-    system python, "-c", "import fontforge"
+    if build.with? 'python'
+      python do
+        system python, "-c", "import fontforge"
+      end
+    end
   end
 
   def caveats

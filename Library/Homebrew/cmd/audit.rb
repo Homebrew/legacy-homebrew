@@ -568,13 +568,7 @@ class FormulaAuditor
       end
     end
 
-    if f.requirements.any?{ |r| r.kind_of?(PythonInstalled) }
-      # Don't check this for all formulae, because some are allowed to set the
-      # PYTHONPATH. E.g. python.rb itself needs to set it.
-      if text =~ /ENV\.append.*PYTHONPATH/ || text =~ /ENV\[['"]PYTHONPATH['"]\]\s*=[^=]/
-        problem "Don't set the PYTHONPATH, instead declare `depends_on :python`"
-      end
-    else
+    unless f.requirements.any?{ |r| r.kind_of?(PythonInstalled) }
       # So if there is no PythonInstalled requirement, we can check if the
       # formula still uses python and should add a `depends_on :python`
       unless f.name.to_s =~ /(pypy[0-9]*)|(python[0-9]*)/
