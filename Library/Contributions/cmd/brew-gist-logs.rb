@@ -50,12 +50,12 @@ end
 def http
   @http ||= begin
     uri = URI.parse('https://api.github.com')
-    p = ENV['http_proxy'] ? URI.parse(ENV['http_proxy']) : nil
-    if p.class == URI::HTTP or p.class == URI::HTTPS
-      @http = Net::HTTP.new(uri.host, uri.port, p.host, p.port, p.user, p.password)
-    else
-      @http = Net::HTTP.new(uri.host, uri.port)
+    args = [uri.host, uri.port]
+    proxy = ENV['http_proxy'] ? URI.parse(ENV['http_proxy']) : nil
+    if proxy.class == URI::HTTP or proxy.class == URI::HTTPS
+      args += [proxy.host, proxy.port, proxy.user, proxy.password]
     end
+    @http = Net::HTTP.send(:new, *args)
     @http.use_ssl = true
     @http
   end
