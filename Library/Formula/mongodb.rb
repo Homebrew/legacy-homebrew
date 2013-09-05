@@ -45,8 +45,10 @@ class Mongodb < Formula
       }
       exec "#{prefix}/mongod", *ARGV
     EOS
+  end
 
-    etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
+  def post_install
+    cp prefix+'mongod.conf', etc unless File.exists? etc+"mongod.conf"
   end
 
   def mongodb_conf; <<-EOS.undent
