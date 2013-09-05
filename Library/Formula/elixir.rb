@@ -38,8 +38,8 @@ class Elixir < Formula
     bin.install Dir['bin/*'] - Dir['bin/*.bat']
 
     Dir['lib/*/ebin'].each do |path|
-      app  = File.basename(File.dirname(path))
-      (lib/"#{app}").install path
+      app = File.basename(File.dirname(path))
+      (lib/app).install path
     end
   end
 
