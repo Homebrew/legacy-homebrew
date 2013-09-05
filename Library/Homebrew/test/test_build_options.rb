@@ -1,9 +1,9 @@
-  require 'testing_env'
+require 'testing_env'
 require 'build_options'
 
 class BuildOptionsTests < Test::Unit::TestCase
   def setup
-    args = %w{--with-foo --with-bar --without-qux} # args fake the command line
+    args = %w{--with-foo --with-bar --without-qux}
     @build = BuildOptions.new(args)
     @build.add("with-foo")
     @build.add("with-bar")
@@ -66,5 +66,9 @@ class BuildOptionsTests < Test::Unit::TestCase
     assert @build.has_opposite_of?(Option.new("--with-qux"))
     assert !@build.has_opposite_of?("--without-qux")
     assert !@build.has_opposite_of?("--without-nonexisting")
+  end
+
+  def test_actually_recognizes_implicit_options
+    assert @build.has_opposite_of?("--with-baz")
   end
 end
