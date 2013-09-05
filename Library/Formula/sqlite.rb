@@ -7,16 +7,16 @@ class SqliteFunctions < Formula
 end
 
 class SqliteDocs < Formula
-  url 'http://www.sqlite.org/2013/sqlite-doc-3080001.zip'
-  version '3.8.0.1'
-  sha1 '89005a0fdd60accd037845895c9b21221d9fc30d'
+  url 'http://www.sqlite.org/2013/sqlite-doc-3080002.zip'
+  version '3.8.0.2'
+  sha1 '43e314880cee7c97c240131625f6442c2ca7b109'
 end
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://www.sqlite.org/2013/sqlite-autoconf-3080001.tar.gz'
-  version '3.8.0.1'
-  sha1 'd2fd623a7537e0fad5a2f33169dd9d6def268583'
+  url 'http://www.sqlite.org/2013/sqlite-autoconf-3080002.tar.gz'
+  version '3.8.0.2'
+  sha1 '294c30e882a0d45877bce09afe72d08ccfc6b650'
 
   option :universal
   option 'with-docs', 'Install HTML documentation'
