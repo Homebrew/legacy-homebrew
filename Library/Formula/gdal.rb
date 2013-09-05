@@ -8,7 +8,7 @@ class Gdal < Formula
   head 'https://svn.osgeo.org/gdal/trunk/gdal'
 
   option 'complete', 'Use additional Homebrew libraries to provide more drivers.'
-  option 'with-postgres', 'Specify PostgreSQL as a dependency.'
+  option 'with-postgresql', 'Specify PostgreSQL as a dependency.'
   option 'with-mysql', 'Specify MySQL as a dependency.'
   option 'enable-opencl', 'Build with OpenCL acceleration.'
   option 'enable-armadillo', 'Build with Armadillo accelerated TPS transforms.'
@@ -157,7 +157,7 @@ class Gdal < Formula
     args.concat unsupported_backends.map {|b| '--without-' + b} unless build.include? 'enable-unsupported'
 
     # Database support.
-    args << (build.with?("postgres") ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : "--without-pg")
+    args << (build.with?("postgresql") ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : "--without-pg")
     args << (build.with?("mysql") ? "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" : "--without-mysql")
 
     # Python is installed manually to ensure everything is properly sandboxed.
