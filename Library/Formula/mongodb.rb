@@ -33,9 +33,6 @@ class Mongodb < Formula
 
     system 'scons', 'install', *args
 
-    (var+'mongodb').mkpath
-    (var+'log/mongodb').mkpath
-
     (prefix+'mongod.conf').write mongodb_conf
 
     mv bin/'mongod', prefix
@@ -49,6 +46,8 @@ class Mongodb < Formula
   end
 
   def post_install
+    (var+'mongodb').mkpath
+    (var+'log/mongodb').mkpath
     cp prefix+'mongod.conf', etc unless File.exists? etc+"mongod.conf"
   end
 
