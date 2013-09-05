@@ -21,61 +21,38 @@ module Homebrew extend self
       canonical_name = Formula.canonical_name(name)
       formula = Formula.factory(canonical_name)
 
-      if not formula.installed?
-        if force_new_install?
-          oh1 "Force installing new formula: #{name}"
-          self.install_formula formula
-          next
-        else
-          raise <<-EOS.undent
-          #{formula} is not installed. Please install it first or use
-          "--force-new-install" flag.
-          EOS
-        end
-      end
-
-      linked_keg_ref = HOMEBREW_REPOSITORY/'opt'/canonical_name
-      keg = Keg.new(linked_keg_ref.realpath)
-
       begin
         oh1 "Reinstalling #{name} #{ARGV.options_only*' '}"
-        quarantine keg
+        opt_link = HOMEBREW_PREFIX/'opt'/canonical_name
+        if opt_link.exist?
+          keg = Keg.new(opt_link.realpath)
+          backup keg
+        end
         self.install_formula formula
       rescue Exception => e
         ofail e.message unless e.message.empty?
-        restore_quarantine keg, formula
-        raise 'Reinstallation abort.'
+        restore_backup keg, formula
+        raise 'Reinstall failed.'
       else
-        remove_quarantine keg
+        backup_path(keg).rmtree if backup_path(keg).exist?
       end
     end
   end
 
-  def force_new_install?
-    ARGV.include? '--force-new-install'
-  end
-
-  def quarantine keg
+  def backup keg
     keg.unlink
-
-    path = Pathname.new(keg.to_s)
-    path.rename quarantine_path(path)
+    keg.rename backup_path(keg)
   end
 
-  def restore_quarantine keg, formula
-    path = Pathname.new(quarantine_path(keg))
+  def restore_backup keg, formula
+    path = backup_path(keg)
     if path.directory?
-      path.rename keg.to_s
+      path.rename keg
       keg.link unless formula.keg_only?
     end
   end
 
-  def remove_quarantine keg
-    path = Pathname.new(quarantine_path(keg))
-    path.rmtree
-  end
-
-  def quarantine_path path
-    path.to_s + '.reinstall'
+  def backup_path path
+    Pathname.new "#{path}.reinstall"
   end
 end

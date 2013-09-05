@@ -19,13 +19,7 @@ module Homebrew extend self
     end unless ARGV.force?
 
     perform_preinstall_checks
-    ARGV.formulae.each do |f|
-      begin
-        install_formula(f)
-      rescue CannotInstallFormulaError => e
-        ofail e.message
-      end
-    end
+    ARGV.formulae.each { |f| install_formula(f) }
   end
 
   def check_ppc
@@ -86,6 +80,7 @@ module Homebrew extend self
     # another formula. In that case, don't generate an error, just move on.
   rescue FormulaAlreadyInstalledError => e
     opoo e.message
-  # Ignore CannotInstallFormulaError and let caller handle it.
+  rescue CannotInstallFormulaError => e
+    ofail e.message
   end
 end
