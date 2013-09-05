@@ -107,7 +107,7 @@ class BuildOptions
   end
 
   def has_opposite_of? option
-    true if args.include? opposite_of option
+    @options.include? opposite_of(option)
   end
 
   def opposite_of option
