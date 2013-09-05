@@ -53,7 +53,15 @@ class Node < Formula
   end
 
   # fixes gyp's detection of system paths on CLT-only systems
-  def patches; DATA; end
+  # fix compilation of libuv on <= 10.6, fixed upstream
+  def patches
+    p = [DATA]
+
+    if build.stable? && MacOS.version <= :snow_leopard
+      p << "https://gist.github.com/jacknagel/6452630/raw/4d2af17010bad40c14ad9c920ef5562a646fb449/fsevents.diff"
+    end
+    p
+  end
 
   def install
     args = %W{--prefix=#{prefix}}
