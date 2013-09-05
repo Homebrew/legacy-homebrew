@@ -17,20 +17,28 @@ class Qt5 < Formula
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
   option :universal
-  option 'with-qtdbus', 'Enable QtDBus module'
-  option 'with-demos-examples', 'Enable Qt demos and examples'
-  option 'with-debug-and-release', 'Compile Qt in debug and release mode'
-  option 'with-mysql', 'Enable MySQL plugin'
-  option 'developer', 'Compile and link Qt with developer options'
+  option 'with-docs', 'Build documentation'
+  option 'developer', 'Build and link with developer options'
 
-  depends_on "d-bus" if build.include? 'with-qtdbus'
+  # Support legacy option name.
+  if build.with? 'qtdbus'
+    depends_on "d-bus" => :recommended
+  else
+    depends_on "d-bus" => :optional
+  end
+
   depends_on "mysql" => :optional
 
   def install
     ENV.universal_binary if build.universal?
     args = ["-prefix", prefix,
             "-system-zlib",
-            "-confirm-license", "-opensource"]
+            "-confirm-license", "-opensource",
+            "-nomake", "examples",
+            "-release"]
+
+    # In latest head `-nomake demos` is no longer recognized
+    args << "-nomake" << "demos" unless build.head?
 
     unless MacOS::CLT.installed?
       # ... too stupid to find CFNumber.h, so we give a hint:
@@ -41,7 +49,7 @@ class Qt5 < Formula
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
-    if build.with? 'qtdbus'
+    if build.with? 'd-bus'
       dbus_opt = Formula.factory('d-bus').opt_prefix
       args << "-I#{dbus_opt}/lib/dbus-1.0/include"
       args << "-I#{dbus_opt}/include/dbus-1.0"
@@ -49,10 +57,8 @@ class Qt5 < Formula
       args << "-ldbus-1"
     end
 
-    unless build.include? 'with-demos-examples'
-      args << "-nomake" << "examples"
-      # In latest head `-nomake demos` is no longer recognized
-      args << "-nomake" << "demos" unless build.head?
+    unless build.with? 'docs'
+      args << "-nomake" << "docs"
     end
 
     if MacOS.prefer_64_bit? or build.universal?
@@ -63,21 +69,7 @@ class Qt5 < Formula
       args << '-arch' << 'x86'
     end
 
-    if build.include? 'with-debug-and-release'
-      args << "-debug-and-release"
-    else
-      args << "-release"
-    end
-
     args << '-developer-build' if build.include? 'developer'
-
-    # We move the source and build in-place because:
-    # - Debug symbols need to find the source
-    # - to fix https://github.com/mxcl/homebrew/issues/20020
-    # - PySide `make apidoc` needs the src
-    (prefix/"src").mkdir
-    mv Dir['*'], "#{prefix}/src/"
-    cd "#{prefix}/src"
 
     system "./configure", *args
     system "make"
@@ -111,7 +103,7 @@ class Qt5 < Formula
   end
 
   test do
-    system "#{bin}/qmake", "--version"
+    system "#{bin}/qmake", "-project"
   end
 
   def caveats; <<-EOS.undent
