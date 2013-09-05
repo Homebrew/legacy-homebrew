@@ -13,9 +13,10 @@ class Mongodb < Formula
   head 'https://github.com/mongodb/mongo.git'
 
   bottle do
-    sha1 'ddac997b68deff5bfa04d22f5ddef44f895e6629' => :mountain_lion
-    sha1 '85ed3769ab3bc301dd044c94522fea24fb91d16f' => :lion
-    sha1 '2e5a28f2a9c97058b5e3b002403ed2fb3439cd8c' => :snow_leopard
+    revision 1
+    sha1 '323566c3738d80a437bae63f294c44e7548ae758' => :mountain_lion
+    sha1 'fbe4d599ae992c6b863c96da6da3b45446bdc0cf' => :lion
+    sha1 'b4d7e33054b9daef2504bcdb8f26ef43dbea6aaf' => :snow_leopard
   end
 
   depends_on 'scons' => :build
@@ -45,8 +46,10 @@ class Mongodb < Formula
       }
       exec "#{prefix}/mongod", *ARGV
     EOS
+  end
 
-    etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
+  def post_install
+    cp prefix+'mongod.conf', etc unless File.exists? etc+"mongod.conf"
   end
 
   def mongodb_conf; <<-EOS.undent
