@@ -2,9 +2,9 @@ require 'formula'
 
 class Root < Formula
   homepage 'http://root.cern.ch'
-  url 'ftp://root.cern.ch/root/root_v5.34.09.source.tar.gz'
-  version '5.34.09'
-  sha1 '2c8a0bb4363bd6b0f9767d6b6bf5a6ea8785b74b'
+  url 'ftp://root.cern.ch/root/root_v5.34.10.source.tar.gz'
+  version '5.34.10'
+  sha1 '2dc0af12e531c4f2314a9fbd7dd4f5fee924d71c'
 
   depends_on 'xrootd' => :recommended
   depends_on 'fftw' => :optional
