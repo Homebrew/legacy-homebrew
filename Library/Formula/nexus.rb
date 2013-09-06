@@ -2,9 +2,9 @@ require 'formula'
 
 class Nexus < Formula
   homepage 'http://www.sonatype.org/'
-  url 'http://download.sonatype.com/nexus/oss/nexus-2.5.0-04-bundle.tar.gz'
-  version '2.5.0-04'
-  sha1 'd6f438f25b08346f7590344c4a4175a8e547c7cb'
+  url 'http://download.sonatype.com/nexus/oss/nexus-2.6.2-01-bundle.tar.gz'
+  version '2.6.2-01'
+  sha1 '046c4b9ed27e4d05eec1be80b676f4ee25ba352a'
 
   # Put the sonatype-work directory in the var directory, to persist across version updates
   def patches
@@ -13,7 +13,7 @@ class Nexus < Formula
 
   def install
     rm_f Dir['bin/*.bat']
-    libexec.install Dir["nexus-2.5.0-04/*"]
+    libexec.install Dir["nexus-2.6.2-01/*"]
     bin.install_symlink libexec/'bin/nexus'
   end
 
@@ -49,10 +49,10 @@ class Nexus < Formula
 end
 
 __END__
-diff --git a/nexus-2.5.0-04/conf/nexus.properties b/nexus-2.5.0-04/conf/nexus.properties
+diff --git a/nexus-2.6.2-01/conf/nexus.properties b/nexus-2.6.2-01/conf/nexus.properties
 index df89251..23b536b 100644
---- a/nexus-2.5.0-04/conf/nexus.properties
-+++ b/nexus-2.5.0-04/conf/nexus.properties
+--- a/nexus-2.6.2-01/conf/nexus.properties
++++ b/nexus-2.6.2-01/conf/nexus.properties
 @@ -22,5 +22,5 @@ nexus-webapp=${bundleBasedir}/nexus
  nexus-webapp-context-path=/nexus
 
