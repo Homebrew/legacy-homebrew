@@ -2,9 +2,9 @@ require 'formula'
 
 class Basex < Formula
   homepage 'http://basex.org'
-  url 'http://files.basex.org/releases/7.6/BaseX76.zip'
-  version '7.6'
-  sha1 '7c90082770530d4b0c9f4327da558de0fc28ee9c'
+  url 'http://files.basex.org/releases/7.7/BaseX77.zip'
+  version '7.7'
+  sha1 '49bb088b6eba892d55733685c78c46e9d313bf7c'
 
   def install
     rm Dir['bin/*.bat']
