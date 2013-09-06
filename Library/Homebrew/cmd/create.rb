@@ -139,10 +139,16 @@ class FormulaCreator
     <% if mode == :cmake %>
         system "cmake", ".", *std_cmake_args
     <% elsif mode == :autotools %>
-        system "./configure", "--disable-debug", "--disable-dependency-tracking",
+        # Remove unrecognized options if warned by configure
+        system "./configure", "--disable-debug",
+                              "--disable-dependency-tracking",
+                              "--disable-silent-rules",
                               "--prefix=\#{prefix}"
     <% else %>
-        system "./configure", "--disable-debug", "--disable-dependency-tracking",
+        # Remove unrecognized options if warned by configure
+        system "./configure", "--disable-debug",
+                              "--disable-dependency-tracking",
+                              "--disable-silent-rules",
                               "--prefix=\#{prefix}"
         # system "cmake", ".", *std_cmake_args
     <% end %>
