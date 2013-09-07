@@ -16,7 +16,7 @@ class Nexus < Formula
     bin.install_symlink libexec/'bin/nexus'
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/nexus/libexec/bin/nexus { console | start | stop | restart | status | dump }"
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/nexus/libexec/bin/nexus start"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -34,15 +34,6 @@ class Nexus < Formula
       <true/>
       </dict>
     </plist>
-    EOS
-  end
-
-  def caveats; <<-EOS.undent
-    If you are upgrading nexus for the first time, and old version is less than 2.3.1, then
-    you will need to copy the sonatype-work directory from:
-      #{HOMEBREW_PREFIX}/Cellar/#{name}/<old version>/
-    to
-      #{var}
     EOS
   end
 end
