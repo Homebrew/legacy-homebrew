@@ -8,7 +8,8 @@ class Mboxgrep < Formula
   depends_on "pcre"
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}",
+      "--infodir=#{info}"
     system "make"
     system "make", "install"
   end
