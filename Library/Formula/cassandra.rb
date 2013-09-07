@@ -33,7 +33,7 @@ class Cassandra < Formula
                   "#{bin}/json2sstable", "#{bin}/nodetool",
                   "#{bin}/sstable*"],
       /`dirname "?\$0"?`\/cassandra.in.sh/,
-      "#{libexec}/cassandra.in.sh"
+      "#{share}/cassandra.in.sh"
   end
 
   def caveats; <<-EOS.undent
