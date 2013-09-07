@@ -3,20 +3,20 @@ require 'formula'
 class SqliteFunctions < Formula
   url 'http://www.sqlite.org/contrib/download/extension-functions.c?get=25', :using  => :nounzip
   sha1 'c68fa706d6d9ff98608044c00212473f9c14892f'
-  version '2010-01-06'
+  version '2010-02-06'
 end
 
 class SqliteDocs < Formula
-  url 'http://www.sqlite.org/2013/sqlite-doc-3071700.zip'
-  version '3.7.17'
-  sha1 '6b533b0a9a21eb2c2d1c9f278b8defbeb5a432a7'
+  url 'http://www.sqlite.org/2013/sqlite-doc-3080002.zip'
+  version '3.8.0.2'
+  sha1 '43e314880cee7c97c240131625f6442c2ca7b109'
 end
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://sqlite.org/2013/sqlite-autoconf-3071700.tar.gz'
-  version '3.7.17'
-  sha1 'e31958e56b1d7bef9433b1ff2e875c8c290d37f4'
+  url 'http://www.sqlite.org/2013/sqlite-autoconf-3080002.tar.gz'
+  version '3.8.0.2'
+  sha1 '294c30e882a0d45877bce09afe72d08ccfc6b650'
 
   option :universal
   option 'with-docs', 'Install HTML documentation'

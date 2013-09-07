@@ -2,8 +2,8 @@ require 'formula'
 
 class Pyqt < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  url 'http://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.2/PyQt-mac-gpl-4.10.2.tar.gz'
-  sha1 '40362e6b9f476683e4e35b83369e30a8dfff99ad'
+  url 'http://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.3/PyQt-mac-gpl-4.10.3.tar.gz'
+  sha1 'ba5465f92fb43c9f0a5b948fa25df5045f160bf0'
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
@@ -18,10 +18,16 @@ class Pyqt < Formula
 
   def install
     python do
-      system python, "./configure-ng.py", "--confirm-license",
-                                          "--bindir=#{bin}",
-                                          "--destdir=#{lib}/#{python.xy}/site-packages",
-                                          "--sipdir=#{share}/sip#{python.if3then3}"
+      args = [ "--confirm-license",
+               "--bindir=#{bin}",
+               "--destdir=#{lib}/#{python.xy}/site-packages",
+               "--sipdir=#{share}/sip#{python.if3then3}" ]
+      # We need to run "configure.py" so that pyqtconfig.py is generated and
+      # PyQWT needs that. But to do the actual compile, we use the newer
+      # "configure-ng.py" that is recommened in the README.
+      system python, "configure.py", *args
+      (python.site_packages/'PyQt4').install 'pyqtconfig.py'
+      system python, "./configure-ng.py", *args
       system "make"
       system "make", "install"
       system "make", "clean"  # because this python block may be run twice

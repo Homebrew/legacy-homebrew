@@ -7,8 +7,8 @@ class Pdf2image < Formula
 
   depends_on :x11
 
-  # superenv strips flags that are needed for the build to succeed
-  env :std
+  conflicts_with 'poppler', 'xpdf',
+    :because => 'pdf2image, poppler, and xpdf install conflicting executables'
 
   def install
     system "./configure", "--prefix=#{prefix}"

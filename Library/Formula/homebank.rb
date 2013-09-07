@@ -2,8 +2,8 @@ require 'formula'
 
 class Homebank < Formula
   homepage 'http://homebank.free.fr'
-  url 'http://homebank.free.fr/public/homebank-4.5.tar.gz'
-  sha1 'cb2b1435f46965eab44171bc6411fee1da754380'
+  url 'http://homebank.free.fr/public/homebank-4.5.2.tar.gz'
+  sha1 'a9caa11edfd15f4dbe2e2957a11026d0b71aea24'
 
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build

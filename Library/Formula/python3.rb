@@ -6,8 +6,8 @@ require 'formula'
 # `brew install python`.
 
 class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.0.tar.gz'
-  sha1 '6ff4d37b567d54763cc55ca70ff8058286b8e2c3'
+  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.tar.gz'
+  sha1 '0c789b38afa522605407515efb74a0278b867628'
 end
 
 class Pip < Formula
@@ -36,6 +36,9 @@ class Python3 < Formula
   depends_on 'xz' => :recommended  # for the lzma module added in 3.3
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
   depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
+
+  skip_clean "bin/pip3", "bin/pip-#{VER}"
+  skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
 
   def patches
     DATA if build.with? 'brewed-tk'
@@ -227,7 +230,9 @@ class Python3 < Formula
 
   def caveats
     text = <<-EOS.undent
-      Setuptools and Pip have been installed, too.
+      Setuptools and Pip have been installed. To update them
+        pip3 install --upgrade setuptools
+        pip3 install --upgrade pip
 
       To symlink "Idle 3" and the "Python Launcher 3" to ~/Applications
         `brew linkapps`

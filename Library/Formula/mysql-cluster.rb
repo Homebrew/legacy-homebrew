@@ -17,14 +17,8 @@ class MysqlCluster < Formula
   option 'enable-local-infile', 'Build with local infile loading support'
   option 'enable-debug', 'Build with debug support'
 
-  conflicts_with 'mysql',
-    :because => "mysql-cluster and mysql install the same binaries."
-
-  conflicts_with 'mariadb',
-    :because => "mysql-cluster and mariadb install the same binaries."
-
-  conflicts_with 'percona-server',
-    :because => "mysql-cluster and percona-server install the same binaries."
+  conflicts_with 'mysql', 'mariadb', 'percona-server',
+    :because => "mysql, mariadb, and percona install the same binaries."
 
   env :std if build.universal?
 

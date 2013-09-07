@@ -56,10 +56,8 @@ module Superenv
 
   def setup_build_environment
     reset
-    self['CC'] = 'cc'
-    self['CXX'] = 'c++'
-    self['OBJC'] = 'cc'
-    self['OBJCXX'] = 'c++'
+    self.cc  = 'cc'
+    self.cxx = 'c++'
     self['DEVELOPER_DIR'] = determine_developer_dir
     self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     self['PATH'] = determine_path
@@ -76,6 +74,12 @@ module Superenv
     self['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     self['ACLOCAL_PATH'] = determine_aclocal_path
 
+    # For custom bottles, need to specify the arch in the environment
+    # so that the compiler shims have access
+    if (arch = ARGV.bottle_arch)
+      self['HOMEBREW_ARCHFLAGS'] = Hardware::CPU.optimization_flags[arch]
+    end
+
     # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
     # compiler flag stripping. It consists of a string of characters which act
     # as flags. Some of these flags are mutually exclusive.
@@ -83,8 +87,11 @@ module Superenv
     # u - A universal build was requested
     # 3 - A 32-bit build was requested
     # b - Installing from a bottle
+    # c - Installing from a bottle with a custom architecture
     # i - Installing from a bottle on Intel
     # 6 - Installing from a bottle on 64-bit Intel
+    # p - Installing from a bottle on PPC
+    # A - Installing from a bottle on PPC with Altivec
     # O - Enables argument refurbishing. Only active under the
     #     make/bsdmake wrappers currently.
     #
@@ -95,8 +102,16 @@ module Superenv
     # Homebrew's apple-gcc42 will be outside the PATH in superenv,
     # so xcrun may not be able to find it
     if self['HOMEBREW_CC'] == 'gcc-4.2'
-      apple_gcc42 = Formula.factory('apple-gcc42') rescue nil
+      apple_gcc42 = begin
+        Formulary.factory('apple-gcc42')
+      rescue Exception # in --debug, catch bare exceptions too
+        nil
+      end
       append_path('PATH', apple_gcc42.opt_prefix/'bin') if apple_gcc42
+    end
+
+    if ENV['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
+      warn_about_non_apple_gcc($1)
     end
   end
 
@@ -113,50 +128,8 @@ module Superenv
   private
 
   def determine_cc
-    if ARGV.include? '--use-gcc'
-      gcc_installed = Formula.factory('apple-gcc42').installed? rescue false
-      # fall back to something else on systems without Apple gcc
-      if MacOS.locate('gcc-4.2') || gcc_installed
-        "gcc-4.2"
-      else
-        raise "gcc-4.2 not found!"
-      end
-    elsif ARGV.include? '--use-llvm'
-      "llvm-gcc"
-    elsif ARGV.include? '--use-clang'
-      "clang"
-    elsif self['HOMEBREW_USE_CLANG']
-      opoo %{HOMEBREW_USE_CLANG is deprecated, use HOMEBREW_CC="clang" instead}
-      "clang"
-    elsif self['HOMEBREW_USE_LLVM']
-      opoo %{HOMEBREW_USE_LLVM is deprecated, use HOMEBREW_CC="llvm" instead}
-      "llvm-gcc"
-    elsif self['HOMEBREW_USE_GCC']
-      opoo %{HOMEBREW_USE_GCC is deprecated, use HOMEBREW_CC="gcc" instead}
-      "gcc"
-    elsif self['HOMEBREW_CC']
-      case self['HOMEBREW_CC']
-        when 'clang', 'gcc-4.0' then self['HOMEBREW_CC']
-        # depending on Xcode version plain 'gcc' could actually be
-        # gcc-4.0 or llvm-gcc
-        when 'gcc', 'gcc-4.2' then 'gcc-4.2'
-        when 'llvm', 'llvm-gcc' then 'llvm-gcc'
-      else
-        opoo "Invalid value for HOMEBREW_CC: #{self['HOMEBREW_CC'].inspect}"
-        default_cc
-      end
-    else
-      default_cc
-    end
-  end
-
-  def default_cc
-    case MacOS.default_compiler
-    when :clang   then 'clang'
-    when :llvm    then 'llvm-gcc'
-    when :gcc     then 'gcc-4.2'
-    when :gcc_4_0 then 'gcc-4.0'
-    end
+    cc = compiler
+    COMPILER_SYMBOL_MAP.invert.fetch(cc, cc)
   end
 
   def determine_path
@@ -203,7 +176,7 @@ module Superenv
     paths << "#{MacOS::X11.include}/freetype2" if x11?
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     paths << "#{sdk}/usr/include/apache2" if MacOS::Xcode.without_clt?
-    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/" unless x11?
+    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers" unless x11?
     paths << MacOS::X11.include if x11?
     paths.to_path_s
   end
@@ -235,11 +208,19 @@ module Superenv
   def determine_cccfg
     s = ""
     if ARGV.build_bottle?
-      s << if Hardware::CPU.type == :intel
+      s << if ARGV.bottle_arch
+        'bc'
+      elsif Hardware::CPU.type == :intel
         if Hardware::CPU.is_64_bit?
           'bi6'
         else
           'bi'
+        end
+      elsif Hardware::CPU.type == :ppc
+        if Hardware::CPU.altivec?
+          'bpA'
+        else
+          'bp'
         end
       else
         'b'
@@ -269,30 +250,28 @@ module Superenv
     macosxsdk remove_macosxsdk].each{|s| alias_method s, :noop }
 
 ### DEPRECATE THESE
-  def compiler
-    case self['HOMEBREW_CC']
-      when "llvm-gcc" then :llvm
-      when "gcc-4.2" then :gcc
-      when "gcc", "clang" then self['HOMEBREW_CC'].to_sym
-    else
-      raise "Invalid value for HOMEBREW_CC: #{self['HOMEBREW_CC'].inspect}"
-    end
-  end
   def deparallelize
     delete('MAKEFLAGS')
   end
   alias_method :j1, :deparallelize
   def gcc
-    self['CC'] = self['OBJC'] = self['HOMEBREW_CC'] = "gcc-4.2"
-    self['CXX'] = self['OBJCXX'] = "g++-4.2"
+    self.cc  = self['HOMEBREW_CC'] = "gcc-4.2"
+    self.cxx = "g++-4.2"
   end
   def llvm
-    self['CC'] = self['OBJC'] = self['HOMEBREW_CC'] = "llvm-gcc"
-    self['CXX'] = self['OBJCXX'] = "llvm-g++-4.2"
+    self.cc  = self['HOMEBREW_CC'] = "llvm-gcc"
+    self.cxx = "llvm-g++-4.2"
   end
   def clang
-    self['CC'] = self['OBJC'] = self['HOMEBREW_CC'] = "clang"
-    self['CXX'] = self['OBJCXX'] = "clang++"
+    self.cc  = self['HOMEBREW_CC'] = "clang"
+    self.cxx = "clang++"
+  end
+  GNU_GCC_VERSIONS.each do |n|
+    define_method(:"gcc-4.#{n}") do
+      gcc = "gcc-4.#{n}"
+      self.cc = self['HOMEBREW_CC'] = gcc
+      self.cxx = gcc.gsub('c', '+')
+    end
   end
   def make_jobs
     self['MAKEFLAGS'] =~ /-\w*j(\d)+/

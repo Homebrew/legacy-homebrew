@@ -20,6 +20,15 @@ class BuildOptions
     @options << Option.new(name, description)
   end
 
+  def add_dep_option(dep)
+    name = dep.name.split("/").last # strip any tap prefix
+    if dep.optional? && !has_option?("with-#{name}")
+      add("with-#{name}", "Build with #{name} support")
+    elsif dep.recommended? && !has_option?("without-#{name}")
+      add("without-#{name}", "Build without #{name} support")
+    end
+  end
+
   def has_option? name
     any? { |opt| opt.name == name }
   end
@@ -91,13 +100,26 @@ class BuildOptions
   # implicit_options are needed because `depends_on 'spam' => 'with-stuff'`
   # complains if 'spam' has stuff as default and only defines `--without-stuff`.
   def implicit_options
-    implicit = unused_options.map do |o|
-      if o.name =~ /^with-(.+)$/ && without?($1)
-        Option.new("without-#{$1}")  # we lose the description, but that's ok
-      elsif o.name =~ /^without-(.+)$/ && with?($1)
-        Option.new("with-#{$1}")
-      end
+    implicit = unused_options.map do |option|
+      opposite_of option unless has_opposite_of? option
     end.compact
     Options.new(implicit)
+  end
+
+  def has_opposite_of? option
+    @options.include? opposite_of(option)
+  end
+
+  def opposite_of option
+    option = Option.new option
+    if option.name =~ /^with-(.+)$/
+      Option.new("without-#{$1}")
+    elsif option.name =~ /^without-(.+)$/
+      Option.new("with-#{$1}")
+    elsif option.name =~ /^enable-(.+)$/
+      Option.new("disable-#{$1}")
+    elsif option.name =~ /^disable-(.+)$/
+      Option.new("enable-#{$1}")
+    end
   end
 end

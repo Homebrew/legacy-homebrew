@@ -3,9 +3,9 @@ require 'formula'
 # Reference: https://github.com/b4winckler/macvim/wiki/building
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/archive/snapshot-70.tar.gz'
-  version '7.4-70'
-  sha1 '66432ae0fe81b2787b23343b6c99ef81f6b52c3e'
+  url 'https://github.com/b4winckler/macvim/archive/snapshot-71.tar.gz'
+  version '7.4-71'
+  sha1 '09101e3e29ae517d6846159211ae64e1427b86c0'
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
