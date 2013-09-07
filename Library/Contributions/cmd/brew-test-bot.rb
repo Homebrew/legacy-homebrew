@@ -243,6 +243,7 @@ class Test
   def formula formula
     @category = __method__.to_s + ".#{formula}"
 
+    test "brew uses #{formula}"
     dependencies = `brew deps #{formula}`.split("\n")
     dependencies -= `brew list`.split("\n")
     dependencies = dependencies.join(' ')
