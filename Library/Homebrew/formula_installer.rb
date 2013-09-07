@@ -374,6 +374,8 @@ class FormulaInstaller
       f.rack.rmdir_if_possible
     end
     raise
+  ensure
+    read.close
   end
 
   def link
