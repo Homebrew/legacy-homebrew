@@ -15,15 +15,16 @@ class Qt < Formula
   head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
 
   option :universal
-  option 'with-qtdbus', 'Enable QtDBus module'
-  option 'with-qt3support', 'Enable deprecated Qt3Support module'
-  option 'with-demos-examples', 'Enable Qt demos and examples'
-  option 'with-docs', 'Build Qt documentation'
-  option 'with-debug-and-release', 'Compile Qt in debug and release mode'
-  option 'developer', 'Compile and link Qt with developer options'
+  option 'with-qt3support', 'Build with deprecated Qt3Support module support'
+  option 'with-docs', 'Build documentation'
+  option 'developer', 'Build and link with developer options'
 
-  depends_on "d-bus" if build.with? 'qtdbus'
+  depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
+
+  odie 'qt: --with-qtdbus has been renamed to --with-d-bus' if ARGV.include? '--with-qtdbus'
+  odie 'qt: --with-demos-examples is no longer supported' if ARGV.include? '--with-demos-examples'
+  odie 'qt: --with-debug-and-release is no longer supported' if ARGV.include? '--with-debug-and-release'
 
   def install
     ENV.universal_binary if build.universal?
@@ -32,7 +33,8 @@ class Qt < Formula
     args = ["-prefix", prefix,
             "-system-zlib",
             "-confirm-license", "-opensource",
-            "-cocoa", "-fast" ]
+            "-nomake", "demos", "-nomake", "examples",
+            "-cocoa", "-fast", "-release"]
 
     # we have to disable these to avoid triggering optimization code
     # that will fail in superenv, perhaps because we rename clang to cc and
@@ -48,7 +50,7 @@ class Qt < Formula
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
-    if build.with? 'qtdbus'
+    if build.with? 'd-bus'
       dbus_opt = Formula.factory('d-bus').opt_prefix
       args << "-I#{dbus_opt}/lib/dbus-1.0/include"
       args << "-I#{dbus_opt}/include/dbus-1.0"
@@ -62,10 +64,6 @@ class Qt < Formula
       args << "-no-qt3support"
     end
 
-    unless build.with? 'demos-examples'
-      args << "-nomake" << "demos" << "-nomake" << "examples"
-    end
-
     unless build.with? 'docs'
       args << "-nomake" << "docs"
     end
@@ -76,15 +74,6 @@ class Qt < Formula
 
     if !MacOS.prefer_64_bit? or build.universal?
       args << '-arch' << 'x86'
-    end
-
-    if build.with? 'debug-and-release'
-      args << "-debug-and-release"
-      # Debug symbols need to find the source so build in the prefix
-      mv "../qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
-      cd "#{prefix}/src"
-    else
-      args << "-release"
     end
 
     args << '-developer-build' if build.include? 'developer'
