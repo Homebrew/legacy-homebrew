@@ -578,10 +578,8 @@ class Formula
       Process.wait
 
       unless $?.success?
-        unless ARGV.verbose?
-          f.flush
-          Kernel.system "/usr/bin/tail", "-n", "5", logfn
-        end
+        f.flush
+        Kernel.system "/usr/bin/tail", "-n", "5", logfn
         f.puts
         require 'cmd/--config'
         Homebrew.write_build_config(f)
