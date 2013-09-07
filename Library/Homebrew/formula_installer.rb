@@ -39,7 +39,7 @@ class FormulaInstaller
 
     if f.installed?
       msg = "#{f}-#{f.installed_version} already installed"
-      msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
+      msg << ", it's just not linked" unless f.linked_keg.symlink? or f.keg_only?
       raise FormulaAlreadyInstalledError, msg
     end
 
@@ -314,7 +314,7 @@ class FormulaInstaller
   end
 
   def caveats
-    if (not f.keg_only?) and ARGV.homebrew_developer?
+    if ARGV.homebrew_developer? and not f.keg_only?
       audit_bin
       audit_sbin
       audit_lib
