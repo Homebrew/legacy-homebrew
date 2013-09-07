@@ -13,7 +13,7 @@ class Nexus < Formula
 
   def install
     rm_f Dir['bin/*.bat']
-    libexec.install Dir["nexus-2.6.2-01/*"]
+    libexec.install Dir["nexus-#{version}/*"]
     bin.install_symlink libexec/'bin/nexus'
   end
 
