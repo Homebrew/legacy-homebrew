@@ -27,7 +27,6 @@ class Cassandra < Formula
     (etc+"cassandra").install Dir["conf/*"]
     prefix.install Dir["*.txt"] + Dir["{bin,interface,javadoc,pylib,lib/licenses}"]
     prefix.install Dir["lib/*.jar"]
-    share.install [bin+'cassandra.in.sh', bin+'stop-server']
   end
 
   def caveats; <<-EOS.undent
