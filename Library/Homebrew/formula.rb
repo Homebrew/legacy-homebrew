@@ -572,24 +572,25 @@ class Formula
       end
       wr.close
 
-      f = File.open(logfn, 'w')
-      f.write(rd.read) until rd.eof?
+      File.open(logfn, 'w') do |f|
+        f.write(rd.read) until rd.eof?
 
-      Process.wait
+        Process.wait
 
-      unless $?.success?
-        f.flush
-        Kernel.system "/usr/bin/tail", "-n", "5", logfn
-        f.puts
-        require 'cmd/--config'
-        Homebrew.write_build_config(f)
-        raise ErrorDuringExecution
+        unless $?.success?
+          f.flush
+          Kernel.system "/usr/bin/tail", "-n", "5", logfn
+          f.puts
+          require 'cmd/--config'
+          Homebrew.write_build_config(f)
+          raise ErrorDuringExecution
+        end
       end
     end
   rescue ErrorDuringExecution
     raise BuildError.new(self, cmd, args, $?)
   ensure
-    [rd, f].each { |io| io.close if io and not io.closed? }
+    rd.close if rd and not rd.closed?
     ENV.update(removed_ENV_variables) if removed_ENV_variables
   end
 
