@@ -220,6 +220,14 @@ Note that these flags should only appear after a command.
 
     If `--force` is passed, Homebrew will allow keg-only formulae to be linked.
 
+  * `linkapps [--local]`:
+    Find all installed formulae that have compiled `.app`-style "application"
+    packages for OS X, and symlink those apps into `/Applications`, allowing
+    for easier access.
+    
+    If provided, `--local` will move them into the user's `~/Applications`
+    folder instead of the system folder. It may need to be created, first.
+
   * `ls, list [--unbrewed] [--versions] [--pinned]` [<formulae>]:
     Without any arguments, list all installed formulae.
 

@@ -1,7 +1,7 @@
-# Links any Applications (.app) found in installed prefixes to ~/Applications
+# Links any Applications (.app) found in installed prefixes to /Applications
 require 'keg'
 
-TARGET_DIR = ARGV.include?("--system") ? "/Applications" : File.expand_path("~/Applications")
+TARGET_DIR = ARGV.include?("--local") ? File.expand_path("~/Applications") : "/Applications"
 
 unless File.exist? TARGET_DIR
   opoo "#{TARGET_DIR} does not exist, stopping."
