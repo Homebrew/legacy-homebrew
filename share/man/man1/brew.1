@@ -236,6 +236,22 @@ If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, Homebrew will list all files which
 If \fB\-\-force\fR is passed, Homebrew will allow keg\-only formulae to be linked\.
 .
 .TP
+\fBlinkapps [\-\-local] [\-\-symlink] [\-f | \-\-force]\fR
+Find all installed formulae that have compiled \fB\.app\fR\-style "application" packages for OS X, and move those apps into \fB/Applications\fR, allowing integration with the system GUI\.
+.
+.IP
+The \fB\.app\fRs will be symlinked \fIback\fR into their build\-folders, ensuring any included scripts still work\.
+.
+.IP
+If provided, \fB\-\-local\fR will move them into the user\'s \fB~/Applications\fR folder instead of the system folder\. It may need to be created, first\.
+.
+.IP
+If \fB\-\-symlink\fR is passed, instead of moving the \fB\.app\fR and then symlinking it back, the \fB\.app\fR will be left in\-place and symlinked into the \fBApplications/\fR folder\. This can break some GUI\-related tasks\.
+.
+.IP
+Finally, \fB\-\-force\fR will allow the moving (or linking) to overwrite any existing \fB\.app\fR directory of the same name\. If you\'re \fIsure\fR you\'re upgrading a previously\-installed Homebrew application to its latest version, this is probably safe\.
+.
+.TP
 \fBls, list [\-\-unbrewed] [\-\-versions] [\-\-pinned]\fR [\fIformulae\fR]
 Without any arguments, list all installed formulae\.
 .
