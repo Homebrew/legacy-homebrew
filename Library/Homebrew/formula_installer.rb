@@ -417,6 +417,7 @@ class FormulaInstaller
       write.close
       Process.wait
       data = read.read
+      read.close
       raise Marshal.load(data) unless data.nil? or data.empty?
       raise Interrupt if $?.exitstatus == 130
       raise "Suspicious installation failure" unless $?.success?
@@ -431,8 +432,6 @@ class FormulaInstaller
       f.rack.rmdir_if_possible
     end
     raise
-  ensure
-    read.close
   end
 
   def link
