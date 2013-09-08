@@ -217,25 +217,13 @@ Note that these flags should only appear after a command.
 
     If `--force` is passed, Homebrew will allow keg-only formulae to be linked.
 
-  * `linkapps [--local] [--symlink] [-f | --force]`:
+  * `linkapps [--local]`:
     Find all installed formulae that have compiled `.app`-style "application"
-    packages for OS X, and move those apps into `/Applications`, allowing
-    integration with the system GUI.
-
-    The `.app`s will be symlinked *back* into their build-folders, ensuring any
-    included scripts still work.
+    packages for OS X, and symlink those apps into `/Applications`, allowing
+    for easier access.
     
     If provided, `--local` will move them into the user's `~/Applications`
     folder instead of the system folder. It may need to be created, first.
-    
-    If `--symlink` is passed, instead of moving the `.app` and then symlinking
-    it back, the `.app` will be left in-place and symlinked into the
-    `Applications/` folder. This can break some GUI-related tasks.
-    
-    Finally, `--force` will allow the moving (or linking) to overwrite any
-    existing `.app` directory of the same name. If you're *sure* you're
-    upgrading a previously-installed Homebrew application to its latest version,
-    this is probably safe.
 
   * `ls, list [--unbrewed] [--versions] [--pinned]` [<formulae>]:
     Without any arguments, list all installed formulae.
