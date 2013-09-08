@@ -148,7 +148,7 @@ Note that these flags should only appear after a command.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--fresh] [--cc=<compiler>] [--use-clang|--use-gcc|--use-llvm] [--build-from-source] [--devel|--HEAD]` <formula>:
+  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--fresh] [--cc=<compiler>] [--use-clang|--use-gcc] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
@@ -179,10 +179,7 @@ Note that these flags should only appear after a command.
     If `--use-clang` is passed, attempt to compile using clang.
 
     If `--use-gcc` is passed, attempt to compile using GCC. This is useful for
-    systems whose default compiler is LLVM-GCC.
-
-    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
-    *NOTE*: Not all formulae will build with LLVM.
+    systems whose default compiler is clang.
 
     If `--build-from-source` is passed, compile from source even if a bottle
     is provided for <formula>.

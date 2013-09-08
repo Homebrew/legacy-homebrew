@@ -50,7 +50,7 @@ class CompilerSelector
   def initialize(f)
     @f = f
     @compilers = CompilerQueue.new
-    %w{clang llvm gcc gcc_4_0}.map(&:to_sym).each do |cc|
+    %w{clang gcc gcc_4_0}.map(&:to_sym).each do |cc|
       unless MacOS.send("#{cc}_build_version").nil?
         @compilers << Compiler.new(cc, priority_for(cc))
       end
@@ -85,8 +85,7 @@ class CompilerSelector
     case cc
     when :clang then MacOS.clang_build_version >= 318 ? 3 : 0.5
     when :gcc   then 2
-    when :llvm  then 1
-    when :gcc_4_0 then 0.25
+    when :gcc_4_0 then 1
     # non-Apple gcc compilers
     else 1.5
     end

@@ -753,6 +753,9 @@ class Formula
     end
 
     def fails_with compiler, &block
+      # avoids breaking for fails_with :llvm blocks in other taps
+      return if compiler == :llvm
+
       @cc_failures ||= Set.new
       @cc_failures << CompilerFailure.new(compiler, &block)
     end

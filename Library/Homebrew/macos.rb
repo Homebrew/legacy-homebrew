@@ -98,14 +98,14 @@ module MacOS extend self
   def default_compiler
     case default_cc
       when /^gcc/ then :gcc
-      when /^llvm/ then :llvm
+      # LLVM is no longer supported, so use GCC on Xcode
+      # versions that came with it
+      when /^llvm/ then Xcode.version < "4.2" ? :gcc : :clang
       when "clang" then :clang
       else
         # guess :(
         if Xcode.version >= "4.3"
           :clang
-        elsif Xcode.version >= "4.2"
-          :llvm
         else
           :gcc
         end

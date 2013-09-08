@@ -185,12 +185,7 @@ class ExampleFormula < Formula
 
   ## Failing with a certain compiler?
 
-  # If it is failing for certain compiler:
-  fails_with :llvm do # :llvm is really llvm-gcc
-    build 2334
-    cause "Segmentation fault during linking."
-  end
-
+  # If it is failing for certain compilers:
   fails_with :clang do
     build 425
     cause 'multiple configure and compile errors'

@@ -6,10 +6,9 @@ module SharedEnvExtension
   GNU_GCC_VERSIONS = (3..9)
   GNU_GCC_REGEXP = /gcc-(4\.[3-9])/
 
-  COMPLER_ALIASES = {'gcc' => 'gcc-4.2', 'llvm' => 'llvm-gcc'}
+  COMPLER_ALIASES = {'gcc' => 'gcc-4.2'}
   COMPILER_SYMBOL_MAP = { 'gcc-4.0'  => :gcc_4_0,
                           'gcc-4.2'  => :gcc,
-                          'llvm-gcc' => :llvm,
                           'clang'    => :clang }
 
   def remove_cc_etc
@@ -98,7 +97,8 @@ module SharedEnvExtension
         raise "gcc-4.2 not found!"
       end
     elsif ARGV.include? '--use-llvm'
-      :llvm
+      opoo "llvm-gcc is no longer supported."
+      MacOS.default_compiler
     elsif ARGV.include? '--use-clang'
       :clang
     elsif self['HOMEBREW_CC']
