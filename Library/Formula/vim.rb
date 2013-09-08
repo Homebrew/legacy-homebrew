@@ -43,6 +43,9 @@ class Vim < Formula
   def install
     ENV['LUA_PREFIX'] = HOMEBREW_PREFIX if build.with?('lua')
 
+    # vim doesn't have and required any Python package, unset PYTHONPATH.
+    ENV.delete('PYTHONPATH')
+
     opts = []
     opts += LANGUAGES_OPTIONAL.map do |language|
       "--enable-#{language}interp" if build.with? language
@@ -50,10 +53,13 @@ class Vim < Formula
     opts += LANGUAGES_DEFAULT.map do |language|
       "--enable-#{language}interp" unless build.without? language
     end
+    if opts.include? %W[--enable-pythoninterp] and opts.include? %W[--enable-python3interp]
+      opts = opts - %W[--enable-pythoninterp --enable-python3interp] + %W[--enable-pythoninterp=dynamic --enable-python3interp=dynamic]
+    end
 
     opts << "--disable-nls" if build.include? "disable-nls"
 
-    if python
+    if python2 and not build.with? "python3"
       if !python.from_osx? && python.framework?
         # Avoid that vim always links System's Python even if configure tells us
         # it has found a brewed Python. Verify with `otool -L`.
@@ -89,12 +95,39 @@ class Vim < Formula
                           "--with-features=huge",
                           "--with-compiledby=Homebrew",
                           *opts
+
+    if build.with? 'python' and build.with? 'python3'
+      # Help vim find Python's library as absolute path.
+      python do
+        inreplace 'src/auto/config.mk', /-DDYNAMIC_PYTHON#{python.if3then3}_DLL=\\".*\\"/, %Q[-DDYNAMIC_PYTHON#{python.if3then3}_DLL=\'\"#{python.prefix}/Python\"\']
+      end
+      # Force vim loading different Python on same time, may cause vim crash.
+      unless python.brewed?
+        opoo "Your Python isn't comes from Homebrew, you may see warning massage during brewing. That's OK. Because we can't detect what your Python is. We will force replace the string."
+        inreplace 'src/auto/config.h', '/* #undef PY_NO_RTLD_GLOBAL */', '#define PY_NO_RTLD_GLOBAL 1'
+        inreplace 'src/auto/config.h', '/* #undef PY3_NO_RTLD_GLOBAL */', '#define PY3_NO_RTLD_GLOBAL 1'
+      end
+    end
+
     system "make"
     # If stripping the binaries is not enabled, vim will segfault with
     # statically-linked interpreters like ruby
     # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
     system "make", "install", "prefix=#{prefix}", "STRIP=/usr/bin/true"
     ln_s bin+'vim', bin+'vi' if build.include? 'override-system-vi'
+  end
+
+  def caveats
+    s = ''
+    if build.with? 'python' and build.with? 'python3'
+      s += <<-EOS.undent
+        This vim build with dynamic library Python 2 & 3.
+
+        Note that vim load dynamic Python 2 & 3 library with the same time
+        may crash vim. For more information, see:
+        http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python3
+      EOS
+    end
   end
 end
 
