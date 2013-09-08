@@ -6,8 +6,8 @@ require 'formula'
 # `brew install python`.
 
 class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.tar.gz'
-  sha1 '0c789b38afa522605407515efb74a0278b867628'
+  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.4.tar.gz'
+  sha1 'b8bf9c2b8a114045598f0e16681d6a63a4d6cdf9'
 end
 
 class Pip < Formula
