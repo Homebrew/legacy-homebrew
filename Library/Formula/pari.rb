@@ -6,7 +6,7 @@ class Pari < Formula
   sha1 '471226fd86fea0ad1f236249a49bdaee16aa34bf'
 
   depends_on 'readline'
-  depends_on :x11
+  depends_on 'x11' => :optional
 
   def install
     readline = Formula.factory 'readline'
