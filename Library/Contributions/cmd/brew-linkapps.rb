@@ -2,6 +2,8 @@
 require 'keg'
 
 TARGET_DIR = ARGV.include?("--system") ? "/Applications" : File.expand_path("~/Applications")
+symlink = ARGV.include? "--symlink"
+force = ARGV.include?("--force") || ARGV.include?('-f')
 
 unless File.exist? TARGET_DIR
   opoo "#{TARGET_DIR} does not exist, stopping."
@@ -16,18 +18,24 @@ HOMEBREW_CELLAR.subdirs.each do |rack|
   keg = kegs.detect(&:linked?) || kegs.max {|a,b| a.version <=> b.version}
 
   Dir["#{keg}/*.app", "#{keg}/bin/*.app", "#{keg}/libexec/*.app"].each do |app|
-    puts "Linking #{app}"
     app_name = File.basename(app)
+    puts (symlink ? 'Linking ' : 'Moving ') + app_name
     target = "#{TARGET_DIR}/#{app_name}"
 
-    if File.exist?(target) && File.symlink?(target)
-      system "rm", target
+    if force || (File.exist?(target) && File.symlink?(target))
+      system "rm", '-r', target
     elsif File.exist?(target)
-      onoe "#{target} already exists, skipping."
+      onoe "#{target} already exists, skipping. (If you've upgraded, you'll have to remove it manually. Alternatively, use --force.)"
       next
     end
-    system "ln", "-s", app, TARGET_DIR
+
+    if symlink
+      system "ln", "-s", app, TARGET_DIR
+    else
+      system "mv", app, TARGET_DIR
+      system "ln", "-s", target, app
+    end
   end
 end
 
-puts "Finished linking. Find the links under #{TARGET_DIR}."
+puts "Finished #{symlink ? 'linking' : 'moving'}. Find the apps under #{TARGET_DIR}."
