@@ -13,11 +13,11 @@ class Kqwait < Formula
   
   def install
     system "make"
-    bin.install('kqwait')
+    bin.install "kqwait"
   end
   
   test do
-    system "kqwait", "-v"
+    system "#{bin}/kqwait", "-v"
   end
 end
 
@@ -36,14 +36,3 @@ index 91c210e..c8c65b2 100644
  	cc $(OPTS) -o $@ dirinfo.o $<
  
  clean:
-
-diff --git a/version.h b/version.h
-new file mode 100644
-index 0000000..10a0ed6
---- /dev/null
-+++ b/version.h
-@@ -0,0 +1,4 @@
-+#ifndef VERSION_H
-+#define VERSION_H
-+#define VERSION "v1.0.2-1-g0425-dirty"
-+#endif
