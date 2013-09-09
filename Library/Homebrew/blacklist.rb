@@ -27,7 +27,9 @@ def blacklisted? name
     We recommend using a MacTeX distribution: http://www.tug.org/mactex/
     EOS
   when 'pip' then <<-EOS.undent
-    pip is installed by `brew install python`
+    Homebrew provides pip via: `brew install python`. However you will then
+    have two Pythons installed on your Mac, so alternatively you can:
+        sudo easy_install pip
     EOS
   when 'pil' then <<-EOS.undent
     Instead of PIL, consider to `pip install pillow` or `brew install samueljohn/python/pillow`.
