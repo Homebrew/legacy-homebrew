@@ -78,7 +78,7 @@ class FormulaInstaller
     etc.cd do
       quiet_system 'git', 'init' unless (etc+'.git').directory?
       quiet_system 'git', 'checkout', '-B', "#{f.name}-last"
-      system 'git', 'add', '.'
+      system 'git', 'add', '--all', '.'
       system 'git', 'commit', '-m', "#{f.name}-#{f.version}: preinstall"
     end
   end
@@ -94,14 +94,14 @@ class FormulaInstaller
     etc.cd do
       FileUtils.cp_r keg_etc_files, etc
 
-      system 'git', 'add', '.'
+      system 'git', 'add', '--all', '.'
       if quiet_system 'git', 'diff', '--exit-code', default_branch
         quiet_system 'git', 'reset', '--hard'
       else
         if quiet_system 'git', 'rev-parse', 'master'
           quiet_system 'git', 'checkout', '-f', 'master'
           FileUtils.cp_r keg_etc_files, etc
-          quiet_system 'git', 'add', '.'
+          quiet_system 'git', 'add', '--all', '.'
         else
           quiet_system 'git', 'checkout', '-b' 'master'
         end
