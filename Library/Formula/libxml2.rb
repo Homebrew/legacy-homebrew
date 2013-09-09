@@ -75,11 +75,8 @@ class Libxml2 < Formula
   end
 
   test do
-    if build.with? 'python'
+    python do
       system python, '-c', "import libxml2"
-    else
-      puts "No tests because built --without-python."
-      true
     end
   end
 end

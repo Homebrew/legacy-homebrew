@@ -21,28 +21,24 @@ class Enchant < Formula
                           "--prefix=#{prefix}",
                           "--disable-ispell",
                           "--disable-myspell"
-    system "make install"
+    system "make", "install"
 
-    if build.with? 'python'
+    python do
       # Now we handle the python bindings from the subformulae PyEnchant
       PyEnchant.new.brew do
         # Don't download and install distribute now
         inreplace 'setup.py', "distribute_setup.use_setuptools()", ""
-        python do
           ENV['PYENCHANT_LIBRARY_PATH'] = lib/'libenchant.dylib'
           system python, 'setup.py', 'install', "--prefix=#{prefix}",
                                 '--single-version-externally-managed',
                                 '--record=installed.txt'
-        end
       end
     end
   end
 
-  def test
-    if build.with? 'python'
-      python do
-        system python, "-c", "import enchant; d=enchant.Dict('en_US'); print(d.suggest('homebrew'))"
-      end
+  test do
+    python do
+      system python, "-c", "import enchant; d=enchant.Dict('en_US'); print(d.suggest('homebrew'))"
     end
   end
 end

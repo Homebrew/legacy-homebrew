@@ -592,8 +592,8 @@ class FormulaAuditor
 
   def audit_check_output warning_and_description
     return unless warning_and_description
-    warning, _ = *warning_and_description
-    problem warning
+    warning, description = *warning_and_description
+    problem "#{warning}\n#{description}"
   end
 
   def audit_installed
