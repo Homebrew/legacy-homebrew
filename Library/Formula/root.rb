@@ -6,6 +6,7 @@ class Root < Formula
   version '5.34.09'
   sha1 '2c8a0bb4363bd6b0f9767d6b6bf5a6ea8785b74b'
 
+  depends_on 'xrootd' => :recommended
   depends_on 'fftw' => :optional
   depends_on :x11
   depends_on :python
