@@ -6,6 +6,7 @@ class Passenger < Formula
   sha1 '13fe86d59f5d3c2dc15219e8e7d816393ebea5b2'
   head 'https://github.com/phusion/passenger.git'
 
+  depends_on :macos => :lion
   depends_on 'curl'
 
   def install
