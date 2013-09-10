@@ -3,6 +3,12 @@ require 'keg'
 
 TARGET_DIR = ARGV.include?("--local") ? File.expand_path("~/Applications") : "/Applications"
 
+unless File.exist? TARGET_DIR
+  opoo "#{TARGET_DIR} does not exist, stopping."
+  puts "Run `mkdir #{TARGET_DIR}` first."
+  exit 1
+end
+
 HOMEBREW_CELLAR.subdirs.each do |rack|
   kegs = rack.subdirs.map { |d| Keg.new(d) }
   next if kegs.empty?
