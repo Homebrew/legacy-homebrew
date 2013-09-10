@@ -2,13 +2,45 @@ require 'formula'
 
 class Phantomjs < Formula
   homepage 'http://www.phantomjs.org/'
-  url 'http://phantomjs.googlecode.com/files/phantomjs-1.9.2-macosx.zip'
-  sha1 '36357dc95c0676fb4972420ad25455f49a8f3331'
+  url 'https://phantomjs.googlecode.com/files/phantomjs-1.9.2-source.zip'
+  sha1 '08559acdbbe04e963632bc35e94c1a9a082b6da1'
 
-  depends_on :macos => :snow_leopard
+  def patches
+    DATA
+  end
 
   def install
+    inreplace 'src/qt/preconfig.sh', '-arch x86', '-arch x86_64' if MacOS.prefer_64_bit?
+    args = ['--confirm', '--qt-config']
+    # Fix Clang/LLVM 3DNow! intrinsic failure.
+    if MacOS.version >= :lion
+      args << '-no-3dnow'
+    else
+      args << '-no-3dnow -no-ssse3'
+    end
+    system './build.sh', *args
     bin.install 'bin/phantomjs'
     (share+'phantomjs').install 'examples'
   end
 end
+__END__
+diff --git a/src/qt/src/gui/kernel/qt_cocoa_helpers_mac_p.h b/src/qt/src/gui/kernel/qt_cocoa_helpers_mac_p.h
+index c068234..90d2ca0 100644
+--- a/src/qt/src/gui/kernel/qt_cocoa_helpers_mac_p.h
++++ b/src/qt/src/gui/kernel/qt_cocoa_helpers_mac_p.h
+@@ -110,6 +110,7 @@
+ #include "private/qt_mac_p.h"
+
+ struct HIContentBorderMetrics;
++struct TabletProximityRec;
+
+ #ifdef Q_WS_MAC32
+ typedef struct _NSPoint NSPoint; // Just redefine here so I don't have to pull in all of Cocoa.
+@@ -155,7 +156,6 @@ bool qt_dispatchKeyEvent(void * /*NSEvent * */ keyEvent, QWidget *widgetToGetEve
+ void qt_dispatchModifiersChanged(void * /*NSEvent * */flagsChangedEvent, QWidget *widgetToGetEvent);
+ bool qt_mac_handleTabletEvent(void * /*QCocoaView * */view, void * /*NSEvent * */event);
+ inline QApplication *qAppInstance() { return static_cast<QApplication *>(QCoreApplication::instance()); }
+-struct ::TabletProximityRec;
+ void qt_dispatchTabletProximityEvent(const ::TabletProximityRec &proxRec);
+ Qt::KeyboardModifiers qt_cocoaModifiers2QtModifiers(ulong modifierFlags);
+ Qt::KeyboardModifiers qt_cocoaDragOperation2QtModifiers(uint dragOperations);
