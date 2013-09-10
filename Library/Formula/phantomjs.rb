@@ -5,6 +5,13 @@ class Phantomjs < Formula
   url 'https://phantomjs.googlecode.com/files/phantomjs-1.9.2-source.zip'
   sha1 '08559acdbbe04e963632bc35e94c1a9a082b6da1'
 
+  bottle do
+    cellar :any
+    sha1 '8dc41cea65414ef1942cc7b4bddfd00a266c7812' => :mountain_lion
+    sha1 'b1843eb5e79b8e32e563b1e06f5370152689362f' => :lion
+    sha1 '3bc0bbeb43f625f3b56501bd4703dc51b96abd84' => :snow_leopard
+  end
+
   def patches
     DATA
   end
