@@ -93,15 +93,18 @@ class Erlang < Formula
 
     unless build.include? 'no-docs'
       manuals = build.head? ? ErlangHeadManuals : ErlangManuals
-      manuals.new.brew {
-        man.install Dir['man/*']
-        # erl -man expects man pages in lib/erlang/man
-        (lib+'erlang').install_symlink man
-      }
-
+      manuals.new.brew { (lib/'erlang').install 'man' }
       htmls = build.head? ? ErlangHeadHtmls : ErlangHtmls
       htmls.new.brew { doc.install Dir['*'] }
     end
+  end
+
+  def caveats; <<-EOS.undent
+    Man pages can be found in:
+      #{opt_prefix}/lib/erlang/man
+
+    Access them with `erl -man`, or add this directory to MANPATH.
+    EOS
   end
 
   def test
