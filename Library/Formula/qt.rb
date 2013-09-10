@@ -6,10 +6,10 @@ class Qt < Formula
   sha1 '745f9ebf091696c0d5403ce691dc28c039d77b9e'
 
   bottle do
-    revision 1
-    sha1 '7f1901dfac85006e37599a87b4e703fe461bdc54' => :mountain_lion
-    sha1 '6ad69314c99323a5ad13e25f46c2c4d5f23dcfa4' => :lion
-    sha1 '9501177ed38218f500eee8f1eb7d2ae00e4993c4' => :snow_leopard
+    revision 2
+    sha1 'b361f521d413409c0e4397f2fc597c965ca44e56' => :mountain_lion
+    sha1 'dcf218f912680031de7ce6d7efa021e499caea78' => :lion
+    sha1 '401f2362ad9a22245a206729954dba731a1cdb52' => :snow_leopard
   end
 
   head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
@@ -42,7 +42,10 @@ class Qt < Formula
     # In --env=std, Qt seems aware of this.
     # But we want superenv, because it allows to build Qt in non-standard
     # locations and with Xcode-only.
-    args << "-no-3dnow" << "-no-ssse3" if superenv?
+    if superenv?
+      args << '-no-3dnow'
+      args << '-no-ssse3' if MacOS.version <= :snow_leopard
+    end
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
