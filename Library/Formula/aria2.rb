@@ -2,8 +2,8 @@ require 'formula'
 
 class Aria2 < Formula
   homepage 'http://aria2.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.17.1/aria2-1.17.1.tar.bz2'
-  sha1 'a40730013501554cdb0ce2b56a919f3ee971c06e'
+  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.0/aria2-1.18.0.tar.bz2'
+  sha1 '1512133f328b825e3ce7d1d85643c08febb21978'
 
   option 'with-appletls', 'Build with Secure Transport for SSL support'
 
@@ -11,14 +11,7 @@ class Aria2 < Formula
   depends_on 'gnutls'
   depends_on 'sqlite'
   depends_on 'curl-ca-bundle' => :recommended
-
-  # Leopard's libxml2 is too old.
-  depends_on 'libxml2' if MacOS.version <= :leopard
-
-  # Fixes compile error with clang 5; already upstream
-  def patches
-    "https://github.com/tatsuhiro-t/aria2/commit/6bcf33a69e1bfa9f7679b78f9f287d84798015aa.patch"
-  end
+  depends_on :macos => :lion # Needs a c++11 compiler
 
   def install
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
