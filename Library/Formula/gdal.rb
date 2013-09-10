@@ -2,8 +2,8 @@ require 'formula'
 
 class Gdal < Formula
   homepage 'http://www.gdal.org/'
-  url 'http://download.osgeo.org/gdal/1.10.0/gdal-1.10.0.tar.gz'
-  sha1 'e522b95056905e4c41047fdb42c0ca172ef3ad25'
+  url 'http://download.osgeo.org/gdal/1.10.1/gdal-1.10.1.tar.gz'
+  sha1 'b4df76e2c0854625d2bedce70cc1eaf4205594ae'
 
   head 'https://svn.osgeo.org/gdal/trunk/gdal'
 
