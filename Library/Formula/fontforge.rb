@@ -30,6 +30,7 @@ class Fontforge < Formula
     depends_on 'pkg-config' => :build
     depends_on 'glib' => :build
     depends_on 'pango' => :build
+    depends_on 'cairo' => :build
   end
 
   fails_with :llvm do
@@ -42,8 +43,10 @@ class Fontforge < Formula
             "--enable-double",
             "--without-freetype-bytecode"]
 
-    args << "--without-cairo" unless build.with? "cairo"
-    args << "--without-pango" unless build.with? "pango"
+    unless build.head?
+      args << "--without-cairo" unless build.with? "cairo"
+      args << "--without-pango" unless build.with? "pango"
+    end
     args << "--without-x" unless build.with? 'x'
 
     # To avoid "dlopen(/opt/local/lib/libpng.2.dylib, 1): image not found"
