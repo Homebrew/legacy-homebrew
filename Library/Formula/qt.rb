@@ -42,7 +42,10 @@ class Qt < Formula
     # In --env=std, Qt seems aware of this.
     # But we want superenv, because it allows to build Qt in non-standard
     # locations and with Xcode-only.
-    args << "-no-3dnow" << "-no-ssse3" if superenv?
+    if superenv?
+      args << '-no-3dnow'
+      args << '-no-ssse3' if MacOS.version <= :snow_leopard
+    end
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
