@@ -78,7 +78,13 @@ module Homebrew extend self
         # references to the Cellar e.g. Qt's QMake annoyingly does this.
         keg.relocate_install_names prefix, tmp_prefix, cellar, tmp_cellar
 
-        relocatable = !keg_contains(HOMEBREW_PREFIX, keg)
+        if prefix == '/usr/local'
+          prefix_check = HOMEBREW_PREFIX/'opt'
+        else
+          prefix_check = HOMEBREW_PREFIX
+        end
+
+        relocatable = !keg_contains(prefix_check, keg)
         relocatable = !keg_contains(HOMEBREW_CELLAR, keg) if relocatable
 
         # And do the same thing in reverse to change the library references
