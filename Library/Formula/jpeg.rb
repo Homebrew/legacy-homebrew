@@ -6,6 +6,7 @@ class Jpeg < Formula
   sha1 'f080b2fffc7581f7d19b968092ba9ebc234556ff'
 
   bottle do
+    cellar :any
     revision 1
     sha1 'efdcddaee959b85d35a232ddcf1e7ae0577a8704' => :mountain_lion
     sha1 '17b90896ea0f517fb980e8f82ad8baa8f3639e43' => :lion
