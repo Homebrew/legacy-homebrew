@@ -7,6 +7,7 @@ class Openvpn < Formula
   sha256 '20bda3f9debb9a52db262aecddfa4e814050a9404a9106136b7e3b6f7ef36ffc'
 
   depends_on 'lzo'
+  depends_on 'tuntap'
 
   def install
     # pam_appl header is installed in a different location on Leopard
@@ -41,14 +42,8 @@ class Openvpn < Formula
   end
 
   def caveats; <<-EOS.undent
-    You may also wish to install tuntap:
-
-      The TunTap project provides kernel extensions for Mac OS X that allow
-      creation of virtual network interfaces.
-
-      http://tuntaposx.sourceforge.net/
-
-    Because these are kernel extensions, there is no Homebrew formula for tuntap.
+    Make sure to follow the directions given by `brew info tuntap`
+    before trying to use OpenVPN.
 
     For OpenVPN to work as a server, you will need to create configuration file
     in #{etc}/openvpn, samples can be found in #{share}/doc/openvpn
