@@ -20,13 +20,11 @@ HOMEBREW_CELLAR.subdirs.each do |rack|
     app_name = File.basename(app)
     target = "#{TARGET_DIR}/#{app_name}"
 
-    if File.exist?(target) && File.symlink?(target)
-      system "rm", target
-    elsif File.exist?(target)
+    if File.exist?(target) && !File.symlink?(target)
       onoe "#{target} already exists, skipping."
       next
     end
-    system "ln", "-s", app, TARGET_DIR
+    system "ln", "-sf", app, TARGET_DIR
   end
 end
 
