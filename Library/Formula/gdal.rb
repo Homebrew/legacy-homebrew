@@ -181,6 +181,13 @@ class Gdal < Formula
     return args
   end
 
+  def patches
+    # Prevent build failure on 10.6 / 10.7
+    # TODO: Remove when 1.10.2 releases
+    # http://trac.osgeo.org/gdal/ticket/5197
+    DATA
+  end
+
   def install
     # Linking flags for SQLite are not added at a critical moment when the GDAL
     # library is being assembled. This causes the build to fail due to missing
@@ -236,3 +243,18 @@ class Gdal < Formula
     end
   end
 end
+
+__END__
+diff --git a/port/cpl_spawn.cpp b/port/cpl_spawn.cpp
+index d702594..69ea3c2 100644
+--- a/port/cpl_spawn.cpp
++++ b/port/cpl_spawn.cpp
+@@ -464,7 +464,7 @@ void CPLSpawnAsyncCloseErrorFileHandle(CPLSpawnedProcess* p)
+     #ifdef __APPLE__
+         #include <TargetConditionals.h>
+     #endif
+-    #if defined(__APPLE__) && !defined(TARGET_OS_IPHONE)
++    #if defined(__APPLE__) && (!defined(TARGET_OS_IPHONE) || TARGET_OS_IPHONE==0)
+         #include <crt_externs.h>
+         #define environ (*_NSGetEnviron())
+     #else
