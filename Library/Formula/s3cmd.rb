@@ -9,6 +9,7 @@ class S3cmd < Formula
   devel do
     url 'https://github.com/s3tools/s3cmd/archive/v1.5.0-alpha3.tar.gz'
     sha1 '18e980c66bdf5fa1c606c95727d43978a4d90635'
+  end
 
   def install
     libexec.install 's3cmd', 'S3'
