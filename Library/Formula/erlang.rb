@@ -31,6 +31,16 @@ class Erlang < Formula
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
+  option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
+  option 'halfword', 'Enable halfword emulator (64-bit builds only)'
+  option 'time', '`brew test --time` to include a time-consuming test'
+  option 'no-docs', 'Do not install documentation'
+
+  depends_on :automake
+  depends_on :libtool
+  depends_on 'unixodbc' if MacOS.version >= :mavericks
+  depends_on 'fop' => :optional # enables building PDF docs
+
   bottle do
     revision 1
     sha1 '772d2c72a3fd24474499d8bd1ca050a5deb5d56c' => :mountain_lion
@@ -38,19 +48,9 @@ class Erlang < Formula
     sha1 '65f9b0d2ea1a7d12d0477f51e3d5cc0415361789' => :snow_leopard
   end
 
-  depends_on :automake
-  depends_on :libtool
-  depends_on 'unixodbc' if MacOS.version >= :mavericks
-  depends_on 'fop' => :optional # enables building PDF docs
-
   fails_with :llvm do
     build 2334
   end
-
-  option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
-  option 'halfword', 'Enable halfword emulator (64-bit builds only)'
-  option 'time', '`brew test --time` to include a time-consuming test'
-  option 'no-docs', 'Do not install documentation'
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
