@@ -2,8 +2,8 @@ require 'formula'
 
 class Rethinkdb < Formula
   homepage 'http://www.rethinkdb.com/'
-  url 'http://download.rethinkdb.com/dist/rethinkdb-1.8.1.tgz'
-  sha1 '8fd78178aa7615fec1d2301719525b2d0d7460b2'
+  url 'http://download.rethinkdb.com/dist/rethinkdb-1.9.0.tgz'
+  sha1 '0e6948ce90f818c6d368f64fe2301bf1eabd451b'
 
   depends_on :macos => :lion
   depends_on 'boost' => :build
