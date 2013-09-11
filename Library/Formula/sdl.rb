@@ -14,6 +14,12 @@ class Sdl < Formula
 
   option :universal
 
+  def patches
+    # Fix for a bug preventing SDL from building at all on OSX 10.9 Mavericks
+    # Related ticket: https://bugzilla.libsdl.org/show_bug.cgi?id=2085
+    "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1320" if MacOS.version >= :mavericks
+  end
+
   def install
     # we have to do this because most build scripts assume that all sdl modules
     # are installed to the same prefix. Consequently SDL stuff cannot be
