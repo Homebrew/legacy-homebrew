@@ -262,22 +262,17 @@ module Superenv
   end
   alias_method :j1, :deparallelize
   def gcc
-    self.cc  = self['HOMEBREW_CC'] = "gcc-4.2"
-    self.cxx = "g++-4.2"
+    self['HOMEBREW_CC'] = "gcc-4.2"
   end
   def llvm
-    self.cc  = self['HOMEBREW_CC'] = "llvm-gcc"
-    self.cxx = "llvm-g++-4.2"
+    self['HOMEBREW_CC'] = "llvm-gcc"
   end
   def clang
-    self.cc  = self['HOMEBREW_CC'] = "clang"
-    self.cxx = "clang++"
+    self['HOMEBREW_CC'] = "clang"
   end
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
-      gcc = "gcc-4.#{n}"
-      self.cc = self['HOMEBREW_CC'] = gcc
-      self.cxx = gcc.gsub('c', '+')
+      self['HOMEBREW_CC'] = "gcc-4.#{n}"
     end
   end
   def make_jobs
