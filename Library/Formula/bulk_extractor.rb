@@ -2,8 +2,8 @@ require 'formula'
 
 class BulkExtractor < Formula
   homepage 'https://github.com/simsong/bulk_extractor/wiki'
-  url 'https://github.com/downloads/simsong/bulk_extractor/bulk_extractor-1.3.1.tar.gz'
-  sha1 'b4d68b0d08c1630b103875ec4c6524f46ad4a8ae'
+  url 'http://digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.4.0.tar.gz'
+  sha1 '177232620c36fe9b5a3998666b5fba89580d3d85'
 
   depends_on :autoconf
   depends_on :automake
@@ -20,15 +20,16 @@ class BulkExtractor < Formula
   end
 
   def install
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make"
+    system "make install"
+
+    # Install documentation
+    (share/'bulk_extractor/doc').install Dir['doc/*.{html,txt,pdf}']
+
     python do
-      system "./configure", "--disable-dependency-tracking",
-                            "--prefix=#{prefix}"
-      system "make"
-      system "make install"
-
-      # Install documentation
-      (share/'bulk_extractor/doc').install Dir['doc/*.{html,txt,pdf}']
-
       (lib/python.xy/"site-packages").install Dir['python/*.py']
     end
 
