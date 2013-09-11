@@ -34,6 +34,10 @@ class Pure < Formula
   end
 
   def install
+    # Force regenerate configure/Makefile due to patching
+    # configure.ac. Remove when new release is available.
+    system "autoreconf -fiv"
+
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-release",
