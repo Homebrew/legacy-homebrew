@@ -15,9 +15,16 @@ class Libmagic < Formula
   def patches
     p = []
     p << DATA if MacOS.version < :lion
-    # Fixes generaly incorrect code, plus issues with certain
-    # versions of cpp.
-    p << 'https://gist.github.com/kwilczynski/6108866/raw/15d1f0a2dba5da23e820b503e8551346a4d235eb/file-5.14.diff'
+    # A single large patch combining multiple fixes from
+    # upstream, see:
+    #
+    #   http://bugs.gw.com/view.php?id=248
+    #   http://bugs.gw.com/view.php?id=270
+    #   http://bugs.gw.com/view.php?id=274
+    #   http://bugs.gw.com/view.php?id=276
+    #   http://bugs.gw.com/view.php?id=279
+    #
+    p << 'https://gist.github.com/kwilczynski/6526172/raw/2d03a20c4abb860c282d3499fb210e458432b873/file-5.14.diff'
   end
 
   def install
