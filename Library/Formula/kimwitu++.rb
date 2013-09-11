@@ -10,8 +10,8 @@ class Kimwituxx < Formula
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
-    system "mkdir -p #{bin}"
-    system "mkdir -p #{man1}"
+    bin.mkpath
+    man1.mkpath
     system "make", "install"
   end
 end
