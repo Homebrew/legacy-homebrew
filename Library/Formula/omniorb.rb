@@ -38,8 +38,7 @@ class Omniorb < Formula
 
   test do
     system "#{bin}/omniidl", "-h"
-
-    if build.with? 'python'
+    python do
       system python, "-c", %(import omniORB; print 'omniORBpy', omniORB.__version__)
     end
   end

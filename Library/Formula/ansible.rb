@@ -35,19 +35,18 @@ class Ansible < Formula
   depends_on :python
   depends_on 'libyaml'
 
-  def wrap script, pythonpath, place_original="#{libexec}/bin"
-    script = Pathname.new(script)
-    place_original = Pathname.new(place_original)
-    place_original.mkpath
-    mv script, "#{place_original}/"
-    script.write <<-EOS.undent
+  def wrap bin_file, pythonpath
+    bin_file = Pathname.new bin_file
+    libexec_bin = Pathname.new libexec/'bin'
+    libexec_bin.mkpath
+    mv bin_file, libexec_bin
+    bin_file.write <<-EOS.undent
       #!/bin/sh
-      PYTHONPATH="#{pythonpath}:$PYTHONPATH" "#{place_original}/#{script.basename}" "$@"
+      PYTHONPATH="#{pythonpath}:$PYTHONPATH" "#{libexec_bin}/#{bin_file.basename}" "$@"
     EOS
   end
 
   def install
-    # installing into private sitepackages inside of the Cellar (in libexec)
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
     python do
@@ -65,7 +64,6 @@ class Ansible < Formula
       # The "main" ansible module is installed in the default location and
       # in order for it to be usable, we add the private_site_packages
       # to the __init__.py of ansible so the deps (PyYAML etc) are found.
-      # Because of egg files,
       inreplace 'lib/ansible/__init__.py',
                 "__author__ = 'Michael DeHaan'",
                 "__author__ = 'Michael DeHaan'; import site; site.addsitedir('#{python.private_site_packages}')"
@@ -75,8 +73,8 @@ class Ansible < Formula
 
     man1.install Dir['docs/man/man1/*.1']
 
-    Dir["#{bin}/*"].each do |script|
-      wrap script, pythonpath=python.private_site_packages
+    Dir["#{bin}/*"].each do |bin_file|
+      wrap bin_file, python.site_packages
     end
   end
 end

@@ -98,9 +98,9 @@ class CompilerSelectorTests < Test::Unit::TestCase
     assert_equal :llvm, actual_cc
   end
 
-  def test_non_apple_gcc_precedence
+  def test_llvm_precedence
     @f << :clang << :gcc
-    assert_equal 'gcc-4.8', actual_cc
+    assert_equal :llvm, actual_cc
   end
 
   def test_missing_gcc

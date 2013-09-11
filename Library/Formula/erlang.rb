@@ -1,43 +1,47 @@
 require 'formula'
 
 class ErlangManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R15B03-1.tar.gz'
-  sha1 'c8674767cd0c1f98946f6a08c7ae318c3f026988'
+  url 'http://erlang.org/download/otp_doc_man_R16B01.tar.gz'
+  sha1 '57ef01620386108db83ef13921313e600d351d44'
 end
 
 class ErlangHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R15B03-1.tar.gz'
-  sha1 '49d761d8554a83be00e18f681b32b94572f9c050'
+  url 'http://erlang.org/download/otp_doc_html_R16B01.tar.gz'
+  sha1 '6741e15e0b3e58736987e38fb8803084078ff99f'
 end
 
 class ErlangHeadManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R15B03-1.tar.gz'
-  sha1 'c8674767cd0c1f98946f6a08c7ae318c3f026988'
+  url 'http://erlang.org/download/otp_doc_man_R16B01.tar.gz'
+  sha1 '57ef01620386108db83ef13921313e600d351d44'
 end
 
 class ErlangHeadHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R15B03-1.tar.gz'
-  sha1 '49d761d8554a83be00e18f681b32b94572f9c050'
+  url 'http://erlang.org/download/otp_doc_html_R16B01.tar.gz'
+  sha1 '6741e15e0b3e58736987e38fb8803084078ff99f'
 end
 
+# Major releases of erlang should typically start out as separate formula in
+# Homebrew-versions, and only be merged to master when things like couchdb and
+# elixir are compatible.
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/archive/OTP_R15B03-1.tar.gz'
-  sha1 '7843070f5d325f95ef13022fc416b22b6b14120d'
+  url 'https://github.com/erlang/otp/archive/OTP_R16B01.tar.gz'
+  sha1 'ddbff080ee39c50b86b847514c641f0a9aab0333'
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
   bottle do
     revision 1
-    sha1 '87d2acd2d27a9b774886a2fb7be0f8f919fca060' => :mountain_lion
-    sha1 '79ec42e6340a32032c39715d4e0a5e1909918af5' => :lion
-    sha1 'afafe2a4b51272eb6ed0f6bfdc4cbdfae0cdc19c' => :snow_leopard
+    sha1 '772d2c72a3fd24474499d8bd1ca050a5deb5d56c' => :mountain_lion
+    sha1 'dbcd966cca49c16d6c2598d49a0bc9a31d6cb702' => :lion
+    sha1 '65f9b0d2ea1a7d12d0477f51e3d5cc0415361789' => :snow_leopard
   end
 
-  # remove the autoreconf if possible
   depends_on :automake
   depends_on :libtool
+  depends_on 'unixodbc' if MacOS.version >= :mavericks
+  depends_on 'fop' => :optional # enables building PDF docs
 
   fails_with :llvm do
     build 2334
@@ -56,6 +60,7 @@ class Erlang < Formula
       ENV.remove_from_cflags /-O./
       ENV.append_to_cflags '-O0'
     end
+    ENV.append "FOP", "#{HOMEBREW_PREFIX}/bin/fop" if build.with? 'fop'
 
     # Do this if building from a checkout to generate configure
     system "./otp_build autoconf" if File.exist? "otp_build"
@@ -83,31 +88,33 @@ class Erlang < Formula
     end
 
     system "./configure", *args
-    touch 'lib/wx/SKIP' if MacOS.version >= :snow_leopard
     system "make"
     ENV.j1 # Install is not thread-safe; can try to create folder twice and fail
     system "make install"
 
     unless build.include? 'no-docs'
       manuals = build.head? ? ErlangHeadManuals : ErlangManuals
-      manuals.new.brew {
-        man.install Dir['man/*']
-        # erl -man expects man pages in lib/erlang/man
-        (lib+'erlang').install_symlink man
-      }
-
+      manuals.new.brew { (lib/'erlang').install 'man' }
       htmls = build.head? ? ErlangHeadHtmls : ErlangHtmls
       htmls.new.brew { doc.install Dir['*'] }
     end
+  end
+
+  def caveats; <<-EOS.undent
+    Man pages can be found in:
+      #{opt_prefix}/lib/erlang/man
+
+    Access them with `erl -man`, or add this directory to MANPATH.
+    EOS
   end
 
   def test
     `#{bin}/erl -noshell -eval 'crypto:start().' -s init stop`
 
     # This test takes some time to run, but per bug #120 should finish in
-    # "less than 20 minutes". It takes a few minutes on a Mac Pro (2009).
-    if build.include? "time"
-      `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.15/ebin/`
+    # "less than 20 minutes". It takes about 20 seconds on a Mac Pro (2009).
+    if build.include?("time") && !build.head?
+      `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.16.2/ebin/`
     end
   end
 end

@@ -114,7 +114,7 @@ class Keg < Pathname
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
-    link_dir('etc', mode) {:mkpath}
+    link_dir('etc', mode) {:mkpath} unless HOMEBREW_GIT_ETC
     link_dir('bin', mode) {:skip_dir}
     link_dir('sbin', mode) {:skip_dir}
     link_dir('include', mode) {:link}
