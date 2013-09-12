@@ -34,6 +34,7 @@ class Enchant < Formula
                                 '--record=installed.txt'
         end
       end
+      end
     end
   end
 
