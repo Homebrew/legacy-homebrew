@@ -134,16 +134,14 @@ class Nginx < Formula
     s = <<-EOS.undent
     Docroot is: #{HOMEBREW_PREFIX}/var/www
 
-    The default port has been set to 8080 so that nginx can run without sudo.
-
-    If you want to host pages on your local machine to the wider network you
-    can change the port to 80 in: #{HOMEBREW_PREFIX}/etc/nginx/nginx.conf
-
-    You will then need to run nginx as root: `sudo nginx`.
+    The default port has been set in #{HOMEBREW_PREFIX}/etc/nginx/nginx.conf to 8080 so that
+    nginx can run without sudo.
     EOS
     s << passenger_caveats if build.include? 'with-passenger'
     s
   end
+
+  plist_options :manual => 'nginx'
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
