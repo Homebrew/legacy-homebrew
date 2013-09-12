@@ -19,7 +19,8 @@ class Nginx < Formula
   option 'with-debug', 'Compile with support for debug log'
   option 'with-spdy', 'Compile with support for SPDY module'
   option 'with-gunzip', 'Compile with support for gunzip module'
-
+  option 'with-sub', 'Compile with support for HTTP Sub module'
+  
   depends_on 'pcre'
   depends_on 'passenger' => :optional
   # SPDY needs openssl >= 1.0.1 for NPN; see:
@@ -82,7 +83,8 @@ class Nginx < Formula
     args << "--with-debug" if build.include? 'with-debug'
     args << "--with-http_spdy_module" if build.include? 'with-spdy'
     args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
-
+    args << "--with-http_sub_module" if build.include? 'with-sub'
+    
     if build.head?
       system "./auto/configure", *args
     else
