@@ -32,6 +32,7 @@ class Enchant < Formula
           system python, 'setup.py', 'install', "--prefix=#{prefix}",
                                 '--single-version-externally-managed',
                                 '--record=installed.txt'
+        end
       end
     end
   end
