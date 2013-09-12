@@ -38,6 +38,11 @@ class Erlang < Formula
     sha1 '65f9b0d2ea1a7d12d0477f51e3d5cc0415361789' => :snow_leopard
   end
 
+  option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
+  option 'halfword', 'Enable halfword emulator (64-bit builds only)'
+  option 'time', '`brew test --time` to include a time-consuming test'
+  option 'no-docs', 'Do not install documentation'
+
   depends_on :automake
   depends_on :libtool
   depends_on 'unixodbc' if MacOS.version >= :mavericks
@@ -46,11 +51,6 @@ class Erlang < Formula
   fails_with :llvm do
     build 2334
   end
-
-  option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
-  option 'halfword', 'Enable halfword emulator (64-bit builds only)'
-  option 'time', '`brew test --time` to include a time-consuming test'
-  option 'no-docs', 'Do not install documentation'
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?

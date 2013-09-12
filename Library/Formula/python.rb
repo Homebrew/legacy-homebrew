@@ -1,21 +1,10 @@
 require 'formula'
 
-class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.4.tar.gz'
-  sha1 'b8bf9c2b8a114045598f0e16681d6a63a4d6cdf9'
-end
-
-class Pip < Formula
-  url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
-  sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
-end
-
 class Python < Formula
   homepage 'http://www.python.org'
+  head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
   url 'http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2'
   sha1 '6cfada1a739544a6fa7f2601b500fba02229656b'
-
-  head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
 
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build (for devs; may fail)'
@@ -35,6 +24,16 @@ class Python < Formula
 
   skip_clean 'bin/pip', 'bin/pip-2.7'
   skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
+
+  resource 'setuptools' do
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.4.tar.gz'
+    sha1 'b8bf9c2b8a114045598f0e16681d6a63a4d6cdf9'
+  end
+
+  resource 'pip' do
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
+    sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
+  end
 
   def patches
     p = []
@@ -141,8 +140,9 @@ class Python < Formula
 
     setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Setuptools.new.brew { system py.binary, *setup_args }
-    Pip.new.brew { system py.binary, *setup_args }
+
+    resource('setuptools').stage { system py.binary, *setup_args }
+    resource('pip').stage { system py.binary, *setup_args }
 
     # And now we write the distutils.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"

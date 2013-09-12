@@ -10,6 +10,8 @@ class Pathname
   def install *sources
     sources.each do |src|
       case src
+      when Resource
+        src.stage(self)
       when Array
         if src.empty?
           opoo "tried to install empty array to #{self}"

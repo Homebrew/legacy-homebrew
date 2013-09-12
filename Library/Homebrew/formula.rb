@@ -1,3 +1,4 @@
+require 'resource'
 require 'download_strategy'
 require 'dependency_collector'
 require 'formula_support'
@@ -56,6 +57,11 @@ class Formula
     end
 
     @pin = FormulaPin.new(self)
+
+    @resources = self.class.resources
+    @resources.each_value do |r|
+      r.set_owner name
+    end
   end
 
   def set_spec(name)
@@ -90,6 +96,16 @@ class Formula
   def url;      active_spec.url;     end
   def version;  active_spec.version; end
   def mirrors;  active_spec.mirrors; end
+
+  def resource(name)
+    res = @resources[name]
+    raise ResourceMissingError.new(@name, name) if res.nil?
+    res
+  end
+
+  def resources
+    @resources.values
+  end
 
   # if the dir is there, but it's empty we consider it not installed
   def installed?
@@ -692,6 +708,19 @@ class Formula
     def mirror val
       @stable ||= SoftwareSpec.new
       @stable.mirror(val)
+    end
+
+    # Hold any resources defined by this formula
+    def resources
+      @resources ||= Hash.new
+    end
+
+    # Define a named resource using a SoftwareSpec style block
+    def resource res_name, &block
+      raise DuplicateResourceError.new(res_name) if resources.has_key?(res_name)
+      spec = SoftwareSpec.new
+      spec.instance_eval(&block)
+      resources[res_name] = Resource.new(res_name, spec)
     end
 
     def dependencies

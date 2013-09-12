@@ -1,9 +1,5 @@
 require 'formula'
 
-class MuttHtmldocs < Formula
-  head 'http://dev.mutt.org/doc/manual.html', :using => :nounzip
-end
-
 class Mutt < Formula
   homepage 'http://www.mutt.org/'
   url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
@@ -19,12 +15,17 @@ class Mutt < Formula
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
 
-  depends_on 'tokyo-cabinet'
-  depends_on 's-lang' => :optional
   if build.head?
     depends_on :autoconf
     depends_on :automake
   end
+
+  depends_on 'tokyo-cabinet'
+  depends_on 's-lang' => :optional
+
+  resource 'html' do
+    head 'http://dev.mutt.org/doc/manual.html', :using => :nounzip
+  end if build.head?
 
   def patches
     urls = [
@@ -84,8 +85,6 @@ class Mutt < Formula
     system "make"
     system "make", "install"
 
-    if build.head?
-      MuttHtmldocs.new.brew { (share/'doc/mutt').install 'manual.html' }
-    end
+    (share/'doc/mutt').install resource('html') if build.head?
   end
 end
