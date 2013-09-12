@@ -1,12 +1,5 @@
 require 'formula'
 
-class WordnetDictionaryUpdate < Formula
-  homepage 'http://wordnet.princeton.edu/'
-  url 'http://wordnetcode.princeton.edu/wn3.1.dict.tar.gz'
-  sha1 '67dee39f6e83c9a05d98c5790722b807812cda87'
-  version '3.1'
-end
-
 class Wordnet < Formula
   homepage 'http://wordnet.princeton.edu/'
   url 'http://wordnetcode.princeton.edu/3.0/WordNet-3.0.tar.bz2'
@@ -16,10 +9,13 @@ class Wordnet < Formula
 
   depends_on :x11
 
+  resource 'dict' do
+    url 'http://wordnetcode.princeton.edu/wn3.1.dict.tar.gz'
+    sha1 '67dee39f6e83c9a05d98c5790722b807812cda87'
+  end
+
   def install
-    WordnetDictionaryUpdate.new.brew do
-      (prefix+"dict").install Dir['*']
-    end
+    (prefix/'dict').install resource('dict')
 
     # Disable calling deprecated fields within the Tcl_Interp during compilation.
     # https://bugzilla.redhat.com/show_bug.cgi?id=902561

@@ -32,10 +32,16 @@ class Erlang < Formula
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
   bottle do
-    sha1 'febb0a5d56258dabd3ccdca22cc3eaa60b16fbf1' => :mountain_lion
-    sha1 '2d1456b7e28942d08f78952993d31219206bc08a' => :lion
-    sha1 '222b389b09cf290ea07a5600d94c08fa7a1fcc01' => :snow_leopard
+    revision 1
+    sha1 '772d2c72a3fd24474499d8bd1ca050a5deb5d56c' => :mountain_lion
+    sha1 'dbcd966cca49c16d6c2598d49a0bc9a31d6cb702' => :lion
+    sha1 '65f9b0d2ea1a7d12d0477f51e3d5cc0415361789' => :snow_leopard
   end
+
+  option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
+  option 'halfword', 'Enable halfword emulator (64-bit builds only)'
+  option 'time', '`brew test --time` to include a time-consuming test'
+  option 'no-docs', 'Do not install documentation'
 
   depends_on :automake
   depends_on :libtool
@@ -45,11 +51,6 @@ class Erlang < Formula
   fails_with :llvm do
     build 2334
   end
-
-  option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
-  option 'halfword', 'Enable halfword emulator (64-bit builds only)'
-  option 'time', '`brew test --time` to include a time-consuming test'
-  option 'no-docs', 'Do not install documentation'
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
@@ -93,15 +94,18 @@ class Erlang < Formula
 
     unless build.include? 'no-docs'
       manuals = build.head? ? ErlangHeadManuals : ErlangManuals
-      manuals.new.brew {
-        man.install Dir['man/*']
-        # erl -man expects man pages in lib/erlang/man
-        (lib+'erlang').install_symlink man
-      }
-
+      manuals.new.brew { (lib/'erlang').install 'man' }
       htmls = build.head? ? ErlangHeadHtmls : ErlangHtmls
       htmls.new.brew { doc.install Dir['*'] }
     end
+  end
+
+  def caveats; <<-EOS.undent
+    Man pages can be found in:
+      #{opt_prefix}/lib/erlang/man
+
+    Access them with `erl -man`, or add this directory to MANPATH.
+    EOS
   end
 
   def test

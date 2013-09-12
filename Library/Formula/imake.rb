@@ -1,10 +1,5 @@
 require 'formula'
 
-class ImakeXorgCfFiles < Formula
-  url 'http://xorg.freedesktop.org/releases/individual/util/xorg-cf-files-1.0.4.tar.bz2'
-  sha1 'c58b7252df481572ec1ccd77b9f1ab561ed89e45'
-end
-
 class Imake < Formula
   homepage 'http://xorg.freedesktop.org'
   url 'http://xorg.freedesktop.org/releases/individual/util/imake-1.0.5.tar.bz2'
@@ -14,6 +9,11 @@ class Imake < Formula
   depends_on :x11
 
   env :std # CPP issues under superenv
+
+  resource 'xorg-cf-files' do
+    url 'http://xorg.freedesktop.org/releases/individual/util/xorg-cf-files-1.0.4.tar.bz2'
+    sha1 'c58b7252df481572ec1ccd77b9f1ab561ed89e45'
+  end
 
   def patches
     # Remove cpp whitespace check and add "-" to pass the cpp -undef test.
@@ -26,7 +26,7 @@ class Imake < Formula
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
 
-    ImakeXorgCfFiles.new.brew do
+    resource('xorg-cf-files').stage do
       system "./configure", "--with-config-dir=#{lib}/X11/config"
       system "make install"
     end
