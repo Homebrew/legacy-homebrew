@@ -31,6 +31,13 @@ class Erlang < Formula
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
+  bottle do
+    revision 1
+    sha1 '772d2c72a3fd24474499d8bd1ca050a5deb5d56c' => :mountain_lion
+    sha1 'dbcd966cca49c16d6c2598d49a0bc9a31d6cb702' => :lion
+    sha1 '65f9b0d2ea1a7d12d0477f51e3d5cc0415361789' => :snow_leopard
+  end
+
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
   option 'halfword', 'Enable halfword emulator (64-bit builds only)'
   option 'time', '`brew test --time` to include a time-consuming test'
@@ -40,13 +47,6 @@ class Erlang < Formula
   depends_on :libtool
   depends_on 'unixodbc' if MacOS.version >= :mavericks
   depends_on 'fop' => :optional # enables building PDF docs
-
-  bottle do
-    revision 1
-    sha1 '772d2c72a3fd24474499d8bd1ca050a5deb5d56c' => :mountain_lion
-    sha1 'dbcd966cca49c16d6c2598d49a0bc9a31d6cb702' => :lion
-    sha1 '65f9b0d2ea1a7d12d0477f51e3d5cc0415361789' => :snow_leopard
-  end
 
   fails_with :llvm do
     build 2334
