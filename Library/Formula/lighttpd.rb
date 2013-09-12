@@ -37,6 +37,8 @@ class Lighttpd < Formula
     system "./configure", *args
     system "make install"
 
+    mv sbin, bin
+
     unless File.exists? config_path
       config_path.install Dir["doc/config/lighttpd.conf"]
       config_path.install Dir["doc/config/modules.conf"]
@@ -96,7 +98,7 @@ class Lighttpd < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/lighttpd</string>
+        <string>#{opt_prefix}/bin/lighttpd</string>
         <string>-D</string>
         <string>-f</string>
         <string>#{config_path}/lighttpd.conf</string>
