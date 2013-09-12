@@ -118,6 +118,10 @@ class Nginx < Formula
     end
   end
 
+  test do
+    system "#{bin}/nginx", '-t'
+  end
+
   def passenger_caveats; <<-EOS.undent
 
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf:
