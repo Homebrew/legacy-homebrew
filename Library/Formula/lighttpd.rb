@@ -77,7 +77,7 @@ class Lighttpd < Formula
   end
 
   test do
-    system "#{bin}/lighttpd", '-t', '-f', "#{HOMEBREW_PREFIX}/etc/lighttpd.conf"
+    system "#{bin}/lighttpd", '-t', '-f', "#{config_path}lighttpd.conf"
   end
 
   def caveats; <<-EOS.undent
@@ -88,7 +88,7 @@ class Lighttpd < Formula
     EOS
   end
 
-  plist_options :manual => "lighttpd -f #{HOMEBREW_PREFIX}/etc/lighttpd.conf"
+  plist_options :manual => "lighttpd -f #{HOMEBREW_PREFIX}/etc/lighttpd/lighttpd.conf"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -102,7 +102,7 @@ class Lighttpd < Formula
         <string>#{opt_prefix}/bin/lighttpd</string>
         <string>-D</string>
         <string>-f</string>
-        <string>#{config_path}/lighttpd.conf</string>
+        <string>#{config_path}lighttpd.conf</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
