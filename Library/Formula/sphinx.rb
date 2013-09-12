@@ -21,7 +21,8 @@ class Sphinx < Formula
 
   # http://snowball.tartarus.org/
   resource 'stemmer' do
-    head 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
+    url 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
+    sha1 '69056075b9fa1382e07cec6c32c8e82f3f35677b'
   end
 
   fails_with :llvm do
