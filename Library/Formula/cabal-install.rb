@@ -12,7 +12,7 @@ class CabalInstall < Formula
   def install
     ENV['PREFIX'] = "#{prefix}"
     ENV.delete('VERBOSE')
-    system 'sh', 'bootstrap.sh'
+    system 'sh', 'bootstrap.sh', '--global'
     bash_completion.install 'bash-completion/cabal'
   end
 end

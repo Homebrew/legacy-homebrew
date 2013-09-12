@@ -18,7 +18,7 @@ require 'set'
 class DependencyCollector
   # Define the languages that we can handle as external dependencies.
   LANGUAGE_MODULES = Set[
-    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
+    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby, :haskell
   ].freeze
 
   attr_reader :deps, :requirements
@@ -101,6 +101,7 @@ class DependencyCollector
     when :hg         then MercurialDependency.new(tags)
     when :python, :python2 then PythonInstalled.new("2", tags)
     when :python3    then PythonInstalled.new("3", tags)
+    when :cabal      then CabalDependency.new(tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     else
