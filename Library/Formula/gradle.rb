@@ -6,9 +6,9 @@ class Gradle < Formula
   sha1 '0cbadad3ced2ba5c53bbb7e6ec3e779c1cd3966c'
 
   devel do
-    url 'http://services.gradle.org/distributions/gradle-1.8-rc-1-bin.zip'
-    sha1 'd43e0d53f054549dc84ccc95f1e7e9460d07472e'
-    version '1.8-rc1'
+    url 'http://services.gradle.org/distributions-snapshots/gradle-1.9-20130911220033+0000-bin.zip'
+    sha1 '39a3ec87bb304eaba9de5c736f0149343fe5d20a'
+    version '1.9-20130911220033'
   end
 
   def install
