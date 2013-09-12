@@ -29,11 +29,6 @@ class Nginx < Formula
 
   skip_clean 'logs'
 
-  # Changes default port to 8080
-  def patches
-    DATA
-  end
-
   def passenger_config_args
     passenger_root = `passenger-config --root`.chomp
 
@@ -48,6 +43,9 @@ class Nginx < Formula
   end
 
   def install
+    # Changes default port to 8080
+    inreplace 'conf/nginx.conf', 'listen       80;', 'listen       8080;'
+
     cc_opt = "-I#{HOMEBREW_PREFIX}/include"
     ld_opt = "-L#{HOMEBREW_PREFIX}/lib"
 
@@ -167,16 +165,3 @@ class Nginx < Formula
     EOS
   end
 end
-
-__END__
---- a/conf/nginx.conf
-+++ b/conf/nginx.conf
-@@ -33,7 +33,7 @@
-     #gzip  on;
-
-     server {
--        listen       80;
-+        listen       8080;
-         server_name  localhost;
-
-         #charset koi8-r;
