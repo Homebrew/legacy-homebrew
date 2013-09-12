@@ -33,6 +33,7 @@ class Enchant < Formula
                                 '--single-version-externally-managed',
                                 '--record=installed.txt'
       end
+      end
     end
   end
 
