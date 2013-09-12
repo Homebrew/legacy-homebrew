@@ -1,10 +1,5 @@
 require 'formula'
 
-class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.4.tar.gz'
-  sha1 'b8bf9c2b8a114045598f0e16681d6a63a4d6cdf9'
-end
-
 class Pypy < Formula
   homepage 'http://pypy.org/'
   url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.1-osx64.tar.bz2'
@@ -12,6 +7,11 @@ class Pypy < Formula
   sha1 '6cdaa1dc0a47d9eb6d816f7d394ca46f290a1ed5'
 
   depends_on :arch => :x86_64
+
+  resource 'setuptools' do
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.4.tar.gz'
+    sha1 'b8bf9c2b8a114045598f0e16681d6a63a4d6cdf9'
+  end
 
   def install
     rmtree 'site-packages'
@@ -39,9 +39,7 @@ class Pypy < Formula
     # $ easy_install pip
     # $ pip install --upgrade setuptools
     # to get newer versions of setuptools outside of Homebrew.
-    Setuptools.new.brew do
-      system "#{bin}/pypy", "setup.py", "install"
-    end
+    resource('setuptools').stage { system "#{bin}/pypy", "setup.py", "install" }
 
     # Symlink to easy_install_pypy.
     unless (scripts_folder+'easy_install_pypy').exist?

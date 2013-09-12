@@ -260,3 +260,24 @@ class ChecksumMismatchError < RuntimeError
     super + advice.to_s
   end
 end
+
+class ResourceMissingError < ArgumentError
+  def initialize formula, resource
+    @formula = formula
+    @resource = resource
+  end
+
+  def to_s
+    "Formula #{@formula} does not define resource \"#{@resource}\"."
+  end
+end
+
+class DuplicateResourceError < ArgumentError
+  def initialize resource
+    @resource = resource
+  end
+
+  def to_s
+    "Resource \"#{@resource}\" defined more than once."
+  end
+end
