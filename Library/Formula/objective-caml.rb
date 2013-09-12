@@ -5,12 +5,6 @@ class ObjectiveCaml < Formula
   url 'http://caml.inria.fr/pub/distrib/ocaml-4.01/ocaml-4.01.0.tar.gz'
   sha1 '31ae98051d42e038f4fbc5fd338c4fa5c36744e0'
 
-  devel do
-    url 'http://caml.inria.fr/pub/distrib/ocaml-4.01/ocaml-4.01.0+rc1.tar.bz2'
-    version '4.01.0+rc1'
-    sha1 '7591b7dd9638463648e60ad26786c3d2b6cb8263'
-  end
-
   head 'http://caml.inria.fr/svn/ocaml/trunk', :using => :svn
 
   depends_on :x11 if MacOS::X11.installed?
