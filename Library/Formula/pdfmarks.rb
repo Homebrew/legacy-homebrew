@@ -5,6 +5,8 @@ class Pdfmarks < Formula
   url 'https://bitbucket.org/alexreg/pdfmarks/get/0.1.tar.gz'
   sha1 '8897430451ae0d46e5a507710f9c3f42af5c8d90'
 
+  depends_on 'ghostscript'
+
   def install
     inreplace 'pdfmarks' do |s|
       s.gsub! "source \"common\"", "source \"#{libexec}/common\""
