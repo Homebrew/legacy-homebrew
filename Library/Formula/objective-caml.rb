@@ -1,7 +1,7 @@
 require 'formula'
 
 class ObjectiveCaml < Formula
-  homepage 'http://www.ocaml-lang.org'
+  homepage 'http://ocaml.org'
   url 'http://caml.inria.fr/pub/distrib/ocaml-4.00/ocaml-4.00.1.tar.bz2'
   sha1 '10b8a4d0b88d20b003e3dd719f2ac9434e6a1042'
 
