@@ -20,8 +20,8 @@ class Ruby < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'readline'
-  depends_on 'gdbm'
+  depends_on 'readline' => :recommended
+  depends_on 'gdbm' => :optional
   depends_on 'libyaml'
   depends_on 'openssl' if MacOS.version >= :mountain_lion
   depends_on :x11 if build.with? 'tcltk'
