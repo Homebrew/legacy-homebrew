@@ -2,8 +2,8 @@ require 'formula'
 
 class QtMobility < Formula
   homepage 'http://qt.nokia.com/products/qt-addons/mobility'
-  url 'git://gitorious.org/qt-mobility/qt-mobility.git', :revision => '6a75140'
-  version '1.2.0-6a75140'
+  url 'git://gitorious.org/qt-mobility/qt-mobility.git', :revision => 'c1d67f4'
+  version '1.2.0-c1d67f4'
 
   depends_on 'qt'
 
