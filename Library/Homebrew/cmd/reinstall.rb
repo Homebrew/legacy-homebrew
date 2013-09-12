@@ -18,24 +18,28 @@ module Homebrew extend self
         ARGV << '--build-bottle'
       end
 
-      canonical_name = Formula.canonical_name(name)
-      formula = Formula.factory(canonical_name)
+      self.reinstall_formula name
+    end
+  end
 
-      begin
-        oh1 "Reinstalling #{name} #{ARGV.options_only*' '}"
-        opt_link = HOMEBREW_PREFIX/'opt'/canonical_name
-        if opt_link.exist?
-          keg = Keg.new(opt_link.realpath)
-          backup keg
-        end
-        self.install_formula formula
-      rescue Exception => e
-        ofail e.message unless e.message.empty?
-        restore_backup keg, formula
-        raise 'Reinstall failed.'
-      else
-        backup_path(keg).rmtree if backup_path(keg).exist?
+  def reinstall_formula name
+    canonical_name = Formula.canonical_name(name)
+    formula = Formula.factory(canonical_name)
+
+    begin
+      oh1 "Reinstalling #{name} #{ARGV.options_only*' '}"
+      opt_link = HOMEBREW_PREFIX/'opt'/canonical_name
+      if opt_link.exist?
+        keg = Keg.new(opt_link.realpath)
+        backup keg
       end
+      self.install_formula formula
+    rescue Exception => e
+      ofail e.message unless e.message.empty?
+      restore_backup keg, formula
+      raise 'Reinstall failed.'
+    else
+      backup_path(keg).rmtree if backup_path(keg).exist?
     end
   end
 
