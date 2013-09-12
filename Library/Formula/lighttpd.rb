@@ -50,6 +50,7 @@ class Lighttpd < Formula
         s.sub!(/^var\.home_dir\s*=\s*".+"$/,"var.home_dir    = \"#{run_path}\"")
         s.sub!(/^var\.conf_dir\s*=\s*".+"$/,"var.conf_dir    = \"#{config_path}\"")
         s.sub!(/^server\.port\s*=\s*80$/,'server.port = 8080')
+        s.sub!(/^server\.document-root\s*=\s*server_root + "\/htdocs"$/,'server.document-root = server_root')
 
         # get rid of "warning: please use server.use-ipv6 only for hostnames, not
         # without server.bind / empty address; your config will break if the kernel
@@ -75,19 +76,19 @@ class Lighttpd < Formula
     run_path.mkpath
   end
 
+  test do
+    system "#{bin}/lighttpd", '-t', '-f', "#{HOMEBREW_PREFIX}/etc/lighttpd.conf"
+  end
+
   def caveats; <<-EOS.undent
-    Docroot is: #{www_path}htdocs/
+    Docroot is: #{www_path}
 
-    The default port has been set to 8080 so that lighttpd can run without sudo.
-
-    If you want to host pages on your local machine to the wider network you
-    can change the port to 80 in: #{config_path}lighttpd.conf
-
-    You will then need to run lighttpd as root: `sudo lighttpd -f #{config_path}lighttpd.conf`.
+    The default port has been set in #{config_path}lighttpd.conf to 8080 so that
+    lighttpd can run without sudo.
     EOS
   end
 
-  plist_options :manual => "lighttpd"
+  plist_options :manual => "lighttpd -f #{HOMEBREW_PREFIX}/etc/lighttpd.conf"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
