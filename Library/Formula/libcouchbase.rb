@@ -9,8 +9,8 @@ class Libcouchbase < Formula
   option 'with-libev-plugin', 'Build libev IO plugin (will pull libev dependency)'
   option 'without-libevent-plugin', 'Do not build libevent plugin (will remove libevent dependency)'
 
-  depends_on 'libev' if build.include?('with-libev-plugin')
-  depends_on 'libevent' unless build.include?('without-libevent-plugin')
+  depends_on 'libev' if build.with?('libev-plugin')
+  depends_on 'libevent' if build.with?('libevent-plugin')
 
   def install
     args = [
@@ -24,6 +24,10 @@ class Libcouchbase < Formula
     if build.universal?
       args.push("--enable-fat-binary")
       ENV.universal_binary
+    end
+    if build.without?('libev-plugin') && build.without?("libevent-plugin")
+      # do not do plugin autodiscovery
+      args.push("--disable-plugins")
     end
     system "./configure", *args
     system "make install"
