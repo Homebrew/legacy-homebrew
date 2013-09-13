@@ -40,7 +40,7 @@ class DependencyCollector
 
   def build(spec)
     spec, tags = case spec
-                 when Hash then spec.shift
+                 when Hash then destructure_spec_hash(spec)
                  else spec
                  end
 
@@ -48,6 +48,10 @@ class DependencyCollector
   end
 
   private
+
+  def destructure_spec_hash(spec)
+    spec.each { |o| return o }
+  end
 
   def parse_spec(spec, tags)
     case spec
