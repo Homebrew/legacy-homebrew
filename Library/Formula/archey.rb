@@ -7,7 +7,6 @@ class Archey < Formula
   version "1.1"
 
   def install
-    system "mkdir #{bin}"
-    system "cp bin/archey #{bin}/"
+    bin.install 'bin/archey'
   end
 end
