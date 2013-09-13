@@ -14,3 +14,4 @@ class Cownet < Formula
     system python, "setup.py", "install", "--home=#{prefix}"
   end
 end
+
