@@ -8,8 +8,6 @@ class Ntfs3g < Formula
   depends_on 'pkg-config' => :build
   depends_on 'fuse4x'
 
-  option 'with-library', 'Build libraries'
-
   def patches
     # From macports:
     # http://trunk/dports/fuse/ntfs-3g/files/patch-configure.diff
@@ -28,8 +26,6 @@ class Ntfs3g < Formula
             "--exec-prefix=#{prefix}",
             "--mandir=#{man}",
             "--with-fuse=external"]
-
-    args << "--disable-library" if not build.include? 'enable-library'
 
     system "./configure", *args
     system "make"
