@@ -54,7 +54,11 @@ class CompilerSelectorTests < Test::Unit::TestCase
 
   def test_fails_with_clang
     @f << :clang
-    assert_equal :gcc, actual_cc
+    if MacOS.version < :lion
+      assert_equal :gcc, actual_cc
+    else
+      assert_equal :llvm, actual_cc
+    end
   end
 
   def test_fails_with_llvm
@@ -89,7 +93,11 @@ class CompilerSelectorTests < Test::Unit::TestCase
 
   def test_mixed_failures_4
     @f << :clang << "gcc-4.8"
-    assert_equal :gcc, actual_cc
+    if MacOS.version < :lion
+      assert_equal :gcc, actual_cc
+    else
+      assert_equal :llvm, actual_cc
+    end
   end
 
   def test_older_clang_precedence
