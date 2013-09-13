@@ -12,7 +12,11 @@ class Passenger < Formula
   def install
     rake "apache2"
     rake "nginx"
-    cp_r Dir["*"], prefix, :preserve => true
+    necessary_files = Dir["configure", "Rakefile", "README.md", "CONTRIBUTORS",
+      "CONTRIBUTING.md", "LICENSE", "INSTALL.md", "NEWS", "passenger.gemspec",
+      "build", "lib", "bin", "doc", "man", "helper-scripts", "ext",
+      "resources", "buildout"]
+    cp_r necessary_files, prefix, :preserve => true
 
     # The various scripts in bin cannot correctly locate their root directory
     # when invoked as symlinks in /usr/local/bin. We create wrapper scripts
