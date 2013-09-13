@@ -2,10 +2,11 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.16.tar.gz'
-  sha1 '5594d425bfa2ee82afa049ed318890512ecea8f3'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.17.tar.gz'
+  sha1 '13fe86d59f5d3c2dc15219e8e7d816393ebea5b2'
   head 'https://github.com/phusion/passenger.git'
 
+  depends_on :macos => :lion
   depends_on 'curl'
 
   def install
@@ -30,7 +31,7 @@ class Passenger < Formula
 
   def caveats; <<-EOS.undent
     To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
-      LoadModule passenger_module #{opt_prefix}/libout/apache2/mod_passenger.so
+      LoadModule passenger_module #{opt_prefix}/buildout/apache2/mod_passenger.so
       PassengerRoot #{opt_prefix}
       PassengerDefaultRuby /usr/bin/ruby
 

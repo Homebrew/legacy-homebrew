@@ -128,4 +128,11 @@ class DependencyCollectorTests < Test::Unit::TestCase
   def test_raises_typeerror_for_unknown_types
     assert_raises(TypeError) { @d.add(Object.new) }
   end
+
+  def test_does_not_mutate_dependency_spec
+    spec = { 'foo' => :optional }
+    copy = spec.dup
+    @d.add(spec)
+    assert_equal copy, spec
+  end
 end

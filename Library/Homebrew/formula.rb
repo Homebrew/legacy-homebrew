@@ -679,7 +679,8 @@ class Formula
 
     def stable &block
       return @stable unless block_given?
-      instance_eval(&block)
+      @stable ||= SoftwareSpec.new
+      @stable.instance_eval(&block)
     end
 
     def bottle *, &block
@@ -694,10 +695,16 @@ class Formula
       @devel.instance_eval(&block)
     end
 
-    def head val=nil, specs={}
-      return @head if val.nil?
-      @head ||= HeadSoftwareSpec.new
-      @head.url(val, specs)
+    def head val=nil, specs={}, &block
+      if block_given?
+        @head ||= HeadSoftwareSpec.new
+        @head.instance_eval(&block)
+      elsif val
+        @head ||= HeadSoftwareSpec.new
+        @head.url(val, specs)
+      else
+        @head
+      end
     end
 
     def version val=nil
