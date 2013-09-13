@@ -12,6 +12,14 @@ class Root < Formula
   depends_on :python
 
   def install
+    # brew audit doesn't like non-executables in bin
+    # so we will move {thisroot,setxrd}.{c,}sh to libexec
+    # (and change any references to them)
+    inreplace Dir['config/roots.in', 'config/thisroot.*sh',
+                  'etc/proof/utils/pq2/setup-pq2',
+                  'man/man1/setup-pq2.1', 'README/INSTALL', 'README/README'],
+      /bin.thisroot/, 'libexec/thisroot'
+
     #Determine architecture
     arch = MacOS.prefer_64_bit? ? 'macosx64' : 'macosx'
 
@@ -34,6 +42,8 @@ class Root < Formula
 
     prefix.install 'test' # needed to run test suite
 
+    libexec.mkpath
+    mv Dir["#{bin}/*.*sh"], libexec
   end
 
   def test
@@ -50,10 +60,9 @@ class Root < Formula
     before using ROOT.
 
     For csh/tcsh users:
-      source `brew --prefix root`/bin/thisroot.csh
+      source `brew --prefix root`/libexec/thisroot.csh
     For bash/zsh users:
-      . $(brew --prefix root)/bin/thisroot.sh
-
+      . $(brew --prefix root)/libexec/thisroot.sh
     EOS
   end
 end
