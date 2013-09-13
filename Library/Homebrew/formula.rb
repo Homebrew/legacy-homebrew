@@ -679,7 +679,8 @@ class Formula
 
     def stable &block
       return @stable unless block_given?
-      instance_eval(&block)
+      @stable ||= SoftwareSpec.new
+      @stable.instance_eval(&block)
     end
 
     def bottle *, &block
