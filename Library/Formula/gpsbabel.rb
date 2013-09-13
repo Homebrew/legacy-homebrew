@@ -9,7 +9,6 @@ class Gpsbabel < Formula
   head 'http://gpsbabel.googlecode.com/svn/trunk/gpsbabel'
 
   depends_on 'libusb' => :optional
-  depends_on 'expat' => :optional
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
