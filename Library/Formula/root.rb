@@ -33,6 +33,22 @@ class Root < Formula
 
     prefix.install 'test' # needed to run test suite
 
+    # brew audit doesn't like non-executables in bin
+    # so we will move {thisroot,setxrd}.{c,}sh to libexec
+    # (and change any references to them)
+    libexec.mkpath
+    mv bin/'thisroot.sh',  libexec/'thisroot.sh'
+    mv bin/'thisroot.csh', libexec/'thisroot.csh'
+    mv bin/'setxrd.sh',    libexec/'setxrd.sh'
+    mv bin/'setxrd.csh',   libexec/'setxrd.csh'
+    inreplace bin/    'roots',                              'bin/thisroot', 'libexec/thisroot'
+    inreplace prefix/ 'etc/root/proof/utils/pq2/setup-pq2', 'bin.thisroot', 'libexec.thisroot'
+    inreplace share/  'doc/root/INSTALL',                   'bin/thisroot', 'libexec/thisroot'
+    inreplace share/  'doc/root/README',                    'bin/thisroot', 'libexec/thisroot'
+    inreplace man/    'setup-pq2.1',                        'bin.thisroot', 'libexec.thisroot'
+    inreplace libexec/'thisroot.sh',                        'bin/thisroot', 'libexec/thisroot'
+    inreplace libexec/'thisroot.csh',                       'bin/thisroot', 'libexec/thisroot'
+
   end
 
   def test
@@ -49,9 +65,13 @@ class Root < Formula
     before using ROOT.
 
     For csh/tcsh users:
-      source `brew --prefix root`/bin/thisroot.csh
+      source `brew --prefix root`/libexec/thisroot.csh
     For bash/zsh users:
-      . $(brew --prefix root)/bin/thisroot.sh
+      . $(brew --prefix root)/libexec/thisroot.sh
+
+    (Note that other ROOT installations [including Homebrew,
+    before ROOT 5.34.10] may put these scripts under `bin`. We
+    moved them to `libexec` in an effort to keep `bin` clean.)
 
     EOS
   end
