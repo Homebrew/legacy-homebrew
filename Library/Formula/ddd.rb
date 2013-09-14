@@ -9,7 +9,13 @@ class Ddd < Formula
   depends_on 'lesstif'
   depends_on :x11
 
-  def patches; DATA; end
+  def patches
+    if MacOS.version >= :mavericks
+      # Needed for OSX 10.9 DP6 build failure:
+      # https://savannah.gnu.org/patch/?8178
+      { :p0 => 'https://savannah.gnu.org/patch/download.php?file_id=29114' }
+    end
+  end
 
   def install
     system "./configure", "--disable-debug",
@@ -29,18 +35,3 @@ class Ddd < Formula
     mv bin/'dddexe', bin/'ddd'
   end
 end
-
-__END__
-diff --git a/ddd/VSLDefList.C b/ddd/VSLDefList.C
-index 55c1778..3dfc6a7 100644
---- a/ddd/VSLDefList.C
-+++ b/ddd/VSLDefList.C
-@@ -60,7 +60,7 @@ const Box *VSLDefList::eval(Box *arg) const
-     {
-	std::ostringstream s;
-	s << *arg;
--	VSLLib::eval_error("no suiting definition for " + f_name() + s);
-+	VSLLib::eval_error("no suiting definition for " + f_name() + s.str().c_str());
-     }
-
-     return d ? d->eval(arg) : 0;
