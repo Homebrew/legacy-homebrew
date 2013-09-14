@@ -20,7 +20,7 @@ class Root < Formula
                   'man/man1/setup-pq2.1', 'README/INSTALL', 'README/README'],
       /bin.thisroot/, 'libexec/thisroot'
 
-    #Determine architecture
+    # Determine architecture
     arch = MacOS.prefer_64_bit? ? 'macosx64' : 'macosx'
 
     # N.B. that it is absolutely essential to specify
@@ -40,7 +40,8 @@ class Root < Formula
     system "make"
     system "make install"
 
-    prefix.install 'test' # needed to run test suite
+    # needed to run test suite
+    prefix.install 'test'
 
     libexec.mkpath
     mv Dir["#{bin}/*.*sh"], libexec
