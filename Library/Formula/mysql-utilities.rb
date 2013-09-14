@@ -17,7 +17,7 @@ class MysqlUtilities < Formula
 
   def install
     system python, "setup.py", "install", "--prefix=#{prefix}"#, "--install-scripts=#{bin}", "--install-lib=#{lib}"
-    system "rm", "#{python.global_site_packages}/mysql/__init__.py"
+    system "rm", "#{python.site_packages}/mysql/__init__.py"
   end
 
   test do
