@@ -6,6 +6,12 @@ class Root < Formula
   version '5.34.10'
   sha1 '2dc0af12e531c4f2314a9fbd7dd4f5fee924d71c'
 
+  bottle do
+    sha1 '7f6abbf1bf9373764d8564e90552e8a1a03ed52d' => :mountain_lion
+    sha1 '6fb8a9c43c8ab9908571677634319c18d15ff8ea' => :lion
+    sha1 'a4f560c56436285635e03fdcd693d7e69320bbe9' => :snow_leopard
+  end
+
   depends_on 'xrootd' => :recommended
   depends_on 'fftw' => :optional
   depends_on :x11
