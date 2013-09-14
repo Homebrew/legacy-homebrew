@@ -19,6 +19,8 @@ class AndroidSdk < Formula
 
   skip_clean var_dirs
 
+  conflicts_with 'adb-fastboot'
+
   def install
     prefix.install 'tools', 'SDK Readme.txt' => 'README'
 
