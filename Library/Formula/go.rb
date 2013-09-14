@@ -13,6 +13,10 @@ class Go < Formula
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
   option 'without-cgo', "Build without cgo"
+  
+  fails_with :clang do
+    cause 'cgo and friends are not compilable with clang yet'
+  end
 
   def install
     # install the completion scripts
