@@ -13,10 +13,25 @@ class Casperjs < Formula
 
   head 'https://github.com/n1k0/casperjs.git'
 
-  depends_on 'phantomjs'
+  option 'with-slimerjs', 'Build with slimerjs (Gecko) support (requires head or devel)'
+
+  depends_on 'phantomjs' => :recommended
+  depends_on 'slimerjs' if build.with? 'slimerjs' and !build.stable?
 
   def install
     libexec.install Dir['*']
     bin.install_symlink libexec+'bin/casperjs'
+  end
+
+  def caveats
+    if build.with? 'slimerjs' and build.stable? then <<-end.undent
+      CasperJS was builded without SlimerJS support, because only devel and head installations support SlimerJS right now.
+      end
+    end
+    if which 'phantomjs' and build.with? 'slimerjs' then <<-end.undent
+      CasperJS will use PhantomJS by default. To use it with SlimerJS start it with: 
+        --engine=slimerjs
+      end
+    end
   end
 end
