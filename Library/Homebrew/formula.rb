@@ -48,7 +48,7 @@ class Formula
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
-    @downloader = download_strategy.new(name, active_spec)
+    @downloader = active_spec.download_strategy.new(name, active_spec)
 
     # Combine DSL `option` and `def options`
     options.each do |opt, desc|
@@ -179,10 +179,6 @@ class Formula
 
   def opt_prefix
     Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
-  end
-
-  def download_strategy
-    active_spec.download_strategy
   end
 
   def cached_download
