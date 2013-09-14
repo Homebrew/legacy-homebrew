@@ -56,8 +56,8 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
 
     puts "brew: Python block (#{py.binary})..." if ARGV.verbose? && ARGV.debug?
     # Ensure env changes are only temporary:
+    old_env = ENV.to_hash
     begin
-      old_env = ENV.to_hash
       # In order to install into the `Cellar`, the dir must exist and be in the
       # `PYTHONPATH`. This will be executed in the context of the formula and
       # lib points to the `HOMEBREW_PREFIX/Cellar/<formula>/<version>/lib`.
