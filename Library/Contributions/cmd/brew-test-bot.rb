@@ -290,7 +290,7 @@ class Test
         test "brew install #{bottle_filename}"
       end
     end
-    test "brew test #{formula}" if formula_object.test_defined?
+    test "brew test --verbose #{formula}" if formula_object.test_defined?
     test "brew uninstall --force #{formula}"
     test "brew uninstall --force #{dependencies}" unless dependencies.empty?
   end
