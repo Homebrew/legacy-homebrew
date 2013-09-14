@@ -2,17 +2,18 @@ require 'formula'
 
 class Pngtools < Formula
   homepage 'http://www.stillhq.com/pngtools/'
-  # Version 0.4 is the current latest, but the upstream has pulled some useful changes from Gentoo into the SVN that make it build nicely with libpng1.5
+  # Version 0.4 is the current latest, but the upstream has pulled some useful
+  # changes from Gentoo into the SVN that make it build nicely with libpng1.5
   url 'http://www.stillhq.com/svn/trunk/pngtools/', :using => :svn, :revision => 3378
   version '0.4'
-  # url 'http://www.stillhq.com/pngtools/source/pngtools_0_4.tgz'
-  # sha1 'bc8b4953fbdf993f5837e2df510d2341e0ab7d54'
   head 'http://www.stillhq.com/svn/trunk/pngtools/', :using => :svn
 
   depends_on :libpng
 
   def patches
-    # Could accomplish this with autotools, but that requires several steps and having autotools installed, vs a quick patch...
+    # Makefile.in patch could be accomplished with autotools, but that requires
+    # several steps and having autotools installed, vs a quick patch...
+    # pnginfo.c patch fixes a couple of minor bugs present in the upstream
     DATA
   end
 
@@ -46,3 +47,32 @@ index 488aaf5..7f356af 100644
  DEFAULT_INCLUDES = -I.@am__isrc@
  depcomp = $(SHELL) $(top_srcdir)/config/depcomp
  am__depfiles_maybe = depfiles
+diff --git a/pnginfo.c b/pnginfo.c
+index 9b17206..6c54ae3 100644
+--- a/pnginfo.c
++++ b/pnginfo.c
+@@ -127,6 +127,8 @@ main (int argc, char *argv[])
+   // For each filename that we have:
+   for (; i < argc; i++)
+     pnginfo_displayfile (argv[i], extractBitmap, displayBitmap, tiffnames);
++
++  return 0;
+ }
+ 
+ void
+@@ -309,11 +309,12 @@ pnginfo_displayfile (char *filename, int extractBitmap, int displayBitmap, int t
+   printf ("  FillOrder: msb-to-lsb\n  Byte Order: Network (Big Endian)\n");
+ 
+   png_textp text;
+-  int num_text, max_text;
++  int num_text;
++  png_get_text(png, info, &text, &num_text);
+ 
+   // Text comments
+-  printf ("  Number of text strings: %d of %d\n",
+-	  num_text, max_text);
++  printf ("  Number of text strings: %d\n",
++	  num_text);
+ 
+   for (i = 0; i < num_text; i++)
+     {
