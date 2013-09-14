@@ -17,7 +17,7 @@ require 'utils'
 require 'date'
 require 'erb'
 
-EMAIL_SUBJECT_FILE = "brew-test-bot.email.txt"
+EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"
 HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 
 class Step
@@ -381,7 +381,7 @@ if ARGV.include? "--email"
   File.open EMAIL_SUBJECT_FILE, 'w' do |file|
     # The file should be written at the end but in case we don't get to that
     # point ensure that we have something valid.
-    file.write "INTERNAL ERROR"
+    file.write "#{MacOS.version}: internal error."
   end
 end
 
@@ -419,9 +419,9 @@ if ARGV.include? "--email"
   end
 
   if failed_steps.empty?
-    email_subject = 'PASSED'
+    email_subject = ''
   else
-    email_subject = "#{failed_steps.join ', '}"
+    email_subject = "#{MacOS.version}: #{failed_steps.join ', '}."
   end
 
   File.open EMAIL_SUBJECT_FILE, 'w' do |file|
