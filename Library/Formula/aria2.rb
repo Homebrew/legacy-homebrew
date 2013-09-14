@@ -9,7 +9,6 @@ class Aria2 < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gnutls'
-  depends_on 'sqlite'
   depends_on 'curl-ca-bundle' => :recommended
 
   # Leopard's libxml2 is too old.
@@ -21,6 +20,9 @@ class Aria2 < Formula
   end
 
   def install
+    ENV.append 'CFLAGS', '-I/usr/include'
+    ENV.append 'LDFLAGS', '-L/usr/lib -lsqlite3'
+    
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
     args << "--with-ca-bundle=#{HOMEBREW_PREFIX}/share/ca-bundle.crt" if build.with? 'curl-ca-bundle'
     if build.with? 'appletls'
