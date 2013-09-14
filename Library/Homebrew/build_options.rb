@@ -6,9 +6,18 @@ class BuildOptions
   attr_accessor :args
   include Enumerable
 
+  attr_reader :options
+  protected :options
+
   def initialize args
     @args = Options.coerce(args)
     @options = Options.new
+  end
+
+  def initialize_copy(other)
+    super
+    @options = other.options.dup
+    @args = other.args.dup
   end
 
   def add name, description=nil
