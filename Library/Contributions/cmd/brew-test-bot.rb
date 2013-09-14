@@ -134,6 +134,10 @@ class Test
     FileUtils.mkdir_p @brewbot_root
   end
 
+  def no_args?
+    @hash == 'HEAD'
+  end
+
   def git arguments
     Dir.chdir HOMEBREW_REPOSITORY do
       `git #{arguments}`
@@ -186,7 +190,7 @@ class Test
       end
     end
 
-    if @hash == 'HEAD'
+    if no_args?
       if diff_start_sha1 == diff_end_sha1 or \
         single_commit?(diff_start_sha1, diff_end_sha1)
         @name = diff_end_sha1
