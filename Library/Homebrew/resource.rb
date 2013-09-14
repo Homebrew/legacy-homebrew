@@ -7,9 +7,6 @@ class Resource
   # This is the resource name
   attr_reader :name
 
-  # This is the associated formula name
-  attr_reader :owner_name
-
   def initialize name, spec
     @name = name
     @spec = spec
