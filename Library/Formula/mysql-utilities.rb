@@ -13,13 +13,14 @@ class MysqlUtilities < Formula
 
   depends_on 'sphinx'
   depends_on :python => ['distutils','sphinx','jinja2']
-  depends_on :python => ['mysql.connector' => 'mysql-connector']
+  depends_on :python => ['mysql.connector' => 'mysql-connector-python']
 
   def install
-    system python, "setup.py", "install"
+    system python, "setup.py", "install", "--prefix=#{prefix}"#, "--install-scripts=#{bin}", "--install-lib=#{lib}"
+    system "rm", "#{python.global_site_packages}/mysql/__init__.py"
   end
 
   test do
-    system "mysqlauditadmin --help"
+    system "#{bin}/mysqlauditgrep", "--help"
   end
 end
