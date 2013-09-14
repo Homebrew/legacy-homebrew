@@ -3,7 +3,7 @@
 
 # This method has a dual nature. For one, it takes a &block and sets up
 # the ENV such that a Python, as defined in the requirements, is the default.
-# If there are multiple `PythonInstalled` requirements, the block is evaluated
+# If there are multiple `PythonDependency` requirements, the block is evaluated
 # once for each Python. This makes it possible to easily support 2.x and
 # 3.x Python bindings without code duplication in formulae.
 # If you need to special case stuff, set :allowed_major_versions.
@@ -24,8 +24,8 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
     end
   end
 
-  # Look for PythonInstalled requirements for this formula:
-  python_reqs = requirements.select{ |r| r.kind_of?(PythonInstalled) }
+  # Look for PythonDependency requirements for this formula:
+  python_reqs = requirements.select{ |r| r.kind_of?(PythonDependency) }
   if python_reqs.empty?
     raise "If you use python in the formula, you have to add `depends_on :python` (or :python3)!"
   end
