@@ -9,7 +9,6 @@ class Aria2 < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gnutls'
-  depends_on 'sqlite'
   depends_on 'curl-ca-bundle' => :recommended
   depends_on :macos => :lion # Needs a c++11 compiler
 
