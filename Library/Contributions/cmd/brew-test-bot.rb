@@ -165,7 +165,7 @@ class Test
     @start_branch = current_branch
 
     # Use Jenkins environment variables if present.
-    if ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT'] \
+    if no_args? and ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT'] \
        and not ENV['ghprbPullId']
       diff_start_sha1 = shorten_revision ENV['GIT_PREVIOUS_COMMIT']
       diff_end_sha1 = shorten_revision ENV['GIT_COMMIT']
