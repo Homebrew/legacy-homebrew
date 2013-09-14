@@ -1,9 +1,9 @@
 require 'formula'
 
 class Topgit < Formula
-  homepage 'http://repo.or.cz/w/topgit.git'
-  url 'git://repo.or.cz/topgit.git', :revision => '1744aca50f3d7b6b4863523207e5010e112dfb85'
-  version '0.8'
+  homepage 'https://github.com/greenrd/topgit'
+  url 'https://github.com/greenrd/topgit.git', :revision => 'f2815f4debdb07f86ee86dd4eb75280919ace55d'
+  version '0.9'
 
   def install
     system "make", "install", "prefix=#{prefix}"
