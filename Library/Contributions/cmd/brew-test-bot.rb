@@ -327,7 +327,6 @@ class Test
 
     if ARGV.include? '--cleanup'
       test 'git reset --hard'
-      test 'git gc'
       git 'stash pop 2>/dev/null'
     end
 
