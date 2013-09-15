@@ -11,7 +11,7 @@ class Ctags < Formula
 
   def patches
     # fixes http://sourceforge.net/tracker/?func=detail&aid=3247256&group_id=6556&atid=106556
-    { :p2 => "https://raw.github.com/gist/4010022/8d0697dc87a40e65011e2192439609c17578c5be/ctags.patch" }
+    { :p2 => "https://gist.github.com/thefloweringash/4010022/raw/8d0697dc87a40e65011e2192439609c17578c5be/ctags.patch" }
   end
 
   def install
