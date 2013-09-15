@@ -1,6 +1,34 @@
 require 'formula'
 
+class JavaRequirement < Requirement
+
+  fatal true
+
+  def self.jdk_home
+    [
+      `/usr/libexec/java_home`.chomp,
+      ENV['JAVA_HOME']
+    ].find { |dir| dir && File.exists?("#{dir}/bin/javac") && File.exists?("#{dir}/include") }
+  end
+
+  satisfy :build_env => false do
+    self.class.jdk_home
+  end
+
+  def message; <<-EOS.undent
+    Could not find a JDK (i.e. not a JRE)
+
+    Do one of the following:
+    - install a JDK that is detected with /usr/libexec/java_home
+    - set the JAVA_HOME environment variable
+    - specify --without-java
+    EOS
+  end
+
+end
+
 class Hamsterdb < Formula
+
   homepage 'http://hamsterdb.com'
   head 'https://github.com/cruppstahl/hamsterdb.git', :branch => 'topic/next'
   url 'http://hamsterdb.com/dl/hamsterdb-2.1.2.tar.gz'
@@ -11,6 +39,7 @@ class Hamsterdb < Formula
 
   depends_on 'boost'
   depends_on 'gnutls'
+  depends_on JavaRequirement if build.with? 'java'
 
   if build.head?
     depends_on 'automake' => :build
@@ -25,13 +54,17 @@ class Hamsterdb < Formula
   def install
 
     if build.head?
-      inreplace 'bootstrap.sh', /^libtoolize/, 'glibtoolize'
-      system "./bootstrap.sh"
+      system '/bin/sh', 'bootstrap.sh'
     end
 
     features = []
-    features << '--disable-java' if build.without? 'java'
     features << '--disable-remote' if build.without? 'remote'
+
+    if build.with? 'java'
+      features << "JDK=#{JavaRequirement.jdk_home}"
+    else
+      features << '--disable-java'
+    end
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -43,4 +76,5 @@ class Hamsterdb < Formula
   test do
     system "#{bin}/ham_info -h"
   end
+
 end
