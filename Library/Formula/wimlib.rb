@@ -6,7 +6,6 @@ class Wimlib < Formula
   sha1 '3a86bd84a27d1db0c33dc15d277dd5b94968379a'
 
   depends_on 'ntfs-3g'
-  depends_on 'libxml2'
 
   def install
     system "./configure", "--disable-debug",
