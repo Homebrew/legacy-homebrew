@@ -64,7 +64,7 @@ class Wine < Formula
     if build.stable?
       # http://bugs.winehq.org/show_bug.cgi?id=34188
       ['http://bugs.winehq.org/attachment.cgi?id=45507']
-	end
+    end
   end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
