@@ -1,15 +1,9 @@
 require 'formula'
 
 class ObjectiveCaml < Formula
-  homepage 'http://www.ocaml-lang.org'
-  url 'http://caml.inria.fr/pub/distrib/ocaml-4.00/ocaml-4.00.1.tar.bz2'
-  sha1 '10b8a4d0b88d20b003e3dd719f2ac9434e6a1042'
-
-  devel do
-    url 'http://caml.inria.fr/pub/distrib/ocaml-4.01/ocaml-4.01.0+rc1.tar.bz2'
-    version '4.01.0+rc1'
-    sha1 '7591b7dd9638463648e60ad26786c3d2b6cb8263'
-  end
+  homepage 'http://ocaml.org'
+  url 'http://caml.inria.fr/pub/distrib/ocaml-4.01/ocaml-4.01.0.tar.gz'
+  sha1 '31ae98051d42e038f4fbc5fd338c4fa5c36744e0'
 
   head 'http://caml.inria.fr/svn/ocaml/trunk', :using => :svn
 
