@@ -60,9 +60,11 @@ class Wine < Formula
     cause 'error: invalid operand for instruction lretw'
   end
 
-  def patches
-    # http://bugs.winehq.org/show_bug.cgi?id=34188
-    ['http://bugs.winehq.org/attachment.cgi?id=45477']
+  if build.stable?
+  	def patches
+      # http://bugs.winehq.org/show_bug.cgi?id=34188
+      ['http://bugs.winehq.org/attachment.cgi?id=45507']
+  	end
   end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
