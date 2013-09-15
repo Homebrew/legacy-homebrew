@@ -7,24 +7,26 @@ class SagaCore < Formula
 
   head 'svn://svn.code.sf.net/p/saga-gis/code-0/trunk/saga-gis'
 
+  depends_on :automake => :build
+  depends_on :autoconf => :build
+  depends_on :libtool => :build
   depends_on 'boost'
   depends_on 'proj'
   depends_on 'gdal'
   depends_on 'wxmac'
   depends_on 'jasper'
-  depends_on 'libharu' => :recommended
   depends_on 'wget'
-  depends_on 'automake' => :build
-  depends_on 'autoconf' => :build
-  depends_on 'libtool' => :build
+  depends_on 'libharu' => :recommended
 
   def patches
-  # Missing proj4 headers needed for compile
-  # http://sourceforge.net/p/saga-gis/bugs/145/
-  [ "https://gist.github.com/nickrobison/6559641/raw/",
-  # Need to remove unsupported libraries from various Makefiles
-  # http://sourceforge.net/apps/trac/saga-gis/wiki/Compiling%20SAGA%20on%20Mac%20OS%20X
-  DATA ]
+    # Missing proj4 headers needed for compile
+    # http://sourceforge.net/p/saga-gis/bugs/145/
+    # Need to remove unsupported libraries from various Makefiles
+    # http://sourceforge.net/apps/trac/saga-gis/wiki/Compiling%20SAGA%20on%20Mac%20OS%20X
+    [
+      "https://gist.github.com/nickrobison/6559641/raw/",
+      DATA
+    ]
   end
 
   def install
