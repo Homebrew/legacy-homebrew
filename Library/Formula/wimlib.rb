@@ -18,6 +18,6 @@ class Wimlib < Formula
   end
 
   test do
-    system "wiminfo"
+    system "wiminfo", "--help"
   end
 end
