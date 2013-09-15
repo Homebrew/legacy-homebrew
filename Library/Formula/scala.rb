@@ -19,6 +19,7 @@ class Scala < Formula
   devel do
     url 'http://www.scala-lang.org/files/archive/scala-2.11.0-M4.tgz'
     sha1 '43e0983cebe75154e41a6b35a5b82bdc5bdbbaa2'
+    version '2.11.0-M4'
   end
 
   option 'with-docs', 'Also install library documentation'
