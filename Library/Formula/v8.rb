@@ -7,15 +7,14 @@ require 'formula'
 
 class V8 < Formula
   homepage 'http://code.google.com/p/v8/'
-  url 'https://github.com/v8/v8/archive/3.19.18.4.tar.gz'
-  sha1 'f44c8eed0fe93b2d04d1d547a1e2640f41161354'
+  head 'https://github.com/v8/v8.git'
+  url 'https://github.com/v8/v8/archive/3.20.17.tar.gz'
+  sha1 '86c61558a0e6fc64f6a4997d16d8077c2d50d98f'
 
   devel do
-    url 'https://github.com/v8/v8/archive/3.20.12.tar.gz'
-    sha1 '1463f4b8b33674bfd366e84b739713a727e9f9ac'
+    url 'https://github.com/v8/v8/archive/3.21.15.tar.gz'
+    sha1 'd2b1233f58181c9d3a08861bb7fd21f34e8870d1'
   end
-
-  head 'https://github.com/v8/v8.git'
 
   option 'with-readline', 'Use readline instead of libedit'
 
