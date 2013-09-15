@@ -9,9 +9,9 @@ class Sslh < Formula
 
   def install
     ENV.j1
-    system "make"
-    sbin.install 'sslh-fork', 'sslh-select'
-    ln_s sbin/'sslh-fork', sbin/'sslh'
+    system 'make'
+    bin.install 'sslh-fork', 'sslh-select'
+    ln_s bin/'sslh-fork', bin/'sslh'
     man8.install 'sslh.8.gz'
   end
 end
