@@ -10,9 +10,9 @@ class ObjectiveCaml < Formula
   depends_on :x11 if MacOS::X11.installed?
 
   bottle do
-    sha1 '' => :mountain_lion
-    sha1 '' => :lion
-    sha1 '' => :snow_leopard
+    sha1 'cba09036b0ddc87f04675f3ceaac2c46b99dcb20' => :mountain_lion
+    sha1 '90e110ace80da3e633b3ba0b95530fe5d43045d7' => :lion
+    sha1 '5b320577bcb6e39ada153e2de14a105a2afb5ca2' => :snow_leopard
   end
 
   def install
