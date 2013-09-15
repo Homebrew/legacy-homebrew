@@ -8,7 +8,7 @@ class Aria2 < Formula
   option 'with-appletls', 'Build with Secure Transport for SSL support'
 
   depends_on 'pkg-config' => :build
-  depends_on 'gnutls'
+  depends_on 'gnutls' unless build.with? 'appletls'
   depends_on 'curl-ca-bundle' => :recommended
   depends_on :macos => :lion # Needs a c++11 compiler
 
