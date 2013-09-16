@@ -611,7 +611,7 @@ class Formula
 
   def stage
     fetched = fetch
-    verify_download_integrity(fetched) if fetched.file?
+    verify_download_integrity(fetched) if fetched.respond_to?(:file?) and fetched.file?
     mktemp do
       downloader.stage
       # Set path after the downloader changes the working folder.
