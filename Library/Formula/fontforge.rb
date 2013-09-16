@@ -19,9 +19,19 @@ class Fontforge < Formula
   depends_on :x11 if build.with? 'x'
   depends_on 'giflib' if build.with? 'gif'
   depends_on 'cairo' => :optional
-  depends_on 'pango' => :optional
+  depends_on 'pango' => :optional if build.stable?
   depends_on 'libspiro' => :optional
+  depends_on 'czmq'=> :optional
   depends_on 'fontconfig'
+  
+  if build.head?
+    depends_on :automake => :build
+    depends_on :libtool
+    depends_on 'pkg-config' => :build
+    depends_on 'glib'
+    depends_on 'pango'
+    depends_on 'cairo'
+  end
 
   fails_with :llvm do
     build 2336
@@ -33,8 +43,10 @@ class Fontforge < Formula
             "--enable-double",
             "--without-freetype-bytecode"]
 
-    args << "--without-cairo" unless build.with? "cairo"
-    args << "--without-pango" unless build.with? "pango"
+    unless build.head?
+      args << "--without-cairo" unless build.with? "cairo"
+      args << "--without-pango" unless build.with? "pango"
+    end
     args << "--without-x" unless build.with? 'x'
 
     # To avoid "dlopen(/opt/local/lib/libpng.2.dylib, 1): image not found"
@@ -51,6 +63,12 @@ class Fontforge < Formula
     # Fix linker error; see: http://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
 
+    # Add environment variables for system libs if building head
+    if build.head?
+      ENV.append "ZLIB_CFLAGS", "-I/usr/include"
+      ENV.append "ZLIB_LIBS", "-L/usr/lib -lz"
+    end
+
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
@@ -58,6 +76,7 @@ class Fontforge < Formula
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/CoreServices.framework/Frameworks"
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Frameworks"
 
+    system "./autogen.sh" if build.head?
     system "./configure", *args
 
     # Fix hard-coded install locations that don't respect the target bindir
@@ -85,11 +104,9 @@ class Fontforge < Formula
     system "make install"
   end
 
-  test do
+  def test
     system "#{bin}/fontforge", "-version"
-    python do
-      system python, "-c", "import fontforge"
-    end
+    system python, "-c", "import fontforge"
   end
 
   def caveats
@@ -109,7 +126,9 @@ class Fontforge < Formula
   end
 
   def patches
-    # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
-    "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
+    unless build.head?
+      # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
+      "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
+    end
   end
 end
