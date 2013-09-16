@@ -25,12 +25,12 @@ class Fontforge < Formula
   depends_on 'fontconfig'
   
   if build.head?
-    depends_on :automake
+    depends_on :automake => :build
     depends_on :libtool
     depends_on 'pkg-config' => :build
-    depends_on 'glib' => :build
-    depends_on 'pango' => :build
-    depends_on 'cairo' => :build
+    depends_on 'glib'
+    depends_on 'pango'
+    depends_on 'cairo'
   end
 
   fails_with :llvm do
