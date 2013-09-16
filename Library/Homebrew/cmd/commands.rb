@@ -1,14 +1,4 @@
 module Homebrew extend self
-  def paths
-    @paths ||= ENV['PATH'].split(File::PATH_SEPARATOR).collect do |p|
-      begin
-        File.expand_path(p).chomp('/')
-      rescue ArgumentError
-        onoe "The following PATH component is invalid: #{p}"
-      end
-    end.uniq.compact
-  end
-
   def commands
     # Find commands in Homebrew/cmd
     cmds = (HOMEBREW_REPOSITORY/"Library/Homebrew/cmd").
