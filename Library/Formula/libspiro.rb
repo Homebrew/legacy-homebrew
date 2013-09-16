@@ -15,7 +15,6 @@ class Libspiro < Formula
 
   def install
 
-    # Create ./configure script if building head
     if build.head?
       system "autoreconf", "-i"
       system "automake"
