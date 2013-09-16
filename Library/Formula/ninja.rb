@@ -8,6 +8,11 @@ class Ninja < Formula
 
   depends_on :python
 
+  def patches
+    # Mavericks build misses atol(), use stol() instead
+    "https://gist.github.com/berkus/6581383/raw/"
+  end
+
   def install
     system python, "./bootstrap.py"
     bin.install "ninja"
