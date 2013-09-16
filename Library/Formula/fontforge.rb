@@ -125,8 +125,8 @@ class Fontforge < Formula
     return s
   end
 
-  unless build.head?
-    def patches
+  def patches
+    unless build.head?
       # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
       "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
     end
