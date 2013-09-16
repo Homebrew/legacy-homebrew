@@ -110,7 +110,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
         target = File.basename(basename_without_params, ".gz")
 
         IO.popen("gunzip -f '#{@tarball_path}' -c") do |pipe|
-          File.open(target, "w") do |f|
+          File.open(target, "wb") do |f|
             buf = ""
             f.write(buf) while pipe.read(1024, buf)
           end
