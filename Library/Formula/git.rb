@@ -13,6 +13,7 @@ class Git < Formula
   depends_on :python
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
+  depends_on 'curl' => :recommended
 
   resource 'man' do
     url 'http://git-core.googlecode.com/files/git-manpages-1.8.4.tar.gz'
@@ -45,6 +46,8 @@ class Git < Formula
     end
 
     ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
+    ENV['NO_CURL'] = '1' if build.without? 'curl'
+    ENV['CURLDIR'] = Formula.factory('curl').opt_prefix if build.with? 'curl'
 
     system "make", "prefix=#{prefix}",
                    "sysconfdir=#{etc}",
