@@ -62,6 +62,12 @@ class Resource
     end
   end
 
+  Partial = Struct.new(:resource, :files)
+
+  def files(*files)
+    Partial.new(self, files)
+  end
+
   # For brew-fetch and others.
   def fetch
     # Ensure the cache exists

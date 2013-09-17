@@ -83,7 +83,7 @@ class Erlang < Formula
     system "make install"
 
     unless build.include? 'no-docs'
-      resource('man').stage { (lib/'erlang').install 'man' }
+      (lib/'erlang').install resource('man').files('man')
       doc.install resource('html')
     end
   end
