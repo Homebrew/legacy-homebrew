@@ -12,18 +12,26 @@ class Go < Formula
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
-  option 'without-cgo', "Build without cgo"
+  option 'with-cgo', "Build with cgo"
 
-  fails_with :clang do
-    cause "clang: error: no such file or directory: 'libgcc.a'"
+  # the cgo module cannot build with clang
+  # NOTE it is ridiculous that we put this stuff in the class
+  # definition, it needs to be in a pre-install test function!
+  if build.with? 'cgo'
+    fails_with :clang do
+      cause "clang: error: no such file or directory: 'libgcc.a'"
+    end
   end
+
+  # Upstream patch for a switch statement that causes a clang error
+  # Should be in the next release.
+  # http://code.google.com/p/go/source/detail?r=000ecca1178d67c9b482d3fb0b6a1bc4aeef2472&path=/src/cmd/ld/lib.c
+  def patches; DATA; end
 
   def install
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
     zsh_completion.install 'misc/zsh/go' => 'go'
-
-    cgo = build.with? 'cgo'
 
     if build.include? 'cross-compile-all'
       targets = [
@@ -35,7 +43,7 @@ class Go < Formula
         ['windows', ['386', 'amd64'],        { :cgo => false }],
 
         # Host platform (darwin/amd64) must always come last
-        ['darwin',  ['386', 'amd64'],        { :cgo => cgo  }],
+        ['darwin',  ['386', 'amd64'],        { :cgo => build.with?('cgo')  }],
       ]
     elsif build.include? 'cross-compile-common'
       targets = [
@@ -43,11 +51,11 @@ class Go < Formula
         ['windows', ['386', 'amd64'],        { :cgo => false }],
 
         # Host platform (darwin/amd64) must always come last
-        ['darwin',  ['386', 'amd64'],        { :cgo => cgo  }],
+        ['darwin',  ['386', 'amd64'],        { :cgo => build.with?('cgo')  }],
       ]
     else
       targets = [
-        ['darwin', [''], { :cgo => cgo }]
+        ['darwin', [''], { :cgo => build.with?('cgo') }]
       ]
     end
 
@@ -86,7 +94,13 @@ class Go < Formula
     when $GOPATH and $GOROOT are set to the same value.
 
     More information here: http://golang.org/doc/code.html#GOPATH
+
+    FYI: We probably didn't build the cgo module because it doesn't build with
+    clang.
     EOS
+    # NOTE I would have the cgo caveat only show if we didn't build it but the
+    # state matrix for that seems inconclusive, ENV.compiler doesn't actually
+    # mean for sure that we used that compiler.
   end
 
   test do
@@ -105,3 +119,33 @@ class Go < Formula
     assert_equal "Hello World\n", `#{bin}/go run hello.go`
   end
 end
+
+__END__
+# HG changeset patch
+# User Dave Cheney <dave@cheney.net>
+# Date 1373336072 18000
+#      Mon Jul 08 21:14:32 2013 -0500
+# Node ID 000ecca1178d67c9b482d3fb0b6a1bc4aeef2472
+# Parent  02b673333fab068d9e12106c01748c2d23682bac
+cmd/ld: trivial: fix unhandled switch case
+
+Fix warning found by clang 3.3.
+
+R=rsc, r
+CC=golang-dev
+https://codereview.appspot.com/11022043
+
+diff -r 02b673333fab -r 000ecca1178d src/cmd/ld/lib.c
+--- a/src/cmd/ld/lib.c	Tue Jul 09 11:12:05 2013 +1000
++++ b/src/cmd/ld/lib.c	Mon Jul 08 21:14:32 2013 -0500
+@@ -665,6 +665,9 @@
+ 	case '6':
+ 		argv[argc++] = "-m64";
+ 		break;
++	case '5':
++		// nothing required for arm
++		break;
+ 	}
+ 	if(!debug['s'] && !debug_s) {
+ 		argv[argc++] = "-gdwarf-2"; 
+

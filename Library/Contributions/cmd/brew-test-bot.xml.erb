@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <% tests.each do |test| %>
-  <testsuite name="brew-test-bot.<%= test.name %>" tests="<%= test.steps.count %>">
+  <testsuite name="brew-test-bot.<%= MacOS.cat %>" tests="<%= test.steps.count %>">
     <% test.steps.each do |step| %>
     <testcase name="<%= step.command_short %>" status="<%= step.status %>" time="<%= step.time %>">
       <% if step.has_output? %>

@@ -64,11 +64,11 @@ module SharedEnvExtension
   end
 
   def cc= val
-    self['CC'] = self['OBJC'] = val
+    self['CC'] = self['OBJC'] = val.to_s
   end
 
   def cxx= val
-    self['CXX'] = self['OBJCXX'] = val
+    self['CXX'] = self['OBJCXX'] = val.to_s
   end
 
   def cc;       self['CC'];           end
@@ -108,6 +108,19 @@ module SharedEnvExtension
       end
     else
       MacOS.default_compiler
+    end
+  end
+
+  # If the given compiler isn't compatible, will try to select
+  # an alternate compiler, altering the value of environment variables.
+  # If no valid compiler is found, raises an exception.
+  def validate_cc!(formula)
+    if formula.fails_with? ENV.compiler
+      begin
+        send CompilerSelector.new(formula).compiler
+      rescue CompilerSelectionError => e
+        raise e.message
+      end
     end
   end
 
@@ -162,7 +175,7 @@ module SharedEnvExtension
 
     begin
       gcc_name = 'gcc' + gcc.delete('.')
-      gcc = Formula.factory(gcc_name)
+      gcc = Formulary.factory(gcc_name)
       if !gcc.installed?
         raise <<-EOS.undent
         The requested Homebrew GCC, #{gcc_name}, was not installed.
@@ -171,8 +184,6 @@ module SharedEnvExtension
           brew install #{gcc_name}
         EOS
       end
-
-      ENV.append('PATH', gcc.opt_prefix/'bin', ':')
     rescue FormulaUnavailableError
       raise <<-EOS.undent
       Homebrew GCC requested, but formula #{gcc_name} not found!

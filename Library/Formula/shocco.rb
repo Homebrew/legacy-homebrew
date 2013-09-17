@@ -1,17 +1,8 @@
 require 'formula'
 
-# Include a private copy of this Python app
-# so we don't have to worry about clashing dependencies.
-class Pygments < Formula
-  homepage 'http://pygments.org/'
-  url 'http://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz'
-  sha1 '4fbd937fd5cebc79fa4b26d4cce0868c4eec5ec5'
-end
-
 class MarkdownProvider < Requirement
   fatal true
   default_formula 'markdown'
-
   satisfy { which 'markdown' }
 end
 
@@ -23,14 +14,19 @@ class Shocco < Formula
   depends_on MarkdownProvider
   depends_on :python
 
+  # Include a private copy of this Python library
+  resource 'pygments' do
+    url 'http://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz'
+    sha1 '4fbd937fd5cebc79fa4b26d4cce0868c4eec5ec5'
+  end
+
   def patches
     DATA
   end
 
   def install
-    Pygments.new.brew { libexec.install 'pygmentize','pygments' }
+    resource('pygments').stage { libexec.install 'pygmentize','pygments' }
 
-    # Brew along with Pygments
     system "./configure",
       "PYGMENTIZE=#{libexec}/pygmentize",
       "MARKDOWN=#{HOMEBREW_PREFIX}/bin/markdown",

@@ -54,16 +54,18 @@ module Superenv
     delete('CLICOLOR_FORCE') # autotools doesn't like this
   end
 
-  def setup_build_environment
+  def setup_build_environment(formula=nil)
     reset
+
     self.cc  = 'cc'
     self.cxx = 'c++'
+    self['HOMEBREW_CC'] = determine_cc
+    validate_cc!(formula) unless formula.nil?
     self['DEVELOPER_DIR'] = determine_developer_dir
     self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     self['PATH'] = determine_path
     self['PKG_CONFIG_PATH'] = determine_pkg_config_path
     self['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
-    self['HOMEBREW_CC'] = determine_cc
     self['HOMEBREW_CCCFG'] = determine_cccfg
     self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
@@ -99,20 +101,7 @@ module Superenv
     # s - apply fix for sed's Unicode support
     # a - apply fix for apr-1-config path
 
-    # Homebrew's apple-gcc42 will be outside the PATH in superenv,
-    # so xcrun may not be able to find it
-    if self['HOMEBREW_CC'] == 'gcc-4.2'
-      apple_gcc42 = begin
-        Formulary.factory('apple-gcc42')
-      rescue Exception # in --debug, catch bare exceptions too
-        nil
-      end
-      append_path('PATH', apple_gcc42.opt_prefix/'bin') if apple_gcc42
-    end
-
-    if ENV['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
-      warn_about_non_apple_gcc($1)
-    end
+    warn_about_non_apple_gcc($1) if ENV['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
   end
 
   def universal_binary
@@ -141,6 +130,24 @@ module Superenv
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << MacOS::X11.bin if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
+
+    # Homebrew's apple-gcc42 will be outside the PATH in superenv,
+    # so xcrun may not be able to find it
+    if self['HOMEBREW_CC'] == 'gcc-4.2'
+      apple_gcc42 = begin
+        Formulary.factory('apple-gcc42')
+      rescue Exception # in --debug, catch bare exceptions too
+        nil
+      end
+      paths << apple_gcc42.opt_prefix/'bin' if apple_gcc42
+    end
+
+    if self['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
+      gcc_name = 'gcc' + $1.delete('.')
+      gcc = Formulary.factory(gcc_name)
+      paths << gcc.opt_prefix/'bin'
+    end
+
     paths.to_path_s
   end
 
@@ -176,7 +183,7 @@ module Superenv
     paths << "#{MacOS::X11.include}/freetype2" if x11?
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     paths << "#{sdk}/usr/include/apache2" if MacOS::Xcode.without_clt?
-    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers/" unless x11?
+    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers" unless x11?
     paths << MacOS::X11.include if x11?
     paths.to_path_s
   end
@@ -255,22 +262,17 @@ module Superenv
   end
   alias_method :j1, :deparallelize
   def gcc
-    self.cc  = self['HOMEBREW_CC'] = "gcc-4.2"
-    self.cxx = "g++-4.2"
+    self['HOMEBREW_CC'] = "gcc-4.2"
   end
   def llvm
-    self.cc  = self['HOMEBREW_CC'] = "llvm-gcc"
-    self.cxx = "llvm-g++-4.2"
+    self['HOMEBREW_CC'] = "llvm-gcc"
   end
   def clang
-    self.cc  = self['HOMEBREW_CC'] = "clang"
-    self.cxx = "clang++"
+    self['HOMEBREW_CC'] = "clang"
   end
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
-      gcc = "gcc-4.#{n}"
-      self.cc = self['HOMEBREW_CC'] = gcc
-      self.cxx = gcc.gsub('c', '+')
+      self['HOMEBREW_CC'] = "gcc-4.#{n}"
     end
   end
   def make_jobs

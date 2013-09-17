@@ -1,11 +1,5 @@
 require 'formula'
 
-class GhostscriptFonts < Formula
-  homepage 'http://sourceforge.net/projects/gs-fonts/'
-  url 'http://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
-  sha1 '2a7198e8178b2e7dba87cb5794da515200b568f5'
-end
-
 class GsDjVU < Formula
   homepage 'http://djvu.sourceforge.net/gsdjvu.html'
   url 'http://downloads.sourceforge.net/project/djvu/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
@@ -39,6 +33,12 @@ class Ghostscript < Formula
   depends_on :libpng
   depends_on :x11 => ['2.7.2', :optional]
   depends_on 'djvulibre' if build.include? 'with-djvu'
+
+  # http://sourceforge.net/projects/gs-fonts/
+  resource 'fonts' do
+    url 'http://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
+    sha1 '2a7198e8178b2e7dba87cb5794da515200b568f5'
+  end
 
   # Fix dylib names, per installation instructions
   def patches
@@ -100,9 +100,7 @@ class Ghostscript < Formula
       system 'make install-so'
     end
 
-    GhostscriptFonts.new.brew do
-      (share+'ghostscript').install '../fonts'
-    end
+    (share+'ghostscript/fonts').install resource('fonts')
 
     (man+'de').rmtree
   end

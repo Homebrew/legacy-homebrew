@@ -1,3 +1,4 @@
+require 'resource'
 require 'download_strategy'
 require 'dependency_collector'
 require 'formula_support'
@@ -10,6 +11,7 @@ require 'compilers'
 require 'build_environment'
 require 'build_options'
 require 'formulary'
+require 'software_spec'
 
 
 class Formula
@@ -28,7 +30,7 @@ class Formula
   def initialize name='__UNKNOWN__', path=nil
     @name = name
     # If we got an explicit path, use that, else determine from the name
-    @path = path.nil? ? self.class.path(name) : Pathname.new(path)
+    @path = path.nil? ? self.class.path(name) : Pathname.new(path).expand_path
     @homepage = self.class.homepage
 
     set_spec :stable
@@ -47,7 +49,7 @@ class Formula
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
-    @downloader = download_strategy.new(name, active_spec)
+    @downloader = active_spec.download_strategy.new(name, active_spec)
 
     # Combine DSL `option` and `def options`
     options.each do |opt, desc|
@@ -56,6 +58,11 @@ class Formula
     end
 
     @pin = FormulaPin.new(self)
+
+    @resources = self.class.resources
+    @resources.each_value do |r|
+      r.set_owner name
+    end
   end
 
   def set_spec(name)
@@ -90,6 +97,16 @@ class Formula
   def url;      active_spec.url;     end
   def version;  active_spec.version; end
   def mirrors;  active_spec.mirrors; end
+
+  def resource(name)
+    res = @resources[name]
+    raise ResourceMissingError.new(@name, name) if res.nil?
+    res
+  end
+
+  def resources
+    @resources.values
+  end
 
   # if the dir is there, but it's empty we consider it not installed
   def installed?
@@ -142,7 +159,7 @@ class Formula
   def kext_prefix; prefix+'Library/Extensions' end
 
   # configuration needs to be preserved past upgrades
-  def etc; HOMEBREW_PREFIX+'etc' end
+  def etc; HOMEBREW_GIT_ETC ? prefix+'etc' : HOMEBREW_PREFIX+'etc' end
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
@@ -163,10 +180,6 @@ class Formula
 
   def opt_prefix
     Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
-  end
-
-  def download_strategy
-    active_spec.download_strategy
   end
 
   def cached_download
@@ -308,6 +321,7 @@ class Formula
       -DCMAKE_INSTALL_PREFIX=#{prefix}
       -DCMAKE_BUILD_TYPE=None
       -DCMAKE_FIND_FRAMEWORK=LAST
+      -DCMAKE_VERBOSE_MAKEFILE=ON
       -Wno-dev
     ]
   end
@@ -515,6 +529,9 @@ class Formula
   def test
     require 'test/unit/assertions'
     extend(Test::Unit::Assertions)
+    # Adding the used options allows us to use `build.with?` inside of tests
+    tab = Tab.for_name(name)
+    tab.used_options.each { |opt| build.args << opt unless build.has_opposite_of? opt }
     ret = nil
     mktemp do
       @testpath = Pathname.pwd
@@ -568,26 +585,25 @@ class Formula
       end
       wr.close
 
-      f = File.open(logfn, 'w')
-      f.write(rd.read) until rd.eof?
+      File.open(logfn, 'w') do |f|
+        f.write(rd.read) until rd.eof?
 
-      Process.wait
+        Process.wait
 
-      unless $?.success?
-        unless ARGV.verbose?
+        unless $?.success?
           f.flush
           Kernel.system "/usr/bin/tail", "-n", "5", logfn
+          f.puts
+          require 'cmd/--config'
+          Homebrew.write_build_config(f)
+          raise ErrorDuringExecution
         end
-        f.puts
-        require 'cmd/--config'
-        Homebrew.write_build_config(f)
-        raise ErrorDuringExecution
       end
     end
   rescue ErrorDuringExecution
     raise BuildError.new(self, cmd, args, $?)
   ensure
-    f.close if f and not f.closed?
+    rd.close if rd and not rd.closed?
     ENV.update(removed_ENV_variables) if removed_ENV_variables
   end
 
@@ -595,7 +611,7 @@ class Formula
 
   def stage
     fetched = fetch
-    verify_download_integrity(fetched) if fetched.file?
+    verify_download_integrity(fetched) if fetched.respond_to?(:file?) and fetched.file?
     mktemp do
       downloader.stage
       # Set path after the downloader changes the working folder.
@@ -660,7 +676,8 @@ class Formula
 
     def stable &block
       return @stable unless block_given?
-      instance_eval(&block)
+      @stable ||= SoftwareSpec.new
+      @stable.instance_eval(&block)
     end
 
     def bottle *, &block
@@ -675,10 +692,16 @@ class Formula
       @devel.instance_eval(&block)
     end
 
-    def head val=nil, specs={}
-      return @head if val.nil?
-      @head ||= HeadSoftwareSpec.new
-      @head.url(val, specs)
+    def head val=nil, specs={}, &block
+      if block_given?
+        @head ||= HeadSoftwareSpec.new
+        @head.instance_eval(&block)
+      elsif val
+        @head ||= HeadSoftwareSpec.new
+        @head.url(val, specs)
+      else
+        @head
+      end
     end
 
     def version val=nil
@@ -689,6 +712,19 @@ class Formula
     def mirror val
       @stable ||= SoftwareSpec.new
       @stable.mirror(val)
+    end
+
+    # Hold any resources defined by this formula
+    def resources
+      @resources ||= Hash.new
+    end
+
+    # Define a named resource using a SoftwareSpec style block
+    def resource res_name, &block
+      raise DuplicateResourceError.new(res_name) if resources.has_key?(res_name)
+      spec = SoftwareSpec.new
+      spec.instance_eval(&block)
+      resources[res_name] = Resource.new(res_name, spec)
     end
 
     def dependencies

@@ -86,9 +86,17 @@ class Updater
     # the refspec ensures that 'origin/master' gets updated
     args << "refs/heads/master:refs/remotes/origin/master"
 
-    safe_system "git", *args
+    reset_on_interrupt { safe_system "git", *args }
 
     @current_revision = read_current_revision
+  end
+
+  def reset_on_interrupt
+    ignore_interrupts { yield }
+  ensure
+    if $?.signaled? && $?.termsig == 2 # SIGINT
+      safe_system "git", "reset", "--hard", @initial_revision
+    end
   end
 
   # Matches raw git diff format (see `man git-diff-tree`)

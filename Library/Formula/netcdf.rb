@@ -1,23 +1,5 @@
 require 'formula'
 
-class NetcdfCXX < Formula
-  homepage 'http://www.unidata.ucar.edu/software/netcdf'
-  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-cxx4-4.2.tar.gz'
-  sha1 '59628c9f06c211a47517fc00d8b068da159ffa9d'
-end
-
-class NetcdfCXX_compat < Formula
-  homepage 'http://www.unidata.ucar.edu/software/netcdf'
-  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-cxx-4.2.tar.gz'
-  sha1 'bab9b2d873acdddbdbf07ab35481cd0267a3363b'
-end
-
-class NetcdfFortran < Formula
-  homepage 'http://www.unidata.ucar.edu/software/netcdf'
-  url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.2.tar.gz'
-  sha1 'f1887314455330f4057bc8eab432065f8f6f74ef'
-end
-
 class Netcdf < Formula
   homepage 'http://www.unidata.ucar.edu/software/netcdf'
   url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-4.2.1.1.tar.gz'
@@ -29,6 +11,21 @@ class Netcdf < Formula
   option 'enable-fortran', 'Compile Fortran bindings'
   option 'disable-cxx', "Don't compile C++ bindings"
   option 'enable-cxx-compat', 'Compile C++ bindings for compatibility'
+
+  resource 'cxx' do
+    url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-cxx4-4.2.tar.gz'
+    sha1 '59628c9f06c211a47517fc00d8b068da159ffa9d'
+  end
+
+  resource 'cxx-compat' do
+    url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-cxx-4.2.tar.gz'
+    sha1 'bab9b2d873acdddbdbf07ab35481cd0267a3363b'
+  end
+
+  resource 'fortran' do
+    url 'http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.2.tar.gz'
+    sha1 'f1887314455330f4057bc8eab432065f8f6f74ef'
+  end
 
   def install
     if build.include? 'enable-fortran'
@@ -58,17 +55,17 @@ class Netcdf < Formula
     ENV.prepend 'CPPFLAGS', "-I#{include}"
     ENV.prepend 'LDFLAGS', "-L#{lib}"
 
-    NetcdfCXX.new.brew do
+    resource('cxx').stage do
       system './configure', *common_args
       system 'make install'
     end unless build.include? 'disable-cxx'
 
-    NetcdfCXX_compat.new.brew do
+    resource('cxx-compat').stage do
       system './configure', *common_args
       system 'make install'
     end if build.include? 'enable-cxx-compat'
 
-    NetcdfFortran.new.brew do
+    resource('fortran').stage do
       system './configure', *common_args
       system 'make install'
     end if build.include? 'enable-fortran'

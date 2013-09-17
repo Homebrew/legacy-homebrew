@@ -41,16 +41,6 @@ end
 class Checks
 
 ############# HELPERS
-  def paths
-    @paths ||= ENV['PATH'].split(File::PATH_SEPARATOR).collect do |p|
-      begin
-        File.expand_path(p).chomp('/')
-      rescue ArgumentError
-        onoe "The following PATH component is invalid: #{p}"
-      end
-    end.uniq.compact
-  end
-
   # Finds files in HOMEBREW_PREFIX *and* /usr/local.
   # Specify paths relative to a prefix eg. "include/foo.h".
   # Sets @found for your convenience.
@@ -452,8 +442,9 @@ def check_user_path_1
 
                 #{conflicts * "\n                "}
 
-            Consider amending your PATH so that #{HOMEBREW_PREFIX}/bin
-            occurs before /usr/bin in your PATH.
+            Consider setting your PATH so that #{HOMEBREW_PREFIX}/bin
+            occurs before /usr/bin. Here is a one-liner:
+                echo export PATH="#{HOMEBREW_PREFIX}/bin:$PATH" >> ~/.bash_profile
           EOS
         end
       end
@@ -469,9 +460,9 @@ end
 def check_user_path_2
   unless $seen_prefix_bin
     <<-EOS.undent
-      Homebrew's bin was not found in your path.
-      Consider amending your PATH variable so it contains:
-        #{HOMEBREW_PREFIX}/bin
+      Homebrew's bin was not found in your PATH.
+      Consider setting the PATH for example like so
+          echo export PATH="#{HOMEBREW_PREFIX}/bin:$PATH" >> ~/.bash_profile
     EOS
   end
 end
@@ -482,9 +473,10 @@ def check_user_path_3
   if sbin.directory? and sbin.children.length > 0
     unless $seen_prefix_sbin
       <<-EOS.undent
-        Homebrew's sbin was not found in your path.
-        Consider amending your PATH variable so it contains:
-          #{HOMEBREW_PREFIX}/sbin
+        Homebrew's sbin was not found in your PATH but you have installed
+        formulae that put executables in #{HOMEBREW_PREFIX}/sbin.
+        Consider setting the PATH for example like so
+            echo export PATH="#{HOMEBREW_PREFIX}/sbin:$PATH" >> ~/.bash_profile
       EOS
     end
   end

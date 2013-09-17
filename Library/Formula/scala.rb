@@ -11,13 +11,6 @@ class ScalaDocs < Formula
   end
 end
 
-class ScalaCompletion < Formula
-  homepage 'http://www.scala-lang.org/'
-  url 'https://raw.github.com/scala/scala-dist/27bc0c25145a83691e3678c7dda602e765e13413/completion.d/2.9.1/scala'
-  version '2.9.1'
-  sha1 'e2fd99fe31a9fb687a2deaf049265c605692c997'
-end
-
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
   url 'http://www.scala-lang.org/files/archive/scala-2.10.2.tgz'
@@ -26,9 +19,15 @@ class Scala < Formula
   devel do
     url 'http://www.scala-lang.org/files/archive/scala-2.11.0-M4.tgz'
     sha1 '43e0983cebe75154e41a6b35a5b82bdc5bdbbaa2'
+    version '2.11.0-M4'
   end
 
   option 'with-docs', 'Also install library documentation'
+
+  resource 'completion' do
+    url 'https://raw.github.com/scala/scala-dist/27bc0c25145a83691e3678c7dda602e765e13413/completion.d/2.9.1/scala'
+    sha1 'e2fd99fe31a9fb687a2deaf049265c605692c997'
+  end
 
   def install
     rm_f Dir["bin/*.bat"]
@@ -37,7 +36,7 @@ class Scala < Formula
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
 
-    ScalaCompletion.new.brew { bash_completion.install 'scala' }
+    bash_completion.install resource('completion')
 
     ScalaDocs.new.brew do
       branch = build.stable? ? 'scala-2.10' : 'scala-2.11'
