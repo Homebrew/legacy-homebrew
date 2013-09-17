@@ -14,7 +14,6 @@ class SagaCore < Formula
   depends_on 'gdal'
   depends_on 'jasper'
   depends_on 'proj'
-  depends_on 'wget'
   depends_on 'wxmac'
   depends_on 'libharu' => :recommended
 
@@ -38,15 +37,15 @@ class SagaCore < Formula
 
     # Missing proj4 headers needed for compile
     # http://sourceforge.net/p/saga-gis/bugs/145/
-    system "wget", "https://gist.github.com/nickrobison/6531625/raw/projects.h", "-O", "src/modules_projection/pj_proj4/pj_proj4/projects.h"
+    curl "https://gist.github.com/nickrobison/6531625/raw/projects.h", "-o", "src/modules_projection/pj_proj4/pj_proj4/projects.h"
 
     system "autoreconf", "-i"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
     # Build App Bundle
-    system "wget", "http://web.fastermac.net/~MacPgmr/SAGA/create_saga_app.sh"
-    system "wget", "http://web.fastermac.net/~MacPgmr/SAGA/saga_gui.icns"
+    curl "http://web.fastermac.net/~MacPgmr/SAGA/create_saga_app.sh", "-O"
+    curl "http://web.fastermac.net/~MacPgmr/SAGA/saga_gui.icns", "-O"
     chmod 0755, 'create_saga_app.sh'
     system "./create_saga_app.sh", "#{bin}/saga_gui", "SAGA"
     prefix.install "SAGA.app"
