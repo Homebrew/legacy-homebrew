@@ -21,6 +21,13 @@ class Gearman < Formula
     system "make install"
   end
 
+  def patches
+    # build fix for tr1 -> std
+    # Fixes have also been applied upstream
+    DATA if MacOS.version >= :mavericks
+  end
+
+
   plist_options :manual => "gearmand -d"
 
   def plist; <<-EOS.undent
@@ -40,3 +47,21 @@ class Gearman < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/libgearman-1.0/gearman.h b/libgearman-1.0/gearman.h
+index 850a26d..8f7a8f0 100644
+--- a/libgearman-1.0/gearman.h
++++ b/libgearman-1.0/gearman.h
+@@ -50,7 +50,11 @@
+ #endif
+
+ #ifdef __cplusplus
++#ifdef _LIBCPP_VERSION
++#  include <cinttypes>
++#else
+ #  include <tr1/cinttypes>
++#endif
+ #  include <cstddef>
+ #  include <cstdlib>
+ #  include <ctime>
