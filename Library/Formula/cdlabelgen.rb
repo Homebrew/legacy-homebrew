@@ -8,7 +8,7 @@ class Cdlabelgen < Formula
   depends_on 'jpeg2ps' => :recommended
 
   def install
-    system "mkdir", "-p", man1
+    man1.mkpath
     system "make", "install", "BASE_DIR=#{prefix}"
   end
 
