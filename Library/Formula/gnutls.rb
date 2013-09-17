@@ -28,10 +28,10 @@ class Gnutls < Formula
 
   def install
     args = %W[
-            --disable-dependency-tracking
-             --disable-static
-             --prefix=#{prefix}
-           ]
+      --disable-dependency-tracking
+      --disable-static
+      --prefix=#{prefix}
+    ]
     
     if build.with? 'guile'
       args << '--enable-guile'
