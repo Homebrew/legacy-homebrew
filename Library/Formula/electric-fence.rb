@@ -13,6 +13,8 @@ class ElectricFence < Formula
   end
 
   def patches
+    # Patch based on this MacPorts port: https://trac.macports.org/ticket/23836
+    # Discussion on how to port it to OS X: http://lists.apple.com/archives/xcode-users/2005/Oct/msg00791.html
     DATA
   end
 
@@ -30,8 +32,6 @@ class ElectricFence < Formula
 end
 
 __END__
-# Patch based on this MacPorts port: https://trac.macports.org/ticket/23836
-# Discussion on how to port it to OS X: http://lists.apple.com/archives/xcode-users/2005/Oct/msg00791.html
 diff --git a/Makefile b/Makefile
 index 660f586..82054b9 100644
 --- a/Makefile
