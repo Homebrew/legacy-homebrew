@@ -12,8 +12,4 @@ class TmuxMemCpuLoad < Formula
     system "make", "install"
   end
 
-  test do
-    # were more thorough. Run the test with `brew test tmux-mem-cpu-load`.
-    system "tmux-mem-cpu-load"
-  end
 end
