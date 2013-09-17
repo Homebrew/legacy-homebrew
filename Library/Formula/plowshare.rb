@@ -46,7 +46,7 @@ __END__
 --- a/src/core.sh
 +++ b/src/core.sh
 @@ -1,4 +1,8 @@
- #!/bin/bash
+ #!/usr/bin/env bash
 +shopt -s expand_aliases
 +alias sed='gsed'
 +alias getopt='`brew --prefix gnu-getopt`/bin/getopt'
