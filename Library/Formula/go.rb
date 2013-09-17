@@ -21,6 +21,11 @@ class Go < Formula
     fails_with :clang do
       cause "clang: error: no such file or directory: 'libgcc.a'"
     end
+  elsif build.include?('cross-compile-all') || build.include?('cross-compile-common')
+    fails_with :clang do
+      cause "error: no case matching constant switch condition '53' [-Werror]
+        switch(thechar){"
+    end
   end
 
   def install
