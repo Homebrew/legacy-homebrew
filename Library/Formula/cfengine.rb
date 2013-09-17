@@ -9,6 +9,7 @@ class Cfengine < Formula
 
   depends_on 'pcre'
   depends_on 'tokyo-cabinet'
+  depends_on 'libxml2'
 
   def patches
     # Fix compilation errors. Both changes are merged upstream already
