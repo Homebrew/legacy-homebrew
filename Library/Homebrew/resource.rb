@@ -2,32 +2,35 @@ require 'download_strategy'
 require 'checksum'
 require 'version'
 
-# A Resource describes a tarball that a formula needs in addition
-# to the formula's own download.
+# Resource is the fundamental representation of an external resource. The
+# primary formula download, along with other declared resources, are instances
+# of this class.
 class Resource
   include FileUtils
 
-  # The mktmp mixin expects a name property
-  # This is the resource name
   attr_reader :name
-
   attr_reader :checksum, :mirrors, :specs, :using
 
-  def initialize name
+  # Formula name must be set after the DSL, as we have no access to the
+  # formula name before initialization of the formula
+  attr_accessor :owner
+
+  # XXX: for bottles, address this later
+  attr_writer :url, :checksum
+
+  def initialize name, url=nil, version=nil
     @name = name
-    @url = nil
-    @version = nil
+    @url = url
+    @version = version
     @mirrors = []
     @specs = {}
     @checksum = nil
     @using = nil
   end
 
-  # Formula name must be set after the DSL, as we have no access to the
-  # formula name before initialization of the formula
-  def set_owner owner
-    @owner = owner
-    @downloader = download_strategy.new("#{owner}--#{name}", self)
+  def downloader
+    download_name = name == :default ? owner.name : "#{owner.name}--#{name}"
+    @downloader ||= download_strategy.new(download_name, self)
   end
 
   # Download the resource
@@ -38,7 +41,7 @@ class Resource
     fetched = fetch
     verify_download_integrity(fetched) if fetched.respond_to?(:file?) and fetched.file?
     mktemp do
-      @downloader.stage
+      downloader.stage
       if block_given?
         yield self
       else
@@ -52,22 +55,22 @@ class Resource
   end
 
   def cached_download
-    @downloader.cached_location
+    downloader.cached_location
   end
 
   # For brew-fetch and others.
   def fetch
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
-    @downloader.fetch
+    downloader.fetch
     cached_download
   end
 
   def verify_download_integrity fn
     fn.verify_checksum(checksum)
   rescue ChecksumMissingError
-    opoo "Cannot verify package integrity"
-    puts "The formula did not provide a download checksum"
+    opoo "Cannot verify download integrity"
+    puts "A checksum was not provided for this resource"
     puts "For your reference the SHA1 is: #{fn.sha1}"
   rescue ChecksumMismatchError => e
     e.advice = <<-EOS.undent
