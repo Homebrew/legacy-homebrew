@@ -10,7 +10,7 @@ end
 
 class CompilerFailure
   attr_reader :compiler, :version
-  attr_rw :build, :version, :cause
+  attr_rw :build, :cause
 
   def initialize compiler, &block
     # Non-Apple compilers are in the format fails_with compiler => version
@@ -84,8 +84,8 @@ class CompilerSelector
   def priority_for(cc)
     case cc
     when :clang then MacOS.clang_build_version >= 318 ? 3 : 0.5
-    when :gcc   then 2
-    when :llvm  then 1
+    when :gcc   then 2.5
+    when :llvm  then 2
     when :gcc_4_0 then 0.25
     # non-Apple gcc compilers
     else 1.5

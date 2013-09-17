@@ -2,15 +2,13 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.0.tar.bz2'
-  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.0.tar.bz2'
-  sha1 'c78a5d5e589edc8ebc702eb00a284ccbca7721bc'
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.2.tar.bz2'
+  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.2.tar.bz2'
+  sha1 '1f8f877f17dea23e1cf2bafeef0f71323df43521'
 
   head 'http://anonsvn.wireshark.org/wireshark/trunk/', :using => :svn
 
   if build.head?
-    # These are required on the HEAD build because the configure
-    # script doesn't live on the subversion repository.
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool

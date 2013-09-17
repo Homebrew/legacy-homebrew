@@ -2,8 +2,8 @@ require 'formula'
 
 class RbenvBinstubs < Formula
   homepage 'https://github.com/ianheggie/rbenv-binstubs'
-  url 'https://github.com/ianheggie/rbenv-binstubs/archive/1.1.tar.gz'
-  sha1 '196ab69695634b06ff6f0151270c66ab7dc9da5c'
+  url 'https://github.com/ianheggie/rbenv-binstubs/archive/1.3.tar.gz'
+  sha1 '1b2beade16979309bc65a5babfbe5ddfe4763eee'
 
   head 'https://github.com/ianheggie/rbenv-binstubs.git'
 

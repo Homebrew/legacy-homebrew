@@ -30,10 +30,11 @@ Note that these flags should only appear after a command.
   * `list`:
     List all installed formulae.
 
-  * `search`, `-S` <text>|/<text>/:
+  * `search` <text>|/<text>/:
     Perform a substring search of formula names for <text>. If <text> is
     surrounded with slashes, then it is interpreted as a regular expression.
-    If no search term is given, all available formula are displayed.
+    The search for <text> is extended online to some popular taps.
+    If no search term is given, all locally available formulae are listed.
 
 ## COMMANDS
 
@@ -62,6 +63,9 @@ Note that these flags should only appear after a command.
     If `-s` is passed, scrubs the cache, removing downloads for even the latest
     versions of formula. Note downloads for any installed formula will still not be
     deleted. If you want to delete those too: `rm -rf $(brew --cache)`
+
+  * `commands`:
+    Show a list of built-in and external commands.
 
   * `create <URL> [--autotools|--cmake] [--no-fetch] [--set-name <name>] [--set-version <version>]`:
     Generate a formula for the downloadable file at <URL> and open it in the editor.
@@ -216,6 +220,14 @@ Note that these flags should only appear after a command.
 
     If `--force` is passed, Homebrew will allow keg-only formulae to be linked.
 
+  * `linkapps [--local]`:
+    Find all installed formulae that have compiled `.app`-style "application"
+    packages for OS X, and symlink those apps into `/Applications`, allowing
+    for easier access.
+    
+    If provided, `--local` will move them into the user's `~/Applications`
+    folder instead of the system folder. It may need to be created, first.
+
   * `ls, list [--unbrewed] [--versions] [--pinned]` [<formulae>]:
     Without any arguments, list all installed formulae.
 
@@ -272,10 +284,19 @@ Note that these flags should only appear after a command.
     If `--force` is passed, and there are multiple versions of <formula>
     installed, delete all installed versions.
 
-  * `search`, `-S` <text>|/<text>/:
+  * `search`, `-S`:
+    Display all locally available formulae for brewing (including tapped ones).
+    No online search is performed if called without arguments.
+
+  * `search`, `-S` <tap>:
+    Display all formulae in a <tap>, even if not yet tapped.
+    <tap> is of the form <user>/<repo>, e.g. `brew search homebrew/dupes`.
+
+  * `search`, `-S` [<tap>] <text>|/<text>/:
     Perform a substring search of formula names for <text>. If <text> is
     surrounded with slashes, then it is interpreted as a regular expression.
-    If no search term is given, all available formula are displayed.
+    The search for <text> is extended online to some popular taps.
+    If a <tap> is specified, the search is restricted to it.
 
   * `search --debian`|`--fedora`|`--fink`|`--macports`|`--opensuse`|`--ubuntu` <text>:
     Search for <text> in the given package manager's list.

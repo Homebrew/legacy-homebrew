@@ -121,7 +121,7 @@ class FormulaCreator
     class #{Formula.class_s name} < Formula
       homepage ''
       url '#{url}'
-    <% if not version.nil? and not version.detected_from_url? %>
+    <% unless version.nil? or version.detected_from_url? %>
       version '#{version}'
     <% end %>
       sha1 '#{sha1}'
@@ -139,10 +139,16 @@ class FormulaCreator
     <% if mode == :cmake %>
         system "cmake", ".", *std_cmake_args
     <% elsif mode == :autotools %>
-        system "./configure", "--disable-debug", "--disable-dependency-tracking",
+        # Remove unrecognized options if warned by configure
+        system "./configure", "--disable-debug",
+                              "--disable-dependency-tracking",
+                              "--disable-silent-rules",
                               "--prefix=\#{prefix}"
     <% else %>
-        system "./configure", "--disable-debug", "--disable-dependency-tracking",
+        # Remove unrecognized options if warned by configure
+        system "./configure", "--disable-debug",
+                              "--disable-dependency-tracking",
+                              "--disable-silent-rules",
                               "--prefix=\#{prefix}"
         # system "cmake", ".", *std_cmake_args
     <% end %>

@@ -2,7 +2,7 @@ module Utils
   module Inreplace
     def inreplace paths, before=nil, after=nil
       Array(paths).each do |path|
-        f = File.open(path, 'r')
+        f = File.open(path, 'rb')
         s = f.read
 
         if before.nil? && after.nil?
@@ -17,7 +17,7 @@ module Utils
           end
         end
 
-        f.reopen(path, 'w').write(s)
+        f.reopen(path, 'wb').write(s)
         f.close
       end
     end

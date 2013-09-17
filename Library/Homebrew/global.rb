@@ -84,6 +84,8 @@ HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY
 
 HOMEBREW_CURL_ARGS = '-f#LA'
 
+HOMEBREW_GIT_ETC = !ENV['HOMEBREW_GIT_ETC'].nil?
+
 module Homebrew extend self
   include FileUtils
 

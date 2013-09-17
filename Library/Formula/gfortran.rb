@@ -48,12 +48,15 @@ class Gfortran < Formula
       "--with-mpc=#{Formula.factory('libmpc').opt_prefix}",
       "--with-cloog=#{Formula.factory('cloog').opt_prefix}",
       "--with-isl=#{Formula.factory('isl').opt_prefix}",
+      # ...and disable isl and cloog version checks in case they upgrade
+      "--disable-cloog-version-check",
+      "--disable-isl-version-check",
       # ...we build the stage 1 gcc with clang (which is know to fail checks)
       "--enable-checking=release",
       "--disable-stage1-checking",
-      # ...speed up build by ignoring cxx
-      "--disable-build-poststage1-with-cxx",
-      "--disable-libstdcxx-pc",
+      # ...speed up build by stop building libstdc++-v3
+      "--disable-libstdcxx",
+      "--enable-lto",
       # ...disable translations avoid conflict with brew install gcc --enable-nls
       '--disable-nls'
     ]

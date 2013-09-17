@@ -38,8 +38,8 @@ Fetch the newest version of Homebrew from GitHub using \fBgit\fR(1)\.
 List all installed formulae\.
 .
 .TP
-\fBsearch\fR, \fB\-S\fR \fItext\fR|/\fItext\fR/
-Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
+\fBsearch\fR \fItext\fR|/\fItext\fR/
+Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps\. If no search term is given, all locally available formulae are listed\.
 .
 .SH "COMMANDS"
 .
@@ -69,6 +69,10 @@ If \fB\-n\fR is passed, show what would be removed, but do not actually remove a
 .
 .IP
 If \fB\-s\fR is passed, scrubs the cache, removing downloads for even the latest versions of formula\. Note downloads for any installed formula will still not be deleted\. If you want to delete those too: \fBrm \-rf $(brew \-\-cache)\fR
+.
+.TP
+\fBcommands\fR
+Show a list of built\-in and external commands\.
 .
 .TP
 \fBcreate <URL> [\-\-autotools|\-\-cmake] [\-\-no\-fetch] [\-\-set\-name <name>] [\-\-set\-version <version>]\fR
@@ -236,6 +240,13 @@ If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, Homebrew will list all files which
 If \fB\-\-force\fR is passed, Homebrew will allow keg\-only formulae to be linked\.
 .
 .TP
+\fBlinkapps [\-\-local]\fR
+Find all installed formulae that have compiled \fB\.app\fR\-style "application" packages for OS X, and symlink those apps into \fB/Applications\fR, allowing for easier access\.
+.
+.IP
+If provided, \fB\-\-local\fR will move them into the user\'s \fB~/Applications\fR folder instead of the system folder\. It may need to be created, first\.
+.
+.TP
 \fBls, list [\-\-unbrewed] [\-\-versions] [\-\-pinned]\fR [\fIformulae\fR]
 Without any arguments, list all installed formulae\.
 .
@@ -298,8 +309,16 @@ Uninstall \fIformula\fR\.
 If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR installed, delete all installed versions\.
 .
 .TP
-\fBsearch\fR, \fB\-S\fR \fItext\fR|/\fItext\fR/
-Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
+\fBsearch\fR, \fB\-S\fR
+Display all locally available formulae for brewing (including tapped ones)\. No online search is performed if called without arguments\.
+.
+.TP
+\fBsearch\fR, \fB\-S\fR \fItap\fR
+Display all formulae in a \fItap\fR, even if not yet tapped\. \fItap\fR is of the form \fIuser\fR/\fIrepo\fR, e\.g\. \fBbrew search homebrew/dupes\fR\.
+.
+.TP
+\fBsearch\fR, \fB\-S\fR [\fItap\fR] \fItext\fR|/\fItext\fR/
+Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps\. If a \fItap\fR is specified, the search is restricted to it\.
 .
 .TP
 \fBsearch \-\-debian\fR|\fB\-\-fedora\fR|\fB\-\-fink\fR|\fB\-\-macports\fR|\fB\-\-opensuse\fR|\fB\-\-ubuntu\fR \fItext\fR

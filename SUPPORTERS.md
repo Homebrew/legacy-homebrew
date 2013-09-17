@@ -139,7 +139,7 @@ These awesome people supported our Kickstarter by giving us £50 or more:
 * Nick Zadrozny
 * Mikael Roos
 * Stephen Eckenrode
-* Kevin Sumner
+* [Kevin Sumner](http://kevinsumner.com)
 * Rahul
 * [Nothing Interactive](http://www.nothing.ch)
 * [Nick Sivo](http://nicksivo.com)

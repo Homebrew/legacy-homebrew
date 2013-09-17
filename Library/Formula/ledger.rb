@@ -10,12 +10,12 @@ class Ledger < Formula
   option 'debug', 'Build with debugging symbols enabled'
 
   depends_on 'boost'
+  depends_on 'gmp'
   depends_on :python => :optional
   if build.head?
     depends_on 'cmake' => :build
     depends_on 'ninja' => :build
     depends_on 'mpfr'
-    depends_on 'gmp'
   else
     depends_on 'gettext'
     depends_on 'pcre'
