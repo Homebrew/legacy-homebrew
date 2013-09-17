@@ -11,10 +11,10 @@ class Cfengine < Formula
   depends_on 'tokyo-cabinet'
 
   def patches
-	# Fix compilation errors. Both changes are merged upstream already
-	# https://github.com/cfengine/core/pull/947
-  	# https://github.com/cfengine/core/commit/d03fcc2d38a4db0c79386aaef30597102bf45853
-	DATA
+    # Fix compilation errors. Both changes are merged upstream already
+    # https://github.com/cfengine/core/pull/947
+    # https://github.com/cfengine/core/commit/d03fcc2d38a4db0c79386aaef30597102bf45853
+    DATA
   end
 
   def install
