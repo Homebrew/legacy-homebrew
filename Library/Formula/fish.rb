@@ -87,3 +87,17 @@ index 34f25e1..b9afa51 100644
  
  #
  # Tell autoconf to create config.h header
+diff --git a/reader.cpp b/reader.cpp
+index f7f92e5..5f3758b 100644
+--- a/reader.cpp
++++ b/reader.cpp
+@@ -3035,6 +3035,9 @@ const wchar_t *reader_readline(void)
+
+                         /* Since we just inserted a completion, don't immediately do a new autosugg
+                         data->suppress_autosuggestion = true;
++
++                        /* Trigger repaint (see #765) */
++                        reader_repaint_if_needed();
+                     }
+                 }
+                 else
