@@ -25,8 +25,8 @@ class Ntfs3g < Formula
             "--prefix=#{prefix}",
             "--exec-prefix=#{prefix}",
             "--mandir=#{man}",
-            "--disable-library",
             "--with-fuse=external"]
+
     system "./configure", *args
     system "make"
     system "make install"

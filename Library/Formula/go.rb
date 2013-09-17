@@ -12,19 +12,21 @@ class Go < Formula
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
-  option 'without-cgo', "Build without cgo"
+  option 'with-cgo', "Build with cgo"
+
+  # the cgo module cannot build with clang
+  # NOTE it is ridiculous that we put this stuff in the class
+  # definition, it needs to be in a pre-install test function!
+  if build.with? 'cgo'
+    fails_with :clang do
+      cause "clang: error: no such file or directory: 'libgcc.a'"
+    end
+  end
 
   def install
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
     zsh_completion.install 'misc/zsh/go' => 'go'
-
-    cgo = if ENV.compiler == :clang
-      # this module cannot build with clang… yet.
-      false
-    else
-      build.with? 'cgo'
-    end
 
     if build.include? 'cross-compile-all'
       targets = [
@@ -36,7 +38,7 @@ class Go < Formula
         ['windows', ['386', 'amd64'],        { :cgo => false }],
 
         # Host platform (darwin/amd64) must always come last
-        ['darwin',  ['386', 'amd64'],        { :cgo => cgo  }],
+        ['darwin',  ['386', 'amd64'],        { :cgo => build.with?('cgo')  }],
       ]
     elsif build.include? 'cross-compile-common'
       targets = [
@@ -44,11 +46,11 @@ class Go < Formula
         ['windows', ['386', 'amd64'],        { :cgo => false }],
 
         # Host platform (darwin/amd64) must always come last
-        ['darwin',  ['386', 'amd64'],        { :cgo => cgo  }],
+        ['darwin',  ['386', 'amd64'],        { :cgo => build.with?('cgo')  }],
       ]
     else
       targets = [
-        ['darwin', [''], { :cgo => cgo }]
+        ['darwin', [''], { :cgo => build.with?('cgo') }]
       ]
     end
 
@@ -87,7 +89,13 @@ class Go < Formula
     when $GOPATH and $GOROOT are set to the same value.
 
     More information here: http://golang.org/doc/code.html#GOPATH
+
+    FYI: We probably didn't build the cgo module because it doesn't build with
+    clang.
     EOS
+    # NOTE I would have the cgo caveat only show if we didn't build it but the
+    # state matrix for that seems inconclusive, ENV.compiler doesn't actually
+    # mean for sure that we used that compiler.
   end
 
   test do

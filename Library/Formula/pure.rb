@@ -26,7 +26,7 @@ class Pure < Formula
   def patches
     {
       :p2 => [
-        DATA, 
+        DATA,
         'https://bitbucket.org/purelang/pure-lang/commits/387a67f2f9943640c05b3e8d796ddf7f06febe3f/raw/'
       ]
     }

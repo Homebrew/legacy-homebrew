@@ -71,4 +71,20 @@ class BuildOptionsTests < Test::Unit::TestCase
   def test_actually_recognizes_implicit_options
     assert @build.has_opposite_of?("--with-baz")
   end
+
+  def test_copies_do_not_share_underlying_options
+    orig = BuildOptions.new []
+    copy = orig.dup
+    copy.add 'foo'
+    assert_empty orig
+    assert_equal 1, copy.count
+  end
+
+  def test_copies_do_not_share_underlying_args
+    orig = BuildOptions.new []
+    copy = orig.dup
+    copy.args << Option.new('foo')
+    assert_empty orig.args
+    assert_equal 1, copy.args.count
+  end
 end

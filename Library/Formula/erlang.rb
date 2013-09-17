@@ -1,25 +1,5 @@
 require 'formula'
 
-class ErlangManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R16B01.tar.gz'
-  sha1 '57ef01620386108db83ef13921313e600d351d44'
-end
-
-class ErlangHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R16B01.tar.gz'
-  sha1 '6741e15e0b3e58736987e38fb8803084078ff99f'
-end
-
-class ErlangHeadManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R16B01.tar.gz'
-  sha1 '57ef01620386108db83ef13921313e600d351d44'
-end
-
-class ErlangHeadHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R16B01.tar.gz'
-  sha1 '6741e15e0b3e58736987e38fb8803084078ff99f'
-end
-
 # Major releases of erlang should typically start out as separate formula in
 # Homebrew-versions, and only be merged to master when things like couchdb and
 # elixir are compatible.
@@ -36,6 +16,16 @@ class Erlang < Formula
     sha1 '772d2c72a3fd24474499d8bd1ca050a5deb5d56c' => :mountain_lion
     sha1 'dbcd966cca49c16d6c2598d49a0bc9a31d6cb702' => :lion
     sha1 '65f9b0d2ea1a7d12d0477f51e3d5cc0415361789' => :snow_leopard
+  end
+
+  resource 'man' do
+    url 'http://erlang.org/download/otp_doc_man_R16B01.tar.gz'
+    sha1 '57ef01620386108db83ef13921313e600d351d44'
+  end
+
+  resource 'html' do
+    url 'http://erlang.org/download/otp_doc_html_R16B01.tar.gz'
+    sha1 '6741e15e0b3e58736987e38fb8803084078ff99f'
   end
 
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
@@ -93,10 +83,8 @@ class Erlang < Formula
     system "make install"
 
     unless build.include? 'no-docs'
-      manuals = build.head? ? ErlangHeadManuals : ErlangManuals
-      manuals.new.brew { (lib/'erlang').install 'man' }
-      htmls = build.head? ? ErlangHeadHtmls : ErlangHtmls
-      htmls.new.brew { doc.install Dir['*'] }
+      resource('man').stage { (lib/'erlang').install 'man' }
+      doc.install resource('html')
     end
   end
 

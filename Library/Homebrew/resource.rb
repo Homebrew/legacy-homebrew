@@ -7,9 +7,6 @@ class Resource
   # This is the resource name
   attr_reader :name
 
-  # This is the associated formula name
-  attr_reader :owner_name
-
   def initialize name, spec
     @name = name
     @spec = spec
@@ -28,7 +25,7 @@ class Resource
   # A target or a block must be given, but not both
   def stage(target=nil)
     fetched = fetch
-    verify_download_integrity(fetched) if fetched.file?
+    verify_download_integrity(fetched) if fetched.respond_to?(:file?) and fetched.file?
     mktemp do
       @downloader.stage
       if block_given?

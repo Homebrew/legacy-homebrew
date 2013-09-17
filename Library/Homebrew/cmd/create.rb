@@ -121,7 +121,7 @@ class FormulaCreator
     class #{Formula.class_s name} < Formula
       homepage ''
       url '#{url}'
-    <% if not version.nil? and not version.detected_from_url? %>
+    <% unless version.nil? or version.detected_from_url? %>
       version '#{version}'
     <% end %>
       sha1 '#{sha1}'

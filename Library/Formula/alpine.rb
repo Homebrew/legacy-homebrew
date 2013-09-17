@@ -14,7 +14,7 @@ class Alpine < Formula
     # Fails to build against Tcl 8.6; reported upstream:
     # http://mailman2.u.washington.edu/pipermail/alpine-info/2013-September/005291.html
     p << DATA
-  end 
+  end
 
   def install
     ENV.j1

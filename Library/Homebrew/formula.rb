@@ -11,6 +11,7 @@ require 'compilers'
 require 'build_environment'
 require 'build_options'
 require 'formulary'
+require 'software_spec'
 
 
 class Formula
@@ -48,7 +49,7 @@ class Formula
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
-    @downloader = download_strategy.new(name, active_spec)
+    @downloader = active_spec.download_strategy.new(name, active_spec)
 
     # Combine DSL `option` and `def options`
     options.each do |opt, desc|
@@ -179,10 +180,6 @@ class Formula
 
   def opt_prefix
     Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
-  end
-
-  def download_strategy
-    active_spec.download_strategy
   end
 
   def cached_download
@@ -614,7 +611,7 @@ class Formula
 
   def stage
     fetched = fetch
-    verify_download_integrity(fetched) if fetched.file?
+    verify_download_integrity(fetched) if fetched.respond_to?(:file?) and fetched.file?
     mktemp do
       downloader.stage
       # Set path after the downloader changes the working folder.

@@ -74,7 +74,7 @@ class DependencyCollector
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
       # Next line only for legacy support of `depends_on 'module' => :python`
       # It should be replaced by `depends_on :python => 'module'`
-      return PythonInstalled.new("2", spec) if tag == :python
+      return PythonDependency.new("2", spec) if tag == :python
       LanguageModuleDependency.new(tag, spec)
     else
       Dependency.new(spec, tags)
@@ -103,8 +103,8 @@ class DependencyCollector
     when :clt        then CLTDependency.new(tags)
     when :arch       then ArchRequirement.new(tags)
     when :hg         then MercurialDependency.new(tags)
-    when :python, :python2 then PythonInstalled.new("2", tags)
-    when :python3    then PythonInstalled.new("3", tags)
+    when :python, :python2 then PythonDependency.new("2", tags)
+    when :python3    then PythonDependency.new("3", tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     else
