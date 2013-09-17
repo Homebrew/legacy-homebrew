@@ -1,4 +1,3 @@
-require 'resource'
 require 'dependency_collector'
 require 'formula_support'
 require 'formula_lock'
@@ -57,9 +56,6 @@ class Formula
     end
 
     @pin = FormulaPin.new(self)
-
-    @resources = self.class.resources
-    @resources.each_value { |r| r.owner = self }
   end
 
   def set_spec(name)
@@ -97,13 +93,11 @@ class Formula
   def mirrors;  active_spec.mirrors; end
 
   def resource(name)
-    res = @resources[name]
-    raise ResourceMissingError.new(@name, name) if res.nil?
-    res
+    active_spec.resource(name)
   end
 
   def resources
-    @resources.values
+    active_spec.resources.values
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -705,17 +699,10 @@ class Formula
       @stable.mirror(val)
     end
 
-    # Hold any resources defined by this formula
-    def resources
-      @resources ||= Hash.new
-    end
-
     # Define a named resource using a SoftwareSpec style block
     def resource name, &block
-      raise DuplicateResourceError.new(name) if resources.has_key?(name)
-      resource = Resource.new(name)
-      resource.instance_eval(&block)
-      resources[name] = resource
+      @stable ||= SoftwareSpec.new
+      @stable.resource(name, &block)
     end
 
     def dependencies
