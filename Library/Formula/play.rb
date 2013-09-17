@@ -7,8 +7,8 @@ class Play < Formula
   sha1 'b733bbd4a67bd99e9821366cdbae87bc3c40892c'
 
   devel do
-    url 'http://downloads.typesafe.com/play/2.2.0-RC1/play-2.2.0-RC1.zip'
-    sha1 'f4f7d577220c7f9be4020517d256f827b5a7d36d'
+    url 'http://downloads.typesafe.com/play/2.2.0-RC2/play-2.2.0-RC2.zip'
+    sha1 '6c3d9dedec8b94de5c3b4da8499bfce22d843b52'
   end
 
   def install
