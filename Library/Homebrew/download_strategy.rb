@@ -4,9 +4,9 @@ require 'utils/json'
 class AbstractDownloadStrategy
   attr_accessor :local_bottle_path
 
-  def initialize name, package
-    @url = package.url
-    specs = package.specs
+  def initialize name, resource
+    @url  = resource.url
+    specs = resource.specs
     @spec, @ref = specs.dup.shift unless specs.empty?
   end
 
@@ -38,16 +38,16 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
       @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{basename_without_params}")
     else
-      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{package.version}#{ext}")
+      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
     end
 
-    @mirrors = package.mirrors
+    @mirrors = resource.mirrors
     @temporary_path = Pathname.new("#@tarball_path.incomplete")
   end
 
@@ -227,9 +227,9 @@ end
 
 # This strategy extracts our binary packages.
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
-    @tarball_path = HOMEBREW_CACHE/"#{name}-#{package.version}#{ext}"
+    @tarball_path = HOMEBREW_CACHE/"#{name}-#{resource.version}#{ext}"
     mirror = ENV['HOMEBREW_SOURCEFORGE_MIRROR']
     @url = "#{@url}?use_mirror=#{mirror}" if mirror
   end
@@ -244,7 +244,7 @@ class LocalBottleDownloadStrategy < CurlDownloadStrategy
 end
 
 class SubversionDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
     @@svn ||= 'svn'
 
@@ -347,7 +347,7 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
 end
 
 class GitDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
     @@git ||= 'git'
 
@@ -502,7 +502,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 end
 
 class CVSDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
@@ -558,7 +558,7 @@ class CVSDownloadStrategy < AbstractDownloadStrategy
 end
 
 class MercurialDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
@@ -611,7 +611,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
 end
 
 class BazaarDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
@@ -665,7 +665,7 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
 end
 
 class FossilDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
     if name.to_s.empty? || name == '__UNKNOWN__'
       raise NotImplementedError, "strategy requires a name parameter"
