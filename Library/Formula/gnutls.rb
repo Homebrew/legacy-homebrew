@@ -12,7 +12,7 @@ class Gnutls < Formula
   depends_on 'libtasn1'
   depends_on 'p11-kit'
   depends_on 'nettle'
-  depends_on 'guile' => :build if build.with? 'guile'
+  depends_on 'guile' => :optional
 
   fails_with :llvm do
     build 2326
@@ -28,7 +28,7 @@ class Gnutls < Formula
 
   def install
     args = %W[
-             --disable-dependency-tracking
+            --disable-dependency-tracking
              --disable-static
              --prefix=#{prefix}
            ]
