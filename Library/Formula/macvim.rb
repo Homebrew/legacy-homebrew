@@ -21,6 +21,10 @@ class Macvim < Formula
 
   env :std if MacOS.version <= :snow_leopard
   # Help us! We'd like to use superenv in these environments too
+  #
+  def patches
+    {:p1 => "https://gist.github.com/felixbuenemann/6127800/raw/78b924f0c04d23938791acf301802fe7f1906807/macvim-head-mavericks.patch"}
+  end
 
   def install
     # Set ARCHFLAGS so the Python app (with C extension) that is
