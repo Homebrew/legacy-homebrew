@@ -2,9 +2,8 @@ require 'formula'
 
 class CsvFix < Formula
   homepage 'http://code.google.com/p/csvfix/'
-  url 'http://csvfix.googlecode.com/files/csvfix_src_120.zip'
-  version '1.20'
-  sha1 'ec0b6d491429d908a9208d6e474591f30dec654c'
+  url 'https://bitbucket.org/neilb/csvfix/get/version-1.3.zip'
+  sha1 '9d8c4c38abf4be722eb6e3fc967fd2eeb3bd2299'
 
   def install
     system "make lin"
