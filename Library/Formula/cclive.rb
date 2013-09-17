@@ -18,8 +18,8 @@ class Cclive < Formula
     depends_on 'automake'
     depends_on 'autoconf'
     depends_on 'libtool'
-    depends_on 'glibmm' => :build if build.head?
-    depends_on 'asciidoc' => :build if build.head?
+    depends_on 'glibmm' => :build
+    depends_on 'asciidoc' => :build
   end
   depends_on 'boost149'
   depends_on 'quvi'
