@@ -23,10 +23,20 @@ class SagaCore < Formula
     # http://sourceforge.net/p/saga-gis/bugs/145/
     # Need to remove unsupported libraries from various Makefiles
     # http://sourceforge.net/apps/trac/saga-gis/wiki/Compiling%20SAGA%20on%20Mac%20OS%20X
-    [
-      "https://gist.github.com/nickrobison/6559641/raw/",
-      DATA
-    ]
+    if build.head?
+      [
+        "https://gist.github.com/nickrobison/6559641/raw/",
+        "https://gist.github.com/nickrobison/6567217/raw/"
+        
+      #  DATA
+      ]
+    else 
+      [
+        "https://gist.github.com/nickrobison/6559641/raw/",
+        "https://gist.github.com/nickrobison/6567217/raw/",
+	"https://gist.github.com/nickrobison/6567238/raw/"
+      ]
+    end
   end
 
   def install
