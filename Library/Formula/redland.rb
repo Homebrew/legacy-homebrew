@@ -1,11 +1,5 @@
 require 'formula'
 
-class RedlandBindings < Formula
-  homepage 'http://librdf.org/bindings/'
-  url 'http://download.librdf.org/source/redland-bindings-1.0.16.1.tar.gz'
-  sha1 '98c20b64cf5e99cbf29fcb84490e73e2a828213a'
-end
-
 class Redland < Formula
   homepage 'http://librdf.org/'
   url 'http://download.librdf.org/source/redland-1.0.16.tar.gz'
@@ -20,6 +14,11 @@ class Redland < Formula
   depends_on 'sqlite' => :recommended
   depends_on 'berkeley-db' => :optional
   depends_on :python => :optional
+
+  resource 'bindings' do
+    url 'http://download.librdf.org/source/redland-bindings-1.0.16.1.tar.gz'
+    sha1 '98c20b64cf5e99cbf29fcb84490e73e2a828213a'
+  end
 
   fails_with :llvm do
     build 2334
@@ -48,8 +47,8 @@ class Redland < Formula
     system "./configure", *args
     system "make install"
 
-    if build.with? 'perl' or build.with? 'php' or build.with? 'ruby' or build.with? 'python'
-      RedlandBindings.new.brew do
+    if %w{php python ruby}.any? { |lang| build.with? lang }
+      resource('bindings').stage do
         args = %W[
           --disable-debug
           --disable-dependency-tracking
