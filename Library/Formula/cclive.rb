@@ -14,11 +14,12 @@ class Cclive < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
-  depends_on 'automake' => :build if build.head?
-  depends_on 'autoconf' => :build if build.head?
-  depends_on 'asciidoc' => :build if build.head?
-  depends_on 'libtool' => :build if build.head?
-  depends_on 'glibmm' => :build if build.head?
+  if build.head?
+    depends_on 'automake'
+    depends_on 'autoconf'
+    depends_on 'libtool'
+    depends_on 'glibmm' => :build if build.head?
+    depends_on 'asciidoc' => :build if build.head?
   depends_on 'boost149'
   depends_on 'quvi'
   depends_on 'pcre'
@@ -29,7 +30,7 @@ class Cclive < Formula
 
   def install
     if build.head?
-      File.open('VERSION', 'w') {|f| f.write 'v' + devel.version}
+      (buildpath/'VERSION').write "v#{devel.version}"
       ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
       system "./bootstrap.sh"
     end
@@ -39,7 +40,7 @@ class Cclive < Formula
   end
 
   test do
-    system "cclive", "-v"
+    system "#{bin}/cclive", "-v"
   end
 end
 
