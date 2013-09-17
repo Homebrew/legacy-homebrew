@@ -6,8 +6,8 @@ class Jpeg2ps < Formula
   sha1 '2fc2701c7c00ba17b051ebcc7b9c8059eb6614f9'
 
   def install
-    system "mkdir", "-p", bin
-    system "mkdir", "-p", man
+    bin.mkpath
+    man.mkpath
     system "make", "install", "BINDIR=#{bin}", "MANDIR=#{man}"
   end
 
