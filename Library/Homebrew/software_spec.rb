@@ -23,9 +23,13 @@ class SoftwareSpec
     resources.each_value { |r| r.owner = owner }
   end
 
+  def resource? name
+    resources.has_key?(name)
+  end
+
   def resource name, &block
     if block_given?
-      raise DuplicateResourceError.new(name) if resources.has_key?(name)
+      raise DuplicateResourceError.new(name) if resource?(name)
       resources[name] = Resource.new(name, &block)
     else
       resources.fetch(name) { raise ResourceMissingError.new(owner, name) }
