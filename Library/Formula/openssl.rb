@@ -21,9 +21,13 @@ class Openssl < Formula
       args << "darwin64-x86_64-cc" << "enable-ec_nistp_64_gcc_128"
 
       # -O3 is used under stdenv, which results in test failures when using clang
-      inreplace 'Configure',
-        %{"darwin64-x86_64-cc","cc:-arch x86_64 -O3},
-        %{"darwin64-x86_64-cc","cc:-arch x86_64 -Os}
+      # The character encoding of 'Configure' is not UTF-8 and causes
+      # errors when using Ruby 2.0.
+      with_encoding_ascii_8bit {
+        inreplace 'Configure',
+          %{"darwin64-x86_64-cc","cc:-arch x86_64 -O3},
+          %{"darwin64-x86_64-cc","cc:-arch x86_64 -Os}
+      }
 
       setup_makedepend_shim
     else
