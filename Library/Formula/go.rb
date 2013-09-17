@@ -21,12 +21,12 @@ class Go < Formula
     fails_with :clang do
       cause "clang: error: no such file or directory: 'libgcc.a'"
     end
-  elsif build.include?('cross-compile-all') || build.include?('cross-compile-common')
-    fails_with :clang do
-      cause "error: no case matching constant switch condition '53' [-Werror]
-        switch(thechar){"
-    end
   end
+
+  # Upstream patch for a switch statement that causes a clang error
+  # Should be in the next release.
+  # http://code.google.com/p/go/source/detail?r=000ecca1178d67c9b482d3fb0b6a1bc4aeef2472&path=/src/cmd/ld/lib.c
+  def patches; DATA; end
 
   def install
     # install the completion scripts
@@ -119,3 +119,33 @@ class Go < Formula
     assert_equal "Hello World\n", `#{bin}/go run hello.go`
   end
 end
+
+__END__
+# HG changeset patch
+# User Dave Cheney <dave@cheney.net>
+# Date 1373336072 18000
+#      Mon Jul 08 21:14:32 2013 -0500
+# Node ID 000ecca1178d67c9b482d3fb0b6a1bc4aeef2472
+# Parent  02b673333fab068d9e12106c01748c2d23682bac
+cmd/ld: trivial: fix unhandled switch case
+
+Fix warning found by clang 3.3.
+
+R=rsc, r
+CC=golang-dev
+https://codereview.appspot.com/11022043
+
+diff -r 02b673333fab -r 000ecca1178d src/cmd/ld/lib.c
+--- a/src/cmd/ld/lib.c	Tue Jul 09 11:12:05 2013 +1000
++++ b/src/cmd/ld/lib.c	Mon Jul 08 21:14:32 2013 -0500
+@@ -665,6 +665,9 @@
+ 	case '6':
+ 		argv[argc++] = "-m64";
+ 		break;
++	case '5':
++		// nothing required for arm
++		break;
+ 	}
+ 	if(!debug['s'] && !debug_s) {
+ 		argv[argc++] = "-gdwarf-2"; 
+
