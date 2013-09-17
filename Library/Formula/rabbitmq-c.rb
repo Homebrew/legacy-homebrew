@@ -2,8 +2,8 @@ require 'formula'
 
 class RabbitmqC < Formula
   homepage 'https://github.com/alanxz/rabbitmq-c'
-  url 'https://github.com/alanxz/rabbitmq-c/archive/v0.4.0.tar.gz'
-  sha1 '2c035f9e3427f0d15ef28b168450a9eb6a66485b'
+  url 'https://github.com/alanxz/rabbitmq-c/archive/v0.4.1.tar.gz'
+  sha1 '97ceb4039ca5a71b73b417bc7257e263ea1e2f4d'
 
   head 'https://github.com/alanxz/rabbitmq-c.git'
 
