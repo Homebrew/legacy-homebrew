@@ -554,7 +554,7 @@ class Aspell < Formula
 
   option "all", "Install all available dictionaries"
 
-  resources.each_value do |r|
+  stable.resources.each_value do |r|
     option "with-lang-#{r.name}", "Install #{r.name} dictionary"
   end
 
