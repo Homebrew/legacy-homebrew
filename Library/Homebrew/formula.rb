@@ -644,10 +644,20 @@ class Formula
     Checksum::TYPES.each do |cksum|
       class_eval <<-EOS, __FILE__, __LINE__ + 1
         def #{cksum}(val)
-          @stable ||= SoftwareSpec.new
+          @stable ||= create_spec(SoftwareSpec)
           @stable.#{cksum}(val)
         end
       EOS
+    end
+
+    def specs
+      @specs ||= []
+    end
+
+    def create_spec(klass)
+      spec = klass.new
+      specs << spec
+      spec
     end
 
     def build
@@ -655,34 +665,34 @@ class Formula
     end
 
     def url val, specs={}
-      @stable ||= SoftwareSpec.new
+      @stable ||= create_spec(SoftwareSpec)
       @stable.url(val, specs)
     end
 
     def stable &block
       return @stable unless block_given?
-      @stable ||= SoftwareSpec.new
+      @stable ||= create_spec(SoftwareSpec)
       @stable.instance_eval(&block)
     end
 
     def bottle *, &block
       return @bottle unless block_given?
-      @bottle ||= Bottle.new
+      @bottle ||= create_spec(Bottle)
       @bottle.instance_eval(&block)
     end
 
     def devel &block
       return @devel unless block_given?
-      @devel ||= SoftwareSpec.new
+      @devel ||= create_spec(SoftwareSpec)
       @devel.instance_eval(&block)
     end
 
     def head val=nil, specs={}, &block
       if block_given?
-        @head ||= HeadSoftwareSpec.new
+        @head ||= create_spec(HeadSoftwareSpec)
         @head.instance_eval(&block)
       elsif val
-        @head ||= HeadSoftwareSpec.new
+        @head ||= create_spec(HeadSoftwareSpec)
         @head.url(val, specs)
       else
         @head
@@ -690,18 +700,18 @@ class Formula
     end
 
     def version val=nil
-      @stable ||= SoftwareSpec.new
+      @stable ||= create_spec(SoftwareSpec)
       @stable.version(val)
     end
 
     def mirror val
-      @stable ||= SoftwareSpec.new
+      @stable ||= create_spec(SoftwareSpec)
       @stable.mirror(val)
     end
 
     # Define a named resource using a SoftwareSpec style block
     def resource name, &block
-      @stable ||= SoftwareSpec.new
+      @stable ||= create_spec(SoftwareSpec)
       @stable.resource(name, &block)
     end
 
