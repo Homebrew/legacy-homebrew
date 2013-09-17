@@ -3,9 +3,8 @@ require 'formula'
 class ElectricFence < Formula
   homepage 'http://perens.com/FreeSoftware/ElectricFence/'
   url 'http://perens.com/FreeSoftware/ElectricFence/electric-fence_2.1.13-0.1.tar.gz'
-  sha1 'e6765bcb1543272040b806eea706fc7ae9b60524'
-
   version '2.1.13-0.1'
+  sha1 'e6765bcb1543272040b806eea706fc7ae9b60524'
 
   def install
     system "make"
@@ -31,6 +30,8 @@ class ElectricFence < Formula
 end
 
 __END__
+# Patch based on this MacPorts port: https://trac.macports.org/ticket/23836
+# Discussion on how to port it to OS X: http://lists.apple.com/archives/xcode-users/2005/Oct/msg00791.html
 diff --git a/Makefile b/Makefile
 index 660f586..82054b9 100644
 --- a/Makefile
