@@ -272,52 +272,9 @@ class FormulaAuditor
   def audit_specs
     problem "Head-only (no stable download)" if f.head_only?
 
-    [:stable, :devel].each do |spec|
-      s = f.send(spec)
-      next if s.nil?
-
-      if s.version.to_s.empty?
-        problem "Invalid or missing #{spec} version"
-      else
-        version_text = s.version unless s.version.detected_from_url?
-        version_url = Version.detect(s.url, s.specs)
-        if version_url.to_s == version_text.to_s && s.version.instance_of?(Version)
-          problem "#{spec} version #{version_text} is redundant with version scanned from URL"
-        end
-      end
-
-      if s.version.to_s =~ /^v/
-        problem "#{spec} version #{s.version} should not have a leading 'v'"
-      end
-
-      cksum = s.checksum
-      next if cksum.nil?
-
-      case cksum.hash_type
-      when :md5
-        problem "md5 checksums are deprecated, please use sha1 or sha256"
-        next
-      when :sha1   then len = 40
-      when :sha256 then len = 64
-      end
-
-      if cksum.empty?
-        problem "#{cksum.hash_type} is empty"
-      else
-        problem "#{cksum.hash_type} should be #{len} characters" unless cksum.hexdigest.length == len
-        problem "#{cksum.hash_type} contains invalid characters" unless cksum.hexdigest =~ /^[a-fA-F0-9]+$/
-        problem "#{cksum.hash_type} should be lowercase" unless cksum.hexdigest == cksum.hexdigest.downcase
-      end
-    end
-
-    # Check for :using that is already detected from the url
-    @specs.each do |s|
-      next if s.using.nil?
-
-      url_strategy = DownloadStrategyDetector.detect(s.url)
-      using_strategy = DownloadStrategyDetector.detect('', s.using)
-
-      problem "redundant :using specification in url or head" if url_strategy == using_strategy
+    @specs.each do |spec|
+      ra = ResourceAuditor.new(spec).audit
+      problems.concat(ra.problems)
     end
   end
 
@@ -622,5 +579,77 @@ class FormulaAuditor
 
   def problem p
     @problems << p
+  end
+end
+
+class ResourceAuditor
+  attr_reader :problems
+  attr_reader :version, :checksum, :using, :specs, :url
+
+  def initialize(resource)
+    @version  = resource.version
+    @checksum = resource.checksum
+    @url      = resource.url
+    @using    = resource.using
+    @specs    = resource.specs
+    @problems = []
+  end
+
+  def audit
+    audit_version
+    audit_checksum
+    audit_download_strategy
+    self
+  end
+
+  def audit_version
+    if version.to_s.empty?
+      problem "invalid or missing version"
+    elsif not version.detected_from_url?
+      version_text = version
+      version_url = Version.detect(url, specs)
+      if version_url.to_s == version_text.to_s && version.instance_of?(Version)
+        problem "version #{version_text} is redundant with version scanned from URL"
+      end
+    end
+
+    if version.to_s =~ /^v/
+      problem "version #{version} should not have a leading 'v'"
+    end
+  end
+
+  def audit_checksum
+    return unless checksum
+
+    case checksum.hash_type
+    when :md5
+      problem "MD5 checksums are deprecated, please use SHA1 or SHA256"
+      return
+    when :sha1   then len = 40
+    when :sha256 then len = 64
+    end
+
+    if checksum.empty?
+      problem "#{checksum.hash_type} is empty"
+    else
+      problem "#{checksum.hash_type} should be #{len} characters" unless checksum.hexdigest.length == len
+      problem "#{checksum.hash_type} contains invalid characters" unless checksum.hexdigest =~ /^[a-fA-F0-9]+$/
+      problem "#{checksum.hash_type} should be lowercase" unless checksum.hexdigest == checksum.hexdigest.downcase
+    end
+  end
+
+  def audit_download_strategy
+    return unless using
+
+    url_strategy   = DownloadStrategyDetector.detect(url)
+    using_strategy = DownloadStrategyDetector.detect('', using)
+
+    if url_strategy == using_strategy
+      problem "redundant :using specification in URL"
+    end
+  end
+
+  def problem text
+    @problems << text
   end
 end
