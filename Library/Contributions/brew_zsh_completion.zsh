@@ -27,6 +27,7 @@ _1st_arguments=(
   'audit:check formulae for Homebrew coding style'
   'cat:display formula file for a formula'
   'cleanup:uninstall unused and old versions of packages'
+  'commands:show a list of commands'
   'create:create a new formula'
   'deps:list dependencies and dependants of a formula'
   'doctor:audits your installation for common issues'

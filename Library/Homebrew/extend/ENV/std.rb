@@ -14,7 +14,7 @@ module Stdenv
     end
   end
 
-  def setup_build_environment
+  def setup_build_environment(formula=nil)
     # Clear CDPATH to avoid make issues that depend on changing directories
     delete('CDPATH')
     delete('GREP_OPTIONS') # can break CMake (lol)
@@ -68,8 +68,13 @@ module Stdenv
       self.cxx = MacOS.locate("c++")
     end
 
+    validate_cc!(formula) unless formula.nil?
+
     if cc =~ GNU_GCC_REGEXP
       warn_about_non_apple_gcc($1)
+      gcc_name = 'gcc' + $1.delete('.')
+      gcc = Formulary.factory(gcc_name)
+      self.append_path('PATH', gcc.opt_prefix/'bin')
     end
 
     # Add lib and include etc. from the current macosxsdk to compiler flags:

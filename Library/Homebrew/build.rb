@@ -120,12 +120,12 @@ class Build
       ENV.keg_only_deps = keg_only_deps.map(&:to_s)
       ENV.deps = deps.map { |d| d.to_formula.to_s }
       ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
-      ENV.setup_build_environment
+      ENV.setup_build_environment(f)
       post_superenv_hacks
       reqs.each(&:modify_build_environment)
       deps.each(&:modify_build_environment)
     else
-      ENV.setup_build_environment
+      ENV.setup_build_environment(f)
       reqs.each(&:modify_build_environment)
       deps.each(&:modify_build_environment)
 
@@ -138,14 +138,6 @@ class Build
         ENV.prepend_path 'CMAKE_PREFIX_PATH', opt
         ENV.prepend 'LDFLAGS', "-L#{opt}/lib" if (opt/:lib).directory?
         ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
-      end
-    end
-
-    if f.fails_with? ENV.compiler
-      begin
-        ENV.send CompilerSelector.new(f).compiler
-      rescue CompilerSelectionError => e
-        raise e.message
       end
     end
 
