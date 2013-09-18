@@ -2,14 +2,18 @@ require 'formula'
 
 class Slimerjs < Formula
   homepage 'http://www.slimerjs.org'
-  url 'http://download.slimerjs.org/v0.8/slimerjs-0.8.2.zip'
-  sha1 '18066ada8e3735f1a2722b104f13201c57136375'
+  url 'http://download.slimerjs.org/v0.8/slimerjs-0.8.3.zip'
+  sha1 '8d2a6dc3b8200fa15cd9d65c84bc9358c11f03f8'
+
+  head 'https://github.com/laurentj/slimerjs.git'
 
   def install
-    # fixed uname on os x as in upstream: https://github.com/laurentj/slimerjs/commit/05abb14
-    inreplace 'slimerjs', 'uname -o', 'uname -o 2>&1'
-    rm_rf 'slimerjs.bat'
-    libexec.install Dir['*']
+    if build.head?
+      cd 'src/'
+      # creating resource archive if build from head
+      system 'zip -r omni.ja chrome/ components/ modules/ defaults/ chrome.manifest -x@package_exclude.lst'
+    end
+    libexec.install %w[application.ini omni.ja slimerjs]
     bin.install_symlink libexec/'slimerjs'
   end
 
