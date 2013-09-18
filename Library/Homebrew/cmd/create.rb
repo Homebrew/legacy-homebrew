@@ -102,10 +102,11 @@ class FormulaCreator
       puts "You'll need to add an explicit 'version' to the formula."
     end
 
+    # XXX: why is "and version" here?
     unless ARGV.include? "--no-fetch" and version
-      spec = SoftwareSpec.new(url, version)
-      strategy = spec.download_strategy
-      @sha1 = strategy.new(name, spec).fetch.sha1 if strategy == CurlDownloadStrategy
+      r = Resource.new(:default, url, version)
+      r.owner = self
+      @sha1 = r.fetch.sha1 if r.download_strategy == CurlDownloadStrategy
     end
 
     path.write ERB.new(template, nil, '>').result(binding)
