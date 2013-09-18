@@ -3,7 +3,6 @@ require 'formula'
 class Kernagic < Formula
   homepage 'https://github.com/hodefoting/kernagic/'
   url 'https://github.com/hodefoting/kernagic/archive/0.1.zip'
-  version '0.1'
   sha1 'e79bce36b72d8645b3923f551160e05636e3fb32'
   head 'https://github.com/hodefoting/kernagic.git'
 
@@ -17,6 +16,6 @@ class Kernagic < Formula
   end
 
   test do
-    system "kernagic"
+    system "#{bin}/kernagic -h"
   end
 end
