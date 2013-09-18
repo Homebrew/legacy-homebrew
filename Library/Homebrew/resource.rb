@@ -18,7 +18,7 @@ class Resource
   # XXX: for bottles, address this later
   attr_writer :url, :checksum
 
-  def initialize name, url=nil, version=nil
+  def initialize name, url=nil, version=nil, &block
     @name = name
     @url = url
     @version = version
@@ -26,6 +26,7 @@ class Resource
     @specs = {}
     @checksum = nil
     @using = nil
+    instance_eval(&block) if block_given?
   end
 
   def downloader

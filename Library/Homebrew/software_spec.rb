@@ -6,7 +6,8 @@ require 'version'
 class SoftwareSpec
   extend Forwardable
 
-  def_delegators :@resource, :owner=
+  attr_reader :resources, :owner
+
   def_delegators :@resource, :stage, :fetch
   def_delegators :@resource, :download_strategy, :verify_download_integrity
   def_delegators :@resource, :checksum, :mirrors, :specs, :using, :downloader
@@ -14,6 +15,21 @@ class SoftwareSpec
 
   def initialize url=nil, version=nil
     @resource = Resource.new(:default, url, version)
+    @resources = {}
+  end
+
+  def owner= owner
+    @resource.owner = owner
+    resources.each_value { |r| r.owner = owner }
+  end
+
+  def resource name, &block
+    if block_given?
+      raise DuplicateResourceError.new(name) if resources.has_key?(name)
+      resources[name] = Resource.new(name, &block)
+    else
+      resources.fetch(name) { raise ResourceMissingError.new(owner, name) }
+    end
   end
 end
 
