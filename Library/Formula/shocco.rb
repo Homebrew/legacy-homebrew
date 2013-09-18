@@ -25,7 +25,7 @@ class Shocco < Formula
   end
 
   def install
-    resource('pygments').stage { libexec.install 'pygmentize','pygments' }
+    libexec.install resource('pygments').files('pygmentize', 'pygments')
 
     system "./configure",
       "PYGMENTIZE=#{libexec}/pygmentize",
