@@ -147,7 +147,7 @@ class FormulaInstaller
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
-    if pour_bottle? true
+    if pour_bottle?
       # TODO We currently only support building with libstdc++ as
       # the default case, and all Apple libstdc++s are compatible, so
       # this default is sensible.
