@@ -272,14 +272,17 @@ class FormulaAuditor
   def audit_specs
     problem "Head-only (no stable download)" if f.head_only?
 
-    @specs.each do |spec|
+    %w[Stable Devel HEAD].each do |name|
+      next unless spec = f.send(name.downcase)
+
       ra = ResourceAuditor.new(spec).audit
-      problems.concat(ra.problems)
+      problems.concat ra.problems.map { |problem| "#{name}: #{problem}" }
 
       spec.resources.each_value do |resource|
-        ra = ResourceAuditor.new(resource)
-        ra.audit
-        problems.concat(ra.problems)
+        ra = ResourceAuditor.new(resource).audit
+        problems.concat ra.problems.map { |problem|
+          "#{name} resource #{resource.name.inspect}: #{problem}"
+        }
       end
     end
   end
