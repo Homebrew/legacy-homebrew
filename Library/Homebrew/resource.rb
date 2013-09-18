@@ -73,7 +73,7 @@ class Resource
   def verify_download_integrity fn
     fn.verify_checksum(checksum)
   rescue ChecksumMissingError
-    opoo "Cannot verify download integrity"
+    opoo "Cannot verify integrity of #{fn.basename}"
     puts "A checksum was not provided for this resource"
     puts "For your reference the SHA1 is: #{fn.sha1}"
   rescue ChecksumMismatchError => e
