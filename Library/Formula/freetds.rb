@@ -30,6 +30,10 @@ class Freetds < Formula
       args << "--with-unixodbc=#{Formula.factory('unixodbc').prefix}"
     end
 
+    if build.include? "enable-msdblib"
+      args << "--enable-msdblib"
+    end
+
     ENV.universal_binary if build.universal?
     system "./configure", *args
     system 'make'
