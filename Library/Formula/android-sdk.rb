@@ -59,7 +59,7 @@ class AndroidSdk < Formula
       EOS
     end
 
-    resource('completion').stage { bash_completion.install 'adb.bash' => 'adb-completion.bash' }
+    bash_completion.install resource('completion').files('adb.bash' => 'adb-completion.bash')
   end
 
   def caveats; <<-EOS.undent
