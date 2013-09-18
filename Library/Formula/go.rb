@@ -66,7 +66,7 @@ class Go < Formula
     cd 'src' do
       targets.each do |os, archs, opts|
         archs.each do |arch|
-          ENV['GOROOT_FINAL'] = prefix
+          ENV['GOROOT_FINAL'] = libexec
           ENV['GOOS']         = os
           ENV['GOARCH']       = arch
           ENV['CGO_ENABLED']  = opts[:cgo] ? "1" : "0"
@@ -77,12 +77,8 @@ class Go < Formula
 
     (buildpath/'pkg/obj').rmtree
 
-    # Don't install header files; they aren't necessary and can
-    # cause problems with other builds.
-    # See:
-    # http://trac.macports.org/ticket/30203
-    # http://code.google.com/p/go/issues/detail?id=2407
-    prefix.install(Dir['*'] - ['include'])
+    libexec.install Dir['*']
+    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   def caveats; <<-EOS.undent
