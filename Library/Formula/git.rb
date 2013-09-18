@@ -4,8 +4,14 @@ class Git < Formula
   homepage 'http://git-scm.com'
   url 'http://git-core.googlecode.com/files/git-1.8.4.tar.gz'
   sha1 '2a361a2d185b8bc604f7f2ce2f502d0dea9d3279'
-
   head 'https://github.com/git/git.git'
+
+  bottle do
+    sha1 'c752e68f6c39a567adfa43eea9f6b74caaf35bcf' => :mountain_lion
+    sha1 'ca4b4ce0455636400ad70e413c179fe4e3329288' => :lion
+    sha1 'c5a3559d59c7d9cd608559771ece10743a340c32' => :snow_leopard
+  end
+
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
