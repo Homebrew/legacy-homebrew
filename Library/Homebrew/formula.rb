@@ -1,5 +1,4 @@
 require 'resource'
-require 'download_strategy'
 require 'dependency_collector'
 require 'formula_support'
 require 'formula_lock'
@@ -49,7 +48,7 @@ class Formula
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
-    @downloader = active_spec.download_strategy.new(name, active_spec)
+    @downloader = active_spec.downloader
 
     # Combine DSL `option` and `def options`
     options.each do |opt, desc|
@@ -60,15 +59,14 @@ class Formula
     @pin = FormulaPin.new(self)
 
     @resources = self.class.resources
-    @resources.each_value do |r|
-      r.set_owner name
-    end
+    @resources.each_value { |r| r.owner = self }
   end
 
   def set_spec(name)
     spec = self.class.send(name)
     return if spec.nil?
     if block_given? && yield(spec) || !spec.url.nil?
+      spec.owner = self
       instance_variable_set("@#{name}", spec)
     end
   end
@@ -515,10 +513,7 @@ class Formula
 
   # For brew-fetch and others.
   def fetch
-    # Ensure the cache exists
-    HOMEBREW_CACHE.mkpath
-    downloader.fetch
-    cached_download
+    active_spec.fetch
   end
 
   # For FormulaInstaller.
@@ -610,11 +605,7 @@ class Formula
   private
 
   def stage
-    fetched = fetch
-    verify_download_integrity(fetched) if fetched.respond_to?(:file?) and fetched.file?
-    mktemp do
-      downloader.stage
-      # Set path after the downloader changes the working folder.
+    active_spec.stage do
       @buildpath = Pathname.pwd
       yield
       @buildpath = nil
