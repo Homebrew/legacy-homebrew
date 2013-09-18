@@ -37,7 +37,7 @@ class Passenger < Formula
   def caveats; <<-EOS.undent
     To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
       LoadModule passenger_module #{opt_prefix}/libexec/buildout/apache2/mod_passenger.so
-      PassengerRoot #{opt_prefix}
+      PassengerRoot #{opt_prefix}/libexec/
       PassengerDefaultRuby /usr/bin/ruby
 
     To activate Phusion Passenger for Nginx, run:
