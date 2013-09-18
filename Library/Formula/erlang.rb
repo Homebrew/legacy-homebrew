@@ -6,8 +6,8 @@ require 'formula'
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/archive/OTP_R16B01.tar.gz'
-  sha1 'ddbff080ee39c50b86b847514c641f0a9aab0333'
+  url 'https://github.com/erlang/otp/archive/OTP_R16B02.tar.gz'
+  sha1 '81f72efe58a99ab1839eb6294935572137133717'
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
@@ -19,13 +19,13 @@ class Erlang < Formula
   end
 
   resource 'man' do
-    url 'http://erlang.org/download/otp_doc_man_R16B01.tar.gz'
-    sha1 '57ef01620386108db83ef13921313e600d351d44'
+    url 'http://erlang.org/download/otp_doc_man_R16B02.tar.gz'
+    sha1 'c64c19d5ab176c8b7c1e05b02b4f2affbed7b0ef'
   end
 
   resource 'html' do
-    url 'http://erlang.org/download/otp_doc_html_R16B01.tar.gz'
-    sha1 '6741e15e0b3e58736987e38fb8803084078ff99f'
+    url 'http://erlang.org/download/otp_doc_html_R16B02.tar.gz'
+    sha1 '142e0b4becc04d3b5bf46a7fa2d48aae43cc84d0'
   end
 
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
@@ -102,7 +102,7 @@ class Erlang < Formula
     # This test takes some time to run, but per bug #120 should finish in
     # "less than 20 minutes". It takes about 20 seconds on a Mac Pro (2009).
     if build.include?("time") && !build.head?
-      `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.16.2/ebin/`
+      `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.16.3/ebin/`
     end
   end
 end
