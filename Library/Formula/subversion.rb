@@ -151,6 +151,11 @@ class Subversion < Formula
     end
   end
 
+  test do
+    system "#{bin}/svnadmin", 'create', 'test'
+    system "#{bin}/svnadmin", 'verify', 'test'
+  end
+
   def caveats
     s = <<-EOS.undent
       svntools have been installed to:
