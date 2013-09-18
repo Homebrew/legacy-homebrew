@@ -6,6 +6,12 @@ class Sqlite < Formula
   version '3.8.0.2'
   sha1 '294c30e882a0d45877bce09afe72d08ccfc6b650'
 
+  bottle do
+    sha1 '453723173f6f2e3c318924e0b750ce5401a81c81' => :mountain_lion
+    sha1 '00dab991a57b175a51f1e91d09d052c9ec86210f' => :lion
+    sha1 'feb9482fbe4a06133462a16e98c3794e25a7eca1' => :snow_leopard
+  end
+
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
 
   option :universal
