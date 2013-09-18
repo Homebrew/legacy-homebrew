@@ -711,7 +711,9 @@ class Formula
 
     # Define a named resource using a SoftwareSpec style block
     def resource name, &block
-      specs.each { |spec| spec.resource(name, &block) }
+      specs.each do |spec|
+        spec.resource(name, &block) unless spec.resource?(name)
+      end
     end
 
     def dependencies

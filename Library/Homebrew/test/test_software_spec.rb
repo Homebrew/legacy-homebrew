@@ -2,6 +2,35 @@ require 'testing_env'
 require 'software_spec'
 require 'bottles'
 
+class SoftwareSpecTests < Test::Unit::TestCase
+  def setup
+    @spec = SoftwareSpec.new
+  end
+
+  def test_resource
+    @spec.resource('foo') { url 'foo-1.0' }
+    assert @spec.resource?('foo')
+  end
+
+  def test_raises_when_duplicate_resources_are_defined
+    @spec.resource('foo') { url 'foo-1.0' }
+    assert_raises(DuplicateResourceError) do
+      @spec.resource('foo') { url 'foo-1.0' }
+    end
+  end
+
+  def test_raises_when_accessing_missing_resources
+    assert_raises(ResourceMissingError) { @spec.resource('foo') }
+  end
+
+  def test_resource_owner
+    owner = Object.new
+    @spec.resource('foo') { url 'foo-1.0' }
+    @spec.owner = owner
+    @spec.resources.each_value { |r| assert_equal owner, r.owner }
+  end
+end
+
 class HeadSoftwareSpecTests < Test::Unit::TestCase
   include VersionAssertions
 
