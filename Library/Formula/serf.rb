@@ -5,6 +5,12 @@ class Serf < Formula
   url 'http://serf.googlecode.com/files/serf-1.3.1.tar.bz2'
   sha1 'b8c8e12e7163d7bacf9be0ea4aaa7b8c32e8c72c'
 
+  bottle do
+    sha1 '663b5ea82c499f6c27346e881a9455fd01c2d4e7' => :mountain_lion
+    sha1 '5ca1800056e67b465886fcc02893b0c98a0239d5' => :lion
+    sha1 'cc53d932bef5d5e896045d75735830697eba85c0' => :snow_leopard
+  end
+
   option :universal
 
   depends_on :libtool
