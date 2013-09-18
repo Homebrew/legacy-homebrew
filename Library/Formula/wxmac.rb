@@ -18,6 +18,7 @@ class Wxmac < Formula
   url 'http://downloads.sourceforge.net/project/wxpython/wxPython/2.9.5.0/wxPython-src-2.9.5.0.tar.bz2'
   sha1 '9183b2ffc6631cb2551c51b655a9d08904aa7b52'
 
+  option 'disable-monolithic', "Build a non-monolithic library (split into multiple files)"
   depends_on :python => :recommended
   depends_on FrameworkPython if build.with? "python"
 
@@ -62,7 +63,6 @@ class Wxmac < Formula
       "--disable-debug",
       "--prefix=#{prefix}",
       "--enable-shared",
-      "--enable-monolithic",
       "--enable-unicode",
       "--enable-std_string",
       "--enable-display",
@@ -82,6 +82,7 @@ class Wxmac < Formula
       "--enable-universal_binary=#{Hardware::CPU.universal_archs.join(',')}",
       "--disable-precomp-headers"
     ]
+    args << "--enable-monolithic" unless build.include? 'disable-monolithic'
 
     system "./configure", *args
     system "make install"
