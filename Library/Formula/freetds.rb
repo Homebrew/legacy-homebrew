@@ -16,8 +16,8 @@ class Freetds < Formula
   end
 
   option :universal
-  option 'enable-msdblib', 'Enable Microsoft behavior in the DB-Library API where it diverges from Sybase\'s'
-  option 'enable-sybase-compat', 'Enable close compatibility with Sybase\'s ABI, at the expense of other features'
+  option "enable-msdblib", "Enable Microsoft behavior in the DB-Library API where it diverges from Sybase's"
+  option "enable-sybase-compat", "Enable close compatibility with Sybase's ABI, at the expense of other features"
 
   def install
     system "autoreconf -i" if build.head?
