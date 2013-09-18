@@ -3,8 +3,7 @@ require 'checksum'
 require 'version'
 
 class SoftwareSpec
-  attr_reader :checksum, :mirrors, :specs
-  attr_reader :using # for auditing
+  attr_reader :checksum, :mirrors, :specs, :using
 
   def initialize url=nil, version=nil
     @url = url
