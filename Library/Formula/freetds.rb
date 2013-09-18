@@ -34,6 +34,10 @@ class Freetds < Formula
       args << "--enable-msdblib"
     end
 
+    if build.include? "enable-sybase-compat"
+      args << "--enable-sybase-compat"
+    end
+
     ENV.universal_binary if build.universal?
     system "./configure", *args
     system 'make'
