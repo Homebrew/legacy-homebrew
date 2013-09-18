@@ -120,6 +120,8 @@ class Subversion < Formula
     end
 
     if build.include? 'perl'
+      # In theory SWIG can be built in parallel, in practice...
+      ENV.deparallelize
       # Remove hard-coded ppc target, add appropriate ones
       if build.universal?
         arches = Hardware::CPU.universal_archs.as_arch_flags
@@ -140,6 +142,7 @@ class Subversion < Formula
       end
       system "make swig-pl"
       system "make", "install-swig-pl", "DESTDIR=#{prefix}"
+      system "mv -v #{prefix}/#{prefix}/lib/* #{prefix}/lib"
     end
 
     if build.include? 'java'
@@ -229,3 +232,35 @@ __END__
 
  javahl_javadir = @libdir@/svn-javahl
  javahl_javahdir = @libdir@/svn-javahl/include
+--- subversion/include/svn_auth.h
++++ subversion/include/svn_auth.h
+@@ -966,7 +966,7 @@ svn_auth_get_keychain_ssl_client_cert_pw_provider(
+   apr_pool_t *pool);
+ #endif /* DARWIN || DOXYGEN */
+
+-#if (!defined(DARWIN) && !defined(WIN32)) || defined(DOXYGEN)
++#if (!defined(DARWIN) && !defined(WIN32)) || defined(DOXYGEN) || defined(SWIGPERL)
+ /** A type of callback function for obtaining the GNOME Keyring password.
+  *
+  * In this callback, the client should ask the user for default keyring
+--- subversion/bindings/swig/perl/libsvn_swig_perl/swigutil_pl.c~       2013-09-18 21:45:41.000000000 +0200
++++ subversion/bindings/swig/perl/libsvn_swig_perl/swigutil_pl.c        2013-09-18 21:46:01.000000000 +0200
+@@ -21,14 +21,14 @@
+  * ====================================================================
+  */
+
+-#include <apr.h>
+-#include <apr_general.h>
+-#include <apr_portable.h>
+-
+ #include <EXTERN.h>
+ #include <perl.h>
+ #include <XSUB.h>
+
++#include <apr.h>
++#include <apr_general.h>
++#include <apr_portable.h>
++
+ /* Perl defines a _ macro, but SVN uses it for translations.
+  * So undefine _ after including the Perl headers. */
+ #undef _
