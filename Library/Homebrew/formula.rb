@@ -720,11 +720,11 @@ class Formula
     end
 
     # Define a named resource using a SoftwareSpec style block
-    def resource res_name, &block
-      raise DuplicateResourceError.new(res_name) if resources.has_key?(res_name)
-      spec = SoftwareSpec.new
-      spec.instance_eval(&block)
-      resources[res_name] = Resource.new(res_name, spec)
+    def resource name, &block
+      raise DuplicateResourceError.new(name) if resources.has_key?(name)
+      resource = Resource.new(name)
+      resource.instance_eval(&block)
+      resources[name] = resource
     end
 
     def dependencies
