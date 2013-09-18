@@ -2,13 +2,10 @@ require 'formula'
 
 class Go < Formula
   homepage 'http://golang.org'
+  head 'https://go.googlecode.com/hg/'
   url 'https://go.googlecode.com/files/go1.1.2.src.tar.gz'
   version '1.1.2'
   sha1 'f5ab02bbfb0281b6c19520f44f7bc26f9da563fb'
-
-  head 'https://go.googlecode.com/hg/'
-
-  skip_clean 'bin'
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
@@ -33,30 +30,24 @@ class Go < Formula
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
     zsh_completion.install 'misc/zsh/go' => 'go'
 
+    # host platform (darwin) must come last in the targets list
     if build.include? 'cross-compile-all'
       targets = [
-        ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
-        ['freebsd', ['386', 'amd64'],        { :cgo => false }],
-        ['netbsd',  ['386', 'amd64'],        { :cgo => false }],
-        ['openbsd', ['386', 'amd64'],        { :cgo => false }],
-
-        ['windows', ['386', 'amd64'],        { :cgo => false }],
-
-        # Host platform (darwin/amd64) must always come last
-        ['darwin',  ['386', 'amd64'],        { :cgo => build.with?('cgo')  }],
+        ['linux',   ['386', 'amd64', 'arm']],
+        ['freebsd', ['386', 'amd64']],
+        ['netbsd',  ['386', 'amd64']],
+        ['openbsd', ['386', 'amd64']],
+        ['windows', ['386', 'amd64']],
+        ['darwin',  ['386', 'amd64']],
       ]
     elsif build.include? 'cross-compile-common'
       targets = [
-        ['linux',   ['386', 'amd64', 'arm'], { :cgo => false }],
-        ['windows', ['386', 'amd64'],        { :cgo => false }],
-
-        # Host platform (darwin/amd64) must always come last
-        ['darwin',  ['386', 'amd64'],        { :cgo => build.with?('cgo')  }],
+        ['linux',   ['386', 'amd64', 'arm']],
+        ['windows', ['386', 'amd64']],
+        ['darwin',  ['386', 'amd64']],
       ]
     else
-      targets = [
-        ['darwin', [''], { :cgo => build.with?('cgo') }]
-      ]
+      targets = [['darwin', ['']]]
     end
 
     # The version check is due to:
@@ -64,12 +55,13 @@ class Go < Formula
     (buildpath/'VERSION').write('default') if build.head?
 
     cd 'src' do
-      targets.each do |os, archs, opts|
+      targets.each do |os, archs|
+        cgo_enabled = ((os == 'darwin') && build.with?('cgo')) ? "1" : "0"
         archs.each do |arch|
           ENV['GOROOT_FINAL'] = libexec
           ENV['GOOS']         = os
           ENV['GOARCH']       = arch
-          ENV['CGO_ENABLED']  = opts[:cgo] ? "1" : "0"
+          ENV['CGO_ENABLED']  = cgo_enabled
           system "./make.bash", "--no-clean"
         end
       end
