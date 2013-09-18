@@ -159,6 +159,31 @@ class FormulaConflictError < Homebrew::InstallationError
   end
 end
 
+class FormulaLinkConflictError < Homebrew::InstallationError
+  attr_reader :f, :conflicts
+
+  def initialize(f, conflicts)
+    @f = f
+    @conflicts = conflicts
+    super f, message
+  end
+
+  def conflict_message(conflict)
+    message = []
+    message << "  #{conflict.name}"
+    message << ": because #{conflict.reason}" if conflict.reason
+    message.join
+  end
+
+  def message
+    message = []
+    message << "Cannot link #{f.name} because conflicting formulae are linked.\n"
+    message.concat conflicts.map { |c| conflict_message(c) } << ""
+    message << "Please `brew unlink #{conflicts.map(&:name)*' '}` before continuing."
+    message.join("\n")
+  end
+end
+
 class BuildError < Homebrew::InstallationError
   attr_reader :exit_status, :command, :env
 
