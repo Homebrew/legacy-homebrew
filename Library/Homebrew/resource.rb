@@ -30,8 +30,19 @@ class Resource
   end
 
   def downloader
-    download_name = name == :default ? owner.name : "#{owner.name}--#{name}"
     @downloader ||= download_strategy.new(download_name, self)
+  end
+
+  def download_name
+    name == :default ? owner.name : "#{owner.name}--#{name}"
+  end
+
+  def download_strategy
+    @download_strategy ||= DownloadStrategyDetector.detect(url, using)
+  end
+
+  def cached_download
+    downloader.cached_location
   end
 
   # Download the resource
@@ -49,14 +60,6 @@ class Resource
         target.install Dir['*']
       end
     end
-  end
-
-  def download_strategy
-    @download_strategy ||= DownloadStrategyDetector.detect(url, using)
-  end
-
-  def cached_download
-    downloader.cached_location
   end
 
   # For brew-fetch and others.
