@@ -275,6 +275,12 @@ class FormulaAuditor
     @specs.each do |spec|
       ra = ResourceAuditor.new(spec).audit
       problems.concat(ra.problems)
+
+      spec.resources.each_value do |resource|
+        ra = ResourceAuditor.new(resource)
+        ra.audit
+        problems.concat(ra.problems)
+      end
     end
   end
 
