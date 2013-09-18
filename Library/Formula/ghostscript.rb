@@ -1,25 +1,22 @@
 require 'formula'
 
-class GsDjVU < Formula
-  homepage 'http://djvu.sourceforge.net/gsdjvu.html'
-  url 'http://downloads.sourceforge.net/project/djvu/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
-  version '1.5'
-  sha1 'c7d0677dae5fe644cf3d714c04b3c2c343906342'
-
-  head 'git://git.code.sf.net/p/djvu/gsdjvu-git'
-end
-
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
   url 'http://downloads.ghostscript.com/public/ghostscript-9.07.tar.gz'
   sha1 'b04a88ea8d661fc53d4f7eac34d84456272afc06'
 
-  head 'git://git.ghostscript.com/ghostpdl.git'
+  head do
+    url 'git://git.ghostscript.com/ghostpdl.git'
+
+    resource 'djvu' do
+      url 'git://git.code.sf.net/p/djvu/gsdjvu-git'
+    end
+  end
 
   option 'with-djvu', 'Build drivers for DjVU file format'
 
   # TODO - figure out why this is needed
-  env :std if build.include? 'with-djvu'
+  env :std if build.with? 'djvu'
 
   if build.head?
     depends_on :automake
@@ -32,12 +29,19 @@ class Ghostscript < Formula
   depends_on 'jbig2dec'
   depends_on :libpng
   depends_on :x11 => ['2.7.2', :optional]
-  depends_on 'djvulibre' if build.include? 'with-djvu'
+  depends_on 'djvulibre' if build.with? 'djvu'
 
   # http://sourceforge.net/projects/gs-fonts/
   resource 'fonts' do
     url 'http://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
     sha1 '2a7198e8178b2e7dba87cb5794da515200b568f5'
+  end
+
+  # http://djvu.sourceforge.net/gsdjvu.html
+  resource 'djvu' do
+    url 'http://downloads.sourceforge.net/project/djvu/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
+    version '1.5'
+    sha1 'c7d0677dae5fe644cf3d714c04b3c2c343906342'
   end
 
   # Fix dylib names, per installation instructions
@@ -61,15 +65,13 @@ class Ghostscript < Formula
 
     src_dir = build.head? ? "gs" : "."
 
-    if build.include? 'with-djvu'
-      GsDjVU.new.brew do
-        inreplace 'gdevdjvu.c', /#include "gserror.h"/, ''
-        (buildpath+'base').install 'gdevdjvu.c'
-        (buildpath+'lib').install 'ps2utf8.ps'
-        ENV['EXTRA_INIT_FILES'] = 'ps2utf8.ps'
-        (buildpath/'base/contrib.mak').open('a').write(File.read('gsdjvu.mak'))
-      end
-    end
+    resource('djvu').stage do
+      inreplace 'gdevdjvu.c', /#include "gserror.h"/, ''
+      (buildpath+'base').install 'gdevdjvu.c'
+      (buildpath+'lib').install 'ps2utf8.ps'
+      ENV['EXTRA_INIT_FILES'] = 'ps2utf8.ps'
+      (buildpath/'base/contrib.mak').open('a').write(File.read('gsdjvu.mak'))
+    end if build.with? 'djvu'
 
     cd src_dir do
       move_included_source_copies
@@ -93,7 +95,7 @@ class Ghostscript < Formula
 
       inreplace 'Makefile' do |s|
         s.change_make_var!('DEVICE_DEVS17','$(DD)djvumask.dev $(DD)djvusep.dev')
-      end if build.include? 'with-djvu'
+      end if build.with? 'djvu'
 
       # Install binaries and libraries
       system 'make install'
