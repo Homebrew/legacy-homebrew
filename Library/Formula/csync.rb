@@ -23,6 +23,8 @@ class Csync < Formula
     depends_on 'samba'
   end
 
+  depends_on :macos => :lion
+
   def patches
     DATA
   end

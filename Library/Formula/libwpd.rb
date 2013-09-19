@@ -2,8 +2,8 @@ require 'formula'
 
 class Libwpd < Formula
   homepage 'http://libwpd.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/libwpd/libwpd-0.9.8.tar.bz2'
-  sha1 '7527d7ec01289c1109551cc58537ca4cf7cf8ba6'
+  url 'http://downloads.sourceforge.net/libwpd/libwpd-0.9.9.tar.bz2'
+  sha1 '74d13c4e5137edc78660059257671b5a1f40224d'
 
   depends_on 'pkg-config' => :build
   depends_on "glib"

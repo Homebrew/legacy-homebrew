@@ -1,7 +1,7 @@
 require 'requirement'
 require 'requirements/fortran_dependency'
 require 'requirements/language_module_dependency'
-require 'requirements/macos_requirement'
+require 'requirements/minimum_macos_requirement'
 require 'requirements/mpi_dependency'
 require 'requirements/python_dependency'
 require 'requirements/x11_dependency'

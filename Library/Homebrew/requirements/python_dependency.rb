@@ -6,14 +6,14 @@ require 'requirement'
 # In `dependency_collector.rb`, special `:python` and `:python3` shortcuts are
 # defined. You can specify a minimum version of the Python that needs to be
 # present, but since not every package is ported to 3.x yet,
-# `PythonInstalled("2")` is not satisfied by 3.x.
+# `PythonDependency("2")` is not satisfied by 3.x.
 # In a formula that shall provide support for 2.x and 3.x, the idiom is:
 # depends_on :python
 # depends_on :python3 => :optional # or :recommended
 #
 # Todo:
 # - Allow further options that choose: universal, framework?, brewed?...
-class PythonInstalled < Requirement
+class PythonDependency < Requirement
   attr_reader :min_version
   attr_reader :if3then3
   attr_reader :imports

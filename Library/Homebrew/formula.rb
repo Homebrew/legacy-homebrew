@@ -1,5 +1,3 @@
-require 'resource'
-require 'download_strategy'
 require 'dependency_collector'
 require 'formula_support'
 require 'formula_lock'
@@ -11,6 +9,7 @@ require 'compilers'
 require 'build_environment'
 require 'build_options'
 require 'formulary'
+require 'software_spec'
 
 
 class Formula
@@ -48,7 +47,7 @@ class Formula
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
-    @downloader = download_strategy.new(name, active_spec)
+    @downloader = active_spec.downloader
 
     # Combine DSL `option` and `def options`
     options.each do |opt, desc|
@@ -57,17 +56,13 @@ class Formula
     end
 
     @pin = FormulaPin.new(self)
-
-    @resources = self.class.resources
-    @resources.each_value do |r|
-      r.set_owner name
-    end
   end
 
   def set_spec(name)
     spec = self.class.send(name)
     return if spec.nil?
     if block_given? && yield(spec) || !spec.url.nil?
+      spec.owner = self
       instance_variable_set("@#{name}", spec)
     end
   end
@@ -98,13 +93,11 @@ class Formula
   def mirrors;  active_spec.mirrors; end
 
   def resource(name)
-    res = @resources[name]
-    raise ResourceMissingError.new(@name, name) if res.nil?
-    res
+    active_spec.resource(name)
   end
 
   def resources
-    @resources.values
+    active_spec.resources.values
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -179,10 +172,6 @@ class Formula
 
   def opt_prefix
     Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
-  end
-
-  def download_strategy
-    active_spec.download_strategy
   end
 
   def cached_download
@@ -518,10 +507,7 @@ class Formula
 
   # For brew-fetch and others.
   def fetch
-    # Ensure the cache exists
-    HOMEBREW_CACHE.mkpath
-    downloader.fetch
-    cached_download
+    active_spec.fetch
   end
 
   # For FormulaInstaller.
@@ -613,11 +599,7 @@ class Formula
   private
 
   def stage
-    fetched = fetch
-    verify_download_integrity(fetched) if fetched.file?
-    mktemp do
-      downloader.stage
-      # Set path after the downloader changes the working folder.
+    active_spec.stage do
       @buildpath = Pathname.pwd
       yield
       @buildpath = nil
@@ -662,10 +644,20 @@ class Formula
     Checksum::TYPES.each do |cksum|
       class_eval <<-EOS, __FILE__, __LINE__ + 1
         def #{cksum}(val)
-          @stable ||= SoftwareSpec.new
+          @stable ||= create_spec(SoftwareSpec)
           @stable.#{cksum}(val)
         end
       EOS
+    end
+
+    def specs
+      @specs ||= []
+    end
+
+    def create_spec(klass)
+      spec = klass.new
+      specs << spec
+      spec
     end
 
     def build
@@ -673,54 +665,55 @@ class Formula
     end
 
     def url val, specs={}
-      @stable ||= SoftwareSpec.new
+      @stable ||= create_spec(SoftwareSpec)
       @stable.url(val, specs)
     end
 
     def stable &block
       return @stable unless block_given?
-      instance_eval(&block)
+      @stable ||= create_spec(SoftwareSpec)
+      @stable.instance_eval(&block)
     end
 
     def bottle *, &block
       return @bottle unless block_given?
-      @bottle ||= Bottle.new
+      @bottle ||= create_spec(Bottle)
       @bottle.instance_eval(&block)
     end
 
     def devel &block
       return @devel unless block_given?
-      @devel ||= SoftwareSpec.new
+      @devel ||= create_spec(SoftwareSpec)
       @devel.instance_eval(&block)
     end
 
-    def head val=nil, specs={}
-      return @head if val.nil?
-      @head ||= HeadSoftwareSpec.new
-      @head.url(val, specs)
+    def head val=nil, specs={}, &block
+      if block_given?
+        @head ||= create_spec(HeadSoftwareSpec)
+        @head.instance_eval(&block)
+      elsif val
+        @head ||= create_spec(HeadSoftwareSpec)
+        @head.url(val, specs)
+      else
+        @head
+      end
     end
 
     def version val=nil
-      @stable ||= SoftwareSpec.new
+      @stable ||= create_spec(SoftwareSpec)
       @stable.version(val)
     end
 
     def mirror val
-      @stable ||= SoftwareSpec.new
+      @stable ||= create_spec(SoftwareSpec)
       @stable.mirror(val)
     end
 
-    # Hold any resources defined by this formula
-    def resources
-      @resources ||= Hash.new
-    end
-
     # Define a named resource using a SoftwareSpec style block
-    def resource res_name, &block
-      raise DuplicateResourceError.new(res_name) if resources.has_key?(res_name)
-      spec = SoftwareSpec.new
-      spec.instance_eval(&block)
-      resources[res_name] = Resource.new(res_name, spec)
+    def resource name, &block
+      specs.each do |spec|
+        spec.resource(name, &block) unless spec.resource?(name)
+      end
     end
 
     def dependencies

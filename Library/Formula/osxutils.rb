@@ -7,6 +7,9 @@ class Osxutils < Formula
 
   head 'https://github.com/vasi/osxutils.git'
 
+  conflicts_with 'leptonica',
+    :because => "both leptonica and osxutils ship a `fileinfo` executable."
+
   def install
     system 'make'
     system 'make', "PREFIX=#{prefix}", 'install'

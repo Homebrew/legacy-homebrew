@@ -4,9 +4,7 @@ class TransitionalMode < Requirement
   fatal true
 
   satisfy do
-    # If not installed, it will install in the correct mode.
-    # If installed, make sure it is transitional instead of strict.
-    !which('camlp5') || `camlp5 -pmode 2>&1`.chomp == 'transitional'
+    Tab.for_name('camlp5').unused_options.include? 'strict'
   end
 
   def message; <<-EOS.undent
