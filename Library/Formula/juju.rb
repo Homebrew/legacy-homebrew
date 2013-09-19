@@ -3,7 +3,6 @@ require 'formula'
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
   url "https://launchpad.net/juju-core/1.14/1.14.0/+download/juju-core_1.14.0.tar.gz"
-  version "1.14.0"
   sha1 "7cefd01c8edb6168e6eae4a6bb44173f61cfd356"
 
   depends_on 'go' => :build
