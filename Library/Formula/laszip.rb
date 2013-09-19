@@ -14,6 +14,6 @@ class Laszip < Formula
   end
 
   test do
-    system "laszippertest"
+    system "#{bin}/laszippertest"
   end
 end
