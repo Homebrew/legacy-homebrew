@@ -3,7 +3,7 @@ require 'formula'
 class Kernagic < Formula
   homepage 'https://github.com/hodefoting/kernagic/'
   url 'https://github.com/hodefoting/kernagic/archive/0.1.zip'
-  sha1 'e79bce36b72d8645b3923f551160e05636e3fb32'
+  sha1 '671e4ff489c2357e718ea999f9b3d15779ae9a80'
   head 'https://github.com/hodefoting/kernagic.git'
 
   depends_on :x11
