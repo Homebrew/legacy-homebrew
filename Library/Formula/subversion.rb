@@ -244,26 +244,3 @@ __END__
  /** A type of callback function for obtaining the GNOME Keyring password.
   *
   * In this callback, the client should ask the user for default keyring
---- subversion/bindings/swig/perl/libsvn_swig_perl/swigutil_pl.c~       2013-09-18 21:45:41.000000000 +0200
-+++ subversion/bindings/swig/perl/libsvn_swig_perl/swigutil_pl.c        2013-09-18 21:46:01.000000000 +0200
-@@ -21,14 +21,16 @@
-  * ====================================================================
-  */
-
--#include <apr.h>
--#include <apr_general.h>
--#include <apr_portable.h>
--
- #include <EXTERN.h>
- #include <perl.h>
- #include <XSUB.h>
-
-+/* Move these includes below the includes above, otherwise they get the wrong definition of boolean */
-+/* http://svn.haxx.se/users/archive-2013-09/0187.shtml */
-+#include <apr.h>
-+#include <apr_general.h>
-+#include <apr_portable.h>
-+
- /* Perl defines a _ macro, but SVN uses it for translations.
-  * So undefine _ after including the Perl headers. */
- #undef _
