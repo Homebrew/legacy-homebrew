@@ -57,7 +57,7 @@ class Ghc < Formula
 
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       args = ["--prefix=#{subprefix}"]
-      args << "--with-gcc=#{ENV.cc}" if ENV.compiler == :gcc
+      args << "--with-gcc=#{ENV.cc}"
 
       system "./configure", *args
       system 'make -j1 install' # -j1 fixes an intermittent race condition
@@ -78,7 +78,7 @@ class Ghc < Formula
 
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       args = ["--prefix=#{prefix}", "--build=#{arch}-apple-darwin"]
-      args << "--with-gcc=#{ENV.cc}" if ENV.compiler == :gcc
+      args << "--with-gcc=#{ENV.cc}"
 
       system "./configure", *args
       system 'make'
