@@ -6,7 +6,11 @@ class Bitchx < Formula
   url 'http://bitchx.ca/BitchX-1.2-final.tar.gz'
   sha1 'a2162a18d3a96ade7d2410f6a560e43f7d6b8763'
 
-  depends_on :macos => :mountain_lion
+  # Reported upstream:
+  # https://github.com/BitchX/BitchX/pull/8
+  def patches
+    DATA
+  end
 
   def install
     args = %W{
@@ -37,3 +41,20 @@ class Bitchx < Formula
   end
 
 end
+
+__END__
+diff --git a/source/compat.c b/source/compat.c
+index fa68988..9549bd6 100644
+--- a/source/compat.c
++++ b/source/compat.c
+@@ -1011,6 +1011,10 @@ int  scandir (const char *name,
+ #include <stddef.h>
+ #include <string.h>
+
++#if defined(__APPLE__)
++ #define environ (*_NSGetEnviron())
++#endif
++
+ int   bsd_setenv(const char *name, const char *value, int rewrite);
+
+ /*
