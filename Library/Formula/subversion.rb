@@ -32,6 +32,7 @@ class Subversion < Formula
 
   # One patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags},
   # and another one to put the svn-tools directory into libexec instead of bin
+  # and another one to get --perl to build http://svn.haxx.se/users/archive-2013-09/0187.shtml
   def patches
     { :p0 => DATA }
   end
