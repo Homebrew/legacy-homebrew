@@ -234,18 +234,19 @@ __END__
  javahl_javahdir = @libdir@/svn-javahl/include
 --- subversion/include/svn_auth.h
 +++ subversion/include/svn_auth.h
-@@ -966,7 +966,7 @@ svn_auth_get_keychain_ssl_client_cert_pw_provider(
+@@ -966,7 +966,8 @@ svn_auth_get_keychain_ssl_client_cert_pw_provider(
    apr_pool_t *pool);
  #endif /* DARWIN || DOXYGEN */
 
 -#if (!defined(DARWIN) && !defined(WIN32)) || defined(DOXYGEN)
++/* Add a condition on SWIGPERL - http://svn.haxx.se/users/archive-2013-09/0187.shtml */
 +#if (!defined(DARWIN) && !defined(WIN32)) || defined(DOXYGEN) || defined(SWIGPERL)
  /** A type of callback function for obtaining the GNOME Keyring password.
   *
   * In this callback, the client should ask the user for default keyring
 --- subversion/bindings/swig/perl/libsvn_swig_perl/swigutil_pl.c~       2013-09-18 21:45:41.000000000 +0200
 +++ subversion/bindings/swig/perl/libsvn_swig_perl/swigutil_pl.c        2013-09-18 21:46:01.000000000 +0200
-@@ -21,14 +21,14 @@
+@@ -21,14 +21,16 @@
   * ====================================================================
   */
 
@@ -257,6 +258,8 @@ __END__
  #include <perl.h>
  #include <XSUB.h>
 
++/* Move these includes below the includes above, otherwise they get the wrong definition of boolean */
++/* http://svn.haxx.se/users/archive-2013-09/0187.shtml */
 +#include <apr.h>
 +#include <apr_general.h>
 +#include <apr_portable.h>
