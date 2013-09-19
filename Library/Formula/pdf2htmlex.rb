@@ -2,8 +2,8 @@ require 'formula'
 
 class Pdf2htmlex < Formula
   homepage 'http://coolwanglu.github.io/pdf2htmlEX/'
-  url 'https://github.com/coolwanglu/pdf2htmlEX/archive/v0.8.1.tar.gz'
-  sha256 'b9911e0ddd75cdc6717d13d493a8e7b88eab98d7c080382acf34c38f30cda79c'
+  url 'https://github.com/coolwanglu/pdf2htmlEX/archive/v0.9.tar.gz'
+  sha256 'eb511c54d3776af24cf8b8966fa88358fdef4cd48556d603f88ce5bff6df681d'
 
   head 'https://github.com/coolwanglu/pdf2htmlEX.git'
 
@@ -12,7 +12,7 @@ class Pdf2htmlex < Formula
   depends_on 'pkg-config' => :build
   depends_on 'fontforge'
   depends_on 'poppler'
-  depends_on 'ttfautohint' => :recommended
+  depends_on 'ttfautohint' => :recommended if MacOS.version > :snow_leopard
 
   def install
     system "cmake", ".", *std_cmake_args
