@@ -11,27 +11,39 @@ class Libswiften < Formula
   depends_on 'scons' => :build
   depends_on 'libidn'
   depends_on 'boost'
+  depends_on 'lua' => :recommended if build.head?
 
   # Patch to include lock from boost. Taken from
   # http://comments.gmane.org/gmane.linux.redhat.fedora.extras.cvs/957411
-  def patches; DATA; end
+  def patches; DATA unless build.head?; end
 
   def install
     boost = Formula.factory("boost")
     libidn = Formula.factory("libidn")
 
-    system "scons",
-        "-j #{ENV.make_jobs}",
-        "V=1", "optimize=1",
-        "debug=0",
-        "allow_warnings=1",
-        "swiften_dll=1",
-        "boost_includedir=#{boost.include}",
-        "boost_libdir=#{boost.lib}",
-        "libidn_includedir=#{libidn.include}",
-        "libidn_libdir=#{libidn.lib}",
-        "SWIFTEN_INSTALLDIR=#{prefix}",
-        prefix
+    args = %W[
+      -j #{ENV.make_jobs}
+      V=1
+      optimize=1 debug=0
+      allow_warnings=1
+      swiften_dll=1
+      boost_includedir=#{boost.include}
+      boost_libdir=#{boost.lib}
+      libidn_includedir=#{libidn.include}
+      libidn_libdir=#{libidn.lib}
+      SWIFTEN_INSTALLDIR=#{prefix}
+    ]
+
+    if build.with? "lua"
+      lua = Formula.factory("lua")
+      args << "SLUIFT_INSTALLDIR=#{prefix}"
+      args << "lua_includedir=#{lua.include}"
+      args << "lua_libdir=#{lua.lib}"
+    end
+
+    args << prefix
+
+    system "scons", *args
     man1.install 'Swift/Packaging/Debian/debian/swiften-config.1' unless build.stable?
   end
 
