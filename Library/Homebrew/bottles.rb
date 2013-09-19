@@ -3,8 +3,6 @@ require 'macos'
 require 'extend/ARGV'
 require 'bottle_version'
 
-# TODO: use options={} for some arguments.
-
 def bottle_filename f, bottle_revision=nil
   name = f.name.downcase
   version = f.stable.version
@@ -12,7 +10,7 @@ def bottle_filename f, bottle_revision=nil
   "#{name}-#{version}#{bottle_native_suffix(bottle_revision)}"
 end
 
-def install_bottle? f, warn=false
+def install_bottle? f, options={:warn=>false}
   return true if f.downloader and defined? f.downloader.local_bottle_path \
     and f.downloader.local_bottle_path
 
@@ -22,7 +20,9 @@ def install_bottle? f, warn=false
   return false unless f.build.used_options.empty?
   return false unless bottle_current?(f)
   if f.bottle.cellar != :any && f.bottle.cellar != HOMEBREW_CELLAR.to_s
-    opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}" if warn
+    if options[:warn]
+      opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
+    end
     return false
   end
 
