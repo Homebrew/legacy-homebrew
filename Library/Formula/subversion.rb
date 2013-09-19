@@ -142,7 +142,7 @@ class Subversion < Formula
       end
       system "make swig-pl"
       system "make", "install-swig-pl", "DESTDIR=#{prefix}"
-      system "mv -v #{prefix}/#{prefix}/lib/* #{prefix}/lib"
+      system "mv -v #{prefix}/#{lib}/* #{lib}"
     end
 
     if build.include? 'java'
