@@ -22,7 +22,7 @@ class Git < Formula
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
   depends_on 'openssl' if build.with? 'brewed-openssl'
-  depends_on 'curl' if build.with? 'brewed-curl'
+  depends_on 'curl' => 'with-darwinssl' if build.with? 'brewed-curl'
 
   resource 'man' do
     url 'http://git-core.googlecode.com/files/git-manpages-1.8.4.tar.gz'
