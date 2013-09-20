@@ -6,11 +6,18 @@ class Geos < Formula
   sha1 'b8aceab04dd09f4113864f2d12015231bb318e9a'
 
   option :universal
+  option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
 
   def install
     ENV.universal_binary if build.universal?
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+# what want we build?
+    if build.with? 'c++11'
+        system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "CXX=clang++ -std=c++11 -stdlib=libc++"
+    else
+        system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    end
     system "make install"
   end
 end
+
