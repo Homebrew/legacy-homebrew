@@ -11,13 +11,16 @@ class Geos < Formula
   def install
     ENV.universal_binary if build.universal?
 
-# what want we build?
+    argv = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+
     if build.with? 'c++11'
-        system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "CXX=clang++ -std=c++11 -stdlib=libc++"
-    else
-        system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+        argv << "CXX=clang++ -std=c++11 -stdlib=libc++"
     end
+
+    system "./configure", *argv
     system "make install"
   end
 end
-
