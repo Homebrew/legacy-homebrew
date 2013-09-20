@@ -25,7 +25,7 @@ class Serf < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "scons", "PREFIX=#{prefix}"
+    system "scons", "PREFIX=#{prefix}", "GSSAPI=/usr"
     system "scons install"
   end
 end
