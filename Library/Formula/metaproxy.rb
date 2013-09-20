@@ -7,7 +7,7 @@ class Metaproxy < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'yazpp'
-  depends_on 'boost1'
+  depends_on 'boost'
 
   def install
     system "./configure", "--disable-dependency-tracking",
