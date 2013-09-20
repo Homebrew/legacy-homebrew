@@ -7,6 +7,7 @@ class Pdf2htmlex < Formula
 
   head 'https://github.com/coolwanglu/pdf2htmlEX.git'
 
+  depends_on :macos => :lion
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
   depends_on 'fontforge'
