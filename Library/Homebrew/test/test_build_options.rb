@@ -87,4 +87,11 @@ class BuildOptionsTests < Test::Unit::TestCase
     assert_empty orig.args
     assert_equal 1, copy.args.count
   end
+
+  def test_concat
+    other = BuildOptions.new []
+    other.add 'some_other_thing'
+    @build.concat(other)
+    assert @build.has_option?('some_other_thing')
+  end
 end

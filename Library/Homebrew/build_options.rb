@@ -20,6 +20,11 @@ class BuildOptions
     @args = other.args.dup
   end
 
+  def concat(other)
+    options.concat(other.options)
+    self
+  end
+
   def add name, description=nil
     description ||= case name.to_s
       when "universal" then "Build a universal binary"
