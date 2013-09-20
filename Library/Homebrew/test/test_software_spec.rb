@@ -47,6 +47,24 @@ class SoftwareSpecTests < Test::Unit::TestCase
     @spec.option(:foo)
     assert @spec.build.has_option? 'foo'
   end
+
+  def test_depends_on
+    @spec.depends_on('foo')
+    assert_equal 'foo', @spec.deps.first.name
+  end
+
+  def test_dependency_option_integration
+    @spec.depends_on 'foo' => :optional
+    @spec.depends_on 'bar' => :recommended
+    assert @spec.build.has_option?('with-foo')
+    assert @spec.build.has_option?('without-bar')
+  end
+
+  def test_explicit_options_override_default_dep_option_description
+    @spec.option('with-foo', 'blah')
+    @spec.depends_on('foo' => :optional)
+    assert_equal 'blah', @spec.build.first.description
+  end
 end
 
 class HeadSoftwareSpecTests < Test::Unit::TestCase
