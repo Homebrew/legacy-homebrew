@@ -6,7 +6,10 @@ class Ejdb < Formula
   sha1 '00ca2c150b2988747ad7b15148c2d624253026c5'
 
   def install
-    system "cd tcejdb && ./configure --prefix=#{prefix} --disable-debug && make"
-    system "cd tcejdb && make install"
+    cd 'tcejdb' do
+      system "./configure --prefix=#{prefix} --disable-debug"
+      system "make"
+      system "make install"
+    end
   end
 end
