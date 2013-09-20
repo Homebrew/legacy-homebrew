@@ -82,7 +82,7 @@ module SharedEnvExtension
   def fcflags;  self['FCFLAGS'];      end
 
   def compiler
-    if (cc = ARGV.cc)
+    @compiler ||= if (cc = ARGV.cc)
       COMPILER_SYMBOL_MAP.fetch(cc) do |other|
         if other =~ GNU_GCC_REGEXP then other
         else
