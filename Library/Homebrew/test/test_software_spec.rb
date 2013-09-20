@@ -29,6 +29,24 @@ class SoftwareSpecTests < Test::Unit::TestCase
     @spec.owner = owner
     @spec.resources.each_value { |r| assert_equal owner, r.owner }
   end
+
+  def test_option
+    @spec.option('foo')
+    assert @spec.build.has_option? 'foo'
+  end
+
+  def test_option_raises_when_begins_with_dashes
+    assert_raises(RuntimeError) { @spec.option('--foo') }
+  end
+
+  def test_option_raises_when_name_empty
+    assert_raises(RuntimeError) { @spec.option('') }
+  end
+
+  def test_option_accepts_symbols
+    @spec.option(:foo)
+    assert @spec.build.has_option? 'foo'
+  end
 end
 
 class HeadSoftwareSpecTests < Test::Unit::TestCase

@@ -2,11 +2,12 @@ require 'forwardable'
 require 'resource'
 require 'checksum'
 require 'version'
+require 'build_options'
 
 class SoftwareSpec
   extend Forwardable
 
-  attr_reader :resources, :owner
+  attr_reader :build, :resources, :owner
 
   def_delegators :@resource, :stage, :fetch
   def_delegators :@resource, :download_strategy, :verify_download_integrity
@@ -16,6 +17,7 @@ class SoftwareSpec
   def initialize url=nil, version=nil
     @resource = Resource.new(:default, url, version)
     @resources = {}
+    @build = BuildOptions.new(ARGV.options_only)
   end
 
   def owner= owner
@@ -34,6 +36,13 @@ class SoftwareSpec
     else
       resources.fetch(name) { raise ResourceMissingError.new(owner, name) }
     end
+  end
+
+  def option name, description=nil
+    name = name.to_s if Symbol === name
+    raise "Option name is required." if name.empty?
+    raise "Options should not start with dashes." if name[0, 1] == "-"
+    build.add(name, description)
   end
 end
 
