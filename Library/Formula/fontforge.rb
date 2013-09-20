@@ -2,10 +2,25 @@ require 'formula'
 
 class Fontforge < Formula
   homepage 'http://fontforge.org/'
-  url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
-  sha1 'b520f532b48e557c177dffa29120225066cc4e84'
 
-  head 'https://github.com/fontforge/fontforge.git'
+  stable do
+    url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
+    sha1 'b520f532b48e557c177dffa29120225066cc4e84'
+
+    depends_on 'cairo' => :optional
+    depends_on 'pango' => :optional
+  end
+
+  head do
+    url 'https://github.com/fontforge/fontforge.git'
+
+    depends_on :automake
+    depends_on :libtool
+    depends_on 'pkg-config' => :build
+    depends_on 'glib'
+    depends_on 'pango'
+    depends_on 'cairo'
+  end
 
   option 'with-gif', 'Build with GIF support'
   option 'with-x', 'Build with X'
@@ -21,18 +36,6 @@ class Fontforge < Formula
   depends_on 'libspiro' => :optional
   depends_on 'czmq'=> :optional
   depends_on 'fontconfig'
-
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
-    depends_on 'pkg-config' => :build
-    depends_on 'glib'
-    depends_on 'pango'
-    depends_on 'cairo'
-  else
-    depends_on 'cairo' => :optional
-    depends_on 'pango' => :optional
-  end
 
   fails_with :llvm do
     build 2336
