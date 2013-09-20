@@ -20,7 +20,7 @@ class Cgal < Formula
 
   def patches
     { :p0 => DATA }
-  end
+  end if build.include? 'with-c++11'
 
   def install
     args = ["-DCMAKE_INSTALL_PREFIX=#{prefix}",
