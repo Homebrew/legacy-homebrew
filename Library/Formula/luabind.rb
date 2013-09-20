@@ -12,7 +12,7 @@ class Luabind < Formula
   def patches
   [
     # patch Jamroot to perform lookup for shared objects with .dylib suffix
-    "https://raw.github.com/gist/3728987/052251fcdc23602770f6c543be9b3e12f0cac50a/Jamroot.diff",
+    "https://gist.github.com/DennisOSRM/3728987/raw/052251fcdc23602770f6c543be9b3e12f0cac50a/Jamroot.diff",
     # apply upstream commit to enable building with clang
     "https://github.com/luabind/luabind/commit/3044a9053ac50977684a75c4af42b2bddb853fad.diff"
   ]
