@@ -11,7 +11,7 @@ class Pdf2htmlex < Formula
   depends_on 'pkg-config' => :build
   depends_on 'fontforge'
   depends_on 'poppler'
-  depends_on 'ttfautohint' => :recommended
+  depends_on 'ttfautohint' => :recommended if MacOS.version > :snow_leopard
 
   def install
     system "cmake", ".", *std_cmake_args
