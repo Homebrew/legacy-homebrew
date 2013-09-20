@@ -7,6 +7,10 @@ class Juju < Formula
 
   depends_on 'go' => :build
 
+  fails_with :clang do
+    cause "clang: error: no such file or directory: 'libgcc.a'"
+  end
+
   def install
     ENV['GOPATH'] = buildpath
     args = %w(install launchpad.net/juju-core/cmd/juju)
