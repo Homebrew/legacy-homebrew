@@ -12,6 +12,7 @@ class Sdl < Formula
     depends_on :libtool
   end
 
+  option 'with-x11-driver', 'Compile with support for X11 video driver'
   option :universal
 
   def patches
@@ -19,6 +20,8 @@ class Sdl < Formula
     # Related ticket: https://bugzilla.libsdl.org/show_bug.cgi?id=2085
     "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1320" if MacOS.version >= :mavericks
   end
+
+  depends_on :x11 if build.with? 'x11-driver'
 
   def install
     # we have to do this because most build scripts assume that all sdl modules
@@ -34,7 +37,7 @@ class Sdl < Formula
     args << "--disable-nasm" unless MacOS.version >= :mountain_lion # might work with earlier, might only work with new clang
     # LLVM-based compilers choke on the assembly code packaged with SDL.
     args << '--disable-assembly' if ENV.compiler == :llvm or (ENV.compiler == :clang and MacOS.clang_build_version < 421)
-    args << '--without-x'
+    args << "--without-x" if build.without? 'x11-driver'
 
     system './configure', *args
     system "make install"
