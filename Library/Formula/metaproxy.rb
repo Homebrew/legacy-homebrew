@@ -7,13 +7,11 @@ class Metaproxy < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'yazpp'
-  depends_on 'boost149'
+  depends_on 'boost1'
 
   def install
-    old_boost = Formula.factory("boost149")
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-boost=#{old_boost.prefix}"
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
