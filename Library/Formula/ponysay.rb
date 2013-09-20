@@ -6,7 +6,6 @@ class Ponysay < Formula
   sha1 'bb867de2cf20a4bc454143d214c8968a0bdbe715'
 
   depends_on :python3
-  depends_on "coreutils"
 
   def install
     system "./setup.py",
