@@ -16,6 +16,8 @@ class Freetds < Formula
   end
 
   option :universal
+  option "enable-msdblib", "Enable Microsoft behavior in the DB-Library API where it diverges from Sybase's"
+  option "enable-sybase-compat", "Enable close compatibility with Sybase's ABI, at the expense of other features"
 
   def install
     system "autoreconf -i" if build.head?
@@ -28,6 +30,14 @@ class Freetds < Formula
 
     if build.include? "with-unixodbc"
       args << "--with-unixodbc=#{Formula.factory('unixodbc').prefix}"
+    end
+
+    if build.include? "enable-msdblib"
+      args << "--enable-msdblib"
+    end
+
+    if build.include? "enable-sybase-compat"
+      args << "--enable-sybase-compat"
     end
 
     ENV.universal_binary if build.universal?
