@@ -2,20 +2,21 @@ require 'formula'
 
 class Hamsterdb < Formula
   homepage 'http://hamsterdb.com'
-  head 'https://github.com/cruppstahl/hamsterdb.git', :branch => 'topic/next'
   url 'http://hamsterdb.com/dl/hamsterdb-2.1.2.tar.gz'
   sha256 '5d1adbd25aad38646c83b8db013dc02af563c2447bd79b25aeac6cc287d098b0'
+
+  head do
+    url 'https://github.com/cruppstahl/hamsterdb.git', :branch => 'topic/next'
+
+    depends_on 'automake' => :build
+    depends_on 'libtool' => :build
+  end
 
   option 'without-java', 'Do not build the Java wrapper'
   option 'without-remote', 'Disable access to remote databases'
 
   depends_on 'boost'
   depends_on 'gnutls'
-
-  if build.head?
-    depends_on 'automake' => :build
-    depends_on 'libtool' => :build
-  end
 
   if build.with? 'remote'
     depends_on 'protobuf'
