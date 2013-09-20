@@ -6,21 +6,29 @@ class Neon < Formula
   sha1 'ae1109923303f67ed3421157927bc4bc29c58961'
 
   depends_on 'pkg-config' => :build
+  depends_on 'openssl' if build.include? 'with-homebrew-openssl'
 
   keg_only :provided_by_osx,
             "Compiling newer versions of Subversion on 10.6 require this newer neon."
 
   option :universal
+  option 'with-homebrew-openssl', 'Include OpenSSL support via Homebrew'
 
   def install
     ENV.universal_binary if build.universal?
     ENV.enable_warnings
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--enable-shared",
-                          "--disable-static",
-                          "--disable-nls",
-                          "--with-ssl"
+    args = [
+      "--disable-debug",
+      "--prefix=#{prefix}",
+      "--enable-shared",
+      "--disable-static",
+      "--disable-nls",
+      "--with-ssl",
+    ]
+    if build.include? 'with-homebrew-openssl'
+      args << "--with-libs=" + Formula.factory('openssl').opt_prefix.to_s
+    end
+    system "./configure", *args
     system "make install"
   end
 end
