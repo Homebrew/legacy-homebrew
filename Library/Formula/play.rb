@@ -13,16 +13,6 @@ class Play < Formula
     rm Dir['*.bat']
     rm Dir["#{buildpath}/**/*.bat"] if build.head?
 
-    # apply workaround for relative symlink, remove block when stable version reaches 2.2.x.
-    # https://github.com/playframework/playframework/issues/1516
-    # https://github.com/playframework/playframework/pull/777
-    if build.stable?
-      inreplace buildpath/"play" do |s|
-        s.gsub! "$dir/", "$dir/../libexec/"
-        s.gsub! "dir=`dirname $PRG`", "dir=`dirname $0` && dir=$dir/`dirname $PRG`"
-      end
-    end
-
     libexec.install Dir['*']
     bin.install_symlink libexec/'play'
   end
