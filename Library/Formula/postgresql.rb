@@ -70,9 +70,9 @@ class Postgresql < Formula
 
   def caveats
     s = <<-EOS.undent
-        initdb #{var}/postgres -E utf8    # create a database
-        postgres -D #{var}/postgres       # serve that database
-        PGDATA=#{var}/postgres postgres   # …alternatively
+    initdb #{var}/postgres -E utf8    # create a database
+    postgres -D #{var}/postgres       # serve that database
+    PGDATA=#{var}/postgres postgres   # …alternatively
 
     If builds of PostgreSQL 9 are failing and you have version 8.x installed,
     you may need to remove the previous version first. See:
