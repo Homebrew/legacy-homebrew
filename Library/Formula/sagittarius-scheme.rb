@@ -8,7 +8,6 @@ class SagittariusScheme < Formula
   depends_on 'cmake' => :build
   depends_on 'libffi'
   depends_on 'bdw-gc'
-  depends_on 'zlib'
 
   env :std
 
@@ -91,32 +90,3 @@ diff --git a/ext/ffi/CMakeLists.txt b/ext/ffi/CMakeLists.txt
    SET(LIB_FFI_LIBRARIES ${FFI})
    CHECK_LIBRARY_EXISTS(${FFI} ffi_prep_cif_var "ffi.h" HAVE_FFI_PREP_CIF_VAR)
    MESSAGE(STATUS "Sagittarius uses platform libffi")
-diff --git a/ext/zlib/CMakeLists.txt b/ext/zlib/CMakeLists.txt
---- a/ext/zlib/CMakeLists.txt
-+++ b/ext/zlib/CMakeLists.txt
-@@ -55,6 +55,8 @@
-     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR}/zlib)
- ELSEIF()
-   INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIRS})
-+  TARGET_LINK_LIBRARIES(sagittarius--zlib ${ZLIB_LIBRARIES})
-+  SET(ZLIB_CONFIGURED TRUE)
- ENDIF()
-
- SET_TARGET_PROPERTIES(sagittarius--zlib PROPERTIES PREFIX "")
-@@ -62,10 +64,12 @@
-   SET_TARGET_PROPERTIES(sagittarius--zlib PROPERTIES SUFFIX ".dylib")
- ENDIF()
- TARGET_LINK_LIBRARIES(sagittarius--zlib sagittarius)
--IF (UNIX)
--  TARGET_LINK_LIBRARIES(sagittarius--zlib z)
--ELSE()
--  TARGET_LINK_LIBRARIES(sagittarius--zlib zlib)
-+IF (NOT ZLIB_CONFIGURED)
-+  IF (UNIX)
-+    TARGET_LINK_LIBRARIES(sagittarius--zlib z)
-+  ELSE()
-+    TARGET_LINK_LIBRARIES(sagittarius--zlib zlib)
-+  ENDIF()
- ENDIF()
-
- INSTALL(TARGETS sagittarius--zlib
