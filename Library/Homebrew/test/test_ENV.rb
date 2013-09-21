@@ -117,3 +117,28 @@ class EnvironmentTests < Test::Unit::TestCase
     assert_equal "/bin#{File::PATH_SEPARATOR}/usr/bin", @env['FOO']
   end
 end
+
+module SharedEnvTests
+  def test_switching_compilers_updates_compiler
+    [:clang, :llvm, :gcc].each do |compiler|
+      @env.send(compiler)
+      assert_equal compiler, @env.compiler
+    end
+  end
+end
+
+class StdenvTests < Test::Unit::TestCase
+  include SharedEnvTests
+
+  def setup
+    @env = {}.extend(Stdenv)
+  end
+end
+
+class SuperenvTests < Test::Unit::TestCase
+  include SharedEnvTests
+
+  def setup
+    @env = {}.extend(Superenv)
+  end
+end
