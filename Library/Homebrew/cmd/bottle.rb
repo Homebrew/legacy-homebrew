@@ -3,6 +3,7 @@ require 'bottles'
 require 'tab'
 require 'keg'
 require 'cmd/versions'
+require 'utils/inreplace'
 require 'erb'
 
 class BottleMerger < Formula
@@ -34,6 +35,10 @@ BOTTLE_ERB = <<-EOS
 EOS
 
 module Homebrew extend self
+  class << self
+    include Utils::Inreplace
+  end
+
   def keg_contains string, keg
     quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
   end
@@ -139,7 +144,26 @@ module Homebrew extend self
         BottleMerger.class_eval bottle_block
       end
       bottle = BottleMerger.new.bottle
-      puts bottle_output bottle if bottle
+      next unless bottle
+      output = bottle_output bottle
+      puts output
+
+      if ARGV.include? '--write'
+        f = Formula.factory formula_name
+        formula_path = HOMEBREW_REPOSITORY+"Library/Formula/#{f.name}.rb"
+        inreplace formula_path do |s|
+          if f.bottle
+            s.gsub!(/  bottle do.+?end\n/m, output)
+          else
+            s.gsub!(/(  (url|sha1|head|version) '\S*'\n+)+/m, '\0' + output + "\n")
+          end
+        end
+
+        update_or_add = f.bottle.nil? ? 'add' : 'update'
+
+        safe_system 'git', 'commit', formula_path, '-m',
+          "#{f.name}: #{update_or_add} bottle."
+      end
     end
     exit 0
   end
