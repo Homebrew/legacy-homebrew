@@ -81,7 +81,9 @@ module Homebrew extend self
       sha1 = bottle_path.sha1
       relocatable = false
 
-      ohai "Detecting if #{filename} is relocatable..."
+      if File.size?(bottle_path) > 1*1024*1024
+        ohai "Detecting if #{filename} is relocatable..."
+      end
       keg = Keg.new f.prefix
       keg.lock do
         # Relocate bottle library references before testing for built-in
