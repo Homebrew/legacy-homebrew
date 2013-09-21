@@ -36,6 +36,17 @@ class Formula
     return versions
   end
 
+  def bottle_filenames branch='HEAD'
+    filenames = []
+    rev_list(branch).each do |sha|
+      filename = formula_for_sha(sha) {|f| bottle_filename f }
+      unless filenames.include? filename or filename.nil?
+        filenames << filename
+      end
+    end
+    return filenames
+  end
+
   def pretty_relative_path
     if Pathname.pwd == repository
       entry_name
