@@ -7,6 +7,7 @@ class SagittariusScheme < Formula
 
   depends_on 'cmake' => :build
   depends_on 'libffi'
+  depends_on 'bdw-gc'
 
   env :std
 
