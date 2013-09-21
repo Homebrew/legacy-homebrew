@@ -81,6 +81,10 @@ class Formula
                           ArgumentError, FormulaSpecificationError]
 
     def version_for_sha sha
+      formula_for_sha(sha) {|f| f.version }
+    end
+
+    def formula_for_sha sha, &block
       mktemp do
         path = Pathname.new(Pathname.pwd+"#{name}.rb")
         path.write text_from_sha(sha)
@@ -88,7 +92,7 @@ class Formula
         # Unload the class so Formula#version returns the correct value
         begin
           Formulary.unload_formula name
-          nostdout { Formula.factory(path.to_s).version }
+          nostdout { yield Formula.factory(path.to_s) }
         rescue *IGNORED_EXCEPTIONS => e
           # We rescue these so that we can skip bad versions and
           # continue walking the history
