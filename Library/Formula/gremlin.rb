@@ -5,9 +5,10 @@ class Gremlin < Formula
   url 'https://github.com/downloads/tinkerpop/gremlin/gremlin-1.3.zip'
   sha1 'd6c3a9c754d5b3d2f629340c98a796a0f4575115'
 
-  head 'https://github.com/tinkerpop/gremlin.git'
-
-  depends_on 'maven' if build.head?
+  head do
+    url 'https://github.com/tinkerpop/gremlin.git'
+    depends_on 'maven' => :build
+  end
 
   def install
     # If this is a head build, checkout the source and build it with maven
