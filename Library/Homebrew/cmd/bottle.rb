@@ -2,6 +2,7 @@ require 'formula'
 require 'bottles'
 require 'tab'
 require 'keg'
+require 'cmd/versions'
 
 class BottleMerger < Formula
   # This provides a URL and Version which are the only needed properties of
@@ -50,8 +51,12 @@ module Homebrew extend self
       return ofail "Formula not installed with '--build-bottle': #{f.name}"
     end
 
-    bottle_revision = bottle_new_revision f
-    filename = bottle_filename f, bottle_revision
+    master_bottle_filenames = f.bottle_filenames 'origin/master'
+    bottle_revision = -1
+    begin
+      bottle_revision += 1
+      filename = bottle_filename(f, bottle_revision)
+    end while master_bottle_filenames.include? filename
 
     if bottle_filename_formula_name(filename).empty?
       return ofail "Add a new regex to bottle_version.rb to parse the bottle filename."
