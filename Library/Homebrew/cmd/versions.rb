@@ -10,6 +10,8 @@ module Homebrew extend self
     ARGV.formulae.all? do |f|
       if ARGV.include? '--compact'
         puts f.versions * " "
+      elsif ARGV.include? '--bottle-filenames'
+        puts f.bottle_filenames
       else
         f.versions do |version, sha|
           print Tty.white.to_s
@@ -34,6 +36,17 @@ class Formula
       end
     end
     return versions
+  end
+
+  def bottle_filenames branch='HEAD'
+    filenames = []
+    rev_list(branch).each do |sha|
+      filename = formula_for_sha(sha) {|f| bottle_filename f }
+      unless filenames.include? filename or filename.nil?
+        filenames << filename
+      end
+    end
+    return filenames
   end
 
   def pretty_relative_path
