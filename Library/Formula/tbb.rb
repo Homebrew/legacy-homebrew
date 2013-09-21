@@ -2,14 +2,12 @@ require 'formula'
 
 class Tbb < Formula
   homepage 'http://www.threadingbuildingblocks.org/'
-  url 'http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb41_20130613oss_src.tgz'
-  mirror 'https://distfiles.macports.org/tbb/tbb41_20130613oss_src.tgz'
-  sha1 'b1322bd10c5b05a79f61edb236adc0513b4a1532'
-  version '4.1u4'
+  url 'https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb42_20130725oss_src.tgz'
+  sha1 'f354bd9b67295f65c43531b751e34f483ed8a024'
+  version '4.2'
 
-  fails_with :clang do
-    build 425
-    cause "Undefined symbols for architecture x86_64: vtable for tbb::tbb_exception"
+  fails_with :llvm do
+    cause 'llvm is not supported on macos. Add build/macos.llvm.inc file with compiler-specific settings.'
   end
 
   def install
@@ -18,8 +16,7 @@ class Tbb < Formula
     # Override build prefix so we can copy the dylibs out of the same place
     # no matter what system we're on, and use our compilers.
     args = ['tbb_build_prefix=BUILDPREFIX',
-            "CONLY=#{ENV.cc}",
-            "CPLUS=#{ENV.cxx}"]
+            "compiler=#{ENV.compiler}"]
     args << (MacOS.prefer_64_bit? ? "arch=intel64" : "arch=ia32")
     system "make", *args
     lib.install Dir['build/BUILDPREFIX_release/*.dylib']

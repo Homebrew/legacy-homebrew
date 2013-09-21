@@ -125,9 +125,9 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # We ship setuptools and pip and reuse the PythonInstalled
+    # We ship setuptools and pip and reuse the PythonDependency
     # Requirement here to write the sitecustomize.py
-    py = PythonInstalled.new("2.7")
+    py = PythonDependency.new("2.7")
     py.binary = bin/'python'
     py.modify_build_environment
 

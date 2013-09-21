@@ -71,6 +71,10 @@ If \fB\-n\fR is passed, show what would be removed, but do not actually remove a
 If \fB\-s\fR is passed, scrubs the cache, removing downloads for even the latest versions of formula\. Note downloads for any installed formula will still not be deleted\. If you want to delete those too: \fBrm \-rf $(brew \-\-cache)\fR
 .
 .TP
+\fBcommands\fR
+Show a list of built\-in and external commands\.
+.
+.TP
 \fBcreate <URL> [\-\-autotools|\-\-cmake] [\-\-no\-fetch] [\-\-set\-name <name>] [\-\-set\-version <version>]\fR
 Generate a formula for the downloadable file at \fIURL\fR and open it in the editor\. Homebrew will attempt to automatically derive the formula name and version, but if it fails, you\'ll have to make your own template\. The wget formula serves as a simple example\. For a complete cheat\-sheet, have a look at
 .
@@ -234,6 +238,13 @@ If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, Homebrew will list all files which
 .
 .IP
 If \fB\-\-force\fR is passed, Homebrew will allow keg\-only formulae to be linked\.
+.
+.TP
+\fBlinkapps [\-\-local]\fR
+Find all installed formulae that have compiled \fB\.app\fR\-style "application" packages for OS X, and symlink those apps into \fB/Applications\fR, allowing for easier access\.
+.
+.IP
+If provided, \fB\-\-local\fR will move them into the user\'s \fB~/Applications\fR folder instead of the system folder\. It may need to be created, first\.
 .
 .TP
 \fBls, list [\-\-unbrewed] [\-\-versions] [\-\-pinned]\fR [\fIformulae\fR]

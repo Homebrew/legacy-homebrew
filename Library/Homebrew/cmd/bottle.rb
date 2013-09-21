@@ -8,6 +8,7 @@ class BottleMerger < Formula
   # a Formula. This object is used to access the Formula bottle DSL to merge
   # multiple outputs of `brew bottle`.
   url '1'
+  def self.reset_bottle; @bottle = Bottle.new; end
 end
 
 module Homebrew extend self
@@ -65,13 +66,14 @@ module Homebrew extend self
     tmp_cellar = '/tmp/Cellar'
 
     HOMEBREW_CELLAR.cd do
-      ohai "Bottling #{f.name} #{f.version}..."
+      ohai "Bottling #{filename}..."
       # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
       # or an uncompressed tarball (and more bandwidth friendly).
       safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.version}"
       sha1 = bottle_path.sha1
       relocatable = false
 
+      ohai "Detecting if #{filename} is relocatable..."
       keg = Keg.new f.prefix
       keg.lock do
         # Relocate bottle library references before testing for built-in
@@ -103,16 +105,29 @@ module Homebrew extend self
     end
   end
 
-  def bottle
-    if ARGV.include? '--merge'
-      ARGV.named.each do |argument|
-        bottle_block = IO.read(argument)
+  def merge
+    merge_hash = {}
+    ARGV.named.each do |argument|
+      formula_name = bottle_filename_formula_name argument
+      merge_hash[formula_name] ||= []
+      bottle_block = IO.read argument
+      merge_hash[formula_name] << bottle_block
+    end
+    merge_hash.keys.each do |formula_name|
+      BottleMerger.reset_bottle
+      ohai formula_name
+      bottle_blocks = merge_hash[formula_name]
+      bottle_blocks.each do |bottle_block|
         BottleMerger.class_eval bottle_block
       end
       bottle = BottleMerger.new.bottle
       bottle_output bottle if bottle
-      exit 0
     end
+    exit 0
+  end
+
+  def bottle
+    merge if ARGV.include? '--merge'
 
     ARGV.formulae.each do |f|
       bottle_formula f

@@ -30,6 +30,7 @@ class Bullet < Formula
     args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}" if build.universal?
     args << "-DBUILD_DEMOS=OFF" if not build.include? "build-demo"
     args << "-DBUILD_EXTRAS=OFF" if not build.include? "build-extra"
+    args << "-DINSTALL_EXTRA_LIBS=ON" if build.include? "build-extra"
 
     system "cmake", *args
     system "make"
