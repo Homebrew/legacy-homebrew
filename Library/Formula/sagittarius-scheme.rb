@@ -15,10 +15,6 @@ class SagittariusScheme < Formula
     { :p1 => DATA }
   end
 
-  fails_with :clang do
-    cause 'Sagittarius Scheme cannot be built with clang'
-  end
-
   def install
     ENV.j1 # This build isn't parallel safe.
 
@@ -28,14 +24,13 @@ class SagittariusScheme < Formula
     ENV.no_optimization
     cmake_args = [
             '.',
-            '-DCMAKE_BUILD_TYPE=None',
-            '-DCMAKE_FIND_FRAMEWORK=LAST',
             '-DCMAKE_SYSTEM_NAME=darwin',
             "-DFFI_LIBRARY_DIR=#{libffi.lib}",
             "-DINSTALL_PREFIX=#{prefix}",
-            "-DCMAKE_INSTALL_PREFIX=#{prefix}",
             "-DCMAKE_SYSTEM_PROCESSOR=#{cmake_system_processor}"
     ]
+
+    cmake_args += std_cmake_args
 
     system 'cmake', *cmake_args
     system 'make'
@@ -90,3 +85,28 @@ diff --git a/ext/ffi/CMakeLists.txt b/ext/ffi/CMakeLists.txt
    SET(LIB_FFI_LIBRARIES ${FFI})
    CHECK_LIBRARY_EXISTS(${FFI} ffi_prep_cif_var "ffi.h" HAVE_FFI_PREP_CIF_VAR)
    MESSAGE(STATUS "Sagittarius uses platform libffi")
+diff --git a/ext/zlib/sagittarius-zlib.c b/ext/zlib/sagittarius-zlib.c
+--- a/ext/zlib/sagittarius-zlib.c
++++ b/ext/zlib/sagittarius-zlib.c
+@@ -181,7 +181,9 @@
+ insert_binding(Z_FULL_FLUSH   );
+ insert_binding(Z_FINISH       );
+ insert_binding(Z_BLOCK        );
++#ifdef Z_TREES // from zlib v1.2.3.4
+ insert_binding(Z_TREES        );
++#endif
+ insert_binding(Z_OK           );
+ insert_binding(Z_STREAM_END   );
+ insert_binding(Z_NEED_DICT    );
+diff --git a/ext/crypto/libtomcrypt-1.17/CMakeLists.txt b/ext/crypto/libtomcrypt-1.17/CMakeLists.txt
+--- a/ext/crypto/libtomcrypt-1.17/CMakeLists.txt
++++ b/ext/crypto/libtomcrypt-1.17/CMakeLists.txt
+@@ -8,7 +8,7 @@
+ #
+
+ # reset c flags
+-IF (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
++IF (CMAKE_C_COMPILER_ID STREQUAL "Clang" OR CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+   SET(CMAKE_C_FLAGS "-Wall -O2 ${DEFAULT_COMPILER_FLAGS}")
+   SET(CMAKE_CXX_FLAGS "-Wall -O2 ${DEFAULT_COMPILER_FLAGS}")
+   IF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
