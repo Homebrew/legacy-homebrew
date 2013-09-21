@@ -65,13 +65,14 @@ module Homebrew extend self
     tmp_cellar = '/tmp/Cellar'
 
     HOMEBREW_CELLAR.cd do
-      ohai "Bottling #{f.name} #{f.version}..."
+      ohai "Bottling #{filename}..."
       # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
       # or an uncompressed tarball (and more bandwidth friendly).
       safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.version}"
       sha1 = bottle_path.sha1
       relocatable = false
 
+      ohai "Detecting if #{filename} is relocatable..."
       keg = Keg.new f.prefix
       keg.lock do
         # Relocate bottle library references before testing for built-in
