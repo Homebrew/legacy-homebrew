@@ -11,6 +11,12 @@ class Go < Formula
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
   option 'without-cgo', "Build with cgo"
 
+  devel do
+    url 'https://go.googlecode.com/files/go1.2rc1.src.tar.gz'
+    version '1.2rc1'
+    sha1 '9f39106e06f552e9bf6d15d201c4663c051d4f89'
+  end
+
   # the cgo module cannot build with clang
   # NOTE it is ridiculous that we put this stuff in the class
   # definition, it needs to be in a pre-install test function!
@@ -23,7 +29,7 @@ class Go < Formula
   # Upstream patch for a switch statement that causes a clang error
   # Should be in the next release.
   # http://code.google.com/p/go/source/detail?r=000ecca1178d67c9b482d3fb0b6a1bc4aeef2472&path=/src/cmd/ld/lib.c
-  def patches; DATA; end
+  def patches; DATA; end unless build.devel?
 
   def install
     # install the completion scripts
