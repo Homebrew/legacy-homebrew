@@ -3,6 +3,7 @@ require 'bottles'
 require 'tab'
 require 'keg'
 require 'cmd/versions'
+require 'erb'
 
 class BottleMerger < Formula
   # This provides a URL and Version which are the only needed properties of
@@ -12,34 +13,34 @@ class BottleMerger < Formula
   def self.reset_bottle; @bottle = Bottle.new; end
 end
 
+BOTTLE_ERB = <<-EOS
+  bottle do
+    <% if prefix.to_s != '/usr/local' %>
+    prefix '<%= prefix %>'
+    <% end %>
+    <% if cellar.is_a? Symbol %>
+    cellar :<%= cellar %>
+    <% elsif cellar.to_s != '/usr/local' %>
+    cellar '<%= cellar %>'
+    <% end %>
+    <% if revision > 0 %>
+    revision <%= revision %>
+    <% end %>
+    <% checksums.keys.each do |checksum_type| %>
+    <% checksum, osx = checksums[checksum_type].shift %>
+    <%= checksum_type %> '<%= checksum %>' => :<%= osx %>
+    <% end %>
+  end
+EOS
+
 module Homebrew extend self
   def keg_contains string, keg
     quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
   end
 
   def bottle_output bottle
-    puts "bottle do"
-    prefix = bottle.prefix.to_s
-    puts "  prefix '#{prefix}'" if prefix != '/usr/local'
-    cellar = if bottle.cellar.is_a? Symbol
-      ":#{bottle.cellar}"
-    elsif bottle.cellar.to_s != '/usr/local/Cellar'
-      "'bottle.cellar'"
-    end
-    puts "  cellar #{cellar}" if cellar
-    puts "  revision #{bottle.revision}" if bottle.revision > 0
-    Checksum::TYPES.each do |checksum_type|
-      checksum_os_versions = bottle.send checksum_type
-      next unless checksum_os_versions
-      os_versions = checksum_os_versions.keys
-      os_versions.map! {|osx| MacOS::Version.from_symbol osx }
-      os_versions.sort.reverse.each do |os_version|
-        osx = os_version.to_sym
-        checksum = checksum_os_versions[osx]
-        puts "  #{checksum_type} '#{checksum}' => :#{osx}"
-      end
-    end
-    puts "end"
+    erb = ERB.new BOTTLE_ERB
+    erb.result(bottle.instance_eval { binding }).gsub(/^\s*$\n/, '')
   end
 
   def bottle_formula f
@@ -69,6 +70,8 @@ module Homebrew extend self
     tmp_prefix = '/tmp'
     cellar = HOMEBREW_CELLAR.to_s
     tmp_cellar = '/tmp/Cellar'
+
+    output = nil
 
     HOMEBREW_CELLAR.cd do
       ohai "Bottling #{filename}..."
@@ -106,7 +109,8 @@ module Homebrew extend self
       bottle.sha1 sha1 => bottle_tag
 
       puts "./#{filename}"
-      bottle_output bottle
+      output = bottle_output bottle
+      puts output
     end
   end
 
@@ -126,7 +130,7 @@ module Homebrew extend self
         BottleMerger.class_eval bottle_block
       end
       bottle = BottleMerger.new.bottle
-      bottle_output bottle if bottle
+      puts bottle_output bottle if bottle
     end
     exit 0
   end
