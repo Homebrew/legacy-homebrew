@@ -9,7 +9,7 @@ class Go < Formula
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
-  option 'with-cgo', "Build with cgo"
+  option 'without-cgo', "Build with cgo"
 
   # the cgo module cannot build with clang
   # NOTE it is ridiculous that we put this stuff in the class
