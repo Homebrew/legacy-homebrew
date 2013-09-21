@@ -162,4 +162,9 @@ class Wine < Formula
     end
     return s
   end
+  
+  def patches
+    # fix "CGDirectPaletteRef" missing in 10.9
+    "http://bugs.winehq.org/attachment.cgi?id=45562"
+  end if MacOS.version >= :mavericks
 end
