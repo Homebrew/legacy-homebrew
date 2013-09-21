@@ -61,9 +61,9 @@ class Formula
       end
     end
 
-    def rev_list
+    def rev_list branch='HEAD'
       repository.cd do
-        `git rev-list --abbrev-commit HEAD -- #{entry_name}`.split
+        `git rev-list --abbrev-commit #{branch} -- #{entry_name}`.split
       end
     end
 
