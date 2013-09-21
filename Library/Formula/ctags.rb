@@ -2,11 +2,13 @@ require 'formula'
 
 class Ctags < Formula
   homepage 'http://ctags.sourceforge.net/'
-  head 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
   url 'http://downloads.sourceforge.net/ctags/ctags-5.8.tar.gz'
   sha1 '482da1ecd182ab39bbdc09f2f02c9fba8cd20030'
 
-  depends_on :autoconf if build.head?
+  head do
+    url 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
+    depends_on :autoconf
+  end
 
   # fixes http://sourceforge.net/tracker/?func=detail&aid=3247256&group_id=6556&atid=106556
   def patches
