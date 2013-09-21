@@ -50,11 +50,6 @@ def bottle_file_outdated? f, file
   bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
 end
 
-def bottle_new_revision f
-  return 0 unless bottle_current? f
-  f.bottle.revision + 1
-end
-
 def bottle_native_suffix revision=nil
   ".#{bottle_tag}#{bottle_suffix(revision)}"
 end

@@ -114,6 +114,13 @@ module Homebrew extend self
       output = bottle_output bottle
       puts output
     end
+
+    if ARGV.include? '--rb'
+      bottle_base = filename.gsub(bottle_suffix(bottle_revision), '')
+      File.open "#{bottle_base}.bottle.rb", 'w' do |file|
+        file.write output
+      end
+    end
   end
 
   def merge
