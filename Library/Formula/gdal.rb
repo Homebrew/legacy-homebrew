@@ -5,7 +5,10 @@ class Gdal < Formula
   url 'http://download.osgeo.org/gdal/1.10.1/gdal-1.10.1.tar.gz'
   sha1 'b4df76e2c0854625d2bedce70cc1eaf4205594ae'
 
-  head 'https://svn.osgeo.org/gdal/trunk/gdal'
+  head do
+    url 'https://svn.osgeo.org/gdal/trunk/gdal'
+    depends_on 'doxygen' => :build
+  end
 
   option 'complete', 'Use additional Homebrew libraries to provide more drivers.'
   option 'with-postgres', 'Specify PostgreSQL as a dependency.'
@@ -13,9 +16,6 @@ class Gdal < Formula
   option 'enable-opencl', 'Build with OpenCL acceleration.'
   option 'enable-armadillo', 'Build with Armadillo accelerated TPS transforms.'
   option 'enable-unsupported', "Allow configure to drag in any library it can find. Invoke this at your own risk."
-
-  # For creating up to date man pages.
-  depends_on 'doxygen' => :build if build.head?
 
   depends_on :python => :recommended
   depends_on :libpng
