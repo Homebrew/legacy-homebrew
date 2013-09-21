@@ -103,4 +103,20 @@ class Bottle < SoftwareSpec
       end
     EOS
   end
+
+  def checksums
+    checksums = {}
+    Checksum::TYPES.each do |checksum_type|
+      checksum_os_versions = send checksum_type
+      next unless checksum_os_versions
+      os_versions = checksum_os_versions.keys
+      os_versions.map! {|osx| MacOS::Version.from_symbol osx }
+      os_versions.sort.reverse.each do |os_version|
+        osx = os_version.to_sym
+        checksum = checksum_os_versions[osx]
+        checksums[checksum_type] = { checksum => osx }
+      end
+    end
+    checksums
+  end
 end
