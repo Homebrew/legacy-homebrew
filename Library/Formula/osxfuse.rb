@@ -7,6 +7,7 @@ class Osxfuse < Formula
   head 'https://github.com/osxfuse/osxfuse.git', :branch => 'osxfuse-2'
 
   depends_on :macos => :snow_leopard
+  depends_on :xcode
   depends_on :autoconf
   depends_on :automake
   depends_on 'gettext' => :build
