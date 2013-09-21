@@ -62,8 +62,12 @@ class Wine < Formula
 
   def patches
     if build.stable?
+      p = []
       # http://bugs.winehq.org/show_bug.cgi?id=34188
-      ['http://bugs.winehq.org/attachment.cgi?id=45507']
+      p << 'http://bugs.winehq.org/attachment.cgi?id=45507'
+      # http://bugs.winehq.org/show_bug.cgi?id=34162
+      p << 'http://bugs.winehq.org/attachment.cgi?id=45562' if MacOS.version >= :mavericks
+      p
     end
   end
 
