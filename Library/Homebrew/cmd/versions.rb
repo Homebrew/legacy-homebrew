@@ -39,7 +39,7 @@ class Formula
   def bottle_filenames branch='HEAD'
     filenames = []
     rev_list(branch).each do |sha|
-      filename = formula_for_sha(sha) {|f| bottle_filename f }
+      filename = formula_for_sha(sha) {|f| bottle_filename f if f.bottle }
       unless filenames.include? filename or filename.nil?
         filenames << filename
       end
