@@ -181,6 +181,18 @@ new file mode 100644
 + 
 + 
 + #============================================================================
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -137,7 +137,7 @@
+ ENDIF()
+ 
+ INSTALL(TARGETS sagittarius DESTINATION lib)
+-INSTALL(TARGETS sash sagittarius DESTINATION bin)
++INSTALL(TARGETS sash DESTINATION bin)
+ # for version control
+ # default dynamic load path like /usr/local/lib/sagittarius/${version}/${triple}
+ # so let's put it there.
 diff --git a/test/r7rs-tests/chibi/test.scm b/test/r7rs-tests/chibi/test.scm
 --- a/test/r7rs-tests/chibi/test.scm
 +++ b/test/r7rs-tests/chibi/test.scm
