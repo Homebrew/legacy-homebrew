@@ -11,6 +11,9 @@ class Mutt < Formula
     resource 'html' do
       url 'http://dev.mutt.org/doc/manual.html', :using => :nounzip
     end
+
+    depends_on :autoconf
+    depends_on :automake
   end
 
   option "with-debug", "Build with debug option enabled"
@@ -20,11 +23,6 @@ class Mutt < Formula
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
-
-  if build.head?
-    depends_on :autoconf
-    depends_on :automake
-  end
 
   depends_on 'tokyo-cabinet'
   depends_on 's-lang' => :optional
