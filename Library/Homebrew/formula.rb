@@ -1,4 +1,3 @@
-require 'dependency_collector'
 require 'formula_support'
 require 'formula_lock'
 require 'formula_pin'
@@ -103,6 +102,14 @@ class Formula
 
   def resources
     active_spec.resources.values
+  end
+
+  def deps
+    active_spec.deps
+  end
+
+  def requirements
+    active_spec.requirements
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -442,9 +449,6 @@ class Formula
     Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name.downcase}.rb")
   end
 
-  def deps;         self.class.dependencies.deps;         end
-  def requirements; self.class.dependencies.requirements; end
-
   def env
     @env ||= self.class.env
   end
@@ -719,13 +723,8 @@ class Formula
       end
     end
 
-    def dependencies
-      @dependencies ||= DependencyCollector.new
-    end
-
     def depends_on dep
-      d = dependencies.add(dep)
-      build.add_dep_option(d) unless d.nil?
+      specs.each { |spec| spec.depends_on(dep) }
     end
 
     def option name, description=nil
