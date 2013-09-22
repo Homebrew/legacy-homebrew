@@ -11,12 +11,22 @@ class DynamodbLocal < Formula
     prefix.install Dir['*']
   end
 
+  def post_install
+    (var/'data/dynamodb-local').mkpath
+    (var/'log/dynamodb-local').mkpath
+  end
+
   def caveats; <<-EOS.undent
     You must use version 7.x of the Java Runtime Engine (JRE); DynamoDB Local does not work on older Java versions.
+
+    DynamoDB Local only supports V2 of the service API.
+
+    Data:    #{var}/data/dynamodb-local
+    Logs:    #{var}/log/dynamodb-local
     EOS
   end
 
-  plist_options :manual => "java -jar #{HOMEBREW_PREFIX}/opt/dynamodb-local/DynamoDBLocal.jar"
+  plist_options :manual => "java -Djava.library.path=#{HOMEBREW_PREFIX}/opt/dynamodb-local -jar #{HOMEBREW_PREFIX}/opt/dynamodb-local/DynamoDBLocal.jar"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -32,13 +42,16 @@ class DynamodbLocal < Formula
       <key>ProgramArguments</key>
       <array>
         <string>/usr/bin/java</string>
+        <string>-Djava.library.path=#{prefix}/</string>
         <string>-jar</string>
         <string>#{prefix}/DynamoDBLocal.jar</string>
       </array>
-      <key>StandardErrorPath</key>
-      <string>/var/log/dynamodb/error.log</string>
+      <key>WorkingDirectory</key>
+      <string>#{var}/data/dynamodb-local</string>
       <key>StandardOutPath</key>
-      <string>/var/log/dynamodb/dynamodb.log</string>
+      <string>#{var}/log/dynamodb-local/stdout.log</string>
+      <key>StandardErrorPath</key>
+      <string>#{var}/log/dynamodb-local/stderr.log</string>
     </dict>
     </plist>
     EOS
