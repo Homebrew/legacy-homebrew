@@ -88,6 +88,12 @@ class Formula
     end
   end
 
+  def default_build?
+    build = self.class.build.dup
+    build.concat(stable.options)
+    build.used_options.empty?
+  end
+
   def url;      active_spec.url;     end
   def version;  active_spec.version; end
   def mirrors;  active_spec.mirrors; end
