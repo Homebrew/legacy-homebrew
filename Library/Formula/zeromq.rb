@@ -5,18 +5,19 @@ class Zeromq < Formula
   url 'http://download.zeromq.org/zeromq-3.2.3.tar.gz'
   sha1 '6857a3a0e908eca58f7c0f90e2ba4695f6700957'
 
-  head 'https://github.com/zeromq/libzmq.git'
+  head do
+    url 'https://github.com/zeromq/libzmq.git'
+
+    depends_on :automake
+    depends_on :libtool
+  end
+
 
   option :universal
   option 'with-pgm', 'Build with PGM extension'
 
   depends_on 'pkg-config' => :build
   depends_on 'libpgm' if build.include? 'with-pgm'
-
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
-  end
 
   fails_with :llvm do
     build 2326
