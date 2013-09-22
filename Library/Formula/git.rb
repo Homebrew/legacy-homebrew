@@ -12,7 +12,6 @@ class Git < Formula
     sha1 'c5a3559d59c7d9cd608559771ece10743a340c32' => :snow_leopard
   end
 
-
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
   option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of the system version"
