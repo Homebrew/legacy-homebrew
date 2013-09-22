@@ -5,9 +5,9 @@ class Libevent < Formula
   url 'https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz'
   sha1 '3e6674772eb77de24908c6267c698146420ab699'
 
-  head 'git://levent.git.sourceforge.net/gitroot/levent/levent'
+  head do
+    url 'git://levent.git.sourceforge.net/gitroot/levent/levent'
 
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end
