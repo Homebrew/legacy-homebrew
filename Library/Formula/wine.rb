@@ -5,23 +5,29 @@ require 'formula'
 # http://wiki.winehq.org/Mono
 class Wine < Formula
   homepage 'http://winehq.org/'
-  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
-  sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
 
-  head 'git://source.winehq.org/git/wine.git'
+  stable do
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
+    sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
+    depends_on 'little-cms'
+  end
 
   devel do
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.2.tar.bz2'
     sha256 '0bfc4276c93de1fdd5989f91807c7362b11995efdf581d60601fec789665b7f1'
+    depends_on 'little-cms2'
+  end
+
+  head do
+    url 'git://source.winehq.org/git/wine.git'
+    depends_on 'little-cms2'
   end
 
   env :std
 
-  # this tells Homebrew that dependencies must be built universal
-  def build.universal? ; true; end
-
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
+  require_universal_deps
 
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
@@ -33,12 +39,6 @@ class Wine < Formula
   depends_on 'libtiff'
   depends_on 'sane-backends'
   depends_on 'libgsm' => :optional
-
-  if build.stable?
-    depends_on 'little-cms'
-  else
-    depends_on 'little-cms2'
-  end
 
   resource 'gecko' do
     url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
