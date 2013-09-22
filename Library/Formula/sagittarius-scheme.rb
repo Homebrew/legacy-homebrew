@@ -22,8 +22,10 @@ class SagittariusScheme < Formula
     cmake_system_processor = MacOS.prefer_64_bit? ? 'x86_64' : 'x86'
 
     ENV.no_optimization
+    ENV['TEST_USE_ANSI'] = '0'
     cmake_args = [
             '.',
+            '-DCMAKE_COLOR_MAKEFILE=OFF',
             '-DCMAKE_SYSTEM_NAME=darwin',
             "-DFFI_LIBRARY_DIR=#{libffi.lib}",
             "-DINSTALL_PREFIX=#{prefix}",
