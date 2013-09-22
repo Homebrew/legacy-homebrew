@@ -2,27 +2,21 @@ require 'formula'
 
 class Virtuoso < Formula
   homepage 'http://virtuoso.openlinksw.com/wiki/main/'
-  url 'http://downloads.sourceforge.net/project/virtuoso/virtuoso/6.1.7/virtuoso-opensource-6.1.7.tar.gz'
-  sha256 'c82c1ee90810db5ccd725f7d0d68b42aa6db9a1c8bf6fe2a4dd0ca91a271aa7f'
+  url 'http://downloads.sourceforge.net/project/virtuoso/virtuoso/7.0.0/virtuoso-opensource-7.0.0.tar.gz'
+  sha256 '7459ff8cefa42c051dc6790a8d34e31a4a873533314e24e529be90edd56f12fc'
 
-  head 'https://github.com/openlink/virtuoso-opensource.git', :branch => 'develop/6'
+  head do
+    url 'https://github.com/openlink/virtuoso-opensource.git', :branch => 'develop/7'
 
-  # If gawk isn't found, make fails deep into the process.
-  depends_on 'gawk' => :build
-
-  if build.head?
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
-  skip_clean :la
+  # If gawk isn't found, make fails deep into the process.
+  depends_on 'gawk' => :build
 
-  def patches
-    # hotfix for https://github.com/openlink/virtuoso-opensource/issues/68
-    # should be applied only to 6.1.7 — remove when building newer versions
-    "https://github.com/openlink/virtuoso-opensource/commit/fd538a973b773443323939544b018a40ce4c8fee.patch"
-  end if build.stable?
+  skip_clean :la
 
   def install
     ENV.m64 if MacOS.prefer_64_bit?

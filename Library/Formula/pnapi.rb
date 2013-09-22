@@ -1,7 +1,7 @@
 require 'formula'
 
 class Pnapi < Formula
-  homepage 'http://service-technology.org/tools/petri_net_api'
+  homepage 'http://service-technology.org/pnapi/'
   url 'http://download.gna.org/service-tech/pnapi/pnapi-4.02.tar.gz'
   sha1 'caa61aaa5886381e594f7eb57a75c1feb6960c3a'
 

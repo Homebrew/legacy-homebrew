@@ -4,9 +4,9 @@ require 'utils/json'
 class AbstractDownloadStrategy
   attr_accessor :local_bottle_path
 
-  def initialize name, package
-    @url = package.url
-    specs = package.specs
+  def initialize name, resource
+    @url  = resource.url
+    specs = resource.specs
     @spec, @ref = specs.dup.shift unless specs.empty?
   end
 
@@ -38,16 +38,16 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
       @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{basename_without_params}")
     else
-      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{package.version}#{ext}")
+      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
     end
 
-    @mirrors = package.mirrors
+    @mirrors = resource.mirrors
     @temporary_path = Pathname.new("#@tarball_path.incomplete")
   end
 
@@ -107,9 +107,13 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       # regardless of the current working directory; the only way to
       # write elsewhere is to use the stdout
       with_system_path do
-        data = `gunzip -f "#{@tarball_path}" -c`
-        File.open(File.basename(basename_without_params, '.gz'), 'w') do |f|
-          f.write data
+        target = File.basename(basename_without_params, ".gz")
+
+        IO.popen("gunzip -f '#{@tarball_path}' -c") do |pipe|
+          File.open(target, "wb") do |f|
+            buf = ""
+            f.write(buf) while pipe.read(1024, buf)
+          end
         end
       end
     when :gzip, :bzip2, :compress, :tar
@@ -131,18 +135,16 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       raise "You must install 7zip: brew install p7zip" unless which "7zr"
       safe_system '7zr', 'x', @tarball_path
     else
-      # we are assuming it is not an archive, use original filename
-      # this behaviour is due to ScriptFileFormula expectations
-      # So I guess we should cp, but we mv, for this historic reason
-      # HOWEVER if this breaks some expectation you had we *will* change the
-      # behaviour, just open an issue at github
-      # We also do this for jar files, as they are in fact zip files, but
-      # we don't want to unzip them
       FileUtils.cp @tarball_path, basename_without_params
     end
   end
 
   private
+
+  def curl(*args)
+    args << '--connect-timeout' << '5' unless @mirrors.empty?
+    super
+  end
 
   def xzpath
     "#{HOMEBREW_PREFIX}/opt/xz/bin/xz"
@@ -199,6 +201,13 @@ class CurlPostDownloadStrategy < CurlDownloadStrategy
   end
 end
 
+# Download from an SSL3-only host.
+class CurlSSL3DownloadStrategy < CurlDownloadStrategy
+  def _fetch
+    curl @url, '-3', '-C', downloaded_size, '-o', @temporary_path
+  end
+end
+
 # Use this strategy to download but not unzip a file.
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
@@ -218,9 +227,9 @@ end
 
 # This strategy extracts our binary packages.
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
-    @tarball_path = HOMEBREW_CACHE/"#{name}-#{package.version}#{ext}"
+    @tarball_path = HOMEBREW_CACHE/"#{name}-#{resource.version}#{ext}"
     mirror = ENV['HOMEBREW_SOURCEFORGE_MIRROR']
     @url = "#{@url}?use_mirror=#{mirror}" if mirror
   end
@@ -235,7 +244,7 @@ class LocalBottleDownloadStrategy < CurlDownloadStrategy
 end
 
 class SubversionDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
     @@svn ||= 'svn'
 
@@ -281,7 +290,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
   end
 
   def get_externals
-    `'#{shell_quote(svn)}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
+    `'#{shell_quote(@@svn)}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
       name, url = line.split(/\s+/)
       yield name, url
     end
@@ -338,7 +347,7 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
 end
 
 class GitDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
     @@git ||= 'git'
 
@@ -493,7 +502,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 end
 
 class CVSDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
@@ -549,7 +558,7 @@ class CVSDownloadStrategy < AbstractDownloadStrategy
 end
 
 class MercurialDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
@@ -602,7 +611,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
 end
 
 class BazaarDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
@@ -656,7 +665,7 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
 end
 
 class FossilDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
     if name.to_s.empty? || name == '__UNKNOWN__'
       raise NotImplementedError, "strategy requires a name parameter"
@@ -724,6 +733,7 @@ class DownloadStrategyDetector
     when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
     when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
     when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
+    when %r[^https?://(.+?\.)?sourceforge\.net/hgweb/] then MercurialDownloadStrategy
     when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
     when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
       # Common URL patterns
@@ -744,6 +754,7 @@ class DownloadStrategyDetector
     when :hg then MercurialDownloadStrategy
     when :nounzip then NoUnzipCurlDownloadStrategy
     when :post then CurlPostDownloadStrategy
+    when :ssl3 then CurlSSL3DownloadStrategy
     when :svn then SubversionDownloadStrategy
     else
       raise "Unknown download strategy #{strategy} was requested."

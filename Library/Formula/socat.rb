@@ -2,12 +2,12 @@ require 'formula'
 
 class Socat < Formula
   homepage 'http://www.dest-unreach.org/socat/'
-  url 'http://www.dest-unreach.org/socat/download/socat-1.7.2.1.tar.bz2'
-  sha1 'c48cbba5e4d20fcf04b327e40d878b7322be82fd'
+  url 'http://www.dest-unreach.org/socat/download/socat-1.7.2.2.tar.bz2'
+  sha1 'ba270b85b0d16a6b300159f9b0d88653a9f5d9da'
 
   devel do
-    url 'http://www.dest-unreach.org/socat/download/socat-2.0.0-b5.tar.bz2'
-    sha1 'd75c0abc816f9bb8ee1e36f6ca4fe58d7e56f2a4'
+    url 'http://www.dest-unreach.org/socat/download/socat-2.0.0-b6.tar.bz2'
+    sha1 '8873c8ab721bc301bfd5026872bace9e01e7bfac'
   end
 
   depends_on 'readline'

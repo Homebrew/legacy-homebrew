@@ -3,7 +3,7 @@ require 'test/testball'
 
 class FailsWithTests < Test::Unit::TestCase
   class Double < Compiler
-    attr_accessor :name, :build
+    attr_accessor :name, :build, :version
   end
 
   def assert_fails_with(cc)
@@ -18,10 +18,11 @@ class FailsWithTests < Test::Unit::TestCase
     @f.send(:fails_with, *args, &block)
   end
 
-  def build_cc(sym, build)
+  def build_cc(sym, build, version=nil)
     cc = Double.new
     cc.name = sym
     cc.build = build
+    cc.version = version
     cc
   end
 
@@ -44,6 +45,12 @@ class FailsWithTests < Test::Unit::TestCase
   def test_fails_with_block_without_build
     fails_with(:clang) { }
     cc = build_cc(:clang, 425)
+    assert_fails_with cc
+  end
+
+  def test_non_apple_gcc_version
+    fails_with(:gcc => '4.8.2')
+    cc = build_cc("gcc-4.8", nil, "4.8.1")
     assert_fails_with cc
   end
 

@@ -5,11 +5,13 @@ class Ohcount < Formula
   url 'https://github.com/blackducksw/ohcount/archive/3.0.0.tar.gz'
   sha1 '7f3fce48bf2a522c5262215699c36625ca6d3d33'
 
-  head 'https://github.com/blackducksw/ohcount.git'
+  head do
+    url 'https://github.com/blackducksw/ohcount.git'
+    depends_on 'libmagic'
+  end
 
   depends_on 'ragel'
   depends_on 'pcre'
-  depends_on 'libmagic' if build.head?
 
   def patches
     DATA

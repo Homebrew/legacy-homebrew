@@ -35,7 +35,7 @@ class Cleaner
       end
     end
 
-    paths.each do |d|
+    paths.reverse_each do |d|
       if d.children.empty? and not f.skip_clean? d
         puts "rmdir: #{d} (empty)" if ARGV.verbose?
         d.rmdir
@@ -80,7 +80,7 @@ class Cleaner
         path.unlink unless @f.skip_clean? path
       elsif not path.symlink?
         # Fix permissions
-        clean_file_permissions path
+        clean_file_permissions(path) unless @f.skip_clean? path
       end
     end
   end

@@ -1,17 +1,9 @@
 require 'formula'
 
-class Libstemmer < Formula
-  # upstream is constantly changing the tarball,
-  # so doing checksum verification here would require
-  # constant, rapid updates to this formula.
-  head 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
-  homepage 'http://snowball.tartarus.org/'
-end
-
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.0.8-release.tar.gz'
-  sha1 'a110e2736d34bb418e30a234fe13daa79a727df6'
+  url 'http://sphinxsearch.com/files/sphinx-2.0.9-release.tar.gz'
+  sha1 '0fa2806fa47a689d9f55d72ce0b6d4abce52e81c'
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
@@ -27,6 +19,12 @@ class Sphinx < Formula
   depends_on :mysql if build.include? 'mysql'
   depends_on :postgresql if build.include? 'pgsql'
 
+  # http://snowball.tartarus.org/
+  resource 'stemmer' do
+    url 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
+    sha1 '69056075b9fa1382e07cec6c32c8e82f3f35677b'
+  end
+
   fails_with :llvm do
     build 2334
     cause "ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)"
@@ -38,7 +36,7 @@ class Sphinx < Formula
   end
 
   def install
-    Libstemmer.new.brew { (buildpath/'libstemmer_c').install Dir['*'] }
+    (buildpath/'libstemmer_c').install resource('stemmer')
 
     args = %W[--prefix=#{prefix}
               --disable-dependency-tracking

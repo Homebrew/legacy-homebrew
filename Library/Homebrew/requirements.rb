@@ -1,7 +1,7 @@
 require 'requirement'
 require 'requirements/fortran_dependency'
 require 'requirements/language_module_dependency'
-require 'requirements/macos_requirement'
+require 'requirements/minimum_macos_requirement'
 require 'requirements/mpi_dependency'
 require 'requirements/python_dependency'
 require 'requirements/x11_dependency'
@@ -60,7 +60,8 @@ class CLTDependency < Requirement
 
   def message; <<-EOS.undent
     The Command Line Tools are required to compile this software.
-    The standalone package can be obtained from http://connect.apple.com,
+    The standalone package can be obtained from
+    https://developer.apple.com/downloads/,
     or it can be installed via Xcode's preferences.
     EOS
   end

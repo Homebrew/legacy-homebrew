@@ -95,14 +95,11 @@ class PathnameExtensionTests < Test::Unit::TestCase
   end
 
   def test_install_removes_original
-    orig_file = @file
     touch @file
+    @dst.install(@file)
 
-    @file, _ = @dst.install(@file)
-
-    assert_equal orig_file.basename, @file.basename
-    assert @file.exist?
-    assert !orig_file.exist?
+    assert (@dst/@file.basename).exist?
+    assert !@file.exist?
   end
 
   def setup_install_test
@@ -198,13 +195,6 @@ class PathnameExtensionTests < Test::Unit::TestCase
       assert((@dst+'bin/a.txt').exist?)
       assert((@dst+'bin/b.txt').exist?)
     end
-  end
-
-  def test_install_returns_installed_paths
-    foo, bar = @src+'foo', @src+'bar'
-    touch [foo, bar]
-    dirs = @dst.install(foo, bar)
-    assert_equal [@dst+'foo', @dst+'bar'], dirs
   end
 
   def test_install_creates_intermediate_directories

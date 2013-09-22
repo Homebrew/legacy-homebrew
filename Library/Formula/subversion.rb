@@ -2,14 +2,14 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://archive.apache.org/dist/subversion/subversion-1.8.0.tar.bz2'
-  # url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.0.tar.bz2'
-  sha1 '45d227511507c5ed99e07f9d42677362c18b364c'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.3.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.3.tar.bz2'
+  sha1 'e328e9f1c57f7c78bea4c3af869ec5d4503580cf'
 
   bottle do
-    sha1 '4b8920c129cfc8adbf491a69d836a5a8f7455409' => :mountain_lion
-    sha1 'ee99dbd0f7b7d4abfdfc5d7a82a008d720713e47' => :lion
-    sha1 '733d68a8bfd92a64270fb67f0bc4cc0974602bf0' => :snow_leopard
+    sha1 '9171c9971647e04958251d85eee58e4a23ef1584' => :mountain_lion
+    sha1 '9370e1ba8d3204b3d896a85ace719eb3613bb642' => :lion
+    sha1 '1373b9020d7e752e29517ba27670c8cdd5ec4520' => :snow_leopard
   end
 
   option :universal
@@ -45,7 +45,7 @@ class Subversion < Formula
   end if build.include? 'perl' or build.include? 'ruby'
 
   def apr_bin
-    superbin or "/usr/bin"
+    Superenv.bin or "/usr/bin"
   end
 
   def install
@@ -122,11 +122,11 @@ class Subversion < Formula
     if build.include? 'perl'
       # Remove hard-coded ppc target, add appropriate ones
       if build.universal?
-        arches = "-arch x86_64 -arch i386"
+        arches = Hardware::CPU.universal_archs.as_arch_flags
       elsif MacOS.version <= :leopard
-        arches = "-arch i386"
+        arches = "-arch #{Hardware::CPU.arch_32_bit}"
       else
-        arches = "-arch x86_64"
+        arches = "-arch #{Hardware::CPU.arch_64_bit}"
       end
 
       perl_core = Pathname.new(`perl -MConfig -e 'print $Config{archlib}'`)+'CORE'
@@ -152,6 +152,11 @@ class Subversion < Formula
       system "make swig-rb EXTRA_SWIG_LDFLAGS=-L/usr/lib"
       system "make install-swig-rb"
     end
+  end
+
+  test do
+    system "#{bin}/svnadmin", 'create', 'test'
+    system "#{bin}/svnadmin", 'verify', 'test'
   end
 
   def caveats

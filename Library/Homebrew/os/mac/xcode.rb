@@ -38,6 +38,10 @@ module MacOS::Xcode extend self
     version < latest_version
   end
 
+  def without_clt?
+    installed? && version >= "4.3" && !MacOS::CLT.installed?
+  end
+
   def prefix
     @prefix ||= begin
       path = Pathname.new(folder)

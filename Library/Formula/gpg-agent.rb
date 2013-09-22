@@ -2,8 +2,8 @@ require 'formula'
 
 class GpgAgent < Formula
   homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.20.tar.bz2'
-  sha1 '7ddfefa37ee9da89a8aaa8f9059d251b4cd02562'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.21.tar.bz2'
+  sha1 '5ba8cce72eb4fd1a3ac1a282d25d7c7b90d3bf26'
 
   depends_on 'libgpg-error'
   depends_on 'libgcrypt'
@@ -42,6 +42,6 @@ index 616d165..ae3126e 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gpg-agent'
 +PACKAGE_TARNAME='gpg-agent'
- PACKAGE_VERSION='2.0.20'
- PACKAGE_STRING='gnupg 2.0.20'
+ PACKAGE_VERSION='2.0.21'
+ PACKAGE_STRING='gnupg 2.0.21'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'

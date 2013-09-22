@@ -151,6 +151,16 @@ module MacOS extend self
       end
   end
 
+  def non_apple_gcc_version(cc)
+    return unless path = locate(cc)
+
+    ivar = "@#{cc.gsub(/(-|\.)/, '')}_version"
+    return instance_variable_get(ivar) if instance_variable_defined?(ivar)
+
+    `#{path} --version` =~ /gcc-\d.\d \(GCC\) (\d\.\d\.\d)/
+    instance_variable_set(ivar, $1)
+  end
+
   # See these issues for some history:
   # http://github.com/mxcl/homebrew/issues/#issue/13
   # http://github.com/mxcl/homebrew/issues/#issue/41
@@ -186,6 +196,14 @@ module MacOS extend self
 
   def prefer_64_bit?
     Hardware::CPU.is_64_bit? and version != :leopard
+  end
+
+  def preferred_arch
+    @preferred_arch ||= if prefer_64_bit? 
+      Hardware::CPU.arch_64_bit
+    else
+      Hardware::CPU.arch_32_bit
+    end
   end
 
   STANDARD_COMPILERS = {

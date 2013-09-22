@@ -4,24 +4,12 @@ class Clang < Formula
   homepage  'http://llvm.org/'
   url       'http://llvm.org/releases/3.3/cfe-3.3.src.tar.gz'
   sha1      'ccd6dbf2cdb1189a028b70bcb8a22509c25c74c8'
-
-  head      'http://llvm.org/git/clang.git'
-end
-
-class CompilerRt < Formula
-  homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.3/compiler-rt-3.3.src.tar.gz'
-  sha1      '745386ec046e3e49742e1ecb6912c560ccd0a002'
-
-  head      'http://llvm.org/git/compiler-rt.git'
 end
 
 class Llvm < Formula
   homepage  'http://llvm.org/'
   url       'http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz'
   sha1      'c6c22d5593419e3cb47cbcf16d967640e5cce133'
-
-  head      'http://llvm.org/git/llvm.git'
 
   bottle do
     sha1 '61854a2cf08a1398577f74fea191a749bec3e72d' => :mountain_lion
@@ -30,8 +18,7 @@ class Llvm < Formula
   end
 
   option :universal
-  option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
-  option 'with-asan', 'Include support for -faddress-sanitizer (from compiler-rt)'
+  option 'with-clang', 'Build Clang support library'
   option 'disable-shared', "Don't build LLVM as a shared library"
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
@@ -42,21 +29,17 @@ class Llvm < Formula
   env :std if build.universal?
 
   def install
-    if build.with? 'python' and build.include? 'disable-shared'
+    if python and build.include? 'disable-shared'
       raise 'The Python bindings need the shared library.'
     end
 
     Clang.new("clang").brew do
-      clang_dir.install Dir['*']
-    end if build.include? 'with-clang'
-
-    CompilerRt.new("compiler-rt").brew do
-      (buildpath/'projects/compiler-rt').install Dir['*']
-    end if build.include? 'with-asan'
+      (buildpath/'tools/clang').install Dir['*']
+    end if build.with? 'clang'
 
     if build.universal?
       ENV['UNIVERSAL'] = '1'
-      ENV['UNIVERSAL_ARCH'] = 'i386 x86_64'
+      ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
     end
 
     ENV['REQUIRES_RTTI'] = '1' if build.include? 'rtti'
@@ -79,22 +62,20 @@ class Llvm < Formula
     args << "--disable-assertions" if build.include? 'disable-assertions'
 
     system "./configure", *args
-    system "make install"
+    system 'make', 'VERBOSE=1'
+    system 'make', 'VERBOSE=1', 'install'
 
     # install llvm python bindings
     if python
-      unless build.head?
-        inreplace buildpath/'bindings/python/llvm/common.py', 'LLVM-3.1svn', "libLLVM-#{version}svn"
-      end
       python.site_packages.install buildpath/'bindings/python/llvm'
+      python.site_packages.install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
     end
 
-    # install clang tools and bindings
-    cd clang_dir do
-      system 'make install'
-      (share/'clang/tools').install 'tools/scan-build', 'tools/scan-view'
-      python.site_packages.install 'bindings/python/clang' if python
-    end if build.include? 'with-clang'
+    # Remove all binaries except llvm-config
+    rm_f Dir["#{bin}/*"] - Dir["#{bin}/llvm-config"]
+
+    # Remove all man pages
+    man.rmtree if build.with? 'clang'
   end
 
   def test
@@ -105,6 +86,13 @@ class Llvm < Formula
     s = ''
     s += python.standard_caveats if python
     s += <<-EOS.undent
+      This formula only provide library components of LLVM. To use full
+      featured LLVM please try the llvm* formulae in homebrew-versions tap,
+      for instance:
+
+          brew tap homebrew/versions
+          brew install llvm33
+
       Extra tools are installed in #{share}/llvm and #{share}/clang.
 
       If you already have LLVM installed, then "brew upgrade llvm" might not work.
@@ -113,7 +101,4 @@ class Llvm < Formula
     EOS
   end
 
-  def clang_dir
-    buildpath/'tools/clang'
-  end
 end

@@ -5,6 +5,7 @@ class Icu4c < Formula
   url 'http://download.icu-project.org/files/icu4c/51.1/icu4c-51_1-src.tgz'
   version '51.1'
   sha1 '7905632335e3dcd6667224da0fa087b49f9095e9'
+  head 'http://source.icu-project.org/repos/icu/icu/trunk/', :using => :svn
 
   bottle do
     sha1 '6b5b4ab5704cc2a8b17070a087c7f9594466cf1d' => :mountain_lion
@@ -19,7 +20,6 @@ class Icu4c < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    ENV.append "LDFLAGS", "-headerpad_max_install_names"
     args = ["--prefix=#{prefix}", "--disable-samples", "--disable-tests", "--enable-static"]
     args << "--with-library-bits=64" if MacOS.prefer_64_bit?
     cd "source" do

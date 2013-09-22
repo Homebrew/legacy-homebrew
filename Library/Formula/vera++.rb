@@ -1,11 +1,5 @@
 require 'formula'
 
-# Use prebuilt docs to avoid need for pandoc
-class VeraMan < Formula
-  url 'https://bitbucket.org/verateam/vera/downloads/vera++-1.2.1-doc.tar.gz'
-  sha1 'fce30676c815b99aa66d25c9dfbd2eda2c74bd7a'
-end
-
 class Veraxx < Formula
   homepage 'https://bitbucket.org/verateam/vera'
   url 'https://bitbucket.org/verateam/vera/downloads/vera++-1.2.1.tar.gz'
@@ -14,11 +8,17 @@ class Veraxx < Formula
   depends_on 'cmake' => :build
   depends_on 'boost'
 
+  # Use prebuilt docs to avoid need for pandoc
+  resource 'doc' do
+    url 'https://bitbucket.org/verateam/vera/downloads/vera++-1.2.1-doc.tar.gz'
+    sha1 'fce30676c815b99aa66d25c9dfbd2eda2c74bd7a'
+  end
+
   def install
     system "cmake", ".", *std_cmake_args
     system "make install"
 
-    VeraMan.new.brew do
+    resource('doc').stage do
       man1.install 'vera++.1'
       doc.install 'vera++.html'
     end

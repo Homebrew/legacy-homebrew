@@ -35,6 +35,7 @@ class Imagemagick < Formula
   depends_on :fontconfig => :optional
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
+  depends_on 'little-cms2' => :optional
   depends_on 'jasper' => :optional
   depends_on 'libwmf' => :optional
   depends_on 'librsvg' => :optional

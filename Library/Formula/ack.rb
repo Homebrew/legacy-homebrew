@@ -2,11 +2,12 @@ require 'formula'
 
 class Ack < Formula
   homepage 'http://beyondgrep.com/'
-  url 'https://github.com/petdance/ack2/archive/2.04.tar.gz'
-  sha1 'b9241ea000b089609d7e62f241c1ef7ad0d70cc6'
+  url 'http://beyondgrep.com/ack-2.08-single-file'
+  sha1 'c0fa19ba31ecc1afe186c5a061c1361ae2a258f3'
+  version '2.08'
 
   def install
-    bin.install "garage/ack-#{version}" => "ack"
+    bin.install "ack-2.08-single-file" => "ack"
     system "pod2man", "#{bin}/ack", "ack.1"
     man1.install "ack.1"
   end

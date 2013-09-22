@@ -5,18 +5,19 @@ class Zeromq < Formula
   url 'http://download.zeromq.org/zeromq-3.2.3.tar.gz'
   sha1 '6857a3a0e908eca58f7c0f90e2ba4695f6700957'
 
-  head 'https://github.com/zeromq/libzmq.git'
+  head do
+    url 'https://github.com/zeromq/libzmq.git'
+
+    depends_on :automake
+    depends_on :libtool
+  end
+
 
   option :universal
   option 'with-pgm', 'Build with PGM extension'
 
   depends_on 'pkg-config' => :build
   depends_on 'libpgm' if build.include? 'with-pgm'
-
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
-  end
 
   fails_with :llvm do
     build 2326
@@ -25,7 +26,7 @@ class Zeromq < Formula
 
   # Address lack of strndup on 10.6, fixed upstream
   # https://github.com/zeromq/zeromq3-x/commit/400cbc208a768c4df5039f401dd2688eede6e1ca
-  def patches; DATA; end
+  def patches; DATA; end unless build.head?
 
   def install
     ENV.universal_binary if build.universal?

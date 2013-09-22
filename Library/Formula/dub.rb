@@ -2,8 +2,8 @@ require 'formula'
 
 class Dub < Formula
   homepage 'http://registry.vibed.org/'
-  url  'https://github.com/rejectedsoftware/dub/archive/v0.9.16.tar.gz'
-  sha1 'ed649b5faee87f0cb239b6c6467850c72c1a656b'
+  url  'https://github.com/rejectedsoftware/dub/archive/v0.9.18.tar.gz'
+  sha1 'a848d5b461eb95acc604d82de154922d3892888b'
 
   head 'https://github.com/rejectedsoftware/dub.git'
 

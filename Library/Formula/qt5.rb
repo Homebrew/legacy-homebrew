@@ -5,35 +5,49 @@ class Qt5 < Formula
   url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.0/single/qt-everywhere-opensource-src-5.1.0.tar.gz'
   sha1 '12d706124dbfac3d542dd3165176a978d478c085'
 
+  bottle do
+    revision 1
+    sha1 '559797c1240c758aea1755b664fb898d492fca03' => :mountain_lion
+    sha1 '67d969a4a260f4576f3fcaf5e1cef23edfd35177' => :lion
+    sha1 '61cfa853784d2493ffa00b3e2897f6f46df5815f' => :snow_leopard
+  end
+
   head 'git://gitorious.org/qt/qt5.git', :branch => 'stable'
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
   option :universal
-  option 'with-qtdbus', 'Enable QtDBus module'
-  option 'with-demos-examples', 'Enable Qt demos and examples'
-  option 'with-debug-and-release', 'Compile Qt in debug and release mode'
-  option 'with-mysql', 'Enable MySQL plugin'
-  option 'developer', 'Compile and link Qt with developer options'
+  option 'with-docs', 'Build documentation'
+  option 'developer', 'Build and link with developer options'
 
-  depends_on "d-bus" if build.include? 'with-qtdbus'
+  depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
 
+  odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if ARGV.include? '--with-qtdbus'
+  odie 'qt5: --with-demos-examples is no longer supported' if ARGV.include? '--with-demos-examples'
+  odie 'qt5: --with-debug-and-release is no longer supported' if ARGV.include? '--with-debug-and-release'
+
   def install
+    ENV.universal_binary if build.universal?
     args = ["-prefix", prefix,
             "-system-zlib",
-            "-confirm-license", "-opensource"]
+            "-confirm-license", "-opensource",
+            "-nomake", "examples",
+            "-release"]
+
+    # In latest head `-nomake demos` is no longer recognized
+    args << "-nomake" << "demos" unless build.head?
 
     unless MacOS::CLT.installed?
       # ... too stupid to find CFNumber.h, so we give a hint:
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
     end
 
-    args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
+    args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
-    if build.with? 'qtdbus'
+    if build.with? 'd-bus'
       dbus_opt = Formula.factory('d-bus').opt_prefix
       args << "-I#{dbus_opt}/lib/dbus-1.0/include"
       args << "-I#{dbus_opt}/include/dbus-1.0"
@@ -41,10 +55,8 @@ class Qt5 < Formula
       args << "-ldbus-1"
     end
 
-    unless build.include? 'with-demos-examples'
-      args << "-nomake" << "examples"
-      # In latest head `-nomake demos` is no longer recognized
-      args << "-nomake" << "demos" unless build.head?
+    unless build.with? 'docs'
+      args << "-nomake" << "docs"
     end
 
     if MacOS.prefer_64_bit? or build.universal?
@@ -55,21 +67,20 @@ class Qt5 < Formula
       args << '-arch' << 'x86'
     end
 
-    if build.include? 'with-debug-and-release'
-      args << "-debug-and-release"
-      # Debug symbols need to find the source so build in the prefix
-      mv "../qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
-      cd "#{prefix}/src"
-    else
-      args << "-release"
-    end
-
     args << '-developer-build' if build.include? 'developer'
 
     system "./configure", *args
     system "make"
     ENV.j1
     system "make install"
+
+    # Fix https://github.com/mxcl/homebrew/issues/20020 (upstream: https://bugreports.qt-project.org/browse/QTBUG-32417)
+    system "install_name_tool", "-change", "#{pwd}/qt-everywhere-opensource-src-5.1.0/qtwebkit/lib/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets", #old
+                                           "#{lib}/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets",  #new
+                                           "#{libexec}/QtWebProcess" # in this lib
+    system "install_name_tool", "-change", "#{pwd}/qt-everywhere-opensource-src-5.1.0/qtwebkit/lib/QtWebKit.framework/Versions/5/QtWebKit",
+                                           "#{lib}/QtWebKit.framework/Versions/5/QtWebKit",
+                                           "#{prefix}/qml/QtWebKit/libqmlwebkitplugin.dylib"
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     cd prefix do
@@ -90,7 +101,7 @@ class Qt5 < Formula
   end
 
   test do
-    system "#{bin}/qmake", "--version"
+    system "#{bin}/qmake", "-project"
   end
 
   def caveats; <<-EOS.undent

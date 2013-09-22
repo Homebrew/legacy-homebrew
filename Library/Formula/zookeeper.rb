@@ -5,15 +5,15 @@ class Zookeeper < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz'
   sha1 'fd921575e02478909557034ea922de871926efc7'
 
-  head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
+  head do
+    url 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
-  option "c",      "Build C bindings."
-  option "perl",   "Build Perl bindings."
-
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end
+
+  option "c",      "Build C bindings."
+  option "perl",   "Build Perl bindings."
 
   depends_on :python => :optional
 
@@ -46,9 +46,9 @@ class Zookeeper < Formula
   def install
     # Don't try to build extensions for PPC
     if Hardware.is_32_bit?
-      ENV['ARCHFLAGS'] = "-arch i386"
+      ENV['ARCHFLAGS'] = "-arch #{Hardware::CPU.arch_32_bit}"
     else
-      ENV['ARCHFLAGS'] = "-arch i386 -arch x86_64"
+      ENV['ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
     end
 
     # Prep work for svn compile.

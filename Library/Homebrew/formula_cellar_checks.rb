@@ -49,9 +49,9 @@ module FormulaCellarChecks
         Installing JARs to "lib" can cause conflicts between packages.
         For Java software, it is typically better for the formula to
         install to "libexec" and then symlink or wrap binaries into "bin".
-        "See "activemq", "jruby", etc. for examples."
-        "The offending files are:"
-        #{jars}
+        See "activemq", "jruby", etc. for examples.
+        The offending files are:
+        #{jars * "\n"}
       EOS
     ]
   end
@@ -71,7 +71,7 @@ module FormulaCellarChecks
       <<-EOS.undent
         Installing non-libraries to "lib" is bad practice.
         The offending files are:
-        #{non_libraries}
+        #{non_libraries * "\n"}
       EOS
     ]
   end
@@ -85,7 +85,7 @@ module FormulaCellarChecks
     ["Non-executables were installed to \"#{bin}\".",
       <<-EOS.undent
         The offending files are:
-        #{non_exes}
+        #{non_exes * "\n"}
       EOS
     ]
   end
