@@ -17,7 +17,7 @@ class Formula
   include Utils::Inreplace
   extend BuildEnvironmentDSL
 
-  attr_reader :name, :path, :homepage, :downloader
+  attr_reader :name, :path, :homepage, :downloader, :build
   attr_reader :stable, :bottle, :devel, :head, :active_spec
 
   # The current working directory during builds and tests.
@@ -48,12 +48,7 @@ class Formula
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
     @downloader = active_spec.downloader
-
-    # Combine DSL `option` and `def options`
-    options.each do |opt, desc|
-      # make sure to strip "--" from the start of options
-      self.class.build.add opt[/--(.+)$/, 1], desc
-    end
+    @build = determine_build_options
 
     @pin = FormulaPin.new(self)
   end
@@ -89,9 +84,13 @@ class Formula
   end
 
   def default_build?
-    build = self.class.build.dup
-    build.concat(stable.options)
-    build.used_options.empty?
+    self.class.build.used_options.empty?
+  end
+
+  def determine_build_options
+    build = active_spec.build
+    options.each { |opt, desc| build.add(opt, desc) }
+    build
   end
 
   def url;      active_spec.url;     end
@@ -172,9 +171,6 @@ class Formula
   def plist_path; prefix+(plist_name+'.plist') end
   def plist_manual; self.class.plist_manual end
   def plist_startup; self.class.plist_startup end
-
-  # Defined and active build-time options.
-  def build; self.class.build; end
 
   def opt_prefix
     Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
@@ -667,7 +663,8 @@ class Formula
     end
 
     def build
-      @build ||= BuildOptions.new(ARGV.options_only)
+      @stable ||= create_spec(SoftwareSpec)
+      @stable.build
     end
 
     def url val, specs={}
@@ -732,11 +729,7 @@ class Formula
     end
 
     def option name, description=nil
-      # Support symbols
-      name = name.to_s
-      raise "Option name is required." if name.empty?
-      raise "Options should not start with dashes." if name[0, 1] == "-"
-      build.add name, description
+      specs.each { |spec| spec.option(name, description) }
     end
 
     def plist_options options
