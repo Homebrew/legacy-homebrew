@@ -8,12 +8,13 @@ class SpatialiteGui < Formula
   devel do
     url 'http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz'
     sha1 '3b9d88e84ffa5a4f913cf74b098532c2cd15398f'
+
+    depends_on 'libxml2'
   end
 
   depends_on 'pkg-config' => :build
   depends_on 'libspatialite'
   depends_on 'libgaiagraphics'
-  depends_on 'libxml2' if build.devel?
   depends_on 'wxmac'
 
   def patches
