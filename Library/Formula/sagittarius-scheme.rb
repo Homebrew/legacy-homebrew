@@ -45,6 +45,18 @@ class SagittariusScheme < Formula
 end
 
 __END__
+diff --git a/ext/crypto/libtomcrypt-1.17/CMakeLists.txt b/ext/crypto/libtomcrypt-1.17/CMakeLists.txt
+--- a/ext/crypto/libtomcrypt-1.17/CMakeLists.txt
++++ b/ext/crypto/libtomcrypt-1.17/CMakeLists.txt
+@@ -8,7 +8,7 @@
+ #
+
+ # reset c flags
+-IF (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
++IF (CMAKE_C_COMPILER_ID STREQUAL "Clang" OR CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+   SET(CMAKE_C_FLAGS "-Wall -O2 ${DEFAULT_COMPILER_FLAGS}")
+   SET(CMAKE_CXX_FLAGS "-Wall -O2 ${DEFAULT_COMPILER_FLAGS}")
+   IF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
 diff --git a/ext/ffi/CMakeLists.txt b/ext/ffi/CMakeLists.txt
 --- a/ext/ffi/CMakeLists.txt
 +++ b/ext/ffi/CMakeLists.txt
@@ -58,7 +70,7 @@ diff --git a/ext/ffi/CMakeLists.txt b/ext/ffi/CMakeLists.txt
 +    MESSAGE(STATUS "Looking for ffi include directory in ${FFI_LIBRARY_DIR}")
 +    FILE(GLOB FFI_INCLUDE_DIR "${FFI_LIBRARY_DIR}/libffi-*/include")
 +    IF (FFI_INCLUDE_DIR)
-+      MESSAGE(STATUS "Looking for ffi include directory in ${FFI_LIBRARY_DIR} - ${FFI_LIBRARY_DIR}${FFI_INCLUDE_DIR}")
++      MESSAGE(STATUS "Looking for ffi include directory in ${FFI_LIBRARY_DIR} - found")
 +      INCLUDE_DIRECTORIES(${FFI_INCLUDE_DIR})
 +      SET(HAVE_FFI_H TRUE)
 +    ELSE()
@@ -85,28 +97,73 @@ diff --git a/ext/ffi/CMakeLists.txt b/ext/ffi/CMakeLists.txt
    SET(LIB_FFI_LIBRARIES ${FFI})
    CHECK_LIBRARY_EXISTS(${FFI} ffi_prep_cif_var "ffi.h" HAVE_FFI_PREP_CIF_VAR)
    MESSAGE(STATUS "Sagittarius uses platform libffi")
-diff --git a/ext/zlib/sagittarius-zlib.c b/ext/zlib/sagittarius-zlib.c
---- a/ext/zlib/sagittarius-zlib.c
-+++ b/ext/zlib/sagittarius-zlib.c
-@@ -181,7 +181,9 @@
- insert_binding(Z_FULL_FLUSH   );
- insert_binding(Z_FINISH       );
- insert_binding(Z_BLOCK        );
-+#ifdef Z_TREES // from zlib v1.2.3.4
- insert_binding(Z_TREES        );
-+#endif
- insert_binding(Z_OK           );
- insert_binding(Z_STREAM_END   );
- insert_binding(Z_NEED_DICT    );
-diff --git a/ext/crypto/libtomcrypt-1.17/CMakeLists.txt b/ext/crypto/libtomcrypt-1.17/CMakeLists.txt
---- a/ext/crypto/libtomcrypt-1.17/CMakeLists.txt
-+++ b/ext/crypto/libtomcrypt-1.17/CMakeLists.txt
-@@ -8,7 +8,7 @@
- #
+diff --git a/ext/zlib/CMakeLists.txt b/ext/zlib/CMakeLists.txt
+--- a/ext/zlib/CMakeLists.txt
++++ b/ext/zlib/CMakeLists.txt
+@@ -24,8 +24,12 @@
+ #check if zlib is available
+ #INCLUDE(${CMAKE_ROOT}/Modules/FindZLIB.cmake)
+ FIND_PACKAGE(ZLIB)
++IF (ZLIB_FOUND)
++  CHECK_LIBRARY_EXISTS(${ZLIB_LIBRARIES} inflateReset2 "" HAVE_ZLIB_INFLATE_RESET2)
++  MESSAGE(STATUS "HAVE_ZLIB_INFLATE_RESET2 = ${HAVE_ZLIB_INFLATE_RESET2}")
++ENDIF()
 
- # reset c flags
--IF (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-+IF (CMAKE_C_COMPILER_ID STREQUAL "Clang" OR CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-   SET(CMAKE_C_FLAGS "-Wall -O2 ${DEFAULT_COMPILER_FLAGS}")
-   SET(CMAKE_CXX_FLAGS "-Wall -O2 ${DEFAULT_COMPILER_FLAGS}")
-   IF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
+-IF (NOT ${ZLIB_FOUND})
++IF (NOT ZLIB_FOUND OR NOT HAVE_ZLIB_INFLATE_RESET2)
+ #  IF (MSVC)
+ #    # use DLL which is provied by zlib.net
+ #  ELSE()
+@@ -38,13 +42,17 @@
+     IF (NOT EXISTS ${HAS_ZLIB_ARCHIVE})
+       MESSAGE(STATUS "donwloading zlib")
+       FILE(
+-   DOWNLOAD "http://zlib.net/${USED_ZLIB_VERSION}.tar.gz"
+-                 "${CMAKE_CURRENT_BINARY_DIR}/zlib.tar.gz"
+-   SHOW_PROGRESS)
++        DOWNLOAD "http://zlib.net/${USED_ZLIB_VERSION}.tar.gz"
++        "${CMAKE_CURRENT_BINARY_DIR}/zlib.tar.gz"
++        SHOW_PROGRESS)
+       EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E tar xzf
+-   ${CMAKE_CURRENT_BINARY_DIR}/zlib.tar.gz
+-   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+-   )
++        ${CMAKE_CURRENT_BINARY_DIR}/zlib.tar.gz
++        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
++      IF(UNIX OR CYGWIN OR MINGW)
++        # Default generated CMakeLists.txt does not include correct source directory
++        EXECUTE_PROCESS(COMMAND sh -c "patch -p3 < ${PROJECT_SOURCE_DIR}/ext/zlib/zlib-CMakeLists.txt.patch"
++          WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
++      ENDIF()
+       FILE(REMOVE ${CMAKE_CURRENT_BINARY_DIR}/${USED_ZLIB_VERSION}/zconf.h)
+       MESSAGE(STATUS "unpacked zlib.tar.gz")
+     ENDIF()
+@@ -63,7 +71,11 @@
+ ENDIF()
+ TARGET_LINK_LIBRARIES(sagittarius--zlib sagittarius)
+ IF (UNIX)
+-  TARGET_LINK_LIBRARIES(sagittarius--zlib z)
++  IF (NOT ZLIB_FOUND OR NOT HAVE_ZLIB_INFLATE_RESET2)
++    TARGET_LINK_LIBRARIES(sagittarius--zlib zlib)
++  ELSE()
++    TARGET_LINK_LIBRARIES(sagittarius--zlib z)
++  ENDIF()
+ ELSE()
+   TARGET_LINK_LIBRARIES(sagittarius--zlib zlib)
+ ENDIF()
+diff --git a/ext/zlib/zlib-CMakeLists.txt.patch b/ext/zlib/zlib-CMakeLists.txt.patch
+new file mode 100644
+--- /dev/null
++++ b/ext/zlib/zlib-CMakeLists.txt.patch
+@@ -0,0 +1,11 @@
++--- build/ext/zlib/zlib-1.2.8.org/CMakeLists.txt   2013-04-29 07:57:10.000000000 +0900
+++++ build/ext/zlib/zlib-1.2.8/CMakeLists.txt   2013-09-22 11:33:03.000000000 +0900
++@@ -83,7 +83,7 @@
++       ${ZLIB_PC} @ONLY)
++ configure_file(   ${CMAKE_CURRENT_SOURCE_DIR}/zconf.h.cmakein
++       ${CMAKE_CURRENT_BINARY_DIR}/zconf.h @ONLY)
++-include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})
+++include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
++
++
++ #============================================================================
