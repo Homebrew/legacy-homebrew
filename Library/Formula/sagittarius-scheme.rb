@@ -47,6 +47,18 @@ class SagittariusScheme < Formula
 end
 
 __END__
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -531,7 +531,7 @@
+   "${PROJECT_SOURCE_DIR}/test/tests\n${PROJECT_BINARY_DIR}/test/data/\n${PROJECT_SOURCE_DIR}/ext/socket\n${PROJECT_SOURCE_DIR}/ext/threads")
+ 
+ ADD_CUSTOM_TARGET(test
+-  COMMAND ${PROJECT_BINARY_DIR}/build/sash
++  COMMAND ${PROJECT_BINARY_DIR}/build/sash -c
+           -D${PROJECT_BINARY_DIR}/build
+ 	  -D${PROJECT_BINARY_DIR}/build/modules
+ 	  -L${PROJECT_SOURCE_DIR}
 diff --git a/ext/crypto/libtomcrypt-1.17/CMakeLists.txt b/ext/crypto/libtomcrypt-1.17/CMakeLists.txt
 --- a/ext/crypto/libtomcrypt-1.17/CMakeLists.txt
 +++ b/ext/crypto/libtomcrypt-1.17/CMakeLists.txt
@@ -169,3 +181,20 @@ new file mode 100644
 + 
 + 
 + #============================================================================
+diff --git a/test/r7rs-tests/chibi/test.scm b/test/r7rs-tests/chibi/test.scm
+--- a/test/r7rs-tests/chibi/test.scm
++++ b/test/r7rs-tests/chibi/test.scm
+@@ -670,7 +670,12 @@
+       (display
+        (make-string (or (test-group-indent-width group) 0)
+                     #\space))
+-      (display (bold (string-append name ": ")))))
++      (let* ((msg (string-append name ": ")))
++       (display
++        (cond
++         ((test-ansi?) (bold msg))
++         (#t msg))))
++      ))
+     (current-test-group group)))
+ 
+ ;;> Ends testing group introduced with @scheme{(test-begin)}, and
