@@ -10,6 +10,8 @@ module Homebrew extend self
     ARGV.formulae.all? do |f|
       if ARGV.include? '--compact'
         puts f.versions * " "
+      elsif ARGV.include? '--bottle-filenames'
+        puts f.bottle_filenames
       else
         f.versions do |version, sha|
           print Tty.white.to_s
@@ -34,6 +36,17 @@ class Formula
       end
     end
     return versions
+  end
+
+  def bottle_filenames branch='HEAD'
+    filenames = []
+    rev_list(branch).each do |sha|
+      filename = formula_for_sha(sha) {|f| bottle_filename f }
+      unless filenames.include? filename or filename.nil?
+        filenames << filename
+      end
+    end
+    return filenames
   end
 
   def pretty_relative_path
@@ -61,9 +74,9 @@ class Formula
       end
     end
 
-    def rev_list
+    def rev_list branch='HEAD'
       repository.cd do
-        `git rev-list --abbrev-commit HEAD -- #{entry_name}`.split
+        `git rev-list --abbrev-commit #{branch} -- #{entry_name}`.split
       end
     end
 
@@ -81,6 +94,10 @@ class Formula
                           ArgumentError, FormulaSpecificationError]
 
     def version_for_sha sha
+      formula_for_sha(sha) {|f| f.version }
+    end
+
+    def formula_for_sha sha, &block
       mktemp do
         path = Pathname.new(Pathname.pwd+"#{name}.rb")
         path.write text_from_sha(sha)
@@ -88,7 +105,8 @@ class Formula
         # Unload the class so Formula#version returns the correct value
         begin
           Formulary.unload_formula name
-          nostdout { Formula.factory(path.to_s).version }
+          f = Formula.factory path.to_s
+          nostdout { yield f }
         rescue *IGNORED_EXCEPTIONS => e
           # We rescue these so that we can skip bad versions and
           # continue walking the history
