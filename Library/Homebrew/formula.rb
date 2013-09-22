@@ -777,6 +777,10 @@ class Formula
       @cc_failures << CompilerFailure.new(compiler, &block)
     end
 
+    def require_universal_deps
+      specs.each { |spec| spec.build.universal = true }
+    end
+
     def test &block
       return @test unless block_given?
       @test_defined = true
