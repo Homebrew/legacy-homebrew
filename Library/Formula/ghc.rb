@@ -1,5 +1,16 @@
 require 'formula'
 
+class Ghcbinary < Formula
+  if Hardware.is_64_bit? and not build.build_32_bit?
+    url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
+    sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
+  else
+    url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2'
+    sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
+  end
+  version '7.4.2'
+end
+
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
   url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2'
@@ -18,16 +29,6 @@ class Ghc < Formula
 
   option '32-bit'
   option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
-
-  resource 'binary' do
-    if Hardware.is_64_bit? and not build.build_32_bit?
-      url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
-      sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
-    else
-      url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2'
-      sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
-    end
-  end
 
   resource 'testsuite' do
     url 'https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz'
@@ -50,7 +51,7 @@ class Ghc < Formula
     # Move the main tarball contents into a subdirectory
     (buildpath+'Ghcsource').install Dir['*']
 
-    resource('binary').stage do
+    Ghcbinary.new.brew do
       # Define where the subformula will temporarily install itself
       subprefix = buildpath+'subfo'
 
