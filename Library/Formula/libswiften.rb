@@ -5,13 +5,15 @@ class Libswiften < Formula
   url 'http://swift.im/downloads/releases/swift-2.0/swift-2.0.tar.gz'
   sha1 'b04ba098fffb1edc2ef0215957371c249458f0be'
 
-  head "git://swift.im/swift"
+  head do
+    url 'git://swift.im/swift'
+    depends_on 'lua' => :recommended
+  end
 
   depends_on :python => :build
   depends_on 'scons' => :build
   depends_on 'libidn'
   depends_on 'boost'
-  depends_on 'lua' => :recommended if build.head?
 
   # Patch to include lock from boost. Taken from
   # http://comments.gmane.org/gmane.linux.redhat.fedora.extras.cvs/957411
