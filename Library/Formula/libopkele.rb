@@ -5,7 +5,7 @@ class Libopkele < Formula
   url 'http://kin.klever.net/dist/libopkele-2.0.4.tar.bz2'
   sha1 '0c403d118efe6b4ee4830914448078c0ee967757'
 
-  head do 
+  head do
     url 'https://github.com/hacker/libopkele.git'
 
     depends_on :automake
