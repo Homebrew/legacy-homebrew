@@ -647,15 +647,6 @@ class Formula
     attr_rw :homepage, :keg_only_reason, :cc_failures
     attr_rw :plist_startup, :plist_manual
 
-    Checksum::TYPES.each do |cksum|
-      class_eval <<-EOS, __FILE__, __LINE__ + 1
-        def #{cksum}(val)
-          @stable ||= create_spec(SoftwareSpec)
-          @stable.#{cksum}(val)
-        end
-      EOS
-    end
-
     def specs
       @specs ||= []
     end
@@ -666,14 +657,33 @@ class Formula
       spec
     end
 
-    def build
-      @stable ||= create_spec(SoftwareSpec)
-      @stable.build
-    end
-
     def url val, specs={}
       @stable ||= create_spec(SoftwareSpec)
       @stable.url(val, specs)
+    end
+
+    def version val=nil
+      @stable ||= create_spec(SoftwareSpec)
+      @stable.version(val)
+    end
+
+    def mirror val
+      @stable ||= create_spec(SoftwareSpec)
+      @stable.mirror(val)
+    end
+
+    Checksum::TYPES.each do |cksum|
+      class_eval <<-EOS, __FILE__, __LINE__ + 1
+        def #{cksum}(val)
+          @stable ||= create_spec(SoftwareSpec)
+          @stable.#{cksum}(val)
+        end
+      EOS
+    end
+
+    def build
+      @stable ||= create_spec(SoftwareSpec)
+      @stable.build
     end
 
     def stable &block
@@ -704,16 +714,6 @@ class Formula
       else
         @head
       end
-    end
-
-    def version val=nil
-      @stable ||= create_spec(SoftwareSpec)
-      @stable.version(val)
-    end
-
-    def mirror val
-      @stable ||= create_spec(SoftwareSpec)
-      @stable.mirror(val)
     end
 
     # Define a named resource using a SoftwareSpec style block
