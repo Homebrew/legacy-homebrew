@@ -2,17 +2,18 @@ require 'formula'
 
 class Sdl < Formula
   homepage 'http://www.libsdl.org/'
-  head 'http://hg.libsdl.org/SDL', :branch => 'SDL-1.2', :using => :hg
   url 'http://www.libsdl.org/release/SDL-1.2.15.tar.gz'
   sha1 '0c5f193ced810b0d7ce3ab06d808cbb5eef03a2c'
 
-  option 'with-x11-driver', 'Compile with support for X11 video driver'
-  option :universal
+  head do
+    url 'http://hg.libsdl.org/SDL', :branch => 'SDL-1.2', :using => :hg
 
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end
+
+  option 'with-x11-driver', 'Compile with support for X11 video driver'
+  option :universal
 
   depends_on :x11 if build.with? 'x11-driver'
 
