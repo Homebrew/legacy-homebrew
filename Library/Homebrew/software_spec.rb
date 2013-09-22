@@ -3,11 +3,13 @@ require 'resource'
 require 'checksum'
 require 'version'
 require 'build_options'
+require 'dependency_collector'
 
 class SoftwareSpec
   extend Forwardable
 
   attr_reader :build, :resources, :owner
+  attr_reader :dependency_collector
 
   def_delegators :@resource, :stage, :fetch
   def_delegators :@resource, :download_strategy, :verify_download_integrity
@@ -18,6 +20,7 @@ class SoftwareSpec
     @resource = Resource.new(:default, url, version)
     @resources = {}
     @build = BuildOptions.new(ARGV.options_only)
+    @dependency_collector = DependencyCollector.new
   end
 
   def owner= owner
@@ -43,6 +46,19 @@ class SoftwareSpec
     raise "Option name is required." if name.empty?
     raise "Options should not start with dashes." if name[0, 1] == "-"
     build.add(name, description)
+  end
+
+  def depends_on spec
+    dep = dependency_collector.add(spec)
+    build.add_dep_option(dep) if dep
+  end
+
+  def deps
+    dependency_collector.deps
+  end
+
+  def requirements
+    dependency_collector.requirements
   end
 end
 
