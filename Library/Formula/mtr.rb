@@ -6,11 +6,13 @@ class Mtr < Formula
   mirror 'ftp://ftp.bitwizard.nl/mtr/mtr-0.82.tar.gz'
   sha1 'f1319de27324d85898a9df0a293a438bbaaa12b5'
 
-  head 'https://github.com/traviscross/mtr.git'
+  head do
+    url 'https://github.com/traviscross/mtr.git'
+    depends_on :automake
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'gtk+' => :optional
-  depends_on :automake if build.head?
 
   def install
     # We need to add this because nameserver8_compat.h has been removed in Snow Leopard
