@@ -53,7 +53,7 @@ class Step
   end
 
   def command_short
-    @command.gsub(/(brew|--force|--verbose|--build-bottle) /, '').strip.squeeze ' '
+    @command.gsub(/(brew|--force|--verbose|--build-bottle|--rb) /, '').strip.squeeze ' '
   end
 
   def passed?
@@ -276,16 +276,11 @@ class Test
     test "brew audit #{formula}"
     return unless install_passed
     unless ARGV.include? '--no-bottle'
-      test "brew bottle #{formula}", :puts_output_on_success => true
+      test "brew bottle --rb #{formula}", :puts_output_on_success => true
       bottle_step = steps.last
       if bottle_step.passed? and bottle_step.has_output?
-        bottle_revision = bottle_new_revision(formula_object)
-        bottle_filename = bottle_filename(formula_object, bottle_revision)
-        bottle_base = bottle_filename.gsub(bottle_suffix(bottle_revision), '')
-        bottle_output = bottle_step.output.gsub /.*(bottle do.*end)/m, '\1'
-        File.open "#{bottle_base}.bottle.rb", 'w' do |file|
-          file.write bottle_output
-        end
+        bottle_filename =
+          bottle_step.output.gsub(/.*(\.\/\S+#{bottle_native_regex}).*/m, '\1')
         test "brew uninstall --force #{formula}"
         test "brew install #{bottle_filename}"
       end

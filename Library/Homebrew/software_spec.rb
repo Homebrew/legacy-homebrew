@@ -2,11 +2,14 @@ require 'forwardable'
 require 'resource'
 require 'checksum'
 require 'version'
+require 'build_options'
+require 'dependency_collector'
 
 class SoftwareSpec
   extend Forwardable
 
-  attr_reader :resources, :owner
+  attr_reader :build, :resources, :owner
+  attr_reader :dependency_collector
 
   def_delegators :@resource, :stage, :fetch
   def_delegators :@resource, :download_strategy, :verify_download_integrity
@@ -16,6 +19,8 @@ class SoftwareSpec
   def initialize url=nil, version=nil
     @resource = Resource.new(:default, url, version)
     @resources = {}
+    @build = BuildOptions.new(ARGV.options_only)
+    @dependency_collector = DependencyCollector.new
   end
 
   def owner= owner
@@ -34,6 +39,26 @@ class SoftwareSpec
     else
       resources.fetch(name) { raise ResourceMissingError.new(owner, name) }
     end
+  end
+
+  def option name, description=nil
+    name = name.to_s if Symbol === name
+    raise "Option name is required." if name.empty?
+    raise "Options should not start with dashes." if name[0, 1] == "-"
+    build.add(name, description)
+  end
+
+  def depends_on spec
+    dep = dependency_collector.add(spec)
+    build.add_dep_option(dep) if dep
+  end
+
+  def deps
+    dependency_collector.deps
+  end
+
+  def requirements
+    dependency_collector.requirements
   end
 end
 
@@ -77,5 +102,21 @@ class Bottle < SoftwareSpec
         end
       end
     EOS
+  end
+
+  def checksums
+    checksums = {}
+    Checksum::TYPES.each do |checksum_type|
+      checksum_os_versions = send checksum_type
+      next unless checksum_os_versions
+      os_versions = checksum_os_versions.keys
+      os_versions.map! {|osx| MacOS::Version.from_symbol osx }
+      os_versions.sort.reverse.each do |os_version|
+        osx = os_version.to_sym
+        checksum = checksum_os_versions[osx]
+        checksums[checksum_type] = { checksum => osx }
+      end
+    end
+    checksums
   end
 end

@@ -2,26 +2,29 @@ require 'formula'
 
 class Ledger < Formula
   homepage 'http://ledger-cli.org'
-  url 'https://github.com/downloads/ledger/ledger/ledger-2.6.3.tar.gz'
-  sha1 '5b8e7d8199acb116f13720a5a469fff1f14b4041'
 
-  head 'https://github.com/ledger/ledger.git', :branch => 'master'
+  stable do
+    url 'https://github.com/downloads/ledger/ledger/ledger-2.6.3.tar.gz'
+    sha1 '5b8e7d8199acb116f13720a5a469fff1f14b4041'
+
+    depends_on 'gettext'
+    depends_on 'pcre'
+    depends_on 'expat'
+    depends_on 'libofx' => :optional
+  end
+
+  head do
+    url 'https://github.com/ledger/ledger.git', :branch => 'master'
+    depends_on 'cmake' => :build
+    depends_on 'ninja' => :build
+    depends_on 'mpfr'
+  end
 
   option 'debug', 'Build with debugging symbols enabled'
 
   depends_on 'boost'
   depends_on 'gmp'
   depends_on :python => :optional
-  if build.head?
-    depends_on 'cmake' => :build
-    depends_on 'ninja' => :build
-    depends_on 'mpfr'
-  else
-    depends_on 'gettext'
-    depends_on 'pcre'
-    depends_on 'expat'
-    depends_on 'libofx' => :optional
-  end
 
   def install
     opoo "Homebrew: Sorry, python bindings for --HEAD seem not to install. Help us fixing this!" if build.with? 'python'

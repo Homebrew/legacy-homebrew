@@ -12,9 +12,9 @@ class Valgrind < Formula
     sha1 "6116ddca2708f56e0a2851bdfbe88e01906fa300"
   end
 
-  head 'svn://svn.valgrind.org/valgrind/trunk'
+  head do
+    url 'svn://svn.valgrind.org/valgrind/trunk'
 
-  if build.head?
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool

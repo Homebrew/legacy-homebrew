@@ -6,9 +6,9 @@ class GstPluginsUgly < Formula
   mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.0.10.tar.xz'
   sha256 'bed3510e09f036e7609e8d291535c395d25109b1180324b16859f475eac3a3c0'
 
-  head 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
 
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end

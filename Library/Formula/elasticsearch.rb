@@ -5,9 +5,10 @@ class Elasticsearch < Formula
   url 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.5.tar.gz'
   sha1 '8027a4ae1bef6876c7651b1590607c8ff6108820'
 
-  head 'https://github.com/elasticsearch/elasticsearch.git'
-
-  depends_on 'maven' if build.head?
+  head do
+    url 'https://github.com/elasticsearch/elasticsearch.git'
+    depends_on 'maven'
+  end
 
   def cluster_name
     "elasticsearch_#{ENV['USER']}"

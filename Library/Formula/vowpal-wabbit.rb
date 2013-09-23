@@ -5,9 +5,9 @@ class VowpalWabbit < Formula
   url 'https://github.com/JohnLangford/vowpal_wabbit/archive/v7.2.tar.gz'
   sha1 'cff4ea03ec31c0849307696cfdefcb6e294deec9'
 
-  head 'https://github.com/JohnLangford/vowpal_wabbit.git'
+  head do
+    url 'https://github.com/JohnLangford/vowpal_wabbit.git'
 
-  if build.head?
     depends_on :libtool
     depends_on :automake
   end
