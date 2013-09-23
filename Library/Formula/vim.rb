@@ -97,9 +97,25 @@ class Vim < Formula
                           *opts
 
     if build.with? 'python' and build.with? 'python3'
+      # On 64-bit systems, we need to avoid a 32-bit Framework Python.
+      # vim doesn't check Python while compiling.
+      python do
+        if MacOS.prefer_64_bit? and python.framework? and not archs_for_command("#{python.prefix}/Python").include? :x86_64
+          opoo "Detected a framework Python that does not have 64-bit support in:"
+          puts <<-EOS.undent
+            #{python.prefix}
+
+            Dynamic loading Python library required the same architecture.
+
+            Note that a framework Python in /Library/Frameworks/Python.framework is
+            the "MacPython" version, and not the system-provided version which is in:
+              /System/Library/Frameworks/Python.framework
+          EOS
+        end
+      end
       # Help vim find Python's library as absolute path.
       python do
-        inreplace 'src/auto/config.mk', /-DDYNAMIC_PYTHON#{python.if3then3}_DLL=\\".*\\"/, %Q[-DDYNAMIC_PYTHON#{python.if3then3}_DLL=\'\"#{python.prefix}/Python\"\']
+        inreplace 'src/auto/config.mk', /-DDYNAMIC_PYTHON#{python.if3then3}_DLL=\\".*\\"/, %Q[-DDYNAMIC_PYTHON#{python.if3then3}_DLL=\'\"#{python.prefix}/Python\"\'] if python.framework?
       end
       # Force vim loading different Python on same time, may cause vim crash.
       unless python.brewed?
@@ -125,7 +141,7 @@ class Vim < Formula
 
         Note that vim load dynamic Python 2 & 3 library with the same time
         may crash vim. For more information, see:
-        http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python3
+            http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python3
       EOS
     end
   end
