@@ -35,6 +35,7 @@ class Ansible < Formula
   depends_on :python
   depends_on 'libyaml'
 
+  # TODO: Move this into Library/Homebrew somewhere (see also mitmproxy.rb).
   def wrap bin_file, pythonpath
     bin_file = Pathname.new bin_file
     libexec_bin = Pathname.new libexec/'bin'
