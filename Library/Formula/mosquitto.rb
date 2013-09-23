@@ -2,11 +2,12 @@ require 'formula'
 
 class Mosquitto < Formula
   homepage 'http://mosquitto.org/'
-  url 'http://mosquitto.org/files/source/mosquitto-1.2.tar.gz'
-  sha1 'eb374899637310cfc785c661ec22117df496d949'
+  url 'http://mosquitto.org/files/source/mosquitto-1.2.1.tar.gz'
+  sha1 'c349b2eecd76e8d6eb17d78231955234968e6f69'
 
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
+
   # mosquitto requires OpenSSL >=1.0 for TLS support
   depends_on 'openssl'
 
