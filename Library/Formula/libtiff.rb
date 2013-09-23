@@ -8,12 +8,17 @@ class Libtiff < Formula
 
   option :universal
 
+  depends_on 'jpeg'
+
   def install
     ENV.universal_binary if build.universal?
+    jpeg = Formula.factory('jpeg').opt_prefix
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-x",
-                          "--disable-lzma"
+                          "--disable-lzma",
+                          "--with-jpeg-include-dir=#{jpeg}/include",
+                          "--with-jpeg-lib-dir=#{jpeg}/lib"
     system "make install"
   end
 end
