@@ -28,9 +28,6 @@ class Qt5 < Formula
             "-nomake", "examples",
             "-release"]
 
-    # In 5.1.1+ `-nomake demos` is no longer recognized
-    # args << "-nomake" << "demos" unless build.head?
-
     unless MacOS::CLT.installed?
       # ... too stupid to find CFNumber.h, so we give a hint:
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
@@ -47,11 +44,6 @@ class Qt5 < Formula
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
     end
-
-    # In 5.1.1+ `-nomake docs` is no longer recognized
-    # unless build.with? 'docs'
-    #  args << "-nomake" << "docs"
-    # end
 
     if MacOS.prefer_64_bit? or build.universal?
       args << '-arch' << 'x86_64'
