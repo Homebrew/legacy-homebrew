@@ -114,7 +114,8 @@ class Bottle < SoftwareSpec
       os_versions.sort.reverse.each do |os_version|
         osx = os_version.to_sym
         checksum = checksum_os_versions[osx]
-        checksums[checksum_type] = { checksum => osx }
+        checksums[checksum_type] ||= []
+        checksums[checksum_type] << { checksum => osx }
       end
     end
     checksums
