@@ -12,6 +12,9 @@ class SagittariusScheme < Formula
   env :std
 
   def patches
+    # This patch has been submitted to the upstream at http://code.google.com/p/sagittarius-scheme/issues/detail?id=140,
+    # and it has been merged already to the head.
+    # This patch will be removed if the next (fixed) version is released.
     { :p1 => DATA }
   end
 
