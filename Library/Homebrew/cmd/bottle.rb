@@ -27,9 +27,11 @@ BOTTLE_ERB = <<-EOS
     <% if revision > 0 %>
     revision <%= revision %>
     <% end %>
-    <% checksums.keys.each do |checksum_type| %>
-    <% checksum, osx = checksums[checksum_type].shift %>
+    <% checksums.each do |checksum_type, checksum_values| %>
+    <% checksum_values.each do |checksum_value| %>
+    <% checksum, osx = checksum_value.shift %>
     <%= checksum_type %> '<%= checksum %>' => :<%= osx %>
+    <% end %>
     <% end %>
   end
 EOS
