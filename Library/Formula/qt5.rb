@@ -5,6 +5,12 @@ class Qt5 < Formula
   url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.1/single/qt-everywhere-opensource-src-5.1.1.tar.gz'
   sha1 '131b023677cd5207b0b0d1864f5d3ac37f10a5ba'
 
+  bottle do
+    sha1 'fdb63c4ba28c771c3bf3b839717433a9777ded31' => :mountain_lion
+    sha1 'f36277bb155428bc7198b9d366131238bab847a2' => :lion
+    sha1 '483f3669b0149448c6448b69077307745037dcb2' => :snow_leopard
+  end
+
   head 'git://gitorious.org/qt/qt5.git', :branch => 'stable'
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
