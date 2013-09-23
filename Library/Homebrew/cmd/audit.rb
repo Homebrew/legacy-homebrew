@@ -225,7 +225,7 @@ class FormulaAuditor
       next if p =~ %r[svn\.sourceforge]
 
       # Is it a sourceforge http(s) URL?
-      next unless p =~ %r[^https?://.*\bsourceforge\.]
+      next unless p =~ %r[^https?://.*\bsourceforge\.com]
 
       if p =~ /(\?|&)use_mirror=/
         problem "Don't use #{$1}use_mirror in SourceForge urls (url is #{p})."
