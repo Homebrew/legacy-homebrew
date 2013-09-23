@@ -8,7 +8,7 @@ class Juju < Formula
   depends_on 'go' => :build
 
   fails_with :clang do
-    cause "clang: error: no such file or directory: 'libgcc.a'"
+    cause "clang: error: no such file or directory: 'libgcc.a'. Try running with --use-llvm option"
   end
 
   def install
