@@ -64,7 +64,8 @@ module Homebrew extend self
     begin
       bottle_revision += 1
       filename = bottle_filename(f, bottle_revision)
-    end while master_bottle_filenames.include? filename
+    end while not ARGV.include? '--no-revision' \
+        and master_bottle_filenames.include? filename
 
     if bottle_filename_formula_name(filename).empty?
       return ofail "Add a new regex to bottle_version.rb to parse the bottle filename."
