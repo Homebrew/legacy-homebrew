@@ -21,7 +21,7 @@ BOTTLE_ERB = <<-EOS
     <% end %>
     <% if cellar.is_a? Symbol %>
     cellar :<%= cellar %>
-    <% elsif cellar.to_s != '/usr/local' %>
+    <% elsif cellar.to_s != '/usr/local/Cellar' %>
     cellar '<%= cellar %>'
     <% end %>
     <% if revision > 0 %>
