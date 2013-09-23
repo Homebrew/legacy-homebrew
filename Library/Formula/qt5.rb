@@ -2,15 +2,8 @@ require 'formula'
 
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
-  url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.0/single/qt-everywhere-opensource-src-5.1.0.tar.gz'
-  sha1 '12d706124dbfac3d542dd3165176a978d478c085'
-
-  bottle do
-    revision 1
-    sha1 '559797c1240c758aea1755b664fb898d492fca03' => :mountain_lion
-    sha1 '67d969a4a260f4576f3fcaf5e1cef23edfd35177' => :lion
-    sha1 '61cfa853784d2493ffa00b3e2897f6f46df5815f' => :snow_leopard
-  end
+  url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.1/single/qt-everywhere-opensource-src-5.1.1.tar.gz'
+  sha1 '131b023677cd5207b0b0d1864f5d3ac37f10a5ba'
 
   head 'git://gitorious.org/qt/qt5.git', :branch => 'stable'
 
@@ -35,9 +28,6 @@ class Qt5 < Formula
             "-nomake", "examples",
             "-release"]
 
-    # In latest head `-nomake demos` is no longer recognized
-    args << "-nomake" << "demos" unless build.head?
-
     unless MacOS::CLT.installed?
       # ... too stupid to find CFNumber.h, so we give a hint:
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
@@ -53,10 +43,6 @@ class Qt5 < Formula
       args << "-I#{dbus_opt}/include/dbus-1.0"
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
-    end
-
-    unless build.with? 'docs'
-      args << "-nomake" << "docs"
     end
 
     if MacOS.prefer_64_bit? or build.universal?
@@ -75,10 +61,10 @@ class Qt5 < Formula
     system "make install"
 
     # Fix https://github.com/mxcl/homebrew/issues/20020 (upstream: https://bugreports.qt-project.org/browse/QTBUG-32417)
-    system "install_name_tool", "-change", "#{pwd}/qt-everywhere-opensource-src-5.1.0/qtwebkit/lib/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets", #old
+    system "install_name_tool", "-change", "#{pwd}/qt-everywhere-opensource-src-#{version}/qtwebkit/lib/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets", #old
                                            "#{lib}/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets",  #new
                                            "#{libexec}/QtWebProcess" # in this lib
-    system "install_name_tool", "-change", "#{pwd}/qt-everywhere-opensource-src-5.1.0/qtwebkit/lib/QtWebKit.framework/Versions/5/QtWebKit",
+    system "install_name_tool", "-change", "#{pwd}/qt-everywhere-opensource-src-#{version}/qtwebkit/lib/QtWebKit.framework/Versions/5/QtWebKit",
                                            "#{lib}/QtWebKit.framework/Versions/5/QtWebKit",
                                            "#{prefix}/qml/QtWebKit/libqmlwebkitplugin.dylib"
 
