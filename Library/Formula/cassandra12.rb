@@ -1,12 +1,12 @@
 require 'formula'
 
-class Cassandra < Formula
+class Cassandra12 < Formula
   homepage 'http://cassandra.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/2.0.0/apache-cassandra-2.0.0-bin.tar.gz'
-  sha1 '1338eeadc865eec4bb1acc130e437aa8770aa87a'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/1.2.10/apache-cassandra-1.2.10-bin.tar.gz'
+  sha1 '1eddb3e790daa0c88f138bdaad18d3fa71d777d4'
 
-  conflicts_with 'cassandra12',
-    :because => "cassandra and cassandra12 install the same binaries."
+  conflicts_with 'cassandra',
+    :because => "cassandra12 and cassandra install the same binaries."
 
   def install
     (var+"lib/cassandra").mkpath
