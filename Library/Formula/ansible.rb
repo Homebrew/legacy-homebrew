@@ -26,7 +26,7 @@ class PyCrypto < Formula
 end
 
 class Ansible < Formula
-  homepage 'http://ansible.github.com/'
+  homepage 'http://www.ansibleworks.com/'
   url 'https://github.com/ansible/ansible/archive/v1.3.2.tar.gz'
   sha1 '2f70db9af49b0d4c17f8f1d91d5c72e791077e9e'
 
