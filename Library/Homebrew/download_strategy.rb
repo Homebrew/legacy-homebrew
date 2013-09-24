@@ -254,6 +254,42 @@ class LocalBottleDownloadStrategy < CurlDownloadStrategy
   end
 end
 
+# S3DownloadStrategy downloads tarballs from AWS S3.
+# To use it, add ":using => S3DownloadStrategy" to the URL section of your
+# formula.  This download strategy uses AWS access tokens (in the
+# environment variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY)
+# to sign the request.  This strategy is good in a corporate setting,
+# because it lets you use a private S3 bucket as a repo for internal
+# distribution.  (It will work for public buckets as well.)
+class S3DownloadStrategy < CurlDownloadStrategy
+  def _fetch
+    # Put the aws gem requirement here (vs top of file) so it's only
+    # a dependency of S3 users, not all Homebrew users
+    require 'rubygems'
+    begin
+      require 'aws-sdk'
+    rescue LoadError
+      onoe "Install the aws-sdk gem into the gem repo used by brew."
+      raise
+    end
+
+    if @url !~ %r[^https?://+([^.]+).s3.amazonaws.com/+(.+)$] then
+      raise "Bad S3 URL: " + @url
+    end
+    (bucket,key) = $1,$2
+
+    obj = AWS::S3.new().buckets[bucket].objects[key]
+    begin
+      s3url = obj.url_for(:get)
+    rescue AWS::Errors::MissingCredentialsError
+      ohai "AWS credentials missing, trying public URL instead."
+      s3url = obj.public_url
+    end
+
+    curl s3url, '-C', downloaded_size, '-o', @temporary_path
+  end
+end
+
 class SubversionDownloadStrategy < AbstractDownloadStrategy
   def initialize name, resource
     super
