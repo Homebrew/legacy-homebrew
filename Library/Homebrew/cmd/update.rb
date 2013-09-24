@@ -20,7 +20,7 @@ module Homebrew extend self
     tapped_formulae = Dir['Library/Formula/*'].map do |formula|
       path = Pathname.new formula
       next unless path.symlink?
-      Pathname.new(path.realpath.to_s.gsub(/.*Taps\//, ''))
+      Pathname.new(path.realpath.to_s.gsub(/.*Taps\//, '')) rescue nil
     end
     tapped_formulae.compact!
     unlink_tap_formula(tapped_formulae)
