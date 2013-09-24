@@ -21,6 +21,32 @@ class Jack < Formula
     { :p0 => DATA }
   end if MacOS.version >= :mountain_lion
 
+  plist_options :manual => "jackd -d coreaudio"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>WorkingDirectory</key>
+      <string>#{prefix}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/bin/jackd</string>
+        <string>-d</string>
+        <string>coreaudio</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>KeepAlive</key>
+      <true/>
+    </dict>
+    </plist>
+    EOS
+  end
+
   def install
     ENV['LINKFLAGS'] = ENV.ldflags
     system "./configure", "--prefix=#{prefix}"
