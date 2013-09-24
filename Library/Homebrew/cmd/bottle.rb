@@ -21,15 +21,17 @@ BOTTLE_ERB = <<-EOS
     <% end %>
     <% if cellar.is_a? Symbol %>
     cellar :<%= cellar %>
-    <% elsif cellar.to_s != '/usr/local' %>
+    <% elsif cellar.to_s != '/usr/local/Cellar' %>
     cellar '<%= cellar %>'
     <% end %>
     <% if revision > 0 %>
     revision <%= revision %>
     <% end %>
-    <% checksums.keys.each do |checksum_type| %>
-    <% checksum, osx = checksums[checksum_type].shift %>
+    <% checksums.each do |checksum_type, checksum_values| %>
+    <% checksum_values.each do |checksum_value| %>
+    <% checksum, osx = checksum_value.shift %>
     <%= checksum_type %> '<%= checksum %>' => :<%= osx %>
+    <% end %>
     <% end %>
   end
 EOS
@@ -62,7 +64,8 @@ module Homebrew extend self
     begin
       bottle_revision += 1
       filename = bottle_filename(f, bottle_revision)
-    end while master_bottle_filenames.include? filename
+    end while not ARGV.include? '--no-revision' \
+        and master_bottle_filenames.include? filename
 
     if bottle_filename_formula_name(filename).empty?
       return ofail "Add a new regex to bottle_version.rb to parse the bottle filename."
