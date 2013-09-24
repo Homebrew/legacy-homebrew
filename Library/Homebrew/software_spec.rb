@@ -8,6 +8,7 @@ require 'dependency_collector'
 class SoftwareSpec
   extend Forwardable
 
+  attr_reader :name
   attr_reader :build, :resources, :owner
   attr_reader :dependency_collector
 
@@ -24,6 +25,7 @@ class SoftwareSpec
   end
 
   def owner= owner
+    @name = owner.name
     @resource.owner = owner
     resources.each_value { |r| r.owner = owner }
   end
