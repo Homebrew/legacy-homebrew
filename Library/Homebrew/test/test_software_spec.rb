@@ -24,10 +24,10 @@ class SoftwareSpecTests < Test::Unit::TestCase
   end
 
   def test_resource_owner
-    owner = Object.new
     @spec.resource('foo') { url 'foo-1.0' }
-    @spec.owner = owner
-    @spec.resources.each_value { |r| assert_equal owner, r.owner }
+    @spec.owner = stub(:name => 'some_name')
+    assert_equal 'some_name', @spec.name
+    @spec.resources.each_value { |r| assert_equal @spec, r.owner }
   end
 
   def test_option
