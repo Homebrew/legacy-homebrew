@@ -11,6 +11,12 @@ class Isl < Formula
   url 'http://isl.gforge.inria.fr/isl-0.12.1.tar.bz2'
   sha1 'a54e80a32bc3e06327053d77d6a81516d4f4b21f'
 
+  bottle do
+    sha1 '45240d08c107cb30c012ef7821e540114096e26c' => :mountain_lion
+    sha1 '0a7bad8d98bd5da3ff66116f7b4f4a8d49d180ad' => :lion
+    sha1 '547196582a38df80c78f3953254cfa6db3641507' => :snow_leopard
+  end
+
   head do
     url 'http://repo.or.cz/r/isl.git'
 
