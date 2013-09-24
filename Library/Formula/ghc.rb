@@ -17,6 +17,8 @@ class Ghc < Formula
   # http://hackage.haskell.org/trac/ghc/ticket/6009
   depends_on :macos => :snow_leopard
 
+  depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
+
   option '32-bit'
   option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
 
