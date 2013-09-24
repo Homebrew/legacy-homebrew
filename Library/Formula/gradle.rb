@@ -10,4 +10,3 @@ class Gradle < Formula
     bin.install_symlink libexec+'bin/gradle'
   end
 end
-
