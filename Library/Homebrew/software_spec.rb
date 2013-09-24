@@ -26,8 +26,8 @@ class SoftwareSpec
 
   def owner= owner
     @name = owner.name
-    @resource.owner = owner
-    resources.each_value { |r| r.owner = owner }
+    @resource.owner = self
+    resources.each_value { |r| r.owner = self }
   end
 
   def resource? name
