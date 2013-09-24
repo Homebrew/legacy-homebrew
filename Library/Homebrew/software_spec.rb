@@ -17,8 +17,8 @@ class SoftwareSpec
   def_delegators :@resource, :checksum, :mirrors, :specs, :using, :downloader
   def_delegators :@resource, :url, :version, :mirror, *Checksum::TYPES
 
-  def initialize url=nil, version=nil
-    @resource = Resource.new(:default, url, version)
+  def initialize
+    @resource = Resource.new
     @resources = {}
     @build = BuildOptions.new(ARGV.options_only)
     @dependency_collector = DependencyCollector.new
@@ -65,8 +65,10 @@ class SoftwareSpec
 end
 
 class HeadSoftwareSpec < SoftwareSpec
-  def initialize url=nil, version=Version.new(:HEAD)
+  def initialize
     super
+    @resource.url = url
+    @resource.version = Version.new('HEAD')
   end
 
   def verify_download_integrity fn
