@@ -17,7 +17,7 @@ class Jack < Formula
   depends_on 'libsamplerate'
 
   def patches
-    #Change pThread header include from CarbonCore
+    # Change pThread header include from CarbonCore
     { :p0 => DATA }
   end if MacOS.version >= :mountain_lion
 
