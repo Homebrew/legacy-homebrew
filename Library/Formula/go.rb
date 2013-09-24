@@ -21,6 +21,8 @@ class Go < Formula
   # NOTE it is ridiculous that we put this stuff in the class
   # definition, it needs to be in a pre-install test function!
   if build.with? 'cgo'
+    depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
+
     fails_with :clang do
       cause "clang: error: no such file or directory: 'libgcc.a'"
     end
