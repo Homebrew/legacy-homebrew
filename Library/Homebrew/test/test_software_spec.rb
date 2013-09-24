@@ -24,10 +24,46 @@ class SoftwareSpecTests < Test::Unit::TestCase
   end
 
   def test_resource_owner
-    owner = Object.new
     @spec.resource('foo') { url 'foo-1.0' }
-    @spec.owner = owner
-    @spec.resources.each_value { |r| assert_equal owner, r.owner }
+    @spec.owner = stub(:name => 'some_name')
+    assert_equal 'some_name', @spec.name
+    @spec.resources.each_value { |r| assert_equal @spec, r.owner }
+  end
+
+  def test_option
+    @spec.option('foo')
+    assert @spec.build.has_option? 'foo'
+  end
+
+  def test_option_raises_when_begins_with_dashes
+    assert_raises(RuntimeError) { @spec.option('--foo') }
+  end
+
+  def test_option_raises_when_name_empty
+    assert_raises(RuntimeError) { @spec.option('') }
+  end
+
+  def test_option_accepts_symbols
+    @spec.option(:foo)
+    assert @spec.build.has_option? 'foo'
+  end
+
+  def test_depends_on
+    @spec.depends_on('foo')
+    assert_equal 'foo', @spec.deps.first.name
+  end
+
+  def test_dependency_option_integration
+    @spec.depends_on 'foo' => :optional
+    @spec.depends_on 'bar' => :recommended
+    assert @spec.build.has_option?('with-foo')
+    assert @spec.build.has_option?('without-bar')
+  end
+
+  def test_explicit_options_override_default_dep_option_description
+    @spec.option('with-foo', 'blah')
+    @spec.depends_on('foo' => :optional)
+    assert_equal 'blah', @spec.build.first.description
   end
 end
 

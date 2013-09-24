@@ -6,18 +6,15 @@ class Ruby < Formula
   mirror 'http://mirrorservice.org/sites/ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p247.tar.bz2'
   sha256 '08e3d4b85b8a1118a8e81261f59dd8b4ddcfd70b6ae554e0ec5ceb99c3185e8a'
 
-  head 'http://svn.ruby-lang.org/repos/ruby/trunk/'
+  head do
+    url 'http://svn.ruby-lang.org/repos/ruby/trunk/'
+    depends_on :autoconf
+  end
 
   option :universal
   option 'with-suffix', 'Suffix commands with "20"'
   option 'with-doc', 'Install documentation'
   option 'with-tcltk', 'Install with Tcl/Tk support'
-
-  if build.universal?
-    depends_on 'autoconf' => :build
-  elsif build.head?
-    depends_on :autoconf
-  end
 
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended

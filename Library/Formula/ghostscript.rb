@@ -11,17 +11,15 @@ class Ghostscript < Formula
     resource 'djvu' do
       url 'git://git.code.sf.net/p/djvu/gsdjvu-git'
     end
+
+    depends_on :automake
+    depends_on :libtool
   end
 
   option 'with-djvu', 'Build drivers for DjVU file format'
 
   # TODO - figure out why this is needed
   env :std if build.with? 'djvu'
-
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
-  end
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'

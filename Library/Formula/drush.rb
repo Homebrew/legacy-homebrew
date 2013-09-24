@@ -3,8 +3,8 @@ require 'formula'
 class Drush < Formula
   homepage 'http://drupal.org/project/drush'
   head 'https://github.com/drush-ops/drush.git'
-  url 'https://github.com/drush-ops/drush/archive/6.0.0.tar.gz'
-  sha1 'de8b4065f179f6ddfd9c8911c2f818f81ab1f4a4'
+  url 'https://github.com/drush-ops/drush/archive/6.1.0.tar.gz'
+  sha1 '81b963e91ff1cb8617e8ed974ac07bb25f509bcf'
 
   def install
     prefix.install_metafiles

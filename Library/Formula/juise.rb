@@ -5,9 +5,12 @@ class Juise < Formula
   url 'https://github.com/Juniper/juise/releases/download/0.5.8/juise-0.5.8.tar.gz'
   sha1 '4529b0d5cf08185d0f9e991aea8fc62468290d9c'
 
-  head 'https://github.com/Juniper/juise.git'
+  head do
+    url 'https://github.com/Juniper/juise.git'
 
-  depends_on 'automake' => :build if build.head?
+    depends_on 'automake' => :build
+  end
+
   depends_on 'libtool'  => :build
   depends_on 'libslax'
   depends_on 'libssh2'
