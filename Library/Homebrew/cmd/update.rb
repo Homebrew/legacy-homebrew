@@ -17,9 +17,21 @@ module Homebrew extend self
     cd HOMEBREW_REPOSITORY
     git_init_if_necessary
 
+    tapped_formulae = Dir['Library/Formula/*'].map do |formula|
+      path = Pathname.new formula
+      next unless path.symlink?
+      Pathname.new(path.realpath.to_s.gsub(/.*Taps\//, ''))
+    end
+    tapped_formulae.compact!
+    unlink_tap_formula(tapped_formulae)
+
     report = Report.new
     master_updater = Updater.new
-    master_updater.pull!
+    begin
+      master_updater.pull!
+    ensure
+      link_tap_formula(tapped_formulae)
+    end
     report.merge!(master_updater.report)
 
     Dir["Library/Taps/*"].each do |tapd|
