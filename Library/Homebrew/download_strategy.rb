@@ -254,40 +254,6 @@ class LocalBottleDownloadStrategy < CurlDownloadStrategy
   end
 end
 
-# AWS4DownloadStrategy downloads tarballs from AWS S3 (= AWS4, get it!)
-# It uses your AWS access tokens (in the standard environment variables
-# AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY) to sign the request.  This
-# strategy is good in a corporate setting, because it lets you use a
-# private S3 bucket as a repo for internal distribution.
-class AWS4DownloadStrategy < CurlDownloadStrategy
-  def _fetch
-    # Put the aws gem requirement here (vs top of file) so it's only
-    # a dependency of S3 users, not all Homebrew users
-    require 'rubygems'
-    begin
-      require 'aws-sdk'
-    rescue LoadError
-      onoe "Install the aws-sdk gem into the gem repo used by brew."
-      raise
-    end
-
-    if @url !~ %r[^s3://+([^/]+)/+(.+)$] then
-      raise "Bad S3 URL: " + @url
-    end
-    (bucket,key) = $1,$2
-
-    obj = AWS::S3.new().buckets[bucket].objects[key]
-    begin
-      s3url = obj.url_for(:get)
-    rescue AWS::Errors::MissingCredentialsError
-      ohai "AWS credentials missing, trying public URL instead."
-      s3url = obj.public_url
-    end
-
-    curl s3url, '-C', downloaded_size, '-o', @temporary_path
-  end
-end
-
 class SubversionDownloadStrategy < AbstractDownloadStrategy
   def initialize name, resource
     super
@@ -771,7 +737,6 @@ class DownloadStrategyDetector
     when %r[^git://] then GitDownloadStrategy
     when %r[^https?://.+\.git$] then GitDownloadStrategy
     when %r[^hg://] then MercurialDownloadStrategy
-    when %r[^s3://] then AWS4DownloadStrategy
     when %r[^svn://] then SubversionDownloadStrategy
     when %r[^svn\+http://] then SubversionDownloadStrategy
     when %r[^fossil://] then FossilDownloadStrategy
@@ -800,7 +765,6 @@ class DownloadStrategyDetector
     when :hg then MercurialDownloadStrategy
     when :nounzip then NoUnzipCurlDownloadStrategy
     when :post then CurlPostDownloadStrategy
-    when :s3 then AWS4DownloadStrategy
     when :ssl3 then CurlSSL3DownloadStrategy
     when :svn then SubversionDownloadStrategy
     else
