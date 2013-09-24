@@ -1,7 +1,7 @@
 require 'formula'
 
 class Lolcode < Formula
-  homepage 'http://www.icanhaslolcode.org/'
+  homepage 'http://lolcode.org'
   url 'https://github.com/justinmeza/lci/archive/v0.11.1.tar.gz'
   sha1 '9949a2480a738ac566dbe66142dd351f778fb8b7'
 

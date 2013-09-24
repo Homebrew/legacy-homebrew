@@ -19,6 +19,10 @@ class V8 < Formula
 
   option 'with-readline', 'Use readline instead of libedit'
 
+  # not building on Snow Leopard:
+  # https://github.com/mxcl/homebrew/issues/21426
+  depends_on :macos => :lion
+
   # gyp currently depends on a full xcode install
   # https://code.google.com/p/gyp/issues/detail?id=292
   depends_on :xcode

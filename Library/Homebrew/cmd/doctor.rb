@@ -41,16 +41,6 @@ end
 class Checks
 
 ############# HELPERS
-  def paths
-    @paths ||= ENV['PATH'].split(File::PATH_SEPARATOR).collect do |p|
-      begin
-        File.expand_path(p).chomp('/')
-      rescue ArgumentError
-        onoe "The following PATH component is invalid: #{p}"
-      end
-    end.uniq.compact
-  end
-
   # Finds files in HOMEBREW_PREFIX *and* /usr/local.
   # Specify paths relative to a prefix eg. "include/foo.h".
   # Sets @found for your convenience.

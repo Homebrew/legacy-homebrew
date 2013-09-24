@@ -1,5 +1,6 @@
 require 'pathname'
 require 'mach'
+require 'resource'
 
 # we enhance pathname to make our code more readable
 class Pathname
@@ -10,6 +11,10 @@ class Pathname
   def install *sources
     sources.each do |src|
       case src
+      when Resource
+        src.stage(self)
+      when Resource::Partial
+        src.resource.stage { install(*src.files) }
       when Array
         if src.empty?
           opoo "tried to install empty array to #{self}"
@@ -172,7 +177,7 @@ class Pathname
     # Get enough of the file to detect common file types
     # POSIX tar magic has a 257 byte offset
     # magic numbers stolen from /usr/share/file/magic/
-    case open { |f| f.read(262) }
+    case open('rb') { |f| f.read(262) }
     when /^PK\003\004/n         then :zip
     when /^\037\213/n           then :gzip
     when /^BZh/n                then :bzip2
@@ -198,7 +203,7 @@ class Pathname
   def incremental_hash(hasher)
     incr_hash = hasher.new
     buf = ""
-    open('r') { |f| incr_hash << buf while f.read(1024, buf) }
+    open('rb') { |f| incr_hash << buf while f.read(1024, buf) }
     incr_hash.hexdigest
   end
 

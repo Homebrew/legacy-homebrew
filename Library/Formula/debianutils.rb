@@ -2,8 +2,8 @@ require 'formula'
 
 class Debianutils < Formula
   homepage 'http://anonscm.debian.org/gitweb/?p=users/clint/debianutils.git'
-  url 'http://ftp.de.debian.org/debian/pool/main/d/debianutils/debianutils_4.3.4.tar.gz'
-  sha1 '18c5c50d330fb4b26b52d3dd6c6b8f3102eaa0ff'
+  url 'http://ftp.de.debian.org/debian/pool/main/d/debianutils/debianutils_4.4.tar.gz'
+  sha1 '019b969ab698c83117254b50fc8f469f10a5d8d6'
 
   def install
     system "./configure", "--disable-dependency-tracking",

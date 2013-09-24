@@ -2,18 +2,21 @@ require 'formula'
 
 class GstPluginsGood < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.0.10.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.0.10.tar.xz'
-  sha256 'c60342d6080ac6f794c5c2427dfbdee9140a2f67b82e7e945e286a2d416428ae'
 
-  head 'git://anongit.freedesktop.org/gstreamer/gst-plugins-good'
+  stable do
+    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.0.10.tar.xz'
+    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.0.10.tar.xz'
+    sha256 'c60342d6080ac6f794c5c2427dfbdee9140a2f67b82e7e945e286a2d416428ae'
 
-  if build.head?
+    depends_on 'check' => :optional
+  end
+
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-good'
+
     depends_on :automake
     depends_on :libtool
     depends_on 'check'
-  else
-    depends_on 'check' => :optional
   end
 
   depends_on :x11

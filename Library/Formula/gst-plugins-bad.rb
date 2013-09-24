@@ -6,9 +6,9 @@ class GstPluginsBad < Formula
   mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.0.10.tar.xz'
   sha256 '91da60ba2ee5c681f11188a4a456894e7f989435c2102c15eff97bbd4fc4c726'
 
-  head 'git://anongit.freedesktop.org/gstreamer/gst-plugins-bad'
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-bad'
 
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end

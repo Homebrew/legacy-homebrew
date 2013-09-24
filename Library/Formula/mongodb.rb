@@ -48,6 +48,7 @@ class Mongodb < Formula
   def post_install
     (var+'mongodb').mkpath
     (var+'log/mongodb').mkpath
+    etc.mkpath
     cp prefix+'mongod.conf', etc unless File.exists? etc+"mongod.conf"
   end
 

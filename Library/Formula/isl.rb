@@ -11,15 +11,15 @@ class Isl < Formula
   url 'http://isl.gforge.inria.fr/isl-0.12.1.tar.bz2'
   sha1 'a54e80a32bc3e06327053d77d6a81516d4f4b21f'
 
-  head 'http://repo.or.cz/r/isl.git'
+  head do
+    url 'http://repo.or.cz/r/isl.git'
 
-  depends_on 'gmp'
-
-  if build.head?
     depends_on :autoconf => :build
     depends_on :automake => :build
     depends_on :libtool => :build
   end
+
+  depends_on 'gmp'
 
   def install
     system "./autogen.sh" if build.head?

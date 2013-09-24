@@ -6,9 +6,9 @@ class Gstreamer < Formula
   mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.0.10.tar.xz'
   sha256 '8e0aa9f41370586171a2616326fbc508bc4b61ffc4d55b2a8c4c3459d0cc1130'
 
-  head 'git://anongit.freedesktop.org/gstreamer/gstreamer'
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gstreamer'
 
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end

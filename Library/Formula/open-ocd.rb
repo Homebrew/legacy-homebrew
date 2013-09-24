@@ -5,6 +5,13 @@ class OpenOcd < Formula
   url 'http://downloads.sourceforge.net/project/openocd/openocd/0.7.0/openocd-0.7.0.tar.bz2'
   sha1 '40fa518af4fae273f24478249fc03aa6fcce9176'
 
+  head do
+    url 'git://git.code.sf.net/p/openocd/code'
+
+    depends_on :libtool
+    depends_on :automake
+  end
+
   option 'enable-ft2232_libftdi', 'Enable building support for FT2232 based devices with libftdi driver'
   option 'enable-ft2232_ftd2xx',  'Enable building support for FT2232 based devices with FTD2XX driver'
 
@@ -44,6 +51,7 @@ class OpenOcd < Formula
 
     ENV['CCACHE'] = 'none'
 
+    system "./bootstrap", "nosubmodule" if build.head?
     system "./configure", *args
     system "make install"
   end

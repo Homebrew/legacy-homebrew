@@ -403,6 +403,7 @@ _brew ()
             audit
             cat
             cleanup
+            commands
             create
             deps
             diy configure
