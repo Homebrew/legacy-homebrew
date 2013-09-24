@@ -2,15 +2,8 @@ require 'formula'
 
 class Valgrind < Formula
   homepage 'http://www.valgrind.org/'
-
-  # Valgrind 3.7.0 drops support for OS X 10.5
-  if MacOS.version >= 10.6
-    url 'http://valgrind.org/downloads/valgrind-3.8.1.tar.bz2'
-    sha1 'aa7a3b0b9903f59a11ae518874852e8ccb12751c'
-  else
-    url "http://valgrind.org/downloads/valgrind-3.6.1.tar.bz2"
-    sha1 "6116ddca2708f56e0a2851bdfbe88e01906fa300"
-  end
+  url 'http://valgrind.org/downloads/valgrind-3.8.1.tar.bz2'
+  sha1 'aa7a3b0b9903f59a11ae518874852e8ccb12751c'
 
   head do
     url 'svn://svn.valgrind.org/valgrind/trunk'
@@ -19,6 +12,8 @@ class Valgrind < Formula
     depends_on :automake
     depends_on :libtool
   end
+
+  depends_on :macos => :snow_leopard
 
   # Valgrind needs vcpreload_core-*-darwin.so to have execute permissions.
   # See #2150 for more information.
@@ -32,7 +27,7 @@ class Valgrind < Formula
     p = []
     p << 'https://gist.github.com/raw/3784836/f046191e72445a2fc8491cb6aeeabe84517687d9/patch1.diff' unless MacOS::CLT.installed?
     p << 'https://gist.github.com/raw/3784930/dc8473c0ac5274f6b7d2eb23ce53d16bd0e2993a/patch2.diff' if MacOS.version == :lion
-    return p.empty? ? nil : p
+    return p
   end
 
   def install
