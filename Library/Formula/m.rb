@@ -7,7 +7,7 @@ class M < Formula
   sha1 '24898e60f333c125e19800acbff5e97b1010444d'
 
   def install
-    system "mkdir -p #{prefix}/share/m && cp m #{prefix}/share/m/"
+    (share/'m').install "m"
   end
 
   def caveats; <<-EOS.undent
