@@ -104,8 +104,6 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    ohai "Pouring #{File.basename(tarball_path)}" if tarball_path.to_s.match bottle_regex
-
     case tarball_path.compression_type
     when :zip
       with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, tarball_path }
@@ -244,6 +242,11 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
   def tarball_path
     @tarball_path ||= HOMEBREW_CACHE/"#{name}-#{resource.version}#{ext}"
   end
+
+  def stage
+    ohai "Pouring #{tarball_path.basename}"
+    super
+  end
 end
 
 # This strategy extracts local binary packages.
@@ -251,6 +254,11 @@ class LocalBottleDownloadStrategy < CurlDownloadStrategy
   def initialize formula, local_bottle_path
     super formula.name, formula.active_spec
     @tarball_path = local_bottle_path
+  end
+
+  def stage
+    ohai "Pouring #{tarball_path.basename}"
+    super
   end
 end
 
