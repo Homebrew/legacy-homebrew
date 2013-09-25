@@ -31,7 +31,7 @@ class Flac < Formula
 
     # adds universal flags to the generated libtool script
     inreplace "libtool" do |s|
-      s.gsub! ":$verstring\"", ":$verstring -arch i386 -arch x86_64\""
+      s.gsub! ":$verstring\"", ":$verstring -arch #{Hardware::CPU.arch_32_bit} -arch #{Hardware::CPU.arch_64_bit}\""
     end
 
     system "make install"

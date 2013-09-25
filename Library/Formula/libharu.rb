@@ -17,7 +17,7 @@ class Libharu < Formula
   end
 
   def png_prefix
-    MacOS::X11.installed? ? MacOS::X11.prefix : HOMEBREW_PREFIX/:opt/:libpng
+    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/libpng" : MacOS::X11.prefix
   end
 
   def install

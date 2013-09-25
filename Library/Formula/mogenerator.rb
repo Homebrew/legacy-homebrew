@@ -7,7 +7,7 @@ class Mogenerator < Formula
 
   head 'https://github.com/rentzsch/mogenerator.git'
 
-  depends_on :xcode # For working xcodebuild.
+  depends_on :xcode
 
   def install
     system "xcodebuild -target mogenerator -configuration Release SYMROOT=symroot OBJROOT=objroot"

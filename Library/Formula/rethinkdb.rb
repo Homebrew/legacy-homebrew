@@ -2,15 +2,19 @@ require 'formula'
 
 class Rethinkdb < Formula
   homepage 'http://www.rethinkdb.com/'
-  url 'http://download.rethinkdb.com/dist/rethinkdb-1.6.1.tgz'
-  sha1 'fdb3acb5febbe3f7cd4d3afd1592e5c4149f7b73'
+  url 'http://download.rethinkdb.com/dist/rethinkdb-1.9.0.tgz'
+  sha1 '0e6948ce90f818c6d368f64fe2301bf1eabd451b'
 
+  depends_on :macos => :lion
   depends_on 'boost' => :build
-  depends_on 'v8'
+
+  fails_with :gcc do
+    build 5666 # GCC 4.2.1
+    cause 'RethinkDB uses C++0x'
+  end
 
   def install
-    # Disable drivers because right now we don't build Python/Ruby bindings. Pull request welcome.
-    system "./configure", "--prefix=#{prefix}", "--fetch", "protobuf", "--disable-drivers"
+    system "./configure", "--prefix=#{prefix}", "--fetch", "protobuf"
     system "make"
     system "make install-osx"
   end

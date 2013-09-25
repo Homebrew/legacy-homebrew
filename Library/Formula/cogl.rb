@@ -11,10 +11,10 @@ class Cogl < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
+  depends_on 'cairo' => 'with-glib'
   depends_on 'glib'
   depends_on 'pango'
-  depends_on 'cairo' # needs cairo-gobject
-  depends_on :x11 if MacOS::X11.installed? or not build.include? 'without-x'
+  depends_on :x11 unless build.without? 'x'
 
   def install
     system "./autogen.sh" if build.head?
@@ -23,7 +23,7 @@ class Cogl < Formula
       --prefix=#{prefix}
       --disable-introspection
     ]
-    args << '--without-x' if build.include? 'without-x'
+    args << '--without-x' if build.without? 'x'
     system './configure', *args
     system "make install"
   end

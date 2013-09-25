@@ -2,9 +2,9 @@ require 'formula'
 
 class Unar < Formula
   homepage 'http://unarchiver.c3.cx/commandline'
-  url 'http://theunarchiver.googlecode.com/files/unar1.6_src.zip'
-  version '1.6'
-  sha1 '1cee2ea4bd89feff4f84754858b21f3757404d7c'
+  url 'http://theunarchiver.googlecode.com/files/unar1.7_src.zip'
+  version '1.7'
+  sha1 'e34760d3806fbf3f1358485ccadf51bd5c7f81be'
 
   head 'https://code.google.com/p/theunarchiver/' , :using => :hg
 
@@ -29,5 +29,10 @@ class Unar < Formula
       man1.install "lsar.1", "unar.1"
       bash_completion.install "unar.bash_completion", "lsar.bash_completion"
     end
+  end
+
+  def test
+    system bin/'unar', '--version'
+    system bin/'lsar', '--version'
   end
 end

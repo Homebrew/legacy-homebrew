@@ -2,8 +2,8 @@ require 'formula'
 
 class Libnfc < Formula
   homepage 'http://www.libnfc.org/'
-  url 'http://libnfc.googlecode.com/files/libnfc-1.7.0-rc6.tar.gz'
-  sha1 'c4ff27dd126fad013297ea035a5f5a1fb02d8f33'
+  url 'http://libnfc.googlecode.com/files/libnfc-1.7.0-rc7.tar.gz'
+  sha1 '6ceb5e1ab810f49fadff9c5e2ecb8bf28a611c56'
 
   depends_on 'pkg-config' => :build
   depends_on 'libusb-compat'
@@ -45,10 +45,10 @@ index ec9e2fc..41797b2 100644
  /**
   * @macro HAL
   * @brief Execute corresponding driver function if exists.
-diff --git a/libnfc/buses/uart_posix.c b/libnfc/buses/uart_posix.c
+diff --git a/libnfc/buses/uart.c b/libnfc/buses/uart.c
 index 7b687c1..686f9ed 100644
---- a/libnfc/buses/uart_posix.c
-+++ b/libnfc/buses/uart_posix.c
+--- a/libnfc/buses/uart.c
++++ b/libnfc/buses/uart.c
 @@ -46,7 +46,7 @@
  #define LOG_CATEGORY "libnfc.bus.uart"
 

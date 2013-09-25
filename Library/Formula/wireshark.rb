@@ -2,9 +2,17 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.0.tar.bz2'
-  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.0.tar.bz2'
-  sha1 'c78a5d5e589edc8ebc702eb00a284ccbca7721bc'
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.2.tar.bz2'
+  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.2.tar.bz2'
+  sha1 '1f8f877f17dea23e1cf2bafeef0f71323df43521'
+
+  head do
+    url 'http://anonsvn.wireshark.org/wireshark/trunk/', :using => :svn
+
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
 
   option 'with-x', 'Include X11 support'
   option 'with-qt', 'Use QT for GUI instead of GTK+'
@@ -29,11 +37,14 @@ class Wireshark < Formula
   end
 
   def install
+    system "./autogen.sh" if build.head?
+
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--with-gnutls",
             "--with-ssl"]
 
+    args << "--disable-warnings-as-errors" if build.head?
     args << "--disable-wireshark" unless build.with? "x" or build.with? "qt"
     args << "--disable-gtktest" unless build.with? "x"
     args << "--with-qt" if build.with? "qt"

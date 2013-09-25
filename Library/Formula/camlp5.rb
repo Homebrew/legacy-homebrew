@@ -2,8 +2,8 @@ require 'formula'
 
 class Camlp5 < Formula
   homepage 'http://pauillac.inria.fr/~ddr/camlp5/'
-  url 'http://pauillac.inria.fr/~ddr/camlp5/distrib/src/camlp5-6.09.tgz'
-  sha1 '0a4d96d5560e2e073f2fcb9e58914e424de00fc6'
+  url 'http://pauillac.inria.fr/~ddr/camlp5/distrib/src/camlp5-6.11.tgz'
+  sha1 '4649a2850869d624182bfb5a02f60800ae35b935'
 
   depends_on 'objective-caml'
 

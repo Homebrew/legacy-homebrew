@@ -1,7 +1,7 @@
 require 'formula'
 
 class Clutter < Formula
-  homepage 'http://clutter-project.org/'
+  homepage 'https://wiki.gnome.org/Clutter'
   url 'http://ftp.gnome.org/pub/gnome/sources/clutter/1.12/clutter-1.12.2.tar.xz'
   sha256 '27a8c4495099ea33de39c2d9a911a2c9e00ffa4dcc8f94fafedbcc752c0ddf13'
 

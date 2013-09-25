@@ -14,8 +14,7 @@ class Duti < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    real_arch = MacOS.prefer_64_bit? ? "x86_64" : "i386"
-    inreplace "Makefile", "@@ARCH@@", real_arch
+    inreplace "Makefile", "@@ARCH@@", MacOS.preferred_arch
     system "make install"
   end
 

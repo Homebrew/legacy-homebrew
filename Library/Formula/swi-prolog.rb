@@ -2,12 +2,12 @@ require 'formula'
 
 class SwiProlog < Formula
   homepage 'http://www.swi-prolog.org/'
-  url 'http://www.swi-prolog.org/download/stable/src/pl-6.2.6.tar.gz'
-  sha256 '9412f0753a61c30dbcf1afac01fe7c9168002854709e00e09c21f959e1232146'
+  url 'http://www.swi-prolog.org/download/stable/src/pl-6.4.1.tar.gz'
+  sha1 '37308983d438e364407b89e835f77a31e5474913'
 
   devel do
-    url 'http://www.swi-prolog.org/download/devel/src/pl-6.3.17.tar.gz'
-    sha1 '93bf9a0f824a3d1ce8a189a37d0c186de6479d42'
+    url 'http://www.swi-prolog.org/download/devel/src/pl-6.5.2.tar.gz'
+    sha1 'fa448e1e59f901966de533140ce8bf6649e51b03'
   end
 
   head 'git://www.swi-prolog.org/home/pl/git/pl.git'
@@ -26,7 +26,7 @@ class SwiProlog < Formula
   end
 
   # 10.5 versions of these are too old
-  if MacOS.version == :leopard
+  if MacOS.version <= :leopard
     depends_on 'fontconfig'
     depends_on 'expat'
   end

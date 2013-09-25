@@ -10,7 +10,7 @@ module Homebrew extend self
   def test
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
-    ENV.extend(HomebrewEnvExtension)
+    ENV.extend(Stdenv)
     ENV.setup_build_environment
 
     ARGV.formulae.each do |f|

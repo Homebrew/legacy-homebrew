@@ -4,9 +4,13 @@ require 'utils/json'
 class AbstractDownloadStrategy
   attr_accessor :local_bottle_path
 
-  def initialize name, package
-    @url = package.url
-    specs = package.specs
+  attr_reader :name, :resource
+
+  def initialize name, resource
+    @name = name
+    @resource = resource
+    @url  = resource.url
+    specs = resource.specs
     @spec, @ref = specs.dup.shift unless specs.empty?
   end
 
@@ -38,36 +42,40 @@ class AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
+    @mirrors = resource.mirrors
+  end
 
-    if name.to_s.empty? || name == '__UNKNOWN__'
-      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{basename_without_params}")
+  def tarball_path
+    @tarball_path ||= if name.to_s.empty? || name == '__UNKNOWN__'
+      Pathname.new("#{HOMEBREW_CACHE}/#{basename_without_params}")
     else
-      @tarball_path = Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{package.version}#{ext}")
+      Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
     end
+  end
 
-    @mirrors = package.mirrors
-    @temporary_path = Pathname.new("#@tarball_path.incomplete")
+  def temporary_path
+    @temporary_path ||= Pathname.new("#{tarball_path}.incomplete")
   end
 
   def cached_location
-    @tarball_path
+    tarball_path
   end
 
   def downloaded_size
-    @temporary_path.size? or 0
+    temporary_path.size? or 0
   end
 
   # Private method, can be overridden if needed.
   def _fetch
-    curl @url, '-C', downloaded_size, '-o', @temporary_path
+    curl @url, '-C', downloaded_size, '-o', temporary_path
   end
 
   def fetch
     ohai "Downloading #{@url}"
-    unless @tarball_path.exist?
-      had_incomplete_download = @temporary_path.exist?
+    unless tarball_path.exist?
+      had_incomplete_download = temporary_path.exist?
       begin
         _fetch
       rescue ErrorDuringExecution
@@ -75,16 +83,16 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
         # try wiping the incomplete download and retrying once
         if $?.exitstatus == 33 && had_incomplete_download
           ohai "Trying a full download"
-          @temporary_path.unlink
+          temporary_path.unlink
           had_incomplete_download = false
           retry
         else
           raise CurlDownloadStrategyError, "Download failed: #{@url}"
         end
       end
-      ignore_interrupts { @temporary_path.rename(@tarball_path) }
+      ignore_interrupts { temporary_path.rename(tarball_path) }
     else
-      puts "Already downloaded: #{@tarball_path}"
+      puts "Already downloaded: #{tarball_path}"
     end
   rescue CurlDownloadStrategyError
     raise if @mirrors.empty?
@@ -92,57 +100,59 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     @url = @mirrors.shift
     retry
   else
-    @tarball_path
+    tarball_path
   end
 
   def stage
-    ohai "Pouring #{File.basename(@tarball_path)}" if @tarball_path.to_s.match bottle_regex
+    ohai "Pouring #{File.basename(tarball_path)}" if tarball_path.to_s.match bottle_regex
 
-    case @tarball_path.compression_type
+    case tarball_path.compression_type
     when :zip
-      with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, @tarball_path }
+      with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, tarball_path }
       chdir
     when :gzip_only
       # gunzip writes the compressed data in the location of the original,
       # regardless of the current working directory; the only way to
       # write elsewhere is to use the stdout
       with_system_path do
-        data = `gunzip -f "#{@tarball_path}" -c`
-        File.open(File.basename(basename_without_params, '.gz'), 'w') do |f|
-          f.write data
+        target = File.basename(basename_without_params, ".gz")
+
+        IO.popen("gunzip -f '#{tarball_path}' -c") do |pipe|
+          File.open(target, "wb") do |f|
+            buf = ""
+            f.write(buf) while pipe.read(1024, buf)
+          end
         end
       end
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
-      with_system_path { safe_system 'tar', 'xf', @tarball_path }
+      with_system_path { safe_system 'tar', 'xf', tarball_path }
       chdir
     when :xz
       raise "You must install XZutils: brew install xz" unless File.executable? xzpath
-      with_system_path { safe_system "#{xzpath} -dc \"#{@tarball_path}\" | tar xf -" }
+      with_system_path { safe_system "#{xzpath} -dc \"#{tarball_path}\" | tar xf -" }
       chdir
     when :pkg
-      safe_system '/usr/sbin/pkgutil', '--expand', @tarball_path, basename_without_params
+      safe_system '/usr/sbin/pkgutil', '--expand', tarball_path, basename_without_params
       chdir
     when :rar
       raise "You must install unrar: brew install unrar" unless which "unrar"
-      quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, @tarball_path
+      quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, tarball_path
     when :p7zip
       raise "You must install 7zip: brew install p7zip" unless which "7zr"
-      safe_system '7zr', 'x', @tarball_path
+      safe_system '7zr', 'x', tarball_path
     else
-      # we are assuming it is not an archive, use original filename
-      # this behaviour is due to ScriptFileFormula expectations
-      # So I guess we should cp, but we mv, for this historic reason
-      # HOWEVER if this breaks some expectation you had we *will* change the
-      # behaviour, just open an issue at github
-      # We also do this for jar files, as they are in fact zip files, but
-      # we don't want to unzip them
-      FileUtils.cp @tarball_path, basename_without_params
+      FileUtils.cp tarball_path, basename_without_params
     end
   end
 
   private
+
+  def curl(*args)
+    args << '--connect-timeout' << '5' unless @mirrors.empty?
+    super
+  end
 
   def xzpath
     "#{HOMEBREW_PREFIX}/opt/xz/bin/xz"
@@ -184,7 +194,7 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
     url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
 
     ohai "Best Mirror #{url}"
-    curl url, '-C', downloaded_size, '-o', @temporary_path
+    curl url, '-C', downloaded_size, '-o', temporary_path
   rescue IndexError, Utils::JSON::Error
     raise "Couldn't determine mirror. Try again later."
   end
@@ -195,7 +205,14 @@ end
 class CurlPostDownloadStrategy < CurlDownloadStrategy
   def _fetch
     base_url,data = @url.split('?')
-    curl base_url, '-d', data, '-C', downloaded_size, '-o', @temporary_path
+    curl base_url, '-d', data, '-C', downloaded_size, '-o', temporary_path
+  end
+end
+
+# Download from an SSL3-only host.
+class CurlSSL3DownloadStrategy < CurlDownloadStrategy
+  def _fetch
+    curl @url, '-3', '-C', downloaded_size, '-o', temporary_path
   end
 end
 
@@ -203,7 +220,7 @@ end
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
   def stage
-    FileUtils.cp @tarball_path, basename_without_params
+    FileUtils.cp tarball_path, basename_without_params
   end
 end
 
@@ -212,17 +229,20 @@ end
 # the formula.
 class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   def _fetch
-    curl @url, '--insecure', '-C', downloaded_size, '-o', @temporary_path
+    curl @url, '--insecure', '-C', downloaded_size, '-o', temporary_path
   end
 end
 
 # This strategy extracts our binary packages.
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
-    @tarball_path = HOMEBREW_CACHE/"#{name}-#{package.version}#{ext}"
     mirror = ENV['HOMEBREW_SOURCEFORGE_MIRROR']
     @url = "#{@url}?use_mirror=#{mirror}" if mirror
+  end
+
+  def tarball_path
+    @tarball_path ||= HOMEBREW_CACHE/"#{name}-#{resource.version}#{ext}"
   end
 end
 
@@ -234,8 +254,44 @@ class LocalBottleDownloadStrategy < CurlDownloadStrategy
   end
 end
 
+# S3DownloadStrategy downloads tarballs from AWS S3.
+# To use it, add ":using => S3DownloadStrategy" to the URL section of your
+# formula.  This download strategy uses AWS access tokens (in the
+# environment variables AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY)
+# to sign the request.  This strategy is good in a corporate setting,
+# because it lets you use a private S3 bucket as a repo for internal
+# distribution.  (It will work for public buckets as well.)
+class S3DownloadStrategy < CurlDownloadStrategy
+  def _fetch
+    # Put the aws gem requirement here (vs top of file) so it's only
+    # a dependency of S3 users, not all Homebrew users
+    require 'rubygems'
+    begin
+      require 'aws-sdk'
+    rescue LoadError
+      onoe "Install the aws-sdk gem into the gem repo used by brew."
+      raise
+    end
+
+    if @url !~ %r[^https?://+([^.]+).s3.amazonaws.com/+(.+)$] then
+      raise "Bad S3 URL: " + @url
+    end
+    (bucket,key) = $1,$2
+
+    obj = AWS::S3.new().buckets[bucket].objects[key]
+    begin
+      s3url = obj.url_for(:get)
+    rescue AWS::Errors::MissingCredentialsError
+      ohai "AWS credentials missing, trying public URL instead."
+      s3url = obj.public_url
+    end
+
+    curl s3url, '-C', downloaded_size, '-o', @temporary_path
+  end
+end
+
 class SubversionDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
     @@svn ||= 'svn'
 
@@ -281,7 +337,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
   end
 
   def get_externals
-    `'#{shell_quote(svn)}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
+    `'#{shell_quote(@@svn)}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
       name, url = line.split(/\s+/)
       yield name, url
     end
@@ -338,7 +394,7 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
 end
 
 class GitDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
     @@git ||= 'git'
 
@@ -493,7 +549,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 end
 
 class CVSDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
@@ -549,7 +605,7 @@ class CVSDownloadStrategy < AbstractDownloadStrategy
 end
 
 class MercurialDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
@@ -602,7 +658,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
 end
 
 class BazaarDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
 
     if name.to_s.empty? || name == '__UNKNOWN__'
@@ -656,7 +712,7 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
 end
 
 class FossilDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, package
+  def initialize name, resource
     super
     if name.to_s.empty? || name == '__UNKNOWN__'
       raise NotImplementedError, "strategy requires a name parameter"
@@ -724,6 +780,7 @@ class DownloadStrategyDetector
     when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
     when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
     when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
+    when %r[^https?://(.+?\.)?sourceforge\.net/hgweb/] then MercurialDownloadStrategy
     when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
     when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
       # Common URL patterns
@@ -744,6 +801,7 @@ class DownloadStrategyDetector
     when :hg then MercurialDownloadStrategy
     when :nounzip then NoUnzipCurlDownloadStrategy
     when :post then CurlPostDownloadStrategy
+    when :ssl3 then CurlSSL3DownloadStrategy
     when :svn then SubversionDownloadStrategy
     else
       raise "Unknown download strategy #{strategy} was requested."

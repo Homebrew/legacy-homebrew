@@ -1,21 +1,10 @@
 require 'formula'
 
-class Distribute < Formula
-  url 'https://pypi.python.org/packages/source/d/distribute/distribute-0.6.45.tar.gz'
-  sha1 '55b15037f2222828496a96f38447c0fa0228df85'
-end
-
-class Pip < Formula
-  url 'https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz'
-  sha1 '9c70d314e5dea6f41415af814056b0f63c3ffd14'
-end
-
 class Python < Formula
   homepage 'http://www.python.org'
+  head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
   url 'http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2'
   sha1 '6cfada1a739544a6fa7f2601b500fba02229656b'
-
-  head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
 
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build (for devs; may fail)'
@@ -31,11 +20,25 @@ class Python < Formula
   depends_on 'gdbm' => :recommended
   depends_on 'openssl' if build.with? 'brewed-openssl'
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
+  depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
+
+  skip_clean 'bin/pip', 'bin/pip-2.7'
+  skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
+
+  resource 'setuptools' do
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.4.tar.gz'
+    sha1 'b8bf9c2b8a114045598f0e16681d6a63a4d6cdf9'
+  end
+
+  resource 'pip' do
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
+    sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
+  end
 
   def patches
     p = []
     p << 'https://gist.github.com/paxswill/5402840/raw/75646d5860685c8be98858288d1772f64d6d5193/pythondtrace-patch.diff' if build.with? 'dtrace'
-    # Patch to disable the search for Tk.frameworked, since homebrew's Tk is
+    # Patch to disable the search for Tk.framework, since Homebrew's Tk is
     # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
     p << DATA if build.with? 'brewed-tk'
     p
@@ -53,9 +56,10 @@ class Python < Formula
   def install
     opoo 'The given option --with-poll enables a somewhat broken poll() on OS X (http://bugs.python.org/issue5154).' if build.with? 'poll'
 
-    # Unset these so that installing pip and distribute puts them where we want
+    # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
     ENV['PYTHONHOME'] = nil
+    ENV['PYTHONPATH'] = nil
 
     args = %W[
              --prefix=#{prefix}
@@ -90,10 +94,6 @@ class Python < Formula
       f.gsub! 'DEFAULT_FRAMEWORK_FALLBACK = [', "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
     end
 
-    # Fix http://bugs.python.org/issue18071
-    inreplace "./Lib/_osx_support.py", "compiler_so = list(compiler_so)",
-              "if isinstance(compiler_so, (str,unicode)): compiler_so = compiler_so.split()"
-
     if build.with? 'brewed-tk'
       ENV.append 'CPPFLAGS', "-I#{Formula.factory('tcl-tk').opt_prefix}/include"
       ENV.append 'LDFLAGS', "-L#{Formula.factory('tcl-tk').opt_prefix}/lib"
@@ -125,17 +125,26 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # We ship distribute and pip and reuse the PythonInstalled
+    # We ship setuptools and pip and reuse the PythonDependency
     # Requirement here to write the sitecustomize.py
-    py = PythonInstalled.new("2.7")
+    py = PythonDependency.new("2.7")
     py.binary = bin/'python'
     py.modify_build_environment
+
+    # Remove old setuptools installations that may still fly around and be
+    # listed in the easy_install.pth. This can break setuptools build with
+    # zipimport.ZipImportError: bad local file header
+    # setuptools-0.9.5-py3.3.egg
+    rm_rf Dir["#{py.global_site_packages}/setuptools*"]
+    rm_rf Dir["#{py.global_site_packages}/distribute*"]
+
     setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Distribute.new.brew { system "#{bin}/python2", *setup_args }
-    Pip.new.brew { system "#{bin}/python2", *setup_args }
 
-    # And now we write the distuitsl.cfg
+    resource('setuptools').stage { system py.binary, *setup_args }
+    resource('pip').stage { system py.binary, *setup_args }
+
+    # And now we write the distutils.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"
     cfg.delete if cfg.exist?
     cfg.write <<-EOF.undent
@@ -175,7 +184,7 @@ class Python < Formula
       ldflags += " -L#{Formula.factory('tcl-tk').opt_prefix}/lib"
     end
     unless MacOS::CLT.installed?
-      # Help Python's build system (distribute/pip) to build things on Xcode-only systems
+      # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
       cflags += " -isysroot #{MacOS.sdk_path}"
       ldflags += " -isysroot #{MacOS.sdk_path}"
@@ -226,8 +235,8 @@ class Python < Formula
       Python demo
         #{HOMEBREW_PREFIX}/share/python/Extras
 
-      Distribute and Pip have been installed. To update them
-        pip install --upgrade distribute
+      Setuptools and Pip have been installed. To update them
+        pip install --upgrade setuptools
         pip install --upgrade pip
 
       To symlink "Idle" and the "Python Launcher" to ~/Applications
@@ -253,6 +262,29 @@ class Python < Formula
 end
 
 __END__
+# http://bugs.python.org/issue18071 (Remove this hung for 2.7.6!)
+diff --git a/Lib/_osx_support.py b/Lib/_osx_support.py
+--- a/Lib/_osx_support.py
++++ b/Lib/_osx_support.py
+@@ -53,7 +53,7 @@ def _find_executable(executable, path=No
+
+
+ def _read_output(commandstring):
+-    """Output from succesful command execution or None"""
++    """Output from successful command execution or None"""
+     # Similar to os.popen(commandstring, "r").read(),
+     # but without actually using os.popen because that
+     # function is not usable during python bootstrap.
+@@ -68,7 +68,7 @@ def _read_output(commandstring):
+
+     with contextlib.closing(fp) as fp:
+         cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
+-        return fp.read().decode('utf-8').strip() if not os.system(cmd) else None
++        return fp.read().strip() if not os.system(cmd) else None
+
+
+# X11 header find fix (and let homebrew handle this.)
+
 diff --git a/setup.py b/setup.py
 index 716f08e..66114ef 100644
 --- a/setup.py

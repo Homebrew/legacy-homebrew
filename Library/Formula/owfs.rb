@@ -2,18 +2,11 @@ require 'formula'
 
 class Owfs < Formula
   homepage 'http://owfs.org/'
-  url 'http://downloads.sourceforge.net/project/owfs/owfs/2.9p0/owfs-2.9p0.tar.gz'
-  version '2.9p0'
-  sha1 '21b28222e36aca35f62db17e84b0fdf3139aae60'
+  url 'http://downloads.sourceforge.net/project/owfs/owfs/2.9p1/owfs-2.9p1.tar.gz'
+  version '2.9p1'
+  sha1 'd431ae5b8eec6988f8ee1e401325eba845cf3696'
 
   depends_on 'libusb-compat'
-
-  # Fixes inline functions in clang.
-  # Reported upstream:
-  # http://sourceforge.net/mailarchive/message.php?msg_id=30219156
-  def patches
-    DATA if ENV.compiler == :clang
-  end
 
   def install
     # Fix include of getline and strsep to avoid crash
@@ -39,45 +32,3 @@ class Owfs < Formula
     system "#{bin}/owserver", "--version"
   end
 end
-
-
-__END__
-
-diff --git a/module/owlib/src/include/rwlock.h b/module/owlib/src/include/rwlock.h
-index 29246ea..57fce7a 100644
---- a/module/owlib/src/include/rwlock.h
-+++ b/module/owlib/src/include/rwlock.h
-@@ -26,10 +26,10 @@ typedef struct {
- } my_rwlock_t;
-
- void my_rwlock_init(my_rwlock_t * rwlock);
--inline void my_rwlock_write_lock(my_rwlock_t * rwlock);
--inline void my_rwlock_write_unlock(my_rwlock_t * rwlock);
--inline void my_rwlock_read_lock(my_rwlock_t * rwlock);
--inline void my_rwlock_read_unlock(my_rwlock_t * rwlock);
-+void my_rwlock_write_lock(my_rwlock_t * rwlock);
-+void my_rwlock_write_unlock(my_rwlock_t * rwlock);
-+void my_rwlock_read_lock(my_rwlock_t * rwlock);
-+void my_rwlock_read_unlock(my_rwlock_t * rwlock);
- void my_rwlock_destroy(my_rwlock_t * rwlock);
-
- #else /* not OW_MT */
-diff --git a/module/ownet/c/src/include/rwlock.h b/module/ownet/c/src/include/rwlock.h
-index 28fc598..c5e6188 100644
---- a/module/ownet/c/src/include/rwlock.h
-+++ b/module/ownet/c/src/include/rwlock.h
-@@ -26,10 +26,10 @@ typedef struct {
- } my_rwlock_t;
-
- void my_rwlock_init(my_rwlock_t * rwlock);
--inline void my_rwlock_write_lock(my_rwlock_t * rwlock);
--inline void my_rwlock_write_unlock(my_rwlock_t * rwlock);
--inline void my_rwlock_read_lock(my_rwlock_t * rwlock);
--inline void my_rwlock_read_unlock(my_rwlock_t * rwlock);
-+void my_rwlock_write_lock(my_rwlock_t * rwlock);
-+void my_rwlock_write_unlock(my_rwlock_t * rwlock);
-+void my_rwlock_read_lock(my_rwlock_t * rwlock);
-+void my_rwlock_read_unlock(my_rwlock_t * rwlock);
- void my_rwlock_destroy(my_rwlock_t * rwlock);
-
- #endif             /* OW_MT */

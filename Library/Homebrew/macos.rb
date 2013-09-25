@@ -18,11 +18,16 @@ module MacOS extend self
     # Give the name of the binary you look for as a string to this method
     # in order to get the full path back as a Pathname.
     (@locate ||= {}).fetch(tool.to_s) do
-      @locate[tool.to_s] = if File.executable? "/usr/bin/#{tool}"
-        Pathname.new "/usr/bin/#{tool}"
+      @locate[tool.to_s] = if File.executable?(path = "/usr/bin/#{tool}")
+        Pathname.new path
+      # Homebrew GCCs most frequently; much faster to check this before xcrun
+      # This also needs to be queried if xcrun won't work, e.g. CLT-only
+      elsif File.executable?(path = "#{HOMEBREW_PREFIX}/bin/#{tool}")
+        Pathname.new path
       else
-        # If the tool isn't in /usr/bin, then we first try to use xcrun to find
-        # it. If it's not there, or xcode-select is misconfigured, we have to
+        # If the tool isn't in /usr/bin or from Homebrew,
+        # then we first try to use xcrun to find it.
+        # If it's not there, or xcode-select is misconfigured, we have to
         # look in dev_tools_path, and finally in xctoolchain_path, because the
         # tools were split over two locations beginning with Xcode 4.3+.
         xcrun_path = unless Xcode.bad_xcode_select_path?
@@ -40,23 +45,24 @@ module MacOS extend self
   end
 
   def dev_tools_path
-    @dev_tools_path ||= \
-    if File.exist? MacOS::CLT::STANDALONE_PKG_PATH and
-       File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/cc" and
-       File.exist? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin/make"
+    @dev_tools_path ||= if tools_in_prefix? CLT::STANDALONE_PKG_PATH
       # In 10.9 the CLT moved from /usr into /Library/Developer/CommandLineTools.
-      Pathname.new "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin"
-    elsif File.exist? "/usr/bin/cc" and File.exist? "/usr/bin/make"
+      Pathname.new "#{CLT::STANDALONE_PKG_PATH}/usr/bin"
+    elsif tools_in_prefix? "/"
       # probably a safe enough assumption (the unix way)
       Pathname.new "/usr/bin"
-    # Note that the exit status of system "xcrun foo" isn't always accurate
     elsif not Xcode.bad_xcode_select_path? and not `/usr/bin/xcrun -find make 2>/dev/null`.empty?
+      # Note that the exit status of system "xcrun foo" isn't always accurate
       # Wherever "make" is there are the dev tools.
       Pathname.new(`/usr/bin/xcrun -find make`.chomp).dirname
     elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
       # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
       Pathname.new "#{Xcode.prefix}/usr/bin"
     end
+  end
+
+  def tools_in_prefix?(prefix)
+    %w{cc make}.all? { |tool| File.executable? "#{prefix}/usr/bin/#{tool}" }
   end
 
   def xctoolchain_path
@@ -107,43 +113,52 @@ module MacOS extend self
   end
 
   def gcc_40_build_version
-    @gcc_40_build_version ||= if locate("gcc-4.0")
-      `#{locate("gcc-4.0")} --version` =~ /build (\d{4,})/
-      $1.to_i
-    end
+    @gcc_40_build_version ||=
+      if (path = locate("gcc-4.0"))
+        %x{#{path} --version}[/build (\d{4,})/, 1].to_i
+      end
   end
   alias_method :gcc_4_0_build_version, :gcc_40_build_version
 
   def gcc_42_build_version
-    @gcc_42_build_version ||= if locate("gcc-4.2") \
-      and not locate("gcc-4.2").realpath.basename.to_s =~ /^llvm/
-      `#{locate("gcc-4.2")} --version` =~ /build (\d{4,})/
-      $1.to_i
-    end
+    @gcc_42_build_version ||=
+      if (path = locate("gcc-4.2")) && path.realpath.basename.to_s !~ /^llvm/
+        %x{#{path} --version}[/build (\d{4,})/, 1].to_i
+      end
   end
   alias_method :gcc_build_version, :gcc_42_build_version
 
   def llvm_build_version
     # for Xcode 3 on OS X 10.5 this will not exist
     # NOTE may not be true anymore but we can't test
-    @llvm_build_version ||= if locate("llvm-gcc")
-      `#{locate("llvm-gcc")} --version` =~ /LLVM build (\d{4,})/
-      $1.to_i
-    end
+    @llvm_build_version ||=
+      if (path = locate("llvm-gcc")) && path.realpath.basename.to_s !~ /^clang/
+        %x{#{path} --version}[/LLVM build (\d{4,})/, 1].to_i
+      end
   end
 
   def clang_version
-    @clang_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ /(?:clang|LLVM) version (\d\.\d)/
-      $1
-    end
+    @clang_version ||=
+      if (path = locate("clang"))
+        %x{#{path} --version}[/(?:clang|LLVM) version (\d\.\d)/, 1]
+      end
   end
 
   def clang_build_version
-    @clang_build_version ||= if locate("clang")
-      `#{locate("clang")} --version` =~ %r[clang-(\d{2,})]
-      $1.to_i
-    end
+    @clang_build_version ||=
+      if (path = locate("clang"))
+        %x{#{path} --version}[%r[clang-(\d{2,})], 1].to_i
+      end
+  end
+
+  def non_apple_gcc_version(cc)
+    return unless path = locate(cc)
+
+    ivar = "@#{cc.gsub(/(-|\.)/, '')}_version"
+    return instance_variable_get(ivar) if instance_variable_defined?(ivar)
+
+    `#{path} --version` =~ /gcc-\d.\d \(GCC\) (\d\.\d\.\d)/
+    instance_variable_set(ivar, $1)
   end
 
   # See these issues for some history:
@@ -181,6 +196,14 @@ module MacOS extend self
 
   def prefer_64_bit?
     Hardware::CPU.is_64_bit? and version != :leopard
+  end
+
+  def preferred_arch
+    @preferred_arch ||= if prefer_64_bit? 
+      Hardware::CPU.arch_64_bit
+    else
+      Hardware::CPU.arch_32_bit
+    end
   end
 
   STANDARD_COMPILERS = {
@@ -234,7 +257,9 @@ module MacOS extend self
   end
 
   def pkgutil_info id
-    `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
+    (@pkginfo ||= {}).fetch(id.to_s) do
+      @pkginfo[id.to_s] = `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
+    end
   end
 end
 

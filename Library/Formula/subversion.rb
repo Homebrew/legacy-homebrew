@@ -2,8 +2,15 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.0.tar.bz2'
-  sha1 '45d227511507c5ed99e07f9d42677362c18b364c'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.3.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.3.tar.bz2'
+  sha1 'e328e9f1c57f7c78bea4c3af869ec5d4503580cf'
+
+  bottle do
+    sha1 '9171c9971647e04958251d85eee58e4a23ef1584' => :mountain_lion
+    sha1 '9370e1ba8d3204b3d896a85ace719eb3613bb642' => :lion
+    sha1 '1373b9020d7e752e29517ba27670c8cdd5ec4520' => :snow_leopard
+  end
 
   option :universal
   option 'java', 'Build Java bindings'
@@ -21,19 +28,12 @@ class Subversion < Formula
   depends_on :libtool if build.include? 'ruby'
 
   # If building bindings, allow non-system interpreters
-  env :userpaths if (build.include? 'perl') or (build.include? 'ruby')
+  env :userpaths if build.include? 'perl' or build.include? 'ruby'
 
+  # One patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags},
+  # and another one to put the svn-tools directory into libexec instead of bin
   def patches
-    ps = []
-
-    # Patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
-    if build.include? 'perl'
-      ps << DATA
-    end
-
-    unless ps.empty?
-      { :p0 => ps }
-    end
+    { :p0 => DATA }
   end
 
   # When building Perl or Ruby bindings, need to use a compiler that
@@ -42,10 +42,10 @@ class Subversion < Formula
   fails_with :clang do
     build 318
     cause "core.c:1: error: bad value (native) for -march= switch"
-  end if (build.include? 'perl') or (build.include? 'ruby')
+  end if build.include? 'perl' or build.include? 'ruby'
 
   def apr_bin
-    superbin or "/usr/bin"
+    Superenv.bin or "/usr/bin"
   end
 
   def install
@@ -73,7 +73,7 @@ class Subversion < Formula
         puts "  brew install subversion --universal --java"
       end
 
-      unless (ENV["JAVA_HOME"] or "").empty?
+      ENV.fetch('JAVA_HOME') do
         opoo "JAVA_HOME is set. Try unsetting it if JNI headers cannot be found."
       end
     end
@@ -113,14 +113,6 @@ class Subversion < Formula
 
     system "make tools"
     system "make install-tools"
-    %w[
-      svn-populate-node-origins-index
-      svn-rep-sharing-stats
-      svnauthz-validate
-      svnraisetreeconflict
-    ].each do |prog|
-      bin.install_symlink bin/"svn-tools"/prog
-    end
 
     python do
       system "make swig-py"
@@ -130,11 +122,11 @@ class Subversion < Formula
     if build.include? 'perl'
       # Remove hard-coded ppc target, add appropriate ones
       if build.universal?
-        arches = "-arch x86_64 -arch i386"
-      elsif MacOS.version == :leopard
-        arches = "-arch i386"
+        arches = Hardware::CPU.universal_archs.as_arch_flags
+      elsif MacOS.version <= :leopard
+        arches = "-arch #{Hardware::CPU.arch_32_bit}"
       else
-        arches = "-arch x86_64"
+        arches = "-arch #{Hardware::CPU.arch_64_bit}"
       end
 
       perl_core = Pathname.new(`perl -MConfig -e 'print $Config{archlib}'`)+'CORE'
@@ -162,8 +154,17 @@ class Subversion < Formula
     end
   end
 
+  test do
+    system "#{bin}/svnadmin", 'create', 'test'
+    system "#{bin}/svnadmin", 'verify', 'test'
+  end
+
   def caveats
-    s = ""
+    s = <<-EOS.undent
+      svntools have been installed to:
+        #{opt_prefix}/libexec
+
+    EOS
 
     s += python.standard_caveats if python
 
@@ -216,3 +217,15 @@ __END__
      INC  => join(' ', $includes, $cppflags,
                   " -I$swig_srcdir/perl/libsvn_swig_perl",
                   " -I$svnlib_srcdir/include",
+
+--- Makefile.in~ 2013-07-25 16:55:27.000000000 +0200
++++ Makefile.in 2013-07-25 17:02:02.000000000 +0200
+@@ -85,7 +85,7 @@
+ swig_pydir_extra = @libdir@/svn-python/svn
+ swig_pldir = @libdir@/svn-perl
+ swig_rbdir = $(SWIG_RB_SITE_ARCH_DIR)/svn/ext
+-toolsdir = @bindir@/svn-tools
++toolsdir = @libexecdir@/svn-tools
+
+ javahl_javadir = @libdir@/svn-javahl
+ javahl_javahdir = @libdir@/svn-javahl/include

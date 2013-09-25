@@ -2,8 +2,8 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.31/kvm-tarbake-jaunty-x86/mariadb-5.5.31.tar.gz'
-  sha1 '45268a0603db8674ecabbc510ad0fcad88a730f7'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.32/kvm-tarbake-jaunty-x86/mariadb-5.5.32.tar.gz'
+  sha1 'cc468beebf3b27439d29635a4e8aec8314f27175'
 
   devel do
     url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.3/kvm-tarbake-jaunty-x86/mariadb-10.0.3.tar.gz'
@@ -23,19 +23,14 @@ class Mariadb < Formula
   option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
   option 'enable-local-infile', 'Build with local infile loading support'
 
-  conflicts_with 'mysql',
-    :because => "mariadb and mysql install the same binaries."
-
-  conflicts_with 'percona-server',
-    :because => "mariadb and percona-server install the same binaries."
-
-  conflicts_with 'mysql-cluster',
-    :because => "mariadb and mysql-cluster install the same binaries."
+  conflicts_with 'mysql', 'mysql-cluster', 'percona-server',
+    :because => "mariadb, mysql, and percona install the same binaries."
 
   env :std if build.universal?
 
   fails_with :clang do
-    build 421
+    build 425
+    cause "error: implicit instantiation of undefined template 'boost::STATIC_ASSERTION_FAILURE<false>'"
   end
 
   def install
@@ -78,7 +73,7 @@ class Mariadb < Formula
     cmake_args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    cmake_args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
+    cmake_args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
 
     # Build with local infile loading support
     cmake_args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'

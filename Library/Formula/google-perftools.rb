@@ -3,8 +3,8 @@ require 'formula'
 class GooglePerftools < Formula
   # TODO rename to gperftools when renames are supported
   homepage 'http://code.google.com/p/gperftools/'
-  url 'http://gperftools.googlecode.com/files/gperftools-2.0.tar.gz'
-  sha1 'da7181a7ba9b5ee7302daf6c16e886c179fe8d1b'
+  url 'http://gperftools.googlecode.com/files/gperftools-2.1.tar.gz'
+  sha1 'b799b99d9f021988bbc931db1c21b2f94826d4f0'
 
   fails_with :llvm do
     build 2326

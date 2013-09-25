@@ -22,6 +22,8 @@ class Pygtksourceview < Formula
   end
 
   test do
-    system "python", "-c", "import gtksourceview2"
+    python do
+      system python, "-c", "import gtksourceview2"
+    end
   end
 end

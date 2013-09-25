@@ -1,16 +1,15 @@
 require 'formula'
 
-class AdbBashCompletion < Formula
-  url 'https://raw.github.com/CyanogenMod/android_sdk/3bf0a01ef66a9b99149ba3faaf34a1362581dd01/bash_completion/adb.bash'
-  sha1 '8e7dad45b8c98c359516d4a818a9090125bc6f7a'
-  version 'cyanogenmod_jellybean'
-end
-
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r22.0.1-macosx.zip'
-  version 'r22.0.1'
-  sha1 '59365847b63792cafc3c3d8134c6392c86f9bf72'
+  url 'http://dl.google.com/android/android-sdk_r22.2-macosx.zip'
+  version '22.2'
+  sha1 'd78f7af8bb5737224261e064a34e5863b72533d1'
+
+  resource 'completion' do
+    url 'https://raw.github.com/CyanogenMod/android_sdk/3bf0a01ef66a9b99149ba3faaf34a1362581dd01/bash_completion/adb.bash'
+    sha1 '8e7dad45b8c98c359516d4a818a9090125bc6f7a'
+  end
 
   # TODO docs and platform-tools
   # See the long comment below for the associated problems
@@ -21,8 +20,7 @@ class AndroidSdk < Formula
   skip_clean var_dirs
 
   def install
-    mv 'SDK Readme.txt', prefix/'README'
-    mv 'tools', prefix
+    prefix.install 'tools', 'SDK Readme.txt' => 'README'
 
     %w[android apkbuilder ddms dmtracedump draw9patch etc1tool emulator
     emulator-arm emulator-x86 hierarchyviewer hprof-conv lint mksdcard
@@ -61,9 +59,7 @@ class AndroidSdk < Formula
       EOS
     end
 
-    AdbBashCompletion.new.brew do
-      bash_completion.install 'adb.bash' => 'adb-completion.bash'
-    end
+    bash_completion.install resource('completion').files('adb.bash' => 'adb-completion.bash')
   end
 
   def caveats; <<-EOS.undent

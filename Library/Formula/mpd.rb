@@ -2,8 +2,8 @@ require 'formula'
 
 class Mpd < Formula
   homepage 'http://www.musicpd.org/'
-  url 'http://www.musicpd.org/download/mpd/0.17/mpd-0.17.4.tar.bz2'
-  sha1 'e3a16b5d784c3699b151e72cfa58d0ea54a49b13'
+  url 'http://www.musicpd.org/download/mpd/0.17/mpd-0.17.5.tar.bz2'
+  sha1 '91e4d8d364a3db02e6f92676dd938880e5bb200a'
 
   head 'git://git.musicpd.org/master/mpd.git'
 
@@ -12,6 +12,7 @@ class Mpd < Formula
   option 'with-lame', 'Build with lame support (for MP3 encoding when streaming)'
   option 'with-two-lame', 'Build with two-lame support (for MP2 encoding when streaming)'
   option 'with-flac', 'Build with flac support (for Flac encoding when streaming)'
+  option 'with-vorbis', 'Build with vorbis support (for Ogg encoding)'
   option 'with-yajl', 'Build with yajl support (for playing from soundcloud)'
   if MacOS.version < :lion
     option 'with-libwrap', 'Build with libwrap (TCP Wrappers) support'
@@ -40,6 +41,8 @@ class Mpd < Formula
   depends_on 'libzzip' => :optional     # Reading from within ZIPs
   depends_on 'yajl' => :optional        # JSON library for SoundCloud
 
+  depends_on 'libvorbis' if build.with? 'vorbis' # Vorbis support
+
   def install
     if build.include? 'lastfm' or build.include? 'libwrap' \
        or build.include? 'enable-soundcloud'
@@ -63,7 +66,7 @@ class Mpd < Formula
     ]
 
     args << '--disable-mad'
-    args << '--disable-curl' if MacOS.version == :leopard
+    args << '--disable-curl' if MacOS.version <= :leopard
 
     args << "--with-faad=#{Formula.factory('faad2').opt_prefix}"
     args << '--enable-zzip' if build.with? 'libzzip'
@@ -71,6 +74,7 @@ class Mpd < Formula
     args << '--disable-libwrap' if build.without? 'libwrap'
     args << '--disable-lame-encoder' if build.without? 'lame'
     args << '--disable-soundcloud' if build.without? 'yajl'
+    args << '--enable-vorbis-encoder' if build.with? 'vorbis'
 
     system './configure', *args
     system 'make'

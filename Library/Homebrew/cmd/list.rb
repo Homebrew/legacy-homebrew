@@ -25,20 +25,35 @@ module Homebrew extend self
 
   private
 
+  UNBREWED_EXCLUDE_FILES = %w[.DS_Store]
+  UNBREWED_EXCLUDE_PATHS = %w[
+    bin/brew
+    lib/gdk-pixbuf-2.0/*
+    lib/gio/*
+    lib/node_modules/*
+    lib/python[23].[0-9]/*
+    share/info/dir
+    share/man/man1/brew.1
+    share/man/whatis
+  ]
+
   def list_unbrewed
-    dirs = HOMEBREW_PREFIX.children.select{ |pn| pn.directory? }.map{ |pn| pn.basename.to_s }
+    dirs  = HOMEBREW_PREFIX.subdirs.map { |dir| dir.basename.to_s }
     dirs -= %w[Library Cellar .git]
 
-    # Exclude the cache, if it has been located under the prefix
-    cache_folder = (HOMEBREW_CACHE.relative_path_from(HOMEBREW_PREFIX)).to_s
-    dirs -= [cache_folder]
+    # Exclude the repository and cache, if they are located under the prefix
+    dirs.delete HOMEBREW_CACHE.relative_path_from(HOMEBREW_PREFIX).to_s
+    dirs.delete HOMEBREW_REPOSITORY.relative_path_from(HOMEBREW_PREFIX).to_s
+    dirs.delete 'etc'
+    dirs.delete 'var'
 
-    # Exclude the repository, if it has been located under the prefix
-    cache_folder = (HOMEBREW_REPOSITORY.relative_path_from(HOMEBREW_PREFIX)).to_s
-    dirs -= [cache_folder]
+    args = dirs + %w[-type f (]
+    args.concat UNBREWED_EXCLUDE_FILES.map { |f| %W[! -name #{f}] }.flatten
+    args.concat UNBREWED_EXCLUDE_PATHS.map { |d| %W[! -path #{d}] }.flatten
+    args.concat %w[)]
 
     cd HOMEBREW_PREFIX
-    exec 'find', *dirs + %w[-type f ( ! -iname .ds_store ! -iname brew ! -iname brew-man.1 ! -iname brew.1 )]
+    exec 'find', *args
   end
 
   def list_versions

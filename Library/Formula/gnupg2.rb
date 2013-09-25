@@ -2,8 +2,10 @@ require 'formula'
 
 class Gnupg2 < Formula
   homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.20.tar.bz2'
-  sha1 '7ddfefa37ee9da89a8aaa8f9059d251b4cd02562'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.21.tar.bz2'
+  sha1 '5ba8cce72eb4fd1a3ac1a282d25d7c7b90d3bf26'
+
+  option '8192', 'Build with support for private keys of up to 8192 bits'
 
   depends_on 'libgpg-error'
   depends_on 'libgcrypt'
@@ -14,6 +16,7 @@ class Gnupg2 < Formula
   depends_on 'gpg-agent'
   depends_on 'dirmngr' => :recommended
   depends_on 'libusb-compat' => :recommended
+  depends_on 'readline' => :optional
 
   # Fix hardcoded runtime data location
   # upstream: http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;h=c3f08dc
@@ -24,15 +27,27 @@ class Gnupg2 < Formula
   def patches; DATA; end
 
   def install
+    inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if build.include? '8192'
+
     (var/'run').mkpath
+
+    ENV.append 'LDFLAGS', '-lresolv'
 
     ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
-                          "--enable-symcryptrun",
-                          "--disable-agent",
-                          "--with-agent-pgm=#{HOMEBREW_PREFIX}/bin/gpg-agent"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-symcryptrun
+      --disable-agent
+      --with-agent-pgm=#{Formula.factory('gpg-agent').opt_prefix}/bin/gpg-agent
+    ]
+
+    if build.with? 'readline'
+      args << "--with-readline=#{Formula.factory('readline').opt_prefix}"
+    end
+
+    system "./configure", *args
     system "make"
     system "make check"
     system "make install"
@@ -70,8 +85,8 @@ index 616d165..ae3126e 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gnupg2'
 +PACKAGE_TARNAME='gnupg2'
- PACKAGE_VERSION='2.0.20'
- PACKAGE_STRING='gnupg 2.0.20'
+ PACKAGE_VERSION='2.0.21'
+ PACKAGE_STRING='gnupg 2.0.21'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'
 
 diff --git a/tests/openpgp/Makefile.in b/tests/openpgp/Makefile.in
@@ -92,16 +107,3 @@ index 1a617e7..1af2d4b 100644
  
  TESTS = version.test mds.test \
  	decrypt.test decrypt-dsa.test \
-  diff --git a/scd/pcsc-wrapper.c b/scd/pcsc-wrapper.c
-  index 7d9415a..f3d92ff 100644
---- a/scd/pcsc-wrapper.c
-+++ b/scd/pcsc-wrapper.c
-@@ -66,7 +66,7 @@
- static int verbose;
-
- #if defined(__APPLE__) || defined(_WIN32) || defined(__CYGWIN__)
--typedef unsinged int pcsc_dword_t;
-+typedef unsigned int pcsc_dword_t;
- #else
- typedef unsigned long pcsc_dword_t;
- #endif

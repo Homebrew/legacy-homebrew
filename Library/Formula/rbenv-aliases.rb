@@ -1,11 +1,11 @@
 require 'formula'
 
 class RbenvAliases < Formula
-  homepage 'https://github.com/nebhale/rbenv-aliases'
-  url 'https://github.com/nebhale/rbenv-aliases/archive/v1.0.0.tar.gz'
-  sha1 'c0a4b1a4f0b1931b39e3cc3969e5d37ad4dec1f9'
+  homepage 'https://github.com/tpope/rbenv-aliases'
+  url 'https://github.com/tpope/rbenv-aliases/archive/v1.0.1.tar.gz'
+  sha1 '7fcfe5ea3011c5f9e00ad41d85bebc2d19869b61'
 
-  head 'https://github.com/nebhale/rbenv-aliases.git'
+  head 'https://github.com/tpope/rbenv-aliases.git'
 
   depends_on 'rbenv'
 

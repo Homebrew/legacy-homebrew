@@ -33,30 +33,32 @@ class Keg < Pathname
   end
 
   def unlink
-    # these are used by the ObserverPathnameExtension to count the number
-    # of files and directories linked
-    $n=$d=0
+    ObserverPathnameExtension.reset_counts!
+
+    dirs = []
 
     TOP_LEVEL_DIRECTORIES.map{ |d| self/d }.each do |dir|
       next unless dir.exist?
       dir.find do |src|
         next if src == self
-        dst=HOMEBREW_PREFIX+src.relative_path_from(self)
-        dst.extend ObserverPathnameExtension
+        dst = HOMEBREW_PREFIX + src.relative_path_from(self)
+        dst.extend(ObserverPathnameExtension)
+
+        dirs << dst if dst.directory? && !dst.symlink?
 
         # check whether the file to be unlinked is from the current keg first
-        if !dst.symlink? || !dst.exist? || src != dst.resolved_path
-          next
-        end
+        next if !dst.symlink? || !dst.exist? || src != dst.resolved_path
 
         dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
         dst.unlink
-        dst.parent.rmdir_if_possible
         Find.prune if src.directory?
       end
     end
     linked_keg_record.unlink if linked_keg_record.symlink?
-    $n+$d
+
+    dirs.reverse_each(&:rmdir_if_possible)
+
+    ObserverPathnameExtension.total
   end
 
   def fname
@@ -102,18 +104,17 @@ class Keg < Pathname
   def link mode=OpenStruct.new
     raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
 
-    $n=0
-    $d=0
+    ObserverPathnameExtension.reset_counts!
 
     share_mkpaths = %w[aclocal doc info locale man]
     share_mkpaths.concat((1..8).map { |i| "man/man#{i}" })
     share_mkpaths.concat((1..8).map { |i| "man/cat#{i}" })
     # Paths used by Gnome Desktop support
-    share_mkpaths.concat %w[applications icons mime-info pixmaps sounds]
+    share_mkpaths.concat %w[applications gnome gnome/help icons mime-info pixmaps sounds]
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
-    link_dir('etc', mode) {:mkpath}
+    link_dir('etc', mode) {:mkpath} unless HOMEBREW_GIT_ETC
     link_dir('bin', mode) {:skip_dir}
     link_dir('sbin', mode) {:skip_dir}
     link_dir('include', mode) {:link}
@@ -141,7 +142,7 @@ class Keg < Pathname
       when /^gdk-pixbuf/ then :mkpath
       when 'ghc' then :mkpath
       when 'lua' then :mkpath
-      when 'node' then :mkpath
+      when /^node/ then :mkpath
       when /^ocaml/ then :mkpath
       when /^perl5/ then :mkpath
       when 'php' then :mkpath
@@ -169,7 +170,7 @@ class Keg < Pathname
       optlink
     end
 
-    return $n + $d
+    ObserverPathnameExtension.total
   rescue Exception
     opoo "Could not link #{fname}. Unlinking..."
     unlink
@@ -208,18 +209,27 @@ class Keg < Pathname
   def make_relative_symlink dst, src, mode=OpenStruct.new
     if dst.exist? and dst.realpath == src.realpath
       puts "Skipping; already exists: #{dst}" if ARGV.verbose?
-    # cf. git-clean -n: list files to delete, don't really link or delete
-    elsif mode.dry_run and mode.overwrite
-      puts dst if dst.exist? or dst.symlink?
       return
+    end
+
+    # cf. git-clean -n: list files to delete, don't really link or delete
+    if mode.dry_run and mode.overwrite
+      if dst.symlink?
+        puts "#{dst} -> #{dst.resolved_path}"
+      elsif dst.exist?
+        puts dst
+      end
+      return
+    end
+
     # list all link targets
-    elsif mode.dry_run
+    if mode.dry_run
       puts dst
       return
-    else
-      dst.delete if mode.overwrite && (dst.exist? or dst.symlink?)
-      dst.make_relative_symlink src
     end
+
+    dst.delete if mode.overwrite && (dst.exist? or dst.symlink?)
+    dst.make_relative_symlink src
   end
 
   # symlinks the contents of self+foo recursively into #{HOMEBREW_PREFIX}/foo
@@ -250,6 +260,15 @@ class Keg < Pathname
           make_relative_symlink dst, src, mode
         end
       elsif src.directory?
+        # If the `src` in the Cellar is a symlink itself, link it directly.
+        # For example Qt has `Frameworks/QtGui.framework -> lib/QtGui.framework`
+        # Not making a link here, would result in an empty dir because the
+        # `src` is not followed by `find`.
+        if src.symlink? && !dst.exist?
+          make_relative_symlink dst, src, mode
+          Find.prune
+        end
+
         # if the dst dir already exists, then great! walk the rest of the tree tho
         next if dst.directory? and not dst.symlink?
         # no need to put .app bundles in the path, the user can just use

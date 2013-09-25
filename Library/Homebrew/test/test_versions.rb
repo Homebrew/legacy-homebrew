@@ -46,6 +46,12 @@ class VersionComparisonTests < Test::Unit::TestCase
   def test_compare_patchlevel_to_non_patchlevel
     assert_operator version('9.9.3-P1'), :>, version('9.9.3')
   end
+
+  def test_erlang_version
+    versions = %w{R16B R15B03-1 R15B03 R15B02 R15B01 R14B04 R14B03
+                  R14B02 R14B01 R14B R13B04 R13B03 R13B02-1}.reverse
+    assert_equal versions, versions.sort_by { |v| version(v) }
+  end
 end
 
 class VersionParsingTests < Test::Unit::TestCase
@@ -232,10 +238,10 @@ class VersionParsingTests < Test::Unit::TestCase
     assert_version_detected '8d', 'http://www.ijg.org/files/jpegsrc.v8d.tar.gz'
   end
 
-  # def test_version_ghc_style
-  #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2'
-  #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2'
-  # end
+  def test_version_ghc_style
+    assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2'
+    assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2'
+  end
 
   def test_pypy_version
     assert_version_detected '1.4.1', 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2'
@@ -296,10 +302,5 @@ class VersionParsingTests < Test::Unit::TestCase
   def test_aespipe_version_style
     assert_version_detected '2.4c',
       'http://loop-aes.sourceforge.net/aespipe/aespipe-v2.4c.tar.bz2'
-  end
-
-  def test_perforce_style
-    assert_version_detected '2013.1.610569-x86_64',
-      '/usr/local/perforce-2013.1.610569-x86_64.mountain_lion.bottle.tar.gz'
   end
 end

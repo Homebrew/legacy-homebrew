@@ -12,8 +12,8 @@ class Htmlcompressor < Formula
   depends_on "closure-compiler" if build.include? 'closure-compiler'
 
   def install
-    libexec.install "htmlcompressor-1.5.3.jar"
-    bin.write_jar_script libexec/"htmlcompressor-1.5.3.jar", "htmlcompressor"
+    libexec.install "htmlcompressor-#{version}.jar"
+    bin.write_jar_script libexec/"htmlcompressor-#{version}.jar", "htmlcompressor"
 
     if build.include? 'yuicompressor'
       yui = Formula.factory('yuicompressor')

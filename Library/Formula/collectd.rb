@@ -30,7 +30,7 @@ class Collectd < Formula
               --localstatedir=#{var}
               --with-python=#{python}]
 
-    args << "--disable-embedded-perl" if MacOS.version == :leopard
+    args << "--disable-embedded-perl" if MacOS.version <= :leopard
     args << "--disable-java" unless build.include? "java"
     args << "--enable-debug" if build.include? "debug"
 

@@ -1,12 +1,9 @@
 require 'formula'
 
-# Versions newer than 1.6.6 cause problems compiling ushare
-# If you update this formula, please "brew install -v ushare"
-
 class Libupnp < Formula
   homepage 'http://pupnp.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/pupnp/pupnp/libUPnP%201.6.6/libupnp-1.6.6.tar.bz2'
-  sha1 '24c2c349cb52ed3d62121fbdae205c8d9dc0f5fa'
+  url 'http://downloads.sourceforge.net/project/pupnp/pupnp/libUPnP%201.6.18/libupnp-1.6.18.tar.bz2'
+  sha1 '7dc7bd2fa74a0f9c65b5fcc4c65b8faa6cf02007'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -8,7 +8,7 @@ class Jstalk < Formula
   head 'https://github.com/ccgus/jstalk.git'
 
   depends_on :macos => :snow_leopard
-  depends_on :xcode # For working xcodebuild.
+  depends_on :xcode
 
   def install
     ["JSTalk Framework", "jstalk command line", "JSTalk Editor"].each do |t|

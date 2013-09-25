@@ -2,9 +2,9 @@ require 'formula'
 
 class MediaInfo < Formula
   homepage 'http://mediainfo.sourceforge.net'
-  url 'http://downloads.sourceforge.net/mediainfo/MediaInfo_CLI_0.7.63_GNU_FromSource.tar.bz2'
-  version '0.7.63'
-  sha1 '76be91f76729e025ba13954f9726b6ec81c19a85'
+  url 'http://downloads.sourceforge.net/mediainfo/MediaInfo_CLI_0.7.64_GNU_FromSource.tar.bz2'
+  version '0.7.64'
+  sha1 'fc62d911998b2fe5d2366b2c18f408d4ffd1a5ef'
 
   depends_on 'pkg-config' => :build
   # fails to build against Leopard's older libcurl

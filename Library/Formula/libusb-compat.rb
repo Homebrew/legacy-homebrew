@@ -2,8 +2,8 @@ require 'formula'
 
 class LibusbCompat < Formula
   homepage 'http://www.libusb.org/'
-  url 'http://downloads.sourceforge.net/project/libusb/libusb-compat-0.1/libusb-compat-0.1.4/libusb-compat-0.1.4.tar.bz2'
-  sha256 'ed5bdd160c7b01ef767fb931a81b454f46226d1e2cf58502ced758d3e5a9fdc4'
+  url 'http://downloads.sourceforge.net/project/libusb/libusb-compat-0.1/libusb-compat-0.1.5/libusb-compat-0.1.5.tar.bz2'
+  sha256 '404ef4b6b324be79ac1bfb3d839eac860fbc929e6acb1ef88793a6ea328bc55a'
 
   option :universal
 

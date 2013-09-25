@@ -82,4 +82,17 @@ class DependencyExpansionTests < Test::Unit::TestCase
 
     assert_equal %w{option}, Dependency.expand(@f).first.tags
   end
+
+  def test_skip_skips_parent_but_yields_children
+    f = stub(:deps => [
+      build_dep(:foo, [], [@bar, @baz]),
+      build_dep(:foo, [], [@baz]),
+    ])
+
+    deps = Dependency.expand(f) do |dependent, dep|
+      Dependency.skip if %w{foo qux}.include? dep.name
+    end
+
+    assert_equal [@bar, @baz], deps
+  end
 end

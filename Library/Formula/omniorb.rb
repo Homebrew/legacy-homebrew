@@ -1,18 +1,17 @@
 require 'formula'
 
-class OmniorbBindings < Formula
-  homepage 'http://omniorb.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/omniorb/omniORBpy/omniORBpy-3.6/omniORBpy-3.6.tar.bz2'
-  sha1 '2def5ded7cd30e8d298113ed450b7bd09eaaf26f'
-end
-
 class Omniorb < Formula
   homepage 'http://omniorb.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-4.1.6/omniORB-4.1.6.tar.bz2'
-  sha1 '383e3b3b605188fe6358316917576e0297c4e1a6'
+  url 'http://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-4.1.7/omniORB-4.1.7.tar.bz2'
+  sha1 'e039eba5f63458651cfdc8a67c664c1ce4134540'
 
   depends_on 'pkg-config' => :build
   depends_on :python => :recommended
+
+  resource 'bindings' do
+    url 'http://downloads.sourceforge.net/project/omniorb/omniORBpy/omniORBpy-3.7/omniORBpy-3.7.tar.bz2'
+    sha1 '71ad9835c2273fe884fd9bd1bc282d40177f4d74'
+  end
 
   # http://www.omniorb-support.com/pipermail/omniorb-list/2012-February/031202.html
   def patches
@@ -25,7 +24,7 @@ class Omniorb < Formula
     system "make install"
 
     python do
-      OmniorbBindings.new.brew do
+      resource('bindings').stage do
         system "./configure", "--prefix=#{prefix}"
         system "make install"
       end
@@ -38,8 +37,7 @@ class Omniorb < Formula
 
   test do
     system "#{bin}/omniidl", "-h"
-
-    if build.with? 'python'
+    python do
       system python, "-c", %(import omniORB; print 'omniORBpy', omniORB.__version__)
     end
   end

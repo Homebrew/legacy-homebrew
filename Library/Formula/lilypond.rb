@@ -1,6 +1,7 @@
 require 'formula'
 
-# Necessary until upstream resolves the incompatibility issue with texinfo 5
+# Necessary until upstream resolves the incompatibility issue with texinfo 5.
+# When this is fixed upstream, replace with a normal texinfo dependency
 class Texinfo4 < Formula
   homepage 'http://www.gnu.org/software/texinfo/'
   url 'http://ftp.gnu.org/gnu/texinfo/texinfo-4.13a.tar.gz'
@@ -13,8 +14,8 @@ class Lilypond < Formula
   sha1 '1eb3b0e5c117a8669dba19ab28f933351e51e39a'
 
   devel do
-    url  'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.21.tar.gz'
-    sha1 '4c208ae1569edb59a598219277eaf6a4a1258205'
+    url 'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.26.tar.gz'
+    sha1 '3b9d7324407ad0159dff72af258cc04fd7d00952'
   end
 
   env :std
@@ -30,8 +31,6 @@ class Lilypond < Formula
   depends_on 'ghostscript'
   depends_on 'mftrace'
   depends_on 'fontforge' => ["with-x", "with-cairo"]
-  # Uncomment the following line once upstream resolve the aforementioned issue:
-  # depends_on 'texinfo'
   depends_on 'fondu'
   # Add dependency on keg-only Homebrew 'flex' because Apple bundles an older and incompatible
   # version of the library with 10.7 at least, seems slow keeping up with updates,
@@ -43,7 +42,7 @@ class Lilypond < Formula
     depends_on 'netpbm'
     depends_on 'imagemagick'
     depends_on 'docbook'
-    depends_on LanguageModuleDependency.new(:python, 'dblatex', 'dbtexmf.dblatex')
+    depends_on :python => ['dbtexmf.dblatex' => 'dblatex']
     depends_on 'texi2html'
   end
 

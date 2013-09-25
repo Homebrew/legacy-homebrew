@@ -2,27 +2,32 @@ require 'formula'
 
 class Libxml2 < Formula
   homepage 'http://xmlsoft.org'
-  url 'ftp://xmlsoft.org/libxml2/libxml2-2.9.1.tar.gz'
-  mirror 'http://xmlsoft.org/sources/libxml2-2.9.1.tar.gz'
-  sha256 'fd3c64cb66f2c4ea27e934d275904d92cec494a8e8405613780cbc8a71680fdb'
 
-  head 'https://git.gnome.org/browse/libxml2', :using => :git
+  stable do
+    url 'ftp://xmlsoft.org/libxml2/libxml2-2.9.1.tar.gz'
+    mirror 'http://xmlsoft.org/sources/libxml2-2.9.1.tar.gz'
+    sha256 'fd3c64cb66f2c4ea27e934d275904d92cec494a8e8405613780cbc8a71680fdb'
 
-  keg_only :provided_by_osx
+    # 2.9.1 cannot build with Python 2.6: https://github.com/mxcl/homebrew/issues/20249
+    if MacOS.version <= :snow_leopard
+      depends_on :python => ["2.7", :optional]
+    else
+      depends_on :python => ["2.7", :recommended]
+    end
+  end
 
-  option :universal
-  # Silence audit warnings
-  option 'with-python', 'Build Python bindings'
+  head do
+    url 'https://git.gnome.org/browse/libxml2', :using => :git
 
-  if build.head?
     depends_on :python => :recommended # satisfied by Python 2.6+
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
-  else
-    # 2.9.1 cannot build with Python 2.6: https://github.com/mxcl/homebrew/issues/20249
-    depends_on PythonInstalled.new("2.7") => :recommended
   end
+
+  keg_only :provided_by_osx
+
+  option :universal
 
   fails_with :llvm do
     build 2326
@@ -58,8 +63,7 @@ class Libxml2 < Formula
         rm path if path.exist?
         ln_s f, path
       }
-    end
-
+    end if build.with? 'python'
   end
 
   def caveats
@@ -73,12 +77,9 @@ class Libxml2 < Formula
     end
   end
 
-  def test
-    if build.with? 'python'
+  test do
+    python do
       system python, '-c', "import libxml2"
-    else
-      puts "No tests beacuse build --wtihout-python."
-      true
     end
   end
 end

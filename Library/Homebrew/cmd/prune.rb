@@ -2,12 +2,9 @@ require 'keg'
 require 'cmd/tap'
 
 module Homebrew extend self
-  # $n and $d are used by the ObserverPathnameExtension to keep track of
-  # certain filesystem actions.
-
   def prune
-    $n = 0
-    $d = 0
+    ObserverPathnameExtension.reset_counts!
+
     dirs = []
 
     Keg::PRUNEABLE_DIRECTORIES.select(&:directory?).each do |dir|
@@ -41,11 +38,13 @@ module Homebrew extend self
 
     repair_taps unless ARGV.dry_run?
 
-    if $n == 0 && $d == 0
+    n, d = ObserverPathnameExtension.counts
+
+    if ObserverPathnameExtension.total.zero?
       puts "Nothing pruned" if ARGV.verbose?
     else
-      print "Pruned #{$n} symbolic links "
-      print "and #{$d} directories " if $d > 0
+      print "Pruned #{n} symbolic links "
+      print "and #{d} directories " if d > 0
       puts  "from #{HOMEBREW_PREFIX}"
     end unless ARGV.dry_run?
   end

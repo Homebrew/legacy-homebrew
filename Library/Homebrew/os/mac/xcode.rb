@@ -38,6 +38,10 @@ module MacOS::Xcode extend self
     version < latest_version
   end
 
+  def without_clt?
+    installed? && version >= "4.3" && !MacOS::CLT.installed?
+  end
+
   def prefix
     @prefix ||= begin
       path = Pathname.new(folder)
@@ -50,19 +54,18 @@ module MacOS::Xcode extend self
       elsif File.executable? "#{V4_BUNDLE_PATH}/Contents/Developer/usr/bin/make"
         # fallback for broken Xcode 4.3 installs
         Pathname.new("#{V4_BUNDLE_PATH}/Contents/Developer")
-      else
-        # Ask Spotlight where Xcode is. If the user didn't install the
-        # helper tools and installed Xcode in a non-conventional place, this
-        # is our only option. See: http://superuser.com/questions/390757
-        path = MacOS.app_with_bundle_id(V4_BUNDLE_ID) ||
-          MacOS.app_with_bundle_id(V3_BUNDLE_ID)
-
-        unless path.nil?
-          path += "Contents/Developer"
-          path if File.executable? "#{path}/usr/bin/make"
-        end
+      elsif (path = bundle_path)
+        path += "Contents/Developer"
+        path if File.executable? "#{path}/usr/bin/make"
       end
     end
+  end
+
+  # Ask Spotlight where Xcode is. If the user didn't install the
+  # helper tools and installed Xcode in a non-conventional place, this
+  # is our only option. See: http://superuser.com/questions/390757
+  def bundle_path
+    MacOS.app_with_bundle_id(V4_BUNDLE_ID) || MacOS.app_with_bundle_id(V3_BUNDLE_ID)
   end
 
   def installed?
@@ -156,14 +159,22 @@ module MacOS::CLT extend self
   FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
   STANDALONE_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
 
-  # This is true if the standard UNIX tools are present in the expected location. For
-  # Mavericks and above this is /Library/Developer/CommandLineTools otherwise it is /usr.
-  # For Xcode < 4.3, this is the standard location. Otherwise, it means that the user has
-  # installed the "Command Line Tools" package.
+  # True if:
+  #  - Xcode < 4.3 is installed. The tools are found under /usr.
+  #  - The "Command Line Tools" package has been installed
+  #    For OS X < 10.9, the tools are found under /usr. For 10.9,
+  #    they are found under /Library/Developer/CommandLineTools.
   def installed?
-    (MacOS.dev_tools_path == Pathname.new("#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/bin") \
-      and File.directory? "#{MacOS::CLT::STANDALONE_PKG_PATH}/usr/include") or
-    (MacOS.dev_tools_path == Pathname.new("/usr/bin") and File.directory? "/usr/include")
+    mavericks_dev_tools? || usr_dev_tools?
+  end
+
+  def mavericks_dev_tools?
+    MacOS.dev_tools_path == Pathname("#{STANDALONE_PKG_PATH}/usr/bin") &&
+      File.directory?("#{STANDALONE_PKG_PATH}/usr/include")
+  end
+
+  def usr_dev_tools?
+    MacOS.dev_tools_path == Pathname("/usr/bin") && File.directory?("/usr/include")
   end
 
   def latest_version?
@@ -175,16 +186,17 @@ module MacOS::CLT extend self
     !latest_version?
   end
 
+  # Version string (a pretty damn long one) of the CLT package.
+  # Note, that different ways to install the CLTs lead to different
+  # version numbers.
   def version
-    # The pkgutils calls are slow, don't repeat if no CLT installed.
-    return @version if @version_determined
+    @version ||= detect_version
+  end
 
-    @version_determined = true
-    # Version string (a pretty damn long one) of the CLT package.
-    # Note, that different ways to install the CLTs lead to different
-    # version numbers.
-    @version ||= [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
-      MacOS.pkgutil_info(id) =~ /version: (.+)$/
-    end && $1
+  def detect_version
+    [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+      version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
+      return version if version
+    end
   end
 end

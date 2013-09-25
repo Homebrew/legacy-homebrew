@@ -2,12 +2,12 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.4.1.tar.gz'
-  sha1 '9c72838973572323535dae10f4e412d671b27a7e'
+  url 'http://nginx.org/download/nginx-1.4.2.tar.gz'
+  sha1 '8f006dc773840b6624a137a584ff8850d5155e3f'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.5.2.tar.gz'
-    sha1 '3546be28a72251f8823ab6be6a1180d300d06f76'
+    url 'http://nginx.org/download/nginx-1.5.5.tar.gz'
+    sha1 '8526d41cdabcd40d4ffa5ae12c8a2cc325255431'
   end
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
@@ -21,17 +21,13 @@ class Nginx < Formula
   option 'with-gunzip', 'Compile with support for gunzip module'
 
   depends_on 'pcre'
+  depends_on 'passenger' => :optional
   # SPDY needs openssl >= 1.0.1 for NPN; see:
   # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
   # http://www.openssl.org/news/changelog.html
   depends_on 'openssl' if build.with? 'spdy'
 
   skip_clean 'logs'
-
-  # Changes default port to 8080
-  def patches
-    DATA
-  end
 
   def passenger_config_args
     passenger_root = `passenger-config --root`.chomp
@@ -47,6 +43,9 @@ class Nginx < Formula
   end
 
   def install
+    # Changes default port to 8080
+    inreplace 'conf/nginx.conf', 'listen       80;', 'listen       8080;'
+
     cc_opt = "-I#{HOMEBREW_PREFIX}/include"
     ld_opt = "-L#{HOMEBREW_PREFIX}/lib"
 
@@ -71,7 +70,8 @@ class Nginx < Formula
             "--http-fastcgi-temp-path=#{var}/run/nginx/fastcgi_temp",
             "--http-uwsgi-temp-path=#{var}/run/nginx/uwsgi_temp",
             "--http-scgi-temp-path=#{var}/run/nginx/scgi_temp",
-            "--http-log-path=#{var}/log/nginx",
+            "--http-log-path=#{var}/log/nginx/access.log",
+            "--error-log-path=#{var}/log/nginx/error.log",
             "--with-http_gzip_static_module"
           ]
 
@@ -118,17 +118,30 @@ class Nginx < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
-    Docroot is: #{HOMEBREW_PREFIX}/var/www
+  test do
+    system "#{bin}/nginx", '-t'
+  end
 
-    The default port has been set to 8080 so that nginx can run without sudo.
+  def passenger_caveats; <<-EOS.undent
 
-    If you want to host pages on your local machine to the wider network you
-    can change the port to 80 in: #{HOMEBREW_PREFIX}/etc/nginx/nginx.conf
-
-    You will then need to run nginx as root: `sudo nginx`.
+    To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf:
+      passenger_root #{HOMEBREW_PREFIX}/opt/passenger
+      passenger_ruby /usr/bin/ruby
     EOS
   end
+
+  def caveats
+    s = <<-EOS.undent
+    Docroot is: #{HOMEBREW_PREFIX}/var/www
+
+    The default port has been set in #{HOMEBREW_PREFIX}/etc/nginx/nginx.conf to 8080 so that
+    nginx can run without sudo.
+    EOS
+    s << passenger_caveats if build.include? 'with-passenger'
+    s
+  end
+
+  plist_options :manual => 'nginx'
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -154,16 +167,3 @@ class Nginx < Formula
     EOS
   end
 end
-
-__END__
---- a/conf/nginx.conf
-+++ b/conf/nginx.conf
-@@ -33,7 +33,7 @@
-     #gzip  on;
-
-     server {
--        listen       80;
-+        listen       8080;
-         server_name  localhost;
-
-         #charset koi8-r;

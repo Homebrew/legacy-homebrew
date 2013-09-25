@@ -9,7 +9,7 @@ class Disco < Formula
 
   depends_on :python
   depends_on 'erlang'
-  depends_on 'simplejson' => :python if MacOS.version == :leopard
+  depends_on 'simplejson' => :python if MacOS.version <= :leopard
   depends_on 'libcmph'
 
   def patches

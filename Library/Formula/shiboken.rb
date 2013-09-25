@@ -2,9 +2,11 @@ require 'formula'
 
 class Shiboken < Formula
   homepage 'http://www.pyside.org/docs/shiboken'
-  url 'http://qt-project.org/uploads/pyside/shiboken-1.1.2.tar.bz2'
-  mirror 'https://distfiles.macports.org/py-shiboken/shiboken-1.1.2.tar.bz2'
-  sha1 '2ffe9d47a3f536840ed9d7eff766a53040bb2a2e'
+  url 'https://download.qt-project.org/official_releases/pyside/shiboken-1.2.0.tar.bz2'
+  mirror 'https://distfiles.macports.org/py-shiboken/shiboken-1.2.0.tar.bz2'
+  sha1 '03866dbdfa34078b2d9d35f4b6d83aa65e292e3f'
+
+  head 'git://gitorious.org/pyside/shiboken.git'
 
   depends_on 'cmake' => :build
   depends_on :python => :recommended
@@ -12,14 +14,14 @@ class Shiboken < Formula
   depends_on 'qt'
 
   def install
-    # Building the tests also runs them. Not building and running tests cuts
-    # install time in half. As of 1.1.1 the install fails unless you do an
-    # out of tree build and put the source dir last in the args.
+    # This block will be run for each python (2.x and 3.x if requested)!
     python do
-      # This block will be run for each python (2.x and 3.x if requested)!
+      # As of 1.1.1 the install fails unless you do an out of tree build and put
+      # the source dir last in the args.
       mkdir "macbuild#{python.if3then3}" do
         args = std_cmake_args
-        args << "-DBUILD_TESTS=OFF"
+        # Building the tests also runs them.
+        args << "-DBUILD_TESTS=ON"
         # For Xcode-only systems, the headers of system's python are inside of Xcode:
         args << "-DPYTHON#{python.if3then3}_INCLUDE_DIR='#{python.incdir}'"
         # Cmake picks up the system's python dylib, even if we have a brewed one:
@@ -46,8 +48,9 @@ class Shiboken < Formula
     end
   end
 
-  def test
-    system 'python', "-c", "import shiboken" if Tab.for_formula('Shiboken').with? 'python'
-    system 'python3', "-c", "import shiboken" if Tab.for_formula('Shiboken').with? 'python3'
+  test do
+    python do
+      system python, "-c", "import shiboken"
+    end
   end
 end

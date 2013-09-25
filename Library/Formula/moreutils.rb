@@ -2,9 +2,9 @@ require 'formula'
 
 class Moreutils < Formula
   homepage 'http://packages.debian.org/unstable/utils/moreutils'
-  url 'http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.48.tar.gz'
-  mirror 'http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.48.tar.gz'
-  sha1 '023893342ce68d877f4a8eb14142bbd7fd3706ee'
+  url 'http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.50.tar.gz'
+  mirror 'http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.50.tar.gz'
+  sha1 'f2d2cab5be2ba4b9a568ea32becf866ee4a37d9d'
 
   conflicts_with 'parallel',
     :because => "both install a 'parallel' executable."

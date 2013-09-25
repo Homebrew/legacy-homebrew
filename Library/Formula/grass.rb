@@ -20,7 +20,7 @@ class Grass < Formula
   depends_on 'wxmac' => :recommended # prefer over OS X's version because of 64bit
   depends_on :postgresql => :optional
   depends_on :mysql => :optional
-  depends_on "cairo" if MacOS.version == :leopard
+  depends_on "cairo" if MacOS.version <= :leopard
   depends_on :x11  # needs to find at least X11/include/GL/gl.h
 
   # Patches that files are not installed outside of the prefix.
@@ -75,15 +75,11 @@ class Grass < Formula
       args << "--with-wxwidgets=#{Formula.factory('wxmac').opt_prefix}/bin/wx-config"
     end
 
-    if MacOS.prefer_64_bit?
-      args << "--enable-64bit"
-      args << "--with-macosx-archs=x86_64"
-    else
-      args << "--with-macosx-archs=i386"
-    end
+    args << "--enable-64bit" if MacOS.prefer_64_bit?
+    args << "--with-macos-archs=#{MacOS.preferred_arch}"
 
     # Deal with Cairo support
-    if MacOS.version == :leopard
+    if MacOS.version <= :leopard
       cairo = Formula.factory('cairo')
       args << "--with-cairo-includes=#{cairo.include}/cairo"
       args << "--with-cairo-libs=#{cairo.lib}"
@@ -126,9 +122,9 @@ class Grass < Formula
         The old Tcl/Tk GUI cannot be built using the version of Tcl/Tk provided
         by OS X. This has the unfortunate consquence of disabling the NVIZ
         visualization system. A keg-only Tcl/Tk brew or some deep hackery of
-        the GRASS source may be possible ways to get around this around this.
+        the GRASS source may be possible ways to get around this.
 
-        Tcl/Tk will eventually be depreciated in GRASS 7 and this version has
+        Tcl/Tk will eventually be deprecated in GRASS 7 and this version has
         been built to support the newer wxPython based GUI. However, there is
         a problem as wxWidgets does not compile as a 64 bit library on OS X
         which affects Snow Leopard users. In order to remedy this, the GRASS

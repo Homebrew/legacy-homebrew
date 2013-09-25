@@ -2,10 +2,14 @@ require 'formula'
 
 class Newlisp < Formula
   homepage 'http://www.newlisp.org/'
-  url 'http://www.newlisp.org/downloads/newlisp-10.5.0.tgz'
-  sha1 '647aa86af6edce30402da260fe7f3ea7d03a91f1'
+  url 'http://www.newlisp.org/downloads/newlisp-10.5.3.tgz'
+  sha1 'dc02542ebb5b2ee2685e51f988a742c4294d14c3'
 
   depends_on 'readline'
+
+  def patches
+    DATA
+  end
 
   def install
     # Required to use our configuration
@@ -21,15 +25,6 @@ class Newlisp < Formula
     If you have brew in a custom prefix, the included examples
     will need to be be pointed to your newlisp executable.
     EOS
-  end
-
-  def patches
-    DATA
-  end
-
-  # Use the IDE to test a complete installation
-  def test
-    system "#{bin}/newlisp-edit"
   end
 end
 
@@ -54,10 +49,10 @@ __END__
  			(begin
 @@ -223,7 +223,7 @@
  		(gs:run-shell 'OutputArea 
- 			(string newlispDir "/newlisp.exe " currentExtension " -C -w \"" $HOME "\""))
+ 			(string newlispDir "/newlisp.exe") (string currentExtension " -C -w \"" $HOME "\""))
  		(gs:run-shell 'OutputArea 
--			(string "/usr/bin/newlisp " currentExtension " -C -w " $HOME))
-+			(string "/usr/local/bin/newlisp " currentExtension " -C -w " $HOME))
+-			(string "/usr/bin/newlisp") (string currentExtension " -C -w " $HOME))
++			(string "/usr/local/bin/newlisp") (string currentExtension " -C -w " $HOME))
  	)
  )
  

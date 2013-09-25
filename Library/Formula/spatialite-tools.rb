@@ -2,8 +2,8 @@ require 'formula'
 
 class SpatialiteTools < Formula
   homepage 'https://www.gaia-gis.it/fossil/spatialite-tools/index'
-  url 'http://www.gaia-gis.it/gaia-sins/spatialite-tools-sources/spatialite-tools-4.1.0.tar.gz'
-  sha1 '8c5edbed7e3326a679b336532e0add313b2af8b5'
+  url 'http://www.gaia-gis.it/gaia-sins/spatialite-tools-sources/spatialite-tools-4.1.1.tar.gz'
+  sha1 '0af3de926b8086287ef31ebba5d8327ee18d14bd'
 
   depends_on 'pkg-config' => :build
 

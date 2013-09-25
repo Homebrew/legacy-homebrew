@@ -21,7 +21,7 @@ class Mapserver < Formula
   depends_on 'proj'
   depends_on 'gdal'
   depends_on 'geos' => :optional
-  depends_on 'postgresql' if build.include? 'with-postgresql' and not MacOS.version >= :lion
+  depends_on 'postgresql' => :optional unless MacOS.version >= :lion
   depends_on 'fcgi' if build.include? 'with-fastcgi'
   depends_on 'cairo' => :optional
 
@@ -38,7 +38,7 @@ class Mapserver < Formula
     args << "--with-php=/usr/bin/php-config" if build.include? 'with-php'
     args << "--with-cairo" if build.with? 'cairo'
 
-    if build.include? 'with-postgresql'
+    if build.with? 'postgresql'
       if MacOS.version >= :lion # Lion ships with PostgreSQL libs
         args << "--with-postgis"
       else
