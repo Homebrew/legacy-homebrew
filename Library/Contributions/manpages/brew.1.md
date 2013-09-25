@@ -436,6 +436,14 @@ can take several different forms:
 
 ## ENVIRONMENT
 
+  * AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY:
+    When using the S3 download strategy, Homebrew will look in
+    these variables for access credentials (see
+    <http://docs.aws.amazon.com/fws/1.1/GettingStartedGuide/index.html?AWSCredentials.html>
+    to retrieve these access credentials from AWS).  If they are not set,
+    the S3 download strategy will download with a public
+    (unsigned) URL.
+
   * BROWSER:
     If set, and `HOMEBREW_BROWSER` is not, use `BROWSER` as the web browser
     when opening project homepages.
