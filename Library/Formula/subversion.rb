@@ -2,15 +2,14 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://archive.apache.org/dist/subversion/subversion-1.8.0.tar.bz2'
-  # url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.0.tar.bz2'
-  sha1 '45d227511507c5ed99e07f9d42677362c18b364c'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.3.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.3.tar.bz2'
+  sha1 'e328e9f1c57f7c78bea4c3af869ec5d4503580cf'
 
   bottle do
-    revision 1
-    sha1 '22b10c1758441a42b7c2273e8e25d4354db48574' => :mountain_lion
-    sha1 'ecbfbc25e93fc1b2a4411dd64522903f21861ace' => :lion
-    sha1 '03f81ee8f7fb8a518dfce74b32443ebbe6f812d8' => :snow_leopard
+    sha1 '9171c9971647e04958251d85eee58e4a23ef1584' => :mountain_lion
+    sha1 '9370e1ba8d3204b3d896a85ace719eb3613bb642' => :lion
+    sha1 '1373b9020d7e752e29517ba27670c8cdd5ec4520' => :snow_leopard
   end
 
   option :universal
@@ -153,6 +152,11 @@ class Subversion < Formula
       system "make swig-rb EXTRA_SWIG_LDFLAGS=-L/usr/lib"
       system "make install-swig-rb"
     end
+  end
+
+  test do
+    system "#{bin}/svnadmin", 'create', 'test'
+    system "#{bin}/svnadmin", 'verify', 'test'
   end
 
   def caveats

@@ -15,6 +15,7 @@ class Macvim < Formula
   depends_on :xcode
   depends_on 'cscope' => :recommended
   depends_on 'lua' => :optional
+  depends_on 'luajit' => :optional
   depends_on :python => :recommended
   # Help us! :python3 in MacVim makes the window disappear, so only 2.x bindings!
 
@@ -49,6 +50,12 @@ class Macvim < Formula
     if build.with? "lua"
       args << "--enable-luainterp"
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
+    end
+
+    if build.with? "luajit"
+      args << "--enable-luainterp"
+      args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
+      args << "--with-luajit"
     end
 
     args << "--enable-pythoninterp=yes" if build.with? 'python'

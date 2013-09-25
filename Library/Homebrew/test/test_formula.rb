@@ -175,7 +175,6 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal 'http://example.com', f.homepage
     assert_version_equal '0.1', f.version
     assert_equal f.stable, f.active_spec
-    assert_equal CurlDownloadStrategy, f.download_strategy
     assert_instance_of CurlDownloadStrategy, f.downloader
 
     assert_instance_of SoftwareSpec, f.stable
@@ -208,26 +207,5 @@ class FormulaTests < Test::Unit::TestCase
     assert_kind_of Formula, Formula.factory(name)
   ensure
     path.unlink
-  end
-
-  def test_dependency_option_integration
-    f = formula do
-      url 'foo-1.0'
-      depends_on 'foo' => :optional
-      depends_on 'bar' => :recommended
-    end
-
-    assert f.build.has_option?('with-foo')
-    assert f.build.has_option?('without-bar')
-  end
-
-  def test_explicit_options_override_default_dep_option_description
-    f = formula do
-      url 'foo-1.0'
-      option 'with-foo', 'blah'
-      depends_on 'foo' => :optional
-    end
-
-    assert_equal 'blah', f.build.first.description
   end
 end

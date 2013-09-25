@@ -5,9 +5,9 @@ class Gource < Formula
   url 'http://gource.googlecode.com/files/gource-0.40.tar.gz'
   sha1 '7af594f84c0ec4c84278a8e9008f83a7a02e97fa'
 
-  head 'https://github.com/acaudwell/Gource.git'
+  head do
+    url 'https://github.com/acaudwell/Gource.git'
 
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end

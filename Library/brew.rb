@@ -89,7 +89,7 @@ begin
     end
   end
 
-  # Add example external commands to PATH before checking.
+  # Add contributed commands to PATH before checking.
   ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/cmd"
   if require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/cmd
     Homebrew.send cmd.to_s.gsub('-', '_').downcase

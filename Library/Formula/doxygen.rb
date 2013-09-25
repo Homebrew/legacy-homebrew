@@ -16,9 +16,14 @@ class Doxygen < Formula
   depends_on 'qt' if build.with? 'doxywizard'
   depends_on 'llvm' => 'with-clang' if build.with? 'libclang'
 
+  def patches
+    DATA if build.with? 'doxywizard'
+  end
+
   def install
     args = ["--prefix", prefix]
     args << '--with-libclang' if build.with? 'libclang'
+    args << '--with-doxywizard' if build.with? 'doxywizard'
     system "./configure", *args
     # Per Macports:
     # https://trac.macports.org/browser/trunk/dports/textproc/doxygen/Portfile#L92
@@ -57,3 +62,21 @@ class Doxygen < Formula
     system "make", "MAN1DIR=share/man/man1", "install"
   end
 end
+
+__END__
+# On Mac OS Qt builds an application bundle rather than a binary.  We need to
+# give install the correct path to the doxywizard binary.  This is similar to
+# what macports does:
+diff --git a/addon/doxywizard/Makefile.in b/addon/doxywizard/Makefile.in
+index 727409a..8b0d00f 100644
+--- a/addon/doxywizard/Makefile.in
++++ b/addon/doxywizard/Makefile.in
+@@ -30,7 +30,7 @@ distclean: Makefile.doxywizard
+ 
+ install:
+ 	$(INSTTOOL) -d $(INSTALL)/bin	
+-	$(INSTTOOL) -m 755 ../../bin/doxywizard $(INSTALL)/bin	
++	$(INSTTOOL) -m 755 ../../bin/doxywizard.app/Contents/MacOS/doxywizard $(INSTALL)/bin
+ 	$(INSTTOOL) -d $(INSTALL)/$(MAN1DIR)
+ 	cat ../../doc/doxywizard.1 | sed -e "s/DATE/$(DATE)/g" -e "s/VERSION/$(VERSION)/g" > doxywizard.1
+ 	$(INSTTOOL) -m 644 doxywizard.1 $(INSTALL)/$(MAN1DIR)/doxywizard.1
