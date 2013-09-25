@@ -2,8 +2,6 @@ require 'open-uri'
 require 'utils/json'
 
 class AbstractDownloadStrategy
-  attr_accessor :local_bottle_path
-
   attr_reader :name, :resource
 
   def initialize name, resource
@@ -251,9 +249,9 @@ end
 
 # This strategy extracts local binary packages.
 class LocalBottleDownloadStrategy < CurlDownloadStrategy
-  def initialize formula, local_bottle_path
+  def initialize formula
     super formula.name, formula.active_spec
-    @tarball_path = local_bottle_path
+    @tarball_path = formula.local_bottle_path
   end
 
   def stage
