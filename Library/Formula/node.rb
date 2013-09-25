@@ -32,8 +32,8 @@ end
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.18/node-v0.10.18.tar.gz'
-  sha1 '0bc3c544ca1707ea4b8bd601706304e9c0609fe5'
+  url 'http://nodejs.org/dist/v0.10.19/node-v0.10.19.tar.gz'
+  sha1 '39478caf7024af6d992007457540f8941104c5d9'
 
   devel do
     url 'http://nodejs.org/dist/v0.11.7/node-v0.11.7.tar.gz'
@@ -53,15 +53,7 @@ class Node < Formula
   end
 
   # fixes gyp's detection of system paths on CLT-only systems
-  # fix compilation of libuv on <= 10.6, fixed upstream
-  def patches
-    p = [DATA]
-
-    if build.stable? && MacOS.version <= :snow_leopard
-      p << "https://gist.github.com/jacknagel/6452630/raw/4d2af17010bad40c14ad9c920ef5562a646fb449/fsevents.diff"
-    end
-    p
-  end
+  def patches; DATA; end
 
   def install
     args = %W{--prefix=#{prefix}}
