@@ -9,7 +9,7 @@ class Djbdns < Formula
 
   def install
     inreplace 'hier.c', 'c("/"', 'c(auto_home'
-    inreplace 'dnscache-conf.c', '([" ])/etc/dnsroots', "$1#{etc}/dnsroots"
+    inreplace 'dnscache-conf.c', '/etc/dnsroots', "#{etc}/dnsroots"
     system "echo gcc -O2 -include /usr/include/errno.h > conf-cc"
     system "echo #{prefix} > conf-home"
     system "echo gcc > conf-ld"
