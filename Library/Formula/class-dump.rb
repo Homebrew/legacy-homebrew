@@ -7,6 +7,11 @@ class ClassDump < Formula
   sha1 'bc6d9542af201028ae980b9d0497b491ce98227f'
 
   def install
-    bin.install 'class-dump'
+    if build.head?
+      system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
+      bin.install "build/Release/class-dump"
+    else
+      bin.install 'class-dump'
+    end
   end
 end
