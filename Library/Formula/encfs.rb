@@ -9,10 +9,11 @@ class Encfs < Formula
   depends_on 'gettext'
   depends_on 'boost'
   depends_on 'rlog'
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
 
   def install
-    inreplace "configure", "-lfuse", "-lfuse4x"
+    ENV['CPPFLAGS'] = "-I#{HOMEBREW_PREFIX}/include/osxfuse"
+    inreplace "configure", "-lfuse", "-losxfuse"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-boost=#{HOMEBREW_PREFIX}"
@@ -21,7 +22,7 @@ class Encfs < Formula
   end
 
   def caveats; <<-EOS.undent
-    Make sure to follow the directions given by `brew info fuse4x-kext`
+    Make sure to follow the directions given by `brew info osxfuse`
     before trying to use a FUSE-based filesystem.
     EOS
   end
