@@ -31,6 +31,12 @@ class Vim < Formula
 
   depends_on :python => :recommended
 
+  def patches
+    # Fix for a bug preventing vim from build at all on OSX 10.9 Mavericks
+    # Related thread on vim-dev: https://groups.google.com/forum/#!msg/vim_dev/uiD_S91FPb0/JrO1V7x8XggJ
+    "https://gist.github.com/apetresc/6614037/raw/bc33adb5fe7256e06bc2ad54bc23ac2983796115/patch.diff" if MacOS.version >= :mavericks
+  end
+
   def install
     ENV['LUA_PREFIX'] = HOMEBREW_PREFIX
 
