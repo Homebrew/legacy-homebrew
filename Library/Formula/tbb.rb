@@ -6,6 +6,8 @@ class Tbb < Formula
   sha1 'f354bd9b67295f65c43531b751e34f483ed8a024'
   version '4.2'
 
+  env :std
+
   fails_with :llvm do
     cause 'llvm is not supported on macos. Add build/macos.llvm.inc file with compiler-specific settings.'
   end
