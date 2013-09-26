@@ -2,8 +2,8 @@ require 'formula'
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.36/glib-2.36.4.tar.xz'
-  sha256 'f654d2542329012d8475736a165dfbf82fadf3ee940c2e0e6ddd4b2fde5cad7e'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.38/glib-2.38.0.tar.xz'
+  sha256 '7513a7de5e814ccb48206340a8773ea523d6a7bf04dc74565de69b899bc2ff32'
 
   option :universal
   option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
@@ -23,8 +23,8 @@ class Glib < Formula
     # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix,
     # but needed to fix an assumption about the location of the d-bus machine
     # id file.
-    p[:p1] = "https://gist.github.com/jacknagel/5393707/raw/5a9047ab7838709084b36242a44471b02d036386/glib-configurable-paths.patch"
-    p[:p0] = "https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/patch-configure.diff" if build.universal?
+    p[:p1] = "https://gist.github.com/jacknagel/6700436/raw/a94f21a9c5ccd10afa0a61b11455c880640f3133/glib-configurable-paths.patch"
+    p[:p0] = "https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/patch-configure.diff" if build.universal?
     p
   end
 
