@@ -51,4 +51,10 @@ class DownloadStrategyDetectorTests < Test::Unit::TestCase
     @d = DownloadStrategyDetector.detect(Object.new)
     assert_equal CurlDownloadStrategy, @d
   end
+
+  def test_raises_when_passed_unrecognized_strategy
+    assert_raises(TypeError) do
+      DownloadStrategyDetector.detect("foo", Class.new)
+    end
+  end
 end
