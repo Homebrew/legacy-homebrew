@@ -2,8 +2,8 @@ require 'formula'
 
 class Genstats < Formula
   homepage 'http://www.vanheusden.com/genstats/'
-  url 'http://www.vanheusden.com/genstats/genstats-1.0.0.tgz'
-  sha1 '8ca19e5fe72f1d881bf38298e155b15f07e6bd66'
+  url 'http://www.vanheusden.com/genstats/genstats-1.2.tgz'
+  sha1 '9b60278d3b0cc5dace63f081f4d5a7c3b6cbc473'
 
   def patches
     # fix compile errors on OS X for 1.0.0. I've emailed the author.
