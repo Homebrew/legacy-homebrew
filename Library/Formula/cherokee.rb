@@ -1,8 +1,8 @@
 require 'formula'
 
 class Cherokee < Formula
-  homepage 'http://www.cherokee-project.com/'
-  url 'http://www.cherokee-project.com/download/1.2/1.2.101/cherokee-1.2.101.tar.gz'
+  homepage 'http://cherokee-project.com/'
+  url 'http://pkgs.fedoraproject.org/repo/pkgs/cherokee/cherokee-1.2.101.tar.gz/ef47003355a2e368e4d9596cd070ef23/cherokee-1.2.101.tar.gz'
   sha1 'b27f149c7d7111207ac8c3cd8a4856c05490d136'
 
   head do
