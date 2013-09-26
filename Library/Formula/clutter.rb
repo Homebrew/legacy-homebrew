@@ -2,8 +2,8 @@ require 'formula'
 
 class Clutter < Formula
   homepage 'https://wiki.gnome.org/Clutter'
-  url 'http://ftp.gnome.org/pub/gnome/sources/clutter/1.12/clutter-1.12.2.tar.xz'
-  sha256 '27a8c4495099ea33de39c2d9a911a2c9e00ffa4dcc8f94fafedbcc752c0ddf13'
+  url 'http://download.gnome.org/sources/clutter/1.16/clutter-1.16.0.tar.xz'
+  sha256 'a213c7859051d6d19b5550c7e433757a35aa8e2b61a43d2eae83dd87912ea8ae'
 
   option 'without-x', 'Build without X11 support'
 
