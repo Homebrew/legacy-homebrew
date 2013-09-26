@@ -7,13 +7,41 @@ class DynamodbLocal < Formula
 
   version '2013-09-12'
 
+  def data_path
+    var/'data/dynamodb-local'
+  end
+
+  def log_path
+    var/'log/dynamodb-local.log'
+  end
+
+  def bin_wrapper_path
+    bin/'dynamodb-local'
+  end
+
+  def bin_wrapper; <<-EOS.undent
+    #!/bin/sh
+    cd #{data_path} && java -Djava.library.path=#{libexec} -jar #{libexec/'DynamodbLocal.jar'}
+    EOS
+  end
+
   def install
-    prefix.install Dir['*']
+    prefix.install %w[
+      LICENSE.txt
+      README.txt
+      third_party_licenses
+    ]
+
+    libexec.install %w[
+      DynamodbLocal.jar
+      libsqlite4java-osx.jnilib
+    ]
+
+    bin_wrapper_path.write(bin_wrapper)
   end
 
   def post_install
-    (var/'data/dynamodb-local').mkpath
-    (var/'log/dynamodb-local').mkpath
+    data_path.mkpath
   end
 
   def caveats; <<-EOS.undent
@@ -21,12 +49,12 @@ class DynamodbLocal < Formula
 
     DynamoDB Local only supports V2 of the service API.
 
-    Data:    #{var}/data/dynamodb-local
-    Logs:    #{var}/log/dynamodb-local
+    Data:    #{data_path}
+    Logs:    #{log_path}
     EOS
   end
 
-  plist_options :manual => "java -Djava.library.path=#{HOMEBREW_PREFIX}/opt/dynamodb-local -jar #{HOMEBREW_PREFIX}/opt/dynamodb-local/DynamoDBLocal.jar"
+  plist_options :manual => "#{HOMEBREW_PREFIX}/bin/dynamodb-local"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -41,17 +69,10 @@ class DynamodbLocal < Formula
       <false/>
       <key>ProgramArguments</key>
       <array>
-        <string>/usr/bin/java</string>
-        <string>-Djava.library.path=#{prefix}/</string>
-        <string>-jar</string>
-        <string>#{prefix}/DynamoDBLocal.jar</string>
+        <string>#{bin_wrapper_path}</string>
+        <key>StandardErrorPath</key>
+        <string>#{log_path}</string>
       </array>
-      <key>WorkingDirectory</key>
-      <string>#{var}/data/dynamodb-local</string>
-      <key>StandardOutPath</key>
-      <string>#{var}/log/dynamodb-local/stdout.log</string>
-      <key>StandardErrorPath</key>
-      <string>#{var}/log/dynamodb-local/stderr.log</string>
     </dict>
     </plist>
     EOS
