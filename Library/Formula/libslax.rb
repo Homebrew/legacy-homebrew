@@ -2,12 +2,15 @@ require 'formula'
 
 class Libslax < Formula
   homepage 'http://www.libslax.org/'
-  url 'https://github.com/Juniper/libslax/releases/download/0.16.17/libslax-0.16.17.tar.gz'
-  sha1 '5ea74b24fed44126955230de9a0e5cbff5bd0361'
+  url 'https://github.com/Juniper/libslax/releases/download/0.17.1/libslax-0.17.1.tar.gz'
+  sha1 '3d2df8e5c922442f253ed70db93259efc6a07750'
 
-  head 'https://github.com/Juniper/libslax.git'
+  head do
+    url 'https://github.com/Juniper/libslax.git'
 
-  depends_on 'automake' => :build if build.head?
+    depends_on 'automake' => :build
+  end
+
   depends_on 'libtool'  => :build
   depends_on 'libxml2'
   depends_on 'libxslt'
@@ -18,7 +21,8 @@ class Libslax < Formula
     system "sh ./bin/setup.sh" if build.head?
 
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--enable-libedit"
     system "make install"
   end
 end

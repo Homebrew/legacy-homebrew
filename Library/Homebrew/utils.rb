@@ -203,7 +203,7 @@ end
 # GZips the given paths, and returns the gzipped paths
 def gzip *paths
   paths.collect do |path|
-    system "/usr/bin/gzip", path
+    with_system_path { safe_system 'gzip', path }
     Pathname.new("#{path}.gz")
   end
 end
@@ -236,6 +236,16 @@ def nostdout
       $stdout = real_stdout
     end
   end
+end
+
+def paths
+  @paths ||= ENV['PATH'].split(File::PATH_SEPARATOR).collect do |p|
+    begin
+      File.expand_path(p).chomp('/')
+    rescue ArgumentError
+      onoe "The following PATH component is invalid: #{p}"
+    end
+  end.uniq.compact
 end
 
 module GitHub extend self

@@ -2,8 +2,8 @@ require 'formula'
 
 class Plzip < Formula
   homepage 'http://www.nongnu.org/lzip/plzip.html'
-  url 'http://download.savannah.gnu.org/releases/lzip/plzip-0.9.tar.gz'
-  sha1 '051d9094a4d7b98c76b92ad2e48e963ca5bf100f'
+  url 'http://download.savannah.gnu.org/releases/lzip/plzip-1.0.tar.gz'
+  sha1 'cb06d7c1f1b579f1d9f90faa7fe3a8b00c01091f'
 
   depends_on 'lzlib'
 

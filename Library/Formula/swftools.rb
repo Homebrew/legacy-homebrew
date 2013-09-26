@@ -1,10 +1,5 @@
 require 'formula'
 
-class XpdfTarball < Formula
-  url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.03.tar.gz', :using  => :nounzip
-  sha1 '499423e8a795e0efd76ca798239eb4d0d52fe248'
-end
-
 class Swftools < Formula
   homepage 'http://www.swftools.org'
   url 'http://www.swftools.org/swftools-0.9.2.tar.gz'
@@ -18,6 +13,11 @@ class Swftools < Formula
   depends_on 'giflib' => :optional
   depends_on 'fftw' => :optional
 
+  resource 'xpdf' do
+    url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.03.tar.gz', :using  => :nounzip
+    sha1 '499423e8a795e0efd76ca798239eb4d0d52fe248'
+  end
+
   def patches
     # Fixes a conftest for libfftwf.dylib that mistakenly calls fftw_malloc()
     # rather than fftwf_malloc().  Reported upstream to their mailing list:
@@ -27,7 +27,7 @@ class Swftools < Formula
   end
 
   def install
-    XpdfTarball.new.brew { (buildpath+'lib/pdf').install Dir['*'] } if build.with? "xpdf"
+    (buildpath+'lib/pdf').install resource('xpdf') if build.with? "xpdf"
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"

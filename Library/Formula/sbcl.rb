@@ -1,11 +1,5 @@
 require 'formula'
 
-class SbclBootstrapBinaries < Formula
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.0/sbcl-1.1.0-x86-64-darwin-binary.tar.bz2'
-  sha1 'ed2069e124027c43926728c48d604efbb4e33950'
-  version "1.1.0"
-end
-
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
   url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.11/sbcl-1.1.11-source.tar.bz2'
@@ -28,6 +22,11 @@ class Sbcl < Formula
   option "without-threads", "Build SBCL without support for native threads"
   option "with-ldb", "Include low-level debugger in the build"
   option "with-internal-xref", "Include XREF information for SBCL internals (increases core size by 5-6MB)"
+
+  resource 'bootstrap' do
+    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.0/sbcl-1.1.0-x86-64-darwin-binary.tar.bz2'
+    sha1 'ed2069e124027c43926728c48d604efbb4e33950'
+  end
 
   def patches
     { :p0 => [
@@ -62,7 +61,7 @@ class Sbcl < Formula
       value =~ /[\x80-\xff]/n
     end
 
-    SbclBootstrapBinaries.new.brew do
+    resource('bootstrap').stage do
       # We only need the binaries for bootstrapping, so don't install anything:
       command = Dir.pwd + "/src/runtime/sbcl"
       core = Dir.pwd + "/output/sbcl.core"

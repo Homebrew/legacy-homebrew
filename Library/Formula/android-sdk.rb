@@ -1,16 +1,15 @@
 require 'formula'
 
-class AdbBashCompletion < Formula
-  url 'https://raw.github.com/CyanogenMod/android_sdk/3bf0a01ef66a9b99149ba3faaf34a1362581dd01/bash_completion/adb.bash'
-  sha1 '8e7dad45b8c98c359516d4a818a9090125bc6f7a'
-  version 'cyanogenmod_jellybean'
-end
-
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r22.0.4-macosx.zip'
-  version 'r22.0.4'
-  sha1 '1db64b870af15901942f248214b13c5648719aaa'
+  url 'http://dl.google.com/android/android-sdk_r22.2-macosx.zip'
+  version '22.2'
+  sha1 'd78f7af8bb5737224261e064a34e5863b72533d1'
+
+  resource 'completion' do
+    url 'https://raw.github.com/CyanogenMod/android_sdk/3bf0a01ef66a9b99149ba3faaf34a1362581dd01/bash_completion/adb.bash'
+    sha1 '8e7dad45b8c98c359516d4a818a9090125bc6f7a'
+  end
 
   # TODO docs and platform-tools
   # See the long comment below for the associated problems
@@ -60,9 +59,7 @@ class AndroidSdk < Formula
       EOS
     end
 
-    AdbBashCompletion.new.brew do
-      bash_completion.install 'adb.bash' => 'adb-completion.bash'
-    end
+    bash_completion.install resource('completion').files('adb.bash' => 'adb-completion.bash')
   end
 
   def caveats; <<-EOS.undent

@@ -18,10 +18,16 @@ class Pyqt < Formula
 
   def install
     python do
-      system python, "./configure-ng.py", "--confirm-license",
-                                          "--bindir=#{bin}",
-                                          "--destdir=#{lib}/#{python.xy}/site-packages",
-                                          "--sipdir=#{share}/sip#{python.if3then3}"
+      args = [ "--confirm-license",
+               "--bindir=#{bin}",
+               "--destdir=#{lib}/#{python.xy}/site-packages",
+               "--sipdir=#{share}/sip#{python.if3then3}" ]
+      # We need to run "configure.py" so that pyqtconfig.py is generated and
+      # PyQWT needs that. But to do the actual compile, we use the newer
+      # "configure-ng.py" that is recommened in the README.
+      system python, "configure.py", *args
+      (python.site_packages/'PyQt4').install 'pyqtconfig.py'
+      system python, "./configure-ng.py", *args
       system "make"
       system "make", "install"
       system "make", "clean"  # because this python block may be run twice

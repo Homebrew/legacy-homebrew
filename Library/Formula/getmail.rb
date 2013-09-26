@@ -2,9 +2,9 @@ require 'formula'
 
 class Getmail < Formula
   homepage 'http://pyropus.ca/software/getmail/'
-  url 'http://pyropus.ca/software/getmail/old-versions/getmail-4.42.0.tar.gz'
-  mirror 'http://fossies.org/linux/misc/getmail-4.42.0.tar.gz'
-  sha1 'c4ebc38d17f9a2ed2516e5070e300b0e160b0aaa'
+  url 'http://pyropus.ca/software/getmail/old-versions/getmail-4.43.0.tar.gz'
+  mirror 'http://fossies.org/linux/misc/getmail-4.43.0.tar.gz'
+  sha1 '835ede882a204cf956229c18ea8073a68af7ba82'
 
   def install
     libexec.install %w( getmail getmail_fetch getmail_maildir getmail_mbox )

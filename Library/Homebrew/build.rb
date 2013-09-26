@@ -13,6 +13,7 @@ at_exit do
 end
 
 require 'global'
+require 'cxxstdlib'
 require 'debrew' if ARGV.debug?
 
 def main
@@ -119,12 +120,12 @@ class Build
       ENV.keg_only_deps = keg_only_deps.map(&:to_s)
       ENV.deps = deps.map { |d| d.to_formula.to_s }
       ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
-      ENV.setup_build_environment
+      ENV.setup_build_environment(f)
       post_superenv_hacks
       reqs.each(&:modify_build_environment)
       deps.each(&:modify_build_environment)
     else
-      ENV.setup_build_environment
+      ENV.setup_build_environment(f)
       reqs.each(&:modify_build_environment)
       deps.each(&:modify_build_environment)
 
@@ -140,13 +141,13 @@ class Build
       end
     end
 
-    if f.fails_with? ENV.compiler
-      begin
-        ENV.send CompilerSelector.new(f).compiler
-      rescue CompilerSelectionError => e
-        raise e.message
-      end
-    end
+    # We only support libstdc++ right now
+    stdlib_in_use = CxxStdlib.new(:libstdcxx, ENV.compiler)
+
+    # This is a bad place for this check, but we don't have access to
+    # compiler selection within the formula installer, only inside the
+    # build instance.
+    stdlib_in_use.check_dependencies(f, deps)
 
     f.brew do
       if ARGV.flag? '--git'
@@ -170,6 +171,8 @@ class Build
 
         begin
           f.install
+          Tab.create(f, :libstdcxx, ENV.compiler,
+            Options.coerce(ARGV.options_only)).write
         rescue Exception => e
           if ARGV.debug?
             debrew e, f

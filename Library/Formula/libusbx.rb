@@ -2,18 +2,19 @@ require 'formula'
 
 class Libusbx < Formula
   homepage 'http://libusbx.org'
-  url 'http://downloads.sourceforge.net/project/libusbx/releases/1.0.16/source/libusbx-1.0.16.tar.bz2'
-  sha1 'ec164f02e6732c373e5a24be6b33a59142435615'
+  url 'http://downloads.sourceforge.net/project/libusbx/releases/1.0.17/source/libusbx-1.0.17.tar.bz2'
+  sha1 'a491054e7f4f3f52b12bd567335180586a54ae16'
 
-  head 'https://github.com/libusbx/libusbx.git'
+  head do
+    url 'https://github.com/libusbx/libusbx.git'
 
-  conflicts_with 'libusb',
-    :because => 'both provide libusb compatible libraries'
-
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end
+
+
+  conflicts_with 'libusb',
+    :because => 'both provide libusb compatible libraries'
 
   option :universal
   option 'no-runtime-logging', 'Build without runtime logging functionality'

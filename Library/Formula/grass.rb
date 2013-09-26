@@ -122,9 +122,9 @@ class Grass < Formula
         The old Tcl/Tk GUI cannot be built using the version of Tcl/Tk provided
         by OS X. This has the unfortunate consquence of disabling the NVIZ
         visualization system. A keg-only Tcl/Tk brew or some deep hackery of
-        the GRASS source may be possible ways to get around this around this.
+        the GRASS source may be possible ways to get around this.
 
-        Tcl/Tk will eventually be depreciated in GRASS 7 and this version has
+        Tcl/Tk will eventually be deprecated in GRASS 7 and this version has
         been built to support the newer wxPython based GUI. However, there is
         a problem as wxWidgets does not compile as a 64 bit library on OS X
         which affects Snow Leopard users. In order to remedy this, the GRASS

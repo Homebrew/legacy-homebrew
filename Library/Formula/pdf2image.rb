@@ -7,8 +7,8 @@ class Pdf2image < Formula
 
   depends_on :x11
 
-  conflicts_with 'poppler'
-  conflicts_with 'xpdf'
+  conflicts_with 'poppler', 'xpdf',
+    :because => 'pdf2image, poppler, and xpdf install conflicting executables'
 
   def install
     system "./configure", "--prefix=#{prefix}"

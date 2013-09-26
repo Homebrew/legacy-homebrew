@@ -1,37 +1,33 @@
 require 'formula'
 
-class WineGecko < Formula
-  url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
-  sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
-end
-
-class WineMono < Formula
-  url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
-  sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
-end
-
 # NOTE: When updating Wine, please check Wine-Gecko and Wine-Mono for updates too:
 # http://wiki.winehq.org/Gecko
 # http://wiki.winehq.org/Mono
 class Wine < Formula
   homepage 'http://winehq.org/'
-  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
-  sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
 
-  head 'git://source.winehq.org/git/wine.git'
+  stable do
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
+    sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
+    depends_on 'little-cms'
+  end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.0.tar.bz2'
-    sha256 '0106ba3c8f0699cc7ae6edfcf505f7709c9e6d963bf32ff9c690607def9d4d77'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.2.tar.bz2'
+    sha256 '0bfc4276c93de1fdd5989f91807c7362b11995efdf581d60601fec789665b7f1'
+    depends_on 'little-cms2'
+  end
+
+  head do
+    url 'git://source.winehq.org/git/wine.git'
+    depends_on 'little-cms2'
   end
 
   env :std
 
-  # this tells Homebrew that dependencies must be built universal
-  def build.universal? ; true; end
-
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
+  require_universal_deps
 
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
@@ -44,10 +40,14 @@ class Wine < Formula
   depends_on 'sane-backends'
   depends_on 'libgsm' => :optional
 
-  if build.stable?
-    depends_on 'little-cms'
-  else
-    depends_on 'little-cms2'
+  resource 'gecko' do
+    url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
+    sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
+  end
+
+  resource 'mono' do
+    url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+    sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
   end
 
   fails_with :llvm do
@@ -61,8 +61,14 @@ class Wine < Formula
   end
 
   def patches
-    # http://bugs.winehq.org/show_bug.cgi?id=34188
-    ['http://bugs.winehq.org/attachment.cgi?id=45477']
+    if build.stable?
+      p = []
+      # http://bugs.winehq.org/show_bug.cgi?id=34188
+      p << 'http://bugs.winehq.org/attachment.cgi?id=45507'
+      # http://bugs.winehq.org/show_bug.cgi?id=34162
+      p << 'http://bugs.winehq.org/attachment.cgi?id=45562' if MacOS.version >= :mavericks
+      p
+    end
   end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
@@ -111,6 +117,8 @@ class Wine < Formula
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
 
+    args << "--without-x" if build.without? 'x11'
+
     system "./configure", *args
 
     unless ENV.compiler == :clang or ENV.compiler == :llvm
@@ -121,18 +129,16 @@ class Wine < Formula
     end
 
     system "make install"
-
-    # Don't need Gnome desktop support
-    (share/'applications').rmtree
-
-    # Download Gecko and Mono once so we don't need to redownload for each prefix
-    WineGecko.new('winegecko').brew { (share+'wine/gecko').install Dir["*"] }
-    WineMono.new('winemono').brew { (share+'wine/mono').install Dir["*"] }
+    (share/'wine/gecko').install resource('gecko')
+    (share/'wine/mono').install resource('mono')
 
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine
     mv bin/'wine', bin/'wine.bin'
     (bin/'wine').write(wine_wrapper)
+
+    # Don't need Gnome desktop support
+    (share/'applications').rmtree
   end
 
   def caveats

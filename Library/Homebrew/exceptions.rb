@@ -112,6 +112,21 @@ class UnsatisfiedRequirements < Homebrew::InstallationError
   end
 end
 
+class IncompatibleCxxStdlibs < Homebrew::InstallationError
+  def initialize(f, dep, wrong, right)
+    super f, <<-EOS.undent
+    #{f} dependency #{dep} was built with the following
+    C++ standard library: #{wrong.type_string} (from #{wrong.compiler})
+
+    This is incompatible with the standard library being used
+    to build #{f}: #{right.type_string} (from #{right.compiler})
+
+    Please reinstall #{dep} using a compatible compiler.
+    hint: Check https://github.com/mxcl/homebrew/wiki/C++-Standard-Libraries
+    EOS
+  end
+end
+
 class FormulaConflictError < Homebrew::InstallationError
   attr_reader :f, :conflicts
 
@@ -243,5 +258,26 @@ class ChecksumMismatchError < RuntimeError
 
   def to_s
     super + advice.to_s
+  end
+end
+
+class ResourceMissingError < ArgumentError
+  def initialize formula, resource
+    @formula = formula
+    @resource = resource
+  end
+
+  def to_s
+    "Formula #{@formula} does not define resource \"#{@resource}\"."
+  end
+end
+
+class DuplicateResourceError < ArgumentError
+  def initialize resource
+    @resource = resource
+  end
+
+  def to_s
+    "Resource \"#{@resource}\" defined more than once."
   end
 end

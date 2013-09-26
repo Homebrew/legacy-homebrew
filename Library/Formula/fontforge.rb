@@ -2,10 +2,25 @@ require 'formula'
 
 class Fontforge < Formula
   homepage 'http://fontforge.org/'
-  url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
-  sha1 'b520f532b48e557c177dffa29120225066cc4e84'
 
-  head 'https://github.com/fontforge/fontforge.git'
+  stable do
+    url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
+    sha1 'b520f532b48e557c177dffa29120225066cc4e84'
+
+    depends_on 'cairo' => :optional
+    depends_on 'pango' => :optional
+  end
+
+  head do
+    url 'https://github.com/fontforge/fontforge.git'
+
+    depends_on :automake
+    depends_on :libtool
+    depends_on 'pkg-config' => :build
+    depends_on 'glib'
+    depends_on 'pango'
+    depends_on 'cairo'
+  end
 
   option 'with-gif', 'Build with GIF support'
   option 'with-x', 'Build with X'
@@ -18,9 +33,8 @@ class Fontforge < Formula
   depends_on 'libtiff'  => :recommended
   depends_on :x11 if build.with? 'x'
   depends_on 'giflib' if build.with? 'gif'
-  depends_on 'cairo' => :optional
-  depends_on 'pango' => :optional
   depends_on 'libspiro' => :optional
+  depends_on 'czmq'=> :optional
   depends_on 'fontconfig'
 
   fails_with :llvm do
@@ -28,13 +42,23 @@ class Fontforge < Formula
     cause "Compiling cvexportdlg.c fails with error: initializer element is not constant"
   end
 
+  def patches
+    unless build.head?
+      # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
+      "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
+    end
+  end
+
   def install
     args = ["--prefix=#{prefix}",
             "--enable-double",
             "--without-freetype-bytecode"]
 
-    args << "--without-cairo" unless build.with? "cairo"
-    args << "--without-pango" unless build.with? "pango"
+    unless build.head?
+      # These are optional in the stable release, but required in head
+      args << "--without-cairo" if build.without? "cairo"
+      args << "--without-pango" if build.without? "pango"
+    end
     args << "--without-x" unless build.with? 'x'
 
     # To avoid "dlopen(/opt/local/lib/libpng.2.dylib, 1): image not found"
@@ -51,6 +75,12 @@ class Fontforge < Formula
     # Fix linker error; see: http://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
 
+    # Add environment variables for system libs if building head
+    if build.head?
+      ENV.append "ZLIB_CFLAGS", "-I/usr/include"
+      ENV.append "ZLIB_LIBS", "-L/usr/lib -lz"
+    end
+
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
@@ -58,6 +88,7 @@ class Fontforge < Formula
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/CoreServices.framework/Frameworks"
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Frameworks"
 
+    system "./autogen.sh" if build.head?
     system "./configure", *args
 
     # Fix hard-coded install locations that don't respect the target bindir
@@ -85,11 +116,6 @@ class Fontforge < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/fontforge", "-version"
-    system python, "-c", "import fontforge"
-  end
-
   def caveats
     x_caveats = <<-EOS.undent
       fontforge is an X11 application.
@@ -106,8 +132,8 @@ class Fontforge < Formula
     return s
   end
 
-  def patches
-    # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
-    "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
+  test do
+    system "#{bin}/fontforge", "-version"
+    system python, "-c", "import fontforge"
   end
 end

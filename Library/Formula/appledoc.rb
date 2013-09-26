@@ -3,7 +3,7 @@ require 'formula'
 class Appledoc < Formula
   homepage 'http://appledoc.gentlebytes.com/'
   url "https://github.com/tomaz/appledoc/archive/v2.2.tar.gz"
-  sha1 'b427506bdefc97b224fd0f873ff87b8d11ce4aec'
+  sha1 '4ad475ee6bdc2e34d6053c4e384aad1781349f5e'
 
   head 'https://github.com/tomaz/appledoc.git', :branch => 'master'
 

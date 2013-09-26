@@ -2,29 +2,39 @@ require 'formula'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.4.6.tgz'
-  sha1 '36886ec043e660db00f2bb6b18d32f507b63a041'
+  url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.6.tar.gz'
+  sha1 '32066d405f3bed175c9433dc4ac455c2e0091b53'
 
   devel do
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.5.2.tgz'
-    sha1 '3f1f4d1b6f0cae4f70d9599d969ac4f7d0a0c579'
+    url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.2.tar.gz'
+    sha1 'e6b0aa35ea78e6bf9d7791a04810a4db4d69decc'
   end
 
-  depends_on :arch => :x86_64
+  head 'https://github.com/mongodb/mongo.git'
+
+  bottle do
+    revision 1
+    sha1 '323566c3738d80a437bae63f294c44e7548ae758' => :mountain_lion
+    sha1 'fbe4d599ae992c6b863c96da6da3b45446bdc0cf' => :lion
+    sha1 'b4d7e33054b9daef2504bcdb8f26ef43dbea6aaf' => :snow_leopard
+  end
+
+  depends_on 'scons' => :build
+  depends_on 'openssl' => :optional
 
   def install
-    # Copy the prebuilt binaries to prefix
-    prefix.install Dir['*']
+    args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
+    args << '--64' if MacOS.prefer_64_bit?
 
-    # Create the data and log directories under /var
-    (var+'mongodb').mkpath
-    (var+'log/mongodb').mkpath
+    if build.with? 'openssl'
+      args << '--ssl'
+      args << "--extrapathdyn=#{Formula.factory('openssl').opt_prefix}"
+    end
 
-    # Write the configuration files
+    system 'scons', 'install', *args
+
     (prefix+'mongod.conf').write mongodb_conf
 
-    # Homebrew: it just works.
-    # NOTE plist updated to use prefix/mongodb!
     mv bin/'mongod', prefix
     (bin/'mongod').write <<-EOS.undent
       #!/usr/bin/env ruby
@@ -33,9 +43,13 @@ class Mongodb < Formula
       }
       exec "#{prefix}/mongod", *ARGV
     EOS
+  end
 
-    # copy the config file to etc if this is the first install.
-    etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
+  def post_install
+    (var+'mongodb').mkpath
+    (var+'log/mongodb').mkpath
+    etc.mkpath
+    cp prefix+'mongod.conf', etc unless File.exists? etc+"mongod.conf"
   end
 
   def mongodb_conf; <<-EOS.undent

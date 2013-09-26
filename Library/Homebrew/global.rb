@@ -12,7 +12,7 @@ require 'rbconfig'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.9.4'
+HOMEBREW_VERSION = '0.9.5'
 HOMEBREW_WWW = 'http://brew.sh'
 
 if RUBY_PLATFORM =~ /darwin/
@@ -85,6 +85,8 @@ HOMEBREW_GITHUB_API_TOKEN = ENV["HOMEBREW_GITHUB_API_TOKEN"]
 HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; #{OS_VERSION})"
 
 HOMEBREW_CURL_ARGS = '-f#LA'
+
+HOMEBREW_GIT_ETC = !ENV['HOMEBREW_GIT_ETC'].nil?
 
 module Homebrew extend self
   include FileUtils

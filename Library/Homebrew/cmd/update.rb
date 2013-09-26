@@ -17,10 +17,22 @@ module Homebrew extend self
     cd HOMEBREW_REPOSITORY
     git_init_if_necessary
 
+    tapped_formulae = Dir['Library/Formula/*'].map do |formula|
+      path = Pathname.new formula
+      next unless path.symlink?
+      Pathname.new(path.realpath.to_s.gsub(/.*Taps\//, '')) rescue nil
+    end
+    tapped_formulae.compact!
+    unlink_tap_formula(tapped_formulae)
+
     report = Report.new
     master_updater = Updater.new
-    master_updater.pull! (if RUBY_PLATFORM =~ /linux/
-      then 'linuxbrew' else 'master' end)
+    begin
+      master_updater.pull! (if RUBY_PLATFORM =~ /linux/
+        then 'linuxbrew' else 'master' end)
+    ensure
+      link_tap_formula(tapped_formulae)
+    end
     report.merge!(master_updater.report)
 
     Dir["Library/Taps/*"].each do |tapd|
@@ -87,9 +99,17 @@ class Updater
     # the refspec ensures that 'origin/master' gets updated
     args << "refs/heads/#{branch}:refs/remotes/origin/#{branch}"
 
-    safe_system "git", *args
+    reset_on_interrupt { safe_system "git", *args }
 
     @current_revision = read_current_revision
+  end
+
+  def reset_on_interrupt
+    ignore_interrupts { yield }
+  ensure
+    if $?.signaled? && $?.termsig == 2 # SIGINT
+      safe_system "git", "reset", "--hard", @initial_revision
+    end
   end
 
   # Matches raw git diff format (see `man git-diff-tree`)

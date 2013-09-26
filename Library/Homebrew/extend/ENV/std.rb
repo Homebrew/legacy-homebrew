@@ -14,7 +14,7 @@ module Stdenv
     end
   end
 
-  def setup_build_environment
+  def setup_build_environment(formula=nil)
     # Clear CDPATH to avoid make issues that depend on changing directories
     delete('CDPATH')
     delete('GREP_OPTIONS') # can break CMake (lol)
@@ -61,11 +61,20 @@ module Stdenv
     self.send self.compiler
 
     # we must have a working compiler!
-    unless self['CC']
+    unless cc
       @compiler = MacOS.default_compiler
       self.send @compiler
-      self['CC'] = self['OBJC'] = MacOS.locate("cc")
-      self['CXX'] = self['OBJCXX'] = MacOS.locate("c++")
+      self.cc  = MacOS.locate("cc")
+      self.cxx = MacOS.locate("c++")
+    end
+
+    validate_cc!(formula) unless formula.nil?
+
+    if cc =~ GNU_GCC_REGEXP
+      warn_about_non_apple_gcc($1)
+      gcc_name = 'gcc' + $1.delete('.')
+      gcc = Formulary.factory(gcc_name)
+      self.append_path('PATH', gcc.opt_prefix/'bin')
     end
 
     # Add lib and include etc. from the current macosxsdk to compiler flags:
@@ -131,8 +140,8 @@ module Stdenv
 
   def gcc_4_0_1
     # we don't use locate because gcc 4.0 has not been provided since Xcode 4
-    self['CC'] = self['OBJC'] = "#{MacOS.dev_tools_path}/gcc-4.0"
-    self['CXX'] = self['OBJCXX'] = "#{MacOS.dev_tools_path}/g++-4.0"
+    self.cc  = "#{MacOS.dev_tools_path}/gcc-4.0"
+    self.cxx = "#{MacOS.dev_tools_path}/g++-4.0"
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags '-march=nocona -mssse3'
     @compiler = :gcc
@@ -144,18 +153,18 @@ module Stdenv
     # However they still provide a gcc symlink to llvm
     # But we don't want LLVM of course.
 
-    cc, cxx = if MACOS then ['gcc-4.2', 'g++-4.2'] else ['gcc', 'g++'] end
-    self['CC'] = self['OBJC'] = MacOS.locate(cc)
-    self['CXX'] = self['OBJCXX'] = MacOS.locate(cxx)
+    ccname, cxxname = if MACOS then ['gcc-4.2', 'g++-4.2'] else ['gcc', 'g++'] end
+    self.cc  = MacOS.locate(ccname)
+    self.cxx = MacOS.locate(cxxname)
 
-    unless self['CC']
-      self['CC'] = self['OBJC'] = "#{HOMEBREW_PREFIX}/bin/#{cc}"
-      self['CXX'] = self['OBJCXX'] = "#{HOMEBREW_PREFIX}/bin/#{cxx}"
-      raise "GCC could not be found" unless File.exist? self['CC']
+    unless cc
+      self.cc  = "#{HOMEBREW_PREFIX}/bin/#{ccname}"
+      self.cxx = "#{HOMEBREW_PREFIX}/bin/#{cxxname}"
+      raise "GCC could not be found" unless File.exist? cc
     end
 
-    if not self['CC'] =~ %r{^/usr/bin/xcrun }
-      raise "GCC could not be found" if Pathname.new(self['CC']).realpath.to_s =~ /llvm/
+    unless cc =~ %r{^/usr/bin/xcrun }
+      raise "GCC could not be found" if Pathname.new(cc).realpath.to_s =~ /llvm/
     end
 
     replace_in_cflags '-O4', '-O3'
@@ -164,16 +173,26 @@ module Stdenv
   end
   alias_method :gcc_4_2, :gcc
 
+  GNU_GCC_VERSIONS.each do |n|
+    define_method(:"gcc-4.#{n}") do
+      gcc = "gcc-4.#{n}"
+      self.cc = self['OBJC'] = gcc
+      self.cxx = self['OBJCXX'] = gcc.gsub('c', '+')
+      set_cpu_cflags
+      @compiler = gcc
+    end
+  end
+
   def llvm
-    self['CC'] = self['OBJC'] = MacOS.locate("llvm-gcc")
-    self['CXX'] = self['OBJCXX'] = MacOS.locate("llvm-g++")
+    self.cc  = MacOS.locate("llvm-gcc")
+    self.cxx = MacOS.locate("llvm-g++")
     set_cpu_cflags
     @compiler = :llvm
   end
 
   def clang
-    self['CC'] = self['OBJC'] = MacOS.locate("clang")
-    self['CXX'] = self['OBJCXX'] = MacOS.locate("clang++")
+    self.cc  = MacOS.locate("clang")
+    self.cxx = MacOS.locate("clang++")
     replace_in_cflags(/-Xarch_#{Hardware::CPU.arch_32_bit} (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags '-march=native', :nehalem => '-march=native -Xclang -target-feature -Xclang -aes'
@@ -232,11 +251,11 @@ module Stdenv
   end
 
   def minimal_optimization
-    self['CFLAGS'] = self['CXXFLAGS'] = "-Os #{SAFE_CFLAGS_FLAGS}"
+    set_cflags "-Os #{SAFE_CFLAGS_FLAGS}"
     macosxsdk unless MacOS::CLT.installed?
   end
   def no_optimization
-    self['CFLAGS'] = self['CXXFLAGS'] = SAFE_CFLAGS_FLAGS
+    set_cflags SAFE_CFLAGS_FLAGS
     macosxsdk unless MacOS::CLT.installed?
   end
 
@@ -340,28 +359,6 @@ module Stdenv
 
   def set_cpu_cflags default=DEFAULT_FLAGS, map=Hardware::CPU.optimization_flags
     set_cpu_flags CC_FLAG_VARS, default, map
-  end
-
-  # actually c-compiler, so cc would be a better name
-  def compiler
-    # test for --flags first so that installs can be overridden on a per
-    # install basis. Then test for ENVs in inverse order to flags, this is
-    # sensible, trust me
-    @compiler ||= if ARGV.include? '--use-gcc'
-      :gcc
-    elsif ARGV.include? '--use-llvm'
-      :llvm
-    elsif ARGV.include? '--use-clang'
-      :clang
-    elsif self['HOMEBREW_USE_CLANG']
-      :clang
-    elsif self['HOMEBREW_USE_LLVM']
-      :llvm
-    elsif self['HOMEBREW_USE_GCC']
-      :gcc
-    else
-      MacOS.default_compiler
-    end
   end
 
   def make_jobs

@@ -54,12 +54,6 @@ class Boost < Formula
     ] unless build.head?
   end
 
-  def pour_bottle?
-    # Don't use the bottle if there is a Homebrew python installed as users
-    # will probably want to link against that instead.
-    not Formula.factory('python').installed?
-  end
-
   def install
     # https://svn.boost.org/trac/boost/ticket/8841
     if build.with? 'mpi' and !build.without? 'single'
@@ -159,5 +153,15 @@ class Boost < Formula
 
     system "./bootstrap.sh", *bargs
     system "./b2", *args
+  end
+
+  def caveats
+    if pour_bottle? and Formula.factory('python').installed?
+      <<-EOS.undent
+      The Boost bottle's module will not import into a Homebrew-installed Python.
+      If you use the Boost Python module then please:
+        brew install boost --build-from-source
+      EOS
+    end
   end
 end
