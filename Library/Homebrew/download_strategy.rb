@@ -761,12 +761,15 @@ end
 
 class DownloadStrategyDetector
   def self.detect(url, strategy=nil)
-    if strategy.is_a? Class and strategy.ancestors.include? AbstractDownloadStrategy
-      strategy
-    elsif strategy.is_a? Symbol
+    if strategy.nil?
+      detect_from_url(url)
+    elsif Class === strategy && strategy < AbstractDownloadStrategy
+        strategy
+    elsif Symbol === strategy
       detect_from_symbol(strategy)
     else
-      detect_from_url(url)
+      raise TypeError,
+        "Unknown download strategy specification #{strategy.inspect}"
     end
   end
 
