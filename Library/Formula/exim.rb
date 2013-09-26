@@ -19,7 +19,10 @@ class Exim < Formula
       s.gsub! '/usr/exim/configure', etc/'exim.conf'
       s.gsub! '/usr/exim', prefix
       s.gsub! '/var/spool/exim', var/'spool/exim'
+<<<<<<< HEAD
+=======
       # http://trac.macports.org/ticket/38654
+>>>>>>> upstream/master
       s.gsub! 'TMPDIR="/tmp"', 'TMPDIR=/tmp'
       s << "SUPPORT_MAILDIR=yes\n" if build.include? 'support-maildir'
       s << "AUTH_PLAINTEXT=yes\n"
