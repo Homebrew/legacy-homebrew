@@ -17,19 +17,17 @@ class Libcanberra < Formula
   depends_on 'gtk+' => :optional
   depends_on 'gtk+3' => :optional
 
-  def install
-    system "./autogen.sh" if ARGV.build_head?
-
-    system "./configure", "--prefix=#{prefix}"
-
-    system "make install" 
-  end
-
   def patches
     # Remove --as-needed and --gc-sections linker flag as it causes linking to fail
     { :p0 => [
       'https://trac.macports.org/export/104881/trunk/dports/audio/libcanberra/files/patch-configure.diff'
     ]}
+  end
+
+  def install
+    system "./autogen.sh" if build.head?
+    system "./configure", "--prefix=#{prefix}"
+    system "make install" 
   end
 end
 
