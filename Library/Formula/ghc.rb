@@ -5,8 +5,9 @@ class Ghc < Formula
   url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2'
   sha1 '8938e1ef08b37a4caa071fa169e79a3001d065ff'
 
+  # NOTE: no Mt. Lion bottle because it was configured to use /usr/bin/gcc,
+  #       which is actually clang on Xcode 5
   bottle do
-    sha1 '332ed50be17831557b5888f7e8395f1beb008731' => :mountain_lion
     sha1 '64a7548eb2135a4b5f2276e59f435a39c2d2961f' => :lion
     sha1 '166bf3c8a512b58da4119b2997a1f45c1f7c65b5' => :snow_leopard
   end
