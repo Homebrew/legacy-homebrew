@@ -734,6 +734,11 @@ class Formula
       specs.each { |spec| spec.option(name, description) }
     end
 
+    def removed_option option, reason=nil
+      reason ||= "#{option} is no longer supported"
+      odie "#{name.downcase}: #{reason}" if ARGV.include? option
+    end
+
     def plist_options options
       @plist_startup = options[:startup]
       @plist_manual = options[:manual]
