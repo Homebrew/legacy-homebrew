@@ -2,9 +2,9 @@ require 'formula'
 
 class Nanomsg < Formula
   homepage 'http://nanomsg.org'
-  url 'http://download.nanomsg.org/nanomsg-0.1-alpha.tar.gz'
-  version '0.1-alpha'
-  sha1 '6b2d9bd60bfcf9377befa006608598716e1c1fe9'
+  url 'http://download.nanomsg.org/nanomsg-0.2-alpha.tar.gz'
+  version '0.2-alpha'
+  sha1 'ecdc7189787f6b000e94f29c648db1f292d872ac'
 
   head do
     url 'https://github.com/nanomsg/nanomsg.git'
