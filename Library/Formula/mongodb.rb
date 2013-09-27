@@ -49,7 +49,7 @@ class Mongodb < Formula
     (var+'mongodb').mkpath
     (var+'log/mongodb').mkpath
     etc.mkpath
-    cp prefix+'mongod.conf', etc unless File.exists? etc+"mongod.conf"
+    cp prefix+'mongod.conf', etc+"mongod.conf" unless File.exists? etc+"mongod.conf"
   end
 
   def mongodb_conf; <<-EOS.undent
