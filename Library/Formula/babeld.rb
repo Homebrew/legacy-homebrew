@@ -14,13 +14,6 @@ class Babeld < Formula
     system "make", "LDLIBS=''"
     system "make", "install", "PREFIX=#{prefix}"
   end
-
-  test do
-    system "man", "babeld"
-    # babeld has no version/help flag, and it'll raise an error if it's
-    # not executed with sudo
-    system "which", "babeld"
-  end
 end
 
 __END__
