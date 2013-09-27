@@ -19,6 +19,11 @@ class AppleGcc42 < Formula
     :using => PkgDownloadStrategy
   version '4.2.1-5666.3'
   sha1 '8fadde2a159082d6474fe9e325b6301e3c0bc84f'
+  bottle do
+    cellar :any
+    sha1 'f84be1286657372c6555c537bf24b647e059c33d' => :mountain_lion
+    sha1 'e4c0455d15381d285e6db9c3182fc2383695bd78' => :lion
+  end
 
   option 'with-gfortran-symlink', 'Provide gfortran symlinks'
 
