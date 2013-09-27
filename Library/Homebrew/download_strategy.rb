@@ -2,8 +2,6 @@ require 'open-uri'
 require 'utils/json'
 
 class AbstractDownloadStrategy
-  attr_accessor :local_bottle_path
-
   attr_reader :name, :resource
 
   def initialize name, resource
@@ -251,9 +249,9 @@ end
 
 # This strategy extracts local binary packages.
 class LocalBottleDownloadStrategy < CurlDownloadStrategy
-  def initialize formula, local_bottle_path
+  def initialize formula
     super formula.name, formula.active_spec
-    @tarball_path = local_bottle_path
+    @tarball_path = formula.local_bottle_path
   end
 
   def stage
@@ -763,12 +761,15 @@ end
 
 class DownloadStrategyDetector
   def self.detect(url, strategy=nil)
-    if strategy.is_a? Class and strategy.ancestors.include? AbstractDownloadStrategy
-      strategy
-    elsif strategy.is_a? Symbol
+    if strategy.nil?
+      detect_from_url(url)
+    elsif Class === strategy && strategy < AbstractDownloadStrategy
+        strategy
+    elsif Symbol === strategy
       detect_from_symbol(strategy)
     else
-      detect_from_url(url)
+      raise TypeError,
+        "Unknown download strategy specification #{strategy.inspect}"
     end
   end
 
