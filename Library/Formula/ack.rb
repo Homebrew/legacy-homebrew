@@ -13,6 +13,6 @@ class Ack < Formula
   end
 
   test do
-    system "#{bin}/ack", 'brew', '/usr/share/dict/words'
+    system "#{bin}/ack", '--version'
   end
 end
