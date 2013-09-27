@@ -79,7 +79,7 @@ end
 class Bottle < SoftwareSpec
   attr_rw :root_url, :prefix, :cellar, :revision
 
-  def_delegators :@resource, :url=
+  def_delegators :@resource, :version=, :url=
 
   def initialize
     super

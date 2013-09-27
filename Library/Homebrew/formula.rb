@@ -698,6 +698,7 @@ class Formula
       return @bottle unless block_given?
       @bottle ||= create_spec(Bottle)
       @bottle.instance_eval(&block)
+      @bottle.version = @stable.version
     end
 
     def devel &block
