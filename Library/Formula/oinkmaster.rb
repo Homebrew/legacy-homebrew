@@ -18,15 +18,7 @@ class Oinkmaster < Formula
   end
 
   def install
-    # ENV.j1  # if your formula's build system can't parallelize
-
-    # Remove unrecognized options if warned by configure
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
-    # system "cmake", ".", *std_cmake_args
-    system "make", "install" # if this fails, try separate make/make install steps
+    system "install" # if this fails, try separate make/make install steps
   end
 
   def caveats
@@ -36,8 +28,18 @@ class Oinkmaster < Formula
 end
 
 __END__
-
-diff -ru oinkmaster-2.0.orig/oinkmaster.conf oinkmaster-2.0/oinkmaster.conf
+diff -Nru oinkmaster-2.0.orig/Makefile oinkmaster-2.0/Makefile
+--- oinkmaster-2.0.orig/Makefile	1970-01-01 03:00:00.000000000 +0300
++++ oinkmaster-2.0/Makefile	2013-09-28 16:50:51.000000000 +0300
+@@ -0,0 +1,7 @@
++install:
++	$(INSTALL_DIR) "$(DESTDIR)/etc"
++	$(INSTALL_DATA) oinkmaster.conf "$(DESTDIR)/etc"
++	$(INSTALL_DIR) "$(DESTDIR)/man1"
++	$(INSTALL_DATA) oinkmaster.1 "$(DESTDIR)/man1"
++	$(INSTALL_DIR) "$(DESTDIR)/bin"
++	$(INSTALL_DATA) oinkmaster.pl "$(DESTDIR)/bin"
+diff -Nru oinkmaster-2.0.orig/oinkmaster.conf oinkmaster-2.0/oinkmaster.conf
 --- oinkmaster-2.0.orig/oinkmaster.conf	2006-02-18 14:35:21.000000000 +0200
 +++ oinkmaster-2.0/oinkmaster.conf	2013-09-27 14:04:20.000000000 +0300
 @@ -79,6 +79,8 @@
@@ -49,14 +51,14 @@ diff -ru oinkmaster-2.0.orig/oinkmaster.conf oinkmaster-2.0/oinkmaster.conf
  
  # The PATH to use during execution. If you prefer to use external 
  # binaries (i.e. use_external_bins=1, see below), tar and gzip must be 
-diff -ru oinkmaster-2.0.orig/oinkmaster.pl oinkmaster-2.0/oinkmaster.pl
+diff -Nru oinkmaster-2.0.orig/oinkmaster.pl oinkmaster-2.0/oinkmaster.pl
 --- oinkmaster-2.0.orig/oinkmaster.pl	2006-02-18 14:35:21.000000000 +0200
 +++ oinkmaster-2.0/oinkmaster.pl	2013-09-27 14:08:40.000000000 +0300
 @@ -134,6 +134,7 @@
  my @DEFAULT_CONFIG_FILES = qw(
      /etc/oinkmaster.conf
      /usr/local/etc/oinkmaster.conf
-+    #{prefix}/etc/oinkmaster.conf
++    /User/alet
  );
  
  my @DEFAULT_DIST_VAR_FILES = qw(
