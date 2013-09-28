@@ -42,6 +42,7 @@ class Wine < Formula
 
   resource 'gecko' do
     url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
+    version '2.21'
     sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
   end
 
