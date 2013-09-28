@@ -241,12 +241,10 @@ class Formula
   def fails_with? cc
     cc = Compiler.new(cc) unless cc.is_a? Compiler
     (self.class.cc_failures || []).any? do |failure|
-      if cc.version
-        # non-Apple GCCs don't have builds, just version numbers
-        failure.compiler == cc.name && failure.version >= cc.version
-      else
-        failure.compiler == cc.name && failure.build >= cc.build
-      end
+      # Major version check distinguishes between, e.g.,
+      # GCC 4.7.1 and GCC 4.8.2, where a comparison is meaningless
+      failure.compiler == cc.name && failure.major_version == cc.major_version && \
+        failure.version >= cc.version
     end
   end
 
@@ -785,6 +783,33 @@ class Formula
       @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
     end
 
+    # For Apple compilers, this should be in the format:
+    # fails_with compiler do
+    #   cause "An explanation for why the build doesn't work."
+    #   build "The Apple build number for the newest incompatible release."
+    # end
+    #
+    # The block may be omitted, and if present the build may be omitted;
+    # if so, then the compiler will be blacklisted for *all* versions.
+    #
+    # For GNU GCC compilers, this should be in the format:
+    # fails_with compiler => major_version do
+    #   cause
+    #   version "The official release number for the latest incompatible
+    #            version, for instance 4.8.1"
+    # end
+    # 
+    # `major_version` should be the major release number only, for instance
+    # '4.8' for the GCC 4.8 series (4.8.0, 4.8.1, etc.).
+    # If `version` or the block is omitted, then the compiler will be
+    # blacklisted for all compilers in that series.
+    #
+    # For example, if a bug is only triggered on GCC 4.8.1 but is not
+    # encountered on 4.8.2:
+    # 
+    # fails_with :gcc => '4.8' do
+    #   version '4.8.1'
+    # end
     def fails_with compiler, &block
       @cc_failures ||= Set.new
       @cc_failures << CompilerFailure.new(compiler, &block)
