@@ -633,10 +633,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
 
     if @clone.exist? && repo_valid?
       puts "Updating #{@clone}"
-      @clone.cd do
-        safe_system hgpath, 'pull'
-        safe_system hgpath, 'update'
-      end
+      @clone.cd { quiet_safe_system hgpath, 'pull', '--update' }
     elsif @clone.exist?
       puts "Removing invalid hg repo from cache"
       @clone.rmtree
