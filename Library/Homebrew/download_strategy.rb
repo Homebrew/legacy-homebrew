@@ -126,17 +126,14 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       with_system_path { safe_system 'tar', 'xf', tarball_path }
       chdir
     when :xz
-      raise "You must install XZutils: brew install xz" unless File.executable? xzpath
       with_system_path { safe_system "#{xzpath} -dc \"#{tarball_path}\" | tar xf -" }
       chdir
     when :pkg
       safe_system '/usr/sbin/pkgutil', '--expand', tarball_path, basename_without_params
       chdir
     when :rar
-      raise "You must install unrar: brew install unrar" unless which "unrar"
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, tarball_path
     when :p7zip
-      raise "You must install 7zip: brew install p7zip" unless which "7zr"
       safe_system '7zr', 'x', tarball_path
     else
       FileUtils.cp tarball_path, basename_without_params
@@ -416,8 +413,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    raise "You must: brew install git" unless which "git"
-
     ohai "Cloning #@url"
 
     if @clone.exist? && repo_valid?
@@ -634,8 +629,6 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    raise "You must: brew install mercurial" unless hgpath
-
     ohai "Cloning #{@url}"
 
     unless @clone.exist?
@@ -684,8 +677,6 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    raise "You must: brew install bazaar" unless bzrpath
-
     ohai "Cloning #{@url}"
     unless @clone.exist?
       url=@url.sub(%r[^bzr://], '')
@@ -737,8 +728,6 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    raise "You must: brew install fossil" unless fossilpath
-
     ohai "Cloning #{@url}"
     unless @clone.exist?
       url=@url.sub(%r[^fossil://], '')
