@@ -10,7 +10,6 @@ class Oinkmaster < Formula
   version '2.0'
   sha1 '01a0d774195670a11af5ff3e302773d962b34224'
 
-  # depends_on 'cmake' => :build
   depends_on 'suricata'
 
   def patches
@@ -30,15 +29,18 @@ end
 __END__
 diff -Nru oinkmaster-2.0.orig/Makefile oinkmaster-2.0/Makefile
 --- oinkmaster-2.0.orig/Makefile	1970-01-01 03:00:00.000000000 +0300
-+++ oinkmaster-2.0/Makefile	2013-09-28 16:50:51.000000000 +0300
-@@ -0,0 +1,7 @@
++++ oinkmaster-2.0/Makefile	2013-09-28 17:17:08.000000000 +0300
+@@ -0,0 +1,10 @@
++INSTALL_DIR = install -d -m 755 
++INSTALL_PROGRAM = install -m 755 
++INSTALL_DATA = install -m 644
 +install:
 +	$(INSTALL_DIR) "$(DESTDIR)/etc"
 +	$(INSTALL_DATA) oinkmaster.conf "$(DESTDIR)/etc"
 +	$(INSTALL_DIR) "$(DESTDIR)/man1"
 +	$(INSTALL_DATA) oinkmaster.1 "$(DESTDIR)/man1"
 +	$(INSTALL_DIR) "$(DESTDIR)/bin"
-+	$(INSTALL_DATA) oinkmaster.pl "$(DESTDIR)/bin"
++	$(INSTALL_PROGRAM) oinkmaster.pl "$(DESTDIR)/bin"
 diff -Nru oinkmaster-2.0.orig/oinkmaster.conf oinkmaster-2.0/oinkmaster.conf
 --- oinkmaster-2.0.orig/oinkmaster.conf	2006-02-18 14:35:21.000000000 +0200
 +++ oinkmaster-2.0/oinkmaster.conf	2013-09-27 14:04:20.000000000 +0300
