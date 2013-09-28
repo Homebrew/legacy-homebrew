@@ -67,7 +67,6 @@ end
 class HeadSoftwareSpec < SoftwareSpec
   def initialize
     super
-    @resource.url = url
     @resource.version = Version.new('HEAD')
   end
 
