@@ -311,9 +311,19 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
     @co
   end
 
+  def repo_valid?
+    @co.join(".svn").directory?
+  end
+
   def fetch
     @url.sub!(/^svn\+/, '') if @url =~ %r[^svn\+http://]
     ohai "Checking out #{@url}"
+
+    if @co.exist? and not repo_valid?
+      puts "Removing invalid SVN repo from cache"
+      @co.rmtree
+    end
+
     if @spec == :revision
       fetch_repo @co, @url, @ref
     elsif @spec == :revisions
@@ -350,11 +360,11 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
-    svncommand = target.exist? ? 'up' : 'checkout'
+    svncommand = target.directory? ? 'up' : 'checkout'
     args = [@@svn, svncommand]
     # SVN shipped with XCode 3.1.4 can't force a checkout.
     args << '--force' unless MacOS.version == :leopard and @@svn == '/usr/bin/svn'
-    args << url if !target.exist?
+    args << url unless target.directory?
     args << target
     args << '-r' << revision if revision
     args << '--ignore-externals' if ignore_externals
@@ -386,9 +396,9 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
-    svncommand = target.exist? ? 'up' : 'checkout'
+    svncommand = target.directory? ? 'up' : 'checkout'
     args = [@@svn, svncommand, '--non-interactive', '--trust-server-cert', '--force']
-    args << url if !target.exist?
+    args << url unless target.directory?
     args << target
     args << '-r' << revision if revision
     args << '--ignore-externals' if ignore_externals
