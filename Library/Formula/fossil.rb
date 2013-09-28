@@ -2,9 +2,9 @@ require 'formula'
 
 class Fossil < Formula
   homepage 'http://www.fossil-scm.org/'
-  url 'http://www.fossil-scm.org/download/fossil-src-20130618210923.tar.gz'
-  sha1 'b8de07de92483ba491c7e11c1d82147bce1cdaf9'
-  version '1.26'
+  url 'http://www.fossil-scm.org/download/fossil-macosx-x86-20130911114349.zip'
+  sha1 '557e5d8d25ce4fd2362464d0a92ab243aff79296'
+  version '1.27'
 
   head 'fossil://http://www.fossil-scm.org/'
 
