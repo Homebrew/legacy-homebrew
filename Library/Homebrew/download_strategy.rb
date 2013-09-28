@@ -695,16 +695,29 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
       ].find { |p| File.executable? p }
   end
 
+  def repo_valid?
+    @clone.join(".bzr").directory?
+  end
+
   def fetch
     ohai "Cloning #{@url}"
-    unless @clone.exist?
-      url=@url.sub(%r[^bzr://], '')
-      # 'lightweight' means history-less
-      safe_system bzrpath, 'checkout', '--lightweight', url, @clone
-    else
+
+    if @clone.exist? && repo_valid?
       puts "Updating #{@clone}"
-      Dir.chdir(@clone) { safe_system bzrpath, 'update' }
+      @clone.cd { safe_system bzrpath, 'update' }
+    elsif @clone.exist?
+      puts "Removing invalid bzr repo from cache"
+      @clone.rmtree
+      clone_repo
+    else
+      clone_repo
     end
+  end
+
+  def clone_repo
+    url = @url.sub(%r[^bzr://], '')
+    # 'lightweight' means history-less
+    safe_system bzrpath, 'checkout', '--lightweight', url, @clone
   end
 
   def stage
