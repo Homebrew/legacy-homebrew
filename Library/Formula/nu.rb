@@ -2,8 +2,8 @@ require 'formula'
 
 class Nu < Formula
   homepage 'http://programming.nu'
-  url 'http://programming.nu/releases/Nu-2.0.1.tgz'
-  sha1 'c0735f8f3daec9471b849f8e96827b5eef0ec44e'
+  url 'https://github.com/timburks/nu/archive/v2.1.1.tar.gz'
+  sha1 'ca0f9bbd5bbdb8528be516325f274d07d4be54bf'
 
   depends_on :macos => :lion
   depends_on 'pcre'
