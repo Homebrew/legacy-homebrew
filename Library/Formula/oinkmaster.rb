@@ -13,6 +13,7 @@ class Oinkmaster < Formula
   depends_on 'suricata'
 
   def patches
+	# add url for rules, patch for search config and fix installing
 	DATA 
   end
 
@@ -32,7 +33,7 @@ diff -Nru oinkmaster-2.0.orig/Makefile oinkmaster-2.0/Makefile
 +++ oinkmaster-2.0/Makefile	2013-09-28 17:17:08.000000000 +0300
 @@ -0,0 +1,10 @@
 +INSTALL_DIR = install -d -m 755 
-+INSTALL_PROGRAM = install -m 755 
++INSTALL_PROGRAM = install -m 555 
 +INSTALL_DATA = install -m 644
 +install:
 +	$(INSTALL_DIR) "$(DESTDIR)/etc"
@@ -60,7 +61,7 @@ diff -Nru oinkmaster-2.0.orig/oinkmaster.pl oinkmaster-2.0/oinkmaster.pl
  my @DEFAULT_CONFIG_FILES = qw(
      /etc/oinkmaster.conf
      /usr/local/etc/oinkmaster.conf
-+    #{prefix}/etc/oinkmaster.conf
++    HOMEBREW_PREFIX/etc/oinkmaster.conf
  );
  
  my @DEFAULT_DIST_VAR_FILES = qw(
