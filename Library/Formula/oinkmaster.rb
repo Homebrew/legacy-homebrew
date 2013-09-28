@@ -14,8 +14,7 @@ class Oinkmaster < Formula
   depends_on 'suricata'
 
   def patches
-	['https://raw.github.com/alet/oinkmaster_patch/master/oinkmaster.patch',
-	DATA ]
+	DATA 
   end
 
   def install
