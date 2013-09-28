@@ -1,9 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-#                /Users/alet/Documents/Source/homebrew/Library/Contributions/example-formula.rb
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Oinkmaster < Formula
   homepage 'http://oinkmaster.sourceforge.net/'
   url 'http://switch.dl.sourceforge.net/project/oinkmaster/oinkmaster/2.0/oinkmaster-2.0.tar.gz'
@@ -13,16 +9,16 @@ class Oinkmaster < Formula
   depends_on 'suricata'
 
   def patches
-	# add url for rules, patch for search config and fix installing
-	DATA 
+    # add url for rules, patch for search config and fix installing
+    DATA
   end
 
   def install
-    system "make DESTDIR=#{prefix} install" # if this fails, try separate make/make install steps
+    system "make DESTDIR=#{prefix} install"
   end
 
   def caveats
-	  "Update rules for suricata by command 'oinkmaster -o ${path}/suricata/rules'"
+    "Update rules for suricata by command 'oinkmaster -o ${path}/suricata/rules'"
   end
 
 end
