@@ -1,30 +1,55 @@
 class Compiler < Struct.new(:name, :priority)
-  def build
-    MacOS.send("#{name}_build_version")
+  # The full version of the compiler for comparison purposes.
+  def version
+    if name.is_a? String
+      MacOS.non_apple_gcc_version(name)
+    else
+      MacOS.send("#{name}_build_version")
+    end
   end
 
-  def version
-    MacOS.non_apple_gcc_version(name) if name.is_a? String
+  # This is exposed under the `build` name for compatibility, since
+  # `fails_with` continues to use `build` in the public API.
+  # `build` indicates the build number of an Apple compiler.
+  # This is preferred over version numbers since there are often
+  # significant differences within the same version,
+  # e.g. GCC 4.2 build 5553 vs 5666.
+  # Non-Apple compilers don't have build numbers.
+  alias_method :build, :version
+
+  # The major version for non-Apple compilers. Used to indicate a compiler
+  # series; for instance, if the version is 4.8.2, it would return "4.8".
+  def major_version
+    version.match(/(\d\.\d)/)[0] if name.is_a? String
   end
 end
 
 class CompilerFailure
-  attr_reader :compiler, :version
-  attr_rw :build, :cause
+  attr_reader :compiler, :major_version
+  attr_rw :cause, :version
 
   def initialize compiler, &block
     # Non-Apple compilers are in the format fails_with compiler => version
     if compiler.is_a? Hash
       # currently the only compiler for this case is GCC
-      _, @version = compiler.shift
-      @compiler = 'gcc-' + @version.match(/(\d\.\d)/)[0]
+      _, @major_version = compiler.shift
+      @compiler = 'gcc-' + @major_version
     else
       @compiler = compiler
     end
 
     instance_eval(&block) if block_given?
-    @build = (@build || 9999).to_i unless compiler.is_a? Hash
+    if !compiler.is_a? Hash
+      @version = (@version || 9999).to_i
+    else
+      # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
+      @version ||= @major_version + '.999' if compiler.is_a? Hash
+    end
   end
+
+  # Allows Apple compiler `fails_with` statements to keep using `build`
+  # even though `build` and `value` are the same internally
+  alias_method :build, :version
 end
 
 class CompilerQueue
