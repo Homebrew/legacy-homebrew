@@ -631,16 +631,28 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   def fetch
     ohai "Cloning #{@url}"
 
-    unless @clone.exist?
-      url=@url.sub(%r[^hg://], '')
-      safe_system hgpath, 'clone', url, @clone
-    else
+    if @clone.exist? && repo_valid?
       puts "Updating #{@clone}"
-      Dir.chdir(@clone) do
+      @clone.cd do
         safe_system hgpath, 'pull'
         safe_system hgpath, 'update'
       end
+    elsif @clone.exist?
+      puts "Removing invalid hg repo from cache"
+      @clone.rmtree
+      clone_repo
+    else
+      clone_repo
     end
+  end
+
+  def repo_valid?
+    @clone.join(".hg").directory?
+  end
+
+  def clone_repo
+    url = @url.sub(%r[^hg://], '')
+    safe_system hgpath, 'clone', url, @clone
   end
 
   def stage
