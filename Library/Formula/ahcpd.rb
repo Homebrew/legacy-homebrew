@@ -15,6 +15,7 @@ class Ahcpd < Formula
     system "make", "install", "PREFIX=", "TARGET=#{prefix}"
   end
 end
+
 __END__
 diff --git a/Makefile b/Makefile
 index e52eeb7..28e1043 100644
