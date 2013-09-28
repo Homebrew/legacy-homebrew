@@ -29,7 +29,7 @@ class Mariadb < Formula
   env :std if build.universal?
 
   fails_with :clang do
-    build 425
+    build 500
     cause "error: implicit instantiation of undefined template 'boost::STATIC_ASSERTION_FAILURE<false>'"
   end
 
