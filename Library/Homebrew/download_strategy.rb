@@ -712,18 +712,6 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
     # See https://bugs.launchpad.net/bzr/+bug/897511
     FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
     FileUtils.rm_r Dir[Dir.pwd+"/.bzr"]
-
-    #dst=Dir.getwd
-    #Dir.chdir @clone do
-    #  if @spec and @ref
-    #    ohai "Checking out #{@spec} #{@ref}"
-    #    Dir.chdir @clone do
-    #      safe_system bzrpath, 'export', '-r', @ref, dst
-    #    end
-    #  else
-    #    safe_system bzrpath, 'export', dst
-    #  end
-    #end
   end
 end
 
