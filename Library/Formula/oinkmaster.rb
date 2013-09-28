@@ -53,3 +53,14 @@ diff -Nru oinkmaster-2.0.orig/oinkmaster.conf oinkmaster-2.0/oinkmaster.conf
  
  # The PATH to use during execution. If you prefer to use external 
  # binaries (i.e. use_external_bins=1, see below), tar and gzip must be 
+diff -Nru oinkmaster-2.0.orig/oinkmaster.pl oinkmaster-2.0/oinkmaster.pl
+--- oinkmaster-2.0.orig/oinkmaster.pl	2006-02-18 14:35:21.000000000 +0200
++++ oinkmaster-2.0/oinkmaster.pl	2013-09-27 14:08:40.000000000 +0300
+@@ -134,6 +134,7 @@
+ my @DEFAULT_CONFIG_FILES = qw(
+     /etc/oinkmaster.conf
+     /usr/local/etc/oinkmaster.conf
++    #{prefix}/etc/oinkmaster.conf
+ );
+ 
+ my @DEFAULT_DIST_VAR_FILES = qw(
