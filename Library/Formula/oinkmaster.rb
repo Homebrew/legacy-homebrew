@@ -3,7 +3,6 @@ require 'formula'
 class Oinkmaster < Formula
   homepage 'http://oinkmaster.sourceforge.net/'
   url 'http://switch.dl.sourceforge.net/project/oinkmaster/oinkmaster/2.0/oinkmaster-2.0.tar.gz'
-  version '2.0'
   sha1 '01a0d774195670a11af5ff3e302773d962b34224'
 
   depends_on 'suricata'
