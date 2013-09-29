@@ -14,8 +14,8 @@ class Nanomsg < Formula
   end
 
   option 'with-test', 'Verify the build with make check'
-  option 'with-doc', 'Install man pages' if build.head?
-  option 'without-nanocat', 'Do not install nanocat tool' if build.head?
+  option 'with-doc', 'Install man pages'
+  option 'without-nanocat', 'Do not install nanocat tool'
 
   depends_on 'pkg-config'=> :build
   depends_on :libtool
