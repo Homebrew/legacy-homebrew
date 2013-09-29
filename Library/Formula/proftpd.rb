@@ -5,22 +5,17 @@ class Proftpd < Formula
   url 'ftp://ftp.proftpd.org/distrib/source/proftpd-1.3.4d.tar.gz'
   sha1 'a5b6c80a8ddeeeccc1c6448d797ccd62a3f63b65'
 
-  #fixes unknown group 'nogroup'
+  # fixes unknown group 'nogroup'
   def patches
     DATA
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}", "--localstatedir=#{var}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}"
     ENV.j1
     system "make", "INSTALL_USER=`whoami`", "INSTALL_GROUP=admin", "install"
-  end
-
-  def caveats; <<-EOS.undent
-    config is: #{HOMEBREW_PREFIX}/etc/proftpd.conf
-
-    You will then need to run nginx as root: `sudo proftpd`.
-    EOS
   end
 
   def plist; <<-EOS.undent
@@ -36,7 +31,7 @@ class Proftpd < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/proftpd</string>
+          <string>#{opt_prefix}/bin/proftpd</string>
         </array>
         <key>UserName</key>
         <string>root</string>
@@ -48,6 +43,14 @@ class Proftpd < Formula
         <string>/dev/null</string>
       </dict>
     </plist>
+    EOS
+  end
+
+  def caveats; <<-EOS.undent
+    The config file is in:
+       #{HOMEBREW_PREFIX}/etc/proftpd.conf
+
+    proftpd may need to be run as root, depending on configuration
     EOS
   end
 end
