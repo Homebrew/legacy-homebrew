@@ -10,7 +10,7 @@ class Graphicsmagick < Formula
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
   option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
   option 'without-magick-plus-plus', 'disable build/install of Magick++'
-  option 'with-svg', 'Compile with libxml2 for svg support'
+  option 'with-svg', 'Compile with svg support'
 
   depends_on :libltdl
 
@@ -27,8 +27,6 @@ class Graphicsmagick < Formula
   depends_on 'jasper' => :optional
   depends_on 'libwmf' => :optional
   depends_on 'ghostscript' => :optional
-
-  depends_on 'libxml2' => :optional
 
   opoo '--with-ghostscript is not recommended' if build.with? 'ghostscript'
   if build.with? 'openmp' and (MacOS.version == 10.5 or ENV.compiler == :clang)
