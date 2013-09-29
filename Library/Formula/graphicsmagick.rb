@@ -68,7 +68,7 @@ class Graphicsmagick < Formula
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
     args << "--without-x" unless build.with? 'x11'
     args << "--without-ttf" if build.without? 'freetype'
-    args << "--with-xml" if build.with? 'svg'
+    args << "--without-xml" unless build.with? 'svg'
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
