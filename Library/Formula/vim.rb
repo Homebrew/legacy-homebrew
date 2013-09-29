@@ -6,10 +6,7 @@ class Vim < Formula
   url 'http://ftp.de.debian.org/debian/pool/main/v/vim/vim_7.4.027.orig.tar.gz'
   sha1 '8d78c0cf545bf75cbcd5e3b709a7d03a568d256e'
 
-  head do
-    url 'https://vim.googlecode.com/hg/'
-    depends_on :hg => :build
-  end
+  head 'https://vim.googlecode.com/hg/'
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
@@ -30,9 +27,10 @@ class Vim < Formula
   end
 
   depends_on :python => :recommended
+  depends_on 'lua' => :optional
 
   def install
-    ENV['LUA_PREFIX'] = HOMEBREW_PREFIX
+    ENV['LUA_PREFIX'] = HOMEBREW_PREFIX if build.with?('lua')
 
     opts = []
     opts += LANGUAGES_OPTIONAL.map do |language|

@@ -70,6 +70,10 @@ class Wxmac < Formula
       "--with-osx_cocoa",
       "--with-libjpeg",
       "--with-libtiff",
+      # Otherwise, even in superenv, the internal libtiff can pick
+      # up on a nonuniversal xz and fail
+      # https://github.com/mxcl/homebrew/issues/22732
+      "--without-lzma",
       "--with-libpng",
       "--with-zlib",
       "--enable-dnd",

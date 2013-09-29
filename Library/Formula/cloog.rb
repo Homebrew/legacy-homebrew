@@ -5,6 +5,12 @@ class Cloog < Formula
   url 'http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.0.tar.gz'
   sha1 '85f620a26aabf6a934c44ca40a9799af0952f863'
 
+  bottle do
+    sha1 'f8a2a2221ff9f24f7db53d5de810df8cbd33f5d8' => :mountain_lion
+    sha1 'ad314e5ad8f54d183272dfa1971bd705e1d5e46b' => :lion
+    sha1 '203c6dd5b1fba557715e8fbb92cbd2d4025b1911' => :snow_leopard
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'gmp'
   depends_on 'isl'

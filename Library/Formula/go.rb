@@ -7,14 +7,28 @@ class Go < Formula
   version '1.1.2'
   sha1 'f5ab02bbfb0281b6c19520f44f7bc26f9da563fb'
 
+  bottle do
+    sha1 '491bb29bddb72b0e612a09985626e9dcd5b2cccf' => :mountain_lion
+    sha1 '74fcdfacb0f7c50df509202bac6f853fe00d1457' => :lion
+    sha1 '0ff1f95940509cae6545f92cf4776aed14e36100' => :snow_leopard
+  end
+
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
-  option 'without-cgo', "Build with cgo"
+  option 'without-cgo', "Build without cgo"
+
+  devel do
+    url 'https://go.googlecode.com/files/go1.2rc1.src.tar.gz'
+    version '1.2rc1'
+    sha1 '9f39106e06f552e9bf6d15d201c4663c051d4f89'
+  end
 
   # the cgo module cannot build with clang
   # NOTE it is ridiculous that we put this stuff in the class
   # definition, it needs to be in a pre-install test function!
   if build.with? 'cgo'
+    depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
+
     fails_with :clang do
       cause "clang: error: no such file or directory: 'libgcc.a'"
     end
@@ -23,7 +37,7 @@ class Go < Formula
   # Upstream patch for a switch statement that causes a clang error
   # Should be in the next release.
   # http://code.google.com/p/go/source/detail?r=000ecca1178d67c9b482d3fb0b6a1bc4aeef2472&path=/src/cmd/ld/lib.c
-  def patches; DATA; end
+  def patches; DATA; end unless build.devel?
 
   def install
     # install the completion scripts

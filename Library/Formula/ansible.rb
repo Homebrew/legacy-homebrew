@@ -26,15 +26,16 @@ class PyCrypto < Formula
 end
 
 class Ansible < Formula
-  homepage 'http://ansible.github.com/'
-  url 'https://github.com/ansible/ansible/archive/v1.2.2.tar.gz'
-  sha1 'cd64c200edec22b9eb0581a79491a7aa551cc864'
+  homepage 'http://www.ansibleworks.com/'
+  url 'https://github.com/ansible/ansible/archive/v1.3.2.tar.gz'
+  sha1 '2f70db9af49b0d4c17f8f1d91d5c72e791077e9e'
 
   head 'https://github.com/ansible/ansible.git', :branch => :devel
 
   depends_on :python
   depends_on 'libyaml'
 
+  # TODO: Move this into Library/Homebrew somewhere (see also mitmproxy.rb).
   def wrap bin_file, pythonpath
     bin_file = Pathname.new bin_file
     libexec_bin = Pathname.new libexec/'bin'

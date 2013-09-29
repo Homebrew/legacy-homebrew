@@ -8,24 +8,32 @@ require 'dependency_collector'
 class SoftwareSpec
   extend Forwardable
 
+  attr_reader :name
   attr_reader :build, :resources, :owner
   attr_reader :dependency_collector
 
   def_delegators :@resource, :stage, :fetch
   def_delegators :@resource, :download_strategy, :verify_download_integrity
   def_delegators :@resource, :checksum, :mirrors, :specs, :using, :downloader
-  def_delegators :@resource, :url, :version, :mirror, *Checksum::TYPES
+  def_delegators :@resource, :version, :mirror, *Checksum::TYPES
 
-  def initialize url=nil, version=nil
-    @resource = Resource.new(:default, url, version)
+  def initialize
+    @resource = Resource.new
     @resources = {}
     @build = BuildOptions.new(ARGV.options_only)
     @dependency_collector = DependencyCollector.new
   end
 
   def owner= owner
-    @resource.owner = owner
-    resources.each_value { |r| r.owner = owner }
+    @name = owner.name
+    @resource.owner = self
+    resources.each_value { |r| r.owner = self }
+  end
+
+  def url val=nil, specs={}
+    return @resource.url if val.nil?
+    @resource.url(val, specs)
+    dependency_collector.add(@resource)
   end
 
   def resource? name
@@ -63,8 +71,9 @@ class SoftwareSpec
 end
 
 class HeadSoftwareSpec < SoftwareSpec
-  def initialize url=nil, version=Version.new(:HEAD)
+  def initialize
     super
+    @resource.version = Version.new('HEAD')
   end
 
   def verify_download_integrity fn
@@ -75,7 +84,7 @@ end
 class Bottle < SoftwareSpec
   attr_rw :root_url, :prefix, :cellar, :revision
 
-  def_delegators :@resource, :url=
+  def_delegators :@resource, :version=, :url=
 
   def initialize
     super
@@ -114,7 +123,8 @@ class Bottle < SoftwareSpec
       os_versions.sort.reverse.each do |os_version|
         osx = os_version.to_sym
         checksum = checksum_os_versions[osx]
-        checksums[checksum_type] = { checksum => osx }
+        checksums[checksum_type] ||= []
+        checksums[checksum_type] << { checksum => osx }
       end
     end
     checksums
