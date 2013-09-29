@@ -27,6 +27,7 @@ class Vim < Formula
   end
 
   depends_on :python => :recommended
+  depends_on "lua" => :optional
 
   def install
     ENV['LUA_PREFIX'] = HOMEBREW_PREFIX
