@@ -67,6 +67,8 @@ class Graphicsmagick < Formula
     args << "--without-x" unless build.with? 'x11'
     args << "--without-ttf" if build.without? 'freetype'
     args << "--without-xml" unless build.with? 'svg'
+    args << "--without-lcms" unless build.with? 'little-cms'
+    args << "--without-lcms2" unless build.with? 'little-cms2'
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
