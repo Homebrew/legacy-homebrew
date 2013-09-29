@@ -27,9 +27,10 @@ class Vim < Formula
   end
 
   depends_on :python => :recommended
+  depends_on 'lua' => :optional
 
   def install
-    ENV['LUA_PREFIX'] = HOMEBREW_PREFIX
+    ENV['LUA_PREFIX'] = HOMEBREW_PREFIX if build.with?('lua')
 
     opts = []
     opts += LANGUAGES_OPTIONAL.map do |language|
