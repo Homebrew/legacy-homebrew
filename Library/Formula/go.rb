@@ -15,7 +15,7 @@ class Go < Formula
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
-  option 'without-cgo', "Build with cgo"
+  option 'without-cgo', "Build without cgo"
 
   devel do
     url 'https://go.googlecode.com/files/go1.2rc1.src.tar.gz'

@@ -2,14 +2,13 @@ require 'formula'
 
 class Quex < Formula
   homepage 'http://quex.org/'
-  url 'http://downloads.sourceforge.net/project/quex/DOWNLOAD/quex-0.62.6.zip'
-  sha1 'a773b9d44b4cf9d9cbfd289ab1420cffdc26ed32'
+  url 'http://downloads.sourceforge.net/project/quex/DOWNLOAD/quex-0.64.8.tar.gz'
+  sha1 'efe3d3f5fa0cf9a1130c16d1e0dd4e48cf72011b'
 
   def install
     libexec.install 'demo', 'quex', 'quex-exe.py'
 
     # Use a shim script to set QUEX_PATH on the user's behalf
-    bin.mkpath
     (bin+'quex').write <<-EOS.undent
       #!/bin/bash
       QUEX_PATH="#{libexec}" "#{libexec}/quex-exe.py" "$@"
