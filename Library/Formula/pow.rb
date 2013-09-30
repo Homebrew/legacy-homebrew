@@ -18,13 +18,15 @@ class Pow < Formula
 
   def caveats;
     <<-EOS.undent
-      Sets up firewall rules to forward port 80 to Pow:
-        sudo pow --install-system
+      Create the required host directories:
+        mkdir -p ~/Library/Application\ Support/Pow/Hosts
+        ln -s ~/.pow ~/Library/Application\ Support/Pow/Hosts
 
-      Installs launchd agent to start on login:
+      Setup port 80 forwarding and launchd agents:
+        sudo pow --install-system
         pow --install-local
 
-      Enables both launchd agents:
+      Load launchd agents:
         sudo launchctl load -w /Library/LaunchDaemons/cx.pow.firewall.plist
         launchctl load -w ~/Library/LaunchAgents/cx.pow.powd.plist
     EOS
