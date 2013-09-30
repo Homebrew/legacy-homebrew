@@ -23,7 +23,15 @@ class Glib < Formula
     # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix,
     # but needed to fix an assumption about the location of the d-bus machine
     # id file.
-    p[:p1] = "https://gist.github.com/jacknagel/6700436/raw/a94f21a9c5ccd10afa0a61b11455c880640f3133/glib-configurable-paths.patch"
+    p[:p1] = []
+    p[:p1] << "https://gist.github.com/jacknagel/6700436/raw/a94f21a9c5ccd10afa0a61b11455c880640f3133/glib-configurable-paths.patch"
+
+    # Upstream patches to fix various compilation issues, should be in 2.38.1
+    p[:p1] << "https://git.gnome.org/browse/glib/patch/?id=92f6cbf5286037fd6bf276370da73635c703fe69"
+    p[:p1] << "https://git.gnome.org/browse/glib/patch/?id=55e6a475b6042298f46297f680247e5ac6f89262"
+    p[:p1] << "https://git.gnome.org/browse/glib/patch/?id=7c8dcd32b91710a3c5fc089c35f228b260e86359"
+    p[:p1] << "https://git.gnome.org/browse/glib/patch/?id=8372f22b26c929e25f1868f4aeacf938b671b2cb"
+
     p[:p0] = "https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/patch-configure.diff" if build.universal?
     p
   end
