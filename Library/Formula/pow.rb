@@ -18,6 +18,10 @@ class Pow < Formula
 
   def caveats;
     <<-EOS.undent
+      Set up the required host directories:
+        mkdir -p ~/Library/Application\ Support/Pow/Hosts
+        ln -s ~/.pow ~/Library/Application\ Support/Pow/Hosts
+
       Sets up firewall rules to forward port 80 to Pow:
         sudo pow --install-system
 
@@ -27,6 +31,10 @@ class Pow < Formula
       Enables both launchd agents:
         sudo launchctl load -w /Library/LaunchDaemons/cx.pow.firewall.plist
         launchctl load -w ~/Library/LaunchAgents/cx.pow.powd.plist
+
+      Visit http://localhost to get started with pow.
+      If you are using a Ruby version manager like rbenv or rvm, take a look at
+      the pow manual: http://pow.cx/manual.html#section_2.3
     EOS
   end
 end
