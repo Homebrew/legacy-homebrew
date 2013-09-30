@@ -73,7 +73,7 @@ class Wxmac < Formula
       # Otherwise, even in superenv, the internal libtiff can pick
       # up on a nonuniversal xz and fail
       # https://github.com/mxcl/homebrew/issues/22732
-      "--without-lzma",
+      "--without-liblzma",
       "--with-libpng",
       "--with-zlib",
       "--enable-dnd",
