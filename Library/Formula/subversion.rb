@@ -241,7 +241,7 @@ __END__
 
 -#if (!defined(DARWIN) && !defined(WIN32)) || defined(DOXYGEN)
 +/* Add a condition on SWIGPERL - http://svn.haxx.se/users/archive-2013-09/0187.shtml */
-+#if (!defined(DARWIN) && !defined(WIN32)) || defined(DOXYGEN) || defined(SWIGPERL)
++#if (!defined(DARWIN) && !defined(WIN32)) || defined(DOXYGEN) || defined(SWIGPERL) || defined(SWIGPYTHON)
  /** A type of callback function for obtaining the GNOME Keyring password.
   *
   * In this callback, the client should ask the user for default keyring
