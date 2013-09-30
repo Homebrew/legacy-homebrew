@@ -20,10 +20,10 @@ class Vim < Formula
   LANGUAGES_OPTIONAL = %w(lua mzscheme perl python3 tcl)
   LANGUAGES_DEFAULT  = %w(ruby python)
 
-  (LANGUAGES_OPTIONAL - %w[python3]).each do |language|
+  LANGUAGES_OPTIONAL.each do |language|
     option "with-#{language}", "Build vim with #{language} support"
   end
-  (LANGUAGES_DEFAULT - %w[python]).each do |language|
+  LANGUAGES_DEFAULT.each do |language|
     option "without-#{language}", "Build vim without #{language} support"
   end
 
@@ -53,7 +53,7 @@ class Vim < Formula
     opts += LANGUAGES_DEFAULT.map do |language|
       "--enable-#{language}interp" unless build.without? language
     end
-    if opts.include? %W[--enable-pythoninterp] and opts.include? %W[--enable-python3interp]
+    if opts.include? "--enable-pythoninterp" and opts.include? "--enable-python3interp"
       opts = opts - %W[--enable-pythoninterp --enable-python3interp] + %W[--enable-pythoninterp=dynamic --enable-python3interp=dynamic]
     end
 
@@ -96,7 +96,7 @@ class Vim < Formula
                           "--with-compiledby=Homebrew",
                           *opts
 
-    if build.with? 'python' and build.with? 'python3'
+    if build.with? "python" and build.with? "python3"
       # On 64-bit systems, we need to avoid a 32-bit Framework Python.
       # vim doesn't check Python while compiling.
       python do
@@ -120,8 +120,8 @@ class Vim < Formula
       # Force vim loading different Python on same time, may cause vim crash.
       unless python.brewed?
         opoo "Your Python isn't comes from Homebrew, you may see warning massage during brewing. That's OK. Because we can't detect what your Python is. We will force replace the string."
-        inreplace 'src/auto/config.h', '/* #undef PY_NO_RTLD_GLOBAL */', '#define PY_NO_RTLD_GLOBAL 1'
-        inreplace 'src/auto/config.h', '/* #undef PY3_NO_RTLD_GLOBAL */', '#define PY3_NO_RTLD_GLOBAL 1'
+        inreplace 'src/auto/config.h', "/* #undef PY_NO_RTLD_GLOBAL */", "#define PY_NO_RTLD_GLOBAL 1"
+        inreplace 'src/auto/config.h', "/* #undef PY3_NO_RTLD_GLOBAL */", "#define PY3_NO_RTLD_GLOBAL 1"
       end
     end
 
@@ -135,7 +135,7 @@ class Vim < Formula
 
   def caveats
     s = ''
-    if build.with? 'python' and build.with? 'python3'
+    if build.with? "python" and build.with? "python3"
       s += <<-EOS.undent
         This vim build with dynamic library Python 2 & 3.
 

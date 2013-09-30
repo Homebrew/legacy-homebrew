@@ -72,11 +72,11 @@ class Macvim < Formula
       args << "--with-luajit"
     end
 
-    if build.with? 'python' and build.with? 'python3'
+    if build.with? "python" and build.with? "python3"
       args << "--enable-pythoninterp=dynamic" << "--enable-python3interp=dynamic"
     else
-      args << "--enable-pythoninterp" if build.with? 'python'
-      args << "--enable-python3interp" if build.with? 'python3'
+      args << "--enable-pythoninterp" if build.with? "python"
+      args << "--enable-python3interp" if build.with? "python3"
     end
 
     # MacVim seems to link Python by `-framework Python` (instead of
@@ -87,7 +87,7 @@ class Macvim < Formula
     # on the Mac. Note configure detects brewed python correctly, but that
     # is ignored.
     # See https://github.com/mxcl/homebrew/issues/17908
-    if python2 and python2.framework? and not build.with? 'python3'
+    if python2 and python2.framework? and not build.with? "python3"
       ENV.prepend 'LDFLAGS', "-L#{python2.libdir} -F#{python2.framework}"
     end
 
@@ -102,7 +102,7 @@ class Macvim < Formula
 
     system "./configure", *args
 
-    if build.with? 'python' and build.with? 'python3'
+    if build.with? "python" and build.with? "python3"
       # On 64-bit systems, we need to avoid a 32-bit Framework Python.
       # MacVim doesn't check Python while compiling.
       python do
@@ -126,8 +126,8 @@ class Macvim < Formula
       # Force vim loading different Python on same time, may cause vim crash.
       unless python.brewed?
         opoo "Your python isn't comes from Homebrew, you may see warning massage during brewing. That's OK. Because we can't detect what your Python is. We will force replace the string."
-        inreplace 'src/auto/config.h', '/* #undef PY_NO_RTLD_GLOBAL */', '#define PY_NO_RTLD_GLOBAL 1'
-        inreplace 'src/auto/config.h', '/* #undef PY3_NO_RTLD_GLOBAL */', '#define PY3_NO_RTLD_GLOBAL 1'
+        inreplace 'src/auto/config.h', "/* #undef PY_NO_RTLD_GLOBAL */", "#define PY_NO_RTLD_GLOBAL 1"
+        inreplace 'src/auto/config.h', "/* #undef PY3_NO_RTLD_GLOBAL */", "#define PY3_NO_RTLD_GLOBAL 1"
       end
     end
 
@@ -166,7 +166,7 @@ class Macvim < Formula
       or:
           brew linkapps --local
     EOS
-    if build.with? 'python' and build.with? 'python3'
+    if build.with? "python" and build.with? "python3"
       s += <<-EOS.undent
 
         This MacVim build with dynamic library Python 2 & 3.
@@ -176,6 +176,7 @@ class Macvim < Formula
             http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python3
       EOS
     end
+    return s
   end
 end
 
