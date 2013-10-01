@@ -45,12 +45,14 @@ class Emacs < Formula
   end
 
   def patches
-    if build.include? "cocoa" and build.include? "japanese" and not build.head?
-       {
-        :p0 => "https://gist.github.com/ganta/5139150/raw/8f6fc32747c40a51de597ce73085f56764a7d3ed/japanese-patch-for-emacs-24.3.patch",
-        :p1 => "https://gist.github.com/fukusaka/5175662/raw/20fa24d579a76a702ea7b3cc63c576052f8ed888/gistfile1.diff"
-      }
+    p = {}
+    if build.include? "cocoa" and not build.head?
+      if build.include? "japanese"
+        p[:p0] = "http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583"
+      end
+      p[:p1] = "https://gist.github.com/fukusaka/5175662/raw/20fa24d579a76a702ea7b3cc63c576052f8ed888/gistfile1.diff"
     end
+    p
   end
 
   def install
