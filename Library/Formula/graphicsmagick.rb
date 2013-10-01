@@ -10,7 +10,7 @@ class Graphicsmagick < Formula
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
   option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
   option 'without-magick-plus-plus', 'disable build/install of Magick++'
-  option 'with-svg', 'Compile with svg support'
+  option 'without-svg', 'Compile without svg support'
 
   depends_on :libltdl
 
@@ -66,7 +66,7 @@ class Graphicsmagick < Formula
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
     args << "--without-x" unless build.with? 'x11'
     args << "--without-ttf" if build.without? 'freetype'
-    args << "--without-xml" unless build.with? 'svg'
+    args << "--without-xml" if build.without? 'svg'
     args << "--without-lcms" unless build.with? 'little-cms'
     args << "--without-lcms2" unless build.with? 'little-cms2'
 
