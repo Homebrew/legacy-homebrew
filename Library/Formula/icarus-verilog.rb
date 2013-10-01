@@ -2,7 +2,7 @@ require 'formula'
 
 class IcarusVerilog < Formula
   homepage 'http://iverilog.icarus.com/'
-  head 'git://github.com/steveicarus/iverilog.git'
+  head 'https://github.com/steveicarus/iverilog.git'
   url 'ftp://icarus.com/pub/eda/verilog/v0.9/verilog-0.9.7.tar.gz'
   sha1 '714c2a605779957490cca24e3dc01d096dbc1474'
 
