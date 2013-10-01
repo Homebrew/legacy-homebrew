@@ -3,7 +3,6 @@ require 'formula'
 class Pgrouting < Formula
   homepage 'http://www.pgrouting.org'
   url "https://github.com/pgRouting/pgrouting/archive/v2.0.0.tar.gz"
-  version "2.0.0"
   sha1 "51ad76917e40fd25113af78abd7504017b47e488"
 
   depends_on 'cmake' => :build
