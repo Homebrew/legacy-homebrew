@@ -31,6 +31,7 @@ class Boost < Formula
   option :universal
   option 'with-icu', 'Build regexp engine with icu support'
   option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
+  option 'with-debug', 'Enable building debug variant'
   option 'without-single', 'Disable building single-threading variant'
   option 'without-static', 'Disable building static library variant'
 
@@ -122,6 +123,10 @@ class Boost < Formula
             "--layout=tagged",
             "--user-config=user-config.jam",
             "install"]
+
+    if build.with? 'debug'
+      args << "variant=release,debug"
+    end
 
     if build.include? 'without-single'
       args << "threading=multi"
