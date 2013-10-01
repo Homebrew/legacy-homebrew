@@ -18,6 +18,12 @@ class Glib < Formula
     cause "Undefined symbol errors while linking"
   end
 
+  resource 'config.h.ed' do
+    url 'https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/config.h.ed'
+    version '111532'
+    sha1 '0926f19d62769dfd3ff91a80ade5eff2c668ec54'
+  end if build.universal?
+
   def patches
     p = {}
     # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix,
@@ -58,7 +64,8 @@ class Glib < Formula
     system "./configure", *args
 
     if build.universal?
-      system "curl 'https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/config.h.ed' | ed - config.h"
+      buildpath.install resource('config.h.ed')
+      system "ed -s - config.h <config.h.ed"
     end
 
     system "make"
