@@ -1,9 +1,9 @@
 require 'formula'
 
 class GitMultipush < Formula
-  homepage 'http://code.google.com/p/git-multipush/'
-  url 'http://git-multipush.googlecode.com/files/git-multipush-2.3.tar.bz2'
-  sha1 'a53f171af5e794afe9b1de6ccd9bd0661db6fd91'
+  homepage 'https://github.com/gavinbeatty/git-multipush'
+  url 'https://github.com/gavinbeatty/git-multipush/archive/git-multipush-v2.4.rc2.tar.gz'
+  sha1 'a2c7873d773daff7d14ebfd66f80c464a219a332'
 
   head do
     url 'https://github.com/gavinbeatty/git-multipush.git'
