@@ -2,8 +2,8 @@ require 'formula'
 
 class CabalInstall < Formula
   homepage 'http://www.haskell.org/haskellwiki/Cabal-Install'
-  url 'http://hackage.haskell.org/packages/archive/cabal-install/1.18.0.1/cabal-install-1.18.0.1.tar.gz'
-  sha1 'ac403d580bd399d682e5d8f4fd8d6d07c03622d9'
+  url 'http://hackage.haskell.org/package/cabal-install-1.18.0.2/cabal-install-1.18.0.2.tar.gz'
+  sha1 '2d1f7a48d17b1e02a1e67584a889b2ff4176a773'
 
   depends_on 'ghc'
 
