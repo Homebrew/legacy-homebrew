@@ -56,13 +56,12 @@ class Boost < Formula
 
   def install
     # https://svn.boost.org/trac/boost/ticket/8841
-    if build.with? 'mpi' and !build.without? 'single'
-      onoe <<-EOS.undent
+    if build.with? 'mpi' and not build.without? 'single'
+      raise <<-EOS.undent
         Building MPI support for both single and multi-threaded flavors
         is not supported.  Please use '--with-mpi' together with
-        '--disable-single'.
+        '--without-single'.
       EOS
-      exit -1
     end
 
     # Adjust the name the libs are installed under to include the path to the
@@ -96,8 +95,6 @@ class Boost < Formula
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    bargs << "--with-toolset=clang" if build.with? "c++11"
-
     if build.with? 'icu'
       icu4c_prefix = Formula.factory('icu4c').opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
@@ -117,6 +114,8 @@ class Boost < Formula
     # Boost.Log cannot be built using Apple GCC at the moment. Disabled
     # on such systems.
     bargs << "--without-libraries=log" if MacOS.version <= :snow_leopard
+
+    bargs << "--without-libraries=python" if build.without? 'python'
 
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
@@ -139,8 +138,7 @@ class Boost < Formula
     end
 
     if MacOS.version >= :lion and build.with? 'c++11'
-      args << "toolset=clang" << "cxxflags=-std=c++11"
-      args << "cxxflags=-stdlib=libc++" << "cxxflags=-fPIC"
+      args << "cxxflags=-std=c++11" << "cxxflags=-stdlib=libc++"
       args << "cxxflags=-arch #{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit? or build.universal?
       args << "cxxflags=-arch #{Hardware::CPU.arch_32_bit}" if !MacOS.prefer_64_bit? or build.universal?
       args << "linkflags=-stdlib=libc++"
@@ -149,7 +147,6 @@ class Boost < Formula
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
-    args << "--without-python" if build.without? 'python'
 
     system "./bootstrap.sh", *bargs
     system "./b2", *args

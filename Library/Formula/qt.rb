@@ -22,9 +22,9 @@ class Qt < Formula
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
 
-  odie 'qt: --with-qtdbus has been renamed to --with-d-bus' if ARGV.include? '--with-qtdbus'
-  odie 'qt: --with-demos-examples is no longer supported' if ARGV.include? '--with-demos-examples'
-  odie 'qt: --with-debug-and-release is no longer supported' if ARGV.include? '--with-debug-and-release'
+  odie 'qt: --with-qtdbus has been renamed to --with-d-bus' if build.include? 'with-qtdbus'
+  odie 'qt: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
+  odie 'qt: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
 
   def install
     ENV.universal_binary if build.universal?

@@ -11,13 +11,11 @@ def bottle_filename f, bottle_revision=nil
 end
 
 def install_bottle? f, options={:warn=>false}
-  return true if f.downloader and defined? f.downloader.local_bottle_path \
-    and f.downloader.local_bottle_path
-
+  return true if f.local_bottle_path
   return false if ARGV.build_from_source?
   return true if ARGV.force_bottle?
   return false unless f.pour_bottle?
-  return false unless f.build.used_options.empty?
+  return false unless f.default_build?
   return false unless bottle_current?(f)
   if f.bottle.cellar != :any && f.bottle.cellar != HOMEBREW_CELLAR.to_s
     if options[:warn]
@@ -48,11 +46,6 @@ def bottle_file_outdated? f, file
   bottle_url_ext = f.bottle.url[bottle_native_regex, 1]
 
   bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
-end
-
-def bottle_new_revision f
-  return 0 unless bottle_current? f
-  f.bottle.revision + 1
 end
 
 def bottle_native_suffix revision=nil

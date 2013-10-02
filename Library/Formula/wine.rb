@@ -5,23 +5,29 @@ require 'formula'
 # http://wiki.winehq.org/Mono
 class Wine < Formula
   homepage 'http://winehq.org/'
-  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
-  sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
 
-  head 'git://source.winehq.org/git/wine.git'
+  stable do
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
+    sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
+    depends_on 'little-cms'
+  end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.2.tar.bz2'
-    sha256 '0bfc4276c93de1fdd5989f91807c7362b11995efdf581d60601fec789665b7f1'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.3.tar.bz2'
+    sha256 'c66c93c2ffec8d1d9922fbaa226b169d62deb77fcbfd0fbd7379b77dbd97d47f'
+    depends_on 'little-cms2'
+  end
+
+  head do
+    url 'git://source.winehq.org/git/wine.git'
+    depends_on 'little-cms2'
   end
 
   env :std
 
-  # this tells Homebrew that dependencies must be built universal
-  def build.universal? ; true; end
-
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
+  require_universal_deps
 
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
@@ -34,15 +40,10 @@ class Wine < Formula
   depends_on 'sane-backends'
   depends_on 'libgsm' => :optional
 
-  if build.stable?
-    depends_on 'little-cms'
-  else
-    depends_on 'little-cms2'
-  end
-
   resource 'gecko' do
-    url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
-    sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
+    url 'http://downloads.sourceforge.net/wine/wine_gecko-2.24-x86.msi', :using => :nounzip
+    version '2.24'
+    sha1 'b4923c0565e6cbd20075a0d4119ce3b48424f962'
   end
 
   resource 'mono' do
@@ -62,8 +63,12 @@ class Wine < Formula
 
   def patches
     if build.stable?
+      p = []
       # http://bugs.winehq.org/show_bug.cgi?id=34188
-      ['http://bugs.winehq.org/attachment.cgi?id=45507']
+      p << 'http://bugs.winehq.org/attachment.cgi?id=45507'
+      # http://bugs.winehq.org/show_bug.cgi?id=34162
+      p << 'http://bugs.winehq.org/attachment.cgi?id=45562' if MacOS.version >= :mavericks
+      p
     end
   end
 
@@ -88,8 +93,8 @@ class Wine < Formula
     ENV.append "CFLAGS", build32
     ENV.append "LDFLAGS", build32
 
-    # Still miscompiles at v1.6
-    if ENV.compiler == :clang
+    # The clang that comes with Xcode 5 no longer miscompiles wine. Tested with 1.7.3.
+    if ENV.compiler == :clang and Compiler.new(:clang).build < 500
       opoo <<-EOS.undent
         Clang currently miscompiles some parts of Wine. If you have gcc, you
         can get a more stable build with:

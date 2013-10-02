@@ -82,7 +82,7 @@ module SharedEnvExtension
   def fcflags;  self['FCFLAGS'];      end
 
   def compiler
-    if (cc = ARGV.cc)
+    @compiler ||= if (cc = ARGV.cc)
       COMPILER_SYMBOL_MAP.fetch(cc) do |other|
         if other =~ GNU_GCC_REGEXP then other
         else
@@ -168,6 +168,13 @@ module SharedEnvExtension
 
     flags.each { |key| self[key] = cflags }
     set_cpu_flags(flags)
+  end
+
+  # ld64 is a newer linker provided for Xcode 2.5
+  def ld64
+    ld64 = Formula.factory('ld64')
+    self['LD'] = ld64.bin/'ld'
+    append "LDFLAGS", "-B#{ld64.bin.to_s+"/"}"
   end
 
   def warn_about_non_apple_gcc(gcc)

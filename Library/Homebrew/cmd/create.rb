@@ -104,8 +104,8 @@ class FormulaCreator
 
     # XXX: why is "and version" here?
     unless ARGV.include? "--no-fetch" and version
-      r = Resource.new(:default, url, version)
-      r.owner = self
+      r = Resource.new
+      r.url, r.version, r.owner = url, version, self
       @sha1 = r.fetch.sha1 if r.download_strategy == CurlDownloadStrategy
     end
 
