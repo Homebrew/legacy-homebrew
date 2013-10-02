@@ -115,6 +115,8 @@ class Boost < Formula
     # on such systems.
     bargs << "--without-libraries=log" if MacOS.version <= :snow_leopard
 
+    bargs << "--without-libraries=python" if build.without? 'python'
+
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
             "-d2",
@@ -145,7 +147,6 @@ class Boost < Formula
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
-    args << "--without-python" if build.without? 'python'
 
     system "./bootstrap.sh", *bargs
     system "./b2", *args
