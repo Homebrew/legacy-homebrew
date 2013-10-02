@@ -12,13 +12,16 @@ class Git < Formula
     sha1 'c5a3559d59c7d9cd608559771ece10743a340c32' => :snow_leopard
   end
 
-
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
+  option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of the system version"
+  option 'with-brewed-curl', "Use Homebrew's version of cURL library"
 
   depends_on :python
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
+  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'curl' => 'with-darwinssl' if build.with? 'brewed-curl'
 
   resource 'man' do
     url 'http://git-core.googlecode.com/files/git-manpages-1.8.4.tar.gz'

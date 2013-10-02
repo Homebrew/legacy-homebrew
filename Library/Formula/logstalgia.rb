@@ -5,7 +5,12 @@ class Logstalgia < Formula
   url 'http://logstalgia.googlecode.com/files/logstalgia-1.0.3.tar.gz'
   sha1 '9d5db0f3598291b3a7a10b8f4bff9f6164eccadc'
 
-  head 'https://github.com/acaudwell/Logstalgia.git'
+  head do
+    url 'https://github.com/acaudwell/Logstalgia.git'
+
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'sdl'
   depends_on :freetype
@@ -15,11 +20,6 @@ class Logstalgia < Formula
   depends_on 'jpeg'
   depends_on 'sdl_image'
   depends_on 'pcre'
-
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
-  end
 
   def install
     # For non-/usr/local installs

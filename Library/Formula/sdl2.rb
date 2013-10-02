@@ -5,9 +5,9 @@ class Sdl2 < Formula
   url 'http://www.libsdl.org/release/SDL2-2.0.0.tar.gz'
   sha1 'a907eb5203abad6649c1eae0120d96c0a1931350'
 
-  head 'http://hg.libsdl.org/SDL', :using => :hg
+  head do
+    url 'http://hg.libsdl.org/SDL', :using => :hg
 
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end

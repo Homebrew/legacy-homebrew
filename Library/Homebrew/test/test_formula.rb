@@ -208,25 +208,4 @@ class FormulaTests < Test::Unit::TestCase
   ensure
     path.unlink
   end
-
-  def test_dependency_option_integration
-    f = formula do
-      url 'foo-1.0'
-      depends_on 'foo' => :optional
-      depends_on 'bar' => :recommended
-    end
-
-    assert f.build.has_option?('with-foo')
-    assert f.build.has_option?('without-bar')
-  end
-
-  def test_explicit_options_override_default_dep_option_description
-    f = formula do
-      url 'foo-1.0'
-      option 'with-foo', 'blah'
-      depends_on 'foo' => :optional
-    end
-
-    assert_equal 'blah', f.build.first.description
-  end
 end

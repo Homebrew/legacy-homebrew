@@ -6,9 +6,9 @@ class Wireshark < Formula
   mirror 'http://www.wireshark.org/download/src/wireshark-1.10.2.tar.bz2'
   sha1 '1f8f877f17dea23e1cf2bafeef0f71323df43521'
 
-  head 'http://anonsvn.wireshark.org/wireshark/trunk/', :using => :svn
+  head do
+    url 'http://anonsvn.wireshark.org/wireshark/trunk/', :using => :svn
 
-  if build.head?
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool

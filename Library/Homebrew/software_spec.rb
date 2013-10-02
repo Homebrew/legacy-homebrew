@@ -2,25 +2,38 @@ require 'forwardable'
 require 'resource'
 require 'checksum'
 require 'version'
+require 'build_options'
+require 'dependency_collector'
 
 class SoftwareSpec
   extend Forwardable
 
-  attr_reader :resources, :owner
+  attr_reader :name
+  attr_reader :build, :resources, :owner
+  attr_reader :dependency_collector
 
   def_delegators :@resource, :stage, :fetch
   def_delegators :@resource, :download_strategy, :verify_download_integrity
   def_delegators :@resource, :checksum, :mirrors, :specs, :using, :downloader
-  def_delegators :@resource, :url, :version, :mirror, *Checksum::TYPES
+  def_delegators :@resource, :version, :mirror, *Checksum::TYPES
 
-  def initialize url=nil, version=nil
-    @resource = Resource.new(:default, url, version)
+  def initialize
+    @resource = Resource.new
     @resources = {}
+    @build = BuildOptions.new(ARGV.options_only)
+    @dependency_collector = DependencyCollector.new
   end
 
   def owner= owner
-    @resource.owner = owner
-    resources.each_value { |r| r.owner = owner }
+    @name = owner.name
+    @resource.owner = self
+    resources.each_value { |r| r.owner = self }
+  end
+
+  def url val=nil, specs={}
+    return @resource.url if val.nil?
+    @resource.url(val, specs)
+    dependency_collector.add(@resource)
   end
 
   def resource? name
@@ -35,11 +48,32 @@ class SoftwareSpec
       resources.fetch(name) { raise ResourceMissingError.new(owner, name) }
     end
   end
+
+  def option name, description=nil
+    name = name.to_s if Symbol === name
+    raise "Option name is required." if name.empty?
+    raise "Options should not start with dashes." if name[0, 1] == "-"
+    build.add(name, description)
+  end
+
+  def depends_on spec
+    dep = dependency_collector.add(spec)
+    build.add_dep_option(dep) if dep
+  end
+
+  def deps
+    dependency_collector.deps
+  end
+
+  def requirements
+    dependency_collector.requirements
+  end
 end
 
 class HeadSoftwareSpec < SoftwareSpec
-  def initialize url=nil, version=Version.new(:HEAD)
+  def initialize
     super
+    @resource.version = Version.new('HEAD')
   end
 
   def verify_download_integrity fn
@@ -50,7 +84,7 @@ end
 class Bottle < SoftwareSpec
   attr_rw :root_url, :prefix, :cellar, :revision
 
-  def_delegators :@resource, :url=
+  def_delegators :@resource, :version=, :url=
 
   def initialize
     super
@@ -77,5 +111,22 @@ class Bottle < SoftwareSpec
         end
       end
     EOS
+  end
+
+  def checksums
+    checksums = {}
+    Checksum::TYPES.each do |checksum_type|
+      checksum_os_versions = send checksum_type
+      next unless checksum_os_versions
+      os_versions = checksum_os_versions.keys
+      os_versions.map! {|osx| MacOS::Version.from_symbol osx }
+      os_versions.sort.reverse.each do |os_version|
+        osx = os_version.to_sym
+        checksum = checksum_os_versions[osx]
+        checksums[checksum_type] ||= []
+        checksums[checksum_type] << { checksum => osx }
+      end
+    end
+    checksums
   end
 end

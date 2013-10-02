@@ -10,18 +10,16 @@ class Resource
 
   attr_reader :name
   attr_reader :checksum, :mirrors, :specs, :using
+  attr_writer :url, :checksum, :version
 
   # Formula name must be set after the DSL, as we have no access to the
   # formula name before initialization of the formula
   attr_accessor :owner
 
-  # XXX: for bottles, address this later
-  attr_writer :url, :checksum
-
-  def initialize name, url=nil, version=nil, &block
+  def initialize name=nil, &block
     @name = name
-    @url = url
-    @version = version
+    @url = nil
+    @version = nil
     @mirrors = []
     @specs = {}
     @checksum = nil
@@ -34,7 +32,7 @@ class Resource
   end
 
   def download_name
-    name == :default ? owner.name : "#{owner.name}--#{name}"
+    name.nil? ? owner.name : "#{owner.name}--#{name}"
   end
 
   def download_strategy
