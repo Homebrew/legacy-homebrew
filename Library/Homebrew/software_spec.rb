@@ -15,7 +15,7 @@ class SoftwareSpec
   def_delegators :@resource, :stage, :fetch
   def_delegators :@resource, :download_strategy, :verify_download_integrity
   def_delegators :@resource, :checksum, :mirrors, :specs, :using, :downloader
-  def_delegators :@resource, :url, :version, :mirror, *Checksum::TYPES
+  def_delegators :@resource, :version, :mirror, *Checksum::TYPES
 
   def initialize
     @resource = Resource.new
@@ -28,6 +28,12 @@ class SoftwareSpec
     @name = owner.name
     @resource.owner = self
     resources.each_value { |r| r.owner = self }
+  end
+
+  def url val=nil, specs={}
+    return @resource.url if val.nil?
+    @resource.url(val, specs)
+    dependency_collector.add(@resource)
   end
 
   def resource? name
@@ -67,7 +73,6 @@ end
 class HeadSoftwareSpec < SoftwareSpec
   def initialize
     super
-    @resource.url = url
     @resource.version = Version.new('HEAD')
   end
 
@@ -79,7 +84,7 @@ end
 class Bottle < SoftwareSpec
   attr_rw :root_url, :prefix, :cellar, :revision
 
-  def_delegators :@resource, :url=
+  def_delegators :@resource, :version=, :url=
 
   def initialize
     super

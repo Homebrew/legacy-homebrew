@@ -1,9 +1,8 @@
 require 'open-uri'
 require 'utils/json'
+require 'erb'
 
 class AbstractDownloadStrategy
-  attr_accessor :local_bottle_path
-
   attr_reader :name, :resource
 
   def initialize name, resource
@@ -33,6 +32,14 @@ class AbstractDownloadStrategy
 
   def quiet_safe_system *args
     safe_system(*expand_safe_system_args(args))
+  end
+
+  def checkout_name(tag)
+    if name.empty? || name == '__UNKNOWN__'
+      "#{ERB::Util.url_encode(@url)}--#{tag}"
+    else
+      "#{name}--#{tag}"
+    end
   end
 
   # All download strategies are expected to implement these methods
@@ -128,17 +135,14 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       with_system_path { safe_system 'tar', 'xf', tarball_path }
       chdir
     when :xz
-      raise "You must install XZutils: brew install xz" unless File.executable? xzpath
       with_system_path { safe_system "#{xzpath} -dc \"#{tarball_path}\" | tar xf -" }
       chdir
     when :pkg
       safe_system '/usr/sbin/pkgutil', '--expand', tarball_path, basename_without_params
       chdir
     when :rar
-      raise "You must install unrar: brew install unrar" unless which "unrar"
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, tarball_path
     when :p7zip
-      raise "You must install 7zip: brew install p7zip" unless which "7zr"
       safe_system '7zr', 'x', tarball_path
     else
       FileUtils.cp tarball_path, basename_without_params
@@ -251,9 +255,9 @@ end
 
 # This strategy extracts local binary packages.
 class LocalBottleDownloadStrategy < CurlDownloadStrategy
-  def initialize formula, local_bottle_path
+  def initialize formula
     super formula.name, formula.active_spec
-    @tarball_path = local_bottle_path
+    @tarball_path = formula.local_bottle_path
   end
 
   def stage
@@ -303,22 +307,30 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
     super
     @@svn ||= 'svn'
 
-    if name.to_s.empty? || name == '__UNKNOWN__'
-      raise NotImplementedError, "strategy requires a name parameter"
+    if ARGV.build_head?
+      @co = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("svn-HEAD")}")
     else
-      @co = Pathname.new("#{HOMEBREW_CACHE}/#{name}--svn")
+      @co = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("svn")}")
     end
-
-    @co = Pathname.new(@co.to_s + '-HEAD') if ARGV.build_head?
   end
 
   def cached_location
     @co
   end
 
+  def repo_valid?
+    @co.join(".svn").directory?
+  end
+
   def fetch
     @url.sub!(/^svn\+/, '') if @url =~ %r[^svn\+http://]
     ohai "Checking out #{@url}"
+
+    if @co.exist? and not repo_valid?
+      puts "Removing invalid SVN repo from cache"
+      @co.rmtree
+    end
+
     if @spec == :revision
       fetch_repo @co, @url, @ref
     elsif @spec == :revisions
@@ -355,11 +367,11 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
-    svncommand = target.exist? ? 'up' : 'checkout'
+    svncommand = target.directory? ? 'up' : 'checkout'
     args = [@@svn, svncommand]
     # SVN shipped with XCode 3.1.4 can't force a checkout.
     args << '--force' unless MacOS.version == :leopard and @@svn == '/usr/bin/svn'
-    args << url if !target.exist?
+    args << url unless target.directory?
     args << target
     args << '-r' << revision if revision
     args << '--ignore-externals' if ignore_externals
@@ -391,9 +403,9 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
-    svncommand = target.exist? ? 'up' : 'checkout'
+    svncommand = target.directory? ? 'up' : 'checkout'
     args = [@@svn, svncommand, '--non-interactive', '--trust-server-cert', '--force']
-    args << url if !target.exist?
+    args << url unless target.directory?
     args << target
     args << '-r' << revision if revision
     args << '--ignore-externals' if ignore_externals
@@ -405,12 +417,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   def initialize name, resource
     super
     @@git ||= 'git'
-
-    if name.to_s.empty? || name == '__UNKNOWN__'
-      raise NotImplementedError, "strategy requires a name parameter"
-    else
-      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--git")
-    end
+    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("git")}")
   end
 
   def cached_location
@@ -418,8 +425,6 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    raise "You must: brew install git" unless which "git"
-
     ohai "Cloning #@url"
 
     if @clone.exist? && repo_valid?
@@ -559,13 +564,7 @@ end
 class CVSDownloadStrategy < AbstractDownloadStrategy
   def initialize name, resource
     super
-
-    if name.to_s.empty? || name == '__UNKNOWN__'
-      raise NotImplementedError, "strategy requires a name parameter"
-    else
-      @unique_token = "#{name}--cvs"
-      @co = Pathname.new("#{HOMEBREW_CACHE}/#{@unique_token}")
-    end
+    @co = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("cvs")}")
   end
 
   def cached_location; @co; end
@@ -582,7 +581,7 @@ class CVSDownloadStrategy < AbstractDownloadStrategy
     unless @co.exist?
       Dir.chdir HOMEBREW_CACHE do
         safe_system '/usr/bin/cvs', '-d', url, 'login'
-        safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', @unique_token, mod
+        safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', checkout_name("cvs"), mod
       end
     else
       puts "Updating #{@co}"
@@ -615,12 +614,7 @@ end
 class MercurialDownloadStrategy < AbstractDownloadStrategy
   def initialize name, resource
     super
-
-    if name.to_s.empty? || name == '__UNKNOWN__'
-      raise NotImplementedError, "strategy requires a name parameter"
-    else
-      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--hg")
-    end
+    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("hg")}")
   end
 
   def cached_location; @clone; end
@@ -636,20 +630,27 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    raise "You must: brew install mercurial" unless hgpath
-
     ohai "Cloning #{@url}"
 
-    unless @clone.exist?
-      url=@url.sub(%r[^hg://], '')
-      safe_system hgpath, 'clone', url, @clone
-    else
+    if @clone.exist? && repo_valid?
       puts "Updating #{@clone}"
-      Dir.chdir(@clone) do
-        safe_system hgpath, 'pull'
-        safe_system hgpath, 'update'
-      end
+      @clone.cd { quiet_safe_system hgpath, 'pull', '--update' }
+    elsif @clone.exist?
+      puts "Removing invalid hg repo from cache"
+      @clone.rmtree
+      clone_repo
+    else
+      clone_repo
     end
+  end
+
+  def repo_valid?
+    @clone.join(".hg").directory?
+  end
+
+  def clone_repo
+    url = @url.sub(%r[^hg://], '')
+    safe_system hgpath, 'clone', url, @clone
   end
 
   def stage
@@ -668,12 +669,7 @@ end
 class BazaarDownloadStrategy < AbstractDownloadStrategy
   def initialize name, resource
     super
-
-    if name.to_s.empty? || name == '__UNKNOWN__'
-      raise NotImplementedError, "strategy requires a name parameter"
-    else
-      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--bzr")
-    end
+    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("bzr")}")
   end
 
   def cached_location; @clone; end
@@ -685,18 +681,29 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
       ].find { |p| File.executable? p }
   end
 
-  def fetch
-    raise "You must: brew install bazaar" unless bzrpath
+  def repo_valid?
+    @clone.join(".bzr").directory?
+  end
 
+  def fetch
     ohai "Cloning #{@url}"
-    unless @clone.exist?
-      url=@url.sub(%r[^bzr://], '')
-      # 'lightweight' means history-less
-      safe_system bzrpath, 'checkout', '--lightweight', url, @clone
-    else
+
+    if @clone.exist? && repo_valid?
       puts "Updating #{@clone}"
-      Dir.chdir(@clone) { safe_system bzrpath, 'update' }
+      @clone.cd { safe_system bzrpath, 'update' }
+    elsif @clone.exist?
+      puts "Removing invalid bzr repo from cache"
+      @clone.rmtree
+      clone_repo
+    else
+      clone_repo
     end
+  end
+
+  def clone_repo
+    url = @url.sub(%r[^bzr://], '')
+    # 'lightweight' means history-less
+    safe_system bzrpath, 'checkout', '--lightweight', url, @clone
   end
 
   def stage
@@ -704,29 +711,13 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
     # See https://bugs.launchpad.net/bzr/+bug/897511
     FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
     FileUtils.rm_r Dir[Dir.pwd+"/.bzr"]
-
-    #dst=Dir.getwd
-    #Dir.chdir @clone do
-    #  if @spec and @ref
-    #    ohai "Checking out #{@spec} #{@ref}"
-    #    Dir.chdir @clone do
-    #      safe_system bzrpath, 'export', '-r', @ref, dst
-    #    end
-    #  else
-    #    safe_system bzrpath, 'export', dst
-    #  end
-    #end
   end
 end
 
 class FossilDownloadStrategy < AbstractDownloadStrategy
   def initialize name, resource
     super
-    if name.to_s.empty? || name == '__UNKNOWN__'
-      raise NotImplementedError, "strategy requires a name parameter"
-    else
-      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{name}--fossil")
-    end
+    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("fossil")}")
   end
 
   def cached_location; @clone; end
@@ -739,8 +730,6 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
   end
 
   def fetch
-    raise "You must: brew install fossil" unless fossilpath
-
     ohai "Cloning #{@url}"
     unless @clone.exist?
       url=@url.sub(%r[^fossil://], '')
@@ -763,12 +752,15 @@ end
 
 class DownloadStrategyDetector
   def self.detect(url, strategy=nil)
-    if strategy.is_a? Class and strategy.ancestors.include? AbstractDownloadStrategy
-      strategy
-    elsif strategy.is_a? Symbol
+    if strategy.nil?
+      detect_from_url(url)
+    elsif Class === strategy && strategy < AbstractDownloadStrategy
+        strategy
+    elsif Symbol === strategy
       detect_from_symbol(strategy)
     else
-      detect_from_url(url)
+      raise TypeError,
+        "Unknown download strategy specification #{strategy.inspect}"
     end
   end
 

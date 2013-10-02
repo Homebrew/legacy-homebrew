@@ -23,6 +23,8 @@ class Formula
   # Will only be non-nil inside #stage and #test.
   attr_reader :buildpath, :testpath
 
+  attr_accessor :local_bottle_path
+
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
     @name = name
@@ -696,6 +698,7 @@ class Formula
       return @bottle unless block_given?
       @bottle ||= create_spec(Bottle)
       @bottle.instance_eval(&block)
+      @bottle.version = @stable.version
     end
 
     def devel &block
