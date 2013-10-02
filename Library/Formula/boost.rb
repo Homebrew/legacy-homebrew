@@ -31,8 +31,18 @@ class Boost < Formula
   option :universal
   option 'with-icu', 'Build regexp engine with icu support'
   option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
+  option 'with-debug', 'Enable building debug variant'
+  option 'without-graph', 'Disable building Boost.Graph library'
+  option 'without-locale', 'Disable building Boost.Locale library'
+  option 'without-log', 'Disable building Boost.Log library'
+  option 'without-math', 'Disable building Boost.Math library'
+  option 'without-program-options', 'Disable building Boost.Program_options library'
+  option 'without-regex', 'Disable building Boost.Regex library'
+  option 'without-serialization', 'Disable building Boost.Serialization library'
   option 'without-single', 'Disable building single-threading variant'
   option 'without-static', 'Disable building static library variant'
+  option 'without-test', 'Disable building Boost.Test library'
+  option 'without-wave', 'Disable building Boost.Wave library'
 
   depends_on :python => :recommended
   depends_on UniversalPython if build.universal? and build.with? "python"
@@ -111,9 +121,47 @@ class Boost < Formula
       bargs << "--without-libraries=coroutine"
     end
 
+    if build.without? 'graph'
+      bargs << "--without-libraries=graph,graph_parallel"
+    end
+
+    if build.without? 'locale'
+      bargs << "--without-libraries=locale"
+    end
+
     # Boost.Log cannot be built using Apple GCC at the moment. Disabled
     # on such systems.
-    bargs << "--without-libraries=log" if MacOS.version <= :snow_leopard
+    if build.without? 'log' or MacOS.version <= :snow_leopard
+      bargs << "--without-libraries=log"
+    end
+
+    if build.without? 'math'
+      bargs << "--without-libraries=math"
+    end
+
+    if build.without? 'program-options'
+      bargs << "--without-libraries=program_options"
+    end
+
+    if build.without? 'python'
+      bargs << "--without-libraries=python"
+    end
+
+    if build.without? 'regex'
+      bargs << "--without-libraries=regex"
+    end
+
+    if build.without? 'serialization'
+      bargs << "--without-libraries=serialization"
+    end
+
+    if build.without? 'test'
+      bargs << "--without-libraries=test"
+    end
+
+    if build.without? 'wave'
+      bargs << "--without-libraries=wave"
+    end
 
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
@@ -122,6 +170,10 @@ class Boost < Formula
             "--layout=tagged",
             "--user-config=user-config.jam",
             "install"]
+
+    if build.with? 'debug'
+      args << "variant=release,debug"
+    end
 
     if build.include? 'without-single'
       args << "threading=multi"
@@ -145,8 +197,6 @@ class Boost < Formula
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
-    args << "--without-python" if build.without? 'python'
-
     system "./bootstrap.sh", *bargs
     system "./b2", *args
   end
