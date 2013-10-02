@@ -8,24 +8,10 @@ class Tcpflow < Formula
   head do
     url 'https://github.com/simsong/tcpflow.git'
     depends_on :automake
-  end
-
-  depends_on :libtool
-
-  def copy_libtool_files!
-    if not MacOS::Xcode.provides_autotools?
-      s = Formula.factory('libtool').share
-      d = "#{s}/libtool/config"
-      cp ["#{d}/config.guess", "#{d}/config.sub"], "."
-    elsif MacOS.version <= :leopard
-      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config.*"], "."
-    else
-      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config/config.*"], "."
-    end
+    depends_on :libtool
   end
 
   def install
-    copy_libtool_files!
     system "bash", "./bootstrap.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

@@ -230,7 +230,7 @@ class Test
       status, filename = line.split
       # Don't try and do anything to removed files.
       if (status == 'A' or status == 'M')
-        if filename.include? '/Formula/'
+        if filename.match /Formula\/\w+\.rb$/
           @formulae << File.basename(filename, '.rb')
         end
       end
