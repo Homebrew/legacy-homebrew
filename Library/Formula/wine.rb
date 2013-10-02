@@ -13,8 +13,8 @@ class Wine < Formula
   end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.2.tar.bz2'
-    sha256 '0bfc4276c93de1fdd5989f91807c7362b11995efdf581d60601fec789665b7f1'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.3.tar.bz2'
+    sha256 'c66c93c2ffec8d1d9922fbaa226b169d62deb77fcbfd0fbd7379b77dbd97d47f'
     depends_on 'little-cms2'
   end
 
@@ -41,9 +41,9 @@ class Wine < Formula
   depends_on 'libgsm' => :optional
 
   resource 'gecko' do
-    url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
-    version '2.21'
-    sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
+    url 'http://downloads.sourceforge.net/wine/wine_gecko-2.24-x86.msi', :using => :nounzip
+    version '2.24'
+    sha1 'b4923c0565e6cbd20075a0d4119ce3b48424f962'
   end
 
   resource 'mono' do
@@ -93,8 +93,8 @@ class Wine < Formula
     ENV.append "CFLAGS", build32
     ENV.append "LDFLAGS", build32
 
-    # Still miscompiles at v1.6
-    if ENV.compiler == :clang
+    # The clang that comes with Xcode 5 no longer miscompiles wine. Tested with 1.7.3.
+    if ENV.compiler == :clang and Compiler.new(:clang).build < 500
       opoo <<-EOS.undent
         Clang currently miscompiles some parts of Wine. If you have gcc, you
         can get a more stable build with:
