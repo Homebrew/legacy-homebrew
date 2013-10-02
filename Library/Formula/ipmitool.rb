@@ -6,6 +6,7 @@ class Ipmitool < Formula
   sha1 '22254a2b814c8cd323866a4dd835e390521c1dfa'
 
   def install
+    # tracking upstream: http://sourceforge.net/p/ipmitool/feature-requests/47/
     # fix build errors w/ clang
     inreplace 'include/ipmitool/ipmi_user.h', 'HAVE_PRAGMA_PACK', 'DISABLE_PRAGMA_PACK'
     # undefined non-posix symbols
