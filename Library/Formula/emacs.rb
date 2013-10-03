@@ -13,6 +13,7 @@ class Emacs < Formula
   option "with-x", "Include X11 support"
   option "use-git-head", "Use Savannah (faster) git mirror for HEAD builds"
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
+  option "japanese", "Patch for Japanese input methods"
 
   if build.include? "use-git-head"
     head 'http://git.sv.gnu.org/r/emacs.git'
@@ -41,6 +42,17 @@ class Emacs < Formula
       (bin/"ctags").unlink
       (share/man/man1/"ctags.1.gz").unlink
     end
+  end
+
+  def patches
+    p = {}
+    if build.include? "cocoa" and not build.head?
+      if build.include? "japanese"
+        p[:p0] = "http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583"
+      end
+      p[:p1] = "https://gist.github.com/fukusaka/5175662/raw/20fa24d579a76a702ea7b3cc63c576052f8ed888/gistfile1.diff"
+    end
+    p
   end
 
   def install
