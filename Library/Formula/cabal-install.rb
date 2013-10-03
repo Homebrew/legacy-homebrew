@@ -29,4 +29,8 @@ class CabalInstall < Formula
     bin.install "bin/cabal"
     bash_completion.install 'bash-completion/cabal'
   end
+
+  test do
+    system "#{bin}/cabal", "--config-file=#{testpath}/config", 'info', 'cabal'
+  end
 end
