@@ -50,7 +50,7 @@ class Resource
   def stage(target=nil)
     fetched = fetch
     verify_download_integrity(fetched) if fetched.respond_to?(:file?) and fetched.file?
-    mktemp do
+    mktemp(download_name) do
       downloader.stage
       if block_given?
         yield self
