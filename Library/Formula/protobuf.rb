@@ -7,6 +7,8 @@ class Protobuf < Formula
 
   option :universal
 
+  depends_on :python => :optional
+
   fails_with :llvm do
     build 2334
   end
@@ -25,11 +27,25 @@ class Protobuf < Formula
 
     # Install editor support and examples
     doc.install %w( editors examples )
+
+    if build.with? 'python'
+      python do
+        chdir 'python' do
+          ENV['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'cpp'
+          ENV.append_to_cflags "-I#{include}"
+          ENV.append_to_cflags "-L#{lib}"
+          system python, 'setup.py', 'build'
+          system python, 'setup.py', 'install', "--prefix=#{prefix}",
+                 '--single-version-externally-managed', '--record=installed.txt'
+        end
+      end
+    end
   end
 
   def caveats; <<-EOS.undent
     Editor support and examples have been installed to:
       #{doc}
+    #{python.standard_caveats if build.with? 'python'}
     EOS
   end
 end
