@@ -1,13 +1,13 @@
 class Keg
-  def fix_install_names
+  def fix_install_names options={}
     return unless MACOS
     mach_o_files.each do |file|
-      install_names_for file do |id, bad_names|
+      install_names_for(file, options) do |id, bad_names|
         file.ensure_writable do
           install_name_tool("-id", id, file) if file.dylib?
 
           bad_names.each do |bad_name|
-            new_name = fixed_name(file, bad_name)
+            new_name = fixed_name(file, bad_name, options)
             unless new_name == bad_name
               install_name_tool("-change", bad_name, new_name, file)
             end
@@ -17,9 +17,9 @@ class Keg
     end
   end
 
-  def relocate_install_names old_prefix, new_prefix, old_cellar, new_cellar
+  def relocate_install_names old_prefix, new_prefix, old_cellar, new_cellar, options={}
     mach_o_files.each do |file|
-      install_names_for(file, relocate_reject_proc(old_prefix)) do |id, old_prefix_names|
+      install_names_for(file, options, relocate_reject_proc(old_prefix)) do |id, old_prefix_names|
         file.ensure_writable do
           new_prefix_id = id.to_s.gsub old_prefix, new_prefix
           install_name_tool("-id", new_prefix_id, file) if file.dylib?
@@ -31,7 +31,7 @@ class Keg
         end
       end
 
-      install_names_for(file, relocate_reject_proc(old_cellar)) do |id, old_cellar_names|
+      install_names_for(file, options, relocate_reject_proc(old_cellar)) do |id, old_cellar_names|
         file.ensure_writable do
           old_cellar_names.each do |old_cellar_name|
             new_cellar_name = old_cellar_name.to_s.gsub old_cellar, new_cellar
@@ -80,7 +80,7 @@ class Keg
     Proc.new { |fn| not fn.start_with?(path) }
   end
 
-  def install_names_for file, reject_proc=default_reject_proc
+  def install_names_for file, options, reject_proc=default_reject_proc
     ENV['HOMEBREW_MACH_O_FILE'] = file.to_s # solves all shell escaping problems
     install_names = `#{MacOS.locate("otool")} -L "$HOMEBREW_MACH_O_FILE"`.split "\n"
 
@@ -97,7 +97,7 @@ class Keg
     # the shortpath ensures that library upgrades don’t break installed tools
     relative_path = Pathname.new(file).relative_path_from(self)
     shortpath = HOMEBREW_PREFIX.join(relative_path)
-    id = if shortpath.exist?
+    id = if shortpath.exist? and not options[:keg_only]
       shortpath
     else
       "#{HOMEBREW_PREFIX}/opt/#{fname}/#{relative_path}"
