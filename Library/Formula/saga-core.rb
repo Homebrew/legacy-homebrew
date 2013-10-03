@@ -7,9 +7,10 @@ class SagaCore < Formula
 
   head 'svn://svn.code.sf.net/p/saga-gis/code-0/trunk/saga-gis'
 
-  depends_on :automake => :build
-  depends_on :autoconf => :build
-  depends_on :libtool => :build
+  option "build-app", "Build SAGA.app Package"
+
+  depends_on :automake
+  depends_on :libtool
   depends_on 'boost'
   depends_on 'gdal'
   depends_on 'jasper'
@@ -33,25 +34,42 @@ class SagaCore < Formula
     end
   end
 
-  def install
+  appdata = {
+    'create_saga_app.sh'  => '60467354402daa24ba707c21f9b04219e565b69c',
+    'saga_gui.icns'       => '1ff67c6d600dd161684d3e8b33a1d138c65b00f4'
+  }
 
-    # Missing proj4 headers needed for compile
-    # http://sourceforge.net/p/saga-gis/bugs/145/
-    curl "https://gist.github.com/nickrobison/6531625/raw/projects.h", "-o", "src/modules_projection/pj_proj4/pj_proj4/projects.h"
+ appdata.each do |name, sha|
+   resource name do
+     url "http://web.fastermac.net/~MacPgmr/SAGA/#{name}"
+     sha1 sha
+   end
+ end
+
+  resource 'projects' do
+    url 'https://gist.github.com/nickrobison/6531625/raw/projects.h'
+    sha1 '50e646dfd60c432c934d2020c75b6232dfac9202'
+
+  end
+
+  def install
+    (buildpath/'src/modules_projection/pj_proj4/pj_proj4/').install resource('projects')
 
     system "autoreconf", "-i"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
-    # Build App Bundle
-    curl "http://web.fastermac.net/~MacPgmr/SAGA/create_saga_app.sh", "-O"
-    curl "http://web.fastermac.net/~MacPgmr/SAGA/saga_gui.icns", "-O"
-    chmod 0755, 'create_saga_app.sh'
-    system "./create_saga_app.sh", "#{bin}/saga_gui", "SAGA"
-    prefix.install "SAGA.app"
+    if build.include? "build-app"
+          (buildpath).install resource('create_saga_app.sh')
+          (buildpath).install resource('saga_gui.icns')
+           chmod 0755, 'create_saga_app.sh'
+           system "./create_saga_app.sh", "#{bin}/saga_gui", "SAGA"
+           prefix.install "SAGA.app"
+        end
   end
 
-  def caveats; <<-EOF.undent
+  if build.include? "build-app"
+    def caveats; <<-EOF.undent
     SAGA.app was installed in:
       #{prefix}
 
@@ -62,4 +80,6 @@ class SagaCore < Formula
     It has problems with creating a preferences file in the correct location and sometimes won't shut down (use Activity Monitor to force quit if necessary).
     EOF
   end
+  end
+
 end
