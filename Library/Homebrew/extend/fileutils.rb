@@ -6,6 +6,14 @@ module FileUtils extend self
   # Create a temporary directory then yield. When the block returns,
   # recursively delete the temporary directory.
   def mktemp
+    # Prefer download_name if it is defined, for two reasons:
+    #  - The name attribute may be nil for resources that represent primary
+    #    formula downloads, in which case we want to use just the owner name.
+    #  - For resources that have a name defined, we want to use "owner--name"
+    #    instead of just "name"
+    prefix = download_name if respond_to?(:download_name)
+    prefix ||= name
+
     # I used /tmp rather than `mktemp -td` because that generates a directory
     # name with exotic characters like + in it, and these break badly written
     # scripts that don't escape strings before trying to regexp them :(
@@ -14,7 +22,7 @@ module FileUtils extend self
     # /tmp volume to the other volume. So we let the user override the tmp
     # prefix if they need to.
     tmp = ENV['HOMEBREW_TEMP'].chuzzle || '/tmp'
-    tempd = with_system_path { `mktemp -d #{tmp}/#{name}-XXXX` }.chuzzle
+    tempd = with_system_path { `mktemp -d #{tmp}/#{prefix}-XXXX` }.chuzzle
     raise "Failed to create sandbox" if tempd.nil?
     prevd = pwd
     cd tempd
