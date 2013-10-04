@@ -199,7 +199,7 @@ module MacOS extend self
   end
 
   def preferred_arch
-    @preferred_arch ||= if prefer_64_bit? 
+    @preferred_arch ||= if prefer_64_bit?
       Hardware::CPU.arch_64_bit
     else
       Hardware::CPU.arch_32_bit
