@@ -199,7 +199,7 @@ module MacOS extend self
   end
 
   def preferred_arch
-    @preferred_arch ||= if prefer_64_bit? 
+    @preferred_arch ||= if prefer_64_bit?
       Hardware::CPU.arch_64_bit
     else
       Hardware::CPU.arch_32_bit
@@ -227,6 +227,7 @@ module MacOS extend self
     "4.6.2" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "4.6.3" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "5.0"   => { :clang => "5.0", :clang_build => 500 },
+    "5.0.1" => { :clang => "5.0", :clang_build => 500 },
   }
 
   def compilers_standard?

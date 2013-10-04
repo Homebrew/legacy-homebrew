@@ -470,7 +470,7 @@ class FormulaInstaller
   end
 
   def fix_install_names
-    Keg.new(f.prefix).fix_install_names
+    Keg.new(f.prefix).fix_install_names(:keg_only => f.keg_only?)
     if @poured_bottle and f.bottle
       old_prefix = f.bottle.prefix
       new_prefix = HOMEBREW_PREFIX.to_s
@@ -479,7 +479,7 @@ class FormulaInstaller
 
       if old_prefix != new_prefix or old_cellar != new_cellar
         Keg.new(f.prefix).relocate_install_names \
-          old_prefix, new_prefix, old_cellar, new_cellar
+          old_prefix, new_prefix, old_cellar, new_cellar, :keg_only => f.keg_only?
       end
     end
   rescue Exception => e
