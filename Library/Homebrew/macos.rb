@@ -85,7 +85,9 @@ module MacOS extend self
         opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
         # Xcode < 4.3 style
         opts << "/Developer/SDKs/MacOSX#{v}.sdk"
-        opts.map{|a| Pathname.new(a) }.detect { |p| p.directory? }
+        existing_sdk = opts.map{|a| Pathname.new(a) }.detect { |p| p.directory? }
+        raise "Missing MacOS X #{v} SDK. Please ensure your Xcode is up to date." unless existing_sdk
+        existing_sdk
       end
     end
   end
