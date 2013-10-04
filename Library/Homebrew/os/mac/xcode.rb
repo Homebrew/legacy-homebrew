@@ -28,7 +28,7 @@ module MacOS::Xcode extend self
     else
       # Default to newest known version of Xcode for unreleased OSX versions.
       if MacOS.version > 10.9
-        "5.0"
+        "5.0.1"
       else
         raise "Mac OS X '#{MacOS.version}' is invalid"
       end
