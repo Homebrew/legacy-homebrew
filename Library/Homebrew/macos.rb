@@ -77,16 +77,14 @@ module MacOS extend self
 
   def sdk_path(v = version)
     (@sdk_path ||= {}).fetch(v.to_s) do
-      @sdk_path[v.to_s] = begin
-        opts = []
-        # First query Xcode itself
-        opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
-        # Xcode.prefix is pretty smart, so lets look inside to find the sdk
-        opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-        # Xcode < 4.3 style
-        opts << "/Developer/SDKs/MacOSX#{v}.sdk"
-        opts.map{|a| Pathname.new(a) }.detect { |p| p.directory? }
-      end
+      opts = []
+      # First query Xcode itself
+      opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
+      # Xcode.prefix is pretty smart, so lets look inside to find the sdk
+      opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+      # Xcode < 4.3 style
+      opts << "/Developer/SDKs/MacOSX#{v}.sdk"
+      @sdk_path[v.to_s] = opts.map { |a| Pathname.new(a) }.detect(&:directory?)
     end
   end
 
