@@ -13,6 +13,8 @@ class Rbenv < Formula
   end
 
   def caveats; <<-EOS.undent
+    You must add the following to your shell profile for the rbenv shell command to work:
+      eval "$(rbenv init -)"
     To use Homebrew's directories rather than ~/.rbenv add to your profile:
       export RBENV_ROOT=#{var}/rbenv
 
