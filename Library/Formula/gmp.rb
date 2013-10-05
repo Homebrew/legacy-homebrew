@@ -10,7 +10,6 @@ class Gmp < Formula
     cellar :any
     sha1 '65dc7505fe80c1ac3fd502a2bfdc09fcfa40a66e' => :mountain_lion
     sha1 '186c0b5627fc0af1114d9bea543dc19bd657df0c' => :lion
-    sha1 '2eba2244894e5558bc6a2bdf9cc20613c16f0065' => :snow_leopard
   end
 
   option '32-bit'

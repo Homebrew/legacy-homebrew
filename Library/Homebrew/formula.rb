@@ -292,12 +292,11 @@ class Formula
     @pin.unpin
   end
 
-  def == b
-    name == b.name
+  def == other
+    instance_of?(other.class) && name == other.name
   end
-  def eql? b
-    self == b and self.class.equal? b.class
-  end
+  alias_method :eql?, :==
+
   def hash
     name.hash
   end

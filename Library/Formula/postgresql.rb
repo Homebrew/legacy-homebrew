@@ -70,7 +70,7 @@ class Postgresql < Formula
 
   def caveats
     s = <<-EOS.undent
-    initdb #{var}/postgres -E utf8    # create a database
+    initdb #{var}/postgres -E utf8    # create a database cluster
     postgres -D #{var}/postgres       # serve that database
     PGDATA=#{var}/postgres postgres   # …alternatively
 

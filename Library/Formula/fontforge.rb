@@ -20,6 +20,7 @@ class Fontforge < Formula
     depends_on 'glib'
     depends_on 'pango'
     depends_on 'cairo'
+    depends_on 'ossp-uuid'
   end
 
   option 'with-gif', 'Build with GIF support'

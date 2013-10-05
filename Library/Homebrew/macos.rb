@@ -17,8 +17,8 @@ module MacOS extend self
     # Don't call tools (cc, make, strip, etc.) directly!
     # Give the name of the binary you look for as a string to this method
     # in order to get the full path back as a Pathname.
-    (@locate ||= {}).fetch(tool.to_s) do
-      @locate[tool.to_s] = if File.executable?(path = "/usr/bin/#{tool}")
+    (@locate ||= {}).fetch(tool.to_s) do |key|
+      @locate[key] = if File.executable?(path = "/usr/bin/#{tool}")
         Pathname.new path
       # Homebrew GCCs most frequently; much faster to check this before xcrun
       # This also needs to be queried if xcrun won't work, e.g. CLT-only
@@ -76,17 +76,15 @@ module MacOS extend self
   end
 
   def sdk_path(v = version)
-    (@sdk_path ||= {}).fetch(v.to_s) do
-      @sdk_path[v.to_s] = begin
-        opts = []
-        # First query Xcode itself
-        opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
-        # Xcode.prefix is pretty smart, so lets look inside to find the sdk
-        opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-        # Xcode < 4.3 style
-        opts << "/Developer/SDKs/MacOSX#{v}.sdk"
-        opts.map{|a| Pathname.new(a) }.detect { |p| p.directory? }
-      end
+    (@sdk_path ||= {}).fetch(v.to_s) do |key|
+      opts = []
+      # First query Xcode itself
+      opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
+      # Xcode.prefix is pretty smart, so lets look inside to find the sdk
+      opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
+      # Xcode < 4.3 style
+      opts << "/Developer/SDKs/MacOSX#{v}.sdk"
+      @sdk_path[key] = opts.map { |a| Pathname.new(a) }.detect(&:directory?)
     end
   end
 
@@ -199,7 +197,7 @@ module MacOS extend self
   end
 
   def preferred_arch
-    @preferred_arch ||= if prefer_64_bit? 
+    @preferred_arch ||= if prefer_64_bit?
       Hardware::CPU.arch_64_bit
     else
       Hardware::CPU.arch_32_bit
@@ -227,6 +225,7 @@ module MacOS extend self
     "4.6.2" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "4.6.3" => { :llvm_build => 2336, :clang => "4.2", :clang_build => 425 },
     "5.0"   => { :clang => "5.0", :clang_build => 500 },
+    "5.0.1" => { :clang => "5.0", :clang_build => 500 },
   }
 
   def compilers_standard?
@@ -251,14 +250,14 @@ module MacOS extend self
 
   def mdfind id
     return [] unless MACOS
-    (@mdfind ||= {}).fetch(id.to_s) do
-      @mdfind[id.to_s] = `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{id}'"`.split("\n")
+    (@mdfind ||= {}).fetch(id.to_s) do |key|
+      @mdfind[key] = `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{key}'"`.split("\n")
     end
   end
 
   def pkgutil_info id
-    (@pkginfo ||= {}).fetch(id.to_s) do
-      @pkginfo[id.to_s] = `/usr/sbin/pkgutil --pkg-info "#{id}" 2>/dev/null`.strip
+    (@pkginfo ||= {}).fetch(id.to_s) do |key|
+      @pkginfo[key] = `/usr/sbin/pkgutil --pkg-info "#{key}" 2>/dev/null`.strip
     end
   end
 end

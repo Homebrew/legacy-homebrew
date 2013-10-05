@@ -96,7 +96,7 @@ module Homebrew extend self
       keg.lock do
         # Relocate bottle library references before testing for built-in
         # references to the Cellar e.g. Qt's QMake annoyingly does this.
-        keg.relocate_install_names prefix, tmp_prefix, cellar, tmp_cellar
+        keg.relocate_install_names prefix, tmp_prefix, cellar, tmp_cellar, :keg_only => f.keg_only?
 
         if prefix == '/usr/local'
           prefix_check = HOMEBREW_PREFIX/'opt'
