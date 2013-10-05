@@ -115,6 +115,27 @@ class Pathname
     return dst
   end
 
+  def cp_path_sub pattern, replacement
+    raise "#{self} does not exist" unless self.exist?
+
+    src = self.to_s
+    dst = src.sub(pattern, replacement)
+    raise "#{src} is the same file as #{dst}" if src == dst
+
+    dst_path = Pathname.new dst
+
+    if self.directory?
+      dst_path.mkpath
+      return
+    end
+
+    dst_path.dirname.mkpath
+
+    dst = yield(src, dst) if block_given?
+
+    FileUtils.cp(src, dst)
+  end
+
   # extended to support common double extensions
   alias extname_old extname
   def extname(path=to_s)
