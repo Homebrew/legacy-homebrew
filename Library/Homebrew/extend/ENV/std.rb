@@ -288,10 +288,11 @@ module Stdenv
 
     append_path 'ACLOCAL_PATH', MacOS::X11.share/'aclocal'
 
-    unless MacOS::CLT.installed?
+    if MacOS::XQuartz.provided_by_apple? and not MacOS::CLT.installed?
       append_path 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11'
-      append 'CFLAGS', "-I#{MacOS::X11.include}"
     end
+
+    append 'CFLAGS', "-I#{MacOS::X11.include}" unless MacOS::CLT.installed?
   end
   alias_method :libpng, :x11
 
