@@ -1,7 +1,7 @@
 require 'formula'
 
 class Flare < Formula
-  homepage 'http://labs.gree.jp/Top/OpenSource/Flare-en.html'
+  homepage 'https://github.com/gree/flare/wiki'
   url 'http://gree.github.io/flare/files/flare-1.0.17.1.zip'
   sha1 '24a09e1d7686aa561dac4f3873e114ee15a7706d'
 
