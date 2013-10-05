@@ -165,12 +165,7 @@ class Formula
   def kext_prefix; prefix+'Library/Extensions' end
 
   # configuration needs to be preserved past upgrades
-  def etc
-    etc = HOMEBREW_PREFIX+'etc'
-    etc = prefix+etc if HOMEBREW_GIT_ETC
-    etc.extend(InstallRenamed)
-    etc
-  end
+  def etc; (HOMEBREW_PREFIX+'etc').extend(InstallRenamed) end
 
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
