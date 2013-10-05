@@ -6,6 +6,12 @@ module InstallRenamed
     end
   end
 
+  def cp_path_sub pattern, replacement
+    super do |src, dst|
+      append_default_if_different(src, dst)
+    end
+  end
+
   private
 
   def append_default_if_different src, dst
