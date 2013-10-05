@@ -281,14 +281,15 @@ module Stdenv
     append 'LDFLAGS', "-L#{MacOS::X11.lib}"
     append_path 'CMAKE_PREFIX_PATH', MacOS::X11.prefix
     append_path 'CMAKE_INCLUDE_PATH', MacOS::X11.include
+    append_path 'CMAKE_INCLUDE_PATH', MacOS::X11.include/'freetype2'
 
     append 'CPPFLAGS', "-I#{MacOS::X11.include}"
+    append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
 
     append_path 'ACLOCAL_PATH', MacOS::X11.share/'aclocal'
 
     unless MacOS::CLT.installed?
       append_path 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11'
-      append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
       append 'CFLAGS', "-I#{MacOS::X11.include}"
     end
   end
