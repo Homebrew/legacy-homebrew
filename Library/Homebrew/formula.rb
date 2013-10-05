@@ -178,6 +178,9 @@ class Formula
   def bash_completion; prefix+'etc/bash_completion.d' end
   def zsh_completion;  share+'zsh/site-functions'     end
 
+  # for storing etc, var files for later copying from bottles
+  def bottle_prefix; prefix+'.bottle' end
+
   # override this to provide a plist
   def plist; nil; end
   alias :startup_plist :plist
