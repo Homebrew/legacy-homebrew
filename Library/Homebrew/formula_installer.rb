@@ -9,6 +9,7 @@ require 'bottles'
 require 'caveats'
 require 'cleaner'
 require 'formula_cellar_checks'
+require 'install_renamed'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -124,6 +125,18 @@ class FormulaInstaller
     end
   end
 
+  def build_bottle_preinstall
+    @etc_var_glob ||= "#{HOMEBREW_PREFIX}/{etc,var}/**/*"
+    @etc_var_preinstall = Dir[@etc_var_glob]
+  end
+
+  def build_bottle_postinstall
+    @etc_var_postinstall = Dir[@etc_var_glob]
+    (@etc_var_postinstall - @etc_var_preinstall).each do |file|
+      Pathname.new(file).cp_path_sub(HOMEBREW_PREFIX, f.bottle_prefix)
+    end
+  end
+
   def install
     # not in initialize so upgrade can unlink the active keg before calling this
     # function but after instantiating this class so that it can avoid having to
@@ -162,7 +175,7 @@ class FormulaInstaller
 
     @@attempted << f
 
-    git_etc_preinstall if HOMEBREW_GIT_ETC
+    #git_etc_preinstall if HOMEBREW_GIT_ETC
 
     @poured_bottle = false
 
@@ -180,10 +193,14 @@ class FormulaInstaller
       opoo "Bottle installation failed: building from source."
     end
 
+    build_bottle_preinstall if ARGV.build_bottle?
+
     unless @poured_bottle
       build
       clean
     end
+
+    build_bottle_postinstall if ARGV.build_bottle?
 
     begin
       f.post_install
@@ -191,7 +208,7 @@ class FormulaInstaller
       opoo "#{f.name} post_install failed. Rerun with `brew postinstall #{f.name}`."
     end
 
-    git_etc_postinstall if HOMEBREW_GIT_ETC
+    #git_etc_postinstall if HOMEBREW_GIT_ETC
 
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
@@ -532,6 +549,13 @@ class FormulaInstaller
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end
+
+    Dir["#{f.bottle_prefix}/{etc,var}/**/*"].each do |file|
+      path = Pathname.new(file)
+      path.extend(InstallRenamed)
+      path.cp_path_sub(f.bottle_prefix, HOMEBREW_PREFIX)
+    end
+    FileUtils.rm_rf f.bottle_prefix
   end
 
   ## checks
