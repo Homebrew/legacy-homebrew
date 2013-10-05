@@ -2,8 +2,8 @@ require 'formula'
 
 class Flare < Formula
   homepage 'http://labs.gree.jp/Top/OpenSource/Flare-en.html'
-  url 'http://labs.gree.jp/data/source/flare-1.0.16.1.tgz'
-  sha1 'a3d022005695bbba97da94f824702e54837ba03c'
+  url 'http://gree.github.io/flare/files/flare-1.0.17.1.zip'
+  sha1 '24a09e1d7686aa561dac4f3873e114ee15a7706d'
 
   head 'https://github.com/fujimoto/flare.git'
 
