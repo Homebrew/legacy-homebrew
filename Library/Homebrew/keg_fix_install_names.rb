@@ -7,7 +7,7 @@ class Keg
           install_name_tool("-id", id, file) if file.dylib?
 
           bad_names.each do |bad_name|
-            new_name = fixed_name(file, bad_name, options)
+            new_name = fixed_name(file, bad_name)
             unless new_name == bad_name
               install_name_tool("-change", bad_name, new_name, file)
             end
