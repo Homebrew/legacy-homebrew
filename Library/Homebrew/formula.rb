@@ -9,7 +9,7 @@ require 'build_environment'
 require 'build_options'
 require 'formulary'
 require 'software_spec'
-
+require 'install_renamed'
 
 class Formula
   include FileUtils
@@ -165,7 +165,13 @@ class Formula
   def kext_prefix; prefix+'Library/Extensions' end
 
   # configuration needs to be preserved past upgrades
-  def etc; HOMEBREW_GIT_ETC ? prefix+'etc' : HOMEBREW_PREFIX+'etc' end
+  def etc
+    etc = HOMEBREW_PREFIX+'etc'
+    etc = prefix+etc if HOMEBREW_GIT_ETC
+    etc.extend(InstallRenamed)
+    etc
+  end
+
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
