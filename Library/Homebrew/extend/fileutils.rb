@@ -39,9 +39,9 @@ module FileUtils extend self
   # bad bug which causes copying symlinks across filesystems to fail;
   # see #14710.
   # This was resolved in Ruby HEAD after the release of 1.9.3p194, but
-  # as of September 2012 isn't in any released version of Ruby.
+  # never backported into the 1.9.3 branch. Fixed in 2.0.0.
   # The monkey-patched method here is copied directly from upstream fix.
-  if RUBY_VERSION < "1.9.3" or RUBY_PATCHLEVEL < 195
+  if RUBY_VERSION < "2.0.0"
     class Entry_
       alias_method :old_copy_metadata, :copy_metadata
       def copy_metadata(path)
