@@ -50,6 +50,8 @@ class Pathname
     # and also broken symlinks are not the end of the world
     raise "#{src} does not exist" unless File.symlink? src or File.exist? src
 
+    dst = yield(src, dst) if block_given?
+
     mkpath
     if File.symlink? src
       # we use the BSD mv command because FileUtils copies the target and
