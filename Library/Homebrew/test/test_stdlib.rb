@@ -13,6 +13,7 @@ class CxxStdlibTests < Test::Unit::TestCase
     @gcc48 = CxxStdlib.new(:libstdcxx, 'gcc-4.8')
     @gcc49 = CxxStdlib.new(:libstdcxx, 'gcc-4.9')
     @lcxx  = CxxStdlib.new(:libcxx, :clang)
+    @purec = CxxStdlib.new(nil, :clang)
   end
 
   def test_apple_libstdcxx_intercompatibility
@@ -58,5 +59,9 @@ class CxxStdlibTests < Test::Unit::TestCase
     stdlib = Tab.dummy_tab.cxxstdlib
     assert_equal stdlib.compiler, :clang
     assert_equal stdlib.type, :libstdcxx
+  end
+
+  def test_compatibility_for_non_cxx_software
+    assert @purec.compatible_with?(@clang)
   end
 end
