@@ -42,6 +42,21 @@ class Keg
     end
   end
 
+  # Detects the C++ dynamic libraries in place, scanning the dynamic links
+  # of the files within the keg.
+  # Note that this doesn't attempt to distinguish between libstdc++ versions,
+  # for instance between Apple libstdc++ and GNU libstdc++
+  def detect_cxx_stdlibs
+    results = Set.new
+    mach_o_files.each do |file|
+      dylibs = file.dynamically_linked_libraries
+      results << :libcxx unless dylibs.grep(/libc\+\+.+\.dylib/).empty?
+      results << :libstdcxx unless dylibs.grep(/libstdc\+\+.+\.dylib/).empty?
+    end
+
+    results.to_a
+  end
+
   private
 
   OTOOL_RX = /\t(.*) \(compatibility version (\d+\.)*\d+, current version (\d+\.)*\d+\)/
