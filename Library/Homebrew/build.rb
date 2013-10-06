@@ -171,7 +171,7 @@ class Build
 
         begin
           f.install
-          Tab.create(f, :libstdcxx, ENV.compiler,
+          Tab.create(f, ENV.compiler,
             Options.coerce(ARGV.options_only)).write
         rescue Exception => e
           if ARGV.debug?

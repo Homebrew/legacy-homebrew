@@ -390,6 +390,17 @@ class Pathname
     end
   end
 
+  # Returns an array containing all dynamically-linked libraries, based on the
+  # output of otool. This returns the install names, so these are not guaranteed
+  # to be absolute paths.
+  # Returns an empty array both for software that links against no libraries,
+  # and for non-mach objects.
+  def dynamically_linked_libraries
+    `otool -L "#{expand_path}"`.chomp.split("\n")[1..-1].map do |line|
+      line[/\t(.+) \([^(]+\)/, 1]
+    end
+  end
+
   # We redefine these private methods in order to add the /o modifier to
   # the Regexp literals, which forces string interpolation to happen only
   # once instead of each time the method is called. This is fixed in 1.9+.
