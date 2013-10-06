@@ -24,7 +24,10 @@ class Grass < Formula
   depends_on :x11  # needs to find at least X11/include/GL/gl.h
 
   # Patches that files are not installed outside of the prefix.
-  def patches; DATA; end
+  if build.head?
+    def patches; "https://gist.github.com/jctull/0fe3db92a3e7c19fa6e0/raw/42e819f0a9b144de782c94f730dbc4da136e9227/grassPatchHead.diff"; end
+    else def patches; DATA; end
+  end
 
   fails_with :clang do
     cause "Multiple build failures while compiling GRASS tools."
