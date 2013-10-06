@@ -8,6 +8,17 @@ class Autogen < Formula
 
   depends_on 'guile'
 
+  fails_with :clang do
+    build 500
+    cause <<-EOS.undent
+      Clang does not appear to be able to handle variables using the name
+      'noreturn' as it is a new keyword in C++11, but it would normally be
+      used as in [[noreturn]] void foo() and not as a variable name. I'm not
+      sure if this is a compiler bug or what, but GCC handles it fine at
+      the moment.
+    EOS
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
