@@ -58,7 +58,7 @@ class CxxStdlibTests < Test::Unit::TestCase
   def test_constructing_from_tab
     stdlib = Tab.dummy_tab.cxxstdlib
     assert_equal stdlib.compiler, :clang
-    assert_equal stdlib.type, :libstdcxx
+    assert_equal stdlib.type, nil
   end
 
   def test_compatibility_for_non_cxx_software
