@@ -141,12 +141,15 @@ class Build
       end
     end
 
-    # We only support libstdc++ right now
-    stdlib_in_use = CxxStdlib.new(:libstdcxx, ENV.compiler)
+    # TODO Track user-selected stdlibs, such as boost in C++11 mode
+    stdlib = ENV.compiler == :clang ? MacOS.default_cxx_stdib : :libstdcxx
+    stdlib_in_use = CxxStdlib.new(stdlib, ENV.compiler)
 
     # This is a bad place for this check, but we don't have access to
     # compiler selection within the formula installer, only inside the
     # build instance.
+    # This is also awkward because we don't actually know yet if this package
+    # will link against a C++ stdlib, but we don't want to test after the build.
     stdlib_in_use.check_dependencies(f, deps)
 
     f.brew do
