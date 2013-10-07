@@ -16,6 +16,6 @@ class Foremost < Formula
 
     bin.install "foremost"
     man8.install "foremost.8.gz"
-    etc.install "foremost.conf" => "foremost.conf.sample"
+    etc.install "foremost.conf" => "foremost.conf.default"
   end
 end
