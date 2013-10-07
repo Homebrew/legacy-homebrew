@@ -14,7 +14,7 @@ class Cogl < Formula
   depends_on 'cairo' => 'with-glib'
   depends_on 'glib'
   depends_on 'pango'
-  depends_on :x11 unless build.without? 'x'
+  depends_on :x11 => '2.5.1' unless build.without? 'x'
 
   def patches
     # Patch from MacPorts, reported upstream at https://bugzilla.gnome.org/show_bug.cgi?id=708825
