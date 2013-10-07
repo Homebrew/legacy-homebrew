@@ -322,6 +322,17 @@ module Stdenv
     end
   end
 
+  def cxx11
+    if compiler == :clang
+      append 'CXX', '-std=c++11'
+      append 'CXX', '-stdlib=libc++'
+    elsif compiler =~ /gcc-4\.(8|9)/
+      append 'CXX', '-std=c++11'
+    else
+      raise "The selected compiler doesn't support C++11: #{compiler}"
+    end
+  end
+
   def replace_in_cflags before, after
     CC_FLAG_VARS.each do |key|
       self[key] = self[key].sub(before, after) if has_key?(key)
