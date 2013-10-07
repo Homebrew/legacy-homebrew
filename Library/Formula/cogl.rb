@@ -26,7 +26,9 @@ class Cogl < Formula
     system "./autogen.sh" if build.head?
     args = %W[
       --disable-dependency-tracking
+      --disable-silent-rules
       --prefix=#{prefix}
+      --enable-cogl-pango=yes
       --disable-introspection
     ]
     args << '--without-x' if build.without? 'x'
