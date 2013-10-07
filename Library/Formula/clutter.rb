@@ -29,9 +29,22 @@ class Clutter < Formula
       --disable-tests
       --disable-examples
       --disable-gtk-doc-html
-      --enable-quartz-backend
     ]
-    args << '--disable-x11-backend' << '--without-x' if build.include? 'without-x'
+
+    if build.with? 'x'
+      args.concat %w{
+        --with-x --enable-x11-backend=yes
+        --enable-gdk-pixbuf=yes
+        --enable-quartz-backend=no
+      }
+    else
+      args.concat %w{
+        --without-x --enable-x11-backend=no
+        --enable-gdk-pixbuf=no
+        --enable-quartz-backend=yes
+      }
+    end
+
     system './configure', *args
     system 'make install'
   end
