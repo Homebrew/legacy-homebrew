@@ -149,13 +149,12 @@ class FormulaInstaller
     end
 
     if pour_bottle?
-      # TODO We currently only support building with libstdc++ as
-      # the default case, and all Apple libstdc++s are compatible, so
-      # this default is sensible.
-      # In the future we need to actually provide a way to read this from
-      # the bottle, or update the default should that change
-      # at some other point.
-      stdlib_in_use = CxxStdlib.new(:libstdcxx, :clang)
+      # This assumes that bottles are built with
+      # a) the OS's default compiler, and
+      # b) the OS's default C++ stdlib
+      # This is probably accurate, but could possibly stand to be
+      # more robust.
+      stdlib_in_use = CxxStdlib.new(MacOS.default_cxx_stdlib, MacOS.default_compiler)
       stdlib_in_use.check_dependencies(f, f.deps)
     end
 
