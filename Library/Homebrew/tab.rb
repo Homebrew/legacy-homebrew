@@ -62,7 +62,6 @@ class Tab < OpenStruct
             :tapped_from => "",
             :time => nil,
             :HEAD => nil,
-            :stdlib => :libstdcxx,
             :compiler => :clang
   end
 
