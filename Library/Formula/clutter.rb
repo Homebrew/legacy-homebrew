@@ -16,7 +16,7 @@ class Clutter < Formula
   depends_on 'atk'
   depends_on 'pango'
   depends_on 'json-glib'
-  depends_on :x11 unless build.include? 'without-x'
+  depends_on :x11 => '2.5.1' unless build.without? 'x'
 
   def install
     args = %W[
