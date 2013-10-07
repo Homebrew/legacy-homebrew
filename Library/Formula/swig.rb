@@ -11,6 +11,13 @@ class Swig < Formula
   depends_on :python  # assure swig find the "right" python
   depends_on :python3 => :optional
 
+  def patches
+    # Allows building Windows binding through a special "-windows" parameter
+    # See https://groups.google.com/forum/#!topic/golang-nuts/9L0U4Q7AtyE for more informations.
+    # Patch adapted for 2.0.11.
+    "https://gist.github.com/steeve/6859467/raw"
+  end
+
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
