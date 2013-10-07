@@ -97,7 +97,7 @@ class Tab < OpenStruct
 
   def cxxstdlib
     # Older tabs won't have these values, so provide sensible defaults
-    lib = stdlib || :libstdcxx
+    lib = stdlib
     cc = compiler || MacOS.default_compiler
     CxxStdlib.new(lib.to_sym, cc.to_sym)
   end
