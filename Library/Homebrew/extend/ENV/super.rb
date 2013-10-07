@@ -97,6 +97,8 @@ module Superenv
     # A - Installing from a bottle on PPC with Altivec
     # O - Enables argument refurbishing. Only active under the
     #     make/bsdmake wrappers currently.
+    # x - Enable C++11 mode.
+    # g - Enable "-stdlib=libc++" for clang.
     #
     # On 10.8 and newer, these flags will also be present:
     # s - apply fix for sed's Unicode support
@@ -108,6 +110,17 @@ module Superenv
   def universal_binary
     self['HOMEBREW_ARCHS'] = Hardware::CPU.universal_archs.join(',')
     append 'HOMEBREW_CCCFG', "u", ''
+  end
+
+  def cxx11
+    if self['HOMEBREW_CC'] == 'clang'
+      append 'HOMEBREW_CCCFG', "x", ''
+      append 'HOMEBREW_CCCFG', "g", ''
+    elsif self['HOMEBREW_CC'] =~ /gcc-4\.(8|9)/
+      append 'HOMEBREW_CCCFG', "x", ''
+    else
+      raise "The selected compiler doesn't support C++11: #{self['HOMEBREW_CC']}"
+    end
   end
 
   # m32 on superenv does not add any CC flags. It prevents "-m32" from being erased.

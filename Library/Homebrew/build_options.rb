@@ -7,6 +7,7 @@ class BuildOptions
 
   attr_accessor :args
   attr_accessor :universal
+  attr_accessor :cxx11
   attr_reader :options
   protected :options
 
@@ -25,6 +26,7 @@ class BuildOptions
     description ||= case name.to_s
       when "universal" then "Build a universal binary"
       when "32-bit" then "Build 32-bit only"
+      when "c++11" then "Build using C++11 mode"
       end.to_s
 
     @options << Option.new(name, description)
@@ -92,6 +94,11 @@ class BuildOptions
   # True if the user requested a universal build.
   def universal?
     universal || args.include?('--universal') && has_option?('universal')
+  end
+
+  # True if the user requested to enable C++11 mode.
+  def cxx11?
+    cxx11 || args.include?('--c++11') && has_option?('c++11')
   end
 
   # Request a 32-bit only build.

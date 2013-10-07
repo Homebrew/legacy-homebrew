@@ -50,6 +50,7 @@ class SoftwareSpec
   end
 
   def option name, description=nil
+    name = 'c++11' if name == :cxx11
     name = name.to_s if Symbol === name
     raise "Option name is required." if name.empty?
     raise "Options should not start with dashes." if name[0, 1] == "-"
