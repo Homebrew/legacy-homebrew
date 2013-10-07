@@ -36,8 +36,8 @@ class Redis < Formula
       ohai "Your redis.conf will not work with 2.6; moved it to redis.conf.old"
     end
 
-    etc.install 'redis.conf' unless (etc/'redis.conf').exist?
-    etc.install 'sentinel.conf' => 'redis-sentinel.conf' unless (etc/'redis-sentinel.conf').exist?
+    etc.install 'redis.conf'
+    etc.install 'sentinel.conf' => 'redis-sentinel.conf'
   end
 
   plist_options :manual => "redis-server #{HOMEBREW_PREFIX}/etc/redis.conf"
