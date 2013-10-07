@@ -45,11 +45,19 @@ class Cmd
     if @arg0 == 'cpp' or @arg0 == 'ld'
       @arg0.to_sym
     elsif @args.include? '-c'
-      :cc
+      if @arg0 =~ /(?:c|g|clang)\+\+/
+        :cxx
+      else
+        :cc
+      end
     elsif @args.include? '-E'
       :ccE
     else
-      :ccld
+      if @arg0 =~ /(?:c|g|clang)\+\+/
+        :cxxld
+      else
+        :ccld
+      end
     end
   end
   def tool
@@ -83,9 +91,9 @@ class Cmd
       args << "-syslibroot" << $sdkroot
     end if nclt?
     allflags = case mode
-    when :ccld
+    when :ccld, :cxxld
       cflags + args + cppflags + ldflags
-    when :cc
+    when :cc, :cxx
       cflags + args + cppflags
     when :ccE
       args + cppflags
@@ -149,9 +157,15 @@ class Cmd
     args
   end
   def cflags
-    return [] unless cccfg? 'O'
+    args = []
+    if mode == :cxx
+      args << '-std=c++11' if cccfg? 'x'
+      args << '-stdlib=libc++' if cccfg? 'g'
+    end
 
-    args = %w{-pipe -w -Os}
+    return args unless cccfg? 'O'
+
+    args << '-pipe' << '-w' << '-Os'
 
     # When bottling use the oldest supported CPU type.
     if cccfg? 'bc'
@@ -199,6 +213,9 @@ class Cmd
     case mode
     when :ld   then args << '-headerpad_max_install_names'
     when :ccld then args << '-Wl,-headerpad_max_install_names'
+    when :cxxld
+      args << '-Wl,-headerpad_max_install_names'
+      args << '-stdlib=libc++' if cccfg? 'g'
     end
     args
   end
