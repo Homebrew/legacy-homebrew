@@ -142,7 +142,7 @@ class Build
     end
 
     # TODO Track user-selected stdlibs, such as boost in C++11 mode
-    stdlib = ENV.compiler == :clang ? MacOS.default_cxx_stdib : :libstdcxx
+    stdlib = ENV.compiler == :clang ? MacOS.default_cxx_stdlib : :libstdcxx
     stdlib_in_use = CxxStdlib.new(stdlib, ENV.compiler)
 
     # This is a bad place for this check, but we don't have access to
