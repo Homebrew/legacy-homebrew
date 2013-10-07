@@ -2,16 +2,17 @@ require 'formula'
 
 class Binwalk < Formula
   homepage 'http://code.google.com/p/binwalk/'
-  url 'http://binwalk.googlecode.com/files/binwalk-0.5.0.tar.gz'
-  sha1 'e7ffb447f932fb33b5c7c9b4ca8f8ddbead7f6db'
+  url 'https://binwalk.googlecode.com/files/binwalk-1.2.1.tar.gz'
+  sha1 '1c5830003ca8d4bcaa65c5ab31b858d46d4731fa'
 
-  depends_on 'libmagic'
+  # Technically, matplotlib is optional, but the binwalk setup script hardcodes
+  # a check that requires user raw_input to override
+  depends_on :python => 'matplotlib'
+  depends_on 'libmagic' => 'with-python'
 
   def install
     cd "src" do
-      system "./configure", "--prefix=#{prefix}"
-      system "make"
-      system "make install"
+      system python, "setup.py", "install", "--prefix=#{prefix}"
     end
   end
 end
