@@ -30,12 +30,6 @@ class Redis < Formula
       s.gsub! "\# bind 127.0.0.1", "bind 127.0.0.1"
     end
 
-    # Fix redis upgrade from 2.4 to 2.6.
-    if File.exists?(etc/'redis.conf') && !File.readlines(etc/'redis.conf').grep(/^vm-enabled/).empty?
-      mv etc/'redis.conf', etc/'redis.conf.old'
-      ohai "Your redis.conf will not work with 2.6; moved it to redis.conf.old"
-    end
-
     etc.install 'redis.conf'
     etc.install 'sentinel.conf' => 'redis-sentinel.conf'
   end
