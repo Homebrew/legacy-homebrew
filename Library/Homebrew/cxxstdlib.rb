@@ -2,11 +2,11 @@ class CxxStdlib
   attr_accessor :type, :compiler
 
   def initialize(type, compiler)
-    if ![:libstdcxx, :libcxx].include? type
+    if type && ![:libstdcxx, :libcxx].include?(type)
       raise ArgumentError, "Invalid C++ stdlib type: #{type}"
     end
 
-    @type     = type.to_sym
+    @type     = type.to_sym if type
     @compiler = compiler.to_sym
   end
 
@@ -15,6 +15,9 @@ class CxxStdlib
   end
 
   def compatible_with?(other)
+    # If either package doesn't use C++, all is well
+    return true if type.nil? || other.type.nil?
+
     # libstdc++ and libc++ aren't ever intercompatible
     return false unless type == other.type
 

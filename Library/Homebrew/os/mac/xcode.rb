@@ -24,7 +24,7 @@ module MacOS::Xcode extend self
     when "10.6"         then "3.2.6"
     when "10.7"         then "4.6.3"
     when "10.8"         then "5.0"
-    when "10.9"         then "5.0"
+    when "10.9"         then "5.0.1"
     else
       # Default to newest known version of Xcode for unreleased OSX versions.
       if MacOS.version > 10.9

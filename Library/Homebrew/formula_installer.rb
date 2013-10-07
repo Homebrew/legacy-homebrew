@@ -149,13 +149,12 @@ class FormulaInstaller
     end
 
     if pour_bottle?
-      # TODO We currently only support building with libstdc++ as
-      # the default case, and all Apple libstdc++s are compatible, so
-      # this default is sensible.
-      # In the future we need to actually provide a way to read this from
-      # the bottle, or update the default should that change
-      # at some other point.
-      stdlib_in_use = CxxStdlib.new(:libstdcxx, :clang)
+      # This assumes that bottles are built with
+      # a) the OS's default compiler, and
+      # b) the OS's default C++ stdlib
+      # This is probably accurate, but could possibly stand to be
+      # more robust.
+      stdlib_in_use = CxxStdlib.new(MacOS.default_cxx_stdlib, MacOS.default_compiler)
       stdlib_in_use.check_dependencies(f, f.deps)
     end
 
@@ -349,6 +348,8 @@ class FormulaInstaller
 
     fix_install_names
 
+    record_cxx_stdlib
+
     ohai "Summary" if ARGV.verbose? or show_summary_heading
     unless ENV['HOMEBREW_NO_EMOJI']
       print "\xf0\x9f\x8d\xba  " if MacOS.version >= :lion
@@ -488,6 +489,18 @@ class FormulaInstaller
     puts "formula against it."
     ohai e, e.backtrace if ARGV.debug?
     @show_summary_heading = true
+  end
+
+  def record_cxx_stdlib
+    stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
+    return if stdlibs.empty?
+
+    tab = Tab.for_formula(f)
+    tab.tabfile.unlink
+    # It's technically possible for the same lib to link to multiple C++ stdlibs,
+    # but very bad news. Right now we don't track this woeful scenario.
+    tab.stdlib = stdlibs.first
+    tab.write
   end
 
   def clean
