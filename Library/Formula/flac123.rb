@@ -16,6 +16,6 @@ class Flac123 < Formula
   end
 
   test do
-    system "flac123"
+    system "#{bin}/flac123"
   end
 end
