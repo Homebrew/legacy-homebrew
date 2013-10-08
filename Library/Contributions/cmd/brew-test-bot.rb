@@ -15,7 +15,9 @@
 require 'formula'
 require 'utils'
 require 'date'
-require 'erb'
+require 'rexml/document'
+require 'rexml/xmldecl'
+require 'rexml/cdata'
 
 EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"
 HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
@@ -395,11 +397,36 @@ else
 end
 
 if ARGV.include? "--junit"
-  xml_erb = HOMEBREW_CONTRIBUTED_CMDS + "brew-test-bot.xml.erb"
-  erb = ERB.new IO.read xml_erb
-  open("brew-test-bot.xml", "w") do |xml|
-    # Remove empty lines and null characters from ERB result.
-    xml.write erb.result(binding).gsub(/^\s*$\n|\000/, '')
+  xml_document = REXML::Document.new
+  xml_document << REXML::XMLDecl.new
+  testsuites = xml_document.add_element 'testsuites'
+  tests.each do |test|
+    testsuite = testsuites.add_element 'testsuite'
+    testsuite.attributes['name'] = "brew-test-bot.#{MacOS.cat}"
+    testsuite.attributes['tests'] = test.steps.count
+    test.steps.each do |step|
+      testcase = testsuite.add_element 'testcase'
+      testcase.attributes['name'] = step.command_short
+      testcase.attributes['status'] = step.status
+      testcase.attributes['time'] = step.time
+      failure = testcase.add_element 'failure' if step.failed?
+      if step.has_output?
+        # Remove null characters from step output.
+        output = REXML::CData.new step.output.delete("\000")
+        if step.passed?
+          system_out = testcase.add_element 'system-out'
+          system_out.text = output
+        else
+          failure.attributes['message'] = "#{step.status}: #{step.command}"
+          failure.text = output
+        end
+      end
+    end
+  end
+
+  open("brew-test-bot.xml", "w") do |xml_file|
+    pretty_print_indent = 2
+    xml_document.write(xml_file, pretty_print_indent)
   end
 end
 
