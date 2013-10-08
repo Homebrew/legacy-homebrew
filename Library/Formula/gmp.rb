@@ -6,6 +6,14 @@ class Gmp < Formula
   mirror 'http://ftp.gnu.org/gnu/gmp/gmp-5.1.3.tar.bz2'
   sha1 'b35928e2927b272711fdfbf71b7cfd5f86a6b165'
 
+  bottle do
+    cellar :any
+    revision 1
+    sha1 '7a4392ecba5ef5077440358a6a1c86d9717e22f8' => :mountain_lion
+    sha1 '8e7b9953d6c337dc6ee1ca97da5eede6b1c3d9be' => :lion
+    sha1 '773bac38cc86dec84dc9b9abb246c56900cac7af' => :snow_leopard
+  end
+
   option '32-bit'
 
   def install
