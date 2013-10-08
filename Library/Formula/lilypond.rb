@@ -11,10 +11,10 @@ end
 class Lilypond < Formula
   homepage 'http://lilypond.org/'
   url 'http://download.linuxaudio.org/lilypond/sources/v2.16/lilypond-2.16.2.tar.gz'
-  sha1 '1eb3b0e5c117a8669dba19ab28f933351e51e39a'
+  sha1 'ce0db5e0749b69c62640ee72126a4347ff4ebfd7'
 
   devel do
-    url 'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.27.tar.gz'
+    url 'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.28.tar.gz'
     sha1 'd3a652f4c9b57f519fed03c9333320ed3e4d7ea1'
   end
 
