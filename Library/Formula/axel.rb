@@ -8,7 +8,7 @@ class Axel < Formula
   # New features patches: https://gist.github.com/denji/6652068
   option "with-unicode-progressbar", "Build with unicode characters progress bar."
   option "with-reactivation", "Build with reactivated dynamic segmentation download."
-  option "with-no-clobber", "Build with breakindent patch."
+  option "with-no-clobber", "Build with patch support option skip already downloaded."
   # option "with-cookies", "Build with cookies better support for axel."
   option "with-content-disposition", "Build with Recognize Content-disposition."
 
