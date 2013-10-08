@@ -2,8 +2,12 @@ require 'formula'
 
 class Cfitsio < Formula
   homepage 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html'
-  url 'http://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio3350.tar.gz'
+  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3350.tar.gz'
   sha1 'e928832708d6a5df21a1e17ae4a63036cab7c1b9'
+  version '3.350'
+
+  mirror 'http://pkgs.fedoraproject.org/repo/pkgs/cfitsio/cfitsio3350.tar.gz/0bc79cd8eeabbcd26828f64269e39e63/cfitsio3350.tar.gz'
+  sha1 '20b62cecb9dc92138a53493bee329c68f03dc99f'
   version '3.350'
 
   option 'with-examples', "Compile and install example programs"
