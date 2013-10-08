@@ -13,13 +13,12 @@ class Recoll < Formula
   end
 
   def install
-
     system "./configure", "--prefix=#{prefix}"
     system "make", "install" 
   end
 
   test do
-    system "true"
+    system "#{bin}/recollindex", "-h"
   end
 end
 
