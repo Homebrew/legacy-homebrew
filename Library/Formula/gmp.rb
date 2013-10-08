@@ -16,6 +16,8 @@ class Gmp < Formula
       ENV.append 'ABI', '32'
       # https://github.com/mxcl/homebrew/issues/20693
       args << "--disable-assembly"
+    elsif build.bottle?
+      args << "--disable-assembly"
     end
 
     system "./configure", *args
