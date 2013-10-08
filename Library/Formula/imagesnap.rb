@@ -8,7 +8,15 @@ class Imagesnap < Formula
   depends_on :xcode
 
   def install
-    system "xcodebuild -project ImageSnap.xcodeproj SYMROOT=build -sdk macosx#{MacOS.version}"
-    bin.install "build/Release/imagesnap"
+  	m_version = MacOS.version
+
+  	if m_version == "10.9"
+  		system "xcodebuild -project ImageSnap.xcodeproj SYMROOT=build -sdk macosx10.8"
+    	bin.install "build/Release/imagesnap"
+    else
+    	system "xcodebuild -project ImageSnap.xcodeproj SYMROOT=build -sdk macosx#{MacOS.version}"
+    	bin.install "build/Release/imagesnap"
+  	end
+    
   end
 end
