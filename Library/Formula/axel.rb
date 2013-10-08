@@ -14,16 +14,16 @@ class Axel < Formula
 
   def patches
     result = Hash.new { |hash, key| hash[key] = [] }
-    if ARGV.include? '--with-unicode-progressbar'
+    if build.with? '--with-unicode-progressbar'
       result[:p1] << 'https://gist.github.com/denji/6652068/raw/a85a3288b715c04958a2d9e9c0014afbeb0086e1/unicode-progressbar.patch'
     end
-    if ARGV.include? '--with-reactivation'
+    if build.with? '--with-reactivation'
       result[:p1] << 'https://gist.github.com/denji/6652068/raw/657279e4706eb0257b7c9da053f3862e6ddaef88/reactivation.patch'
     end
-    if ARGV.include? '--with-no-clobber'
+    if build.with? '--with-no-clobber'
       result[:p1] << 'https://gist.github.com/denji/6652068/raw/4aace6ea245b8231f7c84638ac0d2c48c1ef04e9/no-clobber.patch'
     end
-    if ARGV.include? '--with-content-disposition'
+    if build.with? '--with-content-disposition'
       result[:p1] << 'https://gist.github.com/denji/6652068/raw/32b8d64331b08e1b6284c352d1a421aae73f0afb/content-disposition.patch'
     end
     result
