@@ -23,10 +23,7 @@ class Go < Formula
     sha1 '9f39106e06f552e9bf6d15d201c4663c051d4f89'
   end
 
-  # the cgo module cannot build with clang
-  # NOTE it is ridiculous that we put this stuff in the class
-  # definition, it needs to be in a pre-install test function!
-  if build.with? 'cgo'
+  if build.with? 'cgo' and not build.devel?
     depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
 
     fails_with :clang do
@@ -96,13 +93,7 @@ class Go < Formula
     when $GOPATH and $GOROOT are set to the same value.
 
     More information here: http://golang.org/doc/code.html#GOPATH
-
-    FYI: We probably didn't build the cgo module because it doesn't build with
-    clang.
     EOS
-    # NOTE I would have the cgo caveat only show if we didn't build it but the
-    # state matrix for that seems inconclusive, ENV.compiler doesn't actually
-    # mean for sure that we used that compiler.
   end
 
   test do

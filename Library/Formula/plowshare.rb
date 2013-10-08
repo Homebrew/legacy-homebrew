@@ -32,6 +32,10 @@ class Plowshare < Formula
     not work if X11 support is not enabled. To enable:
       brew remove imagemagick
       brew install imagemagick --with-x
+
+    Plowshare 4 requires Bash 4+. OS X ships with an old Bash 3 version.
+    To install Bash 4:
+      brew install bash
     EOS
   end
 end
