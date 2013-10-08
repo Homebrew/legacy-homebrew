@@ -397,10 +397,15 @@ end
 if ARGV.include? "--junit"
   xml_erb = HOMEBREW_CONTRIBUTED_CMDS + "brew-test-bot.xml.erb"
   erb = ERB.new IO.read xml_erb
-  open("brew-test-bot.xml", "w") do |xml|
-    # Remove empty lines and null characters from ERB result.
-    xml.write erb.result(binding).gsub(/^\s*$\n|\000/, '')
+  output_xml = 'brew-test-bot.xml'
+  input_xml = "#{output_xml}.in"
+  open("brew-test-bot.xml.in", "w") do |xml|
+    # Remove empty lines from ERB result.
+    xml.write erb.result(binding).gsub(/^\s*$\n/, '')
   end
+  # Remove bad characters from ERB result.
+  `iconv -c -s -f utf8 -t utf8 #{input_xml} > #{output_xml}`
+  FileUtils.rm input_xml
 end
 
 if ARGV.include? "--email"
