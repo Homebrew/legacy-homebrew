@@ -11,7 +11,11 @@ class Poco < Formula
     sha1 '2eaa44deb853a6f7ba7d9e4726a365ae45006ef1'
   end
 
+  option :cxx11
+
   def install
+    ENV.cxx11 if build.cxx11?
+
     arch = Hardware.is_64_bit? ? 'Darwin64': 'Darwin32'
     arch << '-clang' if ENV.compiler == :clang
 
@@ -20,6 +24,6 @@ class Poco < Formula
                           "--omit=Data/MySQL,Data/ODBC",
                           "--no-samples",
                           "--no-tests"
-    system "make install CC=#{ENV.cc} CXX=#{ENV.cxx}"
+    system "make", "install", "CC=#{ENV.cc}", "CXX=#{ENV.cxx}"
   end
 end
