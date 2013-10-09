@@ -954,7 +954,7 @@ def check_for_bad_python_symlink
 end
 
 def check_for_non_prefixed_coreutils
-  gnubin = Formula.factory('coreutils').prefix.to_s + "/libexec/gnubin"
+  gnubin = "#{Formula.factory('coreutils').prefix}/libexec/gnubin"
   if paths.include? gnubin then <<-EOS.undent
     Putting non-prefixed coreutils in your path can cause gmp builds to fail.
     EOS
@@ -970,7 +970,7 @@ def check_for_non_prefixed_findutils
 end
 
 def check_for_pydistutils_cfg_in_home
-  if File.exist? ENV['HOME']+'/.pydistutils.cfg' then <<-EOS.undent
+  if File.exist? "#{ENV['HOME']}/.pydistutils.cfg" then <<-EOS.undent
     A .pydistutils.cfg file was found in $HOME, which may cause Python
     builds to fail. See:
       http://bugs.python.org/issue6138
