@@ -831,11 +831,12 @@ def check_for_linked_keg_only_brews
 end
 
 def check_for_MACOSX_DEPLOYMENT_TARGET
-  target_var = ENV['MACOSX_DEPLOYMENT_TARGET']
-  if target_var and target_var != MACOS_VERSION.to_s then <<-EOS.undent
-    MACOSX_DEPLOYMENT_TARGET was set to #{target_var}
+  target = ENV.fetch('MACOSX_DEPLOYMENT_TARGET') { return }
+
+  unless target == MacOS.version.to_s then <<-EOS.undent
+    MACOSX_DEPLOYMENT_TARGET was set to #{target.inspect}
     This is used by Fink, but having it set to a value different from the
-    current system version (#{MACOS_VERSION}) can cause problems, compiling
+    current system version (#{MacOS.version}) can cause problems, compiling
     Git for instance, and should probably be removed.
     EOS
   end
