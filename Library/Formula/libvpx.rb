@@ -23,6 +23,7 @@ class Libvpx < Formula
     args << "--enable-gcov" if build.include? "gcov" and not ENV.compiler == :clang
     args << "--enable-mem-tracker" if build.include? "mem-tracker"
     args << "--enable-postproc-visualizer" if build.include? "visualizer"
+    args << "--extra-cflags=-DGTEST_USE_OWN_TR1_TUPLE=1" # Mavericks uses libc++ which doesn't supply <TR1/tuple>
 
     # see http://code.google.com/p/webm/issues/detail?id=401
     # Configure misdetects 32-bit 10.6.

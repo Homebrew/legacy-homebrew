@@ -200,7 +200,7 @@ module Superenv
   def determine_aclocal_path
     paths = keg_only_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/aclocal" }
     paths << "#{HOMEBREW_PREFIX}/share/aclocal"
-    paths << "/opt/X11/share/aclocal" if x11?
+    paths << "#{MacOS::X11.share}/aclocal" if x11?
     paths.to_path_s
   end
 

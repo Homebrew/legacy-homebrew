@@ -149,13 +149,12 @@ class FormulaInstaller
     end
 
     if pour_bottle?
-      # TODO We currently only support building with libstdc++ as
-      # the default case, and all Apple libstdc++s are compatible, so
-      # this default is sensible.
-      # In the future we need to actually provide a way to read this from
-      # the bottle, or update the default should that change
-      # at some other point.
-      stdlib_in_use = CxxStdlib.new(:libstdcxx, :clang)
+      # This assumes that bottles are built with
+      # a) the OS's default compiler, and
+      # b) the OS's default C++ stdlib
+      # This is probably accurate, but could possibly stand to be
+      # more robust.
+      stdlib_in_use = CxxStdlib.new(MacOS.default_cxx_stdlib, MacOS.default_compiler)
       stdlib_in_use.check_dependencies(f, f.deps)
     end
 
@@ -349,6 +348,8 @@ class FormulaInstaller
 
     fix_install_names
 
+    record_cxx_stdlib
+
     ohai "Summary" if ARGV.verbose? or show_summary_heading
     unless ENV['HOMEBREW_NO_EMOJI']
       print "\xf0\x9f\x8d\xba  " if MacOS.version >= :lion
@@ -470,7 +471,7 @@ class FormulaInstaller
   end
 
   def fix_install_names
-    Keg.new(f.prefix).fix_install_names
+    Keg.new(f.prefix).fix_install_names(:keg_only => f.keg_only?)
     if @poured_bottle and f.bottle
       old_prefix = f.bottle.prefix
       new_prefix = HOMEBREW_PREFIX.to_s
@@ -479,7 +480,7 @@ class FormulaInstaller
 
       if old_prefix != new_prefix or old_cellar != new_cellar
         Keg.new(f.prefix).relocate_install_names \
-          old_prefix, new_prefix, old_cellar, new_cellar
+          old_prefix, new_prefix, old_cellar, new_cellar, :keg_only => f.keg_only?
       end
     end
   rescue Exception => e
@@ -488,6 +489,18 @@ class FormulaInstaller
     puts "formula against it."
     ohai e, e.backtrace if ARGV.debug?
     @show_summary_heading = true
+  end
+
+  def record_cxx_stdlib
+    stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
+    return if stdlibs.empty?
+
+    tab = Tab.for_formula(f)
+    tab.tabfile.unlink
+    # It's technically possible for the same lib to link to multiple C++ stdlibs,
+    # but very bad news. Right now we don't track this woeful scenario.
+    tab.stdlib = stdlibs.first
+    tab.write
   end
 
   def clean
@@ -509,11 +522,10 @@ class FormulaInstaller
   end
 
   def pour
-    downloader = f.downloader
-    if downloader.local_bottle_path
-      downloader = LocalBottleDownloadStrategy.new f,
-                     downloader.local_bottle_path
+    if f.local_bottle_path
+      downloader = LocalBottleDownloadStrategy.new(f)
     else
+      downloader = f.downloader
       fetched = f.fetch
       f.verify_download_integrity fetched
     end

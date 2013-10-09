@@ -170,6 +170,13 @@ module SharedEnvExtension
     set_cpu_flags(flags)
   end
 
+  # ld64 is a newer linker provided for Xcode 2.5
+  def ld64
+    ld64 = Formula.factory('ld64')
+    self['LD'] = ld64.bin/'ld'
+    append "LDFLAGS", "-B#{ld64.bin.to_s+"/"}"
+  end
+
   def warn_about_non_apple_gcc(gcc)
     opoo "Experimental support for non-Apple GCC enabled. Some builds may fail!"
 

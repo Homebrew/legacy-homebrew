@@ -19,6 +19,11 @@ class Mongodb < Formula
     sha1 'b4d7e33054b9daef2504bcdb8f26ef43dbea6aaf' => :snow_leopard
   end
 
+  def patches
+    # Fix Clang v8 build failure.
+    'https://github.com/mongodb/mongo/commit/be4bc7.patch'
+  end
+
   depends_on 'scons' => :build
   depends_on 'openssl' => :optional
 
@@ -49,7 +54,7 @@ class Mongodb < Formula
     (var+'mongodb').mkpath
     (var+'log/mongodb').mkpath
     etc.mkpath
-    cp prefix+'mongod.conf', etc unless File.exists? etc+"mongod.conf"
+    cp prefix+'mongod.conf', etc+"mongod.conf" unless File.exists? etc+"mongod.conf"
   end
 
   def mongodb_conf; <<-EOS.undent

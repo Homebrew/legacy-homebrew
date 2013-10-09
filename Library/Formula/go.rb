@@ -7,9 +7,15 @@ class Go < Formula
   version '1.1.2'
   sha1 'f5ab02bbfb0281b6c19520f44f7bc26f9da563fb'
 
+  bottle do
+    sha1 '491bb29bddb72b0e612a09985626e9dcd5b2cccf' => :mountain_lion
+    sha1 '74fcdfacb0f7c50df509202bac6f853fe00d1457' => :lion
+    sha1 '0ff1f95940509cae6545f92cf4776aed14e36100' => :snow_leopard
+  end
+
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
-  option 'without-cgo', "Build with cgo"
+  option 'without-cgo', "Build without cgo"
 
   devel do
     url 'https://go.googlecode.com/files/go1.2rc1.src.tar.gz'
@@ -17,10 +23,9 @@ class Go < Formula
     sha1 '9f39106e06f552e9bf6d15d201c4663c051d4f89'
   end
 
-  # the cgo module cannot build with clang
-  # NOTE it is ridiculous that we put this stuff in the class
-  # definition, it needs to be in a pre-install test function!
-  if build.with? 'cgo'
+  if build.with? 'cgo' and not build.devel?
+    depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
+
     fails_with :clang do
       cause "clang: error: no such file or directory: 'libgcc.a'"
     end
@@ -88,13 +93,7 @@ class Go < Formula
     when $GOPATH and $GOROOT are set to the same value.
 
     More information here: http://golang.org/doc/code.html#GOPATH
-
-    FYI: We probably didn't build the cgo module because it doesn't build with
-    clang.
     EOS
-    # NOTE I would have the cgo caveat only show if we didn't build it but the
-    # state matrix for that seems inconclusive, ENV.compiler doesn't actually
-    # mean for sure that we used that compiler.
   end
 
   test do

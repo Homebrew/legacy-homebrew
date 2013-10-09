@@ -2,8 +2,11 @@ require 'formula'
 
 class Bibutils < Formula
   homepage 'http://sourceforge.net/p/bibutils/home/Bibutils/'
-  url 'http://downloads.sourceforge.net/project/bibutils/bibutils_5.0_src.tgz'
-  sha1 'cf9b6d7e4d0a679f734e9c477798219dc016a3da'
+  url 'http://downloads.sourceforge.net/project/bibutils/bibutils_5.2_src.tgz'
+  sha1 '4ae54726100535d0f5e726405de4a35f0a62c578'
+
+  #fix uint not being defined clang error
+  def patches; DATA; end
 
   def install
     system "./configure", "--install-dir", prefix
@@ -16,3 +19,30 @@ class Bibutils < Formula
     end
   end
 end
+
+__END__
+diff --git a/lib/biblatexin.c b/lib/biblatexin.c
+index 41c51dc..8d6f57a 100644
+--- a/lib/biblatexin.c
++++ b/lib/biblatexin.c
+@@ -21,6 +21,8 @@
+ #include "reftypes.h"
+ #include "biblatexin.h"
+
++#include <sys/types.h>
++
+ extern const char progname[];
+
+ static list find    = { 0, 0, 0, NULL };
+diff --git a/lib/bibtexin.c b/lib/bibtexin.c
+index 5d97832..bce0847 100644
+--- a/lib/bibtexin.c
++++ b/lib/bibtexin.c
+@@ -21,6 +21,8 @@
+ #include "reftypes.h"
+ #include "bibtexin.h"
+
++#include <sys/types.h>
++
+ static list find    = { 0, 0, 0, NULL };
+ static list replace = { 0, 0, 0, NULL };

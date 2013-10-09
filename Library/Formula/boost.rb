@@ -56,14 +56,15 @@ class Boost < Formula
 
   def install
     # https://svn.boost.org/trac/boost/ticket/8841
-    if build.with? 'mpi' and !build.without? 'single'
-      onoe <<-EOS.undent
+    if build.with? 'mpi' and not build.without? 'single'
+      raise <<-EOS.undent
         Building MPI support for both single and multi-threaded flavors
         is not supported.  Please use '--with-mpi' together with
-        '--disable-single'.
+        '--without-single'.
       EOS
-      exit -1
     end
+
+    ENV.universal_binary if build.universal?
 
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a
@@ -96,8 +97,6 @@ class Boost < Formula
     # we specify libdir too because the script is apparently broken
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
-    bargs << "--with-toolset=clang" if build.with? "c++11"
-
     if build.with? 'icu'
       icu4c_prefix = Formula.factory('icu4c').opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
@@ -105,18 +104,26 @@ class Boost < Formula
       bargs << '--without-icu'
     end
 
+    # Handle libraries that will not be built.
+    without_libraries = []
+
     # The context library is implemented as x86_64 ASM, so it
     # won't build on PPC or 32-bit builds
     # see https://github.com/mxcl/homebrew/issues/17646
-    if Hardware::CPU.type == :ppc || Hardware::CPU.bits == 32 || build.universal?
-      bargs << "--without-libraries=context"
+    if Hardware::CPU.type == :ppc || Hardware::CPU.is_32_bit? || build.universal?
+      without_libraries << "context"
       # The coroutine library depends on the context library.
-      bargs << "--without-libraries=coroutine"
+      without_libraries << "coroutine"
     end
 
     # Boost.Log cannot be built using Apple GCC at the moment. Disabled
     # on such systems.
-    bargs << "--without-libraries=log" if MacOS.version <= :snow_leopard
+    without_libraries << "log" if ENV.compiler == :gcc || ENV.compiler == :llvm
+
+    without_libraries << "python" if build.without? 'python'
+    without_libraries << "mpi" if build.without? 'mpi'
+
+    bargs << "--without-libraries=#{without_libraries.join(',')}"
 
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
@@ -139,29 +146,43 @@ class Boost < Formula
     end
 
     if MacOS.version >= :lion and build.with? 'c++11'
-      args << "toolset=clang" << "cxxflags=-std=c++11"
-      args << "cxxflags=-stdlib=libc++" << "cxxflags=-fPIC"
-      args << "cxxflags=-arch #{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit? or build.universal?
-      args << "cxxflags=-arch #{Hardware::CPU.arch_32_bit}" if !MacOS.prefer_64_bit? or build.universal?
+      args << "cxxflags=-std=c++11" << "cxxflags=-stdlib=libc++"
       args << "linkflags=-stdlib=libc++"
-      args << "linkflags=-arch #{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit? or build.universal?
-      args << "linkflags=-arch #{Hardware::CPU.arch_32_bit}" if !MacOS.prefer_64_bit? or build.universal?
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
-    args << "--without-python" if build.without? 'python'
 
     system "./bootstrap.sh", *bargs
     system "./b2", *args
   end
 
   def caveats
+    s = ''
+    # ENV.compiler doesn't exist in caveats. Check library availability
+    # instead.
+    if Dir.glob("#{lib}/libboost_log*").empty?
+      s += <<-EOS.undent
+
+      Building of Boost.Log is disabled because it requires newer GCC or Clang.
+      EOS
+    end
+
+    if Hardware::CPU.type == :ppc || Hardware::CPU.is_32_bit? || build.universal?
+      s += <<-EOS.undent
+
+      Building of Boost.Context and Boost.Coroutine is disabled as they are
+      only supported on x86_64.
+      EOS
+    end
+
     if pour_bottle? and Formula.factory('python').installed?
-      <<-EOS.undent
+      s += <<-EOS.undent
+
       The Boost bottle's module will not import into a Homebrew-installed Python.
       If you use the Boost Python module then please:
         brew install boost --build-from-source
       EOS
     end
+    s
   end
 end
