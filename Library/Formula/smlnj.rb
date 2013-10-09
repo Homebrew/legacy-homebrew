@@ -2,122 +2,122 @@ require 'formula'
 
 class Smlnj < Formula
   homepage 'http://www.smlnj.org/'
-  url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/config.tgz'
-  sha1 '527cb179b48abcf1463089d168b171fd05eb814d'
-  version '110.75'
+  url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/config.tgz'
+  sha1 '49ce2968bb1a4a41b56f55ed1de41c662b88bc85'
+  version '110.76'
 
   resource 'cm' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/cm.tgz'
-    version '110.75'
-    sha1 'a4310413102c5649ed43d92962ffa307ebec4a39'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/cm.tgz'
+    version '110.76'
+    sha1 'a5d5178ba2f5f04fd1e5c9211b39f8593b5f7701'
   end
 
   resource 'compiler' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/compiler.tgz'
-    version '110.75'
-    sha1 'efd03a1cc84104c22776f56dca67e0ae5e9145e8'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/compiler.tgz'
+    version '110.76'
+    sha1 '9192bee6da808964c71cc7499068f539205bdd39'
   end
 
   resource 'runtime' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/runtime.tgz'
-    version '110.75'
-    sha1 'dd81ce2963ca0ea4b1e92b22c7587d5ae64783f8'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/runtime.tgz'
+    version '110.76'
+    sha1 '3d1799fd160a9f24f13cbc44587822fe70b031eb'
   end
 
   resource 'system' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/system.tgz'
-    version '110.75'
-    sha1 '0f7536bbdcd6d1584f4dcbf3b30a553d98fb0cb1'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/system.tgz'
+    version '110.76'
+    sha1 '59f24b486279572d43e6661d8b4ebd5f91ec6a7b'
   end
 
   resource 'bootstrap' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/boot.x86-unix.tgz'
-    version '110.75'
-    sha1 '0e459e33f54811750a42311a22bc4572ab16ebcb'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/boot.x86-unix.tgz'
+    version '110.76'
+    sha1 'c4d530538257689a0e146acf998bea9d3370aa27'
   end
 
   resource 'mlrisc' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/MLRISC.tgz'
-    version '110.75'
-    sha1 '041b6463d98d0effa0afc457fc5b09e74f081b85'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/MLRISC.tgz'
+    version '110.76'
+    sha1 '3f9dc0f99f158b2e2fbbdab39ce1c2375a73e248'
   end
 
   resource 'lib' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/smlnj-lib.tgz'
-    version '110.75'
-    sha1 '33f4d3a8dc653cd015ed15a27776dd0e3f2fbb04'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/smlnj-lib.tgz'
+    version '110.76'
+    sha1 'f4fc0f56436bec676219004ef73f707430811147'
   end
 
   resource 'ckit' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/ckit.tgz'
-    version '110.75'
-    sha1 '0dbca80174f969a549d85ef3e15a4a8ecce7ed22'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/ckit.tgz'
+    version '110.76'
+    sha1 '82b149381119138de350e28dfb3323e7c47ff8d4'
   end
 
   resource 'nlffi' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/nlffi.tgz'
-    version '110.75'
-    sha1 'b881390f58df7bbc5d84c45eec20af7fcfbfa40c'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/nlffi.tgz'
+    version '110.76'
+    sha1 'cfbd0ae158cef4f22fa968b16d94af0f93eb2fde'
   end
 
   resource 'cml' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/cml.tgz'
-    version '110.75'
-    sha1 '8938aa0685453c16f57bae23e96ed23b1409f419'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/cml.tgz'
+    version '110.76'
+    sha1 '61d1b0458410cb7f84c2ee9c66798ad86ac72226'
   end
 
   resource 'exene' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/eXene.tgz'
-    version '110.75'
-    sha1 'f8608de797634faaad632fbdfd43838c4de85e42'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/eXene.tgz'
+    version '110.76'
+    sha1 'd0b2fc0c44de4a25f342f7e2789804fcd2f48ee7'
   end
 
   resource 'ml-lpt' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/ml-lpt.tgz'
-    version '110.75'
-    sha1 'd0b68f304a5e29173a9599a3959c12e84ea479ee'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/ml-lpt.tgz'
+    version '110.76'
+    sha1 'cb99915ce853929e264afa304b6295e28de8f927'
   end
 
   resource 'ml-lex' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/ml-lex.tgz'
-    version '110.75'
-    sha1 '6557d928f85b28938d4c299925835a6d5eb1e68b'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/ml-lex.tgz'
+    version '110.76'
+    sha1 '8298bd3b1e480453f700659334cc086838e33cf0'
   end
 
   resource 'ml-yacc' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/ml-yacc.tgz'
-    version '110.75'
-    sha1 '1bec52fbc6557dcd7d4363a1ae13be540bfc89a5'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/ml-yacc.tgz'
+    version '110.76'
+    sha1 'd6f565c1f64ab485d2f96a3d725f73a5cf758106'
   end
 
   resource 'ml-burg' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/ml-burg.tgz'
-    version '110.75'
-    sha1 '202f62c604e6d11b0ebed82ce78210a8e5224a9d'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/ml-burg.tgz'
+    version '110.76'
+    sha1 '27e8442b0aefa58d0ea43bc8f3b47cb1baab1fdf'
   end
 
   resource 'pgraph' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/pgraph.tgz'
-    version '110.75'
-    sha1 '7b6425de5ca1648caf230dea5e8db34f90b481c9'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/pgraph.tgz'
+    version '110.76'
+    sha1 'a374b6950c133e9568d0663d906acce1845f33e3'
   end
 
   resource 'trace-debug-profile' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/trace-debug-profile.tgz'
-    version '110.75'
-    sha1 'c828e9d2728171a5d087a41fcbb923ac460a9d50'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/trace-debug-profile.tgz'
+    version '110.76'
+    sha1 '43127a065f22f026fe960580dded77897626cd27'
   end
 
   resource 'heap2asm' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/heap2asm.tgz'
-    version '110.75'
-    sha1 '49c81c4343db2095fe7c28ae5ef40086d225421c'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/heap2asm.tgz'
+    version '110.76'
+    sha1 'aeee4614843893d73ff2c129ec3683d38d1d388e'
   end
 
   resource 'c' do
-    url 'http://smlnj.cs.uchicago.edu/dist/working/110.75/smlnj-c.tgz'
-    version '110.75'
-    sha1 'adbc3874f8715d53bc1f032047c3289cff0af8e9'
+    url 'http://smlnj.cs.uchicago.edu/dist/working/110.76/smlnj-c.tgz'
+    version '110.76'
+    sha1 'b05de86f0596da6400e4d9aad4ec3a5ff7393e0f'
   end
 
   def install

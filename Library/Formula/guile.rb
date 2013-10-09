@@ -2,15 +2,9 @@ require 'formula'
 
 class Guile < Formula
   homepage 'http://www.gnu.org/software/guile/'
-  url 'http://ftpmirror.gnu.org/guile/guile-1.8.8.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/guile/guile-1.8.8.tar.gz'
-  sha1 '548d6927aeda332b117f8fc5e4e82c39a05704f9'
-
-  devel do
-    url 'http://ftpmirror.gnu.org/guile/guile-2.0.9.tar.gz'
-    mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.9.tar.gz'
-    sha1 'fc5d770e8b1d364b2f222a8f8c96ccf740b2956f'
-  end
+  url 'http://ftpmirror.gnu.org/guile/guile-2.0.9.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.9.tar.gz'
+  sha1 'fc5d770e8b1d364b2f222a8f8c96ccf740b2956f'
 
   head do
     url 'git://git.sv.gnu.org/guile.git'
@@ -37,13 +31,11 @@ class Guile < Formula
   fails_with :clang do
     build 211
     cause "Segfaults during compilation"
-  end if build.devel?
+  end
 
   # Only for 2.0.9: Fix shebang shell in build-aux/install-sh.
   # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14201#19
-  def patches
-    DATA if build.devel?
-  end
+  def patches; DATA; end
 
   def install
     system './autogen.sh' if build.head?

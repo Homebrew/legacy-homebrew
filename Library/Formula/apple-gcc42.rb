@@ -17,6 +17,7 @@ class AppleGcc42 < Formula
   homepage 'http://r.research.att.com/tools/'
   url 'http://r.research.att.com/tools/gcc-42-5666.3-darwin11.pkg',
     :using => PkgDownloadStrategy
+  mirror 'http://web.archive.org/web/20130512150329/http://r.research.att.com/tools/gcc-42-5666.3-darwin11.pkg'
   version '4.2.1-5666.3'
   sha1 '8fadde2a159082d6474fe9e325b6301e3c0bc84f'
   bottle do

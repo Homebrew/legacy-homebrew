@@ -10,7 +10,7 @@ require 'utils/json'
 class Tab < OpenStruct
   FILENAME = 'INSTALL_RECEIPT.json'
 
-  def self.create f, stdlib, compiler, args
+  def self.create f, compiler, args
     f.build.args = args
 
     sha = HOMEBREW_REPOSITORY.cd do
@@ -25,8 +25,7 @@ class Tab < OpenStruct
             :tapped_from => f.tap,
             :time => Time.now.to_i, # to_s would be better but Ruby has no from_s function :P
             :HEAD => sha,
-            :compiler => compiler,
-            :stdlib => stdlib
+            :compiler => compiler
   end
 
   def self.from_file path
@@ -63,7 +62,6 @@ class Tab < OpenStruct
             :tapped_from => "",
             :time => nil,
             :HEAD => nil,
-            :stdlib => :libstdcxx,
             :compiler => :clang
   end
 
@@ -99,9 +97,9 @@ class Tab < OpenStruct
 
   def cxxstdlib
     # Older tabs won't have these values, so provide sensible defaults
-    lib = stdlib || :libstdcxx
+    lib = stdlib.to_sym if stdlib
     cc = compiler || MacOS.default_compiler
-    CxxStdlib.new(lib.to_sym, cc.to_sym)
+    CxxStdlib.new(lib, cc.to_sym)
   end
 
   def to_json
