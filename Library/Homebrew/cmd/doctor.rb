@@ -419,14 +419,12 @@ end
 def check_user_path_1
   $seen_prefix_bin = false
   $seen_prefix_sbin = false
-  seen_usr_bin = false
 
   out = nil
 
   paths.each do |p|
     case p
     when '/usr/bin'
-      seen_usr_bin = true
       unless $seen_prefix_bin
         # only show the doctor message if there are any conflicts
         # rationale: a default install should not trigger any brew doctor messages
