@@ -411,8 +411,8 @@ if ARGV.include? "--junit"
       testcase.attributes['time'] = step.time
       failure = testcase.add_element 'failure' if step.failed?
       if step.has_output?
-        # Remove null characters from step output.
-        output = REXML::CData.new step.output.delete("\000")
+        # Remove invalid XML CData characters from step output.
+        output = REXML::CData.new step.output.delete("\000\e")
         if step.passed?
           system_out = testcase.add_element 'system-out'
           system_out.text = output
