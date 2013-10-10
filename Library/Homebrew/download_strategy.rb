@@ -336,7 +336,7 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
       fetch_repo @co, @url, @ref
     when :revisions
       # nil is OK for main_revision, as fetch_repo will then get latest
-      main_revision = @ref.delete :trunk
+      main_revision = @ref[:trunk]
       fetch_repo @co, @url, main_revision, true
 
       get_externals do |external_name, external_url|
