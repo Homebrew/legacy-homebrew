@@ -10,6 +10,7 @@ class Ice < Formula
 
   depends_on 'berkeley-db'
   depends_on 'mcpp'
+  depends_on :python
 
   def patches
     DATA
@@ -33,8 +34,14 @@ class Ice < Formula
       OPTIMIZE=yes
     ]
     args << "CXXFLAGS=#{ENV.cflags} -Wall -D_REENTRANT"
+    args << "PYTHON_FLAGS=-F#{python.framework} -framework Python"
+    args << "PYTHON_LIBS=-F#{python.framework} -framework Python"
 
     cd "cpp" do
+      system "make", *args
+      system "make", "install", *args
+    end
+    cd "py" do
       system "make", *args
       system "make", "install", *args
     end
@@ -75,3 +82,26 @@ diff -urN Ice-3.5.1.original/cpp/config/Make.rules.Darwin Ice-3.5.1/cpp/config/M
  endif
  
  #
+diff -urN Ice-3.5.1.original/py/config/Make.rules.Darwin Ice-3.5.1/py/config/Make.rules.Darwin
+--- Ice-3.5.1.original/py/config/Make.rules.Darwin	2013-10-04 16:48:15.000000000 +0100
++++ Ice-3.5.1/py/config/Make.rules.Darwin	2013-10-10 12:09:45.000000000 +0100
+@@ -17,19 +17,3 @@
+ mksoname		= $(if $(2),lib$(1).$(2).so,lib$(1).so)
+ mklibname       = lib$(1).so
+ 
+-#
+-# We require Python to be built as a Framework for the IcePy plug-in.
+-#
+-ifneq ($(PYTHON_HOME),)
+-    ifeq ($(shell test ! -f $(PYTHON_HOME)/Python && echo 0),0)
+-        $(error Unable to find Python framework See config/Make.rules.Darwin)
+-    endif
+-    PYTHON_LIBS		= -F$(patsubst %/Python.framework/Versions/,%,$(dir $(PYTHON_HOME))) -framework Python
+-else
+-    XCODE_PATH  = $(shell xcode-select --print-path)
+-    SDKS_DIR    = $(XCODE_PATH)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+-    PYTHON_HOME	= $(SDKS_DIR)/System/Library/Frameworks/Python.framework/Versions/Current
+-    PYTHON_LIBS	= -framework Python
+-endif
+-
+-PYTHON_INCLUDE_DIR	= $(PYTHON_HOME)/include/$(PYTHON_VERSION)
