@@ -28,6 +28,7 @@ class Ice < Formula
 
     args = %W[
       prefix=#{prefix}
+      install_mandir=#{prefix}/share/man/man1
       embedded_runpath_prefix=#{prefix}
       OPTIMIZE=yes
     ]
