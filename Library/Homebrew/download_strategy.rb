@@ -161,10 +161,10 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def chdir
-    entries=Dir['*']
+    entries = Dir['*']
     case entries.length
-      when 0 then raise "Empty archive"
-      when 1 then Dir.chdir entries.first rescue nil
+    when 0 then raise "Empty archive"
+    when 1 then Dir.chdir entries.first rescue nil
     end
   end
 
@@ -331,9 +331,10 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
       @co.rmtree
     end
 
-    if @ref_type == :revision
+    case @ref_type
+    when :revision
       fetch_repo @co, @url, @ref
-    elsif @ref_type == :revisions
+    when :revisions
       # nil is OK for main_revision, as fetch_repo will then get latest
       main_revision = @ref.delete :trunk
       fetch_repo @co, @url, main_revision, true
@@ -429,7 +430,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
     if @clone.exist? && repo_valid?
       puts "Updating #@clone"
-      Dir.chdir(@clone) do
+      @clone.cd do
         config_repo
         update_repo
         checkout
@@ -447,7 +448,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
 
   def stage
     dst = Dir.getwd
-    Dir.chdir @clone do
+    @clone.cd do
       if @ref_type and @ref
         ohai "Checking out #@ref_type #@ref"
       else
@@ -579,13 +580,13 @@ class CVSDownloadStrategy < AbstractDownloadStrategy
     mod, url = split_url(@url)
 
     unless @co.exist?
-      Dir.chdir HOMEBREW_CACHE do
+      HOMEBREW_CACHE.cd do
         safe_system '/usr/bin/cvs', '-d', url, 'login'
         safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', checkout_name("cvs"), mod
       end
     else
       puts "Updating #{@co}"
-      Dir.chdir(@co) { safe_system '/usr/bin/cvs', 'up' }
+      @co.cd { safe_system '/usr/bin/cvs', 'up' }
     end
   end
 
@@ -654,8 +655,8 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   end
 
   def stage
-    dst=Dir.getwd
-    Dir.chdir @clone do
+    dst = Dir.getwd
+    @clone.cd do
       if @ref_type and @ref
         ohai "Checking out #{@ref_type} #{@ref}"
         safe_system hgpath, 'archive', '--subrepos', '-y', '-r', @ref, '-t', 'files', dst
