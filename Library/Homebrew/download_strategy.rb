@@ -317,47 +317,47 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     @@svn ||= 'svn'
 
     if ARGV.build_head?
-      @co = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("svn-HEAD")}")
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("svn-HEAD")}")
     else
-      @co = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("svn")}")
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("svn")}")
     end
   end
 
   def cached_location
-    @co
+    @clone
   end
 
   def repo_valid?
-    @co.join(".svn").directory?
+    @clone.join(".svn").directory?
   end
 
   def fetch
     @url.sub!(/^svn\+/, '') if @url =~ %r[^svn\+http://]
     ohai "Checking out #{@url}"
 
-    if @co.exist? and not repo_valid?
+    if @clone.exist? and not repo_valid?
       puts "Removing invalid SVN repo from cache"
-      @co.rmtree
+      @clone.rmtree
     end
 
     case @ref_type
     when :revision
-      fetch_repo @co, @url, @ref
+      fetch_repo @clone, @url, @ref
     when :revisions
       # nil is OK for main_revision, as fetch_repo will then get latest
       main_revision = @ref[:trunk]
-      fetch_repo @co, @url, main_revision, true
+      fetch_repo @clone, @url, main_revision, true
 
       get_externals do |external_name, external_url|
-        fetch_repo @co+external_name, external_url, @ref[external_name], true
+        fetch_repo @clone+external_name, external_url, @ref[external_name], true
       end
     else
-      fetch_repo @co, @url
+      fetch_repo @clone, @url
     end
   end
 
   def stage
-    quiet_safe_system @@svn, 'export', '--force', @co, Dir.pwd
+    quiet_safe_system @@svn, 'export', '--force', @clone, Dir.pwd
   end
 
   def shell_quote str
@@ -574,10 +574,10 @@ end
 class CVSDownloadStrategy < VCSDownloadStrategy
   def initialize name, resource
     super
-    @co = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("cvs")}")
+    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("cvs")}")
   end
 
-  def cached_location; @co; end
+  def cached_location; @clone; end
 
   def fetch
     ohai "Checking out #{@url}"
@@ -588,19 +588,19 @@ class CVSDownloadStrategy < VCSDownloadStrategy
     # cvs -d :pserver:anoncvs@www.gccxml.org:/cvsroot/GCC_XML co gccxml
     mod, url = split_url(@url)
 
-    unless @co.exist?
+    unless @clone.exist?
       HOMEBREW_CACHE.cd do
         safe_system '/usr/bin/cvs', '-d', url, 'login'
         safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', checkout_name("cvs"), mod
       end
     else
-      puts "Updating #{@co}"
-      @co.cd { safe_system '/usr/bin/cvs', 'up' }
+      puts "Updating #{@clone}"
+      @clone.cd { safe_system '/usr/bin/cvs', 'up' }
     end
   end
 
   def stage
-    FileUtils.cp_r Dir[@co+"{.}"], Dir.pwd
+    FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
 
     require 'find'
     Find.find(Dir.pwd) do |path|
