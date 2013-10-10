@@ -1,14 +1,13 @@
 require 'formula'
 
 class RpmDownloadStrategy < CurlDownloadStrategy
-  attr_reader :tarball_name
-  def initialize name, package
+  def initialize name, resource
     super
-    package_name = @spec == :name ? @ref : name
-    @tarball_name="#{package_name}-#{package.version}.tar.gz"
+    @tarball_name = "#{name}-#{resource.version}.tar.gz"
   end
+
   def stage
-    safe_system "rpm2cpio.pl <#{@tarball_path} | cpio -vi #{@tarball_name}"
+    safe_system "rpm2cpio.pl <#{tarball_path} | cpio -vi #{@tarball_name}"
     safe_system "/usr/bin/tar -xzf #{@tarball_name} && rm #{@tarball_name}"
     chdir
   end
@@ -21,7 +20,7 @@ end
 class Rpm < Formula
   homepage 'http://www.rpm5.org/'
   url 'http://rpm5.org/files/rpm/rpm-5.4/rpm-5.4.11-0.20130708.src.rpm',
-      :using => RpmDownloadStrategy, :name => 'rpm'
+      :using => RpmDownloadStrategy
   version '5.4.11'
   sha1 'a40328cf49f43d33746c503a390e3955f5bd3680'
 
