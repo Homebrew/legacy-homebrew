@@ -8,10 +8,12 @@ class Goaccess < Formula
   head 'git://goaccess.git.sourceforge.net/gitroot/goaccess/goaccess'
 
   option 'enable-geoip', "Enable IP location information using GeoIP"
+  option 'enable-utf8', "UTF-8 support for wide characters using ncurses"
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'geoip' if build.include? "enable-geoip"
+  depends_on 'ncurses' if build.include? "enable-utf8"
 
   def install
     args = %W[
@@ -21,6 +23,7 @@ class Goaccess < Formula
     ]
 
     args << "--enable-geoip" if build.include? "enable-geoip"
+    args << "--enable-utf8" if build.include? "enable-utf8"
 
     system "./configure", *args
     system "make install"
