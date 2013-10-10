@@ -55,6 +55,10 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
       "#{name}--#{tag}"
     end
   end
+
+  def cached_location
+    @clone
+  end
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
@@ -323,10 +327,6 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     end
   end
 
-  def cached_location
-    @clone
-  end
-
   def repo_valid?
     @clone.join(".svn").directory?
   end
@@ -428,10 +428,6 @@ class GitDownloadStrategy < VCSDownloadStrategy
     super
     @@git ||= 'git'
     @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("git")}")
-  end
-
-  def cached_location
-    @clone
   end
 
   def fetch
@@ -577,8 +573,6 @@ class CVSDownloadStrategy < VCSDownloadStrategy
     @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("cvs")}")
   end
 
-  def cached_location; @clone; end
-
   def fetch
     ohai "Checking out #{@url}"
 
@@ -626,8 +620,6 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
     super
     @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("hg")}")
   end
-
-  def cached_location; @clone; end
 
   def hgpath
     # #{HOMEBREW_PREFIX}/share/python/hg is deprecated, but we levae it in for a while
@@ -682,8 +674,6 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
     @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("bzr")}")
   end
 
-  def cached_location; @clone; end
-
   def bzrpath
     @path ||= %W[
       #{which("bzr")}
@@ -729,8 +719,6 @@ class FossilDownloadStrategy < VCSDownloadStrategy
     super
     @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("fossil")}")
   end
-
-  def cached_location; @clone; end
 
   def fossilpath
     @path ||= %W[
