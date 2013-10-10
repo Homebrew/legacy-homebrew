@@ -307,7 +307,7 @@ class S3DownloadStrategy < CurlDownloadStrategy
       s3url = obj.public_url
     end
 
-    curl s3url, '-C', downloaded_size, '-o', @temporary_path
+    curl s3url, '-C', downloaded_size, '-o', temporary_path
   end
 end
 
