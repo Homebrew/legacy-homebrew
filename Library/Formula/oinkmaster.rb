@@ -6,6 +6,7 @@ class Oinkmaster < Formula
   sha1 '01a0d774195670a11af5ff3e302773d962b34224'
 
   depends_on 'suricata'
+  depends_on 'wget'
 
   def patches
     # add url for rules, patch for search config and fix installing
@@ -26,10 +27,11 @@ __END__
 diff -Nru oinkmaster-2.0.orig/Makefile oinkmaster-2.0/Makefile
 --- oinkmaster-2.0.orig/Makefile	1970-01-01 03:00:00.000000000 +0300
 +++ oinkmaster-2.0/Makefile	2013-09-28 17:17:08.000000000 +0300
-@@ -0,0 +1,10 @@
-+INSTALL_DIR = install -d -m 755 
-+INSTALL_PROGRAM = install -m 555 
-+INSTALL_DATA = install -m 644
+@@ -0,0 +1,11 @@
++.PHONY: install
++INSTALL_DIR = /usr/bin/install -d -m 755 
++INSTALL_PROGRAM = /usr/bin/install -m 555 
++INSTALL_DATA = /usr/bin/install -m 644
 +install:
 +	$(INSTALL_DIR) "$(DESTDIR)/etc"
 +	$(INSTALL_DATA) oinkmaster.conf "$(DESTDIR)/etc"
