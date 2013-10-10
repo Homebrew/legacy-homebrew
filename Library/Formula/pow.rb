@@ -19,6 +19,7 @@ class Pow < Formula
   def caveats;
     <<-EOS.undent
       Set up the required host directories:
+        mkdir ~/.pow
         mkdir -p ~/Library/Application\ Support/Pow/Hosts
         ln -s ~/.pow ~/Library/Application\ Support/Pow/Hosts
 
