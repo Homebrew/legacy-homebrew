@@ -186,7 +186,7 @@ class FormulaInstaller
       # This is probably accurate, but could possibly stand to be
       # more robust.
       stdlib_in_use = CxxStdlib.new(MacOS.default_cxx_stdlib, MacOS.default_compiler)
-      stdlib_in_use.check_dependencies(f, f.deps)
+      stdlib_in_use.check_dependencies(f, effective_deps)
     end
 
     oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
