@@ -12,9 +12,11 @@ class Luabind < Formula
   def patches
   [
     # patch Jamroot to perform lookup for shared objects with .dylib suffix
-    "https://gist.github.com/DennisOSRM/3728987/raw/052251fcdc23602770f6c543be9b3e12f0cac50a/Jamroot.diff",
+    "https://gist.github.com/DennisOSRM/3728987/raw/Jamroot.diff",
     # apply upstream commit to enable building with clang
-    "https://github.com/luabind/luabind/commit/3044a9053ac50977684a75c4af42b2bddb853fad.diff"
+    "https://github.com/luabind/luabind/commit/3044a9053ac50977684a75c4af42b2bddb853fad.diff",
+    # include C header that is not pulled in automatically on OS X 10.9 anymore
+    "https://gist.github.com/DennisOSRM/a246514bf7d01631dda8/raw/object_rep.diff"
   ]
   end
 
