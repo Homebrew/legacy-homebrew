@@ -17,13 +17,8 @@ class Ice < Formula
 
   def install
     ENV.O2
-    inreplace "cpp/config/Make.rules" do |s|
-      s.gsub! "#OPTIMIZE", "OPTIMIZE"
-      s.gsub! "/opt/Ice-$(VERSION)", prefix
-      s.gsub! "/opt/Ice-$(VERSION_MAJOR).$(VERSION_MINOR)", prefix
-    end
 
-    # what want we build?
+    # what do we want to build?
     wb = 'config src include'
     wb += ' doc' if build.include? 'doc'
     wb += ' demo' if build.include? 'demo'
@@ -31,13 +26,20 @@ class Ice < Formula
       s.change_make_var! "SUBDIRS", wb
     end
 
-    inreplace "cpp/config/Make.rules.Darwin" do |s|
-      s.change_make_var! "CXXFLAGS", "#{ENV.cflags} -Wall -D_REENTRANT"
-    end
+    args = %W[
+      prefix=#{prefix}
+      embedded_runpath_prefix=#{prefix}
+      OPTIMIZE=yes
+    ]
+    args << "CXXFLAGS=#{ENV.cflags} -Wall -D_REENTRANT"
 
     cd "cpp" do
-      system "make"
-      system "make install"
+      system "make", *args
+      system "make", "install", *args
+    end
+    cd "py" do
+      system "make", *args
+      system "make", "install", *args
     end
   end
 end
@@ -84,3 +86,17 @@ diff -urN Ice-3.5.0.original/cpp/config/Make.rules.Darwin Ice-3.5.0/cpp/config/M
  
  #
  # QT is used only for the deprecated IceGrid and IceStorm SQL plugins
+--- Ice-3.5.0.original/py/config/Make.rules.Darwin	2013-03-11 15:19:47.000000000 +0000
++++ Ice-3.5.0/py/config/Make.rules.Darwin	2013-07-23 13:41:42.000000000 +0100
+@@ -27,9 +27,9 @@
+     PYTHON_LIBS		= -F$(patsubst %/Python.framework/Versions/,%,$(dir $(PYTHON_HOME))) -framework Python
+ else
+     XCODE_PATH  = $(shell xcode-select --print-path)
+-    SDKS_DIR    = $(XCODE_PATH)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+-    PYTHON_HOME	= $(SDKS_DIR)/System/Library/Frameworks/Python.framework/Versions/Current
++    PYTHON_HOME	= /System/Library/Frameworks/Python.framework/Versions/Current
+     PYTHON_LIBS	= -framework Python
++
+ endif
+ 
+ PYTHON_INCLUDE_DIR	= $(PYTHON_HOME)/include/$(PYTHON_VERSION)
