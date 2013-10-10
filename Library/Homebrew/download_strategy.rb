@@ -49,8 +49,11 @@ end
 class VCSDownloadStrategy < AbstractDownloadStrategy
   def initialize name, resource
     super
-    specs = resource.specs
-    @ref_type, @ref = specs.dup.shift unless specs.empty?
+    @ref_type, @ref = destructure_spec_hash(resource.specs)
+  end
+
+  def destructure_spec_hash(spec)
+    spec.each { |o| return o }
   end
 end
 
