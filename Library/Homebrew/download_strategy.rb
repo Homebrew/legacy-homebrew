@@ -9,8 +9,6 @@ class AbstractDownloadStrategy
     @name = name
     @resource = resource
     @url  = resource.url
-    specs = resource.specs
-    @ref_type, @ref = specs.dup.shift unless specs.empty?
   end
 
   def expand_safe_system_args args
@@ -46,6 +44,14 @@ class AbstractDownloadStrategy
   def fetch; end
   def stage; end
   def cached_location; end
+end
+
+class VCSDownloadStrategy < AbstractDownloadStrategy
+  def initialize name, resource
+    super
+    specs = resource.specs
+    @ref_type, @ref = specs.dup.shift unless specs.empty?
+  end
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
@@ -302,7 +308,7 @@ class S3DownloadStrategy < CurlDownloadStrategy
   end
 end
 
-class SubversionDownloadStrategy < AbstractDownloadStrategy
+class SubversionDownloadStrategy < VCSDownloadStrategy
   def initialize name, resource
     super
     @@svn ||= 'svn'
@@ -414,7 +420,7 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
   end
 end
 
-class GitDownloadStrategy < AbstractDownloadStrategy
+class GitDownloadStrategy < VCSDownloadStrategy
   def initialize name, resource
     super
     @@git ||= 'git'
@@ -562,7 +568,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 end
 
-class CVSDownloadStrategy < AbstractDownloadStrategy
+class CVSDownloadStrategy < VCSDownloadStrategy
   def initialize name, resource
     super
     @co = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("cvs")}")
@@ -612,7 +618,7 @@ class CVSDownloadStrategy < AbstractDownloadStrategy
   end
 end
 
-class MercurialDownloadStrategy < AbstractDownloadStrategy
+class MercurialDownloadStrategy < VCSDownloadStrategy
   def initialize name, resource
     super
     @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("hg")}")
@@ -667,7 +673,7 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   end
 end
 
-class BazaarDownloadStrategy < AbstractDownloadStrategy
+class BazaarDownloadStrategy < VCSDownloadStrategy
   def initialize name, resource
     super
     @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("bzr")}")
@@ -715,7 +721,7 @@ class BazaarDownloadStrategy < AbstractDownloadStrategy
   end
 end
 
-class FossilDownloadStrategy < AbstractDownloadStrategy
+class FossilDownloadStrategy < VCSDownloadStrategy
   def initialize name, resource
     super
     @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("fossil")}")
