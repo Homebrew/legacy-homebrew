@@ -32,14 +32,6 @@ class AbstractDownloadStrategy
     safe_system(*expand_safe_system_args(args))
   end
 
-  def checkout_name(tag)
-    if name.empty? || name == '__UNKNOWN__'
-      "#{ERB::Util.url_encode(@url)}--#{tag}"
-    else
-      "#{name}--#{tag}"
-    end
-  end
-
   # All download strategies are expected to implement these methods
   def fetch; end
   def stage; end
@@ -54,6 +46,14 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
 
   def destructure_spec_hash(spec)
     spec.each { |o| return o }
+  end
+
+  def checkout_name(tag)
+    if name.empty? || name == '__UNKNOWN__'
+      "#{ERB::Util.url_encode(@url)}--#{tag}"
+    else
+      "#{name}--#{tag}"
+    end
   end
 end
 
