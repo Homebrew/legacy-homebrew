@@ -6,8 +6,9 @@ class VcodexDownloadStrategy < CurlDownloadStrategy
     'I accept www.opensource.org/licenses/eclipse:.'
   end
 
-  def _fetch
-    curl @url, '--output', @tarball_path, '--user', credentials
+  def curl(*args)
+    args << '--user' << credentials
+    super
   end
 end
 
