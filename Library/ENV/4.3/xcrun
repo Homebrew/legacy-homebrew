@@ -1,4 +1,4 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
+#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
 
 # This wrapper because 4.3 xcrun doesn't work with CLT-only configurations
 # But many build-systems expect it to work. This fixes that.

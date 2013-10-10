@@ -3,7 +3,7 @@
 # instantiation to be slower by a tangible amount.
 
 # https://github.com/Homebrew/homebrew-versions/issues/47
-$:.unshift "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8"
+$:.unshift "/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/lib/ruby/1.8"
 
 class String
   def directory?; File.directory? self end
