@@ -10,7 +10,7 @@ class AbstractDownloadStrategy
     @resource = resource
     @url  = resource.url
     specs = resource.specs
-    @spec, @ref = specs.dup.shift unless specs.empty?
+    @ref_type, @ref = specs.dup.shift unless specs.empty?
   end
 
   def expand_safe_system_args args
@@ -331,9 +331,9 @@ class SubversionDownloadStrategy < AbstractDownloadStrategy
       @co.rmtree
     end
 
-    if @spec == :revision
+    if @ref_type == :revision
       fetch_repo @co, @url, @ref
-    elsif @spec == :revisions
+    elsif @ref_type == :revisions
       # nil is OK for main_revision, as fetch_repo will then get latest
       main_revision = @ref.delete :trunk
       fetch_repo @co, @url, main_revision, true
@@ -448,8 +448,8 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   def stage
     dst = Dir.getwd
     Dir.chdir @clone do
-      if @spec and @ref
-        ohai "Checking out #@spec #@ref"
+      if @ref_type and @ref
+        ohai "Checking out #@ref_type #@ref"
       else
         reset
       end
@@ -470,7 +470,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def support_depth?
-    @spec != :revision and host_supports_depth?
+    @ref_type != :revision and host_supports_depth?
   end
 
   def host_supports_depth?
@@ -489,7 +489,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
     args = %w{clone}
     args << '--depth' << '1' if support_depth?
 
-    case @spec
+    case @ref_type
     when :branch, :tag then args << '--branch' << @ref
     end
 
@@ -497,7 +497,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def refspec
-    case @spec
+    case @ref_type
     when :branch then "+refs/heads/#@ref:refs/remotes/origin/#@ref"
     when :tag    then "+refs/tags/#@ref:refs/tags/#@ref"
     else              "+refs/heads/master:refs/remotes/origin/master"
@@ -510,7 +510,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def update_repo
-    unless @spec == :tag && has_ref?
+    unless @ref_type == :tag && has_ref?
       quiet_safe_system @@git, 'fetch', 'origin'
     end
   end
@@ -521,7 +521,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def checkout_args
-    ref = case @spec
+    ref = case @ref_type
           when :branch, :tag, :revision then @ref
           else `git symbolic-ref refs/remotes/origin/HEAD`.strip.split("/").last
           end
@@ -536,7 +536,7 @@ class GitDownloadStrategy < AbstractDownloadStrategy
   end
 
   def reset_args
-    ref = case @spec
+    ref = case @ref_type
           when :branch then "origin/#@ref"
           when :revision, :tag then @ref
           else "origin/HEAD"
@@ -656,8 +656,8 @@ class MercurialDownloadStrategy < AbstractDownloadStrategy
   def stage
     dst=Dir.getwd
     Dir.chdir @clone do
-      if @spec and @ref
-        ohai "Checking out #{@spec} #{@ref}"
+      if @ref_type and @ref
+        ohai "Checking out #{@ref_type} #{@ref}"
         safe_system hgpath, 'archive', '--subrepos', '-y', '-r', @ref, '-t', 'files', dst
       else
         safe_system hgpath, 'archive', '--subrepos', '-y', '-t', 'files', dst
@@ -743,8 +743,8 @@ class FossilDownloadStrategy < AbstractDownloadStrategy
   def stage
     # TODO: The 'open' and 'checkout' commands are very noisy and have no '-q' option.
     safe_system fossilpath, 'open', @clone
-    if @spec and @ref
-      ohai "Checking out #{@spec} #{@ref}"
+    if @ref_type and @ref
+      ohai "Checking out #{@ref_type} #{@ref}"
       safe_system fossilpath, 'checkout', @ref
     end
   end
