@@ -19,6 +19,7 @@ class Zeromq < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libpgm' if build.include? 'with-pgm'
+  depends_on 'libsodium' => :optional
 
   def install
     ENV.universal_binary if build.universal?
@@ -30,6 +31,8 @@ class Zeromq < Formula
       ENV['OpenPGM_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
       args << "--with-system-pgm"
     end
+
+    args << "--with-libsodium" if build.with? 'libsodium'
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
