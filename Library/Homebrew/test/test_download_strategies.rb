@@ -40,7 +40,7 @@ end
 class DownloadStrategyCheckoutNameTests < Test::Unit::TestCase
   def setup
     @resource = ResourceDouble.new("http://foo.com/bar")
-    @strategy = AbstractDownloadStrategy
+    @strategy = VCSDownloadStrategy
   end
 
   def escaped(tag)
