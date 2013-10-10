@@ -419,14 +419,12 @@ end
 def check_user_path_1
   $seen_prefix_bin = false
   $seen_prefix_sbin = false
-  seen_usr_bin = false
 
   out = nil
 
   paths.each do |p|
     case p
     when '/usr/bin'
-      seen_usr_bin = true
       unless $seen_prefix_bin
         # only show the doctor message if there are any conflicts
         # rationale: a default install should not trigger any brew doctor messages
@@ -831,11 +829,12 @@ def check_for_linked_keg_only_brews
 end
 
 def check_for_MACOSX_DEPLOYMENT_TARGET
-  target_var = ENV['MACOSX_DEPLOYMENT_TARGET']
-  if target_var and target_var != MACOS_VERSION.to_s then <<-EOS.undent
-    MACOSX_DEPLOYMENT_TARGET was set to #{target_var}
+  target = ENV.fetch('MACOSX_DEPLOYMENT_TARGET') { return }
+
+  unless target == MacOS.version.to_s then <<-EOS.undent
+    MACOSX_DEPLOYMENT_TARGET was set to #{target.inspect}
     This is used by Fink, but having it set to a value different from the
-    current system version (#{MACOS_VERSION}) can cause problems, compiling
+    current system version (#{MacOS.version}) can cause problems, compiling
     Git for instance, and should probably be removed.
     EOS
   end
@@ -953,7 +952,7 @@ def check_for_bad_python_symlink
 end
 
 def check_for_non_prefixed_coreutils
-  gnubin = Formula.factory('coreutils').prefix.to_s + "/libexec/gnubin"
+  gnubin = "#{Formula.factory('coreutils').prefix}/libexec/gnubin"
   if paths.include? gnubin then <<-EOS.undent
     Putting non-prefixed coreutils in your path can cause gmp builds to fail.
     EOS
@@ -969,7 +968,7 @@ def check_for_non_prefixed_findutils
 end
 
 def check_for_pydistutils_cfg_in_home
-  if File.exist? ENV['HOME']+'/.pydistutils.cfg' then <<-EOS.undent
+  if File.exist? "#{ENV['HOME']}/.pydistutils.cfg" then <<-EOS.undent
     A .pydistutils.cfg file was found in $HOME, which may cause Python
     builds to fail. See:
       http://bugs.python.org/issue6138
@@ -1019,10 +1018,6 @@ def check_for_unlinked_but_not_keg_only
       true
     end
   end.map{ |pn| pn.basename }
-
-  # NOTE very old kegs will be linked without the LinkedKegs symlink
-  # this will trigger this warning but it's wrong, we could detect that though
-  # but I don't feel like writing the code.
 
   if not unlinked.empty? then <<-EOS.undent
     You have unlinked kegs in your Cellar
