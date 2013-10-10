@@ -34,6 +34,10 @@ class CxxStdlib
 
   def check_dependencies(formula, deps)
     deps.each do |dep|
+      # Software is unlikely to link against anything from its buildtime deps,
+      # so it doesn't matter at all if they link against different C++ stdlibs
+      next if dep.tags.include? :build
+
       dep_stdlib = Tab.for_formula(dep.to_formula).cxxstdlib
       if !compatible_with? dep_stdlib
         raise IncompatibleCxxStdlibs.new(formula, dep, dep_stdlib, self)
