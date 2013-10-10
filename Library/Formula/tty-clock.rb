@@ -6,12 +6,12 @@ class TtyClock < Formula
   sha1 'd9875dca06a995faf56a5816abbc5c7ba8c45970'
 
   def install
-	inreplace "Makefile", "INSTALLPATH = /usr/local/bin/", "INSTALLPATH = #{prefix}/bin/"
+	inreplace "Makefile", "/usr/local/bin/", "#{prefix}/bin/"
 	system "make"
 	system "make install"
   end
 
   test do
-    system "tty-clock"
+    system "#{bin}/tty-clock"
   end
 end
