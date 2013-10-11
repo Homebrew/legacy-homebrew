@@ -530,7 +530,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def checkout
-    nostdout { quiet_safe_system 'git', *checkout_args }
+    quiet_safe_system 'git', *checkout_args
   end
 
   def reset_args
