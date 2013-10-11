@@ -7,6 +7,12 @@ class Icu4c < Formula
   sha1 '6de440b71668f1a65a9344cdaf7a437291416781'
   head 'http://source.icu-project.org/repos/icu/icu/trunk/', :using => :svn
 
+  bottle do
+    sha1 '3205496d69fcf985a92954a170dc29abbbc6ae85' => :mountain_lion
+    sha1 '7188afe2066586d3c79480f591f0c373a32422a0' => :lion
+    sha1 'cd9b8955fc41b46fa57c6f3697e4689eff02c7c3' => :snow_leopard
+  end
+
   keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
 
   option :universal
