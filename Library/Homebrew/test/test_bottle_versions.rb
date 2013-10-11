@@ -15,4 +15,9 @@ class BottleVersionParsingTests < Test::Unit::TestCase
     assert_version_detected '6.2p2',
       '/usr/local/ssh-copy-id-6.2p2.mountain_lion.bottle.tar.gz'
   end
+
+  def test_icu4c_style
+    assert_version_detected '52.1',
+      '/usr/local/icu4c-52.1.bottle.tar.gz'
+  end
 end
