@@ -7,6 +7,8 @@ class Icu4c < Formula
   sha1 '6de440b71668f1a65a9344cdaf7a437291416781'
   head 'http://source.icu-project.org/repos/icu/icu/trunk/', :using => :svn
 
+  keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
+
   option :universal
 
   def install
