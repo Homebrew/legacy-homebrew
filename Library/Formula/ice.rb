@@ -30,7 +30,6 @@ class Ice < Formula
     args = %W[
       prefix=#{prefix}
       install_mandir=#{man}/man1
-      install_pythondir=#{lib}/#{python.xy}/site-packages
       install_slicedir=#{share}/Ice-3.5/slice
       embedded_runpath_prefix=#{prefix}
       OPTIMIZE=yes
@@ -43,7 +42,8 @@ class Ice < Formula
       system "make", *args
       system "make", "install", *args
     end
-    args << "install_libdir=#{lib}/#{python.xy}/site-packages"
+    args << "install_pythondir=#{python.site_packages}"
+    args << "install_libdir=#{python.site_packages}"
     cd "py" do
       system "make", *args
       system "make", "install", *args
