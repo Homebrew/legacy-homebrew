@@ -526,9 +526,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
           else `git symbolic-ref refs/remotes/origin/HEAD`.strip.split("/").last
           end
 
-    args = %w{checkout -f}
-    args << { :quiet_flag => '-q' }
-    args << ref
+    %W{checkout -f #{ref}}
   end
 
   def checkout
@@ -542,9 +540,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
           else "origin/HEAD"
           end
 
-    args = %w{reset}
-    args << { :quiet_flag => "-q" }
-    args << "--hard" << ref
+    %W{reset --hard #{ref}}
   end
 
   def reset
