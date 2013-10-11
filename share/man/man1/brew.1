@@ -549,7 +549,7 @@ If set, instructs Homebrew to use the value of \fBHOMEBREW_MAKE_JOBS\fR as the n
 .
 .TP
 HOMEBREW_NO_EMOJI
-If set, Homebrew will not print the beer emoji on a successful build\.
+If set, Homebrew will not print the \fBHOMEBREW_INSTALL_BADGE\fR on a successful build\.
 .
 .IP
 \fINote:\fR Homebrew will only try to print emoji on Lion or newer\.
@@ -557,6 +557,10 @@ If set, Homebrew will not print the beer emoji on a successful build\.
 .TP
 HOMEBREW_NO_GITHUB_API
 If set, Homebrew will not use the GitHub API for e\.g searches or fetching relevant issues on a failed install\.
+.
+.TP
+HOMEBREW_INSTALL_BADGE
+Text printed before the installation summary of each successful build. Defaults to the beer emoji\.
 .
 .TP
 HOMEBREW_SOURCEFORGE_MIRROR
