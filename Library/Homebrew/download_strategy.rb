@@ -42,18 +42,23 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   def initialize name, resource
     super
     @ref_type, @ref = destructure_spec_hash(resource.specs)
+    @clone = HOMEBREW_CACHE/cache_filename
   end
 
   def destructure_spec_hash(spec)
     spec.each { |o| return o }
   end
 
-  def cache_filename(tag)
+  def cache_filename(tag=cache_tag)
     if name.empty? || name == '__UNKNOWN__'
       "#{ERB::Util.url_encode(@url)}--#{tag}"
     else
       "#{name}--#{tag}"
     end
+  end
+
+  def cache_tag
+    "__UNKNOWN__"
   end
 
   def cached_location
@@ -316,15 +321,10 @@ class S3DownloadStrategy < CurlDownloadStrategy
 end
 
 class SubversionDownloadStrategy < VCSDownloadStrategy
-  def initialize name, resource
-    super
-    @@svn ||= 'svn'
+  @@svn ||= 'svn'
 
-    if ARGV.build_head?
-      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("svn-HEAD")}")
-    else
-      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("svn")}")
-    end
+  def cache_tag
+    ARGV.build_head? ? "svn-HEAD" : "svn"
   end
 
   def repo_valid?
@@ -424,11 +424,9 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
 end
 
 class GitDownloadStrategy < VCSDownloadStrategy
-  def initialize name, resource
-    super
-    @@git ||= 'git'
-    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("git")}")
-  end
+  @@git ||= 'git'
+
+  def cache_tag; "git" end
 
   def fetch
     ohai "Cloning #@url"
@@ -568,10 +566,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
 end
 
 class CVSDownloadStrategy < VCSDownloadStrategy
-  def initialize name, resource
-    super
-    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("cvs")}")
-  end
+  def cache_tag; "cvs" end
 
   def fetch
     ohai "Checking out #{@url}"
@@ -616,10 +611,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 end
 
 class MercurialDownloadStrategy < VCSDownloadStrategy
-  def initialize name, resource
-    super
-    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("hg")}")
-  end
+  def cache_tag; "hg" end
 
   def hgpath
     # #{HOMEBREW_PREFIX}/share/python/hg is deprecated, but we levae it in for a while
@@ -669,10 +661,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
 end
 
 class BazaarDownloadStrategy < VCSDownloadStrategy
-  def initialize name, resource
-    super
-    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("bzr")}")
-  end
+  def cache_tag; "bzr" end
 
   def bzrpath
     @path ||= %W[
@@ -715,10 +704,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
 end
 
 class FossilDownloadStrategy < VCSDownloadStrategy
-  def initialize name, resource
-    super
-    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("fossil")}")
-  end
+  def cache_tag; "fossil" end
 
   def fossilpath
     @path ||= %W[
