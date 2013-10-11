@@ -75,8 +75,7 @@ class ResourceTests < Test::Unit::TestCase
     assert_empty @resource.mirrors
     @resource.mirror('foo')
     @resource.mirror('bar')
-    assert_equal 'foo', @resource.mirrors.shift
-    assert_equal 'bar', @resource.mirrors.shift
+    assert_equal %w{foo bar}, @resource.mirrors
   end
 
   def test_checksum_setters

@@ -67,9 +67,8 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, resource
-    super
-    @mirrors = resource.mirrors
+  def mirrors
+    @mirrors ||= resource.mirrors.dup
   end
 
   def tarball_path
@@ -120,9 +119,9 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       puts "Already downloaded: #{tarball_path}"
     end
   rescue CurlDownloadStrategyError
-    raise if @mirrors.empty?
+    raise if mirrors.empty?
     puts "Trying a mirror..."
-    @url = @mirrors.shift
+    @url = mirrors.shift
     retry
   else
     tarball_path
@@ -170,7 +169,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   private
 
   def curl(*args)
-    args << '--connect-timeout' << '5' unless @mirrors.empty?
+    args << '--connect-timeout' << '5' unless mirrors.empty?
     super
   end
 
