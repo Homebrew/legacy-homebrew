@@ -321,8 +321,6 @@ class S3DownloadStrategy < CurlDownloadStrategy
 end
 
 class SubversionDownloadStrategy < VCSDownloadStrategy
-  @@svn ||= 'svn'
-
   def cache_tag
     ARGV.build_head? ? "svn-HEAD" : "svn"
   end
@@ -357,7 +355,7 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 
   def stage
-    quiet_safe_system @@svn, 'export', '--force', @clone, Dir.pwd
+    quiet_safe_system 'svn', 'export', '--force', @clone, Dir.pwd
   end
 
   def shell_quote str
@@ -367,7 +365,7 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 
   def get_externals
-    `'#{shell_quote(@@svn)}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
+    `'#{shell_quote('svn')}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
       name, url = line.split(/\s+/)
       yield name, url
     end
@@ -378,9 +376,9 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.directory? ? 'up' : 'checkout'
-    args = [@@svn, svncommand]
+    args = ['svn', svncommand]
     # SVN shipped with XCode 3.1.4 can't force a checkout.
-    args << '--force' unless MacOS.version == :leopard and @@svn == '/usr/bin/svn'
+    args << '--force' unless MacOS.version == :leopard
     args << url unless target.directory?
     args << target
     args << '-r' << revision if revision
@@ -414,7 +412,7 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.directory? ? 'up' : 'checkout'
-    args = [@@svn, svncommand, '--non-interactive', '--trust-server-cert', '--force']
+    args = ['svn', svncommand, '--non-interactive', '--trust-server-cert', '--force']
     args << url unless target.directory?
     args << target
     args << '-r' << revision if revision
