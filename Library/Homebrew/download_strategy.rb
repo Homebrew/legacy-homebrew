@@ -48,7 +48,7 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
     spec.each { |o| return o }
   end
 
-  def checkout_name(tag)
+  def cache_filename(tag)
     if name.empty? || name == '__UNKNOWN__'
       "#{ERB::Util.url_encode(@url)}--#{tag}"
     else
@@ -321,9 +321,9 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     @@svn ||= 'svn'
 
     if ARGV.build_head?
-      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("svn-HEAD")}")
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("svn-HEAD")}")
     else
-      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("svn")}")
+      @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("svn")}")
     end
   end
 
@@ -427,7 +427,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   def initialize name, resource
     super
     @@git ||= 'git'
-    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("git")}")
+    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("git")}")
   end
 
   def fetch
@@ -570,7 +570,7 @@ end
 class CVSDownloadStrategy < VCSDownloadStrategy
   def initialize name, resource
     super
-    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("cvs")}")
+    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("cvs")}")
   end
 
   def fetch
@@ -585,7 +585,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
     unless @clone.exist?
       HOMEBREW_CACHE.cd do
         safe_system '/usr/bin/cvs', '-d', url, 'login'
-        safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', checkout_name("cvs"), mod
+        safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', cache_filename("cvs"), mod
       end
     else
       puts "Updating #{@clone}"
@@ -618,7 +618,7 @@ end
 class MercurialDownloadStrategy < VCSDownloadStrategy
   def initialize name, resource
     super
-    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("hg")}")
+    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("hg")}")
   end
 
   def hgpath
@@ -671,7 +671,7 @@ end
 class BazaarDownloadStrategy < VCSDownloadStrategy
   def initialize name, resource
     super
-    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("bzr")}")
+    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("bzr")}")
   end
 
   def bzrpath
@@ -717,7 +717,7 @@ end
 class FossilDownloadStrategy < VCSDownloadStrategy
   def initialize name, resource
     super
-    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{checkout_name("fossil")}")
+    @clone = Pathname.new("#{HOMEBREW_CACHE}/#{cache_filename("fossil")}")
   end
 
   def fossilpath
