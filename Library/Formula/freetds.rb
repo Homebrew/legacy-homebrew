@@ -23,7 +23,7 @@ class Freetds < Formula
     system "autoreconf -i" if build.head?
 
     args = %W[--prefix=#{prefix}
-              --with-openssl=/usr/bin
+              --with-openssl=#{MacOS.sdk_path}/usr
               --with-tdsver=7.1
               --mandir=#{man}
             ]

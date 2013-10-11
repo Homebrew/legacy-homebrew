@@ -48,13 +48,17 @@ class Mongodb < Formula
       }
       exec "#{prefix}/mongod", *ARGV
     EOS
+
+    etc.install prefix+'mongod.conf'
+
+    (var+'mongodb').mkpath
+    (var+'log/mongodb').mkpath
   end
 
   def post_install
+    # TODO: can be removed when bottle is updated.
     (var+'mongodb').mkpath
     (var+'log/mongodb').mkpath
-    etc.mkpath
-    cp prefix+'mongod.conf', etc+"mongod.conf" unless File.exists? etc+"mongod.conf"
   end
 
   def mongodb_conf; <<-EOS.undent

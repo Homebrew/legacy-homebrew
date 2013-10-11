@@ -67,11 +67,8 @@ class Lighttpd < Formula
         s.sub!(/^server\.max-connections = .+$/,'server.max-connections = ' + (MAX_FDS / 2).to_s())
       end
     end
-  end
 
-  def post_install
     log_path.mkpath
-    www_path.mkpath
     (www_path/'htdocs').mkpath
     run_path.mkpath
   end

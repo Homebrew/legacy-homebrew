@@ -5,7 +5,7 @@ class Goaccess < Formula
   url 'http://downloads.sourceforge.net/project/goaccess/0.6.1/goaccess-0.6.1.tar.gz'
   sha1 '9604087ca730c288b461a260ab50bf7dd38ca281'
 
-  head 'git://goaccess.git.sourceforge.net/gitroot/goaccess/goaccess'
+  head 'https://github.com/allinurl/goaccess.git'
 
   option 'enable-geoip', "Enable IP location information using GeoIP"
 

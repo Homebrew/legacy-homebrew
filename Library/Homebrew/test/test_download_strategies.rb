@@ -37,7 +37,7 @@ class AbstractDownloadStrategyTests < Test::Unit::TestCase
   end
 end
 
-class DownloadStrategyCheckoutNameTests < Test::Unit::TestCase
+class VCSDownloadStrategyTests < Test::Unit::TestCase
   def setup
     @resource = ResourceDouble.new("http://foo.com/bar")
     @strategy = VCSDownloadStrategy
@@ -49,17 +49,17 @@ class DownloadStrategyCheckoutNameTests < Test::Unit::TestCase
 
   def test_explicit_name
     downloader = @strategy.new("baz", @resource)
-    assert_equal "baz--foo", downloader.checkout_name("foo")
+    assert_equal "baz--foo", downloader.cache_filename("foo")
   end
 
   def test_empty_name
     downloader = @strategy.new("", @resource)
-    assert_equal escaped("foo"), downloader.checkout_name("foo")
+    assert_equal escaped("foo"), downloader.cache_filename("foo")
   end
 
   def test_unknown_name
     downloader = @strategy.new("__UNKNOWN__", @resource)
-    assert_equal escaped("foo"), downloader.checkout_name("foo")
+    assert_equal escaped("foo"), downloader.cache_filename("foo")
   end
 end
 
