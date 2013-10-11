@@ -7,9 +7,10 @@ class Mysql < Formula
   sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
 
   bottle do
-    sha1 '98152e8145a6b505706a6bdbc896c8443436c2fc' => :mountain_lion
-    sha1 '9883662840fdc7582911f2e703990a61a1e40161' => :lion
-    sha1 '82577b2851ac1040593e1b22ccf26cff6475b33b' => :snow_leopard
+    revision 1
+    sha1 'b7ef48694e473966a1ea6b6969d66ffb7354f24a' => :mountain_lion
+    sha1 'ff2823f3ea4e3ffc6ea989d15f6418e8e9fd84f1' => :lion
+    sha1 '8b08166f4f1592a7f847b7bd3738936b86ec2234' => :snow_leopard
   end
 
   depends_on 'cmake' => :build
@@ -114,12 +115,12 @@ class Mysql < Formula
     # Move mysqlaccess to libexec
     mv "#{bin}/mysqlaccess", libexec
     mv "#{bin}/mysqlaccess.conf", libexec
+
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
   end
 
   def post_install
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
-
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",

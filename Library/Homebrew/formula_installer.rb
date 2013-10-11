@@ -9,6 +9,7 @@ require 'bottles'
 require 'caveats'
 require 'cleaner'
 require 'formula_cellar_checks'
+require 'install_renamed'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -78,9 +79,15 @@ class FormulaInstaller
     etc = HOMEBREW_PREFIX+'etc'
     etc.cd do
       quiet_system 'git', 'init' unless (etc+'.git').directory?
-      quiet_system 'git', 'checkout', '-B', "#{f.name}-last"
-      system 'git', 'add', '--all', '.'
-      system 'git', 'commit', '-m', "#{f.name}-#{f.version}: preinstall"
+      quiet_system 'git', 'checkout', '-B', "#{f.name}-preinstall"
+      unless quiet_system 'git', 'diff', '--exit-code', 'HEAD'
+        system 'git', 'add', '--all', '.'
+        system 'git', 'commit', '-m', "#{f.name}-#{f.version}: preinstall"
+      end
+
+      unless quiet_system 'git', 'rev-parse', 'master'
+        quiet_system 'git', 'branch', 'master'
+      end
     end
   end
 
@@ -88,39 +95,63 @@ class FormulaInstaller
     return unless quiet_system 'git', '--version'
 
     etc = HOMEBREW_PREFIX+'etc'
-    keg_etc_files = Dir[f.etc+'*']
-    last_branch = "#{f.name}-last"
+    preinstall_branch = "#{f.name}-preinstall"
     default_branch = "#{f.name}-default"
     merged = false
     etc.cd do
-      FileUtils.cp_r keg_etc_files, etc
-
-      system 'git', 'add', '--all', '.'
-      if quiet_system 'git', 'diff', '--exit-code', default_branch
-        quiet_system 'git', 'reset', '--hard'
-      else
-        if quiet_system 'git', 'rev-parse', 'master'
-          quiet_system 'git', 'checkout', '-f', 'master'
-          FileUtils.cp_r keg_etc_files, etc
-          quiet_system 'git', 'add', '--all', '.'
-        else
-          quiet_system 'git', 'checkout', '-b' 'master'
-        end
+      if quiet_system 'git', 'diff', '--exit-code', preinstall_branch
+        quiet_system 'git', 'branch', default_branch
+        quiet_system 'git', 'branch', '-D', preinstall_branch
+      elsif not quiet_system 'git', 'rev-parse', default_branch
+        quiet_system 'git', 'checkout', '-B', default_branch
+        quiet_system 'git', 'add', '--all', '.'
         system 'git', 'commit', '-m', "#{f.name}-#{f.version}: default"
-        quiet_system 'git', 'branch', '-f', default_branch
+        quiet_system 'git', 'branch', '-D', preinstall_branch
+      else
+        previous_default_branch = `git rev-parse #{default_branch}`.strip
+        quiet_system 'git', 'checkout', '-B', default_branch
+        quiet_system 'git', 'add', '--all', '.'
+        system 'git', 'commit', '-m', "#{f.name}-#{f.version}: default"
 
-        merged = true unless quiet_system 'git' 'merge-base', '--is-ancestor',
-                                          last_branch, 'master'
-        system 'git', 'merge', '--no-ff', '--no-edit',
-               '-X', 'theirs', last_branch
+        default_unchanged = quiet_system('git', 'diff', '--exit-code', \
+                                                previous_default_branch)
+
+        if default_unchanged
+          system 'git', 'reset', '--hard', previous_default_branch
+        end
+
+        quiet_system 'git', 'checkout', 'master'
+        quiet_system 'git', 'reset', '--hard', preinstall_branch
+
+        unless default_unchanged
+          merge_ff = quiet_system 'git', 'merge', '--ff-only', '--no-edit',
+                                         '-X', 'ours', default_branch
+          unless merge_ff
+            merged = true
+            system 'git', 'merge', '--no-ff', '--no-edit',
+                          '-X', 'ours', default_branch
+          end
+        end
       end
 
       if merged
         ohai "Configuration Files"
         puts "Your configuration files for #{f.name} in etc were merged:"
-        puts "To reverse this merge: git reset --hard #{last_branch}"
+        puts "To reverse this merge: git reset --hard #{preinstall_branch}"
         puts "To restore defaults:   git reset --hard #{default_branch}"
       end
+    end
+  end
+
+  def build_bottle_preinstall
+    @etc_var_glob ||= "#{HOMEBREW_PREFIX}/{etc,var}/**/*"
+    @etc_var_preinstall = Dir[@etc_var_glob]
+  end
+
+  def build_bottle_postinstall
+    @etc_var_postinstall = Dir[@etc_var_glob]
+    (@etc_var_postinstall - @etc_var_preinstall).each do |file|
+      Pathname.new(file).cp_path_sub(HOMEBREW_PREFIX, f.bottle_prefix)
     end
   end
 
@@ -155,14 +186,14 @@ class FormulaInstaller
       # This is probably accurate, but could possibly stand to be
       # more robust.
       stdlib_in_use = CxxStdlib.new(MacOS.default_cxx_stdlib, MacOS.default_compiler)
-      stdlib_in_use.check_dependencies(f, f.deps)
+      stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
     end
 
     oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
     @@attempted << f
 
-    git_etc_preinstall if HOMEBREW_GIT_ETC
+    git_etc_preinstall if ENV['HOMEBREW_GIT_ETC']
 
     @poured_bottle = false
 
@@ -180,10 +211,14 @@ class FormulaInstaller
       opoo "Bottle installation failed: building from source."
     end
 
+    build_bottle_preinstall if ARGV.build_bottle?
+
     unless @poured_bottle
       build
       clean
     end
+
+    build_bottle_postinstall if ARGV.build_bottle?
 
     begin
       f.post_install
@@ -191,7 +226,7 @@ class FormulaInstaller
       opoo "#{f.name} post_install failed. Rerun with `brew postinstall #{f.name}`."
     end
 
-    git_etc_postinstall if HOMEBREW_GIT_ETC
+    git_etc_postinstall if ENV['HOMEBREW_GIT_ETC']
 
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
@@ -532,6 +567,13 @@ class FormulaInstaller
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end
+
+    Dir["#{f.bottle_prefix}/{etc,var}/**/*"].each do |file|
+      path = Pathname.new(file)
+      path.extend(InstallRenamed)
+      path.cp_path_sub(f.bottle_prefix, HOMEBREW_PREFIX)
+    end
+    FileUtils.rm_rf f.bottle_prefix
   end
 
   ## checks
