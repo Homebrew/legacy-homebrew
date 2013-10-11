@@ -422,8 +422,6 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
 end
 
 class GitDownloadStrategy < VCSDownloadStrategy
-  @@git ||= 'git'
-
   def cache_tag; "git" end
 
   def fetch
@@ -456,7 +454,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
         reset
       end
       # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
-      safe_system @@git, 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
+      safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
       checkout_submodules(dst) if submodules?
     end
   end
@@ -468,7 +466,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def has_ref?
-    quiet_system @@git, '--git-dir', git_dir, 'rev-parse', '-q', '--verify', @ref
+    quiet_system 'git', '--git-dir', git_dir, 'rev-parse', '-q', '--verify', @ref
   end
 
   def support_depth?
@@ -480,7 +478,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def repo_valid?
-    quiet_system @@git, "--git-dir", git_dir, "status", "-s"
+    quiet_system "git", "--git-dir", git_dir, "status", "-s"
   end
 
   def submodules?
@@ -507,18 +505,18 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def config_repo
-    safe_system @@git, 'config', 'remote.origin.url', @url
-    safe_system @@git, 'config', 'remote.origin.fetch', refspec
+    safe_system 'git', 'config', 'remote.origin.url', @url
+    safe_system 'git', 'config', 'remote.origin.fetch', refspec
   end
 
   def update_repo
     unless @ref_type == :tag && has_ref?
-      quiet_safe_system @@git, 'fetch', 'origin'
+      quiet_safe_system 'git', 'fetch', 'origin'
     end
   end
 
   def clone_repo
-    safe_system @@git, *clone_args
+    safe_system 'git', *clone_args
     @clone.cd { update_submodules } if submodules?
   end
 
@@ -534,7 +532,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def checkout
-    nostdout { quiet_safe_system @@git, *checkout_args }
+    nostdout { quiet_safe_system 'git', *checkout_args }
   end
 
   def reset_args
@@ -550,16 +548,16 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def reset
-    quiet_safe_system @@git, *reset_args
+    quiet_safe_system 'git', *reset_args
   end
 
   def update_submodules
-    safe_system @@git, 'submodule', 'update', '--init'
+    safe_system 'git', 'submodule', 'update', '--init'
   end
 
   def checkout_submodules(dst)
-    sub_cmd = %W{#@@git checkout-index -a -f --prefix=#{dst}/$path/}
-    safe_system @@git, 'submodule', '--quiet', 'foreach', '--recursive', *sub_cmd
+    sub_cmd = %W{git checkout-index -a -f --prefix=#{dst}/$path/}
+    safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', *sub_cmd
   end
 end
 
