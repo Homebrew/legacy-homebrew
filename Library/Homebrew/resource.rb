@@ -99,8 +99,8 @@ class Resource
   def url val=nil, specs={}
     return @url if val.nil?
     @url = val
-    @using = specs.delete(:using)
     @specs.merge!(specs)
+    @using = @specs.delete(:using)
   end
 
   def version val=nil
