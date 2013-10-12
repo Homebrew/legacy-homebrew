@@ -329,7 +329,7 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 
   def fetch
-    @url.sub!(/^svn\+/, '') if @url =~ %r[^svn\+http://]
+    @url = @url.sub(/^svn\+/, '') if @url =~ %r[^svn\+http://]
     ohai "Checking out #{@url}"
 
     if @clone.exist? and not repo_valid?
