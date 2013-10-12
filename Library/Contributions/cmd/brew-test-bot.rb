@@ -10,7 +10,6 @@
 # --email:        Generate an email subject file.
 # --no-bottle:    Run brew install without --build-bottle
 # --HEAD:         Run brew install with --HEAD
-# --devel:        Run brew install with --devel
 
 require 'formula'
 require 'utils'
@@ -272,23 +271,33 @@ class Test
     install_args = '--verbose'
     install_args << ' --build-bottle' unless ARGV.include? '--no-bottle'
     install_args << ' --HEAD' if ARGV.include? '--HEAD'
-    install_args << ' --devel' if ARGV.include? '--devel'
     test "brew install #{install_args} #{formula}"
     install_passed = steps.last.passed?
     test "brew audit #{formula}"
-    return unless install_passed
-    unless ARGV.include? '--no-bottle'
-      test "brew bottle --rb #{formula}", :puts_output_on_success => true
-      bottle_step = steps.last
-      if bottle_step.passed? and bottle_step.has_output?
-        bottle_filename =
-          bottle_step.output.gsub(/.*(\.\/\S+#{bottle_native_regex}).*/m, '\1')
-        test "brew uninstall --force #{formula}"
-        test "brew install #{bottle_filename}"
+    if install_passed
+      unless ARGV.include? '--no-bottle'
+        test "brew bottle --rb #{formula}", :puts_output_on_success => true
+        bottle_step = steps.last
+        if bottle_step.passed? and bottle_step.has_output?
+          bottle_filename =
+            bottle_step.output.gsub(/.*(\.\/\S+#{bottle_native_regex}).*/m, '\1')
+          test "brew uninstall --force #{formula}"
+          test "brew install #{bottle_filename}"
+        end
+      end
+      test "brew test --verbose #{formula}" if formula_object.test_defined?
+      test "brew uninstall --force #{formula}"
+    end
+    if formula_object.devel and not ARGV.include? '--HEAD'
+      test "brew fetch --devel#{formula_fetch_options} #{formula}"
+      test "brew install --devel --verbose #{formula}"
+      devel_install_passed = steps.last.passed?
+      test "brew audit --devel #{formula}"
+      if devel_install_passed
+        test "brew test --devel --verbose #{formula}" if formula_object.test_defined?
+        test "brew uninstall --devel --force #{formula}"
       end
     end
-    test "brew test --verbose #{formula}" if formula_object.test_defined?
-    test "brew uninstall --force #{formula}"
     test "brew uninstall --force #{dependencies}" unless dependencies.empty?
   end
 
