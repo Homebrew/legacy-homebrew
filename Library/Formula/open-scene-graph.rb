@@ -8,6 +8,7 @@ class OpenSceneGraph < Formula
   head 'http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/'
 
   option 'docs', 'Build the documentation with Doxygen and Graphviz'
+  option :cxx11
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -29,6 +30,8 @@ class OpenSceneGraph < Formula
   end
 
   def install
+    ENV.cxx11 if build.cxx11?
+
     # Turning off FFMPEG takes this change or a dozen "-DFFMPEG_" variables
     unless build.with? 'ffmpeg'
       inreplace 'CMakeLists.txt', 'FIND_PACKAGE(FFmpeg)', '#FIND_PACKAGE(FFmpeg)'
