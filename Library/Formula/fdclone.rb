@@ -7,6 +7,10 @@ class Fdclone < Formula
 
   depends_on 'nkf' => :build
 
+  def patches
+    DATA
+  end
+
   def install
     ENV.j1
     system "make", "PREFIX=#{prefix}", "all"
@@ -27,3 +31,16 @@ class Fdclone < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/machine.h b/machine.h
+index 8bc70ab..39b0d28 100644
+--- a/machine.h
++++ b/machine.h
+@@ -1449,4 +1449,6 @@ typedef unsigned long		u_long;
+ #define	GETTODARGS		2
+ #endif
+ 
++#define USEDATADIR
++
+ #endif	/* !__MACHINE_H_ */
