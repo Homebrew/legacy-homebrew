@@ -7,7 +7,7 @@ class Keg
           install_name_tool("-id", id, file) if file.dylib?
 
           bad_names.each do |bad_name|
-            new_name = fixed_name(file, bad_name, options)
+            new_name = fixed_name(file, bad_name)
             unless new_name == bad_name
               install_name_tool("-change", bad_name, new_name, file)
             end
@@ -40,6 +40,27 @@ class Keg
         end
       end
     end
+  end
+
+  # Detects the C++ dynamic libraries in place, scanning the dynamic links
+  # of the files within the keg. This searches only libs contained within
+  # lib/, and ignores binaries and other mach-o objects
+  # Note that this doesn't attempt to distinguish between libstdc++ versions,
+  # for instance between Apple libstdc++ and GNU libstdc++
+  def detect_cxx_stdlibs
+    return [] unless lib.exist?
+
+    results = Set.new
+    lib.find do |file|
+      next if file.symlink? || file.directory?
+      next unless file.dylib?
+
+      dylibs = file.dynamically_linked_libraries
+      results << :libcxx unless dylibs.grep(/libc\+\+.+\.dylib/).empty?
+      results << :libstdcxx unless dylibs.grep(/libstdc\+\+.+\.dylib/).empty?
+    end
+
+    results.to_a
   end
 
   private

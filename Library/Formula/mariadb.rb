@@ -103,12 +103,12 @@ class Mariadb < Formula
 
       ln_s "#{prefix}/support-files/mysql.server", bin
     end
+
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
   end
 
   def post_install
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
-
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",

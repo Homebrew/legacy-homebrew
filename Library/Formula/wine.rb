@@ -13,8 +13,8 @@ class Wine < Formula
   end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.3.tar.bz2'
-    sha256 'c66c93c2ffec8d1d9922fbaa226b169d62deb77fcbfd0fbd7379b77dbd97d47f'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.4.tar.bz2'
+    sha256 '517b3465dbf5b516d3fe886c0f9d4f310dc1d4a38ca4e5580c5d66bab3fb6969'
     depends_on 'little-cms2'
   end
 

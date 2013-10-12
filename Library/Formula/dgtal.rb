@@ -7,7 +7,7 @@ class Dgtal < Formula
 
   head 'https://github.com/DGtal-team/DGtal.git'
 
-  option 'with-qglview', "Enable QGLViewer vizualisation"
+  option 'with-qglviewer', "Enable QGLViewer vizualisation"
   option 'with-magick', "Enable GraphicsMagick for 2d image readers"
 
   depends_on 'cmake' => :build

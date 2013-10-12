@@ -2,8 +2,8 @@ require 'formula'
 
 class XmlToolingC < Formula
   homepage 'https://wiki.shibboleth.net/confluence/display/OpenSAML/XMLTooling-C'
-  url 'http://shibboleth.net/downloads/c++-opensaml/2.5.2/xmltooling-1.5.2.tar.gz'
-  sha256 'd43719f8d742d87131ea64f2dbc8f1b366c7f216ac21015090a51693ff11df98'
+  url 'http://shibboleth.net/downloads/c++-opensaml/2.5.3/xmltooling-1.5.3.tar.gz'
+  sha1 'b8498a8dafe18bf612a6651ab7af662add5c2a68'
 
   depends_on 'pkg-config' => :build
   depends_on 'log4shib'
