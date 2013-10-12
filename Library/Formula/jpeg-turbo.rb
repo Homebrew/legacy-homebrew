@@ -9,7 +9,10 @@ class JpegTurbo < Formula
 
   keg_only "libjpeg-turbo is not linked to prevent conflicts with the standard libjpeg."
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--with-jpeg8"]
     if MacOS.prefer_64_bit?
       args << "--host=x86_64-apple-darwin"
