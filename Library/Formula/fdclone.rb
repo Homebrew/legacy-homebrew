@@ -4,11 +4,11 @@ class Fdclone < Formula
   homepage 'http://hp.vector.co.jp/authors/VA012337/soft/fd/'
   url 'http://hp.vector.co.jp/authors/VA012337/soft/fd/FD-3.01a.tar.gz'
   sha1 '5d4f90ccaee67fadcc5d776f90bbe2fd760c4cdd'
-  version '3.01a'
 
-  depends_on 'nkf'
+  depends_on 'nkf' => :build
 
   def install
+    ENV.j1
     system "make", "PREFIX=#{prefix}", "all"
     system "make", "MANTOP=#{man}", "install"
 
