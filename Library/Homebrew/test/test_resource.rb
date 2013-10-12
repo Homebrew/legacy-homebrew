@@ -40,6 +40,14 @@ class ResourceTests < Test::Unit::TestCase
     assert_equal GitDownloadStrategy, @resource.download_strategy
   end
 
+  def test_does_not_mutate_specs_hash
+    specs = { :using => :git, :branch => 'master' }
+    @resource.url('foo', specs)
+    assert_equal({ :branch => 'master' }, @resource.specs)
+    assert_equal(:git, @resource.using)
+    assert_equal({ :using => :git, :branch => 'master' }, specs)
+  end
+
   def test_version
     @resource.version('1.0')
     assert_version_equal '1.0', @resource.version
