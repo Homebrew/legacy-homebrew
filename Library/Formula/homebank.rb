@@ -12,10 +12,12 @@ class Homebank < Formula
   depends_on 'hicolor-icon-theme'
   depends_on :freetype
   depends_on :fontconfig
+  depends_on 'libofx'
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-ofx"
     system "chmod +x ./install-sh"
     system "make install"
   end
