@@ -94,11 +94,11 @@ class FormulaInstaller
   def git_etc_postinstall
     return unless quiet_system 'git', '--version'
 
-    etc = HOMEBREW_PREFIX+'etc'
     preinstall_branch = "#{f.name}-preinstall"
     default_branch = "#{f.name}-default"
     merged = false
-    etc.cd do
+    f.etc.mkpath
+    f.etc.cd do
       if quiet_system 'git', 'diff', '--exit-code', preinstall_branch
         quiet_system 'git', 'branch', default_branch
         quiet_system 'git', 'branch', '-D', preinstall_branch
