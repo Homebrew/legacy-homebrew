@@ -16,9 +16,11 @@ class Icu4c < Formula
   keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
 
   option :universal
+  option :cxx11
 
   def install
     ENV.universal_binary if build.universal?
+    ENV.cxx11 if build.cxx11?
 
     args = ["--prefix=#{prefix}", "--disable-samples", "--disable-tests", "--enable-static"]
     args << "--with-library-bits=64" if MacOS.prefer_64_bit?
