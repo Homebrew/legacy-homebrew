@@ -33,7 +33,8 @@ class Wine < Formula
   # between them. But if you really want to build without X11, you can.
   depends_on :x11 => :recommended
   depends_on 'freetype' if build.without? 'x11'
-  depends_on 'jpeg'
+  depends_on 'jpeg' if build.without? 'jpeg-turbo'
+  depends_on 'jpeg-turbo' if build.with? 'jpeg-turbo'
   depends_on 'libgphoto2'
   depends_on 'libicns'
   depends_on 'libtiff'
@@ -105,6 +106,11 @@ class Wine < Formula
     # Workarounds for XCode not including pkg-config files
     ENV.libxml2
     ENV.append "LDFLAGS", "-lxslt"
+
+    # JPEG lib
+    jpeg = Formula.factory('jpeg') if build.without? 'jpeg-turbo'
+    jpeg = Formula.factory('jpeg-turbo') if build.with? 'jpeg-turbo'
+    ENV.prepend "JPEG_LIBS", "#{jpeg.lib}"
 
     # Note: we get freetype from :x11, but if the freetype formula has been installed
     # separately and not built universal, it's going to get picked up and break the build.
