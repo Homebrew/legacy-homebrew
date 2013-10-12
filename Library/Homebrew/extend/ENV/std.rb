@@ -14,7 +14,7 @@ module Stdenv
     end
   end
 
-  def setup_build_environment
+  def setup_build_environment(formula=nil)
     # Clear CDPATH to avoid make issues that depend on changing directories
     delete('CDPATH')
     delete('GREP_OPTIONS') # can break CMake (lol)
@@ -68,8 +68,13 @@ module Stdenv
       self.cxx = MacOS.locate("c++")
     end
 
+    validate_cc!(formula) unless formula.nil?
+
     if cc =~ GNU_GCC_REGEXP
       warn_about_non_apple_gcc($1)
+      gcc_name = 'gcc' + $1.delete('.')
+      gcc = Formulary.factory(gcc_name)
+      self.append_path('PATH', gcc.opt_prefix/'bin')
     end
 
     # Add lib and include etc. from the current macosxsdk to compiler flags:
@@ -276,16 +281,18 @@ module Stdenv
     append 'LDFLAGS', "-L#{MacOS::X11.lib}"
     append_path 'CMAKE_PREFIX_PATH', MacOS::X11.prefix
     append_path 'CMAKE_INCLUDE_PATH', MacOS::X11.include
+    append_path 'CMAKE_INCLUDE_PATH', MacOS::X11.include/'freetype2'
 
     append 'CPPFLAGS', "-I#{MacOS::X11.include}"
+    append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
 
     append_path 'ACLOCAL_PATH', MacOS::X11.share/'aclocal'
 
-    unless MacOS::CLT.installed?
+    if MacOS::XQuartz.provided_by_apple? and not MacOS::CLT.installed?
       append_path 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11'
-      append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
-      append 'CFLAGS', "-I#{MacOS::X11.include}"
     end
+
+    append 'CFLAGS', "-I#{MacOS::X11.include}" unless MacOS::CLT.installed?
   end
   alias_method :libpng, :x11
 
@@ -360,12 +367,5 @@ module Stdenv
     else
       Hardware::CPU.cores
     end
-  end
-
-  # ld64 is a newer linker provided for Xcode 2.5
-  def ld64
-    ld64 = Formula.factory('ld64')
-    self['LD'] = ld64.bin/'ld'
-    append "LDFLAGS", "-B#{ld64.bin.to_s+"/"}"
   end
 end

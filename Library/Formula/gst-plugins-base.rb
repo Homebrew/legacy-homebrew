@@ -2,13 +2,13 @@ require 'formula'
 
 class GstPluginsBase < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.0.9.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.0.9.tar.xz'
-  sha256 '963e3b83d651661f495ca2e44ccd2d5c61e986e9d7706246e568276689a372ea'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.2.0.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.2.0.tar.xz'
+  sha256 '8656e20bf4b675e5696fb4af193793351926d428ca02826c5667a6384729a45d'
 
-  head 'git://anongit.freedesktop.org/gstreamer/gst-plugins-base'
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-base'
 
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end

@@ -3,7 +3,7 @@
 
 # This method has a dual nature. For one, it takes a &block and sets up
 # the ENV such that a Python, as defined in the requirements, is the default.
-# If there are multiple `PythonInstalled` requirements, the block is evaluated
+# If there are multiple `PythonDependency` requirements, the block is evaluated
 # once for each Python. This makes it possible to easily support 2.x and
 # 3.x Python bindings without code duplication in formulae.
 # If you need to special case stuff, set :allowed_major_versions.
@@ -16,16 +16,16 @@
 def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
   if !block_given? and !@current_python.nil?
     # We are already inside of a `python do ... end` block, so just return
-    # the current_python or false if the version.major is not allowed.
+    # the current_python or nil if the version.major is not allowed.
     if options[:allowed_major_versions].include?(@current_python.version.major)
       return @current_python
     else
-      return false
+      return nil
     end
   end
 
-  # Look for PythonInstalled requirements for this formula:
-  python_reqs = requirements.select{ |r| r.kind_of?(PythonInstalled) }
+  # Look for PythonDependency requirements for this formula:
+  python_reqs = requirements.select{ |r| r.kind_of?(PythonDependency) }
   if python_reqs.empty?
     raise "If you use python in the formula, you have to add `depends_on :python` (or :python3)!"
   end
@@ -42,7 +42,7 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
   end
 
   # Allow to use an else-branch like so: `if python do ... end; else ... end`.
-  return false if filtered_python_reqs.empty?
+  return nil if filtered_python_reqs.empty?
 
   # Sort by version, so the older 2.x will be used first and if no
   # block_given? then 2.x is preferred because it is returned.
@@ -56,8 +56,8 @@ def python_helper(options={:allowed_major_versions => [2, 3]}, &block)
 
     puts "brew: Python block (#{py.binary})..." if ARGV.verbose? && ARGV.debug?
     # Ensure env changes are only temporary:
+    old_env = ENV.to_hash
     begin
-      old_env = ENV.to_hash
       # In order to install into the `Cellar`, the dir must exist and be in the
       # `PYTHONPATH`. This will be executed in the context of the formula and
       # lib points to the `HOMEBREW_PREFIX/Cellar/<formula>/<version>/lib`.

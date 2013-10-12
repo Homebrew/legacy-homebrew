@@ -120,12 +120,12 @@ class Build
       ENV.keg_only_deps = keg_only_deps.map(&:to_s)
       ENV.deps = deps.map { |d| d.to_formula.to_s }
       ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
-      ENV.setup_build_environment
+      ENV.setup_build_environment(f)
       post_superenv_hacks
       reqs.each(&:modify_build_environment)
       deps.each(&:modify_build_environment)
     else
-      ENV.setup_build_environment
+      ENV.setup_build_environment(f)
       reqs.each(&:modify_build_environment)
       deps.each(&:modify_build_environment)
 
@@ -141,20 +141,15 @@ class Build
       end
     end
 
-    if f.fails_with? ENV.compiler
-      begin
-        ENV.send CompilerSelector.new(f).compiler
-      rescue CompilerSelectionError => e
-        raise e.message
-      end
-    end
-
-    # We only support libstdc++ right now
-    stdlib_in_use = CxxStdlib.new(:libstdcxx, ENV.compiler)
+    # TODO Track user-selected stdlibs, such as boost in C++11 mode
+    stdlib = ENV.compiler == :clang ? MacOS.default_cxx_stdlib : :libstdcxx
+    stdlib_in_use = CxxStdlib.new(stdlib, ENV.compiler)
 
     # This is a bad place for this check, but we don't have access to
     # compiler selection within the formula installer, only inside the
     # build instance.
+    # This is also awkward because we don't actually know yet if this package
+    # will link against a C++ stdlib, but we don't want to test after the build.
     stdlib_in_use.check_dependencies(f, deps)
 
     f.brew do
@@ -179,7 +174,7 @@ class Build
 
         begin
           f.install
-          Tab.create(f, :libstdcxx, ENV.compiler,
+          Tab.create(f, ENV.compiler,
             Options.coerce(ARGV.options_only)).write
         rescue Exception => e
           if ARGV.debug?

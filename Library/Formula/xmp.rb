@@ -4,11 +4,15 @@ class Xmp < Formula
   homepage 'http://xmp.sourceforge.net'
   url 'http://downloads.sourceforge.net/project/xmp/xmp/4.0.6/xmp-4.0.6.tar.gz'
   sha1 '61a7d68e4c37e7407bd35c783821bfbc2b639c87'
-  head 'git://git.code.sf.net/p/xmp/xmp-cli'
 
-  depends_on 'autoconf' if build.head?
-  depends_on 'automake' if build.head?
-  depends_on 'libtool'  if build.head?
+  head do
+    url 'git://git.code.sf.net/p/xmp/xmp-cli'
+
+    depends_on 'autoconf' => :build
+    depends_on 'automake' => :build
+    depends_on 'libtool'  => :build
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'libxmp'
 

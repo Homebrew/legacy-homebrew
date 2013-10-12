@@ -2,8 +2,8 @@ require 'formula'
 
 class Pianobar < Formula
   homepage 'https://github.com/PromyLOPh/pianobar/'
-  url 'https://github.com/PromyLOPh/pianobar/archive/2013.05.19.tar.gz'
-  sha256 'fa4cf45c3f6143b5597269ce2a5178a49acee5b279cc2d9a132e40fa845bb647'
+  url 'https://github.com/PromyLOPh/pianobar/archive/2013.09.15.tar.gz'
+  sha256 '4b18582eb794def5bf4e7d5de211d1f6c79295edac344928e09072aa9386796c'
 
   head 'https://github.com/PromyLOPh/pianobar.git'
 

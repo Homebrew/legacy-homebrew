@@ -1,7 +1,7 @@
 require 'requirement'
 require 'requirements/fortran_dependency'
 require 'requirements/language_module_dependency'
-require 'requirements/macos_requirement'
+require 'requirements/minimum_macos_requirement'
 require 'requirements/mpi_dependency'
 require 'requirements/python_dependency'
 require 'requirements/x11_dependency'
@@ -92,4 +92,10 @@ class MercurialDependency < Requirement
   default_formula 'mercurial'
 
   satisfy { which('hg') }
+end
+
+class GitDependency < Requirement
+  fatal true
+  default_formula 'git'
+  satisfy { which('git') }
 end

@@ -16,7 +16,6 @@ class Mariadb < Formula
   option :universal
   option 'with-tests', 'Keep test when installing'
   option 'with-bench', 'Keep benchmark app when installing'
-  option 'client-only', 'Install only client tools'
   option 'with-embedded', 'Build the embedded server'
   option 'with-libedit', 'Compile with editline wrapper instead of readline'
   option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
@@ -29,7 +28,7 @@ class Mariadb < Formula
   env :std if build.universal?
 
   fails_with :clang do
-    build 425
+    build 500
     cause "error: implicit instantiation of undefined template 'boost::STATIC_ASSERTION_FAILURE<false>'"
   end
 
@@ -56,9 +55,6 @@ class Mariadb < Formula
       -DDEFAULT_COLLATION=utf8_general_ci
       -DINSTALL_SYSCONFDIR=#{etc}
     ]
-
-    # Client only
-    cmake_args << "-DWITHOUT_SERVER=1" if build.include? 'client-only'
 
     # Build the embedded server
     cmake_args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
@@ -107,12 +103,12 @@ class Mariadb < Formula
 
       ln_s "#{prefix}/support-files/mysql.server", bin
     end
+
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
   end
 
   def post_install
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
-
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",

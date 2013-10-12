@@ -213,20 +213,11 @@ end
 # raised by CompilerSelector if the formula fails with all of
 # the compilers available on the user's system
 class CompilerSelectionError < StandardError
-  def message
-    if MacOS.version > :tiger then <<-EOS.undent
-      This formula cannot be built with any available compilers.
-      To install this formula, you may need to:
-        brew tap homebrew/dupes
-        brew install apple-gcc42
-      EOS
-    # tigerbrew has a separate apple-gcc42 for Xcode 2.5
-    else <<-EOS.undent
-      This formula cannot be built with any available compilers.
-      To install this formula, you need to:
-        brew install apple-gcc42
-      EOS
-    end
+  def message; <<-EOS.undent
+    This formula cannot be built with any available compilers.
+    To install this formula, you may need to:
+      brew install apple-gcc42
+    EOS
   end
 end
 
@@ -258,5 +249,26 @@ class ChecksumMismatchError < RuntimeError
 
   def to_s
     super + advice.to_s
+  end
+end
+
+class ResourceMissingError < ArgumentError
+  def initialize formula, resource
+    @formula = formula
+    @resource = resource
+  end
+
+  def to_s
+    "Formula #{@formula} does not define resource \"#{@resource}\"."
+  end
+end
+
+class DuplicateResourceError < ArgumentError
+  def initialize resource
+    @resource = resource
+  end
+
+  def to_s
+    "Resource \"#{@resource}\" defined more than once."
   end
 end

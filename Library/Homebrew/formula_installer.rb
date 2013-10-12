@@ -9,6 +9,7 @@ require 'bottles'
 require 'caveats'
 require 'cleaner'
 require 'formula_cellar_checks'
+require 'install_renamed'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -30,8 +31,9 @@ class FormulaInstaller
     check_install_sanity
   end
 
-  def pour_bottle? warn=false
-    tab.used_options.empty? && options.empty? && install_bottle?(f, warn)
+  def pour_bottle? install_bottle_options={:warn=>false}
+    tab.used_options.empty? && options.empty? && \
+      install_bottle?(f, install_bottle_options)
   end
 
   def check_install_sanity
@@ -39,7 +41,7 @@ class FormulaInstaller
 
     if f.installed?
       msg = "#{f}-#{f.installed_version} already installed"
-      msg << ", it's just not linked" if not f.linked_keg.symlink? and not f.keg_only?
+      msg << ", it's just not linked" unless f.linked_keg.symlink? or f.keg_only?
       raise FormulaAlreadyInstalledError, msg
     end
 
@@ -71,6 +73,88 @@ class FormulaInstaller
     raise
   end
 
+  def git_etc_preinstall
+    return unless quiet_system 'git', '--version'
+
+    etc = HOMEBREW_PREFIX+'etc'
+    etc.cd do
+      quiet_system 'git', 'init' unless (etc+'.git').directory?
+      quiet_system 'git', 'checkout', '-B', "#{f.name}-preinstall"
+      unless quiet_system 'git', 'diff', '--exit-code', 'HEAD'
+        system 'git', 'add', '--all', '.'
+        system 'git', 'commit', '-m', "#{f.name}-#{f.version}: preinstall"
+      end
+
+      unless quiet_system 'git', 'rev-parse', 'master'
+        quiet_system 'git', 'branch', 'master'
+      end
+    end
+  end
+
+  def git_etc_postinstall
+    return unless quiet_system 'git', '--version'
+
+    preinstall_branch = "#{f.name}-preinstall"
+    default_branch = "#{f.name}-default"
+    merged = false
+    f.etc.mkpath
+    f.etc.cd do
+      if quiet_system 'git', 'diff', '--exit-code', preinstall_branch
+        quiet_system 'git', 'branch', default_branch
+        quiet_system 'git', 'branch', '-D', preinstall_branch
+      elsif not quiet_system 'git', 'rev-parse', default_branch
+        quiet_system 'git', 'checkout', '-B', default_branch
+        quiet_system 'git', 'add', '--all', '.'
+        system 'git', 'commit', '-m', "#{f.name}-#{f.version}: default"
+        quiet_system 'git', 'branch', '-D', preinstall_branch
+      else
+        previous_default_branch = `git rev-parse #{default_branch}`.strip
+        quiet_system 'git', 'checkout', '-B', default_branch
+        quiet_system 'git', 'add', '--all', '.'
+        system 'git', 'commit', '-m', "#{f.name}-#{f.version}: default"
+
+        default_unchanged = quiet_system('git', 'diff', '--exit-code', \
+                                                previous_default_branch)
+
+        if default_unchanged
+          system 'git', 'reset', '--hard', previous_default_branch
+        end
+
+        quiet_system 'git', 'checkout', 'master'
+        quiet_system 'git', 'reset', '--hard', preinstall_branch
+
+        unless default_unchanged
+          merge_ff = quiet_system 'git', 'merge', '--ff-only', '--no-edit',
+                                         '-X', 'ours', default_branch
+          unless merge_ff
+            merged = true
+            system 'git', 'merge', '--no-ff', '--no-edit',
+                          '-X', 'ours', default_branch
+          end
+        end
+      end
+
+      if merged
+        ohai "Configuration Files"
+        puts "Your configuration files for #{f.name} in etc were merged:"
+        puts "To reverse this merge: git reset --hard #{preinstall_branch}"
+        puts "To restore defaults:   git reset --hard #{default_branch}"
+      end
+    end
+  end
+
+  def build_bottle_preinstall
+    @etc_var_glob ||= "#{HOMEBREW_PREFIX}/{etc,var}/**/*"
+    @etc_var_preinstall = Dir[@etc_var_glob]
+  end
+
+  def build_bottle_postinstall
+    @etc_var_postinstall = Dir[@etc_var_glob]
+    (@etc_var_postinstall - @etc_var_preinstall).each do |file|
+      Pathname.new(file).cp_path_sub(HOMEBREW_PREFIX, f.bottle_prefix)
+    end
+  end
+
   def install
     # not in initialize so upgrade can unlink the active keg before calling this
     # function but after instantiating this class so that it can avoid having to
@@ -95,24 +179,26 @@ class FormulaInstaller
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
-    if pour_bottle? true
-      # TODO We currently only support building with libstdc++ as
-      # the default case, and all Apple libstdc++s are compatible, so
-      # this default is sensible.
-      # In the future we need to actually provide a way to read this from
-      # the bottle, or update the default should that change
-      # at some other point.
-      stdlib_in_use = CxxStdlib.new(:libstdcxx, :clang)
-      stdlib_in_use.check_dependencies(f, f.deps)
+    if pour_bottle?
+      # This assumes that bottles are built with
+      # a) the OS's default compiler, and
+      # b) the OS's default C++ stdlib
+      # This is probably accurate, but could possibly stand to be
+      # more robust.
+      stdlib_in_use = CxxStdlib.new(MacOS.default_cxx_stdlib, MacOS.default_compiler)
+      stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
     end
 
     oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
     @@attempted << f
 
+    git_etc_preinstall if ENV['HOMEBREW_GIT_ETC']
+
     @poured_bottle = false
+
     begin
-      if pour_bottle? true
+      if pour_bottle? :warn => true
         pour
         @poured_bottle = true
         tab = Tab.for_keg f.prefix
@@ -125,16 +211,22 @@ class FormulaInstaller
       opoo "Bottle installation failed: building from source."
     end
 
+    build_bottle_preinstall if ARGV.build_bottle?
+
     unless @poured_bottle
       build
       clean
     end
+
+    build_bottle_postinstall if ARGV.build_bottle?
 
     begin
       f.post_install
     rescue
       opoo "#{f.name} post_install failed. Rerun with `brew postinstall #{f.name}`."
     end
+
+    git_etc_postinstall if ENV['HOMEBREW_GIT_ETC']
 
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
@@ -257,7 +349,7 @@ class FormulaInstaller
   end
 
   def caveats
-    if (not f.keg_only?) and ARGV.homebrew_developer?
+    if ARGV.homebrew_developer? and not f.keg_only?
       audit_bin
       audit_sbin
       audit_lib
@@ -290,6 +382,8 @@ class FormulaInstaller
     end
 
     fix_install_names
+
+    record_cxx_stdlib
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
     unless ENV['HOMEBREW_NO_EMOJI']
@@ -360,6 +454,7 @@ class FormulaInstaller
       write.close
       Process.wait
       data = read.read
+      read.close
       raise Marshal.load(data) unless data.nil? or data.empty?
       raise Interrupt if $?.exitstatus == 130
       raise "Suspicious installation failure" unless $?.success?
@@ -411,7 +506,7 @@ class FormulaInstaller
   end
 
   def fix_install_names
-    Keg.new(f.prefix).fix_install_names
+    Keg.new(f.prefix).fix_install_names(:keg_only => f.keg_only?)
     if @poured_bottle and f.bottle
       old_prefix = f.bottle.prefix
       new_prefix = HOMEBREW_PREFIX.to_s
@@ -420,7 +515,7 @@ class FormulaInstaller
 
       if old_prefix != new_prefix or old_cellar != new_cellar
         Keg.new(f.prefix).relocate_install_names \
-          old_prefix, new_prefix, old_cellar, new_cellar
+          old_prefix, new_prefix, old_cellar, new_cellar, :keg_only => f.keg_only?
       end
     end
   rescue Exception => e
@@ -429,6 +524,18 @@ class FormulaInstaller
     puts "formula against it."
     ohai e, e.backtrace if ARGV.debug?
     @show_summary_heading = true
+  end
+
+  def record_cxx_stdlib
+    stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
+    return if stdlibs.empty?
+
+    tab = Tab.for_formula(f)
+    tab.tabfile.unlink
+    # It's technically possible for the same lib to link to multiple C++ stdlibs,
+    # but very bad news. Right now we don't track this woeful scenario.
+    tab.stdlib = stdlibs.first
+    tab.write
   end
 
   def clean
@@ -450,17 +557,23 @@ class FormulaInstaller
   end
 
   def pour
-    downloader = f.downloader
-    if downloader.local_bottle_path
-      downloader = LocalBottleDownloadStrategy.new f,
-                     downloader.local_bottle_path
+    if f.local_bottle_path
+      downloader = LocalBottleDownloadStrategy.new(f)
     else
+      downloader = f.downloader
       fetched = f.fetch
       f.verify_download_integrity fetched
     end
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end
+
+    Dir["#{f.bottle_prefix}/{etc,var}/**/*"].each do |file|
+      path = Pathname.new(file)
+      path.extend(InstallRenamed)
+      path.cp_path_sub(f.bottle_prefix, HOMEBREW_PREFIX)
+    end
+    FileUtils.rm_rf f.bottle_prefix
   end
 
   ## checks

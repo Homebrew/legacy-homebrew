@@ -42,7 +42,7 @@ class Denyhosts < Formula
     (libexec+'daemon-control').chmod 0755
 
     # Don't overwrite the config file; the user may have tweaked it.
-    etc.install 'denyhosts.cfg' unless (etc + 'denyhosts.cfg').exist?
+    etc.install 'denyhosts.cfg'
 
     sbin.install_symlink libexec+'daemon-control'
     sbin.install_symlink libexec+'denyhosts.py' => 'denyhosts'

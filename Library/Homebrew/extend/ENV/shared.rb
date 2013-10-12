@@ -82,7 +82,7 @@ module SharedEnvExtension
   def fcflags;  self['FCFLAGS'];      end
 
   def compiler
-    if (cc = ARGV.cc)
+    @compiler ||= if (cc = ARGV.cc)
       COMPILER_SYMBOL_MAP.fetch(cc) do |other|
         if other =~ GNU_GCC_REGEXP then other
         else
@@ -108,6 +108,19 @@ module SharedEnvExtension
       end
     else
       MacOS.default_compiler
+    end
+  end
+
+  # If the given compiler isn't compatible, will try to select
+  # an alternate compiler, altering the value of environment variables.
+  # If no valid compiler is found, raises an exception.
+  def validate_cc!(formula)
+    if formula.fails_with? ENV.compiler
+      begin
+        send CompilerSelector.new(formula).compiler
+      rescue CompilerSelectionError => e
+        raise e.message
+      end
     end
   end
 
@@ -157,12 +170,19 @@ module SharedEnvExtension
     set_cpu_flags(flags)
   end
 
+  # ld64 is a newer linker provided for Xcode 2.5
+  def ld64
+    ld64 = Formula.factory('ld64')
+    self['LD'] = ld64.bin/'ld'
+    append "LDFLAGS", "-B#{ld64.bin.to_s+"/"}"
+  end
+
   def warn_about_non_apple_gcc(gcc)
     opoo "Experimental support for non-Apple GCC enabled. Some builds may fail!"
 
     begin
       gcc_name = 'gcc' + gcc.delete('.')
-      gcc = Formula.factory(gcc_name)
+      gcc = Formulary.factory(gcc_name)
       if !gcc.installed?
         raise <<-EOS.undent
         The requested Homebrew GCC, #{gcc_name}, was not installed.
@@ -171,8 +191,6 @@ module SharedEnvExtension
           brew install #{gcc_name}
         EOS
       end
-
-      ENV.append('PATH', gcc.opt_prefix/'bin', ':')
     rescue FormulaUnavailableError
       raise <<-EOS.undent
       Homebrew GCC requested, but formula #{gcc_name} not found!

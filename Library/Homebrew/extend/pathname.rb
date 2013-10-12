@@ -1,5 +1,6 @@
 require 'pathname'
 require 'mach'
+require 'resource'
 
 # we enhance pathname to make our code more readable
 class Pathname
@@ -10,6 +11,10 @@ class Pathname
   def install *sources
     sources.each do |src|
       case src
+      when Resource
+        src.stage(self)
+      when Resource::Partial
+        src.resource.stage { install(*src.files) }
       when Array
         if src.empty?
           opoo "tried to install empty array to #{self}"
@@ -44,6 +49,8 @@ class Pathname
     # it points to before we move it
     # and also broken symlinks are not the end of the world
     raise "#{src} does not exist" unless File.symlink? src or File.exist? src
+
+    dst = yield(src, dst) if block_given?
 
     mkpath
     if File.symlink? src
@@ -106,6 +113,27 @@ class Pathname
       FileUtils.cp_r to_s, dst
     end
     return dst
+  end
+
+  def cp_path_sub pattern, replacement
+    raise "#{self} does not exist" unless self.exist?
+
+    src = self.to_s
+    dst = src.sub(pattern, replacement)
+    raise "#{src} is the same file as #{dst}" if src == dst
+
+    dst_path = Pathname.new dst
+
+    if self.directory?
+      dst_path.mkpath
+      return
+    end
+
+    dst_path.dirname.mkpath
+
+    dst = yield(src, dst) if block_given?
+
+    FileUtils.cp(src, dst)
   end
 
   # extended to support common double extensions
@@ -172,7 +200,7 @@ class Pathname
     # Get enough of the file to detect common file types
     # POSIX tar magic has a 257 byte offset
     # magic numbers stolen from /usr/share/file/magic/
-    case open { |f| f.read(262) }
+    case open('rb') { |f| f.read(262) }
     when /^PK\003\004/n         then :zip
     when /^\037\213/n           then :gzip
     when /^BZh/n                then :bzip2
@@ -198,7 +226,7 @@ class Pathname
   def incremental_hash(hasher)
     incr_hash = hasher.new
     buf = ""
-    open('r') { |f| incr_hash << buf while f.read(1024, buf) }
+    open('rb') { |f| incr_hash << buf while f.read(1024, buf) }
     incr_hash.hexdigest
   end
 
@@ -382,6 +410,17 @@ class Pathname
       next unless filename.exist?
       filename.chmod 0644
       self.install filename
+    end
+  end
+
+  # Returns an array containing all dynamically-linked libraries, based on the
+  # output of otool. This returns the install names, so these are not guaranteed
+  # to be absolute paths.
+  # Returns an empty array both for software that links against no libraries,
+  # and for non-mach objects.
+  def dynamically_linked_libraries
+    `#{MacOS.locate("otool")} -L "#{expand_path}"`.chomp.split("\n")[1..-1].map do |line|
+      line[/\t(.+) \([^(]+\)/, 1]
     end
   end
 

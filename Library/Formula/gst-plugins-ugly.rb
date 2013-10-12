@@ -2,13 +2,13 @@ require 'formula'
 
 class GstPluginsUgly < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.0.9.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.0.9.tar.xz'
-  sha256 '11250fe9e44b0169c3a289e981b31874b483643ed78f619682ae1644d7088379'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.2.0.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.2.0.tar.xz'
+  sha256 'e4760af4b12bf97ba0a8001cfe733d9d52160a0ad81f6c6f0d0d3a9e798626de'
 
-  head 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
 
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end

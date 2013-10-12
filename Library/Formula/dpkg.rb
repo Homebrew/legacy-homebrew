@@ -60,7 +60,7 @@ index c0f633d..b692806 100644
  #define DEBSIGVERIFY	"/usr/bin/debsig-verify"
  
 -#define TAR		"tar"
-+#define TAR		"gnutar"
++#define TAR		"gtar"
  #define RM		"rm"
  #define CAT		"cat"
  #define FIND		"find"
@@ -90,3 +90,27 @@ index 754488e..8b233fb 100644
  		    -e "s:\$$CONFDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$CONFDIR='$(pkgconfdir)':" \
  		    -e "s:\$$ADMINDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$ADMINDIR='$(admindir)':" \
  		    -e "s:\$$LIBDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$LIBDIR='$(pkglibdir)':" \
+
+diff --git a/scripts/Dpkg/Checksums.pm b/scripts/Dpkg/Checksums.pm
+index 4a64fd1..bb19f59 100644
+--- a/scripts/Dpkg/Checksums.pm
++++ b/scripts/Dpkg/Checksums.pm
+@@ -50,15 +50,15 @@ about supported checksums.
+ 
+ my $CHECKSUMS = {
+     md5 => {
+-	program => [ 'md5sum' ],
++	program => [ 'md5', '-q' ],
+ 	regex => qr/[0-9a-f]{32}/,
+     },
+     sha1 => {
+-	program => [ 'sha1sum' ],
++	program => [ 'shasum', '-a', '1' ],
+ 	regex => qr/[0-9a-f]{40}/,
+     },
+     sha256 => {
+-	program => [ 'sha256sum' ],
++	program => [ 'shasum', '-a', '256' ],
+ 	regex => qr/[0-9a-f]{64}/,
+     },
+ };

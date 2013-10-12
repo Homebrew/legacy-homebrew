@@ -10,10 +10,11 @@ class Bullet < Formula
   depends_on 'cmake' => :build
 
   option :universal
-  option 'framework',   'Build Frameworks'
-  option 'shared',      'Build shared libraries'
-  option 'build-demo',  'Build demo applications'
-  option 'build-extra', 'Build extra library'
+  option 'framework',        'Build Frameworks'
+  option 'shared',           'Build shared libraries'
+  option 'build-demo',       'Build demo applications'
+  option 'build-extra',      'Build extra library'
+  option 'double-precision', 'Use double precision'
 
   def install
     args = []
@@ -30,6 +31,8 @@ class Bullet < Formula
     args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}" if build.universal?
     args << "-DBUILD_DEMOS=OFF" if not build.include? "build-demo"
     args << "-DBUILD_EXTRAS=OFF" if not build.include? "build-extra"
+    args << "-DINSTALL_EXTRA_LIBS=ON" if build.include? "build-extra"
+    args << "-DUSE_DOUBLE_PRECISION=ON" if build.include? "double-precision"
 
     system "cmake", *args
     system "make"

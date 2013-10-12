@@ -2,8 +2,8 @@ require 'formula'
 
 class Concurrencykit < Formula
   homepage 'http://concurrencykit.org'
-  url 'http://concurrencykit.org/releases/ck-0.2.20.tar.gz'
-  sha1 'bc99f50a99061b1a1310fee7200591c35fcbcc36'
+  url 'http://concurrencykit.org/releases/ck-0.3.1.tar.gz'
+  sha1 'ca8fb6cf2a7562c012dffd579ac8f8ed051e6ed4'
 
   head 'git://git.concurrencykit.org/ck.git'
 

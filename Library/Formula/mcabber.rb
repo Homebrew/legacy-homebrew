@@ -5,7 +5,12 @@ class Mcabber < Formula
   url 'http://mcabber.com/files/mcabber-0.10.2.tar.bz2'
   sha1 '7bff70dcf09e8a8a4cc7219e03b48bad382a6bda'
 
-  head 'http://mcabber.com/hg/', :using => :hg
+  head do
+    url 'http://mcabber.com/hg/', :using => :hg
+
+    depends_on :automake
+    depends_on :libtool
+  end
 
   option 'enable-enchant', 'Enable spell checking support via enchant'
   option 'enable-aspell', 'Enable spell checking support via aspell'
@@ -19,11 +24,6 @@ class Mcabber < Formula
   depends_on 'libidn'
   depends_on 'aspell' if build.include? 'enable-aspell'
   depends_on 'enchant' if build.include? 'enable-enchant'
-
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
-  end
 
   def install
     if build.head?
