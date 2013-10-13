@@ -24,7 +24,8 @@ class Gtkx3 < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-glibtest",
-                          "--enable-x11-backend"
+                          "--enable-x11-backend",
+			  "--enable-introspection=yes"
 
     system "make install"
     # Prevent a conflict between this and Gtk+2
