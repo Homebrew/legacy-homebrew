@@ -6,6 +6,7 @@ class Protobuf < Formula
   sha1 '62c10dcdac4b69cc8c6bb19f73db40c264cb2726'
 
   option :universal
+  option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
 
   depends_on :python => :optional
 
@@ -19,9 +20,21 @@ class Protobuf < Formula
     # http://code.google.com/p/protobuf/source/browse/trunk/configure.ac#61
     ENV.prepend 'CXXFLAGS', '-DNDEBUG'
     ENV.universal_binary if build.universal?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-zlib"
+
+    args = ["--disable-debug", 
+            "--disable-dependency-tracking",
+            "--prefix=#{prefix}", 
+            "--with-zlib"]
+
+    if MacOS.version >= :lion and build.include? 'with-c++11'
+      args << "CC=clang"
+      args << "CXX=clang++"
+      args << "CXXFLAGS=-O2 -stdlib=libc++"
+      args << "LIBS=-lc++ -lc++abi"
+    end
+
+    system "./configure", *args
+
     system "make"
     system "make install"
 
