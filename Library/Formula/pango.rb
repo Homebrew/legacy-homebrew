@@ -27,6 +27,7 @@ class Pango < Formula
       --prefix=#{prefix}
       --enable-man
       --with-html-dir=#{share}/doc
+      --enable-introspection=yes
     ]
 
     if build.include? 'without-x'
