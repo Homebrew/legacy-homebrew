@@ -58,7 +58,9 @@ class Imagemagick < Formula
 
   def install
     args = [ "--disable-osx-universal-binary",
-             "--without-perl", # I couldn't make this compile
+             "--with-perl=/usr/bin/perl", 
+             "--with-gslib", 
+             "--without-wmf", 
              "--prefix=#{prefix}",
              "--disable-dependency-tracking",
              "--enable-shared",
