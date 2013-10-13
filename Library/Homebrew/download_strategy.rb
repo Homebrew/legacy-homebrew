@@ -72,7 +72,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def tarball_path
-    @tarball_path ||= if name.to_s.empty? || name == '__UNKNOWN__'
+    @tarball_path ||= if name.empty? || name == '__UNKNOWN__'
       Pathname.new("#{HOMEBREW_CACHE}/#{basename_without_params}")
     else
       Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
