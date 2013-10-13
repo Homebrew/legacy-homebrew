@@ -5,8 +5,8 @@ class Rp < Formula
   homepage 'http://0vercl0k.github.io/rp/'
   version '1.0'
   head 'https://github.com/0vercl0k/rp.git'
-  url 'https://github.com/0vercl0k/rp/archive/master.zip'
-  sha1 '665d6b174f225bfa0946dd4bdb6239482561cdf9'
+  url 'https://github.com/0vercl0k/rp/archive/v1.zip'
+  sha1 '3c6a5190bbb4e4e37e7594c2b8be68e433a22968'
 
   depends_on 'cmake' => :build
 
