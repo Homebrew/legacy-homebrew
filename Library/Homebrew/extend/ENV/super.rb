@@ -265,6 +265,10 @@ module Superenv
     self['HOMEBREW_CC'] = "gcc-4.2"
     @compiler = :gcc
   end
+  def gcc_4_0
+    self['HOMEBREW_CC'] = "gcc-4.0"
+    @compiler = :gcc_4_0
+  end
   def llvm
     self['HOMEBREW_CC'] = "llvm-gcc"
     @compiler = :llvm
