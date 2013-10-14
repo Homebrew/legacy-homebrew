@@ -7,7 +7,10 @@ class Z80dasm < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-
     system "make", "install"
+  end
+
+  test do
+    system bin/'z80dasm', '-V'
   end
 end
