@@ -67,13 +67,12 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
-  def initialize name, resource
-    super
-    @mirrors = resource.mirrors
+  def mirrors
+    @mirrors ||= resource.mirrors.dup
   end
 
   def tarball_path
-    @tarball_path ||= if name.to_s.empty? || name == '__UNKNOWN__'
+    @tarball_path ||= if name.empty? || name == '__UNKNOWN__'
       Pathname.new("#{HOMEBREW_CACHE}/#{basename_without_params}")
     else
       Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
@@ -120,9 +119,9 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       puts "Already downloaded: #{tarball_path}"
     end
   rescue CurlDownloadStrategyError
-    raise if @mirrors.empty?
+    raise if mirrors.empty?
     puts "Trying a mirror..."
-    @url = @mirrors.shift
+    @url = mirrors.shift
     retry
   else
     tarball_path
@@ -170,7 +169,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   private
 
   def curl(*args)
-    args << '--connect-timeout' << '5' unless @mirrors.empty?
+    args << '--connect-timeout' << '5' unless mirrors.empty?
     super
   end
 
@@ -330,7 +329,7 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 
   def fetch
-    @url.sub!(/^svn\+/, '') if @url =~ %r[^svn\+http://]
+    @url = @url.sub(/^svn\+/, '') if @url =~ %r[^svn\+http://]
     ohai "Checking out #{@url}"
 
     if @clone.exist? and not repo_valid?
