@@ -20,20 +20,25 @@ class Mongodb < Formula
   head 'https://github.com/mongodb/mongo.git'
 
   def patches
-    # Fix Clang v8 build failure.
-    'https://github.com/mongodb/mongo/commit/be4bc7.patch'
-  end
+    [ 
+        # Fix Clang v8 build failure.
+        'https://github.com/mongodb/mongo/commit/be4bc7.patch',
+
+        # mongodb currently doesn't support building against libc++
+        # This will be fixed in the 2.6 release, but meanwhile it must
+        # be built against libstdc++. Normally scons blocks
+        # the environment variable, therefore we patch it to make 
+        # aware of darwin+clang combination
+        # See: https://github.com/mxcl/homebrew/issues/22771
+        'https://github.com/romaninsh/mongo/commit/11db5d2.patch'
+    ]
+
+  end if MacOS.version >= :mavericks
 
   depends_on 'scons' => :build
   depends_on 'openssl' => :optional
 
   def install
-    # mongodb currently doesn't support building against libc++
-    # This will be fixed in the 2.6 release, but meanwhile it must
-    # be built against libstdc++
-    # See: https://github.com/mxcl/homebrew/issues/22771
-    ENV.append 'CXXFLAGS', '-stdlib=libstdc++' if ENV.compiler == :clang
-
     args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
     args << '--64' if MacOS.prefer_64_bit?
 
