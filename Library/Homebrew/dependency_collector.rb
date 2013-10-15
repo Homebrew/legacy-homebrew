@@ -76,7 +76,7 @@ class DependencyCollector
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
       # Next line only for legacy support of `depends_on 'module' => :python`
       # It should be replaced by `depends_on :python => 'module'`
-      return PythonDependency.new("2", spec) if tag == :python
+      return PythonDependency.new("2", Array(spec)) if tag == :python
       LanguageModuleDependency.new(tag, spec)
     else
       Dependency.new(spec, tags)
