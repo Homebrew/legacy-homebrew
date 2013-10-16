@@ -30,6 +30,7 @@ class Vice < Formula
     system "make"
     system "make bindist"
     prefix.install Dir['vice-macosx-*/*']
+    bin.install_symlink Dir[prefix/'tools/*']
   end
 
   def caveats
