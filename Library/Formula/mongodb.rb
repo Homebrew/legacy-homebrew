@@ -30,7 +30,8 @@ class Mongodb < Formula
         # the environment variable, therefore we patch it to make 
         # aware of darwin+clang combination
         # See: https://github.com/mxcl/homebrew/issues/22771
-        'https://github.com/romaninsh/mongo/commit/11db5d2.patch'
+        'https://github.com/romaninsh/mongo/commit/11db5d2.patch',
+        'https://github.com/romaninsh/mongo/commit/1425af7.patch'
     ]
 
   end if MacOS.version >= :mavericks
