@@ -6,6 +6,12 @@ class Gfortran < Formula
   mirror 'http://ftp.gnu.org/gnu/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2'
   sha1 '810fb70bd721e1d9f446b6503afe0a9088b62986'
 
+  bottle do
+    sha1 '4bf29afb128791de733e10f3000bcd479a9e3808' => :mountain_lion
+    sha1 '9814a52f73882e801a92b8bea20ae9475d389306' => :lion
+    sha1 '7d7b7d79b973ff32824d442a79c22a8c2d455467' => :snow_leopard
+  end
+
   option 'enable-profiled-build', 'Make use of profile guided optimization when bootstrapping GCC'
   option 'check', 'Run the make check fortran. This is for maintainers.'
   option 'enable-multilib', 'Build with multilib support' if MacOS.prefer_64_bit?
