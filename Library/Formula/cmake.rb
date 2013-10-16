@@ -22,8 +22,8 @@ end
 
 class Cmake < Formula
   homepage 'http://www.cmake.org/'
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.11.2.tar.gz'
-  sha1 '31f217c9305add433e77eff49a6eac0047b9e929'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.12.tar.gz'
+  sha1 '93c93d556e702f8c967acf139fd716268ce69f39'
 
   head 'http://cmake.org/cmake.git'
 
