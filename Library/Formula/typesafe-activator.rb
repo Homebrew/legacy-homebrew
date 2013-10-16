@@ -6,8 +6,6 @@ class TypesafeActivator < Formula
   sha1 '9bbe02637e15f401fab28fcfbb038c43c17fbeba'
 
   def install
-    system "./framework/build", "publish-local"
-
     # remove Windows .bat files
     rm Dir['*.bat']
     rm Dir["#{buildpath}/**/*.bat"]
