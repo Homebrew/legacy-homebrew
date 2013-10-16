@@ -6,16 +6,26 @@ class MidnightCommander < Formula
       :using => CurlUnsafeDownloadStrategy
   mirror 'http://fossies.org/linux/misc/mc-4.8.10.tar.bz2'
   sha256 '5f4166fe78fbf4b42f51ed526ca7f79fea8c77d04355c2b97d4df2a6bd2a1b1a'
+  
+  option 'with-sftp', 'Compile with sftp Virtual File System support'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 's-lang'
+  depends_on 'libssh2' if build.with? 'sftp'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--without-x",
-                          "--with-screen=slang"
+    args = [
+      "--disable-debug",
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+      "--without-x",
+      "--with-screen=slang"
+    ]
+    args << "--enable-vfs-sftp" if build.with? 'sftp'
+    
+    system "./configure", *args
+    
     system "make install"
   end
 end
