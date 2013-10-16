@@ -263,10 +263,6 @@ class FormulaAuditor
     urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
     end
-
-    if urls.any? { |u| u =~ /\.xz/ } && !f.deps.any? { |d| d.name == "xz" }
-      problem "Missing a build-time dependency on 'xz'"
-    end
   end
 
   def audit_specs
