@@ -7,8 +7,7 @@ Example usage:
   brew list [FORMULA...]
   brew update
   brew upgrade [FORMULA...]
-  brew pin [FORMULA...]
-  brew unpin [FORMULA...]
+  brew pin/unpin [FORMULA...]
 
 Troubleshooting:
   brew doctor
