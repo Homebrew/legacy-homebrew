@@ -54,6 +54,10 @@ class Mariadb < Formula
       -DDEFAULT_CHARSET=utf8
       -DDEFAULT_COLLATION=utf8_general_ci
       -DINSTALL_SYSCONFDIR=#{etc}
+      -DWITH_UNIT_TESTS=0
+      -DWITH_LIBEDIT=0
+      -DWITH_LIBWRAP=1
+      -DCOMPILATION_COMMENT="Darwin Homebrew"
     ]
 
     # Build the embedded server
