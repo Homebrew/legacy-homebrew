@@ -235,11 +235,10 @@ class Pathname
     incremental_hash(Digest::SHA1)
   end
 
-  def sha2
+  def sha256
     require 'digest/sha2'
     incremental_hash(Digest::SHA2)
   end
-  alias_method :sha256, :sha2
 
   def verify_checksum expected
     raise ChecksumMissingError if expected.nil? or expected.empty?
