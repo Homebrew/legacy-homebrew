@@ -34,18 +34,11 @@ class GobjectIntrospection < Formula
       s.change_make_var! 'GOBJECT_INTROSPECTION_LIBDIR', HOMEBREW_PREFIX/'lib'
     end
 
-    if build.with? 'tests'
-      system "./configure", "--disable-dependency-tracking",
-                            "--prefix=#{prefix}",
-                            "--with-cairo"
-      system "make install"
-      system "make check"
-    else
-      system "./configure", "--disable-dependency-tracking",
-                            "--prefix=#{prefix}"
-      system "make install"
-    end
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args <<  "--with-cairo" if build.with? 'tests'
 
+    system "./configure", *args
+    system "make install"
   end
 
   def caveats; <<-EOS.undent
