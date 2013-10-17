@@ -114,3 +114,25 @@ index 4a64fd1..bb19f59 100644
  	regex => qr/[0-9a-f]{64}/,
      },
  };
+diff --git a/scripts/Dpkg/Source/Archive.pm b/scripts/Dpkg/Source/Archive.pm
+index de30bf4..c97d421 100644
+--- a/scripts/Dpkg/Source/Archive.pm
++++ b/scripts/Dpkg/Source/Archive.pm
+@@ -47,7 +47,7 @@ sub create {
+     $spawn_opts{from_pipe} = \*$self->{tar_input};
+     # Call tar creation process
+     $spawn_opts{delete_env} = [ 'TAR_OPTIONS' ];
+-    $spawn_opts{exec} = [ 'tar', '--null', '-T', '-', '--numeric-owner',
++    $spawn_opts{exec} = [ 'gtar', '--null', '-T', '-', '--numeric-owner',
+                             '--owner', '0', '--group', '0',
+                             @{$opts{options}}, '-cf', '-' ];
+     *$self->{pid} = spawn(%spawn_opts);
+@@ -123,7 +123,7 @@ sub extract {
+
+     # Call tar extraction process
+     $spawn_opts{delete_env} = [ 'TAR_OPTIONS' ];
+-    $spawn_opts{exec} = [ 'tar', '--no-same-owner', '--no-same-permissions',
++    $spawn_opts{exec} = [ 'gtar', '--no-same-owner', '--no-same-permissions',
+                             @{$opts{options}}, '-xf', '-' ];
+     spawn(%spawn_opts);
+     $self->close();
