@@ -2,8 +2,8 @@ require 'formula'
 
 class Pdf2json < Formula
   homepage 'http://code.google.com/p/pdf2json/'
-  url 'http://pdf2json.googlecode.com/files/pdf2json-0.61.tar.gz'
-  sha1 'd7bfcf89ab82741ed014d3499fe7505d7168686d'
+  url 'http://pdf2json.googlecode.com/files/pdf2json-0.65.tar.gz'
+  sha1 'f7c08c739d1289f2faeda53fd908058ac2d26fe3'
 
   def install
     system "./configure", "--prefix=#{prefix}"
