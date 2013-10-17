@@ -9,23 +9,23 @@ class Tpp < Formula
   depends_on 'figlet' => :optional
 
   def install
-	  system "mv", "tpp.rb", "tpp"
-	  prefix.install ['contrib']
-	  prefix.install ['examples']
+    system "mv", "tpp.rb", "tpp"
+    prefix.install ['contrib']
+    prefix.install ['examples']
     bin.install('tpp')
-	  man1.install ['doc/tpp.1']
-	  doc.install ['README']
-	  doc.install ['CHANGES']
-	  doc.install ['DESIGN']
-	  doc.install ['COPYING']
-	  doc.install ['THANKS']
+    man1.install ['doc/tpp.1']
+    doc.install ['README']
+    doc.install ['CHANGES']
+    doc.install ['DESIGN']
+    doc.install ['COPYING']
+    doc.install ['THANKS']
     NcursesRuby.new.brew do
       inreplace 'extconf.rb', '$CFLAGS  += " -g"', '$CFLAGS  += " -g -DNCURSES_OPAQUE=0"'
-  	  system "ruby", "extconf.rb"
-  	  system "make"
-  	  system "mv", "ncurses_bin.bundle", "lib"
-  	  system "rm", "lib/ncurses.rb"
-  	  prefix.install ['lib']
+      system "ruby", "extconf.rb"
+      system "make"
+      system "mv", "ncurses_bin.bundle", "lib"
+      system "rm", "lib/ncurses.rb"
+      prefix.install ['lib']
       lib.install ['THANKS']
     end
   end
