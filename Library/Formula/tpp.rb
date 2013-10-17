@@ -22,7 +22,7 @@ class Tpp < Formula
       share.install 'VERSION' => '#{share}/doc/ncurses-ruby/VERSION'
       share.install 'TODO' => '#{share}/doc/ncurses-ruby/TODO'
       share.install 'COPYING' => '#{share}/doc/ncurses-ruby/COPYING'
-      share.install 'THANKS' => '#{share}/doc/ncurses-ruby/THANKS']
+      share.install 'THANKS' => '#{share}/doc/ncurses-ruby/THANKS'
     end
   end
 
