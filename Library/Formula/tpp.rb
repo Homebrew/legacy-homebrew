@@ -60,8 +60,8 @@ index 5aeb938..e5d4616 100755
  def load_ncurses
    begin
 -    require "ncurses"
-+    require "../lib/ncurses_bin"
-+    require "../lib/ncurses_sugar"
++    require File.expand_path('../../lib/ncurses_bin.bundle', __FILE__)
++    require File.expand_path('../../lib/ncurses_sugar.rb', __FILE__)
      include Ncurses
    rescue LoadError
      $stderr.print <<EOF
