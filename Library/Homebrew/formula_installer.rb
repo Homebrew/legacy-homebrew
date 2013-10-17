@@ -315,7 +315,10 @@ class FormulaInstaller
   end
 
   def install_dependencies
-    oh1 "Installing dependencies for #{f}: #{Tty.green}#{effective_deps.join(", ")}#{Tty.reset}" if not effective_deps.empty?
+    if effective_deps.length > 1
+      oh1 "Installing dependencies for #{f}: #{Tty.green}#{effective_deps*", "}#{Tty.reset}"
+    end
+
     effective_deps.each do |dep|
       if dep.requested?
        install_dependency(dep)
