@@ -14,6 +14,6 @@ class Primesieve < Formula
   end
 
   def test
-    system "#{bin}/primesieve", "-v"
+    system "#{bin}/primesieve", '2', '1000', '--count=1', '-p2'
   end
 end
