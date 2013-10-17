@@ -2,8 +2,8 @@ require 'formula'
 
 class Snappy < Formula
   homepage 'http://snappy.googlecode.com'
-  url 'http://snappy.googlecode.com/files/snappy-1.1.0.tar.gz'
-  sha1 '17cde387e0f19112d647095624e5ed4051b753be'
+  url 'https://snappy.googlecode.com/files/snappy-1.1.1.tar.gz'
+  sha1 '2988f1227622d79c1e520d4317e299b61d042852'
 
   option :universal
 
