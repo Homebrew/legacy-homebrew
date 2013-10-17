@@ -39,7 +39,7 @@ class Tpp < Formula
   end
 
   test do
-    system "tpp"
+    system "tpp #{prefix}/examples/tpp-features.tpp"
   end
 end
 
