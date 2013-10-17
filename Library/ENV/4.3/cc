@@ -56,13 +56,7 @@ class Cmd
     @tool ||= case @arg0
     when 'ld' then 'ld'
     when 'cpp' then 'cpp'
-    when 'cc', 'c99', 'c89'
-      # Ideally we would run `cx9`, however these tools are POSIX compliant
-      # and don't support many flags. We need -isystem for instance, but also
-      # reliability is generally much higher if we just get clang/gcc to do
-      # the work since Makefiles are dumb and include a lot of excess flags.
-      ENV['HOMEBREW_CC']
-    when 'c++'
+    when /\w\+\+$/
       case ENV['HOMEBREW_CC']
       when /clang/
         'clang++'
@@ -72,7 +66,9 @@ class Cmd
         'g++' + $1.to_s
       end
     else
-      @arg0
+      # Note that this is a universal fallback, so that we'll always invoke
+      # HOMEBREW_CC regardless of what name under which the tool was invoked.
+      ENV['HOMEBREW_CC']
     end
   end
   def args
