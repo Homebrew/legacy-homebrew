@@ -5,28 +5,24 @@ class Tpp < Formula
   url 'http://synflood.at/tpp/tpp-1.3.1.tar.gz'
   sha1 'e99fca1d7819c23d4562e3abdacea7ff82563754'
 
-  option 'international', 'Copy README.de (German README file)'
   depends_on 'figlet' => :optional
 
   def install
-    system "mv", "tpp.rb", "tpp"
-    prefix.install ['contrib']
-    prefix.install ['examples']
-    bin.install('tpp')
+    bin.install "tpp.rb" => "tpp"
+    share.install ['contrib', 'examples']
     man1.install ['doc/tpp.1']
-    doc.install ['README']
-    doc.install ['CHANGES']
-    doc.install ['DESIGN']
-    doc.install ['COPYING']
-    doc.install ['THANKS']
+    doc.install ['README', 'CHANGES', 'DESIGN', 'COPYING', 'THANKS', 'README.de']
     NcursesRuby.new.brew do
       inreplace 'extconf.rb', '$CFLAGS  += " -g"', '$CFLAGS  += " -g -DNCURSES_OPAQUE=0"'
       system "ruby", "extconf.rb"
       system "make"
-      system "mv", "ncurses_bin.bundle", "lib"
-      system "rm", "lib/ncurses.rb"
-      prefix.install ['lib']
-      lib.install ['THANKS']
+      lib.install ['lib/ncurses_sugar.rb', 'ncurses_bin.bundle']
+      share.install ['README' => '#{share}/doc/ncurses-ruby/README',
+                     'Changes' => '#{share}/doc/ncurses-ruby/Changes',
+                     'VERSION' => '#{share}/doc/ncurses-ruby/VERSION',
+                     'TODO' => '#{share}/doc/ncurses-ruby/TODO',
+                     'COPYING' => '#{share}/doc/ncurses-ruby/COPYING',
+                     'THANKS' => '#{share}/doc/ncurses-ruby/THANKS']
     end
   end
 
@@ -34,12 +30,8 @@ class Tpp < Formula
     DATA
   end
 
-  if build.include? 'international'
-    doc.install ['README.de']
-  end
-
   test do
-    system "tpp #{prefix}/examples/tpp-features.tpp"
+    system "#{bin}/tpp #{share}/examples/tpp-features.tpp"
   end
 end
 
