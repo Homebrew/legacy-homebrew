@@ -17,12 +17,12 @@ class Tpp < Formula
       system "ruby", "extconf.rb"
       system "make"
       lib.install ['lib/ncurses_sugar.rb', 'ncurses_bin.bundle']
-      share.install ['README' => '#{share}/doc/ncurses-ruby/README',
-                     'Changes' => '#{share}/doc/ncurses-ruby/Changes',
-                     'VERSION' => '#{share}/doc/ncurses-ruby/VERSION',
-                     'TODO' => '#{share}/doc/ncurses-ruby/TODO',
-                     'COPYING' => '#{share}/doc/ncurses-ruby/COPYING',
-                     'THANKS' => '#{share}/doc/ncurses-ruby/THANKS']
+      share.install 'README' => '#{share}/doc/ncurses-ruby/README'
+      share.install 'Changes' => '#{share}/doc/ncurses-ruby/Changes'
+      share.install 'VERSION' => '#{share}/doc/ncurses-ruby/VERSION'
+      share.install 'TODO' => '#{share}/doc/ncurses-ruby/TODO'
+      share.install 'COPYING' => '#{share}/doc/ncurses-ruby/COPYING'
+      share.install 'THANKS' => '#{share}/doc/ncurses-ruby/THANKS']
     end
   end
 
