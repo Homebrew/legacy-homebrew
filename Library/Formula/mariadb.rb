@@ -56,7 +56,7 @@ class Mariadb < Formula
       -DDEFAULT_COLLATION=utf8_general_ci
       -DINSTALL_SYSCONFDIR=#{etc}
       -DWITH_UNIT_TESTS=0
-      -DCOMPILATION_COMMENT="OSX Homebrew"
+      -DCOMPILATION_COMMENT=OSX
     ]
 
     # Build the embedded server
