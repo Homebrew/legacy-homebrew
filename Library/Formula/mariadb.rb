@@ -2,12 +2,12 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.32/kvm-tarbake-jaunty-x86/mariadb-5.5.32.tar.gz'
-  sha1 'cc468beebf3b27439d29635a4e8aec8314f27175'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.33a/kvm-tarbake-jaunty-x86/mariadb-5.5.33a.tar.gz'
+  sha1 '49fb26cd08c56e1fda42d728eaae9e49ecd5c30d'
 
   devel do
-    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.3/kvm-tarbake-jaunty-x86/mariadb-10.0.3.tar.gz'
-    sha1 'c36c03ad78bdadf9a10e7b695159857d6432726d'
+    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.4/kvm-tarbake-jaunty-x86/mariadb-10.0.4.tar.gz'
+    sha1 '8b9aae9a8d2f6387a40ec05ee7db1190fc21620f'
   end
 
   depends_on 'cmake' => :build
@@ -18,6 +18,7 @@ class Mariadb < Formula
   option 'with-bench', 'Keep benchmark app when installing'
   option 'with-embedded', 'Build the embedded server'
   option 'with-libedit', 'Compile with editline wrapper instead of readline'
+  option 'with-libwrap', 'Compile with tcp wrappers support'
   option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
   option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
   option 'enable-local-infile', 'Build with local infile loading support'
@@ -54,6 +55,8 @@ class Mariadb < Formula
       -DDEFAULT_CHARSET=utf8
       -DDEFAULT_COLLATION=utf8_general_ci
       -DINSTALL_SYSCONFDIR=#{etc}
+      -DWITH_UNIT_TESTS=0
+      -DCOMPILATION_COMMENT="OSX Homebrew"
     ]
 
     # Build the embedded server
@@ -61,6 +64,9 @@ class Mariadb < Formula
 
     # Compile with readline unless libedit is explicitly chosen
     cmake_args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
+
+    # Compile with libwrap support
+    cmake_args << "-DWITH_LIBWRAP=1" if build.include? 'with-libwrap'
 
     # Compile with ARCHIVE engine enabled if chosen
     cmake_args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.include? 'with-archive-storage-engine'
