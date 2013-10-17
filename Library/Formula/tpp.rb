@@ -16,7 +16,8 @@ class Tpp < Formula
       inreplace 'extconf.rb', '$CFLAGS  += " -g"', '$CFLAGS  += " -g -DNCURSES_OPAQUE=0"'
       system "ruby", "extconf.rb"
       system "make"
-      lib.install ['lib/ncurses_sugar.rb', 'ncurses_bin.bundle']
+      lib.install ['lib/ncurses_sugar.rb']
+      lib.install ['ncurses_bin.bundle']
       share.install 'README' => '#{share}/doc/ncurses-ruby/README'
       share.install 'Changes' => '#{share}/doc/ncurses-ruby/Changes'
       share.install 'VERSION' => '#{share}/doc/ncurses-ruby/VERSION'
@@ -31,7 +32,7 @@ class Tpp < Formula
   end
 
   test do
-    system "#{bin}/tpp #{share}/examples/tpp-features.tpp"
+    system "#{bin}/tpp --version"
   end
 end
 
