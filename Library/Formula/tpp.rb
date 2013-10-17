@@ -40,7 +40,7 @@ class Tpp < Formula
   end
 
   test do
-    system "#{bin}/tpp --version"
+    assert `"#{bin}"/tpp --version`.chomp == "tpp - text presentation program #{version}"
   end
 end
 
