@@ -1,5 +1,5 @@
 require 'tab'
-require 'macos'
+require 'os/mac'
 require 'extend/ARGV'
 require 'bottle_version'
 
