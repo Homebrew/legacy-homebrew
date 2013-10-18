@@ -4,6 +4,7 @@ class DbusPython < Formula
   homepage 'http://dbus.freedesktop.org/doc/dbus-python/README.html'
   url 'http://dbus.freedesktop.org/releases/dbus-python/dbus-python-1.2.0.tar.gz'
   sha1 '7a00f7861d26683ab7e3f4418860bd426deed9b5'
+  version '1.2.0'
 
   depends_on "d-bus"
 
