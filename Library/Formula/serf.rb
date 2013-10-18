@@ -25,6 +25,12 @@ class Serf < Formula
   end
 
   def install
+    # SConstruct merges in gssapi linkflags using scons's MergeFlags,
+    # but that discards duplicate values - including the duplicate
+    # values we want, like multiple -arch values for a universal build.
+    # Passing 0 as the `unique` kwarg turns this behaviour off.
+    inreplace 'SConstruct', 'unique=1', 'unique=0'
+
     ENV.universal_binary if build.universal?
     # scons ignores our compiler and flags unless explicitly passed
     args = %W[PREFIX=#{prefix} GSSAPI=/usr CC=#{ENV.cc}
