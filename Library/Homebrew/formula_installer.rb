@@ -384,7 +384,7 @@ class FormulaInstaller
       link
     end
 
-    fix_install_names
+    fix_install_names if OS.mac?
 
     record_cxx_stdlib
 

@@ -84,7 +84,7 @@ module MacOS::Xcode extend self
     # This is a separate function as you can't cache the value out of a block
     # if return is used in the middle, which we do many times in here.
 
-    return "0" unless MACOS
+    return "0" unless OS.mac?
 
     # this shortcut makes version work for people who don't realise you
     # need to install the CLI tools

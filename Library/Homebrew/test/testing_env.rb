@@ -29,7 +29,6 @@ HOMEBREW_VERSION       = '0.9-test'
 RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
 RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
 
-MACOS = true
 MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
 MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }.to_f
 
