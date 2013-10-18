@@ -7,10 +7,7 @@ class Lightning < Formula
   sha1 'cd4f655b314301e9f12a4832de124888b0e9e6da'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--infodir=#{info}"
+    system "./configure","--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end
