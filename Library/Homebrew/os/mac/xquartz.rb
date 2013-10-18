@@ -95,34 +95,28 @@ module OS
       # found in the SDK, so we use sdk_path for both the headers and libraries.
       # Confusingly, executables (e.g. config scripts) are only found under
       # /opt/X11/bin or /usr/X11/bin in all cases.
+      def effective_prefix
+        if provided_by_apple? && Xcode.without_clt?
+          Pathname.new("#{OS::Mac.sdk_path}/usr/X11")
+        else
+          prefix
+        end
+      end
+
       def bin
-        Pathname.new("#{prefix}/bin")
+        prefix/"bin"
       end
 
       def include
-        @include ||= if use_sdk?
-          Pathname.new("#{MacOS.sdk_path}/usr/X11/include")
-        else
-          Pathname.new("#{prefix}/include")
-        end
+        effective_prefix/"include"
       end
 
       def lib
-        @lib ||= if use_sdk?
-          Pathname.new("#{MacOS.sdk_path}/usr/X11/lib")
-        else
-          Pathname.new("#{prefix}/lib")
-        end
+        effective_prefix/"lib"
       end
 
       def share
-        Pathname.new("#{prefix}/share")
-      end
-
-      private
-
-      def use_sdk?
-        provided_by_apple? && Xcode.without_clt?
+        prefix/"share"
       end
     end
   end
