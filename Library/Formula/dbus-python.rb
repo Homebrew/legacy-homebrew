@@ -6,6 +6,7 @@ class DbusPython < Formula
   sha1 '7a00f7861d26683ab7e3f4418860bd426deed9b5'
   version '1.2.0'
 
+  depends_on 'pkg-config' => :build
   depends_on "dbus"
   depends_on "dbus-glib"
 
