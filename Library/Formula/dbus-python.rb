@@ -11,7 +11,7 @@ class DbusPython < Formula
   
   def patches
     p = []
-    p << 'https://gist.github.com/hanxue/7047276/raw/8e3cdd7c6acd0f93e20547fce4717ccf3f6d09fb/dbus-python.patch'
+    p << 'https://gist.github.com/hanxue/7048247/raw/698d65b94543872a0301793aa2c02c25e732fa44/dbus-python.patch'
     # Patch to create setup.py for dbus-python
     # Based on this bug https://bugs.freedesktop.org/show_bug.cgi?id=55439
     # Original patch file at https://bugs.freedesktop.org/attachment.cgi?id=80061
