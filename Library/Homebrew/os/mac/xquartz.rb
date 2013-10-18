@@ -1,5 +1,7 @@
 module OS
   module Mac
+    X11 = XQuartz = Module.new
+
     module XQuartz
       extend self
 
@@ -86,18 +88,6 @@ module OS
 
       def installed?
         !version.nil? && !prefix.nil?
-      end
-    end
-
-    module X11
-      extend self
-
-      def prefix
-        MacOS::XQuartz.prefix
-      end
-
-      def installed?
-        MacOS::XQuartz.installed?
       end
 
       # If XQuartz and/or the CLT are installed, headers will be found under
