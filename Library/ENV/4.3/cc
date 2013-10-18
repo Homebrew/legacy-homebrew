@@ -86,7 +86,7 @@ class Cmd
     else
       args << "-syslibroot" << $sdkroot
     end if nclt?
-    case mode
+    allflags = case mode
     when :ccld
       cflags + args + cppflags + ldflags
     when :cc
@@ -98,6 +98,8 @@ class Cmd
     when :ld
       ldflags + args
     end.compact
+    make_fuss(allflags) if verbose?
+    allflags
   end
   def refurbished_args
     lset = Set.new(libpath + syslibpath)
@@ -148,7 +150,6 @@ class Cmd
         args << arg
       end
     end
-    make_fuss(args)
     args
   end
   def cflags
@@ -219,6 +220,9 @@ class Cmd
     STDERR.puts "brew: superenv removed: #{dels*' '}" unless dels.empty?
     STDERR.puts "brew: superenv deduped: #{dups}" unless dups.empty?
     STDERR.puts "brew: superenv added: #{adds*' '}" unless adds.empty?
+  end
+  def verbose?
+    !ENV['VERBOSE'].nil? || !ENV['HOMEBREW_VERBOSE'].nil?
   end
 end
 
