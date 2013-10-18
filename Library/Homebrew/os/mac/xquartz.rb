@@ -122,7 +122,7 @@ module OS
       private
 
       def use_sdk?
-        not (prefix.to_s == '/opt/X11' or MacOS::CLT.installed?)
+        provided_by_apple? && Xcode.without_clt?
       end
     end
   end
