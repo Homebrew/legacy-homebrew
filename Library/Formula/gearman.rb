@@ -13,6 +13,13 @@ class Gearman < Formula
   depends_on 'ossp-uuid'
   depends_on :mysql => :optional
 
+  def patches
+    p = []
+    # <tr1/cinttypes> no longer exists in OS X Mavericks
+    p << 'http://gist.github.com/pypt/7004799/raw/homebrew-gearman-mavericks.diff' if MacOS.version >= :mavericks
+    p
+  end
+
   def install
     args = ["--prefix=#{prefix}"]
     args << "--with-mysql" if build.with? 'mysql'
