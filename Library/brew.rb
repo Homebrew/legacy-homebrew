@@ -35,7 +35,7 @@ case HOMEBREW_PREFIX.to_s when '/', '/usr'
   # it may work, but I only see pain this route and don't want to support it
   abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
 end
-if MACOS and MACOS_VERSION < 10.5
+if OS.mac? and MacOS.version < 10.5
   abort <<-EOABORT.undent
     Homebrew requires Leopard or higher. For Tiger support, see:
     https://github.com/mistydemeo/tigerbrew

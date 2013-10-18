@@ -1,6 +1,5 @@
 class Keg
   def fix_install_names options={}
-    return unless MACOS
     mach_o_files.each do |file|
       install_names_for(file, options) do |id, bad_names|
         file.ensure_writable do

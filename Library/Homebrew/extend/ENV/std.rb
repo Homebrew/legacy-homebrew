@@ -224,7 +224,7 @@ module Stdenv
   end
 
   def macosxsdk version=MacOS.version
-    return unless MACOS
+    return unless OS.mac?
     # Sets all needed lib and include dirs to CFLAGS, CPPFLAGS, LDFLAGS.
     remove_macosxsdk
     version = version.to_s
