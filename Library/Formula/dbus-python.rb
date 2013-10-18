@@ -1,16 +1,11 @@
 require 'formula'
 
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-#                /usr/local/Library/Contributions/example-formula.rb
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class DbusPython < Formula
-  homepage ''
+  homepage 'http://dbus.freedesktop.org/doc/dbus-python/README.html'
   url 'http://dbus.freedesktop.org/releases/dbus-python/dbus-python-1.2.0.tar.gz'
   sha1 '7a00f7861d26683ab7e3f4418860bd426deed9b5'
 
-  # depends_on 'cmake' => :build
-  depends_on :x11 # if your formula requires any X11/XQuartz components
+  depends_on "d-bus"
 
   def install
     # ENV.j1  # if your formula's build system can't parallelize
