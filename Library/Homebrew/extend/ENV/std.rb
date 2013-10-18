@@ -1,5 +1,5 @@
 require 'hardware'
-require 'macos'
+require 'os/mac'
 require 'extend/ENV/shared'
 
 module Stdenv
