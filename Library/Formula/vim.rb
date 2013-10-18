@@ -15,6 +15,7 @@ class Vim < Formula
 
   option "override-system-vi", "Override system vi"
   option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
+  option "with-client-server", "Enable client/server mode"
 
   LANGUAGES_OPTIONAL = %w(lua mzscheme perl tcl)
   LANGUAGES_DEFAULT  = %w(ruby python)
@@ -28,6 +29,7 @@ class Vim < Formula
 
   depends_on :python => :recommended
   depends_on 'lua' => :optional
+  depends_on 'gtk+' if build.with? 'client-server'
 
   # vim uses the obsolete Apple-only -no-cpp-precomp flag, which
   # FSF GCC can't understand; reported upstream:
@@ -59,6 +61,13 @@ class Vim < Formula
       end
     end
 
+    if build.with? 'client-server'
+      opts << '--enable-gui=gtk2'
+    else
+      opts << "--enable-gui=no"
+      opts << "--without-x"
+    end
+
     # XXX: Please do not submit a pull request that hardcodes the path
     # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.
     # If you have problems with vim because of ruby, ensure a compatible
@@ -70,8 +79,6 @@ class Vim < Formula
     # when calling "make install".
     system "./configure", "--prefix=#{HOMEBREW_PREFIX}",
                           "--mandir=#{man}",
-                          "--enable-gui=no",
-                          "--without-x",
                           "--enable-multibyte",
                           "--with-tlib=ncurses",
                           "--enable-cscope",
