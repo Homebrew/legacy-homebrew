@@ -7,9 +7,17 @@ class DbusPython < Formula
   version '1.2.0'
 
   depends_on 'pkg-config' => :build
-  depends_on "dbus"
   depends_on "dbus-glib"
-
+  
+  def patches
+    p = []
+    p << 'https://gist.github.com/hanxue/7047276/raw/8e3cdd7c6acd0f93e20547fce4717ccf3f6d09fb/dbus-python.patch'
+    # Patch to create setup.py for dbus-python
+    # Based on this bug https://bugs.freedesktop.org/show_bug.cgi?id=55439
+    # Original patch file at https://bugs.freedesktop.org/attachment.cgi?id=80061
+    p
+  end
+  
   def install
     # ENV.j1  # if your formula's build system can't parallelize
 
