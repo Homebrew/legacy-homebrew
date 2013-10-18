@@ -1,5 +1,7 @@
 require 'hardware'
 require 'os/mac/version'
+require 'os/mac/xcode'
+require 'os/mac/xquartz'
 
 module OS
   module Mac
@@ -270,6 +272,3 @@ module OS
     end
   end
 end
-
-require 'os/mac/xcode'
-require 'os/mac/xquartz'
