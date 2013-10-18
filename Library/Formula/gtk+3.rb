@@ -17,13 +17,14 @@ class Gtkx3 < Formula
   depends_on 'jasper' => :optional
   depends_on 'atk'
   depends_on 'at-spi2-atk'
+  depends_on 'gobject-introspection'
 
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-glibtest",
-                          "--disable-introspection",
+                          "--enable-introspection=yes",
                           "--enable-x11-backend"
     system "make install"
     # Prevent a conflict between this and Gtk+2
