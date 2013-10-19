@@ -35,12 +35,20 @@ class Urwid < Formula
   sha1 '0d6aa34975bb516565cfbf951487d26161e400b7'
 end
 
+class PyAmf < Formula
+  url 'https://pypi.python.org/packages/source/P/PyAMF/PyAMF-0.6.1.tar.gz'
+  sha1 '825a5ee167c89d3a026347b409ae26cbf6c68530'
+end
+
 class Mitmproxy < Formula
   homepage 'http://mitmproxy.org'
   url 'http://mitmproxy.org/download/mitmproxy-0.9.2.tar.gz'
   sha1 '7fa95ef27a4ac5ec85010f4ddb85cf6b7f17ef27'
 
+  option 'with-pyamf', 'Enable action message format (AMF) support for python'
+
   depends_on :python
+  depends_on 'protobuf' => :optional
 
   # TODO: Move this into Library/Homebrew somewhere (see also ansible.rb).
   def wrap bin_file, pythonpath
@@ -65,6 +73,7 @@ class Mitmproxy < Formula
       Netlib.new.brew { system python, *install_args }
       PyAsn1.new.brew { system python, *install_args }
       Urwid.new.brew { system python, *install_args }
+      PyAmf.new.brew { system python, *install_args } if build.with? 'pyamf'
 
       inreplace 'libmproxy/__init__.py',
                 /^$/,

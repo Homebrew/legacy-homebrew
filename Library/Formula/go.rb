@@ -7,20 +7,25 @@ class Go < Formula
   version '1.1.2'
   sha1 'f5ab02bbfb0281b6c19520f44f7bc26f9da563fb'
 
-  option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
-  option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
-  option 'without-cgo', "Build with cgo"
-
-  devel do
-    url 'https://go.googlecode.com/files/go1.2rc1.src.tar.gz'
-    version '1.2rc1'
-    sha1 '9f39106e06f552e9bf6d15d201c4663c051d4f89'
+  bottle do
+    sha1 '491bb29bddb72b0e612a09985626e9dcd5b2cccf' => :mountain_lion
+    sha1 '74fcdfacb0f7c50df509202bac6f853fe00d1457' => :lion
+    sha1 '0ff1f95940509cae6545f92cf4776aed14e36100' => :snow_leopard
   end
 
-  # the cgo module cannot build with clang
-  # NOTE it is ridiculous that we put this stuff in the class
-  # definition, it needs to be in a pre-install test function!
-  if build.with? 'cgo'
+  option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
+  option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
+  option 'without-cgo', "Build without cgo"
+
+  devel do
+    url 'https://go.googlecode.com/files/go1.2rc2.src.tar.gz'
+    version '1.2rc2'
+    sha1 '1fc3b39431551ffa69035ccffea18f4328dc2e8c'
+  end
+
+  if build.with? 'cgo' and not build.devel?
+    depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
+
     fails_with :clang do
       cause "clang: error: no such file or directory: 'libgcc.a'"
     end
@@ -32,6 +37,9 @@ class Go < Formula
   def patches; DATA; end unless build.devel?
 
   def install
+    # For Clang cgo support Go needs to be able to tell through CC.
+    ENV['CC'] = 'clang' if build.devel? and ENV.compiler == :clang
+
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
     zsh_completion.install 'misc/zsh/go' => 'go'
@@ -79,7 +87,8 @@ class Go < Formula
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
-  def caveats; <<-EOS.undent
+  def caveats
+    changelog = <<-EOS.undent
     The go get command no longer allows $GOROOT as
     the default destination in Go 1.1 when downloading package source.
     To use the go get command, a valid $GOPATH is now required.
@@ -88,13 +97,20 @@ class Go < Formula
     when $GOPATH and $GOROOT are set to the same value.
 
     More information here: http://golang.org/doc/code.html#GOPATH
-
-    FYI: We probably didn't build the cgo module because it doesn't build with
-    clang.
     EOS
-    # NOTE I would have the cgo caveat only show if we didn't build it but the
-    # state matrix for that seems inconclusive, ENV.compiler doesn't actually
-    # mean for sure that we used that compiler.
+
+    if build.devel?
+      changelog += <<-EOS.undent
+
+      In go 1.2 go vet and go doc are now part of the go.tools sub repo.
+      see: http://tip.golang.org/doc/go1.2#go_tools_godoc
+
+      To get go vet and go doc run:
+        $ go get code.google.com/p/go.tools/cmd/godoc
+        $ go get code.google.com/p/go.tools/cmd/vet
+      EOS
+    end
+    return changelog
   end
 
   test do
@@ -107,9 +123,9 @@ class Go < Formula
         fmt.Println("Hello World")
     }
     EOS
-    # Run go vet check for no errors then run the program.
-    # This is a a bare minimum of go working as it uses vet, build, and run.
-    system "#{bin}/go", "vet", "hello.go"
+    # Run go fmt check for no errors then run the program.
+    # This is a a bare minimum of go working as it uses fmt, build, and run.
+    system "#{bin}/go", "fmt", "hello.go"
     assert_equal "Hello World\n", `#{bin}/go run hello.go`
   end
 end

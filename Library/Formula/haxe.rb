@@ -2,9 +2,7 @@ require 'formula'
 
 class Haxe < Formula
   homepage 'http://haxe.org'
-  # v3-00 was tagged before project moved to git, so doesn't include submodules
-  url 'https://github.com/HaxeFoundation/haxe.git', :revision => '40451b41b09b9155682dad2f2f9db020c1f23678'
-  version '3.0.0-40451b4'
+  url 'https://github.com/HaxeFoundation/haxe.git', :tag => 'v3.0.1'
 
   head 'https://github.com/HaxeFoundation/haxe.git'
 

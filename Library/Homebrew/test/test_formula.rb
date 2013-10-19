@@ -124,6 +124,10 @@ class FormulaTests < Test::Unit::TestCase
     assert !y.eql?(x)
   end
 
+  def test_comparison_with_non_formula_objects_does_not_raise
+    assert_not_equal TestBall.new, Object.new
+  end
+
   def test_class_naming
     assert_equal 'ShellFm', Formula.class_s('shell.fm')
     assert_equal 'Fooxx', Formula.class_s('foo++')

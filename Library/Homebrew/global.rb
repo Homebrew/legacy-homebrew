@@ -5,6 +5,7 @@ require 'extend/ARGV'
 require 'extend/string'
 require 'extend/symbol'
 require 'extend/enumerable'
+require 'os'
 require 'utils'
 require 'exceptions'
 require 'set'
@@ -85,8 +86,6 @@ HOMEBREW_GITHUB_API_TOKEN = ENV["HOMEBREW_GITHUB_API_TOKEN"]
 HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; #{OS_VERSION})"
 
 HOMEBREW_CURL_ARGS = '-f#LA'
-
-HOMEBREW_GIT_ETC = !ENV['HOMEBREW_GIT_ETC'].nil?
 
 module Homebrew extend self
   include FileUtils

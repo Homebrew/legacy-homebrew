@@ -1,6 +1,6 @@
 require 'pathname'
 require 'exceptions'
-require 'macos'
+require 'os/mac'
 require 'utils/json'
 require 'utils/inreplace'
 require 'open-uri'

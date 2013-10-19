@@ -2,8 +2,8 @@ require 'formula'
 
 class GoogleAppEngine < Formula
   homepage 'https://developers.google.com/appengine/'
-  url 'http://googleappengine.googlecode.com/files/google_appengine_1.8.5.zip'
-  sha1 'f0d1bd7f8a2be6ca9cfdb465da153ae0d4132267'
+  url 'http://googleappengine.googlecode.com/files/google_appengine_1.8.6.zip'
+  sha1 '386850f31a1dd67fb538fdce648efa0285df0f73'
 
   depends_on :python
 

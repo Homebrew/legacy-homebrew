@@ -73,6 +73,10 @@ class BuildOptions
     not with? name
   end
 
+  def bottle?
+    args.include? '--build-bottle'
+  end
+
   def head?
     args.include? '--HEAD'
   end

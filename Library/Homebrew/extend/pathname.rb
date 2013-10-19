@@ -50,6 +50,8 @@ class Pathname
     # and also broken symlinks are not the end of the world
     raise "#{src} does not exist" unless File.symlink? src or File.exist? src
 
+    dst = yield(src, dst) if block_given?
+
     mkpath
     if File.symlink? src
       # we use the BSD mv command because FileUtils copies the target and
@@ -111,6 +113,27 @@ class Pathname
       FileUtils.cp_r to_s, dst
     end
     return dst
+  end
+
+  def cp_path_sub pattern, replacement
+    raise "#{self} does not exist" unless self.exist?
+
+    src = self.to_s
+    dst = src.sub(pattern, replacement)
+    raise "#{src} is the same file as #{dst}" if src == dst
+
+    dst_path = Pathname.new dst
+
+    if self.directory?
+      dst_path.mkpath
+      return
+    end
+
+    dst_path.dirname.mkpath
+
+    dst = yield(src, dst) if block_given?
+
+    FileUtils.cp(src, dst)
   end
 
   # extended to support common double extensions
@@ -212,11 +235,10 @@ class Pathname
     incremental_hash(Digest::SHA1)
   end
 
-  def sha2
+  def sha256
     require 'digest/sha2'
     incremental_hash(Digest::SHA2)
   end
-  alias_method :sha256, :sha2
 
   def verify_checksum expected
     raise ChecksumMissingError if expected.nil? or expected.empty?
@@ -387,6 +409,17 @@ class Pathname
       next unless filename.exist?
       filename.chmod 0644
       self.install filename
+    end
+  end
+
+  # Returns an array containing all dynamically-linked libraries, based on the
+  # output of otool. This returns the install names, so these are not guaranteed
+  # to be absolute paths.
+  # Returns an empty array both for software that links against no libraries,
+  # and for non-mach objects.
+  def dynamically_linked_libraries
+    `#{MacOS.locate("otool")} -L "#{expand_path}"`.chomp.split("\n")[1..-1].map do |line|
+      line[/\t(.+) \([^(]+\)/, 1]
     end
   end
 

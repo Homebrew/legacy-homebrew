@@ -7,9 +7,10 @@ class Subversion < Formula
   sha1 'e328e9f1c57f7c78bea4c3af869ec5d4503580cf'
 
   bottle do
-    sha1 '9171c9971647e04958251d85eee58e4a23ef1584' => :mountain_lion
-    sha1 '9370e1ba8d3204b3d896a85ace719eb3613bb642' => :lion
-    sha1 '1373b9020d7e752e29517ba27670c8cdd5ec4520' => :snow_leopard
+    revision 1
+    sha1 '1d7364a2238b5a1c8270c9c8b269730bf20098d1' => :mountain_lion
+    sha1 '52f271a16e789230b8938b4244f863c8c73c76fa' => :lion
+    sha1 '28eac8463678924c6c9d1bb87d74d835ace329d4' => :snow_leopard
   end
 
   option :universal
@@ -163,33 +164,32 @@ class Subversion < Formula
     s = <<-EOS.undent
       svntools have been installed to:
         #{opt_prefix}/libexec
-
     EOS
 
     s += python.standard_caveats if python
 
     if build.include? 'perl'
       s += <<-EOS.undent
+
         The perl bindings are located in various subdirectories of:
           #{prefix}/Library/Perl
-
       EOS
     end
 
     if build.include? 'ruby'
       s += <<-EOS.undent
+
         You may need to add the Ruby bindings to your RUBYLIB from:
           #{HOMEBREW_PREFIX}/lib/ruby
-
       EOS
     end
 
     if build.include? 'java'
       s += <<-EOS.undent
+
         You may need to link the Java bindings into the Java Extensions folder:
           sudo mkdir -p /Library/Java/Extensions
           sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions/libsvnjavahl-1.dylib
-
       EOS
     end
 

@@ -2,14 +2,13 @@ require 'formula'
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.38/glib-2.38.0.tar.xz'
-  sha256 '7513a7de5e814ccb48206340a8773ea523d6a7bf04dc74565de69b899bc2ff32'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.38/glib-2.38.1.tar.xz'
+  sha256 '01906c62ac666d2ab3183cc07261b2536fab7b211c6129ab66b119c2af56d159'
 
   option :universal
   option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'libffi'
 
@@ -17,6 +16,12 @@ class Glib < Formula
     build 2334
     cause "Undefined symbol errors while linking"
   end
+
+  resource 'config.h.ed' do
+    url 'https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/config.h.ed'
+    version '111532'
+    sha1 '0926f19d62769dfd3ff91a80ade5eff2c668ec54'
+  end if build.universal?
 
   def patches
     p = {}
@@ -50,7 +55,8 @@ class Glib < Formula
     system "./configure", *args
 
     if build.universal?
-      system "curl 'https://trac.macports.org/export/95596/trunk/dports/devel/glib2/files/config.h.ed' | ed - config.h"
+      buildpath.install resource('config.h.ed')
+      system "ed -s - config.h <config.h.ed"
     end
 
     system "make"

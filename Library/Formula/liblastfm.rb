@@ -6,6 +6,7 @@ class Liblastfm < Formula
   version '0.3.3.1'
   sha1 '68c0d23364afd7e6bb5dbd9b71419d808fe0d005'
 
+  depends_on 'pkg-config' => :build
   depends_on 'qt'
   depends_on 'fftw'
   depends_on 'libsamplerate'

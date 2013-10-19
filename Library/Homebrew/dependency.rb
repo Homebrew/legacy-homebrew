@@ -63,6 +63,15 @@ class Dependency
     "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
   end
 
+  # Define marshaling semantics because we cannot serialize @env_proc
+  def _dump(*)
+    Marshal.dump([name, tags])
+  end
+
+  def self._load(marshaled)
+    new(*Marshal.load(marshaled))
+  end
+
   class << self
     # Expand the dependencies of dependent recursively, optionally yielding
     # [dependent, dep] pairs to allow callers to apply arbitrary filters to

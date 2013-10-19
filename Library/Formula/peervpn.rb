@@ -13,7 +13,7 @@ class Peervpn < Formula
   def install
     system "make"
     bin.install "peervpn"
-    etc.install "peervpn.conf" unless (etc/'peervpn.conf').exist?
+    etc.install "peervpn.conf"
   end
 
   def caveats; <<-EOS.undent
