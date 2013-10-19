@@ -2,9 +2,9 @@ require 'formula'
 
 class Libmagic < Formula
   homepage 'http://www.darwinsys.com/file/'
-  url 'ftp://ftp.astron.com/pub/file/file-5.14.tar.gz'
-  mirror 'http://fossies.org/unix/misc/file-5.14.tar.gz'
-  sha1 '064c8f17a5f7ae1e336a9285131e046d3b2d04d7'
+  url 'ftp://ftp.astron.com/pub/file/file-5.15.tar.gz'
+  mirror 'http://fossies.org/unix/misc/file-5.15.tar.gz'
+  sha1 'de1a060aa5fe61c1a6f0359fb526e824b4244323'
 
   option :universal
 
@@ -15,9 +15,6 @@ class Libmagic < Formula
   def patches
     p = []
     p << DATA if MacOS.version < :lion
-    # Fixes generaly incorrect code, plus issues with certain
-    # versions of cpp.
-    p << 'https://gist.github.com/kwilczynski/6108866/raw/15d1f0a2dba5da23e820b503e8551346a4d235eb/file-5.14.diff'
   end
 
   def install
