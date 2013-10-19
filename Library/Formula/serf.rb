@@ -6,10 +6,9 @@ class Serf < Formula
   sha1 '90478cd60d4349c07326cb9c5b720438cf9a1b5d'
 
   bottle do
-    revision 1
-    sha1 '' => :mountain_lion
-    sha1 '' => :lion
-    sha1 '' => :snow_leopard
+    sha1 '2a34148f2f914963cdedd4c04858c9b85b09fbb6' => :mountain_lion
+    sha1 '9b44078ef53c14852dbe0d7a2e8eded64c24d4bd' => :lion
+    sha1 '63442a59487dba7c1e81c99bec80653e7f0ae91d' => :snow_leopard
   end
 
   option :universal
