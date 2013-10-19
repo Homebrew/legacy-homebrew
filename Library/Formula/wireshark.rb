@@ -36,6 +36,18 @@ class Wireshark < Formula
     depends_on 'gtk+'
   end
 
+  def patches
+    {
+      # This header has an enum with values already defined as
+      # as macros in /usr/include/sys/dirent.h
+      # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9291
+      :p0 => 'https://trac.macports.org/export/112336/trunk/dports/net/wireshark/files/patch-epan-dissectors-packet-gluster.h.diff',
+      # Removes SDK checks that prevent the build from working on CLT-only systems
+      # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
+      :p1 => DATA
+    }
+  end unless build.head?
+
   def install
     system "./autogen.sh" if build.head?
 
@@ -73,3 +85,53 @@ class Wireshark < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/configure b/configure
+index cd41b63..c473fe7 100755
+--- a/configure
++++ b/configure
+@@ -16703,42 +16703,12 @@ $as_echo "yes" >&6; }
+ 				break
+ 			fi
+ 		done
+-		if test -z "$SDKPATH"
+-		then
+-			{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+-$as_echo "no" >&6; }
+-			as_fn_error $? "We couldn't find the SDK for OS X $deploy_target" "$LINENO" 5
+-		fi
+ 		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+ $as_echo "yes" >&6; }
+ 		;;
+ 	esac
+ 
+ 	#
+-	# Add a -mmacosx-version-min flag to force tests that
+-	# use the compiler, as well as the build itself, not to,
+-	# for example, use compiler or linker features not supported
+-	# by the minimum targeted version of the OS.
+-	#
+-	# Add an -isysroot flag to use the SDK.
+-	#
+-	CFLAGS="-mmacosx-version-min=$deploy_target -isysroot $SDKPATH $CFLAGS"
+-	CXXFLAGS="-mmacosx-version-min=$deploy_target -isysroot $SDKPATH $CXXFLAGS"
+-	LDFLAGS="-mmacosx-version-min=$deploy_target -isysroot $SDKPATH $LDFLAGS"
+-
+-	#
+-	# Add a -sdkroot flag to use with osx-app.sh.
+-	#
+-	OSX_APP_FLAGS="-sdkroot $SDKPATH"
+-
+-	#
+-	# XXX - do we need this to build the Wireshark wrapper?
+-	# XXX - is this still necessary with the -mmacosx-version-min
+-	# flag being set?
+-	#
+-	OSX_DEPLOY_TARGET="MACOSX_DEPLOYMENT_TARGET=$deploy_target"
+-
+-	#
+ 	# In the installer package XML file, give the deployment target
+ 	# as the minimum version.
+ 	#
+
