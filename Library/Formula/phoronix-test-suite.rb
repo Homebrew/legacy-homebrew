@@ -2,8 +2,8 @@ require 'formula'
 
 class PhoronixTestSuite < Formula
   homepage 'http://www.phoronix-test-suite.com/'
-  url 'http://www.phoronix-test-suite.com/download.php?file=phoronix-test-suite-4.8.2'
-  sha1 '4a3dfbf72b5f4b2e557d5a15f66f7b2d6618ee54'
+  url 'http://www.phoronix-test-suite.com/download.php?file=phoronix-test-suite-4.8.3'
+  sha1 '4dc8281d3fec5a2df86b064902794b830c8df088'
 
   def patches; DATA; end
 
