@@ -2,63 +2,36 @@ require 'formula'
 
 class Mdbtools < Formula
   homepage 'https://github.com/brianb/mdbtools/'
-  url "https://github.com/brianb/mdbtools/archive/0.7.tar.gz"
-  sha1 '38e2ab418c7b5018f3f3e3e38734245c90aab3ce'
+  url "https://github.com/brianb/mdbtools/archive/0.7.1.tar.gz"
+  sha1 '33b746f29c1308909a1e82546ec24e8f835d461a'
+
+  option 'with-man-pages', 'Build manual pages'
 
   depends_on 'pkg-config' => :build
+  depends_on 'txt2man' => :build if build.include? 'with-man-pages'
   depends_on 'glib'
   depends_on 'readline'
 
   depends_on :automake
   depends_on :libtool
 
-  # remove unknown linker flags
-  def patches
-    DATA
-  end
-
   def install
     ENV.deparallelize
-    system "NOCONFIGURE='yes' ./autogen.sh"
-    system "./configure", "--prefix=#{prefix}"
+
+    args = ["--prefix=#{prefix}"]
+    args << "--disable-man" unless build.include? 'with-man-pages'
+
+    if MacOS.version == :snow_leopard
+      # aclocal does not respect ACLOCAL_PATH on 10.6
+      ENV['ACLOCAL'] = 'aclocal ' + ENV['ACLOCAL_PATH'].split(':').map {|p| '-I' + p}.join(' ')
+      mkdir "build-aux"
+      touch "build-aux/config.rpath"
+      # AM_PROG_AR does not exist in 10.6 automake
+      inreplace 'configure.ac', 'AM_PROG_AR', 'm4_ifdef([AM_PROG_AR], [AM_PROG_AR])'
+    end
+
+    system "autoreconf", "-i", "-f"
+    system "./configure", *args
     system "make install"
   end
 end
-
-__END__
-diff --git a/configure.in b/configure.in
-index 797ad72..bec756d 100644
---- a/configure.in
-+++ b/configure.in
-@@ -61,7 +61,7 @@ AM_CONDITIONAL(SQL, test x$sql = xtrue)
- AC_SUBST(SQL)
- AC_SUBST(LFLAGS)
- 
--LDFLAGS="$LDFLAGS -Wl,--as-needed"
-+LDFLAGS="$LDFLAGS -Wl,"
- 
- dnl check for iODBC
- 
-diff --git a/src/libmdb/Makefile.am b/src/libmdb/Makefile.am
-index 58ef696..008cd41 100644
---- a/src/libmdb/Makefile.am
-+++ b/src/libmdb/Makefile.am
-@@ -1,5 +1,5 @@
- lib_LTLIBRARIES	=	libmdb.la
- libmdb_la_SOURCES=	catalog.c mem.c file.c table.c data.c dump.c backend.c money.c sargs.c index.c like.c write.c stats.c map.c props.c worktable.c options.c iconv.c
--libmdb_la_LDFLAGS = -version-info 2:0:0 -Wl,--version-script=$(srcdir)/libmdb.map
-+libmdb_la_LDFLAGS = -version-info 2:0:0 -Wl
- AM_CPPFLAGS	=	-I$(top_srcdir)/include $(GLIB_CFLAGS)
- LIBS = $(GLIB_LIBS) @LIBS@
-diff --git a/src/sql/Makefile.am b/src/sql/Makefile.am
-index e79522f..a14a6c6 100644
---- a/src/sql/Makefile.am
-+++ b/src/sql/Makefile.am
-@@ -1,6 +1,6 @@
- lib_LTLIBRARIES	=	libmdbsql.la
- libmdbsql_la_SOURCES=	mdbsql.c parser.y lexer.l 
--libmdbsql_la_LDFLAGS = -version-info 2:0:0 -Wl,--version-script=$(srcdir)/libmdbsql.map
-+libmdbsql_la_LDFLAGS = -version-info 2:0:0 -Wl
- DISTCLEANFILES = parser.c parser.h lexer.c
- AM_CPPFLAGS	=	-I$(top_srcdir)/include $(GLIB_CFLAGS)
- LIBS	=	$(GLIB_LIBS)
