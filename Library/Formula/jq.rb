@@ -7,7 +7,12 @@ class Jq < Formula
 
   head 'https://github.com/stedolan/jq.git'
 
+  depends_on 'autoconf' => :build if build.head?
+  depends_on 'automake' => :build if build.head?
+  depends_on 'bison' => :build if build.head?
+
   def install
+    system "autoreconf -i" if build.head?
     system "./configure"
     system "make"
     bin.install 'jq'
