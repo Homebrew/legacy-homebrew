@@ -2,8 +2,8 @@ require 'formula'
 
 class GitCal < Formula
   homepage 'https://github.com/k4rthik/git-cal'
-  url 'https://github.com/k4rthik/git-cal/archive/v0.9.tar.gz'
-  sha1 'dd4027e367382a8593cab4212d2c7882a7b37680'
+  url 'https://github.com/k4rthik/git-cal/archive/v0.9.1.tar.gz'
+  sha1 '74c70107c9580c0455e01414ccae7333a746bca1'
 
   def install
     bin.install 'git-cal'
