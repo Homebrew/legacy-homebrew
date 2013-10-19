@@ -171,7 +171,7 @@ class Formula
   def var; HOMEBREW_PREFIX+'var' end
 
   def bash_completion
-    etc = ENV['HOMEBREW_GIT_ETC'] ? etc : prefix+'etc'
+    etc = ENV['HOMEBREW_GIT_ETC'] ? self.etc : prefix+'etc'
     etc+'bash_completion.d'
   end
   def zsh_completion;  share+'zsh/site-functions'     end
