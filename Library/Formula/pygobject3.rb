@@ -12,13 +12,16 @@ class Pygobject3 < Formula
   if build.with? 'tests'
     depends_on 'automake' => :build
     depends_on 'autoconf' => :build
-    depends_on 'gnome-common' => :build
     depends_on 'libtool' => :build
+    depends_on 'gnome-common' => :build
     depends_on 'gtk+3' => :build
   end
+  depends_on 'libffi' => :optional
   depends_on 'glib'
   depends_on :python
+  depends_on :python3 => :optional
   depends_on 'py2cairo'
+  depends_on 'py3cairo' if build.with? 'python3'
   depends_on 'gobject-introspection'
 
   option :universal
@@ -40,15 +43,10 @@ class Pygobject3 < Formula
         inreplace 'tests/Makefile.am', '/usr/share', HOMEBREW_PREFIX/'share'
         system "./autogen.sh"
       end
-
-      system "./configure", "--disable-dependency-tracking",
-                            "--prefix=#{prefix}"
-      system "make"
-      system "make install"
-    end
-
-    if build.with? 'tests'
-      system "make check"
+      
+      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+      system "make", "install"
+      system "make", "check" if build.with? 'tests'
     end
   end
 end
