@@ -40,7 +40,7 @@ class Wireshark < Formula
     {
       # This header has an enum with values already defined as
       # as macros in /usr/include/sys/dirent.h
-      # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9291
+      # Fixed upstream, should be in the next release.
       :p0 => 'https://trac.macports.org/export/112336/trunk/dports/net/wireshark/files/patch-epan-dissectors-packet-gluster.h.diff',
       # Removes SDK checks that prevent the build from working on CLT-only systems
       # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
