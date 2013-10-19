@@ -62,7 +62,7 @@ class Git < Formula
                    "LDFLAGS=#{ENV.ldflags}",
                    "install"
 
-    if MACOS
+    if OS.mac?
         # Install the OS X keychain credential helper
         cd 'contrib/credential/osxkeychain' do
           system "make", "CC=#{ENV.cc}",

@@ -28,8 +28,7 @@ module Homebrew extend self
     report = Report.new
     master_updater = Updater.new
     begin
-      master_updater.pull! (if RUBY_PLATFORM =~ /linux/
-        then 'linuxbrew' else 'master' end)
+      master_updater.pull! (if OS.linux? then 'linuxbrew' else 'master' end)
     ensure
       link_tap_formula(tapped_formulae)
     end

@@ -16,24 +16,13 @@ ARGV.extend(HomebrewArgvExtension)
 HOMEBREW_VERSION = '0.9.5'
 HOMEBREW_WWW = 'http://brew.sh'
 
-if RUBY_PLATFORM =~ /darwin/
-  MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
-  MACOS_VERSION = MACOS_FULL_VERSION[/10\.\d+/].to_f
-  OS_VERSION = "Mac OS X #{MACOS_FULL_VERSION}"
-  MACOS = true
-else
-  MACOS_FULL_VERSION = MACOS_VERSION = 0
-  OS_VERSION = RUBY_PLATFORM
-  MACOS = false
-end
-
 def cache
   if ENV['HOMEBREW_CACHE']
     Pathname.new(ENV['HOMEBREW_CACHE'])
   else
     # we do this for historic reasons, however the cache *should* be the same
     # directory whichever user is used and whatever instance of brew is executed
-    home_cache = Pathname.new(if MACOS then "~/Library/Caches/Homebrew"
+    home_cache = Pathname.new(if OS.mac? then "~/Library/Caches/Homebrew"
         else "~/.cache/Homebrew" end).expand_path
     if home_cache.directory? and home_cache.writable_real? \
         or not Pathname.new('/Library/Caches').writable_real?
@@ -81,6 +70,15 @@ HOMEBREW_LOGS = Pathname.new('~/Library/Logs/Homebrew/').expand_path
 
 RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
 RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
+
+if RUBY_PLATFORM =~ /darwin/
+  MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
+  MACOS_VERSION = MACOS_FULL_VERSION[/10\.\d+/].to_f
+  OS_VERSION = "Mac OS X #{MACOS_FULL_VERSION}"
+else
+  MACOS_FULL_VERSION = MACOS_VERSION = 0
+  OS_VERSION = RUBY_PLATFORM
+end
 
 HOMEBREW_GITHUB_API_TOKEN = ENV["HOMEBREW_GITHUB_API_TOKEN"]
 HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; #{OS_VERSION})"

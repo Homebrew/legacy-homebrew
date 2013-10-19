@@ -153,7 +153,7 @@ module Stdenv
     # However they still provide a gcc symlink to llvm
     # But we don't want LLVM of course.
 
-    ccname, cxxname = if MACOS then ['gcc-4.2', 'g++-4.2'] else ['gcc', 'g++'] end
+    ccname, cxxname = if OS.mac? then ['gcc-4.2', 'g++-4.2'] else ['gcc', 'g++'] end
     self.cc  = MacOS.locate(ccname)
     self.cxx = MacOS.locate(cxxname)
 
@@ -304,12 +304,12 @@ module Stdenv
   end
 
   def m64
-    return unless MACOS
+    return unless OS.mac?
     append_to_cflags '-m64'
     append 'LDFLAGS', "-arch #{Hardware::CPU.arch_64_bit}"
   end
   def m32
-    return unless MACOS
+    return unless OS.mac?
     append_to_cflags '-m32'
     append 'LDFLAGS', "-arch #{Hardware::CPU.arch_32_bit}"
   end
