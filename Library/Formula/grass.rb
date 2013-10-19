@@ -2,13 +2,16 @@ require 'formula'
 
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
-  url 'http://grass.osgeo.org/grass64/source/grass-6.4.2.tar.gz'
-  sha1 '74481611573677d90ae0cd446c04a3895e232004'
+  url 'http://grass.osgeo.org/grass64/source/grass-6.4.3.tar.gz'
+  sha1 '925da985f3291c41c7a0411eaee596763f7ff26e'
 
   head 'https://svn.osgeo.org/grass/grass/trunk'
 
   option "without-gui", "Build without WxPython interface. Command line tools still available."
 
+  # build failing on snow leopard
+  depends_on :macos => :lion
+  depends_on 'apple-gcc42' if MacOS.version == :mountain_lion
   depends_on "pkg-config" => :build
   depends_on :python
   depends_on "gettext"
