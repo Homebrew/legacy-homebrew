@@ -58,8 +58,6 @@ end
 begin
   trap("INT", std_trap) # restore default CTRL-C handler
 
-  ENV['HOMEBREW_VERBOSE'] = "1" if ARGV.verbose?
-
   aliases = {'ls' => 'list',
              'homepage' => 'home',
              '-S' => 'search',
