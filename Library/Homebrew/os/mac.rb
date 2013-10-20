@@ -222,6 +222,7 @@ module OS
     end
 
     STANDARD_COMPILERS = {
+      "2.5"   => { :gcc_40_build => 5370 },
       "3.1.4" => { :gcc_40_build => 5493, :gcc_42_build => 5577 },
       "3.2.6" => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "1.7", :clang_build => 77 },
       "4.0"   => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "2.0", :clang_build => 137 },
