@@ -25,6 +25,11 @@ class PyCrypto < Formula
   sha1 'c17e41a80b3fbf2ee4e8f2d8bb9e28c5d08bbb84'
 end
 
+class PythonKeyczar < Formula
+  url 'https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71b.tar.gz'
+  sha1 '20c7c5d54c0ce79262092b4cc691aa309fb277fa'
+end
+
 class Ansible < Formula
   homepage 'http://www.ansibleworks.com/'
   url 'https://github.com/ansible/ansible/archive/v1.3.3.tar.gz'
@@ -34,6 +39,8 @@ class Ansible < Formula
 
   depends_on :python
   depends_on 'libyaml'
+
+  option 'with-accelerate', "Enable accelerated mode"
 
   # TODO: Move this into Library/Homebrew somewhere (see also mitmproxy.rb).
   def wrap bin_file, pythonpath
@@ -56,6 +63,9 @@ class Ansible < Formula
       Paramiko.new.brew { system python, *install_args }
       MarkupSafe.new.brew { system python, *install_args }
       Jinja2.new.brew { system python, *install_args }
+      if build.with? 'accelerate'
+        PythonKeyczar.new.brew { system python, *install_args }
+      end
 
       inreplace 'lib/ansible/constants.py' do |s|
         s.gsub! '/usr/share/ansible', share+'ansible'
