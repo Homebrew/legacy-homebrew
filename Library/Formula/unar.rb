@@ -10,6 +10,13 @@ class Unar < Formula
 
   depends_on :xcode
 
+  bottle do
+    cellar :any
+    sha1 '18a517d2e2e79da17567fc2457e1a398336de27b' => :mountain_lion
+    sha1 '84b82f23f0a053f4d3a6ee9eb0d1edd66cc1f97c' => :lion
+    sha1 'c0313a5a1c6fad5b4ba6b3ac729871bdc76839bd' => :snow_leopard
+  end
+
   def install
     # Build XADMaster.framework, unar and lsar
     system "xcodebuild -project ./XADMaster/XADMaster.xcodeproj -target XADMaster SYMROOT=../ -configuration Release"
