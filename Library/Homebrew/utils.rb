@@ -190,7 +190,8 @@ def exec_editor *args
 end
 
 def exec_browser *args
-  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || "open"
+  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] ||
+    (if OS.mac? then 'open' else 'xdg-open' end)
   safe_exec(browser, *args)
 end
 
