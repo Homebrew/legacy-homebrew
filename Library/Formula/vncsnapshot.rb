@@ -8,11 +8,11 @@ class Vncsnapshot < Formula
   depends_on 'jpeg'
 
   def patches
-      # remove old __APPLE__ ifdef from sockets.cxx
-      # 41 //#ifdef __APPLE__
-      # 42 //typedef int socklen_t;
-      # 43 //#endif
-      DATA
+    # remove old __APPLE__ ifdef from sockets.cxx
+    # 41 //#ifdef __APPLE__
+    # 42 //typedef int socklen_t;
+    # 43 //#endif
+    DATA
   end
 
   def install
@@ -22,8 +22,7 @@ class Vncsnapshot < Formula
 
     system "make"
     bin.install 'vncsnapshot', 'vncpasswd'
-    FileUtils.mv 'vncsnapshot.man1', 'vncsnapshot.1'
-    man1.install 'vncsnapshot.1'
+    man1.install 'vncsnapshot.man1' => 'vncsnapshot.1'
   end
 end
 
