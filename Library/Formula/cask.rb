@@ -2,26 +2,17 @@ require 'formula'
 
 class Cask < Formula
   homepage 'http://cask.github.io/'
-  url 'https://github.com/cask/cask/archive/v0.4.6.zip'
-  sha1 '01435f38593f74d5d9a68844121f2374bf08de30'
+  url 'https://github.com/cask/cask/archive/v0.5.0.zip'
+  sha1 'b73b5f253af2aabc37fa63fcf1bb39406bf5ced7'
   head 'https://github.com/cask/cask.git'
-  
-  depends_on 'emacs'
 
-  option 'without-completions', 'Disable zsh completions'
-  
   def install
-
-    unless build.without? 'completions'
-      zsh_completion.install 'etc/cask_completion.zsh'
-    end
-
+    zsh_completion.install 'etc/cask_completion.zsh'
     bin.install 'bin/cask'
     prefix.install 'Cask'
     prefix.install Dir['*.el']
     prefix.install 'server'
     prefix.install 'templates'
-
   end
 
 end
