@@ -20,6 +20,7 @@ class Imagemagick < Formula
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
   option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
+  option 'with-perl', 'enable build/install of PerlMagick'
   option 'without-magick-plus-plus', 'disable build/install of Magick++'
 
   depends_on :libltdl
@@ -58,7 +59,6 @@ class Imagemagick < Formula
 
   def install
     args = [ "--disable-osx-universal-binary",
-             "--without-perl", # I couldn't make this compile
              "--prefix=#{prefix}",
              "--disable-dependency-tracking",
              "--enable-shared",
@@ -69,6 +69,7 @@ class Imagemagick < Formula
     args << "--disable-openmp" unless build.include? 'enable-openmp'
     args << "--disable-opencl" if build.include? 'disable-opencl'
     args << "--without-gslib" unless build.with? 'ghostscript'
+    args << "--without-perl" unless build.with? 'perl'
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" unless build.with? 'ghostscript'
     args << "--without-magick-plus-plus" if build.without? 'magick-plus-plus'
     args << "--enable-hdri=yes" if build.include? 'enable-hdri'
@@ -92,6 +93,20 @@ class Imagemagick < Formula
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
     system "./configure", *args
     system "make install"
+  end
+
+  def caveats
+    s = <<-EOS.undent
+      For full Perl support you must install the Image::Magick module from the CPAN.
+        https://metacpan.org/module/Image::Magick
+
+      The version of the Perl module and ImageMagick itself need to be kept in sync.
+      If you upgrade one, you must upgrade the other.
+
+      For this version of ImageMagick you should install
+      version #{version} of the Image::Magick Perl module.
+    EOS
+    s if build.with? 'perl'
   end
 
   test do
