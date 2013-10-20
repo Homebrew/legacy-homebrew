@@ -2,7 +2,7 @@ require 'formula'
 
 class Gnutls < Formula
   homepage 'http://gnutls.org'
-  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1/gnutls-3.1.10.tar.xz'
+  url 'http://mirrors.dotsrc.org/gcrypt/gnutls/v3.1/gnutls-3.1.10.tar.xz'
   sha1 '1097644b0e58754217c4f9edbdf68e9f7aa7e08d'
 
   depends_on 'xz' => :build
