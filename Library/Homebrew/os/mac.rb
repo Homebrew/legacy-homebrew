@@ -130,8 +130,15 @@ module OS
 
     def gcc_42_build_version
       @gcc_42_build_version ||=
-        if (path = locate("gcc-4.2")) && path.realpath.basename.to_s !~ /^llvm/
-          %x{#{path} --version}[/build (\d{4,})/, 1].to_i
+        begin
+          gcc = MacOS.locate('gcc-4.2') || Formula.factory('apple-gcc42').opt_prefix/'bin/gcc-4.2'
+          raise unless gcc.exist?
+        rescue
+          gcc = nil
+        end
+
+        if gcc && gcc.realpath.basename.to_s !~ /^llvm/
+          %x{#{gcc} --version}[/build (\d{4,})/, 1].to_i
         end
     end
     alias_method :gcc_build_version, :gcc_42_build_version
