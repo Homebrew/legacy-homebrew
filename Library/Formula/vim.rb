@@ -34,7 +34,7 @@ class Vim < Formula
   # First patch: vim uses the obsolete Apple-only -no-cpp-precomp flag, which
   # FSF GCC can't understand; reported upstream:
   # https://groups.google.com/forum/#!topic/vim_dev/X5yG3-IiUp8
-  # 
+  #
   # Second patch: includes Mac OS X version macros not included by default on 10.9
   # Reported upstream: https://groups.google.com/forum/#!topic/vim_mac/5kVAMSPb6uU
   def patches; DATA; end
