@@ -7,6 +7,7 @@ class Fceux < Formula
 
   option 'no-gtk', "Build without Gtk+ support"
 
+  depends_on 'pkg-config' => :build
   depends_on 'scons' => :build
   depends_on 'sdl'
   depends_on 'libzip'
