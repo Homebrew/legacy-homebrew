@@ -11,8 +11,11 @@ class Cask < Formula
     bin.install 'bin/cask'
     prefix.install 'Cask'
     prefix.install Dir['*.el']
-    prefix.install 'server'
     prefix.install 'templates'
   end
 
+  def test
+    system "make server"
+    system "make"
+  end
 end
