@@ -2,8 +2,8 @@ require 'formula'
 
 class Libsigcxx < Formula
   homepage 'http://libsigc.sourceforge.net'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2/libsigc++-2.2.11.tar.xz'
-  sha256 '9834045f74f56752c2c6b3cdc195c30ab8314ad22dc8e626d6f67f940f1e4957'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.3/libsigc++-2.3.1.tar.xz'
+  sha256 '67d05852b31fdb267c9fdcecd40b046a11aa54d884435e99e3c60dd20cd60393'
 
   depends_on 'xz' => :build
 
