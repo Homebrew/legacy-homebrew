@@ -83,6 +83,11 @@ HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY
 
 HOMEBREW_CURL_ARGS = '-f#LA'
 
+# A regular expession to capture the username (one or more char but no `/`,
+# which has to be escaped like `\/`), repository, followed by an optional `/`
+# and an optional query.
+HOMEBREW_TAP_REGEX = /^([^\/]+)\/([^\/]+)\/?(.+)?$/
+
 module Homebrew extend self
   include FileUtils
 
