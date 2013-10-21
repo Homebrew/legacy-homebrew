@@ -16,13 +16,9 @@ class Fceux < Formula
   depends_on :x11
 
   def install
-    if build.include? "no-gtk"
-      inreplace "SConstruct",
-        "BoolVariable('GTK', 'Enable GTK2 GUI (SDL only)', 1),",
-        "BoolVariable('GTK', 'Enable GTK2 GUI (SDL only)', 0),"
-    end
-
-    system "scons"
+    args = []
+    args << "GTK=0" if build.include? "no-gtk"
+    system "scons", *args
     bin.install 'src/fceux'
   end
 end
