@@ -16,6 +16,10 @@ module Homebrew extend self
         msg = blacklisted? name
         raise "No available formula for #{name}\n#{msg}" if msg
       end
+      if name =~ HOMEBREW_TAP_REGEX then
+        require 'cmd/tap'
+        install_tap $1, $2
+      end
     end unless ARGV.force?
 
     perform_preinstall_checks
