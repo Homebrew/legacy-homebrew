@@ -20,8 +20,8 @@ class Mongodb < Formula
   head 'https://github.com/mongodb/mongo.git'
 
   def patches
-    # Fix Clang v8 build failure.
-    'https://github.com/mongodb/mongo/commit/be4bc7.patch'
+    # Fix osx_min_verson issues with clang
+    'https://github.com/mongodb/mongo/commit/978af9.patch' if build.devel?
   end
 
   depends_on 'scons' => :build
