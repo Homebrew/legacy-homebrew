@@ -4,8 +4,7 @@ class NewEnoughEmacs < Requirement
   fatal true
 
   def satisfied?
-    `emacs --version`.split("\n")[0] =~ /GNU Emacs (\d+)\./
-    major_version = ($1 || 0).to_i
+    major_version = `emacs --batch --eval '(princ emacs-major-version)'`
     major_version >= 23
   end
 
