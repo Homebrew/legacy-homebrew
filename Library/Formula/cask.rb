@@ -13,9 +13,4 @@ class Cask < Formula
     prefix.install 'templates'
   end
 
-  def test
-    system "make start-server"
-    system "make"
-    system "make stop-server"
-  end
 end
