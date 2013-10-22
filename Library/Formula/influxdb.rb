@@ -53,6 +53,6 @@ class Influxdb < Formula
   end
 
   test do
-    system "curl --silent http://localhost:8086/"
+    system "test -e #{opt_prefix}/bin/influxdb"
   end
 end
