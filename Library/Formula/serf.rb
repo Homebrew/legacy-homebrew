@@ -12,10 +12,12 @@ class Serf < Formula
   end
 
   option :universal
+  option 'with-brewed-openssl', 'Include OpenSSL support via Homebrew'
 
   depends_on :libtool
   depends_on 'sqlite'
   depends_on 'scons' => :build
+  depends_on 'openssl' if build.with? 'brewed-openssl'
 
   def install
     # SConstruct merges in gssapi linkflags using scons's MergeFlags,
@@ -28,6 +30,7 @@ class Serf < Formula
     # scons ignores our compiler and flags unless explicitly passed
     args = %W[PREFIX=#{prefix} GSSAPI=/usr CC=#{ENV.cc}
               CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}]
+    args << "OPENSSL=#{Formula.factory('openssl').opt_prefix}" if build.with? 'brewed-openssl'
     system "scons", *args
     system "scons install"
   end
