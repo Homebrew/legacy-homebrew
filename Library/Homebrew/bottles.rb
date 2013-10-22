@@ -96,3 +96,44 @@ def bottle_filename_formula_name filename
   basename = path.basename.to_s
   basename.rpartition("-#{version}").first
 end
+
+class BottleCollector
+  def initialize
+    @bottles = {}
+  end
+
+  def add(checksum, tag, url=nil)
+    @bottles[tag] = checksum
+  end
+
+  def fetch_bottle_for(tag)
+    return [@bottles[tag], tag] if @bottles[tag]
+
+    find_altivec_tag(tag) || find_or_later(tag)
+  end
+
+  # This allows generic Altivec PPC bottles to be supported in some
+  # formulae, while also allowing specific bottles in others; e.g.,
+  # sometimes a formula has just :tiger_altivec, other times it has
+  # :tiger_g4, :tiger_g5, etc.
+  def find_altivec_tag(tag)
+    if tag.to_s =~ /(\w+)_(g4|g4e|g5)$/
+      altitag = "#{$1}_altivec".to_sym
+      return [@bottles[altitag], altitag] if @bottles[altitag]
+    end
+  end
+
+  # Allows a bottle tag to specify a specific OS or later,
+  # so the same bottle can target multiple OSs.
+  # Not used in core, used in taps.
+  def find_or_later_tag(tag)
+    results = @bottles.find_all {|k,v| k.to_s =~ /_or_later$/}
+    results.each do |key, hsh|
+      later_tag = key.to_s[/(\w+)_or_later$/, 1].to_sym
+      bottle_version = MacOS::Version.from_symbol(later_tag)
+      return [hsh, key] if bottle_version <= MacOS::Version.from_symbol(tag)
+    end
+
+    nil
+  end
+end
