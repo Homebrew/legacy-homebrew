@@ -163,7 +163,7 @@ module OS
 
       STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
       FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
-      STANDALONE_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
+      MAVERICKS_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
 
       # True if:
       #  - Xcode < 4.3 is installed. The tools are found under /usr.
@@ -175,8 +175,8 @@ module OS
       end
 
       def mavericks_dev_tools?
-        MacOS.dev_tools_path == Pathname("#{STANDALONE_PKG_PATH}/usr/bin") &&
-          File.directory?("#{STANDALONE_PKG_PATH}/usr/include")
+        MacOS.dev_tools_path == Pathname("#{MAVERICKS_PKG_PATH}/usr/bin") &&
+          File.directory?("#{MAVERICKS_PKG_PATH}/usr/include")
       end
 
       def usr_dev_tools?
