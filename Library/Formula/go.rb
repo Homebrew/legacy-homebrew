@@ -37,9 +37,6 @@ class Go < Formula
   def patches; DATA; end if build.stable?
 
   def install
-    # For Clang cgo support Go needs to be able to tell through CC.
-    ENV['CC'] = 'clang' if build.devel? and ENV.compiler == :clang
-
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
     zsh_completion.install 'misc/zsh/go' => 'go'
