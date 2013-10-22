@@ -76,7 +76,7 @@ end
 
 def bottle_tag
   case MacOS.version
-  when "10.8", "10.7", "10.5"
+  when "10.8", "10.7"
     MacOS.cat
   when "10.6"
     Hardware::CPU.is_64_bit? ? :snow_leopard : :snow_leopard_32
