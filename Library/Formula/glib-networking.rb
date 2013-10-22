@@ -24,6 +24,7 @@ class GlibNetworking < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
+                          "--enable-installed-tests",
                           "--prefix=#{prefix}",
                           certs_options
     system "make install"
