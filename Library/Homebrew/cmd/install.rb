@@ -16,7 +16,7 @@ module Homebrew extend self
         msg = blacklisted? name
         raise "No available formula for #{name}\n#{msg}" if msg
       end
-      if not File.exist? name and name =~ HOMEBREW_TAP_REGEX then
+      if not File.exist? name and name =~ HOMEBREW_TAP_FORMULA_REGEX then
         require 'cmd/tap'
         begin
           install_tap $1, $2
