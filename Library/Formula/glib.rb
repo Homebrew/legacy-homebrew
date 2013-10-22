@@ -25,10 +25,15 @@ class Glib < Formula
 
   def patches
     p = {}
+    p[:p1] = []
     # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix,
     # but needed to fix an assumption about the location of the d-bus machine
     # id file.
-    p[:p1] = "https://gist.github.com/jacknagel/6700436/raw/a94f21a9c5ccd10afa0a61b11455c880640f3133/glib-configurable-paths.patch"
+    p[:p1] << "https://gist.github.com/jacknagel/6700436/raw/a94f21a9c5ccd10afa0a61b11455c880640f3133/glib-configurable-paths.patch"
+    # Fixes compilation with FSF GCC. Doesn't fix it on every platform, due
+    # to unrelated issues in GCC, but improves the situation.
+    # Patch submitted upstream: https://bugzilla.gnome.org/show_bug.cgi?id=672777
+    p[:p1] << "https://gist.github.com/mistydemeo/8c7eaf0940b6b9159779/raw/11b3b1f09d15ccf805b0914a15eece11685ea8a5/gio.diff"
     p[:p0] = "https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/patch-configure.diff" if build.universal?
     p
   end
