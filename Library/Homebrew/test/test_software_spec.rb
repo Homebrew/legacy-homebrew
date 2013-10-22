@@ -110,8 +110,8 @@ class BottleTests < Test::Unit::TestCase
     end
 
     checksums.each_pair do |cat, sha1|
-      assert_equal Checksum.new(:sha1, sha1),
-        @spec.instance_variable_get(:@sha1)[cat]
+      hsh, _ = @spec.instance_variable_get(:@sha1).fetch_bottle_for(cat)
+      assert_equal Checksum.new(:sha1, sha1), hsh
     end
   end
 
