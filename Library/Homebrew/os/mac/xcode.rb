@@ -49,7 +49,8 @@ module OS
       def prefix
         @prefix ||= begin
           path = Pathname.new(folder)
-          if path.absolute? and File.executable? "#{path}/usr/bin/make"
+          if path != CLT::MAVERICKS_PKG_PATH and path.absolute? \
+             and File.executable? "#{path}/usr/bin/make"
             path
           elsif File.executable? '/Developer/usr/bin/make'
             # we do this to support cowboys who insist on installing
