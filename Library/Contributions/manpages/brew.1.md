@@ -499,6 +499,12 @@ can take several different forms:
     directories. TextMate can handle this correctly in project mode, but many
     editors will do strange things in this case.
 
+  * HOMEBREW\_GITHUB\_API\_OPTOUT:
+    By setting this environment variable you can "opt out" of using the GitHub
+    API altogether.  This limits searches to local formulae only.  The value of
+    `HOMEBREW_GITHUB_API_OPTOUT` does not matter (it can even be empty); it
+    only needs to exist in the environment to take effect.
+
   * HOMEBREW\_GITHUB\_API\_TOKEN:
     A personal GitHub API Access token, which you can create at
     <https://github.com/settings/applications>. If set, GitHub will allow you a
