@@ -51,9 +51,8 @@ module OS
     end
 
     def dev_tools_path
-      @dev_tools_path ||= if tools_in_prefix? CLT::STANDALONE_PKG_PATH
-        # In 10.9 the CLT moved from /usr into /Library/Developer/CommandLineTools.
-        Pathname.new "#{CLT::STANDALONE_PKG_PATH}/usr/bin"
+      @dev_tools_path ||= if tools_in_prefix? CLT::MAVERICKS_PKG_PATH
+        Pathname.new "#{CLT::MAVERICKS_PKG_PATH}/usr/bin"
       elsif tools_in_prefix? "/"
         # probably a safe enough assumption (the unix way)
         Pathname.new "/usr/bin"

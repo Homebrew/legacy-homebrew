@@ -49,7 +49,8 @@ module OS
       def prefix
         @prefix ||= begin
           path = Pathname.new(folder)
-          if path.absolute? and File.executable? "#{path}/usr/bin/make"
+          if path != CLT::MAVERICKS_PKG_PATH and path.absolute? \
+             and File.executable? "#{path}/usr/bin/make"
             path
           elsif File.executable? '/Developer/usr/bin/make'
             # we do this to support cowboys who insist on installing
@@ -163,7 +164,8 @@ module OS
 
       STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
       FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
-      STANDALONE_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
+      MAVERICKS_PKG_ID = "com.apple.pkg.CLTools_Executables"
+      MAVERICKS_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
 
       # True if:
       #  - Xcode < 4.3 is installed. The tools are found under /usr.
@@ -175,8 +177,8 @@ module OS
       end
 
       def mavericks_dev_tools?
-        MacOS.dev_tools_path == Pathname("#{STANDALONE_PKG_PATH}/usr/bin") &&
-          File.directory?("#{STANDALONE_PKG_PATH}/usr/include")
+        MacOS.dev_tools_path == Pathname("#{MAVERICKS_PKG_PATH}/usr/bin") &&
+          File.directory?("#{MAVERICKS_PKG_PATH}/usr/include")
       end
 
       def usr_dev_tools?
@@ -200,7 +202,7 @@ module OS
       end
 
       def detect_version
-        [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+        [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID, MAVERICKS_PKG_ID].find do |id|
           version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
           return version if version
         end
