@@ -524,6 +524,10 @@ can take several different forms:
 
     *Note:* Homebrew will only try to print emoji on Lion or newer.
 
+  * HOMEBREW\_NO\_GITHUB\_API:
+    If set, Homebrew will not use the GitHub API for e.g searches or
+    fetching relevant issues on a failed install.
+
   * HOMEBREW\_SOURCEFORGE\_MIRROR:
     If set, Homebrew will use the value of `HOMEBREW_SOURCEFORGE_MIRROR` to
     select a SourceForge mirror for downloading bottles.
