@@ -9,7 +9,6 @@ class Cask < Formula
   def install
     zsh_completion.install 'etc/cask_completion.zsh'
     bin.install 'bin/cask'
-    prefix.install 'Cask'
     prefix.install Dir['*.el']
     prefix.install 'templates'
   end
