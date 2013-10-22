@@ -7,11 +7,17 @@ class Id3lib < Formula
 
   head "cvs://:pserver:anonymous@id3lib.cvs.sourceforge.net:/cvsroot/id3lib:id3lib-devel"
 
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
+
   def patches
     p = []
-    p << DATA unless build.head?
-    # Fix main defined with unsigned int instead of int
+    p << "https://trac.macports.org/export/112431/trunk/dports/audio/id3lib/files/id3lib-vbr-overflow.patch"
     p << "https://trac.macports.org/export/90780/trunk/dports/audio/id3lib/files/id3lib-main.patch"
+    p << "https://trac.macports.org/export/112430/trunk/dports/audio/id3lib/files/no-iomanip.h.patch"
+    p << "https://trac.macports.org/export/112430/trunk/dports/audio/id3lib/files/automake.patch"
+    p << "https://trac.macports.org/export/112430/trunk/dports/audio/id3lib/files/boolcheck.patch"
   end
 
   fails_with :llvm do
@@ -20,25 +26,9 @@ class Id3lib < Formula
   end
 
   def install
+    system "autoreconf -fi"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
 end
-
-# Wrong header size... I believe this bug is fixed in id3lib HEAD. See:
-# http://sourceforge.net/tracker/index.php?func=detail&amp;aid=697951&amp;group_id=979&amp;atid=100979
-__END__
-diff --git a/src/mp3_parse.cpp b/src/mp3_parse.cpp
-index 41d8560..fc8992b 100755
---- a/src/mp3_parse.cpp
-+++ b/src/mp3_parse.cpp
-@@ -465,7 +465,7 @@ bool Mp3Info::Parse(ID3_Reader& reader, size_t mp3size)
-   // from http://www.xingtech.com/developer/mp3/
- 
-   const size_t VBR_HEADER_MIN_SIZE = 8;     // "xing" + flags are fixed
--  const size_t VBR_HEADER_MAX_SIZE = 116;   // frames, bytes, toc and scale are optional
-+  const size_t VBR_HEADER_MAX_SIZE = 120;   // frames, bytes, toc and scale are optional
- 
-   if (mp3size >= vbr_header_offest + VBR_HEADER_MIN_SIZE) 
-   {
