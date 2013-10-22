@@ -212,4 +212,30 @@ class FormulaTests < Test::Unit::TestCase
   ensure
     path.unlink
   end
+
+  def test_class_specs_are_always_initialized
+    f = formula { url 'foo-1.0' }
+
+    %w{stable devel head bottle}.each do |spec|
+      assert_kind_of SoftwareSpec, f.class.send(spec)
+    end
+  end
+
+  def test_incomplete_instance_specs_are_not_accessible
+    f = formula { url 'foo-1.0' }
+
+    %w{devel head bottle}.each { |spec| assert_nil f.send(spec) }
+  end
+
+  def test_honors_attributes_declared_before_specs
+    f = formula do
+      url 'foo-1.0'
+      depends_on 'foo'
+      devel { url 'foo-1.1' }
+    end
+
+    %w{stable devel head bottle}.each do |spec|
+      assert_equal 'foo', f.class.send(spec).deps.first.name
+    end
+  end
 end
