@@ -56,7 +56,6 @@ class Formula
 
   def set_spec(name)
     spec = self.class.send(name)
-    return if spec.nil?
     if block_given? && yield(spec) || !spec.url.nil?
       spec.owner = self
       instance_variable_set("@#{name}", spec)
@@ -656,69 +655,57 @@ class Formula
     attr_rw :plist_startup, :plist_manual
 
     def specs
-      @specs ||= []
-    end
-
-    def create_spec(klass)
-      spec = klass.new
-      specs << spec
-      spec
+      @specs ||= [stable, devel, head, bottle].freeze
     end
 
     def url val, specs={}
-      @stable ||= create_spec(SoftwareSpec)
-      @stable.url(val, specs)
+      stable.url(val, specs)
     end
 
     def version val=nil
-      @stable ||= create_spec(SoftwareSpec)
-      @stable.version(val)
+      stable.version(val)
     end
 
     def mirror val
-      @stable ||= create_spec(SoftwareSpec)
-      @stable.mirror(val)
+      stable.mirror(val)
     end
 
     Checksum::TYPES.each do |cksum|
       class_eval <<-EOS, __FILE__, __LINE__ + 1
         def #{cksum}(val)
-          @stable ||= create_spec(SoftwareSpec)
-          @stable.#{cksum}(val)
+          stable.#{cksum}(val)
         end
       EOS
     end
 
     def build
-      @stable ||= create_spec(SoftwareSpec)
-      @stable.build
+      stable.build
     end
 
     def stable &block
+      @stable ||= SoftwareSpec.new
       return @stable unless block_given?
-      @stable ||= create_spec(SoftwareSpec)
       @stable.instance_eval(&block)
     end
 
     def bottle *, &block
+      @bottle ||= Bottle.new
       return @bottle unless block_given?
-      @bottle ||= create_spec(Bottle)
       @bottle.instance_eval(&block)
       @bottle.version = @stable.version
     end
 
     def devel &block
+      @devel ||= SoftwareSpec.new
       return @devel unless block_given?
-      @devel ||= create_spec(SoftwareSpec)
       @devel.instance_eval(&block)
     end
 
     def head val=nil, specs={}, &block
+      @head ||= HeadSoftwareSpec.new
       if block_given?
-        @head ||= create_spec(HeadSoftwareSpec)
         @head.instance_eval(&block)
       elsif val
-        @head ||= create_spec(HeadSoftwareSpec)
         @head.url(val, specs)
       else
         @head
