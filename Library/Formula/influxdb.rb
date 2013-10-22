@@ -2,8 +2,8 @@ require "formula"
 
 class Influxdb < Formula
   homepage "http://influxdb.org"
-  url "https://s3.amazonaws.com/influxdb/influxdb-0.0.1.tar.gz"
-  sha1 "f2faabc714d621da460573163eaffa6ee02f9b6e"
+  url "http://get.influxdb.org/influxdb-osx-0.0.1.tar.gz"
+  sha1 "f7d3af661e23ff40b0240616e8d6151cd7ab3ddb"
   depends_on "leveldb"
 
   def install
@@ -53,6 +53,6 @@ class Influxdb < Formula
   end
 
   test do
-    system "test -e #{opt_prefix}/bin/influxdb"
+    system "#{opt_prefix}/bin/influxdb -version"
   end
 end
