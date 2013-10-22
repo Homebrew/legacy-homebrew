@@ -15,7 +15,8 @@ class Cask < Formula
   end
 
   def test
-    system "make server"
+    system "make start-server"
     system "make"
+    system "make stop-server"
   end
 end
