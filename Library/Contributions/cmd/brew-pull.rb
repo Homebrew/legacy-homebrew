@@ -52,7 +52,11 @@ ARGV.named.each do|arg|
   patch_args << '--signoff' unless ARGV.include? '--clean'
   # Normally we don't want whitespace errors, but squashing them can break
   # patches so an option is provided to skip this step.
-  patch_args << '--whitespace=fix' unless ARGV.include? '--ignore-whitespace' or ARGV.include? '--clean'
+  if ARGV.include? '--ignore-whitespace' or ARGV.include? '--clean'
+    patch_args << '--whitespace=nowarn'
+  else
+    patch_args << '--whitespace=fix'
+  end
   patch_args << patchpath
 
   safe_system 'git', *patch_args
