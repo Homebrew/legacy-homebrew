@@ -164,6 +164,7 @@ module OS
 
       STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
       FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
+      MAVERICKS_PKG_ID = "com.apple.pkg.CLTools_Executables"
       MAVERICKS_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
 
       # True if:
@@ -201,7 +202,7 @@ module OS
       end
 
       def detect_version
-        [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+        [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID, MAVERICKS_PKG_ID].find do |id|
           version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
           return version if version
         end
