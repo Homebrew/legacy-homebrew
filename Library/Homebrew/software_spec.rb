@@ -4,6 +4,7 @@ require 'checksum'
 require 'version'
 require 'build_options'
 require 'dependency_collector'
+require 'bottles'
 
 class SoftwareSpec
   extend Forwardable
@@ -87,6 +88,7 @@ end
 
 class Bottle < SoftwareSpec
   attr_rw :root_url, :prefix, :cellar, :revision
+  attr_accessor :current_tag
 
   def_delegators :@resource, :version=, :url=
 
@@ -103,16 +105,16 @@ class Bottle < SoftwareSpec
     class_eval <<-EOS, __FILE__, __LINE__ + 1
       def #{cksum}(val=nil)
         return @#{cksum} if val.nil?
-        @#{cksum} ||= Hash.new
+        @#{cksum} ||= BottleCollector.new
         case val
         when Hash
           key, value = val.shift
-          @#{cksum}[value] = Checksum.new(:#{cksum}, key)
+          @#{cksum}.add(Checksum.new(:#{cksum}, key), value)
         end
 
-        if @#{cksum}.has_key? bottle_tag
-          @resource.checksum = @#{cksum}[bottle_tag]
-        end
+        cksum, current_tag = @#{cksum}.fetch_bottle_for(bottle_tag)
+        @resource.checksum = cksum if cksum
+        @current_tag = current_tag if cksum
       end
     EOS
   end
