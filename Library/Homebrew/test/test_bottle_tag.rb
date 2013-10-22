@@ -29,6 +29,7 @@ class BottleTagTests < Test::Unit::TestCase
   def test_tag_tiger_intel_64
     MacOS.stubs(:version).returns(MacOS::Version.new("10.4"))
     Hardware::CPU.stubs(:type).returns(:intel)
+    MacOS.stubs(:prefer_64_bit?).returns(true)
     assert_equal :tiger_64, bottle_tag
   end
 
