@@ -2,8 +2,8 @@ require 'formula'
 
 class Avian < Formula
   homepage 'http://oss.readytalk.com/avian/'
-  url 'http://oss.readytalk.com/avian/avian-0.6.tar.bz2'
-  sha1 '763e1d99af624416aac60f0e222df938aaa3510b'
+  url 'http://oss.readytalk.com/avian/avian-0.7.tar.bz2'
+  sha1 '7650d937c111154cfdeff465e3a1be77b07e1b26'
 
   head 'https://github.com/ReadyTalk/avian.git'
 

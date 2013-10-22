@@ -1,7 +1,7 @@
 require 'requirement'
 require 'requirements/fortran_dependency'
 require 'requirements/language_module_dependency'
-require 'requirements/macos_requirement'
+require 'requirements/minimum_macos_requirement'
 require 'requirements/mpi_dependency'
 require 'requirements/python_dependency'
 require 'requirements/x11_dependency'
@@ -14,7 +14,7 @@ class XcodeDependency < Requirement
 
   def message; <<-EOS.undent
     A full installation of Xcode.app is required to compile this software.
-    Installing just the Command Line Tools is not sufficent.
+    Installing just the Command Line Tools is not sufficient.
     EOS
   end
 end
@@ -60,7 +60,8 @@ class CLTDependency < Requirement
 
   def message; <<-EOS.undent
     The Command Line Tools are required to compile this software.
-    The standalone package can be obtained from http://connect.apple.com,
+    The standalone package can be obtained from
+    https://developer.apple.com/downloads/,
     or it can be installed via Xcode's preferences.
     EOS
   end
@@ -77,6 +78,7 @@ class ArchRequirement < Requirement
   satisfy do
     case @arch
     when :x86_64 then MacOS.prefer_64_bit?
+    when :intel, :ppc then Hardware::CPU.type == @arch
     end
   end
 
@@ -90,4 +92,10 @@ class MercurialDependency < Requirement
   default_formula 'mercurial'
 
   satisfy { which('hg') }
+end
+
+class GitDependency < Requirement
+  fatal true
+  default_formula 'git'
+  satisfy { which('git') }
 end

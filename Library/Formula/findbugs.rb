@@ -5,6 +5,9 @@ class Findbugs < Formula
   url 'http://downloads.sourceforge.net/project/findbugs/findbugs/2.0.2/findbugs-2.0.2.tar.gz'
   sha1 '3817d96e5143f513cb2945f14f50cdb6720d1f49'
 
+  conflicts_with 'fb-client',
+    :because => "findbugs and fb-client both install a `fb` binary"
+
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]

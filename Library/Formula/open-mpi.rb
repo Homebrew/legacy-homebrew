@@ -22,7 +22,7 @@ class OpenMpi < Formula
   # http://www.open-mpi.org/community/lists/devel/2012/05/11003.php
   # http://www.open-mpi.org/community/lists/devel/2012/08/11362.php
   fails_with :clang do
-    build 421
+    build 425
     cause 'fails make check on Lion and ML'
   end if not build.devel?
 

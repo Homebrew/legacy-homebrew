@@ -2,8 +2,8 @@ require 'formula'
 
 class Libofx < Formula
   homepage 'http://libofx.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/libofx/libofx/0.9.8/libofx-0.9.8.tar.gz'
-  sha1 'e0159d77c4458eb937871373db85c9f392e86554'
+  url 'http://downloads.sourceforge.net/project/libofx/libofx/0.9.9/libofx-0.9.9.tar.gz'
+  sha1 'b8ea875cee16953166449de8ddd1b69fb181f61b'
 
   depends_on 'open-sp'
 

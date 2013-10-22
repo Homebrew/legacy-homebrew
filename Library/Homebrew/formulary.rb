@@ -43,6 +43,7 @@ class Formulary
           # have a "no such formula" message.
           raise
         rescue LoadError, NameError
+          raise if ARGV.debug?  # let's see the REAL error
           raise FormulaUnavailableError.new(name)
         end
       end
@@ -62,7 +63,7 @@ class Formulary
       name_without_version = bottle_filename_formula_name @bottle_filename
       if name_without_version.empty?
         if ARGV.homebrew_developer?
-          opoo "Add a new version regex to version.rb to parse this filename."
+          opoo "Add a new regex to bottle_version.rb to parse this filename."
         end
         @name = bottle_name
       else
@@ -73,7 +74,7 @@ class Formulary
 
     def get_formula
       formula = klass.new(name)
-      formula.downloader.local_bottle_path = @bottle_filename
+      formula.local_bottle_path = @bottle_filename
       return formula
     end
   end

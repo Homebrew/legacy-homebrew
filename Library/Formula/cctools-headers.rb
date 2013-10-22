@@ -1,11 +1,5 @@
 require 'formula'
 
-# ld64 requires an updated mach/machine.h to build
-class XnuHeaders < Formula
-  url 'http://opensource.apple.com/tarballs/xnu/xnu-2050.18.24.tar.gz'
-  sha1 '3a2a0b3629cb215b17aca3bb365b8b10b8b408fe'
-end
-
 # The system versions are too old to build ld64
 class CctoolsHeaders < Formula
   homepage 'http://opensource.apple.com/'
@@ -14,6 +8,11 @@ class CctoolsHeaders < Formula
 
   keg_only :provided_by_osx
 
+  resource 'headers' do
+    url 'http://opensource.apple.com/tarballs/xnu/xnu-2050.18.24.tar.gz'
+    sha1 '3a2a0b3629cb215b17aca3bb365b8b10b8b408fe'
+  end
+
   def install
     # only supports DSTROOT, not PREFIX
     inreplace "include/Makefile", "/usr/include", "/include"
@@ -21,6 +20,7 @@ class CctoolsHeaders < Formula
     # installs some headers we don't need to DSTROOT/usr/local/include
     (prefix/'usr').rmtree
 
-    XnuHeaders.new.brew {(include/'mach').install 'osfmk/mach/machine.h'}
+    # ld64 requires an updated mach/machine.h to build
+    resource('headers').stage {(include/'mach').install 'osfmk/mach/machine.h'}
   end
 end

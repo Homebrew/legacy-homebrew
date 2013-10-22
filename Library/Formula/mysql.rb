@@ -2,14 +2,15 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.12.tar.gz/from/http://cdn.mysql.com/'
-  version '5.6.12'
-  sha1 'c48ae4061c23db89de7ebd2d25abbc36283bab69'
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.13.tar.gz/from/http://cdn.mysql.com/'
+  version '5.6.13'
+  sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
 
   bottle do
-    sha1 'bbfa381e1c2ac2c3dc2a3811bc530116343d94be' => :mountain_lion
-    sha1 'a85dd6452d140c708057ed1ef96638eeaf57fb72' => :lion
-    sha1 'acc9217c05e777c02ba9e2088456db491d7476a5' => :snow_leopard
+    revision 1
+    sha1 'b7ef48694e473966a1ea6b6969d66ffb7354f24a' => :mountain_lion
+    sha1 'ff2823f3ea4e3ffc6ea989d15f6418e8e9fd84f1' => :lion
+    sha1 '8b08166f4f1592a7f847b7bd3738936b86ec2234' => :snow_leopard
   end
 
   depends_on 'cmake' => :build
@@ -25,14 +26,8 @@ class Mysql < Formula
   option 'enable-memcached', 'Enable innodb-memcached support'
   option 'enable-debug', 'Build with debug support'
 
-  conflicts_with 'mariadb',
-    :because => "mysql and mariadb install the same binaries."
-
-  conflicts_with 'percona-server',
-    :because => "mysql and percona-server install the same binaries."
-
-  conflicts_with 'mysql-cluster',
-    :because => "mysql and mysql-cluster install the same binaries."
+  conflicts_with 'mysql-cluster', 'mariadb', 'percona-server',
+    :because => "mysql, mariadb, and percona install the same binaries."
 
   env :std if build.universal?
 
@@ -85,7 +80,7 @@ class Mysql < Formula
     args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
@@ -120,12 +115,12 @@ class Mysql < Formula
     # Move mysqlaccess to libexec
     mv "#{bin}/mysqlaccess", libexec
     mv "#{bin}/mysqlaccess.conf", libexec
+
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
   end
 
   def post_install
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
-
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",

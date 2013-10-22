@@ -12,9 +12,8 @@ class Gle < Formula
   depends_on 'libtiff' => :optional
 
   def install
-    arch = MacOS.prefer_64_bit? ? "x86_64" : "i386"
     system "./configure", "--prefix=#{prefix}",
-                          "--with-arch=#{arch}",
+                          "--with-arch=#{MacOS.preferred_arch}",
                           "--without-qt"
 
     inreplace 'Makefile', "MKDIR_P", "mkdir -p"

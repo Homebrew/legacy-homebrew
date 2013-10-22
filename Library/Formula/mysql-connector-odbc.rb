@@ -14,7 +14,7 @@ class MysqlConnectorOdbc < Formula
 
   def install
     args = ["-DCMAKE_INSTALL_PREFIX=#{prefix}"]
-    args << "-DCMAKE_OSX_ARCHITECTURES='i386;x86_64'" if build.universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
     args << "-DMYSQL_LIB:FILEPATH=#{HOMEBREW_PREFIX}/lib/libmysqlclient_r.a"
     ENV['MYSQL_DIR'] = HOMEBREW_PREFIX
     system 'cmake', ".", *args

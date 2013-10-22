@@ -2,7 +2,7 @@ require 'testing_env'
 require 'download_strategy'
 require 'bottles' # XXX: hoist these regexps into constants in Pathname?
 
-class SoftwareSpecDouble
+class ResourceDouble
   attr_reader :url, :specs
 
   def initialize(url="http://foo.com/bar.tar.gz", specs={})
@@ -14,8 +14,8 @@ end
 class AbstractDownloadStrategyTests < Test::Unit::TestCase
   def setup
     @name = "foo"
-    @package = SoftwareSpecDouble.new
-    @strategy = AbstractDownloadStrategy.new(@name, @package)
+    @resource = ResourceDouble.new
+    @strategy = AbstractDownloadStrategy.new(@name, @resource)
     @args = %w{foo bar baz}
   end
 
@@ -37,6 +37,32 @@ class AbstractDownloadStrategyTests < Test::Unit::TestCase
   end
 end
 
+class VCSDownloadStrategyTests < Test::Unit::TestCase
+  def setup
+    @resource = ResourceDouble.new("http://foo.com/bar")
+    @strategy = VCSDownloadStrategy
+  end
+
+  def escaped(tag)
+    "#{ERB::Util.url_encode(@resource.url)}--#{tag}"
+  end
+
+  def test_explicit_name
+    downloader = @strategy.new("baz", @resource)
+    assert_equal "baz--foo", downloader.cache_filename("foo")
+  end
+
+  def test_empty_name
+    downloader = @strategy.new("", @resource)
+    assert_equal escaped("foo"), downloader.cache_filename("foo")
+  end
+
+  def test_unknown_name
+    downloader = @strategy.new("__UNKNOWN__", @resource)
+    assert_equal escaped("foo"), downloader.cache_filename("foo")
+  end
+end
+
 class DownloadStrategyDetectorTests < Test::Unit::TestCase
   def setup
     @d = DownloadStrategyDetector.new
@@ -50,5 +76,11 @@ class DownloadStrategyDetectorTests < Test::Unit::TestCase
   def test_default_to_curl_strategy
     @d = DownloadStrategyDetector.detect(Object.new)
     assert_equal CurlDownloadStrategy, @d
+  end
+
+  def test_raises_when_passed_unrecognized_strategy
+    assert_raises(TypeError) do
+      DownloadStrategyDetector.detect("foo", Class.new)
+    end
   end
 end

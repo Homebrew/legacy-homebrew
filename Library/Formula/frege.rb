@@ -8,6 +8,6 @@ class Frege < Formula
 
   def install
     libexec.install Dir['*']
-    bin.write_jar_script libexec/'frege3.19.112a.jar', 'fregec', '-Xss1m'
+    bin.write_jar_script libexec/"frege#{version}.jar", "fregec", "-Xss1m"
   end
 end

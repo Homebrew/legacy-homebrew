@@ -5,9 +5,9 @@ class Schroedinger < Formula
   url 'http://diracvideo.org/download/schroedinger/schroedinger-1.0.11.tar.gz'
   sha1 'c01ee0bed6c1bd7608763927f719f94ebc6aaa41'
 
-  head  'git://diracvideo.org/git/schroedinger.git'
+  head do
+    url 'git://diracvideo.org/git/schroedinger.git'
 
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end

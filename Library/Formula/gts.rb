@@ -10,6 +10,11 @@ class Gts < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
+  depends_on 'netpbm'
+
+  # Fix for newer netpbm.
+  # This software hasn't been updated in seven years
+  def patches; DATA; end
 
   def install
     ENV.universal_binary if build.universal?
@@ -19,3 +24,18 @@ class Gts < Formula
     system "make install"
   end
 end
+
+__END__
+diff --git a/examples/happrox.c b/examples/happrox.c
+index 88770a8..11f140d 100644
+--- a/examples/happrox.c
++++ b/examples/happrox.c
+@@ -21,7 +21,7 @@
+ #include <stdlib.h>
+ #include <locale.h>
+ #include <string.h>
+-#include <pgm.h>
++#include <netpbm/pgm.h>
+ #include "config.h"
+ #ifdef HAVE_GETOPT_H
+ #  include <getopt.h>

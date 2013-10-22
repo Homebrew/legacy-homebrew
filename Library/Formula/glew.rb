@@ -6,6 +6,7 @@ class Glew < Formula
   sha1 'f41b45ca4a630ad1d00b8b87c5f493781a380300'
 
   def install
+    inreplace "glew.pc.in", "Requires: glu", ""
     system "make", "GLEW_DEST=#{prefix}", "all"
     system "make", "GLEW_DEST=#{prefix}", "install.all"
   end

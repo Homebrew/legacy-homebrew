@@ -2,8 +2,8 @@ require 'formula'
 
 class Tinc < Formula
   homepage 'http://www.tinc-vpn.org'
-  url 'http://www.tinc-vpn.org/packages/tinc-1.0.21.tar.gz'
-  sha1 'e7f65ba5dded43569c51b1fdc2f421c9cee75b9b'
+  url 'http://www.tinc-vpn.org/packages/tinc-1.0.22.tar.gz'
+  sha1 '4a61b5b5f2e31bda5225b1224880d25524d093e7'
 
   depends_on 'lzo'
 

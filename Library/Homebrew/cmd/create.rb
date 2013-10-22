@@ -84,7 +84,9 @@ class FormulaCreator
     else
       @path = Formula.path name
     end
-    if @version.nil?
+    if @version
+      @version = Version.new(@version)
+    else
       @version = Pathname.new(url).version
     end
   end
@@ -100,10 +102,11 @@ class FormulaCreator
       puts "You'll need to add an explicit 'version' to the formula."
     end
 
+    # XXX: why is "and version" here?
     unless ARGV.include? "--no-fetch" and version
-      spec = SoftwareSpec.new(url, version)
-      strategy = spec.download_strategy
-      @sha1 = strategy.new(name, spec).fetch.sha1 if strategy == CurlDownloadStrategy
+      r = Resource.new
+      r.url, r.version, r.owner = url, version, self
+      @sha1 = r.fetch.sha1 if r.download_strategy == CurlDownloadStrategy
     end
 
     path.write ERB.new(template, nil, '>').result(binding)
@@ -113,12 +116,13 @@ class FormulaCreator
     require 'formula'
 
     # Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
+    #                #{HOMEBREW_PREFIX}/Library/Contributions/example-formula.rb
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
     class #{Formula.class_s name} < Formula
       homepage ''
       url '#{url}'
-    <% if not version.nil? and not version.detected_from_url? %>
+    <% unless version.nil? or version.detected_from_url? %>
       version '#{version}'
     <% end %>
       sha1 '#{sha1}'
@@ -136,10 +140,16 @@ class FormulaCreator
     <% if mode == :cmake %>
         system "cmake", ".", *std_cmake_args
     <% elsif mode == :autotools %>
-        system "./configure", "--disable-debug", "--disable-dependency-tracking",
+        # Remove unrecognized options if warned by configure
+        system "./configure", "--disable-debug",
+                              "--disable-dependency-tracking",
+                              "--disable-silent-rules",
                               "--prefix=\#{prefix}"
     <% else %>
-        system "./configure", "--disable-debug", "--disable-dependency-tracking",
+        # Remove unrecognized options if warned by configure
+        system "./configure", "--disable-debug",
+                              "--disable-dependency-tracking",
+                              "--disable-silent-rules",
                               "--prefix=\#{prefix}"
         # system "cmake", ".", *std_cmake_args
     <% end %>

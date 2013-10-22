@@ -2,15 +2,14 @@ require 'formula'
 
 class Beansdb < Formula
   homepage 'https://github.com/douban/beansdb'
+  head 'https://github.com/douban/beansdb.git', :branch => 'master'
   url 'https://github.com/douban/beansdb/archive/v0.6.tar.gz'
   sha1 '9099ce607ff3c3eba251ee34ae65a08c4e3715b9'
-
-  head 'https://github.com/douban/beansdb.git', :branch => 'master'
 
   depends_on :automake
 
   fails_with :clang do
-    build 425
+    cause "Known not to compile with clang."
   end
 
   def install

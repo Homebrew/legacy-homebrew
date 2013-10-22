@@ -1,28 +1,37 @@
 require 'formula'
 
-class GitManuals < Formula
-  url 'http://git-core.googlecode.com/files/git-manpages-1.8.3.4.tar.gz'
-  sha1 '04fe5a752234262d128220f09ea25c0faa447947'
-end
-
-class GitHtmldocs < Formula
-  url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.3.4.tar.gz'
-  sha1 '1f1200515e1e7042bcbd4176ef76c58021cd9a83'
-end
-
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.3.4.tar.gz'
-  sha1 'fe633d02f7d964842d7ea804278b75120fc60c11'
-
+  url 'http://git-core.googlecode.com/files/git-1.8.4.1.tar.gz'
+  sha1 '49004a8dfcbb7c0848147737d9877fd7313a42ec'
   head 'https://github.com/git/git.git'
+
+  bottle do
+    sha1 'bd2613ef7c911b2dbde23defa6a61faaaca43290' => :mountain_lion
+    sha1 'd85ad2d80d2006a1058cb63916061116acbc104f' => :lion
+    sha1 '6ca4e8bb250eb97f709b9f05c7230bd0cce9aca2' => :snow_leopard
+  end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
+  option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of the system version"
+  option 'with-brewed-curl', "Use Homebrew's version of cURL library"
 
   depends_on :python
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
+  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'curl' => 'with-darwinssl' if build.with? 'brewed-curl'
+
+  resource 'man' do
+    url 'http://git-core.googlecode.com/files/git-manpages-1.8.4.1.tar.gz'
+    sha1 'dc0f9de1cacc8912f131b67dc5a19a96768ecc95'
+  end
+
+  resource 'html' do
+    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.4.1.tar.gz'
+    sha1 '1f0e5c5934ec333b5630a8c93a0fb0b1895dfcb8'
+  end
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -47,6 +56,7 @@ class Git < Formula
     ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
 
     system "make", "prefix=#{prefix}",
+                   "sysconfdir=#{etc}",
                    "CC=#{ENV.cc}",
                    "CFLAGS=#{ENV.cflags}",
                    "LDFLAGS=#{ENV.ldflags}",
@@ -82,8 +92,8 @@ class Git < Formula
 
     # We could build the manpages ourselves, but the build process depends
     # on many other packages, and is somewhat crazy, this way is easier.
-    GitManuals.new.brew { man.install Dir['*'] }
-    GitHtmldocs.new.brew { (share+'doc/git-doc').install Dir['*'] }
+    man.install resource('man')
+    (share+'doc/git-doc').install resource('html')
   end
 
   def caveats; <<-EOS.undent

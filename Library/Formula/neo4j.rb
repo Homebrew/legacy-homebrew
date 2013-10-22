@@ -2,14 +2,14 @@ require 'formula'
 
 class Neo4j < Formula
   homepage 'http://neo4j.org'
-  url 'http://dist.neo4j.org/neo4j-community-1.9.2-unix.tar.gz'
-  sha1 '7713b9d6f0780afbe58eae01b2ebf09ca002aecb'
-  version 'community-1.9.2-unix'
+  url 'http://dist.neo4j.org/neo4j-community-1.9.4-unix.tar.gz'
+  sha1 '35626670156b3d43038b3fe061c7883e2d32af94'
+  version '1.9.4'
 
   devel do
-    url 'http://dist.neo4j.org/neo4j-community-2.0.0-M03-unix.tar.gz'
-    sha1 'be4695ba51579c68ccdfb3b0ec3ccaec0f51b26e'
-    version 'community-2.0.0-M03-unix'
+    url 'http://dist.neo4j.org/neo4j-community-2.0.0-M06-unix.tar.gz'
+    sha1 'a39ebc5476ace229e4ad5c901238a2e24a6ef0d7'
+    version '2.0.0-M06'
   end
 
   def install

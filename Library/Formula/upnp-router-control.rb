@@ -4,7 +4,13 @@ class UpnpRouterControl < Formula
   homepage 'https://launchpad.net/upnp-router-control'
   url 'https://launchpad.net/upnp-router-control/trunk/0.2/+download/upnp-router-control-0.2.tar.gz'
   sha1 '4d6b22430f784260fccb2f70c27d0a428b9a753a'
-  head 'bzr://lp:upnp-router-control'
+
+  head do
+    url 'bzr://lp:upnp-router-control'
+
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
@@ -14,11 +20,6 @@ class UpnpRouterControl < Formula
   depends_on 'gssdp'
   depends_on 'curl' => :optional
   depends_on :x11
-
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
-  end
 
   def install
     system "./autogen.sh" if build.head?

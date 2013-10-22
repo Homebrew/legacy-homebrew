@@ -40,7 +40,7 @@ class DependencyCollector
 
   def build(spec)
     spec, tags = case spec
-                 when Hash then spec.shift
+                 when Hash then destructure_spec_hash(spec)
                  else spec
                  end
 
@@ -49,10 +49,16 @@ class DependencyCollector
 
   private
 
+  def destructure_spec_hash(spec)
+    spec.each { |o| return o }
+  end
+
   def parse_spec(spec, tags)
     case spec
     when String
       parse_string_spec(spec, tags)
+    when Resource
+      resource_dep(spec, tags)
     when Symbol
       parse_symbol_spec(spec, tags)
     when Requirement, Dependency
@@ -70,7 +76,7 @@ class DependencyCollector
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
       # Next line only for legacy support of `depends_on 'module' => :python`
       # It should be replaced by `depends_on :python => 'module'`
-      return PythonInstalled.new("2", spec) if tag == :python
+      return PythonDependency.new("2", Array(spec)) if tag == :python
       LanguageModuleDependency.new(tag, spec)
     else
       Dependency.new(spec, tags)
@@ -99,8 +105,8 @@ class DependencyCollector
     when :clt        then CLTDependency.new(tags)
     when :arch       then ArchRequirement.new(tags)
     when :hg         then MercurialDependency.new(tags)
-    when :python, :python2 then PythonInstalled.new("2", tags)
-    when :python3    then PythonInstalled.new("3", tags)
+    when :python, :python2 then PythonDependency.new("2", tags)
+    when :python3    then PythonDependency.new("3", tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     else
@@ -132,6 +138,37 @@ class DependencyCollector
       end
 
       Dependency.new(spec.to_s, tags)
+    end
+  end
+
+  def resource_dep(spec, tags)
+    tags << :build
+    strategy = spec.download_strategy
+
+    case
+    when strategy <= CurlDownloadStrategy
+      parse_url_spec(spec.url, tags)
+    when strategy <= GitDownloadStrategy
+      GitDependency.new(tags)
+    when strategy <= MercurialDownloadStrategy
+      MercurialDependency.new(tags)
+    when strategy <= FossilDownloadStrategy
+      Dependency.new("fossil", tags)
+    when strategy <= BazaarDownloadStrategy
+      Dependency.new("bazaar", tags)
+    when strategy < AbstractDownloadStrategy
+      # allow unknown strategies to pass through
+    else
+      raise TypeError,
+        "#{strategy.inspect} is not an AbstractDownloadStrategy subclass"
+    end
+  end
+
+  def parse_url_spec(url, tags)
+    case File.extname(url)
+    when '.xz'  then Dependency.new('xz', tags)
+    when '.rar' then Dependency.new('unrar', tags)
+    when '.7z'  then Dependency.new('p7zip', tags)
     end
   end
 end

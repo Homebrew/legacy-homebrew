@@ -2,8 +2,11 @@ require 'formula'
 
 class Olsrd < Formula
   homepage 'http://www.olsr.org'
-  url 'http://www.olsr.org/releases/0.6/olsrd-0.6.5.2.tar.bz2'
-  sha1 '0a365dd5c70e44cd6a1da01ca6843b5e83c0bc58'
+  url 'http://www.olsr.org/releases/0.6/olsrd-0.6.6.tar.bz2'
+  sha1 '9923e97d786438f24ff19ec94017acd1c7e0c91e'
+
+  #Release is broken and assumes git repository
+  def patches; DATA end
 
   def install
     lib.mkpath
@@ -41,3 +44,18 @@ class Olsrd < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/Makefile b/Makefile
+index 2df56aa..a24fa98 100644
+--- a/Makefile
++++ b/Makefile
+@@ -88,7 +88,7 @@ switch:
+ src/builddata.c:
+ 	$(MAKECMDPREFIX)$(RM) "$@"
+ 	$(MAKECMDPREFIX)echo "#include \"defs.h\"" >> "$@" 
+-	$(MAKECMDPREFIX)echo "const char olsrd_version[] = \"olsr.org -  $(VERS)`./make/hash_source.sh`\";"  >> "$@"
++	$(MAKECMDPREFIX)echo "const char olsrd_version[] = \"olsr.org -  $(VERS)\";" >> "$@"
+ 	$(MAKECMDPREFIX)date +"const char build_date[] = \"%Y-%m-%d %H:%M:%S\";" >> "$@" 
+ 	$(MAKECMDPREFIX)echo "const char build_host[] = \"$(shell hostname)\";" >> "$@" 
+ 

@@ -6,7 +6,7 @@ class Ttytter < Formula
   sha1 'dd20d55aa819699b3e39ca4c35bf390b3e074db3'
 
   def install
-    bin.install '2.1.00.txt' => 'ttytter'
+    bin.install "#{version}.txt" => "ttytter"
   end
 
   def caveats; <<-EOS.undent

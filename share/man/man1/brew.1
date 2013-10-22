@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "July 2013" "Homebrew" "brew"
+.TH "BREW" "1" "September 2013" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -38,8 +38,8 @@ Fetch the newest version of Homebrew from GitHub using \fBgit\fR(1)\.
 List all installed formulae\.
 .
 .TP
-\fBsearch\fR, \fB\-S\fR \fItext\fR|/\fItext\fR/
-Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
+\fBsearch\fR \fItext\fR|/\fItext\fR/
+Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps\. If no search term is given, all locally available formulae are listed\.
 .
 .SH "COMMANDS"
 .
@@ -71,8 +71,15 @@ If \fB\-n\fR is passed, show what would be removed, but do not actually remove a
 If \fB\-s\fR is passed, scrubs the cache, removing downloads for even the latest versions of formula\. Note downloads for any installed formula will still not be deleted\. If you want to delete those too: \fBrm \-rf $(brew \-\-cache)\fR
 .
 .TP
-\fBcreate [\-\-autotools|\-\-cmake] [\-\-no\-fetch] [\-\-set\-name <name>] [\-\-set\-version <version>]\fR \fIURL\fR
-Generate a formula for the downloadable file at \fIURL\fR and open it in the editor\. Homebrew will attempt to automatically derive the formula name and version, but if it fails, you\'ll have to make your own template\. The wget formula serves as a simple example\.
+\fBcommands\fR
+Show a list of built\-in and external commands\.
+.
+.TP
+\fBcreate <URL> [\-\-autotools|\-\-cmake] [\-\-no\-fetch] [\-\-set\-name <name>] [\-\-set\-version <version>]\fR
+Generate a formula for the downloadable file at \fIURL\fR and open it in the editor\. Homebrew will attempt to automatically derive the formula name and version, but if it fails, you\'ll have to make your own template\. The wget formula serves as a simple example\. For a complete cheat\-sheet, have a look at
+.
+.IP
+\fB$(brew \-\-prefix)/Library/Contributions/example\-formula\.rb\fR
 .
 .IP
 If \fB\-\-autotools\fR is passed, create a basic template for an Autotools\-style build\. If \fB\-\-cmake\fR is passed, create a basic template for a CMake\-style build\.
@@ -167,7 +174,7 @@ To view formula history locally: \fBbrew log \-p <formula>\fR\.
 Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
-\fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-fresh] [\-\-use\-clang|\-\-use\-gcc|\-\-use\-llvm] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-fresh] [\-\-cc=<compiler>] [\-\-use\-clang|\-\-use\-gcc|\-\-use\-llvm] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -187,6 +194,9 @@ If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of
 .
 .IP
 If \fB\-\-fresh\fR is passed, the installation process will not re\-use any options from previous installs\.
+.
+.IP
+If \fB\-\-cc=<compiler>\fR is passed, attempt to compile using the specified compiler\. The specified argument should be the name of the compiler\'s executable, for instance \fBgcc\-4\.2\fR for Apple\'s GCC 4\.2\. This option is the only way to select a non\-Apple compiler; for instance, to build using a Homebrew\-provided GCC 4\.8, use \fB\-\-cc=gcc\-4\.8\fR
 .
 .IP
 If \fB\-\-use\-clang\fR is passed, attempt to compile using clang\.
@@ -228,6 +238,13 @@ If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, Homebrew will list all files which
 .
 .IP
 If \fB\-\-force\fR is passed, Homebrew will allow keg\-only formulae to be linked\.
+.
+.TP
+\fBlinkapps [\-\-local]\fR
+Find all installed formulae that have compiled \fB\.app\fR\-style "application" packages for OS X, and symlink those apps into \fB/Applications\fR, allowing for easier access\.
+.
+.IP
+If provided, \fB\-\-local\fR will move them into the user\'s \fB~/Applications\fR folder instead of the system folder\. It may need to be created, first\.
 .
 .TP
 \fBls, list [\-\-unbrewed] [\-\-versions] [\-\-pinned]\fR [\fIformulae\fR]
@@ -292,12 +309,20 @@ Uninstall \fIformula\fR\.
 If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR installed, delete all installed versions\.
 .
 .TP
-\fBsearch\fR, \fB\-S\fR \fItext\fR|/\fItext\fR/
-Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. If no search term is given, all available formula are displayed\.
+\fBsearch\fR, \fB\-S\fR
+Display all locally available formulae for brewing (including tapped ones)\. No online search is performed if called without arguments\.
 .
 .TP
-\fBsearch \-\-macports\fR|\fB\-\-fink\fR|\fB\-\-debian\fR \fItext\fR
-Search for \fItext\fR in MacPorts, Fink or Debian\'s package list\.
+\fBsearch\fR, \fB\-S\fR \fItap\fR
+Display all formulae in a \fItap\fR, even if not yet tapped\. \fItap\fR is of the form \fIuser\fR/\fIrepo\fR, e\.g\. \fBbrew search homebrew/dupes\fR\.
+.
+.TP
+\fBsearch\fR, \fB\-S\fR [\fItap\fR] \fItext\fR|/\fItext\fR/
+Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps\. If a \fItap\fR is specified, the search is restricted to it\.
+.
+.TP
+\fBsearch \-\-debian\fR|\fB\-\-fedora\fR|\fB\-\-fink\fR|\fB\-\-macports\fR|\fB\-\-opensuse\fR|\fB\-\-ubuntu\fR \fItext\fR
+Search for \fItext\fR in the given package manager\'s list\.
 .
 .TP
 \fBsh [\-\-env=std]\fR
@@ -325,7 +350,7 @@ Example: \fBbrew install jruby && brew test jruby\fR
 .
 .TP
 \fBunlink\fR \fIformula\fR
-Unsymlink \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
+Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
 .
 .TP
 \fBunpin\fR \fIformulae\fR
@@ -446,6 +471,10 @@ Homebrew can install formulae via URL, e\.g\. \fBhttps://raw\.github\.com/mxcl/h
 .SH "ENVIRONMENT"
 .
 .TP
+AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+When using the S3 download strategy, Homebrew will look in these variables for access credentials (see \fIhttp://docs\.aws\.amazon\.com/fws/1\.1/GettingStartedGuide/index\.html?AWSCredentials\.html\fR to retrieve these access credentials from AWS)\. If they are not set, the S3 download strategy will download with a public (unsigned) URL\.
+.
+.TP
 BROWSER
 If set, and \fBHOMEBREW_BROWSER\fR is not, use \fBBROWSER\fR as the web browser when opening project homepages\.
 .
@@ -547,18 +576,6 @@ If set, instructs Homebrew to use \fBHOMEBREW_TEMP\fR as the temporary directory
 .
 .IP
 This issue typically occurs when using FileVault or custom SSD configurations\.
-.
-.TP
-HOMEBREW_USE_CLANG
-If set, forces Homebrew to compile using clang\.
-.
-.TP
-HOMEBREW_USE_GCC
-If set, forces Homebrew to compile using gcc\.
-.
-.TP
-HOMEBREW_USE_LLVM
-If set, forces Homebrew to compile using LLVM\.
 .
 .TP
 HOMEBREW_VERBOSE

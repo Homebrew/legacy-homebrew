@@ -2,18 +2,19 @@ require 'formula'
 
 class Gfortran < Formula
   homepage 'http://gcc.gnu.org/wiki/GFortran'
-  url 'http://ftpmirror.gnu.org/gcc/gcc-4.8.1/gcc-4.8.1.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gcc/gcc-4.8.1/gcc-4.8.1.tar.bz2'
-  sha1 '4e655032cda30e1928fcc3f00962f4238b502169'
+  url 'http://ftpmirror.gnu.org/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2'
+  sha1 '810fb70bd721e1d9f446b6503afe0a9088b62986'
 
   bottle do
-    sha1 '74e1625cc759101a8823a249fa1469da98826756' => :mountain_lion
-    sha1 '759a7106878a8b54a9cdfdd99adcc78d34f99a10' => :lion
-    sha1 'f1ca217e4a3beaeee82593a1d63b34f4555aa7cd' => :snow_leopard
+    sha1 '4bf29afb128791de733e10f3000bcd479a9e3808' => :mountain_lion
+    sha1 '9814a52f73882e801a92b8bea20ae9475d389306' => :lion
+    sha1 '7d7b7d79b973ff32824d442a79c22a8c2d455467' => :snow_leopard
   end
 
   option 'enable-profiled-build', 'Make use of profile guided optimization when bootstrapping GCC'
   option 'check', 'Run the make check fortran. This is for maintainers.'
+  option 'enable-multilib', 'Build with multilib support' if MacOS.prefer_64_bit?
 
   depends_on 'gmp'
   depends_on 'libmpc'
@@ -47,20 +48,24 @@ class Gfortran < Formula
       "--with-mpc=#{Formula.factory('libmpc').opt_prefix}",
       "--with-cloog=#{Formula.factory('cloog').opt_prefix}",
       "--with-isl=#{Formula.factory('isl').opt_prefix}",
+      # ...and disable isl and cloog version checks in case they upgrade
+      "--disable-cloog-version-check",
+      "--disable-isl-version-check",
       # ...we build the stage 1 gcc with clang (which is know to fail checks)
       "--enable-checking=release",
       "--disable-stage1-checking",
-      # ...speed up build by ignoring cxx
-      "--disable-build-poststage1-with-cxx",
-      "--disable-libstdcxx-pc",
+      # ...speed up build by stop building libstdc++-v3
+      "--disable-libstdcxx",
+      "--enable-lto",
       # ...disable translations avoid conflict with brew install gcc --enable-nls
       '--disable-nls'
     ]
 
     # https://github.com/mxcl/homebrew/issues/19584#issuecomment-19661219
-    unless MacOS.prefer_64_bit?
-      args << "--disable-multiarch"
-      args << "--disable-multilib"
+    if build.include? 'enable-multilib' and MacOS.prefer_64_bit?
+      args << '--enable-multilib'
+    else
+      args << '--disable-multilib'
     end
 
     mkdir 'build' do

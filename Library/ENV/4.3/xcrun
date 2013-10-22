@@ -20,7 +20,7 @@ def try path
 end
 
 arg0 = ARGV.shift
-try `/usr/bin/xcrun --find #{arg0}`.chomp
+try `/usr/bin/xcrun --find #{arg0} 2>/dev/null`.chomp
 # Nuts, Xcode is not setup properly or something. Try to find the tools anyway!
 try "#{ENV['HOMEBREW_DEVELOPER_DIR']}/usr/bin/#{arg0}"
 try "#{ENV['HOMEBREW_DEVELOPER_DIR']}/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{arg0}"

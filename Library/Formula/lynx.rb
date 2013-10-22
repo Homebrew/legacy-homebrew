@@ -12,7 +12,7 @@ class Lynx < Formula
                           "--disable-echo",
                           "--with-zlib",
                           "--with-bzlib",
-                          "--with-ssl=/usr",
+                          "--with-ssl=#{MacOS.sdk_path}/usr",
                           "--enable-ipv6"
     system "make install"
   end

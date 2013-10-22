@@ -2,8 +2,8 @@ require 'formula'
 
 class TheSilverSearcher < Formula
   homepage 'https://github.com/ggreer/the_silver_searcher'
-  url 'https://github.com/ggreer/the_silver_searcher/archive/0.14.tar.gz'
-  sha1 '88272485c3cee363ca13a09dfd8380f1e786afb3'
+  url 'https://github.com/ggreer/the_silver_searcher/archive/0.16.tar.gz'
+  sha1 'cd6be1534a95d89f417681ac14832b1f5069bcd8'
 
   head 'https://github.com/ggreer/the_silver_searcher.git'
 
@@ -12,7 +12,7 @@ class TheSilverSearcher < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
-  depends_on 'xz' if build.head?
+  depends_on 'xz'
 
   def install
     # Stable tarball does not include pre-generated configure script
@@ -25,6 +25,8 @@ class TheSilverSearcher < Formula
                           "--prefix=#{prefix}"
     system "make"
     system "make install"
+
+    bash_completion.install 'ag.bashcomp.sh'
   end
 
   def test

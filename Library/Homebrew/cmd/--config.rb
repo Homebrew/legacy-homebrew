@@ -56,7 +56,7 @@ module Homebrew extend self
 
   def origin
     origin = HOMEBREW_REPOSITORY.cd do
-      `git config --get remote.origin.url`.chomp
+      `git config --get remote.origin.url 2>/dev/null`.chomp
     end
     if origin.empty? then "(none)" else origin end
   end
@@ -69,7 +69,7 @@ module Homebrew extend self
 
   def describe_x11
     return "N/A" unless MacOS::XQuartz.installed?
-    return "#{MacOS::XQuartz.version} => " + describe_path(MacOS::XQuartz.prefix)
+    return "#{MacOS::XQuartz.version} => #{describe_path(MacOS::XQuartz.prefix)}"
   end
 
   def describe_perl

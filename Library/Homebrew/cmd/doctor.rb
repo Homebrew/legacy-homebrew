@@ -41,16 +41,6 @@ end
 class Checks
 
 ############# HELPERS
-  def paths
-    @paths ||= ENV['PATH'].split(':').collect do |p|
-      begin
-        File.expand_path(p).chomp('/')
-      rescue ArgumentError
-        onoe "The following PATH component is invalid: #{p}"
-      end
-    end.uniq.compact
-  end
-
   # Finds files in HOMEBREW_PREFIX *and* /usr/local.
   # Specify paths relative to a prefix eg. "include/foo.h".
   # Sets @found for your convenience.
@@ -68,7 +58,7 @@ class Checks
 # Sorry for the lack of an indent here, the diff would have been unreadable.
 # See https://github.com/mxcl/homebrew/pull/9986
 def check_path_for_trailing_slashes
-  bad_paths = ENV['PATH'].split(':').select { |p| p[-1..-1] == '/' }
+  bad_paths = ENV['PATH'].split(File::PATH_SEPARATOR).select { |p| p[-1..-1] == '/' }
   return if bad_paths.empty?
   s = <<-EOS.undent
     Some directories in your path end in a slash.
@@ -223,11 +213,13 @@ end
 def __check_clt_up_to_date
   if not MacOS::CLT.installed? then <<-EOS.undent
     No developer tools installed
-    You should install the Command Line Tools: http://connect.apple.com
+    You should install the Command Line Tools:
+      https://developer.apple.com/downloads/
     EOS
   elsif MacOS::CLT.outdated? then <<-EOS.undent
     A newer Command Line Tools release is available
-    You should install the latest version from: http://connect.apple.com
+    You should install the latest version from:
+      https://developer.apple.com/downloads
     EOS
   end
 end
@@ -239,14 +231,6 @@ def check_for_osx_gcc_installer
     Homebrew doesn't support osx-gcc-installer, and it is known to cause
     some builds to fail.
     Please install Xcode #{MacOS::Xcode.latest_version}.
-    EOS
-  end
-end
-
-def check_for_unsupported_osx
-  if MacOS.version > 10.8 then <<-EOS.undent
-    You are using Mac OS X #{MacOS.version}.
-    We do not yet provide support for this (unreleased) version.
     EOS
   end
 end
@@ -427,14 +411,12 @@ end
 def check_user_path_1
   $seen_prefix_bin = false
   $seen_prefix_sbin = false
-  seen_usr_bin = false
 
   out = nil
 
   paths.each do |p|
     case p
     when '/usr/bin'
-      seen_usr_bin = true
       unless $seen_prefix_bin
         # only show the doctor message if there are any conflicts
         # rationale: a default install should not trigger any brew doctor messages
@@ -450,8 +432,9 @@ def check_user_path_1
 
                 #{conflicts * "\n                "}
 
-            Consider amending your PATH so that #{HOMEBREW_PREFIX}/bin
-            occurs before /usr/bin in your PATH.
+            Consider setting your PATH so that #{HOMEBREW_PREFIX}/bin
+            occurs before /usr/bin. Here is a one-liner:
+                echo export PATH="#{HOMEBREW_PREFIX}/bin:$PATH" >> ~/.bash_profile
           EOS
         end
       end
@@ -467,9 +450,9 @@ end
 def check_user_path_2
   unless $seen_prefix_bin
     <<-EOS.undent
-      Homebrew's bin was not found in your path.
-      Consider amending your PATH variable so it contains:
-        #{HOMEBREW_PREFIX}/bin
+      Homebrew's bin was not found in your PATH.
+      Consider setting the PATH for example like so
+          echo export PATH="#{HOMEBREW_PREFIX}/bin:$PATH" >> ~/.bash_profile
     EOS
   end
 end
@@ -480,9 +463,10 @@ def check_user_path_3
   if sbin.directory? and sbin.children.length > 0
     unless $seen_prefix_sbin
       <<-EOS.undent
-        Homebrew's sbin was not found in your path.
-        Consider amending your PATH variable so it contains:
-          #{HOMEBREW_PREFIX}/sbin
+        Homebrew's sbin was not found in your PATH but you have installed
+        formulae that put executables in #{HOMEBREW_PREFIX}/sbin.
+        Consider setting the PATH for example like so
+            echo export PATH="#{HOMEBREW_PREFIX}/sbin:$PATH" >> ~/.bash_profile
       EOS
     end
   end
@@ -658,7 +642,7 @@ def check_for_multiple_volumes
   real_cellar = HOMEBREW_CELLAR.realpath
 
   tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-  tmp = Pathname.new `/usr/bin/mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX`.strip
+  tmp = Pathname.new with_system_path { `mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX` }.strip
   real_temp = tmp.realpath.parent
 
   where_cellar = volumes.which real_cellar
@@ -837,11 +821,12 @@ def check_for_linked_keg_only_brews
 end
 
 def check_for_MACOSX_DEPLOYMENT_TARGET
-  target_var = ENV['MACOSX_DEPLOYMENT_TARGET']
-  if target_var and target_var != MACOS_VERSION.to_s then <<-EOS.undent
-    MACOSX_DEPLOYMENT_TARGET was set to #{target_var}
+  target = ENV.fetch('MACOSX_DEPLOYMENT_TARGET') { return }
+
+  unless target == MacOS.version.to_s then <<-EOS.undent
+    MACOSX_DEPLOYMENT_TARGET was set to #{target.inspect}
     This is used by Fink, but having it set to a value different from the
-    current system version (#{MACOS_VERSION}) can cause problems, compiling
+    current system version (#{MacOS.version}) can cause problems, compiling
     Git for instance, and should probably be removed.
     EOS
   end
@@ -959,7 +944,7 @@ def check_for_bad_python_symlink
 end
 
 def check_for_non_prefixed_coreutils
-  gnubin = Formula.factory('coreutils').prefix.to_s + "/libexec/gnubin"
+  gnubin = "#{Formula.factory('coreutils').prefix}/libexec/gnubin"
   if paths.include? gnubin then <<-EOS.undent
     Putting non-prefixed coreutils in your path can cause gmp builds to fail.
     EOS
@@ -975,7 +960,7 @@ def check_for_non_prefixed_findutils
 end
 
 def check_for_pydistutils_cfg_in_home
-  if File.exist? ENV['HOME']+'/.pydistutils.cfg' then <<-EOS.undent
+  if File.exist? "#{ENV['HOME']}/.pydistutils.cfg" then <<-EOS.undent
     A .pydistutils.cfg file was found in $HOME, which may cause Python
     builds to fail. See:
       http://bugs.python.org/issue6138
@@ -1025,10 +1010,6 @@ def check_for_unlinked_but_not_keg_only
       true
     end
   end.map{ |pn| pn.basename }
-
-  # NOTE very old kegs will be linked without the LinkedKegs symlink
-  # this will trigger this warning but it's wrong, we could detect that though
-  # but I don't feel like writing the code.
 
   if not unlinked.empty? then <<-EOS.undent
     You have unlinked kegs in your Cellar

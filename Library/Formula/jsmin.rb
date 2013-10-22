@@ -2,12 +2,12 @@ require 'formula'
 
 class Jsmin < Formula
   homepage 'http://www.crockford.com/javascript/jsmin.html'
-  url 'https://github.com/douglascrockford/JSMin/archive/67754f619d0562f583dc5e869d2c05c0af21aca9.tar.gz'
-  version '2013-02-25'
-  sha1 '71633539862e0ab68ed74a92127304794ec8bfa9'
+  url 'https://github.com/douglascrockford/JSMin/archive/1bf6ce5f74a9f8752ac7f5d115b8d7ccb31cfe1b.tar.gz'
+  version '2013-03-29'
+  sha1 '8330fa182c283d5cc3fefcfb412bba662c0e2ee9'
 
   def install
-    system 'cc jsmin.c -o jsmin'
+    system ENV.cc, 'jsmin.c', '-o', 'jsmin'
     bin.install 'jsmin'
   end
 end

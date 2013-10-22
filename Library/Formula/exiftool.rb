@@ -2,8 +2,8 @@ require 'formula'
 
 class Exiftool < Formula
   homepage 'http://www.sno.phy.queensu.ca/~phil/exiftool/index.html'
-  url 'http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-9.33.tar.gz'
-  sha1 '237fefed9ffa0e427451ac34d76327157a99cb2f'
+  url 'http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-9.39.tar.gz'
+  sha1 'fbc78533eb3006d46a9bb5e350e8d6bd6bd1e84c'
 
   def install
     system "perl", "Makefile.PL"

@@ -23,6 +23,8 @@ class Pygtkglext < Formula
   end
 
   test do
-    system "python", "-c", "import pygtk", "pygtk.require('2.0')", "import gtk.gtkgl"
+    python do
+      system python, "-c", "import pygtk", "pygtk.require('2.0')", "import gtk.gtkgl"
+    end
   end
 end

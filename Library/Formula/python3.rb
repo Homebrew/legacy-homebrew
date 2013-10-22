@@ -4,17 +4,6 @@ require 'formula'
 # It's somewhat incompatible with Python 2.x, therefore, the executable
 # "python" will always point to the 2.x version which you can get by
 # `brew install python`.
-
-class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-0.9.7.tar.gz'
-  sha1 'c56c5cc55b678c25a0a06f25a122f6492d62e2d3'
-end
-
-class Pip < Formula
-  url 'https://pypi.python.org/packages/source/p/pip/pip-1.3.1.tar.gz'
-  sha1 '9c70d314e5dea6f41415af814056b0f63c3ffd14'
-end
-
 class Python3 < Formula
   homepage 'http://www.python.org/'
   url 'http://python.org/ftp/python/3.3.2/Python-3.3.2.tar.bz2'
@@ -35,6 +24,20 @@ class Python3 < Formula
   depends_on 'openssl' if build.with? 'brewed-openssl'
   depends_on 'xz' => :recommended  # for the lzma module added in 3.3
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
+  depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
+
+  skip_clean "bin/pip3", "bin/pip-#{VER}"
+  skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
+
+  resource 'setuptools' do
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.6.tar.gz'
+    sha1 '4a8863e8196704759a5800afbcf33a94b802ac88'
+  end
+
+  resource 'pip' do
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
+    sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
+  end
 
   def patches
     DATA if build.with? 'brewed-tk'
@@ -66,6 +69,7 @@ class Python3 < Formula
     # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
     ENV['PYTHONHOME'] = nil
+    ENV['PYTHONPATH'] = nil
 
     args = %W[
       --prefix=#{prefix}
@@ -130,31 +134,33 @@ class Python3 < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # "python3" and executable is forgotten for framework builds.
+    # "python3" executable is forgotten for framework builds.
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
 
-    # We ship setuptools and pip and reuse the PythonInstalled
+    # We ship setuptools and pip and reuse the PythonDependency
     # Requirement here to write the sitecustomize.py
-    py = PythonInstalled.new(VER)
+    py = PythonDependency.new(VER)
+    py.binary = bin/"python#{VER}"
+    py.modify_build_environment
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
-    # setuptools-0.9.5-py3.3.egg
+    # setuptools-0.9.8-py3.3.egg
     rm_rf Dir["#{py.global_site_packages}/setuptools*"]
     rm_rf Dir["#{py.global_site_packages}/distribute*"]
 
-    py.binary = bin/"python#{VER}"
-    py.modify_build_environment
     setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-    Setuptools.new.brew { system "#{bin}/python#{VER}", *setup_args }
+
+    resource('setuptools').stage { system py.binary, *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
-    Pip.new.brew { system "#{bin}/python#{VER}", *setup_args }
+
+    resource('pip').stage { system py.binary, *setup_args }
     mv bin/'pip', bin/'pip3'
 
-    # And now we write the distuitsl.cfg
+    # And now we write the distutils.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/distutils/distutils.cfg"
     cfg.delete if cfg.exist?
     cfg.write <<-EOF.undent

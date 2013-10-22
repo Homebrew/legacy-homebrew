@@ -14,8 +14,8 @@ class Lilypond < Formula
   sha1 '1eb3b0e5c117a8669dba19ab28f933351e51e39a'
 
   devel do
-    url 'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.22.tar.gz'
-    sha1 'c5433cf6ce202685fd841c97161607b9ee03229e'
+    url 'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.28.tar.gz'
+    sha1 'ce0db5e0749b69c62640ee72126a4347ff4ebfd7'
   end
 
   env :std

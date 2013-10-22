@@ -1,47 +1,75 @@
 require 'formula'
 
-class WineGecko < Formula
-  url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
-  sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
-end
-
-class WineMono < Formula
-  url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
-  sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
-end
-
-# NOTE: when updating Wine, please check Wine-Gecko and Wine-Mono for updates
-#  http://wiki.winehq.org/Gecko
-#  http://wiki.winehq.org/Mono
+# NOTE: When updating Wine, please check Wine-Gecko and Wine-Mono for updates too:
+# http://wiki.winehq.org/Gecko
+# http://wiki.winehq.org/Mono
 class Wine < Formula
   homepage 'http://winehq.org/'
-  url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
-  sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
 
-  head 'git://source.winehq.org/git/wine.git'
+  stable do
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
+    sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
+    depends_on 'little-cms'
+  end
+
+  devel do
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.4.tar.bz2'
+    sha256 '517b3465dbf5b516d3fe886c0f9d4f310dc1d4a38ca4e5580c5d66bab3fb6969'
+    depends_on 'little-cms2'
+  end
+
+  head do
+    url 'git://source.winehq.org/git/wine.git'
+    depends_on 'little-cms2'
+  end
 
   env :std
 
-  # this tells Homebrew that dependencies must be built universal
-  def build.universal? ; true; end
-
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
+  require_universal_deps
 
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
   depends_on :x11 => :recommended
   depends_on 'freetype' if build.without? 'x11'
   depends_on 'jpeg'
+  depends_on 'libgphoto2'
   depends_on 'libicns'
   depends_on 'libtiff'
-  depends_on 'little-cms'
   depends_on 'sane-backends'
-  depends_on 'libgphoto2'
+  depends_on 'libgsm' => :optional
+
+  resource 'gecko' do
+    url 'http://downloads.sourceforge.net/wine/wine_gecko-2.24-x86.msi', :using => :nounzip
+    version '2.24'
+    sha1 'b4923c0565e6cbd20075a0d4119ce3b48424f962'
+  end
+
+  resource 'mono' do
+    url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+    sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
+  end
 
   fails_with :llvm do
     build 2336
     cause 'llvm-gcc does not respect force_align_arg_pointer'
+  end
+
+  fails_with :clang do
+    build 421
+    cause 'error: invalid operand for instruction lretw'
+  end
+
+  def patches
+    if build.stable?
+      p = []
+      # http://bugs.winehq.org/show_bug.cgi?id=34188
+      p << 'http://bugs.winehq.org/attachment.cgi?id=45507'
+      # http://bugs.winehq.org/show_bug.cgi?id=34162
+      p << 'http://bugs.winehq.org/attachment.cgi?id=45562' if MacOS.version >= :mavericks
+      p
+    end
   end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
@@ -65,8 +93,8 @@ class Wine < Formula
     ENV.append "CFLAGS", build32
     ENV.append "LDFLAGS", build32
 
-    # Still miscompiles at v1.6
-    if ENV.compiler == :clang
+    # The clang that comes with Xcode 5 no longer miscompiles wine. Tested with 1.7.3.
+    if ENV.compiler == :clang and Compiler.new(:clang).build < 500
       opoo <<-EOS.undent
         Clang currently miscompiles some parts of Wine. If you have gcc, you
         can get a more stable build with:
@@ -90,6 +118,8 @@ class Wine < Formula
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
 
+    args << "--without-x" if build.without? 'x11'
+
     system "./configure", *args
 
     unless ENV.compiler == :clang or ENV.compiler == :llvm
@@ -100,36 +130,41 @@ class Wine < Formula
     end
 
     system "make install"
-
-    # Don't need Gnome desktop support
-    (share/'applications').rmtree
-
-    # Download Gecko and Mono once so we don't need to redownload for each prefix
-    WineGecko.new('winegecko').brew { (share+'wine/gecko').install Dir["*"] }
-    WineMono.new('winemono').brew { (share+'wine/mono').install Dir["*"] }
+    (share/'wine/gecko').install resource('gecko')
+    (share/'wine/mono').install resource('mono')
 
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine
     mv bin/'wine', bin/'wine.bin'
     (bin/'wine').write(wine_wrapper)
+
+    # Don't need Gnome desktop support
+    (share/'applications').rmtree
   end
 
-  def caveats; <<-EOS.undent
-    You may want to get winetricks:
-      brew install winetricks
+  def caveats
+    s = <<-EOS.undent
+      You may want to get winetricks:
+        brew install winetricks
 
-    By default Wine uses a native Mac driver. To switch to the X11 driver, use
-    regedit to set the "graphics" key under "HKCU\Software\Wine\Drivers" to
-    "x11" (or use winetricks).
-
-    For best results with X11, install the latest version of XQuartz:
-      http://xquartz.macosforge.org/
-
-    The current version of Wine contains a partial implementation of dwrite.dll
-    which may cause text rendering issues in applications such as Steam.
-    We recommend that you run winecfg, add an override for dwrite in the
-    Libraries tab, and edit the override mode to "disable". See:
-      http://bugs.winehq.org/show_bug.cgi?id=31374
+      The current version of Wine contains a partial implementation of dwrite.dll
+      which may cause text rendering issues in applications such as Steam.
+      We recommend that you run winecfg, add an override for dwrite in the
+      Libraries tab, and edit the override mode to "disable". See:
+        http://bugs.winehq.org/show_bug.cgi?id=31374
     EOS
+
+    unless build.without? 'x11'
+      s += <<-EOS.undent
+
+        By default Wine uses a native Mac driver. To switch to the X11 driver, use
+        regedit to set the "graphics" key under "HKCU\Software\Wine\Drivers" to
+        "x11" (or use winetricks).
+
+        For best results with X11, install the latest version of XQuartz:
+          http://xquartz.macosforge.org/
+      EOS
+    end
+    return s
   end
 end

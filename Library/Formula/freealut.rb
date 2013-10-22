@@ -3,6 +3,7 @@ require 'formula'
 class Freealut < Formula
   homepage 'http://connect.creativelabs.com/openal/Documentation/The%20OpenAL%20Utility%20Toolkit.htm'
   url 'http://connect.creativelabs.com/openal/Downloads/ALUT/freealut-1.1.0.tar.gz'
+  mirror 'http://ftp.de.debian.org/debian/pool/main/f/freealut/freealut_1.1.0.orig.tar.gz'
   sha1 'b2c04d2b5e0896b3164c01deda39f58933c8055f'
 
   # Adds the OpenAL frameworks to the library list so linking succeeds
