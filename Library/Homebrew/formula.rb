@@ -56,7 +56,7 @@ class Formula
 
   def set_spec(name)
     spec = self.class.send(name)
-    if block_given? && yield(spec) || !spec.url.nil?
+    if block_given? && yield(spec) || spec.url
       spec.owner = self
       instance_variable_set("@#{name}", spec)
     end
