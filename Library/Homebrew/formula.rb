@@ -170,7 +170,10 @@ class Formula
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
-  def bash_completion; prefix+'etc/bash_completion.d' end
+  def bash_completion
+    etc = ENV['HOMEBREW_GIT_ETC'] ? self.etc : prefix+'etc'
+    etc+'bash_completion.d'
+  end
   def zsh_completion;  share+'zsh/site-functions'     end
 
   # for storing etc, var files for later copying from bottles

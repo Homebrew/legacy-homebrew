@@ -45,6 +45,7 @@ class Rpm < Formula
         --prefix=#{prefix}
         --localstatedir=#{var}
         --with-path-cfg=#{etc}/rpm
+        --with-path-magic=#{share}/misc/magic
         --with-extra-path-macros=#{lib}/rpm/macros.*
         --disable-openmp
         --disable-nls

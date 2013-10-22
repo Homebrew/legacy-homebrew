@@ -7,6 +7,7 @@ class Libextractor < Formula
   sha1 '244eb3e16dadedea9dc827fb91cb309e2baa8637'
 
   depends_on 'pkg-config' => :build
+  depends_on :libltdl
 
   def install
     ENV.deparallelize

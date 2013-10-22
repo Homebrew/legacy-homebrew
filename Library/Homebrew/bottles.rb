@@ -1,5 +1,5 @@
 require 'tab'
-require 'macos'
+require 'os/mac'
 require 'extend/ARGV'
 require 'bottle_version'
 
@@ -76,12 +76,18 @@ end
 
 def bottle_tag
   case MacOS.version
-  when "10.8", "10.7", "10.5"
+  when "10.8", "10.7"
     MacOS.cat
   when "10.6"
     Hardware::CPU.is_64_bit? ? :snow_leopard : :snow_leopard_32
   else
-    Hardware::CPU.type == :ppc ? Hardware::CPU.family : MacOS.cat
+    # Return, e.g., :tiger_g3, :leopard_g5_64, :leopard_64 (which is Intel)
+    if Hardware::CPU.type == :ppc
+      tag = "#{MacOS.cat}_#{Hardware::CPU.family}".to_sym
+    else
+      tag = MacOS.cat
+    end
+    MacOS.prefer_64_bit? ? "#{tag}_64".to_sym : tag
   end
 end
 

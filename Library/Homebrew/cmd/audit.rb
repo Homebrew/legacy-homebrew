@@ -153,7 +153,7 @@ class FormulaAuditor
       when *BUILD_TIME_DEPS
         next if dep.build?
         next if dep.name == 'autoconf' && f.name =~ /automake/
-        next if dep.name == 'libtool' && %w{imagemagick libgphoto2 libp11}.any? { |n| f.name == n }
+        next if dep.name == 'libtool' && %w{imagemagick libgphoto2 libp11 libextractor}.any? { |n| f.name == n }
         next if dep.name =~ /autoconf|pkg-config/ && f.name == 'ruby-build'
 
         problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
