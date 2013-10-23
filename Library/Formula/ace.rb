@@ -11,10 +11,8 @@ class Ace < Formula
     when :leopard then 'macosx_leopard'
     when :snow_leopard then 'macosx_snowleopard'
     when :lion then 'macosx_lion'
-    # Fix for 6.2.2.
-    # There's no Mountain Lion or Mavericks files yet.
-    # Reported to d.schmidt@vanderbilt.edu
-    else 'macosx_lion'
+    when :mountain_lion then 'macosx_mountainlion'
+    when :mavericks then 'macosx_mavericks'
     end
   end
 
