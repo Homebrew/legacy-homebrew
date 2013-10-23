@@ -2,8 +2,8 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.20.tar.gz'
-  sha1 '27608024ba9995b53474500d1fc3eb12fff945f0'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.21.tar.gz'
+  sha1 '66b3b2b85283df2b7875d4dcc044dc1afb28a58b'
   head 'https://github.com/phusion/passenger.git'
 
   depends_on :macos => :lion
@@ -15,8 +15,8 @@ class Passenger < Formula
 
     necessary_files = Dir["configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "INSTALL.md", "NEWS", "passenger.gemspec",
-      "build", "lib", "bin", "doc", "man", "helper-scripts", "ext",
-      "resources", "buildout"]
+      "build", "lib", "node_lib", "bin", "doc", "man", "helper-scripts",
+      "ext", "resources", "buildout"]
     libexec.mkpath
     cp_r necessary_files, libexec, :preserve => true
 
