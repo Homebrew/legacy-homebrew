@@ -16,8 +16,8 @@ end
 
 class Notmuch < Formula
   homepage 'http://notmuchmail.org'
-  url 'http://notmuchmail.org/releases/notmuch-0.15.2.tar.gz'
-  sha1 'cbfcfe8441dded2268da2740eb7da4c509c289bb'
+  url 'http://notmuchmail.org/releases/notmuch-0.16.tar.gz'
+  sha1 '1919277b322d7aaffa81b80a64aedbb8a1c52a2b'
 
   option "emacs", "Install emacs support."
 
