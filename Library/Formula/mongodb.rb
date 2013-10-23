@@ -2,12 +2,17 @@ require 'formula'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.7.tar.gz'
-  sha1 'abef63992fe12e4e68a7d9de01d8d8eaa8705c9a'
-
-  devel do
+  if MacOS.version >= :mavericks
     url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.3.tar.gz'
     sha1 '8fbd7f6f2a55092ae0e461ee0f5a4a7f738d40c9'
+  else
+    url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.7.tar.gz'
+    sha1 'abef63992fe12e4e68a7d9de01d8d8eaa8705c9a'
+
+    devel do
+      url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.3.tar.gz'
+      sha1 '8fbd7f6f2a55092ae0e461ee0f5a4a7f738d40c9'
+    end
   end
 
   head 'https://github.com/mongodb/mongo.git'
