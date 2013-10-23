@@ -4,7 +4,7 @@ class NewEnoughEmacs < Requirement
   fatal true
 
   def satisfied?
-    major_version = `emacs --batch --eval '(princ emacs-major-version)'`
+    major_version = `emacs --batch --eval '(princ emacs-major-version)'`.to_i
     major_version >= 23
   end
 
