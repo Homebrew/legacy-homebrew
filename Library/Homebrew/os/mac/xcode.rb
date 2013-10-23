@@ -143,15 +143,15 @@ module OS
       end
 
       def provides_autotools?
-        version.to_f < 4.3
+        version < "4.3"
       end
 
       def provides_gcc?
-        version.to_f < 4.3
+        version < "4.3"
       end
 
       def default_prefix?
-        if version.to_f < 4.3
+        if version < "4.3"
           %r{^/Developer} === prefix
         else
           %r{^/Applications/Xcode.app} === prefix
