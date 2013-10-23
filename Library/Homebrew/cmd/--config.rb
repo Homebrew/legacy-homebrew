@@ -42,7 +42,7 @@ module Homebrew extend self
   def clt
     if instance_variable_defined?(:@clt)
       @clt
-    elsif MacOS::CLT.installed? && MacOS::Xcode.version.to_f >= 4.3
+    elsif MacOS::CLT.installed? && MacOS::Xcode.version >= "4.3"
       @clt = MacOS::CLT.version
     end
   end
