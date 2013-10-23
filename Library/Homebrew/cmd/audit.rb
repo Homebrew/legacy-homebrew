@@ -153,7 +153,7 @@ class FormulaAuditor
       when *BUILD_TIME_DEPS
         next if dep.build?
         next if dep.name == 'autoconf' && f.name =~ /automake/
-        next if dep.name == 'libtool' && %w{imagemagick libgphoto2 libp11}.any? { |n| f.name == n }
+        next if dep.name == 'libtool' && %w{imagemagick libgphoto2 libp11 libextractor}.any? { |n| f.name == n }
         next if dep.name =~ /autoconf|pkg-config/ && f.name == 'ruby-build'
 
         problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
@@ -262,10 +262,6 @@ class FormulaAuditor
     # Use new-style archive downloads
     urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
-    end
-
-    if urls.any? { |u| u =~ /\.xz/ } && !f.deps.any? { |d| d.name == "xz" }
-      problem "Missing a build-time dependency on 'xz'"
     end
   end
 
@@ -403,8 +399,10 @@ class FormulaAuditor
     end
 
     # Avoid hard-coding compilers
-    if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
-      problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
+    unless f.name == 'go' # Go needs to set CC for cgo support.
+      if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
+        problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
+      end
     end
 
     if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}

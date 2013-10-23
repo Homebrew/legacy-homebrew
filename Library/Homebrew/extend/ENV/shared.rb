@@ -183,7 +183,7 @@ module SharedEnvExtension
     begin
       gcc_name = 'gcc' + gcc.delete('.')
       gcc = Formulary.factory(gcc_name)
-      if !gcc.installed?
+      if !gcc.opt_prefix.exist?
         raise <<-EOS.undent
         The requested Homebrew GCC, #{gcc_name}, was not installed.
         You must:

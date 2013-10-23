@@ -56,13 +56,7 @@ class Cmd
     @tool ||= case @arg0
     when 'ld' then 'ld'
     when 'cpp' then 'cpp'
-    when 'cc', 'c99', 'c89'
-      # Ideally we would run `cx9`, however these tools are POSIX compliant
-      # and don't support many flags. We need -isystem for instance, but also
-      # reliability is generally much higher if we just get clang/gcc to do
-      # the work since Makefiles are dumb and include a lot of excess flags.
-      ENV['HOMEBREW_CC']
-    when 'c++'
+    when /\w\+\+$/
       case ENV['HOMEBREW_CC']
       when /clang/
         'clang++'
@@ -72,7 +66,9 @@ class Cmd
         'g++' + $1.to_s
       end
     else
-      @arg0
+      # Note that this is a universal fallback, so that we'll always invoke
+      # HOMEBREW_CC regardless of what name under which the tool was invoked.
+      ENV['HOMEBREW_CC']
     end
   end
   def args
@@ -86,7 +82,7 @@ class Cmd
     else
       args << "-syslibroot" << $sdkroot
     end if nclt?
-    case mode
+    allflags = case mode
     when :ccld
       cflags + args + cppflags + ldflags
     when :cc
@@ -98,6 +94,8 @@ class Cmd
     when :ld
       ldflags + args
     end.compact
+    make_fuss(allflags) if verbose?
+    allflags
   end
   def refurbished_args
     lset = Set.new(libpath + syslibpath)
@@ -148,7 +146,6 @@ class Cmd
         args << arg
       end
     end
-    make_fuss(args)
     args
   end
   def cflags
@@ -216,9 +213,12 @@ class Cmd
     adds = args - @args
     dups = dels & args
 
-    STDERR.puts "brew: superenv removed: #{dels*' '}" unless dels.empty?
-    STDERR.puts "brew: superenv deduped: #{dups}" unless dups.empty?
-    STDERR.puts "brew: superenv added: #{adds*' '}" unless adds.empty?
+    puts "brew: superenv removed: #{dels*' '}" unless dels.empty?
+    puts "brew: superenv deduped: #{dups}" unless dups.empty?
+    puts "brew: superenv added: #{adds*' '}" unless adds.empty?
+  end
+  def verbose?
+    !ENV['VERBOSE'].nil? || !ENV['HOMEBREW_VERBOSE'].nil?
   end
 end
 

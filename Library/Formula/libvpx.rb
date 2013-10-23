@@ -3,7 +3,7 @@ require 'formula'
 class Libvpx < Formula
   homepage 'http://www.webmproject.org/code/'
   url 'http://webm.googlecode.com/files/libvpx-v1.2.0.tar.bz2'
-  sha1 '33fb2df4ee5b06637dc492dafe49425ead117a24'
+  sha1 '214d9a215af1a3278d9fcba4cac89566e321e4cf'
 
   depends_on 'yasm' => :build
 

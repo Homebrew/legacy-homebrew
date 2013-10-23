@@ -94,11 +94,11 @@ class FormulaInstaller
   def git_etc_postinstall
     return unless quiet_system 'git', '--version'
 
-    etc = HOMEBREW_PREFIX+'etc'
     preinstall_branch = "#{f.name}-preinstall"
     default_branch = "#{f.name}-default"
     merged = false
-    etc.cd do
+    f.etc.mkpath
+    f.etc.cd do
       if quiet_system 'git', 'diff', '--exit-code', preinstall_branch
         quiet_system 'git', 'branch', default_branch
         quiet_system 'git', 'branch', '-D', preinstall_branch
@@ -315,7 +315,10 @@ class FormulaInstaller
   end
 
   def install_dependencies
-    oh1 "Installing dependencies for #{f}: #{Tty.green}#{effective_deps.join(", ")}#{Tty.reset}" if not effective_deps.empty?
+    if effective_deps.length > 1
+      oh1 "Installing dependencies for #{f}: #{Tty.green}#{effective_deps*", "}#{Tty.reset}"
+    end
+
     effective_deps.each do |dep|
       if dep.requested?
        install_dependency(dep)
@@ -381,7 +384,7 @@ class FormulaInstaller
       link
     end
 
-    fix_install_names
+    fix_install_names if OS.mac?
 
     record_cxx_stdlib
 

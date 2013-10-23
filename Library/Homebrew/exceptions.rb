@@ -44,7 +44,7 @@ class FormulaUnavailableError < RuntimeError
   end
 
   def to_s
-    if name =~ %r{(\w+)/(\w+)/([^/]+)} then <<-EOS.undent
+    if name =~ HOMEBREW_TAP_FORMULA_REGEX then <<-EOS.undent
       No available formula for #$3 #{dependent_s}
       Please tap it and then try again: brew tap #$1/#$2
       EOS
@@ -219,6 +219,11 @@ class CompilerSelectionError < StandardError
       brew install apple-gcc42
     EOS
   end
+end
+
+# raised in install_tap
+class AlreadyTappedError < RuntimeError
+  def initialize; super "Already tapped!" end
 end
 
 # raised in CurlDownloadStrategy.fetch

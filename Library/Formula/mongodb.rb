@@ -28,6 +28,12 @@ class Mongodb < Formula
   depends_on 'openssl' => :optional
 
   def install
+    # mongodb currently doesn't support building against libc++
+    # This will be fixed in the 2.6 release, but meanwhile it must
+    # be built against libstdc++
+    # See: https://github.com/mxcl/homebrew/issues/22771
+    ENV.append 'CXXFLAGS', '-stdlib=libstdc++' if ENV.compiler == :clang
+
     args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
     args << '--64' if MacOS.prefer_64_bit?
 
