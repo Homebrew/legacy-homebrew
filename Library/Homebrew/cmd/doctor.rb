@@ -193,34 +193,68 @@ end
 def check_xcode_clt
   if MacOS::Xcode.installed?
     __check_xcode_up_to_date
-  elsif MacOS.version >= "10.7"
+  elsif MacOS.version >= :lion
     __check_clt_up_to_date
   else <<-EOS.undent
-    Xcode not installed
-    Most stuff needs Xcode to build: http://developer.apple.com/xcode/
+      Xcode is not installed
+      Most formulae need Xcode to build.
+      It can be installed from https://developer.apple.com/downloads/
     EOS
   end
 end
 
 def __check_xcode_up_to_date
-  if MacOS::Xcode.outdated? then <<-EOS.undent
-    Your Xcode (#{MacOS::Xcode.version}) is outdated
-    Please install Xcode #{MacOS::Xcode.latest_version}.
+  if MacOS::Xcode.outdated?
+    message = <<-EOS.undent
+      Your Xcode (#{MacOS::Xcode.version}) is outdated
+      Please update to Xcode #{MacOS::Xcode.latest_version}.
     EOS
+    if MacOS.version >= :lion
+      message += <<-EOS.undent
+      Xcode can be updated from the App Store.
+      EOS
+    else
+      message += <<-EOS.undent
+      Xcode can be updated from https://developer.apple.com/downloads/
+      EOS
+    end
+    message
   end
 end
 
 def __check_clt_up_to_date
-  if not MacOS::CLT.installed? then <<-EOS.undent
-    No developer tools installed
-    You should install the Command Line Tools:
-      https://developer.apple.com/downloads/
+  if not MacOS::CLT.installed?
+    message = <<-EOS.undent
+      No developer tools installed.
+      You should install the Command Line Tools.
     EOS
-  elsif MacOS::CLT.outdated? then <<-EOS.undent
-    A newer Command Line Tools release is available
-    You should install the latest version from:
-      https://developer.apple.com/downloads
+    if MacOS.version >= :mavericks
+      message += <<-EOS.undent
+        Run `xcode-select --install` to install them.
+      EOS
+    else
+      message += <<-EOS.undent
+        The standalone package can be obtained from
+        https://developer.apple.com/downloads/,
+        or it can be installed via Xcode's preferences.
+      EOS
+    end
+    message
+  elsif MacOS::CLT.outdated?
+    message = <<-EOS.undent
+      A newer Command Line Tools release is available
     EOS
+    if MacOS.version >= :mavericks
+      message += <<-EOS.undent
+        Update them from Software Update in the App Store.
+      EOS
+    else
+      message += <<-EOS.undent
+        The standalone package can be obtained from
+        https://developer.apple.com/downloads/,
+        or it can be installed via Xcode's preferences.
+      EOS
+    end
   end
 end
 
