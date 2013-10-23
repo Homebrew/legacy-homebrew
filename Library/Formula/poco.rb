@@ -3,7 +3,7 @@ require 'formula'
 class Poco < Formula
   homepage 'http://pocoproject.org/'
   url 'http://pocoproject.org/releases/poco-1.4.6/poco-1.4.6p2-all.tar.bz2'
-  sha1 '36f9c7cc806eb9ba8fea11b25f2392c37d8f904d'
+  sha1 'd0d5459039f26a8d4402c8e85484b1b29c75b2b4'
   version '1.4.6p2-all'
 
   devel do

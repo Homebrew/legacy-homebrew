@@ -75,10 +75,9 @@ def bottle_url f
 end
 
 def bottle_tag
-  case MacOS.version
-  when "10.8", "10.7"
+  if MacOS.version >= :lion
     MacOS.cat
-  when "10.6"
+  elsif MacOS.version == :snow_leopard
     Hardware::CPU.is_64_bit? ? :snow_leopard : :snow_leopard_32
   else
     # Return, e.g., :tiger_g3, :leopard_g5_64, :leopard_64 (which is Intel)

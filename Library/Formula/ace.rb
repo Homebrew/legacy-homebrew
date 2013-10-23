@@ -11,26 +11,11 @@ class Ace < Formula
     # for the last 5 years, so although awkward to use on OSX, we use
     # it anyway.
 
-    # First, we figure out the names of header files and make files
-    # for this version of OSX.
-    ver = %x[sw_vers -productVersion].chomp.split(".")
-    ver = ver.slice(0).to_i*100 + ver.slice(1).to_i
-    name = { 1002 => 'macosx',
-             1003 => 'macosx_panther',
-             1004 => 'macosx_tiger',
-             1005 => 'macosx_leopard',
-             1006 => 'macosx_snowleopard',
-             1007 => 'macosx_lion',
-             # TODO: Fix for 6.1.4.
-             # There's no Mountain Lion file yet.
-             # Reported to d.schmidt@vanderbilt.edu
-             1008 => 'macosx_lion' }[ver]
-    makefile = "platform_#{name}.GNU"
-    header = "config-" + name.sub('_','-') + ".h"
-
-    # Now, we give those files the appropriate standard names.
-    ln_sf header, "ace/config.h"
-    ln_sf makefile, "include/makeinclude/platform_macros.GNU"
+    # Figure out the names of the header and makefile for this version
+    # of OSX and link those files to the standard names.
+    name = MacOS.cat.to_s.delete '_'
+    ln_sf "config-macosx-#{name}.h", "ace/config.h"
+    ln_sf "platform_macosx_#{name}.GNU", "include/makeinclude/platform_macros.GNU"
 
     # Set up the environment the way ACE expects during build.
     ENV['ACE_ROOT'] = buildpath
