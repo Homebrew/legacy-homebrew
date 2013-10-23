@@ -203,7 +203,7 @@ class FormulaInstaller
         @poured_bottle = true
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
-        tab.tabfile.delete rescue nil
+        tab.tabfile.delete if tab.tabfile
         tab.write
       end
     rescue
@@ -533,8 +533,8 @@ class FormulaInstaller
     stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
     return if stdlibs.empty?
 
-    tab = Tab.for_formula(f)
-    tab.tabfile.unlink if tab.tabfile
+    tab = Tab.for_keg f.prefix
+    tab.tabfile.delete if tab.tabfile
     # It's technically possible for the same lib to link to multiple C++ stdlibs,
     # but very bad news. Right now we don't track this woeful scenario.
     tab.stdlib = stdlibs.first
