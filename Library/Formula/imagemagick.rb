@@ -45,7 +45,7 @@ class Imagemagick < Formula
   depends_on 'webp' => :optional
 
   opoo '--with-ghostscript is not recommended' if build.with? 'ghostscript'
-  if build.with? 'openmp' and (MacOS.version == 10.5 or ENV.compiler == :clang)
+  if build.with? 'openmp' and (MacOS.version == :leopard or ENV.compiler == :clang)
     opoo '--with-openmp is not supported on Leopard or with Clang'
   end
 
