@@ -6,10 +6,10 @@ class Mongodb < Formula
   sha1 '32066d405f3bed175c9433dc4ac455c2e0091b53'
 
   bottle do
-    revision 2
-    sha1 '346303b785bafeae18228c9ef180b58f052f14e7' => :mountain_lion
-    sha1 'be5cb31e61d55fc7df83c25e19c6c9ab6f4e8aed' => :lion
-    sha1 'f2eb7be5c35c1e185b5af617829ff96f4307e2b0' => :snow_leopard
+    revision 3
+    root_url 'http://downloads.mongodb.org/homebrew'
+    sha1 'f26ef87624558a1b44539d7f7e46f2332f20a656' => :mavericks
+    sha1 'f26ef87624558a1b44539d7f7e46f2332f20a656' => :mountain_lion
   end
 
   devel do
