@@ -30,7 +30,7 @@ module OS
         when "10.9"         then "5.0.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
-          if MacOS.version > 10.9
+          if MacOS.version > "10.9"
             "5.0.1"
           else
             raise "Mac OS X '#{MacOS.version}' is invalid"
