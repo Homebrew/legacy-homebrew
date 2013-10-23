@@ -5,6 +5,19 @@ class Ace < Formula
   url 'http://download.dre.vanderbilt.edu/previous_versions/ACE-6.2.2.tar.bz2'
   sha1 'b95c55a2a72f3a66b16e9296c77807f4e62e8f93'
 
+  def osx_name
+    case MacOS.cat
+    when :tiger then 'macosx_tiger'
+    when :leopard then 'macosx_leopard'
+    when :snow_leopard then 'macosx_snowleopard'
+    when :lion then 'macosx_lion'
+    # Fix for 6.2.2.
+    # There's no Mountain Lion or Mavericks files yet.
+    # Reported to d.schmidt@vanderbilt.edu
+    else 'macosx_lion'
+    end
+  end
+
   def install
     # ACE has two methods of compilation, "traditional" and ./configure.
     # The "traditional" method has consistently given better results
@@ -13,20 +26,8 @@ class Ace < Formula
 
     # First, we figure out the names of header files and make files
     # for this version of OSX.
-    ver = %x[sw_vers -productVersion].chomp.split(".")
-    ver = ver.slice(0).to_i*100 + ver.slice(1).to_i
-    name = { 1002 => 'macosx',
-             1003 => 'macosx_panther',
-             1004 => 'macosx_tiger',
-             1005 => 'macosx_leopard',
-             1006 => 'macosx_snowleopard',
-             1007 => 'macosx_lion',
-             # TODO: Fix for 6.1.4.
-             # There's no Mountain Lion file yet.
-             # Reported to d.schmidt@vanderbilt.edu
-             1008 => 'macosx_lion' }[ver]
-    makefile = "platform_#{name}.GNU"
-    header = "config-" + name.sub('_','-') + ".h"
+    makefile = "platform_#{osx_name}.GNU"
+    header = "config-#{osx_name.sub('_','-')}.h"
 
     # Now, we give those files the appropriate standard names.
     ln_sf header, "ace/config.h"
