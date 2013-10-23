@@ -5,33 +5,17 @@ class Ace < Formula
   url 'http://download.dre.vanderbilt.edu/previous_versions/ACE-6.2.2.tar.bz2'
   sha1 'b95c55a2a72f3a66b16e9296c77807f4e62e8f93'
 
-  def osx_name
-    case MacOS.cat
-    when :tiger then 'macosx_tiger'
-    when :leopard then 'macosx_leopard'
-    when :snow_leopard then 'macosx_snowleopard'
-    when :lion then 'macosx_lion'
-    # Fix for 6.2.2.
-    # There's no Mountain Lion or Mavericks files yet.
-    # Reported to d.schmidt@vanderbilt.edu
-    else 'macosx_lion'
-    end
-  end
-
   def install
     # ACE has two methods of compilation, "traditional" and ./configure.
     # The "traditional" method has consistently given better results
     # for the last 5 years, so although awkward to use on OSX, we use
     # it anyway.
 
-    # First, we figure out the names of header files and make files
-    # for this version of OSX.
-    makefile = "platform_#{osx_name}.GNU"
-    header = "config-#{osx_name.sub('_','-')}.h"
-
-    # Now, we give those files the appropriate standard names.
-    ln_sf header, "ace/config.h"
-    ln_sf makefile, "include/makeinclude/platform_macros.GNU"
+    # Figure out the names of the header and makefile for this version
+    # of OSX and link those files to the standard names.
+    name = MacOS.cat.to_s.delete '_'
+    ln_sf "config-macosx-#{name}.h", "ace/config.h"
+    ln_sf "platform_macosx_#{name}.GNU", "include/makeinclude/platform_macros.GNU"
 
     # Set up the environment the way ACE expects during build.
     ENV['ACE_ROOT'] = buildpath
