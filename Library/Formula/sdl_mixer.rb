@@ -5,6 +5,8 @@ class SdlMixer < Formula
   url 'http://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-1.2.12.tar.gz'
   sha1 'a20fa96470ad9e1052f1957b77ffa68fb090b384'
 
+  option :universal
+
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on 'flac' => :optional
@@ -13,6 +15,8 @@ class SdlMixer < Formula
 
   def install
     inreplace 'SDL_mixer.pc.in', '@prefix@', HOMEBREW_PREFIX
+
+    ENV.universal_binary if build.universal?
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking"
