@@ -13,6 +13,7 @@ class Curl < Formula
   option 'with-ares', 'Build with C-Ares async DNS support'
   option 'with-ssl', 'Build with Homebrew OpenSSL instead of the system version'
   option 'with-darwinssl', 'Build with Secure Transport for SSL support'
+  option 'with-gssapi', 'Build with GSSAPI/Kerberos authentication support.'
 
   depends_on 'pkg-config' => :build
   depends_on 'libmetalink' => :optional
@@ -32,6 +33,7 @@ class Curl < Formula
     args << "--enable-ares=#{Formula.factory("c-ares").opt_prefix}" if build.with? 'ares'
     args << "--with-ssl=#{Formula.factory("openssl").opt_prefix}" if build.with? 'ssl'
     args << "--with-darwinssl" if build.with? 'darwinssl'
+    args << "--with-gssapi" if build.with? 'gssapi'
 
     system "./configure", *args
     system "make install"
