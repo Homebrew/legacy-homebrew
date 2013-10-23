@@ -19,7 +19,9 @@ class Mongodb < Formula
 
   def patches
     # Fix osx_min_verson issues with clang
-    'https://github.com/mongodb/mongo/commit/978af9.patch' if build.devel?
+    if build.devel? or MacOS.version >= :mavericks
+      'https://github.com/mongodb/mongo/commit/978af9.patch'
+    end
   end
 
   depends_on 'scons' => :build
