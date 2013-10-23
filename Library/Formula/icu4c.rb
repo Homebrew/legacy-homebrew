@@ -24,8 +24,8 @@ class Icu4c < Formula
     args << "--with-library-bits=64" if MacOS.prefer_64_bit?
     cd "source" do
       system "./configure", *args
-      system "make"
-      system "make install"
+      system "make", "VERBOSE=1"
+      system "make", "VERBOSE=1", "install"
     end
   end
 end
