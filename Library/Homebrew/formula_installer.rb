@@ -534,7 +534,7 @@ class FormulaInstaller
     return if stdlibs.empty?
 
     tab = Tab.for_formula(f)
-    tab.tabfile.unlink
+    tab.tabfile.unlink if tab.tabfile
     # It's technically possible for the same lib to link to multiple C++ stdlibs,
     # but very bad news. Right now we don't track this woeful scenario.
     tab.stdlib = stdlibs.first
