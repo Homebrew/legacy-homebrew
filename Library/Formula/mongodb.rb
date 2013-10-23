@@ -19,10 +19,10 @@ class Mongodb < Formula
 
   head 'https://github.com/mongodb/mongo.git'
 
-  if build.stable?
+  if build.devel?
     def patches
-      # Fix Clang v8 build failure.
-      'https://github.com/mongodb/mongo/commit/be4bc7.patch'
+      # Fix osx_min_verson issues with clang
+      'https://github.com/mongodb/mongo/commit/978af985464daba35e139619ed9fc3c67e3ecfd4.patch'
     end
   end
 
