@@ -33,21 +33,21 @@ module OS
     end
 
     def leopard?
-      version == 10.5
+      version == "10.5"
     end
 
     def snow_leopard?
-      version >= 10.6
+      version >= "10.6"
     end
     alias_method :snow_leopard_or_newer?, :snow_leopard?
 
     def lion?
-      version >= 10.7
+      version >= "10.7"
     end
     alias_method :lion_or_newer?, :lion?
 
     def mountain_lion?
-      version >= 10.8
+      version >= "10.8"
     end
     alias_method :mountain_lion_or_newer?, :mountain_lion?
 
