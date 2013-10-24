@@ -2,8 +2,8 @@ require 'formula'
 
 class Monkeysphere < Formula
   homepage 'http://web.monkeysphere.info/'
-  url 'http://archive.monkeysphere.info/debian/pool/monkeysphere/m/monkeysphere/monkeysphere_0.35.orig.tar.gz'
-  sha1 'b48acfc6acc887cc9415c486bd45933e2c0c8478'
+  url 'http://archive.monkeysphere.info/debian/pool/monkeysphere/m/monkeysphere/monkeysphere_0.36.orig.tar.gz'
+  sha1 'c4f950346040f7703cb4c6e8b32022f4361d0c9d'
 
   head 'git://git.monkeysphere.info/monkeysphere'
 
