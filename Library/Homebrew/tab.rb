@@ -29,7 +29,7 @@ class Tab < OpenStruct
   end
 
   def self.from_file path
-    tab = Tab.new Utils::JSON.load(open(path).read)
+    tab = Tab.new Utils::JSON.load(File.read(path))
     tab.tabfile = path
     tab
   end
