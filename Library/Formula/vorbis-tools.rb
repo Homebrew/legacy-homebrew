@@ -8,7 +8,7 @@ class VorbisTools < Formula
   depends_on 'libogg'
   depends_on 'libvorbis'
   depends_on 'libao'
-  depends_on 'flac'
+  depends_on 'flac' => :optional
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
