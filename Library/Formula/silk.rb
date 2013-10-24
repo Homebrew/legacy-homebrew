@@ -2,8 +2,8 @@ require 'formula'
 
 class Silk < Formula
   homepage 'http://tools.netsa.cert.org/silk/'
-  url 'http://tools.netsa.cert.org/releases/silk-3.7.1.tar.gz'
-  sha1 'c009c47e3c9cb11e3cd8bc7101b2fa280a809680'
+  url 'http://tools.netsa.cert.org/releases/silk-3.7.2.tar.gz'
+  sha1 '32e73edf764d4c9ce54b9bcf048c13dfd40ec36b'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

@@ -6,8 +6,8 @@ class Checkstyle < Formula
   sha1 'cf08ac75aedddcd3a8d1f27fcbbb6095b0d1d5e3'
 
   def install
-    libexec.install 'checkstyle-5.6-all.jar', 'sun_checks.xml'
-    bin.write_jar_script libexec/'checkstyle-5.6-all.jar', 'checkstyle'
+    libexec.install "checkstyle-#{version}-all.jar", "sun_checks.xml"
+    bin.write_jar_script libexec/"checkstyle-#{version}-all.jar", "checkstyle"
   end
 
   test do

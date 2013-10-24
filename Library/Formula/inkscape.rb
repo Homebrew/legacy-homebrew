@@ -20,6 +20,7 @@ class Inkscape < Formula
   depends_on 'pango'
   depends_on :x11
   depends_on 'poppler' => :optional
+  depends_on 'hicolor-icon-theme'
 
   fails_with :clang
 

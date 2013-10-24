@@ -43,6 +43,7 @@ class Formulary
           # have a "no such formula" message.
           raise
         rescue LoadError, NameError
+          raise if ARGV.debug?  # let's see the REAL error
           raise FormulaUnavailableError.new(name)
         end
       end
@@ -73,7 +74,7 @@ class Formulary
 
     def get_formula
       formula = klass.new(name)
-      formula.downloader.local_bottle_path = @bottle_filename
+      formula.local_bottle_path = @bottle_filename
       return formula
     end
   end

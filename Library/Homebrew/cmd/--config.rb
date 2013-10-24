@@ -42,7 +42,7 @@ module Homebrew extend self
   def clt
     if instance_variable_defined?(:@clt)
       @clt
-    elsif MacOS::CLT.installed? && MacOS::Xcode.version.to_f >= 4.3
+    elsif MacOS::CLT.installed? && MacOS::Xcode.version >= "4.3"
       @clt = MacOS::CLT.version
     end
   end
@@ -56,7 +56,7 @@ module Homebrew extend self
 
   def origin
     origin = HOMEBREW_REPOSITORY.cd do
-      `git config --get remote.origin.url`.chomp
+      `git config --get remote.origin.url 2>/dev/null`.chomp
     end
     if origin.empty? then "(none)" else origin end
   end
@@ -69,7 +69,7 @@ module Homebrew extend self
 
   def describe_x11
     return "N/A" unless MacOS::XQuartz.installed?
-    return "#{MacOS::XQuartz.version} => " + describe_path(MacOS::XQuartz.prefix)
+    return "#{MacOS::XQuartz.version} => #{describe_path(MacOS::XQuartz.prefix)}"
   end
 
   def describe_perl

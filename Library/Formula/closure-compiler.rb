@@ -2,7 +2,7 @@ require 'formula'
 
 class ClosureCompiler < Formula
   homepage 'http://code.google.com/p/closure-compiler/'
-  url 'https://code.google.com/p/closure-compiler/', :using => :git, :tag => 'v20130722'
+  url 'https://code.google.com/p/closure-compiler/', :using => :git, :tag => 'v20130823'
 
   head 'https://code.google.com/p/closure-compiler/', :using => :git
 

@@ -2,8 +2,8 @@ require 'formula'
 
 class AdobeAirSdk < Formula
   homepage 'http://www.adobe.com/products/air/sdk/'
-  url 'http://airdownload.adobe.com/air/mac/download/3.7/AdobeAIRSDK.tbz2'
-  sha1 '0cb832d64619fc871b577b714a9422afa2b7fe91'
+  url 'http://airdownload.adobe.com/air/mac/download/3.8/AdobeAIRSDK.tbz2'
+  sha1 '30d090d13da218934da8e9327be99cd64bbaff6e'
 
   def install
     libexec.install Dir['*']

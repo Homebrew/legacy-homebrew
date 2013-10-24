@@ -12,7 +12,12 @@ class Gnuplot < Formula
   url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.3/gnuplot-4.6.3.tar.gz'
   sha256 'df5ffafa25fb32b3ecc0206a520f6bca8680e6dcc961efd30df34c0a1b7ea7f5'
 
-  head 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot'
+  head do
+    url 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot'
+
+    depends_on :automake
+    depends_on :libtool
+  end
 
   option 'pdf',    'Build the PDF terminal using pdflib-lite'
   option 'wx',     'Build the wxWidgets terminal using pango'
@@ -24,11 +29,6 @@ class Gnuplot < Formula
   option 'tests',  'Verify the build with make check (1 min)'
   option 'without-emacs', 'Do not build Emacs lisp files'
   option 'latex',  'Build with LaTeX support'
-
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
-  end
 
   depends_on 'pkg-config' => :build
   depends_on LuaRequirement unless build.include? 'nolua'

@@ -2,8 +2,8 @@ require 'formula'
 
 class Ydict < Formula
   homepage 'http://code.google.com/p/ydict/'
-  url 'http://ydict.googlecode.com/files/ydict-1.2.6.tar.gz'
-  sha1 '08eb840c31964fb80c5f9af54a26e2bd6e622d6b'
+  url 'http://ydict.googlecode.com/files/ydict-1.3.1.tar.gz'
+  sha1 'ac144b75cd221f69cc24b66340146341808871dd'
 
   def ydict_wrapper; <<-EOS.undent
     #!/bin/sh

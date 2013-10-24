@@ -2,8 +2,8 @@ require 'formula'
 
 class ZshSyntaxHighlighting < Formula
   homepage 'https://github.com/zsh-users/zsh-syntax-highlighting'
-  url 'https://github.com/zsh-users/zsh-syntax-highlighting/archive/0.1.3.zip'
-  sha1 '889b041af29ff1aab0a8e3a3b99ba24f02ddc881'
+  url 'https://github.com/zsh-users/zsh-syntax-highlighting/archive/0.2.0.tar.gz'
+  sha1 '7c37129294aaf7cd61548ccfdf76cb478df3602f'
 
   head 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
 

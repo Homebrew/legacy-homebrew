@@ -5,9 +5,9 @@ class Opus < Formula
   url 'http://downloads.xiph.org/releases/opus/opus-1.0.3.tar.gz'
   sha1 '5781bdd009943deb55a742ac99db20a0d4e89c1e'
 
-  head 'https://git.xiph.org/opus.git'
+  head do
+    url 'https://git.xiph.org/opus.git'
 
-  if build.head?
     depends_on :automake
     depends_on :libtool
   end

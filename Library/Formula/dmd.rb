@@ -28,6 +28,8 @@ class Dmd < Formula
       f.puts "DFLAGS=-I#{libexec}/src/phobos -I#{libexec}/src/druntime/import -L-L#{libexec}/lib"
     end
     bin.write_exec_script libexec/'bin/dmd'
+    bin.write_exec_script libexec/'bin/rdmd'
+    bin.write_exec_script libexec/'bin/dman'
   end
   def test
     system "dmd", "#{share}/d/examples/hello.d"

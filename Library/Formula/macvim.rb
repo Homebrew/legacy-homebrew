@@ -3,15 +3,9 @@ require 'formula'
 # Reference: https://github.com/b4winckler/macvim/wiki/building
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/archive/snapshot-66.tar.gz'
-  version '7.3-66'
-  sha1 'd2915438c9405015e5e39099aecbbda20438ce81'
-
-  devel do
-    url 'https://github.com/b4winckler/macvim/archive/snapshot-69.tar.gz'
-    version '7.4b-BETA-69'
-    sha1 '73568543e146ade2c8548a561ce76eaecccc7f4d'
-  end
+  url 'https://github.com/b4winckler/macvim/archive/snapshot-71.tar.gz'
+  version '7.4-71'
+  sha1 '09101e3e29ae517d6846159211ae64e1427b86c0'
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
@@ -21,27 +15,41 @@ class Macvim < Formula
   depends_on :xcode
   depends_on 'cscope' => :recommended
   depends_on 'lua' => :optional
+  depends_on 'luajit' => :optional
   depends_on :python => :recommended
   # Help us! :python3 in MacVim makes the window disappear, so only 2.x bindings!
+
+  env :std if MacOS.version <= :snow_leopard
+  # Help us! We'd like to use superenv in these environments too
+
+  # Mavericks Patches:
+  # * Fix Ruby.framework detection on OS X 10.9
+  # * Allow building against specific Ruby.framework version matcing ruby-command
+  # * Add missing version macros include for 10.9
+  def patches
+    DATA unless build.head?
+  end
 
   def install
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in
     # PPC support (which isn't needed in Homebrew-supported systems.)
-    arch = MacOS.prefer_64_bit? ? 'x86_64' : 'i386'
-    ENV['ARCHFLAGS'] = "-arch #{arch}"
+    ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}"
 
     # If building for 10.7 or up, make sure that CC is set to "clang".
     ENV.clang if MacOS.version >= :lion
 
+    # macvim HEAD only works with the current Ruby.framework because it builds with -framework Ruby
+    system_ruby = build.head? ? "/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby" : RUBY_PATH
+
     args = %W[
       --with-features=huge
       --enable-multibyte
-      --with-macarchs=#{arch}
+      --with-macarchs=#{MacOS.preferred_arch}
       --enable-perlinterp
       --enable-rubyinterp
       --enable-tclinterp
-      --with-ruby-command=#{RUBY_PATH}
+      --with-ruby-command=#{system_ruby}
       --with-tlib=ncurses
       --with-compiledby=Homebrew
       --with-local-dir=#{HOMEBREW_PREFIX}
@@ -53,6 +61,12 @@ class Macvim < Formula
     if build.with? "lua"
       args << "--enable-luainterp"
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
+    end
+
+    if build.with? "luajit"
+      args << "--enable-luainterp"
+      args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
+      args << "--with-luajit"
     end
 
     args << "--enable-pythoninterp=yes" if build.with? 'python'
@@ -113,3 +127,52 @@ class Macvim < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/src/auto/configure b/src/auto/configure
+index 4fd7b82..08af7f3 100755
+--- a/src/auto/configure
++++ b/src/auto/configure
+@@ -7206,8 +7208,9 @@ echo "${ECHO_T}$rubyhdrdir" >&6; }
+	  librubyarg="$librubyarg"
+	  RUBY_LIBS="$RUBY_LIBS -L$rubylibdir"
+         elif test -d "/System/Library/Frameworks/Ruby.framework"; then
+-                        RUBY_LIBS="-framework Ruby"
+-                        RUBY_CFLAGS=
++            ruby_fw_ver=`$vi_cv_path_ruby -r rbconfig -e "print $ruby_rbconfig::CONFIG['ruby_version'][0,3]"`
++            RUBY_LIBS="/System/Library/Frameworks/Ruby.framework/Versions/$ruby_fw_ver/Ruby"
++            RUBY_CFLAGS="-I/System/Library/Frameworks/Ruby.framework/Versions/$ruby_fw_ver/Headers -DRUBY_VERSION=$rubyversion"
+             librubyarg=
+	fi
+
+diff --git a/src/if_ruby.c b/src/if_ruby.c
+index 4436e06..44fd5ee 100644
+--- a/src/if_ruby.c
++++ b/src/if_ruby.c
+@@ -96,11 +96,7 @@
+ # define rb_num2int rb_num2int_stub
+ #endif
+
+-#ifdef FEAT_GUI_MACVIM
+-# include <Ruby/ruby.h>
+-#else
+-# include <ruby.h>
+-#endif
++#include <ruby.h>
+ #ifdef RUBY19_OR_LATER
+ # include <ruby/encoding.h>
+ #endif
+diff --git a/src/os_mac.h b/src/os_mac.h
+index 78b79c2..54009ab 100644
+--- a/src/os_mac.h
++++ b/src/os_mac.h
+@@ -16,6 +16,9 @@
+ # define OPAQUE_TOOLBOX_STRUCTS 0
+ #endif
+
++/* Include MAC_OS_X_VERSION_* macros */
++#include <AvailabilityMacros.h>
++
+ /*
+  * Macintosh machine-dependent things.
+  *

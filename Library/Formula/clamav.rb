@@ -2,8 +2,8 @@ require 'formula'
 
 class Clamav < Formula
   homepage 'http://www.clamav.net/'
-  url 'http://downloads.sourceforge.net/clamav/clamav-0.97.8.tar.gz'
-  sha1 '078c0ac2b4e69d27eecd7544a8361abcd859e73c'
+  url 'http://downloads.sourceforge.net/clamav/0.98/clamav-0.98.tar.gz'
+  sha1 '1e6a7284721387646c713a8d32fa8b5a897985db'
 
   skip_clean 'share'
 

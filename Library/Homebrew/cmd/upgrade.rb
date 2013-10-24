@@ -3,7 +3,7 @@ require 'cmd/outdated'
 
 class Fixnum
   def plural_s
-    if self > 1 then "s" else "" end
+    if self != 1 then "s" else "" end
   end
 end
 

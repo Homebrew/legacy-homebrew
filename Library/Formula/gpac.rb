@@ -9,13 +9,13 @@ require 'formula'
 # that Brew installs
 
 class Gpac < Formula
-  homepage 'http://gpac.sourceforge.net/index.php'
+  homepage 'http://gpac.wp.mines-telecom.fr/'
   url 'http://downloads.sourceforge.net/gpac/gpac-0.5.0.tar.gz'
   sha1 '48ba16272bfa153abb281ff8ed31b5dddf60cf20'
 
   head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac'
 
-  depends_on :x11
+  depends_on :x11 => MacOS::X11.installed? ? :recommended : :optional
 
   depends_on 'pkg-config' => :build
   depends_on 'a52dec' => :optional
@@ -34,11 +34,14 @@ class Gpac < Formula
 
     args = ["--disable-wx",
             "--prefix=#{prefix}",
-            "--mandir=#{man}",
-            # gpac build system is barely functional
-            "--extra-cflags=-I#{MacOS::X11.include}",
-            # Force detection of X libs on 64-bit kernel
-            "--extra-ldflags=-L#{MacOS::X11.lib}"]
+            "--mandir=#{man}"]
+
+    if build.with? 'x11'
+      # gpac build system is barely functional
+      args << "--extra-cflags=-I#{MacOS::X11.include}"
+      # Force detection of X libs on 64-bit kernel
+      args << "--extra-ldflags=-L#{MacOS::X11.lib}"
+    end
 
     chmod 0700, "configure"
     system "./configure", *args

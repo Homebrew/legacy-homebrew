@@ -2,8 +2,8 @@ require 'formula'
 
 class Proguard < Formula
   homepage 'http://proguard.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/proguard/proguard/4.9/proguard4.9.tar.gz'
-  sha256 '3c8e9a6aee1d965c19d4b426596db9983fb3bff0f589bbc527973c310767d348'
+  url 'http://downloads.sourceforge.net/project/proguard/proguard/4.10/proguard4.10.tar.gz'
+  sha256 'a8ef5a95ae0c41c0a1a2aae5daa70c4c376fa49a9318a6d776aed2fcd76e8f4d'
 
   def install
     libexec.install 'lib/proguard.jar'

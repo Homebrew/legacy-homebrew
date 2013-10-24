@@ -9,6 +9,10 @@ end
 class MachOPathnameTests < Test::Unit::TestCase
   include FileHelper
 
+  def setup
+    @archs = [:i386, :x86_64, :ppc7400, :ppc64].extend(ArchitectureListExtension)
+  end
+
   def test_fat_dylib
     pn = Pathname.new("#{TEST_FOLDER}/mach/fat.dylib")
     assert pn.universal?
@@ -123,19 +127,44 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert_no_match(/Mach-O [^ ]* ?executable/, file(pn))
   end
 
-  def test_architecture_list_extension
-    archs = [:i386, :x86_64, :ppc7400, :ppc64]
-    archs.extend(ArchitectureListExtension)
-    assert archs.universal?
-    archs.remove_ppc!
-    assert_equal 2, archs.length
-    assert_match(/-arch i386/, archs.as_arch_flags)
-    assert_match(/-arch x86_64/, archs.as_arch_flags)
+  def test_architecture_list_extension_universal_checks
+    assert @archs.universal?
+    assert @archs.intel_universal?
+    assert @archs.ppc_universal?
+    assert @archs.cross_universal?
+    assert @archs.fat?
 
+    non_universal = [:i386].extend ArchitectureListExtension
+    assert !non_universal.universal?
+
+    intel_only = [:i386, :x86_64].extend ArchitectureListExtension
+    assert intel_only.universal?
+    assert !intel_only.ppc_universal?
+    assert !intel_only.cross_universal?
+
+    ppc_only = [:ppc970, :ppc64].extend ArchitectureListExtension
+    assert ppc_only.universal?
+    assert !ppc_only.intel_universal?
+    assert !ppc_only.cross_universal?
+
+    cross = [:ppc7400, :i386].extend ArchitectureListExtension
+    assert cross.universal?
+    assert !cross.intel_universal?
+    assert !cross.ppc_universal?
+  end
+
+  def test_architecture_list_extension_massaging_flags
+    @archs.remove_ppc!
+    assert_equal 2, @archs.length
+    assert_match(/-arch i386/, @archs.as_arch_flags)
+    assert_match(/-arch x86_64/, @archs.as_arch_flags)
+  end
+
+  def test_architecture_list_arch_flags_methods
     pn = Pathname.new("#{TEST_FOLDER}/mach/fat.dylib")
-    assert pn.archs.universal?
-    assert_match(/-arch i386/, pn.archs.as_arch_flags)
-    assert_match(/-arch x86_64/, pn.archs.as_arch_flags)
+    assert pn.archs.intel_universal?
+    assert_equal "-arch x86_64 -arch i386", pn.archs.as_arch_flags
+    assert_equal "x86_64;i386", pn.archs.as_cmake_arch_flags
   end
 end
 

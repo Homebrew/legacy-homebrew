@@ -1,5 +1,6 @@
 require 'pathname'
 require 'mach'
+require 'resource'
 
 # we enhance pathname to make our code more readable
 class Pathname
@@ -8,36 +9,36 @@ class Pathname
   BOTTLE_EXTNAME_RX = /(\.[a-z_]+(32)?\.bottle\.(\d+\.)?tar\.gz)$/
 
   def install *sources
-    results = []
     sources.each do |src|
       case src
+      when Resource
+        src.stage(self)
+      when Resource::Partial
+        src.resource.stage { install(*src.files) }
       when Array
         if src.empty?
           opoo "tried to install empty array to #{self}"
-          return []
+          return
         end
-        src.each {|s| results << install_p(s) }
+        src.each {|s| install_p(s) }
       when Hash
         if src.empty?
           opoo "tried to install empty hash to #{self}"
-          return []
+          return
         end
-        src.each {|s, new_basename| results << install_p(s, new_basename) }
+        src.each {|s, new_basename| install_p(s, new_basename) }
       else
-        results << install_p(src)
+        install_p(src)
       end
     end
-    return results
   end
 
   def install_p src, new_basename = nil
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
-      return_value = Pathname.new(dst)
     else
       dst = self
-      return_value = self+File.basename(src)
     end
 
     src = src.to_s
@@ -49,6 +50,8 @@ class Pathname
     # and also broken symlinks are not the end of the world
     raise "#{src} does not exist" unless File.symlink? src or File.exist? src
 
+    dst = yield(src, dst) if block_given?
+
     mkpath
     if File.symlink? src
       # we use the BSD mv command because FileUtils copies the target and
@@ -59,25 +62,21 @@ class Pathname
       # this function when installing from the temporary build directory
       FileUtils.mv src, dst
     end
-
-    return return_value
   end
   protected :install_p
 
   # Creates symlinks to sources in this folder.
   def install_symlink *sources
-    results = []
     sources.each do |src|
       case src
       when Array
-        src.each {|s| results << install_symlink_p(s) }
+        src.each {|s| install_symlink_p(s) }
       when Hash
-        src.each {|s, new_basename| results << install_symlink_p(s, new_basename) }
+        src.each {|s, new_basename| install_symlink_p(s, new_basename) }
       else
-        results << install_symlink_p(src)
+        install_symlink_p(src)
       end
     end
-    return results
   end
 
   def install_symlink_p src, new_basename = nil
@@ -86,14 +85,8 @@ class Pathname
     else
       dst = self+File.basename(new_basename)
     end
-
-    src = src.to_s
-    dst = dst.to_s
-
     mkpath
-    FileUtils.ln_s src, dst
-
-    return dst
+    FileUtils.ln_s src.to_s, dst.to_s
   end
   protected :install_symlink_p
 
@@ -120,6 +113,27 @@ class Pathname
       FileUtils.cp_r to_s, dst
     end
     return dst
+  end
+
+  def cp_path_sub pattern, replacement
+    raise "#{self} does not exist" unless self.exist?
+
+    src = self.to_s
+    dst = src.sub(pattern, replacement)
+    raise "#{src} is the same file as #{dst}" if src == dst
+
+    dst_path = Pathname.new dst
+
+    if self.directory?
+      dst_path.mkpath
+      return
+    end
+
+    dst_path.dirname.mkpath
+
+    dst = yield(src, dst) if block_given?
+
+    FileUtils.cp(src, dst)
   end
 
   # extended to support common double extensions
@@ -186,7 +200,7 @@ class Pathname
     # Get enough of the file to detect common file types
     # POSIX tar magic has a 257 byte offset
     # magic numbers stolen from /usr/share/file/magic/
-    case open { |f| f.read(262) }
+    case open('rb') { |f| f.read(262) }
     when /^PK\003\004/n         then :zip
     when /^\037\213/n           then :gzip
     when /^BZh/n                then :bzip2
@@ -211,11 +225,8 @@ class Pathname
 
   def incremental_hash(hasher)
     incr_hash = hasher.new
-    self.open('r') do |f|
-      while(buf = f.read(1024))
-        incr_hash << buf
-      end
-    end
+    buf = ""
+    open('rb') { |f| incr_hash << buf while f.read(1024, buf) }
     incr_hash.hexdigest
   end
 
@@ -224,11 +235,10 @@ class Pathname
     incremental_hash(Digest::SHA1)
   end
 
-  def sha2
+  def sha256
     require 'digest/sha2'
     incremental_hash(Digest::SHA2)
   end
-  alias_method :sha256, :sha2
 
   def verify_checksum expected
     raise ChecksumMissingError if expected.nil? or expected.empty?
@@ -402,6 +412,17 @@ class Pathname
     end
   end
 
+  # Returns an array containing all dynamically-linked libraries, based on the
+  # output of otool. This returns the install names, so these are not guaranteed
+  # to be absolute paths.
+  # Returns an empty array both for software that links against no libraries,
+  # and for non-mach objects.
+  def dynamically_linked_libraries
+    `#{MacOS.locate("otool")} -L "#{expand_path}"`.chomp.split("\n")[1..-1].map do |line|
+      line[/\t(.+) \([^(]+\)/, 1]
+    end
+  end
+
   # We redefine these private methods in order to add the /o modifier to
   # the Regexp literals, which forces string interpolation to happen only
   # once instead of each time the method is called. This is fixed in 1.9+.
@@ -433,21 +454,36 @@ class Pathname
   end
 end
 
-# sets $n and $d so you can observe creation of stuff
 module ObserverPathnameExtension
+  class << self
+    attr_accessor :n, :d
+
+    def reset_counts!
+      @n = @d = 0
+    end
+
+    def total
+      n + d
+    end
+
+    def counts
+      [n, d]
+    end
+  end
+
   def unlink
     super
     puts "rm #{to_s}" if ARGV.verbose?
-    $n+=1
+    ObserverPathnameExtension.n += 1
   end
   def rmdir
     super
     puts "rmdir #{to_s}" if ARGV.verbose?
-    $d+=1
+    ObserverPathnameExtension.d += 1
   end
   def make_relative_symlink src
     super
-    $n+=1
+    ObserverPathnameExtension.n += 1
   end
   def install_info
     super
@@ -458,6 +494,3 @@ module ObserverPathnameExtension
     puts "uninfo #{to_s}" if ARGV.verbose?
   end
 end
-
-$n=0
-$d=0

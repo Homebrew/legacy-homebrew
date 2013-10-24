@@ -4,9 +4,10 @@ class Opensc < Formula
   homepage 'https://github.com/OpenSC/OpenSC/wiki'
   url 'http://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.13.0/opensc-0.13.0.tar.gz'
   sha1 '9285ccbed7b49f63e488c8fb1b3e102994a28218'
-  head 'https://github.com/OpenSC/OpenSC.git'
 
-  if build.head?
+  head do
+    url 'https://github.com/OpenSC/OpenSC.git'
+
     depends_on :automake
     depends_on :libtool
   end

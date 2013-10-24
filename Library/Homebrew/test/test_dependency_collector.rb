@@ -128,4 +128,35 @@ class DependencyCollectorTests < Test::Unit::TestCase
   def test_raises_typeerror_for_unknown_types
     assert_raises(TypeError) { @d.add(Object.new) }
   end
+
+  def test_does_not_mutate_dependency_spec
+    spec = { 'foo' => :optional }
+    copy = spec.dup
+    @d.add(spec)
+    assert_equal copy, spec
+  end
+
+  def test_resource_dep_git_url
+    resource = Resource.new
+    resource.url("git://github.com/foo/bar.git")
+    assert_instance_of GitDependency, @d.add(resource)
+  end
+
+  def test_resource_dep_gzip_url
+    resource = Resource.new
+    resource.url("http://foo.com/bar.tar.gz")
+    assert_nil @d.add(resource)
+  end
+
+  def test_resource_dep_xz_url
+    resource = Resource.new
+    resource.url("http://foo.com/bar.tar.xz")
+    assert_equal Dependency.new("xz", [:build]), @d.add(resource)
+  end
+
+  def test_resource_dep_raises_for_unknown_classes
+    resource = Resource.new
+    resource.url "foo", :using => Class.new
+    assert_raises(TypeError) { @d.add(resource) }
+  end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Freediameter < Formula
   homepage 'http://www.freediameter.net'
-  url 'http://www.freediameter.net/hg/freeDiameter/archive/1.1.6.tar.gz'
-  sha1 'fac9cf7c4aa8b2b10aaf7f70214f8f808f8e05ab'
+  url 'http://www.freediameter.net/hg/freeDiameter/archive/1.2.0.tar.gz'
+  sha1 '687bd9d551eb4261c3600fcbe35ea519b711e9f7'
 
   head 'http://www.freediameter.net/hg/freeDiameter', :using => :hg
 

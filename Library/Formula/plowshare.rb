@@ -2,9 +2,9 @@ require 'formula'
 
 class Plowshare < Formula
   homepage 'http://code.google.com/p/plowshare/'
-  url 'http://plowshare.googlecode.com/files/plowshare3-snapshot-git20130520.c289008.tar.gz'
-  version '3.GIT-c289008'
-  sha1 '4a69918dbf6faa1698ddcf581aeb7c15d829caf2'
+  url 'http://plowshare.googlecode.com/files/plowshare4-snapshot-git20131009.5e55a9b.tar.gz'
+  version '4.GIT-5e55a9b'
+  sha1 '115ad942c21e5e4acc52a427a8bc6984d7705639'
 
   head 'https://code.google.com/p/plowshare/', :using => :git
 
@@ -32,6 +32,10 @@ class Plowshare < Formula
     not work if X11 support is not enabled. To enable:
       brew remove imagemagick
       brew install imagemagick --with-x
+
+    Plowshare 4 requires Bash 4+. OS X ships with an old Bash 3 version.
+    To install Bash 4:
+      brew install bash
     EOS
   end
 end
@@ -46,7 +50,7 @@ __END__
 --- a/src/core.sh
 +++ b/src/core.sh
 @@ -1,4 +1,8 @@
- #!/bin/bash
+ #!/usr/bin/env bash
 +shopt -s expand_aliases
 +alias sed='gsed'
 +alias getopt='`brew --prefix gnu-getopt`/bin/getopt'

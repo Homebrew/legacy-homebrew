@@ -2,8 +2,8 @@ require 'formula'
 
 class Voldemort < Formula
   homepage 'http://project-voldemort.com/'
-  url 'https://github.com/downloads/voldemort/voldemort/voldemort-0.90.1.tar.gz'
-  sha1 '8a8d33e3a5904f3aeea66bc0503fb12e449e0969'
+  url 'https://github.com/voldemort/voldemort/archive/v1.4.0.tar.gz'
+  sha1 'f07b552d494b9b68d9c4e3561384bc932e7e7bd8'
 
   skip_clean 'libexec/config'
 

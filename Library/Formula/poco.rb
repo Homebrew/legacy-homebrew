@@ -2,9 +2,9 @@ require 'formula'
 
 class Poco < Formula
   homepage 'http://pocoproject.org/'
-  url 'http://pocoproject.org/releases/poco-1.4.6/poco-1.4.6p1-all.tar.bz2'
-  sha1 'c667c97b57d3f56b2884237a43d701b63e2be1f5'
-  version '1.4.6p1-all'
+  url 'http://pocoproject.org/releases/poco-1.4.6/poco-1.4.6p2-all.tar.bz2'
+  sha1 'd0d5459039f26a8d4402c8e85484b1b29c75b2b4'
+  version '1.4.6p2-all'
 
   devel do
     url 'http://pocoproject.org/releases/poco-1.5.1/poco-1.5.1-all.tar.bz2'

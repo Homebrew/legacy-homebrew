@@ -1,5 +1,18 @@
 require 'formula'
 
+class SnowLeopardOrOlder < Requirement
+  fatal true
+  def satisfied?
+    MacOS.version <= :snow_leopard
+  end
+
+  def message; <<-EOS.undent
+    This version of ld64 will only build on 10.6 and older.
+    It is provided for older versions of OS X.
+    EOS
+  end
+end
+
 class Ld64 < Formula
   homepage 'http://opensource.apple.com/'
   # Latest is 134.9, but it no longer supports building for PPC.
@@ -9,6 +22,8 @@ class Ld64 < Formula
   #
   url 'http://opensource.apple.com/tarballs/ld64/ld64-97.17.tar.gz'
   sha1 '7c1d816c2fec02e558f4a528d16d8161f0e379b5'
+
+  depends_on SnowLeopardOrOlder
 
   # Tiger either includes old versions of these headers,
   # or doesn't ship them at all

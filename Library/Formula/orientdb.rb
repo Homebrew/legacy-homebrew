@@ -7,7 +7,7 @@ class Orientdb < Formula
 
   def patches
     # Fixing OrientDB init scripts
-    "https://raw.github.com/gist/5468357/f4c926df7c31fe96425f2bf5feb68b52df31ebaf/homebrew.patch"
+    "https://gist.github.com/leppert/5468357/raw/f4c926df7c31fe96425f2bf5feb68b52df31ebaf/homebrew.patch"
   end
 
   def install

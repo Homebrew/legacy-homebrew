@@ -1,31 +1,18 @@
 require 'formula'
 
 class Riak < Formula
-  homepage 'http://wiki.basho.com/Riak.html'
+  homepage 'http://basho.com/riak/'
+  url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.2/osx/10.8/riak-1.4.2-OSX-x86_64.tar.gz'
+  version '1.4.2'
+  sha256 '2accc58a0ea2f7bd3edc31c934edb0bff6a1535994607fd6cec9c6bbefcf2abf'
 
-  if Hardware.is_64_bit? and not build.build_32_bit?
-    url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.3/1.3.1/osx/10.6/riak-1.3.1-osx-x86_64.tar.gz'
-    version '1.3.1-x86_64'
-    sha256 'e7b4db2273ef3fc0ba76f37468ff040d94a9bdac90ed129e226e483b19451414'
-  else
-    url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.3/1.3.1/osx/10.6/riak-1.3.1-osx-i386.tar.gz'
-    version '1.3.1-i386'
-    sha256 '1169ddcbc1a613c734f3df7350b416e84c667faaae73b647d2fa696aa45bc085'
-  end
-
-  skip_clean 'libexec'
-
-  option '32-bit'
+  depends_on :macos => :mountain_lion
+  depends_on :arch => :x86_64
 
   def install
-    libexec.install Dir['*']
-
-    # The scripts don't dereference symlinks correctly.
-    # Help them find stuff in libexec. - @adamv
-    inreplace Dir["#{libexec}/bin/*"] do |s|
-      s.change_make_var! "RUNNER_SCRIPT_DIR", "#{libexec}/bin"
+    prefix.install Dir['*']
+    inreplace Dir["#{lib}/env.sh"] do |s|
+      s.change_make_var! "RUNNER_BASE_DIR", prefix
     end
-
-    bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 end

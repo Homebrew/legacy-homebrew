@@ -8,6 +8,7 @@ class Freeglut < Formula
   # Examples won't build on Snow Leopard as one of them requires
   # a header the system provided X11 doesn't have.
   option 'with-examples', "Build the examples."
+  option :universal
 
   depends_on :x11
 
@@ -16,6 +17,7 @@ class Freeglut < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
