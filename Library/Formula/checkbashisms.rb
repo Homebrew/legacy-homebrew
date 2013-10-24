@@ -11,6 +11,7 @@ class Checkbashisms < Formula
   def install
     inreplace 'scripts/checkbashisms.pl', '###VERSION###', "#{version}ubuntu1"
     bin.install 'scripts/checkbashisms.pl' => 'checkbashisms'
+    man1.install 'scripts/checkbashisms.1'
   end
 
   test do
