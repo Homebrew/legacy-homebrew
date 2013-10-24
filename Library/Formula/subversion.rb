@@ -25,8 +25,12 @@ class Subversion < Formula
   depends_on 'sqlite'
   depends_on :python => :optional
 
-  # Building Ruby bindings requires libtool
-  depends_on :libtool if build.include? 'ruby'
+  depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
+
+  # Bindings require swig
+  depends_on 'swig' if build.include? 'perl' or build.include? 'python' or build.include? 'python'
 
   # If building bindings, allow non-system interpreters
   env :userpaths if build.include? 'perl' or build.include? 'ruby'
@@ -107,6 +111,8 @@ class Subversion < Formula
     # variable to prevent failures due to incompatible CFLAGS
     ENV['ac_cv_python_compile'] = ENV.cc
 
+    # Suggestion by upstream. http://svn.haxx.se/users/archive-2013-09/0188.shtml
+    system "./autogen.sh"
     system "./configure", *args
     system "make"
     system "make install"
@@ -114,6 +120,12 @@ class Subversion < Formula
 
     system "make tools"
     system "make install-tools"
+
+    # Swig don't understand "-isystem" flags added by Homebrew, so
+    # filter them out from makefiles.
+    Dir.glob(buildpath/"**/Makefile*").each do |mkfile|
+      inreplace mkfile, /\-isystem[^[:space:]]*/, ''
+    end
 
     python do
       system "make swig-py"
