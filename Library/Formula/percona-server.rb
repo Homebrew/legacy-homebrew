@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/Percona-Server-5.6.13-rc60.5/source/Percona-Server-5.6.13-rc60.5.tar.gz'
-  version '5.6.13-rc60.5'
-  sha1 'c8a11e5df24d74f3e362bd85ef6b30756ad3bcf6'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/release-5.6.14-62.0/483/source/Percona-Server-5.6.14-rel62.0.tar.gz'
+  version '5.6.14-rel62.0'
+  sha1 '6d9ddd92338c70ec13bdeb9a23568a990a5766f9'
 
   depends_on 'cmake' => :build
   depends_on 'readline'
@@ -32,6 +32,13 @@ class PerconaServer < Formula
   # shared with the mysql and mariadb formulae.
   def destination
     @destination ||= (var/'percona').directory? ? 'percona' : 'mysql'
+  end
+
+  def patches
+    # Fixes percona server 5.6 compilation on OS X 10.9, based on
+    # https://github.com/mxcl/homebrew/commit/aad5d93f4fabbf69766deb83780d3a6eeab7061a
+    # for mysql 5.6
+    "https://gist.github.com/israelshirk/7cc640498cf264ebfce3/raw/846839c84647c4190ad683e4cbf0fabcd8931f97/gistfile1.txt"
   end
 
   def install
