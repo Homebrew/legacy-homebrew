@@ -10,16 +10,28 @@ class Flac < Formula
   depends_on 'xz' => :build
   depends_on 'lame'
   depends_on 'libogg' => :optional
+  depends_on 'pkg-config' => :build
+  depends_on 'libtool' => :build
+  depends_on 'automake' => :build
+  depends_on 'autoconf' => :build
 
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
   end
 
+  def patches
+      #fixes compilation on mac os 10.9 maverick
+      [
+          "https://gist.github.com/leiflm/7139949/raw"
+      ]
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
     # sadly the asm optimisations won't compile since Leopard
+    system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking",
                           "--disable-debug",
                           "--disable-asm-optimizations",
