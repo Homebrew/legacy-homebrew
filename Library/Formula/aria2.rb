@@ -2,8 +2,8 @@ require 'formula'
 
 class Aria2 < Formula
   homepage 'http://aria2.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.0/aria2-1.18.0.tar.bz2'
-  sha1 '1512133f328b825e3ce7d1d85643c08febb21978'
+  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.1/aria2-1.18.1.tar.bz2'
+  sha1 '050f521848353fe90568059768d73a5a6f7ff869'
 
   option 'with-appletls', 'Build with Secure Transport for SSL support'
 
