@@ -8,9 +8,7 @@ class Mscgen < Formula
   depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'gd' => :recommended
-  depends_on 'freetype' => :optional
-
-  option 'with-freetype', 'Enable FreeType font rendering'
+  depends_on :freetype => :optional
 
   def install
     args = [ "--prefix=#{prefix}",
