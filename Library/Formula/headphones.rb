@@ -3,7 +3,6 @@ require 'formula'
 class Headphones < Formula
   homepage 'https://github.com/rembo10/headphones'
   url 'https://github.com/rembo10/headphones/archive/v0.1.2.zip'
-  version '0.1.2'
   sha1 'd02b4ba4b513e318abf08d72c5b8b9ed4e35de3a'
 
   head 'https://github.com/rembo10/headphones.git'
