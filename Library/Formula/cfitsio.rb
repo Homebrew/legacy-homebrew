@@ -8,9 +8,9 @@ end
 
 class Cfitsio < Formula
   homepage 'http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html'
-  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3340.tar.gz'
-  sha1 '9b6f61bbc0528662134d05f9d84dfe88db9df9b2'
-  version '3.340'
+  url 'ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3350.tar.gz'
+  sha1 'e928832708d6a5df21a1e17ae4a63036cab7c1b9'
+  version '3.350'
 
   option 'with-examples', "Compile and install example programs"
 
@@ -25,13 +25,11 @@ class Cfitsio < Formula
 
       # fetch, compile and install examples programs
       CfitsioExamples.new.brew do
-        mkdir 'bin'
         Dir['*.c'].each do |f|
           # compressed_fits.c does not work (obsolete function call)
           next if f == 'compress_fits.c'
-          system ENV.cc, f, "-I#{include}", "-L#{lib}", "-lcfitsio", "-lm", "-o", "bin/#{f.sub('.c', '')}"
+          system ENV.cc, f, "-I#{include}", "-L#{lib}", "-lcfitsio", "-lm", "-o", "#{bin}/#{f.sub('.c', '')}"
         end
-        bin.install Dir['bin/*']
       end
     end
   end

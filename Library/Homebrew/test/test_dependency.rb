@@ -20,7 +20,7 @@ end
 
 class DependencyTests < Test::Unit::TestCase
   def test_accepts_single_tag
-    dep = Dependency.new("foo", "bar")
+    dep = Dependency.new("foo", %w{bar})
     assert_equal %w{bar}, dep.tags
   end
 
@@ -30,7 +30,7 @@ class DependencyTests < Test::Unit::TestCase
   end
 
   def test_preserves_symbol_tags
-    dep = Dependency.new("foo", :build)
+    dep = Dependency.new("foo", [:build])
     assert_equal [:build], dep.tags
   end
 

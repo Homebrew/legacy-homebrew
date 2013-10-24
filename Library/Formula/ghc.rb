@@ -1,16 +1,5 @@
 require 'formula'
 
-class NeedsSnowLeopard < Requirement
-  satisfy MacOS.version >= :snow_leopard
-
-  def message; <<-EOS.undent
-    GHC requires OS X 10.6 or newer. The binary releases no longer work on
-    Leopard. See the following issue for details:
-        http://hackage.haskell.org/trac/ghc/ticket/6009
-    EOS
-  end
-end
-
 class Ghcbinary < Formula
   if Hardware.is_64_bit? and not build.build_32_bit?
     url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
@@ -23,27 +12,27 @@ class Ghcbinary < Formula
 end
 
 class Ghctestsuite < Formula
-  url 'https://github.com/ghc/testsuite/tarball/ghc-7.4.2-release'
-  sha1 '6b1f161a78a70638aacc931abfdef7dd50c7f923'
+  url 'https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz'
+  sha1 '6a1973ae3cccdb2f720606032ae84ffee8680ca1'
 end
 
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
-  url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-src.tar.bz2'
-  sha1 '73b3b39dc164069bc80b69f7f2963ca1814ddf3d'
+  url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2'
+  sha1 '8938e1ef08b37a4caa071fa169e79a3001d065ff'
 
   env :std
 
-  depends_on NeedsSnowLeopard
+  # http://hackage.haskell.org/trac/ghc/ticket/6009
+  depends_on :macos => :snow_leopard
 
   option '32-bit'
   option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
 
   bottle do
-    revision 1
-    sha1 '45b4f126123e71613564084851a8470fa4b06e6b' => :mountain_lion
-    sha1 'a93d9aab9e3abfe586f9091f14057c6d90f6fdc0' => :lion
-    sha1 '7d284bd3f3263be11229ac45f340fbf742ebbea6' => :snow_leopard
+    sha1 '332ed50be17831557b5888f7e8395f1beb008731' => :mountain_lion
+    sha1 '64a7548eb2135a4b5f2276e59f435a39c2d2961f' => :lion
+    sha1 '166bf3c8a512b58da4119b2997a1f45c1f7c65b5' => :snow_leopard
   end
 
   fails_with :clang do
@@ -53,14 +42,9 @@ class Ghc < Formula
       EOS
   end
 
-  def patches
-    # Explained: http://hackage.haskell.org/trac/ghc/ticket/7040
-    # Discussed: https://github.com/mxcl/homebrew/issues/13519
-    # Remove: version > 7.4.2
-    'http://hackage.haskell.org/trac/ghc/raw-attachment/ticket/7040/ghc7040.patch'
-  end
-
   def install
+    ENV.j1 # Fixes an intermittent race condition
+
     # Move the main tarball contents into a subdirectory
     (buildpath+'Ghcsource').install Dir['*']
 
@@ -70,7 +54,7 @@ class Ghc < Formula
     Ghcbinary.new.brew do
       system "./configure", "--prefix=#{subprefix}"
       # Temporary j1 to stop an intermittent race condition
-      system 'make', '-j1', 'install'
+      system 'make install'
       ENV.prepend 'PATH', subprefix/'bin', ':'
     end
 
@@ -101,8 +85,7 @@ class Ghc < Formula
           end
         end
       end
-      ENV.j1 # Fixes an intermittent race condition
-      system 'make', 'install'
+      system 'make install'
     end
   end
 

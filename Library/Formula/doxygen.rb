@@ -2,20 +2,24 @@ require 'formula'
 
 class Doxygen < Formula
   homepage 'http://www.doxygen.org/'
-  url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.3.1.src.tar.gz'
-  mirror 'http://downloads.sourceforge.net/project/doxygen/rel-1.8.3.1/doxygen-1.8.3.1.src.tar.gz'
-  sha1 '289fc809f44b8025d45279deefbaee7680efd88f'
+  url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.4.src.tar.gz'
+  mirror 'http://downloads.sourceforge.net/project/doxygen/rel-1.8.4/doxygen-1.8.4.src.tar.gz'
+  sha1 'a363811b932e44d479addbadffcc8257cde60b44'
 
   head 'https://doxygen.svn.sourceforge.net/svnroot/doxygen/trunk'
 
   option 'with-dot', 'Build with dot command support from Graphviz.'
   option 'with-doxywizard', 'Build GUI frontend with qt support.'
+  option 'with-libclang', 'Build with libclang support.'
 
-  depends_on 'graphviz' if build.include? 'with-dot'
-  depends_on 'qt' if build.include? 'with-doxywizard'
+  depends_on 'graphviz' if build.with? 'dot'
+  depends_on 'qt' if build.with? 'doxywizard'
+  depends_on 'llvm' => 'with-clang' if build.with? 'libclang'
 
   def install
-    system "./configure", "--prefix", prefix
+    args = ["--prefix", prefix]
+    args << '--with-libclang' if build.with? 'libclang'
+    system "./configure", *args
     # Per Macports:
     # https://trac.macports.org/browser/trunk/dports/textproc/doxygen/Portfile#L92
     inreplace %w[ libmd5/Makefile.libmd5
@@ -26,8 +30,7 @@ class Doxygen < Formula
       # otherwise clang may use up large amounts of RAM while
       # processing localization files
       # gcc doesn't support the flag
-      s.gsub! '-Wno-invalid-source-encoding', '' \
-        unless ENV.compiler == :clang
+      s.gsub! '-Wno-invalid-source-encoding', '' unless ENV.compiler == :clang
       # makefiles hardcode both cc and c++
       s.gsub! /cc$/, ENV.cc
       s.gsub! /c\+\+$/, ENV.cxx

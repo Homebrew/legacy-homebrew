@@ -2,8 +2,8 @@ require 'formula'
 
 class Tomcat < Formula
   homepage 'http://tomcat.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.39/bin/apache-tomcat-7.0.39.tar.gz'
-  sha1 'a4dbca1ffa8f67cf9c985426ee019973638f4666'
+  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.42/bin/apache-tomcat-7.0.42.tar.gz'
+  sha1 '001a64629a93103d4f53ac95faf3e52a63657b95'
 
   # Keep log folders
   skip_clean 'libexec'

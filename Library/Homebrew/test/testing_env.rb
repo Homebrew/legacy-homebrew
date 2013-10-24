@@ -1,15 +1,14 @@
-# This software is in the public domain, furnished "as is", without technical
-# support, and with no warranty, express or implied, as to its usefulness for
-# any purpose.
-
 # Require this file to build a testing environment.
 
 ABS__FILE__ = File.expand_path(__FILE__)
 $:.push(File.expand_path(__FILE__+'/../..'))
 
+require 'extend/module'
 require 'extend/fileutils'
 require 'extend/pathname'
 require 'extend/string'
+require 'extend/symbol'
+require 'extend/enumerable'
 require 'exceptions'
 require 'utils'
 require 'rbconfig'
@@ -27,12 +26,12 @@ HOMEBREW_WWW           = 'http://example.com'
 HOMEBREW_CURL_ARGS     = '-fsLA'
 HOMEBREW_VERSION       = '0.9-test'
 
-RUBY_BIN = Pathname.new("#{RbConfig::CONFIG['bindir']}")
+RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
 RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
 
 MACOS = true
-MACOS_VERSION = ENV.fetch('MACOS_VERSION', 10.6)
-MACOS_FULL_VERSION = '10.6.8'
+MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
+MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }.to_f
 
 ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
@@ -67,10 +66,7 @@ def shutup
   end
 end
 
-unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
-  $:.unshift(File.expand_path("#{ABS__FILE__}/../../compat"))
-  require 'compatibility'
-end
+require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
 
 require 'test/unit' # must be after at_exit
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
@@ -107,5 +103,11 @@ module Test::Unit::Assertions
   def assert_empty(obj, msg=nil)
     assert_respond_to(obj, :empty?, msg)
     assert(obj.empty?, msg)
-  end if RUBY_VERSION.to_f <= 1.8
+  end unless method_defined?(:assert_empty)
+end
+
+class Test::Unit::TestCase
+  def formula(*args, &block)
+    @_f = Class.new(Formula, &block).new(*args)
+  end
 end

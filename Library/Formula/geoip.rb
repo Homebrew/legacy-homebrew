@@ -2,8 +2,8 @@ require 'formula'
 
 class Geoip < Formula
   homepage 'http://www.maxmind.com/app/c'
-  url 'http://geolite.maxmind.com/download/geoip/api/c/GeoIP-1.5.0.tar.gz'
-  sha1 '09abf240ad4c4c3743113465d01b7c74b3140b9f'
+  url 'http://geolite.maxmind.com/download/geoip/api/c/GeoIP-1.5.1.tar.gz'
+  sha1 '36b211ad1857431772f811b126422aea6b68a122'
 
   # These are needed for the autoreconf it always tries to run.
   depends_on :automake

@@ -2,8 +2,8 @@ require 'formula'
 
 class Timedog < Formula
   homepage 'http://timedog.googlecode.com/'
-  url 'http://timedog.googlecode.com/files/timedog-1.2.zip'
-  sha1 '620a4615ba4a03dc8d7ae2f7259b9ab8daf267c6'
+  url 'http://timedog.googlecode.com/files/timedog-1.3.zip'
+  sha1 'bacb349f0f81b5cb00fbabaff13fc643ba15e331'
 
   def install
     bin.install 'timedog'

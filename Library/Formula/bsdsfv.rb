@@ -2,7 +2,7 @@ require 'formula'
 
 class Bsdsfv < Formula
   homepage 'http://bsdsfv.sourceforge.net/'
-  url 'http://sourceforge.net/projects/bsdsfv/files/bsdsfv/1.18/bsdsfv-1.18.tar.gz'
+  url 'http://downloads.sourceforge.net/project/bsdsfv/bsdsfv/1.18/bsdsfv-1.18.tar.gz'
   sha1 '5e72c5e12bce2d5f77469d8f2425064a0ea6fc1e'
 
   # bug report:

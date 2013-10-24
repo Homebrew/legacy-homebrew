@@ -1,16 +1,17 @@
 require 'formula'
 
-# `brew uses foo bar` now returns formula that use both foo and bar
-# Rationale: If you want the union just run the command twice and
-# concatenate the results.
+# `brew uses foo bar` returns formulae that use both foo and bar
+# If you want the union, run the command twice and concatenate the results.
 # The intersection is harder to achieve with shell tools.
 
 module Homebrew extend self
   def uses
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
+    formulae = ARGV.formulae
+
     uses = Formula.select do |f|
-      ARGV.formulae.all? do |ff|
+      formulae.all? do |ff|
         if ARGV.flag? '--recursive'
           f.recursive_dependencies.any? { |dep| dep.name == ff.name }
         else

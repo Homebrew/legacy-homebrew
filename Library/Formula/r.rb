@@ -9,32 +9,33 @@ end
 
 class R < Formula
   homepage 'http://www.r-project.org'
-  url 'http://cran.r-project.org/src/base/R-3/R-3.0.0.tar.gz'
-  sha1 '0cb1d1b815af4ce640ceafd5402a2eb94924c945'
+  url 'http://cran.r-project.org/src/base/R-3/R-3.0.1.tar.gz'
+  sha1 '5cc65476837926fdf04105954ea94efa53ac85ce'
 
   head 'https://svn.r-project.org/R/trunk'
 
   option 'with-valgrind', 'Compile an unoptimized build with support for the Valgrind debugger'
   option 'test', 'Run tests before installing'
 
+  depends_on :fortran
   depends_on 'readline'
   depends_on 'libtiff'
   depends_on 'jpeg'
   depends_on :x11
-
-  depends_on 'valgrind' if build.include? 'with-valgrind'
+  depends_on 'valgrind' => :optional
 
   def install
-    ENV.Og if build.include? 'with-valgrind'
-    ENV.fortran
-
     args = [
       "--prefix=#{prefix}",
       "--with-aqua",
       "--enable-R-framework",
       "--with-lapack"
     ]
-    args << '--with-valgrind-instrumentation=2' if build.include? 'with-valgrind'
+
+    if build.with? 'valgrind'
+      args << '--with-valgrind-instrumentation=2'
+      ENV.Og
+    end
 
     # Pull down recommended packages if building from HEAD.
     system './tools/rsync-recommended' if build.head?

@@ -2,13 +2,13 @@ require 'formula'
 
 class Haproxy < Formula
   homepage 'http://haproxy.1wt.eu'
-  url 'http://haproxy.1wt.eu/download/1.4/src/haproxy-1.4.22.tar.gz'
-  sha1 'ed8918c950bdb5b4b96d62c23073b7972443fe94'
+  url 'http://haproxy.1wt.eu/download/1.4/src/haproxy-1.4.24.tar.gz'
+  sha1 '0c5104d029d8d58d39b0d94179edd84c661306d1'
 
   devel do
-    url 'http://haproxy.1wt.eu/download/1.5/src/devel/haproxy-1.5-dev18.tar.gz'
-    sha1 '791fba9a596c30d1bbb7871ffb8b05e1fd4ecf8b'
-    version '1.5-dev18'
+    url 'http://haproxy.1wt.eu/download/1.5/src/devel/haproxy-1.5-dev19.tar.gz'
+    sha1 '5c16686c516dbeaab8ada6c17c25e9629ab4f7d3'
+    version '1.5-dev19'
   end
 
   depends_on 'pcre'
@@ -21,6 +21,7 @@ class Haproxy < Formula
 
     if build.devel?
       args << "USE_OPENSSL=1"
+      args << "USE_ZLIB=1"
       args << "ADDLIB=-lcrypto"
     end
 

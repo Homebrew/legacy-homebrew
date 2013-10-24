@@ -10,7 +10,7 @@ class Libmms < Formula
 
   def patches
     # see https://trac.macports.org/ticket/27988
-    if MacOS.version == :leopard
+    if MacOS.version <= :leopard
       { :p0 => "https://trac.macports.org/export/87883/trunk/dports/multimedia/libmms/files/src_mms-common.h.patch" }
     end
   end

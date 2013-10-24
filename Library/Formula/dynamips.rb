@@ -2,7 +2,7 @@ require 'formula'
 
 class Dynamips < Formula
   homepage 'http://www.gns3.net/dynamips/'
-  url 'http://sourceforge.net/projects/gns-3/files/Dynamips/0.2.8-RC3-community/dynamips-0.2.8-RC3-community.tar.gz'
+  url 'http://downloads.sourceforge.net/project/gns-3/Dynamips/0.2.8-RC3-community/dynamips-0.2.8-RC3-community.tar.gz'
   sha1 'ed7138859e6bc381ae0cf0d2620b32099845847c'
   version '0.2.8-RC3'
 

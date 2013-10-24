@@ -1,7 +1,6 @@
 require 'formula'
-require 'download_strategy'
 
-class VmallocDownloadStrategy <CurlDownloadStrategy
+class VmallocDownloadStrategy < CurlDownloadStrategy
   def _fetch
     # downloading from AT&T requires using the following credentials
     credentials = 'I accept www.opensource.org/licenses/cpl:.'

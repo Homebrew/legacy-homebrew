@@ -2,9 +2,15 @@ require 'formula'
 
 class Neo4j < Formula
   homepage 'http://neo4j.org'
-  url 'http://dist.neo4j.org/neo4j-community-1.8.2-unix.tar.gz'
-  version 'community-1.8.2-unix'
-  sha1 '5e0dcc4339e02fa7f5f2fabb578100bf2060cd16'
+  url 'http://dist.neo4j.org/neo4j-community-1.9.2-unix.tar.gz'
+  sha1 '7713b9d6f0780afbe58eae01b2ebf09ca002aecb'
+  version 'community-1.9.2-unix'
+
+  devel do
+    url 'http://dist.neo4j.org/neo4j-community-2.0.0-M03-unix.tar.gz'
+    sha1 'be4695ba51579c68ccdfb3b0ec3ccaec0f51b26e'
+    version 'community-2.0.0-M03-unix'
+  end
 
   def install
     # Remove windows files
@@ -48,6 +54,9 @@ class Neo4j < Formula
 
     The manual can be found in:
         #{libexec}/doc/
+
+    You may need to add JAVA_HOME to your shell profile:
+        export JAVA_HOME="$(/usr/libexec/java_home)"
 
     EOS
   end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-1.2.tar.bz2'
-  sha1 'e1df2389560da95e1a76f9375f054e630c7e2602'
+  url 'http://ffmpeg.org/releases/ffmpeg-1.2.1.tar.bz2'
+  sha1 '930e5612d75d04fdf7c0579f4d85d47e31e38945'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
@@ -15,6 +15,7 @@ class Ffmpeg < Formula
   option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
   option "with-libass", "Enable ASS/SSA subtitle format"
   option "with-openjpeg", 'Enable JPEG 2000 image format'
+  option 'with-openssl', 'Enable SSL support'
   option 'with-schroedinger', 'Enable Dirac video format'
   option 'with-ffplay', 'Enable FFplay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'

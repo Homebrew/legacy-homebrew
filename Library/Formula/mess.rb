@@ -2,8 +2,8 @@ require 'formula'
 
 class Mess < Formula
   homepage 'http://www.mess.org/'
-  url 'svn://dspnet.fr/mame/trunk', :revision => '21963'
-  version '0.148u2'
+  url 'svn://dspnet.fr/mame/trunk', :revision => '23625'
+  version '0.149'
 
   head 'svn://dspnet.fr/mame/trunk'
 

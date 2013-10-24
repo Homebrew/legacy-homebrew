@@ -49,6 +49,6 @@ class Msgpack < Formula
     EOS
 
     system ENV.cc, "-o", "test", "test.c", "-lmsgpack"
-    `./test` == "1\n2\n3\n"
+    assert_equal "1\n2\n3\n", `./test`
   end
 end

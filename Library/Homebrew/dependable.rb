@@ -15,6 +15,10 @@ module Dependable
     tags.include? :recommended
   end
 
+  def required?
+    !build? && !optional? && !recommended?
+  end
+
   def options
     Options.coerce(tags - RESERVED_TAGS)
   end

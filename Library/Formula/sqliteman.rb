@@ -2,7 +2,7 @@ require 'formula'
 
 class Sqliteman < Formula
   homepage 'http://www.sqliteman.com/'
-  url 'http://sourceforge.net/projects/sqliteman/files/sqliteman/1.2.2/sqliteman-1.2.2.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/sqliteman/sqliteman/1.2.2/sqliteman-1.2.2.tar.bz2'
   sha1 '8ca90d44ad0eda9e67bdd675523a8786b8ef3818'
 
   depends_on 'cmake' => :build

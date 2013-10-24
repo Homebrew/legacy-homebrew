@@ -23,17 +23,17 @@ class Postgis < Formula
   depends_on 'json-c'
   depends_on 'gdal'
 
-  def postgres_realpath
-    # Follow the PostgreSQL linked keg back to the active Postgres installation
-    # as it is common for people to avoid upgrading Postgres.
-    Formula.factory('postgresql').opt_prefix.realpath
-  end
-
   # Force GPP to be used when pre-processing SQL files. See:
-  #   http://trac.osgeo.org/postgis/ticket/1694
+  # http://trac.osgeo.org/postgis/ticket/1694
+  # Fix linking aganist json-c, upstream in:
+  # https://github.com/postgis/postgis/commit/1c988618c9448dcdc43bc8ffe4ef8ff1d4dae838
   def patches; DATA end
 
   def install
+    # Follow the PostgreSQL linked keg back to the active Postgres installation
+    # as it is common for people to avoid upgrading Postgres.
+    postgres_realpath = Formula.factory('postgresql').opt_prefix.realpath
+
     ENV.deparallelize
 
     args = [
@@ -53,7 +53,6 @@ class Postgis < Formula
       "--disable-nls"
     ]
     args << '--with-gui' if build.include? 'with-gui'
-
 
     system './autogen.sh'
     system './configure', *args
@@ -81,7 +80,7 @@ class Postgis < Formula
     include.install Dir['stage/**/include/*']
 
     # Stand-alone SQL files will be installed the share folder
-    (share + 'postgis').install Dir['stage/**/contrib/postgis-2.0/*']
+    (share/'postgis').install Dir['stage/**/contrib/postgis-2.0/*']
 
     # Extension scripts
     bin.install %w[
@@ -99,6 +98,7 @@ class Postgis < Formula
   end
 
   def caveats;
+    pg = Formula.factory('postgresql').opt_prefix
     <<-EOS.undent
       To create a spatially-enabled database, see the documentation:
         http://postgis.refractions.net/documentation/manual-2.0/postgis_installation.html#create_new_db_extensions
@@ -108,17 +108,18 @@ class Postgis < Formula
       PostGIS SQL scripts installed to:
         #{HOMEBREW_PREFIX}/share/postgis
       PostGIS plugin libraries installed to:
-        #{pg = Formula.factory('postgresql').opt_prefix}/lib
+        #{pg}/lib
       PostGIS extension modules installed to:
         #{pg}/share/postgresql/extension
       EOS
   end
 end
+
 __END__
-Force usage of GPP as the SQL pre-processor as Clang chokes.
+Force usage of GPP as the SQL pre-processor as Clang chokes and fix json-c link error
 
 diff --git a/configure.ac b/configure.ac
-index 136a1d6..c953c69 100644
+index 68d9240..8514041 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -31,17 +31,8 @@ AC_SUBST([ANT])
@@ -141,3 +142,14 @@ index 136a1d6..c953c69 100644
  AC_SUBST([SQLPP])
  
  dnl
+@@ -740,7 +731,9 @@ CPPFLAGS="$CPPFLAGS_SAVE"
+ dnl Ensure we can link against libjson
+ LIBS_SAVE="$LIBS"
+ LIBS="$JSON_LDFLAGS"
+-AC_CHECK_LIB([json], [json_object_get], [HAVE_JSON=yes], [], [])
++AC_CHECK_LIB([json-c], [json_object_get], [HAVE_JSON=yes; JSON_LDFLAGS="-ljson-c"], [
++  AC_CHECK_LIB([json], [json_object_get], [HAVE_JSON=yes; JSON_LDFLAGS="-ljson"], [], [])
++], [])
+ LIBS="$LIBS_SAVE"
+
+ if test "$HAVE_JSON" = "yes"; then

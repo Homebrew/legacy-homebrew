@@ -2,8 +2,8 @@ require 'formula'
 
 class Ptex < Formula
   homepage 'http://ptex.us'
-  url 'https://github.com/wdas/ptex/archive/v2.0.32.tar.gz'
-  sha1 '2e720684d025e948364ebd56ecd00a4934d3a9d6'
+  url 'https://github.com/wdas/ptex/archive/v2.0.42.tar.gz'
+  sha1 '0dc69452c42ccd4a2e24d931f7a9f2d24b7e60da'
 
   # fix utils/Makefile not to expect a git repo for version info
   def patches

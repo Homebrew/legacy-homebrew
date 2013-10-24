@@ -13,7 +13,6 @@ class Znc < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'c-ares' => :optional
 
   skip_clean 'bin/znc'
   skip_clean 'bin/znc-config'

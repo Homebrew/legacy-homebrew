@@ -2,8 +2,8 @@ require 'formula'
 
 class Recoverjpeg < Formula
   homepage 'http://www.rfc1149.net/devel/recoverjpeg.html'
-  url 'http://www.rfc1149.net/download/recoverjpeg/recoverjpeg-2.2.1.tar.gz'
-  sha1 'faf4c9a324ee2697289143668514873f27d75ab6'
+  url 'http://www.rfc1149.net/download/recoverjpeg/recoverjpeg-2.2.3.tar.gz'
+  sha1 '212555b4addaebab3c3559e43e51815cc090183e'
 
   def install
     system "./configure", "--disable-dependency-tracking",

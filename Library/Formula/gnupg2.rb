@@ -2,8 +2,10 @@ require 'formula'
 
 class Gnupg2 < Formula
   homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.19.tar.bz2'
-  sha1 '190c09e6688f688fb0a5cf884d01e240d957ac1f'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.20.tar.bz2'
+  sha1 '7ddfefa37ee9da89a8aaa8f9059d251b4cd02562'
+
+  option '8192', 'Build with support for private keys of up to 8192 bits'
 
   depends_on 'libgpg-error'
   depends_on 'libgcrypt'
@@ -14,24 +16,38 @@ class Gnupg2 < Formula
   depends_on 'gpg-agent'
   depends_on 'dirmngr' => :recommended
   depends_on 'libusb-compat' => :recommended
+  depends_on 'readline' => :optional
 
   # Fix hardcoded runtime data location
   # upstream: http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;h=c3f08dc
   # Adjust package name to fit our scheme of packaging both gnupg 1.x and
   # 2.x, and gpg-agent separately, and adjust tests to fit this scheme
+  # Fix typo that breaks compilation:
+  # http://lists.gnupg.org/pipermail/gnupg-users/2013-May/046652.html
   def patches; DATA; end
 
   def install
+    inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if build.include? '8192'
+
     (var/'run').mkpath
 
-    # so we don't use Clang's internal stdint.h
-    ENV['gl_cv_absolute_stdint_h'] = '/usr/include/stdint.h'
+    ENV.append 'LDFLAGS', '-lresolv'
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
-                          "--enable-symcryptrun",
-                          "--disable-agent",
-                          "--with-agent-pgm=#{HOMEBREW_PREFIX}/bin/gpg-agent"
+    ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
+
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-symcryptrun
+      --disable-agent
+      --with-agent-pgm=#{Formula.factory('gpg-agent').opt_prefix}/bin/gpg-agent
+    ]
+
+    if build.with? 'readline'
+      args << "--with-readline=#{Formula.factory('readline').opt_prefix}"
+    end
+
+    system "./configure", *args
     system "make"
     system "make check"
     system "make install"
@@ -44,10 +60,10 @@ end
 
 __END__
 diff --git a/common/homedir.c b/common/homedir.c
-index 5f2e31e..d797b68 100644
+index 5adf46a..d0c5dec 100644
 --- a/common/homedir.c
 +++ b/common/homedir.c
-@@ -365,7 +365,7 @@ dirmngr_socket_name (void)
+@@ -368,7 +368,7 @@ dirmngr_socket_name (void)
      }
    return name;
  #else /*!HAVE_W32_SYSTEM*/
@@ -58,10 +74,10 @@ index 5f2e31e..d797b68 100644
  
 
 diff --git a/configure b/configure
-index 829fc79..684213e 100755
+index 616d165..ae3126e 100755
 --- a/configure
 +++ b/configure
-@@ -558,8 +558,8 @@ MFLAGS=
+@@ -578,8 +578,8 @@ MFLAGS=
  MAKEFLAGS=
  
  # Identity of this package.
@@ -69,8 +85,8 @@ index 829fc79..684213e 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gnupg2'
 +PACKAGE_TARNAME='gnupg2'
- PACKAGE_VERSION='2.0.19'
- PACKAGE_STRING='gnupg 2.0.19'
+ PACKAGE_VERSION='2.0.20'
+ PACKAGE_STRING='gnupg 2.0.20'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'
 
 diff --git a/tests/openpgp/Makefile.in b/tests/openpgp/Makefile.in
@@ -91,3 +107,16 @@ index 1a617e7..1af2d4b 100644
  
  TESTS = version.test mds.test \
  	decrypt.test decrypt-dsa.test \
+  diff --git a/scd/pcsc-wrapper.c b/scd/pcsc-wrapper.c
+  index 7d9415a..f3d92ff 100644
+--- a/scd/pcsc-wrapper.c
++++ b/scd/pcsc-wrapper.c
+@@ -66,7 +66,7 @@
+ static int verbose;
+
+ #if defined(__APPLE__) || defined(_WIN32) || defined(__CYGWIN__)
+-typedef unsinged int pcsc_dword_t;
++typedef unsigned int pcsc_dword_t;
+ #else
+ typedef unsigned long pcsc_dword_t;
+ #endif

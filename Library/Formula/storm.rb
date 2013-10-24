@@ -6,8 +6,9 @@ class Storm < Formula
   sha1 'abb533c90f5b9eeaafb9136670091fc894fce169'
 
   devel do
-    url 'https://dl.dropbox.com/u/133901206/storm-0.9.0-wip13.zip'
-    sha1 '1de407b2eef494db3efc7f0d9b3f6e6fe2e28fc2'
+    url 'https://dl.dropbox.com/u/133901206/storm-0.9.0-wip16.zip'
+    sha1 'c0e24b5fdcacccd4df460ff79165c3e12c60b8a3'
+    version '0.9.0-wip16'
   end
 
   def install

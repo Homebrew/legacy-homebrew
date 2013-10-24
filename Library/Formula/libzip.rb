@@ -2,8 +2,8 @@ require 'formula'
 
 class Libzip < Formula
   homepage 'http://www.nih.at/libzip/'
-  url 'http://www.nih.at/libzip/libzip-0.10.1.tar.bz2'
-  sha1 '04be811a1919e1063a1f5210671181b7b5416d45'
+  url 'http://www.nih.at/libzip/libzip-0.11.1.tar.gz'
+  sha1 '729a141fd3b47f34a94e8fd8a9ee1b25f0c8e922'
 
   def install
     system "./configure", "--prefix=#{prefix}",

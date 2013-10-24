@@ -40,7 +40,7 @@ def main
   # can be inconvenient for the user. But we need to be safe.
   system "/usr/bin/sudo", "-k"
 
-  install(Formula.factory($0))
+  Build.new(Formula.factory($0)).install
 rescue Exception => e
   unless error_pipe.nil?
     e.continuation = nil if ARGV.debug?
@@ -54,102 +54,131 @@ rescue Exception => e
   end
 end
 
-def post_superenv_hacks f
-  # Only allow Homebrew-approved directories into the PATH, unless
-  # a formula opts-in to allowing the user's path.
-  if f.env.userpaths? or f.recursive_requirements.any? { |rq| rq.env.userpaths? }
-    ENV.userpaths!
-  end
-end
+class Build
+  attr_reader :f, :deps, :reqs
 
-def pre_superenv_hacks f
-  # Allow a formula to opt-in to the std environment.
-  ARGV.unshift '--env=std' if (f.env.std? or
-    f.recursive_dependencies.detect{|d| d.name == 'scons' }) and
-    not ARGV.include? '--env=super'
-end
-
-def expand_deps f
-  f.recursive_dependencies do |dependent, dep|
-    if dep.optional? || dep.recommended?
-      Dependency.prune unless dependent.build.with?(dep.name)
-    elsif dep.build?
-      Dependency.prune unless dependent == f
-    end
-  end.map(&:to_formula)
-end
-
-def install f
-  deps = expand_deps(f)
-  keg_only_deps = deps.select(&:keg_only?)
-
-  pre_superenv_hacks(f)
-  require 'superenv'
-
-  deps.each do |dep|
-    opt = HOMEBREW_PREFIX/:opt/dep
-    fixopt(dep) unless opt.directory? or ARGV.ignore_deps?
+  def initialize(f)
+    @f = f
+    # Expand requirements before dependencies, as requirements
+    # may add dependencies if a default formula is activated.
+    @reqs = expand_reqs
+    @deps = expand_deps
   end
 
-  if superenv?
-    ENV.keg_only_deps = keg_only_deps.map(&:to_s)
-    ENV.deps = deps.map(&:to_s)
-    ENV.x11 = f.recursive_requirements.detect { |rq| rq.kind_of?(X11Dependency) }
-    ENV.setup_build_environment
-    post_superenv_hacks(f)
-    f.recursive_requirements.each(&:modify_build_environment)
-  else
-    ENV.setup_build_environment
-    f.recursive_requirements.each(&:modify_build_environment)
-
-    keg_only_deps.each do |dep|
-      opt = dep.opt_prefix
-      ENV.prepend_path 'PATH', "#{opt}/bin"
-      ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
-      ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
-      ENV.prepend_path 'ACLOCAL_PATH', "#{opt}/share/aclocal"
-      ENV.prepend_path 'CMAKE_PREFIX_PATH', opt
-      ENV.prepend 'LDFLAGS', "-L#{opt}/lib" if (opt/:lib).directory?
-      ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
+  def post_superenv_hacks
+    # Only allow Homebrew-approved directories into the PATH, unless
+    # a formula opts-in to allowing the user's path.
+    if f.env.userpaths? || reqs.any? { |rq| rq.env.userpaths? }
+      ENV.userpaths!
     end
   end
 
-  if f.fails_with? ENV.compiler
-    ENV.send CompilerSelector.new(f, ENV.compiler).compiler
+  def pre_superenv_hacks
+    # Allow a formula to opt-in to the std environment.
+    ARGV.unshift '--env=std' if (f.env.std? or deps.any? { |d| d.name == 'scons' }) and
+      not ARGV.include? '--env=super'
   end
 
-  f.brew do
-    if ARGV.flag? '--git'
-      system "git init"
-      system "git add -A"
-    end
-    if ARGV.flag? '--interactive'
-      ohai "Entering interactive mode"
-      puts "Type `exit' to return and finalize the installation"
-      puts "Install to this prefix: #{f.prefix}"
-
-      if ARGV.flag? '--git'
-        puts "This directory is now a git repo. Make your changes and then use:"
-        puts "  git diff | pbcopy"
-        puts "to copy the diff to the clipboard."
+  def expand_reqs
+    f.recursive_requirements do |dependent, req|
+      if (req.optional? || req.recommended?) && dependent.build.without?(req.name)
+        Requirement.prune
+      elsif req.build? && dependent != f
+        Requirement.prune
+      elsif req.satisfied? && req.default_formula? && (dep = req.to_dependency).installed?
+        dependent.deps << dep
+        Requirement.prune
       end
+    end
+  end
 
-      interactive_shell f
+  def expand_deps
+    f.recursive_dependencies do |dependent, dep|
+      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
+        Dependency.prune
+      elsif dep.build? && dependent != f
+        Dependency.prune
+      end
+    end
+  end
+
+  def install
+    keg_only_deps = deps.map(&:to_formula).select(&:keg_only?)
+
+    pre_superenv_hacks
+    require 'superenv'
+
+    deps.map(&:to_formula).each do |dep|
+      opt = HOMEBREW_PREFIX/:opt/dep
+      fixopt(dep) unless opt.directory? or ARGV.ignore_deps?
+    end
+
+    if superenv?
+      ENV.keg_only_deps = keg_only_deps.map(&:to_s)
+      ENV.deps = deps.map { |d| d.to_formula.to_s }
+      ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
+      ENV.setup_build_environment
+      post_superenv_hacks
+      reqs.each(&:modify_build_environment)
+      deps.each(&:modify_build_environment)
     else
-      f.prefix.mkpath
+      ENV.setup_build_environment
+      reqs.each(&:modify_build_environment)
+      deps.each(&:modify_build_environment)
 
-      begin
-        f.install
-      rescue Exception => e
-        if ARGV.debug?
-          debrew e, f
-        else
-          raise e
-        end
+      keg_only_deps.each do |dep|
+        opt = dep.opt_prefix
+        ENV.prepend_path 'PATH', "#{opt}/bin"
+        ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
+        ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
+        ENV.prepend_path 'ACLOCAL_PATH', "#{opt}/share/aclocal"
+        ENV.prepend_path 'CMAKE_PREFIX_PATH', opt
+        ENV.prepend 'LDFLAGS', "-L#{opt}/lib" if (opt/:lib).directory?
+        ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
       end
+    end
 
-      # Find and link metafiles
-      f.prefix.install_metafiles Pathname.pwd
+    if f.fails_with? ENV.compiler
+      begin
+        ENV.send CompilerSelector.new(f).compiler
+      rescue CompilerSelectionError => e
+        raise e.message
+      end
+    end
+
+    f.brew do
+      if ARGV.flag? '--git'
+        system "git init"
+        system "git add -A"
+      end
+      if ARGV.interactive?
+        ohai "Entering interactive mode"
+        puts "Type `exit' to return and finalize the installation"
+        puts "Install to this prefix: #{f.prefix}"
+
+        if ARGV.flag? '--git'
+          puts "This directory is now a git repo. Make your changes and then use:"
+          puts "  git diff | pbcopy"
+          puts "to copy the diff to the clipboard."
+        end
+
+        interactive_shell f
+      else
+        f.prefix.mkpath
+
+        begin
+          f.install
+        rescue Exception => e
+          if ARGV.debug?
+            debrew e, f
+          else
+            raise e
+          end
+        end
+
+        # Find and link metafiles
+        f.prefix.install_metafiles Pathname.pwd
+      end
     end
   end
 end

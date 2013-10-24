@@ -55,19 +55,23 @@ class Cmd
   def tool
     @tool ||= case @arg0
     when 'ld' then 'ld'
-    when 'cc', 'c99', 'c89', 'cpp'
+    when 'cpp' then 'cpp'
+    when 'cc', 'c99', 'c89'
       # Ideally we would run `cx9`, however these tools are POSIX compliant
       # and don't support many flags. We need -isystem for instance, but also
       # reliability is generally much higher if we just get clang/gcc to do
       # the work since Makefiles are dumb and include a lot of excess flags.
       ENV['HOMEBREW_CC']
     when 'c++'
-      if ENV['HOMEBREW_CC'] =~ /llvm-gcc/
-        'g++'
-      elsif ENV['HOMEBREW_CC'] =~ /gcc-4.2/
-        'g++-4.2'
-      else
+      case ENV['HOMEBREW_CC']
+      when /clang/
         'clang++'
+      when /llvm-gcc/
+        'llvm-g++-4.2'
+      when /gcc(-4.2)?$/
+        'g++-4.2'
+      when /gcc-4.0/
+        'g++-4.0'
       end
     else
       @arg0
@@ -148,17 +152,22 @@ class Cmd
     args
   end
   def cflags
-    if cccfg? 'Ob'
-      %w{-mtune=generic -Oz}
-    elsif cccfg? 'O'
-      args = %w{-pipe -w -Os}
-      args << '-march=native' if tool =~ /clang/
-      args += %w{-arch i386 -arch x86_64} if cccfg? 'u'
-      args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
-      args
+    return [] unless cccfg? 'O'
+
+    args = %w{-pipe -w -Os}
+
+    # When bottling use the oldest supported CPU type.
+    if cccfg? 'bi6'
+      args << '-march=core2'
+    elsif cccfg? 'bi'
+      args << '-march=prescott'
     else
-      []
+      args << '-march=native' if tool =~ /clang/
     end
+
+    args += %w{-arch i386 -arch x86_64} if cccfg? 'u'
+    args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
+    args
   end
   def syslibpath
     # We reject brew's lib as we explicitly add this as a -L flag, thus it

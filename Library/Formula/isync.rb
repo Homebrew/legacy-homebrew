@@ -14,6 +14,12 @@ class Isync < Formula
     depends_on :automake
   end
 
+  def patches
+    # Add "PassCommand" config:
+    # http://sourceforge.net/p/isync/patches/12/
+    "http://sourceforge.net/p/isync/patches/_discuss/thread/17e52692/e059/attachment/passcommand.patch"
+  end if build.head?
+
   def install
     system "touch", "ChangeLog" if build.head?
     system "./autogen.sh" if build.head?

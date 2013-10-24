@@ -8,10 +8,20 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert_operator version('0.1'), :==, version('0.1.0')
     assert_operator version('0.1'), :<, version('0.2')
     assert_operator version('1.2.3'), :>, version('1.2.2')
-    assert_operator version('1.2.3-p34'), :>, version('1.2.3-p33')
     assert_operator version('1.2.4'), :<, version('1.2.4.1')
+  end
+
+  def test_patchlevel
+    assert_operator version('1.2.3-p34'), :>, version('1.2.3-p33')
+    assert_operator version('1.2.3-p33'), :<, version('1.2.3-p34')
+  end
+
+  def test_HEAD
     assert_operator version('HEAD'), :>, version('1.2.3')
     assert_operator version('1.2.3'), :<, version('HEAD')
+  end
+
+  def test_alpha_beta_rc
     assert_operator version('3.2.0b4'), :<, version('3.2.0')
     assert_operator version('1.0beta6'), :<, version('1.0b7')
     assert_operator version('1.0b6'), :<, version('1.0beta7')
@@ -19,13 +29,28 @@ class VersionComparisonTests < Test::Unit::TestCase
     assert_operator version('1.1beta2'), :<, version('1.1rc1')
     assert_operator version('1.0.0beta7'), :<, version('1.0.0')
     assert_operator version('3.2.1'), :>, version('3.2beta4')
+  end
+
+  def test_comparing_unevenly_padded_versions
+    assert_operator version('2.1.0-p194'), :<, version('2.1-p195')
+    assert_operator version('2.1-p195'), :>, version('2.1.0-p194')
+    assert_operator version('2.1-p194'), :<, version('2.1.0-p195')
+    assert_operator version('2.1.0-p195'), :>, version('2.1-p194')
+    assert_operator version('2-p194'), :<, version('2.1-p195')
+  end
+
+  def test_comparison_returns_nil_for_non_version
     assert_nil version('1.0') <=> 'foo'
   end
 
-  def test_version_queries
-    assert Version.new("1.1alpha1").alpha?
-    assert Version.new("1.0beta2").beta?
-    assert Version.new("1.0rc-1").rc?
+  def test_compare_patchlevel_to_non_patchlevel
+    assert_operator version('9.9.3-P1'), :>, version('9.9.3')
+  end
+
+  def test_erlang_version
+    versions = %w{R16B R15B03-1 R15B03 R15B02 R15B01 R14B04 R14B03
+                  R14B02 R14B01 R14B R13B04 R13B03 R13B02-1}.reverse
+    assert_equal versions, versions.sort_by { |v| version(v) }
   end
 end
 
@@ -255,7 +280,7 @@ class VersionParsingTests < Test::Unit::TestCase
   end
 
   def test_suite3270_version
-    assert_version_detected '3.3.12ga7', 'http://sourceforge.net/projects/x3270/files/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz'
+    assert_version_detected '3.3.12ga7', 'http://downloads.sourceforge.net/project/x3270/x3270/3.3.12ga7/suite3270-3.3.12ga7-src.tgz'
   end
 
   def test_wwwoffle_version
@@ -272,5 +297,10 @@ class VersionParsingTests < Test::Unit::TestCase
 
   def test_ezlupdate_version
     assert_version_detected '2011.10', 'https://github.com/downloads/ezsystems/ezpublish-legacy/ezpublish_community_project-2011.10-with_ezc.tar.bz2'
+  end
+
+  def test_aespipe_version_style
+    assert_version_detected '2.4c',
+      'http://loop-aes.sourceforge.net/aespipe/aespipe-v2.4c.tar.bz2'
   end
 end

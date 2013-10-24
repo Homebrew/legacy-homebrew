@@ -5,6 +5,8 @@ class Rubber < Formula
   url 'http://launchpad.net/rubber/trunk/1.1/+download/rubber-20100306.tar.gz'
   sha1 'cd382a19cc9fc65d114456ec9d6b042dc0e65b53'
 
+  depends_on :python
+
   def patches
     # Creates missing .in files and adds them to the configure phase
     # otherwise rubber modules are not found after install

@@ -21,7 +21,7 @@ ARGV.named.each do|arg|
   if arg.to_i > 0
     url = 'https://github.com/mxcl/homebrew/pull/' + arg
   else
-    url_match = arg.match HOMEBREW_PULL_URL_REGEX
+    url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
     unless url_match
       ohai 'Ignoring URL:', "Not a GitHub pull request or commit: #{arg}"
       next

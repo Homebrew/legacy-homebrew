@@ -2,7 +2,7 @@ require 'formula'
 
 class Libwpg < Formula
   homepage 'http://libwpg.sourceforge.net/'
-  url 'http://sourceforge.net/projects/libwpg/files/libwpg/libwpg-0.2.2/libwpg-0.2.2.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/libwpg/libwpg/libwpg-0.2.2/libwpg-0.2.2.tar.bz2'
   sha1 'e9484e795259485ece9a984f60776704d55afeeb'
 
   depends_on 'pkg-config' => :build

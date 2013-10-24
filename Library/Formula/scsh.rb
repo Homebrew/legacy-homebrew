@@ -7,6 +7,9 @@ class Scsh < Formula
 
   head 'https://github.com/scheme/scsh.git'
 
+  # stable segfaults when built 64-bit; see #21351
+  env :std unless build.head?
+
   if build.head?
     depends_on 'automake' => :build
     depends_on 'scheme48'

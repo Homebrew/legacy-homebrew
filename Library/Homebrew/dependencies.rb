@@ -26,4 +26,24 @@ class Dependencies
     @deps
   end
   alias_method :to_ary, :to_a
+
+  def optional
+    select(&:optional?)
+  end
+
+  def recommended
+    select(&:recommended?)
+  end
+
+  def build
+    select(&:build?)
+  end
+
+  def required
+    select(&:required?)
+  end
+
+  def default
+    build + required + recommended
+  end
 end

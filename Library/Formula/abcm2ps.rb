@@ -11,6 +11,6 @@ class Abcm2ps < Formula
   end
 
   test do
-    system "abcm2ps"
+    system "#{bin}/abcm2ps"
   end
 end

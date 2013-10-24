@@ -37,7 +37,7 @@ class Cloog < Formula
     Open3.popen3("#{bin}/cloog", "/dev/stdin") do |stdin, stdout, _|
       stdin.write(cloog_source)
       stdin.close
-      /Generated from \/dev\/stdin by CLooG/ === stdout.read
+      assert_match /Generated from \/dev\/stdin by CLooG/, stdout.read
     end
   end
 end

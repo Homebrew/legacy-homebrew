@@ -10,6 +10,11 @@ class Yaws < Formula
 
   depends_on 'erlang'
 
+  # the default config expects these folders to exist
+  skip_clean 'var/log/yaws'
+  skip_clean 'lib/yaws/examples/ebin'
+  skip_clean 'lib/yaws/examples/include'
+
   def install
     if build.build_32_bit?
       %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
@@ -29,5 +34,10 @@ class Yaws < Formula
         end
       end
     end
+
+    # the default config expects these folders to exist
+    (var/'log/yaws').mkpath
+    (lib/'yaws/examples/ebin').mkpath
+    (lib/'yaws/examples/include').mkpath
   end
 end

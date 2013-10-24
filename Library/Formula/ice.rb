@@ -3,7 +3,7 @@ require 'formula'
 class Ice < Formula
   homepage 'http://www.zeroc.com'
   url 'http://www.zeroc.com/download/Ice/3.5/Ice-3.5.0.tar.gz'
-  sha1 '8501afaf86c0d62192cfc1b83c338178f73e98e9'
+  sha1 '699376c76cfda9ffb24c903a1ea18b789f582421'
 
   option 'doc', 'Install documentation'
   option 'demo', 'Build demos'

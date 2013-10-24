@@ -2,10 +2,6 @@ require 'testing_env'
 require 'formula'
 
 class FormulaValidationTests < Test::Unit::TestCase
-  def formula(*args, &block)
-    Class.new(Formula, &block).new(*args)
-  end
-
   def assert_invalid(attr, &block)
     e = assert_raises(FormulaValidationError, &block)
     assert_equal attr, e.attr
@@ -13,7 +9,7 @@ class FormulaValidationTests < Test::Unit::TestCase
 
   def test_cant_override_brew
     e = assert_raises(RuntimeError) { Class.new(Formula) { def brew; end } }
-    assert_equal "You cannot override Formula#brew", e.message
+    assert_match %r{You cannot override Formula#brew}, e.message
   end
 
   def test_validates_name

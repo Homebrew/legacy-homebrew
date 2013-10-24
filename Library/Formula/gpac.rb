@@ -1,6 +1,5 @@
 require 'formula'
 
-#
 # Installs a relatively minimalist version of the GPAC tools. The
 # most commonly used tool in this package is the MP4Box metadata
 # interleaver, which has relatively few dependencies.
@@ -8,14 +7,13 @@ require 'formula'
 # The challenge with building everything is that Gpac depends on
 # a much older version of FFMpeg and WxWidgets than the version
 # that Brew installs
-#
 
 class Gpac < Formula
   homepage 'http://gpac.sourceforge.net/index.php'
   url 'http://downloads.sourceforge.net/gpac/gpac-0.5.0.tar.gz'
   sha1 '48ba16272bfa153abb281ff8ed31b5dddf60cf20'
 
-  head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac', :using => :svn
+  head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac'
 
   depends_on :x11
 

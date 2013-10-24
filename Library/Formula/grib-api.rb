@@ -5,6 +5,7 @@ class GribApi < Formula
   url 'https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.9.18.tar.gz'
   sha1 '87616917a6978a56ae4fe173a3e6e3828b0ebfba'
 
+  depends_on :fortran
   depends_on 'jasper' => :recommended
   depends_on 'openjpeg' => :optional
 
@@ -17,7 +18,6 @@ class GribApi < Formula
   def install
     ENV.deparallelize
     ENV.no_optimization
-    ENV.fortran
 
     system "./configure", "--prefix=#{prefix}"
     system "make"

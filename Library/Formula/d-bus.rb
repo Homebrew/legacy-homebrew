@@ -2,8 +2,8 @@ require 'formula'
 
 class DBus < Formula
   homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.6.10.tar.gz'
-  sha256 '1f3d6f4a53a7121328f6cd685fc14440d72e6c0006ecb3312cc779c495915e86'
+  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.6.12.tar.gz'
+  sha256 'f67a7abfd6d045c1e9eba2bba4199d301836bc0c6e8a727c765913aba780ee92'
 
   def install
     # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols

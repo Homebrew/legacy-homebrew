@@ -2,8 +2,8 @@ require 'formula'
 
 class GpgAgent < Formula
   homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.19.tar.bz2'
-  sha1 '190c09e6688f688fb0a5cf884d01e240d957ac1f'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.20.tar.bz2'
+  sha1 '7ddfefa37ee9da89a8aaa8f9059d251b4cd02562'
 
   depends_on 'libgpg-error'
   depends_on 'libgcrypt'
@@ -18,22 +18,23 @@ class GpgAgent < Formula
 
   def install
     # so we don't use Clang's internal stdint.h
-    ENV['gl_cv_absolute_stdint_h'] = '/usr/include/stdint.h'
+    ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-agent-only",
-                          "--with-pinentry-pgm=#{HOMEBREW_PREFIX}/bin/pinentry"
+                          "--with-pinentry-pgm=#{Formula.factory('pinentry').opt_prefix}/bin/pinentry",
+                          "--with-scdaemon-pgm=#{Formula.factory('gnupg2').opt_prefix}/libexec/scdaemon"
     system "make install"
   end
 end
 
 __END__
 diff --git a/configure b/configure
-index 829fc79..684213e 100755
+index 616d165..ae3126e 100755
 --- a/configure
 +++ b/configure
-@@ -558,8 +558,8 @@ MFLAGS=
+@@ -578,8 +578,8 @@ MFLAGS=
  MAKEFLAGS=
  
  # Identity of this package.
@@ -41,6 +42,6 @@ index 829fc79..684213e 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gpg-agent'
 +PACKAGE_TARNAME='gpg-agent'
- PACKAGE_VERSION='2.0.19'
- PACKAGE_STRING='gnupg 2.0.19'
+ PACKAGE_VERSION='2.0.20'
+ PACKAGE_STRING='gnupg 2.0.20'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'

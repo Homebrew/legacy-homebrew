@@ -1,15 +1,5 @@
 require 'formula'
 
-class PythonVersion < Requirement
-  env :userpaths
-
-  satisfy { `python -c 'import sys;print(sys.version[:3])'`.strip.to_f >= 2.6 }
-
-  def message
-    "Node's build system, gyp, requires Python 2.6 or newer."
-  end
-end
-
 class NpmNotInstalled < Requirement
   fatal true
 
@@ -41,23 +31,21 @@ end
 
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.5/node-v0.10.5.tar.gz'
-  sha1 '99b92864f4a277debecb4c872ea7202c9aa6996f'
+  url 'http://nodejs.org/dist/v0.10.15/node-v0.10.15.tar.gz'
+  sha1 '14174896de074c244b0ed2251a95d7163d5a5e87'
 
   devel do
-    url 'http://nodejs.org/dist/v0.11.1/node-v0.11.1.tar.gz'
-    sha1 'fe13c36f4d9116ed718af9894aab989d74a9d91c'
+    url 'http://nodejs.org/dist/v0.11.4/node-v0.11.4.tar.gz'
+    sha1 '0035d18e2dcf9aad669b1c7c07319e17abfe3762'
   end
 
   head 'https://github.com/joyent/node.git'
 
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'
-  option 'with-shared-libs', 'Use Homebrew V8 and system OpenSSL, zlib'
 
   depends_on NpmNotInstalled unless build.without? 'npm'
-  depends_on PythonVersion
-  depends_on 'v8' if build.with? 'shared-libs'
+  depends_on :python => ["2.6", :build]
 
   fails_with :llvm do
     build 2326
@@ -69,12 +57,6 @@ class Node < Formula
   def install
     args = %W{--prefix=#{prefix}}
 
-    if build.with? 'shared-libs'
-      args << '--shared-openssl' unless MacOS.version == :leopard
-      args << '--shared-v8'
-      args << '--shared-zlib'
-    end
-
     args << "--debug" if build.include? 'enable-debug'
     args << "--without-npm" if build.include? 'without-npm'
 
@@ -82,46 +64,29 @@ class Node < Formula
     system "make install"
 
     unless build.include? 'without-npm'
-      (lib/"node_modules/npm/npmrc").write(npmrc)
+      (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
     end
   end
 
   def npm_prefix
-    "#{HOMEBREW_PREFIX}/share/npm"
-  end
-
-  def npm_bin
-    "#{npm_prefix}/bin"
-  end
-
-  def modules_folder
-    "#{HOMEBREW_PREFIX}/lib/node_modules"
-  end
-
-  def npmrc
-    <<-EOS.undent
-      prefix = #{npm_prefix}
-    EOS
+    d = "#{HOMEBREW_PREFIX}/share/npm"
+    if File.directory? d
+      d
+    else
+      HOMEBREW_PREFIX.to_s
+    end
   end
 
   def caveats
-    if build.include? 'without-npm'
-      <<-EOS.undent
-        Homebrew has NOT installed npm. We recommend the following method of
-        installation:
-          curl https://npmjs.org/install.sh | sh
-
-        After installing, add the following path to your NODE_PATH environment
-        variable to have npm libraries picked up:
-          #{modules_folder}
-      EOS
-    elsif not ENV['PATH'].split(':').include? npm_bin
-      <<-EOS.undent
-        Homebrew installed npm.
-        We recommend prepending the following path to your PATH environment
-        variable to have npm-installed binaries picked up:
-          #{npm_bin}
-      EOS
+    if build.include? 'without-npm' then <<-end.undent
+      Homebrew has NOT installed npm. If you later install it, you should supplement
+      your NODE_PATH with the npm module folder:
+          #{npm_prefix}/lib/node_modules
+      end
+    elsif not ENV['PATH'].split(':').include? "#{npm_prefix}/bin"; <<-end.undent
+      Probably you should amend your PATH to include npm-installed binaries:
+          #{npm_prefix}/bin
+      end
     end
   end
 end

@@ -11,6 +11,7 @@ class Basex < Formula
     rm_rf "repo"
     rm_rf "data"
     rm_rf "etc"
+    prefix.install_metafiles
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
@@ -18,7 +19,7 @@ class Basex < Formula
   test do
     require 'open3'
     Open3.popen3("#{bin}/basex", "1 to 10") do |_, stdout, _|
-      "1 2 3 4 5 6 7 8 9 10" == stdout.read
+      assert_equal "1 2 3 4 5 6 7 8 9 10", stdout.read
     end
   end
 end

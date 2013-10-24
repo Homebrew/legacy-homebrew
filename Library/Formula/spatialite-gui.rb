@@ -6,13 +6,14 @@ class SpatialiteGui < Formula
   sha1 'b8cfe3def8c77928f7c9fcc86bae3c99179fa486'
 
   devel do
-    url 'http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.6.0.tar.gz'
-    sha1 'd06944273b1e19cdd5c17a463582e074f8548ccd'
+    url 'http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz'
+    sha1 '3b9d88e84ffa5a4f913cf74b098532c2cd15398f'
   end
 
+  depends_on 'pkg-config' => :build
   depends_on 'libspatialite'
   depends_on 'libgaiagraphics'
-
+  depends_on 'libxml2' if build.devel?
   depends_on 'wxmac'
 
   def patches
@@ -60,7 +61,7 @@ index a857e8a..9c90afb 100644
 @@ -71,6 +71,12 @@
  #define unlink	_unlink
  #endif
- 
+
 +#ifdef __WXMAC__
 +// Allow the program to run and recieve focus without creating an app bundle.
 +#include <Carbon/Carbon.h>
@@ -91,6 +92,6 @@ index a857e8a..9c90afb 100644
 +
    return true;
  }
- 
--- 
+
+--
 1.7.9

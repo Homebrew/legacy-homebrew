@@ -42,7 +42,7 @@ class Patches
   private
 
   def external_patches
-     @patches.select{|p| p.external?}
+    @patches.select{|p| p.external?}
   end
 
   # Collects the urls and output names of all external patches

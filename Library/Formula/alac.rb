@@ -7,6 +7,6 @@ class Alac < Formula
 
   def install
     system "make", "CFLAGS=#{ENV.cflags}", "CC=#{ENV.cc}"
-    bin.install('alac')
+    bin.install 'alac'
   end
 end

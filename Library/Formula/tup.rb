@@ -2,8 +2,8 @@ require 'formula'
 
 class Tup < Formula
   homepage 'http://gittup.org/tup/'
-  url 'https://github.com/gittup/tup/archive/v0.6.tar.gz'
-  sha1 '59d5bec8dcbdd407ed654ad25ae05d42a4213a2c'
+  url 'https://github.com/gittup/tup/archive/v0.6.5.tar.gz'
+  sha1 '0df86d8b607b34aee64cbadf1e6e0d090886f077'
   head 'https://github.com/gittup/tup.git'
 
   depends_on 'pkg-config' => :build

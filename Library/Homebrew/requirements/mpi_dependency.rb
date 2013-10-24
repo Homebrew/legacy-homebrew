@@ -9,13 +9,18 @@ class MPIDependency < Requirement
 
   fatal true
 
+  default_formula 'open-mpi'
+
   env :userpaths
 
-  def initialize *lang_list
-    @lang_list = lang_list
+  # This method must accept varargs rather than an array for
+  # backwards compatibility with formulae that call it directly.
+  def initialize(*tags)
     @non_functional = []
     @unknown_langs = []
-    super()
+    @lang_list = [:cc, :cxx, :f77, :f90] & tags
+    tags -= @lang_list
+    super(tags)
   end
 
   def mpi_wrapper_works? compiler
@@ -53,30 +58,6 @@ class MPIDependency < Requirement
       # Fortran 90 environment var has a different name
       compiler = 'MPIFC' if lang == :f90
       ENV[compiler.upcase] = mpi_path
-    end
-  end
-
-  def message
-    if not @unknown_langs.empty?
-      <<-EOS.undent
-        There is no MPI compiler wrapper for:
-            #{@unknown_langs.join ', '}
-
-        The following values are valid arguments to `MPIDependency.new`:
-            :cc, :cxx, :f90, :f77
-        EOS
-    else
-      <<-EOS.undent
-        Homebrew could not locate working copies of the following MPI compiler
-        wrappers:
-            #{@non_functional.join ', '}
-
-        If you have a MPI installation, please ensure the bin folder is on your
-        PATH and that all the wrappers are functional. Otherwise, a MPI
-        installation can be obtained from homebrew by *picking one* of the
-        following formulae:
-            open-mpi, mpich2
-        EOS
     end
   end
 end

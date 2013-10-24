@@ -39,7 +39,7 @@ class Exim < Formula
     end
 
     # The compile script ignores CPPFLAGS
-    ENV.append "CFLAGS", ENV['CPPFLAGS']
+    ENV.append 'CFLAGS', ENV.cppflags
 
     ENV.j1 # See: https://lists.exim.org/lurker/thread/20111109.083524.87c96d9b.en.html
     system "make"

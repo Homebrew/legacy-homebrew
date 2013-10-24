@@ -7,6 +7,7 @@ class BulkExtractor < Formula
 
   depends_on :autoconf
   depends_on :automake
+  depends_on :python
 
   depends_on 'afflib' => :optional
   depends_on 'exiv2' => :optional
@@ -19,25 +20,24 @@ class BulkExtractor < Formula
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    system "make"
-    system "make install"
+    python do
+      system "./configure", "--disable-dependency-tracking",
+                            "--prefix=#{prefix}"
+      system "make"
+      system "make install"
 
-    # Install documentation
-    (share/'bulk_extractor/doc').install Dir['doc/*.{html,txt,pdf}']
+      # Install documentation
+      (share/'bulk_extractor/doc').install Dir['doc/*.{html,txt,pdf}']
 
-    # Install Python utilities
-    (share/'bulk_extractor/python').install Dir['python/*.py']
+      (lib/python.xy/"site-packages").install Dir['python/*.py']
+    end
 
     # Install the GUI the Homebrew way
     libexec.install 'java_gui/BEViewer.jar'
     bin.write_jar_script libexec/"BEViewer.jar", "BEViewer", "-Xmx1g"
   end
 
-  def caveats; <<-EOS.undent
-    You may need to add the directory containing the Python bindings to your PYTHONPATH:
-      #{share}/bulk_extractor/python
-    EOS
+  def caveats
+    python.standard_caveats if python
   end
 end

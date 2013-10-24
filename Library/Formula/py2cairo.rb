@@ -8,6 +8,7 @@ class Py2cairo < Formula
   depends_on 'pkg-config' => :build
   depends_on 'cairo'
   depends_on :x11
+  depends_on :python
 
   option :universal
 
@@ -26,23 +27,20 @@ class Py2cairo < Formula
       end
     end
 
-    # waf miscompiles py2cairo on >= lion with HB python, linking the wrong
-    # Python Library.  So add a LINKFLAG that sets the path.
-    # https://github.com/mxcl/homebrew/issues/12893
-    # https://github.com/mxcl/homebrew/issues/14781
-    # https://bugs.freedesktop.org/show_bug.cgi?id=51544
-    ENV['LINKFLAGS'] = "-L#{%x(python-config --prefix).chomp}/lib"
-    system "./waf", "configure", "--prefix=#{prefix}", "--nopyc", "--nopyo"
-    system "./waf", "install"
+    python do
+      # waf miscompiles py2cairo on >= lion with HB python, linking the wrong
+      # Python Library.  So add a LINKFLAG that sets the path.
+      # https://github.com/mxcl/homebrew/issues/12893
+      # https://github.com/mxcl/homebrew/issues/14781
+      # https://bugs.freedesktop.org/show_bug.cgi?id=51544
+      ENV['LINKFLAGS'] = "-L#{python.libdir}"
+      system "./waf", "configure", "--prefix=#{prefix}", "--nopyc", "--nopyo"
+      system "./waf", "install"
+    end
   end
 
-  def caveats; <<-EOS.undent
-    For non-homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-    EOS
+  def caveats
+    python.standard_caveats if python
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
 end

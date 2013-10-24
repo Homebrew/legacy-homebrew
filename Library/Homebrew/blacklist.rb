@@ -59,5 +59,8 @@ def blacklisted? name
     We won't add sshpass because it makes it too easy for novice SSH users to
     ruin SSH's security.
     EOS
+  when 'gsutil' then <<-EOS.undent
+    Install gsutil with `pip install gsutil`
+    EOS
   end
 end

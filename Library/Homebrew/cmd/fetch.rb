@@ -1,7 +1,5 @@
 require 'formula'
 
-# Downloads the tarballs for the given formulae to the Cache
-
 module Homebrew extend self
   def fetch
     raise FormulaUnspecifiedError if ARGV.named.empty?
@@ -10,10 +8,9 @@ module Homebrew extend self
       bucket = []
       ARGV.formulae.each do |f|
         bucket << f
-        bucket << f.recursive_dependencies.map(&:to_formula)
+        bucket.concat f.recursive_dependencies.map(&:to_formula)
       end
-
-      bucket = bucket.flatten.uniq
+      bucket.uniq!
     else
       bucket = ARGV.formulae
     end
@@ -28,15 +25,14 @@ module Homebrew extend self
 
   def fetch_formula f
     f.cached_download.rmtree if already_fetched?(f) && ARGV.force?
-    tarball, _ = f.fetch
+    download = f.fetch
 
-    # FIXME why are strategies returning different types?
-    return unless tarball.is_a? Pathname
+    return unless download.file?
 
-    puts "Downloaded to: #{tarball}" unless already_fetched?(f)
-    puts Checksum::TYPES.map { |t| "#{t.to_s.upcase}: #{tarball.send(t)}" }
+    puts "Downloaded to: #{download}" unless already_fetched?(f)
+    puts Checksum::TYPES.map { |t| "#{t.to_s.upcase}: #{download.send(t)}" }
 
-    f.verify_download_integrity(tarball)
+    f.verify_download_integrity(download)
   rescue ChecksumMismatchError => e
     Homebrew.failed = true
     opoo "Formula reports different #{e.hash_type}: #{e.expected}"

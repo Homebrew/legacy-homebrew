@@ -5,7 +5,10 @@ class Fail2ban < Formula
   url 'http://cloud.github.com/downloads/fail2ban/fail2ban/fail2ban_0.8.7.1.orig.tar.gz'
   sha1 'ec1a7ea1360056d5095bb9de733c1e388bd22373'
 
+  depends_on :python
+
   def install
+    rm 'setup.cfg'
     inreplace 'setup.py' do |s|
       s.gsub! /\/etc/, etc
       s.gsub! /\/var/, var
@@ -21,13 +24,11 @@ class Fail2ban < Formula
     inreplace 'fail2ban-regex', '/etc', etc
 
     inreplace 'fail2ban-server', '/var', var
-    inreplace 'config/fail2ban.conf', '/var/run', (var + 'run')
+    inreplace 'config/fail2ban.conf', '/var/run', (var/'run')
 
-    system "python", "setup.py", "install",
-                     "--prefix=#{prefix}",
-                     "--install-lib=#{libexec}",
-                     "--install-data=#{libexec}",
-                     "--install-scripts=#{bin}"
+    python do
+      system python, "setup.py", "install", "--prefix=#{prefix}", "--install-lib=#{libexec}"
+    end
   end
 
   plist_options :startup => true
@@ -52,7 +53,9 @@ class Fail2ban < Formula
     EOS
   end
 
-  def caveats; <<-EOS.undent
+  def caveats
+    <<-EOS.undent
+      #{python.standard_caveats if python}
       Before using Fail2Ban for the first time you should edit jail
       configuration and enable the jails that you want to use, for instance
       ssh-ipfw. Also make sure that they point to the correct configuration

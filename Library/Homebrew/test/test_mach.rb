@@ -1,10 +1,14 @@
 require 'testing_env'
 
-def file pn
-  `/usr/bin/file -h '#{pn}'`.chomp
+module FileHelper
+  def file pn
+    `/usr/bin/file -h '#{pn}'`.chomp
+  end
 end
 
 class MachOPathnameTests < Test::Unit::TestCase
+  include FileHelper
+
   def test_fat_dylib
     pn = Pathname.new("#{TEST_FOLDER}/mach/fat.dylib")
     assert pn.universal?
@@ -136,6 +140,8 @@ class MachOPathnameTests < Test::Unit::TestCase
 end
 
 class TextExecutableTests < Test::Unit::TestCase
+  include FileHelper
+
   def teardown
     (HOMEBREW_PREFIX/'foo_script').unlink
   end

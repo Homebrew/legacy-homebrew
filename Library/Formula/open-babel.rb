@@ -2,52 +2,40 @@ require 'formula'
 
 class OpenBabel < Formula
   homepage 'http://www.openbabel.org'
-  url 'http://sourceforge.net/projects/openbabel/files/openbabel/2.3.2/openbabel-2.3.2.tar.gz'
+  url 'http://downloads.sourceforge.net/project/openbabel/openbabel/2.3.2/openbabel-2.3.2.tar.gz'
   sha1 'b8831a308617d1c78a790479523e43524f07d50d'
 
-  option 'gui',    'Build the Graphical User Interface'
-  option 'png',    'Support PNG depiction'
-  option 'python', 'Compile Python language bindings'
-  option 'java',   'Compile Java language bindings'
+  option 'with-cairo',  'Support PNG depiction'
+  option 'with-java',   'Compile Java language bindings'
 
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
-  depends_on 'wxmac' if build.include? 'gui'
-  depends_on 'cairo' if build.include? 'png'
-  depends_on 'eigen' if build.include? 'python'
-  depends_on 'eigen' if build.include? 'java'
+  depends_on :python => :optional
+  depends_on 'wxmac' => :optional
+  depends_on 'cairo' => :optional
+  depends_on 'eigen' if build.with?('python') || build.with?('java')
+
+  # Patch to fix Molecule.draw() in pybel in accordance with upstream commit df59c4a630cf753723d1318c40479d48b7507e1c
+  def patches
+    "https://gist.github.com/fredrikw/5858168/raw"
+  end
 
   def install
     args = %W[ -DCMAKE_INSTALL_PREFIX=#{prefix} ]
-    args << "-DPYTHON_BINDINGS=ON" if build.include? 'python'
-    args << "-DJAVA_BINDINGS=ON" if build.include? 'java'
-    args << "-DBUILD_GUI=ON" if build.include? 'gui'
-    args << "-DCAIRO_INCLUDE_DIRS=#{include}/cairo "\
-    "-DCAIRO_LIBRARIES=#{lib}/libcairo.dylib" if build.include? 'png'
+    args << "-DJAVA_BINDINGS=ON" if build.with? 'java'
+    args << "-DBUILD_GUI=ON" if build.with? 'wxmac'
+    # Looking for Cairo in HOMEBREW_PREFIX
+    # setting the arguments separately, joining them in one string fails with the 'system "cmake", *args' command
+    args << "-DCAIRO_INCLUDE_DIRS='#{HOMEBREW_PREFIX}/include/cairo'" if build.with? 'cairo'
+    args << "-DCAIRO_LIBRARIES='#{HOMEBREW_PREFIX}/lib/libcairo.dylib'" if build.with? 'cairo'
 
-    # Find the right pyhton installation (code from opencv.rb)
-    if build.include? 'python'
-      python_prefix = `python-config --prefix`.strip
-      # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
-      if File.exist? "#{python_prefix}/Python"
-        # Python was compiled with --framework:
-        args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
-        if !MacOS::CLT.installed? and python_prefix.start_with? '/System/Library'
-          # For Xcode-only systems, the headers of system's python are inside of Xcode
-          args << "-DPYTHON_INCLUDE_DIR='#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/Headers'"
-        else
-          args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
-        end
-      else
-        python_lib = "#{python_prefix}/lib/lib#{which_python}"
-        if File.exists? "#{python_lib}.a"
-          args << "-DPYTHON_LIBRARY='#{python_lib}.a'"
-        else
-          args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
-        end
-        args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
-      end
-      args << "-DPYTHON_PACKAGES_PATH='#{lib}/#{which_python}/site-packages'"
+    python do
+      args << "-DPYTHON_BINDINGS=ON"
+      # For Xcode-only systems, the headers of system's python are inside of Xcode:
+      args << "-DPYTHON_INCLUDE_DIR='#{python.incdir}'"
+      # Cmake picks up the system's python dylib, even if we have a brewed one:
+      args << "-DPYTHON_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'"
+      args << "-DPYTHON_PACKAGES_PATH='#{python.site_packages}'"
     end
 
     args << '..'
@@ -58,26 +46,18 @@ class OpenBabel < Formula
       system "make install"
     end
 
-    if build.include? 'python'
-      pydir = lib/which_python/'site-packages'
-      pydir.install lib/'openbabel.py', lib/'pybel.py'
-      cd pydir do
-      `python -c 'import py_compile;py_compile.compile(\"openbabel.py\");py_compile.compile(\"pybel.py\")'`
-      end
+    python do
+      python.site_packages.install lib/'openbabel.py', lib/'pybel.py', lib/'_openbabel.so'
     end
   end
 
-  def caveats; <<-EOS.undent
-    Python modules are installed to #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages
-    so the PYTHONPATH environment variable should include the paths
-    #{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:#{HOMEBREW_PREFIX}/lib
-
-    Java libraries are installed to #{HOMEBREW_PREFIX}/lib so this path should be
-    included in the CLASSPATH environment variable.
+  def caveats
+    s = ''
+    s += python.standard_caveats if python
+    s += <<-EOS.undent
+      Java libraries are installed to #{HOMEBREW_PREFIX}/lib so this path should be
+      included in the CLASSPATH environment variable.
     EOS
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
 end

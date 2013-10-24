@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gpsd < Formula
-  homepage 'https://savannah.nongnu.org/projects/gpsd'
-  url 'http://download.savannah.gnu.org/releases/gpsd/gpsd-3.7.tar.gz'
-  sha1 '6e9ae7c1117102de4f96193a2fdd2778d87af045'
+  homepage 'http://catb.org/gpsd/'
+  url 'http://download.savannah.gnu.org/releases/gpsd/gpsd-3.9.tar.gz'
+  sha1 'ff1db303000910d7cb7bfc3a75c97a0800df0f1b'
 
   depends_on 'scons' => :build
   depends_on 'libusb' => :optional

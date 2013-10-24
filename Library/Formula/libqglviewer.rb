@@ -2,8 +2,10 @@ require 'formula'
 
 class Libqglviewer < Formula
   homepage 'http://www.libqglviewer.com/'
-  url 'http://www.libqglviewer.com/src/libQGLViewer-2.3.17.tar.gz'
-  sha1 '03b1da73bdb07988184c1f5d7c1c360be27b2a0e'
+  url 'http://www.libqglviewer.com/src/libQGLViewer-2.4.0.tar.gz'
+  sha1 '91e3c889822909dc3684e1be6d7f9ff734cc8047'
+
+  head 'https://github.com/GillesDebunne/libQGLViewer.git'
 
   option :universal
 
@@ -31,11 +33,11 @@ end
 __END__
 --- a/QGLViewer/QGLViewer.pro
 +++ b/QGLViewer/QGLViewer.pro
-@@ -246,7 +246,7 @@
+@@ -250,7 +250,7 @@
      FRAMEWORK_HEADERS.path = Headers
      QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
 
--    DESTDIR = ~/Library/Frameworks/
+-    DESTDIR = $${HOME_DIR}/Library/Frameworks/
 +    DESTDIR = $${PREFIX}
 
      QMAKE_POST_LINK=cd $$DESTDIR/QGLViewer.framework/Headers && ln -s . QGLViewer

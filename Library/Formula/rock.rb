@@ -7,6 +7,8 @@ class Rock < Formula
 
   head 'https://github.com/nddrylliog/rock.git'
 
+  depends_on 'bdw-gc'
+
   def install
       # make rock using provided bootstrap
       system "make rescue"

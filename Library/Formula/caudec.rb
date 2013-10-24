@@ -10,20 +10,20 @@ class Caudec < Formula
   depends_on 'aacgain' => :optional
   depends_on 'alac' => :optional
   depends_on 'cksfv' => :optional
+  depends_on 'coreutils' => :optional
   depends_on 'eye-d3' => :optional
+  depends_on 'ffmpeg' => :optional
   depends_on 'flac' => :optional
   depends_on 'flake' => :optional
-  depends_on 'ffmpeg' => :optional
-  depends_on 'gnutls' => :optional
   depends_on 'lame' => :optional
   depends_on 'mp3gain' => :optional
   depends_on 'musepack' => :optional
   depends_on 'opus' => :optional
   depends_on 'sox' => :optional
+  depends_on 'vorbis-tools' => :optional
+  depends_on 'vorbisgain' => :optional
   depends_on 'wavpack' => :optional
   depends_on 'wget' => :optional
-  depends_on 'vorbisgain' => :optional
-  depends_on 'vorbis-tools' => :optional
 
   def install
     bin.install 'caudec'

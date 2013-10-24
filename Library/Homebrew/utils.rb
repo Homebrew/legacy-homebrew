@@ -1,6 +1,9 @@
 require 'pathname'
 require 'exceptions'
 require 'macos'
+require 'utils/json'
+require 'utils/inreplace'
+require 'open-uri'
 
 class Tty
   class << self
@@ -95,7 +98,7 @@ module Homebrew
     fork do
       yield if block_given?
       args.collect!{|arg| arg.to_s}
-      exec(cmd, *args) rescue nil
+      exec(cmd.to_s, *args) rescue nil
       exit! 1 # never gets here unless exec failed
     end
     Process.wait
@@ -169,7 +172,7 @@ def which cmd
 end
 
 def which_editor
-  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
+  editor = ENV.values_at('HOMEBREW_EDITOR', 'VISUAL', 'EDITOR').compact.first
   # If an editor wasn't set, try to pick a sane default
   return editor unless editor.nil?
 
@@ -211,27 +214,6 @@ def archs_for_command cmd
   Pathname.new(cmd).archs
 end
 
-def inreplace paths, before=nil, after=nil
-  Array(paths).each do |path|
-    f = File.open(path, 'r')
-    s = f.read
-
-    if before == nil and after == nil
-      s.extend(StringInreplaceExtension)
-      yield s
-    else
-      sub = s.gsub!(before, after)
-      if sub.nil?
-        opoo "inreplace in '#{path}' failed"
-        puts "Expected replacement of '#{before}' with '#{after}'"
-      end
-    end
-
-    f.reopen(path, 'w').write(s)
-    f.close
-  end
-end
-
 def ignore_interrupts(opt = nil)
   std_trap = trap("INT") do
     puts "One sec, just cleaning up" unless opt == :quietly
@@ -257,6 +239,35 @@ def nostdout
 end
 
 module GitHub extend self
+  ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/")
+
+  Error = Class.new(StandardError)
+
+  def open url, headers={}, &block
+    require 'net/https' # for exception classes below
+
+    default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
+    default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
+    Kernel.open(url, default_headers.merge(headers), &block)
+  rescue OpenURI::HTTPError => e
+    if e.io.meta['x-ratelimit-remaining'].to_i <= 0
+      raise <<-EOS.undent
+        GitHub #{Utils::JSON.load(e.io.read)['message']}
+        You may want to create an API token: https://github.com/settings/applications
+        and then set HOMEBREW_GITHUB_API_TOKEN.
+        EOS
+    else
+      raise e
+    end
+  rescue SocketError, OpenSSL::SSL::SSLError => e
+    raise Error, "Failed to connect to: #{url}\n#{e.message}"
+  end
+
+  def each_issue_matching(query, &block)
+    uri = ISSUES_URI + query
+    open(uri) { |f| Utils::JSON.load(f.read)['issues'].each(&block) }
+  end
+
   def issues_for_formula name
     # bit basic as depends on the issue at github having the exact name of the
     # formula in it. Which for stuff like objective-caml is unlikely. So we
@@ -264,38 +275,23 @@ module GitHub extend self
 
     name = f.name if Formula === name
 
-    require 'open-uri'
-    require 'vendor/multi_json'
-
     issues = []
 
-    uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{name}")
-
-    open uri do |f|
-      MultiJson.decode(f.read)['issues'].each do |issue|
-        # don't include issues that just refer to the tool in their body
-        issues << issue['html_url'] if issue['title'].include? name
-      end
+    each_issue_matching(name) do |issue|
+      # don't include issues that just refer to the tool in their body
+      issues << issue['html_url'] if issue['title'].include? name
     end
 
     issues
-  rescue
-    []
   end
 
   def find_pull_requests rx
-    require 'open-uri'
-    require 'vendor/multi_json'
-
     query = rx.source.delete('.*').gsub('\\', '')
-    uri = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/#{query}")
 
-    open uri do |f|
-      MultiJson.decode(f.read)['issues'].each do |pull|
-        yield pull['pull_request_url'] if rx.match pull['title'] and pull['pull_request_url']
+    each_issue_matching(query) do |issue|
+      if rx === issue['title'] && issue.has_key?('pull_request_url')
+        yield issue['pull_request_url']
       end
     end
-  rescue
-    nil
   end
 end

@@ -1,14 +1,14 @@
 require 'formula'
 
 class Nmap < Formula
-  homepage 'http://nmap.org/6/'
-  url 'http://nmap.org/dist/nmap-6.25.tar.bz2'
-  sha1 '769943a1a5c10f67bf9738e26da42b3312db752f'
+  homepage 'http://nmap.org/'
+  url 'http://nmap.org/dist/nmap-6.40.tar.bz2'
+  sha1 'ee1bec1bb62045c7c1fc69ff183b2ae9b97bd0eb'
 
   head 'https://guest:@svn.nmap.org/nmap/', :using => :svn
 
   # Leopard's version of OpenSSL isn't new enough
-  depends_on "openssl" if MacOS.version == :leopard
+  depends_on "openssl" if MacOS.version <= :leopard
 
   fails_with :llvm do
     build 2334
@@ -23,7 +23,7 @@ class Nmap < Formula
               --without-zenmap
               --disable-universal]
 
-    if MacOS.version == :leopard
+    if MacOS.version <= :leopard
       openssl = Formula.factory('openssl')
       args << "--with-openssl=#{openssl.prefix}"
     end

@@ -1,5 +1,5 @@
 # Links any Applications (.app) found in installed prefixes to ~/Applications
-require "formula"
+require 'keg'
 
 TARGET_DIR = ARGV.include?("--system") ? "/Applications" : File.expand_path("~/Applications")
 
@@ -9,24 +9,24 @@ unless File.exist? TARGET_DIR
   exit 1
 end
 
-HOMEBREW_CELLAR.subdirs.each do |keg|
-  next unless keg.subdirs
-  name = keg.basename.to_s
+HOMEBREW_CELLAR.subdirs.each do |rack|
+  kegs = rack.subdirs.map { |d| Keg.new(d) }
+  next if kegs.empty?
 
-  if ((f = Formula.factory(name)).installed? rescue false)
-    Dir["#{f.installed_prefix}/*.app", "#{f.installed_prefix}/bin/*.app", "#{f.installed_prefix}/libexec/*.app"].each do |p|
-      puts "Linking #{p}"
-      appname = File.basename(p)
-      target = TARGET_DIR+"/"+appname
-      if File.exist? target
-        if File.symlink? target
-          system "rm", target
-        else
-          onoe "#{target} already exists, skipping."
-        end
-      end
-      system "ln", "-s", p, TARGET_DIR
+  keg = kegs.detect(&:linked?) || kegs.max {|a,b| a.version <=> b.version}
+
+  Dir["#{keg}/*.app", "#{keg}/bin/*.app", "#{keg}/libexec/*.app"].each do |app|
+    puts "Linking #{app}"
+    app_name = File.basename(app)
+    target = "#{TARGET_DIR}/#{app_name}"
+
+    if File.exist?(target) && File.symlink?(target)
+      system "rm", target
+    elsif File.exist?(target)
+      onoe "#{target} already exists, skipping."
+      next
     end
+    system "ln", "-s", app, TARGET_DIR
   end
 end
 

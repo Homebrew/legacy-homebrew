@@ -7,6 +7,7 @@ class Cantera < Formula
   head 'http://cantera.googlecode.com/svn/cantera18/trunk/'
 
   depends_on 'numpy' => :python
+  depends_on :python
   depends_on 'graphviz'
 
   # fixes the Makefiles in Cantera/cxx/demos/ that have broken install commands

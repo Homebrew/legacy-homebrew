@@ -2,20 +2,9 @@ require 'formula'
 
 class GnupgInstalled < Requirement
   fatal true
+  default_formula 'gnupg2'
 
   satisfy { which('gpg') || which('gpg2') }
-
-  def message; <<-EOS.undent
-    Gnupg is required to use these tools.
-
-    You can install Gnupg or Gnupg2 with Homebrew:
-      brew install gnupg
-      brew install gnupg2
-
-    Or you can use one of several different
-    prepackaged installers that are available.
-    EOS
-  end
 end
 
 class SigningParty < Formula

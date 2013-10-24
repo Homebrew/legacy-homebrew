@@ -1,8 +1,8 @@
 require 'formula'
 
 class Minizinc < Formula
-  homepage 'http://www.g12.csse.unimelb.edu.au/minizinc/'
-  url 'http://www.g12.csse.unimelb.edu.au/minizinc/downloads/release-1.6/minizinc-1.6-x86_64-apple-darwin.tar.gz'
+  homepage 'http://www.minizinc.org'
+  url 'http://www.minizinc.org/downloads/release-1.6/minizinc-1.6-x86_64-apple-darwin.tar.gz'
   sha1 '71f0e08962eb8bb44c463851f0144c8b006fdb80'
 
   depends_on :arch => :x86_64
@@ -14,10 +14,11 @@ class Minizinc < Formula
   end
 
   def install
-    system "sh", "SETUP", prefix
-    bin.install Dir['bin/*']
+    system "sh", "SETUP", libexec
     man.install Dir['doc/man/*']
-    lib.install Dir['lib/*']
+    libexec.install 'bin', 'lib'
+    bin.install_symlink Dir["#{libexec}/bin/*"]
+    (bin/'private').unlink
   end
 
   def test

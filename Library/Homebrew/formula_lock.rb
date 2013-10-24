@@ -1,3 +1,5 @@
+require 'fcntl'
+
 class FormulaLock
   LOCKDIR = HOMEBREW_CACHE_FORMULA
 
@@ -33,7 +35,9 @@ class FormulaLock
 
   def get_or_create_lockfile
     if @lockfile.nil? || @lockfile.closed?
-      @path.open(File::RDWR | File::CREAT)
+      @lockfile = @path.open(File::RDWR | File::CREAT)
+      @lockfile.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+      @lockfile
     else
       @lockfile
     end

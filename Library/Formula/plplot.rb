@@ -2,7 +2,7 @@ require 'formula'
 
 class Plplot < Formula
   homepage 'http://plplot.sourceforge.net'
-  url 'http://sourceforge.net/projects/plplot/files/plplot/5.9.9%20Source/plplot-5.9.9.tar.gz'
+  url 'http://downloads.sourceforge.net/project/plplot/plplot/5.9.9%20Source/plplot-5.9.9.tar.gz'
   sha1 '3df8fc21723e14af62fea4098e4ef019e1b52a54'
 
   depends_on 'cmake' => :build

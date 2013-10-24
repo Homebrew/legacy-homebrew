@@ -7,8 +7,8 @@ module MacCPUs
     :g4 => '-mcpu=7400',
     :g4e => '-mcpu=7450',
     :g5 => '-mcpu=970'
-  }
-  def optimization_flags; OPTIMIZATION_FLAGS.dup; end
+  }.freeze
+  def optimization_flags; OPTIMIZATION_FLAGS; end
 
   # These methods use info spewed out by sysctl.
   # Look in <mach/machine.h> for decoding info.
@@ -42,6 +42,8 @@ module MacCPUs
         :sandybridge
       when 0x1F65E835 # Ivy Bridge
         :ivybridge
+      when 0x10B282DC # Haswell
+        :haswell
       else
         :dunno
       end
@@ -74,20 +76,23 @@ module MacCPUs
   end
 
   def altivec?
-    type == :ppc && family != :g3
+    @altivec ||= sysctl_bool('hw.optional.altivec')
   end
 
   def avx?
-    pre_sandy = [:core, :core2, :penryn, :nehalem, :arrandale].include? family
-    type == :intel && !pre_sandy
+    @avx ||= sysctl_bool('hw.optional.avx1_0')
   end
 
   def sse3?
-    type == :intel
+    @sse3 ||= sysctl_bool('hw.optional.sse3')
   end
 
   def sse4?
-    type == :intel && (family != :core && family != :core2)
+    @sse4 ||= sysctl_bool('hw.optional.sse4_1')
+  end
+
+  def sse4_2?
+    @sse4 ||= sysctl_bool('hw.optional.sse4_2')
   end
 
   protected

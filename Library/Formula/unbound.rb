@@ -2,8 +2,8 @@ require 'formula'
 
 class Unbound < Formula
   homepage 'http://www.unbound.net'
-  url 'http://www.unbound.net/downloads/unbound-1.4.19.tar.gz'
-  sha256 '47e681cf2489cdbad9c9687d579e9b052dceada8f9a720ba447689246aaeeadd'
+  url 'http://www.unbound.net/downloads/unbound-1.4.20.tar.gz'
+  sha1 '1752976533be2a4f0c9cdbab9d2cbb67d4f27c43'
 
   depends_on 'ldns'
 

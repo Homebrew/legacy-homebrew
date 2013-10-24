@@ -2,15 +2,16 @@ require 'formula'
 
 class Bigloo < Formula
   homepage 'http://www-sop.inria.fr/indes/fp/Bigloo/'
-  url 'ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo3.8c.tar.gz'
-  version '3.8c'
-  sha1 'e876e3f8dc5315aa61177721695e9c04b19f25d9'
+  url 'ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo4.0b.tar.gz'
+  version '4.0b'
+  sha1 '2c70863de59d1d92b63aee3f1ee2f39c6672e732'
 
-  # libgmp seems to be required for 32-bit srfi 27 only, but include anyway
-  depends_on 'gmp'
+  depends_on 'gmp' => :recommended
+
+  option 'with-jvm', 'Enable JVM support'
 
   fails_with :clang do
-    build 421
+    build 425
     cause <<-EOS.undent
       objs/obj_u/Ieee/dtoa.c:262:79504: fatal error: parser
       recursion limit reached, program too complex
@@ -18,17 +19,26 @@ class Bigloo < Formula
   end
 
   def install
-    args = [ "--disable-debug", "--disable-dependency-tracking",
-             "--prefix=#{prefix}",
-             "--mandir=#{man1}", # This is correct for this brew
-             "--infodir=#{info}",
-             "--customgc=yes",
-             "--os-macosx" ]
+    args = ["--disable-debug",
+            "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--mandir=#{man1}",
+            "--infodir=#{info}",
+            "--customgc=yes",
+            "--os-macosx",
+            "--native=yes",
+            "--disable-alsa",
+            "--disable-mpg123",
+            "--disable-flac"]
+
+    args << "--jvm=yes" if build.with? 'jvm'
+    args << "--no-gmp" if build.without? "gmp"
 
     # SRFI 27 is 32-bit only
     args << "--disable-srfi27" if MacOS.prefer_64_bit?
 
     system "./configure", *args
+
     system "make"
     system "make install"
 

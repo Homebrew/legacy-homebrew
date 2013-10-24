@@ -2,9 +2,9 @@ require 'formula'
 
 class Vcsh < Formula
   homepage 'https://github.com/RichiH/vcsh'
-  url 'https://github.com/RichiH/vcsh/archive/v1.2-homebrew.tar.gz'
-  version '1.2'
-  sha1 '1114b6069b0ef2ca7606287664f4f0175829e968'
+  url 'https://github.com/RichiH/vcsh/archive/v1.20130724-homebrew.tar.gz'
+  version '1.20130724'
+  sha1 '3cda5c059bbe40fbd55ff8d0d74dd9f327a15da2'
 
   depends_on 'mr'
 

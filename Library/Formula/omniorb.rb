@@ -2,18 +2,17 @@ require 'formula'
 
 class OmniorbBindings < Formula
   homepage 'http://omniorb.sourceforge.net/'
-  url 'http://sourceforge.net/projects/omniorb/files/omniORBpy/omniORBpy-3.6/omniORBpy-3.6.tar.bz2'
-  sha1 '2def5ded7cd30e8d298113ed450b7bd09eaaf26f'
+  url 'http://downloads.sourceforge.net/project/omniorb/omniORBpy/omniORBpy-3.7/omniORBpy-3.7.tar.bz2'
+  sha1 '71ad9835c2273fe884fd9bd1bc282d40177f4d74'
 end
 
 class Omniorb < Formula
   homepage 'http://omniorb.sourceforge.net/'
-  url 'http://sourceforge.net/projects/omniorb/files/omniORB/omniORB-4.1.6/omniORB-4.1.6.tar.bz2'
-  sha1 '383e3b3b605188fe6358316917576e0297c4e1a6'
-
-  option 'python', 'Enable Python mappings'
+  url 'http://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-4.1.7/omniORB-4.1.7.tar.bz2'
+  sha1 'e039eba5f63458651cfdc8a67c664c1ce4134540'
 
   depends_on 'pkg-config' => :build
+  depends_on :python => :recommended
 
   # http://www.omniorb-support.com/pipermail/omniorb-list/2012-February/031202.html
   def patches
@@ -21,39 +20,27 @@ class Omniorb < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "PYTHON=#{which 'python'}"]
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
 
-    if  build.include? 'python'
+    python do
       OmniorbBindings.new.brew do
-        system "./configure", *args
+        system "./configure", "--prefix=#{prefix}"
         system "make install"
       end
     end
   end
 
   def caveats
-    s = ''
-    if build.include? 'python'
-      s += <<-EOS.undent
-        For non-homebrew Python, you need to amend your PYTHONPATH like so:
-        export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-      EOS
-    end
-    return s.empty? ? nil : s
-  end
-
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+    python.standard_caveats if python
   end
 
   test do
     system "#{bin}/omniidl", "-h"
 
-    if build.include? 'python'
-      system "python", "-c", %(import omniORB; print 'omniORBpy', omniORB.__version__)
+    if build.with? 'python'
+      system python, "-c", %(import omniORB; print 'omniORBpy', omniORB.__version__)
     end
   end
 end

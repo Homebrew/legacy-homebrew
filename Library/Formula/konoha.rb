@@ -8,7 +8,7 @@ class Konoha < Formula
   option 'tests', 'Verify the build with make test (1 min)'
 
   depends_on 'cmake' => :build
-  depends_on MPIDependency.new(:cc, :cxx)
+  depends_on :mpi => [:cc, :cxx]
   depends_on 'pcre'
   depends_on 'json-c'
   depends_on 'sqlite'

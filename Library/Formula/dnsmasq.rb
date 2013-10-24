@@ -8,6 +8,7 @@ class Dnsmasq < Formula
   option 'with-idn', 'Compile with IDN support'
 
   depends_on "libidn" if build.include? 'with-idn'
+  depends_on 'pkg-config' => :build
 
   def install
     ENV.deparallelize

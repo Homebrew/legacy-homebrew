@@ -6,26 +6,25 @@ class Auctex < Formula
   mirror 'http://ftp.gnu.org/gnu/auctex/auctex-11.87.tar.gz'
   sha1 '0be92c7d8f89d57346fe07f05a1a045ffd11cd71'
 
-  depends_on :tex
+  head 'git://git.savannah.gnu.org/auctex.git'
 
-  def options
-    [['--with-emacs=</full/path/to/emacs>', "Force a different emacs"]]
-  end
+  depends_on :tex
+  depends_on :autoconf if build.head?
+
+  option "with-emacs=", "Path to an emacs binary"
 
   def which_emacs
-    # check arguments for a different emacs
-    ARGV.each do |a|
-      if a.index('--with-emacs')
-        return a.sub('--with-emacs=', '')
-      end
-    end
-    which('emacs').to_s
+    emacs = ARGV.value('with-emacs') || which('emacs').to_s
+    raise "#{emacs} not found" if not File.exists? emacs
+    return emacs
   end
 
   def install
     # configure fails if the texmf dir is not there yet
     brew_texmf = share + 'texmf'
     brew_texmf.mkpath
+
+    system "./autogen.sh" if build.head?
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-texmf-dir=#{brew_texmf}",
@@ -66,5 +65,4 @@ class Auctex < Formula
 #{dot_emacs}
     EOS
   end
-
 end

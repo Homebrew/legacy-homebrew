@@ -43,7 +43,7 @@ class Unac < Formula
   test do
     require 'open3'
     Open3.popen3("#{bin}/unaccent", "utf-8", "fóó") do |_, stdout, _|
-      "foo" == stdout.read.strip
+      assert_equal "foo", stdout.read.strip
     end
   end
 end

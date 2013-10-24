@@ -9,8 +9,7 @@ class X11Dependency < Requirement
 
   env { ENV.x11 }
 
-  def initialize(name="x11", *tags)
-    tags.flatten!
+  def initialize(name="x11", tags=[])
     @name = name
     @min_version = tags.shift if /(\d\.)+\d/ === tags.first
     super(tags)
@@ -66,19 +65,19 @@ class X11Dependency < Requirement
         end
       end
 
-      def for(name, *tags)
+      def for(name, tags=[])
         constant = name.capitalize
 
         if defines_const?(constant)
           klass = const_get(constant)
         else
           klass = Class.new(self) do
-            def initialize(name, *tags) super end
+            def initialize(name, tags) super end
           end
 
           const_set(constant, klass)
         end
-        klass.new(name, *tags)
+        klass.new(name, tags)
       end
     end
   end

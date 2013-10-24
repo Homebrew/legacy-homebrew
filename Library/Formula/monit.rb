@@ -2,8 +2,8 @@ require 'formula'
 
 class Monit < Formula
   homepage 'http://mmonit.com/monit/'
-  url 'http://mmonit.com/monit/dist/monit-5.5.tar.gz'
-  sha256 '8276b060b3f0e6453c9748d421dec044ddae09d3e4c4666e13472aab294d7c53'
+  url 'http://mmonit.com/monit/dist/monit-5.5.1.tar.gz'
+  sha256 'dbe4b4744a7100e2d5f4eac353dfb2df0549848e2c7661d9c19acc31cdef2c78'
 
   def install
     system "./configure", "--prefix=#{prefix}",

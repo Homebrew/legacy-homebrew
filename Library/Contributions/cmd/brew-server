@@ -8,6 +8,7 @@ $:.unshift(ENV['HOMEBREW_LIBRARY_PATH'])
 
 require 'global'
 require 'formula'
+require 'cmd/search'
 
 require 'rubygems'
 
@@ -109,7 +110,7 @@ end
 
 get '/search' do
   q = params['q']
-  results = search_brews(q)
+  results = Homebrew.search_formulae(q)
 
   html_page("Results") do |s|
     s << <<-HTML

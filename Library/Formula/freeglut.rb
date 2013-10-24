@@ -2,15 +2,46 @@ require 'formula'
 
 class Freeglut < Formula
   homepage 'http://freeglut.sourceforge.net/'
-  url 'http://sourceforge.net/projects/freeglut/files/freeglut/2.8.0/freeglut-2.8.0.tar.gz'
-  sha1 '4debbe559c6c9841ce1abaddc9d461d17c6083b1'
+  url 'http://downloads.sourceforge.net/project/freeglut/freeglut/2.8.1/freeglut-2.8.1.tar.gz'
+  sha1 '7330b622481e2226c0c9f6d2e72febe96b03f9c4'
+
+  # Examples won't build on Snow Leopard as one of them requires
+  # a header the system provided X11 doesn't have.
+  option 'with-examples', "Build the examples."
 
   depends_on :x11
 
+  def patches
+    DATA if MacOS.version >= :lion
+  end
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+
+    if build.without?('examples') || MacOS.version < :lion
+      inreplace 'Makefile' do |s|
+        s.change_make_var! 'SUBDIRS', 'src include doc'
+      end
+    end
+
     system "make all"
     system "make install"
   end
 end
+
+__END__
+
+diff -ur org/freeglut-2.8.1/include/GL/freeglut_std.h freeglut-2.8.1/include/GL/freeglut_std.h
+--- org/freeglut-2.8.1/include/GL/freeglut_std.h
++++ freeglut-2.8.1/include/GL/freeglut_std.h
+@@ -122,7 +122,7 @@
+  * Always include OpenGL and GLU headers
+  */
+ #if __APPLE__
+-#   include <OpenGL/gl.h>
++#   include <OpenGL/gl3.h>
+ #   include <OpenGL/glu.h>
+ #else
+ #   include <GL/gl.h>

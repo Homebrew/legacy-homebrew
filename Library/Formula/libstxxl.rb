@@ -2,7 +2,7 @@ require 'formula'
 
 class Libstxxl < Formula
   homepage 'http://stxxl.sourceforge.net/'
-  url 'http://sourceforge.net/projects/stxxl/files/stxxl/1.3.1/stxxl-1.3.1.tar.gz'
+  url 'http://downloads.sourceforge.net/project/stxxl/stxxl/1.3.1/stxxl-1.3.1.tar.gz'
   sha1 '5fba2bb26b919a07e966b2f69ae29aa671892a7d'
 
   def install

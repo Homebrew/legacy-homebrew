@@ -34,7 +34,7 @@ class Runit < Formula
     The service directory is #{var}/service instead of /service.
 
     To have runit ready to run services, start runsvdir:
-         runsvdir -P #{var}
+         runsvdir -P #{var}/service
 
     Depending on the services managed by runit, this may need to start as root.
     EOS

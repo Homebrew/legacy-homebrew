@@ -8,9 +8,9 @@ class Libelf < Formula
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    # Use separate steps; there is some kind of (transient)
-    # race in the Makefile.
+                          "--prefix=#{prefix}",
+                          "--disable-compat"
+    # Use separate steps; there is a race in the Makefile.
     system "make"
     system "make install"
   end

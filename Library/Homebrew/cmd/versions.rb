@@ -87,12 +87,14 @@ class Formula
 
         # Unload the class so Formula#version returns the correct value
         begin
-          Object.send(:remove_const, Formula.class_s(name))
-          nostdout { Formula.factory(path).version }
+          Formulary.unload_formula name
+          nostdout { Formula.factory(path.to_s).version }
         rescue *IGNORED_EXCEPTIONS => e
           # We rescue these so that we can skip bad versions and
           # continue walking the history
           ohai "#{e} in #{name} at revision #{sha}", e.backtrace if ARGV.debug?
+        rescue FormulaUnavailableError
+          # Suppress this error
         end
       end
     end

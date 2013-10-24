@@ -2,8 +2,13 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.30/kvm-tarbake-jaunty-x86/mariadb-5.5.30.tar.gz'
-  sha1 'aa0cb78b8d709d765e4a58953ecdceefc48af5a7'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.32/kvm-tarbake-jaunty-x86/mariadb-5.5.32.tar.gz'
+  sha1 'cc468beebf3b27439d29635a4e8aec8314f27175'
+
+  devel do
+    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.3/kvm-tarbake-jaunty-x86/mariadb-10.0.3.tar.gz'
+    sha1 'c36c03ad78bdadf9a10e7b695159857d6432726d'
+  end
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -30,21 +35,20 @@ class Mariadb < Formula
   env :std if build.universal?
 
   fails_with :clang do
-    build 421
-  end
-
-  def patches
-    # fix build on Xcode only systems
-    DATA
+    build 425
+    cause "error: implicit instantiation of undefined template 'boost::STATIC_ASSERTION_FAILURE<false>'"
   end
 
   def install
+    # Don't hard-code the libtool path. See:
+    # https://github.com/mxcl/homebrew/issues/20185
+    inreplace "cmake/libutils.cmake",
+      "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
+      "COMMAND libtool -static -o ${TARGET_LOCATION}"
+
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
-
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
 
     cmake_args = %W[
       .
@@ -84,35 +88,50 @@ class Mariadb < Formula
     system "make"
     system "make install"
 
-    # Don't create databases inside of the prefix!
-    # See: https://github.com/mxcl/homebrew/issues/4975
-    rm_rf prefix+'data'
-
-    (prefix+'mysql-test').rmtree unless build.include? 'with-tests' # save 121MB!
-    (prefix+'sql-bench').rmtree unless build.include? 'with-bench'
-
-    # Link the setup script into bin
-    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
-
-    # Fix up the control script and link into bin
-    inreplace "#{prefix}/support-files/mysql.server" do |s|
-      s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
-      # pidof can be replaced with pgrep from proctools on Mountain Lion
-      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
-    end
-
     # Fix my.cnf to point to #{etc} instead of /etc
     inreplace "#{etc}/my.cnf" do |s|
       s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
     end
 
-    ln_s "#{prefix}/support-files/mysql.server", bin
+    unless build.include? 'client-only'
+      # Don't create databases inside of the prefix!
+      # See: https://github.com/mxcl/homebrew/issues/4975
+      rm_rf prefix+'data'
+
+      (prefix+'mysql-test').rmtree unless build.include? 'with-tests' # save 121MB!
+      (prefix+'sql-bench').rmtree unless build.include? 'with-bench'
+
+      # Link the setup script into bin
+      ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+
+      # Fix up the control script and link into bin
+      inreplace "#{prefix}/support-files/mysql.server" do |s|
+        s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+        # pidof can be replaced with pgrep from proctools on Mountain Lion
+        s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
+      end
+
+      ln_s "#{prefix}/support-files/mysql.server", bin
+    end
+  end
+
+  def post_install
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
+
+    unless File.exist? "#{var}/mysql/mysql/user.frm"
+      ENV['TMPDIR'] = nil
+      system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",
+        "--basedir=#{prefix}", "--datadir=#{var}/mysql", "--tmpdir=/tmp"
+    end
   end
 
   def caveats; <<-EOS.undent
-    Set up databases with:
-        unset TMPDIR
-        mysql_install_db --user=\`whoami\` --basedir="$(brew --prefix mariadb)" --datadir=#{var}/mysql --tmpdir=/tmp
+    A "/etc/my.cnf" from another install may interfere with a Homebrew-built
+    server starting up correctly.
+
+    To connect:
+        mysql -uroot
     EOS
   end
 
@@ -127,8 +146,11 @@ class Mariadb < Formula
       <true/>
       <key>Label</key>
       <string>#{plist_name}</string>
-      <key>Program</key>
-      <string>#{HOMEBREW_PREFIX}/bin/mysqld_safe</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/bin/mysqld_safe</string>
+        <string>--bind-address=127.0.0.1</string>
+      </array>
       <key>RunAtLoad</key>
       <true/>
       <key>WorkingDirectory</key>
@@ -137,19 +159,10 @@ class Mariadb < Formula
     </plist>
     EOS
   end
-end
 
-__END__
-diff --git a/cmake/libutils.cmake b/cmake/libutils.cmake
-index 7c13df0..c82de4d 100644
---- a/cmake/libutils.cmake
-+++ b/cmake/libutils.cmake
-@@ -183,7 +183,7 @@ MACRO(MERGE_STATIC_LIBS TARGET OUTPUT_NAME LIBS_TO_MERGE)
-       # binaries properly)
-       ADD_CUSTOM_COMMAND(TARGET ${TARGET} POST_BUILD
-         COMMAND rm ${TARGET_LOCATION}
--        COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION} 
-+        COMMAND libtool -static -o ${TARGET_LOCATION} 
-         ${STATIC_LIBS}
-       )  
-     ELSE()
+  test do
+    (prefix+'mysql-test').cd do
+      system './mysql-test-run.pl', 'status'
+    end
+  end
+end

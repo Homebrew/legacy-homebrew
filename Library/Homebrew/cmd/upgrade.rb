@@ -1,4 +1,5 @@
 require 'cmd/install'
+require 'cmd/outdated'
 
 class Fixnum
   def plural_s
@@ -8,25 +9,19 @@ end
 
 module Homebrew extend self
   def upgrade
-    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      # note we only abort if Homebrew is *not* installed as sudo and the user
-      # calls brew as root. The fix is to chown brew to root.
-      abort "Cowardly refusing to `sudo brew upgrade'"
-    end
-
     Homebrew.perform_preinstall_checks
 
     if ARGV.named.empty?
-      require 'cmd/outdated'
-      upgrade_pinned = false
       outdated = Homebrew.outdated_brews
+      exit 0 if outdated.empty?
     else
-      upgrade_pinned = true
       outdated = ARGV.formulae.select do |f|
         if f.installed?
           onoe "#{f}-#{f.installed_version} already installed"
-        elsif not f.rack.exist? or f.rack.children.empty?
+          false
+        elsif not f.rack.directory? or f.rack.subdirs.empty?
           onoe "#{f} not installed"
+          false
         else
           true
         end
@@ -34,27 +29,33 @@ module Homebrew extend self
       exit 1 if outdated.empty?
     end
 
-    unless upgrade_pinned
-      pinned = outdated.select { |f| f.pinned? }
+    unless upgrade_pinned?
+      pinned = outdated.select(&:pinned?)
       outdated -= pinned
     end
 
-    if outdated.length > 0
-      oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
-      puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
-    end
-    if not upgrade_pinned and pinned.length > 0
-      oh1 "Not upgrading #{pinned.length} pinned package#{outdated.length.plural_s}:"
+    oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
+    puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
+
+    unless upgrade_pinned? || pinned.empty?
+      oh1 "Not upgrading #{pinned.length} pinned package#{pinned.length.plural_s}:"
       puts pinned.map{ |f| "#{f.name} #{f.version}" } * ", "
     end
 
-    outdated.each do |f|
-      upgrade_formula f
-    end
+    outdated.each { |f| upgrade_formula(f) }
+  end
+
+  def upgrade_pinned?
+    not ARGV.named.empty?
   end
 
   def upgrade_formula f
     tab = Tab.for_formula(f)
+
+    # Inject options from a previous install into the formula's
+    # BuildOptions object. TODO clean this up.
+    f.build.args += tab.used_options
+
     outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
 
     installer = FormulaInstaller.new(f)

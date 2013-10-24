@@ -1,12 +1,15 @@
 require 'formula'
 
 class Ohcount < Formula
-  homepage 'http://sourceforge.net/apps/trac/ohcount/'
-  url 'http://downloads.sourceforge.net/project/ohcount/ohcount-3.0.0.tar.gz'
-  sha1 '5c1357b3094881ff9804fbf3002c9aaa16494cce'
+  homepage 'https://github.com/blackducksw/ohcount'
+  url 'https://github.com/blackducksw/ohcount/archive/3.0.0.tar.gz'
+  sha1 '7f3fce48bf2a522c5262215699c36625ca6d3d33'
+
+  head 'https://github.com/blackducksw/ohcount.git'
 
   depends_on 'ragel'
   depends_on 'pcre'
+  depends_on 'libmagic' if build.head?
 
   def patches
     DATA

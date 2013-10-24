@@ -8,15 +8,15 @@ end
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.4/sbcl-1.1.4-source.tar.bz2'
-  sha1 '57c1055821e4ad1c9c1b2b75fa972c5ae7ca86d0'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.9/sbcl-1.1.9-source.tar.bz2'
+  sha1 'a2a2e165429940ecd5cf1c3bc3068898c4b864ea'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    sha1 'f3a56af6651fad229616ce0ad182fa4829b1c0f2' => :mountain_lion
-    sha1 'cec671e27e8a23ff8b9c6f8d15549a7cfc688bcb' => :lion
-    sha1 'f148420a1d44f0a8e5fe56ac57639fe6421a22c3' => :snow_leopard
+    sha1 '7e35a9310709d31b97bc58d9f044d95ef35efa21' => :mountain_lion
+    sha1 '86d524f4d2ba3ee9a642463c065f1db594913ee7' => :lion
+    sha1 '76a5b9f8b10b998f8294ece1d6181616489ff703' => :snow_leopard
   end
 
   fails_with :llvm do
@@ -78,11 +78,7 @@ class Sbcl < Formula
     system "sh install.sh"
   end
 
-  def caveats; <<-EOS.undent
-    If you are upgrading sbcl and you have installed maxima,
-    you have to reinstall maxima:
-
-      brew rm maxima && brew install maxima
-    EOS
+  test do
+    system "#{bin}/sbcl", "--version"
   end
 end

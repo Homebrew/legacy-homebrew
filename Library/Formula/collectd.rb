@@ -7,8 +7,10 @@ class Collectd < Formula
 
   # Will fail against Java 1.7
   option "java", "Enable Java 1.6 support"
+  option "debug", "Enable debug support"
 
   depends_on 'pkg-config' => :build
+  depends_on :python
 
   fails_with :clang do
     build 318
@@ -26,10 +28,11 @@ class Collectd < Formula
               --disable-dependency-tracking
               --prefix=#{prefix}
               --localstatedir=#{var}
-              --with-python=/usr/bin]
+              --with-python=#{python}]
 
-    args << "--disable-embedded-perl" if MacOS.version == :leopard
+    args << "--disable-embedded-perl" if MacOS.version <= :leopard
     args << "--disable-java" unless build.include? "java"
+    args << "--enable-debug" if build.include? "debug"
 
     system "./configure", *args
     system "make install"

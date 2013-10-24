@@ -43,4 +43,8 @@ class Yarp < Formula
     system "cmake", *args
     system "make install"
   end
+
+  test do
+    system "#{bin}/yarp", "check"
+  end
 end

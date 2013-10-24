@@ -2,8 +2,8 @@ require 'formula'
 
 class Pango < Formula
   homepage 'http://www.pango.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.34/pango-1.34.0.tar.xz'
-  sha256 '105da1efe019018a9de81681d88c9ace83d2111509ab625c4be9d124a1fdce27'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.34/pango-1.34.1.tar.xz'
+  sha256 '1aea30df34a8ae4fcce71afd22aa5b57224b52916d46e3ea81ff9f1eb130e64c'
 
   option 'without-x', 'Build without X11 support'
 
