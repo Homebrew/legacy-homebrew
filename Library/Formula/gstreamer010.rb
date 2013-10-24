@@ -12,6 +12,8 @@ class Gstreamer010 < Formula
   # Fix sed version detection for 10.8
   # Reported and fixed upstream:
   # https://bugzilla.gnome.org/show_bug.cgi?id=680428
+  # Fix header inclusion
+  # http://cgit.freedesktop.org/gstreamer/gstreamer/commit/?id=2231721dddb9ba7db3d7566f64a6fa58fdd1ff9d
   def patches
     DATA
   end
@@ -49,3 +51,17 @@ index 0af896d..20e6576 100755
    { $as_echo "$as_me:${as_lineno-$LINENO}: checking flex version $flex_version >= $flex_min_version" >&5
  $as_echo_n "checking flex version $flex_version >= $flex_min_version... " >&6; }
    if perl -w <<EOF
+diff --git a/gst/gstdatetime.c b/gst/gstdatetime.c
+index 6a8f659..8384ece 100644
+--- a/gst/gstdatetime.c
++++ b/gst/gstdatetime.c
+@@ -21,8 +21,8 @@
+ #include "config.h"
+ #endif
+
+-#include "glib-compat-private.h"
+ #include "gst_private.h"
++#include "glib-compat-private.h"
+ #include "gstdatetime.h"
+ #include "gstvalue.h"
+ #include <glib.h>
