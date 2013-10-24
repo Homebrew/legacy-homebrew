@@ -8,6 +8,7 @@ class Gstreamer010 < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
+  depends_on 'libxml2'
 
   # Fix sed version detection for 10.8
   # Reported and fixed upstream:
