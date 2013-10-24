@@ -9,6 +9,7 @@ class Libtorrent < Formula
   depends_on 'libsigc++'
 
   def install
+    ENV.cxx += ' -stdlib=libstdc++' if ENV.compiler == :clang && MacOS.version >= :mavericks
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
