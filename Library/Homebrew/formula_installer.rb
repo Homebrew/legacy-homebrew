@@ -179,16 +179,6 @@ class FormulaInstaller
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
-    if pour_bottle?
-      # This assumes that bottles are built with
-      # a) the OS's default compiler, and
-      # b) the OS's default C++ stdlib
-      # This is probably accurate, but could possibly stand to be
-      # more robust.
-      stdlib_in_use = CxxStdlib.new(MacOS.default_cxx_stdlib, MacOS.default_compiler)
-      stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
-    end
-
     oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
     @@attempted << f
@@ -201,6 +191,11 @@ class FormulaInstaller
       if pour_bottle? :warn => true
         pour
         @poured_bottle = true
+
+        stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
+        stdlib_in_use = CxxStdlib.new(stdlibs.first, MacOS.default_compiler)
+        stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
+
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
         tab.tabfile.delete if tab.tabfile
