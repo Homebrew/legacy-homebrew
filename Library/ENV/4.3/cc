@@ -161,6 +161,7 @@ class Cmd
     if mode == :cxx
       args << '-std=c++11' if cccfg? 'x'
       args << '-stdlib=libc++' if cccfg? 'g'
+      args << '-stdlib=libstdc++' if cccfg? 'h'
     end
 
     return args unless cccfg? 'O'
@@ -216,6 +217,7 @@ class Cmd
     when :cxxld
       args << '-Wl,-headerpad_max_install_names'
       args << '-stdlib=libc++' if cccfg? 'g'
+      args << '-stdlib=libstdc++' if cccfg? 'h'
     end
     args
   end

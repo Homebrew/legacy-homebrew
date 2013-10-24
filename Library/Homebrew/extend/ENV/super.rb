@@ -99,6 +99,7 @@ module Superenv
     #     make/bsdmake wrappers currently.
     # x - Enable C++11 mode.
     # g - Enable "-stdlib=libc++" for clang.
+    # h - Enable "-stdlib=libstdc++" for clang.
     #
     # On 10.8 and newer, these flags will also be present:
     # s - apply fix for sed's Unicode support
@@ -120,6 +121,18 @@ module Superenv
       append 'HOMEBREW_CCCFG', "x", ''
     else
       raise "The selected compiler doesn't support C++11: #{self['HOMEBREW_CC']}"
+    end
+  end
+
+  def libcxx
+    if self['HOMEBREW_CC'] == 'clang'
+      append 'HOMEBREW_CCCFG', "g", ''
+    end
+  end
+
+  def libstdcxx
+    if self['HOMEBREW_CC'] == 'clang'
+      append 'HOMEBREW_CCCFG', "h", ''
     end
   end
 
