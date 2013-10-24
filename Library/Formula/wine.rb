@@ -62,14 +62,18 @@ class Wine < Formula
   end
 
   def patches
+    p = []
     if build.stable?
-      p = []
       # http://bugs.winehq.org/show_bug.cgi?id=34188
       p << 'http://bugs.winehq.org/attachment.cgi?id=45507'
       # http://bugs.winehq.org/show_bug.cgi?id=34162
       p << 'http://bugs.winehq.org/attachment.cgi?id=45562' if MacOS.version >= :mavericks
-      p
     end
+    if build.devel?
+      # http://bugs.winehq.org/show_bug.cgi?id=34166
+      p << 'http://bugs.winehq.org/attachment.cgi?id=46394'
+    end
+    p
   end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
