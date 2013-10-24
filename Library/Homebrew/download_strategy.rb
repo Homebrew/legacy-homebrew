@@ -210,7 +210,7 @@ class AxelDownloadStrategy < CurlDownloadStrategy
 
   def _fetch
     connections = ENV['HOMEBREW_AXEL_CONNECTIONS'] or 4
-    axel "-n #{connections}", '-a', '-o', @temporary_path, @url 
+    axel "-n #{connections}", '-a', '-o', @temporary_path, @url
   end
 
 end
@@ -736,14 +736,14 @@ end
 
 class DownloadStrategyDetector
   def self.detect(url, strategy=nil)
-    if strategy.nil?
+    if ARGV.include? '--use-axel'
+      AxelDownloadStrategy
+    elsif strategy.nil?
       detect_from_url(url)
     elsif Class === strategy && strategy < AbstractDownloadStrategy
         strategy
     elsif Symbol === strategy
       detect_from_symbol(strategy)
-    elsif ARGV.include? '--use-axel'
-      AxelDownloadStrategy
     else
       raise TypeError,
         "Unknown download strategy specification #{strategy.inspect}"
