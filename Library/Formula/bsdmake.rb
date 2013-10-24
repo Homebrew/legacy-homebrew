@@ -11,10 +11,12 @@ class Bsdmake < Formula
 
   def patches
     # MacPorts patches to make bsdmake play nice with our prefix system
+    # Also a MacPorts patch to circumvent setrlimit error
     { :p0 => %W[
       https://trac.macports.org/export/90868/trunk/dports/devel/bsdmake/files/patch-Makefile.diff
       https://trac.macports.org/export/90611/trunk/dports/devel/bsdmake/files/patch-mk.diff
       https://trac.macports.org/export/90611/trunk/dports/devel/bsdmake/files/patch-pathnames.diff
+      https://trac.macports.org/export/105220/trunk/dports/devel/bsdmake/files/patch-setrlimit.diff
     ]}
   end
 
