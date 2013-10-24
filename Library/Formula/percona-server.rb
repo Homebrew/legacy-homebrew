@@ -34,6 +34,13 @@ class PerconaServer < Formula
     @destination ||= (var/'percona').directory? ? 'percona' : 'mysql'
   end
 
+  def patches
+    [
+      # Fixes percona server 5.6 compilation on OS X 10.9, based on https://github.com/mxcl/homebrew/commit/aad5d93f4fabbf69766deb83780d3a6eeab7061a for mysql 5.6
+      "https://gist.github.com/israelshirk/7146987/raw/48a44174667388c0078680cdc93af1b8fbd12ea8/gistfile1.txt"
+    ]
+  end
+
   def install
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
