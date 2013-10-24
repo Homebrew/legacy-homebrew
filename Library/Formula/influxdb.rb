@@ -3,7 +3,7 @@ require "formula"
 class Influxdb < Formula
   homepage "http://influxdb.org"
   url "http://get.influxdb.org/influxdb-osx-0.0.1.tar.gz"
-  sha1 "f7d3af661e23ff40b0240616e8d6151cd7ab3ddb"
+  sha1 "c79858495c9e7af29ae8968f8aa8a3e6055962fc"
   depends_on "leveldb"
 
   def install
