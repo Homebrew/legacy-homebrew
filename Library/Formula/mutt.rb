@@ -2,8 +2,8 @@ require 'formula'
 
 class Mutt < Formula
   homepage 'http://www.mutt.org/'
-  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
-  sha1 'a8475f2618ce5d5d33bff85c0affdf21ab1d76b9'
+  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.22.tar.gz'
+  sha1 '728a114cb3a44df373dbf1292fc34dd8321057dc'
 
   head do
     url 'http://dev.mutt.org/hg/mutt#HEAD', :using => :hg
@@ -17,7 +17,6 @@ class Mutt < Formula
   end
 
   option "with-debug", "Build with debug option enabled"
-  option "with-sidebar-patch", "Apply sidebar (folder list) patch" unless build.head?
   option "with-trash-patch", "Apply trash folder patch"
   option "with-slang", "Build against slang instead of ncurses"
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
@@ -29,21 +28,14 @@ class Mutt < Formula
 
   def patches
     urls = [
-      ['with-sidebar-patch', 'http://lunar-linux.org/~tchan/mutt/patch-1.5.21.sidebar.20130219.txt'],
-      ['with-trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features/trash-folder'],
+      ['with-trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.4/features/trash-folder'],
       # original source for this went missing, patch sourced from Arch at
       # https://aur.archlinux.org/packages/mutt-ignore-thread/
       ['with-ignore-thread-patch', 'https://gist.github.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch'],
       ['with-pgp-verbose-mime-patch',
-          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.4/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
       ['with-confirm-attachment-patch', 'https://gist.github.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch'],
     ]
-
-    if build.with? "ignore-thread-patch" and build.with? "sidebar-patch"
-      puts "\n"
-      onoe "The ignore-thread-patch and sidebar-patch options are mutually exlusive. Please pick one"
-      exit 1
-    end
 
     p = []
     urls.each do |u|
