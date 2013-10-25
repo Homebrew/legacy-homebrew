@@ -37,7 +37,7 @@ class PerconaServer < Formula
   def patches
     [
       # Fixes percona server 5.6 compilation on OS X 10.9, based on https://github.com/mxcl/homebrew/commit/aad5d93f4fabbf69766deb83780d3a6eeab7061a for mysql 5.6
-      "https://gist.github.com/israelshirk/7146987/raw/7cad7a2518d3a24b59502f46c52ba71c4b9624ca/gistfile1.txt"
+      "https://gist.github.com/israelshirk/7cc640498cf264ebfce3/raw/846839c84647c4190ad683e4cbf0fabcd8931f97/gistfile1.txt"
     ]
   end
 
