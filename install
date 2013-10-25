@@ -148,7 +148,7 @@ else
   sudo "/usr/bin/chgrp admin #{HOMEBREW_PREFIX}"
 end
 
-ohai "Downloading and Installing Homebrew..."
+ohai "Downloading and installing Homebrew..."
 Dir.chdir HOMEBREW_PREFIX do
   if git
     # we do it in four steps to avoid merge errors when reinstalling
