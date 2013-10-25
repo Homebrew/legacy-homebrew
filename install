@@ -29,7 +29,7 @@ end
 def warn warning
   puts "#{Tty.red}Warning#{Tty.reset}: #{warning.chomp}"
 end
- 
+
 def system *args
   abort "Failed during: #{args.shell_s}" unless Kernel.system *args
 end
