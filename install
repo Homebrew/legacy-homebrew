@@ -108,7 +108,7 @@ EOABORT
 # Tests will fail if the prefix exists, but we don't have execution
 # permissions. Abort in this case.
 abort <<-EOABORT if File.directory? HOMEBREW_PREFIX and not File.executable? HOMEBREW_PREFIX
-The Homeprew prefix, #{HOMEBREW_PREFIX}, exists but is not searchable. If this is
+The Homebrew prefix, #{HOMEBREW_PREFIX}, exists but is not searchable. If this is
 not intentional, please restore the default permissions and try running the
 installer again:
     sudo chmod 755 #{HOMEBREW_PREFIX}
