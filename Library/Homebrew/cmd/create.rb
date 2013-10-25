@@ -78,9 +78,11 @@ class FormulaCreator
     @url = url
     path = Pathname.new(url)
     if @name.nil?
+      %r{github.com/\S+/(\S+)/archive/}.match url
+      @name ||= $1
       /(.*?)[-_.]?#{path.version}/.match path.basename
-      @name = $1
-      @path = Formula.path $1 unless $1.nil?
+      @name ||= $1
+      @path = Formula.path @name unless @name.nil?
     else
       @path = Formula.path name
     end
