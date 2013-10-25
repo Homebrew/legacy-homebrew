@@ -2,8 +2,8 @@ require 'formula'
 
 class Czmq < Formula
   homepage 'http://czmq.zeromq.org/'
-  url 'http://download.zeromq.org/czmq-1.4.1.tar.gz'
-  sha1 '8ddb485e9d53bca6bb703c850be40b8da70c4d74'
+  url 'http://download.zeromq.org/czmq-2.0.2.tar.gz'
+  sha1 '9a78ea2bf2100863eefdd0512c77486ebd1e2587'
 
   head do
     url 'https://github.com/zeromq/czmq.git'
@@ -23,5 +23,9 @@ class Czmq < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+  end
+
+  test do
+    system "#{bin}/czmq_selftest"
   end
 end
