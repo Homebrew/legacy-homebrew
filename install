@@ -64,7 +64,7 @@ def wait_for_user
 end
 
 def macos_version
-  @macos_version ||= /(10\.\d+)(\.\d+)?/.match(`/usr/bin/sw_vers -productVersion`).captures.first.to_f
+  @macos_version ||= `/usr/bin/sw_vers -productVersion`.chomp[/10\.\d+/]
 end
 
 def git
@@ -91,7 +91,7 @@ end
 Dir.chdir "/usr"
 
 ####################################################################### script
-abort "MacOS too old, see: https://github.com/mistydemeo/tigerbrew" if macos_version < 10.5
+abort "MacOS too old, see: https://github.com/mistydemeo/tigerbrew" if macos_version < "10.5"
 abort "Don't run this as root!" if Process.uid == 0
 abort <<-EOABORT unless `groups`.split.include? "admin"
 This script requires the user #{ENV['USER']} to be an Administrator. If this
@@ -165,19 +165,19 @@ Dir.chdir HOMEBREW_PREFIX do
     # pipefail to cause the exit status from curl to propogate if it fails
     # we use -k for curl because Leopard has a bunch of bad SSL certificates
     curl_flags = "fsSL"
-    curl_flags << "k" if macos_version <= 10.5
+    curl_flags << "k" if macos_version <= "10.5"
     system "/bin/bash -o pipefail -c '/usr/bin/curl -#{curl_flags} https://github.com/mxcl/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
   end
 end
 
 warn "#{HOMEBREW_PREFIX}/bin is not in your PATH." unless ENV['PATH'].split(':').include? "#{HOMEBREW_PREFIX}/bin"
 
-if macos_version > 10.8
+if macos_version > "10.8"
   unless File.exist? "/Library/Developer/CommandLineTools/usr/bin/clang"
     ohai "Installing the Command Line Tools:"
     sudo "/usr/bin/xcode-select", "--install"
   end
-elsif macos_version > 10.6
+elsif macos_version > "10.6"
   `/usr/bin/cc --version 2> /dev/null` =~ %r[clang-(\d{2,})]
   version = $1.to_i
   warn %{Install the "Command Line Tools for Xcode": http://connect.apple.com} if version < 425
