@@ -254,6 +254,14 @@ module GitHub extend self
   Error = Class.new(StandardError)
 
   def open url, headers={}, &block
+    # This is a no-op if the user is opting out of using the GitHub API.
+    # Opting out of using the GitHub API can be done by setting the
+    # HOMEBREW_GITHUB_API_OPTOUT environment variable.  The value of the
+    # environment variable does not matter (it can even be empty!).
+    # For bash : export HOMEBREW_GITHUB_API_OPTOUT=1
+    # For csh  : setenv HOMEBREW_GITHUB_API_OPTOUT 1
+    return if ENV['HOMEBREW_GITHUB_API_OPTOUT']
+
     require 'net/https' # for exception classes below
 
     default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
