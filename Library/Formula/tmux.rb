@@ -39,7 +39,7 @@ class Tmux < Formula
   end
 
   def caveats; <<-EOS.undent
-    Exmample configurations have been installed to:
+    Example configurations have been installed to:
       #{share}/tmux/examples
     EOS
   end
