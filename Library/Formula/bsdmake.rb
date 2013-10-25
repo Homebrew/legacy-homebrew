@@ -16,7 +16,7 @@ class Bsdmake < Formula
       https://trac.macports.org/export/90868/trunk/dports/devel/bsdmake/files/patch-Makefile.diff
       https://trac.macports.org/export/90611/trunk/dports/devel/bsdmake/files/patch-mk.diff
       https://trac.macports.org/export/90611/trunk/dports/devel/bsdmake/files/patch-pathnames.diff
-      https://trac.macports.org/raw-attachment/ticket/35612/patch-main.c.diff
+      https://trac.macports.org/export/105220/trunk/dports/devel/bsdmake/files/patch-setrlimit.diff
     ]}
   end
 
