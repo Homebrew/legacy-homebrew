@@ -47,13 +47,9 @@ class Keg
   # Note that this doesn't attempt to distinguish between libstdc++ versions,
   # for instance between Apple libstdc++ and GNU libstdc++
   def detect_cxx_stdlibs
-    return [] unless lib.exist?
-
     results = Set.new
-    lib.find do |file|
-      next if file.symlink? || file.directory?
-      next unless file.dylib?
 
+    mach_o_files.each do |file|
       dylibs = file.dynamically_linked_libraries
       results << :libcxx unless dylibs.grep(/libc\+\+.+\.dylib/).empty?
       results << :libstdcxx unless dylibs.grep(/libstdc\+\+.+\.dylib/).empty?
