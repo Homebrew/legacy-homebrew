@@ -2,8 +2,8 @@ require 'formula'
 
 class Zeromq < Formula
   homepage 'http://www.zeromq.org/'
-  url 'http://download.zeromq.org/zeromq-3.2.4.tar.gz'
-  sha1 '08303259f08edd1faeac2e256f5be3899377135e'
+  url 'http://download.zeromq.org/zeromq-4.0.1.tar.gz'
+  sha1 '50d894108a26a610eb22cd425cc487480e898acc'
 
   head do
     url 'https://github.com/zeromq/libzmq.git'
