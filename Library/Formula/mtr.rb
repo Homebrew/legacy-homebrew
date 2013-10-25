@@ -28,11 +28,11 @@ class Mtr < Formula
   end
 
   def caveats; <<-EOS.undent
-    mtr requires superuser privileges. You can either run the program
+    #{name} requires superuser privileges. You can either run the program
     via `sudo`, or change its ownership to root and set the setuid bit:
 
-      sudo chown root:wheel #{sbin}/mtr
-      sudo chmod u+s #{sbin}/mtr
+    $ sudo chown root:wheel #{sbin}/#{name}
+    $ sudo chmod u+s #{sbin}/#{name}
 
     In any case, you should be certain that you trust the software you
     are executing with elevated privileges.
