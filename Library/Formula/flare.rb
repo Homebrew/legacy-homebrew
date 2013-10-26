@@ -1,9 +1,9 @@
 require 'formula'
 
 class Flare < Formula
-  homepage 'http://labs.gree.jp/Top/OpenSource/Flare-en.html'
-  url 'http://labs.gree.jp/data/source/flare-1.0.16.1.tgz'
-  sha1 'a3d022005695bbba97da94f824702e54837ba03c'
+  homepage 'https://github.com/gree/flare/wiki'
+  url 'https://github.com/gree/flare/archive/1.0.18.tar.gz'
+  sha1 'ddbaaf4b2d887584533c5910fff4a1789b6f62d0'
 
   head 'https://github.com/fujimoto/flare.git'
 
@@ -14,8 +14,6 @@ class Flare < Formula
   depends_on 'boost'
 
   def install
-    # Compatibility with Automake 1.13 and newer.
-    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
     system "autoreconf -vfi"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
