@@ -9,6 +9,8 @@ class OpenMpi < Formula
   option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
 
   conflicts_with 'mpich2', :because => 'both install mpi__ compiler wrappers'
+  conflicts_with 'libevent', :because => 'both install same set of header files'
+  conflicts_with 'lcdf-typetools', :because => 'both install same set of binaries.'
 
   depends_on :fortran unless build.include? 'disable-fortran'
 
