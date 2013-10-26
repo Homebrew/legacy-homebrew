@@ -94,6 +94,9 @@ class Git < Formula
     # on many other packages, and is somewhat crazy, this way is easier.
     man.install resource('man')
     (share+'doc/git-doc').install resource('html')
+
+    # Make html docs world-readable; check if this is still needed at 1.8.4.2
+    chmod 0644, Dir["#{share}/doc/git-doc/*"]
   end
 
   def caveats; <<-EOS.undent
