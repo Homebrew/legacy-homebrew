@@ -5,8 +5,11 @@ class Vtclock < Formula
   url 'http://webonastick.com/vtclock/vtclock-2005-02-20.tar.gz'
   sha1 'aabc321bd46ceb9015ee5cd84b526487d63f2dc1'
 
+  version '2005-02-20'
+
   def install
-    system "make", "install"
+    system "make"
+    bin.install "vtclock"
   end
 
   test do
