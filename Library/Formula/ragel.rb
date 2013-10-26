@@ -5,6 +5,11 @@ class Ragel < Formula
   url 'http://www.complang.org/ragel/ragel-6.8.tar.gz'
   sha1 '95cabbcd52bd25d76c588ddf11e1fd242d7cbcc7'
 
+  # Unbreak compilation with clang
+  def patches
+    DATA
+  end
+
   resource 'pdf' do
     url 'http://www.complang.org/ragel/ragel-guide-6.8.pdf'
     sha1 'e57ee7f740dd395d4d5330949594a02c91ad0308'
@@ -16,3 +21,17 @@ class Ragel < Formula
     doc.install resource('pdf')
   end
 end
+
+__END__
+diff --git a/ragel/javacodegen.cpp b/ragel/javacodegen.cpp
+index adff67e..1502155 100644
+--- a/ragel/javacodegen.cpp
++++ b/ragel/javacodegen.cpp
+@@ -41,6 +41,7 @@
+ #define _out       5
+
+ using std::setw;
++using std::setiosflags;
+ using std::ios;
+ using std::ostringstream;
+ using std::string;
