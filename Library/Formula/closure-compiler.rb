@@ -6,6 +6,8 @@ class ClosureCompiler < Formula
 
   head 'https://code.google.com/p/closure-compiler/', :using => :git
 
+  depends_on 'ant' => :build
+
   def install
     system "ant", "clean"
     system "ant"
