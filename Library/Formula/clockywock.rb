@@ -12,6 +12,6 @@ class Clockywock < Formula
   end
 
   test do
-    system "clockywock"
+    system "#{bin}/clockywock -h"
   end
 end
