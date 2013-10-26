@@ -166,7 +166,7 @@ class FormulaCreator
         # were more thorough. Run the test with `brew test #{name}`.
         #
         # The installed folder is not in the path, so use the entire path to any
-        # executables being tested: `system "#{bin}/program", "--version"`.
+        # executables being tested: `system "\#{bin}/program", "--version"`.
         system "false"
       end
     end
