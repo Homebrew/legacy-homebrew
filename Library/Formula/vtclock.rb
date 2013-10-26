@@ -13,6 +13,6 @@ class Vtclock < Formula
   end
 
   test do
-    system "vtclock"
+    system "#{bin}/vtclock -h"
   end
 end
