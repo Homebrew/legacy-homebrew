@@ -145,9 +145,14 @@ class Boost < Formula
       args << "link=shared,static"
     end
 
-    if MacOS.version >= :lion and build.with? 'c++11'
-      args << "cxxflags=-std=c++11" << "cxxflags=-stdlib=libc++"
-      args << "linkflags=-stdlib=libc++"
+    if MacOS.version >= :lion
+      if build.with? 'c++11'
+        args << "cxxflags=-std=c++11" << "cxxflags=-stdlib=libc++"
+        args << "linkflags=-stdlib=libc++"
+      else
+        args << "cxxflags=-stdlib=libstdc++"
+        args << "linkflags=-stdlib=libstdc++"
+      end
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
