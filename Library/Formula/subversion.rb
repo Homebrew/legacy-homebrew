@@ -33,6 +33,7 @@ class Subversion < Formula
 
   # One patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags},
   # and another one to put the svn-tools directory into libexec instead of bin
+  # and another one to get --perl to build http://svn.haxx.se/users/archive-2013-09/0187.shtml
   def patches
     { :p0 => DATA }
   end
@@ -121,6 +122,8 @@ class Subversion < Formula
     end
 
     if build.include? 'perl'
+      # In theory SWIG can be built in parallel, in practice...
+      ENV.deparallelize
       # Remove hard-coded ppc target, add appropriate ones
       if build.universal?
         arches = Hardware::CPU.universal_archs.as_arch_flags
@@ -141,6 +144,7 @@ class Subversion < Formula
       end
       system "make swig-pl"
       system "make", "install-swig-pl", "DESTDIR=#{prefix}"
+      system "mv -v #{prefix}/#{lib}/* #{lib}"
     end
 
     if build.include? 'java'
@@ -229,3 +233,15 @@ __END__
 
  javahl_javadir = @libdir@/svn-javahl
  javahl_javahdir = @libdir@/svn-javahl/include
+--- subversion/include/svn_auth.h
++++ subversion/include/svn_auth.h
+@@ -966,7 +966,8 @@ svn_auth_get_keychain_ssl_client_cert_pw_provider(
+   apr_pool_t *pool);
+ #endif /* DARWIN || DOXYGEN */
+
+-#if (!defined(DARWIN) && !defined(WIN32)) || defined(DOXYGEN)
++/* Add a condition on SWIGPERL - http://svn.haxx.se/users/archive-2013-09/0187.shtml */
++#if (!defined(DARWIN) && !defined(WIN32)) || defined(DOXYGEN) || defined(SWIGPERL)
+ /** A type of callback function for obtaining the GNOME Keyring password.
+  *
+  * In this callback, the client should ask the user for default keyring
