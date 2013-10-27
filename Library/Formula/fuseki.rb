@@ -30,6 +30,7 @@ class Fuseki < Formula
     # Move binaries into place
     bin.install 'fuseki-server'
     bin.install Dir["s-*"]
+    prefix.install 'fuseki-server.jar'
 
     unless File.exists?(etc/'fuseki.ttl')
       etc.cp 'config.ttl' => 'fuseki.ttl'
@@ -39,8 +40,16 @@ class Fuseki < Formula
     # Create a location for dataset files, in case we're being used in LaunchAgent mode
     (var/'fuseki').mkpath
 
-    # Copy across everything else
-    prefix.install Dir["*"]
+    # Install example configs
+    prefix.install Dir["config*.ttl"]
+
+    # Install example data
+    prefix.install 'Data'
+
+    # Install documentation
+    %w[DEPENDENCIES LICENSE NOTICE ReleaseNotes.txt pages].each do |docfile|
+      prefix.install docfile
+    end
   end
 
   def caveats; <<-EOS.undent
