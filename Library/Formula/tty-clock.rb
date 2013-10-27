@@ -7,7 +7,7 @@ class TtyClock < Formula
   head 'https://github.com/xorg62/tty-clock.git'
 
   def install
-    inreplace "Makefile", "/usr/local/bin/", "#{bin}"
+    inreplace "Makefile", "/usr/local/bin/", "#{bin}/"
     system "make"
     system "make install"
   end
