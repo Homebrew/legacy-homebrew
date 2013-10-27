@@ -13,11 +13,16 @@ class Poco < Formula
 
   option :cxx11
 
+  option 'with-c++11', 'Compile using std=c++11 and stdlib=libc++' if MacOS.version >= :lion
+
   def install
     ENV.cxx11 if build.cxx11?
 
     arch = Hardware.is_64_bit? ? 'Darwin64': 'Darwin32'
-    arch << '-clang' if ENV.compiler == :clang
+    if ENV.compilter == :clang
+      arch << '-clang'
+      arch << '-libc++' if build.include? 'with-c++11'
+    end
 
     system "./configure", "--prefix=#{prefix}",
                           "--config=#{arch}",
