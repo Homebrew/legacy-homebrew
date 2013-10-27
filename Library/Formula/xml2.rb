@@ -10,16 +10,14 @@ class Xml2 < Formula
   sha1 'e954311383d053747ae0c224b12dfddb8a1c0e74'
 
   # depends_on 'cmake' => :build
-  depends_on :x11 # if your formula requires any X11/XQuartz components
+  # depends_on :x11 # if your formula requires any X11/XQuartz components
+  depends_on 'libxml++'
 
   def install
     # ENV.j1  # if your formula's build system can't parallelize
 
     # Remove unrecognized options if warned by configure
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     # system "cmake", ".", *std_cmake_args
     system "make", "install" # if this fails, try separate make/make install steps
   end
@@ -30,6 +28,6 @@ class Xml2 < Formula
     # This test will fail and we won't accept that! It's enough to just replace
     # "false" with the main program this formula installs, but it'd be nice if you
     # were more thorough. Run the test with `brew test xml2`.
-    system "false"
+    system "brew test xml2"
   end
 end
