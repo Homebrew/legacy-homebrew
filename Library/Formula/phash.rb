@@ -23,6 +23,12 @@ class Phash < Formula
     cause "configure: WARNING: CImg.h: present but cannot be compiled"
   end
 
+  # Original code imports </usr/include/complex.h>
+  # We change it to <complex.h>
+  def patches
+    DATA
+  end
+
   def install
     args = %W[--disable-debug
               --disable-dependency-tracking
@@ -39,3 +45,25 @@ class Phash < Formula
     system "make install"
   end
 end
+
+__END__
+diff -crB pHash-0.9.6_ori/src/ph_fft.h pHash-0.9.6/src/ph_fft.h
+*** pHash-0.9.6_ori/src/ph_fft.h	2011-08-02 07:23:43.000000000 +0200
+--- pHash-0.9.6/src/ph_fft.h	2013-10-10 09:29:05.000000000 +0200
+***************
+*** 29,35 ****
+  #define PI 3.1415926535897932
+  
+  #include <math.h>
+! #include </usr/include/complex.h>
+  #include <stdlib.h>
+  
+  int fft(double *x, int N, complex double *X);
+--- 29,35 ----
+  #define PI 3.1415926535897932
+  
+  #include <math.h>
+! #include <complex.h>
+  #include <stdlib.h>
+  
+  int fft(double *x, int N, complex double *X);
