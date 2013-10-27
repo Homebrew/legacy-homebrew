@@ -93,8 +93,8 @@ class Grass < Formula
 
     if build.with? "mysql"
       mysql = Formula.factory('mysql')
-      args << "--with-mysql-includes=#{mysql.include + 'mysql'}"
-      args << "--with-mysql-libs=#{mysql.lib + 'mysql'}"
+      args << "--with-mysql-includes=#{mysql.include}/mysql"
+      args << "--with-mysql-libs=#{mysql.lib}/mysql"
       args << "--with-mysql"
     end
 
