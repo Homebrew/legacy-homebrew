@@ -16,7 +16,7 @@ class Glog < Formula
 
         # Don't use tr1 prefix when we're using libc++:
         # https://code.google.com/p/google-glog/issues/detail?id=121
-        :p0 => "https://google-glog.googlecode.com/issues/attachment?aid=1210003000&name=libc%2B%2B.diff&token=cHcwWwlDueqKVwXcBHiOK81MGDk%3A1382574925714",
+        :p0 => "https://google-glog.googlecode.com/issues/attachment?aid=1210003000&name=libc%2B%2B.diff&token=XibcNVdg2suz1w646JbsbHHOkJs%3A1382896876470",
       }
     end
   end
