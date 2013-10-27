@@ -8,7 +8,7 @@ class Fuseki < Formula
 
   def install
     # Remove windows files
-    rm_f Dir["*.bat"]
+    rm_f 'fuseki-server.bat'
 
     # Remove init.d script to avoid confusion
     rm 'fuseki'
@@ -29,7 +29,7 @@ class Fuseki < Formula
 
     # Move binaries into place
     bin.install 'fuseki-server'
-    bin.install Dir["s-*"]
+    bin.install 's-delete', 's-get', 's-head', 's-post', 's-put', 's-query', 's-update', 's-update-form'
     prefix.install 'fuseki-server.jar'
 
     unless File.exists?(etc/'fuseki.ttl')
@@ -41,15 +41,13 @@ class Fuseki < Formula
     (var/'fuseki').mkpath
 
     # Install example configs
-    prefix.install Dir["config*.ttl"]
+    prefix.install 'config-examples.ttl', 'config-inf-tdb.ttl', 'config-tdb-text.ttl', 'config-tdb.ttl', 'config.ttl'
 
     # Install example data
     prefix.install 'Data'
 
     # Install documentation
-    %w[DEPENDENCIES LICENSE NOTICE ReleaseNotes.txt pages].each do |docfile|
-      prefix.install docfile
-    end
+    prefix.install 'DEPENDENCIES', 'LICENSE', 'NOTICE', 'ReleaseNotes.txt', 'pages'
   end
 
   def caveats; <<-EOS.undent
