@@ -567,40 +567,39 @@ class Formula
       ENV.remove_cc_etc
     end
 
-    if ARGV.verbose?
-      safe_system cmd, *args
-    else
-      @exec_count ||= 0
-      @exec_count += 1
-      logd = HOMEBREW_LOGS/name
-      logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd.to_s).split(' ').first]
-      mkdir_p(logd)
+    @exec_count ||= 0
+    @exec_count += 1
+    logd = HOMEBREW_LOGS/name
+    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd.to_s).split(' ').first]
+    mkdir_p(logd)
 
-      rd, wr = IO.pipe
-      fork do
-        rd.close
-        $stdout.reopen wr
-        $stderr.reopen wr
-        args.collect!{|arg| arg.to_s}
-        exec(cmd.to_s, *args) rescue nil
-        puts "Failed to execute: #{cmd}"
-        exit! 1 # never gets here unless exec threw or failed
+    rd, wr = IO.pipe
+    fork do
+      rd.close
+      $stdout.reopen wr
+      $stderr.reopen wr
+      args.collect!{|arg| arg.to_s}
+      exec(cmd.to_s, *args) rescue nil
+      puts "Failed to execute: #{cmd}"
+      exit! 1 # never gets here unless exec threw or failed
+    end
+    wr.close
+
+    File.open(logfn, 'w') do |f|
+      while buf = rd.gets
+        f.puts buf
+        puts buf if ARGV.verbose?
       end
-      wr.close
 
-      File.open(logfn, 'w') do |f|
-        f.write(rd.read) until rd.eof?
+      Process.wait
 
-        Process.wait
-
-        unless $?.success?
-          f.flush
-          Kernel.system "/usr/bin/tail", "-n", "5", logfn
-          f.puts
-          require 'cmd/--config'
-          Homebrew.write_build_config(f)
-          raise ErrorDuringExecution
-        end
+      unless $?.success?
+        f.flush
+        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
+        f.puts
+        require 'cmd/--config'
+        Homebrew.write_build_config(f)
+        raise ErrorDuringExecution
       end
     end
   rescue ErrorDuringExecution
