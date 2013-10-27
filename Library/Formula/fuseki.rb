@@ -14,7 +14,7 @@ class Fuseki < Formula
     rm 'fuseki'
 
     # Write the installation path into the wrapper shell script
-    inreplace 'fuseki-server', /export FUSEKI_HOME=.+/, "export FUSEKI_HOME=\"#{prefix}\""
+    inreplace 'fuseki-server', /export FUSEKI_HOME=.+/, %'export FUSEKI_HOME="#{libexec}"'
     inreplace 'fuseki-server', /^exec java\s+(.+)/, "exec java -Dlog4j.configuration=file:#{etc/'fuseki.log4j.properties'} \\1"
 
     # Use file logging instead of STDOUT logging
@@ -27,10 +27,12 @@ class Fuseki < Formula
                                   "log4j.appender.FusekiFileLog.File=#{(var/'log/fuseki/fuseki.log')}"
     etc.install 'log4j.properties' => 'fuseki.log4j.properties'
 
-    # Move binaries into place
-    bin.install 'fuseki-server'
-    bin.install 's-delete', 's-get', 's-head', 's-post', 's-put', 's-query', 's-update', 's-update-form'
-    prefix.install 'fuseki-server.jar'
+    # Install and symlink wrapper binaries into place
+    libexec.install 'fuseki-server'
+    libexec.install 's-delete', 's-get', 's-head', 's-post', 's-put', 's-query', 's-update', 's-update-form'
+    bin.install_symlink Dir["#{libexec}/*"]
+    # Non-symlinked binaries and application files
+    libexec.install 'fuseki-server.jar', 'pages'
 
     unless File.exists?(etc/'fuseki.ttl')
       etc.cp 'config.ttl' => 'fuseki.ttl'
@@ -47,7 +49,7 @@ class Fuseki < Formula
     prefix.install 'Data'
 
     # Install documentation
-    prefix.install 'DEPENDENCIES', 'LICENSE', 'NOTICE', 'ReleaseNotes.txt', 'pages'
+    prefix.install 'DEPENDENCIES', 'LICENSE', 'NOTICE', 'ReleaseNotes.txt'
   end
 
   def caveats; <<-EOS.undent
