@@ -1,7 +1,6 @@
 class Formula
   def self.md5(val)
-    @stable ||= create_spec(SoftwareSpec)
-    @stable.md5(val)
+    stable.md5(val)
   end
 end
 
