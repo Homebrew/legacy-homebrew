@@ -9,7 +9,7 @@ class Plowshare < Formula
   head 'https://code.google.com/p/plowshare/', :using => :git
 
   depends_on 'recode'
-  depends_on 'imagemagick'
+  depends_on 'imagemagick' => 'with-x11'
   depends_on 'tesseract'
   depends_on 'spidermonkey'
   depends_on 'aview'
@@ -27,12 +27,6 @@ class Plowshare < Formula
   end
 
   def caveats; <<-EOS.undent
-    The default installation of imagemagick does not enable
-    X11 support. plowshare uses the display command which does
-    not work if X11 support is not enabled. To enable:
-      brew remove imagemagick
-      brew install imagemagick --with-x
-
     Plowshare 4 requires Bash 4+. OS X ships with an old Bash 3 version.
     To install Bash 4:
       brew install bash
