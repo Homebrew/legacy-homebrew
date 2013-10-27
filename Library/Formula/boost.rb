@@ -30,14 +30,31 @@ class Boost < Formula
 
   option :universal
   option 'with-icu', 'Build regexp engine with icu support'
-  option 'with-c++11', 'Compile using Clang, std=c++11 and stdlib=libc++' if MacOS.version >= :lion
   option 'without-single', 'Disable building single-threading variant'
   option 'without-static', 'Disable building static library variant'
+  option 'with-mpi', 'Build with MPI support'
+  option :cxx11
 
   depends_on :python => :recommended
   depends_on UniversalPython if build.universal? and build.with? "python"
-  depends_on "icu4c" if build.with? 'icu'
-  depends_on :mpi => [:cc, :cxx, :optional]
+
+  if build.with? 'icu'
+    if build.cxx11?
+      depends_on 'icu4c' => 'c++11'
+    else
+      depends_on 'icu4c'
+    end
+  end
+
+  if build.with? 'mpi'
+    if build.cxx11?
+      depends_on 'open-mpi' => 'c++11'
+    else
+      depends_on :mpi => [:cc, :cxx, :optional]
+    end
+  end
+
+  odie 'boost: --with-c++11 has been renamed to --c++11' if build.with? 'c++11'
 
   fails_with :llvm do
     build 2335
@@ -64,7 +81,16 @@ class Boost < Formula
       EOS
     end
 
+    if build.cxx11? and build.with? 'mpi' and python
+      raise <<-EOS.undent
+        Building MPI support for Python using C++11 mode results in
+        failure and hence disabled.  Please don't use this combination
+        of options.
+      EOS
+    end
+
     ENV.universal_binary if build.universal?
+    ENV.cxx11 if build.cxx11?
 
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a
@@ -143,11 +169,6 @@ class Boost < Formula
       args << "link=shared"
     else
       args << "link=shared,static"
-    end
-
-    if MacOS.version >= :lion and build.with? 'c++11'
-      args << "cxxflags=-std=c++11" << "cxxflags=-stdlib=libc++"
-      args << "linkflags=-stdlib=libc++"
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
