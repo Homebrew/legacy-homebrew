@@ -209,7 +209,7 @@ module OS
     end
 
     def prefer_64_bit?
-      Hardware::CPU.is_64_bit? and version != :leopard
+      Hardware::CPU.is_64_bit? and version > :leopard
     end
 
     def preferred_arch
