@@ -6,9 +6,10 @@ class Libpng < Formula
   sha1 '67f20d69564a4a50204cb924deab029f11ad2d3c'
 
   bottle do
-    sha1 '5e7feb640d654df0c2ac072d86e46ce9df9eaeee' => :mountain_lion
-    sha1 'bbd94d671653943cf21314911978d90f5fb536df' => :lion
-    sha1 'fb685cfb8b37b883bf004ee7c9ca785d3435b155' => :snow_leopard
+    revision 1
+    sha1 '73625454f0982d11e88165fbcdcd58045a103250' => :mavericks
+    sha1 'dc3e64a3357d59c09ac517b83e048525f0a9c9ae' => :mountain_lion
+    sha1 'c3d9bca7dc5a6136b5ab19dc3635b194ae4186b1' => :lion
   end
 
   keg_only :provided_pre_mountain_lion
