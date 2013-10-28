@@ -7,10 +7,10 @@ class Mysql < Formula
   sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
 
   bottle do
-    revision 1
-    sha1 'b7ef48694e473966a1ea6b6969d66ffb7354f24a' => :mountain_lion
-    sha1 'ff2823f3ea4e3ffc6ea989d15f6418e8e9fd84f1' => :lion
-    sha1 '8b08166f4f1592a7f847b7bd3738936b86ec2234' => :snow_leopard
+    revision 2
+    sha1 '58e852b4914b2102144879c51e501c94429be32c' => :mavericks
+    sha1 'adac8eaa66a75b909ed148e54b273ae65c3d725a' => :mountain_lion
+    sha1 'c9f65ec043617775e08f277fedf099ed70fdcef3' => :lion
   end
 
   depends_on 'cmake' => :build
