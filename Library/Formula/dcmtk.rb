@@ -12,12 +12,6 @@ class Dcmtk < Formula
   depends_on 'libtiff'
   depends_on 'doxygen' if build.include? 'with-docs'
 
-  fails_with :clang do
-    build 425
-    cause "error: use of undeclared identifier 'scaleData'"
-  end
-
-
   # This roughly corresponds to thefollowing upstream patch:
   #
   #   http://git.dcmtk.org/web?p=dcmtk.git;a=commitdiff;h=dbadc0d8f3760f65504406c8b2cb8633f868a258
