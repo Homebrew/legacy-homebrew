@@ -7,6 +7,12 @@ class Qpdf < Formula
 
   depends_on 'pcre'
 
+  # Fix building using Clang and libc++
+  # https://github.com/qpdf/qpdf/issues/19
+  def patches
+    'https://github.com/qpdf/qpdf/pull/21.diff'
+  end
+
   def install
     # find Homebrew's libpcre
     ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
