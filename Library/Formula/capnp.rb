@@ -11,7 +11,7 @@ class Capnp < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "-j6", "check"
-	system "make", "install"
+    system "make", "install"
   end
 
   test do
