@@ -39,18 +39,12 @@ class Formula
   def bottle_filenames branch='HEAD'
     filenames = []
     rev_list(branch).each do |sha|
-      filename = formula_for_sha(sha) do |f|
-        bottle_block = f.class.send(:bottle)
-        unless bottle_block.checksums.empty?
-          revision = bottle_block.revision
-          bottle_filename f, revision
-        end
-      end
+      filename = formula_for_sha(sha) {|f| bottle_filename f if f.bottle }
       unless filenames.include? filename or filename.nil?
         filenames << filename
       end
     end
-    filenames
+    return filenames
   end
 
   def pretty_relative_path
