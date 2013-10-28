@@ -9,17 +9,17 @@ class Ragel < Formula
     url 'http://www.complang.org/ragel/ragel-guide-6.8.pdf'
     sha1 'e57ee7f740dd395d4d5330949594a02c91ad0308'
   end
+
   def patches
     DATA
   end
-  
+
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
     doc.install resource('pdf')
   end
 end
-
 
 __END__
 --- ragel-6.8/ragel/javacodegen.cpp	2013-02-11 02:57:45.000000000 +0100
