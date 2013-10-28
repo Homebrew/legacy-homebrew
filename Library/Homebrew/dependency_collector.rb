@@ -109,6 +109,7 @@ class DependencyCollector
     when :python3    then PythonDependency.new("3", tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
+    when :ant        then ant_dep(spec, tags)
     else
       raise "Unsupported special dependency #{spec.inspect}"
     end
@@ -137,6 +138,13 @@ class DependencyCollector
       else tags << :build
       end
 
+      Dependency.new(spec.to_s, tags)
+    end
+  end
+
+  def ant_dep(spec, tags)
+    if MacOS.version >= :mavericks
+      tags << :build
       Dependency.new(spec.to_s, tags)
     end
   end
