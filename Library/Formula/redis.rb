@@ -7,6 +7,12 @@ class Redis < Formula
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
+  bottle do
+    sha1 '961733ae14c8822c3918a85475141a0514e996c1' => :mavericks
+    sha1 '56d2245a72b6f56af66e979175a441cddc3a3bae' => :mountain_lion
+    sha1 '89dce53fca0c2116bf18ada9f5b2fb16a941d5ce' => :lion
+  end
+
   fails_with :llvm do
     build 2334
     cause 'Fails with "reference out of range from _linenoise"'
