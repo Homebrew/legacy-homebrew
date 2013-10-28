@@ -11,14 +11,8 @@ class Libtextcat < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
-    include.join('libtextcat').install "src/common.h"
-    include.join('libtextcat').install "src/constants.h"
-    include.join('libtextcat').install "src/fingerprint.h"
-    include.join('libtextcat').install "src/textcat.h"
-    include.join('libtextcat').install "src/wg_mempool.h"
-    share.install "langclass/LM"
-    share.install "langclass/ShortTexts"
-    share.install "langclass/conf.txt"
+    (include/'libtextcat/').install Dir["src/*.h"]
+    share.install "langclass/LM", "langclass/ShortTexts", "langclass/conf.txt"
   end
 
   test do
