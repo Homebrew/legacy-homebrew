@@ -20,10 +20,13 @@ class AppleGcc42 < Formula
   mirror 'http://web.archive.org/web/20130512150329/http://r.research.att.com/tools/gcc-42-5666.3-darwin11.pkg'
   version '4.2.1-5666.3'
   sha1 '8fadde2a159082d6474fe9e325b6301e3c0bc84f'
+
   bottle do
     cellar :any
-    sha1 'f84be1286657372c6555c537bf24b647e059c33d' => :mountain_lion
-    sha1 'e4c0455d15381d285e6db9c3182fc2383695bd78' => :lion
+    revision 1
+    sha1 '6b2f79ffd0a1ce4f66dc1728147cbf92238ad934' => :mavericks
+    sha1 'a5ea9db71e33fb371ceb736ffb8006bf69e206f1' => :mountain_lion
+    sha1 'df7d347f800bd9ac7779cefd8362f8fad29f9acf' => :lion
   end
 
   option 'with-gfortran-symlink', 'Provide gfortran symlinks'
