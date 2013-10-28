@@ -2,8 +2,8 @@ require 'formula'
 
 class Groonga < Formula
   homepage 'http://groonga.org/'
-  url 'http://packages.groonga.org/source/groonga/groonga-3.0.8.tar.gz'
-  sha1 '00f226d6c85d21a71107b398322bf86389db9432'
+  url 'http://packages.groonga.org/source/groonga/groonga-3.0.9.tar.gz'
+  sha1 '18d3031df30aff2c21aea45ad994247ae8314d0f'
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
