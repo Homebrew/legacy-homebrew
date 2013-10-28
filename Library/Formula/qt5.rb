@@ -58,6 +58,8 @@ class Qt5 < Formula
       args << '-arch' << 'x86'
     end
 
+    args << '-sdk' << "macosx#{MacOS::version}" # Give a hint to Qt so that it uses the right SDK.
+
     args << '-developer-build' if build.include? 'developer'
 
     system "./configure", *args
