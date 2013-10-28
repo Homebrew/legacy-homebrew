@@ -21,28 +21,15 @@ class X265 < Formula
     cause '-mstackrealign not supported in the 64bit mode'
   end
 
-  def patches
-      # superenv removes -march=core-avx2
-      DATA
-  end if build.head?
-
   def install
 
     args = std_cmake_args
     args.delete '-DCMAKE_BUILD_TYPE=None'
     args << '-DCMAKE_BUILD_TYPE=Release'
+    ENV.append 'CXXFLAGS', '-mavx2'
 
     system "cmake", "source",  *args
     system "make"
     bin.install 'x265'
   end
 end
-
-__END__
-diff --git a/source/common/CMakeLists.txt b/source/common/CMakeLists.txt
-index 62bacd2..9b15eec 100644
---- a/source/common/CMakeLists.txt
-+++ b/source/common/CMakeLists.txt
-@@ -134 +134 @@ if(ENABLE_PRIMITIVES_VEC)
--                PROPERTIES COMPILE_FLAGS "-march=core-avx2")
-+                PROPERTIES COMPILE_FLAGS "-mavx2")
