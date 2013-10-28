@@ -7,12 +7,17 @@ class OpenMpi < Formula
 
   option 'disable-fortran', 'Do not build the Fortran bindings'
   option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
+  option :cxx11
 
   conflicts_with 'mpich2', :because => 'both install mpi__ compiler wrappers'
+  conflicts_with 'libevent', :because => 'both install same set of header files'
+  conflicts_with 'lcdf-typetools', :because => 'both install same set of binaries.'
 
   depends_on :fortran unless build.include? 'disable-fortran'
 
   def install
+    ENV.cxx11 if build.cxx11?
+
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking

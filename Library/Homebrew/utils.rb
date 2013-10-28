@@ -254,6 +254,9 @@ module GitHub extend self
   Error = Class.new(StandardError)
 
   def open url, headers={}, &block
+    # This is a no-op if the user is opting out of using the GitHub API.
+    return if ENV['HOMEBREW_NO_GITHUB_API']
+
     require 'net/https' # for exception classes below
 
     default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
@@ -296,6 +299,9 @@ module GitHub extend self
   end
 
   def find_pull_requests rx
+    return if ENV['HOMEBREW_NO_GITHUB_API']
+    puts "Searching open pull requests..."
+
     query = rx.source.delete('.*').gsub('\\', '')
 
     each_issue_matching(query) do |issue|

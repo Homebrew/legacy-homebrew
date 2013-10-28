@@ -6,6 +6,7 @@ class Protobuf < Formula
   sha1 '62c10dcdac4b69cc8c6bb19f73db40c264cb2726'
 
   option :universal
+  option :cxx11
 
   depends_on :python => :optional
 
@@ -19,6 +20,8 @@ class Protobuf < Formula
     # http://code.google.com/p/protobuf/source/browse/trunk/configure.ac#61
     ENV.prepend 'CXXFLAGS', '-DNDEBUG'
     ENV.universal_binary if build.universal?
+    ENV.cxx11 if build.cxx11?
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-zlib"

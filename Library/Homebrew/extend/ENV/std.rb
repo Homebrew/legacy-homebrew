@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'hardware'
 require 'os/mac'
 require 'extend/ENV/shared'
@@ -195,7 +196,6 @@ module Stdenv
     replace_in_cflags(/-Xarch_#{Hardware::CPU.arch_32_bit} (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags '-march=native', :nehalem => '-march=native -Xclang -target-feature -Xclang -aes'
-    append_to_cflags '-Qunused-arguments'
     @compiler = :clang
   end
 
@@ -319,6 +319,29 @@ module Stdenv
     if compiler != :clang && Hardware.is_32_bit?
       # Can't mix "-march" for a 32-bit CPU  with "-arch x86_64"
       replace_in_cflags(/-march=\S*/, "-Xarch_#{Hardware::CPU.arch_32_bit} \\0")
+    end
+  end
+
+  def cxx11
+    if compiler == :clang
+      append 'CXX', '-std=c++11'
+      append 'CXX', '-stdlib=libc++'
+    elsif compiler =~ /gcc-4\.(8|9)/
+      append 'CXX', '-std=c++11'
+    else
+      raise "The selected compiler doesn't support C++11: #{compiler}"
+    end
+  end
+
+  def libcxx
+    if compiler == :clang
+      append 'CXX', '-stdlib=libc++'
+    end
+  end
+
+  def libstdcxx
+    if compiler == :clang
+      append 'CXX', '-stdlib=libstdc++'
     end
   end
 

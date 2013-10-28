@@ -13,8 +13,8 @@ class Wine < Formula
   end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.4.tar.bz2'
-    sha256 '517b3465dbf5b516d3fe886c0f9d4f310dc1d4a38ca4e5580c5d66bab3fb6969'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.5.tar.bz2'
+    sha256 '355c2980c457f7d714132fcf7008fcb9ad185295bdd9f0681e9123d839952823'
     depends_on 'little-cms2'
   end
 
@@ -62,14 +62,18 @@ class Wine < Formula
   end
 
   def patches
+    p = []
     if build.stable?
-      p = []
       # http://bugs.winehq.org/show_bug.cgi?id=34188
       p << 'http://bugs.winehq.org/attachment.cgi?id=45507'
       # http://bugs.winehq.org/show_bug.cgi?id=34162
       p << 'http://bugs.winehq.org/attachment.cgi?id=45562' if MacOS.version >= :mavericks
-      p
     end
+    if build.devel?
+      # http://bugs.winehq.org/show_bug.cgi?id=34166
+      p << 'http://bugs.winehq.org/attachment.cgi?id=46394'
+    end
+    p
   end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:

@@ -2,38 +2,37 @@ require 'formula'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  if MacOS.version >= :mavericks
+  url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.7.tar.gz'
+  sha1 'abef63992fe12e4e68a7d9de01d8d8eaa8705c9a'
+
+  devel do
     url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.3.tar.gz'
     sha1 '8fbd7f6f2a55092ae0e461ee0f5a4a7f738d40c9'
-  else
-    url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.7.tar.gz'
-    sha1 'abef63992fe12e4e68a7d9de01d8d8eaa8705c9a'
-
-    devel do
-      url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.3.tar.gz'
-      sha1 '8fbd7f6f2a55092ae0e461ee0f5a4a7f738d40c9'
-    end
   end
 
   head 'https://github.com/mongodb/mongo.git'
 
   def patches
     # Fix osx_min_verson issues with clang
-    'https://github.com/mongodb/mongo/commit/978af9.patch' if build.devel?
+    # This ensures libstdc++ is picked, since mongodb is not yet compatible
+    p = []
+    p << 'https://github.com/mongodb/mongo/commit/978af9.patch' if build.devel?
+    # Fix Clang v8 build failure from build warnings and -Werror
+    p << 'https://github.com/mongodb/mongo/commit/be4bc7.patch' if build.stable?
   end
 
   depends_on 'scons' => :build
   depends_on 'openssl' => :optional
 
   def install
-    # mongodb currently doesn't support building against libc++
-    # This will be fixed in the 2.6 release, but meanwhile it must
-    # be built against libstdc++
-    # See: https://github.com/mxcl/homebrew/issues/22771
-    ENV.append 'CXXFLAGS', '-stdlib=libstdc++' if ENV.compiler == :clang
+    # mongodb currently can't build with libc++; this should be fixed in
+    # 2.6, but can't be backported to the current stable release.
+    ENV.cxx += ' -stdlib=libstdc++' if ENV.compiler == :clang && MacOS.version >= :mavericks
 
     args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
     args << '--64' if MacOS.prefer_64_bit?
+    args << "--cc=#{ENV.cc}"
+    args << "--cxx=#{ENV.cxx}"
 
     if build.with? 'openssl'
       args << '--ssl'
