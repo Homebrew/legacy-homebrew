@@ -19,10 +19,11 @@ class Sqlmap < Formula
     depends_on :python => 'pysqlite'
   end
   def install
-    inreplace 'lib/parse/cmdline.py', '"\"%s\"" % _ if " " in _ else _)', ''
-    inreplace 'lib/parse/cmdline.py', 'usage = "%s%s [options]" % ("python " if not IS_WIN else "", \\', 'usage = "sqlmap [options]"'
-    prefix.install Dir["*"]
-    bin.install_symlink prefix+"sqlmap.py" => 'sqlmap.py'
-    bin.install_symlink prefix+"sqlmap.py" => 'sqlmap'
+    unzip_dir = prefix + "#{name}-#{version}/"
+    inreplace "lib/parse/cmdline.py", '"\"%s\"" % _ if " " in _ else _)', ''
+    inreplace "lib/parse/cmdline.py", 'usage = "%s%s [options]" % ("python " if not IS_WIN else "", \\', 'usage = "sqlmap [options]"'
+    unzip_dir.install Dir['*']
+    bin.install_symlink unzip_dir+"sqlmap.py" => 'sqlmap.py'
+    bin.install_symlink unzip_dir+"sqlmap.py" => 'sqlmap'
   end
 end
