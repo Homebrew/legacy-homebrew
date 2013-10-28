@@ -5,11 +5,13 @@ class Jq < Formula
   url 'http://stedolan.github.io/jq/download/source/jq-1.3.tar.gz'
   sha1 'ac1f19e5d9921683af25251e97c2c4bfee895ca2'
 
-  head 'https://github.com/stedolan/jq.git'
+  head do
+    url 'https://github.com/stedolan/jq.git'
 
-  depends_on 'autoconf' => :build if build.head?
-  depends_on 'automake' => :build if build.head?
-  depends_on 'bison' => :build if build.head?
+    depends_on 'autoconf' => :build
+    depends_on 'automake' => :build
+    depends_on 'bison' => :build
+  end
 
   def install
     system "autoreconf -i" if build.head?
