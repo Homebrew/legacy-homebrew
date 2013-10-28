@@ -25,6 +25,10 @@ class Formula
 
   attr_accessor :local_bottle_path
 
+  # Flag for marking whether this formula needs C++ standard library
+  # compatibility check
+  attr_reader :cxxstdlib
+
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
     @name = name
@@ -52,6 +56,8 @@ class Formula
     @build = determine_build_options
 
     @pin = FormulaPin.new(self)
+
+    @cxxstdlib ||= Set.new
   end
 
   def set_spec(name)
@@ -641,6 +647,12 @@ class Formula
       # -f means don't prompt the user if there are errors; just exit with non-zero status
       safe_system '/usr/bin/patch', '-f', *(p.patch_args)
     end
+  end
+
+  # Explicitly request changing C++ standard library compatibility check
+  # settings. Use with caution!
+  def cxxstdlib_check check_type
+    @cxxstdlib << check_type
   end
 
   def self.method_added method
