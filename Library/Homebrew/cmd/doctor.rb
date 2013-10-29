@@ -261,13 +261,26 @@ def __check_clt_up_to_date
 end
 
 def check_for_osx_gcc_installer
-  if (MacOS.version < "10.7" || MacOS::Xcode.version < "4.1") && \
-    MacOS.clang_version == "2.1" then <<-EOS.undent
-    You have osx-gcc-installer installed.
-    Homebrew doesn't support osx-gcc-installer, and it is known to cause
-    some builds to fail.
-    Please install Xcode #{MacOS::Xcode.latest_version}.
+  if (MacOS.version < "10.7" || MacOS::Xcode.version > "4.1") && \
+      MacOS.clang_version == "2.1"
+    message = <<-EOS.undent
+    You seem to have osx-gcc-installer installed.
+    Homebrew doesn't support osx-gcc-installer. It causes many builds to fail and
+    is an unlicensed distribution of really old Xcode files.
     EOS
+    if MacOS.version >= :mavericks
+      message += <<-EOS.undent
+        Please run `xcode-select --install` to install the CLT.
+      EOS
+    elsif MacOS.version >= :lion
+      message += <<-EOS.undent
+        Please install the CLT or Xcode #{MacOS::Xcode.latest_version}.
+      EOS
+    else
+      message += <<-EOS.undent
+        Please install Xcode #{MacOS::Xcode.latest_version}.
+      EOS
+    end
   end
 end
 
