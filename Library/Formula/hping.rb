@@ -18,6 +18,7 @@ class Hping < Formula
   end
 
   def install
+    ENV.append 'CFLAGS', '-D_FORTIFY_SOURCE=0' # Don't use secure strlcat/strlcpy functions
     # Compile fails with tcl support; TCL on OS X is 32-bit only
     system "./configure", "--no-tcl"
 
