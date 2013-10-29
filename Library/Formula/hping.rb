@@ -18,6 +18,10 @@ class Hping < Formula
   end
 
   def install
+    # Conflict with secure strcpy function. Applying suggested fix from macports.
+    # http://trac.macports.org/ticket/40763#comment:2
+    ENV.append 'CFLAGS', '-D_FORTIFY_SOURCE=0'
+
     # Compile fails with tcl support; TCL on OS X is 32-bit only
     system "./configure", "--no-tcl"
 
