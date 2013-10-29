@@ -34,7 +34,7 @@ class Setweblocthumb < Formula
     setWeblocThumb -w
 
       List paths that are being watched by user-specific launch agents
-    
+
     setWeblocThumb's self-updater code has been patched out by Homebrew, as we handle all updating of apps installed by Homebrew.
 
     setWeblocThumb is installed as written in all prior cases, but can be invoked in any case, e.g. setweblocthumb, SETWEBLOCTHUMB, setWeblocThumb, etc.
