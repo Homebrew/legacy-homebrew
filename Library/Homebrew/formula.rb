@@ -437,6 +437,10 @@ class Formula
     Formulary.factory name
   end
 
+  def tap?
+    !!path.realpath.to_s.match(%r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)})
+  end
+
   def tap
     if path.realpath.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)}
       "#$1/#$2"
