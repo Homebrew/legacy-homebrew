@@ -7,6 +7,11 @@ class LcdfTypetools < Formula
 
   conflicts_with 'open-mpi', :because => 'both install same set of binaries.'
 
+  def patches
+    # fixes https://github.com/kohler/lcdf-typetools/issues/3
+    "https://github.com/kohler/lcdf-typetools/commit/d263fdf688166d1eedffb776d4cc72815d561c52.patch"
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
