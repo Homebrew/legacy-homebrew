@@ -11,8 +11,7 @@ class Ragel < Formula
   end
 
   def patches
-    # Fix compilation with clang
-    # http://www.complang.org/pipermail/ragel-users/2013-October/003007.html
+    # Fix compilation with recent clang, patch from upstream git repo
     DATA
   end
 
@@ -25,15 +24,14 @@ end
 
 __END__
 diff --git a/ragel/javacodegen.cpp b/ragel/javacodegen.cpp
-index adff67e..2152b35 100644
+index adff67e..ff2193c 100644
 --- a/ragel/javacodegen.cpp
 +++ b/ragel/javacodegen.cpp
-@@ -1184,7 +1184,7 @@ std::ostream &JavaTabCodeGen::ARRAY_ITEM( string item, bool last )
- {
- 	item_count++;
+@@ -54,6 +54,7 @@ using std::cin;
+ using std::cout;
+ using std::cerr;
+ using std::endl;
++using std::setiosflags;
  
--	out << setw(5) << setiosflags(ios::right) << item;
-+	out << setw(5) << std::setiosflags(ios::right) << item;
- 	
- 	if ( !last ) {
- 		if ( item_count % SAIIC == 0 ) {
+ void javaLineDirective( ostream &out, const char *fileName, int line )
+ {
