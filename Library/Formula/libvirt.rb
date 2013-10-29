@@ -35,6 +35,9 @@ class Libvirt < Formula
         "http://libvirt.org/git/?p=libvirt.git;a=commitdiff_plain;h=2d74822a9eb4856c7f5216bb92bcb76630660f72",
         # Fix Snow Leopard and lower broken by the 1st patch
         "http://libvirt.org/git/?p=libvirt.git;a=commitdiff_plain;h=2f776d49796fe34dcf5a876f4c4e34f79b66f705",
+        # Fix xdrproc_t changes with Mavericks, backwards compat with
+        # older versions. Must remove for next version.
+        "https://gist.github.com/ColinHebert/7195346/raw/fd468bf92adaff918f3eaf0c8617e6b18d50abfa/0001-Add-the-third-argument-required-for-xdrproc_t.patch",
       ]
     }
   end
