@@ -26,6 +26,8 @@ class Pypy < Formula
     # we want to avoid putting PyPy's Python.h somewhere that configure
     # scripts will find it.
     libexec.install Dir['*']
+    bin.mkpath
+    ln_s libexec/'bin/pypy', bin/'pypy'
 
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
