@@ -9,9 +9,17 @@ class Capnp < Formula
     cause "Cap'n Proto requires C++11 support"
   end
 
+  fails_with :gcc_4_0 do
+    cause "Cap'n Proto requires C++11 support"
+  end
+
   fails_with :clang do
     build 425
     cause "Clang 3.2 or newer is required to build Cap'n Proto"
+  end
+
+  fails_with :llvm do
+    cause "Cap'n Proto requires C++11 support"
   end
 
   def install
