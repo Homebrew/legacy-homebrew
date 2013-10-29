@@ -11,6 +11,10 @@ class GooglePerftools < Formula
     cause "Segfault during linking"
   end
 
+  def patches
+    DATA
+  end
+
   def install
     ENV.append_to_cflags '-D_XOPEN_SOURCE'
     system "./configure", "--disable-dependency-tracking",
@@ -19,3 +23,14 @@ class GooglePerftools < Formula
     system "make install"
   end
 end
+
+__END__
+--- a/src/static_vars.cc
++++ b/src/static_vars.cc
+@@ -37,6 +37,7 @@
+ #include "common.h"
+ #include "sampler.h"           // for Sampler
+ #include "base/googleinit.h"
++#include <pthread.h>
+
+ namespace tcmalloc {
