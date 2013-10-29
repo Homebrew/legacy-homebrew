@@ -10,6 +10,10 @@ class Ragel < Formula
     sha1 'e57ee7f740dd395d4d5330949594a02c91ad0308'
   end
 
+  def patches
+      "https://gist.github.com/romainbossart/7068665/raw/"
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
