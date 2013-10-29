@@ -9,6 +9,8 @@ class RubyBuild < Formula
 
   depends_on 'autoconf' => :recommended
   depends_on 'pkg-config' => :recommended
+  depends_on 'libyaml' => :recommended
+  depends_on 'openssl' => :optional
 
   def install
     ENV['PREFIX'] = prefix
