@@ -9,10 +9,16 @@ class Capnp < Formula
     cause "Cap'n Proto requires C++11 support"
   end
 
+  fails_with :clang do
+    build 425
+    cause "Clang 3.2 or newer is required to build Cap'n Proto"
+  end
+
   def install
-    ENV.libcxx if ENV.compiler == :clang unless MacOS.clang_build_version >= 500
-    args = ["--disable-debug", "--disable-dependency-tracking", "--disable-silent-rules", "--prefix=#{prefix}"]
-    system "./configure", *args
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
     system "make", "check"
     system "make", "install"
   end
