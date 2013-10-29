@@ -437,6 +437,10 @@ class Formula
     Formulary.factory name
   end
 
+  def tap?
+    !!path.realpath.to_s.match(HOMEBREW_TAP_DIR_REGEX)
+  end
+
   def tap
     if path.realpath.to_s =~ HOMEBREW_TAP_DIR_REGEX
       "#$1/#$2"
