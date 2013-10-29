@@ -22,7 +22,10 @@ class Capnp < Formula
     cause "Cap'n Proto requires C++11 support"
   end
 
+  depends_on 'homebrew/versions/llvm34' => ['with-clang', 'with-libcxx', :build] if MacOS.version.to_s <= "10.7"
+
   def install
+    ENV.libcxx if MacOS.version.to_s <= "10.7"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
