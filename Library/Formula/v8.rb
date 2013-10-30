@@ -7,9 +7,8 @@ require 'formula'
 
 class V8 < Formula
   homepage 'http://code.google.com/p/v8/'
-  url 'https://github.com/v8/v8/archive/3.19.18.4.tar.gz'
-  sha1 'f44c8eed0fe93b2d04d1d547a1e2640f41161354'
-
+  url 'https://github.com/v8/v8/archive/3.21.17.tar.gz'
+  sha1 '762dacc85a896e23a311eaed1e182f535677f4d6'
   devel do
     url 'https://github.com/v8/v8/archive/3.20.12.tar.gz'
     sha1 '1463f4b8b33674bfd366e84b739713a727e9f9ac'
