@@ -26,12 +26,19 @@ module Homebrew extend self
     end unless ARGV.force?
 
     perform_preinstall_checks
-    ARGV.formulae.each do |f|
-      begin
-        install_formula(f)
-      rescue CannotInstallFormulaError => e
-        ofail e.message
+    begin
+      ARGV.formulae.each do |f|
+        begin
+          install_formula(f)
+        rescue CannotInstallFormulaError => e
+          ofail e.message
+        end
       end
+    rescue FormulaUnavailableError => e
+      ofail e.message
+      require 'cmd/search'
+      puts 'Searching taps...'
+      puts_columns(search_taps(query_regexp(e.name)))
     end
   end
 
