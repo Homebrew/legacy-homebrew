@@ -48,8 +48,7 @@ class Resource
   # If block is given, yield to that block
   # A target or a block must be given, but not both
   def stage(target=nil)
-    fetched = fetch
-    verify_download_integrity(fetched) if fetched.respond_to?(:file?) and fetched.file?
+    verify_download_integrity(fetch)
     mktemp(download_name) do
       downloader.stage
       if block_given?
@@ -75,7 +74,9 @@ class Resource
   end
 
   def verify_download_integrity fn
-    fn.verify_checksum(checksum)
+    if fn.respond_to?(:file?) && fn.file?
+      fn.verify_checksum(checksum)
+    end
   rescue ChecksumMissingError
     opoo "Cannot verify integrity of #{fn.basename}"
     puts "A checksum was not provided for this resource"

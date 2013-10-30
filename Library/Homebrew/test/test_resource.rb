@@ -106,15 +106,15 @@ class ResourceTests < Test::Unit::TestCase
     fn = Pathname.new('test')
     checksum = @resource.sha1('baadidea'*5)
 
-    fn.expects(:verify_checksum).
-      with(checksum).raises(ChecksumMissingError)
+    fn.stubs(:file? => true)
+    fn.expects(:verify_checksum).raises(ChecksumMissingError)
     fn.expects(:sha1)
 
     shutup { @resource.verify_download_integrity(fn) }
   end
 
   def test_verify_download_integrity_mismatch
-    fn = Object.new
+    fn = stub(:file? => true)
     checksum = @resource.sha1('baadidea'*5)
 
     fn.expects(:verify_checksum).with(checksum).
