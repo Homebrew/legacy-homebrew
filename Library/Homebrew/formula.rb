@@ -594,7 +594,7 @@ class Formula
 
       unless $?.success?
         f.flush
-        Kernel.system "/usr/bin/tail", "-n", "5", logfn
+        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
         f.puts
         require 'cmd/--config'
         Homebrew.write_build_config(f)
