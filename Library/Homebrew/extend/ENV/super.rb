@@ -185,7 +185,7 @@ module Superenv
   end
 
   def determine_pkg_config_libdir
-    paths = %W{/usr/lib/pkgconfig #{HOMEBREW_REPOSITORY}/Library/ENV/pkgconfig/#{MacOS.version}}
+    paths = %W{/usr/lib/pkgconfig #{HOMEBREW_LIBRARY}/ENV/pkgconfig/#{MacOS.version}}
     paths << "#{MacOS::X11.lib}/pkgconfig" << "#{MacOS::X11.share}/pkgconfig" if x11?
     paths.to_path_s
   end
