@@ -6,16 +6,21 @@ class Pyqt5 < Formula
   sha1 '90a3d6a805da7559ad83704866c1751d698f1873'
 
   option 'enable-debug', "Build with debug symbols"
+  option 'use-qtdir', "Use QT from $QTDIR instead of brewing qt5"
 
   depends_on :python3 => :recommended
   depends_on :python2 => :optional
 
-  depends_on 'qt5'
+  depends_on 'qt5' unless build.include? "use-qtdir"
 
   if build.with? 'python3'
     depends_on 'sip' => [:build, 'with-python3']
   else
     depends_on 'sip' => :build
+  end
+
+  if build.include? "use-qtdir" and not system ("#{ENV['QTDIR']}/bin/qmake -v")
+    onoe "No suitable qmake found at #{ENV['QTDIR']}/bin/qmake."
   end
 
   def install
@@ -28,6 +33,7 @@ class Pyqt5 < Formula
                # sip.h could not be found automatically
                "--sip-incdir=#{Formula.factory('sip').opt_prefix}/include" ]
       args << '--debug' if build.include? 'enable-debug'
+      args << "--qmake=#{ENV['QTDIR']}/bin/qmake" if build.include? 'use-qtdir'
 
       system python, "./configure.py", *args
       system "make"
