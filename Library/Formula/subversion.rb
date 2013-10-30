@@ -2,9 +2,9 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.3.tar.bz2'
-  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.3.tar.bz2'
-  sha1 'e328e9f1c57f7c78bea4c3af869ec5d4503580cf'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.4.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.4.tar.bz2'
+  sha1 '6e7ac5b56ec22995c763a668c658577f96f2c090'
 
   bottle do
     revision 1
