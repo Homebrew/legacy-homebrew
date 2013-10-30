@@ -43,12 +43,16 @@ class Resource
     downloader.cached_location
   end
 
-  # Download the resource
+  # Fetch, verify, and unpack the resource
+  def stage(target=nil, &block)
+    verify_download_integrity(fetch)
+    unpack(target, &block)
+  end
+
   # If a target is given, unpack there; else unpack to a temp folder
   # If block is given, yield to that block
   # A target or a block must be given, but not both
-  def stage(target=nil)
-    verify_download_integrity(fetch)
+  def unpack(target=nil)
     mktemp(download_name) do
       downloader.stage
       if block_given?
