@@ -3,8 +3,8 @@ require 'formula'
 class Tegh < Formula
   homepage 'https://github.com/D1plo1d/tegh'
   head 'https://github.com/D1plo1d/tegh.git', :branch => 'develop'
-  url 'https://s3.amazonaws.com/tegh_binaries/0.3.0/tegh-0.3.0-brew.tar.gz'
-  sha1 'ffdffdf566c99db683a806c2357517d71b5fc5ca'
+  url 'https://s3.amazonaws.com/tegh_binaries/0.3.1/tegh-0.3.1-brew.tar.gz'
+  sha1 '7061165db148a27d229563e340d6c691b4fd92a8'
 
   depends_on 'node'
 
