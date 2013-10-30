@@ -224,7 +224,7 @@ Note that these flags should only appear after a command.
     Find all installed formulae that have compiled `.app`-style "application"
     packages for OS X, and symlink those apps into `/Applications`, allowing
     for easier access.
-    
+
     If provided, `--local` will move them into the user's `~/Applications`
     folder instead of the system folder. It may need to be created, first.
 
@@ -330,6 +330,9 @@ Note that these flags should only appear after a command.
     Remove symlinks for <formula> from the Homebrew prefix. This can be useful
     for temporarily disabling a formula:
     `brew unlink foo && commands && brew link foo`.
+
+  * `unlinkapps [--local]`:
+    Removes links created by `brew linkapps`.
 
   * `unpin` <formulae>:
     Unpin <formulae>, allowing them to be upgraded by `brew upgrade`. See also
