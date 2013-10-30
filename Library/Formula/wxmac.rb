@@ -18,6 +18,11 @@ class Wxmac < Formula
   url 'http://downloads.sourceforge.net/project/wxpython/wxPython/2.9.5.0/wxPython-src-2.9.5.0.tar.bz2'
   sha1 '9183b2ffc6631cb2551c51b655a9d08904aa7b52'
 
+  devel do
+    url 'http://downloads.sourceforge.net/project/wxwindows/3.0.0-rc2/wxWidgets-3.0.0-rc2.tar.bz2'
+    sha1 'b862990fc3dd97b4194c3955ff73b4f6aa47f823'
+  end
+
   option 'disable-monolithic', "Build a non-monolithic library (split into multiple files)"
   depends_on :python => :recommended
   depends_on FrameworkPython if build.with? "python"
