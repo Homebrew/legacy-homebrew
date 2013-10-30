@@ -2,8 +2,8 @@ require 'formula'
 
 class Pyqt5 < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt/download5'
-  url 'http://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.0.1/PyQt-gpl-5.0.1.tar.gz'
-  sha1 'ed94b4ae8a440678f9bbf52637add38e21faf4d2'
+  url 'http://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.1.1/PyQt-gpl-5.1.1.tar.gz'
+  sha1 '90a3d6a805da7559ad83704866c1751d698f1873'
 
   option 'enable-debug', "Build with debug symbols"
 
