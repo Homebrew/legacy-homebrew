@@ -353,6 +353,10 @@ Example: \fBbrew install jruby && brew test jruby\fR
 Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
 .
 .TP
+\fBunlinkapps [\-\-local]\fR
+Removes links created by \fBbrew linkapps\fR\.
+.
+.TP
 \fBunpin\fR \fIformulae\fR
 Unpin \fIformulae\fR, allowing them to be upgraded by \fBbrew upgrade\fR\. See also \fBpin\fR\.
 .
