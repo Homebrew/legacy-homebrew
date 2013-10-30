@@ -362,7 +362,7 @@ class Formula
 
   # an array of all Formula names
   def self.names
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
   end
 
   def self.each
@@ -393,7 +393,7 @@ class Formula
   end
 
   def self.aliases
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Aliases/*"].map{ |f| File.basename f }.sort
+    Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
   # TODO - document what this returns and why
@@ -402,7 +402,7 @@ class Formula
     if name.include? "/"
       if name =~ %r{(.+)/(.+)/(.+)}
         tap_name = "#$1-#$2".downcase
-        tapd = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Taps/#{tap_name}")
+        tapd = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{tap_name}")
         tapd.find_formula do |relative_pathname|
           return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
         end if tapd.directory?
@@ -412,13 +412,13 @@ class Formula
     end
 
     # test if the name is a core formula
-    formula_with_that_name = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb")
+    formula_with_that_name = Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb")
     if formula_with_that_name.file? and formula_with_that_name.readable?
       return name
     end
 
     # test if the name is a formula alias
-    possible_alias = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Aliases/#{name}")
+    possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{name}")
     if possible_alias.file?
       return possible_alias.realpath.basename('.rb').to_s
     end
@@ -457,7 +457,7 @@ class Formula
   end
 
   def self.path name
-    Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name.downcase}.rb")
+    Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
   end
 
   def env

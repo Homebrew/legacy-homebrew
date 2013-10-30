@@ -190,7 +190,7 @@ class FormulaTests < Test::Unit::TestCase
 
   def test_path
     name = 'foo-bar'
-    assert_equal Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"), Formula.path(name)
+    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formula.path(name)
   end
 
   def test_factory

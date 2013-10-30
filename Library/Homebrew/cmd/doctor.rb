@@ -926,7 +926,7 @@ def check_git_status
       If this a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
-          cd #{HOMEBREW_REPOSITORY}/Library && git stash && git clean -d -f
+          cd #{HOMEBREW_LIBRARY} && git stash && git clean -d -f
       EOS
     end
   end
@@ -1032,7 +1032,7 @@ def check_for_outdated_homebrew
     timestamp = if File.directory? ".git"
       `git log -1 --format="%ct" HEAD`.to_i
     else
-      (HOMEBREW_REPOSITORY/"Library").mtime.to_i
+      HOMEBREW_LIBRARY.mtime.to_i
     end
 
     if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent

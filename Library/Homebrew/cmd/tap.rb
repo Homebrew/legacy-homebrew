@@ -83,7 +83,7 @@ module Homebrew extend self
   def repair_taps
     count = 0
     # prune dead symlinks in Formula
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].each do |fn|
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].each do |fn|
       if not File.exist? fn
         File.delete fn
         count += 1
