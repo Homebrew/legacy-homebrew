@@ -19,7 +19,6 @@ require 'rexml/xmldecl'
 require 'rexml/cdata'
 
 EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"
-HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 
 class Step
   attr_reader :command, :name, :status, :output, :time
