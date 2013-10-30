@@ -723,7 +723,7 @@ def __check_git_version
   # https://help.github.com/articles/https-cloning-errors
   `git --version`.chomp =~ /git version ((?:\d+\.?)+)/
 
-  if Version.new($1) < Version.new("1.7.10") then <<-EOS.undent
+  if $1 and Version.new($1) < Version.new("1.7.10") then <<-EOS.undent
     An outdated version of Git was detected in your PATH.
     Git 1.7.10 or newer is required to perform checkouts over HTTPS from GitHub.
     Please upgrade: brew upgrade git
