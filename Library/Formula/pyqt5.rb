@@ -13,9 +13,9 @@ class Pyqt5 < Formula
   depends_on 'qt5'
 
   if build.with? 'python3'
-    depends_on 'sip' => 'with-python3'
+    depends_on 'sip' => [:build, 'with-python3']
   else
-    depends_on 'sip'
+    depends_on 'sip' => :build
   end
 
   def install
