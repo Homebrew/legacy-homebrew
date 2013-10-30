@@ -67,7 +67,7 @@ module Homebrew extend self
   def github_info f
     path = f.path.realpath
 
-    if path.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)/(.*)}
+    if path.to_s =~ HOMEBREW_TAP_PATH_REGEX
       user = $1
       repo = "homebrew-#$2"
       path = $3

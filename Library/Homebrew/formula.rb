@@ -438,7 +438,7 @@ class Formula
   end
 
   def tap
-    if path.realpath.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)}
+    if path.realpath.to_s =~ HOMEBREW_TAP_DIR_REGEX
       "#$1/#$2"
     elsif core_formula?
       "mxcl/master"
