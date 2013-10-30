@@ -51,7 +51,9 @@ module OS
     end
 
     def dev_tools_path
-      @dev_tools_path ||= if tools_in_prefix? CLT::MAVERICKS_PKG_PATH
+      @dev_tools_path ||= if tools_in_prefix? CLT::XCODE5_PKG_PATH
+        Pathname.new "#{CLT::XCODE5_PKG_PATH}/usr/bin"
+      elsif tools_in_prefix? CLT::MAVERICKS_PKG_PATH
         Pathname.new "#{CLT::MAVERICKS_PKG_PATH}/usr/bin"
       elsif tools_in_prefix? "/"
         # probably a safe enough assumption (the unix way)
@@ -67,7 +69,7 @@ module OS
     end
 
     def tools_in_prefix?(prefix)
-      %w{cc make}.all? { |tool| File.executable? "#{prefix}/usr/bin/#{tool}" }
+      %w{gcc make}.all? { |tool| File.executable? "#{prefix}/usr/bin/#{tool}" }
     end
 
     def xctoolchain_path
