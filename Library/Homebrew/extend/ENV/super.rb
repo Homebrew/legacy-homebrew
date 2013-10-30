@@ -61,9 +61,8 @@ module Superenv
   def setup_build_environment(formula=nil)
     reset
 
-    self.cc  = 'cc'
-    self.cxx = 'c++'
-    self['HOMEBREW_CC'] = determine_cc
+    self.cc  = self['HOMEBREW_CC']  = determine_cc
+    self.cxx = self['HOMEBREW_CXX'] = determine_cxx
     validate_cc!(formula) unless formula.nil?
     self['DEVELOPER_DIR'] = determine_developer_dir
     self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
@@ -150,6 +149,10 @@ module Superenv
   def determine_cc
     cc = compiler
     COMPILER_SYMBOL_MAP.invert.fetch(cc, cc)
+  end
+
+  def determine_cxx
+    determine_cc.to_s.gsub('gcc', 'g++').gsub('clang', 'clang++')
   end
 
   def determine_path
@@ -292,25 +295,18 @@ module Superenv
     delete('MAKEFLAGS')
   end
   alias_method :j1, :deparallelize
-  def gcc
-    self['HOMEBREW_CC'] = "gcc-4.2"
-    @compiler = :gcc
-  end
-  def gcc_4_0
-    self['HOMEBREW_CC'] = "gcc-4.0"
-    @compiler = :gcc_4_0
-  end
-  def llvm
-    self['HOMEBREW_CC'] = "llvm-gcc"
-    @compiler = :llvm
-  end
-  def clang
-    self['HOMEBREW_CC'] = "clang"
-    @compiler = :clang
+  COMPILER_SYMBOL_MAP.values.each do |compiler|
+    define_method compiler do
+      @compiler = compiler
+      self.cc  = self['HOMEBREW_CC']  = determine_cc
+      self.cxx = self['HOMEBREW_CXX'] = determine_cxx
+    end
   end
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
-      @compiler = self['HOMEBREW_CC'] = "gcc-4.#{n}"
+      @compiler = :"gcc-4.#{n}"
+      self.cc  = self['HOMEBREW_CC']  = determine_cc
+      self.cxx = self['HOMEBREW_CXX'] = determine_cxx
     end
   end
   def make_jobs
