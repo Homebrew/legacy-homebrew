@@ -1,7 +1,7 @@
 require 'formula'
 
+# TODO rename to gperftools when renames are supported
 class GooglePerftools < Formula
-  # TODO rename to gperftools when renames are supported
   homepage 'http://code.google.com/p/gperftools/'
   url 'http://gperftools.googlecode.com/files/gperftools-2.1.tar.gz'
   sha1 'b799b99d9f021988bbc931db1c21b2f94826d4f0'
@@ -11,6 +11,7 @@ class GooglePerftools < Formula
     cause "Segfault during linking"
   end
 
+  # Incorporated upstream, remove on next version update
   def patches
     DATA
   end
