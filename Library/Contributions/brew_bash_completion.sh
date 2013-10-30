@@ -414,6 +414,7 @@ _brew ()
             home
             info abv
             install
+            linkapps
             link ln
             list ls
             log
@@ -428,6 +429,7 @@ _brew ()
             test
             uninstall remove rm
             unlink
+            unlinkapps
             unpin
             untap
             update
