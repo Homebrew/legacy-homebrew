@@ -166,6 +166,7 @@ module OS
       FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
       MAVERICKS_PKG_ID = "com.apple.pkg.CLTools_Executables"
       MAVERICKS_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
+      XCODE5_PKG_PATH = Pathname.new("/Applications/Xcode.app/Contents/Developer")
 
       # True if:
       #  - Xcode < 4.3 is installed. The tools are found under /usr.
@@ -173,12 +174,17 @@ module OS
       #    For OS X < 10.9, the tools are found under /usr. For 10.9,
       #    they are found under /Library/Developer/CommandLineTools.
       def installed?
-        mavericks_dev_tools? || usr_dev_tools?
+        xcode5_dev_tools? || mavericks_dev_tools? || usr_dev_tools?
       end
 
       def mavericks_dev_tools?
         MacOS.dev_tools_path == Pathname("#{MAVERICKS_PKG_PATH}/usr/bin") &&
           File.directory?("#{MAVERICKS_PKG_PATH}/usr/include")
+      end
+
+      def xcode5_dev_tools?
+        sdk_path = Pathname(`/usr/bin/xcrun --show-sdk-path`.strip).join('usr/include')
+        MacOS.dev_tools_path == Pathname("#{XCODE5_PKG_PATH}/usr/bin") && File.directory?(sdk_path)
       end
 
       def usr_dev_tools?
