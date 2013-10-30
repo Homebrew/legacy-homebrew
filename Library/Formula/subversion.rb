@@ -2,26 +2,30 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.3.tar.bz2'
-  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.3.tar.bz2'
-  sha1 'e328e9f1c57f7c78bea4c3af869ec5d4503580cf'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.4.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.4.tar.bz2'
+  sha1 '6e7ac5b56ec22995c763a668c658577f96f2c090'
 
   bottle do
-    revision 1
-    sha1 '1d7364a2238b5a1c8270c9c8b269730bf20098d1' => :mountain_lion
-    sha1 '52f271a16e789230b8938b4244f863c8c73c76fa' => :lion
-    sha1 '28eac8463678924c6c9d1bb87d74d835ace329d4' => :snow_leopard
+    sha1 '8cb9f5378c894b15b39833156c1ef9cab15acd68' => :mavericks
+    sha1 'df36b64a8185468a8b807b5c30aff7ff61b9f617' => :mountain_lion
+    sha1 'd24a24b4094383f0b0ea19b6f1a9064d0a5e7791' => :lion
   end
 
   option :universal
+  option 'with-brewed-openssl', 'Include OpenSSL support to Serf via Homebrew'
   option 'java', 'Build Java bindings'
   option 'perl', 'Build Perl bindings'
   option 'ruby', 'Build Ruby bindings'
 
+  resource 'serf' do
+    url 'http://serf.googlecode.com/files/serf-1.3.2.tar.bz2'
+    sha1 '90478cd60d4349c07326cb9c5b720438cf9a1b5d'
+  end
+
   depends_on 'pkg-config' => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
-  depends_on 'serf'
   depends_on 'sqlite'
   depends_on :python => :optional
 
@@ -31,6 +35,10 @@ class Subversion < Formula
 
   # Bindings require swig
   depends_on 'swig' if build.include? 'perl' or build.include? 'python' or build.include? 'python'
+
+  # For Serf
+  depends_on 'scons' => :build
+  depends_on 'openssl' if build.with? 'brewed-openssl'
 
   # If building bindings, allow non-system interpreters
   env :userpaths if build.include? 'perl' or build.include? 'ruby'
@@ -54,6 +62,24 @@ class Subversion < Formula
   end
 
   def install
+    serf_prefix = libexec+'serf'
+
+    resource('serf').stage do
+      # SConstruct merges in gssapi linkflags using scons's MergeFlags,
+      # but that discards duplicate values - including the duplicate
+      # values we want, like multiple -arch values for a universal build.
+      # Passing 0 as the `unique` kwarg turns this behaviour off.
+      inreplace 'SConstruct', 'unique=1', 'unique=0'
+
+      ENV.universal_binary if build.universal?
+      # scons ignores our compiler and flags unless explicitly passed
+      args = %W[PREFIX=#{serf_prefix} GSSAPI=/usr CC=#{ENV.cc}
+                CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}]
+      args << "OPENSSL=#{Formula.factory('openssl').opt_prefix}" if build.with? 'brewed-openssl'
+      system "scons", *args
+      system "scons install"
+    end
+
     if build.include? 'unicode-path'
       raise Homebrew::InstallationError.new(self, <<-EOS.undent
         The --unicode-path patch is not supported on Subversion 1.8.
@@ -93,7 +119,7 @@ class Subversion < Formula
             "--with-apr=#{apr_bin}",
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula.factory('sqlite').opt_prefix}",
-            "--with-serf=#{Formula.factory('serf').opt_prefix}",
+            "--with-serf=#{serf_prefix}",
             "--disable-mod-activation",
             "--disable-nls",
             "--without-apache-libexecdir",

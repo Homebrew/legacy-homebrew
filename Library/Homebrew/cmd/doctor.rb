@@ -261,13 +261,26 @@ def __check_clt_up_to_date
 end
 
 def check_for_osx_gcc_installer
-  if (MacOS.version < "10.7" || MacOS::Xcode.version < "4.1") && \
-    MacOS.clang_version == "2.1" then <<-EOS.undent
-    You have osx-gcc-installer installed.
-    Homebrew doesn't support osx-gcc-installer, and it is known to cause
-    some builds to fail.
-    Please install Xcode #{MacOS::Xcode.latest_version}.
+  if (MacOS.version < "10.7" || MacOS::Xcode.version > "4.1") && \
+      MacOS.clang_version == "2.1"
+    message = <<-EOS.undent
+    You seem to have osx-gcc-installer installed.
+    Homebrew doesn't support osx-gcc-installer. It causes many builds to fail and
+    is an unlicensed distribution of really old Xcode files.
     EOS
+    if MacOS.version >= :mavericks
+      message += <<-EOS.undent
+        Please run `xcode-select --install` to install the CLT.
+      EOS
+    elsif MacOS.version >= :lion
+      message += <<-EOS.undent
+        Please install the CLT or Xcode #{MacOS::Xcode.latest_version}.
+      EOS
+    else
+      message += <<-EOS.undent
+        Please install Xcode #{MacOS::Xcode.latest_version}.
+      EOS
+    end
   end
 end
 
@@ -723,7 +736,7 @@ def __check_git_version
   # https://help.github.com/articles/https-cloning-errors
   `git --version`.chomp =~ /git version ((?:\d+\.?)+)/
 
-  if Version.new($1) < Version.new("1.7.10") then <<-EOS.undent
+  if $1 and Version.new($1) < Version.new("1.7.10") then <<-EOS.undent
     An outdated version of Git was detected in your PATH.
     Git 1.7.10 or newer is required to perform checkouts over HTTPS from GitHub.
     Please upgrade: brew upgrade git
@@ -913,7 +926,7 @@ def check_git_status
       If this a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
-          cd #{HOMEBREW_REPOSITORY}/Library && git stash && git clean -d -f
+          cd #{HOMEBREW_LIBRARY} && git stash && git clean -d -f
       EOS
     end
   end
@@ -1019,7 +1032,7 @@ def check_for_outdated_homebrew
     timestamp = if File.directory? ".git"
       `git log -1 --format="%ct" HEAD`.to_i
     else
-      (HOMEBREW_REPOSITORY/"Library").mtime.to_i
+      HOMEBREW_LIBRARY.mtime.to_i
     end
 
     if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent

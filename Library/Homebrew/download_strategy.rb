@@ -1,4 +1,3 @@
-require 'open-uri'
 require 'utils/json'
 require 'erb'
 
@@ -208,8 +207,26 @@ end
 
 # Detect and download from Apache Mirror
 class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
+  def apache_mirrors
+    rd, wr = IO.pipe
+    buf = ""
+
+    pid = fork do
+      rd.close
+      $stdout.reopen(wr)
+      $stderr.reopen(wr)
+      curl "#{@url}&asjson=1"
+    end
+    wr.close
+
+    buf << rd.read until rd.eof?
+    rd.close
+    Process.wait(pid)
+    buf
+  end
+
   def _fetch
-    mirrors = Utils::JSON.load(open("#{@url}&asjson=1").read)
+    mirrors = Utils::JSON.load(apache_mirrors)
     url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
 
     ohai "Best Mirror #{url}"

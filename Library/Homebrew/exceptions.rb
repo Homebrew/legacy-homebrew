@@ -182,6 +182,9 @@ class BuildError < Homebrew::InstallationError
     if not ARGV.verbose?
       puts
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
+      if formula.tap?
+        puts "If reporting this please do so at the #{formula.tap} tap (not mxcl/homebrew)."
+      end
     else
       require 'cmd/--config'
       require 'cmd/--env'
