@@ -150,6 +150,7 @@ class Formulary
   # * a formula URL
   # * a local bottle reference
   def self.factory ref
+    ref = ref.to_s
     # If a URL is passed, download to the cache and install
     if ref =~ %r[(https?|ftp)://]
       f = FromUrlLoader.new(ref)
