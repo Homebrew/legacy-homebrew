@@ -2,8 +2,8 @@ require 'formula'
 
 class X265 < Formula
   homepage 'http://x265.org'
-  url 'https://bitbucket.org/multicoreware/x265/get/0.4.1.tar.bz2'
-  sha1 'a3441aa6f1dc0940b89a53bec8031492bca1fa86'
+  url 'https://bitbucket.org/multicoreware/x265/get/0.5.tar.bz2'
+  sha1 '7f0a0766083c25b194d2d0f98deafacd29eacaf2'
 
   head 'https://bitbucket.org/multicoreware/x265', :using => :hg
 
@@ -30,6 +30,6 @@ class X265 < Formula
 
     system "cmake", "source",  *args
     system "make"
-    bin.install 'x265'
+    system "make", "install"
   end
 end
