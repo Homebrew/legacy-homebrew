@@ -145,8 +145,8 @@ class PythonDependency < Requirement
     elsif from_osx? and MacOS.version <= :mountain_lion
       # Python on OS X has been stripped off its includes (unless you install the CLT), therefore we use the MacOS.sdk.
       Pathname.new("#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}")
-    elsif from_osx? and MacOS.version >= :maverics
-      # As of Maverics, the Python framework is no longer included in the SDK
+    elsif from_osx? and MacOS.version >= :mavericks
+      # As of Mavericks, the Python framework is no longer included in the SDK
       Pathname.new("/System/Library/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}")
     else
       # What Python knows about itself
