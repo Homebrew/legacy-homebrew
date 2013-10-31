@@ -39,6 +39,28 @@ class Keg
         end
       end
     end
+
+    # Search for pkgconfig .pc files and relocate references to the cellar
+    old_cellar = HOMEBREW_CELLAR if old_cellar == :any
+    old_prefix = HOMEBREW_PREFIX if old_prefix == :any
+
+    old_cellar = Regexp.escape(old_cellar)
+    old_prefix = Regexp.escape(old_prefix)
+
+    pkgconfig_files.each do |pcfile|
+      pcfile.ensure_writable do
+        pcfile.open('rb') do |f|
+          s = f.read
+          # These regexes match lines of the form: prefix=/usr/local/Cellar/foo/1.2.3/lib
+          # and (assuming new_cellar is "/tmp") transform them into: prefix="/tmp/foo/1.2.3/lib"
+          # If the original line did not have quotes, we add them in automatically
+          s.gsub!(%r[([\S]+)="?#{old_cellar}(.*?)"?$], "\\1=\"#{new_cellar}\\2\"")
+          s.gsub!(%r[([\S]+)="?#{old_prefix}(.*?)"?$], "\\1=\"#{new_prefix}\\2\"")
+          f.reopen(pcfile, 'wb')
+          f.write(s)
+        end
+      end
+    end
   end
 
   # Detects the C++ dynamic libraries in place, scanning the dynamic links
@@ -142,5 +164,25 @@ class Keg
     end
 
     mach_o_files
+  end
+
+  def pkgconfig_files
+    pkgconfig_files = []
+
+    # find .pc files, which are stored in lib/pkgconfig
+    pc_dir = self/'lib/pkgconfig'
+    if pc_dir.directory?
+      pc_dir.find do |pn|
+        next if pn.symlink? or pn.directory? or pn.extname.to_s != '.pc'
+        pkgconfig_files << pn
+      end
+    end
+
+    # find name-config scripts, which can be all over the keg
+    Pathname.new(self).find do |pn|
+      next if pn.symlink? or pn.directory?
+      pkgconfig_files << pn if pn.text_executable? and pn.basename.to_s.end_with? '-config'
+    end
+    pkgconfig_files
   end
 end
