@@ -9,6 +9,11 @@ class Tup < Formula
   depends_on 'pkg-config' => :build
   depends_on 'osxfuse'
 
+  def patches
+    # replace fuse with its successor osxfuse
+    "https://gist.github.com/nikolay/7242850/raw/d54726a37cdde738b995203ad6f433d88f2962d6/tup.patch"
+  end
+
   def install
     ENV['TUP_LABEL'] = version
     system "./build.sh"
