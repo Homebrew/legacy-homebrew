@@ -24,10 +24,6 @@ module Homebrew extend self
     end
   end
 
-  def already_fetched? f
-    f.cached_download.exist?
-  end
-
   def fetch_resource r
     puts "Resource: #{r.name}"
     fetch_fetchable r
@@ -47,11 +43,13 @@ module Homebrew extend self
 
   def fetch_fetchable f
     f.clear_cache if ARGV.force?
+
+    already_fetched = f.cached_download.exist?
     download = f.fetch
 
     return unless download.file?
 
-    puts "Downloaded to: #{download}" unless already_fetched?(f)
+    puts "Downloaded to: #{download}" unless already_fetched
     puts Checksum::TYPES.map { |t| "#{t.to_s.upcase}: #{download.send(t)}" }
 
     f.verify_download_integrity(download)
