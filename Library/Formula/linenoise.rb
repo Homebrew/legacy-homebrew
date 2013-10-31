@@ -2,7 +2,7 @@ require 'formula'
 
 class Linenoise < Formula
   homepage 'https://github.com/antirez/linenoise'
-  url 'https://github.com/antirez/linenoise/archive/master.zip'
+  head 'https://github.com/antirez/linenoise', :using => :git
   sha1 '08a7dfd6243fe9691d87b937b2c8c9c6552bd67a'
   version '0.1'
 
@@ -13,8 +13,7 @@ class Linenoise < Formula
 
   def install
     system "make"
-    system "mkdir -p #{lib}"
-    system "cp liblinenoise.dylib #{lib}"
+    lib.install 'liblinenoise.dylib'
   end
 
   test do
