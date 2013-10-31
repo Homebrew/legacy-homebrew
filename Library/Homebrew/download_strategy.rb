@@ -35,6 +35,7 @@ class AbstractDownloadStrategy
   def fetch; end
   def stage; end
   def cached_location; end
+  def clear_cache; end
 end
 
 class VCSDownloadStrategy < AbstractDownloadStrategy
@@ -63,6 +64,10 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   def cached_location
     @clone
   end
+
+  def clear_cache
+    cached_location.rmtree if cached_location.exist?
+  end
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
@@ -84,6 +89,10 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location
     tarball_path
+  end
+
+  def clear_cache
+    [cached_location, temporary_path].each { |f| f.unlink if f.exist? }
   end
 
   def downloaded_size

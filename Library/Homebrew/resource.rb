@@ -43,6 +43,10 @@ class Resource
     downloader.cached_location
   end
 
+  def clear_cache
+    downloader.clear_cache
+  end
+
   # Fetch, verify, and unpack the resource
   def stage(target=nil, &block)
     verify_download_integrity(fetch)

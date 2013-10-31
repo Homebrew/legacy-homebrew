@@ -46,7 +46,7 @@ module Homebrew extend self
   private
 
   def fetch_fetchable f
-    f.cached_download.rmtree if already_fetched?(f) && ARGV.force?
+    f.clear_cache if ARGV.force?
     download = f.fetch
 
     return unless download.file?

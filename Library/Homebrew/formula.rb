@@ -192,6 +192,10 @@ class Formula
     downloader.cached_location
   end
 
+  def clear_cache
+    downloader.clear_cache
+  end
+
   # Can be overridden to selectively disable bottles from formulae.
   # Defaults to true so overridden version does not have to check if bottles
   # are supported.
