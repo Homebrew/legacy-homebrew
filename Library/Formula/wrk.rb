@@ -7,6 +7,8 @@ class Wrk < Formula
 
   head 'https://github.com/wg/wrk.git'
 
+  depends_on 'luajit'
+
   def install
     system "make"
     bin.install "wrk"
