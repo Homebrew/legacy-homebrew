@@ -381,8 +381,7 @@ end
 end
 
 def check_access_logs
-  folder = Pathname.new('~/Library/Logs/Homebrew')
-  if folder.exist? and not folder.writable_real?
+  if HOMEBREW_LOGS.exist? and not HOMEBREW_LOGS.writable_real?
     <<-EOS.undent
       #{folder} isn't writable.
       This can happen if you "sudo make install" software that isn't managed
