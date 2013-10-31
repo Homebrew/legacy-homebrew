@@ -16,6 +16,7 @@ class Scons < Formula
              # SCons gets handsy with sys.path---`scons-local` is one place it
              # will look when all is said and done.
              "--install-data=#{libexec}",
+             "--install-lib=#{python.site_packages}",
              "--install-scripts=#{bin}",
              "--no-version-script", "--no-install-man"
     end
