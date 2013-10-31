@@ -30,7 +30,18 @@ class Mplayer < Formula
   def patches
     # When building SVN, configure prompts the user to pull FFmpeg from git.
     # Don't do that.
-    DATA if build.head?
+    patches = Array.new
+
+    if build.head?
+      # When building SVN, configure prompts the user to pull FFmpeg from git.
+      # Don't do that.
+      patches.push "https://gist.github.com/anonymous/7234266/raw/"
+    end
+
+    if MacOS.version >= :mavericks
+      # Fix compiling of brew's mplayer formula on OS X mavericks v10.9
+      patches.push "https://gist.github.com/anonymous/7234293/raw/"
+    end
   end
 
   def install
@@ -70,18 +81,3 @@ class Mplayer < Formula
     system "#{bin}/mplayer", "-ao", "null", "/System/Library/Sounds/Glass.aiff"
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index a1fba5f..5deaa80 100755
---- a/configure
-+++ b/configure
-@@ -49,8 +49,6 @@ if test -e ffmpeg/mp_auto_pull ; then
- fi
- 
- if ! test -e ffmpeg ; then
--    echo "No FFmpeg checkout, press enter to download one with git or CTRL+C to abort"
--    read tmp
-     if ! git clone --depth 1 git://source.ffmpeg.org/ffmpeg.git ffmpeg ; then
-         rm -rf ffmpeg
-         echo "Failed to get a FFmpeg checkout"
