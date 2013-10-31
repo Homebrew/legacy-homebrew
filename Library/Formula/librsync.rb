@@ -7,6 +7,8 @@ class Librsync < Formula
 
   option :universal
 
+  depends_on 'popt'
+
   def patches
     # fixes librsync doesn't correctly export inlined functions:
     # http://trac.macports.org/ticket/31742

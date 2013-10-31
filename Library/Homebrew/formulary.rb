@@ -74,7 +74,7 @@ class Formulary
 
     def get_formula
       formula = klass.new(name)
-      formula.downloader.local_bottle_path = @bottle_filename
+      formula.local_bottle_path = @bottle_filename
       return formula
     end
   end

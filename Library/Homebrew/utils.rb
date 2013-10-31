@@ -1,6 +1,6 @@
 require 'pathname'
 require 'exceptions'
-require 'macos'
+require 'os/mac'
 require 'utils/json'
 require 'utils/inreplace'
 require 'open-uri'
@@ -138,7 +138,7 @@ def curl *args
 
   args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
   # See https://github.com/mxcl/homebrew/issues/6103
-  args << "--insecure" if MacOS.version < 10.6
+  args << "--insecure" if MacOS.version < "10.6"
   args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
   args << "--silent" unless $stdout.tty?
 
@@ -166,8 +166,8 @@ def puts_columns items, star_items=[]
   end
 end
 
-def which cmd
-  dir = ENV['PATH'].split(':').find {|p| File.executable? File.join(p, cmd)}
+def which cmd, path=ENV['PATH']
+  dir = path.split(File::PATH_SEPARATOR).find {|p| File.executable? File.join(p, cmd)}
   Pathname.new(File.join(dir, cmd)) unless dir.nil?
 end
 
@@ -203,7 +203,7 @@ end
 # GZips the given paths, and returns the gzipped paths
 def gzip *paths
   paths.collect do |path|
-    system "/usr/bin/gzip", path
+    with_system_path { safe_system 'gzip', path }
     Pathname.new("#{path}.gz")
   end
 end
@@ -238,12 +238,25 @@ def nostdout
   end
 end
 
+def paths
+  @paths ||= ENV['PATH'].split(File::PATH_SEPARATOR).collect do |p|
+    begin
+      File.expand_path(p).chomp('/')
+    rescue ArgumentError
+      onoe "The following PATH component is invalid: #{p}"
+    end
+  end.uniq.compact
+end
+
 module GitHub extend self
   ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/")
 
   Error = Class.new(StandardError)
 
   def open url, headers={}, &block
+    # This is a no-op if the user is opting out of using the GitHub API.
+    return if ENV['HOMEBREW_NO_GITHUB_API']
+
     require 'net/https' # for exception classes below
 
     default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
@@ -286,6 +299,9 @@ module GitHub extend self
   end
 
   def find_pull_requests rx
+    return if ENV['HOMEBREW_NO_GITHUB_API']
+    puts "Searching open pull requests..."
+
     query = rx.source.delete('.*').gsub('\\', '')
 
     each_issue_matching(query) do |issue|

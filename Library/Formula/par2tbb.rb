@@ -32,7 +32,9 @@ class Par2tbb < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/par2"
+  test do
+    (testpath/'test.out').write "test"
+    system "#{bin}/par2", 'create', 'test', 'test.out'
+    system "#{bin}/par2", 'verify', 'test.par2'
   end
 end

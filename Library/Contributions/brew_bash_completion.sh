@@ -318,7 +318,7 @@ _brew_search ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--debian --fink --macports"
+        __brewcomp "--debian --fedora --fink --macports --opensuse --ubuntu"
         return
         ;;
     esac
@@ -403,6 +403,7 @@ _brew ()
             audit
             cat
             cleanup
+            commands
             create
             deps
             diy configure
@@ -413,6 +414,7 @@ _brew ()
             home
             info abv
             install
+            linkapps
             link ln
             list ls
             log
@@ -422,10 +424,12 @@ _brew ()
             prune
             pin
             search
+            reinstall
             tap
             test
             uninstall remove rm
             unlink
+            unlinkapps
             unpin
             untap
             update
@@ -451,6 +455,7 @@ _brew ()
     fetch)                      _brew_fetch ;;
     info|abv)                   _brew_info ;;
     install|instal)             _brew_install ;;
+    reinstall|reinstal)         _brew_install ;;
     link|ln)                    _brew_link ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;

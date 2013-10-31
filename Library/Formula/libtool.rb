@@ -9,6 +9,13 @@ class Libtool < Formula
   mirror 'http://ftp.gnu.org/gnu/libtool/libtool-2.4.2.tar.gz'
   sha1 '22b71a8b5ce3ad86e1094e7285981cae10e6ff88'
 
+  bottle do
+    revision 1
+    sha1 '3a025da1e80c2965f0eee2591fca225315f97290' => :mavericks
+    sha1 'bd62a22ee51cceec5e359d33f6b19d217368166d' => :mountain_lion
+    sha1 '0cf484aa89183c6b3228c0f156229c787f996f89' => :lion
+  end
+
   if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/glibtoolize"
     keg_only "Xcode 4.2 and below provide glibtool."
   end

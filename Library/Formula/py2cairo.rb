@@ -19,13 +19,7 @@ class Py2cairo < Formula
 
   def install
     # Python extensions default to universal but cairo may not be universal
-    unless build.universal?
-      ENV['ARCHFLAGS'] = if MacOS.prefer_64_bit?
-        "-arch x86_64"
-      else
-        "-arch i386"
-      end
-    end
+    ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}" unless build.universal?
 
     python do
       # waf miscompiles py2cairo on >= lion with HB python, linking the wrong

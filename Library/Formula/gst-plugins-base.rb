@@ -2,15 +2,25 @@ require 'formula'
 
 class GstPluginsBase < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.0.8.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.0.8.tar.xz'
-  sha256 'b55c9deea00acf789f82845c088b7c7c17b3ecef24a94831a819071b3dd8ef0d'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.2.0.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.2.0.tar.xz'
+  sha256 '8656e20bf4b675e5696fb4af193793351926d428ca02826c5667a6384729a45d'
+
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-base'
+
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'gettext'
-  depends_on 'gstreamer'
-
+  if build.with? 'gobject-introspection'
+    depends_on 'gstreamer' => 'with-gobject-introspection'
+  else
+    depends_on 'gstreamer'
+  end
   # The set of optional dependencies is based on the intersection of
   # gst-plugins-base-0.10.35/REQUIREMENTS and Homebrew formulae
   depends_on 'gobject-introspection' => :optional
@@ -22,11 +32,10 @@ class GstPluginsBase < Formula
   depends_on 'libvorbis' => :optional
 
   def install
+
     # gnome-vfs turned off due to lack of formula for it.
     args = %W[
       --prefix=#{prefix}
-      --disable-debug
-      --disable-dependency-tracking
       --enable-experimental
       --disable-libvisual
       --disable-alsa
@@ -35,9 +44,17 @@ class GstPluginsBase < Formula
       --disable-x
       --disable-xvideo
       --disable-xshm
+      --disable-debug
+      --disable-dependency-tracking
     ]
+
+    if build.head?
+      ENV.append "NOCONFIGURE", "yes"
+      system "./autogen.sh"
+    end
+
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

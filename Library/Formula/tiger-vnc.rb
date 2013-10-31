@@ -17,11 +17,7 @@ class TigerVnc < Formula
   # Fix black screen issue on Mountain Lion
   # http://permalink.gmane.org/gmane.network.vnc.tigervnc.user/544
   def patches
-    { :p0 => DATA,
-      :p1 => [
-        "http://tigervnc.svn.sourceforge.net/viewvc/tigervnc/trunk/vncviewer/OSXPixelBuffer.cxx?r1=4646&r2=4956&view=patch",
-        "http://tigervnc.svn.sourceforge.net/viewvc/tigervnc/trunk/vncviewer/OSXPixelBuffer.h?r1=4504&r2=4956&view=patch"
-    ]}
+    { :p0 => DATA }
   end
 
   def install
@@ -118,3 +114,73 @@ Index: common/rdr/TLSOutStream.cxx
 
  #ifdef HAVE_GNUTLS
  using namespace rdr;
+===================================================================
+--- vncviewer/OSXPixelBuffer.h 2011/06/17 07:35:56     4504
++++ vncviewer/OSXPixelBuffer.h 2012/08/17 13:37:42     4956
+@@ -29,8 +29,8 @@
+   void draw(int src_x, int src_y, int x, int y, int w, int h);
+
+ protected:
+-  // This is really a CGImageRerf, but Apple headers conflict with FLTK
+-  void *image;
++  // This is really a CGContextRef, but Apple headers conflict with FLTK
++  void *bitmap;
+ };
+
+===================================================================
+--- vncviewer/OSXPixelBuffer.cxx       2011/08/23 12:04:46     4646
++++ vncviewer/OSXPixelBuffer.cxx       2012/08/17 13:37:42     4956
+@@ -40,29 +40,24 @@
+   ManagedPixelBuffer(rfb::PixelFormat(32, 24, false, true,
+                                       255, 255, 255, 16, 8, 0),
+                      width, height),
+-  image(NULL)
++  bitmap(NULL)
+ {
+   CGColorSpaceRef lut;
+-  CGDataProviderRef provider;
+
+   lut = CGColorSpaceCreateDeviceRGB();
+   assert(lut);
+-  provider = CGDataProviderCreateWithData(NULL, data, datasize, NULL);
+-  assert(provider);
+
+-  image = CGImageCreate(width, height, 8, 32, width*4, lut,
+-                        kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Little,
+-                        provider, NULL, false, kCGRenderingIntentDefault);
+-  assert(image);
++  bitmap = CGBitmapContextCreate(data, width, height, 8, width*4, lut,
++                                 kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Little);
++  assert(bitmap);
+
+-  CGDataProviderRelease(provider);
+   CGColorSpaceRelease(lut);
+ }
+
+
+ PlatformPixelBuffer::~PlatformPixelBuffer()
+ {
+-  CGImageRelease((CGImageRef)image);
++  CFRelease((CGContextRef)bitmap);
+ }
+
+
+@@ -71,6 +66,7 @@
+   CGRect rect;
+   CGContextRef gc;
+   CGAffineTransform at;
++  CGImageRef image;
+
+   gc = (CGContextRef)fl_gc;
+
+@@ -102,7 +98,9 @@
+   rect.size.width = width();
+   rect.size.height = -height(); // Negative height does _not_ flip the image
+
+-  CGContextDrawImage(gc, rect, (CGImageRef)image);
++  image = CGBitmapContextCreateImage((CGContextRef)bitmap);
++  CGContextDrawImage(gc, rect, image);
++  CGImageRelease(image);
+
+   CGContextRestoreGState(gc);
+ }

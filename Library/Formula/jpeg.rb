@@ -6,10 +6,10 @@ class Jpeg < Formula
   sha1 'f080b2fffc7581f7d19b968092ba9ebc234556ff'
 
   bottle do
-    revision 1
-    sha1 'efdcddaee959b85d35a232ddcf1e7ae0577a8704' => :mountain_lion
-    sha1 '17b90896ea0f517fb980e8f82ad8baa8f3639e43' => :lion
-    sha1 '5df0f135a9e43cd37d69b4ec6022323d72c477ae' => :snow_leopard
+    cellar :any
+    sha1 '1f61eefc3d5dec2028c80afec203219b29a9d28d' => :mavericks
+    sha1 '403549b7b3b3e34a58e24b8e08bb3aa7e6dc3d6e' => :mountain_lion
+    sha1 '29648a413e64c64758619fc6c5bff737b4d2e1de' => :lion
   end
 
   option :universal

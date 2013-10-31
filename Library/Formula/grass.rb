@@ -2,13 +2,16 @@ require 'formula'
 
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
-  url 'http://grass.osgeo.org/grass64/source/grass-6.4.2.tar.gz'
-  sha1 '74481611573677d90ae0cd446c04a3895e232004'
+  url 'http://grass.osgeo.org/grass64/source/grass-6.4.3.tar.gz'
+  sha1 '925da985f3291c41c7a0411eaee596763f7ff26e'
 
   head 'https://svn.osgeo.org/grass/grass/trunk'
 
   option "without-gui", "Build without WxPython interface. Command line tools still available."
 
+  # build failing on snow leopard
+  depends_on :macos => :lion
+  depends_on 'apple-gcc42' if MacOS.version == :mountain_lion
   depends_on "pkg-config" => :build
   depends_on :python
   depends_on "gettext"
@@ -20,7 +23,7 @@ class Grass < Formula
   depends_on 'wxmac' => :recommended # prefer over OS X's version because of 64bit
   depends_on :postgresql => :optional
   depends_on :mysql => :optional
-  depends_on "cairo" if MacOS.version <= :leopard
+  depends_on "cairo"
   depends_on :x11  # needs to find at least X11/include/GL/gl.h
 
   # Patches that files are not installed outside of the prefix.
@@ -75,22 +78,12 @@ class Grass < Formula
       args << "--with-wxwidgets=#{Formula.factory('wxmac').opt_prefix}/bin/wx-config"
     end
 
-    if MacOS.prefer_64_bit?
-      args << "--enable-64bit"
-      args << "--with-macosx-archs=x86_64"
-    else
-      args << "--with-macosx-archs=i386"
-    end
+    args << "--enable-64bit" if MacOS.prefer_64_bit?
+    args << "--with-macos-archs=#{MacOS.preferred_arch}"
 
-    # Deal with Cairo support
-    if MacOS.version <= :leopard
-      cairo = Formula.factory('cairo')
-      args << "--with-cairo-includes=#{cairo.include}/cairo"
-      args << "--with-cairo-libs=#{cairo.lib}"
-    else
-      args << "--with-cairo-includes=#{MacOS::X11.include} #{MacOS::X11.include}/cairo"
-    end
-
+    cairo = Formula.factory('cairo')
+    args << "--with-cairo-includes=#{cairo.include}/cairo"
+    args << "--with-cairo-libs=#{cairo.lib}"
     args << "--with-cairo"
 
     # Database support
@@ -100,8 +93,8 @@ class Grass < Formula
 
     if build.with? "mysql"
       mysql = Formula.factory('mysql')
-      args << "--with-mysql-includes=#{mysql.include + 'mysql'}"
-      args << "--with-mysql-libs=#{mysql.lib + 'mysql'}"
+      args << "--with-mysql-includes=#{mysql.include}/mysql"
+      args << "--with-mysql-libs=#{mysql.lib}/mysql"
       args << "--with-mysql"
     end
 
@@ -126,9 +119,9 @@ class Grass < Formula
         The old Tcl/Tk GUI cannot be built using the version of Tcl/Tk provided
         by OS X. This has the unfortunate consquence of disabling the NVIZ
         visualization system. A keg-only Tcl/Tk brew or some deep hackery of
-        the GRASS source may be possible ways to get around this around this.
+        the GRASS source may be possible ways to get around this.
 
-        Tcl/Tk will eventually be depreciated in GRASS 7 and this version has
+        Tcl/Tk will eventually be deprecated in GRASS 7 and this version has
         been built to support the newer wxPython based GUI. However, there is
         a problem as wxWidgets does not compile as a 64 bit library on OS X
         which affects Snow Leopard users. In order to remedy this, the GRASS

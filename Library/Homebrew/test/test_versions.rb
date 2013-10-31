@@ -1,6 +1,19 @@
 require 'testing_env'
 require 'version'
 
+class VersionTests < Test::Unit::TestCase
+  def test_accepts_objects_responding_to_to_str
+    value = stub(:to_str => '0.1')
+    assert_equal '0.1', Version.new(value).to_s
+  end
+
+  def test_raises_for_non_string_objects
+    assert_raises(TypeError) { Version.new(1.1) }
+    assert_raises(TypeError) { Version.new(1) }
+    assert_raises(TypeError) { Version.new(:symbol) }
+  end
+end
+
 class VersionComparisonTests < Test::Unit::TestCase
   include VersionAssertions
 
@@ -238,10 +251,10 @@ class VersionParsingTests < Test::Unit::TestCase
     assert_version_detected '8d', 'http://www.ijg.org/files/jpegsrc.v8d.tar.gz'
   end
 
-  # def test_version_ghc_style
-  #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2'
-  #   assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2'
-  # end
+  def test_version_ghc_style
+    assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-x86_64-apple-darwin.tar.bz2'
+    assert_version_detected '7.0.4', 'http://www.haskell.org/ghc/dist/7.0.4/ghc-7.0.4-i386-apple-darwin.tar.bz2'
+  end
 
   def test_pypy_version
     assert_version_detected '1.4.1', 'http://pypy.org/download/pypy-1.4.1-osx.tar.bz2'

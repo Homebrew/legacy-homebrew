@@ -5,12 +5,13 @@ class Libp11 < Formula
   url 'http://downloads.sourceforge.net/project/opensc/libp11/libp11-0.2.8.tar.gz'
   sha1 '2d1f6dc4200038f55a0cb7e22858f93e484b0724'
 
-  head 'https://github.com/OpenSC/libp11.git'
+  head do
+    url 'https://github.com/OpenSC/libp11.git'
+    depends_on :automake
+  end
 
   depends_on 'pkg-config' => :build
   depends_on :libltdl
-
-  depends_on :automake if build.head?
 
   def install
     system "./bootstrap" if build.head?

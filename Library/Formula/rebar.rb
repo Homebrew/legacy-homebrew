@@ -5,6 +5,8 @@ class Rebar < Formula
   url 'https://github.com/rebar/rebar/archive/2.0.0.zip'
   sha1 '4775839097324107c730e094e42ce87b456b655c'
 
+  head "https://github.com/basho/rebar.git", :branch => "master"
+
   depends_on 'erlang'
 
   def install

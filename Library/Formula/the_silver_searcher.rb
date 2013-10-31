@@ -2,8 +2,8 @@ require 'formula'
 
 class TheSilverSearcher < Formula
   homepage 'https://github.com/ggreer/the_silver_searcher'
-  url 'https://github.com/ggreer/the_silver_searcher/archive/0.15.tar.gz'
-  sha1 '578adf5276a9bf39deb7dbaf86abca96c312a388'
+  url 'https://github.com/ggreer/the_silver_searcher/archive/0.17.tar.gz'
+  sha1 '88673329b320457c065a914ceb77ac878ca4f0c0'
 
   head 'https://github.com/ggreer/the_silver_searcher.git'
 
@@ -25,6 +25,8 @@ class TheSilverSearcher < Formula
                           "--prefix=#{prefix}"
     system "make"
     system "make install"
+
+    bash_completion.install 'ag.bashcomp.sh'
   end
 
   def test

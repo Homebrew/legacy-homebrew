@@ -2,35 +2,42 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'https://phusion-passenger.googlecode.com/files/passenger-4.0.5.tar.gz'
-  sha1 '4c1e12dae0c972e1498f2dae258929d8fa4ba42d'
-  head 'https://github.com/FooBarWidget/passenger.git'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.21.tar.gz'
+  sha1 '66b3b2b85283df2b7875d4dcc044dc1afb28a58b'
+  head 'https://github.com/phusion/passenger.git'
 
+  depends_on :macos => :lion
   depends_on 'curl'
 
   def install
     rake "apache2"
     rake "nginx"
-    cp_r Dir["*"], prefix, :preserve => true
+
+    necessary_files = Dir["configure", "Rakefile", "README.md", "CONTRIBUTORS",
+      "CONTRIBUTING.md", "LICENSE", "INSTALL.md", "NEWS", "passenger.gemspec",
+      "build", "lib", "node_lib", "bin", "doc", "man", "helper-scripts",
+      "ext", "resources", "buildout"]
+    libexec.mkpath
+    cp_r necessary_files, libexec, :preserve => true
 
     # The various scripts in bin cannot correctly locate their root directory
     # when invoked as symlinks in /usr/local/bin. We create wrapper scripts
     # to solve this problem.
-    mv bin, libexec
-    mkdir bin
-    Dir[libexec/"*"].each do |orig_script|
+    bin.mkpath
+    Dir[libexec/"bin/*"].each do |orig_script|
       name = File.basename(orig_script)
       (bin/name).write <<-EOS.undent
         #!/bin/sh
         exec #{orig_script} "$@"
       EOS
     end
+    mv libexec/'man', share
   end
 
   def caveats; <<-EOS.undent
     To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
-      LoadModule passenger_module #{HOMEBREW_PREFIX}/opt/passenger/libout/apache2/mod_passenger.so
-      PassengerRoot #{HOMEBREW_PREFIX}/opt/passenger
+      LoadModule passenger_module #{opt_prefix}/libexec/buildout/apache2/mod_passenger.so
+      PassengerRoot #{opt_prefix}/libexec
       PassengerDefaultRuby /usr/bin/ruby
 
     To activate Phusion Passenger for Nginx, run:
@@ -39,7 +46,7 @@ class Passenger < Formula
   end
 
   test do
-    if `#{HOMEBREW_PREFIX}/bin/passenger-config --root`.strip != prefix.to_s
+    if `#{HOMEBREW_PREFIX}/bin/passenger-config --root`.strip != libexec.to_s
       raise "Invalid root path"
     end
   end

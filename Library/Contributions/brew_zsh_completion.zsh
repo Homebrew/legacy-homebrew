@@ -24,8 +24,10 @@ _brew_outdated_formulae() {
 
 local -a _1st_arguments
 _1st_arguments=(
+  'audit:check formulae for Homebrew coding style'
   'cat:display formula file for a formula'
   'cleanup:uninstall unused and old versions of packages'
+  'commands:show a list of commands'
   'create:create a new formula'
   'deps:list dependencies and dependants of a formula'
   'doctor:audits your installation for common issues'
@@ -33,6 +35,7 @@ _1st_arguments=(
   'home:visit the homepage of a formula or the brew project'
   'info:information about a formula'
   'install:install a formula'
+  'reinstall:install a formula anew; re-using its current options'
   'link:link a formula'
   'list:list files in a formula or not-installed formulae'
   'log:git commit log for a formula'
@@ -87,7 +90,7 @@ case "$words[1]" in
         _brew_installed_formulae
         _wanted installed_formulae expl 'installed formulae' compadd -a installed_formulae
       fi ;;
-  install|home|homepage|log|info|abv|uses|cat|deps|edit|options)
+  install|reinstall|audit|home|homepage|log|info|abv|uses|cat|deps|edit|options)
     _brew_all_formulae
     _wanted formulae expl 'all formulae' compadd -a formulae ;;
   remove|rm|uninstall|unlink|cleanup|link|ln|pin|unpin)

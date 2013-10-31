@@ -19,7 +19,6 @@ class John < Formula
   end
 
   fails_with :clang do
-    build 425
     cause "rawSHA1_ng_fmt.c:535:19: error: redefinition of '_mm_testz_si128'"
   end if build.include? 'jumbo'
 

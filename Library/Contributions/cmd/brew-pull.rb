@@ -52,7 +52,11 @@ ARGV.named.each do|arg|
   patch_args << '--signoff' unless ARGV.include? '--clean'
   # Normally we don't want whitespace errors, but squashing them can break
   # patches so an option is provided to skip this step.
-  patch_args << '--whitespace=fix' unless ARGV.include? '--ignore-whitespace' or ARGV.include? '--clean'
+  if ARGV.include? '--ignore-whitespace' or ARGV.include? '--clean'
+    patch_args << '--whitespace=nowarn'
+  else
+    patch_args << '--whitespace=fix'
+  end
   patch_args << patchpath
 
   safe_system 'git', *patch_args
@@ -78,7 +82,7 @@ ARGV.named.each do|arg|
     `git diff #{revision}.. --name-status`.each_line do |line|
       status, filename = line.split
       # Don't try and do anything to removed files.
-      if (status == 'A' or status == 'M') and filename.include? '/Formula/' or tap url
+      if (status == 'A' or status == 'M') and filename.match /Formula\/\w+\.rb$/ or tap url
         formula = File.basename(filename, '.rb')
         ohai "Installing #{formula}"
         install = Formula.factory(formula).installed? ? 'upgrade' : 'install'

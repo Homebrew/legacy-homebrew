@@ -2,8 +2,8 @@ require 'formula'
 
 class Newt < Formula
   homepage 'https://fedorahosted.org/newt/'
-  url 'https://fedorahosted.org/releases/n/e/newt/newt-0.52.15.tar.gz'
-  sha1 'e067280e474eb327c62eaa306e2242adcf540ab2'
+  url 'https://fedorahosted.org/releases/n/e/newt/newt-0.52.16.tar.gz'
+  sha1 '678bf57e0a7e28db4da1a2951dbb65f9ce882f73'
 
   depends_on 'gettext'
   depends_on 'popt'
@@ -11,8 +11,8 @@ class Newt < Formula
   depends_on :python => :optional
 
   def patches
-    { :p0 => [ "https://trac.macports.org/export/106061/trunk/dports/devel/libnewt/files/patch-configure.ac.diff",
-               "https://trac.macports.org/export/106061/trunk/dports/devel/libnewt/files/patch-Makefile.in.diff" ] }
+    { :p0 => [ "https://trac.macports.org/export/111598/trunk/dports/devel/libnewt/files/patch-configure.ac.diff",
+               "https://gist.github.com/co-me/6725961/raw/aa8bb06967ad5360eab89e22c1fe15b36bfa06e3/patch-Makefile.in.diff" ] }
   end
 
   def install

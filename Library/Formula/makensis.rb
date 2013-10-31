@@ -1,10 +1,5 @@
 require 'formula'
 
-class NsisSupport < Formula
-  url 'http://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46.zip'
-  sha1 'adeff823a1f8af3c19783700a6b8d9054cf0f3c2'
-end
-
 class Makensis < Formula
   homepage 'http://nsis.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-src.tar.bz2'
@@ -12,9 +7,14 @@ class Makensis < Formula
 
   depends_on 'scons' => :build
 
+  resource 'nsis' do
+    url 'http://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46.zip'
+    sha1 'adeff823a1f8af3c19783700a6b8d9054cf0f3c2'
+  end
+
   def install
     system "scons makensis"
     bin.install "build/release/makensis/makensis"
-    NsisSupport.new.brew { (share+"nsis").install Dir['*'] }
+    (share/'nsis').install resource('nsis')
   end
 end

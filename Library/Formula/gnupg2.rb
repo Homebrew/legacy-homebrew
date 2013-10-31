@@ -2,8 +2,8 @@ require 'formula'
 
 class Gnupg2 < Formula
   homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.20.tar.bz2'
-  sha1 '7ddfefa37ee9da89a8aaa8f9059d251b4cd02562'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.22.tar.bz2'
+  sha1 '9ba9ee288e9bf813e0f1e25cbe06b58d3072d8b8'
 
   option '8192', 'Build with support for private keys of up to 8192 bits'
 
@@ -60,10 +60,10 @@ end
 
 __END__
 diff --git a/common/homedir.c b/common/homedir.c
-index 5adf46a..d0c5dec 100644
+index 4b03cfe..c84f26f 100644
 --- a/common/homedir.c
 +++ b/common/homedir.c
-@@ -368,7 +368,7 @@ dirmngr_socket_name (void)
+@@ -472,7 +472,7 @@ dirmngr_socket_name (void)
      }
    return name;
  #else /*!HAVE_W32_SYSTEM*/
@@ -72,9 +72,8 @@ index 5adf46a..d0c5dec 100644
  #endif /*!HAVE_W32_SYSTEM*/
  }
  
-
 diff --git a/configure b/configure
-index 616d165..ae3126e 100755
+index e5479af..a17a54d 100755
 --- a/configure
 +++ b/configure
 @@ -578,8 +578,8 @@ MFLAGS=
@@ -85,15 +84,14 @@ index 616d165..ae3126e 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gnupg2'
 +PACKAGE_TARNAME='gnupg2'
- PACKAGE_VERSION='2.0.20'
- PACKAGE_STRING='gnupg 2.0.20'
+ PACKAGE_VERSION='2.0.22'
+ PACKAGE_STRING='gnupg 2.0.22'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'
-
 diff --git a/tests/openpgp/Makefile.in b/tests/openpgp/Makefile.in
-index 1a617e7..1af2d4b 100644
+index c9ceb2d..7044900 100644
 --- a/tests/openpgp/Makefile.in
 +++ b/tests/openpgp/Makefile.in
-@@ -286,11 +286,11 @@ GPG_IMPORT = ../../g10/gpg2 --homedir . \
+@@ -312,11 +312,11 @@ GPG_IMPORT = ../../g10/gpg2 --homedir . \
  
  
  # Programs required before we can run these tests.
@@ -107,16 +105,3 @@ index 1a617e7..1af2d4b 100644
  
  TESTS = version.test mds.test \
  	decrypt.test decrypt-dsa.test \
-  diff --git a/scd/pcsc-wrapper.c b/scd/pcsc-wrapper.c
-  index 7d9415a..f3d92ff 100644
---- a/scd/pcsc-wrapper.c
-+++ b/scd/pcsc-wrapper.c
-@@ -66,7 +66,7 @@
- static int verbose;
-
- #if defined(__APPLE__) || defined(_WIN32) || defined(__CYGWIN__)
--typedef unsinged int pcsc_dword_t;
-+typedef unsigned int pcsc_dword_t;
- #else
- typedef unsigned long pcsc_dword_t;
- #endif

@@ -5,7 +5,13 @@ class Thrift < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=thrift/0.9.0/thrift-0.9.0.tar.gz'
   sha1 'fefcf4d729bf80da419407dfa028740aa95fa2e3'
 
-  head 'http://svn.apache.org/repos/asf/thrift/trunk'
+  head do
+    url 'https://git-wip-us.apache.org/repos/asf/thrift.git', :branch => "master"
+
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
 
   option "with-haskell", "Install Haskell binding"
   option "with-erlang", "Install Erlang binding"

@@ -15,6 +15,7 @@ class Pass < Formula
 
   def install
     system "make DESTDIR=#{prefix} PREFIX=/ install"
+    zsh_completion.install "contrib/pass.zsh-completion" => "_pass"
   end
 
   def test
