@@ -35,7 +35,7 @@ class Subversion < Formula
   depends_on :libtool
 
   # Bindings require swig
-  depends_on 'swig' if build.include? 'perl' or build.include? 'python' or build.include? 'python'
+  depends_on 'swig' if build.include? 'perl' or build.include? 'python' or build.include? 'ruby'
 
   # For Serf
   depends_on 'scons' => :build
@@ -148,18 +148,14 @@ class Subversion < Formula
     system "make tools"
     system "make install-tools"
 
-    # Swig don't understand "-isystem" flags added by Homebrew, so
-    # filter them out from makefiles.
-    Dir.glob(buildpath/"**/Makefile*").each do |mkfile|
-      inreplace mkfile, /\-isystem[^[:space:]]*/, ''
-    end
-
     python do
       system "make swig-py"
       system "make install-swig-py"
     end
 
     if build.include? 'perl'
+      # In theory SWIG can be built in parallel, in practice...
+      ENV.deparallelize
       # Remove hard-coded ppc target, add appropriate ones
       if build.universal?
         arches = Hardware::CPU.universal_archs.as_arch_flags
@@ -180,6 +176,9 @@ class Subversion < Formula
       end
       system "make swig-pl"
       system "make", "install-swig-pl", "DESTDIR=#{prefix}"
+      # Some of the libraries get installed into the wrong place, they end up having the
+      # prefix in the directory name twice.
+      mv Dir.glob("#{prefix}/#{lib}/*"), "#{lib}"
     end
 
     if build.include? 'java'
