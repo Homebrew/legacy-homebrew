@@ -50,7 +50,7 @@ class Tab < OpenStruct
   end
 
   def self.for_formula f
-    path = [f.opt_prefix, f.linked_keg].map{ |pn| pn.join(FILENAME) }.find{ |pn| pn.exist? }
+    path = [f.opt_prefix, f.linked_keg, f.installed_prefix].map{ |pn| pn.join(FILENAME) }.find{ |pn| pn.exist? }
     # Legacy kegs may lack a receipt. If it doesn't exist, fake one
     if path.nil? then self.dummy_tab(f) else self.from_file(path) end
   end
