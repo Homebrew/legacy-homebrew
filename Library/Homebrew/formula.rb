@@ -169,10 +169,7 @@ class Formula
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
-  def bash_completion
-    etc = ENV['HOMEBREW_GIT_ETC'] ? self.etc : prefix+'etc'
-    etc+'bash_completion.d'
-  end
+  def bash_completion; prefix+'etc/bash_completion.d' end
   def zsh_completion;  share+'zsh/site-functions'     end
 
   # for storing etc, var files for later copying from bottles
@@ -362,7 +359,7 @@ class Formula
 
   # an array of all Formula names
   def self.names
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
   end
 
   def self.each
@@ -393,7 +390,7 @@ class Formula
   end
 
   def self.aliases
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Aliases/*"].map{ |f| File.basename f }.sort
+    Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
   # TODO - document what this returns and why
@@ -402,7 +399,7 @@ class Formula
     if name.include? "/"
       if name =~ %r{(.+)/(.+)/(.+)}
         tap_name = "#$1-#$2".downcase
-        tapd = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Taps/#{tap_name}")
+        tapd = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{tap_name}")
         tapd.find_formula do |relative_pathname|
           return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
         end if tapd.directory?
@@ -412,13 +409,13 @@ class Formula
     end
 
     # test if the name is a core formula
-    formula_with_that_name = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb")
+    formula_with_that_name = Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb")
     if formula_with_that_name.file? and formula_with_that_name.readable?
       return name
     end
 
     # test if the name is a formula alias
-    possible_alias = Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Aliases/#{name}")
+    possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{name}")
     if possible_alias.file?
       return possible_alias.realpath.basename('.rb').to_s
     end
@@ -437,8 +434,12 @@ class Formula
     Formulary.factory name
   end
 
+  def tap?
+    !!path.realpath.to_s.match(HOMEBREW_TAP_DIR_REGEX)
+  end
+
   def tap
-    if path.realpath.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)}
+    if path.realpath.to_s =~ HOMEBREW_TAP_DIR_REGEX
       "#$1/#$2"
     elsif core_formula?
       "mxcl/master"
@@ -453,7 +454,7 @@ class Formula
   end
 
   def self.path name
-    Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name.downcase}.rb")
+    Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
   end
 
   def env

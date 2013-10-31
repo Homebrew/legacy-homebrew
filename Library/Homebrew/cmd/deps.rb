@@ -36,7 +36,7 @@ module Homebrew extend self
       reqs = f.requirements
     end
     deps.map(&:name) + reqs.to_a.map do |r|
-      ":#{r.class.default_formula}" if r.default_formula?
+      r.class.default_formula if r.default_formula?
     end.compact
   end
 

@@ -68,6 +68,10 @@ module MacCPUs
     end
   end
 
+  def extmodel
+    @extmodel ||= `/usr/sbin/sysctl -n machdep.cpu.extmodel`.to_i
+  end
+
   def cores
     @cores ||= `/usr/sbin/sysctl -n hw.ncpu`.to_i
   end
@@ -109,6 +113,10 @@ module MacCPUs
 
   def sse3?
     @sse3 ||= sysctl_bool('hw.optional.sse3')
+  end
+
+  def ssse3?
+    @ssse3 ||= sysctl_bool('hw.optional.supplementalsse3')
   end
 
   def sse4?
