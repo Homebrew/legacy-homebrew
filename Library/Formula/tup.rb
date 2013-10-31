@@ -11,7 +11,7 @@ class Tup < Formula
 
   def patches
     # replace fuse with its successor osxfuse
-    "https://gist.github.com/nikolay/7242850/raw/d54726a37cdde738b995203ad6f433d88f2962d6/tup.patch"
+    "https://gist.github.com/nikolay/7242850/raw/0bf86b3b67d9aff25e6b0ca306dfc196fcb377f0/tup.patch"
   end
 
   def install
