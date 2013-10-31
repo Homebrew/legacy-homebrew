@@ -68,6 +68,10 @@ module MacCPUs
     end
   end
 
+  def extmodel
+    @extmodel ||= `/usr/sbin/sysctl -n machdep.cpu.extmodel`.to_i
+  end
+
   def cores
     @cores ||= `/usr/sbin/sysctl -n hw.ncpu`.to_i
   end
