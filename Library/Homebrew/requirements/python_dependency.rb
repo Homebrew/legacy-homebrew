@@ -143,8 +143,14 @@ class PythonDependency < Requirement
       # Homebrew since a long while only supports frameworked python
       HOMEBREW_PREFIX/"opt/#{python}/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}"
     elsif from_osx?
-      # Python on OS X has been stripped off its includes (unless you install the CLT), therefore we use the MacOS.sdk.
-      Pathname.new("#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}")
+      if MacOS.version >= :mavericks
+        # On Mavericks the sytem python headers are available again at their expected location.
+        # Just to be safe, let python-config tell use where to look.
+        Pathname.new(`#{binary}-config --prefix`.strip)
+      else
+        # Python on OS X prior to Mavericks has been stripped of its includes (unless you install the CLT), therefore we use the MacOS.sdk.
+        Pathname.new("#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}")
+      end
     else
       # What Python knows about itself
       Pathname.new(`#{binary} -c 'import sys;print(sys.prefix)'`.strip)
