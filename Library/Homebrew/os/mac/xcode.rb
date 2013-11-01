@@ -185,13 +185,19 @@ module OS
         MacOS.dev_tools_path == Pathname("/usr/bin") && File.directory?("/usr/include")
       end
 
-      def latest_version?
-        `/usr/bin/clang --version` =~ %r{clang-(\d+)\.(\d+)\.(\d+)}
-        $1.to_i >= 425 and $3.to_i >= 28
+      def latest_version
+        if MacOS.version >= "10.9"
+          "500.2.79"
+        elsif MacOS.version == "10.8"
+          "500.2.78"
+        else
+          "425.0.28"
+        end
       end
 
       def outdated?
-        !latest_version?
+        version = `/usr/bin/clang --version`[%r{clang-(\d+\.\d+\.\d+)}, 1]
+        version < latest_version
       end
 
       # Version string (a pretty damn long one) of the CLT package.
