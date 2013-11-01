@@ -103,6 +103,7 @@ module Homebrew extend self
       desc = formula_home_res.body.match(pkg_mgr_desc_class).captures[2]
       if desc.kind_of? String
         convert_html_tags!(desc, f.homepage)
+        ohai "Description"
         print desc
       end
     end
