@@ -9,13 +9,6 @@ class Mahout < Formula
   depends_on 'maven' => :build
   depends_on 'hadoop'
 
-  def shim_script target
-    <<-EOS.undent
-    #!/bin/bash
-    exec #{libexec}/bin/#{target} $@
-    EOS
-  end
-
   def install
     if build.head?
       system 'chmod 755 ./bin'
@@ -33,12 +26,7 @@ class Mahout < Formula
       libexec.install Dir['*.jar']
     end
 
-    bin.mkpath
-
-    Dir["#{libexec}/bin/*"].each do |b|
-      n = Pathname.new(b).basename
-      (bin+n).write shim_script(n)
-    end
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
   def caveats; <<-EOS.undent
