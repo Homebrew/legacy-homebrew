@@ -2,8 +2,8 @@ require 'formula'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.7.tar.gz'
-  sha1 'abef63992fe12e4e68a7d9de01d8d8eaa8705c9a'
+  url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.8.tar.gz'
+  sha1 '59fa237e102c9760271df9433ee7357dd0ec831f'
 
   devel do
     url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.3.tar.gz'
