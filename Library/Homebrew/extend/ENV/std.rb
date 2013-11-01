@@ -41,7 +41,7 @@ module Stdenv
 
     unless HOMEBREW_PREFIX.to_s == '/usr/local'
       # /usr/local is already an -isystem and -L directory so we skip it
-      self['CPPFLAGS'] = "-isystem #{HOMEBREW_PREFIX}/include"
+      self['CPPFLAGS'] = "-isystem#{HOMEBREW_PREFIX}/include"
       self['LDFLAGS'] = "-L#{HOMEBREW_PREFIX}/lib"
       # CMake ignores the variables above
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
