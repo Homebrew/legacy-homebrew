@@ -9,6 +9,9 @@ class Fuse4x < Formula
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
 
+  keg_only 'Conflicts with osxfuse'
+
+
   depends_on 'gettext'
   depends_on 'fuse4x-kext'
 
