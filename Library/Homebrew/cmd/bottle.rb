@@ -200,15 +200,16 @@ module Homebrew extend self
         else
           formula_path = HOMEBREW_REPOSITORY+formula_relative_path
         end
+        has_bottle_block = f.class.send(:bottle).checksums.any?
         inreplace formula_path do |s|
-          if f.bottle
-            s.gsub!(/  bottle do.+?end\n/m, output)
+          if has_bottle_block
+            s.sub!(/  bottle do.+?end\n/m, output)
           else
-            s.gsub!(/(  (url|sha1|head|version) '\S*'\n+)+/m, '\0' + output + "\n")
+            s.sub!(/(  (url|sha1|head|version) '\S*'\n+)+/m, '\0' + output + "\n")
           end
         end
 
-        update_or_add = f.bottle.nil? ? 'add' : 'update'
+        update_or_add = has_bottle_block ? 'update' : 'add'
 
         safe_system 'git', 'commit', formula_path, '-m',
           "#{f.name}: #{update_or_add} bottle."
