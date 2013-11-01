@@ -4,6 +4,9 @@ require 'keg'
 require 'caveats'
 require 'blacklist'
 require 'utils/json'
+require 'utils/htmlconvert'
+require 'net/http'
+require 'uri'
 
 module Homebrew extend self
   def info
@@ -93,6 +96,20 @@ module Homebrew extend self
     puts "#{f.name}: #{specs*', '}#{' (pinned)' if f.pinned?}"
 
     puts f.homepage
+    
+    formula_home_res = Net::HTTP.get_response URI(f.homepage)
+    if formula_home_res.is_a? Net::HTTPSuccess
+      pkg_mgr_desc_class = /(<([[:alpha:]]+)[[[:alnum:]]="[[:blank:]]]* class="pkg_mgr_desc".*?>)(.*?)(<\/\2>)/m
+      desc = formula_home_res.body.match(pkg_mgr_desc_class)
+      if desc.kind_of? MatchData
+        desc = desc.captures[2]
+      end
+      if desc.kind_of? String
+        convert_html_tags!(desc, f.homepage)
+        ohai "Description"
+        print desc
+      end
+    end
 
     if f.keg_only?
       puts
