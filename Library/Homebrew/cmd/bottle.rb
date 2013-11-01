@@ -194,7 +194,12 @@ module Homebrew extend self
 
       if ARGV.include? '--write'
         f = Formula.factory formula_name
-        formula_path = HOMEBREW_REPOSITORY+"Library/Formula/#{f.name}.rb"
+        formula_relative_path = "Library/Formula/#{f.name}.rb"
+        if File.exists? formula_relative_path
+          formula_path = Pathname.new(formula_relative_path)
+        else
+          formula_path = HOMEBREW_REPOSITORY+formula_relative_path
+        end
         inreplace formula_path do |s|
           if f.bottle
             s.gsub!(/  bottle do.+?end\n/m, output)
