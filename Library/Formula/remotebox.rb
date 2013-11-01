@@ -5,12 +5,10 @@ class Remotebox < Formula
   url 'http://knobgoblin.org.uk/downloads/RemoteBox-1.6.tar.bz2'
   sha1 '3e73e722f1bfddae04b9465d28b1958d2caf0ee0'
 
+  depends_on 'SOAP::Lite' => :perl
+  depends_on 'Gtk2'	=> :perl
+  depends_on 'rdesktop' => :recommended
 
-  depends_on 'SOAP::Lite' 		=> :perl
-  depends_on 'Gtk2'				=> :perl
-  depends_on 'rdesktop'			=> :recommended
-
-<<<<<<< HEAD
   def patches
   	# Perl script uses $Bin which does not resolve to symlink. 
   	# Change to #RealBin - resolve symlink - and proper paths
@@ -19,7 +17,8 @@ class Remotebox < Formula
   
   def install
     bin.install Dir['remotebox']
-	prefix.install Dir['*']
+	libexec.install Dir['share/*']
+	doc.install Dir['docs']
   end
 end
 
@@ -38,14 +37,14 @@ __END__
  use MIME::Base64;
  # *** PACKAGERS MAY WISH TO PATCH THIS LOCATION ***
 -use lib "$Bin/share/remotebox";
-+use lib "$RealBin/../share/remotebox";
++use lib "$RealBin/../libexec/remotebox";
  # *************************************************
  use vboxService qw($endpoint $fault :all);
  
  # *** PACKAGERS MAY WISH TO PATCH THESE LOCATIONS ***
 -our $sharedir = "$Bin/share/remotebox";
 -our $docdir   = "$Bin/docs";
-+our $sharedir = "$RealBin/../share/remotebox";
++our $sharedir = "$RealBin/../libexec/remotebox";
 +our $docdir   = "$RealBin/../docs";
  # ***************************************************
  
@@ -57,4 +56,3 @@ __END__
 	prefix.install Dir['*']
   end
 end
->>>>>>> 6b1b4e5ece6dafbb2ef7101fa690608a81b662e7
