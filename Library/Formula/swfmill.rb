@@ -2,8 +2,8 @@ require 'formula'
 
 class Swfmill < Formula
   homepage 'http://swfmill.org'
-  url 'http://swfmill.org/releases/swfmill-0.3.2.tar.gz'
-  sha1 'e7ac1f267e4cbb8166acf6af78ddae914feed207'
+  url 'http://swfmill.org/releases/swfmill-0.3.3.tar.gz'
+  sha1 '7aa2c674e20f5649985b6dde3838393c5efefb6e'
 
   depends_on 'pkg-config' => :build
   depends_on :freetype
