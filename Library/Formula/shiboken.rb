@@ -2,9 +2,9 @@ require 'formula'
 
 class Shiboken < Formula
   homepage 'http://www.pyside.org/docs/shiboken'
-  url 'https://download.qt-project.org/official_releases/pyside/shiboken-1.2.0.tar.bz2'
-  mirror 'https://distfiles.macports.org/py-shiboken/shiboken-1.2.0.tar.bz2'
-  sha1 '03866dbdfa34078b2d9d35f4b6d83aa65e292e3f'
+  url 'http://download.qt-project.org/official_releases/pyside/shiboken-1.2.1.tar.bz2'
+  mirror 'https://distfiles.macports.org/py-shiboken/shiboken-1.2.1.tar.bz2'
+  sha1 'f310ac163f3407109051ccebfd192bc9620e9124'
 
   head 'git://gitorious.org/pyside/shiboken.git'
 
@@ -48,9 +48,38 @@ class Shiboken < Formula
     end
   end
 
+  def patches
+    # This fixes issues with libc++ and its lack of the tr1 namespace.
+    # Upstream ticket: https://bugreports.qt-project.org/browse/PYSIDE-200
+    # Patch is currently under code review at: https://codereview.qt-project.org/#change,69324
+    DATA
+  end
+
   test do
     python do
       system python, "-c", "import shiboken"
     end
   end
 end
+
+__END__
+diff --git a/ext/sparsehash/google/sparsehash/sparseconfig.h b/ext/sparsehash/google/sparsehash/sparseconfig.h
+index 44a4dda..8cf2f1c 100644
+--- a/ext/sparsehash/google/sparsehash/sparseconfig.h
++++ b/ext/sparsehash/google/sparsehash/sparseconfig.h
+@@ -13,6 +13,15 @@
+     #define HASH_NAMESPACE stdext
+     /* The system-provided hash function including the namespace. */
+     #define SPARSEHASH_HASH  HASH_NAMESPACE::hash_compare
++/* libc++ does not implement the tr1 namespce so use the c++11
++ *  definitions for systems that use it (OS X 10.9) */
++#elif __clang__ &&  __has_include(<functional>)
++    /* the location of the header defining hash functions */
++    #define HASH_FUN_H <functional>
++    /* the namespace of the hash<> function */
++    #define HASH_NAMESPACE std
++    /* The system-provided hash function including the namespace. */
++    #define SPARSEHASH_HASH HASH_NAMESPACE::hash
+ #else
+     /* the location of the header defining hash functions */
+     #define HASH_FUN_H <tr1/functional>
