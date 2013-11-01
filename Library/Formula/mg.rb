@@ -2,14 +2,19 @@ require 'formula'
 
 class Mg < Formula
   homepage 'http://homepage.boetes.org/software/mg/'
-  url 'http://homepage.boetes.org/software/mg/mg-20110905.tar.gz'
-  sha1 '51d2bac801cab33c9b552c36db5f8637fbbe9363'
+  url 'http://homepage.boetes.org/software/mg/mg-20130922.tar.gz'
+  sha1 'ddd461ebae8df3c016359956348329fd04906195'
+  depends_on 'bsdmake' => :build
+  depends_on 'clens'
+
+  def patches
+    { :p0 => 'https://gist.github.com/jasperla/7264123/raw'}
+  end
 
   def install
-    # -Wno-error=unused-but-set-variable requires GCC 4.6+
-    inreplace 'Makefile.in', '-Wno-error=unused-but-set-variable', ''
-    system "./configure"
-    system "make", "install", "prefix=#{prefix}", "mandir=#{man}"
+    ENV.j1
+    system "bsdmake"
+    bin.install "mg"
     doc.install "tutorial"
   end
 end
