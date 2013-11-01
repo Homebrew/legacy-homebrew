@@ -17,7 +17,7 @@ class Remotebox < Formula
   
   def install
     bin.install Dir['remotebox']
-	libexec.install Dir['share/*']
+    libexec.install Dir['share/*']
 	doc.install Dir['docs']
   end
 end
