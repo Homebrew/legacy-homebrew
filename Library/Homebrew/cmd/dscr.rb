@@ -6,15 +6,10 @@ require 'uri'
 
 module Homebrew extend self
   def dscr
-    print_dscr
-  end
-
-  def print_dscr
     if ARGV.named.empty?
       if ARGV.include? "--all"
         Formula.each do |f|
           dscr_formula f
-          puts '---'
         end
       elsif HOMEBREW_CELLAR.exist?
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
@@ -45,10 +40,12 @@ module Homebrew extend self
       end
       if desc.kind_of? String
         convert_html_tags!(desc, f.homepage)
-        ohai "Description", desc
+        ohai "Description: #{f.name}", desc
       else
         onoe "No description for #{f.name}"
       end
+    else
+      onoe "Could not connect to #{f.homepage}"
     end
   end
 end
