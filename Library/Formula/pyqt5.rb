@@ -37,8 +37,8 @@ class Pyqt5 < Formula
       system "make", "clean"  # because this python block may be run twice
 
       # For PyQt5 we default to put 3.x bindings in bin, unless --without-python3
-      if build.with? 'python3' and build.with? 'python'
-        ['pyuic5', 'pyrcc5', 'pylupdate5'].each { |f| mv(bin/f, bin/"#{f}-py2")}
+      if python.version.major == 2 and build.with? 'python3'
+        ['pyuic5', 'pyrcc5', 'pylupdate5'].each { |f| mv bin/f, bin/"#{f}-py2" }
       end
     end
   end
