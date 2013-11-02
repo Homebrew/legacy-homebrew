@@ -40,7 +40,7 @@ class Macvim < Formula
     ENV.clang if MacOS.version >= :lion
 
     # macvim HEAD only works with the current Ruby.framework because it builds with -framework Ruby
-    system_ruby = build.head? ? "/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby" : RUBY_PATH
+    system_ruby = MacOS.version >= :mavericks ? "/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby" : RUBY_PATH
 
     args = %W[
       --with-features=huge
