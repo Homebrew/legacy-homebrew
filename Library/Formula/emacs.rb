@@ -34,6 +34,12 @@ class Emacs < Formula
     cause "Duplicate symbol errors while linking."
   end
 
+  def patches
+    {
+      :p0 => 'https://gist.github.com/znz/7279123/raw/edef39d879fe453fab43b76add0a1ca6ad355eb3/emacs.c.diff',
+    }
+  end
+
   # Follow MacPorts and don't install ctags from Emacs. This allows Vim
   # and Emacs and ctags to play together without violence.
   def do_not_install_ctags
