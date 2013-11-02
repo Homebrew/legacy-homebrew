@@ -23,6 +23,7 @@ class Sip < Formula
       # Note the binary `sip` is the same for python 2.x and 3.x
       # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
       system python, "configure.py",
+                              "--deployment-target=#{MacOS.version}",
                               "--destdir=#{lib}/#{python.xy}/site-packages",
                               "--bindir=#{bin}",
                               "--incdir=#{include}",
