@@ -19,6 +19,12 @@ class Dart < Formula
     bin.write_exec_script Dir["#{libexec}/bin/{pub,dart?*}"]
   end
 
+  def caveats; <<-EOS.undent
+    To use with IntelliJ, set the Dart home to:
+      #{opt_prefix}/libexec
+    EOS
+  end
+
   test do
     (testpath/'sample.dart').write <<-EOS.undent
       import 'dart:io';
