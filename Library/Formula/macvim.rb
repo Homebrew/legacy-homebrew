@@ -24,7 +24,7 @@ class Macvim < Formula
 
   # Mavericks Patches:
   # * Fix Ruby.framework detection on OS X 10.9
-  # * Allow building against specific Ruby.framework version matcing ruby-command
+  # * Allow building against specific Ruby.framework version matching ruby-command
   # * Add missing version macros include for 10.9
   def patches
     DATA unless build.head?
