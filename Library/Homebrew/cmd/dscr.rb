@@ -11,6 +11,7 @@ module Homebrew extend self
         Formula.each do |f|
           dscr_formula f
         end
+      end
     else
       ARGV.named.each do |f|
         begin
