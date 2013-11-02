@@ -102,7 +102,7 @@ class Cmd
     when :ld
       ldflags + args
     end.compact
-    make_fuss(allflags) if verbose?
+    make_fuss(allflags) if verbose? and cccfg? 'O'
     allflags
   end
   def refurbished_args
