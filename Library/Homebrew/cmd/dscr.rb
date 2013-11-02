@@ -11,9 +11,6 @@ module Homebrew extend self
         Formula.each do |f|
           dscr_formula f
         end
-      elsif HOMEBREW_CELLAR.exist?
-        puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
-      end
     else
       ARGV.named.each do |f|
         begin
