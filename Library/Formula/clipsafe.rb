@@ -4,7 +4,6 @@ class Clipsafe < Formula
   homepage 'http://waxandwane.org/clipsafe.html'
   url 'http://waxandwane.org/download/clipsafe-1.1.tar.gz'
   sha1 '5e940a3f89821bfb3315ff9b1be4256db27e5f6a'
-  version '1.1'
 
   resource "Crypt::Twofish" do
     url "http://search.cpan.org/CPAN/authors/id/A/AM/AMS/Crypt-Twofish-2.17.tar.gz"
@@ -23,24 +22,24 @@ class Clipsafe < Formula
 
   def install
     resource("Crypt::Twofish").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{prefix}"
+      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
       system "make"
       system "make", "install"
     end
     resource("Digest::SHA").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{prefix}"
+      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
       system "make"
       system "make", "install"
     end
     resource("DateTime").stage do
-      system "perl", "Build.PL", "--install_base=#{prefix}"
+      system "perl", "Build.PL", "--install_base=#{libexec}"
       system "./Build"
       system "./Build", "install"
     end
 
     # patch since we need to add the the ressources to perls load_path
     first_doc_string = "# cliPSafe is a command line interface to Password Safe databases."
-    inreplace "clipsafe", /#{first_doc_string}/, "use lib '#{prefix}/lib/perl5';\n#{first_doc_string}"
+    inreplace "clipsafe", /#{first_doc_string}/, "use lib '#{libexec}/lib/perl5';\n#{first_doc_string}"
 
     bin.install "clipsafe"
   end
