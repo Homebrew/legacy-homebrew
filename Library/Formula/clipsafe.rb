@@ -5,14 +5,11 @@ class Clipsafe < Formula
   url 'http://waxandwane.org/download/clipsafe-1.1.tar.gz'
   sha1 '5e940a3f89821bfb3315ff9b1be4256db27e5f6a'
 
+  depends_on :macos => :mountain_lion
+
   resource "Crypt::Twofish" do
     url "http://search.cpan.org/CPAN/authors/id/A/AM/AMS/Crypt-Twofish-2.17.tar.gz"
     sha1 "f2659d7b9e7d7daadb3b2414174bd6ec8ac68eda"
-  end
-
-  resource "Params::Validate" do
-    url "http://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/Params-Validate-1.08.tar.gz"
-    sha1 "0ec98748b756cb5f6e34a6db6eaa13b5e4105cb1"
   end
 
   resource "Digest::SHA" do
@@ -42,14 +39,6 @@ class Clipsafe < Formula
       system "perl", "Build.PL", "--install_base=#{libexec}"
       system "./Build"
       system "./Build", "install"
-    end
-
-    unless MacOS.version >= :mountain_lion
-      resource("Params::Validate").stage do
-        system "perl", "Build.PL", "--install_base=#{libexec}"
-        system "./Build"
-        system "./Build", "install"
-      end
     end
 
     # patch since we need to add the the ressources to perls load_path
