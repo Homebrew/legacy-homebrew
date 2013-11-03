@@ -22,7 +22,7 @@ class Sdcc < Formula
 
     # The issue the patch below fixes is already fixed on HEAD, so
     # we only want to apply it if we aren't building for HEAD.
-    p << DATA if !build.head?
+    #p << DATA if !build.head?
     p
   end
 
