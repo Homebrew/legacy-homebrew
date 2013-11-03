@@ -45,6 +45,6 @@ class Clipsafe < Formula
   end
 
   test do
-    system "#{bin}/clipsafe", "--help"
+    system "env", "TERM=#{ENV['TERM']}", "#{bin}/clipsafe", "--help"
   end
 end
