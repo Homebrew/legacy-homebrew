@@ -31,7 +31,7 @@ class Timidity < Formula
     formats << 'vorbis' if build.with? 'libogg' and build.with? 'libvorbis'
     formats << 'flac' if build.with? 'flac'
     formats << 'speex' if build.with? 'speex'
-    
+
     if formats.any?
       args << "--enable-audio=" + formats.join(",")
     end
@@ -41,9 +41,9 @@ class Timidity < Formula
 
     if build.with? 'freepats'
       Freepats.new.brew do
-         (share/'freepats').install Dir['*']
-         (share/'timidity/').install_symlink share/'freepats/Tone_000', share/'freepats/Drum_000'
-         File.symlink share/'freepats/freepats.cfg', share/'timidity/timidity.cfg'
+        (share/'freepats').install Dir['*']
+        (share/'timidity/').install_symlink share/'freepats/Tone_000', share/'freepats/Drum_000'
+        File.symlink share/'freepats/freepats.cfg', share/'timidity/timidity.cfg'
       end
     end
   end
