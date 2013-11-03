@@ -10,11 +10,21 @@ class Vte < Formula
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'gtk+'
+  depends_on 'pygtk'
 
   def install
+    # Detecting pygtk-2.0 fails without the PKG_CONFIG_PATH being set to
+    # include some additional pkgconfig paths.
+    ENV["PKG_CONFIG_PATH"] = "#{ENV["PKG_CONFIG_PATH"]}:/usr/local/lib/pkgconfig/:"
+                             "/usr/lib/pkgconfig/:/usr/X11/lib/pkgconfig/"
+
+    # pygtk-codegen-2.0 has been deprecated and replaced by
+    # pygobject-codegen-2.0, but the vte Makefile fails to detect this.
+    ENV["PYGTK_CODEGEN"] = "/usr/local/bin/pygobject-codegen-2.0"
+    
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-python",
+                          "--enable-python",
                           "--disable-Bsymbolic"
     system "make install"
   end
