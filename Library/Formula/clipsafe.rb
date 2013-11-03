@@ -10,6 +10,11 @@ class Clipsafe < Formula
     sha1 "f2659d7b9e7d7daadb3b2414174bd6ec8ac68eda"
   end
 
+  resource "Params::Validate" do
+    url "http://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/Params-Validate-1.08.tar.gz"
+    sha1 "0ec98748b756cb5f6e34a6db6eaa13b5e4105cb1"
+  end
+
   resource "Digest::SHA" do
     url "http://search.cpan.org/CPAN/authors/id/M/MS/MSHELOR/Digest-SHA-5.85.tar.gz"
     sha1 "a603cfba95afcd0266c9482c0c93e84241fe0ce0"
@@ -26,15 +31,25 @@ class Clipsafe < Formula
       system "make"
       system "make", "install"
     end
+
     resource("Digest::SHA").stage do
       system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
       system "make"
       system "make", "install"
     end
+
     resource("DateTime").stage do
       system "perl", "Build.PL", "--install_base=#{libexec}"
       system "./Build"
       system "./Build", "install"
+    end
+
+    unless MacOS.version >= :mountain_lion
+      resource("Params::Validate").stage do
+        system "perl", "Build.PL", "--install_base=#{libexec}"
+        system "./Build"
+        system "./Build", "install"
+      end
     end
 
     # patch since we need to add the the ressources to perls load_path
