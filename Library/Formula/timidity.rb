@@ -26,33 +26,24 @@ class Timidity < Formula
             "--mandir=#{man}"
            ]
 
-    formats = Array.new
-    if !build.include? 'without-darwin'
-      formats.push 'darwin'
-    end
-    if build.with? 'libogg' and build.with? 'libvorbis'
-      formats.push 'vorbis'
-    end
-    if build.with? 'flac'
-      formats.push 'flac'
-    end
-    if build.with? 'speex'
-      formats.push 'speex'
-    end
+    formats = []
+    formats << 'darwin' if build.with? 'darwin'
+    formats << 'vorbis' if build.with? 'libogg' and build.with? 'libvorbis'
+    formats << 'flac' if build.with? 'flac'
+    formats << 'speex' if build.with? 'speex'
+    
     if formats.any?
-      args.push "--enable-audio=" + formats.join(",")
+      args << "--enable-audio=" + formats.join(",")
     end
 
     system "./configure", *args
     system "make install"
 
-    if !build.include? 'without-freepats'
-      Dir.mkdir share/'timidity'
+    if build.with? 'freepats'
       Freepats.new.brew do
          (share/'freepats').install Dir['*']
+         (share/'timidity/').install_symlink share/'freepats/Tone_000', share/'freepats/Drum_000'
          File.symlink share/'freepats/freepats.cfg', share/'timidity/timidity.cfg'
-         File.symlink share/'freepats/Tone_000', share/'timidity/Tone_000'
-         File.symlink share/'freepats/Drum_000', share/'timidity/Drum_000'
       end
     end
   end
