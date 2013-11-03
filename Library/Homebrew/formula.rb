@@ -609,11 +609,9 @@ class Formula
         f.puts
         require 'cmd/--config'
         Homebrew.write_build_config(f)
-        raise ErrorDuringExecution
+        raise BuildError.new(self, cmd, args, $?)
       end
     end
-  rescue ErrorDuringExecution
-    raise BuildError.new(self, cmd, args, $?)
   ensure
     rd.close if rd and not rd.closed?
     ENV.update(removed_ENV_variables) if removed_ENV_variables
