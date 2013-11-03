@@ -98,11 +98,11 @@ class Wine < Formula
     ENV.append "LDFLAGS", build32
 
     # The clang that comes with Xcode 5 no longer miscompiles wine. Tested with 1.7.3.
-    if ENV.compiler == :clang and Compiler.new(:clang).build < 500
+    if ENV.compiler == :clang and MacOS.clang_build_version < 500
       opoo <<-EOS.undent
-        Clang currently miscompiles some parts of Wine. If you have gcc, you
-        can get a more stable build with:
-          brew install wine --use-gcc
+        Clang currently miscompiles some parts of Wine.
+        If you have GCC, you can get a more stable build with:
+          brew install wine --cc=gcc-4.2 # or 4.7, 4.8, etc.
       EOS
     end
 
