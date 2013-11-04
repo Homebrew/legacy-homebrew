@@ -7,9 +7,10 @@ class PkgConfig < Formula
   sha256 '6b6eb31c6ec4421174578652c7e141fdaae2dabad1021f420d8713206ac1f845'
 
   bottle do
-    sha1 'fe503c105b952d04863931da96f03b0339d7fbb0' => :mountain_lion
-    sha1 'd483a4ed0eca160fb5c69d3a0a4011c3393ee2a3' => :lion
-    sha1 'e5859bdb284d4810057fd8cace202c60af40885f' => :snow_leopard
+    revision 1
+    sha1 '7e7fd6ed2cb6047254a8f39ae3a6e35e7a74e12b' => :mavericks
+    sha1 'ae227f7888d7d268f1742526cf1959b3260b22b6' => :mountain_lion
+    sha1 '69e86c0e2424a921176b9da66b54be01d80bf624' => :lion
   end
 
   def install

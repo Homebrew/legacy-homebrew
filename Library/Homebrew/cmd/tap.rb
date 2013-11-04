@@ -23,7 +23,7 @@ module Homebrew extend self
 
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
-    raise "Already tapped!" if tapd.directory?
+    raise AlreadyTappedError if tapd.directory?
     abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
 
     files = []
@@ -83,7 +83,7 @@ module Homebrew extend self
   def repair_taps
     count = 0
     # prune dead symlinks in Formula
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].each do |fn|
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].each do |fn|
       if not File.exist? fn
         File.delete fn
         count += 1

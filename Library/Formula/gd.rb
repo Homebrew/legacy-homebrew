@@ -12,6 +12,8 @@ class Gd < Formula
   depends_on :libpng => :recommended
   depends_on 'jpeg' => :recommended
   depends_on :freetype => :optional
+  depends_on 'libtiff' => :optional
+  depends_on 'libvpx' => :optional
 
   fails_with :llvm do
     build 2326
@@ -46,6 +48,18 @@ class Gd < Formula
       args << "--with-jpeg=#{Formula.factory("jpeg").opt_prefix}"
     else
       args << "--without-jpeg"
+    end
+
+    if build.with? "libtiff"
+      args << "--with-tiff=#{Formula.factory("libtiff").opt_prefix}"
+    else
+      args << "--without-tiff"
+    end
+
+    if build.with? "libvpx"
+      args << "--with-vpx=#{Formula.factory("libvpx").opt_prefix}"
+    else
+      args << "--without-vpx"
     end
 
     system "./configure", *args

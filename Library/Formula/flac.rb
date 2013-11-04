@@ -11,13 +11,30 @@ class Flac < Formula
   depends_on 'lame'
   depends_on 'libogg' => :optional
 
+  # Mavericks fix needs autoreconf. Drop these after upstream has
+  # incorporated the patch.
+  depends_on :autoconf => :build
+  depends_on :automake => :build
+  depends_on :libtool => :build
+  depends_on 'pkg-config' => :build
+
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
   end
 
+  def patches
+    # Fixes compilation on mac os 10.9 maverick.
+    # https://sourceforge.net/p/flac/bugs/405/
+    { :p0 => "https://sourceforge.net/p/flac/bugs/_discuss/thread/17c68b42/fc53/attachment/autoconf-not-gnu89-131010.patch" }
+  end
+
   def install
     ENV.universal_binary if build.universal?
+
+    # Mavericks fix needs autoreconf. Drop this line after upstream has
+    # incorporated the patch.
+    system "./autogen.sh"
 
     # sadly the asm optimisations won't compile since Leopard
     system "./configure", "--disable-dependency-tracking",

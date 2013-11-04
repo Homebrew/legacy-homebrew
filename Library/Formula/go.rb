@@ -18,9 +18,9 @@ class Go < Formula
   option 'without-cgo', "Build without cgo"
 
   devel do
-    url 'https://go.googlecode.com/files/go1.2rc2.src.tar.gz'
-    version '1.2rc2'
-    sha1 '1fc3b39431551ffa69035ccffea18f4328dc2e8c'
+    url 'https://go.googlecode.com/files/go1.2rc3.src.tar.gz'
+    version '1.2rc3'
+    sha1 '1bfcb525b28c2fe65d0b7d6dbd4418ce2027e2eb'
   end
 
   if build.with? 'cgo' and not build.devel?
@@ -34,7 +34,7 @@ class Go < Formula
   # Upstream patch for a switch statement that causes a clang error
   # Should be in the next release.
   # http://code.google.com/p/go/source/detail?r=000ecca1178d67c9b482d3fb0b6a1bc4aeef2472&path=/src/cmd/ld/lib.c
-  def patches; DATA; end unless build.devel?
+  def patches; DATA; end if build.stable?
 
   def install
     # For Clang cgo support Go needs to be able to tell through CC.
@@ -157,5 +157,5 @@ diff -r 02b673333fab -r 000ecca1178d src/cmd/ld/lib.c
 +		break;
  	}
  	if(!debug['s'] && !debug_s) {
- 		argv[argc++] = "-gdwarf-2"; 
+ 		argv[argc++] = "-gdwarf-2";
 

@@ -109,6 +109,7 @@ class DependencyCollector
     when :python3    then PythonDependency.new("3", tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
+    when :ant        then ant_dep(spec, tags)
     else
       raise "Unsupported special dependency #{spec.inspect}"
     end
@@ -131,12 +132,20 @@ class DependencyCollector
   end
 
   def autotools_dep(spec, tags)
-    unless MacOS::Xcode.provides_autotools?
-      case spec
-      when :libltdl then spec = :libtool
-      else tags << :build
-      end
+    return if MacOS::Xcode.provides_autotools?
 
+    if spec == :libltdl
+      spec = :libtool
+      tags << :run
+    end
+
+    tags << :build unless tags.include? :run
+    Dependency.new(spec.to_s, tags)
+  end
+
+  def ant_dep(spec, tags)
+    if MacOS.version >= :mavericks
+      tags << :build
       Dependency.new(spec.to_s, tags)
     end
   end

@@ -92,8 +92,9 @@ class Gfortran < Formula
     end
 
     # This package installs a whole GCC suite. Removing non-fortran components:
-    bin.children.reject{ |p| p.basename.to_s.match(/gfortran/) }.each{ |p| rm p }
-    man1.children.reject{ |p| p.basename.to_s.match(/gfortran/) }.each{ |p| rm p }
+    bin.children.reject{ |p| p.basename.to_s.match(/gfortran/) }.each(&:unlink)
+    info.children.reject{ |p| p.basename.to_s.match(/gfortran/) }.each(&:unlink)
+    man1.children.reject{ |p| p.basename.to_s.match(/gfortran/) }.each(&:unlink)
     man7.rmtree  # dupes: fsf fundraising and gpl
     # (share/'locale').rmtree
     (share/"gcc-#{version}").rmtree # dupes: libstdc++ pretty printer, will be added by gcc* formula

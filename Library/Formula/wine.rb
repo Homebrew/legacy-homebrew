@@ -13,8 +13,8 @@ class Wine < Formula
   end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.4.tar.bz2'
-    sha256 '517b3465dbf5b516d3fe886c0f9d4f310dc1d4a38ca4e5580c5d66bab3fb6969'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.5.tar.bz2'
+    sha256 '355c2980c457f7d714132fcf7008fcb9ad185295bdd9f0681e9123d839952823'
     depends_on 'little-cms2'
   end
 
@@ -62,14 +62,18 @@ class Wine < Formula
   end
 
   def patches
+    p = []
     if build.stable?
-      p = []
       # http://bugs.winehq.org/show_bug.cgi?id=34188
       p << 'http://bugs.winehq.org/attachment.cgi?id=45507'
       # http://bugs.winehq.org/show_bug.cgi?id=34162
       p << 'http://bugs.winehq.org/attachment.cgi?id=45562' if MacOS.version >= :mavericks
-      p
     end
+    if build.devel?
+      # http://bugs.winehq.org/show_bug.cgi?id=34166
+      p << 'http://bugs.winehq.org/attachment.cgi?id=46394'
+    end
+    p
   end
 
   # the following libraries are currently not specified as dependencies, or not built as 32-bit:
@@ -82,7 +86,7 @@ class Wine < Formula
 
   def wine_wrapper; <<-EOS.undent
     #!/bin/sh
-    DYLD_FALLBACK_LIBRARY_PATH="#{MacOS::X11.lib}:#{HOMEBREW_PREFIX}/lib:/usr/lib" "#{bin}/wine.bin" "$@"
+    DYLD_FALLBACK_LIBRARY_PATH="#{library_path}" "#{bin}/wine.bin" "$@"
     EOS
   end
 
@@ -94,11 +98,11 @@ class Wine < Formula
     ENV.append "LDFLAGS", build32
 
     # The clang that comes with Xcode 5 no longer miscompiles wine. Tested with 1.7.3.
-    if ENV.compiler == :clang and Compiler.new(:clang).build < 500
+    if ENV.compiler == :clang and MacOS.clang_build_version < 500
       opoo <<-EOS.undent
-        Clang currently miscompiles some parts of Wine. If you have gcc, you
-        can get a more stable build with:
-          brew install wine --use-gcc
+        Clang currently miscompiles some parts of Wine.
+        If you have GCC, you can get a more stable build with:
+          brew install wine --cc=gcc-4.2 # or 4.7, 4.8, etc.
       EOS
     end
 
@@ -166,5 +170,14 @@ class Wine < Formula
       EOS
     end
     return s
+  end
+
+  private
+
+  def library_path
+    paths = ["#{HOMEBREW_PREFIX}/lib", '/usr/lib']
+    paths.unshift(MacOS::X11.lib) unless build.without? 'x11'
+
+    paths.join(':')
   end
 end

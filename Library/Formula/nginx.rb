@@ -125,7 +125,7 @@ class Nginx < Formula
   def passenger_caveats; <<-EOS.undent
 
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf:
-      passenger_root #{HOMEBREW_PREFIX}/opt/passenger
+      passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec
       passenger_ruby /usr/bin/ruby
     EOS
   end

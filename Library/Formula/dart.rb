@@ -4,19 +4,25 @@ class Dart < Formula
   homepage 'http://www.dartlang.org/'
 
   if MacOS.prefer_64_bit?
-    url 'https://gsdview.appspot.com/dart-editor-archive-integration/28355/dartsdk-macos-64.zip'
-    sha1 '577d4bab25dc7fd98318e42c75c6a15b5306aa47'
+    url 'https://gsdview.appspot.com/dart-editor-archive-integration/29341/dartsdk-macos-64.zip'
+    sha1 '4deec77f9b6a3cd495115384d2e5806baaca0516'
   else
-    url 'https://gsdview.appspot.com/dart-editor-archive-integration/28355/dartsdk-macos-32.zip'
-    sha1 '10e5abc3b538c94ff145e7cd7d7de3689a7ba4d3'
+    url 'https://gsdview.appspot.com/dart-editor-archive-integration/29341/dartsdk-macos-32.zip'
+    sha1 'fe0fa1e27ecff186a2a8616f6eecbf10649776b7'
   end
 
-  version '28355'
+  version '29341'
 
   def install
     libexec.install Dir['*']
     bin.install_symlink "#{libexec}/bin/dart"
     bin.write_exec_script Dir["#{libexec}/bin/{pub,dart?*}"]
+  end
+
+  def caveats; <<-EOS.undent
+    To use with IntelliJ, set the Dart home to:
+      #{opt_prefix}/libexec
+    EOS
   end
 
   test do

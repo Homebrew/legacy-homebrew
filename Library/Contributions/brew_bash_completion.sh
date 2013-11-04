@@ -207,9 +207,6 @@ _brew_install ()
                 --force
                 --git
                 --HEAD
-                --use-clang
-                --use-gcc
-                --use-llvm
                 "
         else
             __brewcomp "
@@ -221,9 +218,6 @@ _brew_install ()
                 --HEAD
                 --ignore-dependencies
                 --interactive
-                --use-clang
-                --use-gcc
-                --use-llvm
                 --verbose
                 $(brew options --compact "$prv" 2>/dev/null)
                 "
@@ -414,6 +408,7 @@ _brew ()
             home
             info abv
             install
+            linkapps
             link ln
             list ls
             log
@@ -428,6 +423,7 @@ _brew ()
             test
             uninstall remove rm
             unlink
+            unlinkapps
             unpin
             untap
             update

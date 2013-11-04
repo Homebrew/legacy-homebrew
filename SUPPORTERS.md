@@ -435,7 +435,7 @@ These wonderful people supported our Kickstarter by giving us £10 or more:
 * [Dimitar Dimitrov](http://ddimitrov.name/)
 * [Hacker School](https://www.hackerschool.com/)
 * [Franklin](http://frankl.in)
-* Wes Garrison
+* [Wes Garrison](http://databasically.com)
 * [Braulio Carreno](http://carreno.me)
 * [Derek Croft](http://www.kiindly.com)
 * [Doc Ritezel](http://ritezel.com)

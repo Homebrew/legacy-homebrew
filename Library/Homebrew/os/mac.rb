@@ -51,9 +51,8 @@ module OS
     end
 
     def dev_tools_path
-      @dev_tools_path ||= if tools_in_prefix? CLT::STANDALONE_PKG_PATH
-        # In 10.9 the CLT moved from /usr into /Library/Developer/CommandLineTools.
-        Pathname.new "#{CLT::STANDALONE_PKG_PATH}/usr/bin"
+      @dev_tools_path ||= if tools_in_prefix? CLT::MAVERICKS_PKG_PATH
+        Pathname.new "#{CLT::MAVERICKS_PKG_PATH}/usr/bin"
       elsif tools_in_prefix? "/"
         # probably a safe enough assumption (the unix way)
         Pathname.new "/usr/bin"
@@ -130,8 +129,15 @@ module OS
 
     def gcc_42_build_version
       @gcc_42_build_version ||=
-        if (path = locate("gcc-4.2")) && path.realpath.basename.to_s !~ /^llvm/
-          %x{#{path} --version}[/build (\d{4,})/, 1].to_i
+        begin
+          gcc = MacOS.locate('gcc-4.2') || Formula.factory('apple-gcc42').opt_prefix/'bin/gcc-4.2'
+          raise unless gcc.exist?
+        rescue
+          gcc = nil
+        end
+
+        if gcc && gcc.realpath.basename.to_s !~ /^llvm/
+          %x{#{gcc} --version}[/build (\d{4,})/, 1].to_i
         end
     end
     alias_method :gcc_build_version, :gcc_42_build_version
@@ -203,7 +209,7 @@ module OS
     end
 
     def prefer_64_bit?
-      Hardware::CPU.is_64_bit? and version != :leopard
+      Hardware::CPU.is_64_bit? and version > :leopard
     end
 
     def preferred_arch
@@ -215,6 +221,7 @@ module OS
     end
 
     STANDARD_COMPILERS = {
+      "2.5"   => { :gcc_40_build => 5370 },
       "3.1.4" => { :gcc_40_build => 5493, :gcc_42_build => 5577 },
       "3.2.6" => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "1.7", :clang_build => 77 },
       "4.0"   => { :gcc_40_build => 5494, :gcc_42_build => 5666, :llvm_build => 2335, :clang => "2.0", :clang_build => 137 },
