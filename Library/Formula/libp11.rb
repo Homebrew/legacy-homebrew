@@ -11,7 +11,7 @@ class Libp11 < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on :libltdl
+  depends_on :libtool => :run
 
   def install
     system "./bootstrap" if build.head?
