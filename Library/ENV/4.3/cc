@@ -102,7 +102,7 @@ class Cmd
     when :ld
       ldflags + args
     end.compact
-    make_fuss(allflags) if verbose? and cccfg? 'O'
+    make_fuss(allflags)
     allflags
   end
   def refurbished_args
@@ -228,6 +228,8 @@ class Cmd
     sys.to_flags('-isystem') + opt.to_flags('-I')
   end
   def make_fuss args
+    return unless make_fuss?
+
     dels = @args - args
     adds = args - @args
     dups = dels & args
@@ -236,8 +238,15 @@ class Cmd
     STDERR.puts "brew: superenv deduped: #{dups}" unless dups.empty?
     STDERR.puts "brew: superenv added: #{adds*' '}" unless adds.empty?
   end
+  def make_fuss?
+    verbose? and cccfg? 'O' and not configure?
+  end
   def verbose?
     !ENV['VERBOSE'].nil? || !ENV['HOMEBREW_VERBOSE'].nil?
+  end
+  def configure?
+    # configure scripts generated with autoconf 2.56 or later export DUALCASE
+    ENV.key? 'DUALCASE'
   end
 end
 
