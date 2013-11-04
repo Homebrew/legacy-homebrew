@@ -5,7 +5,7 @@ class Vnstat < Formula
   url 'http://humdi.net/vnstat/vnstat-1.11.tar.gz'
   sha1 '92494f38a752dcf60053af2a6d8977737da7e616'
 
-  depends_on 'libgd'
+  depends_on 'gd'
 
   def install
     inreplace "src/cfg.c", '/etc/vnstat.conf', "#{etc}/vnstat.conf"
