@@ -15,7 +15,7 @@ class Emacs < Formula
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
 
   if build.include? "use-git-head"
-    head 'http://git.sv.gnu.org/r/emacs.git'
+    head 'git://git.sv.gnu.org/emacs.git'
   else
     head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
   end
