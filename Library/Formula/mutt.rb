@@ -6,7 +6,7 @@ class Mutt < Formula
   sha1 '728a114cb3a44df373dbf1292fc34dd8321057dc'
 
   head do
-    url 'http://dev.mutt.org/hg/mutt#HEAD', :using => :hg
+    url 'http://dev.mutt.org/hg/mutt#default', :using => :hg
 
     resource 'html' do
       url 'http://dev.mutt.org/doc/manual.html', :using => :nounzip

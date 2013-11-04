@@ -25,6 +25,10 @@ class Formula
 
   attr_accessor :local_bottle_path
 
+  # Flag for marking whether this formula needs C++ standard library
+  # compatibility check
+  attr_reader :cxxstdlib
+
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
     @name = name
@@ -52,6 +56,8 @@ class Formula
     @build = determine_build_options
 
     @pin = FormulaPin.new(self)
+
+    @cxxstdlib ||= Set.new
   end
 
   def set_spec(name)
@@ -169,10 +175,7 @@ class Formula
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
-  def bash_completion
-    etc = ENV['HOMEBREW_GIT_ETC'] ? self.etc : prefix+'etc'
-    etc+'bash_completion.d'
-  end
+  def bash_completion; prefix+'etc/bash_completion.d' end
   def zsh_completion;  share+'zsh/site-functions'     end
 
   # for storing etc, var files for later copying from bottles
@@ -193,6 +196,10 @@ class Formula
 
   def cached_download
     downloader.cached_location
+  end
+
+  def clear_cache
+    downloader.clear_cache
   end
 
   # Can be overridden to selectively disable bottles from formulae.
@@ -570,44 +577,41 @@ class Formula
       ENV.remove_cc_etc
     end
 
-    if ARGV.verbose?
-      safe_system cmd, *args
-    else
-      @exec_count ||= 0
-      @exec_count += 1
-      logd = HOMEBREW_LOGS/name
-      logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd.to_s).split(' ').first]
-      mkdir_p(logd)
+    @exec_count ||= 0
+    @exec_count += 1
+    logd = HOMEBREW_LOGS/name
+    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd.to_s).split(' ').first]
+    mkdir_p(logd)
 
-      rd, wr = IO.pipe
-      fork do
-        rd.close
-        $stdout.reopen wr
-        $stderr.reopen wr
-        args.collect!{|arg| arg.to_s}
-        exec(cmd.to_s, *args) rescue nil
-        puts "Failed to execute: #{cmd}"
-        exit! 1 # never gets here unless exec threw or failed
+    rd, wr = IO.pipe
+    fork do
+      rd.close
+      $stdout.reopen wr
+      $stderr.reopen wr
+      args.collect!{|arg| arg.to_s}
+      exec(cmd.to_s, *args) rescue nil
+      puts "Failed to execute: #{cmd}"
+      exit! 1 # never gets here unless exec threw or failed
+    end
+    wr.close
+
+    File.open(logfn, 'w') do |f|
+      while buf = rd.gets
+        f.puts buf
+        puts buf if ARGV.verbose?
       end
-      wr.close
 
-      File.open(logfn, 'w') do |f|
-        f.write(rd.read) until rd.eof?
+      Process.wait
 
-        Process.wait
-
-        unless $?.success?
-          f.flush
-          Kernel.system "/usr/bin/tail", "-n", "5", logfn
-          f.puts
-          require 'cmd/--config'
-          Homebrew.write_build_config(f)
-          raise ErrorDuringExecution
-        end
+      unless $?.success?
+        f.flush
+        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
+        f.puts
+        require 'cmd/--config'
+        Homebrew.write_build_config(f)
+        raise BuildError.new(self, cmd, args, $?)
       end
     end
-  rescue ErrorDuringExecution
-    raise BuildError.new(self, cmd, args, $?)
   ensure
     rd.close if rd and not rd.closed?
     ENV.update(removed_ENV_variables) if removed_ENV_variables
@@ -641,6 +645,12 @@ class Formula
       # -f means don't prompt the user if there are errors; just exit with non-zero status
       safe_system '/usr/bin/patch', '-f', *(p.patch_args)
     end
+  end
+
+  # Explicitly request changing C++ standard library compatibility check
+  # settings. Use with caution!
+  def cxxstdlib_check check_type
+    @cxxstdlib << check_type
   end
 
   def self.method_added method

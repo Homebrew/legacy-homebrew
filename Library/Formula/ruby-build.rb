@@ -7,8 +7,8 @@ class RubyBuild < Formula
 
   head 'https://github.com/sstephenson/ruby-build.git'
 
-  depends_on 'autoconf' => :recommended
-  depends_on 'pkg-config' => :recommended
+  depends_on 'autoconf' => [:recommended, :run]
+  depends_on 'pkg-config' => [:recommended, :run]
   depends_on 'libyaml' => :recommended
   depends_on 'openssl' => :optional
 

@@ -2,11 +2,7 @@ require 'hardware'
 
 module Homebrew extend self
   def __config
-    if ARGV.first == '-1'
-      dump_c1
-    else
-      dump_verbose_config
-    end
+    dump_verbose_config
   end
 
   def llvm
@@ -149,18 +145,5 @@ module Homebrew extend self
     puts "Perl: #{describe_perl}"
     puts "Python: #{describe_python}"
     puts "Ruby: #{describe_ruby}"
-  end
-
-  def dump_c1
-    print "#{HOMEBREW_PREFIX}-#{HOMEBREW_VERSION} "
-    print MACOS_FULL_VERSION
-    print "-#{kernel}" if MacOS.version < :lion
-    print ' '
-    print MacOS::Xcode.prefix unless MacOS::Xcode.default_prefix?
-    print "#{MacOS::Xcode.version}"
-    print "-noclt" unless MacOS::CLT.installed?
-    print " clang-#{clang_build} llvm-#{llvm} "
-    print "#{MacOS::XQuartz.prefix}-#{MacOS::XQuartz.version}" if MacOS::XQuartz.prefix
-    puts
   end
 end
