@@ -2,8 +2,8 @@ require 'formula'
 
 class Sdcc < Formula
   homepage 'http://sdcc.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/sdcc/sdcc/3.1.0/sdcc-src-3.1.0.tar.bz2'
-  sha1 '4806c79bd1572c3be8e8a9ee68f94c31d251d530'
+  url 'http://downloads.sourceforge.net/project/sdcc/sdcc/3.3.0/sdcc-src-3.3.0.tar.bz2'
+  sha1 'beed1b8c73f13344e018f48b1563ff2a948b70cf'
 
   head 'https://sdcc.svn.sourceforge.net/svnroot/sdcc/trunk/sdcc/'
 
@@ -22,7 +22,7 @@ class Sdcc < Formula
 
     # The issue the patch below fixes is already fixed on HEAD, so
     # we only want to apply it if we aren't building for HEAD.
-    p << DATA if !build.head?
+    #p << DATA if !build.head?
     p
   end
 
