@@ -18,6 +18,7 @@ class Mutt < Formula
 
   option "with-debug", "Build with debug option enabled"
   option "with-trash-patch", "Apply trash folder patch"
+  option "with-sidebar-patch", "Apply sidebar patch"
   option "with-slang", "Build against slang instead of ncurses"
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
@@ -29,6 +30,7 @@ class Mutt < Formula
   def patches
     urls = [
       ['with-trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.4/features/trash-folder'],
+      ['with-sidebar-patch', 'https://raw.github.com/nedos/mutt-sidebar-patch/master/mutt-sidebar.patch'],
       # original source for this went missing, patch sourced from Arch at
       # https://aur.archlinux.org/packages/mutt-ignore-thread/
       ['with-ignore-thread-patch', 'https://gist.github.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch'],
