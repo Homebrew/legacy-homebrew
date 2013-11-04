@@ -12,7 +12,7 @@ class Graphicsmagick < Formula
   option 'without-magick-plus-plus', 'disable build/install of Magick++'
   option 'without-svg', 'Compile without svg support'
 
-  depends_on :libltdl
+  depends_on :libtool => :run
 
   depends_on 'pkg-config' => :build
 
