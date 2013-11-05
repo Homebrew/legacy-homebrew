@@ -45,24 +45,26 @@ class Cmd
     if @arg0 == 'cpp' or @arg0 == 'ld'
       @arg0.to_sym
     elsif @args.include? '-c'
-      :cc
+      if @arg0 =~ /(?:c|g|clang)\+\+/
+        :cxx
+      else
+        :cc
+      end
     elsif @args.include? '-E'
       :ccE
     else
-      :ccld
+      if @arg0 =~ /(?:c|g|clang)\+\+/
+        :cxxld
+      else
+        :ccld
+      end
     end
   end
   def tool
     @tool ||= case @arg0
     when 'ld' then 'ld'
     when 'cpp' then 'cpp'
-    when 'cc', 'c99', 'c89'
-      # Ideally we would run `cx9`, however these tools are POSIX compliant
-      # and don't support many flags. We need -isystem for instance, but also
-      # reliability is generally much higher if we just get clang/gcc to do
-      # the work since Makefiles are dumb and include a lot of excess flags.
-      ENV['HOMEBREW_CC']
-    when 'c++'
+    when /\w\+\+$/
       case ENV['HOMEBREW_CC']
       when /clang/
         'clang++'
@@ -72,7 +74,9 @@ class Cmd
         'g++' + $1.to_s
       end
     else
-      @arg0
+      # Note that this is a universal fallback, so that we'll always invoke
+      # HOMEBREW_CC regardless of what name under which the tool was invoked.
+      ENV['HOMEBREW_CC']
     end
   end
   def args
@@ -86,10 +90,10 @@ class Cmd
     else
       args << "-syslibroot" << $sdkroot
     end if nclt?
-    case mode
-    when :ccld
+    allflags = case mode
+    when :ccld, :cxxld
       cflags + args + cppflags + ldflags
-    when :cc
+    when :cc, :cxx
       cflags + args + cppflags
     when :ccE
       args + cppflags
@@ -98,6 +102,8 @@ class Cmd
     when :ld
       ldflags + args
     end.compact
+    make_fuss(allflags)
+    allflags
   end
   def refurbished_args
     lset = Set.new(libpath + syslibpath)
@@ -148,13 +154,19 @@ class Cmd
         args << arg
       end
     end
-    make_fuss(args)
     args
   end
   def cflags
-    return [] unless cccfg? 'O'
+    args = []
+    if mode == :cxx
+      args << '-std=c++11' if cccfg? 'x'
+      args << '-stdlib=libc++' if cccfg? 'g'
+      args << '-stdlib=libstdc++' if cccfg? 'h'
+    end
 
-    args = %w{-pipe -w -Os}
+    return args unless cccfg? 'O'
+
+    args << '-pipe' << '-w' << '-Os'
 
     # When bottling use the oldest supported CPU type.
     if cccfg? 'bc'
@@ -202,6 +214,10 @@ class Cmd
     case mode
     when :ld   then args << '-headerpad_max_install_names'
     when :ccld then args << '-Wl,-headerpad_max_install_names'
+    when :cxxld
+      args << '-Wl,-headerpad_max_install_names'
+      args << '-stdlib=libc++' if cccfg? 'g'
+      args << '-stdlib=libstdc++' if cccfg? 'h'
     end
     args
   end
@@ -212,6 +228,8 @@ class Cmd
     sys.to_flags('-isystem') + opt.to_flags('-I')
   end
   def make_fuss args
+    return unless make_fuss?
+
     dels = @args - args
     adds = args - @args
     dups = dels & args
@@ -220,9 +238,21 @@ class Cmd
     STDERR.puts "brew: superenv deduped: #{dups}" unless dups.empty?
     STDERR.puts "brew: superenv added: #{adds*' '}" unless adds.empty?
   end
+  def make_fuss?
+    verbose? and cccfg? 'O' and not configure?
+  end
+  def verbose?
+    !ENV['VERBOSE'].nil? || !ENV['HOMEBREW_VERBOSE'].nil?
+  end
+  def configure?
+    # configure scripts generated with autoconf 2.56 or later export DUALCASE
+    ENV.key? 'DUALCASE'
+  end
 end
 
 if __FILE__ == $PROGRAM_NAME
+  STDOUT.sync = STDERR.sync = true
+
   ##################################################################### sanity
   abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
 

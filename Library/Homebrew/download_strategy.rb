@@ -1,4 +1,3 @@
-require 'open-uri'
 require 'utils/json'
 require 'erb'
 
@@ -36,6 +35,7 @@ class AbstractDownloadStrategy
   def fetch; end
   def stage; end
   def cached_location; end
+  def clear_cache; end
 end
 
 class VCSDownloadStrategy < AbstractDownloadStrategy
@@ -64,6 +64,10 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   def cached_location
     @clone
   end
+
+  def clear_cache
+    cached_location.rmtree if cached_location.exist?
+  end
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
@@ -85,6 +89,10 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location
     tarball_path
+  end
+
+  def clear_cache
+    [cached_location, temporary_path].each { |f| f.unlink if f.exist? }
   end
 
   def downloaded_size
@@ -208,8 +216,26 @@ end
 
 # Detect and download from Apache Mirror
 class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
+  def apache_mirrors
+    rd, wr = IO.pipe
+    buf = ""
+
+    pid = fork do
+      rd.close
+      $stdout.reopen(wr)
+      $stderr.reopen(wr)
+      curl "#{@url}&asjson=1"
+    end
+    wr.close
+
+    buf << rd.read until rd.eof?
+    rd.close
+    Process.wait(pid)
+    buf
+  end
+
   def _fetch
-    mirrors = Utils::JSON.load(open("#{@url}&asjson=1").read)
+    mirrors = Utils::JSON.load(apache_mirrors)
     url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
 
     ohai "Best Mirror #{url}"

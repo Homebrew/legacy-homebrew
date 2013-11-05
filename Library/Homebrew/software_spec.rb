@@ -50,6 +50,7 @@ class SoftwareSpec
   end
 
   def option name, description=nil
+    name = 'c++11' if name == :cxx11
     name = name.to_s if Symbol === name
     raise "Option name is required." if name.empty?
     raise "Options should not start with dashes." if name[0, 1] == "-"
@@ -119,7 +120,7 @@ class Bottle < SoftwareSpec
       checksum_os_versions = send checksum_type
       next unless checksum_os_versions
       os_versions = checksum_os_versions.keys
-      os_versions.map! {|osx| MacOS::Version.from_symbol osx }
+      os_versions.map! {|osx| MacOS::Version.from_symbol osx rescue nil }
       os_versions.sort.reverse.each do |os_version|
         osx = os_version.to_sym
         checksum = checksum_os_versions[osx]

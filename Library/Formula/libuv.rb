@@ -3,8 +3,8 @@ require 'formula'
 # Note that x.even are stable releases, x.odd are devel releases
 class Libuv < Formula
   homepage 'https://github.com/joyent/libuv'
-  url 'https://github.com/joyent/libuv/archive/v0.10.13.tar.gz'
-  sha1 'f1bb5671ef6b45606d4cf17816f173dda3d47a92'
+  url 'https://github.com/joyent/libuv/archive/v0.10.18.tar.gz'
+  sha1 '31fbe2c9e1b2d0f57cfbafd55818734dc545e36a'
 
   head 'https://github.com/joyent/libuv.git', :branch => 'master'
 

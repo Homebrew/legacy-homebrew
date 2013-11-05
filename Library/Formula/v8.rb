@@ -7,15 +7,8 @@ require 'formula'
 
 class V8 < Formula
   homepage 'http://code.google.com/p/v8/'
-  url 'https://github.com/v8/v8/archive/3.19.18.4.tar.gz'
-  sha1 'f44c8eed0fe93b2d04d1d547a1e2640f41161354'
-
-  devel do
-    url 'https://github.com/v8/v8/archive/3.20.12.tar.gz'
-    sha1 '1463f4b8b33674bfd366e84b739713a727e9f9ac'
-  end
-
-  head 'https://github.com/v8/v8.git'
+  url 'https://github.com/v8/v8/archive/3.21.17.tar.gz'
+  sha1 '762dacc85a896e23a311eaed1e182f535677f4d6'
 
   option 'with-readline', 'Use readline instead of libedit'
 
@@ -28,13 +21,21 @@ class V8 < Formula
   depends_on :xcode
   depends_on 'readline' => :optional
 
+  resource 'gyp' do
+    url 'http://gyp.googlecode.com/svn/trunk', :revision => 1685
+    version '1685'
+  end
+
   def install
-    system 'make dependencies'
-    system 'make', 'native',
+    # Download gyp ourselves because running "make dependencies" pulls in ICU.
+    (buildpath/'build/gyp').install resource('gyp')
+
+    system "make", "native",
                    "-j#{ENV.make_jobs}",
                    "library=shared",
                    "snapshot=on",
-                   "console=readline"
+                   "console=readline",
+                   "i18nsupport=off"
 
     prefix.install 'include'
     cd 'out/native' do

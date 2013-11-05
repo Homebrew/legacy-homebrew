@@ -2,8 +2,8 @@ require 'formula'
 
 class Valgrind < Formula
   homepage 'http://www.valgrind.org/'
-  url 'http://valgrind.org/downloads/valgrind-3.8.1.tar.bz2'
-  sha1 'aa7a3b0b9903f59a11ae518874852e8ccb12751c'
+  url 'http://valgrind.org/downloads/valgrind-3.9.0.tar.bz2'
+  sha1 '9415e28933de9d6687f993c4bb797e6bd49583f1'
 
   head do
     url 'svn://svn.valgrind.org/valgrind/trunk'

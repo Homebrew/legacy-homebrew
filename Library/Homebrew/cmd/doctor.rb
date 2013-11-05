@@ -191,55 +191,96 @@ def check_for_broken_symlinks
 end
 
 def check_xcode_clt
-  if MacOS::Xcode.installed?
+  if MacOS.version >= :mavericks
+    __check_clt_up_to_date
+  elsif MacOS::Xcode.installed?
     __check_xcode_up_to_date
-  elsif MacOS.version >= 10.7
+  elsif MacOS.version >= :lion
     __check_clt_up_to_date
   else <<-EOS.undent
-    Xcode not installed
-    Most stuff needs Xcode to build: http://developer.apple.com/xcode/
+      Xcode is not installed
+      Most formulae need Xcode to build.
+      It can be installed from https://developer.apple.com/downloads/
     EOS
   end
 end
 
 def __check_xcode_up_to_date
-  if MacOS::Xcode.outdated? then <<-EOS.undent
-    Your Xcode (#{MacOS::Xcode.version}) is outdated
-    Please install Xcode #{MacOS::Xcode.latest_version}.
+  if MacOS::Xcode.outdated?
+    message = <<-EOS.undent
+      Your Xcode (#{MacOS::Xcode.version}) is outdated
+      Please update to Xcode #{MacOS::Xcode.latest_version}.
     EOS
+    if MacOS.version >= :lion
+      message += <<-EOS.undent
+      Xcode can be updated from the App Store.
+      EOS
+    else
+      message += <<-EOS.undent
+      Xcode can be updated from https://developer.apple.com/downloads/
+      EOS
+    end
+    message
   end
 end
 
 def __check_clt_up_to_date
-  if not MacOS::CLT.installed? then <<-EOS.undent
-    No developer tools installed
-    You should install the Command Line Tools:
-      https://developer.apple.com/downloads/
+  if not MacOS::CLT.installed?
+    message = <<-EOS.undent
+      No developer tools installed.
+      You should install the Command Line Tools.
     EOS
-  elsif MacOS::CLT.outdated? then <<-EOS.undent
-    A newer Command Line Tools release is available
-    You should install the latest version from:
-      https://developer.apple.com/downloads
+    if MacOS.version >= :mavericks
+      message += <<-EOS.undent
+        Run `xcode-select --install` to install them.
+      EOS
+    else
+      message += <<-EOS.undent
+        The standalone package can be obtained from
+        https://developer.apple.com/downloads/,
+        or it can be installed via Xcode's preferences.
+      EOS
+    end
+    message
+  elsif MacOS::CLT.outdated?
+    message = <<-EOS.undent
+      A newer Command Line Tools release is available
     EOS
+    if MacOS.version >= :mavericks
+      message += <<-EOS.undent
+        Update them from Software Update in the App Store.
+      EOS
+    else
+      message += <<-EOS.undent
+        The standalone package can be obtained from
+        https://developer.apple.com/downloads/,
+        or it can be installed via Xcode's preferences.
+      EOS
+    end
   end
 end
 
 def check_for_osx_gcc_installer
-  if (MacOS.version < 10.7 || MacOS::Xcode.version < "4.1") && \
-    MacOS.clang_version == "2.1" then <<-EOS.undent
-    You have osx-gcc-installer installed.
-    Homebrew doesn't support osx-gcc-installer, and it is known to cause
-    some builds to fail.
-    Please install Xcode #{MacOS::Xcode.latest_version}.
+  if (MacOS.version < "10.7" || MacOS::Xcode.version > "4.1") && \
+      MacOS.clang_version == "2.1"
+    message = <<-EOS.undent
+    You seem to have osx-gcc-installer installed.
+    Homebrew doesn't support osx-gcc-installer. It causes many builds to fail and
+    is an unlicensed distribution of really old Xcode files.
     EOS
-  end
-end
-
-def check_for_unsupported_osx
-  if MacOS.version > 10.8 then <<-EOS.undent
-    You are using Mac OS X #{MacOS.version}.
-    We do not yet provide support for this (unreleased) version.
-    EOS
+    if MacOS.version >= :mavericks
+      message += <<-EOS.undent
+        Please run `xcode-select --install` to install the CLT.
+      EOS
+    elsif MacOS.version >= :lion
+      message += <<-EOS.undent
+        Please install the CLT or Xcode #{MacOS::Xcode.latest_version}.
+      EOS
+    else
+      message += <<-EOS.undent
+        Please install Xcode #{MacOS::Xcode.latest_version}.
+      EOS
+    end
   end
 end
 
@@ -340,16 +381,15 @@ end
 end
 
 def check_access_logs
-  folder = Pathname.new('~/Library/Logs/Homebrew')
-  if folder.exist? and not folder.writable_real?
+  if HOMEBREW_LOGS.exist? and not HOMEBREW_LOGS.writable_real?
     <<-EOS.undent
-      #{folder} isn't writable.
+      #{HOMEBREW_LOGS} isn't writable.
       This can happen if you "sudo make install" software that isn't managed
       by Homebrew.
 
       Homebrew writes debugging logs to this location.
 
-      You should probably `chown` #{folder}
+      You should probably `chown` #{HOMEBREW_LOGS}
     EOS
   end
 end
@@ -695,7 +735,7 @@ def __check_git_version
   # https://help.github.com/articles/https-cloning-errors
   `git --version`.chomp =~ /git version ((?:\d+\.?)+)/
 
-  if Version.new($1) < Version.new("1.7.10") then <<-EOS.undent
+  if $1 and Version.new($1) < Version.new("1.7.10") then <<-EOS.undent
     An outdated version of Git was detected in your PATH.
     Git 1.7.10 or newer is required to perform checkouts over HTTPS from GitHub.
     Please upgrade: brew upgrade git
@@ -885,7 +925,7 @@ def check_git_status
       If this a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
-          cd #{HOMEBREW_REPOSITORY}/Library && git stash && git clean -d -f
+          cd #{HOMEBREW_LIBRARY} && git stash && git clean -d -f
       EOS
     end
   end
@@ -991,7 +1031,7 @@ def check_for_outdated_homebrew
     timestamp = if File.directory? ".git"
       `git log -1 --format="%ct" HEAD`.to_i
     else
-      (HOMEBREW_REPOSITORY/"Library").mtime.to_i
+      HOMEBREW_LIBRARY.mtime.to_i
     end
 
     if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent

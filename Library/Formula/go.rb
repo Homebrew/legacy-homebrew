@@ -18,9 +18,9 @@ class Go < Formula
   option 'without-cgo', "Build without cgo"
 
   devel do
-    url 'https://go.googlecode.com/files/go1.2rc1.src.tar.gz'
-    version '1.2rc1'
-    sha1 '9f39106e06f552e9bf6d15d201c4663c051d4f89'
+    url 'https://go.googlecode.com/files/go1.2rc3.src.tar.gz'
+    version '1.2rc3'
+    sha1 '1bfcb525b28c2fe65d0b7d6dbd4418ce2027e2eb'
   end
 
   if build.with? 'cgo' and not build.devel?
@@ -34,7 +34,7 @@ class Go < Formula
   # Upstream patch for a switch statement that causes a clang error
   # Should be in the next release.
   # http://code.google.com/p/go/source/detail?r=000ecca1178d67c9b482d3fb0b6a1bc4aeef2472&path=/src/cmd/ld/lib.c
-  def patches; DATA; end unless build.devel?
+  def patches; DATA; end if build.stable?
 
   def install
     # For Clang cgo support Go needs to be able to tell through CC.
@@ -87,7 +87,8 @@ class Go < Formula
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
-  def caveats; <<-EOS.undent
+  def caveats
+    changelog = <<-EOS.undent
     The go get command no longer allows $GOROOT as
     the default destination in Go 1.1 when downloading package source.
     To use the go get command, a valid $GOPATH is now required.
@@ -97,6 +98,19 @@ class Go < Formula
 
     More information here: http://golang.org/doc/code.html#GOPATH
     EOS
+
+    if build.devel?
+      changelog += <<-EOS.undent
+
+      In go 1.2 go vet and go doc are now part of the go.tools sub repo.
+      see: http://tip.golang.org/doc/go1.2#go_tools_godoc
+
+      To get go vet and go doc run:
+        $ go get code.google.com/p/go.tools/cmd/godoc
+        $ go get code.google.com/p/go.tools/cmd/vet
+      EOS
+    end
+    return changelog
   end
 
   test do
@@ -109,9 +123,9 @@ class Go < Formula
         fmt.Println("Hello World")
     }
     EOS
-    # Run go vet check for no errors then run the program.
-    # This is a a bare minimum of go working as it uses vet, build, and run.
-    system "#{bin}/go", "vet", "hello.go"
+    # Run go fmt check for no errors then run the program.
+    # This is a a bare minimum of go working as it uses fmt, build, and run.
+    system "#{bin}/go", "fmt", "hello.go"
     assert_equal "Hello World\n", `#{bin}/go run hello.go`
   end
 end
@@ -143,5 +157,5 @@ diff -r 02b673333fab -r 000ecca1178d src/cmd/ld/lib.c
 +		break;
  	}
  	if(!debug['s'] && !debug_s) {
- 		argv[argc++] = "-gdwarf-2"; 
+ 		argv[argc++] = "-gdwarf-2";
 

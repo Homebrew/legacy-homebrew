@@ -2,14 +2,14 @@ require 'formula'
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.4.tar.gz'
-  sha1 '2a361a2d185b8bc604f7f2ce2f502d0dea9d3279'
+  url 'http://git-core.googlecode.com/files/git-1.8.4.2.tar.gz'
+  sha1 'f2e9317703553b4215700605c15d0f3a30623a9d'
   head 'https://github.com/git/git.git'
 
   bottle do
-    sha1 'c752e68f6c39a567adfa43eea9f6b74caaf35bcf' => :mountain_lion
-    sha1 'ca4b4ce0455636400ad70e413c179fe4e3329288' => :lion
-    sha1 'c5a3559d59c7d9cd608559771ece10743a340c32' => :snow_leopard
+    sha1 '028a2d04720decebabc8a7a9e47121ab95e967be' => :mavericks
+    sha1 '7b3d19e95c10c66a927928e18fe83c9fbd53eb04' => :mountain_lion
+    sha1 '826fae4c92d82d7e87ad7a4f543d5eb503b31440' => :lion
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -24,13 +24,13 @@ class Git < Formula
   depends_on 'curl' => 'with-darwinssl' if build.with? 'brewed-curl'
 
   resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.8.4.tar.gz'
-    sha1 '8c67a7bc442d6191bc17633c7f2846c71bda71cf'
+    url 'http://git-core.googlecode.com/files/git-manpages-1.8.4.2.tar.gz'
+    sha1 'aebbb6dc8bca979f8d54bdef51b128deba195c94'
   end
 
   resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.4.tar.gz'
-    sha1 'f130398eb623c913497ef51a6e61d916fe7e31c8'
+    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.4.2.tar.gz'
+    sha1 'b0d5e7e24aba1af4a8e1a4fa9c894c3a673bf5d8'
   end
 
   def install
@@ -94,6 +94,9 @@ class Git < Formula
     # on many other packages, and is somewhat crazy, this way is easier.
     man.install resource('man')
     (share+'doc/git-doc').install resource('html')
+
+    # Make html docs world-readable; check if this is still needed at 1.8.4.2
+    chmod 0644, Dir["#{share}/doc/git-doc/**/*.{html,txt}"]
   end
 
   def caveats; <<-EOS.undent

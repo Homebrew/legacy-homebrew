@@ -2,10 +2,11 @@ require 'formula'
 
 class Mjpegtools < Formula
   homepage 'http://mjpeg.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/mjpeg/mjpegtools/2.0.0/mjpegtools-2.0.0.tar.gz'
-  sha1 'f411e8573d446711dbe8455a6ae9257e1afe1e70'
+  url 'http://downloads.sourceforge.net/project/mjpeg/mjpegtools/2.1.0/mjpegtools-2.1.0.tar.gz'
+  sha1 'b9effa86280e23d67369e842e5cb645948583097'
 
   depends_on :x11 if MacOS::X11.installed?
+  depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'

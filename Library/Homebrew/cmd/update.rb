@@ -1,5 +1,6 @@
 require 'cmd/tap'
 require 'cmd/untap'
+require 'tap_migrations'
 
 module Homebrew extend self
   def update
@@ -54,6 +55,16 @@ module Homebrew extend self
     # we unlink first in case the formula has moved to another tap
     Homebrew.unlink_tap_formula(report.removed_tapped_formula)
     Homebrew.link_tap_formula(report.new_tapped_formula)
+
+    # automatically tap any migrated formulae's new tap
+    report.select_formula(:D).each do |f|
+      next unless (HOMEBREW_CELLAR/f).exist?
+      tap_user, tap_repo = TAP_MIGRATIONS[f].split '/'
+      begin
+        install_tap tap_user, tap_repo
+      rescue AlreadyTappedError => e
+      end
+    end
 
     if report.empty?
       puts "Already up-to-date."

@@ -2,8 +2,8 @@ require 'formula'
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.24.1.tar.xz'
-  sha1 'f805db83a4cf1c2169574a21b43582998bc03011'
+  url 'http://poppler.freedesktop.org/poppler-0.24.3.tar.xz'
+  sha1 '9aca24a8b012587ea579f72892863d9b3245009a'
 
   option 'with-qt4', 'Build Qt backend'
   option 'with-glib', 'Build Glib backend'

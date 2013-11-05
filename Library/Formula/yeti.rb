@@ -7,6 +7,8 @@ class Yeti < Formula
 
   head 'https://github.com/mth/yeti.git'
 
+  depends_on :ant
+
   def install
     system "ant jar"
     libexec.install "yeti.jar"

@@ -16,15 +16,29 @@ module Homebrew extend self
         msg = blacklisted? name
         raise "No available formula for #{name}\n#{msg}" if msg
       end
+      if not File.exist? name and name =~ HOMEBREW_TAP_FORMULA_REGEX then
+        require 'cmd/tap'
+        begin
+          install_tap $1, $2
+        rescue AlreadyTappedError => e
+        end
+      end
     end unless ARGV.force?
 
     perform_preinstall_checks
-    ARGV.formulae.each do |f|
-      begin
-        install_formula(f)
-      rescue CannotInstallFormulaError => e
-        ofail e.message
+    begin
+      ARGV.formulae.each do |f|
+        begin
+          install_formula(f)
+        rescue CannotInstallFormulaError => e
+          ofail e.message
+        end
       end
+    rescue FormulaUnavailableError => e
+      ofail e.message
+      require 'cmd/search'
+      puts 'Searching taps...'
+      puts_columns(search_taps(query_regexp(e.name)))
     end
   end
 
@@ -45,7 +59,9 @@ module Homebrew extend self
   def check_xcode
     require 'cmd/doctor'
     checks = Checks.new
-    %w{check_xcode_clt check_xcode_license_approved}.each do |check|
+    doctor_methods = ['check_xcode_clt', 'check_xcode_license_approved',
+                      'check_for_osx_gcc_installer']
+    doctor_methods.each do |check|
       out = checks.send(check)
       opoo out unless out.nil?
     end

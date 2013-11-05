@@ -2,8 +2,8 @@ require 'formula'
 
 class Ispc < Formula
   homepage 'http://ispc.github.com'
-  url 'http://downloads.sourceforge.net/project/ispcmirror/v1.4.4/ispc-v1.4.4-osx.tar.gz'
-  sha1 '3db292eb38cb1651f1448cfa72541484f4be878a'
+  url 'http://downloads.sourceforge.net/project/ispcmirror/v1.5.0/ispc-v1.5.0-osx.tar.gz'
+  sha1 'dc03fcc523ccab31a16ad4db1d9f8c755b4fcd38'
 
   def install
     bin.install 'ispc'

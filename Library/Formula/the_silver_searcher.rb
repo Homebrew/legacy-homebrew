@@ -2,10 +2,9 @@ require 'formula'
 
 class TheSilverSearcher < Formula
   homepage 'https://github.com/ggreer/the_silver_searcher'
-  url 'https://github.com/ggreer/the_silver_searcher/archive/0.16.tar.gz'
-  sha1 'cd6be1534a95d89f417681ac14832b1f5069bcd8'
-
   head 'https://github.com/ggreer/the_silver_searcher.git'
+  url 'https://github.com/ggreer/the_silver_searcher/archive/0.18.tar.gz'
+  sha1 '43c399f5add3921b4fcb7c7f3d21909d81cd0559'
 
   depends_on :automake
   depends_on :autoconf

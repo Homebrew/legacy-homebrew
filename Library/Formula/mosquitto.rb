@@ -2,8 +2,8 @@ require 'formula'
 
 class Mosquitto < Formula
   homepage 'http://mosquitto.org/'
-  url 'http://mosquitto.org/files/source/mosquitto-1.2.1.tar.gz'
-  sha1 'c349b2eecd76e8d6eb17d78231955234968e6f69'
+  url 'http://mosquitto.org/files/source/mosquitto-1.2.2.tar.gz'
+  sha1 '7e0ccffe4c34506ecf153b48c29d2f09c5c09586'
 
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
@@ -32,8 +32,7 @@ class Mosquitto < Formula
     Python client bindings can be installed from the Python Package Index:
         pip install mosquitto
 
-    Javascript client is available at:
-        http://mosquitto.org/js/
+    Javascript client has been removed, see Eclipse Paho for an alternative.
     EOD
   end
 

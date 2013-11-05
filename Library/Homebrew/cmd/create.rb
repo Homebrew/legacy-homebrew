@@ -78,9 +78,11 @@ class FormulaCreator
     @url = url
     path = Pathname.new(url)
     if @name.nil?
+      %r{github.com/\S+/(\S+)/archive/}.match url
+      @name ||= $1
       /(.*?)[-_.]?#{path.version}/.match path.basename
-      @name = $1
-      @path = Formula.path $1 unless $1.nil?
+      @name ||= $1
+      @path = Formula.path @name unless @name.nil?
     else
       @path = Formula.path name
     end
@@ -116,7 +118,7 @@ class FormulaCreator
     require 'formula'
 
     # Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-    #                #{HOMEBREW_PREFIX}/Library/Contributions/example-formula.rb
+    #                #{HOMEBREW_CONTRIB}/example-formula.rb
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
     class #{Formula.class_s name} < Formula
@@ -162,6 +164,9 @@ class FormulaCreator
         # This test will fail and we won't accept that! It's enough to just replace
         # "false" with the main program this formula installs, but it'd be nice if you
         # were more thorough. Run the test with `brew test #{name}`.
+        #
+        # The installed folder is not in the path, so use the entire path to any
+        # executables being tested: `system "\#{bin}/program", "--version"`.
         system "false"
       end
     end

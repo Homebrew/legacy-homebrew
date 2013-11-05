@@ -43,13 +43,20 @@ class Resource
     downloader.cached_location
   end
 
-  # Download the resource
+  def clear_cache
+    downloader.clear_cache
+  end
+
+  # Fetch, verify, and unpack the resource
+  def stage(target=nil, &block)
+    verify_download_integrity(fetch)
+    unpack(target, &block)
+  end
+
   # If a target is given, unpack there; else unpack to a temp folder
   # If block is given, yield to that block
   # A target or a block must be given, but not both
-  def stage(target=nil)
-    fetched = fetch
-    verify_download_integrity(fetched) if fetched.respond_to?(:file?) and fetched.file?
+  def unpack(target=nil)
     mktemp(download_name) do
       downloader.stage
       if block_given?
@@ -75,7 +82,9 @@ class Resource
   end
 
   def verify_download_integrity fn
-    fn.verify_checksum(checksum)
+    if fn.respond_to?(:file?) && fn.file?
+      fn.verify_checksum(checksum)
+    end
   rescue ChecksumMissingError
     opoo "Cannot verify integrity of #{fn.basename}"
     puts "A checksum was not provided for this resource"

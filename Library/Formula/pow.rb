@@ -19,8 +19,8 @@ class Pow < Formula
   def caveats;
     <<-EOS.undent
       Create the required host directories:
-        mkdir -p ~/Library/Application\ Support/Pow/Hosts
-        ln -s ~/.pow ~/Library/Application\ Support/Pow/Hosts
+        mkdir -p ~/Library/Application\\ Support/Pow/Hosts
+        ln -s ~/Library/Application\\ Support/Pow/Hosts ~/.pow
 
       Setup port 80 forwarding and launchd agents:
         sudo pow --install-system
