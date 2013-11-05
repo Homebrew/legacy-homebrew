@@ -10,22 +10,15 @@ class Cattle < Formula
   depends_on 'gtk-doc' => :build
   depends_on 'pkg-config' => :build
 
-  def install
-    ENV['LIBTOOLIZE'] = "#{HOMEBREW_PREFIX}/bin/glibtoolize"
-    ENV['ACLOCAL'] = "#{HOMEBREW_PREFIX}/bin/aclocal"
-    ENV['AUTOM4TE'] = "#{HOMEBREW_PREFIX}/bin/autom4te"
-    ENV['AUTOMAKE'] = "#{HOMEBREW_PREFIX}/bin/automake"
-    ENV['AUTOHEADER'] = "#{HOMEBREW_PREFIX}/bin/autoheader"
-    ENV['AUTOCONF'] = "#{HOMEBREW_PREFIX}/bin/autoconf"
+  depends_on :autoconf => :build
+  depends_on :automake => :build
+  depends_on :libtool => :build
 
-    inreplace 'autogen.sh', 'libtoolize', '$LIBTOOLIZE'
-    inreplace 'autogen.sh', 'aclocal', '$ACLOCAL'
-    inreplace 'autogen.sh', 'automake', '$AUTOMAKE'
-    inreplace 'autogen.sh', 'autoheader', '$AUTOHEADER'
-    inreplace 'autogen.sh', 'autoconf', '$AUTOCONF'
+  def install
+    inreplace 'autogen.sh', 'libtoolize', 'glibtoolize'
 
     system 'sh autogen.sh'
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
   end
