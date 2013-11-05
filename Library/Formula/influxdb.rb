@@ -64,6 +64,6 @@ class Influxdb < Formula
   end
 
   test do
-    system "#{opt_prefix}/bin/influxdb -version"
+    system "#{opt_prefix}/bin/influxdb -v"
   end
 end
