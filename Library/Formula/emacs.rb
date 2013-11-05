@@ -58,8 +58,8 @@ class Emacs < Formula
     end
 
     # See: https://github.com/mxcl/homebrew/issues/4852
-    if build.head? and File.exists? "./autogen/copy_autogen"
-      system "autogen/copy_autogen"
+    if build.head?
+      system "./autogen.sh"
     end
 
     if build.include? "cocoa"
