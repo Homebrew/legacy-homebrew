@@ -14,7 +14,7 @@ class Influxdb < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["CC"] = "/usr/local/bin/gcc-4.2"
+    ENV["CC"] = "#{bin}/gcc-4.2"
 
     system "./build.sh"
 
