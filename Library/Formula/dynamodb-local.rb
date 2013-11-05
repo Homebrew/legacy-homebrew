@@ -58,9 +58,9 @@ class DynamodbLocal < Formula
       <key>ProgramArguments</key>
       <array>
         <string>#{bin/'dynamodb-local'}</string>
-        <key>StandardErrorPath</key>
-        <string>#{log_path}</string>
       </array>
+      <key>StandardErrorPath</key>
+      <string>#{log_path}</string>
     </dict>
     </plist>
     EOS
