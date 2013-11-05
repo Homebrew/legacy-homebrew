@@ -2,8 +2,8 @@ require 'formula'
 
 class SaneBackends < Formula
   homepage 'http://www.sane-project.org/'
-  url 'ftp://ftp2.sane-project.org/pub/sane/sane-backends-1.0.23.tar.gz'
-  sha1 '9363b49aecca6ef2b51da31119f48cba4dedcf07'
+  url 'http://fossies.org/linux/misc/sane-backends-1.0.24.tar.gz'
+  sha1 'c10bcb30a1b092b2c2fe5a86d6a5efc29123ccf9'
 
   option :universal
 
