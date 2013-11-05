@@ -184,7 +184,7 @@ warn "#{HOMEBREW_PREFIX}/bin is not in your PATH." unless ENV['PATH'].split(':')
 if macos_version < "10.9" and macos_version > "10.6"
   `/usr/bin/cc --version 2> /dev/null` =~ %r[clang-(\d{2,})]
   version = $1.to_i
-  warn %{Install the "Command Line Tools for Xcode": http://connect.apple.com} if version < 425
+  warn %{Install the "Command Line Tools for Xcode": https://developer.apple.com/downloads/} if version < 425
 else
   warn "Now install Xcode: https://developer.apple.com/xcode/" unless File.exist? "/usr/bin/cc"
 end
