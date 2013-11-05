@@ -1,11 +1,5 @@
 require 'formula'
 
-class Freepats < Formula
-  homepage 'http://freepats.zenvoid.org/'
-  url 'http://freepats.zenvoid.org/freepats-20060219.zip'
-  sha1 '8b798940dc581f025effead75428dfaaba356afe'
-end
-
 class Timidity < Formula
   homepage 'http://timidity.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/timidity/TiMidity++/TiMidity++-2.14.0/TiMidity++-2.14.0.tar.bz2'
@@ -18,6 +12,11 @@ class Timidity < Formula
   depends_on 'libvorbis' => :recommended
   depends_on 'flac' => :recommended
   depends_on 'speex' => :recommended
+
+  resource 'freepats' do
+    url 'http://freepats.zenvoid.org/freepats-20060219.zip'
+    sha1 '8b798940dc581f025effead75428dfaaba356afe'
+  end
 
   def install
     args = ["--disable-debug",
@@ -40,11 +39,9 @@ class Timidity < Formula
     system "make install"
 
     if build.with? 'freepats'
-      Freepats.new.brew do
-        (share/'freepats').install Dir['*']
-        (share/'timidity/').install_symlink share/'freepats/Tone_000', share/'freepats/Drum_000'
-        File.symlink share/'freepats/freepats.cfg', share/'timidity/timidity.cfg'
-      end
+      (share/'freepats').install resource('freepats')
+      (share/'timidity/').install_symlink share/'freepats/Tone_000', share/'freepats/Drum_000'
+      File.symlink share/'freepats/freepats.cfg', share/'timidity/timidity.cfg'
     end
   end
 
