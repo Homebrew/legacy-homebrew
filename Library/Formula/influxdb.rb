@@ -1,5 +1,5 @@
 require "formula"
- 
+
 class Influxdb < Formula
   homepage "http://influxdb.org"
   url "http://get.influxdb.org/src/influxdb-0.0.7.tar.gz"
@@ -11,28 +11,28 @@ class Influxdb < Formula
   depends_on "bison"
   depends_on "flex"
   depends_on "go"
- 
+
   def install
     ENV["GOPATH"] = buildpath
     ENV["CC"] = "/usr/local/bin/gcc-4.2"
-    
-    system "./build.sh" 
- 
+
+    system "./build.sh"
+
     inreplace "config.json.sample" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
       s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
       s.gsub! "./admin/", "#{share}/admin/"
     end
- 
+
     bin.install "server" => "influxdb"
     etc.install "config.json.sample" => "influxdb.conf"
     share.install "admin"
- 
+
     %w[influxdb infludxb/data influxdb/raft].each { |p| (var+p).mkpath }
   end
- 
+
   plist_options :manual => "influxdb -config=#{HOMEBREW_PREFIX}/etc/influxdb.conf"
- 
+
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -62,7 +62,7 @@ class Influxdb < Formula
     </plist>
     EOS
   end
- 
+
   test do
     system "#{opt_prefix}/bin/influxdb -version"
   end
