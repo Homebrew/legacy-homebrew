@@ -28,19 +28,17 @@ class Mplayer < Formula
   end unless MacOS.prefer_64_bit?
 
   def patches
-    # When building SVN, configure prompts the user to pull FFmpeg from git.
-    # Don't do that.
-    patches = Array.new
+    p = []
 
     if build.head?
       # When building SVN, configure prompts the user to pull FFmpeg from git.
       # Don't do that.
-      patches.push "https://gist.github.com/anonymous/7234266/raw/"
+      patches << "https://gist.github.com/anonymous/7234266/raw/"
     end
 
     if MacOS.version >= :mavericks
       # Fix compiling of brew's mplayer formula on OS X mavericks v10.9
-      patches.push "https://gist.github.com/anonymous/7234293/raw/"
+      patches << "https://gist.github.com/anonymous/7234293/raw/"
     end
   end
 
