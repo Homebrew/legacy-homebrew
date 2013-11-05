@@ -5,12 +5,12 @@ class Influxdb < Formula
   url "http://get.influxdb.org/src/influxdb-0.0.7.tar.gz"
   sha1 "2ee3e88112a9f3f7fa4423acbdb686711bd42595"
 
-  depends_on "protobuf"
   depends_on "leveldb"
-  depends_on "apple-gcc42"
-  depends_on "bison"
-  depends_on "flex"
-  depends_on "go"
+  depends_on "protobuf" => :build
+  depends_on "apple-gcc42" => :build
+  depends_on "bison" => :build
+  depends_on "flex" => :build
+  depends_on "go" => :build
 
   def install
     ENV["GOPATH"] = buildpath
