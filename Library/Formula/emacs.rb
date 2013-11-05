@@ -63,10 +63,7 @@ class Emacs < Formula
       args << '--without-gnutls'
     end
 
-    # See: https://github.com/mxcl/homebrew/issues/4852
-    if build.head? and File.exists? "./autogen/copy_autogen"
-      system "autogen/copy_autogen"
-    end
+    system "./autogen.sh" if build.head?
 
     if build.include? "cocoa"
       # Patch for color issues described here:
