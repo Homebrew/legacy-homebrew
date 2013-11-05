@@ -1,8 +1,8 @@
 require 'formula'
 
 class OpenJade < Formula
-  url 'http://downloads.sourceforge.net/project/openjade/openjade/1.3.2/openjade-1.3.2.tar.gz'
   homepage 'http://openjade.sourceforge.net'
+  url 'http://downloads.sourceforge.net/project/openjade/openjade/1.3.2/openjade-1.3.2.tar.gz'
   sha1 '54e1999f41450fbd62c5d466002d79d3efca2321'
 
   depends_on 'xmlcatmgr' => :build
@@ -50,7 +50,6 @@ class OpenJade < Formula
 
     # Install additional dsssl
     subdir = 'sgml/openjade'
-    (share+subdir).mkpath
     (share+subdir).install Dir['dsssl/*']
 
     # Link additional catalogs to the root catalog
