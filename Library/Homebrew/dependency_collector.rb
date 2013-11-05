@@ -132,14 +132,15 @@ class DependencyCollector
   end
 
   def autotools_dep(spec, tags)
-    unless MacOS::Xcode.provides_autotools?
-      case spec
-      when :libltdl then spec = :libtool
-      else tags << :build
-      end
+    return if MacOS::Xcode.provides_autotools?
 
-      Dependency.new(spec.to_s, tags)
+    if spec == :libltdl
+      spec = :libtool
+      tags << :run
     end
+
+    tags << :build unless tags.include? :run
+    Dependency.new(spec.to_s, tags)
   end
 
   def ant_dep(spec, tags)
