@@ -7,6 +7,7 @@ class Mplayer < Formula
 
   head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
 
+  option 'with-livemedia', 'Build with LIVE555 streaming media support'
   option 'with-x', 'Build with X11 support'
   option 'without-osd', 'Build without OSD'
 
@@ -14,6 +15,7 @@ class Mplayer < Formula
   depends_on 'xz' => :build
   depends_on 'libcaca' => :optional
   depends_on :x11 if build.include? 'with-x'
+  depends_on 'livemedia' => :optional
 
   unless build.include? 'without-osd' or build.include? 'with-x'
     # These are required for the OSD. We can get them from X11, or we can
