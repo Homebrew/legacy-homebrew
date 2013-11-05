@@ -15,29 +15,16 @@ class DynamodbLocal < Formula
     var/'log/dynamodb-local.log'
   end
 
-  def bin_wrapper_path
-    bin/'dynamodb-local'
-  end
-
   def bin_wrapper; <<-EOS.undent
     #!/bin/sh
-    cd #{data_path} && java -Djava.library.path=#{libexec} -jar #{libexec/'DynamodbLocal.jar'}
+    cd #{data_path} && java -Djava.library.path=#{libexec} -jar #{libexec}/DynamodbLocal.jar
     EOS
   end
 
   def install
-    prefix.install %w[
-      LICENSE.txt
-      README.txt
-      third_party_licenses
-    ]
-
-    libexec.install %w[
-      DynamodbLocal.jar
-      libsqlite4java-osx.jnilib
-    ]
-
-    bin_wrapper_path.write(bin_wrapper)
+    prefix.install %w[LICENSE.txt README.txt third_party_licenses]
+    libexec.install %w[DynamodbLocal.jar libsqlite4java-osx.jnilib]
+    (bin/'dynamodb-local').write(bin_wrapper)
   end
 
   def post_install
@@ -45,12 +32,13 @@ class DynamodbLocal < Formula
   end
 
   def caveats; <<-EOS.undent
-    You must use version 7.x of the Java Runtime Engine (JRE); DynamoDB Local does not work on older Java versions.
+    You must use version 7.x of the Java Runtime Engine (JRE).
+    DynamoDB Local does not work on older Java versions.
 
     DynamoDB Local only supports V2 of the service API.
 
-    Data:    #{data_path}
-    Logs:    #{log_path}
+    Data: #{data_path}
+    Logs: #{log_path}
     EOS
   end
 
@@ -69,7 +57,7 @@ class DynamodbLocal < Formula
       <false/>
       <key>ProgramArguments</key>
       <array>
-        <string>#{bin_wrapper_path}</string>
+        <string>#{bin/'dynamodb-local'}</string>
         <key>StandardErrorPath</key>
         <string>#{log_path}</string>
       </array>
