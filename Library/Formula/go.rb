@@ -40,6 +40,12 @@ class Go < Formula
     # For Clang cgo support Go needs to be able to tell through CC.
     ENV['CC'] = 'clang' if build.devel? and ENV.compiler == :clang
 
+    # Make sure we're using the aforementioned GCC 4.2 dependency on 10.8 and 10.9
+    if build.with? 'cgo' and not build.devel? and MacOS.version >= :mountain_lion
+      gcc42_bin = Formula.factory('apple-gcc42').bin
+      ENV['CC'] = "#{gcc42_bin}/gcc-4.2"
+    end
+
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
     zsh_completion.install 'misc/zsh/go' => 'go'
