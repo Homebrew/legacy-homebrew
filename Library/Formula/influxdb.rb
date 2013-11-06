@@ -9,13 +9,18 @@ class Influxdb < Formula
   depends_on "protobuf" => :build
   depends_on "bison" => :build
   depends_on "flex" => :build
-  depends_on "go" => [:devel, :build]
+  depends_on "go" => :build
 
   def install
-    ENV.prepend_path "PATH", "/usr/local/bin"
     ENV["GOPATH"] = buildpath
 
-    system "./build.sh"
+    # For versions of OSX that ship with clang, make sure we're using GCC 4.2 to play nicely with go
+    if MacOS.version >= :mountain_lion
+      gcc42_bin = Formula.factory("apple-gcc42").bin
+      ENV["CC"] = "#{gcc42_bin}/gcc-4.2"
+    end
+
+    system "go build src/server/server.go"
 
     inreplace "config.json.sample" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
