@@ -39,8 +39,14 @@ module OS
         end
       end
 
+      # http://xquartz.macosforge.org/trac/wiki
+      # http://xquartz.macosforge.org/trac/wiki/Releases
       def latest_version
-        "2.7.4"
+        case MacOS.version
+        when "10.5" then "2.6.3"
+        when "10.9" then "2.7.5_rc4"
+        else "2.7.4"
+        end
       end
 
       def bundle_path
