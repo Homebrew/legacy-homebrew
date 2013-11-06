@@ -2,9 +2,9 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.2.tar.bz2'
-  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.2.tar.bz2'
-  sha1 '1f8f877f17dea23e1cf2bafeef0f71323df43521'
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.3.tar.bz2'
+  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.3.tar.bz2'
+  sha1 '58b02d6c2f1ae086a6ec46289d1eea0cc4343309'
 
   head do
     url 'http://anonsvn.wireshark.org/wireshark/trunk/', :using => :svn
@@ -38,10 +38,6 @@ class Wireshark < Formula
 
   def patches
     {
-      # This header has an enum with values already defined as
-      # as macros in /usr/include/sys/dirent.h
-      # Fixed upstream, should be in the next release.
-      :p0 => 'https://trac.macports.org/export/112336/trunk/dports/net/wireshark/files/patch-epan-dissectors-packet-gluster.h.diff',
       # Removes SDK checks that prevent the build from working on CLT-only systems
       # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
       :p1 => DATA
