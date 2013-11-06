@@ -498,8 +498,14 @@ class GitDownloadStrategy < VCSDownloadStrategy
     @ref_type != :revision and host_supports_depth?
   end
 
+  SHALLOW_CLONE_WHITELIST = [
+    %r{git://},
+    %r{https://github\.com},
+    %r{http://git\.sv\.gnu\.org},
+  ]
+
   def host_supports_depth?
-    @url =~ %r{git://} or @url =~ %r{https://github.com/}
+    SHALLOW_CLONE_WHITELIST.any? { |rx| rx === @url }
   end
 
   def repo_valid?
