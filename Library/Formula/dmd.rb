@@ -2,8 +2,8 @@ require 'formula'
 
 class Dmd < Formula
   homepage 'http://www.digitalmars.com/d/'
-  url 'http://downloads.dlang.org/releases/2013/dmd.2.063.2.zip'
-  sha1 '774b351132ae4f35f5fd08c32d6dddbe26605337'
+  url 'http://downloads.dlang.org/releases/2013/dmd.2.064.2.zip'
+  sha1 'c09a7787b9137409a2169268b57655ce29c9f0d3'
 
   def install
     # clean it up a little first
