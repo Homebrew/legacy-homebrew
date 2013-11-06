@@ -9,7 +9,7 @@ class OpengrmNgram < Formula
 
   def install
     if MacOS.version > :mountain_lion
-      ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/usr/include/c++/4.2.1"
+      ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include/c++/4.2.1"
       ENV.append 'LIBS', "#{MacOS.sdk_path}/usr/lib/libstdc++.dylib"
     end
     system "./configure", "--disable-dependency-tracking", 
