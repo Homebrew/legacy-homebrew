@@ -16,7 +16,7 @@ class Tag < Formula
   test do
     test_tag = 'test_tag'
     test_file = Pathname.pwd+'test_file'
-    FileUtils.touch test_file
+    touch test_file
     system "#{bin}/tag", '--add', test_tag, test_file
     assert `#{bin}/tag --list --no-name #{test_file}`.chomp == test_tag
   end
