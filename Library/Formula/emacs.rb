@@ -36,7 +36,7 @@ class Emacs < Formula
 
   def patches
     {
-      :p0 => 'https://gist.github.com/znz/7279123/raw/edef39d879fe453fab43b76add0a1ca6ad355eb3/emacs.c.diff',
+      :p0 => DATA, # fix default-directory on Cocoa and Mavericks.
     }
   end
 
@@ -132,3 +132,23 @@ class Emacs < Formula
     return s
   end
 end
+
+__END__
+--- src/emacs.c.orig	2013-02-06 13:33:36.000000000 +0900
++++ src/emacs.c	2013-11-02 22:38:45.000000000 +0900
+@@ -1158,10 +1158,13 @@
+   if (!noninteractive)
+     {
+ #ifdef NS_IMPL_COCOA
++      /* Started from GUI? */
++      /* FIXME: Do the right thing if getenv returns NULL, or if
++         chdir fails.  */
++      if (! inhibit_window_system && ! isatty (0))
++        chdir (getenv ("HOME"));
+       if (skip_args < argc)
+         {
+-	  /* FIXME: Do the right thing if getenv returns NULL, or if
+-	     chdir fails.  */
+           if (!strncmp (argv[skip_args], "-psn", 4))
+             {
+               skip_args += 1;
