@@ -7,14 +7,13 @@ class Influxdb < Formula
 
   depends_on "leveldb"
   depends_on "protobuf" => :build
-  depends_on "apple-gcc42" => :build
   depends_on "bison" => :build
   depends_on "flex" => :build
-  depends_on "go" => :build
+  depends_on "go" => [:devel, :build]
 
   def install
+    ENV.prepend_path "PATH", "/usr/local/bin"
     ENV["GOPATH"] = buildpath
-    ENV["CC"] = "#{bin}/gcc-4.2"
 
     system "./build.sh"
 
