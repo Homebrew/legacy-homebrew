@@ -12,7 +12,7 @@ class OpengrmNgram < Formula
       ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include/c++/4.2.1"
       ENV.append 'LIBS', "#{MacOS.sdk_path}/usr/lib/libstdc++.dylib"
     end
-    system "./configure", "--disable-dependency-tracking", 
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

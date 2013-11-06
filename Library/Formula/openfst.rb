@@ -10,8 +10,8 @@ class Openfst < Formula
       ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include/c++/4.2.1"
       ENV.append 'LIBS', "#{MacOS.sdk_path}/usr/lib/libstdc++.dylib"
     end
-    system "./configure", "--disable-dependency-tracking", 
-                          "--enable-far", "--enable-pdt", 
+    system "./configure", "--disable-dependency-tracking",
+                          "--enable-far", "--enable-pdt",
                           "--prefix=#{prefix}"
     system "make install"
   end
