@@ -482,7 +482,7 @@ def check_user_path_1
 
             Consider setting your PATH so that #{HOMEBREW_PREFIX}/bin
             occurs before /usr/bin. Here is a one-liner:
-                echo export PATH="#{HOMEBREW_PREFIX}/bin:$PATH" >> ~/.bash_profile
+                echo export PATH='#{HOMEBREW_PREFIX}/bin:$PATH' >> ~/.bash_profile
           EOS
         end
       end
