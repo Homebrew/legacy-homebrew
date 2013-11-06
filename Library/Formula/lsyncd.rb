@@ -49,9 +49,8 @@ class Lsyncd < Formula
 
   def install
     # XNU Headers
-    system "tar", "xf", resource('xnu').fetch
-    xnu_path = Dir['xnu*'].first
-    ENV.append 'CPPFLAGS', "-I./#{xnu_path}"
+    resource('xnu').stage buildpath/'xnu'
+    ENV.append 'CPPFLAGS', "-I./xnu"
 
     # Docbook Catalog
     docbook = Formula.factory 'docbook'
