@@ -2,8 +2,8 @@ require 'formula'
 
 class MysqlCluster < Formula
   homepage 'http://www.mysql.com/cluster/'
-  url 'http://mysql.llarian.net/Downloads/MySQL-Cluster-7.3/mysql-cluster-gpl-7.3.1.tar.gz'
-  sha1 '593588df751ba154fbe2d36d96dd57257c9846b3'
+  url 'http://mysql.llarian.net/Downloads/MySQL-Cluster-7.3/mysql-cluster-gpl-7.3.2.tar.gz'
+  sha1 '5b94e177ccbefd28e10b3734fbfc007da296bedd'
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -23,7 +23,7 @@ class MysqlCluster < Formula
   env :std if build.universal?
 
   fails_with :clang do
-    build 421
+    build 500
     cause "http://article.gmane.org/gmane.comp.db.mysql.cluster/2085"
   end
 

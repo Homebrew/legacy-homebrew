@@ -58,7 +58,7 @@ module Homebrew extend self
 
     # automatically tap any migrated formulae's new tap
     report.select_formula(:D).each do |f|
-      next unless Formula.factory(f).installed?
+      next unless (HOMEBREW_CELLAR/f).exist?
       tap_user, tap_repo = TAP_MIGRATIONS[f].split '/'
       begin
         install_tap tap_user, tap_repo

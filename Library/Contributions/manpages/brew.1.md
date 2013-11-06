@@ -151,7 +151,7 @@ Note that these flags should only appear after a command.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--fresh] [--cc=<compiler>] [--use-clang|--use-gcc|--use-llvm] [--build-from-source] [--devel|--HEAD]` <formula>:
+  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--fresh] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
@@ -173,19 +173,10 @@ Note that these flags should only appear after a command.
     If `--fresh` is passed, the installation process will not re-use any
     options from previous installs.
 
-    If `--cc=<compiler>` is passed, attempt to compile using the specified
-    compiler. The specified argument should be the name of the compiler's
-    executable, for instance `gcc-4.2` for Apple's GCC 4.2.
-    This option is the only way to select a non-Apple compiler; for instance,
-    to build using a Homebrew-provided GCC 4.8, use `--cc=gcc-4.8`
-
-    If `--use-clang` is passed, attempt to compile using clang.
-
-    If `--use-gcc` is passed, attempt to compile using GCC. This is useful for
-    systems whose default compiler is LLVM-GCC.
-
-    If `--use-llvm` is passed, attempt to compile using the LLVM front-end to GCC.
-    *NOTE*: Not all formulae will build with LLVM.
+    If `--cc=<compiler>` is passed, attempt to compile using <compiler>.
+    <compiler> should be the name of the compiler's executable, for instance
+    `gcc-4.2` for Apple's GCC 4.2, or `gcc-4.8` for a Homebrew-provided GCC
+    4.8.
 
     If `--build-from-source` is passed, compile from source even if a bottle
     is provided for <formula>.

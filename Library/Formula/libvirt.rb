@@ -2,8 +2,8 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/libvirt-1.1.3.tar.gz'
-  sha256 'af83e65b4b26520662ddd183c1358be0d05138dba3e66745419f06441eff5a7c'
+  url 'http://libvirt.org/sources/libvirt-1.1.4.tar.gz'
+  sha256 '5910f5cf607a50c606d959e6b1e5d6e67966b7aa7324982afd7f85d9c24bd98f'
 
   option 'without-libvirtd', 'Build only the virsh client and development libraries'
 
@@ -22,24 +22,6 @@ class Libvirt < Formula
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
-  end
-
-  def patches
-    {
-      :p1 => [
-        # getsockopt() on Mac OS X requires using SOL_LOCAL instead of
-        # SOL_SOCKET for LOCAL_PEERCRED. This corrects that for Mac OS X
-        "http://libvirt.org/git/?p=libvirt.git;a=commitdiff_plain;h=5a468b38b6b9ac66c1db5d8ed5d5a122a9cf01cd",
-        # sysctlbyname() requires a different name on Mac OS X for CPU
-        # frequency than FreeBSD does. This patch corrects the name.
-        "http://libvirt.org/git/?p=libvirt.git;a=commitdiff_plain;h=2d74822a9eb4856c7f5216bb92bcb76630660f72",
-        # Fix Snow Leopard and lower broken by the 1st patch
-        "http://libvirt.org/git/?p=libvirt.git;a=commitdiff_plain;h=2f776d49796fe34dcf5a876f4c4e34f79b66f705",
-        # Fix xdrproc_t changes with Mavericks, backwards compat with
-        # older versions. Must remove for next version.
-        "https://gist.github.com/ColinHebert/7195346/raw/fd468bf92adaff918f3eaf0c8617e6b18d50abfa/0001-Add-the-third-argument-required-for-xdrproc_t.patch",
-      ]
-    }
   end
 
   def install
