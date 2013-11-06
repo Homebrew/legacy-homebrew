@@ -2,10 +2,11 @@ require 'formula'
 
 class Jsdoc3 < Formula
   homepage 'http://usejsdoc.org/'
-  url 'https://github.com/jsdoc3/jsdoc/archive/v3.2.1.tar.gz'
-  sha1 '9475bdef742dbdee96e002f000a2d99e05253093'
-
   head 'https://github.com/jsdoc3/jsdoc.git', :branch => 'master'
+  url 'https://github.com/jsdoc3/jsdoc/archive/v3.2.2.tar.gz'
+  sha1 '69d284a65a9b2b06c6e6454acb30976b41dea7b6'
+
+  conflicts_with 'jsdoc-toolkit', :because => 'both install jsdoc'
 
   def install
     libexec.install Dir['*']
