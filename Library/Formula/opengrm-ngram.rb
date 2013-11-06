@@ -1,7 +1,6 @@
 require 'formula'
 
 class OpengrmNgram < Formula
-
   depends_on 'openfst' => 'with-far'
 
   homepage 'http://openfst.cs.nyu.edu/twiki/bin/view/GRM/NGramLibrary'
