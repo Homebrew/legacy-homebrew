@@ -35,10 +35,10 @@ class Emacs < Formula
   end
 
   def patches
-    {
-      :p0 => DATA, # fix default-directory on Cocoa and Mavericks.
-    }
-  end
+    # Fix default-directory on Cocoa and Mavericks.
+    # Fied upstream in r114730 and r114882.
+    {:p0 => DATA}
+  end unless build.head?
 
   # Follow MacPorts and don't install ctags from Emacs. This allows Vim
   # and Emacs and ctags to play together without violence.
