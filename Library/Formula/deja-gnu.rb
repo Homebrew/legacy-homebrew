@@ -6,7 +6,7 @@ class DejaGnu < Formula
   mirror 'http://ftp.gnu.org/gnu/dejagnu/dejagnu-1.5.1.tar.gz'
   sha1 'eb16fb455690592a97f22acd17e8fc2f1b5c54c2'
 
-  head 'git://git.sv.gnu.org/dejagnu.git'
+  head 'http://git.sv.gnu.org/r/dejagnu.git'
 
   def install
     ENV.j1 # Or fails on Mac Pro

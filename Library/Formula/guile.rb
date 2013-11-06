@@ -7,7 +7,7 @@ class Guile < Formula
   sha1 'fc5d770e8b1d364b2f222a8f8c96ccf740b2956f'
 
   head do
-    url 'git://git.sv.gnu.org/guile.git'
+    url 'http://git.sv.gnu.org/r/guile.git'
 
     depends_on 'automake' => :build
     depends_on 'gettext' => :build
