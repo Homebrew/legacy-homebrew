@@ -1,13 +1,24 @@
 require 'formula'
 
 class Openfst < Formula
+
   homepage 'http://www.openfst.org/'
-  url 'http://openfst.cs.nyu.edu/twiki/pub/FST/FstDownload/openfst-1.3.3.tar.gz'
-  sha1 'd265fab57dd54c65bf200dd382afb490f2551c7d'
+  url 'http://www.openfst.org/twiki/pub/FST/FstDownload/openfst-1.3.4.tar.gz'
+  sha1 '21972c05896b2154a3fa1bdca5c9a56350194b38'
+
+  option 'with-far', 'enable finite state transducer archive support needed for OpenGrm'
+  option 'with-pdt', 'enable push-down automata support needed for OpenGrm'
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    if MacOS.version > :mountain_lion
+      ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/usr/include/c++/4.2.1"
+      ENV.append 'LIBS', "#{MacOS.sdk_path}/usr/lib/libstdc++.dylib"
+    end
+
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args << "--enable-far" if build.with? 'far'
+    args << "--enable-pdt" if build.with? 'pdt'
+    system "./configure", *args
     system "make install"
   end
 end
