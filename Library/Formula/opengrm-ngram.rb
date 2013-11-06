@@ -5,7 +5,7 @@ class OpengrmNgram < Formula
   homepage 'http://openfst.cs.nyu.edu/twiki/bin/view/GRM/NGramLibrary'
   sha1 'a2ceeaf6ac129b66d2682d76a20388cf1d4b8c31'
 
-  depends_on 'openfst' => 'with-far'
+  depends_on 'openfst'
 
   def install
     if MacOS.version > :mountain_lion
