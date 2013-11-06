@@ -56,16 +56,16 @@ class Emacs < Formula
   end
 
   def patches
-    p = {}
+    p = { :p0 => [], :p1 => [] }
     if build.include? "cocoa" and not build.head?
       # "--japanese" option:
       # to apply a patch from MacEmacsJP for Japanese input methods
       if build.include? "japanese"
-        p[:p0] = "http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583"
+        p[:p0].push("http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583")
       end
       # a fix for the fullscreen feature:
       # This patch removes a white stripe on the upper of a frame
-      p[:p1] = "https://gist.github.com/fukusaka/5175662/raw/20fa24d579a76a702ea7b3cc63c576052f8ed888/gistfile1.diff"
+      p[:p1].push("https://gist.github.com/fukusaka/5175662/raw/20fa24d579a76a702ea7b3cc63c576052f8ed888/gistfile1.diff")
     end
     p
   end
