@@ -29,6 +29,13 @@ class Go < Formula
     fails_with :clang do
       cause "clang: error: no such file or directory: 'libgcc.a'"
     end
+
+    # Surprise! On Mavericks (10.9), gcc *is* clang!
+    if MacOS.version == :mavericks
+      fails_with :gcc do
+        cause "clang: error: no such file or directory: 'libgcc.a'"
+      end
+    end
   end
 
   # Upstream patch for a switch statement that causes a clang error
@@ -39,12 +46,6 @@ class Go < Formula
   def install
     # For Clang cgo support Go needs to be able to tell through CC.
     ENV['CC'] = 'clang' if build.devel? and ENV.compiler == :clang
-
-    # Make sure we're using the aforementioned GCC 4.2 dependency on 10.8 and 10.9
-    if build.with? 'cgo' and not build.devel? and MacOS.version >= :mountain_lion
-      gcc42_bin = Formula.factory('apple-gcc42').bin
-      ENV['CC'] = "#{gcc42_bin}/gcc-4.2"
-    end
 
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
