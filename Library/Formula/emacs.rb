@@ -35,9 +35,14 @@ class Emacs < Formula
   end
 
   def patches
-    # Fix default-directory on Cocoa and Mavericks.
-    # Fied upstream in r114730 and r114882.
-    {:p0 => DATA}
+    {
+      # Fix default-directory on Cocoa and Mavericks.
+      # Fixed upstream in r114730 and r114882.
+      :p0 => DATA,
+      # Make native fullscreen mode optional, mostly from
+      # upstream r111679
+      :p1 => 'https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch'
+    }
   end unless build.head?
 
   # Follow MacPorts and don't install ctags from Emacs. This allows Vim
