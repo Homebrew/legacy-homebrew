@@ -2,8 +2,8 @@ require 'formula'
 
 class Fping < Formula
   homepage 'http://fping.org/'
-  url 'http://fping.org/dist/fping-3.6.tar.gz'
-  sha1 '85aac6084d5ccef2b5a4c4eb892f891576c0c0fd'
+  url 'http://fping.org/dist/fping-3.7.tar.gz'
+  sha1 '6a6e3490a8ae80101a29afa90a72289db2d011ca'
 
   head 'https://github.com/schweikert/fping.git'
 
@@ -13,9 +13,4 @@ class Fping < Formula
     system "make install"
   end
 
-  def caveats; <<-EOS.undent
-    fping can only be run by root by default so either use sudo to run fping or
-        setuid root #{sbin}/fping
-    EOS
-  end
 end
