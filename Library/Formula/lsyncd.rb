@@ -5,9 +5,9 @@ class Lsyncd < Formula
   url 'https://github.com/axkibe/lsyncd/archive/release-2.1.5.tar.gz'
   sha1 '2b8eb169365edc54488a97435bbd39ae4a6731b8'
 
-  depends_on 'asciidoc'   => :build
-  depends_on 'automake'   => :build
-  depends_on 'docbook'    => :build
+  depends_on :automake
+  depends_on 'asciidoc' => :build
+  depends_on 'docbook' => :build
   depends_on 'pkg-config' => :build
   depends_on 'lua'
 
@@ -43,36 +43,32 @@ class Lsyncd < Formula
     else
       # If raised, go to http://www.opensource.apple.com/ and find the XNU
       # version used by your version of OSX.
-      raise Homebrew::InstallationError.new(
-        self, "No XNU version known for OSX " + osx_version
-      )
+      raise Homebrew::InstallationError.new self, "No XNU version known for OSX #{osx_version}"
     end
   end
 
   def install
     # XNU Headers
     system "tar", "xf", resource('xnu').fetch
-    xnu_path = Dir['xnu*'][0]
+    xnu_path = Dir['xnu*'].first
     ENV.append 'CPPFLAGS', "-I./#{xnu_path}"
 
     # Docbook Catalog
-    docbook = Formula.factory('docbook')
+    docbook = Formula.factory 'docbook'
     ENV.append 'XML_CATALOG_FILES', docbook.opt_prefix/'docbook/xml/4.5/catalog.xml'
 
     # Asciidoc Binary
-    a2x = Formula.factory('asciidoc')
+    a2x = Formula.factory 'asciidoc'
     a2x_path = a2x.bin/'a2x'
+    inreplace "Makefile.am", "$(A2X)", a2x_path
 
     system "autoreconf", "--install"
     system "./configure", "--disable-dependency-tracking",
                           "--with-fsevents", "--without-inotify",
                           "--prefix=#{prefix}"
 
-    # For an unknown reason, A2X is not defined in the makefile,
-    # and doc compilation will fail if we do not add it.
-    system "sed", "-i.bu", "399 i\\\nA2X = #{a2x_path}\n", "Makefile"
     system "make"
-    system "make install"
+    system "make", "install"
 
   end
 
