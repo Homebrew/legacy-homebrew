@@ -8,6 +8,8 @@ class Spidermonkey < Formula
 
   head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz'
 
+  conflicts_with 'narwhal', :because => 'both install a js binary'
+
   depends_on 'readline'
   depends_on 'nspr'
 
