@@ -28,7 +28,7 @@ class Evas < Formula
     
     args = ["--prefix=#{prefix}", "--disable-dependency-tracking"]
     
-    args << "--with-doxygen-file=/usr/local/bin/doxygen" if build.include? 'with-docs'
+    args << "--with-doxygen-file=#{HOMEBREW_PREFIX}/bin/doxygen" if build.include? 'with-docs'
     
     system "./configure", *args
                                                    
