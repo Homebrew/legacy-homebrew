@@ -11,6 +11,10 @@ class Loudmouth < Formula
   depends_on 'gnutls'
   depends_on 'libidn'
 
+  # Fix compilation on 10.9. Sent upstream:
+  # https://github.com/mcabber/loudmouth/pull/9
+  def patches; DATA; end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
@@ -18,3 +22,23 @@ class Loudmouth < Formula
     system "make install"
   end
 end
+
+__END__
+diff --git a/loudmouth/lm-sock.c b/loudmouth/lm-sock.c
+index f3a2803..6e99eca 100644
+--- a/loudmouth/lm-sock.c
++++ b/loudmouth/lm-sock.c
+@@ -314,6 +314,13 @@ gboolean
+ _lm_sock_set_keepalive (LmOldSocketT sock, int delay)
+ {
+ #ifdef USE_TCP_KEEPALIVES
++
++#ifdef __APPLE__
++#ifndef TCP_KEEPIDLE
++#define TCP_KEEPIDLE TCP_KEEPALIVE
++#endif
++#endif
++
+     int opt;
+ 
+     opt = 1;
