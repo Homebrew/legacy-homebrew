@@ -6,9 +6,6 @@ class Aplus < Formula
   mirror 'http://ftp.us.debian.org/debian/pool/main/a/aplus-fsf/aplus-fsf_4.22.1.orig.tar.gz'
   sha1 'e757cc7654cf35dba15a6a5d6cac5320146558fc'
 
-  depends_on :automake
-  depends_on :libtool
-
   # Fix the missing CoreServices include (via Fink version of aplus)
   def patches
     DATA
@@ -20,12 +17,8 @@ class Aplus < Formula
       chmod 0644, path
       inreplace path, "/usr/local/aplus-fsf-4.20", prefix
     end
-    system "aclocal -I config"
-    system "glibtoolize --force --copy"
-    system "automake --foreign --add-missing --copy"
-    system "autoconf"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
     ENV.j1 # make install breaks with -j option
     system "make", "install"
