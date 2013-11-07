@@ -12,8 +12,12 @@ class Libslax < Formula
   end
 
   depends_on 'libtool'  => :build
-  depends_on 'libxml2'
-  depends_on 'libxslt'
+
+  if MacOS.version <= :mountain_lion
+    depends_on 'libxml2'
+    depends_on 'libxslt'
+  end
+
   depends_on 'curl' if MacOS.version <= :lion
 
   def install
