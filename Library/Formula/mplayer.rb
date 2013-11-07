@@ -33,13 +33,15 @@ class Mplayer < Formula
     if build.head?
       # When building SVN, configure prompts the user to pull FFmpeg from git.
       # Don't do that.
-      patches << "https://gist.github.com/anonymous/7234266/raw/"
+      p << "https://gist.github.com/anonymous/7234266/raw/"
     end
 
     if MacOS.version >= :mavericks
       # Fix compiling of brew's mplayer formula on OS X mavericks v10.9
-      patches << "https://gist.github.com/anonymous/7234293/raw/"
+      p << "https://gist.github.com/anonymous/7234293/raw/"
     end
+
+    return p
   end
 
   def install
