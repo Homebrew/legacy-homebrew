@@ -6,6 +6,10 @@ class SdlImage < Formula
   sha1 '5e3e393d4e366638048bbb10d6a269ea3f4e4cf2'
 
   depends_on 'sdl'
+  depends_on 'jpeg'    => :recommended
+  depends_on 'libpng'  => :recommended
+  depends_on 'libtiff' => :recommended
+  depends_on 'webp'    => :recommended
 
   option :universal
 
