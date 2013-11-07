@@ -16,6 +16,9 @@ class Mutt < Formula
     depends_on :automake
   end
 
+  conflicts_with 'signing-party',
+    :because => 'mutt installs private copies of pgpring and pgpewrap'
+
   option "with-debug", "Build with debug option enabled"
   option "with-trash-patch", "Apply trash folder patch"
   option "with-slang", "Build against slang instead of ncurses"

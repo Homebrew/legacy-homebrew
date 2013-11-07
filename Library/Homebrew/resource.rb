@@ -61,7 +61,7 @@ class Resource
       downloader.stage
       if block_given?
         yield self
-      else
+      elsif target
         target.install Dir['*']
       end
     end
