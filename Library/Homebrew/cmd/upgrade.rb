@@ -13,7 +13,10 @@ module Homebrew extend self
 
     if ARGV.named.empty?
       outdated = Homebrew.outdated_brews
-      exit 0 if outdated.empty?
+      if outdated.empty?
+        puts "Already up-to-date."
+        exit 0
+      end
     else
       outdated = ARGV.formulae.select do |f|
         if f.installed?
