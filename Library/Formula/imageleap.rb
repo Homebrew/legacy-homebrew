@@ -6,9 +6,8 @@ class Imageleap < Formula
   sha1 'b5dfa3fae32ebdb4019292eda99d07389a9ed328'
 
   def install
-    system "PREFIX='#{prefix}'"
     system "make"
-    system "make", "install"
+    system "make",  "PREFIX=#{prefix}", "install"
   end
 
   test do
