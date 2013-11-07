@@ -13,9 +13,11 @@ class Juise < Formula
 
   depends_on 'libtool'  => :build
   depends_on 'libslax'
-  depends_on 'libssh2'
-  depends_on 'pcre'
-  depends_on 'sqlite'
+  if MacOS.version <= :mountainlion
+    depends_on 'libssh2'
+    depends_on 'pcre'
+    depends_on 'sqlite'
+  end
 
   def install
     system "sh ./bin/setup.sh" if build.head?
