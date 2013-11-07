@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libmpdclient < Formula
-  homepage 'http://mpd.wikia.com/wiki/ClientLib:libmpdclient'
-  url 'http://downloads.sourceforge.net/project/musicpd/libmpdclient/2.7/libmpdclient-2.7.tar.bz2'
-  sha1 'a8ec78f6a7ae051fbf1cc0f47564301423c281b0'
+  homepage 'http://www.musicpd.org/libs/libmpdclient/'
+  url 'http://www.musicpd.org/download/libmpdclient/2/libmpdclient-2.9.tar.gz'
+  sha1 'fe40dcb54f79648a17b68c93add2e601077a9311'
 
   head do
     url 'git://git.musicpd.org/master/libmpdclient.git'
@@ -11,8 +11,9 @@ class Libmpdclient < Formula
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
-    depends_on 'doxygen' => :build
   end
+
+  depends_on 'doxygen' => :build
 
   option :universal
 

@@ -17,12 +17,9 @@ class Dependency
   end
 
   def ==(other)
-    name == other.name
-  end
-
-  def eql?(other)
     instance_of?(other.class) && name == other.name
   end
+  alias_method :eql?, :==
 
   def hash
     name.hash
