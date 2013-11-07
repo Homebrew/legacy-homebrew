@@ -7,6 +7,7 @@ class Apachetop < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
+                          "--mandir=#{man}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--with-logfile=/var/log/apache2/access_log"
