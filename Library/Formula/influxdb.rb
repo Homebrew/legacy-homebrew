@@ -5,6 +5,12 @@ class Influxdb < Formula
   url "http://get.influxdb.org/src/influxdb-0.0.7.tar.gz"
   sha1 "2ee3e88112a9f3f7fa4423acbdb686711bd42595"
 
+  bottle do
+    sha1 '2cafb68bd52cf47adf03e1e42551342d0cbfe5cc' => :mavericks
+    sha1 '98ef180c3577da468cba3843ff4608a3c6987746' => :mountain_lion
+    sha1 'f59872ca4c0b77657e5adfe8c0c02a2b170f322b' => :lion
+  end
+
   depends_on "leveldb"
   depends_on "protobuf" => :build
   depends_on "bison" => :build
