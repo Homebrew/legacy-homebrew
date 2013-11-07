@@ -9,7 +9,8 @@ class Fping < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--enable-ipv6"
     system "make install"
   end
 
