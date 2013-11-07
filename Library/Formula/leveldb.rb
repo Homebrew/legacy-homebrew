@@ -5,7 +5,7 @@ class Leveldb < Formula
   url 'https://leveldb.googlecode.com/files/leveldb-1.14.0.tar.gz'
   sha1 '641d54df4aaf7ee569ae003cfbdb888ebdee0d7f'
 
-  depends_on 'snappy' => :build
+  depends_on 'snappy'
 
   def install
     system 'make'
