@@ -14,6 +14,11 @@ class Libplist < Formula
   depends_on :python => :optional
   depends_on 'Cython' => :python if build.with? 'python'
 
+  def patches
+    # Upstream patch for compilation on 10.9
+    "https://github.com/libimobiledevice/libplist/commit/c56c8103f51c20c6fcf99e8bc9d83c380f503a1b.patch"
+  end
+
   def install
     ENV.deparallelize # make fails on an 8-core Mac Pro
 
