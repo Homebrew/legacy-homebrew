@@ -8,9 +8,10 @@ class Leveldb < Formula
   depends_on 'snappy' => :build
 
   def install
-    system "make"
-    system "make leveldbutil"
-    include.install "include/leveldb"
+    system 'make'
+    system 'make', 'leveldbutil'
+
+    include.install 'include/leveldb'
     bin.install 'leveldbutil'
     lib.install 'libleveldb.a'
     lib.install 'libleveldb.dylib.1.14' => 'libleveldb.1.14.dylib'
