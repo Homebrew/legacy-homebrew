@@ -36,14 +36,20 @@ class Emacs < Formula
   end
 
   def patches
-    {
+    p = {
       # Fix default-directory on Cocoa and Mavericks.
       # Fixed upstream in r114730 and r114882.
-      :p0 => DATA,
+      :p0 => [ DATA ],
       # Make native fullscreen mode optional, mostly from
       # upstream r111679
-      :p1 => 'https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch'
+      :p1 => [ 'https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch' ]
     }
+    # "--japanese" option:
+    # to apply a patch from MacEmacsJP for Japanese input methods
+    if build.include? "cocoa" and build.include? "japanese"
+      p[:p0].push("http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583")
+    end
+    p
   end unless build.head?
 
   # Follow MacPorts and don't install ctags from Emacs. This allows Vim
@@ -53,21 +59,6 @@ class Emacs < Formula
       (bin/"ctags").unlink
       (share/man/man1/"ctags.1.gz").unlink
     end
-  end
-
-  def patches
-    p = { :p0 => [], :p1 => [] }
-    if build.include? "cocoa" and not build.head?
-      # "--japanese" option:
-      # to apply a patch from MacEmacsJP for Japanese input methods
-      if build.include? "japanese"
-        p[:p0].push("http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583")
-      end
-      # a fix for the fullscreen feature:
-      # This patch removes a white stripe on the upper of a frame
-      p[:p1].push("https://gist.github.com/fukusaka/5175662/raw/20fa24d579a76a702ea7b3cc63c576052f8ed888/gistfile1.diff")
-    end
-    p
   end
 
   def install
