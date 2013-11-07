@@ -5,7 +5,9 @@ class Sdl2Net < Formula
   url 'http://www.libsdl.org/projects/SDL_net/release/SDL2_net-2.0.0.tar.gz'
   sha1 'c7cf473b3adada23171df9f92b3117052eac69fa'
 
+  depends_on 'pkg-config' => :build
   depends_on 'sdl2'
+
   option :universal
 
   def install
