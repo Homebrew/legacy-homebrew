@@ -10,6 +10,7 @@ class Sdl2Image < Formula
   depends_on 'libpng'  => :recommended
   depends_on 'libtiff' => :recommended
   depends_on 'webp'    => :recommended
+
   option :universal
 
   def install
