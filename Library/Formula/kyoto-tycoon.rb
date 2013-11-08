@@ -20,4 +20,24 @@ class KyotoTycoon < Formula
     system "make"
     system "make install"
   end
+
+  def patches
+    if MacOS.version >= :mavericks
+      DATA
+    end
+  end
 end
+
+
+__END__
+--- a/ktdbext.h  2013-11-08 09:34:53.000000000 -0500
++++ b/ktdbext.h  2013-11-08 09:35:00.000000000 -0500
+@@ -271,7 +271,7 @@
+       if (!logf("prepare", "started to open temporary databases under %s", tmppath.c_str()))
+         err = true;
+       stime = kc::time();
+-      uint32_t pid = getpid() & kc::UINT16MAX;
++      uint32_t pid = kc::getpid() & kc::UINT16MAX;
+       uint32_t tid = kc::Thread::hash() & kc::UINT16MAX;
+       uint32_t ts = kc::time() * 1000;
+       for (size_t i = 0; i < dbnum_; i++) {
