@@ -2,8 +2,8 @@ require 'formula'
 
 class Fping < Formula
   homepage 'http://fping.org/'
-  url 'http://fping.org/dist/fping-3.7.tar.gz'
-  sha1 '6a6e3490a8ae80101a29afa90a72289db2d011ca'
+  url 'http://fping.org/dist/fping-3.8.tar.gz'
+  sha1 '1aad76c065d4049ca6c5c1b4de82c13f4529a201'
 
   head 'https://github.com/schweikert/fping.git'
 
