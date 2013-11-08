@@ -28,6 +28,9 @@ class Neo4j < Formula
     # Adjust UDC props
     open("#{libexec}/conf/neo4j-wrapper.conf", 'a') { |f|
       f.puts "wrapper.java.additional.4=-Dneo4j.ext.udc.source=homebrew"
+
+      # suppress the empty, focus-stealing java gui
+      f.puts "wrapper.java.additional=-Djava.awt.headless=true"
     }
   end
 
