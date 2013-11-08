@@ -20,7 +20,9 @@ class KyotoCabinet < Formula
   end
 
   def patches
-    DATA
+    if MacOS.version >= :mavericks
+      DATA
+    end
   end
 end
 
