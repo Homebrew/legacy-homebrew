@@ -9,15 +9,15 @@ class Glog < Formula
 
   def patches
     if MacOS.version >= :mavericks
-      {
+      [
         # Since 0.3.4 has not yet been released, manually apply
         # r134 that refactors the way headers are included.
-        :p1 => "https://gist.github.com/danslo/7128754/raw/9b19991da4753f5efb87ae9a6939e6c3e9bc1fdf/glog_logging_r134.diff",
+        "https://gist.github.com/danslo/7128754/raw/9b19991da4753f5efb87ae9a6939e6c3e9bc1fdf/glog_logging_r134.diff",
 
         # Don't use tr1 prefix when we're using libc++:
-        # https://code.google.com/p/google-glog/issues/detail?id=121
-        :p0 => "https://google-glog.googlecode.com/issues/attachment?aid=1210003000&name=libc%2B%2B.diff&token=XibcNVdg2suz1w646JbsbHHOkJs%3A1382896876470",
-      }
+        # https://code.google.com/p/google-glog/issues/detail?id=121 (patch mirrored on gist.github.com)
+        "https://gist.github.com/noahm/7364571/raw/436283200fe5a3ac5d00d769bb2203260bebfcf9/libc%2B%2B.diff",
+      ]
     end
   end
 
