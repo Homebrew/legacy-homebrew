@@ -29,7 +29,7 @@ class Ice < Formula
 
     args = %W[
       prefix=#{prefix}
-      install_mandir=#{man}/man1
+      install_mandir=#{man1}
       install_slicedir=#{share}/Ice-3.5/slice
       embedded_runpath_prefix=#{prefix}
       OPTIMIZE=yes
