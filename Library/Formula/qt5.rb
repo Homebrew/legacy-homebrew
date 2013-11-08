@@ -33,7 +33,6 @@ class Qt5 < Formula
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
-  option :universal
   option 'with-docs', 'Build documentation'
   option 'developer', 'Build and link with developer options'
 
@@ -43,9 +42,9 @@ class Qt5 < Formula
   odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if build.include? 'with-qtdbus'
   odie 'qt5: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
   odie 'qt5: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
+  odie 'qt5: --universal is no longer supported' if build.universal?
 
   def install
-    ENV.universal_binary if build.universal?
     args = ["-prefix", prefix,
             "-system-zlib",
             "-confirm-license", "-opensource",
@@ -72,13 +71,15 @@ class Qt5 < Formula
       args << "-ldbus-1"
     end
 
-    if MacOS.prefer_64_bit? or build.universal?
+    if MacOS.prefer_64_bit?
       args << '-arch' << 'x86_64'
     end
 
-    if !MacOS.prefer_64_bit? or build.universal?
+    if !MacOS.prefer_64_bit?
       args << '-arch' << 'x86'
     end
+
+    args << '-sdk' << "macosx#{MacOS::version}" # Give a hint to Qt so that it uses the right SDK.
 
     args << '-developer-build' if build.include? 'developer'
 
