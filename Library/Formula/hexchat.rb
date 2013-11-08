@@ -2,8 +2,8 @@ require 'formula'
 
 class Hexchat < Formula
   homepage 'http://hexchat.github.io/'
-  url 'https://github.com/hexchat/hexchat/archive/v2.9.5.tar.gz'
-  sha1 '874d777c308ebc4438bd970629fffc8eeb188b91'
+  url 'https://github.com/hexchat/hexchat/archive/v2.9.6.tar.gz'
+  sha1 'f19248e8d255cf463d5c0eba3e3df02a431f3911'
   head 'https://github.com/hexchat/hexchat.git'
 
   depends_on 'pkg-config' => :build
