@@ -5,6 +5,13 @@ class Inkscape < Formula
   url 'http://downloads.sourceforge.net/project/inkscape/inkscape/0.48.4/inkscape-0.48.4.tar.gz'
   sha1 'ce453cc9aff56c81d3b716020cd8cc7fa1531da0'
 
+  head do
+      url 'lp:inkscape/0.48.x', :using => :bzr
+
+      depends_on :autoconf
+      depends_on :automake
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
   depends_on 'boost-build' => :build
@@ -22,9 +29,15 @@ class Inkscape < Formula
   depends_on 'poppler' => :optional
   depends_on 'hicolor-icon-theme'
 
-  fails_with :clang
+  fails_with :clang unless build.head?
 
   def install
+    if build.head?
+      ENV['ACLOCAL_FLAGS'] = "-I #{HOMEBREW_PREFIX}/share/aclocal"
+      system "./autogen.sh"
+      ENV.cxx11
+    end
+
     args = [ "--disable-dependency-tracking",
              "--prefix=#{prefix}",
              "--enable-lcms" ]
