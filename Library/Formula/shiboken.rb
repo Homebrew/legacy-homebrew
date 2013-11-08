@@ -64,16 +64,17 @@ end
 
 __END__
 diff --git a/ext/sparsehash/google/sparsehash/sparseconfig.h b/ext/sparsehash/google/sparsehash/sparseconfig.h
-index 44a4dda..8cf2f1c 100644
+index 44a4dda..5073639 100644
 --- a/ext/sparsehash/google/sparsehash/sparseconfig.h
 +++ b/ext/sparsehash/google/sparsehash/sparseconfig.h
-@@ -13,6 +13,15 @@
+@@ -13,6 +13,16 @@
      #define HASH_NAMESPACE stdext
      /* The system-provided hash function including the namespace. */
      #define SPARSEHASH_HASH  HASH_NAMESPACE::hash_compare
-+/* libc++ does not implement the tr1 namespce so use the c++11
-+ *  definitions for systems that use it (OS X 10.9) */
-+#elif __clang__ &&  __has_include(<functional>)
++/* libc++ does not implement the tr1 namespce, instead the
++ * equivalient functionality is placed in namespace std,
++ * so use when it targeting such systems (OS X 10.7 onwards) */
++#elif defined(_LIBCPP_VERSION)
 +    /* the location of the header defining hash functions */
 +    #define HASH_FUN_H <functional>
 +    /* the namespace of the hash<> function */
