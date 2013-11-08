@@ -12,6 +12,9 @@ class Maven < Formula
     # Fix the permissions on the global settings file.
     chmod 0644, Dir["conf/settings.xml"]
 
+    # OS X readlink doesn't support -f
+    inreplace 'bin/mvn', 'readlink -f', 'readlink'
+
     prefix.install_metafiles
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
