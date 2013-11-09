@@ -3,9 +3,9 @@ require 'formula'
 # Reference: https://github.com/b4winckler/macvim/wiki/building
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/archive/snapshot-71.tar.gz'
-  version '7.4-71'
-  sha1 '09101e3e29ae517d6846159211ae64e1427b86c0'
+  url 'https://github.com/b4winckler/macvim/archive/snapshot-72.tar.gz'
+  version '7.4-72'
+  sha1 '3fb5b09d7496c8031a40e7a73374424ef6c81166'
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
@@ -22,14 +22,6 @@ class Macvim < Formula
   env :std if MacOS.version <= :snow_leopard
   # Help us! We'd like to use superenv in these environments too
 
-  # Mavericks Patches:
-  # * Fix Ruby.framework detection on OS X 10.9
-  # * Allow building against specific Ruby.framework version matching ruby-command
-  # * Add missing version macros include for 10.9
-  def patches
-    DATA unless build.head?
-  end
-
   def install
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in
@@ -40,7 +32,7 @@ class Macvim < Formula
     ENV.clang if MacOS.version >= :lion
 
     # macvim HEAD only works with the current Ruby.framework because it builds with -framework Ruby
-    system_ruby = build.head? ? "/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby" : RUBY_PATH
+    system_ruby = "/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
 
     args = %W[
       --with-features=huge
@@ -127,52 +119,3 @@ class Macvim < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/src/auto/configure b/src/auto/configure
-index 4fd7b82..08af7f3 100755
---- a/src/auto/configure
-+++ b/src/auto/configure
-@@ -7206,8 +7208,9 @@ echo "${ECHO_T}$rubyhdrdir" >&6; }
-	  librubyarg="$librubyarg"
-	  RUBY_LIBS="$RUBY_LIBS -L$rubylibdir"
-         elif test -d "/System/Library/Frameworks/Ruby.framework"; then
--                        RUBY_LIBS="-framework Ruby"
--                        RUBY_CFLAGS=
-+            ruby_fw_ver=`$vi_cv_path_ruby -r rbconfig -e "print $ruby_rbconfig::CONFIG['ruby_version'][0,3]"`
-+            RUBY_LIBS="/System/Library/Frameworks/Ruby.framework/Versions/$ruby_fw_ver/Ruby"
-+            RUBY_CFLAGS="-I/System/Library/Frameworks/Ruby.framework/Versions/$ruby_fw_ver/Headers -DRUBY_VERSION=$rubyversion"
-             librubyarg=
-	fi
-
-diff --git a/src/if_ruby.c b/src/if_ruby.c
-index 4436e06..44fd5ee 100644
---- a/src/if_ruby.c
-+++ b/src/if_ruby.c
-@@ -96,11 +96,7 @@
- # define rb_num2int rb_num2int_stub
- #endif
-
--#ifdef FEAT_GUI_MACVIM
--# include <Ruby/ruby.h>
--#else
--# include <ruby.h>
--#endif
-+#include <ruby.h>
- #ifdef RUBY19_OR_LATER
- # include <ruby/encoding.h>
- #endif
-diff --git a/src/os_mac.h b/src/os_mac.h
-index 78b79c2..54009ab 100644
---- a/src/os_mac.h
-+++ b/src/os_mac.h
-@@ -16,6 +16,9 @@
- # define OPAQUE_TOOLBOX_STRUCTS 0
- #endif
-
-+/* Include MAC_OS_X_VERSION_* macros */
-+#include <AvailabilityMacros.h>
-+
- /*
-  * Macintosh machine-dependent things.
-  *
