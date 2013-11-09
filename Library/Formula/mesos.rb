@@ -4,12 +4,11 @@ class Java7Requirement < Requirement
   fatal true
 
   def java_home_cmd
-    "/usr/libexec/java_home -v '1.7'"
+    "/usr/libexec/java_home -v 1.7"
   end
 
   satisfy :build_env => false do
     system *java_home_cmd.split(" ")
-    $?.success?
   end
 
   def message; <<-EOS.undent
