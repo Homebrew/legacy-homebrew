@@ -38,18 +38,11 @@ class Erlang < Formula
   depends_on 'unixodbc' if MacOS.version >= :mavericks
   depends_on 'fop' => :optional # enables building PDF docs
 
-  fails_with :llvm do
-    build 2334
-  end
+  fails_with :llvm
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
 
-    if ENV.compiler == :llvm
-      # Don't use optimizations. Fixes build on Lion/Xcode 4.2
-      ENV.remove_from_cflags /-O./
-      ENV.append_to_cflags '-O0'
-    end
     ENV.append "FOP", "#{HOMEBREW_PREFIX}/bin/fop" if build.with? 'fop'
 
     # Do this if building from a checkout to generate configure
