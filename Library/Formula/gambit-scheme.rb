@@ -14,7 +14,9 @@ class GambitScheme < Formula
     args = %W[
       --disable-debug
       --prefix=#{prefix}
+      --libdir=#{lib}/gambit-c
       --infodir=#{info}
+      --docdir=#{doc}
     ]
 
     # Recommended to improve the execution speed and compactness
