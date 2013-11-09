@@ -15,6 +15,11 @@ class Log4cxx < Formula
     cause "Fails with 'collect2: ld terminated with signal 11 [Segmentation fault]'"
   end
 
+  # Incorporated upstream, remove on next version update
+  # https://issues.apache.org/jira/browse/LOGCXX-404
+  # https://issues.apache.org/jira/browse/LOGCXX-417
+  def patches; DATA; end
+
   def install
     ENV.universal_binary if build.universal?
     ENV.O2 # Using -Os causes build failures on Snow Leopard.
@@ -30,3 +35,26 @@ class Log4cxx < Formula
     system "make install"
   end
 end
+__END__
+--- a/src/main/include/log4cxx/helpers/simpledateformat.h
++++ b/src/main/include/log4cxx/helpers/simpledateformat.h
+@@ -27,10 +27,9 @@
+
+ #include <log4cxx/helpers/dateformat.h>
+ #include <vector>
++#include <locale>
+ #include <time.h>
+
+-namespace std { class locale; }
+-
+ namespace log4cxx
+ {
+         namespace helpers
+--- a/src/main/cpp/stringhelper.cpp
++++ b/src/main/cpp/stringhelper.cpp
+@@ -28,6 +28,7 @@
+ #endif
+ #include <log4cxx/private/log4cxx_private.h>
+ #include <cctype>
++#include <cstdlib>
+ #include <apr.h>

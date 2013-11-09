@@ -6,6 +6,8 @@ class TinyFugue < Formula
   sha1 '37bb70bfb7b44d36c28606c6bd45e435502fb4b4'
   version '5.0b8'
 
+  conflicts_with 'tee-clc', :because => 'both install a `tf` binary'
+
   depends_on 'libnet'
   depends_on 'pcre'
 

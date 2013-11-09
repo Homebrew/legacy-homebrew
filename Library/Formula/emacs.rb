@@ -34,6 +34,17 @@ class Emacs < Formula
     cause "Duplicate symbol errors while linking."
   end
 
+  def patches
+    {
+      # Fix default-directory on Cocoa and Mavericks.
+      # Fixed upstream in r114730 and r114882.
+      :p0 => DATA,
+      # Make native fullscreen mode optional, mostly from
+      # upstream r111679
+      :p1 => 'https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch'
+    }
+  end unless build.head?
+
   # Follow MacPorts and don't install ctags from Emacs. This allows Vim
   # and Emacs and ctags to play together without violence.
   def do_not_install_ctags
@@ -57,10 +68,7 @@ class Emacs < Formula
       args << '--without-gnutls'
     end
 
-    # See: https://github.com/mxcl/homebrew/issues/4852
-    if build.head? and File.exists? "./autogen/copy_autogen"
-      system "autogen/copy_autogen"
-    end
+    system "./autogen.sh" if build.head?
 
     if build.include? "cocoa"
       # Patch for color issues described here:
@@ -126,3 +134,23 @@ class Emacs < Formula
     return s
   end
 end
+
+__END__
+--- src/emacs.c.orig	2013-02-06 13:33:36.000000000 +0900
++++ src/emacs.c	2013-11-02 22:38:45.000000000 +0900
+@@ -1158,10 +1158,13 @@
+   if (!noninteractive)
+     {
+ #ifdef NS_IMPL_COCOA
++      /* Started from GUI? */
++      /* FIXME: Do the right thing if getenv returns NULL, or if
++         chdir fails.  */
++      if (! inhibit_window_system && ! isatty (0))
++        chdir (getenv ("HOME"));
+       if (skip_args < argc)
+         {
+-	  /* FIXME: Do the right thing if getenv returns NULL, or if
+-	     chdir fails.  */
+           if (!strncmp (argv[skip_args], "-psn", 4))
+             {
+               skip_args += 1;

@@ -2,8 +2,9 @@ require 'formula'
 
 class Bind < Formula
   homepage 'http://www.isc.org/software/bind/'
-  url 'http://ftp.isc.org/isc/bind9/9.9.4/bind-9.9.4.tar.gz'
-  sha1 'd7be390e6c2546f37a7280e1975e1cd134565f62'
+  url 'http://ftp.isc.org/isc/bind9/9.9.4-P1/bind-9.9.4-P1.tar.gz'
+  version '9.9.4-P1'
+  sha1 '35dd28de21626fd6327230c38d0f164dd2263bed'
 
   option 'with-brewed-openssl', 'Build with Homebrew OpenSSL instead of the system version'
 

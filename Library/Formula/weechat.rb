@@ -27,16 +27,6 @@ class Weechat < Formula
   end
 
   def install
-    # Remove all arch flags from the PERL_*FLAGS as we specify them ourselves.
-    # This messes up because the system perl is a fat binary with 32, 64 and PPC
-    # compiles, but our deps don't have that. Remove at v0.3.8, fixed in HEAD.
-    archs = %W[-arch ppc -arch i386 -arch x86_64].join('|')
-    inreplace  "src/plugins/perl/CMakeLists.txt",
-      'IF(PERL_FOUND)',
-      'IF(PERL_FOUND)' +
-      %Q{\n  STRING(REGEX REPLACE "#{archs}" "" PERL_CFLAGS "${PERL_CFLAGS}")} +
-      %Q{\n  STRING(REGEX REPLACE "#{archs}" "" PERL_LFLAGS "${PERL_LFLAGS}")}
-
     args = std_cmake_args + %W[
       -DPREFIX=#{prefix}
       -DENABLE_GTK=OFF
