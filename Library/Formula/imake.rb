@@ -8,8 +8,6 @@ class Imake < Formula
   depends_on 'pkg-config' => :build
   depends_on :x11
 
-  env :std # CPP issues under superenv
-
   resource 'xorg-cf-files' do
     url 'http://xorg.freedesktop.org/releases/individual/util/xorg-cf-files-1.0.4.tar.bz2'
     sha1 'c58b7252df481572ec1ccd77b9f1ab561ed89e45'
