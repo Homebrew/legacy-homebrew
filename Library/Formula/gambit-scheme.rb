@@ -26,14 +26,12 @@ class GambitScheme < Formula
 
     args << "--enable-shared" if build.include? 'enable-shared'
 
-    unless ENV.compiler == :gcc
+    if ENV.compiler == :clang
       opoo <<-EOS.undent
-        Gambit will build with GCC if an acceptable version is found on your
-        system, or Clang otherwise.  If it finds only Clang, the build will
-        take a very, very long time.  Programs built with Gambit after the
-        install may also tke a long time to compile.
-
-        You can remedy this by installing an apple-gcc* or gcc* package.
+        Gambit will build with Clang, however the build may take longer and
+        produce substandard binaries. If you have GCC, you can get a faster
+        build and faster execution with:
+          brew install gambit-scheme --cc=gcc-4.2 # or 4.7, 4.8, etc.
       EOS
     end
 
