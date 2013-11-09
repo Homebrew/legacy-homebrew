@@ -304,7 +304,7 @@ module Superenv
   end
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
-      @compiler = :"gcc-4.#{n}"
+      @compiler = "gcc-4.#{n}"
       self.cc  = self['HOMEBREW_CC']  = determine_cc
       self.cxx = self['HOMEBREW_CXX'] = determine_cxx
     end
