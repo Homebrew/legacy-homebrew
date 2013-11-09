@@ -11,12 +11,17 @@ class GambitScheme < Formula
   fails_with :llvm
 
   def install
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
-            "--infodir=#{info}",
-            # Recommended to improve the execution speed and compactness
-            # of the generated executables. Increases compilation times.
-            "--enable-single-host"]
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+      --infodir=#{info}
+    ]
+
+    # Recommended to improve the execution speed and compactness
+    # of the generated executables. Increases compilation times.
+    # Don't enable this when using clang, per configure warning.
+    args << "--enable-single-host" unless ENV.compiler == :clang
+
     args << "--enable-shared" if build.include? 'enable-shared'
 
     unless ENV.compiler == :gcc
