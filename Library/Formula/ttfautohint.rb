@@ -2,8 +2,8 @@ require 'formula'
 
 class Ttfautohint < Formula
   homepage 'http://www.freetype.org/ttfautohint'
-  url 'http://download.savannah.gnu.org/releases/freetype/ttfautohint-0.95.tar.gz'
-  sha1 '5039cf8af38283a2f70b8912a968dd1abde9836a'
+  url 'http://downloads.sourceforge.net/project/freetype/ttfautohint/0.97/ttfautohint-0.97.tar.gz'
+  sha1 '8e11226a9d6d2f8210c752dc97c614d5b753651a'
 
   depends_on :freetype
 
