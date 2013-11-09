@@ -12,6 +12,10 @@ class Libkml < Formula
     depends_on :libtool
   end
 
+  # Fix compilation with clang and gcc 4.7+
+  # https://code.google.com/p/libkml/issues/detail?id=179
+  def patches; DATA; end
+
   def install
     if build.head?
       # The inreplace line below is only required until the patch in #issue 186
@@ -30,3 +34,17 @@ class Libkml < Formula
     system "make install"
   end
 end
+
+__END__
+diff --git a/src/kml/base/file_posix.cc b/src/kml/base/file_posix.cc
+index 764ae55..8ee9892 100644
+--- a/src/kml/base/file_posix.cc
++++ b/src/kml/base/file_posix.cc
+@@ -29,6 +29,7 @@
+ #include "kml/base/file.h"
+ #include <stdlib.h>
+ #include <string.h>
++#include <unistd.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ 
