@@ -8,10 +8,7 @@ class GambitScheme < Formula
   option 'with-check', 'Execute "make check" before installing'
   option 'enable-shared', 'Build Gambit Scheme runtime as shared library'
 
-  fails_with :llvm do
-    build 2335
-    cause "ld crashes during the build process or segfault at runtime"
-  end
+  fails_with :llvm
 
   def install
     args = ["--disable-debug",
