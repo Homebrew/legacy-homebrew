@@ -64,7 +64,7 @@ class Cmd
     @tool ||= case @arg0
     when 'ld' then 'ld'
     when 'cpp' then 'cpp'
-    when /\w\+\+$/
+    when /\w\+\+(-\d\.\d)?$/
       case ENV['HOMEBREW_CC']
       when /clang/
         'clang++'
