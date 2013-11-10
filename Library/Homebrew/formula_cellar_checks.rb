@@ -89,4 +89,21 @@ module FormulaCellarChecks
       EOS
     ]
   end
+
+  def check_generic_executables bin
+    return unless bin.directory?
+    generics = bin.children.select { |g| g.to_s =~ /\/(run|service)$/}
+    return if generics.empty?
+
+    ["Generic binaries were installed to \"#{bin}\".",
+      <<-EOS.undent
+        Binaries with generic names are likely to conflict with other software,
+        and suggest that this software should be installed to "libexec" and
+        then symlinked as needed.
+
+        The offending files are:
+          #{generics * "\n          "}
+      EOS
+    ]
+  end
 end
