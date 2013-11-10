@@ -346,12 +346,16 @@ Note that these flags should only appear after a command.
     If <formulae> are given, upgrade only the specified brews (but do so even
     if they are pinned; see `pin`, `unpin`).
 
-  * `uses [--installed] [--recursive]` <formula>:
+  * `uses [--installed] [--recursive] [--devel|--HEAD]` <formula>:
     Show the formulae that specify <formula> as a dependency.
 
     Use `--recursive` to resolve more than one level of dependencies.
 
     If `--installed` is passed, only list installed formulae.
+
+    By default, `uses` shows usages of `formula` by stable builds. To find
+    cases where `formula` is used by development or HEAD build, pass
+    `--devel` or `--HEAD`.
 
   * `versions [--compact]` <formulae>:
     List previous versions of <formulae>, along with a command to checkout
