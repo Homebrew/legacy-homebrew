@@ -373,7 +373,7 @@ Options for the \fBinstall\fR command are also valid here\.
 If \fIformulae\fR are given, upgrade only the specified brews (but do so even if they are pinned; see \fBpin\fR, \fBunpin\fR)\.
 .
 .TP
-\fBuses [\-\-installed] [\-\-recursive]\fR \fIformula\fR
+\fBuses [\-\-installed] [\-\-recursive] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
 Show the formulae that specify \fIformula\fR as a dependency\.
 .
 .IP
@@ -381,6 +381,9 @@ Use \fB\-\-recursive\fR to resolve more than one level of dependencies\.
 .
 .IP
 If \fB\-\-installed\fR is passed, only list installed formulae\.
+.
+.IP
+By default, \fBuses\fR shows usages of \fBformula\fR by stable builds\. To find cases where \fBformula\fR is used by development or HEAD build, pass \fB\-\-devel\fR or \fB\-\-HEAD\fR\.
 .
 .TP
 \fBversions [\-\-compact]\fR \fIformulae\fR
