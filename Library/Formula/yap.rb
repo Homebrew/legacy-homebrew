@@ -18,13 +18,11 @@ class Yap < Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--enable-tabling",
+    system "./configure", "--enable-tabling",
                           "--enable-depth-limit",
                           "--enable-coroutining",
                           "--enable-threads",
                           "--enable-pthread-locking",
-                          "--enable-clpbn-bp=no",
                           "--with-gmp=#{Formula.factory('gmp').opt_prefix}",
                           "--with-readline=#{Formula.factory('readline').opt_prefix}",
                           "--with-java=/Library/Java/Home",
