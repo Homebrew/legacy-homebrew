@@ -2,10 +2,10 @@ require 'formula'
 
 class Lsusb < Formula
   homepage 'https://github.com/jlhonora/lsusb'
-  url 'https://raw.github.com/jlhonora/lsusb/master/lsusb-0.1.tar.gz'
-  sha1 '46556b26ed9b6086cf724bdb4e573ff4de16517c'
+  head 'https://github.com/jlhonora/lsusb', :using => :git
 
-  head 'https://github.com/jlhonora/lsusb.git'
+  url 'https://github.com/jlhonora/lsusb/releases/download/0.2/lsusb-0.2.tar.gz'
+  sha1 '00e99f1f9fb15ae5fcb4261d354d1dac0b8ee9fb'
 
   def install
     bin.install 'lsusb'
