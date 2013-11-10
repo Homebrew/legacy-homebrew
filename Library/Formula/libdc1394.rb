@@ -2,8 +2,8 @@ require 'formula'
 
 class Libdc1394 < Formula
   homepage 'http://damien.douxchamps.net/ieee1394/libdc1394/'
-  url 'http://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.0/libdc1394-2.2.0.tar.gz'
-  sha1 '7e831258a65e7e111a9d52d8062aec6d28a1e4c4'
+  url 'http://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.1/libdc1394-2.2.1.tar.gz'
+  sha1 'b92c9670b68c4e5011148f16c87532bef2e5b808'
 
   def patches
     # fix issue due to bug in OSX Firewire stack
