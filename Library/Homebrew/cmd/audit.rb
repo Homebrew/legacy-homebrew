@@ -562,7 +562,9 @@ class FormulaAuditor
     audit_check_output(check_jars)
     audit_check_output(check_non_libraries)
     audit_check_output(check_non_executables(f.bin))
+    audit_check_output(check_generic_executables(f.bin))
     audit_check_output(check_non_executables(f.sbin))
+    audit_check_output(check_generic_executables(f.sbin))
   end
 
   def audit
