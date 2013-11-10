@@ -5,6 +5,8 @@ class Pdsh < Formula
   url 'http://pdsh.googlecode.com/files/pdsh-2.29.tar.bz2'
   sha1 'a3e44ffba151f023d72df67cd7a7d37b4a80c80e'
 
+  conflicts_with 'clusterit', :because => 'both install `dshbak`'
+
   option "without-dshgroups", "Compile without dshgroups which conflicts with genders. The option should be specified to load genders module first instead of dshgroups."
 
   depends_on 'readline'
