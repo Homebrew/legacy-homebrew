@@ -9,7 +9,9 @@ class Memcacheq < Formula
   depends_on 'libevent'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    ENV.append 'CFLAGS', '-std=gnu89'
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-threads"
     system "make install"
