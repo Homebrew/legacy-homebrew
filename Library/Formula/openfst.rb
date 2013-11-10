@@ -6,7 +6,12 @@ class Openfst < Formula
   sha1 '21972c05896b2154a3fa1bdca5c9a56350194b38'
 
   def install
+    if MacOS.version > :mountain_lion
+      ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include/c++/4.2.1"
+      ENV.append 'LIBS', "#{MacOS.sdk_path}/usr/lib/libstdc++.dylib"
+    end
     system "./configure", "--disable-dependency-tracking",
+                          "--enable-far", "--enable-pdt",
                           "--prefix=#{prefix}"
     system "make install"
   end
