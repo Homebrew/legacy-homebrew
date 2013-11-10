@@ -4,7 +4,7 @@ class Multimarkdown < Formula
   homepage 'http://fletcherpenney.net/multimarkdown/'
   head 'https://github.com/fletcher/MultiMarkdown-4.git', :branch => 'master'
   # Use git tag instead of the tarball to get submodules
-  url 'https://github.com/fletcher/MultiMarkdown-4.git', :tag => '4.3.1'
+  url 'https://github.com/fletcher/MultiMarkdown-4.git', :tag => '4.3.2'
 
   conflicts_with 'mtools', :because => 'both install `mmd` binaries'
 
@@ -17,7 +17,7 @@ class Multimarkdown < Formula
 
   def caveats; <<-EOS.undent
     Support files have been installed to:
-      #{prefix}/Support
+      #{opt_prefix}/Support
     EOS
   end
 end
