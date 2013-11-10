@@ -1081,19 +1081,26 @@ end
   end
 
   def check_for_latest_xquartz
-    quartz = MacOS::XQuartz.version
-    return unless quartz
+    return unless MacOS::XQuartz.installed?
     return if MacOS::XQuartz.provided_by_apple?
 
-    quartz = Version.new(quartz)
-    latest = Version.new(MacOS::XQuartz.latest_version)
+    installed_version = Version.new(MacOS::XQuartz.version)
+    latest_version    = Version.new(MacOS::XQuartz.latest_version)
 
-    return if quartz >= latest
+    return if installed_version >= latest_version
 
-    <<-EOS.undent
-      Your XQuartz (#{quartz}) is outdated
-      Please install XQuartz #{latest}.
-    EOS
+    case MacOS.version
+    when "10.9" then <<-EOS.undent
+      Your XQuartz (#{installed_version}) is outdated
+      OS X Mavericks requires XQuartz #{latest_version}:
+        http://xquartz.macosforge.org/trac/wiki/X112.7.5
+      EOS
+    else <<-EOS.undent
+      Your XQuartz (#{installed_version}) is outdated
+      Please install XQuartz #{latest_version}:
+        https://xquartz.macosforge.org
+      EOS
+    end
   end
 end # end class Checks
 
