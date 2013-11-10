@@ -16,12 +16,14 @@ class Git < Formula
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
   option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of the system version"
   option 'with-brewed-curl', "Use Homebrew's version of cURL library"
+  option 'with-persistent-https', 'Build git-remote-persistent-https from "contrib" directory'
 
   depends_on :python
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
   depends_on 'openssl' if build.with? 'brewed-openssl'
   depends_on 'curl' => 'with-darwinssl' if build.with? 'brewed-curl'
+  depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
     url 'http://git-core.googlecode.com/files/git-manpages-1.8.4.3.tar.gz'
@@ -77,6 +79,15 @@ class Git < Formula
                      "CFLAGS=#{ENV.cflags}",
                      "LDFLAGS=#{ENV.ldflags}"
       bin.install 'git-subtree'
+    end
+
+    if build.with? 'persistent-https'
+      cd 'contrib/persistent-https' do
+        system "make"
+        bin.install 'git-remote-persistent-http',
+                    'git-remote-persistent-https',
+                    'git-remote-persistent-https--proxy'
+      end
     end
 
     unless build.without? 'completions'
