@@ -38,30 +38,26 @@ class Erlang < Formula
   depends_on 'unixodbc' if MacOS.version >= :mavericks
   depends_on 'fop' => :optional # enables building PDF docs
 
-  fails_with :llvm do
-    build 2334
-  end
+  fails_with :llvm
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
 
-    if ENV.compiler == :llvm
-      # Don't use optimizations. Fixes build on Lion/Xcode 4.2
-      ENV.remove_from_cflags /-O./
-      ENV.append_to_cflags '-O0'
-    end
     ENV.append "FOP", "#{HOMEBREW_PREFIX}/bin/fop" if build.with? 'fop'
 
     # Do this if building from a checkout to generate configure
     system "./otp_build autoconf" if File.exist? "otp_build"
 
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
-            "--enable-kernel-poll",
-            "--enable-threads",
-            "--enable-dynamic-ssl-lib",
-            "--enable-shared-zlib",
-            "--enable-smp-support"]
+    args = %W[
+      --disable-debug
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --enable-kernel-poll
+      --enable-threads
+      --enable-dynamic-ssl-lib
+      --enable-shared-zlib
+      --enable-smp-support
+    ]
 
     args << "--with-dynamic-trace=dtrace" unless MacOS.version <= :leopard or not MacOS::CLT.installed?
 
@@ -78,6 +74,14 @@ class Erlang < Formula
     end
 
     system "./configure", *args
+
+    if ENV.compiler == :clang
+      # Superenv does not pass -march=native during configure, causing
+      # misdetection of this capability on some architectures:
+      # https://github.com/mxcl/homebrew/issues/23754
+      inreplace Dir['erts/*/config.h'].first, /^#define ETHR_HAVE___SYNC_VAL_COMPARE_AND_SWAP128 1$/, ''
+    end
+
     system "make"
     ENV.j1 # Install is not thread-safe; can try to create folder twice and fail
     system "make install"

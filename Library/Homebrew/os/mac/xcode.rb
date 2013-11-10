@@ -197,6 +197,7 @@ module OS
 
       def outdated?
         version = `/usr/bin/clang --version`[%r{clang-(\d+\.\d+\.\d+)}, 1]
+        return true unless version
         version < latest_version
       end
 

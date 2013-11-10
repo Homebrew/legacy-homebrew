@@ -2,16 +2,14 @@ require 'formula'
 
 class Cyassl < Formula
   homepage 'http://yassl.com/yaSSL/Products-cyassl.html'
-  url 'https://github.com/cyassl/cyassl/archive/v2.8.0.tar.gz'
-  sha256 '9d8a061e30f6fc6bcdeb0b19eb13dfc1ccf3959837a4a6de5fd982f7332799eb'
+  url 'https://github.com/cyassl/cyassl/archive/v2.8.3.tar.gz'
+  sha256 '4b61aa59fbd87cdee14b5d45e94efc0a431b802db12973e97f09a8921ac78963'
 
   head 'https://github.com/cyassl/cyassl.git'
 
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
-
-  fails_with :clang
 
   def install
     args = %W[--infodir=#{info}
@@ -56,10 +54,8 @@ class Cyassl < Formula
     # Also, only applies if fastmath is enabled.
     ENV.append_to_cflags '-mdynamic-no-pic' if MacOS.prefer_64_bit?
 
-    # No public release available, Git tag is therefore used.
-    system "autoreconf --verbose --install --force"
+    system "./autogen.sh"
     system "./configure", *args
-
     system "make"
     system "make install"
   end

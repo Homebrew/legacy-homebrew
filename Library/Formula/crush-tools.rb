@@ -8,6 +8,8 @@ class CrushTools < Formula
 
   depends_on 'pcre'
 
+  conflicts_with 'aggregate', :because => 'both install an `aggregate` binary'
+
   def install
     # find Homebrew's libpcre
     ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
