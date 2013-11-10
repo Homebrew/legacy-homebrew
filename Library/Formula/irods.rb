@@ -5,6 +5,8 @@ class Irods < Formula
   url 'https://www.irods.org/cgi-bin/upload16.cgi/irods3.2.tgz'
   sha1 'd1dd7787e69cfda96b7719af2e50ffbc68485a23'
 
+  conflicts_with 'sleuthkit', :because => 'both install `ils`'
+
   option 'with-fuse', 'Install iRODS FUSE client'
 
   depends_on 'fuse4x' if build.include? 'with-fuse'
