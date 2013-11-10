@@ -9,17 +9,13 @@ class Librsync < Formula
 
   depends_on 'popt'
 
-  def patches
-    # fixes librsync doesn't correctly export inlined functions:
-    # http://trac.macports.org/ticket/31742
-    # link to upstream bug report:
-    # http://sourceforge.net/tracker/?func=detail&aid=3464437&group_id=56125&atid=479439
-    { :p0 => 'https://trac.macports.org/export/90437/trunk/dports/net/librsync/files/patch-delta.c.diff' }
-  end
-
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+
+    ENV.append 'CFLAGS', '-std=gnu89'
+
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--enable-shared"
