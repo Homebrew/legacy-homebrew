@@ -14,7 +14,7 @@ class Yap < Formula
   depends_on 'readline'
 
   fails_with :clang do
-    cause "Undefined symbols linking for architecture x86_64"
+    cause "uses variable-length arrays in structs, which will never be supported by clang"
   end
 
   def install
