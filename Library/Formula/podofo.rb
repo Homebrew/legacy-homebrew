@@ -2,8 +2,8 @@ require 'formula'
 
 class Podofo < Formula
   homepage 'http://podofo.sourceforge.net'
-  url 'http://downloads.sourceforge.net/podofo/podofo-0.9.1.tar.gz'
-  sha1 'd04c26b93dcf5f82a8dd90e02df6de95fb98ef47'
+  url 'http://downloads.sourceforge.net/podofo/podofo-0.9.2.tar.gz'
+  sha1 '8a6e27e17e0ed9f12e1a999cff66eae8eb97a4bc'
 
   depends_on 'cmake' => :build
   depends_on :libpng
