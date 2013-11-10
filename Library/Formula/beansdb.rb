@@ -8,11 +8,8 @@ class Beansdb < Formula
 
   depends_on :automake
 
-  fails_with :clang do
-    cause "Known not to compile with clang."
-  end
-
   def install
+    ENV.append 'CFLAGS', '-std=gnu89'
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}"
 
