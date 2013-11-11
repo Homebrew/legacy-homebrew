@@ -2,8 +2,8 @@ require 'formula'
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.12/sbcl-1.1.12-source.tar.bz2'
-  sha1 '614d712cad67165930be16c86d8a48d5b921b25c'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.13/sbcl-1.1.13-source.tar.bz2'
+  sha1 '4aeedf092afd15e3db042e09223f5cf3d613d138'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
