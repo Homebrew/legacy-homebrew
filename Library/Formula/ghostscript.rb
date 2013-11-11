@@ -18,9 +18,6 @@ class Ghostscript < Formula
 
   option 'with-djvu', 'Build drivers for DjVU file format'
 
-  # TODO - figure out why this is needed
-  env :std if build.with? 'djvu'
-
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libtiff'
@@ -63,7 +60,7 @@ class Ghostscript < Formula
       (buildpath+'base').install 'gdevdjvu.c'
       (buildpath+'lib').install 'ps2utf8.ps'
       ENV['EXTRA_INIT_FILES'] = 'ps2utf8.ps'
-      (buildpath/'base/contrib.mak').open('a').write(File.read('gsdjvu.mak'))
+      (buildpath/'base/contrib.mak').open('a') { |f| f.write(File.read('gsdjvu.mak')) }
     end if build.with? 'djvu'
 
     cd src_dir do
