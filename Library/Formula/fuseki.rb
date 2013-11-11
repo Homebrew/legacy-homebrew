@@ -14,21 +14,21 @@ class Fuseki < Formula
     rm 'fuseki'
 
     # Write the installation path into the wrapper shell script
-    inreplace 'fuseki-server' do |binfile|
-      binfile.gsub! /export FUSEKI_HOME=.+/,
-                    %'export FUSEKI_HOME="#{libexec}"'
-      binfile.gsub! /^exec java\s+(.+)/,
-                    "exec java -Dlog4j.configuration=file:#{etc/'fuseki.log4j.properties'} \\1"
+    inreplace 'fuseki-server' do |s|
+      s.gsub! /export FUSEKI_HOME=.+/,
+              %'export FUSEKI_HOME="#{libexec}"'
+      s.gsub! /^exec java\s+(.+)/,
+              "exec java -Dlog4j.configuration=file:#{etc/'fuseki.log4j.properties'} \\1"
     end
 
     # Use file logging instead of STDOUT logging
-    inreplace 'log4j.properties' do |log4j_properties|
-      log4j_properties.gsub! /^log4j\.rootLogger=.+/,                  '### \0'
-      log4j_properties.gsub! /^log4j\.appender\.stdlog.+/,             '### \0'
-      log4j_properties.gsub! /^## (log4j\.rootLogger=.+)/,             '\1'
-      log4j_properties.gsub! /^## (log4j\.appender\.FusekiFileLog.+)/, '\1'
-      log4j_properties.gsub! /^log4j.appender.FusekiFileLog.File=.+/,
-                             "log4j.appender.FusekiFileLog.File=#{(var/'log/fuseki/fuseki.log')}"
+    inreplace 'log4j.properties' do |s|
+      s.gsub! /^log4j\.rootLogger=.+/,                  '### \0'
+      s.gsub! /^log4j\.appender\.stdlog.+/,             '### \0'
+      s.gsub! /^## (log4j\.rootLogger=.+)/,             '\1'
+      s.gsub! /^## (log4j\.appender\.FusekiFileLog.+)/, '\1'
+      s.gsub! /^log4j.appender.FusekiFileLog.File=.+/,
+              "log4j.appender.FusekiFileLog.File=#{(var/'log/fuseki/fuseki.log')}"
     end
     etc.install 'log4j.properties' => 'fuseki.log4j.properties'
 
