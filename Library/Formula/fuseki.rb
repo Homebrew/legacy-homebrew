@@ -40,8 +40,8 @@ class Fuseki < Formula
     libexec.install 'fuseki-server.jar', 'pages'
 
     unless File.exists?(etc/'fuseki.ttl')
-      etc.cp 'config.ttl' => 'fuseki.ttl'
-      ohai "The sample config.ttl config file has been copied to #{etc/'fuseki.ttl'}"
+      etc.install 'config.ttl' => 'fuseki.ttl'
+      ohai "The sample config.ttl config file has been moved to #{etc/'fuseki.ttl'}"
     end
 
     # Create a location for dataset and log files,
@@ -65,17 +65,13 @@ class Fuseki < Formula
     * See the Fuseki documentation for instructions on using an in-memory database:
       http://jena.apache.org/documentation/serving_data/#fuseki-server-starting-with-an-empty-dataset
 
-    * LaunchAgent differences from standard configuration:
-
-      The default config file has been installed to:
-        #{etc/'fuseki.ttl'}
-      The dataset folder has been set to:
-        #{var/'fuseki'}
-      The default logfile has been installed to:
-        #{etc/'fuseki.log4j.properties'}
+    * Running from the LaunchAgent is different the standard configuration and
+      uses traditional Unix paths: please inspect the settings here first:
+      #{etc/'fuseki.ttl'}
 
       NOTE: Currently the logging configuration file will be overwritten
-            if you re-install or upgrade Fuseki.
+            if you re-install or upgrade Fuseki. This file is located here:
+            #{etc/'fuseki.log4j.properties'}
     EOS
   end
 
