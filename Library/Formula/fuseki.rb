@@ -39,9 +39,7 @@ class Fuseki < Formula
     # Non-symlinked binaries and application files
     libexec.install 'fuseki-server.jar', 'pages'
 
-    unless File.exists?(etc/'fuseki.ttl')
-      etc.install 'config.ttl' => 'fuseki.ttl'
-    end
+    etc.install 'config.ttl' => 'fuseki.ttl'
 
     # Create a location for dataset and log files,
     # in case we're being used in LaunchAgent mode
