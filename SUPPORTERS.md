@@ -325,7 +325,7 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [Daniel Hertz](http://www.dhertz.com)
 * [Chuck Fouts](https://github.com/gnarl)
 * [Chip Warden](https://twitter.com/lgw4)
-* Ethan Schoonover
+* [Ethan Schoonover](http://ethanschoonover.com)
 * [Chi Trung Nguyen](http://www.napcaesmind.de)
 * [Danny Amey](http://www.dannyamey.com/)
 * Oscar
