@@ -163,9 +163,9 @@ class Cmd
   def cflags
     args = []
 
-    return args unless cccfg? 'O'
-
-    args << '-pipe' << '-w' << '-Os'
+    args << '-pipe'
+    args << '-w' unless configure?
+    args << '-Os'
 
     # When bottling use the oldest supported CPU type.
     if cccfg? 'bc'
