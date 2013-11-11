@@ -11,6 +11,7 @@ class Rdup < Formula
   depends_on 'pcre'
   depends_on 'glib'
   depends_on 'libarchive'
+  depends_on 'mcrypt'
 
   def install
     ENV.deparallelize
