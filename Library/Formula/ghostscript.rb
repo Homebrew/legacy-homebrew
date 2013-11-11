@@ -18,13 +18,11 @@ class Ghostscript < Formula
 
   option 'with-djvu', 'Build drivers for DjVU file format'
 
-  # TODO - figure out why this is needed
-  env :std if build.with? 'djvu'
-
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libtiff'
   depends_on 'jbig2dec'
+  depends_on 'little-cms2'
   depends_on :libpng
   depends_on :x11 => ['2.7.2', :optional]
   depends_on 'djvulibre' if build.with? 'djvu'
@@ -50,16 +48,11 @@ class Ghostscript < Formula
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    renames = %w(jpeg libpng tiff zlib jbig2dec)
-    renames << "freetype" if MacOS.version >= :lion
-    renames.each do |lib|
-      mv lib, "#{lib}_local"
-    end
+    renames = %w{freetype jbig2dec jpeg lcms2 libpng tiff zlib}
+    renames.each { |lib| mv lib, "#{lib}_local" }
   end
 
   def install
-    ENV.deparallelize
-
     src_dir = build.head? ? "gs" : "."
 
     resource('djvu').stage do
@@ -67,7 +60,7 @@ class Ghostscript < Formula
       (buildpath+'base').install 'gdevdjvu.c'
       (buildpath+'lib').install 'ps2utf8.ps'
       ENV['EXTRA_INIT_FILES'] = 'ps2utf8.ps'
-      (buildpath/'base/contrib.mak').open('a').write(File.read('gsdjvu.mak'))
+      (buildpath/'base/contrib.mak').open('a') { |f| f.write(File.read('gsdjvu.mak')) }
     end if build.with? 'djvu'
 
     cd src_dir do
