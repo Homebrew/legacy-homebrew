@@ -5,11 +5,11 @@ class Gimp < Formula
   url 'ftp://ftp.gimp.org/pub/gimp/v2.8/gimp-2.8.8.tar.bz2'
   sha1 'a97b93d608a8b0cccd0d97da63bee48d40cc4b35'
 
-  option 'without-x', 'Build without X'
-
   depends_on 'pkg-config' => :build
   depends_on 'gettext' => :build
   depends_on 'intltool' => :build
+
+  depends_on :x11 => :recommended
 
   depends_on 'gegl'
   depends_on 'babl'
@@ -24,7 +24,7 @@ class Gimp < Formula
     depends_on 'pango' => ['without-x']
     depends_on 'gtk+' => ['without-x']
     depends_on 'cairo' => ['without-x']
-    depends_on 'pygtk' => 'without-x'
+    depends_on 'pygtk' => ['without-x']
   end
 
   depends_on 'glib'
