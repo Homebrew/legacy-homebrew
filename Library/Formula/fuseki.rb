@@ -41,7 +41,6 @@ class Fuseki < Formula
 
     unless File.exists?(etc/'fuseki.ttl')
       etc.install 'config.ttl' => 'fuseki.ttl'
-      ohai "The sample config.ttl config file has been moved to #{etc/'fuseki.ttl'}"
     end
 
     # Create a location for dataset and log files,
