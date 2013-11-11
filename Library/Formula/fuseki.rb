@@ -61,31 +61,20 @@ class Fuseki < Formula
   def caveats; <<-EOS.undent
     Quick-start guide:
 
-    * In-memory operation
+    * See the Fuseki documentation for instructions on using an in-memory database:
+      http://jena.apache.org/documentation/serving_data/#fuseki-server-starting-with-an-empty-dataset
 
-      1. Start the server:
-          fuseki-server --update --mem /ds
+    * LaunchAgent differences from standard configuration:
 
-      2. Open webadmin:
-          open http://localhost:3030/
+      The default config file has been installed to:
+        #{etc/'fuseki.ttl'}
+      The dataset folder has been set to:
+        #{var/'fuseki'}
+      The default logfile has been installed to:
+        #{etc/'fuseki.log4j.properties'}
 
-      3. Import some sample data into the store:
-          s-put http://localhost:3030/ds/data default #{prefix}/Data/books.ttl
-
-    * LaunchAgent configuration
-
-      1. Edit #{etc/'fuseki.ttl'} to configure your services and datasets
-         (a directory #{var/'fuseki'} has been created for dataset folders)
-
-      2. Follow the LaunchAgent instructions below
-
-    Logging:
-
-      Logging config is stored in #{etc/'fuseki.log4j.properties'}
-      Currently this file will be overwritten if you re-install or upgrade Fuseki.
-
-      To follow the logs, run:
-        tail -f #{var/'log/fuseki/fuseki.log'}
+      NOTE: Currently the logging configuration file will be overwritten
+            if you re-install or upgrade Fuseki.
     EOS
   end
 
