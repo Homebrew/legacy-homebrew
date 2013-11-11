@@ -7,6 +7,12 @@ class Sbcl < Formula
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
+  bottle do
+    sha1 'd6364b5a6632b2a63fc669132079770377852050' => :mavericks
+    sha1 '2b148110002167034d7bbe876f05d11c4d148b67' => :mountain_lion
+    sha1 '7a73be0f6a50077887ffbb5be9145334e16290c3' => :lion
+  end
+
   fails_with :llvm do
     build 2334
     cause "Compilation fails with LLVM."
