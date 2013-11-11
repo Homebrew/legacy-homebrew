@@ -5,14 +5,24 @@ class Pygtk < Formula
   url 'http://ftp.acc.umu.se/pub/GNOME/sources/pygtk/2.24/pygtk-2.24.0.tar.bz2'
   sha1 '344e6a32a5e8c7e0aaeb807e0636a163095231c2'
 
+  option 'without-x', 'Build without X11 support'
+
   depends_on 'pkg-config' => :build
   depends_on :python
-  depends_on :x11
+  depends_on :x11 if build.with? 'x'
   depends_on 'glib'
-  depends_on 'gtk+'
+  if build.with? 'x'
+    depends_on 'gtk+'
+  else
+    depends_on 'gtk+' => ['without-x']
+  end
   depends_on 'atk'
   depends_on 'pygobject'
-  depends_on 'py2cairo'
+   if build.with? 'x'
+    depends_on 'py2cairo'
+  else
+    depends_on 'py2cairo' => ['without-x']
+  end
   depends_on 'libglade' if build.include? 'glade'
 
   option :universal

@@ -5,9 +5,11 @@ class Py2cairo < Formula
   url 'http://cairographics.org/releases/py2cairo-1.10.0.tar.bz2'
   sha1 '2efa8dfafbd6b8e492adaab07231556fec52d6eb'
 
+	option 'without-x', 'Build without X11 support'
+
   depends_on 'pkg-config' => :build
   depends_on 'cairo'
-  depends_on :x11
+  depends_on :x11 if build.with? 'x'
   depends_on :python
 
   option :universal
