@@ -24,8 +24,6 @@ class Cairo < Formula
   depends_on 'glib' => :recommended
   depends_on :x11 if build.with? 'x'
 
-  env :std if build.universal?
-
   def install
     ENV.universal_binary if build.universal?
 
