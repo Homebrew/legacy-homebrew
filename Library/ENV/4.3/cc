@@ -163,6 +163,8 @@ class Cmd
   def cflags
     args = []
 
+    return args unless cccfg? 'O' or configure?
+
     args << '-pipe'
     args << '-w' unless configure?
     args << '-Os'
