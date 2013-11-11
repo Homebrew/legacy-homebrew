@@ -7,6 +7,7 @@ class Mkvtoolnix < Formula
 
   head 'https://github.com/mbunkus/mkvtoolnix.git'
 
+  depends_on 'pkg-config' => :build
   depends_on 'boost' => 'c++11'
   depends_on 'libvorbis'
   depends_on 'flac' => :optional
@@ -37,8 +38,6 @@ class Mkvtoolnix < Formula
 
   def install
     ENV.cxx11
-    ENV['ZLIB_CFLAGS'] = '-I/usr/include'
-    ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
 
     ENV['ZLIB_CFLAGS'] = '-I/usr/include'
     ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
