@@ -7,7 +7,7 @@ class Py2cairo < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'cairo'
-  depends_on :x11
+  depends_on :x11 => :recommended
   depends_on :python
 
   option :universal

@@ -7,12 +7,17 @@ class Pygtk < Formula
 
   depends_on 'pkg-config' => :build
   depends_on :python
-  depends_on :x11
+  depends_on :x11 => :recommended
   depends_on 'glib'
-  depends_on 'gtk+'
+  if build.with? 'x'
+    depends_on 'gtk+'
+    depends_on 'py2cairo'
+  else
+    depends_on 'gtk+' => ['without-x']
+    depends_on 'py2cairo' => ['without-x']
+  end
   depends_on 'atk'
   depends_on 'pygobject'
-  depends_on 'py2cairo'
   depends_on 'libglade' if build.include? 'glade'
 
   option :universal
