@@ -1,7 +1,7 @@
 require 'formula'
 
 class Drizzle < Formula
-  homepage 'http://drizzle.org'
+  homepage 'http://www.drizzle.org'
   url 'https://launchpad.net/drizzle/7.1/7.1.36/+download/drizzle-7.1.36-stable.tar.gz'
   sha1 '6ce317d6a6b0560e75d5bcf44af2e278443cfbfe'
 
