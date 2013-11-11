@@ -13,16 +13,13 @@ class Pygtk < Formula
   depends_on 'glib'
   if build.with? 'x'
     depends_on 'gtk+'
+    depends_on 'py2cairo'
   else
     depends_on 'gtk+' => ['without-x']
+    depends_on 'py2cairo' => ['without-x']
   end
   depends_on 'atk'
   depends_on 'pygobject'
-   if build.with? 'x'
-    depends_on 'py2cairo'
-  else
-    depends_on 'py2cairo' => ['without-x']
-  end
   depends_on 'libglade' if build.include? 'glade'
 
   option :universal
