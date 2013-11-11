@@ -9,7 +9,7 @@ class Cookiecutter < Formula
 
   def install
     python do
-      system python, "setup.py", "install"
+      system python, "setup.py", "install", "--prefix=#{prefix}"
     end
   end
 
