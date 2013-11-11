@@ -10,7 +10,13 @@ class Dub < Formula
   depends_on 'pkg-config' => :build
   depends_on 'dmd'  => :build
 
-  def patches; DATA; end
+  # patch is in upstream master
+  def patches
+    [
+      "https://github.com/rejectedsoftware/dub/commit/0e91afd52babf96128be43120dfd5f9a38b4d202.patch",
+      "https://github.com/rejectedsoftware/dub/commit/b08454b6baa5c7e9e2d5a21c943c21cb986fff23.patch",
+    ]
+  end
 
   def install
     system "./build.sh"
@@ -21,26 +27,3 @@ class Dub < Formula
     system "#{bin}/dub; true"
   end
 end
-
-__END__
-diff --git a/build.sh b/build.sh
-index dce1766..eacc765 100755
---- a/build.sh
-+++ b/build.sh
-@@ -16,11 +16,11 @@ fi
- LIBS=`pkg-config --libs libcurl 2>/dev/null || echo "-lcurl"`
-
- # fix for modern GCC versions with --as-needed by default
--if [ "$DC" = "dmd" ]; then
--	LIBS="-l:libphobos2.a $LIBS"
--elif [ "$DC" = "ldmd2" ]; then
--	LIBS="-lphobos-ldc $LIBS"
--fi
-+# if [ "$DC" = "dmd" ]; then
-+#     LIBS="-l:libphobos2.a $LIBS"
-+# elif [ "$DC" = "ldmd2" ]; then
-+#     LIBS="-lphobos-ldc $LIBS"
-+# fi
-
- # adjust linker flags for dmd command line
- LIBS=`echo "$LIBS" | sed 's/^-L/-L-L/; s/ -L/ -L-L/g; s/^-l/-L-l/; s/ -l/ -L-l/g'`
