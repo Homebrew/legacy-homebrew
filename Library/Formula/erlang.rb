@@ -74,14 +74,6 @@ class Erlang < Formula
     end
 
     system "./configure", *args
-
-    if ENV.compiler == :clang
-      # Superenv does not pass -march=native during configure, causing
-      # misdetection of this capability on some architectures:
-      # https://github.com/mxcl/homebrew/issues/23754
-      inreplace Dir['erts/*/config.h'].first, /^#define ETHR_HAVE___SYNC_VAL_COMPARE_AND_SWAP128 1$/, ''
-    end
-
     system "make"
     ENV.j1 # Install is not thread-safe; can try to create folder twice and fail
     system "make install"
