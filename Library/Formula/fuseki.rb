@@ -66,11 +66,11 @@ class Fuseki < Formula
 
     * Running from the LaunchAgent is different the standard configuration and
       uses traditional Unix paths: please inspect the settings here first:
-      #{etc/'fuseki.ttl'}
+      #{etc}/fuseki.ttl
 
       NOTE: Currently the logging configuration file will be overwritten
             if you re-install or upgrade Fuseki. This file is located here:
-            #{etc/'fuseki.log4j.properties'}
+            #{etc}/'fuseki.log4j.properties'
     EOS
   end
 
