@@ -14,33 +14,24 @@ class Gimp < Formula
   depends_on 'gegl'
   depends_on 'babl'
   depends_on 'fontconfig'
-  if build.with? 'x'
-    depends_on 'pango'
-  else
-    depends_on 'pango' => ['without-x']
-  end
-  depends_on 'glib'
-  if build.with? 'x'
-    depends_on 'gtk+'
-  else
-    depends_on 'gtk+' => ['without-x']
-  end
-  depends_on 'gdk-pixbuf'
-  if build.with? 'x'
-    depends_on 'cairo'
-  else
-    depends_on 'cairo' => ['without-x']
-  end
-  depends_on 'freetype'
-  depends_on 'xz'
-  depends_on 'lbzip2'
 
   if build.with? 'x'
+    depends_on 'pango'
+    depends_on 'gtk+'
+    depends_on 'cairo'
     depends_on 'pygtk'
   else
+    depends_on 'pango' => ['without-x']
+    depends_on 'gtk+' => ['without-x']
+    depends_on 'cairo' => ['without-x']
     depends_on 'pygtk' => 'without-x'
   end
 
+  depends_on 'glib'
+  depends_on 'gdk-pixbuf'
+  depends_on 'freetype'
+  depends_on 'xz'
+  depends_on 'lbzip2'
   depends_on 'aalib'
   depends_on 'ghostscript'
   depends_on 'libpng'
