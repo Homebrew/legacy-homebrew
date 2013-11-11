@@ -101,7 +101,7 @@ module Homebrew extend self
       puts
     end
 
-    conflicts = f.conflicts.map(&:name).sort!
+    conflicts = f.conflicts.map { |c| c.formula }.sort
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
@@ -122,7 +122,7 @@ module Homebrew extend self
       ohai "Dependencies"
       %w{build required recommended optional}.map do |type|
         deps = f.deps.send(type)
-        puts "#{type.capitalize}: #{deps*', '}" unless deps.empty?
+        puts "#{type.capitalize}: #{decorate_dependencies deps}" unless deps.empty?
       end
     end
 
@@ -134,6 +134,21 @@ module Homebrew extend self
 
     c = Caveats.new(f)
     ohai 'Caveats', c.caveats unless c.empty?
+  end
+
+  def decorate_dependencies dependencies
+    #necessary for 1.8.7 unicode handling since many installs are on 1.8.7
+    checkmark = Tty.green + ["2714".hex].pack("U*") + Tty.reset
+    cross_out = Tty.red + ["2718".hex].pack("U*") + Tty.reset
+
+    deps_status = dependencies.collect do |dep|
+      if ENV['HOMEBREW_NO_EMOJI']
+        "%s%s%s" % [(dep.installed? ? Tty.green : Tty.red), dep, Tty.reset]
+      else
+        "%s %s" % [dep, (dep.installed? ? checkmark : cross_out)]
+      end
+    end
+    deps_status * ", "
   end
 
   private
