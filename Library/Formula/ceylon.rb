@@ -13,6 +13,8 @@ class Ceylon < Formula
 
     # Symlink shell scripts but not args.sh
     bin.install_symlink Dir["#{libexec}/bin/ceylon*"]
+    
+    man1.install_symlink Dir["#{share}/doc/ceylon/man/man1/*"]
   end
 
   def caveats
