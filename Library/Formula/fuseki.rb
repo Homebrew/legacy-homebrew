@@ -49,7 +49,7 @@ class Fuseki < Formula
     (var/'log/fuseki').mkpath
 
     # Install example configs
-    prefix.install 'config-examples.ttl', 'config-inf-tdb.ttl', 'config-tdb-text.ttl', 'config-tdb.ttl', 'config.ttl'
+    prefix.install 'config-examples.ttl', 'config-inf-tdb.ttl', 'config-tdb-text.ttl', 'config-tdb.ttl'
 
     # Install example data
     prefix.install 'Data'
