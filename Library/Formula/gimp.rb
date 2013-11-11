@@ -4,14 +4,13 @@ class Gimp < Formula
   homepage 'http://www.gimp.org'
   url 'ftp://ftp.gimp.org/pub/gimp/v2.8/gimp-2.8.8.tar.bz2'
   sha1 'a97b93d608a8b0cccd0d97da63bee48d40cc4b35'
-  version "2.8.8"
 
   option 'without-x', 'Build without X'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext' => :build
   depends_on 'intltool' => :build
-  
+
   depends_on 'gegl'
   depends_on 'babl'
   depends_on 'fontconfig'
@@ -42,10 +41,8 @@ class Gimp < Formula
     depends_on 'pygtk' => 'without-x'
   end
 
-  #depends_on 'iso-codes'
   depends_on 'aalib'
   depends_on 'ghostscript'
-  #depends_on 'lcms2'
   depends_on 'libpng'
   depends_on 'librsvg'
   depends_on 'libwmf'
