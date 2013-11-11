@@ -56,8 +56,6 @@ class Ghostscript < Formula
   end
 
   def install
-    ENV.deparallelize
-
     src_dir = build.head? ? "gs" : "."
 
     resource('djvu').stage do
