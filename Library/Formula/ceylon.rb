@@ -8,13 +8,12 @@ class Ceylon < Formula
   def install
     rm_f Dir["bin/*.bat"]
 
+    man1.install Dir['doc/man/man1/*']
     doc.install Dir['doc/*']
     libexec.install Dir['*']
 
     # Symlink shell scripts but not args.sh
     bin.install_symlink Dir["#{libexec}/bin/ceylon*"]
-    
-    man1.install_symlink Dir["#{share}/doc/ceylon/man/man1/*"]
   end
 
   def caveats
