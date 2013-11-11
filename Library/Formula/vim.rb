@@ -43,7 +43,7 @@ class Vim < Formula
   def install
     ENV['LUA_PREFIX'] = HOMEBREW_PREFIX if build.with?('lua')
 
-    # vim doesn't have and required any Python package, unset PYTHONPATH.
+    # vim doesn't require any Python package, unset PYTHONPATH.
     ENV.delete('PYTHONPATH')
 
     opts = []
@@ -61,8 +61,8 @@ class Vim < Formula
 
     if python2 and not build.with? "python3"
       if !python.from_osx? && python.framework?
-        # Avoid that vim always links System's Python even if configure tells us
-        # it has found a brewed Python. Verify with `otool -L`.
+        # Avoid vim always linking to System's Python, even when configure tells us
+        # it has found a brewed Python. (Verify with `otool -L`.)
         ENV.prepend 'LDFLAGS', "-F#{python.framework}"
       elsif python.from_osx? && !MacOS::CLT.installed?
         # Avoid `Python.h not found` on 10.8 with Xcode-only
@@ -101,11 +101,11 @@ class Vim < Formula
       # vim doesn't check Python while compiling.
       python do
         if MacOS.prefer_64_bit? and python.framework? and not archs_for_command("#{python.prefix}/Python").include? :x86_64
-          opoo "Detected a framework Python that does not have 64-bit support in:"
+          opoo "Detected a framework Python that does not have 64-bit support built in:"
           puts <<-EOS.undent
             #{python.prefix}
 
-            Dynamic loading Python library required the same architecture.
+            Dynamic loading Python library requires the same architecture.
 
             Note that a framework Python in /Library/Frameworks/Python.framework is
             the "MacPython" version, and not the system-provided version which is in:
@@ -119,7 +119,7 @@ class Vim < Formula
       end
       # Force vim loading different Python on same time, may cause vim crash.
       unless python.brewed?
-        opoo "Your Python isn't comes from Homebrew, you may see warning massage during brewing. That's OK. Because we can't detect what your Python is. We will force replace the string."
+        opoo "You seem to have a version of Python not installed by Homebrew. Attempting to modify config.h. You may see warning message during brewing."
         inreplace 'src/auto/config.h', "/* #undef PY_NO_RTLD_GLOBAL */", "#define PY_NO_RTLD_GLOBAL 1"
         inreplace 'src/auto/config.h', "/* #undef PY3_NO_RTLD_GLOBAL */", "#define PY3_NO_RTLD_GLOBAL 1"
       end
@@ -137,10 +137,10 @@ class Vim < Formula
     s = ''
     if build.with? "python" and build.with? "python3"
       s += <<-EOS.undent
-        This vim build with dynamic library Python 2 & 3.
+        Vim has been built with dynamic loading of Python 2 and Python 3.
 
-        Note that vim load dynamic Python 2 & 3 library with the same time
-        may crash vim. For more information, see:
+        Note: if Vim dynamically loads both Python 2 and Python 3, it may
+        crash. For more information, see:
             http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python3
       EOS
     end
