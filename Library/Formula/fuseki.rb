@@ -22,7 +22,6 @@ class Fuseki < Formula
     end
 
     # Use file logging instead of STDOUT logging
-    (var/'log/fuseki').mkpath
     inreplace 'log4j.properties' do |log4j_properties|
       log4j_properties.gsub! /^log4j\.rootLogger=.+/,                  '### \0'
       log4j_properties.gsub! /^log4j\.appender\.stdlog.+/,             '### \0'
@@ -45,8 +44,10 @@ class Fuseki < Formula
       ohai "The sample config.ttl config file has been copied to #{etc/'fuseki.ttl'}"
     end
 
-    # Create a location for dataset files, in case we're being used in LaunchAgent mode
+    # Create a location for dataset and log files,
+    # in case we're being used in LaunchAgent mode
     (var/'fuseki').mkpath
+    (var/'log/fuseki').mkpath
 
     # Install example configs
     prefix.install 'config-examples.ttl', 'config-inf-tdb.ttl', 'config-tdb-text.ttl', 'config-tdb.ttl', 'config.ttl'
