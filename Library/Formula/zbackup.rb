@@ -16,4 +16,9 @@ class Zbackup < Formula
     system "cmake", ".", *std_cmake_args
     system "make", "install"
   end
+
+  test do
+    system "#{bin}/zbackup", '--non-encrypted', 'init', '.'
+    system "echo test | #{bin}/zbackup backup backups/test.bak"
+  end
 end
