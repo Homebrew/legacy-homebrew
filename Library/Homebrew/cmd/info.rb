@@ -138,8 +138,13 @@ module Homebrew extend self
 
   def decorate_dependencies dependencies
     # necessary for 1.8.7 unicode handling since many installs are on 1.8.7
-    tick = Tty.green + ["2714".hex].pack("U*") + Tty.reset
-    cross = Tty.red  + ["2718".hex].pack("U*") + Tty.reset
+    if $stdout.tty?
+      tick = Tty.green + ["2714".hex].pack("U*") + Tty.reset
+      cross = Tty.red  + ["2718".hex].pack("U*") + Tty.reset
+    else
+      tick = ''
+      cross = ''
+    end
 
     deps_status = dependencies.collect do |dep|
       if ENV['HOMEBREW_NO_EMOJI']
