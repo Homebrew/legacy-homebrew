@@ -14,7 +14,6 @@ class GstPluginsBase < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   if build.with? 'gobject-introspection'
     depends_on 'gstreamer' => 'with-gobject-introspection'

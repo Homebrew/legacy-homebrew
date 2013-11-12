@@ -21,7 +21,6 @@ class GstPluginsGood < Formula
 
   depends_on :x11
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
   depends_on 'libsoup'
