@@ -41,9 +41,6 @@ class Glib < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    # -w is said to causes gcc to emit spurious errors for this package
-    ENV.enable_warnings if ENV.compiler == :gcc
-
     # Disable dtrace; see https://trac.macports.org/ticket/30413
     args = %W[
       --disable-maintainer-mode
