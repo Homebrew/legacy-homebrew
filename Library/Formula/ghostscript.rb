@@ -27,6 +27,8 @@ class Ghostscript < Formula
   depends_on :x11 => ['2.7.2', :optional]
   depends_on 'djvulibre' if build.with? 'djvu'
 
+  conflicts_with 'gambit-scheme', :because => 'both install `gsc` binaries'
+
   # http://sourceforge.net/projects/gs-fonts/
   resource 'fonts' do
     url 'http://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
