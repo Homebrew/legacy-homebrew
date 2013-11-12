@@ -185,7 +185,7 @@ class Cmd
       args << '-march=native' if tool =~ /clang/
     end
 
-    ENV['HOMEBREW_ARCHS'].split(',').each { |a| args << "-arch" << a } if cccfg? 'u'
+    args.concat(archflags)
     args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
     args
   end
@@ -194,6 +194,11 @@ class Cmd
     args << '-std=c++11' if cccfg? 'x'
     args << '-stdlib=libc++' if cccfg? 'g'
     args << '-stdlib=libstdc++' if cccfg? 'h'
+    args
+  end
+  def archflags
+    args = []
+    ENV['HOMEBREW_ARCHS'].split(',').each { |a| args << "-arch" << a } if cccfg? 'u'
     args
   end
   def syslibpath
