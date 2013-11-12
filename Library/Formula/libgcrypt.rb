@@ -15,7 +15,7 @@ class Libgcrypt < Formula
   end
 
   def patches
-    if ENV.compiler == :clang and MacOS.clang_build_version < 500
+    if ENV.compiler == :clang and (build.universal? or build.build_32_bit?)
       { :p0 => "https://trac.macports.org/export/85232/trunk/dports/devel/libgcrypt/files/clang-asm.patch" }
     end
   end
