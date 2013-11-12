@@ -2,11 +2,9 @@ require 'formula'
 
 class Gstreamer < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.2.0.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.2.0.tar.xz'
-  sha256 '94af5274299f845adf41cc504e0209b269acab7721293f49850fea27b4099463'
-
-  def patches; DATA; end
+  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.2.1.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.2.1.tar.xz'
+  sha256 'a4523d2471bca6cd0059a32e3b042f50faa4dadc6439852af8b43ca3f17d1fc9'
 
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gstreamer'
@@ -48,19 +46,3 @@ class Gstreamer < Formula
     system "make", "install"
   end
 end
-
-__END__
-diff --git a/gst/gstdatetime.c b/gst/gstdatetime.c
-index 6a8f659..8384ece 100644
---- a/gst/gstdatetime.c
-+++ b/gst/gstdatetime.c
-@@ -21,8 +21,8 @@
- #include "config.h"
- #endif
-
--#include "glib-compat-private.h"
- #include "gst_private.h"
-+#include "glib-compat-private.h"
- #include "gstdatetime.h"
- #include "gstvalue.h"
- #include <glib.h>
