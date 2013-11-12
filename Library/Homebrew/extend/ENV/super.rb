@@ -290,7 +290,6 @@ module Superenv
     set_cpu_flags
     macosxsdk remove_macosxsdk].each{|s| alias_method s, :noop }
 
-### DEPRECATE THESE
   def deparallelize
     delete('MAKEFLAGS')
   end
