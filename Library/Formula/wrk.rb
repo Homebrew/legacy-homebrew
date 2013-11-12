@@ -5,6 +5,8 @@ class Wrk < Formula
   url 'https://github.com/wg/wrk/archive/2.2.2.tar.gz'
   sha1 'e13ebcea4d88137c788363daafae546b0ccdbf19'
 
+  conflicts_with 'wrk-trello', :because => 'both install `wrk` binaries'
+
   def install
     system "make"
     bin.install "wrk"
