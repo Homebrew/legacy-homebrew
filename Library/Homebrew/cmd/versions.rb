@@ -7,6 +7,11 @@ module Homebrew extend self
 
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
+    opoo <<-EOS.undent
+      brew-versions is unsupported and may be removed soon.
+      Please use the homebrew-versions tap instead:
+        https://github.com/Homebrew/homebrew-versions
+    EOS
     ARGV.formulae.all? do |f|
       if ARGV.include? '--compact'
         puts f.versions * " "
