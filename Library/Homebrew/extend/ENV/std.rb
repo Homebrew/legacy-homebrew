@@ -103,44 +103,14 @@ module Stdenv
   end
   alias_method :j1, :deparallelize
 
-  # recommended by Apple, but, eg. wget won't compile with this flag, so…
-  def fast
-    remove_from_cflags(/-O./)
-    append_to_cflags '-fast'
-  end
-  def O4
-    # LLVM link-time optimization
-    remove_from_cflags(/-O./)
-    append_to_cflags '-O4'
-  end
-  def O3
-    # Sometimes O4 just takes fucking forever
-    remove_from_cflags(/-O./)
-    append_to_cflags '-O3'
-  end
-  def O2
-    # Sometimes O3 doesn't work or produces bad binaries
-    remove_from_cflags(/-O./)
-    append_to_cflags '-O2'
-  end
-  def Os
-    # Sometimes you just want a small one
-    remove_from_cflags(/-O./)
-    append_to_cflags '-Os'
-  end
-  def Og
-    # Sometimes you want a debug build
-    remove_from_cflags(/-O./)
-    append_to_cflags '-g -O0'
-  end
-  def O1
-    # Sometimes even O2 doesn't work :(
-    remove_from_cflags(/-O./)
-    append_to_cflags '-O1'
-  end
-  def O0
-    remove_from_cflags(/-O./)
-    append_to_cflags '-O0'
+  # These methods are no-ops for compatibility.
+  %w{fast Og}.each { |opt| define_method(opt) {} }
+
+  %w{O4 O3 O2 O1 O0 Os}.each do |opt|
+    define_method opt do
+      remove_from_cflags(/-O./)
+      append_to_cflags "-#{opt}"
+    end
   end
 
   def gcc_4_0_1
