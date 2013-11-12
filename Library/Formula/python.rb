@@ -26,8 +26,8 @@ class Python < Formula
   skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.3.tar.gz'
-    sha1 'faadca24f78488ad1a29f59bbeff9de26aa8e937'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.3.2.tar.gz'
+    sha1 '77180132225c5b4696e6d061655e291f3d1b20f5'
   end
 
   resource 'pip' do
@@ -38,9 +38,6 @@ class Python < Formula
   def patches
     p = []
     p << 'https://gist.github.com/paxswill/5402840/raw/75646d5860685c8be98858288d1772f64d6d5193/pythondtrace-patch.diff' if build.with? 'dtrace'
-    # Patch to disable the search for Tk.framework, since Homebrew's Tk is
-    # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
-    p << DATA if build.with? 'brewed-tk'
     p
   end
 
@@ -260,74 +257,3 @@ class Python < Formula
     system "#{bin}/python", "-c", "import Tkinter; root = Tkinter.Tk()"
   end
 end
-
-__END__
-# http://bugs.python.org/issue18071 (Remove this hung for 2.7.6!)
-diff --git a/Lib/_osx_support.py b/Lib/_osx_support.py
---- a/Lib/_osx_support.py
-+++ b/Lib/_osx_support.py
-@@ -53,7 +53,7 @@ def _find_executable(executable, path=No
-
-
- def _read_output(commandstring):
--    """Output from succesful command execution or None"""
-+    """Output from successful command execution or None"""
-     # Similar to os.popen(commandstring, "r").read(),
-     # but without actually using os.popen because that
-     # function is not usable during python bootstrap.
-@@ -68,7 +68,7 @@ def _read_output(commandstring):
-
-     with contextlib.closing(fp) as fp:
-         cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
--        return fp.read().decode('utf-8').strip() if not os.system(cmd) else None
-+        return fp.read().strip() if not os.system(cmd) else None
-
-
-# X11 header find fix (and let homebrew handle this.)
-
-diff --git a/setup.py b/setup.py
-index 716f08e..66114ef 100644
---- a/setup.py
-+++ b/setup.py
-@@ -1810,9 +1810,6 @@ class PyBuildExt(build_ext):
-         # Rather than complicate the code below, detecting and building
-         # AquaTk is a separate method. Only one Tkinter will be built on
-         # Darwin - either AquaTk, if it is found, or X11 based Tk.
--        if (host_platform == 'darwin' and
--            self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
--            return
- 
-         # Assume we haven't found any of the libraries or include files
-         # The versions with dots are used on Unix, and the versions without
-@@ -1858,21 +1855,6 @@ class PyBuildExt(build_ext):
-             if dir not in include_dirs:
-                 include_dirs.append(dir)
-
--        # Check for various platform-specific directories
--        if host_platform == 'sunos5':
--            include_dirs.append('/usr/openwin/include')
--            added_lib_dirs.append('/usr/openwin/lib')
--        elif os.path.exists('/usr/X11R6/include'):
--            include_dirs.append('/usr/X11R6/include')
--            added_lib_dirs.append('/usr/X11R6/lib64')
--            added_lib_dirs.append('/usr/X11R6/lib')
--        elif os.path.exists('/usr/X11R5/include'):
--            include_dirs.append('/usr/X11R5/include')
--            added_lib_dirs.append('/usr/X11R5/lib')
--        else:
--            # Assume default location for X11
--            include_dirs.append('/usr/X11/include')
--            added_lib_dirs.append('/usr/X11/lib')
- 
-         # If Cygwin, then verify that X is installed before proceeding
-         if host_platform == 'cygwin':
-@@ -1897,9 +1879,6 @@ class PyBuildExt(build_ext):
-         if host_platform in ['aix3', 'aix4']:
-             libs.append('ld')
- 
--        # Finally, link with the X11 libraries (not appropriate on cygwin)
--        if host_platform != "cygwin":
--            libs.append('X11')
- 
-         ext = Extension('_tkinter', ['_tkinter.c', 'tkappinit.c'],
-                         define_macros=[('WITH_APPINIT', 1)] + defs,
