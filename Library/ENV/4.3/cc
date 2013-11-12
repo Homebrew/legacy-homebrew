@@ -167,6 +167,20 @@ class Cmd
 
     args << '-pipe'
     args << '-w' unless configure?
+    args.concat(optflags)
+    args.concat(archflags)
+    args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
+    args
+  end
+  def cxxflags
+    args = cflags
+    args << '-std=c++11' if cccfg? 'x'
+    args << '-stdlib=libc++' if cccfg? 'g'
+    args << '-stdlib=libstdc++' if cccfg? 'h'
+    args
+  end
+  def optflags
+    args = []
     args << '-Os'
 
     # When bottling use the oldest supported CPU type.
@@ -184,16 +198,6 @@ class Cmd
     else
       args << '-march=native' if tool =~ /clang/
     end
-
-    args.concat(archflags)
-    args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
-    args
-  end
-  def cxxflags
-    args = cflags
-    args << '-std=c++11' if cccfg? 'x'
-    args << '-stdlib=libc++' if cccfg? 'g'
-    args << '-stdlib=libstdc++' if cccfg? 'h'
     args
   end
   def archflags
