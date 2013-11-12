@@ -181,7 +181,7 @@ class Cmd
   end
   def optflags
     args = []
-    args << '-Os'
+    args << "-#{ENV['HOMEBREW_OPTIMIZATION_LEVEL']}"
 
     # When bottling use the oldest supported CPU type.
     if cccfg? 'bc'
