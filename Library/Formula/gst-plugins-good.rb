@@ -20,7 +20,6 @@ class GstPluginsGood < Formula
     depends_on 'check'
   end
 
-  depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
