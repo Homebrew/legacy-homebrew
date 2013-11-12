@@ -70,6 +70,7 @@ module Superenv
     self['PKG_CONFIG_PATH'] = determine_pkg_config_path
     self['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
     self['HOMEBREW_CCCFG'] = determine_cccfg
+    self['HOMEBREW_OPTIMIZATION_LEVEL'] = 'Os'
     self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
     self['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
@@ -252,7 +253,7 @@ module Superenv
 
 ### NO LONGER NECESSARY OR NO LONGER SUPPORTED
   def noop(*args); end
-  %w[m64 gcc_4_0_1 fast O4 O3 O2 Os Og O1 libxml2 minimal_optimization
+  %w[m64 gcc_4_0_1 fast Og libxml2 minimal_optimization
     no_optimization enable_warnings x11
     set_cpu_flags
     macosxsdk remove_macosxsdk].each{|s| alias_method s, :noop }
@@ -314,6 +315,12 @@ module Superenv
   # m32 on superenv does not add any CC flags. It prevents "-m32" from being erased.
   def m32
     append 'HOMEBREW_CCCFG', "3", ''
+  end
+
+  %w{O4 O3 O2 O1 O0 Os}.each do |opt|
+    define_method opt do
+      self['HOMEBREW_OPTIMIZATION_LEVEL'] = opt
+    end
   end
 end
 
