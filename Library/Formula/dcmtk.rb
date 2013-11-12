@@ -8,7 +8,7 @@ class Dcmtk < Formula
   option 'with-docs', 'Install development libraries/headers and HTML docs'
 
   depends_on 'cmake' => :build
-  depends_on :libpng
+  depends_on "libpng"
   depends_on 'libtiff'
   depends_on 'doxygen' if build.include? 'with-docs'
 
