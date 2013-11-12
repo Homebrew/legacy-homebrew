@@ -2,8 +2,8 @@ require 'formula'
 
 class Mplayer < Formula
   homepage 'http://www.mplayerhq.hu/'
-  url 'http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.1.tar.xz'
-  sha1 '913a4bbeab7cbb515c2f43ad39bc83071b2efd75'
+  url 'http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.1.1.tar.xz'
+  sha1 'ba2f3bd1442d04b17b0143680850273d928689c1'
 
   head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
 
