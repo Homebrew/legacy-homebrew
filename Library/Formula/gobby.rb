@@ -13,7 +13,6 @@ class Gobby < Formula
   depends_on 'libgsasl'
   depends_on 'libxml++'
   depends_on 'gtksourceview'
-  depends_on 'obby'
   depends_on 'gettext'
   depends_on 'hicolor-icon-theme'
   depends_on 'libinfinity'
