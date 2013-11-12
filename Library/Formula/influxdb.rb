@@ -36,7 +36,8 @@ class Influxdb < Formula
     etc.install "config.json.sample" => "influxdb.conf"
     share.install "admin"
 
-    %w[influxdb influxdb/data influxdb/raft].each { |p| (var+p).mkpath }
+    (var/'influxdb/data').mkpath
+    (var/'influxdb/raft').mkpath
   end
 
   plist_options :manual => "influxdb -config=#{HOMEBREW_PREFIX}/etc/influxdb.conf"
