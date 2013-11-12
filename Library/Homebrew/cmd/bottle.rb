@@ -195,11 +195,7 @@ module Homebrew extend self
       if ARGV.include? '--write'
         f = Formula.factory formula_name
         formula_relative_path = "Library/Formula/#{f.name}.rb"
-        if File.exists? formula_relative_path
-          formula_path = Pathname.new(formula_relative_path)
-        else
-          formula_path = HOMEBREW_REPOSITORY+formula_relative_path
-        end
+        formula_path = HOMEBREW_REPOSITORY+formula_relative_path
         has_bottle_block = f.class.send(:bottle).checksums.any?
         inreplace formula_path do |s|
           if has_bottle_block
