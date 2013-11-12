@@ -1089,18 +1089,11 @@ end
 
     return if installed_version >= latest_version
 
-    case MacOS.version
-    when "10.9" then <<-EOS.undent
-      Your XQuartz (#{installed_version}) is outdated
-      OS X Mavericks requires XQuartz #{latest_version}:
-        http://xquartz.macosforge.org/trac/wiki/X112.7.5
-      EOS
-    else <<-EOS.undent
+    <<-EOS.undent
       Your XQuartz (#{installed_version}) is outdated
       Please install XQuartz #{latest_version}:
         https://xquartz.macosforge.org
-      EOS
-    end
+    EOS
   end
 end # end class Checks
 
