@@ -13,6 +13,7 @@ class Emacs < Formula
   option "with-x", "Include X11 support"
   option "use-git-head", "Use Savannah (faster) git mirror for HEAD builds"
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
+  option "japanese", "Patch for Japanese input methods"
 
   if build.include? "use-git-head"
     head 'http://git.sv.gnu.org/r/emacs.git'
@@ -35,14 +36,20 @@ class Emacs < Formula
   end
 
   def patches
-    {
+    p = {
       # Fix default-directory on Cocoa and Mavericks.
       # Fixed upstream in r114730 and r114882.
-      :p0 => DATA,
+      :p0 => [ DATA ],
       # Make native fullscreen mode optional, mostly from
       # upstream r111679
-      :p1 => 'https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch'
+      :p1 => [ 'https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch' ]
     }
+    # "--japanese" option:
+    # to apply a patch from MacEmacsJP for Japanese input methods
+    if build.include? "cocoa" and build.include? "japanese"
+      p[:p0].push("http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583")
+    end
+    p
   end unless build.head?
 
   # Follow MacPorts and don't install ctags from Emacs. This allows Vim
