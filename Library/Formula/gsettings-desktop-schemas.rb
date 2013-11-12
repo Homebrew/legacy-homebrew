@@ -13,7 +13,8 @@ class GsettingsDesktopSchemas < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--disable-schemas-compile"
     system "make install"
   end
 

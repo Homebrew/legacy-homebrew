@@ -25,7 +25,8 @@ class Gtkx3 < Formula
                           "--prefix=#{prefix}",
                           "--disable-glibtest",
                           "--enable-introspection=yes",
-                          "--enable-x11-backend"
+                          "--enable-x11-backend",
+                          "--disable-schemas-compile"
     system "make install"
     # Prevent a conflict between this and Gtk+2
     mv bin/'gtk-update-icon-cache', bin/'gtk3-update-icon-cache'
