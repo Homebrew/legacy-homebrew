@@ -39,6 +39,8 @@ class GstPluginsGood < Formula
   depends_on 'speex' => :optional
   depends_on 'taglib' => :optional
 
+  depends_on 'libogg' if build.with? 'flac'
+
   def install
     args = %W[
       --prefix=#{prefix}
