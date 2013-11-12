@@ -18,9 +18,10 @@ class Dvdrtools < Formula
   end
 
   def install
-    ENV['LIBS'] = '-lIOKit -framework CoreFoundation'
+    ENV['LIBS'] = '-framework IOKit -framework CoreFoundation'
 
-    system "./configure", '--disable-debug', '--disable-dependency-tracking',
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system 'make install'
