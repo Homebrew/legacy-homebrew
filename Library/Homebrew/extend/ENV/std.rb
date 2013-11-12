@@ -138,6 +138,10 @@ module Stdenv
     remove_from_cflags(/-O./)
     append_to_cflags '-O1'
   end
+  def O0
+    remove_from_cflags(/-O./)
+    append_to_cflags '-O0'
+  end
 
   def gcc_4_0_1
     # we don't use locate because gcc 4.0 has not been provided since Xcode 4
