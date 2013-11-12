@@ -23,23 +23,21 @@ module Homebrew extend self
 
   def build_env_keys env
     %w[
-      CC CXX LD
-      HOMEBREW_CC
+      CC CXX LD OBJC OBJCXX
+      HOMEBREW_CC HOMEBREW_CXX
       CFLAGS CXXFLAGS CPPFLAGS LDFLAGS SDKROOT MAKEFLAGS
       CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_LIBRARY_PATH CMAKE_FRAMEWORK_PATH
       MACOSX_DEPLOYMENT_TARGET PKG_CONFIG_PATH PKG_CONFIG_LIBDIR
-      HOMEBREW_DEBUG HOMEBREW_MAKE_JOBS HOMEBREW_VERBOSE HOMEBREW_USE_CLANG
-      HOMEBREW_USE_GCC HOMEBREW_USE_LLVM HOMEBREW_SVN HOMEBREW_GIT
+      HOMEBREW_DEBUG HOMEBREW_MAKE_JOBS HOMEBREW_VERBOSE
+      HOMEBREW_SVN HOMEBREW_GIT
       HOMEBREW_SDKROOT HOMEBREW_BUILD_FROM_SOURCE
       MAKE GIT CPP
-      ACLOCAL_PATH OBJC PATH CPATH].select{ |key| env.fetch(key) if env.key? key }
+      ACLOCAL_PATH PATH CPATH].select{ |key| env.fetch(key) if env.key? key }
   end
 
   def dump_build_env env
     build_env_keys(env).each do |key|
-      case key when 'CC', 'CXX'
-        next
-      end if superenv?
+      next if superenv? and %w{CC CXX OBJC OBJCXX}.include? key
 
       value = env[key]
       print "#{key}: #{value}"

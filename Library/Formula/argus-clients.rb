@@ -8,12 +8,8 @@ class ArgusClients < Formula
   depends_on 'readline' => :recommended
   depends_on 'rrdtool' => :recommended
 
-  fails_with :clang do
-    build 425
-    cause "Undefined symbols for architecture x86_64"
-  end
-
   def install
+    ENV.append 'CFLAGS', '-std=gnu89'
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"

@@ -22,23 +22,15 @@ class Libagg < Formula
     # AM_C_PROTOTYPES was removed in automake 1.12, as it's only needed for
     # pre-ANSI compilers
     inreplace 'configure.in', 'AM_C_PROTOTYPES', ''
+    inreplace 'autogen.sh', 'libtoolize', 'glibtoolize'
 
-    # No configure script. We need to run autoreconf, and aclocal and automake
-    # need some direction.
-    ENV['ACLOCAL'] = "aclocal -I#{HOMEBREW_PREFIX}/share/aclocal" # To find SDL m4 files
-    # This part snatched from MacPorts
-    ENV['AUTOMAKE'] = "automake --foreign --add-missing --ignore-deps"
-    system "autoreconf -fi"
-
-    system "./configure",
-           "--disable-debug",
-           "--disable-dependency-tracking",
-           "--prefix=#{prefix}",
-           "--disable-platform", # Causes undefined symbols
-           "--disable-ctrl",     # No need to run these during configuration
-           "--disable-examples",
-           "--disable-sdltest"
-
+    system "sh", "autogen.sh",
+                 "--disable-dependency-tracking",
+                 "--prefix=#{prefix}",
+                 "--disable-platform", # Causes undefined symbols
+                 "--disable-ctrl",     # No need to run these during configuration
+                 "--disable-examples",
+                 "--disable-sdltest"
     system "make install"
   end
 end

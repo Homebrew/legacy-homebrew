@@ -1,10 +1,28 @@
 require 'formula'
 
+class Qt5HeadDownloadStrategy < GitDownloadStrategy
+  include FileUtils
+
+  def support_depth?
+    # We need to make a local clone so we can't use "--depth 1"
+    false
+  end
+
+  def stage
+    @clone.cd { reset }
+    safe_system 'git', 'clone', @clone, '.'
+    ln_s @clone, 'qt'
+    safe_system './init-repository', '--mirror', "#{Dir.pwd}/"
+    rm 'qt'
+  end
+end
+
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
   url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.1/single/qt-everywhere-opensource-src-5.1.1.tar.gz'
   sha1 '131b023677cd5207b0b0d1864f5d3ac37f10a5ba'
-  head 'git://gitorious.org/qt/qt5.git', :branch => 'stable'
+  head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
+    :using => Qt5HeadDownloadStrategy
 
   bottle do
     revision 1
@@ -38,6 +56,9 @@ class Qt5 < Formula
       # ... too stupid to find CFNumber.h, so we give a hint:
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
     end
+
+    # https://bugreports.qt-project.org/browse/QTBUG-34382
+    args << "-no-xcb" if build.head?
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 

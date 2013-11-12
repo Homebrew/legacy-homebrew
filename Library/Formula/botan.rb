@@ -8,10 +8,18 @@ class Botan < Formula
   option 'enable-debug', 'Enable debug build of Botan'
 
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--cpu=#{MacOS.preferred_arch}"
+    args = %W[
+      --prefix=#{prefix}
+      --docdir=#{share}/doc
+      --cpu=#{MacOS.preferred_arch}
+      --cc=#{ENV.compiler}
+      --os=darwin
+      --with-openssl
+      --with-zlib
+      --with-bzip2
+    ]
+
     args << "--enable-debug" if build.include? "enable-debug"
-    args << "--cc=#{ENV.compiler}"
 
     system "./configure.py", *args
     # A hack to force them use our CFLAGS. MACH_OPT is empty in the Makefile
