@@ -2,15 +2,9 @@ require 'formula'
 
 class Osxfuse < Formula
   homepage 'http://osxfuse.github.io'
-  url 'https://github.com/osxfuse/osxfuse.git', :tag => 'osxfuse-2.6.1_1'
+  url 'https://github.com/osxfuse/osxfuse.git', :tag => 'osxfuse-2.6.2'
 
   head 'https://github.com/osxfuse/osxfuse.git', :branch => 'osxfuse-2'
-
-  bottle do
-    sha1 'cecee3f4d3d790d4277a4520b988cd8d26eeca90' => :mountain_lion
-    sha1 'f2e691264528e5364bc2dede5e8874a75f657b6e' => :lion
-    sha1 '40e05305257de14c5dda8058de5ad14440e87dde' => :snow_leopard
-  end
 
   depends_on :macos => :snow_leopard
   depends_on :xcode
