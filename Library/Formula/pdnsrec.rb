@@ -9,16 +9,11 @@ class Pdnsrec < Formula
   depends_on 'boost'
   depends_on 'lua' => :optional
 
-  # Disable superenv, else the compiled binary crashes at startup
-  env :std
-
   def install
     # Set overrides using environment variables
     ENV['DESTDIR'] = "#{prefix}"
     ENV['OPTFLAGS'] = "-O0"
-
-    # Ensure only -O0 is passed to compiler
-    ENV.remove_from_cflags /-Os/
+    ENV.O0
 
     # Include Lua if requested
     if build.include? 'with-lua'
