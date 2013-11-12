@@ -26,14 +26,10 @@ class Libgcrypt < Formula
     end
   end
 
-  def cflags
-    cflags = ENV.cflags.to_s
-    cflags += ' -std=gnu89 -fheinous-gnu-extensions' if ENV.compiler == :clang
-    cflags
-  end
-
   def install
     ENV.universal_binary if build.universal?
+
+    ENV.append 'CFLAGS', '-std=gnu89 -fheinous-gnu-extensions' if ENV.compiler == :clang
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -46,7 +42,7 @@ class Libgcrypt < Formula
     end
 
     # Parallel builds work, but only when run as separate steps
-    system "make", "CFLAGS=#{cflags}"
+    system "make", "CFLAGS=#{ENV.cflags}"
     system "make check"
     system "make install"
   end
