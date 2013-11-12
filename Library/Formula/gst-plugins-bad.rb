@@ -14,7 +14,6 @@ class GstPluginsBad < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
 

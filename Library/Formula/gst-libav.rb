@@ -15,7 +15,6 @@ class GstLibav < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "xz" => :build
   depends_on "yasm" => :build
   depends_on "gst-plugins-base"
 
