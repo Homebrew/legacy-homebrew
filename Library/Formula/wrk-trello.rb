@@ -5,6 +5,8 @@ class WrkTrello < Formula
   url 'http://cloud.github.com/downloads/blangel/wrk/wrk-1.0.1.tar.gz'
   sha1 'e517e9fb66dc285321b38a398aae35956c83a0ea'
 
+  conflicts_with 'wrk', :because => 'both install `wrk` binaries'
+
   def script; <<-EOS.undent
     #!/bin/sh
     export WRK_HOME="#{libexec}"
