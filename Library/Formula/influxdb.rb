@@ -2,8 +2,8 @@ require "formula"
 
 class Influxdb < Formula
   homepage "http://influxdb.org"
-  url "http://get.influxdb.org/src/influxdb-0.0.7.tar.gz"
-  sha1 "2ee3e88112a9f3f7fa4423acbdb686711bd42595"
+  url "http://get.influxdb.org/src/influxdb-0.1.0.tar.gz"
+  sha1 "97b7a8f36597403e34b918744c60ce0398a2fffb"
 
   bottle do
     sha1 '2cafb68bd52cf47adf03e1e42551342d0cbfe5cc' => :mavericks
@@ -36,7 +36,7 @@ class Influxdb < Formula
     etc.install "config.json.sample" => "influxdb.conf"
     share.install "admin"
 
-    %w[influxdb infludxb/data influxdb/raft].each { |p| (var+p).mkpath }
+    %w[influxdb influxdb/data influxdb/raft].each { |p| (var+p).mkpath }
   end
 
   plist_options :manual => "influxdb -config=#{HOMEBREW_PREFIX}/etc/influxdb.conf"
