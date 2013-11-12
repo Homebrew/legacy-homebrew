@@ -24,7 +24,7 @@ class Fontforge < Formula
   end
 
   option 'with-gif', 'Build with GIF support'
-  option 'with-x', 'Build with X'
+  option 'with-x', 'Build with X11 support, including FontForge.app'
 
   depends_on 'gettext'
   depends_on :python => :recommended
