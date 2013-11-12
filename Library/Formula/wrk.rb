@@ -2,8 +2,12 @@ require 'formula'
 
 class Wrk < Formula
   homepage 'https://github.com/wg/wrk'
-  url 'https://github.com/wg/wrk/archive/2.2.2.tar.gz'
-  sha1 'e13ebcea4d88137c788363daafae546b0ccdbf19'
+  url 'https://github.com/wg/wrk/archive/3.0.1.tar.gz'
+  sha1 'de18133a99ee13d572124983e688536bd82f93ea'
+
+  head 'https://github.com/wg/wrk.git'
+
+  depends_on 'luajit'
 
   def install
     system "make"
