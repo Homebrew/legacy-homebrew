@@ -28,9 +28,16 @@ class Mplayer < Formula
   end unless MacOS.prefer_64_bit?
 
   def patches
-    # When building SVN, configure prompts the user to pull FFmpeg from git.
-    # Don't do that.
-    DATA if build.head?
+    p = []
+    if build.head?
+      # When building SVN, configure prompts the user to pull FFmpeg from git.
+      # Don't do that.
+      p << DATA
+    else
+      # Fix compilation on 10.9, adapted from upstream revision r36500
+      p << "https://gist.github.com/jacknagel/7441175/raw/37657c264a6a3bb4d30dee14538c367f7ffccba9/vo_corevideo.h.patch"
+    end
+    p
   end
 
   def install
