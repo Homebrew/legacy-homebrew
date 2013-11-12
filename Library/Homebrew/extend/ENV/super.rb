@@ -251,13 +251,6 @@ module Superenv
 
   public
 
-### NO LONGER NECESSARY OR NO LONGER SUPPORTED
-  def noop(*args); end
-  %w[m64 gcc_4_0_1 fast Og libxml2 minimal_optimization
-    no_optimization enable_warnings x11
-    set_cpu_flags
-    macosxsdk remove_macosxsdk].each{|s| alias_method s, :noop }
-
   def deparallelize
     delete('MAKEFLAGS')
   end
@@ -322,6 +315,19 @@ module Superenv
       self['HOMEBREW_OPTIMIZATION_LEVEL'] = opt
     end
   end
+
+  def noop(*args); end
+  noops = []
+
+  # These methods are no longer necessary under superenv, but are needed to
+  # maintain an interface compatible with stdenv.
+  noops.concat %w{fast Og libxml2 x11 set_cpu_flags macosxsdk remove_macosxsdk}
+
+  # These methods provide functionality that has not yet been ported to
+  # superenv.
+  noops.concat %w{m64 gcc_4_0_1 minimal_optimization no_optimization enable_warnings}
+
+  noops.each { |m| alias_method m, :noop }
 end
 
 
