@@ -111,39 +111,6 @@ module Superenv
     warn_about_non_apple_gcc($1) if ENV['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
   end
 
-  def universal_binary
-    self['HOMEBREW_ARCHS'] = Hardware::CPU.universal_archs.join(',')
-    append 'HOMEBREW_CCCFG', "u", ''
-  end
-
-  def cxx11
-    if self['HOMEBREW_CC'] == 'clang'
-      append 'HOMEBREW_CCCFG', "x", ''
-      append 'HOMEBREW_CCCFG', "g", ''
-    elsif self['HOMEBREW_CC'] =~ /gcc-4\.(8|9)/
-      append 'HOMEBREW_CCCFG', "x", ''
-    else
-      raise "The selected compiler doesn't support C++11: #{self['HOMEBREW_CC']}"
-    end
-  end
-
-  def libcxx
-    if self['HOMEBREW_CC'] == 'clang'
-      append 'HOMEBREW_CCCFG', "g", ''
-    end
-  end
-
-  def libstdcxx
-    if self['HOMEBREW_CC'] == 'clang'
-      append 'HOMEBREW_CCCFG', "h", ''
-    end
-  end
-
-  # m32 on superenv does not add any CC flags. It prevents "-m32" from being erased.
-  def m32
-    append 'HOMEBREW_CCCFG', "3", ''
-  end
-
   private
 
   def determine_cc
@@ -294,6 +261,7 @@ module Superenv
     delete('MAKEFLAGS')
   end
   alias_method :j1, :deparallelize
+
   COMPILER_SYMBOL_MAP.values.each do |compiler|
     define_method compiler do
       @compiler = compiler
@@ -301,6 +269,7 @@ module Superenv
       self.cxx = self['HOMEBREW_CXX'] = determine_cxx
     end
   end
+
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
       @compiler = "gcc-4.#{n}"
@@ -308,9 +277,43 @@ module Superenv
       self.cxx = self['HOMEBREW_CXX'] = determine_cxx
     end
   end
+
   def make_jobs
     self['MAKEFLAGS'] =~ /-\w*j(\d)+/
     [$1.to_i, 1].max
+  end
+
+  def universal_binary
+    self['HOMEBREW_ARCHS'] = Hardware::CPU.universal_archs.join(',')
+    append 'HOMEBREW_CCCFG', "u", ''
+  end
+
+  def cxx11
+    if self['HOMEBREW_CC'] == 'clang'
+      append 'HOMEBREW_CCCFG', "x", ''
+      append 'HOMEBREW_CCCFG', "g", ''
+    elsif self['HOMEBREW_CC'] =~ /gcc-4\.(8|9)/
+      append 'HOMEBREW_CCCFG', "x", ''
+    else
+      raise "The selected compiler doesn't support C++11: #{self['HOMEBREW_CC']}"
+    end
+  end
+
+  def libcxx
+    if self['HOMEBREW_CC'] == 'clang'
+      append 'HOMEBREW_CCCFG', "g", ''
+    end
+  end
+
+  def libstdcxx
+    if self['HOMEBREW_CC'] == 'clang'
+      append 'HOMEBREW_CCCFG', "h", ''
+    end
+  end
+
+  # m32 on superenv does not add any CC flags. It prevents "-m32" from being erased.
+  def m32
+    append 'HOMEBREW_CCCFG', "3", ''
   end
 end
 
