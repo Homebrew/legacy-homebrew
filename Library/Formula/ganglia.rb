@@ -5,6 +5,8 @@ class Ganglia < Formula
   url 'http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.6.0/ganglia-3.6.0.tar.gz'
   sha1 'b06529ac49deb1f1c65c6215b8d2d13c3f3fa23f'
 
+  conflicts_with 'coreutils', :because => 'both install `gstat` binaries'
+
   depends_on 'pkg-config' => :build # to find APR
   depends_on 'confuse'
   depends_on 'pcre'
