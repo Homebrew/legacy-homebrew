@@ -10,4 +10,8 @@ class Masscan < Formula
     system "make"
     bin.install "bin/masscan"
   end
+
+  test do
+    assert `#{bin}/masscan --echo`.include? 'adapter ='
+  end
 end
