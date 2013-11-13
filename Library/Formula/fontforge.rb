@@ -14,6 +14,7 @@ class Fontforge < Formula
   head do
     url 'https://github.com/fontforge/fontforge.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
     depends_on 'pkg-config' => :build
