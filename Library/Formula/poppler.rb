@@ -18,6 +18,8 @@ class Poppler < Formula
   depends_on 'glib' => :optional
   depends_on 'cairo' if build.with? 'glib' # Needs a newer Cairo build than OS X 10.6.7 provides
 
+  conflicts_with 'pdftohtml', :beacuse => 'both install `pdftohtml` binaries'
+
   conflicts_with 'pdf2image', 'xpdf',
     :because => 'poppler, pdf2image, and xpdf install conflicting executables'
 
