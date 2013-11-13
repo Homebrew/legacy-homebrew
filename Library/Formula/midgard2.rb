@@ -18,16 +18,21 @@ class Midgard2 < Formula
   depends_on 'libgda'
 
   def install
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --with-libgda5
+      --with-dbus-support
+      --enable-introspection=no
+    ]
+
     if build.head?
-      system "autoreconf", "-i", "--force"
-      system "automake"
+      inreplace 'autogen.sh', 'libtoolize', 'glibtoolize'
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
     end
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-libgda5",
-                          "--with-dbus-support",
-                          "--enable-introspection=no"
     system "make install"
   end
 end
