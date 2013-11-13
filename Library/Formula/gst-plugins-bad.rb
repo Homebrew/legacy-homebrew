@@ -9,6 +9,7 @@ class GstPluginsBad < Formula
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-bad'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

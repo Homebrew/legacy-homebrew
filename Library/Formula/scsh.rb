@@ -8,6 +8,7 @@ class Scsh < Formula
   head do
     url 'https://github.com/scheme/scsh.git'
 
+    depends_on 'autoconf' => :build
     depends_on 'automake' => :build
     depends_on 'scheme48'
   end

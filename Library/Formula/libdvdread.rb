@@ -9,6 +9,7 @@ class Libdvdread < Formula
 
   depends_on 'libdvdcss'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 

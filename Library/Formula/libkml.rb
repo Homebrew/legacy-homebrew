@@ -8,6 +8,7 @@ class Libkml < Formula
   head do
     url 'http://libkml.googlecode.com/svn/trunk/'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

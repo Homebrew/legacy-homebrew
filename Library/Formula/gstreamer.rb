@@ -9,6 +9,7 @@ class Gstreamer < Formula
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gstreamer'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
