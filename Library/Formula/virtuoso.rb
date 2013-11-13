@@ -16,6 +16,8 @@ class Virtuoso < Formula
   # If gawk isn't found, make fails deep into the process.
   depends_on 'gawk' => :build
 
+  conflicts_with 'unixodbc', :because => 'Both install `isql` binaries.'
+
   skip_clean :la
 
   def install
