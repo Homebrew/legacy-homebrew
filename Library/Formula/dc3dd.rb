@@ -5,6 +5,7 @@ class Dc3dd < Formula
   url 'http://downloads.sourceforge.net/project/dc3dd/dc3dd/7.1.0/dc3dd-7.1.614.tar.gz'
   sha1 '808abb6472861a88efd94fd22ffea7021007d769'
 
+  depends_on :autoconf
   depends_on :automake
 
   # Remove explicit dependency on automake 1.10.1
