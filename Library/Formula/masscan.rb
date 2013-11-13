@@ -8,6 +8,6 @@ class Masscan < Formula
 
   def install
     system "make"
-    bin.install("bin/masscan")
+    bin.install "bin/masscan"
   end
 end
