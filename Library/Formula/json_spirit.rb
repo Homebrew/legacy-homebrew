@@ -13,6 +13,11 @@ class JsonSpirit < Formula
     args << "-DBUILD_STATIC_LIBRARIES=ON"
 
     system "cmake", *args
+    system "make"
+
+    args = std_cmake_args
+    args << "-DBUILD_STATIC_LIBRARIES=OFF"
+    system "cmake", *args
     system "make install"
   end
 end
