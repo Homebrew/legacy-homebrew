@@ -29,10 +29,17 @@ class Bullet < Formula
     end
 
     args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}" if build.universal?
-    args << "-DBUILD_DEMOS=OFF" if not build.include? "build-demo"
-    args << "-DBUILD_EXTRAS=OFF" if not build.include? "build-extra"
-    args << "-DINSTALL_EXTRA_LIBS=ON" if build.include? "build-extra"
     args << "-DUSE_DOUBLE_PRECISION=ON" if build.include? "double-precision"
+
+    args << "-DBUILD_DEMOS=OFF" unless build.include? "build-demo"
+
+    # Demos require extras, see:
+    # https://code.google.com/p/bullet/issues/detail?id=767&thanks=767&ts=1384333052
+    if build.include? "build-extra" or build.include? "build-demo"
+      args << "-DINSTALL_EXTRA_LIBS=ON"
+    else
+      args << "-DBUILD_EXTRAS=OFF"
+    end
 
     system "cmake", *args
     system "make"
