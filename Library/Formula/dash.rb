@@ -12,10 +12,7 @@ class Dash < Formula
   end
 
   def install
-    if build.head?
-      system "aclocal"
-      system "autoreconf -f -i -Wall,no-obsolete"
-    end
+    system "./autogen.sh" if build.head?
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-libedit",
