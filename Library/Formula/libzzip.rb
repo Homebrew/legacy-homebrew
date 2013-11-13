@@ -6,11 +6,12 @@ class Libzzip < Formula
   sha1 'cf8b642abd9db618324a1b98cc71492a007cd687'
 
   option 'sdl', 'Enable SDL usage and create SDL_rwops_zzip.pc'
+  option :universal
 
   depends_on 'pkg-config' => :build
   depends_on 'sdl' if build.include? 'sdl'
 
-  option :universal
+  conflicts_with 'zzuf', :because => 'both install `zzcat` binaries'
 
   def install
     if build.universal?
@@ -27,7 +28,7 @@ class Libzzip < Formula
     args << '--enable-sdl' if build.include? 'sdl'
     system './configure', *args
     system 'make install'
-    ENV.deparallelize     # fails without this when a compressed file isn't ready.
-    system 'make check'   # runing this after install bypasses DYLD issues.
+    ENV.deparallelize   # fails without this when a compressed file isn't ready
+    system 'make check' # runing this after install bypasses DYLD issues
   end
 end
