@@ -5,6 +5,8 @@ class Libmongoclient < Formula
   url 'http://fastdl.mongodb.org/src/mongodb-src-r2.5.3.tar.gz'
   sha1 '8fbd7f6f2a55092ae0e461ee0f5a4a7f738d40c9'
 
+  head 'https://github.com/mongodb/mongo.git'
+
   depends_on 'scons' => :build
   depends_on 'boost' => :build
 
