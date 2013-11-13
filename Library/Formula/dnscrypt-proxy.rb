@@ -8,6 +8,7 @@ class DnscryptProxy < Formula
   head do
     url 'https://github.com/opendns/dnscrypt-proxy.git', :branch => 'master'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

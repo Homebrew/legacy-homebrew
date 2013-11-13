@@ -8,6 +8,7 @@ class EnginePkcs11 < Formula
   head do
     url 'https://github.com/OpenSC/engine_pkcs11.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

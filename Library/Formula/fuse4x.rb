@@ -6,6 +6,7 @@ class Fuse4x < Formula
   sha1 '3a9700f716eff930dcd2426772c642a09adcc73a'
 
   # Always use newer versions of these tools
+  depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
 
