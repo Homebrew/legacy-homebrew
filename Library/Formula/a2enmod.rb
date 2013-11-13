@@ -11,8 +11,4 @@ class A2enmod < Formula
     ENV['PREFIX'] = prefix
     system "./install.sh"
   end
-
-  test do
-    system "false"
-  end
 end
