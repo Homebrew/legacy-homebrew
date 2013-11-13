@@ -11,18 +11,30 @@ class NetSnmp < Formula
     sha1 "5e46232a2508a3cb6543f0438569090f78e4a20e"
   end
 
+  depends_on :python => :optional
+
   def install
-    system "./configure", "--disable-debugging",
-                          "--prefix=#{prefix}",
-                          "--enable-ipv6",
-                          "--with-defaults",
-                          "--with-persistent-directory=#{var}/db/net-snmp",
-                          "--with-logfile=#{var}/log/snmpd.log",
-                          "--with-mib-modules=host ucd-snmp/diskio",
-                          "--without-rpm",
-                          "--without-kmem-usage",
-                          "--disable-embedded-perl",
-                          "--without-perl-modules"
+    args = [
+      "--disable-debugging",
+      "--prefix=#{prefix}",
+      "--enable-ipv6",
+      "--with-defaults",
+      "--with-persistent-directory=#{var}/db/net-snmp",
+      "--with-logfile=#{var}/log/snmpd.log",
+      "--with-mib-modules=host ucd-snmp/diskio",
+      "--without-rpm",
+      "--without-kmem-usage",
+      "--disable-embedded-perl",
+      "--without-perl-modules",
+    ]
+
+    if build.with? "python"
+      args << "--with-python-modules"
+      # the net-snmp configure script finds the wrong python
+      ENV['PYTHONPROG'] = `which python`
+    end
+
+    system "./configure", *args
     system "make"
     system "make install"
   end
