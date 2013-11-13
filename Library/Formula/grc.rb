@@ -7,6 +7,8 @@ class Grc < Formula
 
   depends_on :python
 
+  conflicts_with 'cc65', :because => 'both install `grc` binaries'
+
   def install
     #TODO we should deprefixify since it's python and thus possible
     inreplace ['grc', 'grc.1'], '/etc', etc
