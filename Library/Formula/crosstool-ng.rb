@@ -7,6 +7,7 @@ class CrosstoolNg < Formula
 
   depends_on :autoconf
   depends_on :automake
+  depends_on :libtool
   depends_on 'coreutils' => :build
   depends_on 'wget'
   depends_on 'gnu-sed'
