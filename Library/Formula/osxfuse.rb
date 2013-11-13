@@ -31,6 +31,11 @@ class Osxfuse < Formula
     system "./build.sh", "-t", "homebrew", "-f", prefix
   end
 
+  def patches
+    # Don't lack fuse.pc
+    DATA
+  end
+
   def caveats; <<-EOS.undent
     If upgrading from a previous version of osxfuse, the previous kernel extension
     will need to be unloaded before installing the new version. First, check that
@@ -49,3 +54,62 @@ class Osxfuse < Formula
     EOS
   end
 end
+
+__END__
+diff --git
+diff --git a/fuse/Makefile.am b/fuse/Makefile.am
+index 210cb48..8f02307 100644
+--- a/fuse/Makefile.am
++++ b/fuse/Makefile.am
+@@ -4,7 +4,6 @@ SUBDIRS = @subdirs@ @subdirs2@
+ 
+ EXTRA_DIST =			\
+ 	fuse.pc.in		\
+-	osxfuse.pc.in		\
+ 	README*			\
+ 	Filesystems		\
+ 	FAQ			\
+@@ -14,10 +13,6 @@ EXTRA_DIST =			\
+ 
+ pkgconfigdir = @pkgconfigdir@
+ 
+-if DARWIN
+-pkgconfig_DATA = osxfuse.pc
+-else
+ pkgconfig_DATA = fuse.pc
+-endif
+ 
+ $(pkgconfig_DATA): config.status
+diff --git a/fuse/configure.in b/fuse/configure.in
+index df12cc4..1e32f82 100644
+--- a/fuse/configure.in
++++ b/fuse/configure.in
+@@ -103,11 +103,7 @@ AM_CONDITIONAL(LINUX, test "$arch" = linux)
+ AM_CONDITIONAL(BSD, test "$arch" = bsd)
+ AM_CONDITIONAL(DARWIN, test "$arch" = darwin)
+ 
+-if test "$arch" = darwin; then
+-	fuse_pc=osxfuse.pc
+-else
+-	fuse_pc=fuse.pc
+-fi
++fuse_pc=fuse.pc
+ 
+ AC_CONFIG_FILES([$fuse_pc Makefile lib/Makefile util/Makefile example/Makefile include/Makefile])
+ AC_OUTPUT
+diff --git a/fuse/fuse.pc.in b/fuse/fuse.pc.in
+index 9f98892..f8a1cb7 100644
+--- a/fuse/fuse.pc.in
++++ b/fuse/fuse.pc.in
+@@ -4,7 +4,7 @@ libdir=@libdir@
+ includedir=@includedir@
+ 
+ Name: fuse
+-Description: Filesystem in Userspace
++Description: OSXFUSE
+ Version: @VERSION@
+-Libs: -L${libdir} -lfuse @libfuse_libs@
+-Cflags: -I${includedir}/fuse -D_FILE_OFFSET_BITS=64
++Libs: -L${libdir} -losxfuse @libfuse_libs@
++Cflags: -I${includedir}/osxfuse/fuse -D_FILE_OFFSET_BITS=64 -D_DARWIN_USE_64_BIT_INODE
+C_OUTPUT
