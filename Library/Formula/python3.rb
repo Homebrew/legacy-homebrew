@@ -1,9 +1,5 @@
 require 'formula'
 
-# Python3 is the new language standard, not just a new revision.
-# It's somewhat incompatible with Python 2.x, therefore, the executable
-# "python" will always point to the 2.x version which you can get by
-# `brew install python`.
 class Python3 < Formula
   homepage 'http://www.python.org/'
   url 'http://python.org/ftp/python/3.3.2/Python-3.3.2.tar.bz2'
@@ -30,8 +26,8 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.3.tar.gz'
-    sha1 'faadca24f78488ad1a29f59bbeff9de26aa8e937'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.3.2.tar.gz'
+    sha1 '77180132225c5b4696e6d061655e291f3d1b20f5'
   end
 
   resource 'pip' do
