@@ -8,6 +8,7 @@ class Libslax < Formula
   head do
     url 'https://github.com/Juniper/libslax.git'
 
+    depends_on 'autoconf' => :build
     depends_on 'automake' => :build
   end
 

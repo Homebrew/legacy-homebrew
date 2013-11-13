@@ -11,6 +11,7 @@ class Mpich2 < Formula
   head do
     url 'git://git.mpich.org/mpich.git'
 
+    depends_on 'autoconf' => :build
     depends_on 'automake' => :build
     depends_on 'libtool'  => :build
   end

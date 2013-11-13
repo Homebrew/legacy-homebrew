@@ -8,6 +8,7 @@ class Libusb < Formula
   head do
     url 'git://git.libusb.org/libusb.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

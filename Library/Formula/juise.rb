@@ -8,6 +8,7 @@ class Juise < Formula
   head do
     url 'https://github.com/Juniper/juise.git'
 
+    depends_on 'autoconf' => :build
     depends_on 'automake' => :build
   end
 

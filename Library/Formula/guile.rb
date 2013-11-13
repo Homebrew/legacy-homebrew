@@ -9,6 +9,7 @@ class Guile < Formula
   head do
     url 'http://git.sv.gnu.org/r/guile.git'
 
+    depends_on 'autoconf' => :build
     depends_on 'automake' => :build
     depends_on 'gettext' => :build
   end

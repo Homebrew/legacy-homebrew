@@ -10,6 +10,7 @@ class Libiscsi < Formula
 
   depends_on 'cunit' if build.with? 'noinst'
   depends_on 'popt'
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 

@@ -8,6 +8,7 @@ class UpnpRouterControl < Formula
   head do
     url 'bzr://lp:upnp-router-control'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

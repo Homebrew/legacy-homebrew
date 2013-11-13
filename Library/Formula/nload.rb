@@ -9,6 +9,7 @@ class Nload < Formula
     build 2334
   end
 
+  depends_on :autoconf
   depends_on :automake
 
   # Patching configure.in file to make configure compile on Mac OS.

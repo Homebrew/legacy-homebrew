@@ -8,6 +8,7 @@ class Mcabber < Formula
   head do
     url 'http://mcabber.com/hg/', :using => :hg
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

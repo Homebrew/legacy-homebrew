@@ -9,6 +9,7 @@ class GstPluginsUgly < Formula
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

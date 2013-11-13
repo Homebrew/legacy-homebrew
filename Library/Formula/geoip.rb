@@ -6,6 +6,7 @@ class Geoip < Formula
   sha1 '36b211ad1857431772f811b126422aea6b68a122'
 
   # These are needed for the autoreconf it always tries to run.
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 

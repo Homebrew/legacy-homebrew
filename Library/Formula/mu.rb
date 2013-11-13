@@ -19,6 +19,7 @@ class Mu < Formula
   head do
     url 'https://github.com/djcb/mu.git'
 
+    depends_on 'autoconf' => :build
     depends_on 'automake' => :build
     depends_on 'libtool' => :build
   end

@@ -8,6 +8,7 @@ class Pcb < Formula
 
   head 'git://git.geda-project.org/pcb.git'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build

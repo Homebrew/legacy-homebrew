@@ -8,8 +8,9 @@ class VowpalWabbit < Formula
   head do
     url 'https://github.com/JohnLangford/vowpal_wabbit.git'
 
-    depends_on :libtool
+    depends_on :autoconf
     depends_on :automake
+    depends_on :libtool
   end
 
   depends_on 'boost' => :build

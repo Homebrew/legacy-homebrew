@@ -5,6 +5,7 @@ class Libagg < Formula
   url 'http://www.antigrain.com/agg-2.5.tar.gz'
   sha1 '08f23da64da40b90184a0414369f450115cdb328'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
   depends_on 'pkg-config' => :build

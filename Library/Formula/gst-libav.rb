@@ -9,6 +9,7 @@ class GstLibav < Formula
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gst-libav'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
     depends_on "gettext"

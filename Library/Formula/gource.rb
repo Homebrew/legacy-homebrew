@@ -8,6 +8,7 @@ class Gource < Formula
   head do
     url 'https://github.com/acaudwell/Gource.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

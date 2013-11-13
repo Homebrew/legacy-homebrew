@@ -17,6 +17,7 @@ class GnuSmalltalk < Formula
   option 'tcltk', 'Build the Tcl/Tk module that requires X11'
 
   # Need newer versions on Snow Leopard
+  depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
 

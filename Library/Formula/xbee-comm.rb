@@ -10,6 +10,7 @@ class XbeeComm < Formula
 
   head 'https://github.com/guyzmo/xbee-comm.git'
 
+  depends_on :autoconf
   depends_on :automake
 
   def install

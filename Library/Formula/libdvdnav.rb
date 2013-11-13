@@ -8,6 +8,7 @@ class Libdvdnav < Formula
 
   depends_on 'libdvdread'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 

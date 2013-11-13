@@ -8,6 +8,7 @@ class SdlSound < Formula
   head do
     url 'http://hg.icculus.org/icculus/SDL_sound', :using => :hg
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

@@ -8,6 +8,7 @@ class Vimpc < Formula
   head do
     url 'https://github.com/boysetsfrog/vimpc.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

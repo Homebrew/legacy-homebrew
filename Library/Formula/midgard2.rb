@@ -8,6 +8,7 @@ class Midgard2 < Formula
   head do
     url 'https://github.com/midgardproject/midgard-core.git', :branch => 'ratatoskr'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

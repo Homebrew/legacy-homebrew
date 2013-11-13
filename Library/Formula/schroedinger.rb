@@ -8,6 +8,7 @@ class Schroedinger < Formula
   head do
     url 'git://diracvideo.org/git/schroedinger.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

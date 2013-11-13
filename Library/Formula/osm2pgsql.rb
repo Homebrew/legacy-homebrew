@@ -6,6 +6,7 @@ class Osm2pgsql < Formula
   sha1 '9c0141faad6b93ccd0aa5fd554c6d1fd1af28532'
 
   depends_on :postgresql
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
   depends_on "geos"

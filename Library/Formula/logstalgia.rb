@@ -8,6 +8,7 @@ class Logstalgia < Formula
   head do
     url 'https://github.com/acaudwell/Logstalgia.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

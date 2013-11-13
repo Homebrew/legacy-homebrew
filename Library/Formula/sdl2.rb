@@ -8,6 +8,7 @@ class Sdl2 < Formula
   head do
     url 'http://hg.libsdl.org/SDL', :using => :hg
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

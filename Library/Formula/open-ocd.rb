@@ -8,8 +8,9 @@ class OpenOcd < Formula
   head do
     url 'git://git.code.sf.net/p/openocd/code'
 
-    depends_on :libtool
+    depends_on :autoconf
     depends_on :automake
+    depends_on :libtool
   end
 
   option 'enable-ft2232_libftdi', 'Enable building support for FT2232 based devices with libftdi driver'

@@ -5,6 +5,7 @@ class Stk < Formula
   url 'http://ccrma.stanford.edu/software/stk/release/stk-4.4.4.tar.gz'
   sha1 '2a94f02ed054d3b991352cc68a85a0a8063e3a4b'
 
+  depends_on :autoconf
   depends_on :automake
 
   option "enable-debug", "Compile with debug flags and modified CFLAGS for easier debugging"
