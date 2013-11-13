@@ -25,6 +25,41 @@ class Burp < Formula
   test do
     system "#{bin}/burp", "-v"
   end
+
+  plist_options :startup => true
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>UserName</key>
+      <string>root</string>
+      <key>KeepAlive</key>
+      <false/>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/bin/burp</string>
+        <string>-a</string>
+        <string>t</string>
+      </array>
+      <key>StartInterval</key>
+      <integer>1200</integer>
+      <key>WorkingDirectory</key>
+      <string>#{HOMEBREW_PREFIX}</string>
+    </dict>
+    </plist>
+    EOS
+  end
+
+  def caveats; <<-EOS.undent
+    Before installing the launchd entry you should configure your burp client in
+    #{etc}/burp/burp.conf
+    EOS
+  end
+
 end
 
 __END__
