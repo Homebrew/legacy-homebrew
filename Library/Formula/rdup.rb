@@ -6,8 +6,6 @@ class Rdup < Formula
   sha1 '49dc7570122bfa362f36a26a2ffa8bfe8ad55182'
 
   depends_on 'pkg-config' => :build
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
   depends_on 'nettle'
   depends_on 'pcre'
   depends_on 'glib'
