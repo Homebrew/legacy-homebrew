@@ -22,7 +22,7 @@ class Thrift < Formula
   option "with-php", "Install Php binding"
 
   depends_on 'boost'
-  depends_on 'libtool' # The bootstrap.sh command requires libtool
+  depends_on 'libtool'
   depends_on :python => :optional
 
   # Patches required to compile 0.9.1 with "-std=c++11", maybe remove when thrift 1.0 hits
@@ -38,7 +38,6 @@ class Thrift < Formula
   end
   
   def install
-    #system "./bootstrap.sh" if build.head?
     system "./bootstrap.sh" # always required if pulling source directly from git instead of using the already-bootstrapped tarball
 
     exclusions = ["--without-ruby"]
