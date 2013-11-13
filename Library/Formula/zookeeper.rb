@@ -8,6 +8,7 @@ class Zookeeper < Formula
   head do
     url 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

@@ -14,6 +14,7 @@ class GstPluginsGood < Formula
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-good'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
     depends_on 'check'

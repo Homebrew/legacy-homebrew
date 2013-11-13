@@ -12,6 +12,7 @@ class Mdbtools < Formula
   depends_on 'glib'
   depends_on 'readline'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 

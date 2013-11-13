@@ -9,6 +9,7 @@ class Postgis < Formula
 
   option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 
