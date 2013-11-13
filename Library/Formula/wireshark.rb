@@ -14,6 +14,11 @@ class Wireshark < Formula
     depends_on :libtool
   end
 
+  devel do
+    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.11.0.tar.bz2'
+    sha1 '117e7d6ac65bcfda04d97dc4958dfe156d58c323'
+  end
+
   option 'with-x', 'Include X11 support'
   option 'with-qt', 'Use QT for GUI instead of GTK+'
 
@@ -42,7 +47,7 @@ class Wireshark < Formula
       # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
       :p1 => DATA
     }
-  end unless build.head?
+  end if build.stable?
 
   def install
     system "./autogen.sh" if build.head?
