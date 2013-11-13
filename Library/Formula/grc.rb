@@ -10,7 +10,6 @@ class Grc < Formula
   conflicts_with 'cc65', :because => 'both install `grc` binaries'
 
   def install
-    #TODO we should deprefixify since it's python and thus possible
     inreplace ['grc', 'grc.1'], '/etc', etc
     inreplace ['grcat', 'grcat.1'], '/usr/local', prefix
     inreplace ['grc', 'grcat'], '#! /usr/bin/python', '#!/usr/bin/env python'
