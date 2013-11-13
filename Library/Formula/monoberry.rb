@@ -6,12 +6,10 @@ class Monoberry < Formula
   sha1 '733598dd918afd0f34947e9b0db66d25f9f4619e'
 
   def install
-    mkdir_p "#{share}/monoberry"
-    mkdir_p "#{bin}"
-    cp_r ["target/lib", "target/target", "target/tool"], "#{share}/monoberry"
-    File.open("#{bin}/monoberry", 'w') { |file|
-      file.write("#!/bin/sh\nmono #{share}/monoberry/tool/monoberry.exe $@\n")
-    }
-    chmod 0755, "#{bin}/monoberry"
+    (share/'monoberry').install "target/lib", "target/target", "target/tool"
+    (bin/'monoberry').write <<-EOS
+#!/bin/sh
+mono #{share}/monoberry/tool/monoberry.exe "$@"
+    EOS
   end
 end
