@@ -41,13 +41,14 @@ class Rpm < Formula
         --prefix=#{prefix}
         --localstatedir=#{var}
         --with-path-cfg=#{etc}/rpm
-        --with-path-magic=#{HOMEBREW_PREFIX}/opt/libmagic/share/misc/magic
+        --with-path-magic=#{HOMEBREW_PREFIX}/share/misc/magic
         --with-extra-path-macros=#{lib}/rpm/macros.*
         --with-libiconv-prefix=/usr
         --disable-openmp
         --disable-nls
         --disable-dependency-tracking
         --with-db=external
+        --with-sqlite=external
         --with-file=external
         --with-popt=external
         --with-beecrypt=external
@@ -56,13 +57,16 @@ class Rpm < Formula
         --with-uuid=external
         --with-pcre=external
         --with-lua=internal
-        --with-sqlite=external
         --with-syck=internal
         --without-apidocs
         varprefix=#{var}
     ]
 
+    inreplace "configure", "db-6.0", "db-5.3"
+    inreplace "configure", "db_sql-6.0", "db_sql-5.3"
     system "./configure", *args
+    inreplace "Makefile", "--tag=CC", "--tag=CXX"
+    inreplace "Makefile", "--mode=link $(CCLD)", "--mode=link $(CXX)"
     system "make"
     system "make install"
   end
