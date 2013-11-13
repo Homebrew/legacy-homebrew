@@ -50,7 +50,7 @@ class Thrift < Formula
     exclusions << "--without-erlang" unless build.include? "with-erlang"
 
     ENV["PY_PREFIX"] = prefix  # So python bindins don't install to /usr!
-    ENV["CXXFLAGS"] = "-std=c++11" # Required on OS 10.9, see THRIFT-1458 & THRIFT-2229
+    ENV.cxx11
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
