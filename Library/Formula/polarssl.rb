@@ -7,6 +7,8 @@ class Polarssl < Formula
 
   depends_on 'cmake' => :build
 
+  conflicts_with 'md5sha1sum', :because => 'both install conflicting binaries'
+
   def install
     system "cmake", ".",  *std_cmake_args
     system "make"
