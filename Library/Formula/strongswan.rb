@@ -2,19 +2,16 @@ require 'formula'
 
 class Strongswan < Formula
   homepage 'http://www.strongswan.org'
-  url 'http://download.strongswan.org/strongswan-5.1.0.tar.bz2'
-  sha1 'ee7a9b078b183c138156fba695ddf870f1990748'
+  url 'http://download.strongswan.org/strongswan-5.1.1.tar.bz2'
+  sha1 'eba9c90e3e910edd18ef4f1e380e59751965258b'
 
   option 'with-curl', 'Build with libcurl based fetcher'
   option 'with-suite-b', 'Build with Suite B support (does not use the IPsec implementation provided by the kernel)'
 
-  depends_on 'vstr'
   depends_on 'openssl' if build.include? 'with-suite-b' or MacOS.version <= :leopard
   depends_on 'curl' => :optional
 
   def install
-    # required for Vstr
-    ENV.append 'CFLAGS', '--std=gnu89' if ENV.compiler == :clang
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
@@ -46,7 +43,6 @@ class Strongswan < Formula
       --enable-tools
       --enable-updown
       --enable-unity
-      --enable-vstr
       --enable-xauth-generic
     ]
     args << "--enable-curl" if build.with? 'curl'
