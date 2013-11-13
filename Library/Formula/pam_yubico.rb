@@ -10,6 +10,8 @@ class PamYubico < Formula
   depends_on 'ykclient'
   depends_on 'ykpers'
 
+  conflicts_with 'fastbit', :because => 'Both install `include/util.h`"
+
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--with-libyubikey-prefix=#{HOMEBREW_PREFIX}",
