@@ -13,7 +13,6 @@ class Mutt < Formula
     end
 
     depends_on :autoconf
-    depends_on :autoconf
     depends_on :automake
   end
 
