@@ -3,8 +3,8 @@ require 'formula'
 class Python < Formula
   homepage 'http://www.python.org'
   head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
-  url 'http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2'
-  sha1 '6cfada1a739544a6fa7f2601b500fba02229656b'
+  url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz'
+  sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
 
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build (for devs; may fail)'
@@ -26,8 +26,8 @@ class Python < Formula
   skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.3.tar.gz'
-    sha1 'faadca24f78488ad1a29f59bbeff9de26aa8e937'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.3.2.tar.gz'
+    sha1 '77180132225c5b4696e6d061655e291f3d1b20f5'
   end
 
   resource 'pip' do

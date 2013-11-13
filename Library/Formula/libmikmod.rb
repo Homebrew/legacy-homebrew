@@ -8,9 +8,7 @@ class Libmikmod < Formula
   option 'with-debug', 'Enable debugging symbols'
 
   def install
-    if build.with? 'debug'
-      ENV.compiler == :clang ? ENV.Og : ENV.O2
-    end
+    ENV.O2 if build.with? 'debug'
 
     # OSX has CoreAudio, but ALSA is not for this OS nor is SAM9407 nor ULTRA.
     args = %W[

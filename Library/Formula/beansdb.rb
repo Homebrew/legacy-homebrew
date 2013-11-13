@@ -6,6 +6,7 @@ class Beansdb < Formula
   url 'https://github.com/douban/beansdb/archive/v0.6.tar.gz'
   sha1 '9099ce607ff3c3eba251ee34ae65a08c4e3715b9'
 
+  depends_on :autoconf
   depends_on :automake
 
   def install

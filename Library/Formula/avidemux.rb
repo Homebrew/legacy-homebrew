@@ -59,13 +59,11 @@ class Avidemux < Formula
       args << "-DSDL=OFF"
 
       if build.with? 'debug'
+        ENV.O2
         ENV.enable_warnings
         args << '-DCMAKE_BUILD_TYPE=Debug'
         args << '-DCMAKE_VERBOSE_MAKEFILE=true'
-        if ENV.compiler == :clang
-          ENV.Og
-        else
-          ENV.O2
+        unless ENV.compiler == :clang
           args << '-DCMAKE_C_FLAGS_DEBUG=-ggdb3'
           args << '-DCMAKE_CXX_FLAGS_DEBUG=-ggdb3'
         end
@@ -113,7 +111,7 @@ class Avidemux < Formula
         if build.with? 'debug'
           args << '-DCMAKE_BUILD_TYPE=Debug'
           args << '-DCMAKE_VERBOSE_MAKEFILE=true'
-          if ENV.compiler != :clang
+          unless ENV.compiler == :clang
             args << '-DCMAKE_C_FLAGS_DEBUG=-ggdb3'
             args << '-DCMAKE_CXX_FLAGS_DEBUG=-ggdb3'
           end

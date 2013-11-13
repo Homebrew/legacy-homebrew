@@ -8,9 +8,12 @@ class Libkml < Formula
   head do
     url 'http://libkml.googlecode.com/svn/trunk/'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
+
+  conflicts_with 'uriparser', :because => 'both install `liburiparser.dylib`'
 
   # Fix compilation with clang and gcc 4.7+
   # https://code.google.com/p/libkml/issues/detail?id=179

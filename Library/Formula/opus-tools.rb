@@ -8,6 +8,7 @@ class OpusTools < Formula
   head do
     url 'https://git.xiph.org/opus-tools.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

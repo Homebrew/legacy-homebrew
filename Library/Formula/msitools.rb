@@ -8,8 +8,8 @@ class Msitools < Formula
   depends_on 'xz' => :build
   depends_on 'intltool' => :build
   depends_on 'pkg-config' => :build
-  depends_on :automake
   depends_on :autoconf
+  depends_on :automake
   depends_on :libtool
   depends_on 'e2fsprogs'
   depends_on 'gcab'

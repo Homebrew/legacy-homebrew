@@ -8,6 +8,7 @@ class Libopkele < Formula
   head do
     url 'https://github.com/hacker/libopkele.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

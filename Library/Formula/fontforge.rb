@@ -14,6 +14,7 @@ class Fontforge < Formula
   head do
     url 'https://github.com/fontforge/fontforge.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
     depends_on 'pkg-config' => :build
@@ -24,7 +25,7 @@ class Fontforge < Formula
   end
 
   option 'with-gif', 'Build with GIF support'
-  option 'with-x', 'Build with X'
+  option 'with-x', 'Build with X11 support, including FontForge.app'
 
   depends_on 'gettext'
   depends_on :python => :recommended

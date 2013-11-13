@@ -13,7 +13,7 @@ class Watchman < Formula
 
   def install
     system "./autogen.sh"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-pcre"
     system "make"

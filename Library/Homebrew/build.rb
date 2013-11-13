@@ -100,6 +100,8 @@ class Build
         Dependency.prune
       elsif dep.build? && dependent != f
         Dependency.prune
+      elsif dep.build?
+        Dependency.keep_but_prune_recursive_deps
       end
     end
   end
