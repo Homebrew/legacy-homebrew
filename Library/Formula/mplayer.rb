@@ -41,13 +41,7 @@ class Mplayer < Formula
   end
 
   def install
-    # (A) Do not use pipes, per bug report and MacPorts
-    # * https://github.com/mxcl/homebrew/issues/622
-    # * http://trac.macports.org/browser/trunk/dports/multimedia/mplayer-devel/Portfile
-    # (B) Any kind of optimisation breaks the build
-    # (C) It turns out that ENV.O1 fixes link errors with llvm.
-    ENV['CFLAGS'] = ''
-    ENV['CXXFLAGS'] = ''
+    # It turns out that ENV.O1 fixes link errors with llvm.
     ENV.O1 if ENV.compiler == :llvm
 
     # we disable cdparanoia because homebrew's version is hacked to work on OS X
