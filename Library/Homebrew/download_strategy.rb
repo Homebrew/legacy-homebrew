@@ -503,6 +503,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
     %r{git://},
     %r{https://github\.com},
     %r{http://git\.sv\.gnu\.org},
+    %r{http://llvm\.org},
   ]
 
   def host_supports_depth?
