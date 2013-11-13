@@ -91,10 +91,14 @@ class Cmd
       args << "-syslibroot" << $sdkroot
     end if nclt?
     allflags = case mode
-    when :ccld, :cxxld
+    when :ccld
       cflags + args + cppflags + ldflags
-    when :cc, :cxx
+    when :cxxld
+      cxxflags + args + cppflags + ldflags
+    when :cc
       cflags + args + cppflags
+    when :cxx
+      cxxflags + args + cppflags
     when :ccE
       args + cppflags
     when :cpp
@@ -158,15 +162,26 @@ class Cmd
   end
   def cflags
     args = []
-    if mode == :cxx
-      args << '-std=c++11' if cccfg? 'x'
-      args << '-stdlib=libc++' if cccfg? 'g'
-      args << '-stdlib=libstdc++' if cccfg? 'h'
-    end
 
-    return args unless cccfg? 'O'
+    return args unless cccfg? 'O' or configure?
 
-    args << '-pipe' << '-w' << '-Os'
+    args << '-pipe'
+    args << '-w' unless configure?
+    args.concat(optflags)
+    args.concat(archflags)
+    args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
+    args
+  end
+  def cxxflags
+    args = cflags
+    args << '-std=c++11' if cccfg? 'x'
+    args << '-stdlib=libc++' if cccfg? 'g'
+    args << '-stdlib=libstdc++' if cccfg? 'h'
+    args
+  end
+  def optflags
+    args = []
+    args << "-#{ENV['HOMEBREW_OPTIMIZATION_LEVEL']}"
 
     # When bottling use the oldest supported CPU type.
     if cccfg? 'bc'
@@ -183,9 +198,11 @@ class Cmd
     else
       args << '-march=native' if tool =~ /clang/
     end
-
+    args
+  end
+  def archflags
+    args = []
     ENV['HOMEBREW_ARCHS'].split(',').each { |a| args << "-arch" << a } if cccfg? 'u'
-    args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
     args
   end
   def syslibpath

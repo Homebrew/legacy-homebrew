@@ -12,6 +12,8 @@ class Libkml < Formula
     depends_on :libtool
   end
 
+  conflicts_with 'uriparser', :because => 'both install `liburiparser.dylib`'
+
   # Fix compilation with clang and gcc 4.7+
   # https://code.google.com/p/libkml/issues/detail?id=179
   def patches; DATA; end

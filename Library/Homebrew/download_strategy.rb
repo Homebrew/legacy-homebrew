@@ -228,6 +228,7 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
     end
     wr.close
 
+    rd.readline if ARGV.verbose? # Remove Homebrew output
     buf << rd.read until rd.eof?
     rd.close
     Process.wait(pid)

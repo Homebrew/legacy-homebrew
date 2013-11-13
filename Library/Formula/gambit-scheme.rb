@@ -5,6 +5,9 @@ class GambitScheme < Formula
   url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_0.tgz'
   sha256 '2b03ecef89da2a53212dc3e6583ee4175d91a0752779e1758bcab5d09e9d1e63'
 
+  conflicts_with 'ghostscript', :because => 'both install `gsc` binaries'
+  conflicts_with 'scheme48', :because => 'both install `scheme-r5rs` binaries'
+
   option 'with-check', 'Execute "make check" before installing'
   option 'enable-shared', 'Build Gambit Scheme runtime as shared library'
 

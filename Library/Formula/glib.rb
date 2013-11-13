@@ -2,8 +2,8 @@ require 'formula'
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.38/glib-2.38.1.tar.xz'
-  sha256 '01906c62ac666d2ab3183cc07261b2536fab7b211c6129ab66b119c2af56d159'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.38/glib-2.38.2.tar.xz'
+  sha256 '056a9854c0966a0945e16146b3345b7a82562a5ba4d5516fd10398732aea5734'
 
   option :universal
   option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
@@ -41,16 +41,12 @@ class Glib < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    # -w is said to causes gcc to emit spurious errors for this package
-    ENV.enable_warnings if ENV.compiler == :gcc
-
     # Disable dtrace; see https://trac.macports.org/ticket/30413
     args = %W[
       --disable-maintainer-mode
       --disable-dependency-tracking
       --disable-silent-rules
       --disable-dtrace
-      --disable-modular-tests
       --disable-libelf
       --prefix=#{prefix}
       --localstatedir=#{var}

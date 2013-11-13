@@ -2,13 +2,13 @@ require 'formula'
 
 class Ceylon < Formula
   homepage 'http://ceylon-lang.org/'
-  url 'http://ceylon-lang.org/download/dist/1_0_Beta'
-  version '1.0.beta'
-  sha1 'a84e7684545fac8751aa7538a47accf36708e5e7'
+  url 'http://ceylon-lang.org/download/dist/1_0_0'
+  sha1 '24737e1816c16497cb4b504d857530e1a171c2bf'
 
   def install
     rm_f Dir["bin/*.bat"]
 
+    man1.install Dir['doc/man/man1/*']
     doc.install Dir['doc/*']
     libexec.install Dir['*']
 

@@ -70,6 +70,7 @@ module Superenv
     self['PKG_CONFIG_PATH'] = determine_pkg_config_path
     self['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
     self['HOMEBREW_CCCFG'] = determine_cccfg
+    self['HOMEBREW_OPTIMIZATION_LEVEL'] = 'Os'
     self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
     self['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
@@ -109,39 +110,6 @@ module Superenv
     # a - apply fix for apr-1-config path
 
     warn_about_non_apple_gcc($1) if ENV['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
-  end
-
-  def universal_binary
-    self['HOMEBREW_ARCHS'] = Hardware::CPU.universal_archs.join(',')
-    append 'HOMEBREW_CCCFG', "u", ''
-  end
-
-  def cxx11
-    if self['HOMEBREW_CC'] == 'clang'
-      append 'HOMEBREW_CCCFG', "x", ''
-      append 'HOMEBREW_CCCFG', "g", ''
-    elsif self['HOMEBREW_CC'] =~ /gcc-4\.(8|9)/
-      append 'HOMEBREW_CCCFG', "x", ''
-    else
-      raise "The selected compiler doesn't support C++11: #{self['HOMEBREW_CC']}"
-    end
-  end
-
-  def libcxx
-    if self['HOMEBREW_CC'] == 'clang'
-      append 'HOMEBREW_CCCFG', "g", ''
-    end
-  end
-
-  def libstdcxx
-    if self['HOMEBREW_CC'] == 'clang'
-      append 'HOMEBREW_CCCFG', "h", ''
-    end
-  end
-
-  # m32 on superenv does not add any CC flags. It prevents "-m32" from being erased.
-  def m32
-    append 'HOMEBREW_CCCFG', "3", ''
   end
 
   private
@@ -283,18 +251,11 @@ module Superenv
 
   public
 
-### NO LONGER NECESSARY OR NO LONGER SUPPORTED
-  def noop(*args); end
-  %w[m64 gcc_4_0_1 fast O4 O3 O2 Os Og O1 libxml2 minimal_optimization
-    no_optimization enable_warnings x11
-    set_cpu_flags
-    macosxsdk remove_macosxsdk].each{|s| alias_method s, :noop }
-
-### DEPRECATE THESE
   def deparallelize
     delete('MAKEFLAGS')
   end
   alias_method :j1, :deparallelize
+
   COMPILER_SYMBOL_MAP.values.each do |compiler|
     define_method compiler do
       @compiler = compiler
@@ -302,6 +263,7 @@ module Superenv
       self.cxx = self['HOMEBREW_CXX'] = determine_cxx
     end
   end
+
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
       @compiler = "gcc-4.#{n}"
@@ -309,10 +271,63 @@ module Superenv
       self.cxx = self['HOMEBREW_CXX'] = determine_cxx
     end
   end
+
   def make_jobs
     self['MAKEFLAGS'] =~ /-\w*j(\d)+/
     [$1.to_i, 1].max
   end
+
+  def universal_binary
+    self['HOMEBREW_ARCHS'] = Hardware::CPU.universal_archs.join(',')
+    append 'HOMEBREW_CCCFG', "u", ''
+  end
+
+  def cxx11
+    if self['HOMEBREW_CC'] == 'clang'
+      append 'HOMEBREW_CCCFG', "x", ''
+      append 'HOMEBREW_CCCFG', "g", ''
+    elsif self['HOMEBREW_CC'] =~ /gcc-4\.(8|9)/
+      append 'HOMEBREW_CCCFG', "x", ''
+    else
+      raise "The selected compiler doesn't support C++11: #{self['HOMEBREW_CC']}"
+    end
+  end
+
+  def libcxx
+    if self['HOMEBREW_CC'] == 'clang'
+      append 'HOMEBREW_CCCFG', "g", ''
+    end
+  end
+
+  def libstdcxx
+    if self['HOMEBREW_CC'] == 'clang'
+      append 'HOMEBREW_CCCFG', "h", ''
+    end
+  end
+
+  # m32 on superenv does not add any CC flags. It prevents "-m32" from being erased.
+  def m32
+    append 'HOMEBREW_CCCFG', "3", ''
+  end
+
+  %w{O4 O3 O2 O1 O0 Os}.each do |opt|
+    define_method opt do
+      self['HOMEBREW_OPTIMIZATION_LEVEL'] = opt
+    end
+  end
+
+  def noop(*args); end
+  noops = []
+
+  # These methods are no longer necessary under superenv, but are needed to
+  # maintain an interface compatible with stdenv.
+  noops.concat %w{fast Og libxml2 x11 set_cpu_flags macosxsdk remove_macosxsdk}
+
+  # These methods provide functionality that has not yet been ported to
+  # superenv.
+  noops.concat %w{m64 gcc_4_0_1 minimal_optimization no_optimization enable_warnings}
+
+  noops.each { |m| alias_method m, :noop }
 end
 
 
