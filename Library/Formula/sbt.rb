@@ -12,7 +12,13 @@ class Sbt < Formula
       test -f ~/.sbtconfig && . ~/.sbtconfig
       exec java -Xmx512M ${SBT_OPTS} -jar #{libexec}/sbt-launch.jar "$@"
     EOS
-
+    
+    (bin+'sbt-debug').write <<-EOS.undent
+      #!/bin/sh
+      export SBT_OPTS=$SBT_OPTS" -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"
+      sbt
+    EOS
+    
     libexec.install Dir['*']
   end
 
