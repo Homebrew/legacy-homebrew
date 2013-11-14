@@ -13,11 +13,25 @@ class Libkml < Formula
     depends_on :libtool
   end
 
-  conflicts_with 'uriparser', :because => 'both install `liburiparser.dylib`'
+  def patches
+    p = []
+    # Fix compilation with clang and gcc 4.7+
+    # https://code.google.com/p/libkml/issues/detail?id=179
+    p << DATA
 
-  # Fix compilation with clang and gcc 4.7+
-  # https://code.google.com/p/libkml/issues/detail?id=179
-  def patches; DATA; end
+    # Correct an issue where internal third-party libs (libminizip and liburiparser)
+    # are installed as dylibs. liburiparser conflicts with uriparser formula.
+    # libminizip conflicts with new formula, and some of its symbols have been
+    # renamed with prefixes of "libkml_", i.e, can't be linked against for other builds
+    # Fix just forces internal libs to be linked statically until the following
+    # is addressed upstream: https://code.google.com/p/libkml/issues/detail?id=50
+    if build.head?
+      p << "https://gist.github.com/dakcarto/7420023/raw"
+    else
+      p << "https://gist.github.com/dakcarto/7419882/raw"
+    end
+    return p
+  end
 
   def install
     if build.head?
