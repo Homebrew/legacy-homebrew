@@ -9,7 +9,7 @@ class Libinfinity < Formula
   depends_on 'glib'
   depends_on 'gtk+'
   depends_on 'gnutls'
-  depends_on 'libgsasl'
+  depends_on 'gsasl'
   depends_on :x11
 
 
