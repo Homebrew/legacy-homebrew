@@ -19,6 +19,7 @@ class PkgConfig < Formula
         #{HOMEBREW_PREFIX}/share/pkgconfig
         /usr/local/lib/pkgconfig
         /usr/lib/pkgconfig
+        #{HOMEBREW_LIBRARY}/ENV/pkgconfig/#{MacOS.version}
       ].uniq
 
     args = %W[
