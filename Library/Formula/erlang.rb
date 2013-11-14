@@ -42,9 +42,8 @@ class Erlang < Formula
   fails_with :llvm
 
   def patches
-    p = []
     #Fixes problem with ODBC on Mavericks
-    p << DATA if MacOS.version >= :mavericks
+    DATA if MacOS.version >= :mavericks
   end
 
   def install
