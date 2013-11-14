@@ -2,13 +2,15 @@ require 'formula'
 
 class Shiboken < Formula
   homepage 'http://www.pyside.org/docs/shiboken'
-  url 'https://download.qt-project.org/official_releases/pyside/shiboken-1.2.0.tar.bz2'
-  mirror 'https://distfiles.macports.org/py-shiboken/shiboken-1.2.0.tar.bz2'
-  sha1 '03866dbdfa34078b2d9d35f4b6d83aa65e292e3f'
+  url 'https://download.qt-project.org/official_releases/pyside/shiboken-1.2.1.tar.bz2'
+  mirror 'https://distfiles.macports.org/py-shiboken/shiboken-1.2.1.tar.bz2'
+  sha1 'f310ac163f3407109051ccebfd192bc9620e9124'
 
   head 'git://gitorious.org/pyside/shiboken.git'
 
   depends_on 'cmake' => :build
+  depends_on 'pkg-config' => :build
+  depends_on 'google-sparsehash' => :build
   depends_on :python => :recommended
   depends_on :python3 => :optional
   depends_on 'qt'
@@ -53,4 +55,49 @@ class Shiboken < Formula
       system python, "-c", "import shiboken"
     end
   end
+
+  def patches
+    # Fixes build failure with clang and libc++
+    # see https://github.com/PySide/Shiboken/pull/71
+    DATA
+  end
 end
+
+__END__
+diff --git a/libshiboken/CMakeLists.txt b/libshiboken/CMakeLists.txt
+index c8575e7..c17ef4c 100644
+--- a/libshiboken/CMakeLists.txt
++++ b/libshiboken/CMakeLists.txt
+@@ -11,8 +11,10 @@ configure_file("${CMAKE_CURRENT_SOURCE_DIR}/sbkversion.h.in"
+                "${CMAKE_CURRENT_BINARY_DIR}/sbkversion.h" @ONLY)
+ 
+ #Find installed sparsehash
+-find_path(SPARSEHASH_INCLUDE_PATH sparseconfig.h PATH_SUFFIXES "/google/sparsehash")
+-if(SPARSEHASH_INCLUDE_PATH)
++find_package(PkgConfig)
++pkg_check_modules(SPARSEHASH libsparsehash)
++if(SPARSEHASH_FOUND)
++    set(SPARSEHASH_INCLUDE_PATH ${SPARSEHASH_INCLUDE_DIRS})
+     message(STATUS "Using system hash found in: ${SPARSEHASH_INCLUDE_PATH}")
+ else()
+     set(SPARSEHASH_INCLUDE_PATH ${CMAKE_SOURCE_DIR}/ext/sparsehash)
+diff --git a/tests/libsample/simplefile.cpp b/tests/libsample/simplefile.cpp
+index deac166..573a9d6 100644
+--- a/tests/libsample/simplefile.cpp
++++ b/tests/libsample/simplefile.cpp
+@@ -90,13 +90,13 @@ bool
+ SimpleFile::exists() const
+ {
+     std::ifstream ifile(p->m_filename);
+-    return ifile;
++    return bool(ifile);
+ }
+ 
+ bool
+ SimpleFile::exists(const char* filename)
+ {
+     std::ifstream ifile(filename);
+-    return ifile;
++    return bool(ifile);
+ }
+ 
