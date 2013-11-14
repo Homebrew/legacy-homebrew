@@ -41,6 +41,12 @@ class Erlang < Formula
 
   fails_with :llvm
 
+  def patches
+    p = []
+    #Fixes problem with ODBC on Mavericks
+    p << DATA if MacOS.version >= :mavericks
+  end
+
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
 
@@ -103,3 +109,27 @@ class Erlang < Formula
     end
   end
 end
+__END__
+diff --git a/lib/odbc/configure.in b/lib/odbc/configure.in
+index 83f7a47..62e8ff0 100644
+--- a/lib/odbc/configure.in
++++ b/lib/odbc/configure.in
+@@ -130,18 +130,6 @@ AC_SUBST(THR_LIBS)
+ odbc_lib_link_success=no
+ AC_SUBST(TARGET_FLAGS)
+     case $host_os in
+-        darwin*)
+-                TARGET_FLAGS="-DUNIX"
+-	        if test ! -d "$with_odbc" || test "$with_odbc" = "yes"; then
+-		    ODBC_LIB= -L"/usr/lib"
+-		    ODBC_INCLUDE="-I/usr/lib/include"
+-		else
+-		    ODBC_LIB=-L"$with_odbc/lib"
+-		    ODBC_INCLUDE="-I$with_odbc/include"
+-		fi
+-			    
+-               AC_CHECK_LIB(iodbc, SQLAllocHandle,[ODBC_LIB="$ODBC_LIB -liodbc"; odbc_lib_link_success=yes])
+-            ;;
+         win32|cygwin)
+ 		TARGET_FLAGS="-DWIN32"
+ 		AC_CHECK_LIB(ws2_32, main)
