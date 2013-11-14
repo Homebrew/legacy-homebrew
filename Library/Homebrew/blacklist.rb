@@ -32,7 +32,7 @@ def blacklisted? name
         sudo easy_install pip
     EOS
   when 'pil' then <<-EOS.undent
-    Instead of PIL, consider to `pip install pillow` or `brew install samueljohn/python/pillow`.
+    Instead of PIL, consider `pip install pillow` or `brew install samueljohn/python/pillow`.
     EOS
   when 'macruby' then <<-EOS.undent
     MacRuby works better when you install their package:
