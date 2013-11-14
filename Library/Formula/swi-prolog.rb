@@ -10,7 +10,11 @@ class SwiProlog < Formula
     sha1 'fa448e1e59f901966de533140ce8bf6649e51b03'
   end
 
-  head 'git://www.swi-prolog.org/home/pl/git/pl.git'
+  head do
+    url 'git://www.swi-prolog.org/home/pl/git/pl.git'
+
+    depends_on :autoconf
+  end
 
   option 'lite', "Disable all packages"
   option 'with-jpl', "Enable JPL (Java Prolog Bridge)"
