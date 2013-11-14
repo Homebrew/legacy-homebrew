@@ -2,9 +2,9 @@ require 'formula'
 
 class Pyside < Formula
   homepage 'http://www.pyside.org'
-  url 'https://download.qt-project.org/official_releases/pyside/pyside-qt4.8+1.2.0.tar.bz2'
-  mirror 'https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.2.0.tar.bz2'
-  sha1 'b7bbb068f775cea6c42a86dc2796ed7dd4f36555'
+  url 'https://download.qt-project.org/official_releases/pyside/pyside-qt4.8+1.2.1.tar.bz2'
+  mirror 'https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.2.1.tar.bz2'
+  sha1 'eec5bed37647dd8d3d1c7a610ad913312dd55910'
 
   head 'git://gitorious.org/pyside/pyside.git'
 

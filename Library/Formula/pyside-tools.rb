@@ -2,8 +2,8 @@ require 'formula'
 
 class PysideTools < Formula
   homepage 'http://www.pyside.org'
-  url 'http://qt-project.org/uploads/pyside/pyside-tools-0.2.14.tar.bz2'
-  sha1 'f654553bc9bfb35dbc5673da26830969393f9fe8'
+  url 'https://github.com/PySide/Tools/archive/0.2.15.tar.gz'
+  sha1 'b668d15e8d67e25a653db5abf8f542802e2ee2dd'
 
   head 'git://gitorious.org/pyside/pyside-tools.git'
 
