@@ -1,8 +1,8 @@
 require 'formula'
 
 class Minicom < Formula
-  homepage 'http://alioth.debian.org/projects/minicom/'
-  url 'http://alioth.debian.org/frs/download.php/file/3700/minicom-2.6.1.tar.gz'
+  homepage 'http://pkgs.fedoraproject.org/repo/pkgs/minicom/'
+  url 'http://pkgs.fedoraproject.org/repo/pkgs/minicom/minicom-2.6.1.tar.gz/435fb410a5bfa9bb20d4248b3ca53529/minicom-2.6.1.tar.gz'
   sha1 'ce6b5f3dab6b4179736152e38a806029f8ad222a'
 
   def install
