@@ -121,7 +121,7 @@ These awesome people supported our Kickstarter by giving us £50 or more:
 * [Lane Lillquist](http://www.lillq.com)
 * [Robert Schmidl](https://github.com/RobRoy)
 * [Collective Idea](http://collectiveidea.com)
-* Thomas Fuchs
+* [Freckle Time Tracking](http://letsfreckle.com/)
 * Hans-Christian Otto
 * Dan Lane
 * Seth Szymanski
