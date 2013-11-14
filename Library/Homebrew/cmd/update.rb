@@ -59,7 +59,9 @@ module Homebrew extend self
     # automatically tap any migrated formulae's new tap
     report.select_formula(:D).each do |f|
       next unless (HOMEBREW_CELLAR/f).exist?
-      tap_user, tap_repo = TAP_MIGRATIONS[f].split '/'
+      migration = TAP_MIGRATIONS[f]
+      next unless migration
+      tap_user, tap_repo = migration.split '/'
       begin
         install_tap tap_user, tap_repo
       rescue AlreadyTappedError => e
