@@ -101,8 +101,8 @@ class Grass < Formula
     end
 
     system "./configure", "--prefix=#{prefix}", *args
-    system "make" # make and make install must be separate steps.
-    system "make install"
+    system "make GDAL_DYNAMIC=" # make and make install must be separate steps.
+    system "make GDAL_DYNAMIC= install" # GDAL_DYNAMIC set to blank for r.external compatability
   end
 
   def caveats
