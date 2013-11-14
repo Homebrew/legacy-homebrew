@@ -8,6 +8,7 @@ class Embryo < Formula
   head do
     url 'http://svn.enlightenment.org/svn/e/trunk/embryo/'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

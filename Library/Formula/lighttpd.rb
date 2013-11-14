@@ -8,6 +8,7 @@ class Lighttpd < Formula
   option 'with-lua', 'Include Lua scripting support for mod_magnet'
 
   depends_on 'pkg-config' => :build
+  depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'pcre'
   depends_on 'lua' => :optional

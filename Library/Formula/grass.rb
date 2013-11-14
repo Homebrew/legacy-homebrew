@@ -2,16 +2,14 @@ require 'formula'
 
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
+  head 'https://svn.osgeo.org/grass/grass/trunk'
   url 'http://grass.osgeo.org/grass64/source/grass-6.4.3.tar.gz'
   sha1 '925da985f3291c41c7a0411eaee596763f7ff26e'
 
-  head 'https://svn.osgeo.org/grass/grass/trunk'
-
   option "without-gui", "Build without WxPython interface. Command line tools still available."
 
-  # build failing on snow leopard
   depends_on :macos => :lion
-  depends_on 'apple-gcc42' if MacOS.version == :mountain_lion
+  depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
   depends_on "pkg-config" => :build
   depends_on :python
   depends_on "gettext"
@@ -20,14 +18,20 @@ class Grass < Formula
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-  depends_on 'wxmac' => :recommended # prefer over OS X's version because of 64bit
+  depends_on "wxmac" => :recommended # prefer over OS X's version because of 64bit
   depends_on :postgresql => :optional
   depends_on :mysql => :optional
   depends_on "cairo"
   depends_on :x11  # needs to find at least X11/include/GL/gl.h
 
   # Patches that files are not installed outside of the prefix.
-  def patches; DATA; end
+  def patches;
+    if build.head?
+      "https://gist.github.com/jctull/0fe3db92a3e7c19fa6e0/raw/42e819f0a9b144de782c94f730dbc4da136e9227/grassPatchHead.diff"
+    else
+      DATA
+    end
+  end
 
   fails_with :clang do
     cause "Multiple build failures while compiling GRASS tools."
@@ -87,9 +91,7 @@ class Grass < Formula
     args << "--with-cairo"
 
     # Database support
-    if build.with? "postgres"
-      args << "--with-postgres"
-    end
+    args << "--with-postgres" if build.with? "postgres"
 
     if build.with? "mysql"
       mysql = Formula.factory('mysql')

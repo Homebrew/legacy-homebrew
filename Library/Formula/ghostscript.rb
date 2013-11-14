@@ -12,6 +12,7 @@ class Ghostscript < Formula
       url 'git://git.code.sf.net/p/djvu/gsdjvu-git'
     end
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

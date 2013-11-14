@@ -6,6 +6,7 @@ class Samba < Formula
   sha1 'a3cd91fa8835c7c47e4cb3ab419f92b4895052b5'
 
   # Needed for autogen.sh
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 

@@ -7,6 +7,7 @@ class Mtr < Formula
 
   head do
     url 'https://github.com/traviscross/mtr.git'
+    depends_on :autoconf
     depends_on :automake
   end
 

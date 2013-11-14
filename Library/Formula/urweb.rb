@@ -6,6 +6,7 @@ class Urweb < Formula
   sha1 '944165b5f5f638ae54d804e4957618e1ae257b81'
   head 'http://hg.impredicative.com/urweb', :using => :hg
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
   depends_on 'mlton'
