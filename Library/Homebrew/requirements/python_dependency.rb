@@ -85,7 +85,7 @@ class PythonDependency < Requirement
       ENV['PYTHONPATH'] = nil
       @unsatisfied_because = ''
       if binary.nil? || !binary.executable?
-        @unsatisfied_because += "No `#{@python}` found in your PATH! Consider to `brew install #{@python}`."
+        @unsatisfied_because += "No `#{@python}` found in your PATH. To install with Homebrew use `brew install #{@python}`."
         false
       elsif pypy?
         @unsatisfied_because += "Your #{@python} executable appears to be a PyPy, which is not supported."
@@ -97,7 +97,7 @@ class PythonDependency < Requirement
         @unsatisfied_because += "Python version #{version} is too old (need at least #{@min_version})."
         false
       elsif @min_version.major == 2 && `python -c "import sys; print(sys.version_info[0])"`.strip == "3"
-        @unsatisfied_because += "Your `python` points to a Python 3.x. This is not supported."
+        @unsatisfied_because += "Your `python` points to Python 3.x; this is not supported."
         false
       else
         @imports.keys.all? do |module_name|
