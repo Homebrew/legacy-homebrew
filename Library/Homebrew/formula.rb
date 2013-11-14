@@ -23,7 +23,7 @@ class Formula
   # Will only be non-nil inside #stage and #test.
   attr_reader :buildpath, :testpath
 
-  attr_accessor :local_bottle_path, :pour_failed
+  attr_accessor :local_bottle_path
 
   # Flag for marking whether this formula needs C++ standard library
   # compatibility check

@@ -12,7 +12,6 @@ end
 
 def install_bottle? f, options={:warn=>false}
   return true if f.local_bottle_path
-  return false if f.pour_failed
   return false if ARGV.build_from_source?
   return true if ARGV.force_bottle?
   return false unless f.pour_bottle?

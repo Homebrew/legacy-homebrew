@@ -15,7 +15,7 @@ class FormulaInstaller
   include FormulaCellarChecks
 
   attr_reader :f
-  attr_accessor :tab, :options, :ignore_deps
+  attr_accessor :tab, :options, :ignore_deps, :pour_failed
   attr_accessor :show_summary_heading, :show_header
 
   def initialize ff
@@ -32,6 +32,7 @@ class FormulaInstaller
   end
 
   def pour_bottle? install_bottle_options={:warn=>false}
+    return false if @pour_failed
     tab.used_options.empty? && options.empty? && \
       install_bottle?(f, install_bottle_options)
   end
@@ -131,14 +132,14 @@ class FormulaInstaller
       end
     rescue
       raise if ARGV.homebrew_developer?
-      f.pour_failed = true
+      @pour_failed = true
       opoo "Bottle installation failed: building from source."
     end
 
     build_bottle_preinstall if ARGV.build_bottle?
 
     unless @poured_bottle
-      install_dependencies if f.pour_failed && !ignore_deps
+      install_dependencies if @pour_failed && !ignore_deps
       build
       clean
     end
@@ -238,7 +239,7 @@ class FormulaInstaller
   end
 
   def install_dependencies
-    @effective_deps = nil if f.pour_failed
+    @effective_deps = nil if @pour_failed
 
     if effective_deps.length > 1
       oh1 "Installing dependencies for #{f}: #{Tty.green}#{effective_deps*", "}#{Tty.reset}"
