@@ -32,6 +32,7 @@ class FormulaInstaller
   end
 
   def pour_bottle? install_bottle_options={:warn=>false}
+    return false if @pour_failed
     tab.used_options.empty? && options.empty? && \
       install_bottle?(f, install_bottle_options)
   end
@@ -131,12 +132,14 @@ class FormulaInstaller
       end
     rescue
       raise if ARGV.homebrew_developer?
+      @pour_failed = true
       opoo "Bottle installation failed: building from source."
     end
 
     build_bottle_preinstall if ARGV.build_bottle?
 
     unless @poured_bottle
+      install_dependencies if @pour_failed && !ignore_deps
       build
       clean
     end
@@ -236,6 +239,8 @@ class FormulaInstaller
   end
 
   def install_dependencies
+    @effective_deps = nil if @pour_failed
+
     if effective_deps.length > 1
       oh1 "Installing dependencies for #{f}: #{Tty.green}#{effective_deps*", "}#{Tty.reset}"
     end
