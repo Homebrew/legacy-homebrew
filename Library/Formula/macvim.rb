@@ -99,11 +99,11 @@ class Macvim < Formula
       # MacVim doesn't check Python while compiling.
       python do
         if MacOS.prefer_64_bit? and python.framework? and not archs_for_command("#{python.prefix}/Python").include? :x86_64
-          opoo "Detected a framework Python that does not have 64-bit support in:"
+          opoo "Detected a framework Python that does not have 64-bit support built in:"
           puts <<-EOS.undent
             #{python.prefix}
 
-            Dynamic loading Python library required the same architecture.
+            Dynamic loading Python library requires the same architecture.
 
             Note that a framework Python in /Library/Frameworks/Python.framework is
             the "MacPython" version, and not the system-provided version which is in:
@@ -117,7 +117,7 @@ class Macvim < Formula
       end
       # Force vim loading different Python on same time, may cause vim crash.
       unless python.brewed?
-        opoo "Your python isn't comes from Homebrew, you may see warning massage during brewing. That's OK. Because we can't detect what your Python is. We will force replace the string."
+        opoo "You seem to have a version of Python not installed by Homebrew. Attempting to modify config.h. You may see warning message during brewing."
         inreplace 'src/auto/config.h', "/* #undef PY_NO_RTLD_GLOBAL */", "#define PY_NO_RTLD_GLOBAL 1"
         inreplace 'src/auto/config.h', "/* #undef PY3_NO_RTLD_GLOBAL */", "#define PY3_NO_RTLD_GLOBAL 1"
       end
@@ -153,7 +153,7 @@ class Macvim < Formula
       MacVim.app installed to:
         #{prefix}
 
-      To link the application to a normal Mac OS X location:
+      Run the following to make MacVim available as a Mac OS X application:
           brew linkapps
       or:
           brew linkapps --local
@@ -161,10 +161,10 @@ class Macvim < Formula
     if build.with? "python" and build.with? "python3"
       s += <<-EOS.undent
 
-        This MacVim build with dynamic library Python 2 & 3.
+        MacVim has been built with dynamic loading of Python 2 and Python 3.
 
-        Note that MacVim load dynamic Python 2 & 3 library with the same time
-        may crash MacVim. For more information, see:
+        Note: if MacVim dynamically loads both Python 2 and Python 3, it may
+        crash. For more information, see:
             http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python3
       EOS
     end
