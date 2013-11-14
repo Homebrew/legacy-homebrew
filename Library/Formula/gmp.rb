@@ -15,6 +15,7 @@ class Gmp < Formula
   end
 
   option '32-bit'
+  option :cxx11
 
   # Patches gmp.h to remove the __need_size_t define, which
   # was preventing libc++ builds from getting the ptrdiff_t type
@@ -24,6 +25,7 @@ class Gmp < Formula
   end
 
   def install
+    ENV.cxx11 if build.cxx11?
     args = ["--prefix=#{prefix}", "--enable-cxx"]
 
     if build.build_32_bit?
