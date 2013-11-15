@@ -2,9 +2,9 @@ require 'formula'
 
 class Pypy < Formula
   homepage 'http://pypy.org/'
-  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.1-osx64.tar.bz2'
-  version '2.1.0'
-  sha1 '6cdaa1dc0a47d9eb6d816f7d394ca46f290a1ed5'
+  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.2-osx64.tar.bz2'
+  version '2.2.0'
+  sha1 '6091171ebebb6f02e15b181d2a9a00e79c5b26a7'
 
   depends_on :arch => :x86_64
 
