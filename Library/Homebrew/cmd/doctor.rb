@@ -483,7 +483,7 @@ def check_user_path_1
 
             Consider setting your PATH so that #{HOMEBREW_PREFIX}/bin
             occurs before /usr/bin. Here is a one-liner:
-                echo export PATH="#{HOMEBREW_PREFIX}/bin:$PATH" >> ~/.bash_profile
+                echo export PATH='#{HOMEBREW_PREFIX}/bin:$PATH' >> ~/.bash_profile
           EOS
         end
       end
@@ -1082,18 +1082,18 @@ end
   end
 
   def check_for_latest_xquartz
-    quartz = MacOS::XQuartz.version
-    return unless quartz
+    return unless MacOS::XQuartz.installed?
     return if MacOS::XQuartz.provided_by_apple?
 
-    quartz = Version.new(quartz)
-    latest = Version.new(MacOS::XQuartz.latest_version)
+    installed_version = Version.new(MacOS::XQuartz.version)
+    latest_version    = Version.new(MacOS::XQuartz.latest_version)
 
-    return if quartz >= latest
+    return if installed_version >= latest_version
 
     <<-EOS.undent
-      Your XQuartz (#{quartz}) is outdated
-      Please install XQuartz #{latest}.
+      Your XQuartz (#{installed_version}) is outdated
+      Please install XQuartz #{latest_version}:
+        https://xquartz.macosforge.org
     EOS
   end
 end # end class Checks

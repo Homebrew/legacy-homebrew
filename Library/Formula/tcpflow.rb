@@ -7,6 +7,7 @@ class Tcpflow < Formula
 
   head do
     url 'https://github.com/simsong/tcpflow.git'
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

@@ -8,6 +8,7 @@ class Zeromq < Formula
   head do
     url 'https://github.com/zeromq/libzmq.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

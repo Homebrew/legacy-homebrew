@@ -2,14 +2,15 @@ require 'formula'
 
 class Ice < Formula
   homepage 'http://www.zeroc.com'
-  url 'http://www.zeroc.com/download/Ice/3.5/Ice-3.5.0.tar.gz'
-  sha1 '699376c76cfda9ffb24c903a1ea18b789f582421'
+  url 'http://www.zeroc.com/download/Ice/3.5/Ice-3.5.1.tar.gz'
+  sha1 '63599ea22a1e9638a49356682c9e516b7c2c454f'
 
   option 'doc', 'Install documentation'
   option 'demo', 'Build demos'
 
   depends_on 'berkeley-db'
   depends_on 'mcpp'
+  depends_on :python
 
   def patches
     DATA
@@ -17,13 +18,8 @@ class Ice < Formula
 
   def install
     ENV.O2
-    inreplace "cpp/config/Make.rules" do |s|
-      s.gsub! "#OPTIMIZE", "OPTIMIZE"
-      s.gsub! "/opt/Ice-$(VERSION)", prefix
-      s.gsub! "/opt/Ice-$(VERSION_MAJOR).$(VERSION_MINOR)", prefix
-    end
 
-    # what want we build?
+    # what do we want to build?
     wb = 'config src include'
     wb += ' doc' if build.include? 'doc'
     wb += ' demo' if build.include? 'demo'
@@ -31,29 +27,43 @@ class Ice < Formula
       s.change_make_var! "SUBDIRS", wb
     end
 
-    inreplace "cpp/config/Make.rules.Darwin" do |s|
-      s.change_make_var! "CXXFLAGS", "#{ENV.cflags} -Wall -D_REENTRANT"
-    end
+    args = %W[
+      prefix=#{prefix}
+      install_mandir=#{man1}
+      install_slicedir=#{share}/Ice-3.5/slice
+      embedded_runpath_prefix=#{prefix}
+      OPTIMIZE=yes
+    ]
+    args << "CXXFLAGS=#{ENV.cflags} -Wall -D_REENTRANT"
+    args << "PYTHON_FLAGS=-F#{python.framework} -framework Python"
+    args << "PYTHON_LIBS=-F#{python.framework} -framework Python"
 
     cd "cpp" do
-      system "make"
-      system "make install"
+      system "make", *args
+      system "make", "install", *args
+    end
+    args << "install_pythondir=#{python.site_packages}"
+    args << "install_libdir=#{python.site_packages}"
+    cd "py" do
+      system "make", *args
+      system "make", "install", *args
     end
   end
 end
 
 __END__
-diff -urN Ice-3.5.0.original/cpp/config/Make.rules.Darwin Ice-3.5.0/cpp/config/Make.rules.Darwin
---- ./cpp/config/Make.rules.Darwin	2013-03-11 15:19:46.000000000 +0000
-+++ ./cpp/config/Make.rules.Darwin	2013-04-02 18:03:40.000000000 +0100
-@@ -11,25 +11,18 @@
+diff -urN Ice-3.5.1.original/cpp/config/Make.rules.Darwin Ice-3.5.1/cpp/config/Make.rules.Darwin
+--- Ice-3.5.1.original/cpp/config/Make.rules.Darwin	2013-10-04 16:48:14.000000000 +0100
++++ Ice-3.5.1/cpp/config/Make.rules.Darwin	2013-10-09 10:09:32.000000000 +0100
+@@ -11,26 +11,19 @@
  # This file is included by Make.rules when uname is Darwin.
  #
  
 -CXX			= xcrun clang++
 +CXX			?= g++
  
- CXXFLAGS		= -Wall -Werror -D_REENTRANT
+ CPPFLAGS 	        += -pthread
+ CXXFLAGS		+= -Wall -Werror
  
  ifeq ($(OPTIMIZE),yes)
 -     #
@@ -75,12 +85,26 @@ diff -urN Ice-3.5.0.original/cpp/config/Make.rules.Darwin Ice-3.5.0/cpp/config/M
  endif
  
  #
-@@ -72,7 +65,7 @@
- ICEUTIL_OS_LIBS         = -lpthread
- ICE_OS_LIBS             = -ldl
+diff -urN Ice-3.5.1.original/py/config/Make.rules.Darwin Ice-3.5.1/py/config/Make.rules.Darwin
+--- Ice-3.5.1.original/py/config/Make.rules.Darwin	2013-10-04 16:48:15.000000000 +0100
++++ Ice-3.5.1/py/config/Make.rules.Darwin	2013-10-10 12:09:45.000000000 +0100
+@@ -17,19 +17,3 @@
+ mksoname		= $(if $(2),lib$(1).$(2).so,lib$(1).so)
+ mklibname       = lib$(1).so
  
--PLATFORM_HAS_READLINE   := no
-+PLATFORM_HAS_READLINE   := yes
- 
- #
- # QT is used only for the deprecated IceGrid and IceStorm SQL plugins
+-#
+-# We require Python to be built as a Framework for the IcePy plug-in.
+-#
+-ifneq ($(PYTHON_HOME),)
+-    ifeq ($(shell test ! -f $(PYTHON_HOME)/Python && echo 0),0)
+-        $(error Unable to find Python framework See config/Make.rules.Darwin)
+-    endif
+-    PYTHON_LIBS		= -F$(patsubst %/Python.framework/Versions/,%,$(dir $(PYTHON_HOME))) -framework Python
+-else
+-    XCODE_PATH  = $(shell xcode-select --print-path)
+-    SDKS_DIR    = $(XCODE_PATH)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+-    PYTHON_HOME	= $(SDKS_DIR)/System/Library/Frameworks/Python.framework/Versions/Current
+-    PYTHON_LIBS	= -framework Python
+-endif
+-
+-PYTHON_INCLUDE_DIR	= $(PYTHON_HOME)/include/$(PYTHON_VERSION)

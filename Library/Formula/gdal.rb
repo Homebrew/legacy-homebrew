@@ -26,7 +26,7 @@ class Gdal < Formula
   depends_on 'proj'
   depends_on 'geos'
 
-  depends_on 'sqlite'  # To ensure compatibility with SpatiaLite.
+  depends_on 'sqlite' # To ensure compatibility with SpatiaLite.
   depends_on 'freexl'
   depends_on 'libspatialite'
 
@@ -238,7 +238,7 @@ class Gdal < Formula
       <<-EOS.undent
         This version of GDAL was built with Python support. In addition to providing
         modules that makes GDAL functions available to Python scripts, the Python
-        binding provides ~18 additional command line tools.
+        binding provides additional command line tools.
       EOS
     end
   end

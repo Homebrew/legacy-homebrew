@@ -8,6 +8,8 @@ class Uriparser < Formula
   depends_on 'pkg-config' => :build
   depends_on 'cpptest'
 
+  conflicts_with 'libkml', :because => 'both install `liburiparser.dylib`'
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

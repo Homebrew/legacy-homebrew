@@ -346,12 +346,16 @@ Note that these flags should only appear after a command.
     If <formulae> are given, upgrade only the specified brews (but do so even
     if they are pinned; see `pin`, `unpin`).
 
-  * `uses [--installed] [--recursive]` <formula>:
+  * `uses [--installed] [--recursive] [--devel|--HEAD]` <formula>:
     Show the formulae that specify <formula> as a dependency.
 
     Use `--recursive` to resolve more than one level of dependencies.
 
     If `--installed` is passed, only list installed formulae.
+
+    By default, `uses` shows usages of `formula` by stable builds. To find
+    cases where `formula` is used by development or HEAD build, pass
+    `--devel` or `--HEAD`.
 
   * `versions [--compact]` <formulae>:
     List previous versions of <formulae>, along with a command to checkout
@@ -514,13 +518,18 @@ can take several different forms:
     *Default:* the number of available CPU cores.
 
   * HOMEBREW\_NO\_EMOJI:
-    If set, Homebrew will not print the beer emoji on a successful build.
+    If set, Homebrew will not print the `HOMEBREW_INSTALL_BADGE` on a
+    successful build.
 
     *Note:* Homebrew will only try to print emoji on Lion or newer.
 
   * HOMEBREW\_NO\_GITHUB\_API:
     If set, Homebrew will not use the GitHub API for e.g searches or
     fetching relevant issues on a failed install.
+
+  * HOMEBREW\_INSTALL\_BADGE:
+    Text printed before the installation summary of each successful build.
+    Defaults to the beer emoji.
 
   * HOMEBREW\_SOURCEFORGE\_MIRROR:
     If set, Homebrew will use the value of `HOMEBREW_SOURCEFORGE_MIRROR` to

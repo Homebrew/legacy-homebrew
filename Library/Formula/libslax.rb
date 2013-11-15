@@ -8,12 +8,17 @@ class Libslax < Formula
   head do
     url 'https://github.com/Juniper/libslax.git'
 
+    depends_on 'autoconf' => :build
     depends_on 'automake' => :build
   end
 
   depends_on 'libtool'  => :build
-  depends_on 'libxml2'
-  depends_on 'libxslt'
+
+  if MacOS.version <= :mountain_lion
+    depends_on 'libxml2'
+    depends_on 'libxslt'
+  end
+
   depends_on 'curl' if MacOS.version <= :lion
 
   def install

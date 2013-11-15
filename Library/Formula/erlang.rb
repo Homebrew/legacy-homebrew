@@ -33,35 +33,32 @@ class Erlang < Formula
   option 'time', '`brew test --time` to include a time-consuming test'
   option 'no-docs', 'Do not install documentation'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
   depends_on 'unixodbc' if MacOS.version >= :mavericks
   depends_on 'fop' => :optional # enables building PDF docs
 
-  fails_with :llvm do
-    build 2334
-  end
+  fails_with :llvm
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
 
-    if ENV.compiler == :llvm
-      # Don't use optimizations. Fixes build on Lion/Xcode 4.2
-      ENV.remove_from_cflags /-O./
-      ENV.append_to_cflags '-O0'
-    end
     ENV.append "FOP", "#{HOMEBREW_PREFIX}/bin/fop" if build.with? 'fop'
 
     # Do this if building from a checkout to generate configure
     system "./otp_build autoconf" if File.exist? "otp_build"
 
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
-            "--enable-kernel-poll",
-            "--enable-threads",
-            "--enable-dynamic-ssl-lib",
-            "--enable-shared-zlib",
-            "--enable-smp-support"]
+    args = %W[
+      --disable-debug
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --enable-kernel-poll
+      --enable-threads
+      --enable-dynamic-ssl-lib
+      --enable-shared-zlib
+      --enable-smp-support
+    ]
 
     args << "--with-dynamic-trace=dtrace" unless MacOS.version <= :leopard or not MacOS::CLT.installed?
 

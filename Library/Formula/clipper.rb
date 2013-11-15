@@ -2,8 +2,8 @@ require 'formula'
 
 class Clipper < Formula
   homepage 'https://wincent.com/products/clipper'
-  url 'https://github.com/wincent/clipper/archive/0.1.zip'
-  sha1 'c0659968bf4ed4c6ac2e01c6608f55d5e22f96c3'
+  url 'https://github.com/wincent/clipper/archive/0.2.zip'
+  sha1 'dbc037d4d60b73ff0f99959adb0c3a94a45761cd'
 
   depends_on 'go' => :build
 
@@ -36,6 +36,11 @@ class Clipper < Formula
         <string>--port</string>
         <string>8377</string>
       </array>
+      <key>EnvironmentVariables</key>
+      <dict>
+        <key>LANG</key>
+        <string>en_US.UTF-8</string>
+      </dict>
     </dict>
     </plist>
     EOS

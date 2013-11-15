@@ -8,6 +8,7 @@ class Libevent < Formula
   head do
     url 'git://levent.git.sourceforge.net/gitroot/levent/levent'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
@@ -16,8 +17,6 @@ class Libevent < Formula
 
   option :universal
   option 'enable-manpages', 'Install the libevent manpages (requires doxygen)'
-
-  conflicts_with 'open-mpi', :because => 'both install same set of header files'
 
   fails_with :llvm do
     build 2326

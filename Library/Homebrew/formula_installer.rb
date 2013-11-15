@@ -32,6 +32,7 @@ class FormulaInstaller
   end
 
   def pour_bottle? install_bottle_options={:warn=>false}
+    return false if @pour_failed
     tab.used_options.empty? && options.empty? && \
       install_bottle?(f, install_bottle_options)
   end
@@ -131,12 +132,14 @@ class FormulaInstaller
       end
     rescue
       raise if ARGV.homebrew_developer?
+      @pour_failed = true
       opoo "Bottle installation failed: building from source."
     end
 
     build_bottle_preinstall if ARGV.build_bottle?
 
     unless @poured_bottle
+      install_dependencies if @pour_failed && !ignore_deps
       build
       clean
     end
@@ -236,6 +239,8 @@ class FormulaInstaller
   end
 
   def install_dependencies
+    @effective_deps = nil if @pour_failed
+
     if effective_deps.length > 1
       oh1 "Installing dependencies for #{f}: #{Tty.green}#{effective_deps*", "}#{Tty.reset}"
     end
@@ -309,7 +314,7 @@ class FormulaInstaller
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
     unless ENV['HOMEBREW_NO_EMOJI']
-      print "\xf0\x9f\x8d\xba  " if MacOS.version >= :lion
+      print "#{ENV['HOMEBREW_INSTALL_BADGE'] || "\xf0\x9f\x8d\xba"}  " if MacOS.version >= :lion
     end
     print "#{f.prefix}: #{f.prefix.abv}"
     print ", built in #{pretty_duration build_time}" if build_time
@@ -499,11 +504,13 @@ class FormulaInstaller
   def audit_bin
     print_check_output(check_PATH(f.bin)) unless f.keg_only?
     print_check_output(check_non_executables(f.bin))
+    print_check_output(check_generic_executables(f.bin))
   end
 
   def audit_sbin
     print_check_output(check_PATH(f.sbin)) unless f.keg_only?
     print_check_output(check_non_executables(f.sbin))
+    print_check_output(check_generic_executables(f.sbin))
   end
 
   def audit_lib
@@ -548,7 +555,7 @@ end
 
 class Formula
   def keg_only_text
-    s = "This formula is keg-only: so it was not symlinked into #{HOMEBREW_PREFIX}."
+    s = "This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}."
     s << "\n\n#{keg_only_reason.to_s}"
     if lib.directory? or include.directory?
       s <<

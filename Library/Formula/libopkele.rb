@@ -8,18 +8,15 @@ class Libopkele < Formula
   head do
     url 'https://github.com/hacker/libopkele.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
   depends_on 'pkg-config' => :build
 
-  fails_with :clang do
-    build 421
-    cause <<-EOS.undent
-      In file included from discovery.cc:5:
-      ../include/opkele/discovery.h:24:11: error: use of undeclared identifier 'insert'
-    EOS
+  def patches
+    "https://github.com/hacker/libopkele/commit/9ff6244998b0d41e71f7cc7351403ad590e990e4.patch"
   end unless build.head?
 
   def install

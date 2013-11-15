@@ -2,7 +2,7 @@ require 'formula'
 
 class Slimerjs < Formula
   homepage 'http://www.slimerjs.org'
-  url 'http://download.slimerjs.org/v0.8/slimerjs-0.8.4.zip'
+  url 'http://download.slimerjs.org/v0.8/0.8.4/slimerjs-0.8.4.zip'
   sha1 '89c7dc05b9df5f2aac0d423fb5a2118271ac9ad2'
 
   head 'https://github.com/laurentj/slimerjs.git'

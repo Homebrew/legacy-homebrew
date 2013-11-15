@@ -9,6 +9,7 @@ class Libnids < Formula
   option "disable-libglib", "Don't use glib2 for multiprocessing support"
 
   depends_on 'pkg-config' => :build
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
   depends_on 'libnet' unless build.include? "disable-libnet"

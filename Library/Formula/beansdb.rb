@@ -6,13 +6,11 @@ class Beansdb < Formula
   url 'https://github.com/douban/beansdb/archive/v0.6.tar.gz'
   sha1 '9099ce607ff3c3eba251ee34ae65a08c4e3715b9'
 
+  depends_on :autoconf
   depends_on :automake
 
-  fails_with :clang do
-    cause "Known not to compile with clang."
-  end
-
   def install
+    ENV.append 'CFLAGS', '-std=gnu89'
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}"
 

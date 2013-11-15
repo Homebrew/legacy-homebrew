@@ -4,7 +4,7 @@ class Haxe < Formula
   homepage 'http://haxe.org'
   url 'https://github.com/HaxeFoundation/haxe.git', :tag => 'v3.0.1'
 
-  head 'https://github.com/HaxeFoundation/haxe.git'
+  head 'https://github.com/HaxeFoundation/haxe.git', :branch => 'development'
 
   depends_on 'neko'
   depends_on 'objective-caml'

@@ -18,9 +18,9 @@ class Go < Formula
   option 'without-cgo', "Build without cgo"
 
   devel do
-    url 'https://go.googlecode.com/files/go1.2rc3.src.tar.gz'
-    version '1.2rc3'
-    sha1 '1bfcb525b28c2fe65d0b7d6dbd4418ce2027e2eb'
+    url 'https://go.googlecode.com/files/go1.2rc4.src.tar.gz'
+    version '1.2rc4'
+    sha1 'a1782aef715875119e04ebd3f101708e3b6aa866'
   end
 
   if build.with? 'cgo' and not build.devel?
@@ -37,9 +37,6 @@ class Go < Formula
   def patches; DATA; end if build.stable?
 
   def install
-    # For Clang cgo support Go needs to be able to tell through CC.
-    ENV['CC'] = 'clang' if build.devel? and ENV.compiler == :clang
-
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
     zsh_completion.install 'misc/zsh/go' => 'go'
