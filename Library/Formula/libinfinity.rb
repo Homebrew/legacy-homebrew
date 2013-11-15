@@ -2,29 +2,26 @@ require 'formula'
 
 class Libinfinity < Formula
   homepage 'http://gobby.0x539.de/trac/wiki/Infinote/Libinfinity'
-  url 'http://releases.0x539.de/libinfinity/libinfinity-0.5.3.tar.gz'
-  sha1 '33fcdad764331e33ff1036d24c65d6296387e839'
+  url 'http://releases.0x539.de/libinfinity/libinfinity-0.5.4.tar.gz'
+  sha1 '75e3349452bdd182a385f62100c09f47b277b145'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'gtk+'
   depends_on 'gnutls'
-  depends_on 'libgsasl'
+  depends_on 'gsasl'
   depends_on :x11
 
-  # Reported upstream here: http://gobby.0x539.de/trac/ticket/595
-  # Supposedly fixed in HEAD, but still happens in 0.5.3, possibly
-  # in a different place.
-  fails_with :clang do
-    build 425
-    cause 'Non-void function should return a value'
-  end
 
-  # MacPorts patch to fix pam include
-  def patches
+  def patches;
+    # MacPorts patch to fix pam include
     { :p0 => [
       "https://trac.macports.org/export/92297/trunk/dports/comms/libinfinity/files/patch-infinoted-infinoted-pam.c.diff"
-    ]}
+      ],
+      # Reported and closed upstream, but not seeing the fix:
+      # http://gobby.0x539.de/trac/ticket/595
+      :p1 => [ DATA ]
+    }
   end
 
   def install
@@ -33,3 +30,28 @@ class Libinfinity < Formula
     system "make install"
   end
 end
+
+__END__
+diff --git a/libinfinity/communication/inf-communication-method.c b/libinfinity/communication/inf-communication-method.c
+index 8526ab8..12a9923 100644
+--- a/libinfinity/communication/inf-communication-method.c
++++ b/libinfinity/communication/inf-communication-method.c
+@@ -299,13 +299,13 @@ inf_communication_method_received(InfCommunicationMethod* method,
+ {
+   InfCommunicationMethodIface* iface;
+ 
+-  g_return_if_fail(INF_COMMUNICATION_IS_METHOD(method));
+-  g_return_if_fail(INF_IS_XML_CONNECTION(connection));
+-  g_return_if_fail(inf_communication_method_is_member(method, connection));
+-  g_return_if_fail(xml != NULL);
++  g_return_val_if_fail(INF_COMMUNICATION_IS_METHOD(method), NULL);
++  g_return_val_if_fail(INF_IS_XML_CONNECTION(connection), NULL);
++  g_return_val_if_fail(inf_communication_method_is_member(method, connection), NULL);
++  g_return_val_if_fail(xml != NULL, NULL);
+ 
+   iface = INF_COMMUNICATION_METHOD_GET_IFACE(method);
+-  g_return_if_fail(iface->received != NULL);
++  g_return_val_if_fail(iface->received != NULL, NULL);
+ 
+   return iface->received(method, connection, xml);
+ }

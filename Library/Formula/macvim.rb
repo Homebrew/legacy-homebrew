@@ -17,12 +17,15 @@ class Macvim < Formula
   depends_on 'lua' => :optional
   depends_on 'luajit' => :optional
   depends_on :python => :recommended
-  # Help us! :python3 in MacVim makes the window disappear, so only 2.x bindings!
+  depends_on :python3 => :optional
 
   env :std if MacOS.version <= :snow_leopard
   # Help us! We'd like to use superenv in these environments too
 
   def install
+    # MacVim doesn't have and required any Python package, unset PYTHONPATH.
+    ENV.delete('PYTHONPATH')
+
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in
     # PPC support (which isn't needed in Homebrew-supported systems.)
@@ -61,7 +64,12 @@ class Macvim < Formula
       args << "--with-luajit"
     end
 
-    args << "--enable-pythoninterp=yes" if build.with? 'python'
+    if build.with? "python" and build.with? "python3"
+      args << "--enable-pythoninterp=dynamic" << "--enable-python3interp=dynamic"
+    else
+      args << "--enable-pythoninterp" if build.with? "python"
+      args << "--enable-python3interp" if build.with? "python3"
+    end
 
     # MacVim seems to link Python by `-framework Python` (instead of
     # `python-config --ldflags`) and so we have to pass the -F to point to
@@ -71,7 +79,9 @@ class Macvim < Formula
     # on the Mac. Note configure detects brewed python correctly, but that
     # is ignored.
     # See https://github.com/mxcl/homebrew/issues/17908
-    ENV.prepend 'LDFLAGS', "-L#{python2.libdir} -F#{python2.framework}" if python && python.brewed?
+    if python2 and python2.framework? and not build.with? "python3"
+      ENV.prepend 'LDFLAGS', "-L#{python2.libdir} -F#{python2.framework}"
+    end
 
     unless MacOS::CLT.installed?
       # On Xcode-only systems:
@@ -83,6 +93,35 @@ class Macvim < Formula
     end
 
     system "./configure", *args
+
+    if build.with? "python" and build.with? "python3"
+      # On 64-bit systems, we need to avoid a 32-bit Framework Python.
+      # MacVim doesn't check Python while compiling.
+      python do
+        if MacOS.prefer_64_bit? and python.framework? and not archs_for_command("#{python.prefix}/Python").include? :x86_64
+          opoo "Detected a framework Python that does not have 64-bit support built in:"
+          puts <<-EOS.undent
+            #{python.prefix}
+
+            Dynamic loading Python library requires the same architecture.
+
+            Note that a framework Python in /Library/Frameworks/Python.framework is
+            the "MacPython" version, and not the system-provided version which is in:
+              /System/Library/Frameworks/Python.framework
+          EOS
+        end
+      end
+      # Help vim find Python's library as absolute path.
+      python do
+        inreplace 'src/auto/config.mk', /-DDYNAMIC_PYTHON#{python.if3then3}_DLL=\\".*\\"/, %Q[-DDYNAMIC_PYTHON#{python.if3then3}_DLL=\'\"#{python.prefix}/Python\"\'] if python.framework?
+      end
+      # Force vim loading different Python on same time, may cause vim crash.
+      unless python.brewed?
+        opoo "You seem to have a version of Python not installed by Homebrew. Attempting to modify config.h. You may see warning message during brewing."
+        inreplace 'src/auto/config.h', "/* #undef PY_NO_RTLD_GLOBAL */", "#define PY_NO_RTLD_GLOBAL 1"
+        inreplace 'src/auto/config.h', "/* #undef PY3_NO_RTLD_GLOBAL */", "#define PY3_NO_RTLD_GLOBAL 1"
+      end
+    end
 
     if build.include? "custom-icons"
       # Get the custom font used by the icons
@@ -108,14 +147,27 @@ class Macvim < Formula
     executables.each {|f| ln_s bin+'mvim', bin+f}
   end
 
-  def caveats; <<-EOS.undent
-    MacVim.app installed to:
-      #{prefix}
+  def caveats
+    s = ''
+    s += <<-EOS.undent
+      MacVim.app installed to:
+        #{prefix}
 
-    To link the application to a normal Mac OS X location:
-        brew linkapps
-    or:
-        ln -s #{prefix}/MacVim.app /Applications
+      Run the following to make MacVim available as a Mac OS X application:
+          brew linkapps
+      or:
+          brew linkapps --local
     EOS
+    if build.with? "python" and build.with? "python3"
+      s += <<-EOS.undent
+
+        MacVim has been built with dynamic loading of Python 2 and Python 3.
+
+        Note: if MacVim dynamically loads both Python 2 and Python 3, it may
+        crash. For more information, see:
+            http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python3
+      EOS
+    end
+    return s
   end
 end
