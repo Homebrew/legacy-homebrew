@@ -2,14 +2,15 @@ require 'formula'
 
 class Monetdb < Formula
   homepage 'http://www.monetdb.org/'
-  url 'http://dev.monetdb.org/downloads/sources/Feb2013-SP3/MonetDB-11.15.11.zip'
-  sha1 '12f5a2e65a5a4fa8c67303af5e0b4ea1fe12672b'
+  url 'http://www.monetdb.org/downloads/sources/Latest/MonetDB-11.15.17.tar.xz'
+  sha1 '8f470b294b65630fefad1b6c7fbdfd814d761056'
 
   head 'http://dev.monetdb.org/hg/MonetDB', :using => :hg
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
   depends_on 'readline' # Compilation fails with libedit.
+  depends_on 'xz'
 
   def install
     system "./bootstrap" if build.head?
