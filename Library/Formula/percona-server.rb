@@ -7,13 +7,11 @@ class PerconaServer < Formula
   sha1 '6d9ddd92338c70ec13bdeb9a23568a990a5766f9'
 
   depends_on 'cmake' => :build
-  depends_on 'readline'
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
 
   option :universal
   option 'with-tests', 'Build with unit tests'
   option 'with-embedded', 'Build the embedded server'
-  option 'with-libedit', 'Compile with editline wrapper instead of readline'
   option 'enable-local-infile', 'Build with local infile loading support'
 
 
@@ -67,6 +65,7 @@ class PerconaServer < Formula
       -DDEFAULT_COLLATION=utf8_general_ci
       -DSYSCONFDIR=#{etc}
       -DCOMPILATION_COMMENT=Homebrew
+      -DWITH_EDITLINE=system
       -DCMAKE_BUILD_TYPE=RelWithDebInfo
     ]
 
@@ -86,9 +85,6 @@ class PerconaServer < Formula
 
     # Build the embedded server
     args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'
-
-    # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless build.with? 'libedit'
 
     # Make universal for binding to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
