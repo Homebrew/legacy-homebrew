@@ -262,29 +262,6 @@ class Python < Formula
 end
 
 __END__
-# http://bugs.python.org/issue18071 (Remove this hung for 2.7.6!)
-diff --git a/Lib/_osx_support.py b/Lib/_osx_support.py
---- a/Lib/_osx_support.py
-+++ b/Lib/_osx_support.py
-@@ -53,7 +53,7 @@ def _find_executable(executable, path=No
-
-
- def _read_output(commandstring):
--    """Output from succesful command execution or None"""
-+    """Output from successful command execution or None"""
-     # Similar to os.popen(commandstring, "r").read(),
-     # but without actually using os.popen because that
-     # function is not usable during python bootstrap.
-@@ -68,7 +68,7 @@ def _read_output(commandstring):
-
-     with contextlib.closing(fp) as fp:
-         cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
--        return fp.read().decode('utf-8').strip() if not os.system(cmd) else None
-+        return fp.read().strip() if not os.system(cmd) else None
-
-
-# X11 header find fix (and let homebrew handle this.)
-
 diff --git a/setup.py b/setup.py
 index 716f08e..66114ef 100644
 --- a/setup.py
