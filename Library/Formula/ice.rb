@@ -108,3 +108,23 @@ diff -urN Ice-3.5.1.original/py/config/Make.rules.Darwin Ice-3.5.1/py/config/Mak
 -endif
 -
 -PYTHON_INCLUDE_DIR	= $(PYTHON_HOME)/include/$(PYTHON_VERSION)
+diff -urN Ice-3.5.1.original/cpp/src/IceGrid/DescriptorHelper.h Ice-3.5.1/cpp/src/IceGrid/DescriptorHelper.h
+--- Ice-3.5.1.original/cpp/src/IceGrid/DescriptorHelper.h	2013-10-04 16:48:14.000000000 +0100
++++ Ice-3.5.1/cpp/src/IceGrid/DescriptorHelper.h	2013-11-15 00:11:22.000000000 +0000
+@@ -247,7 +247,6 @@
+     ServerInstanceHelper(const ServerInstanceDescriptor&, const Resolver&, bool);
+     ServerInstanceHelper(const ServerDescriptorPtr&, const Resolver&, bool);
+     
+-    void operator=(const ServerInstanceHelper&);
+     bool operator==(const ServerInstanceHelper&) const;
+     bool operator!=(const ServerInstanceHelper&) const;
+ 
+@@ -265,7 +264,7 @@
+ 
+     void init(const ServerDescriptorPtr&, const Resolver&, bool);
+ 
+-    const ServerInstanceDescriptor _def;
++    ServerInstanceDescriptor _def;
+     std::string _id;
+     ServerInstanceDescriptor _instance;
+ 
