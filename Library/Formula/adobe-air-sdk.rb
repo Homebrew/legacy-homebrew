@@ -18,6 +18,8 @@ class AdobeAirSdk < Formula
     if build.with? 'compiler'
       bin.write_exec_script libexec/'bin/aasdoc'
       bin.write_exec_script libexec/'bin/acompc'
+      bin.write_exec_script libexec/'bin/adl'
+      bin.write_exec_script libexec/'bin/adt'
       bin.write_exec_script libexec/'bin/amxmlc'
       bin.write_exec_script libexec/'bin/asdoc'
       bin.write_exec_script libexec/'bin/compc'
