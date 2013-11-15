@@ -82,7 +82,7 @@ ARGV.named.each do|arg|
     `git diff #{revision}.. --name-status`.each_line do |line|
       status, filename = line.split
       # Don't try and do anything to removed files.
-      if (status == 'A' or status == 'M') and filename.match /Formula\/\w+\.rb$/ or tap url
+      if (status == 'A' or status == 'M') and filename.match /Formula\/.+\.rb$/ or tap url
         formula = File.basename(filename, '.rb')
         ohai "Installing #{formula}"
         install = Formula.factory(formula).installed? ? 'upgrade' : 'install'
