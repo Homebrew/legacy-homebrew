@@ -262,8 +262,8 @@ class Cmd
     !ENV['VERBOSE'].nil? || !ENV['HOMEBREW_VERBOSE'].nil?
   end
   def configure?
-    # configure scripts generated with autoconf 2.56 or later export DUALCASE
-    ENV.key? 'DUALCASE'
+    # configure scripts generated with autoconf 2.61 or later export as_nl
+    ENV.key? 'as_nl'
   end
 end
 
