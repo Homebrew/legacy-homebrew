@@ -1,19 +1,22 @@
 require 'formula'
 
-class PureDocs < Formula
-  url 'https://bitbucket.org/purelang/pure-lang/downloads/pure-docs-0.57.tar.gz'
-  sha1 '7f2c6051b831d3de887f2182e8b29b1716ab45fd'
-end
-
 class Pure < Formula
   homepage 'http://purelang.bitbucket.org/'
-  url 'https://bitbucket.org/purelang/pure-lang/downloads/pure-0.57.tar.gz'
-  sha1 '5c7441993752d0e2cba74912521d6df865e5dc0b'
+  url 'https://bitbucket.org/purelang/pure-lang/downloads/pure-0.58.tar.gz'
+  sha1 '9ec99ed3a8166659153e25efcbfc14a227d9ad95'
+
+  depends_on :automake
+  depends_on :libtool
 
   depends_on 'llvm'
   depends_on 'gmp'
   depends_on 'readline'
   depends_on 'mpfr'
+
+  resource 'docs' do
+    url 'https://bitbucket.org/purelang/pure-lang/downloads/pure-docs-0.58.tar.gz'
+    sha1 'f67a2e4723d7bbd92818e75f675e8057a02f3a00'
+  end
 
   def install
     system "./configure", "--disable-debug",
@@ -21,9 +24,11 @@ class Pure < Formula
                           "--enable-release",
                           "--without-elisp"
     system "make"
-    system "make check"
     system "make install"
+    resource('docs').stage { system "make", "prefix=#{prefix}", "install" }
+  end
 
-    PureDocs.new.brew { system "make", "prefix=#{prefix}", "install" }
+  test do
+    system "#{bin}/pure", "--version"
   end
 end

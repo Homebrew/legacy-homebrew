@@ -9,11 +9,10 @@ class Gplcver < Formula
     inreplace 'src/makefile.osx' do |s|
       s.gsub! '-mcpu=powerpc', ''
       s.change_make_var! 'CFLAGS', "$(INCS) $(OPTFLGS) #{ENV.cflags}"
+      s.change_make_var! 'LFLAGS', ''
     end
 
-    cd 'src' do
-      system "make -f makefile.osx"
-    end
+    system "make", "-C", "src", "-f", "makefile.osx"
     bin.install 'bin/cver'
   end
 end

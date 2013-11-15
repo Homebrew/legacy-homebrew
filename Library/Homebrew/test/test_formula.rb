@@ -124,6 +124,10 @@ class FormulaTests < Test::Unit::TestCase
     assert !y.eql?(x)
   end
 
+  def test_comparison_with_non_formula_objects_does_not_raise
+    assert_not_equal TestBall.new, Object.new
+  end
+
   def test_class_naming
     assert_equal 'ShellFm', Formula.class_s('shell.fm')
     assert_equal 'Fooxx', Formula.class_s('foo++')
@@ -162,9 +166,10 @@ class FormulaTests < Test::Unit::TestCase
 
       bottle do
         sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard_32
-        sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard
+        sha1 'faceb00cfaceb00cfaceb00cfaceb00cfaceb00c' => :snow_leopard
         sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
         sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
+        sha1 'deadf00ddeadf00ddeadf00ddeadf00ddeadf00d' => :mavericks
       end
 
       def initialize(name="spec_test_ball", path=nil)
@@ -175,7 +180,6 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal 'http://example.com', f.homepage
     assert_version_equal '0.1', f.version
     assert_equal f.stable, f.active_spec
-    assert_equal CurlDownloadStrategy, f.download_strategy
     assert_instance_of CurlDownloadStrategy, f.downloader
 
     assert_instance_of SoftwareSpec, f.stable
@@ -186,7 +190,7 @@ class FormulaTests < Test::Unit::TestCase
 
   def test_path
     name = 'foo-bar'
-    assert_equal Pathname.new("#{HOMEBREW_REPOSITORY}/Library/Formula/#{name}.rb"), Formula.path(name)
+    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formula.path(name)
   end
 
   def test_factory
@@ -208,5 +212,31 @@ class FormulaTests < Test::Unit::TestCase
     assert_kind_of Formula, Formula.factory(name)
   ensure
     path.unlink
+  end
+
+  def test_class_specs_are_always_initialized
+    f = formula { url 'foo-1.0' }
+
+    %w{stable devel head bottle}.each do |spec|
+      assert_kind_of SoftwareSpec, f.class.send(spec)
+    end
+  end
+
+  def test_incomplete_instance_specs_are_not_accessible
+    f = formula { url 'foo-1.0' }
+
+    %w{devel head bottle}.each { |spec| assert_nil f.send(spec) }
+  end
+
+  def test_honors_attributes_declared_before_specs
+    f = formula do
+      url 'foo-1.0'
+      depends_on 'foo'
+      devel { url 'foo-1.1' }
+    end
+
+    %w{stable devel head bottle}.each do |spec|
+      assert_equal 'foo', f.class.send(spec).deps.first.name
+    end
   end
 end

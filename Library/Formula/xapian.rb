@@ -1,21 +1,20 @@
 require 'formula'
 
-class XapianBindings < Formula
-  homepage 'http://xapian.org'
-  url 'http://oligarchy.co.uk/xapian/1.2.13/xapian-bindings-1.2.13.tar.gz'
-  sha1 '0cffc6ae2df295d2f8bc052831ed225e60236e92'
-end
-
 class Xapian < Formula
   homepage 'http://xapian.org'
-  url 'http://oligarchy.co.uk/xapian/1.2.13/xapian-core-1.2.13.tar.gz'
-  sha1 'ae5edc64671c5f32a3a24abf8cc3028cb56f6c6b'
+  url 'http://oligarchy.co.uk/xapian/1.2.15/xapian-core-1.2.15.tar.gz'
+  sha1 '3d2ea66e9930451dcac4b96f321284f3dee98d51'
 
   option "java",   "Java bindings"
   option "php",    "PHP bindings"
   option "ruby",   "Ruby bindings"
 
   depends_on :python => :optional
+
+  resource 'bindings' do
+    url 'http://oligarchy.co.uk/xapian/1.2.15/xapian-bindings-1.2.15.tar.gz'
+    sha1 '88424067be668f3566b5921099d82032a7a88289'
+  end
 
   skip_clean :la
 
@@ -29,7 +28,7 @@ class Xapian < Formula
     system "make install"
     return unless build_any_bindings?
 
-    XapianBindings.new.brew do
+    resource('bindings').stage do
       args = %W[
         --disable-dependency-tracking
         --prefix=#{prefix}

@@ -2,8 +2,8 @@ require 'formula'
 
 class Jruby < Formula
   homepage 'http://www.jruby.org'
-  url 'http://jruby.org.s3.amazonaws.com/downloads/1.7.4/jruby-bin-1.7.4.tar.gz'
-  sha1 '7e48129c03268963e1493990973e52da85ab1f7f'
+  url 'http://jruby.org.s3.amazonaws.com/downloads/1.7.5/jruby-bin-1.7.5.tar.gz'
+  sha1 'ffe25392764db210cf385e61c4f0a410c6f2d32d'
 
   def install
     # Remove Windows files
@@ -17,7 +17,7 @@ class Jruby < Formula
     end
 
     # Only keep the OS X native libraries
-    cd 'lib/native' do
+    cd 'lib/jni' do
       Dir['*'].each do |file|
         rm_rf file unless file.downcase == 'darwin'
       end

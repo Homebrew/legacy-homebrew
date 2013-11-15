@@ -9,7 +9,7 @@ require 'formula'
 # that Brew installs
 
 class Gpac < Formula
-  homepage 'http://gpac.sourceforge.net/index.php'
+  homepage 'http://gpac.wp.mines-telecom.fr/'
   url 'http://downloads.sourceforge.net/gpac/gpac-0.5.0.tar.gz'
   sha1 '48ba16272bfa153abb281ff8ed31b5dddf60cf20'
 

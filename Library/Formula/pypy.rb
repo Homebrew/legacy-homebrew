@@ -1,22 +1,33 @@
 require 'formula'
 
-class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.0.tar.gz'
-  sha1 '6ff4d37b567d54763cc55ca70ff8058286b8e2c3'
-end
-
 class Pypy < Formula
   homepage 'http://pypy.org/'
-  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.1-osx64.tar.bz2'
-  version '2.1.0'
-  sha1 '6cdaa1dc0a47d9eb6d816f7d394ca46f290a1ed5'
+  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.2-osx64.tar.bz2'
+  version '2.2.0'
+  sha1 '6091171ebebb6f02e15b181d2a9a00e79c5b26a7'
 
   depends_on :arch => :x86_64
+
+  resource 'setuptools' do
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.3.2.tar.gz'
+    sha1 '77180132225c5b4696e6d061655e291f3d1b20f5'
+  end
+
+  resource 'pip' do
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
+    sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
+  end
 
   def install
     rmtree 'site-packages'
 
-    prefix.install Dir['*']
+    # The PyPy binary install instructions suggest installing somewhere
+    # (like /opt) and symlinking in binaries as needed. Specifically,
+    # we want to avoid putting PyPy's Python.h somewhere that configure
+    # scripts will find it.
+    libexec.install Dir['*']
+    bin.mkpath
+    ln_s libexec/'bin/pypy', bin/'pypy'
 
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
@@ -26,7 +37,7 @@ class Pypy < Formula
     prefix_site_packages.mkpath
 
     # Symlink the prefix site-packages into the cellar.
-    ln_s prefix_site_packages, prefix+'site-packages'
+    ln_s prefix_site_packages, libexec+'site-packages'
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
@@ -39,9 +50,8 @@ class Pypy < Formula
     # $ easy_install pip
     # $ pip install --upgrade setuptools
     # to get newer versions of setuptools outside of Homebrew.
-    Setuptools.new.brew do
-      system "#{bin}/pypy", "setup.py", "install"
-    end
+    resource('setuptools').stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
+    resource('pip').stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
 
     # Symlink to easy_install_pypy.
     unless (scripts_folder+'easy_install_pypy').exist?
@@ -86,6 +96,6 @@ class Pypy < Formula
 
   # The Cellar location of distutils
   def distutils
-    prefix+"lib-python/2.7/distutils"
+    libexec+"lib-python/2.7/distutils"
   end
 end

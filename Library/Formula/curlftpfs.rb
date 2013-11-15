@@ -7,6 +7,7 @@ class Curlftpfs < Formula
 
   head 'https://github.com/rfw/curlftpfs.git'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 

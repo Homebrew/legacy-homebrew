@@ -80,7 +80,7 @@ class Cleaner
         path.unlink unless @f.skip_clean? path
       elsif not path.symlink?
         # Fix permissions
-        clean_file_permissions path
+        clean_file_permissions(path) unless @f.skip_clean? path
       end
     end
   end

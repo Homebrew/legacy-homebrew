@@ -1,22 +1,18 @@
 require 'formula'
 
-class SqliteFunctions < Formula
-  url 'http://www.sqlite.org/contrib/download/extension-functions.c?get=25', :using  => :nounzip
-  sha1 'c68fa706d6d9ff98608044c00212473f9c14892f'
-  version '2010-01-06'
-end
-
-class SqliteDocs < Formula
-  url 'http://www.sqlite.org/2013/sqlite-doc-3071700.zip'
-  version '3.7.17'
-  sha1 '6b533b0a9a21eb2c2d1c9f278b8defbeb5a432a7'
-end
-
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://sqlite.org/2013/sqlite-autoconf-3071700.tar.gz'
-  version '3.7.17'
-  sha1 'e31958e56b1d7bef9433b1ff2e875c8c290d37f4'
+  url 'http://www.sqlite.org/2013/sqlite-autoconf-3080100.tar.gz'
+  version '3.8.1'
+  sha1 '42464b07df2d6f8aa28f73ce4cc6d48b47be810e'
+
+  bottle do
+    sha1 '6b76c6c72549ac9e399523e50f2c65f2e36446df' => :mavericks
+    sha1 'e2791c264bae126ed9f5d4e2f0ebd39cff021e06' => :mountain_lion
+    sha1 '3df9bddc26a4f807f6d814beeed228bde6887f84' => :lion
+  end
+
+  keg_only :provided_by_osx, "OS X provides an older sqlite3."
 
   option :universal
   option 'with-docs', 'Install HTML documentation'
@@ -26,7 +22,17 @@ class Sqlite < Formula
 
   depends_on 'readline' => :recommended
 
-  keg_only :provided_by_osx, "OS X provides an older sqlite3."
+  resource 'functions' do
+    url 'http://www.sqlite.org/contrib/download/extension-functions.c?get=25', :using  => :nounzip
+    version '2010-01-06'
+    sha1 'c68fa706d6d9ff98608044c00212473f9c14892f'
+  end
+
+  resource 'docs' do
+    url 'http://www.sqlite.org/2013/sqlite-doc-3080100.zip'
+    version '3.8.1'
+    sha1 'd7cb698f32318fbf5dce9f10c9cd7b84c3d70105'
+  end
 
   def install
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" unless build.without? "rtree"
@@ -42,7 +48,7 @@ class Sqlite < Formula
     system "make install"
 
     if build.with? "functions"
-      SqliteFunctions.new.brew { buildpath.install 'extension-functions.c' }
+      buildpath.install resource('functions')
       system ENV.cc, "-fno-common",
                      "-dynamiclib",
                      "extension-functions.c",
@@ -50,8 +56,7 @@ class Sqlite < Formula
                      *ENV.cflags.split
       lib.install "libsqlitefunctions.dylib"
     end
-
-    SqliteDocs.new.brew { doc.install Dir['*'] } if build.with? "docs"
+    doc.install resource('docs') if build.with? "docs"
   end
 
   def caveats

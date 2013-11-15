@@ -7,6 +7,11 @@ class DocbookXsl < Formula
 
   depends_on 'docbook'
 
+  resource 'ns' do
+    url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl-ns/1.78.1/docbook-xsl-ns-1.78.1.tar.bz2'
+    sha1 '6a0823039b22ae0e0e9bc5ecc0dc325acdc3218f'
+  end
+
   def install
     doc_files = %w[AUTHORS BUGS COPYING NEWS README RELEASE-NOTES.txt TODO VERSION VERSION.xsl]
     xsl_files = %w[assembly catalog.xml common docsrc eclipse epub epub3 extensions
@@ -14,7 +19,7 @@ class DocbookXsl < Formula
                    params profiling roundtrip slides template tests tools webhelp
                    website xhtml xhtml-1_1 xhtml5]
     (prefix/'docbook-xsl').install xsl_files + doc_files
-    DocbookXslNs.new.brew do
+    resource('ns').stage do
       (prefix/'docbook-xsl-ns').install xsl_files + doc_files + ['README.ns']
     end
 
@@ -25,10 +30,4 @@ class DocbookXsl < Formula
 
     bin.write_exec_script "#{prefix}/docbook-xsl/epub/bin/dbtoepub"
   end
-end
-
-class DocbookXslNs < Formula
-  homepage 'http://docbook.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/docbook/docbook-xsl-ns/1.78.1/docbook-xsl-ns-1.78.1.tar.bz2'
-  sha1 '6a0823039b22ae0e0e9bc5ecc0dc325acdc3218f'
 end

@@ -44,7 +44,7 @@ class BuildOptionsTests < Test::Unit::TestCase
   end
 
   def test_implicit_options
-    # --without-baz is not explicitly specified on the command line
+    # --without-baz is not explicitly specified on the command line (i.e. args)
     # therefore --with-baz should be implicitly assumed:
     assert @build.implicit_options.include?("--with-baz")
     # But all these should not be in the implict_options:
@@ -52,5 +52,39 @@ class BuildOptionsTests < Test::Unit::TestCase
     assert !@build.implicit_options.include?("--with-bar")
     assert !@build.implicit_options.include?("--without-bar")
     assert !@build.implicit_options.include?("--with-qux")
+  end
+
+  def test_opposite_of
+    assert @build.opposite_of(Option.new("with-foo")) == Option.new("without-foo")
+    assert @build.opposite_of("without-foo") == Option.new("with-foo")
+    assert @build.opposite_of(Option.new("enable-spam")) == Option.new("disable-spam")
+    assert @build.opposite_of("disable-beer") == Option.new("enable-beer")
+  end
+
+  def test_has_opposite_of?
+    assert @build.has_opposite_of?("--without-foo")
+    assert @build.has_opposite_of?(Option.new("--with-qux"))
+    assert !@build.has_opposite_of?("--without-qux")
+    assert !@build.has_opposite_of?("--without-nonexisting")
+  end
+
+  def test_actually_recognizes_implicit_options
+    assert @build.has_opposite_of?("--with-baz")
+  end
+
+  def test_copies_do_not_share_underlying_options
+    orig = BuildOptions.new []
+    copy = orig.dup
+    copy.add 'foo'
+    assert_empty orig
+    assert_equal 1, copy.count
+  end
+
+  def test_copies_do_not_share_underlying_args
+    orig = BuildOptions.new []
+    copy = orig.dup
+    copy.args << Option.new('foo')
+    assert_empty orig.args
+    assert_equal 1, copy.args.count
   end
 end

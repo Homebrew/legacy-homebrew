@@ -2,8 +2,8 @@ require 'formula'
 
 class Clojurescript < Formula
   homepage 'https://github.com/clojure/clojurescript'
-  url 'https://github.com/clojure/clojurescript/archive/r1853.tar.gz'
-  sha1 '19e07e266ea189d791bfe06507e4560483b8f0d6'
+  url 'https://github.com/clojure/clojurescript/archive/r1934.tar.gz'
+  sha1 'e1b48dc9409410d7557f9e0c0769fba290e2a6c3'
 
   head "https://github.com/clojure/clojurescript.git"
 

@@ -1,20 +1,5 @@
 require 'formula'
 
-# Python3 is the new language standard, not just a new revision.
-# It's somewhat incompatible with Python 2.x, therefore, the executable
-# "python" will always point to the 2.x version which you can get by
-# `brew install python`.
-
-class Setuptools < Formula
-  url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.0.tar.gz'
-  sha1 '6ff4d37b567d54763cc55ca70ff8058286b8e2c3'
-end
-
-class Pip < Formula
-  url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
-  sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
-end
-
 class Python3 < Formula
   homepage 'http://www.python.org/'
   url 'http://python.org/ftp/python/3.3.2/Python-3.3.2.tar.bz2'
@@ -36,6 +21,19 @@ class Python3 < Formula
   depends_on 'xz' => :recommended  # for the lzma module added in 3.3
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
   depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
+
+  skip_clean "bin/pip3", "bin/pip-#{VER}"
+  skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
+
+  resource 'setuptools' do
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.3.2.tar.gz'
+    sha1 '77180132225c5b4696e6d061655e291f3d1b20f5'
+  end
+
+  resource 'pip' do
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
+    sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
+  end
 
   def patches
     DATA if build.with? 'brewed-tk'
@@ -136,9 +134,9 @@ class Python3 < Formula
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
 
-    # We ship setuptools and pip and reuse the PythonInstalled
+    # We ship setuptools and pip and reuse the PythonDependency
     # Requirement here to write the sitecustomize.py
-    py = PythonInstalled.new(VER)
+    py = PythonDependency.new(VER)
     py.binary = bin/"python#{VER}"
     py.modify_build_environment
 
@@ -152,10 +150,10 @@ class Python3 < Formula
     setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
 
-    Setuptools.new.brew { system py.binary, *setup_args }
+    resource('setuptools').stage { system py.binary, *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
 
-    Pip.new.brew { system py.binary, *setup_args }
+    resource('pip').stage { system py.binary, *setup_args }
     mv bin/'pip', bin/'pip3'
 
     # And now we write the distutils.cfg
@@ -227,7 +225,9 @@ class Python3 < Formula
 
   def caveats
     text = <<-EOS.undent
-      Setuptools and Pip have been installed, too.
+      Setuptools and Pip have been installed. To update them
+        pip3 install --upgrade setuptools
+        pip3 install --upgrade pip
 
       To symlink "Idle 3" and the "Python Launcher 3" to ~/Applications
         `brew linkapps`

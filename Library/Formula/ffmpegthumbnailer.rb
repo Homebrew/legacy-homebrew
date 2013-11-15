@@ -7,6 +7,7 @@ class Ffmpegthumbnailer < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
+  depends_on :libpng
   depends_on 'ffmpeg'
 
   def install

@@ -2,11 +2,13 @@ require 'formula'
 
 class Bind < Formula
   homepage 'http://www.isc.org/software/bind/'
-  url 'http://ftp.isc.org/isc/bind9/9.9.3-P2/bind-9.9.3-P2.tar.gz'
-  sha1 'a0235692c488b3fadf54a15858b1f13ae2ab6979'
-  version '9.9.3-P2'
+  url 'http://ftp.isc.org/isc/bind9/9.9.4-P1/bind-9.9.4-P1.tar.gz'
+  version '9.9.4-P1'
+  sha1 '35dd28de21626fd6327230c38d0f164dd2263bed'
 
-  depends_on "openssl" if MacOS.version <= :leopard
+  option 'with-brewed-openssl', 'Build with Homebrew OpenSSL instead of the system version'
+
+  depends_on "openssl" if MacOS.version <= :leopard or build.with?('brewed-openssl')
 
   def install
     ENV.libxml2
@@ -21,9 +23,13 @@ class Bind < Formula
       "--enable-ipv6",
     ]
 
-    # For Xcode-only systems we help a bit to find openssl.
-    # If CLT.installed?, it evaluates to "/usr", which works.
-    args << "--with-openssl=#{MacOS.sdk_path}/usr" unless MacOS.version <= :leopard
+    if build.with? 'brewed-openssl'
+      args << "--with-ssl-dir=#{Formula.factory('openssl').opt_prefix}"
+    elsif MacOS.version > :leopard
+      # For Xcode-only systems we help a bit to find openssl.
+      # If CLT.installed?, it evaluates to "/usr", which works.
+      args << "--with-openssl=#{MacOS.sdk_path}/usr"
+    end
 
     system "./configure", *args
 

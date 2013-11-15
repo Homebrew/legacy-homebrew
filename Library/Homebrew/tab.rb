@@ -1,3 +1,4 @@
+require 'cxxstdlib'
 require 'ostruct'
 require 'options'
 require 'utils/json'
@@ -9,7 +10,7 @@ require 'utils/json'
 class Tab < OpenStruct
   FILENAME = 'INSTALL_RECEIPT.json'
 
-  def self.create f, args
+  def self.create f, compiler, stdlib, args
     f.build.args = args
 
     sha = HOMEBREW_REPOSITORY.cd do
@@ -23,11 +24,13 @@ class Tab < OpenStruct
             :poured_from_bottle => false,
             :tapped_from => f.tap,
             :time => Time.now.to_i, # to_s would be better but Ruby has no from_s function :P
-            :HEAD => sha
+            :HEAD => sha,
+            :compiler => compiler,
+            :stdlib => stdlib
   end
 
   def self.from_file path
-    tab = Tab.new Utils::JSON.load(open(path).read)
+    tab = Tab.new Utils::JSON.load(File.read(path))
     tab.tabfile = path
     tab
   end
@@ -59,7 +62,8 @@ class Tab < OpenStruct
             :poured_from_bottle => false,
             :tapped_from => "",
             :time => nil,
-            :HEAD => nil
+            :HEAD => nil,
+            :compiler => :clang
   end
 
   def with? name
@@ -92,6 +96,13 @@ class Tab < OpenStruct
     used_options + unused_options
   end
 
+  def cxxstdlib
+    # Older tabs won't have these values, so provide sensible defaults
+    lib = stdlib.to_sym if stdlib
+    cc = compiler || MacOS.default_compiler
+    CxxStdlib.new(lib, cc.to_sym)
+  end
+
   def to_json
     Utils::JSON.dump({
       :used_options => used_options.map(&:to_s),
@@ -100,7 +111,9 @@ class Tab < OpenStruct
       :poured_from_bottle => poured_from_bottle,
       :tapped_from => tapped_from,
       :time => time,
-      :HEAD => send("HEAD")})
+      :HEAD => send("HEAD"),
+      :stdlib => (stdlib.to_s if stdlib),
+      :compiler => (compiler.to_s if compiler)})
   end
 
   def write

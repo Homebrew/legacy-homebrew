@@ -16,28 +16,16 @@ class Mariadb < Formula
   option :universal
   option 'with-tests', 'Keep test when installing'
   option 'with-bench', 'Keep benchmark app when installing'
-  option 'client-only', 'Install only client tools'
   option 'with-embedded', 'Build the embedded server'
   option 'with-libedit', 'Compile with editline wrapper instead of readline'
   option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
   option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
   option 'enable-local-infile', 'Build with local infile loading support'
 
-  conflicts_with 'mysql',
-    :because => "mariadb and mysql install the same binaries."
-
-  conflicts_with 'percona-server',
-    :because => "mariadb and percona-server install the same binaries."
-
-  conflicts_with 'mysql-cluster',
-    :because => "mariadb and mysql-cluster install the same binaries."
+  conflicts_with 'mysql', 'mysql-cluster', 'percona-server',
+    :because => "mariadb, mysql, and percona install the same binaries."
 
   env :std if build.universal?
-
-  fails_with :clang do
-    build 425
-    cause "error: implicit instantiation of undefined template 'boost::STATIC_ASSERTION_FAILURE<false>'"
-  end
 
   def install
     # Don't hard-code the libtool path. See:
@@ -63,8 +51,9 @@ class Mariadb < Formula
       -DINSTALL_SYSCONFDIR=#{etc}
     ]
 
-    # Client only
-    cmake_args << "-DWITHOUT_SERVER=1" if build.include? 'client-only'
+    # oqgraph requires boost, but fails to compile against boost 1.54
+    # Upstream bug: https://mariadb.atlassian.net/browse/MDEV-4795
+    cmake_args << "-DWITHOUT_OQGRAPH_STORAGE_ENGINE=1"
 
     # Build the embedded server
     cmake_args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
@@ -113,12 +102,12 @@ class Mariadb < Formula
 
       ln_s "#{prefix}/support-files/mysql.server", bin
     end
+
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
   end
 
   def post_install
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
-
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",

@@ -51,7 +51,7 @@ module FormulaCellarChecks
         install to "libexec" and then symlink or wrap binaries into "bin".
         See "activemq", "jruby", etc. for examples.
         The offending files are:
-        #{jars * "\n"}
+          #{jars * "\n          "}
       EOS
     ]
   end
@@ -69,9 +69,9 @@ module FormulaCellarChecks
 
     ["Non-libraries were installed to \"#{f.lib}\".",
       <<-EOS.undent
-        Installing non-libraries to "lib" is bad practice.
+        Installing non-libraries to "lib" is discouraged.
         The offending files are:
-        #{non_libraries * "\n"}
+          #{non_libraries * "\n          "}
       EOS
     ]
   end
@@ -85,7 +85,24 @@ module FormulaCellarChecks
     ["Non-executables were installed to \"#{bin}\".",
       <<-EOS.undent
         The offending files are:
-        #{non_exes * "\n"}
+          #{non_exes * "\n          "}
+      EOS
+    ]
+  end
+
+  def check_generic_executables bin
+    return unless bin.directory?
+    generics = bin.children.select { |g| g.to_s =~ /\/(run|service)$/}
+    return if generics.empty?
+
+    ["Generic binaries were installed to \"#{bin}\".",
+      <<-EOS.undent
+        Binaries with generic names are likely to conflict with other software,
+        and suggest that this software should be installed to "libexec" and
+        then symlinked as needed.
+
+        The offending files are:
+          #{generics * "\n          "}
       EOS
     ]
   end

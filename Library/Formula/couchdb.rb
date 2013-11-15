@@ -2,27 +2,28 @@ require 'formula'
 
 class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
-  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.3.1/apache-couchdb-1.3.1.tar.gz'
-  sha1 'eaec2cde365c5eb9651bb3230f777c6c728ffaae'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.5.0/apache-couchdb-1.5.0.tar.gz'
+  sha1 '283e4bbd4f1727bb334a67d2f988a7d412523bef'
 
-  head 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
+  head do
+    url 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
-  if build.devel? or build.head?
     depends_on :automake => :build
     depends_on :libtool => :build
-    # CouchDB >= 1.3.0 requires autoconf 2.63 or higher
+    # CouchDB >=1.3.0 requires autoconf 2.63 or higher
     depends_on 'autoconf' => :build
     depends_on 'autoconf-archive' => :build
     depends_on 'pkg-config' => :build
     depends_on 'help2man' => :build
   end
+
   depends_on 'spidermonkey'
   depends_on 'icu4c'
   depends_on 'erlang'
   depends_on 'curl' if MacOS.version <= :leopard
 
   def install
-    # couchdb 1.3.0 supports vendor names and versioning
+    # CouchDB >=1.3.0 supports vendor names and versioning
     # in the welcome message
     inreplace 'etc/couchdb/default.ini.tpl.in' do |s|
       s.gsub! '%package_author_name%', 'Homebrew'

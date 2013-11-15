@@ -32,6 +32,10 @@ class Calc < Formula
         "-single_module -undefined dynamic_lookup -dynamiclib -install_name ${LIBDIR}/libcalc${LIB_EXT_VERSION}"
       s.change_make_var! "LIBCUSTCALC_SHLIB",
         "-single_module -undefined dynamic_lookup -dynamiclib -install_name ${LIBDIR}/libcustcalc${LIB_EXT_VERSION}"
+      s.change_make_var! 'CC',
+        "MACOSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET} #{ENV.cc}"
+      s.change_make_var! 'MACOSX_DEPLOYMENT_TARGET',
+        "#{MacOS.version}"
     end
 
     system "make"

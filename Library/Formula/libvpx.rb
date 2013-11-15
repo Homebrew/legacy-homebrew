@@ -2,8 +2,8 @@ require 'formula'
 
 class Libvpx < Formula
   homepage 'http://www.webmproject.org/code/'
-  url 'http://webm.googlecode.com/files/libvpx-v1.1.0.tar.bz2'
-  sha1 '356af5f770c50cd021c60863203d8f30164f6021'
+  url 'http://webm.googlecode.com/files/libvpx-v1.2.0.tar.bz2'
+  sha1 '214d9a215af1a3278d9fcba4cac89566e321e4cf'
 
   depends_on 'yasm' => :build
 
@@ -11,12 +11,6 @@ class Libvpx < Formula
   option 'mem-tracker', 'Enable tracking memory usage'
   option 'visualizer', 'Enable post processing visualizer'
 
-  # Fixes build error on ML, discussed in:
-  # https://github.com/mxcl/homebrew/issues/12567
-  # yasm: FATAL: unable to open include file `asm_enc_offsets.asm'.
-  # Reported to:
-  # https://groups.google.com/a/webmproject.org/group/webm-discuss/browse_thread/thread/39d1166feac1061c
-  # Not yet in HEAD as of 20 JUN 2012.
   # Add Mavericks as a comple target, upstream in:
   # http://git.chromium.org/gitweb/?p=webm/libvpx.git;a=commitdiff;h=fe4a52077f076fff4f3024373af21600afbc6df7
   def patches; DATA; end
@@ -29,6 +23,8 @@ class Libvpx < Formula
     args << "--enable-gcov" if build.include? "gcov" and not ENV.compiler == :clang
     args << "--enable-mem-tracker" if build.include? "mem-tracker"
     args << "--enable-postproc-visualizer" if build.include? "visualizer"
+
+    ENV.append "CXXFLAGS", "-DGTEST_USE_OWN_TR1_TUPLE=1" # Mavericks uses libc++ which doesn't supply <TR1/tuple>
 
     # see http://code.google.com/p/webm/issues/detail?id=401
     # Configure misdetects 32-bit 10.6.
@@ -48,18 +44,6 @@ class Libvpx < Formula
 end
 
 __END__
---- a/build/make/gen_asm_deps.sh	2012-05-08 16:14:00.000000000 -0700
-+++ b/build/make/gen_asm_deps.sh	2012-06-19 20:26:54.000000000 -0700
-@@ -42,7 +42,7 @@
- 
- [ -n "$srcfile" ] || show_help
- sfx=${sfx:-asm}
--includes=$(LC_ALL=C egrep -i "include +\"?+[a-z0-9_/]+\.${sfx}" $srcfile |
-+includes=$(LC_ALL=C egrep -i "include +\"+[a-z0-9_/]+\.${sfx}" $srcfile |
-            perl -p -e "s;.*?([a-z0-9_/]+.${sfx}).*;\1;")
- #" restore editor state
- for inc in ${includes}; do
-
 --- a/configure	2012-05-09 01:14:00.000000000 +0200
 +++ b/configure	2013-07-19 10:10:02.000000000 +0200
 @@ -111,6 +111,7 @@

@@ -18,7 +18,7 @@ class Llvm < Formula
   end
 
   option :universal
-  option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
+  option 'with-clang', 'Build Clang support library'
   option 'disable-shared', "Don't build LLVM as a shared library"
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
@@ -29,13 +29,13 @@ class Llvm < Formula
   env :std if build.universal?
 
   def install
-    if build.with? 'python' and build.include? 'disable-shared'
+    if python and build.include? 'disable-shared'
       raise 'The Python bindings need the shared library.'
     end
 
     Clang.new("clang").brew do
-      clang_dir.install Dir['*']
-    end if build.include? 'with-clang'
+      (buildpath/'tools/clang').install Dir['*']
+    end if build.with? 'clang'
 
     if build.universal?
       ENV['UNIVERSAL'] = '1'
@@ -68,18 +68,14 @@ class Llvm < Formula
     # install llvm python bindings
     if python
       python.site_packages.install buildpath/'bindings/python/llvm'
+      python.site_packages.install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
     end
-
-    # Install clang tools and bindings
-    cd clang_dir do
-      (share/'clang/tools').install 'tools/scan-build', 'tools/scan-view'
-      python.site_packages.install 'bindings/python/clang' if python
-    end if build.include? 'with-clang'
 
     # Remove all binaries except llvm-config
-    Dir[bin/'*'].each do |exec_path|
-      rm_f exec_path unless File.basename(exec_path) == 'llvm-config'
-    end
+    rm_f Dir["#{bin}/*"] - Dir["#{bin}/llvm-config"]
+
+    # Remove all man pages
+    man.rmtree if build.with? 'clang'
   end
 
   def test
@@ -91,7 +87,7 @@ class Llvm < Formula
     s += python.standard_caveats if python
     s += <<-EOS.undent
       This formula only provide library components of LLVM. To use full
-      featured LLVM please try the llvm3* formulae in homebrew-versions tap,
+      featured LLVM please try the llvm* formulae in homebrew-versions tap,
       for instance:
 
           brew tap homebrew/versions
@@ -105,7 +101,4 @@ class Llvm < Formula
     EOS
   end
 
-  def clang_dir
-    buildpath/'tools/clang'
-  end
 end

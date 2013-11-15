@@ -5,15 +5,15 @@ class Libbluray < Formula
   url 'ftp://ftp.videolan.org/pub/videolan/libbluray/0.2.3/libbluray-0.2.3.tar.bz2'
   sha1 '604396b6051cbdfc56e6009c893f7a95d9d9e020'
 
-  head 'git://git.videolan.org/libbluray.git'
+  head do
+    url 'git://git.videolan.org/libbluray.git'
 
-  depends_on 'pkg-config' => :build
-
-  if build.head?
     depends_on :automake => :build
     depends_on :autoconf => :build
     depends_on :libtool  => :build
   end
+
+  depends_on 'pkg-config' => :build
 
   def install
     ENV.libxml2

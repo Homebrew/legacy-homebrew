@@ -2,7 +2,11 @@ require 'formula'
 
 class Neko < Formula
   homepage 'http://nekovm.org'
+
+  # revision includes recent parameterized build targets for mac.  Use a :tag
+  # on the next release
   url 'https://github.com/HaxeFoundation/neko.git', :revision => '6ab8f48a8dc62e4d917b599b3d8c8e10f764f839'
+
   version '2.0.0-6ab8f48'
 
   head 'https://github.com/HaxeFoundation/neko.git'

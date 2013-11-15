@@ -5,6 +5,7 @@ class Libagg < Formula
   url 'http://www.antigrain.com/agg-2.5.tar.gz'
   sha1 '08f23da64da40b90184a0414369f450115cdb328'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
   depends_on 'pkg-config' => :build
@@ -22,23 +23,15 @@ class Libagg < Formula
     # AM_C_PROTOTYPES was removed in automake 1.12, as it's only needed for
     # pre-ANSI compilers
     inreplace 'configure.in', 'AM_C_PROTOTYPES', ''
+    inreplace 'autogen.sh', 'libtoolize', 'glibtoolize'
 
-    # No configure script. We need to run autoreconf, and aclocal and automake
-    # need some direction.
-    ENV['ACLOCAL'] = "aclocal -I#{HOMEBREW_PREFIX}/share/aclocal" # To find SDL m4 files
-    # This part snatched from MacPorts
-    ENV['AUTOMAKE'] = "automake --foreign --add-missing --ignore-deps"
-    system "autoreconf -fi"
-
-    system "./configure",
-           "--disable-debug",
-           "--disable-dependency-tracking",
-           "--prefix=#{prefix}",
-           "--disable-platform", # Causes undefined symbols
-           "--disable-ctrl",     # No need to run these during configuration
-           "--disable-examples",
-           "--disable-sdltest"
-
+    system "sh", "autogen.sh",
+                 "--disable-dependency-tracking",
+                 "--prefix=#{prefix}",
+                 "--disable-platform", # Causes undefined symbols
+                 "--disable-ctrl",     # No need to run these during configuration
+                 "--disable-examples",
+                 "--disable-sdltest"
     system "make install"
   end
 end

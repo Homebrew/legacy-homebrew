@@ -5,6 +5,7 @@ class Ctail < Formula
   url 'http://ctail.i-want-a-pony.com/downloads/ctail-0.1.0.tar.bz2'
   sha1 '4bd0373df88136b48cac721c98d34cefda27aff9'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 

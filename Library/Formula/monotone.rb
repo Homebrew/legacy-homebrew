@@ -1,11 +1,5 @@
 require 'formula'
 
-class Botan18 < Formula
-  homepage 'http://botan.randombit.net/'
-  url 'http://files.randombit.net/botan/v1.8/Botan-1.8.13.tbz'
-  sha1 '66cda9e05001e4a298cbb0095b9a3f6d11c4ef53'
-end
-
 class Monotone < Formula
   homepage 'http://monotone.ca/'
   url 'http://www.monotone.ca/downloads/1.0/monotone-1.0.tar.bz2'
@@ -17,6 +11,12 @@ class Monotone < Formula
   depends_on 'lua'
   depends_on 'pcre'
 
+  # http://botan.randombit.net/
+  resource 'botan' do
+    url 'http://files.randombit.net/botan/v1.8/Botan-1.8.13.tbz'
+    sha1 '66cda9e05001e4a298cbb0095b9a3f6d11c4ef53'
+  end
+
   fails_with :llvm do
     build 2334
     cause "linker fails"
@@ -24,8 +24,7 @@ class Monotone < Formula
 
   def install
     botan18_prefix = libexec+'botan18'
-
-    Botan18.new.brew do
+    resource('botan').stage do
       args = ["--prefix=#{botan18_prefix}"]
       args << "--cpu=#{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit?
       system "./configure.py", *args

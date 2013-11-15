@@ -59,11 +59,17 @@ module MacCPUs
       when 11
         :g4e # PowerPC 7450
       when 100
-        :g5  # PowerPC 970
+        # This is the only 64-bit PPC CPU type, so it's useful
+        # to distinguish in `brew --config` output and in bottle tags
+        MacOS.prefer_64_bit? ? :g5_64 : :g5  # PowerPC 970
       else
         :dunno
       end
     end
+  end
+
+  def extmodel
+    @extmodel ||= `/usr/sbin/sysctl -n machdep.cpu.extmodel`.to_i
   end
 
   def cores
@@ -107,6 +113,10 @@ module MacCPUs
 
   def sse3?
     @sse3 ||= sysctl_bool('hw.optional.sse3')
+  end
+
+  def ssse3?
+    @ssse3 ||= sysctl_bool('hw.optional.supplementalsse3')
   end
 
   def sse4?

@@ -17,12 +17,9 @@ class Dependency
   end
 
   def ==(other)
-    name == other.name
-  end
-
-  def eql?(other)
     instance_of?(other.class) && name == other.name
   end
+  alias_method :eql?, :==
 
   def hash
     name.hash
@@ -63,6 +60,15 @@ class Dependency
     "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
   end
 
+  # Define marshaling semantics because we cannot serialize @env_proc
+  def _dump(*)
+    Marshal.dump([name, tags])
+  end
+
+  def self._load(marshaled)
+    new(*Marshal.load(marshaled))
+  end
+
   class << self
     # Expand the dependencies of dependent recursively, optionally yielding
     # [dependent, dep] pairs to allow callers to apply arbitrary filters to
@@ -76,6 +82,8 @@ class Dependency
           next []
         when :skip
           expand(dep.to_formula, &block)
+        when :keep_but_prune_recursive_deps
+          [dep]
         else
           expand(dep.to_formula, &block) << dep
         end
@@ -102,6 +110,11 @@ class Dependency
     # Prune a single dependency but do not prune its dependencies
     def skip
       throw(:action, :skip)
+    end
+
+    # Keep a dependency, but prune its dependencies
+    def keep_but_prune_recursive_deps
+      throw(:action, :keep_but_prune_recursive_deps)
     end
 
     def merge_repeats(deps)

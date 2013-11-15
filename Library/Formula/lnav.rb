@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lnav < Formula
-  homepage 'http://tstack.github.io/lnav/'
-  url 'http://lnav.org/downloads/lnav-0.5.0.tar.bz2'
-  sha1 '8d68cb8b46878b2a54e9004a1f4994b07772b8b0'
+  homepage 'http://lnav.org'
+  url 'https://github.com/tstack/lnav/releases/download/v0.6.2/lnav-0.6.2.tar.gz'
+  sha1 'b3669fedffc724854e709750c0fd38d3930d0022'
 
   head 'https://github.com/tstack/lnav.git'
 

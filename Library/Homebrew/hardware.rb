@@ -1,3 +1,5 @@
+require 'os'
+
 class Hardware
   module CPU extend self
     INTEL_32BIT_ARCHS = [:i386].freeze
@@ -30,11 +32,10 @@ class Hardware
     end
   end
 
-  case RUBY_PLATFORM.downcase
-  when /darwin/
+  if OS.mac?
     require 'os/mac/hardware'
     CPU.extend MacCPUs
-  when /linux/
+  elsif OS.linux?
     require 'os/linux/hardware'
     CPU.extend LinuxCPUs
   else

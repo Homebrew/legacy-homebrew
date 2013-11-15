@@ -27,7 +27,12 @@ def blacklisted? name
     We recommend using a MacTeX distribution: http://www.tug.org/mactex/
     EOS
   when 'pip' then <<-EOS.undent
-    pip is installed by `brew install python`
+    Homebrew provides pip via: `brew install python`. However you will then
+    have two Pythons installed on your Mac, so alternatively you can:
+        sudo easy_install pip
+    EOS
+  when 'pil' then <<-EOS.undent
+    Instead of PIL, consider `pip install pillow` or `brew install samueljohn/python/pillow`.
     EOS
   when 'macruby' then <<-EOS.undent
     MacRuby works better when you install their package:
@@ -35,10 +40,16 @@ def blacklisted? name
     EOS
   when /(lib)?lzma/
     "lzma is now part of the xz formula."
-  when 'xcode' then <<-EOS.undent
-    Xcode can be installed via the App Store (on Lion or newer), or from:
-      https://developer.apple.com/downloads/
-    EOS
+  when 'xcode'
+    if MacOS.version >= :lion
+      <<-EOS.undent
+      Xcode can be installed from the App Store.
+      EOS
+    else
+      <<-EOS.undent
+      Xcode can be installed from https://developer.apple.com/downloads/
+      EOS
+    end
   when 'gtest', 'googletest', 'google-test' then <<-EOS.undent
     Installing gtest system-wide is not recommended; it should be vendored
     in your projects that use it.
