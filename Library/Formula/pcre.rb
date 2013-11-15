@@ -2,8 +2,8 @@ require 'formula'
 
 class Pcre < Formula
   homepage 'http://www.pcre.org/'
-  url 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.33.tar.bz2'
-  mirror 'http://downloads.sourceforge.net/project/pcre/pcre/8.33/pcre-8.33.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/pcre/pcre/8.33/pcre-8.33.tar.bz2'
+  mirror 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.33.tar.bz2'
   sha256 'c603957a4966811c04af5f6048c71cfb4966ec93312d7b3118116ed9f3bc0478'
 
   option :universal
