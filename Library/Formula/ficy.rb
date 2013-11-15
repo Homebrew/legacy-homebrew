@@ -7,13 +7,7 @@ class Ficy < Formula
 
   def install
     system "make"
-    system "mkdir -p #{prefix}"
-    system "cp fIcy #{prefix}/fIcy" 
-    system "ln -s #{prefix}/fIcy /usr/local/bin/fIcy" 
-    system "cp fPls #{prefix}/fPls" 
-    system "ln -s #{prefix}/fPls /usr/local/bin/fPls" 
-    system "cp fResync #{prefix}/fResync" 
-    system "ln -s #{prefix}/fResync /usr/local/bin/fResync" 
+    system bin.install 'fIcy' 'fPls' 'fResync'
   end
 
   test do
