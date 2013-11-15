@@ -9,10 +9,12 @@ class XmlToolingC < Formula
   depends_on 'log4shib'
   depends_on 'xerces-c'
   depends_on 'xml-security-c'
-  depends_on 'boost149'
+  depends_on 'boost'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    ENV.O2 # Os breaks the build
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
