@@ -38,42 +38,50 @@ class Mariadb < Formula
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    cmake_args = %W[
+    # -DINSTALL_* are relative to prefix
+    args = %W[
       .
       -DCMAKE_INSTALL_PREFIX=#{prefix}
+      -DCMAKE_FIND_FRAMEWORK=LAST
+      -DCMAKE_VERBOSE_MAKEFILE=ON
       -DMYSQL_DATADIR=#{var}/mysql
-      -DINSTALL_MANDIR=#{man}
-      -DINSTALL_DOCDIR=#{doc}
-      -DINSTALL_MYSQLSHAREDIR=#{share.basename}/mysql
+      -DINSTALL_INCLUDEDIR=include/mysql
+      -DINSTALL_MANDIR=share/man
+      -DINSTALL_DOCDIR=share/doc/#{name}
+      -DINSTALL_INFODIR=share/info
+      -DINSTALL_MYSQLSHAREDIR=share/mysql
       -DWITH_SSL=yes
       -DDEFAULT_CHARSET=utf8
       -DDEFAULT_COLLATION=utf8_general_ci
       -DINSTALL_SYSCONFDIR=#{etc}
+      -DCOMPILATION_COMMENT=Homebrew
     ]
+
+    args << "-DWITH_UNIT_TESTS=OFF" unless build.with? 'tests'
 
     # oqgraph requires boost, but fails to compile against boost 1.54
     # Upstream bug: https://mariadb.atlassian.net/browse/MDEV-4795
-    cmake_args << "-DWITHOUT_OQGRAPH_STORAGE_ENGINE=1"
+    args << "-DWITHOUT_OQGRAPH_STORAGE_ENGINE=1"
 
     # Build the embedded server
-    cmake_args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'
 
     # Compile with readline unless libedit is explicitly chosen
-    cmake_args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
+    args << "-DWITH_READLINE=yes" unless build.with? 'libedit'
 
     # Compile with ARCHIVE engine enabled if chosen
-    cmake_args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.include? 'with-archive-storage-engine'
+    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.with? 'archive-storage-engine'
 
     # Compile with BLACKHOLE engine enabled if chosen
-    cmake_args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
+    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? 'blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    cmake_args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
+    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
 
     # Build with local infile loading support
-    cmake_args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
+    args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
 
-    system "cmake", *cmake_args
+    system "cmake", *args
     system "make"
     system "make install"
 
@@ -87,8 +95,8 @@ class Mariadb < Formula
       # See: https://github.com/mxcl/homebrew/issues/4975
       rm_rf prefix+'data'
 
-      (prefix+'mysql-test').rmtree unless build.include? 'with-tests' # save 121MB!
-      (prefix+'sql-bench').rmtree unless build.include? 'with-bench'
+      (prefix+'mysql-test').rmtree unless build.with? 'tests' # save 121MB!
+      (prefix+'sql-bench').rmtree unless build.with? 'bench'
 
       # Link the setup script into bin
       ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
