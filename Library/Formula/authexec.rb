@@ -8,7 +8,7 @@ class Authexec < Formula
   head 'https://github.com/tcurdt/authexec.git'
 
   def install
-    system 'make all'
+    system ENV.cc, 'authexec.c', '-framework', 'Security', '-o', 'authexec'
     bin.install 'authexec'
   end
 end
