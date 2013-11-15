@@ -14,8 +14,6 @@ class AdobeAirSdk < Formula
 
   def install
     libexec.install Dir['*']
-    bin.write_exec_script libexec/'bin/adl'
-    bin.write_exec_script libexec/'bin/adt'
 
     if build.with? 'compiler'
       bin.write_exec_script libexec/'bin/aasdoc'
@@ -29,6 +27,8 @@ class AdobeAirSdk < Formula
       bin.write_exec_script libexec/'bin/optimizer'
       bin.write_exec_script libexec/'bin/swcdepends'
       bin.write_exec_script libexec/'bin/swfdump'
+    else
+      bin.write_exec_script Dir["#{libexec}/bin/*"]
     end
   end
 end
