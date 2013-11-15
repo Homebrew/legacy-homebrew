@@ -28,6 +28,11 @@ class Llvm < Formula
 
   env :std if build.universal?
 
+  def patches
+    # fix llvm-config --bindir to point libexec instead of hard coded /bin
+    DATA
+  end
+
   def install
     if python and build.include? 'disable-shared'
       raise 'The Python bindings need the shared library.'
@@ -71,8 +76,8 @@ class Llvm < Formula
       python.site_packages.install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
     end
 
-    # Remove all binaries except llvm-config
-    rm_f Dir["#{bin}/*"] - Dir["#{bin}/llvm-config"]
+    # Install all other binaries except llvm-config to libexec
+    libexec.install Dir["#{bin}/*"] - Dir["#{bin}/llvm-config"]
 
     # Remove all man pages
     man.rmtree if build.with? 'clang'
@@ -102,3 +107,18 @@ class Llvm < Formula
   end
 
 end
+
+__END__
+diff --git a/tools/llvm-config/llvm-config.cpp b/tools/llvm-config/llvm-config.cpp
+index 7edf5ec..16edd04 100644
+--- a/tools/llvm-config/llvm-config.cpp
++++ b/tools/llvm-config/llvm-config.cpp
+@@ -249,7 +249,7 @@ int main(int argc, char **argv) {
+   } else {
+     ActivePrefix = CurrentExecPrefix;
+     ActiveIncludeDir = ActivePrefix + "/include";
+-    ActiveBinDir = ActivePrefix + "/bin";
++    ActiveBinDir = ActivePrefix + "/libexec";
+     ActiveLibDir = ActivePrefix + "/lib";
+     ActiveIncludeOption = "-I" + ActiveIncludeDir;
+   }
