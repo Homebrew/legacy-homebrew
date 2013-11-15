@@ -2,16 +2,9 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.13.tar.gz/from/http://cdn.mysql.com/'
-  version '5.6.13'
-  sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
-
-  bottle do
-    revision 2
-    sha1 '58e852b4914b2102144879c51e501c94429be32c' => :mavericks
-    sha1 'adac8eaa66a75b909ed148e54b273ae65c3d725a' => :mountain_lion
-    sha1 'c9f65ec043617775e08f277fedf099ed70fdcef3' => :lion
-  end
+  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.14.tar.gz/from/http://cdn.mysql.com/'
+  version '5.6.14'
+  sha1 '7cf44fb2a7733b52559f66c00446122bc79321d2'
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -51,19 +44,23 @@ class Mysql < Formula
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    args = [".",
-            "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-            "-DMYSQL_DATADIR=#{var}/mysql",
-            "-DINSTALL_INCLUDEDIR=include/mysql",
-            "-DINSTALL_MANDIR=#{man}",
-            "-DINSTALL_DOCDIR=#{doc}",
-            "-DINSTALL_INFODIR=#{info}",
-            # CMake prepends prefix, so use share.basename
-            "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/#{name}",
-            "-DWITH_SSL=yes",
-            "-DDEFAULT_CHARSET=utf8",
-            "-DDEFAULT_COLLATION=utf8_general_ci",
-            "-DSYSCONFDIR=#{etc}"]
+    # -DINSTALL_* are relative to prefix
+    args = %W[
+      .
+      -DCMAKE_INSTALL_PREFIX=#{prefix}
+      -DCMAKE_FIND_FRAMEWORK=LAST
+      -DCMAKE_VERBOSE_MAKEFILE=ON
+      -DMYSQL_DATADIR=#{var}/mysql
+      -DINSTALL_INCLUDEDIR=include/mysql
+      -DINSTALL_MANDIR=share/man
+      -DINSTALL_DOCDIR=share/doc/#{name}
+      -DINSTALL_INFODIR=share/info
+      -DINSTALL_MYSQLSHAREDIR=share/#{name}
+      -DWITH_SSL=yes
+      -DDEFAULT_CHARSET=utf8
+      -DDEFAULT_COLLATION=utf8_general_ci
+      -DSYSCONFDIR=#{etc}
+    ]
 
     # To enable unit testing at build, we need to download the unit testing suite
     if build.include? 'with-tests'
@@ -2853,6 +2850,19 @@ diff -ur a/vio/viosocket.c b/vio/viosocket.c
  
 -  DBUG_RETURN(test(ret));
 +  DBUG_RETURN(mysql_test(ret));
+ }
+ 
+ 
+diff --git a/sql/transaction.cc b/sql/transaction.cc
+index 00f42c0..c9e8fc4 100644
+--- a/sql/transaction.cc
++++ b/sql/transaction.cc
+@@ -380,7 +380,7 @@ bool trans_rollback_implicit(THD *thd)
+   /* Rollback should clear transaction_rollback_request flag. */
+   DBUG_ASSERT(! thd->transaction_rollback_request);
+ 
+-  DBUG_RETURN(test(res));
++  DBUG_RETURN(mysql_test(res));
  }
  
  
