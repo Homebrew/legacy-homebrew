@@ -18,8 +18,9 @@ class Povray < Formula
       "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-boost-1.50.diff",
       "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-configure-stat.diff",
       "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-lseek64.diff",
-      "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-vfe-uint.diff"
-    ]}
+      "https://trac.macports.org/export/102440/trunk/dports/graphics/povray/files/patch-vfe-uint.diff",
+      "https://gist.github.com/jacobsn/7413932/raw"
+   ]}
   end
 
   def install
@@ -35,7 +36,7 @@ class Povray < Formula
       "--disable-debug",
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
-      "--mandir=#{man}",
+      "--mandir=#{man}"
     ]
 
     args << "--with-openexr=${HOMEBREW_PREFIX}" if build.include? "use-openexr"
