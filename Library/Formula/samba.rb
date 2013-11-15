@@ -5,6 +5,8 @@ class Samba < Formula
   url 'http://www.samba.org/samba/ftp/stable/samba-3.6.20.tar.gz'
   sha1 '445f579112bc69027f560be276744facc1196fe1'
 
+  conflicts_with 'talloc', :because => 'both install `include/talloc.h`'
+
   # Fixes the Grouplimit of 16 users os OS X.
   # Bug has been raised upstream:
   # https://bugzilla.samba.org/show_bug.cgi?id=8773
