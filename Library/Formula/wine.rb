@@ -7,8 +7,8 @@ class Wine < Formula
   homepage 'http://winehq.org/'
 
   stable do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.tar.bz2'
-    sha256 'e1f130efbdcbfa211ca56ee03357ccd17a31443889b4feebdcb88248520b42ae'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.1.tar.bz2'
+    sha256 'd5bc2c088b555caa60a7ba1156e6ed74d791ba3c438129c75ab53805215a384c'
     depends_on 'little-cms'
   end
 
@@ -63,12 +63,6 @@ class Wine < Formula
 
   def patches
     p = []
-    if build.stable?
-      # http://bugs.winehq.org/show_bug.cgi?id=34188
-      p << 'http://bugs.winehq.org/attachment.cgi?id=45507'
-      # http://bugs.winehq.org/show_bug.cgi?id=34162
-      p << 'http://bugs.winehq.org/attachment.cgi?id=45562' if MacOS.version >= :mavericks
-    end
     if build.devel?
       # http://bugs.winehq.org/show_bug.cgi?id=34166
       p << 'http://bugs.winehq.org/attachment.cgi?id=46394'
