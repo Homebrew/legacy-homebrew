@@ -6,7 +6,7 @@ class Xstow < Formula
   sha1 'e4e68fbf05150067d82ce526cb784c5c91107ec9'
 
   fails_with :clang do
-    build 421
+    build 500
     cause <<-EOS.undent
       clang does not support unqualified lookups in c++ templates, see:
       http://clang.llvm.org/compatibility.html#dep_lookup
