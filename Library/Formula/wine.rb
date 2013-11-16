@@ -47,8 +47,8 @@ class Wine < Formula
   end
 
   resource 'mono' do
-    url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
-    sha1 'dd349e72249ce5ff981be0e9dae33ac4a46a9f60'
+    url 'http://downloads.sourceforge.net/wine/wine-mono-4.5.0.msi', :using => :nounzip
+    sha256 '389a2b60563a82e7bf93883dbf4eed933ae846dbad43e853c820878e3d1bedc9'
   end
 
   fails_with :llvm do
