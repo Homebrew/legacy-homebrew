@@ -21,11 +21,8 @@ class Phantomjs < Formula
     inreplace 'src/qt/preconfig.sh', '-arch x86', '-arch x86_64' if MacOS.prefer_64_bit?
     args = ['--confirm', '--qt-config']
     # Fix Clang/LLVM 3DNow! intrinsic failure.
-    if MacOS.version >= :lion
-      args << '-no-3dnow'
-    else
-      args << '-no-3dnow -no-ssse3'
-    end
+    # See https://github.com/mxcl/homebrew/blob/c8736d8cabf8442164fcd05c5cc05b0f4489a65b/Library/Formula/qt.rb#L85-L94
+    args << '-no-3dnow -no-ssse3'
     system './build.sh', *args
     bin.install 'bin/phantomjs'
     (share+'phantomjs').install 'examples'
