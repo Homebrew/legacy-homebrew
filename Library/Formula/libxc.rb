@@ -10,7 +10,7 @@ class Libxc < Formula
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--enable-shared",
-                          "FCCPP=#{ENV.cc} -E -C -ansi",
+                          "FCCPP=#{ENV.fc} -E -x c",
                           "CC=#{ENV.cc}",
                           "CFLAGS=-pipe"
     system "make"
