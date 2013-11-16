@@ -2,11 +2,12 @@ require 'formula'
 
 class Web100clt < Formula
   homepage 'http://www.internet2.edu/performance/ndt/'
-  url 'http://software.internet2.edu/sources/ndt/ndt-3.6.4.tar.gz'
-  sha1 'a83f086cc9fbe802dfd0ff3b6631acf29461b75e'
+  url 'http://software.internet2.edu/sources/ndt/ndt-3.6.5.2.tar.gz'
+  sha1 '533a7dbb1b660a0148a0e295b481f63ab9ecb8f7'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
 
