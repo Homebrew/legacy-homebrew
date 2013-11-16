@@ -14,6 +14,8 @@ class PerconaServer < Formula
   option 'with-embedded', 'Build the embedded server'
   option 'enable-local-infile', 'Build with local infile loading support'
 
+  conflicts_with 'mysql-connector-c',
+    :because => 'both install `mysql_config`'
 
   conflicts_with 'mariadb', 'mysql', 'mysql-cluster',
     :because => "percona, mariadb, and mysql install the same binaries."
