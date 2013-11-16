@@ -1,11 +1,24 @@
 require 'formula'
 
+class SaltHeadDownloadStrategy < GitDownloadStrategy
+  # We need to make a local clone so we can't use "--depth 1"
+  def support_depth?
+    false
+  end
+
+  def stage
+    @clone.cd {reset}
+    safe_system 'git', 'clone', @clone, '.'
+  end
+end
+
 class Saltstack < Formula
   homepage 'http://www.saltstack.org'
   url 'https://pypi.python.org/packages/source/s/salt/salt-0.17.2.tar.gz'
   sha1 'd2568cb72a0eab21f273aa8ab36eacd6f1e58dc9'
 
-  head 'https://github.com/saltstack/salt.git', :branch => :develop
+  head 'https://github.com/saltstack/salt.git', :branch => :develop,
+    :using => SaltHeadDownloadStrategy
 
   depends_on :python
   depends_on 'swig' => :build
