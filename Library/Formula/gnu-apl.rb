@@ -1,6 +1,6 @@
 require 'formula'
 
-class Apl < Formula
+class GnuApl < Formula
   homepage 'http://www.gnu.org/software/apl/'
   url 'http://ftpmirror.gnu.org/apl/apl-1.1.tar.gz'
   sha1 'de5071372b64a6d6921141cbbc3555e3b40da7af'
