@@ -38,6 +38,10 @@ class Ice < Formula
     args << "PYTHON_FLAGS=-F#{python.framework} -framework Python"
     args << "PYTHON_LIBS=-F#{python.framework} -framework Python"
 
+    #Unset ICE_HOME as it interferes with the build
+    ice_home_temp = ENV['ICE_HOME']
+    ENV['ICE_HOME'] = nil
+
     cd "cpp" do
       system "make", *args
       system "make", "install", *args
@@ -48,6 +52,10 @@ class Ice < Formula
       system "make", *args
       system "make", "install", *args
     end
+
+    # Restore ICE_HOME
+    ENV['ICE_HOME'] = ice_home_temp
+
   end
 end
 
