@@ -182,11 +182,10 @@ module Superenv
   def determine_cmake_include_path
     sdk = MacOS.sdk_path if MacOS::Xcode.without_clt?
     paths = []
-    paths << "#{MacOS::X11.include}/freetype2" if x11?
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     paths << "#{sdk}/usr/include/apache2" if MacOS::Xcode.without_clt?
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers" unless x11?
-    paths << MacOS::X11.include if x11?
+    paths << MacOS::X11.include << "#{MacOS::X11.include}/freetype2" if x11?
     paths.to_path_s
   end
 
