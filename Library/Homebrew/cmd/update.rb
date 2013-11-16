@@ -81,9 +81,14 @@ module Homebrew extend self
     if Dir['.git/*'].empty?
       safe_system "git init"
       safe_system "git config core.autocrlf false"
-      safe_system "git remote add origin https://github.com/mxcl/homebrew.git"
+      safe_system "git remote add origin https://github.com/Homebrew/homebrew.git"
       safe_system "git fetch origin"
       safe_system "git reset --hard origin/master"
+    end
+
+    if `git remote show origin -n` =~ /Fetch URL: \S+mxcl\/homebrew/
+      safe_system "git remote set-url origin https://github.com/Homebrew/homebrew.git"
+      safe_system "git remote set-url --delete origin .*mxcl\/homebrew.*"
     end
   rescue Exception
     FileUtils.rm_rf ".git"
