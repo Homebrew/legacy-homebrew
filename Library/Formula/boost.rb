@@ -30,6 +30,7 @@ class Boost < Formula
 
   option :universal
   option 'with-icu', 'Build regexp engine with icu support'
+  option 'use-tagged-layout', 'Build with tagged layout'
   option 'without-single', 'Disable building single-threading variant'
   option 'without-static', 'Disable building static library variant'
   option 'with-mpi', 'Build with MPI support'
@@ -145,9 +146,12 @@ class Boost < Formula
             "--libdir=#{lib}",
             "-d2",
             "-j#{ENV.make_jobs}",
-            "--layout=tagged",
             "--user-config=user-config.jam",
             "install"]
+
+    if build.include? 'use-tagged-layout'
+      args << '--layout=tagged'
+    end
 
     if build.include? 'without-single'
       args << "threading=multi"
