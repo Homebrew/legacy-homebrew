@@ -7,6 +7,11 @@ class Lysp < Formula
 
   depends_on 'bdw-gc'
 
+  fails_with :clang do
+    build 500
+    cause "use of unknown builtin '__builtin_return'"
+  end
+
   # Use our CFLAGS
   def patches; DATA; end
 
