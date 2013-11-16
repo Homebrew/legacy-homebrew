@@ -130,7 +130,7 @@ class Vim < Formula
     # statically-linked interpreters like ruby
     # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
     system "make", "install", "prefix=#{prefix}", "STRIP=/usr/bin/true"
-    ln_s bin+'vim', bin+'vi' if build.include? 'override-system-vi'
+    ln_s 'vim', bin/'vi' if build.include? 'override-system-vi'
   end
 
   def caveats
