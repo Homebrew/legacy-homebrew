@@ -3,25 +3,12 @@
 # See: http://github.com/mxcl/homebrew/issues/issue/1438
 
 require 'formula'
+require 'set'
 
-def get_used_by(formulae)
-  used_by = {}
-  formulae.each do |f|
-    f.deps.each do |dep|
-      _deps = used_by[dep.to_s] || []
-      _deps << f.name unless _deps.include? f.name
-      used_by[dep.to_s] = _deps
-    end
-  end
+deps_of_installed = Set.new
 
-  return used_by
-end
-
-installed = Formula.installed
-names = installed.map(&:name)
-deps_graph = get_used_by(installed)
-
-names.each do |name|
-  deps = deps_graph[name] || []
-  puts name unless deps.any? { |dep| names.include? dep.to_s }
+Formula.installed.each do |f|
+  deps_of_installed.merge f.deps.map(&:name)
+end.each do |f|
+  puts f.name unless deps_of_installed.include? f.name
 end
