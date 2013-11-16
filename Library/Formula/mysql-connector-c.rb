@@ -7,6 +7,9 @@ class MysqlConnectorC < Formula
 
   depends_on 'cmake' => :build
 
+  conflicts_with 'percona-server',
+    :because => 'both install `mysql_config`'
+
   fails_with :llvm do
     build 2334
     cause "Unsupported inline asm"
