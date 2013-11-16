@@ -9,13 +9,10 @@ class AwsElasticache < AmazonWebServicesFormula
   depends_on 'ec2-api-tools'
 
   def install
-    rm Dir['bin/*.cmd'] # Remove Windows command files
-    libexec.install "bin", "lib"
-    bin.install_symlink Dir["#{libexec}/bin/*"]
-    (bin/'service').unlink # Don't keep this symlink
+    standard_install
   end
 
   def caveats
-    standard_instructions "AWS_ELASTICACHE_HOME", libexec
+    standard_instructions "AWS_ELASTICACHE_HOME"
   end
 end
