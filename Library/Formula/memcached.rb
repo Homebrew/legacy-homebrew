@@ -10,6 +10,8 @@ class Memcached < Formula
   option "enable-sasl", "Enable SASL support -- disables ASCII protocol!"
   option "enable-sasl-pwdb", "Enable SASL with memcached's own plain text password db support -- disables ASCII protocol!"
 
+  conflicts_with 'mysql-cluster', :because => 'both install `bin/memcached`'
+
   def install
     args = ["--prefix=#{prefix}", "--disable-coverage"]
     args << "--enable-sasl" if build.include? "enable-sasl"
