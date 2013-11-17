@@ -23,18 +23,17 @@ class GitFlowAvh < Formula
   conflicts_with 'git-flow'
 
   def install
-    system "make", "prefix=#{prefix}", "install"
+    system "make", "prefix=#{libexec}", "install"
+    (bin/'git-flow').write <<-EOS.undent
+      #!/bin/bash
+      export FLAGS_GETOPT_CMD=#{HOMEBREW_PREFIX}/opt/gnu-getopt/bin/getopt
+      exec "#{libexec}/bin/git-flow" "$@"
+    EOS
 
     resource('completion').stage do
       bash_completion.install "git-flow-completion.bash"
       zsh_completion.install "git-flow-completion.zsh"
     end
-  end
-
-  def caveats; <<-EOS.undent
-    Create a ~/.gitflow_export file with the content
-      export FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"
-     EOS
   end
 
   test do
