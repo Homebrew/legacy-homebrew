@@ -8,7 +8,6 @@ class Storm < Formula
   devel do
     url 'https://dl.dropboxusercontent.com/s/p5wf0hsdab5n9kn/storm-0.9.0-rc2.zip'
     sha1 '1fc891d29259a431bcd297cbcc24888152cc25bb'
-    version '0.9.0-rc2'
   end
 
   def install
