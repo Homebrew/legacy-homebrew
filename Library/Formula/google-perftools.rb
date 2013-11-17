@@ -1,6 +1,5 @@
 require 'formula'
 
-# TODO rename to gperftools when renames are supported
 class GooglePerftools < Formula
   homepage 'http://code.google.com/p/gperftools/'
   url 'http://gperftools.googlecode.com/files/gperftools-2.1.tar.gz'
