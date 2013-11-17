@@ -4,6 +4,7 @@ class Qwt < Formula
   homepage 'http://qwt.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/qwt/qwt/6.1.0/qwt-6.1.0.tar.bz2'
   sha1 '48a967038f7aa9a9c87c64bcb2eb07c5df375565'
+  head 'svn://svn.code.sf.net/p/qwt/code/trunk/qwt', :tag => 'qwt-6.1.0'
 
   depends_on 'qt'
 
@@ -13,7 +14,12 @@ class Qwt < Formula
       s.gsub! /^\s*QWT_INSTALL_PREFIX\s*=(.*)$/, "QWT_INSTALL_PREFIX=#{prefix}"
     end
 
-    system "qmake -spec macx-g++ -config release"
+    if MacOS.version >= :mavericks
+        system "qmake -spec unsupported/macx-clang-libc++ -config release"
+    else
+        system "qmake -spec macx-g++ -config release"
+    end
+
     system "make"
     system "make install"
   end
