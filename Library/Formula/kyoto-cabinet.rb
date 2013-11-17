@@ -2,8 +2,8 @@ require 'formula'
 
 class KyotoCabinet < Formula
   homepage 'http://fallabs.com/kyotocabinet/'
-  url 'http://fallabs.com/kyotocabinet/pkg/kyotocabinet-1.2.76.tar.gz'
-  sha1 'a4ec70d08ca6c8f510dbc329d5c27b55030d3521'
+  url 'https://github.com/jkassemi/kyotocabinet/archive/1.2.77.tar.gz'
+  sha1 '9bff7674a69022756bc32b1801941b34741e2d94'
 
   fails_with :clang do
     build 421
