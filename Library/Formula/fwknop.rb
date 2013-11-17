@@ -17,8 +17,7 @@ class Fwknop < Formula
 
   def install
     if build.head?
-      system 'autoreconf', '-fvi'
-      system 'autoconf'
+      system './autogen.sh'
     end
 
     system "./configure", "--disable-dependency-tracking",
