@@ -81,7 +81,6 @@ module Homebrew extend self
     %w{Homebrew games},
     %w{Homebrew science},
     %w{Homebrew completions},
-    %w{Homebrew x11},
     %w{Homebrew binary},
   ]
 
