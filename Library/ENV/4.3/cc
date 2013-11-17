@@ -7,6 +7,27 @@
 
 require "#{File.dirname __FILE__}/../libsuperenv"
 require 'set'
+require 'stringio'
+
+class Logger
+  def initialize
+    @io = StringIO.new
+  end
+
+  def puts(*args)
+    @io.puts(*args)
+  end
+
+  def log!
+    return unless ENV.key? 'HOMEBREW_CC_LOG_PATH'
+    path = "#{ENV['HOMEBREW_CC_LOG_PATH']}.cc"
+
+    puts
+    File.open(path, File::WRONLY | File::APPEND | File::CREAT) { |f| f.write(@io.string) }
+  end
+end
+
+LOGGER = Logger.new
 
 def cccfg? flags
   flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
@@ -19,20 +40,6 @@ def syspath
     %W{#$sdkroot/usr #$sdkroot/usr/local}
   else
     %W{/usr /usr/local}
-  end
-end
-
-module ExecLogExtension
-  def exec *args
-    path = File.expand_path('~/Library/Logs/Homebrew/cc.log')
-    open(path, 'a') do |f|
-      f.print '[', $0
-      f.print " -%s" % ENV['HOMEBREW_CCCFG'] if ENV['HOMEBREW_CCCFG']
-      f.print '] '
-      f.puts args.join(' ')
-      f.puts
-    end
-    Kernel.exec *args
   end
 end
 
@@ -251,9 +258,9 @@ class Cmd
     adds = args - @args
     dups = dels & args
 
-    STDERR.puts "brew: superenv removed: #{dels*' '}" unless dels.empty?
-    STDERR.puts "brew: superenv deduped: #{dups}" unless dups.empty?
-    STDERR.puts "brew: superenv added: #{adds*' '}" unless adds.empty?
+    LOGGER.puts "superenv removed:  #{dels*' '}" unless dels.empty?
+    LOGGER.puts "superenv deduped:  #{dups}" unless dups.empty?
+    LOGGER.puts "superenv added:    #{adds*' '}" unless adds.empty?
   end
   def make_fuss?
     verbose? and cccfg? 'O' and not configure?
@@ -268,8 +275,6 @@ class Cmd
 end
 
 if __FILE__ == $PROGRAM_NAME
-  STDOUT.sync = STDERR.sync = true
-
   ##################################################################### sanity
   abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
 
@@ -279,7 +284,14 @@ if __FILE__ == $PROGRAM_NAME
   end
 
   ####################################################################### main
-  extend(ExecLogExtension) if ENV['HOMEBREW_LOG']
+
+  LOGGER.puts "#{File.basename($0)} called with: #{ARGV.join(" ")}"
+
   cmd = Cmd.new($0, ARGV)
-  exec "xcrun", cmd.tool, *cmd.args
+  tool, args = cmd.tool, cmd.args
+
+  LOGGER.puts "superenv executed: #{tool} #{args.join(" ")}"
+  LOGGER.log!
+
+  exec "xcrun", tool, *args
 end
