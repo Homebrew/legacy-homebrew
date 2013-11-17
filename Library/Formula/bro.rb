@@ -8,6 +8,7 @@ class Bro < Formula
   depends_on 'cmake' => :build
   depends_on 'swig' => :build
   depends_on 'libmagic'
+  depends_on 'geoip' => :recommended
 
   def install
     # Ruby bindings not building for me on 10.6 - @adamv
