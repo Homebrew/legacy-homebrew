@@ -11,9 +11,13 @@ class GooglePerftools < Formula
     cause "Segfault during linking"
   end
 
-  # Incorporated upstream, remove on next version update
+  # DATA is incorporated upstream, remove on next version update
+  # configure patch removes __thread support, which breaks tcmalloc since it internally calls malloc as well
   def patches
-    DATA
+    [
+      DATA,
+      "https://gist.github.com/JustSid/7430366/raw"
+    ]
   end
 
   def install
