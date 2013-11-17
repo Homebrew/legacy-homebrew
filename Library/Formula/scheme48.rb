@@ -9,6 +9,7 @@ class Scheme48 < Formula
   conflicts_with 'scsh', :because => 'both install include/scheme48.h'
 
   def install
+    ENV.O0 if ENV.compiler == :clang
     ENV.deparallelize
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
