@@ -74,6 +74,14 @@ class Node < Formula
 
     unless build.include? 'without-npm'
       (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
+
+      # Link npm manpages
+      Pathname.glob("#{lib}/node_modules/npm/man/*").each do |man|
+        dir = send(man.basename)
+        man.children.each do |file|
+          dir.install_symlink(file.relative_path_from(dir))
+        end
+      end
     end
   end
 
