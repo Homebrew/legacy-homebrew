@@ -7,7 +7,7 @@ class Amtterm < Formula
   sha1 'cfd199cc870f48a59caa89408b039239eab85322'
 
   def install
-    system "make", "install"
+    system "make","prefix=#{prefix}", "install"
   end
 
   test do
