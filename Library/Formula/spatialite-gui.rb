@@ -16,6 +16,10 @@ class SpatialiteGui < Formula
   depends_on 'libspatialite'
   depends_on 'libgaiagraphics'
   depends_on 'wxmac'
+  depends_on 'geos'
+  depends_on 'proj'
+  depends_on 'freexl'
+  depends_on 'sqlite'
 
   def patches
     patch_set = {
@@ -28,14 +32,7 @@ class SpatialiteGui < Formula
   end
 
   def install
-    # This lib doesn't get picked up by configure.
-    ENV.append 'LDFLAGS', '-lwx_osx_cocoau_aui-2.9'
-    # 1.6.0 doesn't pick up GEOS libraries. See:
-    #   https://www.gaia-gis.it/fossil/spatialite_gui/tktview?name=d27778d7e4
-    ENV.append 'LDFLAGS', '-lgeos_c' if build.devel?
-
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 end
