@@ -6,6 +6,12 @@ class Osxfuse < Formula
 
   head 'https://github.com/osxfuse/osxfuse.git', :branch => 'osxfuse-2'
 
+  bottle do
+    sha1 '2804a40da6381c94ada37e275e34b6ba65110e41' => :mavericks
+    sha1 '5bd2825c7d8ff9a330b8b6a4c47d5ba391c3b31e' => :mountain_lion
+    sha1 '047f17c804bd54b44b0c458f0d4b6ee1afad262e' => :lion
+  end
+
   depends_on :macos => :snow_leopard
   depends_on :xcode
   depends_on :autoconf
