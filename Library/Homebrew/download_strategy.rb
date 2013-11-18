@@ -604,12 +604,12 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
     unless @clone.exist?
       HOMEBREW_CACHE.cd do
-        safe_system '/usr/bin/cvs', '-d', url, 'login'
-        safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', cache_filename("cvs"), mod
+        safe_system '/usr/local/bin/cvs', '-d', url, 'login'
+        safe_system '/usr/local/bin/cvs', '-d', url, 'checkout', '-d', cache_filename("cvs"), mod
       end
     else
       puts "Updating #{@clone}"
-      @clone.cd { safe_system '/usr/bin/cvs', 'up' }
+      @clone.cd { safe_system '/usr/local/bin/cvs', 'up' }
     end
   end
 
