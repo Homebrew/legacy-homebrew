@@ -10,6 +10,7 @@ class Fsv < Formula
 
   depends_on :x11
   depends_on 'gtk+'
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
   depends_on 'pkg-config' => :build
