@@ -263,10 +263,7 @@ class Cmd
     LOGGER.puts "superenv added:    #{adds*' '}" unless adds.empty?
   end
   def make_fuss?
-    verbose? and cccfg? 'O' and not configure?
-  end
-  def verbose?
-    !ENV['VERBOSE'].nil? || !ENV['HOMEBREW_VERBOSE'].nil?
+    cccfg? 'O' and not configure?
   end
   def configure?
     # configure scripts generated with autoconf 2.61 or later export as_nl
