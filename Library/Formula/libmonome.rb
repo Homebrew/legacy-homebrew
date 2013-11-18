@@ -9,14 +9,10 @@ class Libmonome < Formula
 
   depends_on 'liblo'
 
-  fails_with :clang do
-    cause 'waf fails to find g++ when compiling with clang'
-  end
-
   def install
+    inreplace 'wscript', '-Werror', ''
     system "./waf", "configure", "--prefix=#{prefix}"
     system "./waf build"
     system "./waf install"
   end
-
 end
