@@ -4,4 +4,5 @@ TAP_MIGRATIONS = {
   'denyhosts' => 'homebrew/boneyard',
   'ipopt' => 'homebrew/science',
   'qfits' => 'homebrew/boneyard',
+  'blackbox' => 'homebrew/boneyard',
 }
