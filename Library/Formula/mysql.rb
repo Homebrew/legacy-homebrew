@@ -2,8 +2,7 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.14.tar.gz/from/http://cdn.mysql.com/'
-  version '5.6.14'
+  url 'http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14.tar.gz'
   sha1 '7cf44fb2a7733b52559f66c00446122bc79321d2'
 
   bottle do
