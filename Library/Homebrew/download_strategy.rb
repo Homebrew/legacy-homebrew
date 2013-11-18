@@ -591,6 +591,15 @@ class GitDownloadStrategy < VCSDownloadStrategy
 end
 
 class CVSDownloadStrategy < VCSDownloadStrategy
+  def cvspath
+    @path ||= %W[
+      /usr/bin/cvs
+      #{HOMEBREW_PREFIX}/bin/cvs
+      #{HOMEBREW_PREFIX}/opt/cvs/bin/cvs
+      #{which("cvs")}
+      ].find { |p| File.executable? p }
+  end
+
   def cache_tag; "cvs" end
 
   def fetch
@@ -604,12 +613,12 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
     unless @clone.exist?
       HOMEBREW_CACHE.cd do
-        safe_system '/usr/bin/cvs', '-d', url, 'login'
-        safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', cache_filename("cvs"), mod
+        safe_system cvspath, '-d', url, 'login'
+        safe_system cvspath, '-d', url, 'checkout', '-d', cache_filename("cvs"), mod
       end
     else
       puts "Updating #{@clone}"
-      @clone.cd { safe_system '/usr/bin/cvs', 'up' }
+      @clone.cd { safe_system cvspath, 'up' }
     end
   end
 
