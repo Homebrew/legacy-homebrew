@@ -2,8 +2,8 @@ require 'formula'
 
 class Afflib < Formula
   homepage 'https://github.com/simsong/AFFLIBv3'
-  url 'https://github.com/simsong/AFFLIBv3/archive/v3.7.3.tar.gz'
-  sha1 '530c09f0852d6fb673762b3beafa2097ae4694fa'
+  url 'https://github.com/simsong/AFFLIBv3/archive/v3.7.4.tar.gz'
+  sha1 '589dae6f8439e97ab080026701cd0caa0636ac22'
 
   depends_on :autoconf
   depends_on :automake
