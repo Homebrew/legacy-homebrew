@@ -5,6 +5,7 @@ class Lsyncd < Formula
   url 'https://github.com/axkibe/lsyncd/archive/release-2.1.5.tar.gz'
   sha1 '2b8eb169365edc54488a97435bbd39ae4a6731b8'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on 'asciidoc' => :build
   depends_on 'docbook' => :build
