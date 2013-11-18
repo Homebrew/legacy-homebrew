@@ -25,5 +25,5 @@ class Array
   end
 end
 
-$brewfix = ENV['HOMEBREW_PREFIX'].freeze
-$sdkroot = ENV['HOMEBREW_SDKROOT'].freeze
+$brewfix = ENV['HOMEBREW_PREFIX']
+$sdkroot = ENV['HOMEBREW_SDKROOT']
