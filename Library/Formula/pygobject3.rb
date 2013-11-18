@@ -2,8 +2,8 @@ require 'formula'
 
 class Pygobject3 < Formula
   homepage 'http://live.gnome.org/PyGObject'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.8/pygobject-3.8.3.tar.xz'
-  sha256 '384b3e1b8d1e7c8796d7eb955380d62946dd0ed9c54ecf0817af2d6b254e082c'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.10/pygobject-3.10.2.tar.xz'
+  sha256 '75608f2c4052f0277508fc79debef026d9e84cb9261de2b922387c093d32c326'
 
   option 'with-tests', 'run tests'
 
@@ -19,7 +19,7 @@ class Pygobject3 < Formula
 
   depends_on 'libffi' => :optional
   depends_on 'glib'
-  depends_on :python
+  depends_on :python => %w{2.7}
   depends_on :python3 => :optional
   depends_on 'py2cairo'
   depends_on 'py3cairo' if build.with? 'python3'
