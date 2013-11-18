@@ -165,6 +165,8 @@ class DependencyCollector
       Dependency.new("fossil", tags)
     when strategy <= BazaarDownloadStrategy
       Dependency.new("bazaar", tags)
+    when strategy <= CVSDownloadStrategy
+      Dependency.new("cvs", tags) if MacOS.version >= :mavericks
     when strategy < AbstractDownloadStrategy
       # allow unknown strategies to pass through
     else
