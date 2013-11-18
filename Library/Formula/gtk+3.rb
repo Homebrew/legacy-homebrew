@@ -2,8 +2,8 @@ require 'formula'
 
 class Gtkx3 < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.10/gtk+-3.10.3.tar.xz'
-  sha256 '8fb41deb898ad00ee858d5c04e2f80d295fbd6a8e9688cd7c0ba56ab84c6b727'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.10/gtk+-3.10.4.tar.xz'
+  sha256 '4fd411fc6377d969d7f8e99c14d078822e8dbe940a417be299e456a3d2c4a52b'
 
   depends_on :x11 => '2.5' # needs XInput2, introduced in libXi 1.3
   depends_on 'pkg-config' => :build
