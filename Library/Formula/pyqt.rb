@@ -23,7 +23,6 @@ class Pyqt < Formula
                "--destdir=#{lib}/#{python.xy}/site-packages",
                "--sipdir=#{share}/sip#{python.if3then3}" ]
 
-
       # We need to run "configure.py" so that pyqtconfig.py is generated and
       # PyQWT needs that. But to do the actual compile, we use the newer
       # "configure-ng.py" that is recommened in the README.
@@ -31,7 +30,7 @@ class Pyqt < Formula
       (python.site_packages/'PyQt4').install 'pyqtconfig.py'
 
       if MacOS.version >= :mavericks
-          args << "--spec=unsupported/macx-clang-libc++"
+        args << "--spec=unsupported/macx-clang-libc++"
       end
 
       system python, "./configure-ng.py", *args

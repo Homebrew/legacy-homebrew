@@ -15,9 +15,9 @@ class Qwt < Formula
     end
 
     if MacOS.version >= :mavericks
-        system "qmake -spec unsupported/macx-clang-libc++ -config release"
+      system "qmake -spec unsupported/macx-clang-libc++ -config release"
     else
-        system "qmake -spec macx-g++ -config release"
+      system "qmake -spec macx-g++ -config release"
     end
 
     system "make"
