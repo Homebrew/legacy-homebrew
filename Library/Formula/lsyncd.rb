@@ -12,6 +12,9 @@ class Lsyncd < Formula
   depends_on 'pkg-config' => :build
   depends_on 'lua'
 
+  # This is an artificial requirement, the resource below is incomplete
+  depends_on :macos => :lion
+
   resource 'xnu' do
     # Note: Do not use MacOS::version -- the version number is not
     # enough, we need the patch number as well.
@@ -41,11 +44,7 @@ class Lsyncd < Formula
       when "10.9"
         url "http://www.opensource.apple.com/tarballs/xnu/xnu-2422.1.72.tar.gz"
         sha1 "c7bdc40396df3c51ece934c0e3b4a19b063ea34c"
-    else
-      # If raised, go to http://www.opensource.apple.com/ and find the XNU
-      # version used by your version of OSX.
-      raise Homebrew::InstallationError.new self, "No XNU version known for OSX #{osx_version}"
-    end
+      end
   end
 
   def install
