@@ -66,6 +66,9 @@ class Qt < Formula
       # Change Iaedaff7c: Enable building with clang / libc++ on OS X 10.9 Mavericks
       # (https://codereview.qt-project.org/#change,70930)
       'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/cc0a38d67cb36b650a275af3825731ce1f2ba35c/Change_Iaedaff7c',
+      # Change I04e1471d: Return the correct system font on OS X Mavericks.
+      # (https://codereview.qt-project.org/#change,62261)
+      'https://gist.github.com/mhemeryck/7487365/raw/adc0ba7a9b33b113ab3d15f545082703a51d3ccd/Change_I04e1471d',
     ]
   end
 
