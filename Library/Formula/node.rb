@@ -36,8 +36,8 @@ class Node < Formula
   sha1 'd7c6a39dfa714eae1f8da7a00c9a07efd74a03b3'
 
   devel do
-    url 'http://nodejs.org/dist/v0.11.7/node-v0.11.7.tar.gz'
-    sha1 'a3b0d7fb818754ad55f06a02745d7ec53986de64'
+    url 'http://nodejs.org/dist/v0.11.8/node-v0.11.8.tar.gz'
+    sha1 '21d3927c78adaaf3fe7cc9602ffb0a85de7f6ea0'
   end
 
   head 'https://github.com/joyent/node.git'
@@ -74,6 +74,14 @@ class Node < Formula
 
     unless build.include? 'without-npm'
       (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
+
+      # Link npm manpages
+      Pathname.glob("#{lib}/node_modules/npm/man/*").each do |man|
+        dir = send(man.basename)
+        man.children.each do |file|
+          dir.install_symlink(file.relative_path_from(dir))
+        end
+      end
     end
   end
 

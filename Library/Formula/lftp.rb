@@ -6,17 +6,25 @@ class Lftp < Formula
   mirror 'ftp://ftp.cs.tu-berlin.de/pub/net/ftp/lftp/lftp-4.4.11.tar.bz2'
   sha1 '56cefb9aa683acfa5c5713d530f594085ea7b149'
 
+  option 'with-gnutls', "Use GnuTLS instead of the default OpenSSL"
+
   depends_on 'pkg-config' => :build
   depends_on 'readline'
-  depends_on 'gnutls'
+  depends_on 'gnutls' => :optional
 
   def install
     # Bus error
     # TODO what are the more specific circumstances?
     ENV.no_optimization if MacOS.version <= :leopard
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = ["--disable-dependency-tracking",
+            "--prefix=#{prefix}"]
+    if build.with? 'gnutls'
+     args << "--with-gnutls"
+    else
+     args << "--with-openssl"
+    end
+    system "./configure", *args
     system "make install"
   end
 end

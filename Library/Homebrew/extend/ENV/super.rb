@@ -72,6 +72,7 @@ module Superenv
     self['HOMEBREW_CCCFG'] = determine_cccfg
     self['HOMEBREW_OPTIMIZATION_LEVEL'] = 'Os'
     self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
+    self['HOMEBREW_PREFIX'] = HOMEBREW_PREFIX
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
     self['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
     self['HOMEBREW_VERBOSE'] = "1" if ARGV.verbose?
@@ -182,11 +183,10 @@ module Superenv
   def determine_cmake_include_path
     sdk = MacOS.sdk_path if MacOS::Xcode.without_clt?
     paths = []
-    paths << "#{MacOS::X11.include}/freetype2" if x11?
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     paths << "#{sdk}/usr/include/apache2" if MacOS::Xcode.without_clt?
     paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers" unless x11?
-    paths << MacOS::X11.include if x11?
+    paths << MacOS::X11.include << "#{MacOS::X11.include}/freetype2" if x11?
     paths.to_path_s
   end
 

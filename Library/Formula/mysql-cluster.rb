@@ -17,6 +17,7 @@ class MysqlCluster < Formula
   option 'enable-local-infile', 'Build with local infile loading support'
   option 'enable-debug', 'Build with debug support'
 
+  conflicts_with 'memcached', :because => 'both install `bin/memcached`'
   conflicts_with 'mysql', 'mariadb', 'percona-server',
     :because => "mysql, mariadb, and percona install the same binaries."
 
