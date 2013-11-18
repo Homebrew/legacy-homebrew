@@ -14,7 +14,7 @@ class NordugridArc < Formula
   depends_on 'globus-toolkit'
 
   fails_with :clang do
-    build 421
+    build 500
     cause "Fails with 'template specialization requires 'template<>''"
   end
 
