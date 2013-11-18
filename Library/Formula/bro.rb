@@ -11,7 +11,6 @@ class Bro < Formula
   depends_on 'geoip' => :recommended
 
   def install
-    # Ruby bindings not building for me on 10.6 - @adamv
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
