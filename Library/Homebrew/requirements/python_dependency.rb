@@ -278,7 +278,7 @@ class PythonDependency < Requirement
     # Todo: If Jack's formula revisions arrive, we can get rid of this here!
     if brewed?
       require 'formula'
-      file = Formula.factory(@python).prefix/"Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/lib/#{xy}/distutils/distutils.cfg"
+      file = Formula.factory(@python).opt_prefix/"Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/lib/#{xy}/distutils/distutils.cfg"
       ohai "Writing #{file}" if ARGV.verbose? && ARGV.debug?
       file.delete if file.exist?
       file.write <<-EOF.undent
