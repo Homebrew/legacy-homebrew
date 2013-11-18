@@ -73,7 +73,7 @@ Note that these flags should only appear after a command.
     and version, but if it fails, you'll have to make your own template. The wget
     formula serves as a simple example. For a complete cheat-sheet, have a look at
 
-    `$(brew --prefix)/Library/Contributions/example-formula.rb`
+    `$(brew --repository)/Library/Contributions/example-formula.rb`
 
     If `--autotools` is passed, create a basic template for an Autotools-style build.
     If `--cmake` is passed, create a basic template for a CMake-style build.
@@ -411,7 +411,7 @@ to create your own commands without modifying Homebrew's internals.
 A number of (useful, but unsupported) external commands are included and enabled
 by default:
 
-    $ ls `brew --repository`/Library/Contributions/cmd
+    $ ls $(brew --repository)/Library/Contributions/cmd
 
 Documentation for the included external commands as well as instructions for
 creating your own can be found on the wiki:
