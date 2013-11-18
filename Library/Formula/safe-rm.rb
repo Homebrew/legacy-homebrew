@@ -6,11 +6,13 @@ class SafeRm < Formula
   sha1 '6b829ae68e1fa3c8016e15ab37fcc08caef7712f'
 
   def install
-    mv 'safe-rm', 'rm'
-    bin.install 'rm'
+    bin.install 'safe-rm'
   end
 
   test do
-    `which rm` =~ /^#{HOMEBREW_PREFIX}/
+    file = "a-file"
+    touch file
+    system "#{bin}/safe-rm", file
+    !File.exists? file
   end
 end
