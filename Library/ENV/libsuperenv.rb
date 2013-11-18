@@ -25,5 +25,5 @@ class Array
   end
 end
 
-$brewfix = "#{__FILE__}/../../../".cleanpath.freeze
-$sdkroot = ENV['HOMEBREW_SDKROOT'].freeze
+$brewfix = ENV['HOMEBREW_PREFIX']
+$sdkroot = ENV['HOMEBREW_SDKROOT']
