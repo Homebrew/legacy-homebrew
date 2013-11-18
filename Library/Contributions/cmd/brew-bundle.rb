@@ -5,8 +5,8 @@
 # Looks for a Brewfile and runs each line as a brew command.
 #
 # brew bundle              # Looks for "./Brewfile"
-# brew bundle path/to/dir  # Looks for "./path/to/dir/Brewfile"
-# brew bundle path/to/file # Looks for "./path/to/file"
+# brew bundle path/to/dir  # Looks for "path/to/dir/Brewfile"
+# brew bundle path/to/file # Looks for "path/to/file"
 #
 # For example, given a Brewfile with the following contents:
 # tap foo/bar
