@@ -11,5 +11,6 @@ class Mg < Formula
     system "make"
     bin.install "mg"
     doc.install "tutorial"
+    man1.install "mg.1"
   end
 end
