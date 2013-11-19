@@ -2,20 +2,20 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/release-5.6.14-62.0/483/source/Percona-Server-5.6.14-rel62.0.tar.gz'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/Percona-Server-5.6.14-rel62.0.tar.gz'
   version '5.6.14-rel62.0'
   sha1 '6d9ddd92338c70ec13bdeb9a23568a990a5766f9'
 
   depends_on 'cmake' => :build
-  depends_on 'readline'
-  depends_on 'pidof'
+  depends_on 'pidof' unless MacOS.version >= :mountain_lion
 
   option :universal
   option 'with-tests', 'Build with unit tests'
   option 'with-embedded', 'Build the embedded server'
-  option 'with-libedit', 'Compile with editline wrapper instead of readline'
   option 'enable-local-infile', 'Build with local infile loading support'
 
+  conflicts_with 'mysql-connector-c',
+    :because => 'both install `mysql_config`'
 
   conflicts_with 'mariadb', 'mysql', 'mysql-cluster',
     :because => "percona, mariadb, and mysql install the same binaries."
@@ -30,8 +30,8 @@ class PerconaServer < Formula
   # Where the database files should be located. Existing installs have them
   # under var/percona, but going forward they will be under var/msyql to be
   # shared with the mysql and mariadb formulae.
-  def destination
-    @destination ||= (var/'percona').directory? ? 'percona' : 'mysql'
+  def datadir
+    @datadir ||= (var/'percona').directory? ? var/'percona' : var/'mysql'
   end
 
   def patches
@@ -42,45 +42,51 @@ class PerconaServer < Formula
   end
 
   def install
+    # Don't hard-code the libtool path. See:
+    # https://github.com/mxcl/homebrew/issues/20185
+    inreplace "cmake/libutils.cmake",
+      "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
+      "COMMAND libtool -static -o ${TARGET_LOCATION}"
+
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    # Make sure that data directory exists
-    (var/destination).mkpath
+    args = %W[
+      -DCMAKE_INSTALL_PREFIX=#{prefix}
+      -DCMAKE_FIND_FRAMEWORK=LAST
+      -DCMAKE_VERBOSE_MAKEFILE=ON
+      -DMYSQL_DATADIR=#{datadir}
+      -DINSTALL_INCLUDEDIR=include/mysql
+      -DINSTALL_MANDIR=share/man
+      -DINSTALL_DOCDIR=share/doc/#{name}
+      -DINSTALL_INFODIR=share/info
+      -DINSTALL_MYSQLSHAREDIR=share/mysql
+      -DWITH_SSL=yes
+      -DDEFAULT_CHARSET=utf8
+      -DDEFAULT_COLLATION=utf8_general_ci
+      -DSYSCONFDIR=#{etc}
+      -DCOMPILATION_COMMENT=Homebrew
+      -DWITH_EDITLINE=system
+      -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    ]
 
-    args = [
-      ".",
-      "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-      "-DMYSQL_DATADIR=#{var}/#{destination}",
-      "-DINSTALL_MANDIR=#{man}",
-      "-DINSTALL_DOCDIR=#{doc}",
-      "-DINSTALL_INFODIR=#{info}",
-      # CMake prepends prefix, so use share.basename
-      "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/mysql",
-      "-DWITH_SSL=yes",
-      "-DDEFAULT_CHARSET=utf8",
-      "-DDEFAULT_COLLATION=utf8_general_ci",
-      "-DSYSCONFDIR=#{etc}",
-      "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
-      # PAM plugin is Linux-only at the moment
-      "-DWITHOUT_AUTH_PAM=1",
-      "-DWITHOUT_AUTH_PAM_COMPAT=1",
-      "-DWITHOUT_DIALOG=1"
+    # PAM plugin is Linux-only at the moment
+    args.concat %W[
+      -DWITHOUT_AUTH_PAM=1
+      -DWITHOUT_AUTH_PAM_COMPAT=1
+      -DWITHOUT_DIALOG=1
     ]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if build.include? 'with-tests'
+    if build.with? 'tests'
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
     end
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
-
-    # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'
 
     # Make universal for binding to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
@@ -105,6 +111,8 @@ class PerconaServer < Formula
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+      # pidof can be replaced with pgrep from proctools on Mountain Lion
+      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
 
     ln_s "#{prefix}/support-files/mysql.server", bin
@@ -112,24 +120,20 @@ class PerconaServer < Formula
     # Move mysqlaccess to libexec
     mv "#{bin}/mysqlaccess", libexec
     mv "#{bin}/mysqlaccess.conf", libexec
+
+    # Make sure that data directory exists
+    datadir.mkpath
+  end
+
+  def post_install
+    unless File.exist? "#{datadir}/mysql/user.frm"
+      ENV['TMPDIR'] = nil
+      system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
+        "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
+    end
   end
 
   def caveats; <<-EOS.undent
-    Set up databases to run AS YOUR USER ACCOUNT with:
-        unset TMPDIR
-        mysql_install_db --verbose --user=`whoami` --basedir="$(brew --prefix percona-server)" --datadir=#{var}/#{destination} --tmpdir=/tmp
-
-    To set up base tables in another folder, or use a different user to run
-    mysqld, view the help for mysqld_install_db:
-        mysql_install_db --help
-
-    and view the MySQL documentation:
-      * http://dev.mysql.com/doc/refman/5.5/en/mysql-install-db.html
-      * http://dev.mysql.com/doc/refman/5.5/en/default-privileges.html
-
-    To run as, for instance, user "mysql", you may need to `sudo`:
-        sudo mysql_install_db ...options...
-
     A "/etc/my.cnf" from another install may interfere with a Homebrew-built
     server starting up correctly.
 
