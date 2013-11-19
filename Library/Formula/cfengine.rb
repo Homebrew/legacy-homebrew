@@ -21,13 +21,13 @@ class Cfengine < Formula
   end
 
   def install
-    # Find our libpcre
-    ENV.append 'LDFLAGS', "-L#{Formula.factory('pcre').opt_prefix}/lib"
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-workdir=#{var}/cfengine",
-                          "--with-tokyocabinet"
+                          "--with-tokyocabinet",
+                          "--with-pcre=#{Formula.factory('pcre').opt_prefix}",
+                          "--without-mysql",
+                          "--without-postgresql"
     system "make install"
   end
 
