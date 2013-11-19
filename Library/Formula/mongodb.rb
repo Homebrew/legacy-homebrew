@@ -6,8 +6,8 @@ class Mongodb < Formula
   sha1 '59fa237e102c9760271df9433ee7357dd0ec831f'
 
   devel do
-    url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.3.tar.gz'
-    sha1 '8fbd7f6f2a55092ae0e461ee0f5a4a7f738d40c9'
+    url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.4.tar.gz'
+    sha1 'ad40b93c9638178cd487c80502084ac3a9472270'
   end
 
   head 'https://github.com/mongodb/mongo.git'
