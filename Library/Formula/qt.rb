@@ -83,15 +83,8 @@ class Qt < Formula
             "-cocoa", "-fast", "-release"]
 
     # we have to disable these to avoid triggering optimization code
-    # that will fail in superenv, perhaps because we rename clang to cc and
-    # Qt thinks it can build with special assembler commands.
-    # In --env=std, Qt seems aware of this.
-    # But we want superenv, because it allows to build Qt in non-standard
-    # locations and with Xcode-only.
-    if superenv?
-      args << '-no-3dnow'
-      args << '-no-ssse3'
-    end
+    # that will fail in superenv (in --env=std, Qt seems aware of this)
+    args << '-no-3dnow' << '-no-ssse3' if superenv?
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 

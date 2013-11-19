@@ -1,6 +1,5 @@
 require 'formula'
 
-# TODO rename to gperftools when renames are supported
 class GooglePerftools < Formula
   homepage 'http://code.google.com/p/gperftools/'
   url 'http://gperftools.googlecode.com/files/gperftools-2.1.tar.gz'
@@ -11,9 +10,11 @@ class GooglePerftools < Formula
     cause "Segfault during linking"
   end
 
-  # Incorporated upstream, remove on next version update
+  # * DATA is incorporated upstream, remove on next version update
+  # * configure patch removes __thread support, which breaks tcmalloc since it internally calls malloc as well
+  #   upstream: https://code.google.com/p/gperftools/issues/detail?id=573
   def patches
-    DATA
+    [DATA, "https://gist.github.com/JustSid/7430366/raw"]
   end
 
   def install

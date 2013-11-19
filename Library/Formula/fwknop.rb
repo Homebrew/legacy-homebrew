@@ -5,10 +5,17 @@ class Fwknop < Formula
   url 'http://www.cipherdyne.org/fwknop/download/fwknop-2.5.1.tar.bz2'
   sha1 '65bed25e9d7f4a7ccc3f15cab35b95a6f7b21873'
 
+  head do
+    url 'https://github.com/mrash/fwknop.git'
+    depends_on :automake
+    depends_on :autoconf
+  end
+
   # needed for gpg support
   depends_on 'gpgme' => :optional
 
   def install
+    system './autogen.sh' if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

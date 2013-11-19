@@ -6,14 +6,14 @@ class Scala < Formula
   sha1 '04cd6237f164940e1e993a127e7cb21297f3b7ae'
 
   devel do
-    url 'http://www.scala-lang.org/files/archive/scala-2.11.0-M4.tgz'
-    sha1 '43e0983cebe75154e41a6b35a5b82bdc5bdbbaa2'
-    version '2.11.0-M4'
+    url 'http://www.scala-lang.org/files/archive/scala-2.11.0-M5.tgz'
+    sha1 '6933737190288476ce6751a6302c990713963e82'
+    version '2.11.0-M5'
 
     resource 'docs' do
-      url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.0-M4.zip'
-      sha1 '24be02960fda935ab8d5a67b902147af3c95ced4'
-      version '2.11.0-M4'
+      url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.0-M5.zip'
+      sha1 '9eb42cb7703602133b23fc67d622ec916d1030ff'
+      version '2.11.0-M5'
     end
   end
 
@@ -27,7 +27,6 @@ class Scala < Formula
   resource 'completion' do
     url 'https://raw.github.com/scala/scala-dist/27bc0c25145a83691e3678c7dda602e765e13413/completion.d/2.9.1/scala'
     sha1 'e2fd99fe31a9fb687a2deaf049265c605692c997'
-    version '2.9.1'
   end
 
   def install
