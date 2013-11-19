@@ -2,7 +2,7 @@ require 'formula'
 
 class Cgminer < Formula
   homepage 'http://www.gnu.org/software/a2ps/'
-  #head ''
+  head 'https://github.com/ckolivas/cgminer.git'
   url 'https://github.com/ckolivas/cgminer/archive/v3.8.1.tar.gz'
   sha1 '29a0348685d0c1d3a89c3ee67b6decc0e5de59ad'
   depends_on 'pkg-config' => :build
