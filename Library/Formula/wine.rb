@@ -101,6 +101,7 @@ class Wine < Formula
     end
 
     # Workarounds for XCode not including pkg-config files
+    # FIXME we include pkg-config files for libxml2 and libxslt. Is this really necessary?
     ENV.libxml2
     ENV.append "LDFLAGS", "-lxslt"
 
