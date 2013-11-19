@@ -11,9 +11,13 @@ class Plplot < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pango'
 
+  option 'with-java'
+
   def install
+    args = std_cmake_args
+    args << '-DENABLE_java=OFF' unless build.with? 'java'
     mkdir "plplot-build" do
-      system "cmake", "..", *std_cmake_args
+      system "cmake", "..", *args
       system "make"
       system "make install"
     end
