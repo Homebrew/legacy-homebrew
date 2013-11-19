@@ -30,8 +30,6 @@ class Wine < Formula
     depends_on 'little-cms2'
   end
 
-  env :std
-
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
   require_universal_deps
@@ -92,11 +90,7 @@ class Wine < Formula
   end
 
   def install
-    # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
-    build32 = "-arch i386 -m32"
-
-    ENV.append "CFLAGS", build32
-    ENV.append "LDFLAGS", build32
+    ENV.m32 # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
 
     # The clang that comes with Xcode 5 no longer miscompiles wine. Tested with 1.7.3.
     if ENV.compiler == :clang and MacOS.clang_build_version < 500
