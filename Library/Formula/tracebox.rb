@@ -6,10 +6,10 @@ class Tracebox < Formula
   sha1 'f41917b76d38bb2e7fd264516948166270758e2a'
 
   depends_on 'git' => :build
-  depends_on 'lua'
   depends_on :autoconf => :build
   depends_on :automake => :build
   depends_on :libtool => :build
+  depends_on 'lua'
 
   def install
     ENV['AUTOHEADER'] = 'true'
@@ -25,7 +25,7 @@ class Tracebox < Formula
   end
 
   test do
-    system "tracebox"
+    system "#{bin}/tracebox"
   end
 
   def caveats; <<-EOS.undent
