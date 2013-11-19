@@ -6,4 +6,5 @@ TAP_MIGRATIONS = {
   'qfits' => 'homebrew/boneyard',
   'blackbox' => 'homebrew/boneyard',
   'libgtextutils' => 'homebrew/science',
+  'syslog-ng', => 'homebrew/boneyard',
 }
