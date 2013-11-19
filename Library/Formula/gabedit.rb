@@ -11,7 +11,9 @@ class Gabedit < Formula
   depends_on 'gtkglext'
 
   def install
-    system 'make'
-    bin.install 'gabedit' # There is no 'make install'
+    args = []
+    args << "OMPLIB=" << "OMPCFLAGS=" if ENV.compiler == :clang
+    system 'make', *args
+    bin.install 'gabedit'
   end
 end
