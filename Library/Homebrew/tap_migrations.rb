@@ -5,5 +5,5 @@ TAP_MIGRATIONS = {
   'ipopt' => 'homebrew/science',
   'qfits' => 'homebrew/boneyard',
   'blackbox' => 'homebrew/boneyard',
-  'libgtextutils' -> 'homebrew/science',
+  'libgtextutils' => 'homebrew/science',
 }
