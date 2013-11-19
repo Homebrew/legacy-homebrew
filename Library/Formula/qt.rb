@@ -71,7 +71,10 @@ class Qt < Formula
 
   def install
     # Must be built with --HEAD on Mavericks at the moment
-    raise 'Qt currently requires --HEAD on Mavericks' if MacOS.version == :mavericks and not build.head?
+    raise <<-EOS.undent if MacOS.version == :mavericks and not build.head?
+      On Mavericks, you must install Qt HEAD:
+        brew install qt --HEAD
+      EOS
 
     ENV.universal_binary if build.universal?
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
