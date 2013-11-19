@@ -11,6 +11,8 @@ module Homebrew extend self
       EOS
     end
     abort "Please `brew install git' first." unless which "git"
+    
+    puts "Updating list of formulae..."
 
     # ensure GIT_CONFIG is unset as we need to operate on .git/config
     ENV.delete('GIT_CONFIG')
