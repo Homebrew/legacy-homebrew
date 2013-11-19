@@ -13,5 +13,6 @@ class GlobusToolkit < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
+    share.install prefix/'man'
   end
 end
