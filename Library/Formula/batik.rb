@@ -11,8 +11,8 @@ class Batik < Formula
     libexec.install Dir['*.jar']
     libexec.install 'lib'
 
-    bin.write_jar_script Dir[libexec/'batik-rasterizer.jar'].first, 'batik-rasterizer'
-    bin.write_jar_script Dir[libexec/'batik.jar'].first, 'batik'
+    bin.write_jar_script libexec/'batik-rasterizer.jar', 'batik-rasterizer'
+    bin.write_jar_script libexec/'batik.jar', 'batik'
   end
 
 end
