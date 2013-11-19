@@ -118,3 +118,17 @@ class GitDependency < Requirement
   default_formula 'git'
   satisfy { which('git') }
 end
+
+class JavaDependency < Requirement
+  fatal true
+
+  satisfy { quiet_system('/usr/libexec/java_home -F'); $?.exitstatus == 0 }
+
+  def message; <<-EOS.undent
+    A Java distribution is required to install.
+
+    You can install Java distribution from:
+      https://java.com/getjava
+    EOS
+  end
+end
