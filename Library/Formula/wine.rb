@@ -9,7 +9,14 @@ class Wine < Formula
   stable do
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.1.tar.bz2'
     sha256 'd5bc2c088b555caa60a7ba1156e6ed74d791ba3c438129c75ab53805215a384c'
+
     depends_on 'little-cms'
+
+    resource 'gecko' do
+      url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
+      version '2.21'
+      sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
+    end
   end
 
   devel do
@@ -47,8 +54,8 @@ class Wine < Formula
   end
 
   resource 'mono' do
-    url 'http://downloads.sourceforge.net/wine/wine-mono-4.5.0.msi', :using => :nounzip
-    sha256 '389a2b60563a82e7bf93883dbf4eed933ae846dbad43e853c820878e3d1bedc9'
+    url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+    sha256 '3dfc23bbc29015e4e538dab8b83cb825d3248a0e5cf3b3318503ee7331115402'
   end
 
   fails_with :llvm do
