@@ -24,6 +24,6 @@ class Task < Formula
   end
 
   test do
-    system "#{bin}/salt", "--version"
+    system "#{bin}/task", "diagnostics"
   end
 end
