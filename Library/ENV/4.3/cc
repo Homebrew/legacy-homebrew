@@ -189,7 +189,7 @@ class Cmd
   end
   def archflags
     args = []
-    ENV['HOMEBREW_ARCHS'].split(',').each { |a| args << "-arch" << a } if cccfg? 'u'
+    args.concat ENV['HOMEBREW_ARCHFLAGS'].split(' ') if cccfg? 'u'
     args
   end
   def syslibpath
