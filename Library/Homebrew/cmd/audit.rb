@@ -575,7 +575,7 @@ class FormulaAuditor
     audit_conflicts
     audit_patches
     audit_text
-    text.each_line.with_index { |line, lineno| audit_line(line, lineno) }
+    text.split("\n").each_with_index { |line, lineno| audit_line(line, lineno) }
     audit_python
     audit_installed
   end
