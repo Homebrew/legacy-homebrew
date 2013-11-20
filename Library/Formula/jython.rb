@@ -16,4 +16,19 @@ class Jython < Formula
     inreplace libexec/'bin/jython', 'PRG=$0', "PRG=#{libexec}/bin/jython"
     bin.install_symlink libexec/'bin/jython'
   end
+
+  def caveats; <<-EOS.undent
+    To be able to use the Jython Launcher you will have to set
+    the JYTHON_HOME environment variable.
+
+    For bash, zsh & co:
+      export JYTHON_HOME=#{opt_prefix}/libexec
+
+    For fish:
+      set -x JYTHON_HOME #{opt_prefix}/libexec
+
+    Now you can simply run `jython` on the command line to start
+    Jython.
+    EOS
+  end
 end
