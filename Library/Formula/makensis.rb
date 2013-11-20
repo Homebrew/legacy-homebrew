@@ -13,7 +13,7 @@ class Makensis < Formula
   end
 
   def install
-    system "scons makensis"
+    system "scons makensis APPEND_CCFLAGS=--stdlib=libstdc++ APPEND_LINKFLAGS=--stdlib=libstdc++"
     bin.install "build/release/makensis/makensis"
     (share/'nsis').install resource('nsis')
   end
