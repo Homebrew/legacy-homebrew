@@ -76,17 +76,12 @@ module Superenv
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
     self['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
     self['HOMEBREW_VERBOSE'] = "1" if ARGV.verbose?
+    self['HOMEBREW_OPTFLAGS'] = determine_optflags
     self['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     self['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
     self['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
     self['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     self['ACLOCAL_PATH'] = determine_aclocal_path
-
-    # For custom bottles, need to specify the arch in the environment
-    # so that the compiler shims have access
-    if (arch = ARGV.bottle_arch)
-      self['HOMEBREW_ARCHFLAGS'] = Hardware::CPU.optimization_flags[arch]
-    end
 
     # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
     # compiler flag stripping. It consists of a string of characters which act
@@ -94,12 +89,6 @@ module Superenv
     #
     # u - A universal build was requested
     # 3 - A 32-bit build was requested
-    # b - Installing from a bottle
-    # c - Installing from a bottle with a custom architecture
-    # i - Installing from a bottle on Intel
-    # 6 - Installing from a bottle on 64-bit Intel
-    # p - Installing from a bottle on PPC
-    # A - Installing from a bottle on PPC with Altivec
     # O - Enables argument refurbishing. Only active under the
     #     make/bsdmake wrappers currently.
     # x - Enable C++11 mode.
@@ -214,27 +203,17 @@ module Superenv
     end
   end
 
+  def determine_optflags
+    if ARGV.build_bottle?
+      arch = ARGV.bottle_arch || Hardware.oldest_cpu
+      Hardware::CPU.optimization_flags.fetch(arch)
+    elsif compiler == :clang
+      "-march=native"
+    end
+  end
+
   def determine_cccfg
     s = ""
-    if ARGV.build_bottle?
-      s << if ARGV.bottle_arch
-        'bc'
-      elsif Hardware::CPU.type == :intel
-        if Hardware::CPU.is_64_bit?
-          'bi6'
-        else
-          'bi'
-        end
-      elsif Hardware::CPU.type == :ppc
-        if Hardware::CPU.altivec?
-          'bpA'
-        else
-          'bp'
-        end
-      else
-        'b'
-      end
-    end
     # Fix issue with sed barfing on unicode characters on Mountain Lion
     s << 's' if MacOS.version >= :mountain_lion
     # Fix issue with >= 10.8 apr-1-config having broken paths

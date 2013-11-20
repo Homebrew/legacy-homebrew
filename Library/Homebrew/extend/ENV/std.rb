@@ -343,7 +343,7 @@ module Stdenv
 
     if ARGV.build_bottle?
       arch = ARGV.bottle_arch || Hardware.oldest_cpu
-      append flags, Hardware::CPU.optimization_flags[arch]
+      append flags, Hardware::CPU.optimization_flags.fetch(arch)
     else
       # Don't set -msse3 and older flags because -march does that for us
       append flags, map.fetch(Hardware::CPU.family, default)

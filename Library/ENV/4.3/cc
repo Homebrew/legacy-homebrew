@@ -184,22 +184,7 @@ class Cmd
   def optflags
     args = []
     args << "-#{ENV['HOMEBREW_OPTIMIZATION_LEVEL']}"
-
-    # When bottling use the oldest supported CPU type.
-    if cccfg? 'bc'
-      # Custom bottle specified during the build
-      args << ENV['HOMEBREW_ARCHFLAGS']
-    elsif cccfg? 'bi6'
-      args << '-march=core2'
-    elsif cccfg? 'bi'
-      args << '-march=prescott'
-    elsif cccfg? 'bpA'
-      args << '-mcpu=7400'
-    elsif cccfg? 'bp'
-      args << '-mcpu=750'
-    else
-      args << '-march=native' if tool =~ /clang/
-    end
+    args.concat ENV['HOMEBREW_OPTFLAGS'].split(' ') if ENV['HOMEBREW_OPTFLAGS']
     args
   end
   def archflags
