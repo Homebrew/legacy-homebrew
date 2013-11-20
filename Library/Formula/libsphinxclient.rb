@@ -15,13 +15,11 @@ class Libsphinxclient < Formula
   def install
     Dir.chdir "api/libsphinxclient"
 
-    args = %W[--prefix=#{prefix}]
-
     # libsphinxclient doesn't seem to support concurrent jobs:
     #  https://bbs.archlinux.org/viewtopic.php?id=77214
-    ENV['MAKEFLAGS'] = "-j1"
+    ENV.j1
 
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 end
