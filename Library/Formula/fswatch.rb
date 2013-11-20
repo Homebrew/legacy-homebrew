@@ -2,9 +2,8 @@ require 'formula'
 
 class Fswatch < Formula
   homepage 'https://github.com/alandipert/fswatch'
-  url 'https://codeload.github.com/alandipert/fswatch/tar.gz/r0.0.1'
-  sha1 'e24397925de76a9d0805331c387b6517bc18b0ed'
-  version '0.0.1'
+  url 'https://github.com/alandipert/fswatch/archive/r0.0.2.tar.gz'
+  sha1 '80dcf0d4af0b28f1b777528050f2e094218cee5f'
 
   def install
     system 'make'
