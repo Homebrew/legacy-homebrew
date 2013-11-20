@@ -2,8 +2,8 @@ require 'formula'
 
 class Evas < Formula
   homepage 'http://trac.enlightenment.org/e/wiki/Evas'
-  url 'http://download.enlightenment.org/releases/evas-1.7.8.tar.gz'
-  sha1 'ce71de058896e80c8f1822d967a6dcee01a1c9ac'
+  url 'http://download.enlightenment.org/releases/evas-1.7.9.tar.gz'
+  sha1 '5804cf35451f4e05185b6ae9103b0390c0dfed5d'
 
   option 'with-docs', 'Install development libraries/headers and HTML docs'
 
