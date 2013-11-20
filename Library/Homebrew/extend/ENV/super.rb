@@ -257,7 +257,7 @@ module Superenv
   end
 
   def universal_binary
-    self['HOMEBREW_ARCHS'] = Hardware::CPU.universal_archs.join(',')
+    self['HOMEBREW_ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
     append 'HOMEBREW_CCCFG', "u", ''
   end
 
