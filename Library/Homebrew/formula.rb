@@ -227,6 +227,9 @@ class Formula
   # can still return a Hash with DATA as the value for a patch level key.
   def patches; end
 
+  # Can be overridden to run commands just after uninstall.
+  def post_uninstall; end
+
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
   def keg_only?

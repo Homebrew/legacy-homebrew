@@ -13,6 +13,7 @@ module Homebrew extend self
           keg.uninstall
           rm_opt_link keg.fname
           rm_pin keg.fname
+          post_uninstall keg.fname
         end
       end
     else
@@ -32,6 +33,7 @@ module Homebrew extend self
 
         rm_opt_link name
         rm_pin name
+        post_uninstall name
       end
     end
   rescue MultipleVersionsInstalledError => e
@@ -46,5 +48,9 @@ module Homebrew extend self
 
   def rm_pin name
     Formula.factory(name).unpin rescue nil
+  end
+
+  def post_uninstall name
+    Formula.factory(name).post_uninstall rescue nil
   end
 end
