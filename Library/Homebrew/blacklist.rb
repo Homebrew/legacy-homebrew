@@ -11,11 +11,6 @@ def blacklisted? name
     Some build scripts fail to detect it correctly, please check existing
     formulae for solutions.
     EOS
-  when 'libxml', 'libxlst' then <<-EOS.undent
-    Apple distributes #{name} with OS X, you can find it in /usr/lib.
-    However not all build scripts look for these hard enough, so you may need
-    to call ENV.libxml2 in your formula's install function.
-    EOS
   when 'wxpython' then <<-EOS.undent
     The Python bindings (import wx) for wxWidgets are installed by:
         brew install wxwidgets
