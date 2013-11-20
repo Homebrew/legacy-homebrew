@@ -85,6 +85,12 @@ class Wine < Formula
   # Including /usr/lib because wine, as of 1.3.15, tries to dlopen
   # libncurses.5.4.dylib, and fails to find it without the fallback path.
 
+  def library_path
+    path = %W[#{HOMEBREW_PREFIX}/lib /usr/lib]
+    paths.unshift(MacOS::X11.lib) unless build.without? 'x11'
+    paths.join(':')
+  end
+
   def wine_wrapper; <<-EOS.undent
     #!/bin/sh
     DYLD_FALLBACK_LIBRARY_PATH="#{library_path}" "#{bin}/wine.bin" "$@"
@@ -172,14 +178,5 @@ class Wine < Formula
       EOS
     end
     return s
-  end
-
-  private
-
-  def library_path
-    paths = ["#{HOMEBREW_PREFIX}/lib", '/usr/lib']
-    paths.unshift(MacOS::X11.lib) unless build.without? 'x11'
-
-    paths.join(':')
   end
 end
