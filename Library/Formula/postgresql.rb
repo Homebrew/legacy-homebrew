@@ -3,6 +3,12 @@ require 'formula'
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
   url 'http://ftp.postgresql.org/pub/source/v9.3.1/postgresql-9.3.1.tar.bz2'
+  bottle do
+    sha1 '11a69f847f44c2f1e3d8be884350d9f6a723f454' => :mavericks
+    sha1 '936b14d5b2006e16cfb5ec9d58577b24cebc04c4' => :mountain_lion
+    sha1 '1fa00b15402e5928299a766db0aca3c85d70fef7' => :lion
+  end
+
   sha256 '8ea4a7a92a6f5a79359b02e683ace335c5eb45dffe7f8a681a9ce82470a8a0b8'
 
   option '32-bit'
@@ -68,12 +74,14 @@ class Postgresql < Formula
     system "make install-world"
   end
 
+  def post_install
+    unless File.exist? "#{var}/postgres"
+      system "#{bin}/initdb", "#{var}/postgres", '-E', 'utf8'
+    end
+  end
+
   def caveats
     s = <<-EOS.undent
-    initdb #{var}/postgres -E utf8    # create a database cluster
-    postgres -D #{var}/postgres       # serve that database
-    PGDATA=#{var}/postgres postgres   # …alternatively
-
     If builds of PostgreSQL 9 are failing and you have version 8.x installed,
     you may need to remove the previous version first. See:
       https://github.com/mxcl/homebrew/issues/issue/2510
@@ -94,7 +102,7 @@ class Postgresql < Formula
     EOS
   end
 
-  plist_options :manual => "pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres -l #{HOMEBREW_PREFIX}/var/postgres/server.log start"
+  plist_options :manual => "postgres -D #{HOMEBREW_PREFIX}/var/postgres"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
