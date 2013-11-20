@@ -26,7 +26,8 @@ class Luajit < Formula
     # This doesn't yet work under superenv because it removes '-g'
     args << 'CCDEBUG=-g' if build.include? 'enable-debug'
 
-    system 'make', 'amalg', 'install', *args
+    system 'make', 'amalg', *args
+    system 'make', 'install', *args
   end
 
   test do
