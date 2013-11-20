@@ -6,6 +6,7 @@ Installation
 ------------
 
 * Debian or Ubuntu: `sudo apt-get install build-essential curl git ruby`
+* Fedora: `sudo yum groupinstall 'Development Tools' && sudo yum install curl git ruby bzip2-devel`
 * `git clone https://github.com/Homebrew/linuxbrew.git ~/.linuxbrew`
 * Add to your `.bashrc` or `.zshrc`:
 
