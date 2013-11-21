@@ -20,6 +20,3 @@ class Array
     select { |path| File.directory? path }.uniq.map { |path| prefix + path }
   end
 end
-
-$brewfix = ENV['HOMEBREW_PREFIX']
-$sdkroot = ENV['HOMEBREW_SDKROOT']
