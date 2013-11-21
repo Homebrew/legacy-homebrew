@@ -8,6 +8,11 @@ class Avian < Formula
 
   depends_on :macos => :lion
 
+  # Fix build with clang; already upstream
+  def patches
+    "https://github.com/ReadyTalk/avian/commit/69ea1f57219e0ec1b113f1fcadaa3dae6b93f358.diff"
+  end
+
   def install
     system 'make', 'JAVA_HOME=/Library/Java/Home'
     bin.install Dir['build/darwin-*/avian*']
