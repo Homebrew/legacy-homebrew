@@ -30,6 +30,8 @@ class Wine < Formula
     depends_on 'little-cms2'
   end
 
+  env :std
+
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
   require_universal_deps
@@ -83,6 +85,12 @@ class Wine < Formula
   # Including /usr/lib because wine, as of 1.3.15, tries to dlopen
   # libncurses.5.4.dylib, and fails to find it without the fallback path.
 
+  def library_path
+    path = %W[#{HOMEBREW_PREFIX}/lib /usr/lib]
+    paths.unshift(MacOS::X11.lib) unless build.without? 'x11'
+    paths.join(':')
+  end
+
   def wine_wrapper; <<-EOS.undent
     #!/bin/sh
     DYLD_FALLBACK_LIBRARY_PATH="#{library_path}" "#{bin}/wine.bin" "$@"
@@ -90,7 +98,11 @@ class Wine < Formula
   end
 
   def install
-    ENV.m32 # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
+    # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
+    build32 = "-arch i386 -m32"
+
+    ENV.append "CFLAGS", build32
+    ENV.append "LDFLAGS", build32
 
     # The clang that comes with Xcode 5 no longer miscompiles wine. Tested with 1.7.3.
     if ENV.compiler == :clang and MacOS.clang_build_version < 500
@@ -166,14 +178,5 @@ class Wine < Formula
       EOS
     end
     return s
-  end
-
-  private
-
-  def library_path
-    paths = ["#{HOMEBREW_PREFIX}/lib", '/usr/lib']
-    paths.unshift(MacOS::X11.lib) unless build.without? 'x11'
-
-    paths.join(':')
   end
 end
