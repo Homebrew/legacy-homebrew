@@ -204,7 +204,7 @@ class Cmd
   end
   def cpath
     cpath = ENV['CMAKE_PREFIX_PATH'].split(':').map{|d| "#{d}/include" } + ENV['CMAKE_INCLUDE_PATH'].split(':')
-    opt = cpath.select{|prefix| prefix =~ %r{^#$brewfix/opt} }
+    opt = cpath.grep(%r{^#$brewfix/opt})
     sys = cpath - opt
     [sys, opt]
   end
