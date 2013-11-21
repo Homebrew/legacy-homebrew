@@ -15,8 +15,4 @@ class EchoprintCodegen < Formula
       system "make", "install", "PREFIX=#{prefix}"
     end
   end
-
-  def test
-    system "echoprint-codegen"
-  end
 end
