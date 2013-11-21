@@ -11,8 +11,6 @@ class Gdal < Formula
   end
 
   option 'complete', 'Use additional Homebrew libraries to provide more drivers.'
-  option 'with-postgresql', 'Specify PostgreSQL as a dependency.'
-  option 'with-mysql', 'Specify MySQL as a dependency.'
   option 'enable-opencl', 'Build with OpenCL acceleration.'
   option 'enable-armadillo', 'Build with Armadillo accelerated TPS transforms.'
   option 'enable-unsupported', "Allow configure to drag in any library it can find. Invoke this at your own risk."
