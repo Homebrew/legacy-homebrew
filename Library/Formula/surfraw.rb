@@ -2,7 +2,7 @@ require 'formula'
 
 class Surfraw < Formula
   homepage 'http://surfraw.alioth.debian.org/'
-  url 'http://surfraw.alioth.debian.org/dist/surfraw-2.2.8.tar.gz'
+  url 'http://ftp.de.debian.org/debian/pool/main/s/surfraw/surfraw_2.2.8.orig.tar.gz'
   sha1 '3114cd6e8d64f87b84ed0eff4369bfb0b10f2eb6'
 
   head 'git://git.debian.org/surfraw/surfraw.git'
